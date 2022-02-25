@@ -47,37 +47,73 @@ FoEproxy.addHandler('CampaignService', 'start', (data, postData) => {
         return;
     }
     
-    //do not show box, when scout is currently scouting
-    //if (!(data.responseData.scout.path[0] == 0)) {
-    //    return;
-    //}
+    for (let province of data.responseData.provinces) {
+        scoutingTimes.Provinces[province.id] = province;
+    }
+    scoutingTimes.scoutPosition = data.responseData.scout?.current_province|0;
+    scoutingTimes.scoutTarget = data.responseData.scout?.path[data.responseData.scout?.path?.length-1]|0;
+    scoutingTimes.scoutTraveltime = data.responseData.scout.time_to_target;
 
-    // Don't create a new box while another one is still open
-    if ($('#mapScoutingTimesDialog').length > 0) {
+    return scoutingTimes.ShowDialog();
+});
+
+FoEproxy.addHandler('CampaignService', 'getProvinceData', (data, postData) => {
+       
+    return scoutingTimes.CheckSectors(data);
+});
+FoEproxy.addHandler('CampaignService', 'buySector', (data, postData) => {
+       
+    return scoutingTimes.CheckSectors(data);
+});
+
+FoEproxy.addHandler('CampaignService', 'buyInstantScout', (data, postData) => {
+       
+    // Is the box enabled in the settings?
+    if (!Settings.GetSetting('ShowScoutingTimes')) {
         return;
     }
     
-    return scoutingTimes.ShowDialog(data.responseData);
+    scoutingTimes.Provinces[data.responseData.province.id].isScouted = true;
+
+    return scoutingTimes.ShowDialog();
+});
+
+FoEproxy.addHandler('CampaignService', 'moveScoutToProvince', (data, postData) => {
+       
+    // Is the box enabled in the settings?
+    if (!Settings.GetSetting('ShowScoutingTimes')) {
+        return;
+    }
+    
+    for (resp of postData) {
+        if (resp.requestMethod === 'moveScoutToProvince') {
+            scoutingTimes.scoutTarget = resp.requestData[0][resp.requestData[0].length - 1];
+            scoutingTimes.scoutTraveltime = data.responseData;
+        }
+    }
+
+    return scoutingTimes.ShowDialog();
 });
 
 let scoutingTimes = {
 
     Provinces: {},
+    castleBonuses:{},
+    target:0,
+    scoutPosition:0,
+    scoutTarget:[],
+    scoutTraveltime:0,
 
     /**
      * Shows a box displaying the base scouting times
      *
      * @constructor
      */
-    ShowDialog: (data) => {
+    ShowDialog: () => {
 
         //let Provinces = {};
         let toscout = [];
         
-        for (let province of data.provinces) {
-            scoutingTimes.Provinces[province.id] = province;
-        }
-
         let castlebonus = 1;
         if ((Castle.curLevel|0)>0) castlebonus = scoutingTimes.castleBonuses[Castle.curLevel];
 
@@ -99,18 +135,21 @@ let scoutingTimes = {
                         continue;
                     };
 
-                    if (!(scoutingTimes.Provinces[child.id].fromCurrent|false)) {
-                        if (province.id = data.scout.current_province){
-                            scoutingTimes.Provinces[child.id].fromCurrent = true;
-                        }
-                        scoutingTimes.Provinces[child.id].travelTime = (element.travelTime + (Math.max(scoutingTimes.distance(data.scout.current_province,child.id) - 1, 0)) * 600) * castlebonus;
-                    } 
+                    if (child.isScouted|false) {
+                        scoutingTimes.Provinces[child.id].travelTime = 0;
+                    } else {
+                        if (!(scoutingTimes.Provinces[child.id].fromCurrent|false)) {
+                            if (province.id === scoutingTimes.scoutPosition){
+                                scoutingTimes.Provinces[child.id].fromCurrent = true;
+                            }
+                            scoutingTimes.Provinces[child.id].travelTime = (element.travelTime + (Math.max(scoutingTimes.distance(scoutingTimes.scoutPosition,child.id) - 1, 0)) * 600) * castlebonus;
+                        } 
 
-                    if (data.scout.path[data.scout.path.length-1] === child.id) {
-                        scoutingTimes.Provinces[child.id].travelTime = data.scout.time_to_target;
-                        scoutingTimes.target = child.id;
+                        if (scoutingTimes.scoutTarget === child.id) {
+                            scoutingTimes.Provinces[child.id].travelTime = scoutingTimes.scoutTraveltime;
+                            scoutingTimes.target = child.id;
+                        }
                     }
-                    
                     if (child.isScouted|false) scoutingTimes.Provinces[child.id].travelTime = 0;
                     let mayScout = true;
 
@@ -133,34 +172,36 @@ let scoutingTimes = {
             let p = toscout.pop();
             let province = scoutingTimes.Provinces[p];
             if (province.isScouted|false) {
-                htmltext += `<tr class="scouted"><td>${province.name}</td><td></td><td></td></tr>`;
+                htmltext += `<tr class="scouted" title="${i18n('Eras.'+Technologies.Eras[province.era])}"><td>${province.name}</td><td></td><td></td></tr>`;
                 i += 1;
             }
             if ((province.travelTime|0)>0) {
                 i += 1;
-                htmltext += `<tr><td>${province.name}</td><td>`;
-                htmltext += (p === scoutingTimes.target) ? `...<img  src="${MainParser.InnoCDN}/assets/city/gui/citymap_icons/tavern_shop_boost_scout_small_icon.png" alt="">...` : `<img  src="${MainParser.InnoCDN}/assets/shared/icons/money.png" alt=""> ${province.travelTime > 1 ? scoutingTimes.numberWithCommas(province.scoutingCost) : 0}</td>`;
+                htmltext += `<tr title="${i18n('Eras.'+Technologies.Eras[province.era])}"><td>${province.name}</td>`;
+                htmltext += (p === scoutingTimes.target) ? `<td class="scouting">...<img  src="${MainParser.InnoCDN}/assets/city/gui/citymap_icons/tavern_shop_boost_scout_small_icon.png" alt="">...` : `<td><img  src="${MainParser.InnoCDN}/assets/shared/icons/money.png" alt=""> ${province.travelTime > 1 ? scoutingTimes.numberWithCommas(province.scoutingCost) : 0}</td>`;
                 htmltext += `<td><img  src="${MainParser.InnoCDN}/assets/shared/icons/icon_time.png" alt="">`;
                 htmltext += ` ${scoutingTimes.format(province.travelTime)}`;
                 htmltext += `</td></tr>`;
             }
         }
        
-        htmltext += `</table>`
+        htmltext += `</table>`;
         //htmltext += `<div style="color:var(--text-bright); text-align:center;">${i18n('Boxes.scoutingTimes.Warning')}</div>`
         
         if (i > 0) {
-            HTML.AddCssFile('scoutingtimes');
+            if ($('#mapScoutingTimesDialog').length === 0) {
+                HTML.AddCssFile('scoutingtimes');
         
-            HTML.Box({
-                id: 'mapScoutingTimesDialog',
-                title: i18n('Boxes.scoutingTimes.Title'),
-                auto_close: true,
-                dragdrop: true,
-                minimize: false,
-                ask: i18n('Boxes.scoutingTimes.HelpLink'),
-            });
-    
+                HTML.Box({
+                    id: 'mapScoutingTimesDialog',
+                    title: i18n('Boxes.scoutingTimes.Title'),
+                    auto_close: true,
+                    dragdrop: true,
+                    minimize: false,
+                    ask: i18n('Boxes.scoutingTimes.HelpLink'),
+                });
+            }
+        
             $('#mapScoutingTimesDialogBody').html(htmltext);
         }
     },
@@ -183,20 +224,17 @@ let scoutingTimes = {
     numberWithCommas: (x) => {
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     },
-
-    castleBonuses:{},
-    target:0,
     
     distance: (StartId, GoalId) => {
-        limit = Math.floor(Math.min(StartId/100,GoalId/100)) * 100;
-        StartDist = scoutingTimes.GetDistances(StartId,limit);
-        GoalDist = scoutingTimes.GetDistances(GoalId,limit);
+        let limit = Math.floor(Math.min(StartId/100,GoalId/100)) * 100;
+        let StartDist = scoutingTimes.GetDistances(StartId,limit);
+        let GoalDist = scoutingTimes.GetDistances(GoalId,limit);
 
-        Distance = 1000;
+        let Distance = 1000;
         for (let index in GoalDist) {
             
             if (StartDist[index]) {
-                DistanceNew = GoalDist[index].dist+StartDist[index].dist;
+                let DistanceNew = GoalDist[index].dist+StartDist[index].dist;
                 if (DistanceNew<Distance) Distance = DistanceNew;
             }
             if (Distance === 1) break;
@@ -205,23 +243,53 @@ let scoutingTimes = {
     },
 
     GetDistances:(StartId,limit) => {
+
         let temp = [[StartId,0]];
+        let distx = {};
         for (let Province of temp) {
             if (Province[0]<limit) break;
-            if (!scoutingTimes.Provinces[Province[0]]?.parentIds) continue;
+
+            let isShorter = false;
+
+            if (!distx[Province[0]]) {
+                distx[Province[0]] = {'id':Province[0], 'dist': Province[1]};
+                isShorter = true;
+            } else {
+                if (distx[Province[0]]?.dist > Province[1]) {
+                    distx[Province[0]] = {'id':Province[0], 'dist': Province[1]};
+                    isShorter = true;
+                }
+            }
+
+            if (!scoutingTimes.Provinces[Province[0]]?.parentIds || !isShorter) continue;
             for (let parent of scoutingTimes.Provinces[Province[0]].parentIds) {
                 temp.push([parent,Province[1]+1]);
             }
-        }
-        let distx = {};
-        for (let p of temp) {
-            if (!distx[p[0]]) {
-                distx[p[0]] = {'id':p[0], 'dist': p[1]};
-            } else {
-                if (distx[p[0]]?.dist > p[1]) distx[p[0]] = {'id':p[0], 'dist': p[1]};
-            }
+            
         }
         return distx;
     },
+
+    CheckSectors: (data) => {
+            // Is the box enabled in the settings?
+        if (!Settings.GetSetting('ShowScoutingTimes')) {
+            return;
+        }
+        let Id = data.responseData[0].provinceId;
+        let istaken = true;
+        for (let sector of data.responseData) {
+            if (!(sector.isPlayerOwned)) {
+                istaken = false;
+                break;
+            }
+        }
+
+        if (!istaken) return;
+                    
+        scoutingTimes.Provinces[Id].isPlayerOwned = true;
+
+        return scoutingTimes.ShowDialog();
+
+    }
 
 };

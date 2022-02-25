@@ -90,6 +90,12 @@
 		"sort": 13
 	},
 	{
+		"name": "ExcludeRelics",
+		"status": false,
+		"group": "Boxes",
+		"sort": 13
+	},
+	{
 		"name": "Show2kQuestMark",
 		"status": false,
 		"group": "Boxes",
@@ -167,12 +173,6 @@
 		"callback": "NotificationStack",
 		"group": "Extension",
 		"sort": 9
-	},
-	{
-		"name": "DrivePermission",
-		"calback": "DrivePermissions",
-		"group": "Extension",
-		"sort": 1
 	},
 	{
 		"name": "About",
