@@ -309,7 +309,8 @@ let betterMusic = {
                 title: 'Better Music',
                 auto_close: true,
                 dragdrop: true,
-                minimize: true,                
+                minimize: true,
+                resize: true,                
             });
 
             $('#betterMusicDialogclose').on('click', function() {
@@ -404,12 +405,16 @@ let betterMusic = {
     },
 
     setScene: (scene) => {
-        if (!betterMusic.Scenes[scene] && betterMusic.currentTitle != scene) {
+        
+        if (betterMusic.currentTitle == scene) return
+        
+        if (!betterMusic.Scenes[scene]) {
             if (betterMusic.Settings.Finish) return;
             if (!betterMusic.playStatus) return;
             betterMusic.switchTrack(scene);
             return
         }
+
         betterMusic.buildlist(scene);
         if (betterMusic.currentScene === scene) return;
 
