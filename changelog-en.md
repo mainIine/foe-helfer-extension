@@ -1,5 +1,30 @@
 ## Changelog - Extension
 
+##### 2.7.0.0
+
+**New**
+- Music Module:
+	- [#2335](https://github.com/mainIine/foe-helfer-extension/issues/2335) [Info](https://github.com/mainIine/foe-helfer-extension/issues/2335)
+		- You can choose whether titles linked to an epoch may be played in your city or in the colony:
+			- Nu current epoch (only titles linked to the current epoch will be played).
+			- up to current epoch (only titles linked to the current or an earlier epoch are played)
+			- ignore era (all titles can be played)
+			- You can choose whether visiting the tavern, the PvP arena or opening the event window should trigger the associated title
+			- You can choose whether the titles of other settlements can be played in settlements (e.g. Egypt can be played in Aztecs if selected below).
+
+**Update**
+- St.Patricks Box:
+  - The box can now be resized
+
+**BugFix**
+- Alarms:
+	- [#2332](https://github.com/mainIine/foe-helfer-extension/issues/2332) The alarm overview did not open.
+
+- Guild Battles:
+	- The overview box of the provinces could not be opened.
+
+---
+
 ##### 2.6.0.1
 
 **Update**
