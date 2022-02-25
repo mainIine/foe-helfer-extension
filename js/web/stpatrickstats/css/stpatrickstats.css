@@ -11,24 +11,25 @@
  * **************************************************************************************
  */
 
- #stPatrickDialog {
-    top: 50px;
-    left: calc(100vw - 350px);
+#stPatrickDialog {
+	top: 50px;
+	left: calc(100vw - 350px);
+	width: 280px;
+    height: auto;
 }
 
-#stPatrickDialog img{
+#stPatrickDialog img {
     width: 25px;
     height: 25px;
 }
 
 #stPatrickDialogBody {
-    width: 250px;
-    height: auto;
     display: block;
     justify-content: center;
     align-items: center;
     text-align: center;
     font-size: 100%;
+    overflow-y: auto;
 }
 
 

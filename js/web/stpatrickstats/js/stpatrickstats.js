@@ -19,6 +19,7 @@ FoEproxy.addHandler('IdleGameService', 'getState', (data, postData) => {
 	}
 
 	for (let x in data.responseData.characters) {
+		if (!Object.hasOwnProperty.call(data.responseData.characters, x)) continue;
         let character = data.responseData.characters[x];
 
 		stPatrick.stPat[character.id].level = character.level|0;
@@ -28,6 +29,7 @@ FoEproxy.addHandler('IdleGameService', 'getState', (data, postData) => {
 	stPatrick.Tasklist = data.responseData.taskHandler.taskOrder;
 	
 	for (let t in data.responseData.taskHandler.completedTasks) {
+		if (!Object.hasOwnProperty.call(data.responseData.taskHandler.completedTasks, t)) continue;
         td = data.responseData.taskHandler.completedTasks[t];
 		let index = stPatrick.Tasklist.indexOf(td);
 		if (index > -1) {
@@ -56,6 +58,7 @@ FoEproxy.addHandler('IdleGameService', 'performActions', (data, postData) => {
 
     for (let x in game)
 	{
+		if (!Object.hasOwnProperty.call(game, x)) continue;
         let data2 = game[x];
 				
 		if(!data2['characterId'] && !data2['taskId']) {
@@ -91,6 +94,7 @@ FoEproxy.addMetaHandler('idle_game', (data, postData) => {
 
     for (let x in resp['configs'][0]['characters'])
 	{
+		if (!Object.hasOwnProperty.call(resp['configs'][0]['characters'], x)) continue;
 		let d = resp['configs'][0]['characters'][x];
 
 		if(!d['id'])
@@ -101,6 +105,7 @@ FoEproxy.addMetaHandler('idle_game', (data, postData) => {
     }
 	for (let t in resp['configs'][0]['tasks'])
 	{
+		if (!Object.hasOwnProperty.call(resp['configs'][0]['tasks'], t)) continue;
 		let task = resp['configs'][0]['tasks'][t];
 
 		if(!task['id'])
@@ -161,18 +166,21 @@ let stPatrick = {
         HTML.AddCssFile('stpatrickstats');
         
         HTML.Box({
-            'id': 'stPatrickDialog',
-            'title': i18n('Boxes.stPatrick.Title'),
-            'auto_close': true,
-            'dragdrop': true,
-            'minimize': true
+            id: 'stPatrickDialog',
+            title: i18n('Boxes.stPatrick.Title'),
+            auto_close: true,
+            dragdrop: true,
+            minimize: true,
+			resize : true
         });
 
-		stPatrick.hiddenTables = JSON.parse(localStorage.getItem('stPatrickSettings') || '[]');
+		[stPatrick.hiddenTables, stPatrick.minimized] = JSON.parse(localStorage.getItem('stPatrickSettings2') || '[[],false]');
+
+
 		
         let htmltext = `<table id="stPatTable" style="width:100%"><tr><th colspan="2">`;
         htmltext += `<img src="${MainParser.InnoCDN}/assets/shared/seasonalevents/stpatricks/event/stpatrick_task_idle_currency_thumb.png" alt="" >`;
-        htmltext += `${i18n('Boxes.stPatrick.Hourly')}<br>(idle)</th></tr><tr>`;
+        htmltext += `${i18n('Boxes.stPatrick.Hourly')}</th></tr><tr>`;
         htmltext += `<td>${stPatrick.stPat.market_1.baseData.name}<br><span id="stPatFest"></span></td>`;
         htmltext += `<td rowspan="2">${i18n('Boxes.stPatrick.Production')}<br><span id="stPatWork"></span></td>`;
         htmltext += `</tr><tr><td>${stPatrick.stPat.transport_1.baseData.name}<br><span id="stPatShip"></span></td>`;
@@ -226,17 +234,40 @@ let stPatrick = {
 		htmltext += `<span id="stPatTown" style="color:var(--text-bright); font-weight:bold"></span>`;
         
         
-        $('#stPatrickDialogBody').html(htmltext); 
+        $('#stPatrickDialogBody').html(htmltext);
+
 		for (let t in stPatrick.hiddenTables) {
+			if (!Object.hasOwnProperty.call(stPatrick.hiddenTables, t)) continue;
 			table= stPatrick.hiddenTables[t];
 			stPatrick.hide2(table);
-		};
+		}
+
+		let box = $('#stPatrickDialog'),
+			open = box.hasClass('open');
+
+		if (open === true && stPatrick.minimized) {
+			box.removeClass('open');
+			box.addClass('closed');
+			box.find('.window-body').css("visibility", "hidden");
+		}
+		else {
+			box.removeClass('closed');
+			box.addClass('open');
+			box.find('.window-body').css("visibility", "visible");
+		}
+
+		$('#stPatrickDialogHeader > span.window-minimize').on('click', function() {
+			stPatrick.minimized = !stPatrick.minimized;
+			localStorage.setItem('stPatrickSettings2', JSON.stringify([stPatrick.hiddenTables, stPatrick.minimized]));
+		});
+
     },
 
 
 	stPatrickUpdateDialog: () => {
 
 		for (let building in stPatrick.stPat) {
+			if (!Object.hasOwnProperty.call(stPatrick.stPat, building)) continue;
 			building = stPatrick.stPatProduction(stPatrick.stPat[building])
 		}
 
@@ -244,12 +275,14 @@ let stPatrick = {
 		let sum = 0;
 
 		for (let b in stPatrick.stPat) {
+			if (!Object.hasOwnProperty.call(stPatrick.stPat, b)) continue;
 			if (stPatrick.stPat[b].degree > degree && stPatrick.stPat[b].type === 'work'){
 				degree = stPatrick.stPat[b].degree;
 			}
 		}
 		let worktitle = ''
 		for (let b in stPatrick.stPat) {
+			if (!Object.hasOwnProperty.call(stPatrick.stPat, b)) continue;
 			if (stPatrick.stPat[b].type === 'work'){
 				sum += Math.pow(1000, stPatrick.stPat[b].degree - degree) * stPatrick.stPat[b].production
 				worktitle += `\n${stPatrick.stPat[b].baseData.name}: ${stPatrick.stPat[b].production.toPrecision(3)} ${stPatrick.stPatNums[stPatrick.stPat[b].degree]}`
@@ -286,6 +319,7 @@ let stPatrick = {
 		$(ident).addClass("highlight");
 
 		for (let x in stPatrick.stPat) {
+			if (!Object.hasOwnProperty.call(stPatrick.stPat, x)) continue;
 			$('#stPat'+x+'Level').text(`${stPatrick.stPat[x].level} -> ${stPatrick.stPat[x].next}`);
 			$('#stPat'+x).text(`${stPatrick.bigNum(stPatrick.stPat[x].need)} ${stPatrick.stPatNums[stPatrick.stPat[x].ndegree]}`);
 			$('#stPat'+x+'Time').text(`(${stPatrick.time(stPatrick.stPat[x].need,stPatrick.stPat[x].ndegree,sum,degree,0,0)})`);
@@ -345,6 +379,7 @@ let stPatrick = {
 
 		let x = 0;
 		for (let rank in building.baseData.rankProductionLevels) {
+			if (!Object.hasOwnProperty.call(building.baseData.rankProductionLevels, rank)) continue;
 			x = building.baseData.rankProductionLevels[rank];
 			if (x > building.level) {
 				break;
@@ -392,6 +427,7 @@ let stPatrick = {
 		}
 
 		for (let i in building.baseData.bonuses) {
+			if (!Object.hasOwnProperty.call(building.baseData.bonuses, i)) continue;
 			let bonus = building.baseData.bonuses[i];
 
 			if (building.manager < bonus.level) {
@@ -418,6 +454,9 @@ let stPatrick = {
 		if (building.manager > 0) {
 			building.production = p;
 			building.degree = d;
+		} else {
+			building.production = 0;
+			building.degree = 0;
 		}
 
 		return building;
@@ -453,7 +492,7 @@ let stPatrick = {
 		} else {
 			stPatrick.hiddenTables.push(id);
 		}
-		localStorage.setItem('stPatrickSettings', JSON.stringify(stPatrick.hiddenTables));
+		localStorage.setItem('stPatrickSettings2', JSON.stringify([stPatrick.hiddenTables, stPatrick.minimized]));
 	},
 
 	hide2: (id) => {
@@ -461,4 +500,5 @@ let stPatrick = {
 	},
 
 	hiddenTables : [],
+	minimized: false,
 };
