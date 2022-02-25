@@ -16,24 +16,41 @@ FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, post
     //on startUp
     let first = false;
     if ($('#betterMusic1').length === 0) {
+        
         let newSound = document.createElement("audio");
         newSound.id = "betterMusic1";
         newSound.volume = 0;
-        //newSound.loop = true;
+        newSound.loop = true;
         newSound.onloadedmetadata = function () {betterMusic.setEvent()}
-        //newSound.onerror = function () {betterMusic.TrackSelector()}
-        //newSound.onload = function () {betterMusic.play(this)}
         $('#musicControl-Btn').append(newSound);
-        betterMusic.currentId = newSound.id;
+        //betterMusic.currentId = newSound.id;
+        betterMusic.Ids.push(newSound.id);
+        
         let newSound2 = document.createElement("audio");
         newSound2.id = "betterMusic2";
         newSound2.volume = 0;
-        //newSound2.loop = true;
+        newSound2.loop = true;
         newSound2.onloadedmetadata = function () {betterMusic.setEvent()}
-        //newSound2.onerror = function () {betterMusic.TrackSelector()}
-        //newSound2.onload = function () {betterMusic.play(this)}
         $('#musicControl-Btn').append(newSound2);
-        betterMusic.nextId = newSound2.id;
+        //betterMusic.nextId = newSound2.id;
+        betterMusic.Ids.push(newSound2.id);
+        
+        let newSound3 = document.createElement("audio");
+        newSound3.id = "betterMusic3";
+        newSound3.volume = 0;
+        newSound3.loop = true;
+        newSound3.onloadedmetadata = function () {betterMusic.setEvent()}
+        $('#musicControl-Btn').append(newSound3);
+        betterMusic.Ids.push(newSound3.id);
+        
+        let newSound4 = document.createElement("audio");
+        newSound4.id = "betterMusic4";
+        newSound4.volume = 0;
+        newSound4.loop = true;
+        newSound4.onloadedmetadata = function () {betterMusic.setEvent()}
+        $('#musicControl-Btn').append(newSound4);
+        //betterMusic.nextId = newSound2.id;
+        betterMusic.Ids.push(newSound4.id);
         
         betterMusic.loadSettings();
         betterMusic.playStatus = betterMusic.Settings.PlayOnStart;
@@ -116,6 +133,7 @@ FoEproxy.addHandler('FriendsTavernService', 'getConfig', (data, postData) => {
 let betterMusic = {
 
     NextEvent: null,
+    Ids: [],
     currentId: "",
     nextId: "",
     currentTitle: "",
@@ -227,12 +245,12 @@ let betterMusic = {
         "foe_music_battlegrounds": {Volume:.7, Name:"Guild Battlegrounds"},
         "foe_music_pvp_arena": {Volume:.6, Name:"PvP Arena"},
         "FoE_BattleTheme_Vs1": {Volume:.7, Name:"Battle Theme"},
-        "foe_music_stpatricks_v2": {Volume:.6, Name:"St Patricks Day Event", Event:"forge_stpatrick_event"},
-        "foe_music_wildlife": {Volume:1, Name:"Wildlife Event", Event:"forge_wildlife_event"},
-        "foe_music_archeology": {Volume:.6, Name:"Archaeology  Event", Event:"forge_archeology_event"},
-        "foe_music_summer": {Volume:.7, Name:"Summer Event", Event:"forge_summer_event"},
-        "foe_music_halloween": {Volume:.6, Name:"Halloween Event", Event:"forge_halloween_event"},
-        "foe_music_winter": {Volume:.6, Name:"Winter Event", Event:"forge_winter_event"},
+        "foe_music_stpatricks_v2": {Volume:.6, Name:"St Patricks Day Event", Event:"st_patricks_event"},
+        "foe_music_wildlife": {Volume:1, Name:"Wildlife Event", Event:"wildlife_event"},
+        "foe_music_archeology": {Volume:.6, Name:"Archaeology  Event", Event:"archeology_event"},
+        "foe_music_summer": {Volume:.7, Name:"Summer Event", Event:"summer_event"},
+        "foe_music_halloween": {Volume:.6, Name:"Halloween Event", Event:"halloween_event"},
+        "foe_music_winter": {Volume:.6, Name:"Winter Event", Event:"winter_event"},
         "foe_music_anniversary": {Volume:1, Name:"Anniversary Event", Event:"forge_ages_event"},
         "foe_music_vikings": {Volume:1, Name:"Viking Settlement", Settlement:"vikings"},
         "foe_music_japanese": {Volume:1, Name:"Japanese Settlement", Settlement:"japanese"},
@@ -322,15 +340,22 @@ let betterMusic = {
 
 
     switchTrack: (newTrack, transition = betterMusic.Settings.TransitionTime) => {
-        $SoundC = $(`#${betterMusic.currentId}`);
-        $SoundN = $(`#${betterMusic.nextId}`);
+        //$SoundC = $(`#${betterMusic.currentId}`);
+        //$SoundN = $(`#${betterMusic.nextId}`);
+        $SoundC = $(`#${betterMusic.Ids.shift()}`);
+        $SoundN = $(`#${betterMusic.Ids[0]}`);
         
         if ($SoundC[0].src == MainParser.InnoCDN + 'assets/sounds/shared/theme/'+ newTrack +'.ogg') {
-            
+        
+            betterMusic.Ids.unshift($SoundC[0].id);
             betterMusic.setEvent(0);
+        
         } else {
-            $SoundN[0].volume = 0;
+            
+            betterMusic.Ids.push($SoundC[0].id);
             $SoundC.animate({volume: 0}, transition);
+            
+            $SoundN[0].volume = 0;
             $SoundN[0].src = MainParser.InnoCDN + 'assets/sounds/shared/theme/'+ newTrack +'.ogg';
             
             clearTimeout(betterMusic.nextEvent);
@@ -344,12 +369,12 @@ let betterMusic = {
                 })
                 .catch(error => {
                     betterMusic.PossibleTracks[newTrack].banned = true;
+                    console.log("banned");
                     betterMusic.buildlist(betterMusic.currentScene);
                     betterMusic.TrackSelector();
                 });
             }
 
-            [betterMusic.currentId, betterMusic.nextId] = [betterMusic.nextId, betterMusic.currentId];
         }
         return;
     },
@@ -358,10 +383,12 @@ let betterMusic = {
         clearTimeout(betterMusic.nextEvent);
         betterMusic.playStatus = false;
         if (!(e?.relatedTarget?.classList.contains('betterMusicTitle'))) {
-            $(`#${betterMusic.currentId}`)[0].pause();
-            $(`#${betterMusic.nextId}`)[0].pause();
-            $(`#${betterMusic.currentId}`)[0].src = "";
-            $(`#${betterMusic.nextId}`)[0].src = "";
+            //$(`#${betterMusic.currentId}`)[0].pause();
+            //$(`#${betterMusic.currentId}`)[0].src = "";
+            //$(`#${betterMusic.nextId}`)[0].pause();
+            //$(`#${betterMusic.nextId}`)[0].src = "";
+            $(`#${betterMusic.Ids[0]}`)[0].pause();
+            $(`#${betterMusic.Ids[0]}`)[0].src = "";
             
             $('#musicControl-Btn').addClass('musicmuted');
         }
@@ -376,7 +403,8 @@ let betterMusic = {
 
     setEvent: (transition = betterMusic.Settings.TransitionTime) => {
         if (!betterMusic.playStatus) return;
-        let $SoundC = $(`#${betterMusic.currentId}`);
+        //let $SoundC = $(`#${betterMusic.currentId}`);
+        let $SoundC = $(`#${betterMusic.Ids[0]}`);
         let timeout = Math.floor($SoundC[0].duration * 1000 - transition);
         if (timeout != 'NaN') {
             clearTimeout(betterMusic.nextEvent);
@@ -416,7 +444,9 @@ let betterMusic = {
 
     newVolume: (value) => {
         betterMusic.Settings.Volume = value;
-        $(`#${betterMusic.currentId}`)[0].volume = value;
+        //$(`#${betterMusic.currentId}`)[0].volume = value;
+        $(`#${betterMusic.Ids[0]}`)[0].volume = value;
+        
     },
     
     loadSettings: ()=> {
