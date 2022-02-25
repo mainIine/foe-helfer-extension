@@ -166,12 +166,12 @@ let stPatrick = {
         HTML.AddCssFile('stpatrickstats');
         
         HTML.Box({
-            'id': 'stPatrickDialog',
-            'title': i18n('Boxes.stPatrick.Title'),
-            'auto_close': true,
-            'dragdrop': true,
-            'minimize': true,
-			//'resize' : true
+            id: 'stPatrickDialog',
+            title: i18n('Boxes.stPatrick.Title'),
+            auto_close: true,
+            dragdrop: true,
+            minimize: true,
+			resize : true
         });
 
 		[stPatrick.hiddenTables, stPatrick.minimized] = JSON.parse(localStorage.getItem('stPatrickSettings2') || '[[],false]');
@@ -234,12 +234,13 @@ let stPatrick = {
 		htmltext += `<span id="stPatTown" style="color:var(--text-bright); font-weight:bold"></span>`;
         
         
-        $('#stPatrickDialogBody').html(htmltext); 
+        $('#stPatrickDialogBody').html(htmltext);
+
 		for (let t in stPatrick.hiddenTables) {
 			if (!Object.hasOwnProperty.call(stPatrick.hiddenTables, t)) continue;
 			table= stPatrick.hiddenTables[t];
 			stPatrick.hide2(table);
-		};
+		}
 
 		let box = $('#stPatrickDialog'),
 			open = box.hasClass('open');
