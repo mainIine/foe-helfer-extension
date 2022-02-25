@@ -164,26 +164,26 @@
 	width: 24px;
 }
 #stats .tabs ul li.statsTreasurePlayerD a span {
-	background-position: 0 4px;
+	background-position: 0 2px;
 }
 #stats .tabs ul li.statsTreasurePlayerH a span {
-	background-position: -40px 4px;
+	background-position: -40px 2px;
 }
 #stats .tabs ul li.statsTreasureClanD a span {
-	background-position: -80px 6px;
+	background-position: -80px 3px;
 }
 #stats .tabs ul li.statsTreasureClanH a span {
-	background-position: -120px 6px;
+	background-position: -120px 3px;
 }
 #stats .tabs ul li.statsUnitsD a span {
-	background-position: -160px 6px;
+	background-position: -160px 3px;
 }
 #stats .tabs ul li.statsUnitsH a span {
-	background-position: -200px 6px;
+	background-position: -200px 3px;
 }
 #stats .tabs ul li.statsRewards a span {
-	background-position: -280px 4px;
+	background-position: -280px 2px;
 }
 #stats .tabs ul li.statsGBGPlayers a span {
-	background-position: -237px 4px;
+	background-position: -237px 2px;
 }
