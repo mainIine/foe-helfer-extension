@@ -19,7 +19,7 @@ FoEproxy.addHandler('IdleGameService', 'getState', (data, postData) => {
 	}
 
 	for (let x in data.responseData.characters) {
-		if (!Object.hasOwnProperty.call(data.responseData.characters, x)) return;
+		if (!Object.hasOwnProperty.call(data.responseData.characters, x)) continue;
         let character = data.responseData.characters[x];
 
 		stPatrick.stPat[character.id].level = character.level|0;
@@ -29,7 +29,7 @@ FoEproxy.addHandler('IdleGameService', 'getState', (data, postData) => {
 	stPatrick.Tasklist = data.responseData.taskHandler.taskOrder;
 	
 	for (let t in data.responseData.taskHandler.completedTasks) {
-		if (!Object.hasOwnProperty.call(data.responseData.taskHandler.completedTasks, t)) return;
+		if (!Object.hasOwnProperty.call(data.responseData.taskHandler.completedTasks, t)) continue;
         td = data.responseData.taskHandler.completedTasks[t];
 		let index = stPatrick.Tasklist.indexOf(td);
 		if (index > -1) {
@@ -58,7 +58,7 @@ FoEproxy.addHandler('IdleGameService', 'performActions', (data, postData) => {
 
     for (let x in game)
 	{
-		if (!Object.hasOwnProperty.call(game, x)) return;
+		if (!Object.hasOwnProperty.call(game, x)) continue;
         let data2 = game[x];
 				
 		if(!data2['characterId'] && !data2['taskId']) {
@@ -94,7 +94,7 @@ FoEproxy.addMetaHandler('idle_game', (data, postData) => {
 
     for (let x in resp['configs'][0]['characters'])
 	{
-		if (!Object.hasOwnProperty.call(resp['configs'][0]['characters'], x)) return;
+		if (!Object.hasOwnProperty.call(resp['configs'][0]['characters'], x)) continue;
 		let d = resp['configs'][0]['characters'][x];
 
 		if(!d['id'])
@@ -105,7 +105,7 @@ FoEproxy.addMetaHandler('idle_game', (data, postData) => {
     }
 	for (let t in resp['configs'][0]['tasks'])
 	{
-		if (!Object.hasOwnProperty.call(resp['configs'][0]['tasks'], t)) return;
+		if (!Object.hasOwnProperty.call(resp['configs'][0]['tasks'], t)) continue;
 		let task = resp['configs'][0]['tasks'][t];
 
 		if(!task['id'])
@@ -233,7 +233,7 @@ let stPatrick = {
         
         $('#stPatrickDialogBody').html(htmltext); 
 		for (let t in stPatrick.hiddenTables) {
-			if (!Object.hasOwnProperty.call(stPatrick.hiddenTables, t)) return;
+			if (!Object.hasOwnProperty.call(stPatrick.hiddenTables, t)) continue;
 			table= stPatrick.hiddenTables[t];
 			stPatrick.hide2(table);
 		};
@@ -243,7 +243,7 @@ let stPatrick = {
 	stPatrickUpdateDialog: () => {
 
 		for (let building in stPatrick.stPat) {
-			if (!Object.hasOwnProperty.call(stPatrick.stPat, building)) return;
+			if (!Object.hasOwnProperty.call(stPatrick.stPat, building)) continue;
 			building = stPatrick.stPatProduction(stPatrick.stPat[building])
 		}
 
@@ -251,14 +251,14 @@ let stPatrick = {
 		let sum = 0;
 
 		for (let b in stPatrick.stPat) {
-			if (!Object.hasOwnProperty.call(stPatrick.stPat, b)) return;
+			if (!Object.hasOwnProperty.call(stPatrick.stPat, b)) continue;
 			if (stPatrick.stPat[b].degree > degree && stPatrick.stPat[b].type === 'work'){
 				degree = stPatrick.stPat[b].degree;
 			}
 		}
 		let worktitle = ''
 		for (let b in stPatrick.stPat) {
-			if (!Object.hasOwnProperty.call(stPatrick.stPat, b)) return;
+			if (!Object.hasOwnProperty.call(stPatrick.stPat, b)) continue;
 			if (stPatrick.stPat[b].type === 'work'){
 				sum += Math.pow(1000, stPatrick.stPat[b].degree - degree) * stPatrick.stPat[b].production
 				worktitle += `\n${stPatrick.stPat[b].baseData.name}: ${stPatrick.stPat[b].production.toPrecision(3)} ${stPatrick.stPatNums[stPatrick.stPat[b].degree]}`
@@ -295,7 +295,7 @@ let stPatrick = {
 		$(ident).addClass("highlight");
 
 		for (let x in stPatrick.stPat) {
-			if (!Object.hasOwnProperty.call(stPatrick.stPat, x)) return;
+			if (!Object.hasOwnProperty.call(stPatrick.stPat, x)) continue;
 			$('#stPat'+x+'Level').text(`${stPatrick.stPat[x].level} -> ${stPatrick.stPat[x].next}`);
 			$('#stPat'+x).text(`${stPatrick.bigNum(stPatrick.stPat[x].need)} ${stPatrick.stPatNums[stPatrick.stPat[x].ndegree]}`);
 			$('#stPat'+x+'Time').text(`(${stPatrick.time(stPatrick.stPat[x].need,stPatrick.stPat[x].ndegree,sum,degree,0,0)})`);
@@ -355,7 +355,7 @@ let stPatrick = {
 
 		let x = 0;
 		for (let rank in building.baseData.rankProductionLevels) {
-			if (!Object.hasOwnProperty.call(building.baseData.rankProductionLevels, rank)) return;
+			if (!Object.hasOwnProperty.call(building.baseData.rankProductionLevels, rank)) continue;
 			x = building.baseData.rankProductionLevels[rank];
 			if (x > building.level) {
 				break;
@@ -403,7 +403,7 @@ let stPatrick = {
 		}
 
 		for (let i in building.baseData.bonuses) {
-			if (!Object.hasOwnProperty.call(building.baseData.bonuses, i)) return;
+			if (!Object.hasOwnProperty.call(building.baseData.bonuses, i)) continue;
 			let bonus = building.baseData.bonuses[i];
 
 			if (building.manager < bonus.level) {
