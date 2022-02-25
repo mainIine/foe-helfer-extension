@@ -454,6 +454,9 @@ let stPatrick = {
 		if (building.manager > 0) {
 			building.production = p;
 			building.degree = d;
+		} else {
+			building.production = 0;
+			building.degree = 0;
 		}
 
 		return building;
