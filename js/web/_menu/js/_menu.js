@@ -982,5 +982,54 @@ let _menu = {
 
 		return btn;
 	},
+
+	music_Btn: () => {
+		let btn = $('<div />').attr({
+			'id': 'music-Btn',
+			'data-slug': 'music'
+		}).addClass('hud-btn');
+
+		// Tooltip einbinden
+		btn = _menu.toolTipp(btn, i18n('Menu.Music.Title'), i18n('Menu.Music.Desc'));
+
+		let btn_sp = $('<span />').bind('click', function () {
+			if ($('#betterMusicDialog').length > 0) {
+				betterMusic.CloseBox();
+			} else {
+				betterMusic.ShowDialog();
+			}		
+
+		});
+
+		btn.append(btn_sp);
+
+		return btn;
+	},
+
+	musicControl_Btn: () => {
+		let btn = $('<div />').attr({
+			'id': 'musicControl-Btn',
+			'data-slug': 'musicControl'
+		}).addClass('hud-btn');
+
+		// Tooltip einbinden
+		btn = _menu.toolTipp(btn, i18n('Menu.MusicControl.Title'), i18n('Menu.MusicControl.Desc'));
+
+		let btn_sp = $('<span />').bind('click', function () {
+			if ($('#musicControl-Btn').hasClass('hud-btn-red') === false) {
+				$('#musicControl-Btn').toggleClass('musicmuted');
+				if ($('#musicControl-Btn').hasClass('musicmuted')) {
+					betterMusic.pause();
+				} else {
+					betterMusic.playStatus = true;
+					betterMusic.TrackSelector();
+				}
+			}
+		});
+
+		btn.append(btn_sp);
+
+		return btn;
+	},
 	
 };
