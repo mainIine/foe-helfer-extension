@@ -342,6 +342,10 @@ table.foe-table:not(.no-hover) tbody tr:hover {
 	background-color: var(--background-table-hover);
 }
 
+table.foe-table.vertical-top td {
+	vertical-align: top;
+}
+
 table.foe-table tr th,
 table.foe-table tr td {
 	padding: 2px 5px;
@@ -1152,7 +1156,8 @@ FP-Bar */
 
 .window-body input[type=text],
 .window-body input[type=number],
-.window-body select {
+.window-body select,
+.window-body textarea {
 	background-color: var(--background-light);
 	color: var(--text-medium);
 	background-clip: padding-box;
@@ -1162,6 +1167,10 @@ FP-Bar */
 	padding: 2px 5px;
 	border-radius: 2px;
 	box-sizing: border-box;
+}
+
+.window-body textarea {
+	line-height: unset;
 }
 
 .closed .window-body {
