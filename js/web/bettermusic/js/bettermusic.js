@@ -23,7 +23,6 @@ FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, post
         newSound.loop = true;
         newSound.onloadedmetadata = function () {betterMusic.setEvent()}
         $('#musicControl-Btn').append(newSound);
-        //betterMusic.currentId = newSound.id;
         betterMusic.Ids.push(newSound.id);
         
         let newSound2 = document.createElement("audio");
@@ -32,7 +31,6 @@ FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, post
         newSound2.loop = true;
         newSound2.onloadedmetadata = function () {betterMusic.setEvent()}
         $('#musicControl-Btn').append(newSound2);
-        //betterMusic.nextId = newSound2.id;
         betterMusic.Ids.push(newSound2.id);
         
         let newSound3 = document.createElement("audio");
@@ -49,7 +47,6 @@ FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, post
         newSound4.loop = true;
         newSound4.onloadedmetadata = function () {betterMusic.setEvent()}
         $('#musicControl-Btn').append(newSound4);
-        //betterMusic.nextId = newSound2.id;
         betterMusic.Ids.push(newSound4.id);
         
         betterMusic.loadSettings();
@@ -68,7 +65,6 @@ FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, post
 FoEproxy.addHandler('CampaignService', 'start', (data, postData) => {
        
     betterMusic.setScene("map");
-    //betterMusic.sceneDetail = data.responseData.;
     
 });
 
@@ -340,10 +336,8 @@ let betterMusic = {
 
 
     switchTrack: (newTrack, transition = betterMusic.Settings.TransitionTime) => {
-        //$SoundC = $(`#${betterMusic.currentId}`);
-        //$SoundN = $(`#${betterMusic.nextId}`);
-        $SoundC = $(`#${betterMusic.Ids.shift()}`);
-        $SoundN = $(`#${betterMusic.Ids[0]}`);
+        let $SoundC = $(`#${betterMusic.Ids.shift()}`);
+        let $SoundN = $(`#${betterMusic.Ids[0]}`);
         
         if ($SoundC[0].src == MainParser.InnoCDN + 'assets/sounds/shared/theme/'+ newTrack +'.ogg') {
         
@@ -369,7 +363,7 @@ let betterMusic = {
                 })
                 .catch(error => {
                     betterMusic.PossibleTracks[newTrack].banned = true;
-                    console.log("banned");
+                    console.log("↑ ↑ ↑ ↑ banned from playlist ↑ ↑ ↑ ↑ ↑");
                     betterMusic.buildlist(betterMusic.currentScene);
                     betterMusic.TrackSelector();
                 });
@@ -383,11 +377,7 @@ let betterMusic = {
         clearTimeout(betterMusic.nextEvent);
         betterMusic.playStatus = false;
         if (!(e?.relatedTarget?.classList.contains('betterMusicTitle'))) {
-            //$(`#${betterMusic.currentId}`)[0].pause();
-            //$(`#${betterMusic.currentId}`)[0].src = "";
-            //$(`#${betterMusic.nextId}`)[0].pause();
-            //$(`#${betterMusic.nextId}`)[0].src = "";
-            $(`#${betterMusic.Ids[0]}`)[0].pause();
+           $(`#${betterMusic.Ids[0]}`)[0].pause();
             $(`#${betterMusic.Ids[0]}`)[0].src = "";
             
             $('#musicControl-Btn').addClass('musicmuted');
@@ -403,7 +393,6 @@ let betterMusic = {
 
     setEvent: (transition = betterMusic.Settings.TransitionTime) => {
         if (!betterMusic.playStatus) return;
-        //let $SoundC = $(`#${betterMusic.currentId}`);
         let $SoundC = $(`#${betterMusic.Ids[0]}`);
         let timeout = Math.floor($SoundC[0].duration * 1000 - transition);
         if (timeout != 'NaN') {
@@ -444,7 +433,6 @@ let betterMusic = {
 
     newVolume: (value) => {
         betterMusic.Settings.Volume = value;
-        //$(`#${betterMusic.currentId}`)[0].volume = value;
         $(`#${betterMusic.Ids[0]}`)[0].volume = value;
         
     },
@@ -498,6 +486,7 @@ let betterMusic = {
     },
 
     buildlist: (scene) => {
+        if (!betterMusic.Scenes[scene]) return;
         betterMusic.Scenes[scene].TitleList = [];
         for (title in betterMusic.Settings.Scenes[scene]) {
             if (betterMusic.PossibleTracks[title].banned) continue;
