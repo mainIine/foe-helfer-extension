@@ -170,10 +170,13 @@ let stPatrick = {
             'title': i18n('Boxes.stPatrick.Title'),
             'auto_close': true,
             'dragdrop': true,
-            'minimize': true
+            'minimize': true,
+			//'resize' : true
         });
 
-		stPatrick.hiddenTables = JSON.parse(localStorage.getItem('stPatrickSettings') || '[]');
+		[stPatrick.hiddenTables, stPatrick.minimized] = JSON.parse(localStorage.getItem('stPatrickSettings2') || '[[],false]');
+
+
 		
         let htmltext = `<table id="stPatTable" style="width:100%"><tr><th colspan="2">`;
         htmltext += `<img src="${MainParser.InnoCDN}/assets/shared/seasonalevents/stpatricks/event/stpatrick_task_idle_currency_thumb.png" alt="" >`;
@@ -237,6 +240,26 @@ let stPatrick = {
 			table= stPatrick.hiddenTables[t];
 			stPatrick.hide2(table);
 		};
+
+		let box = $('#stPatrickDialog'),
+			open = box.hasClass('open');
+
+		if (open === true && stPatrick.minimized) {
+			box.removeClass('open');
+			box.addClass('closed');
+			box.find('.window-body').css("visibility", "hidden");
+		}
+		else {
+			box.removeClass('closed');
+			box.addClass('open');
+			box.find('.window-body').css("visibility", "visible");
+		}
+
+		$('#stPatrickDialogHeader > span.window-minimize').on('click', function() {
+			stPatrick.minimized = !stPatrick.minimized;
+			localStorage.setItem('stPatrickSettings2', JSON.stringify([stPatrick.hiddenTables, stPatrick.minimized]));
+		});
+
     },
 
 
@@ -465,7 +488,7 @@ let stPatrick = {
 		} else {
 			stPatrick.hiddenTables.push(id);
 		}
-		localStorage.setItem('stPatrickSettings', JSON.stringify(stPatrick.hiddenTables));
+		localStorage.setItem('stPatrickSettings2', JSON.stringify([stPatrick.hiddenTables, stPatrick.minimized]));
 	},
 
 	hide2: (id) => {
@@ -473,4 +496,5 @@ let stPatrick = {
 	},
 
 	hiddenTables : [],
+	minimized: false,
 };
