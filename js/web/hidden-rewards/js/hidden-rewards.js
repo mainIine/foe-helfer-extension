@@ -25,12 +25,13 @@ FoEproxy.addHandler('HiddenRewardService', 'getOverview', (data, postData) => {
 
 /**
  *
- * @type {{init: HiddenRewards.init, prepareData: HiddenRewards.prepareData, BuildBox: HiddenRewards.BuildBox, RefreshGui: HiddenRewards.RefreshGui, Cache: null, FilteredCache : null, FirstCycle : true}}
+ * @type {{init: HiddenRewards.init, prepareData: HiddenRewards.prepareData, BuildBox: HiddenRewards.BuildBox, RefreshGui: HiddenRewards.RefreshGui, Cache: null, FilteredCache : null, FilteredCache2 : null, FirstCycle : true}}
  */
 let HiddenRewards = {
 
     Cache: null,
     FilteredCache : null,
+    FilteredCache2 : null,
     FirstCycle: true,
     
 	/**
@@ -119,12 +120,14 @@ let HiddenRewards = {
      */
     RefreshGui: (fromHandler = false) => {       
         HiddenRewards.FilteredCache = [];
+        HiddenRewards.FilteredCache2 = [];
         for (let i = 0; i < HiddenRewards.Cache.length; i++) {
 	    let StartTime = moment.unix(HiddenRewards.Cache[i].starts|0),
 		EndTime = moment.unix(HiddenRewards.Cache[i].expires);
-            if (StartTime < MainParser.getCurrentDateTime() && EndTime > MainParser.getCurrentDateTime()) {
-            	HiddenRewards.FilteredCache.push(HiddenRewards.Cache[i]);
-           }
+            if (StartTime > MainParser.getCurrentDateTime() || EndTime < MainParser.getCurrentDateTime()) continue;
+            HiddenRewards.FilteredCache.push(HiddenRewards.Cache[i]);
+            if (HiddenRewards.Cache[i].position.context == "guildExpedition") continue;
+            HiddenRewards.FilteredCache2.push(HiddenRewards.Cache[i]);
         }
 
         HiddenRewards.SetCounter();
@@ -196,10 +199,9 @@ let HiddenRewards = {
 
 
 	SetCounter: ()=> {
-        if (HiddenRewards.FilteredCache && HiddenRewards.FilteredCache.length > 0){
-			$('#hidden-reward-count').text(HiddenRewards.FilteredCache.length).show();
-		} else {
-			$('#hidden-reward-count').hide();
-		}
+        let count = HiddenRewards.FilteredCache?.length|0;
+        if (Settings.GetSetting('ExcludeRelics')) count = HiddenRewards.FilteredCache2?.length|0;
+        $('#hidden-reward-count').text(count).show();
+          if (count = 0) $('#hidden-reward-count').hide();
 	}
 };

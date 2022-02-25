@@ -236,7 +236,9 @@
 				'closebox',
 				'castle',
 				'stpatrickstats',
-				'scoutingtimes'
+				'scoutingtimes',
+				'discord',
+				'bettermusic'
 			];
 
 			// load scripts (one after the other)
