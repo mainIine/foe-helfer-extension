@@ -51,8 +51,7 @@ FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, post
         
         betterMusic.loadSettings();
         betterMusic.playStatus = betterMusic.Settings.PlayOnStart;
-        if (!betterMusic.playStatus) betterMusic.pause();
-        
+                
         betterMusic.buildlists();
         betterMusic.initialize(10000);
         first = true;
