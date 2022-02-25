@@ -995,13 +995,12 @@ FP-Bar */
 }
 
 .window-box.closed {
-	border-width: 35px 10px 0 10px;
+	border-width: 27px 5px 10px;
 	border-style: solid;
 	border-image-source: url('../images/hud/window-closed.png');
-	border-image-slice: 54 28 0 28;
+	border-image-slice: 54 28 28;
 	border-image-width: 54px 28px 0 28px;
 	border-image-repeat: round;
-	border-image-outset: 0.3;
 	border-radius: 20px;
 	border-bottom: none;
 	background-image: none;
