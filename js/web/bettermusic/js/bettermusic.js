@@ -50,11 +50,15 @@ FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, post
         betterMusic.Ids.push(newSound4.id);
         
         betterMusic.loadSettings();
+        
         betterMusic.playStatus = betterMusic.Settings.PlayOnStart;
-                
+        if (!betterMusic.playStatus) betterMusic.pause();
+        
         betterMusic.buildlists();
         betterMusic.initialize(10000);
         first = true;
+
+        
     }
     
     if (!first) betterMusic.setScene("main");
@@ -376,11 +380,13 @@ let betterMusic = {
     pause: (e) => {
         clearTimeout(betterMusic.nextEvent);
         betterMusic.playStatus = false;
+        $('#musicControl-Btn').addClass('musicmuted');
+        
         if (!(e?.relatedTarget?.classList.contains('betterMusicTitle'))) {
-           $(`#${betterMusic.Ids[0]}`)[0].pause();
-            $(`#${betterMusic.Ids[0]}`)[0].src = "";
-            
-            $('#musicControl-Btn').addClass('musicmuted');
+            let elem= $(`#${betterMusic.Ids[0]}`)[0]
+            if (!elem) return;
+            elem.pause();
+            elem.src = "";
         }
     },
 
