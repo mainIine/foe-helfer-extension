@@ -180,7 +180,7 @@ let stPatrick = {
 		
         let htmltext = `<table id="stPatTable" style="width:100%"><tr><th colspan="2">`;
         htmltext += `<img src="${MainParser.InnoCDN}/assets/shared/seasonalevents/stpatricks/event/stpatrick_task_idle_currency_thumb.png" alt="" >`;
-        htmltext += `${i18n('Boxes.stPatrick.Hourly')}<br>(idle)</th></tr><tr>`;
+        htmltext += `${i18n('Boxes.stPatrick.Hourly')}</th></tr><tr>`;
         htmltext += `<td>${stPatrick.stPat.market_1.baseData.name}<br><span id="stPatFest"></span></td>`;
         htmltext += `<td rowspan="2">${i18n('Boxes.stPatrick.Production')}<br><span id="stPatWork"></span></td>`;
         htmltext += `</tr><tr><td>${stPatrick.stPat.transport_1.baseData.name}<br><span id="stPatShip"></span></td>`;
