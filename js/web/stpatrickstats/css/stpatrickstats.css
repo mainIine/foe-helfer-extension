@@ -29,6 +29,7 @@
     align-items: center;
     text-align: center;
     font-size: 100%;
+    overflow-y: auto;
 }
 
 
