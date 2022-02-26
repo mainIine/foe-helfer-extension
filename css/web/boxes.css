@@ -342,6 +342,10 @@ table.foe-table:not(.no-hover) tbody tr:hover {
 	background-color: var(--background-table-hover);
 }
 
+table.foe-table.vertical-top td {
+	vertical-align: top;
+}
+
 table.foe-table tr th,
 table.foe-table tr td {
 	padding: 2px 5px;
@@ -991,13 +995,12 @@ FP-Bar */
 }
 
 .window-box.closed {
-	border-width: 35px 10px 0 10px;
+	border-width: 27px 5px 10px;
 	border-style: solid;
 	border-image-source: url('../images/hud/window-closed.png');
-	border-image-slice: 54 28 0 28;
+	border-image-slice: 54 28 28;
 	border-image-width: 54px 28px 0 28px;
 	border-image-repeat: round;
-	border-image-outset: 0.3;
 	border-radius: 20px;
 	border-bottom: none;
 	background-image: none;
@@ -1152,7 +1155,8 @@ FP-Bar */
 
 .window-body input[type=text],
 .window-body input[type=number],
-.window-body select {
+.window-body select,
+.window-body textarea {
 	background-color: var(--background-light);
 	color: var(--text-medium);
 	background-clip: padding-box;
@@ -1162,6 +1166,10 @@ FP-Bar */
 	padding: 2px 5px;
 	border-radius: 2px;
 	box-sizing: border-box;
+}
+
+.window-body textarea {
+	line-height: unset;
 }
 
 .closed .window-body {
