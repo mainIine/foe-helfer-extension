@@ -24,7 +24,7 @@ FoEproxy.addHandler('ClanBattleService', 'deployDefendingArmy', (data, postData)
 });
 
 FoEproxy.addHandler('ClanBattleService', 'getContinent', (data, postData) => {
-	if (GvG.Actions === undefined) {
+	if (GvG.Init === false) {
 		GvG.initActions();
 	}
 	GvG.setRecalc(data.responseData.continent.calculation_time.start_time, true);
@@ -42,7 +42,7 @@ FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, post
 });
 
 FoEproxy.addWsHandler('UpdateService', 'finishDailyCalculation', (data, postData) => {	
-	if (data['responseData'] === true) {
+	if (data['responseData'] === true && GvG.Init === true) {
 		GvG.resetData();
 	}
 });
