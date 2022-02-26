@@ -31,7 +31,8 @@ let _menu = {
 		'calculator',
 		'partCalc',
 		'outpost',
-		'productions',	
+		'productions',
+		'productionsrating',
 		'hiddenRewards',
 		'negotiation',
 		'infobox',
@@ -53,7 +54,6 @@ let _menu = {
 		'alerts',
 		'guildmemberstat',
 		'gexstat',
-		'productionsrating',
 		'castle',
 		'music',
 		'musicControl',
@@ -126,9 +126,8 @@ let _menu = {
 	 * @param {object} btn
 	 * @param {string} title
 	 * @param {string} desc
-	 * @param {string} id
 	 */
-	toolTipp: (btn, title, desc, id = '') => {
+	toolTipp: (btn, title, desc) => {
 
 		$(btn).attr('title', desc);
 
@@ -280,7 +279,9 @@ let _menu = {
 
 	MakeButton: (slug, titel, desc, red = false)=> {
 
-		let btn = _menu.toolTipp(
+		console.log('Slug: ', slug);
+
+		let btn = _menu.MakeButton(
 			$('<div />').attr({
 				id: `${slug}-Btn`,
 				'data-slug': slug
@@ -388,13 +389,13 @@ let _menu = {
 	 * @returns {*|jQuery}
 	 */
 	productions_Btn: () => {
-		let btn_FPsBG = _menu.toolTipp('productions', i18n('Menu.Productions.Title'), i18n('Menu.Productions.Desc'));
+		let pB = _menu.toolTipp('productions', i18n('Menu.Productions.Title'), i18n('Menu.Productions.Desc'));
 
-		let btn_FPs = $('<span />').bind('click', function () {
+		let btnSpan = $('<span />').on('click', function() {
 			Productions.init();
 		});
 
-		return btn_FPsBG.append(btn_FPs);
+		return pB.append(btnSpan);
 	},
 
 	/**
@@ -699,7 +700,7 @@ let _menu = {
 			return;
 		}
 
-		let btn = _menu.toolTipp('moppelhelper', i18n('Menu.Moppelhelper.Title'), i18n('Menu.Moppelhelper.Desc'));
+		let btn = _menu.MakeButton('moppelhelper', i18n('Menu.Moppelhelper.Title'), i18n('Menu.Moppelhelper.Desc'));
 
 		let btn_sp = $('<span />').on('click', function () {
 			EventHandler.ShowMoppelHelper();
