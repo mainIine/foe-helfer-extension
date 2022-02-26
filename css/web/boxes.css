@@ -925,7 +925,7 @@ FP-Bar */
 	top: 30%;
 	left: 40%;
 	user-select: none;
-	box-shadow: 0 0 3px black;
+	box-shadow: 0 0 1px 1px #000000aa;
 	border: 3px solid #895022;
 	border-radius: 5px;
 }
@@ -1471,7 +1471,7 @@ SettingsBox */
 	text-align: left;
 	position: absolute;
 	right: 10px;
-	top: 10px;
+	top: 40px;
 	border: 5px solid transparent;
 	background: transparent url('../images/hud/box-bg.png') center top no-repeat;
 	background-size: cover;

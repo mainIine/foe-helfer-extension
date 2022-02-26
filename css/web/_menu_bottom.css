@@ -124,12 +124,14 @@
 	margin: 1px;
 	float: left;
 	border-radius: 4px;
-	box-shadow: inset 0 0 1px 2px #6ab135ab;
+	box-shadow: inset 0 0 3px 1px #00000087, 0 0 2px #00000087;
+	border: 2px solid transparent;
+    box-sizing: border-box;
+	background: linear-gradient(#553419, #553419) padding-box, linear-gradient(to bottom, #82ae4c, #4f7421) border-box;
 }
 
 .hud-btn-red {
-	background-color: var(--background-table-error);
-	box-shadow: inset 0 0 1px 2px var(--background-table-error), inset 0 0 4px 1px #00000038;
+	background: linear-gradient(to bottom, #4f291b, #553419) padding-box, linear-gradient(to bottom, #a84a35, #88301e) border-box;
 }
 
 .hud-btn span:first-child {
@@ -145,7 +147,7 @@
 .menu-placeholder {
 	width: 33px;
 	height: 33px;
-	background: #ff0;
+	background: var(--black-50);
 	float: left;
 	border-radius: 4px;
 }
