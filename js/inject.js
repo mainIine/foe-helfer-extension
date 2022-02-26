@@ -237,6 +237,7 @@
 				'castle',
 				'stpatrickstats',
 				'scoutingtimes',
+				'discord',
 				'bettermusic'
 			];
 

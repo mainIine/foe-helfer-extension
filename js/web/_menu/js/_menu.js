@@ -55,9 +55,10 @@ let _menu = {
 		'gexstat',
 		'productionsrating',
 		'castle',
-		// 'unitsGex',
+		//'discord',
 		'music',
 		'musicControl',
+		// 'unitsGex',
 	],
 
 	HiddenItems: [],
@@ -938,7 +939,7 @@ let _menu = {
 	/**
 	 * GEX statistic
 	 */
-	 gexstat_Btn: () => {
+	gexstat_Btn: () => {
 		let btn = $('<div />').attr({
 			'id': 'gexstat-Btn',
 			'data-slug': 'gexstat'
@@ -950,6 +951,30 @@ let _menu = {
 		let btn_sp = $('<span />').bind('click', function () {
 			if ($('#gexstat-Btn').hasClass('hud-btn-red') === false) {
 				GexStat.BuildBox(false);
+			}
+		});
+
+		btn.append(btn_sp);
+
+		return btn;
+	},
+
+
+	/**
+	 * Castle System
+	 */
+	castle_Btn: () => {
+		let btn = $('<div />').attr({
+			'id': 'castle-Btn',
+			'data-slug': 'castle'
+		}).addClass('hud-btn');
+
+		// Tooltip einbinden
+		btn = _menu.toolTipp(btn, i18n('Menu.Castle.Title'), i18n('Menu.Castle.Desc'));
+
+		let btn_sp = $('<span />').bind('click', function () {
+			if ($('#castle-Btn').hasClass('hud-btn-red') === false) {
+				Castle.BuildBox();
 			}
 		});
 
@@ -973,7 +998,7 @@ let _menu = {
 			} else {
 				betterMusic.ShowDialog();
 			}		
-			
+
 		});
 
 		btn.append(btn_sp);
@@ -999,30 +1024,6 @@ let _menu = {
 					betterMusic.playStatus = true;
 					betterMusic.TrackSelector();
 				}
-			}
-		});
-
-		btn.append(btn_sp);
-
-		return btn;
-	},
-
-
-	/**
-	 * Castle System
-	 */
-	castle_Btn: () => {
-		let btn = $('<div />').attr({
-			'id': 'castle-Btn',
-			'data-slug': 'castle'
-		}).addClass('hud-btn');
-
-		// Tooltip einbinden
-		btn = _menu.toolTipp(btn, i18n('Menu.Castle.Title'), i18n('Menu.Castle.Desc'));
-
-		let btn_sp = $('<span />').bind('click', function () {
-			if ($('#castle-Btn').hasClass('hud-btn-red') === false) {
-				Castle.BuildBox();
 			}
 		});
 

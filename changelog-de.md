@@ -1,5 +1,31 @@
 ## Changelog - Extension
 
+##### 2.7.0.0
+
+**New**
+- Musik Modul:
+    - [#2335](https://github.com/mainIine/foe-helfer-extension/issues/2335) [Infos](https://github.com/mainIine/foe-helfer-extension/issues/2335)
+      - Du kannst wählen, ob Titel, die an eine Epoche gebunden sind, in Deiner Stadt oder in der Kolonie gespielt werden dürfen:
+        - Nu aktuelle Epoche (nur Titel, die mit der aktuellen Epoche verbunden sind, werden gespielt)
+        - bis zur aktuellen Epoche (es werden nur Titel gespielt, die mit der aktuellen oder einer früheren Epoche verbunden sind)
+        - Ära ignorieren (alle Titel können gespielt werden)
+        - Du kannst auswählen, ob der Besuch der Taverne, der PvP-Arena oder das Öffnen des Ereignisfensters den zugehörigen Titel auslösen soll
+        - Du kannst auswählen, ob in Siedlungen die Titel anderer Siedlungen gespielt werden dürfen (z.B. Ägypten darf in Azteken gespielt werden, wenn unten ausgewählt)
+
+**Update**
+- St.Patricks Box:
+  - Die Box kann nun in der Größe verändert werden 
+
+
+**BugFix**
+- Alarme:
+    - [#2332](https://github.com/mainIine/foe-helfer-extension/issues/2332) Die Alarm-Übersicht lies sich nicht öffnen
+
+- Gildengefechte:
+	- Die Übersichtsbox der Provinzen ließ sich nicht öffnen
+
+---
+
 ##### 2.6.0.1
 
 **Update**
