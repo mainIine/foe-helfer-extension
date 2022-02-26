@@ -930,8 +930,8 @@ FP-Bar */
 	border-radius: 5px;
 }
 
-.window-box.closed {
-	/**/
+.closed.window-box {
+	height: 36px !important;
 }
 
 .window-head {
@@ -944,6 +944,10 @@ FP-Bar */
 	border-radius: 3px 3px 0 0;
 	box-sizing: border-box;
 	height: 36px;
+}
+
+.closed .window-head {
+	border-bottom-width: 0;
 }
 
 .window-head span.title {
@@ -963,7 +967,7 @@ FP-Bar */
 	margin-left: auto;
 }
 
-.window-head span.window-ask {
+.window-ask {
 	display: inline-block;
 	background-position: -28px -1px, -2px -26px;
 	margin-right: 2px;
@@ -971,12 +975,11 @@ FP-Bar */
 	height: 22px;
 	position: relative;
 }
-
-.window-head span.window-ask:hover {
+.window-ask:hover {
 	background-position: -28px -1px, -28px -26px;
 }
 
-.window-head span.window-speaker {
+.window-speaker {
 	height: 22px;
 	display: inline-block;
 	position: relative;
@@ -984,21 +987,19 @@ FP-Bar */
 	width: 22px;
 	margin-right: 2px;
 }
-
-.window-head span.window-speaker:hover {
+.window-speaker:hover {
 	background-position: -146px -2px, -28px -26px;
 }
 
-.window-head span.window-speaker.deactivated {
+.window-speaker.deactivated {
 	background-position: -146px -2px, -2px -26px;
 }
-
-.window-head span.window-speaker.deactivated:hover {
+.window-speaker.deactivated:hover {
 	background-position: -105px -2px, -28px -26px;
 }
 
 
-.window-head span.window-minimize {
+.window-minimize {
 	background-position: -53px -2px, -2px -26px;
 	margin-right: 2px;
 	width: 22px;
@@ -1006,18 +1007,18 @@ FP-Bar */
 	display: inline-block;
 	position: relative;
 }
-.open .window-head span.window-minimize:hover {
+.open .window-minimize:hover {
 	background-position: -53px -2px, -28px -26px;
 }
-.closed .window-head span.window-minimize {
+.closed .window-minimize {
 	background-position: -77px -1px, -2px -26px;
 }
-.closed .window-head span.window-minimize:hover {
+.closed .window-minimize:hover {
 	background-position: -77px -1px, -28px -26px;
 }
 
 
-.window-head span.window-settings {
+.window-settings {
 	background-position: -192px -2px, -2px -26px;
 	display: inline-block;
 	width: 22px;
@@ -1026,11 +1027,11 @@ FP-Bar */
 	margin-right: 2px;
 }
 
-.window-head span.window-settings:hover {
+.window-settings:hover {
 	background-position: -192px -2px, -28px -26px;
 }
 
-.window-head span.window-map {
+.window-map {
     background-image: url('../images/hud/map.png'), url('../images/hud/box-sprite.png');
     display: inline-block;
     width: 22px;
@@ -1041,20 +1042,18 @@ FP-Bar */
     background-size: 11px , 240px;
 	background-position: 6px, -2px -26px;
 }
-
-.window-head span.window-map:hover {
+.window-map:hover {
 	background-position: 6px, -28px -26px;
 }
 
-.window-head span.window-close {
+.window-close {
 	background-position: -2px -2px, -2px -26px;
 	display: inline-block;
 	width: 22px;
 	height: 22px;
 	position: relative;
 }
-
-.window-head span.window-close:hover {
+.window-close:hover {
 	background-position: -2px -2px, -28px -26px;
 }
 
@@ -1093,7 +1092,7 @@ FP-Bar */
 }
 
 .closed .window-body {
-	height: 3px !important;
+	height: 0 !important;
 }
 
 .window-grippy {
@@ -1113,7 +1112,7 @@ FP-Bar */
 }
 
 .closed .window-grippy {
-	display:none;
+	display: none;
 }
 
 .on-top {
