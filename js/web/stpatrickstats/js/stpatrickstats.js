@@ -268,7 +268,7 @@ let stPatrick = {
 
 		for (let building in stPatrick.stPat) {
 			if (!Object.hasOwnProperty.call(stPatrick.stPat, building)) continue;
-			building = stPatrick.stPatProduction(stPatrick.stPat[building])
+			stPatrick.stPat[building] = stPatrick.stPatProduction(stPatrick.stPat[building])
 		}
 
 		let degree = 0;
