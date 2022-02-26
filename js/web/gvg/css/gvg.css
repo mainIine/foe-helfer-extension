@@ -76,7 +76,6 @@
 }
 
 #GvGMapBody {
-	height: inherit;
 	display: flex;
 	align-items: stretch;
 	overflow: hidden;
