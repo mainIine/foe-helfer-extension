@@ -44,7 +44,6 @@ let _menu = {
 		'kits',
 		'greatbuildings',
 		'market',
-		// 'marketoffers',
 		'bluegalaxy',
 		'moppelhelper',
 		'fpCollector',
@@ -55,10 +54,10 @@ let _menu = {
 		'gexstat',
 		'productionsrating',
 		'castle',
-		//'discord',
 		'music',
 		'musicControl',
-		// 'unitsGex',
+		// 'marketoffers',
+		// 'discord'
 	],
 
 	HiddenItems: [],
