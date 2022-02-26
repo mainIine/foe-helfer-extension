@@ -16,7 +16,7 @@
 	left: 1000px;
 	z-index: 150;
 	width: 270px;
-	height: 40px;
+	height: 46px;
 	box-shadow: 0 0 5px black;
 	border-radius: 6px 6px 0 0;
 	bottom: -2px;
@@ -37,7 +37,7 @@
 
 #foe-helper-hud-wrapper {
 	width: 220px;
-	height: 39px;
+	height: 45px;
 	position: absolute;
 	bottom: 0;
 	left: 0;
@@ -51,7 +51,7 @@
 	left: 0;
 	bottom: 1px;
 	transition: left 0.7s ease-in-out;
-	height: 37px;
+	height: 43px;
 }
 
 .hud-btn-left,
@@ -59,7 +59,7 @@
 .hud-btn-left::before,
 .hud-btn-right::before {
 	position: absolute;
-	height: 40px;
+	height: 46px;
 	width: 14px;
 	right: 0;
 	bottom: 0;
@@ -118,8 +118,8 @@
 
 .hud-btn {
 	display: block;
-	width: 33px;
-	height: 33px;
+	width: 39px;
+	height: 39px;
 	position: relative;
 	margin: 1px;
 	float: left;
@@ -145,8 +145,8 @@
 }
 
 .menu-placeholder {
-	width: 33px;
-	height: 33px;
+	width: 39px;
+	height: 39px;
 	background: var(--black-50);
 	float: left;
 	border-radius: 4px;
