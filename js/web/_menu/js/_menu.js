@@ -32,32 +32,32 @@ let _menu = {
 		'partCalc',
 		'outpost',
 		'productions',
-		'productionsrating',
+		'productionsRating',
 		'hiddenRewards',
 		'negotiation',
 		'infobox',
 		'notice',
 		'technologies',
 		'campagneMap',
-		'citymap',
+		'cityMap',
 		'unit',
 		'settings',
 		'stats',
 		'kits',
-		'greatbuildings',
+		'greatBuildings',
 		'market',
-		'bluegalaxy',
-		'moppelhelper',
+		'blueGalaxy',
+		'moppelHelper',
 		'fpCollector',
-		'gildfight',
+		'gildFight',
 		'investment',
 		'alerts',
-		'guildmemberstat',
-		'gexstat',
+		'guildMemberstat',
+		'gexStat',
 		'castle',
 		'music',
 		'musicControl',
-		// 'marketoffers',
+		// 'marketOffers',
 		// 'discord'
 	],
 
@@ -279,9 +279,7 @@ let _menu = {
 
 	MakeButton: (slug, titel, desc, red = false)=> {
 
-		console.log('Slug: ', slug);
-
-		let btn = _menu.MakeButton(
+		let btn = _menu.toolTipp(
 			$('<div />').attr({
 				id: `${slug}-Btn`,
 				'data-slug': slug
@@ -389,7 +387,7 @@ let _menu = {
 	 * @returns {*|jQuery}
 	 */
 	productions_Btn: () => {
-		let pB = _menu.toolTipp('productions', i18n('Menu.Productions.Title'), i18n('Menu.Productions.Desc'));
+		let pB = _menu.MakeButton('productions', i18n('Menu.Productions.Title'), i18n('Menu.Productions.Desc'));
 
 		let btnSpan = $('<span />').on('click', function() {
 			Productions.init();
@@ -403,7 +401,7 @@ let _menu = {
 	 *
 	 * @returns {*|jQuery}
 	 */
-	productionsrating_Btn: () => {
+	productionsRating_Btn: () => {
 		let btn_prodratBG = _menu.MakeButton('productionsrating', i18n('Menu.ProductionsRating.Title'), i18n('Menu.ProductionsRating.Desc'));
 
 		let btn_prodrat = $('<span />').bind('click', function () {
@@ -500,7 +498,7 @@ let _menu = {
 	 *
 	 * @returns {*|jQuery}
 	 */
-	citymap_Btn: () => {
+	cityMap_Btn: () => {
 		let btn_CityBG = _menu.MakeButton('citymap', i18n('Menu.Citymap.Title'), i18n('Menu.Citymap.Desc'));
 
 		let btn_City = $('<span />').on('click', function () {
@@ -618,7 +616,7 @@ let _menu = {
 	/**
 	 * FP Produzierende LGs
 	 */
-	greatbuildings_Btn: () => {
+	greatBuildings_Btn: () => {
 
 		let btn = _menu.MakeButton('greatbuildings', i18n('Menu.greatbuildings.Title'), i18n('Menu.greatbuildings.Desc'));
 
@@ -652,7 +650,7 @@ let _menu = {
 	/**
 	* Marktangebote
 	*/
-	marketoffers_Btn: () => {
+	marketOffers_Btn: () => {
 		let btn = _menu.MakeButton(
 			'marketoffers',
 			i18n('Menu.MarketOffers.Title'),
@@ -672,7 +670,7 @@ let _menu = {
 	/**
 	 * Helper Blue Galaxy
 	 */
-	bluegalaxy_Btn: () => {
+	blueGalaxy_Btn: () => {
 		let OwnGalaxy = Object.values(MainParser.CityMapData).find(obj => (obj['cityentity_id'] === 'X_OceanicFuture_Landmark3'));;
 
 		// no BG => display none
@@ -694,7 +692,7 @@ let _menu = {
 	/**
 	 * Moppelassistent
 	 * */
-	moppelhelper_Btn: () => {
+	moppelHelper_Btn: () => {
 		// active?
 		if(!Settings.GetSetting('ShowPlayersMotivation')){
 			return;
@@ -757,7 +755,7 @@ let _menu = {
 	 * 	
 	 * @returns {*|jQuery}
 	 * */
-	gildfight_Btn: () => {
+	gildFight_Btn: () => {
 		let btn = _menu.MakeButton(
 			'gildfight',
 				i18n('Menu.Gildfight.Title'),
@@ -793,7 +791,7 @@ let _menu = {
 	/**
 	 * Guild member statistic
 	 */
-	guildmemberstat_Btn: () => {
+	guildMemberstat_Btn: () => {
 		let btn = _menu.MakeButton(
 			'guildmemberstat',
 			i18n('Menu.GuildMemberStat.Title'),
@@ -813,7 +811,7 @@ let _menu = {
 	/**
 	 * GEX statistic
 	 */
-	gexstat_Btn: () => {
+	gexStat_Btn: () => {
 		let btn = _menu.MakeButton('gexstat', i18n('Menu.GexStat.Title'), i18n('Menu.GexStat.Desc'));
 
 		let btn_sp = $('<span />').bind('click', function () {
