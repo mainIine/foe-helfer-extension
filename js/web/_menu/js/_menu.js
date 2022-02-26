@@ -402,7 +402,7 @@ let _menu = {
 	 * @returns {*|jQuery}
 	 */
 	productionsRating_Btn: () => {
-		let btn_prodratBG = _menu.MakeButton('productionsrating', i18n('Menu.ProductionsRating.Title'), i18n('Menu.ProductionsRating.Desc'));
+		let btn_prodratBG = _menu.MakeButton('productionsRating', i18n('Menu.ProductionsRating.Title'), i18n('Menu.ProductionsRating.Desc'));
 
 		let btn_prodrat = $('<span />').bind('click', function () {
 			Productions.ShowRating();
@@ -499,7 +499,7 @@ let _menu = {
 	 * @returns {*|jQuery}
 	 */
 	cityMap_Btn: () => {
-		let btn_CityBG = _menu.MakeButton('citymap', i18n('Menu.Citymap.Title'), i18n('Menu.Citymap.Desc'));
+		let btn_CityBG = _menu.MakeButton('cityMap', i18n('Menu.Citymap.Title'), i18n('Menu.Citymap.Desc'));
 
 		let btn_City = $('<span />').on('click', function () {
 			if (LastMapPlayerID === ExtPlayerID) {
@@ -618,7 +618,7 @@ let _menu = {
 	 */
 	greatBuildings_Btn: () => {
 
-		let btn = _menu.MakeButton('greatbuildings', i18n('Menu.greatbuildings.Title'), i18n('Menu.greatbuildings.Desc'));
+		let btn = _menu.MakeButton('greatBuildings', i18n('Menu.greatbuildings.Title'), i18n('Menu.greatbuildings.Desc'));
 
 		let btn_sp = $('<span />').on('click', function () {
 			GreatBuildings.Show();
@@ -652,7 +652,7 @@ let _menu = {
 	*/
 	marketOffers_Btn: () => {
 		let btn = _menu.MakeButton(
-			'marketoffers',
+			'marketOffers',
 			i18n('Menu.MarketOffers.Title'),
 			'<em id="marketoffers-Btn-closed" class="tooltip-error">' + i18n('Menu.MarketOffers.Warning') + '<br></em>' + i18n('Menu.MarketOffers.Desc'),
 			true
@@ -680,7 +680,7 @@ let _menu = {
 			return;
 		}
 
-		let btn = _menu.MakeButton('bluegalaxy', i18n('Menu.Bluegalaxy.Title'), i18n('Menu.Bluegalaxy.Desc'));
+		let btn = _menu.MakeButton('blueGalaxy', i18n('Menu.Bluegalaxy.Title'), i18n('Menu.Bluegalaxy.Desc'));
 
 		let btn_sp = $('<span />').on('click', function () {
 			BlueGalaxy.Show();
@@ -698,7 +698,7 @@ let _menu = {
 			return;
 		}
 
-		let btn = _menu.MakeButton('moppelhelper', i18n('Menu.Moppelhelper.Title'), i18n('Menu.Moppelhelper.Desc'));
+		let btn = _menu.MakeButton('moppelHelper', i18n('Menu.Moppelhelper.Title'), i18n('Menu.Moppelhelper.Desc'));
 
 		let btn_sp = $('<span />').on('click', function () {
 			EventHandler.ShowMoppelHelper();
@@ -757,7 +757,7 @@ let _menu = {
 	 * */
 	gildFight_Btn: () => {
 		let btn = _menu.MakeButton(
-			'gildfight',
+			'gildFight',
 				i18n('Menu.Gildfight.Title'),
 				i18n('Menu.Gildfight.Warning') + i18n('Menu.Gildfight.Desc'),
 			 	true
@@ -793,7 +793,7 @@ let _menu = {
 	 */
 	guildMemberstat_Btn: () => {
 		let btn = _menu.MakeButton(
-			'guildmemberstat',
+			'guildMemberstat',
 			i18n('Menu.GuildMemberStat.Title'),
 			'<em id="guildmemberstat-Btn-closed" class="tooltip-error">' + i18n('Menu.GuildMemberStat.Warning') + '<br></em>' + i18n('Menu.GuildMemberStat.Desc'),
 			true
@@ -812,7 +812,7 @@ let _menu = {
 	 * GEX statistic
 	 */
 	gexStat_Btn: () => {
-		let btn = _menu.MakeButton('gexstat', i18n('Menu.GexStat.Title'), i18n('Menu.GexStat.Desc'));
+		let btn = _menu.MakeButton('gexStat', i18n('Menu.GexStat.Title'), i18n('Menu.GexStat.Desc'));
 
 		let btn_sp = $('<span />').bind('click', function () {
 			if ($('#gexstat-Btn').hasClass('hud-btn-red') === false) {
