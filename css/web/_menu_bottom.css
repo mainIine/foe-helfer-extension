@@ -16,19 +16,18 @@
 	left: 1000px;
 	z-index: 150;
 	width: 270px;
-	height: 53px;
-	bottom: 0;
-	padding-left: 20px;
-	padding-right: 28px;
-	transition: height 0.2s linear;
+	height: 40px;
+	box-shadow: 0 0 5px black;
+	border-radius: 6px 6px 0 0;
+	bottom: -2px;
+	transition: all 0.1s ease;
 	font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
 	font-size: 0.75rem;
 	font-weight: 400;
+	border-left: 1px solid #2e1206;
+	border-right: 1px solid #2e1206;
 }
 
-#foe-helper-hud::before,
-#foe-helper-hud::after,
-.hud-btn,
 .hud-btn-left::before,
 .hud-btn-left-active::before,
 .hud-btn-right::before,
@@ -36,33 +35,15 @@
 	background: url('../images/hud/menu-sm.png') top left no-repeat;
 }
 
-#foe-helper-hud::before {
-	content: '';
-	height: 52px;
-	width: 26px;
+#foe-helper-hud-wrapper {
+	width: 220px;
+	height: 39px;
 	position: absolute;
 	bottom: 0;
 	left: 0;
-}
-
-#foe-helper-hud::after {
-	content: '';
-	height: 52px;
-	width: 24px;
-	background-position: -246px 0;
-	position: absolute;
-	bottom: 0;
-	right: 0;
-}
-
-#foe-helper-hud-wrapper {
-	width: 220px;
-	height: 53px;
-	position: absolute;
-	bottom: 0;
-	left: 26px;
 	overflow: hidden;
-	background: url('../images/hud/menu-bg-sm.png') top left repeat-x;
+	background-color: #553419;
+    border-top: 1px solid #2e1206;
 }
 
 #foe-helper-hud-slider {
@@ -70,49 +51,61 @@
 	left: 0;
 	bottom: 1px;
 	transition: left 0.7s ease-in-out;
-	height: 47px;
+	height: 37px;
 }
 
 .hud-btn-left,
-.hud-btn-right{
+.hud-btn-right, 
+.hud-btn-left::before,
+.hud-btn-right::before {
 	position: absolute;
-	height: 52px;
-	width: 20px;
-	right: 2px;
+	height: 40px;
+	width: 14px;
+	right: 0;
 	bottom: 0;
 	display: block;
 	z-index: 1;
 }
 
 .hud-btn-left {
-	left: 1px;
+	left: 0;
+}
+
+.hud-btn-left, .hud-btn-right, .hud-btn-left::before, .hud-btn-right::before {
+	display: none;
+}
+
+.hud-btn-left-active, .hud-btn-right-active, .hud-btn-left-active::before, .hud-btn-right-active::before {
+	display: block;
+}
+
+.hud-btn-right.hud-btn-right-active {
+	right: -12px;
+}
+
+.hud-btn-left.hud-btn-left-active {
+	left: -12px;
 }
 
 .hud-btn-left::before,
 .hud-btn-right::before {
 	content: '';
-	height: 46px;
-	width: 16px;
-	display: block;
-	position: absolute;
-	right: 1px;
-	bottom: 1px;
 }
 
 .hud-btn-left::before {
-	background-position: -255px -65px;
+	background-position: -254px -65px;
 	transform: scaleX(-1);
 }
 
 .hud-btn-right::before {
-	background-position: -256px -65px;
+	background-position: -254px -65px;
 }
 
 .hud-btn-left-active::before {
-	background-position: -255px -123px;
+	background-position: -256px -123px;
 }
 .hud-btn-left-active:hover::before {
-	background-position: -239px -65px;
+	background-position: -240px -65px;
 }
 
 .hud-btn-right-active::before {
@@ -125,52 +118,49 @@
 
 .hud-btn {
 	display: block;
-	background-position: -183px -123px;
-	width: 45px;
-	height: 45px;
+	width: 33px;
+	height: 33px;
 	position: relative;
-	margin-bottom: 2px;
+	margin: 1px;
 	float: left;
-	top: 2px;
+	border-radius: 4px;
+	box-shadow: inset 0 0 3px 1px #00000087, 0 0 2px #00000087;
+	border: 2px solid transparent;
+    box-sizing: border-box;
+	background: linear-gradient(#553419, #553419) padding-box, linear-gradient(to bottom, #82ae4c, #4f7421) border-box;
 }
 
 .hud-btn-red {
-	background-position: -183px -66px;
+	background: linear-gradient(to bottom, #4f291b, #553419) padding-box, linear-gradient(to bottom, #a84a35, #88301e) border-box;
 }
 
 .hud-btn span:first-child {
 	background-position: center center;
 	background-repeat: no-repeat;
-	display: block;
-	width: 65%;
-	height: 65%;
+	display: inline-flex;
+	width: 76%;
+	height: 76%;
 	background-size: contain;
-	position: absolute;
-	top: 8px;
-	left: 8px;
+	margin-top: 12%;
 }
 
 .menu-placeholder {
-	width: 45px;
-	height: 46px;
-	background: url('../images/hud/menu-sm.png') -126px -64px no-repeat;
+	width: 33px;
+	height: 33px;
+	background: var(--black-50);
 	float: left;
+	border-radius: 4px;
 }
 
 .hud-btn span.hud-counter {
-	width: 16px;
-	height: 16px;
-	position: absolute;
-	padding: 2px;
-	bottom: 4px;
-	top: unset;
-	left: 5px;
-	background-color: var(--hud-counter);
-	border-radius: 50%;
-	line-height: 16px;
-	text-align: center;
-    box-shadow: 1px 0 0 1px rgba(0,0,0,0.245);
-    pointer-events: none;
+	width: 12px !important;
+	height: 12px !important;
+	padding: 2px !important;
+	top: -4px !important;
+	left: unset !important;
+	right: -2px !important;
+	line-height: 10px !important;
+	font-size: 0.7rem !important;
 }
 
 

@@ -639,23 +639,27 @@ Tabs */
 	margin: 0 4px 0 0;
 	padding: 0;
 	display: inline-block;
-	line-height: 33px;
+	line-height: 30px;
 	position: relative;
-}
-
-.window-body .tabs ul.horizontal li:hover {
-	background-position: 0 -126px;
+	border-radius: 4px 4px 0 0;
+	border: 2px solid #522c0f;
+	border-bottom: none;
+	background: linear-gradient(#494241, #2b2c33);
+	box-shadow: inset 0 1px 1px #2a1f31, inset 0 2px 0 #5a5155, 0 -1px 3px #000;
 }
 
 .window-body .tabs ul.horizontal li.active {
-	background-position: 0 -126px
+	border: 2px solid rgb(137, 80, 34);
+	border-bottom: none;
+	background: linear-gradient(#4a5c7a, #3b4863);
+	box-shadow: inset 0 1px 1px #242235, inset 0 2px 0 #737793, 0 -1px 3px #000;
 }
 
 .window-body .tabs ul.horizontal li a {
 	text-decoration: none;
 	display: block;
 	position: relative;
-	padding: 0 8px;
+	padding: 0 6px;
 	color: var(--text-tab);
 }
 
@@ -667,57 +671,10 @@ Tabs */
 .window-body .tabs ul.horizontal li a span {
 	display: inline-block;
 	z-index: 20;
-	position: relative;
-	top: 1px;
 }
 
 .window-body .tabs ul.horizontal li.disabled a span {
 	text-decoration: line-through;
-}
-
-.window-body .tabs ul.horizontal li a:before {
-	content: '';
-	position: absolute;
-	background-image:  url('../images/hud/tab.png');
-	background-repeat: no-repeat;
-	background-position: center left;
-	width: 50%;
-	height: 33px;
-	z-index: 1;
-	left: 0;
-	bottom: 0;
-	top: 0;
-}
-
-.window-body .tabs ul.horizontal li a:after {
-	content: '';
-	position: absolute;
-	background-image:  url('../images/hud/tab.png');
-	background-repeat: no-repeat;
-	background-position: center right;
-	width: 50%;
-	height: 33px;
-	z-index: 1;
-	right: 0;
-	top: 0;
-	bottom: 0;
-}
-
-.window-body .tabs ul.horizontal li:hover a:before,
-.window-body .tabs ul.horizontal li.active a:before,
-.window-body .tabs ul.horizontal li.active:hover a:before,
-.window-body .tabs ul.horizontal li:hover a:after,
-.window-body .tabs ul.horizontal li.active a:after,
-.window-body .tabs ul.horizontal li.active:hover a:after {
-	background-image:  url('../images/hud/tab-active.png');
-	background-repeat: no-repeat;
-	background-position: center left;
-}
-
-.window-body .tabs ul.horizontal li:hover a:after,
-.window-body .tabs ul.horizontal li.active a:after,
-.window-body .tabs ul.horizontal li.active:hover a:after {
-	background-position: center right;
 }
 
 .window-body .tabs > div {
@@ -979,46 +936,32 @@ FP-Bar */
 	text-shadow: 0 1px 1px var(--black-65);
 	position: absolute;
 	text-align: left;
-	padding: 1px;
 	top: 30%;
 	left: 40%;
-	border-color: transparent;
-	border-width: 27px 5px 4px 5px;
-	border-style: solid;
-	border-image-source: url('../images/hud/window.png');
-	border-image-slice: 54 28 28;
-	border-image-width: 54px 28px 28px;
-	border-image-repeat: round;
-	border-image-outset: 0.6;
-	border-radius: 20px;
 	user-select: none;
+	box-shadow: 0 0 1px 1px #000000aa;
+	border: 3px solid #895022;
+	border-radius: 5px;
 }
 
-.window-box.closed {
-	border-width: 27px 5px 10px;
-	border-style: solid;
-	border-image-source: url('../images/hud/window-closed.png');
-	border-image-slice: 54 28 28;
-	border-image-width: 54px 28px 0 28px;
-	border-image-repeat: round;
-	border-radius: 20px;
-	border-bottom: none;
-	background-image: none;
-	height: 3px !important;
-	min-height: 0px !important;
-}
-
-.window-head:active {
-	cursor: url('../images/cursor_drag.cur'), auto !important;
+.closed.window-box {
+	height: 36px !important;
 }
 
 .window-head {
 	display: flex;
 	justify-content: space-between;
-	position: absolute;
-	top: -29px;
-	left: 7px;
-	right: 5px;
+	background: linear-gradient(#652518, #44150a);
+	box-shadow: inset 0 1px 0 #652518, inset 0 2px 0 #853427;
+	padding: 6px;
+	border-bottom: 2px solid #895022;
+	border-radius: 3px 3px 0 0;
+	box-sizing: border-box;
+	height: 36px;
+}
+
+.closed .window-head {
+	border-bottom-width: 0;
 }
 
 .window-head span.title {
@@ -1038,7 +981,7 @@ FP-Bar */
 	margin-left: auto;
 }
 
-.window-head span.window-ask {
+.window-ask {
 	display: inline-block;
 	background-position: -28px -1px, -2px -26px;
 	margin-right: 2px;
@@ -1046,12 +989,11 @@ FP-Bar */
 	height: 22px;
 	position: relative;
 }
-
-.window-head span.window-ask:hover {
+.window-ask:hover {
 	background-position: -28px -1px, -28px -26px;
 }
 
-.window-head span.window-speaker {
+.window-speaker {
 	height: 22px;
 	display: inline-block;
 	position: relative;
@@ -1059,21 +1001,19 @@ FP-Bar */
 	width: 22px;
 	margin-right: 2px;
 }
-
-.window-head span.window-speaker:hover {
+.window-speaker:hover {
 	background-position: -146px -2px, -28px -26px;
 }
 
-.window-head span.window-speaker.deactivated {
+.window-speaker.deactivated {
 	background-position: -146px -2px, -2px -26px;
 }
-
-.window-head span.window-speaker.deactivated:hover {
+.window-speaker.deactivated:hover {
 	background-position: -105px -2px, -28px -26px;
 }
 
 
-.window-head span.window-minimize {
+.window-minimize {
 	background-position: -53px -2px, -2px -26px;
 	margin-right: 2px;
 	width: 22px;
@@ -1081,18 +1021,18 @@ FP-Bar */
 	display: inline-block;
 	position: relative;
 }
-.open .window-head span.window-minimize:hover {
+.open .window-minimize:hover {
 	background-position: -53px -2px, -28px -26px;
 }
-.closed .window-head span.window-minimize {
+.closed .window-minimize {
 	background-position: -77px -1px, -2px -26px;
 }
-.closed .window-head span.window-minimize:hover {
+.closed .window-minimize:hover {
 	background-position: -77px -1px, -28px -26px;
 }
 
 
-.window-head span.window-settings {
+.window-settings {
 	background-position: -192px -2px, -2px -26px;
 	display: inline-block;
 	width: 22px;
@@ -1101,11 +1041,11 @@ FP-Bar */
 	margin-right: 2px;
 }
 
-.window-head span.window-settings:hover {
+.window-settings:hover {
 	background-position: -192px -2px, -28px -26px;
 }
 
-.window-head span.window-map {
+.window-map {
     background-image: url('../images/hud/map.png'), url('../images/hud/box-sprite.png');
     display: inline-block;
     width: 22px;
@@ -1116,25 +1056,23 @@ FP-Bar */
     background-size: 11px , 240px;
 	background-position: 6px, -2px -26px;
 }
-
-.window-head span.window-map:hover {
+.window-map:hover {
 	background-position: 6px, -28px -26px;
 }
 
-.window-head span.window-close {
+.window-close {
 	background-position: -2px -2px, -2px -26px;
 	display: inline-block;
 	width: 22px;
 	height: 22px;
 	position: relative;
 }
-
-.window-head span.window-close:hover {
+.window-close:hover {
 	background-position: -2px -2px, -28px -26px;
 }
 
 .window-body {
-	height: 100%;
+	height: calc(100% - 36px);
 	overflow: hidden;
 }
 
@@ -1173,7 +1111,7 @@ FP-Bar */
 }
 
 .closed .window-body {
-	height: 3px !important;
+	height: 0 !important;
 }
 
 .window-grippy {
@@ -1193,7 +1131,7 @@ FP-Bar */
 }
 
 .closed .window-grippy {
-	display:none;
+	display: none;
 }
 
 .on-top {
@@ -1552,7 +1490,7 @@ SettingsBox */
 	text-align: left;
 	position: absolute;
 	right: 10px;
-	top: 10px;
+	top: 40px;
 	border: 5px solid transparent;
 	background: transparent url('../images/hud/box-bg.png') center top no-repeat;
 	background-size: cover;
