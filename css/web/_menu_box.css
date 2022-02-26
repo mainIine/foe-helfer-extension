@@ -54,16 +54,21 @@
 	background: url('../images/hud/menu-sm.png') top left no-repeat;
 }
 
-.hud-btn {
+.hud-btn {	
 	display: inline-block;
-	background-position: -183px -123px;
 	width: 45px;
 	height: 45px;
 	position: relative;
+	margin: 1px;
+	border-radius: 4px;
+	box-shadow: inset 0 0 3px 1px #00000087, 0 0 2px #00000087;
+	border: 2px solid transparent;
+    box-sizing: border-box;
+	background: linear-gradient(#553419, #553419) padding-box, linear-gradient(to bottom, #82ae4c, #4f7421) border-box;
 }
 
 .hud-btn-red {
-	background-position: -183px -66px;
+	background: linear-gradient(to bottom, #4f291b, #553419) padding-box, linear-gradient(to bottom, #a84a35, #88301e) border-box;
 }
 
 .hud-btn span:first-child {
@@ -81,7 +86,7 @@
 	display: inline-block;
 	width: 45px;
 	height: 45px;
-	background: url('../images/hud/menu-sm.png') -126px -66px no-repeat;
+	background: var(--black-50);
 }
 
 .hud-btn span.hud-counter {
