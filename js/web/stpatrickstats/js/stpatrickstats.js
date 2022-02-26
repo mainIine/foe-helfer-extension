@@ -289,7 +289,7 @@ let stPatrick = {
 			}
 		}
 
-		while (sum > 1000 && degree<6) {
+		while (Number(sum.toPrecision(3)) >= 1000 && degree<6) {
 			sum /= 1000;
 			degree += 1;
 		}
@@ -480,7 +480,7 @@ let stPatrick = {
 	},
 
 	bigNum: (number) => {
-		bigNum = number >= 1000 ? `${Math.floor(number)}` : `${number.toPrecision(3)}`;
+		bigNum = Number(number.toPrecision(3)) >= 1000 ? `${Math.floor(number)}` : `${number.toPrecision(3)}`;
 		return bigNum;
 	},
 
