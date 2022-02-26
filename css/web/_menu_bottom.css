@@ -143,10 +143,11 @@
 }
 
 .menu-placeholder {
-	width: 45px;
-	height: 46px;
-	background: url('../images/hud/menu-sm.png') -126px -64px no-repeat;
+	width: 33px;
+	height: 33px;
+	background: #ff0;
 	float: left;
+	border-radius: 4px;
 }
 
 .hud-btn span.hud-counter {
