@@ -6,18 +6,6 @@
 		"sort": 0
 	},
 	{
-		"name": "SendGEXInfo",
-		"status": true,
-		"group": "Sending",
-		"sort": 1
-	},
-	{
-		"name": "SendGildMemberLGInfo",
-		"status": false,
-		"group": "Sending",
-		"sort": 2
-	},
-	{
 		"name": "AutomaticNegotiation",
 		"status": true,
 		"group": "Boxes",
@@ -43,7 +31,7 @@
 	},
 	{
 		"name": "ShowOwnPartOnAllGBs",
-		"status": false,
+		"status": true,
 		"group": "Boxes",
 		"sort": 5
 	},
@@ -78,16 +66,52 @@
 		"sort": 10
 	},
 	{
+		"name": "AutoOpenCloseBox",
+		"status": false,
+		"group": "Boxes",
+		"sort": 11
+	},
+	{
 		"name": "InfoboxEntryCount",
 		"callback": "InfoboxInputEntryCount",
 		"group": "Boxes",
-		"sort": 11
+		"sort": 12
 	},
 	{
 		"name": "ShowMapTradeWarning",
 		"status": true,
 		"group": "Boxes",
-		"sort": 12
+		"sort": 13
+	},
+	{
+		"name": "ShowScoutingTimes",
+		"status": true,
+		"group": "Boxes",
+		"sort": 13
+	},
+	{
+		"name": "ExcludeRelics",
+		"status": false,
+		"group": "Boxes",
+		"sort": 13
+	},
+	{
+		"name": "Show2kQuestMark",
+		"status": false,
+		"group": "Boxes",
+		"sort": 14
+	},
+	{
+		"name": "ShowPlayerLinks",
+		"status": true,
+		"group": "Boxes",
+		"sort": 15
+	},
+	{
+		"name": "HideHelperDuringBattle",
+		"status": false,
+		"group": "Boxes",
+		"sort": 15
 	},
 	{
 		"name": "ChangeLanguage",
@@ -102,41 +126,53 @@
 		"sort": 1
 	},
 	{
+		"name": "MenuContent",
+		"callback": "MenuContent",
+		"group": "Extension",
+		"sort": 2
+	},
+	{
 		"name": "MenuLength",
 		"callback": "MenuInputLength",
 		"group": "Extension",
-		"sort": 2
+		"sort": 3
 	},
 	{
 		"name": "ResetBoxPositions",
 		"button": "ResetBoxCoords",
 		"group": "Extension",
-		"sort": 3
+		"sort": 4
 	},
 	{
 		"name": "ExportSettings",
 		"callback": "ExportView",
 		"group": "Extension",
-		"sort": 4
+		"sort": 5
+	},
+	{
+		"name": "EnableSound",
+		"status": true,
+		"group": "Extension",
+		"sort": 6
 	},
 	{
 		"name": "ShowNotifications",
 		"status": true,
 		"group": "Extension",
-		"sort": 5
+		"sort": 7
 	},
 	{
 		"name": "NotificationsPosition",
 		"callback": "NotificationView",
 		"group": "Extension",
 		"status": "bottom-right",
-		"sort": 6
+		"sort": 8
 	},
 	{
 		"name": "NotificationsStack",
 		"callback": "NotificationStack",
 		"group": "Extension",
-		"sort": 7
+		"sort": 9
 	},
 	{
 		"name": "About",

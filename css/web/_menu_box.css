@@ -1,14 +1,12 @@
 /*
  * **************************************************************************************
+ * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
  *
- * Dateiname:                 _menu_box.css
- * Projekt:                   foe-chrome
- *
- * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              24.02.21, 09:49 Uhr
- * zuletzt bearbeitet:       24.02.21, 09:47 Uhr
- *
- * Copyright © 2021
+ * See file LICENSE.md or go to
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
  *
  * **************************************************************************************
  */
@@ -19,22 +17,17 @@
     width: 120px;
     height: 60px;
     min-width: 95px !important;
-	min-height: 50px !important;    
-	border-image-source: url(../images/hud/window-menu.png);
-	border-radius: 15px;
-	border-width: 30px 7px 7px 7px;
-	border-image-outset: 0.3;
+	min-height: 50px !important;
 }
 
 #menu_box.closed {
-	border-image-source: url(../images/hud/window-menu-closed.png);
+	border-image-source: url('../images/hud/window-menu-closed.png');
 	min-height: 0 !important;
 }
 
 #menu_boxHeader {
-	top: -31px;
-	left: 1px;
-	right: -5px;
+	background: linear-gradient(#33435e, #243048);
+    box-shadow: inset 0 1px 1px #242235, inset 0 2px 0 #737793;
 }
 
 #menu_box.closed #menu_boxHeader {
@@ -54,23 +47,28 @@
 
 #menu_box #menu_boxBody {
 	overflow: auto;
-	overflow-y: auto;
+	padding: 2px
 }
 
 .hud-btn {
 	background: url('../images/hud/menu-sm.png') top left no-repeat;
 }
 
-.hud-btn {
+.hud-btn {	
 	display: inline-block;
-	background-position: -183px -123px;
 	width: 45px;
 	height: 45px;
 	position: relative;
+	margin: 1px;
+	border-radius: 4px;
+	box-shadow: inset 0 0 3px 1px #00000087, 0 0 2px #00000087;
+	border: 2px solid transparent;
+    box-sizing: border-box;
+	background: linear-gradient(#553419, #553419) padding-box, linear-gradient(to bottom, #82ae4c, #4f7421) border-box;
 }
 
 .hud-btn-red {
-	background-position: -183px -66px;
+	background: linear-gradient(to bottom, #4f291b, #553419) padding-box, linear-gradient(to bottom, #a84a35, #88301e) border-box;
 }
 
 .hud-btn span:first-child {
@@ -88,7 +86,7 @@
 	display: inline-block;
 	width: 45px;
 	height: 45px;
-	background: url('../images/hud/menu-sm.png') -126px -66px no-repeat;
+	background: var(--black-50);
 }
 
 .hud-btn span.hud-counter {
@@ -154,6 +152,18 @@ Tooltip */
 	left: 81px;
 	background: url('../images/hud/tooltip_bg_arrow.png') top center no-repeat;
 	transform: rotate(180deg);
+}
+
+.toolTipWrapper .tooltip-error {
+	color: #f79090;
+}
+
+.toolTipWrapper .toolTipHeader {
+	color: #bdc5cb;
+	background-color: #313d45;
+	box-shadow: inset 0 0 2px var(--black);
+	margin: -7px -7px 2px -7px;
+	padding: 0 5px 1.3px;
 }
 
 .toolTipWrapper .tooltip-error {

@@ -1,14 +1,12 @@
 /*
  * **************************************************************************************
+ * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
  *
- * Dateiname:                 inject.js
- * Projekt:                   foe-chrome
- *
- * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              22.12.19, 14:31 Uhr
- * zuletzt bearbeitet:       22.12.19, 13:50 Uhr
- *
- * Copyright © 2019
+ * See file LICENSE.md or go to
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
  *
  * **************************************************************************************
  */
@@ -181,6 +179,8 @@
 					'lit-html/lit-html.bundle.min',
 					'SimpleMarkdown/simple-markdown.min',
 					'dexie/dexie.min',
+					'dexie/dexie-export-import',
+					'downloadjs/downloadjs.min'
 				];
 
 			// load all vendor scripts first (unknown order)
@@ -205,6 +205,7 @@
 				'unit',
 				'alerts',
 				'guildfights',
+				'gvg',
 				'stats',
 				'campagnemap',
 				'bonus-service',
@@ -220,15 +221,24 @@
 				'greatbuildings',
 				'notice',
 				'inventory-tracker',
-				'ws-chat',
 				'treasury',
 				'market',
+				'marketoffers',
 				'bluegalaxy',
 				'eventhandler',
 				'fp-collector',
 				'unit-gex',
 				'maptradewarning',
-				'guildmemberstat'
+				'guildmemberstat',
+				'quests',
+				'gexstat',
+				'dbexport',
+				'closebox',
+				'castle',
+				'stpatrickstats',
+				'scoutingtimes',
+				'discord',
+				'bettermusic'
 			];
 
 			// load scripts (one after the other)
@@ -238,16 +248,6 @@
 			}
 
 			window.dispatchEvent(new CustomEvent('foe-helper#loaded'));
-
-			// If #content is available, flash content has been loaded ...
-			let IsForum = false;
-			if (window !== undefined && window.location !== undefined && window.location.pathname !== undefined && window.location.pathname.includes('forum')) {
-				IsForum = true;
-            }
-
-			if (document.getElementById('content') && !IsForum ){
-				alert('You installed the FoE Helper but didn\'t switch the game to HTML5. Check that in your game settings!');
-			}
 
 		} catch (err) {
 			// make sure that the packet buffer in the FoEproxy does not fill up in the event of an incomplete loading.

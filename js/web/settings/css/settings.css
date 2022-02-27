@@ -1,14 +1,12 @@
-/*
+ /*
  * **************************************************************************************
+ * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
  *
- * Dateiname:                 settings.css
- * Projekt:                   foe-chrome
- *
- * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              27.12.19, 12:16 Uhr
- * zuletzt bearbeitet:       27.12.19, 12:15 Uhr
- *
- * Copyright © 2019
+ * See file LICENSE.md or go to
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
  *
  * **************************************************************************************
  */
@@ -113,7 +111,7 @@
 
 #SettingsBoxBody .settings-wrapper {
 	position: absolute;
-	top: 41px;
+	top: 75px;
 	bottom: 0;
 	left: 0;
 	right: 0;
@@ -135,8 +133,11 @@
 #SettingsBoxBody .tabs ul.vertical {
 	position: static;
 	width: 200px;
+	height: auto;
 	padding-top: 5px;
+	margin-bottom: 2px;
 	overflow-y: auto;
+	overflow-x: hidden;
 }
 
 #SettingsBoxBody .tabs ul.vertical li {
@@ -145,8 +146,11 @@
 
 #SettingsBoxBody .tabs .sub-tab {
 	margin-left: 0;
+	margin-bottom: 2px;
 	border-left: 0;
 	width: 100%;
+	overflow-y: auto;
+	overflow-x: hidden;
 }
 
 #SettingsBoxBody .helplist {
@@ -212,4 +216,12 @@
 
 #SettingsBoxBody hr {
 	border: 1px solid var(--text-dark);
+}
+
+/* Menu Inhalt */
+.setting .hud-btn {
+	margin-right: 6px;
+	margin-bottom: 6px;
+	text-align: center;
+	float: left;
 }

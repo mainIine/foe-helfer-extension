@@ -1,13 +1,12 @@
 /*
  * **************************************************************************************
+ * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
  *
- * Dateiname:                 popup.js
- * Projekt:                   foe
- *
- * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       20.09.19, 11:02 Uhr
- *
- * Copyright © 2019
+ * See file LICENSE.md or go to
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
  *
  * **************************************************************************************
  */
@@ -70,7 +69,7 @@ $(async function(){
 	})();
 
 	$('body').on('click', '.foe-link', ()=> {
-		chrome.tabs.create({url: "https://foe-rechner.de/"});
+		chrome.tabs.create({url: "https://foe-helper.com/"});
 	});
 
 	if(lng !== 'de'){

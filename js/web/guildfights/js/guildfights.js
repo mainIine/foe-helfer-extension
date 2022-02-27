@@ -1,14 +1,12 @@
 /*
  * **************************************************************************************
+ * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
  *
- * Dateiname:                 guildfights.js
- * Projekt:                   foe-chrome
- *
- * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              22.03.21, 09:28 Uhr
- * zuletzt bearbeitet:       21.03.21, 11:52 Uhr
- *
- * Copyright © 2021
+ * See file LICENSE.md or go to
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
  *
  * **************************************************************************************
  */
@@ -31,7 +29,16 @@ FoEproxy.addHandler('GuildBattlegroundService', 'getPlayerLeaderboard', (data, p
 
 // Gildengefechte
 FoEproxy.addHandler('GuildBattlegroundStateService', 'getState', (data, postData) => {
-	if (data.responseData['stateId'] !== 'participating') {
+	if (data.responseData['stateId'] !== 'participating')
+	{
+		GildFights.CurrentGBGRound = parseInt(data.responseData['startsAt']) - 259200;
+
+		if (GildFights.curDateFilter === null || GildFights.curDateEndFilter === null)
+		{
+			GildFights.curDateFilter = moment.unix(GildFights.CurrentGBGRound).subtract(11, 'd').format('YYYYMMDD');
+			GildFights.curDateEndFilter = moment.unix(GildFights.CurrentGBGRound).format('YYYYMMDD');
+		}
+
 		GildFights.HandlePlayerLeaderboard(data.responseData['playerLeaderboardEntries']);
 	}
 });
@@ -39,25 +46,35 @@ FoEproxy.addHandler('GuildBattlegroundStateService', 'getState', (data, postData
 // Gildengefechte - Map, Gilden
 FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postData) => {
 	GildFights.init();
+	GildFights.CurrentGBGRound = data['responseData']['endsAt'];
+
+	if (GildFights.curDateFilter === null || GildFights.curDateEndFilter === null)
+	{
+		GildFights.curDateFilter = moment.unix(GildFights.CurrentGBGRound).subtract(11, 'd').format('YYYYMMDD');
+		GildFights.curDateEndFilter = MainParser.getCurrentDateTime();
+	}
+
 	GildFights.MapData = data['responseData'];
 	ActiveMap = 'gg';
 
 	$('#gildfight-Btn').removeClass('hud-btn-red');
 	$('#selectorCalc-Btn-closed').remove();
 
-	if( $('#ProvinceMap').length > 0 ){
+	if ($('#ProvinceMap').length > 0)
+	{
 		ProvinceMap.Refresh();
 	}
 
 	// update box when open
-	if( $('#LiveGildFighting').length > 0 ){
+	if ($('#LiveGildFighting').length > 0)
+	{
 		GildFights.BuildFightContent();
 	}
 });
 
 
 /**
- * @type {{ShowExportButton: GildFights.ShowExportButton, GetTabContent: (function(): string), ShowPlayerBox: GildFights.ShowPlayerBox, SettingsExport: GildFights.SettingsExport, PrevActionTimestamp: null, NewActionTimestamp: null, SortedColors: null, ShowGildBox: (function(): undefined), BuildFightContent: GildFights.BuildFightContent, InjectionLoaded: boolean, MapData: null, BuildPlayerContent: GildFights.BuildPlayerContent, SetTabContent: GildFights.SetTabContent, NewAction: null, TabsContent: [], PrevAction: null, UpdateCounter: GildFights.UpdateCounter, init: GildFights.init, PrepareColors: (function(): undefined), ProvinceNames: null, HandlePlayerLeaderboard: GildFights.HandlePlayerLeaderboard, SetTabs: GildFights.SetTabs, GetTabs: (function(): string), PlayerBoxContent: [], Colors: null, RefreshTable: (function(*=): undefined), SetAlert: GildFights.SetAlert, Neighbours: [], Tabs: [], PlayersPortraits: null}}
+ * @type {{SettingsExport: GildFights.SettingsExport, curDetailViewFilter: null, UpdateDB: ((function(*, *): Promise<void>)|*), GBGRound: null, PrevActionTimestamp: null, NewActionTimestamp: null, InjectionLoaded: boolean, MapData: null, BuildPlayerContent: ((function(*=): Promise<void>)|*), intiateDatePicker: ((function(): Promise<void>)|*), GBGHistoryView: boolean, LogDatePicker: null, NewAction: null, PrevAction: null, init: GildFights.init, PrepareColors: GildFights.PrepareColors, SetBoxNavigation: ((function(*=): Promise<void>)|*), PlayerBoxContent: *[], DeleteAlert: GildFights.DeleteAlert, PlayerBoxSettingsSaveValues: GildFights.PlayerBoxSettingsSaveValues, ToggleProgressList: GildFights.ToggleProgressList, Colors: null, RefreshTable: GildFights.RefreshTable, SetAlert: GildFights.SetAlert, formatRange: (function(): string), GetAlertButton: (function(integer): string), Tabs: *[], ToggleCopyButton: GildFights.ToggleCopyButton, Alerts: *[], PlayersPortraits: null, GetTabContent: (function(): string), ShowPlayerBox: GildFights.ShowPlayerBox, CurrentGBGRound: null, showGuildColumn: number, curDateFilter: null, SortedColors: null, ShowGildBox: GildFights.ShowGildBox, BuildFightContent: GildFights.BuildFightContent, BuildDetailViewContent: ((function(*): Promise<void>)|*), SetTabContent: GildFights.SetTabContent, BuildDetailViewLog: ((function(*): Promise<void>)|*), TabsContent: *[], GetAlerts: (function(): Promise<unknown>), UpdateCounter: GildFights.UpdateCounter, GBGAllRounds: null, ProvinceNames: null, checkForDB: ((function(*): Promise<void>)|*), HandlePlayerLeaderboard: ((function(*): Promise<void>)|*), SetTabs: GildFights.SetTabs, CopyToClipBoard: GildFights.CopyToClipBoard, GetTabs: (function(): string), DeleteOldSnapshots: ((function(*=): Promise<void>)|*), PlayerBoxSettings: {showProgressFilter: number, showOnlyActivePlayers: number, showLogButton: number, showRoundSelector: number}, Neighbours: *[], curDateEndFilter: null, ShowPlayerBoxSettings: GildFights.ShowPlayerBoxSettings, SaveLiveFightSettings: GildFights.SaveLiveFightSettings, ShowLiveFightSettings: GildFights.ShowLiveFightSettings, ShowDetailViewBox: GildFights.ShowDetailViewBox}}
  */
 let GildFights = {
 
@@ -70,25 +87,59 @@ let GildFights = {
 	MapData: null,
 	Neighbours: [],
 	PlayersPortraits: null,
-	Colors : null,
+	Colors: null,
 	SortedColors: null,
-	ProvinceNames : null,
+	ProvinceNames: null,
 	InjectionLoaded: false,
 	PlayerBoxContent: [],
+	CurrentGBGRound: null,
+	GBGRound: null,
+	GBGAllRounds: null,
+	GBGHistoryView: false,
+	LogDatePicker: null,
+	curDateFilter: null,
+	curDateEndFilter: null,
+	curDetailViewFilter: null,
+	PlayerBoxSettings: {
+		showRoundSelector: 1,
+		showLogButton: 1,
+		showProgressFilter: 1,
+		showOnlyActivePlayers: 0,
+	},
+	showGuildColumn: 0,
 
 	Tabs: [],
 	TabsContent: [],
 
+
+	/**
+	 *
+	 * @returns {Promise<void>}
+	 */
+	checkForDB: async (playerID) => {
+
+		const DBName = `FoeHelperDB_GuildFights_${playerID}`;
+
+		GildFights.db = new Dexie(DBName);
+
+		GildFights.db.version(1).stores({
+			snapshots: '&[player_id+gbground+time],[gbground+player_id], [date+player_id], gbground',
+			history: '&gbground'
+		});
+
+		GildFights.db.open();
+	},
+
 	/**
 	 * Zündung
 	 */
-	init: ()=> {
+	init: () => {
 		// moment.js global set
 		moment.locale(MainParser.Language);
 
 		GildFights.GetAlerts();
 
-		if(GildFights.InjectionLoaded === false)
+		if (GildFights.InjectionLoaded === false)
 		{
 			FoEproxy.addWsHandler('GuildBattlegroundService', 'all', data => {
 				if ($('#LiveGildFighting').length > 0 && data['responseData'][0])
@@ -101,25 +152,40 @@ let GildFights = {
 	},
 
 
-	HandlePlayerLeaderboard: (d) => {
+	/**
+	 * @param d
+	 * @returns {Promise<void>}
+	 */
+	HandlePlayerLeaderboard: async (d) => {
 		// immer zwei vorhalten, für Referenz Daten (LiveUpdate)
-		if (localStorage.getItem('GildFights.NewAction') !== null) {
+		if (localStorage.getItem('GildFights.NewAction') !== null)
+		{
 			GildFights.PrevAction = JSON.parse(localStorage.getItem('GildFights.NewAction'));
 			GildFights.PrevActionTimestamp = parseInt(localStorage.getItem('GildFights.NewActionTimestamp'));
 		}
-		else if (GildFights.NewAction !== null) {
+		else if (GildFights.NewAction !== null)
+		{
 			GildFights.PrevAction = GildFights.NewAction;
 			GildFights.PrevActionTimestamp = GildFights.NewActionTimestamp;
 		}
 
 		let players = [];
+		let sumNegotiations = 0;
+		let sumBattles = 0;
 
-		for (let i in d) {
-			if (!d.hasOwnProperty(i)) {
+		for (let i in d)
+		{
+
+			if (!d.hasOwnProperty(i))
+			{
 				break;
 			}
+			sumNegotiations += d[i]['negotiationsWon'] || 0;
+			sumBattles += d[i]['battlesWon'] || 0;
 
 			players.push({
+				gbground: GildFights.CurrentGBGRound,
+				rank: i * 1 + 1,
 				player_id: d[i]['player']['player_id'],
 				name: d[i]['player']['name'],
 				avatar: d[i]['player']['avatar'],
@@ -128,16 +194,214 @@ let GildFights = {
 			});
 		}
 
+		await GildFights.UpdateDB('history', { participation: players, sumNegotiations: sumNegotiations, sumBattles: sumBattles });
+
+		GildFights.GBGHistoryView = false;
 		GildFights.NewAction = players;
 		localStorage.setItem('GildFights.NewAction', JSON.stringify(GildFights.NewAction));
 
 		GildFights.NewActionTimestamp = moment().unix();
 		localStorage.setItem('GildFights.NewActionTimestamp', GildFights.NewActionTimestamp);
 
-		if ($('#GildPlayers').length > 0) {
-			GildFights.BuildPlayerContent();
-		} else {
+		if ($('#GildPlayers').length > 0)
+		{
+			GildFights.BuildPlayerContent(GildFights.CurrentGBGRound);
+		}
+		else
+		{
 			GildFights.ShowPlayerBox();
+		}
+	},
+
+
+	/**
+	 * @param content
+	 * @param data
+	 * @returns {Promise<void>}
+	 */
+	UpdateDB: async (content, data) => {
+
+		if (content === 'history')
+		{
+			await GildFights.db.history.put({ gbground: GildFights.CurrentGBGRound, sumNegotiations: data.sumNegotiations, sumBattles: data.sumBattles, participation: data.participation });
+		}
+
+		if (content === 'player')
+		{
+
+			let battles = 0,
+				negotiations = 0;
+
+			let CurrentSnapshot = await GildFights.db.snapshots
+				.where({
+					gbground: GildFights.CurrentGBGRound,
+					player_id: data.player_id
+				})
+				.first();
+
+			if (CurrentSnapshot === undefined)
+			{
+				battles = data.battles;
+				negotiations = data.negotiations;
+			}
+			else
+			{
+				battles = data.diffbat;
+				negotiations = data.diffneg;
+			}
+
+			await GildFights.db.snapshots.add({
+				gbground: GildFights.CurrentGBGRound,
+				player_id: data.player_id,
+				name: data.name,
+				date: parseInt(moment.unix(data.time).format("YYYYMMDD")),
+				time: data.time,
+				battles: battles,
+				negotiations: negotiations
+			});
+		}
+
+	},
+
+
+	/**
+	 * @param gbground
+	 * @returns {Promise<void>}
+	 */
+	SetBoxNavigation: async (gbground) => {
+		let h = [];
+		let i = 0;
+		let PlayerBoxSettings = JSON.parse(localStorage.getItem('GildFightsPlayerBoxSettings')) || '{}';
+
+		GildFights.PlayerBoxSettings.showRoundSelector = (PlayerBoxSettings.showRoundSelector !== undefined) ? PlayerBoxSettings.showRoundSelector : GildFights.PlayerBoxSettings.showRoundSelector;
+		GildFights.PlayerBoxSettings.showLogButton = (PlayerBoxSettings.showLogButton !== undefined) ? PlayerBoxSettings.showLogButton : GildFights.PlayerBoxSettings.showLogButton;
+		GildFights.PlayerBoxSettings.showProgressFilter = (PlayerBoxSettings.showProgressFilter !== undefined) ? PlayerBoxSettings.showProgressFilter : GildFights.PlayerBoxSettings.showProgressFilter;
+
+		if (GildFights.GBGAllRounds === undefined || GildFights.GBGAllRounds === null)
+		{
+			// get all available GBG entires
+			const gbgRounds = await GildFights.db.history.where('gbground').above(0).keys();
+			gbgRounds.sort(function (a, b) { return b - a });
+			GildFights.GBGAllRounds = gbgRounds;
+
+		}
+
+		//set latest GBG round to show if available and no specific GBG round is set
+		if (!gbground && GildFights.GBGAllRounds && GildFights.GBGAllRounds.length)
+		{
+			gbground = GildFights.GBGAllRounds[i];
+		}
+
+		if (gbground && GildFights.GBGAllRounds && GildFights.GBGAllRounds.length)
+		{
+			let index = GildFights.GBGAllRounds.indexOf(gbground);
+			let previousweek = GildFights.GBGAllRounds[index + 1] || null;
+			let nextweek = GildFights.GBGAllRounds[index - 1] || null;
+
+			h.push(`<div id="gbg_roundswitch" class="roundswitch dark-bg">`);
+
+			if (GildFights.PlayerBoxSettings.showRoundSelector)
+			{
+				h.push(`${i18n('Boxes.GuildMemberStat.GBFRound')} <button class="btn btn-default btn-set-week" data-week="${previousweek}"${previousweek === null ? ' disabled' : ''}>&lt;</button> `);
+				h.push(`<select id="gbg-select-gbground">`);
+
+				GildFights.GBGAllRounds.forEach(week => {
+					h.push(`<option value="${week}"${gbground === week ? ' selected="selected"' : ''}>` + moment.unix(week).subtract(11, 'd').format(i18n('Date')) + ` - ` + moment.unix(week).format(i18n('Date')) + `</option>`);
+				});
+
+				h.push(`</select>`);
+				h.push(`<button class="btn btn-default btn-set-week last" data-week="${nextweek}"${nextweek === null ? ' disabled' : ''}>&gt;</button>`);
+			}
+
+			if (gbground === GildFights.CurrentGBGRound)
+			{
+				h.push(`<div id="gbgLogFilter">`);
+				if (GildFights.PlayerBoxSettings.showProgressFilter === 1)
+				{
+					h.push(`<button id="gbg_filterProgressList" title="${HTML.i18nTooltip(i18n('Boxes.Gildfights.ProgressFilterDesc'))}" class="btn btn-default" disabled>&#8593;</button>`);
+				}
+
+				if (GildFights.PlayerBoxSettings.showLogButton === 1)
+				{
+					h.push(`<button id="gbg_showLog" class="btn btn-default">${i18n('Boxes.Gildfights.SnapshotLog')}</button>`);
+				}
+				h.push(`</div>`);
+			}
+			h.push(`</div>`);
+		}
+
+		h.push(`<div id="gbgContentWrapper"></div>`);
+
+		$('#GildPlayersBody').html(h.join('')).promise().done(function () {
+
+			$('.btn-set-week').off().on('click', function () {
+
+				GildFights.GBGHistoryView = true;
+				let week = $(this).data('week');
+
+				if (!GildFights.GBGAllRounds.includes(week))
+				{
+					return;
+				};
+
+				GildFights.BuildPlayerContent(week);
+			});
+
+			$('#gbg-select-gbground').off().on('change', function () {
+
+				GildFights.GBGHistoryView = true;
+				let week = parseInt($(this).val());
+
+				if (!GildFights.GBGAllRounds.includes(week) || week === GildFights.CurrentGBGRound)
+				{
+					return;
+				};
+
+				GildFights.BuildPlayerContent(week);
+			});
+
+			$('button#gbg_showLog').off('click').on('click', function () {
+				GildFights.curDetailViewFilter = { content: 'filter', gbground: GildFights.CurrentGBGRound };
+				GildFights.ShowDetailViewBox(GildFights.curDetailViewFilter)
+			});
+
+			$('button#gbg_filterProgressList').on('click', function () {
+				GildFights.ToggleProgressList('gbg_filterProgressList');
+			});
+		});
+
+	},
+
+	/**
+	 * Filters the list for players with new progress
+	 * @param id
+	 */
+	ToggleProgressList: (id) => {
+
+		let elem = $('#GildPlayersTable > tbody');
+		let nelem = elem.find('tr.new');
+		let act = $('#' + id).hasClass('filtered') ? 'show' : 'hide';
+
+		if (act === 'hide')
+		{
+			if (nelem.length !== 0)
+			{
+				let oelem = elem.find('tr:not(.new)');
+				GildFights.PlayerBoxSettings.showOnlyActivePlayers = 1;
+				localStorage.setItem('GildFightsPlayerBoxSettings', JSON.stringify(GildFights.PlayerBoxSettings));
+				$('#GildPlayersTable > thead .text-warning').hide();
+				oelem.hide();
+				$('#' + id).addClass('filtered btn-green');
+			}
+		}
+
+		else if (act === 'show')
+		{
+			elem.find('tr').show();
+			GildFights.PlayerBoxSettings.showOnlyActivePlayers = 0;
+			localStorage.setItem('GildFightsPlayerBoxSettings', JSON.stringify(GildFights.PlayerBoxSettings));
+			$('#GildPlayersTable > thead .text-warning').show();
+			$('#' + id).removeClass('filtered btn-green');
 		}
 	},
 
@@ -147,7 +411,7 @@ let GildFights = {
 	 *
 	 * @param id
 	 */
-	SetTabs: (id)=> {
+	SetTabs: (id) => {
 		GildFights.Tabs.push('<li class="' + id + ' game-cursor"><a href="#' + id + '" class="game-cursor"><span>&nbsp;</span></a></li>');
 	},
 
@@ -157,7 +421,7 @@ let GildFights = {
 	 *
 	 * @returns {string}
 	 */
-	GetTabs: ()=> {
+	GetTabs: () => {
 		return '<ul class="horizontal dark-bg">' + GildFights.Tabs.join('') + '</ul>';
 	},
 
@@ -168,7 +432,7 @@ let GildFights = {
 	 * @param id
 	 * @param content
 	 */
-	SetTabContent: (id, content)=> {
+	SetTabContent: (id, content) => {
 		// ab dem zweiten Eintrag verstecken
 		let style = GildFights.TabsContent.length > 0 ? ' style="display:none"' : '';
 
@@ -181,10 +445,28 @@ let GildFights = {
 	 *
 	 * @returns {string}
 	 */
-	GetTabContent: ()=> {
+	GetTabContent: () => {
 		return GildFights.TabsContent.join('');
 	},
 
+	/**
+	 *
+	 * @param {boolean} alertActive
+	 * @param {integer} provId
+	 * @param {integer} alertId
+	 */
+	GetAlertButton: (provId) => {
+		let btn;
+		if (GildFights.Alerts.find((a) => a.provId == provId) !== undefined)
+		{
+			btn = `<button class="btn-default btn-tight deletealertbutton" data-id="${provId}">${i18n('Boxes.Gildfights.DeleteAlert')}</button>`;
+		}
+		else
+		{
+			btn = `<button class="btn-default btn-tight setalertbutton" data-id="${provId}">${i18n('Boxes.Gildfights.SetAlert')}</button>`;
+		}
+		return btn;
+	},
 
 	/**
 	 * Creates the box with the data
@@ -192,10 +474,10 @@ let GildFights = {
 	 * @param reload
 	 * @constructor
 	 */
-	ShowGildBox: (reload)=> {
-		// Wenn die Box noch nicht da ist, neu erzeugen und in den DOM packen
-		if( $('#LiveGildFighting').length === 0 ){
+	ShowGildBox: (reload) => {
 
+		if ($('#LiveGildFighting').length === 0)
+		{
 			HTML.Box({
 				id: 'LiveGildFighting',
 				title: i18n('Menu.Gildfight.Title'),
@@ -203,13 +485,14 @@ let GildFights = {
 				dragdrop: true,
 				resize: true,
 				minimize: true,
-                settings: 'GildFights.ShowLiveFightSettings()'
+				settings: 'GildFights.ShowLiveFightSettings()'
 			});
 
 			// add css to the dom
 			HTML.AddCssFile('guildfights');
 		}
-		else if(!reload) {
+		else if (!reload)
+		{
 			HTML.CloseOpenBox('LiveGildFighting');
 			return;
 		}
@@ -223,7 +506,8 @@ let GildFights = {
 	 */
 	ShowPlayerBox: () => {
 		// Wenn die Box noch nicht da ist, neu erzeugen und in den DOM packen
-		if( $('#GildPlayers').length === 0 ){
+		if ($('#GildPlayers').length === 0)
+		{
 
 			moment.locale(MainParser.Language);
 
@@ -234,26 +518,79 @@ let GildFights = {
 				dragdrop: true,
 				minimize: true,
 				resize: true,
-				settings: 'GildFights.ShowExportButton()'
+				settings: 'GildFights.ShowPlayerBoxSettings()'
 			});
 
 			// CSS in den DOM prügeln
 			HTML.AddCssFile('guildfights');
 		}
 
-		GildFights.BuildPlayerContent();
+		GildFights.BuildPlayerContent(GildFights.CurrentGBGRound);
+	},
+
+	/**
+	 * Generates the snapshot detail box
+	 * @param d
+	 */
+	ShowDetailViewBox: (d) => {
+		// Wenn die Box noch nicht da ist, neu erzeugen und in den DOM packen
+		if ($('#GildPlayersDetailView').length === 0)
+		{
+			let ptop = null,
+				pright = null;
+
+			HTML.Box({
+				id: 'GildPlayersDetailView',
+				title: i18n('Boxes.Gildfights.SnapshotLog'),
+				auto_close: true,
+				dragdrop: true,
+				minimize: true,
+				resize: true
+			});
+
+			if (localStorage.getItem('GildPlayersDetailViewCords') === null)
+			{
+				ptop = $('#GildPlayers').length !== 0 ? $('#GildPlayers').position().top : 0;
+				pright = $('#GildPlayers').length !== 0 ? ($('#GildPlayers').position().left + $('#GildPlayers').width() + 10) : 0;
+				$('#GildPlayersDetailView').css('top', ptop + 'px').css('left', (pright * 1) + 'px');
+			}
+
+		}
+
+		GildFights.BuildDetailViewContent(d);
 	},
 
 
 	/**
-	 * Display the contents of the snapshot
+	 * Built the player content content
+	 * @param gbground
+	 * @returns {Promise<void>}
 	 */
-	BuildPlayerContent: ()=> {
+	BuildPlayerContent: async (gbground) => {
+
+		let newRound = false;
+		let updateDetailView = false;
+
+		await GildFights.SetBoxNavigation(gbground);
+
+		let CurrentSnapshot = await GildFights.db.snapshots
+			.where({
+				gbground: GildFights.CurrentGBGRound
+			})
+			.first();
+
+		if (CurrentSnapshot === undefined)
+		{
+			newRound = true;
+			// if there is a new GBG round delete previous snapshots
+			GildFights.DeleteOldSnapshots(GildFights.CurrentGBGRound);
+		}
 
 		let t = [],
 			b = [],
 			tN = 0,
-			tF = 0;
+			tF = 0,
+			histView = false;
 
 		GildFights.PlayerBoxContent = [];
 
@@ -262,53 +599,86 @@ let GildFights = {
 			negotiationsWon: 'negotiations',
 			battlesWon: 'battles',
 			total: 'total'
-		})
+		});
 
-		for(let i in GildFights.NewAction)
+		if (gbground && gbground !== null && gbground !== GildFights.CurrentGBGRound)
 		{
-			if(!GildFights.NewAction.hasOwnProperty(i)){
+
+			let d = await GildFights.db.history.where({ gbground: gbground }).toArray();
+			GildFights.GBGRound = d[0].participation.sort(function (a, b) {
+				return a.rank - b.rank;
+			});
+			histView = true;
+
+		}
+		else
+		{
+			GildFights.GBGRound = GildFights.NewAction;
+		}
+
+		for (let i in GildFights.GBGRound)
+		{
+			if (!GildFights.GBGRound.hasOwnProperty(i))
+			{
 				break;
 			}
 
-			let playerNew = GildFights.NewAction[i];
+			let playerNew = GildFights.GBGRound[i];
 
 			let fightAddOn = '',
 				negotaionAddOn = '',
+				diffNegotiations = 0,
+				diffBattles = 0,
+				newProgressClass = '',
 				change = false;
 
 			// gibt es einen älteren Snapshot?
-			if(GildFights.PrevAction !== null){
+			if (GildFights.PrevAction !== null && histView === false)
+			{
 
 				let playerOld = GildFights.PrevAction.find(p => (p['player_id'] === playerNew['player_id']));
 
 				// gibt es zu diesem Spieler Daten?
-				if(playerOld !== undefined) {
+				if (playerOld !== undefined)
+				{
 
-					if (playerOld['negotiationsWon'] < playerNew['negotiationsWon']) {
-						negotaionAddOn = ' <small class="text-success">&#8593; ' + (playerNew['negotiationsWon'] - playerOld['negotiationsWon']) + '</small>';
+					if (playerOld['negotiationsWon'] < playerNew['negotiationsWon'])
+					{
+						diffNegotiations = playerNew['negotiationsWon'] - playerOld['negotiationsWon'];
+						negotaionAddOn = ' <small class="text-success">&#8593; ' + diffNegotiations + '</small>';
 						change = true;
 					}
 
-					if (playerOld['battlesWon'] < playerNew['battlesWon']) {
-						fightAddOn = ' <small class="text-success">&#8593; ' + (playerNew['battlesWon'] - playerOld['battlesWon']) + '</small>';
+					if (playerOld['battlesWon'] < playerNew['battlesWon'])
+					{
+						diffBattles = playerNew['battlesWon'] - playerOld['battlesWon'];
+						fightAddOn = ' <small class="text-success">&#8593; ' + diffBattles + '</small>';
 						change = true;
 					}
 				}
 			}
 
+			if ((change === true || newRound === true) && GildFights.GBGHistoryView === false)
+			{
+				await GildFights.UpdateDB('player', { gbground: GildFights.CurrentGBGRound, player_id: playerNew['player_id'], name: playerNew['name'], battles: playerNew['battlesWon'], negotiations: playerNew['negotiationsWon'], diffbat: diffBattles, diffneg: diffNegotiations, time: moment().unix() });
+				updateDetailView = true;
+			}
+
+			newProgressClass = change && !newRound ? 'new ' : '';
+
 			tN += playerNew['negotiationsWon'];
 			tF += playerNew['battlesWon'];
 
-			b.push('<tr class="' + (playerNew['player_id'] === ExtPlayerID ? ' mark-player' : '') + (change === true ? ' bg-green' : '') + '">');
+			b.push('<tr data-player="' + playerNew['player_id'] + '" data-gbground="' + gbground + '" class="' + newProgressClass + (!histView ? 'showdetailview ' : '') + (playerNew['player_id'] === ExtPlayerID ? 'mark-player ' : '') + (change === true ? 'bg-green' : '') + '">');
 
-			b.push('<td>' + (parseInt(i) +1) + '.</td>');
+			b.push('<td class="tdmin">' + (parseInt(i) + 1) + '.</td>');
 
-			b.push('<td><img src="' + MainParser.InnoCDN + 'assets/shared/avatars/' + MainParser.PlayerPortraits[ playerNew['avatar'] ] + '.jpg" alt=""></td>');
+			b.push('<td class="tdmin"><img src="' + MainParser.InnoCDN + 'assets/shared/avatars/' + MainParser.PlayerPortraits[playerNew['avatar']] + '.jpg" alt=""></td>');
 
 			b.push('<td>' + playerNew['name'] + '</td>');
 
 			b.push('<td class="text-center">');
-			b.push(playerNew['negotiationsWon']  + negotaionAddOn);
+			b.push(playerNew['negotiationsWon'] + negotaionAddOn);
 			b.push('</td>');
 
 			b.push('<td class="text-center">');
@@ -316,10 +686,10 @@ let GildFights = {
 			b.push('</td>');
 
 			b.push('<td class="text-center">');
-			let both = playerNew['battlesWon'] + (playerNew['negotiationsWon']*2);
+			let both = playerNew['battlesWon'] + (playerNew['negotiationsWon'] * 2);
 			b.push(both);
 			b.push('</td>');
-
+			b.push('<td></td>');
 			b.push('</tr>');
 
 			GildFights.PlayerBoxContent.push({
@@ -330,20 +700,26 @@ let GildFights = {
 			})
 		}
 
-		let tNF = (tN*2)+tF;
+		// Update DetailView if there are changes and DetailView is open
+		if ($('#GildPlayersDetailView').length !== 0 && updateDetailView === true)
+		{
+			GildFights.BuildDetailViewContent(GildFights.curDetailViewFilter);
+		}
 
-		t.push('<table class="foe-table">');
+		let tNF = (tN * 2) + tF;
+
+		t.push('<table id="GildPlayersTable" class="foe-table' + (histView === false ? ' chevron-right' : '') + '">');
 
 		t.push('<thead>');
 		t.push('<tr>');
 
-		t.push('<th>&nbsp;</th>');
-		t.push('<th>&nbsp;</th>');
+		t.push('<th class="tdmin">&nbsp;</th>');
+		t.push('<th class="tdmin">&nbsp;</th>');
 		t.push('<th>' + i18n('Boxes.Gildfights.Player') + '</th>');
 		t.push('<th class="text-center"><span class="negotiation" title="' + HTML.i18nTooltip(i18n('Boxes.Gildfights.Negotiations')) + '"></span> <strong class="text-warning">(' + HTML.Format(tN) + ')</strong></th>');
 		t.push('<th class="text-center"><span class="fight" title="' + HTML.i18nTooltip(i18n('Boxes.Gildfights.Fights')) + '"></span> <strong class="text-warning">(' + HTML.Format(tF) + ')</strong></th>');
 		t.push('<th class="text-center">' + i18n('Boxes.Gildfights.Total') + ' <strong class="text-warning">(' + HTML.Format(tNF) + ')</strong></th>');
-
+		t.push('<th></th>');
 		t.push('</tr>');
 		t.push('</thead>');
 
@@ -353,15 +729,56 @@ let GildFights = {
 
 		t.push('</tbody>');
 
-		$('#GildPlayersBody').html( t.join('') );
+		$('#gbgContentWrapper').html(t.join('')).promise().done(function () {
 
-		if( $('#GildPlayersHeader .title').find('.time-diff').length === 0 )
+			$('#GildPlayersBody tr.showdetailview').off('click').on('click', function () {
+				let player_id = $(this).data('player');
+				let gbground = $(this).data('gbground');
+
+				GildFights.curDetailViewFilter = { content: 'player', player_id: player_id, gbground: gbground };
+
+				if ($('#GildPlayersDetailView').length === 0)
+				{
+					GildFights.ShowDetailViewBox(GildFights.curDetailViewFilter);
+				}
+				else
+				{
+
+					GildFights.BuildDetailViewContent(GildFights.curDetailViewFilter);
+				}
+			});
+
+			$("#GildPlayers").on("remove", function () {
+				if ($('#GildPlayersDetailView').length !== 0)
+				{
+					$('#GildPlayersDetailView').fadeOut(50, function () {
+						$(this).remove();
+					});
+				}
+			});
+
+			// check if member has a new progress
+			let newPlayer = $('#GildPlayersTable tbody').find('tr.new').length;
+			if (newPlayer > 0)
+			{
+				$('button#gbg_filterProgressList').html('&#8593; ' + newPlayer);
+				$('button#gbg_filterProgressList').attr("disabled", false);
+
+				if (GildFights.PlayerBoxSettings.showOnlyActivePlayers === 1)
+				{
+					GildFights.ToggleProgressList('gbg_filterProgressList');
+				}
+			}
+		});
+
+		if ($('#GildPlayersHeader .title').find('.time-diff').length === 0)
 		{
-			$('#GildPlayersHeader .title').append( $('<small />').addClass('time-diff') );
+			$('#GildPlayersHeader .title').append($('<small />').addClass('time-diff'));
 		}
 
 		// es gibt schon einen Snapshot vorher
-		if (GildFights.PrevActionTimestamp !== null){
+		if (GildFights.PrevActionTimestamp !== null)
+		{
 
 			let start = moment.unix(GildFights.PrevActionTimestamp),
 				end = moment.unix(GildFights.NewActionTimestamp),
@@ -370,17 +787,208 @@ let GildFights = {
 			let time = duration.humanize();
 
 			$('.time-diff').text(
-				HTML.i18nReplacer(i18n('Boxes.Gildfights.LastSnapshot'), {time: time})
+				HTML.i18nReplacer(i18n('Boxes.Gildfights.LastSnapshot'), { time: time })
 			);
 		}
 	},
 
 
 	/**
+	 *
+	 * @param d
+	 * @returns {Promise<void>}
+	 */
+	BuildDetailViewContent: async (d) => {
+
+		let player_id = d.player_id ? d.player_id : null,
+			content = d.content ? d.content : 'player',
+			gbground = d.gbground ? d.gbground : GildFights.CurrentGBGRound,
+			playerName = null,
+			dailyFights = [],
+			detaildata = [],
+			sumN = 0,
+			sumF = 0,
+			h = [];
+
+		if (player_id === null && content === "player") return;
+
+		if (content === "player")
+		{
+			detaildata = await GildFights.db.snapshots.where({ gbground: gbground, player_id: player_id }).toArray();
+
+			playerName = detaildata[0].name;
+			dailyFights = detaildata.reduce(function (res, obj) {
+				let date = moment.unix(obj.time).format('YYYYMMDD');
+
+				if (!(date in res))
+				{
+					res.__array.push(res[date] = { date: date, time: obj.time, battles: obj.battles, negotiations: obj.negotiations });
+				}
+				else
+				{
+					res[date].battles += +obj.battles;
+					res[date].negotiations += +obj.negotiations;
+				}
+				return res;
+			}, { __array: [] }).__array.sort(function (a, b) { return b.date - a.date });
+
+
+			h.push('<div class="pname dark-bg text-center">' + playerName + ': ' + moment.unix(gbground).subtract(11, 'd').format(i18n('DateShort')) + ` - ` + moment.unix(gbground).format(i18n('Date')) + '</div>');
+
+			h.push('<table id="gbgPlayerLogTable" class="foe-table gbglog"><thead>');
+			h.push('<tr class="sorter-header">');
+			h.push('<th class="is-number" data-type="gbg-playerlog-group">' + i18n('Boxes.Gildfights.Date') + '</th>');
+			h.push('<th class="is-number text-center" data-type="gbg-playerlog-group"><span class="negotiation" title="' + HTML.i18nTooltip(i18n('Boxes.Gildfights.Negotiations')) + '"></span></th>');
+			h.push('<th class="is-number text-center" data-type="gbg-playerlog-group"><span class="fight" title="' + HTML.i18nTooltip(i18n('Boxes.Gildfights.Fights')) + '"></span></th>');
+			h.push(`<th class="is-number text-center" data-type="gbg-playerlog-group">${i18n('Boxes.Gildfights.Total')}</th>`);
+			h.push(`<th></th>`);
+			h.push('</tr>');
+			h.push('</thead><tbody class="gbg-playerlog-group">');
+
+			dailyFights.forEach(day => {
+				let id = moment.unix(day.time).format('YYYYMMDD');
+				let sum = (day.battles + day.negotiations * 2);
+				h.push('<tr id="gbgdetail_' + id + '" data-gbground="' + gbground + '" data-player="' + player_id + '" data-id="' + id + '" class="hasdetail">');
+				h.push(`<td class="is-number" data-number="${day.time}">${moment.unix(day.time).format(i18n('Date'))}</td>`);
+				h.push(`<td class="is-number text-center" data-number="${day.negotiations}">${HTML.Format(day.negotiations)}</td>`);
+				h.push(`<td class="is-number text-center" data-number="${day.battles}">${HTML.Format(day.battles)}</td>`);
+				h.push(`<td class="is-number text-center" data-number="${sum}">${HTML.Format(sum)}</td>`);
+				h.push(`<td></td>`);
+				h.push('</tr>');
+
+			});
+
+			h.push('</tbody></table>');
+		}
+		else if (content === "filter")
+		{
+			detaildata = await GildFights.db.snapshots.where({ gbground: gbground }).and(function (item) {
+				return (item.date >= GildFights.curDateFilter && item.date <= GildFights.curDateEndFilter)
+			}).toArray();
+
+			detaildata.sort(function (a, b) { return b.time - a.time });
+
+			h.push('<div class="datetimepicker"><button id="gbgLogDatepicker" class="btn btn-default">' + GildFights.formatRange() + '</button></div>');
+			h.push('<table id="GildFightsLogTable" class="foe-table gbglog"><thead>');
+			h.push('<tr class="sorter-header">');
+			h.push('<th class="is-number" data-type="gbg-log-group">' + i18n('Boxes.Gildfights.Date') + '</th>');
+			h.push('<th class="case-sensitive" data-type="gbg-log-group">' + i18n('Boxes.Gildfights.Player') + '</th>');
+			h.push('<th class="is-number text-center" data-type="gbg-log-group"><span class="negotiation" title="' + HTML.i18nTooltip(i18n('Boxes.Gildfights.Negotiations')) + '"></span></th>');
+			h.push('<th class="is-number text-center" data-type="gbg-log-group"><span class="fight" title="' + HTML.i18nTooltip(i18n('Boxes.Gildfights.Fights')) + '"></span></th>');
+			h.push(`<th class="is-number text-center" data-type="gbg-log-group">${i18n('Boxes.Gildfights.Total')}</th>`);
+			h.push('</tr>');
+			h.push('</thead><tbody class="gbg-log-group">');
+
+			detaildata.forEach(e => {
+				sumN += e.negotiations;
+				sumF += e.battles;
+				let sum = (e.battles + e.negotiations * 2);
+				h.push('<tr data-id="' + e.time + '" id="gbgtime_' + e.time + '">');
+				h.push(`<td class="is-number" data-number="${e.time}">${moment.unix(e.time).format(i18n('DateTime'))}</td>`);
+				h.push(`<td class="case-sensitive" data-text="${e.name.toLowerCase().replace(/[\W_ ]+/g, "")}">${e.name}</td>`);
+				h.push(`<td class="is-number text-center" data-number="${e.negotiations}">${HTML.Format(e.negotiations)}</td>`);
+				h.push(`<td class="is-number text-center" data-number="${e.battles}">${HTML.Format(e.battles)}</td>`);
+				h.push(`<td class="is-number text-center" data-number="${sum}">${HTML.Format(sum)}</td>`);
+				h.push('</tr>');
+			});
+
+			h.push('</tbody></table>');
+		}
+
+		$('#GildPlayersDetailViewBody').html(h.join('')).promise().done(function () {
+
+			$('#GildPlayersDetailViewBody .gbglog').tableSorter();
+
+			if ($('#gbgLogDatepicker').length !== 0)
+			{
+				GildFights.intiateDatePicker();
+			}
+			$('#GildPlayersDetailViewBody tr.sorter-header').on('click', function () {
+				$(this).parents('.foe-table').find('tr.open').removeClass("open");
+
+			});
+
+			$('#GildPlayersDetailViewBody > .foe-table tr').on('click', function () {
+
+				if ($(this).next("tr.detailview").length)
+				{
+					$(this).next("tr.detailview").remove();
+					$(this).removeClass('open');
+				}
+				else
+				{
+					if (!$(this).hasClass("hasdetail"))
+					{
+						return;
+					}
+
+					let date = $(this).data("id");
+					let player = $(this).data("player");
+					let awidth = $(this).find('td:first-child').width();
+					let bwidth = $(this).find('td:nth-child(2)').width();
+					let cwidth = $(this).find('td:nth-child(3)').width();
+					let dwidth = $(this).find('td:nth-child(4)').width();
+					let ewidth = $(this).find('td:last-child').width();
+
+					$(this).addClass('open');
+
+					GildFights.BuildDetailViewLog({ date: date, player: player, width: { a: awidth, b: bwidth, c: cwidth, d: dwidth, e: ewidth } });
+				}
+			});
+
+		});
+	},
+
+
+	/**
+	 * @param gbground
+	 * @returns {Promise<void>}
+	 */
+	DeleteOldSnapshots: async (gbground) => {
+
+		let deleteCount = await GildFights.db.snapshots.where("gbground").notEqual(gbground).delete();
+
+	},
+
+
+	/**
+	 * @param data
+	 * @returns {Promise<void>}
+	 */
+	BuildDetailViewLog: async (data) => {
+		let h = [];
+		let d = await GildFights.db.snapshots.where({ player_id: data.player, date: data.date }).reverse().sortBy('date');
+
+		if (!d) return;
+
+		if (!data.width)
+		{
+			data.width = { a: 50, b: 20, c: 20, d: 20 }
+		}
+
+		h.push(`<tr class="detailview dark-bg"><td class="nopadding" colspan="${$('#GildPlayersDetailViewBody > .foe-table thead tr').find("th").length}"><table class="foe-table log"><body>`);
+
+		d.forEach(e => {
+			h.push(`<tr>`);
+			h.push(`<td style="width: ${data.width.a}px">${moment.unix(e.time).format(i18n('DateTime'))}</td>`);
+			h.push(`<td style="width: ${data.width.b}px" class="text-center">${e.negotiations}</td>`);
+			h.push(`<td style="width: ${data.width.c}px" class="text-center">${e.battles}</td>`);
+			h.push(`<td style="width: ${data.width.d}px" class="text-center">${(e.battles + e.negotiations * 2)}</td>`);
+			h.push(`<td style="width: ${data.width.e}px"></td>`);
+			h.push(`</tr>`);
+		});
+
+		h.push(`</tbody></table></td></tr>`);
+
+		$(h.join('')).insertAfter($('#gbgdetail_' + data.date));
+	},
+
+	/**
 	 * Contents of the card box
 	 */
 	BuildFightContent: () => {
 
+		GildFights.CopyCache = [];
 		GildFights.Tabs = [];
 		GildFights.TabsContent = [];
 
@@ -391,23 +999,26 @@ let GildFights = {
 			mapdata = GildFights.MapData['map']['provinces'],
 			gbgGuilds = GildFights.MapData['battlegroundParticipants'],
 			own = gbgGuilds.find(e => e['clan']['id'] === ExtGuildID),
-			LiveFightSettings = JSON.parse(localStorage.getItem('LiveFightSettings')),
-			showGuildColumn = (LiveFightSettings && LiveFightSettings.showGuildColumn !== undefined) ? LiveFightSettings.showGuildColumn : 0;
+			LiveFightSettings = JSON.parse(localStorage.getItem('LiveFightSettings'));
+
+		GildFights.showGuildColumn = (LiveFightSettings && LiveFightSettings.showGuildColumn !== undefined) ? LiveFightSettings.showGuildColumn : 0;
 
 		progress.push('<div id="progress"><table class="foe-table">');
 		progress.push('<thead><tr>');
 		progress.push('<th class="prov-name" style="user-select:text">' + i18n('Boxes.Gildfights.Province') + '</th>');
 
-		if(showGuildColumn) {
+		if (GildFights.showGuildColumn)
+		{
 			progress.push('<th>' + i18n('Boxes.Gildfights.Owner') + '</th>');
 		}
+
 		progress.push('<th>' + i18n('Boxes.Gildfights.Progress') + '</th>');
 
 		progress.push('</tr></thead><tbody>');
 
-		for(let i in mapdata)
+		for (let i in mapdata)
 		{
-			if(!mapdata.hasOwnProperty(i))
+			if (!mapdata.hasOwnProperty(i))
 			{
 				break;
 			}
@@ -418,83 +1029,88 @@ let GildFights = {
 
 			let linkIDs = ProvinceMap.ProvinceData().find(e => e['id'] === id)['connections'];
 
-			for(let x in linkIDs)
+			for (let x in linkIDs)
 			{
-				if(!linkIDs.hasOwnProperty(x)) {
+				if (!linkIDs.hasOwnProperty(x))
+				{
 					continue;
 				}
 
 				let neighborID = GildFights.MapData['map']['provinces'].find(e => e['id'] === linkIDs[x]);
 
-				if(neighborID['ownerId']){
+				if (neighborID['ownerId'])
+				{
 					mapdata[i]['neighbor'].push(neighborID['ownerId']);
 				}
 			}
 
-			for(let x in gbgGuilds)
+			for (let x in gbgGuilds)
 			{
-				if(!gbgGuilds.hasOwnProperty(x)) {
+				if (!gbgGuilds.hasOwnProperty(x))
+				{
 					break;
 				}
 
-				if(mapdata[i]['ownerId'] !== undefined && gbgGuilds[x]['participantId'] === mapdata[i]['ownerId'])
+				if (mapdata[i]['ownerId'] !== undefined && gbgGuilds[x]['participantId'] === mapdata[i]['ownerId'])
 				{
 					// show current fights
-					if(mapdata[i]['conquestProgress'].length > 0 && (mapdata[i]['lockedUntil'] === undefined))
+					if (mapdata[i]['conquestProgress'].length > 0 && (mapdata[i]['lockedUntil'] === undefined))
 					{
 						let pColor = GildFights.SortedColors.find(e => e['id'] === mapdata[i]['ownerId']);
 
-						progress.push(`<tr id="province-${id}" data-id="${id}">`);
+						progress.push(`<tr id="province-${id}" data-id="${id}" data-tab="progress">`);
 
-						console.log('gbgGuilds[x]: ', gbgGuilds[x]);
+						//console.log('gbgGuilds[x]: ', gbgGuilds[x]);
 
 						progress.push(`<td title="${i18n('Boxes.Gildfights.Owner')}: ${gbgGuilds[x]['clan']['name']}"><b><span class="province-color" style="background-color:${pColor['main']}"></span> ${mapdata[i]['title']}</b></td>`);
-						
-						if(showGuildColumn) {
+
+						if (GildFights.showGuildColumn)
+						{
 							progress.push(`<td>${gbgGuilds[x]['clan']['name']}</td>`);
 						}
 						progress.push(`<td data-field="${id}-${mapdata[i]['ownerId']}" class="guild-progress">`);
 
 						let provinceProgress = mapdata[i]['conquestProgress'];
 
-						for(let y in provinceProgress)
+						for (let y in provinceProgress)
 						{
-							if(!provinceProgress.hasOwnProperty(y))
+							if (!provinceProgress.hasOwnProperty(y))
 							{
 								break;
 							}
 
 							let color = GildFights.SortedColors.find(e => e['id'] === provinceProgress[y]['participantId']);
 
-							progress.push(`<span class="attack attacker-${provinceProgress[y]['participantId']} gbg-${color['cid'] }">${provinceProgress[y]['progress']}</span>`);
+							progress.push(`<span class="attack attacker-${provinceProgress[y]['participantId']} gbg-${color['cid']}">${provinceProgress[y]['progress']}</span>`);
 						}
 					}
 				}
 			}
 
 			// If sectors doesnt belong to anyone
-			if(mapdata[i]['ownerId'] === undefined && mapdata[i]['conquestProgress'].length > 0)
+			if (mapdata[i]['ownerId'] === undefined && mapdata[i]['conquestProgress'].length > 0)
 			{
-				progress.push(`<tr id="province-${id}" data-id="${id}">`);
+				progress.push(`<tr id="province-${id}" data-id="${id}" data-tab="progress">`);
 				progress.push(`<td><b><span class="province-color" style="background-color:#555"></span> ${mapdata[i]['title']}</b></td>`);
 
-				if(showGuildColumn) {
+				if (GildFights.showGuildColumn)
+				{
 					progress.push(`<td><em>${i18n('Boxes.Gildfights.NoOwner')}</em></td>`);
 				}
 				progress.push('<td data-field="' + id + '" class="guild-progress">');
 
 				let provinceProgress = mapdata[i]['conquestProgress'];
 
-				for(let y in provinceProgress)
+				for (let y in provinceProgress)
 				{
-					if(!provinceProgress.hasOwnProperty(y))
+					if (!provinceProgress.hasOwnProperty(y))
 					{
 						break;
 					}
 
 					let color = GildFights.SortedColors.find(e => e['id'] === provinceProgress[y]['participantId']);
 
-					progress.push(`<span class="attack attacker-${provinceProgress[y]['participantId']} gbg-${color['cid'] }">${provinceProgress[y]['progress']}</span>`);
+					progress.push(`<span class="attack attacker-${provinceProgress[y]['participantId']} gbg-${color['cid']}">${provinceProgress[y]['progress']}</span>`);
 				}
 			}
 		}
@@ -505,8 +1121,9 @@ let GildFights = {
 		nextup.push('<div id="nextup"><table class="foe-table">');
 		nextup.push('<thead><tr>');
 		nextup.push('<th class="prov-name">' + i18n('Boxes.Gildfights.Province') + '</th>');
-		
-		if (showGuildColumn) {
+
+		if (GildFights.showGuildColumn)
+		{
 			nextup.push('<th>' + i18n('Boxes.Gildfights.Owner') + '</th>');
 		}
 		nextup.push('<th class="time-static">' + i18n('Boxes.Gildfights.Time') + '</th>');
@@ -517,52 +1134,44 @@ let GildFights = {
 		let arrayprov = [];
 
 		// Time until next sectors will be available
-		for(let i in mapdata)
+		for (let i in mapdata)
 		{
-			if(!mapdata.hasOwnProperty(i)) continue;
+			if (!mapdata.hasOwnProperty(i)) continue;
 
 
-			if(mapdata[i]['lockedUntil'] !== undefined && own['clan']['name'] !== mapdata[i]['owner']) // dont show own sectors -> maybe a setting box to choose which sectors etc. will be shown?
+			if (mapdata[i]['lockedUntil'] !== undefined && own['clan']['name'] !== mapdata[i]['owner']) // dont show own sectors -> maybe a setting box to choose which sectors etc. will be shown?
 			{
 				arrayprov.push(mapdata[i]);  // push all datas into array
 			}
 		}
 
-		let prov = arrayprov.sort((a, b)=> { return a.lockedUntil - b.lockedUntil});
+		let prov = arrayprov.sort((a, b) => { return a.lockedUntil - b.lockedUntil });
 
-		for(let x in prov)
+		for (let x in prov)
 		{
-			if(!prov.hasOwnProperty(x)) continue;
+			if (!prov.hasOwnProperty(x)) continue;
 
-			if(prov[x]['neighbor'].includes(own['participantId'])) // Show only neighbors
+			if (prov[x]['neighbor'].includes(own['participantId']))
 			{
 				let countDownDate = moment.unix(prov[x]['lockedUntil'] - 2),
 					color = GildFights.SortedColors.find(e => e['id'] === prov[x]['ownerId']),
-					intervalID = setInterval(()=>{
+					intervalID = setInterval(() => {
 						GildFights.UpdateCounter(countDownDate, intervalID, prov[x]['id']);
 					}, 1000);
 
-				nextup.push(`<tr id="timer-${prov[x]['id']}">`);
+				nextup.push(`<tr id="timer-${prov[x]['id']}" class="timer" data-tab="nextup" data-id=${prov[x]['id']}>`);
 				nextup.push(`<td class="prov-name" title="${i18n('Boxes.Gildfights.Owner')}: ${prov[x]['owner']}"><span class="province-color" ${color['main'] ? 'style="background-color:' + color['main'] + '"' : ''}"></span> <b>${prov[x]['title']}</b></td>`);
 
 				GildFights.UpdateCounter(countDownDate, intervalID, prov[x]['id']);
 
-				if (showGuildColumn) {
+				if (GildFights.showGuildColumn)
+				{
 					nextup.push(`<td>${prov[x]['owner']}</td>`);
 				}
 
 				nextup.push(`<td class="time-static" style="user-select:text">${countDownDate.format('HH:mm')}</td>`);
 				nextup.push(`<td class="time-dynamic" id="counter-${prov[x]['id']}">${countDownDate.format('HH:mm:ss')}</td>`);
-				let content = `<button class="btn-default btn-tight" onclick="GildFights.SetAlert(${prov[x]['id']})">${i18n('Boxes.Gildfights.SetAlert')}</button>`;
-
-				if(GildFights.Alerts.includes(prov[x]['id'])){
-					content = '&#10004;';
-				}
-
-				if(!Alerts){
-					content = '';
-				}
-				nextup.push(`<td class="text-right" id="alert-${prov[x]['id']}">${content}</td>`);
+				nextup.push(`<td class="text-right" id="alert-${prov[x]['id']}">${GildFights.GetAlertButton(prov[x]['id'])}</td>`);
 				nextup.push('</tr>');
 			}
 		}
@@ -575,25 +1184,130 @@ let GildFights = {
 		let h = [];
 
 		h.push('<div class="gbg-tabs tabs">');
-		h.push( GildFights.GetTabs() );
-		h.push( GildFights.GetTabContent() );
-		h.push('<button class="btn-default" onclick="ProvinceMap.buildMap()">MAP</button>');
+		h.push(GildFights.GetTabs());
+		h.push(GildFights.GetTabContent());
+		h.push('<button class="btn-default copybutton" onclick="GildFights.CopyToClipBoard()">COPY</button>');
+		h.push('<button class="btn-default mapbutton" onclick="ProvinceMap.buildMap()">MAP</button>');
 		h.push('</div>');
 
-		$('#LiveGildFighting').find('#LiveGildFightingBody').html( h.join('') ).promise().done(function(){
-			$('.gbg-tabs').tabslet({active: 1});
-
-			$('#LiveGildFighting').on('click', 'tr', function(e){
-
-				if($(this).hasClass('highlight-row'))
+		$('#LiveGildFighting').find('#LiveGildFightingBody').html(h.join('')).promise().done(function () {
+			$('.gbg-tabs').tabslet({ active: 1 });
+			$('.gbg-tabs').on('_after', (e) => {
+				GildFights.ToggleCopyButton();
+			});
+			$('#LiveGildFighting').on('click', '.deletealertbutton', function (e) {
+				GildFights.DeleteAlert($(this).data('id'));
+				e.stopPropagation();
+			});
+			$('#LiveGildFighting').on('click', '.setalertbutton', function (e) {
+				GildFights.SetAlert($(this).data('id'));
+				e.stopPropagation();
+			});
+			$('#LiveGildFighting').on('click', 'tr', function () {
+				if ($(this).hasClass('highlight-row'))
 				{
 					$(this).removeClass('highlight-row');
-				}
-				else {
+					GildFights.ToggleCopyButton();
+				} else
+				{
 					$(this).addClass('highlight-row');
+					GildFights.ToggleCopyButton();
 				}
 			});
 		});
+	},
+
+
+	/**
+	 * Initatite the Litepicker object
+	 *
+	 * @returns {Promise<void>}
+	 */
+	intiateDatePicker: async () => {
+
+		GildFights.LogDatePicker = new Litepicker({
+			element: document.getElementById('gbgLogDatepicker'),
+			format: 'YYYYMMDD',
+			lang: MainParser.Language,
+			singleMode: false,
+			splitView: false,
+			numberOfMonths: 1,
+			numberOfColumns: 1,
+			autoRefresh: true,
+			minDate: moment.unix(GildFights.CurrentGBGRound).subtract(12, "d").toDate(),
+			maxDate: moment.unix(GildFights.CurrentGBGRound).toDate(),
+			startDate: moment.unix(GildFights.CurrentGBGRound).subtract(11, "d").toDate(),
+			endDate: MainParser.getCurrentDateTime(),
+			showWeekNumbers: false,
+			onSelect: async (dateStart, dateEnd) => {
+				GildFights.curDateFilter = moment(dateStart).format('YYYYMMDD');
+				GildFights.curDateEndFilter = moment(dateEnd).format('YYYYMMDD');
+
+				$('#gbgLogDatepicker').text(GildFights.formatRange());
+				GildFights.curDetailViewFilter = { content: 'filter', gbground: GildFights.CurrentGBGRound };
+				GildFights.BuildDetailViewContent(GildFights.curDetailViewFilter);
+
+			}
+		});
+	},
+
+
+	formatRange: () => {
+		let text = undefined;
+		let dateStart = moment(GildFights.curDateFilter);
+		let dateEnd = moment(GildFights.curDateEndFilter);
+
+		if (dateStart.isSame(dateEnd))
+		{
+			text = `${dateStart.format(i18n('Date'))}`;
+		}
+		else if (dateStart.year() !== (dateEnd.year()))
+		{
+			text = `${dateStart.format(i18n('Date'))}` + ' - ' + `${dateEnd.format(i18n('Date'))}`;
+		}
+		else
+		{
+			text = `${dateStart.format(i18n('DateShort'))}` + ' - ' + `${dateEnd.format(i18n('Date'))}`;
+		}
+
+		return text;
+	},
+
+
+	ToggleCopyButton: () => {
+		if ($('#nextup').is(':visible') && $('.timer.highlight-row').length > 0)
+		{
+			$('.copybutton').show();
+		} else
+		{
+			$('.copybutton').hide();
+		}
+	},
+
+
+	CopyToClipBoard: () => {
+		let copy = '';
+		let copycache = [];
+		$('.timer.highlight-row').each(function () {
+			copycache.push(GildFights.MapData['map']['provinces'].find((mapItem) => mapItem.id == $(this).data('id')));
+		});
+
+		copycache.sort(function (a, b) { return a.lockedUntil - b.lockedUntil });
+		copycache.forEach((mapElem) => {
+			copy += `${moment.unix(mapElem.lockedUntil - 2).format('HH:mm')} ${mapElem.title}\n`;
+		});
+
+		if (copy !== '')
+		{
+			helper.str.copyToClipboardLegacy(copy).then(() => {
+				HTML.ShowToastMsg({
+					head: i18n('Boxes.Gildfights.CopyToClipBoard.Title'),
+					text: i18n('Boxes.Gildfights.CopyToClipBoard.Desc'),
+					type: 'success',
+					hideAfter: 5000
+				});
+			});
+		}
 	},
 
 
@@ -602,7 +1316,7 @@ let GildFights = {
 		let idSpan = $(`#counter-${id}`),
 			removeIt = false;
 
-		if(countDownDate.isValid())
+		if (countDownDate.isValid())
 		{
 			let diff = countDownDate.diff(moment());
 
@@ -610,15 +1324,17 @@ let GildFights = {
 			{
 				removeIt = true;
 			}
-			else {
+			else
+			{
 				idSpan.text(moment.utc(diff).format('HH:mm:ss'));
 			}
 		}
-		else {
+		else
+		{
 			removeIt = true;
 		}
 
-		if(removeIt)
+		if (removeIt)
 		{
 			clearInterval(intervalID);
 
@@ -626,9 +1342,10 @@ let GildFights = {
 			$(`#timer-${id}`).find('.time-static').html(`<strong class="text-success">offen</strong>`); // @ToDo: translate
 
 			// remove timer after 10s
-			setTimeout(()=> {
-				$(`#timer-${id}`).fadeToggle(function(){
+			setTimeout(() => {
+				$(`#timer-${id}`).fadeToggle(function () {
 					$(this).remove();
+					GildFights.ToggleCopyButton();
 				});
 			}, 10000);
 		}
@@ -638,28 +1355,31 @@ let GildFights = {
 	/**
 	 * Determine and assign colours of the individual guilds
 	 */
-	PrepareColors: ()=> {
+	PrepareColors: () => {
 
 		// ist schon fertig aufbereitet
-		if(GildFights.SortedColors !== null){
+		if (GildFights.SortedColors !== null)
+		{
 			return;
 		}
 
 		let colors = [],
 			gbgGuilds = GildFights.MapData['battlegroundParticipants'];
 
-		for(let i in gbgGuilds)
+		for (let i in gbgGuilds)
 		{
-			if(!gbgGuilds.hasOwnProperty(i))
+			if (!gbgGuilds.hasOwnProperty(i))
 			{
 				break;
 			}
 
 			let c = null;
 
-			if(gbgGuilds[i]['clan']['id'] === ExtGuildID){
+			if (gbgGuilds[i]['clan']['id'] === ExtGuildID)
+			{
 				c = GildFights.Colors.find(o => (o['id'] === 'own_guild_colour'));
-			} else {
+			} else
+			{
 				c = GildFights.Colors.find(o => (o['id'] === gbgGuilds[i]['colour']));
 			}
 
@@ -682,26 +1402,28 @@ let GildFights = {
 	 *
 	 * @param data
 	 */
-	RefreshTable: (data)=> {
+	RefreshTable: (data) => {
 
 		// Province is locked
-		if(data['conquestProgress'].length === 0 || data['lockedUntil'])
+		if (data['conquestProgress'].length === 0 || data['lockedUntil'])
 		{
-			let elements = $(`#province-${data['id']}`).find('.attack').length;
+			let $province = $(`#province-${data['id']}`),
+				elements = $province.find('.attack').length;
 
-			$(`.attack-${data['id']}`).fadeToggle(function(){
+			$(`.attack-${data['id']}`).fadeToggle(function () {
 				$(this).remove();
 			});
 
-			if(elements === 1){
-				$(`#province-${data['id']}`).fadeToggle(function(){
+			if (elements === 1)
+			{
+				$province.fadeToggle(function () {
 					$(this).remove();
 				});
 			}
 
 			// search the province for owner update
-			ProvinceMap.MapMerged.forEach((province,index)=>{
-				if(province.id === data['id'])
+			ProvinceMap.MapMerged.forEach((province, index) => {
+				if (province.id === data['id'])
 				{
 					let colors = GildFights.SortedColors.find(e => e['id'] === data['ownerId']);
 
@@ -711,7 +1433,8 @@ let GildFights = {
 				}
 			});
 
-			if( $('#ProvinceMap').length > 0 ){
+			if ($('#ProvinceMap').length > 0)
+			{
 				ProvinceMap.Refresh();
 			}
 
@@ -719,9 +1442,9 @@ let GildFights = {
 		}
 
 
-		for(let i in data['conquestProgress'])
+		for (let i in data['conquestProgress'])
 		{
-			if(!data['conquestProgress'].hasOwnProperty(i))
+			if (!data['conquestProgress'].hasOwnProperty(i))
 			{
 				break;
 			}
@@ -733,12 +1456,13 @@ let GildFights = {
 				pColor = GildFights.SortedColors.find(e => e['id'] === data['ownerId']),
 				p = GildFights.MapData['battlegroundParticipants'].find(o => (o['participantId'] === d['participantId']));
 
-			if(!data['id']){
+			if (!data['id'])
+			{
 				continue;
 			}
 
 			// <tr> is not present, create it
-			if(cell.length === 0)
+			if (cell.length === 0)
 			{
 				let newCell = $('<tr />').attr({
 					id: `province-${data['id']}`,
@@ -750,11 +1474,10 @@ let GildFights = {
 				$('#progress').find('table.foe-table').prepend(
 					newCell.append(
 						$('<td />').append(
-							$('<span />').css({'background-color':pColor['main']}).attr({class: 'province-color'}),
+							$('<span />').css({ 'background-color': pColor['main'] }).attr({ class: 'province-color' }),
 							$('<b />').text(mD['title']),
 						),
-						// @todo: dont add guild name when disabled via settings
-						$('<td />').text(p['clan']['name']),
+						(GildFights.showGuildColumn ? $('<td />').text(p['clan']['name']) : ''),
 						$('<td />').attr({
 							field: `${data['id']}-${data['ownerId']}`,
 							class: 'guild-progress'
@@ -767,11 +1490,13 @@ let GildFights = {
 
 			cell.removeClass('pulse');
 
-			if( cell.find('.attacker-' + d['participantId']).length > 0 ){
+			if (cell.find('.attacker-' + d['participantId']).length > 0)
+			{
 				cell.find('.attacker-' + d['participantId']).text(progess);
 			}
 
-			else {
+			else
+			{
 				let color = GildFights.SortedColors.find(e => e['id'] === p['participantId']);
 
 				cell.find('.guild-progress').append(
@@ -783,30 +1508,59 @@ let GildFights = {
 
 			cell.addClass('pulse');
 
-			setTimeout(() =>  {
+			setTimeout(() => {
 				cell.removeClass('pulse');
 			}, 1200);
 		}
 	},
 
 
-	ShowExportButton: () => {
-		let c = `<p class="text-center"><button class="btn btn-default" onclick="GildFights.SettingsExport('csv')">${i18n('Boxes.Gildfights.ExportCSV')}</button></p>`;
-		c += `<p class="text-center"><button class="btn btn-default" onclick="GildFights.SettingsExport('json')">${i18n('Boxes.Gildfights.ExportJSON')}</button></p>`;
+	ShowPlayerBoxSettings: () => {
 
-		$('#GildPlayersSettingsBox').html(c);
+		let c = [];
+		let Settings = GildFights.PlayerBoxSettings;
+		c.push(`<p class="text-left"><span class="settingtitle">${i18n('Boxes.Gildfights.Title')}</span>` +
+			`<input id="gf_showRoundSelector" name="showroundswitcher" value="1" type="checkbox" ${(Settings.showRoundSelector === 1) ? ' checked="checked"' : ''} /> <label for="gf_showRoundSelector">${i18n('Boxes.Gildfights.ShowRoundSelector')}</label></p>`);
+		c.push(`<p class="text-left"><input id="gf_showProgressFilter" name="showprogressfilter" value="1" type="checkbox" ${(Settings.showProgressFilter === 1) ? ' checked="checked"' : ''} /> <label for="gf_showProgressFilter">${i18n('Boxes.Gildfights.ShowProgressFilter')}</label></p>`);
+		c.push(`<p class="text-left"><input id="gf_showLogButton" name="showlogbutton" value="1" type="checkbox" ${(Settings.showLogButton === 1) ? ' checked="checked"' : ''} /> <label for="gf_showLogButton">${i18n('Boxes.Gildfights.ShowLogButton')}</label></p>`);
+		c.push(`<p><button id="save-GildFightsPlayerBox-settings" class="btn btn-default" style="width:100%" onclick="GildFights.PlayerBoxSettingsSaveValues()">${i18n('Boxes.General.Save')}</button></p>`);
+		c.push(`<hr><p>${i18n('Boxes.General.Export')}: <button class="btn btn-default" onclick="GildFights.SettingsExport('csv')" title="${HTML.i18nTooltip(i18n('Boxes.General.ExportCSV'))}">CSV</button>`);
+		c.push(`<button class="btn btn-default" onclick="GildFights.SettingsExport('json')" title="${HTML.i18nTooltip(i18n('Boxes.General.ExportJSON'))}">JSON</button></p>`);
+
+		$('#GildPlayersSettingsBox').html(c.join(''));
 	},
 
 
-	SettingsExport: (type)=> {
+	PlayerBoxSettingsSaveValues: () => {
+
+		GildFights.PlayerBoxSettings.showRoundSelector = $("#gf_showRoundSelector").is(':checked') ? 1 : 0;
+		GildFights.PlayerBoxSettings.showProgressFilter = $("#gf_showProgressFilter").is(':checked') ? 1 : 0;
+		GildFights.PlayerBoxSettings.showLogButton = $("#gf_showLogButton").is(':checked') ? 1 : 0;
+
+		localStorage.setItem('GildFightsPlayerBoxSettings', JSON.stringify(GildFights.PlayerBoxSettings));
+
+		$(`#GildPlayersSettingsBox`).fadeToggle('fast', function () {
+			$(this).remove();
+
+			GildFights.BuildPlayerContent(GildFights.CurrentGBGRound);
+
+		});
+
+	},
+
+
+	SettingsExport: (type) => {
 
 		let blob, file;
+		let BOM = "\uFEFF";
 
-		if(type === 'json')
+		if (type === 'json')
 		{
 			let json = JSON.stringify(GildFights.PlayerBoxContent);
 
-			blob = new Blob([json], {type: 'application/json;charset=utf-8'});
+			blob = new Blob([BOM + json], {
+				type: 'application/json;charset=utf-8'
+			});
 			file = `ggfights-${ExtWorld}.json`;
 		}
 
@@ -814,9 +1568,9 @@ let GildFights = {
 		{
 			let csv = [];
 
-			for(let i in GildFights.PlayerBoxContent)
+			for (let i in GildFights.PlayerBoxContent)
 			{
-				if(!GildFights.PlayerBoxContent.hasOwnProperty(i))
+				if (!GildFights.PlayerBoxContent.hasOwnProperty(i))
 				{
 					break;
 				}
@@ -825,57 +1579,66 @@ let GildFights = {
 				csv.push(`${r['player']};${r['negotiationsWon']};${r['battlesWon']};${r['total']}`);
 			}
 
-			blob = new Blob([csv.join('\r\n')], {type: 'text/csv;charset=utf-8'});
+			blob = new Blob([BOM + csv.join('\r\n')], {
+				type: 'text/csv;charset=utf-8'
+			});
 			file = `ggfights-${ExtWorld}.csv`;
 		}
 
 		MainParser.ExportFile(blob, file);
 
-		$(`#GildPlayersSettingsBox`).fadeToggle('fast', function(){
+		$(`#GildPlayersSettingsBox`).fadeToggle('fast', function () {
 			$(this).remove();
 		});
 	},
 
 
-	GetAlerts: ()=> {
-
-		// is alert.js included?
-		if(!Alerts){
-			return ;
-		}
-
-		// fetch all alerts and search the id
-		Alerts.getAll().then((resp)=> {
-			if(resp.length === 0){
-				return ;
+	GetAlerts: async () => {
+		return new Promise(async (resolve, reject) => {
+			// is alert.js included?
+			if (!Alerts)
+			{
+				resolve();
 			}
 
-			let currentTime = MainParser.getCurrentDateTime();
-
-			resp.forEach((alert) => {
-				if(alert['data']['category'] === 'gbg')
+			// fetch all alerts and search the id
+			return Alerts.getAll().then((resp) => {
+				if (resp.length === 0)
 				{
-					let alertTime = alert['data']['expires'],
-						name = alert['data']['title'],
-						prov = GildFights.MapData['map']['provinces'].find(
-							e => e.title === name && alertTime > currentTime
-						);
-
-					GildFights.Alerts.push(prov['id']);
+					resolve();
 				}
-			})
+
+				let currentTime = MainParser.getCurrentDateTime();
+
+				GildFights.Alerts = [];
+
+				resp.forEach((alert) => {
+					if (alert['data']['category'] === 'gbg')
+					{
+						let alertTime = alert['data']['expires'],
+							name = alert['data']['title'],
+							prov = GildFights.MapData['map']['provinces'].find(
+								e => e.title === name && alertTime > currentTime
+							);
+
+						if (prov !== undefined)
+						{
+							GildFights.Alerts.push({ provId: prov['id'], alertId: alert.id });
+						}
+					}
+				});
+				resolve();
+			});
 		});
 	},
 
 
-	SetAlert: (id)=> {
+	SetAlert: (id) => {
 		let prov = GildFights.MapData['map']['provinces'].find(e => e.id === id);
-
-		GildFights.Alerts.push(id);
 
 		const data = {
 			title: prov.title,
-			body: HTML.i18nReplacer(i18n('Boxes.Gildfights.SaveAlert'), {provinceName: prov.title}),
+			body: HTML.i18nReplacer(i18n('Boxes.Gildfights.SaveAlert'), { provinceName: prov.title }),
 			expires: (prov.lockedUntil - 30) * 1000, // -30s * Microtime
 			repeat: -1,
 			persistent: true,
@@ -890,25 +1653,45 @@ let GildFights = {
 			playerId: ExtPlayerID,
 			action: 'create',
 			data: data,
+		}).then((aId) => {
+			GildFights.Alerts.push({ provId: id, alertId: aId });
+			$(`#alert-${id}`).html(GildFights.GetAlertButton(id));
+			HTML.ShowToastMsg({
+				head: i18n('Boxes.Gildfights.SaveMessage.Title'),
+				text: HTML.i18nReplacer(i18n('Boxes.Gildfights.SaveMessage.Desc'), { provinceName: prov.title }),
+				type: 'success',
+				hideAfter: 5000
+			});
 		});
 
-		HTML.ShowToastMsg({
-			head: i18n('Boxes.Gildfights.SaveMessage.Title'),
-			text: HTML.i18nReplacer(i18n('Boxes.Gildfights.SaveMessage.Desc'), {provinceName: prov.title}),
-			type: 'success',
-			hideAfter: 5000
-		});
-
-		$(`#alert-${id}`).html('&#10004;');
 	},
 
+	DeleteAlert: (provId) => {
+		let prov = GildFights.MapData['map']['provinces'].find(e => e.id === provId);
+		let alert = GildFights.Alerts.find((a) => a.provId == provId);
+		MainParser.sendExtMessage({
+			type: 'alerts',
+			playerId: ExtPlayerID,
+			action: 'delete',
+			id: alert.alertId,
+		}).then(() => {
+			GildFights.Alerts = GildFights.Alerts.filter((a) => a.provId != provId);
+			HTML.ShowToastMsg({
+				head: i18n('Boxes.Gildfights.DeleteMessage.Title'),
+				text: HTML.i18nReplacer(i18n('Boxes.Gildfights.DeleteMessage.Desc'), { provinceName: prov.title }),
+				type: 'success',
+				hideAfter: 5000
+			});
+			$(`#alert-${provId}`).html(GildFights.GetAlertButton(provId));
+		});
+	},
 
 	ShowLiveFightSettings: () => {
 		let c = [];
 		let LiveFightSettings = JSON.parse(localStorage.getItem('LiveFightSettings'));
 		let showGuildColumn = (LiveFightSettings && LiveFightSettings.showGuildColumn !== undefined) ? LiveFightSettings.showGuildColumn : 0;
 
-		c.push(`<p><input id="showguildcolumn" name="showguildcolumn" value="1" type="checkbox" ${(showGuildColumn === 1) ? ' checked="checked"':''} /> <label for="showguildcolumn">${i18n('Boxes.Gildfights.ShowOwner')}</label></p>`);
+		c.push(`<p><input id="showguildcolumn" name="showguildcolumn" value="1" type="checkbox" ${(showGuildColumn === 1) ? ' checked="checked"' : ''} /> <label for="showguildcolumn">${i18n('Boxes.Gildfights.ShowOwner')}</label></p>`);
 		c.push(`<p><button onclick="GildFights.SaveLiveFightSettings()" id="save-livefight-settings" class="btn btn-default" style="width:100%">${i18n('Boxes.Gildfights.SaveSettings')}</button></p>`);
 
 		// insert into DOM
@@ -925,6 +1708,8 @@ let GildFights = {
 		{
 			value.showGuildColumn = 1;
 		}
+
+		GildFights.showGuildColumn = value.showGuildColumn;
 
 		localStorage.setItem('LiveFightSettings', JSON.stringify(value));
 
@@ -965,9 +1750,10 @@ let ProvinceMap = {
 		height: 1960
 	},
 
-	buildMap: ()=> {
+	buildMap: () => {
 
-		if( $('#ProvinceMap').length === 0 ){
+		if ($('#ProvinceMap').length === 0)
+		{
 			HTML.Box({
 				id: 'ProvinceMap',
 				title: 'ProvinceMap',
@@ -986,7 +1772,7 @@ let ProvinceMap = {
 	},
 
 
-	prepare: ()=> {
+	prepare: () => {
 
 		ProvinceMap.Map = document.createElement("canvas");
 
@@ -1012,8 +1798,7 @@ let ProvinceMap = {
 		});
 
 		// get the mouse-cords relativ the the minified canvas
-		function handleMouseDown(e)
-		{
+		function handleMouseDown(e) {
 			e.preventDefault();
 			e.stopPropagation();
 
@@ -1031,13 +1816,12 @@ let ProvinceMap = {
 		}
 
 		// Objects
-		function Province(data)
-		{
-			for(let key in data)
+		function Province(data) {
+			for (let key in data)
 			{
-				if(!data.hasOwnProperty(key)) continue;
+				if (!data.hasOwnProperty(key)) continue;
 
-				if(data[key])
+				if (data[key])
 				{
 					this[key] = data[key];
 				}
@@ -1045,8 +1829,7 @@ let ProvinceMap = {
 		}
 
 
-		Province.prototype.drawGGMap = function()
-		{
+		Province.prototype.drawGGMap = function () {
 
 			ProvinceMap.MapCTX.lineWidth = ProvinceMap.StrokeWidth;
 
@@ -1079,8 +1862,8 @@ let ProvinceMap = {
 			ProvinceMap.MapCTX.textAlign = "center";
 			ProvinceMap.MapCTX.stroke(path);
 
-			// if is spawn, no text => image
-			if(this.flagImg)
+			// if is spawn, no text => image + background color
+			if (this.flagImg && this.flagPos)
 			{
 				ProvinceMap.MapCTX.globalAlpha = 0.2;
 				ProvinceMap.MapCTX.fill(path);
@@ -1091,12 +1874,15 @@ let ProvinceMap = {
 
 				flag_image.src = `${MainParser.InnoCDN}assets/shared/clanflags/${this.flagImg}.jpg`;
 
-				flag_image.onload = function(){
+				flag_image.onload = function () {
 					ProvinceMap.MapCTX.globalAlpha = 1;
 					ProvinceMap.MapCTX.drawImage(this, flag_x, flag_y);
 				}
+
+
 			}
-			else {
+			else
+			{
 				ProvinceMap.MapCTX.globalAlpha = 0.5;
 				ProvinceMap.MapCTX.fill(path);
 
@@ -1108,7 +1894,7 @@ let ProvinceMap = {
 				// Shadow from title
 				ProvinceMap.MapCTX.globalAlpha = 0.7;
 				ProvinceMap.MapCTX.fillStyle = '#000000';
-				ProvinceMap.MapCTX.fillText(this.short, this.flag.x+2, this.flag.y+4);
+				ProvinceMap.MapCTX.fillText(this.short, this.flag.x + 2, this.flag.y + 4);
 			}
 
 			/*
@@ -1126,7 +1912,7 @@ let ProvinceMap = {
 			*/
 		}
 
-		Province.prototype.updateGGMap = function(){
+		Province.prototype.updateGGMap = function () {
 
 			this.drawGGMap();
 
@@ -1139,7 +1925,7 @@ let ProvinceMap = {
 		let provinces = [];
 
 		function init() {
-			ProvinceMap.SVGPaths().forEach(function(i){
+			ProvinceMap.SVGPaths().forEach(function (i) {
 
 				const path = i.path.replace(/\s+/g, " ");
 				const pD = ProvinceMap.ProvinceData()[i.id];
@@ -1159,7 +1945,7 @@ let ProvinceMap = {
 
 				const prov = GildFights.MapData['map']['provinces'][i.id];
 
-				if(prov['ownerId'])
+				if (prov['ownerId'])
 				{
 					const colors = GildFights.SortedColors.find(c => (c['id'] === prov['ownerId']));
 
@@ -1169,14 +1955,14 @@ let ProvinceMap = {
 					data['strokeStyle'] = ProvinceMap.hexToRgb(colors['main']);
 					data['alpha'] = 0.3;
 
-					if(prov['isSpawnSpot'])
+					if (prov['isSpawnSpot'])
 					{
 						let clan = GildFights.MapData['battlegroundParticipants'].find(c => c['participantId'] === prov['ownerId']);
 
 						data['flagImg'] = clan['clan']['flag'].toLowerCase();
 					}
 
-					if(prov['lockedUntil'])
+					if (prov['lockedUntil'])
 					{
 						data['lockedUntil'] = prov['lockedUntil'];
 					}
@@ -1195,12 +1981,12 @@ let ProvinceMap = {
 	},
 
 
-	PrepareProvinces: ()=> {
+	PrepareProvinces: () => {
 
 	},
 
 
-	Refresh: ()=> {
+	Refresh: () => {
 		ProvinceMap.MapCTX.clearRect(0, 0, ProvinceMap.Map.width, ProvinceMap.Map.height)
 
 		const provinces = ProvinceMap.MapMerged;
@@ -1211,7 +1997,7 @@ let ProvinceMap = {
 			province.updateGGMap();
 		});
 
-		if(!ProvinceMap.ToolTipActive)
+		if (!ProvinceMap.ToolTipActive)
 		{
 			clearInterval(ProvinceMap.ToolTipId);
 			ProvinceMap.ToolTipId = false;
@@ -1226,12 +2012,12 @@ let ProvinceMap = {
 	},
 
 
-	DrawProvinces: ()=> {
+	DrawProvinces: () => {
 		const pD = ProvinceMap.ProvinceData();
 
 		ProvinceMap.MapCTX.clearRect(0, 0, ProvinceMap.MapSize.width, ProvinceMap.MapSize.height);
 
-		ProvinceMap.SVGPaths().forEach(function(i){
+		ProvinceMap.SVGPaths().forEach(function (i) {
 			let path = i.path.replace(/\s+/g, " ");
 
 			ProvinceMap.MapCTX.lineWidth = ProvinceMap.StrokeWidth;
@@ -1274,7 +2060,7 @@ let ProvinceMap = {
 
 			ProvinceMap.MapCTX.lineWidth = 2;
 			ProvinceMap.MapCTX.strokeStyle = '#ffffff';
-			ProvinceMap.MapCTX.font = 'bold 62px "Source Sans Pro"';
+			ProvinceMap.MapCTX.font = 'bold 62px Verdana';
 			ProvinceMap.MapCTX.textAlign = 'center';
 			ProvinceMap.MapCTX.shadowColor = '#000000';
 			ProvinceMap.MapCTX.shadowBlur = 25;
@@ -1286,7 +2072,7 @@ let ProvinceMap = {
 	},
 
 
-	ParsePathToCanvas: (i)=> {
+	ParsePathToCanvas: (i) => {
 		let e, s;
 		let path = new Path2D();
 
@@ -1321,7 +2107,7 @@ let ProvinceMap = {
 	},
 
 
-	ParseMove: (i, n)=> {
+	ParseMove: (i, n) => {
 		let e = { x: 0, y: 0, index: i },
 			s = ProvinceMap.ParseNumber(i, n);
 
@@ -1329,16 +2115,19 @@ let ProvinceMap = {
 	},
 
 
-	ParseNumber: (t, i)=> {
+	ParseNumber: (t, i) => {
 
 		let n = { num: 0, index: t };
 
-		for (let e = "", s = !1, o = !1, c = t; c < i.length; c++) {
+		for (let e = "", s = !1, o = !1, c = t; c < i.length; c++)
+		{
 			let r = i.charAt(c);
 
 			if (0 !== e.length || s || "-" !== r)
-				if (o || "." !== r) {
-					if (!r.match("[0-9]")) {
+				if (o || "." !== r)
+				{
+					if (!r.match("[0-9]"))
+					{
 						if (0 === e.length && " " === r) continue;
 						"," === r && c++, (n.num = parseFloat(e)), (n.index = c);
 						break;
@@ -1352,7 +2141,7 @@ let ProvinceMap = {
 	},
 
 
-	ParseCurve: (i, n)=> {
+	ParseCurve: (i, n) => {
 		let e = { cp1x: 0, cp1y: 0, cp2x: 0, cp2y: 0, x: 0, y: 0, index: i },
 			s = ProvinceMap.ParseNumber(i, n);
 
@@ -1374,611 +2163,1189 @@ let ProvinceMap = {
 	},
 
 
-	hexToRgb: (hex, alpha)=> {
+	hexToRgb: (hex, alpha) => {
 		hex = hex.trim();
 		hex = hex[0] === '#' ? hex.substr(1) : hex;
 
 		let bigint = parseInt(hex, 16), h = [];
 
-		if (hex.length === 3) {
+		if (hex.length === 3)
+		{
 			h.push((bigint >> 4) & 255);
 			h.push((bigint >> 2) & 255);
 
-		} else {
+		} else
+		{
 			h.push((bigint >> 16) & 255);
 			h.push((bigint >> 8) & 255);
 		}
 
 		h.push(bigint & 255);
 
-		if(alpha) {
+		if (alpha)
+		{
 			h.push(alpha);
-			return 'rgba('+h.join(',')+')';
+			return 'rgba(' + h.join(',') + ')';
 
-		} else {
-			return 'rgb('+h.join(',')+')';
+		} else
+		{
+			return 'rgb(' + h.join(',') + ')';
 		}
 	},
 
 
-	ProvinceData: ()=> {
-		return [{
-			id: 0,
-			name: "A1: Mati Tudokk",
-			connections: [1, 3, 4, 5],
-			short: 'A1M',
-			flag: {
-				x: 1249,
-				y: 816
-			}
-		}, {
-			id: 1,
-			name: "B1: Ofrus Remyr",
-			connections: [0, 2, 6, 7],
-			short: 'B1O',
-			flag: {
-				x: 1327,
-				y: 996
-			}
-		}, {
-			id: 2,
-			name: "C1: Niali Diath",
-			connections: [1, 3, 8, 9],
-			short: 'C1N',
-			flag: {
-				x: 1064,
-				y: 1011
-			}
-		}, {
-			id: 3,
-			name: "D1: Brurat Andgiry",
-			connections: [0, 2, 10, 11],
-			short: 'D1B',
-			flag: {
-				x: 1064,
-				y: 838
-			}
-		}, {
-			id: 4,
-			name: "A2: Sladisk Icro",
-			connections: [0, 5, 11, 12, 13],
-			short: 'A2S',
-			flag: {
-				x: 1269,
-				y: 629
-			}
-		}, {
-			id: 5,
-			name: "A2: Tevomospa",
-			connections: [0, 4, 6, 14, 15],
-			short: 'A2T',
-			flag: {
-				x: 1482,
-				y: 752
-			}
-		}, {
-			id: 6,
-			name: "B2: Subeblic",
-			connections: [1, 5, 7, 16, 17],
-			short: 'B2S',
-			flag: {
-				x: 1541,
-				y: 984
-			}
-		}, {
-			id: 7,
-			name: "B2: Taspac",
-			connections: [1, 6, 8, 18, 19],
-			short: 'B2T',
-			flag: {
-				x: 1375,
-				y: 1197
-			}
-		}, {
-			id: 8,
-			name: "C2: Shadsterning",
-			connections: [2, 7, 9, 20, 21],
-			short: 'C2S',
-			flag: {
-				x: 1052,
-				y: 1217
-			}
-		}, {
-			id: 9,
-			name: "C2: Tayencoria",
-			connections: [2, 8, 10, 22, 23],
-			short: 'C2T',
-			flag: {
-				x: 878,
-				y: 1063
-			}
-		}, {
-			id: 10,
-			name: "D2: Slandmonii",
-			connections: [3, 9, 11, 24, 25],
-			short: 'D2S',
-			flag: {
-				x: 791,
-				y: 794
-			}
-		}, {
-			id: 11,
-			name: "D2: Tachmazer",
-			connections: [3, 4, 10, 26, 27],
-			short: 'D2T',
-			flag: {
-				x: 974,
-				y: 658
-			}
-		}, {
-			id: 12,
-			name: "A3: Vobolize",
-			connections: [4, 13, 27, 28, 29],
-			short: 'A3V',
-			flag: {
-				x: 1218,
-				y: 479
-			}
-		}, {
-			id: 13,
-			name: "A3: Xemga",
-			connections: [4, 12, 14, 30, 31],
-			short: 'A3X',
-			flag: {
-				x: 1407,
-				y: 523
-			}
-		}, {
-			id: 14,
-			name: "A3: Yelili",
-			connections: [5, 13, 15, 32, 33],
-			short: 'A3Y',
-			flag: {
-				x: 1592,
-				y: 574
-			}
-		}, {
-			id: 15,
-			name: "A3: Zamva",
-			connections: [5, 14, 16, 34, 35],
-			short: 'A3Z',
-			flag: {
-				x: 1693,
-				y: 710
-			}
-		}, {
-			id: 16,
-			name: "B3: Vishrain",
-			connections: [6, 15, 17, 36, 37],
-			short: 'B3V',
-			flag: {
-				x: 1721,
-				y: 889
-			}
-		}, {
-			id: 17,
-			name: "B3: Xidorpupo",
-			connections: [6, 16, 18, 38, 39],
-			short: 'B3X',
-			flag: {
-				x: 1800,
-				y: 1241
-			}
-		}, {
-			id: 18,
-			name: "B3: Yepadlic",
-			connections: [7, 17, 19, 40, 41],
-			short: 'B3Y',
-			flag: {
-				x: 1710,
-				y: 1364
-			}
-		}, {
-			id: 19,
-			name: "B3: Zilsier",
-			connections: [7, 18, 20, 42, 43],
-			short: 'B3Z',
-			flag: {
-				x: 1528,
-				y: 1401
-			}
-		}, {
-			id: 20,
-			name: "C3: Vilipne",
-			connections: [8, 19, 21, 44, 45],
-			short: 'C3V',
-			flag: {
-				x: 1132,
-				y: 1382
-			}
-		}, {
-			id: 21,
-			name: "C3: Xistan",
-			connections: [8, 20, 22, 46, 47],
-			short: 'C3X',
-			flag: {
-				x: 851,
-				y: 1343
-			}
-		}, {
-			id: 22,
-			name: "C3: Yeraim",
-			connections: [9, 21, 23, 48, 49],
-			short: 'C3Y',
-			flag: {
-				x: 656,
-				y: 1220
-			}
-		}, {
-			id: 23,
-			name: "C3: Zeaslo",
-			connections: [9, 22, 24, 50, 51],
-			short: 'C3Z',
-			flag: {
-				x: 569,
-				y: 1050
-			}
-		}, {
-			id: 24,
-			name: "D3: Verdebu",
-			connections: [10, 23, 25, 52, 53],
-			short: 'D3V',
-			flag: {
-				x: 592,
-				y: 824
-			}
-		}, {
-			id: 25,
-			name: "D3: Xiwait",
-			connections: [10, 24, 26, 54, 55],
-			short: 'D3X',
-			flag: {
-				x: 628,
-				y: 636
-			}
-		}, {
-			id: 26,
-			name: "D3: Yerat",
-			connections: [11, 25, 27, 56, 57],
-			short: 'D3Y',
-			flag: {
-				x: 788,
-				y: 520
-			}
-		}, {
-			id: 27,
-			name: "D3: Zilgypt",
-			connections: [11, 12, 26, 58, 59],
-			short: 'D3Z',
-			flag: {
-				x: 1025,
-				y: 484
-			}
-		}, {
-			id: 28,
-			name: "A4: Aithmirash",
-			connections: [12, 29, 59],
-			short: 'A4A',
-			flag: {
-				x: 1176,
-				y: 310
-			},
-			flagPos: {
-				x: 1131,
-				y: 265
-			}
-		}, {
-			id: 29,
-			name: "A4: Bangma Mynia",
-			connections: [12, 28, 30],
-			short: 'A4B',
-			flag: {
-				x: 1337,
-				y: 316
-			}
-		}, {
-			id: 30,
-			name: "A4: Cuatishca",
-			connections: [13, 29, 31],
-			short: 'A4C',
-			flag: {
-				x: 1473,
-				y: 354
-			}
-		}, {
-			id: 31,
-			name: "A4: Dilandmoor",
-			connections: [13, 30, 32],
-			short: 'A4D',
-			flag: {
-				x: 1591,
-				y: 391
-			}
-		}, {
-			id: 32,
-			name: "A4: Eda Monwe",
-			connections: [14, 31, 33],
-			short: 'A4E',
-			flag: {
-				x: 1723,
-				y: 398
-			},
-			flagPos: {
-				x: 1678,
-				y: 353
-			}
-		}, {
-			id: 33,
-			name: "A4: Frimoandbada",
-			connections: [14, 32, 34],
-			short: 'A4F',
-			flag: {
-				x: 1839,
-				y: 477
-			}
-		}, {
-			id: 34,
-			name: "A4: Gosolastan",
-			connections: [15, 33, 35],
-			short: 'A4G',
-			flag: {
-				x: 1962,
-				y: 590
-			}
-		}, {
-			id: 35,
-			name: "A4: Hasaint",
-			connections: [15, 34, 36],
-			short: 'A4H',
-			flag: {
-				x: 2047,
-				y: 688
-			}
-		}, {
-			id: 36,
-			name: "B4: Aguime",
-			connections: [16, 35, 37],
-			short: 'B4A',
-			flag: {
-				x: 1970,
-				y: 842
-			},
-			flagPos: {
-				x: 1925,
-				y: 797
-			}
-		}, {
-			id: 37,
-			name: "B4: Bliclatan",
-			connections: [16, 36, 38],
-			short: 'B4B',
-			flag: {
-				x: 1900,
-				y: 1000
-			}
-		}, {
-			id: 38,
-			name: "B4: Capepesk",
-			connections: [17, 37, 39],
-			short: 'B4C',
-			flag: {
-				x: 2088,
-				y: 1176
-			}
-		}, {
-			id: 39,
-			name: "B4: Dalomstates",
-			connections: [17, 38, 40],
-			short: 'B4D',
-			flag: {
-				x: 2138,
-				y: 1361
-			}
-		}, {
-			id: 40,
-			name: "B4: Engthio",
-			connections: [18, 39, 41],
-			short: 'B4E',
-			flag: {
-				x: 2113,
-				y: 1504
-			},
-			flagPos: {
-				x: 2068,
-				y: 1469
-			}
-		}, {
-			id: 41,
-			name: "B4: Fradistaro",
-			connections: [18, 40, 42],
-			short: 'B4F',
-			flag: {
-				x: 1951,
-				y: 1590
-			}
-		}, {
-			id: 42,
-			name: "B4: Goima",
-			connections: [19, 41, 43],
-			short: 'B4G',
-			flag: {
-				x: 1735,
-				y: 1605
-			}
-		}, {
-			id: 43,
-			name: "B4: Hranreka",
-			connections: [19, 42, 44],
-			short: 'B4H',
-			flag: {
-				x: 1416,
-				y: 1454
-			}
-		}, {
-			id: 44,
-			name: "C4: Andgalbou",
-			connections: [20, 43, 45],
-			short: 'C4A',
-			flag: {
-				x: 1240,
-				y: 1521
-			},
-			flagPos: {
-				x: 1195,
-				y: 1476
-			}
-		}, {
-			id: 45,
-			name: "C4: Bangne Casau",
-			connections: [20, 44, 46],
-			short: 'C4B',
-			flag: {
-				x: 1015,
-				y: 1601
-			}
-		}, {
-			id: 46,
-			name: "C4: Cagalpo",
-			connections: [21, 45, 47],
-			short: 'C4C',
-			flag: {
-				x: 808,
-				y: 1586
-			}
-		}, {
-			id: 47,
-			name: "C4: Denwana",
-			connections: [21, 46, 48],
-			short: 'C4D',
-			flag: {
-				x: 686,
-				y: 1532
-			}
-		}, {
-			id: 48,
-			name: "C4: Eastkiabumi",
-			connections: [22, 47, 49],
-			short: 'C4E',
-			flag: {
-				x: 455,
-				y: 1410
-			},
-			flagPos: {
-				x: 410,
-				y: 1365
-			}
-		}, {
-			id: 49,
-			name: "C4: Francedian",
-			connections: [22, 48, 50],
-			short: 'C4F',
-			flag: {
-				x: 304,
-				y: 1318
-			}
-		}, {
-			id: 50,
-			name: "C4: Guayla",
-			connections: [23, 49, 51],
-			short: 'C4G',
-			flag: {
-				x: 257,
-				y: 1182
-			}
-		}, {
-			id: 51,
-			name: "C4: Hoguay",
-			connections: [23, 50, 52],
-			short: 'C4H',
-			flag: {
-				x: 267,
-				y: 1011
-			}
-		}, {
-			id: 52,
-			name: "D4: Arasruhana",
-			connections: [24, 51, 53],
-			short: 'D4A',
-			flag: {
-				x: 429,
-				y: 851
-			},
-			flagPos: {
-				x: 384,
-				y: 806
-			}
-		}, {
-			id: 53,
-			name: "D4: Basainti",
-			connections: [24, 52, 54],
-			short: 'D4B',
-			flag: {
-				x: 300,
-				y: 718
-			}
-		}, {
-			id: 54,
-			name: "D4: Camehermenle",
-			connections: [25, 53, 55],
-			short: 'D4C',
-			flag: {
-				x: 415,
-				y: 600
-			}
-		}, {
-			id: 55,
-			name: "D4: Dabiala",
-			connections: [25, 54, 56],
-			short: 'D4D',
-			flag: {
-				x: 398,
-				y: 465
-			}
-		}, {
-			id: 56,
-			name: "D4: Enggreboka",
-			connections: [26, 55, 57],
-			short: 'D4E',
-			flag: {
-				x: 507,
-				y: 361
-			},
-			flagPos: {
-				x: 462,
-				y: 316
-			}
-		}, {
-			id: 57,
-			name: "D4: Finnited",
-			connections: [26, 56, 58],
-			short: 'D4F',
-			flag: {
-				x: 723,
-				y: 311
-			}
-		}, {
-			id: 58,
-			name: "D4: Guayre Bhugera",
-			connections: [27, 57, 59],
-			short: 'D4G',
-			flag: {
-				x: 878,
-				y: 252
-			}
-		}, {
-			id: 59,
-			name: "D4: Honbo",
-			short: 'D4H',
-			connections: [27, 28, 58],
-			flag: {
-				x: 1042,
-				y: 302
-			}
-		}];
+	ProvinceData: () => {
+		if (GildFights.MapData.map['id'] === "volcano_archipelago") {
+			return [{
+				id: 0,
+				name: "A1: Mati Tudokk",
+				connections: [1, 3, 4, 5],
+				short: 'A1M',
+				flag: {
+					x: 1249,
+					y: 816
+				}
+			}, {
+				id: 1,
+				name: "B1: Ofrus Remyr",
+				connections: [0, 2, 6, 7],
+				short: 'B1O',
+				flag: {
+					x: 1327,
+					y: 996
+				}
+			}, {
+				id: 2,
+				name: "C1: Niali Diath",
+				connections: [1, 3, 8, 9],
+				short: 'C1N',
+				flag: {
+					x: 1064,
+					y: 1011
+				}
+			}, {
+				id: 3,
+				name: "D1: Brurat Andgiry",
+				connections: [0, 2, 10, 11],
+				short: 'D1B',
+				flag: {
+					x: 1064,
+					y: 838
+				}
+			}, {
+				id: 4,
+				name: "A2: Sladisk Icro",
+				connections: [0, 5, 11, 12, 13],
+				short: 'A2S',
+				flag: {
+					x: 1269,
+					y: 629
+				}
+			}, {
+				id: 5,
+				name: "A2: Tevomospa",
+				connections: [0, 4, 6, 14, 15],
+				short: 'A2T',
+				flag: {
+					x: 1482,
+					y: 752
+				}
+			}, {
+				id: 6,
+				name: "B2: Subeblic",
+				connections: [1, 5, 7, 16, 17],
+				short: 'B2S',
+				flag: {
+					x: 1541,
+					y: 984
+				}
+			}, {
+				id: 7,
+				name: "B2: Taspac",
+				connections: [1, 6, 8, 18, 19],
+				short: 'B2T',
+				flag: {
+					x: 1375,
+					y: 1197
+				}
+			}, {
+				id: 8,
+				name: "C2: Shadsterning",
+				connections: [2, 7, 9, 20, 21],
+				short: 'C2S',
+				flag: {
+					x: 1052,
+					y: 1217
+				}
+			}, {
+				id: 9,
+				name: "C2: Tayencoria",
+				connections: [2, 8, 10, 22, 23],
+				short: 'C2T',
+				flag: {
+					x: 878,
+					y: 1063
+				}
+			}, {
+				id: 10,
+				name: "D2: Slandmonii",
+				connections: [3, 9, 11, 24, 25],
+				short: 'D2S',
+				flag: {
+					x: 791,
+					y: 794
+				}
+			}, {
+				id: 11,
+				name: "D2: Tachmazer",
+				connections: [3, 4, 10, 26, 27],
+				short: 'D2T',
+				flag: {
+					x: 974,
+					y: 658
+				}
+			}, {
+				id: 12,
+				name: "A3: Vobolize",
+				connections: [4, 13, 27, 28, 29],
+				short: 'A3V',
+				flag: {
+					x: 1218,
+					y: 479
+				}
+			}, {
+				id: 13,
+				name: "A3: Xemga",
+				connections: [4, 12, 14, 30, 31],
+				short: 'A3X',
+				flag: {
+					x: 1407,
+					y: 523
+				}
+			}, {
+				id: 14,
+				name: "A3: Yelili",
+				connections: [5, 13, 15, 32, 33],
+				short: 'A3Y',
+				flag: {
+					x: 1592,
+					y: 574
+				}
+			}, {
+				id: 15,
+				name: "A3: Zamva",
+				connections: [5, 14, 16, 34, 35],
+				short: 'A3Z',
+				flag: {
+					x: 1693,
+					y: 710
+				}
+			}, {
+				id: 16,
+				name: "B3: Vishrain",
+				connections: [6, 15, 17, 36, 37],
+				short: 'B3V',
+				flag: {
+					x: 1721,
+					y: 889
+				}
+			}, {
+				id: 17,
+				name: "B3: Xidorpupo",
+				connections: [6, 16, 18, 38, 39],
+				short: 'B3X',
+				flag: {
+					x: 1800,
+					y: 1241
+				}
+			}, {
+				id: 18,
+				name: "B3: Yepadlic",
+				connections: [7, 17, 19, 40, 41],
+				short: 'B3Y',
+				flag: {
+					x: 1710,
+					y: 1364
+				}
+			}, {
+				id: 19,
+				name: "B3: Zilsier",
+				connections: [7, 18, 20, 42, 43],
+				short: 'B3Z',
+				flag: {
+					x: 1528,
+					y: 1401
+				}
+			}, {
+				id: 20,
+				name: "C3: Vilipne",
+				connections: [8, 19, 21, 44, 45],
+				short: 'C3V',
+				flag: {
+					x: 1132,
+					y: 1382
+				}
+			}, {
+				id: 21,
+				name: "C3: Xistan",
+				connections: [8, 20, 22, 46, 47],
+				short: 'C3X',
+				flag: {
+					x: 851,
+					y: 1343
+				}
+			}, {
+				id: 22,
+				name: "C3: Yeraim",
+				connections: [9, 21, 23, 48, 49],
+				short: 'C3Y',
+				flag: {
+					x: 656,
+					y: 1220
+				}
+			}, {
+				id: 23,
+				name: "C3: Zeaslo",
+				connections: [9, 22, 24, 50, 51],
+				short: 'C3Z',
+				flag: {
+					x: 569,
+					y: 1050
+				}
+			}, {
+				id: 24,
+				name: "D3: Verdebu",
+				connections: [10, 23, 25, 52, 53],
+				short: 'D3V',
+				flag: {
+					x: 592,
+					y: 824
+				}
+			}, {
+				id: 25,
+				name: "D3: Xiwait",
+				connections: [10, 24, 26, 54, 55],
+				short: 'D3X',
+				flag: {
+					x: 628,
+					y: 636
+				}
+			}, {
+				id: 26,
+				name: "D3: Yerat",
+				connections: [11, 25, 27, 56, 57],
+				short: 'D3Y',
+				flag: {
+					x: 788,
+					y: 520
+				}
+			}, {
+				id: 27,
+				name: "D3: Zilgypt",
+				connections: [11, 12, 26, 58, 59],
+				short: 'D3Z',
+				flag: {
+					x: 1025,
+					y: 484
+				}
+			}, {
+				id: 28,
+				name: "A4: Aithmirash",
+				connections: [12, 29, 59],
+				short: 'A4A',
+				flag: {
+					x: 1176,
+					y: 310
+				},
+				flagPos: {
+					x: 1131,
+					y: 265
+				}
+			}, {
+				id: 29,
+				name: "A4: Bangma Mynia",
+				connections: [12, 28, 30],
+				short: 'A4B',
+				flag: {
+					x: 1337,
+					y: 316
+				}
+			}, {
+				id: 30,
+				name: "A4: Cuatishca",
+				connections: [13, 29, 31],
+				short: 'A4C',
+				flag: {
+					x: 1473,
+					y: 354
+				}
+			}, {
+				id: 31,
+				name: "A4: Dilandmoor",
+				connections: [13, 30, 32],
+				short: 'A4D',
+				flag: {
+					x: 1591,
+					y: 391
+				}
+			}, {
+				id: 32,
+				name: "A4: Eda Monwe",
+				connections: [14, 31, 33],
+				short: 'A4E',
+				flag: {
+					x: 1723,
+					y: 398
+				},
+				flagPos: {
+					x: 1678,
+					y: 353
+				}
+			}, {
+				id: 33,
+				name: "A4: Frimoandbada",
+				connections: [14, 32, 34],
+				short: 'A4F',
+				flag: {
+					x: 1839,
+					y: 477
+				}
+			}, {
+				id: 34,
+				name: "A4: Gosolastan",
+				connections: [15, 33, 35],
+				short: 'A4G',
+				flag: {
+					x: 1962,
+					y: 590
+				}
+			}, {
+				id: 35,
+				name: "A4: Hasaint",
+				connections: [15, 34, 36],
+				short: 'A4H',
+				flag: {
+					x: 2047,
+					y: 688
+				}
+			}, {
+				id: 36,
+				name: "B4: Aguime",
+				connections: [16, 35, 37],
+				short: 'B4A',
+				flag: {
+					x: 1970,
+					y: 842
+				},
+				flagPos: {
+					x: 1925,
+					y: 797
+				}
+			}, {
+				id: 37,
+				name: "B4: Bliclatan",
+				connections: [16, 36, 38],
+				short: 'B4B',
+				flag: {
+					x: 1900,
+					y: 1000
+				},
+				flagPos: {
+					x: 1790,
+					y: 945
+				}
+			}, {
+				id: 38,
+				name: "B4: Capepesk",
+				connections: [17, 37, 39],
+				short: 'B4C',
+				flag: {
+					x: 2088,
+					y: 1176
+				}
+			}, {
+				id: 39,
+				name: "B4: Dalomstates",
+				connections: [17, 38, 40],
+				short: 'B4D',
+				flag: {
+					x: 2138,
+					y: 1361
+				}
+			}, {
+				id: 40,
+				name: "B4: Engthio",
+				connections: [18, 39, 41],
+				short: 'B4E',
+				flag: {
+					x: 2113,
+					y: 1504
+				},
+				flagPos: {
+					x: 2068,
+					y: 1469
+				}
+			}, {
+				id: 41,
+				name: "B4: Fradistaro",
+				connections: [18, 40, 42],
+				short: 'B4F',
+				flag: {
+					x: 1951,
+					y: 1590
+				},
+				flagPos: {
+					x: 1921,
+					y: 1540
+				}
+			}, {
+				id: 42,
+				name: "B4: Goima",
+				connections: [19, 41, 43],
+				short: 'B4G',
+				flag: {
+					x: 1735,
+					y: 1605
+				}
+			}, {
+				id: 43,
+				name: "B4: Hranreka",
+				connections: [19, 42, 44],
+				short: 'B4H',
+				flag: {
+					x: 1416,
+					y: 1454
+				}
+			}, {
+				id: 44,
+				name: "C4: Andgalbou",
+				connections: [20, 43, 45],
+				short: 'C4A',
+				flag: {
+					x: 1240,
+					y: 1521
+				},
+				flagPos: {
+					x: 1195,
+					y: 1476
+				}
+			}, {
+				id: 45,
+				name: "C4: Bangne Casau",
+				connections: [20, 44, 46],
+				short: 'C4B',
+				flag: {
+					x: 1015,
+					y: 1601
+				}
+			}, {
+				id: 46,
+				name: "C4: Cagalpo",
+				connections: [21, 45, 47],
+				short: 'C4C',
+				flag: {
+					x: 808,
+					y: 1586
+				},
+				flagPos: {
+					x: 778,
+					y: 1536
+				}
+			}, {
+				id: 47,
+				name: "C4: Denwana",
+				connections: [21, 46, 48],
+				short: 'C4D',
+				flag: {
+					x: 686,
+					y: 1532
+				}
+			}, {
+				id: 48,
+				name: "C4: Eastkiabumi",
+				connections: [22, 47, 49],
+				short: 'C4E',
+				flag: {
+					x: 455,
+					y: 1410
+				},
+				flagPos: {
+					x: 410,
+					y: 1365
+				}
+			}, {
+				id: 49,
+				name: "C4: Francedian",
+				connections: [22, 48, 50],
+				short: 'C4F',
+				flag: {
+					x: 304,
+					y: 1318
+				}
+			}, {
+				id: 50,
+				name: "C4: Guayla",
+				connections: [23, 49, 51],
+				short: 'C4G',
+				flag: {
+					x: 257,
+					y: 1182
+				},
+				flagPos: {
+					x: 217,
+					y: 1099
+				}
+			}, {
+				id: 51,
+				name: "C4: Hoguay",
+				connections: [23, 50, 52],
+				short: 'C4H',
+				flag: {
+					x: 267,
+					y: 1011
+				}
+			}, {
+				id: 52,
+				name: "D4: Arasruhana",
+				connections: [24, 51, 53],
+				short: 'D4A',
+				flag: {
+					x: 429,
+					y: 851
+				},
+				flagPos: {
+					x: 384,
+					y: 806
+				}
+			}, {
+				id: 53,
+				name: "D4: Basainti",
+				connections: [24, 52, 54],
+				short: 'D4B',
+				flag: {
+					x: 300,
+					y: 718
+				}
+			}, {
+				id: 54,
+				name: "D4: Camehermenle",
+				connections: [25, 53, 55],
+				short: 'D4C',
+				flag: {
+					x: 415,
+					y: 600
+				}
+			}, {
+				id: 55,
+				name: "D4: Dabiala",
+				connections: [25, 54, 56],
+				short: 'D4D',
+				flag: {
+					x: 398,
+					y: 465
+				},
+				flagPos: {
+					x: 370,
+					y: 442
+				}
+			}, {
+				id: 56,
+				name: "D4: Enggreboka",
+				connections: [26, 55, 57],
+				short: 'D4E',
+				flag: {
+					x: 507,
+					y: 361
+				},
+				flagPos: {
+					x: 462,
+					y: 316
+				}
+			}, {
+				id: 57,
+				name: "D4: Finnited",
+				connections: [26, 56, 58],
+				short: 'D4F',
+				flag: {
+					x: 723,
+					y: 311
+				}
+			}, {
+				id: 58,
+				name: "D4: Guayre Bhugera",
+				connections: [27, 57, 59],
+				short: 'D4G',
+				flag: {
+					x: 878,
+					y: 252
+				}
+			}, {
+				id: 59,
+				name: "D4: Honbo",
+				connections: [27, 28, 58],
+				short: 'D4H',
+				flag: {
+					x: 1042,
+					y: 302
+				}
+			}];
+		}
+		else if (GildFights.MapData.map['id'] === "waterfall_archipelago") {
+			return [{
+				id: 0,
+				name: "X1X: Elleorus",
+				connections: [ 1, 2, 3, 4, 5, 6],
+				short: 'X1X',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 1,
+				name: "A2A: Flunnipia",
+				connections: [ 0, 2, 6, 7, 8, 18],
+				short: 'A2A',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 2,
+				name: "B2A: Achinata",
+				connections: [ 0, 1, 3, 8, 9, 10],
+				short: 'B2A',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 3,
+				name: "C2A: Enudran",
+				connections: [ 0, 2, 4, 10, 11, 12],
+				short: 'C2A',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 4,
+				name: "D2A: Zebbeasos",
+				connections: [ 0, 3, 5, 12, 13, 14],
+				short: 'D2A',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 5,
+				name: "E2A: Appatinaka",
+				connections: [ 0, 4, 6, 14, 15, 16],
+				short: 'E2A',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 6,
+				name: "F2A: Kracciarhia",
+				connections: [ 0, 1, 5, 16, 17, 18],
+				short: 'F2A',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 7,
+				name: "A3A: Micianary",
+				connections: [ 1, 8, 18, 19, 20, 36],
+				short: 'A3A',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 8,
+				name: "A3B: Sheaggasia",
+				connections: [ 1, 2, 7, 9, 20, 21],
+				short: 'A3B',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 9,
+				name: "B3A: Birrathan",
+				connections: [ 2, 8, 10, 21, 22, 23],
+				short: 'B3A',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 10,
+				name: "B3B: Phiodeanet",
+				connections: [ 2, 3, 9, 11, 23, 24],
+				short: 'B3B',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 11,
+				name: "C3A: Ioppiorion",
+				connections: [ 3, 10, 12, 24, 25, 26],
+				short: 'C3A',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 12,
+				name: "C3B: Acyalyn",
+				connections: [ 3, 4, 11, 13, 26, 27],
+				short: 'C3B',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 13,
+				name: "D3A: Giobbolas",
+				connections: [ 4, 12, 14, 27, 28, 29],
+				short: 'D3A',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 14,
+				name: "D3B: Briocealyn",
+				connections: [ 4, 5, 13, 15, 29, 30],
+				short: 'D3B',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 15,
+				name: "E3A: Joviolmond",
+				connections: [ 5, 14, 16, 30, 31, 32],
+				short: 'E3A',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 16,
+				name: "E3B: Ciobiathis",
+				connections: [ 5, 6, 15, 17, 32, 33],
+				short: 'E3B',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 17,
+				name: "F3A: Preammirune",
+				connections: [ 6, 16, 18, 33, 34, 35],
+				short: 'F3A',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 18,
+				name: "F3B: Exoryme",
+				connections: [ 1, 6, 7, 17, 35, 36],
+				short: 'F3B',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 19,
+				name: "A4A: Phiossiania",
+				connections: [ 7, 20, 36, 37, 38, 60],
+				short: 'A4A',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 20,
+				name: "A4B: Klitimelan",
+				connections: [ 7, 8, 19, 21, 38, 39],
+				short: 'A4B',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 21,
+				name: "A4C: Ioclequey",
+				connections: [ 8, 9, 20, 22, 39, 40],
+				short: 'A4C',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 22,
+				name: "B4A: Lastaruz",
+				connections: [ 9, 21, 23, 40, 41, 42],
+				short: 'B4A',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 23,
+				name: "B4B: Ecceacyre",
+				connections: [ 9, 10, 22, 24, 42, 43],
+				short: 'B4B',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 24,
+				name: "B4C: Yastalyn",
+				connections: [ 10, 11, 23, 25, 43, 44],
+				short: 'B4C',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 25,
+				name: "C4A: Chobbiabis",
+				connections: [ 11, 24, 26, 44, 45, 46],
+				short: 'C4A',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 26,
+				name: "C4B: Mioccijan",
+				connections: [ 11, 12, 25, 27, 46, 47],
+				short: 'C4B',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 27,
+				name: "C4C: Cheabenium",
+				connections: [ 12, 13, 26, 28, 47, 48],
+				short: 'C4C',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 28,
+				name: "D4A: Diodiriel",
+				connections: [ 13, 27, 29, 48, 49, 50],
+				short: 'D4A',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 29,
+				name: "D4B: Driqela",
+				connections: [ 13, 14, 28, 30, 50, 51],
+				short: 'D4B',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 30,
+				name: "D4C: Gakiaran",
+				connections: [ 14, 15, 29, 31, 51, 52],
+				short: 'D4C',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 31,
+				name: "E4A: Phulotora",
+				connections: [ 15, 30, 32, 52, 53, 54],
+				short: 'E4A',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 32,
+				name: "E4B: Iccothaer",
+				connections: [ 15, 16, 31, 33, 54, 55],
+				short: 'E4B',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 33,
+				name: "E4C: Ohephere",
+				connections: [ 16, 17, 32, 34, 55, 56],
+				short: 'E4C',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 34,
+				name: "F4A: Xioceomos",
+				connections: [ 17, 33, 35, 56, 57, 58],
+				short: 'F4A',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 35,
+				name: "F4B: Oglilyn",
+				connections: [ 17, 18, 34, 36, 58, 59],
+				short: 'F4B',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 36,
+				name: "F4C: Omialanto",
+				connections: [ 7, 18, 19, 35, 59, 60],
+				short: 'F4C',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 37,
+				name: "A5A: Appiatoph",
+				connections: [ 19, 38, 60],
+				short: 'A5A',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 38,
+				name: "A5B: Cuchrarahe",
+				connections: [ 19, 20, 37, 39],
+				short: 'A5B',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 39,
+				name: "A5C: Eokkirune",
+				connections: [ 20, 21, 38, 40],
+				short: 'A5C',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 40,
+				name: "A5D: Iyoriyaz",
+				connections: [ 21, 22, 39, 41],
+				short: 'A5D',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 41,
+				name: "B5A: Strennearial",
+				connections: [ 22, 40, 42],
+				short: 'B5A',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 42,
+				name: "B5B: Atherathios",
+				connections: [ 22, 23, 41, 43],
+				short: 'B5B',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 43,
+				name: "B5C: Xeaxudin",
+				connections: [ 23, 24, 42, 44],
+				short: 'B5C',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 44,
+				name: "B5D: Stronolyn",
+				connections: [ 24, 25, 43, 45],
+				short: 'B5D',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 45,
+				name: "C5A: Stuckodod",
+				connections: [ 25, 44, 46],
+				short: 'C5A',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 46,
+				name: "C5B: Kazazriel",
+				connections: [ 25, 26, 45, 47],
+				short: 'C5B',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 47,
+				name: "C5C: Pilitallios",
+				connections: [ 26, 27, 46, 48],
+				short: 'C5C',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 48,
+				name: "C5D: Xishotish",
+				connections: [ 27, 28, 47, 49],
+				short: 'C5D',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 49,
+				name: "D5A: Gegleadore",
+				connections: [ 28, 48, 50],
+				short: 'D5A',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 50,
+				name: "D5B: Wrorrulan",
+				connections: [ 28, 29, 49, 51],
+				short: 'D5B',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 51,
+				name: "D5C: Cleoseotophy",
+				connections: [ 29, 30, 50, 52],
+				short: 'D5C',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 52,
+				name: "D5D: Equioque",
+				connections: [ 30, 31, 51, 53],
+				short: 'D5D',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 53,
+				name: "E5A: Eatutiar",
+				connections: [ 31, 52, 54],
+				short: 'E5A',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 54,
+				name: "E5B: Kaweariael",
+				connections: [ 31, 32, 53, 55],
+				short: 'E5B',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 55,
+				name: "E5C: Yossiryon",
+				connections: [ 32, 33, 54, 56],
+				short: 'E5C',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 56,
+				name: "E5D: Ecladorth",
+				connections: [ 33, 34, 55, 57],
+				short: 'E5D',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 57,
+				name: "F5A: Udriomond",
+				connections: [ 34, 56, 58],
+				short: 'F5A',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 58,
+				name: "F5B: Kreamenon",
+				connections: [ 34, 35, 57, 59],
+				short: 'F5B',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 59,
+				name: "F5C: Jokuthriaz",
+				connections: [ 35, 36, 58, 60],
+				short: 'F5C',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}, {
+				id: 60,
+				name: "F5D: Gleoleaterra",
+				connections: [ 19, 36, 37, 59],
+				short: 'F5D',
+				flag: {
+					x: 111,
+					y: 111
+				}
+			}];
+		}
 	},
 
 
-	SVGPaths: ()=> {
+	SVGPaths: () => {
 		return [{
 			id: 53,
 			path: "M163.872,764.729c-7.181-4.726-14.166-9.785-21.582-14.105\n\t\tc-14.985-8.729-26.67-20.955-36.755-34.68c-3.638-4.951-5.859-11.179-7.738-17.135c-3.2-10.139-5.622-20.525-8.364-30.809\n\t\tc-3.592-13.472,1.39-25.231,13.542-31.959c11.61-6.428,24.1-7.195,36.819-5.157c8.189,1.313,16.171,4.243,24.382,5.028\n\t\tc13.873,1.326,27.872,1.291,41.781,2.329c4.818,0.359,9.971,1.353,14.192,3.552c9.976,5.198,19.516,11.242,29.145,17.087\n\t\tc1.344,0.816,2.375,2.328,3.248,3.708c4.493,7.104,11.175,8.257,18.361,5.946c10.415-3.35,20.743-7.083,30.807-11.361\n\t\tc5.49-2.334,10.351-3.642,16.158-1.141c7.946,3.422,16.251,2.836,24.424,0.501c5.43-1.551,10.735-3.557,16.196-4.974\n\t\tc8.679-2.252,17.421-3.625,26.505-2.242c11.104,1.691,22.289,2.854,35.122,4.455c-3.916,3.401-6.618,5.642-9.203,8.011\n\t\tc-16.728,15.331-16.057,35.257,1.357,49.836c8.202,6.867,18.056,10.196,27.94,12.659c11.863,2.957,18.064,10.353,21.447,21.232\n\t\tc0.789,2.538,1.762,5.029,2.392,7.604c3.285,13.426,9.715,24.545,21.848,32.067c3.693,2.29,6.501,6.008,9.715,9.072\n\t\tc-0.396,0.722-0.792,1.444-1.188,2.167c-3.044-0.628-6.304-0.764-9.092-1.981c-7.306-3.19-14.724-6.327-21.525-10.434\n\t\tc-14.999-9.056-31.102-10.869-48.063-9.048c-3.903,0.419-7.896,0.095-11.844-0.01c-13.565-0.359-27.138-1.196-40.69-0.947\n\t\tc-5.142,0.094-10.475,2.087-15.317,4.16c-37.506,16.051-76.019,17.022-115.388,8.73c-20.272-4.27-40.024-9.852-58.736-18.89\n\t\tc-2.588-1.25-5.629-1.562-8.46-2.309C164.792,765.427,164.313,765.105,163.872,764.729z"

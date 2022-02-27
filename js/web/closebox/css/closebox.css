@@ -1,0 +1,88 @@
+/*
+ * **************************************************************************************
+ * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
+ *
+ * See file LICENSE.md or go to
+ * https://github.com//mainIine/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
+ *
+ * **************************************************************************************
+ */
+
+#CloseBox {
+    width: fit-content;
+    height: fit-content;
+    top: inherit;
+    left: inherit;
+    bottom: 230px;
+    right: 70px;
+    border-width: 27px 5px 4px 5px;
+    border-image-source: none;
+    border-radius: 10px;
+    background: none;
+    z-index: 151;
+}
+
+#CloseBox .settingtitle {
+    display: block;
+    margin-bottom: 7px;
+    font-size: 0.9em;
+    text-decoration: underline;
+}
+
+#CloseBoxBody {
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px, rgb(116 73 24) 0px 0px 0px 3px;
+    background: rgb(116 73 24);
+    border-radius: 5px;
+}
+
+#CloseBox:hover #CloseBoxBody {
+    box-shadow: none;
+    border-radius: unset;
+}
+
+#CloseBox .closebox {
+    padding: 0;
+}
+
+#CloseBox .settingsbox-wrapper {
+    min-width: 250px;
+    right: -40px;
+}
+
+#CloseBox button.vertical {
+    display: block;
+}
+
+#CloseBoxHeader {
+    display: none;
+
+}
+
+#CloseBoxHeader .title em {
+    display: none;
+}
+
+#CloseBox:hover {
+    overflow: visible;
+    border-width: 27px 5px 4px 5px;
+    border-image-source: url(../../../../css/images/hud/window-small.png);
+}
+
+#CloseBox:hover #CloseBoxHeader {
+    display: flex;
+}
+
+
+#CloseBox:hover>.window-head>span.window-settings {
+    position: absolute;
+    right: 0;
+}
+
+#CloseBox #cb-close-all-windows {
+    width: 100%;
+    height: 100%;
+    font-size: 2vw;
+}

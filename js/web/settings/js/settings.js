@@ -1,18 +1,20 @@
 /*
  * **************************************************************************************
+ * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
  *
- * Dateiname:                 settings.js
- * Projekt:                   foe-chrome
- *
- * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              22.12.19, 14:31 Uhr
- * zuletzt bearbeitet:       22.12.19, 14:31 Uhr
- *
- * Copyright © 2019
+ * See file LICENSE.md or go to
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
  *
  * **************************************************************************************
  */
 
+/**
+ *
+ * @type {{Help: (function(): string), NotificationView: (function(): string), GetSetting: ((function(*, *=): *)|*), MenuSelected: (function(): string), BoxGroups: string[], BuildBox: Settings.BuildBox, About: (function(): string), StoreSettings: Settings.StoreSettings, InfoboxInputEntryCount: (function(): *|jQuery), VersionInfo: (function(): string), Init: Settings.Init, ExportView: (function(): string), MenuInputLength: (function(): *|jQuery), NotificationStack: (function(): *|jQuery), ImportSettings: Settings.ImportSettings, LoadConfig: Settings.LoadConfig, BuildBody: Settings.BuildBody, ResetBoxCoords: Settings.ResetBoxCoords, DrivePermissions: (function(): string), LanguageDropdown: (function(): string), Preferences: null, MenuContent: (function(): *), ExportSettings: Settings.ExportSettings}}
+ */
 let Settings = {
 
 	/**
@@ -36,7 +38,7 @@ let Settings = {
 	 * @param start
 	 * @constructor
 	 */
-	Init: (start = true) => {
+	Init: () => {
 		Settings.LoadConfig((response) => {
 			Settings.Preferences = response;
 		});
@@ -230,12 +232,8 @@ let Settings = {
 		} else {
 
 			if (Settings.Preferences === null) {
-
-				Settings.LoadConfig((response) => {
-					Settings.Preferences = response;
-
-					return Settings.Preferences.find(itm => itm['name'] === name)['status'];
-				});
+				console.error('Error getting default value of setting "' + name + '". config.json not loaded');
+				return null;
 
 			} else {
 				return Settings.Preferences.find(itm => itm['name'] === name)['status'];
@@ -255,7 +253,7 @@ let Settings = {
 				<dl class="info-box">
 					<dt>${i18n('Settings.Version.Title')}</dt><dd>${extVersion}</dd>
 					<dt>${i18n('Settings.Version.PlayerId')}</dt><dd>${ExtPlayerID}</dd>
-					<dt>${i18n('Settings.Version.GuildId')}</dt><dd>${ExtGuildID}</dd>
+					<dt>${i18n('Settings.Version.GuildId')}</dt><dd>${(ExtGuildID ? ExtGuildID : 'N/A')}</dd>
 					<dt>${i18n('Settings.Version.World')}</dt><dd>${ExtWorld}</dd>
 				</dl>`;
 	},
@@ -268,9 +266,7 @@ let Settings = {
 	 * @constructor
 	 */
 	ExportView: () => {
-		return `<p>${i18n('Settings.ExportSettings.ViewExport')} <button class="btn-default" id="export-settings" onclick="Settings.ExportSettings()">${i18n('Settings.ExportSettings.Button')}</button></p>
-				<hr>
-				<p>${i18n('Settings.ExportSettings.ViewImport')} <input type="file" id="import-settings" onchange="Settings.ImportSettings()" accept="application/json"></p>`;
+		return `<p><button class="btn-default" onclick="DBExport.BuildBox()">${i18n('Settings.ExportSettings.OpenImportExportTool')}</button></p>`;
 	},
 
 
@@ -389,10 +385,10 @@ let Settings = {
 	 */
 	Help: () => {
 		return '<ul class="helplist">' +
-			'<li><a href="https://foe-rechner.de" target="_blank"><span class="website">&nbsp;</span>' + i18n('Settings.Help.Website') + '</a></li>' +
-			'<li><a href="https://forum.foe-rechner.de/" target="_blank"><span class="forums">&nbsp;</span>' + i18n('Settings.Help.Forums') + '</a></li>' +
+			'<li><a href="https://foe-helper.com" target="_blank"><span class="website">&nbsp;</span>' + i18n('Settings.Help.Website') + '</a></li>' +
+			'<li><a href="https://discuss.foe-helper.com/" target="_blank"><span class="forums">&nbsp;</span>' + i18n('Settings.Help.Forums') + '</a></li>' +
 			'<li><a href="https://discord.gg/z97KZq4" target="_blank"><span class="discord">&nbsp;</span>' + i18n('Settings.Help.Discord') + '</a></li>' +
-			'<li><a href="https://github.com/dsiekiera/foe-helfer-extension/issues" target="_blank"><span class="github">&nbsp;</span>' + i18n('Settings.Help.Github') + '</a></li>' +
+			'<li><a href="https://github.com/mainIine/foe-helfer-extension/issues" target="_blank"><span class="github">&nbsp;</span>' + i18n('Settings.Help.Github') + '</a></li>' +
 			'</ul>';
 	},
 
@@ -483,6 +479,54 @@ let Settings = {
 		return ip;
 	},
 
+
+	/**
+	 * Add all the buttons you need
+	 */
+	MenuContent: () => {
+		let bl = $('<div />'),
+			menuItems = Array.from(_menu.Items),
+			HiddenItems = localStorage.getItem('MenuHiddenItems'),
+			hiddenArray = [];
+
+		// Reattach already hidden icons
+		if (HiddenItems !== null) {
+			hiddenArray = JSON.parse(HiddenItems);
+			menuItems.push(...hiddenArray);
+		}
+
+		for (let i in menuItems)
+		{
+			if (!menuItems.hasOwnProperty(i)) {
+				break;
+			}
+
+			const name = menuItems[i];
+
+			// exclude settings
+			if(name === 'settings'){
+				continue;
+			}
+
+			// is there a function?
+			if (_menu[name + '_Btn'])
+			{
+				let btnBG = $('<div />')
+					.attr({ id: `setting-${name}-Btn` })
+					.addClass('hud-btn')
+					.addClass(hiddenArray.includes(name) ? 'hud-btn-red' : '');
+
+				let btn = $(`<span onclick="_menu.ToggleItemVisibility('${name}')"></span>`);
+		
+				btnBG.append(btn);
+				bl.append(btnBG);
+			}
+		}
+
+		return bl.html();
+	},
+
+
 	/**
 	 *	Erzeugt ein Input Feld
 	 *
@@ -513,6 +557,130 @@ let Settings = {
 		});
 
 		return ip;
+	},
+
+
+	DrivePermissions: () => {
+
+		const jsScript = document.createElement('script')
+		jsScript.src = 'https://apis.google.com/js/api.js'
+
+		document.body.appendChild(jsScript);
+
+		// Client ID and API key from the Developer Console
+		const CLIENT_ID = '704447943704-pnmhlg152l3jvc57f4f2i8fi24ev5aof.apps.googleusercontent.com';
+		const API_KEY = 'AIzaSyBD9_OBsIcHWj8swRwXWGVEOrZfLMssr9Q';
+
+		// Array of API discovery doc URLs for APIs used by the quickstart
+		const DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/drive/v3/rest"];
+
+		// Authorization scopes required by the API; multiple scopes can be
+		// included, separated by spaces.
+		const SCOPES = 'https://www.googleapis.com/auth/drive.metadata.write';
+
+		const authorizeButton = document.getElementById('authorize_button');
+		const signoutButton = document.getElementById('signout_button');
+
+		/**
+		 *  On load, called to load the auth2 library and API client library.
+		 */
+		function handleClientLoad() {
+			gapi.load('client:auth2', initClient);
+		}
+
+		/**
+		 *  Initializes the API client library and sets up sign-in state
+		 *  listeners.
+		 */
+		function initClient() {
+			gapi.client.init({
+				apiKey: API_KEY,
+				clientId: CLIENT_ID,
+				discoveryDocs: DISCOVERY_DOCS,
+				scope: SCOPES
+			}).then(function () {
+				// Listen for sign-in state changes.
+				gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
+
+				// Handle the initial sign-in state.
+				updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
+				authorizeButton.onclick = handleAuthClick;
+				signoutButton.onclick = handleSignoutClick;
+			}, function(error) {
+				appendPre(JSON.stringify(error, null, 2));
+			});
+		}
+
+		/**
+		 *  Called when the signed in status changes, to update the UI
+		 *  appropriately. After a sign-in, the API is called.
+		 */
+		function updateSigninStatus(isSignedIn) {
+			if (isSignedIn) {
+				authorizeButton.style.display = 'none';
+				signoutButton.style.display = 'block';
+				listFiles();
+			} else {
+				authorizeButton.style.display = 'block';
+				signoutButton.style.display = 'none';
+			}
+		}
+
+		/**
+		 *  Sign in the user upon button click.
+		 */
+		function handleAuthClick(event) {
+			gapi.auth2.getAuthInstance().signIn();
+		}
+
+		/**
+		 *  Sign out the user upon button click.
+		 */
+		function handleSignoutClick(event) {
+			gapi.auth2.getAuthInstance().signOut();
+		}
+
+		/**
+		 * Append a pre element to the body containing the given message
+		 * as its text node. Used to display the results of the API call.
+		 *
+		 * @param {string} message Text to be placed in pre element.
+		 */
+		function appendPre(message) {
+			let pre = document.getElementById('content');
+			let textContent = document.createTextNode(message + "\n");
+			pre.appendChild(textContent);
+		}
+
+		/**
+		 * Print files.
+		 */
+		function listFiles() {
+			gapi.client.drive.files.list({
+				'pageSize': 10,
+				'fields': "nextPageToken, files(id, name)"
+			}).then(function(response) {
+				appendPre('Files:');
+				let files = response.result.files;
+				if (files && files.length > 0) {
+					for (let i = 0; i < files.length; i++) {
+						let file = files[i];
+						appendPre(file.name + ' (' + file.id + ')');
+					}
+				} else {
+					appendPre('No files found.');
+				}
+			});
+		}
+
+		jsScript.addEventListener('load', () => {
+			handleClientLoad()
+		});
+
+		return `<button id="authorize_button" style="display: none;" class="btn-default">Authorize</button>&nbsp;
+		<button id="signout_button" style="display: none;" class="btn-default">Sign Out</button>
+	
+		<pre id="content" style="white-space: pre-wrap;"></pre>`;
 	},
 
 
@@ -593,5 +761,7 @@ let Settings = {
 		});
 
 		return ip;
-	}
+	},
 };
+
+Settings.Init(); // Darf hier aufgerufen werden, da keine anderen Module benötigt werden. config.json soll bis zum StartUp geladen sein

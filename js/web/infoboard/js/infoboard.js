@@ -1,14 +1,12 @@
 /*
  * **************************************************************************************
+ * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
  *
- * Dateiname:                 infoboard.js
- * Projekt:                   foe-chrome
- *
- * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              22.12.19, 14:31 Uhr
- * zuletzt bearbeitet:       22.12.19, 14:31 Uhr
- *
- * Copyright © 2019
+ * See file LICENSE.md or go to
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
  *
  * **************************************************************************************
  */
@@ -35,28 +33,8 @@ FoEproxy.addHandler('ConversationService', 'getOverview', (data, postData) => {
     MainParser.setConversations(data.responseData);
 });
 
-// when a great building where the player has invested has been levelled
-FoEproxy.addHandler('BlueprintService', 'newReward', (data, postData) => {
-
-    if (data && data['responseData'] && data['responseData']) {
-        // save the number of returned FPs to show in the infoboard message
-        Info.ReturnFPPoints = (data['responseData']['strategy_point_amount']) ? data.responseData.strategy_point_amount : 0;
-
-        // If the Info.OtherPlayerService_newEventgreat_building_contribution ran earlier than this
-        // the ReturnFPPoints was 0 so no message was posted. Therefore recreate the message using
-        // the stored data (and the correct value of Info.ReturnFPPoints) and post it
-        if (Info.ReturnFPMessageData) {
-            let bd = Info.OtherPlayerService_newEventgreat_building_contribution(Info.ReturnFPMessageData);
-            Info.ReturnFPMessageData = null;
-            Infoboard.PostMessage(bd);
-        }
-    }
-
-});
-
 /**
- *
- * @type {{init: Infoboard.init, Show: InfoBoard.Show, InjectionLoaded: boolean, ResetBox: Infoboard.ResetBox, BoxContent: Infoboard.BoxContent, FilterInput: Infoboard.FilterInput, SoundFile: HTMLAudioElement, Box: Infoboard.Box, PlayInfoSound: null, History: Array, MaxEntries:Number}}
+ * @type {{MaxEntries: number, DebugWebSocket: boolean, OriginalDocumentTitle: string, TitleBlinkEvent: null, ResetBox: Infoboard.ResetBox, SavedFilter: string[], SoundFile: HTMLAudioElement, SavedTextFilter: string, HandleMessage: Infoboard.HandleMessage, Box: ((function(): (boolean|undefined))|*), History: *[], StartTitleBlinking: Infoboard.StartTitleBlinking, Init: Infoboard.Init, InjectionLoaded: boolean, StopTitleBlinking: Infoboard.StopTitleBlinking, FilterInput: Infoboard.FilterInput, Show: Infoboard.Show, PostMessage: Infoboard.PostMessage, PlayInfoSound: boolean}}
  */
 let Infoboard = {
 
@@ -68,7 +46,8 @@ let Infoboard = {
     DebugWebSocket: false,
     History: [],
     MaxEntries: 0,
-
+    OriginalDocumentTitle: document.title,
+    TitleBlinkEvent: null,
 
     /**
      * Setzt einen ByPass auf den WebSocket und "hört" mit
@@ -77,6 +56,11 @@ let Infoboard = {
         FoEproxy.addRawWsHandler(data => {
             Infoboard.HandleMessage('in', data);
         });
+
+        // Der Spieler ist wieder im FoE Tab
+        window.onfocus = function() {
+            // Infoboard.StopTitleBlinking();
+        };
     },
 
 
@@ -127,13 +111,13 @@ let Infoboard = {
 
 
             HTML.Box({
-                'id': 'BackgroundInfo',
-                'title': i18n('Boxes.Infobox.Title'),
-                'auto_close': true,
-                'dragdrop': true,
-                'resize': true,
-                'minimize': true,
-                'speaker': 'infoboxTone'
+                id: 'BackgroundInfo',
+                title: i18n('Boxes.Infobox.Title'),
+                auto_close: true,
+                dragdrop: true,
+                resize: true,
+                minimize: true,
+                speaker: 'infoboxTone'
             });
 
             // CSS in den DOM prügeln
@@ -189,12 +173,13 @@ let Infoboard = {
         });
 
         Infoboard.MaxEntries = localStorage.getItem("EntryCount") || 0;
+
         for (let i = 0; i < Infoboard.History.length; i++) {
             const element = Infoboard.History[i];
             Infoboard.PostMessage(element,false);
         }
 
-        $('#BackgroundInfo').on('click', '#infoboxTone', function () {
+        div.on('click', '#infoboxTone', function () {
 
             let disabled = $(this).hasClass('deactivated');
 
@@ -244,14 +229,22 @@ let Infoboard = {
             return;
         }
 
+        // Der Spieler hat den FoE Tab verlassen
+        window.onblur = function() {
+            // Infoboard.StartTitleBlinking()
+        };
+
         Infoboard.PostMessage(bd);
     },
 
 
-    PostMessage: (bd,add = true) => {
+    PostMessage: (bd, add = true) => {
+        if (!bd['date']) bd['date'] = new Date();
 
-        if ($('#BackgroundInfo').length > 0) {
-            if(bd['class'] !== 'welcome' && add){
+        if ($('#BackgroundInfo').length > 0)
+        {
+            if(bd['class'] !== 'welcome' && add)
+            {
                 if(Infoboard.MaxEntries > 0 && Infoboard.History.length >= Infoboard.MaxEntries){
                     Infoboard.History.shift();
                 }
@@ -261,14 +254,20 @@ let Infoboard = {
 
             let status = $('input[data-type="' + bd['class'] + '"]').prop('checked'),
                 textfilter = $('input[data-type="text"]').val().split("|"),
-                msg = bd['msg'], img = bd['img'], type = bd['type'], tr = $('<tr />');
+                msg = bd['msg'], img = bd['img'], type = bd['type'], tr = $('<tr />'),
+				filterStatus = textfilter.some(e => msg.toLowerCase().includes(e.toLowerCase()));
 
             // wenn nicht angezeigt werden soll, direkt verstecken
-            if ((!status || !(textfilter.some(e => msg.toLowerCase().includes(e.toLowerCase())))) && bd.class !== 'welcome') {
+            if ((!status || !filterStatus) && bd.class !== 'welcome')
+            {
                 tr.hide();
-            }else{
-                if(Infoboard.MaxEntries > 0 && $('#BackgroundInfoTable tbody tr').length >= Infoboard.MaxEntries){
-                    while(Infoboard.MaxEntries > 0 && $('#BackgroundInfoTable tbody tr').length >= Infoboard.MaxEntries){
+            }
+            else
+            {
+                if(Infoboard.MaxEntries > 0 && $('#BackgroundInfoTable tbody tr').length >= Infoboard.MaxEntries)
+                {
+                    while(Infoboard.MaxEntries > 0 && $('#BackgroundInfoTable tbody tr').length >= Infoboard.MaxEntries)
+					{
                         let trLast = $('#BackgroundInfoTable tbody tr:last-child')[0];
                         trLast.parentNode.removeChild(trLast);
                     }
@@ -283,14 +282,15 @@ let Infoboard = {
 
             tr.append(
                 '<td></td>' +
-                '<td>' + type + '<br><small><em>' + moment().format('HH:mm:ss') + '</em></small></td>' +
+                '<td>' + type + '<br><small><em>' + moment(bd['date']).format('HH:mm:ss') + '</em></small></td>' +
                 '<td>' + msg + '</td>'
             );
 
             $('#BackgroundInfoTable tbody').prepend(tr);
 
-            if (Infoboard.PlayInfoSound && status) {
-                Infoboard.SoundFile.play();
+            if (Infoboard.PlayInfoSound && status && filterStatus)
+            {
+                if (Settings.GetSetting('EnableSound')) Infoboard.SoundFile.play();
             }
         }
     },
@@ -343,6 +343,26 @@ let Infoboard = {
             $('#BackgroundInfoTable tbody').html('');
             Infoboard.History = [];
         });
+    },
+
+
+    StopTitleBlinking: ()=> {
+
+        clearInterval(Infoboard.TitleBlinkEvent);
+        document.title = Infoboard.OriginalDocumentTitle;
+
+        Infoboard.TitleBlinkEvent = null;
+    },
+
+
+    StartTitleBlinking: (txt)=> {
+        if(Infoboard.TitleBlinkEvent !== null){
+            return;
+        }
+
+        Infoboard.TitleBlinkEvent = setInterval(()=> {
+            document.title = (document.title === Infoboard.OriginalDocumentTitle ? txt : Infoboard.OriginalDocumentTitle);
+        }, 750);
     }
 };
 
@@ -350,17 +370,10 @@ let Infoboard = {
 let Info = {
 
     /**
-     * Cache zum "merken" der kampfenden Gilden
+     * Cache zum "merken" der kämpfenden Gilden
      */
     GildPoints: {},
 
-
-    /**
-     * Wenn ein LG gelevelt wurde, kommen die FPs einzeln zurück
-     * und müssen gesammelt werden
-     */
-    ReturnFPPoints: -1,
-    ReturnFPMessageData: null,
 
     /**
      * Jmd hat in einer Auktion mehr geboten
@@ -369,14 +382,16 @@ let Info = {
      * @returns {{class: 'auction', msg: string, type: string}}
      */
     ItemAuctionService_updateBid: (d) => {
+        let PlayerLink = MainParser.GetPlayerLink(d['player']['player_id'], d['player']['name']);
+
         return {
             class: 'auction',
             type: 'Auktion',
             msg: HTML.i18nReplacer(
                 i18n('Boxes.Infobox.Messages.Auction'), {
-                'player': d['player']['name'],
-                'amount': HTML.Format(d['amount']),
-            }
+                    player: PlayerLink,
+                    amount: HTML.Format(d['amount']),
+                }
             )
         };
     },
@@ -389,20 +404,26 @@ let Info = {
      * @returns {class: 'message', msg: string, type: string, img: string | undefined}
      */
     ConversationService_getNewMessage: (d) => {
-        let header, message, image, chat = MainParser.Conversations.find(obj => obj.id === d['conversationId']);
-        if (chat && chat['hidden']) return undefined;
+        let chat = MainParser.Conversations.find(obj => obj.id === d['conversationId']),
+            header, message, image;
+
+        if (chat && chat['hidden']){
+            return undefined;
+        }
 
         if (d['text'] !== '') {
             // normale Nachricht
             message = d['text'].replace(/(\r\n|\n|\r)/gm, '<br>');
-
-        } else if (d['attachment']) {
-            if (d['attachment']['type'] === 'great_building') {
+        }
+        else if (d['attachment'])
+        {
+            if (d['attachment']['type'] === 'great_building')
+            {
                 // legendäres Bauwerk
                 message = HTML.i18nReplacer(
                     i18n('Boxes.Infobox.Messages.MsgBuilding'), {
-                    'building': MainParser.CityEntities[d['attachment']['cityEntityId']]['name'],
-                    'level': d['attachment']['level']
+                    building: MainParser.CityEntities[d['attachment']['cityEntityId']]['name'],
+                    level: d['attachment']['level']
                 });
             }
             else if (d['attachment']['type'] === 'trade_offer') {
@@ -413,24 +434,35 @@ let Info = {
 
         if (chat) {
             // passendes Bildchen wählen
-            if (chat['important']) {
+            if (chat['important'])
+            {
                 image = 'msg-important';
-            } else if (chat['favorite']) {
+            }
+            else if (chat['favorite']) {
                 image = 'msg-favorite';
             }
 
-            if (d['sender'] && d['sender']['name']) {
-                // normale Chatnachricht (bekannte ID)
-                if (d['sender']['name'] === chat['title']) {
-                    header = '<div><strong class="bright">' + chat['title'] + '</strong></div>';
-                } else {
-                    header = '<div><strong class="bright">' + chat['title'] + '</strong> - <em>' + d['sender']['name'] + '</em></div>';
-                }
-            } else {
-                // Chatnachricht vom System (Betreten/Verlassen)
-                header = '<div><strong class="bright">' + chat['title'] + '</strong></div>';
+            if (chat['escaped_title'] === undefined) { 
+                chat['escaped_title'] = HTML.escapeHtml(chat['title']); 
             }
-        } else {
+
+            if (d['sender'] && d['sender']['name'])
+            {
+                // normale Chatnachricht (bekannte ID)
+                if (d['sender']['name'] === chat['title'])
+                {
+                    header = '<div><strong class="bright">' + MainParser.GetPlayerLink(d['sender']['player_id'], d['sender']['name']) + '</strong></div>';
+                }
+                else {
+                    header = '<div><strong class="bright">' + chat['escaped_title'] + '</strong> - <em>' + MainParser.GetPlayerLink(d['sender']['player_id'], d['sender']['name']) + '</em></div>';
+                }
+            }
+            else {
+                // Chatnachricht vom System (Betreten/Verlassen)
+                header = '<div><strong class="bright">' + chat['escaped_title'] + '</strong></div>';
+            }
+        }
+        else {
             return undefined;
         }
 
@@ -477,10 +509,10 @@ let Info = {
         let bP = GildFights.MapData['battlegroundParticipants'],
             prov;
 
-        if (data['id'] === 0) {
-            prov = GildFights.ProvinceNames[0]['provinces'][0];
+        if (!data['id'] || data['id'] === 0) {
+            prov = ProvinceMap.ProvinceData()[0];
         } else {
-            prov = GildFights.ProvinceNames[0]['provinces'].find(o => (o['id'] === data['id']));
+            prov = ProvinceMap.ProvinceData().find(o => (o['id'] === data['id']));
         }
 
         if (data['lockedUntil'] !== undefined) {
@@ -514,6 +546,7 @@ let Info = {
 
         // Es wird gerade gekämpft
         let color = GildFights.SortedColors.find(c => (c['id'] === data['ownerId'])), t = '', image;
+
         for (let i in data['conquestProgress']) {
             if (!data['conquestProgress'].hasOwnProperty(i)) {
                 break;
@@ -536,18 +569,22 @@ let Info = {
                     ts = colors['shadow'], ss = color['shadow'];
 
                 t += '<span style="color:' + tc + ';text-shadow: 0 1px 1px ' + ts + '">' + p['clan']['name'] + '</span> ⚔️ <span style="color:' + sc + ';text-shadow: 0 1px 1px ' + ss + '">' + prov['name'] + '</span> (<strong>' + d['progress'] + '</strong>/<strong>' + d['maxProgress'] + '</strong>)<br>';
-            } else {
+            }
+            else {
                 let tc = colors['highlight'],
                     ts = colors['shadow'];
 
                 t += '<span style="color:' + tc + ';text-shadow: 0 1px 1px ' + ts + '">' + p['clan']['name'] + '</span> ⚔️ ' + prov['name'] + ' (<strong>' + d['progress'] + '</strong>/<strong>' + d['maxProgress'] + '</strong>)<br>';
 
             }
+
             if (image) {
                 image = 'gbg-undefined';
-            } else {
+            }
+            else {
                 image = 'gbg-' + colors['cid'];
             }
+
             if (Info.GildPoints[data['id']] === undefined) {
                 Info.GildPoints[data['id']] = {};
             }
@@ -573,37 +610,36 @@ let Info = {
      */
     OtherPlayerService_newEventgreat_building_contribution: (d) => {
 
-        let newFP = Info.ReturnFPPoints;
-        if (d['rank'] >= 6) { newFP = 0; }
+        let newFP=-1;
+        if (d['rank'] >= 6) {
+            newFP = 0
+        }
+        else {
+            let Entity = Object.values(MainParser.CityEntities).find(obj => (obj['name'] === d['great_building_name']));
+                EntityID = Entity['id'],
+                EraName = EraName = GreatBuildings.GetEraName(EntityID),
+                Era = Technologies.Eras[EraName],
+                P1 = GreatBuildings.Rewards[Era][d['level']-1],
+                FPRewards = GreatBuildings.GetMaezen(P1, MainParser.ArkBonus);
 
-        let data = {
+                newFP = FPRewards[d['rank'] - 1];
+        }
+
+        let PlayerLink = MainParser.GetPlayerLink(d['other_player']['player_id'], d['other_player']['name']);
+
+        return {
             class: 'level',
             type: 'Level-Up',
             msg: HTML.i18nReplacer(
                 i18n('Boxes.Infobox.Messages.LevelUp'), {
-                player: d['other_player']['name'],
-                building: d['great_building_name'],
-                level: d['level'],
-                rank: d['rank'],
-                fps: newFP
-            }
+                    player: PlayerLink,
+                    building: d['great_building_name'],
+                    level: d['level'],
+                    rank: d['rank'],
+                    fps: newFP !== -1 ? newFP : '???'
+                }
             )
         };
-
-        // If the ReturnFPPoints is -1 the BlueprintService.newReward handler has not run yet
-        // so store the data and post the message from that handler (using the stored data)
-        // ... but only if the rank is 5 and higher (1-5), otherwise, there is no reward
-        // (and BlueprintService.newReward is not triggered)
-        if (d['rank'] < 6 && Info.ReturnFPPoints == -1) {
-            Info.ReturnFPMessageData = d;
-            return undefined;
-        }
-
-        // zurück setzen
-        Info.ReturnFPPoints = -1;
-        Info.ReturnFPMessageData = null;
-
-        return data;
     },
 
 
@@ -614,12 +650,14 @@ let Info = {
      * @returns {{class: 'trade', msg: string, type: string}}
      */
     OtherPlayerService_newEventtrade_accepted: (d) => {
+        let PlayerLink = MainParser.GetPlayerLink(d['other_player']['player_id'], d['other_player']['name']);
+
         return {
             class: 'trade',
             type: i18n('Boxes.Infobox.FilterTrade'),
             msg: HTML.i18nReplacer(
                 i18n('Boxes.Infobox.Messages.Trade'), {
-                'player': d['other_player']['name'],
+                'player': PlayerLink,
                 'offer': GoodsData[d['offer']['good_id']]['name'],
                 'offerValue': d['offer']['value'],
                 'need': GoodsData[d['need']['good_id']]['name'],
@@ -643,12 +681,14 @@ let Info = {
             return false;
         }
 
+        let PlayerLink = MainParser.GetPlayerLink(d['player']['player_id'], d['player']['name']);
+
         return {
             class: 'gex',
             type: 'GEX',
             msg: HTML.i18nReplacer(
                 i18n('Boxes.Infobox.Messages.GEX'), {
-                'player': d['player']['name'],
+                'player': PlayerLink,
                 'points': HTML.Format(d['expeditionPoints'])
             }
             )

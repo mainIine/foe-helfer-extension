@@ -1,13 +1,12 @@
 /*
  * **************************************************************************************
+ * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
  *
- * Dateiname:                 table-sorter.js
- * Projekt:                   foe
- *
- * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * zu letzt bearbeitet:       09.10.19, 20:48 Uhr
- *
- * Copyright © 2019
+ * See file LICENSE.md or go to
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
  *
  * **************************************************************************************
  */
@@ -104,7 +103,9 @@
         let table = this;
         this.on('click', 'tr.sorter-header th', function (){
             //Remove incjected detailviews
-            $("tr.detailview").remove();
+            if(!$(this).parent().hasClass("subsort")){
+                $("tr.detailview").remove();
+            }
             
             if (!$(this).hasClass('no-sort')) {
                 let type = 'string';

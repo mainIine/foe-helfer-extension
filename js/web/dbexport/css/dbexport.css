@@ -1,0 +1,195 @@
+#DBExport {
+	width: 750px;
+	height: 550px;
+	top: calc(50vh - 300px);
+	left: calc(50vw - 210px);
+}
+
+#DBExport #DBExportBody {
+	overflow-y: scroll;
+}
+
+#dbexport_wrapper {
+	padding: 10px;
+}
+
+#dbex_dropzone {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	width: 100%;
+	height: 50px;
+	border: 2px dotted #bbb;
+	border-radius: 10px;
+	padding: 20px 0px;
+	color: #bbb;
+	cursor: pointer;
+}
+
+#dbex_fileupload {
+	display: none;
+}
+
+table {
+	text-align: left;
+}
+
+#DBExport #dbex-loading-data {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: #000000c0;
+	z-index: 100;
+	opacity: 1;
+
+}
+
+#DBExport #dbex-loading-data .message {
+	position: relative;
+	top: 47%;
+	width: 100%;
+	height: 100px;
+	text-align: center;
+}
+
+#DBExport #dbex-loading-data .message .progress {
+	display: block;
+	font-size: 1.4rem;
+}
+
+#DBExport #dbex-loading-data .progressbar {
+	min-width: 80px;
+	width: fit-content;
+	background: transparent;
+	margin: 0 auto;
+	font-size: 1.0rem;
+
+}
+
+#DBExport #dbex-loading-data .progressbar .state {
+	width: 80px;
+	background-color: var(--text-bright);
+	height: 9px;
+	margin-top: 5px;
+}
+
+#DBExport #debex_import_wrapper {
+	padding: 10px 0;
+	text-align: center;
+}
+
+#DBExport #debex_import_wrapper p.error {
+	color: var(--text-bright);
+}
+
+#DBExport #debex_import_wrapper p.success {
+	color: var(--text-bright);
+}
+
+#DBExport #debex_import_wrapper .icon {
+	width: 22px;
+	height: 22px;
+	display: inline-block;
+
+}
+
+#DBExport #debex_import_wrapper .icon.success {
+	background-image: url(../../../../css/images/hud/success-icon.png);
+	background-repeat: no-repeat;
+	zoom: 0.7;
+}
+
+#DBExport #debex_import_wrapper .icon.error {
+	font-size: 1.3rem;
+	color: rgb(158, 0, 0);
+}
+
+#DBExport #debex_import_wrapper .errmsg {
+	color: var(--text-normal);
+	font-size: 0.8rem;
+	display: block;
+}
+
+#dbex-loading-data .loadericon {
+	display: block;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	width: 150px;
+	height: 150px;
+	margin: -75px 0 0 -75px;
+	border-radius: 50%;
+	border: 3px solid transparent;
+	border-top-color: #543118;
+	-webkit-animation: spin 2s linear infinite;
+	animation: spin 2s linear infinite;
+}
+
+#dbex-loading-data .loadericon:before {
+	content: "";
+	position: absolute;
+	top: 5px;
+	left: 5px;
+	right: 5px;
+	bottom: 5px;
+	border-radius: 50%;
+	border: 3px solid transparent;
+	border-top-color: #f8af36;
+	-webkit-animation: spin 3s linear infinite;
+	animation: spin 3s linear infinite;
+}
+
+#dbex-loading-data .loadericon:after {
+	content: "";
+	position: absolute;
+	top: 15px;
+	left: 15px;
+	right: 15px;
+	bottom: 15px;
+	border-radius: 50%;
+	border: 3px solid transparent;
+	border-top-color: #f3d6a0;
+	-webkit-animation: spin 1.5s linear infinite;
+	animation: spin 1.5s linear infinite;
+}
+
+@-webkit-keyframes spin {
+	0% {
+		-webkit-transform: rotate(0deg);
+		-ms-transform: rotate(0deg);
+		transform: rotate(0deg);
+	}
+
+	100% {
+		-webkit-transform: rotate(360deg);
+		-ms-transform: rotate(360deg);
+		transform: rotate(360deg);
+	}
+}
+
+@keyframes spin {
+	0% {
+		-webkit-transform: rotate(0deg);
+		-ms-transform: rotate(0deg);
+		transform: rotate(0deg);
+	}
+
+	100% {
+		-webkit-transform: rotate(360deg);
+		-ms-transform: rotate(360deg);
+		transform: rotate(360deg);
+	}
+}
+
+@keyframes glow {
+	from {
+		box-shadow: inset 0 0 5px -5px #fc8f007c;
+	}
+
+	to {
+		box-shadow: inset 0 0 5px 5px #fc8f007c;
+	}
+}

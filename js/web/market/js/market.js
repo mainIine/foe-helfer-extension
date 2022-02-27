@@ -1,13 +1,12 @@
 /*
  * **************************************************************************************
+ * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
  *
- * Dateiname:                 market.js
- * Projekt:                   foe-chrome
- *
- * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:               17.07.20, 23:50 Uhr
- *
- * Copyright © 2020
+ * See file LICENSE.md or go to
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
  *
  * **************************************************************************************
  */
@@ -59,13 +58,15 @@ let Market = {
     TradeDisadvantage: false,
 
 	OfferSelect: null,
-	NeedSelect: null,
+    NeedSelect: null,
+
+    ScrollPositions: [],
 
 
 	/**
 	 * Create a div-box for the DOM + Eventlistener
 	 */
-    Show: ()=> {
+    Show: (event = true)=> {
         if ($('#Market').length === 0)
         {
             HTML.Box({
@@ -74,7 +75,8 @@ let Market = {
                 auto_close: true,
                 dragdrop: true,
                 minimize: true,
-                resize: true
+                resize: true,
+                settings: 'Market.ShowSettingsButton()'
             });
 
             // add css to DOM
@@ -83,6 +85,8 @@ let Market = {
 
             $('#Market').on('click', '.custom-option', function(){
                 let func = $(this).closest('.custom-options').data('function');
+
+                Market.ScrollPositions[func] = $(this).closest('.custom-options').scrollTop();
 
                 Market[`${func}Select`] = $(this).text().trim();
 
@@ -161,6 +165,11 @@ let Market = {
                 Market.CalcBody();
             });
         }
+		else if (!event)
+		{
+			HTML.CloseOpenBox('Market');
+			return;
+		}
 
         Market.CalcBody();
     },
@@ -201,7 +210,7 @@ let Market = {
 								${i18n('Boxes.Market.AllGoods')}
 							</span>`);
 
-							for (let era = 0; era <= Technologies.Eras.SpaceAgeAsteroidBelt - Technologies.Eras.BronzeAge; era++)
+							for (let era = 0; era < Technologies.Eras.NextEra - Technologies.Eras.BronzeAge; era++)
 							{
 								ID += 1;
 
@@ -242,7 +251,7 @@ let Market = {
 								${i18n('Boxes.Market.AllGoods')}
 							</span>`);
 
-							for (let era = 0; era <= Technologies.Eras.SpaceAgeAsteroidBelt - Technologies.Eras.BronzeAge; era++)
+							for (let era = 0; era < Technologies.Eras.NextEra - Technologies.Eras.BronzeAge; era++)
 							{
 								ID += 1;
 
@@ -295,20 +304,21 @@ let Market = {
         h.push('</div>');
 
         // Table
-        h.push('<table class="foe-table">');
+        h.push('<table class="foe-table exportable">');
 
         h.push('<thead>');
         h.push('<tr>');
-        h.push('<th colspan="3">' + i18n('Boxes.Market.OfferColumn') + '</th>');
-        h.push('<th colspan="3">' + i18n('Boxes.Market.NeedColumn') + '</th>');
-        h.push('<th>' + i18n('Boxes.Market.RateColumn') + '</th>');
-        h.push('<th>' + i18n('Boxes.Market.PlayerColumn') + '</th>');
+        h.push('<th columnname2="Offered goods" columnname3="Offered amount" colspan="3">' + i18n('Boxes.Market.OfferColumn') + '</th>');
+        h.push('<th columnname2="Requested goods" columnname3="Requested amount"colspan="3">' + i18n('Boxes.Market.NeedColumn') + '</th>');
+        h.push('<th columnname="Rate">' + i18n('Boxes.Market.RateColumn') + '</th>');
+        h.push('<th columnname="Player">' + i18n('Boxes.Market.PlayerColumn') + '</th>');
         h.push('<th>' + i18n('Boxes.Market.PageColumn') + '</th>');
         h.push('</tr>');
         h.push('</thead>');
 
         let Counter = 0;
-        let Pos = 0;
+        let Pos = 0,
+            OwnPos = 0;
         for (let i = 0; i < Market.Trades.length; i++)
         {
             if (Counter >= Market.MaxResults) break;
@@ -319,25 +329,29 @@ let Market = {
                     NeedGoodID = Trade['need']['good_id'],
                     OfferEra = Technologies.Eras[GoodsData[OfferGoodID]['era']],
                     NeedEra = Technologies.Eras[GoodsData[NeedGoodID]['era']],
-                    OfferTT = HTML.i18nReplacer(i18n('Boxes.Market.OfferTT'), { 'era': i18n('Eras.' + OfferEra), 'stock': HTML.Format(ResourceStock[OfferGoodID]) });
-                    NeedTT = HTML.i18nReplacer(i18n('Boxes.Market.NeedTT'), { 'era': i18n('Eras.' + NeedEra), 'stock': HTML.Format(ResourceStock[NeedGoodID]) });
+                    OfferTT = HTML.i18nReplacer(i18n('Boxes.Market.OfferTT'), { 'era': i18n('Eras.' + OfferEra), 'stock': HTML.Format(ResourceStock[OfferGoodID]) }),
+                    NeedTT = HTML.i18nReplacer(i18n('Boxes.Market.NeedTT'), { 'era': i18n('Eras.' + NeedEra), 'stock': HTML.Format(ResourceStock[NeedGoodID]) }),
+                    CurrentPos = (Trade['merchant']['is_self'] ? OwnPos : Pos);
 
                 h.push('<tr>');
-                h.push('<td class="goods-image"><span class="goods-sprite-50 sm '+ GoodsData[Trade['offer']['good_id']]['id'] +'"></span></td>'); 
-                h.push('<td><strong class="td-tooltip" title="' + HTML.i18nTooltip(OfferTT) + '">' + GoodsData[Trade['offer']['good_id']]['name'] + '</strong></td>');
+                h.push('<td class="goods-image"><span class="goods-sprite-50 sm ' + GoodsData[OfferGoodID]['id'] +'"></span></td>');
+                h.push('<td><strong class="td-tooltip" title="' + HTML.i18nTooltip(OfferTT) + '">' + GoodsData[OfferGoodID]['name'] + '</strong></td>');
                 h.push('<td><strong class="td-tooltip" title="' + HTML.i18nTooltip(OfferTT) + '">' + Trade['offer']['value'] + '</strong></td>');
-                h.push('<td class="goods-image"><span class="goods-sprite-50 sm ' + GoodsData[Trade['need']['good_id']]['id'] +'"></span></td>'); 
-                h.push('<td><strong class="td-tooltip" title="' + HTML.i18nTooltip(NeedTT) + '">' + GoodsData[Trade['need']['good_id']]['name'] + '</strong></td>');
+                h.push('<td class="goods-image"><span class="goods-sprite-50 sm ' + GoodsData[NeedGoodID]['id'] +'"></span></td>');
+                h.push('<td><strong class="td-tooltip" title="' + HTML.i18nTooltip(NeedTT) + '">' + GoodsData[NeedGoodID]['name'] + '</strong></td>');
                 h.push('<td><strong class="td-tooltip" title="' + HTML.i18nTooltip(NeedTT) + '">' + Trade['need']['value'] + '</strong></td>');
                 h.push('<td class="text-center">' + HTML.Format(MainParser.round(Trade['offer']['value'] / Trade['need']['value'] * 100) / 100) + '</td>');
                 h.push('<td>' + Trade['merchant']['name'] + '</td>');
-                h.push('<td class="text-center">' + (Math.floor(Pos / 10 + 1)) + '-' + (Pos % 10 + 1) + '</td>');
+                h.push('<td class="text-center">' + (Math.floor(CurrentPos / 10 + 1)) + '-' + (CurrentPos % 10 + 1) + '</td>');
                 h.push('</tr>');
 
                 Counter += 1;
             }
 
-            if (!Trade['merchant']['is_self']) { //Eigene Handel rausfiltern
+            if (Trade['merchant']['is_self']) { //Eigene Handel rausfiltern
+                OwnPos += 1;
+            }
+            else {
                 Pos += 1;
             }
         }
@@ -345,7 +359,14 @@ let Market = {
         h.push('</table>');
 
 		$('#MarketBody').html(h.join('')).promise().done(function(){
-			HTML.Dropdown();
+            HTML.Dropdown();
+
+            $('#Market').find('.custom-options').each(function () {
+                let func = $(this).data('function');
+                let ScrollPos = Market.ScrollPositions[func];
+                if (ScrollPos) $(this).scrollTop(ScrollPos);
+            });
+
 		});
 
         $('.td-tooltip').tooltip({
@@ -388,7 +409,8 @@ let Market = {
         }
 
         //Tradepartner
-        if (Trade['merchant']['is_self']) {
+        let IsOwnOffer = Trade['merchant']['is_self'];
+        if (IsOwnOffer) {
             if (!Market.ShowOwnOffers) {
                 return false;
             }
@@ -418,11 +440,15 @@ let Market = {
         let Rate = Trade['offer']['value'] / Trade['need']['value'];
         let Rating = Rate * Math.pow(2, EraDiff);
 
-        if (Rating > 1 && !Market.TradeAdvantage) {
+        CurrentTradeAdvantage = (IsOwnOffer ? Market.TradeDisadvantage : Market.TradeAdvantage);
+        if (Rating > 1 && !CurrentTradeAdvantage) {
             return false;
         }
         if (Rating === 1) { // Fair
-            if (ResourceStock[OfferGoodID] + Trade['offer']['value']/2 < ResourceStock[NeedGoodID] - Trade['need']['value']/2) { //Stock is higher
+            let CurrentOfferValue = (IsOwnOffer ? Trade['need']['value'] : Trade['offer']['value']),
+                CurrentNeedValue = (IsOwnOffer ? Trade['offer']['value'] : Trade['need']['value']);
+
+            if (ResourceStock[OfferGoodID] + CurrentOfferValue/2 < ResourceStock[NeedGoodID] - CurrentNeedValue/2) { //Stock is higher
                 if (!Market.TradeFairStock) {
                     return false;
                 }
@@ -433,6 +459,8 @@ let Market = {
                 }
             }
         }
+
+        CurrentTradeDisdvantage = (IsOwnOffer ? Market.TradeAdvantage : Market.TradeDisadvantage);
         if (Rating < 1 && !Market.TradeDisadvantage) {
             return false;
         }
@@ -470,5 +498,16 @@ let Market = {
             if (TradeGood === AllowedGoods[i]) return true;
         }
         return false
+    },
+
+    /**
+    *
+    */
+    ShowSettingsButton: () => {
+        let h = [];
+        h.push(`<p class="text-center"><button class="btn btn-default" onclick="HTML.ExportTable($('#MarketBody').find('.foe-table.exportable'), 'csv', 'Market')">${i18n('Boxes.General.ExportCSV')}</button></p>`);
+        h.push(`<p class="text-center"><button class="btn btn-default" onclick="HTML.ExportTable($('#MarketBody').find('.foe-table.exportable'), 'json', 'Market')">${i18n('Boxes.General.ExportJSON')}</button></p>`);
+
+        $('#MarketSettingsBox').html(h.join(''));
     },
 };

@@ -1,13 +1,12 @@
 /*
  * **************************************************************************************
+ * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
  *
- * Dateiname:                 notice.js
- * Projekt:                   foe-chrome
- *
- * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              24.05.20, 14:22 Uhr
- *
- * Copyright © 2020
+ * See file LICENSE.md or go to
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
  *
  * **************************************************************************************
  */
@@ -43,11 +42,11 @@ let Notice = {
 			MainParser.send2Server({isEmpty:true}, 'Notice/get',(resp)=>{
 				Notice.notes = resp.notice;
 
-				Notice.buildBox();
+				Notice.buildBox(false);
 			});
 
 		} else {
-			Notice.buildBox();
+			Notice.buildBox(false);
 		}
 	},
 
@@ -55,7 +54,7 @@ let Notice = {
 	/**
 	 * Put a empty box into the DOM
 	 */
-	buildBox: ()=> {
+	buildBox: (event = true) => {
 		if( $('#notices').length < 1 )
 		{
 			// CSS into the DOM
@@ -73,6 +72,11 @@ let Notice = {
 			});
 
 			Notice.Listener();
+		}
+		else if (!event)
+		{
+			HTML.CloseOpenBox('notices');
+			return;
 		}
 
 		Notice.Players = PlayerDict;

@@ -1,14 +1,12 @@
 /*
  * **************************************************************************************
+ * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
  *
- * Dateiname:                 _menu-box.js
- * Projekt:                   foe-chrome
- *
- * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              22.12.19, 14:31 Uhr
- * zuletzt bearbeitet:       22.12.19, 13:49 Uhr
- *
- * Copyright © 2019
+ * See file LICENSE.md or go to
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
  *
  * **************************************************************************************
  */
@@ -45,6 +43,7 @@ let _menu_box = {
 
 
 	CalcBody: () => {
+		_menu.TopOffset = $('#menu_box').offset().top;
 		_menu.ListLinks(_menu_box.InsertMenuItem);
 		_menu_box.CheckButtons();
 	},
@@ -136,6 +135,7 @@ let _menu_box = {
 		});
 
 		HiddenRewards.SetCounter();
+		BlueGalaxy.SetCounter();
 	},
 
 

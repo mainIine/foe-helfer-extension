@@ -1,22 +1,21 @@
 /*
  * **************************************************************************************
+ * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
  *
- * Dateiname:                 citymap.js
- * Projekt:                   foe-chrome
- *
- * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              19.03.21, 15:33 Uhr
- * zuletzt bearbeitet:       19.03.21, 10:21 Uhr
- *
- * Copyright © 2021
+ * See file LICENSE.md or go to
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
  *
  * **************************************************************************************
  */
 
 
 /**
+ * CityMap class
  *
- * @type {{init: CityMap.init, showSumbitBox: CityMap.showSumbitBox, UnlockedAreas: null, SubmitData: CityMap.SubmitData, SetBuildings: CityMap.SetBuildings, CityData: null, ScaleUnit: number, CityView: string, hashCode: (function(*): number), OccupiedArea: number, IsExtern: boolean, getAreas: CityMap.getAreas, PrepareBox: CityMap.PrepareBox, BuildGrid: CityMap.BuildGrid}}
+ * @type {{highlightOldBuildings: CityMap.highlightOldBuildings, EfficiencyFactor: number, init: CityMap.init, UnlockedAreas: null, BlockedAreas: null, SubmitData: CityMap.SubmitData, SetBuildings: CityMap.SetBuildings, CityData: null, ScaleUnit: number, CityView: string, CityEntities: null, hashCode: (function(*): *), OccupiedArea: number, IsExtern: boolean, showSubmitBox: CityMap.showSubmitBox, getAreas: CityMap.getAreas, PrepareBox: CityMap.PrepareBox, GetBuildingSize: (function(*): {}), BuildGrid: CityMap.BuildGrid, copyMetaInfos: CityMap.copyMetaInfos}}
  */
 let CityMap = {
 	CityData: null,
@@ -24,6 +23,7 @@ let CityMap = {
 	ScaleUnit: 100,
 	CityView: 'skew',
 	UnlockedAreas: null,
+	BlockedAreas: null,
 	OccupiedArea: 0,
 	EfficiencyFactor: 0,
 	IsExtern: false,
@@ -32,10 +32,12 @@ let CityMap = {
 	/**
 	 * Zündung...
 	 *
-	 * @param Data
-	 * @param Title
+	 * @param event
+	 * @param event
+	 * @param Data The City data
+	 * @param Title Name of the city
 	 */
-	init: (Data = null, Title = i18n('Boxes.CityMap.YourCity') + '...')=> {
+	init: (event, Data = null, Title = i18n('Boxes.CityMap.YourCity') + '...')=> {
 
 		if (Data === null) { // No data => own city
 			CityMap.IsExtern = false;
@@ -84,6 +86,11 @@ let CityMap = {
 			}, 100);
 
 		}
+		else if (!event)
+		{
+			HTML.CloseOpenBox('city-map-overlay');
+			return;
+		}
 
 		setTimeout(()=>{
 
@@ -110,9 +117,9 @@ let CityMap = {
 	 */
 	PrepareBox: (Title)=> {
 		let oB = $('#city-map-overlayBody'),
-			w = $('<div />').attr({'id':'wrapper'});
+			w = $('<div />').attr({'id':'citymap-wrapper'});
 
-			w.append( $('<div />').attr('id', 'map-container').append( $('<div />').attr('id', 'grid-outer').attr('data-unit', CityMap.ScaleUnit).attr('data-view', CityMap.CityView).append( $('<div />').attr('id', 'map-grid') ) ) ).append( $('<div />').attr({'id': 'sidebar'}) );
+		w.append( $('<div />').attr('id', 'map-container').append( $('<div />').attr('id', 'grid-outer').attr('data-unit', CityMap.ScaleUnit).attr('data-view', CityMap.CityView).append( $('<div />').attr('id', 'map-grid') ) ) ).append( $('<div />').attr({'id': 'sidebar'}) );
 
 		$('#city-map-overlayHeader > .title').attr('id', 'map' + CityMap.hashCode(Title));
 
@@ -157,15 +164,17 @@ let CityMap = {
 			CityMap.SetBuildings(CityMap.CityData, false);
 
 			$('#map-container').scrollTo( $('.pulsate') , 800, {offset: {left: -280, top: -280}, easing: 'swing'});
+			$('.to-old-legends').hide();
+			$('.building-count-area').show();
 		});
 
 		// Button for submit Box
 		if (CityMap.IsExtern === false) {
 			menu.append($('<button />').addClass('btn-default ml-auto').attr({ id: 'highlight-old-buildings', onclick: 'CityMap.highlightOldBuildings()' }).text(i18n('Boxes.CityMap.HighlightOldBuildings')));
-
+			menu.append($('<input type="text" id="BuildingsFilter" placeholder="'+ i18n('Boxes.CityMap.FilterBuildings') +'" oninput="CityMap.filterBuildings(this.value)">'));
 			menu.append($('<button />').addClass('btn-default ml-auto').attr({ id: 'copy-meta-infos', onclick: 'CityMap.copyMetaInfos()' }).text(i18n('Boxes.CityMap.CopyMetaInfos')));
 
-			menu.append($('<button />').addClass('btn-default ml-auto').attr({ id: 'show-submit-box', onclick: 'CityMap.showSumbitBox()' }).text(i18n('Boxes.CityMap.ShowSubmitBox')));
+			menu.append($('<button />').addClass('btn-default ml-auto').attr({ id: 'show-submit-box', onclick: 'CityMap.showSubmitBox()' }).text(i18n('Boxes.CityMap.ShowSubmitBox')));
 		}
 
 
@@ -238,7 +247,7 @@ let CityMap = {
 			// Unlocked Areas rendern
 			CityMap.BuildGrid();
 		}
-		
+
 		let MinX = 0,
 			MinY = 0,
 			MaxX = 63,
@@ -246,39 +255,32 @@ let CityMap = {
 
 		for (let b in CityMap.CityData)
 		{
-			if (!CityMap.CityData.hasOwnProperty(b) || CityMap.CityData[b]['x'] < MinX || CityMap.CityData[b]['x'] > MaxX || CityMap.CityData[b]['y'] < MinY || CityMap.CityData[b]['y'] > MaxY)
-				continue;
+			if (!CityMap.CityData.hasOwnProperty(b) || CityMap.CityData[b]['x'] < MinX || CityMap.CityData[b]['x'] > MaxX || CityMap.CityData[b]['y'] < MinY || CityMap.CityData[b]['y'] > MaxY) continue;
 
-			let	d = MainParser.CityEntities[ CityMap.CityData[b]['cityentity_id'] ],
-		
-				x = (CityMap.CityData[b]['x'] === undefined ? 0 : ((parseInt(CityMap.CityData[b]['x']) * CityMap.ScaleUnit) / 100 )),
-				y = (CityMap.CityData[b]['y'] === undefined ? 0 : ((parseInt(CityMap.CityData[b]['y']) * CityMap.ScaleUnit) / 100 )),
-				w = ((parseInt(d['width']) * CityMap.ScaleUnit) / 100),
-				h = ((parseInt(d['length']) * CityMap.ScaleUnit) / 100),
-			
+			let d = MainParser.CityEntities[CityMap.CityData[b]['cityentity_id']],
+				BuildingSize = CityMap.GetBuildingSize(CityMap.CityData[b]),
+
+				x = (CityMap.CityData[b]['x'] === undefined ? 0 : ((parseInt(CityMap.CityData[b]['x']) * CityMap.ScaleUnit) / 100)),
+				y = (CityMap.CityData[b]['y'] === undefined ? 0 : ((parseInt(CityMap.CityData[b]['y']) * CityMap.ScaleUnit) / 100)),
+				xsize = ((parseInt(BuildingSize['xsize']) * CityMap.ScaleUnit) / 100),
+				ysize = ((parseInt(BuildingSize['ysize']) * CityMap.ScaleUnit) / 100),
+
 				f = $('<span />').addClass('entity ' + d['type']).css({
-						width: w + 'em',
-						height: h + 'em',
-						left: x + 'em',
-						top: y + 'em'
-					})
+					width: xsize + 'em',
+					height: ysize + 'em',
+					left: x + 'em',
+					top: y + 'em'
+				})
 					.attr('title', d['name'])
 					.attr('data-entityid', CityMap.CityData[b]['id']),
 				era;
 
-			let AreaNeeded = parseInt(d['width']) * parseInt(d['length']);
-			CityMap.OccupiedArea += (AreaNeeded);
-            
-		    if(!CityMap.OccupiedArea2[d.type]) CityMap.OccupiedArea2[d.type] = 0;
-			CityMap.OccupiedArea2[d.type] += (AreaNeeded);
+			CityMap.OccupiedArea += (BuildingSize['building_area']);
 
-			if (d.type !== 'street' && CityMap.CityData[b]['state']['__class__'] !== 'UnconnectedState') {
-				let RequiredStreet = d['requirements']['street_connection_level'] | 0
+			if (!CityMap.OccupiedArea2[d.type]) CityMap.OccupiedArea2[d.type] = 0;
+			CityMap.OccupiedArea2[d.type] += (BuildingSize['building_area']);
 
-				if (RequiredStreet) {
-					StreetsNeeded += Math.min(parseFloat(d['width']), parseFloat(d['length'])) * RequiredStreet / 2;
-				}
-			}
+			StreetsNeeded += BuildingSize['street_area'];
 
 			// Search age
 			if (d['is_multi_age'] && CityMap.CityData[b]['level']) {
@@ -286,7 +288,7 @@ let CityMap = {
 
 			}
 			// Great building
-			else if (d['strategy_points_for_upgrade']) {
+			else if (d['type'] === 'greatbuilding') {
 				era = CurrentEraID;
 			}
 			else {
@@ -307,7 +309,30 @@ let CityMap = {
 				f.attr({
 					title: `${d['name']}<br><em>${i18n('Eras.' + era )}</em>`
 				})
-				if (era<CurrentEraID) {f.addClass('oldBuildings')}
+
+				if (era < CurrentEraID) {
+                    f.addClass('oldBuildings');
+
+					let eraDiff = CurrentEraID - era;
+					
+					switch(eraDiff){
+						case 1:
+							f.addClass('older-1');
+							break;
+
+						case 2:
+							f.addClass('older-2');
+							break;
+
+						case 3:
+							f.addClass('older-3');
+							break;
+
+						default: 
+							f.addClass('to-old');
+							break;
+					}
+                }
 			}
 
 			// die Größe wurde geändert, wieder aktivieren
@@ -349,37 +374,53 @@ let CityMap = {
 			aW.append( $('<p />').addClass('total-area') );
 			aW.append( $('<p />').addClass('occupied-area') );
 			aW.append( $('<p />').addClass('building-count-area') );
-            
+			aW.append( $('<p />').addClass('to-old-legends').hide() );
+
 			$('#sidebar').append(aW);
 		}
 
-		$('.total-area').html(txtTotal);
-
 		// Non player city => Unlocked areas cant be detected => dont show free space
 		if (!CityMap.IsExtern) {
+			$('.total-area').html(txtTotal);
 			$('.occupied-area').html(txtFree);
-        }
-		
-		sortable = [];
-		for( x in CityMap.OccupiedArea2) sortable.push([x, CityMap.OccupiedArea2[x]]);
+		}
+
+		let sortable = [];
+		for(let x in CityMap.OccupiedArea2) sortable.push([x, CityMap.OccupiedArea2[x]]);
 		sortable.sort((a, b) => a[1] - b[1]);
 		sortable.reverse();
 
 		let txtCount = [];
-		for( x in sortable ){
-		    let type =  sortable[x][0];
+
+		for(let x in sortable )
+		{
+			if(!sortable.hasOwnProperty(x)){
+				break;
+			}
+
+			let type =  sortable[x][0];
 			let TypeName = i18n('Boxes.CityMap.' + type)
 			const count = sortable[x][1];
-		    const pct = parseFloat(100*count/CityMap.OccupiedArea).toFixed(1);
+			const pct = parseFloat(100*count/CityMap.OccupiedArea).toFixed(1);
+
 			let str = `${TypeName}:<br> ${count} (${pct}%)<br>`;
+
 			if (type === 'street') {
 				str = str + HTML.Format(Math.round(CityMap.EfficiencyFactor * 10000) / 100) + '% ' + i18n('Boxes.Citymap.Efficiency') + '<br>';
 			}
-			str = str + '<br>';
-		    txtCount.push(str);
+			str = `<span class="square ${type}"></span>${str}<br>`;
+			txtCount.push(str);
 		}
 		$('.building-count-area').html(txtCount.join(''));
+		
+		let legends = [];
+		
+		legends.push(`<span class="older-1 diagonal"></span> ${$('#map-container .older-1').length} ${i18n('Boxes.CityMap.OlderThan1Era')}<br>`);
+		legends.push(`<span class="older-2 diagonal"></span> ${$('#map-container .older-2').length} ${i18n('Boxes.CityMap.OlderThan2Era')}<br>`);
+		legends.push(`<span class="older-3 diagonal"></span> ${$('#map-container .older-3').length} ${i18n('Boxes.CityMap.OlderThan3Era')}<br>`);
+		legends.push(`<span class="to-old diagonal"></span> ${$('#map-container .to-old').length} ${i18n('Boxes.CityMap.OlderThan4Era')}<br>`);
 
+		$('.to-old-legends').html(legends.join(''));
 	},
 
 
@@ -397,12 +438,15 @@ let CityMap = {
 	/**
 	 * Show the submit box
 	 */
-	showSumbitBox: () => {
-		if ($('#CityMapSubmit').length > 0) {
-			$('#CityMapSubmit').remove();
+	showSubmitBox: () => {
+		let $CityMapSubmit = $('#CityMapSubmit');
+
+		if ($CityMapSubmit.length > 0)
+		{
+			$CityMapSubmit.remove();
 		}
 
-		if ($('#CityMapSubmit').length < 1)
+		if ($CityMapSubmit.length < 1)
 		{
 			HTML.Box({
 				'id': 'CityMapSubmit',
@@ -411,12 +455,11 @@ let CityMap = {
 				'saveCords': false
 			});
 
-			// CSS in den DOM prügeln
 			HTML.AddCssFile('citymap');
 
 			let desc = '<p class="text-center">' + i18n('Boxes.CityMap.Desc1') + '</p>';
-			
-			desc += '<p class="text-center" id="msg-line"><button class="btn-default" onclick="CityMap.SubmitData()">' + i18n('Boxes.CityMap.Desc2') + '</button></p>';
+
+			desc += '<p class="text-center" id="msg-line"><button class="btn-default" onclick="CityMap.SubmitData()">' + i18n('Boxes.CityMap.Submit') + '</button></p>';
 
 			$('#CityMapSubmitBody').html(desc);
 		}
@@ -428,6 +471,7 @@ let CityMap = {
 	 */
 	highlightOldBuildings: ()=> {
 		$('.oldBuildings').toggleClass('diagonal');
+		$('.building-count-area, .to-old-legends').fadeToggle();
 	},
 
 
@@ -437,18 +481,55 @@ let CityMap = {
 	 */
 	SubmitData: ()=> {
 
-		let d = {
-			entities: MainParser.CityMapData,
-			areas: CityMap.UnlockedAreas,
-			metaIDs: {
-				entity: MainParser.CityEntitiesMetaId,
-				set: MainParser.CitySetsMetaId,
-				upgrade: MainParser.CityBuildingsUpgradesMetaId
-			}
-		};
+		let currentDate = new Date(),
+			d = {
+				time: currentDate.toISOString().split('T')[0] + ' ' + currentDate.getHours() + ':' + currentDate.getMinutes() + ':' + currentDate.getSeconds(),
+				player: {
+					name: ExtPlayerName,
+					id: ExtPlayerID,
+					world: ExtWorld,
+					avatar: ExtPlayerAvatar
+				},
+				eras: Technologies.Eras,
+				entities: MainParser.CityMapData,
+				areas: CityMap.UnlockedAreas,
+				blockedAreas: CityMap.BlockedAreas,
+				metaIDs: {
+					entity: MainParser.CityEntitiesMetaId,
+					set: MainParser.CitySetsMetaId,
+					upgrade: MainParser.CityBuildingsUpgradesMetaId
+				}
+			};
 
-		MainParser.send2Server(d, 'CityPlanner', function(){
-			$('#CityMapSubmitBody').html('<p><span class="text-success">' + i18n('Boxes.CityMap.SubmitSuccess') + '</p><a class="btn-default" target="_blank" href="https://foe-rechner.de">foe-rechner.de</a></span>');
+		MainParser.send2Server(d, 'CityPlanner', function(resp){
+
+			if(resp.status === 'OK')
+			{
+				HTML.ShowToastMsg({
+					head: i18n('Boxes.CityMap.SubmitSuccessHeader'),
+					text: [
+						i18n('Boxes.CityMap.SubmitSuccess'),
+						'<a target="_blank" href="https://foe-helper.com/citymap/overview">foe-helper.com</a>'
+					],
+					type: 'success',
+					hideAfter: 10000,
+				});
+			}
+			else {
+				HTML.ShowToastMsg({
+					head: i18n('Boxes.CityMap.SubmitErrorHeader'),
+					text: [
+						i18n('Boxes.CityMap.SubmitError'),
+						'<a href="https://github.com/mainIine/foe-helfer-extension/issues" target="_blank">Github</a>'
+					],
+					type: 'error',
+					hideAfter: 10000,
+				});
+			}
+
+			$('#CityMapSubmit').fadeToggle(function(){
+				$(this).remove();
+			});
 		});
 	},
 
@@ -456,14 +537,64 @@ let CityMap = {
 	/**
 	 * Copy citydata to the clipboard
 	 */
-	copyMetaInfos:()=> {
-		helper.str.copyToClipboard(JSON.stringify({CityMapData:MainParser.CityMapData,CityEntities:MainParser.CityEntities,UnlockedAreas:CityMap.UnlockedAreas}));
-
-		HTML.ShowToastMsg({
-			head: i18n('Boxes.CityMap.ToastHeadCopyData'),
-			text: i18n('Boxes.CityMap.ToastBodyCopyData'),
-			type: 'info',
-			hideAfter: 4000,
+	copyMetaInfos: () => {
+		helper.str.copyToClipboard(
+			JSON.stringify({CityMapData:MainParser.CityMapData,CityEntities:MainParser.CityEntities,UnlockedAreas:CityMap.UnlockedAreas})
+		).then(() => {
+			HTML.ShowToastMsg({
+				head: i18n('Boxes.CityMap.ToastHeadCopyData'),
+				text: i18n('Boxes.CityMap.ToastBodyCopyData'),
+				type: 'info',
+				hideAfter: 4000,
+			})
 		});
+	},
+
+
+	GetBuildingSize: (CityMapEntity) => {
+		let CityEntity = MainParser.CityEntities[CityMapEntity['cityentity_id']];
+
+		let Ret = {};
+
+		Ret['is_connected'] = (CityMapEntity['state']['__class__'] !== 'UnconnectedState' && CityMapEntity['state']['pausedAt'] === undefined && CityMapEntity['state']['pausedState'] === undefined);
+
+		if (CityEntity['requirements']) {
+			Ret['xsize'] = CityEntity['width'];
+			Ret['ysize'] = CityEntity['length'];
+
+			if (CityEntity['type'] !== 'street') {
+				Ret['streets_required'] = CityEntity['requirements']['street_connection_level'] | 0;
+			}
+			else {
+				Ret['streets_required'] = 0;
+			}
+		}
+		else {
+			let Size = CityEntity['components']['AllAge']['placement']['size'];
+
+			Ret['xsize'] = Size['x'];
+			Ret['ysize'] = Size['y'];
+			Ret['streets_required'] = CityEntity['components']['AllAge']['streetConnectionRequirement']['requiredLevel'] | 0;
+		}
+
+		Ret['building_area'] = Ret['xsize'] * Ret['ysize'];
+		Ret['street_area'] = (Ret['is_connected'] ? parseFloat(Math.min(Ret['xsize'], Ret['ysize'])) * Ret['streets_required'] / 2 : 0);
+		Ret['total_area'] = Ret['building_area'] + Ret['street_area'];
+
+		return Ret;
+	},
+
+	filterBuildings: (string) => {
+		spans = $('span.entity');
+		for (sp of spans) {
+			let title = $(sp).attr('data-original-title');
+			if ((string != "") && (title.substr(0,title.indexOf("<em>")).toLowerCase().indexOf(string.toLowerCase()) > -1)) {
+				$(sp).addClass('blinking');
+			} else {
+				$(sp).removeClass('blinking');
+			}
+
+		}
+
 	}
 };

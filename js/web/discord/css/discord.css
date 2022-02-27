@@ -1,0 +1,25 @@
+/*
+ * **************************************************************************************
+ * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
+ *
+ * See file LICENSE.md or go to
+ * https://github.com//mainIine/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
+ *
+ * **************************************************************************************
+ */
+
+#Discord {
+	width: fit-content;
+	height: fit-content;
+	min-width: 750px;
+	max-width: 80vW;
+	top: calc(50vh - 375px);
+	left: calc(50vw - 375px);
+}
+
+#Discord .window-body .textarea {
+	min-width: 13.125rem;
+}

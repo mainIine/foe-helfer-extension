@@ -1,14 +1,12 @@
 /*
  * **************************************************************************************
+ * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
  *
- * Dateiname:                 technologies.js
- * Projekt:                   foe-chrome
- *
- * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              22.12.19, 14:31 Uhr
- * zuletzt bearbeitet:       22.12.19, 14:31 Uhr
- *
- * Copyright © 2019
+ * See file LICENSE.md or go to
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
  *
  * **************************************************************************************
  */
@@ -98,6 +96,7 @@ let Technologies = {
         SpaceAgeMars: 18,
         SpaceAgeAsteroidBelt: 19,
         SpaceAgeVenus: 20,
+        NextEra: 21,
     },
 
 
@@ -133,12 +132,13 @@ let Technologies = {
 		if ($('#technologies').length === 0) {
 
 			HTML.Box({
-				'id': 'technologies',
-				'title': i18n('Boxes.Technologies.Title'),
-				'auto_close': true,
-				'dragdrop': true,
-				'minimize': true,
-				'resize': true
+				id: 'technologies',
+				title: i18n('Boxes.Technologies.Title'),
+				auto_close: true,
+				dragdrop: true,
+				minimize: true,
+                resize: true,
+                settings: 'Technologies.ShowSettingsButton()'
 			});
 
 			// CSS in den DOM prügeln
@@ -175,12 +175,12 @@ let Technologies = {
         // Zeitalter vor und zurück schalten
         $('#technologies').on('click', '.btn-switchage', function () {
 
-            $('.btn-switchage').removeClass('btn-default-active');
+            $('.btn-switchage').removeClass('btn-active');
 
             Technologies.SelectedEraID = $(this).data('value');
             Technologies.CalcBody();
 
-            $(this).addClass('btn-default-active');
+            $(this).addClass('btn-active');
         });
 
 		Technologies.BuildBox();
@@ -258,7 +258,7 @@ let Technologies = {
         }
 
         let PreviousEraID = Math.max(Technologies.SelectedEraID - 1, CurrentEraID),
-            NextEraID = Math.min(Technologies.SelectedEraID + 1, Technologies.Eras['SpaceAgeVenus']);
+            NextEraID = Math.min(Technologies.SelectedEraID + 1, Technologies.Eras.NextEra - 1);
 
         h.push('<div class="dark-bg" style="margin-bottom: 3px">');
 	        h.push('<div class="techno-head">');
@@ -272,14 +272,14 @@ let Technologies = {
         	h.push('</div>');
         h.push('</div>');
 
-        h.push('<table class="foe-table">');
+        h.push('<table class="foe-table exportable">');
 
         h.push('<thead>' +
             '<tr>' +
-            '<th colspan="2">' + i18n('Boxes.Technologies.Resource') + '</th>' +
-            '<th>' + i18n('Boxes.Technologies.DescRequired') + '</th>' +
-            '<th>' + i18n('Boxes.Technologies.DescInStock') + '</th>' +
-            '<th class="text-right">' + i18n('Boxes.Technologies.DescStillMissing') + '</th>' +
+            '<th colspan="2" columnname2="resource">' + i18n('Boxes.Technologies.Resource') + '</th>' +
+            '<th columnname="required">' + i18n('Boxes.Technologies.DescRequired') + '</th>' +
+            '<th columnname="instock">' + i18n('Boxes.Technologies.DescInStock') + '</th>' +
+            '<th columnname="remaining" class="text-right">' + i18n('Boxes.Technologies.DescStillMissing') + '</th>' +
             '</tr>' +
             '</thead>');
 
@@ -336,5 +336,16 @@ let Technologies = {
         h.push('</table');
 
         $('#technologiesBody').html(h.join(''));
-    }
+    },
+
+    /**
+    *
+    */
+    ShowSettingsButton: () => {
+        let h = [];
+        h.push(`<p class="text-center"><button class="btn btn-default" onclick="HTML.ExportTable($('#technologiesBody').find('.foe-table.exportable'), 'csv', 'technologies')">${i18n('Boxes.General.ExportCSV')}</button></p>`);
+        h.push(`<p class="text-center"><button class="btn btn-default" onclick="HTML.ExportTable($('#technologiesBody').find('.foe-table.exportable'), 'json', 'technologies')">${i18n('Boxes.General.ExportJSON')}</button></p>`);
+
+        $('#technologiesSettingsBox').html(h.join(''));
+    },
 };

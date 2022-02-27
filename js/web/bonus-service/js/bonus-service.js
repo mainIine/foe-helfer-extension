@@ -1,13 +1,12 @@
 /*
  * **************************************************************************************
+ * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
  *
- * Dateiname:                 bonus-service.js
- * Projekt:                   foe-chrome
- *
- * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              10.07.20, 15:44 Uhr
- *
- * Copyright © 2020
+ * See file LICENSE.md or go to
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
  *
  * **************************************************************************************
  */
@@ -41,13 +40,17 @@ FoEproxy.addHandler('OtherPlayerService', 'visitPlayer', (data, postData) => {
 FoEproxy.addHandler('BonusService', 'getLimitedBonuses', (data, postData) => {
 	BonusService.Bonuses = data['responseData'];
 
-	if($('#bonus-hud').length > 0){
+	FoEproxy.pushFoeHelperMessage('BonusUpdated');
+
+	if ($('#bonus-hud').length > 0) {
 		BonusService.CalcBonusData();
 	}
+});
 
-	if ($('#bluegalaxy').length > 0) {
-		BlueGalaxy.CalcBody();
-    }
+FoEproxy.addFoeHelperHandler('QuestsUpdated', data => {
+	if ($('#bonus-hud').length > 0) {
+		BonusService.CalcBonusData();
+	}
 });
 
 // Guildfights enter
@@ -197,7 +200,10 @@ let BonusService = {
 					si = $('<span />');
 
 				sp.attr({
-					class: `hud-btn`
+					class: `hud-btn`,
+					title: 'FoE Helper: '+i18n('Boxes.BonusService.'+bt[i]),
+				}).tooltip({
+					placement: 'left'
 				});
 
 				sb.attr({
@@ -256,16 +262,23 @@ let BonusService = {
 					a = parseInt(si.text());
 
 				// Bonus is empty
-				if(b['amount'] === undefined || b['amount'] <= 0){
+				if (b['amount'] === undefined || b['amount'] <= 0) {
 					si.closest('.hud-btn').addClass('hud-btn-red');
 					si.hide();
 				}
 
 				// Bonus ticker down, when changed
-				else if(a !== b['amount']) {
+				else if (a !== b['amount']) {
+					si.closest('.hud-btn').removeClass('hud-btn-red');
+					si.show();
+
 					si.text(b['amount']);
 
 					si.addClass('bonus-blink');
+
+					if (bt[i] === 'donequests') {
+						if (Settings.GetSetting('EnableSound')) Calculator.SoundFile.play();
+					}
 
 					setTimeout(()=>{
 						si.removeClass('bonus-blink');
@@ -284,6 +297,7 @@ let BonusService = {
 		let Ret = 0;
 		for (let i = 0; i < MainParser.Quests.length; i++) {
 			let Quest = MainParser.Quests[i];
+			if (Quest['category'] === 'outpost') continue;
 			if (Quest['state'] === 'collectReward') Ret += 1;
 		}
 		return Ret;

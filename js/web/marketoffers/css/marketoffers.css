@@ -1,0 +1,162 @@
+﻿/*
+ * **************************************************************************************
+ * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
+ *
+ * See file LICENSE.md or go to
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
+ *
+ * **************************************************************************************
+ */
+
+#MarketOffers {
+    top: 100px;
+    right: 100px;
+    width: 650px;
+}
+
+#MarketOffers #MarketOffersBody {
+    overflow-y: auto;
+    min-height: 400px;
+    max-height: 750px;
+}
+
+#MarketOffers #MarketOffersBody table th {
+    position: sticky;
+    top: 0;
+    cursor: pointer;
+    z-index: 1;
+    font-size: 85%;
+}
+
+#MarketOffers #MarketOffersBody td {
+    position: relative;
+    font-size: 85%;
+    vertical-align: middle;
+}
+
+#MarketOffers #MarketOffersBody td span.custom-option.era {
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+#MarketOffers #MarketOffersBody td span.custom-option:not(.era) {
+    padding-left: 20px;
+}
+
+#MarketOffers #MarketOffersBody .filters th {
+    text-align: center;
+}
+
+#MarketOffers #MarketOffersBody .filters select {
+    width: 160px;
+}
+
+#MarketOffers #MarketOffersBody td.goods-image {
+    padding: 0;
+    background-color: var(--black-50);
+    }
+
+#MarketOffers #MarketOffersBody .goods-sprite-50.sm {
+    width: 25px;
+    height: 25px;
+    text-align: center;
+}
+
+#MarketOffers #MarketOffersBody .goods-sprite-50.sm::before {
+    zoom: 0.7;
+    overflow: hidden;
+    position: static;
+    display: inline-block;
+}
+
+#MarketOffers #MarketOffersBody table .sorter-header .ascending:after {
+    content: "↑";
+    color: var(--text-bright);
+    left: 4px;
+    position: relative;
+}
+
+#MarketOffers #MarketOffersBody table .sorter-header .descending:after {
+    content: "↓";
+    color: var(--text-bright);
+    left: 4px;
+    position: relative;
+}
+
+#MarketOffersEvents {
+    top: 100px;
+    right: 100px;
+    width: 650px;
+}
+
+#MarketOffersEvents #MarketOffersEventsBody {
+    overflow-y: auto;
+    min-height: 400px;
+    max-height: 750px;
+}
+
+#MarketOffersEvents #MarketOffersEventsBody table th {
+    position: sticky;
+    top: 0;
+    cursor: pointer;
+    z-index: 1;
+    font-size: 85%;
+}
+
+#MarketOffersEvents #MarketOffersEventsBody td {
+    position: relative;
+    font-size: 85%;
+    vertical-align: middle;
+}
+
+#MarketOffersEvents #MarketOffersEventsBody td span.custom-option.era {
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+#MarketOffersEvents #MarketOffersEventsBody td span.custom-option:not(.era) {
+    padding-left: 20px;
+}
+
+#MarketOffersEvents #MarketOffersEventsBody .filters th {
+    text-align: center;
+}
+
+#MarketOffersEvents #MarketOffersEventsBody .filters select {
+    width: 160px;
+}
+
+#MarketOffersEvents #MarketOffersEventsBody td.goods-image {
+    padding: 0;
+    background-color: var(--black-50);
+}
+
+#MarketOffersEvents #MarketOffersEventsBody .goods-sprite-50.sm {
+    width: 25px;
+    height: 25px;
+    text-align: center;
+}
+
+#MarketOffersEvents #MarketOffersEventsBody .goods-sprite-50.sm::before {
+    zoom: 0.7;
+    overflow: hidden;
+    position: static;
+    display: inline-block;
+}
+
+#MarketOffersEvents #MarketOffersEventsBody table .sorter-header .ascending:after {
+    content: "↑";
+    color: var(--text-bright);
+    left: 4px;
+    position: relative;
+}
+
+#MarketOffersEvents #MarketOffersEventsBody table .sorter-header .descending:after {
+    content: "↓";
+    color: var(--text-bright);
+    left: 4px;
+    position: relative;
+}

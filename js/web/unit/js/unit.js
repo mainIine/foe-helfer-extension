@@ -1,14 +1,12 @@
 /*
  * **************************************************************************************
+ * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
  *
- * Dateiname:                 unit.js
- * Projekt:                   foe-chrome
- *
- * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              16.02.21, 23:02 Uhr
- * zuletzt bearbeitet:       16.02.21, 21:46 Uhr
- *
- * Copyright © 2021
+ * See file LICENSE.md or go to
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
  *
  * **************************************************************************************
  */
@@ -66,6 +64,7 @@ let Unit = {
 
 	Tabs: [],
 	TabsContent: [],
+	CurrentTab: 1,
 
 
 	/**
@@ -82,6 +81,7 @@ let Unit = {
 				title: i18n('Boxes.Units.Title'),
 				auto_close: true,
 				dragdrop: true,
+				resize: true,
 				minimize: true
 			};
 
@@ -352,7 +352,10 @@ let Unit = {
 
 		$('#UnitOverview').find('#UnitOverviewBody').html( h.join('') ).promise().done(function(){
 			Unit.BuildTimer();
-			$('.unit-tabs').tabslet({active: 1});
+			$('.unit-tabs').tabslet({active: Unit.CurrentTab});
+			$('.unit-tabs').on("_after", function() {
+				Unit.CurrentTab = $('.unit-tabs li.active').index() + 1;
+			});
 		});
 	},
 
@@ -421,13 +424,12 @@ let Unit = {
 	 * @constructor
 	 */
 	RefreshAlca: (data) => {
-		if (!Unit.alca)
-		{
+		if (!Unit.alca) {
 			Unit.alca = Object.values(MainParser.CityMapData).find(obj => (obj['cityentity_id'] === 'X_ProgressiveEra_Landmark1'))
 		}
 
 		// update next harvest time if pickup
-		if(data && data['updatedEntities'][0]['cityentity_id'] === 'X_ProgressiveEra_Landmark1')
+		if (data && data['updatedEntities'] && data['updatedEntities'][0] && data['updatedEntities'][0]['cityentity_id'] === 'X_ProgressiveEra_Landmark1')
 		{
 			Unit.NextHarvest = data['updatedEntities'][0]['state']['next_state_transition_at'];
 			Unit.BuildTimer();

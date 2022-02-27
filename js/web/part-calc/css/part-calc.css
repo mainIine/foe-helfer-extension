@@ -1,14 +1,12 @@
 /*
  * **************************************************************************************
+ * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
  *
- * Dateiname:                 part-calc.css
- * Projekt:                   foe-chrome
- *
- * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              27.12.19, 12:45 Uhr
- * zuletzt bearbeitet:       27.12.19, 12:45 Uhr
- *
- * Copyright © 2019
+ * See file LICENSE.md or go to
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
  *
  * **************************************************************************************
  */
@@ -111,8 +109,19 @@
 	padding: 0.2rem 0.4rem;
 }
 
+#OwnPartBox .btn-default.btn-tight {
+	padding: 0.2rem;
+}
+
 #OwnPartBox #up-to-level-up {
 	color: var(--text-bright);
+}
+
+#OwnPartBox .bottom-buttons {
+	padding: 0 0.3rem 0.3rem;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 }
 
 #OwnPartBox .black-bg {
@@ -178,13 +187,14 @@
 
 .OwnPartBoxBackground .outerArrow:before {
 	content: "";
-	width: 36px;
-	height: 36px;
-	background-position: 5px -52px;
+	width: 28px;
+	height: 28px;
 	position: absolute;
-	top: -13px;
-	left: -30px;
+	top: 51px;
+	left: -23px;
 	z-index: -1;
+	background: #895022;
+	border-radius: 3px 0 0 3px;
 }
 
 .OwnPartBoxBackground .outerArrow span.arrow {
@@ -192,7 +202,7 @@
 	height: 22px;
 	background-position: -77px -2px, -2px -26px;
 	position: absolute;
-	top: -6px;
+	top: 54px;
 	left: -20px;
 }
 
@@ -218,10 +228,9 @@
 	top: 0;
 	left: 55px;
 	padding: 0 15px;
-	border-width: 0 10px 10px 10px;
-	border-image-width: 0 28px 28px;
+	border-width: 0 5px 5px 5px;
 	opacity: 0;
-	border-radius: 0 0 15px 15px;
+	border-radius: 0 0 5px 5px;
 }
 
 .OwnPartBoxBackgroundBody > div > span:not(.btn-default) {
@@ -284,6 +293,17 @@
 	position: relative;
 }
 
+.OwnPartBoxBackground label.form-check-label-wide {
+	padding: 1px;
+	line-height: 1.4rem;
+	margin: 0 0 5px 0;
+	width: calc(2/3*100% - (1 - 1/3)*8px);
+	background-color: rgba(255,255,255, 0.07);
+	vertical-align: middle;
+	transition: background-color 0.2s linear;
+	position: relative;
+}
+
 .OwnPartBoxBackground label.form-check-label:nth-child(-n+3) {
 	margin-top: 0;
 }
@@ -298,6 +318,23 @@
 }
 
 .OwnPartBoxBackground label.form-check-label:hover {
+	background-color: rgba(255,255,255, 0.1);
+}
+
+.OwnPartBoxBackground label.form-check-label-wide:nth-child(-n+3) {
+	margin-top: 0;
+}
+
+.OwnPartBoxBackground label.form-check-label-wide:nth-child(3n) {
+	margin-right: 0;
+}
+
+.OwnPartBoxBackground label.form-check-label-wide span {
+	display: inline-block;
+	margin-left: 22px;
+}
+
+.OwnPartBoxBackground label.form-check-label-wide:hover {
 	background-color: rgba(255,255,255, 0.1);
 }
 

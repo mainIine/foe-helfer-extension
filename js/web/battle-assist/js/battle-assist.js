@@ -1,14 +1,12 @@
 /*
  * **************************************************************************************
+ * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
  *
- * Dateiname:                 battle-assist.js
- * Projekt:                   foe-chrome
- *
- * erstellt von:              Daniel Siekiera <daniel.siekiera@gmail.com>
- * erstellt am:	              15.09.20, 09:21 Uhr
- * zuletzt bearbeitet:        15.09.20, 09:18 Uhr
- *
- * Copyright © 2020
+ * See file LICENSE.md or go to
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
  *
  * **************************************************************************************
  */
@@ -40,7 +38,7 @@ FoEproxy.addHandler('BattlefieldService', 'all', (data, postData) => {
             alive.push(unit.unitTypeId);
         } else {
             const unitEra = Unit.Types.find(e => e.unitTypeId === unit.unitTypeId)?.minEra;
-            if (Technologies.Eras[unitEra] > CurrentEraID)
+            if (CurrentEraID && Technologies.Eras[unitEra] > CurrentEraID)
             	nextEraUnitDead = true;
         }
     }
