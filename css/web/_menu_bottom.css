@@ -14,44 +14,37 @@
 #foe-helper-hud {
 	position: absolute;
 	left: 1000px;
+	bottom: 0;
 	z-index: 150;
 	width: 270px;
-	height: 46px;
-	box-shadow: 0 0 5px black;
-	border-radius: 6px 6px 0 0;
-	bottom: -2px;
+	height: 44px;
+	box-shadow: 0 0 1px 1px var(--black-50);
+	border-radius: 2px 2px 0 0;
 	transition: all 0.1s ease;
 	font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
 	font-size: 0.75rem;
 	font-weight: 400;
-	border-left: 1px solid #2e1206;
-	border-right: 1px solid #2e1206;
-}
-
-.hud-btn-left::before,
-.hud-btn-left-active::before,
-.hud-btn-right::before,
-.hud-btn-right-active::before {
-	background: url('../images/hud/menu-sm.png') top left no-repeat;
+	border: 2px solid #624d3a;
+	border-bottom-width: 0;
+	background-color: #553419;
+	box-sizing: border-box;
 }
 
 #foe-helper-hud-wrapper {
 	width: 220px;
-	height: 45px;
+	height: inherit;
 	position: absolute;
 	bottom: 0;
 	left: 0;
 	overflow: hidden;
-	background-color: #553419;
-    border-top: 1px solid #2e1206;
 }
 
 #foe-helper-hud-slider {
 	position: absolute;
 	left: 0;
-	bottom: 1px;
+	top: 2px;
 	transition: left 0.7s ease-in-out;
-	height: 43px;
+	height: inherit;
 }
 
 .hud-btn-left,
@@ -59,7 +52,7 @@
 .hud-btn-left::before,
 .hud-btn-right::before {
 	position: absolute;
-	height: 46px;
+	height: inherit;
 	width: 14px;
 	right: 0;
 	bottom: 0;
@@ -68,15 +61,20 @@
 	box-sizing: border-box;
 }
 
+.hud-btn-left, .hud-btn-right {
+	border: 2px solid #624d3a;
+	border-bottom-width: 0;
+}
+
 .hud-btn-left {
 	left: 0;
 	border-radius: 5px 0 0 0;
-	border: 1px solid #2e1206;
+	box-shadow: 0 -1px 0 var(--black-50), -1px 0 0 var(--black-50);
 }
 
 .hud-btn-right {
 	border-radius: 0 5px 0 0;
-	border: 1px solid #2e1206;
+	box-shadow: 0 -1px 0 var(--black-50), 1px 0 0 var(--black-50);
 }
 
 .hud-btn-left, .hud-btn-right, .hud-btn-left::before, .hud-btn-right::before {
@@ -88,12 +86,12 @@
 	background: linear-gradient(to bottom, #c38236, #894422);
 }
 
-.hud-btn-right.hud-btn-right-active {
+.hud-btn-right-active {
 	right: -13px;
 }
 
-.hud-btn-left.hud-btn-left-active {
-	left: -13px;
+.hud-btn-left-active {
+	left: -14px;
 }
 
 .hud-btn-right:hover, .hud-btn-left:hover {
@@ -109,7 +107,7 @@
 	border-bottom: 12px solid transparent;
 	position: relative;
 	top: 25%;
-	left: 3px;
+	left: 2px;
 }
 
 .hud-btn-left-active::before {
@@ -165,65 +163,4 @@
 	right: -2px !important;
 	line-height: 10px !important;
 	font-size: 0.7rem !important;
-}
-
-
-/* ---------------------------------------------------------------------------------------------------------------------
-Tooltip */
-
-.toolTipWrapper {
-	text-align: left;
-	display: none;
-	position: absolute;
-	width: 180px;
-	right: 0;
-	bottom: 70px;
-	border: 10px solid transparent;
-	background-color: #5e5a4e;
-	border-image: url('../images/hud/tooltip_bg.png') 10px round;
-	z-index: 999;
-	transform: translateX(-50%);
-	font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
-	font-size: 0.9rem;
-	font-weight: 400;
-	color: #f2ede1;
-	padding: 3px;
-	pointer-events: none;
-	user-select: none;
-}
-
-.toolTipWrapper::after {
-	content: '';
-	width: 18px;
-	height: 31px;
-	display: inline-block;
-	position: absolute;
-	bottom: -26px;
-	transform: translateX(-50%);
-	left: 50%;
-	background: url('../images/hud/tooltip_bg_arrow.png') center center no-repeat;
-}
-
-.toolTipWrapper .tooltip-error {
-	color: #f79090;
-}
-
-.toolTipWrapper .toolTipHeader {
-	color: #bdc5cb;
-	background-color: #313d45;
-	box-shadow: inset 0 0 2px var(--black);
-	margin: -7px -7px 2px -7px;
-	padding: 0 5px 1.3px;
-}
-
-.toolTipWrapper .tooltip-error {
-	color: #f79090;
-}
-
-.toolTipWrapper .toolTipHeader {
-	color: #bdc5cb;
-	background-color: #313d45;
-	box-shadow: inset 0 0 2px var(--black);
-	margin: -7px -7px 2px -7px;
-	padding: 0 5px 1.3px;
 }
