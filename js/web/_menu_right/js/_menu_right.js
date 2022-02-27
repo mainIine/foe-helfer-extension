@@ -225,12 +225,9 @@ let _menu_right = {
 
 		_menu.ActiveSlide++;
 
-		if (_menu.ActiveSlide*_menu.HudHeight > $('#foe-helper-hud-slider').height()) {
-			let toScroll = $('#foe-helper-hud-slider').height() - (_menu.ActiveSlide-1)*_menu.HudHeight;
-			_menu.MenuScrollTop -= toScroll;
-		}
-		else
-			_menu.MenuScrollTop -= _menu.HudHeight;
+		_menu.MenuScrollTop -= _menu.HudHeight;
+		if (_menu.ActiveSlide * _menu.HudHeight > $('#foe-helper-hud-slider').height())
+			_menu.MenuScrollTop = - (($('#foe-helper-hud-slider').height()/_menu.HudHeight) - 1) *_menu.HudHeight;
 
 		$('#foe-helper-hud-slider').css({
 			'top': _menu.MenuScrollTop + 'px'
