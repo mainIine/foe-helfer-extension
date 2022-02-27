@@ -13,7 +13,7 @@
 
 let _menu_bottom = {
 
-	btnSize: 41,
+	btnSize: 45,
 
 	/**
 	 * Create the div holders and put them to the DOM
