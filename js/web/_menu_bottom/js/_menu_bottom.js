@@ -244,7 +244,7 @@ let _menu_bottom = {
 
 		_menu.MenuScrollLeft -= _menu.HudWidth;
 		if (_menu.ActiveSlide * _menu.HudWidth > $('#foe-helper-hud-slider').width())
-			_menu.MenuScrollLeft -= $('#foe-helper-hud-slider').width() - (_menu.ActiveSlide) * _menu.HudWidth;
+			_menu.MenuScrollLeft = - (($('#foe-helper-hud-slider').width()/_menu.HudWidth) - 1) *_menu.HudWidth;
 
 
 		$('#foe-helper-hud-slider').css({
