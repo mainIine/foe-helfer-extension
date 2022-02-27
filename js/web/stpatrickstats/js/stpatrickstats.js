@@ -13,9 +13,20 @@
 
 FoEproxy.addHandler('IdleGameService', 'getState', (data, postData) => {
 
-    // Don't create a new box while another one is still open
+	// Don't create a new box while another one is still open
     if ($('#stPatrickDialog').length === 0) {
 		stPatrick.ShowDialog();
+	}
+
+
+	for (x in stPatrick.stPat) {
+		stPatrick.stPat[x].level = 0;
+		stPatrick.stPat[x].manager = 0;
+		stPatrick.stPat[x].production = 0;
+		stPatrick.stPat[x].degree = 0;
+		stPatrick.stPat[x].next = 0;
+		stPatrick.stPat[x].need = 0;
+		stPatrick.stPat[x].ndegree = 0;
 	}
 
 	for (let x in data.responseData.characters) {
@@ -120,7 +131,7 @@ FoEproxy.addMetaHandler('idle_game', (data, postData) => {
 
 let stPatrick = {
 
-	stPat: {
+	stPat : {
 		workshop_1 : {level:0, manager:0, baseData: null, production:0, degree:0, next:0, need:0, ndegree:0, type: 'work'},
 		workshop_2 : {level:0, manager:0, baseData: null, production:0, degree:0, next:0, need:0, ndegree:0, type: 'work'},
 		workshop_3 : {level:0, manager:0, baseData: null, production:0, degree:0, next:0, need:0, ndegree:0, type: 'work'},
@@ -129,7 +140,7 @@ let stPatrick = {
 		transport_1 : {level:0, manager:0, baseData: null, production:0, degree:0, next:0, need:0, ndegree:0, type: 'ship'},
 		market_1 : {level:0, manager:0, baseData: null, production:0, degree:0, next:0, need:0, ndegree:0, type: 'fest'}
 	},
-
+    
 	Tasks : {},
 
 	Tasklist: [],
