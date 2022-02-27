@@ -846,7 +846,7 @@ let GildFights = {
 			h.push('</thead><tbody class="gbg-playerlog-group">');
 
 			dailyFights.forEach(day => {
-				let id = moment.unix(day.time).format(i18n('YYYYMMDD'));
+				let id = moment.unix(day.time).format('YYYYMMDD');
 				let sum = (day.battles + day.negotiations * 2);
 				h.push('<tr id="gbgdetail_' + id + '" data-gbground="' + gbground + '" data-player="' + player_id + '" data-id="' + id + '" class="hasdetail">');
 				h.push(`<td class="is-number" data-number="${day.time}">${moment.unix(day.time).format(i18n('Date'))}</td>`);
