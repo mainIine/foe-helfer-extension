@@ -29,7 +29,7 @@ FoEproxy.addHandler('IdleGameService', 'getState', (data, postData) => {
 		stPatrick.stPat[x].ndegree = 0;
 	}
 	
-	stPatrick.targets = JSON.parse(localStorage.getItem('stPatrickSettingsTargets') || '{workshop_1 : 0, workshop_2 : 0, workshop_3 : 0, workshop_4 : 0, workshop_5 : 0, transport_1 : 0, market_1 : 0},');
+	stPatrick.targets = JSON.parse(localStorage.getItem('stPatrickSettingsTargets') || '{"workshop_1": 0, "workshop_2": 0, "workshop_3": 0, "workshop_4": 0, "workshop_5": 0, "transport_1": 0, "market_1": 0}');
 
 	for (let x in data.responseData.characters) {
 		if (!Object.hasOwnProperty.call(data.responseData.characters, x)) continue;
