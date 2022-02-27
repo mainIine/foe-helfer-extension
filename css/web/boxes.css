@@ -410,7 +410,7 @@ p {
 	background-image: url('../images/menu/market.png');
 }
 
-[id$=moppelhelper-Btn] span {
+[id$=moppelHelper-Btn] span {
 	background-image: url('../images/menu/polivation.png');
 }
 
@@ -418,7 +418,7 @@ p {
 	background-image: url('../images/menu/forgepoints.png');
 }
 
-[id$=greatbuildings-Btn] span {
+[id$=greatBuildings-Btn] span {
 	background-image: url('../images/menu/greatbuildings.png');
 }
 
@@ -426,7 +426,7 @@ p {
 	background-image: url('../images/menu/productions.png');
 }
 
-[id$=productionsrating-Btn] span {
+[id$=productionsRating-Btn] span {
 	background-image: url('../images/menu/productionsrating.png');
 }
 
@@ -454,7 +454,7 @@ p {
 	background-image: url('../images/menu/map.png');
 }
 
-[id$=citymap-Btn] span {
+[id$=cityMap-Btn] span {
 	background-image: url('../images/menu/citymap.png');
 }
 
@@ -494,7 +494,7 @@ p {
 	background-image: url('../images/menu/notices.png');
 }
 
-[id$=bluegalaxy-Btn] span {
+[id$=blueGalaxy-Btn] span {
 	background-image: url('../images/menu/BlueGalaxy.png');
 }
 
@@ -502,7 +502,7 @@ p {
 	background-image: url('../images/menu/gex.png');
 }
 
-[id$=gildfight-Btn] span {
+[id$=gildFight-Btn] span {
 	background-image: url('../images/menu/gbg.png');
 }
 
@@ -510,15 +510,11 @@ p {
 	background-image: url('../images/menu/investhistory.png');
 }
 
-[id$=guildmemberstat-Btn] span {
+[id$=guildMemberstat-Btn] span {
 	background-image: url('../images/menu/guildmemberstat.png');
 }
 
-						  
-													   
- 
-
-[id$=gexstat-Btn] span {
+[id$=gexStat-Btn] span {
 	background-image: url('../images/menu/gex.png');
 }
 

@@ -65,10 +65,18 @@
 	bottom: 0;
 	display: block;
 	z-index: 1;
+	box-sizing: border-box;
 }
 
 .hud-btn-left {
 	left: 0;
+	border-radius: 5px 0 0 0;
+	border: 1px solid #2e1206;
+}
+
+.hud-btn-right {
+	border-radius: 0 5px 0 0;
+	border: 1px solid #2e1206;
 }
 
 .hud-btn-left, .hud-btn-right, .hud-btn-left::before, .hud-btn-right::before {
@@ -77,43 +85,39 @@
 
 .hud-btn-left-active, .hud-btn-right-active, .hud-btn-left-active::before, .hud-btn-right-active::before {
 	display: block;
+	background: linear-gradient(to bottom, #c38236, #894422);
 }
 
 .hud-btn-right.hud-btn-right-active {
-	right: -12px;
+	right: -13px;
 }
 
 .hud-btn-left.hud-btn-left-active {
-	left: -12px;
+	left: -13px;
+}
+
+.hud-btn-right:hover, .hud-btn-left:hover {
+	background: linear-gradient(to bottom, #d8cf56, #d58f4a);
 }
 
 .hud-btn-left::before,
 .hud-btn-right::before {
 	content: '';
-}
-
-.hud-btn-left::before {
-	background-position: -254px -65px;
-	transform: scaleX(-1);
-}
-
-.hud-btn-right::before {
-	background-position: -254px -65px;
+	width: 0;
+	height: 0;
+	border-top: 12px solid transparent;
+	border-bottom: 12px solid transparent;
+	position: relative;
+	top: 25%;
+	left: 3px;
 }
 
 .hud-btn-left-active::before {
-	background-position: -256px -123px;
-}
-.hud-btn-left-active:hover::before {
-	background-position: -240px -65px;
+	border-right: 6px solid #48291b;
 }
 
 .hud-btn-right-active::before {
-	background-position: -256px -123px;
-}
-
-.hud-btn-right-active:hover::before {
-	background-position: -240px -65px;
+	border-left: 6px solid #48291b;
 }
 
 .hud-btn {
