@@ -588,7 +588,7 @@ let _menu = {
 	 * @returns {*|jQuery}
 	 */
 	stats_Btn: () => {
-		let btn_StatsBG = _menu.MakeButton('stats', i18n('Menu.Stats.Title'), i18n('Menu.Stats.Desc'), 'stats-Btn');
+		let btn_StatsBG = _menu.MakeButton('stats', i18n('Menu.Stats.Title'), i18n('Menu.Stats.Desc'));
 
 		let btn_Stats = $('<span />').on('click', function() {
 			Stats.page = 1;
