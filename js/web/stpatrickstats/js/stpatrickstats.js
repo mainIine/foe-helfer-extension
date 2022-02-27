@@ -275,6 +275,7 @@ let stPatrick = {
 			selectinput.setAttribute("data-replace", this.id);
 			selectinput.setAttribute("style", "width: 80px");
 			selectinput.setAttribute("onkeyup", "stPatrick.updateTarget(event)");
+			selectinput.setAttribute("onfocusout", "stPatrick.removeInput(event)");
 			this.style.display = "none";
 			this.parentElement.append(selectinput);
 			selectinput.focus();
@@ -288,11 +289,24 @@ let stPatrick = {
 			stPatrick.saveTargets();
 		}
 
-		if (event.key != 'Enter' && event.key != 'Escape') return
+		if (event.key != 'Enter' && event.key != 'Escape') return;
 		$('#'+event.srcElement.dataset.replace)[0].style.display = "block";
+		event.srcElement.setAttribute("onfocusout", "");
 		event.srcElement.remove();
 		stPatrick.stPatrickUpdateDialog();
 			
+	},
+
+	removeInput: (event) => {
+		
+		stPatrick.targets[event.srcElement.dataset.station] = Number(event.srcElement.value);
+		stPatrick.saveTargets();
+		
+		$('#'+event.srcElement.dataset.replace)[0].style.display = "block";
+		
+		event.srcElement.remove();
+
+		stPatrick.stPatrickUpdateDialog();
 	},
 
 	stPatrickUpdateDialog: () => {
