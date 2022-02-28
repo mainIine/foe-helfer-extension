@@ -21,7 +21,7 @@ FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, post
         newSound.id = "betterMusic1";
         newSound.volume = 0;
         newSound.loop = true;
-        newSound.onloadedmetadata = function () {betterMusic.setEvent()}
+        newSound.onloadedmetadata = function () {betterMusic.setEvent(id="betterMusic1")}
         $('#musicControl-Btn').append(newSound);
         betterMusic.Ids.push(newSound.id);
         
@@ -29,7 +29,7 @@ FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, post
         newSound2.id = "betterMusic2";
         newSound2.volume = 0;
         newSound2.loop = true;
-        newSound2.onloadedmetadata = function () {betterMusic.setEvent()}
+        newSound2.onloadedmetadata = function () {betterMusic.setEvent(id="betterMusic2")}
         $('#musicControl-Btn').append(newSound2);
         betterMusic.Ids.push(newSound2.id);
         
@@ -37,17 +37,9 @@ FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, post
         newSound3.id = "betterMusic3";
         newSound3.volume = 0;
         newSound3.loop = true;
-        newSound3.onloadedmetadata = function () {betterMusic.setEvent()}
+        newSound3.onloadedmetadata = function () {betterMusic.setEvent(id="betterMusic3")}
         $('#musicControl-Btn').append(newSound3);
         betterMusic.Ids.push(newSound3.id);
-        
-        let newSound4 = document.createElement("audio");
-        newSound4.id = "betterMusic4";
-        newSound4.volume = 0;
-        newSound4.loop = true;
-        newSound4.onloadedmetadata = function () {betterMusic.setEvent()}
-        $('#musicControl-Btn').append(newSound4);
-        betterMusic.Ids.push(newSound4.id);
         
         betterMusic.loadSettings();
         
@@ -270,7 +262,7 @@ let betterMusic = {
         let htmltext = ``;
         htmltext += `<table id="musicSettingsGeneral" class="musicSettings"><caption>General Settings</caption><tr>`;
         htmltext += `<td><input id="musicSettingsVolume" type="range" min="0" max="1" step ="0.05" value="${betterMusic.Settings.Volume}" oninput="betterMusic.newVolume(Number(this.value))"><br><label for="musicSettingsVolume">Volume</label></td>`;
-        htmltext += `<td><input id="musicSettingsPlayOnClose" type="checkbox" ${betterMusic.Settings.PlayOnStart ? 'checked="checked"' : ''}" oninput="betterMusic.Settings.PlayOnStart = this.checked"><label for="musicSettingsPlayOnClose">start playing on game start</label></td></tr><tr>`;
+        htmltext += `<td><input id="musicSettingsPlayOnClose" type="checkbox" ${betterMusic.Settings.PlayOnStart ? 'checked="checked"' : ''}" oninput="betterMusic.Settings.PlayOnStart = this.checked"><label for="musicSettingsPlayOnClose">play automatically</label></td></tr><tr>`;
         
         htmltext += `</tr></table><table id="musicSettingsTitle" class="musicSettings"><caption>Title Settings</caption><tr>`;
         htmltext += `<td><input id="musicSettingsTransitionTime" type="range" min="0" max="5000" step ="500" value="${betterMusic.Settings.TransitionTime}" oninput="betterMusic.Settings.TransitionTime = Number(this.value)"><br><label for="musicSettingsTransitionTime">Transition between Titels</label></td>`;
@@ -346,9 +338,12 @@ let betterMusic = {
         if ($SoundC[0].src == MainParser.InnoCDN + 'assets/sounds/shared/theme/'+ newTrack +'.ogg') {
         
             betterMusic.Ids.unshift($SoundC[0].id);
-            betterMusic.setEvent(0);
+            betterMusic.setEvent($SoundC[0].id, 0);
         
         } else {
+            
+            let elem = $(`#${betterMusic.Ids[1]}`)[0];
+            if (!(!elem)) elem.pause();
             
             betterMusic.Ids.push($SoundC[0].id);
             $SoundC.animate({volume: 0}, transition);
@@ -383,7 +378,7 @@ let betterMusic = {
         $('#musicControl-Btn').addClass('musicmuted');
         
         if (!(e?.relatedTarget?.classList.contains('betterMusicTitle'))) {
-            let elem= $(`#${betterMusic.Ids[0]}`)[0]
+            let elem= $(`#${betterMusic.Ids[0]}`)[0];
             if (!elem) return;
             elem.pause();
             elem.src = "";
@@ -397,16 +392,14 @@ let betterMusic = {
         betterMusic.playRandom(betterMusic.Scenes[betterMusic.currentScene].TitleList);    
     },
 
-    setEvent: (transition = betterMusic.Settings.TransitionTime) => {
+    setEvent: (id, transition = betterMusic.Settings.TransitionTime) => {
         if (!betterMusic.playStatus) return;
-        let $SoundC = $(`#${betterMusic.Ids[0]}`);
+        let $SoundC = $(`#${id}`);
         let timeout = Math.floor($SoundC[0].duration * 1000 - transition);
         if (timeout != 'NaN') {
             clearTimeout(betterMusic.nextEvent);
             betterMusic.nextEvent = setTimeout(function() {betterMusic.TrackSelector()}, timeout);
         }
-        
-        
     },
 
     setScene: (scene) => {
@@ -450,7 +443,7 @@ let betterMusic = {
     loadSettings: ()=> {
 
 		tempSettings = JSON.parse(localStorage.getItem('betterMusicSettings') || '{}');
-        betterMusic.Settings = betterMusic.update(betterMusic.Settings,tempSettings)
+        betterMusic.Settings = betterMusic.update(betterMusic.Settings,tempSettings);
 
     },
     
@@ -460,7 +453,7 @@ let betterMusic = {
     },
     
     initialize: (value=10000) => {
-        clearTimeout(betterMusic.nextEvent);
+        //clearTimeout(betterMusic.nextEvent);
         betterMusic.nextEvent = setTimeout(function() {betterMusic.TrackSelector()}, value);
     },
 
