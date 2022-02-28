@@ -18,9 +18,9 @@ FoEproxy.addHandler('TradeService', 'getTradeOffers', (data, postData) => {
     if (requestMethod === 'getTradeOffers' || requestMethod === 'acceptOfferById') {
         Market.Trades = data.responseData;
 
-        if ($('#marketoffers-Btn').hasClass('hud-btn-red')) {
-            $('#marketoffers-Btn').removeClass('hud-btn-red');
-            $('#marketoffers-Btn-closed').remove();
+        if ($('#marketOffers-Btn').hasClass('hud-btn-red')) {
+            $('#marketOffers-Btn').removeClass('hud-btn-red');
+            $('#marketOffers-Btn-closed').remove();
         }
     }
 });
@@ -31,6 +31,8 @@ FoEproxy.addHandler('TradeService', 'getTradeOffers', (data, postData) => {
  *
  */
 let MarketOffers = {
+    OffersCounts: [],
+    NeedCounts: [],
     OffersSums: [],
     NeedSums: [],
 
@@ -61,6 +63,58 @@ let MarketOffers = {
 
         $('#MarketOffers').on('click', '.button-events', function () {
             MarketOffers.ShowEvents(false);
+        });
+
+        $('#MarketOffers').on('click', '.btn-filter-offer', function () {
+            let GoodIndex = parseFloat($(this).data('value'));
+
+            Market.TradePartnerNeighbor = false;
+            Market.TradePartnerGuild = false;
+            Market.TradePartnerFriend = false;
+            Market.ShowOwnOffers = true;
+
+            Market.TradeForHigher = true;
+            Market.TradeForEqual = true;
+            Market.TradeForLower = true;
+
+            Market.TradeAdvantage = true;
+            Market.TradeFairStock = true;
+            Market.TradeFair = true;
+            Market.TradeDisadvantage = true;
+
+            Market.Offer = 6 * Math.floor(GoodIndex/5) + 2 + GoodIndex%5;
+            Market.OfferSelect = GoodsList[GoodIndex]['name'];
+
+            Market.Need = 0;
+            Market.NeedSelect = null;
+
+            Market.Show(true);
+        });
+
+        $('#MarketOffers').on('click', '.btn-filter-need', function () {
+            let GoodIndex = parseFloat($(this).data('value'));
+
+            Market.TradePartnerNeighbor = false;
+            Market.TradePartnerGuild = false;
+            Market.TradePartnerFriend = false;
+            Market.ShowOwnOffers = true;
+
+            Market.TradeForHigher = true;
+            Market.TradeForEqual = true;
+            Market.TradeForLower = true;
+
+            Market.TradeAdvantage = true;
+            Market.TradeFairStock = true;
+            Market.TradeFair = true;
+            Market.TradeDisadvantage = true;
+
+            Market.Offer = 0;
+            Market.OfferSelect = null;
+
+            Market.Need = 6 * Math.floor(GoodIndex / 5) + 2 + GoodIndex % 5;
+            Market.NeedSelect = GoodsList[GoodIndex]['name'];
+
+            Market.Show(true);
         });
 
         MarketOffers.CalcBody();
@@ -95,6 +149,8 @@ let MarketOffers = {
                 Era = Technologies.Eras[CurrentGood['era']],
                 GoodID = CurrentGood['id'],
                 Inventory = ResourceStock[GoodID],
+                OfferCount = OfferCounts[GoodID],
+                NeedCount = NeedCounts[GoodID],
                 OfferSum = OfferSums[GoodID],
                 NeedSum = NeedSums[GoodID];
 
@@ -103,8 +159,8 @@ let MarketOffers = {
             h.push('<td class="goods-image"><span class="goods-sprite-50 sm ' + GoodID + '"></span></td>');
             h.push('<td data-text="' + CurrentGood['name'].toLowerCase().replace(/[\W_ ]+/g, "") + '"><strong>' + CurrentGood['name'] + '</strong></td>');
             h.push('<td class="is-number" data-number="' + Inventory + '">' + HTML.Format(Inventory) + '</td>');
-            h.push('<td class="is-number" data-number="' + OfferSum + '">' + HTML.Format(OfferSum) + '</td>');
-            h.push('<td class="is-number" data-number="' + NeedSum + '">' + HTML.Format(NeedSum) + '</td>');
+            h.push('<td class="is-number" data-number="' + OfferSum + '">' + (OfferCount > 0 ? '<button class="btn btn-default btn-filter-offer" data-value="' + i + '" style="white-space:nowrap">' + HTML.Format(OfferSum) + ' (' + OfferCount + ')' + '</button>' : '-') + '</td>');
+            h.push('<td class="is-number" data-number="' + NeedSum + '">' + (NeedCount > 0 ? '<button class="btn btn-default btn-filter-need" data-value="' + i + '" style="white-space:nowrap">' + HTML.Format(NeedSum) + ' (' + NeedCount + ')' + '</button>' : '-') + '</td>');
             h.push('<td class="is-number" data-number="' + (Inventory + OfferSum) + '">' + HTML.Format(Inventory + OfferSum) + '</td>');
             h.push('<td class="is-number" data-number="' + NeedSum + '">' + HTML.Format(Inventory + NeedSum) + '</td>');
             
@@ -121,12 +177,16 @@ let MarketOffers = {
      * 
      * */
     CalcTradeSums: () => {
+        OfferCounts = [];
+        NeedCounts = [];
         OfferSums = [];
         NeedSums = [];
 
         for (let i = 0; i < GoodsList.length; i++) {
             let GoodID = GoodsList[i]['id'];
 
+            OfferCounts[GoodID] = 0;
+            NeedCounts[GoodID] = 0;
             OfferSums[GoodID] = 0;
             NeedSums[GoodID] = 0;
         }
@@ -140,6 +200,8 @@ let MarketOffers = {
 
             if (!Trade['merchant']['is_self']) continue;
 
+            OfferCounts[OfferGood] += 1;
+            NeedCounts[NeedGood] += 1;
             OfferSums[OfferGood] += OfferAmount;
             NeedSums[NeedGood] += NeedAmount;
         }
@@ -274,7 +336,7 @@ let MarketOffers = {
             h.push('<td class="is-number" data-number="' + Event['offer']['value'] + '"><strong class="td-tooltip" title="' + HTML.i18nTooltip(OfferTT) + '">' + Event['offer']['value'] + '</strong></td>');
 
             h.push('<td class="goods-image"><span class="goods-sprite-50 sm ' + GoodsData[NeedGoodID]['id'] + '"></span></td>');
-            h.push('<td data-text="' + GoodsData[OfferGoodID]['name'].toLowerCase().replace(/[\W_ ]+/g, "") + '"><strong class="td-tooltip" title="' + HTML.i18nTooltip(NeedTT) + '">' + GoodsData[NeedGoodID]['name'] + '</strong></td>');
+            h.push('<td data-text="' + GoodsData[NeedGoodID]['name'].toLowerCase().replace(/[\W_ ]+/g, "") + '"><strong class="td-tooltip" title="' + HTML.i18nTooltip(NeedTT) + '">' + GoodsData[NeedGoodID]['name'] + '</strong></td>');
             h.push('<td class="is-number" data-number="' + Event['need']['value'] + '"><strong class="td-tooltip" title="' + HTML.i18nTooltip(NeedTT) + '">' + Event['need']['value'] + '</strong></td>');
 
             h.push('<td class="text-center" data-number="' + Event['offer']['value'] / Event['need']['value'] + '">' + HTML.Format(MainParser.round(Event['offer']['value'] / Event['need']['value'] * 100) / 100) + '</td>');
