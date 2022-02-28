@@ -1187,7 +1187,7 @@ let HelperBeta = {
 	},
 	menu: [
 		'unitsGex',
-		'marketoffers',
+		'marketOffers',
 		'discord',
 	],
 	active: JSON.parse(localStorage.getItem('HelperBetaActive'))
