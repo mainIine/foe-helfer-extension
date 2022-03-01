@@ -199,9 +199,6 @@ let HiddenRewards = {
 
 
 	SetCounter: ()=> {
-        console.log(HiddenRewards.FilteredCache);
-        console.log(HiddenRewards.FilteredCache2);
-        
         let count = HiddenRewards.FilteredCache?.length || 0;
         if (Settings.GetSetting('ExcludeRelics')) count = HiddenRewards.FilteredCache2?.length || 0;
         $('#hidden-reward-count').text(count).show();
