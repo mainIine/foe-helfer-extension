@@ -887,13 +887,13 @@ FP-Bar */
 .window-head {
 	display: flex;
 	justify-content: space-between;
-	background: linear-gradient(#652518, #44150a);
+	align-items: center;
+	background: linear-gradient(0deg, #44150a, #48170c, #4c190e, #501b10, #541d12, #581f13, #5d2115, #612316);
 	box-shadow: inset 0 1px 0 #652518, inset 0 2px 0 #853427;
-	padding: 6px;
+	padding: 0.4rem;
 	border-bottom: 2px solid #895022;
 	border-radius: 3px 3px 0 0;
 	box-sizing: border-box;
-	height: 36px;
 }
 
 .closed .window-head {
@@ -1059,7 +1059,6 @@ FP-Bar */
 	right: -7px;
 	cursor: nwse-resize;
 	background: url('../images/hud/wingrip.png') no-repeat;
-	cursor: url('../images/cursor_hover.cur'), auto !important;
 }
 
 .window-grippy:active {
