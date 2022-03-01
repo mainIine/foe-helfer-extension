@@ -654,12 +654,12 @@ let _menu = {
 		let btn = _menu.MakeButton(
 			'marketOffers',
 			i18n('Menu.MarketOffers.Title'),
-			'<em id="marketoffers-Btn-closed" class="tooltip-error">' + i18n('Menu.MarketOffers.Warning') + '<br></em>' + i18n('Menu.MarketOffers.Desc'),
+			'<em id="marketOffers-Btn-closed" class="tooltip-error">' + i18n('Menu.MarketOffers.Warning') + '<br></em>' + i18n('Menu.MarketOffers.Desc'),
 			true
 		);
 
 		let btn_MarketOffers = $('<span />').bind('click', function () {
-			if ($('#marketoffers-Btn').hasClass('hud-btn-red') === false) {
+			if ($('#marketOffers-Btn').hasClass('hud-btn-red') === false) {
 				MarketOffers.Show(false);
 			}
 		});
