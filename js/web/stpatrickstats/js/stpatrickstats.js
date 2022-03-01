@@ -53,6 +53,10 @@ FoEproxy.addHandler('IdleGameService', 'getState', (data, postData) => {
 	stPatrick.Progress = Number(data.responseData.idleCurrencyAmount.value)||0;
 	stPatrick.ProgressDegree = Number(data.responseData.idleCurrencyAmount.degree)||0;
 
+	for (let t of data.responseData.taskHandler.inProgressTasks) {
+		stPatrick.Taskprogress[t.id] = {value:t.currentProgress.value, degree:t.currentProgress.degree || 0};
+    }
+
 	stPatrick.stPatrickUpdateDialog();
 });
 
@@ -140,6 +144,8 @@ let stPatrick = {
 	Tasks : {},
 
 	Tasklist: [],
+
+	Taskprogress:[],
 
 	Progress: 0,
 	ProgressDegree: 0,
@@ -230,7 +236,12 @@ let stPatrick = {
 		htmltext += `<td id="stPatmarket_1" class="align-right"></td>`;
 		htmltext += `<td id="stPatmarket_1Time" class="align-left"></td></tr>`;
         htmltext += `</table>`;
-        htmltext += `<table id="stPatTasks" class="foe-table" style="width:100%"><tr><th onclick="stPatrick.hide('#stPatTasks')">${i18n('Boxes.stPatrick.UpcomingTasks')}</th></tr>`;
+        htmltext += `<table id="stPatTasksActive" class="foe-table" style="width:100%"><tr><th colspan="2" onclick="stPatrick.hide('#stPatTasksActive')">${i18n('Boxes.stPatrick.ActiveTasks')}</th></tr>`;
+		htmltext += `<tr><td id="stPatTask0"></td><td id="time0"></td></tr>`;
+        htmltext += `<tr><td id="stPatTask1"></td><td id="time1"></td></tr>`;
+        htmltext += `<tr><td id="stPatTask2"></td><td id="time2"></td></tr>`;
+        htmltext += `</table>`;
+		htmltext += `<table id="stPatTasks" class="foe-table" style="width:100%"><tr><th onclick="stPatrick.hide('#stPatTasks')">${i18n('Boxes.stPatrick.UpcomingTasks')}</th></tr>`;
 		htmltext += `<tr><td id="stPatTask3"></td></tr>`;
         htmltext += `<tr><td id="stPatTask4"></td></tr>`;
         htmltext += `<tr><td id="stPatTask5"></td></tr>`;
@@ -380,6 +391,38 @@ let stPatrick = {
 		$('#stPatFest').attr('title', `${stPatrick.bigNum(fest)} ${stPatrick.stPatNumTitles[festd]}`);
 
 		let i = Math.min(stPatrick.Tasklist.length, 9);
+
+		for (let t = 0;t<3;t++) {
+			$('#stPatTask'+ t).text(``);
+			$('#stPatTask'+ t).addClass('hide');
+			$('#time'+ t).text(``);
+			$('#time'+ t).addClass('hide');
+			if (t >= i) continue;
+
+			let Task = stPatrick.Tasks[stPatrick.Tasklist[t]];
+			console.log(Task);
+			if (Task.type !== "collect_idle_currency") continue;
+
+			$('#stPatTask'+ t).text(`${Task.description}`);
+			$('#stPatTask'+ t).removeClass('hide');
+			console.log(Task.requiredProgress.value);
+			console.log(Task.requiredProgress.degree);
+			console.log(stPatrick.stPat[Task.targets[0]].production);
+			console.log(stPatrick.stPat[Task.targets[0]].degree);
+			console.log(stPatrick.Taskprogress[stPatrick.Tasklist[t]]?.value || 0);
+			console.log(stPatrick.Taskprogress[stPatrick.Tasklist[t]]?.degree || 0);
+			
+			$('#time'+ t).text(`${stPatrick.time(Task.requiredProgress.value,
+												Task.requiredProgress.degree,
+												stPatrick.stPat[Task.targets[0]].production,
+												stPatrick.stPat[Task.targets[0]].degree,
+												stPatrick.Taskprogress[stPatrick.Tasklist[t]]?.value || 0,
+												stPatrick.Taskprogress[stPatrick.Tasklist[t]]?.degree || 0)}`);
+			$('#time'+ t).removeClass('hide');
+			
+			
+			
+		}
 		for (let t = 3;t<9;t++) {
 			if (t < i) {
 				let Task = stPatrick.Tasks[stPatrick.Tasklist[t]];

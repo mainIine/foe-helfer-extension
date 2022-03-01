@@ -861,6 +861,7 @@
   "Boxes.stPatrick.T": "Trillion",
   "Boxes.stPatrick.Title": "St Patrick Info",
   "Boxes.stPatrick.UpcomingTasks": "Upcoming Tasks",
+  "Boxes.stPatrick.ActiveTasks": "Active Collection Tasks",
   "Boxes.stPatrick.Warning": "The values may update slow - depending on server feedback. Given times do not take updates of current stock into account.",
   "Date": "DD-MMM-YY",
   "DateShort": "DD-MMM",
