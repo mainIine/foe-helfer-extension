@@ -62,10 +62,6 @@
     padding-left: 2px;
 }
 
-#stPatNext.hide td {
-    display: none;
-}
-
-#stPatTasks.hide td, #stPatTasks td.hide {
+#stPatNext.hide td, #stPatTasks.hide td, #stPatTasks td.hide, #stPatTasksActive.hide td, #stPatTasksActive td.hide {
     display: none;
 }
