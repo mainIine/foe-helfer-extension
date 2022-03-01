@@ -1,33 +1,20 @@
-/*
- * **************************************************************************************
- * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
- * You may use, distribute and modify this code under the
- * terms of the AGPL license.
- *
- * See file LICENSE.md or go to
- * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
- * for full license details.
- *
- * **************************************************************************************
- */
-
- #HiddenRewardBox {
+#HiddenRewardBox {
     top: 30%;
     left: 30px;
 	max-height: 400px;
 }
 
-#HiddenRewardBox img {
-    height: auto;
-    width: auto;
-    max-width: 3.5em;
-    max-height: 2.5em;
-}
 #HiddenRewardBox #HiddenRewardBoxBody {
 	max-height: 400px;
 	min-width: 350px;
 	overflow: hidden;
 	overflow-y: auto;
+}
+
+#HiddenRewardBox table th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
 }
 
 #HiddenRewardBox table td.incident {
@@ -36,24 +23,35 @@
     min-height: 30px;
 }
 
-#HiddenRewardBox td.warning,
-#HiddenRewardBox td .warning {
-    color: var(--text-bright);
+#HiddenRewardBox img {
+    height: auto;
+    width: auto;
+    max-width: 3.5em;
+    max-height: 2.5em;
+}
+
+#HiddenRewardBox td.warning {
+    color: #FFB539;
 }
 
 td[title="incident_sos"], td[title="incident_beach_gear"], td[title="incident_shipwreck"] {
-	background-color: #d4ab70;
+	box-shadow: inset 0px 0px 20px 10px #d4ab70;
 }
 
 td[title="incident_fallen_tree_1x1"], td[title="incident_blocked_road_1x1"], td[title="incident_blocked_road_2x2"], td[title="incident_fallen_tree_2x2"], td[title="incident_pothole_1x1"], td[title="incident_pothole_2x2"] {
-	background-color: #818272;
+	box-shadow: inset 0px 0px 20px 10px #818272;
 }
 
+<<<<<<< Updated upstream
 
 td[title="incident_sculptor"], td[title="incident_beehive"], td[title="incident_crates"], td[title="incident_broken_cart"], td[title="incident_car_accident"], td[title="incident_clothesline"], td[title="incident_dinosaur_bones"], td[title="incident_empty_clothesline"], td[title="incident_fruit_vendor"], td[title="incident_kite"], td[title="incident_mammoth_bones"], td[title="incident_musician"], td[title="incident_overgrowth"], td[title="incident_quicksand"], td[title="incident_statue"], td[title="incident_stick_hut"], td[title="incident_treasure_chest"], td[title="incident_wine_cask"], td[title="spring_cherry_tree"], td[title="ages_birthday_gift_1"], td[title="ages_birthday_gift_2"], td[title="ages_birthday_gift_3"] {
 	background-color: #5d6324;
+=======
+td[title="incident_sculptor"], td[title="incident_beehive"], td[title="incident_crates"], td[title="incident_broken_cart"], td[title="incident_car_accident"], td[title="incident_clothesline"], td[title="incident_dinosaur_bones"], td[title="incident_empty_clothesline"], td[title="incident_fruit_vendor"], td[title="incident_kite"], td[title="incident_mammoth_bones"], td[title="incident_musician"], td[title="incident_overgrowth"], td[title="incident_quicksand"], td[title="incident_statue"], td[title="incident_stick_hut"], td[title="incident_treasure_chest"], td[title="incident_wine_cask"], td[title="spring_cherry_tree"] {
+	box-shadow: inset 0px 0px 20px 10px #5d6324;
+>>>>>>> Stashed changes
 }
 
 td[title="incident_rhino"], td[title="incident_castaway"], td[title="incident_fisherman"], td[title="incident_floating_chest"], td[title="incident_flotsam"] {
-	background-color: #20423f;
+	box-shadow: inset 0px 0px 20px 10px #20423f;
 }
