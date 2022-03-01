@@ -165,8 +165,10 @@ let Market = {
                 Market.CalcBody();
             });
         }
-		else if (!event)
-		{
+        else if (event) {
+            Market.CalcBody();
+        }
+		else {
 			HTML.CloseOpenBox('Market');
 			return;
 		}

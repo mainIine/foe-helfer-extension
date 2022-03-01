@@ -13,7 +13,7 @@
 
 let _menu_bottom = {
 
-	btnSize: 41,
+	btnSize: 45,
 
 	/**
 	 * Create the div holders and put them to the DOM
@@ -242,12 +242,9 @@ let _menu_bottom = {
 
 		_menu.ActiveSlide++;
 
-		if (_menu.ActiveSlide*_menu.HudWidth > $('#foe-helper-hud-slider').width()) {
-			let toScroll = $('#foe-helper-hud-slider').width() - (_menu.ActiveSlide-1)*_menu.HudWidth;
-			_menu.MenuScrollLeft -= toScroll;
-		}
-		else
-			_menu.MenuScrollLeft -= _menu.HudWidth;
+		_menu.MenuScrollLeft -= _menu.HudWidth;
+		if (_menu.ActiveSlide * _menu.HudWidth > $('#foe-helper-hud-slider').width())
+			_menu.MenuScrollLeft = - (($('#foe-helper-hud-slider').width()/_menu.HudWidth) - 1) *_menu.HudWidth;
 
 
 		$('#foe-helper-hud-slider').css({

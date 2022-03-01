@@ -1,5 +1,23 @@
 ## Changelog - Extension
 
+##### 2.7.0.1
+
+**Update**
+- St.Patricks Box:
+	- das Ziellevel bei den Upgrade-Kosten kann nun sebst bestimmt werden
+
+
+**BugFix**
+-  St.Patricks Box:
+    - [#2341] es gab keinen Reset der Gebäude bei Start der nächsten Stadt
+	- Berechnung der Zeit bis zum Erreichen der 8,4Q für die nächste Stadt war nicht korrekt
+
+- Ereignisse:
+	- [#2340] die "Null" ist nun wieder versteckt, wenn es keine Ereignisse gibt
+
+
+---
+
 ##### 2.7.0.0
 
 **New**
@@ -14,8 +32,10 @@
 
 **Update**
 - St.Patricks Box:
-  - Die Box kann nun in der Größe verändert werden 
+  	- Die Box kann nun in der Größe verändert werden
 
+- Ereignisse:
+	- Es kann nun in den Einstellungen gewählt werden, ob Relikte in der Anzahl an verfügbaren Relikten berücksichtigt werden
 
 **BugFix**
 - Alarme:

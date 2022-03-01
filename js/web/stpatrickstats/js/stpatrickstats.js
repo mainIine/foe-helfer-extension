@@ -35,8 +35,8 @@ FoEproxy.addHandler('IdleGameService', 'getState', (data, postData) => {
 		if (!Object.hasOwnProperty.call(data.responseData.characters, x)) continue;
         let character = data.responseData.characters[x];
 
-		stPatrick.stPat[character.id].level = character.level|0;
-		stPatrick.stPat[character.id].manager = character.managerLevel|0;
+		stPatrick.stPat[character.id].level = character.level||0;
+		stPatrick.stPat[character.id].manager = character.managerLevel||0;
     }
 
 	stPatrick.Tasklist = data.responseData.taskHandler.taskOrder;
@@ -49,9 +49,9 @@ FoEproxy.addHandler('IdleGameService', 'getState', (data, postData) => {
 			stPatrick.Tasklist.splice(index, 1);
 		}
     }
-
-	stPatrick.Progress = data.responseData.idleCurrencyAmount.value|0;
-	stPatrick.ProgressDegree = data.responseData.idleCurrencyAmount.degree|0;
+	
+	stPatrick.Progress = Number(data.responseData.idleCurrencyAmount.value)||0;
+	stPatrick.ProgressDegree = Number(data.responseData.idleCurrencyAmount.degree)||0;
 
 	stPatrick.stPatrickUpdateDialog();
 });
@@ -275,6 +275,7 @@ let stPatrick = {
 			selectinput.setAttribute("data-replace", this.id);
 			selectinput.setAttribute("style", "width: 80px");
 			selectinput.setAttribute("onkeyup", "stPatrick.updateTarget(event)");
+			selectinput.setAttribute("onfocusout", "stPatrick.removeInput(event)");
 			this.style.display = "none";
 			this.parentElement.append(selectinput);
 			selectinput.focus();
@@ -288,11 +289,24 @@ let stPatrick = {
 			stPatrick.saveTargets();
 		}
 
-		if (event.key != 'Enter' && event.key != 'Escape') return
+		if (event.key != 'Enter' && event.key != 'Escape') return;
 		$('#'+event.srcElement.dataset.replace)[0].style.display = "block";
+		event.srcElement.setAttribute("onfocusout", "");
 		event.srcElement.remove();
 		stPatrick.stPatrickUpdateDialog();
 			
+	},
+
+	removeInput: (event) => {
+		
+		stPatrick.targets[event.srcElement.dataset.station] = Number(event.srcElement.value);
+		stPatrick.saveTargets();
+		
+		$('#'+event.srcElement.dataset.replace)[0].style.display = "block";
+		
+		event.srcElement.remove();
+
+		stPatrick.stPatrickUpdateDialog();
 	},
 
 	stPatrickUpdateDialog: () => {
@@ -389,7 +403,7 @@ let stPatrick = {
 			stPatrick.saveTargets();
 			building.next = 1;
 			building.need = building.baseData.buyCostValue;
-			building.ndegree = building.baseData.buyCostDegree|0;
+			building.ndegree = building.baseData.buyCostDegree||0;
 			if (building.need >= 1000 && building.ndegree<6) {
 				building.need /= 1000;
 				building.ndegree += 1;
@@ -398,7 +412,7 @@ let stPatrick = {
 		}
 
 		let p = building.baseData.baseProductionValue;
-		let d = building.baseData.baseProductionDegree|0;
+		let d = building.baseData.baseProductionDegree||0;
 		let t = building.baseData.productionDuration+building.baseData.rechargeDuration;
 		let pbonus = 0;
 		let tbonus = 0;
@@ -444,7 +458,7 @@ let stPatrick = {
 		let base = building.baseData.baseUpgradeCostValue;
 		let growth = building.baseData.upgradeCostGrowthRate;
 		let need = 0;
-		let ndegree = building.baseData.baseUpgradeCostDegree|0;
+		let ndegree = building.baseData.baseUpgradeCostDegree||0;
 
 		for (let i = building.level; i<x; i++) {
 			need += Math.pow(growth,i-1)*base;
