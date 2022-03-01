@@ -126,7 +126,7 @@ let HiddenRewards = {
 		EndTime = moment.unix(HiddenRewards.Cache[i].expires);
             if (StartTime > MainParser.getCurrentDateTime() || EndTime < MainParser.getCurrentDateTime()) continue;
             HiddenRewards.FilteredCache.push(HiddenRewards.Cache[i]);
-            if (HiddenRewards.Cache[i].position.context == "guildExpedition") continue;
+            if (HiddenRewards.Cache[i].position.context != "guildExpedition") continue;
             HiddenRewards.FilteredCache2.push(HiddenRewards.Cache[i]);
         }
 
@@ -199,8 +199,11 @@ let HiddenRewards = {
 
 
 	SetCounter: ()=> {
-        let count = HiddenRewards.FilteredCache?.length|0;
-        if (Settings.GetSetting('ExcludeRelics')) count = HiddenRewards.FilteredCache2?.length|0;
+        console.log(HiddenRewards.FilteredCache);
+        console.log(HiddenRewards.FilteredCache2);
+        
+        let count = HiddenRewards.FilteredCache?.length || 0;
+        if (Settings.GetSetting('ExcludeRelics')) count = HiddenRewards.FilteredCache2?.length || 0;
         $('#hidden-reward-count').text(count).show();
         if (count === 0) $('#hidden-reward-count').hide();
 	}
