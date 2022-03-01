@@ -400,17 +400,10 @@ let stPatrick = {
 			if (t >= i) continue;
 
 			let Task = stPatrick.Tasks[stPatrick.Tasklist[t]];
-			console.log(Task);
 			if (Task.type !== "collect_idle_currency") continue;
 
 			$('#stPatTask'+ t).text(`${Task.description}`);
 			$('#stPatTask'+ t).removeClass('hide');
-			console.log(Task.requiredProgress.value);
-			console.log(Task.requiredProgress.degree);
-			console.log(stPatrick.stPat[Task.targets[0]].production);
-			console.log(stPatrick.stPat[Task.targets[0]].degree);
-			console.log(stPatrick.Taskprogress[stPatrick.Tasklist[t]]?.value || 0);
-			console.log(stPatrick.Taskprogress[stPatrick.Tasklist[t]]?.degree || 0);
 			
 			$('#time'+ t).text(`${stPatrick.time(Task.requiredProgress.value,
 												Task.requiredProgress.degree,
