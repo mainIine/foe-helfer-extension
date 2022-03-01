@@ -86,6 +86,7 @@ FoEproxy.addHandler('IdleGameService', 'performActions', (data, postData) => {
 
 		if (data2.type === 'collect_task') {
 			let index = stPatrick.Tasklist.indexOf(data2.taskId);
+			stPatrick.Taskprogress[data2.taskId] = {}
 			if (index > -1) {
 				stPatrick.Tasklist.splice(index, 1);
 			}
