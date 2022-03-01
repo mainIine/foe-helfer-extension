@@ -5,7 +5,7 @@
 **Update**
 - St.Patricks Box:
 	- the target level for the building upgrade costs may now be selected manually
-
+	- a time estimate is now given for collection tasks
 
 **BugFix**
 -  St.Patricks Box:
