@@ -869,7 +869,6 @@ FP-Bar */
 	font-size: 0.9rem;
 	font-weight: 400;
 	color: var(--text-normal);
-	text-shadow: 0 1px 1px var(--black-65);
 	position: absolute;
 	text-align: left;
 	top: 30%;
