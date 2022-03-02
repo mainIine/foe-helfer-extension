@@ -57,7 +57,7 @@
 
 	let   lng = chrome.i18n.getUILanguage();
 	const uLng = localStorage.getItem('user-language');
-
+	
 	// we only need the first part
 	if (lng.indexOf('-') > 0) {
 		lng = lng.split('-')[0];
@@ -112,6 +112,8 @@
 
 	async function InjectCode() {
 		try {
+			const loadBeta = JSON.parse(localStorage.getItem('LoadBeta')) || false;
+			
 			// set some global variables
 			let script = document.createElement('script');
 			script.innerText = `
@@ -153,98 +155,27 @@
 				}
 				exportFunction(callBgApi, window, {defineAs: 'foeHelperBgApiHandler'});
 			}
-			
+
+			let extURL = chrome.extension.getURL('');
+
+			if (loadBeta) extURL = `https://github.com/mainIine/foe-helfer-extension/tree/beta/`;
+						
 			// load the main
-			await promisedLoadCode(chrome.extension.getURL(`js/web/_main/js/_main.js?v=${v}`));
+			await promisedLoadCode(`${extURL}js/web/_main/js/_main.js?v=${v}`);
 
 			// first wait for ant and i18n to be loaded
 			await jQueryLoading;
-
-
-			const extURL = chrome.extension.getURL(''),
-				vendorScripts = [
-					'i18njs/i18njs.min',
-					'moment/moment-with-locales.min',
-					'CountUp/jquery.easy_number_animate.min',
-					'Tabslet/jquery.tabslet.min',
-					'ScrollTo/jquery.scrollTo.min',
-					'jQuery/jquery-resizable.min',
-					'jQuery/jquery-ui.min',
-					'jQuery/jquery.toast',
-					'tooltip/tooltip',
-					'tableSorter/table-sorter',
-					'Sortable/Sortable.min',
-					'jsZip/jszip.min',
-					'date-range/lightpick',
-					'lit-html/lit-html.bundle.min',
-					'SimpleMarkdown/simple-markdown.min',
-					'dexie/dexie.min',
-					'dexie/dexie-export-import',
-					'downloadjs/downloadjs.min'
-				];
-
+			
 			// load all vendor scripts first (unknown order)
-			await Promise.all(vendorScripts.map(vendorScript => promisedLoadCode(`${extURL}vendor/${vendorScript}.js?v=${v}`)));
+			await Promise.all(vendorScriptsToLoad.map(vendorScript => promisedLoadCode(`${extURL}vendor/${vendorScript}.js?v=${v}`)));
 
 			window.dispatchEvent(new CustomEvent('foe-helper#vendors-loaded'));
 
-			const s = [
-				'_languages',
-				'_helper',
-				'_menu',
-				'_menu_bottom',
-				'_menu_right',
-				'_menu_box',
-				'indexdb',
-				'kits',
-				'outposts',
-				'calculator',
-				'infoboard',
-				'productions',
-				'part-calc',
-				'unit',
-				'alerts',
-				'guildfights',
-				'gvg',
-				'stats',
-				'campagnemap',
-				'bonus-service',
-				'technologies',
-				'negotiation',
-				'eventchests',
-				'settings',
-				'investment',
-				'strategy-points',
-				'battle-assist',
-				'citymap',
-				'hidden-rewards',
-				'greatbuildings',
-				'notice',
-				'inventory-tracker',
-				'treasury',
-				'market',
-				'marketoffers',
-				'bluegalaxy',
-				'eventhandler',
-				'fp-collector',
-				'unit-gex',
-				'maptradewarning',
-				'guildmemberstat',
-				'quests',
-				'gexstat',
-				'dbexport',
-				'closebox',
-				'castle',
-				'stpatrickstats',
-				'scoutingtimes',
-				'discord',
-				'bettermusic'
-			];
-
+			
 			// load scripts (one after the other)
-			for (let i = 0; i < s.length; i++)
+			for (let i = 0; i < internalScriptsToLoad.length; i++)
 			{
-				await promisedLoadCode(`${extURL}js/web/${s[i]}/js/${s[i]}.js?v=${v}`);
+				await promisedLoadCode(`${extURL}js/web/${internalScriptsToLoad[i]}/js/${internalScriptsToLoad[i]}.js?v=${v}`);
 			}
 
 			window.dispatchEvent(new CustomEvent('foe-helper#loaded'));
