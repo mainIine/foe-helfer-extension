@@ -66,6 +66,9 @@
     display: none;
 }
 
+#stPatNext th, #stPatTasks th, #stPatTasksActive th {
+    position: relative;
+}
 #stPatNext.hide i, #stPatTasks.hide i, #stPatTasksActive.hide i {
     border: solid var(--text-bright);
     border-width: 0 2px 2px 0;
