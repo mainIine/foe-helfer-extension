@@ -7,6 +7,9 @@
 	- the target level for the building upgrade costs may now be selected manually
 	- a time estimate is now given for collection tasks
 
+- Boxes and Menu:
+	- updated Design
+
 **BugFix**
 -  St.Patricks Box:
     - [#2341] reset of building stats was not correct after town 

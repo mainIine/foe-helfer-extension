@@ -7,6 +7,9 @@
 	- das Ziellevel bei den Upgrade-Kosten kann nun sebst bestimmt werden
 	- Für Sammelaufgaben wird nun eine Zeitabschätzung angegeben
 
+- Boxen und Menu:
+	- aktualisiertes Design
+
 **BugFix**
 -  St.Patricks Box:
     - [#2341] es gab keinen Reset der Gebäude bei Start der nächsten Stadt
