@@ -200,7 +200,7 @@ let stPatrick = {
         htmltext += `</tr><tr><td>${stPatrick.stPat.transport_1.baseData.name}<br><span id="stPatShip"></span></td>`;
         htmltext += `</tr><tr><td colspan="3" style="color: var(--text-bright);font-size:smaller">${i18n('Boxes.stPatrick.Warning')}</td></tr></table>`;
         
-		htmltext += `<table id="stPatNext" class="foe-table" style="width:100%"><tr><th colspan="4"  onclick="stPatrick.hide('#stPatNext')">${i18n('Boxes.stPatrick.BuildingUpgrades')}</th></tr>`;
+		htmltext += `<table id="stPatNext" class="foe-table" style="width:100%"><tr><th colspan="4"  onclick="stPatrick.hide('#stPatNext')">${i18n('Boxes.stPatrick.BuildingUpgrades')}<i></i></tr>`;
 		htmltext += `<tr title="${stPatrick.stPat.workshop_1.baseData.name}">`;
         htmltext += `<td><img src="${MainParser.InnoCDN}/assets/shared/seasonalevents/stpatricks/event/stpatrick_task_goods_hats_thumb.png" alt="" ></td>`;
         htmltext += `<td><span id="stPatworkshop_1Level" class="levelSelect" data-station="workshop_1"></span></td>`;
@@ -237,12 +237,12 @@ let stPatrick = {
 		htmltext += `<td id="stPatmarket_1" class="align-right"></td>`;
 		htmltext += `<td id="stPatmarket_1Time" class="align-left"></td></tr>`;
         htmltext += `</table>`;
-        htmltext += `<table id="stPatTasksActive" class="foe-table" style="width:100%"><tr><th colspan="2" onclick="stPatrick.hide('#stPatTasksActive')">${i18n('Boxes.stPatrick.ActiveTasks')}</th></tr>`;
+        htmltext += `<table id="stPatTasksActive" class="foe-table" style="width:100%"><tr><th colspan="2" onclick="stPatrick.hide('#stPatTasksActive')">${i18n('Boxes.stPatrick.ActiveTasks')}<i></i></th></tr>`;
 		htmltext += `<tr><td id="stPatTask0"></td><td id="time0"></td></tr>`;
         htmltext += `<tr><td id="stPatTask1"></td><td id="time1"></td></tr>`;
         htmltext += `<tr><td id="stPatTask2"></td><td id="time2"></td></tr>`;
         htmltext += `</table>`;
-		htmltext += `<table id="stPatTasks" class="foe-table" style="width:100%"><tr><th onclick="stPatrick.hide('#stPatTasks')">${i18n('Boxes.stPatrick.UpcomingTasks')}</th></tr>`;
+		htmltext += `<table id="stPatTasks" class="foe-table" style="width:100%"><tr><th onclick="stPatrick.hide('#stPatTasks')">${i18n('Boxes.stPatrick.UpcomingTasks')}<i></i></th></tr>`;
 		htmltext += `<tr><td id="stPatTask3"></td></tr>`;
         htmltext += `<tr><td id="stPatTask4"></td></tr>`;
         htmltext += `<tr><td id="stPatTask5"></td></tr>`;
