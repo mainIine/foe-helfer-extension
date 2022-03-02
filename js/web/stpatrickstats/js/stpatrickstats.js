@@ -54,7 +54,7 @@ FoEproxy.addHandler('IdleGameService', 'getState', (data, postData) => {
 	stPatrick.ProgressDegree = Number(data.responseData.idleCurrencyAmount.degree)||0;
 
 	for (let t of data.responseData.taskHandler.inProgressTasks) {
-		stPatrick.Taskprogress[t.id] = {value:t.currentProgress.value, degree:t.currentProgress.degree || 0};
+		stPatrick.Taskprogress[t.id] = {value:t.currentProgress.value || 0, degree:t.currentProgress.degree || 0};
     }
 
 	stPatrick.stPatrickUpdateDialog();
@@ -405,11 +405,22 @@ let stPatrick = {
 
 			$('#stPatTask'+ t).text(`${Task.description}`);
 			$('#stPatTask'+ t).removeClass('hide');
+			let target=Task.targets[0]
+			let targetProduction=stPatrick.stPat[target].production;
+			let targetDegree=stPatrick.stPat[target].degree;
+			if (target==='market_1') {
+				targetProduction = sum;
+				targetDegree = degree;
+			}
+			if (target==='transport_1' && targetProduction > work) {
+				targetProduction = work;
+				targetDegree = workd;
+			}
 			
 			$('#time'+ t).text(`${stPatrick.time(Task.requiredProgress.value,
 												Task.requiredProgress.degree,
-												stPatrick.stPat[Task.targets[0]].production,
-												stPatrick.stPat[Task.targets[0]].degree,
+												targetProduction,
+												targetDegree,
 												stPatrick.Taskprogress[stPatrick.Tasklist[t]]?.value || 0,
 												stPatrick.Taskprogress[stPatrick.Tasklist[t]]?.degree || 0)}`);
 			$('#time'+ t).removeClass('hide');
