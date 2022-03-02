@@ -12,7 +12,10 @@
  */
 
 FoEproxy.addHandler('IdleGameService', 'getState', (data, postData) => {
-
+	//Do not show window if deactivated in settings
+	if(!Settings.GetSetting('ShowEventChest')){
+		return;
+	}
 	// Don't create a new box while another one is still open
     if ($('#stPatrickDialog').length === 0) {
 		stPatrick.ShowDialog();
@@ -413,6 +416,10 @@ let stPatrick = {
 				targetDegree = degree;
 			}
 			if (target==='transport_1' && targetProduction > work) {
+				targetProduction = work;
+				targetDegree = workd;
+			}
+			if (Task.targets.length===5) {
 				targetProduction = work;
 				targetDegree = workd;
 			}
