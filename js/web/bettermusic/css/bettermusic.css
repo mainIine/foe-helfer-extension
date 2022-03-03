@@ -89,7 +89,7 @@
   width: 2em;
   height: 1em;
   border-radius: 1em;
-  border: 2px solid var(--text-normal);
+  border: 2px solid rgb(147 9 9 / 100%);
   background-color: rgb(147 9 9 / 36%);
   content: "";
   margin-right: 0.7em;
@@ -113,6 +113,7 @@
 }
 #betterMusicDialogBody [type="checkbox"]:checked + label:before {
   background-color: rgb(10 139 65 / 59%);
+  border-color: rgb(10 139 65 / 100%);
 }
 #betterMusicDialogBody [type="checkbox"]:checked + label:after {
   margin: 0 0 0 1em;
