@@ -12,9 +12,10 @@
  */
 
 
-#betterMusicDialog {
+ #betterMusicDialog {
   top: 50px;
   left: calc(100vw - 350px);
+  width: 550px;
 }
 
 #betterMusicDialogBody {
@@ -40,14 +41,14 @@
   text-align: left;
 }
 
+#betterMusicDialog .flex > div {
+  min-width: 40%;
+  padding: 0.5em;
+}
+
 #musicSettingsScenesX tr th {
   writing-mode:vertical-lr;
   text-align: right;
-}
-
-#betterMusicDialogBody table caption{
-  font-weight: bold;
-  font-size: large;
 }
 
 #betterMusicDialogBody table {

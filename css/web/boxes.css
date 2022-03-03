@@ -1543,3 +1543,21 @@ SettingsBox */
 	text-shadow: 0 1px 1px var(--black-65);
 	user-select: none;
 }
+
+input[type="range"] {
+	-webkit-appearance: none;
+	height: 3px;
+	background: var(--black-50);
+	border-radius: 5px;
+	background-repeat: no-repeat;
+  }
+
+input[type="range"]::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	height: 13px;
+	width: 13px;
+	border-radius: 50%;
+	background: var(--text-bright);
+	box-shadow: 0 0 2px 0 var(--black-50), inset -1px -1px 3px var(--text-normal);
+	transition: background .3s ease-in-out;
+}

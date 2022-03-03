@@ -24,9 +24,7 @@ FoEproxy.addHandler('ClanBattleService', 'deployDefendingArmy', (data, postData)
 });
 
 FoEproxy.addHandler('ClanBattleService', 'getContinent', (data, postData) => {
-	if (GvG.Init === false) {
-		GvG.initActions();
-	}
+	GvG.initActions();
 	GvG.setRecalc(data.responseData.continent.calculation_time.start_time, true);
 });
 
