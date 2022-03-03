@@ -142,9 +142,17 @@ let GuildFights = {
 		if (GuildFights.InjectionLoaded === false)
 		{
 			FoEproxy.addWsHandler('GuildBattlegroundService', 'all', data => {
+
+				// Update Tables
 				if ($('#LiveGildFighting').length > 0 && data['responseData'][0])
 				{
 					GuildFights.RefreshTable(data['responseData'][0]);
+				}
+
+				// Update Minimap
+				if($('#ProvinceMap').length > 0 && data['responseData'][0])
+				{
+					ProvinceMap.Refresh(data['responseData'][0]);
 				}
 			});
 			GuildFights.InjectionLoaded = true;
@@ -1453,7 +1461,7 @@ let GuildFights = {
 				max = d['maxProgress'],
 				progess = d['progress'],
 				cell = $(`tr#province-${data['id']}`),
-				pColor = GuildFights.SortedColors.find(e => e['id'] === data['ownerId']),
+				pColor = GuildFights.SortedColors.find(e => e['id'] === data['participantId']),
 				p = GuildFights.MapData['battlegroundParticipants'].find(o => (o['participantId'] === d['participantId']));
 
 			if (!data['id'])
@@ -1666,6 +1674,7 @@ let GuildFights = {
 
 	},
 
+
 	DeleteAlert: (provId) => {
 		let prov = GuildFights.MapData['map']['provinces'].find(e => e.id === provId);
 		let alert = GuildFights.Alerts.find((a) => a.provId == provId);
@@ -1685,6 +1694,7 @@ let GuildFights = {
 			$(`#alert-${provId}`).html(GuildFights.GetAlertButton(provId));
 		});
 	},
+
 
 	ShowLiveFightSettings: () => {
 		let c = [];
@@ -1723,7 +1733,7 @@ let GuildFights = {
 
 /**
  *
- * @type {{ProvinceObject: {}, ToolTipActive: boolean, FrameSize: number, prepare: ProvinceMap.prepare, MapMerged: *[], ParseNumber: (function(*, *): {num: number, index}), MapCTX: {}, ParseMove: (function(*, *)), ParseCurve: (function(*, *)), StrokeColor: string, MapSize: {width: number, height: number}, PrepareProvinces: ProvinceMap.PrepareProvinces, Refresh: ProvinceMap.Refresh, ParsePathToCanvas: (function(*): Path2D), Mouse: {x: undefined, y: undefined}, StrokeWidth: number, buildMap: ProvinceMap.buildMap, DrawProvinces: ProvinceMap.DrawProvinces, ToolTipId: boolean, ProvinceData: ((function(): (*|undefined))|*), Map: {}, hexToRgb: ((function(*, *): string)|*)}}
+ * @type {{ProvinceObject: {}, ToolTipActive: boolean, FrameSize: number, prepare: ProvinceMap.prepare, MapMerged: *[], ParseNumber: (function(*, *): {num: number, index}), MapCTX: {}, ParseMove: (function(*, *)), ParseCurve: (function(*, *)), StrokeColor: string, MapSize: {width: number, height: number}, PrepareProvinces: ProvinceMap.PrepareProvinces, Refresh: ProvinceMap.Refresh, ParsePathToCanvas: (function(*): Path2D), Mouse: {x: undefined, y: undefined}, StrokeWidth: number, buildMap: ProvinceMap.buildMap, ToolTipId: boolean, ProvinceData: ((function(): (*|undefined))|*), Map: {}, hexToRgb: ((function(*, *): string)|*)}}
  */
 let ProvinceMap = {
 
@@ -2006,8 +2016,21 @@ let ProvinceMap = {
 	},
 
 
-	Refresh: () => {
+	/**
+	 * Rebuild the Canvas
+	 *
+	 * @param socketData
+	 * @constructor
+	 */
+	Refresh: (socketData = []) => {
 		ProvinceMap.MapCTX.clearRect(0, 0, ProvinceMap.Map.width, ProvinceMap.Map.height)
+
+		if(socketData.length)
+		{
+			let idx = ProvinceMap.MapMerged.findIndex(p => p.id === socketData['id']);
+
+			ProvinceMap.MapMerged[idx]['conquestProgress'] = socketData['conquestProgress'];
+		}
 
 		const provinces = ProvinceMap.MapMerged;
 
