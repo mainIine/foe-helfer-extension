@@ -75,10 +75,10 @@
     display: inline-block;
     padding: 3px;
     position: absolute;
-    right: 10px;
-    transform: rotate(45deg);
-    -webkit-transform: rotate(45deg);
-    margin-top: 2px;
+    right: 8px;
+    transform: rotate(135deg);
+    -webkit-transform: rotate(135deg);
+    margin-top: 4px;
 }
 #stPatNext:not(.hide) i, #stPatTasks:not(.hide) i, #stPatTasksActive:not(.hide) i {
     border: solid var(--text-bright);
@@ -87,7 +87,7 @@
     padding: 3px;
     position: absolute;
     right: 10px;
-    transform: rotate(225deg);
-    -webkit-transform: rotate(225deg);
-    margin-top: 6px;
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    margin-top: 4px;
 }
