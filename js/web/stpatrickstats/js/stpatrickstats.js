@@ -56,10 +56,13 @@ FoEproxy.addHandler('IdleGameService', 'getState', (data, postData) => {
 	stPatrick.Progress = Number(data.responseData.idleCurrencyAmount.value)||0;
 	stPatrick.ProgressDegree = Number(data.responseData.idleCurrencyAmount.degree)||0;
 
-	for (let t of data.responseData.taskHandler.inProgressTasks) {
-		stPatrick.Taskprogress[t.id] = {value:t.currentProgress.value || 0, degree:t.currentProgress.degree || 0};
-    }
-
+	if (!(!data?.responseData?.taskHandler?.inProgressTasks)) {
+		for (let t of data.responseData.taskHandler.inProgressTasks) {
+			stPatrick.Taskprogress[t.id] = {value:t.currentProgress.value || 0, degree:t.currentProgress.degree || 0};
+		}
+	
+	}
+	
 	stPatrick.stPatrickUpdateDialog();
 });
 
