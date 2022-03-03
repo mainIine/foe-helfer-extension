@@ -68,3 +68,53 @@
   text-align: right;
 }
 
+
+#betterMusicDialogBody [type="checkbox"] {
+  display: none;
+}
+#betterMusicDialogBody [type="select"] {
+  margin-top: 15px;
+}
+#betterMusicDialogBody [type="checkbox"] + label {
+  position: relative;
+  display: block;
+  cursor: pointer;
+  font-family: sans-serif;
+  padding-left:2.8em;
+  position: relative;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+#betterMusicDialogBody [type="checkbox"] + label:before {
+  width: 2em;
+  height: 1em;
+  border-radius: 1em;
+  border: 2px solid rgb(147 9 9 / 100%);
+  background-color: rgb(147 9 9 / 36%);
+  content: "";
+  margin-right: 0.7em;
+  transition: background-color 0.5s linear;
+  z-index: 5;
+  position: absolute;
+  left: 0px;
+}
+#betterMusicDialogBody [type="checkbox"] + label:after {
+  width: 1em;
+  height: 1em;
+  border-radius: 1em;
+  background-color: var(--text-normal);
+  content: "";
+  transition: margin 0.1s linear;
+  box-shadow: 0px 0px 5px #aaa;
+  position: absolute;
+  left: 2px;
+  top: 2px;
+  z-index: 10;
+}
+#betterMusicDialogBody [type="checkbox"]:checked + label:before {
+  background-color: rgb(10 139 65 / 59%);
+  border-color: rgb(10 139 65 / 100%);
+}
+#betterMusicDialogBody [type="checkbox"]:checked + label:after {
+  margin: 0 0 0 1em;
+}

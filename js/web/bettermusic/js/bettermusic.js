@@ -277,9 +277,9 @@ let betterMusic = {
         htmltext += `<select id="musicSettingsColony" type="select" oninput="betterMusic.Settings.Colony = this.selectedIndex"><option value="0" ${betterMusic.Settings.Colony === 0 ? 'selected="selected"': ''}>ignore era</option><option value="1" ${betterMusic.Settings.Colony === 1 ? 'selected="selected"': ''}>play up to current era</option><option value="2" ${betterMusic.Settings.Colony === 2 ? 'selected="selected"': ''}>play only current era</option></select>`;
         htmltext += `</div>`;
         htmltext += `<div>`;
-        htmltext += `<input id="musicSettingsTavern" type="checkbox" ${betterMusic.Settings.Tavern ? 'checked="checked"' : ''}" oninput="betterMusic.Settings.Tavern = this.checked"><label for="musicSettingsTavern">allow tavern trigger</label><br>`;
-        htmltext += `<input id="musicSettingsPvP" type="checkbox" ${betterMusic.Settings.Pvp ? 'checked="checked"' : ''}" oninput="betterMusic.Settings.Pvp = this.checked"><label for="musicSettingsPvp">allow pvp trigger</label><br>`;
-        htmltext += `<input id="musicSettingsIgnoreSettlement" type="checkbox" ${betterMusic.Settings.IgnoreSettlement ? 'checked="checked"' : ''}" oninput="betterMusic.Settings.IgnoreSettlement = this.checked"><label for="musicSettingsIgnoreSettlement">ignore settlement type</label><br>`;
+        htmltext += `<input id="musicSettingsTavern" type="checkbox" ${betterMusic.Settings.Tavern ? 'checked="checked"' : ''}" oninput="betterMusic.Settings.Tavern = this.checked"><label for="musicSettingsTavern">allow tavern trigger</label>`;
+        htmltext += `<input id="musicSettingsPvp" type="checkbox" ${betterMusic.Settings.Pvp ? 'checked="checked"' : ''}" oninput="betterMusic.Settings.Pvp = this.checked"><label for="musicSettingsPvp">allow pvp trigger</label>`;
+        htmltext += `<input id="musicSettingsIgnoreSettlement" type="checkbox" ${betterMusic.Settings.IgnoreSettlement ? 'checked="checked"' : ''}" oninput="betterMusic.Settings.IgnoreSettlement = this.checked"><label for="musicSettingsIgnoreSettlement">ignore settlement type</label>`;
         htmltext += `<input id="musicSettingsEvents" type="checkbox" ${betterMusic.Settings.Events ? 'checked="checked"' : ''}" oninput="betterMusic.Settings.Events = this.checked"><label for="musicSettingsEvents">allow Event trigger</label>`;
         htmltext += `</div>`;
         htmltext += `</div>`;
