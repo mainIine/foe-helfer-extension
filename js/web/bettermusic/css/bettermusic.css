@@ -102,7 +102,7 @@
   width: 1em;
   height: 1em;
   border-radius: 1em;
-  background-color: var(--text-bright);
+  background-color: var(--text-normal);
   content: "";
   transition: margin 0.1s linear;
   box-shadow: 0px 0px 5px #aaa;
