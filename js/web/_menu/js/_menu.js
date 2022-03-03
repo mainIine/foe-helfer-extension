@@ -764,8 +764,8 @@ let _menu = {
 			);
 
 		let btn_sp = $('<span />').on('click', function (){
-			if(GildFights.MapData) {
-				GildFights.ShowGildBox();
+			if(GuildFights.MapData) {
+				GuildFights.ShowGildBox();
 			}
 		});
 
