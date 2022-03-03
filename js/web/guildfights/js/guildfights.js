@@ -57,7 +57,7 @@ FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postDa
 	GildFights.MapData = data['responseData'];
 	ActiveMap = 'gg';
 
-	$('#gildfight-Btn').removeClass('hud-btn-red');
+	$('#gildFight-Btn').removeClass('hud-btn-red');
 	$('#selectorCalc-Btn-closed').remove();
 
 	if ($('#ProvinceMap').length > 0)
