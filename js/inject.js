@@ -238,7 +238,8 @@
 				'stpatrickstats',
 				'scoutingtimes',
 				'discord',
-				'bettermusic'
+				'bettermusic',
+				'minigame_aztecs'
 			];
 
 			// load scripts (one after the other)
