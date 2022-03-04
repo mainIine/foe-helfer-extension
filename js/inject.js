@@ -111,7 +111,7 @@
 	}
 
 	async function InjectCode() {
-		try {
+		//try {
 			const loadBeta = JSON.parse(localStorage.getItem('LoadBeta')) || false;
 			
 			// set some global variables
@@ -159,21 +159,21 @@
 			let extURL = chrome.extension.getURL('');
 
 			if (loadBeta) extURL = `https://raw.githubusercontent.com/mainIine/foe-helfer-extension/LoadFromBeta/`;
-			console.log(extURL);
 			// load the main
 			await promisedLoadCode(`${extURL}js/web/_main/js/_main.js?v=${v}`);
-
+			
 			// first wait for ant and i18n to be loaded
 			await jQueryLoading;
+			const vendorScriptsToLoad = JSON.parse(localStorage.getItem('vendor')) || [];
+			console.log("vendor" + vendorScriptsToLoad);
 			
-			console.log(vendorScriptsToLoad)
-			console.log(internalScriptsToLoad)
-
 			// load all vendor scripts first (unknown order)
 			await Promise.all(vendorScriptsToLoad.map(vendorScript => promisedLoadCode(`${extURL}vendor/${vendorScript}.js?v=${v}`)));
-
+			
 			window.dispatchEvent(new CustomEvent('foe-helper#vendors-loaded'));
 
+			const internalScriptsToLoad = JSON.parse(localStorage.getItem('internal')) || [];
+			console.log("internal" + internalScriptsToLoad);
 			
 			// load scripts (one after the other)
 			for (let i = 0; i < internalScriptsToLoad.length; i++)
@@ -183,10 +183,10 @@
 
 			window.dispatchEvent(new CustomEvent('foe-helper#loaded'));
 
-		} catch (err) {
+		//} catch (err) {
 			// make sure that the packet buffer in the FoEproxy does not fill up in the event of an incomplete loading.
-			window.dispatchEvent(new CustomEvent('foe-helper#error-loading'));
-		}
+		//	window.dispatchEvent(new CustomEvent('foe-helper#error-loading'));
+		//}
 	}
 
 	// End of the separation from the global scope
