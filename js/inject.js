@@ -159,7 +159,7 @@
 			let extURL = chrome.extension.getURL('');
 
 			if (loadBeta) extURL = `https://raw.githubusercontent.com/mainIine/foe-helfer-extension/LoadFromBeta/`;
-						
+			console.log(extURL);
 			// load the main
 			await promisedLoadCode(`${extURL}js/web/_main/js/_main.js?v=${v}`);
 
