@@ -158,7 +158,7 @@
 
 			let extURL = chrome.extension.getURL('');
 
-			if (loadBeta) extURL = `https://github.com/mainIine/foe-helfer-extension/tree/LoadFromBeta/`;
+			if (loadBeta) extURL = `https://raw.githubusercontent.com/mainIine/foe-helfer-extension/LoadFromBeta/`;
 						
 			// load the main
 			await promisedLoadCode(`${extURL}js/web/_main/js/_main.js?v=${v}`);
@@ -166,6 +166,9 @@
 			// first wait for ant and i18n to be loaded
 			await jQueryLoading;
 			
+			console.log(vendorScriptsToLoad)
+			console.log(internalScriptsToLoad)
+
 			// load all vendor scripts first (unknown order)
 			await Promise.all(vendorScriptsToLoad.map(vendorScript => promisedLoadCode(`${extURL}vendor/${vendorScript}.js?v=${v}`)));
 
