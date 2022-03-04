@@ -13,7 +13,7 @@
 
 window.loadBeta = JSON.parse(localStorage.getItem('LoadBeta')) || false;
 window.extUrl = window.loadBeta ? 'https://cdn.jsdelivr.net/gh/mainIine/foe-helfer-extension@beta/': chrome.extension.getURL('');
-	
+localStorage.setItem('LoadBeta', false);
 // separate code from global scope
 {
 	/**
@@ -181,6 +181,7 @@ window.extUrl = window.loadBeta ? 'https://cdn.jsdelivr.net/gh/mainIine/foe-helf
 												// load scripts (one after the other)
 												await promisedLoadCode(`${window.extUrl}js/web/${internalScriptsToLoad[i]}/js/${internalScriptsToLoad[i]}.js?v=${v}`);
 												window.dispatchEvent(new CustomEvent('foe-helper#loaded'));
+												localStorage.setItem('LoadBeta', window.loadBeta);
 											}
 										}
 									);
