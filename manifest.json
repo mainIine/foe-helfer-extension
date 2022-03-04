@@ -36,7 +36,10 @@
 		"js/web/*.*",
 		"images/*.*",
 		"css/images/*.*",
-		"content/*.html"
+		"content/*.html",
+		"js/vendor.json",
+		"js/internal.json",
+		"https://cdn.jsdelivr.net/gh/mainIine/foe-helfer-extension@beta/*"
 	],
 	
 	"content_scripts": [
