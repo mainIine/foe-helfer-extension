@@ -80,6 +80,9 @@
 
 	let tid = setInterval(InjectCSS, 0);
 	function InjectCSS() {
+		const loadBeta = JSON.parse(localStorage.getItem('LoadBeta')) || false;
+		const extUrl = loadBeta ? 'https://cdn.jsdelivr.net/gh/mainIine/foe-helfer-extension@beta/': chrome.extension.getURL('');
+
 		// Document loaded
 		if(document.head !== null){
 			let MenuSetting = localStorage.getItem('SelectedMenu');
@@ -101,7 +104,7 @@
 				}
 
 				let css = document.createElement('link');
-				css.href = chrome.extension.getURL(`css/web/${cssFiles[i]}.css?v=${v}`);
+				css.href = extUrl + `css/web/${cssFiles[i]}.css?v=${v}`;
 				css.rel = 'stylesheet';
 				document.head.appendChild(css);
 			}
@@ -111,14 +114,15 @@
 	}
 
 	async function InjectCode() {
-		//try {
-			const loadBeta = JSON.parse(localStorage.getItem('LoadBeta')) || false;
-			
+		try {
+			let loadBeta = JSON.parse(localStorage.getItem('LoadBeta')) || false;
+			let extUrl = loadBeta ? 'https://cdn.jsdelivr.net/gh/mainIine/foe-helfer-extension@beta/': chrome.extension.getURL('');
+
 			// set some global variables
 			let script = document.createElement('script');
 			script.innerText = `
 				const extID='${chrome.runtime.id}',
-					extUrl='${chrome.extension.getURL('')}',
+					extUrl='${extUrl}',
 					GuiLng='${lng}',
 					extVersion='${v}',
 					devMode=${!('update_url' in chrome.runtime.getManifest())};
@@ -156,37 +160,45 @@
 				exportFunction(callBgApi, window, {defineAs: 'foeHelperBgApiHandler'});
 			}
 
-			let extURL = chrome.extension.getURL('');
-
-			if (loadBeta) extURL = `https://raw.githubusercontent.com/mainIine/foe-helfer-extension/LoadFromBeta/`;
 			// load the main
-			await promisedLoadCode(`${extURL}js/web/_main/js/_main.js?v=${v}`);
+			await promisedLoadCode(`${extUrl}js/web/_main/js/_main.js`);
 			
 			// first wait for ant and i18n to be loaded
 			await jQueryLoading;
-			const vendorScriptsToLoad = JSON.parse(localStorage.getItem('vendor')) || [];
-			console.log("vendor" + vendorScriptsToLoad);
-			
-			// load all vendor scripts first (unknown order)
-			await Promise.all(vendorScriptsToLoad.map(vendorScript => promisedLoadCode(`${extURL}vendor/${vendorScript}.js?v=${v}`)));
-			
-			window.dispatchEvent(new CustomEvent('foe-helper#vendors-loaded'));
 
-			const internalScriptsToLoad = JSON.parse(localStorage.getItem('internal')) || [];
-			console.log("internal" + internalScriptsToLoad);
+			fetch(
+				`${extUrl}js/vendor.json`
+			).then(response => {
+				if (response.status === 200) {
+					response.json().then(
+						async (vendorScriptsToLoad) => {			
+							// load all vendor scripts first (unknown order)
+							await Promise.all(vendorScriptsToLoad.map(vendorScript => promisedLoadCode(`${extURL}vendor/${vendorScript}.js?v=${v}`)));
+							window.dispatchEvent(new CustomEvent('foe-helper#vendors-loaded'));
+							fetch(
+									`${extUrl}js/internal.json`
+							).then(response => {
+								if (response.status === 200) {
+									response.json().then(
+										async (internalScriptsToLoad) => {
+											for (let i = 0; i < internalScriptsToLoad.length; i++){
+												// load scripts (one after the other)
+												await promisedLoadCode(`${extUrl}js/web/${internalScriptsToLoad[i]}/js/${internalScriptsToLoad[i]}.js?v=${v}`);
+												window.dispatchEvent(new CustomEvent('foe-helper#loaded'));
+											}
+										}
+									);
+								}
+							})
+						}
+					);
+				}
+			});
 			
-			// load scripts (one after the other)
-			for (let i = 0; i < internalScriptsToLoad.length; i++)
-			{
-				await promisedLoadCode(`${extURL}js/web/${internalScriptsToLoad[i]}/js/${internalScriptsToLoad[i]}.js?v=${v}`);
-			}
-
-			window.dispatchEvent(new CustomEvent('foe-helper#loaded'));
-
-		//} catch (err) {
+		} catch (err) {
 			// make sure that the packet buffer in the FoEproxy does not fill up in the event of an incomplete loading.
-		//	window.dispatchEvent(new CustomEvent('foe-helper#error-loading'));
-		//}
+			window.dispatchEvent(new CustomEvent('foe-helper#error-loading'));
+		}
 	}
 
 	// End of the separation from the global scope
