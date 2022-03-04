@@ -2197,5 +2197,8 @@ if (window.foeHelperBgApiHandler !== undefined && window.foeHelperBgApiHandler i
 	delete window.foeHelperBgApiHandler;
 }
 
+localStorage.setItem('internal',JSON.stringify(internalScriptsToLoad));
+localStorage.setItem('vendor',JSON.stringify(vendorScriptsToLoad));
+
 console.log('FOE Helper version ' + extVersion + ' started. ID: ' + extID);
 console.log(navigator.userAgent);
