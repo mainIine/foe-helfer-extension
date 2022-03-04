@@ -14,7 +14,7 @@
 		"https://*.forgeofempires.com/*",
 		"https://foe-helper.com/*",
 		"https://*.foe-helper.com/*",
-		"https://*.foe-rechner.de/*",
+		"https://*.foe-rechner.de/*"
 	],
 
 	"browser_action": {
