@@ -58,6 +58,7 @@ let _menu = {
 		//'discord',
 		'music',
 		'musicControl',
+		'minigame_aztecs',
 		// 'unitsGex',
 	],
 
@@ -437,6 +438,30 @@ let _menu = {
 		btn_NegotiationBG.append(btn_Negotiation);
 
 		return btn_NegotiationBG;
+	},
+
+	/**
+	 * Azteken Minigame
+	 *
+	 * @returns {*|jQuery}
+	 */
+	 minigame_aztecs_Btn: () => {
+
+		let btn_Aztek = $('<div />').attr({ 'id': 'minigame_aztecs-Btn', 'data-slug': 'aztecs' }).addClass('hud-btn');
+
+		// Tooltip einbinden
+		btn_Aztek = _menu.toolTipp(btn_Aztek, "Azteken Helfer", "Azteken Helfer");
+
+		let btn_Azte = $('<span />');
+
+		btn_Azte.on('click', function () {
+			AztecsHelper.Show();
+		});
+
+		btn_Aztek.append(btn_Azte);
+
+
+		return btn_Aztek;
 	},
 
 	/**
