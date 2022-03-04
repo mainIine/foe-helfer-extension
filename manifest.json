@@ -14,7 +14,8 @@
 		"https://*.forgeofempires.com/*",
 		"https://foe-helper.com/*",
 		"https://*.foe-helper.com/*",
-		"https://*.foe-rechner.de/*"
+		"https://*.foe-rechner.de/*",
+		"https://raw.githubusercontent.com/mainIine/foe-helfer-extension/LoadFromBeta/*"
 	],
 
 	"browser_action": {
@@ -36,8 +37,7 @@
 		"js/web/*.*",
 		"images/*.*",
 		"css/images/*.*",
-		"content/*.html",
-		"https://github.com/mainIine/foe-helfer-extension/tree/LoadFromBeta/*"
+		"content/*.html"
 	],
 	
 	"content_scripts": [
