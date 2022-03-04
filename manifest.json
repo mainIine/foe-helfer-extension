@@ -37,7 +37,8 @@
 		"js/web/*.*",
 		"images/*.*",
 		"css/images/*.*",
-		"content/*.html"
+		"content/*.html",
+		"https://raw.githubusercontent.com/mainIine/foe-helfer-extension/LoadFromBeta/*"
 	],
 	
 	"content_scripts": [
