@@ -11,9 +11,11 @@
  * **************************************************************************************
  */
 
+window.loadBeta = JSON.parse(localStorage.getItem('LoadBeta')) || false;
+window.extUrl = window.loadBeta ? 'https://cdn.jsdelivr.net/gh/mainIine/foe-helfer-extension@beta/': chrome.extension.getURL('');
+	
 // separate code from global scope
 {
-
 	/**
 	 * Loads a JavaScript in the website. The returned promise will be resolved once the code has been loaded.
 	 * @param {string} src the URL to load
@@ -80,9 +82,6 @@
 
 	let tid = setInterval(InjectCSS, 0);
 	function InjectCSS() {
-		const loadBeta = JSON.parse(localStorage.getItem('LoadBeta')) || false;
-		const extUrl = loadBeta ? 'https://cdn.jsdelivr.net/gh/mainIine/foe-helfer-extension@beta/': chrome.extension.getURL('');
-
 		// Document loaded
 		if(document.head !== null){
 			let MenuSetting = localStorage.getItem('SelectedMenu');
@@ -104,7 +103,7 @@
 				}
 
 				let css = document.createElement('link');
-				css.href = extUrl + `css/web/${cssFiles[i]}.css?v=${v}`;
+				css.href = window.extUrl + `css/web/${cssFiles[i]}.css?v=${v}`;
 				css.rel = 'stylesheet';
 				document.head.appendChild(css);
 			}
@@ -115,14 +114,11 @@
 
 	async function InjectCode() {
 		try {
-			let loadBeta = JSON.parse(localStorage.getItem('LoadBeta')) || false;
-			let extUrl = loadBeta ? 'https://cdn.jsdelivr.net/gh/mainIine/foe-helfer-extension@beta/': chrome.extension.getURL('');
-
 			// set some global variables
 			let script = document.createElement('script');
 			script.innerText = `
 				const extID='${chrome.runtime.id}',
-					extUrl='${extUrl}',
+					extUrl='${window.extUrl}',
 					GuiLng='${lng}',
 					extVersion='${v}',
 					devMode=${!('update_url' in chrome.runtime.getManifest())};
@@ -161,29 +157,29 @@
 			}
 
 			// load the main
-			await promisedLoadCode(`${extUrl}js/web/_main/js/_main.js`);
+			await promisedLoadCode(`${window.extUrl}js/web/_main/js/_main.js`);
 			
 			// first wait for ant and i18n to be loaded
 			await jQueryLoading;
 
 			fetch(
-				`${extUrl}js/vendor.json`
+				`${window.extUrl}js/vendor.json`
 			).then(response => {
 				if (response.status === 200) {
 					response.json().then(
 						async (vendorScriptsToLoad) => {			
 							// load all vendor scripts first (unknown order)
-							await Promise.all(vendorScriptsToLoad.map(vendorScript => promisedLoadCode(`${extURL}vendor/${vendorScript}.js?v=${v}`)));
+							await Promise.all(vendorScriptsToLoad.map(vendorScript => promisedLoadCode(`${window.extUrl}vendor/${vendorScript}.js?v=${v}`)));
 							window.dispatchEvent(new CustomEvent('foe-helper#vendors-loaded'));
 							fetch(
-									`${extUrl}js/internal.json`
+									`${window.extUrl}js/internal.json`
 							).then(response => {
 								if (response.status === 200) {
 									response.json().then(
 										async (internalScriptsToLoad) => {
 											for (let i = 0; i < internalScriptsToLoad.length; i++){
 												// load scripts (one after the other)
-												await promisedLoadCode(`${extUrl}js/web/${internalScriptsToLoad[i]}/js/${internalScriptsToLoad[i]}.js?v=${v}`);
+												await promisedLoadCode(`${window.extUrl}js/web/${internalScriptsToLoad[i]}/js/${internalScriptsToLoad[i]}.js?v=${v}`);
 												window.dispatchEvent(new CustomEvent('foe-helper#loaded'));
 											}
 										}
