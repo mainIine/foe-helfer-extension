@@ -37,7 +37,6 @@
 
 #musicSettingsScenesX tr th:first-child {
   writing-mode: horizontal-tb;
-  vertical-align: bottom;
   text-align: left;
 }
 
@@ -47,8 +46,12 @@
 }
 
 #musicSettingsScenesX tr th {
-  writing-mode:vertical-lr;
-  text-align: right;
+  vertical-align: bottom;
+}
+
+#musicSettingsScenesX tr th span {
+  writing-mode: vertical-lr;
+  transform: rotate(180deg);
 }
 
 #betterMusicDialogBody table {
