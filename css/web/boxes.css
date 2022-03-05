@@ -1546,10 +1546,14 @@ SettingsBox */
 
 input[type="range"] {
 	-webkit-appearance: none;
-	height: 3px;
+	height: 5px;
 	background: var(--black-50);
 	border-radius: 5px;
 	background-repeat: no-repeat;
+	margin-top: 13px;
+	margin-bottom: 10px;
+	position: relative;
+	top:-1px;
   }
 
 input[type="range"]::-webkit-slider-thumb {
