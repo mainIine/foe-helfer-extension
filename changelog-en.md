@@ -2,13 +2,18 @@
 
 ##### 2.7.0.1
 
+**New**
+- Beta-Mode:
+	- you may now select in the settings if you want to load the freshest helper from Github instead of running the installed version 
+	- If you use it: please be aware of higher bug ratio and please report any odd behavior you find on the discord or in Github
+
 **Update**
 - St.Patricks Box:
 	- the target level for the building upgrade costs may now be selected manually
 	- a time estimate is now given for collection tasks
 
 - Boxes and Menu:
-	- updated Design
+	- sleaker Design
 
 **BugFix**
 -  St.Patricks Box:
