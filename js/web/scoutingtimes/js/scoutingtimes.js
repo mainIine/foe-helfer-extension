@@ -128,7 +128,8 @@ let scoutingTimes = {
                 for (let element of province.children)
                 {
                     let child = scoutingTimes.Provinces[element.targetId];
-                    if (child.isPlayerOwned) {
+                    if (!child) continue;
+                    if (child?.isPlayerOwned) {
                         continue;
                     };
                     if (toscout.indexOf(child.id) > -1) {

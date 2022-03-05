@@ -2,6 +2,11 @@
 
 ##### 2.7.0.1
 
+**New**
+- Beta-Modus:
+	- in den Einstellungen kann nun eingestellt werden, dass die aktuelle Beta-Version von Github verwendet werden soll statt der installierten 
+	- Wenn dieser Modus benutzt wird, kann es vermehrt zum Auftreten von Fehlern kommen - bitte berichtet Fehler auf dem Discord oder im Github!
+
 **Update**
 - St.Patricks Box:
 	- das Ziellevel bei den Upgrade-Kosten kann nun sebst bestimmt werden
