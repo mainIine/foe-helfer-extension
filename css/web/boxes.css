@@ -1268,7 +1268,7 @@ FP-Bar */
 .jq-has-icon { padding: 10px 10px 10px 50px; background-repeat: no-repeat; background-position: 10px; box-shadow: 0 1px 3px black; }
 
 .jq-icon-info {
-	background-image: url('../images/hud/info-icon.png'), linear-gradient(rgba(76, 47, 30, 0.5)), rgba(0,0,0,0.2)), url('../images/hud/box-bg.png');
+	background-image: url('../images/hud/info-icon.png'), linear-gradient(rgba(76, 47, 30, 0.5), rgba(0,0,0,0.2)), url('../images/hud/box-bg.png');
 	background-position: 12px 20px, top left;
 	background-repeat: no-repeat, repeat, repeat;
 	color: #d9edf7;
