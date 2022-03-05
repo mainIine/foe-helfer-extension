@@ -267,11 +267,11 @@ let betterMusic = {
                 
         let htmltext = `<div class="flex">`;
         htmltext += `<div id="musicSettingsGeneral" class="musicSettings"><h1>${i18n("Boxes.BetterMusic.GeneralSettings")}</h1>`;
-        htmltext += `<label for="musicSettingsVolume">${i18n("Boxes.BetterMusic.Volume")} </label> <input id="musicSettingsVolume" type="range" min="0" max="1" step ="0.05" value="${betterMusic.Settings.Volume}" oninput="betterMusic.newVolume(Number(this.value))"><br>`;
+        htmltext += `<label for="musicSettingsVolume">${i18n("Boxes.BetterMusic.Volume")} <input id="musicSettingsVolume" type="range" min="0" max="1" step ="0.05" value="${betterMusic.Settings.Volume}" oninput="betterMusic.newVolume(Number(this.value))"></label> <br>`;
         htmltext += `<input id="musicSettingsPlayOnClose" type="checkbox" ${betterMusic.Settings.PlayOnStart ? 'checked="checked"' : ''}" oninput="betterMusic.Settings.PlayOnStart = this.checked"><label for="musicSettingsPlayOnClose">${i18n("Boxes.BetterMusic.Auto")}</label></div>`;
         
         htmltext += `<div id="musicSettingsTitle" class="musicSettings"><h1>${i18n("Boxes.BetterMusic.TitleSettings")}</h1>`;
-        htmltext += `<label for="musicSettingsTransitionTime">${i18n("Boxes.BetterMusic.Transition")} </label><input id="musicSettingsTransitionTime" type="range" min="0" max="5000" step ="500" value="${betterMusic.Settings.TransitionTime}" oninput="betterMusic.Settings.TransitionTime = Number(this.value)"><br>`;
+        htmltext += `<label for="musicSettingsTransitionTime">${i18n("Boxes.BetterMusic.Transition")} <input id="musicSettingsTransitionTime" type="range" min="0" max="5000" step ="500" value="${betterMusic.Settings.TransitionTime}" oninput="betterMusic.Settings.TransitionTime = Number(this.value)"></label><br>`;
         htmltext += `<input id="musicSettingsFinish" type="checkbox" ${betterMusic.Settings.Finish ? 'checked="checked"' : ''}" oninput="betterMusic.Settings.Finish = this.checked"><label for="musicSettingsFinish">${i18n("Boxes.BetterMusic.Finish")}</label></div>`;
         htmltext += `</div>`;
 

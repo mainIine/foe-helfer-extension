@@ -76,7 +76,8 @@
   display: none;
 }
 #betterMusicDialogBody [type="select"] {
-  margin-top: 15px;
+  margin-top: 8px;
+  margin-bottom: 15px;
 }
 #betterMusicDialogBody [type="checkbox"] + label {
   position: relative;
