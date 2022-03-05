@@ -6,6 +6,9 @@
 - St.Patricks Box:
 	- das Ziellevel bei den Upgrade-Kosten kann nun sebst bestimmt werden
 	- Für Sammelaufgaben wird nun eine Zeitabschätzung angegeben
+- Gildengefechte:
+	- Wasserfall Karte hinzugefügt
+	- Freischaltzeiten der Sektoren werden nun auf der Karte angezeigt
 
 - Boxen und Menu:
 	- aktualisiertes Design

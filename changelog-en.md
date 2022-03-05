@@ -6,9 +6,12 @@
 - St.Patricks Box:
 	- the target level for the building upgrade costs may now be selected manually
 	- a time estimate is now given for collection tasks
+- Guild Battle Grounds:
+	- added waterfall map
+	- added unlock times to the map
 
 - Boxes and Menu:
-	- updated Design
+	- updated design
 
 **BugFix**
 -  St.Patricks Box:

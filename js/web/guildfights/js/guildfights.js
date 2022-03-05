@@ -1915,16 +1915,23 @@ let ProvinceMap = {
 			{
 				ProvinceMap.MapCTX.globalAlpha = 0.5;
 				ProvinceMap.MapCTX.fill(path);
+				ProvinceMap.MapCTX.strokeStyle = '#00000088';
+				ProvinceMap.MapCTX.lineWidth = 5;
 
 				// Title e.g. "B4D"
 				ProvinceMap.MapCTX.globalAlpha = 1;
 				ProvinceMap.MapCTX.fillStyle = (!this.ownerID ? '#ffffff' : this.strokeStyle);
-				ProvinceMap.MapCTX.fillText(this.short, this.flag.x, this.flag.y);
+				ProvinceMap.MapCTX.fillText(this.short, this.flag.x, this.flag.y - 20);
+				ProvinceMap.MapCTX.strokeText(this.short, this.flag.x, this.flag.y - 20);
 
-				// Shadow from title
-				ProvinceMap.MapCTX.globalAlpha = 0.7;
-				ProvinceMap.MapCTX.fillStyle = '#000000';
-				ProvinceMap.MapCTX.fillText(this.short, this.flag.x + 2, this.flag.y + 4);
+				// time 
+				ProvinceMap.MapCTX.globalAlpha = 1;
+				ProvinceMap.MapCTX.font = 'bold 30px Arial';
+				ProvinceMap.MapCTX.fillStyle = (!this.ownerID ? '#ffffff' : this.strokeStyle);
+
+				let provinceUnlockTime = (moment.unix(this.lockedUntil).format('HH:mm') != 'Invalid date') ? moment.unix(this.lockedUntil).format('HH:mm') : '';
+				ProvinceMap.MapCTX.fillText(provinceUnlockTime, this.flag.x, this.flag.y+20);
+				ProvinceMap.MapCTX.strokeText(provinceUnlockTime, this.flag.x, this.flag.y+20);
 			}
 
 			/*
