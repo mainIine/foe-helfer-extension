@@ -11,11 +11,20 @@
  * **************************************************************************************
  */
 
+// separate code from global scope
+{
 window.loadBeta = JSON.parse(localStorage.getItem('LoadBeta')) || false;
 window.extUrl = window.loadBeta ? 'https://cdn.jsdelivr.net/gh/mainIine/foe-helfer-extension@beta/': chrome.extension.getURL('');
 localStorage.setItem('LoadBeta', false);
-// separate code from global scope
-{
+if (window.loadBeta) {
+	fetch("https://api.github.com/repos/mainIine/foe-helfer-extension/branches/beta")
+		.then(response => {if (response.status === 200) {response.json()
+		.then((data) => {inject(data?.commit?.commit?.committer?.date)})}});
+} else {
+	inject("");
+}
+
+function inject (betaDate) {
 	/**
 	 * Loads a JavaScript in the website. The returned promise will be resolved once the code has been loaded.
 	 * @param {string} src the URL to load
@@ -54,8 +63,8 @@ localStorage.setItem('LoadBeta', false);
 		}, {capture: false, once: true, passive: true});
 	});
 
-
-	const v = chrome.runtime.getManifest().version;
+	
+	const v = chrome.runtime.getManifest().version + (window.loadBeta ? '-beta-'+ betaDate:'');
 
 	let   lng = chrome.i18n.getUILanguage();
 	const uLng = localStorage.getItem('user-language');
@@ -155,7 +164,6 @@ localStorage.setItem('LoadBeta', false);
 				}
 				exportFunction(callBgApi, window, {defineAs: 'foeHelperBgApiHandler'});
 			}
-
 			// load the main
 			await promisedLoadCode(`${window.extUrl}js/web/_main/js/_main.js`);
 			
@@ -180,9 +188,9 @@ localStorage.setItem('LoadBeta', false);
 											for (let i = 0; i < internalScriptsToLoad.length; i++){
 												// load scripts (one after the other)
 												await promisedLoadCode(`${window.extUrl}js/web/${internalScriptsToLoad[i]}/js/${internalScriptsToLoad[i]}.js?v=${v}`);
-												window.dispatchEvent(new CustomEvent('foe-helper#loaded'));
-												localStorage.setItem('LoadBeta', window.loadBeta);
 											}
+											window.dispatchEvent(new CustomEvent('foe-helper#loaded'));
+											localStorage.setItem('LoadBeta', window.loadBeta);
 										}
 									);
 								}
@@ -198,5 +206,6 @@ localStorage.setItem('LoadBeta', false);
 		}
 	}
 
+}
 	// End of the separation from the global scope
 }
