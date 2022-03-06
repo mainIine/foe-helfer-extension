@@ -13,7 +13,18 @@
 
 // separate code from global scope
 {
+window.loadBeta = JSON.parse(localStorage.getItem('LoadBeta')) || false;
+window.extUrl = window.loadBeta ? 'https://cdn.jsdelivr.net/gh/mainIine/foe-helfer-extension@beta/': chrome.extension.getURL('');
+localStorage.setItem('LoadBeta', false);
+if (window.loadBeta) {
+	fetch("https://api.github.com/repos/mainIine/foe-helfer-extension/branches/beta")
+		.then(response => {if (response.status === 200) {response.json()
+		.then((data) => {inject(data?.commit?.commit?.committer?.date)})}});
+} else {
+	inject("");
+}
 
+function inject (betaDate) {
 	/**
 	 * Loads a JavaScript in the website. The returned promise will be resolved once the code has been loaded.
 	 * @param {string} src the URL to load
@@ -52,12 +63,12 @@
 		}, {capture: false, once: true, passive: true});
 	});
 
-
-	const v = chrome.runtime.getManifest().version;
+	
+	const v = chrome.runtime.getManifest().version + (window.loadBeta ? '-beta-'+ betaDate:'');
 
 	let   lng = chrome.i18n.getUILanguage();
 	const uLng = localStorage.getItem('user-language');
-
+	
 	// we only need the first part
 	if (lng.indexOf('-') > 0) {
 		lng = lng.split('-')[0];
@@ -101,7 +112,7 @@
 				}
 
 				let css = document.createElement('link');
-				css.href = chrome.extension.getURL(`css/web/${cssFiles[i]}.css?v=${v}`);
+				css.href = window.extUrl + `css/web/${cssFiles[i]}.css?v=${v}`;
 				css.rel = 'stylesheet';
 				document.head.appendChild(css);
 			}
@@ -116,7 +127,7 @@
 			let script = document.createElement('script');
 			script.innerText = `
 				const extID='${chrome.runtime.id}',
-					extUrl='${chrome.extension.getURL('')}',
+					extUrl='${window.extUrl}',
 					GuiLng='${lng}',
 					extVersion='${v}',
 					devMode=${!('update_url' in chrome.runtime.getManifest())};
@@ -153,107 +164,48 @@
 				}
 				exportFunction(callBgApi, window, {defineAs: 'foeHelperBgApiHandler'});
 			}
-			
 			// load the main
-			await promisedLoadCode(chrome.extension.getURL(`js/web/_main/js/_main.js?v=${v}`));
-
+			await promisedLoadCode(`${window.extUrl}js/web/_main/js/_main.js`);
+			
 			// first wait for ant and i18n to be loaded
 			await jQueryLoading;
 
-
-			const extURL = chrome.extension.getURL(''),
-				vendorScripts = [
-					'i18njs/i18njs.min',
-					'moment/moment-with-locales.min',
-					'CountUp/jquery.easy_number_animate.min',
-					'Tabslet/jquery.tabslet.min',
-					'ScrollTo/jquery.scrollTo.min',
-					'jQuery/jquery-resizable.min',
-					'jQuery/jquery-ui.min',
-					'jQuery/jquery.toast',
-					'tooltip/tooltip',
-					'tableSorter/table-sorter',
-					'Sortable/Sortable.min',
-					'jsZip/jszip.min',
-					'date-range/lightpick',
-					'lit-html/lit-html.bundle.min',
-					'SimpleMarkdown/simple-markdown.min',
-					'dexie/dexie.min',
-					'dexie/dexie-export-import',
-					'downloadjs/downloadjs.min'
-				];
-
-			// load all vendor scripts first (unknown order)
-			await Promise.all(vendorScripts.map(vendorScript => promisedLoadCode(`${extURL}vendor/${vendorScript}.js?v=${v}`)));
-
-			window.dispatchEvent(new CustomEvent('foe-helper#vendors-loaded'));
-
-			const s = [
-				'_languages',
-				'_helper',
-				'_menu',
-				'_menu_bottom',
-				'_menu_right',
-				'_menu_box',
-				'indexdb',
-				'kits',
-				'outposts',
-				'calculator',
-				'infoboard',
-				'productions',
-				'part-calc',
-				'unit',
-				'alerts',
-				'guildfights',
-				'gvg',
-				'stats',
-				'campagnemap',
-				'bonus-service',
-				'technologies',
-				'negotiation',
-				'eventchests',
-				'settings',
-				'investment',
-				'strategy-points',
-				'battle-assist',
-				'citymap',
-				'hidden-rewards',
-				'greatbuildings',
-				'notice',
-				'inventory-tracker',
-				'treasury',
-				'market',
-				'marketoffers',
-				'bluegalaxy',
-				'eventhandler',
-				'fp-collector',
-				'unit-gex',
-				'maptradewarning',
-				'guildmemberstat',
-				'quests',
-				'gexstat',
-				'dbexport',
-				'closebox',
-				'castle',
-				'stpatrickstats',
-				'scoutingtimes',
-				'discord',
-				'bettermusic'
-			];
-
-			// load scripts (one after the other)
-			for (let i = 0; i < s.length; i++)
-			{
-				await promisedLoadCode(`${extURL}js/web/${s[i]}/js/${s[i]}.js?v=${v}`);
-			}
-
-			window.dispatchEvent(new CustomEvent('foe-helper#loaded'));
-
+			fetch(
+				`${window.extUrl}js/vendor.json`
+			).then(response => {
+				if (response.status === 200) {
+					response.json().then(
+						async (vendorScriptsToLoad) => {			
+							// load all vendor scripts first (unknown order)
+							await Promise.all(vendorScriptsToLoad.map(vendorScript => promisedLoadCode(`${window.extUrl}vendor/${vendorScript}.js?v=${v}`)));
+							window.dispatchEvent(new CustomEvent('foe-helper#vendors-loaded'));
+							fetch(
+									`${window.extUrl}js/internal.json`
+							).then(response => {
+								if (response.status === 200) {
+									response.json().then(
+										async (internalScriptsToLoad) => {
+											for (let i = 0; i < internalScriptsToLoad.length; i++){
+												// load scripts (one after the other)
+												await promisedLoadCode(`${window.extUrl}js/web/${internalScriptsToLoad[i]}/js/${internalScriptsToLoad[i]}.js?v=${v}`);
+											}
+											window.dispatchEvent(new CustomEvent('foe-helper#loaded'));
+											localStorage.setItem('LoadBeta', window.loadBeta);
+										}
+									);
+								}
+							})
+						}
+					);
+				}
+			});
+			
 		} catch (err) {
 			// make sure that the packet buffer in the FoEproxy does not fill up in the event of an incomplete loading.
 			window.dispatchEvent(new CustomEvent('foe-helper#error-loading'));
 		}
 	}
 
+}
 	// End of the separation from the global scope
 }

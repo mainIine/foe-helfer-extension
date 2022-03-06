@@ -1,5 +1,34 @@
 ## Changelog - Extension
 
+##### 2.7.0.1
+
+**New**
+- Beta-Mode:
+	- you may now select in the settings if you want to load the freshest helper from Github instead of running the installed version 
+	- If you use it: please be aware of higher bug ratio and please report any odd behavior you find on the discord or in Github
+
+**Update**
+- St.Patricks Box:
+	- the target level for the building upgrade costs may now be selected manually
+	- a time estimate is now given for collection tasks
+- Guild Battle Grounds:
+	- added waterfall map
+	- added unlock times to the map
+
+- Boxes and Menu:
+	- updated design
+
+**BugFix**
+-  St.Patricks Box:
+    - [#2341] reset of building stats was not correct after town 
+	- calculation of time estimate for "next twon 8.4Q" was slightly incorrect 
+
+- Hidden incidents:
+	- [#2340] the incident count is now hidden again when "0"
+
+
+---
+
 ##### 2.7.0.0
 
 **New**
@@ -15,6 +44,9 @@
 **Update**
 - St.Patricks Box:
   - The box can now be resized
+  
+- Hidden incidents:
+	- there now is a setting to exclude relics from the incident count
 
 **BugFix**
 - Alarms:
