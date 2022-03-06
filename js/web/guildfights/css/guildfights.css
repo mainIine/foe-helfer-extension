@@ -496,6 +496,5 @@
 }
 
 #ProvinceMap.waterfall_archipelago #province-map {
-	background-image: linear-gradient(#00000088, #00000055), url('../images/waterfall_archipelago_bg.jpg');
-	background-size: 100%;
+	background-color: #222;
 }
