@@ -418,7 +418,7 @@ let stPatrick = {
 				targetProduction = sum;
 				targetDegree = degree;
 			}
-			if (target==='transport_1' && targetProduction > work) {
+			if (target==='transport_1' && targetProduction * Math.pow(1000,targetDegree-workd) > work) {
 				targetProduction = work;
 				targetDegree = workd;
 			}
