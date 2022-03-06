@@ -75,11 +75,12 @@
 	height: 500px;
 }
 
-#GvGMapBody {
+#GvGMapBody.window-body {
 	display: flex;
 	align-items: stretch;
 	overflow: hidden;
 	justify-content: space-between;
+	height: calc(100% - 19px);
 }
 
 #GvGMapContent {

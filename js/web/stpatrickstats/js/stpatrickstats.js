@@ -12,7 +12,10 @@
  */
 
 FoEproxy.addHandler('IdleGameService', 'getState', (data, postData) => {
-
+	//Do not show window if deactivated in settings
+	if(!Settings.GetSetting('ShowEventChest')){
+		return;
+	}
 	// Don't create a new box while another one is still open
     if ($('#stPatrickDialog').length === 0) {
 		stPatrick.ShowDialog();
@@ -53,6 +56,13 @@ FoEproxy.addHandler('IdleGameService', 'getState', (data, postData) => {
 	stPatrick.Progress = Number(data.responseData.idleCurrencyAmount.value)||0;
 	stPatrick.ProgressDegree = Number(data.responseData.idleCurrencyAmount.degree)||0;
 
+	if (!(!data?.responseData?.taskHandler?.inProgressTasks)) {
+		for (let t of data.responseData.taskHandler.inProgressTasks) {
+			stPatrick.Taskprogress[t.id] = {value:t.currentProgress.value || 0, degree:t.currentProgress.degree || 0};
+		}
+	
+	}
+	
 	stPatrick.stPatrickUpdateDialog();
 });
 
@@ -82,6 +92,7 @@ FoEproxy.addHandler('IdleGameService', 'performActions', (data, postData) => {
 
 		if (data2.type === 'collect_task') {
 			let index = stPatrick.Tasklist.indexOf(data2.taskId);
+			stPatrick.Taskprogress[data2.taskId] = {}
 			if (index > -1) {
 				stPatrick.Tasklist.splice(index, 1);
 			}
@@ -141,6 +152,8 @@ let stPatrick = {
 
 	Tasklist: [],
 
+	Taskprogress:[],
+
 	Progress: 0,
 	ProgressDegree: 0,
 	
@@ -193,7 +206,7 @@ let stPatrick = {
         htmltext += `</tr><tr><td>${stPatrick.stPat.transport_1.baseData.name}<br><span id="stPatShip"></span></td>`;
         htmltext += `</tr><tr><td colspan="3" style="color: var(--text-bright);font-size:smaller">${i18n('Boxes.stPatrick.Warning')}</td></tr></table>`;
         
-		htmltext += `<table id="stPatNext" class="foe-table" style="width:100%"><tr><th colspan="4"  onclick="stPatrick.hide('#stPatNext')">${i18n('Boxes.stPatrick.BuildingUpgrades')}</th></tr>`;
+		htmltext += `<table id="stPatNext" class="foe-table" style="width:100%"><tr><th colspan="4"  onclick="stPatrick.hide('#stPatNext')">${i18n('Boxes.stPatrick.BuildingUpgrades')}<i></i></tr>`;
 		htmltext += `<tr title="${stPatrick.stPat.workshop_1.baseData.name}">`;
         htmltext += `<td><img src="${MainParser.InnoCDN}/assets/shared/seasonalevents/stpatricks/event/stpatrick_task_goods_hats_thumb.png" alt="" ></td>`;
         htmltext += `<td><span id="stPatworkshop_1Level" class="levelSelect" data-station="workshop_1"></span></td>`;
@@ -230,7 +243,12 @@ let stPatrick = {
 		htmltext += `<td id="stPatmarket_1" class="align-right"></td>`;
 		htmltext += `<td id="stPatmarket_1Time" class="align-left"></td></tr>`;
         htmltext += `</table>`;
-        htmltext += `<table id="stPatTasks" class="foe-table" style="width:100%"><tr><th onclick="stPatrick.hide('#stPatTasks')">${i18n('Boxes.stPatrick.UpcomingTasks')}</th></tr>`;
+        htmltext += `<table id="stPatTasksActive" class="foe-table" style="width:100%"><tr><th colspan="2" onclick="stPatrick.hide('#stPatTasksActive')">${i18n('Boxes.stPatrick.ActiveTasks')}<i></i></th></tr>`;
+		htmltext += `<tr><td id="stPatTask0"></td><td id="time0"></td></tr>`;
+        htmltext += `<tr><td id="stPatTask1"></td><td id="time1"></td></tr>`;
+        htmltext += `<tr><td id="stPatTask2"></td><td id="time2"></td></tr>`;
+        htmltext += `</table>`;
+		htmltext += `<table id="stPatTasks" class="foe-table" style="width:100%"><tr><th onclick="stPatrick.hide('#stPatTasks')">${i18n('Boxes.stPatrick.UpcomingTasks')}<i></i></th></tr>`;
 		htmltext += `<tr><td id="stPatTask3"></td></tr>`;
         htmltext += `<tr><td id="stPatTask4"></td></tr>`;
         htmltext += `<tr><td id="stPatTask5"></td></tr>`;
@@ -380,6 +398,46 @@ let stPatrick = {
 		$('#stPatFest').attr('title', `${stPatrick.bigNum(fest)} ${stPatrick.stPatNumTitles[festd]}`);
 
 		let i = Math.min(stPatrick.Tasklist.length, 9);
+
+		for (let t = 0;t<3;t++) {
+			$('#stPatTask'+ t).text(``);
+			$('#stPatTask'+ t).addClass('hide');
+			$('#time'+ t).text(``);
+			$('#time'+ t).addClass('hide');
+			if (t >= i) continue;
+
+			let Task = stPatrick.Tasks[stPatrick.Tasklist[t]];
+			if (Task.type !== "collect_idle_currency") continue;
+
+			$('#stPatTask'+ t).text(`${Task.description}`);
+			$('#stPatTask'+ t).removeClass('hide');
+			let target=Task.targets[0]
+			let targetProduction=stPatrick.stPat[target].production;
+			let targetDegree=stPatrick.stPat[target].degree;
+			if (target==='market_1') {
+				targetProduction = sum;
+				targetDegree = degree;
+			}
+			if (target==='transport_1' && targetProduction * Math.pow(1000,targetDegree-workd) > work) {
+				targetProduction = work;
+				targetDegree = workd;
+			}
+			if (Task.targets.length===5) {
+				targetProduction = work;
+				targetDegree = workd;
+			}
+			
+			$('#time'+ t).text(`${stPatrick.time(Task.requiredProgress.value,
+												Task.requiredProgress.degree,
+												targetProduction,
+												targetDegree,
+												stPatrick.Taskprogress[stPatrick.Tasklist[t]]?.value || 0,
+												stPatrick.Taskprogress[stPatrick.Tasklist[t]]?.degree || 0)}`);
+			$('#time'+ t).removeClass('hide');
+			
+			
+			
+		}
 		for (let t = 3;t<9;t++) {
 			if (t < i) {
 				let Task = stPatrick.Tasks[stPatrick.Tasklist[t]];
