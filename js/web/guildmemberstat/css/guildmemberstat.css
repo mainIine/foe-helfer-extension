@@ -197,7 +197,7 @@
 }
 
 #GuildMemberStatBody tr.sorter-header th {
-    z-index: 100;
+    z-index: 11;
 }
 
 #GuildMemberStatBody table th {
