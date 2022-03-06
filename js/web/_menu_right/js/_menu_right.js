@@ -224,7 +224,10 @@ let _menu_right = {
 		$('.hud-btn-down').removeClass('hasFocus');
 
 		_menu.ActiveSlide++;
+
 		_menu.MenuScrollTop -= _menu.HudHeight;
+		if (_menu.ActiveSlide * _menu.HudHeight > $('#foe-helper-hud-slider').height())
+			_menu.MenuScrollTop = - (($('#foe-helper-hud-slider').height()/_menu.HudHeight) - 1) *_menu.HudHeight;
 
 		$('#foe-helper-hud-slider').css({
 			'top': _menu.MenuScrollTop + 'px'
@@ -250,7 +253,11 @@ let _menu_right = {
 		$('.hud-btn-up').removeClass('hasFocus');
 
 		_menu.ActiveSlide--;
-		_menu.MenuScrollTop += _menu.HudHeight;
+		
+		if (_menu.ActiveSlide == 1) 
+			_menu.MenuScrollTop = 0;
+		else
+			_menu.MenuScrollTop += _menu.HudHeight;
 
 		$('#foe-helper-hud-slider').css({
 			'top': _menu.MenuScrollTop + 'px'

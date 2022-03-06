@@ -175,6 +175,12 @@
 		"sort": 9
 	},
 	{
+		"name": "LoadBeta",
+		"status": false,
+		"group": "Extension",
+		"sort": 9
+	},
+	{
 		"name": "About",
 		"callback": "About",
 		"group": "About",
