@@ -16,13 +16,6 @@
     right: 15%;
     width: 120px;
     height: 60px;
-    min-width: 95px !important;
-	min-height: 50px !important;
-}
-
-#menu_box.closed {
-	border-image-source: url('../images/hud/window-menu-closed.png');
-	min-height: 0 !important;
 }
 
 #menu_boxHeader {
@@ -47,11 +40,8 @@
 
 #menu_box #menu_boxBody {
 	overflow: auto;
-	padding: 2px
-}
-
-.hud-btn {
-	background: url('../images/hud/menu-sm.png') top left no-repeat;
+	padding: 2px;
+	height: calc(100% - 42px);
 }
 
 .hud-btn {	
