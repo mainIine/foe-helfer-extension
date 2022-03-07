@@ -526,6 +526,13 @@ let HTML = {
 			}
 		};
 
+		// Except the "menu Box"
+		if(id === 'menu_box')
+		{
+			options['minWidth'] = 105;
+			options['minHeight'] = 87;
+		}
+
 		// keep aspect ratio
 		if (keepRatio) {
 			options['aspectRatio'] = box.width() + ' / ' + box.height();
