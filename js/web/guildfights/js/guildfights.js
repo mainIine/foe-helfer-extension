@@ -1789,7 +1789,7 @@ let ProvinceMap = {
 		ProvinceMap.Map = document.createElement("canvas");
 
 		if (GuildFights.MapData.map['id'] === "waterfall_archipelago") {
-			ProvinceMap.Map.width = 1080;
+			ProvinceMap.Map.width = 900;
 			ProvinceMap.Map.height = 800;
 		} else {
 			ProvinceMap.Map.width = ProvinceMap.MapSize.width;
@@ -1935,7 +1935,12 @@ let ProvinceMap = {
 			}
 		}
 
-		Province.prototype.drawHexMap = function () {
+		Province.prototype.drawHexMap = function (mapdata = []) {
+
+			let id = this['id'] || 0;
+			let additionalSectorinfo = mapdata[id];
+
+			console.log(this, additionalSectorinfo);
 
 			ProvinceMap.MapCTX.lineWidth = ProvinceMap.StrokeWidth;
 			ProvinceMap.MapCTX.globalAlpha = this.alpha;
@@ -1943,7 +1948,7 @@ let ProvinceMap = {
 			ProvinceMap.MapCTX.textAlign = "center";
 			ProvinceMap.MapCTX.font = 'bold 25px Arial';
 			ProvinceMap.MapCTX.globalAlpha = 1;
-			ProvinceMap.MapCTX.lineWidth = 1;
+			ProvinceMap.MapCTX.lineWidth = 2;
 
 			let mapStuff = {
 				sizeFactor: ProvinceMap.Map.width / 8,
@@ -1953,46 +1958,60 @@ let ProvinceMap = {
 				hexheight: 0.7 * ProvinceMap.Map.height / 7
 			};
 			
-			let id = this['id'] || 0;
 			let x = this.flag.x * (mapStuff.hexwidth * 0.375) + mapStuff.offsetX;
 			let y = this.flag.y * (mapStuff.hexheight * 0.5) + mapStuff.offsetY;
 
 			if (this.flagImg && this.flagPos) {
-				let flag_image = new Image(),
+				/*let flag_image = new Image(),
 					flag_x = this.flagPos.x * (mapStuff.hexwidth * 0.375) - 20 + mapStuff.offsetX,
-					flag_y = this.flagPos.y * (mapStuff.hexheight * 0.5) - 20 + mapStuff.offsetY;
+					flag_y = this.flagPos.y * (mapStuff.hexheight * 0.5) - 20 + mapStuff.offsetY;*/
 					let sector = this;
 
-				flag_image.src = `${MainParser.InnoCDN}assets/shared/clanflags/${this.flagImg}.jpg`;
+				ProvinceMap.MapCTX.font = 'bold 40px Arial';
+				ProvinceMap.MapCTX.fillStyle = '#111111';
+				ProvinceMap.MapCTX.fillText('🛡', x, y);
+				ProvinceMap.MapCTX.font = 'bold 15px Arial';
+				ProvinceMap.MapCTX.fillText(sector.ownerName.substring(0,9), x, y + (mapStuff.hexheight*0.25));
+				ProvinceMap.MapCTX.font = 'bold 40px Arial';
 
-				flag_image.onload = function () {
-					ProvinceMap.MapCTX.drawImage(this, flag_x, flag_y, mapStuff.hexheight/2, mapStuff.hexheight/2);
-					ProvinceMap.MapCTX.fillStyle = sector.strokeStyle;
-					drawHex(sector, mapStuff);
-				}
+				ProvinceMap.MapCTX.fillStyle = sector.strokeStyle;
+				drawHex(x, y, mapStuff.hexwidth, mapStuff.hexheight);
+
+				//flag_image.src = `${MainParser.InnoCDN}assets/shared/clanflags/${this.flagImg}.jpg`;
+
+				//flag_image.onload = function () {
+					//ProvinceMap.MapCTX.drawImage(this, flag_x, flag_y, mapStuff.hexheight/2, mapStuff.hexheight/2);
+				//}
 			}
 			else {
-
 				// Title e.g. "B4D"
-				ProvinceMap.MapCTX.fillStyle = '#000000';
-				ProvinceMap.MapCTX.fillText(this.short, x, y);
-				ProvinceMap.MapCTX.strokeStyle = '#00000088';
+				ProvinceMap.MapCTX.font = 'bold 25px Arial';
+				ProvinceMap.MapCTX.fillStyle = '#111111';
+				ProvinceMap.MapCTX.fillText(this.short, x, y - (mapStuff.hexheight*0.1));
 
 				// time 
-				ProvinceMap.MapCTX.font = 'bold 15px Arial';
+				ProvinceMap.MapCTX.font = 'bold 16px Arial';
 				let provinceUnlockTime = (moment.unix(this.lockedUntil).format('HH:mm') != 'Invalid date') ? moment.unix(this.lockedUntil).format('HH:mm') : '';
-				ProvinceMap.MapCTX.fillText(provinceUnlockTime, x, y + 20);
+				ProvinceMap.MapCTX.fillText(provinceUnlockTime, x, y + (mapStuff.hexheight*0.25));
+
+				if (additionalSectorinfo.totalBuildingSlots != undefined) {
+					let slots = '●';
+					if (additionalSectorinfo.totalBuildingSlots == 1)
+						slots = '●';
+					else if (additionalSectorinfo.totalBuildingSlots == 2)
+						slots = '●●';
+					else if (additionalSectorinfo.totalBuildingSlots == 3)
+						slots = '●●●';
+
+					ProvinceMap.MapCTX.fillText(slots, x, y + (mapStuff.hexheight*0.07));
+				}
 
 				ProvinceMap.MapCTX.fillStyle = this.strokeStyle;
-				drawHex(this, mapStuff);
+				drawHex(x, y, mapStuff.hexwidth, mapStuff.hexheight);
 			}
 		}
 
-		drawHex = function (sector, mapStuff) {
-			let width = mapStuff.hexwidth;
-			let height = mapStuff.hexheight;
-			let x = sector.flag.x * (width * 0.375) + mapStuff.offsetX;
-			let y = sector.flag.y * (height * 0.5) + mapStuff.offsetY;
+		drawHex = function (x, y, width, height) {
 			
 			ProvinceMap.MapCTX.beginPath();
 			ProvinceMap.MapCTX.moveTo(x - (width / 4), y - (height / 2));
@@ -2008,8 +2027,9 @@ let ProvinceMap = {
 
 		Province.prototype.updateGGMap = function () {
 
-			if (GuildFights.MapData.map['id'] === "waterfall_archipelago")
-				this.drawHexMap();
+			if (GuildFights.MapData.map['id'] === "waterfall_archipelago") {
+				this.drawHexMap(GuildFights.MapData.map.provinces);
+			}
 			else
 				this.drawGGMap();
 
