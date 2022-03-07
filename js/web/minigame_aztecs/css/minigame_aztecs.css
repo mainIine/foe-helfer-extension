@@ -43,3 +43,16 @@ table.aztecTable{
     font-weight: bolder;
     font-size: xx-large;
 }
+
+.aztec.color-red{
+    color:white;
+    background-color: red;
+}
+.aztec.color-yellow{
+    color:red;
+    background-color: yellow;
+}
+.aztec.color-green{
+    color:red;
+    background-color: green;
+}
