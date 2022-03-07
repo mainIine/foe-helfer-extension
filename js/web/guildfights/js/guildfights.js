@@ -1959,14 +1959,14 @@ let ProvinceMap = {
 
 			if (this.flagImg && this.flagPos) {
 				let flag_image = new Image(),
-					flag_x = this.flagPos.x * (mapStuff.hexwidth * 0.375) - 45 + mapStuff.offsetX,
-					flag_y = this.flagPos.y * (mapStuff.hexheight * 0.5) - 45 + mapStuff.offsetY;
+					flag_x = this.flagPos.x * (mapStuff.hexwidth * 0.375) - 20 + mapStuff.offsetX,
+					flag_y = this.flagPos.y * (mapStuff.hexheight * 0.5) - 20 + mapStuff.offsetY;
 					let sector = this;
 
 				flag_image.src = `${MainParser.InnoCDN}assets/shared/clanflags/${this.flagImg}.jpg`;
 
 				flag_image.onload = function () {
-					ProvinceMap.MapCTX.drawImage(this, flag_x, flag_y);
+					ProvinceMap.MapCTX.drawImage(this, flag_x, flag_y, mapStuff.hexheight/2, mapStuff.hexheight/2);
 					ProvinceMap.MapCTX.fillStyle = sector.strokeStyle;
 					drawHex(sector, mapStuff);
 				}
@@ -1974,12 +1974,11 @@ let ProvinceMap = {
 			else {
 
 				// Title e.g. "B4D"
-				ProvinceMap.MapCTX.fillStyle = '#ffffff';
+				ProvinceMap.MapCTX.fillStyle = '#000000';
 				ProvinceMap.MapCTX.fillText(this.short, x, y);
 				ProvinceMap.MapCTX.strokeStyle = '#00000088';
 
 				// time 
-				ProvinceMap.MapCTX.fillStyle = '#ffffff';
 				ProvinceMap.MapCTX.font = 'bold 15px Arial';
 				let provinceUnlockTime = (moment.unix(this.lockedUntil).format('HH:mm') != 'Invalid date') ? moment.unix(this.lockedUntil).format('HH:mm') : '';
 				ProvinceMap.MapCTX.fillText(provinceUnlockTime, x, y + 20);
