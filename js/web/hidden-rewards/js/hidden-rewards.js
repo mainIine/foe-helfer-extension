@@ -31,7 +31,7 @@ let HiddenRewards = {
 
     Cache: null,
     FilteredCache : null,
-    FilteredCache2 : null,
+    CountNonGE:0,
     FirstCycle: true,
     
 	/**
@@ -66,12 +66,12 @@ let HiddenRewards = {
 	 */
     prepareData: (Rewards) => {
         let data = [];
-
+        
         for (let idx in Rewards) {
             if (!Rewards.hasOwnProperty(idx)) continue;
 
             let position = Rewards[idx].position.context;
-
+            let isGE = false;
             let SkipEvent = true;
 
             // prüfen ob der Spieler in seiner Stadt eine zweispurige Straße hat
@@ -82,9 +82,11 @@ let HiddenRewards = {
             else {
                 SkipEvent = false;
             }
-	   if (position === 'cityUnderwater') {
-		SkipEvent = true;
-	   }
+            if (position === 'cityUnderwater') {
+                SkipEvent = true;
+            }
+
+            if (position === 'guildExpedition') isGE = true;
 
             if (SkipEvent) {
                 continue;
@@ -102,6 +104,7 @@ let HiddenRewards = {
                 position: position,
                 starts: Rewards[idx].startTime,
                 expires: Rewards[idx].expireTime,
+                isGE: isGE,
             });
         }
 
@@ -120,14 +123,13 @@ let HiddenRewards = {
      */
     RefreshGui: (fromHandler = false) => {       
         HiddenRewards.FilteredCache = [];
-        HiddenRewards.FilteredCache2 = [];
+        HiddenRewards.CountNonGE = 0;
         for (let i = 0; i < HiddenRewards.Cache.length; i++) {
 	    let StartTime = moment.unix(HiddenRewards.Cache[i].starts|0),
 		EndTime = moment.unix(HiddenRewards.Cache[i].expires);
             if (StartTime > MainParser.getCurrentDateTime() || EndTime < MainParser.getCurrentDateTime()) continue;
             HiddenRewards.FilteredCache.push(HiddenRewards.Cache[i]);
-            if (HiddenRewards.Cache[i].position.context == "guildExpedition") continue;
-            HiddenRewards.FilteredCache2.push(HiddenRewards.Cache[i]);
+            if (!HiddenRewards.Cache[i].isGE) HiddenRewards.CountNonGE++;
         }
 
         HiddenRewards.SetCounter();
@@ -199,9 +201,9 @@ let HiddenRewards = {
 
 
 	SetCounter: ()=> {
-        let count = HiddenRewards.FilteredCache?.length|0;
-        if (Settings.GetSetting('ExcludeRelics')) count = HiddenRewards.FilteredCache2?.length|0;
+        let count = HiddenRewards.FilteredCache?.length || 0;
+        if (Settings.GetSetting('ExcludeRelics')) count = HiddenRewards.CountNonGE;
         $('#hidden-reward-count').text(count).show();
-          if (count = 0) $('#hidden-reward-count').hide();
+        if (count === 0) $('#hidden-reward-count').hide();
 	}
 };

@@ -21,10 +21,10 @@ FoEproxy.addHandler('ClanService', 'getOwnClanData', (data, postData) => {
 		{
 			GuildMemberStat.UpdateData('clandata', null).then((e) => {
 
-				if ($('#guildmemberstat-Btn').hasClass('hud-btn-red'))
+				if ($('#guildMemberstat-Btn').hasClass('hud-btn-red'))
 				{
-					$('#guildmemberstat-Btn').removeClass('hud-btn-red');
-					$('#guildmemberstat-Btn-closed').remove();
+					$('#guildMemberstat-Btn').removeClass('hud-btn-red');
+					$('#guildMemberstat-Btn-closed').remove();
 				}
 
 			});
