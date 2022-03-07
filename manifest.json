@@ -2,8 +2,8 @@
 	"name": "__MSG_appName__",
 	"description": "__MSG_appDesc__",
 	"default_locale": "en",
-	"version": "2.7.0.0",
-  
+	"version": "2.8.0.0",
+ 	
 	"manifest_version": 2,
 	"permissions": [
 		"alarms",
@@ -14,7 +14,9 @@
 		"https://*.forgeofempires.com/*",
 		"https://foe-helper.com/*",
 		"https://*.foe-helper.com/*",
-		"https://*.foe-rechner.de/*"
+		"https://*.foe-rechner.de/*",
+		"https://cdn.jsdelivr.net/gh/mainIine/foe-helfer-extension@beta/*",
+		"https://api.github.com/repos/mainIine/foe-helfer-extension/branches/beta"
 	],
 
 	"browser_action": {
@@ -36,7 +38,11 @@
 		"js/web/*.*",
 		"images/*.*",
 		"css/images/*.*",
-		"content/*.html"
+		"content/*.html",
+		"js/vendor.json",
+		"js/internal.json",
+		"https://cdn.jsdelivr.net/gh/mainIine/foe-helfer-extension@beta/*",
+		"https://api.github.com/repos/mainIine/foe-helfer-extension/branches/beta"
 	],
 	
 	"content_scripts": [

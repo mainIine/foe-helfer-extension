@@ -59,9 +59,9 @@
 
 #UnitOverview #UnitOverviewBody .tabs ul li a span {
 	width: 21px;
-	top: 6px;
 	background: transparent url('../images/unit-icons.png') 0 3px no-repeat;
 	background-size: 90px 20px;
+	height: 26px;
 }
 
 #UnitOverview #UnitOverviewBody .tabs ul li.defense a span {
