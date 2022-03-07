@@ -1941,58 +1941,59 @@ let ProvinceMap = {
 			ProvinceMap.MapCTX.globalAlpha = this.alpha;
 			ProvinceMap.MapCTX.fillStyle = this.strokeStyle;
 			ProvinceMap.MapCTX.textAlign = "center";
-			ProvinceMap.MapCTX.font = 'bold 40px Arial';
-			ProvinceMap.MapCTX.globalAlpha = 0.8;
+			ProvinceMap.MapCTX.font = 'bold 25px Arial';
+			ProvinceMap.MapCTX.globalAlpha = 1;
 			ProvinceMap.MapCTX.lineWidth = 1;
 
-			let sizeFactor = ProvinceMap.Map.width / 17;
-			let offset = sizeFactor * 0.5;
-
 			let mapStuff = {
-				sizeFactor: ProvinceMap.Map.width / 20,
-				offset: ProvinceMap.Map.width / 20,
-				hexwidth: 100,
-				hexheight: 75
+				sizeFactor: ProvinceMap.Map.width / 8,
+				offsetX: ProvinceMap.Map.width / 14,
+				offsetY: ProvinceMap.Map.height / 20,
+				hexwidth: 1 * ProvinceMap.Map.width / 8,
+				hexheight: 0.7 * ProvinceMap.Map.height / 7
 			};
 			
 			let id = this['id'] || 0;
+			let x = this.flag.x * (mapStuff.hexwidth * 0.375) + mapStuff.offsetX;
+			let y = this.flag.y * (mapStuff.hexheight * 0.5) + mapStuff.offsetY;
 
 			if (this.flagImg && this.flagPos) {
-				drawHex(this, mapStuff);
-
 				let flag_image = new Image(),
-					flag_x = this.flagPos.x * sizeFactor-45 + offset,
-					flag_y = this.flagPos.y * sizeFactor-45 + offset;
+					flag_x = this.flagPos.x * (mapStuff.hexwidth * 0.375) - 45 + mapStuff.offsetX,
+					flag_y = this.flagPos.y * (mapStuff.hexheight * 0.5) - 45 + mapStuff.offsetY;
+					let sector = this;
 
 				flag_image.src = `${MainParser.InnoCDN}assets/shared/clanflags/${this.flagImg}.jpg`;
 
 				flag_image.onload = function () {
 					ProvinceMap.MapCTX.drawImage(this, flag_x, flag_y);
+					ProvinceMap.MapCTX.fillStyle = sector.strokeStyle;
+					drawHex(sector, mapStuff);
 				}
 			}
 			else {
-				drawHex(this, mapStuff);
 
 				// Title e.g. "B4D"
 				ProvinceMap.MapCTX.fillStyle = '#ffffff';
-				ProvinceMap.MapCTX.fillText(this.short, this.flag.x * sizeFactor + offset, this.flag.y * sizeFactor - 20 + offset);
+				ProvinceMap.MapCTX.fillText(this.short, x, y);
 				ProvinceMap.MapCTX.strokeStyle = '#00000088';
-				ProvinceMap.MapCTX.strokeText(this.short, this.flag.x * sizeFactor + offset, this.flag.y * sizeFactor - 20 + offset);
 
 				// time 
 				ProvinceMap.MapCTX.fillStyle = '#ffffff';
+				ProvinceMap.MapCTX.font = 'bold 15px Arial';
 				let provinceUnlockTime = (moment.unix(this.lockedUntil).format('HH:mm') != 'Invalid date') ? moment.unix(this.lockedUntil).format('HH:mm') : '';
-				ProvinceMap.MapCTX.fillText(provinceUnlockTime, this.flag.x * sizeFactor + offset, this.flag.y * sizeFactor+20 + offset);
+				ProvinceMap.MapCTX.fillText(provinceUnlockTime, x, y + 20);
+
+				ProvinceMap.MapCTX.fillStyle = this.strokeStyle;
+				drawHex(this, mapStuff);
 			}
 		}
 
 		drawHex = function (sector, mapStuff) {
 			let width = mapStuff.hexwidth;
 			let height = mapStuff.hexheight;
-			let x = sector.flag.x * width;
-			let y = sector.flag.y * height;
-
-			console.log(sector.flag.x, sector.flag.y, x, y, width, height);
+			let x = sector.flag.x * (width * 0.375) + mapStuff.offsetX;
+			let y = sector.flag.y * (height * 0.5) + mapStuff.offsetY;
 			
 			ProvinceMap.MapCTX.beginPath();
 			ProvinceMap.MapCTX.moveTo(x - (width / 4), y - (height / 2));
