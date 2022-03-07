@@ -15,8 +15,8 @@
 		"https://foe-helper.com/*",
 		"https://*.foe-helper.com/*",
 		"https://*.foe-rechner.de/*",
-		"https://cdn.jsdelivr.net/gh/mainIine/foe-helfer-extension@beta/*",
-		"https://api.github.com/repos/mainIine/foe-helfer-extension/branches/beta"
+		"https://cdn.jsdelivr.net/*",
+		"https://api.github.com/*"
 	],
 
 	"browser_action": {
@@ -40,9 +40,7 @@
 		"css/images/*.*",
 		"content/*.html",
 		"js/vendor.json",
-		"js/internal.json",
-		"https://cdn.jsdelivr.net/gh/mainIine/foe-helfer-extension@beta/*",
-		"https://api.github.com/repos/mainIine/foe-helfer-extension/branches/beta"
+		"js/internal.json"
 	],
 	
 	"content_scripts": [
