@@ -121,24 +121,25 @@ let scoutingTimes = {
             if (Object.hasOwnProperty.call(scoutingTimes.Provinces, p)) {
                 const province = scoutingTimes.Provinces[p];
                 
-                if (!(province.isPlayerOwned|false)) {
+                if (!(province.isPlayerOwned)) {
                     continue;
                 }
 
                 for (let element of province.children)
                 {
                     let child = scoutingTimes.Provinces[element.targetId];
-                    if (child.isPlayerOwned|false) {
+                    if (!child) continue;
+                    if (child?.isPlayerOwned) {
                         continue;
                     };
                     if (toscout.indexOf(child.id) > -1) {
                         continue;
                     };
 
-                    if (child.isScouted|false) {
+                    if (child.isScouted) {
                         scoutingTimes.Provinces[child.id].travelTime = 0;
                     } else {
-                        if (!(scoutingTimes.Provinces[child.id].fromCurrent|false)) {
+                        if (!(scoutingTimes.Provinces[child.id].fromCurrent)) {
                             if (province.id === scoutingTimes.scoutPosition){
                                 scoutingTimes.Provinces[child.id].fromCurrent = true;
                             }
@@ -150,11 +151,11 @@ let scoutingTimes = {
                             scoutingTimes.target = child.id;
                         }
                     }
-                    if (child.isScouted|false) scoutingTimes.Provinces[child.id].travelTime = 0;
+                    if (child.isScouted) scoutingTimes.Provinces[child.id].travelTime = 0;
                     let mayScout = true;
 
                     for (let blockId of child.blockers) {
-                        if (!(scoutingTimes.Provinces[blockId]?.isPlayerOwned|false)) {
+                        if (!(scoutingTimes.Provinces[blockId]?.isPlayerOwned)) {
                             mayScout = false;
                         }
                     }
@@ -171,7 +172,7 @@ let scoutingTimes = {
         while (toscout.length > 0) {
             let p = toscout.pop();
             let province = scoutingTimes.Provinces[p];
-            if (province.isScouted|false) {
+            if (province.isScouted) {
                 htmltext += `<tr class="scouted" title="${i18n('Eras.'+Technologies.Eras[province.era])}"><td>${province.name}</td><td></td><td></td></tr>`;
                 i += 1;
             }

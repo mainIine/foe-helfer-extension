@@ -54,7 +54,8 @@ let ApiURL = 'https://api.foe-rechner.de/',
 	possibleMaps = ['main', 'gex', 'gg', 'era_outpost', 'gvg'],
 	PlayerLinkFormat = 'https://foe.scoredb.io/__world__/Player/__playerid__',
 	GuildLinkFormat = 'https://foe.scoredb.io/__world__/Guild/__guildid__',
-	BuildingsLinkFormat = 'https://forgeofempires.fandom.com/wiki/__buildingid__';
+	BuildingsLinkFormat = 'https://forgeofempires.fandom.com/wiki/__buildingid__',
+	LinkIcon = '<svg xmlns="http://www.w3.org/2000/svg" width="22pt" height="22pt" viewBox="0 0 22 22"><g><path id="foehelper-external-link-icon" d="M 13 0 L 13 2 L 18.5625 2 L 6.28125 14.28125 L 7.722656 15.722656 L 20 3.4375 L 20 9 L 22 9 L 22 0 Z M 0 4 L 0 22 L 18 22 L 18 9 L 16 11 L 16 20 L 2 20 L 2 6 L 11 6 L 13 4 Z M 0 4 "/></g></svg>';
 
 // Übersetzungen laden
 let i18n_loaded = false;
@@ -665,7 +666,7 @@ const FoEproxy = (function () {
 		UnitGex.checkForDB(ExtPlayerID);
 		GuildMemberStat.checkForDB(ExtPlayerID);
 		GexStat.checkForDB(ExtPlayerID);
-		GildFights.checkForDB(ExtPlayerID);
+		GuildFights.checkForDB(ExtPlayerID);
 
 		// which tab is active in StartUp Object?
 		let vals = {
@@ -1187,7 +1188,8 @@ let HelperBeta = {
 	},
 	menu: [
 		'unitsGex',
-		'marketoffers',
+		'marketOffers',
+		'discord',
 	],
 	active: JSON.parse(localStorage.getItem('HelperBetaActive'))
 };
@@ -1482,7 +1484,7 @@ let MainParser = {
 		{
 			let PlayerLink = HTML.i18nReplacer(PlayerLinkFormat, { 'world': ExtWorld.toUpperCase(), 'playerid': PlayerID });
 
-			return `<a class="external-link game-cursor" href="${PlayerLink}" target="_blank">${PlayerName} <svg xmlns="http://www.w3.org/2000/svg" width="22pt" height="22pt" viewBox="0 0 22 22"><g><path id="foehelper-external-link-icon" d="M 13 0 L 13 2 L 18.5625 2 L 6.28125 14.28125 L 7.722656 15.722656 L 20 3.4375 L 20 9 L 22 9 L 22 0 Z M 0 4 L 0 22 L 18 22 L 18 9 L 16 11 L 16 20 L 2 20 L 2 6 L 11 6 L 13 4 Z M 0 4 "/></g></svg></a>`;
+			return `<a class="external-link game-cursor" href="${PlayerLink}" target="_blank">${PlayerName} ${LinkIcon}</a>`;
 		}
 		else {
 			return PlayerName;
@@ -1498,7 +1500,7 @@ let MainParser = {
 		{
 			let GuildLink = HTML.i18nReplacer(GuildLinkFormat, { 'world': ExtWorld.toUpperCase(), 'guildid': GuildID });
 
-			return `<a class="external-link game-cursor" href="${GuildLink}" target="_blank">${GuildName} <svg xmlns="http://www.w3.org/2000/svg" width="22pt" height="22pt" viewBox="0 0 22 22"><g><path id="foehelper-external-link-icon" d="M 13 0 L 13 2 L 18.5625 2 L 6.28125 14.28125 L 7.722656 15.722656 L 20 3.4375 L 20 9 L 22 9 L 22 0 Z M 0 4 L 0 22 L 18 22 L 18 9 L 16 11 L 16 20 L 2 20 L 2 6 L 11 6 L 13 4 Z M 0 4 "/></g></svg></a>`;
+			return `<a class="external-link game-cursor" href="${GuildLink}" target="_blank">${GuildName} ${LinkIcon}</a>`;
 		}
 		else {
 			return GuildName;
@@ -1514,7 +1516,7 @@ let MainParser = {
 		{
 			let BuildingLink = HTML.i18nReplacer(BuildingsLinkFormat, {'buildingid': BuildingID });
 
-			return `<a class="external-link game-cursor" href="${BuildingLink}" target="_blank">${BuildingName} <svg xmlns="http://www.w3.org/2000/svg" width="22pt" height="22pt" viewBox="0 0 22 22"><g><path id="foehelper-external-link-icon" d="M 13 0 L 13 2 L 18.5625 2 L 6.28125 14.28125 L 7.722656 15.722656 L 20 3.4375 L 20 9 L 22 9 L 22 0 Z M 0 4 L 0 22 L 18 22 L 18 9 L 16 11 L 16 20 L 2 20 L 2 6 L 11 6 L 13 4 Z M 0 4 "/></g></svg></a>`;
+			return `<a class="external-link game-cursor" href="${BuildingLink}" target="_blank">${BuildingName} ${LinkIcon}</a>`;
 		}
 		else {
 			return BuildingName;
@@ -2121,5 +2123,5 @@ if (window.foeHelperBgApiHandler !== undefined && window.foeHelperBgApiHandler i
 	delete window.foeHelperBgApiHandler;
 }
 
-console.log('FOE Helper version ' + extVersion + ' started. ID: ' + extID);
+console.log('FOE Helper version ' + extVersion + ' started' + (window.loadBeta ? ' in Beta Mode': '') + '. ID: ' + extID);
 console.log(navigator.userAgent);

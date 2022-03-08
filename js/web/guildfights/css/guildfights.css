@@ -358,32 +358,31 @@
 
 #LiveGildFightingBody .tabs ul li a span {
 	width: 21px;
-	top: 6px;
+	top: 4px;
 	background: transparent url('../../unit/images/unit-icons.png') 0 3px no-repeat;
 	background-size: 90px 20px;
 }
 
 #LiveGildFightingBody .tabs ul li.gbgprogress a span {
-	background: transparent url('../../stats/images/tabs.png') -237px 0 no-repeat;
+	background: transparent url('../../stats/images/tabs.png') -237px 2px no-repeat;
 }
 
 #LiveGildFightingBody .tabs ul li.gbgnextup a span {
 	background: transparent url('../../x_img/hourglass.png') no-repeat;
 	background-size: contain;
-	top: 8px;
 	position: relative;
 }
 
 #LiveGildFightingBody .tabs>button.mapbutton {
 	position: absolute;
-	top: 7px;
+	top: 40px;
 	right: 7px;
 }
 
 #LiveGildFightingBody .tabs>button.copybutton {
 	display: none;
 	position: absolute;
-	top: 7px;
+	top: 40px;
 	right: 64px;
 }
 
@@ -473,15 +472,30 @@
 
 /*************************************************************************************************************/
 
-#ProvinceMap {
+#ProvinceMap.volcano_archipelago {
 	width: 560px;
 	height: 438px;
 	left: calc(50vw - 280px);
 	top: calc(50vh - 219px);
 }
 
+#ProvinceMap.waterfall_archipelago {
+	width: 513px;
+	height: 438px;
+	left: calc(50vw - 256px);
+	top: calc(50vh - 219px);
+}
+
 #ProvinceMap #province-map {
 	height: 100%;
-	background: transparent url('../images/volcano_archipelago_bg.jpg');
+}
+
+#ProvinceMap.volcano_archipelago #province-map {
+	background-image: linear-gradient(#00000055, #00000055), url('../images/volcano_archipelago_bg.jpg');
+	background-size: 100%;
+}
+
+#ProvinceMap.waterfall_archipelago #province-map {
+	background-image: linear-gradient(#00000088, #00000055), url('../images/waterfall_archipelago_bg.jpg');
 	background-size: 100%;
 }

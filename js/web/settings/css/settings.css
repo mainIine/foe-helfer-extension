@@ -111,7 +111,7 @@
 
 #SettingsBoxBody .settings-wrapper {
 	position: absolute;
-	top: 41px;
+	top: 75px;
 	bottom: 0;
 	left: 0;
 	right: 0;
@@ -222,5 +222,6 @@
 .setting .hud-btn {
 	margin-right: 6px;
 	margin-bottom: 6px;
+	text-align: center;
 	float: left;
 }
