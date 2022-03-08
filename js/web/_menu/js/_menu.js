@@ -447,15 +447,17 @@ let _menu = {
 	 */
 	 minigame_aztecs_Btn: () => {
 
-		let btn_Aztek = $('<div />').attr({ 'id': 'minigame_aztecs-Btn', 'data-slug': 'aztecs' }).addClass('hud-btn');
+		let btn_Aztek = $('<div />').attr({ 'id': 'minigame_aztecs-Btn', 'data-slug': 'aztecs' }).addClass('hud-btn hud-btn-red');
 
 		// Tooltip einbinden
-		btn_Aztek = _menu.toolTipp(btn_Aztek, "Azteken Helfer", "Azteken Helfer");
+		btn_Aztek = _menu.toolTipp(btn_Aztek, "Aztec Helper", '<em id="minigame_aztecs-Btn-closed" class="tooltip-error">Opens automatically when starting a aztec mini game<br></em>Aztec Minigame Helper - BETA -');
 
 		let btn_Azte = $('<span />');
 
 		btn_Azte.on('click', function () {
-			AztecsHelper.Show();
+			if ($('#minigame_aztecs-Btn').hasClass('hud-btn-red') === false) {
+				AztecsHelper.Show();
+			}
 		});
 
 		btn_Aztek.append(btn_Azte);
