@@ -313,7 +313,7 @@ let betterMusic = {
     
             HTML.Box({
                 id: 'betterMusicDialog',
-                title: i18n("Boxes.BetterMusic.General"),
+                title: i18n("Boxes.BetterMusic.Title"),
                 auto_close: true,
                 dragdrop: true,
                 minimize: true,
