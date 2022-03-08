@@ -1945,10 +1945,14 @@ let ProvinceMap = {
 			ProvinceMap.MapCTX.lineWidth = ProvinceMap.StrokeWidth;
 			ProvinceMap.MapCTX.globalAlpha = this.alpha;
 			ProvinceMap.MapCTX.fillStyle = this.strokeStyle;
+			ProvinceMap.MapCTX.strokeStyle = "#333333";
 			ProvinceMap.MapCTX.textAlign = "center";
 			ProvinceMap.MapCTX.font = 'bold 25px Arial';
 			ProvinceMap.MapCTX.globalAlpha = 1;
 			ProvinceMap.MapCTX.lineWidth = 2;
+
+			if (this.strokeStyle == 'rgb(5,73,230)')
+				this.strokeStyle = '#0554e5';
 
 			let mapStuff = {
 				sizeFactor: ProvinceMap.Map.width / 8,
@@ -1985,24 +1989,26 @@ let ProvinceMap = {
 			}
 			else {
 				// Title e.g. "B4D"
-				ProvinceMap.MapCTX.font = 'bold 25px Arial';
+				ProvinceMap.MapCTX.font = 'bold 22px Arial';
 				ProvinceMap.MapCTX.fillStyle = '#111111';
-				ProvinceMap.MapCTX.fillText(this.short, x, y - (mapStuff.hexheight*0.1));
+				ProvinceMap.MapCTX.fillText(this.short, x, y - (mapStuff.hexheight*0.09));
 
 				// time 
-				ProvinceMap.MapCTX.font = 'bold 16px Arial';
+				ProvinceMap.MapCTX.font = 'bold 15px Courier New';
 				let provinceUnlockTime = (moment.unix(this.lockedUntil).format('HH:mm') != 'Invalid date') ? moment.unix(this.lockedUntil).format('HH:mm') : '';
 				ProvinceMap.MapCTX.fillText(provinceUnlockTime, x, y + (mapStuff.hexheight*0.25));
 
 				if (additionalSectorinfo.totalBuildingSlots != undefined) {
-					let slots = '●';
+					let slots = '▼';
 					if (additionalSectorinfo.totalBuildingSlots == 1)
-						slots = '●';
+						slots = '▼';
 					else if (additionalSectorinfo.totalBuildingSlots == 2)
-						slots = '●●';
+						slots = '▼▲';
 					else if (additionalSectorinfo.totalBuildingSlots == 3)
-						slots = '●●●';
+						slots = '▼▲▼';
 
+					ProvinceMap.MapCTX.fillStyle = '#eeeeee';
+					ProvinceMap.MapCTX.font = 'bold 15px Courier New';
 					ProvinceMap.MapCTX.fillText(slots, x, y + (mapStuff.hexheight*0.07));
 				}
 
@@ -2012,7 +2018,6 @@ let ProvinceMap = {
 		}
 
 		drawHex = function (x, y, width, height) {
-			
 			ProvinceMap.MapCTX.beginPath();
 			ProvinceMap.MapCTX.moveTo(x - (width / 4), y - (height / 2));
 			ProvinceMap.MapCTX.lineTo(x + (width / 4), y - (height / 2));
@@ -2023,6 +2028,7 @@ let ProvinceMap = {
 			ProvinceMap.MapCTX.lineTo(x - (width / 4), y - (height / 2));
 			ProvinceMap.MapCTX.closePath();
 			ProvinceMap.MapCTX.fill();
+			ProvinceMap.MapCTX.stroke();
 		}
 
 		Province.prototype.updateGGMap = function () {
