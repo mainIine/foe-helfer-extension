@@ -502,6 +502,11 @@ let HTML = {
 				box.width(s[0]).height(s[1]);
 			}
 		}
+		else {
+			setTimeout(()=>{
+				box.width(box.width()).height(box.height());
+			}, 800);
+		}
 
 		box.append(grip);
 
@@ -512,8 +517,8 @@ let HTML = {
 				sw: '.window-grippy',
 				nw: '.window-grippy'
 			},
-			minHeight: $(box).css("min-width") || 200,
-			minWidth: $(box).css("min-height") || 250,
+			minHeight: 200,
+			minWidth: 250,
 			stop: (e, $el) => {
 				let size = $el.element.width() + '|' + $el.element.height();
 
@@ -521,12 +526,16 @@ let HTML = {
 			}
 		};
 
-		// keep aspect Ratio
-		if (keepRatio) {
-			let width = box.width(),
-				height = box.height();
+		// Except the "menu Box"
+		if(id === 'menu_box')
+		{
+			options['minWidth'] = 105;
+			options['minHeight'] = 87;
+		}
 
-			options['aspectRatio'] = width / height;
+		// keep aspect ratio
+		if (keepRatio) {
+			options['aspectRatio'] = box.width() + ' / ' + box.height();
 
 			box.resizable(options);
 		}
@@ -902,9 +911,9 @@ let HTML = {
 				return;
 			}
 
-			let BOM = "\uFEFF";
-			let Blob1 = new Blob([BOM + FileContent], { type: "application/octet-binary;charset=ANSI" });
-			MainParser.ExportFile(Blob1, FileName + '.' + Format);
+			// with UTF-8 BOM
+			let BlobData = new Blob(["\uFEFF" + FileContent], { type: "application/octet-binary;charset=ANSI" });
+			MainParser.ExportFile(BlobData, FileName + '.' + Format);
 		});
 	},
 
