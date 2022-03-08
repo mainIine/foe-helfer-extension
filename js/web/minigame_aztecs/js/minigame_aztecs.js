@@ -172,10 +172,9 @@ let AztecsHelper = {
         if(AztecsHelper.MovesLeft > 0){
             AztecsHelper.grid.forEach((rowData) => {
                 var row = document.createElement('tr');
-
                 rowData.forEach((cellData) => {
                     var cell = document.createElement('td');
-                    cell.appendChild(document.createTextNode(cellData.content));
+                    if(typeof cellData.content !== "number") cell.appendChild(document.createTextNode(cellData.content));
                     if(cellData.prob >= 0.0 && cellData.prob < 0.4){
                         cell.className = " aztec color-red";
                     }  
@@ -199,7 +198,6 @@ let AztecsHelper = {
                     }
                     row.appendChild(cell);
                 });
-
                 tableBody.appendChild(row);
             });
             table.className = "aztecTable"
