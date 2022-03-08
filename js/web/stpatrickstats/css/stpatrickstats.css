@@ -62,10 +62,32 @@
     padding-left: 2px;
 }
 
-#stPatNext.hide td {
+#stPatNext.hide td, #stPatTasks.hide td, #stPatTasks td.hide, #stPatTasksActive.hide td, #stPatTasksActive td.hide {
     display: none;
 }
 
-#stPatTasks.hide td, #stPatTasks td.hide {
-    display: none;
+#stPatNext th, #stPatTasks th, #stPatTasksActive th {
+    position: relative;
+}
+#stPatNext.hide i, #stPatTasks.hide i, #stPatTasksActive.hide i {
+    border: solid var(--text-bright);
+    border-width: 0 2px 2px 0;
+    display: inline-block;
+    padding: 3px;
+    position: absolute;
+    right: 8px;
+    transform: rotate(135deg);
+    -webkit-transform: rotate(135deg);
+    margin-top: 4px;
+}
+#stPatNext:not(.hide) i, #stPatTasks:not(.hide) i, #stPatTasksActive:not(.hide) i {
+    border: solid var(--text-bright);
+    border-width: 0 2px 2px 0;
+    display: inline-block;
+    padding: 3px;
+    position: absolute;
+    right: 10px;
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    margin-top: 4px;
 }
