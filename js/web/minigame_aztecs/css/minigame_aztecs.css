@@ -12,10 +12,16 @@
  */
 
  #aztecsHelper {
-	width: 663px;
+	width: 660px;
     height: 462px;
     top: calc(46vh - 200px);
-    left: calc(49vw - 320px);
+    left: calc(49vw - 314px);
+    pointer-events: none;
+    background-image: none;
+}
+
+#aztecsHelper #aztecsHelperHeader {
+    pointer-events: auto;
 }
 
 #aztecsHelper #aztecsHelperBody {
@@ -31,28 +37,37 @@
 
 table.aztecTable{
 	width: 100%;
-    height: 93%;
-    margin-top: 38px;
+    height: 91%;
+    margin-top: 42px;
 }
 
 #aztecsHelperBody table td {
     text-align: center;
-	color:red;
     width: 50px;
     height: 50px;
     font-weight: bolder;
     font-size: xx-large;
 }
 
+
 .aztec.color-red{
-    color:white;
-    background-color: red;
+    color:red;
+}
+.aztec.color-orangered{
+    color:orangered;
+}
+.aztec.color-orange{
+    color:orange;
 }
 .aztec.color-yellow{
-    color:red;
-    background-color: yellow;
+    color:yellow;
+}
+.aztec.color-yellowgreen{
+    color:yellowgreen;
+}
+.aztec.color-chartreuse{
+    color:chartreuse;
 }
 .aztec.color-green{
-    color:red;
-    background-color: green;
+    color:green;
 }

@@ -514,6 +514,10 @@ p {
 	background-image: url('../images/menu/guildmemberstat.png');
 }
 
+[id$=minigame_aztecs-Btn] span {
+	background-image: url('../images/menu/aztecsHelper.png');
+}
+
 						  
 													   
  

@@ -13,14 +13,28 @@
 
 FoEproxy.addHandler('CollectingMinigameService', 'start', (data, postData) => {
     //Start Minigame
-    debugger;
     const r = data.responseData;
     if (r.context !== "merchant") {
         return;
     }
+
+    if ($('#minigame_aztecs-Btn').hasClass('hud-btn-red')) {
+        $('#minigame_aztecs-Btn').removeClass('hud-btn-red');
+        $('#minigame_aztecs-Btn-closed').remove();
+    }
+
+    AztecsHelper.Show();
     AztecsHelper.mapHeight = r.height;
     AztecsHelper.mapWidth = r.width;
-    AztecsHelper.grid = [...Array(AztecsHelper.mapHeight)].map(e => Array(AztecsHelper.mapWidth).fill({content: AztecsHelper.unknownCell, adjacent: [], prob: 0}));
+    AztecsHelper.boughtSomething = false;
+    let arr = new Array(AztecsHelper.mapHeight);
+    for (var i = 0; i < AztecsHelper.mapHeight; i++) {
+        arr[i] = new Array(AztecsHelper.mapWidth);
+        for (let j = 0; j < arr[i].length; j++) {
+            arr[i][j] = {content: AztecsHelper.unknownCell, adjacent: [], prob: 0};
+        }
+    }
+    AztecsHelper.grid = arr;
     if (r.reward.resources === undefined || Object.values(r.reward.resources) <= 0) return;
     AztecsHelper.ResourcesLeft = Object.values(r.reward.resources)[0];
     AztecsHelper.CalcBody();
@@ -28,29 +42,31 @@ FoEproxy.addHandler('CollectingMinigameService', 'start', (data, postData) => {
 
 FoEproxy.addHandler('CollectingMinigameService', 'submitMove', (data, postData) => {
     //DoTurn
-    debugger;
     const r = data.responseData;
+    AztecsHelper.boughtSomething = false;
     AztecsHelper.firstMoveDone = true;
     if (r.length > 0 && r.length == 1) {
         if (r[0]["__class__"] === "CollectingMinigameRewardTile") {
             r[0]["x"] = r[0]["x"] || 0;
             r[0]["y"] = r[0]["y"] || 0;
-            if (AztecsHelper.MovesDone < AztecsHelper.MaxMoves) AztecsHelper.MovesDone += 1;
+            AztecsHelper.MovesDone += 1;
             if (AztecsHelper.ResourcesLeft > 0) AztecsHelper.ResourcesLeft -= 1;
             AztecsHelper.firstMoveDone = true;
             AztecsHelper.grid[r[0].y][r[0].x].content = AztecsHelper.resourceCell;
         }
         else if (r[0]["__class__"] === "CollectingMinigameEmptyTile") {
-            r[0]["x"] = r["x"] || 0;
-            r[0]["y"] = r["y"] || 0;
+            r[0]["x"] = r[0]["x"] || 0;
+            r[0]["y"] = r[0]["y"] || 0;
+            AztecsHelper.MovesDone += 1;
             if (r[0]["adjacentRewards"] !== undefined) {
                 AztecsHelper.grid[r[0].y][r[0].x].content = r[0]["adjacentRewards"];
             }
             else {
-                AztecsHelper.grid[r[0].x][r[0].y].content = AztecsHelper.emptyCell;
+                AztecsHelper.grid[r[0].y][r[0].x].content = AztecsHelper.emptyCell;
             }
         }
     } else if (r.length > 1) {
+        AztecsHelper.MovesDone += 1;
         for (let i = 0; i < r.length; i++) {
             const cell = r[i];
             if (cell["__class__"] === "CollectingMinigameEmptyTile") {
@@ -67,6 +83,7 @@ FoEproxy.addHandler('CollectingMinigameService', 'submitMove', (data, postData) 
 
     }
     AztecsHelper.CalcBody();
+    AztecsHelper.CalcAdjacentCells();
 });
 
 FoEproxy.addHandler('ResourceService', 'getPlayerResources', (data, postData) => {
@@ -74,7 +91,26 @@ FoEproxy.addHandler('ResourceService', 'getPlayerResources', (data, postData) =>
     if (!r.resources) {
         return;
     }
-    AztecsHelper.MaxMoves = r.resources.aztecs_collecting_minigame_turns || 0;
+    AztecsHelper.MovesLeft = r.resources.aztecs_collecting_minigame_turns || 0;
+
+    if(AztecsHelper.boughtSomething && AztecsHelper.MovesLeft > 0){
+        AztecsHelper.boughtSomething = false;
+        AztecsHelper.Show();
+    }
+
+    if(AztecsHelper.MovesLeft == 0 && $('#aztecsHelper').length > 0){
+        HTML.CloseOpenBox('aztecsHelper');
+    }
+});
+
+FoEproxy.addHandler('ResourceShopService', 'buyResources', (data, postData) => {
+    const r = data.responseData;
+    if (r["__class__"] !== "Success") {
+        return;
+    }
+
+    AztecsHelper.boughtSomething = true;
+
 });
 
 
@@ -83,14 +119,18 @@ let AztecsHelper = {
     emptyCell: " ",
     unknownCell: "?",
 
-    grid: [],
     firstMoveDone: false,
+    boughtSomething: false,
+
     MovesDone: 0,
-    MaxMoves: 0,
+    MovesLeft: 0,
     ResourcesLeft: 0,
 
     mapHeight: 0,
     mapWidth: 0,
+
+    possibleRessources: [],
+    grid: [],
 
     Show: () => {
         if ($('#aztecsHelper').length === 0) {
@@ -129,43 +169,69 @@ let AztecsHelper = {
         $('#aztecsHelperBody').empty();
         var table = document.createElement('table');
         var tableBody = document.createElement('tbody');
+        if(AztecsHelper.MovesLeft > 0){
+            AztecsHelper.grid.forEach((rowData) => {
+                var row = document.createElement('tr');
 
-        AztecsHelper.grid.forEach((rowData) => {
-            var row = document.createElement('tr');
+                rowData.forEach((cellData) => {
+                    var cell = document.createElement('td');
+                    cell.appendChild(document.createTextNode(cellData.content));
+                    if(cellData.prob >= 0.0 && cellData.prob < 0.4){
+                        cell.className = " aztec color-red";
+                    }  
+                    else if(cellData.prob >= 0.4 && cellData.prob < 0.8) {
+                        cell.className = "aztec color-orangered";
+                    }
+                    else if(cellData.prob >= 0.8 && cellData.prob < 1.0) {
+                        cell.className = "aztec color-orange";
+                    }
+                    else if(cellData.prob >= 1.0 && cellData.prob < 1.4) {
+                        cell.className = "aztec color-yellow";
+                    }
+                    else if(cellData.prob >= 1.4 && cellData.prob < 1.8) {
+                        cell.className = "aztec color-yellowgreen";
+                    }
+                    else if(cellData.prob >= 1.8 && cellData.prob < 2.2) {
+                        cell.className = "aztec color-chartreuse";
+                    }
+                    else if(cellData.prob >= 2.2) {
+                        cell.className = "aztec color-green";
+                    }
+                    row.appendChild(cell);
+                });
 
-            rowData.forEach((cellData) => {
-                var cell = document.createElement('td');
-                cell.appendChild(document.createTextNode(cellData.content));
-                cell.title = "prob: " + cellData.prob;
-                if(cellData.prob >= 0 && cellData.prob < 1) cell.className = " aztec color-red";
-                else if(cellData.prob >= 1 && cellData.prob < 2) cell.className = "aztec color-yellow";
-                else if(cellData.prob >= 2) cell.className = "aztec color-green";
-                row.appendChild(cell);
+                tableBody.appendChild(row);
             });
-
-            tableBody.appendChild(row);
-        });
-        table.className = "aztecTable"
-        table.appendChild(tableBody);
-        $('#aztecsHelperBody').append(table);
+            table.className = "aztecTable"
+            table.appendChild(tableBody);
+            $('#aztecsHelperBody').append(table);    
+        }else{
+            $('#aztecsHelper').length > 0 && HTML.CloseOpenBox('aztecsHelper');
+        }
     },
     /**
      * Checks adjacent cells for possible Resources
-     * @param {number} x 
-     * @param {number} y 
+     * @param {number} x //Width
+     * @param {number} y //Height
      * @param {number} adj 
      */
     CalcAdjacentCells: () => {
+        if(AztecsHelper.MovesLeft <= 0) return $('#aztecsHelper').length > 0 && HTML.CloseOpenBox('aztecsHelper');
         var map = AztecsHelper.grid;
         var rC = AztecsHelper.resourceCell;
         var eC = AztecsHelper.emptyCell;
         var uC = AztecsHelper.unknownCell;
 
-        var possibleRessources = [];
-
-        for (let x = 0; x < AztecsHelper.mapWidth; x++) {
-            for (let y = 0; y < AztecsHelper.mapHeight; y++) {
-                var cell = map[x][y];
+        //reset prob attribute
+        for (let y = 0; y < AztecsHelper.mapHeight; y++) {
+            for (let x = 0; x < AztecsHelper.mapWidth; x++) {
+                map[y][x].prob = 0;
+            }
+        }
+        
+        for (let y = 0; y < AztecsHelper.mapHeight; y++) {
+            for (let x = 0; x < AztecsHelper.mapWidth; x++) {
+                var cell = map[y][x];
                 if(typeof cell.content === "number"){
                     var surrUnCells = [];
                     var surrResCells = [];
@@ -183,12 +249,12 @@ let AztecsHelper = {
                             for (let i = 0; i < surrUnCells.length; i++) {
                                 const surrCell = surrUnCells[i];
                                 //Addiere die 'Wahrscheinlichkeit' zur jeweiligen Zelle
-                                map[surrCell.x][surrCell.y].prob += local_prob;
+                                map[surrCell.y][surrCell.x].prob += local_prob;
                                 //Füge eine Referenz des aktuellen Feldes zum Feld der Unbekannten 
-                                map[surrCell.x][surrCell.y].adjacent.push(cell);
-                                if(possibleRessources.filter(pR=>pR.x === surrCell.x && pR.y === surrCell.y).length <= 0){
-                                    possibleRessources = possibleRessources.filter(pR=>pR.x !== surrCell.x && pR.y !== surrCell.y)
-                                    possibleRessources.push({"x":surrCell.x,"y":surrCell.y,"prop":map[surrCell.x][surrCell.y].prop});
+                                map[surrCell.y][surrCell.x].adjacent.push(cell);
+                                if(AztecsHelper.possibleRessources.filter(pR=>pR.x === surrCell.x && pR.y === surrCell.y).length <= 0){
+                                    AztecsHelper.possibleRessources = AztecsHelper.possibleRessources.filter(pR=>pR.x !== surrCell.x && pR.y !== surrCell.y)
+                                    AztecsHelper.possibleRessources.push({"x":surrCell.x,"y":surrCell.y,"prob":map[surrCell.y][surrCell.x].prob});
                                 }
                             }
                         }
@@ -196,50 +262,49 @@ let AztecsHelper = {
                 }
             }
         }
-        possibleRessources = possibleRessources.sort((a, b) => b.prop - a.prop);
-        console.log(possibleRessources.join(", "));
+        AztecsHelper.possibleRessources = AztecsHelper.possibleRessources.sort((a, b) => b.prob - a.prob);
         AztecsHelper.CalcBody();
     },
     /**
      * |    -1/-1 - 0/-1 - +1/-1
      * |    -1/0  - 0/0  - +1/0
      * |    -1/+1 - 0/+1 - +1/+1
-     * @param {*} x 
-     * @param {*} y 
+     * @param {*} width //x
+     * @param {*} height //y
      */
-    HasSurroundingCell: (x,y, cellContent) => {
+    HasSurroundingCell: (width,height, cellContent) => {
         var map = AztecsHelper.grid;
         var uC = cellContent;
         var has = false;
-        if(y > 0) if(map[x][y-1].content === uC) has = true;// 0/-1
-        if(x > 0) if(map[x-1][y].content === uC) has = true;// -1/0
-        if(y < AztecsHelper.mapHeight-1) if(map[x][y+1].content === uC) has = true;// 0/+1
-        if(x < AztecsHelper.mapWidth-1) if(map[x+1][y].content === uC) has = true;// +1/0
-        if(x < AztecsHelper.mapWidth-1 && y > 0) if(map[x+1][y-1].content === uC) has = true;// +1/-1
-        if(y < AztecsHelper.mapHeight-1 && x > 0) if(map[x-1][y+1].content === uC) has = true;// -1/+1
-        if(x < AztecsHelper.mapWidth-1 && y < AztecsHelper.mapHeight-1) if(map[x+1][y+1].content === uC) has = true;// +1/+1
-        if(y > 0 && x > 0) if(map[x-1][y-1].content === uC) has = true;// -1/-1
+        if(width > 0) if(map[height][width-1].content === uC) has = true;// 0/-1
+        if(height > 0) if(map[height-1][width].content === uC) has = true;// -1/0
+        if(width < AztecsHelper.mapwidth-1) if(map[height][width+1].content === uC) has = true;// 0/+1
+        if(height < AztecsHelper.mapHeight-1) if(map[height+1][width].content === uC) has = true;// +1/0
+        if(height < AztecsHelper.mapHeight-1 && width > 0) if(map[height+1][width-1].content === uC) has = true;// +1/-1
+        if(width < AztecsHelper.mapwidth-1 && height > 0) if(map[height-1][width+1].content === uC) has = true;// -1/+1
+        if(height < AztecsHelper.mapHeight-1 && width < AztecsHelper.mapwidth-1) if(map[height+1][width+1].content === uC) has = true;// +1/+1
+        if(width > 0 && height > 0) if(map[height-1][width-1].content === uC) has = true;// -1/-1
         return has;
     },
     /**
      * |    -1/-1 - 0/-1 - +1/-1
      * |    -1/0  - 0/0  - +1/0
      * |    -1/+1 - 0/+1 - +1/+1
-     * @param {*} x 
-     * @param {*} y 
+     * @param {*} width //x
+     * @param {*} height //y
      */
-    GetSurroundingCell: (x,y, cellContent) => {
+    GetSurroundingCell: (width,height, cellContent) => {
         var map = AztecsHelper.grid;
         var uC = cellContent;
         var arr = [];
-        if(y > 0) if(map[x][y-1].content === uC) arr.push({"x":x,"y":y-1});// 0/-1
-        if(x > 0) if(map[x-1][y].content === uC) arr.push({"x":x-1,"y":y});// -1/0
-        if(y < AztecsHelper.mapHeight-1) if(map[x][y+1].content === uC) arr.push({"x":x,"y":y+1});// 0/+1
-        if(x < AztecsHelper.mapWidth-1) if(map[x+1][y].content === uC) arr.push({"x":x+1,"y":y});// +1/0
-        if(x < AztecsHelper.mapWidth-1 && y > 0) if(map[x+1][y-1].content === uC) arr.push({"x":x+1,"y":y-1});// +1/-1
-        if(y < AztecsHelper.mapHeight-1 && x > 0) if(map[x-1][y+1].content === uC) arr.push({"x":x-1,"y":y+1});// -1/+1
-        if(x < AztecsHelper.mapWidth-1 && y < AztecsHelper.mapHeight-1) if(map[x+1][y+1].content === uC) arr.push({"x":x+1,"y":y+1});// +1/+1
-        if(y > 0 && x > 0) if(map[x-1][y-1].content === uC) arr.push({"x":x-1,"y":y-1});// -1/-1
+        if(width > 0) if(map[height][width-1].content === uC) arr.push({"x":width-1,"y":height});// height0/width-1
+        if(height > 0) if(map[height-1][width].content === uC) arr.push({"x":width,"y":height-1});// height-1/width0
+        if(width < AztecsHelper.mapWidth-1) if(map[height][width+1].content === uC) arr.push({"x":width+1,"y":height});// height0/width+1
+        if(height < AztecsHelper.mapHeight-1) if(map[height+1][width].content === uC) arr.push({"x":width,"y":height+1});// height+1/width0
+        if(height < AztecsHelper.mapHeight-1 && width > 0) if(map[height+1][width-1].content === uC) arr.push({"x":width-1,"y":height+1});// height+1/width-1
+        if(width < AztecsHelper.mapWidth-1 && height > 0) if(map[height-1][width+1].content === uC) arr.push({"x":width+1,"y":height-1});// height-1/width+1
+        if(height < AztecsHelper.mapHeight-1 && width < AztecsHelper.mapWidth-1) if(map[height+1][width+1].content === uC) arr.push({"x":width+1,"y":height+1});// +1/+1
+        if(width > 0 && height > 0) if(map[height-1][width-1].content === uC) arr.push({"x":width-1,"y":height-1});// -1/-1
         return arr;
-    },
+    }
 };
