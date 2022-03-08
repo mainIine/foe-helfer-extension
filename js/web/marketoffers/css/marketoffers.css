@@ -35,6 +35,12 @@
     position: relative;
     font-size: 85%;
     vertical-align: middle;
+    text-align: center;
+}
+
+#MarketOffers #MarketOffersBody td button {
+    font-size: 85%;
+    padding: 0 0.3rem 0.3rem;
 }
 
 #MarketOffers #MarketOffersBody td span.custom-option.era {

@@ -1,5 +1,36 @@
 ## Changelog - Extension
 
+##### 2.8.0.0
+
+**New**
+- Beta-Mode:
+	- in the settings you can now choose to use the current beta version of Github instead of the installed one.
+	- When using this mode, there may be more bugs - please report bugs on [Discord](https://discord.gg/z97KZq4) or on [Github](https://github.com/mainIine/foe-helfer-extension/issues)!
+
+**Update**
+- St. Patrick's Box:
+	- the target level for the upgrade costs can now be determined by yourself
+	- A time estimate is now given for collection tasks
+
+- Guild Battles:
+	- Waterfall map added
+	- Unlock times of sectors are now shown on the map
+
+- Boxes and menu:
+	- updated design, less graphics more pure CSS
+
+**BugFix**
+- St.Patrick's Box:
+	- [#2341](https://github.com/mainIine/foe-helfer-extension/issues/2341) [#2348](https://github.com/mainIine/foe-helfer-extension/issues/2348) there was no reset of buildings when starting the next city
+	- calculation of time to reach 8.4Q for the next city was not correct
+
+
+- Events:
+	- [#2340](https://github.com/mainIine/foe-helfer-extension/issues/2340) the "zero" is now hidden again when there are no events
+
+
+---
+
 ##### 2.7.0.0
 
 **New**
@@ -15,6 +46,9 @@
 **Update**
 - St.Patricks Box:
   - The box can now be resized
+  
+- Hidden incidents:
+	- there now is a setting to exclude relics from the incident count
 
 **BugFix**
 - Alarms:

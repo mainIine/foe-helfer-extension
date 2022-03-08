@@ -21,7 +21,7 @@ FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, post
         newSound.id = "betterMusic1";
         newSound.volume = 0;
         newSound.loop = true;
-        newSound.onloadedmetadata = function () {betterMusic.setEvent()}
+        newSound.onloadedmetadata = function () {betterMusic.setEvent(id="betterMusic1")}
         $('#musicControl-Btn').append(newSound);
         betterMusic.Ids.push(newSound.id);
         
@@ -29,7 +29,7 @@ FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, post
         newSound2.id = "betterMusic2";
         newSound2.volume = 0;
         newSound2.loop = true;
-        newSound2.onloadedmetadata = function () {betterMusic.setEvent()}
+        newSound2.onloadedmetadata = function () {betterMusic.setEvent(id="betterMusic2")}
         $('#musicControl-Btn').append(newSound2);
         betterMusic.Ids.push(newSound2.id);
         
@@ -37,17 +37,9 @@ FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, post
         newSound3.id = "betterMusic3";
         newSound3.volume = 0;
         newSound3.loop = true;
-        newSound3.onloadedmetadata = function () {betterMusic.setEvent()}
+        newSound3.onloadedmetadata = function () {betterMusic.setEvent(id="betterMusic3")}
         $('#musicControl-Btn').append(newSound3);
         betterMusic.Ids.push(newSound3.id);
-        
-        let newSound4 = document.createElement("audio");
-        newSound4.id = "betterMusic4";
-        newSound4.volume = 0;
-        newSound4.loop = true;
-        newSound4.onloadedmetadata = function () {betterMusic.setEvent()}
-        $('#musicControl-Btn').append(newSound4);
-        betterMusic.Ids.push(newSound4.id);
         
         betterMusic.loadSettings();
         
@@ -68,6 +60,12 @@ FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, post
 FoEproxy.addHandler('CampaignService', 'start', (data, postData) => {
        
     betterMusic.setScene("map");
+    
+});
+
+FoEproxy.addHandler('ClanBattleService', 'all', (data, postData) => {
+       
+    betterMusic.setScene("gvg");
     
 });
 
@@ -219,14 +217,14 @@ let betterMusic = {
     },
     playStatus: false,
     Scenes: {
-        "main": {Name: "Main City", TitleList: []},
-        "settlement":{Name: "Settlement", TitleList: []},
-        "colony":{Name: "Colony", TitleList: []},
-        "ge":{Name: "Expedition", TitleList: []},
-        "gbg":{Name: "Battlegrounds", TitleList: []},
-        "gvg":{Name: "Guild vs Guild", TitleList: []},
-        "battle":{Name: "Battle", TitleList: []},
-        "map":{Name: "Map", TitleList: []},
+        "main": {Name: i18n("Boxes.BetterMusic.Main"), TitleList: []},
+        "settlement":{Name: i18n("Boxes.BetterMusic.Settlement"), TitleList: []},
+        "colony":{Name: i18n("Boxes.BetterMusic.Colony"), TitleList: []},
+        "ge":{Name: i18n("Boxes.BetterMusic.GE"), TitleList: []},
+        "gbg":{Name: i18n("Boxes.BetterMusic.GBG"), TitleList: []},
+        "gvg":{Name: i18n("Boxes.BetterMusic.GvG"), TitleList: []},
+        "battle":{Name: i18n("Boxes.BetterMusic.Battle"), TitleList: []},
+        "map":{Name: i18n("Boxes.BetterMusic.Map"), TitleList: []},
     },
     PossibleTracks: {
         "FoE_CityTrack_Vs2": {Volume:1, Name:"Stone Age - Early Middle Ages", Age:1, Agelimit: 4},
@@ -267,29 +265,35 @@ let betterMusic = {
     ShowDialog: () => {
 
                 
-        let htmltext = ``;
-        htmltext += `<table id="musicSettingsGeneral" class="musicSettings"><caption>General Settings</caption><tr>`;
-        htmltext += `<td><input id="musicSettingsVolume" type="range" min="0" max="1" step ="0.05" value="${betterMusic.Settings.Volume}" oninput="betterMusic.newVolume(Number(this.value))"><br><label for="musicSettingsVolume">Volume</label></td>`;
-        htmltext += `<td><input id="musicSettingsPlayOnClose" type="checkbox" ${betterMusic.Settings.PlayOnStart ? 'checked="checked"' : ''}" oninput="betterMusic.Settings.PlayOnStart = this.checked"><label for="musicSettingsPlayOnClose">start playing on game start</label></td></tr><tr>`;
+        let htmltext = `<div class="flex">`;
+        htmltext += `<div id="musicSettingsGeneral" class="musicSettings"><h1>${i18n("Boxes.BetterMusic.GeneralSettings")}</h1>`;
+        htmltext += `<label for="musicSettingsVolume">${i18n("Boxes.BetterMusic.Volume")} <input id="musicSettingsVolume" type="range" min="0" max="1" step ="0.05" value="${betterMusic.Settings.Volume}" oninput="betterMusic.newVolume(Number(this.value))"></label> <br>`;
+        htmltext += `<input id="musicSettingsPlayOnClose" type="checkbox" ${betterMusic.Settings.PlayOnStart ? 'checked="checked"' : ''}" oninput="betterMusic.Settings.PlayOnStart = this.checked"><label for="musicSettingsPlayOnClose">${i18n("Boxes.BetterMusic.Auto")}</label></div>`;
         
-        htmltext += `</tr></table><table id="musicSettingsTitle" class="musicSettings"><caption>Title Settings</caption><tr>`;
-        htmltext += `<td><input id="musicSettingsTransitionTime" type="range" min="0" max="5000" step ="500" value="${betterMusic.Settings.TransitionTime}" oninput="betterMusic.Settings.TransitionTime = Number(this.value)"><br><label for="musicSettingsTransitionTime">Transition between Titels</label></td>`;
-        htmltext += `<td><input id="musicSettingsFinish" type="checkbox" ${betterMusic.Settings.Finish ? 'checked="checked"' : ''}" oninput="betterMusic.Settings.Finish = this.checked"><label for="musicSettingsFinish">let titles finish</label></td>`;
-               
-        htmltext += `</tr></table><table id="musicSettingsScenes" class="musicSettings"><caption>Scene Settings</caption><tr>`
-        htmltext += `<td><label for="musicSettingsMainCity">In City </label><select id="musicSettingsMainCity" type="select" oninput="betterMusic.Settings.MainCity = this.selectedIndex"><option value="0" ${betterMusic.Settings.MainCity === 0 ? 'selected="selected"': ''}>ignore era</option><option value="1" ${betterMusic.Settings.MainCity === 1 ? 'selected="selected"': ''}>play up to current era</option><option value="2" ${betterMusic.Settings.MainCity === 2 ? 'selected="selected"': ''}>play only current era</option></input></td>`;
-        htmltext += `<td><input id="musicSettingsTavern" type="checkbox" ${betterMusic.Settings.Tavern ? 'checked="checked"' : ''}" oninput="betterMusic.Settings.Tavern = this.checked"><label for="musicSettingsTavern">allow tavern trigger</label></td>`;
-        htmltext += `<td><input id="musicSettingsPvP" type="checkbox" ${betterMusic.Settings.Pvp ? 'checked="checked"' : ''}" oninput="betterMusic.Settings.Pvp = this.checked"><label for="musicSettingsPvp">allow pvp trigger</label></td></tr><tr>`;
-        htmltext += `</tr><tr>`
-        htmltext += `<td><label for="musicSettingsColony">In Colony </label><select id="musicSettingsColony" type="select" oninput="betterMusic.Settings.Colony = this.selectedIndex"><option value="0" ${betterMusic.Settings.Colony === 0 ? 'selected="selected"': ''}>ignore era</option><option value="1" ${betterMusic.Settings.Colony === 1 ? 'selected="selected"': ''}>play up to current era</option><option value="2" ${betterMusic.Settings.Colony === 2 ? 'selected="selected"': ''}>play only current era</option></input></td>`;
-        htmltext += `<td><input id="musicSettingsIgnoreSettlement" type="checkbox" ${betterMusic.Settings.IgnoreSettlement ? 'checked="checked"' : ''}" oninput="betterMusic.Settings.IgnoreSettlement = this.checked"><label for="musicSettingsIgnoreSettlement">ignore settlement type</label></td>`;
-        htmltext += `<td><input id="musicSettingsEvents" type="checkbox" ${betterMusic.Settings.Events ? 'checked="checked"' : ''}" oninput="betterMusic.Settings.Events = this.checked"><label for="musicSettingsEvents">allow Event trigger</label></td>`;
-        htmltext += `</tr></table>`;
+        htmltext += `<div id="musicSettingsTitle" class="musicSettings"><h1>${i18n("Boxes.BetterMusic.TitleSettings")}</h1>`;
+        htmltext += `<label for="musicSettingsTransitionTime">${i18n("Boxes.BetterMusic.Transition")} <input id="musicSettingsTransitionTime" type="range" min="0" max="5000" step ="500" value="${betterMusic.Settings.TransitionTime}" oninput="betterMusic.Settings.TransitionTime = Number(this.value)"></label><br>`;
+        htmltext += `<input id="musicSettingsFinish" type="checkbox" ${betterMusic.Settings.Finish ? 'checked="checked"' : ''}" oninput="betterMusic.Settings.Finish = this.checked"><label for="musicSettingsFinish">${i18n("Boxes.BetterMusic.Finish")}</label></div>`;
+        htmltext += `</div>`;
 
-        htmltext += `<table id="musicSettingsScenesX" class="foe-table"><caption style="font-weight: bold; font-size: initial; padding-top: 10px;">Select, which titles are allowed in which respective scene</caption><tr><th>Title</th>`;
+        htmltext += `<div id="musicSettingsScenes" class="musicSettings"><h1 class="text-center">${i18n("Boxes.BetterMusic.SceneSettings")}</h1>`
+        htmltext += `<div class="flex">`;
+        htmltext += `<div class="text-right">`;
+        htmltext += `<label for="musicSettingsMainCity">${i18n("Boxes.BetterMusic.InCity")} </label><select id="musicSettingsMainCity" type="select" oninput="betterMusic.Settings.MainCity = this.selectedIndex"><option value="0" ${betterMusic.Settings.MainCity === 0 ? 'selected="selected"': ''}>${i18n("Boxes.BetterMusic.IgnoreEra")} </option><option value="1" ${betterMusic.Settings.MainCity === 1 ? 'selected="selected"': ''}>${i18n("Boxes.BetterMusic.ToEra")} </option><option value="2" ${betterMusic.Settings.MainCity === 2 ? 'selected="selected"': ''}>${i18n("Boxes.BetterMusic.CurrentEra")} </option></select><br>`;
+        htmltext += `<label for="musicSettingsColony">${i18n("Boxes.BetterMusic.InColony")} </label>`;
+        htmltext += `<select id="musicSettingsColony" type="select" oninput="betterMusic.Settings.Colony = this.selectedIndex"><option value="0" ${betterMusic.Settings.Colony === 0 ? 'selected="selected"': ''}>${i18n("Boxes.BetterMusic.IgnoreEra")}</option><option value="1" ${betterMusic.Settings.Colony === 1 ? 'selected="selected"': ''}>${i18n("Boxes.BetterMusic.ToEra")}</option><option value="2" ${betterMusic.Settings.Colony === 2 ? 'selected="selected"': ''}>${i18n("Boxes.BetterMusic.CurrentEra")}</option></select>`;
+        htmltext += `</div>`;
+        htmltext += `<div>`;
+        htmltext += `<input id="musicSettingsTavern" type="checkbox" ${betterMusic.Settings.Tavern ? 'checked="checked"' : ''}" oninput="betterMusic.Settings.Tavern = this.checked"><label for="musicSettingsTavern">${i18n("Boxes.BetterMusic.TavernT")}</label>`;
+        htmltext += `<input id="musicSettingsPvp" type="checkbox" ${betterMusic.Settings.Pvp ? 'checked="checked"' : ''}" oninput="betterMusic.Settings.Pvp = this.checked"><label for="musicSettingsPvp">${i18n("Boxes.BetterMusic.PvPT")}</label>`;
+        htmltext += `<input id="musicSettingsIgnoreSettlement" type="checkbox" ${betterMusic.Settings.IgnoreSettlement ? 'checked="checked"' : ''}" oninput="betterMusic.Settings.IgnoreSettlement = this.checked"><label for="musicSettingsIgnoreSettlement">${i18n("Boxes.BetterMusic.IgnoreSettlement")}</label>`;
+        htmltext += `<input id="musicSettingsEvents" type="checkbox" ${betterMusic.Settings.Events ? 'checked="checked"' : ''}" oninput="betterMusic.Settings.Events = this.checked"><label for="musicSettingsEvents">${i18n("Boxes.BetterMusic.EventT")}</label>`;
+        htmltext += `</div>`;
+        htmltext += `</div>`;
+
+        htmltext += `<table id="musicSettingsScenesX" class="foe-table"><caption style="font-weight: bold; font-size: initial; padding-top: 10px;">${i18n("Boxes.BetterMusic.Scenes")}</caption><tr><th>${i18n("Boxes.BetterMusic.TitleName")}</th>`;
         
         for (let scene in betterMusic.Scenes) {
-            htmltext += `<th>${betterMusic.Scenes[scene].Name}</th>`;
+            htmltext += `<th><span>${betterMusic.Scenes[scene].Name}</span></th>`;
         }
         htmltext += `</tr>`;
         
@@ -309,7 +313,7 @@ let betterMusic = {
     
             HTML.Box({
                 id: 'betterMusicDialog',
-                title: 'Better Music',
+                title: i18n("Boxes.BetterMusic.General"),
                 auto_close: true,
                 dragdrop: true,
                 minimize: true,
@@ -346,9 +350,12 @@ let betterMusic = {
         if ($SoundC[0].src == MainParser.InnoCDN + 'assets/sounds/shared/theme/'+ newTrack +'.ogg') {
         
             betterMusic.Ids.unshift($SoundC[0].id);
-            betterMusic.setEvent(0);
+            betterMusic.setEvent($SoundC[0].id, 0);
         
         } else {
+            
+            let elem = $(`#${betterMusic.Ids[1]}`)[0];
+            if (!(!elem)) elem.pause();
             
             betterMusic.Ids.push($SoundC[0].id);
             $SoundC.animate({volume: 0}, transition);
@@ -367,7 +374,7 @@ let betterMusic = {
                 })
                 .catch(error => {
                     betterMusic.PossibleTracks[newTrack].banned = true;
-                    console.log("↑ ↑ ↑ ↑ banned from playlist ↑ ↑ ↑ ↑ ↑");
+                    console.log(`↑ ↑ ↑ ↑ ${newTrack} banned from playlist ↑ ↑ ↑ ↑ ↑`);
                     betterMusic.buildlist(betterMusic.currentScene);
                     betterMusic.TrackSelector();
                 });
@@ -383,7 +390,7 @@ let betterMusic = {
         $('#musicControl-Btn').addClass('musicmuted');
         
         if (!(e?.relatedTarget?.classList.contains('betterMusicTitle'))) {
-            let elem= $(`#${betterMusic.Ids[0]}`)[0]
+            let elem= $(`#${betterMusic.Ids[0]}`)[0];
             if (!elem) return;
             elem.pause();
             elem.src = "";
@@ -397,16 +404,14 @@ let betterMusic = {
         betterMusic.playRandom(betterMusic.Scenes[betterMusic.currentScene].TitleList);    
     },
 
-    setEvent: (transition = betterMusic.Settings.TransitionTime) => {
+    setEvent: (id, transition = betterMusic.Settings.TransitionTime) => {
         if (!betterMusic.playStatus) return;
-        let $SoundC = $(`#${betterMusic.Ids[0]}`);
+        let $SoundC = $(`#${id}`);
         let timeout = Math.floor($SoundC[0].duration * 1000 - transition);
         if (timeout != 'NaN') {
             clearTimeout(betterMusic.nextEvent);
             betterMusic.nextEvent = setTimeout(function() {betterMusic.TrackSelector()}, timeout);
         }
-        
-        
     },
 
     setScene: (scene) => {
@@ -450,7 +455,7 @@ let betterMusic = {
     loadSettings: ()=> {
 
 		tempSettings = JSON.parse(localStorage.getItem('betterMusicSettings') || '{}');
-        betterMusic.Settings = betterMusic.update(betterMusic.Settings,tempSettings)
+        betterMusic.Settings = betterMusic.update(betterMusic.Settings,tempSettings);
 
     },
     
@@ -460,7 +465,7 @@ let betterMusic = {
     },
     
     initialize: (value=10000) => {
-        clearTimeout(betterMusic.nextEvent);
+        //clearTimeout(betterMusic.nextEvent);
         betterMusic.nextEvent = setTimeout(function() {betterMusic.TrackSelector()}, value);
     },
 

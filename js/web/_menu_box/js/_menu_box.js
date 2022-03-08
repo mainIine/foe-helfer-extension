@@ -43,6 +43,7 @@ let _menu_box = {
 
 
 	CalcBody: () => {
+		_menu.TopOffset = $('#menu_box').offset().top;
 		_menu.ListLinks(_menu_box.InsertMenuItem);
 		_menu_box.CheckButtons();
 	},
