@@ -158,9 +158,9 @@ let HTML = {
 	Box: (args) => {
 
 		let title = $('<span />').addClass('title').html(args['title']);
-
+		
 		if (args['onlyTitle'] !== true) {
-			title = $('<span />').addClass('title').html(args['title'] + ' <small><em> - ' + i18n('Global.BoxTitle') + '</em></small>');
+			title = $('<span />').addClass('title').html((extVersion.indexOf("beta") > -1 ? '(Beta) ': '') + args['title'] + ' <small><em> - FoE Helper</em></small>');
 		}
 
 		let close = $('<span />').attr('id', args['id'] + 'close').addClass('window-close'),
@@ -517,8 +517,8 @@ let HTML = {
 				sw: '.window-grippy',
 				nw: '.window-grippy'
 			},
-			minHeight: 200,
-			minWidth: 250,
+			minHeight: 100,
+			minWidth: 220,
 			stop: (e, $el) => {
 				let size = $el.element.width() + '|' + $el.element.height();
 
