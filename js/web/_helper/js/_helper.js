@@ -160,7 +160,7 @@ let HTML = {
 		let title = $('<span />').addClass('title').html(args['title']);
 
 		if (args['onlyTitle'] !== true) {
-			title = $('<span />').addClass('title').html(args['title'] + ' <small><em> - ' + i18n('Global.BoxTitle') + '</em></small>');
+			title = $('<span />').addClass('title').html((window.loadBeta ? '(Beta) ': '') + args['title'] + ' <small><em> - FoE Helper</em></small>');
 		}
 
 		let close = $('<span />').attr('id', args['id'] + 'close').addClass('window-close'),
