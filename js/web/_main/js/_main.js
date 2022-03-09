@@ -2123,5 +2123,5 @@ if (window.foeHelperBgApiHandler !== undefined && window.foeHelperBgApiHandler i
 	delete window.foeHelperBgApiHandler;
 }
 
-console.log('FOE Helper version ' + extVersion + ' started' + (window.loadBeta ? ' in Beta Mode': '') + '. ID: ' + extID);
+console.log('FOE Helper version ' + extVersion + ' started' + (extVersion.indexOf("beta") > -1 ? ' in Beta Mode': '') + '. ID: ' + extID);
 console.log(navigator.userAgent);

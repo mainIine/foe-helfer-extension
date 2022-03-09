@@ -313,7 +313,7 @@ let betterMusic = {
     
             HTML.Box({
                 id: 'betterMusicDialog',
-                title: i18n("Boxes.BetterMusic.General"),
+                title: i18n("Boxes.BetterMusic.Title"),
                 auto_close: true,
                 dragdrop: true,
                 minimize: true,
@@ -373,9 +373,13 @@ let betterMusic = {
                     $SoundN.animate({volume: 1*betterMusic.PossibleTracks[newTrack].Volume*betterMusic.Settings.Volume}, transition);
                 })
                 .catch(error => {
-                    betterMusic.PossibleTracks[newTrack].banned = true;
-                    console.log(`↑ ↑ ↑ ↑ ${newTrack} banned from playlist ↑ ↑ ↑ ↑ ↑`);
-                    betterMusic.buildlist(betterMusic.currentScene);
+                    if (error.toString() == "NotSupportedError: Failed to load because no supported source was found.") {
+                        console.log(`↑ ↑ ↑ ↑ ${newTrack} banned from playlist ↑ ↑ ↑ ↑ ↑`);
+                        if (betterMusic.PossibleTracks[newTrack]) {
+                            betterMusic.PossibleTracks[newTrack].banned = true;
+                            betterMusic.buildlist(betterMusic.currentScene);
+                        }
+                    }
                     betterMusic.TrackSelector();
                 });
             }
