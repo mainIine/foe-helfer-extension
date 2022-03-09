@@ -1774,7 +1774,7 @@ let ProvinceMap = {
 		ProvinceMap.Map = document.createElement("canvas");
 
 		if (GuildFights.MapData.map['id'] === "waterfall_archipelago") {
-			ProvinceMap.Map.width = 900;
+			ProvinceMap.Map.width = 800;
 			ProvinceMap.Map.height = 800;
 		} else {
 			ProvinceMap.Map.width = ProvinceMap.MapSize.width;
@@ -1892,7 +1892,7 @@ let ProvinceMap = {
 			let additionalSectorinfo = mapdata[id];
 
 			ProvinceMap.MapCTX.fillStyle = this.owner.colors.highlight;
-			ProvinceMap.MapCTX.strokeStyle = "#333333";
+			ProvinceMap.MapCTX.strokeStyle = "#222222";
 			ProvinceMap.MapCTX.textAlign = "center";
 			ProvinceMap.MapCTX.font = 'bold 25px Arial';
 			ProvinceMap.MapCTX.globalAlpha = 1;
@@ -1921,7 +1921,7 @@ let ProvinceMap = {
 
 				// time 
 				ProvinceMap.MapCTX.font = 'bold 15px Courier New';
-				ProvinceMap.MapCTX.fillStyle = '#111111';
+				ProvinceMap.MapCTX.fillStyle = '#000000';
 				let provinceUnlockTime = (moment.unix(this.lockedUntil).format('HH:mm') != 'Invalid date') ? moment.unix(this.lockedUntil).format('HH:mm') : '';
 				ProvinceMap.MapCTX.fillText(provinceUnlockTime, mapStuff.x, mapStuff.y + (mapStuff.hexheight*0.25));
 
@@ -1933,7 +1933,8 @@ let ProvinceMap = {
 
 						let color = GuildFights.SortedColors.find(c => (c['id'] === prog.participantId));
 						ProvinceMap.MapCTX.fillStyle = color.main;
-						ProvinceMap.MapCTX.fillRect((mapStuff.x - mapStuff.hexwidth * 0.18), (mapStuff.y + (mapStuff.hexheight*0.33)) + 3*index, 3 + mapStuff.hexwidth/3*progDiff, 3);
+						ProvinceMap.MapCTX.fillRect((mapStuff.x - mapStuff.hexwidth * 0.18), (mapStuff.y + (mapStuff.hexheight*0.3)) + 4 * index, 3 + mapStuff.hexwidth/3*progDiff, 3);
+						ProvinceMap.MapCTX.strokeRect((mapStuff.x - mapStuff.hexwidth * 0.18), (mapStuff.y + (mapStuff.hexheight*0.3)) + 4 * index, 3 + mapStuff.hexwidth/3*progDiff, 3);
 					});
 				}
 
@@ -1951,20 +1952,19 @@ let ProvinceMap = {
 			}
 
 			ProvinceMap.MapCTX.font = 'bold 22px Arial';
-			ProvinceMap.MapCTX.fillStyle = '#111111';
+			ProvinceMap.MapCTX.fillStyle = '#000000';
 			ProvinceMap.MapCTX.fillText(this.short, mapStuff.x, titleY);
 			
 			if (additionalSectorinfo.totalBuildingSlots != undefined) {
-				let slots = '◼';
+				let slots = '☗';
 				if (additionalSectorinfo.totalBuildingSlots == 1)
-					slots = '◼';
+					slots = '☗';
 				else if (additionalSectorinfo.totalBuildingSlots == 2)
-					slots = '◼◼';
+					slots = '☗☗';
 				else if (additionalSectorinfo.totalBuildingSlots == 3)
-					slots = '◼◼◼';
+					slots = '☗☗☗';
 
-				ProvinceMap.MapCTX.fillStyle = '#111111';
-				ProvinceMap.MapCTX.font = '12px Arial';
+				ProvinceMap.MapCTX.font = '12px Courier New';
 				ProvinceMap.MapCTX.fillText(slots, mapStuff.x, slotsY);
 			}
 		}
@@ -2081,6 +2081,7 @@ let ProvinceMap = {
 
 		if (socketData['id'] != undefined) {
 			let updatedProvince = ProvinceMap.Provinces.find(p => p.id === socketData['id']);
+			// to do: this does not change anything
 			updatedProvince.updateGGMapSector();
 		}
 	},
