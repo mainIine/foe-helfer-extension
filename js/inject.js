@@ -17,9 +17,10 @@ window.loadBeta = JSON.parse(localStorage.getItem('LoadBeta')) || false;
 window.extUrl = window.loadBeta ? 'https://cdn.jsdelivr.net/gh/mainIine/foe-helfer-extension@beta/': chrome.extension.getURL('');
 localStorage.setItem('LoadBeta', false);
 if (window.loadBeta) {
-	fetch("https://api.github.com/repos/mainIine/foe-helfer-extension/branches/beta")
+	now = new Date();
+	fetch("https://api.github.com/repos/mainIine/foe-helfer-extension/branches/beta?" + now)
 		.then(response => {if (response.status === 200) {response.json()
-		.then((data) => {inject(data?.commit?.commit?.committer?.date)})}});
+		.then((data) => {inject(data?.commit?.commit?.committer?.date || "")})}});
 } else {
 	inject("");
 }
@@ -137,7 +138,8 @@ function inject (betaDate) {
 					extUrl='${window.extUrl}',
 					GuiLng='${lng}',
 					extVersion='${v}',
-					devMode=${!('update_url' in chrome.runtime.getManifest())};
+					devMode=${!('update_url' in chrome.runtime.getManifest())},
+					loadBeta=${window.loadBeta};
 			`;
 			(document.head || document.documentElement).appendChild(script);
 			// The script was (supposedly) executed directly and can be removed again.
