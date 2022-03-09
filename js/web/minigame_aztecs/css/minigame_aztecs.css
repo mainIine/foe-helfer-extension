@@ -13,9 +13,9 @@
 
  #aztecsHelper {
 	width: 660px;
-    height: 462px;
-    top: calc(46vh - 200px);
-    left: calc(49vw - 314px);
+    height: 500px;
+    top: calc(23vh + 8px);
+    left: calc(32vw + 16px);
     pointer-events: none;
     background-image: none;
 }
