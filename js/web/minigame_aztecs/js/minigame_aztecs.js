@@ -86,7 +86,30 @@ FoEproxy.addHandler('CollectingMinigameService', 'submitMove', (data, postData) 
     AztecsHelper.CalcAdjacentCells();
 });
 
+FoEproxy.addHandler('ResourceShopService', 'buyResources', (data, postData) => {
+    if(postData[0].requestData.filter(x => x.mainType === "cultural_outpost" && x.subType === "collecting_minigame_buy_turns")){
+        if(postData[0].requestData.filter(x => x["resources"] !== undefined)[0].resources.aztecs_collecting_minigame_turns > 0){
+            AztecsHelper.boughtSomething = true;
+        }else{
+            AztecsHelper.boughtSomething = false;
+        }
+    }else{
+        AztecsHelper.boughtSomething = false;
+    }
+});
+
 FoEproxy.addHandler('ResourceService', 'getPlayerResources', (data, postData) => {
+
+    if(postData[0].requestData.filter(x => x.mainType === "cultural_outpost" && x.subType === "collecting_minigame_buy_turns").length > 0){
+        if(postData[0].requestData.filter(x => x["resources"] !== undefined)[0].resources.aztecs_collecting_minigame_turns > 0){
+            AztecsHelper.boughtSomething = true;
+        }else{
+            AztecsHelper.boughtSomething = false;
+        }
+    }else{
+        AztecsHelper.boughtSomething = false;
+    }
+
     const r = data.responseData;
     if (!r.resources) {
         return;
@@ -101,16 +124,6 @@ FoEproxy.addHandler('ResourceService', 'getPlayerResources', (data, postData) =>
     if(AztecsHelper.MovesLeft == 0 && $('#aztecsHelper').length > 0){
         HTML.CloseOpenBox('aztecsHelper');
     }
-});
-
-FoEproxy.addHandler('ResourceShopService', 'buyResources', (data, postData) => {
-    const r = data.responseData;
-    if (r["__class__"] !== "Success") {
-        return;
-    }
-
-    AztecsHelper.boughtSomething = true;
-
 });
 
 
