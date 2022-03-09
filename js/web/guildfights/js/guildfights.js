@@ -62,7 +62,7 @@ FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postDa
 
 	if ($('#ProvinceMap').length > 0)
 	{
-		ProvinceMap.Refresh();
+		ProvinceMap.RefreshSector();
 	}
 
 	// update box when open
@@ -74,7 +74,7 @@ FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postDa
 
 
 /**
- * @type {{SettingsExport: GuildFights.SettingsExport, curDetailViewFilter: null, UpdateDB: ((function(*, *): Promise<void>)|*), GBGRound: null, PrevActionTimestamp: null, NewActionTimestamp: null, InjectionLoaded: boolean, MapData: null, BuildPlayerContent: ((function(*=): Promise<void>)|*), intiateDatePicker: ((function(): Promise<void>)|*), GBGHistoryView: boolean, LogDatePicker: null, NewAction: null, PrevAction: null, init: GuildFights.init, PrepareColors: GuildFights.PrepareColors, SetBoxNavigation: ((function(*=): Promise<void>)|*), PlayerBoxContent: *[], DeleteAlert: GuildFights.DeleteAlert, PlayerBoxSettingsSaveValues: GuildFights.PlayerBoxSettingsSaveValues, ToggleProgressList: GuildFights.ToggleProgressList, Colors: null, RefreshTable: GuildFights.RefreshTable, SetAlert: GuildFights.SetAlert, formatRange: (function(): string), GetAlertButton: (function(integer): string), Tabs: *[], ToggleCopyButton: GuildFights.ToggleCopyButton, Alerts: *[], PlayersPortraits: null, GetTabContent: (function(): string), ShowPlayerBox: GuildFights.ShowPlayerBox, CurrentGBGRound: null, showGuildColumn: number, curDateFilter: null, SortedColors: null, ShowGildBox: GuildFights.ShowGildBox, BuildFightContent: GuildFights.BuildFightContent, BuildDetailViewContent: ((function(*): Promise<void>)|*), SetTabContent: GuildFights.SetTabContent, BuildDetailViewLog: ((function(*): Promise<void>)|*), TabsContent: *[], GetAlerts: (function(): Promise<unknown>), UpdateCounter: GuildFights.UpdateCounter, GBGAllRounds: null, ProvinceNames: null, checkForDB: ((function(*): Promise<void>)|*), HandlePlayerLeaderboard: ((function(*): Promise<void>)|*), SetTabs: GuildFights.SetTabs, CopyToClipBoard: GuildFights.CopyToClipBoard, GetTabs: (function(): string), DeleteOldSnapshots: ((function(*=): Promise<void>)|*), PlayerBoxSettings: {showProgressFilter: number, showOnlyActivePlayers: number, showLogButton: number, showRoundSelector: number}, Neighbours: *[], curDateEndFilter: null, ShowPlayerBoxSettings: GuildFights.ShowPlayerBoxSettings, SaveLiveFightSettings: GuildFights.SaveLiveFightSettings, ShowLiveFightSettings: GuildFights.ShowLiveFightSettings, ShowDetailViewBox: GuildFights.ShowDetailViewBox}}
+ * @type {{SettingsExport: GuildFights.SettingsExport, curDetailViewFilter: null, UpdateDB: ((function(*, *): Promise<void>)|*), GBGRound: null, PrevActionTimestamp: null, NewActionTimestamp: null, InjectionLoaded: boolean, MapData: null, BuildPlayerContent: ((function(*=): Promise<void>)|*), intiateDatePicker: ((function(): Promise<void>)|*), GBGHistoryView: boolean, LogDatePicker: null, NewAction: null, PrevAction: null, init: GuildFights.init, PrepareColors: GuildFights.PrepareColors, SetBoxNavigation: ((function(*=): Promise<void>)|*), PlayerBoxContent: *[], DeleteAlert: GuildFights.DeleteAlert, PlayerBoxSettingsSaveValues: GuildFights.PlayerBoxSettingsSaveValues, ToggleProgressList: GuildFights.ToggleProgressList, Colors: null, RefreshTable: GuildFights.RefreshTable, SetAlert: GuildFights.SetAlert, formatRange: (function(): string), GetAlertButton: (function(integer): string), Tabs: *[], ToggleCopyButton: GuildFights.ToggleCopyButton, Alerts: *[], PlayersPortraits: null, GetTabContent: (function(): string), ShowPlayerBox: GuildFights.ShowPlayerBox, CurrentGBGRound: null, showGuildColumn: number, curDateFilter: null, SortedColors: null, ShowGuildBox: GuildFights.ShowGuildBox, BuildFightContent: GuildFights.BuildFightContent, BuildDetailViewContent: ((function(*): Promise<void>)|*), SetTabContent: GuildFights.SetTabContent, BuildDetailViewLog: ((function(*): Promise<void>)|*), TabsContent: *[], GetAlerts: (function(): Promise<unknown>), UpdateCounter: GuildFights.UpdateCounter, GBGAllRounds: null, ProvinceNames: null, checkForDB: ((function(*): Promise<void>)|*), HandlePlayerLeaderboard: ((function(*): Promise<void>)|*), SetTabs: GuildFights.SetTabs, CopyToClipBoard: GuildFights.CopyToClipBoard, GetTabs: (function(): string), DeleteOldSnapshots: ((function(*=): Promise<void>)|*), PlayerBoxSettings: {showProgressFilter: number, showOnlyActivePlayers: number, showLogButton: number, showRoundSelector: number}, Neighbours: *[], curDateEndFilter: null, ShowPlayerBoxSettings: GuildFights.ShowPlayerBoxSettings, SaveLiveFightSettings: GuildFights.SaveLiveFightSettings, ShowLiveFightSettings: GuildFights.ShowLiveFightSettings, ShowDetailViewBox: GuildFights.ShowDetailViewBox}}
  */
 let GuildFights = {
 
@@ -152,7 +152,7 @@ let GuildFights = {
 				// Update Minimap
 				if($('#ProvinceMap').length > 0 && data['responseData'][0])
 				{
-					ProvinceMap.Refresh(data['responseData'][0]);
+					ProvinceMap.RefreshSector(data['responseData'][0]);
 				}
 			});
 			GuildFights.InjectionLoaded = true;
@@ -482,7 +482,7 @@ let GuildFights = {
 	 * @param reload
 	 * @constructor
 	 */
-	ShowGildBox: (reload) => {
+	ShowGuildBox: (reload) => {
 
 		if ($('#LiveGildFighting').length === 0)
 		{
@@ -678,13 +678,9 @@ let GuildFights = {
 			tF += playerNew['battlesWon'];
 
 			b.push('<tr data-player="' + playerNew['player_id'] + '" data-gbground="' + gbground + '" class="' + newProgressClass + (!histView ? 'showdetailview ' : '') + (playerNew['player_id'] === ExtPlayerID ? 'mark-player ' : '') + (change === true ? 'bg-green' : '') + '">');
-
 			b.push('<td class="tdmin">' + (parseInt(i) + 1) + '.</td>');
-
 			b.push('<td class="tdmin"><img src="' + MainParser.InnoCDN + 'assets/shared/avatars/' + MainParser.PlayerPortraits[playerNew['avatar']] + '.jpg" alt=""></td>');
-
 			b.push('<td>' + playerNew['name'] + '</td>');
-
 			b.push('<td class="text-center">');
 			b.push(playerNew['negotiationsWon'] + negotaionAddOn);
 			b.push('</td>');
@@ -732,9 +728,7 @@ let GuildFights = {
 		t.push('</thead>');
 
 		t.push('<tbody>');
-
 		t.push(b.join(''));
-
 		t.push('</tbody>');
 
 		$('#gbgContentWrapper').html(t.join('')).promise().done(function () {
@@ -1067,8 +1061,6 @@ let GuildFights = {
 						let pColor = GuildFights.SortedColors.find(e => e['id'] === mapdata[i]['ownerId']);
 
 						progress.push(`<tr id="province-${id}" data-id="${id}" data-tab="progress">`);
-
-						//console.log('gbgGuilds[x]: ', gbgGuilds[x]);
 
 						progress.push(`<td title="${i18n('Boxes.GuildFights.Owner')}: ${gbgGuilds[x]['clan']['name']}"><b><span class="province-color" style="background-color:${pColor['main']}"></span> ${mapdata[i]['title']}</b></td>`);
 
@@ -1430,20 +1422,20 @@ let GuildFights = {
 			}
 
 			// search the province for owner update
-			ProvinceMap.MapMerged.forEach((province, index) => {
+			ProvinceMap.Provinces.forEach((province, index) => {
 				if (province.id === data['id'])
 				{
 					let colors = GuildFights.SortedColors.find(e => e['id'] === data['ownerId']);
 
-					ProvinceMap.MapMerged[index].ownerId = data['ownerId'];
-					ProvinceMap.MapMerged[index].fillStyle = ProvinceMap.hexToRgb(colors['main'], '.3');
-					ProvinceMap.MapMerged[index].strokeStyle = ProvinceMap.hexToRgb(colors['main']);
+					ProvinceMap.Provinces[index].ownerId = data['ownerId'];
+					ProvinceMap.Provinces[index].fillStyle = ProvinceMap.hexToRgb(colors['main'], '.3');
+					ProvinceMap.Provinces[index].strokeStyle = ProvinceMap.hexToRgb(colors['main']);
 				}
 			});
 
 			if ($('#ProvinceMap').length > 0)
 			{
-				ProvinceMap.Refresh();
+				ProvinceMap.RefreshSector();
 			}
 
 			return;
@@ -1478,11 +1470,12 @@ let GuildFights = {
 				});
 
 				let mD = GuildFights.MapData['map']['provinces'].find(d => d.id === data['id']);
+				let provinceColor = pColor['main'] || 'rgba(0,0,0,0)';
 
 				$('#progress').find('table.foe-table').prepend(
 					newCell.append(
 						$('<td />').append(
-							$('<span />').css({ 'background-color': pColor['main'] }).attr({ class: 'province-color' }),
+							$('<span />').css({ 'background-color': provinceColor }).attr({ class: 'province-color' }),
 							$('<b />').text(mD['title']),
 						),
 						(GuildFights.showGuildColumn ? $('<td />').text(p['clan']['name']) : ''),
@@ -1725,7 +1718,7 @@ let GuildFights = {
 
 		$(`#LiveGildFightingSettingsBox`).fadeToggle('fast', function () {
 			$.when($(`#LiveGildFightingSettingsBox`).remove()).then(
-				GuildFights.ShowGildBox(true)
+				GuildFights.ShowGuildBox(true)
 			);
 		});
 	},
@@ -1733,23 +1726,15 @@ let GuildFights = {
 
 /**
  *
- * @type {{ProvinceObject: {}, ToolTipActive: boolean, FrameSize: number, prepare: ProvinceMap.prepare, MapMerged: *[], ParseNumber: (function(*, *): {num: number, index}), MapCTX: {}, ParseMove: (function(*, *)), ParseCurve: (function(*, *)), StrokeColor: string, MapSize: {width: number, height: number}, PrepareProvinces: ProvinceMap.PrepareProvinces, Refresh: ProvinceMap.Refresh, ParsePathToCanvas: (function(*): Path2D), Mouse: {x: undefined, y: undefined}, StrokeWidth: number, buildMap: ProvinceMap.buildMap, ToolTipId: boolean, ProvinceData: ((function(): (*|undefined))|*), Map: {}, hexToRgb: ((function(*, *): string)|*)}}
+ * @type {{ProvinceObject: {}, ToolTipActive: boolean, FrameSize: number, prepare: ProvinceMap.prepare, Provinces: *[], ParseNumber: (function(*, *): {num: number, index}), MapCTX: {}, ParseMove: (function(*, *)), ParseCurve: (function(*, *)), StrokeColor: string, MapSize: {width: number, height: number}, PrepareProvinces: ProvinceMap.PrepareProvinces, Refresh: ProvinceMap.Refresh, ParsePathToCanvas: (function(*): Path2D), Mouse: {x: undefined, y: undefined}, StrokeWidth: number, buildMap: ProvinceMap.buildMap, ToolTipId: boolean, ProvinceData: ((function(): (*|undefined))|*), Map: {}, hexToRgb: ((function(*, *): string)|*)}}
  */
 let ProvinceMap = {
 
 	Map: {},
 	MapCTX: {},
 
-	MapMerged: [],
+	Provinces: [],
 	ProvinceObject: {},
-
-	ToolTipActive: false,
-	ToolTipId: false,
-
-	Mouse: {
-		x: undefined,
-		y: undefined
-	},
 
 	StrokeWidth: 4,
 	StrokeColor: '#fff',
@@ -1807,48 +1792,32 @@ let ProvinceMap = {
 		ProvinceMap.MapCTX.translate(-3, -3);
 		ProvinceMap.MapCTX.globalCompositeOperation = 'destination-over';
 
-		ProvinceMap.Map.addEventListener('mousedown', e => {
-			handleMouseDown(e);
-		});
-
-		// get the mouse-cords relativ the the minified canvas
-		function handleMouseDown(e) {
-			e.preventDefault();
-			e.stopPropagation();
-
-			const $canvas = $(ProvinceMap.Map),
-				canvasOffset = $canvas.offset(),
-				canvasWidth = $canvas.width(),
-				offsetX = e.pageX - canvasOffset.left,
-				offsetY = e.pageY - canvasOffset.top,
-				factor = ((canvasWidth / 2500) * 100);
-
-			ProvinceMap.Mouse.x = ((offsetX * 100) / factor);
-			ProvinceMap.Mouse.y = ((offsetY * 100) / factor);
-
-			// ProvinceMap.Refresh();
-		}
-
 		// Objects
 		function Province(data) {
-			for (let key in data)
-			{
-				if (!data.hasOwnProperty(key)) continue;
-
-				if (data[key])
-				{
-					this[key] = data[key];
-				}
-			}
+			this.id = data.id || 0;
+			this.name = data.name;
+			this.short = data.short;
+			this.links = data.links;
+			this.flag = data.flag;
+			this.flagPos = data.flagPos;
+			this.path = data.path;
+			this.ownerID = data.ownerID;
+			this.owner = {
+				id: data.ownerID,
+				name: data.ownerName,
+				flagImg: data.flagImg,
+				colors: GuildFights.SortedColors.find(c => (c.id === data.ownerID))
+			};
+			this.lockedUntil = data.lockedUntil;
+			this.progress = [];
 		}
 
-
-		Province.prototype.drawGGMap = function () {
+		Province.prototype.drawGGMapSector = function () {
 
 			ProvinceMap.MapCTX.lineWidth = ProvinceMap.StrokeWidth;
-			ProvinceMap.MapCTX.globalAlpha = this.alpha;
-			ProvinceMap.MapCTX.strokeStyle = this.strokeStyle;
-			ProvinceMap.MapCTX.fillStyle = this.fillStyle;
+			ProvinceMap.MapCTX.globalAlpha = 1;
+			ProvinceMap.MapCTX.strokeStyle = this.owner.colors.main;
+			ProvinceMap.MapCTX.fillStyle = this.owner.colors.main;
 
 			let id = this['id'] || 0;
 
@@ -1866,26 +1835,6 @@ let ProvinceMap = {
 				ProvinceMap.MapCTX.setLineDash([]);
 			}
 
-			/*
-				"this" object
-
-				alpha: 0.3
-				fillStyle: "rgba(190,189,189,.3)"
-				flag: {x: 878, y: 1063}
-				flagImg: 'flag_15',
-				flagPos: {x: 828, y: 1063}
-				id: 9
-				links: [2, 8, 10, 22, 23]
-				name: "C2: Tayencoria"
-				ownerID: 56596
-				ownerName: "Brennholz-Verleih"
-				path: "M853.82,1179.501c-1.966-3.399-3.049-5.821-4.618-7.874 c-4...."
-				short: "C2T"
-				strokeStyle: "rgb(190,189,189)"
-			*/
-
-			// console.log('this: ', this);
-
 			const path = (this.path != 0) ? ProvinceMap.ParsePathToCanvas(this.path) : '';
 
 			// Province border
@@ -1895,7 +1844,7 @@ let ProvinceMap = {
 			ProvinceMap.MapCTX.stroke(path);
 
 			// if is spawn, no text => image + background color
-			if (this.flagImg && this.flagPos)
+			if (this.owner.flagImg && this.flagPos)
 			{
 				ProvinceMap.MapCTX.globalAlpha = 0.2;
 				ProvinceMap.MapCTX.fill(path);
@@ -1920,14 +1869,14 @@ let ProvinceMap = {
 
 				// Title e.g. "B4D"
 				ProvinceMap.MapCTX.globalAlpha = 1;
-				ProvinceMap.MapCTX.fillStyle = (!this.ownerID ? '#ffffff' : this.strokeStyle);
+				ProvinceMap.MapCTX.fillStyle = (!this.owner.id ? '#ffffff' : this.strokeStyle);
 				ProvinceMap.MapCTX.fillText(this.short, this.flag.x, this.flag.y - 20);
 				ProvinceMap.MapCTX.strokeText(this.short, this.flag.x, this.flag.y - 20);
 
 				// time 
 				ProvinceMap.MapCTX.globalAlpha = 1;
 				ProvinceMap.MapCTX.font = 'bold 30px Arial';
-				ProvinceMap.MapCTX.fillStyle = (!this.ownerID ? '#ffffff' : this.strokeStyle);
+				ProvinceMap.MapCTX.fillStyle = (!this.owner.id ? '#ffffff' : this.strokeStyle);
 
 				let provinceUnlockTime = (moment.unix(this.lockedUntil).format('HH:mm') != 'Invalid date') ? moment.unix(this.lockedUntil).format('HH:mm') : '';
 				ProvinceMap.MapCTX.fillText(provinceUnlockTime, this.flag.x, this.flag.y+20);
@@ -1935,85 +1884,103 @@ let ProvinceMap = {
 			}
 		}
 
-		Province.prototype.drawHexMap = function (mapdata = []) {
+		Province.prototype.drawHexMapSector = function (mapdata = []) {
+
+			console.log('update', this);
 
 			let id = this['id'] || 0;
 			let additionalSectorinfo = mapdata[id];
 
-			console.log(this, additionalSectorinfo);
-
-			ProvinceMap.MapCTX.lineWidth = ProvinceMap.StrokeWidth;
-			ProvinceMap.MapCTX.globalAlpha = this.alpha;
-			ProvinceMap.MapCTX.fillStyle = this.strokeStyle;
+			ProvinceMap.MapCTX.fillStyle = this.owner.colors.highlight;
 			ProvinceMap.MapCTX.strokeStyle = "#333333";
 			ProvinceMap.MapCTX.textAlign = "center";
 			ProvinceMap.MapCTX.font = 'bold 25px Arial';
 			ProvinceMap.MapCTX.globalAlpha = 1;
 			ProvinceMap.MapCTX.lineWidth = 2;
 
-			if (this.strokeStyle == 'rgb(5,73,230)')
-				this.strokeStyle = '#0554e5';
-
 			let mapStuff = {
 				sizeFactor: ProvinceMap.Map.width / 8,
 				offsetX: ProvinceMap.Map.width / 14,
 				offsetY: ProvinceMap.Map.height / 20,
-				hexwidth: 1 * ProvinceMap.Map.width / 8,
-				hexheight: 0.7 * ProvinceMap.Map.height / 7
+				hexwidth: ProvinceMap.Map.width / 8,
+				hexheight: ProvinceMap.Map.height / 10,
+				x: this.flag.x * (ProvinceMap.Map.width / 8 * 0.375) + ProvinceMap.Map.width / 14,
+				y: this.flag.y * (ProvinceMap.Map.height / 10 * 0.5) + (ProvinceMap.Map.height / 20)
 			};
-			
-			let x = this.flag.x * (mapStuff.hexwidth * 0.375) + mapStuff.offsetX;
-			let y = this.flag.y * (mapStuff.hexheight * 0.5) + mapStuff.offsetY;
 
-			if (this.flagImg && this.flagPos) {
-				/*let flag_image = new Image(),
-					flag_x = this.flagPos.x * (mapStuff.hexwidth * 0.375) - 20 + mapStuff.offsetX,
-					flag_y = this.flagPos.y * (mapStuff.hexheight * 0.5) - 20 + mapStuff.offsetY;*/
-					let sector = this;
-
-				ProvinceMap.MapCTX.font = 'bold 40px Arial';
-				ProvinceMap.MapCTX.fillStyle = '#111111';
-				ProvinceMap.MapCTX.fillText('🛡', x, y);
-				ProvinceMap.MapCTX.font = 'bold 15px Arial';
-				ProvinceMap.MapCTX.fillText(sector.ownerName.substring(0,9), x, y + (mapStuff.hexheight*0.25));
-				ProvinceMap.MapCTX.font = 'bold 40px Arial';
-
-				ProvinceMap.MapCTX.fillStyle = sector.strokeStyle;
-				drawHex(x, y, mapStuff.hexwidth, mapStuff.hexheight);
-
-				//flag_image.src = `${MainParser.InnoCDN}assets/shared/clanflags/${this.flagImg}.jpg`;
-
-				//flag_image.onload = function () {
-					//ProvinceMap.MapCTX.drawImage(this, flag_x, flag_y, mapStuff.hexheight/2, mapStuff.hexheight/2);
-				//}
+			if (this.owner.flagImg && this.flagPos) {
+				this.drawImgHex(mapStuff);
 			}
 			else {
-				// Title e.g. "B4D"
-				ProvinceMap.MapCTX.font = 'bold 22px Arial';
-				ProvinceMap.MapCTX.fillStyle = '#111111';
-				ProvinceMap.MapCTX.fillText(this.short, x, y - (mapStuff.hexheight*0.09));
+				if (this.lockedUntil == undefined) {
+					this.drawTitleAndSlots(true, mapStuff, additionalSectorinfo);
+				}
+				else {
+					this.drawTitleAndSlots(false, mapStuff, additionalSectorinfo);
+				}
 
 				// time 
 				ProvinceMap.MapCTX.font = 'bold 15px Courier New';
+				ProvinceMap.MapCTX.fillStyle = '#111111';
 				let provinceUnlockTime = (moment.unix(this.lockedUntil).format('HH:mm') != 'Invalid date') ? moment.unix(this.lockedUntil).format('HH:mm') : '';
-				ProvinceMap.MapCTX.fillText(provinceUnlockTime, x, y + (mapStuff.hexheight*0.25));
+				ProvinceMap.MapCTX.fillText(provinceUnlockTime, mapStuff.x, mapStuff.y + (mapStuff.hexheight*0.25));
 
-				if (additionalSectorinfo.totalBuildingSlots != undefined) {
-					let slots = '▼';
-					if (additionalSectorinfo.totalBuildingSlots == 1)
-						slots = '▼';
-					else if (additionalSectorinfo.totalBuildingSlots == 2)
-						slots = '▼▲';
-					else if (additionalSectorinfo.totalBuildingSlots == 3)
-						slots = '▼▲▼';
+				if (additionalSectorinfo.conquestProgress != undefined && additionalSectorinfo.conquestProgress != []) {
+					this.progress = additionalSectorinfo.conquestProgress;
 
-					ProvinceMap.MapCTX.fillStyle = '#eeeeee';
-					ProvinceMap.MapCTX.font = 'bold 15px Courier New';
-					ProvinceMap.MapCTX.fillText(slots, x, y + (mapStuff.hexheight*0.07));
+					this.progress.forEach(function(prog, index) {
+						let progDiff = (prog.progress / prog.maxProgress);
+
+						let color = GuildFights.SortedColors.find(c => (c['id'] === prog.participantId));
+						ProvinceMap.MapCTX.fillStyle = color.main;
+						ProvinceMap.MapCTX.fillRect((mapStuff.x - mapStuff.hexwidth * 0.18), (mapStuff.y + (mapStuff.hexheight*0.33)) + 3*index, 3 + mapStuff.hexwidth/3*progDiff, 3);
+					});
 				}
 
-				ProvinceMap.MapCTX.fillStyle = this.strokeStyle;
-				drawHex(x, y, mapStuff.hexwidth, mapStuff.hexheight);
+				ProvinceMap.MapCTX.fillStyle = this.owner.colors.highlight;
+				drawHex(mapStuff.x, mapStuff.y, mapStuff.hexwidth, mapStuff.hexheight);
+			}
+		}
+
+		Province.prototype.drawTitleAndSlots = function(drawCentered = true, mapStuff, additionalSectorinfo) {
+			let titleY = mapStuff.y - (mapStuff.hexheight*0.09);
+			let slotsY = mapStuff.y + (mapStuff.hexheight*0.07);
+			if (drawCentered) {
+				titleY = mapStuff.y + (mapStuff.hexheight*0.06);
+				slotsY = mapStuff.y + (mapStuff.hexheight*0.20);
+			}
+
+			ProvinceMap.MapCTX.font = 'bold 22px Arial';
+			ProvinceMap.MapCTX.fillStyle = '#111111';
+			ProvinceMap.MapCTX.fillText(this.short, mapStuff.x, titleY);
+			
+			if (additionalSectorinfo.totalBuildingSlots != undefined) {
+				let slots = '◼';
+				if (additionalSectorinfo.totalBuildingSlots == 1)
+					slots = '◼';
+				else if (additionalSectorinfo.totalBuildingSlots == 2)
+					slots = '◼◼';
+				else if (additionalSectorinfo.totalBuildingSlots == 3)
+					slots = '◼◼◼';
+
+				ProvinceMap.MapCTX.fillStyle = '#111111';
+				ProvinceMap.MapCTX.font = '12px Arial';
+				ProvinceMap.MapCTX.fillText(slots, mapStuff.x, slotsY);
+			}
+		}
+
+		Province.prototype.drawImgHex = function(mapStuff) {
+			let flag_image = new Image(),
+			flag_x = this.flagPos.x * (mapStuff.hexwidth * 0.375) - 20 + mapStuff.offsetX,
+			flag_y = this.flagPos.y * (mapStuff.hexheight * 0.5) - 20 + mapStuff.offsetY;
+			let sector = this;
+
+			flag_image.src = `${MainParser.InnoCDN}assets/shared/clanflags/${this.owner.flagImg}.jpg`;
+
+			flag_image.onload = function () {
+				ProvinceMap.MapCTX.drawImage(this, flag_x, flag_y, mapStuff.hexheight/2, mapStuff.hexheight/2);
+				ProvinceMap.MapCTX.fillStyle = sector.owner.colors.highlight;
+				drawHex(mapStuff.x, mapStuff.y, mapStuff.hexwidth, mapStuff.hexheight);
 			}
 		}
 
@@ -2031,17 +1998,11 @@ let ProvinceMap = {
 			ProvinceMap.MapCTX.stroke();
 		}
 
-		Province.prototype.updateGGMap = function () {
-
-			if (GuildFights.MapData.map['id'] === "waterfall_archipelago") {
-				this.drawHexMap(GuildFights.MapData.map.provinces);
-			}
+		Province.prototype.updateGGMapSector = function () {
+			if (GuildFights.MapData.map['id'] === "waterfall_archipelago") 
+				this.drawHexMapSector(GuildFights.MapData.map.provinces);
 			else
-				this.drawGGMap();
-
-			// hier Farbe ändern
-			// this.x += this.velocity.x // Move x coordinate
-			// this.y += this.velocity.y // Move y coordinate
+				this.drawGGMapSector();
 		}
 
 		// Implementation
@@ -2076,17 +2037,14 @@ let ProvinceMap = {
 					data['ownerName'] = prov['owner'];
 					data['fillStyle'] = ProvinceMap.hexToRgb(colors['main'], '.3');
 					data['strokeStyle'] = ProvinceMap.hexToRgb(colors['main']);
-					data['alpha'] = 0.3;
 
-					if (prov['isSpawnSpot'])
-					{
+					if (prov['isSpawnSpot']) {
 						let clan = GuildFights.MapData['battlegroundParticipants'].find(c => c['participantId'] === prov['ownerId']);
 
 						data['flagImg'] = clan['clan']['flag'].toLowerCase();
 					}
 
-					if (prov['lockedUntil'])
-					{
+					if (prov['lockedUntil']) {
 						data['lockedUntil'] = prov['lockedUntil'];
 					}
 				}
@@ -2094,13 +2052,12 @@ let ProvinceMap = {
 				provinces.push(new Province(data));
 			});
 
-			ProvinceMap.MapMerged = provinces;
+			ProvinceMap.Provinces = provinces;
 		}
 
 		init();
-		// refresh();
 
-		ProvinceMap.Refresh();
+		ProvinceMap.BuildMap();
 	},
 
 
@@ -2110,34 +2067,39 @@ let ProvinceMap = {
 
 
 	/**
-	 * Rebuild the Canvas
+	 * Rebuild a Sector
 	 *
 	 * @param socketData
 	 * @constructor
 	 */
-	Refresh: (socketData = []) => {
-		ProvinceMap.MapCTX.clearRect(0, 0, ProvinceMap.Map.width, ProvinceMap.Map.height)
-
-		if(socketData.length)
-		{
-			let idx = ProvinceMap.MapMerged.findIndex(p => p.id === socketData['id']);
-
-			ProvinceMap.MapMerged[idx]['conquestProgress'] = socketData['conquestProgress'];
+	 RefreshSector: (socketData = []) => {
+		 // this is always undefined?
+		if(socketData.length) { 
+			let idx = ProvinceMap.Provinces.findIndex(p => p.id === socketData['id']);
+			ProvinceMap.Provinces[idx]['conquestProgress'] = socketData['conquestProgress'];
 		}
 
-		const provinces = ProvinceMap.MapMerged;
+		if (socketData['id'] != undefined) {
+			let updatedProvince = ProvinceMap.Provinces.find(p => p.id === socketData['id']);
+			updatedProvince.updateGGMapSector();
+		}
+	},
 
-		ProvinceMap.ToolTipActive = false;
+
+	/**
+	 * Build the Canvas
+	 *
+	 * @param socketData
+	 * @constructor
+	 */
+	BuildMap: () => {
+		ProvinceMap.MapCTX.clearRect(0, 0, ProvinceMap.Map.width, ProvinceMap.Map.height);
+
+		const provinces = ProvinceMap.Provinces;
 
 		provinces.forEach(province => {
-			province.updateGGMap();
+			province.updateGGMapSector();
 		});
-
-		if (!ProvinceMap.ToolTipActive)
-		{
-			clearInterval(ProvinceMap.ToolTipId);
-			ProvinceMap.ToolTipId = false;
-		}
 	},
 
 
