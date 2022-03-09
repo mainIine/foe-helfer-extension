@@ -62,7 +62,11 @@ FoEproxy.addHandler('IdleGameService', 'getState', (data, postData) => {
 		}
 	
 	}
-	
+
+	if (data.responseData.stage) {
+		stPatrick.stPatStage = data.responseData.stage;
+	}
+
 	stPatrick.stPatrickUpdateDialog();
 });
 
@@ -156,7 +160,8 @@ let stPatrick = {
 
 	Progress: 0,
 	ProgressDegree: 0,
-	
+	stPatStage: 0,
+
 	stPatNums: {
 		0 : "",
 		1 : "K",
@@ -450,8 +455,8 @@ let stPatrick = {
 			}
 		}
 
-		$('#stPatTown').text(`${i18n('Boxes.stPatrick.NextTown')} 8.4 Q: ${stPatrick.time(8.4,5,sum,degree,stPatrick.Progress,stPatrick.ProgressDegree)}`);
-		
+		$('#stPatTown').text(`${i18n('Boxes.stPatrick.NextTown')} 8.4 Q: ${stPatrick.time(8.4,5,sum,degree,stPatrick.Progress,stPatrick.ProgressDegree)}\n(${i18n('Boxes.stPatrick.CurrentRun')}: ${stPatrick.stPatStage})`);
+
 	},
 
 	stPatProduction: (building) => {
