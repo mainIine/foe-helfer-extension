@@ -54,6 +54,13 @@ function inject (betaDate) {
 		});
 	}
 
+	async function loadJsonResource(file) {
+		const response = await fetch(file);
+		if (response.status !== 200) {
+			throw "Error loading json file "+file;
+		}
+		return response.json();
+	}
 
 	// check whether jQuery has been loaded in the DOM
 	// => Catch jQuery Loaded event
@@ -164,42 +171,29 @@ function inject (betaDate) {
 				}
 				exportFunction(callBgApi, window, {defineAs: 'foeHelperBgApiHandler'});
 			}
+			// start loading both script-lists
+			const vendorListPromise = loadJsonResource(`${window.extUrl}js/vendor.json`);
+			const scriptListPromise = loadJsonResource(`${window.extUrl}js/internal.json`);
+
 			// load the main
 			await promisedLoadCode(`${window.extUrl}js/web/_main/js/_main.js`);
-			
-			// first wait for ant and i18n to be loaded
+
+			// wait for ant and i18n to be loaded
 			await jQueryLoading;
 
-			fetch(
-				`${window.extUrl}js/vendor.json`
-			).then(response => {
-				if (response.status === 200) {
-					response.json().then(
-						async (vendorScriptsToLoad) => {			
-							// load all vendor scripts first (unknown order)
-							await Promise.all(vendorScriptsToLoad.map(vendorScript => promisedLoadCode(`${window.extUrl}vendor/${vendorScript}.js?v=${v}`)));
-							window.dispatchEvent(new CustomEvent('foe-helper#vendors-loaded'));
-							fetch(
-									`${window.extUrl}js/internal.json`
-							).then(response => {
-								if (response.status === 200) {
-									response.json().then(
-										async (internalScriptsToLoad) => {
-											for (let i = 0; i < internalScriptsToLoad.length; i++){
-												// load scripts (one after the other)
-												await promisedLoadCode(`${window.extUrl}js/web/${internalScriptsToLoad[i]}/js/${internalScriptsToLoad[i]}.js?v=${v}`);
-											}
-											window.dispatchEvent(new CustomEvent('foe-helper#loaded'));
-											localStorage.setItem('LoadBeta', window.loadBeta);
-										}
-									);
-								}
-							})
-						}
-					);
-				}
-			});
-			
+			// load all vendor scripts first (unknown order)
+			const vendorScriptsToLoad = await vendorListPromise;
+			await Promise.all(vendorScriptsToLoad.map(vendorScript => promisedLoadCode(`${window.extUrl}vendor/${vendorScript}.js?v=${v}`)));
+			window.dispatchEvent(new CustomEvent('foe-helper#vendors-loaded'));
+
+			// load scripts (one after the other)
+			const internalScriptsToLoad = await scriptListPromise;
+			for (let i = 0; i < internalScriptsToLoad.length; i++){
+				await promisedLoadCode(`${window.extUrl}js/web/${internalScriptsToLoad[i]}/js/${internalScriptsToLoad[i]}.js?v=${v}`);
+			}
+			window.dispatchEvent(new CustomEvent('foe-helper#loaded'));
+
+			localStorage.setItem('LoadBeta', window.loadBeta);
 		} catch (err) {
 			// make sure that the packet buffer in the FoEproxy does not fill up in the event of an incomplete loading.
 			window.dispatchEvent(new CustomEvent('foe-helper#error-loading'));
