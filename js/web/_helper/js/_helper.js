@@ -517,8 +517,8 @@ let HTML = {
 				sw: '.window-grippy',
 				nw: '.window-grippy'
 			},
-			minHeight: 200,
-			minWidth: 250,
+			minHeight: 100,
+			minWidth: 220,
 			stop: (e, $el) => {
 				let size = $el.element.width() + '|' + $el.element.height();
 
