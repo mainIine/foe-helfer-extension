@@ -122,6 +122,10 @@ FoEproxy.addHandler('ResourceService', 'getPlayerResources', (data, postData) =>
     }
 
     if(AztecsHelper.MovesLeft == 0 && $('#aztecsHelper').length > 0){
+        if (!$('#minigame_aztecs-Btn').hasClass('hud-btn-red')) {
+            $('#minigame_aztecs-Btn').addClass('hud-btn-red');
+            _menu.toolTipp($('#minigame_aztecs-Btn'),"Aztec Helper", '<em id="minigame_aztecs-Btn-closed" class="tooltip-error">Opens automatically when starting a aztec mini game<br></em>Aztec Minigame Helper - BETA -');
+        }
         HTML.CloseOpenBox('aztecsHelper');
     }
 });
