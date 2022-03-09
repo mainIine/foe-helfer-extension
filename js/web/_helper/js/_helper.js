@@ -159,10 +159,8 @@ let HTML = {
 
 		let title = $('<span />').addClass('title').html(args['title']);
 		
-		if (loadBeta === undefined) var loadBeta2 = (extVersion.indexOf("beta") > -1) //can be removed in Versions after 2.8.0.0
-
 		if (args['onlyTitle'] !== true) {
-			title = $('<span />').addClass('title').html((loadBeta || loadBeta2 ? '(Beta) ': '') + args['title'] + ' <small><em> - FoE Helper</em></small>');
+			title = $('<span />').addClass('title').html((extVersion.indexOf("beta") > -1 ? '(Beta) ': '') + args['title'] + ' <small><em> - FoE Helper</em></small>');
 		}
 
 		let close = $('<span />').attr('id', args['id'] + 'close').addClass('window-close'),

@@ -2122,6 +2122,6 @@ if (window.foeHelperBgApiHandler !== undefined && window.foeHelperBgApiHandler i
 	MainParser.foeHelperBgApiHandler = window.foeHelperBgApiHandler;
 	delete window.foeHelperBgApiHandler;
 }
-if (loadBeta === undefined) var loadBeta2 = (extVersion.indexOf("beta") > -1) //can be removed in Versions after 2.8.0.0
-console.log('FOE Helper version ' + extVersion + ' started' + (loadBeta || loadBeta2 ? ' in Beta Mode': '') + '. ID: ' + extID);
+
+console.log('FOE Helper version ' + extVersion + ' started' + (extVersion.indexOf("beta") > -1 ? ' in Beta Mode': '') + '. ID: ' + extID);
 console.log(navigator.userAgent);
