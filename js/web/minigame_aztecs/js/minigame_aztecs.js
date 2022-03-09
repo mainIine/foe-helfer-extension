@@ -86,7 +86,30 @@ FoEproxy.addHandler('CollectingMinigameService', 'submitMove', (data, postData) 
     AztecsHelper.CalcAdjacentCells();
 });
 
+FoEproxy.addHandler('ResourceShopService', 'buyResources', (data, postData) => {
+    if(postData[0].requestData.filter(x => x.mainType === "cultural_outpost" && x.subType === "collecting_minigame_buy_turns")){
+        if(postData[0].requestData.filter(x => x["resources"] !== undefined)[0].resources.aztecs_collecting_minigame_turns > 0){
+            AztecsHelper.boughtSomething = true;
+        }else{
+            AztecsHelper.boughtSomething = false;
+        }
+    }else{
+        AztecsHelper.boughtSomething = false;
+    }
+});
+
 FoEproxy.addHandler('ResourceService', 'getPlayerResources', (data, postData) => {
+
+    if(postData[0].requestData.filter(x => x.mainType === "cultural_outpost" && x.subType === "collecting_minigame_buy_turns").length > 0){
+        if(postData[0].requestData.filter(x => x["resources"] !== undefined)[0].resources.aztecs_collecting_minigame_turns > 0){
+            AztecsHelper.boughtSomething = true;
+        }else{
+            AztecsHelper.boughtSomething = false;
+        }
+    }else{
+        AztecsHelper.boughtSomething = false;
+    }
+
     const r = data.responseData;
     if (!r.resources) {
         return;
@@ -99,18 +122,12 @@ FoEproxy.addHandler('ResourceService', 'getPlayerResources', (data, postData) =>
     }
 
     if(AztecsHelper.MovesLeft == 0 && $('#aztecsHelper').length > 0){
+        if (!$('#minigame_aztecs-Btn').hasClass('hud-btn-red')) {
+            $('#minigame_aztecs-Btn').addClass('hud-btn-red');
+            _menu.toolTipp($('#minigame_aztecs-Btn'),"Aztec Helper", '<em id="minigame_aztecs-Btn-closed" class="tooltip-error">Opens automatically when starting a aztec mini game<br></em>Aztec Minigame Helper - BETA -');
+        }
         HTML.CloseOpenBox('aztecsHelper');
     }
-});
-
-FoEproxy.addHandler('ResourceShopService', 'buyResources', (data, postData) => {
-    const r = data.responseData;
-    if (r["__class__"] !== "Success") {
-        return;
-    }
-
-    AztecsHelper.boughtSomething = true;
-
 });
 
 
@@ -172,10 +189,9 @@ let AztecsHelper = {
         if(AztecsHelper.MovesLeft > 0){
             AztecsHelper.grid.forEach((rowData) => {
                 var row = document.createElement('tr');
-
                 rowData.forEach((cellData) => {
                     var cell = document.createElement('td');
-                    cell.appendChild(document.createTextNode(cellData.content));
+                    if(typeof cellData.content !== "number") cell.appendChild(document.createTextNode(cellData.content));
                     if(cellData.prob >= 0.0 && cellData.prob < 0.4){
                         cell.className = " aztec color-red";
                     }  
@@ -199,7 +215,6 @@ let AztecsHelper = {
                     }
                     row.appendChild(cell);
                 });
-
                 tableBody.appendChild(row);
             });
             table.className = "aztecTable"
