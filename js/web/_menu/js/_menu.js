@@ -259,6 +259,10 @@ let _menu = {
 		}
 		
 		localStorage.setItem('MenuHiddenItems', JSON.stringify(_menu.HiddenItems));
+
+		// refresh the Menü after setting-toggle
+		$('#foe-helper-hud, #menu_box').remove();
+		_menu.CallSelectedMenu(MainParser.SelectedMenu);
 	},
 
 
