@@ -187,7 +187,7 @@ let Stats = {
 			Stats.ResMap[EraName] = [];
 
 			for (let i = 0; i < 5; i++) {
-				Stats.ResMap[EraName].push(GoodsList[(Era - 2) * 5 + i].id);
+				if (GoodsList[(Era - 2) * 5 + i]) Stats.ResMap[EraName].push(GoodsList[(Era - 2) * 5 + i].id);
             }
 		}
     },
