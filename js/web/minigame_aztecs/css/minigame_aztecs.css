@@ -11,11 +11,12 @@
  * **************************************************************************************
  */
 
- #aztecsHelper {
+#aztecsHelper {
 	width: 660px;
-    height: 529px;
-    top: calc(23vh + 8px);
-    left: calc(32vw + 16px);
+    height: 530px;
+    top: calc(50% - -17px);
+    left: 50%;
+    transform: translate(-50%, -50%);
     pointer-events: none;
     background-image: none;
 }
