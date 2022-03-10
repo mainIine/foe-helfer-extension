@@ -63,7 +63,7 @@ td[title="incident_rhino"], td[title="incident_castaway"], td[title="incident_fi
     box-shadow: inset 1px -1px 0px 0px #3D250F, inset 0px 0px 20px 5px rgb(23 47 44 / 0.6), inset 0px 0px 0px 20px rgb(45 173 161 / 0.6), inset 0px 0px 0px 1px rgb(45 173 161 / 0.6);
 }
 
-td[title="incident_outpost_01"], td[title="incident_outpost_02"], td[title="incident_outpost_03"] {
+td[title="Shard_01"], td[title="Shard_02"], td[title="Shard_03"] {
     box-shadow: inset 1px -1px 0px 0px #3D250F, inset 0px 0px 20px 5px rgb(110 10 55 / 0.6), inset 0px 0px 0px 20px rgb(237 43 131 / 0.6), inset 0px 0px 0px 1px rgb(237 43 131 / 0.6);
 }
 
