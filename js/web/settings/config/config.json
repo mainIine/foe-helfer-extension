@@ -111,7 +111,13 @@
 		"name": "HideHelperDuringBattle",
 		"status": false,
 		"group": "Boxes",
-		"sort": 15
+		"sort": 16
+	},
+	{
+		"name": "ShowAztecHelper",
+		"status": false,
+		"group": "Boxes",
+		"sort": 17
 	},
 	{
 		"name": "ChangeLanguage",
