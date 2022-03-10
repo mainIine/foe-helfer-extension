@@ -22,8 +22,10 @@ FoEproxy.addHandler('CollectingMinigameService', 'start', (data, postData) => {
         $('#minigame_aztecs-Btn').removeClass('hud-btn-red');
         $('#minigame_aztecs-Btn-closed').remove();
     }
-
-    AztecsHelper.Show();
+    if (Settings.GetSetting('ShowAztecHelper')){
+        AztecsHelper.Show();
+        AztecsHelper.CalcBody();
+    }
     AztecsHelper.mapHeight = r.height;
     AztecsHelper.mapWidth = r.width;
     AztecsHelper.boughtSomething = false;
@@ -37,7 +39,6 @@ FoEproxy.addHandler('CollectingMinigameService', 'start', (data, postData) => {
     AztecsHelper.grid = arr;
     if (r.reward.resources === undefined || Object.values(r.reward.resources) <= 0) return;
     AztecsHelper.ResourcesLeft = Object.values(r.reward.resources)[0];
-    AztecsHelper.CalcBody();
 });
 
 FoEproxy.addHandler('CollectingMinigameService', 'submitMove', (data, postData) => {
@@ -59,7 +60,9 @@ FoEproxy.addHandler('CollectingMinigameService', 'submitMove', (data, postData) 
                     $('#minigame_aztecs-Btn').addClass('hud-btn-red');
                     _menu.toolTipp($('#minigame_aztecs-Btn'),"Aztec Helper", '<em id="minigame_aztecs-Btn-closed" class="tooltip-error">Opens automatically when starting a aztec mini game<br></em>Aztec Minigame Helper -BETA-');
                 }
-                HTML.CloseOpenBox('aztecsHelper');
+                if ($('#aztecsHelper').length === 1){
+                    HTML.CloseOpenBox('aztecsHelper');
+                }
             }
         }
         else if (r[0]["__class__"] === "CollectingMinigameEmptyTile") {
@@ -90,8 +93,10 @@ FoEproxy.addHandler('CollectingMinigameService', 'submitMove', (data, postData) 
         }
 
     }
-    AztecsHelper.CalcBody();
-    AztecsHelper.CalcAdjacentCells();
+    if ($('#aztecsHelper').length === 1){
+        AztecsHelper.CalcBody();
+        AztecsHelper.CalcAdjacentCells();
+    }
 });
 
 FoEproxy.addHandler('ResourceShopService', 'buyResources', (data, postData) => {
@@ -126,7 +131,9 @@ FoEproxy.addHandler('ResourceService', 'getPlayerResources', (data, postData) =>
 
     if(AztecsHelper.boughtSomething && AztecsHelper.MovesLeft > 0){
         AztecsHelper.boughtSomething = false;
-        AztecsHelper.Show();
+        if (Settings.GetSetting('ShowAztecHelper')){
+            AztecsHelper.Show();
+        }
     }
 
     if(AztecsHelper.MovesLeft == 0 && $('#aztecsHelper').length > 0){
