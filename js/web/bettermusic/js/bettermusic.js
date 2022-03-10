@@ -47,7 +47,6 @@ FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, post
         if (!betterMusic.playStatus) betterMusic.pause();
         
         betterMusic.buildlists();
-        betterMusic.initialize(10000);
         first = true;
 
         
@@ -127,8 +126,26 @@ FoEproxy.addHandler('FriendsTavernService', 'getConfig', (data, postData) => {
     
 });
 
+$('#game_body').click(function () {
+    if (!betterMusic.first || $('#betterMusic1').length === 0) return;
+    betterMusic.first = false;
+    betterMusic.TrackSelector();
+})
+$('#game_body').contextmenu(function () {
+    if (!betterMusic.first || $('#betterMusic1').length === 0) return;
+    betterMusic.first = false;
+    betterMusic.TrackSelector();
+})
+$('#game_body').keydown(function () {
+    if (!betterMusic.first || $('#betterMusic1').length === 0) return;
+    betterMusic.first = false;
+    betterMusic.TrackSelector();
+})
+
+
 let betterMusic = {
 
+    first: true,
     NextEvent: null,
     Ids: [],
     currentId: "",
@@ -468,11 +485,6 @@ let betterMusic = {
         betterMusic.buildlists();
     },
     
-    initialize: (value=10000) => {
-        //clearTimeout(betterMusic.nextEvent);
-        betterMusic.nextEvent = setTimeout(function() {betterMusic.TrackSelector()}, value);
-    },
-
     update (obj/*, …*/) {
         for (var i=1; i<arguments.length; i++) {
             for (var prop in arguments[i]) {
