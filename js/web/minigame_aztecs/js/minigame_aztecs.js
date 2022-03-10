@@ -53,6 +53,7 @@ FoEproxy.addHandler('CollectingMinigameService', 'submitMove', (data, postData) 
             if (AztecsHelper.ResourcesLeft > 0) AztecsHelper.ResourcesLeft -= 1;
             AztecsHelper.firstMoveDone = true;
             AztecsHelper.grid[r[0].y][r[0].x].content = AztecsHelper.resourceCell;
+            AztecsHelper.possibleRessources = AztecsHelper.possibleRessources.filter(res => res.x !== r[0].x && res.y !== r[0].y);
             if(AztecsHelper.ResourcesLeft == 0){
                 if (!$('#minigame_aztecs-Btn').hasClass('hud-btn-red')) {
                     $('#minigame_aztecs-Btn').addClass('hud-btn-red');
@@ -162,7 +163,7 @@ let AztecsHelper = {
             // Box in den DOM
             HTML.Box({
                 'id': 'aztecsHelper',
-                'title': i18n('Box.AztecMiniGame.Title'),
+                'title': i18n('Boxes.AztecMiniGame.Title'),
                 'auto_close': true,
                 'minimize': true,
                 'dragdrop': false
@@ -198,16 +199,8 @@ let AztecsHelper = {
                 var row = document.createElement('tr');
                 rowData.forEach((cellData, y) => {
                     var cell = document.createElement('td');
-                    if(AztecsHelper.possibleRessources.length > 0){
-                        if(AztecsHelper.possibleRessources.filter(x=>x["x"] === x && x["y"] === y).length > 0){
-                            let index = AztecsHelper.possibleRessources.findIndex(data => data["x"] === x && data["y"] === y && data["prob"] === cellData.prob);
-                            cellData["text"] = index + 1;  
-                        }
-                    }
-                    if(typeof cellData.content !== "number" && cellData.content !== AztecsHelper.emptyCell && cellData.prob <= 0) 
+                    if(typeof cellData.content !== "number" && cellData.content !== AztecsHelper.emptyCell) 
                         cell.appendChild(document.createTextNode(cellData.content));
-                    else if(cellData.prob > 0 && typeof cellData.content !== "number" && cellData.content !== AztecsHelper.emptyCell)
-                        cell.appendChild(document.createTextNode(cellData["text"]));
                     if(cellData.prob >= 0.0 && cellData.prob < 0.4){
                         cell.className = " aztec color-red";
                     }  
@@ -235,7 +228,15 @@ let AztecsHelper = {
             });
             table.className = "aztecTable"
             table.appendChild(tableBody);
-            $('#aztecsHelperBody').append(table);    
+            $('#aztecsHelperBody').append(table);
+            var divDes = document.createElement('div');
+            var span = document.createElement('span');
+            span.appendChild(document.createTextNode(i18n('Boxes.AztecMiniGame.Description')));
+            span.className = "aztecDescription";
+            divDes.className = "aztecDescriptionWrapper";
+            divDes.appendChild(span);
+            $('#aztecsHelperBody').append(table);
+            $('#aztecsHelperBody').append(divDes);
         }else{
             $('#aztecsHelper').length > 0 && HTML.CloseOpenBox('aztecsHelper');
         }
@@ -292,7 +293,10 @@ let AztecsHelper = {
         }
         
         AztecsHelper.possibleRessources = AztecsHelper.possibleRessources.sort((a, b) => b.prob - a.prob);
-        if(AztecsHelper.possibleRessources[0].prob < AztecsHelper.possibleRessources[1].prob) AztecsHelper.possibleRessources = AztecsHelper.possibleRessources.sort((a, b) => a.prob - b.prob);
+        if(AztecsHelper.possibleRessources.length > 1){
+            if(AztecsHelper.possibleRessources[0].prob < AztecsHelper.possibleRessources[1].prob) 
+                AztecsHelper.possibleRessources = AztecsHelper.possibleRessources.sort((a, b) => a.prob - b.prob);
+        }
         AztecsHelper.CalcBody();
     },
     /**
