@@ -11,27 +11,30 @@
  * **************************************************************************************
  */
 
-#menu_box {
+#menu_box.window-box {
     top: 30%;
     right: 15%;
     width: 120px;
     height: 60px;
-    min-width: 95px !important;
-	min-height: 50px !important;
-}
-
-#menu_box.closed {
-	border-image-source: url('../images/hud/window-menu-closed.png');
-	min-height: 0 !important;
+	border-width: 2px;
 }
 
 #menu_boxHeader {
-	background: linear-gradient(#33435e, #243048);
-    box-shadow: inset 0 1px 1px #242235, inset 0 2px 0 #737793;
+	background: linear-gradient(#384354, #293344);
+    box-shadow: inset 0 1px 1px #384354, inset 0 2px 0 #575d69;
+	padding: 0.2rem;
 }
 
 #menu_box.closed #menu_boxHeader {
 	top: -33px;
+}
+
+#menu_box.closed.window-box {
+    height: 28px !important;
+}
+
+#menu_boxHeader .window-minimize {
+	margin-right: 0;
 }
 
 #menu_box .window-head span.title {
@@ -47,11 +50,8 @@
 
 #menu_box #menu_boxBody {
 	overflow: auto;
-	padding: 2px
-}
-
-.hud-btn {
-	background: url('../images/hud/menu-sm.png') top left no-repeat;
+	padding: 2px;
+	height: calc(100% - 42px);
 }
 
 .hud-btn {	

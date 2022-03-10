@@ -57,6 +57,7 @@ let _menu = {
 		'castle',
 		'music',
 		'musicControl',
+		'minigame_aztecs'
 		// 'marketOffers',
 		// 'discord'
 	],
@@ -258,6 +259,13 @@ let _menu = {
 		}
 		
 		localStorage.setItem('MenuHiddenItems', JSON.stringify(_menu.HiddenItems));
+
+		// refresh the Menü after setting-toggle
+		setTimeout(()=> {
+			$('#foe-helper-hud, #menu_box').remove();
+			_menu.CallSelectedMenu(MainParser.SelectedMenu);
+		}, 100);
+
 	},
 
 
@@ -395,6 +403,24 @@ let _menu = {
 
 		return pB.append(btnSpan);
 	},
+
+	/**
+	 * Azteken Minigame
+	 *
+	 * @returns {*|jQuery}
+	 */
+	 minigame_aztecs_Btn: () => {
+		let btn_Aztek = _menu.MakeButton('minigame_aztecs', i18n('Menu.AztecMiniGame.Title'), i18n('Menu.AztecMiniGame.Desc'), true);
+
+		let btn_Azte = $('<span />').on('click', function () {
+			if ($('#minigame_aztecs-Btn').hasClass('hud-btn-red') === false) {
+				AztecsHelper.Show();
+			}
+		});
+
+		return btn_Aztek.append(btn_Azte);
+	},
+
 
 	/**
 	 * Outpost Button

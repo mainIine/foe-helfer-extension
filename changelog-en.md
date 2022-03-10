@@ -1,30 +1,52 @@
 ## Changelog - Extension
 
-##### 2.7.0.1
+##### 2.9.0.0
+**New**
+- Aztecs Minigame Helper
+	- ...
+
+**Update**
+- New Era - Space Age Jupiter Moon:
+	- added new resources to the extension
+
+- Beta-Mode:
+	- improved loading procedure
+	- boxes will now show in the title that the extension is running in Beta-Mode
+
+- Guild Battles:
+	- new, comprehensive map layout
+
+**BugFix**
+
+---
+
+##### 2.8.0.0
 
 **New**
 - Beta-Mode:
-	- you may now select in the settings if you want to load the freshest helper from Github instead of running the installed version 
-	- If you use it: please be aware of higher bug ratio and please report any odd behavior you find on the discord or in Github
+	- in the settings you can now choose to use the current beta version of Github instead of the installed one.
+	- When using this mode, there may be more bugs - please report bugs on [Discord](https://discord.gg/z97KZq4) or on [Github](https://github.com/mainIine/foe-helfer-extension/issues)!
 
 **Update**
-- St.Patricks Box:
-	- the target level for the building upgrade costs may now be selected manually
-	- a time estimate is now given for collection tasks
-- Guild Battle Grounds:
-	- added waterfall map
-	- added unlock times to the map
+- St. Patrick's Box:
+	- the target level for the upgrade costs can now be determined by yourself
+	- A time estimate is now given for collection tasks
 
-- Boxes and Menu:
-	- updated design
+- Guild Battles:
+	- Waterfall map added
+	- Unlock times of sectors are now shown on the map
+
+- Boxes and menu:
+	- updated design, less graphics more pure CSS
 
 **BugFix**
--  St.Patricks Box:
-    - [#2341] reset of building stats was not correct after town 
-	- calculation of time estimate for "next twon 8.4Q" was slightly incorrect 
+- St.Patrick's Box:
+	- [#2341](https://github.com/mainIine/foe-helfer-extension/issues/2341) [#2348](https://github.com/mainIine/foe-helfer-extension/issues/2348) there was no reset of buildings when starting the next city
+	- calculation of time to reach 8.4Q for the next city was not correct
 
-- Hidden incidents:
-	- [#2340] the incident count is now hidden again when "0"
+
+- Events:
+	- [#2340](https://github.com/mainIine/foe-helfer-extension/issues/2340) the "zero" is now hidden again when there are no events
 
 
 ---

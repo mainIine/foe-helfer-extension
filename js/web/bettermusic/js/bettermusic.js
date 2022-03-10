@@ -22,7 +22,7 @@ FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, post
         newSound.volume = 0;
         newSound.loop = true;
         newSound.onloadedmetadata = function () {betterMusic.setEvent(id="betterMusic1")}
-        $('#musicControl-Btn').append(newSound);
+        $('#game_body').append(newSound);
         betterMusic.Ids.push(newSound.id);
         
         let newSound2 = document.createElement("audio");
@@ -30,7 +30,7 @@ FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, post
         newSound2.volume = 0;
         newSound2.loop = true;
         newSound2.onloadedmetadata = function () {betterMusic.setEvent(id="betterMusic2")}
-        $('#musicControl-Btn').append(newSound2);
+        $('#game_body').append(newSound2);
         betterMusic.Ids.push(newSound2.id);
         
         let newSound3 = document.createElement("audio");
@@ -38,7 +38,7 @@ FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, post
         newSound3.volume = 0;
         newSound3.loop = true;
         newSound3.onloadedmetadata = function () {betterMusic.setEvent(id="betterMusic3")}
-        $('#musicControl-Btn').append(newSound3);
+        $('#game_body').append(newSound3);
         betterMusic.Ids.push(newSound3.id);
         
         betterMusic.loadSettings();
@@ -47,7 +47,6 @@ FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, post
         if (!betterMusic.playStatus) betterMusic.pause();
         
         betterMusic.buildlists();
-        betterMusic.initialize(10000);
         first = true;
 
         
@@ -127,8 +126,26 @@ FoEproxy.addHandler('FriendsTavernService', 'getConfig', (data, postData) => {
     
 });
 
+$('#game_body').click(function () {
+    if (!betterMusic.first || $('#betterMusic1').length === 0) return;
+    betterMusic.first = false;
+    betterMusic.TrackSelector();
+})
+$('#game_body').contextmenu(function () {
+    if (!betterMusic.first || $('#betterMusic1').length === 0) return;
+    betterMusic.first = false;
+    betterMusic.TrackSelector();
+})
+$('#game_body').keydown(function () {
+    if (!betterMusic.first || $('#betterMusic1').length === 0) return;
+    betterMusic.first = false;
+    betterMusic.TrackSelector();
+})
+
+
 let betterMusic = {
 
+    first: true,
     NextEvent: null,
     Ids: [],
     currentId: "",
@@ -313,7 +330,7 @@ let betterMusic = {
     
             HTML.Box({
                 id: 'betterMusicDialog',
-                title: i18n("Boxes.BetterMusic.General"),
+                title: i18n("Boxes.BetterMusic.Title"),
                 auto_close: true,
                 dragdrop: true,
                 minimize: true,
@@ -373,9 +390,13 @@ let betterMusic = {
                     $SoundN.animate({volume: 1*betterMusic.PossibleTracks[newTrack].Volume*betterMusic.Settings.Volume}, transition);
                 })
                 .catch(error => {
-                    betterMusic.PossibleTracks[newTrack].banned = true;
-                    console.log(`↑ ↑ ↑ ↑ ${newTrack} banned from playlist ↑ ↑ ↑ ↑ ↑`);
-                    betterMusic.buildlist(betterMusic.currentScene);
+                    if (error.toString() == "NotSupportedError: Failed to load because no supported source was found.") {
+                        console.log(`↑ ↑ ↑ ↑ ${newTrack} banned from playlist ↑ ↑ ↑ ↑ ↑`);
+                        if (betterMusic.PossibleTracks[newTrack]) {
+                            betterMusic.PossibleTracks[newTrack].banned = true;
+                            betterMusic.buildlist(betterMusic.currentScene);
+                        }
+                    }
                     betterMusic.TrackSelector();
                 });
             }
@@ -464,11 +485,6 @@ let betterMusic = {
         betterMusic.buildlists();
     },
     
-    initialize: (value=10000) => {
-        //clearTimeout(betterMusic.nextEvent);
-        betterMusic.nextEvent = setTimeout(function() {betterMusic.TrackSelector()}, value);
-    },
-
     update (obj/*, …*/) {
         for (var i=1; i<arguments.length; i++) {
             for (var prop in arguments[i]) {
