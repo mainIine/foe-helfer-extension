@@ -53,6 +53,13 @@ FoEproxy.addHandler('CollectingMinigameService', 'submitMove', (data, postData) 
             if (AztecsHelper.ResourcesLeft > 0) AztecsHelper.ResourcesLeft -= 1;
             AztecsHelper.firstMoveDone = true;
             AztecsHelper.grid[r[0].y][r[0].x].content = AztecsHelper.resourceCell;
+            if(AztecsHelper.ResourcesLeft == 0){
+                if (!$('#minigame_aztecs-Btn').hasClass('hud-btn-red')) {
+                    $('#minigame_aztecs-Btn').addClass('hud-btn-red');
+                    _menu.toolTipp($('#minigame_aztecs-Btn'),"Aztec Helper", '<em id="minigame_aztecs-Btn-closed" class="tooltip-error">Opens automatically when starting a aztec mini game<br></em>Aztec Minigame Helper -BETA-');
+                }
+                HTML.CloseOpenBox('aztecsHelper');
+            }
         }
         else if (r[0]["__class__"] === "CollectingMinigameEmptyTile") {
             r[0]["x"] = r[0]["x"] || 0;
@@ -124,7 +131,7 @@ FoEproxy.addHandler('ResourceService', 'getPlayerResources', (data, postData) =>
     if(AztecsHelper.MovesLeft == 0 && $('#aztecsHelper').length > 0){
         if (!$('#minigame_aztecs-Btn').hasClass('hud-btn-red')) {
             $('#minigame_aztecs-Btn').addClass('hud-btn-red');
-            _menu.toolTipp($('#minigame_aztecs-Btn'),"Aztec Helper", '<em id="minigame_aztecs-Btn-closed" class="tooltip-error">Opens automatically when starting a aztec mini game<br></em>Aztec Minigame Helper - BETA -');
+            _menu.toolTipp($('#minigame_aztecs-Btn'),"Aztec Helper", '<em id="minigame_aztecs-Btn-closed" class="tooltip-error">Opens automatically when starting a aztec mini game<br></em>Aztec Minigame Helper -BETA-');
         }
         HTML.CloseOpenBox('aztecsHelper');
     }
@@ -182,7 +189,7 @@ let AztecsHelper = {
             }
         }
     },
-    CalcBody: function () {
+    CalcBody: () => {
         $('#aztecsHelperBody').empty();
         var table = document.createElement('table');
         var tableBody = document.createElement('tbody');
@@ -234,7 +241,6 @@ let AztecsHelper = {
         if(AztecsHelper.MovesLeft <= 0) return $('#aztecsHelper').length > 0 && HTML.CloseOpenBox('aztecsHelper');
         var map = AztecsHelper.grid;
         var rC = AztecsHelper.resourceCell;
-        var eC = AztecsHelper.emptyCell;
         var uC = AztecsHelper.unknownCell;
 
         //reset prob attribute
