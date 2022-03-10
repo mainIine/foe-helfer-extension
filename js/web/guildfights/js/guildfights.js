@@ -1806,10 +1806,23 @@ let ProvinceMap = {
 				id: data.ownerID,
 				name: data.ownerName,
 				flagImg: data.flagImg,
-				colors: GuildFights.SortedColors.find(c => (c.id === data.ownerID))
+				colors: findSectorColors(data.ownerID),
 			};
 			this.lockedUntil = data.lockedUntil;
 			this.progress = [];
+		}
+
+		findSectorColors = function(ownerID) {
+			let colors = {};
+			if (ownerID != undefined)
+				colors = GuildFights.SortedColors.find(c => (c.id === ownerID))
+			else
+				colors = {
+					main: '#444',
+					highlight: '#555',
+					shadow: '#333'
+				}
+			return colors;
 		}
 
 		Province.prototype.drawGGMapSector = function () {
@@ -1885,7 +1898,6 @@ let ProvinceMap = {
 		}
 
 		Province.prototype.drawHexMapSector = function (mapdata = []) {
-
 			console.log('update', this);
 
 			let id = this['id'] || 0;
@@ -2031,8 +2043,7 @@ let ProvinceMap = {
 
 				if (prov['ownerId'] || pD.flagPos)
 				{
-					const colors = GuildFights.SortedColors.find(c => (c['id'] === prov['ownerId']));
-
+					const colors = findSectorColors(prov['ownerId']);
 					data['ownerID'] = prov['ownerId'];
 					data['ownerName'] = prov['owner'];
 					data['fillStyle'] = ProvinceMap.hexToRgb(colors['main'], '.3');
