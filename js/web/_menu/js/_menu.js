@@ -57,6 +57,7 @@ let _menu = {
 		'castle',
 		'music',
 		'musicControl',
+		'minigame_aztecs'
 		// 'marketOffers',
 		// 'discord'
 	],
@@ -395,6 +396,33 @@ let _menu = {
 
 		return pB.append(btnSpan);
 	},
+
+	/**
+	 * Azteken Minigame
+	 *
+	 * @returns {*|jQuery}
+	 */
+	 minigame_aztecs_Btn: () => {
+
+		let btn_Aztek = $('<div />').attr({ 'id': 'minigame_aztecs-Btn', 'data-slug': 'aztecs' }).addClass('hud-btn hud-btn-red');
+
+		// Tooltip einbinden
+		btn_Aztek = _menu.toolTipp(btn_Aztek, i18n('Menu.AztecMiniGame.Title'), i18n('Menu.AztecMiniGame.Desc'));
+
+		let btn_Azte = $('<span />');
+
+		btn_Azte.on('click', function () {
+			if ($('#minigame_aztecs-Btn').hasClass('hud-btn-red') === false) {
+				AztecsHelper.Show();
+			}
+		});
+
+		btn_Aztek.append(btn_Azte);
+
+
+		return btn_Aztek;
+	},
+
 
 	/**
 	 * Outpost Button
