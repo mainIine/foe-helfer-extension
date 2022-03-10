@@ -407,7 +407,7 @@ let _menu = {
 		let btn_Aztek = $('<div />').attr({ 'id': 'minigame_aztecs-Btn', 'data-slug': 'aztecs' }).addClass('hud-btn hud-btn-red');
 
 		// Tooltip einbinden
-		btn_Aztek = _menu.toolTipp(btn_Aztek, "Aztec Helper", '<em id="minigame_aztecs-Btn-closed" class="tooltip-error">Opens automatically when starting a aztec mini game<br></em>Aztec Minigame Helper - BETA -');
+		btn_Aztek = _menu.toolTipp(btn_Aztek, i18n('Menu.AztecMiniGame.Title'), i18n('Menu.AztecMiniGame.Desc'));
 
 		let btn_Azte = $('<span />');
 

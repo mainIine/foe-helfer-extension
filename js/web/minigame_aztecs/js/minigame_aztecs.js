@@ -162,7 +162,7 @@ let AztecsHelper = {
             // Box in den DOM
             HTML.Box({
                 'id': 'aztecsHelper',
-                'title': "Azteken Helfer",
+                'title': i18n('Box.AztecMiniGame.Title'),
                 'auto_close': true,
                 'minimize': true,
                 'dragdrop': false
@@ -194,11 +194,20 @@ let AztecsHelper = {
         var table = document.createElement('table');
         var tableBody = document.createElement('tbody');
         if(AztecsHelper.MovesLeft > 0){
-            AztecsHelper.grid.forEach((rowData) => {
+            AztecsHelper.grid.forEach((rowData, x) => {
                 var row = document.createElement('tr');
-                rowData.forEach((cellData) => {
+                rowData.forEach((cellData, y) => {
                     var cell = document.createElement('td');
-                    if(typeof cellData.content !== "number") cell.appendChild(document.createTextNode(cellData.content));
+                    if(AztecsHelper.possibleRessources.length > 0){
+                        if(AztecsHelper.possibleRessources.filter(x=>x["x"] === x && x["y"] === y).length > 0){
+                            let index = AztecsHelper.possibleRessources.findIndex(data => data["x"] === x && data["y"] === y && data["prob"] === cellData.prob);
+                            cellData["text"] = index + 1;  
+                        }
+                    }
+                    if(typeof cellData.content !== "number" && cellData.content !== AztecsHelper.emptyCell && cellData.prob <= 0) 
+                        cell.appendChild(document.createTextNode(cellData.content));
+                    else if(cellData.prob > 0 && typeof cellData.content !== "number" && cellData.content !== AztecsHelper.emptyCell)
+                        cell.appendChild(document.createTextNode(cellData["text"]));
                     if(cellData.prob >= 0.0 && cellData.prob < 0.4){
                         cell.className = " aztec color-red";
                     }  
@@ -273,17 +282,17 @@ let AztecsHelper = {
                                 map[surrCell.y][surrCell.x].prob += local_prob;
                                 //Füge eine Referenz des aktuellen Feldes zum Feld der Unbekannten 
                                 map[surrCell.y][surrCell.x].adjacent.push(cell);
-                                if(AztecsHelper.possibleRessources.filter(pR=>pR.x === surrCell.x && pR.y === surrCell.y).length <= 0){
-                                    AztecsHelper.possibleRessources = AztecsHelper.possibleRessources.filter(pR=>pR.x !== surrCell.x && pR.y !== surrCell.y)
-                                    AztecsHelper.possibleRessources.push({"x":surrCell.x,"y":surrCell.y,"prob":map[surrCell.y][surrCell.x].prob});
-                                }
+                                AztecsHelper.possibleRessources = AztecsHelper.possibleRessources.filter(pR=>pR.x !== surrCell.x && pR.y !== surrCell.y)
+                                AztecsHelper.possibleRessources.push({"x":surrCell.x,"y":surrCell.y,"prob":map[surrCell.y][surrCell.x].prob});
                             }
                         }
                     }
                 }
             }
         }
+        
         AztecsHelper.possibleRessources = AztecsHelper.possibleRessources.sort((a, b) => b.prob - a.prob);
+        if(AztecsHelper.possibleRessources[0].prob < AztecsHelper.possibleRessources[1].prob) AztecsHelper.possibleRessources = AztecsHelper.possibleRessources.sort((a, b) => a.prob - b.prob);
         AztecsHelper.CalcBody();
     },
     /**
