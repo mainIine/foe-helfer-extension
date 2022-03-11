@@ -22,10 +22,6 @@ FoEproxy.addHandler('CollectingMinigameService', 'start', (data, postData) => {
         $('#minigame_aztecs-Btn').removeClass('hud-btn-red');
         $('#minigame_aztecs-Btn-closed').remove();
     }
-    if (Settings.GetSetting('ShowAztecHelper')){
-        AztecsHelper.Show();
-        AztecsHelper.CalcBody();
-    }
     AztecsHelper.mapHeight = r.height;
     AztecsHelper.mapWidth = r.width;
     AztecsHelper.boughtSomething = false;
@@ -39,6 +35,10 @@ FoEproxy.addHandler('CollectingMinigameService', 'start', (data, postData) => {
     AztecsHelper.grid = arr;
     if (r.reward.resources === undefined || Object.values(r.reward.resources) <= 0) return;
     AztecsHelper.ResourcesLeft = Object.values(r.reward.resources)[0];
+    if (Settings.GetSetting('ShowAztecHelper')){
+        AztecsHelper.Show();
+        AztecsHelper.CalcBody();
+    }
 });
 
 FoEproxy.addHandler('CollectingMinigameService', 'submitMove', (data, postData) => {
