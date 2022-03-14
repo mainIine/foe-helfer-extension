@@ -1198,8 +1198,11 @@ let GuildFights = {
 		h.push('<button class="btn-default mapbutton" onclick="ProvinceMap.buildMap()">MAP</button>');
 		h.push('</div>');
 
+		let activeTab = 1;
+		if ($('.gbgnextup.active').length > 0) activeTab = 2;
+
 		$('#LiveGildFighting').find('#LiveGildFightingBody').html(h.join('')).promise().done(function () {
-			$('.gbg-tabs').tabslet({ active: 1 });
+			$('.gbg-tabs').tabslet({ active: activeTab });
 			$('.gbg-tabs').on('_after', (e) => {
 				GuildFights.ToggleCopyButton();
 			});
