@@ -134,16 +134,21 @@ let _menu_right = {
 		});
 
 
-		// Klick auf Pfeil nach unten
-		$('body').on('click', '.hud-btn-down-active', function () {
-			_menu_right.ClickButtonDown();
-		});
+		if (jQuery._data($('body').get(0), 'events' ).click.filter((elem) => elem.selector == ".hud-btn-down-active").length == 0) {
+			// Klick auf Pfeil nach unten
+			$('body').on('click', '.hud-btn-down-active', function () {
+				_menu_right.ClickButtonDown();
+			});
+		};
+
+		if (jQuery._data($('body').get(0), 'events' ).click.filter((elem) => elem.selector == ".hud-btn-up-active").length == 0) {
+			// Klick auf Pfeil nach oben
+			$('body').on('click', '.hud-btn-up-active', function () {
+				_menu_right.ClickButtonUp();
+			});
+		};
 
 
-		// Klick auf Pfeil nach oben
-		$('body').on('click', '.hud-btn-up-active', function () {
-			_menu_right.ClickButtonUp();
-		});
 
 
 		// Tooltipp top ermitteln und einblenden

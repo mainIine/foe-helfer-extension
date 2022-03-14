@@ -149,17 +149,19 @@ let _menu_bottom = {
 			activeIdx = $(this).index('.hud-btn');
 		});
 
+		if (jQuery._data($('body').get(0), 'events' ).click.filter((elem) => elem.selector == ".hud-btn-right-active").length == 0) {
+			// Klick auf Pfeil nach rechts
+			$('body').on('click', '.hud-btn-right-active', function () {
+				_menu_bottom.ClickButtonRight();
+			});
+		};
 
-		// Klick auf Pfeil nach unten
-		$('body').on('click', '.hud-btn-right-active', function () {
-			_menu_bottom.ClickButtonRight();
-		});
-
-
-		// Klick auf Pfeil nach oben
-		$('body').on('click', '.hud-btn-left-active', function () {
-			_menu_bottom.ClickButtonLeft();
-		});
+		if (jQuery._data($('body').get(0), 'events' ).click.filter((elem) => elem.selector == ".hud-btn-left-active").length == 0) {
+			// Klick auf Pfeil nach links
+			$('body').on('click', '.hud-btn-left-active', function () {
+				_menu_bottom.ClickButtonLeft();
+			});
+		};
 
 
 		// Tooltipp top ermitteln und einblenden
