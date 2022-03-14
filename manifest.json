@@ -14,9 +14,7 @@
 		"https://*.forgeofempires.com/*",
 		"https://foe-helper.com/*",
 		"https://*.foe-helper.com/*",
-		"https://*.foe-rechner.de/*",
-		"https://cdn.jsdelivr.net/*",
-		"https://api.github.com/*"
+		"https://*.foe-rechner.de/*"
 	],
 
 	"browser_action": {
