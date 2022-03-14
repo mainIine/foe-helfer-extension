@@ -106,7 +106,7 @@ let BonusService = {
 		}
 
 		// no? exit...
-		if(exist === false){
+		if (exist === false && BonusService.GetDoneQuestsCount() === 0){
 			return;
 		}
 
