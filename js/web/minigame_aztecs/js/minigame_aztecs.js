@@ -329,7 +329,7 @@ let AztecsHelper = {
                             if (Overlap.length!=0) {
                                 let testP=0;
                                 for (let oC of Overlap) {
-                                    testP += map[oC.y][oC.x].prob[other] || 0;
+                                    testP += map[oC.y][oC.x].probList[other] || 0;
                                 }
                                 let min = unrevRes - (otherCell.content - otherCell.surrResCells.length);
                                 let max = unrevRes - Math.floor(testP);
@@ -419,13 +419,6 @@ let AztecsHelper = {
         return arr;
     },
 
-    test:()=>{
-        AztecsHelper.mapHeight=7;
-        AztecsHelper.mapWidth=11;
-        AztecsHelper.grid = JSON.parse('[[{"content":" "},{"content":1},{"content":"✓"},{"content":"?"},{"content":"?"},{"content":"?"},{"content":"?"},{"content":"?"},{"content":"?"},{"content":1},{"content":" "}],[{"content":" "},{"content":2},{"content":"?"},{"content":"?"},{"content":"?"},{"content":"?"},{"content":"?"},{"content":"?"},{"content":"✓"},{"content":1},{"content":" "}],[{"content":" "},{"content":1},{"content":"✓"},{"content":"?"},{"content":"?"},{"content":"✓"},{"content":1},{"content":1},{"content":1},{"content":1},{"content":" "}],[{"content":1},{"content":2},{"content":"?"},{"content":"?"},{"content":1},{"content":1},{"content":1},{"content":" "},{"content":" "},{"content":" "},{"content":" "}],[{"content":"?"},{"content":"✓"},{"content":"?"},{"content":"?"},{"content":1},{"content":" "},{"content":" "},{"content":" "},{"content":" "},{"content":" "},{"content":" "}],[{"content":"?"},{"content":"?"},{"content":"?"},{"content":"✓"},{"content":1},{"content":" "},{"content":" "},{"content":" "},{"content":" "},{"content":" "},{"content":" "}],[{"content":1},{"content":2},{"content":"?"},{"content":"?"},{"content":1},{"content":" "},{"content":" "},{"content":" "},{"content":" "},{"content":" "},{"content":" "}]]');
-        AztecsHelper.CalcAdjacentCells();
-    },
-
     remIndex: (array) => {
         let out=[];
         for (x in array) {
@@ -433,4 +426,57 @@ let AztecsHelper = {
         }
         return out;
     },
+
+    density: (goods, tries) => {
+        let w=11;
+        let h=7;
+
+        let map=[];
+        let heat=[];
+        
+        for (let y=0; y<h;y++) {
+            heat[y] = [];
+            map[y] = [];
+            for (let x=0; x<w;x++) {
+                heat[y][x] = 0;
+                map[y][x] = "";
+            }
+        }
+        
+        for (let j=0;j<tries;j++) {
+            let i=goods;
+            while (i>0) {
+                let x=Math.random()*w |0;
+                let y=Math.random()*h |0;
+
+                if (map[y][x] != 'G') {
+
+                    if(x > 0) if(map[y][x-1] !== 'G') map[y][x-1] = 'N';// y0/x-1
+                    if(y > 0) if(map[y-1][x] !== 'G') map[y-1][x] = 'N';// y-1/x0
+                    if(x < w-1) if(map[y][x+1] !== 'G') map[y][x+1]='N';// y0/x+1
+                    if(y < h-1) if(map[y+1][x] !== 'G') map[y+1][x]='N';// y+1/x0
+                    if(y < h-1 && x > 0) if(map[y+1][x-1] !== 'G') map[y+1][x-1]='N';// y+1/x-1
+                    if(x < w-1 && y > 0) if(map[y-1][x+1] !== 'G') map[y-1][x+1]='N';// y-1/x+1
+                    if(y < h-1 && x < w-1) if(map[y+1][x+1] !== 'G') map[y+1][x+1]='N';// +1/+1
+                    if(x > 0 && y > 0) if(map[y-1][x-1] !== 'G') map[y-1][x-1]='N';// -1/-1
+                    i--
+                }
+                
+            }
+
+            for (let x=0; x<w;x++) {
+                for (let y=0; y<h;y++) {
+                    if (map[y][x] == "N") heat[y][x]++;
+                    map[y][x] = "";
+                }
+            }
+        }
+        for (let x=0; x<w;x++) {
+            for (let y=0; y<h;y++) {
+                heat[y][x] = Math.floor(heat[y][x]/tries*100)/100;
+            }
+        }
+        console.log(heat);
+    },
+
 };
