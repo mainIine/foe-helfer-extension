@@ -1,5 +1,25 @@
 ## Changelog - Extension
 
+##### 2.9.0.0
+**New**
+- Aztecs Minigame Helper
+	- ...
+
+**Update**
+- New Era - Space Age Jupiter Moon:
+	- added new resources to the extension
+
+- Beta-Mode:
+	- improved loading procedure
+	- boxes will now show in the title that the extension is running in Beta-Mode
+
+- Guild Battles:
+	- new, comprehensive map layout
+
+**BugFix**
+
+---
+
 ##### 2.8.0.0
 
 **New**
