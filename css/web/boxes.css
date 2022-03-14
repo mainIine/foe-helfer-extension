@@ -15,8 +15,12 @@ body {
 	position: absolute !important;
 	height: 100% !important;
 	width: 100% !important;
+}
+
+.overflowHidden {
 	overflow: hidden;
 }
+
 
 /* Chrome, Opera */
 input[type=number]::-webkit-inner-spin-button,

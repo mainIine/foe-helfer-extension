@@ -73,6 +73,10 @@ let _menu = {
 	 */
 	CallSelectedMenu: (selMenu = 'BottomBar') => {
 
+		window.onresize = (function(event){
+			if (event.target == window) _menu.OverflowCheck()
+		})
+		
 		if (selMenu === 'BottomBar') {
 			_menu.selectedMenu = 'BottomBar';
 			_menu_bottom.BuildOverlayMenu();
@@ -93,8 +97,21 @@ let _menu = {
 		if (Settings.GetSetting('AutoOpenCloseBox')) {
 			CloseBox.BuildBox();
 		}
+		
+		_menu.OverflowCheck(_menu.selectedMenu, true);
 	},
 
+	OverflowCheck: (selMenu='Box', flag) => {
+		$('#game_body').addClass('overflowHidden');
+		if (window.innerHeight < 600 ||window.innerWidth < 950) {
+			$('#game_body').removeClass('overflowHidden');
+		} else {
+			if (!flag && selMenu != MainParser.SelectedMenu) {			
+			$('#menu_box').remove();
+			_menu.CallSelectedMenu(MainParser.SelectedMenu);
+			}
+		}
+	},
 
 	/**
 	 * Hides a button. The HUD slider must already be filled for this.
@@ -259,6 +276,13 @@ let _menu = {
 		}
 		
 		localStorage.setItem('MenuHiddenItems', JSON.stringify(_menu.HiddenItems));
+
+		// refresh the Menü after setting-toggle
+		setTimeout(()=> {
+			$('#foe-helper-hud, #menu_box').remove();
+			_menu.CallSelectedMenu(MainParser.SelectedMenu);
+		}, 100);
+
 	},
 
 
