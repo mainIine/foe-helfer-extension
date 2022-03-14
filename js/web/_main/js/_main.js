@@ -1259,7 +1259,7 @@ let MainParser = {
 		}
 		else if (LastStartedVersion !== extVersion) {
 			MainParser.StartUpType = 'UpdatedVersion';
-			storage.removeItem('LoadBeta');
+			if (!loadBeta) localStorage.removeItem('LoadBeta');
 			/* We have a new version installed and started the first time */
 		}
 		else if (LastAgreedVersion !== extVersion) {
