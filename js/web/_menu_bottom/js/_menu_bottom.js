@@ -35,7 +35,12 @@ let _menu_bottom = {
 		hud.append(btnUp);
 		hud.append(hudWrapper)
 		hud.append(btnDown);
-
+		
+		// If the window size changes, recalculate
+		window.onresize = function() {
+			_menu_bottom.SetMenuWidth(true);
+		};
+		
 		$('body').append(hud).promise().done(function(){
 
 			// Insert buttons
@@ -47,11 +52,6 @@ let _menu_bottom = {
 
 			window.dispatchEvent(new CustomEvent('foe-helper#menu_loaded'));
 		});
-
-		// If the window size changes, recalculate
-		window.onresize = function (event) {
-			_menu_bottom.SetMenuWidth(true);
-		};
 	},
 
 
@@ -115,7 +115,13 @@ let _menu_bottom = {
 
 		_menu.HudCount = Math.floor((($(window).outerWidth() - 50) - $('#foe-helper-hud').offset().left) / _menu_bottom.btnSize);
 		_menu.HudCount = Math.min(_menu.HudCount, MenuItemCount);
-
+		if (_menu.HudCount <= 0) {
+			$('#foe-helper-hud').remove();
+			window.onresize = function(){};
+			_menu.CallSelectedMenu('Box');
+			return;
+		} 
+			
 		// hat der Spieler eine Länge vorgebeben?
 		let MenuLength = localStorage.getItem('MenuLength');
 

@@ -31,6 +31,11 @@ let _menu_right = {
 		hud.append(hudWrapper)
 		hud.append(btnDown);
 
+		// Wenn sie die Fenstergröße verändert, neu berechnen
+		window.onresize = function () {
+			_menu_right.SetMenuHeight(true);
+		};
+
 		$('body').append(hud).ready(function () {
 
 			// Buttons einfügen
@@ -43,11 +48,6 @@ let _menu_right = {
 			window.dispatchEvent(new CustomEvent('foe-helper#menu_loaded'));
 		});
 
-
-		// Wenn sie die Fenstergröße verändert, neu berechnen
-		window.onresize = function (event) {
-			_menu_right.SetMenuHeight(true);
-		};
 	},
 
 
@@ -101,6 +101,11 @@ let _menu_right = {
 		_menu.HudCount = Math.floor((($(window).outerHeight() - 50) - $('#foe-helper-hud').offset().top) / 55);
 		_menu.HudCount = Math.min(_menu.HudCount, MenuItemCount);
 
+		if (_menu.HudCount <= 0) {
+			$('#foe-helper-hud').remove();
+			_menu.CallSelectedMenu('Box')
+		}
+			
 		// hat der Spieler eine Länge vorgebeben?
 		let MenuLength = localStorage.getItem('MenuLength');
 

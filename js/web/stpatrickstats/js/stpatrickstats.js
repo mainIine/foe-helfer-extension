@@ -261,7 +261,7 @@ let stPatrick = {
         htmltext += `<tr><td id="stPatTask7"></td></tr>`;
         htmltext += `<tr><td id="stPatTask8"></td></tr>`;
         htmltext += `</table>`;
-		htmltext += `<span id="stPatTown" style="color:var(--text-bright); font-weight:bold"></span>`;
+		htmltext += `<div id="stPatTown" style="color:var(--text-bright); font-weight:bold"></div>`;
         
         
         $('#stPatrickDialogBody').html(htmltext);
@@ -455,7 +455,7 @@ let stPatrick = {
 			}
 		}
 
-		$('#stPatTown').text(`${i18n('Boxes.stPatrick.NextTown')} 8.4 Q: ${stPatrick.time(8.4,5,sum,degree,stPatrick.Progress,stPatrick.ProgressDegree)}\n(${i18n('Boxes.stPatrick.CurrentRun')}: ${stPatrick.stPatStage})`);
+		$('#stPatTown').html(`${i18n('Boxes.stPatrick.CurrentRun')}: ${stPatrick.stPatStage} / ${i18n('Boxes.stPatrick.Variant')}: ${(stPatrick.stPatStage-1) % 3 + 1}<br>${i18n('Boxes.stPatrick.NextTown')} 8.4 Q: ${stPatrick.time(8.4,5,sum,degree,stPatrick.Progress,stPatrick.ProgressDegree)}`);
 
 	},
 
