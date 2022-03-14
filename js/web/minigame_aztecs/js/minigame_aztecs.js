@@ -329,7 +329,7 @@ let AztecsHelper = {
                             if (Overlap.length!=0) {
                                 let testP=0;
                                 for (let oC of Overlap) {
-                                    testP += map[oC.y][oC.x].prop[other] || 0;
+                                    testP += map[oC.y][oC.x].prob[other] || 0;
                                 }
                                 let min = unrevRes - (otherCell.content - otherCell.surrResCells.length);
                                 let max = unrevRes - Math.floor(testP);
