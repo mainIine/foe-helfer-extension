@@ -990,6 +990,19 @@ let GuildFights = {
 	 */
 	BuildFightContent: () => {
 
+		findSectorColors = function(ownerID) {
+			let colors = {};
+			if (ownerID != undefined)
+				colors = GuildFights.SortedColors.find(c => (c.id === ownerID))
+			else
+				colors = {
+					main: '#444',
+					highlight: '#555',
+					shadow: '#333'
+				}
+			return colors;
+		}
+
 		GuildFights.CopyCache = [];
 		GuildFights.Tabs = [];
 		GuildFights.TabsContent = [];
@@ -1058,7 +1071,7 @@ let GuildFights = {
 					// show current fights
 					if (mapdata[i]['conquestProgress'].length > 0 && (mapdata[i]['lockedUntil'] === undefined))
 					{
-						let pColor = GuildFights.SortedColors.find(e => e['id'] === mapdata[i]['ownerId']);
+						let pColor = findSectorColors(mapdata[i]['ownerId']);
 
 						progress.push(`<tr id="province-${id}" data-id="${id}" data-tab="progress">`);
 
@@ -1079,7 +1092,7 @@ let GuildFights = {
 								break;
 							}
 
-							let color = GuildFights.SortedColors.find(e => e['id'] === provinceProgress[y]['participantId']);
+							let color = findSectorColors(provinceProgress[y]['participantId']);
 
 							progress.push(`<span class="attack attacker-${provinceProgress[y]['participantId']} gbg-${color['cid']}">${provinceProgress[y]['progress']}</span>`);
 						}
@@ -1736,13 +1749,13 @@ let ProvinceMap = {
 	Provinces: [],
 	ProvinceObject: {},
 
-	StrokeWidth: 4,
-	StrokeColor: '#fff',
+	StrokeWidth: 1,
+	StrokeColor: '#222',
 	FrameSize: 1,
 
 	MapSize: {
-		width: 2500,
-		height: 1960
+		width: 800,
+		height: 800
 	},
 
 	buildMap: () => {
@@ -1773,13 +1786,8 @@ let ProvinceMap = {
 
 		ProvinceMap.Map = document.createElement("canvas");
 
-		if (GuildFights.MapData.map['id'] === "waterfall_archipelago") {
-			ProvinceMap.Map.width = 800;
-			ProvinceMap.Map.height = 800;
-		} else {
-			ProvinceMap.Map.width = ProvinceMap.MapSize.width;
-			ProvinceMap.Map.height = ProvinceMap.MapSize.height;
-		}
+		ProvinceMap.Map.width = 800;
+		ProvinceMap.Map.height = 800;
 
 		ProvinceMap.MapCTX = ProvinceMap.Map.getContext('2d');
 
@@ -1788,8 +1796,8 @@ let ProvinceMap = {
 		});
 
 		$('#ProvinceMapBody').html(ProvinceMap.Map);
-
-		ProvinceMap.MapCTX.translate(-3, -3);
+		if (GuildFights.MapData.map['id'] !== "waterfall_archipelago") 
+			ProvinceMap.MapCTX.translate(400, 400);
 		ProvinceMap.MapCTX.globalCompositeOperation = 'destination-over';
 
 		// Objects
@@ -1810,6 +1818,7 @@ let ProvinceMap = {
 			};
 			this.lockedUntil = data.lockedUntil;
 			this.progress = [];
+			this.circlePosition = data.circlePosition;
 		}
 
 		findSectorColors = function(ownerID) {
@@ -1825,75 +1834,52 @@ let ProvinceMap = {
 			return colors;
 		}
 
-		Province.prototype.drawGGMapSector = function () {
+		Province.prototype.drawGGMapSector = function (mapdata = []) {
 
-			ProvinceMap.MapCTX.lineWidth = ProvinceMap.StrokeWidth;
+			ProvinceMap.MapCTX.lineWidth = 1;
 			ProvinceMap.MapCTX.globalAlpha = 1;
-			ProvinceMap.MapCTX.strokeStyle = this.owner.colors.main;
-			ProvinceMap.MapCTX.fillStyle = this.owner.colors.main;
+			ProvinceMap.MapCTX.strokeStyle = '#222222';
+			ProvinceMap.MapCTX.fillStyle = this.owner.colors.highlight;
 
 			let id = this['id'] || 0;
+			let additionalSectorinfo = mapdata[id];
+			let sector = this;        
+			let xy = { x: 1, y: -1};
 
-			// check if someone fighting on this sector
-			let parties = GuildFights.MapData['map']['provinces'][id];
-
-			if(parties['conquestProgress'] && parties['conquestProgress'].length > 0)
-			{
-				let mostParticipantId = parties['conquestProgress'].sort((a, b)=> b.progress - a.progress)[0]['participantId'];
-
-				ProvinceMap.MapCTX.setLineDash([8, 10]);
-				ProvinceMap.MapCTX.strokeStyle = GuildFights.SortedColors.find(o => o['id'] === mostParticipantId)['main'];
-			}
-			else {
-				ProvinceMap.MapCTX.setLineDash([]);
-			}
-
-			const path = (this.path != 0) ? ProvinceMap.ParsePathToCanvas(this.path) : '';
-
-			// Province border
-			ProvinceMap.MapCTX.globalAlpha = 1;
-			ProvinceMap.MapCTX.font = 'bold 45px Arial';
+			ProvinceMap.MapCTX.font = 'bold 25px Arial';
 			ProvinceMap.MapCTX.textAlign = "center";
-			ProvinceMap.MapCTX.stroke(path);
 
 			// if is spawn, no text => image + background color
-			if (this.owner.flagImg && this.flagPos)
-			{
-				ProvinceMap.MapCTX.globalAlpha = 0.2;
-				ProvinceMap.MapCTX.fill(path);
-
-				let flag_image = new Image(),
-					flag_x = this.flagPos.x,
-					flag_y = this.flagPos.y;
-
-				flag_image.src = `${MainParser.InnoCDN}assets/shared/clanflags/${this.flagImg}.jpg`;
+			if (sector.owner.flagImg && sector.flagPos) {
+				let flag_image = new Image();
+				flag_image.src = `${MainParser.InnoCDN}assets/shared/clanflags/${sector.owner.flagImg}.jpg`;
 
 				flag_image.onload = function () {
-					ProvinceMap.MapCTX.globalAlpha = 1;
-					ProvinceMap.MapCTX.drawImage(this, flag_x, flag_y);
+					console.log('what');
+					ProvinceMap.MapCTX.drawImage(this,xy.x*(sector.circlePosition.radius-sector.circlePosition.initRadius/2)*Math.sin(sector.circlePosition.angle+sector.circlePosition.angleFragment/2)-20,xy.y*(sector.circlePosition.radius-sector.circlePosition.initRadius/2)*Math.cos(sector.circlePosition.angle+sector.circlePosition.angleFragment/2), 40, 40);
+					
+				ProvinceMap.MapCTX.fillStyle = sector.owner.colors.main;
+				sector.drawSector();
 				}
 			}
 			else
 			{
-				ProvinceMap.MapCTX.globalAlpha = 0.5;
-				ProvinceMap.MapCTX.fill(path);
-				ProvinceMap.MapCTX.strokeStyle = '#00000088';
-				ProvinceMap.MapCTX.lineWidth = 5;
+				ProvinceMap.MapCTX.fillStyle = '#222222';
 
-				// Title e.g. "B4D"
-				ProvinceMap.MapCTX.globalAlpha = 1;
-				ProvinceMap.MapCTX.fillStyle = (!this.owner.id ? '#ffffff' : this.strokeStyle);
-				ProvinceMap.MapCTX.fillText(this.short, this.flag.x, this.flag.y - 20);
-				ProvinceMap.MapCTX.strokeText(this.short, this.flag.x, this.flag.y - 20);
+				let x = xy.x*(this.circlePosition.radius-this.circlePosition.initRadius/2)*Math.sin(this.circlePosition.angle+this.circlePosition.angleFragment/2);
+				let y = xy.y*(this.circlePosition.radius-this.circlePosition.initRadius/2)*Math.cos(this.circlePosition.angle+this.circlePosition.angleFragment/2);
 
+				this.drawTitleAndSlots(true, x, y-15, additionalSectorinfo);
+				
 				// time 
-				ProvinceMap.MapCTX.globalAlpha = 1;
-				ProvinceMap.MapCTX.font = 'bold 30px Arial';
-				ProvinceMap.MapCTX.fillStyle = (!this.owner.id ? '#ffffff' : this.strokeStyle);
+				ProvinceMap.MapCTX.font = 'bold 20px Arial';
 
 				let provinceUnlockTime = (moment.unix(this.lockedUntil).format('HH:mm') != 'Invalid date') ? moment.unix(this.lockedUntil).format('HH:mm') : '';
-				ProvinceMap.MapCTX.fillText(provinceUnlockTime, this.flag.x, this.flag.y+20);
-				ProvinceMap.MapCTX.strokeText(provinceUnlockTime, this.flag.x, this.flag.y+20);
+				ProvinceMap.MapCTX.fillText(provinceUnlockTime,xy.x*(this.circlePosition.radius-this.circlePosition.initRadius/2)*Math.sin(this.circlePosition.angle+this.circlePosition.angleFragment/2),xy.y*(this.circlePosition.radius-this.circlePosition.initRadius/2)*Math.cos(this.circlePosition.angle+this.circlePosition.angleFragment/2)+25);
+			
+				
+				ProvinceMap.MapCTX.fillStyle = this.owner.colors.main;
+				this.drawSector();
 			}
 		}
 
@@ -1925,10 +1911,10 @@ let ProvinceMap = {
 			}
 			else {
 				if (this.lockedUntil == undefined) {
-					this.drawTitleAndSlots(true, mapStuff, additionalSectorinfo);
+					this.drawTitleAndSlots(true, mapStuff.x, mapStuff.y, additionalSectorinfo);
 				}
 				else {
-					this.drawTitleAndSlots(false, mapStuff, additionalSectorinfo);
+					this.drawTitleAndSlots(false, mapStuff.x, mapStuff.y, additionalSectorinfo);
 				}
 
 				// time 
@@ -1955,17 +1941,17 @@ let ProvinceMap = {
 			}
 		}
 
-		Province.prototype.drawTitleAndSlots = function(drawCentered = true, mapStuff, additionalSectorinfo) {
-			let titleY = mapStuff.y - (mapStuff.hexheight*0.09);
-			let slotsY = mapStuff.y + (mapStuff.hexheight*0.07);
+		Province.prototype.drawTitleAndSlots = function(drawCentered = true, x, y, additionalSectorinfo) {
+			let titleY = y - 10;
+			let slotsY = y + 7;
 			if (drawCentered) {
-				titleY = mapStuff.y + (mapStuff.hexheight*0.06);
-				slotsY = mapStuff.y + (mapStuff.hexheight*0.20);
+				titleY = y + 6;
+				slotsY = y + 20;
 			}
 
 			ProvinceMap.MapCTX.font = 'bold 22px Arial';
 			ProvinceMap.MapCTX.fillStyle = '#000000';
-			ProvinceMap.MapCTX.fillText(this.short, mapStuff.x, titleY);
+			ProvinceMap.MapCTX.fillText(this.short, x, titleY);
 			
 			if (additionalSectorinfo.totalBuildingSlots != undefined) {
 				let slots = '☗';
@@ -1977,7 +1963,7 @@ let ProvinceMap = {
 					slots = '☗☗☗';
 
 				ProvinceMap.MapCTX.font = '12px Courier New';
-				ProvinceMap.MapCTX.fillText(slots, mapStuff.x, slotsY);
+				ProvinceMap.MapCTX.fillText(slots, x, slotsY);
 			}
 		}
 
@@ -1995,6 +1981,21 @@ let ProvinceMap = {
 				drawHex(mapStuff.x, mapStuff.y, mapStuff.hexwidth, mapStuff.hexheight);
 			}
 		}
+
+        Province.prototype.drawSector = function() {    
+            let xy = { x: 1, y: -1 }; // change first quadrant                
+			ProvinceMap.MapCTX.beginPath();
+            ProvinceMap.MapCTX.moveTo(xy.x*(this.circlePosition.radius-this.circlePosition.initRadius)*Math.sin(this.circlePosition.angle), xy.y*(this.circlePosition.radius-this.circlePosition.initRadius)*Math.cos(this.circlePosition.angle));
+            ProvinceMap.MapCTX.lineTo(xy.x*this.circlePosition.radius*Math.sin(this.circlePosition.angle),xy.y*this.circlePosition.radius*Math.cos(this.circlePosition.angle));
+            ProvinceMap.MapCTX.lineTo(xy.x*this.circlePosition.radius*Math.sin(this.circlePosition.angle+this.circlePosition.angleFragment/2),xy.y*this.circlePosition.radius*Math.cos(this.circlePosition.angle+this.circlePosition.angleFragment/2));
+            ProvinceMap.MapCTX.lineTo(xy.x*this.circlePosition.radius*Math.sin(this.circlePosition.angle+this.circlePosition.angleFragment),xy.y*this.circlePosition.radius*Math.cos(this.circlePosition.angle+this.circlePosition.angleFragment));
+            ProvinceMap.MapCTX.lineTo(xy.x*(this.circlePosition.radius-this.circlePosition.initRadius)*Math.sin(this.circlePosition.angle+this.circlePosition.angleFragment),xy.y*(this.circlePosition.radius-this.circlePosition.initRadius)*Math.cos(this.circlePosition.angle+this.circlePosition.angleFragment));
+            ProvinceMap.MapCTX.lineTo(xy.x*(this.circlePosition.radius-this.circlePosition.initRadius)*Math.sin(this.circlePosition.angle), xy.y*(this.circlePosition.radius-this.circlePosition.initRadius)*Math.cos(this.circlePosition.angle));
+            ProvinceMap.MapCTX.closePath();
+            ProvinceMap.MapCTX.fill();
+            ProvinceMap.MapCTX.strokeStyle = '#000';
+            ProvinceMap.MapCTX.stroke();   
+        }
 
 		drawHex = function (x, y, width, height) {
 			ProvinceMap.MapCTX.beginPath();
@@ -2014,13 +2015,18 @@ let ProvinceMap = {
 			if (GuildFights.MapData.map['id'] === "waterfall_archipelago") 
 				this.drawHexMapSector(GuildFights.MapData.map.provinces);
 			else
-				this.drawGGMapSector();
+				this.drawGGMapSector(GuildFights.MapData.map.provinces);
 		}
 
 		// Implementation
 		let provinces = [];
 
 		function init() {
+			let angle = Math.PI/2; // 90°
+			let rotator = 0;
+			let radius = ProvinceMap.MapSize.width/8;
+			let initRadius = radius;
+
 			ProvinceMap.ProvinceData().forEach(function (i) {
 
 				const path = i.path.replace(/\s+/g, " ");
@@ -2059,6 +2065,20 @@ let ProvinceMap = {
 						data['lockedUntil'] = prov['lockedUntil'];
 					}
 				}
+				if (rotator >= Math.PI*2) {
+					rotator = 0;
+					angle = angle/2;
+					radius = initRadius+radius;
+				}
+
+				data.circlePosition = {
+					radius: radius,
+					initRadius: initRadius,
+					angle: rotator,
+					angleFragment: angle
+				};    
+				
+				rotator += angle;
 
 				provinces.push(new Province(data));
 			});
