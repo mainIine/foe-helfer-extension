@@ -35,7 +35,6 @@ let Settings = {
 	/**
 	 * load the settings from the json
 	 *
-	 * @param start
 	 * @constructor
 	 */
 	Init: () => {
@@ -134,7 +133,11 @@ let Settings = {
 					}
 				}
 
-				if (d['callback'] !== undefined) {
+				// no value && no callback function, make it empty
+				if(d['callback'] === undefined && status === undefined && d['button'] === undefined) {
+					cs.html('');
+				}
+				else if (d['callback'] !== undefined) {
 					cs.html(Settings[d['callback']]());
 
 				}
@@ -148,10 +151,13 @@ let Settings = {
 
 				cd.html(i18n(`Settings.${d['name']}.Desc`));
 				ct.text(i18n(`Settings.${d['name']}.Title`));
+
 				cs.find('input.setting-check').attr('data-id', d['name']);
+
 				if (status) {
 					cs.find('input.setting-check').attr('checked', '');
 				}
+
 				cs.find('.check').addClass(status ? '' : 'unchecked');
 				cs.find('.toogle-word').text(status ? i18n('Boxes.Settings.Active') : i18n('Boxes.Settings.Inactive'));
 
