@@ -14,19 +14,19 @@
 // separate code from global scope
 {
 let ScArray=[];
-const loadBeta = JSON.parse(localStorage.getItem('LoadBeta')) || false;
-localStorage.setItem('LoadBeta', 'false');
-if (loadBeta) {
-	let now = new Date();
-	fetch("https://api.github.com/repos/mainIine/foe-helfer-extension/branches/beta?" + now)
-		.then(response => {if (response.status === 200) {response.json()
-		.then((data) => {inject(true,
-								'https://cdn.jsdelivr.net/gh/mainIine/foe-helfer-extension@' + (data?.commit?.sha || 'beta') + '/', 
-								(data?.commit?.commit?.committer?.date || ""
-						))})}});
-} else {
+//const loadBeta = JSON.parse(localStorage.getItem('LoadBeta')) || false;
+//localStorage.setItem('LoadBeta', 'false');
+//if (loadBeta) {
+//	let now = new Date();
+//	fetch("https://api.github.com/repos/mainIine/foe-helfer-extension/branches/beta?" + now)
+//		.then(response => {if (response.status === 200) {response.json()
+//		.then((data) => {inject(true,
+//								'https://cdn.jsdelivr.net/gh/mainIine/foe-helfer-extension@' + (data?.commit?.sha || 'beta') + '/', 
+//								(data?.commit?.commit?.committer?.date || ""
+//						))})}});
+//} else {
 	inject();
-}
+//}
 
 function inject (loadBeta = false, extUrl = chrome.extension.getURL(''), betaDate='') {
 	/**
