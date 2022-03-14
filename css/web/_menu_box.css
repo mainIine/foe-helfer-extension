@@ -54,7 +54,7 @@
 	height: calc(100% - 42px);
 }
 
-.hud-btn {	
+#menu_box .hud-btn {	
 	display: inline-block;
 	width: 45px;
 	height: 45px;
@@ -67,11 +67,11 @@
 	background: linear-gradient(#553419, #553419) padding-box, linear-gradient(to bottom, #82ae4c, #4f7421) border-box;
 }
 
-.hud-btn-red {
+#menu_box .hud-btn-red {
 	background: linear-gradient(to bottom, #4f291b, #553419) padding-box, linear-gradient(to bottom, #a84a35, #88301e) border-box;
 }
 
-.hud-btn span:first-child {
+#menu_box .hud-btn span:first-child {
 	background-position: center center;
 	background-repeat: no-repeat;
 	width: 65%;
@@ -82,14 +82,14 @@
 	left: 7px;
 }
 
-.menu-placeholder {
+#menu_box .menu-placeholder {
 	display: inline-block;
 	width: 45px;
 	height: 45px;
 	background: var(--black-50);
 }
 
-.hud-btn span.hud-counter {
+#menu_box .hud-btn span.hud-counter {
 	width: 15px;
 	height: 15px;
 	position: absolute;
