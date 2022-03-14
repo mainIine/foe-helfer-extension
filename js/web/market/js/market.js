@@ -213,7 +213,8 @@ let Market = {
 							</span>`);
 
 							for (let era = 0; era < Technologies.Eras.NextEra - Technologies.Eras.BronzeAge; era++)
-							{
+                            {
+                                if (GoodsList.length < 5 * (era + 1)) break; // Era does not exist yet
 								ID += 1;
 
 								h.push(`<span class="custom-option era${(Market.Offer === ID ? ' selected' : '')}" data-value="${ID}">${i18n('Eras.' + (era + Technologies.Eras.BronzeAge))}</span>`);
@@ -254,7 +255,9 @@ let Market = {
 							</span>`);
 
 							for (let era = 0; era < Technologies.Eras.NextEra - Technologies.Eras.BronzeAge; era++)
-							{
+                            {
+                                if (GoodsList.length < 5 * (era + 1)) break; // Era does not exist yet
+
 								ID += 1;
 
 								h.push(`<span class="custom-option era${(Market.Need === ID ? ' selected' : '')}" data-value="${ID}">
