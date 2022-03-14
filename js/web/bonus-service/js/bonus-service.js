@@ -87,29 +87,6 @@ let BonusService = {
 	 * @constructor
 	 */
 	InitBonus: (isGex = false)=> {
-		let bt = BonusService.BonusTypes,
-			exist = false;
-
-		// check if player has some of these 4 bonuses
-		for(let i in bt)
-		{
-			if(!bt.hasOwnProperty(i)) break;
-
-			BonusService.Bonuses.forEach((arr)=>{
-				if(arr['type'].includes(bt[i])){
-					exist = true;
-					return false;
-				}
-			});
-
-			if(exist === true) break;
-		}
-
-		// no? exit...
-		if(exist === false){
-			return;
-		}
-
 		if($('#bonus-hud').length === 0){
 			HTML.AddCssFile('bonus-service');
 
