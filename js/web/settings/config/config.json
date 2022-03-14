@@ -181,10 +181,10 @@
 		"sort": 9
 	},
 	{
-		"_name": "LoadBeta",
-		"_status": false,
-		"_group": "Extension",
-		"_sort": 9
+		"name": "LoadBeta",
+		"status": false,
+		"group": "Extension",
+		"sort": 9
 	},
 	{
 		"name": "About",
