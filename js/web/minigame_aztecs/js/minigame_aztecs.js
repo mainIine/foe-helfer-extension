@@ -329,7 +329,9 @@ let AztecsHelper = {
                             if (Overlap.length!=0) {
                                 let testP=0;
                                 for (let oC of Overlap) {
-                                    testP += map[oC.y][oC.x].probList[other] || 0;
+                                    if (map[oC.y][oC.x].hasOwnProperty(probList)) {
+                                        testP += map[oC.y][oC.x].probList[other] || 0;
+                                    } 
                                 }
                                 let min = unrevRes - (otherCell.content - otherCell.surrResCells.length);
                                 let max = unrevRes - Math.floor(testP);
@@ -380,8 +382,8 @@ let AztecsHelper = {
     },
 
     Compare: (BaseArray, CompareArray)=>{
-        const Overlap = BaseArray.filter(value => !(!CompareArray[`y${value.y}x${value.x}`]));
-        const Diff = BaseArray.filter(value => !CompareArray[`y${value.y}x${value.x}`]);
+        const Overlap = BaseArray.filter(value => CompareArray.filter(value2 => value.y==value2.y && value.x==value2.x).length > 0);
+        const Diff = BaseArray.filter(value => CompareArray.filter(value2 => value.y==value2.y && value.x==value2.x).length == 0);
         return [Overlap, Diff];
     },
 
