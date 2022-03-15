@@ -14,19 +14,19 @@
 // separate code from global scope
 {
 let ScArray=[];
-const loadBeta = JSON.parse(localStorage.getItem('LoadBeta')) || false;
-localStorage.setItem('LoadBeta', 'false');
-if (loadBeta) {
-	let now = new Date();
-	fetch("https://api.github.com/repos/mainIine/foe-helfer-extension/branches/beta?" + now)
-		.then(response => {if (response.status === 200) {response.json()
-		.then((data) => {inject(true,
-								'https://cdn.jsdelivr.net/gh/mainIine/foe-helfer-extension@' + (data?.commit?.sha || 'beta') + '/', 
-								(data?.commit?.commit?.committer?.date || ""
-						))})}});
-} else {
+//const loadBeta = JSON.parse(localStorage.getItem('LoadBeta')) || false;
+//localStorage.setItem('LoadBeta', 'false');
+//if (loadBeta) {
+//	let now = new Date();
+//	fetch("https://api.github.com/repos/mainIine/foe-helfer-extension/branches/beta?" + now)
+//		.then(response => {if (response.status === 200) {response.json()
+//		.then((data) => {inject(true,
+//								'https://cdn.jsdelivr.net/gh/mainIine/foe-helfer-extension@' + (data?.commit?.sha || 'beta') + '/', 
+//								(data?.commit?.commit?.committer?.date || ""
+//						))})}});
+//} else {
 	inject();
-}
+//}
 
 function inject (loadBeta = false, extUrl = chrome.extension.getURL(''), betaDate='') {
 	/**
@@ -216,7 +216,7 @@ function inject (loadBeta = false, extUrl = chrome.extension.getURL(''), betaDat
 					
 			window.dispatchEvent(new CustomEvent('foe-helper#loaded'));
 
-			localStorage.setItem('LoadBeta', JSON.stringify(loadBeta));
+			//localStorage.setItem('LoadBeta', JSON.stringify(loadBeta));
 		} catch (err) {
 			// make sure that the packet buffer in the FoEproxy does not fill up in the event of an incomplete loading.
 			window.dispatchEvent(new CustomEvent('foe-helper#error-loading'));
