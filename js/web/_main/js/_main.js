@@ -1254,7 +1254,7 @@ let MainParser = {
 
 		if (!LastStartedVersion) {
 			MainParser.StartUpType = 'DeletedSettings';
-			/* Fresh install of deleted settings */
+			/* Fresh install or deleted settings */
 			/* Attention: If you do stuff here it might be executed every start when surfing in incognito mode */
 		}
 		else if (LastStartedVersion !== extVersion) {
