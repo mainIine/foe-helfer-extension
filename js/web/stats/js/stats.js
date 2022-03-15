@@ -183,6 +183,8 @@ let Stats = {
 			let EraName = Technologies.EraNames[Era];
 			if (!EraName) continue;
 
+			if (GoodsList.length < 5 * (Era - 1)) break; // Era does not exist yet
+
 			Stats.PlayableEras.push(EraName);
 			Stats.ResMap[EraName] = [];
 

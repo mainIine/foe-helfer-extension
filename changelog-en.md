@@ -3,20 +3,29 @@
 ##### 2.9.0.0
 **New**
 - Aztecs Minigame Helper
-	- ...
+	- this shows you the most likely locations for goods in the Aztecs minigame
 
 **Update**
 - New Era - Space Age Jupiter Moon:
 	- added new resources to the extension
 
 - Beta-Mode:
-	- improved loading procedure
-	- boxes will now show in the title that the extension is running in Beta-Mode
+	- removed Beda Mode - now only available in a [separate extension](https://github.com/mainIine/foe-helfer-extension/archive/refs/heads/betaLoader.zip) that has to be downloaded and added to the browser extensions manually
 
 - Guild Battles:
 	- new, comprehensive map layout
 
+- Menu:
+	- now automatically switches into box mode when window is too small for the menu bar
+	- changed position of bottom hud to accomodate FoE-Plus
+
 **BugFix**
+
+- Menu:
+	- small windows now again have the scroll bars for the game screen
+
+- Bonus Hud:
+	- now always shows outside main city, even if only for the done quests
 
 ---
 

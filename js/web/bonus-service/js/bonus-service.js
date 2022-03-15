@@ -70,6 +70,7 @@ FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, post
  */
 let BonusService = {
 	
+	timeout:null,
 	Bonuses: [],
 	BonusTypes: [
 		'first_strike',
@@ -91,8 +92,9 @@ let BonusService = {
 			HTML.AddCssFile('bonus-service');
 
 			// wait 2s
-			setTimeout(()=>{
+			BonusService.timeout = setTimeout(()=>{
 				BonusService.ShowBonusSidebar(isGex);
+				BonusService.timeout = null;
 			},2000);
 		}
 	},
@@ -130,6 +132,10 @@ let BonusService = {
 	 * Removes the bonus-Hud
 	 */
 	HideBonusSidebar: ()=> {
+		if (BonusService.timeout !== null) {
+			clearTimeout(BonusService.timeout);
+			BonusService.timeout = null;
+		}
 		if($('#bonus-hud').length > 0){
 			$('#bonus-hud').fadeToggle(function(){
 				$(this).remove();
