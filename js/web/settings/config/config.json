@@ -182,7 +182,6 @@
 	},
 	{
 		"name": "LoadBeta",
-		"status": false,
 		"group": "Extension",
 		"sort": 9
 	},

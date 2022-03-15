@@ -267,6 +267,7 @@ let _menu = {
 			_menu.HiddenItems = _menu.HiddenItems.filter(e => {
 				return e !== name;
 			});
+			if (_menu.Items.indexOf(name) == -1) _menu.Items.push(name);
 		}
 		else {
 			$('#' + name + '-Btn').addClass('btn-hidden');
