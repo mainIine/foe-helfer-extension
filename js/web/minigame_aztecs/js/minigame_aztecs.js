@@ -251,7 +251,6 @@ let AztecsHelper = {
      * @param {number} adj 
      */
     CalcAdjacentCells: () => {
-        if(AztecsHelper.MovesLeft <= 0) return $('#aztecsHelper').length > 0 && HTML.CloseOpenBox('aztecsHelper');
         var map = AztecsHelper.grid;
         const rC = AztecsHelper.resourceCell,
             uC = AztecsHelper.unknownCell,
@@ -379,6 +378,8 @@ let AztecsHelper = {
         }
 
         AztecsHelper.CalcBody();
+        if(AztecsHelper.MovesLeft <= 0) return $('#aztecsHelper').length > 0 && HTML.CloseOpenBox('aztecsHelper');
+        
     },
 
     Compare: (BaseArray, CompareArray)=>{
