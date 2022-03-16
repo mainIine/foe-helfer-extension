@@ -385,6 +385,16 @@ let AztecsHelper = {
     Compare: (BaseArray, CompareArray)=>{
         const Overlap = BaseArray.filter(value => CompareArray.filter(value2 => value.y==value2.y && value.x==value2.x).length > 0);
         const Diff = BaseArray.filter(value => CompareArray.filter(value2 => value.y==value2.y && value.x==value2.x).length == 0);
+        //let Overlap=[];
+        //let Diff=[];
+        //BaseArray.forEach(value => {
+        //    if (CompareArray.filter(value2 => value.y==value2.y && value.x==value2.x).length > 0) {
+        //        Overlap.push(value);
+        //    }else{
+        //        Diff.push(value);
+        //    }
+        //})
+
         return [Overlap, Diff];
     },
 
