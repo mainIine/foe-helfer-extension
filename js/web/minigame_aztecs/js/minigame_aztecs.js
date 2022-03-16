@@ -273,20 +273,20 @@ let AztecsHelper = {
                 if (cell.content === rC) {cell.prob = 1}
                 if (cell.content === uC) {
                     unknownCells[`y${y}x${x}`] = {"x":x,"y":y};
-                    cell.surrNumCells = AztecsHelper.GetSurroundingCell(x,y,"number");
+                    cell.surrNumCells = AztecsHelper.GetSurroundingCell(x,y,"number"); //alle Nachbarzellen mit Zahl
                 }
                 if (typeof cell.content === "number"){
-                    //Hole, falls vorhanden, alle schon entdeckten Felder mit Ressourcen
-                    cell.surrUnCells = AztecsHelper.GetSurroundingCell(x,y,uC);
-                    cell.surrResCells = AztecsHelper.GetSurroundingCell(x,y,rC);
-                    cell.surrNumCells = AztecsHelper.GetSurroundingCell(x,y,"number");
+                    
+                    cell.surrUnCells = AztecsHelper.GetSurroundingCell(x,y,uC); //alle unbekannten Nachbarzellen 
+                    cell.surrResCells = AztecsHelper.GetSurroundingCell(x,y,rC);//alle Nachbarzellen mit Ressource
+                    //cell.surrNumCells = AztecsHelper.GetSurroundingCell(x,y,"number"); // alle Nachbarzellen mit Zahl
                     numberCells[`y${y}x${x}`] = {"x":x,"y":y};
                     
                 }
             }
         }
         let tmp = JSON.parse(JSON.stringify(numberCells));
-                
+        let run = 0;                
         while (Object.keys(tmp).length > 0) {
             let tmp2 = {};
             for (let c in tmp) {
@@ -305,61 +305,63 @@ let AztecsHelper = {
                     if (unrevRes == 0 || unrevRes == cell.surrUnCells.length){ //Anzahl übriger Güter ist 0 oder entspricht der Anzahl unbekannter Felder 
                         let prob = (unrevRes == 0) ? 0 : 1;
                         let content = (unrevRes == 0) ? nrC : rC;
-                        for (let cx of cell.surrUnCells) {
-                            map[cx.y][cx.x].content = content;
-                            map[cx.y][cx.x].prob = prob;
-                            
-                            let uIndex = `y${cx.y}x${cx.x}`;
+                        for (let cx of cell.surrUnCells) { //surrUnCells sind alle bekannt - entweder Ressource oder keine Ressource 
+                            let uC = map[cx.y][cx.x];
+                            uC.content = content;
+                            uC.prob = prob;
+                            for (let snC of uC.surrNumCells) {  //Zahlennachbarn der vormals unbekannten Nachbarzelle prüfen und diese der erneuten Prüfung unterziehen
+                                tmp2[`y${snC.y}x${snC.x}`] = snC;                                    
+                            }
+                            let uIndex = `y${cx.y}x${cx.x}`; //Zelle aus der Liste unbekannter Zellen entfernen
                             if (unknownCells.hasOwnProperty(uIndex)) delete unknownCells[uIndex];
                         }
-                        cell.surrUnCells = [];
-                        for (cx of cell.surrNumCells) {
-                            let uIndex=`y${cx.y}x${cx.x}`;
-                            tmp2[uIndex] = cx;
-                        }
+                        cell.surrUnCells = []; //keine unbekannten Nachbarzellen mehr
                     } else {
-                        for (let other in numberCells) {
-                            if (other==c) continue;
+                        for (let other in numberCells) { //andere Zahlenzellen durchgehen
+                            if (other == c) continue;
                             let otherCell = map[numberCells[other].y][numberCells[other].x];
                             
                             let Overlap = [], Diff=[];
-                            [Overlap, Diff] = AztecsHelper.Compare(cell.surrUnCells, otherCell.surrUnCells);
+                            [Overlap, Diff] = AztecsHelper.Compare(cell.surrUnCells, otherCell.surrUnCells); //Überlapp und Unterschied der auf unbekannten Nachbarn zwischen der Zelle und der anderen Zelle bestimmen
                             
-                            if (Overlap.length!=0) {
+                            if (Overlap.length!=0) { //wenn es einen Überlapp gibt
                                 let testP=0;
-                                for (let oC of Overlap) {
+                                for (let oC of Overlap) { //Summe der Wahrscheinlichkeiten der Überlappzellen in Bezug auf die andere Zelle bestimmen
                                     if (map[oC.y][oC.x].hasOwnProperty("probList")) {
                                         testP += map[oC.y][oC.x].probList[other] || 0;
                                     } 
                                 }
-                                let min = unrevRes - (otherCell.content - otherCell.surrResCells.length);
-                                let max = unrevRes - Math.floor(testP);
-                                if (Diff.length == min || max == 0){ 
+                                let min = unrevRes - (otherCell.content - otherCell.surrResCells.length);  //min Anzahl der Diff-Zellen die eine Ressource haben
+                                if (min < 0) min = 0;
+                                let max = unrevRes - Math.floor(testP); //max Anzahl der Diff Zellen die eine Ressource haben können
+
+                                if (Diff.length == min || max == 0){ // Anzahl Diffzellen entspricht dem minimum oder das max ist 0
                                     let prob = (max == 0) ? 0 : 1;
                                     let content = (max == 0) ? nrC : rC;
-                                    for (let cx of Diff) {
-                                        map[cx.y][cx.x].content = content;
-                                        map[cx.y][cx.x].prob = prob;
-                                        
+                                    for (let cx of Diff) {  //Diff Zellen sind alle bekannt - entweder Ressource oder keine Ressource 
+                                        let uC = map[cx.y][cx.x];
+                                        uC.content = content;
+                                        uC.prob = prob;
+                                        for (let snC of uC.surrNumCells) {  //Zahlennachbarn der vormals unbekannten Nachbarzelle prüfen und diese der erneuten Prüfung unterziehen
+                                            tmp2[`y${snC.y}x${snC.x}`] = snC;                                    
+                                        }
                                         let uIndex=`y${cx.y}x${cx.x}`;
-                                        if (unknownCells.hasOwnProperty(uIndex)) delete unknownCells[uIndex];
+                                        if (unknownCells.hasOwnProperty(uIndex)) delete unknownCells[uIndex]; //entferne Zelle aus Liste unbekannter Zellen
                                     }
-                                    cell.surrUnCells = JSON.parse(JSON.stringify(Overlap));
-                                    tmp2[other] = numberCells[other];
-                                    unrevRes -= (max == 0) ? 0 : min;
+                                    cell.surrUnCells = JSON.parse(JSON.stringify(Overlap)); // da alle Diff-Zellen bekannt, werden unbekannte Nachbarzellen reduziert auf Überlapp
+                                    unrevRes -= (max == 0) ? 0 : min; //anzahl übrige Ressourcen um Zelle reduzieren
                                 }
                             }
                         }
-                        if (cell.surrUnCells.length > 0) {
-                            for (let dC of cell.surrUnCells) {
-                                let newP = unrevRes / cell.surrUnCells.length;
-                                if (!map[dC.y][dC.x].hasOwnProperty("probList")) map[dC.y][dC.x].probList = [];
-                                let oldP = (!map[dC.y][dC.x].probList[c]) ? 0 : map[dC.y][dC.x].probList[c];
-                                if (oldP != newP) {
-                                    map[dC.y][dC.x].probList[c] = newP;
-                                    for (cx of map[dC.y][dC.x].surrNumCells) {
-                                        let uIndex=`y${cx.y}x${cx.x}`;
-                                        tmp2[uIndex] = cx;
+                        if (cell.surrUnCells.length > 0) { //es sind noch unbekannte Nachbarzellen vorhanden
+                            for (let dC of cell.surrUnCells) {//unbekannte Nachbarzellen durchgehen
+                                let newP = unrevRes / cell.surrUnCells.length; //wahrscheinlichkeit, dass Nachbarzelle eine Ressource hat ist Anzahl Ressourcen/Anzahl unbekannter Nachbarn 
+                                if (!map[dC.y][dC.x].hasOwnProperty("probList")) map[dC.y][dC.x].probList = []; //probList anlegen, falls noch nicht vorhanden
+                                let oldP = map[dC.y][dC.x].probList[c] || 0; //bisherige Wahrscheinlichkeit auslesen
+                                if (oldP != newP) {//wenn sich Wahrscheinlichkeit geändert hat
+                                    map[dC.y][dC.x].probList[c] = newP; //neue Wahrscheinlichkeit zuweisen
+                                    for (snC of map[dC.y][dC.x].surrNumCells) { // und benachbarte Zahlenzellen erneuter Prüfung unterziehen
+                                        tmp2[`y${snC.y}x${snC.x}`] = snC;                                   
                                     }
                                 }
                             }
@@ -367,14 +369,18 @@ let AztecsHelper = {
                     }
                 }
             }
+            if (run >= 20) {   //möglicher Debugger-Breakpoint für Endlosschleife
+                console.log("Endlosschleife???");
+            }
             tmp = tmp2;
+            run++;
         }  
         
-        for (let c in unknownCells) {
+        for (let c in unknownCells) { //alle noch unbekannten Zellen durchgehen
             let cell = unknownCells[c];
-            if (!map[cell.y][cell.x].probList) continue;
-            map[cell.y][cell.x].prob = Math.max(...AztecsHelper.remIndex(map[cell.y][cell.x].probList));
-            delete map[cell.y][cell.x].probList;
+            if (!map[cell.y][cell.x].probList) continue; //wenn probList existiert
+            map[cell.y][cell.x].prob = Math.max(...AztecsHelper.remIndex(map[cell.y][cell.x].probList)); //maximum der probList als Wahrscheilichkeit notieren
+            delete map[cell.y][cell.x].probList; //probList entfernen
         }
 
         AztecsHelper.CalcBody();
