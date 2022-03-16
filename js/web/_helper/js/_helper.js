@@ -413,7 +413,7 @@ let HTML = {
 
 		document.getElementById(el.id + "Header").removeEventListener("pointerdown", dragMouseDown);
 
-		let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0, top = 0, left = 0, id;
+		let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0, top = 0, left = 0, id;			
 
 		id = el.id;
 
@@ -446,12 +446,32 @@ let HTML = {
 			top = (el.offsetTop - pos2);
 			left = (el.offsetLeft - pos1);
 
+			let noOverflow = $('.overflowHidden').length > 0;
+
 			// Schutz gegen "zu Hoch geschoben"
 			if (top < 0) {
-				top = 12;
+				top = 0;
 
-				document.onpointerup = null;
-				document.onpointermove = null;
+				//document.onpointerup = null;
+				//document.onpointermove = null;
+			}
+			if (left < 0) {
+				left = 0;
+
+				//document.onpointerup = null;
+				//document.onpointermove = null;
+			}
+			if ((left + el.clientWidth > window.innerWidth) && noOverflow) {
+				left = window.innerWidth - el.clientWidth;
+
+				//document.onpointerup = null;
+				//document.onpointermove = null;
+			}
+			if (top + el.clientHeight > window.innerHeight && noOverflow) {
+				top = window.innerHeight - el.clientHeight;
+
+				//document.onpointerup = null;
+				//document.onpointermove = null;
 			}
 
 			el.style.top = top + "px";
