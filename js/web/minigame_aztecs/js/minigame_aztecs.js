@@ -328,7 +328,7 @@ let AztecsHelper = {
                             if (Overlap.length!=0) {
                                 let testP=0;
                                 for (let oC of Overlap) {
-                                    if (map[oC.y][oC.x].hasOwnProperty(probList)) {
+                                    if (map[oC.y][oC.x].hasOwnProperty("probList")) {
                                         testP += map[oC.y][oC.x].probList[other] || 0;
                                     } 
                                 }
