@@ -436,6 +436,8 @@
   "Boxes.GvGMap.Sector.Hitpoints": "Hitpoints",
   "Boxes.GvGMap.Sector.Terrain_beach" : "Beach",
   "Boxes.GvGMap.Sector.Terrain_plain" : "Plain",
+  "Boxes.GvGMap.Sector.Terrain_rocks" : "Rocks",
+  "Boxes.GvGMap.Sector.Terrain_water" : "Water",	
   "Boxes.GvGMap.Sector.Terrain":"Terrain",
   "Boxes.GvGMap.Sector.Power": "Power",
   "Boxes.GvGMap.Sector.Protected": "Sector is protected",
