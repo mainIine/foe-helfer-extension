@@ -258,6 +258,7 @@ let AztecsHelper = {
         
         var numberCells = {};
         var unknownCells = {};
+        var leftRes = ResourcesLeft;
 
         //reset prob and eval attribute
         for (let y = 0; y < AztecsHelper.mapHeight; y++) {
@@ -269,8 +270,8 @@ let AztecsHelper = {
         for (let y = 0; y < AztecsHelper.mapHeight; y++) {
             for (let x = 0; x < AztecsHelper.mapWidth; x++) {
                 var cell = map[y][x];
-                if (cell.content === nrC) {cell.prob = 0}
-                if (cell.content === rC) {cell.prob = 1}
+                if (cell.content === nrC) {cell.prob = 0};
+                if (cell.content === rC) {cell.prob = 1};
                 if (cell.content === uC) {
                     unknownCells[`y${y}x${x}`] = {"x":x,"y":y};
                     cell.surrNumCells = AztecsHelper.GetSurroundingCell(x,y,"number"); //alle Nachbarzellen mit Zahl
@@ -287,17 +288,15 @@ let AztecsHelper = {
         }
         let tmp = JSON.parse(JSON.stringify(numberCells));
         let run = 0;                
-        while (Object.keys(tmp).length > 0) {
+        while (Object.keys(tmp).length > 0 && leftRes > 0) {
             let tmp2 = {};
             for (let c in tmp) {
                 if (tmp2.hasOwnProperty(c)) delete tmp2[c];
+                if (leftRes == 0) break;
                 
-                x=tmp[c].x;
-                y=tmp[c].y;
-                
-                let cell = map[y][x];
-                cell.surrUnCells = AztecsHelper.GetSurroundingCell(x,y,uC);
-                cell.surrResCells = AztecsHelper.GetSurroundingCell(x,y,rC);
+                let cell = map[tmp[c].y][tmp[c].x];
+                cell.surrUnCells = AztecsHelper.GetSurroundingCell(tmp[c].x,tmp[c].y,uC);
+                cell.surrResCells = AztecsHelper.GetSurroundingCell(tmp[c].x,tmp[c].y,rC);
                 
                 //Wenn drumherum unbekannte Felder vorhanden sind
                 if (cell.surrUnCells.length > 0){
@@ -312,6 +311,7 @@ let AztecsHelper = {
                             for (let snC of uC.surrNumCells) {  //Zahlennachbarn der vormals unbekannten Nachbarzelle prüfen und diese der erneuten Prüfung unterziehen
                                 tmp2[`y${snC.y}x${snC.x}`] = snC;                                    
                             }
+                            if (prob=1) leftRes--;
                             let uIndex = `y${cx.y}x${cx.x}`; //Zelle aus der Liste unbekannter Zellen entfernen
                             if (unknownCells.hasOwnProperty(uIndex)) delete unknownCells[uIndex];
                         }
@@ -345,6 +345,7 @@ let AztecsHelper = {
                                         for (let snC of uC.surrNumCells) {  //Zahlennachbarn der vormals unbekannten Nachbarzelle prüfen und diese der erneuten Prüfung unterziehen
                                             tmp2[`y${snC.y}x${snC.x}`] = snC;                                    
                                         }
+                                        if (prob=1) leftRes--;
                                         let uIndex=`y${cx.y}x${cx.x}`;
                                         if (unknownCells.hasOwnProperty(uIndex)) delete unknownCells[uIndex]; //entferne Zelle aus Liste unbekannter Zellen
                                     }
@@ -353,7 +354,7 @@ let AztecsHelper = {
                                 }
                             }
                         }
-                        if (cell.surrUnCells.length > 0) { //es sind noch unbekannte Nachbarzellen vorhanden
+                        if (cell.surrUnCells.length > 0 && leftRes > 0) { //es sind noch unbekannte Nachbarzellen vorhanden
                             for (let dC of cell.surrUnCells) {//unbekannte Nachbarzellen durchgehen
                                 let newP = unrevRes / cell.surrUnCells.length; //wahrscheinlichkeit, dass Nachbarzelle eine Ressource hat ist Anzahl Ressourcen/Anzahl unbekannter Nachbarn 
                                 if (!map[dC.y][dC.x].hasOwnProperty("probList")) map[dC.y][dC.x].probList = []; //probList anlegen, falls noch nicht vorhanden
@@ -378,7 +379,14 @@ let AztecsHelper = {
         
         for (let c in unknownCells) { //alle noch unbekannten Zellen durchgehen
             let cell = unknownCells[c];
+            if (leftRes==0) {
+                map[cell.y][cell.x].prob = 0;
+                map[cell.y][cell.x].content = nrC;
+                if (!(!map[cell.y][cell.x].probList)) delete map[cell.y][cell.x].probList
+                continue;
+            }
             if (!map[cell.y][cell.x].probList) continue; //wenn probList existiert
+            map[cell.y][cell.x].probList.push(leftRes/Object.keys(unknownCells).length);
             map[cell.y][cell.x].prob = Math.max(...AztecsHelper.remIndex(map[cell.y][cell.x].probList)); //maximum der probList als Wahrscheilichkeit notieren
             delete map[cell.y][cell.x].probList; //probList entfernen
         }
@@ -441,7 +449,7 @@ let AztecsHelper = {
     remIndex: (array) => {
         let out=[];
         for (x in array) {
-            out.push(array[x]);
+            if (array.hasOwnProperty(x)) out.push(array[x]);
         }
         return out;
     },
