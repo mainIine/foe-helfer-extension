@@ -37,8 +37,8 @@ let _menu_bottom = {
 		hud.append(btnDown);
 		
 		// If the window size changes, recalculate
-		window.onresize = function() {
-			_menu_bottom.SetMenuWidth(true);
+		window.onresize = function(event) {
+			if (event.target == window) _menu_bottom.SetMenuWidth(true);
 		};
 		
 		$('body').append(hud).promise().done(function(){
