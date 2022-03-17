@@ -238,6 +238,38 @@ let AztecsHelper = {
             span.className = "aztecDescription";
             divDes.className = "aztecDescriptionWrapper";
             divDes.appendChild(span);
+            
+            span = document.createElement('span');
+            span.innerHTML= '&nbsp;0%';
+            span.className = 'aztec color-red';
+            span.style='font-weight:bold'
+            divDes.appendChild(span);
+            span = document.createElement('span');
+            span.innerHTML= '&nbsp;➜';
+            span.className = 'aztec color-orangered';
+            span.style='font-weight:bold'
+            divDes.appendChild(span);
+            span = document.createElement('span');
+            span.innerHTML= '&nbsp;50%➜';
+            span.className = 'aztec color-orange';
+            span.style='font-weight:bold'
+            divDes.appendChild(span);
+            span = document.createElement('span');
+            span.innerHTML= '&nbsp;66%➜';
+            span.className = 'aztec color-yellow';
+            span.style='font-weight:bold'
+            divDes.appendChild(span);
+            span = document.createElement('span');
+            span.innerHTML= '&nbsp;75%➜';
+            span.className = 'aztec color-yellowgreen';
+            span.style='font-weight:bold'
+            divDes.appendChild(span);
+            span = document.createElement('span');
+            span.innerHTML= '&nbsp;100%';
+            span.className = 'aztec color-chartreuse';
+            span.style='font-weight:bold'
+            divDes.appendChild(span);
+            
             $('#aztecsHelperBody').append(table);
             $('#aztecsHelperBody').append(divDes);
         }else{
