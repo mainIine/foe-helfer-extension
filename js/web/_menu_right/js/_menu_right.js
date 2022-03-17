@@ -32,8 +32,8 @@ let _menu_right = {
 		hud.append(btnDown);
 
 		// Wenn sie die Fenstergröße verändert, neu berechnen
-		window.onresize = function () {
-			_menu_right.SetMenuHeight(true);
+		window.onresize = function (event) {
+			if (event.target == window) _menu_right.SetMenuHeight(true);
 		};
 
 		$('body').append(hud).ready(function () {
