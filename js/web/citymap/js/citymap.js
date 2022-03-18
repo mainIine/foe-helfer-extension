@@ -282,16 +282,16 @@ let CityMap = {
 			CityMap.OccupiedArea2[d.type] += (BuildingSize['building_area']);
 
 			StreetsNeeded += BuildingSize['street_area'];
-	
-			// Search age
-			if (d['is_multi_age'] && CityMap.CityData[b]['level']) {
-				era = CityMap.CityData[b]['level'] + 1;
 
-			}
 			// Great building
-			else if (d['type'] === 'greatbuilding') {
+			if (d['type'] === 'greatbuilding') {
 				era = CurrentEraID;
 			}
+			// Multi era
+			else if (CityMapEntity['level']) {
+				era = CityMapEntity['level'] + 1;
+			}
+			// Zeitalter suchen
 			else {
 				let regExString = new RegExp("(?:_)((.[\\s\\S]*))(?:_)", "ig"),
 					testEra = regExString.exec(d['id']);
