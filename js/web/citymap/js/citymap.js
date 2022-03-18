@@ -275,7 +275,7 @@ let CityMap = {
 					.attr('data-entityid', CityMap.CityData[b]['id']),
 				era;
 			
-			if (!d.type) d.type = d?.components?[Object.keys(d.components)[0]].tags?.tags?.find(value => value.hasOwnProperty('buildingType')).buildingType;
+			if (!d.type) d.type = d?.components[Object.keys(d.components)[0]].tags?.tags?.find(value => value.hasOwnProperty('buildingType')).buildingType;
 
 			CityMap.OccupiedArea += (BuildingSize['building_area']);
 
