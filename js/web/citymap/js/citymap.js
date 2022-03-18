@@ -257,7 +257,8 @@ let CityMap = {
 		{
 			if (!CityMap.CityData.hasOwnProperty(b) || CityMap.CityData[b]['x'] < MinX || CityMap.CityData[b]['x'] > MaxX || CityMap.CityData[b]['y'] < MinY || CityMap.CityData[b]['y'] > MaxY) continue;
 
-			let d = MainParser.CityEntities[CityMap.CityData[b]['cityentity_id']],
+			let CityMapEntity = CityMap.CityData[b],
+				d = MainParser.CityEntities[CityMapEntity['cityentity_id']],
 				BuildingSize = CityMap.GetBuildingSize(CityMap.CityData[b]),
 
 				x = (CityMap.CityData[b]['x'] === undefined ? 0 : ((parseInt(CityMap.CityData[b]['x']) * CityMap.ScaleUnit) / 100)),
@@ -275,12 +276,10 @@ let CityMap = {
 					.attr('data-entityid', CityMap.CityData[b]['id']),
 				era;
 			
-			if (!d.type) d.type = d?.components?.AllAge?.tags?.tags?.find(value => value.hasOwnProperty('buildingType')).buildingType;
-
 			CityMap.OccupiedArea += (BuildingSize['building_area']);
 
-			if (!CityMap.OccupiedArea2[d.type]) CityMap.OccupiedArea2[d.type] = 0;
-			CityMap.OccupiedArea2[d.type] += (BuildingSize['building_area']);
+			if (!CityMap.OccupiedArea2[CityMapEntity.type]) CityMap.OccupiedArea2[CityMapEntity.type] = 0;
+			CityMap.OccupiedArea2[CityMapEntity.type] += (BuildingSize['building_area']);
 
 			StreetsNeeded += BuildingSize['street_area'];
 	
