@@ -51,26 +51,26 @@ table.aztecTable{
 }
 
 
-.aztec.color-red{
+.aztec.color0{
     color:red;
 }
-.aztec.color-orangered{
+.aztec.color1{
     color:orangered;
 }
-.aztec.color-orange{
+.aztec.color2{
     color:orange;
 }
-.aztec.color-yellow{
+.aztec.color3{
     color:yellow;
 }
-.aztec.color-yellowgreen{
-    color:yellowgreen;
+.aztec.color4{
+    color:greenyellow;
 }
-.aztec.color-chartreuse{
+.aztec.color5{
     color:chartreuse;
 }
-.aztec.color-green{
-    color:green;
+.aztec.color6{
+    color:#0FFF50;
 }
 
 #aztecsHelperBody .aztecDescriptionWrapper{
