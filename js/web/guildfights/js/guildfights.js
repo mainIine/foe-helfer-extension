@@ -1438,9 +1438,12 @@ let GuildFights = {
 				{
 					let colors = GuildFights.SortedColors.find(e => e['id'] === data['ownerId']);
 
-					ProvinceMap.MapMerged[index].ownerId = data['ownerId'];
-					ProvinceMap.MapMerged[index].fillStyle = ProvinceMap.hexToRgb(colors['main'], '.3');
-					ProvinceMap.MapMerged[index].strokeStyle = ProvinceMap.hexToRgb(colors['main']);
+					if(colors)
+					{
+						ProvinceMap.MapMerged[index].ownerId = data['ownerId'];
+						ProvinceMap.MapMerged[index].fillStyle = ProvinceMap.hexToRgb(colors['main'], '.3');
+						ProvinceMap.MapMerged[index].strokeStyle = ProvinceMap.hexToRgb(colors['main']);
+					}
 				}
 			});
 
