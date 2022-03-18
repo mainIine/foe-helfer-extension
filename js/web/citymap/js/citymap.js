@@ -253,111 +253,95 @@ let CityMap = {
 			MaxX = 63,
 			MaxY = 63;
 
-		for (let b in CityMap.CityData)
-		{
-			if (!CityMap.CityData.hasOwnProperty(b) || CityMap.CityData[b]['x'] < MinX || CityMap.CityData[b]['x'] > MaxX || CityMap.CityData[b]['y'] < MinY || CityMap.CityData[b]['y'] > MaxY) continue;
-
-			let CityMapEntity = CityMap.CityData[b],
-				d = MainParser.CityEntities[CityMapEntity['cityentity_id']],
-				BuildingSize = CityMap.GetBuildingSize(CityMap.CityData[b]),
-
-				x = (CityMap.CityData[b]['x'] === undefined ? 0 : ((parseInt(CityMap.CityData[b]['x']) * CityMap.ScaleUnit) / 100)),
-				y = (CityMap.CityData[b]['y'] === undefined ? 0 : ((parseInt(CityMap.CityData[b]['y']) * CityMap.ScaleUnit) / 100)),
-				xsize = ((parseInt(BuildingSize['xsize']) * CityMap.ScaleUnit) / 100),
-				ysize = ((parseInt(BuildingSize['ysize']) * CityMap.ScaleUnit) / 100),
-
-				f = $('<span />').addClass('entity ' + d['type']).css({
-					width: xsize + 'em',
-					height: ysize + 'em',
-					left: x + 'em',
-					top: y + 'em'
-				})
-					.attr('title', d['name'])
-					.attr('data-entityid', CityMap.CityData[b]['id']),
-				era;
-			
-			CityMap.OccupiedArea += (BuildingSize['building_area']);
-
-			if (!CityMap.OccupiedArea2[CityMapEntity.type]) CityMap.OccupiedArea2[CityMapEntity.type] = 0;
-			CityMap.OccupiedArea2[CityMapEntity.type] += (BuildingSize['building_area']);
-
-			StreetsNeeded += BuildingSize['street_area'];
+			for (let b in CityMap.CityData)
+			{
+				if (!CityMap.CityData.hasOwnProperty(b) || CityMap.CityData[b]['x'] < MinX || CityMap.CityData[b]['x'] > MaxX || CityMap.CityData[b]['y'] < MinY || CityMap.CityData[b]['y'] > MaxY) continue;
+				let d = MainParser.CityEntities[CityMap.CityData[b]['cityentity_id']];
+				if (!d.type) d.type = d?.components?.AllAge?.tags?.tags?.find(value => value.hasOwnProperty('buildingType')).buildingType;
 	
-			// Search age
-			if (d['is_multi_age'] && CityMap.CityData[b]['level']) {
-				era = CityMap.CityData[b]['level'] + 1;
-
-			}
-			// Great building
-			else if (d['type'] === 'greatbuilding') {
-				era = CurrentEraID;
-			}
-			else {
-				let regExString = new RegExp("(?:_)((.[\\s\\S]*))(?:_)", "ig"),
-					testEra = regExString.exec(d['id']);
-
-				if (testEra && testEra.length > 1) {
-					era = Technologies.Eras[testEra[1]];
-
-					// AllAge => Current era
-					if (era === 0) {
-						era = CurrentEraID;
+				let	BuildingSize = CityMap.GetBuildingSize(CityMap.CityData[b]),
+					x = (CityMap.CityData[b]['x'] === undefined ? 0 : ((parseInt(CityMap.CityData[b]['x']) * CityMap.ScaleUnit) / 100)),
+					y = (CityMap.CityData[b]['y'] === undefined ? 0 : ((parseInt(CityMap.CityData[b]['y']) * CityMap.ScaleUnit) / 100)),
+					xsize = ((parseInt(BuildingSize['xsize']) * CityMap.ScaleUnit) / 100),
+					ysize = ((parseInt(BuildingSize['ysize']) * CityMap.ScaleUnit) / 100),
+					f = $('<span />').addClass('entity ' + d['type']).css({
+						width: xsize + 'em',
+						height: ysize + 'em',
+						left: x + 'em',
+						top: y + 'em'
+					})
+						.attr('title', d['name'])
+						.attr('data-entityid', CityMap.CityData[b]['id']),
+					era;
+	
+				
+				CityMap.OccupiedArea += (BuildingSize['building_area']);
+	
+				if (!CityMap.OccupiedArea2[d.type]) CityMap.OccupiedArea2[d.type] = 0;
+				CityMap.OccupiedArea2[d.type] += (BuildingSize['building_area']);
+				StreetsNeeded += BuildingSize['street_area'];
+		
+				// Search age
+				if ((d['is_multi_age'] && CityMap.CityData[b]['level']) ||
+					(CityMap.CityData[b]['type'] === "generic_building" && CityMap.CityData[b]['level'])) {
+					era = CityMap.CityData[b]['level'] + 1;
+				}
+				// Great building
+				else if (d['type'] === 'greatbuilding') {
+					era = CurrentEraID;
+				}
+				else {
+					let regExString = new RegExp("(?:_)((.[\\s\\S]*))(?:_)", "ig"),
+						testEra = regExString.exec(d['id']);
+					if (testEra && testEra.length > 1) {
+						era = Technologies.Eras[testEra[1]];
+						// AllAge => Current era
+						if (era === 0) {
+							era = CurrentEraID;
+						}
 					}
 				}
-			}
-
-			if(era){
-				f.attr({
-					title: `${d['name']}<br><em>${i18n('Eras.' + era )}</em>`
-				})
-
-				if (era < CurrentEraID) {
-                    f.addClass('oldBuildings');
-
-					let eraDiff = CurrentEraID - era;
-					
-					switch(eraDiff){
-						case 1:
-							f.addClass('older-1');
-							break;
-
-						case 2:
-							f.addClass('older-2');
-							break;
-
-						case 3:
-							f.addClass('older-3');
-							break;
-
-						default: 
-							f.addClass('to-old');
-							break;
+				if(era){
+					f.attr({
+						title: `${d['name']}<br><em>${i18n('Eras.' + era )}</em>`
+					})
+					if (era < CurrentEraID) {
+						f.addClass('oldBuildings');
+						let eraDiff = CurrentEraID - era;
+						
+						switch(eraDiff){
+							case 1:
+								f.addClass('older-1');
+								break;
+							case 2:
+								f.addClass('older-2');
+								break;
+							case 3:
+								f.addClass('older-3');
+								break;
+							default: 
+								f.addClass('to-old');
+								break;
+						}
 					}
-                }
+				}
+				// die Größe wurde geändert, wieder aktivieren
+				if (ActiveId !== null && ActiveId === CityMap.CityData[b]['id'])
+				{
+					f.addClass('pulsate');
+				}
+				$('#grid-outer').append( f );
 			}
-
-			// die Größe wurde geändert, wieder aktivieren
-			if (ActiveId !== null && ActiveId === CityMap.CityData[b]['id'])
-			{
-				f.addClass('pulsate');
-			}
-
-			$('#grid-outer').append( f );
-		}
-
-		let StreetsUsed = CityMap.OccupiedArea2['street'] | 0;
-		CityMap.EfficiencyFactor = StreetsNeeded / StreetsUsed;
-
-		// Gebäudenamen via Tooltip
-		$('.entity').tooltip({
-			container: '#city-map-overlayBody',
-			html: true
-		});
-
-		$('#grid-outer').draggable();
-
-		CityMap.getAreas();
-	},
+			let StreetsUsed = CityMap.OccupiedArea2['street'] | 0;
+			CityMap.EfficiencyFactor = StreetsNeeded / StreetsUsed;
+			// Gebäudenamen via Tooltip
+			$('.entity').tooltip({
+				container: '#city-map-overlayBody',
+				html: true
+			});
+			$('#grid-outer').draggable();
+			CityMap.getAreas();
+		},
 
 
 	/**
