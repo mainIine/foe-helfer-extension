@@ -274,6 +274,8 @@ let CityMap = {
 					.attr('title', d['name'])
 					.attr('data-entityid', CityMap.CityData[b]['id']),
 				era;
+			
+			if (!d.type) d.type = d?.components?[Object.keys(d.components)[0]].tags?.tags?.find(value => value.hasOwnProperty('buildingType')).buildingType;
 
 			CityMap.OccupiedArea += (BuildingSize['building_area']);
 
@@ -281,7 +283,7 @@ let CityMap = {
 			CityMap.OccupiedArea2[d.type] += (BuildingSize['building_area']);
 
 			StreetsNeeded += BuildingSize['street_area'];
-
+	
 			// Search age
 			if (d['is_multi_age'] && CityMap.CityData[b]['level']) {
 				era = CityMap.CityData[b]['level'] + 1;
