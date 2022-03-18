@@ -291,6 +291,10 @@ let CityMap = {
 			else if (CityMapEntity['level']) {
 				era = CityMapEntity['level'] + 1;
 			}
+			// new format
+			else if (d?.components?.AllAge?.era?.era) {
+				era = Technologies.Eras[d.components.AllAge.era.era];
+			}
 			// Zeitalter suchen
 			else {
 				let regExString = new RegExp("(?:_)((.[\\s\\S]*))(?:_)", "ig"),
