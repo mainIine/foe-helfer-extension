@@ -60,14 +60,12 @@ FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postDa
 	$('#gildFight-Btn').removeClass('hud-btn-red');
 	$('#selectorCalc-Btn-closed').remove();
 
-	if ($('#ProvinceMap').length > 0)
-	{
+	if ($('#ProvinceMap').length > 0) {
 		ProvinceMap.RefreshSector();
 	}
 
 	// update box when open
-	if ($('#LiveGildFighting').length > 0)
-	{
+	if ($('#LiveGildFighting').length > 0) {
 		GuildFights.BuildFightContent();
 	}
 });
@@ -130,28 +128,22 @@ let GuildFights = {
 		GuildFights.db.open();
 	},
 
-	/**
-	 * Zündung
-	 */
 	init: () => {
 		// moment.js global set
 		moment.locale(MainParser.Language);
 
 		GuildFights.GetAlerts();
 
-		if (GuildFights.InjectionLoaded === false)
-		{
+		if (GuildFights.InjectionLoaded === false) {
 			FoEproxy.addWsHandler('GuildBattlegroundService', 'all', data => {
 
 				// Update Tables
-				if ($('#LiveGildFighting').length > 0 && data['responseData'][0])
-				{
+				if ($('#LiveGildFighting').length > 0 && data['responseData'][0]) {
 					GuildFights.RefreshTable(data['responseData'][0]);
 				}
 
 				// Update Minimap
-				if($('#ProvinceMap').length > 0 && data['responseData'][0])
-				{
+				if($('#ProvinceMap').length > 0 && data['responseData'][0]) {
 					ProvinceMap.RefreshSector(data['responseData'][0]);
 				}
 			});
@@ -1416,7 +1408,7 @@ let GuildFights = {
 	RefreshTable: (data) => {
 
 		// Province is locked
-		if (data['conquestProgress'].length === 0 || data['lockedUntil']) {
+		if (data['lockedUntil']) {
 			let $province = $(`#province-${data['id']}`),
 				elements = $province.find('.attack').length;
 
@@ -1433,12 +1425,10 @@ let GuildFights = {
 
 			// search the province for owner update
 			ProvinceMap.Provinces.forEach((province, index) => {
-				if (province.id === data['id'])
-				{
-					let colors = GuildFights.SortedColors.find(e => e['id'] === data['ownerId']);
+				if (province.id === data['id']) {
+					let colors = getSectorColors(data['ownerId']);
 
-					if(colors)
-					{
+					if(colors) {
 						ProvinceMap.MapMerged[index].ownerId = data['ownerId'];
 						ProvinceMap.MapMerged[index].fillStyle = ProvinceMap.hexToRgb(colors['main'], '.3');
 						ProvinceMap.MapMerged[index].strokeStyle = ProvinceMap.hexToRgb(colors['main']);
@@ -1446,10 +1436,7 @@ let GuildFights = {
 				}
 			});
 
-			if ($('#ProvinceMap').length > 0)
-			{
-				ProvinceMap.RefreshSector();
-			}
+			console.log(ProvinceMap.MapMerged);
 
 			return;
 		}
@@ -1793,13 +1780,13 @@ let ProvinceMap = {
 
 		// Objects
 		function Province(data) {
+			console.log(getSectorColors(data.ownerID));
 			this.id = data.id || 0;
 			this.name = data.name;
 			this.short = data.short;
 			this.links = data.links;
 			this.flag = data.flag;
 			this.flagPos = data.flagPos;
-			this.ownerID = data.ownerID;
 			this.owner = {
 				id: data.ownerID,
 				name: data.ownerName,
@@ -1826,26 +1813,26 @@ let ProvinceMap = {
 		}
 
 		Province.prototype.updateMapSector = function () {
-			this.drawGGMapSector(GuildFights.MapData.map['id']);
+			this.drawMapSector(GuildFights.MapData.map['id']);
 		}
 
-		Province.prototype.drawGGMapSector = function (mapType = 'waterfall_archipelago') {
+		Province.prototype.drawMapSector = function (mapType = 'waterfall_archipelago') {
 			ProvinceMap.MapCTX.font = 'bold 30px Arial';
 			ProvinceMap.MapCTX.textAlign = "center";
-
 			ProvinceMap.MapCTX.fillStyle = this.owner.colors.highlight;
 			
 			let sector = this;
 			let noRealignSectors = [];
 
+			// waterfall map
 			let mapStuff = {
 				sizeFactor: ProvinceMap.Size.width / 8,
 				offsetX: ProvinceMap.Size.width / 14,
 				offsetY: ProvinceMap.Size.height / 20,
 				hexwidth: ProvinceMap.Size.width / 8,
 				hexheight: ProvinceMap.Size.height / 10,
-				x: sector.flag.x * (ProvinceMap.Size.width / 8 * 0.375) + ProvinceMap.Size.width / 14,
-				y: sector.flag.y * (ProvinceMap.Size.height / 10 * 0.5) + (ProvinceMap.Size.height / 20)
+				x: sector.flag.x * (ProvinceMap.Size.width / 3) + ProvinceMap.Size.width / 14,
+				y: sector.flag.y * (ProvinceMap.Size.height / 5) + (ProvinceMap.Size.height / 20)
 			};
 
 			if (mapType === 'volcano_archipelago') {
@@ -1882,9 +1869,7 @@ let ProvinceMap = {
 				if (sector.lockedUntil !== undefined) 
 					mapStuff.y = mapStuff.y+15;
 				
-				if (sector.conquestProgress != []) {
-					sector.drawProgress(mapStuff);
-				}
+				sector.drawProgress(mapStuff);
 			}
 		}
 
@@ -1920,20 +1905,21 @@ let ProvinceMap = {
 		}
 
 		Province.prototype.drawProgress = function(mapStuff) {
-			this.conquestProgress.forEach(function(prog, index) {
-				let progDiff = (prog.progress / prog.maxProgress);
+			if (this.conquestProgress !== undefined && this.conquestProgress !== [])
+				this.conquestProgress.forEach(function(prog, index) {
+					let progDiff = (prog.progress / prog.maxProgress);
 
-				let color = GuildFights.SortedColors.find(c => (c.id === prog.participantId));
-				ProvinceMap.MapCTX.fillStyle = '#1118';
-				ProvinceMap.MapCTX.fillRect(mapStuff.x-20, mapStuff.y + 5*index, 1 + 110/3, 2);
-				ProvinceMap.MapCTX.fillStyle = color.highlight;
-				ProvinceMap.MapCTX.strokeRect(mapStuff.x-20, mapStuff.y + 5*index, 3 + 110/3*progDiff, 3);
-				ProvinceMap.MapCTX.fillRect(mapStuff.x-20, mapStuff.y + 5*index, 3 + 110/3*progDiff, 3);
-				// old waterfall stuff
-				// ProvinceMap.MapCTX.fillRect((mapStuff.x - mapStuff.hexwidth * 0.18), (mapStuff.y + (mapStuff.hexheight*0.3)) + 4 * index, 3 + mapStuff.hexwidth/3*progDiff, 3);
-				// ProvinceMap.MapCTX.strokeRect((mapStuff.x - mapStuff.hexwidth * 0.18), (mapStuff.y + (mapStuff.hexheight*0.3)) + 4 * index, 3 + mapStuff.hexwidth/3*progDiff, 3);
+					let color = GuildFights.SortedColors.find(c => (c.id === prog.participantId));
+					ProvinceMap.MapCTX.fillStyle = '#1118';
+					ProvinceMap.MapCTX.fillRect(mapStuff.x-20, mapStuff.y + 5*index, 1 + 110/3, 2);
+					ProvinceMap.MapCTX.fillStyle = color.highlight;
+					ProvinceMap.MapCTX.strokeRect(mapStuff.x-20, mapStuff.y + 5*index, 3 + 110/3*progDiff, 3);
+					ProvinceMap.MapCTX.fillRect(mapStuff.x-20, mapStuff.y + 5*index, 3 + 110/3*progDiff, 3);
+					// old waterfall stuff
+					// ProvinceMap.MapCTX.fillRect((mapStuff.x - mapStuff.hexwidth * 0.18), (mapStuff.y + (mapStuff.hexheight*0.3)) + 4 * index, 3 + mapStuff.hexwidth/3*progDiff, 3);
+					// ProvinceMap.MapCTX.strokeRect((mapStuff.x - mapStuff.hexwidth * 0.18), (mapStuff.y + (mapStuff.hexheight*0.3)) + 4 * index, 3 + mapStuff.hexwidth/3*progDiff, 3);
 
-			});
+				});
 		}
 
 		Province.prototype.drawStartSector = function(mapStuff, mapType) {
@@ -2067,30 +2053,16 @@ let ProvinceMap = {
 	 * @constructor
 	 */
 	 RefreshSector: (socketData = []) => {
-		 // this is always undefined?
-		if(socketData.length) { 
-			let idx = ProvinceMap.Provinces.findIndex(p => p.id === socketData['id']);
-			ProvinceMap.Provinces[idx]['conquestProgress'] = socketData['conquestProgress'];
-		}
-
-		if (socketData['id'] != undefined) {
-			// A1 muss man sich anders angucken
+		// TO DO: A1 does not update because id is missing
+		if (socketData['id'] !== undefined) {
 			let updatedProvince = ProvinceMap.Provinces.find(p => p.id === socketData['id']);
 
 			if (socketData.conquestProgress)
 				updatedProvince.conquestProgress = socketData.conquestProgress;
 
-			// something goes wrong here
 			if (socketData.ownerId !== updatedProvince.owner.id) {
-
-				console.log('update', socketData, updatedProvince);
-
 				updatedProvince.owner.id = socketData.ownerId;
-				updatedProvince.ownerID = socketData.ownerId;
-				updatedProvince.owner.name = '';
 				updatedProvince.owner.colors = getSectorColors(socketData.ownerId);
-
-				console.log('set', socketData, updatedProvince);
 			}
 
 			if (socketData.lockedUntil)
