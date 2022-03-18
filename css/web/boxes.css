@@ -470,6 +470,10 @@ p {
 	background-image: url('../images/menu/settings.png');
 }
 
+[id$=settings-Btn] {
+	background: linear-gradient(#464040, #2c2d33) padding-box, linear-gradient(to bottom, #82ae4c, #4f7421) border-box;
+}
+
 [id$=stats-Btn] span {
 	background-image: url('../images/menu/stats.png');
 }
