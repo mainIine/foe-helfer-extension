@@ -1490,7 +1490,7 @@ let GuildFights = {
 				$('#progress').find('table.foe-table').prepend(
 					newCell.append(
 						$('<td />').append(
-							$('<span />').css({ 'background-color': pColor['main'] }).attr({ class: 'province-color' }),
+							$('<span />').css({ 'background-color': ((!pColor) ? '#555':pColor['main'])}).attr({ class: 'province-color' }),
 							$('<b />').text(mD['title']),
 						),
 						(GuildFights.showGuildColumn ? $('<td />').text(p['clan']['name']) : ''),
