@@ -278,8 +278,8 @@ let CityMap = {
 			
 			CityMap.OccupiedArea += (BuildingSize['building_area']);
 
-			if (!CityMap.OccupiedArea2[CityMapEntity.type]) CityMap.OccupiedArea2[CityMapEntity.type] = 0;
-			CityMap.OccupiedArea2[CityMapEntity.type] += (BuildingSize['building_area']);
+			if (!CityMap.OccupiedArea2[d.type]) CityMap.OccupiedArea2[d.type] = 0;
+			CityMap.OccupiedArea2[d.type] += (BuildingSize['building_area']);
 
 			StreetsNeeded += BuildingSize['street_area'];
 	
