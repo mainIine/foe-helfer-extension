@@ -536,6 +536,7 @@ let GuildFights = {
 		GuildFights.BuildPlayerContent(GuildFights.CurrentGBGRound);
 	},
 
+
 	/**
 	 * Generates the snapshot detail box
 	 * @param d
@@ -990,6 +991,7 @@ let GuildFights = {
 
 		$(h.join('')).insertAfter($('#gbgdetail_' + data.date));
 	},
+
 
 	/**
 	 * Contents of the card box
@@ -1988,7 +1990,7 @@ let ProvinceMap = {
 
 				const prov = GuildFights.MapData['map']['provinces'][i.id];
 
-				if (prov['ownerId'] || pD.flagPos)
+				if (prov['ownerId'])
 				{
 					const colors = GuildFights.SortedColors.find(c => (c['id'] === prov['ownerId']));
 
