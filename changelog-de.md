@@ -1,30 +1,32 @@
 ## Changelog - Extension
 
-##### 2.7.0.1
+##### 2.8.0.0
 
 **New**
 - Beta-Modus:
 	- in den Einstellungen kann nun eingestellt werden, dass die aktuelle Beta-Version von Github verwendet werden soll statt der installierten 
-	- Wenn dieser Modus benutzt wird, kann es vermehrt zum Auftreten von Fehlern kommen - bitte berichtet Fehler auf dem Discord oder im Github!
+	- Wenn dieser Modus benutzt wird, kann es vermehrt zum Auftreten von Fehlern kommen - bitte berichtet Fehler auf dem [Discord](https://discord.gg/z97KZq4) oder auf [Github](https://github.com/mainIine/foe-helfer-extension/issues)!
 
 **Update**
 - St.Patricks Box:
-	- das Ziellevel bei den Upgrade-Kosten kann nun sebst bestimmt werden
-	- Für Sammelaufgaben wird nun eine Zeitabschätzung angegeben
+    - das Ziellevel bei den Upgrade-Kosten kann nun selbst bestimmt werden
+    - Für Sammelaufgaben wird nun eine Zeitabschätzung angegeben
+  
 - Gildengefechte:
 	- Wasserfall Karte hinzugefügt
 	- Freischaltzeiten der Sektoren werden nun auf der Karte angezeigt
 
 - Boxen und Menu:
-	- aktualisiertes Design
+	- aktualisiertes Design, weniger Grafiken mehr reines CSS
 
 **BugFix**
 -  St.Patricks Box:
-    - [#2341] es gab keinen Reset der Gebäude bei Start der nächsten Stadt
-	- Berechnung der Zeit bis zum Erreichen der 8,4Q für die nächste Stadt war nicht korrekt
+    - [#2341](https://github.com/mainIine/foe-helfer-extension/issues/2341) [#2348](https://github.com/mainIine/foe-helfer-extension/issues/2348) es gab keinen Reset der Gebäude bei Start der nächsten Stadt
+    - Berechnung der Zeit bis zum Erreichen der 8,4Q für die nächste Stadt war nicht korrekt
+
 
 - Ereignisse:
-	- [#2340] die "Null" ist nun wieder versteckt, wenn es keine Ereignisse gibt
+	- [#2340](https://github.com/mainIine/foe-helfer-extension/issues/2340) die "Null" ist nun wieder versteckt, wenn es keine Ereignisse gibt
 
 
 ---

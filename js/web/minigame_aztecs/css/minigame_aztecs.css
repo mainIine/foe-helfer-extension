@@ -1,0 +1,87 @@
+/*
+ * **************************************************************************************
+ * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
+ *
+ * See file LICENSE.md or go to
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
+ *
+ * **************************************************************************************
+ */
+
+#aztecsHelper {
+	width: 660px;
+    height: 530px;
+    top: calc(50% - -17px);
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    background-image: none;
+}
+
+#aztecsHelper #aztecsHelperHeader {
+    pointer-events: auto;
+}
+
+#aztecsHelper #aztecsHelperBody {
+	overflow: auto;
+}
+
+#aztecsHelperBody .total-wrapper {
+	display: inline-flex;
+	justify-content: space-around;
+	width: calc(100% - 20px);
+	padding: 10px;
+}
+
+table.aztecTable{
+	width: 100%;
+    height: 85%;
+    margin-top: 41px;
+}
+
+#aztecsHelperBody table td {
+    text-align: center;
+    width: 50px;
+    height: 50px;
+    font-weight: bolder;
+    font-size: xx-large;
+}
+
+
+.aztec.color0{
+    color:red;
+}
+.aztec.color1{
+    color:orangered;
+}
+.aztec.color2{
+    color:orange;
+}
+.aztec.color3{
+    color:yellow;
+}
+.aztec.color4{
+    color:greenyellow;
+}
+.aztec.color5{
+    color:chartreuse;
+}
+.aztec.color6{
+    color:#0FFF50;
+}
+
+#aztecsHelperBody .aztecDescriptionWrapper{
+    height: 30px;
+    text-align: center;
+    align-content: center;
+    align-items: center;
+    font-size: medium;
+}
+#aztecsHelperBody .aztecDescription{
+    text-align: center;
+    align-content: center;
+    color: darkturquoise;
+}

@@ -62,7 +62,11 @@ FoEproxy.addHandler('IdleGameService', 'getState', (data, postData) => {
 		}
 	
 	}
-	
+
+	if (data.responseData.stage) {
+		stPatrick.stPatStage = data.responseData.stage;
+	}
+
 	stPatrick.stPatrickUpdateDialog();
 });
 
@@ -156,7 +160,8 @@ let stPatrick = {
 
 	Progress: 0,
 	ProgressDegree: 0,
-	
+	stPatStage: 0,
+
 	stPatNums: {
 		0 : "",
 		1 : "K",
@@ -256,7 +261,7 @@ let stPatrick = {
         htmltext += `<tr><td id="stPatTask7"></td></tr>`;
         htmltext += `<tr><td id="stPatTask8"></td></tr>`;
         htmltext += `</table>`;
-		htmltext += `<span id="stPatTown" style="color:var(--text-bright); font-weight:bold"></span>`;
+		htmltext += `<div id="stPatTown" style="color:var(--text-bright); font-weight:bold"></div>`;
         
         
         $('#stPatrickDialogBody').html(htmltext);
@@ -383,7 +388,7 @@ let stPatrick = {
 
 		for (let x in stPatrick.stPat) {
 			if (!Object.hasOwnProperty.call(stPatrick.stPat, x)) continue;
-			$('#stPat'+x+'Level').text(`${stPatrick.stPat[x].level} -> ${stPatrick.stPat[x].next}`);
+			$('#stPat'+x+'Level').text(`${stPatrick.stPat[x].level} → ${stPatrick.stPat[x].next}`);
 			$('#stPat'+x).text(`${stPatrick.bigNum(stPatrick.stPat[x].need)} ${stPatrick.stPatNums[stPatrick.stPat[x].ndegree]}`);
 			$('#stPat'+x+'Time').text(`(${stPatrick.time(stPatrick.stPat[x].need,stPatrick.stPat[x].ndegree,sum,degree,0,0)})`);
 			$('#stPat'+x).attr('title', `${stPatrick.bigNum(stPatrick.stPat[x].need)} ${stPatrick.stPatNumTitles[stPatrick.stPat[x].ndegree]}`);
@@ -450,8 +455,8 @@ let stPatrick = {
 			}
 		}
 
-		$('#stPatTown').text(`${i18n('Boxes.stPatrick.NextTown')} 8.4 Q: ${stPatrick.time(8.4,5,sum,degree,stPatrick.Progress,stPatrick.ProgressDegree)}`);
-		
+		$('#stPatTown').html(`${i18n('Boxes.stPatrick.CurrentRun')}: ${stPatrick.stPatStage} / ${i18n('Boxes.stPatrick.Variant')}: ${(stPatrick.stPatStage-1) % 3 + 1}<br>${i18n('Boxes.stPatrick.NextTown')} 8.4 Q: ${stPatrick.time(8.4,5,sum,degree,stPatrick.Progress,stPatrick.ProgressDegree)}`);
+
 	},
 
 	stPatProduction: (building) => {

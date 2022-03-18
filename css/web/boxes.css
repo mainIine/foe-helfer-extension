@@ -15,8 +15,12 @@ body {
 	position: absolute !important;
 	height: 100% !important;
 	width: 100% !important;
+}
+
+.overflowHidden {
 	overflow: hidden;
 }
+
 
 /* Chrome, Opera */
 input[type=number]::-webkit-inner-spin-button,
@@ -534,6 +538,9 @@ p {
 }
 [id$=musicControl-Btn].musicmuted span {
 	background-image: url('../images/menu/musicmute.png');
+}
+[id$=minigame_aztecs-Btn] span {
+	background-image: url('../images/menu/aztecsHelper.png');
 }
 
 .hud-btn span.hud-counter {

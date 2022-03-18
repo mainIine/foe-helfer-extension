@@ -1995,6 +1995,8 @@ let GuildMemberStat = {
 
 		for (let eraId = Technologies.Eras.IronAge; eraId < Technologies.Eras.NextEra; eraId++)
 		{
+			if (GoodsList.length < 5 * (eraId - 1)) break; // Era does not exist yet
+
 			if (Technologies.EraNames[eraId] === undefined) continue;
 
 			let currentEra = i18n('Eras.' + eraId);
