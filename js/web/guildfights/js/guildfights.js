@@ -536,6 +536,7 @@ let GuildFights = {
 		GuildFights.BuildPlayerContent(GuildFights.CurrentGBGRound);
 	},
 
+
 	/**
 	 * Generates the snapshot detail box
 	 * @param d
@@ -985,6 +986,7 @@ let GuildFights = {
 		$(h.join('')).insertAfter($('#gbgdetail_' + data.date));
 	},
 
+
 	/**
 	 * Contents of the card box
 	 */
@@ -1196,8 +1198,11 @@ let GuildFights = {
 		h.push('<button class="btn-default mapbutton" onclick="ProvinceMap.buildMap()">MAP</button>');
 		h.push('</div>');
 
+		let activeTab = 1;
+		if ($('.gbgnextup.active').length > 0) activeTab = 2;
+
 		$('#LiveGildFighting').find('#LiveGildFightingBody').html(h.join('')).promise().done(function () {
-			$('.gbg-tabs').tabslet({ active: 1 });
+			$('.gbg-tabs').tabslet({ active: activeTab });
 			$('.gbg-tabs').on('_after', (e) => {
 				GuildFights.ToggleCopyButton();
 			});
@@ -1432,9 +1437,12 @@ let GuildFights = {
 				{
 					let colors = GuildFights.SortedColors.find(e => e['id'] === data['ownerId']);
 
-					ProvinceMap.Provinces[index].ownerId = data['ownerId'];
-					ProvinceMap.Provinces[index].fillStyle = ProvinceMap.hexToRgb(colors['main'], '.3');
-					ProvinceMap.Provinces[index].strokeStyle = ProvinceMap.hexToRgb(colors['main']);
+					if(colors)
+					{
+						ProvinceMap.MapMerged[index].ownerId = data['ownerId'];
+						ProvinceMap.MapMerged[index].fillStyle = ProvinceMap.hexToRgb(colors['main'], '.3');
+						ProvinceMap.MapMerged[index].strokeStyle = ProvinceMap.hexToRgb(colors['main']);
+					}
 				}
 			});
 
@@ -2008,8 +2016,6 @@ let ProvinceMap = {
 				};
 
 				const prov = GuildFights.MapData['map']['provinces'][i.id];
-
-				console.log(prov);
 
 				if (prov['ownerId'] || pD.flagPos) {
 					data.ownerID = prov['ownerId'];

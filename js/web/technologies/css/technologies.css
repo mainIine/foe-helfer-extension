@@ -116,6 +116,5 @@
 #technologies #technologiesBody .goods-sprite-50.sm::before { 
 	zoom: 0.7; 
 	overflow: hidden;
-	position: static;
 	display: inline-block;
 }

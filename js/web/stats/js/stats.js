@@ -183,11 +183,13 @@ let Stats = {
 			let EraName = Technologies.EraNames[Era];
 			if (!EraName) continue;
 
+			if (GoodsList.length < 5 * (Era - 1)) break; // Era does not exist yet
+
 			Stats.PlayableEras.push(EraName);
 			Stats.ResMap[EraName] = [];
 
 			for (let i = 0; i < 5; i++) {
-				Stats.ResMap[EraName].push(GoodsList[(Era - 2) * 5 + i].id);
+				if (GoodsList[(Era - 2) * 5 + i]) Stats.ResMap[EraName].push(GoodsList[(Era - 2) * 5 + i].id);
             }
 		}
     },

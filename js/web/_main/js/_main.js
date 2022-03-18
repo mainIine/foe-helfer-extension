@@ -1254,7 +1254,7 @@ let MainParser = {
 
 		if (!LastStartedVersion) {
 			MainParser.StartUpType = 'DeletedSettings';
-			/* Fresh install of deleted settings */
+			/* Fresh install or deleted settings */
 			/* Attention: If you do stuff here it might be executed every start when surfing in incognito mode */
 		}
 		else if (LastStartedVersion !== extVersion) {
@@ -2123,5 +2123,5 @@ if (window.foeHelperBgApiHandler !== undefined && window.foeHelperBgApiHandler i
 	delete window.foeHelperBgApiHandler;
 }
 
-console.log('FOE Helper version ' + extVersion + ' started' + (window.loadBeta ? ' in Beta Mode': '') + '. ID: ' + extID);
+console.log('FOE Helper version ' + extVersion + ' started' + (extVersion.indexOf("beta") > -1 ? ' in Beta Mode': '') + '. ID: ' + extID);
 console.log(navigator.userAgent);
