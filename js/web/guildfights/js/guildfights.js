@@ -1122,10 +1122,9 @@ let GuildFights = {
 		nextup.push('<thead><tr>');
 		nextup.push('<th class="prov-name">' + i18n('Boxes.GuildFights.Province') + '</th>');
 
-		if (GuildFights.showGuildColumn)
-		{
+		if (GuildFights.showGuildColumn) 
 			nextup.push('<th>' + i18n('Boxes.GuildFights.Owner') + '</th>');
-		}
+		
 		nextup.push('<th class="time-static">' + i18n('Boxes.GuildFights.Time') + '</th>');
 		nextup.push('<th class="time-dynamic">' + i18n('Boxes.GuildFights.Count') + '</th>');
 
@@ -1187,7 +1186,7 @@ let GuildFights = {
 		h.push(GuildFights.GetTabs());
 		h.push(GuildFights.GetTabContent());
 		h.push('<button class="btn-default copybutton" onclick="GuildFights.CopyToClipBoard()">COPY</button>');
-		h.push('<button class="btn-default mapbutton" onclick="ProvinceMap.buildMap()">MAP</button>');
+		h.push('<button class="btn-default mapbutton" onclick="ProvinceMap.build()">MAP</button>');
 		h.push('</div>');
 
 		let activeTab = 1;
@@ -1416,8 +1415,7 @@ let GuildFights = {
 				$(this).remove();
 			});
 
-			if (elements === 1)
-			{
+			if (elements === 1) {
 				$province.fadeToggle(function () {
 					$(this).remove();
 				});
@@ -1429,14 +1427,11 @@ let GuildFights = {
 					let colors = getSectorColors(data['ownerId']);
 
 					if(colors) {
-						ProvinceMap.MapMerged[index].ownerId = data['ownerId'];
-						ProvinceMap.MapMerged[index].fillStyle = ProvinceMap.hexToRgb(colors['main'], '.3');
-						ProvinceMap.MapMerged[index].strokeStyle = ProvinceMap.hexToRgb(colors['main']);
+						province.owner.id = data['ownerId'];
+						province.owner.colors = colors;
 					}
 				}
 			});
-
-			console.log(ProvinceMap.MapMerged);
 
 			return;
 		}
@@ -1451,7 +1446,7 @@ let GuildFights = {
 				max = d['maxProgress'],
 				progess = d['progress'],
 				cell = $(`tr#province-${data['id']}`),
-				pColor = GuildFights.SortedColors.find(e => e['id'] === data['participantId']),
+				pColor = getSectorColors(data['participantId']),
 				p = GuildFights.MapData['battlegroundParticipants'].find(o => (o['participantId'] === d['participantId']));
 
 			if (!data['id']) {
@@ -1510,7 +1505,6 @@ let GuildFights = {
 
 
 	ShowPlayerBoxSettings: () => {
-
 		let c = [];
 		let Settings = GuildFights.PlayerBoxSettings;
 		c.push(`<p class="text-left"><span class="settingtitle">${i18n('Boxes.GuildFights.Title')}</span>` +
@@ -1719,7 +1713,7 @@ let GuildFights = {
 
 /**
  *
- * @type {{ProvinceObject: {}, ToolTipActive: boolean, FrameSize: number, prepare: ProvinceMap.prepare, Provinces: *[], MapCTX: {}, StrokeColor: string, Map: {width: number, height: number}, Refresh: ProvinceMap.Refresh, Mouse: {x: undefined, y: undefined}, StrokeWidth: number, buildMap: ProvinceMap.buildMap, ToolTipId: boolean, ProvinceData: ((function(): (*|undefined))|*), Map: {}, hexToRgb: ((function(*, *): string)|*)}}
+ * @type {{ProvinceObject: {}, ToolTipActive: boolean, FrameSize: number, prepare: ProvinceMap.prepare, Provinces: *[], MapCTX: {}, StrokeColor: string, Map: {width: number, height: number}, Refresh: ProvinceMap.Refresh, Mouse: {x: undefined, y: undefined}, StrokeWidth: number, build: ProvinceMap.build, ToolTipId: boolean, ProvinceData: ((function(): (*|undefined))|*), Map: {}, hexToRgb: ((function(*, *): string)|*)}}
  */
 let ProvinceMap = {
 
@@ -1734,11 +1728,10 @@ let ProvinceMap = {
 	Provinces: [],
 	ProvinceObject: {},
 
-	StrokeWidth: 1,
 	StrokeColor: '#222',
 	FrameSize: 1,
 
-	buildMap: () => {
+	build: () => {
 		if ($('#ProvinceMap').length === 0) {
 			HTML.Box({
 				id: 'ProvinceMap',
@@ -1780,7 +1773,6 @@ let ProvinceMap = {
 
 		// Objects
 		function Province(data) {
-			console.log(getSectorColors(data.ownerID));
 			this.id = data.id || 0;
 			this.name = data.name;
 			this.short = data.short;
@@ -1797,19 +1789,19 @@ let ProvinceMap = {
 			this.conquestProgress = data.conquestProgress;
 			this.circlePosition = data.circlePosition;
 			this.totalBuildingSlots = data.totalBuildingSlots;
+
+			return this;
 		}
 
 		getSectorColors = function(ownerID) {
-			let colors = {};
-			if (ownerID != undefined)
-				colors = GuildFights.SortedColors.find(c => (c.id === ownerID))
+			if (ownerID !== undefined)
+				return GuildFights.SortedColors.find(c => (c.id === ownerID))
 			else
-				colors = {
+				return {
 					main: '#444',
 					highlight: '#555',
 					shadow: '#333'
 				}
-			return colors;
 		}
 
 		Province.prototype.updateMapSector = function () {
@@ -1841,7 +1833,7 @@ let ProvinceMap = {
 				mapStuff.y = xy.y*(sector.circlePosition.radius-sector.circlePosition.initRadius/2)*Math.cos(sector.circlePosition.angle+sector.circlePosition.angleFragment/2);
 				noRealignSectors = [1,2,29,31,30,32,33,34,35,37,38,39,41,42,43,45,46,47,49,50,51,53,54,55,57,58,59];
 
-				// realign some sectors on circular map to have more space
+				// realign some sectors on volcano map to have more space
 				if (!noRealignSectors.includes(sector.id) && sector.owner.flagImg == undefined) 
 					mapStuff.y = mapStuff.y - 10;
 			}
@@ -1856,16 +1848,11 @@ let ProvinceMap = {
 				else
 					drawHex(mapStuff.x, mapStuff.y, mapStuff.hexwidth, mapStuff.hexheight);
 
-				ProvinceMap.MapCTX.fillStyle = '#222';
-
-				//if (sector.lockedUntil == undefined) 
-					sector.drawTitleAndSlots(true, mapStuff.x, mapStuff.y);
-				//else 
-				//	sector.drawTitleAndSlots(false, mapStuff.x, mapStuff.y);
-
+				ProvinceMap.MapCTX.fillStyle = ProvinceMap.StrokeColor;
+				sector.drawTitleAndSlots(true, mapStuff.x, mapStuff.y);
 				mapStuff.y = mapStuff.y+16;
-				sector.drawUnlockTime(mapStuff);
 
+				sector.drawUnlockTime(mapStuff);
 				if (sector.lockedUntil !== undefined) 
 					mapStuff.y = mapStuff.y+15;
 				
@@ -1989,7 +1976,6 @@ let ProvinceMap = {
 			let initRadius = radius;
 
 			ProvinceMap.ProvinceData().forEach(function (i) {
-
 				const pD = ProvinceMap.ProvinceData()[i.id];
 
 				let data = {
@@ -2006,7 +1992,9 @@ let ProvinceMap = {
 				if (prov['ownerId'] || pD.flagPos) {
 					data.ownerID = prov['ownerId'];
 					data.ownerName = prov.owner;
-					data.totalBuildingSlots = prov.totalBuildingSlots;
+
+					if (prov.totalBuildingSlots) 
+						data.totalBuildingSlots = prov.totalBuildingSlots;
 
 					if (prov.isSpawnSpot) {
 						let clan = GuildFights.MapData['battlegroundParticipants'].find(c => c['participantId'] === prov['ownerId']);
@@ -2034,10 +2022,13 @@ let ProvinceMap = {
 				};
 				rotator += angle;
 
+
 				provinces.push(new Province(data));
 			});
 
 			ProvinceMap.Provinces = provinces;
+
+			console.log(provinces);
 		}
 
 		init();
@@ -2053,7 +2044,7 @@ let ProvinceMap = {
 	 * @constructor
 	 */
 	 RefreshSector: (socketData = []) => {
-		// TO DO: A1 does not update because id is missing
+		// TO DO: check sector unlock times and refresh
 		if (socketData['id'] !== undefined) {
 			let updatedProvince = ProvinceMap.Provinces.find(p => p.id === socketData['id']);
 
@@ -2071,6 +2062,10 @@ let ProvinceMap = {
 			GuildFights.MapData.map.provinces[socketData['id']] = updatedProvince;
 
 			updatedProvince.updateMapSector();
+		}
+		// TO DO: A1 does not update because id is missing
+		else {
+			console.log(socketData);
 		}
 	},
 
