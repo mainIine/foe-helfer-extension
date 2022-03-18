@@ -472,6 +472,10 @@
 
 /*************************************************************************************************************/
 
+#ProvinceMapBody {
+	background: #222;
+}
+
 #ProvinceMap.volcano_archipelago {
 	width: 800px;
 	height: 800px;
@@ -489,4 +493,6 @@
 #ProvinceMap #province-map {
 	height: 100%;
 	background-color: #222;
+	margin: 0 auto;
+	display: block;
 }
