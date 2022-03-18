@@ -208,22 +208,25 @@ let AztecsHelper = {
                     if(typeof cellData.content !== "number" && cellData.content !== AztecsHelper.emptyCell) 
                         cell.appendChild(document.createTextNode(cellData.content));
                     if(cellData.prob == 0){
-                        cell.className = "aztec color-red";
+                        cell.className = "aztec color0";
                     }  
-                    else if(cellData.prob > 0 && cellData.prob < 0.5) {
-                        cell.className = "aztec color-orangered";
+                    else if(cellData.prob > 0 && cellData.prob < 0.33) {
+                        cell.className = "aztec color1";
+                    }
+                    else if(cellData.prob >= 0.33 && cellData.prob < 0.5) {
+                        cell.className = "aztec color2";
                     }
                     else if(cellData.prob >= 0.5 && cellData.prob < 0.66) {
-                        cell.className = "aztec color-orange";
+                        cell.className = "aztec color3";
                     }
                     else if(cellData.prob >= 0.66 && cellData.prob < 0.75) {
-                        cell.className = "aztec color-yellow";
+                        cell.className = "aztec color4";
                     }
                     else if(cellData.prob >= 0.75 && cellData.prob < 1) {
-                        cell.className = "aztec color-yellowgreen";
+                        cell.className = "aztec color5";
                     }
                     else if(cellData.prob == 1) {
-                        cell.className = "aztec color-chartreuse";
+                        cell.className = "aztec color6";
                     }
                     row.appendChild(cell);
                 });
@@ -240,33 +243,38 @@ let AztecsHelper = {
             divDes.appendChild(span);
             
             span = document.createElement('span');
-            span.innerHTML= '&nbsp;0%';
-            span.className = 'aztec color-red';
+            span.innerHTML= '&nbsp;'+AztecsHelper.nonresourceCell+'&nbsp;0%';
+            span.className = 'aztec color0';
             span.style='font-weight:bold'
             divDes.appendChild(span);
             span = document.createElement('span');
             span.innerHTML= '&nbsp;➜';
-            span.className = 'aztec color-orangered';
+            span.className = 'aztec color1';
+            span.style='font-weight:bold'
+            divDes.appendChild(span);
+            span = document.createElement('span');
+            span.innerHTML= '&nbsp;33%➜';
+            span.className = 'aztec color2';
             span.style='font-weight:bold'
             divDes.appendChild(span);
             span = document.createElement('span');
             span.innerHTML= '&nbsp;50%➜';
-            span.className = 'aztec color-orange';
+            span.className = 'aztec color3';
             span.style='font-weight:bold'
             divDes.appendChild(span);
             span = document.createElement('span');
             span.innerHTML= '&nbsp;66%➜';
-            span.className = 'aztec color-yellow';
+            span.className = 'aztec color4';
             span.style='font-weight:bold'
             divDes.appendChild(span);
             span = document.createElement('span');
             span.innerHTML= '&nbsp;75%➜';
-            span.className = 'aztec color-yellowgreen';
+            span.className = 'aztec color5';
             span.style='font-weight:bold'
             divDes.appendChild(span);
             span = document.createElement('span');
-            span.innerHTML= '&nbsp;100%';
-            span.className = 'aztec color-chartreuse';
+            span.innerHTML= '&nbsp;100%&nbsp;'+AztecsHelper.resourceCell;
+            span.className = 'aztec color6';
             span.style='font-weight:bold'
             divDes.appendChild(span);
             
@@ -417,7 +425,10 @@ let AztecsHelper = {
                 if (!(!map[cell.y][cell.x].probList)) delete map[cell.y][cell.x].probList
                 continue;
             }
-            if (!map[cell.y][cell.x].probList) continue; //wenn probList existiert
+            if (!map[cell.y][cell.x].probList) {//wenn probList nicht existiert
+                map[cell.y][cell.x].prob = leftRes/Object.keys(unknownCells).length;
+                continue; 
+            }
             map[cell.y][cell.x].probList.push(leftRes/Object.keys(unknownCells).length);
             map[cell.y][cell.x].prob = Math.max(...AztecsHelper.remIndex(map[cell.y][cell.x].probList)); //maximum der probList als Wahrscheilichkeit notieren
             delete map[cell.y][cell.x].probList; //probList entfernen
