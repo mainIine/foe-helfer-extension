@@ -329,7 +329,7 @@ let AztecsHelper = {
             }
         }
         let tmp = JSON.parse(JSON.stringify(numberCells));
-        while (Object.keys(tmp).length > 0) {
+        while ((Object.keys(tmp).length > 0) && (run < 20)) {
             let tmp2 = {};
             for (let c in tmp) {
                 if (tmp2.hasOwnProperty(c)) delete tmp2[c];
@@ -413,8 +413,8 @@ let AztecsHelper = {
             }
             tmp = JSN.parse(JSON.stringify(tmp2));
             run = run+1;
-            if (run>=20) {
-                console.log("endlosschleife");
+            if (run>=10) {
+                console.log("Endlosschleife???");
             }
 
         }  
