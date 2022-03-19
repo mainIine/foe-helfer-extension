@@ -299,6 +299,8 @@ let AztecsHelper = {
         var numberCells = {};
         var unknownCells = {};
         var leftRes = AztecsHelper.ResourcesLeft+0;
+        var run=0;
+        console.log(AztecsHelper.ResourcesLeft);
 
         //reset prob and eval attribute
         for (let y = 0; y < AztecsHelper.mapHeight; y++) {
@@ -327,11 +329,11 @@ let AztecsHelper = {
             }
         }
         let tmp = JSON.parse(JSON.stringify(numberCells));
-        while (Object.keys(tmp).length > 0 && leftRes > 0) {
+        while (Object.keys(tmp).length > 0) {
             let tmp2 = {};
             for (let c in tmp) {
                 if (tmp2.hasOwnProperty(c)) delete tmp2[c];
-                if (leftRes == 0) break;
+                //if (leftRes == 0) break;
                 
                 let cell = map[tmp[c].y][tmp[c].x];
                 cell.surrUnCells = AztecsHelper.GetSurroundingCell(tmp[c].x,tmp[c].y,uC);
@@ -350,9 +352,7 @@ let AztecsHelper = {
                             for (let snC of uC.surrNumCells) {  //Zahlennachbarn der vormals unbekannten Nachbarzelle prüfen und diese der erneuten Prüfung unterziehen
                                 tmp2[`y${snC.y}x${snC.x}`] = snC;                                    
                             }
-                            if (prob == 1) {
-                                leftRes -= 1;
-                            }
+                            if (prob == 1) leftRes -= 1;
                             let uIndex = `y${cx.y}x${cx.x}`; //Zelle aus der Liste unbekannter Zellen entfernen
                             if (unknownCells.hasOwnProperty(uIndex)) delete unknownCells[uIndex];
                         }
@@ -386,9 +386,7 @@ let AztecsHelper = {
                                         for (let snC of uC.surrNumCells) {  //Zahlennachbarn der vormals unbekannten Nachbarzelle prüfen und diese der erneuten Prüfung unterziehen
                                             tmp2[`y${snC.y}x${snC.x}`] = snC;                                    
                                         }
-                                        if (prob == 1) {
-                                            leftRes -= 1;
-                                        }
+                                        if (prob == 1) leftRes -= 1;
                                         let uIndex=`y${cx.y}x${cx.x}`;
                                         if (unknownCells.hasOwnProperty(uIndex)) delete unknownCells[uIndex]; //entferne Zelle aus Liste unbekannter Zellen
                                     }
@@ -413,6 +411,12 @@ let AztecsHelper = {
                     }
                 }
             }
+            tmp = JSN.parse(JSON.stringify(tmp2));
+            run = run+1;
+            if (run>=20) {
+                console.log("endlosschleife");
+            }
+
         }  
         
         for (let c in unknownCells) { //alle noch unbekannten Zellen durchgehen
