@@ -300,7 +300,6 @@ let AztecsHelper = {
         var unknownCells = {};
         var leftRes = AztecsHelper.ResourcesLeft+0;
         var run=0;
-        console.log(AztecsHelper.ResourcesLeft);
 
         //reset prob and eval attribute
         for (let y = 0; y < AztecsHelper.mapHeight; y++) {
@@ -322,14 +321,14 @@ let AztecsHelper = {
                     
                     cell.surrUnCells = AztecsHelper.GetSurroundingCell(x,y,uC); //alle unbekannten Nachbarzellen 
                     cell.surrResCells = AztecsHelper.GetSurroundingCell(x,y,rC);//alle Nachbarzellen mit Ressource
-                    //cell.surrNumCells = AztecsHelper.GetSurroundingCell(x,y,"number"); // alle Nachbarzellen mit Zahl
+                    cell.surrNumCells = AztecsHelper.GetSurroundingCell(x,y,"number"); // alle Nachbarzellen mit Zahl
                     numberCells[`y${y}x${x}`] = {"x":x,"y":y};
                     
                 }
             }
         }
         let tmp = JSON.parse(JSON.stringify(numberCells));
-        while ((Object.keys(tmp).length > 0) && (run < 20)) {
+        while (Object.keys(tmp).length > 0 && run<20) {
             let tmp2 = {};
             for (let c in tmp) {
                 if (tmp2.hasOwnProperty(c)) delete tmp2[c];
@@ -411,7 +410,7 @@ let AztecsHelper = {
                     }
                 }
             }
-            tmp = JSN.parse(JSON.stringify(tmp2));
+            tmp = JSON.parse(JSON.stringify(tmp2));
             run = run+1;
             if (run>=10) {
                 console.log("Endlosschleife???");
