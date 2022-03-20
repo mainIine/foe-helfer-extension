@@ -13,9 +13,9 @@
 
 #treasury {
     width: 370px;
-    padding: 10px;
 }
 
 #treasury #treasuryBody {
     overflow: auto;
+    padding: 10px;
 }
