@@ -470,6 +470,14 @@ p {
 	background-image: url('../images/menu/settings.png');
 }
 
+[id$=settings-Btn] {
+	background: linear-gradient(#423428, #463526) padding-box, linear-gradient(to bottom, #7f916a, #455630) border-box;
+}
+
+[id$=marketOffers-Btn] span {
+	background-image: url('../images/menu/marketOffers.png');
+}
+
 [id$=stats-Btn] span {
 	background-image: url('../images/menu/stats.png');
 }
