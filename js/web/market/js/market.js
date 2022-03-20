@@ -526,6 +526,6 @@ let Market = {
 			value = true;
 
 		localStorage.setItem('ShowMarketFilter', value);
-		$(`#MarketSettingsBox`).hide();
+		$(`#MarketSettingsBox`).remove();
     },
 };
