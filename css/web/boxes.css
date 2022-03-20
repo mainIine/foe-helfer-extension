@@ -471,7 +471,7 @@ p {
 }
 
 [id$=settings-Btn] {
-	background: linear-gradient(#464040, #2c2d33) padding-box, linear-gradient(to bottom, #82ae4c, #4f7421) border-box;
+	background: linear-gradient(#423428, #463526) padding-box, linear-gradient(to bottom, #7f916a, #455630) border-box;
 }
 
 [id$=marketOffers-Btn] span {
