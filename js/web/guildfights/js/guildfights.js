@@ -48,8 +48,7 @@ FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postDa
 	GuildFights.init();
 	GuildFights.CurrentGBGRound = data['responseData']['endsAt'];
 
-	if (GuildFights.curDateFilter === null || GuildFights.curDateEndFilter === null)
-	{
+	if (GuildFights.curDateFilter === null || GuildFights.curDateEndFilter === null) {
 		GuildFights.curDateFilter = moment.unix(GuildFights.CurrentGBGRound).subtract(11, 'd').format('YYYYMMDD');
 		GuildFights.curDateEndFilter = MainParser.getCurrentDateTime();
 	}
@@ -1709,7 +1708,7 @@ let GuildFights = {
 
 /**
  *
- * @type {{ProvinceObject: {}, ToolTipActive: boolean, FrameSize: number, prepare: ProvinceMap.prepare, Provinces: *[], MapCTX: {}, StrokeColor: string, Map: {width: number, height: number}, Refresh: ProvinceMap.Refresh, Mouse: {x: undefined, y: undefined}, StrokeWidth: number, build: ProvinceMap.build, ToolTipId: boolean, ProvinceData: ((function(): (*|undefined))|*), Map: {}, hexToRgb: ((function(*, *): string)|*)}}
+ * @type {{ToolTipActive: boolean, prepare: ProvinceMap.prepare, Provinces: *[], MapCTX: {}, StrokeColor: string, Map: {width: number, height: number}, Refresh: ProvinceMap.Refresh, Mouse: {x: undefined, y: undefined}, StrokeWidth: number, build: ProvinceMap.build, ToolTipId: boolean, ProvinceData: ((function(): (*|undefined))|*), Map: {}, hexToRgb: ((function(*, *): string)|*)}}
  */
 let ProvinceMap = {
 
@@ -1722,10 +1721,8 @@ let ProvinceMap = {
 	},
 
 	Provinces: [],
-	ProvinceObject: {},
 
-	StrokeColor: '#222',
-	FrameSize: 1,
+	StrokeColor: '#111',
 
 	build: () => {
 		if ($('#ProvinceMap').length === 0) {
@@ -1752,18 +1749,17 @@ let ProvinceMap = {
 		ProvinceMap.Map = document.createElement("canvas");
 		ProvinceMap.MapCTX = ProvinceMap.Map.getContext('2d');
 
-		ProvinceMap.MapCTX.strokeStyle = ProvinceMap.StrokeColor;
-		ProvinceMap.MapCTX.lineWidth = 3;
-
 		$(ProvinceMap.Map).attr({
 			id: 'province-map',
 			width: ProvinceMap.Size.width,
 			height: ProvinceMap.Size.height,
 		});
-
 		$('#ProvinceMapBody').html(ProvinceMap.Map);
 
-		// 0,0 in the center on volcano map
+		ProvinceMap.MapCTX.strokeStyle = ProvinceMap.StrokeColor;
+		ProvinceMap.MapCTX.lineWidth = 2;
+
+		// put 0,0 in the center on volcano map
 		if (GuildFights.MapData.map['id'] === "volcano_archipelago") 
 			ProvinceMap.MapCTX.translate(ProvinceMap.Size.width/2, ProvinceMap.Size.height/2);
 
@@ -1796,7 +1792,9 @@ let ProvinceMap = {
 				return {
 					main: '#444',
 					highlight: '#555',
-					shadow: '#333'
+					shadow: '#333',
+					base: '#444',
+					id: undefined
 				}
 		}
 
@@ -1844,14 +1842,15 @@ let ProvinceMap = {
 				else
 					drawHex(mapStuff.x, mapStuff.y, mapStuff.hexwidth, mapStuff.hexheight);
 
-				ProvinceMap.MapCTX.fillStyle = ProvinceMap.StrokeColor;
 				sector.drawTitleAndSlots(true, mapStuff.x, mapStuff.y);
+
 				mapStuff.y = mapStuff.y+16;
 
 				sector.drawUnlockTime(mapStuff);
+
 				if (sector.lockedUntil !== undefined) 
 					mapStuff.y = mapStuff.y+15;
-				
+
 				sector.drawProgress(mapStuff);
 			}
 		}
@@ -1933,17 +1932,22 @@ let ProvinceMap = {
 		}
 
         Province.prototype.drawSectorShape = function() {    
-            let xy = { x: 1, y: -1 }; // change first quadrant                
+            let xy = { x: 1, y: -1 }; // change first quadrant
+			let radius = this.circlePosition.radius;
+			let initRadius = this.circlePosition.initRadius;
+			let angle = this.circlePosition.angle;
+			let angleFragment = this.circlePosition.angleFragment;
+
 			ProvinceMap.MapCTX.beginPath();
-            ProvinceMap.MapCTX.moveTo(xy.x*(this.circlePosition.radius-this.circlePosition.initRadius)*Math.sin(this.circlePosition.angle), xy.y*(this.circlePosition.radius-this.circlePosition.initRadius)*Math.cos(this.circlePosition.angle));
-            ProvinceMap.MapCTX.lineTo(xy.x*this.circlePosition.radius*Math.sin(this.circlePosition.angle),xy.y*this.circlePosition.radius*Math.cos(this.circlePosition.angle));
-            ProvinceMap.MapCTX.lineTo(xy.x*this.circlePosition.radius*Math.sin(this.circlePosition.angle+this.circlePosition.angleFragment/2),xy.y*this.circlePosition.radius*Math.cos(this.circlePosition.angle+this.circlePosition.angleFragment/2));
-            ProvinceMap.MapCTX.lineTo(xy.x*this.circlePosition.radius*Math.sin(this.circlePosition.angle+this.circlePosition.angleFragment),xy.y*this.circlePosition.radius*Math.cos(this.circlePosition.angle+this.circlePosition.angleFragment));
-            ProvinceMap.MapCTX.lineTo(xy.x*(this.circlePosition.radius-this.circlePosition.initRadius)*Math.sin(this.circlePosition.angle+this.circlePosition.angleFragment),xy.y*(this.circlePosition.radius-this.circlePosition.initRadius)*Math.cos(this.circlePosition.angle+this.circlePosition.angleFragment));
-            ProvinceMap.MapCTX.lineTo(xy.x*(this.circlePosition.radius-this.circlePosition.initRadius)*Math.sin(this.circlePosition.angle), xy.y*(this.circlePosition.radius-this.circlePosition.initRadius)*Math.cos(this.circlePosition.angle));
+            ProvinceMap.MapCTX.moveTo(xy.x*(radius-initRadius) * Math.sin(angle), xy.y*(radius-initRadius) * Math.cos(angle));
+            ProvinceMap.MapCTX.lineTo(xy.x*radius * Math.sin(angle), xy.y*radius * Math.cos(angle));
+            ProvinceMap.MapCTX.lineTo(xy.x*radius * Math.sin(angle+angleFragment/2), xy.y*radius * Math.cos(angle+angleFragment/2));
+            ProvinceMap.MapCTX.lineTo(xy.x*radius * Math.sin(angle+angleFragment), xy.y*radius * Math.cos(angle+angleFragment));
+            ProvinceMap.MapCTX.lineTo(xy.x*(radius-initRadius) * Math.sin(angle+angleFragment), xy.y*(radius-initRadius) * Math.cos(angle+angleFragment));
+            ProvinceMap.MapCTX.lineTo(xy.x*(radius-initRadius) * Math.sin(angle), xy.y*(radius-initRadius) * Math.cos(angle));
             ProvinceMap.MapCTX.closePath();
             ProvinceMap.MapCTX.fill();
-            ProvinceMap.MapCTX.strokeStyle = '#000';
+            ProvinceMap.MapCTX.strokeStyle = ProvinceMap.StrokeColor;
             ProvinceMap.MapCTX.stroke();   
         }
 
@@ -1983,15 +1987,13 @@ let ProvinceMap = {
 					flagPos: pD.flagPos
 				};
 
-				const prov = GuildFights.MapData['map']['provinces'][i.id];
+				let prov = GuildFights.MapData['map']['provinces'][i.id];
+
+				console.log(prov);
 
 				if (prov['ownerId'] || pD.flagPos) {
 					data.ownerID = prov['ownerId'];
 					data.ownerName = prov.owner;
-
-					if (prov.totalBuildingSlots) 
-						data.totalBuildingSlots = prov.totalBuildingSlots;
-
 					if (prov.isSpawnSpot) {
 						let clan = GuildFights.MapData['battlegroundParticipants'].find(c => c['participantId'] === prov['ownerId']);
 						data['flagImg'] = clan['clan']['flag'].toLowerCase();
@@ -2000,6 +2002,9 @@ let ProvinceMap = {
 					if (prov.lockedUntil) 
 						data.lockedUntil = prov.lockedUntil;
 
+					if (prov.totalBuildingSlots) 
+						data.totalBuildingSlots = prov.totalBuildingSlots;
+	
 					if (prov.conquestProgress !== []) 
 						data.conquestProgress = prov.conquestProgress;
 				}
@@ -2018,13 +2023,10 @@ let ProvinceMap = {
 				};
 				rotator += angle;
 
-
 				provinces.push(new Province(data));
 			});
 
 			ProvinceMap.Provinces = provinces;
-
-			console.log(provinces);
 		}
 
 		init();
