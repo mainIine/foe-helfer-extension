@@ -606,6 +606,12 @@ const FoEproxy = (function () {
 	FoEproxy.addMetaHandler('city_entities', (xhr, postData) => {
 		let EntityArray = JSON.parse(xhr.responseText);
 		MainParser.CityEntities = Object.assign({}, ...EntityArray.map((x) => ({ [x.id]: x })));
+		for (let i in MainParser.CityEntities) {
+			if (!MainParser.CityEntities.hasOwnProperty(i)) continue;
+
+			let CityEntity = MainParser.CityEntities[i];
+			if (!CityEntity.type) CityEntity.type = CityEntity?.components?.AllAge?.tags?.tags?.find(value => value.hasOwnProperty('buildingType')).buildingType;
+        }
 	});
 
 	// Updatestufen der Eventgebäude
@@ -1259,6 +1265,7 @@ let MainParser = {
 		}
 		else if (LastStartedVersion !== extVersion) {
 			MainParser.StartUpType = 'UpdatedVersion';
+			if (!(!isRelease)) {localStorage.removeItem("LoadBeta")}
 			/* We have a new version installed and started the first time */
 		}
 		else if (LastAgreedVersion !== extVersion) {
