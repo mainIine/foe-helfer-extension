@@ -1,6 +1,6 @@
 [	
 	{
-		"udate": "23.02.2022"
+		"udate": "28.02.2022"
 	},
 	{
 		"groupname": "Guild_Battlegrounds"
@@ -33,7 +33,7 @@
 		"assets": [
 			"D_MultiAge_Battlegrounds4"
 		],
-		"kit":[
+		"kit": [
 			"selection_kit_great_elephant",
 			"fragment#selection_kit_great_elephant",
 			"fragment#building_iridescent_garden"
@@ -41,6 +41,34 @@
 	},
 	{
 		"groupname": "Events"
+	},
+	{
+		"name": "Golden_Orrery",
+		"buildings": [
+			{
+				"first": "W_MultiAge_AgeBonus22b",
+				"update": "upgrade_kit_golden_orrery"
+			}
+		],
+		"kit": "selection_kit_golden_orrery"
+	},
+	{
+		"name": "Grand_Monarchs_Set",
+		"buildings": [
+			{
+				"first": "R_MultiAge_BirthdayBonus22a",
+				"update": "upgrade_kit_grand_king"
+			},
+			{
+				"first": "R_MultiAge_BirthdayBonus22c",
+				"update": "upgrade_kit_grand_queen"
+			}
+		],
+		"kit": [
+			"selection_kit_grand_monarchs",
+			"selection_kit_grand_king",
+			"selection_kit_grand_queen"
+		]
 	},
 	{
 		"name": "Celtic_Farmstead",
