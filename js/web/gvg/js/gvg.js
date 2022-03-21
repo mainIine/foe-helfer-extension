@@ -754,7 +754,7 @@ let GvGMap = {
 			html += i18n('Boxes.GvGMap.Sector.Power') + ': ' + sector.power +'<br>';
 			if (sector.isProtected)
 				html += i18n('Boxes.GvGMap.Sector.Protected')+'<br>';
-			html += 'Terrain: '+ sector.terrain +'<br>';
+			html += i18n('Boxes.GvGMap.Sector.Terrain')+ ': ' +  i18n('Boxes.GvGMap.Sector.Terrain_'+sector.terrain) +'<br>';
 			html += '</div>';
 		}
 

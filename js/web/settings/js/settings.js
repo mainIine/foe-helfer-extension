@@ -533,39 +533,6 @@ let Settings = {
 	},
 
 
-	/**
-	 *	Erzeugt ein Input Feld
-	 *
-	 * @returns {null|undefined|jQuery}
-	 */
-	InfoboxInputEntryCount: () => {
-		let ip = $('<input />').addClass('setting-input').attr({
-			type: 'number',
-			id: 'infobox-entry-length',
-			step: 1,
-			min: 1
-		}),
-			value = localStorage.getItem('EntryCount') || 0;
-		ip[0].defaultValue = ip[0].value = value;
-
-		localStorage.setItem('EntryCount', value);
-
-		$('#SettingsBox').on('keyup', '#infobox-entry-length', function () {
-			let value = $(this).val();
-
-			if (value > 0) {
-				localStorage.setItem('EntryCount', value);
-			} else {
-				localStorage.setItem('EntryCount', 0);
-			}
-
-			Infoboard.MaxEntries = value;
-		});
-
-		return ip;
-	},
-
-
 	NotificationView: () => {
 		let elements = [],
 			settingPos = localStorage.getItem('NotificationsPosition'),
