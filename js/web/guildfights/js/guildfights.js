@@ -2043,28 +2043,26 @@ let ProvinceMap = {
 	 */
 	 RefreshSector: (socketData = []) => {
 		// TO DO: check sector unlock times and refresh
+		let updatedProvince = ProvinceMap.Provinces.find(p => p.id === 0);
 		if (socketData['id'] !== undefined) {
-			let updatedProvince = ProvinceMap.Provinces.find(p => p.id === socketData['id']);
-
-			if (socketData.conquestProgress)
-				updatedProvince.conquestProgress = socketData.conquestProgress;
-
-			if (socketData.ownerId !== updatedProvince.owner.id) {
-				updatedProvince.owner.id = socketData.ownerId;
-				updatedProvince.owner.colors = getSectorColors(socketData.ownerId);
-			}
-
-			if (socketData.lockedUntil)
-				updatedProvince.lockedUntil = socketData.lockedUntil;
-
-			GuildFights.MapData.map.provinces[socketData['id']] = updatedProvince;
-
-			updatedProvince.updateMapSector();
+			 updatedProvince = ProvinceMap.Provinces.find(p => p.id === socketData['id']);
 		}
+		
+		if (socketData.conquestProgress)
+			updatedProvince.conquestProgress = socketData.conquestProgress;
+
+		if (socketData.ownerId !== updatedProvince.owner.id) {
+			updatedProvince.owner.id = socketData.ownerId;
+			updatedProvince.owner.colors = getSectorColors(socketData.ownerId);
+		}
+
+		if (socketData.lockedUntil)
+			updatedProvince.lockedUntil = socketData.lockedUntil;
+
+		GuildFights.MapData.map.provinces[socketData['id']] = updatedProvince;
+
+		updatedProvince.updateMapSector();
 		// TO DO: A1 does not update because id is missing
-		else {
-			console.log(socketData);
-		}
 	},
 
 
