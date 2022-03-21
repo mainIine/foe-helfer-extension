@@ -1439,11 +1439,10 @@ let Parts = {
 			buttons,
 			defaults = Parts.DefaultButtons,
 			sB = localStorage.getItem('CustomPartCalcButtons'),
+			allGB = localStorage.getItem('ShowOwnPartOnAllGBs'),
 			nV = `<p class="new-row">${i18n('Boxes.Calculator.Settings.newValue')}: <input type="number" class="settings-values" style="width:30px"> <span class="btn btn-default btn-green" onclick="Parts.SettingsInsertNewRow()">+</span></p>`;
 
-
-		if(sB)
-		{
+		if(sB) {
 			// buttons = [...new Set([...defaults,...JSON.parse(sB)])];
 			buttons = JSON.parse(sB);
 
@@ -1454,10 +1453,8 @@ let Parts = {
 			buttons = defaults;
 		}
 
-
 		buttons.forEach(bonus => {
-			if(bonus === 'ark')
-			{
+			if(bonus === 'ark') {
 				c.push(`<p class="text-center"><input type="hidden" class="settings-values" value="ark"> <button class="btn btn-default">${MainParser.ArkBonus}%</button></p>`);
 			}
 			else {
@@ -1468,10 +1465,12 @@ let Parts = {
 		// new own button
 		c.push(nV);
 
-		c.push('<input id="copyformatpergb" class="copyformatpergb game-cursor" ' + (Parts.CopyFormatPerGB ? 'checked' : '') + ' type="checkbox"> ' + i18n('Boxes.OwnpartCalculator.CopyFormatPerGB'));
+		console.log(allGB);
+		c.push('<p><input id="copyformatpergb" class="copyformatpergb game-cursor" ' + (Parts.CopyFormatPerGB ? 'checked' : '') + ' type="checkbox"> ' + i18n('Boxes.OwnpartCalculator.CopyFormatPerGB'));
+		c.push('<br><input type="checkbox" id="openonaliengb" class="openonaliengb game-cursor" ' + ((allGB == 'true') ? 'checked' : '') + '> ' + i18n('Settings.ShowOwnPartOnAllGBs.Desc')) + '</p>';
 
 		// save button
-		c.push(`<hr><p><button id="save-calculator-settings" class="btn btn-default" style="width:100%" onclick="Parts.SettingsSaveValues()">${i18n('Boxes.Calculator.Settings.Save')}</button></p>`);
+		c.push(`<p><button id="save-calculator-settings" class="btn btn-default" style="width:100%" onclick="Parts.SettingsSaveValues()">${i18n('Boxes.Calculator.Settings.Save')}</button></p>`);
 
 		// insert into DOM
 		$('#OwnPartBoxSettingsBox').html(c.join(''));
@@ -1514,7 +1513,11 @@ let Parts = {
 
 		let OldCopyFormatPerGB = Parts.CopyFormatPerGB;
 		Parts.CopyFormatPerGB = $('.copyformatpergb').prop('checked');
-		localStorage.setItem(Parts.GetStorageKey('CopyFormatPerGB', null), Parts.CopyFormatPerGB);
+
+        let openforeignGB = false;
+		if ($("#openonaliengb").is(':checked'))
+			openforeignGB = true;
+		localStorage.setItem('ShowOwnPartOnAllGBs',openforeignGB);
 
 		$(`#OwnPartBoxSettingsBox`).fadeToggle('fast', function(){
 			$(this).remove();
