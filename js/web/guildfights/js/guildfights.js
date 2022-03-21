@@ -130,6 +130,7 @@ let GuildFights = {
 		GuildFights.db.open();
 	},
 
+
 	/**
 	 * Zündung
 	 */
@@ -380,6 +381,7 @@ let GuildFights = {
 
 	},
 
+
 	/**
 	 * Filters the list for players with new progress
 	 * @param id
@@ -457,6 +459,7 @@ let GuildFights = {
 		return GuildFights.TabsContent.join('');
 	},
 
+
 	/**
 	 *
 	 * @param {boolean} alertActive
@@ -475,6 +478,7 @@ let GuildFights = {
 		}
 		return btn;
 	},
+
 
 	/**
 	 * Creates the box with the data
