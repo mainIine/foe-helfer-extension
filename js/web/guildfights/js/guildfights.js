@@ -1806,6 +1806,7 @@ let ProvinceMap = {
 			ProvinceMap.MapCTX.font = 'bold 30px Arial';
 			ProvinceMap.MapCTX.textAlign = "center";
 			ProvinceMap.MapCTX.fillStyle = this.owner.colors.highlight;
+			ProvinceMap.MapCTX.lineWidth = 2;
 			
 			let sector = this;
 			let noRealignSectors = [];
@@ -1870,8 +1871,10 @@ let ProvinceMap = {
 				slotsY = y - 10;
 			}
 
-			ProvinceMap.MapCTX.font = 'bold 22px Arial';
-			ProvinceMap.MapCTX.fillStyle = '#000000';
+			ProvinceMap.MapCTX.font = 'bold 23px Arial';
+			ProvinceMap.MapCTX.strokeStyle = '#fff5';
+			ProvinceMap.MapCTX.strokeText(this.short, x, titleY);
+			ProvinceMap.MapCTX.fillStyle = '#000';
 			ProvinceMap.MapCTX.fillText(this.short, x, titleY);
 			
 			if (this.totalBuildingSlots != undefined) {
@@ -1887,6 +1890,7 @@ let ProvinceMap = {
 		}
 
 		Province.prototype.drawProgress = function(mapStuff) {
+			ProvinceMap.MapCTX.strokeStyle = ProvinceMap.StrokeColor;
 			if (this.conquestProgress !== undefined && this.conquestProgress !== [])
 				this.conquestProgress.forEach(function(prog, index) {
 					let progDiff = (prog.progress / prog.maxProgress);
