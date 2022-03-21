@@ -66,12 +66,6 @@
 		"sort": 11
 	},
 	{
-		"name": "InfoboxEntryCount",
-		"callback": "InfoboxInputEntryCount",
-		"group": "Boxes",
-		"sort": 12
-	},
-	{
 		"name": "ShowMapTradeWarning",
 		"status": true,
 		"group": "Boxes",
