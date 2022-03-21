@@ -30,12 +30,6 @@
 		"sort": 4
 	},
 	{
-		"name": "ShowOwnPartOnAllGBs",
-		"status": true,
-		"group": "Boxes",
-		"sort": 5
-	},
-	{
 		"name": "ShowEventChest",
 		"status": true,
 		"group": "Boxes",
@@ -70,12 +64,6 @@
 		"status": false,
 		"group": "Boxes",
 		"sort": 11
-	},
-	{
-		"name": "InfoboxEntryCount",
-		"callback": "InfoboxInputEntryCount",
-		"group": "Boxes",
-		"sort": 12
 	},
 	{
 		"name": "ShowMapTradeWarning",

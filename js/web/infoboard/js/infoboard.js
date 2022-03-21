@@ -117,7 +117,8 @@ let Infoboard = {
                 dragdrop: true,
                 resize: true,
                 minimize: true,
-                speaker: 'infoboxTone'
+                speaker: 'infoboxTone',
+                settings: 'Infoboard.ShowSettings()'
             });
 
             // CSS in den DOM prügeln
@@ -363,7 +364,38 @@ let Infoboard = {
         Infoboard.TitleBlinkEvent = setInterval(()=> {
             document.title = (document.title === Infoboard.OriginalDocumentTitle ? txt : Infoboard.OriginalDocumentTitle);
         }, 750);
-    }
+    },
+    
+
+    /**
+    *
+    */
+     ShowSettings: () => {
+		let autoOpen = Settings.GetSetting('AutoOpenInfoBox');
+		let messagesAmount = localStorage.getItem('EntryCount');
+
+        let h = [];
+        h.push(`<p><input id="autoStartInfoboard" name="autoStartInfoboard" value="1" type="checkbox" ${(autoOpen === true) ? ' checked="checked"' : ''} /> <label for="autoStartInfoboard">${i18n('Boxes.Settings.Autostart')}</label>`);
+        h.push(`<p><label for="infoboxentry-length">${i18n('Settings.InfoboxEntryCount.Desc')}</label><input class="setting-input" type="number" id="infoboxentry-length" step="1" min="1" max="2000" value="${(messagesAmount)}"></p>`);
+        h.push(`<p><button onclick="Infoboard.SaveSettings()" id="saveInfoboardSettings" class="btn btn-default" style="width:100%">${i18n('Boxes.Settings.Save')}</button></p>`);
+
+        $('#BackgroundInfoSettingsBox').html(h.join(''));
+    },
+
+    /**
+    *
+    */
+    SaveSettings: () => {
+        let value = false;
+		if ($("#autoStartInfoboard").is(':checked'))
+			value = true;
+        
+        let messagesAmount = $("#infoboxentry-length").val();
+
+        localStorage.setItem('AutoOpenInfoBox', value);
+        localStorage.setItem('EntryCount', messagesAmount);
+		$(`#BackgroundInfoSettingsBox`).remove();
+    },
 };
 
 
@@ -693,5 +725,5 @@ let Info = {
             }
             )
         };
-    }
+    },
 };
