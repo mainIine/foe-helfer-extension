@@ -124,7 +124,7 @@ let Productions = {
 		{
 			if (!d.hasOwnProperty(i)) continue;
 
-			if (d[i]['id'] >= 2000000000 && d[i]['cityentity_id'] !== 'V_AllAge_CastleSystem1') continue; //Exclude all off grid buildings except Castle
+			if (d[i]['id'] >= 2000000000 && !d[i]['cityentity_id'].startsWith('V_AllAge_CastleSystem')) continue; //Exclude all off grid buildings except Castle
 
 			// jede einzelne Produktart holen
 			let building = Productions.readType(d[i]);
@@ -640,7 +640,7 @@ let Productions = {
 				}
 			}
 
-			if (d['cityentity_id'] === 'V_AllAge_CastleSystem1') {
+			if (d['cityentity_id'].startsWith('V_AllAge_CastleSystem')) {
 				Ret.at = undefined;
 				Ret.in = undefined;
 
