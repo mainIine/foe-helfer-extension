@@ -299,12 +299,13 @@ let Productions = {
 			if (In) Ret.in = In;
 		}
 
+		let DoubleProductionWhenMotivated = false,
+			DoubleHappinessWhenMotivated = false;
+
 		//GenericCityEntity
 		if (CityEntity['components']) {
 			let Products = {},
 				MotivatedProducts = {};
-
-			DoubleProductionWhenMotivated = false;
 
 			if (d.state && d['state']['productionOption'] && d['state']['productionOption']['products']) {
 				let CurrentProducts = d['state']['productionOption']['products'],
@@ -455,8 +456,7 @@ let Productions = {
 		else {
 			let CurrentResources = [],
 				AdditionalResources = [],
-				Units,
-				DoubleProductionWhenMotivated = false;
+				Units;
 
 			if (CityEntity['abilities']) {
 				for (let AbilityIndex in CityEntity['abilities']) {
@@ -465,6 +465,7 @@ let Productions = {
 					let Ability = CityEntity['abilities'][AbilityIndex];
 
 					if (Ability['__class__'] === 'DoubleProductionWhenMotivatedAbility') DoubleProductionWhenMotivated = true;
+					if (Ability['__class__'] === 'PolishableAbility') DoubleHappinessWhenMotivated = true;
 
 					if (!d['state']['is_motivated'] && Ability['additionalResources'] && Ability['__class__'] === 'AddResourcesWhenMotivatedAbility') {
 						if (Ability['additionalResources']['AllAge'] && Ability['additionalResources']['AllAge']['resources']) {
@@ -743,6 +744,9 @@ let Productions = {
 				if ((ProductName === 'money' || ProductName === 'supplies' || ProductName === 'clan_power') && DoubleProductionWhenMotivated && !d['state']['is_motivated']) {
 					MotivationFactor = 2;
 				}
+				else if (ProductName === 'happiness' && DoubleHappinessWhenMotivated && d['state']['socialInteractionId'] !== 'polish'){
+					MotivationFactor = 2;
+                }
 				else { //Keine Doppelproduktion durch Motivierung oder schon motiviert
 					MotivationFactor = 1;
 				}
@@ -853,18 +857,12 @@ let Productions = {
 		// einzelne Güterarten durchsteppen
 		for(let pt in Productions.Types)
 		{
-			if(!Productions.Types.hasOwnProperty(pt))
-			{
-				break;
-			}
-
+			if (!Productions.Types.hasOwnProperty(pt)) break;
+			
 			let type = Productions.Types[pt];
 
-			if(!Productions.BuildingsProducts.hasOwnProperty(type))
-			{
-				break;
-			}
-
+			if (!Productions.BuildingsProducts.hasOwnProperty(type)) break;
+			
 			Productions.SetTabs(type);
 
 			Productions.BuildingsProducts[type] = helper.arr.multisort(Productions.BuildingsProducts[type], ['name'], ['ASC']);
