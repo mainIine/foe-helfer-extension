@@ -34,6 +34,9 @@ FoEproxy.addHandler('ArmyUnitManagementService', 'getArmyInfo', (data, postData)
 FoEproxy.addHandler('CityProductionService', 'pickupProduction', (data, postData) => {
 	Unit.RefreshAlca(data['responseData']);
 
+	console.log('data: ', data);
+	console.log('postData: ', postData);
+
 	if (Unit.alca && postData && postData[0] && postData[0]['requestData'] && postData[0]['requestData'][0] && postData[0]['requestData'][0][0] === Unit.alca.id) {
 		if (data.responseData.militaryProducts === undefined) {
 			return;
@@ -373,12 +376,7 @@ let Unit = {
 			return ;
 		}
 
-		if(Unit.alca['state']['next_state_transition_at'] === undefined) {
-			text = `<strong class="text-warning">${i18n('Boxes.Units.AlcaHarvest')}</strong>`;
-
-		}
-		// there was a harvest...
-		else if(Unit.NextHarvest !== null)
+		if(Unit.NextHarvest !== null)
 		{
 			let countDownDate = moment.unix(Unit.NextHarvest);
 
