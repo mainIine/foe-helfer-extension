@@ -78,7 +78,7 @@ let MarketOffers = {
             Market.TradeForLower = true;
 
             Market.TradeAdvantage = true;
-            Market.TradeLowerStock = true;
+            Market.TradeFairStock = true;
             Market.TradeFair = true;
             Market.TradeDisadvantage = true;
 
@@ -104,7 +104,7 @@ let MarketOffers = {
             Market.TradeForLower = true;
 
             Market.TradeAdvantage = true;
-            Market.TradeLowerStock = true;
+            Market.TradeFairStock = true;
             Market.TradeFair = true;
             Market.TradeDisadvantage = true;
 
