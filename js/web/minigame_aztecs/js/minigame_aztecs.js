@@ -394,7 +394,7 @@ let AztecsHelper = {
                                 }
                             }
                         }
-                        if (cell.surrUnCells.length > 0 && leftRes > 0) { //es sind noch unbekannte Nachbarzellen vorhanden
+                        if (cell.surrUnCells.length > 0) {//} && leftRes > 0) { //es sind noch unbekannte Nachbarzellen vorhanden
                             for (let dC of cell.surrUnCells) {//unbekannte Nachbarzellen durchgehen
                                 let newP = unrevRes / cell.surrUnCells.length; //wahrscheinlichkeit, dass Nachbarzelle eine Ressource hat ist Anzahl Ressourcen/Anzahl unbekannter Nachbarn 
                                 if (!map[dC.y][dC.x].hasOwnProperty("probList")) map[dC.y][dC.x].probList = []; //probList anlegen, falls noch nicht vorhanden
@@ -418,23 +418,28 @@ let AztecsHelper = {
 
         }  
         
-        for (let c in unknownCells) { //alle noch unbekannten Zellen durchgehen
-            let cell = unknownCells[c];
-            if (leftRes==0) {
-                map[cell.y][cell.x].prob = 0;
-                map[cell.y][cell.x].content = nrC;
-                if (!(!map[cell.y][cell.x].probList)) delete map[cell.y][cell.x].probList
-                continue;
+        let nLeft = Object.keys(unknownCells).length;
+        if (nLeft > 0) {
+            let pLeft = leftRes/nLeft
+        
+            for (let c in unknownCells) { //alle noch unbekannten Zellen durchgehen
+                let cell = unknownCells[c];
+                if (leftRes==0) {
+                    map[cell.y][cell.x].prob = 0;
+                    map[cell.y][cell.x].content = nrC;
+                    if (!(!map[cell.y][cell.x].probList)) delete map[cell.y][cell.x].probList
+                    continue;
+                }
+                if (!map[cell.y][cell.x].probList) {//wenn probList nicht existiert
+                    map[cell.y][cell.x].prob = pLeft;
+                    continue; 
+                }
+                map[cell.y][cell.x].probList.push(pLeft);
+                map[cell.y][cell.x].prob = Math.max(...AztecsHelper.remIndex(map[cell.y][cell.x].probList)); //maximum der probList als Wahrscheilichkeit notieren
+                delete map[cell.y][cell.x].probList; //probList entfernen
             }
-            if (!map[cell.y][cell.x].probList) {//wenn probList nicht existiert
-                map[cell.y][cell.x].prob = leftRes/Object.keys(unknownCells).length;
-                continue; 
-            }
-            map[cell.y][cell.x].probList.push(leftRes/Object.keys(unknownCells).length);
-            map[cell.y][cell.x].prob = Math.max(...AztecsHelper.remIndex(map[cell.y][cell.x].probList)); //maximum der probList als Wahrscheilichkeit notieren
-            delete map[cell.y][cell.x].probList; //probList entfernen
         }
-
+        
         AztecsHelper.CalcBody();
         if(AztecsHelper.MovesLeft <= 0) return $('#aztecsHelper').length > 0 && HTML.CloseOpenBox('aztecsHelper');
         
