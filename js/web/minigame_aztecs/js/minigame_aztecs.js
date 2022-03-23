@@ -418,27 +418,21 @@ let AztecsHelper = {
 
         }  
         
-        let nLeft = Object.keys(unknownCells).length;
-        if (nLeft > 0) {
-            let pLeft = leftRes/nLeft
-        
-            for (let c in unknownCells) { //alle noch unbekannten Zellen durchgehen
-                let cell = unknownCells[c];
-                if (leftRes==0) {
-                    map[cell.y][cell.x].prob = 0;
-                    map[cell.y][cell.x].content = nrC;
-                    if (!(!map[cell.y][cell.x].probList)) delete map[cell.y][cell.x].probList
-                    continue;
-                }
-                if (!map[cell.y][cell.x].probList) {//wenn probList nicht existiert
-                    map[cell.y][cell.x].prob = pLeft;
-                    continue; 
-                }
-                map[cell.y][cell.x].probList.push(pLeft);
-                map[cell.y][cell.x].prob = Math.max(...AztecsHelper.remIndex(map[cell.y][cell.x].probList)); //maximum der probList als Wahrscheilichkeit notieren
-                delete map[cell.y][cell.x].probList; //probList entfernen
+        for (let c in unknownCells) { //alle noch unbekannten Zellen durchgehen
+            if (!unknownCells.hasOwnProperty(c)) continue;
+            let cell = unknownCells[c];
+            if (leftRes==0) {
+                map[cell.y][cell.x].prob = 0;
+                map[cell.y][cell.x].content = nrC;
+                if (!(!map[cell.y][cell.x].probList)) delete map[cell.y][cell.x].probList
+                continue;
             }
+
+            if (!map[cell.y][cell.x].probList) continue; //wenn probList nicht existiert
+            map[cell.y][cell.x].prob = Math.max(...AztecsHelper.remIndex(map[cell.y][cell.x].probList)); //maximum der probList als Wahrscheilichkeit notieren
+            delete map[cell.y][cell.x].probList; //probList entfernen
         }
+        
         
         AztecsHelper.CalcBody();
         if(AztecsHelper.MovesLeft <= 0) return $('#aztecsHelper').length > 0 && HTML.CloseOpenBox('aztecsHelper');
