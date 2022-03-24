@@ -686,7 +686,7 @@ let GuildFights = {
 
 			b.push('<td class="tdmin">' + (parseInt(i) + 1) + '.</td>');
 
-			b.push('<td class="tdmin"><img src="' + MainParser.InnoCDN + 'assets/shared/avatars/' + MainParser.PlayerPortraits[playerNew['avatar']] + '.jpg" alt=""></td>');
+			b.push('<td class="tdmin"><img src="' + MainParser.InnoCDN + 'assets/shared/avatars/' + (MainParser.PlayerPortraits[playerNew['avatar']] || 'portrait_433') + '.jpg" alt=""></td>');
 
 			b.push('<td>' + playerNew['name'] + '</td>');
 
