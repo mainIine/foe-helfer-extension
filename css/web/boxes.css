@@ -289,12 +289,18 @@ a[target="_blank"] svg {
 }
 
 .window-box::-webkit-scrollbar,
-.window-body::-webkit-scrollbar {
+.window-body::-webkit-scrollbar,
+.window-body * ::-webkit-scrollbar,
+.window-body * * ::-webkit-scrollbar,
+.window-body * * *::-webkit-scrollbar {
 	width: 5px;
 	border-left: 1px solid var(--border-table-top);
 }
 .window-box::-webkit-scrollbar-thumb,
-.window-body::-webkit-scrollbar-thumb {
+.window-body::-webkit-scrollbar-thumb,
+.window-body * ::-webkit-scrollbar-thumb,
+.window-body * * ::-webkit-scrollbar-thumb,
+.window-body * * *::-webkit-scrollbar-thumb {
 	background: #281207;
 	border-radius: 10px;
 	border-top: 1px solid var(--border-table-top);
