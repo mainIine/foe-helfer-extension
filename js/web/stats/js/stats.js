@@ -722,7 +722,7 @@ let Stats = {
 
 		const series = knownIds.map(playerId => {
 			const playerInfo = playerKV[playerId] || {name: '' + playerId};
-			const avatarUrl = MainParser.PlayerPortraits[playerInfo.avatar] ? `${MainParser.InnoCDN}assets/shared/avatars/${MainParser.PlayerPortraits[playerInfo.avatar]}.jpg` : '#'
+			const avatarUrl = `${MainParser.InnoCDN}assets/shared/avatars/${(MainParser.PlayerPortraits[playerInfo.avatar] || 'portrait_433')}.jpg`;
 			return {
 				name: playerInfo.name,
 				avatarUrl,
