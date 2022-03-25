@@ -1,5 +1,38 @@
 ## Changelog - Extension
 
+##### 2.9.0.0
+**New**
+- Azteken Minigame Helfer
+	- Zeigt dir die Wahrscheinlichkeiten der Güter auf den verdeckten Feldern
+
+**Update**
+- Neues Zeitalter - Raumfahrt: Jupiter Mond:
+	- added new resources to the extension
+
+- Beta-Modus:
+	- wurde entfernt, wird jetzt in einer [extra Extension](https://github.com/mainIine/foe-helfer-extension/archive/refs/heads/betaLoader.zip) angeboten
+
+- Gildengefechte:
+	- Neue, schematische Karten
+	- Neue Einstellungen für Countdowns: zeige alle Countdowns, zeige auch Countdowns eigener Sektoren
+
+- Menü:
+	- Falls das Fenster zu klein ist, wird automatisch das Boxmenü aktiviert, damit man weiterhin auf den Helfer zugreifen kann
+	- Positionierung des unteren Menüs für FoE+ leicht angepasst
+
+- Einstellungen: 
+	- die meisten Einstellungen sind nun im jeweiligen Fenster zu finden
+
+**BugFix**
+
+- Menü:
+	- Kleine Fenster haben nun wieder Scrollbars
+
+- Bonus HUD:
+	- wird nun immer angezeigt
+
+---
+
 ##### 2.8.0.0
 
 **New**
