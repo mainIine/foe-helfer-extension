@@ -1413,6 +1413,7 @@ let GuildFights = {
 			return;
 		}
 
+		if (data['conquestProgress']) GuildFights.MapData.map.provinces.conquestProgress = data.conquestProgress;
 
 		for (let i in data['conquestProgress']) {
 			if (!data['conquestProgress'].hasOwnProperty(i)) {
