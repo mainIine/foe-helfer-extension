@@ -292,7 +292,7 @@ a[target="_blank"] svg {
 .window-body::-webkit-scrollbar,
 .window-body * ::-webkit-scrollbar
 {
-	width: 10px;
+	width: 7px;
 	background: #57250c;
 	border-left: 1px solid var(--border-table-top);
 	border-right: 1px solid var(--border-table-top);
@@ -301,7 +301,7 @@ a[target="_blank"] svg {
 .window-body::-webkit-scrollbar-thumb,
 .window-body * ::-webkit-scrollbar-thumb {
 	background: #281207;
-	border-radius: 10px;
+	border-radius: 4px;
 	border-top: 1px solid var(--border-table-top);
 	border-right: 1px solid var(--border-table-bottom);
 	border-bottom: 1px solid var(--border-table-bottom);
