@@ -7,10 +7,10 @@
 
 **Update**
 - Neues Zeitalter - Raumfahrt: Jupiter Mond:
-	- added new resources to the extension
+	- Die neuen Güter wurden hinzugefügt
 
 - Beta-Modus:
-	- wurde entfernt, wird jetzt in einer [extra Extension](https://github.com/mainIine/foe-helfer-extension/archive/refs/heads/betaLoader.zip) angeboten
+	- Wurde entfernt, wird jetzt in einer [extra Extension](https://github.com/mainIine/foe-helfer-extension/archive/refs/heads/betaLoader.zip) angeboten
 
 - Gildengefechte:
 	- Neue, schematische Karten
@@ -21,7 +21,7 @@
 	- Positionierung des unteren Menüs für FoE+ leicht angepasst
 
 - Einstellungen: 
-	- die meisten Einstellungen sind nun im jeweiligen Fenster zu finden
+	- Die meisten Einstellungen sind nun im jeweiligen Fenster zu finden
 
 **BugFix**
 
