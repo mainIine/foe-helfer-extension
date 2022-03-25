@@ -38,6 +38,10 @@ FoEproxy.addFoeHelperHandler('QuestsUpdated', data => {
 	}
 });
 
+/**
+ *
+ * @type {{FirstCycle: boolean, IsNextLevel: boolean, CalcBackgroundBody: Parts.CalcBackgroundBody, BuildBoxPowerLeveling: Parts.BuildBoxPowerLeveling, CopyStrings: {}, LastLevel: null, TrustExistingPlaces: boolean, RemainingOwnPart: null, CopyIncludeFP: boolean, CopyOwnPlayerName: null, CopyBuildingName: null, CopyIncludeLevelString: boolean, PowerLevelingMaxLevel: number, CopyDescending: boolean, CopyPlaces: boolean[], CopyIncludeGB: boolean, CopyModeAuto: boolean, CurrentMaezens: *[], UpdateTableBodyPowerLeveling: Parts.UpdateTableBodyPowerLeveling, Exts: number[], SettingsRemoveRow: Parts.SettingsRemoveRow, CopyModeAutoUnsafe: boolean, CityMapEntity: undefined, SafePlaces: undefined, Rankings: undefined, Level: undefined, Show: Parts.Show, ArcPercents: number[], GetCopyStringEx: (function(*, *, *, *, *, *, *): string), DefaultButtons: (number|string)[], CalcBody: Parts.CalcBody, GetCopyString: (function(): string), CalcBodyPowerLevelingData: (function(): {HasDoubleCollection: boolean, DoubleCollections: [], EigenNettos: [], CityEntity: *, EigenBruttos: [], MaxLevel: number | number, OwnPartSum: number, MinLevel: *, Places: []}), PowerLevelingData: null, CopyModeAll: boolean, CopyFunction: (function(*, *): string), CopyFormatPerGB: boolean, CalcBodyPowerLeveling: Parts.CalcBodyPowerLeveling, SettingsInsertNewRow: Parts.SettingsInsertNewRow, CopyIncludePlayer: boolean, CopyIncludeOwnPart: boolean, LastPlayerID: null, ShowCalculatorSettings: Parts.ShowCalculatorSettings, GetStorageKey: ((function(*, *): string)|*), SettingsSaveValues: Parts.SettingsSaveValues, LockExistingPlaces: boolean, BackGroundBoxAnimation: Parts.BackGroundBoxAnimation, CopyPlayerName: null, PlaceAvailables: *[], LastEntityID: null, Maezens: *[], CalcTableBodyPowerLeveling: Parts.CalcTableBodyPowerLeveling, CopyString: null, CopyPreP: boolean, CopyIncludeLevel: boolean, IsPreviousLevel: boolean, ShowPowerLeveling: Parts.ShowPowerLeveling, PlayInfoSound: null}}
+ */
 let Parts = {
 	CityMapEntity: undefined,
 	Rankings: undefined,
@@ -88,6 +92,7 @@ let Parts = {
 	CopyIncludeLevel: true,
 	CopyIncludeFP: true,
 	CopyIncludeOwnPart: false,
+	CopyPreP: true,
 	CopyDescending: true,
 	CopyIncludeLevelString: false,
 
@@ -324,6 +329,11 @@ let Parts = {
 						Parts.CopyIncludeOwnPart = !Parts.CopyIncludeOwnPart;
 						StorageKey = Parts.GetStorageKey('CopyIncludeOwnPart', (Parts.CopyFormatPerGB ? Parts.CityMapEntity['cityentity_id'] : null));
 						localStorage.setItem(StorageKey, Parts.CopyIncludeOwnPart);
+					}
+					else if (OptionsName === 'prep') {
+						Parts.CopyPreP = !Parts.CopyPreP;
+						StorageKey = Parts.GetStorageKey('CopyPreP', (Parts.CopyFormatPerGB ? Parts.CityMapEntity['cityentity_id'] : null));
+						localStorage.setItem(StorageKey, Parts.CopyPreP);
 					}
 				}
 
@@ -942,6 +952,14 @@ let Parts = {
 				Parts.CopyIncludeOwnPart = false;
 			}
 
+			let SavedCopyPreP = localStorage.getItem(Parts.GetStorageKey('CopyPreP', Parts.CityMapEntity['cityentity_id']));
+			if (SavedCopyPreP !== null) {
+				Parts.CopyPreP = (SavedCopyPreP === 'true');
+			}
+			else {
+				Parts.CopyPreP = true;
+			}
+
 			let SavedCopyDescending = localStorage.getItem(Parts.GetStorageKey('CopyDescending', Parts.CityMapEntity['cityentity_id']));
 			if (SavedCopyDescending !== null) {
 				Parts.CopyDescending = (SavedCopyDescending === 'true');
@@ -991,6 +1009,7 @@ let Parts = {
 			'<label class="form-check-label game-cursor" for="options-descending"><input type="checkbox" class="form-check-input" id="options-descending" data-options="descending" ' + (Parts.CopyDescending ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.OptionsDescending') + '</span></label>' +
 			'<label class="form-check-label game-cursor" for="options-levelup"><input type="checkbox" class="form-check-input" id="options-levelup" data-options="levelup" ' + (Parts.CopyIncludeLevelString ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.OptionsLevelUp') + '</span></label>' +
 			'<label class="form-check-label game-cursor" for="options-ownpart"><input type="checkbox" class="form-check-input" id="options-ownpart" data-options="ownpart" ' + (Parts.CopyIncludeOwnPart ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.OptionsOwnPart') + '</span></label>' +
+			'<label class="form-check-label game-cursor" for="options-prep"><input type="checkbox" class="form-check-input" id="options-prep" data-options="prep" ' + (Parts.CopyPreP ? 'checked' : '') + '> <span>P(xx)</span></label>' +
 			'</div>';
 
 		h.push(Options)
@@ -1106,6 +1125,7 @@ let Parts = {
 		return Parts.GetCopyStringEx(Places=Parts.CopyPlaces, Maezens=Parts.Maezens, Level=Parts.Level, OwnPart=Parts.RemainingOwnPart, PlaceAll=Parts.CopyModeAll, PlaceAuto=Parts.CopyModeAuto, PlaceAutoUnsafe=Parts.CopyModeAutoUnsafe)
     },
 
+
 	GetCopyStringEx: (Places, Maezens, Level, OwnPart, PlaceAll, PlaceAuto, PlaceAutoUnsafe) => {	
 		let Ret = [];
 		if (Parts.CopyIncludePlayer) Ret.push(Parts.CopyPlayerName);
@@ -1129,10 +1149,10 @@ let Parts = {
 				if (PlaceAll && Maezens[Place] === 0) continue;
 				
 				if (Parts.CopyIncludeFP) {
-					Ret.push('P' + (Place + 1) + '(' + Maezens[Place] + ')');
+					Ret.push((Parts.CopyPreP ? 'P' : '') + (Place + 1) + '(' + Maezens[Place] + ')');
 				}
 				else {
-					Ret.push('P' + (Place + 1));
+					Ret.push((Parts.CopyPreP ? 'P' : '') + (Place + 1));
 				}
 			}
 		}
@@ -1419,11 +1439,10 @@ let Parts = {
 			buttons,
 			defaults = Parts.DefaultButtons,
 			sB = localStorage.getItem('CustomPartCalcButtons'),
+			allGB = localStorage.getItem('ShowOwnPartOnAllGBs'),
 			nV = `<p class="new-row">${i18n('Boxes.Calculator.Settings.newValue')}: <input type="number" class="settings-values" style="width:30px"> <span class="btn btn-default btn-green" onclick="Parts.SettingsInsertNewRow()">+</span></p>`;
 
-
-		if(sB)
-		{
+		if(sB) {
 			// buttons = [...new Set([...defaults,...JSON.parse(sB)])];
 			buttons = JSON.parse(sB);
 
@@ -1434,10 +1453,8 @@ let Parts = {
 			buttons = defaults;
 		}
 
-
 		buttons.forEach(bonus => {
-			if(bonus === 'ark')
-			{
+			if(bonus === 'ark') {
 				c.push(`<p class="text-center"><input type="hidden" class="settings-values" value="ark"> <button class="btn btn-default">${MainParser.ArkBonus}%</button></p>`);
 			}
 			else {
@@ -1448,10 +1465,12 @@ let Parts = {
 		// new own button
 		c.push(nV);
 
-		c.push('<input id="copyformatpergb" class="copyformatpergb game-cursor" ' + (Parts.CopyFormatPerGB ? 'checked' : '') + ' type="checkbox"> ' + i18n('Boxes.OwnpartCalculator.CopyFormatPerGB'));
+		console.log(allGB);
+		c.push('<p><input id="copyformatpergb" class="copyformatpergb game-cursor" ' + (Parts.CopyFormatPerGB ? 'checked' : '') + ' type="checkbox"> ' + i18n('Boxes.OwnpartCalculator.CopyFormatPerGB'));
+		c.push('<br><input type="checkbox" id="openonaliengb" class="openonaliengb game-cursor" ' + ((allGB == 'true') ? 'checked' : '') + '> ' + i18n('Settings.ShowOwnPartOnAllGBs.Desc')) + '</p>';
 
 		// save button
-		c.push(`<hr><p><button id="save-calculator-settings" class="btn btn-default" style="width:100%" onclick="Parts.SettingsSaveValues()">${i18n('Boxes.Calculator.Settings.Save')}</button></p>`);
+		c.push(`<p><button id="save-calculator-settings" class="btn btn-default" style="width:100%" onclick="Parts.SettingsSaveValues()">${i18n('Boxes.Calculator.Settings.Save')}</button></p>`);
 
 		// insert into DOM
 		$('#OwnPartBoxSettingsBox').html(c.join(''));
@@ -1494,7 +1513,11 @@ let Parts = {
 
 		let OldCopyFormatPerGB = Parts.CopyFormatPerGB;
 		Parts.CopyFormatPerGB = $('.copyformatpergb').prop('checked');
-		localStorage.setItem(Parts.GetStorageKey('CopyFormatPerGB', null), Parts.CopyFormatPerGB);
+
+        let openforeignGB = false;
+		if ($("#openonaliengb").is(':checked'))
+			openforeignGB = true;
+		localStorage.setItem('ShowOwnPartOnAllGBs',openforeignGB);
 
 		$(`#OwnPartBoxSettingsBox`).fadeToggle('fast', function(){
 			$(this).remove();

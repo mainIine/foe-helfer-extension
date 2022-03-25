@@ -300,7 +300,6 @@ let AztecsHelper = {
         var unknownCells = {};
         var leftRes = AztecsHelper.ResourcesLeft+0;
         var run=0;
-        console.log(AztecsHelper.ResourcesLeft);
 
         //reset prob and eval attribute
         for (let y = 0; y < AztecsHelper.mapHeight; y++) {
@@ -322,14 +321,14 @@ let AztecsHelper = {
                     
                     cell.surrUnCells = AztecsHelper.GetSurroundingCell(x,y,uC); //alle unbekannten Nachbarzellen 
                     cell.surrResCells = AztecsHelper.GetSurroundingCell(x,y,rC);//alle Nachbarzellen mit Ressource
-                    //cell.surrNumCells = AztecsHelper.GetSurroundingCell(x,y,"number"); // alle Nachbarzellen mit Zahl
+                    cell.surrNumCells = AztecsHelper.GetSurroundingCell(x,y,"number"); // alle Nachbarzellen mit Zahl
                     numberCells[`y${y}x${x}`] = {"x":x,"y":y};
                     
                 }
             }
         }
         let tmp = JSON.parse(JSON.stringify(numberCells));
-        while ((Object.keys(tmp).length > 0) && (run < 20)) {
+        while (Object.keys(tmp).length > 0 && run<20) {
             let tmp2 = {};
             for (let c in tmp) {
                 if (tmp2.hasOwnProperty(c)) delete tmp2[c];
@@ -395,7 +394,7 @@ let AztecsHelper = {
                                 }
                             }
                         }
-                        if (cell.surrUnCells.length > 0 && leftRes > 0) { //es sind noch unbekannte Nachbarzellen vorhanden
+                        if (cell.surrUnCells.length > 0) {//} && leftRes > 0) { //es sind noch unbekannte Nachbarzellen vorhanden
                             for (let dC of cell.surrUnCells) {//unbekannte Nachbarzellen durchgehen
                                 let newP = unrevRes / cell.surrUnCells.length; //wahrscheinlichkeit, dass Nachbarzelle eine Ressource hat ist Anzahl Ressourcen/Anzahl unbekannter Nachbarn 
                                 if (!map[dC.y][dC.x].hasOwnProperty("probList")) map[dC.y][dC.x].probList = []; //probList anlegen, falls noch nicht vorhanden
@@ -411,7 +410,7 @@ let AztecsHelper = {
                     }
                 }
             }
-            tmp = JSN.parse(JSON.stringify(tmp2));
+            tmp = JSON.parse(JSON.stringify(tmp2));
             run = run+1;
             if (run>=10) {
                 console.log("Endlosschleife???");
@@ -420,6 +419,7 @@ let AztecsHelper = {
         }  
         
         for (let c in unknownCells) { //alle noch unbekannten Zellen durchgehen
+            if (!unknownCells.hasOwnProperty(c)) continue;
             let cell = unknownCells[c];
             if (leftRes==0) {
                 map[cell.y][cell.x].prob = 0;
@@ -427,15 +427,13 @@ let AztecsHelper = {
                 if (!(!map[cell.y][cell.x].probList)) delete map[cell.y][cell.x].probList
                 continue;
             }
-            if (!map[cell.y][cell.x].probList) {//wenn probList nicht existiert
-                map[cell.y][cell.x].prob = leftRes/Object.keys(unknownCells).length;
-                continue; 
-            }
-            map[cell.y][cell.x].probList.push(leftRes/Object.keys(unknownCells).length);
+
+            if (!map[cell.y][cell.x].probList) continue; //wenn probList nicht existiert
             map[cell.y][cell.x].prob = Math.max(...AztecsHelper.remIndex(map[cell.y][cell.x].probList)); //maximum der probList als Wahrscheilichkeit notieren
             delete map[cell.y][cell.x].probList; //probList entfernen
         }
-
+        
+        
         AztecsHelper.CalcBody();
         if(AztecsHelper.MovesLeft <= 0) return $('#aztecsHelper').length > 0 && HTML.CloseOpenBox('aztecsHelper');
         

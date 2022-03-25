@@ -381,7 +381,7 @@ let GexStat = {
 			h.push(`<td class="text-center is-number" data-number="${member.rank}">${member.rank}</td>`);
 			h.push(`<td class="text-center is-number" data-number="${level}"><span class="level${encounterClass}" title="${HTML.i18nTooltip(i18n('Boxes.GexStat.Level') + ' ' + level)}"></span></td>`);
 			h.push(`<td class="case-sensitive" data-text="${member.name.toLowerCase().replace(/[\W_ ]+/g, "")}">` +
-				`<div class="avatar"><img src="${MainParser.InnoCDN + 'assets/shared/avatars/' + MainParser.PlayerPortraits[member.avatar] + '.jpg'}" /></div>` +
+				`<div class="avatar"><img src="${MainParser.InnoCDN + 'assets/shared/avatars/' + (MainParser.PlayerPortraits[member.avatar] || 'portrait_433') + '.jpg'}" /></div>` +
 				`<div class="membername">${MainParser.GetPlayerLink(member.player_id, member.name)}</div></td>`);
 			h.push(`<td class="is-number" data-number="${member.expeditionPoints}">${HTML.Format(member.expeditionPoints)}</td>`);
 			h.push(`<td class="is-number" data-number="${level}">${level}</td>`);

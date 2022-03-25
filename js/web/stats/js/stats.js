@@ -722,7 +722,7 @@ let Stats = {
 
 		const series = knownIds.map(playerId => {
 			const playerInfo = playerKV[playerId] || {name: '' + playerId};
-			const avatarUrl = MainParser.PlayerPortraits[playerInfo.avatar] ? `${MainParser.InnoCDN}assets/shared/avatars/${MainParser.PlayerPortraits[playerInfo.avatar]}.jpg` : '#'
+			const avatarUrl = `${MainParser.InnoCDN}assets/shared/avatars/${(MainParser.PlayerPortraits[playerInfo.avatar] || 'portrait_433')}.jpg`;
 			return {
 				name: playerInfo.name,
 				avatarUrl,
@@ -1181,9 +1181,12 @@ let Stats = {
 			let pointImage = '';
 			if (rewardInfo.type != 'unit') {
 				let url = '';
+				let url2 = '';
 				if ((rewardInfo.iconAssetName || rewardInfo.assembledReward && rewardInfo.assembledReward.iconAssetName)) {
 					const icon = rewardInfo.assembledReward && rewardInfo.assembledReward.iconAssetName ? rewardInfo.assembledReward.iconAssetName : rewardInfo.iconAssetName;
 					url = `${MainParser.InnoCDN}assets/shared/icons/reward_icons/reward_icon_${icon}.png`;
+					url2 = `${MainParser.InnoCDN}assets/shared/icons/goods_large/${icon}.png`;
+					
 					//fix for fragment missing images for buildings
 					if (rewardInfo.type == 'good' && rewardInfo.iconAssetName == 'random_goods' && rewardInfo.subType) {
 						url = `${MainParser.InnoCDN}assets/shared/icons/reward_icons/reward_icon_random_goods.png`;
@@ -1197,7 +1200,7 @@ let Stats = {
 						url = `${MainParser.InnoCDN}assets/city/buildings/${rewardInfo.subType.replace(/^(\w)_/, '$1_SS_')}.png`;
 				}
 				if (url) {
-					pointImage = `<img src="${url}" style="width: 45px; height: 45px; margin-right: 4px;">`;
+					pointImage = `<object data="${url}" style="width: 45px; height: 45px; margin-right: 4px;" type="image/png">${url2 != '' ? '<img src="'+url2+'" style="width: 45px; height: 45px; margin-right: 4px;">':''}</object>`;
 				}
 			}
 			return {

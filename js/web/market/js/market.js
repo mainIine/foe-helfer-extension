@@ -33,7 +33,7 @@ FoEproxy.addHandler('TradeService', 'getTradeOffers', (data, postData) => {
 /**
  * Market function
  *
- * @type {{OfferSelect: null, Trades: [], TradeFair: boolean, TradePartnerGuild: boolean, TradeForHigher: boolean, MaxResults: number, TestGoodFilter: (function(*, *): boolean), TestFilter: (function(*): boolean), TradeLowerStock: boolean, TradePartnerFriend: boolean, MinQuantity: number, TradeForEqual: boolean, TradeDisadvantage: boolean, Need: number, OnlyAffordable: boolean, Offer: number, NeedSelect: null, TradePartnerNeighbor: boolean, TradeAdvantage: boolean, Show: Market.Show, ShowOwnOffers: boolean, CalcBody: Market.CalcBody, TradeForLower: boolean}}
+ * @type {{OfferSelect: null, Trades: [], TradeFair: boolean, TradePartnerGuild: boolean, TradeForHigher: boolean, MaxResults: number, TestGoodFilter: (function(*, *): boolean), TestFilter: (function(*): boolean), TradeFairStock: boolean, TradePartnerFriend: boolean, MinQuantity: number, TradeForEqual: boolean, TradeDisadvantage: boolean, Need: number, OnlyAffordable: boolean, Offer: number, NeedSelect: null, TradePartnerNeighbor: boolean, TradeAdvantage: boolean, Show: Market.Show, ShowOwnOffers: boolean, CalcBody: Market.CalcBody, TradeForLower: boolean}}
  */
 let Market = {
     Trades: [],
@@ -53,7 +53,7 @@ let Market = {
     TradeForLower: true,
 
     TradeAdvantage: true,
-    TradeLowerStock: false,
+    TradeFairStock: true,
     TradeFair: true,
     TradeDisadvantage: false,
 
@@ -145,8 +145,8 @@ let Market = {
                 Market.CalcBody();
             });
 
-            $('#Market').on('click', '.tradelowerstock', function () {
-                Market.TradeLowerStock = !Market.TradeLowerStock;
+            $('#Market').on('click', '.tradefairstock', function () {
+                Market.TradeFairStock = !Market.TradeFairStock;
                 Market.CalcBody();
             });
 
@@ -279,7 +279,7 @@ let Market = {
 
         h.push('<td><label class="game-cursor"><input class="tradepartnerguild game-cursor" ' + (Market.TradePartnerGuild ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Market.TradePartnerGuild') + '</label></td>');
         h.push('<td><label class="game-cursor"><input class="tradeforequal game-cursor" ' + (Market.TradeForEqual ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Market.TradeForEqual') + '</label></td>');
-        h.push('<td><label class="game-cursor"><input class="tradefair game-cursor" ' + (Market.TradeFair ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Market.TradeFair') + '</label></td>');
+        h.push('<td><label class="game-cursor"><input class="tradefairstock game-cursor" ' + (Market.TradeFairStock ? 'checked' : '') + ' type="checkbox" title="' + HTML.i18nTooltip(i18n('Boxes.Market.TradeFairStockTT')) + '">' + i18n('Boxes.Market.TradeFairStock') + '</label></td>');
         h.push('</tr>');
 
         h.push('<tr>');
@@ -287,7 +287,7 @@ let Market = {
         h.push('<td title="' + HTML.i18nTooltip(i18n('Boxes.Market.TTMinQuantity')) + '"><input type="number" id="minquantity" step="1" min="0" max="1000000" value="' + Market.MinQuantity + '"></td>');
         h.push('<td><label class="game-cursor"><input class="tradepartnerfriend game-cursor" ' + (Market.TradePartnerFriend ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Market.TradePartnerFriend') + '</label></td>');
         h.push('<td><label class="game-cursor"><input class="tradeforlower game-cursor" ' + (Market.TradeForLower ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Market.TradeForLower') + '</label></td>');
-        h.push('<td><label class="game-cursor"><input class="tradedisadvantage game-cursor" ' + (Market.TradeDisadvantage ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Market.TradeDisadvantage') + '</label></td>');
+        h.push('<td><label class="game-cursor"><input class="tradefair game-cursor" ' + (Market.TradeFair ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Market.TradeFair') + '</label></td>');
         h.push('</tr>');
 
         h.push('<tr>');
@@ -295,7 +295,7 @@ let Market = {
         h.push('<td><input type="number" id="maxresults" step="1" min="1" max="1000000" value="' + Market.MaxResults + '"></td>');
         h.push('<td><label class="game-cursor"><input class="showownoffers game-cursor" ' + (Market.ShowOwnOffers ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Market.ShowOwnOffers') + '</label></td>');
         h.push('<td></td>');
-        h.push('<td><label class="game-cursor" title="' + HTML.i18nTooltip(i18n('Boxes.Market.TradeLowerStockTT')) + '"><input class="tradelowerstock game-cursor" ' + (Market.TradeLowerStock ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Market.TradeLowerStock') + '</label></td>');
+        h.push('<td><label class="game-cursor"><input class="tradedisadvantage game-cursor" ' + (Market.TradeDisadvantage ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Market.TradeDisadvantage') + '</label></td>');
         h.push('</tr>');
 
         h.push('<tr>');
@@ -450,15 +450,20 @@ let Market = {
             return false;
         }
 
-        if (Rating === 1 && !Market.TradeFair) { //Fair
-            return false;
-        } 
+        if (Rating === 1) { // Fair
+            let CurrentOfferValue = (IsOwnOffer ? Trade['need']['value'] : Trade['offer']['value']),
+                CurrentNeedValue = (IsOwnOffer ? Trade['offer']['value'] : Trade['need']['value']);
 
-        let CurrentOfferValue = (IsOwnOffer ? Trade['need']['value'] : Trade['offer']['value']),
-            CurrentNeedValue = (IsOwnOffer ? Trade['offer']['value'] : Trade['need']['value']);
-
-        if ((ResourceStock[OfferGoodID] + CurrentOfferValue/2 > ResourceStock[NeedGoodID] - CurrentNeedValue/2) && Market.TradeLowerStock) { //Stock is higher
-            return false;
+            if (ResourceStock[OfferGoodID] + CurrentOfferValue/2 < ResourceStock[NeedGoodID] - CurrentNeedValue/2) { //Stock is higher
+                if (!Market.TradeFairStock) {
+                    return false;
+                }
+            }
+            else { // Stock is lower or equal
+                if (!Market.TradeFair) {
+                    return false;
+                }
+            }
         }
 
         CurrentTradeDisdvantage = (IsOwnOffer ? Market.TradeAdvantage : Market.TradeDisadvantage);
@@ -505,10 +510,27 @@ let Market = {
     *
     */
     ShowSettingsButton: () => {
+		let autoOpen = Settings.GetSetting('ShowMarketFilter');
+
         let h = [];
-        h.push(`<p class="text-center"><button class="btn btn-default" onclick="HTML.ExportTable($('#MarketBody').find('.foe-table.exportable'), 'csv', 'Market')">${i18n('Boxes.General.ExportCSV')}</button></p>`);
-        h.push(`<p class="text-center"><button class="btn btn-default" onclick="HTML.ExportTable($('#MarketBody').find('.foe-table.exportable'), 'json', 'Market')">${i18n('Boxes.General.ExportJSON')}</button></p>`);
+        h.push(`<p class="text-center"><button class="btn btn-default" onclick="HTML.ExportTable($('#MarketBody').find('.foe-table.exportable'), 'csv', 'Market')">${i18n('Boxes.General.ExportCSV')}</button><br>`);
+        h.push(`<button class="btn btn-default" onclick="HTML.ExportTable($('#MarketBody').find('.foe-table.exportable'), 'json', 'Market')">${i18n('Boxes.General.ExportJSON')}</button></p>`);
+        h.push(`<p><input id="autoStartMarket" name="autoStartMarket" value="1" type="checkbox" ${(autoOpen === true) ? ' checked="checked"' : ''} /> <label for="autoStartMarket">${i18n('Boxes.Market.Settings.Autostart')}</label></p>`);
+
+        h.push(`<p><button onclick="Market.SaveSettings()" id="save-market-settings" class="btn btn-default" style="width:100%">${i18n('Boxes.Settings.Save')}</button></p>`);
 
         $('#MarketSettingsBox').html(h.join(''));
+    },
+
+    /**
+    *
+    */
+    SaveSettings: () => {
+        let value = false;
+		if ($("#autoStartMarket").is(':checked'))
+			value = true;
+
+		localStorage.setItem('ShowMarketFilter', value);
+		$(`#MarketSettingsBox`).remove();
     },
 };

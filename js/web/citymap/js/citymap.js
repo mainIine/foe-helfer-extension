@@ -287,6 +287,9 @@ let CityMap = {
 			if (d['type'] === 'greatbuilding') {
 				era = CurrentEraID;
 			}
+			else if (d.id.indexOf("AllAge") > -1) {
+				era = CurrentEraID;
+			}
 			// Multi era
 			else if (CityMapEntity['level']) {
 				era = CityMapEntity['level'] + 1;

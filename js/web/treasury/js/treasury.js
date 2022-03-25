@@ -32,6 +32,7 @@ let Treasury = {
                 'title': i18n('Boxes.Treasury.Title'),
                 'auto_close': true,
                 'dragdrop': true,
+                settings: 'Treasury.ShowSettings()'
             });
 
             // CSS in den DOM prügeln
@@ -105,5 +106,30 @@ let Treasury = {
         let BOM = "\uFEFF";
         let Blob1 = new Blob([BOM + ExportString], { type: "application/octet-binary;charset=ANSI" });
         MainParser.ExportFile(Blob1, 'GBG-export.csv');
-    }
+    },
+
+    /**
+    *
+    */
+     ShowSettings: () => {
+		let autoOpen = Settings.GetSetting('ShowGuildTreasuryLogExport');
+
+        let h = [];
+        h.push(`<p><input id="autoStartTreasuryExport" name="autoStartTreasuryExport" value="1" type="checkbox" ${(autoOpen === true) ? ' checked="checked"' : ''} /> <label for="autoStartMarket">${i18n('Boxes.Settings.Autostart')}</label></p>`);
+        h.push(`<p><button onclick="Treasury.SaveSettings()" id="save-treasury-settings" class="btn btn-default" style="width:100%">${i18n('Boxes.Settings.Save')}</button></p>`);
+
+        $('#treasurySettingsBox').html(h.join(''));
+    },
+
+    /**
+    *
+    */
+    SaveSettings: () => {
+        let value = false;
+		if ($("#autoStartMarket").is(':checked'))
+			value = true;
+
+		localStorage.setItem('ShowGuildTreasuryLogExport', value);
+		$(`#treasurySettingsBox`).remove();
+    },
 };

@@ -373,6 +373,7 @@ let GuildFights = {
 
 	},
 
+
 	/**
 	 * Filters the list for players with new progress
 	 * @param id
@@ -450,6 +451,7 @@ let GuildFights = {
 		return GuildFights.TabsContent.join('');
 	},
 
+
 	/**
 	 *
 	 * @param {boolean} alertActive
@@ -468,6 +470,7 @@ let GuildFights = {
 		}
 		return btn;
 	},
+
 
 	/**
 	 * Creates the box with the data
@@ -673,7 +676,9 @@ let GuildFights = {
 
 			b.push('<tr data-player="' + playerNew['player_id'] + '" data-gbground="' + gbground + '" class="' + newProgressClass + (!histView ? 'showdetailview ' : '') + (playerNew['player_id'] === ExtPlayerID ? 'mark-player ' : '') + (change === true ? 'bg-green' : '') + '">');
 			b.push('<td class="tdmin">' + (parseInt(i) + 1) + '.</td>');
-			b.push('<td class="tdmin"><img src="' + MainParser.InnoCDN + 'assets/shared/avatars/' + MainParser.PlayerPortraits[playerNew['avatar']] + '.jpg" alt=""></td>');
+
+			b.push('<td class="tdmin"><img src="' + MainParser.InnoCDN + 'assets/shared/avatars/' + (MainParser.PlayerPortraits[playerNew['avatar']] || 'portrait_433') + '.jpg" alt=""></td>');
+
 			b.push('<td>' + playerNew['name'] + '</td>');
 			b.push('<td class="text-center">');
 			b.push(playerNew['negotiationsWon'] + negotaionAddOn);
@@ -837,19 +842,17 @@ let GuildFights = {
 			h.push('<th class="is-number text-center" data-type="gbg-playerlog-group"><span class="negotiation" title="' + HTML.i18nTooltip(i18n('Boxes.GuildFights.Negotiations')) + '"></span></th>');
 			h.push('<th class="is-number text-center" data-type="gbg-playerlog-group"><span class="fight" title="' + HTML.i18nTooltip(i18n('Boxes.GuildFights.Fights')) + '"></span></th>');
 			h.push(`<th class="is-number text-center" data-type="gbg-playerlog-group">${i18n('Boxes.GuildFights.Total')}</th>`);
-			h.push(`<th></th>`);
 			h.push('</tr>');
 			h.push('</thead><tbody class="gbg-playerlog-group">');
 
 			dailyFights.forEach(day => {
 				let id = moment.unix(day.time).format(i18n('DateTime'));
 				let sum = (day.battles + day.negotiations * 2);
-				h.push('<tr id="gbgdetail_' + id + '" data-gbground="' + gbground + '" data-player="' + player_id + '" data-id="' + id + '" class="hasdetail">');
+				h.push('<tr id="gbgdetail_' + id + '" data-gbground="' + gbground + '" data-player="' + player_id + '" data-id="' + id + '">');
 				h.push(`<td class="is-number" data-number="${day.time}">${moment.unix(day.time).format(i18n('Date'))}</td>`);
 				h.push(`<td class="is-number text-center" data-number="${day.negotiations}">${HTML.Format(day.negotiations)}</td>`);
 				h.push(`<td class="is-number text-center" data-number="${day.battles}">${HTML.Format(day.battles)}</td>`);
 				h.push(`<td class="is-number text-center" data-number="${sum}">${HTML.Format(sum)}</td>`);
-				h.push(`<td></td>`);
 				h.push('</tr>');
 
 			});
