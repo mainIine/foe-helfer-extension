@@ -2012,7 +2012,7 @@ let ProvinceMap = {
 						data.isSpawnSpot = true;
 					}
 				}
-				else if (prov.owner.id) 
+				else if (prov.owner) 
 					data.ownerID = prov.owner.id;
 
 				if (prov.lockedUntil) 
