@@ -1159,7 +1159,7 @@ let GuildFights = {
 			own = gbgGuilds.find(e => e['clan']['id'] === ExtGuildID),
 			LiveFightSettings = JSON.parse(localStorage.getItem('LiveFightSettings'));
 
-		GuildFights.showAdjacentSectors = (LiveFightSettings && LiveFightSettings.showAdjacentSectors !== undefined) ? LiveFightSettings.showAdjacentSectors : 0;
+		GuildFights.showAdjacentSectors = (LiveFightSettings && LiveFightSettings.showAdjacentSectors !== undefined) ? LiveFightSettings.showAdjacentSectors : 1;
 		GuildFights.showOwnSectors = (LiveFightSettings && LiveFightSettings.showOwnSectors !== undefined) ? LiveFightSettings.showOwnSectors : 0;
 
 		nextup.push('<div id="nextup"><table class="foe-table">');
