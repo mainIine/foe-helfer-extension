@@ -2066,7 +2066,7 @@ let ProvinceMap = {
 			updatedProvince.owner.colors = ProvinceMap.getSectorColors(socketData.ownerId);
 		}
 
-		GuildFights.MapData.map.provinces[socketData['id'] || 0] = updatedProvince;
+		//GuildFights.MapData.map.provinces[socketData['id'] || 0] = updatedProvince;
 
 		updatedProvince.updateMapSector();
 	},
