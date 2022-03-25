@@ -34,9 +34,6 @@ FoEproxy.addHandler('ArmyUnitManagementService', 'getArmyInfo', (data, postData)
 FoEproxy.addHandler('CityProductionService', 'pickupProduction', (data, postData) => {
 	Unit.RefreshAlca(data['responseData']);
 
-	console.log('data: ', data);
-	console.log('postData: ', postData);
-
 	if (Unit.alca && postData && postData[0] && postData[0]['requestData'] && postData[0]['requestData'][0] && postData[0]['requestData'][0][0] === Unit.alca.id) {
 		if (data.responseData.militaryProducts === undefined) {
 			return;
