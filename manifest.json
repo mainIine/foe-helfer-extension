@@ -38,7 +38,8 @@
 		"css/images/*.*",
 		"content/*.html",
 		"js/vendor.json",
-		"js/internal.json"
+		"js/internal.json",
+		"js/foeproxy.js"
 	],
 	
 	"content_scripts": [
