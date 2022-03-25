@@ -1428,7 +1428,7 @@ let GuildFights = {
 				max = d['maxProgress'],
 				progess = d['progress'],
 				cell = $(`tr#province-${data['id']}`),
-				pColor = ProvinceMap.getSectorColors(GuildFights.MapData.map?.province[data.id]?.ownerId),
+				pColor = ProvinceMap.getSectorColors(GuildFights.MapData.map?.provinces[data.id]?.ownerId),
 				p = GuildFights.MapData['battlegroundParticipants'].find(o => (o['participantId'] === d['participantId']));
 
 			if (!data['id']) {
