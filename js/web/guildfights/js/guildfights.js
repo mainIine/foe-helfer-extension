@@ -1277,11 +1277,9 @@ let GuildFights = {
 
 
 	ToggleCopyButton: () => {
-		if ($('#nextup').is(':visible') && $('.timer.highlight-row').length > 0)
-		{
+		if ($('#nextup').is(':visible') && $('.timer.highlight-row').length > 0) {
 			$('.copybutton').show();
-		} else
-		{
+		} else {
 			$('.copybutton').hide();
 		}
 	},
@@ -1842,9 +1840,8 @@ let ProvinceMap = {
 				sector.drawStartSector(mapStuff, mapType);
 			
 			else {
-
-				console.log(sector);
 				ProvinceMap.MapCTX.fillStyle = sector.owner.colors.highlight;
+
 				if (mapType === 'volcano_archipelago') 
 					sector.drawSectorShape();
 				else
@@ -1916,8 +1913,8 @@ let ProvinceMap = {
 					let barWidth = 50;
 					let x = mapStuff.x-27;
 
-					ProvinceMap.MapCTX.fillStyle = '#1118';
-					ProvinceMap.MapCTX.fillRect(x, mapStuff.y + 8*index, 3 + barWidth, 4);
+					ProvinceMap.MapCTX.fillStyle = '#111a';
+					ProvinceMap.MapCTX.fillRect(x, mapStuff.y + 8*index + 1, 3 + barWidth, 4);
 					ProvinceMap.MapCTX.fillStyle = color.highlight;
 					ProvinceMap.MapCTX.strokeRect(x, mapStuff.y + 8*index, 3 + barWidth*progDiff, 6);
 					ProvinceMap.MapCTX.fillRect(x, mapStuff.y + 8*index, 3 + barWidth*progDiff, 6);
@@ -1928,17 +1925,9 @@ let ProvinceMap = {
 			let flag_image = new Image();
 			flag_image.src = `${MainParser.InnoCDN}assets/shared/clanflags/${this.owner.flagImg}.jpg`;
 			let sector = this;
-			let flag_x = mapStuff.x-25;
-			let flag_y = mapStuff.y-25;
-			let width = mapStuff.hexheight/2;
-			let height = mapStuff.hexheight/2;
-
-			if (mapType === 'volcano_archipelago') {
-				flag_x = mapStuff.x-25;
-				flag_y = mapStuff.y-25;
-				height = 50;
-				width = 50;
-			}
+			let flagX = mapStuff.x-25;
+			let flagY = mapStuff.y-25;
+			let flagSize = 50;
 
 			flag_image.onload = function () {
 				ProvinceMap.MapCTX.fillStyle = sector.owner.colors.highlight;
@@ -1947,7 +1936,7 @@ let ProvinceMap = {
 				else
 					drawHex(mapStuff.x, mapStuff.y, mapStuff.hexwidth, mapStuff.hexheight);
 
-				ProvinceMap.MapCTX.drawImage(this, flag_x, flag_y, width, height);
+				ProvinceMap.MapCTX.drawImage(this, flagX, flagY, flagSize, flagSize);
 			}
 		}
 
@@ -2019,10 +2008,12 @@ let ProvinceMap = {
 						data['flagImg'] = clan['clan']['flag'].toLowerCase();
 						data.isSpawnSpot = true;
 					}
-
-					if (prov.lockedUntil) 
-						data.lockedUntil = prov.lockedUntil;
 				}
+				else if (prov.owner.id) 
+					data.ownerID = prov.owner.id;
+
+				if (prov.lockedUntil) 
+					data.lockedUntil = prov.lockedUntil;
 
 				if (prov.totalBuildingSlots) 
 					data.totalBuildingSlots = prov.totalBuildingSlots;
@@ -2072,13 +2063,13 @@ let ProvinceMap = {
 		if (socketData.conquestProgress)
 			updatedProvince.conquestProgress = socketData.conquestProgress;
 
+		if (socketData.lockedUntil)
+			updatedProvince.lockedUntil = socketData.lockedUntil;
+
 		if (socketData.ownerId !== updatedProvince.owner.id) {
 			updatedProvince.owner.id = socketData.ownerId;
 			updatedProvince.owner.colors = getSectorColors(socketData.ownerId);
 		}
-
-		if (socketData.lockedUntil)
-			updatedProvince.lockedUntil = socketData.lockedUntil;
 
 		GuildFights.MapData.map.provinces[socketData['id']] = updatedProvince;
 

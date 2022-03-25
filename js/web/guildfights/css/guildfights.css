@@ -490,9 +490,17 @@
 	top: calc(50vh - 219px);
 }
 
-#ProvinceMap #province-map {
+#ProvinceMap #province-map-wrap {
+	overflow: auto;
+	position: relative;
 	height: 100%;
+	width: 100%;
+}
+
+#ProvinceMap #province-map {
 	background-color: #222;
 	margin: 0 auto;
 	display: block;
+	position: relative;
+	height: 100%;
 }
