@@ -137,6 +137,12 @@ let GuildFights = {
 
 		if (GuildFights.InjectionLoaded === false) {
 			FoEproxy.addWsHandler('GuildBattlegroundService', 'all', data => {
+				
+				let Pid = data.responseData[0].id || 0;
+				for (x in data.responseData[0]) {
+					if (!data.responseData[0].hasOwnProperty(x) || x === "id") continue;
+					GuildFights.MapData.map.provinces[Pid][x] = data.responseData[0][x];
+				}
 
 				// Update Tables
 				if ($('#LiveGildFighting').length > 0 && data['responseData'][0]) {
@@ -1413,8 +1419,6 @@ let GuildFights = {
 			return;
 		}
 
-		if (data['conquestProgress']) GuildFights.MapData.map.provinces[data.id].conquestProgress = data.conquestProgress;
-
 		for (let i in data['conquestProgress']) {
 			if (!data['conquestProgress'].hasOwnProperty(i)) {
 				break;
@@ -1424,7 +1428,7 @@ let GuildFights = {
 				max = d['maxProgress'],
 				progess = d['progress'],
 				cell = $(`tr#province-${data['id']}`),
-				pColor = ProvinceMap.getSectorColors(data['participantId']),
+				pColor = ProvinceMap.getSectorColors(data['ownerId']),
 				p = GuildFights.MapData['battlegroundParticipants'].find(o => (o['participantId'] === d['participantId']));
 
 			if (!data['id']) {
