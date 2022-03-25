@@ -995,19 +995,6 @@ let GuildFights = {
 		let progress = [], nextup = [],
 			LiveFightSettings = JSON.parse(localStorage.getItem('LiveFightSettings'));
 
-		getSectorColors = function(ownerID) {
-			let colors = {};
-			if (ownerID != undefined)
-				colors = GuildFights.SortedColors.find(c => (c.id === ownerID))
-			else
-				colors = {
-					main: '#444',
-					highlight: '#666',
-					shadow: '#333'
-				}
-			return colors;
-		}
-
 		GuildFights.showGuildColumn = (LiveFightSettings && LiveFightSettings.showGuildColumn !== undefined) ? LiveFightSettings.showGuildColumn : 0;
 
 		progress = GuildFights.BuildProgressTab();
@@ -1099,7 +1086,7 @@ let GuildFights = {
 				if (mapdata[i]['ownerId'] !== undefined && gbgGuilds[x]['participantId'] === mapdata[i]['ownerId']) {
 					// show current fights
 					if (mapdata[i]['conquestProgress'].length > 0 && (mapdata[i]['lockedUntil'] === undefined)) {
-						let pColor = getSectorColors(mapdata[i]['ownerId']);
+						let pColor = ProvinceMap.getSectorColors(mapdata[i]['ownerId']);
 						let provinceProgress = mapdata[i]['conquestProgress'];
 
 						progress.push(`<tr id="province-${id}" data-id="${id}" data-tab="progress">`);
@@ -1115,7 +1102,7 @@ let GuildFights = {
 								break;
 							}
 
-							let color = getSectorColors(provinceProgress[y]['participantId']);
+							let color = ProvinceMap.getSectorColors(provinceProgress[y]['participantId']);
 							progress.push(`<span class="attack attacker-${provinceProgress[y]['participantId']} gbg-${color['cid']}">${provinceProgress[y]['progress']}</span>`);
 						}
 					}
@@ -1414,7 +1401,7 @@ let GuildFights = {
 			// search the province for owner update
 			ProvinceMap.Provinces.forEach((province, index) => {
 				if (province.id === data['id']) {
-					let colors = getSectorColors(data['ownerId']);
+					let colors = ProvinceMap.getSectorColors(data['ownerId']);
 
 					if(colors) {
 						province.owner.id = data['ownerId'];
@@ -1436,7 +1423,7 @@ let GuildFights = {
 				max = d['maxProgress'],
 				progess = d['progress'],
 				cell = $(`tr#province-${data['id']}`),
-				pColor = getSectorColors(data['participantId']),
+				pColor = ProvinceMap.getSectorColors(data['participantId']),
 				p = GuildFights.MapData['battlegroundParticipants'].find(o => (o['participantId'] === d['participantId']));
 
 			if (!data['id']) {
@@ -1725,6 +1712,19 @@ let ProvinceMap = {
 
 	StrokeColor: '#111',
 
+	getSectorColors: (ownerID) => {
+		if (ownerID !== undefined)
+			return GuildFights.SortedColors.find(c => (c.id === ownerID))
+		else
+			return {
+				main: '#444',
+				highlight: '#666',
+				shadow: '#333',
+				base: '#444',
+				id: undefined
+			}
+	},
+
 	build: () => {
 		if ($('#ProvinceMap').length === 0) {
 			HTML.Box({
@@ -1782,7 +1782,7 @@ let ProvinceMap = {
 				id: data.ownerID,
 				name: data.ownerName,
 				flagImg: data.flagImg,
-				colors: getSectorColors(data.ownerID),
+				colors: ProvinceMap.getSectorColors(data.ownerID),
 			};
 			this.lockedUntil = data.lockedUntil;
 			this.conquestProgress = data.conquestProgress;
@@ -1790,19 +1790,6 @@ let ProvinceMap = {
 			this.totalBuildingSlots = data.totalBuildingSlots;
 
 			return this;
-		}
-
-		getSectorColors = function(ownerID) {
-			if (ownerID !== undefined)
-				return GuildFights.SortedColors.find(c => (c.id === ownerID))
-			else
-				return {
-					main: '#444',
-					highlight: '#666',
-					shadow: '#333',
-					base: '#444',
-					id: undefined
-				}
 		}
 
 		Province.prototype.updateMapSector = function () {
@@ -2071,10 +2058,10 @@ let ProvinceMap = {
 
 		if (socketData.ownerId !== updatedProvince.owner.id) {
 			updatedProvince.owner.id = socketData.ownerId;
-			updatedProvince.owner.colors = getSectorColors(socketData.ownerId);
+			updatedProvince.owner.colors = ProvinceMap.getSectorColors(socketData.ownerId);
 		}
 
-		GuildFights.MapData.map.provinces[socketData['id']] = updatedProvince;
+		GuildFights.MapData.map.provinces[socketData['id'] || 0] = updatedProvince;
 
 		updatedProvince.updateMapSector();
 	},
