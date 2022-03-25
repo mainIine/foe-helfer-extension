@@ -10,7 +10,7 @@
 	- added new resources to the extension
 
 - Beta-Mode:
-	- removed Beda Mode - now only available in a [separate extension](https://github.com/mainIine/foe-helfer-extension/archive/refs/heads/betaLoader.zip) that has to be downloaded and added to the browser extensions manually
+	- removed Beta Mode - now only available in a [separate extension](https://github.com/mainIine/foe-helfer-extension/archive/refs/heads/betaLoader.zip) that has to be downloaded and added to the browser extensions manually
 
 - Guild Battlegrounds:
 	- new, comprehensive map layout
