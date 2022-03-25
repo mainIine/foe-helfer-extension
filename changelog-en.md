@@ -12,12 +12,16 @@
 - Beta-Mode:
 	- removed Beda Mode - now only available in a [separate extension](https://github.com/mainIine/foe-helfer-extension/archive/refs/heads/betaLoader.zip) that has to be downloaded and added to the browser extensions manually
 
-- Guild Battles:
+- Guild Battlegrounds:
 	- new, comprehensive map layout
+	- new settings: select if you want to see own sector countdowns or even all sector countdowns in the list
 
 - Menu:
 	- now automatically switches into box mode when window is too small for the menu bar
 	- changed position of bottom hud to accomodate FoE-Plus
+
+- Settings:
+	- Most settings are now available in the menu and the respective window
 
 **BugFix**
 
