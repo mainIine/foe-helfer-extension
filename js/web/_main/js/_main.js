@@ -1216,7 +1216,7 @@ let MainParser = {
 	BonusService: null,
 	Boosts: {},
 	EmissaryService: null,
-	PlayerPortraits: null,
+	PlayerPortraits: [],
 	Conversations: [],
 	CityEntitiesMetaId: null,
 	CitySetsMetaId: null,
