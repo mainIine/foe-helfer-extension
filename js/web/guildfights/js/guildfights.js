@@ -995,19 +995,19 @@ let GuildFights = {
 		GuildFights.Tabs = [];
 		GuildFights.TabsContent = [];
 
-		GuildFights.SetTabs('gbgprogress');
 		GuildFights.SetTabs('gbgnextup');
+		GuildFights.SetTabs('gbgprogress');
 
 		let progress = [], nextup = [],
 			LiveFightSettings = JSON.parse(localStorage.getItem('LiveFightSettings'));
 
 		GuildFights.showGuildColumn = (LiveFightSettings && LiveFightSettings.showGuildColumn !== undefined) ? LiveFightSettings.showGuildColumn : 0;
 
-		progress = GuildFights.BuildProgressTab();
 		nextup = GuildFights.BuildNextUpTab();
+		progress = GuildFights.BuildProgressTab();
 
-		GuildFights.SetTabContent('gbgprogress', progress.join(''));
 		GuildFights.SetTabContent('gbgnextup', nextup.join(''));
+		GuildFights.SetTabContent('gbgprogress', progress.join(''));
 
 		let h = [];
 
