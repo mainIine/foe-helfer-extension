@@ -152,12 +152,19 @@ let HiddenRewards = {
         for (let i = 0; i < HiddenRewards.Cache.length; i++) {
 	    let StartTime = moment.unix(HiddenRewards.Cache[i].starts|0),
 		EndTime = moment.unix(HiddenRewards.Cache[i].expires);
+            HiddenRewards.Cache[i].isVis = true;
             if (StartTime > MainParser.getCurrentDateTime() || EndTime < MainParser.getCurrentDateTime()) continue;
-            HiddenRewards.FilteredCache.push(HiddenRewards.Cache[i]);
-            if (!HiddenRewards.Cache[i].isGE) HiddenRewards.CountNonGE++;
-            if (!HiddenRewards.Cache[i].isGE || HiddenRewards.GElookup[HiddenRewards.Cache[i].positionGE] <= Math.floor((HiddenRewards.GEprogress % 32)/8)) {
+            if (!HiddenRewards.Cache[i].isGE) {
+                HiddenRewards.CountNonGE++;
                 HiddenRewards.CountVisGE++;
             }
+            if (HiddenRewards.Cache[i].isGE && HiddenRewards.GElookup[HiddenRewards.Cache[i].positionGE] <= Math.floor((HiddenRewards.GEprogress % 32)/8)) {
+                HiddenRewards.CountVisGE++;
+            }
+            if (HiddenRewards.Cache[i].isGE && !(HiddenRewards.GElookup[HiddenRewards.Cache[i].positionGE] <= Math.floor((HiddenRewards.GEprogress % 32)/8))) {
+                HiddenRewards.Cache[i].isVis = false;
+            }
+            HiddenRewards.FilteredCache.push(HiddenRewards.Cache[i]);
         }
 
         HiddenRewards.SetCounter();
@@ -205,7 +212,7 @@ let HiddenRewards = {
                 let hiddenReward = HiddenRewards.FilteredCache[idx];
 				
 		
-                h.push('<tr>');
+                h.push(`<tr ${!hiddenReward.isVis ? 'class="unavailable"':''}>`);
                 let img =  hiddenReward.type;
                 if (hiddenReward.type.indexOf('outpost') > -1) {
                     img = 'Shard_' + hiddenReward.type.substr(hiddenReward.type.length-2, 2);
