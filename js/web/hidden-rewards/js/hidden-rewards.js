@@ -27,14 +27,16 @@ FoEproxy.addHandler('HiddenRewardService', 'getOverview', (data, postData) => {
 FoEproxy.addHandler('GuildExpeditionService', 'getOverview', (data, postData) => {
     HiddenRewards.GEprogress = data?.responseData?.progress?.currentEntityId || 0;
     localStorage.setItem('HiddenRewards.GEprogress', JSON.stringify(HiddenRewards.GEprogress));
+    HiddenRewards.RefreshGui();
 });
 
 FoEproxy.addHandler('GuildExpeditionService', 'getState', (data, postData) => {
     for (let x in data.responseData) {
         if (!data.responseData.hasOwnProperty(x)) continue;
-        if (!data.responseData[x].hasOwnProperty(currentEntityId)) continue;
+        if (!data.responseData[x].hasOwnProperty('currentEntityId')) continue;
         HiddenRewards.GEprogress = data.responseData[x].currentEntityId;
         localStorage.setItem('HiddenRewards.GEprogress', JSON.stringify(HiddenRewards.GEprogress));
+        HiddenRewards.RefreshGui();
     }
 });
 
