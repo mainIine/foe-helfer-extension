@@ -1507,10 +1507,8 @@ SettingsBox */
 	position: absolute;
 	right: 10px;
 	top: 40px;
-	border: 5px solid transparent;
-	background: transparent url('../images/hud/box-bg.png') center top no-repeat;
-	background-size: cover;
-	border-image: url('../images/hud/settings_bg.png') 5 round;
+	border: 2px solid #977041;
+	background-color: #523018;
 	color: var(--text-normal);
 	padding: 10px;
 	z-index: 20;
@@ -1523,11 +1521,11 @@ SettingsBox */
 .settingsbox-wrapper::after {
 	content: '';
 	position: absolute;
-	background: url('../images/hud/settings_bg_arrow.png') center center no-repeat;
 	top: -18px;
-	width: 29px;
-	height: 18px;
 	right: 35px;
+	border-bottom: 18px solid #523018;
+	border-left: 18px solid transparent;
+	border-right: 18px solid transparent;
 }
 
 .settingsbox-wrapper input[type="text"],

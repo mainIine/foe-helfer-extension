@@ -995,19 +995,19 @@ let GuildFights = {
 		GuildFights.Tabs = [];
 		GuildFights.TabsContent = [];
 
-		GuildFights.SetTabs('gbgprogress');
 		GuildFights.SetTabs('gbgnextup');
+		GuildFights.SetTabs('gbgprogress');
 
 		let progress = [], nextup = [],
 			LiveFightSettings = JSON.parse(localStorage.getItem('LiveFightSettings'));
 
 		GuildFights.showGuildColumn = (LiveFightSettings && LiveFightSettings.showGuildColumn !== undefined) ? LiveFightSettings.showGuildColumn : 0;
 
-		progress = GuildFights.BuildProgressTab();
 		nextup = GuildFights.BuildNextUpTab();
+		progress = GuildFights.BuildProgressTab();
 
-		GuildFights.SetTabContent('gbgprogress', progress.join(''));
 		GuildFights.SetTabContent('gbgnextup', nextup.join(''));
+		GuildFights.SetTabContent('gbgprogress', progress.join(''));
 
 		let h = [];
 
@@ -1717,6 +1717,39 @@ let ProvinceMap = {
 
 	StrokeColor: '#111',
 
+	mapDrag: () => {
+		const wrapper = document.getElementById('province-map-wrap');	
+		let pos = { top: 0, left: 0, x: 0, y: 0 };
+		
+		const mouseDownHandler = function(e) {	
+			pos = {
+				left: wrapper.scrollLeft,
+				top: wrapper.scrollTop,
+				x: e.clientX,
+				y: e.clientY,
+			};
+	
+			document.addEventListener('mousemove', mouseMoveHandler);
+			document.addEventListener('mouseup', mouseUpHandler);
+		};
+	
+		const mouseMoveHandler = function(e) {
+			const dx = e.clientX - pos.x;
+			const dy = e.clientY - pos.y;
+			wrapper.scrollTop = pos.top - dy;
+			wrapper.scrollLeft = pos.left - dx;
+		};
+	
+		const mouseUpHandler = function() {	
+			document.removeEventListener('mousemove', mouseMoveHandler);
+			document.removeEventListener('mouseup', mouseUpHandler);
+		};
+
+        ProvinceMap.Map.addEventListener('mousedown', function (e) {
+			wrapper.addEventListener('mousedown', mouseDownHandler);
+        }, false);
+	},
+
 	getSectorColors: (ownerID) => {
 		if (ownerID !== undefined)
 			return GuildFights.SortedColors.find(c => (c.id === ownerID))
@@ -1766,7 +1799,13 @@ let ProvinceMap = {
 			id: 'province-map-wrap',
 		});
 		$(wrapper).html(ProvinceMap.Map);
-		$('#ProvinceMapBody').html(wrapper);
+		$('#ProvinceMapBody').html(wrapper).append('<span id="zoomGBGMap" class="btn-default">'+i18n('Boxes.GvGMap.Action.Zoom')+'</span>');
+		
+		ProvinceMap.mapDrag();
+
+		$('#zoomGBGMap').click(function (e) {
+			$('#province-map').toggleClass('zoomed');
+		});
 
 		ProvinceMap.MapCTX.strokeStyle = ProvinceMap.StrokeColor;
 		ProvinceMap.MapCTX.lineWidth = 2;

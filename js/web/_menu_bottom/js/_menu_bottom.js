@@ -133,8 +133,8 @@ let _menu_bottom = {
 		_menu.HudWidth = (_menu.HudCount * _menu_bottom.btnSize);
 		_menu.SlideParts = Math.ceil(MenuItemCount / _menu.HudCount);
 
-		$('#foe-helper-hud').width(_menu.HudWidth + 3);
-		$('#foe-helper-hud-wrapper').width(_menu.HudWidth + 3);
+		$('#foe-helper-hud').width(_menu.HudWidth);
+		$('#foe-helper-hud-wrapper').width(_menu.HudWidth);
 		$('#foe-helper-hud-slider').width( ($("#foe-helper-hud-slider").children().length * _menu_bottom.btnSize));
 	},
 	
