@@ -43,15 +43,13 @@ FoEproxy.addHandler('GuildExpeditionService', 'getState', (data, postData) => {
 
 /**
  *
- * @type {{init: HiddenRewards.init, prepareData: HiddenRewards.prepareData, BuildBox: HiddenRewards.BuildBox, RefreshGui: HiddenRewards.RefreshGui, Cache: null, FilteredCache : null, FirstCycle : true, CountNonGE:0, CountVisGE:0, GEprogress:0, GElookup:[0,0,1,1,1,2,2,3,3,3]}}
+ * @type {{init: HiddenRewards.init, prepareData: HiddenRewards.prepareData, BuildBox: HiddenRewards.BuildBox, RefreshGui: HiddenRewards.RefreshGui, Cache: null, FilteredCache : null, FirstCycle : true, GEprogress:0, GElookup:[0,0,1,1,1,2,2,3,3,3]}}
  */
 let HiddenRewards = {
 
     Cache: null,
     FilteredCache : null,
     FirstCycle: true,
-    CountNonGE:0,
-    CountVisGE:0,
     GEprogress:0,
     GElookup:[0,0,1,1,1,2,2,3,3,3],
     
@@ -147,20 +145,11 @@ let HiddenRewards = {
      */
     RefreshGui: (fromHandler = false) => {       
         HiddenRewards.FilteredCache = [];
-        HiddenRewards.CountNonGE = 0;
-        HiddenRewards.CountVisGE = 0;
         for (let i = 0; i < HiddenRewards.Cache.length; i++) {
 	    let StartTime = moment.unix(HiddenRewards.Cache[i].starts|0),
 		EndTime = moment.unix(HiddenRewards.Cache[i].expires);
             HiddenRewards.Cache[i].isVis = true;
             if (StartTime > MainParser.getCurrentDateTime() || EndTime < MainParser.getCurrentDateTime()) continue;
-            if (!HiddenRewards.Cache[i].isGE) {
-                HiddenRewards.CountNonGE++;
-                HiddenRewards.CountVisGE++;
-            }
-            if (HiddenRewards.Cache[i].isGE && HiddenRewards.GElookup[HiddenRewards.Cache[i].positionGE] <= Math.floor((HiddenRewards.GEprogress % 32)/8)) {
-                HiddenRewards.CountVisGE++;
-            }
             if (HiddenRewards.Cache[i].isGE && !(HiddenRewards.GElookup[HiddenRewards.Cache[i].positionGE] <= Math.floor((HiddenRewards.GEprogress % 32)/8))) {
                 HiddenRewards.Cache[i].isVis = false;
             }
@@ -236,10 +225,11 @@ let HiddenRewards = {
 
 
 	SetCounter: ()=> {
-        let count = HiddenRewards.FilteredCache?.length || 0;
+        let list = HiddenRewards.FilteredCache || [];
+        let count = list.length;
         let CountRelics = JSON.parse(localStorage.getItem('CountRelics') || 0);
-        if (CountRelics == 1) count = HiddenRewards.CountVisGE;
-        if (CountRelics == 2) count = HiddenRewards.CountNonGE;
+        if (CountRelics == 1) count = list.filter(x => x.isVis).length;
+        if (CountRelics == 2) count = list.filter(x => !x.isGE).length;
         $('#hidden-reward-count').text(count).show();
         if (count === 0) $('#hidden-reward-count').hide();
 	},
