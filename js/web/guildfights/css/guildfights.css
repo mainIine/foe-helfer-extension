@@ -491,7 +491,7 @@
 }
 
 #ProvinceMap #province-map-wrap {
-	overflow: auto;
+	overflow: hidden;
 	position: relative;
 	height: 100%;
 	width: 100%;
@@ -499,8 +499,18 @@
 
 #ProvinceMap #province-map {
 	background-color: #222;
-	margin: 0 auto;
-	display: block;
 	position: relative;
 	height: 100%;
+	margin: 0 auto;
+	display: block;
+}
+
+#ProvinceMap #province-map.zoomed {
+	height: auto;
+}
+
+#ProvinceMap #zoomGBGMap {
+	position: absolute;
+	top: 40px;
+	left: 3px;
 }
