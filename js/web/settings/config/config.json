@@ -67,7 +67,7 @@
 	},
 	{
 		"name": "ShowOwnPartOnAllGBs",
-		"status": false,
+		"status": true,
 		"group": "Boxes",
 		"sort": 12
 	},
