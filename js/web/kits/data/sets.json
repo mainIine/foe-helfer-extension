@@ -1,6 +1,6 @@
 [	
 	{
-		"udate": "28.02.2022"
+		"udate": "30.03.2022"
 	},
 	{
 		"groupname": "Guild_Battlegrounds"
@@ -43,10 +43,48 @@
 		"groupname": "Events"
 	},
 	{
+		"name": "Butterfly_Sanctuary",
+		"buildings": [
+			{
+				"first": "R_MultiAge_ArcheologyBonus22a",
+				"update": "upgrade_kit_butterfly_house"
+			},
+			{
+				"first": "A_MultiAge_ArcheologyBonus22a",
+				"update": ""
+			},
+			{
+				"first": "D_MultiAge_ArcheologyBonus22a",
+				"update": ""
+			},
+			{
+				"first": "D_MultiAge_ArcheologyBonus22b",
+				"update": ""
+			},
+			{
+				"first": "D_MultiAge_ArcheologyBonus22c",
+				"update": ""
+			},
+			{
+				"first": "L_AllAge_ArcheologyBonus22a",
+				"update": ""
+			},
+			{
+				"first": "L_AllAge_ArcheologyBonus22b",
+				"update": ""
+			}
+		],
+		"kit": [
+			"selection_kit_butterfly_sanctuary",
+			"selection_kit_butterfly_house",
+			"selection_kit_butterfly_gardens"
+		]
+	},
+	{
 		"name": "Golden_Orrery",
 		"buildings": [
 			{
-				"first": "W_MultiAge_AgeBonus22b",
+				"first": "W_MultiAge_AgeBonus22a",
 				"update": "upgrade_kit_golden_orrery"
 			}
 		],
