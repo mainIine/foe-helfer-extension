@@ -1187,7 +1187,7 @@ let GuildFights = {
 			if (!prov.hasOwnProperty(x)) continue;
 
 			let showCountdowns = true;
-			if (GuildFights.showAdjacentSectors)
+			if (GuildFights.showAdjacentSectors && prov[x].hasOwnProperty('neighbor'))
 				showCountdowns = (prov[x]['neighbor'].includes(own['participantId']));
 
 			if (showCountdowns) {
