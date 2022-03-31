@@ -193,7 +193,9 @@ function inject (loadBeta = false, extUrl = chrome.extension.getURL(''), betaDat
 			// start loading both script-lists
 			const vendorListPromise = loadJsonResource(`${extUrl}js/vendor.json`);
 			const scriptListPromise = loadJsonResource(`${extUrl}js/internal.json`);
-
+			
+			// load foe-Proxy
+			await promisedLoadCode(chrome.extension.getURL('')+`js/foeproxy.js`);
 			// load the main
 			await promisedLoadCode(`${extUrl}js/web/_main/js/_main.js`);
 

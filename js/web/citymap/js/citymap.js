@@ -503,9 +503,9 @@ let CityMap = {
 				areas: CityMap.UnlockedAreas,
 				blockedAreas: CityMap.BlockedAreas,
 				metaIDs: {
-					entity: MainParser.CityEntitiesMetaId,
-					set: MainParser.CitySetsMetaId,
-					upgrade: MainParser.CityBuildingsUpgradesMetaId
+					entity: MainParser.MetaIds['city_entities'],
+					set: MainParser.MetaIds['building_sets'],
+					upgrade: MainParser.MetaIds['building_upgrades']
 				}
 			};
 
