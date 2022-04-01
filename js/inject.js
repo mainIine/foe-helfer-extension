@@ -13,20 +13,25 @@
 
 // separate code from global scope
 {
-let ScArray=[];
-//const loadBeta = JSON.parse(localStorage.getItem('LoadBeta')) || false;
-//localStorage.setItem('LoadBeta', 'false');
-//if (loadBeta) {
-//	let now = new Date();
-//	fetch("https://api.github.com/repos/mainIine/foe-helfer-extension/branches/beta?" + now)
-//		.then(response => {if (response.status === 200) {response.json()
-//		.then((data) => {inject(true,
-//								'https://cdn.jsdelivr.net/gh/mainIine/foe-helfer-extension@' + (data?.commit?.sha || 'beta') + '/', 
-//								(data?.commit?.commit?.committer?.date || ""
-//						))})}});
-//} else {
-	inject();
-//}
+let scripts = {
+	vendor: ["once", "primed"],
+	internal: ["once", "primed"]
+};
+	
+function scriptLoaded (src, base) {
+	scripts[base].splice(scripts[base].indexOf(src),1);
+	if (scripts.internal.length == 1) {
+		scripts.internal.splice(scripts.internal.indexOf("once"),1);
+		window.dispatchEvent(new CustomEvent('foe-helper#loaded'));
+	}
+	if (scripts.vendor.length == 1) {
+		scripts.vendor.splice(scripts.vendor.indexOf("once"),1);
+		window.dispatchEvent(new CustomEvent('foe-helper#vendors-loaded'));
+	}
+};
+
+inject();
+
 
 function inject (loadBeta = false, extUrl = chrome.extension.getURL(''), betaDate='') {
 	/**
@@ -34,12 +39,15 @@ function inject (loadBeta = false, extUrl = chrome.extension.getURL(''), betaDat
 	 * @param {string} src the URL to load
 	 * @returns {Promise<void>}
 	 */
-	function promisedLoadCode(src, append=true) {
+	 function promisedLoadCode(src, base="base") {
 		return new Promise(async (resolve, reject) => {
 			let sc = document.createElement('script');
 			sc.src = src;
-
+			if (scripts[base]) {
+				scripts[base].push(src);
+			}
 			sc.addEventListener('load', function() {
+				if (scripts[base]) scriptLoaded(src, base);
 				this.remove();
 				resolve();
 			});
@@ -48,22 +56,6 @@ function inject (loadBeta = false, extUrl = chrome.extension.getURL(''), betaDat
 				this.remove();
 				reject();
 			});
-
-			if (append) {
-				while (!document.head && !document.documentElement) await new Promise((resolve) => {
-					// @ts-ignore
-					requestIdleCallback(resolve);
-				});
-				(document.head || document.documentElement).appendChild(sc);
-			} else {
-				ScArray.push(sc);
-				resolve();
-			}
-		});
-	}
-	
-	async function append(sc) {
-		return await new Promise(async () => {
 			while (!document.head && !document.documentElement) await new Promise((resolve) => {
 				// @ts-ignore
 				requestIdleCallback(resolve);
@@ -71,7 +63,7 @@ function inject (loadBeta = false, extUrl = chrome.extension.getURL(''), betaDat
 			(document.head || document.documentElement).appendChild(sc);
 		});
 	}
-
+	
 	async function loadJsonResource(file) {
 		const response = await fetch(file);
 		if (response.status !== 200) {
@@ -205,21 +197,18 @@ function inject (loadBeta = false, extUrl = chrome.extension.getURL(''), betaDat
 			// load all vendor scripts first (unknown order)
 			const vendorScriptsToLoad = await vendorListPromise;
 			await Promise.all(vendorScriptsToLoad.map(vendorScript => promisedLoadCode(`${extUrl}vendor/${vendorScript}.js?v=${v}`)));
-			window.dispatchEvent(new CustomEvent('foe-helper#vendors-loaded'));
-
+			
+			scriptLoaded("primed", "vendor");
+			
 			// load scripts (one after the other)
 			const internalScriptsToLoad = await scriptListPromise;
 
 			for (let i = 0; i < internalScriptsToLoad.length; i++){
 				await promisedLoadCode(`${extUrl}js/web/${internalScriptsToLoad[i]}/js/${internalScriptsToLoad[i]}.js?v=${v}`, false);
 			}
-			for (let sc of ScArray) {
-				append(sc);
-			}
 					
-			window.dispatchEvent(new CustomEvent('foe-helper#loaded'));
+			scriptLoaded("primed", "internal");
 
-			//localStorage.setItem('LoadBeta', JSON.stringify(loadBeta));
 		} catch (err) {
 			// make sure that the packet buffer in the FoEproxy does not fill up in the event of an incomplete loading.
 			window.dispatchEvent(new CustomEvent('foe-helper#error-loading'));
