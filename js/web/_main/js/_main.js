@@ -466,9 +466,12 @@ GetFights = () =>{
 			MainParser.UpdatePlayerDict(data.responseData, 'PlayerList', data.requestMethod);
 		}
 		if (data.requestMethod === 'getSocialList') {
-			MainParser.UpdatePlayerDict(data.responseData.friends, 'PlayerList', 'getFriendsList');
-			MainParser.UpdatePlayerDict(data.responseData.guildMembers, 'PlayerList', 'getClanMemberList');
-			MainParser.UpdatePlayerDict(data.responseData.neighbours, 'PlayerList', 'getNeighborList');
+			if (data.responseData.friends) 
+				MainParser.UpdatePlayerDict(data.responseData.friends, 'PlayerList', 'getFriendsList');
+			if (data.responseData.guildMembers) 
+				MainParser.UpdatePlayerDict(data.responseData.guildMembers, 'PlayerList', 'getClanMemberList');
+			if (data.responseData.neighbours) 
+				MainParser.UpdatePlayerDict(data.responseData.neighbours, 'PlayerList', 'getNeighborList');
 		}
 	});
 
