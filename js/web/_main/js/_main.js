@@ -462,8 +462,13 @@ GetFights = () =>{
 
 	// Nachbarn/Gildenmitglieder/Freunde Tab geöffnet
 	FoEproxy.addHandler('OtherPlayerService', 'all', (data, postData) => {
-		if (data.requestMethod === 'getNeighborList' || data.requestMethod === 'getFriendsList' || data.requestMethod === 'getClanMemberList') {
+		if (data.requestMethod === 'getNeighborList' || data.requestMethod === 'getFriendsList' || data.requestMethod === 'getClanMemberList' || data.requestMethod === 'getAwaitingFriendRequestCount') {
 			MainParser.UpdatePlayerDict(data.responseData, 'PlayerList', data.requestMethod);
+		}
+		if (data.requestMethod === 'getSocialList') {
+			MainParser.UpdatePlayerDict(data.responseData.friends, 'PlayerList', 'getFriendsList');
+			MainParser.UpdatePlayerDict(data.responseData.guildMembers, 'PlayerList', 'getClanMemberList');
+			MainParser.UpdatePlayerDict(data.responseData.neighbours, 'PlayerList', 'getNeighborList');
 		}
 	});
 
