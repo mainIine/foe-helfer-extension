@@ -1003,6 +1003,28 @@ let GuildFights = {
 
 		GuildFights.showGuildColumn = (LiveFightSettings && LiveFightSettings.showGuildColumn !== undefined) ? LiveFightSettings.showGuildColumn : 0;
 
+		let mapdata = GuildFights.MapData['map']['provinces'];
+		for (let i in mapdata) {
+			if (!mapdata.hasOwnProperty(i)) 
+				break;
+
+			let id = mapdata[i]['id'];
+			mapdata[i]['neighbor'] = [];
+			let linkIDs = ProvinceMap.ProvinceData().find(e => e['id'] === id)['connections'];
+
+			for (let x in linkIDs) {
+				if (!linkIDs.hasOwnProperty(x)) {
+					continue;
+				}
+
+				let neighborID = GuildFights.MapData['map']['provinces'].find(e => e['id'] === linkIDs[x]);
+
+				if (neighborID['ownerId']) {
+					mapdata[i]['neighbor'].push(neighborID['ownerId']);
+				}
+			}
+		}
+
 		nextup = GuildFights.BuildNextUpTab();
 		progress = GuildFights.BuildProgressTab();
 
@@ -1069,20 +1091,6 @@ let GuildFights = {
 				break;
 
 			let id = mapdata[i]['id'];
-			mapdata[i]['neighbor'] = [];
-			let linkIDs = ProvinceMap.ProvinceData().find(e => e['id'] === id)['connections'];
-
-			for (let x in linkIDs) {
-				if (!linkIDs.hasOwnProperty(x)) {
-					continue;
-				}
-
-				let neighborID = GuildFights.MapData['map']['provinces'].find(e => e['id'] === linkIDs[x]);
-
-				if (neighborID['ownerId']) {
-					mapdata[i]['neighbor'].push(neighborID['ownerId']);
-				}
-			}
 
 			for (let x in gbgGuilds) {
 				if (!gbgGuilds.hasOwnProperty(x)) {
