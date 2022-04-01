@@ -21,6 +21,14 @@ FoEproxy.addHandler('ResearchService', 'getProgress', (data, postData) => {
 	Technologies.UnlockedTechnologies = data.responseData;
 });
 
+FoEproxy.addHandler('ResearchService', 'payTechnology', (data, postData) => {
+	let era = data.responseData.technology.era;
+    if (Technologies.Eras[era] > CurrentEraID) {
+        CurrentEraID = Technologies.EraNames[era];
+        CurrentEra = era;
+    }
+});
+
 FoEproxy.addHandler('ResearchService', 'spendForgePoints', (data, postData) => {
     let CurrentTech = data.responseData['technology'];
     if (CurrentTech === undefined) return;

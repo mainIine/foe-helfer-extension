@@ -564,7 +564,7 @@ let _menu = {
 	 *
 	 * @returns {null|undefined|jQuery}
 	 */
-	hiddenRewards_Btn: () => {
+	 hiddenRewards_Btn: () => {
 		let btn_RewardsBG = _menu.MakeButton('hiddenRewards', i18n('Menu.HiddenRewards.Title'), i18n('Menu.HiddenRewards.Desc'));
 
 		let btn_Rewards = $('<span />').on('click', function () {
@@ -572,6 +572,16 @@ let _menu = {
 		})
 
 		return btn_RewardsBG.append(btn_Rewards, $('<span id="hidden-reward-count" class="hud-counter">0</span>'));
+	},
+
+	recurringQuests_Btn: () => {
+		let btn_RewardsBG = _menu.MakeButton('recurringQuests', i18n('Menu.recurringQuests.Title'), i18n('Menu.recurringQuests.Desc'));
+
+		let btn_Rewards = $('<span />').on('click', function () {
+			Recurring.init();
+		})
+
+		return btn_RewardsBG.append(btn_Rewards, $('<span id="recurring-count" class="hud-counter">0</span>'));
 	},
 
 	/**
