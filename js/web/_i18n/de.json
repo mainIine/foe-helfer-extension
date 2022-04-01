@@ -1121,6 +1121,8 @@
     "Menu.ProductionsRating.Desc": "Suche nach Gebäuden, die weniger Ertrag pro Feld haben als erwünscht",
     "Menu.ProductionsRating.Title": "Gebäude Effizienzbewertung",
     "Menu.RightBar": "Rechts",
+    "Menu.recurringQuests.Title": "Widerkehrende Quests",
+    "Menu.recurringQuests.Desc": "Verfolgt, welche der wiederkehrenden Quests schon Diamanten spendiert haben",
     "Menu.SaveMessage.Desc": "Die neue Menü-Reihenfolge wurde gespeichert",
     "Menu.SaveMessage.Title": "Gespeichert!",
     "Menu.Settings.Desc": "Hier stellst du ein paar Kleinigkeiten ein",

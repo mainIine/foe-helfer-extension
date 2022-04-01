@@ -1123,6 +1123,8 @@
     "Menu.ProductionsRating.Desc": "Search for buildings that produce less resources per tile than expected.",
     "Menu.ProductionsRating.Title": "Building Efficiency Rating",
     "Menu.RightBar": "Right",
+    "Menu.recurringQuests.Title": "Recurring Quests",
+    "Menu.recurringQuests.Desc": "Tracks, which of the recurring quests already gave diamonds",
     "Menu.SaveMessage.Desc": "The new menu-order was saved",
     "Menu.SaveMessage.Title": "Saved!",
     "Menu.Settings.Desc": "Configure FoE Helper",
