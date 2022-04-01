@@ -142,7 +142,7 @@ GetFights = () =>{
 			if (!MainParser.CityEntities.hasOwnProperty(i)) continue;
 
 			let CityEntity = MainParser.CityEntities[i];
-			if (!CityEntity.type) CityEntity.type = CityEntity?.components?.AllAge?.tags?.tags?.find(value => value.hasOwnProperty('buildingType')).buildingType;
+			if (!CityEntity.type) CityEntity.type = CityEntity.components.AllAge.tags.tags.find(value => value.hasOwnProperty('buildingType')).buildingType;
         }
 	});
 
