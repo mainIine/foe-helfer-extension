@@ -460,6 +460,10 @@ p {
 	background-image: url('../images/menu/incident_crates.png');
 }
 
+[id$=recurringQuests-Btn] span:first-child {
+	background-image: url('../images/menu/recurringQuests.png');
+}
+
 [id$=campagneMap-Btn] span {
 	background-image: url('../images/menu/map.png');
 }
