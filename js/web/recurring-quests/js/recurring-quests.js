@@ -61,7 +61,7 @@ let Recurring = {
             HTML.Box({
                 'id': 'RecurringQuestsBox',
                 'title': i18n('Boxes.RecurringQuests.Title'),
-                'ask': i18n('Boxes.RecurringQuests.HelpLink'),
+                //'ask': i18n('Boxes.RecurringQuests.HelpLink'),
                 'auto_close': true,
                 'dragdrop': true,
                 'minimize': true,
