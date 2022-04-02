@@ -20,6 +20,13 @@
     overflow: auto;
 }
 
+#RecurringQuestsBoxBody div {
+    color: var(--text-bright);
+    padding: 5px;
+    font-size: smaller;
+    text-align: justify;
+}
+
 #RecurringQuestsBoxBody thead {
     position: sticky;
     top:0;
@@ -27,4 +34,13 @@
 #RecurringQuestsBoxBody th:last-child,
 #RecurringQuestsBoxBody td:last-child {
         text-align: center;
+        font-weight: bold;
+        font-size: large;
+}
+
+#RecurringQuestsBoxBody td.check:last-child {
+    color:chartreuse;
+}
+#RecurringQuestsBoxBody td:last-child {
+    color:orange;
 }

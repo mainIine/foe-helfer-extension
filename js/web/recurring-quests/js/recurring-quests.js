@@ -101,7 +101,7 @@ let Recurring = {
 	 */
     BuildBox: () => {
         let h = [];
-        h.push(`<div style="color:var(--text-bright); padding:5px">${i18n('RecurringQuests.Warning')}</div>`);
+        h.push(`<div>${i18n('RecurringQuests.Warning')}</div>`);
 
         h.push('<table class="foe-table">');
 
@@ -119,7 +119,7 @@ let Recurring = {
             let quest=Recurring.data.Questlist[q]
             h.push(`<tr>`);
             h.push('<td >' + quest.title + '</td>');
-            h.push('<td>' + (quest.diamonds ? '✓' :'?')+ '</td>');
+            h.push(quest.diamonds ? '<td class="check">✓</td>' : '<td>?</td>');
             h.push('</tr>');
         }
         h.push('</tbody>');
