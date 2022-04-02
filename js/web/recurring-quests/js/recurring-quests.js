@@ -27,15 +27,17 @@ FoEproxy.addHandler('QuestService', 'getUpdates', (data, postData) => {
         if (!data.responseData.hasOwnProperty(q)) continue;
         let quest = data.responseData[q];
         if (quest.id >= 900000 && quest.id < 1000000) {
-            if (!Recurring.data.Questlist[quest.id] && quest.genericRewards.length > 0 && quest.genericRewards[0].flags.includes('random')) {
+            if (quest.genericRewards?.length > 0) {
+                if (!Recurring.data.Questlist[quest.id] && quest.genericRewards[0].flags.includes('random')) {
                 Recurring.data.Questlist[quest.id] = {'title':quest.title, 'diamonds': false};
                 Recurring.data.count++;
                 changes=true;
-            }
-            if (quest.genericRewards.subtype == "medals" || quest.genericRewards.subtype == "premium") {
-                Recurring.data.Questlist[quest.id].diamonds = true;
-                Recurring.data.count--;
-                changes=true;
+                }
+                if (quest.genericRewards[0].subType == "medals" || quest.genericRewards[0].subType == "premium") {
+                    Recurring.data.Questlist[quest.id].diamonds = true;
+                    Recurring.data.count--;
+                    changes=true;
+                }
             }
         }
     }
@@ -47,7 +49,7 @@ FoEproxy.addHandler('QuestService', 'getUpdates', (data, postData) => {
 
 let Recurring = {
     first: true,
-    data: null,
+    data: {},
     count:0,
    
 	/**
