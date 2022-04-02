@@ -286,8 +286,7 @@ let BlueGalaxy = {
         let value = false;
 		if ($("#autoStartBGHelper").is(':checked'))
 			value = true;
-
-		localStorage.setItem('autoStartBGHelper', value);
+		localStorage.setItem('ShowBlueGalaxyHelper', value);
 		$(`#bluegalaxySettingsBox`).remove();
     },
 };

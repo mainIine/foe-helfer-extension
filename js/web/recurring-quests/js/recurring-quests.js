@@ -95,7 +95,7 @@ let Recurring = {
 	 */
     BuildBox: () => {
         let h = [];
-        h.push(`<div style="color:var(--text-bright)">${i18n('RecurringQuests.Warning')}</div>`);
+        h.push(`<div style="color:var(--text-bright); padding:5px">${i18n('RecurringQuests.Warning')}</div>`);
 
         h.push('<table class="foe-table">');
 
