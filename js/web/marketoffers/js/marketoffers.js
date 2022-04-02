@@ -363,6 +363,8 @@ let MarketOffers = {
         h.push(`<p class="text-center"><button class="btn btn-default" onclick="HTML.ExportTable($('#MarketOffersEventsBody').find('.foe-table.exportable'), 'csv', 'MarketOffersEvents')">${i18n('Boxes.General.ExportCSV')}</button></p>`);
         h.push(`<p class="text-center"><button class="btn btn-default" onclick="HTML.ExportTable($('#MarketOffersEventsBody').find('.foe-table.exportable'), 'json', 'MarketOffersEvents')">${i18n('Boxes.General.ExportJSON')}</button></p>`);
 
+        h.push(i18n('Boxes.MarketOffersEvents.OptionalColumns') + ':');       
+       
         $('#MarketOffersEventsSettingsBox').html(h.join(''));
     },
 };

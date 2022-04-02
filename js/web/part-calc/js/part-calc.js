@@ -1465,7 +1465,6 @@ let Parts = {
 		// new own button
 		c.push(nV);
 
-		console.log(allGB);
 		c.push('<p><input id="copyformatpergb" class="copyformatpergb game-cursor" ' + (Parts.CopyFormatPerGB ? 'checked' : '') + ' type="checkbox"> ' + i18n('Boxes.OwnpartCalculator.CopyFormatPerGB'));
 		c.push('<br><input type="checkbox" id="openonaliengb" class="openonaliengb game-cursor" ' + ((allGB == 'true') ? 'checked' : '') + '> ' + i18n('Settings.ShowOwnPartOnAllGBs.Desc')) + '</p>';
 
@@ -1513,6 +1512,7 @@ let Parts = {
 
 		let OldCopyFormatPerGB = Parts.CopyFormatPerGB;
 		Parts.CopyFormatPerGB = $('.copyformatpergb').prop('checked');
+		localStorage.setItem(Parts.GetStorageKey('CopyFormatPerGB', null), Parts.CopyFormatPerGB);
 
         let openforeignGB = false;
 		if ($("#openonaliengb").is(':checked'))
