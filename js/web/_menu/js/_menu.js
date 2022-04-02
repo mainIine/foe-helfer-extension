@@ -581,7 +581,7 @@ let _menu = {
 			Recurring.init();
 		})
 
-		return btn_RewardsBG.append(btn_Rewards, $('<span id="recurring-count" class="hud-counter">0</span>'));
+		return btn_RewardsBG.append(btn_Rewards, $(`<span id="recurring-count" class="hud-counter">${Recurring.data.count || 0}</span>`));
 	},
 
 	/**
