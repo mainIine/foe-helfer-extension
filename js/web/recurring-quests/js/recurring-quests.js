@@ -22,7 +22,6 @@ FoEproxy.addHandler('QuestService', 'getUpdates', (data, postData) => {
         Recurring.data.currentEra = CurrentEraID;
     }
     if (!data.responseData) return;
-    let changes = false;
     for (let q in data.responseData) {
         if (!data.responseData.hasOwnProperty(q)) continue;
         let quest = data.responseData[q];
@@ -30,27 +29,32 @@ FoEproxy.addHandler('QuestService', 'getUpdates', (data, postData) => {
             if (quest.genericRewards?.length > 0) {
                 if (!Recurring.data.Questlist[quest.id] && quest.genericRewards[0].flags.includes('random')) {
                 Recurring.data.Questlist[quest.id] = {'title':quest.title, 'diamonds': false};
-                Recurring.data.count++;
-                changes=true;
                 }
                 if (quest.genericRewards[0].subType == "medals" || quest.genericRewards[0].subType == "premium") {
                     Recurring.data.Questlist[quest.id].diamonds = true;
-                    Recurring.data.count--;
-                    changes=true;
                 }
+                if (!Recurring.data.Questlist[quest.id].era) Recurring.data.Questlist[quest.id].era = CurrentEraID;
             }
         }
     }
-    if (changes) {
-        Recurring.SaveSettings;
+    Recurring.data.count=0;
+    Recurring.data.filter = [];
+    for (let q in Recurring.data.Questlist) {
+        if (!Recurring.data.Questlist[q]) continue;
+        if (Recurring.data.Questlist[q].era == CurrentEraID) {
+            Recurring.data.filter.push(q);
+            if (!Recurring.data.Questlist[q].diamonds) Recurring.data.count++;
+        }
     }
+    
+    Recurring.SaveSettings();
     Recurring.RefreshGui();
 });
 
 let Recurring = {
     first: true,
     data: {},
-    count:0,
+    filter:[],
    
 	/**
 	 * Box in den DOM
@@ -110,7 +114,7 @@ let Recurring = {
 
         h.push('<tbody>');
 
-        for (let q in Recurring.data.Questlist) {
+        for (let q of Recurring.data.filter) {
             if (!Recurring.data.Questlist[q]) continue;
             let quest=Recurring.data.Questlist[q]
             h.push(`<tr>`);
