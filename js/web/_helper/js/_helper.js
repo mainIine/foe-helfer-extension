@@ -158,9 +158,9 @@ let HTML = {
 	Box: (args) => {
 
 		let title = $('<span />').addClass('title').html(args['title']);
-
+		
 		if (args['onlyTitle'] !== true) {
-			title = $('<span />').addClass('title').html(args['title'] + ' <small><em> - ' + i18n('Global.BoxTitle') + '</em></small>');
+			title = $('<span />').addClass('title').html((extVersion.indexOf("beta") > -1 ? '(Beta) ': '') + args['title'] + ' <small><em> - FoE Helper</em></small>');
 		}
 
 		let close = $('<span />').attr('id', args['id'] + 'close').addClass('window-close'),
@@ -413,7 +413,7 @@ let HTML = {
 
 		document.getElementById(el.id + "Header").removeEventListener("pointerdown", dragMouseDown);
 
-		let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0, top = 0, left = 0, id;
+		let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0, top = 0, left = 0, id;			
 
 		id = el.id;
 
@@ -446,12 +446,32 @@ let HTML = {
 			top = (el.offsetTop - pos2);
 			left = (el.offsetLeft - pos1);
 
+			let noOverflow = $('.overflowHidden').length > 0;
+
 			// Schutz gegen "zu Hoch geschoben"
 			if (top < 0) {
-				top = 12;
+				top = 0;
 
-				document.onpointerup = null;
-				document.onpointermove = null;
+				//document.onpointerup = null;
+				//document.onpointermove = null;
+			}
+			if (left < 0) {
+				left = 0;
+
+				//document.onpointerup = null;
+				//document.onpointermove = null;
+			}
+			if ((left + el.clientWidth > window.innerWidth) && noOverflow) {
+				left = window.innerWidth - el.clientWidth;
+
+				//document.onpointerup = null;
+				//document.onpointermove = null;
+			}
+			if (top + el.clientHeight > window.innerHeight && noOverflow) {
+				top = window.innerHeight - el.clientHeight;
+
+				//document.onpointerup = null;
+				//document.onpointermove = null;
 			}
 
 			el.style.top = top + "px";
@@ -517,8 +537,8 @@ let HTML = {
 				sw: '.window-grippy',
 				nw: '.window-grippy'
 			},
-			minHeight: 200,
-			minWidth: 250,
+			minHeight: 100,
+			minWidth: 220,
 			stop: (e, $el) => {
 				let size = $el.element.width() + '|' + $el.element.height();
 

@@ -70,6 +70,7 @@ FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, post
  */
 let BonusService = {
 	
+	timeout:null,
 	Bonuses: [],
 	BonusTypes: [
 		'first_strike',
@@ -87,35 +88,13 @@ let BonusService = {
 	 * @constructor
 	 */
 	InitBonus: (isGex = false)=> {
-		let bt = BonusService.BonusTypes,
-			exist = false;
-
-		// check if player has some of these 4 bonuses
-		for(let i in bt)
-		{
-			if(!bt.hasOwnProperty(i)) break;
-
-			BonusService.Bonuses.forEach((arr)=>{
-				if(arr['type'].includes(bt[i])){
-					exist = true;
-					return false;
-				}
-			});
-
-			if(exist === true) break;
-		}
-
-		// no? exit...
-		if(exist === false){
-			return;
-		}
-
 		if($('#bonus-hud').length === 0){
 			HTML.AddCssFile('bonus-service');
 
 			// wait 2s
-			setTimeout(()=>{
+			BonusService.timeout = setTimeout(()=>{
 				BonusService.ShowBonusSidebar(isGex);
+				BonusService.timeout = null;
 			},2000);
 		}
 	},
@@ -153,6 +132,10 @@ let BonusService = {
 	 * Removes the bonus-Hud
 	 */
 	HideBonusSidebar: ()=> {
+		if (BonusService.timeout !== null) {
+			clearTimeout(BonusService.timeout);
+			BonusService.timeout = null;
+		}
 		if($('#bonus-hud').length > 0){
 			$('#bonus-hud').fadeToggle(function(){
 				$(this).remove();

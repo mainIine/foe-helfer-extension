@@ -13,7 +13,7 @@
 
 /**
  *
- * @type {{Help: (function(): string), NotificationView: (function(): string), GetSetting: ((function(*, *=): *)|*), MenuSelected: (function(): string), BoxGroups: string[], BuildBox: Settings.BuildBox, About: (function(): string), StoreSettings: Settings.StoreSettings, InfoboxInputEntryCount: (function(): *|jQuery), VersionInfo: (function(): string), Init: Settings.Init, ExportView: (function(): string), MenuInputLength: (function(): *|jQuery), NotificationStack: (function(): *|jQuery), ImportSettings: Settings.ImportSettings, LoadConfig: Settings.LoadConfig, BuildBody: Settings.BuildBody, ResetBoxCoords: Settings.ResetBoxCoords, DrivePermissions: (function(): string), LanguageDropdown: (function(): string), Preferences: null, MenuContent: (function(): *), ExportSettings: Settings.ExportSettings}}
+ * @type {{Help: (function(): string), NotificationView: (function(): string), GetSetting: ((function(*, *=): *)|*), MenuSelected: (function(): string), BoxGroups: string[], BuildBox: Settings.BuildBox, About: (function(): string), StoreSettings: Settings.StoreSettings, InfoboxInputEntryCount: (function(): *|jQuery), VersionInfo: (function(): string), Init: Settings.Init, ExportView: (function(): string), MenuInputLength: (function(): *|jQuery), NotificationStack: (function(): *|jQuery), ImportSettings: Settings.ImportSettings, LoadConfig: Settings.LoadConfig, BuildBody: Settings.BuildBody, ResetBoxCoords: Settings.ResetBoxCoords, LanguageDropdown: (function(): string), Preferences: null, MenuContent: (function(): *), ExportSettings: Settings.ExportSettings}}
  */
 let Settings = {
 
@@ -35,7 +35,6 @@ let Settings = {
 	/**
 	 * load the settings from the json
 	 *
-	 * @param start
 	 * @constructor
 	 */
 	Init: () => {
@@ -134,7 +133,11 @@ let Settings = {
 					}
 				}
 
-				if (d['callback'] !== undefined) {
+				// no value && no callback function, make it empty
+				if(d['callback'] === undefined && status === undefined && d['button'] === undefined) {
+					cs.html('');
+				}
+				else if (d['callback'] !== undefined) {
 					cs.html(Settings[d['callback']]());
 
 				}
@@ -148,10 +151,13 @@ let Settings = {
 
 				cd.html(i18n(`Settings.${d['name']}.Desc`));
 				ct.text(i18n(`Settings.${d['name']}.Title`));
+
 				cs.find('input.setting-check').attr('data-id', d['name']);
+
 				if (status) {
 					cs.find('input.setting-check').attr('checked', '');
 				}
+
 				cs.find('.check').addClass(status ? '' : 'unchecked');
 				cs.find('.toogle-word').text(status ? i18n('Boxes.Settings.Active') : i18n('Boxes.Settings.Inactive'));
 
@@ -532,14 +538,14 @@ let Settings = {
 	 *
 	 * @returns {null|undefined|jQuery}
 	 */
-	InfoboxInputEntryCount: () => {
+	 InfoboxInputEntryCount: () => {
 		let ip = $('<input />').addClass('setting-input').attr({
 			type: 'number',
 			id: 'infobox-entry-length',
 			step: 1,
 			min: 1
 		}),
-			value = localStorage.getItem('EntryCount') || 0;
+		value = localStorage.getItem('EntryCount') || 0;
 		ip[0].defaultValue = ip[0].value = value;
 
 		localStorage.setItem('EntryCount', value);
@@ -557,130 +563,6 @@ let Settings = {
 		});
 
 		return ip;
-	},
-
-
-	DrivePermissions: () => {
-
-		const jsScript = document.createElement('script')
-		jsScript.src = 'https://apis.google.com/js/api.js'
-
-		document.body.appendChild(jsScript);
-
-		// Client ID and API key from the Developer Console
-		const CLIENT_ID = '704447943704-pnmhlg152l3jvc57f4f2i8fi24ev5aof.apps.googleusercontent.com';
-		const API_KEY = 'AIzaSyBD9_OBsIcHWj8swRwXWGVEOrZfLMssr9Q';
-
-		// Array of API discovery doc URLs for APIs used by the quickstart
-		const DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/drive/v3/rest"];
-
-		// Authorization scopes required by the API; multiple scopes can be
-		// included, separated by spaces.
-		const SCOPES = 'https://www.googleapis.com/auth/drive.metadata.write';
-
-		const authorizeButton = document.getElementById('authorize_button');
-		const signoutButton = document.getElementById('signout_button');
-
-		/**
-		 *  On load, called to load the auth2 library and API client library.
-		 */
-		function handleClientLoad() {
-			gapi.load('client:auth2', initClient);
-		}
-
-		/**
-		 *  Initializes the API client library and sets up sign-in state
-		 *  listeners.
-		 */
-		function initClient() {
-			gapi.client.init({
-				apiKey: API_KEY,
-				clientId: CLIENT_ID,
-				discoveryDocs: DISCOVERY_DOCS,
-				scope: SCOPES
-			}).then(function () {
-				// Listen for sign-in state changes.
-				gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
-
-				// Handle the initial sign-in state.
-				updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
-				authorizeButton.onclick = handleAuthClick;
-				signoutButton.onclick = handleSignoutClick;
-			}, function(error) {
-				appendPre(JSON.stringify(error, null, 2));
-			});
-		}
-
-		/**
-		 *  Called when the signed in status changes, to update the UI
-		 *  appropriately. After a sign-in, the API is called.
-		 */
-		function updateSigninStatus(isSignedIn) {
-			if (isSignedIn) {
-				authorizeButton.style.display = 'none';
-				signoutButton.style.display = 'block';
-				listFiles();
-			} else {
-				authorizeButton.style.display = 'block';
-				signoutButton.style.display = 'none';
-			}
-		}
-
-		/**
-		 *  Sign in the user upon button click.
-		 */
-		function handleAuthClick(event) {
-			gapi.auth2.getAuthInstance().signIn();
-		}
-
-		/**
-		 *  Sign out the user upon button click.
-		 */
-		function handleSignoutClick(event) {
-			gapi.auth2.getAuthInstance().signOut();
-		}
-
-		/**
-		 * Append a pre element to the body containing the given message
-		 * as its text node. Used to display the results of the API call.
-		 *
-		 * @param {string} message Text to be placed in pre element.
-		 */
-		function appendPre(message) {
-			let pre = document.getElementById('content');
-			let textContent = document.createTextNode(message + "\n");
-			pre.appendChild(textContent);
-		}
-
-		/**
-		 * Print files.
-		 */
-		function listFiles() {
-			gapi.client.drive.files.list({
-				'pageSize': 10,
-				'fields': "nextPageToken, files(id, name)"
-			}).then(function(response) {
-				appendPre('Files:');
-				let files = response.result.files;
-				if (files && files.length > 0) {
-					for (let i = 0; i < files.length; i++) {
-						let file = files[i];
-						appendPre(file.name + ' (' + file.id + ')');
-					}
-				} else {
-					appendPre('No files found.');
-				}
-			});
-		}
-
-		jsScript.addEventListener('load', () => {
-			handleClientLoad()
-		});
-
-		return `<button id="authorize_button" style="display: none;" class="btn-default">Authorize</button>&nbsp;
-		<button id="signout_button" style="display: none;" class="btn-default">Sign Out</button>
-	
-		<pre id="content" style="white-space: pre-wrap;"></pre>`;
 	},
 
 

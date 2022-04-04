@@ -213,7 +213,8 @@ let Market = {
 							</span>`);
 
 							for (let era = 0; era < Technologies.Eras.NextEra - Technologies.Eras.BronzeAge; era++)
-							{
+                            {
+                                if (GoodsList.length < 5 * (era + 1)) break; // Era does not exist yet
 								ID += 1;
 
 								h.push(`<span class="custom-option era${(Market.Offer === ID ? ' selected' : '')}" data-value="${ID}">${i18n('Eras.' + (era + Technologies.Eras.BronzeAge))}</span>`);
@@ -254,7 +255,9 @@ let Market = {
 							</span>`);
 
 							for (let era = 0; era < Technologies.Eras.NextEra - Technologies.Eras.BronzeAge; era++)
-							{
+                            {
+                                if (GoodsList.length < 5 * (era + 1)) break; // Era does not exist yet
+
 								ID += 1;
 
 								h.push(`<span class="custom-option era${(Market.Need === ID ? ' selected' : '')}" data-value="${ID}">
@@ -446,6 +449,7 @@ let Market = {
         if (Rating > 1 && !CurrentTradeAdvantage) {
             return false;
         }
+
         if (Rating === 1) { // Fair
             let CurrentOfferValue = (IsOwnOffer ? Trade['need']['value'] : Trade['offer']['value']),
                 CurrentNeedValue = (IsOwnOffer ? Trade['offer']['value'] : Trade['need']['value']);
@@ -506,10 +510,27 @@ let Market = {
     *
     */
     ShowSettingsButton: () => {
+		let autoOpen = Settings.GetSetting('ShowMarketFilter');
+
         let h = [];
-        h.push(`<p class="text-center"><button class="btn btn-default" onclick="HTML.ExportTable($('#MarketBody').find('.foe-table.exportable'), 'csv', 'Market')">${i18n('Boxes.General.ExportCSV')}</button></p>`);
-        h.push(`<p class="text-center"><button class="btn btn-default" onclick="HTML.ExportTable($('#MarketBody').find('.foe-table.exportable'), 'json', 'Market')">${i18n('Boxes.General.ExportJSON')}</button></p>`);
+        h.push(`<p class="text-center"><button class="btn btn-default" onclick="HTML.ExportTable($('#MarketBody').find('.foe-table.exportable'), 'csv', 'Market')">${i18n('Boxes.General.ExportCSV')}</button><br>`);
+        h.push(`<button class="btn btn-default" onclick="HTML.ExportTable($('#MarketBody').find('.foe-table.exportable'), 'json', 'Market')">${i18n('Boxes.General.ExportJSON')}</button></p>`);
+        h.push(`<p><input id="autoStartMarket" name="autoStartMarket" value="1" type="checkbox" ${(autoOpen === true) ? ' checked="checked"' : ''} /> <label for="autoStartMarket">${i18n('Boxes.Market.Settings.Autostart')}</label></p>`);
+
+        h.push(`<p><button onclick="Market.SaveSettings()" id="save-market-settings" class="btn btn-default" style="width:100%">${i18n('Boxes.Settings.Save')}</button></p>`);
 
         $('#MarketSettingsBox').html(h.join(''));
+    },
+
+    /**
+    *
+    */
+    SaveSettings: () => {
+        let value = false;
+		if ($("#autoStartMarket").is(':checked'))
+			value = true;
+
+		localStorage.setItem('ShowMarketFilter', value);
+		$(`#MarketSettingsBox`).remove();
     },
 };

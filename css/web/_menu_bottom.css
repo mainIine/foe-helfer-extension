@@ -13,7 +13,7 @@
 
 #foe-helper-hud {
 	position: absolute;
-	left: 1000px;
+	left: 1035px;
 	bottom: 0;
 	z-index: 150;
 	width: 270px;
@@ -163,4 +163,83 @@
 	right: -2px !important;
 	line-height: 10px !important;
 	font-size: 0.7rem !important;
+}
+
+
+#menu_box.window-box {
+    top: 30%;
+    right: 15%;
+    width: 120px;
+    height: 60px;
+	border-width: 2px;
+}
+
+#menu_boxHeader {
+	background: linear-gradient(#384354, #293344);
+    box-shadow: inset 0 1px 1px #384354, inset 0 2px 0 #575d69;
+	padding: 0.2rem;
+}
+
+#menu_box.closed #menu_boxHeader {
+	top: -33px;
+}
+
+#menu_box.closed.window-box {
+    height: 28px !important;
+}
+
+#menu_boxHeader .window-minimize {
+	margin-right: 0;
+}
+
+#menu_box .window-head span.title {
+	font-size: 95%;
+	color: #eee;
+	padding-top: 1px;
+}
+
+#menu_box .header {
+    margin-bottom: 2px;
+    padding: 1em 0;
+}
+
+#menu_box #menu_boxBody {
+	overflow: auto;
+	padding: 2px;
+	height: calc(100% - 42px);
+}
+
+#menu_box .hud-btn {	
+	display: inline-block;
+	width: 45px;
+	height: 45px;
+	text-align: center;
+}
+
+#menu_box .hud-btn-red {
+	background: linear-gradient(to bottom, #4f291b, #553419) padding-box, linear-gradient(to bottom, #a84a35, #88301e) border-box;
+}
+
+#menu_box .menu-placeholder {
+	display: inline-block;
+	width: 45px;
+	height: 45px;
+}
+
+#menu_box .hud-btn span.hud-counter {
+	width: 15px;
+	height: 15px;
+	position: absolute;
+	padding: 1px;
+	bottom: 4px;
+	top: unset;
+	left: 4px;
+	background-color: var(--hud-counter);
+	border-radius: 50%;
+	line-height: 13px;
+	text-align: center;
+    box-shadow: 1px 0 0 1px rgba(0,0,0,0.245);
+	pointer-events: none;
+	font-weight: bold;
+	font-size: 0.8rem;
 }

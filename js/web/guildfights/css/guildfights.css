@@ -472,30 +472,45 @@
 
 /*************************************************************************************************************/
 
+#ProvinceMapBody {
+	background: #222;
+}
+
 #ProvinceMap.volcano_archipelago {
-	width: 560px;
-	height: 438px;
+	width: 800px;
+	height: 800px;
 	left: calc(50vw - 280px);
 	top: calc(50vh - 219px);
 }
 
 #ProvinceMap.waterfall_archipelago {
-	width: 513px;
-	height: 438px;
+	width: 800px;
+	height: 800px;
 	left: calc(50vw - 256px);
 	top: calc(50vh - 219px);
 }
 
-#ProvinceMap #province-map {
+#ProvinceMap #province-map-wrap {
+	overflow: hidden;
+	position: relative;
 	height: 100%;
+	width: 100%;
 }
 
-#ProvinceMap.volcano_archipelago #province-map {
-	background-image: linear-gradient(#00000055, #00000055), url('../images/volcano_archipelago_bg.jpg');
-	background-size: 100%;
+#ProvinceMap #province-map {
+	background-color: #222;
+	position: relative;
+	height: 100%;
+	margin: 0 auto;
+	display: block;
 }
 
-#ProvinceMap.waterfall_archipelago #province-map {
-	background-image: linear-gradient(#00000088, #00000055), url('../images/waterfall_archipelago_bg.jpg');
-	background-size: 100%;
+#ProvinceMap #province-map.zoomed {
+	height: auto;
+}
+
+#ProvinceMap #zoomGBGMap {
+	position: absolute;
+	top: 40px;
+	left: 3px;
 }

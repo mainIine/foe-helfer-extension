@@ -257,7 +257,8 @@ let CityMap = {
 		{
 			if (!CityMap.CityData.hasOwnProperty(b) || CityMap.CityData[b]['x'] < MinX || CityMap.CityData[b]['x'] > MaxX || CityMap.CityData[b]['y'] < MinY || CityMap.CityData[b]['y'] > MaxY) continue;
 
-			let d = MainParser.CityEntities[CityMap.CityData[b]['cityentity_id']],
+			let CityMapEntity = CityMap.CityData[b],
+				d = MainParser.CityEntities[CityMapEntity['cityentity_id']],
 				BuildingSize = CityMap.GetBuildingSize(CityMap.CityData[b]),
 
 				x = (CityMap.CityData[b]['x'] === undefined ? 0 : ((parseInt(CityMap.CityData[b]['x']) * CityMap.ScaleUnit) / 100)),
@@ -274,7 +275,7 @@ let CityMap = {
 					.attr('title', d['name'])
 					.attr('data-entityid', CityMap.CityData[b]['id']),
 				era;
-
+			
 			CityMap.OccupiedArea += (BuildingSize['building_area']);
 
 			if (!CityMap.OccupiedArea2[d.type]) CityMap.OccupiedArea2[d.type] = 0;
@@ -282,15 +283,22 @@ let CityMap = {
 
 			StreetsNeeded += BuildingSize['street_area'];
 
-			// Search age
-			if (d['is_multi_age'] && CityMap.CityData[b]['level']) {
-				era = CityMap.CityData[b]['level'] + 1;
-
-			}
 			// Great building
-			else if (d['type'] === 'greatbuilding') {
+			if (d['type'] === 'greatbuilding') {
 				era = CurrentEraID;
 			}
+			else if (d.id.indexOf("AllAge") > -1) {
+				era = CurrentEraID;
+			}
+			// Multi era
+			else if (CityMapEntity['level']) {
+				era = CityMapEntity['level'] + 1;
+			}
+			// new format
+			else if (d?.components?.AllAge?.era?.era) {
+				era = Technologies.Eras[d.components.AllAge.era.era];
+			}
+			// Zeitalter suchen
 			else {
 				let regExString = new RegExp("(?:_)((.[\\s\\S]*))(?:_)", "ig"),
 					testEra = regExString.exec(d['id']);
@@ -495,9 +503,9 @@ let CityMap = {
 				areas: CityMap.UnlockedAreas,
 				blockedAreas: CityMap.BlockedAreas,
 				metaIDs: {
-					entity: MainParser.CityEntitiesMetaId,
-					set: MainParser.CitySetsMetaId,
-					upgrade: MainParser.CityBuildingsUpgradesMetaId
+					entity: MainParser.MetaIds['city_entities'],
+					set: MainParser.MetaIds['building_sets'],
+					upgrade: MainParser.MetaIds['building_upgrades']
 				}
 			};
 

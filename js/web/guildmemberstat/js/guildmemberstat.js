@@ -1111,7 +1111,7 @@ let GuildMemberStat = {
 				`${deletedMember ? 'title="' + HTML.i18nTooltip(i18n('Boxes.GuildMemberStat.MemberLeavedGuild')) + '"' : ''}>`);
 
 			h.push(`<td class="is-number text-center${rankDiffClass}" data-number="${!deletedMember ? rank : member['score']}">${!deletedMember ? '#' + (rank - deletedCount) : ''}</td>`);
-			h.push(`<td class="case-sensitive copyable" data-text="${member['name'].toLowerCase().replace(/[\W_ ]+/g, "")}"><img style="max-width: 22px" src="${MainParser.InnoCDN + 'assets/shared/avatars/' + MainParser.PlayerPortraits[member['avatar']]}.jpg" alt="${member['name']}"> <span>${MainParser.GetPlayerLink(member['player_id'], member['name'])}</span></td>`);
+			h.push(`<td class="case-sensitive copyable" data-text="${member['name'].toLowerCase().replace(/[\W_ ]+/g, "")}"><img style="max-width: 22px" src="${MainParser.InnoCDN + 'assets/shared/avatars/' + (MainParser.PlayerPortraits[member.avatar] || 'portrait_433')}.jpg" alt="${member['name']}"> <span>${MainParser.GetPlayerLink(member['player_id'], member['name'])}</span></td>`);
 			h.push(`<td class="is-number" data-number="${member['score']}">${HTML.Format(member['score'])}${scoreDiff > 0 || scoreDiff < 0 ? '<span class="prev_score ' + scoreDiffClass + '">' + (scoreDiff > 0 ? '+' : '') + HTML.Format(scoreDiff) + '</span>' : ''}</td>`);
 
 			if (GuildMemberStat.Settings.showBattlesWon)
@@ -1995,6 +1995,8 @@ let GuildMemberStat = {
 
 		for (let eraId = Technologies.Eras.IronAge; eraId < Technologies.Eras.NextEra; eraId++)
 		{
+			if (GoodsList.length < 5 * (eraId - 1)) break; // Era does not exist yet
+
 			if (Technologies.EraNames[eraId] === undefined) continue;
 
 			let currentEra = i18n('Eras.' + eraId);

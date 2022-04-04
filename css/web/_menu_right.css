@@ -171,3 +171,90 @@
     box-shadow: 1px 0 0 1px rgba(0,0,0,0.245);
     pointer-events: none;
 }
+
+
+#menu_box.window-box {
+    top: 30%;
+    right: 15%;
+    width: 120px;
+    height: 60px;
+	border-width: 2px;
+}
+
+#menu_boxHeader {
+	background: linear-gradient(#384354, #293344);
+    box-shadow: inset 0 1px 1px #384354, inset 0 2px 0 #575d69;
+	padding: 0.2rem;
+}
+
+#menu_box.closed #menu_boxHeader {
+	top: -33px;
+}
+
+#menu_box.closed.window-box {
+    height: 28px !important;
+}
+
+#menu_boxHeader .window-minimize {
+	margin-right: 0;
+}
+
+#menu_box .window-head span.title {
+	font-size: 95%;
+	color: #eee;
+	padding-top: 1px;
+}
+
+#menu_box .header {
+    margin-bottom: 2px;
+    padding: 1em 0;
+}
+
+#menu_box #menu_boxBody {
+	overflow: auto;
+	padding: 2px;
+	height: calc(100% - 42px);
+}
+
+#menu_box .hud-btn {	
+	display: inline-block;
+	width: 45px;
+	height: 45px;
+	position: relative;
+	margin: 1px;
+	box-shadow: inset 0 0 3px 1px #00000087, 0 0 2px #00000087;
+    box-sizing: border-box;
+}
+
+#menu_box .hud-btn span:first-child {
+	width: 65%;
+	height: 65%;
+	position: absolute;
+	top: 7px;
+	left: 7px;
+}
+
+#menu_box .menu-placeholder {
+	display: inline-block;
+	width: 45px;
+	height: 45px;
+	background: var(--black-50);
+}
+
+#menu_box .hud-btn span.hud-counter {
+	width: 15px;
+	height: 15px;
+	position: absolute;
+	padding: 1px;
+	bottom: 4px;
+	top: unset;
+	left: 4px;
+	background-color: var(--hud-counter);
+	border-radius: 50%;
+	line-height: 13px;
+	text-align: center;
+    box-shadow: 1px 0 0 1px rgba(0,0,0,0.245);
+	pointer-events: none;
+	font-weight: bold;
+	font-size: 0.8rem;
+}
