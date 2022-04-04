@@ -44,6 +44,8 @@ FoEproxy.addHandler('QuestService', 'getUpdates', (data, postData) => {
         if (Recurring.data.Questlist[q].era == CurrentEraID) {
             Recurring.data.filter.push(q);
             if (!Recurring.data.Questlist[q].diamonds) Recurring.data.count++;
+        } else if (CurrentEraID - Recurring.data.Questlist[q].era > 1) {
+            delete Recurring.data.Questlist[q];
         }
     }
     
