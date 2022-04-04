@@ -1,5 +1,54 @@
 ## Changelog - Extension
 
+##### 2.9.0.0
+
+**New**
+- Aztecs Minigame Helper
+	- Shows you the probabilities of the goods on the hidden fields
+
+**Update**
+- New Age - Space Travel: Jupiter Moon:
+	- The new goods have been added
+
+- Beta Mode:
+	- Has been removed, is now offered in an [extra extension](https://github.com/mainIine/foe-helfer-extension/archive/refs/heads/betaLoader.zip)
+
+- Guild Battles:
+	- New schematic maps
+	- New settings for countdowns: show all countdowns, also show countdowns of own sectors
+
+- Own share calculator:
+	- [#2367](https://github.com/mainIine/foe-helfer-extension/issues/2367) more option added - places can be output without the leading "P" as well
+
+- Menu:
+	- [#2363](https://github.com/mainIine/foe-helfer-extension/issues/2363) If the window is too small, the box menu is automatically activated so that you can still access the helper
+	- Positioning of the lower menu for FoE+ slightly adjusted
+
+- Settings:
+	- Most settings can now be found in the respective window
+
+**BugFix**
+
+- Menu:
+	- [#2364](https://github.com/mainIine/foe-helfer-extension/issues/2364) Small windows now have scrollbars again
+
+- Menu box (ReSize):
+	- Can be dragged very small again
+
+- Production Overview:
+	- [#2393](https://github.com/mainIine/foe-helfer-extension/issues/2393) Golden fields were not recognized
+
+- Bonus HUD:
+	- Is now always displayed
+
+- Guild Battles:
+	- [#2379](https://github.com/mainIine/foe-helfer-extension/issues/2379) within a session the last open tab is remembered
+
+- Stats:
+	- [#2388](https://github.com/mainIine/foe-helfer-extension/issues/2388) fixed wrong links to goods
+
+---
+
 ##### 2.8.0.0
 
 **New**

@@ -267,7 +267,7 @@ let Investment = {
 			hiddenClass=(showHiddenGb && isHidden) ? ' ishidden' : (isHidden) ? ' ishidden hide' : '';
 
 			h.push(`<tr id="invhist${x}" data-id="${contribution['id']}" data-max-progress="${contribution['max_progress']}" data-detail='${JSON.stringify(history)}' class="${hasFpHistoryClass}${newerClass}${hiddenClass}">` +
-				`<td class="case-sensitive" data-text="${contribution['playerName'].toLowerCase().replace(/[\W_ ]+/g, "")}"><img style="max-width: 22px" src="${MainParser.InnoCDN + 'assets/shared/avatars/' + MainParser.PlayerPortraits[contribution['Avatar']]}.jpg" alt="${contribution['playerName']}"> ${MainParser.GetPlayerLink(contribution['playerId'], contribution['playerName'])}</td>`);
+				`<td class="case-sensitive" data-text="${contribution['playerName'].toLowerCase().replace(/[\W_ ]+/g, "")}"><img style="max-width: 22px" src="${MainParser.InnoCDN + 'assets/shared/avatars/' + (MainParser.PlayerPortraits[contribution['Avatar']] || 'portrait_433')}.jpg" alt="${contribution['playerName']}"> ${MainParser.GetPlayerLink(contribution['playerId'], contribution['playerName'])}</td>`);
 			h.push('<td class="case-sensitive" data-text="' + contribution['gbname'].toLowerCase().replace(/[\W_ ]+/g, "") + '">' + contribution['gbname'] + ' (' + contribution['level'] + ')</td>');
 			h.push(`<td class="is-number text-center invest-tooltip" data-number="${isHidden}" title="${i18n('Boxes.Investment.Overview.HideGB')}"><span class="hideicon ishidden-${isHidden?'on':'off'}"></span></td>`);
 			
@@ -407,7 +407,8 @@ let Investment = {
 			showBlueprints = (InvestmentSettings && InvestmentSettings.showBlueprints !== undefined) ? InvestmentSettings.showBlueprints : 0,
 			showMedals = (InvestmentSettings && InvestmentSettings.showMedals !== undefined) ? InvestmentSettings.showMedals : 0,
 			showHiddenGb = (InvestmentSettings && InvestmentSettings.showHiddenGb !== undefined) ? InvestmentSettings.showHiddenGb : 0,
-			removeUnsafeCalc = (InvestmentSettings && InvestmentSettings.removeUnsafeCalc !== undefined) ? InvestmentSettings.removeUnsafeCalc : 0;
+			removeUnsafeCalc = (InvestmentSettings && InvestmentSettings.removeUnsafeCalc !== undefined) ? InvestmentSettings.removeUnsafeCalc : 0,
+			showinvestmentsautomatically = Settings.GetSetting('ShowInvestments');
 
 		c.push(`<p>${i18n('Boxes.Investment.Overview.AdditionalColumns')}:</p><p><input id="showentrydate" name="showentrydate" value="1" type="checkbox" ${(showEntryDate === 1) ? ' checked="checked"':''} /> <label for="showentrydate">${i18n('Boxes.Investment.Overview.SettingsEntryTime')}</label></p>`);
 		c.push(`<p><input id="showinvestmentincreasedate" name="showinvestmentincreasedate" value="1" type="checkbox" ${(showInvestmentIncreaseDate === 1) ? ' checked="checked"':''} /> <label for="showinvestmentincreasedate">${i18n('Boxes.Investment.Overview.DateOfIncrease')}</label></p>`);
@@ -416,7 +417,8 @@ let Investment = {
 		c.push(`<p><input id="showblueprints" name="showblueprints" value="1" type="checkbox" ${(showBlueprints === 1) ? ' checked="checked"':''} /> <label for="showblueprints">${i18n('Boxes.Investment.Overview.Blueprints')}</label></p>`);
 		c.push(`<p><hr /><input id="showhiddengb" name="showhiddengb" value="1" type="checkbox" ${(showHiddenGb === 1) ? ' checked="checked"':''} /> <label for="showhiddengb">${i18n('Boxes.Investment.Overview.SettingsHiddenGB')}</label></p>`);
 		c.push(`<p><input id="removeunsafecalc" name="removeunsafecalc" value="1" type="checkbox" ${(removeUnsafeCalc === 1) ? ' checked="checked"':''} /> <label for="removeunsafecalc">${i18n('Boxes.Investment.Overview.SettingsUnsafeCalc')}</label></p>`);
-		c.push(`<hr><p><button id="save-Investment-settings" class="btn btn-default" style="width:100%" onclick="Investment.SettingsSaveValues()">${i18n('Boxes.Investment.Overview.SettingsSave')}</button></p>`);
+		c.push(`<p><hr /><input id="showinvestmentsautomatically" name="showinvestmentsautomatically" value="1" type="checkbox" ${(showinvestmentsautomatically === true) ? ' checked="checked"':''} /> <label for="showinvestmentsautomatically">${i18n('Boxes.Settings.Autostart')}</label></p>`);
+		c.push(`<p><button id="save-Investment-settings" class="btn btn-default" style="width:100%" onclick="Investment.SettingsSaveValues()">${i18n('Boxes.Investment.Overview.SettingsSave')}</button></p>`);
 
 		$('#InvestmentSettingsBox').html(c.join(''));
 	},
@@ -665,6 +667,7 @@ let Investment = {
 	SettingsSaveValues: () => {
 
 		let value = JSON.parse(localStorage.getItem('InvestmentSettings') || '{}');
+		let autoOpen = false;
 
 		value['showEntryDate'] = 0;
 		value['showRestFp'] = 0;
@@ -675,39 +678,30 @@ let Investment = {
 		value['showInvestmentIncreaseDate'] = 0;
 
 		if ($("#showentrydate").is(':checked'))
-		{
 			value['showEntryDate'] = 1;
-		}
 
 		if ($("#showrestfp").is(':checked'))
-		{
 			value['showRestFp'] = 1;
-		}
 
 		if ($("#showmedals").is(':checked'))
-		{
 			value['showMedals'] = 1;
-		}
 
 		if ($("#showblueprints").is(':checked'))
-		{
 			value['showBlueprints'] = 1;
-		}
 
 		if ($("#showhiddengb").is(':checked'))
-		{
 			value['showHiddenGb'] = 1;
-		}
 
 		if ($("#removeunsafecalc").is(':checked'))
-		{
 			value['removeUnsafeCalc'] = 1;
-		}
 
 		if ($("#showinvestmentincreasedate").is(':checked'))
-		{
 			value['showInvestmentIncreaseDate'] = 1;
-		}
+
+		if ($("#showinvestmentsautomatically").is(':checked'))
+			autoOpen = true;
+
+		localStorage.setItem('ShowInvestments', autoOpen);
 
 		localStorage.setItem('InvestmentSettings', JSON.stringify(value));
 

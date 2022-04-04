@@ -57,6 +57,7 @@ let _menu = {
 		'castle',
 		'music',
 		'musicControl',
+		'minigame_aztecs'
 		// 'marketOffers',
 		// 'discord'
 	],
@@ -72,6 +73,10 @@ let _menu = {
 	 */
 	CallSelectedMenu: (selMenu = 'BottomBar') => {
 
+		window.onresize = (function(event){
+			if (event.target == window) _menu.OverflowCheck()
+		})
+		
 		if (selMenu === 'BottomBar') {
 			_menu.selectedMenu = 'BottomBar';
 			_menu_bottom.BuildOverlayMenu();
@@ -92,8 +97,21 @@ let _menu = {
 		if (Settings.GetSetting('AutoOpenCloseBox')) {
 			CloseBox.BuildBox();
 		}
+		
+		_menu.OverflowCheck(_menu.selectedMenu, true);
 	},
 
+	OverflowCheck: (selMenu='Box', flag) => {
+		$('#game_body').addClass('overflowHidden');
+		if (window.innerHeight < 600 ||window.innerWidth < 950) {
+			$('#game_body').removeClass('overflowHidden');
+		} else {
+			if (!flag && selMenu != MainParser.SelectedMenu) {			
+			$('#menu_box').remove();
+			_menu.CallSelectedMenu(MainParser.SelectedMenu);
+			}
+		}
+	},
 
 	/**
 	 * Hides a button. The HUD slider must already be filled for this.
@@ -249,6 +267,7 @@ let _menu = {
 			_menu.HiddenItems = _menu.HiddenItems.filter(e => {
 				return e !== name;
 			});
+			if (_menu.Items.indexOf(name) == -1) _menu.Items.push(name);
 		}
 		else {
 			$('#' + name + '-Btn').addClass('btn-hidden');
@@ -258,6 +277,13 @@ let _menu = {
 		}
 		
 		localStorage.setItem('MenuHiddenItems', JSON.stringify(_menu.HiddenItems));
+
+		// refresh the Menü after setting-toggle
+		setTimeout(()=> {
+			$('#foe-helper-hud, #menu_box').remove();
+			_menu.CallSelectedMenu(MainParser.SelectedMenu);
+		}, 100);
+
 	},
 
 
@@ -397,6 +423,24 @@ let _menu = {
 	},
 
 	/**
+	 * Azteken Minigame
+	 *
+	 * @returns {*|jQuery}
+	 */
+	 minigame_aztecs_Btn: () => {
+		let btn_Aztek = _menu.MakeButton('minigame_aztecs', i18n('Menu.AztecMiniGame.Title'), i18n('Menu.AztecMiniGame.Desc'), true);
+
+		let btn_Azte = $('<span />').on('click', function () {
+			if ($('#minigame_aztecs-Btn').hasClass('hud-btn-red') === false) {
+				AztecsHelper.Show();
+			}
+		});
+
+		return btn_Aztek.append(btn_Azte);
+	},
+
+
+	/**
 	 * Outpost Button
 	 *
 	 * @returns {*|jQuery}
@@ -520,7 +564,7 @@ let _menu = {
 	 *
 	 * @returns {null|undefined|jQuery}
 	 */
-	hiddenRewards_Btn: () => {
+	 hiddenRewards_Btn: () => {
 		let btn_RewardsBG = _menu.MakeButton('hiddenRewards', i18n('Menu.HiddenRewards.Title'), i18n('Menu.HiddenRewards.Desc'));
 
 		let btn_Rewards = $('<span />').on('click', function () {
@@ -528,6 +572,16 @@ let _menu = {
 		})
 
 		return btn_RewardsBG.append(btn_Rewards, $('<span id="hidden-reward-count" class="hud-counter">0</span>'));
+	},
+
+	recurringQuests_Btn: () => {
+		let btn_RewardsBG = _menu.MakeButton('recurringQuests', i18n('Menu.recurringQuests.Title'), i18n('Menu.recurringQuests.Desc'));
+
+		let btn_Rewards = $('<span />').on('click', function () {
+			Recurring.init();
+		})
+
+		return btn_RewardsBG.append(btn_Rewards, $(`<span id="recurring-count" class="hud-counter">${Recurring.data.count || 0}</span>`));
 	},
 
 	/**
@@ -765,7 +819,7 @@ let _menu = {
 
 		let btn_sp = $('<span />').on('click', function (){
 			if(GuildFights.MapData) {
-				GuildFights.ShowGildBox();
+				GuildFights.ShowGuildBox();
 			}
 		});
 

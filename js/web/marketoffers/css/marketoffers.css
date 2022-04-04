@@ -15,12 +15,13 @@
     top: 100px;
     right: 100px;
     width: 650px;
+    height: 500px;
 }
 
 #MarketOffers #MarketOffersBody {
     overflow-y: auto;
-    min-height: 400px;
-    max-height: 750px;
+    min-height: 10px;
+    max-height: 2160px;
 }
 
 #MarketOffers #MarketOffersBody table th {
@@ -96,12 +97,13 @@
     top: 100px;
     right: 100px;
     width: 650px;
+    height: 500px;
 }
 
 #MarketOffersEvents #MarketOffersEventsBody {
     overflow-y: auto;
-    min-height: 400px;
-    max-height: 750px;
+    min-height: 10px;
+    max-height: 2160px;
 }
 
 #MarketOffersEvents #MarketOffersEventsBody table th {

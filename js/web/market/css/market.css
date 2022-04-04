@@ -12,15 +12,15 @@
  */
 
 #Market {
-    top: 100px;
-    right: 100px;
-    width: 650px;
+	top: 100px;
+	right: 100px;
+	width: 650px;
+	height: 500px;
 }
 
 #Market #MarketBody {
     overflow-y: auto;
-	min-height: 400px;
-    max-height: 750px;
+    max-height: 2160px;
 }
 
 #Market #MarketBody table th {
@@ -68,6 +68,6 @@
 #Market #MarketBody .goods-sprite-50.sm::before { 
 	zoom: 0.7; 
 	overflow: hidden;
-	position: static;
+	/*position: static;*/
 	display: inline-block;
 }

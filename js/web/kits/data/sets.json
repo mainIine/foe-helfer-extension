@@ -1,6 +1,6 @@
 [	
 	{
-		"udate": "23.02.2022"
+		"udate": "30.03.2022"
 	},
 	{
 		"groupname": "Guild_Battlegrounds"
@@ -33,7 +33,7 @@
 		"assets": [
 			"D_MultiAge_Battlegrounds4"
 		],
-		"kit":[
+		"kit": [
 			"selection_kit_great_elephant",
 			"fragment#selection_kit_great_elephant",
 			"fragment#building_iridescent_garden"
@@ -41,6 +41,72 @@
 	},
 	{
 		"groupname": "Events"
+	},
+	{
+		"name": "Butterfly_Sanctuary",
+		"buildings": [
+			{
+				"first": "R_MultiAge_ArcheologyBonus22a",
+				"update": "upgrade_kit_butterfly_house"
+			},
+			{
+				"first": "A_MultiAge_ArcheologyBonus22a",
+				"update": ""
+			},
+			{
+				"first": "D_MultiAge_ArcheologyBonus22a",
+				"update": ""
+			},
+			{
+				"first": "D_MultiAge_ArcheologyBonus22b",
+				"update": ""
+			},
+			{
+				"first": "D_MultiAge_ArcheologyBonus22c",
+				"update": ""
+			},
+			{
+				"first": "L_AllAge_ArcheologyBonus22a",
+				"update": ""
+			},
+			{
+				"first": "L_AllAge_ArcheologyBonus22b",
+				"update": ""
+			}
+		],
+		"kit": [
+			"selection_kit_butterfly_sanctuary",
+			"selection_kit_butterfly_house",
+			"selection_kit_butterfly_gardens"
+		]
+	},
+	{
+		"name": "Golden_Orrery",
+		"buildings": [
+			{
+				"first": "W_MultiAge_AgeBonus22a",
+				"update": "upgrade_kit_golden_orrery"
+			}
+		],
+		"kit": "selection_kit_golden_orrery"
+	},
+	{
+		"name": "Grand_Monarchs_Set",
+		"buildings": [
+			{
+				"first": "R_MultiAge_BirthdayBonus22a",
+				"update": "upgrade_kit_grand_king"
+			},
+			{
+				"first": "R_MultiAge_BirthdayBonus22c",
+				"update": "upgrade_kit_grand_queen"
+			}
+		],
+		"kit": [
+			"selection_kit_grand_monarchs",
+			"selection_kit_grand_king",
+			"selection_kit_grand_queen"
+		]
 	},
 	{
 		"name": "Celtic_Farmstead",

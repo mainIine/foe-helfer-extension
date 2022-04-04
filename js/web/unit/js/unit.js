@@ -373,12 +373,7 @@ let Unit = {
 			return ;
 		}
 
-		if(Unit.alca['state']['next_state_transition_at'] === undefined) {
-			text = `<strong class="text-warning">${i18n('Boxes.Units.AlcaHarvest')}</strong>`;
-
-		}
-		// there was a harvest...
-		else if(Unit.NextHarvest !== null)
+		if(Unit.NextHarvest !== null)
 		{
 			let countDownDate = moment.unix(Unit.NextHarvest);
 

@@ -1,5 +1,53 @@
 ## Changelog - Extension
 
+##### 2.9.0.0
+**Neu**
+- Azteken Minigame Helfer
+	- Zeigt dir die Wahrscheinlichkeiten der Güter auf den verdeckten Feldern
+
+**Update**
+- Neues Zeitalter - Raumfahrt: Jupiter Mond:
+    - Die neuen Güter wurden hinzugefügt
+
+- Beta-Modus:
+    - Wurde entfernt, wird jetzt in einer [extra Extension](https://github.com/mainIine/foe-helfer-extension/archive/refs/heads/betaLoader.zip) angeboten
+
+- Gildengefechte:
+    - Neue, schematische Karten
+    - Neue Einstellungen für Countdowns: zeige alle Countdowns, zeige auch Countdowns eigener Sektoren
+
+- Eigenanteilsrechner:
+  - [#2367](https://github.com/mainIine/foe-helfer-extension/issues/2367) weitere Option ergänzt - Plätze können auch ohne das führende "P" ausgegeben werden
+
+- Menü:
+    - [#2363](https://github.com/mainIine/foe-helfer-extension/issues/2363) Falls das Fenster zu klein ist, wird automatisch das Boxmenü aktiviert, damit man weiterhin auf den Helfer zugreifen kann
+    - Positionierung des unteren Menüs für FoE+ leicht angepasst
+
+- Einstellungen: 
+    - Die meisten Einstellungen sind nun im jeweiligen Fenster zu finden
+
+**BugFix**
+
+- Menü:
+    - [#2364](https://github.com/mainIine/foe-helfer-extension/issues/2364) Kleine Fenster haben nun wieder Scrollbars
+
+- Menübox (ReSize):
+    - Kann wieder sehr klein gezogen werden
+
+- Produktionsübersicht:
+	- [#2393](https://github.com/mainIine/foe-helfer-extension/issues/2393) Goldene Felder wurden nicht erkannt
+
+- Bonus HUD:
+    - wird nun immer angezeigt
+
+- Gildengefechte:
+    - [#2379](https://github.com/mainIine/foe-helfer-extension/issues/2379) innerhalb einer Session wird sich der letzte offene Tab gemerkt
+
+- Statistiken:
+    - [#2388](https://github.com/mainIine/foe-helfer-extension/issues/2388) falsche Links zu Gütern gefixt
+
+---
+
 ##### 2.8.0.0
 
 **New**

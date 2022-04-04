@@ -11,20 +11,30 @@
  * **************************************************************************************
  */
 
-#menu_box {
+#menu_box.window-box {
     top: 30%;
     right: 15%;
     width: 120px;
     height: 60px;
+	border-width: 2px;
 }
 
 #menu_boxHeader {
-	background: linear-gradient(#33435e, #243048);
-    box-shadow: inset 0 1px 1px #242235, inset 0 2px 0 #737793;
+	background: linear-gradient(#384354, #293344);
+    box-shadow: inset 0 1px 1px #384354, inset 0 2px 0 #575d69;
+	padding: 0.2rem;
 }
 
 #menu_box.closed #menu_boxHeader {
 	top: -33px;
+}
+
+#menu_box.closed.window-box {
+    height: 28px !important;
+}
+
+#menu_boxHeader .window-minimize {
+	margin-right: 0;
 }
 
 #menu_box .window-head span.title {
@@ -44,7 +54,7 @@
 	height: calc(100% - 42px);
 }
 
-.hud-btn {	
+#menu_box .hud-btn {	
 	display: inline-block;
 	width: 45px;
 	height: 45px;
@@ -57,11 +67,11 @@
 	background: linear-gradient(#553419, #553419) padding-box, linear-gradient(to bottom, #82ae4c, #4f7421) border-box;
 }
 
-.hud-btn-red {
+#menu_box .hud-btn-red {
 	background: linear-gradient(to bottom, #4f291b, #553419) padding-box, linear-gradient(to bottom, #a84a35, #88301e) border-box;
 }
 
-.hud-btn span:first-child {
+#menu_box .hud-btn span:first-child {
 	background-position: center center;
 	background-repeat: no-repeat;
 	width: 65%;
@@ -72,14 +82,14 @@
 	left: 7px;
 }
 
-.menu-placeholder {
+#menu_box .menu-placeholder {
 	display: inline-block;
 	width: 45px;
 	height: 45px;
 	background: var(--black-50);
 }
 
-.hud-btn span.hud-counter {
+#menu_box .hud-btn span.hud-counter {
 	width: 15px;
 	height: 15px;
 	position: absolute;

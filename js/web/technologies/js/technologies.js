@@ -18,7 +18,15 @@ FoEproxy.addMetaHandler('research', (xhr, postData) => {
 });
 
 FoEproxy.addHandler('ResearchService', 'getProgress', (data, postData) => {
-	Technologies.UnlockedTechologies = data.responseData;
+	Technologies.UnlockedTechnologies = data.responseData;
+});
+
+FoEproxy.addHandler('ResearchService', 'payTechnology', (data, postData) => {
+	let era = data.responseData.technology.era;
+    if (Technologies.Eras[era] > CurrentEraID) {
+        CurrentEraID = Technologies.EraNames[era];
+        CurrentEra = era;
+    }
 });
 
 FoEproxy.addHandler('ResearchService', 'spendForgePoints', (data, postData) => {
@@ -29,20 +37,20 @@ FoEproxy.addHandler('ResearchService', 'spendForgePoints', (data, postData) => {
     if (ID === undefined) return;
 
     let TechFound = false;
-    for (let i in Technologies.UnlockedTechologies.inProgressTechnologies) {
-        if (!Technologies.UnlockedTechologies.inProgressTechnologies.hasOwnProperty(i)) continue;
+    for (let i in Technologies.UnlockedTechnologies.inProgressTechnologies) {
+        if (!Technologies.UnlockedTechnologies.inProgressTechnologies.hasOwnProperty(i)) continue;
 
-        if (Technologies.UnlockedTechologies.inProgressTechnologies[i]['tech_id'] === ID) {
+        if (Technologies.UnlockedTechnologies.inProgressTechnologies[i]['tech_id'] === ID) {
             TechFound = true;
-            Technologies.UnlockedTechologies.inProgressTechnologies[i]['currentSP'] = CurrentTech['progress']['currentSP'];
+            Technologies.UnlockedTechnologies.inProgressTechnologies[i]['currentSP'] = CurrentTech['progress']['currentSP'];
 
             break;
         }
     }
 
     if (!TechFound) {
-        let TechCount = Technologies.UnlockedTechologies.inProgressTechnologies.length;
-        Technologies.UnlockedTechologies.inProgressTechnologies[TechCount] = CurrentTech['progress'];
+        let TechCount = Technologies.UnlockedTechnologies.inProgressTechnologies.length;
+        Technologies.UnlockedTechnologies.inProgressTechnologies[TechCount] = CurrentTech['progress'];
     }
 
     if ($('#technologies').length !== 0) {
@@ -57,8 +65,8 @@ FoEproxy.addHandler('ResearchService', 'payTechnology', (data, postData) => {
     let ID = CurrentTech['id']
     if (ID === undefined) return;
 
-    let TechCount = Technologies.UnlockedTechologies.unlockedTechnologies.length
-    Technologies.UnlockedTechologies.unlockedTechnologies[TechCount] = ID;
+    let TechCount = Technologies.UnlockedTechnologies.unlockedTechnologies.length
+    Technologies.UnlockedTechnologies.unlockedTechnologies[TechCount] = ID;
 
     if ($('#technologies').length !== 0) {
         Technologies.CalcBody();
@@ -67,7 +75,7 @@ FoEproxy.addHandler('ResearchService', 'payTechnology', (data, postData) => {
 
 let Technologies = {
     AllTechnologies: null,
-    UnlockedTechologies: false,
+    UnlockedTechnologies: false,
     SelectedEraID: undefined,
 
     IgnorePrevEra: null,
@@ -96,7 +104,8 @@ let Technologies = {
         SpaceAgeMars: 18,
         SpaceAgeAsteroidBelt: 19,
         SpaceAgeVenus: 20,
-        NextEra: 21,
+        SpaceAgeJupiterMoon: 21,
+        NextEra: 22,
     },
 
 
@@ -122,6 +131,7 @@ let Technologies = {
         18: 'SpaceAgeMars',
         19: 'SpaceAgeAsteroidBelt',
         20: 'SpaceAgeVenus',
+        21: 'SpaceAgeJupiterMoon',
     },
 
 
@@ -211,16 +221,16 @@ let Technologies = {
         }
 
         // Suche erforschte Technologien
-        for (let i = 0; i < Technologies.UnlockedTechologies['unlockedTechnologies'].length; i++) {
-            let TechName = Technologies.UnlockedTechologies['unlockedTechnologies'][i];
+        for (let i = 0; i < Technologies.UnlockedTechnologies['unlockedTechnologies'].length; i++) {
+            let TechName = Technologies.UnlockedTechnologies['unlockedTechnologies'][i];
             let Index = TechDict[TechName];
             Technologies.AllTechnologies[Index]['isResearched'] = true;
             Technologies.AllTechnologies[Index]['currentSP'] = Technologies.AllTechnologies[Index]['maxSP'];
         }
 
         // Teilweise erforscht
-        for (let i = 0; i < Technologies.UnlockedTechologies['inProgressTechnologies'].length; i++) {
-            let InProgTech = Technologies.UnlockedTechologies['inProgressTechnologies'][i];
+        for (let i = 0; i < Technologies.UnlockedTechnologies['inProgressTechnologies'].length; i++) {
+            let InProgTech = Technologies.UnlockedTechnologies['inProgressTechnologies'][i];
             let Index = TechDict[InProgTech['tech_id']];
             Technologies.AllTechnologies[Index]['currentSP'] = InProgTech['currentSP'];
         }
@@ -239,7 +249,7 @@ let Technologies = {
                 if (EraID < CurrentEraID && Technologies.IgnorePrevEra) continue; // Vorherige ZA ausblenden
                 if (EraID >= CurrentEraID && Tech['childTechnologies'].length === 0 && Technologies.IgnoreCurrentEraOptional) continue; // Aktuelles/zukünfiges ZA und optionale Technologie ausblenden
 
-                if (EraID >= CurrentEraID && EraID <= Technologies.SelectedEraID) { // && ) { //Alle Technologien voriger ZA und optionale Technologien ausblenden
+                if (EraID >= CurrentEraID && EraID <= Technologies.SelectedEraID) { // Alle Technologien voriger ZA und optionale Technologien ausblenden
                     if (RequiredResources['strategy_points'] === undefined)
                     	RequiredResources['strategy_points'] = 0;
 
@@ -319,7 +329,7 @@ let Technologies = {
                     let Diff = Stock - Required;
 
                     h.push('<tr>');
-                    h.push('<td class="goods-image"><span class="goods-sprite-50 sm '+ GoodsData[ResourceName]['id'] +'"></span></td>'); 
+                    h.push('<td class="goods-image" style="width:25px"><span class="goods-sprite-50 sm '+ GoodsData[ResourceName]['id'] +'"></span></td>');
                     h.push('<td>' + GoodsData[ResourceName]['name'] + '</td>');
                     h.push('<td>' + HTML.Format(Required) + '</td>');
                     h.push('<td>' + HTML.Format(Stock) + '</td>');

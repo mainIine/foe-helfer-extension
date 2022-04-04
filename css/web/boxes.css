@@ -15,8 +15,12 @@ body {
 	position: absolute !important;
 	height: 100% !important;
 	width: 100% !important;
+}
+
+.overflowHidden {
 	overflow: hidden;
 }
+
 
 /* Chrome, Opera */
 input[type=number]::-webkit-inner-spin-button,
@@ -284,14 +288,20 @@ a[target="_blank"] svg {
 	margin-right: auto;
 }
 
-/* Chrome */
-::-webkit-scrollbar {
-	width: 5px;
+.window-box ::-webkit-scrollbar,
+.window-body::-webkit-scrollbar,
+.window-body * ::-webkit-scrollbar
+{
+	width: 7px;
+	background: #57250c;
 	border-left: 1px solid var(--border-table-top);
+	border-right: 1px solid var(--border-table-top);
 }
-::-webkit-scrollbar-thumb {
+.window-box ::-webkit-scrollbar-thumb,
+.window-body::-webkit-scrollbar-thumb,
+.window-body * ::-webkit-scrollbar-thumb {
 	background: #281207;
-	border-radius: 10px;
+	border-radius: 4px;
 	border-top: 1px solid var(--border-table-top);
 	border-right: 1px solid var(--border-table-bottom);
 	border-bottom: 1px solid var(--border-table-bottom);
@@ -450,6 +460,10 @@ p {
 	background-image: url('../images/menu/incident_crates.png');
 }
 
+[id$=recurringQuests-Btn] span:first-child {
+	background-image: url('../images/menu/recurringQuests.png');
+}
+
 [id$=campagneMap-Btn] span {
 	background-image: url('../images/menu/map.png');
 }
@@ -464,6 +478,14 @@ p {
 
 [id$=settings-Btn] span {
 	background-image: url('../images/menu/settings.png');
+}
+
+[id$=settings-Btn] {
+	background: linear-gradient(#423428, #463526) padding-box, linear-gradient(to bottom, #7f916a, #455630) border-box;
+}
+
+[id$=marketOffers-Btn] span {
+	background-image: url('../images/menu/marketOffers.png');
 }
 
 [id$=stats-Btn] span {
@@ -534,6 +556,9 @@ p {
 }
 [id$=musicControl-Btn].musicmuted span {
 	background-image: url('../images/menu/musicmute.png');
+}
+[id$=minigame_aztecs-Btn] span {
+	background-image: url('../images/menu/aztecsHelper.png');
 }
 
 .hud-btn span.hud-counter {
@@ -1486,10 +1511,8 @@ SettingsBox */
 	position: absolute;
 	right: 10px;
 	top: 40px;
-	border: 5px solid transparent;
-	background: transparent url('../images/hud/box-bg.png') center top no-repeat;
-	background-size: cover;
-	border-image: url('../images/hud/settings_bg.png') 5 round;
+	border: 2px solid #977041;
+	background-color: #523018;
 	color: var(--text-normal);
 	padding: 10px;
 	z-index: 20;
@@ -1502,11 +1525,11 @@ SettingsBox */
 .settingsbox-wrapper::after {
 	content: '';
 	position: absolute;
-	background: url('../images/hud/settings_bg_arrow.png') center center no-repeat;
 	top: -18px;
-	width: 29px;
-	height: 18px;
 	right: 35px;
+	border-bottom: 18px solid #523018;
+	border-left: 18px solid transparent;
+	border-right: 18px solid transparent;
 }
 
 .settingsbox-wrapper input[type="text"],
