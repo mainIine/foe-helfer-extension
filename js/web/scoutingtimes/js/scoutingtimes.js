@@ -200,6 +200,7 @@ let scoutingTimes = {
                     dragdrop: true,
                     minimize: false,
                     ask: i18n('Boxes.scoutingTimes.HelpLink'),
+                    settings: 'scoutingTimes.ShowSettings()',
                 });
             }
         
@@ -291,6 +292,30 @@ let scoutingTimes = {
 
         return scoutingTimes.ShowDialog();
 
-    }
+    },
+    
+    /**
+    *
+    */
+     ShowSettings: () => {
+		let autoOpen = Settings.GetSetting('ShowScoutingTimes');
+
+        let h = [];
+        h.push(`<p><label><input id="autoStartScout" type="checkbox" ${(autoOpen === true) ? ' checked="checked"' : ''} />${i18n('Boxes.Settings.Autostart')}</label></p>`);
+        h.push(`<p><button onclick="scoutingTimes.SaveSettings()" id="save-bghelper-settings" class="btn btn-default" style="width:100%">${i18n('Boxes.Settings.Save')}</button></p>`);
+
+        $('#mapScoutingTimesDialogSettingsBox').html(h.join(''));
+    },
+
+    /**
+    *
+    */
+    SaveSettings: () => {
+        let value = false;
+		if ($("#autoStartScout").is(':checked'))
+			value = true;
+		localStorage.setItem('ShowScoutingTimes', value);
+		$(`#mapScoutingTimesDialogSettingsBox`).remove();
+    },
 
 };
