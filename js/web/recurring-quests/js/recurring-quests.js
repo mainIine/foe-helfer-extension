@@ -13,10 +13,6 @@
 
 FoEproxy.addHandler('QuestService', 'getUpdates', (data, postData) => {
     
-    if (Recurring.first) {
-        Recurring.first = false;
-        Recurring.data = JSON.parse(localStorage.getItem('Recurring')) || {"Questlist": {}, "currentEra": 0, "count":0, "showCounter": false};
-    }
     if (Recurring.data.currentEra < CurrentEraID) {
         Recurring.Questlist = {};
         Recurring.data.currentEra = CurrentEraID;
@@ -54,9 +50,7 @@ FoEproxy.addHandler('QuestService', 'getUpdates', (data, postData) => {
 });
 
 let Recurring = {
-    first: true,
-    data: {},
-    filter:[],
+    data: JSON.parse(localStorage.getItem('Recurring')) || {"Questlist": {}, "currentEra": 0, "count":0, "showCounter": false},
    
 	/**
 	 * Box in den DOM
