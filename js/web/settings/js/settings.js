@@ -254,7 +254,7 @@ let Settings = {
 	 * @returns {string}
 	 */
 	VersionInfo: () => {
-		let v = extVersion.match(/\d+/)[0] > 1 ? `<p>${i18n('Settings.Version.Link').replace('__version__', extVersion)}</p>` : ``;
+		let v = extVersion.includes('beta') ? `` : `<p>${i18n('Settings.Version.Link').replace('__version__', '')}</p>`;
 		v +=	`<dl class="info-box">
 					<dt>${i18n('Settings.Version.Title')}</dt><dd>${extVersion}</dd>
 					<dt>${i18n('Settings.Version.PlayerId')}</dt><dd>${ExtPlayerID}</dd>
