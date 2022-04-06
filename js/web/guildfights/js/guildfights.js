@@ -1787,6 +1787,8 @@ let ProvinceMap = {
 
 			// add css to the dom
 			HTML.AddCssFile('guildfights');
+		} else {
+			HTML.CloseOpenBox('ProvinceMap')
 		}
 
 		ProvinceMap.prepare();
