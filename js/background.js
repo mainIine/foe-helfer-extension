@@ -364,7 +364,7 @@ alertsDB.version(1).stores({
 			});
 
 			browser.tabs.create({
-				url: `https://foe-helper.com/extension/update?v=${version}&lang=${lng}`
+				url: `https://foe-helper.com/extension/update?lang=${lng}`
 			});
 		}
 	});
