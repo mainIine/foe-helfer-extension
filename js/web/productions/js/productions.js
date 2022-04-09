@@ -730,7 +730,7 @@ let Productions = {
 				if (MainParser.BonusService !== null) {
 					let FPBonus = MainParser.BonusService.find(o => (o['type'] === 'daily_strategypoint'));
 
-					if (FPBonus) {
+					if (FPBonus && FPBonus['value']) {
 						if (!Products['strategy_points']) Products['strategy_points'] = 0;
 						Products['strategy_points'] += FPBonus['value'];
 					}
