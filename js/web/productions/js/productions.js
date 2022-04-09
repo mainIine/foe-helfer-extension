@@ -330,15 +330,20 @@ let Productions = {
 
 					if (CurrentProduct['guildResources'] && CurrentProduct['guildResources']['resources']) {
 						let Resources = CurrentProduct['guildResources']['resources'];
-						if (Resources['all_goods_of_age']) {
+
+						for (let GoodID in Resources) {
+							if (!Resources.hasOwnProperty(GoodID)) continue;
+
+							let Amount = Resources[GoodID];
+
 							if (!CurrentProduct['onlyWhenMotivated'] || IsPolivated) {
 								if (!Products['clan_goods']) Products['clan_goods'] = 0;
-								Products['clan_goods'] += Resources['all_goods_of_age'];
+								Products['clan_goods'] += Amount;
 							}
 
 							if (!MotivatedProducts['clan_goods']) MotivatedProducts['clan_goods'] = 0;
-							MotivatedProducts['clan_goods'] += Resources['all_goods_of_age'];
-						}
+							MotivatedProducts['clan_goods'] += Amount;
+                        }
 					}
 				}
 
