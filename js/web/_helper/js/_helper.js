@@ -461,14 +461,14 @@ let HTML = {
 				//document.onpointerup = null;
 				//document.onpointermove = null;
 			}
-			if ((left + el.clientWidth > window.innerWidth) && noOverflow) {
-				left = window.innerWidth - el.clientWidth;
+			if ((left + 80 > window.innerWidth) && noOverflow) {
+				left = window.innerWidth - 80;//el.clientWidth;
 
 				//document.onpointerup = null;
 				//document.onpointermove = null;
 			}
-			if (top + el.clientHeight > window.innerHeight && noOverflow) {
-				top = window.innerHeight - el.clientHeight;
+			if (top + 80 > window.innerHeight && noOverflow) {
+				top = window.innerHeight - 80;//el.clientHeight;
 
 				//document.onpointerup = null;
 				//document.onpointermove = null;

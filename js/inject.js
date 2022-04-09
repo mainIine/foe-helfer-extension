@@ -14,6 +14,8 @@
 // separate code from global scope
 {
 let scripts = {
+	main: ["once"],
+	proxy: ["once"],
 	vendor: ["once", "primed"],
 	internal: ["once", "primed"]
 };
@@ -23,6 +25,14 @@ function scriptLoaded (src, base) {
 	if (scripts.internal.length == 1) {
 		scripts.internal.splice(scripts.internal.indexOf("once"),1);
 		window.dispatchEvent(new CustomEvent('foe-helper#loaded'));
+	}
+	if (scripts.main.length == 1) {
+		scripts.main.splice(scripts.internal.indexOf("once"),1);
+		window.dispatchEvent(new CustomEvent('foe-helper#mainloaded'));
+	}
+	if (scripts.proxy.length == 1) {
+		scripts.proxy.splice(scripts.internal.indexOf("once"),1);
+		window.dispatchEvent(new CustomEvent('foe-helper#proxyloaded'));
 	}
 	if (scripts.vendor.length == 1) {
 		scripts.vendor.splice(scripts.vendor.indexOf("once"),1);
@@ -71,11 +81,21 @@ function inject (loadBeta = false, extUrl = chrome.extension.getURL(''), betaDat
 		}
 		return response.json();
 	}
-
+	
 	// check whether jQuery has been loaded in the DOM
 	// => Catch jQuery Loaded event
 	const jQueryLoading = new Promise(resolve => {
 		window.addEventListener('foe-helper#jQuery-loaded', evt => {
+			resolve();
+		}, {capture: false, once: true, passive: true});
+	});
+	const mainLoaded = new Promise(resolve => {
+		window.addEventListener('foe-helper#mainloaded', evt => {
+			resolve();
+		}, {capture: false, once: true, passive: true});
+	});
+	const proxyLoaded = new Promise(resolve => {
+		window.addEventListener('foe-helper#proxyloaded', evt => {
 			resolve();
 		}, {capture: false, once: true, passive: true});
 	});
@@ -187,16 +207,18 @@ function inject (loadBeta = false, extUrl = chrome.extension.getURL(''), betaDat
 			const scriptListPromise = loadJsonResource(`${extUrl}js/internal.json`);
 			
 			// load foe-Proxy
-			await promisedLoadCode(chrome.extension.getURL('')+`js/foeproxy.js`);
+			await promisedLoadCode(chrome.extension.getURL('')+`js/foeproxy.js`,"proxy");
+			await proxyLoaded;
 			// load the main
-			await promisedLoadCode(`${extUrl}js/web/_main/js/_main.js`);
-
+			await promisedLoadCode(`${extUrl}js/web/_main/js/_main.js`,"main");
+			await mainLoaded;
+			
 			// wait for ant and i18n to be loaded
 			await jQueryLoading;
 
 			// load all vendor scripts first (unknown order)
 			const vendorScriptsToLoad = await vendorListPromise;
-			await Promise.all(vendorScriptsToLoad.map(vendorScript => promisedLoadCode(`${extUrl}vendor/${vendorScript}.js?v=${v}`)));
+			await Promise.all(vendorScriptsToLoad.map(vendorScript => promisedLoadCode(`${extUrl}vendor/${vendorScript}.js?v=${v}`),"vendor"));
 			
 			scriptLoaded("primed", "vendor");
 			
@@ -204,7 +226,7 @@ function inject (loadBeta = false, extUrl = chrome.extension.getURL(''), betaDat
 			const internalScriptsToLoad = await scriptListPromise;
 
 			for (let i = 0; i < internalScriptsToLoad.length; i++){
-				await promisedLoadCode(`${extUrl}js/web/${internalScriptsToLoad[i]}/js/${internalScriptsToLoad[i]}.js?v=${v}`, false);
+				await promisedLoadCode(`${extUrl}js/web/${internalScriptsToLoad[i]}/js/${internalScriptsToLoad[i]}.js?v=${v}`, "internal");
 			}
 					
 			scriptLoaded("primed", "internal");

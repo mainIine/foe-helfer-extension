@@ -1,35 +1,51 @@
 ## Changelog - Extension
 
 ##### 2.9.0.0
+
 **New**
 - Aztecs Minigame Helper
-	- this shows you the most likely locations for goods in the Aztecs minigame
+	- Shows you the probabilities of the goods on the hidden fields
 
 **Update**
-- New Era - Space Age Jupiter Moon:
-	- added new resources to the extension
+- New Age - Space Travel: Jupiter Moon:
+	- The new goods have been added
 
-- Beta-Mode:
-	- removed Beta Mode - now only available in a [separate extension](https://github.com/mainIine/foe-helfer-extension/archive/refs/heads/betaLoader.zip) that has to be downloaded and added to the browser extensions manually
+- Beta Mode:
+	- Has been removed, is now offered in an [extra extension](https://github.com/mainIine/foe-helfer-extension/archive/refs/heads/betaLoader.zip)
 
-- Guild Battlegrounds:
-	- new, comprehensive map layout
-	- new settings: select if you want to see own sector countdowns or even all sector countdowns in the list
+- Guild Battles:
+	- New schematic maps
+	- New settings for countdowns: show all countdowns, also show countdowns of own sectors
+
+- Own share calculator:
+	- [#2367](https://github.com/mainIine/foe-helfer-extension/issues/2367) more option added - places can be output without the leading "P" as well
 
 - Menu:
-	- now automatically switches into box mode when window is too small for the menu bar
-	- changed position of bottom hud to accomodate FoE-Plus
+	- [#2363](https://github.com/mainIine/foe-helfer-extension/issues/2363) If the window is too small, the box menu is automatically activated so that you can still access the helper
+	- Positioning of the lower menu for FoE+ slightly adjusted
 
 - Settings:
-	- Most settings are now available in the menu and the respective window
+	- Most settings can now be found in the respective window
 
 **BugFix**
 
 - Menu:
-	- small windows now again have the scroll bars for the game screen
+	- [#2364](https://github.com/mainIine/foe-helfer-extension/issues/2364) Small windows now have scrollbars again
 
-- Bonus Hud:
-	- now always shows outside main city, even if only for the done quests
+- Menu box (ReSize):
+	- Can be dragged very small again
+
+- Production Overview:
+	- [#2393](https://github.com/mainIine/foe-helfer-extension/issues/2393) Golden fields were not recognized
+
+- Bonus HUD:
+	- Is now always displayed
+
+- Guild Battles:
+	- [#2379](https://github.com/mainIine/foe-helfer-extension/issues/2379) within a session the last open tab is remembered
+
+- Stats:
+	- [#2388](https://github.com/mainIine/foe-helfer-extension/issues/2388) fixed wrong links to goods
 
 ---
 
