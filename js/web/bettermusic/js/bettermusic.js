@@ -100,6 +100,11 @@ FoEproxy.addHandler('GuildExpeditionService', 'getOverview', (data, postData) =>
     betterMusic.setScene("ge");
     
 });
+FoEproxy.addHandler('BattlefieldService', 'all', (data, postData) => {
+       
+    betterMusic.setScene("battle");
+    
+});
 
 FoEproxy.addHandler('PVPArenaService', 'getOverview', (data, postData) => {
        

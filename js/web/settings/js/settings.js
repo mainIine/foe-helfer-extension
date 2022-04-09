@@ -254,14 +254,15 @@ let Settings = {
 	 * @returns {string}
 	 */
 	VersionInfo: () => {
-
-		return `<p>${i18n('Settings.Version.Link').replace('__version__', extVersion)}</p>
-				<dl class="info-box">
+		let v = extVersion.includes('beta') ? `` : `<p>${i18n('Settings.Version.Link').replace('__version__', '')}</p>`;
+		v +=	`<dl class="info-box">
 					<dt>${i18n('Settings.Version.Title')}</dt><dd>${extVersion}</dd>
 					<dt>${i18n('Settings.Version.PlayerId')}</dt><dd>${ExtPlayerID}</dd>
 					<dt>${i18n('Settings.Version.GuildId')}</dt><dd>${(ExtGuildID ? ExtGuildID : 'N/A')}</dd>
 					<dt>${i18n('Settings.Version.World')}</dt><dd>${ExtWorld}</dd>
 				</dl>`;
+		return v;
+		
 	},
 
 
