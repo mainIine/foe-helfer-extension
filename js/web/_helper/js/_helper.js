@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -549,7 +549,7 @@ let HTML = {
 		// Except the "menu Box"
 		if(id === 'menu_box')
 		{
-			options['minWidth'] = 105;
+			options['minWidth'] = 101;
 			options['minHeight'] = 87;
 		}
 

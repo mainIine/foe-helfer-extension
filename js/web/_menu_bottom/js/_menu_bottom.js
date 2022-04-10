@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -23,7 +23,7 @@ let _menu_bottom = {
 
 	BuildOverlayMenu: () => {
 
-		let hud = $('<div />').attr('id', 'foe-helper-hud').addClass('game-cursor'),
+		let hud = $('<div />').attr('class', 'foe-helper-hud hud-bottom').addClass('game-cursor'),
 			hudWrapper = $('<div />').attr('id', 'foe-helper-hud-wrapper'),
 			hudInner = $('<div />').attr('id', 'foe-helper-hud-slider');
 
@@ -113,10 +113,10 @@ let _menu_bottom = {
 	Prepare: () => {
 		let MenuItemCount = $("#foe-helper-hud-slider").children().length;
 
-		_menu.HudCount = Math.floor((($(window).outerWidth() - 50) - $('#foe-helper-hud').offset().left) / _menu_bottom.btnSize);
+		_menu.HudCount = Math.floor((($(window).outerWidth() - 50) - $('.foe-helper-hud').offset().left) / _menu_bottom.btnSize);
 		_menu.HudCount = Math.min(_menu.HudCount, MenuItemCount);
 		if (_menu.HudCount <= 0) {
-			$('#foe-helper-hud').remove();
+			$('.foe-helper-hud').remove();
 			window.onresize = function(){};
 			_menu.CallSelectedMenu('Box');
 			return;
@@ -133,7 +133,7 @@ let _menu_bottom = {
 		_menu.HudWidth = (_menu.HudCount * _menu_bottom.btnSize);
 		_menu.SlideParts = Math.ceil(MenuItemCount / _menu.HudCount);
 
-		$('#foe-helper-hud').width(_menu.HudWidth);
+		$('.foe-helper-hud').width(_menu.HudWidth);
 		$('#foe-helper-hud-wrapper').width(_menu.HudWidth);
 		$('#foe-helper-hud-slider').width( ($("#foe-helper-hud-slider").children().length * _menu_bottom.btnSize));
 	},
@@ -184,7 +184,7 @@ let _menu_bottom = {
 			axis: 'x',
 			distance: 15,
 			start: function () {
-				$('#foe-helper-hud').addClass('is--sorting');
+				$('.foe-helper-hud').addClass('is--sorting');
 			},
 			sort: function () {
 
@@ -225,7 +225,7 @@ let _menu_bottom = {
 
 				localStorage.setItem('MenuSort', JSON.stringify(_menu.Items));
 
-				$('#foe-helper-hud').removeClass('is--sorting');
+				$('.foe-helper-hud').removeClass('is--sorting');
 				if (_menu.equalTo(storedItems)) return;
 
 				HTML.ShowToastMsg({
