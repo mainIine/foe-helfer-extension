@@ -12,7 +12,7 @@
  */
 
 
-.foe-helper-hud.hud-right {
+#foe-helper-hud.hud-right {
 	right: 0;
 	top: 515px;
 	width: 63px;

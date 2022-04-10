@@ -17,7 +17,7 @@ let _menu_right = {
 	 *
 	 */
 	BuildOverlayMenu: () => {
-		let hud = $('<div />').attr('class', 'foe-helper-hud hud-right').addClass('game-cursor'),
+		let hud = $('<div />').attr({'id': 'foe-helper-hud','class': 'hud-right'}).addClass('game-cursor'),
 			hudWrapper = $('<div />').attr('id', 'foe-helper-hud-wrapper'),
 			hudInner = $('<div />').attr('id', 'foe-helper-hud-slider');
 
@@ -98,11 +98,11 @@ let _menu_right = {
 	Prepare: () => {
 		let MenuItemCount = $("#foe-helper-hud-slider").children().length;
 
-		_menu.HudCount = Math.floor((($(window).outerHeight() - 50) - $('.foe-helper-hud').offset().top) / 55);
+		_menu.HudCount = Math.floor((($(window).outerHeight() - 50) - $('#foe-helper-hud').offset().top) / 55);
 		_menu.HudCount = Math.min(_menu.HudCount, MenuItemCount);
 
 		if (_menu.HudCount <= 0) {
-			$('.foe-helper-hud').remove();
+			$('#foe-helper-hud').remove();
 			_menu.CallSelectedMenu('Box')
 		}
 			
@@ -116,7 +116,7 @@ let _menu_right = {
 		_menu.HudHeight = (_menu.HudCount * 55);
 		_menu.SlideParts = Math.ceil(MenuItemCount / _menu.HudCount);
 
-		$('.foe-helper-hud').height(_menu.HudHeight + 2);
+		$('#foe-helper-hud').height(_menu.HudHeight + 2);
 		$('#foe-helper-hud-wrapper').height(_menu.HudHeight);
 	},
 
@@ -171,7 +171,7 @@ let _menu_right = {
 			axis: 'y',
 			distance: 15,
 			start: function () {
-				$('.foe-helper-hud').addClass('is--sorting');
+				$('#foe-helper-hud').addClass('is--sorting');
 			},
 			sort: function () {
 
@@ -210,7 +210,7 @@ let _menu_right = {
 
 				localStorage.setItem('MenuSort', JSON.stringify(_menu.Items));
 
-				$('.foe-helper-hud').removeClass('is--sorting');
+				$('#foe-helper-hud').removeClass('is--sorting');
 
 				HTML.ShowToastMsg({
 					show: 'force',
