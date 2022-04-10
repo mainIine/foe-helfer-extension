@@ -16,7 +16,6 @@
 	right: 30px;
 	width: 560px;
 	height: 450px;
-	padding: 2px;
 }
 
 .info-table {
@@ -204,4 +203,8 @@ input.textfilter{
     width: -moz-available;          /* WebKit-based browsers will ignore this. */
     width: -webkit-fill-available;  /* Mozilla-based browsers will ignore this. */
     width: fill-available;
+}
+
+#BackgroundInfoSettingsBox {
+	z-index: 150;
 }

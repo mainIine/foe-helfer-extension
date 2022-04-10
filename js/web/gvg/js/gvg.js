@@ -24,9 +24,7 @@ FoEproxy.addHandler('ClanBattleService', 'deployDefendingArmy', (data, postData)
 });
 
 FoEproxy.addHandler('ClanBattleService', 'getContinent', (data, postData) => {
-	if (GvG.Actions === undefined) {
-		GvG.initActions();
-	}
+	GvG.initActions();
 	GvG.setRecalc(data.responseData.continent.calculation_time.start_time, true);
 });
 
@@ -42,7 +40,7 @@ FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, post
 });
 
 FoEproxy.addWsHandler('UpdateService', 'finishDailyCalculation', (data, postData) => {	
-	if (data['responseData'] === true) {
+	if (data['responseData'] === true && GvG.Init === true) {
 		GvG.resetData();
 	}
 });
@@ -756,7 +754,7 @@ let GvGMap = {
 			html += i18n('Boxes.GvGMap.Sector.Power') + ': ' + sector.power +'<br>';
 			if (sector.isProtected)
 				html += i18n('Boxes.GvGMap.Sector.Protected')+'<br>';
-			html += 'Terrain: '+ sector.terrain +'<br>';
+			html += i18n('Boxes.GvGMap.Sector.Terrain')+ ': ' +  i18n('Boxes.GvGMap.Sector.Terrain_'+sector.terrain) +'<br>';
 			html += '</div>';
 		}
 

@@ -1,5 +1,113 @@
 ## Changelog - Extension
 
+##### 2.9.0.0
+
+**New**
+- Aztecs Minigame Helper
+	- Shows you the probabilities of the goods on the hidden fields
+
+**Update**
+- New Age - Space Travel: Jupiter Moon:
+	- The new goods have been added
+
+- Beta Mode:
+	- Has been removed, is now offered in an [extra extension](https://github.com/mainIine/foe-helfer-extension/archive/refs/heads/betaLoader.zip)
+
+- Guild Battles:
+	- New schematic maps
+	- New settings for countdowns: show all countdowns, also show countdowns of own sectors
+
+- Own share calculator:
+	- [#2367](https://github.com/mainIine/foe-helfer-extension/issues/2367) more option added - places can be output without the leading "P" as well
+
+- Menu:
+	- [#2363](https://github.com/mainIine/foe-helfer-extension/issues/2363) If the window is too small, the box menu is automatically activated so that you can still access the helper
+	- Positioning of the lower menu for FoE+ slightly adjusted
+
+- Settings:
+	- Most settings can now be found in the respective window
+
+**BugFix**
+
+- Menu:
+	- [#2364](https://github.com/mainIine/foe-helfer-extension/issues/2364) Small windows now have scrollbars again
+
+- Menu box (ReSize):
+	- Can be dragged very small again
+
+- Production Overview:
+	- [#2393](https://github.com/mainIine/foe-helfer-extension/issues/2393) Golden fields were not recognized
+
+- Bonus HUD:
+	- Is now always displayed
+
+- Guild Battles:
+	- [#2379](https://github.com/mainIine/foe-helfer-extension/issues/2379) within a session the last open tab is remembered
+
+- Stats:
+	- [#2388](https://github.com/mainIine/foe-helfer-extension/issues/2388) fixed wrong links to goods
+
+---
+
+##### 2.8.0.0
+
+**New**
+- Beta-Mode:
+	- in the settings you can now choose to use the current beta version of Github instead of the installed one.
+	- When using this mode, there may be more bugs - please report bugs on [Discord](https://discord.gg/z97KZq4) or on [Github](https://github.com/mainIine/foe-helfer-extension/issues)!
+
+**Update**
+- St. Patrick's Box:
+	- the target level for the upgrade costs can now be determined by yourself
+	- A time estimate is now given for collection tasks
+
+- Guild Battles:
+	- Waterfall map added
+	- Unlock times of sectors are now shown on the map
+
+- Boxes and menu:
+	- updated design, less graphics more pure CSS
+
+**BugFix**
+- St.Patrick's Box:
+	- [#2341](https://github.com/mainIine/foe-helfer-extension/issues/2341) [#2348](https://github.com/mainIine/foe-helfer-extension/issues/2348) there was no reset of buildings when starting the next city
+	- calculation of time to reach 8.4Q for the next city was not correct
+
+
+- Events:
+	- [#2340](https://github.com/mainIine/foe-helfer-extension/issues/2340) the "zero" is now hidden again when there are no events
+
+
+---
+
+##### 2.7.0.0
+
+**New**
+- Music Module:
+	- [#2335](https://github.com/mainIine/foe-helfer-extension/issues/2335) [Info](https://github.com/mainIine/foe-helfer-extension/issues/2335)
+		- You can choose whether titles linked to an epoch may be played in your city or in the colony:
+			- Nu current epoch (only titles linked to the current epoch will be played).
+			- up to current epoch (only titles linked to the current or an earlier epoch are played)
+			- ignore era (all titles can be played)
+			- You can choose whether visiting the tavern, the PvP arena or opening the event window should trigger the associated title
+			- You can choose whether the titles of other settlements can be played in settlements (e.g. Egypt can be played in Aztecs if selected below).
+
+**Update**
+- St.Patricks Box:
+  - The box can now be resized
+  
+- Hidden incidents:
+	- there now is a setting to exclude relics from the incident count
+
+**BugFix**
+- Alarms:
+	- [#2332](https://github.com/mainIine/foe-helfer-extension/issues/2332) The alarm overview did not open.
+
+- Guild Battles:
+	- The overview box of the provinces could not be opened.
+
+---
+
 ##### 2.6.0.1
 
 **Update**

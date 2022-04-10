@@ -158,9 +158,9 @@ let HTML = {
 	Box: (args) => {
 
 		let title = $('<span />').addClass('title').html(args['title']);
-
+		
 		if (args['onlyTitle'] !== true) {
-			title = $('<span />').addClass('title').html(args['title'] + ' <small><em> - ' + i18n('Global.BoxTitle') + '</em></small>');
+			title = $('<span />').addClass('title').html((extVersion.indexOf("beta") > -1 ? '(Beta) ': '') + args['title'] + ' <small><em> - FoE Helper</em></small>');
 		}
 
 		let close = $('<span />').attr('id', args['id'] + 'close').addClass('window-close'),
@@ -413,7 +413,7 @@ let HTML = {
 
 		document.getElementById(el.id + "Header").removeEventListener("pointerdown", dragMouseDown);
 
-		let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0, top = 0, left = 0, id;
+		let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0, top = 0, left = 0, id;			
 
 		id = el.id;
 
@@ -446,12 +446,32 @@ let HTML = {
 			top = (el.offsetTop - pos2);
 			left = (el.offsetLeft - pos1);
 
+			let noOverflow = $('.overflowHidden').length > 0;
+
 			// Schutz gegen "zu Hoch geschoben"
 			if (top < 0) {
-				top = 12;
+				top = 0;
 
-				document.onpointerup = null;
-				document.onpointermove = null;
+				//document.onpointerup = null;
+				//document.onpointermove = null;
+			}
+			if (left < 0) {
+				left = 0;
+
+				//document.onpointerup = null;
+				//document.onpointermove = null;
+			}
+			if ((left + el.clientWidth > window.innerWidth) && noOverflow) {
+				left = window.innerWidth - el.clientWidth;
+
+				//document.onpointerup = null;
+				//document.onpointermove = null;
+			}
+			if (top + el.clientHeight > window.innerHeight && noOverflow) {
+				top = window.innerHeight - el.clientHeight;
+
+				//document.onpointerup = null;
+				//document.onpointermove = null;
 			}
 
 			el.style.top = top + "px";
@@ -502,6 +522,11 @@ let HTML = {
 				box.width(s[0]).height(s[1]);
 			}
 		}
+		else {
+			setTimeout(()=>{
+				box.width(box.width()).height(box.height());
+			}, 800);
+		}
 
 		box.append(grip);
 
@@ -512,8 +537,8 @@ let HTML = {
 				sw: '.window-grippy',
 				nw: '.window-grippy'
 			},
-			minHeight: $(box).css("min-width") || 200,
-			minWidth: $(box).css("min-height") || 250,
+			minHeight: 100,
+			minWidth: 220,
 			stop: (e, $el) => {
 				let size = $el.element.width() + '|' + $el.element.height();
 
@@ -521,12 +546,16 @@ let HTML = {
 			}
 		};
 
-		// keep aspect Ratio
-		if (keepRatio) {
-			let width = box.width(),
-				height = box.height();
+		// Except the "menu Box"
+		if(id === 'menu_box')
+		{
+			options['minWidth'] = 105;
+			options['minHeight'] = 87;
+		}
 
-			options['aspectRatio'] = width / height;
+		// keep aspect ratio
+		if (keepRatio) {
+			options['aspectRatio'] = box.width() + ' / ' + box.height();
 
 			box.resizable(options);
 		}
@@ -902,9 +931,9 @@ let HTML = {
 				return;
 			}
 
-			let BOM = "\uFEFF";
-			let Blob1 = new Blob([BOM + FileContent], { type: "application/octet-binary;charset=ANSI" });
-			MainParser.ExportFile(Blob1, FileName + '.' + Format);
+			// with UTF-8 BOM
+			let BlobData = new Blob(["\uFEFF" + FileContent], { type: "application/octet-binary;charset=ANSI" });
+			MainParser.ExportFile(BlobData, FileName + '.' + Format);
 		});
 	},
 

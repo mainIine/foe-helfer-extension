@@ -187,13 +187,14 @@
 
 .OwnPartBoxBackground .outerArrow:before {
 	content: "";
-	width: 36px;
-	height: 36px;
-	background-position: 5px -52px;
+	width: 28px;
+	height: 28px;
 	position: absolute;
-	top: -13px;
-	left: -30px;
+	top: 51px;
+	left: -23px;
 	z-index: -1;
+	background: #895022;
+	border-radius: 3px 0 0 3px;
 }
 
 .OwnPartBoxBackground .outerArrow span.arrow {
@@ -201,7 +202,7 @@
 	height: 22px;
 	background-position: -77px -2px, -2px -26px;
 	position: absolute;
-	top: -6px;
+	top: 54px;
 	left: -20px;
 }
 
@@ -227,10 +228,9 @@
 	top: 0;
 	left: 55px;
 	padding: 0 15px;
-	border-width: 0 10px 10px 10px;
-	border-image-width: 0 28px 28px;
+	border-width: 0 5px 5px 5px;
 	opacity: 0;
-	border-radius: 0 0 15px 15px;
+	border-radius: 0 0 5px 5px;
 }
 
 .OwnPartBoxBackgroundBody > div > span:not(.btn-default) {

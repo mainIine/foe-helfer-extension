@@ -72,8 +72,8 @@
 		"sort": 11
 	},
 	{
-		"name": "InfoboxEntryCount",
-		"callback": "InfoboxInputEntryCount",
+		"name": "ShowOwnPartOnAllGBs",
+		"status": true,
 		"group": "Boxes",
 		"sort": 12
 	},
@@ -105,7 +105,13 @@
 		"name": "HideHelperDuringBattle",
 		"status": false,
 		"group": "Boxes",
-		"sort": 15
+		"sort": 16
+	},
+	{
+		"name": "ShowAztecHelper",
+		"status": true,
+		"group": "Boxes",
+		"sort": 17
 	},
 	{
 		"name": "ChangeLanguage",
@@ -165,6 +171,11 @@
 	{
 		"name": "NotificationsStack",
 		"callback": "NotificationStack",
+		"group": "Extension",
+		"sort": 9
+	},
+	{
+		"name": "LoadBeta",
 		"group": "Extension",
 		"sort": 9
 	},

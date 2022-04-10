@@ -121,24 +121,25 @@ let scoutingTimes = {
             if (Object.hasOwnProperty.call(scoutingTimes.Provinces, p)) {
                 const province = scoutingTimes.Provinces[p];
                 
-                if (!(province.isPlayerOwned|false)) {
+                if (!(province.isPlayerOwned)) {
                     continue;
                 }
 
                 for (let element of province.children)
                 {
                     let child = scoutingTimes.Provinces[element.targetId];
-                    if (child.isPlayerOwned|false) {
+                    if (!child) continue;
+                    if (child?.isPlayerOwned) {
                         continue;
                     };
                     if (toscout.indexOf(child.id) > -1) {
                         continue;
                     };
 
-                    if (child.isScouted|false) {
+                    if (child.isScouted) {
                         scoutingTimes.Provinces[child.id].travelTime = 0;
                     } else {
-                        if (!(scoutingTimes.Provinces[child.id].fromCurrent|false)) {
+                        if (!(scoutingTimes.Provinces[child.id].fromCurrent)) {
                             if (province.id === scoutingTimes.scoutPosition){
                                 scoutingTimes.Provinces[child.id].fromCurrent = true;
                             }
@@ -150,11 +151,11 @@ let scoutingTimes = {
                             scoutingTimes.target = child.id;
                         }
                     }
-                    if (child.isScouted|false) scoutingTimes.Provinces[child.id].travelTime = 0;
+                    if (child.isScouted) scoutingTimes.Provinces[child.id].travelTime = 0;
                     let mayScout = true;
 
                     for (let blockId of child.blockers) {
-                        if (!(scoutingTimes.Provinces[blockId]?.isPlayerOwned|false)) {
+                        if (!(scoutingTimes.Provinces[blockId]?.isPlayerOwned)) {
                             mayScout = false;
                         }
                     }
@@ -171,7 +172,7 @@ let scoutingTimes = {
         while (toscout.length > 0) {
             let p = toscout.pop();
             let province = scoutingTimes.Provinces[p];
-            if (province.isScouted|false) {
+            if (province.isScouted) {
                 htmltext += `<tr class="scouted" title="${i18n('Eras.'+Technologies.Eras[province.era])}"><td>${province.name}</td><td></td><td></td></tr>`;
                 i += 1;
             }
@@ -199,6 +200,7 @@ let scoutingTimes = {
                     dragdrop: true,
                     minimize: false,
                     ask: i18n('Boxes.scoutingTimes.HelpLink'),
+                    settings: 'scoutingTimes.ShowSettings()',
                 });
             }
         
@@ -245,25 +247,27 @@ let scoutingTimes = {
     GetDistances:(StartId,limit) => {
 
         let temp = [[StartId,0]];
-        let i = 0;
+        let distx = {};
         for (let Province of temp) {
             if (Province[0]<limit) break;
-            if (i > 1000) break;
-            if (!scoutingTimes.Provinces[Province[0]]?.parentIds) continue;
+
+            let isShorter = false;
+
+            if (!distx[Province[0]]) {
+                distx[Province[0]] = {'id':Province[0], 'dist': Province[1]};
+                isShorter = true;
+            } else {
+                if (distx[Province[0]]?.dist > Province[1]) {
+                    distx[Province[0]] = {'id':Province[0], 'dist': Province[1]};
+                    isShorter = true;
+                }
+            }
+
+            if (!scoutingTimes.Provinces[Province[0]]?.parentIds || !isShorter) continue;
             for (let parent of scoutingTimes.Provinces[Province[0]].parentIds) {
-                i += 1;
-                if (i > 1000) break;
                 temp.push([parent,Province[1]+1]);
             }
             
-        }
-        let distx = {};
-        for (let p of temp) {
-            if (!distx[p[0]]) {
-                distx[p[0]] = {'id':p[0], 'dist': p[1]};
-            } else {
-                if (distx[p[0]]?.dist > p[1]) distx[p[0]] = {'id':p[0], 'dist': p[1]};
-            }
         }
         return distx;
     },
@@ -288,6 +292,30 @@ let scoutingTimes = {
 
         return scoutingTimes.ShowDialog();
 
-    }
+    },
+    
+    /**
+    *
+    */
+     ShowSettings: () => {
+		let autoOpen = Settings.GetSetting('ShowScoutingTimes');
+
+        let h = [];
+        h.push(`<p><label><input id="autoStartScout" type="checkbox" ${(autoOpen === true) ? ' checked="checked"' : ''} />${i18n('Boxes.Settings.Autostart')}</label></p>`);
+        h.push(`<p><button onclick="scoutingTimes.SaveSettings()" id="save-bghelper-settings" class="btn btn-default" style="width:100%">${i18n('Boxes.Settings.Save')}</button></p>`);
+
+        $('#mapScoutingTimesDialogSettingsBox').html(h.join(''));
+    },
+
+    /**
+    *
+    */
+    SaveSettings: () => {
+        let value = false;
+		if ($("#autoStartScout").is(':checked'))
+			value = true;
+		localStorage.setItem('ShowScoutingTimes', value);
+		$(`#mapScoutingTimesDialogSettingsBox`).remove();
+    },
 
 };

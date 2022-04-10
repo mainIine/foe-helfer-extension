@@ -13,18 +13,41 @@
 
 // separate code from global scope
 {
+let scripts = {
+	vendor: ["once", "primed"],
+	internal: ["once", "primed"]
+};
+	
+function scriptLoaded (src, base) {
+	scripts[base].splice(scripts[base].indexOf(src),1);
+	if (scripts.internal.length == 1) {
+		scripts.internal.splice(scripts.internal.indexOf("once"),1);
+		window.dispatchEvent(new CustomEvent('foe-helper#loaded'));
+	}
+	if (scripts.vendor.length == 1) {
+		scripts.vendor.splice(scripts.vendor.indexOf("once"),1);
+		window.dispatchEvent(new CustomEvent('foe-helper#vendors-loaded'));
+	}
+};
 
+inject();
+
+
+function inject (loadBeta = false, extUrl = chrome.extension.getURL(''), betaDate='') {
 	/**
 	 * Loads a JavaScript in the website. The returned promise will be resolved once the code has been loaded.
 	 * @param {string} src the URL to load
 	 * @returns {Promise<void>}
 	 */
-	function promisedLoadCode(src) {
+	 function promisedLoadCode(src, base="base") {
 		return new Promise(async (resolve, reject) => {
 			let sc = document.createElement('script');
 			sc.src = src;
-
+			if (scripts[base]) {
+				scripts[base].push(src);
+			}
 			sc.addEventListener('load', function() {
+				if (scripts[base]) scriptLoaded(src, base);
 				this.remove();
 				resolve();
 			});
@@ -33,16 +56,21 @@
 				this.remove();
 				reject();
 			});
-
 			while (!document.head && !document.documentElement) await new Promise((resolve) => {
 				// @ts-ignore
 				requestIdleCallback(resolve);
 			});
-
 			(document.head || document.documentElement).appendChild(sc);
 		});
 	}
-
+	
+	async function loadJsonResource(file) {
+		const response = await fetch(file);
+		if (response.status !== 200) {
+			throw "Error loading json file "+file;
+		}
+		return response.json();
+	}
 
 	// check whether jQuery has been loaded in the DOM
 	// => Catch jQuery Loaded event
@@ -52,12 +80,12 @@
 		}, {capture: false, once: true, passive: true});
 	});
 
-
-	const v = chrome.runtime.getManifest().version;
+	
+	const v = chrome.runtime.getManifest().version + (loadBeta ? '-beta-'+ betaDate:'');
 
 	let   lng = chrome.i18n.getUILanguage();
 	const uLng = localStorage.getItem('user-language');
-
+	
 	// we only need the first part
 	if (lng.indexOf('-') > 0) {
 		lng = lng.split('-')[0];
@@ -75,7 +103,7 @@
 		localStorage.setItem('user-language', lng);
 	}
 
-	InjectCode();
+	InjectCode(loadBeta, extUrl);
 
 
 	let tid = setInterval(InjectCSS, 0);
@@ -99,9 +127,8 @@
 				if(!cssFiles.hasOwnProperty(i)) {
 					break;
 				}
-
 				let css = document.createElement('link');
-				css.href = chrome.extension.getURL(`css/web/${cssFiles[i]}.css?v=${v}`);
+				css.href = extUrl + `css/web/${cssFiles[i]}.css?v=${v}`;
 				css.rel = 'stylesheet';
 				document.head.appendChild(css);
 			}
@@ -110,16 +137,18 @@
 		}
 	}
 
-	async function InjectCode() {
-		try {
+	async function InjectCode(loadBeta, extUrl) {
+	 	try {
 			// set some global variables
 			let script = document.createElement('script');
 			script.innerText = `
 				const extID='${chrome.runtime.id}',
-					extUrl='${chrome.extension.getURL('')}',
+					extUrl='${extUrl}',
 					GuiLng='${lng}',
 					extVersion='${v}',
-					devMode=${!('update_url' in chrome.runtime.getManifest())};
+					isRelease=true,
+					devMode=${!('update_url' in chrome.runtime.getManifest())},
+					loadBeta=${loadBeta};
 			`;
 			(document.head || document.documentElement).appendChild(script);
 			// The script was (supposedly) executed directly and can be removed again.
@@ -153,99 +182,32 @@
 				}
 				exportFunction(callBgApi, window, {defineAs: 'foeHelperBgApiHandler'});
 			}
+			// start loading both script-lists
+			const vendorListPromise = loadJsonResource(`${extUrl}js/vendor.json`);
+			const scriptListPromise = loadJsonResource(`${extUrl}js/internal.json`);
 			
+			// load foe-Proxy
+			await promisedLoadCode(chrome.extension.getURL('')+`js/foeproxy.js`);
 			// load the main
-			await promisedLoadCode(chrome.extension.getURL(`js/web/_main/js/_main.js?v=${v}`));
+			await promisedLoadCode(`${extUrl}js/web/_main/js/_main.js`);
 
-			// first wait for ant and i18n to be loaded
+			// wait for ant and i18n to be loaded
 			await jQueryLoading;
 
-
-			const extURL = chrome.extension.getURL(''),
-				vendorScripts = [
-					'i18njs/i18njs.min',
-					'moment/moment-with-locales.min',
-					'CountUp/jquery.easy_number_animate.min',
-					'Tabslet/jquery.tabslet.min',
-					'ScrollTo/jquery.scrollTo.min',
-					'jQuery/jquery-resizable.min',
-					'jQuery/jquery-ui.min',
-					'jQuery/jquery.toast',
-					'tooltip/tooltip',
-					'tableSorter/table-sorter',
-					'Sortable/Sortable.min',
-					'jsZip/jszip.min',
-					'date-range/lightpick',
-					'lit-html/lit-html.bundle.min',
-					'SimpleMarkdown/simple-markdown.min',
-					'dexie/dexie.min',
-					'dexie/dexie-export-import',
-					'downloadjs/downloadjs.min'
-				];
-
 			// load all vendor scripts first (unknown order)
-			await Promise.all(vendorScripts.map(vendorScript => promisedLoadCode(`${extURL}vendor/${vendorScript}.js?v=${v}`)));
-
-			window.dispatchEvent(new CustomEvent('foe-helper#vendors-loaded'));
-
-			const s = [
-				'_languages',
-				'_helper',
-				'_menu',
-				'_menu_bottom',
-				'_menu_right',
-				'_menu_box',
-				'indexdb',
-				'kits',
-				'outposts',
-				'calculator',
-				'infoboard',
-				'productions',
-				'part-calc',
-				'unit',
-				'alerts',
-				'guildfights',
-				'gvg',
-				'stats',
-				'campagnemap',
-				'bonus-service',
-				'technologies',
-				'negotiation',
-				'eventchests',
-				'settings',
-				'investment',
-				'strategy-points',
-				'battle-assist',
-				'citymap',
-				'hidden-rewards',
-				'greatbuildings',
-				'notice',
-				'inventory-tracker',
-				'treasury',
-				'market',
-				'marketoffers',
-				'bluegalaxy',
-				'eventhandler',
-				'fp-collector',
-				'unit-gex',
-				'maptradewarning',
-				'guildmemberstat',
-				'quests',
-				'gexstat',
-				'dbexport',
-				'closebox',
-				'castle',
-				'stpatrickstats',
-				'scoutingtimes'
-			];
-
+			const vendorScriptsToLoad = await vendorListPromise;
+			await Promise.all(vendorScriptsToLoad.map(vendorScript => promisedLoadCode(`${extUrl}vendor/${vendorScript}.js?v=${v}`)));
+			
+			scriptLoaded("primed", "vendor");
+			
 			// load scripts (one after the other)
-			for (let i = 0; i < s.length; i++)
-			{
-				await promisedLoadCode(`${extURL}js/web/${s[i]}/js/${s[i]}.js?v=${v}`);
-			}
+			const internalScriptsToLoad = await scriptListPromise;
 
-			window.dispatchEvent(new CustomEvent('foe-helper#loaded'));
+			for (let i = 0; i < internalScriptsToLoad.length; i++){
+				await promisedLoadCode(`${extUrl}js/web/${internalScriptsToLoad[i]}/js/${internalScriptsToLoad[i]}.js?v=${v}`, false);
+			}
+					
+			scriptLoaded("primed", "internal");
 
 		} catch (err) {
 			// make sure that the packet buffer in the FoEproxy does not fill up in the event of an incomplete loading.
@@ -253,5 +215,6 @@
 		}
 	}
 
+}
 	// End of the separation from the global scope
 }

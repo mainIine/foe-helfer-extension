@@ -5,7 +5,7 @@
  * terms of the AGPL license.
  *
  * See file LICENSE.md or go to
- * https://github.com/dsiekiera/foe-helfer-extension/blob/master/LICENSE.md
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
  * for full license details.
  *
  * **************************************************************************************
@@ -23,88 +23,110 @@
 }
 
 #fp-collectorBody .head {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	justify-items: center;
-	padding: 5px 10px;
-	margin-bottom: 2px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2px 5px;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+#fp-collectorBody .btn-tight {
+    max-width: unset;
+}
+
+#fp-collectorBody .foehelper-accordion:hover .foehelper-accordion-head {
+	box-shadow: inset 0px 0px 0px 2000px var(--background-table-hover);
+}
+
+#fp-collectorBody .open .foehelper-accordion-head {
+	margin-bottom: unset;
+}
+
+#fp-collectorBody .open .foehelper-accordion-body {
+	margin: 0 0 2px 0;
 }
 
 #fp-collectorBody .foehelper-accordion-head strong {
-	width: 35px;
+	width: 75px;
 	text-align: right;
 	margin: 0 8px 0 2px;
 }
 
-.foehelper-accordion-body div {
+#fp-collectorBody .foehelper-accordion-body div {
 	border-top: 1px solid var(--border-table-top);
-	padding: 2px 0 2px 30px;
+    border-bottom: 1px solid var(--border-table-bottom-darker);
+    display: flex;
 }
 
-.foehelper-accordion-body div .fps {
-	width: 30px;
+#fp-collectorBody .foehelper-accordion-body div .fps {
+	width: 105px;
 	color: var(--text-bright);
 	text-align: right;
-	margin: 0 8px 0 2px;
+	margin: 0 8px 0 0;
 }
 
-.foehelper-accordion-body div .desc {
-	width: 45%;
+#fp-collectorBody .foehelper-accordion-body div .desc {
+	width: 180px;
 }
 
-.foehelper-accordion-body div img {
+#fp-collectorBody .foehelper-accordion-body div img {
 	max-height: 25px;
 	border-radius: 2px;
 	margin-right: 4px;;
 }
 
-.foehelper-accordion-head span.image {
+#fp-collectorBody .foehelper-accordion-head span.image {
 	width: 30px;
-	height: 22px;
-	background-size: 20px auto;
+	height: 24px;
+	background-size: 24px auto;
 	background-repeat: no-repeat;
 	background-position: center;
 }
 
 .foehelper-accordion-head.hiddenReward-head span.image {
-	background-image: url('../images/incident.png');
+	background-image: url('../images/incident.png') !important;
 }
 
 .foehelper-accordion-head.chest-head  span.image {
-	background-image: url('../images/expedition.png');
+	background-image: url('../images/expedition.png') !important;
 }
 
 .foehelper-accordion-head.guildExpedition-head span.image {
-	background-image: url('../images/relic.png');
+	background-image: url('../images/relic.png') !important;
+}
+
+.foehelper-accordion-head.shards-head span.image {
+	background-image: url('../images/shards.png') !important;
 }
 
 .foehelper-accordion-head.battlegrounds_conquest-head span.image {
-	background-image: url('../images/gbg-gray.png');
+	background-image: url('../images/gbg.png') !important;
 }
 
 .foehelper-accordion-head.satDown-head span.image {
-	background-image: url('../images/tavern.png');
+	background-image: url('../images/sat_down.png') !important;
 }
 
 .foehelper-accordion-head.Quest-head span.image {
-	background-image: url('../images/quest.png');
+	background-image: url('../images/quest.png') !important;
 }
 
 .foehelper-accordion-head.spoilsOfWar-head span.image {
-	background-image: url('../images/spoils_of_war.png');
+	background-image: url('../images/spoils_of_war.png') !important;
 }
 
 .foehelper-accordion-head.diplomaticGifts-head span.image {
-	background-image: url('../images/diplomatic_gifts.png');
+	background-image: url('../images/diplomatic_gifts.png') !important;
 }
 
 .foehelper-accordion-head.antiquesDealer-head span.image {
-	background-image: url('../images/ant.png');
+	background-image: url('../images/ant.png') !important;
 }
 
 .foehelper-accordion-head.double_collection-head span.image {
-	background-image: url('../../../../css/images/menu/BlueGalaxy.png');
+	background-image: url('../../../../css/images/menu/BlueGalaxy.png') !important;
 }
 
 .foehelper-accordion-head.dailyChallenges-head span.image {
@@ -120,42 +142,71 @@
 }
 
 .foehelper-accordion-head.pvp_arena-head span.image {
-	background-image: url('../images/pvp_arena.png');
+	background-image: url('../images/pvp_arena.png') !important;
+}
+
+.foehelper-accordion-head.castle_system_daily_reward_chest-head span.image {
+	background-image: url('../images/castle_system_daily_reward_chest.png') !important;
 }
 
 /* Events */
-.foehelper-accordion-head.chestEventGrandPrize-head span.image {
-	background-image: url('../images/chestEventGrandPrize.png') !important;
-}
 
-.foehelper-accordion-head.card_duel-head span.image {
-	background-image: url('../images/soccer_cup.png') !important;
+.foehelper-accordion-head.leagueReward-head span.image {
+	background-image: url('../images/leagueReward.png') !important;
 }
-
+/*Event*/
+.foehelper-accordion-head.event-head span.image {
+	background-image: url('../images/event.png') !important;
+}
+/*Forge-Bowl Event*/
+.foehelper-accordion-head.forge_bowl_event-head span.image {
+	background-image: url('../images/forge_bowl_event.png') !important;
+}
+/*Archaeology Event*/
+.foehelper-accordion-head.archeology_event-head span.image {
+	background-image: url('../images/archeology_event.png') !important;
+}
+/*St Patrick's Day Event*/
+.foehelper-accordion-head.st_patricks_event-head span.image {
+	background-image: url('../images/st_patricks_event.png') !important;
+}
+/*May-Day Event*/
+.foehelper-accordion-head.may_day_event-head span.image {
+	background-image: url('../images/may_day_event.png') !important;
+}
+/*Carnival Event*/
+.foehelper-accordion-head.carnival_event-head span.image {
+	background-image: url('../images/carnival_event.png') !important;
+}
+/*Ages Event*/
+.foehelper-accordion-head.forge_ages_event-head span.image {
+	background-image: url('../images/forge_ages_event.png') !important;
+}
+/*Spring Event*/
+.foehelper-accordion-head.spring_event-head span.image {
+	background-image: url('../images/spring_event.png') !important;
+}
+/*FoE Soccer Cup*/
+.foehelper-accordion-head.soccer_event-head span.image {
+	background-image: url('../images/soccer_event.png') !important;
+}
+/*Wildlife Event*/
 .foehelper-accordion-head.wildlife_event-head span.image {
 	background-image: url('../images/wildlife_event.png') !important;
 }
-
-.foehelper-accordion-head.summerEvent-head span.image {
+/*Summer Event*/
+.foehelper-accordion-head.summer_event-head span.image {
 	background-image: url('../images/summer_event.png') !important;
 }
-
-.foehelper-accordion-head.st_patricks_event_grand_prize-head span.image, .foehelper-accordion-head.st_patricks_event-head span.image, .foehelper-accordion-head.st_patricks_task_reward-head span.image {
-	background-image: url('../images/stPatricksEvent.png');
+/*Fall Event*/
+.foehelper-accordion-head.fall_event-head span.image {
+	background-image: url('../images/fall_event.png') !important;
 }
-
-.foehelper-accordion-head.winterEventGandPrize-head span.image, .foehelper-accordion-head.winterEvent-head span.image {
-	background-image: url('../images/winterEvent.png');
-}
-
-.foehelper-accordion-head.archeologyEvent-head span.image, .foehelper-accordion-head.archeologyEventAutoCollect-head span.image {
-	background-image: url('../images/archeologyEvent.png');
-}
-
-.foehelper-accordion-head.halloweenEvent-head span.image, .foehelper-accordion-head.halloweenEventAutoCollect-head span.image {
+/*Halloween Event*/
+.foehelper-accordion-head.halloween_event-head span.image {
 	background-image: url('../images/halloween_event.png') !important;
 }
-
-.foehelper-accordion-head.reward_calendar-head span.image, .foehelper-accordion-head.st_patricks_event_grand_prize span.image, .foehelper-accordion-head.forge_bowl_event_grand_prize-head span.image, .foehelper-accordion-head.chestEvent-head span.image {
-	background-image: url('../images/event.png') !important;
+/*Winter Event*/
+.foehelper-accordion-head.winter_event-head span.image {
+	background-image: url('../images/winter_event.png') !important;
 }

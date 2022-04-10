@@ -54,7 +54,7 @@
 }
 
 #Castle .castle_wrapper .icon.castle-points {
-	background: url(./images/castle_icon.png) center no-repeat;
+	background: url('./images/castle_icon.png') center no-repeat;
 	background-size: contain;
 }
 
@@ -94,7 +94,7 @@
 #Castle #casLogWrapper tr.caption.closed td span,
 #Castle #casLogWrapper tr.caption.closed th span {
 	padding-right: 20px;
-	background-image: url(../../../../css/images/hud/chevron-right.svg);
+	background-image: url('../../../../css/images/hud/chevron-right.svg');
 	background-size: 20px 20px;
 	background-position: center right;
 	background-repeat: no-repeat;
@@ -103,7 +103,7 @@
 #Castle #casLogWrapper tr.caption.open td span,
 #Castle #casLogWrapper tr.caption.open th span {
 	padding-right: 20px;
-	background-image: url(../../../../css/images/hud/chevron-down.svg);
+	background-image: url('../../../../css/images/hud/chevron-down.svg');
 	background-size: 20px 20px;
 	background-position: center right;
 	background-repeat: no-repeat;

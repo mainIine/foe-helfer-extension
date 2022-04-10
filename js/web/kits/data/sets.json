@@ -1,6 +1,6 @@
 [	
 	{
-		"udate": "19.02.2022"
+		"udate": "30.03.2022"
 	},
 	{
 		"groupname": "Guild_Battlegrounds"
@@ -16,7 +16,11 @@
 		"assets": [
 			"D_MultiAge_Battlegrounds2"
 		],
-		"kit": "selection_kit_statue_of_honor"
+		"kit": [
+			"selection_kit_statue_of_honor",
+			"fragment#selection_kit_statue_of_honor",
+			"fragment#building_road_to_victory"
+		]
 	},
 	{
 		"name": "The_Great_Elephant",
@@ -29,10 +33,80 @@
 		"assets": [
 			"D_MultiAge_Battlegrounds4"
 		],
-		"kit": "selection_kit_great_elephant"
+		"kit": [
+			"selection_kit_great_elephant",
+			"fragment#selection_kit_great_elephant",
+			"fragment#building_iridescent_garden"
+		]
 	},
 	{
 		"groupname": "Events"
+	},
+	{
+		"name": "Butterfly_Sanctuary",
+		"buildings": [
+			{
+				"first": "R_MultiAge_ArcheologyBonus22a",
+				"update": "upgrade_kit_butterfly_house"
+			},
+			{
+				"first": "A_MultiAge_ArcheologyBonus22a",
+				"update": ""
+			},
+			{
+				"first": "D_MultiAge_ArcheologyBonus22a",
+				"update": ""
+			},
+			{
+				"first": "D_MultiAge_ArcheologyBonus22b",
+				"update": ""
+			},
+			{
+				"first": "D_MultiAge_ArcheologyBonus22c",
+				"update": ""
+			},
+			{
+				"first": "L_AllAge_ArcheologyBonus22a",
+				"update": ""
+			},
+			{
+				"first": "L_AllAge_ArcheologyBonus22b",
+				"update": ""
+			}
+		],
+		"kit": [
+			"selection_kit_butterfly_sanctuary",
+			"selection_kit_butterfly_house",
+			"selection_kit_butterfly_gardens"
+		]
+	},
+	{
+		"name": "Golden_Orrery",
+		"buildings": [
+			{
+				"first": "W_MultiAge_AgeBonus22a",
+				"update": "upgrade_kit_golden_orrery"
+			}
+		],
+		"kit": "selection_kit_golden_orrery"
+	},
+	{
+		"name": "Grand_Monarchs_Set",
+		"buildings": [
+			{
+				"first": "R_MultiAge_BirthdayBonus22a",
+				"update": "upgrade_kit_grand_king"
+			},
+			{
+				"first": "R_MultiAge_BirthdayBonus22c",
+				"update": "upgrade_kit_grand_queen"
+			}
+		],
+		"kit": [
+			"selection_kit_grand_monarchs",
+			"selection_kit_grand_king",
+			"selection_kit_grand_queen"
+		]
 	},
 	{
 		"name": "Celtic_Farmstead",
@@ -764,7 +838,10 @@
 				"update": "upgrade_kit_graveyard"
 			}
 		],
-		"kit": "selection_kit_graveyard"
+		"kit": [
+			"selection_kit_graveyard",
+			"fragment#selection_kit_graveyard"
+		]
 	},
 	{
 		"groupname": "Cultural_Settlements"
@@ -786,7 +863,10 @@
 				"update": "upgrade_kit_greater_rune_stone"
 			}
 		],
-		"kit": "selection_kit_greater_rune_stone"
+		"kit": [
+			"selection_kit_greater_rune_stone",
+			"fragment#selection_kit_greater_rune_stone"
+		]
 	},
 	{
 		"name": "Shinto_Temple",
@@ -805,7 +885,10 @@
 				"update": "upgrade_kit_timeless_dojo"
 			}
 		],
-		"kit": "selection_kit_timeless_dojo"
+		"kit": [
+			"selection_kit_timeless_dojo",
+			"fragment#selection_kit_timeless_dojo"
+		]
 	},
 	{
 		"name": "Royal_Bathhouse",
@@ -824,7 +907,10 @@
 				"update": "upgrade_kit_ancient_obelisk"
 			}
 		],
-		"kit": "selection_kit_ancient_obelisk"
+		"kit": [
+			"selection_kit_ancient_obelisk",
+			"fragment#selection_kit_ancient_obelisk"
+		]
 	},
 	{
 		"name": "Sun_Temple",
@@ -843,7 +929,10 @@
 				"update": "upgrade_kit_jade_statue"
 			}
 		],
-		"kit": "selection_kit_jade_statue"
+		"kit": [
+			"selection_kit_jade_statue",
+			"fragment#selection_kit_jade_statue"
+		]
 	},
 	{
 		"name": "Mughals_Temple",
@@ -863,7 +952,10 @@
 				"update": "upgrade_kit_minaret"
 			}
 		],
-		"kit": "selection_kit_minaret"
+		"kit": [
+			"selection_kit_minaret",
+			"fragment#selection_kit_minaret"
+		]
 	},
 	{
 		"groupname": "Guild_Expeditions"
@@ -951,7 +1043,8 @@
 				"first": "R_MultiAge_EasterBonus5",
 				"update": "upgrade_kit_shrine_of_knowledge"
 			}
-		]
+		],
+		"kit": "fragment#building_shrine_of_knowledge"
 	},
 	{
 		"groupname": "Specials"
@@ -974,7 +1067,21 @@
 				"update": "shrink_kit_wishing_well"
 			}
 		],
-		"kit": "selection_kit_diplomatic_gifts"
+		"kit": [
+			"selection_kit_diplomatic_gifts",
+			"fragment#building_wishing_well",
+			"fragment#shrink_kit_wishing_well"
+		]
+	},
+	{
+		"name": "Kits",
+		"link": "Category:Building_Items",
+		"kit": [
+			"renovation_kit",
+			"one_up_kit",
+			"fragment#one_up_kit",
+			"store_building"
+		]
 	},
 	{
 		"groupname": "Towers"

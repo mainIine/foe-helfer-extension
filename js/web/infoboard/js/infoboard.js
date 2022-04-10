@@ -117,7 +117,8 @@ let Infoboard = {
                 dragdrop: true,
                 resize: true,
                 minimize: true,
-                speaker: 'infoboxTone'
+                speaker: 'infoboxTone',
+                settings: 'Infoboard.ShowSettings()'
             });
 
             // CSS in den DOM prügeln
@@ -139,7 +140,7 @@ let Infoboard = {
         h.push('<ul>');
         h.push('<li><label class="game-cursor"><input type="checkbox" data-type="auction" class="filter-msg game-cursor" ' + (Infoboard.SavedFilter.includes("auction") ? "checked" : "") + '> ' + i18n('Boxes.Infobox.FilterAuction') + '</label></li>');
         h.push('<li><label class="game-cursor"><input type="checkbox" data-type="gex" class="filter-msg game-cursor" ' + (Infoboard.SavedFilter.includes("gex") ? "checked" : "") + '> ' + i18n('Boxes.Infobox.FilterGex') + '</label></li>');
-        h.push('<li><label class="game-cursor"><input type="checkbox" data-type="gbg" class="filter-msg game-cursor" ' + (Infoboard.SavedFilter.includes("gbg") ? "checked" : "") + '> ' + i18n('Boxes.Infobox.FilterGildFights') + '</label></li>');
+        h.push('<li><label class="game-cursor"><input type="checkbox" data-type="gbg" class="filter-msg game-cursor" ' + (Infoboard.SavedFilter.includes("gbg") ? "checked" : "") + '> ' + i18n('Boxes.Infobox.FilterGuildFights') + '</label></li>');
         h.push('<li><label class="game-cursor"><input type="checkbox" data-type="trade" class="filter-msg game-cursor" ' + (Infoboard.SavedFilter.includes("trade") ? "checked" : "") + '> ' + i18n('Boxes.Infobox.FilterTrade') + '</label></li>');
         h.push('<li><label class="game-cursor"><input type="checkbox" data-type="level" class="filter-msg game-cursor" ' + (Infoboard.SavedFilter.includes("level") ? "checked" : "") + '> ' + i18n('Boxes.Infobox.FilterLevel') + '</label></li>');
         h.push('<li><label class="game-cursor"><input type="checkbox" data-type="msg" class="filter-msg game-cursor" ' + (Infoboard.SavedFilter.includes("msg") ? "checked" : "") + '> ' + i18n('Boxes.Infobox.FilterMessage') + '</label></li>');
@@ -363,7 +364,38 @@ let Infoboard = {
         Infoboard.TitleBlinkEvent = setInterval(()=> {
             document.title = (document.title === Infoboard.OriginalDocumentTitle ? txt : Infoboard.OriginalDocumentTitle);
         }, 750);
-    }
+    },
+    
+
+    /**
+    *
+    */
+     ShowSettings: () => {
+		let autoOpen = Settings.GetSetting('AutoOpenInfoBox');
+		let messagesAmount = localStorage.getItem('EntryCount');
+
+        let h = [];
+        h.push(`<p><input id="autoStartInfoboard" name="autoStartInfoboard" value="1" type="checkbox" ${(autoOpen === true) ? ' checked="checked"' : ''} /> <label for="autoStartInfoboard">${i18n('Boxes.Settings.Autostart')}</label>`);
+        h.push(`<p><label for="infoboxentry-length">${i18n('Settings.InfoboxEntryCount.Desc')}</label><input class="setting-input" type="number" id="infoboxentry-length" step="1" min="1" max="2000" value="${(messagesAmount)}"></p>`);
+        h.push(`<p><button onclick="Infoboard.SaveSettings()" id="saveInfoboardSettings" class="btn btn-default" style="width:100%">${i18n('Boxes.Settings.Save')}</button></p>`);
+
+        $('#BackgroundInfoSettingsBox').html(h.join(''));
+    },
+
+    /**
+    *
+    */
+    SaveSettings: () => {
+        let value = false;
+		if ($("#autoStartInfoboard").is(':checked'))
+			value = true;
+        
+        let messagesAmount = $("#infoboxentry-length").val();
+
+        localStorage.setItem('AutoOpenInfoBox', value);
+        localStorage.setItem('EntryCount', messagesAmount);
+		$(`#BackgroundInfoSettingsBox`).remove();
+    },
 };
 
 
@@ -502,11 +534,11 @@ let Info = {
      */
     GuildBattlegroundService_getProvinces: (d) => {
 
-        GildFights.PrepareColors();
+        GuildFights.PrepareColors();
 
         let data = d[0];
 
-        let bP = GildFights.MapData['battlegroundParticipants'],
+        let bP = GuildFights.MapData['battlegroundParticipants'],
             prov;
 
         if (!data['id'] || data['id'] === 0) {
@@ -521,14 +553,14 @@ let Info = {
             if (data['lockedUntil'] < Math.floor(MainParser.getCurrentDateTime() / 1000) + 14390) return undefined;
 
             let p = bP.find(o => (o['participantId'] === data['ownerId'])),
-                colors = GildFights.SortedColors.find(c => (c['id'] === data['ownerId']));
+                colors = GuildFights.SortedColors.find(c => (c['id'] === data['ownerId']));
 
             let tc = colors['highlight'],
                 ts = colors['shadow'];
 
             return {
                 class: 'gbg',
-                type: i18n('Boxes.Infobox.FilterGildFights'),
+                type: i18n('Boxes.Infobox.FilterGuildFights'),
                 msg: HTML.i18nReplacer(
                     i18n('Boxes.Infobox.Messages.GildFightOccupied'), {
                     provinceName: prov['name'],
@@ -545,7 +577,7 @@ let Info = {
         if (!data['conquestProgress'][0]) return undefined;
 
         // Es wird gerade gekämpft
-        let color = GildFights.SortedColors.find(c => (c['id'] === data['ownerId'])), t = '', image;
+        let color = GuildFights.SortedColors.find(c => (c['id'] === data['ownerId'])), t = '', image;
 
         for (let i in data['conquestProgress']) {
             if (!data['conquestProgress'].hasOwnProperty(i)) {
@@ -554,7 +586,7 @@ let Info = {
 
             let d = data['conquestProgress'][i],
                 p = bP.find(o => (o['participantId'] === d['participantId'])),
-                colors = GildFights.SortedColors.find(c => (c['id'] === d['participantId']));
+                colors = GuildFights.SortedColors.find(c => (c['id'] === d['participantId']));
 
             // es gibt mehrere Gilden in einer Provinz, aber eine kämpft gar nicht, überspringen
             if (Info.GildPoints[data['id']] !== undefined &&
@@ -595,7 +627,7 @@ let Info = {
 
         return {
             class: 'gbg',
-            type: i18n('Boxes.Infobox.FilterGildFights'),
+            type: i18n('Boxes.Infobox.FilterGuildFights'),
             msg: t,
             img: image
         };
@@ -693,5 +725,5 @@ let Info = {
             }
             )
         };
-    }
+    },
 };
