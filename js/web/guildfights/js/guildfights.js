@@ -1036,8 +1036,8 @@ let GuildFights = {
 		h.push('<div class="gbg-tabs tabs">');
 		h.push(GuildFights.GetTabs());
 		h.push(GuildFights.GetTabContent());
-		h.push('<button class="btn-default copybutton" onclick="GuildFights.CopyToClipBoard()">COPY</button>');
-		h.push('<button class="btn-default mapbutton" onclick="ProvinceMap.build()">MAP</button>');
+		h.push('<button class="btn-default copybutton" onclick="GuildFights.CopyToClipBoard()">'+ i18n('Boxes.GuildFights.Copy') +'</button>');
+		h.push('<button class="btn-default mapbutton" onclick="ProvinceMap.build()">'+ i18n('Boxes.GuildFights.OpenMap') +'</button>');
 		h.push('</div>');
 
 		let activeTab = 1;
