@@ -164,7 +164,7 @@ let Stats = {
 
 	// State for UI
 	state: {
-		source: 'statsTreasurePlayerH', // Source of data - indexdb table name
+		source: 'statsTreasurePlayerD', // Source of data - indexdb table name
 		chartType: 'line', // chart type
 		eras: {}, // Selected era for filtering data,
 		eraSelectOpen: false, // Dropdown
@@ -195,6 +195,16 @@ let Stats = {
     },
 
 	DatePickerObj: null,
+	DatePickerStart: 0,
+	DatePickerEnd: moment(MainParser.getCurrentDate()).toDate(),
+
+	minDateFilter: null,
+	maxDateFilter: moment(MainParser.getCurrentDate()).toDate(),
+	currentDateFilter: moment(MainParser.getCurrentDate()).format('YYYY-MM-DD'),
+	currentDateEndFilter: moment(MainParser.getCurrentDate()).format('YYYY-MM-DD'),
+
+	lockDates: [],
+	TodayEntries: null,
 
 	treasureSources: ['statsTreasurePlayerH', 'statsTreasurePlayerD', 'statsTreasureClanH', 'statsTreasureClanD'],
 	unitSources: ['statsUnitsH', 'statsUnitsD'],
@@ -308,7 +318,7 @@ let Stats = {
 
 					}
 
-					Stats.state.source = value || 'statsTreasurePlayerH';
+					Stats.state.source = value || 'statsTreasurePlayerD';
 					break;
 
 				case 'setChartType':
@@ -356,7 +366,7 @@ let Stats = {
 
 		Stats.updateOptions();
 		await Stats.loadHighcharts();
-		await Stats.updateCharts();
+		await Stats.updateCharts(Stats.DatePickerStart, Stats.DatePickerEnd);
 	},
 
 
@@ -368,27 +378,30 @@ let Stats = {
 		let secondaryOptions = Stats.isSelectedRewardSources() ? Stats.RenderSecondaryOptions() : '';
 
 		$('#statsBody .options-2').html(secondaryOptions).promise().done(function(){
-			/*
-			if ($('#GVGDatePicker').length > 0) {
+			if ($('#StatsDatePicker').length > 0) {
 
 				Stats.DatePickerObj = new Litepicker({
-					element: document.getElementById('GVGDatePicker'),
+					element: document.getElementById('StatsDatePicker'),
 					format: i18n('Date'),
 					lang: MainParser.Language,
 					singleMode: false,
 					maxDate: MainParser.getCurrentDate(),
 					showWeekNumbers: true,
 					onSelect: async function (start, end) {
-						$('#GVGDatePicker').text(`${start} - ${end}`);
+						$('#StatsDatePicker').text(`${start} - ${end}`);
 
-						return await Stats.updateCommonChart(Stats.applyDeltaToSeriesIfNeed(await Stats.createGBGSeries({ s: start, e: end })));
+						Stats.DatePickerStart = start;
+						Stats.DatePickerEnd = end;
+
+						console.log(Stats.DatePickerStart,Stats.DatePickerEnd);
+
+						return await Stats.updateCharts({ s: start, e: end });
 					}
 				});
 			}
 			else {
 				Stats.DatePickerObj = null;
             }
-			*/
 		});
 	},
 
@@ -471,11 +484,11 @@ let Stats = {
 		});
 
 		const sourceBtns = [
-			'statsTreasurePlayerH',
+			//'statsTreasurePlayerH',
 			'statsTreasurePlayerD',
-			'statsTreasureClanH',
+			//'statsTreasureClanH',
 			'statsTreasureClanD',
-			'statsUnitsH',
+			//'statsUnitsH',
 			'statsUnitsD',
 			'statsRewards',
 			'statsGBGPlayers'
@@ -495,6 +508,10 @@ let Stats = {
 			disabled: !Stats.isSelectedTreasureSources() && !Stats.isSelectedUnitSources() && !Stats.isSelectedGBGSources(),
 			value: it
 		}));
+
+		let hidePicker = false;
+		if (hidePicker) $('#FPCollectorPicker').hide();
+
 		return `<div class="option-era-dropdown">
 					${Stats.RenderEraSwitchers()}
 				</div>
@@ -518,7 +535,8 @@ let Stats = {
 					<span class="btn-group">
 					${chartTypes.join('')}
 					</span>
-				</div>`;
+				</div>
+				<div class="text-right"><button class="btn btn-default btn-tight" id="StatsDatePicker">${Stats.formatRange()}</button></div>`;
 	},
 
 
@@ -542,7 +560,7 @@ let Stats = {
 			value: it,
 		}));
 
-		//btnsPeriodSelect.push('<input class="game-cursor" id="GVGDatePicker" type="text">');
+		//btnsPeriodSelect.push('<input class="game-cursor" id="StatsDatePicker" type="text">');
 
 		const btnsRewardSelect = [
 			'default', //incidents
@@ -567,6 +585,24 @@ let Stats = {
 				<div class="option-2-reward-source btn-group">
 					${btnsRewardSelect.join('')}
 				</div>`;
+	},
+
+	formatRange: ()=> {
+		let text = undefined;
+		let dateStart = moment(Stats.currentDateFilter);
+		let dateEnd = moment(Stats.currentDateEndFilter);
+
+		if (dateStart.isSame(dateEnd)){
+			text = `${dateStart.format(i18n('Date'))}`;
+		}
+		else if (dateStart.year() !== (dateEnd.year())){
+			text = `${dateStart.format(i18n('Date'))}` + ' - ' + `${dateEnd.format(i18n('Date'))}`;
+		}
+		else {
+			text = `${dateStart.format(i18n('DateShort'))}` + ' - ' + `${dateEnd.format(i18n('Date'))}`;
+		}
+
+		return text;
 	},
 
 
@@ -665,25 +701,25 @@ let Stats = {
 	 *
 	 * @returns {Promise<void>}
 	 */
-	updateCharts: async () => {
+	updateCharts: async (dates = null) => {
 		if (Stats.isSelectedGBGSources()) {
-			return await Stats.updateCommonChart(Stats.applyDeltaToSeriesIfNeed(await Stats.createGBGSeries()));
+			return await Stats.updateCommonChart(Stats.applyDeltaToSeriesIfNeed(await Stats.createGBGSeries(dates)));
 		}
 
 		if (Stats.isSelectedUnitSources()) {
-			return await Stats.updateCommonChart(Stats.applyDeltaToSeriesIfNeed(await Stats.createUnitsSeries()));
+			return await Stats.updateCommonChart(Stats.applyDeltaToSeriesIfNeed(await Stats.createUnitsSeries(dates)));
 		}
 
 		if (Stats.isSelectedTreasureSources()) {
 			if (Stats.state.isGroupByEra) {
-				return await Stats.updateCommonChart(Stats.applyDeltaToSeriesIfNeed(await Stats.createTreasureGroupByEraSeries()));
+				return await Stats.updateCommonChart(Stats.applyDeltaToSeriesIfNeed(await Stats.createTreasureGroupByEraSeries(dates)));
 			} else {
-				return await Stats.updateCommonChart(Stats.applyDeltaToSeriesIfNeed(await Stats.createTreasureSeries()));
+				return await Stats.updateCommonChart(Stats.applyDeltaToSeriesIfNeed(await Stats.createTreasureSeries(dates)));
 			}
 		}
 
 		if (Stats.isSelectedRewardSources) {
-			return Stats.updateRewardCharts(await Stats.createRewardSeries());
+			return Stats.updateRewardCharts(await Stats.createRewardSeries(dates));
 		}
 	},
 
@@ -702,10 +738,10 @@ let Stats = {
 			let from = moment(dates.s).toDate(),
 				to = moment(dates.e).toDate();
 
-			data = await IndexDB.db['statsGBGPlayers'].where('date').between(from, to).sortBy('date');
+			data = await IndexDB.db.statsGBGPlayers.where('date').between(from, to).sortBy('date');
 
 		} else {
-			data = await IndexDB.db['statsGBGPlayers'].orderBy('date').toArray();
+			data = await IndexDB.db.statsGBGPlayers.orderBy('date').toArray();
 		}
 
 		const playerCache = await IndexDB.db.statsGBGPlayerCache.toArray();
@@ -756,9 +792,20 @@ let Stats = {
 	 *
 	 * @returns {Promise<{series, pointFormat: string, footerFormat: string}>}
 	 */
-	createUnitsSeries: async () => {
-		const source = Stats.state.source;
-		let data = await IndexDB.db[source].orderBy('date').toArray();
+	createUnitsSeries: async (dates = null) => {
+		let data = null;
+
+		if(dates !== null){
+			let from = moment(dates.s).toDate(),
+				to = moment(dates.e).toDate();
+
+			data = await IndexDB.db.statsUnitsD.where('date').between(from, to).sortBy('date');
+		} 
+		else
+			data = await IndexDB.db.statsUnitsD.orderBy('date').toArray();
+
+
+		console.log(data);
 
 		const unitsTypes = data.reduce((acc, it) => {
 			const unitIds = Object.keys(it.army);
@@ -809,13 +856,18 @@ let Stats = {
 	 *
 	 * @returns {Promise<{series: {data, name: *}[]}>}
 	 */
-	createTreasureGroupByEraSeries: async () => {
-		const source = Stats.state.source;
-		let data = await IndexDB.db[source].orderBy('date').toArray();
+	createTreasureGroupByEraSeries: async (dates = null) => {
+		// todo: ggf gildenid abfangen
+		let data = null;
 
-		if (['statsTreasureClanH', 'statsTreasureClanD'].includes(source)) {
-			data = data.filter(it => it.clanId === ExtGuildID);
-		}
+		if(dates !== null){
+			let from = moment(dates.s).toDate(),
+				to = moment(dates.e).toDate();
+
+			data = await IndexDB.db.statsTreasureClanD.where('date').between(from, to).sortBy('date');
+		} 
+		else
+			data = await IndexDB.db.statsTreasureClanD.orderBy('date').toArray();
 
 		const series = Stats.getSelectedEras().map(era => {
 			return {
@@ -835,17 +887,19 @@ let Stats = {
 	 *
 	 * @returns {Promise<{series, pointFormat: string, colors: *[], footerFormat: string}>}
 	 */
-	createTreasureSeries: async () => {
-		const source = Stats.state.source;
+	createTreasureSeries: async (dates) => {
 		const selectedEras = Stats.getSelectedEras();
-		const isClanTreasure = ['statsTreasureClanH', 'statsTreasureClanD'].includes(source);
 		const hcColors = Highcharts.getOptions().colors;
+		let data = null;
 
-		let data = await IndexDB.db[source].orderBy('date').toArray();
+		if(dates !== null){
+			let from = moment(dates.s).toDate(),
+				to = moment(dates.e).toDate();
 
-		if (isClanTreasure) {
-			data = data.filter(it => it.clanId === ExtGuildID);
-		}
+			data = await IndexDB.db.statsTreasureClanD.where('date').between(from, to).sortBy('date');
+		} 
+		else
+			data = await IndexDB.db.statsTreasureClanD.orderBy('date').toArray();
 
 		let colors;
 
