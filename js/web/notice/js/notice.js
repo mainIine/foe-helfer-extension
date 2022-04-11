@@ -182,7 +182,7 @@ let Notice = {
 			content = `<div class='tabs notices'>`;
 
 			if(tab.length > 0){
-				content += `<ul class='horizontal'>${tab.join('')}</ul>`;
+				content += `<ul class='horizontal dark-bg'>${tab.join('')}</ul>`;
 			}
 
 			content += 		`<span class="btn-default grp-btn" data-id="new">+ ${i18n('Boxes.Notice.NewGroup')}</span>`;

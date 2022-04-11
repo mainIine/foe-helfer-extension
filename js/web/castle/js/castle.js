@@ -908,7 +908,7 @@ let Castle = {
             let progressStr = i.progress === i.maxprogress ? i.maxprogress : i.progress + ' / ' + i.maxprogress;
             let rewardStr = i.reward === i.maxreward ? i.maxreward : i.reward + ' / ' + i.maxreward;
 
-            return r + `<tr ${i.warning && i.warnnotice ? ' title="' + i.warnnotice + '" ' : ''}class="${i.warning ? 'warning ' : ''}${i.success ? 'success' : 'pending'}">
+            return r + `<tr ${i.warning && i.warnnotice ? ' title="' + i.warnnotice + '" ' : ''}class="${i.warning ? 'warning ' : ''}${i.success ? 'bg-green' : 'pending'}">
                 <td>${i.name}</td>
                 <td class="text-right">${progressStr}</td>
                 <td class="text-right">${rewardStr}</td>
