@@ -38,6 +38,7 @@
 #musicSettingsScenesX tr th:first-child {
   writing-mode: horizontal-tb;
   text-align: left;
+  width:auto;
 }
 
 #betterMusicDialog .flex > div {
@@ -47,6 +48,7 @@
 
 #musicSettingsScenesX tr th {
   vertical-align: bottom;
+  width:15px;
 }
 
 #musicSettingsScenesX tr th span {
