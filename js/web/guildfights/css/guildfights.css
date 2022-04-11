@@ -94,11 +94,6 @@
 	border-right: 1px solid var(--text-bright);
 }
 
-
-#GildPlayersBody tr.bg-green td {
-	background-color: var(--background-table-success);
-}
-
 #GildPlayersBody table .tdmin,
 #GildPlayersDetailViewBody table .tdmin {
 	width: 1%;

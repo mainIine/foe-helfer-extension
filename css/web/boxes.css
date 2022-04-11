@@ -371,6 +371,10 @@ table.foe-table tr.success td,
 	color: var(--text-success);
 }
 
+table.foe-table tr.bg-green td {
+	background-color: var(--background-table-success);
+}
+
 p {
 	margin: 0 0 10px 0;
 }

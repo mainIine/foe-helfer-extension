@@ -1739,7 +1739,7 @@ let Productions = {
 		if (!Productions.RatingCurrentTab) CurrentTab = 'Settings';
 
 		h.push('<div class="tabs">');
-		h.push('<ul class="horizontal">');
+		h.push('<ul class="horizontal dark-bg">');
 		h.push('<li class="' + (Productions.RatingCurrentTab === 'Settings' ? 'active' : '')  + '"><a class="toggle-tab" data-value="Settings"><span>' + i18n('Boxes.ProductionsRating.Settings') + '</span></a></li>');
 		h.push('<li class="' + (Productions.RatingCurrentTab === 'Results' ? 'active' : '') + '"><a class="toggle-tab" data-value="Results"><span>' + i18n('Boxes.ProductionsRating.Results') + '</span></a></li>');
 		h.push('</ul>');
