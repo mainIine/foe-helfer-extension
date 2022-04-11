@@ -11,7 +11,7 @@
  * **************************************************************************************
  */
 
-.foe-helper-hud.hud-bottom {
+#foe-helper-hud.hud-bottom {
 	left: 1035px;
 	bottom: 0;
 	width: 270px;
