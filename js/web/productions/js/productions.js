@@ -417,17 +417,35 @@ let Productions = {
                         }
 					}
 
-					if (BuildingSize['is_connected'] && EraComponents['happiness']) {
-						let Happiness = EraComponents['happiness']['provided'];
+					if (BuildingSize['is_connected']) {
+						if (EraComponents['happiness']) {
+							let Happiness = EraComponents['happiness']['provided'];
 
-						if (Happiness) {
-							if (d['state']['__class__'] === 'PolishedState') Happiness *= 2;
+							if (Happiness) {
+								if (d['state']['__class__'] === 'PolishedState') Happiness *= 2;
 
-							if (!Products['happiness']) Products['happiness'] = 0;
-							Products['happiness'] += Happiness;
+								if (!Products['happiness']) Products['happiness'] = 0;
+								Products['happiness'] += Happiness;
 
-							if (!MotivatedProducts['happiness']) MotivatedProducts['happiness'] = 0;
-							MotivatedProducts['happiness'] += Happiness;
+								if (!MotivatedProducts['happiness']) MotivatedProducts['happiness'] = 0;
+								MotivatedProducts['happiness'] += Happiness;
+							}
+						}
+
+						if (EraComponents['boosts']['boosts']) {
+							for (let i = 0; i < EraComponents['boosts']['boosts'].length; i++) {
+								let Boost = EraComponents['boosts']['boosts'][i],
+									BoostType = Boost['type'];
+
+								if (Boost['type'] === 'att_boost_attacker' || Boost['type'] === 'att_boost_defender' || Boost['type'] === 'def_boost_attacker' || Boost['type'] === 'def_boost_defender') {
+
+									if (!Products[BoostType]) Products[BoostType] = 0;
+									Products[BoostType] += Boost['value'];
+
+									if (!MotivatedProducts[BoostType]) MotivatedProducts[BoostType] = 0;
+									MotivatedProducts[BoostType] += Boost['value'];
+								}
+                            }
                         }
                     }
 				}
