@@ -449,8 +449,6 @@ let Notice = {
 			data['name'] = txt;
 		}
 
-		console.log(data);
-
 		MainParser.send2Server(data, 'Notice/set', (resp)=>{
 			Notice.notes = resp['notice'];
 
@@ -527,8 +525,6 @@ let Notice = {
 			grpID = parseInt($this.data('parent')),
 			head = $this.find('.content-head').html(),
 			cont = $this.find('.content-text').html();
-
-			console.log({id:itmID,grp:grpID,type:'cnt',head:head,cont:cont,});
 
 		// send content changes to server und change local object
 		MainParser.send2Server({id:itmID,grp:grpID,type:'cnt',head:head,cont:cont,}, 'Notice/set', (resp)=>{
