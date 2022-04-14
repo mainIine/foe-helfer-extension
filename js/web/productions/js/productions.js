@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -258,7 +258,7 @@ let Productions = {
 			BuildingSize = CityMap.GetBuildingSize(d);
 
 		// Münzboost ausrechnen und bereitstellen falls noch nicht initialisiert
-		if(Productions.Boosts['money'] === undefined) Productions.Boosts['money'] = ((MainParser.BoostSums['coin_production'] + 100) / 100);
+		if (Productions.Boosts['money'] === undefined) Productions.Boosts['money'] = ((MainParser.BoostSums['coin_production'] + 100) / 100);
 		if (Productions.Boosts['supplies'] === undefined) Productions.Boosts['supplies'] = ((MainParser.BoostSums['supply_production'] + 100) / 100);
 
 		let era = CityMap.GetBuildingEra(d);
@@ -276,7 +276,7 @@ let Productions = {
 		if (!BuildingSize['is_connected']) {
 			Ret.at = undefined;
 			Ret.in = undefined;
-        }
+		}
 		else if (d['state']) {
 			let At = d['state']['next_state_transition_at'],
 				In = d['state']['next_state_transition_in'];
@@ -939,8 +939,8 @@ let Productions = {
 						
 						if (Productions.TypeHasProduction(type)) {
 							rowA.push('<td class="wsnw is-date" data-date="' + buildings[i]['at'] + '">' + (buildings[i]['at'] ? moment.unix(buildings[i]['at']).format(i18n('DateTime')) : i18n('Boxes.Productions.DateNA')) + '</td>');
-							if (!buildings[i]['at']) { //No date available or no product
-								rowA.push('<td></td>');
+							if (!buildings[i]['at']) { //No date available
+								rowA.push('<td>');
                             }						
 							else if (buildings[i]['at'] * 1000 <= MainParser.getCurrentDateTime()) {
 								rowA.push('<td style="white-space:nowrap"><strong class="success">' + i18n('Boxes.Productions.Done') + '</strong></td>');
@@ -1725,7 +1725,7 @@ let Productions = {
 		if (!Productions.RatingCurrentTab) CurrentTab = 'Settings';
 
 		h.push('<div class="tabs">');
-		h.push('<ul class="horizontal">');
+		h.push('<ul class="horizontal dark-bg">');
 		h.push('<li class="' + (Productions.RatingCurrentTab === 'Settings' ? 'active' : '')  + '"><a class="toggle-tab" data-value="Settings"><span>' + i18n('Boxes.ProductionsRating.Settings') + '</span></a></li>');
 		h.push('<li class="' + (Productions.RatingCurrentTab === 'Results' ? 'active' : '') + '"><a class="toggle-tab" data-value="Results"><span>' + i18n('Boxes.ProductionsRating.Results') + '</span></a></li>');
 		h.push('</ul>');

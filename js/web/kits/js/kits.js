@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -52,7 +52,7 @@ let Kits = {
 				resize: true
 			});
 
-			$('#kitsBody').append( $('<div />').attr('id', 'kitsBodyTopbar'), $('<div />').attr('id', 'kitsBodyInner') );
+			$('#kitsBody').append( $('<div />').attr({'id':'kitsBodyTopbar','class':'dark-bg'}), $('<div />').attr('id', 'kitsBodyInner') );
 
 			$('#kitsBodyTopbar').append(
 				$('<span />').attr({
