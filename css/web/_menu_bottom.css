@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -11,35 +11,25 @@
  * **************************************************************************************
  */
 
-#foe-helper-hud {
-	position: absolute;
+#foe-helper-hud.hud-bottom {
 	left: 1035px;
 	bottom: 0;
-	z-index: 150;
 	width: 270px;
 	height: 48px;
-	box-shadow: 0 0 1px 1px var(--black-50);
 	border-radius: 2px 2px 0 0;
 	transition: all 0.1s ease;
-	font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
-	font-size: 0.75rem;
-	font-weight: 400;
-	border: 2px solid #624d3a;
 	border-bottom-width: 0;
 	background-color: #553419;
-	box-sizing: border-box;
 }
 
-#foe-helper-hud-wrapper {
+.hud-bottom #foe-helper-hud-wrapper {
 	width: 220px;
 	height: inherit;
-	position: absolute;
 	bottom: 0;
 	left: 0;
-	overflow: hidden;
 }
 
-#foe-helper-hud-slider {
+.hud-bottom #foe-helper-hud-slider {
 	position: absolute;
 	left: 0;
 	top: 2px;
@@ -47,199 +37,22 @@
 	height: inherit;
 }
 
-.hud-btn-left,
-.hud-btn-right, 
-.hud-btn-left::before,
-.hud-btn-right::before {
-	position: absolute;
-	height: inherit;
-	width: 14px;
-	right: 0;
-	bottom: 0;
-	display: block;
-	z-index: 1;
-	box-sizing: border-box;
-}
-
-.hud-btn-left, .hud-btn-right {
-	border: 2px solid #624d3a;
-	border-bottom-width: 0;
-}
-
-.hud-btn-left {
-	left: 0;
-	border-radius: 5px 0 0 0;
-	box-shadow: 0 -1px 0 var(--black-50), -1px 0 0 var(--black-50);
-}
-
-.hud-btn-right {
-	border-radius: 0 5px 0 0;
-	box-shadow: 0 -1px 0 var(--black-50), 1px 0 0 var(--black-50);
-}
-
-.hud-btn-left, .hud-btn-right, .hud-btn-left::before, .hud-btn-right::before {
-	display: none;
-}
-
-.hud-btn-left-active, .hud-btn-right-active, .hud-btn-left-active::before, .hud-btn-right-active::before {
-	display: block;
-	background: linear-gradient(to bottom, #c38236, #894422);
-}
-
-.hud-btn-right-active {
-	right: -13px;
-}
-
-.hud-btn-left-active {
-	left: -14px;
-}
-
-.hud-btn-right:hover, .hud-btn-left:hover {
-	background: linear-gradient(to bottom, #d8cf56, #d58f4a);
-}
-
-.hud-btn-left::before,
-.hud-btn-right::before {
-	content: '';
-	width: 0;
-	height: 0;
-	border-top: 12px solid transparent;
-	border-bottom: 12px solid transparent;
-	position: relative;
-	top: 25%;
-	left: 2px;
-}
-
-.hud-btn-left-active::before {
-	border-right: 6px solid #48291b;
-}
-
-.hud-btn-right-active::before {
-	border-left: 6px solid #48291b;
-}
-
-.hud-btn {
-	display: block;
-	width: 43px;
-	height: 43px;
-	position: relative;
-	margin: 1px;
+.hud-bottom .hud-btn, .hud-bottom .menu-placeholder {
 	float: left;
-	box-sizing: border-box;
-	box-shadow: inset 0 0 3px 1px #000000a1, 0 0 2px #00000087;
-	border-radius: 4px;
-	border: 2px solid transparent;
-	background: linear-gradient(#553419, #553419) padding-box, linear-gradient(to bottom, #82ae4c, #4f7421) border-box;
 }
 
-.hud-btn-red {
-	background: linear-gradient(to bottom, #4f291b, #553419) padding-box, linear-gradient(to bottom, #a84a35, #88301e) border-box;
-}
-
-.hud-btn span:first-child {
-	background-position: center center;
-	background-repeat: no-repeat;
+.hud-bottom .hud-btn span:first-child {
 	display: inline-flex;
 	width: 76%;
 	height: 76%;
-	background-size: contain;
 	margin-top: 12%;
 }
 
-.menu-placeholder {
-	width: 43px;
-	height: 43px;
-	background: var(--black-50);
-	float: left;
-	border-radius: 4px;
-}
-
-.hud-btn span.hud-counter {
-	width: 12px !important;
-	height: 12px !important;
-	padding: 2px !important;
-	top: -4px !important;
-	left: unset !important;
-	right: -2px !important;
-	line-height: 10px !important;
-	font-size: 0.7rem !important;
-}
-
-
-#menu_box.window-box {
-    top: 30%;
-    right: 15%;
-    width: 120px;
-    height: 60px;
-	border-width: 2px;
-}
-
-#menu_boxHeader {
-	background: linear-gradient(#384354, #293344);
-    box-shadow: inset 0 1px 1px #384354, inset 0 2px 0 #575d69;
-	padding: 0.2rem;
-}
-
-#menu_box.closed #menu_boxHeader {
-	top: -33px;
-}
-
-#menu_box.closed.window-box {
-    height: 28px !important;
-}
-
-#menu_boxHeader .window-minimize {
-	margin-right: 0;
-}
-
-#menu_box .window-head span.title {
-	font-size: 95%;
-	color: #eee;
-	padding-top: 1px;
-}
-
-#menu_box .header {
-    margin-bottom: 2px;
-    padding: 1em 0;
-}
-
-#menu_box #menu_boxBody {
-	overflow: auto;
-	padding: 2px;
-	height: calc(100% - 42px);
-}
-
-#menu_box .hud-btn {	
-	display: inline-block;
-	width: 45px;
-	height: 45px;
-	text-align: center;
-}
-
-#menu_box .hud-btn-red {
-	background: linear-gradient(to bottom, #4f291b, #553419) padding-box, linear-gradient(to bottom, #a84a35, #88301e) border-box;
-}
-
-#menu_box .menu-placeholder {
-	display: inline-block;
-	width: 45px;
-	height: 45px;
-}
-
-#menu_box .hud-btn span.hud-counter {
-	width: 15px;
-	height: 15px;
-	position: absolute;
-	padding: 1px;
-	bottom: 4px;
-	top: unset;
-	left: 4px;
-	background-color: var(--hud-counter);
-	border-radius: 50%;
-	line-height: 13px;
-	text-align: center;
-    box-shadow: 1px 0 0 1px rgba(0,0,0,0.245);
-	pointer-events: none;
-	font-weight: bold;
-	font-size: 0.8rem;
+.hud-bottom .hud-btn span.hud-counter {
+	width: 12px;
+	height: 12px;
+	left: 2px;
+	bottom: 2px;
+	line-height: 10px;
+	font-size: 0.7rem;
 }

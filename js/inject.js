@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -27,11 +27,11 @@ function scriptLoaded (src, base) {
 		window.dispatchEvent(new CustomEvent('foe-helper#loaded'));
 	}
 	if (scripts.main.length == 1) {
-		scripts.main.splice(scripts.internal.indexOf("once"),1);
+		scripts.main.splice(scripts.main.indexOf("once"),1);
 		window.dispatchEvent(new CustomEvent('foe-helper#mainloaded'));
 	}
 	if (scripts.proxy.length == 1) {
-		scripts.proxy.splice(scripts.internal.indexOf("once"),1);
+		scripts.proxy.splice(scripts.proxy.indexOf("once"),1);
 		window.dispatchEvent(new CustomEvent('foe-helper#proxyloaded'));
 	}
 	if (scripts.vendor.length == 1) {

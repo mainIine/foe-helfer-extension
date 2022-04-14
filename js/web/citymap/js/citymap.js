@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -274,7 +274,7 @@ let CityMap = {
 				})
 					.attr('title', d['name'])
 					.attr('data-entityid', CityMap.CityData[b]['id']);
-			
+
 			CityMap.OccupiedArea += (BuildingSize['building_area']);
 
 			if (!CityMap.OccupiedArea2[d.type]) CityMap.OccupiedArea2[d.type] = 0;
@@ -283,6 +283,7 @@ let CityMap = {
 			StreetsNeeded += BuildingSize['street_area'];
 
 			let era = CityMap.GetBuildingEra(CityMapEntity);
+
 			if(era){
 				f.attr({
 					title: `${d['name']}<br><em>${i18n('Eras.' + era )}</em>`
@@ -611,7 +612,7 @@ let CityMap = {
 			}
 			else {
 				return CurrentEraID;
-            }
+			}
 		}
-    }
+	}
 };

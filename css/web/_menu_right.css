@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -12,249 +12,68 @@
  */
 
 
-#foe-helper-hud {
-	position: absolute;
+#foe-helper-hud.hud-right {
 	right: 0;
-	z-index: 150;
+	top: 515px;
 	width: 63px;
 	height: 270px;
-	top: 515px;
+	border-radius: 8px 0 0 8px;
+	transition: height 0.2s linear;
+	border-right-width: 0;
+	background-color: #301e0f;
 	padding-top: 22px;
 	padding-bottom: 22px;
-	transition: height 0.2s linear;
-	font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
-	font-size: 0.75rem;
-	font-weight: 400;
-	box-sizing: border-box;
-	border: 2px solid #755b43;
-	border-right-width: 0;
-	border-radius: 8px 0 0 8px;
-	background-color: #301e0f;
-	box-shadow: 0 0 1px 1px var(--black-65);
 }
 
-#foe-helper-hud::before, #foe-helper-hud::after {
+.hud-right::before, .hud-right::after {
+	position: absolute;
 	content: '';
 	width: 64px;
 	height: 18px;
-	position: absolute;
 	left: 0;
 }
 
-#foe-helper-hud::before {
+.hud-right::before {
 	top: 0;
 	border-bottom: 2px solid #755b43;
 }
 
-#foe-helper-hud::after {
+.hud-right::after {
 	border-top: 2px solid #755b43;
 	left: 0;
 	bottom: 0;
 }
 
-
-#foe-helper-hud-wrapper {
+.hud-right #foe-helper-hud-wrapper {
 	width: inherit;
-	height: 220px;
-	position: absolute;
+	height: 218px;
 	right: 0;
-	top: 24px;
-	overflow: hidden;
+	top: 22px;
 }
 
-#foe-helper-hud-slider {
+.hud-right #foe-helper-hud-slider {
 	position: absolute;
 	top: 0;
 	right: 3px;
 	transition: top 0.7s ease-in-out;
 }
 
-.hud-btn-up,
-.hud-btn-down {
-	position: absolute;
-	width: 57px;
-	height: 14px;
-	right: 2px;
-	display: block;
-	z-index: 1;
-	background: #7c6149aa;
-}
-
-.hud-btn-up-active, .hud-btn-down-active {
-	background: linear-gradient(to bottom, #c38236, #894422);
-}
-
-.hud-btn-up-active:hover, .hud-btn-down-active:hover {
-	background: linear-gradient(to bottom, #d8cf56, #d58f4a);
-}
-
-.hud-btn-up {
-	top: 2px;
-	border-radius: 5px 0 0 0;
-}
-
-.hud-btn-down {
-	bottom: 2px;
-	border-radius: 0 0 0 5px;
-}
-
-.hud-btn-up::before,
-.hud-btn-down::before {
-	content: '';
-	display: block;
-	position: absolute;
-	right: 30%;
-	top: 2px;
-	width: 0;
-	height: 0;
-	border-left: 12px solid transparent;
-	border-right: 12px solid transparent;
-}
-
-.hud-btn-up::before {
-	border-bottom: 9px solid #48291b;
-}
-
-.hud-btn-down::before {
-	bottom: 1px;
-	border-top: 9px solid #48291b;
-}
-
-.hud-btn {
-	display: block;
+.hud-right .hud-btn {
 	height: 53px;
     width: 54px;
-    margin-left: 1px;
-    margin-bottom: 2px;
-	box-sizing: border-box;
-	border-radius: 4px;
-	border: 2px solid transparent;
-	position: relative;	
-	box-shadow: inset 0 0 3px 2px #301e0f, 0 0 2px #00000087;
-	background: linear-gradient(#553419, #553419) padding-box, linear-gradient(to bottom, #82ae4c, #4f7421) border-box;
+	margin-bottom: 2px;
 }
 
-.hud-btn-red {
-	background: linear-gradient(to bottom, #4f291b, #553419) padding-box, linear-gradient(to bottom, #a84a35, #88301e) border-box;
-}
-
-.hud-btn span:first-child {
-	background-position: center center;
-	background-repeat: no-repeat;
-	display: block;
-	width: 70%;
-	height: 70%;
-	background-size: contain;
-	position: absolute;
-	top: 15%;
-	left: 15%;
-}
-
-.menu-placeholder {
+.hud-right .menu-placeholder {
 	width: 55px;
 	height: 55px;
-	background: var(--black-65);
 }
 
-.hud-btn span.hud-counter {
+.hud-right .hud-btn span.hud-counter {
+	padding: 2px;
 	width: 16px;
 	height: 16px;
-	position: absolute;
-	padding: 2px;
 	bottom: 4px;
-	top: unset;
 	left: 5px;
-	background-color: var(--hud-counter);
-	border-radius: 50%;
 	line-height: 16px;
-	text-align: center;
-    box-shadow: 1px 0 0 1px rgba(0,0,0,0.245);
-    pointer-events: none;
-}
-
-
-#menu_box.window-box {
-    top: 30%;
-    right: 15%;
-    width: 120px;
-    height: 60px;
-	border-width: 2px;
-}
-
-#menu_boxHeader {
-	background: linear-gradient(#384354, #293344);
-    box-shadow: inset 0 1px 1px #384354, inset 0 2px 0 #575d69;
-	padding: 0.2rem;
-}
-
-#menu_box.closed #menu_boxHeader {
-	top: -33px;
-}
-
-#menu_box.closed.window-box {
-    height: 28px !important;
-}
-
-#menu_boxHeader .window-minimize {
-	margin-right: 0;
-}
-
-#menu_box .window-head span.title {
-	font-size: 95%;
-	color: #eee;
-	padding-top: 1px;
-}
-
-#menu_box .header {
-    margin-bottom: 2px;
-    padding: 1em 0;
-}
-
-#menu_box #menu_boxBody {
-	overflow: auto;
-	padding: 2px;
-	height: calc(100% - 42px);
-}
-
-#menu_box .hud-btn {	
-	display: inline-block;
-	width: 45px;
-	height: 45px;
-	position: relative;
-	margin: 1px;
-	box-shadow: inset 0 0 3px 1px #00000087, 0 0 2px #00000087;
-    box-sizing: border-box;
-}
-
-#menu_box .hud-btn span:first-child {
-	width: 65%;
-	height: 65%;
-	position: absolute;
-	top: 7px;
-	left: 7px;
-}
-
-#menu_box .menu-placeholder {
-	display: inline-block;
-	width: 45px;
-	height: 45px;
-	background: var(--black-50);
-}
-
-#menu_box .hud-btn span.hud-counter {
-	width: 15px;
-	height: 15px;
-	position: absolute;
-	padding: 1px;
-	bottom: 4px;
-	top: unset;
-	left: 4px;
-	background-color: var(--hud-counter);
-	border-radius: 50%;
-	line-height: 13px;
-	text-align: center;
-    box-shadow: 1px 0 0 1px rgba(0,0,0,0.245);
-	pointer-events: none;
-	font-weight: bold;
-	font-size: 0.8rem;
 }

@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -451,27 +451,18 @@ let HTML = {
 			// Schutz gegen "zu Hoch geschoben"
 			if (top < 0) {
 				top = 0;
-
-				//document.onpointerup = null;
-				//document.onpointermove = null;
 			}
-			if (left < 0) {
-				left = 0;
-
-				//document.onpointerup = null;
-				//document.onpointermove = null;
+			// Schutz gegen "zu weit links geschoben"
+			if (left < 120 - el.offsetWidth) {
+				left = 120 - el.offsetWidth;
 			}
+			// Schutz gegen "zu weit rechts geschoben"
 			if ((left + 80 > window.innerWidth) && noOverflow) {
-				left = window.innerWidth - 80;//el.clientWidth;
-
-				//document.onpointerup = null;
-				//document.onpointermove = null;
+				left = window.innerWidth - 80;
 			}
+			// Schutz gegen "zu weit runter geschoben"
 			if (top + 80 > window.innerHeight && noOverflow) {
-				top = window.innerHeight - 80;//el.clientHeight;
-
-				//document.onpointerup = null;
-				//document.onpointermove = null;
+				top = window.innerHeight - 80;
 			}
 
 			el.style.top = top + "px";
@@ -549,7 +540,7 @@ let HTML = {
 		// Except the "menu Box"
 		if(id === 'menu_box')
 		{
-			options['minWidth'] = 105;
+			options['minWidth'] = 101;
 			options['minHeight'] = 87;
 		}
 
