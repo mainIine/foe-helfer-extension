@@ -255,31 +255,13 @@ let Productions = {
 		let Products = [],
 			EntityID = d['cityentity_id'],
 			CityEntity = MainParser.CityEntities[EntityID],
-			BuildingSize = CityMap.GetBuildingSize(d),
-			era;
+			BuildingSize = CityMap.GetBuildingSize(d);
 
 		// Münzboost ausrechnen und bereitstellen falls noch nicht initialisiert
-		if(Productions.Boosts['money'] === undefined) Productions.Boosts['money'] = ((MainParser.BoostSums['coin_production'] + 100) / 100);
+		if (Productions.Boosts['money'] === undefined) Productions.Boosts['money'] = ((MainParser.BoostSums['coin_production'] + 100) / 100);
 		if (Productions.Boosts['supplies'] === undefined) Productions.Boosts['supplies'] = ((MainParser.BoostSums['supply_production'] + 100) / 100);
 
-		// Great building
-		if (CityEntity['type'] === 'greatbuilding') {
-			era = CurrentEraID;
-		}
-		// Multi era
-		else if (d['level']) {
-			era = d['level'] + 1;
-		}
-		// Zeitalter suchen
-		else {
-			let regExString = new RegExp("(?:_)((.[\\s\\S]*))(?:_)", "ig"),
-				testEra = regExString.exec(d['cityentity_id']);
-
-			if (testEra && testEra.length > 1) {
-				era = Technologies.Eras[testEra[1]];
-				if (era === 0) era = CurrentEraID; //AllAge => Current era
-			}
-		}
+		let era = CityMap.GetBuildingEra(d);
 
 		let Ret = {
 			name: CityEntity['name'],
@@ -291,7 +273,11 @@ let Productions = {
 			in: 0
 		};
 
-		if (d['state']) {
+		if (!BuildingSize['is_connected']) {
+			Ret.at = undefined;
+			Ret.in = undefined;
+		}
+		else if (d['state']) {
 			let At = d['state']['next_state_transition_at'],
 				In = d['state']['next_state_transition_in'];
 
@@ -953,9 +939,9 @@ let Productions = {
 						
 						if (Productions.TypeHasProduction(type)) {
 							rowA.push('<td class="wsnw is-date" data-date="' + buildings[i]['at'] + '">' + (buildings[i]['at'] ? moment.unix(buildings[i]['at']).format(i18n('DateTime')) : i18n('Boxes.Productions.DateNA')) + '</td>');
-							if (!buildings[i]['at']) { //No date available
-								rowA.push('<td>');
-                            }						
+							if (!buildings[i]['at']) { //No date available or no product
+								rowA.push('<td></td>');
+							}
 							else if (buildings[i]['at'] * 1000 <= MainParser.getCurrentDateTime()) {
 								rowA.push('<td style="white-space:nowrap"><strong class="success">' + i18n('Boxes.Productions.Done') + '</strong></td>');
 							}
