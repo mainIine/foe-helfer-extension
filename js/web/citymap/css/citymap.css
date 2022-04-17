@@ -291,9 +291,9 @@
 }
 
 @keyframes pulse {
-	0% { transform: scale(0.9); opacity: 0.7; }
+	0% { transform: scale(0.9); opacity: 0.2; }
 	50% { transform: scale(1); opacity: 1; }
-	100% { transform: scale(0.9); opacity: 0.7; }
+	100% { transform: scale(0.9); opacity: 0.2; }
 }
 
 .pulsate {
