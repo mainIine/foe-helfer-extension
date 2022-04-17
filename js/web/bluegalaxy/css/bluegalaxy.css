@@ -50,7 +50,3 @@
     position: relative;
     font-size: 100%;
 }
-
-#bluegalaxy #bluegalaxyBody .foe-table tr:first-child td:nth-child(5) strong {
-    color: var(--text-success);
-}

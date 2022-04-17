@@ -128,9 +128,10 @@ let BlueGalaxy = {
 
             let Production = Productions.readType(CityMap[i]);
 
-            //console.log(Production);
-
             if (Production['products']) {
+                let diamond = Production['products']['premium'];
+                if (!diamond) diamond = 0;
+
                 let FP = Production['products']['strategy_points'];
                 if (!FP) FP = 0;
 
@@ -147,16 +148,17 @@ let BlueGalaxy = {
                     EntityID: EntityID, 
                     FP: FP, 
                     Goods: GoodsSum, 
+                    Diamonds: diamond,
                     In: Production['in'], 
                     At: Production['at']
                 });
             }
         }
                 
-        Buildings = Buildings.filter(obj => ((obj['FP'] > 0 || obj['Goods'] > 0) && obj['In'] < 23 * 3600)); // Hide everything above 23h
+        Buildings = Buildings.filter(obj => ((obj["Diamonds"] > 0 || obj['FP'] > 0 || obj['Goods'] > 0) && obj['In'] < 15 * 3600)); // Hide everything above 15h
 
         Buildings = Buildings.sort(function (a, b) {
-            return (b['FP'] - a['FP']) + BlueGalaxy.GoodsValue * (b['Goods'] - a['Goods']);
+            return 1000 * (b['Diamonds'] - a['Diamonds']) + (b['FP'] - a['FP']) + BlueGalaxy.GoodsValue * (b['Goods'] - a['Goods']);
         });
 
         let h = [];
@@ -187,13 +189,14 @@ let BlueGalaxy = {
         h.push('</div>');       
 
         let table = [];
-        if (BlueGalaxy.DoubleCollections > 0 && Buildings.length > 0) { 
+        if (BlueGalaxy.DoubleCollections > 0 && Buildings.length > 0) {
 
             table.push('<table class="foe-table">');
 
             table.push('<thead>' +
                 '<tr>' +
                 '<th>' + i18n('Boxes.BlueGalaxy.Building') + '</th>' +
+                '<th>' + i18n('Boxes.BlueGalaxy.Diamonds') + '</th>' +
                 '<th>' + i18n('Boxes.BlueGalaxy.FP') + '</th>' +
                 '<th>' + i18n('Boxes.BlueGalaxy.Goods') + '</th>' +
                 '<th>' + i18n('Boxes.BlueGalaxy.DoneIn') + '</th>' +
@@ -202,8 +205,10 @@ let BlueGalaxy = {
                 '</thead>');
 
             let CollectionsLeft = BlueGalaxy.DoubleCollections,
+                DiamondsBonusSum = 0,
                 FPBonusSum = 0,
                 GoodsBonusSum = 0;
+
 
             for (let i = 0; i < Buildings.length; i++) {
                 if (CollectionsLeft <= 0) break;
@@ -212,6 +217,7 @@ let BlueGalaxy = {
 
                 table.push('<tr>');
                 table.push('<td>' + BuildingName + '</td>');
+                table.push('<td class="text-center">' + HTML.Format(Buildings[i]['Diamonds']) + '</td>');
                 table.push('<td class="text-center">' + HTML.Format(Buildings[i]['FP']) + '</td>');
                 table.push('<td class="text-center">' + HTML.Format(Buildings[i]['Goods']) + '</td>');
 
@@ -219,14 +225,16 @@ let BlueGalaxy = {
                     table.push('<td style="white-space:nowrap"><strong class="success">' + i18n('Boxes.BlueGalaxy.Done') + '</strong></td>');
                     CollectionsLeft -= 1;
 
+                    DiamondsBonusSum += Buildings[i]['Diamonds'] * BlueGalaxy.GalaxyFactor;
                     FPBonusSum += Buildings[i]['FP'] * BlueGalaxy.GalaxyFactor;
                     GoodsBonusSum += Buildings[i]['Goods'] * BlueGalaxy.GalaxyFactor;
                 }
                 else {
+                    console.log(BuildingName, Buildings[i]["At"]*1000 <= MainParser.getCurrentDateTime());
                     table.push('<td style="white-space:nowrap"><strong class="error">' + moment.unix(Buildings[i]['At']).fromNow() + '</strong></td>');
                 }
 
-                table.push('<td class="text-right"><span class="show-entity" data-id="' + Buildings[i]['ID'] + '"><img class="game-cursor" src="' + extUrl + 'css/images/hud/open-eye.png"></span></td>');
+                table.push('<td class="text-right"><span class="show-entity" data-id="' + Buildings[i]['ID'] + '"><img cl0ass="game-cursor" src="' + extUrl + 'css/images/hud/open-eye.png"></span></td>');
                 table.push('</tr>');
 
                 // nur so viele ausgeben wie es auch Versuche gibt
@@ -237,8 +245,8 @@ let BlueGalaxy = {
 
             table.push('</table');
 
-            if (FPBonusSum > 0 || GoodsBonusSum > 0) {
-                h.push(HTML.i18nReplacer(i18n('Boxes.BlueGalaxy.EstimatedBonus'), { FP: Math.round(FPBonusSum), Goods: Math.round(GoodsBonusSum)}));
+            if (DiamondsBonusSum > 0 || FPBonusSum > 0 || GoodsBonusSum > 0) {
+                h.push(HTML.i18nReplacer(i18n('Boxes.BlueGalaxy.EstimatedBonus'), { Diamonds: Math.round(DiamondsBonusSum), FP: Math.round(FPBonusSum), Goods: Math.round(GoodsBonusSum)}));
                 h.push('<br>');
             }
         }
