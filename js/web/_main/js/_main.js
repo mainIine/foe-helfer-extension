@@ -345,6 +345,10 @@ GetFights = () =>{
 	FoEproxy.addHandler('OtherPlayerService', 'visitPlayer', (data, postData) => {
 		LastMapPlayerID = data.responseData['other_player']['player_id'];
 		MainParser.OtherPlayerCityMapData = Object.assign({}, ...data.responseData['city_map']['entities'].map((x) => ({ [x.id]: x })));
+		
+		let OtherPlayer = data.responseData.other_player;
+		let IsPlunderable = (OtherPlayer.is_neighbor && !OtherPlayer.is_friend && !OtherPlayer.is_guild_member);
+		Reader.OtherPlayersBuildings(data.responseData, IsPlunderable);
 	});
 
 
