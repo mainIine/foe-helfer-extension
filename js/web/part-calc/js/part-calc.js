@@ -94,7 +94,7 @@ let Parts = {
 	CopyIncludeOwnPart: false,
 	CopyPreP: true,
 	CopyDescending: true,
-	CopyIncludeLevelString: false,
+	CopyIncludeLevelString: true,
 
 	CopyModeAll: false,
 	CopyModeAuto: true,
@@ -421,7 +421,7 @@ let Parts = {
 			Parts.LockExistingPlaces = true;
 			Parts.TrustExistingPlaces = false;
 			for (let i = 0; i < 5; i++) Parts.Exts[i] = 0;
-			Parts.CopyIncludeLevelString = false;
+			Parts.CopyIncludeLevelString = true;
 		}
 
 		Parts.FirstCycle = false;
