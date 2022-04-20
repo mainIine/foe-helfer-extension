@@ -45,7 +45,8 @@ let CityMap = {
 		}
 		// Neighbor or other modul
 		else {
-			CityMap.IsExtern = true;
+			CityMap.IsExtern = false;
+			Data = MainParser.OtherPlayerCityMapData;
 		}
 
 		CityMap.CityData = Object.values(Data).sort(function (X1, X2) {
