@@ -691,7 +691,8 @@ GetFights = () =>{
 			Calculator.CityMapEntity = CityMapEntity['responseData'][0];
 
 			// wenn schon offen, den Inhalt updaten
-			if ($('#costCalculator').length > 0) {
+			//if ($('#costCalculator').length > 0) 
+			{
 				Calculator.Show();
 			}
 		}
