@@ -1048,15 +1048,15 @@ let GuildFights = {
 			$('.gbg-tabs').on('_after', (e) => {
 				GuildFights.ToggleCopyButton();
 			});
-			$('#LiveGildFighting').on('click', '.deletealertbutton', function (e) {
+			$('#nextup').on('click', '.deletealertbutton', function (e) {
 				GuildFights.DeleteAlert($(this).data('id'));
 				e.stopPropagation();
 			});
-			$('#LiveGildFighting').on('click', '.setalertbutton', function (e) {
+			$('#nextup').on('click', '.setalertbutton', function (e) {
 				GuildFights.SetAlert($(this).data('id'));
 				e.stopPropagation();
 			});
-			$('#LiveGildFighting').on('click', 'tr', function () {
+			$('#nextup').on('click', 'tr', function () {
 				if ($(this).hasClass('highlight-row'))
 				{
 					$(this).removeClass('highlight-row');
