@@ -1041,7 +1041,7 @@ let GuildFights = {
 		h.push('</div>');
 
 		let activeTab = 1;
-		if ($('.gbgnextup.active').length > 0) activeTab = 2;
+		if ($('.gbgprogress.active').length > 0) activeTab = 2;
 
 		$('#LiveGildFighting').find('#LiveGildFightingBody').html(h.join('')).promise().done(function () {
 			$('.gbg-tabs').tabslet({ active: activeTab });
