@@ -696,6 +696,8 @@ GetFights = () =>{
 				Calculator.Show();
 			}
 		}
+		else
+			Parts.Show();
 
 	}
 
