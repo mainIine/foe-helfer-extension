@@ -697,7 +697,8 @@ GetFights = () =>{
 			}
 		}
 		else
-			Parts.Show();
+			if ($('#OwnPartBox').length == 0) 
+				Parts.Show();
 
 	}
 
@@ -1366,7 +1367,7 @@ let MainParser = {
 			xhr2.send("type=StoreBuilding&PlayerID=" + PlayerID + "&Content=" + s);
 
 		}
-		
+
 		Reader.ArmyBoosts = Unit.GetBoostSums(BoostDict);
 
 		//Reader.showResult();
