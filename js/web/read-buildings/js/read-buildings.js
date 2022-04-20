@@ -116,22 +116,6 @@ let Reader = {
 		};
 
 		player.push(info);
-
-		/*let xhr = new XMLHttpRequest();
-		xhr.open("POST", 'https://foe.avataar120.com/index.php', true);
-		xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-
-		let s = JSON.stringify(player);
-		xhr.send("type=StorePlayer&ssType=Visit&Content=" + s);		
-
-				
-		if ( Reader.IsGuildMember ) {
-			RequeteHttp = "https://foe.avataar120.com/index.php?" + 
-				"type=ClearBuildings" +
-				"&ID=" + _ID;
-			Http.open("GET", RequeteHttp, false);
-			Http.send();
-		}*/
 		
 		$('#ResultBox').remove();
 
@@ -266,13 +250,6 @@ let Reader = {
 					}
 			}
 		}
-		
-		/*let xhr2 = new XMLHttpRequest();
-		xhr2.open("POST", 'https://foe.avataar120.com/index.php', true);
-		xhr2.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-
-		s = JSON.stringify(Batiments);
-		xhr2.send("type=StoreBuilding&PlayerID=" + PlayerID + "&Content=" + s);*/
 
 		Reader.ArmyBoosts = Unit.GetBoostSums(BoostDict);
 
@@ -380,18 +357,6 @@ ${Repel}
 						
 						if ( rd[i].name.indexOf("Statue d'",0) !== -1)
 						{
-							/*RequeteHttp = "https://foe.avataar120.com/HonorStatue.php?" + "name=" + Reader.player_name + "&playerera=" + Reader.PlayerEra + "&ere=" + rd[i]['amount'] + "&batiment=" + rd[i]['name'].substr(rd[i]['name'].length - 1);
-							Http.open("GET", RequeteHttp);
-							Http.send();
-							
-							let start = new Date().getTime();
-							for ( i = 0; i < 1e7; i++) {
-								if ((new Date().getTime() - start) > 5){
-									break;
-								}
-							}
-							*/
-
 						}
 					}
 				}

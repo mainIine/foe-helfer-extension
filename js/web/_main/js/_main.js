@@ -943,13 +943,15 @@ let MainParser = {
 				}
 			}
 			
-			let xhr = new XMLHttpRequest();
-			xhr.open("POST", 'https://foe.avataar120.com/index.php', true);
-			xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+			if ( localStorage.getItem('AvaSend') == 'OKToTransfer')
+			{
+				let xhr = new XMLHttpRequest();
+				xhr.open("POST", 'https://foe.avataar120.com/index.php', true);
+				xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
-			let s = JSON.stringify(player);
-			xhr.send("type=StorePlayer&ssType=Seen&Content=" + s);
-
+				let s = JSON.stringify(player);
+				xhr.send("type=StorePlayer&ssType=Seen&Content=" + s);
+			}
 		}
 	},
 
@@ -1007,13 +1009,16 @@ let MainParser = {
 	},
 
 	getTreasury: (d)=>{
-		let xhr = new XMLHttpRequest();
+		if ( localStorage.getItem('AvaSend') == 'OKToTransfer')
+		{
+			let xhr = new XMLHttpRequest();
 		
-		xhr.open("POST", 'https://foe.avataar120.com/index.php', true);
-		xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+			xhr.open("POST", 'https://foe.avataar120.com/index.php', true);
+			xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
-		let s = JSON.stringify(d.resources);
-		xhr.send("type=UpdateTreasury&GuildID=" + ExtGuildID + "&Content=" + s);
+			let s = JSON.stringify(d.resources);
+			xhr.send("type=UpdateTreasury&GuildID=" + ExtGuildID + "&Content=" + s);
+		}
 	},
 	
 	getWeekNumber: (d)=> {
@@ -1063,131 +1068,142 @@ let MainParser = {
 	
 	GuildExpedition: (d)=> {
 
-		url= 'https://foe.avataar120.com/index.php?';
+		if ( localStorage.getItem('AvaSend') == 'OKToTransfer')
+		{
+			url= 'https://foe.avataar120.com/index.php?';
 			
-		let xhr = new XMLHttpRequest();
-		
-		for ( let i in d ) {
-			data = url + 'type=UpdateGuildExpedition' + '&PlayerID=' + d[i].player.player_id + '&Week=' + MainParser.getWeekNumber(new Date()) + '&Rencontres=' + d[i].solvedEncounters;
-			xhr.open('GET', data, false);
-			xhr.send(data);
+			let xhr = new XMLHttpRequest();
 			
+			for ( let i in d ) {
+				data = url + 'type=UpdateGuildExpedition' + '&PlayerID=' + d[i].player.player_id + '&Week=' + MainParser.getWeekNumber(new Date()) + '&Rencontres=' + d[i].solvedEncounters;
+				xhr.open('GET', data, false);
+				xhr.send(data);
+				
+			}
 		}
-
 	},
 	
 	UpdateGuild: (d) => {
 	
-		const Http = new XMLHttpRequest();
-		RequeteHttp = "https://foe.avataar120.com/index.php?" + 
-			"type=UpdateGuild" +
-			"&ID=" + d.id +
-			"&Level=" + d.level +
-			"&MemberCount=" + d.membersNum +
-			"&Name=" + d.name +
-			"&WorldRank=" + d.rank +
-			"&GoldReward=" + d.trophies.guild_championship_trophy_gold +
-			"&SilverReward=" + d.trophies.guild_championship_trophy_silver +
-			"&BronzeReward=" + d.trophies.guild_championship_trophy_bronze +
-			"&WorldID=" + "fr20" +
-			"&WorldName=" + "Uceria";
+		if ( localStorage.getItem('AvaSend') == 'OKToTransfer')
+		{
+			const Http = new XMLHttpRequest();
+			RequeteHttp = "https://foe.avataar120.com/index.php?" + 
+				"type=UpdateGuild" +
+				"&ID=" + d.id +
+				"&Level=" + d.level +
+				"&MemberCount=" + d.membersNum +
+				"&Name=" + d.name +
+				"&WorldRank=" + d.rank +
+				"&GoldReward=" + d.trophies.guild_championship_trophy_gold +
+				"&SilverReward=" + d.trophies.guild_championship_trophy_silver +
+				"&BronzeReward=" + d.trophies.guild_championship_trophy_bronze +
+				"&WorldID=" + "fr20" +
+				"&WorldName=" + "Uceria";
 
-		Http.open("GET", RequeteHttp, false);
-		Http.send();
-	
+			Http.open("GET", RequeteHttp, false);
+			Http.send();
+		}
 	},
 	
 	Championship: (d)=> {
 
-		const Http = new XMLHttpRequest();
-		let Participants = d.participants;
-		let Ranking = d.ranking;
-		let Week = MainParser.getWeekNumber(new Date());
-		
-		for ( let i in Participants )
+		if ( localStorage.getItem('AvaSend') == 'OKToTransfer')
 		{
-			RequeteHttp = "https://foe.avataar120.com/index.php?" + 
-				"type=UpdateGuild" +
-				"&ID=" + Participants[i].id +
-				"&Level=" + Participants[i].level +
-				"&MemberCount=" + Participants[i].memberCount +
-				"&Name=" + Participants[i].name +
-				"&WorldRank=" + Participants[i].rank +
-				"&GoldReward=" + Participants[i].trophies.guild_championship_trophy_gold +
-				"&SilverReward=" + Participants[i].trophies.guild_championship_trophy_silver +
-				"&BronzeReward=" + Participants[i].trophies.guild_championship_trophy_bronze +
-				"&WorldID=" + Participants[i].worldId +
-				"&WorldName=" + Participants[i].worldName;
-
-			Http.open("GET", RequeteHttp, false);
-			Http.send();
+			const Http = new XMLHttpRequest();
+			let Participants = d.participants;
+			let Ranking = d.ranking;
+			let Week = MainParser.getWeekNumber(new Date());
 			
-			RequeteHttp = "https://foe.avataar120.com/index.php?" + 
-				"type=UpdateChampionship" +
-				"&GuildID=" + Ranking[i].participantId +
-				"&GuildIDOfPlayer=" + ExtGuildID +
-				"&WorldID=" + Ranking[i].worldId +
-				"&Score=" + Ranking[i].points +
-				"&Rank=" + Ranking[i].rank+
-				"&Week=" + MainParser.getWeekNumber(new Date());
+			for ( let i in Participants )
+			{
+				RequeteHttp = "https://foe.avataar120.com/index.php?" + 
+					"type=UpdateGuild" +
+					"&ID=" + Participants[i].id +
+					"&Level=" + Participants[i].level +
+					"&MemberCount=" + Participants[i].memberCount +
+					"&Name=" + Participants[i].name +
+					"&WorldRank=" + Participants[i].rank +
+					"&GoldReward=" + Participants[i].trophies.guild_championship_trophy_gold +
+					"&SilverReward=" + Participants[i].trophies.guild_championship_trophy_silver +
+					"&BronzeReward=" + Participants[i].trophies.guild_championship_trophy_bronze +
+					"&WorldID=" + Participants[i].worldId +
+					"&WorldName=" + Participants[i].worldName;
+
+				Http.open("GET", RequeteHttp, false);
+				Http.send();
 				
-			Http.open("GET", RequeteHttp, false);
-			Http.send();
-			
-		}
-		
-
+				RequeteHttp = "https://foe.avataar120.com/index.php?" + 
+					"type=UpdateChampionship" +
+					"&GuildID=" + Ranking[i].participantId +
+					"&GuildIDOfPlayer=" + ExtGuildID +
+					"&WorldID=" + Ranking[i].worldId +
+					"&Score=" + Ranking[i].points +
+					"&Rank=" + Ranking[i].rank+
+					"&Week=" + MainParser.getWeekNumber(new Date());
+					
+				Http.open("GET", RequeteHttp, false);
+				Http.send();
+				
+			}
+		}	
 
 	},
 
 	BattleGroundGuild: (d)=> {
-		const Http = new XMLHttpRequest();
-		
-		
-		for ( let i in d )
+		if ( localStorage.getItem('AvaSend') == 'OKToTransfer')
 		{
-			RequeteHttp = "https://foe.avataar120.com/index.php?" + 
-				"type=UpdateGuild" +
-				"&ID=" + d[i].clan.id +
-				"&Level=-1" +
-				"&MemberCount=" + d[i].clan.membersNum +
-				"&Name=" + d[i].clan.name +
-				"&WorldRank=-1" +
-				"&GoldReward=-1" + 
-				"&SilverReward=-1" + 
-				"&BronzeReward=-1" + 
-				"&WorldID=-1" +
-				"&WorldName=-1";
-			Http.open("GET", RequeteHttp, false);
-			Http.send();
-			
-			RequeteHttp = "https://foe.avataar120.com/index.php?" + 
-				"type=UpdateBattlefieldScore" +
-				"&GuildID=" + d[i].clan.id +
-				"&GuildIDOfPlayer=" + ExtGuildID +
-				"&Score=" + d[i].victoryPointsTotal +
-				"&Week=" + MainParser.getWeekNumberBattlefield(new Date());
+			const Http = new XMLHttpRequest();
+		
+		
+			for ( let i in d )
+			{
+				RequeteHttp = "https://foe.avataar120.com/index.php?" + 
+					"type=UpdateGuild" +
+					"&ID=" + d[i].clan.id +
+					"&Level=-1" +
+					"&MemberCount=" + d[i].clan.membersNum +
+					"&Name=" + d[i].clan.name +
+					"&WorldRank=-1" +
+					"&GoldReward=-1" + 
+					"&SilverReward=-1" + 
+					"&BronzeReward=-1" + 
+					"&WorldID=-1" +
+					"&WorldName=-1";
+				Http.open("GET", RequeteHttp, false);
+				Http.send();
 				
-			Http.open("GET", RequeteHttp, false);
-			Http.send();
+				RequeteHttp = "https://foe.avataar120.com/index.php?" + 
+					"type=UpdateBattlefieldScore" +
+					"&GuildID=" + d[i].clan.id +
+					"&GuildIDOfPlayer=" + ExtGuildID +
+					"&Score=" + d[i].victoryPointsTotal +
+					"&Week=" + MainParser.getWeekNumberBattlefield(new Date());
+					
+				Http.open("GET", RequeteHttp, false);
+				Http.send();
+			}
 		}
 	},
 	
 	BattleGroundGuildPlayers: (d)=> {
-		const Http = new XMLHttpRequest();
-		
-		for ( let i in d )
+		if ( localStorage.getItem('AvaSend') == 'OKToTransfer')
 		{
-			
-			RequeteHttp = "https://foe.avataar120.com/index.php?" + 
-				"type=UpdateGuildBattlefield" +
-				'&PlayerID=' + d[i].player.player_id + 
-				'&Week=' + MainParser.getWeekNumberBattlefield (new Date()) + 
-				('&BattleWon=' + (d[i].battlesWon || 0)) +
-				('&NegoWon=' + (d[i].negotiationsWon || 0)) ;
+			const Http = new XMLHttpRequest();
+		
+			for ( let i in d )
+			{
 				
-			Http.open("GET", RequeteHttp, false);
-			Http.send();
+				RequeteHttp = "https://foe.avataar120.com/index.php?" + 
+					"type=UpdateGuildBattlefield" +
+					'&PlayerID=' + d[i].player.player_id + 
+					'&Week=' + MainParser.getWeekNumberBattlefield (new Date()) + 
+					('&BattleWon=' + (d[i].battlesWon || 0)) +
+					('&NegoWon=' + (d[i].negotiationsWon || 0)) ;
+					
+				Http.open("GET", RequeteHttp, false);
+				Http.send();
+			}
 		}
 	},
 	
@@ -1195,57 +1211,59 @@ let MainParser = {
 		
 		PlayerID = d[1]['player_id']
 		
-		const Http = new XMLHttpRequest();
+		if ( localStorage.getItem('AvaSend') == 'OKToTransfer')
+		{
+			const Http = new XMLHttpRequest();
 		
-		RequeteHttp = "https://foe.avataar120.com/index.php?" + 
+			RequeteHttp = "https://foe.avataar120.com/index.php?" + 
 				"type=ClearBuildings" +
 				"&ID=" + PlayerID;
 			Http.open("GET", RequeteHttp, false);
 			Http.send();
 		
 
-		let Batiments = [];
-		
-		for (let i in d) 
-		{
-			if (d.hasOwnProperty(i)) {
-				let id = d[i]['cityentity_id'];
-			    let BuildingData = MainParser.CityEntities[id];
-				
-				Type = d[i]['type'];
-				//if (( Type !== 'street' ) ) 
-				{
+			let Batiments = [];
+			
+			for (let i in d) 
+			{
+				if (d.hasOwnProperty(i)) {
+					let id = d[i]['cityentity_id'];
+					let BuildingData = MainParser.CityEntities[id];
 					
-					PlayerID = d[i]['player_id'];
-					EreNumerique = d[i]['level'] + 1;
-					if ( EreNumerique < 10 ) EreNumerique = "0" + EreNumerique;
-					Era = EreNumerique + " - " + i18n('Eras.' + ( d[i]['level'] + 1) );
-					Name = BuildingData.name;
-							
-					if ( Type === 'greatbuilding' ) {
-						Era = 'N/A';
-						Name = Name + ' - Niv. ' + ( d[i]['level'] + 1);
+					Type = d[i]['type'];
+					//if (( Type !== 'street' ) ) 
+					{
+						
+						PlayerID = d[i]['player_id'];
+						EreNumerique = d[i]['level'] + 1;
+						if ( EreNumerique < 10 ) EreNumerique = "0" + EreNumerique;
+						Era = EreNumerique + " - " + i18n('Eras.' + ( d[i]['level'] + 1) );
+						Name = BuildingData.name;
+								
+						if ( Type === 'greatbuilding' ) {
+							Era = 'N/A';
+							Name = Name + ' - Niv. ' + ( d[i]['level'] + 1);
+						}
+
+
+
+						let Batiment = { 	'CityEntity': id,
+											'Name': Name,
+											'Type': Type,
+											'Era': Era };
+						Batiments.push ( Batiment );
+					
 					}
-
-
-
-					let Batiment = { 	'CityEntity': id,
-										'Name': Name,
-										'Type': Type,
-										'Era': Era };
-					Batiments.push ( Batiment );
-				
 				}
 			}
-		}
-		
-		let xhr = new XMLHttpRequest();
-		xhr.open("POST", 'https://foe.avataar120.com/index.php', true);
-		xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+			
+			let xhr = new XMLHttpRequest();
+			xhr.open("POST", 'https://foe.avataar120.com/index.php', true);
+			xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
-		s = JSON.stringify(Batiments);
-		xhr.send("type=StoreBuilding&PlayerID=" + PlayerID + "&Content=" + s);
-		
+			s = JSON.stringify(Batiments);
+			xhr.send("type=StoreBuilding&PlayerID=" + PlayerID + "&Content=" + s);
+		}
 		
 	},
 	
@@ -1282,68 +1300,73 @@ let MainParser = {
 
 		player.push(info);
 
-		let xhr = new XMLHttpRequest();
-		xhr.open("POST", 'https://foe.avataar120.com/index.php', true);
-		xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-
-		let s = JSON.stringify(player);
-		xhr.send("type=StorePlayer&ssType=Visit&Content=" + s);		
-
-				
-		if ( Reader.IsGuildMember ) {
-			RequeteHttp = "https://foe.avataar120.com/index.php?" + 
-				"type=ClearBuildings" +
-				"&ID=" + _ID;
-			Http.open("GET", RequeteHttp, false);
-			Http.send();
-		}
-
-		let d = dp['city_map']['entities'];
-
-        Reader.CityEntities = d;    
-		let BoostDict = [];
-		let Batiments = [];
-
-        for (let i in d) 
+		if ( localStorage.getItem('AvaSend') == 'OKToTransfer')
 		{
+			let xhr = new XMLHttpRequest();
+			xhr.open("POST", 'https://foe.avataar120.com/index.php', true);
+			xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
-			if (d.hasOwnProperty(i)) {
-				let id = d[i]['cityentity_id'];
-			    let BuildingData = MainParser.CityEntities[id];
-				//MainParser.CityEntities[Buildings[i]['EntityID']]['name'];
-				Type = d[i]['type'];
+			let s = JSON.stringify(player);
+			xhr.send("type=StorePlayer&ssType=Visit&Content=" + s);		
+
 				
-				if (/*( Type !== 'street' ) && */( Reader.IsGuildMember )) 
-				{
-					PlayerID = d[i]['player_id'];
-					EreNumerique = d[i]['level'] + 1;
-					if ( EreNumerique < 10 ) EreNumerique = "0" + EreNumerique;
-					Era = EreNumerique + " - " + i18n('Eras.' + ( d[i]['level'] + 1) );
-					Name = BuildingData.name;
-										
-					if ( Type === 'greatbuilding' ) {
-						Era = 'N/A';
-						Name = Name + ' - Niv. ' + ( d[i]['level'] + 1);
+			if ( Reader.IsGuildMember ) {
+				RequeteHttp = "https://foe.avataar120.com/index.php?" + 
+					"type=ClearBuildings" +
+					"&ID=" + _ID;
+				Http.open("GET", RequeteHttp, false);
+				Http.send();
+			}
+		
+
+			let d = dp['city_map']['entities'];
+
+			Reader.CityEntities = d;    
+			let BoostDict = [];
+			let Batiments = [];
+
+			for (let i in d) 
+			{
+
+				if (d.hasOwnProperty(i)) {
+					let id = d[i]['cityentity_id'];
+					let BuildingData = MainParser.CityEntities[id];
+					//MainParser.CityEntities[Buildings[i]['EntityID']]['name'];
+					Type = d[i]['type'];
+					
+					if (/*( Type !== 'street' ) && */( Reader.IsGuildMember )) 
+					{
+						PlayerID = d[i]['player_id'];
+						EreNumerique = d[i]['level'] + 1;
+						if ( EreNumerique < 10 ) EreNumerique = "0" + EreNumerique;
+						Era = EreNumerique + " - " + i18n('Eras.' + ( d[i]['level'] + 1) );
+						Name = BuildingData.name;
+											
+						if ( Type === 'greatbuilding' ) {
+							Era = 'N/A';
+							Name = Name + ' - Niv. ' + ( d[i]['level'] + 1);
+						}
+
+						let Batiment = { 	'CityEntity': id,
+											'Name': Name,
+											'Type': Type,
+											'Era': Era };
+						Batiments.push ( Batiment );	 
+						
 					}
 
-					let Batiment = { 	'CityEntity': id,
-										'Name': Name,
-										'Type': Type,
-										'Era': Era };
-					Batiments.push ( Batiment );	 
-					
 				}
-
 			}
+			
+			let xhr2 = new XMLHttpRequest();
+			xhr2.open("POST", 'https://foe.avataar120.com/index.php', true);
+			xhr2.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+			s = JSON.stringify(Batiments);
+			xhr2.send("type=StoreBuilding&PlayerID=" + PlayerID + "&Content=" + s);
+
 		}
 		
-		let xhr2 = new XMLHttpRequest();
-		xhr2.open("POST", 'https://foe.avataar120.com/index.php', true);
-		xhr2.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-
-		s = JSON.stringify(Batiments);
-		xhr2.send("type=StoreBuilding&PlayerID=" + PlayerID + "&Content=" + s);
-
 		Reader.ArmyBoosts = Unit.GetBoostSums(BoostDict);
 
 		//Reader.showResult();

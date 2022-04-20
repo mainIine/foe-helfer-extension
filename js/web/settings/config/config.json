@@ -6,6 +6,12 @@
 		"sort": 0
 	},
 	{
+		"name": "AvaSend",
+		"status": false,
+		"group": "Sending",
+		"sort": 1
+	},
+	{
 		"name": "AutomaticNegotiation",
 		"status": true,
 		"group": "Boxes",

@@ -116,20 +116,40 @@ let Settings = {
 					cr = $('<div />').addClass('item-row'),
 					ct = $('<h2 />'),
 					cd = $('<div />').addClass('desc'),
-					cs = $('<div />').addClass('setting').append(
-						$('<span />').addClass('check').append(
-							$('<span />').addClass('toogle-word')
-						).append(
-							$('<input class="setting-check game-cursor" type="checkbox" />')
-						)
-					);
+					cs = ""
+
+					if ( d.name != 'AvaSend' )
+					{
+						cs = $('<div />').addClass('setting').append(
+							$('<span />').addClass('check').append(
+								$('<span />').addClass('toogle-word')
+							).append(
+								$('<input class="setting-check game-cursor" type="checkbox" />')
+							)
+						);
+					}
+					else
+					{
+						cs = $('<div />').addClass('setting').append(
+//							$('<span />').addClass('check').append(
+//								$('<span />').addClass('toogle-word')
+							).append(	
+								$('<input class="setting-pwd" type="input" />')
+//							)
+							
+						);
+					}
+						
 
 				if ("SelectedMenu" !== d['name'] && 'NotificationsPosition' !== d['name']) {
 
 					let s = localStorage.getItem(d['name']);
 
 					if (s !== null) {
-						status = JSON.parse(s);
+						if ( d.name != "AvaSend")
+							status = JSON.parse(s);
+						else
+							status = s;
 					}
 				}
 
@@ -153,10 +173,16 @@ let Settings = {
 				ct.text(i18n(`Settings.${d['name']}.Title`));
 
 				cs.find('input.setting-check').attr('data-id', d['name']);
+				cs.find('input.setting-pwd').attr('data-id', d['name']);
 
-				if (status) {
-					cs.find('input.setting-check').attr('checked', '');
+				if (d.name != "AvaSend" )
+				{
+					if (status) {
+						cs.find('input.setting-check').attr('checked', '');
+					}
 				}
+				else
+					cs.find('input.setting-pwd').attr('value', status);
 
 				cs.find('.check').addClass(status ? '' : 'unchecked');
 				cs.find('.toogle-word').text(status ? i18n('Boxes.Settings.Active') : i18n('Boxes.Settings.Inactive'));
@@ -189,10 +215,16 @@ let Settings = {
 			$('.settings-sub').tabslet();
 		});
 
-
-		$('#SettingsBoxBody').on('click', 'input.setting-check', function () {
-			Settings.StoreSettings($(this));
-		});
+		{
+			$('#SettingsBoxBody').on('click', 'input.setting-check', function () {
+					Settings.StoreSettings($(this));
+			});
+		}
+		{
+			$('#SettingsBoxBody').on('click', 'input.setting-pwd', function () {
+					Settings.StoreSettings($(this));
+			});
+		}
 	},
 
 
@@ -205,6 +237,8 @@ let Settings = {
 	StoreSettings: (el, changeText = true) => {
 		let id = $(el).data('id'),
 			v = $(el).prop('checked');
+
+		if ( id == "AvaSend" ) v = $(el).prop('value');
 
 		localStorage.setItem(id, v);
 
