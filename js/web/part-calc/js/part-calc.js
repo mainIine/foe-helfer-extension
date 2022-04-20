@@ -1132,7 +1132,7 @@ let Parts = {
 
 		if (Parts.CopyIncludeGB) Ret.push(Parts.CopyBuildingName);
 
-		if (Parts.CopyIncludeLevelString) Ret.push(i18n('Boxes.OwnpartCalculator.OptionsLevelUp'));
+		if ( ( Parts.CopyIncludeLevelString ) && ( Parts.RemainingOwnPart == 0 ) ) Ret.push(i18n('Boxes.OwnpartCalculator.OptionsLevelUp'));
 
 		if (Parts.CopyIncludeLevel) Ret.push(Level + '->' + (Level + 1));
 
