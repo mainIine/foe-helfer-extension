@@ -33,22 +33,12 @@ FoEproxy.addHandler('ConversationService', 'getOverview', (data, postData) => {
     MainParser.setConversations(data.responseData);
 });
 
-FoEproxy.addHandler('all', 'all', (data, postData) => {
-    if ( ($('#BackgroundInfo').length > 0) && (data.requestClass != "TimeService") && (data.requestClass != "MessageService") )
-    {
-        let tr = $('<tr class="sys-message">'),
-            date = new Date();
-        
-        tr.append(
-            
-            '<td></td>' +
-            '<td>' + 'Message système' + '<br><small><em>' + moment(date).format('HH:mm:ss') + '</em></small></td>' +
-            '<td>' + data.requestClass + " - " + data.requestMethod + '</td>' +
-            '</tr>'
-        );
+FoEproxy.addRawWsHandler(data => {
+    Infoboard.DisplaySysMsg ( data [0] );
+});
 
-        $('#BackgroundInfoTable tbody').prepend(tr);
-    }
+FoEproxy.addHandler('all', 'all', (data, postData) => {
+    Infoboard.DisplaySysMsg ( data );
 });
 
 /**
@@ -81,6 +71,24 @@ let Infoboard = {
         };
     },
 
+    DisplaySysMsg: ( data ) => {
+    
+        if ( ($('#BackgroundInfo').length > 0) && (data.requestClass != "TimeService") && (data.requestClass != "MessageService") )
+        {
+            let tr = $('<tr class="sys-message">'),
+                date = new Date();
+            
+            tr.append(
+                
+                '<td></td>' +
+                '<td>' + 'Message système' + '<br><small><em>' + moment(date).format('HH:mm:ss') + '</em></small></td>' +
+                '<td>' + data.requestClass + " - " + data.requestMethod + '</td>' +
+                '</tr>'
+            );
+    
+            $('#BackgroundInfoTable tbody').prepend(tr);
+        }
+    },
 
     /**
      * Zeigt die InfoBox an
