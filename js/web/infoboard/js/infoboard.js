@@ -33,6 +33,24 @@ FoEproxy.addHandler('ConversationService', 'getOverview', (data, postData) => {
     MainParser.setConversations(data.responseData);
 });
 
+FoEproxy.addHandler('all', 'all', (data, postData) => {
+    if ( ($('#BackgroundInfo').length > 0) && (data.requestClass != "TimeService") && (data.requestClass != "MessageService") )
+    {
+        let tr = $('<tr class="sys-message">'),
+            date = new Date();
+        
+        tr.append(
+            
+            '<td></td>' +
+            '<td>' + 'Message système' + '<br><small><em>' + moment(date).format('HH:mm:ss') + '</em></small></td>' +
+            '<td>' + data.requestClass + " - " + data.requestMethod + '</td>' +
+            '</tr>'
+        );
+
+        $('#BackgroundInfoTable tbody').prepend(tr);
+    }
+});
+
 /**
  * @type {{MaxEntries: number, DebugWebSocket: boolean, OriginalDocumentTitle: string, TitleBlinkEvent: null, ResetBox: Infoboard.ResetBox, SavedFilter: string[], SoundFile: HTMLAudioElement, SavedTextFilter: string, HandleMessage: Infoboard.HandleMessage, Box: ((function(): (boolean|undefined))|*), History: *[], StartTitleBlinking: Infoboard.StartTitleBlinking, Init: Infoboard.Init, InjectionLoaded: boolean, StopTitleBlinking: Infoboard.StopTitleBlinking, FilterInput: Infoboard.FilterInput, Show: Infoboard.Show, PostMessage: Infoboard.PostMessage, PlayInfoSound: boolean}}
  */

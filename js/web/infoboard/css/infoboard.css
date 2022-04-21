@@ -126,6 +126,11 @@ table.info-table tr td {
 	background-size: 25px;
 }
 
+#BackgroundInfoTable .sys-message td:first-child {
+	background-image: url('../../x_img/sys-msg.png');
+	background-size: 25px;
+}
+
 #BackgroundInfoTable .msg-favorite td:first-child {
 	background-image: url('../../x_img/msg-favorite.png');
 	background-size: 25px;
