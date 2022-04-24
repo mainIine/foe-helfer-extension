@@ -52,9 +52,9 @@ let Kits = {
 				resize: true
 			});
 
-			$('#kitsBody').append( $('<div />').attr({'id':'kitsBodyTopbar','class':'dark-bg'}), $('<div />').attr('id', 'kitsBodyInner') );
+			$('#kitsBody').append( $('<div />').attr('id','kitsBodyInner'), $('<div />').attr({id:'kitsBodyBottombar', class:'dark-bg'}) );
 
-			$('#kitsBodyTopbar').append(
+			$('#kitsBodyBottombar').append(
 				$('<span />').attr({
 					id: 'kits-triplestate-button',
 					class: 'btn-default btn-tight',
@@ -467,6 +467,9 @@ let Kits = {
 					else if (aName == "building_iridescent_garden") {
 						aName = "D_MultiAge_Battlegrounds4";
 					}
+					else if (aName == "building_shrine_of_inspiration") {
+						aName = "R_MultiAge_EasterBonus16";
+					}
 					else if (aName == "building_shrine_of_knowledge") {
 						aName = "R_MultiAge_EasterBonus5";
 					}
@@ -551,6 +554,9 @@ let Kits = {
 				}
 				else if (aName == "building_iridescent_garden") {
 					aName = "D_MultiAge_Battlegrounds4";
+				}
+				else if (aName == "building_shrine_of_inspiration") {
+					aName = "R_MultiAge_EasterBonus16";
 				}
 				else if (aName == "building_shrine_of_knowledge") {
 					aName = "R_MultiAge_EasterBonus5";
