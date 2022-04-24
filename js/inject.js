@@ -218,7 +218,10 @@ function inject (loadBeta = false, extUrl = chrome.extension.getURL(''), betaDat
 
 			// load all vendor scripts first (unknown order)
 			const vendorScriptsToLoad = await vendorListPromise;
-			await Promise.all(vendorScriptsToLoad.map(vendorScript => promisedLoadCode(`${extUrl}vendor/${vendorScript}.js?v=${v}`),"vendor"));
+			for (let i = 0; i < vendorScriptsToLoad.length; i++){
+				await promisedLoadCode(`${extUrl}vendor/${vendorScriptsToLoad[i]}.js?v=${v}`,"vendor");
+			}
+			//await Promise.all(vendorScriptsToLoad.map(vendorScript => promisedLoadCode(`${extUrl}vendor/${vendorScript}.js?v=${v}`,"vendor")));
 			
 			scriptLoaded("primed", "vendor");
 			

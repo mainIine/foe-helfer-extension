@@ -453,16 +453,16 @@ let HTML = {
 				top = 0;
 			}
 			// Schutz gegen "zu weit links geschoben"
-			if (left < 120 - el.offsetWidth) {
-				left = 120 - el.offsetWidth;
+			if (left < Math.min(0,  120 - el.offsetWidth)) {
+				left = Math.min(0,  120 - el.offsetWidth);
 			}
 			// Schutz gegen "zu weit rechts geschoben"
-			if ((left + 80 > window.innerWidth) && noOverflow) {
-				left = window.innerWidth - 80;
+			if (left > Math.max(window.innerWidth - 80, window.innerWidth-el.offsetWidth) && noOverflow) {
+				left = Math.max(window.innerWidth - 80, window.innerWidth-el.offsetWidth);
 			}
 			// Schutz gegen "zu weit runter geschoben"
-			if (top + 80 > window.innerHeight && noOverflow) {
-				top = window.innerHeight - 80;
+			if (top > Math.max(window.innerHeight - 80, window.innerHeight-el.offsetHeight-20) && noOverflow) {
+				top = Math.max(window.innerHeight - 80, window.innerHeight-el.offsetHeight-20);
 			}
 
 			el.style.top = top + "px";
