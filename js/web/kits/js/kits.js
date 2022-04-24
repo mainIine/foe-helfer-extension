@@ -52,7 +52,7 @@ let Kits = {
 				resize: true
 			});
 
-			$('#kitsBody').append( $('<div />').attr('id','kitsBodyInner'), $('<div />').attr({id:'kitsBodyBottombar', class:'dark-bg'}) );
+			$('#kitsBody').append( $('<div />').attr('id','kitsBodyInner'), $('<div />').attr('id','kitsBodyBottombar') );
 
 			$('#kitsBodyBottombar').append(
 				$('<span />').attr({
