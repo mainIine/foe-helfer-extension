@@ -1,6 +1,6 @@
 [	
 	{
-		"udate": "30.03.2022"
+		"udate": "23.04.2022"
 	},
 	{
 		"groupname": "Guild_Battlegrounds"
@@ -43,36 +43,40 @@
 		"groupname": "Events"
 	},
 	{
-		"name": "Butterfly_Sanctuary",
+		"name": "Gentiana_Windmill",
+		"buildings": [
+			{
+				"first": "R_MultiAge_SoccerBonus22a",
+				"update": "upgrade_kit_gentiana_windmill"
+			}
+		],
+		"assets": [
+			"D_MultiAge_SoccerBonus22flowerpath",
+			"D_MultiAge_SoccerBonus22rockypath",
+			"D_MultiAge_SoccerBonus22olivepath",
+			"D_MultiAge_SoccerBonus22wheatpath"
+		],
+		"kit": [
+			"selection_kit_gentiana_windmill_farm",
+			"selection_kit_gentiana_windmill",
+			"selection_kit_gentiana_farmland"
+		]
+	},
+	{
+		"name": "Butterfly_Sanctuary_Set",
 		"buildings": [
 			{
 				"first": "R_MultiAge_ArcheologyBonus22a",
 				"update": "upgrade_kit_butterfly_house"
-			},
-			{
-				"first": "A_MultiAge_ArcheologyBonus22a",
-				"update": ""
-			},
-			{
-				"first": "D_MultiAge_ArcheologyBonus22a",
-				"update": ""
-			},
-			{
-				"first": "D_MultiAge_ArcheologyBonus22b",
-				"update": ""
-			},
-			{
-				"first": "D_MultiAge_ArcheologyBonus22c",
-				"update": ""
-			},
-			{
-				"first": "L_AllAge_ArcheologyBonus22a",
-				"update": ""
-			},
-			{
-				"first": "L_AllAge_ArcheologyBonus22b",
-				"update": ""
 			}
+		],
+		"assets": [
+			"A_MultiAge_ArcheologyBonus22a",
+			"D_MultiAge_ArcheologyBonus22a",
+			"D_MultiAge_ArcheologyBonus22b",
+			"D_MultiAge_ArcheologyBonus22c",
+			"L_AllAge_ArcheologyBonus22a",
+			"L_AllAge_ArcheologyBonus22b"
 		],
 		"kit": [
 			"selection_kit_butterfly_sanctuary",
@@ -179,7 +183,7 @@
 		"link": "Pirate%27s_Hideout",
 		"buildings": [
 			{
-				"first": "R_MultiAge_SummerBonus21i",
+				"first": "R_MultiAge_SummerBonus21a",
 				"update": "upgrade_kit_pirates_hideout"
 			}
 		],
@@ -286,31 +290,15 @@
 			{
 				"first": "R_MultiAge_FallBonus20a",
 				"update": "upgrade_kit_harvest_barn"
-			},
-			{
-				"first": "R_MultiAge_FallBonus20e",
-				"update": ""
-			},
-			{
-				"first": "D_MultiAge_FallBonus20a",
-				"update": ""
-			},
-			{
-				"first": "L_AllAge_FallBonus20a",
-				"update": ""
-			},
-			{
-				"first": "L_AllAge_FallBonus20b",
-				"update": ""
-			},
-			{
-				"first": "D_MultiAge_FallBonus20b",
-				"update": ""
-			},
-			{
-				"first": "A_MultiAge_FallBonus20",
-				"update": ""
 			}
+		],
+		"assets": [
+			"A_MultiAge_FallBonus20",
+			"R_MultiAge_FallBonus20e",
+			"D_MultiAge_FallBonus20a",
+			"D_MultiAge_FallBonus20b",
+			"L_AllAge_FallBonus20a",
+			"L_AllAge_FallBonus20b"
 		],
 		"kit": [ 
 			"selection_kit_harvest_farm",
@@ -820,6 +808,15 @@
 				"update": "upgrade_kit_maypole"
 			}
 		]
+	},
+	{
+		"name": "Shrine_of_Inspiration",
+		"buildings": [
+			{
+				"first": "R_MultiAge_EasterBonus16"
+			}
+		],
+		"kit": "fragment#building_shrine_of_inspiration"
 	},
 	{
 		"name": "Confectionary",
