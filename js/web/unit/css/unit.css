@@ -99,6 +99,11 @@
 	box-shadow: 1px 1px 2px var(--black-65);
 }
 
+/*fallback for all tools that do not specify their own scale*/
+:root {
+	--unit_scale: 3/9; 
+}
+
 .unit_icon.ArcticFuture_champion {background-position: 0 0}
 .unit_icon.BronzeAge_champion {background-position: calc(-90px*var(--unit_scale)) 0}
 .unit_icon.ColonialAge {background#position: calc(-180px*var(--unit_scale)) 0}
