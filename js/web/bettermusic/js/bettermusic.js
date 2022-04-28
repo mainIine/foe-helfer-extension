@@ -1,7 +1,7 @@
 
 /*
  * **************************************************************************************
- * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -98,6 +98,11 @@ FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postDa
 FoEproxy.addHandler('GuildExpeditionService', 'getOverview', (data, postData) => {
        
     betterMusic.setScene("ge");
+    
+});
+FoEproxy.addHandler('BattlefieldService', 'all', (data, postData) => {
+       
+    betterMusic.setScene("battle");
     
 });
 

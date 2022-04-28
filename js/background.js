@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -364,7 +364,7 @@ alertsDB.version(1).stores({
 			});
 
 			browser.tabs.create({
-				url: `https://foe-helper.com/extension/update?v=${version}&lang=${lng}`
+				url: `https://foe-helper.com/extension/update?lang=${lng}`
 			});
 		}
 	});

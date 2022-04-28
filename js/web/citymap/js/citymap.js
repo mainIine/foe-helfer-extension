@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -15,7 +15,7 @@
 /**
  * CityMap class
  *
- * @type {{highlightOldBuildings: CityMap.highlightOldBuildings, EfficiencyFactor: number, init: CityMap.init, UnlockedAreas: null, BlockedAreas: null, SubmitData: CityMap.SubmitData, SetBuildings: CityMap.SetBuildings, CityData: null, ScaleUnit: number, CityView: string, CityEntities: null, hashCode: (function(*): *), OccupiedArea: number, IsExtern: boolean, showSubmitBox: CityMap.showSubmitBox, getAreas: CityMap.getAreas, PrepareBox: CityMap.PrepareBox, GetBuildingSize: (function(*): {}), BuildGrid: CityMap.BuildGrid, copyMetaInfos: CityMap.copyMetaInfos}}
+ * @type {{highlightOldBuildings: CityMap.highlightOldBuildings, EfficiencyFactor: number, init: CityMap.init, UnlockedAreas: null, BlockedAreas: null, SubmitData: CityMap.SubmitData, SetBuildings: CityMap.SetBuildings, CityData: null, ScaleUnit: number, CityView: string, CityEntities: null, hashCode: (function(*): *), OccupiedArea: number, IsExtern: boolean, showSubmitBox: CityMap.showSubmitBox, getAreas: CityMap.getAreas, PrepareBox: CityMap.PrepareBox, GetBuildingSize: (function(*): {}), BuildGrid: CityMap.BuildGrid, copyMetaInfos: CityMap.copyMetaInfos}, GetBuildingEra: (function(*): {})}
  */
 let CityMap = {
 	CityData: null,
@@ -259,7 +259,7 @@ let CityMap = {
 
 			let CityMapEntity = CityMap.CityData[b],
 				d = MainParser.CityEntities[CityMapEntity['cityentity_id']],
-				BuildingSize = CityMap.GetBuildingSize(CityMap.CityData[b]),
+				BuildingSize = CityMap.GetBuildingSize(CityMapEntity),
 
 				x = (CityMap.CityData[b]['x'] === undefined ? 0 : ((parseInt(CityMap.CityData[b]['x']) * CityMap.ScaleUnit) / 100)),
 				y = (CityMap.CityData[b]['y'] === undefined ? 0 : ((parseInt(CityMap.CityData[b]['y']) * CityMap.ScaleUnit) / 100)),
@@ -273,9 +273,8 @@ let CityMap = {
 					top: y + 'em'
 				})
 					.attr('title', d['name'])
-					.attr('data-entityid', CityMap.CityData[b]['id']),
-				era;
-			
+					.attr('data-entityid', CityMap.CityData[b]['id']);
+
 			CityMap.OccupiedArea += (BuildingSize['building_area']);
 
 			if (!CityMap.OccupiedArea2[d.type]) CityMap.OccupiedArea2[d.type] = 0;
@@ -283,35 +282,7 @@ let CityMap = {
 
 			StreetsNeeded += BuildingSize['street_area'];
 
-			// Great building
-			if (d['type'] === 'greatbuilding') {
-				era = CurrentEraID;
-			}
-			else if (d.id.indexOf("AllAge") > -1) {
-				era = CurrentEraID;
-			}
-			// Multi era
-			else if (CityMapEntity['level']) {
-				era = CityMapEntity['level'] + 1;
-			}
-			// new format
-			else if (d?.components?.AllAge?.era?.era) {
-				era = Technologies.Eras[d.components.AllAge.era.era];
-			}
-			// Zeitalter suchen
-			else {
-				let regExString = new RegExp("(?:_)((.[\\s\\S]*))(?:_)", "ig"),
-					testEra = regExString.exec(d['id']);
-
-				if (testEra && testEra.length > 1) {
-					era = Technologies.Eras[testEra[1]];
-
-					// AllAge => Current era
-					if (era === 0) {
-						era = CurrentEraID;
-					}
-				}
-			}
+			let era = CityMap.GetBuildingEra(CityMapEntity);
 
 			if(era){
 				f.attr({
@@ -604,5 +575,44 @@ let CityMap = {
 
 		}
 
+	},
+
+	GetBuildingEra: (CityMapEntity) => {
+		let CityEntity = MainParser.CityEntities[CityMapEntity['cityentity_id']];
+
+		// Great building
+		if (CityEntity['type'] === 'greatbuilding') {
+			return CurrentEraID;
+		}
+		// AllAge
+		else if (CityMapEntity['cityentity_id'].indexOf("AllAge") > -1) {
+			return CurrentEraID;
+		}
+		// Multi era
+		else if (CityMapEntity['level']) {
+			return CityMapEntity['level'] + 1;
+		}
+		// new format
+		else if (CityEntity?.components?.AllAge?.era?.era) {
+			return Technologies.Eras[CityEntity.components.AllAge.era.era];
+		}
+		// Zeitalter suchen
+		else {
+			let regExString = new RegExp("(?:_)((.[\\s\\S]*))(?:_)", "ig"),
+				testEra = regExString.exec(CityMapEntity['cityentity_id']);
+
+			if (testEra && testEra.length > 1) {
+				era = Technologies.Eras[testEra[1]];
+
+				// AllAge => Current era
+				if (era === 0) {
+					era = CurrentEraID;
+				}
+				return era;
+			}
+			else {
+				return CurrentEraID;
+			}
+		}
 	}
 };
