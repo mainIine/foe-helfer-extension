@@ -19,7 +19,7 @@
 #statsBody {
 	width: 1100px;
 	max-height: 800px;
-	overflow: scroll;
+	overflow: auto;
 }
 
 #stats #highcharts {
@@ -41,8 +41,15 @@
 }
 
 #stats .option-era-dropdown {
-	width: 146px;
-	align-self: end;
+	width: 170px;
+}
+
+#stats .option-era-dropdown .dropdown {
+	width: 100%;
+}
+
+#stats .option-era-dropdown .dropdown ul li {
+	padding: 0.1rem;
 }
 
 #stats .tabs  {

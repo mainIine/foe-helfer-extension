@@ -54,11 +54,6 @@
     text-decoration: underline;
 }
 
-#moppelhelper #moppelhelperBody .dropdown span.arrow {
-	top: 14px;
-	right: 8px;
-}
-
 #moppelhelper #moppelhelperBody .dropdown input[type=checkbox]:checked ~ span.arrow {
 	top: 11px;
 }
