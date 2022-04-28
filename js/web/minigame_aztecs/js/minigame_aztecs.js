@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -365,15 +365,16 @@ let AztecsHelper = {
                             [Overlap, Diff] = AztecsHelper.Compare(cell.surrUnCells, otherCell.surrUnCells); //Überlapp und Unterschied der auf unbekannten Nachbarn zwischen der Zelle und der anderen Zelle bestimmen
                             
                             if (Overlap.length!=0) { //wenn es einen Überlapp gibt
-                                let testP=0;
-                                for (let oC of Overlap) { //Summe der Wahrscheinlichkeiten der Überlappzellen in Bezug auf die andere Zelle bestimmen
-                                    if (map[oC.y][oC.x].hasOwnProperty("probList")) {
-                                        testP += map[oC.y][oC.x].probList[other] || 0;
-                                    } 
-                                }
+                                let testP= Math.max(0,
+                                                    otherCell.content + Overlap.length - otherCell.surrUnCells.length - otherCell.surrResCells.length);
+                                //for (let oC of Overlap) { //Summe der Wahrscheinlichkeiten der Überlappzellen in Bezug auf die andere Zelle bestimmen
+                                //    if (map[oC.y][oC.x].hasOwnProperty("probList")) {
+                                //        testP += map[oC.y][oC.x].probList[other] || 0;
+                                //    } 
+                                //}
                                 let min = unrevRes - (otherCell.content - otherCell.surrResCells.length);  //min Anzahl der Diff-Zellen die eine Ressource haben
                                 if (min < 0) min = 0;
-                                let max = unrevRes - Math.floor(testP); //max Anzahl der Diff Zellen die eine Ressource haben können
+                                let max = unrevRes - testP; //max Anzahl der Diff Zellen die eine Ressource haben können
 
                                 if (Diff.length == min || max == 0){ // Anzahl Diffzellen entspricht dem minimum oder das max ist 0
                                     let prob = (max == 0) ? 0 : 1;
@@ -548,5 +549,13 @@ let AztecsHelper = {
         }
         console.log(heat);
     },
+
+    test:()=>{
+        AztecsHelper.mapHeight=7;
+        AztecsHelper.mapWidth=11;
+        AztecsHelper.grid = JSON.parse('[[{"content":"?"},{"content":"?"},{"content":"?"},{"content":"?"},{"content":"?"},{"content":"?"},{"content":"?"},{"content":"?"},{"content":"?"},{"content":"?"},{"content":"?"}],[{"content":"?"},{"content":"?"},{"content":"?"},{"content":"?"},{"content":"?"},{"content":"?"},{"content":1},{"content":"?"},{"content":"?"},{"content":4},{"content":"?"}],[{"content":"?"},{"content":"?"},{"content":"?`"},{"content":"?"},{"content":"?"},{"content":2},{"content":1},{"content":1},{"content":"?"},{"content":"?"},{"content":"?"}],[{"content":"?"},{"content":"?"},{"content":"?"},{"content":"?"},{"content":2},{"content":1},{"content":" "},{"content":1},{"content":"?"},{"content":3},{"content":2}],[{"content":"?"},{"content":"?"},{"content":"?"},{"content":"?"},{"content":2},{"content":" "},{"content":" "},{"content":1},{"content":1},{"content":1},{"content":" "}],[{"content":"?"},{"content":"?"},{"content":"?"},{"content":"?"},{"content":2},{"content":" "},{"content":" "},{"content":" "},{"content":" "},{"content":" "},{"content":" "}],[{"content":"?"},{"content":"?"},{"content":"?"},{"content":"?"},{"content":1},{"content":" "},{"content":" "},{"content":" "},{"content":" "},{"content":" "},{"content":" "}]]');
+        AztecsHelper.CalcAdjacentCells();
+    },
+
 
 };

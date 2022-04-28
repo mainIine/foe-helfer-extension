@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -13,10 +13,6 @@
 
 FoEproxy.addHandler('QuestService', 'getUpdates', (data, postData) => {
     
-    if (Recurring.first) {
-        Recurring.first = false;
-        Recurring.data = JSON.parse(localStorage.getItem('Recurring')) || {"Questlist": {}, "currentEra": 0, "count":0, "showCounter": false};
-    }
     if (Recurring.data.currentEra < CurrentEraID) {
         Recurring.Questlist = {};
         Recurring.data.currentEra = CurrentEraID;
@@ -44,6 +40,8 @@ FoEproxy.addHandler('QuestService', 'getUpdates', (data, postData) => {
         if (Recurring.data.Questlist[q].era == CurrentEraID) {
             Recurring.data.filter.push(q);
             if (!Recurring.data.Questlist[q].diamonds) Recurring.data.count++;
+        } else if (CurrentEraID - Recurring.data.Questlist[q].era > 1) {
+            delete Recurring.data.Questlist[q];
         }
     }
     
@@ -52,9 +50,7 @@ FoEproxy.addHandler('QuestService', 'getUpdates', (data, postData) => {
 });
 
 let Recurring = {
-    first: true,
-    data: {},
-    filter:[],
+    data: JSON.parse(localStorage.getItem('Recurring')) || {"Questlist": {}, "currentEra": 0, "count":0, "showCounter": false},
    
 	/**
 	 * Box in den DOM

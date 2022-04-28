@@ -72,12 +72,6 @@
 		"sort": 11
 	},
 	{
-		"name": "ShowOwnPartOnAllGBs",
-		"status": true,
-		"group": "Boxes",
-		"sort": 12
-	},
-	{
 		"name": "ShowMapTradeWarning",
 		"status": true,
 		"group": "Boxes",
