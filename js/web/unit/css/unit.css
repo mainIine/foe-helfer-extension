@@ -77,15 +77,15 @@
 }
 
 #UnitOverview #UnitOverviewBody .head-sticky th {
-    border-top: unset !important;
-    top: 0 !important;
+	border-top: unset !important;
+	top: 0 !important;
 }
 
 #UnitOverview #UnitOverviewBody .tabs ul li a span {
-    width: 21px;
-    top: 6px;
+	width: 21px;
+	top: 6px;
 	background: url('../images/unit_tab_icon.png') 0 3px no-repeat;
-    background-size: 126px 20px;
+	background-size: 126px 20px;
 }
 
 #UnitOverview #UnitOverviewBody .tabs ul li.defense a span {
