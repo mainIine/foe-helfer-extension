@@ -107,7 +107,7 @@ let Unit = {
 
 		if (Unit.alca)
 		{
-			top.push('<div style="padding: 4px;" class="text-center dark-bg" id="alca-timer"></div>');
+			top.push('<div id="alca-timer" class="text-center dark-bg"></div>');
 		}
 
 		// Attack army
@@ -425,6 +425,10 @@ let Unit = {
 				Unit.CurrentTab = $('.unit-tabs li.active').index() + 1;
 			});
 		});
+		if (Unit.alca)
+		{
+			$('#UnitOverview').find('.unit-tabs').prop('style', 'height:calc(100% - 80px)');
+		}
 	},
 
 
@@ -511,7 +515,7 @@ let Unit = {
 	 * @param id
 	 */
 	SetTabs: (id)=>{
-		Unit.Tabs.push('<li class="' + id + ' game-cursor"><a href="#' + id + '" class="game-cursor"><span>&nbsp;</span></a></li>');
+		Unit.Tabs.push('<li class="' + id + ' game-cursor"><a href="#' + id + '" class="game-cursor" title="' + i18n('Boxes.Units.' + id + '') + '" ><span>&nbsp;</span></a></li>');
 	},
 
 
