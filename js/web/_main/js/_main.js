@@ -1368,7 +1368,7 @@ let MainParser = {
 
 		}
 
-		Reader.ArmyBoosts = Unit.GetBoostSums(BoostDict);
+		//Reader.ArmyBoosts = Unit.GetBoostSums(BoostDict);
 
 		//Reader.showResult();
 		

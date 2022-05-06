@@ -81,12 +81,12 @@ let Reader = {
 		Reader.Plunder_Repel = '';
 
 		//To be enabled again when set up connection with website
-		/* if (FirstTime) 
+		if (FirstTime) 
 		{
 			FirstTime = 0;
 			MainParser.SendBuildings(MainParser.CityMapData);
 		}
- */
+ 
 
 		Reader.IsPlunderable = IsPlunderable;
 		const Http = new XMLHttpRequest();
