@@ -55,6 +55,7 @@ let Unit = {
 	Types: null,
 	Attack : null,
 	Defense: null,
+	ArenaDefense: null,
 	alca : undefined,
 
 	Cache : null,
@@ -66,6 +67,9 @@ let Unit = {
 	TabsContent: [],
 	CurrentTab: 1,
 
+	Settings: {
+		pictogramScaling: 4,
+	},
 
 	/**
 	 * Creates an HTML box for the DOM
@@ -82,7 +86,8 @@ let Unit = {
 				auto_close: true,
 				dragdrop: true,
 				resize: true,
-				minimize: true
+				minimize: true,
+				settings: 'Unit.ShowSettings()'
 			};
 
 			HTML.Box(args);
@@ -100,6 +105,8 @@ let Unit = {
 	 * Render and place in the BoxContent
 	 */
 	BuildBox:()=> {
+		Unit.LoadSettings();
+		document.querySelector('#UnitOverview').style.setProperty('--unit_scale', Unit.Settings.pictogramScaling + '/5');
 
 		let top = [];
 
@@ -762,5 +769,48 @@ let Unit = {
 		last.push('</table>');
 
 		Unit.SetTabContent('alca', last.join(''));
+	},
+
+	/**
+	*
+	*/
+	LoadSettings: () => {
+		Unit.Settings = JSON.parse(localStorage.getItem('UnitOverviewSettings')) || Unit.Settings;
+		Unit.Settings.pictogramScaling = (Unit.Settings && Unit.Settings.pictogramScaling !== undefined) ? Unit.Settings.pictogramScaling : 4;
+	},
+
+	/**
+	* Settings, Settings.pictogramScaling;
+	*/
+	ShowSettings: () => {
+		let h = [];
+
+		h.push(`<p>${i18n('Boxes.Units.PictogramScalingTitle')}
+					<button class="btn btn-default btn-tight btn-set-value" data-value="-1">&lt;</button>
+					<input type="number" id="pictogramScaling" step="1" min="2" max="5" placeholder="2-5" required value="${Unit.Settings.pictogramScaling}" title="${HTML.i18nTooltip(i18n('Boxes.Units.PictogramScalingDesc'))}">
+					<button class="btn btn-default btn-tight btn-set-value" data-value="1">&gt;</button>
+					<span class="validity"></span>
+				</p>`);
+		h.push(`<p><button onclick="Unit.SaveSettings()" id="unit-save-settings" class="btn btn-default" style="width:100%">${i18n('Boxes.Settings.Save')}</button></p>`);
+
+		$('#UnitOverviewSettingsBox').html(h.join(''));
+		
+		$('#UnitOverviewSettingsBox').on('click', '.btn-set-value', function () {
+			let value = parseFloat($('#pictogramScaling').val()) + parseFloat($(this).data('value'));
+			value = value < 2 ? 2 : value;
+			value = value > 5 ? 5 : value;
+			$('#pictogramScaling').val(value);
+		});
+	},
+
+	/**
+	*
+	*/
+	SaveSettings: () => {
+		Unit.Settings.pictogramScaling = 2 <= $('#pictogramScaling').val() && $('#pictogramScaling').val() <= 5 ? $('#pictogramScaling').val() : Unit.Settings.pictogramScaling;
+		localStorage.setItem('UnitOverviewSettings', JSON.stringify(Unit.Settings));
+
+		$(`#UnitOverviewSettingsBox`).remove();
+		Unit.BuildBox();
 	}
 };
