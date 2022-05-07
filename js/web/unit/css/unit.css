@@ -104,8 +104,12 @@
 	background-position: -84px 3px;
 }
 
-#UnitOverview {
-	--unit_scale: 4/5;
+#UnitOverviewSettingsBox input:invalid+button+span:after {
+	content: '❌';
+}
+
+#UnitOverviewSettingsBox input:valid+button+span:after {
+	content: '✔️';
 }
 
 .unit_icon {
