@@ -893,7 +893,7 @@
     "Boxes.Units.Defend": "Defence%",
     "Boxes.Units.NextUnitsIn": "The next __count__ Traz units will finish in <span class=\"alca-countdown\"></span> at __harvest__ hr",
     "Boxes.Units.NotFilled": "Slot Empty",
-    "Boxes.Units.PictogramScalingDesc": "Choose a value between 2 and 5 !&#10;Choose a smaller value for more data&#10;or a larger one for better viewing.",
+    "Boxes.Units.PictogramScalingDesc": "Choose a value between 1 and 4 !&#10;Choose a smaller value for more data&#10;or a larger one for better viewing.",
     "Boxes.Units.PictogramScalingTitle": "Imagesize",
     "Boxes.Units.Proportionally": "Percentage",
     "Boxes.Units.Quantity": "Quantity",
