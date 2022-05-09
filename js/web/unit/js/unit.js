@@ -68,7 +68,7 @@ let Unit = {
 	CurrentTab: 1,
 
 	Settings: {
-		pictogramScaling: 4,
+		pictogramScaling: 3,
 	},
 
 	/**
@@ -106,7 +106,8 @@ let Unit = {
 	 */
 	BuildBox:()=> {
 		Unit.LoadSettings();
-		document.querySelector('#UnitOverview').style.setProperty('--unit_scale', Unit.Settings.pictogramScaling + '/5');
+		let unitScale = parseInt(Unit.Settings.pictogramScaling) + 1 + '/5';
+		document.querySelector('#UnitOverview').style.setProperty('--unit_scale', unitScale);
 
 		let top = [];
 
@@ -787,7 +788,7 @@ let Unit = {
 
 		h.push(`<p>${i18n('Boxes.Units.PictogramScalingTitle')}
 					<button class="btn btn-default btn-tight btn-set-value" data-value="-1">&lt;</button>
-					<input type="number" id="pictogramScaling" step="1" min="2" max="5" placeholder="2-5" required value="${Unit.Settings.pictogramScaling}" title="${HTML.i18nTooltip(i18n('Boxes.Units.PictogramScalingDesc'))}">
+					<input type="number" id="pictogramScaling" step="1" min="1" max="4" placeholder="1-4" required value="${Unit.Settings.pictogramScaling}" title="${HTML.i18nTooltip(i18n('Boxes.Units.PictogramScalingDesc'))}">
 					<button class="btn btn-default btn-tight btn-set-value" data-value="1">&gt;</button>
 					<span class="validity"></span>
 				</p>`);
@@ -797,8 +798,9 @@ let Unit = {
 		
 		$('#UnitOverviewSettingsBox').on('click', '.btn-set-value', function () {
 			let value = parseFloat($('#pictogramScaling').val()) + parseFloat($(this).data('value'));
-			value = value < 2 ? 2 : value;
-			value = value > 5 ? 5 : value;
+			if (value !== value) value = 1; //NaN => 1
+			value = value < 1 ? 1 : value;
+			value = value > 4 ? 4 : value;
 			$('#pictogramScaling').val(value);
 		});
 	},
@@ -807,10 +809,10 @@ let Unit = {
 	*
 	*/
 	SaveSettings: () => {
-		Unit.Settings.pictogramScaling = 2 <= $('#pictogramScaling').val() && $('#pictogramScaling').val() <= 5 ? $('#pictogramScaling').val() : Unit.Settings.pictogramScaling;
+		Unit.Settings.pictogramScaling = 1 <= $('#pictogramScaling').val() && $('#pictogramScaling').val() <= 4 ? $('#pictogramScaling').val() : Unit.Settings.pictogramScaling;
 		localStorage.setItem('UnitOverviewSettings', JSON.stringify(Unit.Settings));
 
-		$(`#UnitOverviewSettingsBox`).remove();
+		$('#UnitOverviewSettingsBox').remove();
 		Unit.BuildBox();
 	}
 };
