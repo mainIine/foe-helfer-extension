@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -40,7 +40,7 @@ FoEproxy.addFoeHelperHandler('QuestsUpdated', data => {
 
 /**
  *
- * @type {{FirstCycle: boolean, IsNextLevel: boolean, CalcBackgroundBody: Parts.CalcBackgroundBody, BuildBoxPowerLeveling: Parts.BuildBoxPowerLeveling, CopyStrings: {}, LastLevel: null, TrustExistingPlaces: boolean, RemainingOwnPart: null, CopyIncludeFP: boolean, CopyOwnPlayerName: null, CopyBuildingName: null, CopyIncludeLevelString: boolean, PowerLevelingMaxLevel: number, CopyDescending: boolean, CopyPlaces: boolean[], CopyIncludeGB: boolean, CopyModeAuto: boolean, CurrentMaezens: *[], UpdateTableBodyPowerLeveling: Parts.UpdateTableBodyPowerLeveling, Exts: number[], SettingsRemoveRow: Parts.SettingsRemoveRow, CopyModeAutoUnsafe: boolean, CityMapEntity: undefined, SafePlaces: undefined, Rankings: undefined, Level: undefined, Show: Parts.Show, ArcPercents: number[], GetCopyStringEx: (function(*, *, *, *, *, *, *): string), DefaultButtons: (number|string)[], CalcBody: Parts.CalcBody, GetCopyString: (function(): string), CalcBodyPowerLevelingData: (function(): {HasDoubleCollection: boolean, DoubleCollections: [], EigenNettos: [], CityEntity: *, EigenBruttos: [], MaxLevel: number | number, OwnPartSum: number, MinLevel: *, Places: []}), PowerLevelingData: null, CopyModeAll: boolean, CopyFunction: (function(*, *): string), CopyFormatPerGB: boolean, CalcBodyPowerLeveling: Parts.CalcBodyPowerLeveling, SettingsInsertNewRow: Parts.SettingsInsertNewRow, CopyIncludePlayer: boolean, CopyIncludeOwnPart: boolean, LastPlayerID: null, ShowCalculatorSettings: Parts.ShowCalculatorSettings, GetStorageKey: ((function(*, *): string)|*), SettingsSaveValues: Parts.SettingsSaveValues, LockExistingPlaces: boolean, BackGroundBoxAnimation: Parts.BackGroundBoxAnimation, CopyPlayerName: null, PlaceAvailables: *[], LastEntityID: null, Maezens: *[], CalcTableBodyPowerLeveling: Parts.CalcTableBodyPowerLeveling, CopyString: null, CopyPreP: boolean, CopyIncludeLevel: boolean, IsPreviousLevel: boolean, ShowPowerLeveling: Parts.ShowPowerLeveling, PlayInfoSound: null}}
+ * @type {{FirstCycle: boolean, IsNextLevel: boolean, CalcBackgroundBody: Parts.CalcBackgroundBody, BuildBoxPowerLeveling: Parts.BuildBoxPowerLeveling, CopyStrings: {}, LastLevel: null, TrustExistingPlaces: boolean, RemainingOwnPart: null, CopyIncludeFP: boolean, CopyOwnPlayerName: null, CopyBuildingName: null, CopyIncludeLevelString: boolean, PowerLevelingMaxLevel: number, CopyDescending: boolean, CopyPlaces: boolean[], CopyIncludeGB: boolean, CopyModeAuto: boolean, CurrentMaezens: *[], UpdateTableBodyPowerLeveling: Parts.UpdateTableBodyPowerLeveling, Exts: number[], SettingsRemoveRow: Parts.SettingsRemoveRow, CopyModeAutoUnsafe: boolean, CityMapEntity: undefined, SafePlaces: undefined, Rankings: undefined, Level: undefined, Show: Parts.Show, ArcPercents: number[], GetCopyStringEx: (function(*, *, *, *, *, *, *): string), DefaultButtons: (number|string)[], CalcBody: Parts.CalcBody, GetCopyString: (function(): string), CalcBodyPowerLevelingData: (function(): {HasDoubleCollection: boolean, DoubleCollections: [], EigenNettos: [], CityEntity: *, EigenBruttos: [], MaxLevel: number | number, OwnPartSum: number, MinLevel: *, Places: []}), PowerLevelingData: null, CopyModeAll: boolean, CopyFunction: (function(*, *): string), CopyFormatPerGB: boolean, CalcBodyPowerLeveling: Parts.CalcBodyPowerLeveling, SettingsInsertNewRow: Parts.SettingsInsertNewRow, CopyIncludeDanger:boolean, CopyIncludePlayer: boolean, CopyIncludeOwnPart: boolean, LastPlayerID: null, ShowCalculatorSettings: Parts.ShowCalculatorSettings, GetStorageKey: ((function(*, *): string)|*), SettingsSaveValues: Parts.SettingsSaveValues, LockExistingPlaces: boolean, BackGroundBoxAnimation: Parts.BackGroundBoxAnimation, CopyPlayerName: null, PlaceAvailables: *[], LastEntityID: null, Maezens: *[], CalcTableBodyPowerLeveling: Parts.CalcTableBodyPowerLeveling, CopyString: null, CopyPreP: boolean, CopyIncludeLevel: boolean, IsPreviousLevel: boolean, ShowPowerLeveling: Parts.ShowPowerLeveling, PlayInfoSound: null}}
  */
 let Parts = {
 	CityMapEntity: undefined,
@@ -54,6 +54,7 @@ let Parts = {
 
 	CurrentMaezens: [],
 	RemainingOwnPart: null,
+	AnyDangers: null,
 
 	PowerLevelingMaxLevel: 999999,
 	PowerLevelingData: null,
@@ -87,6 +88,7 @@ let Parts = {
 	CopyPlayerName: null,
 	CopyBuildingName: null,
 
+	CopyIncludeDanger: false,
 	CopyIncludePlayer: true,
 	CopyIncludeGB: true,
 	CopyIncludeLevel: true,
@@ -295,6 +297,11 @@ let Parts = {
 				if (OptionsName) {
 					let StorageKey;
 
+					if (OptionsName === 'danger') {
+						Parts.CopyIncludeDanger = !Parts.CopyIncludeDanger;
+						StorageKey = Parts.GetStorageKey('CopyIncludeDanger', (Parts.CopyFormatPerGB ? Parts.CityMapEntity['cityentity_id'] : null));
+						localStorage.setItem(StorageKey, Parts.CopyIncludeDanger);
+					}
 					if (OptionsName === 'player') {
 						Parts.CopyIncludePlayer = !Parts.CopyIncludePlayer;
 						StorageKey = Parts.GetStorageKey('CopyIncludePlayer', (Parts.CopyFormatPerGB ? Parts.CityMapEntity['cityentity_id'] : null));
@@ -391,6 +398,9 @@ let Parts = {
 
 			Parts.CopyFormatPerGB = (localStorage.getItem(Parts.GetStorageKey('CopyFormatPerGB', null)) === 'true');
 			if (!Parts.CopyFormatPerGB) {
+				let SavedCopyIncludeDanger = localStorage.getItem(Parts.GetStorageKey('CopyIncludeDanger', null));
+				if (SavedCopyIncludeDanger !== null) Parts.CopyIncludeDanger = (SavedCopyIncludeDanger === 'true');
+
 				let SavedCopyIncludePlayer = localStorage.getItem(Parts.GetStorageKey('CopyIncludePlayer', null));
 				if (SavedCopyIncludePlayer !== null) Parts.CopyIncludePlayer = (SavedCopyIncludePlayer === 'true');
 
@@ -626,6 +636,7 @@ let Parts = {
 			Parts.CurrentMaezens[i] = Parts.Maezens[i] | 0;
 		}
 		Parts.RemainingOwnPart = EigenTotal - EigenStart;
+		Parts.AnyDangers = (Dangers.find(e => e > 5) || LeveltLG.find(e => e) ? true : false);
 
 		Parts.SafePlaces = [];
 		for (let i = 0; i < 5; i++) {
@@ -912,6 +923,15 @@ let Parts = {
         }
 
 		if (localStorage.getItem(Parts.GetStorageKey('CopyFormatPerGB', null)) === 'true') {
+			// CopyIncludeDanger
+			let SavedCopyIncludeDanger = localStorage.getItem(Parts.GetStorageKey('CopyIncludeDanger', Parts.CityMapEntity['cityentity_id']));
+			if (SavedCopyIncludeDanger !== null) {
+				Parts.CopyIncludeDanger = (CopyIncludeDanger === 'true');
+			}
+			else {
+				Parts.CopyIncludeDanger = false;
+            }
+
 			let SavedCopyIncludePlayer = localStorage.getItem(Parts.GetStorageKey('CopyIncludePlayer', Parts.CityMapEntity['cityentity_id']));
 			if (SavedCopyIncludePlayer !== null) {
 				Parts.CopyIncludePlayer = (SavedCopyIncludePlayer === 'true');
@@ -1010,6 +1030,7 @@ let Parts = {
 			'<label class="form-check-label game-cursor" for="options-levelup"><input type="checkbox" class="form-check-input" id="options-levelup" data-options="levelup" ' + (Parts.CopyIncludeLevelString ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.OptionsLevelUp') + '</span></label>' +
 			'<label class="form-check-label game-cursor" for="options-ownpart"><input type="checkbox" class="form-check-input" id="options-ownpart" data-options="ownpart" ' + (Parts.CopyIncludeOwnPart ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.OptionsOwnPart') + '</span></label>' +
 			'<label class="form-check-label game-cursor" for="options-prep"><input type="checkbox" class="form-check-input" id="options-prep" data-options="prep" ' + (Parts.CopyPreP ? 'checked' : '') + '> <span>P(xx)</span></label>' +
+			'<label class="form-check-label game-cursor" for="options-danger"><input type="checkbox" class="form-check-input" id="options-danger" data-options="danger" ' + (Parts.CopyIncludeDanger ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.OptionsDanger') + '</span></label>' +
 			'</div>';
 
 		h.push(Options)
@@ -1122,12 +1143,16 @@ let Parts = {
 
 
 	GetCopyString: () => {
-		return Parts.GetCopyStringEx(Places=Parts.CopyPlaces, Maezens=Parts.Maezens, Level=Parts.Level, OwnPart=Parts.RemainingOwnPart, PlaceAll=Parts.CopyModeAll, PlaceAuto=Parts.CopyModeAuto, PlaceAutoUnsafe=Parts.CopyModeAutoUnsafe)
+		return Parts.GetCopyStringEx(Places=Parts.CopyPlaces, Maezens=Parts.Maezens, Level=Parts.Level, OwnPart=Parts.RemainingOwnPart, PlaceAll=Parts.CopyModeAll, PlaceAuto=Parts.CopyModeAuto, PlaceAutoUnsafe=Parts.CopyModeAutoUnsafe, PlaceDanger=Parts.AnyDangers)
     },
 
 
-	GetCopyStringEx: (Places, Maezens, Level, OwnPart, PlaceAll, PlaceAuto, PlaceAutoUnsafe) => {	
+	GetCopyStringEx: (Places, Maezens, Level, OwnPart, PlaceAll, PlaceAuto, PlaceAutoUnsafe, PlaceDanger) => {	
 		let Ret = [];
+
+		// TODO | Prüfen, ob tatsächlich ein Platz unsicher ist
+		if (Parts.CopyIncludeDanger && PlaceDanger) Ret.push('!!!');
+
 		if (Parts.CopyIncludePlayer) Ret.push(Parts.CopyPlayerName);
 
 		if (Parts.CopyIncludeGB) Ret.push(Parts.CopyBuildingName);
@@ -1244,7 +1269,7 @@ let Parts = {
 			box.on('click', '.button-powerlevel-copy', function () {
 				let gb_level = parseInt($(this).parent().find(".hidden-text").html());
 
-				let CopyParts = Parts.GetCopyStringEx(Places=[true, true, true, true, true], Maezens=Parts.PowerLevelingData.Places[gb_level], Level=gb_level, OwnPart=Parts.PowerLevelingData.EigenNettos[gb_level], PlaceAll=true, PlaceAuto=false, PlaceAutoUnsafe=false);
+				let CopyParts = Parts.GetCopyStringEx(Places=[true, true, true, true, true], Maezens=Parts.PowerLevelingData.Places[gb_level], Level=gb_level, OwnPart=Parts.PowerLevelingData.EigenNettos[gb_level], PlaceAll=true, PlaceAuto=false, PlaceAutoUnsafe=false, PlaceDanger=false);
 				helper.str.copyToClipboardLegacy(CopyParts);
 			});
 		}
@@ -1465,7 +1490,6 @@ let Parts = {
 		// new own button
 		c.push(nV);
 
-		console.log(allGB);
 		c.push('<p><input id="copyformatpergb" class="copyformatpergb game-cursor" ' + (Parts.CopyFormatPerGB ? 'checked' : '') + ' type="checkbox"> ' + i18n('Boxes.OwnpartCalculator.CopyFormatPerGB'));
 		c.push('<br><input type="checkbox" id="openonaliengb" class="openonaliengb game-cursor" ' + ((allGB == 'true') ? 'checked' : '') + '> ' + i18n('Settings.ShowOwnPartOnAllGBs.Desc')) + '</p>';
 
@@ -1513,6 +1537,7 @@ let Parts = {
 
 		let OldCopyFormatPerGB = Parts.CopyFormatPerGB;
 		Parts.CopyFormatPerGB = $('.copyformatpergb').prop('checked');
+		localStorage.setItem(Parts.GetStorageKey('CopyFormatPerGB', null), Parts.CopyFormatPerGB);
 
         let openforeignGB = false;
 		if ($("#openonaliengb").is(':checked'))

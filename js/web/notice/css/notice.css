@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -56,10 +56,10 @@
 #noticesBody .sub-tab-edit {
 	width: 24px;
 	height: 24px;
-	background: rgba(255,255,255,0.2) url('../../../../css/images/hud/edit.png') center center no-repeat;
+	background: var(--black-50) url('../../../../css/images/hud/edit.png') center center no-repeat;
 	position: absolute;
 	background-size: 80%;
-	border: 1px solid var(--text-normal);
+	border: 1px solid var(--border-table-bottom);
 	border-radius: 3px;
 	z-index: 50;
 }
@@ -109,10 +109,6 @@
 	margin-bottom: 15px;
 }
 
-#noticesBody .content-head-player span.clan-name {
-
-}
-
 #noticesBody .content-head-player div.info-text {
 	margin-left: auto;
 }
@@ -135,8 +131,18 @@
 #notices-modalBody,
 #notices-modal-playersBody {
 	padding: 10px;
+	flex-wrap: wrap;
 	display: flex;
-	flex-direction: column;
+}
+
+#notices-modalBody input {
+	width: 100%;
+	margin-bottom: 5px;
+}
+
+#notices-modalBody .btn-default {
+	margin: 0 1px;
+	flex-grow: 2;
 }
 
 #notices-modal-playersBody {

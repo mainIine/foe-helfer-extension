@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -12,22 +12,34 @@
  */
 
 #UnitOverview {
-	top: 30%;
-	right: 15%;
-	width: 490px;
-	height: 450px;
+	left: calc(50vw - 250px);
+	top: calc(50vh - 250px);
+	width: 420px;
+	height: 460px;
+	min-width: 283px;
+	min-height: 46px;
 }
 
-#UnitOverview .window-body {
-	overflow-x: hidden;
+#UnitOverview .unit-tabs {
+	height: calc(100% - 40px);
+}
+
+#UnitOverview #attack,
+#UnitOverview #defense,
+#UnitOverview #arenaDefense,
+#UnitOverview #pool,
+#UnitOverview #alca {
+	height: 100%;
+	overflow: hidden;
 	overflow-y: auto;
 }
 
-.units-icon {
-	background: transparent url('../images/armyuniticons.png') no-repeat;
-	display: inline-block;
-	width: 30px;
-	height: 30px;
+#UnitOverview #alca-timer {
+	padding: 4px;
+	height: 32px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 #UnitOverview .health {
@@ -57,157 +69,261 @@
 	position: absolute;
 }
 
+#UnitOverview #UnitOverviewBody table.foe-table th {
+	border-top: 1px solid var(--border-table-top);
+	position: sticky;
+	top: 24px;
+	z-index: 1;
+}
+
+#UnitOverview #UnitOverviewBody .head-sticky th {
+	border-top: unset !important;
+	top: 0 !important;
+}
+
 #UnitOverview #UnitOverviewBody .tabs ul li a span {
 	width: 21px;
-	background: transparent url('../images/unit-icons.png') 0 3px no-repeat;
-	background-size: 90px 20px;
-	height: 26px;
+	top: 6px;
+	background: url('../images/unit_tab_icon.png') 0 3px no-repeat;
+	background-size: 126px 20px;
 }
 
 #UnitOverview #UnitOverviewBody .tabs ul li.defense a span {
 	background-position: -21px 3px;
 }
 
+#UnitOverview #UnitOverviewBody .tabs ul li.arenaDefense a span {
+	background-position: -42px 3px;
+}
+
 #UnitOverview #UnitOverviewBody .tabs ul li.pool a span {
-	background-position: -41px 3px;
+	background-position: -63px 3px;
 }
 
 #UnitOverview #UnitOverviewBody .tabs ul li.alca a span {
-	background-position: -67px 3px;
+	background-position: -84px 3px;
 }
 
-.units-icon {background-size: 1030px 125px}
+#UnitOverviewSettingsBox input:invalid+button+span:after {
+	content: '❌';
+}
 
-.ArcticFuture_champion {background-position: 0 0}
-.BronzeAge_champion {background-position: 0 -32px}
-.ColonialAge_champion {background-position: 0 -63px}
-.ContemporaryEra_champion {background-position: 0 -94px}
-.EarlyMiddleAge_champion {background-position: -32px 0}
-.FutureEra_champion {background-position: -32px -32px}
-.HighMiddleAge_champion {background-position: -32px -63px}
-.IndustrialAge_champion {background-position: -32px -94px}
-.IronAge_champion {background-position: -63px 0}
-.LateMiddleAge_champion {background-position: -63px -32px}
-.ModernEra_champion {background-position: -63px -63px}
-.OceanicFuture_champion {background-position: -63px -94px}
-.PostModernEra_champion {background-position: -94px 0}
-.ProgressiveEra_champion {background-position: -94px -32px}
-.SpaceAgeAsteroidBelt_champion {background-position: -94px -63px}
-.SpaceAgeMars_champion {background-position: -94px -94px}
-.SpaceAgeVenus_champion {background-position: -125px 0}
-.TomorrowEra_champion {background-position: -125px -32px}
-.VirtualFuture_champion {background-position: -125px -63px}
-.aa_vehicle {background-position: -125px -94px}
-.anti_material_sniper {background-position: -157px 0}
-.archer {background-position: -157px -32px}
-.armored_car {background-position: -157px -63px}
-.armoredswordsman {background-position: -157px -94px}
-.assault_tank {background-position: -188px 0}
-.attack_helicopter {background-position: -188px -32px}
-.augmented_samurai {background-position: -188px -63px}
-.automatic_rifleman {background-position: -188px -94px}
-.axe_hammer_warrior {background-position: -219px 0}
-.clubman {background-position: -219px 0}
-.balista {background-position: -219px -32px}
-.barbarian {background-position: -219px -63px}
-.barbarian_slinger {background-position: -219px -94px}
-.battle_fortress {background-position: -250px 0}
-.battle_tank {background-position: -250px -32px}
-.bazooka {background-position: -250px -63px}
-.behemoth {background-position: -250px -94px}
-.belt {background-position: -281px 0}
-.biedenhaender_mercenary {background-position: -281px -32px}
-.bombarde {background-position: -281px -63px}
-.brave_warrior {background-position: -281px -94px}
-.breech_loader {background-position: -313px 0}
-.camel_archer {background-position: -313px -32px}
-.cannoniers {background-position: -313px -63px}
-.cataphract {background-position: -313px -94px}
-.catapult {background-position: -344px 0}
-.color_guard {background-position: -344px -32px}
-.combat_drone {background-position: -344px -63px}
-.commando {background-position: -344px -94px}
-.conscript {background-position: -375px 0}
-.crab_mech {background-position: -375px -32px}
-.crossbowman {background-position: -375px -63px}
-.dismounted_knight {background-position: -375px -94px}
-.dragon_drone {background-position: -406px 0}
-.dragoon {background-position: -406px -32px}
-.drill_ranger {background-position: -406px -63px}
-.drone_swarm {background-position: -406px -94px}
-.energy_cannon {background-position: -437px 0}
-.exo_soldier {background-position: -437px -32px}
-.feudal_knight {background-position: -437px -63px}
-.ghost_blaster {background-position: -437px -94px}
-.gliders {background-position: -469px 0}
-.grenadier {background-position: -469px -32px}
-.hoplite {background-position: -469px -63px}
-.horseman {background-position: -469px -94px}
-.hover_hammer {background-position: -500px 0}
-.hover_tank {background-position: -500px -32px}
-.howitzer {background-position: -500px -63px}
-.hydroelectric_eel {background-position: -500px -94px}
-.imperial_knight {background-position: -531px 0}
-.infantry_fighting_vehicle {background-position: -531px -32px}
-.jaeger {background-position: -531px -63px}
-.javeliner {background-position: -531px -94px}
-.khopesh_fighter {background-position: -562px 0}
-.lancer {background-position: -562px -32px}
-.legionnaire {background-position: -562px -63px}
-.longbowman {background-position: -562px -94px}
-.manta {background-position: -593px 0}
-.marksman {background-position: -593px -32px}
-.mech_artillery {background-position: -593px -63px}
-.mech_infantry {background-position: -593px -94px}
-.medusa {background-position: -625px 0}
-.military_drummer {background-position: -625px -32px}
-.militiaman {background-position: -625px -63px}
-.missile_artillery {background-position: -625px -94px}
-.mobile_microwave_gun {background-position: -656px 0}
-.mounted_bowman {background-position: -656px -32px}
-.mounted_brave {background-position: -656px -63px}
-.mounted_legionnaire {background-position: -656px -94px}
-.nail_storm {background-position: -687px 0}
-.nautilus {background-position: -687px -32px}
-.ninja {background-position: -687px -63px}
-.nubian_archer {background-position: -687px -94px}
-.observer_drone {background-position: -718px 0}
-.octopod {background-position: -718px -32px}
-.palintona {background-position: -718px -63px}
-.paratrooper {background-position: -718px -94px}
-.pikeman {background-position: -749px 0}
-.plasma_artillery {background-position: -749px -32px}
-.power_dragon {background-position: -749px -63px}
-.rail_gun_unit {background-position: -749px -94px}
-.ranger {background-position: -781px 0}
-.recon_raider {background-position: -781px -32px}
-.rf_cannon {background-position: -781px -63px}
-.rifleman {background-position: -781px -94px}
-.rocket_artillery {background-position: -812px 0}
-.rocket_troop {background-position: -812px -32px}
-.rogue {background-position: -812px -63px}
-.ronin_bot {background-position: -812px -94px}
-.sat_uplink_unit {background-position: -843px 0}
-.scimitar {background-position: -843px -32px}
-.sentinel {background-position: -843px -63px}
-.shredder {background-position: -843px -94px}
-.slinger {background-position: -874px 0}
-.sniper {background-position: -874px -32px}
-.sniperbot {background-position: -874px -63px}
-.space_marine {background-position: -874px -94px}
-.spearman {background-position: -905px 0}
-.stealth_tank {background-position: -905px -32px}
-.steel_fist {background-position: -905px -63px}
-.steel_warden {background-position: -905px -94px}
-.strike_team {background-position: -937px 0}
-.sub_cruiser {background-position: -937px -32px}
-.surrogate_soldier {background-position: -937px -63px}
-.tank {background-position: -937px -94px}
-.tesla_walker {background-position: -968px 0}
-.trebuchet {background-position: -968px -32px}
-.turturret {background-position: -968px -63px}
-.ultra_ap {background-position: -968px -94px}
-.universal_tank {background-position: -999px 0}
-.war_chariot {background-position: -999px -32px}
-.war_elephant {background-position: -999px -63px}
-.warrior_monk {background-position: -999px -94px}
+#UnitOverviewSettingsBox input:valid+button+span:after {
+	content: '✔️';
+}
+
+.unit_icon {
+	background-repeat: no-repeat;
+	background-size: calc(1820px*var(--unit_scale)) calc(208px*var(--unit_scale));
+	display: inline-block;
+	width: calc(50px*var(--unit_scale));
+	height: calc(50px*var(--unit_scale));
+	box-shadow: 1px 1px 2px var(--black-65);
+}
+
+/*fallback for all tools that do not specify their own scale*/
+:root {
+	--unit_scale: 3/5; 
+}
+
+.unit_icon.ArcticFuture_champion {background-position: calc(-1px*var(--unit_scale)) calc(-1px*var(--unit_scale))}
+.unit_icon.BronzeAge_champion {background-position: calc(-1px*var(--unit_scale)) calc(-53px*var(--unit_scale))}
+.unit_icon.ColonialAge_champion {background-position: calc(-1px*var(--unit_scale)) calc(-105px*var(--unit_scale))}
+.unit_icon.ContemporaryEra_champion {background-position: calc(-1px*var(--unit_scale)) calc(-157px*var(--unit_scale))}
+.unit_icon.EarlyMiddleAge_champion {background-position: calc(-53px*var(--unit_scale)) calc(-1px*var(--unit_scale))}
+.unit_icon.FutureEra_champion {background-position: calc(-53px*var(--unit_scale)) calc(-53px*var(--unit_scale))}
+.unit_icon.HighMiddleAge_champion {background-position: calc(-53px*var(--unit_scale)) calc(-105px*var(--unit_scale))}
+.unit_icon.IndustrialAge_champion {background-position: calc(-53px*var(--unit_scale)) calc(-157px*var(--unit_scale))}
+.unit_icon.IronAge_champion {background-position: calc(-105px*var(--unit_scale)) calc(-1px*var(--unit_scale))}
+.unit_icon.LateMiddleAge_champion {background-position: calc(-105px*var(--unit_scale)) calc(-53px*var(--unit_scale))}
+.unit_icon.ModernEra_champion {background-position: calc(-105px*var(--unit_scale)) calc(-105px*var(--unit_scale))}
+.unit_icon.OceanicFuture_champion {background-position: calc(-105px*var(--unit_scale)) calc(-157px*var(--unit_scale))}
+.unit_icon.PostModernEra_champion {background-position: calc(-157px*var(--unit_scale)) calc(-1px*var(--unit_scale))}
+.unit_icon.ProgressiveEra_champion {background-position: calc(-157px*var(--unit_scale)) calc(-53px*var(--unit_scale))}
+.unit_icon.SpaceAgeAsteroidBelt_champion {background-position: calc(-157px*var(--unit_scale)) calc(-105px*var(--unit_scale))}
+.unit_icon.SpaceAgeJupiterMoon_champion {background-position: calc(-157px*var(--unit_scale)) calc(-157px*var(--unit_scale))}
+.unit_icon.SpaceAgeMars_champion {background-position: calc(-209px*var(--unit_scale)) calc(-1px*var(--unit_scale))}
+.unit_icon.SpaceAgeVenus_champion {background-position: calc(-209px*var(--unit_scale)) calc(-53px*var(--unit_scale))}
+.unit_icon.TomorrowEra_champion {background-position: calc(-209px*var(--unit_scale)) calc(-105px*var(--unit_scale))}
+.unit_icon.VirtualFuture_champion {background-position: calc(-209px*var(--unit_scale)) calc(-157px*var(--unit_scale))}
+.unit_icon.aa_vehicle {background-position: calc(-261px*var(--unit_scale)) calc(-1px*var(--unit_scale))}
+.unit_icon.abyssal_glider {background-position: calc(-261px*var(--unit_scale)) calc(-53px*var(--unit_scale))}
+.unit_icon.anti_material_sniper {background-position: calc(-261px*var(--unit_scale)) calc(-105px*var(--unit_scale))}
+.unit_icon.archer {background-position: calc(-261px*var(--unit_scale)) calc(-157px*var(--unit_scale))}
+.unit_icon.armored_car {background-position: calc(-313px*var(--unit_scale)) calc(-1px*var(--unit_scale))}
+.unit_icon.armoredswordsman {background-position: calc(-313px*var(--unit_scale)) calc(-53px*var(--unit_scale))}
+.unit_icon.assault_tank {background-position: calc(-313px*var(--unit_scale)) calc(-105px*var(--unit_scale))}
+.unit_icon.attack_helicopter {background-position: calc(-313px*var(--unit_scale)) calc(-157px*var(--unit_scale))}
+.unit_icon.augmented_samurai {background-position: calc(-365px*var(--unit_scale)) calc(-1px*var(--unit_scale))}
+.unit_icon.automatic_rifleman {background-position: calc(-365px*var(--unit_scale)) calc(-53px*var(--unit_scale))}
+.unit_icon.axe_hammer_warrior {background-position: calc(-365px*var(--unit_scale)) calc(-105px*var(--unit_scale))}
+.unit_icon.clubman {background-position: calc(-365px*var(--unit_scale)) calc(-105px*var(--unit_scale))}
+.unit_icon.balista {background-position: calc(-365px*var(--unit_scale)) calc(-157px*var(--unit_scale))}
+.unit_icon.barbarian {background-position: calc(-417px*var(--unit_scale)) calc(-1px*var(--unit_scale))}
+.unit_icon.barbarian_slinger {background-position: calc(-417px*var(--unit_scale)) calc(-53px*var(--unit_scale))}
+.unit_icon.battle_fortress {background-position: calc(-417px*var(--unit_scale)) calc(-105px*var(--unit_scale))}
+.unit_icon.battle_tank {background-position: calc(-417px*var(--unit_scale)) calc(-157px*var(--unit_scale))}
+.unit_icon.bazooka {background-position: calc(-469px*var(--unit_scale)) calc(-1px*var(--unit_scale))}
+.unit_icon.behemoth {background-position: calc(-469px*var(--unit_scale)) calc(-53px*var(--unit_scale))}
+.unit_icon.belt {background-position: calc(-469px*var(--unit_scale)) calc(-105px*var(--unit_scale))}
+.unit_icon.biedenhaender_mercenary {background-position: calc(-469px*var(--unit_scale)) calc(-157px*var(--unit_scale))}
+.unit_icon.bombarde {background-position: calc(-521px*var(--unit_scale)) calc(-1px*var(--unit_scale))}
+.unit_icon.brave_warrior {background-position: calc(-521px*var(--unit_scale)) calc(-53px*var(--unit_scale))}
+.unit_icon.breech_loader {background-position: calc(-521px*var(--unit_scale)) calc(-105px*var(--unit_scale))}
+.unit_icon.camel_archer {background-position: calc(-521px*var(--unit_scale)) calc(-157px*var(--unit_scale))}
+.unit_icon.cannoniers {background-position: calc(-573px*var(--unit_scale)) calc(-1px*var(--unit_scale))}
+.unit_icon.cataphract {background-position: calc(-573px*var(--unit_scale)) calc(-53px*var(--unit_scale))}
+.unit_icon.catapult {background-position: calc(-573px*var(--unit_scale)) calc(-105px*var(--unit_scale))}
+.unit_icon.cavitation_tank {background-position: calc(-573px*var(--unit_scale)) calc(-157px*var(--unit_scale))}
+.unit_icon.color_guard {background-position: calc(-625px*var(--unit_scale)) calc(-1px*var(--unit_scale))}
+.unit_icon.combat_drone {background-position: calc(-625px*var(--unit_scale)) calc(-53px*var(--unit_scale))}
+.unit_icon.commando {background-position: calc(-625px*var(--unit_scale)) calc(-105px*var(--unit_scale))}
+.unit_icon.conscript {background-position: calc(-625px*var(--unit_scale)) calc(-157px*var(--unit_scale))}
+.unit_icon.crab_mech {background-position: calc(-677px*var(--unit_scale)) calc(-1px*var(--unit_scale))}
+.unit_icon.crossbowman {background-position: calc(-677px*var(--unit_scale)) calc(-53px*var(--unit_scale))}
+.unit_icon.dismounted_knight {background-position: calc(-677px*var(--unit_scale)) calc(-105px*var(--unit_scale))}
+.unit_icon.division_drones {background-position: calc(-677px*var(--unit_scale)) calc(-157px*var(--unit_scale))}
+.unit_icon.dragon_drone {background-position: calc(-729px*var(--unit_scale)) calc(-1px*var(--unit_scale))}
+.unit_icon.dragoon {background-position: calc(-729px*var(--unit_scale)) calc(-53px*var(--unit_scale))}
+.unit_icon.drill_ranger {background-position: calc(-729px*var(--unit_scale)) calc(-105px*var(--unit_scale))}
+.unit_icon.drone_swarm {background-position: calc(-729px*var(--unit_scale)) calc(-157px*var(--unit_scale))}
+.unit_icon.energy_cannon {background-position: calc(-781px*var(--unit_scale)) calc(-1px*var(--unit_scale))}
+.unit_icon.exo_soldier {background-position: calc(-781px*var(--unit_scale)) calc(-53px*var(--unit_scale))}
+.unit_icon.feudal_knight {background-position: calc(-781px*var(--unit_scale)) calc(-105px*var(--unit_scale))}
+.unit_icon.ghost_blaster {background-position: calc(-781px*var(--unit_scale)) calc(-157px*var(--unit_scale))}
+.unit_icon.glacier_hiker {background-position: calc(-833px*var(--unit_scale)) calc(-1px*var(--unit_scale))}
+.unit_icon.gliders {background-position: calc(-833px*var(--unit_scale)) calc(-53px*var(--unit_scale))}
+.unit_icon.grenadier {background-position: calc(-833px*var(--unit_scale)) calc(-105px*var(--unit_scale))}
+.unit_icon.harpoon_grenadier {background-position: calc(-833px*var(--unit_scale)) calc(-157px*var(--unit_scale))}
+.unit_icon.hoplite {background-position: calc(-885px*var(--unit_scale)) calc(-1px*var(--unit_scale))}
+.unit_icon.horseman {background-position: calc(-885px*var(--unit_scale)) calc(-53px*var(--unit_scale))}
+.unit_icon.hover_hammer {background-position: calc(-885px*var(--unit_scale)) calc(-105px*var(--unit_scale))}
+.unit_icon.hover_tank {background-position: calc(-885px*var(--unit_scale)) calc(-157px*var(--unit_scale))}
+.unit_icon.howitzer {background-position: calc(-937px*var(--unit_scale)) calc(-1px*var(--unit_scale))}
+.unit_icon.hydroelectric_eel {background-position: calc(-937px*var(--unit_scale)) calc(-53px*var(--unit_scale))}
+.unit_icon.imperial_knight {background-position: calc(-937px*var(--unit_scale)) calc(-105px*var(--unit_scale))}
+.unit_icon.infantry_fighting_vehicle {background-position: calc(-937px*var(--unit_scale)) calc(-157px*var(--unit_scale))}
+.unit_icon.jaeger {background-position: calc(-989px*var(--unit_scale)) calc(-1px*var(--unit_scale))}
+.unit_icon.javeliner {background-position: calc(-989px*var(--unit_scale)) calc(-53px*var(--unit_scale))}
+.unit_icon.khopesh_fighter {background-position: calc(-989px*var(--unit_scale)) calc(-105px*var(--unit_scale))}
+.unit_icon.lancer {background-position: calc(-989px*var(--unit_scale)) calc(-157px*var(--unit_scale))}
+.unit_icon.legionnaire {background-position: calc(-1041px*var(--unit_scale)) calc(-1px*var(--unit_scale))}
+.unit_icon.longbowman {background-position: calc(-1041px*var(--unit_scale)) calc(-53px*var(--unit_scale))}
+.unit_icon.manta {background-position: calc(-1041px*var(--unit_scale)) calc(-105px*var(--unit_scale))}
+.unit_icon.marksman {background-position: calc(-1041px*var(--unit_scale)) calc(-157px*var(--unit_scale))}
+.unit_icon.mech_artillery {background-position: calc(-1093px*var(--unit_scale)) calc(-1px*var(--unit_scale))}
+.unit_icon.mech_infantry {background-position: calc(-1093px*var(--unit_scale)) calc(-53px*var(--unit_scale))}
+.unit_icon.medusa {background-position: calc(-1093px*var(--unit_scale)) calc(-105px*var(--unit_scale))}
+.unit_icon.military_drummer {background-position: calc(-1093px*var(--unit_scale)) calc(-157px*var(--unit_scale))}
+.unit_icon.militiaman {background-position: calc(-1145px*var(--unit_scale)) calc(-1px*var(--unit_scale))}
+.unit_icon.missile_artillery {background-position: calc(-1145px*var(--unit_scale)) calc(-53px*var(--unit_scale))}
+.unit_icon.mobile_microwave_gun {background-position: calc(-1145px*var(--unit_scale)) calc(-105px*var(--unit_scale))}
+.unit_icon.mounted_bowman {background-position: calc(-1145px*var(--unit_scale)) calc(-157px*var(--unit_scale))}
+.unit_icon.mounted_brave {background-position: calc(-1197px*var(--unit_scale)) calc(-1px*var(--unit_scale))}
+.unit_icon.mounted_legionnaire {background-position: calc(-1197px*var(--unit_scale)) calc(-53px*var(--unit_scale))}
+.unit_icon.nail_storm {background-position: calc(-1197px*var(--unit_scale)) calc(-105px*var(--unit_scale))}
+.unit_icon.nautilus {background-position: calc(-1197px*var(--unit_scale)) calc(-157px*var(--unit_scale))}
+.unit_icon.ninja {background-position: calc(-1249px*var(--unit_scale)) calc(-1px*var(--unit_scale))}
+.unit_icon.nubian_archer {background-position: calc(-1249px*var(--unit_scale)) calc(-53px*var(--unit_scale))}
+.unit_icon.observer_drone {background-position: calc(-1249px*var(--unit_scale)) calc(-105px*var(--unit_scale))}
+.unit_icon.octopod {background-position: calc(-1249px*var(--unit_scale)) calc(-157px*var(--unit_scale))}
+.unit_icon.palintona {background-position: calc(-1301px*var(--unit_scale)) calc(-1px*var(--unit_scale))}
+.unit_icon.paratrooper {background-position: calc(-1301px*var(--unit_scale)) calc(-53px*var(--unit_scale))}
+.unit_icon.pikeman {background-position: calc(-1301px*var(--unit_scale)) calc(-105px*var(--unit_scale))}
+.unit_icon.plasma_artillery {background-position: calc(-1301px*var(--unit_scale)) calc(-157px*var(--unit_scale))}
+.unit_icon.power_dragon {background-position: calc(-1353px*var(--unit_scale)) calc(-1px*var(--unit_scale))}
+.unit_icon.rail_gun_unit {background-position: calc(-1353px*var(--unit_scale)) calc(-53px*var(--unit_scale))}
+.unit_icon.ranger {background-position: calc(-1353px*var(--unit_scale)) calc(-105px*var(--unit_scale))}
+.unit_icon.recon_raider {background-position: calc(-1353px*var(--unit_scale)) calc(-157px*var(--unit_scale))}
+.unit_icon.rf_cannon {background-position: calc(-1405px*var(--unit_scale)) calc(-1px*var(--unit_scale))}
+.unit_icon.rifleman {background-position: calc(-1405px*var(--unit_scale)) calc(-53px*var(--unit_scale))}
+.unit_icon.rocket_artillery {background-position: calc(-1405px*var(--unit_scale)) calc(-105px*var(--unit_scale))}
+.unit_icon.rocket_troop {background-position: calc(-1405px*var(--unit_scale)) calc(-157px*var(--unit_scale))}
+.unit_icon.rogue {background-position: calc(-1457px*var(--unit_scale)) calc(-1px*var(--unit_scale))}
+.unit_icon.ronin_bot {background-position: calc(-1457px*var(--unit_scale)) calc(-53px*var(--unit_scale))}
+.unit_icon.sat_uplink_unit {background-position: calc(-1457px*var(--unit_scale)) calc(-105px*var(--unit_scale))}
+.unit_icon.scimitar {background-position: calc(-1457px*var(--unit_scale)) calc(-157px*var(--unit_scale))}
+.unit_icon.sentinel {background-position: calc(-1509px*var(--unit_scale)) calc(-1px*var(--unit_scale))}
+.unit_icon.shredder {background-position: calc(-1509px*var(--unit_scale)) calc(-53px*var(--unit_scale))}
+.unit_icon.slinger {background-position: calc(-1509px*var(--unit_scale)) calc(-105px*var(--unit_scale))}
+.unit_icon.sniper {background-position: calc(-1509px*var(--unit_scale)) calc(-157px*var(--unit_scale))}
+.unit_icon.sniperbot {background-position: calc(-1561px*var(--unit_scale)) calc(-1px*var(--unit_scale))}
+.unit_icon.space_marine {background-position: calc(-1561px*var(--unit_scale)) calc(-53px*var(--unit_scale))}
+.unit_icon.spearman {background-position: calc(-1561px*var(--unit_scale)) calc(-105px*var(--unit_scale))}
+.unit_icon.stealth_tank {background-position: calc(-1561px*var(--unit_scale)) calc(-157px*var(--unit_scale))}
+.unit_icon.steel_fist {background-position: calc(-1613px*var(--unit_scale)) calc(-1px*var(--unit_scale))}
+.unit_icon.steel_warden {background-position: calc(-1613px*var(--unit_scale)) calc(-53px*var(--unit_scale))}
+.unit_icon.strike_team {background-position: calc(-1613px*var(--unit_scale)) calc(-105px*var(--unit_scale))}
+.unit_icon.sub_cruiser {background-position: calc(-1613px*var(--unit_scale)) calc(-157px*var(--unit_scale))}
+.unit_icon.surrogate_soldier {background-position: calc(-1665px*var(--unit_scale)) calc(-1px*var(--unit_scale))}
+.unit_icon.tank {background-position: calc(-1665px*var(--unit_scale)) calc(-53px*var(--unit_scale))}
+.unit_icon.tesla_walker {background-position: calc(-1665px*var(--unit_scale)) calc(-105px*var(--unit_scale))}
+.unit_icon.trebuchet {background-position: calc(-1665px*var(--unit_scale)) calc(-157px*var(--unit_scale))}
+.unit_icon.turturret {background-position: calc(-1717px*var(--unit_scale)) calc(-1px*var(--unit_scale))}
+.unit_icon.ultra_ap {background-position: calc(-1717px*var(--unit_scale)) calc(-53px*var(--unit_scale))}
+.unit_icon.universal_tank {background-position: calc(-1717px*var(--unit_scale)) calc(-105px*var(--unit_scale))}
+.unit_icon.war_chariot {background-position: calc(-1717px*var(--unit_scale)) calc(-157px*var(--unit_scale))}
+.unit_icon.war_elephant {background-position: calc(-1769px*var(--unit_scale)) calc(-1px*var(--unit_scale))}
+.unit_icon.warrior_monk {background-position: calc(-1769px*var(--unit_scale)) calc(-53px*var(--unit_scale))}
+
+.unit_skill::after {
+	content: "";
+	background-image: url(../images/unit_skill.png);
+	background-repeat: no-repeat;
+	background-size: calc(168px*var(--unit_scale)) calc(168px*var(--unit_scale));
+	display: block;
+	width: calc(24px*var(--unit_scale));
+	height: calc(24px*var(--unit_scale));
+	position: relative;
+	top: calc(28px*var(--unit_scale));
+	left: calc(28px*var(--unit_scale));
+}
+
+.unit_skill.rogue::after {background-position: calc(-144px*var(--unit_scale)) calc(-48px*var(--unit_scale))}
+.unit_skill.attack::after {background-position: 0 0}
+.unit_skill.blast::after {background-position: calc(-24px*var(--unit_scale)) 0}
+.unit_skill.bushes::after {background-position: calc(-48px*var(--unit_scale)) 0}
+.unit_skill.call_of_duty::after {background-position: calc(-72px*var(--unit_scale)) 0}
+.unit_skill.chivalry::after {background-position: calc(-96px*var(--unit_scale)) 0}
+.unit_skill.close_quarters::after {background-position: calc(-120px*var(--unit_scale)) 0}
+.unit_skill.contact::after {background-position: 0 calc(-24px*var(--unit_scale))}
+.unit_skill.crater::after {background-position: calc(-24px*var(--unit_scale)) calc(-24px*var(--unit_scale))}
+.unit_skill.defense::after {background-position: calc(-48px*var(--unit_scale)) calc(-24px*var(--unit_scale))}
+.unit_skill.double_damage::after {background-position: calc(-72px*var(--unit_scale)) calc(-24px*var(--unit_scale))}
+.unit_skill.dragon_breath::after {background-position: calc(-96px*var(--unit_scale)) calc(-24px*var(--unit_scale))}
+.unit_skill.era::after {background-position: calc(-120px*var(--unit_scale)) calc(-24px*var(--unit_scale))}
+.unit_skill.fast::after {background-position: 0 calc(-48px*var(--unit_scale))}
+.unit_skill.flying::after {background-position: calc(-24px*var(--unit_scale)) calc(-48px*var(--unit_scale))}
+.unit_skill.force_field::after {background-position: calc(-48px*var(--unit_scale)) calc(-48px*var(--unit_scale))}
+.unit_skill.forest::after {background-position: calc(-72px*var(--unit_scale)) calc(-48px*var(--unit_scale))}
+.unit_skill.frenzy::after {background-position: calc(-96px*var(--unit_scale)) calc(-48px*var(--unit_scale))}
+.unit_skill.heat::after {background-position: calc(-120px*var(--unit_scale)) calc(-48px*var(--unit_scale))}
+.unit_skill.heavy_melee::after {background-position: 0 calc(-72px*var(--unit_scale))}
+.unit_skill.hills::after {background-position: calc(-24px*var(--unit_scale)) calc(-72px*var(--unit_scale))}
+.unit_skill.house::after {background-position: calc(-48px*var(--unit_scale)) calc(-72px*var(--unit_scale))}
+.unit_skill.last_stand::after {background-position: calc(-72px*var(--unit_scale)) calc(-72px*var(--unit_scale))}
+.unit_skill.light_melee::after {background-position: calc(-96px*var(--unit_scale)) calc(-72px*var(--unit_scale))}
+.unit_skill.long_ranged::after {background-position: calc(-120px*var(--unit_scale)) calc(-72px*var(--unit_scale))}
+.unit_skill.mirv::after {background-position: 0 calc(-96px*var(--unit_scale))}
+.unit_skill.morale::after {background-position: calc(-24px*var(--unit_scale)) calc(-96px*var(--unit_scale))}
+.unit_skill.mortar::after {background-position: calc(-48px*var(--unit_scale)) calc(-96px*var(--unit_scale))}
+.unit_skill.movement::after {background-position: calc(-72px*var(--unit_scale)) calc(-96px*var(--unit_scale))}
+.unit_skill.one_shot::after {background-position: calc(-96px*var(--unit_scale)) calc(-96px*var(--unit_scale))}
+.unit_skill.plain::after {background-position: calc(-120px*var(--unit_scale)) calc(-96px*var(--unit_scale))}
+.unit_skill.poison::after {background-position: 0 calc(-120px*var(--unit_scale))}
+.unit_skill.power_shot::after {background-position: calc(-24px*var(--unit_scale)) calc(-120px*var(--unit_scale))}
+.unit_skill.rally::after {background-position: calc(-48px*var(--unit_scale)) calc(-120px*var(--unit_scale))}
+.unit_skill.range::after {background-position: calc(-72px*var(--unit_scale)) calc(-120px*var(--unit_scale))}
+.unit_skill.rapid_deployment::after {background-position: calc(-96px*var(--unit_scale)) calc(-120px*var(--unit_scale))}
+.unit_skill.reactive_armor::after {background-position: calc(-120px*var(--unit_scale)) calc(-120px*var(--unit_scale))}
+.unit_skill.recharge::after {background-position: calc(-144px*var(--unit_scale)) 0}
+.unit_skill.rocks::after {background-position: calc(-144px*var(--unit_scale)) calc(-24px*var(--unit_scale))}
+.unit_skill.rubble::after {background-position: calc(-144px*var(--unit_scale)) calc(-72px*var(--unit_scale))}
+.unit_skill.sandbagcircle::after {background-position: calc(-144px*var(--unit_scale)) calc(-96px*var(--unit_scale))}
+.unit_skill.short_ranged::after {background-position: calc(-144px*var(--unit_scale)) calc(-120px*var(--unit_scale))}
+.unit_skill.stealth::after {background-position: 0 calc(-144px*var(--unit_scale))}
+.unit_skill.swamp::after {background-position: calc(-24px*var(--unit_scale)) calc(-144px*var(--unit_scale))}
+.unit_skill.swarm::after {background-position: calc(-48px*var(--unit_scale)) calc(-144px*var(--unit_scale))}
+.unit_skill.trench::after {background-position: calc(-72px*var(--unit_scale)) calc(-144px*var(--unit_scale))}
+.unit_skill.unit::after {background-position: calc(-96px*var(--unit_scale)) calc(-144px*var(--unit_scale))}
+.unit_skill.unit_ability_dug_in::after {background-position: calc(-120px*var(--unit_scale)) calc(-144px*var(--unit_scale))}

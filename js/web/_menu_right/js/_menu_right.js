@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -17,7 +17,7 @@ let _menu_right = {
 	 *
 	 */
 	BuildOverlayMenu: () => {
-		let hud = $('<div />').attr('id', 'foe-helper-hud').addClass('game-cursor'),
+		let hud = $('<div />').attr({'id': 'foe-helper-hud','class': 'hud-right'}).addClass('game-cursor'),
 			hudWrapper = $('<div />').attr('id', 'foe-helper-hud-wrapper'),
 			hudInner = $('<div />').attr('id', 'foe-helper-hud-slider');
 

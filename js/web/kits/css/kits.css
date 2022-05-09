@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -20,18 +20,19 @@
 	transform: translateX(-50%);
 }
 
-#kits #kitsBody {
-	overflow: hidden;
-	overflow-y: auto;
+#kits #kitsBodyInner {
+    height: calc(100% - 28px);
+    overflow: hidden;
+    overflow-y: auto;
+    border-bottom: 1px solid var(--border-table-bottom);
 }
 
 
 #kits #kitsBody tr.headline th {
+	z-index: 1;
 	position: sticky;
 	top: 0;
-	z-index: 1;
-	border-top: 1px solid var(--text-bright);
-	border-bottom: 1px solid var(--text-bright);
+	border-bottom: 1px solid var(--border-table-top);
 }
 
 #kits #kitsBody table.foe-table tr th,
@@ -39,10 +40,12 @@
 	padding: 5px;
 }
 
-#kits #kitsBodyTopbar {
-	padding: 3px;
+#kits #kitsBodyBottombar {
 	display: flex;
-	justify-content: space-around;
+	justify-content: center;
+	padding: 2px 10px;
+	background-color: rgba(0, 0, 0, 0.35);
+	border-top: 1px solid var(--border-table-top);
 }
 
 #kits #kits-triplestate-button {
@@ -69,6 +72,7 @@
 	text-align: center;
 	max-width: 90px;
 	max-height: 70px;
+	image-rendering: -webkit-optimize-contrast;
 }
 
 #kits .kits-fragment-image {

@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -451,27 +451,18 @@ let HTML = {
 			// Schutz gegen "zu Hoch geschoben"
 			if (top < 0) {
 				top = 0;
-
-				//document.onpointerup = null;
-				//document.onpointermove = null;
 			}
-			if (left < 0) {
-				left = 0;
-
-				//document.onpointerup = null;
-				//document.onpointermove = null;
+			// Schutz gegen "zu weit links geschoben"
+			if (left < Math.min(0,  120 - el.offsetWidth)) {
+				left = Math.min(0,  120 - el.offsetWidth);
 			}
-			if ((left + el.clientWidth > window.innerWidth) && noOverflow) {
-				left = window.innerWidth - el.clientWidth;
-
-				//document.onpointerup = null;
-				//document.onpointermove = null;
+			// Schutz gegen "zu weit rechts geschoben"
+			if (left > Math.max(window.innerWidth - 80, window.innerWidth-el.offsetWidth) && noOverflow) {
+				left = Math.max(window.innerWidth - 80, window.innerWidth-el.offsetWidth);
 			}
-			if (top + el.clientHeight > window.innerHeight && noOverflow) {
-				top = window.innerHeight - el.clientHeight;
-
-				//document.onpointerup = null;
-				//document.onpointermove = null;
+			// Schutz gegen "zu weit runter geschoben"
+			if (top > Math.max(window.innerHeight - 80, window.innerHeight-el.offsetHeight-20) && noOverflow) {
+				top = Math.max(window.innerHeight - 80, window.innerHeight-el.offsetHeight-20);
 			}
 
 			el.style.top = top + "px";
@@ -549,7 +540,7 @@ let HTML = {
 		// Except the "menu Box"
 		if(id === 'menu_box')
 		{
-			options['minWidth'] = 105;
+			options['minWidth'] = 101;
 			options['minHeight'] = 87;
 		}
 

@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -55,6 +55,7 @@ let Unit = {
 	Types: null,
 	Attack : null,
 	Defense: null,
+	ArenaDefense: null,
 	alca : undefined,
 
 	Cache : null,
@@ -66,6 +67,9 @@ let Unit = {
 	TabsContent: [],
 	CurrentTab: 1,
 
+	Settings: {
+		pictogramScaling: 3,
+	},
 
 	/**
 	 * Creates an HTML box for the DOM
@@ -82,7 +86,8 @@ let Unit = {
 				auto_close: true,
 				dragdrop: true,
 				resize: true,
-				minimize: true
+				minimize: true,
+				settings: 'Unit.ShowSettings()'
 			};
 
 			HTML.Box(args);
@@ -100,6 +105,9 @@ let Unit = {
 	 * Render and place in the BoxContent
 	 */
 	BuildBox:()=> {
+		Unit.LoadSettings();
+		let unitScale = parseInt(Unit.Settings.pictogramScaling) + 1 + '/5';
+		document.querySelector('#UnitOverview').style.setProperty('--unit_scale', unitScale);
 
 		let top = [];
 
@@ -107,7 +115,7 @@ let Unit = {
 
 		if (Unit.alca)
 		{
-			top.push('<div style="padding: 4px;" class="text-center dark-bg" id="alca-timer"></div>');
+			top.push('<div id="alca-timer" class="text-center dark-bg"></div>');
 		}
 
 		// Attack army
@@ -120,7 +128,7 @@ let Unit = {
 
 		attack.push('<table class="foe-table">');
 
-		attack.push('<thead>');
+		attack.push('<thead class="head-sticky">');
 			attack.push('<tr>');
 				attack.push('<th></th>');
 				attack.push('<th class="text-center" style="width:29%">' + i18n('Boxes.Units.Unit') + '</th>');
@@ -160,7 +168,7 @@ let Unit = {
 
 			attack.push('<tr data-era="' + era + '">');
 
-			attack.push('<td><span class="units-icon ' + Unit.Attack[i]['unitTypeId'] + '"></span></td>');
+			attack.push(`<td><span class="unit_icon ${Unit.Attack[i]['unitTypeId']} unit_skill ${type['unitClass']}" style="background-image:url('${MainParser.InnoCDN}assets/shared/unit_portraits/armyuniticons_50x50/armyuniticons_50x50_0.png')"></span></td>`);
 			attack.push('<td>' + type['name'] + '</td>');
 
 			let status = cache['currentHitpoints'] * 10;
@@ -200,7 +208,7 @@ let Unit = {
 		Unit.SetTabs('defense');
 
 		defense.push('<table class="foe-table">');
-		defense.push('<thead>');
+		defense.push('<thead class="head-sticky">');
 			defense.push('<tr>');
 				defense.push('<th></th>');
 				defense.push('<th class="text-center" style="width:29%">' + i18n('Boxes.Units.Unit') + '</th>');
@@ -228,7 +236,7 @@ let Unit = {
 				cache = Unit.Cache['units'].find(obj => (obj['unitId'] === Unit.Defense[i]['unitId'])),
 				era = Technologies.Eras[type['minEra']];
 
-			defense.push('<td><span class="units-icon ' + Unit.Defense[i]['unitTypeId'] + '"></span></td>');
+			defense.push(`<td><span class="unit_icon ${Unit.Defense[i]['unitTypeId']} unit_skill ${type['unitClass']}" style="background-image:url('${MainParser.InnoCDN}assets/shared/unit_portraits/armyuniticons_50x50/armyuniticons_50x50_0.png')"></span></td>`);
 			defense.push('<td>' + type['name'] + '</td>');
 
 			let status = cache['currentHitpoints'] * 10;
@@ -261,6 +269,73 @@ let Unit = {
 		Unit.SetTabContent('defense', defense.join(''));
 
 
+		// Arenavertedigung
+		let arenaDefense = [];
+
+		Unit.SetTabs('arenaDefense');
+
+		arenaDefense.push('<table class="foe-table">');
+		arenaDefense.push('<thead class="head-sticky">');
+			arenaDefense.push('<tr>');
+				arenaDefense.push('<th></th>');
+				arenaDefense.push('<th class="text-center" style="width:29%">' + i18n('Boxes.Units.Unit') + '</th>');
+				arenaDefense.push('<th class="text-center">' + i18n('Boxes.Units.Status') + '</th>');
+				arenaDefense.push('<th class="text-center">' + i18n('Boxes.Units.Attack') + '</th>');
+				arenaDefense.push('<th class="text-center">' + i18n('Boxes.Units.Defend') + '</th>');
+			arenaDefense.push('</tr>');
+		arenaDefense.push('</thead>');
+		arenaDefense.push('<tbody>');
+
+        Unit.ArenaDefense = [];
+        for (let i in Unit.Cache['units']) {
+            if (Unit.Cache['units'][i]['isArenaDefending']) {
+                Unit.ArenaDefense[Unit.ArenaDefense.length] = Unit.Cache['units'][i];
+            }
+        }
+		for(let i in Unit.ArenaDefense){
+			if(!Unit.ArenaDefense.hasOwnProperty(i)){
+				break;
+			}
+
+			arenaDefense.push('<tr>');
+
+			let type = Unit.Types.find(obj => (obj['unitTypeId'] === Unit.ArenaDefense[i]['unitTypeId'])),
+				cache = Unit.Cache['units'].find(obj => (obj['unitId'] === Unit.ArenaDefense[i]['unitId'])),
+				era = Technologies.Eras[type['minEra']];
+
+			arenaDefense.push(`<td><span class="unit_icon ${Unit.ArenaDefense[i]['unitTypeId']} unit_skill ${type['unitClass']}" style="background-image:url('${MainParser.InnoCDN}assets/shared/unit_portraits/armyuniticons_50x50/armyuniticons_50x50_0.png')"></span></td>`);
+			arenaDefense.push('<td>' + type['name'] + '</td>');
+
+			let status = cache['currentHitpoints'] * 10;
+			arenaDefense.push('<td class="text-center"><span class="health"><span class="bar" style="width:' + status + '%"></span><span class="percent">' + status + '%</span></span></td>');
+
+			let Boosts = Unit.GetBoostSums(Unit.GetBoostDict(cache['bonuses']));
+
+			let AttackBoost = Boosts['DefenseAttackBoost'],
+				DefenseBoost = Boosts['DefenseDefenseBoost']
+
+			let Attack = MainParser.round(type['baseDamage'] * (AttackBoost / 100)) + type['baseDamage'],
+				Defense = MainParser.round(type['baseArmor'] * (DefenseBoost / 100)) + type['baseArmor'];
+
+			arenaDefense.push('<td class="text-center"><em><small>+' + AttackBoost + '%</small></em> <strong class="text-success">= ' + Attack + '</strong></td>');
+			arenaDefense.push('<td class="text-center"><em><small>+' + DefenseBoost + '%</small></em> <strong class="text-success">= ' + Defense + '</strong></td>');
+
+			arenaDefense.push('</tr>');
+		}
+
+		for(let i = Unit.ArenaDefense.length; i < 8; i++){
+			arenaDefense.push('<tr>');
+			arenaDefense.push('<td colspan="5" class="text-center"><strong class="text-danger"><em>' + i18n('Boxes.Units.NotFilled') + '</em></strong></td>');
+			arenaDefense.push('</tr>');
+		}
+
+		arenaDefense.push('</tbody>');
+
+		arenaDefense.push('</table>');
+
+		Unit.SetTabContent('arenaDefense', arenaDefense.join(''));
+
+
 		// alle Einheiten im Überblick
 		let pool = [],
 			eras = [],
@@ -285,6 +360,7 @@ let Unit = {
 				name: d['name'],
 				attached: (c[i]['attached'] === undefined ? '-' : c[i]['attached']),
 				unattached: (c[i]['unattached'] === undefined ? '-' : c[i]['unattached']),
+				unitClass: d['unitClass']
 			});
 		}
 
@@ -292,7 +368,7 @@ let Unit = {
 
 		pool.push('<table class="foe-table">');
 
-		pool.push('<thead>');
+		pool.push('<thead class="head-sticky">');
 			pool.push('<tr>');
 				pool.push('<th></th>');
 				pool.push('<th>' + i18n('Boxes.Units.Unit') + '</th>');
@@ -321,7 +397,7 @@ let Unit = {
 				}
 
 				pool.push('<tr>');
-					pool.push('<td><span class="units-icon ' + eras[era][i]['id'] + '"></span></td>');
+					pool.push(`<td><span class="unit_icon ${eras[era][i]['id']} unit_skill ${eras[era][i]['unitClass']}" style="background-image:url('${MainParser.InnoCDN}assets/shared/unit_portraits/armyuniticons_50x50/armyuniticons_50x50_0.png')"></span></td>`);
 					pool.push('<td>' + eras[era][i]['name'] + '</td>');
 					pool.push('<td class="text-center">' + eras[era][i]['attached'] + '</td>');
 					pool.push('<td class="text-center">' + eras[era][i]['unattached'] + '</td>');
@@ -357,6 +433,10 @@ let Unit = {
 				Unit.CurrentTab = $('.unit-tabs li.active').index() + 1;
 			});
 		});
+		if (Unit.alca)
+		{
+			$('#UnitOverview').find('.unit-tabs').prop('style', 'height:calc(100% - 80px)');
+		}
 	},
 
 
@@ -373,7 +453,12 @@ let Unit = {
 			return ;
 		}
 
-		if(Unit.NextHarvest !== null)
+		if(Unit.alca['state']['next_state_transition_at'] === undefined) {
+			text = `<strong class="text-warning">${i18n('Boxes.Units.AlcaHarvest')}</strong>`;
+
+		}
+		// there was a harvest...
+		else if(Unit.NextHarvest !== null)
 		{
 			let countDownDate = moment.unix(Unit.NextHarvest);
 
@@ -438,7 +523,7 @@ let Unit = {
 	 * @param id
 	 */
 	SetTabs: (id)=>{
-		Unit.Tabs.push('<li class="' + id + ' game-cursor"><a href="#' + id + '" class="game-cursor"><span>&nbsp;</span></a></li>');
+		Unit.Tabs.push('<li class="' + id + ' game-cursor"><a href="#' + id + '" class="game-cursor" title="' + i18n('Boxes.Units.' + id + '') + '" ><span>&nbsp;</span></a></li>');
 	},
 
 
@@ -633,6 +718,7 @@ let Unit = {
 					era: era,
 					id: AlcaUnits[i]['unitTypeId'],
 					name: type['name'],
+					unitClass: type['unitClass'],
 					count: 1
 				};
 
@@ -646,7 +732,7 @@ let Unit = {
 
 		last.push('<table class="foe-table">');
 
-		last.push('<thead>');
+		last.push('<thead class="head-sticky">');
 			last.push('<tr>');
 				last.push('<th class="text-warning">' + LastTotal + 'x</th>');
 				last.push('<th>' + i18n('Boxes.Units.Unit') + '</th>');
@@ -668,7 +754,7 @@ let Unit = {
 
 			last.push('<tr data-era="' + LastAlca[i]['era'] + '">');
 
-				last.push('<td><span class="units-icon ' + LastAlca[i]['id'] + '"></span></td>');
+				last.push(`<td><span class="unit_icon ${LastAlca[i]['id']} unit_skill ${LastAlca[i]['unitClass']}" style="background-image:url('${MainParser.InnoCDN}assets/shared/unit_portraits/armyuniticons_50x50/armyuniticons_50x50_0.png')"></span></td>`);
 				last.push('<td>' + LastAlca[i]['name'] + '</td>');
 
 				last.push('<td class="text-center">' + LastAlca[i]['count'] + 'x</td>');
@@ -684,5 +770,49 @@ let Unit = {
 		last.push('</table>');
 
 		Unit.SetTabContent('alca', last.join(''));
+	},
+
+	/**
+	*
+	*/
+	LoadSettings: () => {
+		Unit.Settings = JSON.parse(localStorage.getItem('UnitOverviewSettings')) || Unit.Settings;
+		Unit.Settings.pictogramScaling = (Unit.Settings && Unit.Settings.pictogramScaling !== undefined) ? Unit.Settings.pictogramScaling : 4;
+	},
+
+	/**
+	* Settings, Settings.pictogramScaling;
+	*/
+	ShowSettings: () => {
+		let h = [];
+
+		h.push(`<p>${i18n('Boxes.Units.PictogramScalingTitle')}
+					<button class="btn btn-default btn-tight btn-set-value" data-value="-1">&lt;</button>
+					<input type="number" id="pictogramScaling" step="1" min="1" max="4" placeholder="1-4" required value="${Unit.Settings.pictogramScaling}" title="${HTML.i18nTooltip(i18n('Boxes.Units.PictogramScalingDesc'))}">
+					<button class="btn btn-default btn-tight btn-set-value" data-value="1">&gt;</button>
+					<span class="validity"></span>
+				</p>`);
+		h.push(`<p><button onclick="Unit.SaveSettings()" id="unit-save-settings" class="btn btn-default" style="width:100%">${i18n('Boxes.Settings.Save')}</button></p>`);
+
+		$('#UnitOverviewSettingsBox').html(h.join(''));
+		
+		$('#UnitOverviewSettingsBox').on('click', '.btn-set-value', function () {
+			let value = parseFloat($('#pictogramScaling').val()) + parseFloat($(this).data('value'));
+			if (value !== value) value = 1; //NaN => 1
+			value = value < 1 ? 1 : value;
+			value = value > 4 ? 4 : value;
+			$('#pictogramScaling').val(value);
+		});
+	},
+
+	/**
+	*
+	*/
+	SaveSettings: () => {
+		Unit.Settings.pictogramScaling = 1 <= $('#pictogramScaling').val() && $('#pictogramScaling').val() <= 4 ? $('#pictogramScaling').val() : Unit.Settings.pictogramScaling;
+		localStorage.setItem('UnitOverviewSettings', JSON.stringify(Unit.Settings));
+
+		$('#UnitOverviewSettingsBox').remove();
+		Unit.BuildBox();
 	}
 };

@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -18,9 +18,6 @@
     left: inherit;
     bottom: 230px;
     right: 70px;
-    border-width: 27px 5px 4px 5px;
-    border-image-source: none;
-    border-radius: 10px;
     background: none;
     z-index: 151;
 }
@@ -67,18 +64,28 @@
 
 #CloseBox:hover {
     overflow: visible;
-    border-width: 27px 5px 4px 5px;
-    border-image-source: url(../../../../css/images/hud/window-small.png);
+    padding-bottom: 27px;
 }
 
 #CloseBox:hover #CloseBoxHeader {
     display: flex;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 0.2rem;
+    border-radius: 0 0 3px 3px;
+    border-bottom-width: 0;
 }
 
 
 #CloseBox:hover>.window-head>span.window-settings {
     position: absolute;
     right: 0;
+}
+
+#CloseBox #CloseBoxSettingsBox {
+    top: 60px;
 }
 
 #CloseBox #cb-close-all-windows {
