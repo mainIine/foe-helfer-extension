@@ -1,5 +1,42 @@
 ## Changelog - Extension
 
+##### 2.9.1.0
+
+**Update**
+- Own contribution calculator:
+	- Data for the A.I. added => Powerlevel-Overview
+
+- Units:
+	- PvP slots are also output, graphics can be scaled in size
+
+**BugFix**
+- Production overview:
+	- [#2199](https://github.com/mainIine/foe-helfer-extension/issues/2199) Correct age is now displayed
+	- [#2222](https://github.com/mainIine/foe-helfer-extension/issues/2222) [#2233](https://github.com/mainIine/foe-helfer-extension/issues/2233) [#2236](https://github.com/mainIine/foe-helfer-extension/issues/2236) [#2290](https://github.com/mainIine/foe-helfer-extension/issues/2290) [#2403](https://github.com/mainIine/foe-helfer-extension/issues/2403) "Golden fields" are now correctly recognised
+	- [#2290](https://github.com/mainIine/foe-helfer-extension/issues/2290) Percentages of the castle were not respected
+
+- Guild battles:
+	- [#2244](https://github.com/mainIine/foe-helfer-extension/issues/2244) added missing translations
+
+- Efficiency calculation:
+	- [#2282](https://github.com/mainIine/foe-helfer-extension/issues/2282) non-motivated shrines are detected
+	- [#2405](https://github.com/mainIine/foe-helfer-extension/issues/2405) "Stage of the Ages" was not recognised
+
+- Bonus hud:
+	- [#2409](https://github.com/mainIine/foe-helfer-extension/issues/2409) Graphics were not displayed
+
+- Notes:
+	- [#2419](https://github.com/mainIine/foe-helfer-extension/issues/2419) Groups could not be renamed
+
+- Settings:
+	- [#2421](https://github.com/mainIine/foe-helfer-extension/issues/2421) removed double entry for "own contribution calculator".
+
+- LB Investments:
+	- [#2431](https://github.com/mainIine/foe-helfer-extension/issues/2431) Goods production for higher levels of Star Gazer was too high
+
+---
+
+
 ##### 2.9.0.0
 
 **New**

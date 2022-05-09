@@ -1,5 +1,41 @@
 ## Changelog - Extension
 
+##### 2.9.1.0
+
+**Update**
+- Eigenanteilsrechner:
+  - Daten für das K.I. ergänzt => Powerlevel-Übersicht
+
+- Einheiten:
+  - PvP Slots werden auch ausgegeben, Grafiken lassen sich in der Größe skalieren
+
+**BugFix**
+- Produktionsübersicht:
+  - [#2199](https://github.com/mainIine/foe-helfer-extension/issues/2199) Korrektes Zeitalter wird nun angezeigt
+  - [#2222](https://github.com/mainIine/foe-helfer-extension/issues/2222) [#2233](https://github.com/mainIine/foe-helfer-extension/issues/2233) [#2236](https://github.com/mainIine/foe-helfer-extension/issues/2236) [#2290](https://github.com/mainIine/foe-helfer-extension/issues/2290)[#2403](https://github.com/mainIine/foe-helfer-extension/issues/2403) "Goldene Felder" werden nun korrekt erkannt
+  - [#2290](https://github.com/mainIine/foe-helfer-extension/issues/2290) Prozente des Schlosses wurden nicht beachtet
+
+- Gildengefechte:
+  - [#2244](https://github.com/mainIine/foe-helfer-extension/issues/2244) fehlende Übersetzungen ergänzt
+
+- Effizienzberechnung:
+  - [#2282](https://github.com/mainIine/foe-helfer-extension/issues/2282) Nicht motivierte Schreine werden erkannt
+  - [#2405](https://github.com/mainIine/foe-helfer-extension/issues/2405) "Bühne der Zeitalter" wurde nicht erkannt
+
+- Bonus-Hud: 
+  - [#2409](https://github.com/mainIine/foe-helfer-extension/issues/2409) Grafiken wurden nicht angezeigt
+
+- Notizen:
+  - [#2419](https://github.com/mainIine/foe-helfer-extension/issues/2419) Gruppen ließen sich nicht umbenennen
+
+- Einstellungen:
+  - [#2421](https://github.com/mainIine/foe-helfer-extension/issues/2421) doppelter Eintrag für "Eigenanteilsrechner" entfernt
+
+- LB Investitionen:
+	- [#2431](https://github.com/mainIine/foe-helfer-extension/issues/2431) Die Warenproduktion für höhere Stufen von Star Gazer war zu hoch
+
+---
+
 ##### 2.9.0.0
 **Neu**
 - Azteken Minigame Helfer
