@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -112,11 +112,19 @@ let UnitGex = {
 
 			$('#unitsGexBody').append(
 				`<div class="head">
-					<div class="text-warning"></div>
-					<div class="text-right"></div>
 				</div>`,
-				`<div id="unitsGexBodyInner"></div>`
+				`<div id="unitsGexBodyInner"></div>`,
+				`<div class="pagination">
+					<button class="btn btn-tight btn-default btn-pagination ge_difficulty_1" onclick="UnitGex.ToggleHeader('0'); $('#unitsGexBody').animate({scrollTop: 0}, 'fast')"></button>
+					<button class="btn btn-tight btn-default btn-pagination ge_difficulty_2" onclick="UnitGex.ToggleHeader('0'); $('#unitsGexBody').animate({scrollTop: 480}, 'fast')"></button>
+					<button class="btn btn-tight btn-default btn-pagination ge_difficulty_3" onclick="UnitGex.ToggleHeader('0'); $('#unitsGexBody').animate({scrollTop: 960}, 'fast')"></button>
+					<button class="btn btn-tight btn-default btn-pagination ge_difficulty_4" onclick="UnitGex.ToggleHeader('0'); $('#unitsGexBody').animate({scrollTop: 1440}, 'fast')"></button>
+				</div>`
 			);
+		}
+		else {
+			HTML.CloseOpenBox('unitsGex');
+			return;
 		}
 
 		UnitGex.buildBody();
@@ -164,7 +172,7 @@ let UnitGex = {
 				const E = entries[0];
 
 				tr.push(`<div class="foehelper-accordion-head ${i}-head" onclick="UnitGex.ToggleHeader('${i}')">
-							<span class="text-warning" style="margin-right:10px">${i}.</span> <strong class="text-${E['Data']['winner'] === 1 ? 'success' : 'danger'}">${E['Data']['winner'] === 1 ? 'Gewonnen' : 'Verloren'}</strong>
+							<span class="text-warning" style="margin: 0 10px;">${i}. ${i18n('Boxes.UnitsGex.Stage')}</span> <strong class="text-${E['Data']['winner'] === 1 ? 'success' : 'danger'}" style="position: absolute; left: 110px;">${E['Data']['winner'] === 1 ? i18n('Boxes.UnitsGex.Won') : i18n('Boxes.UnitsGex.Lost')}</strong>
 						</div>`);
 
 				tr.push(`<div class="foehelper-accordion-body ${i}-body">`);
@@ -218,13 +226,9 @@ let UnitGex = {
 					tr.push(		`</div>`);
 				}
 
-
 				tr.push(	`</div>`);
 				tr.push(`</div>`);
-
-
 			}
-
 			tr.push(`</div>`);
 		}
 
@@ -236,13 +240,10 @@ let UnitGex = {
 
 	PrepareUnit: (entry)=> {
 		let type = Unit.Types.find(obj => (obj['unitTypeId'] === entry['unitTypeId'])),
-			//cache = Unit.Cache['units'].find(obj => (obj['unitId'] === entry['unitId'])),
 			era = Technologies.Eras[type['minEra']],
 			fit = (entry['currentHitpoints'] * 10);
 
-		// console.log('entry: ', entry);
-
-		return `<span class="units-icon ${entry['unitTypeId']}"><span class="health"><span class="fit" style="width:${fit}%"></span></span></span>`;
+		return `<span class="unit_icon ${entry['unitTypeId']} unit_skill ${type['unitClass']}"><span class="health"><span class="fit" style="width:${fit}%"></span></span></span>`;
 	},
 
 

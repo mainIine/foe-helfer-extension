@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -478,7 +478,7 @@ let Investment = {
 		let arc = 1 + (MainParser.ArkBonus / 100);
 		let allGB = await IndexDB.db.investhistory.where('id').above(0).keys();
 		let UpdatedList = false;
-		let playerSyncGbKeys = null;
+		let playerSyncGbKeys = [];
 		let arcLevelCheck = JSON.parse(localStorage.getItem('InvestmentArcBonus'));
 		let forceFullUpdate = !arcLevelCheck || arcLevelCheck != MainParser.ArkBonus ? true : false;
 
@@ -487,7 +487,7 @@ let Investment = {
 			if (LGData.hasOwnProperty(i))
 			{
 				let PlayerID = LGData[i]['player']['player_id'];
-
+				if (PlayerID === ExtPlayerID) continue;
 				// if update started from Player GB Overview
 				// get all available investment from Storage to check if already leveled
 				if (!FullSync && playerSyncGbKeys === null) {

@@ -1,4 +1,5 @@
 [
+	"dexie/dexie.min",
 	"i18njs/i18njs.min",
 	"moment/moment-with-locales.min",
 	"CountUp/jquery.easy_number_animate.min",
@@ -14,7 +15,6 @@
 	"date-range/lightpick",
 	"lit-html/lit-html.bundle.min",
 	"SimpleMarkdown/simple-markdown.min",
-	"dexie/dexie.min",
-	"dexie/dexie-export-import",
-	"downloadjs/downloadjs.min"
+	"downloadjs/downloadjs.min",
+	"dexie/dexie-export-import"
 ]

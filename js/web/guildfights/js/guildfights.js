@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -1036,27 +1036,27 @@ let GuildFights = {
 		h.push('<div class="gbg-tabs tabs">');
 		h.push(GuildFights.GetTabs());
 		h.push(GuildFights.GetTabContent());
-		h.push('<button class="btn-default copybutton" onclick="GuildFights.CopyToClipBoard()">COPY</button>');
-		h.push('<button class="btn-default mapbutton" onclick="ProvinceMap.build()">MAP</button>');
+		h.push('<button class="btn-default copybutton" onclick="GuildFights.CopyToClipBoard()">'+ i18n('Boxes.GuildFights.Copy') +'</button>');
+		h.push('<button class="btn-default mapbutton" onclick="ProvinceMap.build()">'+ i18n('Boxes.GuildFights.OpenMap') +'</button>');
 		h.push('</div>');
 
 		let activeTab = 1;
-		if ($('.gbgnextup.active').length > 0) activeTab = 2;
+		if ($('.gbgprogress.active').length > 0) activeTab = 2;
 
 		$('#LiveGildFighting').find('#LiveGildFightingBody').html(h.join('')).promise().done(function () {
 			$('.gbg-tabs').tabslet({ active: activeTab });
 			$('.gbg-tabs').on('_after', (e) => {
 				GuildFights.ToggleCopyButton();
 			});
-			$('#LiveGildFighting').on('click', '.deletealertbutton', function (e) {
+			$('#nextup').on('click', '.deletealertbutton', function (e) {
 				GuildFights.DeleteAlert($(this).data('id'));
 				e.stopPropagation();
 			});
-			$('#LiveGildFighting').on('click', '.setalertbutton', function (e) {
+			$('#nextup').on('click', '.setalertbutton', function (e) {
 				GuildFights.SetAlert($(this).data('id'));
 				e.stopPropagation();
 			});
-			$('#LiveGildFighting').on('click', 'tr', function () {
+			$('#nextup').on('click', 'tr', function () {
 				if ($(this).hasClass('highlight-row'))
 				{
 					$(this).removeClass('highlight-row');
@@ -1787,6 +1787,8 @@ let ProvinceMap = {
 
 			// add css to the dom
 			HTML.AddCssFile('guildfights');
+		} else {
+			HTML.CloseOpenBox('ProvinceMap')
 		}
 
 		ProvinceMap.prepare();
