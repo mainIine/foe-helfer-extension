@@ -926,7 +926,7 @@ let Parts = {
 			// CopyIncludeDanger
 			let SavedCopyIncludeDanger = localStorage.getItem(Parts.GetStorageKey('CopyIncludeDanger', Parts.CityMapEntity['cityentity_id']));
 			if (SavedCopyIncludeDanger !== null) {
-				Parts.CopyIncludeDanger = (CopyIncludeDanger === 'true');
+				Parts.CopyIncludeDanger = (SavedCopyIncludeDanger === 'true');
 			}
 			else {
 				Parts.CopyIncludeDanger = false;
