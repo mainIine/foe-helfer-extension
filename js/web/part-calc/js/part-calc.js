@@ -1170,6 +1170,7 @@ let Parts = {
 			$boxBg.animate({height: h, opacity: 1}, 250, function () {
 				$box.addClass('show');
 				$box.find('.black-bg').show();
+				e.style.height = 'auto';
 			});
 		}
 
