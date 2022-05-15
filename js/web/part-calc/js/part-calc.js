@@ -1078,7 +1078,7 @@ let Parts = {
 		h.push(Options)
 
 		if (Parts.CopyIncludeDanger) {
-			let DangerOptions = '<p><span class="header"><strong>' + i18n('Boxes.OwnpartCalculator.Places') + '</strong></span></p>' +
+			let DangerOptions = '<p><span class="header"><strong>' + i18n('Boxes.OwnpartCalculator.OptionsDanger') + '</strong></span></p>' +
 			'<div><span>' + i18n('Boxes.OwnpartCalculator.OptionsDangerPrefix') + ':</span><input type="text" class="form-text-input" id="options-danger-prefix" data-options="danger-prefix" value="' + Parts.CopyDangerPrefix + '"></div>' +
 			'<div><span>' + i18n('Boxes.OwnpartCalculator.OptionsDangerSuffix') + ':</span><input type="text" class="form-text-input" id="options-danger-suffix" data-options="danger-suffix" value="' + Parts.CopyDangerSuffix + '"></div>';
 
