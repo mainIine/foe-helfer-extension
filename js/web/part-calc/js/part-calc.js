@@ -425,10 +425,10 @@ let Parts = {
 				if (SavedCopyIncludeDanger !== null) Parts.CopyIncludeDanger = (SavedCopyIncludeDanger === 'true');
 
 				let SavedCopyDangerPrefix = localStorage.getItem(Parts.GetStorageKey('CopyDangerPrefix', null));
-				if (SavedCopyDangerPrefix !== null) Parts.CopyDangerPrefix = (SavedCopyDangerPrefix === 'true');
+				if (SavedCopyDangerPrefix !== null) Parts.CopyDangerPrefix = SavedCopyDangerPrefix;
 
 				let SavedCopyDangerSuffix = localStorage.getItem(Parts.GetStorageKey('CopyDangerSuffix', null));
-				if (SavedCopyDangerSuffix !== null) Parts.CopyDangerSuffix = (SavedCopyDangerSuffix === 'true');
+				if (SavedCopyDangerSuffix !== null) Parts.CopyDangerSuffix = SavedCopyDangerSuffix;
 
 				let SavedCopyIncludePlayer = localStorage.getItem(Parts.GetStorageKey('CopyIncludePlayer', null));
 				if (SavedCopyIncludePlayer !== null) Parts.CopyIncludePlayer = (SavedCopyIncludePlayer === 'true');
