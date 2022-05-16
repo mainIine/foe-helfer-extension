@@ -360,7 +360,9 @@ let AztecsHelper = {
                         for (let other in numberCells) { //andere Zahlenzellen durchgehen
                             if (other == c) continue;
                             let otherCell = map[numberCells[other].y][numberCells[other].x];
-                            
+                                otherCell.surrUnCells = AztecsHelper.GetSurroundingCell(numberCells[other].x,numberCells[other].y,uC);
+                                otherCell.surrResCells = AztecsHelper.GetSurroundingCell(numberCells[other].x,numberCells[other].y,rC);
+                
                             let Overlap = [], Diff=[];
                             [Overlap, Diff] = AztecsHelper.Compare(cell.surrUnCells, otherCell.surrUnCells); //Überlapp und Unterschied der auf unbekannten Nachbarn zwischen der Zelle und der anderen Zelle bestimmen
                             
@@ -553,7 +555,7 @@ let AztecsHelper = {
     test:()=>{
         AztecsHelper.mapHeight=7;
         AztecsHelper.mapWidth=11;
-        AztecsHelper.grid = JSON.parse('[[{"content":"?"},{"content":"?"},{"content":"?"},{"content":"?"},{"content":"?"},{"content":"?"},{"content":"?"},{"content":"?"},{"content":"?"},{"content":"?"},{"content":"?"}],[{"content":"?"},{"content":"?"},{"content":"?"},{"content":"?"},{"content":"?"},{"content":"?"},{"content":1},{"content":"?"},{"content":"?"},{"content":4},{"content":"?"}],[{"content":"?"},{"content":"?"},{"content":"?`"},{"content":"?"},{"content":"?"},{"content":2},{"content":1},{"content":1},{"content":"?"},{"content":"?"},{"content":"?"}],[{"content":"?"},{"content":"?"},{"content":"?"},{"content":"?"},{"content":2},{"content":1},{"content":" "},{"content":1},{"content":"?"},{"content":3},{"content":2}],[{"content":"?"},{"content":"?"},{"content":"?"},{"content":"?"},{"content":2},{"content":" "},{"content":" "},{"content":1},{"content":1},{"content":1},{"content":" "}],[{"content":"?"},{"content":"?"},{"content":"?"},{"content":"?"},{"content":2},{"content":" "},{"content":" "},{"content":" "},{"content":" "},{"content":" "},{"content":" "}],[{"content":"?"},{"content":"?"},{"content":"?"},{"content":"?"},{"content":1},{"content":" "},{"content":" "},{"content":" "},{"content":" "},{"content":" "},{"content":" "}]]');
+        AztecsHelper.grid = JSON.parse('[[{"content":1},{"content":1},{"content":" "},{"content":" "},{"content":" "},{"content":1},{"content":"?"},{"content":"?"},{"content":"?"},{"content":"?"},{"content":"?"}],[{"content":"?"},{"content":1},{"content":" "},{"content":" "},{"content":" "},{"content":2},{"content":"?"},{"content":"?"},{"content":"?"},{"content":"?"},{"content":"?"}],[{"content":1},{"content":1},{"content":" "},{"content":" "},{"content":" "},{"content":1},{"content":"?"},{"content":"?"},{"content":"?"},{"content":"?"},{"content":"?"}],[{"content":" "},{"content":" "},{"content":" "},{"content":" "},{"content":" "},{"content":2},{"content":"?"},{"content":"?"},{"content":"?"},{"content":"?"},{"content":"?"}],[{"content":1},{"content":1},{"content":1},{"content":" "},{"content":" "},{"content":1},{"content":"?"},{"content":"?"},{"content":"?"},{"content":"?"},{"content":"?"}],[{"content":"?"},{"content":"?"},{"content":3},{"content":2},{"content":1},{"content":2},{"content":"?"},{"content":"?"},{"content":"?"},{"content":"?"},{"content":"?"}],[{"content":"?"},{"content":"?"},{"content":"?"},{"content":"?"},{"content":"?"},{"content":"?"},{"content":"?"},{"content":"?"},{"content":"?"},{"content":"?"},{"content":"?"}]]');
         AztecsHelper.CalcAdjacentCells();
     },
 
