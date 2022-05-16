@@ -432,7 +432,7 @@ let Productions = {
 							}
 						}
 
-						if (EraComponents['boosts']['boosts']) {
+						if (EraComponents['boosts'] && EraComponents['boosts']['boosts']) {
 							for (let i = 0; i < EraComponents['boosts']['boosts'].length; i++) {
 								let Boost = EraComponents['boosts']['boosts'][i],
 									BoostType = Boost['type'];

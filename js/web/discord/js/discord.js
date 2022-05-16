@@ -105,6 +105,7 @@ let Discord = {
 		$('#DiscordBody').html(h.join(''));
 	},
 
+
 	Save: ()=> {
 		const data = {
 			name: $('#webhook-name').val(),
