@@ -831,7 +831,7 @@ let Stats = {
 			series,
 			pointFormat: `<tr>
 								<td>
-									<span class="unit_icon {series.options.unitId}"></span>
+									<span class="unit_icon {series.options.unitId}" style="background-image:url('${MainParser.InnoCDN}assets/shared/unit_portraits/armyuniticons_50x50/armyuniticons_50x50_0.png')"></span>
 								</td>
 								<td>
 									<span style="margin: 0 5px;"><span style="color:{point.color}">●</span> {series.name}: </span>
@@ -1327,7 +1327,7 @@ let Stats = {
 		const seriesMapBySource = groupedByRewardSource[rewardSource] || {};
 		const serieData = Object.keys(seriesMapBySource).map(it => {
 			const rewardInfo = (rewardTypes.find(r => r.id === it) || {name: it});
-			const iconClass = rewardInfo.type === 'unit' ? `unit_icon ${rewardInfo.subType}` : '';
+			const iconClass = rewardInfo.type === 'unit' ? `unit_icon ${rewardInfo.subType}" style="background-image:url('${MainParser.InnoCDN}assets/shared/unit_portraits/armyuniticons_50x50/armyuniticons_50x50_0.png')` : '';
 			// Asset image if not unit
 			let pointImage = '';
 			if (rewardInfo.type != 'unit') {

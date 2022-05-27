@@ -243,7 +243,7 @@ let UnitGex = {
 			era = Technologies.Eras[type['minEra']],
 			fit = (entry['currentHitpoints'] * 10);
 
-		return `<span class="unit_icon ${entry['unitTypeId']} unit_skill ${type['unitClass']}"><span class="health"><span class="fit" style="width:${fit}%"></span></span></span>`;
+		return `<span class="unit_icon ${entry['unitTypeId']} unit_skill ${type['unitClass']}" style="background-image:url('${MainParser.InnoCDN}assets/shared/unit_portraits/armyuniticons_50x50/armyuniticons_50x50_0.png')"><span class="health"><span class="fit" style="width:${fit}%"></span></span></span>`;
 	},
 
 
