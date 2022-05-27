@@ -776,12 +776,12 @@ let Unit = {
 	*
 	*/
 	LoadSettings: () => {
-		Unit.Settings = JSON.parse(localStorage.getItem('UnitOverviewSettings')) || Unit.Settings;
-		Unit.Settings.pictogramScaling = (Unit.Settings && Unit.Settings.pictogramScaling !== undefined) ? Unit.Settings.pictogramScaling : 4;
+		cachedSettings = JSON.parse(localStorage.getItem('UnitOverviewSettings')) || Unit.Settings;
+		Unit.Settings.pictogramScaling = (cachedSettings && cachedSettings.pictogramScaling !== undefined) ? cachedSettings.pictogramScaling : Unit.Settings.pictogramScaling;
 	},
 
 	/**
-	* Settings, Settings.pictogramScaling;
+	* Unit.Settings.pictogramScaling;
 	*/
 	ShowSettings: () => {
 		let h = [];
