@@ -967,7 +967,7 @@ let Stats = {
 			data = await IndexDB.db[matchingDB].where('date').between(Stats.DatePickerFrom, Stats.DatePickerTo).sortBy('date');
 		} 
 		else
-			data = await IndexDB.db.statsTreasureClanD.orderBy('date').toArray();
+			data = await IndexDB.db.statsTreasurePlayerD.orderBy('date').toArray();
 
 		const series = Stats.getSelectedEras().map(era => {
 			return {
@@ -1002,7 +1002,7 @@ let Stats = {
 			data = await IndexDB.db[matchingDB].where('date').between(Stats.DatePickerFrom, Stats.DatePickerTo).sortBy('date');
 		} 
 		else
-			data = await IndexDB.db.statsTreasureClanD.orderBy('date').toArray();
+			data = await IndexDB.db.statsTreasurePlayerD.orderBy('date').toArray();
 
 		let colors;
 
