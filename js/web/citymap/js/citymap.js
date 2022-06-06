@@ -563,6 +563,7 @@ let CityMap = {
 		return Ret;
 	},
 
+
 	filterBuildings: (string) => {
 		spans = $('span.entity');
 		for (sp of spans) {
@@ -576,6 +577,7 @@ let CityMap = {
 		}
 
 	},
+
 
 	GetBuildingEra: (CityMapEntity) => {
 		let CityEntity = MainParser.CityEntities[CityMapEntity['cityentity_id']];
