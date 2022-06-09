@@ -201,13 +201,13 @@ FoEproxy.addHandler('OtherPlayerService', 'rewardPlunder', (data, postData) => {
 
 				StrategyPoints.insertIntoDB({
 					event: 'plunderReward',
-					notes: player ? `<img src="${MainParser.InnoCDN + 'assets/shared/avatars/' + (MainParser.PlayerPortraits[player['Avatar']] || 'portrait_433')}.jpg"><span>${MainParser.GetPlayerLink(player['PlayerID'], player['PlayerName'])}</span>` : '',
+					notes: player ? `<img src="${MainParser.InnoCDN + 'assets/shared/avatars/' + (MainParser.PlayerPortraits[player['Avatar']] || 'portrait_433')}.jpg"><span>${MainParser.GetPlayerLink(player['PlayerID'], player['PlayerName'])}${entity ? ' - ' + entity['name'] : ''}</span>` : '',
 					amount: PlunderedFP,
 					date: moment(MainParser.getCurrentDate()).format('YYYY-MM-DD')
 				});
 			}
 		}
-	}, 200);
+	}, 1000);
 });
 
 
