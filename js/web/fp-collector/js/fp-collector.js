@@ -411,14 +411,19 @@ let FPCollector = {
 	HandleAdvanceQuest: (PostData) => {
 		if (PostData['requestData'] && PostData['requestData'][0]) {
 			let QuestID = PostData['requestData'][0];
+
 			for (let Quest of MainParser.Quests) {
 				if (Quest['id'] !== QuestID || Quest['state'] !== 'collectReward') continue;
+
 				if (Quest['genericRewards']) {
+
 					for (let Reward of Quest['genericRewards']) {
 						if (Reward['type'] === 'outpost_complete_item') { // Kulturelle Siedlung Abschlussbelohnung
+
 							let outpostData = Outposts.OutpostData;
 							let playthrough = outpostData.completedPlaythroughs < outpostData.playthroughs.length ? outpostData.playthroughs[outpostData.completedPlaythroughs] : outpostData.playthroughs[outpostData.playthroughs.length-1];
 							let amount = (playthrough.rewards[0].subType === "strategy_points" ? playthrough.rewards[0].amount : 0) + (playthrough.additionalRewardFromBoost ? playthrough.additionalRewardFromBoost.amount : 0 );
+
 							if (amount === 0 ) return;
 							StrategyPoints.insertIntoDB({
 								event: 'collectReward',
