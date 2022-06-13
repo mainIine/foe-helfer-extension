@@ -1,5 +1,18 @@
 ## Changelog - Extension
 
+##### 2.9.2.0
+
+- Production overview:
+	- [#2449](https://github.com/mainIine/foe-helfer-extension/issues/2449) [#2452](https://github.com/mainIine/foe-helfer-extension/issues/2452) Production overview did not open
+
+- Statistics module:
+	- [#2453](https://github.com/mainIine/foe-helfer-extension/issues/2453) DNA (Special Good) was not recognised
+
+- Own contribution calculator:
+	- [#2454](https://github.com/mainIine/foe-helfer-extension/issues/2454) As of version 2.9.1.0, the Own Share Calculator crashed if the format was saved per Legendary Building and the new "Danger" option was selected for one of the buildings at the same time.
+
+---
+
 ##### 2.9.1.0
 
 **Update**

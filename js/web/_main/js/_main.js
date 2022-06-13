@@ -397,30 +397,32 @@ GetFights = () =>{
 	FoEproxy.addHandler('BattlefieldService', 'startByBattleType', (data, postData) => {
 
 		// Kampf beendet
-		if (data.responseData["error_code"] == 901) {
+		if (data.responseData["error_code"] === 901) {
 			return;
 		}
-		if (data.responseData["armyId"] == 1 || data.responseData["state"]["round"] == 1 || data.responseData["battleType"]["totalWaves"] == 1) {
+		if (data.responseData["armyId"] === 1 || data.responseData["state"]["round"] === 1 || data.responseData["battleType"]["totalWaves"] === 1) {
 			let units = data.responseData.state.unitsOrder;
+
 			for (let i = 0; i < units.length; i++) {
 				const unit = units[i];
-				if (unit.teamFlag == 1 && data.responseData["battleType"]["totalWaves"] == 1) {
+				if (unit.teamFlag === 1 && data.responseData["battleType"]["totalWaves"] === 1) {
 					OwnUnits.push({ "unitTypeId": unit.unitTypeId, "startHitpoints": unit.startHitpoints, "bonuses": unit.bonuses, "abilities": unit.abilities });
-				} else if (unit.teamFlag == 2) {
+				} else if (unit.teamFlag === 2) {
 					EnemyUnits.push({ "unitTypeId": unit.unitTypeId, "startHitpoints": unit.startHitpoints, "bonuses": unit.bonuses, "abilities": unit.abilities });
 				}
 			}
-			Fights.push({enemy:EnemyUnits, own:OwnUnits, won:(data.responseData["state"]["winnerBit"] == 1 ? true:false)});
+
+			Fights.push({enemy:EnemyUnits, own:OwnUnits, won:(data.responseData["state"]["winnerBit"] === 1)});
 			EnemyUnits = [];
 			OwnUnits = [];
 		}
-		else if(data.responseData["battleType"]["totalWaves"] == 2 && data.responseData["battleType"]["currentWaveId"] == null){
+		else if(data.responseData["battleType"]["totalWaves"] === 2 && data.responseData["battleType"]["currentWaveId"] == null){
 			let units = data.responseData.state.unitsOrder;
 			for (let i = 0; i < units.length; i++) {
 				const unit = units[i];
-				if (unit.teamFlag == 1) {
+				if (unit.teamFlag === 1) {
 					OwnUnits.push({ "unitTypeId": unit.unitTypeId, "startHitpoints": unit.startHitpoints, "bonuses": unit.bonuses, "abilities": unit.abilities });
-				} else if (unit.teamFlag == 2) {
+				} else if (unit.teamFlag === 2) {
 					EnemyUnits.push({ "unitTypeId": unit.unitTypeId, "startHitpoints": unit.startHitpoints, "bonuses": unit.bonuses, "abilities": unit.abilities });
 				}
 			}
@@ -548,10 +550,6 @@ GetFights = () =>{
 				lgUpdateData.Rankings = Rankings;
 				lgUpdateData.Bonus = Bonus;
 				lgUpdateData.Era = Era;
-
-				if(lgUpdateData.Rankings && lgUpdateData.CityMapEntity){
-					if(!IsLevelScroll) MainParser.SendLGData(lgUpdateData);
-				}
 
 				lgUpdate();
 			}
@@ -1131,31 +1129,6 @@ let MainParser = {
 
 
 	/**
-	 * Collect some stats
-	 *
-	 * @param d
-	 * @returns {boolean}
-	 * @constructor
-	 */
-	SendLGData: (d)=> {
-
-		const dataEntity = d['CityMapEntity']['responseData'][0],
-			realData = {
-				entity: dataEntity,
-				ranking: d['Rankings'],
-				bonus: d['Bonus'],
-				era: d['Era'],
-			}
-
-		MainParser.sendExtMessage({
-			type: 'send2Api',
-			url: `${ApiURL}OwnLGData/?world=${ExtWorld}${MainParser.DebugMode ? '&debug' : ''}&v=${extVersion}`,
-			data: JSON.stringify(realData)
-		});
-	},
-
-
-	/**
 	 * Back up player data
 	 *
 	 * @param d
@@ -1280,15 +1253,6 @@ let MainParser = {
 					}
 				}
 			}
-		}
-
-		if (lgs.length > 0) {
-			// ab zum Server
-			MainParser.sendExtMessage({
-				type: 'send2Api',
-				url: ApiURL + 'SelfPlayerLGs/?player_id=' + ExtPlayerID + '&guild_id=' + ExtGuildID + '&world=' + ExtWorld,
-				data: JSON.stringify(lgs)
-			});
 		}
 	},
 
@@ -1488,11 +1452,12 @@ let MainParser = {
 	 * Collect titles of the chats
 	 *
 	 * @param d
+	 * @param refresh
 	 */
-	setConversations: (d) => {
+	setConversations: (d, refresh = false) => {
 
 		// If the cache is empty, read out the memory.
-		if (MainParser.Conversations.length === 0)
+		if (MainParser.Conversations.length === 0 && !refresh)
 		{
 			let StorageHeader = localStorage.getItem('ConversationsHeaders');
 			if (StorageHeader !== null) {

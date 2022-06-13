@@ -12,11 +12,11 @@
  */
 
 FoEproxy.addHandler('GrandPrizeService', 'getGrandPrizes', (data, postData) => {
-	FPCollector.curentEvent = data.responseData[0].context;
+	FPCollector.curentEvent = data.responseData[0]['context'].replace(/_tournament/g,'');
 });
 
 FoEproxy.addHandler('TimedSpecialRewardService', 'getTimedSpecial', (data, postData) => {
-	FPCollector.curentEvent = data.responseData['context'];
+	FPCollector.curentEvent = data.responseData['context'].replace(/_tournament/g,'');
 });
 
 // - GG reward after fight [2,5,10]FP or PvP reward
@@ -26,13 +26,11 @@ FoEproxy.addHandler('TimedSpecialRewardService', 'getTimedSpecial', (data, postD
 // - Daily reward box castle system
 // - personal rank gain chest Truhe PvP-Arena
 FoEproxy.addHandler('RewardService', 'collectReward', (data, postData) => {
-
 	const d = data.responseData[0][0];
 	let eventCheck = data.responseData[1],
 		event = data.responseData[1],
 		notes = null,
 		amount = d['amount'];
-
 
 	if (FPCollector.curentEvent !== null ) {
 		if (eventCheck.toLowerCase().includes("event")) {
@@ -54,14 +52,13 @@ FoEproxy.addHandler('RewardService', 'collectReward', (data, postData) => {
 			event = FPCollector.curentEvent;
 			notes = i18n('Boxes.FPCollector.reward_calendar');
 		}
-		if (eventCheck.toLowerCase().includes("grandprize") || eventCheck.includes("grand_prize") || eventCheck.includes("event_pass") ) {
+		if (eventCheck.toLowerCase().includes("grandprize") || eventCheck.includes("grand_prize") || d['type'].includes("grand_prize") || eventCheck.includes("event_pass") ) {
 			event = FPCollector.curentEvent;
 			notes = i18n('Boxes.FPCollector.grand_prize');
 		}
 	}
 
 	if (d['subType'] !== 'strategy_points') {
-
 		if (data.responseData[1] === 'castle_system') { // Tägliche Belohnungskiste
 			event = 'castle_system_daily_reward_chest';
 			notes = d['name'];
@@ -72,8 +69,8 @@ FoEproxy.addHandler('RewardService', 'collectReward', (data, postData) => {
 			notes = d['name'];
 			amount = 0;
 			rewards = d['rewards'];
-			if (!Array.isArray(rewards)) { 
-				return; 
+			if (!Array.isArray(rewards)) {
+				return;
 			}
 			for (let reward of rewards) {
 				if (reward['subType'] === 'strategy_points') {
@@ -88,9 +85,9 @@ FoEproxy.addHandler('RewardService', 'collectReward', (data, postData) => {
 			return;
 		}
 	}
-
 	else if (event === 'default') {	// default is hiddenreward or leaguereward or flying island incidents
 		event = 'hiddenReward';
+
 		if (isCurrentlyInOutpost === 1) {
 			event = 'shards';
 		}
@@ -113,35 +110,29 @@ FoEproxy.addHandler('RewardService', 'collectReward', (data, postData) => {
 
 // - reward calendar completion
 FoEproxy.addHandler('InventoryService', 'getItem', (data, postData) => {
-
 	let eventCheck = data.responseData.itemAssetName;
-	
+
 	if (eventCheck.includes("calendar_completion")) {
-		
-		let event = !FPCollector.curentEvent ? i18n('Boxes.FPCollector.event') : FPCollector.curentEvent,
+		let event = !FPCollector.curentEvent ? 'event' : FPCollector.curentEvent,
 			notes = i18n('Boxes.FPCollector.reward_calendar_completion'),
 			amount = 0,
 			rewards = data.responseData.item.reward['rewards'];
-			
 		if (!Array.isArray(rewards)) {
 			return;
 		}
-		
 		for (let reward of rewards) {
 			if (reward['subType'] === 'strategy_points') {
 				amount += reward['amount'];
 			}
 		}
-		
 		if (amount === 0) {
 			return;
 		}
-		
 	}
 	else {
 		return;
 	}
-	
+
 	StrategyPoints.insertIntoDB({
 		event: event,
 		notes: notes,
@@ -152,10 +143,9 @@ FoEproxy.addHandler('InventoryService', 'getItem', (data, postData) => {
 
 // GEX FP from chest
 FoEproxy.addHandler('GuildExpeditionService', 'openChest', (data, postData) => {
-
 	const d = data['responseData'];
 
-	if (d['subType'] !== 'strategy_points'){
+	if (d['subType'] !== 'strategy_points') {
 		return;
 	}
 
@@ -169,10 +159,9 @@ FoEproxy.addHandler('GuildExpeditionService', 'openChest', (data, postData) => {
 
 // Visit other players (satDown)
 FoEproxy.addHandler('FriendsTavernService', 'getOtherTavern', (data, postData) => {
-
 	const d = data['responseData'];
 
-	if (!d['rewardResources'] || !d['rewardResources']['resources'] || !d['rewardResources']['resources']['strategy_points'] || !postData[0] || !postData[0]['requestData'] || !postData[0]['requestData'][0]){
+	if (!d['rewardResources'] || !d['rewardResources']['resources'] || !d['rewardResources']['resources']['strategy_points'] || !postData[0] || !postData[0]['requestData'] || !postData[0]['requestData'][0]) {
 		return;
 	}
 
@@ -180,7 +169,7 @@ FoEproxy.addHandler('FriendsTavernService', 'getOtherTavern', (data, postData) =
 
 	StrategyPoints.insertIntoDB({
 		event: 'satDown',
-		notes: player ? `<img src="${MainParser.InnoCDN + 'assets/shared/avatars/' + (MainParser.PlayerPortraits[player['Avatar']] || 'portrait_433')}.jpg"><span>${MainParser.GetPlayerLink(player['PlayerID'], player['PlayerName'])}</span>` : '',
+		notes: player ? `<img src="${MainParser.InnoCDN + 'assets/shared/avatars/' + MainParser.PlayerPortraits[player['Avatar']]}.jpg"><span>${MainParser.GetPlayerLink(player['PlayerID'], player['PlayerName'])}</span>` : '',
 		amount: d['rewardResources']['resources']['strategy_points'],
 		date: moment(MainParser.getCurrentDate()).format('YYYY-MM-DD')
 	});
@@ -201,24 +190,18 @@ FoEproxy.addHandler('CityMapService', 'reset', (data, postData) => {
 });
 
 FoEproxy.addHandler('OtherPlayerService', 'rewardPlunder', (data, postData) => {
-
 	setTimeout(function() {
-		
 		for (let i = 0; i < data.responseData.length; i++) {
-
 			let PlunderReward = data.responseData[i];
 
 			if (PlunderReward['product'] && PlunderReward['product']['resources'] && PlunderReward['product']['resources']['strategy_points']) {
-
 				let PlunderedFP = PlunderReward['product']['resources']['strategy_points'];
-
-				const player = PlayerDict[FPCollector.lastVisitedPlayer];
-				
+				const player = PlayerDict[FPCollector.lastVisitedPlayer];	
 				const entity = MainParser.CityEntities[FPCollector.lastPlunderedEntity];
 
 				StrategyPoints.insertIntoDB({
 					event: 'plunderReward',
-					notes: player ? `<img src="${MainParser.InnoCDN + 'assets/shared/avatars/' + MainParser.PlayerPortraits[player['Avatar']]}.jpg"><span>${MainParser.GetPlayerLink(player['PlayerID'], player['PlayerName'])}${entity ? ' - ' + entity['name'] : ''}</span>` : '',
+					notes: player ? `<img src="${MainParser.InnoCDN + 'assets/shared/avatars/' + (MainParser.PlayerPortraits[player['Avatar']] || 'portrait_433')}.jpg"><span>${MainParser.GetPlayerLink(player['PlayerID'], player['PlayerName'])}${entity ? ' - ' + entity['name'] : ''}</span>` : '',
 					amount: PlunderedFP,
 					date: moment(MainParser.getCurrentDate()).format('YYYY-MM-DD')
 				});
@@ -230,9 +213,7 @@ FoEproxy.addHandler('OtherPlayerService', 'rewardPlunder', (data, postData) => {
 
 // double Collection by Blue Galaxy contains [id, type]
 FoEproxy.addHandler('CityMapService', 'showEntityIcons', (data, postData) => {
-
 	for (let i in data['responseData']) {
-
 		if (!data['responseData'].hasOwnProperty(i)) continue;
 
 		if (data['responseData'][i]['type'] !== 'citymap_icon_double_collection') continue;
@@ -242,9 +223,11 @@ FoEproxy.addHandler('CityMapService', 'showEntityIcons', (data, postData) => {
 			CityEntity = MainParser.CityEntities[Building['cityentity_id']];
 
 		let Production = Productions.readType(Building);
+
 		if (!Production['products']) continue;
 
 		let FP = Production['products']['strategy_points'];
+
 		if (!FP) continue;
 
 		StrategyPoints.insertIntoDB({
@@ -428,77 +411,40 @@ let FPCollector = {
 	HandleAdvanceQuest: (PostData) => {
 		if (PostData['requestData'] && PostData['requestData'][0]) {
 			let QuestID = PostData['requestData'][0];
+
 			for (let Quest of MainParser.Quests) {
 				if (Quest['id'] !== QuestID || Quest['state'] !== 'collectReward') continue;
 
-				// normale Quest-Belohnung
 				if (Quest['genericRewards']) {
+
 					for (let Reward of Quest['genericRewards']) {
-						if (Reward['subType'] === 'strategy_points') {
+						if (Reward['type'] === 'outpost_complete_item') { // Kulturelle Siedlung Abschlussbelohnung
+
+							let outpostData = Outposts.OutpostData;
+							let playthrough = outpostData.completedPlaythroughs < outpostData.playthroughs.length ? outpostData.playthroughs[outpostData.completedPlaythroughs] : outpostData.playthroughs[outpostData.playthroughs.length-1];
+							let amount = (playthrough.rewards[0].subType === "strategy_points" ? playthrough.rewards[0].amount : 0) + (playthrough.additionalRewardFromBoost ? playthrough.additionalRewardFromBoost.amount : 0 );
+
+							if (amount === 0 ) return;
 							StrategyPoints.insertIntoDB({
 								event: 'collectReward',
-								notes: Quest['windowTitle'] ? Quest['windowTitle'] : '',
-								amount: Reward['amount'],
+								notes: Quest.questGiver['name'] + ' - ' + Quest['windowTitle'],
+								amount: amount,
 								date: moment(MainParser.getCurrentDate()).format('YYYY-MM-DD')
 							});
 						}
-					}
-				}
-
-				// Kulturelle Siedlung Abschlussbelohnung
-				if (Quest['genericRewards']) {
-					for (let Reward of Quest['genericRewards']) {
-						if (Reward['type'] === 'outpost_complete_item') {
-							let CastleSystemLevel,
-								CastleSystemBonus,
-								CastlePoints = ResourceStock['castle_points'] | 0;
-							for (let i=0; i < MainParser.CastleSystemLevels.length; i++) {
-								let NextLevel = MainParser.CastleSystemLevels[i];
-								if (CastlePoints < NextLevel['requiredPoints']) break;
-								CastleSystemLevel = NextLevel['level'];
-								let NextLevelPermanentRewards = NextLevel['permanentRewards'][CurrentEra];
-								for (let j in NextLevelPermanentRewards) {
-									if (NextLevelPermanentRewards[j]['subType'] === "cop_playthrough_reward") {
-										CastleSystemBonus = NextLevelPermanentRewards[j]['id'].replace(/[^0-9]/g, '');
-									}
-								}
-							}
-							if (Reward['subType'] === 'vikings') {
-								amount = Quest['maxSeasonProgress'] >= 16 ? 50 : 0;
-							}
-							if (Reward['subType'] === 'japanese') {
-								amount = Quest['maxSeasonProgress'] >= 14 ? 50 : 0;
-							}
-							if (Reward['subType'] === 'egyptians') {
-								amount = Quest['maxSeasonProgress'] >= 11 ? 60 : 0;
-							}
-							if (Reward['subType'] === 'aztecs') {
-								amount = Quest['maxSeasonProgress'] >= 14 ? 55 : 0;
-							}
-							if (Reward['subType'] === 'mughals') {
-								amount = Quest['maxSeasonProgress'] >= 11 ? 60 : 0;
-							}
-							if (amount === 0 && CastleSystemLevel <= 3) {
-								return;
-							}
+						else if (Reward['type'] === 'forgepoint_package') { // Belohnung einer Schleifenquest
 							StrategyPoints.insertIntoDB({
 								event: 'collectReward',
-								notes: Quest['windowTitle'] ? Quest['windowTitle'] : '',
-								amount: parseInt(amount) + parseInt(CastleSystemBonus),
-								date: moment(MainParser.getCurrentDate()).format('YYYY-MM-DD')
-							});
-						}
-					}
-				}
-
-				// Belohnung einer Schleifenquest
-				if (Quest['genericRewards']) {
-					for (let Reward of Quest['genericRewards']) {
-						if (Reward['type'] === 'forgepoint_package') {
-							StrategyPoints.insertIntoDB({
-								event: 'collectReward',
-								notes: Quest['windowTitle'] ? Quest['windowTitle'] : '',
+								notes: Quest.questGiver['name'] + ' - ' + Quest['windowTitle'],
 								amount: Number(Reward['subType']),
+								date: moment(MainParser.getCurrentDate()).format('YYYY-MM-DD')
+							});
+						}
+						else if (Reward['subType'] === 'strategy_points') { // normale Quest-Belohnung
+							StrategyPoints.insertIntoDB({
+								event: 'collectReward',
+								notes: Quest.questGiver['name'] + ' - ' + Quest['windowTitle'],
+								amount: Reward['amount'],
 								date: moment(MainParser.getCurrentDate()).format('YYYY-MM-DD')
 							});
 						}

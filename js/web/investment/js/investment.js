@@ -478,7 +478,7 @@ let Investment = {
 		let arc = 1 + (MainParser.ArkBonus / 100);
 		let allGB = await IndexDB.db.investhistory.where('id').above(0).keys();
 		let UpdatedList = false;
-		let playerSyncGbKeys = [];
+		let playerSyncGbKeys = null;
 		let arcLevelCheck = JSON.parse(localStorage.getItem('InvestmentArcBonus'));
 		let forceFullUpdate = !arcLevelCheck || arcLevelCheck != MainParser.ArkBonus ? true : false;
 
@@ -572,7 +572,7 @@ let Investment = {
 					allGB = Investment.remove_key_from_array(allGB, CurrentGB.id);
 				}
 
-				if (CurrentGB !== undefined && !FullSync)
+				if (CurrentGB !== undefined && !FullSync && playerSyncGbKeys !== null)
 				{
 					playerSyncGbKeys = Investment.remove_key_from_array(playerSyncGbKeys, CurrentGB.id);
 				}
@@ -625,7 +625,7 @@ let Investment = {
 		}
 
 		// Delete leveled GBs from GB Player Overview
-		if (!FullSync && playerSyncGbKeys.length >= 1) {
+		if (!FullSync && playerSyncGbKeys !== null && playerSyncGbKeys.length >= 1) {
 			UpdatedList=true;
 			await IndexDB.db.investhistory.where('id').anyOf(playerSyncGbKeys).delete();
 		}

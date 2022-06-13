@@ -1,5 +1,18 @@
 ## Changelog - Extension
 
+##### 2.9.2.0
+
+- Produktionsübersicht:
+    - [#2449](https://github.com/mainIine/foe-helfer-extension/issues/2449) [#2452](https://github.com/mainIine/foe-helfer-extension/issues/2452) Produktionsübersicht öffnete sich nicht
+
+- Statistikmodul:
+    - [#2453](https://github.com/mainIine/foe-helfer-extension/issues/2453) DNA (Spezial Gut) wurde nicht erkannt
+
+- Eigenanteilsrechner:
+    - [#2454](https://github.com/mainIine/foe-helfer-extension/issues/2454) Ab Version 2.9.1.0 crashte der Eigenanteilsrechner, wenn man das Format je Legendärem Gebäude abspeichert und gleichzeitig die neue "Danger"-Option bei einem der Gebäude ausgewählt hatte
+
+---
+
 ##### 2.9.1.0
 
 **Update**

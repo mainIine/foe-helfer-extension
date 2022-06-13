@@ -707,6 +707,8 @@
     "Boxes.OwnpartCalculator.Note": "Note",
     "Boxes.OwnpartCalculator.OldLevel": "Old level",
     "Boxes.OwnpartCalculator.OptionsDanger": "Danger",
+    "Boxes.OwnpartCalculator.OptionsDangerPrefix": "Prefix",
+    "Boxes.OwnpartCalculator.OptionsDangerSuffix": "Suffix",
     "Boxes.OwnpartCalculator.OptionsDescending": "Descending",
     "Boxes.OwnpartCalculator.OptionsFP": "Forge Points",
     "Boxes.OwnpartCalculator.OptionsGB": "Name building",
@@ -828,6 +830,7 @@
     "Boxes.Stats.BtnToggleAnnotationsTitle": "Show a decrease of goods on GvG map.",
     "Boxes.Stats.BtnToggleGroupBy": "Group by Ages",
     "Boxes.Stats.BtnToggleGroupByTitle": "Group by Name",
+    "Boxes.Stats.DatePicker": "Pick Dates",
     "Boxes.Stats.Era": "Era",
     "Boxes.Stats.HelpLink": "https://foe-helper.com/docs/en/statistics/",
     "Boxes.Stats.Period.all": "All",
@@ -1293,6 +1296,6 @@
     "Settings.Version.Title": "Version",
     "Settings.Version.World": "World:",
     "StrategyPoints.BuyableFP": "Number of FPs that can be bought with coins.",
-    "YYYYMMDD": "???",
+    "YYYYMMDD": "YYYY-MM-DD",
     "_Language": "English"
 }
