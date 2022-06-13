@@ -83,46 +83,47 @@
 	background-size: 24px auto;
 	background-repeat: no-repeat;
 	background-position: center;
+	image-rendering: -webkit-optimize-contrast;
 }
 
 .foehelper-accordion-head.hiddenReward-head span.image {
-	background-image: url('../images/incident.png') !important;
+	background-image: url('../../x_img/incident.png') !important;
 }
 
 .foehelper-accordion-head.chest-head  span.image {
-	background-image: url('../images/expedition.png') !important;
+	background-image: url('../../x_img/expedition.png') !important;
 }
 
 .foehelper-accordion-head.guildExpedition-head span.image {
-	background-image: url('../images/relic.png') !important;
+	background-image: url('../../x_img/relic.png') !important;
 }
 
 .foehelper-accordion-head.shards-head span.image {
-	background-image: url('../images/shards.png') !important;
+	background-image: url('../../x_img/shards.png') !important;
 }
 
 .foehelper-accordion-head.battlegrounds_conquest-head span.image {
-	background-image: url('../images/gbg.png') !important;
+	background-image: url('../../x_img/gbg.png') !important;
 }
 
 .foehelper-accordion-head.satDown-head span.image {
-	background-image: url('../images/sat_down.png') !important;
+	background-image: url('../../x_img/sat_down.png') !important;
 }
 
 .foehelper-accordion-head.Quest-head span.image {
-	background-image: url('../images/quest.png') !important;
+	background-image: url('../../x_img/quest.png') !important;
 }
 
 .foehelper-accordion-head.spoilsOfWar-head span.image {
-	background-image: url('../images/spoils_of_war.png') !important;
+	background-image: url('../../x_img/spoils_of_war.png') !important;
 }
 
 .foehelper-accordion-head.diplomaticGifts-head span.image {
-	background-image: url('../images/diplomatic_gifts.png') !important;
+	background-image: url('../../x_img/diplomatic_gifts.png') !important;
 }
 
 .foehelper-accordion-head.antiquesDealer-head span.image {
-	background-image: url('../images/ant.png') !important;
+	background-image: url('../../x_img/ant.png') !important;
 }
 
 .foehelper-accordion-head.double_collection-head span.image {
@@ -130,83 +131,83 @@
 }
 
 .foehelper-accordion-head.dailyChallenges-head span.image {
-	background-image: url('../images/dailyChallenges.png') !important;
+	background-image: url('../../x_img/dailyChallenges.png') !important;
 }
 
 .foehelper-accordion-head.plunderReward-head span.image {
-	background-image: url('../images/plunder.png') !important;
+	background-image: url('../../x_img/plunder.png') !important;
 }
 
 .foehelper-accordion-head.collectReward-head span.image {
-	background-image: url('../images/quest.png') !important;
+	background-image: url('../../x_img/quest.png') !important;
 }
 
 .foehelper-accordion-head.pvp_arena-head span.image {
-	background-image: url('../images/pvp_arena.png') !important;
+	background-image: url('../../x_img/pvp_arena.png') !important;
 }
 
 .foehelper-accordion-head.castle_system_daily_reward_chest-head span.image {
-	background-image: url('../images/castle_system_daily_reward_chest.png') !important;
+	background-image: url('../../x_img/castle_system_daily_reward_chest.png') !important;
 }
 
 /* Events */
 
 .foehelper-accordion-head.leagueReward-head span.image {
-	background-image: url('../images/leagueReward.png') !important;
+	background-image: url('../../x_img/leagueReward.png') !important;
 }
 /*Event*/
 .foehelper-accordion-head.event-head span.image {
-	background-image: url('../images/event.png') !important;
+	background-image: url('../../x_img/event.png') !important;
 }
 /*Forge-Bowl Event*/
 .foehelper-accordion-head.forge_bowl_event-head span.image {
-	background-image: url('../images/forge_bowl_event.png') !important;
+	background-image: url('../../x_img/forge_bowl_event.png') !important;
 }
 /*Archaeology Event*/
 .foehelper-accordion-head.archeology_event-head span.image {
-	background-image: url('../images/archeology_event.png') !important;
+	background-image: url('../../x_img/archeology_event.png') !important;
 }
 /*St Patrick's Day Event*/
 .foehelper-accordion-head.st_patricks_event-head span.image {
-	background-image: url('../images/st_patricks_event.png') !important;
+	background-image: url('../../x_img/st_patricks_event.png') !important;
 }
 /*May-Day Event*/
 .foehelper-accordion-head.may_day_event-head span.image {
-	background-image: url('../images/may_day_event.png') !important;
+	background-image: url('../../x_img/may_day_event.png') !important;
 }
 /*Carnival Event*/
 .foehelper-accordion-head.carnival_event-head span.image {
-	background-image: url('../images/carnival_event.png') !important;
+	background-image: url('../../x_img/carnival_event.png') !important;
 }
 /*Ages Event*/
 .foehelper-accordion-head.forge_ages_event-head span.image {
-	background-image: url('../images/forge_ages_event.png') !important;
+	background-image: url('../../x_img/forge_ages_event.png') !important;
 }
 /*Spring Event*/
 .foehelper-accordion-head.spring_event-head span.image {
-	background-image: url('../images/spring_event.png') !important;
+	background-image: url('../../x_img/spring_event.png') !important;
 }
 /*FoE Soccer Cup*/
 .foehelper-accordion-head.soccer_event-head span.image {
-	background-image: url('../images/soccer_event.png') !important;
+	background-image: url('../../x_img/soccer_event.png') !important;
 }
 /*Wildlife Event*/
 .foehelper-accordion-head.wildlife_event-head span.image {
-	background-image: url('../images/wildlife_event.png') !important;
+	background-image: url('../../x_img/wildlife_event.png') !important;
 }
 /*Summer Event*/
 .foehelper-accordion-head.summer_event-head span.image {
-	background-image: url('../images/summer_event.png') !important;
+	background-image: url('../../x_img/summer_event.png') !important;
 }
 /*Fall Event*/
 .foehelper-accordion-head.fall_event-head span.image {
-	background-image: url('../images/fall_event.png') !important;
+	background-image: url('../../x_img/fall_event.png') !important;
 }
 /*Halloween Event*/
 .foehelper-accordion-head.halloween_event-head span.image {
-	background-image: url('../images/halloween_event.png') !important;
+	background-image: url('../../x_img/halloween_event.png') !important;
 }
 /*Winter Event*/
 .foehelper-accordion-head.winter_event-head span.image {
-	background-image: url('../images/winter_event.png') !important;
+	background-image: url('../../x_img/winter_event.png') !important;
 }

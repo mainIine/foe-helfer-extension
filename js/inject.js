@@ -47,6 +47,7 @@ function inject (loadBeta = false, extUrl = chrome.extension.getURL(''), betaDat
 	/**
 	 * Loads a JavaScript in the website. The returned promise will be resolved once the code has been loaded.
 	 * @param {string} src the URL to load
+	 * @param base
 	 * @returns {Promise<void>}
 	 */
 	 function promisedLoadCode(src, base="base") {

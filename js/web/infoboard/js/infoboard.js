@@ -13,7 +13,7 @@
 
 // neues Postfach
 FoEproxy.addHandler('ConversationService', 'getOverviewForCategory', (data, postData) => {
-    MainParser.setConversations(data.responseData);
+    MainParser.setConversations(data.responseData, true);
 });
 
 FoEproxy.addHandler('ConversationService', 'getCategory', (data, postData) => {

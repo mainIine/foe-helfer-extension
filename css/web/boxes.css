@@ -60,6 +60,7 @@ a[target="_blank"] svg {
 	font-size: 1rem;
 	width: 9rem;
 	border: 1px solid var(--text-dark);
+	border-radius: 4px;
 	text-shadow: none;
 }
 
@@ -72,6 +73,7 @@ a[target="_blank"] svg {
 	display: inline-block;
 	width: 100%;
 	background-color: var(--background-light);
+	border-radius: 4px;
 
 	color: var(--text-medium);
 	padding: .2rem;
