@@ -374,6 +374,8 @@ let Infoboard = {
 		let autoOpen = Settings.GetSetting('AutoOpenInfoBox');
 		let messagesAmount = localStorage.getItem('EntryCount');
 
+        let EntryCountTitle = i18n('Settings.InfoboxEntryCount.Title'); //Dummy usage. Dont mark i18n key for disposal yet. Might be useful later
+
         let h = [];
         h.push(`<p><input id="autoStartInfoboard" name="autoStartInfoboard" value="1" type="checkbox" ${(autoOpen === true) ? ' checked="checked"' : ''} /> <label for="autoStartInfoboard">${i18n('Boxes.Settings.Autostart')}</label>`);
         h.push(`<p><label for="infoboxentry-length">${i18n('Settings.InfoboxEntryCount.Desc')}</label><input class="setting-input" type="number" id="infoboxentry-length" step="1" min="1" max="2000" value="${(messagesAmount)}"></p>`);
