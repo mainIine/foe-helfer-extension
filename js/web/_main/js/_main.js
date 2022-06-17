@@ -721,6 +721,15 @@ GetFights = () =>{
 		}
 	}, 1000 * 60 * 2);
 
+	// Messages: Thread opened
+	FoEproxy.addHandler('ConversationService', 'getConversation', (data, postData) => {
+		MainParser.OpenConversation = data.responseData['id'];
+	});
+
+	// Messages: Thread closed
+	FoEproxy.addHandler('ConversationService', 'markMessageRead', (data, postData) => {
+		MainParser.OpenConversation = null;
+	});
 
 })();
 
@@ -761,6 +770,7 @@ let MainParser = {
 	CityEntities: null,
 	CastleSystemLevels: null,
 	StartUpType: null,
+	OpenConversation: null,
 
 	// all buildings of the player
 	CityMapData: {},
