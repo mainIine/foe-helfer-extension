@@ -27,6 +27,7 @@ let Calculator = {
 	Rankings : undefined,
 	CityMapEntity : undefined,
 	LastRecurringQuests: undefined,
+	ForderBonusPerConversation: true,
 	DefaultButtons: [
 		80, 85, 90, 'ark'
 	],
@@ -48,6 +49,8 @@ let Calculator = {
 			return;
 		}
 
+		Calculator.ForderBonusPerConversation = (localStorage.getItem('CalculatorForderBonusPerConversation') !== 'false');
+
         // Wenn die Box noch nicht da ist, neu erzeugen und in den DOM packen
         if ($('#costCalculator').length === 0) {
             let spk = localStorage.getItem('CalculatorTone');
@@ -58,14 +61,7 @@ let Calculator = {
 
             } else {
                 Calculator.PlayInfoSound = (spk !== 'deactivated');
-            }
-
-            let ab = localStorage.getItem('CalculatorForderBonus');
-
-            // alten Wert übernehmen, wenn vorhanden
-            if (ab !== null) {
-				Calculator.ForderBonus = parseFloat(ab);
-			}
+            }		
 
             HTML.Box({
 				id: 'costCalculator',
@@ -87,14 +83,16 @@ let Calculator = {
 			$('#costCalculator').on('click', '.btn-toggle-arc', function () {
 				Calculator.ForderBonus = parseFloat($(this).data('value'));
 				$('#costFactor').val(Calculator.ForderBonus);
-				localStorage.setItem('CalculatorForderBonus', Calculator.ForderBonus);
+				let StorageKey = (Calculator.ForderBonusPerConversation && MainParser.OpenConversation ? 'CalculatorForderBonus_' + MainParser.OpenConversation : 'CalculatorForderBonus');
+				localStorage.setItem(StorageKey, Calculator.ForderBonus);
 				Calculator.Show();
 			});
 
 			// wenn der Wert des Archebonus verändert wird, Event feuern
 			$('#costCalculator').on('blur', '#costFactor', function () {
 				Calculator.ForderBonus = parseFloat($('#costFactor').val());
-				localStorage.setItem('CalculatorForderBonus', Calculator.ForderBonus);
+				let StorageKey = (Calculator.ForderBonusPerConversation && MainParser.OpenConversation ? 'CalculatorForderBonus_' + MainParser.OpenConversation : 'CalculatorForderBonus');
+				localStorage.setItem(StorageKey, Calculator.ForderBonus);
 				Calculator.Show();
 			});
 
@@ -113,6 +111,25 @@ let Calculator = {
 			});
 
         }
+
+		let ForderBonusLoaded = false;
+			if(Calculator.ForderBonusPerConversation && MainParser.OpenConversation){
+				let StorageKey = 'CalculatorForderBonus_' + MainParser.OpenConversation,
+					StorageValue = localStorage.getItem(StorageKey);
+				
+				if(StorageValue !== null){
+					Calculator.ForderBonus = parseFloat(StorageValue);
+					ForderBonusLoaded = true;
+				}
+			}
+
+			if(!ForderBonusLoaded){
+				let ab = localStorage.getItem('CalculatorForderBonus');
+				// alten Wert übernehmen, wenn vorhanden
+				if (ab !== null) {
+					Calculator.ForderBonus = parseFloat(ab);
+				}
+			}
 
 		let PlayerID = Calculator.CityMapEntity['player_id'],
             h = [];
@@ -705,6 +722,8 @@ let Calculator = {
 		// new own button
 		c.push(nV);
 
+		c.push('<p><input id="forderbonusperconversation" class="forderbonusperconversation game-cursor" ' + (Calculator.ForderBonusPerConversation ? 'checked' : '') + ' type="checkbox"> ' + i18n('Boxes.Calculator.ForderBonusPerConversation'));
+
 		// save button
 		c.push(`<hr><p><button id="save-calculator-settings" class="btn btn-default" style="width:100%" onclick="Calculator.SettingsSaveValues()">${i18n('Boxes.Calculator.Settings.Save')}</button></p>`);
 
@@ -742,6 +761,9 @@ let Calculator = {
 					values.push(v);
 				}
 			}
+
+			Calculator.ForderBonusPerConversation = $('.forderbonusperconversation').prop('checked');
+			localStorage.setItem('CalculatorForderBonusPerConversation', Calculator.ForderBonusPerConversation);
 		});
 
 		// save new buttons
