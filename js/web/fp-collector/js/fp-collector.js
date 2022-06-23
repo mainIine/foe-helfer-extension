@@ -12,11 +12,13 @@
  */
 
 FoEproxy.addHandler('GrandPrizeService', 'getGrandPrizes', (data, postData) => {
-	FPCollector.curentEvent = data.responseData[0]['context'].replace(/_tournament/g,'');
+	FPCollector.curentEvent = data.responseData[0]['context'];
 });
 
 FoEproxy.addHandler('TimedSpecialRewardService', 'getTimedSpecial', (data, postData) => {
-	FPCollector.curentEvent = data.responseData['context'].replace(/_tournament/g,'');
+	if (!FPCollector.curentEvent) {
+		FPCollector.curentEvent = data.responseData['context'].replace(/_tournament/g,'');
+	}
 });
 
 // - GG reward after fight [2,5,10]FP or PvP reward
@@ -81,6 +83,12 @@ FoEproxy.addHandler('RewardService', 'collectReward', (data, postData) => {
 				return;
 			}
 		}
+		/*else if (data.responseData[0][2] && data.responseData[0][2]['subType'] === 'strategy_points') { // Event-Überraschungskiste
+			console.log('✔️Event-Überraschungskiste', data, postData);
+			event = 'event';
+			notes = i18n('Boxes.FPCollector.event_mystery_item');
+			amount = data.responseData[0][2]['amount'];
+		}*/
 		else {
 			return;
 		}
@@ -92,8 +100,8 @@ FoEproxy.addHandler('RewardService', 'collectReward', (data, postData) => {
 			event = 'shards';
 		}
 		if (postData[0].requestMethod === 'useItem') {
-			event = !FPCollector.curentEvent ? i18n('Boxes.FPCollector.league_reward') : FPCollector.curentEvent;
-			notes = !FPCollector.curentEvent ? moment(MainParser.getCurrentDate()).format('YYYY-MM-DD') : i18n('Boxes.FPCollector.league_reward');
+			event = !FPCollector.curentEvent ? 'event' : FPCollector.curentEvent;
+			notes = i18n('Boxes.FPCollector.league_reward');
 		}
 		if (postData[0].requestMethod === 'advanceQuest') {
 			return;
@@ -169,7 +177,7 @@ FoEproxy.addHandler('FriendsTavernService', 'getOtherTavern', (data, postData) =
 
 	StrategyPoints.insertIntoDB({
 		event: 'satDown',
-		notes: player ? `<img src="${MainParser.InnoCDN + 'assets/shared/avatars/' + MainParser.PlayerPortraits[player['Avatar']]}.jpg"><span>${MainParser.GetPlayerLink(player['PlayerID'], player['PlayerName'])}</span>` : '',
+		notes: player ? `<img src="${MainParser.InnoCDN + 'assets/shared/avatars/' + (MainParser.PlayerPortraits[player['Avatar']] || 'portrait_433')}.jpg"><span>${MainParser.GetPlayerLink(player['PlayerID'], player['PlayerName'])}</span>` : '',
 		amount: d['rewardResources']['resources']['strategy_points'],
 		date: moment(MainParser.getCurrentDate()).format('YYYY-MM-DD')
 	});
@@ -196,7 +204,7 @@ FoEproxy.addHandler('OtherPlayerService', 'rewardPlunder', (data, postData) => {
 
 			if (PlunderReward['product'] && PlunderReward['product']['resources'] && PlunderReward['product']['resources']['strategy_points']) {
 				let PlunderedFP = PlunderReward['product']['resources']['strategy_points'];
-				const player = PlayerDict[FPCollector.lastVisitedPlayer];	
+				const player = PlayerDict[FPCollector.lastVisitedPlayer];
 				const entity = MainParser.CityEntities[FPCollector.lastPlunderedEntity];
 
 				StrategyPoints.insertIntoDB({
@@ -212,30 +220,32 @@ FoEproxy.addHandler('OtherPlayerService', 'rewardPlunder', (data, postData) => {
 
 
 // double Collection by Blue Galaxy contains [id, type]
-FoEproxy.addHandler('CityMapService', 'showEntityIcons', (data, postData) => {
-	for (let i in data['responseData']) {
-		if (!data['responseData'].hasOwnProperty(i)) continue;
+FoEproxy.addHandler('CityMapService', 'showAppliedBonus', (data, postData) => {
+	let BonusId = null;
+	BonusService.Bonuses.find(object => {
+		if (object.type === 'double_collection') {
+			BonusId = object.id;
+		}
+	});
 
-		if (data['responseData'][i]['type'] !== 'citymap_icon_double_collection') continue;
-
-		let CityMapID = data['responseData'][i]['id'],
+	if (data['responseData']['bonus'][0] === BonusId) {
+		let CityMapID = data['responseData']['entityId'],
 			Building = MainParser.CityMapData[CityMapID],
-			CityEntity = MainParser.CityEntities[Building['cityentity_id']];
+			CityEntity = MainParser.CityEntities[Building['cityentity_id']],
+			Production = Productions.readType(Building);
 
-		let Production = Productions.readType(Building);
+		if (Production['products']) {
+			let FP = Production['products']['strategy_points'];
 
-		if (!Production['products']) continue;
-
-		let FP = Production['products']['strategy_points'];
-
-		if (!FP) continue;
-
-		StrategyPoints.insertIntoDB({
-			event: 'double_collection',
-			notes: CityEntity['name'],
-			amount: FP,
-			date: moment(MainParser.getCurrentDate()).format('YYYY-MM-DD')
-		});
+			if (FP) {
+				StrategyPoints.insertIntoDB({
+					event: 'double_collection',
+					notes: CityEntity['name'],
+					amount: FP,
+					date: moment(MainParser.getCurrentDate()).format('YYYY-MM-DD')
+				});
+			}
+		}
 	}
 });
 
@@ -416,15 +426,14 @@ let FPCollector = {
 				if (Quest['id'] !== QuestID || Quest['state'] !== 'collectReward') continue;
 
 				if (Quest['genericRewards']) {
-
 					for (let Reward of Quest['genericRewards']) {
 						if (Reward['type'] === 'outpost_complete_item') { // Kulturelle Siedlung Abschlussbelohnung
-
-							let outpostData = Outposts.OutpostData;
-							let playthrough = outpostData.completedPlaythroughs < outpostData.playthroughs.length ? outpostData.playthroughs[outpostData.completedPlaythroughs] : outpostData.playthroughs[outpostData.playthroughs.length-1];
-							let amount = (playthrough.rewards[0].subType === "strategy_points" ? playthrough.rewards[0].amount : 0) + (playthrough.additionalRewardFromBoost ? playthrough.additionalRewardFromBoost.amount : 0 );
+							let outpostData = Outposts.OutpostData,
+								playthrough = outpostData.completedPlaythroughs < outpostData.playthroughs.length ? outpostData.playthroughs[outpostData.completedPlaythroughs] : outpostData.playthroughs[outpostData.playthroughs.length-1],
+								amount = (playthrough.rewards[0].subType === "strategy_points" ? playthrough.rewards[0].amount : 0) + (playthrough.additionalRewardFromBoost ? playthrough.additionalRewardFromBoost.amount : 0 );
 
 							if (amount === 0 ) return;
+
 							StrategyPoints.insertIntoDB({
 								event: 'collectReward',
 								notes: Quest.questGiver['name'] + ' - ' + Quest['windowTitle'],
