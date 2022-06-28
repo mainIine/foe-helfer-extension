@@ -211,7 +211,7 @@ FoEproxy.addHandler('OtherPlayerService', 'rewardPlunder', (data, postData) => {
 });
 
 
-// double Collection by Blue Galaxy contains [id, type]
+// double Collection by Blue Galaxy contains [id, type] -  old, should not get triggered anymore
 FoEproxy.addHandler('CityMapService', 'showEntityIcons', (data, postData) => {
 	for (let i in data['responseData']) {
 		if (!data['responseData'].hasOwnProperty(i)) continue;
@@ -236,6 +236,40 @@ FoEproxy.addHandler('CityMapService', 'showEntityIcons', (data, postData) => {
 			amount: FP,
 			date: moment(MainParser.getCurrentDate()).format('YYYY-MM-DD')
 		});
+	}
+});
+
+// double Collection by Blue Galaxy contains [id, type]  - NEW Version
+FoEproxy.addHandler('CityMapService', 'showAppliedBonus', (data, postData) => {
+	for (let i in BonusService.Bonuses) {
+		if (!BonusService.Bonuses.hasOwnProperty(i)) continue;
+		
+		let BonusX = BonusService.Bonuses[i];
+		if (BonusX['type'] !== 'double_collection') continue;
+
+		for (let j in data['responseData']['bonus']) {
+			if (!data['responseData']['bonus'].hasOwnProperty(j)) continue;
+			if (BonusX['id'] !== data['responseData']['bonus'][j]) continue;
+			
+			let CityMapID = data['responseData']['entityId'],
+				Building = MainParser.CityMapData[CityMapID],
+				CityEntity = MainParser.CityEntities[Building['cityentity_id']];
+
+			let Production = Productions.readType(Building);
+
+			if (!Production['products']) continue;
+
+			let FP = Production['products']['strategy_points'];
+
+			if (!FP) continue;
+
+			StrategyPoints.insertIntoDB({
+				event: 'double_collection',
+				notes: CityEntity['name'],
+				amount: FP,
+				date: moment(MainParser.getCurrentDate()).format('YYYY-MM-DD')
+			});
+		}
 	}
 });
 
