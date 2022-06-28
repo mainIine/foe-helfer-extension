@@ -12,7 +12,7 @@
  */
 
 FoEproxy.addHandler('GrandPrizeService', 'getGrandPrizes', (data, postData) => {
-	FPCollector.curentEvent = data.responseData[0]['context'];
+	FPCollector.curentEvent = data.responseData[0]['context'].replace(/_tournament/g,'');
 });
 
 FoEproxy.addHandler('TimedSpecialRewardService', 'getTimedSpecial', (data, postData) => {
@@ -226,22 +226,23 @@ FoEproxy.addHandler('CityMapService', 'showEntityIcons', (data, postData) => {
 
 		if (data['responseData'][i]['type'] !== 'citymap_icon_double_collection') continue;
 
-	if (data['responseData']['bonus'][0] === BonusId) {
-		let CityMapID = data['responseData']['entityId'],
-			Building = MainParser.CityMapData[CityMapID],
-			CityEntity = MainParser.CityEntities[Building['cityentity_id']],
-			Production = Productions.readType(Building);
+		if (data['responseData']['bonus'][0] === BonusId) {
+			let CityMapID = data['responseData']['entityId'],
+				Building = MainParser.CityMapData[CityMapID],
+				CityEntity = MainParser.CityEntities[Building['cityentity_id']],
+				Production = Productions.readType(Building);
 
-		if (Production['products']) {
-			let FP = Production['products']['strategy_points'];
+			if (Production['products']) {
+				let FP = Production['products']['strategy_points'];
 
-			if (FP) {
-				StrategyPoints.insertIntoDB({
-					event: 'double_collection',
-					notes: CityEntity['name'],
-					amount: FP,
-					date: moment(MainParser.getCurrentDate()).format('YYYY-MM-DD')
-				});
+				if (FP) {
+					StrategyPoints.insertIntoDB({
+						event: 'double_collection',
+						notes: CityEntity['name'],
+						amount: FP,
+						date: moment(MainParser.getCurrentDate()).format('YYYY-MM-DD')
+					});
+				}
 			}
 		}
 	}
