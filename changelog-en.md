@@ -1,5 +1,37 @@
 ## Changelog - Extension
 
+##### 2.9.3.0
+
+**Update**
+- Music module:
+	- now includes track for the fellowship event
+
+- Incidents:
+	- grafics for the ad chest and the fellowship event's special incident added
+
+- Building kits module:
+	- newest event buildings added
+
+- FP Collector:
+	- fellowship event added
+
+- GB Calculator:
+	- new option "Save Donation Factor per Conversation".
+		- Calculator will now detect if the great building has been open via the context menu in an open conversation (for example a 1.95 group).
+		- When selecting a different donation factor (1.9, 1.92, 1.95 etc.) this value will per stored per conversation.
+	- So after some time:
+		- If you open a GB in the 1.9 group it will preselect 90% when opening the GB
+		- If you open a GB in the 1.95 group it will preselect 95% when opening the GB
+
+**BugFix**
+- City Overview:
+	- [#2470](https://github.com/mainIine/foe-helfer-extension/issues/2470) some of the new expansion areas were not properly mapped
+
+- FP Collector:
+	- [#2469](https://github.com/mainIine/foe-helfer-extension/issues/2469) blue galaxy rewards were not tracked anymore
+
+
+---
 ##### 2.9.2.0
 
 - Production overview:
