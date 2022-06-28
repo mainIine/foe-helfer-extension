@@ -1,6 +1,6 @@
 [	
 	{
-		"udate": "23.04.2022"
+		"udate": "24.06.2022"
 	},
 	{
 		"groupname": "Guild_Battlegrounds"
@@ -41,6 +41,26 @@
 	},
 	{
 		"groupname": "Events"
+	},
+	{
+		"name": "Heroes_Tavern",
+		"buildings": [
+			{
+				"first": "R_MultiAge_HeroBonus22a",
+				"update": "upgrade_kit_heroes_tavern"
+			}
+		],
+		"kit": "selection_kit_heroes_tavern"
+	},
+	{
+		"name": "Animal_Crossing",
+		"buildings": [
+			{
+				"first": "R_MultiAge_WildBonus22a",
+				"update": "upgrade_kit_animal_crossing"
+			}
+		],
+		"kit": "selection_kit_animal_crossing"
 	},
 	{
 		"name": "Gentiana_Windmill",
@@ -837,7 +857,7 @@
 		],
 		"kit": [
 			"selection_kit_graveyard",
-			"fragment#selection_kit_graveyard"
+			"fragment#upgrade_kit_graveyard"
 		]
 	},
 	{
@@ -1041,7 +1061,10 @@
 				"update": "upgrade_kit_shrine_of_knowledge"
 			}
 		],
-		"kit": "fragment#building_shrine_of_knowledge"
+		"kit": [
+			"fragment#building_shrine_of_knowledge",
+			"fragment#upgrade_kit_shrine_of_knowledge"
+		]
 	},
 	{
 		"groupname": "Specials"
