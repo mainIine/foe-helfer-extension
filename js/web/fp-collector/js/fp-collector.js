@@ -250,8 +250,8 @@ FoEproxy.addHandler('CityMapService', 'showEntityIcons', (data, postData) => {
 
 // double Collection by Blue Galaxy contains [id, type]  - NEW Version
 FoEproxy.addHandler('CityMapService', 'showAppliedBonus', (data, postData) => {
-	let BonusId = BonusService.Bonuses.find(object => object.type === 'double_collection').id;
-
+	let BonusId = BonusService.Bonuses.find(object => object.type === 'double_collection')?.id;
+	if (!BonusId) return;
   	for (let j in data['responseData']['bonus']) {
 		if (!data['responseData']['bonus'].hasOwnProperty(j)) continue;
 		if (BonusId !== data['responseData']['bonus'][j]) continue;
