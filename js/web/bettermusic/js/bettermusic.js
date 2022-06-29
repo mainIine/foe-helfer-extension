@@ -538,7 +538,7 @@ let betterMusic = {
         if (!betterMusic.Scenes[scene]) return;
         betterMusic.Scenes[scene].TitleList = [];
         for (title in betterMusic.Settings.Scenes[scene]) {
-            if (betterMusic.PossibleTracks[title].banned) continue;
+            if (betterMusic.PossibleTracks[title]?.banned) continue;
             if (scene==="settlement" && (betterMusic.PossibleTracks[title].Settlement != Outposts?.OutpostData?.content) && (betterMusic.PossibleTracks[title].Settlement != undefined) && (!betterMusic.IgnoreSettlement)) continue;
             if (scene==="colony" && (
                 ((betterMusic.PossibleTracks[title].Agelimit < CurrentEraID || betterMusic.PossibleTracks[title].Age > CurrentEraID ) && betterMusic.Settings.Colony == 2) ||
