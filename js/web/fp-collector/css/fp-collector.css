@@ -199,6 +199,10 @@
 .foehelper-accordion-head.summer_event-head span.image {
 	background-image: url('../../x_img/summer_event.png') !important;
 }
+/*Hero Event*/
+.foehelper-accordion-head.hero_event-head span.image {
+	background-image: url('../../x_img/hero_event.png') !important;
+}
 /*Fall Event*/
 .foehelper-accordion-head.fall_event-head span.image {
 	background-image: url('../../x_img/fall_event.png') !important;
