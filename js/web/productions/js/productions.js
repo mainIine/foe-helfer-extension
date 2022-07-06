@@ -363,6 +363,8 @@ let Productions = {
 												let Amount = Resources[ResName] / 5;
 
 												let StartIndex = (era - 2) * 5;
+												if(ResName.endsWith('previous_age')) StartIndex -= 5;
+
 												if (StartIndex >= 0 && StartIndex + 5 <= GoodsList.length) {
 													for (let i = 0; i < 5; i++) {
 														let Resource2 = GoodsList[StartIndex + i]['id'];
