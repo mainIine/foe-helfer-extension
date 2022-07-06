@@ -31,7 +31,7 @@ let ApiURL = 'https://api.foe-rechner.de/',
 	ExtPlayerAvatar = null,
 	ExtGuildID = 0,
 	ExtGuildPermission = 0,
-	ExtWorld = '',
+	ExtWorld = window.location.hostname.split('.')[0],
 	CurrentEra = null,
 	CurrentEraID = null,
 	GoodsData = [],
@@ -105,7 +105,7 @@ const i18n_loadPromise = (async () => {
 
 document.addEventListener("DOMContentLoaded", function () {
 	// note current world
-	ExtWorld = window.location.hostname.split('.')[0];
+	//ExtWorld = window.location.hostname.split('.')[0];
 	localStorage.setItem('current_world', ExtWorld);
 
 	// register resize functions
@@ -1151,7 +1151,7 @@ let MainParser = {
 		StartUpDone = true;
 		ExtGuildID = d['clan_id'];
 		ExtGuildPermission = d['clan_permissions'];
-		ExtWorld = window.location.hostname.split('.')[0];
+		//ExtWorld = window.location.hostname.split('.')[0];
 		CurrentEra = d['era'];
 		if (CurrentEra['era']) CurrentEra = CurrentEra['era'];
 		CurrentEraID = Technologies.Eras[CurrentEra];
