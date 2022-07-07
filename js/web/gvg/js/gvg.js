@@ -744,7 +744,7 @@ let GvGMap = {
 	showSector: (sector) => {
 		let html = '';
 		if (sector.owner.id != 0) {
-			let TerrainKey = Terrain_' + sector.terrain;
+			let TerrainKey = 'Terrain_' + sector.terrain;
 
 			html += '<div id="sectorInfo">';
 			html += '<span class="guildflag ' + sector.owner.flag + '" style="background-color: '+GvGMap.colorToString(sector.owner.color) + ';border-color: '+GvGMap.colorToString(sector.owner.color) + '"></span>';
