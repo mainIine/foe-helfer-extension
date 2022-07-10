@@ -294,6 +294,17 @@ let Productions = {
 			let Products = {},
 				MotivatedProducts = {};
 
+			if(CityEntity['components']['AllAge'] && CityEntity['components']['AllAge']['tags'] && CityEntity['components']['AllAge']['tags']['tags']){
+				let Tags = CityEntity['components']['AllAge']['tags']['tags'];
+				for(let i = 0; i < Tags.length;i++)
+				{
+					let Tag = Tags[i];
+					if(Tag['buildingType']){
+						Ret['type'] = Tag['buildingType'];
+					}
+				}
+			}
+
 			if (d.state && d['state']['productionOption'] && d['state']['productionOption']['products']) {
 				let CurrentProducts = d['state']['productionOption']['products'],
 					ProductionName = d['state']['productionOption']['name'];
