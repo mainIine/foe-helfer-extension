@@ -54,7 +54,6 @@ FoEproxy.addHandler('RewardService', 'collectReward', (data, postData) => {
     if ($('#Wildlife').length === 0) return;
     if (data.responseData[1]!=='wildlife_event') return;
     Wildlife.rewardactive += 1;
-    console.log(Wildlife.rewardactive);
     if ($('#Wildlife.open').length > 0) $('#Wildlife .window-minimize')[0].click();
     
 });
@@ -62,7 +61,6 @@ FoEproxy.addHandler('RewardService', 'collectReward', (data, postData) => {
 $('#container')[0].addEventListener("click", function () {
     if ($('#Wildlife').length === 0) return;
     if (Wildlife.rewardactive > 0) Wildlife.rewardactive -= 1;
-    console.log(Wildlife.rewardactive);
     if ($('#Wildlife.closed').length === 0) return;
     if (Wildlife.rewardactive!==0) return;
     $('#Wildlife .window-minimize')[0].click();
