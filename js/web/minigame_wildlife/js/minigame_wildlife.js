@@ -60,6 +60,7 @@ FoEproxy.addHandler('RewardService', 'collectReward', (data, postData) => {
 
 $('#container')[0].addEventListener("click", function () {
     if ($('#Wildlife').length === 0) return;
+    if (Wildlife.rewardactive==0) return;
     if (Wildlife.rewardactive > 0) Wildlife.rewardactive -= 1;
     if ($('#Wildlife.closed').length === 0) return;
     if (Wildlife.rewardactive!==0) return;
