@@ -51,7 +51,20 @@ FoEproxy.addHandler('ResourceShopService', 'buyOffer', (data, postData) => {
 
 FoEproxy.addHandler('RewardService', 'collectReward', (data, postData) => {
     //hide when reward window pops up
-    if ($('#Wildlife.open').length === 0) return;
+    if ($('#Wildlife').length === 0) return;
+    if (data.responseData[1]!=='wildlife_event') return;
+    Wildlife.rewardactive += 1;
+    console.log(Wildlife.rewardactive);
+    if ($('#Wildlife.open').length > 0) $('#Wildlife .window-minimize')[0].click();
+    
+});
+
+$('#container')[0].addEventListener("click", function () {
+    if ($('#Wildlife').length === 0) return;
+    if (Wildlife.rewardactive > 0) Wildlife.rewardactive -= 1;
+    console.log(Wildlife.rewardactive);
+    if ($('#Wildlife.closed').length === 0) return;
+    if (Wildlife.rewardactive!==0) return;
     $('#Wildlife .window-minimize')[0].click();
 });
 
@@ -86,6 +99,35 @@ FoEproxy.addHandler('PopGameService', 'popTile', (data, postData) => {
     if (ResourceStock.wildlife_pop_moves <= 0) Wildlife.Close();
 });
 
+FoEproxy.addHandler('PopGameService', 'useBooster', (data, postData) => {
+    if ($('#Wildlife').length === 0) return;
+    if (!data?.responseData?.changes) return;
+    for (let change of data.responseData.changes) {
+        if (change.newTiles) {
+            for (let tile of change.newTiles) {
+                let x = tile.position?.x || 0;
+                let y = tile.position?.y || 0;
+                Wildlife.grid[x][y] = (tile.type === "grandPrize" ? "paw" : tile.type + (tile.popType === "default" ? "" : "_chest"));
+            }
+        }
+        if (change.updatedTiles) {
+            for (let tile of change.updatedTiles) {
+                let x = tile.position?.x || 0;
+                let y = tile.position?.y || 0;
+                Wildlife.grid[x][y] = (tile.type === "grandPrize" ? "paw" : tile.type + (tile.popType === "default" ? "" : "_chest"));
+            }
+        }
+    }
+    let x=Wildlife.lastX;
+    let y=Wildlife.lastY;
+    Wildlife.lastX=null;
+    Wildlife.lastY=null;
+    Wildlife.tempC=null;
+    Wildlife.prevC=null;
+    Wildlife.Update();
+    Wildlife.CoordsCheck(x, y);
+    //if (ResourceStock.wildlife_pop_moves <= 0) Wildlife.Close();
+});
 $(window).mousemove( function(e){
     if ($('#WildlifeBody .WLwrapper').length === 0) return;
     if ($('#WildlifeBody').css('visibility') === 'hidden') return;
@@ -98,13 +140,7 @@ $(window).mousemove( function(e){
         $('#WildlifeBody .WLwrapper').hide();
         $('#Wildlife').css('background-image','none');
         $('#WildlifeBody .WLcell').show();
-        if (Wildlife.tempC !== null) {
-            $(`#WLcellX${Wildlife.lastX}Y${Wildlife.lastY}`).removeClass(Wildlife.tempC);
-            $(`#WLcellX${Wildlife.lastX}Y${Wildlife.lastY}`).addClass(`WL${Wildlife.grid[Wildlife.lastX][Wildlife.lastY]}`);
-            Wildlife.tempC = null;
-        }
-        Wildlife.lastX=null;
-        Wildlife.lastY=null;        
+        Wildlife.resetTempChest();
     } else {
         $('#WildlifeBody .WLwrapper').show();
         $('#Wildlife').css('background-image','');
@@ -128,6 +164,7 @@ let Wildlife = {
     hide:[],
     check:null,
     tool:null,
+    rewardactive:0,
 
     Show: () => {
         if ($('#Wildlife').length === 0) {
@@ -182,11 +219,7 @@ let Wildlife = {
         if (Wildlife.lastX==x && Wildlife.lastY==y) return;
         if (x>Wildlife.width-1 || y > Wildlife.height-1 || x<0 || y<0) return;
         
-        if (Wildlife.tempC !== null) {
-            $(`#WLcellX${Wildlife.lastX}Y${Wildlife.lastY}`).removeClass(Wildlife.tempC);
-            $(`#WLcellX${Wildlife.lastX}Y${Wildlife.lastY}`).addClass(`WL${Wildlife.grid[Wildlife.lastX][Wildlife.lastY]}`);
-            Wildlife.tempC = null;
-        }
+        Wildlife.resetTempChest();
         Wildlife.lastX=x;
         Wildlife.lastY=y;
 
@@ -208,21 +241,10 @@ let Wildlife = {
                     $(`#WLcellX${x}Y${y}`).removeClass(`WL${Wildlife.grid[x][y]}`);
                     Wildlife.tempC = `WL${Wildlife.grid[x][y]}_chest`;
                     $(`#WLcellX${x}Y${y}`).addClass(Wildlife.tempC);
+                    $(`#WLcellX${x}Y${y}`).addClass("WLdroppable");
                     Wildlife.hide.splice(Wildlife.hide.indexOf(`WLcellX${x}Y${y}`),1);
                 }
             }
-//            let max = (Wildlife.tool==="hammer" ? x+1 : Wildlife.width);
-  //          let start = (Wildlife.tool==="hammer" ? x : 0);
-    //        for (let i=start;i<max;i++) {
-      //          for (let j=0;j<Wildlife.height;j++) {
-        //            if (Wildlife.hide.includes(`WLcellX${i}Y${j}`)) continue;
-          //          if (Wildlife.grid[i][j]===`paw` || Wildlife.grid[i][j].indexOf(`chest`)>1 || (x===i && y===j && Wildlife.tempC !== null)) {
-            //            Wildlife.hide.push(`WLcellX${i}Y${j}`);
-              //          continue;
-                //    }
-//                    break;
-  //              }
-    //        }
             for (let cell of Wildlife.hide) {
                 $(`#${cell}`).hide();
             }
@@ -274,6 +296,16 @@ let Wildlife = {
         }
 
         if (c>0) Wildlife.hideDrops();
-    }
+    },
 
+    resetTempChest: () => {
+        if (Wildlife.tempC !== null) {
+            $(`#WLcellX${Wildlife.lastX}Y${Wildlife.lastY}`).removeClass(Wildlife.tempC);
+            $(`#WLcellX${Wildlife.lastX}Y${Wildlife.lastY}`).removeClass('WLdroppable');
+            $(`#WLcellX${Wildlife.lastX}Y${Wildlife.lastY}`).addClass(`WL${Wildlife.grid[Wildlife.lastX][Wildlife.lastY]}`);
+            Wildlife.tempC = null;
+        }
+        Wildlife.lastX=null;
+        Wildlife.lastY=null;   
+    },
 };
