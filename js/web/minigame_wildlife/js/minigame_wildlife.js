@@ -222,13 +222,13 @@ let Wildlife = {
         Wildlife.lastX=x;
         Wildlife.lastY=y;
 
-        $('#WildlifeBody .WLcell').show();
+        $('#WildlifeBody .WLcell').fadeIn(0);
         Wildlife.hide=[];
         let c = Wildlife.grid[x][y];
         if (c === "paw" || c.indexOf("chest") > 0) return;
 
         if (Wildlife.tool === "destroyer") {
-            $(`.WL${c}`).hide();
+            $(`.WL${c}`).fadeOut('fast');
         } else {
             Wildlife.check = c;
             if (Wildlife.tool === "hammer") {
@@ -245,12 +245,11 @@ let Wildlife = {
                 }
             }
             for (let cell of Wildlife.hide) {
-                $(`#${cell}`).hide();
+                $(`#${cell}`).fadeOut('fast');
             }
         }
-        Wildlife.hideDrops();
-
-
+        //Wildlife.hideDrops()
+        setTimeout(Wildlife.hideDrops,250);
     },
 
     CheckNeighbours: (x,y) => {
@@ -289,12 +288,12 @@ let Wildlife = {
             for (let drop of drops) {
                 if((h-drop.offsetTop)<60 && (h-drop.offsetTop)>50) {
                     c+=1;
-                    $(`#${drop.id}`).hide();
+                    $(`#${drop.id}`).fadeOut('fast');
                 };
             }
         }
 
-        if (c>0) Wildlife.hideDrops();
+        if (c>0) setTimeout(Wildlife.hideDrops,250);
     },
 
     resetTempChest: () => {
