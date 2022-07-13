@@ -179,6 +179,14 @@ let Productions = {
 				if (building['motivatedproducts']['supplies']) {
 					building['motivatedproducts']['supplies'] = MainParser.round(building['motivatedproducts']['supplies'] * Productions.Boosts['supplies']);
 				}
+
+				if (building['products']['strategy_points']) {
+					building['products']['strategy_points'] = MainParser.round(building['products']['strategy_points'] * Productions.Boosts['strategy_points']);
+				}
+
+				if (building['motivatedproducts']['strategy_points']) {
+					building['motivatedproducts']['strategy_points'] = MainParser.round(building['motivatedproducts']['strategy_points'] * Productions.Boosts['fp']);
+				}
 			}
 
 			// Nach Produkt
@@ -260,6 +268,7 @@ let Productions = {
 		// Münzboost ausrechnen und bereitstellen falls noch nicht initialisiert
 		if (Productions.Boosts['money'] === undefined) Productions.Boosts['money'] = ((MainParser.BoostSums['coin_production'] + 100) / 100);
 		if (Productions.Boosts['supplies'] === undefined) Productions.Boosts['supplies'] = ((MainParser.BoostSums['supply_production'] + 100) / 100);
+		if (Productions.Boosts['fp'] === undefined) Productions.Boosts['supplies'] = ((MainParser.BoostSums['forge_points_production'] + 100) / 100);
 
 		let era = CityMap.GetBuildingEra(d);
 
