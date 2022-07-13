@@ -553,7 +553,7 @@ let CityMap = {
 
 			Ret['xsize'] = Size['x'];
 			Ret['ysize'] = Size['y'];
-			Ret['streets_required'] = CityEntity['components']['AllAge']['streetConnectionRequirement']['requiredLevel'] | 0;
+			Ret['streets_required'] = CityEntity?.components?.AllAge?.streetConnectionRequirement?.requiredLevel | 0;
 		}
 
 		Ret['building_area'] = Ret['xsize'] * Ret['ysize'];
