@@ -30,6 +30,9 @@
 - FP Collector:
 	- [#2469](https://github.com/mainIine/foe-helfer-extension/issues/2469) blue galaxy rewards were not tracked anymore
 
+- Production Overview:
+	- some minor fixes to accomodate newer building's specificities
+	- FP-Boost (upcoming summer event) now included in calculations
 
 ---
 ##### 2.9.2.0
