@@ -851,7 +851,8 @@ let MainParser = {
 		'def_boost_defender': 0,
 		'happiness_amount': 0,			
 		'coin_production': 0,
-		'supply_production': 0
+		'supply_production': 0,
+		'forge_points_production':0,
 	},
 
 
