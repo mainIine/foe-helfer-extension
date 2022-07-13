@@ -289,6 +289,7 @@ let Wildlife = {
     },
 
     hideDrops: () => {
+        if ($('#Wildlife').length === 0) return
         let c=0;
         let drops = $('.WLdroppable');
         h=$('#Wildlife')[0].clientHeight;
