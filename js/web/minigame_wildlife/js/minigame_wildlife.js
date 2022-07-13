@@ -58,9 +58,17 @@ FoEproxy.addHandler('RewardService', 'collectReward', (data, postData) => {
     
 });
 
-$('#container')[0].addEventListener("click", function () {
+$('#container')[0].addEventListener("click", function (e) {
     if ($('#Wildlife').length === 0) return;
     if (Wildlife.rewardactive==0) return;
+    
+    let X=e.clientX,
+        Y=e.clientY,
+        Xc = window.innerWidth/2,
+        Yc = window.innerHeight/2;
+    
+    if (X>Xc-432 && X<Xc+432 && Y<Yc+296 && Y>Yc-296 && (X<Xc-58 || X>Xc+73 || Y<Yc+144 ||Y>Yc+167)) return;
+    
     if (Wildlife.rewardactive > 0) Wildlife.rewardactive -= 1;
     if ($('#Wildlife.closed').length === 0) return;
     if (Wildlife.rewardactive!==0) return;
