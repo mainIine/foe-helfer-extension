@@ -181,7 +181,7 @@ let Productions = {
 				}
 
 				if (building['products']['strategy_points']) {
-					building['products']['strategy_points'] = MainParser.round(building['products']['strategy_points'] * Productions.Boosts['strategy_points']);
+					building['products']['strategy_points'] = MainParser.round(building['products']['strategy_points'] * Productions.Boosts['fp']);
 				}
 
 				if (building['motivatedproducts']['strategy_points']) {
