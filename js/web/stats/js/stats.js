@@ -1351,8 +1351,8 @@ let Stats = {
 						url = `${MainParser.InnoCDN}assets/city/buildings/${rewardInfo.subType.replace(/^(\w)_/, '$1_SS_')}.png`;
 				}
 				if (url) {
-					//pointImage = `<object data="${url}" style="width: 45px; height: 45px; margin-right: 4px;" type="image/png">${url2 != '' ? '<img src="'+url2+'" style="width: 45px; height: 45px; margin-right: 4px;">':''}</object>`;
-					pointImage = `<img src="${url}" style="width: 45px; height: 45px; margin-right: 4px;" onerror="this.onerror=null; this.source='${url2}'">`;
+					pointImage = `<object data="${url}" style="width: 45px; height: 45px; margin-right: 4px;" type="image/png">${url2 != '' ? '<img src="'+url2+'" style="width: 45px; height: 45px; margin-right: 4px;">':''}</object>`;
+					//pointImage = `<img src="${url}" style="width: 45px; height: 45px; margin-right: 4px;" onerror="this.onerror=null; this.src='${url2}'">`;
 				}
 			}
 			return {
