@@ -370,7 +370,7 @@ let Stats = {
 	 * Update options
 	 */
 	updateOptions: () => {
-		console.log('updateOptions');
+		//console.log('updateOptions');
 		$('#statsBody .options').html(Stats.RenderOptions());
 
 		$('#statsBody').promise().done(function(){
@@ -589,7 +589,7 @@ let Stats = {
 			text = i18n('Boxes.Stats.DatePicker');
 		}
 
-		console.log(dateStart,dateEnd);
+		//console.log(dateStart,dateEnd);
 
 		return text;
 	},
