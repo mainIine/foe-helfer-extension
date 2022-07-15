@@ -13,9 +13,7 @@
 
 FoEproxy.addHandler('PopGameService', 'getOverview', (data, postData) => {
     //Start Minigame
-    if(!Settings.GetSetting('ShowEventChest')){
-		return;
-	}
+    if(!Settings.GetSetting('ShowEventChest')) return;
     if (!data?.responseData?.currentGame?.config?.height) return;
     if (!data?.responseData?.currentGame?.config?.width) return;
     if (!data?.responseData?.currentGame?.tiles) return;
@@ -40,6 +38,7 @@ FoEproxy.addHandler('PopGameService', 'getOverview', (data, postData) => {
 });
 FoEproxy.addHandler('ResourceShopService', 'buyOffer', (data, postData) => {
     //buy Extra turns
+    if(!Settings.GetSetting('ShowEventChest')) return;
     if (!Array.isArray(data.responseData)) return;
     for (let G of data.responseData) {
         if (G.gains?.resources?.wildlife_pop_moves) {
