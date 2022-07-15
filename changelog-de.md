@@ -1,5 +1,40 @@
 ## Changelog - Extension
 
+**Update**
+- Musik-Modul:
+	- Enthält jetzt einen Titel für die Gemeinschaftsveranstaltung
+
+- Ereignisse:
+	- [#2466](https://github.com/mainIine/foe-helfer-extension/issues/2466) Grafiken für die Werbetruhe und das besondere Ereignis des Gemeinschaftsereignisses hinzugefügt
+
+- Gebäude-Kits:
+	- Neueste Ereignisgebäude hinzugefügt
+
+- FP-Einsammlungen:
+	- Ereignis "Gemeinschaft" hinzugefügt
+
+- GB-Rechner:
+	- Neue Option "Donation Factor per Conversation speichern".
+		- Der Rechner erkennt nun, wenn das große Gebäude über das Kontextmenü in einer offenen Konversation geöffnet wurde (z.B. eine 1,95 Gruppe).
+		- Bei Auswahl eines anderen Spendenfaktors (1,9, 1,92, 1,95 etc.) wird dieser Wert pro Gespräch gespeichert.
+	- Also nach einiger Zeit:
+		- Wenn Sie ein GB in der Gruppe 1,9 öffnen, werden beim Öffnen des GB 90 % vorausgewählt.
+		- Wenn Sie einen GB in der Gruppe 1.95 öffnen, werden beim Öffnen des GB 95% vorausgewählt.
+
+**BugFix**
+- Stadtübersicht:
+    - [#2470](https://github.com/mainIine/foe-helfer-extension/issues/2470) Einige neue Expansionsgebiete wurden nicht richtig eingezeichnet
+    - [#2465](https://github.com/mainIine/foe-helfer-extension/issues/2465) Stadtplan zeigte keine Dekorationen an
+
+- FP-Einsammlungen:
+    - [#2469](https://github.com/mainIine/foe-helfer-extension/issues/2469) Blaue Galaxie-Belohnungen wurden nicht mehr getrackt
+
+- Produktionsübersicht:
+    - Einige kleinere Korrekturen, um die Besonderheiten der neueren Gebäude zu berücksichtigen
+    - FP-Boost (kommendes Sommer-Event) wird nun in die Berechnungen einbezogen
+
+---
+
 ##### 2.9.2.0
 
 - Produktionsübersicht:

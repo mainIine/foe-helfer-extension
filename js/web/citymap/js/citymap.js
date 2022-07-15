@@ -250,8 +250,8 @@ let CityMap = {
 
 		let MinX = 0,
 			MinY = 0,
-			MaxX = 63,
-			MaxY = 63;
+			MaxX = 71,
+			MaxY = 71;
 
 		for (let b in CityMap.CityData)
 		{
@@ -553,7 +553,7 @@ let CityMap = {
 
 			Ret['xsize'] = Size['x'];
 			Ret['ysize'] = Size['y'];
-			Ret['streets_required'] = CityEntity['components']['AllAge']['streetConnectionRequirement']['requiredLevel'] | 0;
+			Ret['streets_required'] = CityEntity?.components?.AllAge?.streetConnectionRequirement?.requiredLevel | 0;
 		}
 
 		Ret['building_area'] = Ret['xsize'] * Ret['ysize'];

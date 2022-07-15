@@ -744,17 +744,19 @@ let GvGMap = {
 	showSector: (sector) => {
 		let html = '';
 		if (sector.owner.id != 0) {
+			let TerrainKey = 'Terrain_' + sector.terrain;
+
 			html += '<div id="sectorInfo">';
-			html += '<span class="guildflag '+sector.owner.flag+'" style="background-color: '+GvGMap.colorToString(sector.owner.color)+';border-color: '+GvGMap.colorToString(sector.owner.color)+'"></span>';
-			html += '<b class="text-bright">'+ sector.owner.name +'</b><br>';
+			html += '<span class="guildflag ' + sector.owner.flag + '" style="background-color: '+GvGMap.colorToString(sector.owner.color) + ';border-color: '+GvGMap.colorToString(sector.owner.color) + '"></span>';
+			html += '<b class="text-bright">' + sector.owner.name + '</b><br>';
 			if (MapSector.underSiege(sector))
-				html += 'Under Siege by: '+ MapSector.underSiege(sector) +'<br>';
-			html += i18n('Boxes.GvGMap.Sector.Hitpoints') + ': ' + sector.hitpoints +'/80<br>';
-			html += i18n('Boxes.GvGMap.Sector.Coords') + ': ' + MapSector.coords(sector) +'<br>';
-			html += i18n('Boxes.GvGMap.Sector.Power') + ': ' + sector.power +'<br>';
+				html += 'Under Siege by: ' + MapSector.underSiege(sector) + '<br>';
+			html += i18n('Boxes.GvGMap.Sector.Hitpoints') + ': ' + sector.hitpoints + '/80<br>';
+			html += i18n('Boxes.GvGMap.Sector.Coords') + ': ' + MapSector.coords(sector) + '<br>';
+			html += i18n('Boxes.GvGMap.Sector.Power') + ': ' + sector.power + '<br>';
 			if (sector.isProtected)
-				html += i18n('Boxes.GvGMap.Sector.Protected')+'<br>';
-			html += i18n('Boxes.GvGMap.Sector.Terrain')+ ': ' +  i18n('Boxes.GvGMap.Sector.Terrain_'+sector.terrain) +'<br>';
+				html += i18n('Boxes.GvGMap.Sector.Protected') + '<br>';
+			html += i18n('Boxes.GvGMap.Sector.Terrain')+ ': ' +  i18n('Boxes.GvGMap.Sector.' + TerrainKey) +'<br>';
 			html += '</div>';
 		}
 

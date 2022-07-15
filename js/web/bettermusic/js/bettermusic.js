@@ -124,6 +124,18 @@ FoEproxy.addHandler('GrandPrizeService', 'getGrandPrizes', (data, postData) => {
     };
     
 });
+FoEproxy.addHandler('EventPassService', 'getPreview', (data, postData) => {
+
+    Eventname = data.responseData?.teaserPrizes?.context;
+    
+    if (!betterMusic.Settings.Events) return;
+    
+    for (t in betterMusic.PossibleTracks) {
+        if (betterMusic.PossibleTracks[t].Event != Eventname) continue;
+        return betterMusic.setScene(t);
+    };
+    
+});
 
 FoEproxy.addHandler('FriendsTavernService', 'getConfig', (data, postData) => {
        
@@ -267,6 +279,7 @@ let betterMusic = {
         "foe_music_stpatricks_v2": {Volume:.6, Name:"St Patricks Day Event", Event:"st_patricks_event"},
         "foe_music_wildlife": {Volume:1, Name:"Wildlife Event", Event:"wildlife_event"},
         "foe_music_archeology": {Volume:.6, Name:"Archaeology  Event", Event:"archeology_event"},
+        "foe_music_hero": {Volume:.7, Name:"Fellowship Event", Event:"hero_event"},
         "foe_music_summer": {Volume:.7, Name:"Summer Event", Event:"summer_event"},
         "foe_music_halloween": {Volume:.6, Name:"Halloween Event", Event:"halloween_event"},
         "foe_music_winter": {Volume:.6, Name:"Winter Event", Event:"winter_event"},
@@ -525,7 +538,7 @@ let betterMusic = {
         if (!betterMusic.Scenes[scene]) return;
         betterMusic.Scenes[scene].TitleList = [];
         for (title in betterMusic.Settings.Scenes[scene]) {
-            if (betterMusic.PossibleTracks[title].banned) continue;
+            if (betterMusic.PossibleTracks[title]?.banned) continue;
             if (scene==="settlement" && (betterMusic.PossibleTracks[title].Settlement != Outposts?.OutpostData?.content) && (betterMusic.PossibleTracks[title].Settlement != undefined) && (!betterMusic.IgnoreSettlement)) continue;
             if (scene==="colony" && (
                 ((betterMusic.PossibleTracks[title].Agelimit < CurrentEraID || betterMusic.PossibleTracks[title].Age > CurrentEraID ) && betterMusic.Settings.Colony == 2) ||

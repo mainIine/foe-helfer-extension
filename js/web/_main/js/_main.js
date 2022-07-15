@@ -31,7 +31,7 @@ let ApiURL = 'https://api.foe-rechner.de/',
 	ExtPlayerAvatar = null,
 	ExtGuildID = 0,
 	ExtGuildPermission = 0,
-	ExtWorld = '',
+	ExtWorld = window.location.hostname.split('.')[0],
 	CurrentEra = null,
 	CurrentEraID = null,
 	GoodsData = [],
@@ -105,7 +105,7 @@ const i18n_loadPromise = (async () => {
 
 document.addEventListener("DOMContentLoaded", function () {
 	// note current world
-	ExtWorld = window.location.hostname.split('.')[0];
+	//ExtWorld = window.location.hostname.split('.')[0];
 	localStorage.setItem('current_world', ExtWorld);
 
 	// register resize functions
@@ -721,6 +721,15 @@ GetFights = () =>{
 		}
 	}, 1000 * 60 * 2);
 
+	// Messages: Thread opened
+	FoEproxy.addHandler('ConversationService', 'getConversation', (data, postData) => {
+		MainParser.OpenConversation = data.responseData['id'];
+	});
+
+	// Messages: Thread closed
+	FoEproxy.addHandler('ConversationService', 'markMessageRead', (data, postData) => {
+		MainParser.OpenConversation = null;
+	});
 
 })();
 
@@ -761,6 +770,7 @@ let MainParser = {
 	CityEntities: null,
 	CastleSystemLevels: null,
 	StartUpType: null,
+	OpenConversation: null,
 
 	// all buildings of the player
 	CityMapData: {},
@@ -841,7 +851,8 @@ let MainParser = {
 		'def_boost_defender': 0,
 		'happiness_amount': 0,			
 		'coin_production': 0,
-		'supply_production': 0
+		'supply_production': 0,
+		'forge_points_production':0,
 	},
 
 
@@ -1141,7 +1152,7 @@ let MainParser = {
 		StartUpDone = true;
 		ExtGuildID = d['clan_id'];
 		ExtGuildPermission = d['clan_permissions'];
-		ExtWorld = window.location.hostname.split('.')[0];
+		//ExtWorld = window.location.hostname.split('.')[0];
 		CurrentEra = d['era'];
 		if (CurrentEra['era']) CurrentEra = CurrentEra['era'];
 		CurrentEraID = Technologies.Eras[CurrentEra];

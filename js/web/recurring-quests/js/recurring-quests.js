@@ -134,7 +134,7 @@ let Recurring = {
 
     ShowSettingsButton: () => {
         let h = [];
-        h.push(`<label><input type="checkbox" oninput="Recurring.SaveSettings(this.checked)" ${Recurring.data.showCounter?'checked':''}/>${i18n("Boxes.RecurringQuests.showCounter")}<label>`);
+        h.push(`<label><input type="checkbox" oninput="Recurring.SaveSettings(this.checked)" ${Recurring.data.showCounter?'checked':''}/>${i18n('Boxes.RecurringQuests.showCounter')}<label>`);
         $('#RecurringQuestsBoxSettingsBox').html(h.join(''));
     },
 

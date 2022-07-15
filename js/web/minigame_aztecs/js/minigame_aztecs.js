@@ -111,7 +111,7 @@ FoEproxy.addHandler('ResourceShopService', 'buyResources', (data, postData) => {
 });
 
 FoEproxy.addHandler('ResourceService', 'getPlayerResources', (data, postData) => {
-
+    if (!Array.isArray(data.responseData)) return;
     if(postData[0].requestData.filter(x => x.mainType === "cultural_outpost" && x.subType === "collecting_minigame_buy_turns").length > 0){
         if(postData[0].requestData.filter(x => x["resources"] !== undefined)[0].resources.aztecs_collecting_minigame_turns > 0){
             AztecsHelper.boughtSomething = true;
