@@ -179,6 +179,14 @@ let Productions = {
 				if (building['motivatedproducts']['supplies']) {
 					building['motivatedproducts']['supplies'] = MainParser.round(building['motivatedproducts']['supplies'] * Productions.Boosts['supplies']);
 				}
+
+				if (building['products']['strategy_points']) {
+					building['products']['strategy_points'] = MainParser.round(building['products']['strategy_points'] * Productions.Boosts['fp']);
+				}
+
+				if (building['motivatedproducts']['strategy_points']) {
+					building['motivatedproducts']['strategy_points'] = MainParser.round(building['motivatedproducts']['strategy_points'] * Productions.Boosts['fp']);
+				}
 			}
 
 			// Nach Produkt
@@ -260,6 +268,7 @@ let Productions = {
 		// Münzboost ausrechnen und bereitstellen falls noch nicht initialisiert
 		if (Productions.Boosts['money'] === undefined) Productions.Boosts['money'] = ((MainParser.BoostSums['coin_production'] + 100) / 100);
 		if (Productions.Boosts['supplies'] === undefined) Productions.Boosts['supplies'] = ((MainParser.BoostSums['supply_production'] + 100) / 100);
+		if (Productions.Boosts['fp'] === undefined) Productions.Boosts['fp'] = ((MainParser.BoostSums['forge_points_production'] + 100) / 100);
 
 		let era = CityMap.GetBuildingEra(d);
 
@@ -293,6 +302,17 @@ let Productions = {
 		if (CityEntity['components']) {
 			let Products = {},
 				MotivatedProducts = {};
+
+			if(CityEntity['components']['AllAge'] && CityEntity['components']['AllAge']['tags'] && CityEntity['components']['AllAge']['tags']['tags']){
+				let Tags = CityEntity['components']['AllAge']['tags']['tags'];
+				for(let i = 0; i < Tags.length;i++)
+				{
+					let Tag = Tags[i];
+					if(Tag['buildingType']){
+						Ret['type'] = Tag['buildingType'];
+					}
+				}
+			}
 
 			if (d.state && d['state']['productionOption'] && d['state']['productionOption']['products']) {
 				let CurrentProducts = d['state']['productionOption']['products'],
@@ -363,6 +383,8 @@ let Productions = {
 												let Amount = Resources[ResName] / 5;
 
 												let StartIndex = (era - 2) * 5;
+												if(ResName.endsWith('previous_age')) StartIndex -= 5;
+
 												if (StartIndex >= 0 && StartIndex + 5 <= GoodsList.length) {
 													for (let i = 0; i < 5; i++) {
 														let Resource2 = GoodsList[StartIndex + i]['id'];

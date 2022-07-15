@@ -1,0 +1,114 @@
+/*
+ * **************************************************************************************
+ * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
+ *
+ * See file LICENSE.md or go to
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
+ *
+ * **************************************************************************************
+ */
+
+#Wildlife {
+	width: 520px;
+    height: 494px;
+    top: calc(50% - 281px);
+    left: calc(50% - 261px);
+    pointer-events: none;
+}
+
+#Wildlife #WildlifeHeader {
+    pointer-events: auto;
+}
+
+#Wildlife #WildlifeBody {
+	overflow: none;
+}
+#WLwrapper {
+    height: 404px;
+}
+#WLdestroyer {
+    background-image: url("../img/destroyer.png") ;
+}
+#WLhammer {
+    background-image: url("../img/hammer.png") ;
+}
+#WLwarning {
+    width: 400px;
+    display: inline-block;
+    vertical-align: top;
+    text-shadow: 1px 1px black;
+    color: orangered;
+}
+.WLtool {
+    height: 50px;
+    width: 50px;
+    background-size: 50px;
+    display:inline-flex;
+    border: transparent solid 2px;
+    pointer-events: auto;
+}
+
+.WLselected {
+    border: white solid 2px;
+}
+
+.WLcolumn {
+	display: table-cell;
+	vertical-align: bottom;
+    width:47px;
+    
+}
+
+.WLwrapper {
+	display: table-row;
+    height: 400px;
+}
+
+.WLcell {
+    background: url('../img/Wildlife.png');
+    width: 47px;
+    height: 49px;
+}
+
+.WLred{
+    background-position:97px 58px; 
+}
+.WLblue{
+    background-position:192px 58px;
+}
+.WLpurple{
+    background-position:332px 58px;
+}
+.WLgreen{
+    background-position:238px 58px;
+}
+.WLyellow{
+    background-position:145px 58px;
+}
+.WLorange{
+    background-position:285px 58px;
+}
+.WLred_chest{
+    background-position:98px -6px; 
+}
+.WLblue_chest{
+    background-position:192px -6px;
+}
+.WLpurple_chest{
+    background-position:333px -6px;
+}
+.WLgreen_chest{
+    background-position:239px -6px;
+}
+.WLyellow_chest{
+    background-position:145px -6px;
+}
+.WLorange_chest{
+    background-position:286px -6px;
+}
+.WLpaw{
+    background-position:51px -6px;
+}

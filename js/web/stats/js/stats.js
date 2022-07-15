@@ -370,7 +370,7 @@ let Stats = {
 	 * Update options
 	 */
 	updateOptions: () => {
-		console.log('updateOptions');
+		//console.log('updateOptions');
 		$('#statsBody .options').html(Stats.RenderOptions());
 
 		$('#statsBody').promise().done(function(){
@@ -589,7 +589,7 @@ let Stats = {
 			text = i18n('Boxes.Stats.DatePicker');
 		}
 
-		console.log(dateStart,dateEnd);
+		//console.log(dateStart,dateEnd);
 
 		return text;
 	},
@@ -1352,6 +1352,7 @@ let Stats = {
 				}
 				if (url) {
 					pointImage = `<object data="${url}" style="width: 45px; height: 45px; margin-right: 4px;" type="image/png">${url2 != '' ? '<img src="'+url2+'" style="width: 45px; height: 45px; margin-right: 4px;">':''}</object>`;
+					//pointImage = `<img src="${url}" style="width: 45px; height: 45px; margin-right: 4px;" onerror="this.onerror=null; this.src='${url2}'">`;
 				}
 			}
 			return {
