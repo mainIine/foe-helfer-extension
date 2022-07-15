@@ -58,6 +58,7 @@
 .WLcolumn {
 	display: table-cell;
 	vertical-align: bottom;
+    width:47px;
     
 }
 
