@@ -86,6 +86,7 @@
     "Boxes.Calculator.Commitment": "Вклад",
     "Boxes.Calculator.Done": "готово",
     "Boxes.Calculator.FP": "СО",
+    "Boxes.Calculator.ForderBonusPerConversation": "Сохранить % для данной ветки",
     "Boxes.Calculator.FriendlyInvestment": "Инвестирование в:",
     "Boxes.Calculator.HelpLink": "https://foe-helper.com/docs/en/cost-calculator/",
     "Boxes.Calculator.LGNotConnected": "ВС не соединено с дорогой.",
