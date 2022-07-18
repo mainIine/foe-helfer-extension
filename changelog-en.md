@@ -4,19 +4,19 @@
 
 **Update**
 - Music module:
-	- now includes track for the fellowship event
+	- Now includes track for the fellowship event
 
 - Incidents:
-	- grafics for the ad chest and the fellowship event's special incident added
+    - [#2466](https://github.com/mainIine/foe-helfer-extension/issues/2466) Graphics for the ad chest and the fellowship event's special incident added
 
 - Building kits module:
-	- newest event buildings added
+	- Newest event buildings added
 
 - FP Collector:
-	- fellowship event added
+	- Fellowship event added
 
 - GB Calculator:
-	- new option "Save Donation Factor per Conversation".
+	- New option "Save Donation Factor per Conversation".
 		- Calculator will now detect if the great building has been open via the context menu in an open conversation (for example a 1.95 group).
 		- When selecting a different donation factor (1.9, 1.92, 1.95 etc.) this value will per stored per conversation.
 	- So after some time:
@@ -25,16 +25,18 @@
 
 **BugFix**
 - City Overview:
-	- [#2470](https://github.com/mainIine/foe-helfer-extension/issues/2470) some of the new expansion areas were not properly mapped
+    - [#2470](https://github.com/mainIine/foe-helfer-extension/issues/2470) Some new expansion areas were not properly mapped
+    - [#2465](https://github.com/mainIine/foe-helfer-extension/issues/2465) City map did not show decorations
 
 - FP Collector:
 	- [#2469](https://github.com/mainIine/foe-helfer-extension/issues/2469) blue galaxy rewards were not tracked anymore
 
 - Production Overview:
-	- some minor fixes to accomodate newer building's specificities
+	- Some minor fixes to accommodate newer building's specificities
 	- FP-Boost (upcoming summer event) now included in calculations
 
 ---
+
 ##### 2.9.2.0
 
 - Production overview:
