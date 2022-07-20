@@ -486,14 +486,26 @@ GetFights = () =>{
 
 
 	// Required by the kits
+	FoEproxy.addHandler('InventoryService', 'getItem', (data, postData) => {
+		MainParser.UpdateInventoryItem(data.responseData);
+	});
+
+
+	// Required by the kits
 	FoEproxy.addHandler('InventoryService', 'getItems', (data, postData) => {
 		MainParser.UpdateInventory(data.responseData);
 	});
 
 
 	// Required by the kits
-	FoEproxy.addHandler('InventoryService', 'getInventory', (data, postData) => {
-		MainParser.UpdateInventory(data.responseData.inventoryItems);
+	FoEproxy.addHandler('InventoryService', 'getItemsByType', (data, postData) => {
+		MainParser.UpdateInventory(data.responseData);
+	});
+
+
+	// Required by the kits
+	FoEproxy.addHandler('InventoryService', 'getItemAmount', (data, postData) => {
+		MainParser.UpdateInventoryAmount(data.responseData);
 	});
 
 
@@ -1428,6 +1440,32 @@ let MainParser = {
 			let ID = Items[i]['id'];
 			MainParser.Inventory[ID] = Items[i];
 		}
+		Kits.UpdateBoxIfVisible();
+	},
+
+
+	/**
+	 * Updates the inventory
+	 *
+	 * @param Item
+	 */
+	UpdateInventoryItem: (Item) => {
+		let ID = Item['id'];
+		MainParser.Inventory[ID] = Item;
+		Kits.UpdateBoxIfVisible();
+	},
+
+
+	/**
+	 * Updates the inventory
+	 *
+	 * @param Item
+	 */
+	UpdateInventoryAmount: (Item) => {
+		let ID = Item[0],
+			Amount = Item[1];
+		MainParser.Inventory[ID].inStock = Amount;
+		Kits.UpdateBoxIfVisible();
 	},
 
 
