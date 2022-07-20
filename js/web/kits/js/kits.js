@@ -304,7 +304,7 @@ let Kits = {
 
 			if (show) {
 				let Name = kits[set]['name'],
-					GroupName = kits[set]['groupname']
+					GroupName = kits[set]['groupname'],
 					ChainSetIco = '';
 
 				if (Name) { //Name is set
