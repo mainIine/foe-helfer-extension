@@ -146,22 +146,28 @@ GetFights = () =>{
         }
 	});
 
-	// Updatestufen der Eventgebäude
-	FoEproxy.addMetaHandler('selection_kits', (xhr, postData) => {
-		let SelectKitArray = JSON.parse(xhr.responseText)
-		MainParser.BuildingSelectionKits = Object.assign({}, ...SelectKitArray.map((x) => ({ [x.id]: x })));
+	// Building-Upgrades
+	FoEproxy.addMetaHandler('building_upgrades', (xhr, postData) => {
+		let BuildingUpgradesArray = JSON.parse(xhr.responseText);
+		MainParser.BuildingUpgrades = Object.assign({}, ...BuildingUpgradesArray.map((x) => ({ [x.upgradeItem.id]: x })));
 	});
 
 	// Building-Sets
 	FoEproxy.addMetaHandler('building_sets', (xhr, postData) => {
-		let BuildingSetArray = JSON.parse(xhr.responseText);
-		MainParser.BuildingSets = Object.assign({}, ...BuildingSetArray.map((x) => ({ [x.id]: x })));
+		let BuildingSetsArray = JSON.parse(xhr.responseText);
+		MainParser.BuildingSets = Object.assign({}, ...BuildingSetsArray.map((x) => ({ [x.id]: x })));
 	});
 
 	// Building-Chains
 	FoEproxy.addMetaHandler('building_chains', (xhr, postData) => {
 		let BuildingChainsArray = JSON.parse(xhr.responseText);
 		MainParser.BuildingChains = Object.assign({}, ...BuildingChainsArray.map((x) => ({ [x.id]: x })));
+	});
+
+	// Selection-Kits
+	FoEproxy.addMetaHandler('selection_kits', (xhr, postData) => {
+		let SelectKitsArray = JSON.parse(xhr.responseText);
+		MainParser.SelectionKits = Object.assign({}, ...SelectKitsArray.map((x) => ({ [x.selectionKitId]: x })));
 	});
 
 	// Castle-System-Levels
@@ -795,15 +801,11 @@ let MainParser = {
 	ArkBonus: 0,
 	Inventory: {},
 
-	// Update levels of the event buildings
-	BuildingSelectionKits: null,
-
-	// Building sets
+	// all buildings additional data
+	BuildingUpgrades: null,
 	BuildingSets: null,
-
-	//Winterzug etc.
 	BuildingChains: null,
-
+	SelectionKits: null,
 
 	InnoCDN: 'https://foede.innogamescdn.com/',
 
