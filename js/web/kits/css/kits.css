@@ -103,3 +103,7 @@
 	background-color: rgba(140, 0, 0, 0.5);
 	opacity: 0.7;
 }
+
+#kits .chain-set-ico {
+	margin: -7px 0 -3px;
+}
