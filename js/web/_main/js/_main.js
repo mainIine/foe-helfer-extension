@@ -761,7 +761,6 @@ let HelperBeta = {
 		'unitsGex',
 		'marketOffers',
 		'discord',
-		'recurringQuests',
 	],
 	active: JSON.parse(localStorage.getItem('HelperBetaActive'))
 };
