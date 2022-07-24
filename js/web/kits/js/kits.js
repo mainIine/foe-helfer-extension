@@ -24,7 +24,7 @@ let Kits = {
 	 * Get all sets from the server
 	 */
 	init: ()=> {
-		MainParser.loadJSON(extUrl + 'js/web/kits/data/sets.json', (data)=>{
+		MainParser.loadJSON(extUrl + 'js/web/kits/data/sets.json', (data)=> {
 			Kits.KitsjSON = JSON.parse(data);
 			Kits.BuildBox();
 		});
@@ -45,7 +45,7 @@ let Kits = {
 
 			HTML.Box({
 				id: 'kits',
-				title: i18n('Boxes.Kits.Title'),
+				title: i18n('Menu.Kits.Title'),
 				auto_close: true,
 				dragdrop: true,
 				minimize: true,
@@ -67,6 +67,15 @@ let Kits = {
 		}
 
 		Kits.ReadSets();
+	},
+	
+	/**
+	 * Refresh the Box
+	 */
+	UpdateBoxIfVisible: ()=> {
+		if ($('#kits').length !== 0) {
+			Kits.ReadSets();
+		}
 	},
 
 
@@ -114,13 +123,20 @@ let Kits = {
 				let itemL1 = inv.find(el => el['item']['cityEntityId'] === building['first']),
 					itemUgr = false;
 
+				if (itemL1 && itemL1['inStock'] < 1) {
+					itemL1 = '';
+				}
+
 				// Upgrade Kit
 				if (building['update']) {
 					itemUgr = inv.find(el => el['itemAssetName'] === building['update']);
 				}
+				
+				if (itemUgr && itemUgr['inStock'] < 1) {
+					itemUgr = '';
+				}
 
 				if (itemL1) {
-
 					itemRow.push({
 						type: 'first',
 						item: itemL1,
@@ -130,7 +146,6 @@ let Kits = {
 					show = true;
 
 					if (!itemUgr && Kits.ShowMissing > 0) {
-
 						itemRow.push({
 							type: 'update',
 							item: building['update'],
@@ -140,7 +155,6 @@ let Kits = {
 				}
 
 				if (itemUgr) {
-
 					if (!itemL1 && Kits.ShowMissing > 0) {
 						itemRow.push({
 							type: 'first',
@@ -186,19 +200,22 @@ let Kits = {
 			// [Building has asset buildings or kits on ShowMissing(1)] or [ShowMissing(2)] ? show !
 			if (kits[set]['kit'] && Array.isArray(kits[set]['kit'])) {
 				for (let a in kits[set]['kit']) {
-					if (inv.find(el => el['itemAssetName'] === kits[set]['kit'][a])) {
+					let k = inv.find(el => el['itemAssetName'] === kits[set]['kit'][a]);
+					if (k && k['inStock'] > 0) {
 						show = true;
 					}
 				}
 			}
 			else if (kits[set]['kit']) {
-				if (inv.find(el => el['itemAssetName'] === kits[set]['kit'])) {
+				let k = inv.find(el => el['itemAssetName'] === kits[set]['kit']);
+				if (k && k['inStock'] > 0) {
 					show = true;
 				}
 			}
 			if (kits[set]['assets']) {
 				for (let a in kits[set]['assets']) {
-					if (inv.find(el => el['item']['cityEntityId'] === kits[set]['assets'][a])) {
+					let asset = inv.find(el => el['item']['cityEntityId'] === kits[set]['assets'][a]);
+					if (asset && asset['inStock'] > 0) {
 						show = true;
 					}
 				}
@@ -208,22 +225,15 @@ let Kits = {
 			}
 
 			// Building has asset buildings?
-			if (kits[set]['assets']) {	
-
+			if (kits[set]['assets']) {
 				for (let a in kits[set]['assets']) {
-
 					if(!kits[set]['assets'].hasOwnProperty(a)) {
 						break;
 					}
 
 					let asset = inv.find(el => el['item']['cityEntityId'] === kits[set]['assets'][a]);
 
-					if (asset) {
-
-						if (!buildings && Kits.ShowMissing > 0) {
-							buildings = missings;
-						}
-
+					if (asset && asset['inStock'] > 0) {
 						assetRow.push({
 							element: 'asset',
 							item: asset,
@@ -231,7 +241,6 @@ let Kits = {
 						});
 					} 
 					else if (show && Kits.ShowMissing > 0) {
-
 						assetRow.push({
 							element: 'asset',
 							item: entities[kits[set]['assets'][a]],
@@ -247,61 +256,43 @@ let Kits = {
 			
 			// selection kit exist?
 			if (kits[set]['kit'] && Array.isArray(kits[set]['kit']) ) {
-
 				for (let a in kits[set]['kit']) {
-					
 					if(!kits[set]['kit'].hasOwnProperty(a)) {
 						break;
 					}
 
 					let k = inv.find(el => el['itemAssetName'] === kits[set]['kit'][a]);
 
-					
-					if (k) {
-
-						if (!buildings && Kits.ShowMissing > 0) {
-							buildings = missings;
-						}
-
+					if (k && k['inStock'] > 0) {
 						kitRow.push({
 							type: 'kit',
 							item: k,
-							show: true
+							missing: false
 						});
 					}
 					else if (show && Kits.ShowMissing > 0) {
-
 						kitRow.push({
 							type: 'kit',
 							item: kits[set]['kit'][a],
-							show: true,
 							missing: true
 						});
 					}
 				}
 			}
 			else if (kits[set]['kit']) {
-
 				let k = inv.find(el => el['itemAssetName'] === kits[set]['kit']);
 
-				if (k) {
-
-					if (!buildings && Kits.ShowMissing > 0) {
-						buildings = missings;
-					}
-
+				if (k && k['inStock'] > 0) {
 					kitRow.push({
 						type: 'kit',
 						item: k,
-						show: true
+						missing: false
 					});
 				}
 				else if (show && Kits.ShowMissing > 0) {
-
 					kitRow.push({
 						type: 'kit',
 						item: kits[set]['kit'],
-						show: true,
 						missing: true
 					});
 				}
@@ -313,19 +304,53 @@ let Kits = {
 
 			if (show) {
 				let Name = kits[set]['name'],
-					GroupName = kits[set]['groupname'];
+					GroupName = kits[set]['groupname'],
+					ChainSetIco = '';
 
 				if (Name) { //Name is set
-					let i18nKey = 'Kits.Sets.' + Name,
-						i18nTranslation = i18n(i18nKey);
+					let sName = Name.toLowerCase().replace(/_set/g, '');
 
-					if (i18nKey === i18nTranslation) i18nTranslation = Name.replace(/_/g, ' '); //No translation => Fallback to Name
+					if (Name === 'Kits') {
+						KitText = i18n('Boxes.Kits.Kits');
+					}
+					else if (Name === 'Guard_Post') {
+						KitText = MainParser.SelectionKits['selection_kit_guard_post'].name;
+					}
+					else if (Name === 'Winterdeco_Set') {
+						KitText = MainParser.SelectionKits['selection_kit_winter_deco'].name;
+					}
+					else if (MainParser.BuildingChains[sName]) {
+						KitText = MainParser.BuildingChains[sName].name;
+						ChainSetIco = '<img src="' + MainParser.InnoCDN + 'assets/shared/icons/' + sName + '.png" class="chain-set-ico">';
+					}
+					else if (MainParser.BuildingSets[sName]) {
+						KitText = MainParser.BuildingSets[sName].name;
+						ChainSetIco = '<img src="' + MainParser.InnoCDN + 'assets/shared/icons/' + sName + '.png" class="chain-set-ico">';
+					}
+					else if (MainParser.CityEntities[kits[set].buildings[0]['first']]) {
+						let itemName = MainParser.CityEntities[kits[set].buildings[0]['first']].name;
+						let idx = itemName.indexOf(' - ', 0);
+						
+						if (idx === -1) {
+							idx = itemName.indexOf(' – ', 0); // looks the same but it isn't ¯\_(ツ)_/¯
+						}
+
+						if (idx === -1) {
+							KitText = itemName;
+						}
+						else {
+							KitText = itemName.substring(0, idx);
+						}
+					}
+					else {
+						KitText = Name.replace(/_/g, ' '); //Upcoming => Fallback to Name
+					}
 
 					let Link = kits[set]['link'] ? kits[set]['link'] : Name;
-					KitText = MainParser.GetBuildingLink(Link, i18nTranslation);
+					KitText = MainParser.GetBuildingLink(Link, KitText);
 				}
 				else if (GroupName) { //Group is set
-					let i18nKey = 'Kits.Sets.' + GroupName,
+					let i18nKey = 'Boxes.Kits.' + GroupName,
 						i18nTranslation = i18n(i18nKey);
 
 					if (i18nKey === i18nTranslation) i18nTranslation = GroupName.replace(/_/g, ' '); //No translation => Fallback to GroupName
@@ -336,15 +361,13 @@ let Kits = {
 					KitText = i18n('Boxes.Kits.Udate') + kits[set]['udate'];
 				}
 
-				t += '<tr><th colspan="4" class="head">' + KitText + '</th></tr>';
+				t += '<tr><th colspan="4" class="head">' + ChainSetIco +' '+ KitText + '</th></tr>';
 
 				if(buildings) {
-
-					buildings.forEach((e) => {
+					buildings.forEach((e)=> {
 						let rowTd = '';
 
 						if (e[0]['type'] === 'first') {
-
 							rowTd += Kits.ItemTd(e[0]);
 
 							if (e[1] === undefined) {
@@ -360,7 +383,6 @@ let Kits = {
 							}
 						} 
 						else if (e[0]['type'] === 'update') {
-
 							if (Kits.ShowMissing > 0) {
 								rowTd += Kits.ItemTd(e[0]);
 								rowTd += Kits.ItemTd(e[1]);
@@ -377,11 +399,10 @@ let Kits = {
 
 				// Asset listing
 				if (assetRow.length) {
-
 					t += `<tr><td colspan="4" class="assets-header">${i18n('Boxes.Kits.Extensions')}</td></tr>`;
 					let rowTd = '<td colspan="4"><div class="assets-row">';
 
-					assetRow.forEach((e) => {
+					assetRow.forEach((e)=> {
 						rowTd += Kits.ItemAssetDiv(e);
 					});
 
@@ -392,11 +413,10 @@ let Kits = {
 
 				// Kit listing
 				if (kitRow.length > 1) {
-
 					t += `<tr><td colspan="4" class="assets-header">${i18n('Boxes.Kits.SelectionKit')}</td></tr>`;
 					let rowTd = '<td colspan="4"><div class="kits-row">';
 
-					kitRow.forEach((e) => {
+					kitRow.forEach((e)=> {
 						rowTd += Kits.ItemKitDiv(e);
 					});
 
@@ -405,7 +425,6 @@ let Kits = {
 					t += '<tr>' + rowTd + '</tr>';
 				}
 				else if (kitRow.length) {
-
 					t += `<tr><td colspan="4" class="assets-header">${i18n('Boxes.Kits.SelectionKit')}</td></tr>`;
 
 					let rowTd = Kits.ItemTd(kitRow[0]);
@@ -430,7 +449,6 @@ let Kits = {
 	 * @constructor
 	 */
 	ItemTd: (el)=> {
-
 		if (!el || el['item'] == undefined) {
 			return '';
 		}
@@ -448,7 +466,6 @@ let Kits = {
 			url = MainParser.InnoCDN + 'assets/city/buildings/' + [aName.slice(0, 1), '_SS', aName.slice(1)].join('') + '.png';
 		}
 		else if (el['type'] === 'update' || el['type'] === 'kit') {
-
 			aName = el['missing'] ? item : item['itemAssetName'];
 
 			if (aName.includes('fragment')) {
@@ -488,8 +505,22 @@ let Kits = {
 		}
 
 		if (el['missing']) {
+			let title = '';
+			if (el['type'] === 'first') {
+				title = item['name'];
+			}
+			else if (el['type'] === 'update') {
+				title = MainParser.BuildingUpgrades[item] ? MainParser.BuildingUpgrades[item].upgradeItem['name'] : i18n('Boxes.Kits.UpgradeKit');
+			}
+			else if (el['type'] === 'kit') {
+				title = MainParser.SelectionKits[item] ? MainParser.SelectionKits[item]['name'] : i18n('Boxes.Kits.SelectionKit');
+			}
+			else {
+				title = i18n('Boxes.Kits.Fragment');
+			}
+			
 			td += `<td class="text-center is-missing"><div class="kits-image-container"><img class="kits-image" src="${url}" alt="${item['name']}"/>${url_fragment}</div></td>`;
-			td += `<td class="is-missing">${el['type'] === 'first' ? item['name'] : el['type'] === 'update' ? i18n('Boxes.Kits.UpgradeKit') : el['type'] === 'kit' ? i18n('Boxes.Kits.SelectionKit') : i18n('Boxes.Kits.Fragment')}<br>${i18n('Boxes.Kits.InStock')}: <strong class="text-warning">-</strong></td>`;
+			td += `<td class="is-missing">${title}<br>${i18n('Boxes.Kits.InStock')}: <strong class="text-warning">-</strong></td>`;
 		} 
 		else {
 			td += `<td class="text-center"><div class="kits-image-container"><img class="kits-image" src="${url}" alt="${item['name']}"/>${url_fragment}</div></td>`;
@@ -508,10 +539,10 @@ let Kits = {
 	 * @constructor
 	 */
 	ItemAssetDiv: (el)=> {
-
 		if (!el || el['item'] == undefined) {
 			return '';
 		}
+
 		let item = el['item'],
 			aName = el['missing'] ? item['asset_id'] : item['itemAssetName'],
 			url = MainParser.InnoCDN + 'assets/city/buildings/' + [aName.slice(0, 1), '_SS', aName.slice(1)].join('') + '.png';
@@ -530,10 +561,10 @@ let Kits = {
 	 * @constructor
 	 */
 	ItemKitDiv: (el)=> {
-
 		if (!el || el['item'] == undefined) {
 			return '';
 		}
+
 		let item = el['item'],
 			aName = el['missing'] ? item : item['itemAssetName'],
 			url,
@@ -573,13 +604,24 @@ let Kits = {
 			}
 			url = MainParser.InnoCDN + 'assets/city/buildings/' + [aName.slice(0, 1), '_SS', aName.slice(1)].join('') + '.png';
 		}
+		
+		let title = '';
+		if (!el['missing']) {
+			title = item['name'];
+		}
+		else if (url_fragment) {
+			title = i18n('Boxes.Kits.Fragment');
+		}
+		else {
+			title = MainParser.SelectionKits[item] ? MainParser.SelectionKits[item]['name'] : i18n('Boxes.Kits.SelectionKit');
+		}
 
 		return 	`<div class="item-kits${(el['missing'] ? ' is-missing' : '')}">
 					<div class="kits-image-container">
 						<img class="kits-image" src="${url}" alt="${item['name']}" />
 						${url_fragment}
 					</div><br>
-					${(!el['missing'] ? item['name'] : url_fragment ? i18n('Boxes.Kits.Fragment') : i18n('Boxes.Kits.SelectionKit'))}<br>${i18n('Boxes.Kits.InStock')}: <strong class="text-warning">${(item['inStock'] ? item['inStock'] : '-') + (url_fragment && item['item'] ? '/' + item['item']['reward']['requiredAmount'] : '')}</strong>
+					${title}<br>${i18n('Boxes.Kits.InStock')}: <strong class="text-warning">${(item['inStock'] ? item['inStock'] : '-') + (url_fragment && item['item'] ? '/' + item['item']['reward']['requiredAmount'] : '')}</strong>
 				</div>`;
 	},
 
@@ -590,7 +632,7 @@ let Kits = {
 	 * @returns {[]}
 	 * @constructor
 	 */
-	GetInvententoryArray: () => {
+	GetInvententoryArray: ()=> {
 		let Ret = [];
 		for (let i in MainParser.Inventory) {
 			if (!MainParser.Inventory.hasOwnProperty(i)) continue;
