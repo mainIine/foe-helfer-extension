@@ -207,7 +207,9 @@ let AztecsHelper = {
                     if(typeof cellData.content !== "number" && cellData.content !== AztecsHelper.emptyCell) 
                         cell.appendChild(document.createTextNode(cellData.content));
                     if(cellData.prob == 0){
-                        cell.className = "aztec color0";
+                        cell.className = cellData.content == AztecsHelper.unknownCell 
+                            ? "aztec colorU" 
+                            : "aztec color0";
                     }  
                     else if(cellData.prob > 0 && cellData.prob < 0.33) {
                         cell.className = "aztec color1";

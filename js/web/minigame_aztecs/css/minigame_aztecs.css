@@ -51,6 +51,9 @@ table.aztecTable{
 }
 
 
+.aztec.colorU{
+    color:rgb(0, 200, 255);
+}
 .aztec.color0{
     color:red;
 }
