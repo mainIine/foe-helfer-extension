@@ -1,6 +1,6 @@
 [	
 	{
-		"udate": "24.06.2022"
+		"udate": "20.07.2022"
 	},
 	{
 		"groupname": "Guild_Battlegrounds"
@@ -41,6 +41,27 @@
 	},
 	{
 		"groupname": "Events"
+	},
+	{
+		"name": "Sunflower_Oil_Press",
+		"buildings": [
+			{
+				"first": "R_MultiAge_FallBonus22a",
+				"update": "upgrade_kit_sunflower_oil_press"
+			}
+		],
+		"kit": "selection_kit_sunflower_oil_press"
+	},
+	{
+		"name": "Privateers_Boathouse",
+		"link": "Privateer%27s_Boathouse",
+		"buildings": [
+			{
+				"first": "W_MultiAge_SummerBonus22a",
+				"update": "upgrade_kit_privateers_boathouse"
+			}
+		],
+		"kit": "selection_kit_privateers_boathouse"
 	},
 	{
 		"name": "Heroes_Tavern",
