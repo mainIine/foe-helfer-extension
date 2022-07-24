@@ -14,8 +14,8 @@
 // separate code from global scope
 {
 let scripts = {
-	main: ["once"],
-	proxy: ["once"],
+	main: ["once", "primed"],
+	proxy: ["once", "primed"],
 	vendor: ["once", "primed"],
 	internal: ["once", "primed"]
 };
@@ -209,9 +209,11 @@ function inject (loadBeta = false, extUrl = chrome.extension.getURL(''), betaDat
 			
 			// load foe-Proxy
 			await promisedLoadCode(chrome.extension.getURL('')+`js/foeproxy.js`,"proxy");
+			scriptLoaded("primed", "proxy");
 			await proxyLoaded;
 			// load the main
 			await promisedLoadCode(`${extUrl}js/web/_main/js/_main.js`,"main");
+			scriptLoaded("primed", "main");
 			await mainLoaded;
 			
 			// wait for ant and i18n to be loaded
