@@ -445,6 +445,9 @@ let Parts = {
 				let SavedCopyIncludeOwnPart = localStorage.getItem(Parts.GetStorageKey('CopyIncludeOwnPart', null));
 				if (SavedCopyIncludeOwnPart !== null) Parts.CopyIncludeOwnPart = (SavedCopyIncludeOwnPart === 'true');
 
+				let SavedCopyPreP = localStorage.getItem(Parts.GetStorageKey('CopyPreP', null));
+				if (SavedCopyPreP !== null) Parts.CopyPreP = (SavedCopyPreP === 'true');
+
 				let SavedCopyDescending = localStorage.getItem(Parts.GetStorageKey('CopyDescending', null));
 				if (SavedCopyDescending !== null) Parts.CopyDescending = (SavedCopyDescending === 'true');
 			}
