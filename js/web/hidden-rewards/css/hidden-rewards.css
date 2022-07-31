@@ -41,7 +41,7 @@
 }
 
 td[title="incident_sos"], td[title="incident_beach_gear"], td[title="incident_shipwreck"], td[title="incident_flotsam"] {
-	background: linear-gradient(to top right, #20423f, 15%, #20423f, 45%, #d4ab70, 75%, #d4ab70);
+	background: linear-gradient(to top right, #20423f, 15%, #20423f, 35%, #d4ab70, 65%, #d4ab70);
 }
 
 td[title="incident_sos"] img {
