@@ -1,5 +1,21 @@
 ## Changelog - Extension
 
+##### 2.10.0.0
+
+**New**
+- Recurring Quests
+	- This module shows for which of the recurring quests the Helper is sure that player has already received diamonds.
+		- if it shows a "✓", you already got diamonds for that quest
+		- if it shows a "?", the helper has not seen you getting diamonds or medals for that quest - you may have gotten them on a different device, before installing the helper, or before activation of this feature though
+
+**BugFix**
+- GB Calculator
+	- [#2491](https://github.com/mainIine/foe-helfer-extension/issues/2491) "P(XX)" Setting was not saved/set properly.
+
+- Aztecs Minigame Helper
+	- [#1489](https://github.com/mainIine/foe-helfer-extension/issues/2489) Box would not show.
+
+
 ##### 2.9.3.0
 
 **Update**
