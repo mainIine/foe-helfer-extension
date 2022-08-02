@@ -1,5 +1,21 @@
 ## Changelog - Extension
 
+##### 2.10.0.0
+
+**New**
+- Wiederkehrende Quests
+	- Dieses Modul zeigt, für welche Quests der Helfer sicher ist, dass du bereits Diamanten erhalten hast.
+		- zeigt es ein "✓", hast du bereits Diamanten erhalten
+		- zeigt es ein "?", hat der Helfer noch nicht beobachtet, dass du Diamanten oder Medaillen bekommen hast für diese Quest - du könntest aber evtl. schon Diamanten auf einem anderen Gerät, vor Aktivierung dieses Features oder vor Installation des Helfers bekommen haben.
+
+**BugFix**
+- Eigenanteilsrechner
+	- [#2491](https://github.com/mainIine/foe-helfer-extension/issues/2491) "P(XX)" Einstellungen wurde nicht korrekt gespeichert/abgerufen.
+
+- Aztecs Minigame Helper
+	- [#1489](https://github.com/mainIine/foe-helfer-extension/issues/2489) Box wurde nicht angezeigt.
+
+##### 2.9.3.0	
 **Update**
 - Musik-Modul:
 	- Enthält jetzt einen Titel für die Gemeinschaftsveranstaltung
