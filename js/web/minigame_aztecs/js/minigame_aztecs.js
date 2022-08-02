@@ -99,8 +99,8 @@ FoEproxy.addHandler('CollectingMinigameService', 'submitMove', (data, postData) 
 });
 
 FoEproxy.addHandler('ResourceShopService', 'buyResources', (data, postData) => {
-    if(postData[0].requestData.filter(x => x.mainType === "cultural_outpost" && x.subType === "collecting_minigame_buy_turns")){
-        if(postData[0].requestData.filter(x => x["resources"] !== undefined)[0].resources.aztecs_collecting_minigame_turns > 0){
+    if(postData[0].requestData.filter(x => x?.mainType === "cultural_outpost" && x?.subType === "collecting_minigame_buy_turns")){
+        if(postData[0].requestData.filter(x => x?.["resources"] !== undefined)?.[0]?.resources?.aztecs_collecting_minigame_turns > 0){
             AztecsHelper.boughtSomething = true;
         }else{
             AztecsHelper.boughtSomething = false;
@@ -111,9 +111,8 @@ FoEproxy.addHandler('ResourceShopService', 'buyResources', (data, postData) => {
 });
 
 FoEproxy.addHandler('ResourceService', 'getPlayerResources', (data, postData) => {
-    if (!Array.isArray(data.responseData)) return;
-    if(postData[0].requestData.filter(x => x.mainType === "cultural_outpost" && x.subType === "collecting_minigame_buy_turns").length > 0){
-        if(postData[0].requestData.filter(x => x["resources"] !== undefined)[0].resources.aztecs_collecting_minigame_turns > 0){
+    if(postData[0].requestData.filter(x => x?.mainType === "cultural_outpost" && x?.subType === "collecting_minigame_buy_turns").length > 0){
+        if(postData[0].requestData.filter(x => x?.["resources"] !== undefined)?.[0]?.resources?.aztecs_collecting_minigame_turns > 0){
             AztecsHelper.boughtSomething = true;
         }else{
             AztecsHelper.boughtSomething = false;
@@ -208,7 +207,9 @@ let AztecsHelper = {
                     if(typeof cellData.content !== "number" && cellData.content !== AztecsHelper.emptyCell) 
                         cell.appendChild(document.createTextNode(cellData.content));
                     if(cellData.prob == 0){
-                        cell.className = "aztec color0";
+                        cell.className = cellData.content == AztecsHelper.unknownCell 
+                            ? "aztec colorU" 
+                            : "aztec color0";
                     }  
                     else if(cellData.prob > 0 && cellData.prob < 0.33) {
                         cell.className = "aztec color1";

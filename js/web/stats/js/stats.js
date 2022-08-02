@@ -1251,7 +1251,7 @@ let Stats = {
 			},
 			tooltip: {
 				useHTML: true,
-				shared: series.length <= 5,
+				shared: series.length <= 8 || series.filter((x, index, array) => x.era == array[0].era && x.era != undefined).length == series.length,
 				headerFormat: '<small>{point.key}</small><br/><table>',
 				borderWidth: series.length <= 5 ? 0 : 1,
 				pointFormat,
