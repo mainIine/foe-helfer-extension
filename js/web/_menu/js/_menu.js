@@ -57,7 +57,8 @@ let _menu = {
 		'castle',
 		'music',
 		'musicControl',
-		'minigame_aztecs'
+		'minigame_aztecs',
+		'recurringQuests'
 		// 'marketOffers',
 		// 'discord'
 	],
