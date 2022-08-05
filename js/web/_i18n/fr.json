@@ -975,7 +975,7 @@
     "Boxes.stPatrick.Variant": "Variante",
     "Boxes.stPatrick.Warning": "Ces valeurs peuvent être mise à jour lentement - en fonction des réponses du serveur. Les délais indiqués ne tiennent pas compte des mises à jour du stock actuel.",
     "Date": "DD-MMM-YY",
-    "DateShort": "JJ-MMM",
+    "DateShort": "DD-MMM",
     "DateTime": "DD.MM.YYYY HH:mm",
     "Eras.0": "Sans ère",
     "Eras.1": "Âge de Pierre",
