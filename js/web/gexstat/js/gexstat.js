@@ -299,7 +299,7 @@ let GexStat = {
 			h.push(`<td class="td-rank"><span class="winner-rank rank-${rankClass}"><span>${participant.rank}</span></span></td>`);
 			h.push(`<td>` +
 				`<div class="clanflag"><img src="${MainParser.InnoCDN + 'assets/shared/clanflags/' + participant.flag + '.jpg'}" /></div>` +
-				`<div class="claninfo"><span class="clanname">${participant.name}</span><br /> ` +
+				`<div class="claninfo"><span class="clanname">${MainParser.GetGuildLink(participant['guildId'], participant['name'], participant['worldId'])}</span><br /> ` +
 				`<span class="clanworld">${participant.worldName}</span></div></td>`);
 			h.push(`<td class="progress"><div class="progbar rank-${rankClass}${stripedClass}" style="width: ${progressWidth}%"></div> ${participant.points}%</td>`);
 			h.push(`<td><div class="flex justify-content-between mbottom2"><div>${i18n('Boxes.GexStat.Rank')}: ${participant.worldrank} </div><div>${i18n('Boxes.GexStat.Member')}: ${participant.memberCount}</div></div>` +
