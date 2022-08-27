@@ -241,6 +241,8 @@
     "Boxes.DBExport.WrongDBPlayerID": "The player ID of the DB to be imported does not match the current account.",
     "Boxes.DBExport.WrongDBWorld": "The world of the DB to be imported does not match the current account.",
     "Boxes.Discord.Title": "???",
+    "Boxes.doubleFPprevention.Text": "Prevention",
+    "Boxes.doubleFPprevention.Title": "Double donation",
     "Boxes.EventChests.Chance": "Chance",
     "Boxes.EventChests.Cost": "Costs",
     "Boxes.EventChests.CostPerPrize": "Cost/Prize",
@@ -1195,6 +1197,9 @@
     "Settings.Version.PlayerId": "Player ID:",
     "Settings.Version.Title": "Version",
     "Settings.Version.World": "World:",
+    "Settings.doubleFPtimeout.Desc": "Shows a box that temporarily covers the FP entry field in GB after a donation. The value determines the duration the box is shown in seconds - when 0, the box does not show",
+    "Settings.doubleFPtimeout.Title": "Doppeleinzahlungsblocker",
+    "Settings.Entry.doubleFPtimeout": "Doppeleinzahlungsblocker",
     "StrategyPoints.BuyableFP": "Number of FPs that can be bought with coins.",
     "_Language": "English"
 }
