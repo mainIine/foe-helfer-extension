@@ -96,7 +96,7 @@
 		"sort": 14
 	},
 	{
-		"name": "ShowPlayerLinks",
+		"name": "ShowLinks",
 		"status": true,
 		"group": "Boxes",
 		"sort": 15
