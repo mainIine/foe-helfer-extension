@@ -1,0 +1,29 @@
+/*
+ * **************************************************************************************
+ * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
+ *
+ * See file LICENSE.md or go to
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
+ *
+ * **************************************************************************************
+ */
+
+#doubleFPprevention {
+    top: calc(50vh - 110px);
+    left: calc(50vw + 120px);
+}
+
+#doubleFPpreventionBody {
+    width: auto;
+    height: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 120%;
+    background-color: rgba(103, 1, 1, 0.5);
+}
+
