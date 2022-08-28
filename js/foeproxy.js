@@ -539,7 +539,7 @@ const FoEproxy = (function () {
 		const post = JSON.parse(new TextDecoder().decode(data))[0];
 		//console.log(post);
 		if (!post || !post.requestClass || !post.requestMethod || !post.requestData) return;
-		proxyRequestAction(post.requestClass, post.requestMethod, post.requestData);
+		proxyRequestAction(post.requestClass, post.requestMethod, post);
 	}
 
 	XHR.send = function (postData) {
