@@ -12,13 +12,12 @@
  * **************************************************************************************
  */
 
-FoEproxy.addHandler('GreatBuildingsService', 'contributeForgePoints', (data, postData) => {
+FoEproxy.addRequestHandler('GreatBuildingsService', 'contributeForgePoints', (postData) => {
     
     let t = (Settings.GetSetting('doubleFPtimeout') || 0) * 1000;
     
     if (t == 0) return;
-    let playerRank = data.responseData.filter(rank => rank.player.player_id == ExtPlayerID)
-    if (playerRank[0].rank == undefined) return;
+    if (postData[1]==ExtPlayerID) return; //only show box in other player GB 
     doubleFPprevention.ShowBox();
     let x = setTimeout(doubleFPprevention.Close, t);
 });
