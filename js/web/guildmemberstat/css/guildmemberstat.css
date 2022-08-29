@@ -417,7 +417,7 @@
     padding: 3px 5px;
     background-color: var(--text-btn);
     position: relative;
-    z-index: 100;
+    z-index: 1;
 }
 
 #GuildMemberStat #gms-filter-input.highlight {

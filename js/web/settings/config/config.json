@@ -72,6 +72,12 @@
 		"sort": 11
 	},
 	{
+		"name": "doubleFPtimeout",
+		"callback": "doubleFPtimeout",
+		"group": "Boxes",
+		"sort": 13
+	},
+	{
 		"name": "ShowMapTradeWarning",
 		"status": true,
 		"group": "Boxes",
@@ -90,7 +96,7 @@
 		"sort": 14
 	},
 	{
-		"name": "ShowPlayerLinks",
+		"name": "ShowLinks",
 		"status": true,
 		"group": "Boxes",
 		"sort": 15

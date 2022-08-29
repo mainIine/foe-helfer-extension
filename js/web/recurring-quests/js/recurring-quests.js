@@ -35,11 +35,16 @@ FoEproxy.addHandler('QuestService', 'getUpdates', (data, postData) => {
     }
     Recurring.data.count=0;
     Recurring.data.filter = [];
+    Recurring.data.filter2 = [];
     for (let q in Recurring.data.Questlist) {
         if (!Recurring.data.Questlist[q]) continue;
         if (Recurring.data.Questlist[q].era == CurrentEraID) {
-            Recurring.data.filter.push(q);
-            if (!Recurring.data.Questlist[q].diamonds) Recurring.data.count++;
+            if (!Recurring.data.Questlist[q].diamonds){
+                Recurring.data.filter.push(q);
+                Recurring.data.count++;
+            } else {
+                Recurring.data.filter2.push(q);
+            }
         } else if (CurrentEraID - Recurring.data.Questlist[q].era > 1) {
             delete Recurring.data.Questlist[q];
         }
@@ -67,6 +72,7 @@ let Recurring = {
                 'auto_close': true,
                 'dragdrop': true,
                 'minimize': true,
+                'resize': true,
                 'settings': 'Recurring.ShowSettingsButton()'
             });
 
@@ -111,6 +117,14 @@ let Recurring = {
         h.push('<tbody>');
 
         for (let q of Recurring.data.filter) {
+            if (!Recurring.data.Questlist[q]) continue;
+            let quest=Recurring.data.Questlist[q]
+            h.push(`<tr>`);
+            h.push('<td >' + quest.title + '</td>');
+            h.push(quest.diamonds ? '<td class="check">✓</td>' : '<td>?</td>');
+            h.push('</tr>');
+        }
+        for (let q of Recurring.data.filter2) {
             if (!Recurring.data.Questlist[q]) continue;
             let quest=Recurring.data.Questlist[q]
             h.push(`<tr>`);
