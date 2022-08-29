@@ -496,7 +496,7 @@ let Settings = {
 			type: 'number',
 			id: 'doubleFPtimeoutinput',
 			step: 1,
-			min: 2
+			min: 0
 		}),
 		value = localStorage.getItem('doubleFPtimeout');
 		ip[0].defaultValue = ip[0].value = value;
@@ -507,7 +507,12 @@ let Settings = {
 
 		$('#SettingsBox').on('keyup', '#doubleFPtimeoutinput', function () {
 			let value = $(this).val();
-			localStorage.setItem('doubleFPtimeout', value);
+			if (value > 0) {
+				localStorage.setItem('doubleFPtimeout', value);
+			} else {
+				localStorage.removeItem('doubleFPtimeout');
+			}
+
 		});
 
 		return ip;
