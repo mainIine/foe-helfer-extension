@@ -1,5 +1,19 @@
 ## Changelog - Extension
 
+##### 2.11.0.0
+
+**New**
+- GB FP double payment
+	- can be activated in the box settings by giving a value greater 0
+		- when active, the input field and pay button will be blocked after every FP payment for the given value in seconds
+		- this may prevent double FP payments in cases in which the server is slow with a response and the input field seemed to not have reacted on the mouse click
+
+**BugFix**
+- Recurring Quests
+	- The menu entry is now displayed correctly and the module is now properly accessible
+
+---
+
 ##### 2.10.0.0
 
 **New**
@@ -15,6 +29,7 @@
 - Aztecs Minigame Helper
 	- [#1489](https://github.com/mainIine/foe-helfer-extension/issues/2489) Box would not show.
 
+---
 
 ##### 2.9.3.0
 

@@ -457,7 +457,7 @@ let Settings = {
 	 *
 	 * @returns {null|undefined|jQuery}
 	 */
-	MenuInputLength: () => {
+	 MenuInputLength: () => {
 		let ip = $('<input />').addClass('setting-input').attr({
 			type: 'number',
 			id: 'menu-input-length',
@@ -481,6 +481,38 @@ let Settings = {
 			}
 
 			_menu.SetMenuHeight(true);
+		});
+
+		return ip;
+	},
+	
+	/**
+	 *	Erzeugt in Input Feld
+	 *
+	 * @returns {null|undefined|jQuery}
+	 */
+	 doubleFPtimeout: () => {
+		let ip = $('<input />').addClass('setting-input').attr({
+			type: 'number',
+			id: 'doubleFPtimeoutinput',
+			step: 1,
+			min: 0
+		}),
+		value = localStorage.getItem('doubleFPtimeout');
+		ip[0].defaultValue = ip[0].value = value;
+
+		if (null !== value) {
+			ip.val(value);
+		}
+
+		$('#SettingsBox').on('keyup', '#doubleFPtimeoutinput', function () {
+			let value = $(this).val();
+			if (value > 0) {
+				localStorage.setItem('doubleFPtimeout', value);
+			} else {
+				localStorage.removeItem('doubleFPtimeout');
+			}
+
 		});
 
 		return ip;

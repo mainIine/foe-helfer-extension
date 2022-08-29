@@ -92,9 +92,9 @@ InventoryTracker = function () {
 
 					tmp.inventory = {};
 
-					if (!data) {
-						return;
-					}
+					if (!data) return;
+					if (!Array.isArray(data)) return;
+					
 					let items = data.filter(item => item.itemAssetName.indexOf('forgepoints') > -1);
 					for (let [index, item] of items.entries()) {
 						tmp.inventory[item.id] = item;
