@@ -1,5 +1,19 @@
 ## Changelog - Extension
 
+##### 2.11.0.0
+
+**Neu**
+- GB FP Doppelzahlung
+	- kann in den Box-Einstellungen durch Eingabe eines Wertes größer 0 aktiviert werden
+		- wenn aktiv, werden das Eingabefeld und der Bezahlbutton nach jeder FP-Zahlung für den angegebenen Wert in Sekunden blockiert
+		- dies kann doppelte FP-Zahlungen in Fällen verhindern, in denen der Server langsam mit einer Antwort ist und das Eingabefeld scheinbar nicht auf den Mausklick reagiert hat
+
+**BugFix**
+- Wiederkehrende Quests
+	- Der Menüeintrag wird nun korrekt angezeigt und das Modul ist nun korrekt zugänglich
+
+---
+
 ##### 2.10.0.0
 
 **New**
@@ -15,7 +29,10 @@
 - Aztecs Minigame Helper
 	- [#1489](https://github.com/mainIine/foe-helfer-extension/issues/2489) Box wurde nicht angezeigt.
 
-##### 2.9.3.0	
+---
+
+##### 2.9.3.0
+
 **Update**
 - Musik-Modul:
 	- Enthält jetzt einen Titel für die Gemeinschaftsveranstaltung
