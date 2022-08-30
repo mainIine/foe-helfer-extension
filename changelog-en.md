@@ -12,6 +12,8 @@
 - Recurring Quests
 	- The menu entry is now displayed correctly and the module is now properly accessible
 
+---
+
 ##### 2.10.0.0
 
 **New**
@@ -27,6 +29,7 @@
 - Aztecs Minigame Helper
 	- [#1489](https://github.com/mainIine/foe-helfer-extension/issues/2489) Box would not show.
 
+---
 
 ##### 2.9.3.0
 
