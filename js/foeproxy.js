@@ -536,7 +536,14 @@ const FoEproxy = (function () {
 	function xhrOnSend(data) {
 		if (!proxyEnabled ) return;
 		if (!data) return;
-		const post = JSON.parse(new TextDecoder().decode(data))[0];
+    
+    		let post;
+    
+    		if (typeof data === 'object' && data instanceof ArrayBuffer)
+      			post = JSON.parse(new TextDecoder().decode(data))[0];
+    		else 
+      			post = JSON.parse(data)[0];
+
 		//console.log(post);
 		if (!post || !post.requestClass || !post.requestMethod || !post.requestData) return;
 		proxyRequestAction(post.requestClass, post.requestMethod, post);
