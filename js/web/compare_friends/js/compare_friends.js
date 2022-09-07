@@ -29,7 +29,9 @@ FoEproxy.addHandler('ConversationService', 'getCategory', (data, postData) => {
 	}
 });
 
-// Thread is opened
+/**
+ * Thread is opened
+ */
 FoEproxy.addHandler('ConversationSettingsService', 'getSettings', (data, postData) => {
 	if(postData[0]['requestClass'] === 'ConversationSettingsService' && postData[0]['requestMethod'] === 'getSettings')
 	{
@@ -39,6 +41,17 @@ FoEproxy.addHandler('ConversationSettingsService', 'getSettings', (data, postDat
 
 			CompareFriends.BuildBody(true);
 		}
+	}
+});
+
+/**
+ * Friend is deleted
+ */
+FoEproxy.addHandler('FriendService', 'deleteFriend', (data, postData) => {
+	if ($('#friendsCompareBox').length > 0) {
+		setTimeout(()=>{
+			CompareFriends.BuildBody(true);
+		}, 200);
 	}
 });
 
@@ -56,6 +69,7 @@ let CompareFriends = {
 	 * Current opened thread
 	 */
 	CurrentThread: 0,
+
 
 	ParseThreads: (data)=> {
 
@@ -91,7 +105,20 @@ let CompareFriends = {
 		let key = CompareFriends.Threads.findIndex(t => t.id === CompareFriends.CurrentThread);
 
 		CompareFriends.Threads[key]['participants'] = data;
-	}, BuildBody: (rebuild = false)=> {
+	},
+
+
+	/**
+	 * Create a table
+	 *
+	 * @param rebuild
+	 * @constructor
+	 */
+	BuildBody: (rebuild = false)=> {
+
+		if(!rebuild){
+			CompareFriends.Threads = [];
+		}
 
 		if ($('#friendsCompareBox').length === 0) {
 			HTML.Box({
