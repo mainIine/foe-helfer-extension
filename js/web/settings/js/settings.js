@@ -378,7 +378,7 @@ let Settings = {
 	About: () => {
 		return '<hr>' +
 			'<h2>' + i18n('Settings.About.TranslateTitle') + '</h2>' +
-			'<p>' + i18n('Settings.About.TranslateDesc') + ' <a href="http://i18n.foe-helper.com/" target="_blank">Weblate</a></p>' +
+			'<p>' + i18n('Settings.About.TranslateDesc') + ' <a href="http://i18n.foe-helper.com/projects/foe-helper/extension/" target="_blank">Weblate</a></p>' +
 			'<hr>' +
 			'<h2>' + i18n('Settings.About.RatingTitle') + '</h2>' +
 			'<p>' + i18n('Settings.About.RatingDesc') + '</p>';
