@@ -26,6 +26,14 @@
 
 #friendsCompareTable th {
 	position: sticky;
-	top: 0;
-	transform: rotate(-45deg);
+	top: 0px;
+	text-align: center;	
+}
+#friendsCompareTable th:not(:first-child) span {
+	writing-mode: vertical-lr;
+	transform: rotate(180deg);
+	height: 150px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
