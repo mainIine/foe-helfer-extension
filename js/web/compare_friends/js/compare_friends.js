@@ -16,10 +16,16 @@
 /**
  * Get threads from ConversationService
  */
-FoEproxy.addHandler('ConversationService', 'getOverviewForCategory', (data, postData) => {
+ FoEproxy.addHandler('ConversationService', 'getOverviewForCategory', (data, postData) => {
 	if (data['responseData']['category']['type'] === 'social')
 	{
 		CompareFriends.ParseThreads(data['responseData']['category']['teasers']);
+	}
+});
+FoEproxy.addHandler('ConversationService', 'getCategory', (data, postData) => {
+	if (data['responseData']['type'] === 'social')
+	{
+		CompareFriends.ParseThreads(data['responseData']['teasers']);
 	}
 });
 
@@ -129,7 +135,7 @@ let CompareFriends = {
 				continue;
 			}
 
-			t.push(`<th>${d.title}</th>`);
+			t.push(`<th><span title="${d.title}">${d.title}</span></th>`);
 		}
 
 		t.push('</tr>');
@@ -155,9 +161,9 @@ let CompareFriends = {
 				}
 
 				if(CompareFriends.Threads[x]['participants'].findIndex(p => p.playerId === Player.PlayerID) === -1){
-					t.push(`<td class="text-center text-danger"><strong>&#10060;</strong></td>`);
+					t.push(`<td class="text-center text-danger">❌</td>`);
 				} else {
-					t.push(`<td class="text-center"><strong class="text-success">&#10003;<strong</td>`);
+					t.push(`<td class="text-center">✔️</td>`);
 				}
 			}
 
