@@ -60,7 +60,7 @@
     "Boxes.AuctionSettings.Title": "Auktionseinstellungen",
     "Boxes.AuctionSettings.Bid": "Gebot",
     "Boxes.AuctionSettings.Help": "Hilfe",
-    "Boxes.AuctionSettings.Help1": "Dieses Modul berechnet automatisch ein nächstes Gebpt, basierend auf dem aktuellen Gebpt und den Einstellungen und kopiert es in die Zwischenablage",
+    "Boxes.AuctionSettings.Help1": "Dieses Modul berechnet automatisch ein nächstes Gebot, basierend auf dem aktuellen Gebot und den Einstellungen und kopiert es in die Zwischenablage",
     "Boxes.AuctionSettings.Help2": "Das Gebot muss manuell in das Gebotsfeld eingefügt und mit Enter bestätigt werden.",
     "Boxes.AuctionSettings.Help3": "Zu Beginn startet das Modul in der ersten Zeile der Einstellungen und mit jedem weiteren Gebot wird die folgende Zeile zur Berechnung genutzt.",
     "Boxes.AuctionSettings.Help4": "Wenn über eine Zeit von einer Minute kein Gebot abgegeben wird, dann beginnt das Modul wieder bei Zeile 1.",
