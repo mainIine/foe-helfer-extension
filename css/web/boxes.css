@@ -1824,3 +1824,7 @@ input[type="range"]::-webkit-slider-thumb {
 	width: 45px;
 	height: 45px;
 }
+.box-buttons {
+	display: flex;
+    justify-content: center;
+}
