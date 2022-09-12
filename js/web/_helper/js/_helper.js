@@ -162,7 +162,7 @@ let HTML = {
 		if (args['onlyTitle'] !== true) {
 			title = $('<span />').addClass('title').html((extVersion.indexOf("beta") > -1 ? '(Beta) ': '') + args['title'] + ' <small><em> - FoE Helper</em></small>');
 		}
-		
+		title = title.attr('title', title[0].textContent);
 		let	buttons = $('<div />').attr('id', args['id'] + 'Buttons').addClass('box-buttons'),
 			head = $('<div />').attr('id', args['id'] + 'Header').attr('class', 'window-head').append(title),
 			body = $('<div />').attr('id', args['id'] + 'Body').attr('class', 'window-body'),
