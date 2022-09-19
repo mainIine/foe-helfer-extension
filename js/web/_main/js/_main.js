@@ -1507,7 +1507,7 @@ let MainParser = {
 	setConversations: (d, refresh = false) => {
 
 		// If the cache is empty, read out the memory.
-		if (MainParser.Conversations.length === 0 && !refresh)
+		if (MainParser.Conversations.length === 0 && refresh)
 		{
 			let StorageHeader = localStorage.getItem('ConversationsHeaders');
 			if (StorageHeader !== null) {
