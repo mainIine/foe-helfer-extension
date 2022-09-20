@@ -13,23 +13,10 @@
 
 // neues Postfach
 FoEproxy.addHandler('ConversationService', 'getOverviewForCategory', (data, postData) => {
-    MainParser.setConversations(data.responseData, true);
+    MainParser.setConversations(data.responseData.category, true);
 });
 
 FoEproxy.addHandler('ConversationService', 'getCategory', (data, postData) => {
-    MainParser.setConversations(data.responseData);
-});
-
-// altes Postfach
-FoEproxy.addHandler('ConversationService', 'getEntities', (data, postData) => {
-    MainParser.setConversations(data.responseData);
-});
-
-FoEproxy.addHandler('ConversationService', 'getTeasers', (data, postData) => {
-    MainParser.setConversations(data.responseData);
-});
-
-FoEproxy.addHandler('ConversationService', 'getOverview', (data, postData) => {
     MainParser.setConversations(data.responseData);
 });
 

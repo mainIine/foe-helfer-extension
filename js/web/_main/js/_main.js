@@ -1564,42 +1564,10 @@ let MainParser = {
 			}
 
 		}
-		else if (d['category'] && d['category']['teasers']) {
-			for (let k in d['category']['teasers']) {
-				if (!d['category']['teasers'].hasOwnProperty(k)) {
-					continue;
-				}
-
-				let key = MainParser.Conversations.findIndex((obj) => (obj.id === d['category']['teasers'][k]['id']));
-
-				// Is a key already available?
-				if (key !== -1) {
-					MainParser.Conversations[key]['type'] = d['category']['type'];
-					MainParser.Conversations[key]['title'] = d['category']['teasers'][k]['title'];
-					MainParser.Conversations[key]['hidden'] = d['category']['teasers'][k]['isHidden'];
-					MainParser.Conversations[key]['favorite'] = d['category']['teasers'][k]['isFavorite'];
-					MainParser.Conversations[key]['important'] = d['category']['teasers'][k]['isImportant'];
-					MainParser.Conversations[key]['lastSeen'] = day;
-				}
-
-				// → Create key
-				else {
-					MainParser.Conversations.push({
-						type: d['category']['type'],
-						id: d['category']['teasers'][k]['id'],
-						title: d['category']['teasers'][k]['title'],
-						hidden: d['category']['teasers'][k]['isHidden'],
-						favorite: d['category']['teasers'][k]['isFavorite'],
-						important: d['category']['teasers'][k]['isImportant'],
-						lastSeen: day
-					});
-				}
-			}
-		}
 
 		if (MainParser.Conversations.length > 0)
 		{
-			//cleanup of entries that have not been seen for more than a month - once per day
+			//cleanup of entries that have not been seen for more than a month - executes once per day
 			if (LCU != day) {
 				MainParser.Conversations[LCUindex]["LCU"] = day;
 				MainParser.Conversations = MainParser.Conversations.filter(obj => obj.lastSeen +30 > day);
