@@ -17,34 +17,33 @@ FoEproxy.addWsHandler('ItemAuctionService', 'updateBid', data => {
         return;
     }
     Auction.current = data.responseData.amount;
-    if (Auction.active) Auction.updateClipboard();
+    Auction.updateClipboard();
     
 });
 
-FoEproxy.addHandler('all', 'all', (data, postdata) => {
+FoEproxy.addHandler('ItemAuctionService', 'getAuction', (data, postdata) => {
     if (!Settings.GetSetting('Auctions')) {
         return;
     }
-        
-    if (postdata[0].requestClass == 'AntiquesDealerService' || postdata[0].requestClass == 'ItemAuctionService') {
-        Auction.active = true;
-        if (data.requestMethod=='getAuction' || data.requestMethod=='updateBid') {
-            Auction.current = Math.max(data.responseData.highestBid?.amount||0,(data.responseData.startingBid||0)-Auction.diff[Auction.index], data.responseData.amount||0);
-            Auction.updateClipboard();
-        }
-        if (data.requestMethod=='makeBid') {
-            Auction.index = Math.min(Auction.index + 1, Auction.diff.length-1);
-            if (Auction.timeout) clearTimeout(Auction.timeout)
-            Auction.timeout = setTimeout(()=>{
-                Auction.index=0},
-                60000);
-        }
-    } else if (data.requestMethod != 'newMessage' && data.requestMethod != 'updateTime' ) {
-        if (Auction.active) {
-            Auction.active = false;
-            helper.str.copyToClipboard('');
-        }
+    if (data.responseData.state == "closed") return;
+    Auction.current = Math.max(data.responseData.highestBid?.amount||0,(data.responseData.startingBid||0)-Auction.diff[Auction.index]);
+    Auction.updateClipboard();
+});
+
+FoEproxy.addHandler('ItemAuctionService', 'updateBid', (data, postdata) => {
+    if (!Settings.GetSetting('Auctions')) {
+        return;
     }
+    Auction.current = data.responseData.amount;
+    Auction.updateClipboard();
+});
+
+FoEproxy.addRequestHandler('ItemAuctionService', 'makeBid', (data, postdata) => {
+    Auction.index = Math.min(Auction.index + 1, Auction.diff.length-1);
+    if (Auction.timeout) clearTimeout(Auction.timeout)
+    Auction.timeout = setTimeout(
+        ()=>{Auction.index=0},
+        60000);
 });
 
 
@@ -53,7 +52,6 @@ let Auction = {
     fak: JSON.parse(localStorage.getItem('AuctionFactors') || '[1,1,1,1.1]'),
     index: 0,
     current: 0,
-    active: false,
     timeout:null,
     
     updateClipboard: () => {
