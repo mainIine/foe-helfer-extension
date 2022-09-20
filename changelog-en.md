@@ -1,5 +1,22 @@
 ## Changelog - Extension
 
+##### 2.12.0.0
+
+**New**
+- ???Conversation Organizer???
+	- compares your friends list with selected conversation's participants
+		- open the module via the menu
+		- open the group info of the conversation you are interested in
+
+- Auctions
+	- when active, this calculates an auction bid based on a given sequence and the current bid and places it in the clipboard
+	- you have to paste the calculated bid into the bidding field manually
+	- you may activate this feature and edit the bidding sequence in the Settings under "Boxes"
+
+**BugFix**
+- 
+---
+
 ##### 2.11.0.0
 
 **New**
