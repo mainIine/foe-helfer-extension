@@ -607,8 +607,6 @@
     "Boxes.Market.TradeForGoods": "Offer Era",
     "Boxes.Market.TradeForHigher": "Higher",
     "Boxes.Market.TradeForLower": "Lower",
-    "Boxes.Market.TradeLowerStock": "offer is at lower stock",
-    "Boxes.Market.TradeLowerStockTT": "This excludes all trades where the offered good has a lower stock than the requested good",
     "Boxes.Market.TradePartner": "Partners",
     "Boxes.Market.TradePartnerFriend": "Friends",
     "Boxes.Market.TradePartnerGuild": "Guild Members",
