@@ -584,8 +584,6 @@
     "Boxes.Market.TradeForGoods": "Epocha ponuky",
     "Boxes.Market.TradeForHigher": "Vyššia",
     "Boxes.Market.TradeForLower": "Nižšia",
-    "Boxes.Market.TradeLowerStock": "ponuka je k nízkemu stavu",
-    "Boxes.Market.TradeLowerStockTT": "Vylučuje všetky ponuky kde je stav skladu nižší ako požadované množstvo",
     "Boxes.Market.TradePartner": "Partneri",
     "Boxes.Market.TradePartnerFriend": "Priatelia",
     "Boxes.Market.TradePartnerGuild": "Členovia cechu",

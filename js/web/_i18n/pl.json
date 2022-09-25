@@ -595,8 +595,6 @@
     "Boxes.Market.TradeForGoods": "Epoka",
     "Boxes.Market.TradeForHigher": "Wyższa",
     "Boxes.Market.TradeForLower": "Niższa",
-    "Boxes.Market.TradeLowerStock": "niższy stan magazynowy",
-    "Boxes.Market.TradeLowerStockTT": "Pomija to wszystkie transakcje, w których oferowany towar ma niższe zapasy niż towar zamówiony",
     "Boxes.Market.TradePartner": "Sprzedający",
     "Boxes.Market.TradePartnerFriend": "Przyjaciele",
     "Boxes.Market.TradePartnerGuild": "Członkowie gildii",
