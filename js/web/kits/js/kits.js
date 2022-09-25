@@ -350,9 +350,10 @@ let Kits = {
 					KitText = MainParser.GetBuildingLink(Link, KitText);
 				}
 				else if (GroupName) { //Group is set
-					let i18nTranslation = i18n('Boxes.Kits.' + GroupName);
+					let i18nKey = 'Boxes.Kits.' + GroupName,
+						i18nTranslation = i18n(i18nKey);
 
-					if ('Boxes.Kits.' + GroupName === i18nTranslation) i18nTranslation = GroupName.replace(/_/g, ' '); //No translation => Fallback to GroupName
+					if (i18nKey === i18nTranslation) i18nTranslation = GroupName.replace(/_/g, ' '); //No translation => Fallback to GroupName
 
 					KitText = i18nTranslation;
 				}
