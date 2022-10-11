@@ -628,6 +628,7 @@
     "Boxes.MarketOffersEvents.OptionalColumns": "???",
     "Boxes.MarketOffersEvents.Title": "Handel - Ereignisse",
     "Boxes.MoppelHelper.Attacks": "Angriffe",
+    "Boxes.MoppelHelper.CityProtected": "Die Stadt dieses Spielers kann nicht angegriffen werden",
     "Boxes.MoppelHelper.Days": "__days__ Tag(e)",
     "Boxes.MoppelHelper.Era": "Zeitalter",
     "Boxes.MoppelHelper.Event": "Ereignis",
