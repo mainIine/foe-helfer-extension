@@ -484,7 +484,7 @@ let EventHandler = {
             }
 			h.push(MainParser.GetPlayerLink(Player['PlayerID'], Player['PlayerName']));
 			let pTime=EventHandler.isProtected[Player['PlayerID']] | 0;
-			let pImg= (EventHandler.CurrentPlayerGroup === 'Neighbors' && (pTime == -1 || pTime > MainParser.getTime)) ? pImage : '';
+			let pImg= (EventHandler.CurrentPlayerGroup === 'Neighbors' && (pTime == -1 || pTime * 1000 > MainParser.getCurrentDateTime())) ? pImage : '';
 			h.push(`<td data-text="${i18n('Eras.' + Technologies.Eras[Player['Era']])}">${pImg + i18n('Eras.' + Technologies.Eras[Player['Era']]) + pImg}</td>`);
 
 			h.push('<td class="is-number" data-number="' + Player['Score'] + '">' + HTML.Format(Player['Score']) + '</td>');
