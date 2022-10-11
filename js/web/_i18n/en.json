@@ -632,6 +632,7 @@
     "Boxes.MarketOffersEvents.Title": "Trade Events",
     "Boxes.MoppelHelper.Attacks": "Attacks",
     "Boxes.MoppelHelper.Days": "__days__ day(s)",
+    "Boxes.MoppelHelper.CityProtected": "This players city can not be attacked",
     "Boxes.MoppelHelper.Era": "Era",
     "Boxes.MoppelHelper.Event": "Event",
     "Boxes.MoppelHelper.Friends": "Friends",
