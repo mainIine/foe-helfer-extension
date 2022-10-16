@@ -11,9 +11,7 @@
  *  *
  *  * **************************************************************************************
  *
- */
-
-/**
+ *//**
  * Get threads from ConversationService
  */
  FoEproxy.addHandler('ConversationService', 'getOverviewForCategory', (data, postData) => {
