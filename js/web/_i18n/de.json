@@ -233,14 +233,10 @@
     "Boxes.CloseBox.Title": "Titel",
     "Boxes.CloseBox.Vertical": "vertikal",
     "Boxes.CloseBox.View": "Anzeige",
-<<<<<<<<< Temporary merge branch 1
     "Boxes.CompareFriends.HelpLink": "???",
-    "Boxes.CompareFriends.Title": "???",
-=========
-    "Boxes.CompareFriendsThreads.Title": "Freunde in Unterhaltungen vergleichen",
-    "Boxes.CompareFriendsThreads.Information": "Besuche erst die Mitgliederübersicht der sozialen Unterhaltung die Du hier vergleichen möchtest, damit Daten vergleichen werden können.",
     "Boxes.CompareFriendsThreads.HelpLink": "___",
->>>>>>>>> Temporary merge branch 2
+    "Boxes.CompareFriendsThreads.Information": "Besuche erst die Mitgliederübersicht der sozialen Unterhaltung die Du hier vergleichen möchtest, damit Daten vergleichen werden können.",
+    "Boxes.CompareFriendsThreads.Title": "Freunde in Unterhaltungen vergleichen",
     "Boxes.DBExport.Compression": "Komprimierung",
     "Boxes.DBExport.Description": "Bezeichnung",
     "Boxes.DBExport.Export": "Export",
@@ -613,6 +609,8 @@
     "Boxes.Market.TradeForGoods": "Zeitalter (Angebot)",
     "Boxes.Market.TradeForHigher": "Höheres",
     "Boxes.Market.TradeForLower": "Geringeres",
+    "Boxes.Market.TradeLowerStock": "???",
+    "Boxes.Market.TradeLowerStockTT": "???",
     "Boxes.Market.TradePartner": "Handelspartner",
     "Boxes.Market.TradePartnerFriend": "Freunde",
     "Boxes.Market.TradePartnerGuild": "Gilden Mitglieder",
