@@ -13,23 +13,10 @@
 
 // neues Postfach
 FoEproxy.addHandler('ConversationService', 'getOverviewForCategory', (data, postData) => {
-    MainParser.setConversations(data.responseData, true);
+    MainParser.setConversations(data.responseData.category, true);
 });
 
 FoEproxy.addHandler('ConversationService', 'getCategory', (data, postData) => {
-    MainParser.setConversations(data.responseData);
-});
-
-// altes Postfach
-FoEproxy.addHandler('ConversationService', 'getEntities', (data, postData) => {
-    MainParser.setConversations(data.responseData);
-});
-
-FoEproxy.addHandler('ConversationService', 'getTeasers', (data, postData) => {
-    MainParser.setConversations(data.responseData);
-});
-
-FoEproxy.addHandler('ConversationService', 'getOverview', (data, postData) => {
     MainParser.setConversations(data.responseData);
 });
 
@@ -476,10 +463,6 @@ let Info = {
                 image = 'msg-favorite';
             }
 
-            if (chat['escaped_title'] === undefined) { 
-                chat['escaped_title'] = HTML.escapeHtml(chat['title']); 
-            }
-
             if (d['sender'] && d['sender']['name'])
             {
                 // normale Chatnachricht (bekannte ID)
@@ -488,12 +471,12 @@ let Info = {
                     header = '<div><strong class="bright">' + MainParser.GetPlayerLink(d['sender']['player_id'], d['sender']['name']) + '</strong></div>';
                 }
                 else {
-                    header = '<div><strong class="bright">' + chat['escaped_title'] + '</strong> - <em>' + MainParser.GetPlayerLink(d['sender']['player_id'], d['sender']['name']) + '</em></div>';
+                    header = '<div><strong class="bright">' + HTML.escapeHtml(chat['title']) + '</strong> - <em>' + MainParser.GetPlayerLink(d['sender']['player_id'], d['sender']['name']) + '</em></div>';
                 }
             }
             else {
                 // Chatnachricht vom System (Betreten/Verlassen)
-                header = '<div><strong class="bright">' + chat['escaped_title'] + '</strong></div>';
+                header = '<div><strong class="bright">' + HTML.escapeHtml(chat['title']) + '</strong></div>';
             }
         }
         else {

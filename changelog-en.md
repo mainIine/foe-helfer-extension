@@ -1,5 +1,29 @@
 ## Changelog - Extension
 
+##### 2.12.0.0
+
+**New**
+- Friends comparison in conversations:
+	- compares your friends list with selected conversation's participants
+		- open the module via the menu
+		- open the group info of the conversation you are interested in
+
+- Auctions:
+	- when active, this calculates an auction bid based on a given sequence and the current bid and places it in the clipboard
+	- you have to paste the calculated bid into the bidding field manually
+	- you may activate this feature and edit the bidding sequence in the Settings under "Boxes"
+
+**Update**
+- Motivate/Polish Helper:
+	- if a player cannot be attacked, this is now indicated in the Era column
+
+**BugFix**
+- Extension:
+	- [#2515](https://github.com/mainIine/foe-helfer-extension/issues/2515) Constant bug in development log - Cosmetic fix
+
+- GvG Map & Log:
+	- [#2526](https://github.com/mainIine/foe-helfer-extension/issues/2526) Special characters in GvG box - fixed
+
 ##### 2.11.0.0
 
 **New**

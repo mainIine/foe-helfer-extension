@@ -1,14 +1,16 @@
 /*
- * **************************************************************************************
- * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
- * You may use, distribute and modify this code under the
- * terms of the AGPL license.
  *
- * See file LICENSE.md or go to 
- * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md 
- * for full license details.
+ *  * **************************************************************************************
+ *  * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
+ *  * You may use, distribute and modify this code under the
+ *  * terms of the AGPL license.
+ *  *
+ *  * See file LICENSE.md or go to
+ *  * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
+ *  * for full license details.
+ *  *
+ *  * **************************************************************************************
  *
- * **************************************************************************************
  */
 
 let _menu = {
@@ -58,7 +60,8 @@ let _menu = {
 		'music',
 		'musicControl',
 		'minigame_aztecs',
-		'recurringQuests'
+		'recurringQuests',
+		'compare_friends_threads',
 		// 'marketOffers',
 		// 'discord'
 	],
@@ -428,7 +431,7 @@ let _menu = {
 	 *
 	 * @returns {*|jQuery}
 	 */
-	 minigame_aztecs_Btn: () => {
+	minigame_aztecs_Btn: () => {
 		let btn_Aztek = _menu.MakeButton('minigame_aztecs', i18n('Menu.AztecMiniGame.Title'), i18n('Menu.AztecMiniGame.Desc'), true);
 
 		let btn_Azte = $('<span />').on('click', function () {
@@ -439,7 +442,6 @@ let _menu = {
 
 		return btn_Aztek.append(btn_Azte);
 	},
-
 
 	/**
 	 * Outpost Button
@@ -888,6 +890,20 @@ let _menu = {
 			if ($('#castle-Btn').hasClass('hud-btn-red') === false) {
 				Castle.BuildBox();
 			}
+		});
+
+		return btn.append(btn_sp);
+	},
+
+
+	/**
+	 * Compare friends and threads
+	 */
+	compare_friends_threads_Btn: () => {
+		let btn = _menu.MakeButton('compare_friends_threads', i18n('Menu.CompareFriendsThreads.Title'), i18n('Menu.CompareFriendsThreads.Desc'));
+
+		let btn_sp = $('<span />').bind('click', function () {
+			CompareFriendsThreads.BuildBody();
 		});
 
 		return btn.append(btn_sp);

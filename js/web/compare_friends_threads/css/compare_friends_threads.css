@@ -1,0 +1,37 @@
+/*
+ *
+ *  * **************************************************************************************
+ *  * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
+ *  * You may use, distribute and modify this code under the
+ *  * terms of the AGPL license.
+ *  *
+ *  * See file LICENSE.md or go to
+ *  * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
+ *  * for full license details.
+ *  *
+ *  * **************************************************************************************
+ *
+ */#friendsCompareBox {
+	top: calc((100vH - 400px) / 2);
+	left: calc((100vw - 500px) / 2);
+	width: 500px;
+	height: 400px;
+}
+
+#friendsCompareBoxBody {
+	overflow-y: auto;
+}
+
+#friendsCompareTable th {
+	position: sticky;
+	top: 0px;
+	text-align: center;	
+}
+#friendsCompareTable th:not(:first-child) span {
+	writing-mode: vertical-lr;
+	transform: rotate(180deg);
+	height: 150px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
