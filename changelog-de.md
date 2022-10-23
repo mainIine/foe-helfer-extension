@@ -1,5 +1,15 @@
 ## Changelog - Extension
 
+##### 2.12.0.0
+
+**Neu**
+- Thead Friends Compare
+  - Dieses kleine Plugin vergleicht alle Freunde in den ausgewählten sozialen Unterhaltungen um in einer Übersicht darzustellen ob Freunde auch in anderen Unterhalten eingetragen sind
+
+**BugFix**
+- Extension:
+  - [#2515](https://github.com/mainIine/foe-helfer-extension/issues/2515) Constant error in dev log - Kosmetische Korrektur
+
 ##### 2.11.0.0
 
 **Neu**
