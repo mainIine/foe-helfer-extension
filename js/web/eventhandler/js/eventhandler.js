@@ -17,13 +17,20 @@ FoEproxy.addHandler('OtherPlayerService', 'getEventsPaginated', (data, postData)
     }
 });
 
+FoEproxy.addHandler('OtherPlayerService', 'getCityProtections', (data, postData) => {
+	if (!Array.isArray(data.responseData)) return;
+	for (x of data.responseData) {
+		EventHandler.isProtected[x.playerId] = x.expireTime;
+	}
+});
+
 let EventHandler = {
 	EventIDs: {},
 
 	db: null,
 
 	CurrentPlayerGroup: null,
-
+	
 	FilterMoppelEvents: true,
 	FilterTavernVisits: false,
 	FilterAttacks: false,
@@ -31,7 +38,7 @@ let EventHandler = {
 	FilterTrades: false,
 	FilterGBs: false,
 	FilterOthers: false,
-
+	isProtected:{},
 	AllInvalidDates: [],
 
 	MaxVisitCount : 7,
@@ -426,6 +433,7 @@ let EventHandler = {
 		h.push('</tr>');
 
 		let HasGuildPermission = ((ExtGuildPermission & GuildMemberStat.GuildPermission_Leader) > 0 || (ExtGuildPermission & GuildMemberStat.GuildPermission_Founder) > 0);
+		let pImage = `<img style="max-width: 22px" src="${MainParser.InnoCDN}assets/shared/gui/tavern/shop/tavern_shop_boost_shield1_icon.png" title="${i18n('Boxes.MoppelHelper.CityProtected')}" alt="${i18n('Boxes.MoppelHelper.CityProtected')}"></img>`
 		for (let i = 0; i < PlayerList.length; i++)
 		{
 			let Player = PlayerList[i];
@@ -475,8 +483,9 @@ let EventHandler = {
 				h.push(`<img class="small" src="${extUrl}js/web/guildmemberstat/images/act_${Player['Activity']}.png">`);
             }
 			h.push(MainParser.GetPlayerLink(Player['PlayerID'], Player['PlayerName']));
-
-			h.push(`<td data-text="${i18n('Eras.' + Technologies.Eras[Player['Era']])}">${i18n('Eras.' + Technologies.Eras[Player['Era']])}</td>`);
+			let pTime=EventHandler.isProtected[Player['PlayerID']] | 0;
+			let pImg= (EventHandler.CurrentPlayerGroup === 'Neighbors' && (pTime == -1 || pTime > MainParser.getTime)) ? pImage : '';
+			h.push(`<td data-text="${i18n('Eras.' + Technologies.Eras[Player['Era']])}">${pImg + i18n('Eras.' + Technologies.Eras[Player['Era']]) + pImg}</td>`);
 
 			h.push('<td class="is-number" data-number="' + Player['Score'] + '">' + HTML.Format(Player['Score']) + '</td>');
 
