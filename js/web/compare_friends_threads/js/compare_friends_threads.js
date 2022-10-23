@@ -11,21 +11,20 @@
  *  *
  *  * **************************************************************************************
  *
- */
-
-/**
+ *//**
  * Get threads from ConversationService
  */
  FoEproxy.addHandler('ConversationService', 'getOverviewForCategory', (data, postData) => {
 	if (data['responseData']['category']['type'] === 'social')
 	{
-		CompareFriends.ParseThreads(data['responseData']['category']['teasers']);
+		CompareFriendsThreads.ParseThreads(data['responseData']['category']['teasers']);
 	}
 });
+ 
 FoEproxy.addHandler('ConversationService', 'getCategory', (data, postData) => {
 	if (data['responseData']['type'] === 'social')
 	{
-		CompareFriends.ParseThreads(data['responseData']['teasers']);
+		CompareFriendsThreads.ParseThreads(data['responseData']['teasers']);
 	}
 });
 
@@ -36,10 +35,10 @@ FoEproxy.addHandler('ConversationSettingsService', 'getSettings', (data, postDat
 	if(postData[0]['requestClass'] === 'ConversationSettingsService' && postData[0]['requestMethod'] === 'getSettings')
 	{
 		if (data['responseData']['participants']) {
-			CompareFriends.CurrentThread = postData[0]['requestData'][0];
-			CompareFriends.ParseThreadParticipants(data['responseData']['participants']);
+			CompareFriendsThreads.CurrentThread = postData[0]['requestData'][0];
+			CompareFriendsThreads.ParseThreadParticipants(data['responseData']['participants']);
 
-			CompareFriends.BuildBody(true);
+			CompareFriendsThreads.BuildBody(true);
 		}
 	}
 });
@@ -50,7 +49,7 @@ FoEproxy.addHandler('ConversationSettingsService', 'getSettings', (data, postDat
 FoEproxy.addHandler('FriendService', 'deleteFriend', (data, postData) => {
 	if ($('#friendsCompareBox').length > 0) {
 		setTimeout(()=>{
-			CompareFriends.BuildBody(true);
+			CompareFriendsThreads.BuildBody(true);
 		}, 200);
 	}
 });
@@ -58,11 +57,18 @@ FoEproxy.addHandler('FriendService', 'deleteFriend', (data, postData) => {
 /**
  * Compare friends list with threads
  *
- * @type {{Threads: *[], CurrentThread: number, ThreadParticipants: *[], ParseThreadParticipants: CompareFriends.ParseThreadParticipants, BuildBody: CompareFriends.BuildBody, ParseThreads: CompareFriends.ParseThreads}}
+ * @type {{Threads: *[], CurrentThread: number, ThreadParticipants: *[], ParseThreadParticipants: CompareFriendsThreads.ParseThreadParticipants, BuildBody: CompareFriendsThreads.BuildBody, ParseThreads: CompareFriendsThreads.ParseThreads}}
  */
-let CompareFriends = {
+let CompareFriendsThreads = {
 
+	/**
+	 * All threads
+	 */
 	Threads: [],
+
+	/**
+	 * All participants
+	 */
 	ThreadParticipants: [],
 
 	/**
@@ -80,11 +86,11 @@ let CompareFriends = {
 			}
 
 			// search for the cached thread
-			let index = CompareFriends.Threads.findIndex(t => t.id === data[i].id);
+			let index = CompareFriendsThreads.Threads.findIndex(t => t.id === data[i].id);
 
 			// not found
 			if(index === -1){
-				CompareFriends.Threads.push({
+				CompareFriendsThreads.Threads.push({
 					id: data[i].id,
 					title: data[i].title,
 					participants: []
@@ -102,9 +108,9 @@ let CompareFriends = {
 	 */
 	ParseThreadParticipants: (data)=> {
 
-		let key = CompareFriends.Threads.findIndex(t => t.id === CompareFriends.CurrentThread);
+		let key = CompareFriendsThreads.Threads.findIndex(t => t.id === CompareFriendsThreads.CurrentThread);
 
-		CompareFriends.Threads[key]['participants'] = data;
+		CompareFriendsThreads.Threads[key]['participants'] = data;
 	},
 
 
@@ -117,29 +123,29 @@ let CompareFriends = {
 	BuildBody: (rebuild = false)=> {
 
 		if(!rebuild){
-			CompareFriends.Threads = [];
+			CompareFriendsThreads.Threads = [];
 		}
 
 		if ($('#friendsCompareBox').length === 0) {
 			HTML.Box({
 				id: 'friendsCompareBox',
-				title: i18n('Boxes.CompareFriends.Title'),
-				ask: i18n('Boxes.CompareFriends.HelpLink'),
+				title: i18n('Boxes.CompareFriendsThreads.Title'),
+				ask: i18n('Boxes.CompareFriendsThreads.HelpLink'),
 				auto_close: true,
 				dragdrop: true,
 				minimize: true,
 				resize: true,
 			});
 
-			HTML.AddCssFile('compare_friends');
+			HTML.AddCssFile('compare_friends_threads');
 
 		} else if(!rebuild) {
 			HTML.CloseOpenBox('friendsCompareBox');
 		}
 
 		// no threads visited
-		if(CompareFriends.Threads[0]?.participants.length === undefined){
-			let info = '<div class="text-center text-warning" style="margin-top:2em">Besuche erst die Mitgliederübersicht einer sozialen Unterhaltung um hier Daten zu sehen.</div>';
+		if(CompareFriendsThreads.Threads[0]?.participants.length === undefined){
+			let info = `<div class="text-center text-warning" style="margin-top:2em">${i18n('Boxes.CompareFriendsThreads.Information')}</div>`;
 
 			$('#friendsCompareBoxBody').html(info);
 
@@ -155,8 +161,8 @@ let CompareFriends = {
 
 		t.push('<th>&nbsp;</th>');
 
-		for(let i in CompareFriends.Threads){
-			let d = CompareFriends.Threads[i];
+		for(let i in CompareFriendsThreads.Threads){
+			let d = CompareFriendsThreads.Threads[i];
 
 			if(d['participants'].length === 0){
 				continue;
@@ -181,13 +187,13 @@ let CompareFriends = {
 
 			t.push(`<td>#${(parseInt(p) + 1)} <img style="max-width: 22px" src="${MainParser.InnoCDN + 'assets/shared/avatars/' + (MainParser.PlayerPortraits[Player['Avatar']] || 'portrait_433')}.jpg" alt="${Player['PlayerName']}"> ${MainParser.GetPlayerLink(Player['PlayerID'], Player['PlayerName'])}</td>`);
 
-			for(let x in CompareFriends.Threads)
+			for(let x in CompareFriendsThreads.Threads)
 			{
-				if(CompareFriends.Threads[x]['participants'].length === 0){
+				if(CompareFriendsThreads.Threads[x]['participants'].length === 0){
 					continue;
 				}
 
-				if(CompareFriends.Threads[x]['participants'].findIndex(p => p.playerId === Player.PlayerID) === -1){
+				if(CompareFriendsThreads.Threads[x]['participants'].findIndex(p => p.playerId === Player.PlayerID) === -1){
 					t.push(`<td class="text-center text-danger">❌</td>`);
 				} else {
 					t.push(`<td class="text-center">✔️</td>`);
