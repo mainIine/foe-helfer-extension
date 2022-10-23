@@ -606,8 +606,6 @@
     "Boxes.Market.TradeForGoods": "Ère de l'offre",
     "Boxes.Market.TradeForHigher": "Plus haute",
     "Boxes.Market.TradeForLower": "Plus basse",
-    "Boxes.Market.TradeLowerStock": "l'offre est en stock faible",
-    "Boxes.Market.TradeLowerStockTT": "Cela exclut tous les échanges où le bien offert a un stock inférieur au bien demandé",
     "Boxes.Market.TradePartner": "Marchands",
     "Boxes.Market.TradePartnerFriend": "Amis",
     "Boxes.Market.TradePartnerGuild": "Membres de guilde",
