@@ -233,6 +233,14 @@
     "Boxes.CloseBox.Title": "Titel",
     "Boxes.CloseBox.Vertical": "vertikal",
     "Boxes.CloseBox.View": "Anzeige",
+<<<<<<<<< Temporary merge branch 1
+    "Boxes.CompareFriends.HelpLink": "???",
+    "Boxes.CompareFriends.Title": "???",
+=========
+    "Boxes.CompareFriendsThreads.Title": "Freunde in Unterhaltungen vergleichen",
+    "Boxes.CompareFriendsThreads.Information": "Besuche erst die Mitgliederübersicht der sozialen Unterhaltung die Du hier vergleichen möchtest, damit Daten vergleichen werden können.",
+    "Boxes.CompareFriendsThreads.HelpLink": "___",
+>>>>>>>>> Temporary merge branch 2
     "Boxes.DBExport.Compression": "Komprimierung",
     "Boxes.DBExport.Description": "Bezeichnung",
     "Boxes.DBExport.Export": "Export",
@@ -1006,10 +1014,10 @@
     "Menu.Campagne.Warning": "Deaktiviert: Besuche zuerst eine Provinz (M)!",
     "Menu.Castle.Desc": "Zeigt dir die vorhandenen Möglichkeiten Burgpunkte zu verdienen.",
     "Menu.Castle.Title": "Burgsystem",
-	"Menu.CompareFriendsThreads.Title": "Freunde in Gruppen finden",
-	"Menu.CompareFriendsThreads.Desc": "Gleiche Freunde in verschiedenen Unterhaltungen finden",
     "Menu.Citymap.Desc": "Zeigt deine Stadt schematisch von oben",
     "Menu.Citymap.Title": "Stadtübersicht",
+    "Menu.CompareFriendsThreads.Desc": "Gleiche Freunde in verschiedenen Unterhaltungen finden",
+    "Menu.CompareFriendsThreads.Title": "Freunde in Gruppen finden",
     "Menu.Discord.Desc": "Discord Verbindung",
     "Menu.Discord.Title": "Löse mit Events Meldungen in deinem Discord aus",
     "Menu.Dropdown": "Als DropDown",
