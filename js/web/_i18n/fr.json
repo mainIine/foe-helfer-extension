@@ -233,7 +233,7 @@
     "Boxes.CloseBox.Title": "Réglages",
     "Boxes.CloseBox.Vertical": "vertical",
     "Boxes.CloseBox.View": "Afficher",
-    "Boxes.CompareFriends.HelpLink": "https://docs.foe-helper.com/francais/module/comparer-ami",
+    "Boxes.CompareFriendThreads.HelpLink": "https://docs.foe-helper.com/francais/module/comparer-ami",
     "Boxes.DBExport.Compression": "compression",
     "Boxes.DBExport.Description": "Description",
     "Boxes.DBExport.Export": "Exporter",
