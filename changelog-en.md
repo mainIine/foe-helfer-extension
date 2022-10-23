@@ -13,6 +13,10 @@
 	- you have to paste the calculated bid into the bidding field manually
 	- you may activate this feature and edit the bidding sequence in the Settings under "Boxes"
 
+**Update**
+- Motivate/Polish Helper:
+	- if a player cannot be attacked, this is now indicated in the Era column
+
 **BugFix**
 - 
 ---
