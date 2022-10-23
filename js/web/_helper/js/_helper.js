@@ -162,30 +162,31 @@ let HTML = {
 		if (args['onlyTitle'] !== true) {
 			title = $('<span />').addClass('title').html((extVersion.indexOf("beta") > -1 ? '(Beta) ': '') + args['title'] + ' <small><em> - FoE Helper</em></small>');
 		}
-
-		let close = $('<span />').attr('id', args['id'] + 'close').addClass('window-close'),
-
+		title = title.attr('title', title[0].textContent);
+		let	buttons = $('<div />').attr('id', args['id'] + 'Buttons').addClass('box-buttons'),
 			head = $('<div />').attr('id', args['id'] + 'Header').attr('class', 'window-head').append(title),
 			body = $('<div />').attr('id', args['id'] + 'Body').attr('class', 'window-body'),
 			div = $('<div />').attr('id', args['id']).attr('class', 'window-box open').append(head).append(body).hide(),
 			cords = localStorage.getItem(args['id'] + 'Cords');
-
+		
+		//close button
+		let close = $('<span />').attr('id', args['id'] + 'close').addClass('window-close');
 
 		if (args['auto_close'] !== false) {
-			head.append(close);
+			buttons.append(close);
 		}
 
 		// Minimierenbutton
 		if (args['minimize']) {
 			let min = $('<span />').addClass('window-minimize');
-			min.insertAfter(title);
+			buttons.prepend(min);
 		}
 
 		// insert a wrench icon
 		// set a click event on it
 		if (args['settings']) {
 			let set = $('<span />').addClass('window-settings').attr('id', `${args['id']}-settings`);
-			set.insertAfter(title);
+			buttons.prepend(set);
 
 			if (typeof args['settings'] !== 'boolean') {
 				HTML.customFunctions[`${args['id']}Settings`] = args['settings'];
@@ -194,7 +195,7 @@ let HTML = {
 
 		if (args['popout']) {
 			let set = $('<span />').addClass('window-settings').attr('id', `${args['id']}-popout`);
-			set.insertAfter(title);
+			buttons.prepend(set);
 
 			if (typeof args['popout'] !== 'boolean') {
 				HTML.customFunctions[`${args['id']}PopOut`] = args['popout'];
@@ -203,7 +204,7 @@ let HTML = {
 
 		if (args['map']) {
 			let set = $('<span />').addClass('window-map').attr('id', `${args['id']}-map`);
-			set.insertAfter(title);
+			buttons.prepend(set);
 
 			if (typeof args['map'] !== 'boolean') {
 				HTML.customFunctions[`${args['id']}Map`] = args['map'];
@@ -213,7 +214,7 @@ let HTML = {
 		// Lautsprecher für Töne
 		if (args['speaker']) {
 			let spk = $('<span />').addClass('window-speaker').attr('id', args['speaker']);
-			spk.insertAfter(title);
+			buttons.prepend(spk);
 
 			$('#' + args['speaker']).addClass(localStorage.getItem(args['speaker']));
 		}
@@ -228,8 +229,11 @@ let HTML = {
 
 		// Ein Link zu einer Seite
 		if (args['ask']) {
-			div.find(title).after($('<span />').addClass('window-ask').attr('data-url', args['ask']));
+			let ask = $('<span />').addClass('window-ask').attr('data-url', args['ask']);
+			buttons.prepend(ask);
 		}
+
+		head.append(buttons);
 
 		// wenn Box im DOM, verfeinern
 		$('body').append(div).promise().done(function () {

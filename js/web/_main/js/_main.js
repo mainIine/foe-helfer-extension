@@ -1507,12 +1507,26 @@ let MainParser = {
 	setConversations: (d, refresh = false) => {
 
 		// If the cache is empty, read out the memory.
-		if (MainParser.Conversations.length === 0 && !refresh)
+		if (MainParser.Conversations.length === 0 && refresh)
 		{
 			let StorageHeader = localStorage.getItem('ConversationsHeaders');
 			if (StorageHeader !== null) {
 				MainParser.Conversations = JSON.parse(StorageHeader);
 			}
+		}
+		let day = Math.floor(Date.now()/86400000);
+		let LCUindex = MainParser.Conversations.findIndex((obj) => (obj.id === "__lastCleanup"));
+		let LCU = day;
+		if (LCUindex == -1) {
+			MainParser.Conversations.forEach( (obj) => obj.lastSeen = day);
+			MainParser.Conversations.push({
+				id: "__lastCleanup",
+				LCU: day,
+				lastSeen: day
+			})
+		} else {
+			LCU = MainParser.Conversations[LCUindex]["LCU"];
+			MainParser.Conversations[LCUindex]["lastSeen"] = day;
 		}
 
 		if (d['teasers'])
@@ -1532,6 +1546,7 @@ let MainParser = {
 					MainParser.Conversations[key]['hidden'] = d['teasers'][k]['isHidden'];
 					MainParser.Conversations[key]['favorite'] = d['teasers'][k]['isFavorite'];
 					MainParser.Conversations[key]['important'] = d['teasers'][k]['isImportant'];
+					MainParser.Conversations[key]['lastSeen'] = day;
 				}
 				// → Create key
 				else {
@@ -1541,46 +1556,22 @@ let MainParser = {
 						title: d['teasers'][k]['title'],
 						hidden: d['teasers'][k]['isHidden'],
 						favorite: d['teasers'][k]['isFavorite'],
-						important: d['teasers'][k]['isImportant']
+						important: d['teasers'][k]['isImportant'],
+						lastSeen: day
 					});
 				}
 
 			}
 
-		}
-		else if (d['category'] && d['category']['teasers']) {
-			for (let k in d['category']['teasers']) {
-				if (!d['category']['teasers'].hasOwnProperty(k)) {
-					continue;
-				}
-
-				let key = MainParser.Conversations.findIndex((obj) => (obj.id === d['category']['teasers'][k]['id']));
-
-				// Is a key already available?
-				if (key !== -1) {
-					MainParser.Conversations[key]['type'] = d['category']['type'];
-					MainParser.Conversations[key]['title'] = d['category']['teasers'][k]['title'];
-					MainParser.Conversations[key]['hidden'] = d['category']['teasers'][k]['isHidden'];
-					MainParser.Conversations[key]['favorite'] = d['category']['teasers'][k]['isFavorite'];
-					MainParser.Conversations[key]['important'] = d['category']['teasers'][k]['isImportant'];
-				}
-
-				// → Create key
-				else {
-					MainParser.Conversations.push({
-						type: d['category']['type'],
-						id: d['category']['teasers'][k]['id'],
-						title: d['category']['teasers'][k]['title'],
-						hidden: d['category']['teasers'][k]['isHidden'],
-						favorite: d['category']['teasers'][k]['isFavorite'],
-						important: d['category']['teasers'][k]['isImportant']
-					});
-				}
-			}
 		}
 
 		if (MainParser.Conversations.length > 0)
 		{
+			//cleanup of entries that have not been seen for more than a month - executes once per day
+			if (LCU != day) {
+				MainParser.Conversations[LCUindex]["LCU"] = day;
+				MainParser.Conversations = MainParser.Conversations.filter(obj => obj.lastSeen +30 > day);
+			}
 			// Dopplungen entfernen und Daten lokal abspeichern
 			MainParser.Conversations = [...new Set(MainParser.Conversations.map(s => JSON.stringify(s)))].map(s => JSON.parse(s));
 			localStorage.setItem('ConversationsHeaders', JSON.stringify(MainParser.Conversations));
