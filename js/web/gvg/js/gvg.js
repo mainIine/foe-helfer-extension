@@ -1,14 +1,16 @@
 /*
- * **************************************************************************************
- * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
- * You may use, distribute and modify this code under the
- * terms of the AGPL license.
  *
- * See file LICENSE.md or go to
- * https://github.com/dsiekiera/foe-helfer-extension/blob/master/LICENSE.md
- * for full license details.
+ *  * **************************************************************************************
+ *  * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
+ *  * You may use, distribute and modify this code under the
+ *  * terms of the AGPL license.
+ *  *
+ *  * See file LICENSE.md or go to
+ *  * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
+ *  * for full license details.
+ *  *
+ *  * **************************************************************************************
  *
- * **************************************************************************************
  */
 
 FoEproxy.addHandler('ClanBattleService', 'grantIndependence', (data, postData) => {
@@ -731,10 +733,14 @@ let GvGMap = {
 		GvGMap.updateGuildData(newGuild);
 	},
 
+	encodeGuildName: (guildname) => {
+		return guildname.replace('<', '&lt;');
+	},
+
 	updateGuildData: (guild) => {
 		let tableRow = document.getElementById("id-"+guild.id);
 		if (tableRow != null) {
-			let html = '<td><span class="guildflag '+guild.flag+'" style="background-color: '+GvGMap.colorToString(guild.color)+'"></span>'+guild.name+'</td>';
+			let html = '<td><span class="guildflag '+guild.flag+'" style="background-color: '+GvGMap.colorToString(guild.color)+'"></span>' + GvGMap.encodeGuildName(guild.name) +'</td>';
 			html += '<td class="text-center">'+guild.sectors+'</td>';
 			html += '<td class="text-center">'+guild.power+'</td>';
 			tableRow.innerHTML = html;
@@ -748,7 +754,7 @@ let GvGMap = {
 
 			html += '<div id="sectorInfo">';
 			html += '<span class="guildflag ' + sector.owner.flag + '" style="background-color: '+GvGMap.colorToString(sector.owner.color) + ';border-color: '+GvGMap.colorToString(sector.owner.color) + '"></span>';
-			html += '<b class="text-bright">' + sector.owner.name + '</b><br>';
+			html += '<b class="text-bright">' + GvGMap.encodeGuildName(sector.owner.name) + '</b><br>';
 			if (MapSector.underSiege(sector))
 				html += 'Under Siege by: ' + MapSector.underSiege(sector) + '<br>';
 			html += i18n('Boxes.GvGMap.Sector.Hitpoints') + ': ' + sector.hitpoints + '/80<br>';
@@ -782,7 +788,7 @@ let GvGMap = {
 		t.push('</tr></thead>');
 		GvGMap.Map.Guilds.forEach(function (guild) {
 			t.push('<tr id="id-'+guild.id+'">');
-			t.push('<td><span class="guildflag '+guild.flag+'" style="background-color: '+GvGMap.colorToString(guild.color)+'"></span>'+guild.name+'</td>');
+			t.push('<td><span class="guildflag '+guild.flag+'" style="background-color: '+GvGMap.colorToString(guild.color)+'"></span>' + GvGMap.encodeGuildName(guild.name) + '</td>');
 			t.push('<td class="text-center">'+guild.sectors+'</td>');
 			t.push('<td class="text-center">'+guild.power+'</td>');
 			t.push('</tr>');
@@ -848,7 +854,7 @@ let GvGMap = {
 			return i18n('Boxes.GvGMap.Log.NPC');
 		}
 		else if (guild != undefined) {
-			return '<span class="guildflag '+guild.flag+'" style="background-color: '+GvGMap.colorToString(guild.color)+'"></span> '+ guild.name;
+			return '<span class="guildflag '+guild.flag+'" style="background-color: '+GvGMap.colorToString(guild.color)+'"></span> '+ GvGMap.encodeGuildName(guild.name);
 		}
 		return i18n('Boxes.GvGMap.Log.UnknownGuild');
 	},
@@ -967,13 +973,18 @@ let GvGLog = {
 	buildEntry: (entry) => {
 		let t = [];
 		let sector = MapSector.getById(entry.sectorId);
+
 		let hostileAction = (entry.targetClan === GvGMap.OwnGuild.Id && (entry.type === 'defender_damaged' || entry.type === 'defender_defeated')) ? 'alert' : 'noAlert';
+
 		let friendlyAction = (entry.targetClan === GvGMap.OwnGuild.Id && (entry.type === 'defender_deployed' || entry.type === 'defender_replaced')) ? 'friendly' : 'actionUnknown';
+
 		let tr = document.createElement('tr');
+
 		if (sector != null) { // if sector is on map
 			let sectorCoords = MapSector.coords(sector);
 			t.push('<td><b class="text-bright">'+sectorCoords+'</b><br>'+moment.unix(entry.timestamp).format('HH:mm:ss')+'</td>');
 			t.push('<td>');
+
 				if (entry.sourceClan != entry.targetClan && entry.targetClan != undefined && entry.sourceClan != undefined)
 					t.push(GvGMap.showGuildFlagAndName(entry.sourceClan) +' → '+ GvGMap.showGuildFlagAndName(entry.targetClan));
 				else if (entry.sourceClan != undefined)
