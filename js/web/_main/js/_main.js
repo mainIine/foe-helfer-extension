@@ -1050,26 +1050,29 @@ let MainParser = {
 		{
 			let PlayerLink = HTML.i18nReplacer(PlayerLinkFormat, { 'world': ExtWorld.toUpperCase(), 'playerid': PlayerID });
 
-			return `<a class="external-link game-cursor" href="${PlayerLink}" target="_blank">${PlayerName} ${LinkIcon}</a>`;
+			return `<a class="external-link game-cursor" href="${PlayerLink}" target="_blank">${HTML.escapeHtml(PlayerName)} ${LinkIcon}</a>`;
 		}
 		else {
-			return PlayerName;
+			return HTML.escapeHtml(PlayerName);
 		}
 	},
 	
 	/**
 	 * @param GuildID
 	 * @param GuildName
+	 * @param WorldId
 	 */
 	GetGuildLink: (GuildID, GuildName, WorldId) => {
+		if(!WorldId) WorldId = ExtWorld;
+
 		if (Settings.GetSetting('ShowLinks'))
 		{
 			let GuildLink = HTML.i18nReplacer(GuildLinkFormat, { 'world': WorldId.toUpperCase(), 'guildid': GuildID });
 
-			return `<a class="external-link game-cursor" href="${GuildLink}" target="_blank">${GuildName} ${LinkIcon}</a>`;
+			return `<a class="external-link game-cursor" href="${GuildLink}" target="_blank">${HTML.escapeHtml(GuildName)} ${LinkIcon}</a>`;
 		}
 		else {
-			return GuildName;
+			return HTML.escapeHtml(GuildName);
 		}
 	},
 
