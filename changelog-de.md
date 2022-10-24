@@ -1,15 +1,39 @@
 ## Changelog - Extension
 
+##### 2.12.0.0
+
+**Neu**
+- Auktionen:
+	- Wenn diese Funktion aktiviert ist, berechnet sie ein Auktionsgebot auf der Grundlage einer bestimmten Sequenz und des aktuellen Gebots und legt es in der Zwischenablage ab
+	- Du musst das berechnete Gebot manuell in das Gebotsfeld eintragen
+	- Du kannst diese Funktion aktivieren und die Bietreihenfolge in den Einstellungen unter "Boxen" bearbeiten
+
+- Freundes-Vergleich in Unterhaltungen:
+  - Dieses kleine Plugin vergleicht alle Freunde in den ausgewählten sozialen Unterhaltungen um in einer Übersicht darzustellen ob Freunde auch in anderen Unterhalten eingetragen sind
+
+**Update**
+- Motivations Helfer:
+	- Wenn ein Spieler nicht angegriffen werden kann, wird dies jetzt in der Spalte Ära angezeigt
+
+**BugFix**
+- Extension:
+    - [#2515](https://github.com/mainIine/foe-helfer-extension/issues/2515) Constant error in dev log - Kosmetische Korrektur
+  
+- GvG Karte & Protokoll:
+    - [#2526](https://github.com/mainIine/foe-helfer-extension/issues/2526) Special characters in GvG-Box - gefixt
+
+---
+
 ##### 2.11.0.0
 
 **Neu**
-- GB FP Doppelzahlung
+- GB FP Doppelzahlung:
 	- kann in den Box-Einstellungen durch Eingabe eines Wertes größer 0 aktiviert werden
 		- wenn aktiv, werden das Eingabefeld und der Bezahlbutton nach jeder FP-Zahlung für den angegebenen Wert in Sekunden blockiert
 		- dies kann doppelte FP-Zahlungen in Fällen verhindern, in denen der Server langsam mit einer Antwort ist und das Eingabefeld scheinbar nicht auf den Mausklick reagiert hat
 
 **BugFix**
-- Wiederkehrende Quests
+- Wiederkehrende Quests:
 	- Der Menüeintrag wird nun korrekt angezeigt und das Modul ist nun korrekt zugänglich
 
 ---
@@ -17,16 +41,16 @@
 ##### 2.10.0.0
 
 **New**
-- Wiederkehrende Quests
+- Wiederkehrende Quests:
 	- Dieses Modul zeigt, für welche Quests der Helfer sicher ist, dass du bereits Diamanten erhalten hast.
 		- zeigt es ein "✓", hast du bereits Diamanten erhalten
 		- zeigt es ein "?", hat der Helfer noch nicht beobachtet, dass du Diamanten oder Medaillen bekommen hast für diese Quest - du könntest aber evtl. schon Diamanten auf einem anderen Gerät, vor Aktivierung dieses Features oder vor Installation des Helfers bekommen haben.
 
 **BugFix**
-- Eigenanteilsrechner
+- Eigenanteilsrechner:
 	- [#2491](https://github.com/mainIine/foe-helfer-extension/issues/2491) "P(XX)" Einstellungen wurde nicht korrekt gespeichert/abgerufen.
 
-- Aztecs Minigame Helper
+- Aztecs Minigame Helper:
 	- [#1489](https://github.com/mainIine/foe-helfer-extension/issues/2489) Box wurde nicht angezeigt.
 
 ---
