@@ -512,7 +512,7 @@
     "Boxes.Infobox.FilterTrade": "Piactér",
     "Boxes.Infobox.Messages.Auction": "'<strong>__player__</strong> játékos kínált __amount__ érmét.",
     "Boxes.Infobox.Messages.GEX": "<strong>__player__</strong> nemrég __points__ C.E. pontot kapott.",
-    "Boxes.Infobox.Messages.GildFightOccupied": "A <span style="color:#ffb539">__provinceName__</span> tartományt elfoglalta <span style="color:__attackerColor__;text-shadow: 0 1px 1px __attackerShadow__">__attackerName__</span> és ezért zárolva van eddig: __untilOccupied__.",
+    "Boxes.Infobox.Messages.GildFightOccupied": "A <span style=""color:#ffb539"">__provinceName__</span> tartományt elfoglalta <span style=""color:__attackerColor__;text-shadow: 0 1px 1px __attackerShadow__"">__attackerName__</span> és ezért zárolva van eddig: __untilOccupied__.",
     "Boxes.Infobox.Messages.LevelUp": "A __player__ játékos __building__ épülete elérte a __level__. szintet.<br>Te a(z) <strong>__rank__.</strong> helyezést érted el és <strong>__fps__</strong> FP-t kaptál vissza.",
     "Boxes.Infobox.Messages.MsgBuilding": "__building__ - szint __level__",
     "Boxes.Infobox.Messages.Trade": "<strong> __player__ </strong> elfogadta az ajánlatodat. Ezt kaptad: __needValue__ __need__. Ezt adtad: __offerValue__ __offer__.",
