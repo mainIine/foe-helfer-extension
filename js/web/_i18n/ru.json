@@ -904,7 +904,7 @@
     "Settings.ShowMarketFilter.Title": "Показывать инструмент фильтра для рынка",
     "Settings.ShowNotifications.Desc": "Помощник использует уведомления в разных местах. Вы можете включить и выключить эту опцию здесь.",
     "Settings.ShowNotifications.Title": "Уведомления",
-    "Settings.ShowOwnPartOnAllGBs.Desc": "Показывать калькулятор также для ВС других игроков",
+    "Settings.ShowOwnPartOnAllGBs.Desc": "Обновить калькулятор для ВС других игроков",
     "Settings.ShowOwnPartOnAllGBs.Title": "Показывать калькулятор для всех ВС",
     "Settings.ShowPlayersMotivation.Desc": "Нужно ли передавать мероприятия дружбы (мотивирование строений)?",
     "Settings.ShowPlayersMotivation.Title": "Активность бафов",
