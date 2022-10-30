@@ -11,16 +11,19 @@
  *  *
  *  * **************************************************************************************
  *
- *//**
+ */
+
+/**
  * Get threads from ConversationService
  */
- FoEproxy.addHandler('ConversationService', 'getOverviewForCategory', (data, postData) => {
+FoEproxy.addHandler('ConversationService', 'getOverviewForCategory', (data, postData) => {
 	if (data['responseData']['category']['type'] === 'social')
 	{
 		CompareFriendsThreads.ParseThreads(data['responseData']['category']['teasers']);
 	}
 });
- 
+
+
 FoEproxy.addHandler('ConversationService', 'getCategory', (data, postData) => {
 	if (data['responseData']['type'] === 'social')
 	{
@@ -38,10 +41,15 @@ FoEproxy.addHandler('ConversationSettingsService', 'getSettings', (data, postDat
 			CompareFriendsThreads.CurrentThread = postData[0]['requestData'][0];
 			CompareFriendsThreads.ParseThreadParticipants(data['responseData']['participants']);
 
-			CompareFriendsThreads.BuildBody(true);
+			if ($('#friendsCompareBox').length > 0) {
+				setTimeout(()=>{
+					CompareFriendsThreads.BuildBody(true);
+				}, 200);
+			}
 		}
 	}
 });
+
 
 /**
  * Friend is deleted
@@ -122,9 +130,11 @@ let CompareFriendsThreads = {
 	 */
 	BuildBody: (rebuild = false)=> {
 
+		/*
 		if(!rebuild){
 			CompareFriendsThreads.Threads = [];
 		}
+		*/
 
 		if ($('#friendsCompareBox').length === 0) {
 			HTML.Box({
@@ -196,7 +206,7 @@ let CompareFriendsThreads = {
 				if(CompareFriendsThreads.Threads[x]['participants'].findIndex(p => p.playerId === Player.PlayerID) === -1){
 					t.push(`<td class="text-center text-danger">❌</td>`);
 				} else {
-					t.push(`<td class="text-center">✔️</td>`);
+					t.push(`<td class="text-center">✔</td>`);
 				}
 			}
 

@@ -491,7 +491,7 @@ let Settings = {
 	 *
 	 * @returns {null|undefined|jQuery}
 	 */
-	 doubleFPtimeout: () => {
+	doubleFPtimeout: () => {
 		let ip = $('<input />').addClass('setting-input').attr({
 			type: 'number',
 			id: 'doubleFPtimeoutinput',
@@ -571,7 +571,7 @@ let Settings = {
 	 *
 	 * @returns {null|undefined|jQuery}
 	 */
-	 InfoboxInputEntryCount: () => {
+	InfoboxInputEntryCount: () => {
 		let ip = $('<input />').addClass('setting-input').attr({
 			type: 'number',
 			id: 'infobox-entry-length',

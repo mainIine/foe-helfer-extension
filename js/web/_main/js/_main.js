@@ -387,7 +387,7 @@ GetFights = () =>{
 	FoEproxy.addHandler('FriendService', 'deleteFriend', (data, postData) => {
 		let FriendID = data.responseData;
 		if (PlayerDict[FriendID]) {
-			PlayerDict[FriendID]['isFriend'] = false;
+			PlayerDict[FriendID]['IsFriend'] = false;
 		}
 
 		if ($('#moppelhelper').length === 0) {
