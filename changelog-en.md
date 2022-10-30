@@ -1,5 +1,16 @@
 ## Changelog - Extension
 
+##### 2.12.0.1
+
+**BugFix**
+- GvG map & log:
+	- Special characters in GvG box - fixed
+
+- Translations:
+	- hu.json fixed
+
+---
+
 ##### 2.12.0.0
 
 **New**
