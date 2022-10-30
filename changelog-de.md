@@ -1,5 +1,16 @@
 ## Changelog - Extension
 
+##### 2.12.0.1
+
+**BugFix**
+- GvG Karte & Protokoll:
+	- Special characters in GvG-Box - gefixt
+
+- Übersetzungen:
+	- hu.json gefixt
+
+---
+
 ##### 2.12.0.0
 
 **Neu**
