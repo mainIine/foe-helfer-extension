@@ -93,31 +93,31 @@
 		"name": "ShowScoutingTimes",
 		"status": true,
 		"group": "Boxes",
-		"sort": 13
+		"sort": 14
 	},
 	{
 		"name": "Show2kQuestMark",
 		"status": false,
 		"group": "Boxes",
-		"sort": 14
+		"sort": 15
 	},
 	{
 		"name": "ShowLinks",
 		"status": true,
 		"group": "Boxes",
-		"sort": 15
+		"sort": 16
 	},
 	{
 		"name": "HideHelperDuringBattle",
 		"status": false,
 		"group": "Boxes",
-		"sort": 16
+		"sort": 17
 	},
 	{
 		"name": "ShowAztecHelper",
 		"status": true,
 		"group": "Boxes",
-		"sort": 17
+		"sort": 18
 	},
 	{
 		"name": "ChangeLanguage",
