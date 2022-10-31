@@ -1,14 +1,16 @@
 /*
- * **************************************************************************************
- * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
- * You may use, distribute and modify this code under the
- * terms of the AGPL license.
  *
- * See file LICENSE.md or go to
- * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
- * for full license details.
+ *  * **************************************************************************************
+ *  * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
+ *  * You may use, distribute and modify this code under the
+ *  * terms of the AGPL license.
+ *  *
+ *  * See file LICENSE.md or go to
+ *  * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
+ *  * for full license details.
+ *  *
+ *  * **************************************************************************************
  *
- * **************************************************************************************
  */
 
 // neues Postfach
@@ -357,7 +359,7 @@ let Infoboard = {
     /**
     *
     */
-     ShowSettings: () => {
+	ShowSettings: () => {
 		let autoOpen = Settings.GetSetting('AutoOpenInfoBox');
 		let messagesAmount = localStorage.getItem('EntryCount');
 
@@ -371,18 +373,14 @@ let Infoboard = {
         $('#BackgroundInfoSettingsBox').html(h.join(''));
     },
 
+
     /**
     *
     */
     SaveSettings: () => {
-        let value = false;
-		if ($("#autoStartInfoboard").is(':checked'))
-			value = true;
-        
-        let messagesAmount = $("#infoboxentry-length").val();
+        localStorage.setItem('AutoOpenInfoBox', $("#autoStartInfoboard").is(':checked'));
+        localStorage.setItem('EntryCount', $("#infoboxentry-length").val());
 
-        localStorage.setItem('AutoOpenInfoBox', value);
-        localStorage.setItem('EntryCount', messagesAmount);
 		$(`#BackgroundInfoSettingsBox`).remove();
     },
 };
@@ -532,6 +530,9 @@ let Info = {
             prov = ProvinceMap.ProvinceData().find(o => (o['id'] === data['id']));
         }
 
+		// Hook for Discord events
+		Discord.CheckForEvent('gbg', data['id']);
+
         if (data['lockedUntil'] !== undefined) {
 
             // keine Übernahme
@@ -585,13 +586,13 @@ let Info = {
                 let tc = colors['highlight'], sc = color['highlight'],
                     ts = colors['shadow'], ss = color['shadow'];
 
-                t += '<span style="color:' + tc + ';text-shadow: 0 1px 1px ' + ts + '">' + p['clan']['name'] + '</span> ⚔️ <span style="color:' + sc + ';text-shadow: 0 1px 1px ' + ss + '">' + prov['name'] + '</span> (<strong>' + d['progress'] + '</strong>/<strong>' + d['maxProgress'] + '</strong>)<br>';
+                t += '<span style="color:' + tc + ';text-shadow: 0 1px 1px ' + ts + '">' + p['clan']['name'] + '</span> ⚔ <span style="color:' + sc + ';text-shadow: 0 1px 1px ' + ss + '">' + prov['name'] + '</span> (<strong>' + d['progress'] + '</strong>/<strong>' + d['maxProgress'] + '</strong>)<br>';
             }
             else {
                 let tc = colors['highlight'],
                     ts = colors['shadow'];
 
-                t += '<span style="color:' + tc + ';text-shadow: 0 1px 1px ' + ts + '">' + p['clan']['name'] + '</span> ⚔️ ' + prov['name'] + ' (<strong>' + d['progress'] + '</strong>/<strong>' + d['maxProgress'] + '</strong>)<br>';
+                t += '<span style="color:' + tc + ';text-shadow: 0 1px 1px ' + ts + '">' + p['clan']['name'] + '</span> ⚔ ' + prov['name'] + ' (<strong>' + d['progress'] + '</strong>/<strong>' + d['maxProgress'] + '</strong>)<br>';
 
             }
 
