@@ -571,6 +571,9 @@ p {
 [id$=compare_friends_threads-Btn] span {
 	background-image: url('../images/menu/comparefriendsthreads.png');
 }
+[id$=discord-Btn] span {
+	background-image: url('../images/menu/discord.png');
+}
 
 /***********************************************************************************/
 
