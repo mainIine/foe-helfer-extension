@@ -1,6 +1,13 @@
 ## Changelog - Extension
 
-##### 2.12.0.1
+##### 2.12.0.2
+
+**BugFix**
+- Battle Assist:
+	- the position of the "Higher Era Unit Lost"-Warning has been corrected in the case that the PVP tounament was not running (Sunday Evening - Monday morning)
+---
+
+###### 2.12.0.1
 
 **BugFix**
 - GvG map & log:
