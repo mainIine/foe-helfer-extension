@@ -43,9 +43,11 @@ FoEproxy.addHandler('BattlefieldService', 'all', (data, postData) => {
         }
     }
 
+    let noTournament=!data?.responseData?.state?.ranking_data?.tournament_running;
+
     // A unit from a future age has died
     if (nextEraUnitDead)
-    	return BattleAssist.ShowNextEraDialog();
+    	return BattleAssist.ShowNextEraDialog(noTournament);
 
     // There are no other opponents
     if (winnerBit !== 1 || !ranking_data?.nextArmy)
@@ -66,7 +68,7 @@ let BattleAssist = {
 	 *
 	 * @constructor
 	 */
-    ShowNextEraDialog: () => {
+    ShowNextEraDialog: (nT=false) => {
         HTML.AddCssFile('battle-assist');
         
         HTML.Box({
@@ -77,6 +79,7 @@ let BattleAssist = {
             'minimize': false
         });
         $('#battleAssistNextEraDialogBody').html(`${i18n('Boxes.BattleAssist.Text.NextEra')}`);
+        if (nT) $('#battleAssistNextEraDialog').addClass('BattleAssistNoTournamnt');
     },
 
 	/**
