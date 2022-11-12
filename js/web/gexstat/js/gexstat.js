@@ -215,10 +215,10 @@ let GexStat = {
 						partdata[k].name = player.name;
 						partdata[k].avatar = player.avatar;
 						partdata[k].expeditionPoints = data[k].expeditionPoints ? data[k].expeditionPoints : 0;
-						partdata[k].solvedEncounters = data[k].solvedEncounters;
+						partdata[k].solvedEncounters = data[k].solvedEncounters || 0;
 
 						sumExpeditionPoints += data[k].expeditionPoints ? data[k].expeditionPoints : 0;
-						sumEncounters += data[k].solvedEncounters;
+						sumEncounters += data[k].solvedEncounters || 0;
 						activeMembers = partdata[k].expeditionPoints !== 0 ? activeMembers + 1 : activeMembers;
 					}
 				}
@@ -375,7 +375,7 @@ let GexStat = {
 		for (let x = 0; x < participation.length; x++)
 		{
 			const member = participation[x];
-			let level = Math.ceil(member.solvedEncounters / 16);
+			let level = Math.ceil((member.solvedEncounters || 0) / 16);
 			let encounterClass = ' level' + level;
 			h.push(`<tr>`);
 			h.push(`<td class="text-center is-number" data-number="${member.rank}">${member.rank}</td>`);
@@ -385,7 +385,7 @@ let GexStat = {
 				`<div class="membername">${MainParser.GetPlayerLink(member.player_id, member.name)}</div></td>`);
 			h.push(`<td class="is-number" data-number="${member.expeditionPoints}">${HTML.Format(member.expeditionPoints)}</td>`);
 			h.push(`<td class="is-number" data-number="${level}">${level}</td>`);
-			h.push(`<td class="is-number" data-number="${member.solvedEncounters}">${member.solvedEncounters}/48</td>`);
+			h.push(`<td class="is-number" data-number="${member.solvedEncounters||0}">${member.solvedEncounters||0}/48</td>`);
 
 			h.push(`</tr>`);
 
