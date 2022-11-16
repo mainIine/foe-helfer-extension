@@ -43,8 +43,7 @@ FoEproxy.addHandler('BattlefieldService', 'all', (data, postData) => {
         }
     }
 
-    let noTournament=!data?.responseData?.state?.ranking_data?.tournament_running;
-
+    let noTournament=!data?.responseData?.state?.ranking_data?.tournament_running || data?.responseData?.battleType?.type=="guild_expedition";
     // A unit from a future age has died
     if (nextEraUnitDead)
     	return BattleAssist.ShowNextEraDialog(noTournament);
