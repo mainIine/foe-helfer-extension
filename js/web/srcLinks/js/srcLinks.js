@@ -32,7 +32,7 @@ let srcLinks= {
         xhr.send();
     },
     readHX: (HXscript) => {
-        let startString = "c=new Vjb(sg.baseUrl,";
+        let startString = "baseUrl,";
         let start = HXscript.indexOf(startString) + startString.length;
         HXscript = HXscript.substring(start)
         let end = HXscript.indexOf("}")+1;
@@ -40,11 +40,16 @@ let srcLinks= {
         srcLinks.FileList = JSON.parse(HXscript);
     },
     getFileWithCS: (filename) => {
-        let CS = srcLinks.FileList[filename]
-        if (!CS) {
-            console.log("file " + filename + " not in list!")
+        if (!FileList) {
+            console.log ("Source file list not loaded!");
+            return "";
         }
-        return filename.substring(0,filename.length-4) + "-" + CS + filename.substring(filename.length-4)
+        let CS = srcLinks.FileList[filename];
+        if (!CS) {
+            console.log("file " + filename + " not in list!");
+            return "";
+        }
+        return filename.substring(0,filename.length-4) + "-" + CS + filename.substring(filename.length-4);
     },
     GetPortrait: (id)=> {
         let file=MainParser.PlayerPortraits[id] || 'portrait_433';
