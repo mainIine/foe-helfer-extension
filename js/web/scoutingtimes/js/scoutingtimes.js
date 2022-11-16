@@ -179,7 +179,7 @@ let scoutingTimes = {
             if ((province.travelTime|0)>0) {
                 i += 1;
                 htmltext += `<tr title="${i18n('Eras.'+Technologies.Eras[province.era])}"><td>${province.name}</td>`;
-                htmltext += (p === scoutingTimes.target) ? `<td class="scouting">...<img  src="${srcLinks.get("/city/gui/citymap_icons/tavern_shop_boost_scout_small_icon.png", true)}" alt="">...` : `<td><img  src="${srcLinks.get("/shared/icons/money.png")}" alt=""> ${province.travelTime > 1 ? scoutingTimes.numberWithCommas(province.scoutingCost) : 0}</td>`;
+                htmltext += (p === scoutingTimes.target) ? `<td class="scouting">...<img  src="${srcLinks.get("/city/gui/citymap_icons/tavern_shop_boost_scout_small_icon.png", true)}" alt="">...` : `<td><img  src="${srcLinks.get("/shared/icons/money.png", true)}" alt=""> ${province.travelTime > 1 ? scoutingTimes.numberWithCommas(province.scoutingCost) : 0}</td>`;
                 htmltext += `<td><img  src="${srcLinks.get("/shared/icons/icon_time.png", true)}" alt="">`;
                 htmltext += ` ${scoutingTimes.format(province.travelTime)}`;
                 htmltext += `</td></tr>`;
