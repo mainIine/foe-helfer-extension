@@ -37,7 +37,12 @@ let srcLinks= {
         HXscript = HXscript.substring(start)
         let end = HXscript.indexOf("}")+1;
         HXscript = HXscript.substring(0,end);
-        srcLinks.FileList = JSON.parse(HXscript);
+        try {
+            srcLinks.FileList = JSON.parse(HXscript);
+        } 
+        catch {
+            console.log("parsing of ForgeHX failed");
+        }
     },
     getFileWithCS: (filename) => {
         if (!FileList) {
