@@ -140,7 +140,7 @@ let Notice = {
 						const player = JSON.parse(itm['player_data']);
 
 						subdiv.push(`<div class="content-head-player">
-										<span class="avatar" style="background-image:url('${MainParser.InnoCDN + 'assets/shared/avatars/' + (MainParser.PlayerPortraits[player['Avatar']] || 'portrait_433')}.jpg')"></span>
+										<span class="avatar" style="background-image:url('${srcLinks.GetPortrait(Player['Avatar'])}')"></span>
 										<div class="text">
 											<span class="name">${player['PlayerName']}</span>
 											<span class="clan-name"><em>#${player['PlayerID']}</em> ${player['ClanName'] ? '[' + player['ClanName'] + ']' : '&nbsp;'}</span>
@@ -584,9 +584,9 @@ let Notice = {
 			if(!players.hasOwnProperty(i)) { break; }
 
 			const p = players[i],
-				a = MainParser.InnoCDN + 'assets/shared/avatars/' + (MainParser.PlayerPortraits[p['Avatar']] || 'portrait_433');
+				a = srcLinks.GetPortrait(p['Avatar']);
 
-			content += `<span class="custom-option custom-option-noticePlayers" data-value="${p['PlayerID']}"><span class="avatar" style="background-image:url('${a}.jpg')"></span>${p['PlayerName']}</span>`;
+			content += `<span class="custom-option custom-option-noticePlayers" data-value="${p['PlayerID']}"><span class="avatar" style="background-image:url("${a}")"></span>${p['PlayerName']}</span>`;
 		}
 
 		content +=		`</div>

@@ -685,7 +685,7 @@ let GuildFights = {
 			b.push('<tr data-player="' + playerNew['player_id'] + '" data-gbground="' + gbground + '" class="' + newProgressClass + (!histView ? 'showdetailview ' : '') + (playerNew['player_id'] === ExtPlayerID ? 'mark-player ' : '') + (change === true ? 'bg-green' : '') + '">');
 			b.push('<td class="tdmin">' + (parseInt(i) + 1) + '.</td>');
 
-			b.push('<td class="tdmin"><img src="' + MainParser.InnoCDN + 'assets/shared/avatars/' + (MainParser.PlayerPortraits[playerNew['avatar']] || 'portrait_433') + '.jpg" alt=""></td>');
+			b.push('<td class="tdmin"><img src="' + srcLinks.GetPortrait(playerNew['avatar']) + '" alt=""></td>');
 
 			b.push('<td>' + playerNew['name'] + '</td>');
 			b.push('<td class="text-center">');
