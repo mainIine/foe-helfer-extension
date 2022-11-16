@@ -60,7 +60,7 @@ let srcLinks= {
     },
     GetPortrait: (id)=> {
         let file=MainParser.PlayerPortraits[id] || 'portrait_433';
-        return srcLinks.getFullPath(srcLinks.get('/shared/avatars/' + file + '.jpg'));
+        return srcLinks.get('/shared/avatars/' + file + '.jpg', true);
     },
     getFullPath: (file) => {
         return MainParser.InnoCDN + 'assets' + file;
