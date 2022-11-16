@@ -44,7 +44,7 @@ let srcLinks= {
             console.log("parsing of ForgeHX failed");
         }
     },
-    getFileWithCS: (filename) => {
+    getFileWithCS: (filename, full=false) => {
         if (!FileList) {
             console.log ("Source file list not loaded!");
             return filename;
@@ -54,7 +54,9 @@ let srcLinks= {
             console.log("file " + filename + " not in list!");
             return filename;
         }
-        return filename.substring(0,filename.length-4) + "-" + CS + filename.substring(filename.length-4);
+        let CSfilename = filename.substring(0,filename.length-4) + "-" + CS + filename.substring(filename.length-4);
+        if (full) return srcLinks.getFullPath(CSfilename);
+        return CSfilename;
     },
     GetPortrait: (id)=> {
         let file=MainParser.PlayerPortraits[id] || 'portrait_433';
