@@ -195,7 +195,7 @@ let CompareFriendsThreads = {
 
 			t.push('<tr>');
 
-			t.push(`<td>#${(parseInt(p) + 1)} <img style="max-width: 22px" src="${MainParser.InnoCDN + 'assets/shared/avatars/' + (MainParser.PlayerPortraits[Player['Avatar']] || 'portrait_433')}.jpg" alt="${Player['PlayerName']}"> ${MainParser.GetPlayerLink(Player['PlayerID'], Player['PlayerName'])}</td>`);
+			t.push(`<td>#${(parseInt(p) + 1)} <img style="max-width: 22px" src="${srcLinks.GetPortrait(Player['Avatar'])}" alt="${Player['PlayerName']}"> ${MainParser.GetPlayerLink(Player['PlayerID'], Player['PlayerName'])}</td>`);
 
 			for(let x in CompareFriendsThreads.Threads)
 			{
