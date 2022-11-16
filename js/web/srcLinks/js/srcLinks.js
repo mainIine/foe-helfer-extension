@@ -44,7 +44,7 @@ let srcLinks= {
             console.log("parsing of ForgeHX failed");
         }
     },
-    getFileWithCS: (filename, full=false) => {
+    get: (filename, full=false) => {
         if (!FileList) {
             console.log ("Source file list not loaded!");
             return filename;
@@ -60,7 +60,7 @@ let srcLinks= {
     },
     GetPortrait: (id)=> {
         let file=MainParser.PlayerPortraits[id] || 'portrait_433';
-        return srcLinks.getFullPath(srcLinks.getFileWithCS('/shared/avatars/' + file + '.jpg'));
+        return srcLinks.getFullPath(srcLinks.get('/shared/avatars/' + file + '.jpg'));
     },
     getFullPath: (file) => {
         return MainParser.InnoCDN + 'assets' + file;
