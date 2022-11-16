@@ -1973,7 +1973,7 @@ let ProvinceMap = {
 
 		Province.prototype.drawStartSector = function(mapStuff, mapType) {
 			let flag_image = new Image();
-			flag_image.src = `${MainParser.InnoCDN}assets/shared/clanflags/${this.owner.flagImg}.jpg`;
+			flag_image.src = srcLinks(`/shared/clanflags/${this.owner.flagImg}.jpg`, true);
 			let sector = this;
 			let flagX = mapStuff.x-25;
 			let flagY = mapStuff.y-25;
