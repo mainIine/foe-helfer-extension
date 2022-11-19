@@ -45,7 +45,7 @@ let srcLinks= {
         }
     },
     get: (filename, full=false) => {
-        if (!FileList) {
+        if (!srcLinks.FileList) {
             console.log ("Source file list not loaded!");
             return filename;
         }
