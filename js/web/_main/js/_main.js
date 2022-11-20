@@ -11,6 +11,15 @@
  * **************************************************************************************
  */
 
+let ExtbaseData = JSON.parse(localStorage.getItem("HelperBaseData")||"{}");
+const extID = ExtbaseData.extID,
+	extUrl = ExtbaseData.extUrl,
+	GuiLng = ExtbaseData.GuiLng,
+	extVersion = ExtbaseData.extVersion,
+	isRelease = ExtbaseData.isRelease,
+	devMode = ExtbaseData.devMode,
+	loadBeta = ExtbaseData.loadBeta;
+
 {
 	// jQuery detection
 	let intval = -1;

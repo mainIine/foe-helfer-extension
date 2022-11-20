@@ -2,9 +2,9 @@
 	"name": "__MSG_appName__",
 	"description": "__MSG_appDesc__",
 	"default_locale": "en",
-	"version": "2.9.2.0",
+	"version": "2.12.0.1",
  	
-	"manifest_version": 3,
+	"manifest_version": 2,
 	"permissions": [
 		"alarms",
 		"storage",
@@ -17,7 +17,7 @@
 		"https://*.foe-rechner.de/*"
 	],
 
-	"action": {
+	"browser_action": {
 		"default_icon": "images/app16.png",
 		"default_popup": "content/popup.html",
 		"default_title": "__MSG_appName__"
@@ -29,21 +29,18 @@
 		"128": "images/app128.png"
 	},
 
-	"web_accessible_resources": [{
-		"resources": [
-			"css/web/*.css",
-			"vendor/*.js",
-			"vendor/sounds/*.mp3",
-			"js/web/*.*",
-			"images/*.*",
-			"css/images/*.*",
-			"content/*.html",
-			"js/vendor.json",
-			"js/internal.json",
-			"js/foeproxy.js"
-		],
-		"matches": []
-	}],
+	"web_accessible_resources": [
+		"css/web/*.css",
+		"vendor/*.js",
+		"vendor/sounds/*.mp3",
+		"js/web/*.*",
+		"images/*.*",
+		"css/images/*.*",
+		"content/*.html",
+		"js/vendor.json",
+		"js/internal.json",
+		"js/foeproxy.js"
+	],
 	
 	"content_scripts": [
 		{
@@ -64,7 +61,11 @@
 	},
 
 	"background": {
-		"service_worker": "ES.js",
-		"type" : "module"
+		"scripts": [
+			"vendor/browser-polyfill/browser-polyfill.min.js",
+			"vendor/dexie/dexie.min.js",
+			"background.js"
+		],
+		"persistent": true
 	}
 }
