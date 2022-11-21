@@ -190,7 +190,6 @@ GetFights = () =>{
 
 		if (idx !== -1) {
 			MainParser.InnoCDN = requestData.url.substring(0, idx + 1);
-			MainParser.sendExtMessage({type: 'setInnoCDN', url: MainParser.InnoCDN});
 			let portraits = {};
 
 			$(xhr.responseText).find('portrait').each(function () {
@@ -1214,18 +1213,6 @@ let MainParser = {
 		});
 
 		ExtPlayerAvatar = d.portrait_id;
-
-		MainParser.sendExtMessage({
-			type: 'setPlayerData',
-			data: {
-				world: ExtWorld,
-				player_id: ExtPlayerID,
-				name: d.user_name,
-				portrait: d.portrait_id,
-				guild_id: d.clan_id,
-				guild_name: d.clan_name
-			}
-		});
 
 		Infoboard.Init();
 	},
