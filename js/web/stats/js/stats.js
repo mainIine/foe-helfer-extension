@@ -1335,20 +1335,20 @@ let Stats = {
 				let url2 = '';
 				if ((rewardInfo.iconAssetName || rewardInfo.assembledReward && rewardInfo.assembledReward.iconAssetName)) {
 					const icon = rewardInfo.assembledReward && rewardInfo.assembledReward.iconAssetName ? rewardInfo.assembledReward.iconAssetName : rewardInfo.iconAssetName;
-					url = `${srcLinks.get("/shared/icons/reward_icons/reward_icon_${icon}.png", true)}`;
-					url2 = `${srcLinks.get("/shared/icons/goods_large/${icon}.png", true)}`;
+					url = srcLinks.get(`/shared/icons/reward_icons/reward_icon_${icon}.png`, true);
+					url2 = srcLinks.get(`/shared/icons/goods_large/${icon}.png`, true);
 					
 					//fix for fragment missing images for buildings
 					if (rewardInfo.type == 'good' && rewardInfo.iconAssetName == 'random_goods' && rewardInfo.subType) {
-						url = `${srcLinks.get("/shared/icons/reward_icons/reward_icon_random_goods.png", true)}`;
+						url = srcLinks.get(`/shared/icons/reward_icons/reward_icon_random_goods.png`, true);
 					}
 					if (rewardInfo.subType == 'fragment' && rewardInfo.subType) {
 						if (rewardInfo.assembledReward.type == 'building' && rewardInfo.subType){
-							url = `${srcLinks.get("/city/buildings/${rewardInfo.assembledReward.subType.replace(/^(\w)_/, '$1_SS_')}.png", true)}`;
+							url = srcLinks.get(`/city/buildings/${rewardInfo.assembledReward.subType.replace(/^(\w)_/, '$1_SS_')}.png`, true);
 						}
 					}
 				}else if (rewardInfo.type == 'building' && rewardInfo.subType) {
-						url = `${srcLinks.get("/city/buildings/${rewardInfo.subType.replace(/^(\w)_/, '$1_SS_')}.png", true)}`;
+						url = srcLinks.get(`/city/buildings/${rewardInfo.subType.replace(/^(\w)_/, '$1_SS_')}.png`, true);
 				}
 				if (url) {
 					pointImage = `<object data="${url}" style="width: 45px; height: 45px; margin-right: 4px;" type="image/png">${url2 != '' ? '<img src="'+url2+'" style="width: 45px; height: 45px; margin-right: 4px;">':''}</object>`;
