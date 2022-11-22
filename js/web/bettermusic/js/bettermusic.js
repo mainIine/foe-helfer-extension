@@ -382,7 +382,7 @@ let betterMusic = {
         let $SoundC = $(`#${betterMusic.Ids.shift()}`);
         let $SoundN = $(`#${betterMusic.Ids[0]}`);
         
-        if ($SoundC[0].src == MainParser.InnoCDN + 'assets/sounds/shared/theme/'+ newTrack +'.ogg') {
+        if ($SoundC[0].src == srcLinks.get('/sounds/shared/theme/'+ newTrack +'.ogg', true)) {
         
             betterMusic.Ids.unshift($SoundC[0].id);
             betterMusic.setEvent($SoundC[0].id, 0);
@@ -396,7 +396,7 @@ let betterMusic = {
             $SoundC.animate({volume: 0}, transition);
             
             $SoundN[0].volume = 0;
-            $SoundN[0].src = MainParser.InnoCDN + 'assets/sounds/shared/theme/'+ newTrack +'.ogg';
+            $SoundN[0].src = srcLinks.get('/sounds/shared/theme/'+ newTrack +'.ogg', true);
             
             clearTimeout(betterMusic.nextEvent);
             var playPromise = $SoundN[0].play();

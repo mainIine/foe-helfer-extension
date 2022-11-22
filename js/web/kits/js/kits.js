@@ -321,11 +321,11 @@ let Kits = {
 					}
 					else if (MainParser.BuildingChains[sName]) {
 						KitText = MainParser.BuildingChains[sName].name;
-						ChainSetIco = '<img src="' + MainParser.InnoCDN + 'assets/shared/icons/' + sName + '.png" class="chain-set-ico">';
+						ChainSetIco = '<img src="' + srcLinks.get('/shared/icons/' + sName + '.png', true) + '" class="chain-set-ico">';
 					}
 					else if (MainParser.BuildingSets[sName]) {
 						KitText = MainParser.BuildingSets[sName].name;
-						ChainSetIco = '<img src="' + MainParser.InnoCDN + 'assets/shared/icons/' + sName + '.png" class="chain-set-ico">';
+						ChainSetIco = '<img src="' + srcLinks.get('/shared/icons/' + sName + '.png', true) + '" class="chain-set-ico">';
 					}
 					else if (MainParser.CityEntities[kits[set].buildings[0]['first']]) {
 						let itemName = MainParser.CityEntities[kits[set].buildings[0]['first']].name;
@@ -463,18 +463,18 @@ let Kits = {
 
 			aName = el['missing'] ? item['asset_id'] : item['itemAssetName'];
 
-			url = MainParser.InnoCDN + 'assets/city/buildings/' + [aName.slice(0, 1), '_SS', aName.slice(1)].join('') + '.png';
+			url = srcLinks.get('/city/buildings/' + [aName.slice(0, 1), '_SS', aName.slice(1)].join('') + '.png', true) ;
 		}
 		else if (el['type'] === 'update' || el['type'] === 'kit') {
 			aName = el['missing'] ? item : item['itemAssetName'];
 
 			if (aName.includes('fragment')) {
 				aName = aName.replace('fragment#', '');
-				url = MainParser.InnoCDN + 'assets/shared/icons/icon_fragment.png';
+				url = srcLinks.get('/shared/icons/icon_fragment.png', true);
 				url_fragment = `<img class="kits-fragment-image" src="${url}" alt="${item['name']}"/>`;
 			}
 
-			url = MainParser.InnoCDN + 'assets/shared/icons/reward_icons/reward_icon_' + aName + '.png';
+			url = srcLinks.get('/shared/icons/reward_icons/reward_icon_' + aName + '.png', true);
 
 			if (aName.includes('building_')) {
 				if (!item['item']) {
@@ -500,7 +500,7 @@ let Kits = {
 				else {
 					aName = item['item']['reward']['assembledReward']['subType'];
 				}
-				url = MainParser.InnoCDN + 'assets/city/buildings/' + [aName.slice(0, 1), '_SS', aName.slice(1)].join('') + '.png';
+				url = srcLinks.get('/city/buildings/' + [aName.slice(0, 1), '_SS', aName.slice(1)].join('') + '.png', true);
 			}
 		}
 
@@ -545,7 +545,7 @@ let Kits = {
 
 		let item = el['item'],
 			aName = el['missing'] ? item['asset_id'] : item['itemAssetName'],
-			url = MainParser.InnoCDN + 'assets/city/buildings/' + [aName.slice(0, 1), '_SS', aName.slice(1)].join('') + '.png';
+			url = srcLinks.get('/city/buildings/' + [aName.slice(0, 1), '_SS', aName.slice(1)].join('') + '.png', true);
 
 		return 	`<div class="item-asset${(el['missing'] ? ' is-missing' : '')}">
 					<img class="asset-image" src="${url}" alt="${item['name']}" /><br>
@@ -572,11 +572,11 @@ let Kits = {
 
 		if (aName.includes('fragment')) {
 			aName = aName.replace('fragment#', '');
-			url = MainParser.InnoCDN + 'assets/shared/icons/icon_fragment.png';
+			url = srcLinks.get('/shared/icons/icon_fragment.png', true);
 			url_fragment = `<img class="kits-fragment-image" src="${url}" alt="${item['name']}" />`;
 		}
 
-		url = MainParser.InnoCDN + 'assets/shared/icons/reward_icons/reward_icon_' + aName + '.png';
+		url = srcLinks.get('/shared/icons/reward_icons/reward_icon_' + aName + '.png', true);
 
 		if (aName.includes('building_')) {
 			if (!item['item']) {
@@ -602,7 +602,7 @@ let Kits = {
 			else {
 				aName = item['item']['reward']['assembledReward']['subType'];
 			}
-			url = MainParser.InnoCDN + 'assets/city/buildings/' + [aName.slice(0, 1), '_SS', aName.slice(1)].join('') + '.png';
+			url = srcLinks.get('/city/buildings/' + [aName.slice(0, 1), '_SS', aName.slice(1)].join('') + '.png', true);
 		}
 		
 		let title = '';

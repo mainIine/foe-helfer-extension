@@ -751,7 +751,7 @@ let Stats = {
 
 		const series = knownIds.map(playerId => {
 			const playerInfo = playerKV[playerId] || {name: '' + playerId};
-			const avatarUrl = `${MainParser.InnoCDN}assets/shared/avatars/${(MainParser.PlayerPortraits[playerInfo.avatar] || 'portrait_433')}.jpg`;
+			const avatarUrl = srcLinks.GetPortrait(playerInfo.avatar);
 			return {
 				name: playerInfo.name,
 				avatarUrl,
@@ -831,7 +831,7 @@ let Stats = {
 			series,
 			pointFormat: `<tr>
 								<td>
-									<span class="unit_icon {series.options.unitId}" style="background-image:url('${MainParser.InnoCDN}assets/shared/unit_portraits/armyuniticons_50x50/armyuniticons_50x50_0.png')"></span>
+									<span class="unit_icon {series.options.unitId}" style="background-image:url('${srcLinks.get("/shared/unit_portraits/armyuniticons_50x50/armyuniticons_50x50_0.png", true)}')"></span>
 								</td>
 								<td>
 									<span style="margin: 0 5px;"><span style="color:{point.color}">●</span> {series.name}: </span>
@@ -1327,7 +1327,7 @@ let Stats = {
 		const seriesMapBySource = groupedByRewardSource[rewardSource] || {};
 		const serieData = Object.keys(seriesMapBySource).map(it => {
 			const rewardInfo = (rewardTypes.find(r => r.id === it) || {name: it});
-			const iconClass = rewardInfo.type === 'unit' ? `unit_icon ${rewardInfo.subType}" style="background-image:url('${MainParser.InnoCDN}assets/shared/unit_portraits/armyuniticons_50x50/armyuniticons_50x50_0.png')` : '';
+			const iconClass = rewardInfo.type === 'unit' ? `unit_icon ${rewardInfo.subType}" style="background-image:url('${srcLinks.get("/shared/unit_portraits/armyuniticons_50x50/armyuniticons_50x50_0.png", true)}')` : '';
 			// Asset image if not unit
 			let pointImage = '';
 			if (rewardInfo.type != 'unit') {
@@ -1335,20 +1335,20 @@ let Stats = {
 				let url2 = '';
 				if ((rewardInfo.iconAssetName || rewardInfo.assembledReward && rewardInfo.assembledReward.iconAssetName)) {
 					const icon = rewardInfo.assembledReward && rewardInfo.assembledReward.iconAssetName ? rewardInfo.assembledReward.iconAssetName : rewardInfo.iconAssetName;
-					url = `${MainParser.InnoCDN}assets/shared/icons/reward_icons/reward_icon_${icon}.png`;
-					url2 = `${MainParser.InnoCDN}assets/shared/icons/goods_large/${icon}.png`;
+					url = srcLinks.get(`/shared/icons/reward_icons/reward_icon_${icon}.png`, true);
+					url2 = srcLinks.get(`/shared/icons/goods_large/${icon}.png`, true);
 					
 					//fix for fragment missing images for buildings
 					if (rewardInfo.type == 'good' && rewardInfo.iconAssetName == 'random_goods' && rewardInfo.subType) {
-						url = `${MainParser.InnoCDN}assets/shared/icons/reward_icons/reward_icon_random_goods.png`;
+						url = srcLinks.get(`/shared/icons/reward_icons/reward_icon_random_goods.png`, true);
 					}
 					if (rewardInfo.subType == 'fragment' && rewardInfo.subType) {
 						if (rewardInfo.assembledReward.type == 'building' && rewardInfo.subType){
-							url = `${MainParser.InnoCDN}assets/city/buildings/${rewardInfo.assembledReward.subType.replace(/^(\w)_/, '$1_SS_')}.png`;
+							url = srcLinks.get(`/city/buildings/${rewardInfo.assembledReward.subType.replace(/^(\w)_/, '$1_SS_')}.png`, true);
 						}
 					}
 				}else if (rewardInfo.type == 'building' && rewardInfo.subType) {
-						url = `${MainParser.InnoCDN}assets/city/buildings/${rewardInfo.subType.replace(/^(\w)_/, '$1_SS_')}.png`;
+						url = srcLinks.get(`/city/buildings/${rewardInfo.subType.replace(/^(\w)_/, '$1_SS_')}.png`, true);
 				}
 				if (url) {
 					pointImage = `<object data="${url}" style="width: 45px; height: 45px; margin-right: 4px;" type="image/png">${url2 != '' ? '<img src="'+url2+'" style="width: 45px; height: 45px; margin-right: 4px;">':''}</object>`;

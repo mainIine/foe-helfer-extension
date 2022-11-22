@@ -1,5 +1,22 @@
 ## Changelog - Extension
 
+##### 2.12.1.0
+
+**Neu**
+- Discord Webhooks:
+	- (derzeit nur) für die Gildengefechte kann ein Event ausgelöst werden, dass beim ersten Angriff auf einen Sektor eine Nachricht an den Kanal-WebHook eines Discord-Servers schicken kann
+  	- weitere Events könnten folgen, wenn bedarf besteht
+
+**Update**
+- Erweiterung:
+	- zukunftssichere Bildlinks für mögliche Änderungen der Inno-Hosting-Richtlinien (Zeitstempel)
+
+**BugFix**
+- Kampfassistent:
+	- [#2522](https://github.com/mainIine/foe-helfer-extension/issues/2522) Die "Überlagerungsbox" war verschoben
+
+---
+
 ##### 2.12.0.1
 
 **BugFix**

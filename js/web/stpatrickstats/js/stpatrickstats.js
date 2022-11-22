@@ -70,7 +70,7 @@ FoEproxy.addHandler('IdleGameService', 'getState', (data, postData) => {
 	stPatrick.stPatrickUpdateDialog();
 });
 
-FoEproxy.addHandler('IdleGameService', 'performActions', (data, postData) => {
+FoEproxy.addRequestHandler('IdleGameService', 'performActions', (postData) => {
 	
     if(postData[0]['requestClass'] !== 'IdleGameService')
     	return;
@@ -204,7 +204,7 @@ let stPatrick = {
 
 		
         let htmltext = `<table id="stPatTable" style="width:100%"><tr><th colspan="2">`;
-        htmltext += `<img src="${MainParser.InnoCDN}/assets/shared/seasonalevents/stpatricks/event/stpatrick_task_idle_currency_thumb.png" alt="" >`;
+        htmltext += `<img src="${srcLinks.get("/shared/seasonalevents/stpatricks/event/stpatrick_task_idle_currency_thumb.png", true)}" alt="" >`;
         htmltext += `${i18n('Boxes.stPatrick.Hourly')}</th></tr><tr>`;
         htmltext += `<td>${stPatrick.stPat.market_1.baseData.name}<br><span id="stPatFest"></span></td>`;
         htmltext += `<td rowspan="2">${i18n('Boxes.stPatrick.Production')}<br><span id="stPatWork"></span></td>`;
@@ -213,37 +213,37 @@ let stPatrick = {
         
 		htmltext += `<table id="stPatNext" class="foe-table" style="width:100%"><tr><th colspan="4"  onclick="stPatrick.hide('#stPatNext')">${i18n('Boxes.stPatrick.BuildingUpgrades')}<i></i></tr>`;
 		htmltext += `<tr title="${stPatrick.stPat.workshop_1.baseData.name}">`;
-        htmltext += `<td><img src="${MainParser.InnoCDN}/assets/shared/seasonalevents/stpatricks/event/stpatrick_task_goods_hats_thumb.png" alt="" ></td>`;
+        htmltext += `<td><img src="${srcLinks.get("/shared/seasonalevents/stpatricks/event/stpatrick_task_goods_hats_thumb.png", true)}" alt="" ></td>`;
         htmltext += `<td><span id="stPatworkshop_1Level" class="levelSelect" data-station="workshop_1"></span></td>`;
 		htmltext += `<td id="stPatworkshop_1" class="align-right"></td>`;
 		htmltext += `<td id="stPatworkshop_1Time" class="align-left"></td></tr>`;
 		htmltext += `<tr title="${stPatrick.stPat.workshop_2.baseData.name}">`;
-        htmltext += `<td><img src="${MainParser.InnoCDN}/assets/shared/seasonalevents/stpatricks/event/stpatrick_task_goods_flowers_thumb.png" alt="" ></td>`;
+        htmltext += `<td><img src="${srcLinks.get("/shared/seasonalevents/stpatricks/event/stpatrick_task_goods_flowers_thumb.png", true)}" alt="" ></td>`;
         htmltext += `<td><span id="stPatworkshop_2Level" class="levelSelect" data-station="workshop_2"></span></td>`;
 		htmltext += `<td id="stPatworkshop_2" class="align-right"></td>`;
 		htmltext += `<td id="stPatworkshop_2Time" class="align-left"></td></tr>`;
 		htmltext += `<tr title="${stPatrick.stPat.workshop_3.baseData.name}">`;
-        htmltext += `<td><img src="${MainParser.InnoCDN}/assets/shared/seasonalevents/stpatricks/event/stpatrick_task_goods_cake_thumb.png" alt="" ></td>`;
+        htmltext += `<td><img src="${srcLinks.get("/shared/seasonalevents/stpatricks/event/stpatrick_task_goods_cake_thumb.png", true)}" alt="" ></td>`;
         htmltext += `<td><span id="stPatworkshop_3Level" class="levelSelect" data-station="workshop_3"></span></td>`;
 		htmltext += `<td id="stPatworkshop_3" class="align-right"></td>`;
 		htmltext += `<td id="stPatworkshop_3Time" class="align-left"></td></tr>`
 		htmltext += `<tr title="${stPatrick.stPat.workshop_4.baseData.name}">`;
-        htmltext += `<td><img src="${MainParser.InnoCDN}/assets/shared/seasonalevents/stpatricks/event/stpatrick_task_goods_drinks_thumb.png" alt="" ></td>`;
+        htmltext += `<td><img src="${srcLinks.get("/shared/seasonalevents/stpatricks/event/stpatrick_task_goods_drinks_thumb.png", true)}" alt="" ></td>`;
         htmltext += `<td><span id="stPatworkshop_4Level" class="levelSelect" data-station="workshop_4"></span></td>`;
 		htmltext += `<td id="stPatworkshop_4" class="align-right"></td>`;
 		htmltext += `<td id="stPatworkshop_4Time" class="align-left"></td></tr>`;
 		htmltext += `<tr title="${stPatrick.stPat.workshop_5.baseData.name}">`;
-        htmltext += `<td><img src="${MainParser.InnoCDN}/assets/shared/seasonalevents/stpatricks/event/stpatrick_task_goods_fireworks_thumb.png" alt="" ></td>`;
+        htmltext += `<td><img src="${srcLinks.get("/shared/seasonalevents/stpatricks/event/stpatrick_task_goods_fireworks_thumb.png", true)}" alt="" ></td>`;
         htmltext += `<td><span id="stPatworkshop_5Level" class="levelSelect" data-station="workshop_5"></span></td>`;
 		htmltext += `<td id="stPatworkshop_5" class="align-right"></td>`;
 		htmltext += `<td id="stPatworkshop_5Time" class="align-left"></td></tr>`;
 		htmltext += `<tr title="${stPatrick.stPat.transport_1.baseData.name}">`;
-        htmltext += `<td><img src="${MainParser.InnoCDN}/assets/shared/seasonalevents/stpatricks/event/stpatrick_task_shipyard_thumb.png" alt="" ></td>`;
+        htmltext += `<td><img src="${srcLinks.get("/shared/seasonalevents/stpatricks/event/stpatrick_task_shipyard_thumb.png", true)}" alt="" ></td>`;
         htmltext += `<td><span id="stPattransport_1Level" class="levelSelect" data-station="transport_1"></span></td>`;
 		htmltext += `<td id="stPattransport_1" class="align-right"></td>`;
 		htmltext += `<td id="stPattransport_1Time" class="align-left"></td></tr>`;
 		htmltext += `<tr title="${stPatrick.stPat.market_1.baseData.name}">`;
-        htmltext += `<td><img src="${MainParser.InnoCDN}/assets/shared/seasonalevents/stpatricks/event/stpatrick_task_parade_thumb.png" alt="" ></td>`;
+        htmltext += `<td><img src="${srcLinks.get("/shared/seasonalevents/stpatricks/event/stpatrick_task_parade_thumb.png", true)}" alt="" ></td>`;
         htmltext += `<td><span id="stPatmarket_1Level" class="levelSelect" data-station="market_1"></span></td>`;
 		htmltext += `<td id="stPatmarket_1" class="align-right"></td>`;
 		htmltext += `<td id="stPatmarket_1Time" class="align-left"></td></tr>`;
