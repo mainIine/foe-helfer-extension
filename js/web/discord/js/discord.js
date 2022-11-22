@@ -13,10 +13,6 @@
  *
  */
 
-/*
-* guildFight
-* */
-
 let Discord = {
 
 	StorageName: 'DiscordWebHooks',
@@ -68,10 +64,10 @@ let Discord = {
 		h.push(`<table class="foe-table no-hover vertical-top">`);
 			h.push(`<thead>`);
 				h.push(`<tr>`);
-					h.push(`<th>Name</th>`);
+					h.push(`<th>${i18n('Boxes.Discord.Name')}</th>`);
 					h.push(`<th>URL</th>`);
-					h.push(`<th>Event</th>`);
-					h.push(`<th>Message</th>`);
+					h.push(`<th>${i18n('Boxes.Discord.Event')}</th>`);
+					h.push(`<th>${i18n('Boxes.Discord.Message')}</th>`);
 					h.push(`<th style="width:1%"></th>`);
 				h.push(`</tr>`);
 			h.push(`</thead>`);
@@ -83,6 +79,10 @@ let Discord = {
 				continue;
 			}
 
+			if(!Discord.WebHooks[i] || Discord.WebHooks[i]['name']){
+				continue;
+			}
+
 			let d = Discord.WebHooks[i];
 
 			h.push(`<tr>`);
@@ -90,12 +90,12 @@ let Discord = {
 				h.push(`<td>${d.url.substring(0,30)}...</td>`);
 				h.push(`<td>${d.event}</td>`);
 				h.push(`<td>${d.message}</td>`);
-				h.push(`<td style="white-space:nowrap;"><button class="btn-default btn-delete" role="button" type="button" onclick="Discord.Delete(${i})">Delete</button>&nbsp;<button class="btn-default" role="button" type="button" onclick="Discord.EntryForm(${i})">Edit</button></td>`);
+				h.push(`<td style="white-space:nowrap;"><button class="btn-default btn-delete" role="button" type="button" onclick="Discord.Delete(${i})">${i18n('Boxes.Discord.DeleteEntry')}</button>&nbsp;<button class="btn-default" role="button" type="button" onclick="Discord.EntryForm(${i})">${i18n('Boxes.Discord.EditEntry')}</button></td>`);
 			h.push(`</tr>`);
 		}
 
 		h.push(`<tr>`);
-			h.push(`<td colspan="5" class="text-right"><small><em class="text-warning">For guild events you have to visit the Guildfight map before</em></small>&nbsp;&nbsp;<button class="btn-default" role="button" type="button" onclick="Discord.EntryForm()">New Entry</button></td>`);
+			h.push(`<td colspan="5" class="text-right"><small><em class="text-warning">${i18n('Boxes.Discord.VisitGGMapBefore')}</em></small>&nbsp;&nbsp;<button class="btn-default" role="button" type="button" onclick="Discord.EntryForm()">${i18n('Boxes.Discord.TitleNewEntry')}</button></td>`);
 		h.push(`</tr>`);
 
 		h.push(`</tbody>`);
@@ -133,12 +133,12 @@ let Discord = {
 			h.push(`<thead>`);
 
 			h.push(`<tr>`);
-			h.push(`<th>Name</th>`);
+			h.push(`<th>${i18n('Boxes.Discord.Name')}</th>`);
 			h.push(`<td><input value="${data?data['name']:''}"  id="name" name="name" type="text" spellcheck="false"></td>`);
 			h.push(`</tr>`);
 
 			h.push(`<tr>`);
-			h.push(`<th>Webhook Url</th>`);
+			h.push(`<th>${i18n('Boxes.Discord.WebhookUrl')}</th>`);
 			h.push(`<td><input value="${data?data['url']:''}" id="url" name="url" type="text" spellcheck="false"></td>`);
 			h.push(`</tr>`);
 
@@ -165,14 +165,14 @@ let Discord = {
 			h.push(`</tr>`);
 
 			h.push(`<tr>`);
-			h.push(`<th>Nachricht</th>`);
+			h.push(`<th>${i18n('Boxes.Discord.Message')}</th>`);
 			h.push(`<td><textarea id="message" name="message" spellcheck="false">${data?data['message']:':flame: Aware!!\n' +
 				'The province "#gg_province_name#" should be attacked!!'}</textarea><small><em class="text-warning">#gg_province_name# for province name replace</em></small></td>`);
 			h.push(`</tr>`);
 
 			h.push(`<tr>`);
 			h.push(`<td colspan="2" class="text-right">
-				<button class="btn-default" role="button" type="button" onclick="Discord.Save(${i})">Speichern</button>
+				<button class="btn-default" role="button" type="button" onclick="Discord.Save(${i})">${i18n('Boxes.Discord.Save')}</button>
 			</td>`);
 			h.push(`</tr>`);
 			h.push(`</thead>`);
@@ -255,6 +255,7 @@ let Discord = {
 							content: e.message.replace('#gg_province_name#', d.name)
 						}
 					)
+						.then();
 					//.then(a => a.json()).then(console.log); // only for debug
 
 					// save for check
