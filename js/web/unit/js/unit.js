@@ -168,7 +168,7 @@ let Unit = {
 
 			attack.push('<tr data-era="' + era + '">');
 
-			attack.push(`<td><span class="unit_icon ${Unit.Attack[i]['unitTypeId']} unit_skill ${type['unitClass']}" style="background-image:url('${MainParser.InnoCDN}assets/shared/unit_portraits/armyuniticons_50x50/armyuniticons_50x50_0.png')"></span></td>`);
+			attack.push(`<td><span class="unit_icon ${Unit.Attack[i]['unitTypeId']} unit_skill ${type['unitClass']}" style="background-image:url('${srcLinks.get("/shared/unit_portraits/armyuniticons_50x50/armyuniticons_50x50_0.png", true)}')"></span></td>`);
 			attack.push('<td>' + type['name'] + '</td>');
 
 			let status = cache['currentHitpoints'] * 10;
@@ -236,7 +236,7 @@ let Unit = {
 				cache = Unit.Cache['units'].find(obj => (obj['unitId'] === Unit.Defense[i]['unitId'])),
 				era = Technologies.Eras[type['minEra']];
 
-			defense.push(`<td><span class="unit_icon ${Unit.Defense[i]['unitTypeId']} unit_skill ${type['unitClass']}" style="background-image:url('${MainParser.InnoCDN}assets/shared/unit_portraits/armyuniticons_50x50/armyuniticons_50x50_0.png')"></span></td>`);
+			defense.push(`<td><span class="unit_icon ${Unit.Defense[i]['unitTypeId']} unit_skill ${type['unitClass']}" style="background-image:url('${srcLinks.get("/shared/unit_portraits/armyuniticons_50x50/armyuniticons_50x50_0.png", true)}')"></span></td>`);
 			defense.push('<td>' + type['name'] + '</td>');
 
 			let status = cache['currentHitpoints'] * 10;
@@ -303,7 +303,7 @@ let Unit = {
 				cache = Unit.Cache['units'].find(obj => (obj['unitId'] === Unit.ArenaDefense[i]['unitId'])),
 				era = Technologies.Eras[type['minEra']];
 
-			arenaDefense.push(`<td><span class="unit_icon ${Unit.ArenaDefense[i]['unitTypeId']} unit_skill ${type['unitClass']}" style="background-image:url('${MainParser.InnoCDN}assets/shared/unit_portraits/armyuniticons_50x50/armyuniticons_50x50_0.png')"></span></td>`);
+			arenaDefense.push(`<td><span class="unit_icon ${Unit.ArenaDefense[i]['unitTypeId']} unit_skill ${type['unitClass']}" style="background-image:url('${srcLinks.get("/shared/unit_portraits/armyuniticons_50x50/armyuniticons_50x50_0.png", true)}')"></span></td>`);
 			arenaDefense.push('<td>' + type['name'] + '</td>');
 
 			let status = cache['currentHitpoints'] * 10;
@@ -397,7 +397,7 @@ let Unit = {
 				}
 
 				pool.push('<tr>');
-					pool.push(`<td><span class="unit_icon ${eras[era][i]['id']} unit_skill ${eras[era][i]['unitClass']}" style="background-image:url('${MainParser.InnoCDN}assets/shared/unit_portraits/armyuniticons_50x50/armyuniticons_50x50_0.png')"></span></td>`);
+					pool.push(`<td><span class="unit_icon ${eras[era][i]['id']} unit_skill ${eras[era][i]['unitClass']}" style="background-image:url('${srcLinks.get("/shared/unit_portraits/armyuniticons_50x50/armyuniticons_50x50_0.png", true)}')"></span></td>`);
 					pool.push('<td>' + eras[era][i]['name'] + '</td>');
 					pool.push('<td class="text-center">' + eras[era][i]['attached'] + '</td>');
 					pool.push('<td class="text-center">' + eras[era][i]['unattached'] + '</td>');
@@ -754,7 +754,7 @@ let Unit = {
 
 			last.push('<tr data-era="' + LastAlca[i]['era'] + '">');
 
-				last.push(`<td><span class="unit_icon ${LastAlca[i]['id']} unit_skill ${LastAlca[i]['unitClass']}" style="background-image:url('${MainParser.InnoCDN}assets/shared/unit_portraits/armyuniticons_50x50/armyuniticons_50x50_0.png')"></span></td>`);
+				last.push(`<td><span class="unit_icon ${LastAlca[i]['id']} unit_skill ${LastAlca[i]['unitClass']}" style="background-image:url('${srcLinks.get("/shared/unit_portraits/armyuniticons_50x50/armyuniticons_50x50_0.png", true)}')"></span></td>`);
 				last.push('<td>' + LastAlca[i]['name'] + '</td>');
 
 				last.push('<td class="text-center">' + LastAlca[i]['count'] + 'x</td>');

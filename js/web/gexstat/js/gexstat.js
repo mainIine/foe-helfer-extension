@@ -215,10 +215,10 @@ let GexStat = {
 						partdata[k].name = player.name;
 						partdata[k].avatar = player.avatar;
 						partdata[k].expeditionPoints = data[k].expeditionPoints ? data[k].expeditionPoints : 0;
-						partdata[k].solvedEncounters = data[k].solvedEncounters;
+						partdata[k].solvedEncounters = data[k].solvedEncounters || 0;
 
 						sumExpeditionPoints += data[k].expeditionPoints ? data[k].expeditionPoints : 0;
-						sumEncounters += data[k].solvedEncounters;
+						sumEncounters += data[k].solvedEncounters || 0;
 						activeMembers = partdata[k].expeditionPoints !== 0 ? activeMembers + 1 : activeMembers;
 					}
 				}
@@ -298,7 +298,7 @@ let GexStat = {
 			h.push(`<tr>`);
 			h.push(`<td class="td-rank"><span class="winner-rank rank-${rankClass}"><span>${participant.rank}</span></span></td>`);
 			h.push(`<td>` +
-				`<div class="clanflag"><img src="${MainParser.InnoCDN + 'assets/shared/clanflags/' + participant.flag + '.jpg'}" /></div>` +
+				`<div class="clanflag"><img src="${srcLinks.get('/shared/clanflags/' + participant.flag + '.jpg', true)}" /></div>` +
 				`<div class="claninfo"><span class="clanname">${MainParser.GetGuildLink(participant['guildId'], participant['name'], participant['worldId'])}</span><br /> ` +
 				`<span class="clanworld">${participant.worldName}</span></div></td>`);
 			h.push(`<td class="progress"><div class="progbar rank-${rankClass}${stripedClass}" style="width: ${progressWidth}%"></div> ${participant.points}%</td>`);
@@ -375,17 +375,17 @@ let GexStat = {
 		for (let x = 0; x < participation.length; x++)
 		{
 			const member = participation[x];
-			let level = Math.ceil(member.solvedEncounters / 16);
+			let level = Math.ceil((member.solvedEncounters || 0) / 16);
 			let encounterClass = ' level' + level;
 			h.push(`<tr>`);
 			h.push(`<td class="text-center is-number" data-number="${member.rank}">${member.rank}</td>`);
 			h.push(`<td class="text-center is-number" data-number="${level}"><span class="level${encounterClass}" title="${HTML.i18nTooltip(i18n('Boxes.GexStat.Level') + ' ' + level)}"></span></td>`);
 			h.push(`<td class="case-sensitive" data-text="${member.name.toLowerCase().replace(/[\W_ ]+/g, "")}">` +
-				`<div class="avatar"><img src="${MainParser.InnoCDN + 'assets/shared/avatars/' + (MainParser.PlayerPortraits[member.avatar] || 'portrait_433') + '.jpg'}" /></div>` +
+				`<div class="avatar"><img src="${srcLinks.GetPortrait(member.avatar)}" /></div>` +
 				`<div class="membername">${MainParser.GetPlayerLink(member.player_id, member.name)}</div></td>`);
 			h.push(`<td class="is-number" data-number="${member.expeditionPoints}">${HTML.Format(member.expeditionPoints)}</td>`);
 			h.push(`<td class="is-number" data-number="${level}">${level}</td>`);
-			h.push(`<td class="is-number" data-number="${member.solvedEncounters}">${member.solvedEncounters}/48</td>`);
+			h.push(`<td class="is-number" data-number="${member.solvedEncounters||0}">${member.solvedEncounters||0}/48</td>`);
 
 			h.push(`</tr>`);
 

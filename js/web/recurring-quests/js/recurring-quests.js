@@ -110,7 +110,7 @@ let Recurring = {
         h.push('<thead>');
         h.push('<tr>');
         h.push('<th>' + i18n('RecurringQuests.Table.Quest') + '</th>');
-        h.push('<th><img src="' + MainParser.InnoCDN + 'assets/shared/icons/premium.png" alt="" width="20px" height="20px">?</th>');
+        h.push('<th><img src="' + srcLinks.get("/shared/icons/premium.png", true) + '" alt="" width="20px" height="20px">?</th>');
         h.push('</tr>');
         h.push('</thead>');
 

@@ -1,14 +1,16 @@
 /*
- * **************************************************************************************
- * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
- * You may use, distribute and modify this code under the
- * terms of the AGPL license.
  *
- * See file LICENSE.md or go to
- * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
- * for full license details.
+ *  * **************************************************************************************
+ *  * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
+ *  * You may use, distribute and modify this code under the
+ *  * terms of the AGPL license.
+ *  *
+ *  * See file LICENSE.md or go to
+ *  * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
+ *  * for full license details.
+ *  *
+ *  * **************************************************************************************
  *
- * **************************************************************************************
  */
 
 // Provinznamen der GG
@@ -139,7 +141,7 @@ let GuildFights = {
 			FoEproxy.addWsHandler('GuildBattlegroundService', 'all', data => {
 				if (!data['responseData'][0]) return
 				let Pid = data.responseData[0].id || 0;
-				for (x in data.responseData[0]) {
+				for (let x in data.responseData[0]) {
 					if (!data.responseData[0].hasOwnProperty(x) || x === "id") continue;
 					GuildFights.MapData.map.provinces[Pid][x] = data.responseData[0][x];
 				}
@@ -683,7 +685,7 @@ let GuildFights = {
 			b.push('<tr data-player="' + playerNew['player_id'] + '" data-gbground="' + gbground + '" class="' + newProgressClass + (!histView ? 'showdetailview ' : '') + (playerNew['player_id'] === ExtPlayerID ? 'mark-player ' : '') + (change === true ? 'bg-green' : '') + '">');
 			b.push('<td class="tdmin">' + (parseInt(i) + 1) + '.</td>');
 
-			b.push('<td class="tdmin"><img src="' + MainParser.InnoCDN + 'assets/shared/avatars/' + (MainParser.PlayerPortraits[playerNew['avatar']] || 'portrait_433') + '.jpg" alt=""></td>');
+			b.push('<td class="tdmin"><img src="' + srcLinks.GetPortrait(playerNew['avatar']) + '" alt=""></td>');
 
 			b.push('<td>' + playerNew['name'] + '</td>');
 			b.push('<td class="text-center">');
@@ -1824,8 +1826,9 @@ let ProvinceMap = {
 		ProvinceMap.MapCTX.lineWidth = 2;
 
 		// put 0,0 in the center on volcano map
-		if (GuildFights.MapData.map['id'] === "volcano_archipelago") 
+		if (GuildFights.MapData.map['id'] === "volcano_archipelago") {
 			ProvinceMap.MapCTX.translate(ProvinceMap.Size.width/2, ProvinceMap.Size.height/2);
+		}
 
 		// Objects
 		function Province(data) {
@@ -1970,7 +1973,7 @@ let ProvinceMap = {
 
 		Province.prototype.drawStartSector = function(mapStuff, mapType) {
 			let flag_image = new Image();
-			flag_image.src = `${MainParser.InnoCDN}assets/shared/clanflags/${this.owner.flagImg}.jpg`;
+			flag_image.src = srcLinks.get(`/shared/clanflags/${this.owner.flagImg}.jpg`, true);
 			let sector = this;
 			let flagX = mapStuff.x-25;
 			let flagY = mapStuff.y-25;
@@ -2007,7 +2010,7 @@ let ProvinceMap = {
             ProvinceMap.MapCTX.stroke();   
         }
 
-		drawHex = function (x, y, width, height) {
+		let drawHex = function (x, y, width, height) {
 			let pointers = width / 4;
 			let topBottomWidth = width / 2;
 			ProvinceMap.MapCTX.beginPath();
@@ -2100,7 +2103,7 @@ let ProvinceMap = {
 	 * @param socketData
 	 * @constructor
 	 */
-	 RefreshSector: (socketData = []) => {
+	RefreshSector: (socketData = []) => {
 		// TO DO: check sector unlock times and refresh
 		let updatedProvince = ProvinceMap.Provinces.find(p => p.id === 0); // first sector does not have an ID, make it the default one
 

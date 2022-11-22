@@ -15,6 +15,10 @@
     top: calc(50vh + 230px);
     left: calc(50vw - 298px);
 }
+#battleAssistNextEraDialog.BattleAssistNoTournamnt{
+    top: calc(50vh + 200px);
+    left: calc(50vw - 298px);
+}
 
 #battleAssistNextEraDialogBody {
     width: 576px;
