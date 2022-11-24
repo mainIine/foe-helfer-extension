@@ -1,5 +1,18 @@
 ## Changelog - Extension
 
+##### 2.12.1.1
+
+**Update**
+- Discord Webhooks:
+  	- en/de Hilfe-Links ergänzt
+
+**BugFix**
+- Discord Webhooks:
+	- nun sichtbar für alle Spieler
+	- Einträge wurden nach dem Speichern nicht angezeigt	
+
+---
+
 ##### 2.12.1.0
 
 **Neu**

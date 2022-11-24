@@ -255,6 +255,7 @@
     "Boxes.DBExport.WrongDBWorld": "Die Welt der zu importierenden DB passt nicht zum aktuellen Account.",
     "Boxes.Discord.Title": "Discord Webhhoks",
     "Boxes.Discord.TitleNewEntry": "Neuer Webhook Eintrag",
+	"Boxes.Discord.HelpLink": "https://docs.foe-helper.com/deutsch/module/discord",
 	"Boxes.Discord.VisitGGMapBefore": "Um Events der GG zu nutzen, besuche zuerst die Gildengefecht Karte",
 	"Boxes.Discord.EditEntry": "Bearbeiten",
 	"Boxes.Discord.DeleteEntry": "Löschen",
