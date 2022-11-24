@@ -140,7 +140,7 @@ let Notice = {
 						const player = JSON.parse(itm['player_data']);
 
 						subdiv.push(`<div class="content-head-player">
-										<span class="avatar" style="background-image:url('${srcLinks.GetPortrait(Player['Avatar'])}')"></span>
+										<span class="avatar" style="background-image:url('${srcLinks.GetPortrait(player['Avatar'])}')"></span>
 										<div class="text">
 											<span class="name">${player['PlayerName']}</span>
 											<span class="clan-name"><em>#${player['PlayerID']}</em> ${player['ClanName'] ? '[' + player['ClanName'] + ']' : '&nbsp;'}</span>
