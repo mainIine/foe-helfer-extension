@@ -79,7 +79,7 @@ let Discord = {
 				continue;
 			}
 
-			if(!Discord.WebHooks[i] || Discord.WebHooks[i]['name']){
+			if(!Discord.WebHooks[i] || !Discord.WebHooks[i]['name']){
 				continue;
 			}
 
@@ -122,7 +122,7 @@ let Discord = {
 		HTML.Box({
 			id: 'DiscordNewEntry',
 			title: i18n('Boxes.Discord.TitleNewEntry'),
-			ask: 'https://www.google.com'
+			ask: i18n('Boxes.Discord.HelpLink')
 		});
 
 		setTimeout(()=>{

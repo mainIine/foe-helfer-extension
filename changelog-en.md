@@ -1,5 +1,18 @@
 ## Changelog - Extension
 
+##### 2.12.1.1
+
+**Update**
+- Discord Webhooks:
+  - en/de Help links added
+
+**BugFix**
+- Discord Webhooks:
+	- Now visible for all players
+	- Entries were not displayed after saving
+
+---
+
 ##### 2.12.1.0
 
 **New**
