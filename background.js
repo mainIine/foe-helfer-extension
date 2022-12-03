@@ -11,6 +11,12 @@
  * **************************************************************************************
  */
 
+ 'use strict';
+
+importScripts(
+	'vendor/browser-polyfill/browser-polyfill.min.js','vendor/dexie/dexie.min.js'
+)
+
 // @ts-ignore
 let alertsDB = new Dexie("Alerts");
 // Define Database Schema
@@ -615,38 +621,13 @@ alertsDB.version(1).stores({
 			}
 
 			case 'send2Api': { // type
-				let xhr = new XMLHttpRequest();
-
-				xhr.open('POST', request.url);
-				xhr.setRequestHeader('Content-Type', 'application/json');
-				xhr.send(request.data);
-
-				return APIsuccess(true);
-			}
-
-			case 'setInnoCDN': { // type
-				localStorage.setItem('InnoCDN', request.url);
-				return APIsuccess(true);
-			}
-
-			case 'getInnoCDN': { // type
-				let cdnUrl = localStorage.getItem('InnoCDN');
-				return APIsuccess([cdnUrl || defaultInnoCDN, cdnUrl != null]);
-			}
-
-			case 'setPlayerData': { // type
-				const data = request.data;
-
-				const playerdata = JSON.parse(localStorage.getItem('PlayerIdentities') || '{}');
-				playerdata[data.world+'-'+data.player_id] = data;
-				localStorage.setItem('PlayerIdentities', JSON.stringify(playerdata));
-
-				return APIsuccess(true);
-			}
-
-			case 'getPlayerData': { // type
-				const playerdata = JSON.parse(localStorage.getItem('PlayerIdentities') || '{}');
-				return APIsuccess(playerdata[request.world+'-'+request.player_id]);
+				fetch(request.url, {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					body: request.data
+				});
 			}
 
 			case 'showNotification': { // type
