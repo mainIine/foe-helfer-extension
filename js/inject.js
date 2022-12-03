@@ -43,7 +43,7 @@ function scriptLoaded (src, base) {
 inject();
 
 
-function inject (loadBeta = false, extUrl = chrome.extension.getURL(''), betaDate='') {
+function inject (loadBeta = false, extUrl = chrome.runtime.getURL(''), betaDate='') {
 	/**
 	 * Loads a JavaScript in the website. The returned promise will be resolved once the code has been loaded.
 	 * @param {string} src the URL to load
@@ -161,22 +161,19 @@ function inject (loadBeta = false, extUrl = chrome.extension.getURL(''), betaDat
 	async function InjectCode(loadBeta, extUrl) {
 	 	try {
 			// set some global variables
-			let script = document.createElement('script');
-			script.innerText = `
-				const extID='${chrome.runtime.id}',
-					extUrl='${extUrl}',
-					GuiLng='${lng}',
-					extVersion='${v}',
-					isRelease=true,
-					devMode=${!('update_url' in chrome.runtime.getManifest())},
-					loadBeta=${loadBeta};
-			`;
-			(document.head || document.documentElement).appendChild(script);
-			// The script was (supposedly) executed directly and can be removed again.
-			script.remove();
+			localStorage.setItem("HelperBaseData", JSON.stringify({
+				extID: chrome.runtime.id,
+				extUrl: extUrl,
+				GuiLng: lng,
+				extVersion: v,
+				isRelease: true,
+				devMode: `${!('update_url' in chrome.runtime.getManifest())}`,
+				loadBeta: loadBeta
+			}));
+			
 			// Firefox does not support direct communication with background.js but API injections
 			// So the the messages have to be forwarded and this exports an API-Function to do so
-			if (!chrome.app && exportFunction && window.wrappedJSObject) {
+			if (!chrome.extension && exportFunction && window.wrappedJSObject) {
 				function callBgApi(data) {
 					return new window.Promise(
 						exportFunction(
@@ -208,7 +205,7 @@ function inject (loadBeta = false, extUrl = chrome.extension.getURL(''), betaDat
 			const scriptListPromise = loadJsonResource(`${extUrl}js/internal.json`);
 			
 			// load foe-Proxy
-			await promisedLoadCode(chrome.extension.getURL('')+`js/foeproxy.js`,"proxy");
+			await promisedLoadCode(chrome.runtime.getURL('')+`js/foeproxy.js`,"proxy");
 			scriptLoaded("primed", "proxy");
 			await proxyLoaded;
 			// load the main
