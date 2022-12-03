@@ -25,10 +25,6 @@
 	height: 500px;
 }
 
-#GildPlayers.closed {
-	height: 22px !important;
-}
-
 #GildPlayersHeader small {
 	font-weight: lighter;
 }
