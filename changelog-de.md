@@ -1,5 +1,21 @@
 ## Changelog - Extension
 
+##### 2.12.2.0
+
+**Update**
+- Discord Webhooks:
+  - Kopieren Button ergänzt
+  - Maximale Höhe für viele Einträge ergänzt
+  - Testbutton integriert
+  - beliebig viele Webhook Urls können hinterlegt werden
+  - neue Funktionen werden folgen...
+
+**BugFix**
+- Notizfunktion: 
+  	- Box wurde wegen eines fehlerhaften Avatar links nicht angezeigt
+
+---
+
 ##### 2.12.1.1
 
 **Update**

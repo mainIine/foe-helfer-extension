@@ -1,16 +1,15 @@
 /*
+ * *************************************************************************************
  *
- *  * **************************************************************************************
- *  * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
- *  * You may use, distribute and modify this code under the
- *  * terms of the AGPL license.
- *  *
- *  * See file LICENSE.md or go to
- *  * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
- *  * for full license details.
- *  *
- *  * **************************************************************************************
+ * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
  *
+ * See file LICENSE.md or go to
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
+ *
+ * *************************************************************************************
  */
 
 body {
@@ -218,6 +217,7 @@ a[target="_blank"] svg {
 	text-align: center;
 	font-size: 9pt;
 	font-family: sans-serif;
+	border-radius: 2px;
 }
 
 .btn-green:not([disabled]),
@@ -335,7 +335,7 @@ table.foe-table thead tr th,
 table.foe-table th,
 .dark-bg,
 .thead th {
-	background: url(../images/hud/box-bg.png) center center repeat;
+	background: url('../images/hud/box-bg.png') center center repeat;
 	box-shadow: inset 0px 0px 0px 2000px var(--black-50), 0 1px 0 0 var(--border-table-top), 0 2px 0 0 var(--border-table-bottom);
 }
 

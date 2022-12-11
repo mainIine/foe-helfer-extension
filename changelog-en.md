@@ -1,5 +1,21 @@
 ## Changelog - Extension
 
+##### 2.12.2.0
+
+**Update**
+- Discord webhooks:
+	- Copy button added
+	- Maximum height for many entries added
+	- test button integrated
+	- any number of webhook urls can be stored
+    - new functions will follow...
+
+**BugFix**
+- note function:
+	- Box was not displayed because of a faulty avatar on the left side
+
+---
+
 ##### 2.12.1.1
 
 **Update**
