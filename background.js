@@ -222,6 +222,22 @@ alertsDB.version(1).stores({
 			// make sure the alarm got cleared before finishing
 			await alarmClearP;
 		}
+
+		/**
+		 * deletes all Alerts marked for deletion which don't have a notification displayed.
+		 */
+		async function cleanupAlerts() {
+			const alerts = await getAllAlerts();
+			// don't actually delete an alarm with notification since the user can still interact with the notification
+			const notifications = await browser.notifications.getAll();
+			alerts.forEach(alert => {
+				const tagId = prefix + alert.id;
+				if (!notifications[tagId]) {
+					db.alerts.delete(alert.id);
+				}
+			});
+		}
+
 		/**
 		 * triggers the notification for the given alert
 		 * @param {FoEAlert} alert
@@ -304,7 +320,8 @@ alertsDB.version(1).stores({
 			}
 		});
 
-
+		// upon start cleanup alerts which didn't get removed properly.
+		cleanupAlerts();
 
 		return {
 			getValidData: getValidateAlertData,
