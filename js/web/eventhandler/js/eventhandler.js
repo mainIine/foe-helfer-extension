@@ -1,5 +1,6 @@
 ﻿/*
- * **************************************************************************************
+ * *************************************************************************************
+ *
  * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
@@ -8,7 +9,7 @@
  * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
  * for full license details.
  *
- * **************************************************************************************
+ * *************************************************************************************
  */
 
 FoEproxy.addHandler('OtherPlayerService', 'getEventsPaginated', (data, postData) => {
@@ -263,7 +264,9 @@ let EventHandler = {
 	ShowMoppelHelper: () => {
 		moment.locale(i18n('Local'));
 
-		if ($('#moppelhelper').length === 0) {
+		let $moppelHelper = $('#moppelhelper');
+
+		if ($moppelHelper.length === 0) {
 			HTML.Box({
 				id: 'moppelhelper',
 				title: i18n('Boxes.MoppelHelper.Title'),
@@ -276,43 +279,43 @@ let EventHandler = {
 
 			HTML.AddCssFile('eventhandler');
 
-			$('#moppelhelper').on('click', '.filtermoppelevents', function () {
+			$moppelHelper.on('click', '.filtermoppelevents', function () {
 				EventHandler.FilterMoppelEvents = !EventHandler.FilterMoppelEvents;
 				EventHandler.CalcMoppelHelperTable();
 			});
 
-			$('#moppelhelper').on('click', '.filtertavernvisits', function () {
+			$moppelHelper.on('click', '.filtertavernvisits', function () {
 				EventHandler.FilterTavernVisits = !EventHandler.FilterTavernVisits;
 				EventHandler.CalcMoppelHelperTable();
 			});
 
-			$('#moppelhelper').on('click', '.filterattacks', function () {
+			$moppelHelper.on('click', '.filterattacks', function () {
 				EventHandler.FilterAttacks = !EventHandler.FilterAttacks;
 				EventHandler.CalcMoppelHelperTable();
 			});
 
-			$('#moppelhelper').on('click', '.filterplunders', function () {
+			$moppelHelper.on('click', '.filterplunders', function () {
 				EventHandler.FilterPlunders = !EventHandler.FilterPlunders;
 				EventHandler.CalcMoppelHelperTable();
 			});
 
-			$('#moppelhelper').on('click', '.filtertrades', function () {
+			$moppelHelper.on('click', '.filtertrades', function () {
 				EventHandler.FilterTrades = !EventHandler.FilterTrades;
 				EventHandler.CalcMoppelHelperTable();
 			});
 
-			$('#moppelhelper').on('click', '.filtergbs', function () {
+			$moppelHelper.on('click', '.filtergbs', function () {
 				EventHandler.FilterGBs = !EventHandler.FilterGBs;
 				EventHandler.CalcMoppelHelperTable();
 			});
 
-			$('#moppelhelper').on('click', '.filterothers', function () {
+			$moppelHelper.on('click', '.filterothers', function () {
 				EventHandler.FilterOthers = !EventHandler.FilterOthers;
 				EventHandler.CalcMoppelHelperTable();
 			});
 
 			// Choose Neighbors/Guildmembers/Friends
-			$('#moppelhelper').on('click', '.toggle-players', function () {
+			$moppelHelper.on('click', '.toggle-players', function () {
 				EventHandler.CurrentPlayerGroup = $(this).data('value');
 				
 				EventHandler.CalcMoppelHelperBody();
