@@ -1,5 +1,6 @@
 /*
- * **************************************************************************************
+ * *************************************************************************************
+ *
  * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
@@ -8,10 +9,10 @@
  * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
  * for full license details.
  *
- * **************************************************************************************
+ * *************************************************************************************
  */
 
- 'use strict';
+'use strict';
 
 importScripts(
 	'vendor/browser-polyfill/browser-polyfill.min.js','vendor/dexie/dexie.min.js'
@@ -334,8 +335,6 @@ alertsDB.version(1).stores({
 	})();
 
 
-
-
 	browser.runtime.onInstalled.addListener(() => {
 		"use strict";
 		const version = browser.runtime.getManifest().version;
@@ -406,6 +405,7 @@ alertsDB.version(1).stores({
 		return {ok: true, data: data};
 	}
 
+
 	/**
 	 * creates the return value for an error
 	 * @param {string} message the error message
@@ -414,6 +414,7 @@ alertsDB.version(1).stores({
 	function APIerror(message) {
 		return {ok: false, error: message};
 	}
+
 
 	/**
 	 * handles internal and external extension communication
@@ -646,8 +647,7 @@ alertsDB.version(1).stores({
 					});
 				}
 				catch( error ){
-					console.error('NotificationManager.notify:');
-					console.error( error );
+					console.error('NotificationManager.notify: ', error );
 					return APIsuccess(false);
 				}
 				return APIsuccess(true);
@@ -657,6 +657,7 @@ alertsDB.version(1).stores({
 
 		return APIerror(`unknown request type: ${type}`);
 	}
+
 
 	browser.runtime.onMessage.addListener(handleWebpageRequests);
 	browser.runtime.onMessageExternal.addListener(handleWebpageRequests);

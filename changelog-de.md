@@ -1,6 +1,10 @@
 ## Changelog - Extension
 
-##### 2.12.2.0
+##### 3.0.0.0
+
+**Neu**
+- Erweiterung:
+  - Kompatibilität für die neuen Manifest V3 Anforderungen für Chromium-Browser geschaffen, Firefox folgt erst im 1 Quartal 2023
 
 **Update**
 - Discord Webhooks:
