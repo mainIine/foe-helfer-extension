@@ -262,7 +262,7 @@ alertsDB.version(1).stores({
 		browser.alarms.onAlarm.addListener(async (alarm) => {
 			if (!alarm.name.startsWith(prefix)) return;
 
-			const alertId = Number.parseInt(alarm.name.substr(prefix.length));
+			const alertId = Number.parseInt(alarm.name.substring(prefix.length));
 			if (!Number.isInteger(alertId) || alertId > Number.MAX_SAFE_INTEGER || alertId < 0) return;
 
 			const alertData = await db.transaction('rw', db.alerts, async () => {
@@ -282,7 +282,7 @@ alertsDB.version(1).stores({
 		browser.notifications.onClicked.addListener(async (notificationId) => {
 			if (!notificationId.startsWith(prefix)) return;
 
-			const alertId = Number.parseInt(notificationId.substr(prefix.length));
+			const alertId = Number.parseInt(notificationId.substring(prefix.length));
 			if (!Number.isInteger(alertId) || alertId > Number.MAX_SAFE_INTEGER || alertId < 0) return;
 
 			const alertData = await db.transaction('rw', db.alerts, async () => {
@@ -309,13 +309,13 @@ alertsDB.version(1).stores({
 		browser.notifications.onClosed.addListener(async (notificationId) => {
 			if (!notificationId.startsWith(prefix)) return;
 
-			const alertId = Number.parseInt(notificationId.substr(prefix.length));
+			const alertId = Number.parseInt(notificationId.substring(prefix.length));
 			const alert = await getAlert(alertId);
 			if (alert) {
 				if (alert.delete) {
-					db.alert.delete(alertId);
+					db.alerts.delete(alertId);
 				} else {
-					db.alert.update(alertId, {handled: true});
+					db.alerts.update(alertId, {handled: true});
 				}
 			}
 		});
