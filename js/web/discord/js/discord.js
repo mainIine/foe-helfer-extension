@@ -171,8 +171,8 @@ let Discord = {
 				}
 
 				let url = Discord.WebHooksUrls[i];
-
-				h.push(`<option${url && (url['url'] === data['url'] || Discord.WebHooksUrls.length === 1) ? ' selected' : ''} value="${url['url']}">${url['name']}</option>`);
+				console.log('url: ',url);
+				h.push(`<option${url && data && (url['url'] === data['url'] || Discord.WebHooksUrls.length === 1) ? ' selected' : ''} value="${url['url']}">${url['name']}</option>`);
 			}
 
 			h.push(`</td>`);
