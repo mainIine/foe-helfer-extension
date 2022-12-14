@@ -5,6 +5,7 @@
 **Neu**
 - Erweiterung:
   - Kompatibilität für die neuen Manifest V3 Anforderungen für Chromium-Browser geschaffen, Firefox folgt erst im 1 Quartal 2023
+  - diverse CSS Anpassungen
 
 **Update**
 - Discord Webhooks:
