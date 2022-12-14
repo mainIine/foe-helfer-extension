@@ -53,7 +53,7 @@
 }
 
 #Castle .castle_wrapper .icon.castle-points {
-	background: url('./images/castle_icon.png') center no-repeat;
+	background: url('../../x_img/castle_icon.png') center no-repeat;
 	background-size: contain;
 }
 

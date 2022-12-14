@@ -1,16 +1,15 @@
 /*
+ * *************************************************************************************
  *
- *  * **************************************************************************************
- *  * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
- *  * You may use, distribute and modify this code under the
- *  * terms of the AGPL license.
- *  *
- *  * See file LICENSE.md or go to
- *  * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
- *  * for full license details.
- *  *
- *  * **************************************************************************************
+ * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
  *
+ * See file LICENSE.md or go to
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
+ *
+ * *************************************************************************************
  */
 
 body {
@@ -84,10 +83,6 @@ a[target="_blank"] svg {
 	overflow: hidden;
 	text-overflow: ellipsis;
 	text-align: center;
-
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
 	user-select: none;
 }
 
@@ -158,9 +153,6 @@ a[target="_blank"] svg {
 	font-weight: 400;
 	text-align: center;
 	vertical-align: middle;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
 	user-select: none;
 	padding: 0.2rem 0.8rem;
 	font-size: 0.8rem;
@@ -218,6 +210,7 @@ a[target="_blank"] svg {
 	text-align: center;
 	font-size: 9pt;
 	font-family: sans-serif;
+	border-radius: 2px;
 }
 
 .btn-green:not([disabled]),
@@ -335,7 +328,7 @@ table.foe-table thead tr th,
 table.foe-table th,
 .dark-bg,
 .thead th {
-	background: url(../images/hud/box-bg.png) center center repeat;
+	background: url('../images/hud/box-bg.png') center center repeat;
 	box-shadow: inset 0px 0px 0px 2000px var(--black-50), 0 1px 0 0 var(--border-table-top), 0 2px 0 0 var(--border-table-bottom);
 }
 
@@ -600,14 +593,14 @@ Tabs */
 	border-radius: 4px 4px 0 0;
 	border: 2px solid #522c0f;
 	border-bottom: none;
-	background: linear-gradient(#494241, #2b2c33);
+	background: var(--background-tabs);
 	box-shadow: inset 0 1px 1px #2a1f31, inset 0 2px 0 #5a5155, 0 -1px 3px #000;
 }
 
 .window-body .tabs ul.horizontal li.active {
 	border: 2px solid rgb(137, 80, 34);
 	border-bottom: none;
-	background: linear-gradient(#4a5c7a, #3b4863);
+	background: var(--background-tabs-active);
 	box-shadow: inset 0 1px 1px #242235, inset 0 2px 0 #737793, 0 -1px 3px #000;
 }
 
@@ -908,7 +901,7 @@ FP-Bar */
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	background: linear-gradient(0deg, #44150a, #48170c, #4c190e, #501b10, #541d12, #581f13, #5d2115, #612316);
+	background: var(--background-window-head);
 	box-shadow: inset 0 1px 0 #652518, inset 0 2px 0 #853427;
 	padding: 0.4rem;
 	border-bottom: 2px solid #895022;
@@ -1616,11 +1609,11 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 .hud-btn-up-active, .hud-btn-down-active {
-	background: linear-gradient(to bottom, #c38236, #894422);
+	background: var(--background-hud-btn);
 }
 
 .hud-btn-up-active:hover, .hud-btn-down-active:hover {
-	background: linear-gradient(to bottom, #d8cf56, #d58f4a);
+	background: var(--background-hud-btn-hover);
 }
 
 .hud-btn-up {
@@ -1789,7 +1782,7 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 #menu_boxHeader {
-	background: linear-gradient(#384354, #293344);
+	background: var(--background-window-boxmenu-head);
     box-shadow: inset 0 1px 1px #384354, inset 0 2px 0 #575d69;
 	padding: 0.2rem;
 }
@@ -1836,3 +1829,16 @@ input[type="range"]::-webkit-slider-thumb {
 	display: flex;
     justify-content: center;
 }
+
+span.activity {
+    display: inline-block;
+    height: 14px;
+    width: 14px;
+    border-radius: 50%;
+    background: #ccc;
+    box-shadow: 0 0 2px 1px #000;
+}
+
+span.activity.activity_2 { background: var(--background-tabs-active); }
+span.activity.activity_1 { background: var(--background-btn-active); }
+span.activity.activity_0 { background: var(--background-btn-red); }

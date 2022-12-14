@@ -69,39 +69,54 @@
 	position: absolute;
 }
 
-#UnitOverview #UnitOverviewBody table.foe-table th {
+#UnitOverview table.foe-table th {
 	border-top: 1px solid var(--border-table-top);
 	position: sticky;
 	top: 24px;
 	z-index: 1;
 }
 
-#UnitOverview #UnitOverviewBody .head-sticky th {
+#UnitOverview .head-sticky th {
 	border-top: unset !important;
 	top: 0 !important;
+}
+
+#UnitOverview li.attack {
+	background: linear-gradient(#8a3f3f, #5e1c1c);
+	box-shadow: inset 0 1px 1px #352222, inset 0 2px 0 #c75d5d, 0 -1px 3px #000;
+}
+
+#UnitOverview li.defense {
+	background: linear-gradient(#375b99, #09286b);
+	box-shadow: inset 0 1px 1px #352222, inset 0 2px 0 #7879a9, 0 -1px 3px #000;
+}
+
+#UnitOverview li.arenaDefense {
+	background: linear-gradient(#d3a543, #a07930);
+	box-shadow: inset 0 1px 1px #352e22, inset 0 2px 0 #ffc958, 0 -1px 3px #000;
 }
 
 #UnitOverview #UnitOverviewBody .tabs ul li a span {
 	width: 21px;
 	top: 6px;
-	background: url('../images/unit_tab_icon.png') 0 3px no-repeat;
+	background: url('../images/unit_tab_icon.png') 0 6px no-repeat;
 	background-size: 126px 20px;
 }
 
 #UnitOverview #UnitOverviewBody .tabs ul li.defense a span {
-	background-position: -21px 3px;
+	background-position: -21px 6px;
 }
 
 #UnitOverview #UnitOverviewBody .tabs ul li.arenaDefense a span {
-	background-position: -42px 3px;
+	background-position: -42px 6px;
 }
 
 #UnitOverview #UnitOverviewBody .tabs ul li.pool a span {
-	background-position: -63px 3px;
+	background-position: -63px 6px;
 }
 
 #UnitOverview #UnitOverviewBody .tabs ul li.alca a span {
-	background-position: -84px 3px;
+	background-position: -84px 6px;
 }
 
 #UnitOverviewSettingsBox input:invalid+button+span:after {
@@ -118,7 +133,7 @@
 	display: inline-block;
 	width: calc(50px*var(--unit_scale));
 	height: calc(50px*var(--unit_scale));
-	box-shadow: 1px 1px 2px var(--black-65);
+	zoom: 0.75;
 }
 
 /*fallback for all tools that do not specify their own scale*/

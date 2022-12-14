@@ -17,6 +17,10 @@
 	width: 720px;
 }
 
+#outpostConsumablesBody {
+	overflow: auto;
+}
+
 #outpostConsumables #outpostConsumablesBody tr.total-row td {
 	border-top: 2px solid #efcf9a;
 	font-weight: 700;
