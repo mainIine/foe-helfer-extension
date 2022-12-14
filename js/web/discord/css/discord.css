@@ -1,16 +1,15 @@
 /*
+ * *************************************************************************************
  *
- *  * **************************************************************************************
- *  * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
- *  * You may use, distribute and modify this code under the
- *  * terms of the AGPL license.
- *  *
- *  * See file LICENSE.md or go to
- *  * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
- *  * for full license details.
- *  *
- *  * **************************************************************************************
+ * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
  *
+ * See file LICENSE.md or go to
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
+ *
+ * *************************************************************************************
  */
 
 #Discord {
@@ -19,14 +18,19 @@
     left: calc(50vw - 375px);
 }
 
+#Discord .window-body {
+	max-height: calc(100vh - 150px);
+	overflow-y: auto;
+}
+
 #Discord .window-body .textarea {
     min-width: 13.125rem;
 }
 
 #DiscordNewEntry {
-	width: 450px;
+	width: 550px;
 	top: calc(50vh - 105px);
-	left: calc(50vw - 225px);
+	left: calc(50vw - 275px);
 	z-index: 1000;
 }
 
@@ -36,4 +40,11 @@
 
 #DiscordNewEntryBody textarea {
 	height: 100px;
+}
+
+#DiscordWebhookUrls {
+	width: 600px;
+	top: calc(50vh - 50px);
+	left: calc(50vw - 300px);
+	z-index: 1000;
 }

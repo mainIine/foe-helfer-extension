@@ -203,6 +203,19 @@
     position: relative
 }
 
+span.activity {
+    display: inline-block;
+    height: 14px;
+    width: 14px;
+    border-radius: 50%;
+    background: #ccc;
+    box-shadow: 0 0 2px 1px #000;
+}
+
+span.activity.activity_2 { background: var(--background-tabs-active); }
+span.activity.activity_1 { background: var(--background-btn-active); }
+span.activity.activity_0 { background: var(--background-btn-red); }
+
 #GuildMemberStatBody table tr td.dark {
     background-color: var(--black-50) !important;
 }

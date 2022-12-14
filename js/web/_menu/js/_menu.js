@@ -1,16 +1,15 @@
 /*
+ * *************************************************************************************
  *
- *  * **************************************************************************************
- *  * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
- *  * You may use, distribute and modify this code under the
- *  * terms of the AGPL license.
- *  *
- *  * See file LICENSE.md or go to
- *  * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
- *  * for full license details.
- *  *
- *  * **************************************************************************************
+ * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
  *
+ * See file LICENSE.md or go to
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
+ *
+ * *************************************************************************************
  */
 
 let _menu = {
@@ -567,7 +566,7 @@ let _menu = {
 	 *
 	 * @returns {null|undefined|jQuery}
 	 */
-	 hiddenRewards_Btn: () => {
+	hiddenRewards_Btn: () => {
 		let btn_RewardsBG = _menu.MakeButton('hiddenRewards', i18n('Menu.HiddenRewards.Title'), i18n('Menu.HiddenRewards.Desc'));
 
 		let btn_Rewards = $('<span />').on('click', function () {

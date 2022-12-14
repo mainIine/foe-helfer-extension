@@ -1,5 +1,6 @@
 /*
- * **************************************************************************************
+ * *************************************************************************************
+ *
  * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
@@ -8,8 +9,14 @@
  * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
  * for full license details.
  *
- * **************************************************************************************
+ * *************************************************************************************
  */
+
+'use strict';
+
+importScripts(
+	'vendor/browser-polyfill/browser-polyfill.min.js','vendor/dexie/dexie.min.js'
+)
 
 // @ts-ignore
 let alertsDB = new Dexie("Alerts");
@@ -215,6 +222,22 @@ alertsDB.version(1).stores({
 			// make sure the alarm got cleared before finishing
 			await alarmClearP;
 		}
+
+		/**
+		 * deletes all Alerts marked for deletion which don't have a notification displayed.
+		 */
+		async function cleanupAlerts() {
+			const alerts = await getAllAlerts();
+			// don't actually delete an alarm with notification since the user can still interact with the notification
+			const notifications = await browser.notifications.getAll();
+			alerts.forEach(alert => {
+				const tagId = prefix + alert.id;
+				if (!notifications[tagId]) {
+					db.alerts.delete(alert.id);
+				}
+			});
+		}
+
 		/**
 		 * triggers the notification for the given alert
 		 * @param {FoEAlert} alert
@@ -239,7 +262,7 @@ alertsDB.version(1).stores({
 		browser.alarms.onAlarm.addListener(async (alarm) => {
 			if (!alarm.name.startsWith(prefix)) return;
 
-			const alertId = Number.parseInt(alarm.name.substr(prefix.length));
+			const alertId = Number.parseInt(alarm.name.substring(prefix.length));
 			if (!Number.isInteger(alertId) || alertId > Number.MAX_SAFE_INTEGER || alertId < 0) return;
 
 			const alertData = await db.transaction('rw', db.alerts, async () => {
@@ -259,7 +282,7 @@ alertsDB.version(1).stores({
 		browser.notifications.onClicked.addListener(async (notificationId) => {
 			if (!notificationId.startsWith(prefix)) return;
 
-			const alertId = Number.parseInt(notificationId.substr(prefix.length));
+			const alertId = Number.parseInt(notificationId.substring(prefix.length));
 			if (!Number.isInteger(alertId) || alertId > Number.MAX_SAFE_INTEGER || alertId < 0) return;
 
 			const alertData = await db.transaction('rw', db.alerts, async () => {
@@ -286,18 +309,19 @@ alertsDB.version(1).stores({
 		browser.notifications.onClosed.addListener(async (notificationId) => {
 			if (!notificationId.startsWith(prefix)) return;
 
-			const alertId = Number.parseInt(notificationId.substr(prefix.length));
+			const alertId = Number.parseInt(notificationId.substring(prefix.length));
 			const alert = await getAlert(alertId);
 			if (alert) {
 				if (alert.delete) {
-					db.alert.delete(alertId);
+					db.alerts.delete(alertId);
 				} else {
-					db.alert.update(alertId, {handled: true});
+					db.alerts.update(alertId, {handled: true});
 				}
 			}
 		});
 
-
+		// upon start cleanup alerts which didn't get removed properly.
+		cleanupAlerts();
 
 		return {
 			getValidData: getValidateAlertData,
@@ -326,8 +350,6 @@ alertsDB.version(1).stores({
 			trigger: triggerAlert
 		};
 	})();
-
-
 
 
 	browser.runtime.onInstalled.addListener(() => {
@@ -400,6 +422,7 @@ alertsDB.version(1).stores({
 		return {ok: true, data: data};
 	}
 
+
 	/**
 	 * creates the return value for an error
 	 * @param {string} message the error message
@@ -408,6 +431,7 @@ alertsDB.version(1).stores({
 	function APIerror(message) {
 		return {ok: false, error: message};
 	}
+
 
 	/**
 	 * handles internal and external extension communication
@@ -615,38 +639,13 @@ alertsDB.version(1).stores({
 			}
 
 			case 'send2Api': { // type
-				let xhr = new XMLHttpRequest();
-
-				xhr.open('POST', request.url);
-				xhr.setRequestHeader('Content-Type', 'application/json');
-				xhr.send(request.data);
-
-				return APIsuccess(true);
-			}
-
-			case 'setInnoCDN': { // type
-				localStorage.setItem('InnoCDN', request.url);
-				return APIsuccess(true);
-			}
-
-			case 'getInnoCDN': { // type
-				let cdnUrl = localStorage.getItem('InnoCDN');
-				return APIsuccess([cdnUrl || defaultInnoCDN, cdnUrl != null]);
-			}
-
-			case 'setPlayerData': { // type
-				const data = request.data;
-
-				const playerdata = JSON.parse(localStorage.getItem('PlayerIdentities') || '{}');
-				playerdata[data.world+'-'+data.player_id] = data;
-				localStorage.setItem('PlayerIdentities', JSON.stringify(playerdata));
-
-				return APIsuccess(true);
-			}
-
-			case 'getPlayerData': { // type
-				const playerdata = JSON.parse(localStorage.getItem('PlayerIdentities') || '{}');
-				return APIsuccess(playerdata[request.world+'-'+request.player_id]);
+				fetch(request.url, {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					body: request.data
+				});
 			}
 
 			case 'showNotification': { // type
@@ -665,8 +664,7 @@ alertsDB.version(1).stores({
 					});
 				}
 				catch( error ){
-					console.error('NotificationManager.notify:');
-					console.error( error );
+					console.error('NotificationManager.notify: ', error );
 					return APIsuccess(false);
 				}
 				return APIsuccess(true);
@@ -676,6 +674,7 @@ alertsDB.version(1).stores({
 
 		return APIerror(`unknown request type: ${type}`);
 	}
+
 
 	browser.runtime.onMessage.addListener(handleWebpageRequests);
 	browser.runtime.onMessageExternal.addListener(handleWebpageRequests);

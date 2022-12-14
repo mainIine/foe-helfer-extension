@@ -1,5 +1,6 @@
 /*
- * **************************************************************************************
+ * *************************************************************************************
+ *
  * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
@@ -8,7 +9,7 @@
  * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
  * for full license details.
  *
- * **************************************************************************************
+ * *************************************************************************************
  */
 
 FoEproxy.addHandler('ClanService', 'getOwnClanData', (data, postData) => {
@@ -1080,7 +1081,6 @@ let GuildMemberStat = {
 
 			let deletedMember = (typeof member['deleted'] !== 'undefined' && member['deleted'] !== 0);
 			deletedCount += deletedMember ? 1 : 0;
-			let activityIcon = !deletedMember ? `act_${member['activity']}.png` : 'act_deleted.png';
 
 			if (deletedMember && !GuildMemberStat.Settings.showDeletedMembers)
 			{
@@ -1122,7 +1122,7 @@ let GuildMemberStat = {
 			h.push(`<td class="is-number" data-number="${Technologies.Eras[member['era']]}">${i18n('Eras.' + Technologies.Eras[member['era']])}</td>`);
 
 			if (GuildMemberStat.hasGuildMemberRights)
-				h.push(`<td class="is-number" data-number="${member['activity']}"><img src="${extUrl}js/web/guildmemberstat/images/${activityIcon}" /> ${ActWarnCount > 0 ? '<span class="warn">(' + ActWarnCount + ')</span>' : ''}</td>`);
+				h.push(`<td class="is-number" data-number="${member['activity']}"><span class="activity activity_${member['activity']}"></span> ${ActWarnCount > 0 ? '<span class="warn">(' + ActWarnCount + ')</span>' : ''}</td>`);
 
 			h.push(`<td class="is-number text-center" data-number="${forumActivityCount}">${forumActivityCount}</td>`);
 			h.push(`<td class="is-number text-center" data-number="${gexActivityCount}">${gexActivityCount}</td>`);
@@ -1736,6 +1736,7 @@ let GuildMemberStat = {
 		GuildMemberStat.hidePreloader();
 
 	},
+
 
 	ShowGuildBuildings: async () => {
 
