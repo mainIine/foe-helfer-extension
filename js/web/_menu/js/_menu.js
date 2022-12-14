@@ -566,7 +566,7 @@ let _menu = {
 	 *
 	 * @returns {null|undefined|jQuery}
 	 */
-	 hiddenRewards_Btn: () => {
+	hiddenRewards_Btn: () => {
 		let btn_RewardsBG = _menu.MakeButton('hiddenRewards', i18n('Menu.HiddenRewards.Title'), i18n('Menu.HiddenRewards.Desc'));
 
 		let btn_Rewards = $('<span />').on('click', function () {

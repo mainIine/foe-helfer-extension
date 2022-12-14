@@ -264,9 +264,7 @@ let EventHandler = {
 	ShowMoppelHelper: () => {
 		moment.locale(i18n('Local'));
 
-		let $moppelHelper = $('#moppelhelper');
-
-		if ($moppelHelper.length === 0) {
+		if ($('#moppelhelper').length === 0) {
 			HTML.Box({
 				id: 'moppelhelper',
 				title: i18n('Boxes.MoppelHelper.Title'),
@@ -279,43 +277,43 @@ let EventHandler = {
 
 			HTML.AddCssFile('eventhandler');
 
-			$moppelHelper.on('click', '.filtermoppelevents', function () {
+			$('#moppelhelper').on('click', '.filtermoppelevents', function () {
 				EventHandler.FilterMoppelEvents = !EventHandler.FilterMoppelEvents;
 				EventHandler.CalcMoppelHelperTable();
 			});
 
-			$moppelHelper.on('click', '.filtertavernvisits', function () {
+			$('#moppelhelper').on('click', '.filtertavernvisits', function () {
 				EventHandler.FilterTavernVisits = !EventHandler.FilterTavernVisits;
 				EventHandler.CalcMoppelHelperTable();
 			});
 
-			$moppelHelper.on('click', '.filterattacks', function () {
+			$('#moppelhelper').on('click', '.filterattacks', function () {
 				EventHandler.FilterAttacks = !EventHandler.FilterAttacks;
 				EventHandler.CalcMoppelHelperTable();
 			});
 
-			$moppelHelper.on('click', '.filterplunders', function () {
+			$('#moppelhelper').on('click', '.filterplunders', function () {
 				EventHandler.FilterPlunders = !EventHandler.FilterPlunders;
 				EventHandler.CalcMoppelHelperTable();
 			});
 
-			$moppelHelper.on('click', '.filtertrades', function () {
+			$('#moppelhelper').on('click', '.filtertrades', function () {
 				EventHandler.FilterTrades = !EventHandler.FilterTrades;
 				EventHandler.CalcMoppelHelperTable();
 			});
 
-			$moppelHelper.on('click', '.filtergbs', function () {
+			$('#moppelhelper').on('click', '.filtergbs', function () {
 				EventHandler.FilterGBs = !EventHandler.FilterGBs;
 				EventHandler.CalcMoppelHelperTable();
 			});
 
-			$moppelHelper.on('click', '.filterothers', function () {
+			$('#moppelhelper').on('click', '.filterothers', function () {
 				EventHandler.FilterOthers = !EventHandler.FilterOthers;
 				EventHandler.CalcMoppelHelperTable();
 			});
 
 			// Choose Neighbors/Guildmembers/Friends
-			$moppelHelper.on('click', '.toggle-players', function () {
+			$('#moppelhelper').on('click', '.toggle-players', function () {
 				EventHandler.CurrentPlayerGroup = $(this).data('value');
 				
 				EventHandler.CalcMoppelHelperBody();
