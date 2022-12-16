@@ -264,6 +264,8 @@
     "Boxes.Discord.Message": "Message",
     "Boxes.Discord.Save": "Save",
     "Boxes.Discord.WebhookUrl": "Webhook URL",
+    "Boxes.Discord.CopyTitle": "Copy",
+	"Boxes.Discord.TestEntry": "Testing",
     "Boxes.EventChests.Chance": "Chance",
     "Boxes.EventChests.Cost": "Costs",
     "Boxes.EventChests.CostPerPrize": "Cost/Prize",

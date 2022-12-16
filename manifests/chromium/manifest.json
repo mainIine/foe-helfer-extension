@@ -1,0 +1,68 @@
+{
+	"name": "__MSG_appName__",
+	"description": "__MSG_appDesc__",
+	"default_locale": "en",
+	"version": "3.0.0.0",
+ 	
+	"manifest_version": 3,
+	"permissions": [
+		"alarms",
+		"storage",
+		"tabs",
+	  	"notifications",
+		"clipboardWrite"
+	],
+
+	"host_permissions": [
+		"https://*.forgeofempires.com/*",
+		"https://foe-helper.com/*",
+		"https://*.foe-helper.com/*",
+		"https://*.foe-rechner.de/*"
+	],
+
+	"action": {
+		"default_icon": "images/app16.png",
+		"default_popup": "content/popup.html",
+		"default_title": "__MSG_appName__"
+	},
+
+	"icons": {
+		"16": "images/app16.png",
+		"48": "images/app48.png",
+		"128": "images/app128.png"
+	},
+
+	"web_accessible_resources": [
+		{
+			"resources": [
+				"js/*",
+				"vendor/*",
+				"css/*",
+				"content/*"
+			],
+			"matches": [ "https://*/*" ]
+		}
+	],
+	
+	"content_scripts": [
+		{
+			"matches": ["https://*.forgeofempires.com/*"],
+			"include_globs": [ "*forgeofempires.com/game*" ],
+			"run_at": "document_start",
+			"js": [
+				"vendor/browser-polyfill/browser-polyfill.min.js",
+				"js/web/_languages/js/_languages.js",
+				"js/inject.js"
+			]
+		}
+	],
+
+	"externally_connectable" : {
+		"matches": ["https://*.forgeofempires.com/*"],
+		"ids": ["*"]
+	},
+
+	"background": {
+		"service_worker": "background.js"
+	}
+}
