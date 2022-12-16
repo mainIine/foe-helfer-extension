@@ -593,6 +593,7 @@ let GvGMap = {
 				if (sector.hitpoints != undefined) { 
 					let newSector = {};
 					let realX = (sector.position.x - GvGMap.ProvinceData.bounds.x_min) * GvGMap.Map.HexWidth;
+					if (sector.position.y === undefined) sector.position.y = 0;
 					let realY = (sector.position.y - GvGMap.ProvinceData.bounds.y_min) * GvGMap.Map.HexHeight;
 
 					if (sector.position.y % 2 === 0) 

@@ -76,29 +76,17 @@
 	width: 200px;
 }
 
-#bonus-hud .first_strike-icon {
-	background-image: url('../../x_img/first_strike.png');
-}
+.first_strike-icon { background-image: url('../../x_img/first_strike.png'); }
 
-#bonus-hud .spoils_of_war-icon {
-	background-image: url('../../x_img/spoils_of_war.png');
-}
+.spoils_of_war-icon { background-image: url('../../x_img/spoils_of_war.png'); }
 
-#bonus-hud .diplomatic_gifts-icon {
-	background-image: url('../../x_img/diplomatic_gifts.png');
-}
+.diplomatic_gifts-icon { background-image: url('../../x_img/diplomatic_gifts.png'); }
 
-#bonus-hud .missile_launch-icon {
-	background-image: url('../../x_img/missile_launch.png');
-}
+.missile_launch-icon { background-image: url('../../x_img/missile_launch.png'); }
 
-#bonus-hud .aid_goods-icon {
-	background-image: url('../../x_img/aid_goods.png');
-}
+.aid_goods-icon { background-image: url('../../x_img/aid_goods.png'); }
 
-#bonus-hud .donequests-icon {
-	background-image: url('../../x_img/quest.png');
-}
+.donequests-icon { background-image: url('../../x_img/quest.png'); }
 
 
 .bonus-blink {
