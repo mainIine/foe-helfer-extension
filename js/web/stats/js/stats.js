@@ -1492,8 +1492,7 @@ let Stats = {
 			];
 
 			for (const file of sources) {
-				const loadFromLocal = true;
-				const baseUrl = loadFromLocal ? (extUrl + 'vendor/highchart-8.0.4/') : 'https://code.highcharts.com/';
+				const baseUrl = extUrl + 'vendor/highchart-8.0.4/';
 				await Stats.promisedLoadCode(baseUrl + file);
 			}
 
