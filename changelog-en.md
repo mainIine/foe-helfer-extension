@@ -1,5 +1,13 @@
 ## Changelog - Extension
 
+##### 3.0.0.1
+
+**BugFix**
+- Statistics:
+	- Script was not always included locally, this is now changed
+
+---
+
 ##### 3.0.0.0
 
 **New**
