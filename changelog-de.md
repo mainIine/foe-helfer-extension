@@ -1,10 +1,18 @@
 ## Changelog - Extension
 
+##### 3.0.0.1
+
+**BugFix**
+- Statistiken:
+  - Script wurde nicht immer lokal eingebunden, das ist nun geändert
+
+---
+
 ##### 3.0.0.0
 
 **Neu**
 - Erweiterung:
-  - Kompatibilität für die neuen Manifest V3 Anforderungen für Chromium-Browser geschaffen, Firefox folgt erst im 1 Quartal 2023
+  - Kompatibilität für die neuen Manifest V3 Anforderungen für Chromium-Browser geschaffen, Firefox folgt  im 1 Quartal 2023
   - diverse CSS Anpassungen
 
 **Update**
