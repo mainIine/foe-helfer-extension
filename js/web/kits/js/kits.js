@@ -12,16 +12,28 @@
  */
 
 /**
- * @type {{ItemTd: ((function(*=): string)|*), init: Kits.init, ShowMissing: number, ReadSets: Kits.ReadSets, ItemDiv: (function(*): string), GetInvententoryArray: (function(): *[]), ToggleView: Kits.ToggleView, KitsjSON: null, BuildBox: Kits.BuildBox}}
+ * A {@link HTML.Box box} for listing owned (in inventory) and missing buildings, and according kits and assets.
+ * @namespace
  */
 let Kits = {
 
+	/**
+	 * The parsed JSON of all known sets.
+	 * @type {object[]}
+	 */
 	KitsjSON: null,
+	/**
+	 * Determines which sets and assets to create. Valid values:
+	 * - `0`: Shows owned sets and assets only
+	 * - `1`: Shows owned sets and according assets (owned and missing)
+	 * - `2`: Shows all known sets and assets
+	 * @type {number}
+	 */
 	ShowMissing: 0,
 
 
 	/**
-	 * Get all sets from the server
+	 * Loads all known sets {@link Kits.KitsjSON JSON} and creates the {@link HTML.Box DOM box}.
 	 */
 	init: ()=> {
 		MainParser.loadJSON(extUrl + 'js/web/kits/data/sets.json', (data)=> {
@@ -32,13 +44,9 @@ let Kits = {
 
 
 	/**
-	 * Create the box
-	 *
-	 * @constructor
+	 * Creates the {@link HTML.Box box} with displayed sets.
 	 */
 	BuildBox: ()=> {
-
-
 		if ( $('#kits').length === 0 ) {
 
 			HTML.AddCssFile('kits');
@@ -80,9 +88,7 @@ let Kits = {
 
 
 	/**
-	 * Compare
-	 *
-	 * @constructor
+	 * Creates all displayed set elements.
 	 */
 	ReadSets: ()=> {
 		let inv = Kits.GetInvententoryArray(),
@@ -442,11 +448,9 @@ let Kits = {
 
 
 	/**
-	 * Create two td's for a level1 oder update building
-	 *
-	 * @param el
-	 * @returns {string}
-	 * @constructor
+	 * Creates two `td`'s for a level1 or update building.
+	 * @param {SetItem} el
+	 * @returns {string} HTML string of the two `td` elements.
 	 */
 	ItemTd: (el)=> {
 		if (!el || el['item'] == undefined) {
@@ -532,11 +536,9 @@ let Kits = {
 
 
 	/**
-	 * Create a div-row for assets of a set
-	 *
-	 * @param el
-	 * @returns {string}
-	 * @constructor
+	 * Creates a `div` for any asset of a set.
+	 * @param {AssetItem} el
+	 * @returns {string} HTML string of the `div` element.
 	 */
 	ItemAssetDiv: (el)=> {
 		if (!el || el['item'] == undefined) {
@@ -554,11 +556,9 @@ let Kits = {
 	},
 	
 	/**
-	 * Create a div-row for multible kits of a set
-	 *
-	 * @param el
-	 * @returns {string}
-	 * @constructor
+	 * Creates a `div` for any kit of a set.
+	 * @param {SetItem} el
+	 * @returns {string} HTML string of the `div` element.
 	 */
 	ItemKitDiv: (el)=> {
 		if (!el || el['item'] == undefined) {
@@ -627,10 +627,8 @@ let Kits = {
 
 
 	/**
-	 * Return MainParser.Inventory as array
-	 *
-	 * @returns {[]}
-	 * @constructor
+	 * Returns {@link MainParser.Inventory} as array.
+	 * @returns {any[]}
 	 */
 	GetInvententoryArray: ()=> {
 		let Ret = [];
@@ -660,9 +658,7 @@ let Kits = {
 
 
 	/**
-	 * Toggle view
-	 *
-	 * @constructor
+	 * Toggles displaying of owned, missing and all set items.
 	 */
 	ToggleView: ()=> {
 		Kits.ShowMissing === 0 ? Kits.ShowMissing = 1 : Kits.ShowMissing === 1 ? Kits.ShowMissing = 2 : Kits.ShowMissing = 0;
@@ -673,3 +669,16 @@ let Kits = {
 		$('#kits-triplestate-button').text(Kits.ShowMissing === 0 ? i18n('Boxes.Kits.TripleStateButton0') : Kits.ShowMissing === 1 ? i18n('Boxes.Kits.TripleStateButton1') : i18n('Boxes.Kits.TripleStateButton2'))
 	}
 };
+
+/**
+ * @typedef SetItem
+ * @property {string} type 'first', 'update' or 'kit'
+ * @property {string|object} item
+ * @property {boolean} missing
+ */
+/**
+ * @typedef AssetItem
+ * @property {string} element 'asset'
+ * @property {*} item
+ * @property {boolean} missing
+ */
