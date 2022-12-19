@@ -97,11 +97,6 @@ let Kits = {
 
 		let t = '<table class="foe-table">';
 
-		t += 	`<tr class="headline" style="display:table-row">
-					<th colspan="2">${i18n('Boxes.Kits.Name')}</th>
-					<th colspan="2">${i18n('Boxes.Kits.KitName')}</th>
-				</tr>`;
-
 		// Sets durchsteppen
 		for (let set in kits) {
 
