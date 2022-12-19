@@ -111,6 +111,7 @@ let _menu = {
 		} else {
 			if (!flag && selMenu != MainParser.SelectedMenu) {			
 			$('#menu_box').remove();
+			$('.tooltip').remove();
 			_menu.CallSelectedMenu(MainParser.SelectedMenu);
 			}
 		}
