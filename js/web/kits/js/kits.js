@@ -308,10 +308,10 @@ let Kits = {
 				show = true;
 			}
 
-			if (show) {
-				let Name = kits[set]['name'],
-					GroupName = kits[set]['groupname'],
-					ChainSetIco = '';
+			const Name = kits[set]['name'],
+				GroupName = kits[set]['groupname'];
+			if (show || GroupName || !Name && !GroupName) {
+				let ChainSetIco = '';
 
 				if (Name) { //Name is set
 					let sName = Name.toLowerCase().replace(/_set/g, '');
