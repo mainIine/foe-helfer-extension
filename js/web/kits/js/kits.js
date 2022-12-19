@@ -418,7 +418,7 @@ let Kits = {
 				}
 
 				// Kit listing
-				if (kitRow.length > 1) {
+				if (kitRow.length) {
 					t += `<tr><td colspan="4" class="assets-header">${i18n('Boxes.Kits.SelectionKit')}</td></tr>`;
 					let rowTd = '<td colspan="4"><div class="kits-row">';
 
@@ -427,14 +427,6 @@ let Kits = {
 					});
 
 					rowTd += '</div></td>';
-
-					t += '<tr>' + rowTd + '</tr>';
-				}
-				else if (kitRow.length) {
-					t += `<tr><td colspan="4" class="assets-header">${i18n('Boxes.Kits.SelectionKit')}</td></tr>`;
-
-					let rowTd = Kits.ItemTd(kitRow[0]);
-					rowTd += '<td colspan="2"></td>';
 
 					t += '<tr>' + rowTd + '</tr>';
 				}
