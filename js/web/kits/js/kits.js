@@ -109,9 +109,13 @@ let Kits = {
 				break;
 			}
 
+			/** @type {SetItem[][]} */
 			let buildings = [],
+				/** @type {SetItem[][]} */
 				missings = [],
+				/** @type {SetItem[]} */
 				assetRow = [],
+				/** @type {SetItem[]} */
 				kitRow = [],
 				show = false;
 
@@ -123,6 +127,7 @@ let Kits = {
 				}
 
 				const building = kits[set]['buildings'][i];
+				/** @type {SetItem[]} */
 				let itemRow = [];
 
 				// Level 1
@@ -241,14 +246,14 @@ let Kits = {
 
 					if (asset && asset['inStock'] > 0) {
 						assetRow.push({
-							element: 'asset',
+							type: 'asset',
 							item: asset,
 							missing: false
 						});
 					} 
 					else if (show && Kits.ShowMissing > 0) {
 						assetRow.push({
-							element: 'asset',
+							type: 'asset',
 							item: entities[kits[set]['assets'][a]],
 							missing: true
 						});
@@ -537,7 +542,7 @@ let Kits = {
 
 	/**
 	 * Creates a `div` for any asset of a set.
-	 * @param {AssetItem} el
+	 * @param {SetItem} el
 	 * @returns {string} HTML string of the `div` element.
 	 */
 	ItemAssetDiv: (el)=> {
@@ -672,13 +677,7 @@ let Kits = {
 
 /**
  * @typedef SetItem
- * @property {string} type 'first', 'update' or 'kit'
+ * @property {string} type 'first', 'update', 'kit' or 'asset'
  * @property {string|object} item
- * @property {boolean} missing
- */
-/**
- * @typedef AssetItem
- * @property {string} element 'asset'
- * @property {*} item
  * @property {boolean} missing
  */
