@@ -153,11 +153,15 @@
 #gvgOptions {
 	height: inherit;
 	overflow: auto;
-	min-width: 300px;
+	min-width: 340px;
 	flex-grow: 2;
 	position: relative;
 	border-left: 2px solid var(--text-dark);
 }
+
+.rank-first { color: var(--text-bright) }
+.rank-second { color: #69b0d6 }
+.rank-third { color: #f24c25 }
 
 #gvgOptions.collapsed {
 	width: 0;
@@ -216,7 +220,7 @@
 
 #GvGlog {
 	font-size: 90%;
-	width: 295px;
+	width: 340px;
 }
 
 #GvGlog.foe-table tr:nth-child(odd) {
