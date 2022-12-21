@@ -9,6 +9,11 @@
 	- choose the desired GB, enter a level range you are interested in and go hunting
 	- "resetting" will clear the list and reset the filter
 
+**BugFix**
+- Menu:
+	- tooltips could be left behind when the menu mode was force-changed due to zooming or the like
+
+
 ---
 
 ##### 3.0.0.1
