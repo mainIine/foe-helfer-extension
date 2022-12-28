@@ -678,55 +678,50 @@ let Parts = {
 		}
 				
 		// Info-Block
-		h.push('<div class="dark-bg">');
-		h.push('<table style="width: 100%"><tr><td class="text-center">');
-		h.push('<h1 class="lg-info">' + CityEntity['name'] + '</h1>');
+		h.push('<div class="dark-bg text-center" style="padding:5px">');
+		
+		h.push('<div class="flex" style="justify-content: space-between;align-items:center;margin-bottom:8px;">');
+		h.push('<div class="lb-info">');
+		h.push('<h1>' + CityEntity['name'] + '</h1>');
+		if (PlayerName) h.push('<strong>' + MainParser.GetPlayerLink(PlayerID, PlayerName) + '</strong>');
+		h.push('</div>');
 
-		if (PlayerName) h.push('<strong>' + MainParser.GetPlayerLink(PlayerID, PlayerName) + '</strong><br>');
-
+		h.push('<div class="level-switch">');
 		if (Parts.IsPreviousLevel) {
 			let Level = GreatBuildings.GetLevel(EntityID, Total);
-			if (Level) {
+			if (Level) 
 				h.push(i18n('Boxes.OwnpartCalculator.Step') + ' ' + (Level-1) + ' &rarr; ' + (Level));
-			}
-			else { //Level unbekannt
+			else // Level unknown
 				h.push(i18n('Boxes.OwnpartCalculator.OldLevel'));
-			}
 		}
 		else {
-			if (Parts.IsNextLevel) {
-				h.push('<button class="btn btn-default btn-set-level" data-value="' + (Parts.Level - 1) + '">&lt;</button> ');
-			}
+			if (Parts.IsNextLevel) 
+				h.push('<button class="btn btn-default btn-tight btn-set-level" data-value="' + (Parts.Level - 1) + '">&lt;</button> ');
+
 			h.push(i18n('Boxes.OwnpartCalculator.Step') + ' ' + Parts.Level + ' &rarr; ' + (parseInt(Parts.Level) + 1));
-			if (GreatBuildings.Rewards[Era] && GreatBuildings.Rewards[Era][Parts.Level + 1]) {
-				h.push(' <button class="btn btn-default btn-set-level" data-value="' + (Parts.Level + 1) + '">&gt;</button>');
-			}
+
+			if (GreatBuildings.Rewards[Era] && GreatBuildings.Rewards[Era][Parts.Level + 1]) 
+				h.push(' <button class="btn btn-default btn-tight btn-set-level" data-value="' + (Parts.Level + 1) + '">&gt;</button>');
 		}
-		
+		h.push('</div>');
+		h.push('</div>');
 
-		h.push('</td>');
-		h.push('<td class="text-right">');
 		h.push('<span class="btn-group">');
-
 		// different arc bonus-buttons
 		let investmentSteps = [80, 85, 90, MainParser.ArkBonus],
 			customButtons = localStorage.getItem('CustomPartCalcButtons');
 
 		// custom buttons available
-		if(customButtons)
-		{
+		if(customButtons) {
 			investmentSteps = [];
 			let bonuses = JSON.parse(customButtons);
 
 			bonuses.forEach(bonus => {
-				if(bonus === 'ark')
-				{
+				if(bonus === 'ark') 
 					investmentSteps.push(MainParser.ArkBonus);
-				}
-				else {
+				else 
 					investmentSteps.push(bonus);
-				}
-			})
+			});
 		}
 
 		investmentSteps = investmentSteps.filter((item, index) => investmentSteps.indexOf(item) === index);
@@ -735,38 +730,10 @@ let Parts = {
 			h.push(`<button class="btn btn-default btn-set-arc${(Parts.ArcPercents[0] === bonus ? ' btn-active' : '')}" data-value="${bonus}">${bonus}%</button>`);
 		});
 
-		h.push('</span>');
-		h.push('</td>');
-		h.push('</tr></table>');
-
-		h.push('<table style="margin-bottom: 3px; width: 100%">');
-
-		h.push('<tr>');
-		h.push('<td colspan="2"></td>');
-		h.push('<td>' + i18n('Boxes.OwnpartCalculator.ExistingPayments') + '</td>');
-		h.push('</tr>');
-
-		h.push('<tr>');
-		h.push('<td class="text-center">' + i18n('Boxes.OwnpartCalculator.PatronPart') + ': <strong class="' + (PlayerID === ExtPlayerID ? '' : 'success') + '">' + HTML.Format(MaezenTotal + ExtTotal) + '</strong></td>');
-		h.push('<td class="text-center">' + i18n('Boxes.OwnpartCalculator.OwnPart') + ': <strong class="' + (PlayerID === ExtPlayerID ? 'success' : '') + '">' + HTML.Format(EigenTotal) + '</strong></td>');
-		h.push('<td class="text-center"><input id="lockexistingpayments" class="lockexistingpayments game-cursor" ' + (Parts.LockExistingPlaces ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.OwnpartCalculator.Lock') + '</td>');
-		h.push('</tr>');
-
-		h.push('<tr>');
-		h.push('<td class="text-center">' + i18n('Boxes.OwnpartCalculator.LGTotalFP') + ': <strong>' + HTML.Format(Total) + '</strong></td>');
-		if (EigenStart > 0) {
-			h.push('<td class="text-center">' + i18n('Boxes.OwnpartCalculator.OwnPartRemaining') + ': <strong class="' + (PlayerID === ExtPlayerID ? 'success' : '') + '">' + HTML.Format(EigenTotal - EigenStart) + '</strong></td>');
-		}
-		else {
-			h.push('<td></td>');
-		}
-		h.push('<td class="text-center"><input id="trustexistingpayments" class="trustexistingpayments game-cursor" ' + (Parts.TrustExistingPlaces ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.OwnpartCalculator.Trust') + '</td>');
-		h.push('</tr>');
-
-		h.push('</table>');
+		h.push('</span>');		
 		h.push('</div>');
 
-		h.push('<table id="OwnPartTable" class="foe-table">');
+		h.push('<table id="OwnPartTable" class="foe-table" style="margin-top:3px">');
 		h.push('<thead>');
 
 		h.push('<tr>');
@@ -878,13 +845,35 @@ let Parts = {
 		h.push('</tbody>');
 		h.push('</table>');
 
+		
+		h.push('<div class="dark-bg" style="padding:5px">');
+
+		h.push('<div class="text-center">' + i18n('Boxes.OwnpartCalculator.ExistingPayments'));
+		h.push(': <input id="lockexistingpayments" class="lockexistingpayments game-cursor" ' + (Parts.LockExistingPlaces ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.OwnpartCalculator.Lock'));
+		h.push('<input id="trustexistingpayments" class="trustexistingpayments game-cursor" ' + (Parts.TrustExistingPlaces ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.OwnpartCalculator.Trust') + '</div>');
+
+		h.push('<table style="width: 100%">');
+		h.push('<tr>');
+		h.push('<td>' + i18n('Boxes.OwnpartCalculator.PatronPart') + ': <strong class="' + (PlayerID === ExtPlayerID ? '' : 'success') + '">' + HTML.Format(MaezenTotal + ExtTotal) + '</strong></td>');
+		h.push('<td class="text-right">' + i18n('Boxes.OwnpartCalculator.OwnPart') + ': <strong class="' + (PlayerID === ExtPlayerID ? 'success' : '') + '">' + HTML.Format(EigenTotal) + '</strong></td>');
+		h.push('</tr>');
+		h.push('<tr>');
+		h.push('<td>' + i18n('Boxes.OwnpartCalculator.LGTotalFP') + ': <strong>' + HTML.Format(Total) + '</strong></td>');
+		if (EigenStart > 0) {
+			h.push('<td class="text-right">' + i18n('Boxes.OwnpartCalculator.OwnPartRemaining') + ': <strong class="' + (PlayerID === ExtPlayerID ? 'success' : '') + '">' + HTML.Format(EigenTotal - EigenStart) + '</strong></td>');
+		}
+		else {
+			h.push('<td></td>');
+		}
+		h.push('</tr>');
+		h.push('</table>');
+
 		Parts.CalcBackgroundBody();
 
 		h.push(Calculator.GetRecurringQuestsLine(Parts.PlayInfoSound));
 
 		// Wieviel fehlt noch bis zum leveln?
-		if (Parts.IsPreviousLevel === false)
-		{
+		if (Parts.IsPreviousLevel === false) {
 			let rest;
 			if (Parts.IsNextLevel) {
 				rest = Total;
@@ -893,11 +882,11 @@ let Parts = {
 				rest = Parts.CityMapEntity['state']['invested_forge_points'] === undefined ? Parts.CityMapEntity['state']['forge_points_for_level_up'] : Parts.CityMapEntity['state']['forge_points_for_level_up'] - Parts.CityMapEntity['state']['invested_forge_points'];
 			}
 
-			h.push('<div class="text-center dark-bg d-flex" style="padding:5px 0;">');
+			h.push('<div class="text-center d-flex" style="padding:3px 0;">');
 			h.push('<em>' + i18n('Boxes.Calculator.Up2LevelUp') + ': <span id="up-to-level-up">' + HTML.Format(rest) + '</span> ' + i18n('Boxes.Calculator.FP') + '</em>');
 			h.push('</div>');
 
-			h.push('<div class="bottom-buttons text-center dark-bg">');
+			h.push('<div class="bottom-buttons text-center">');
 			h.push('<div class="btn-group">');
 			if (Parts.SafePlaces.length > 0 || Parts.CopyModeAll) { //Copy bzw. Note Button nur einblenden wenn zumindest ein Platz safe ist
 				h.push('<span class="btn-default button-own">' + i18n('Boxes.OwnpartCalculator.CopyValues') + '</span>');
@@ -910,6 +899,7 @@ let Parts = {
 
 			h.push('<div class="btn-group">');
 			h.push('<span class="btn-default button-powerleveling">' + i18n('Boxes.OwnpartCalculator.PowerLeveling') + '</span>');
+			h.push('</div>');
 			h.push('</div>');
 			h.push('</div>');
 
