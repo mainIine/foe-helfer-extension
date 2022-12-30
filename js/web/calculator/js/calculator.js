@@ -159,22 +159,19 @@ let Calculator = {
         h.push('<div class="text-center dark-bg" style="padding:5px 0 3px;">');
 
         // LG - Daten + Spielername
-		h.push('<p class="header"><strong><span class="building-name">' + BuildingName + '</span>');
+		h.push('<div class="header"><strong><span class="building-name">' + BuildingName + '</span>');
 
 		if (Calculator.PlayerName) {
 			h.push('<span class="player-name">' + MainParser.GetPlayerLink(PlayerID, Calculator.PlayerName));
 
 			if (Calculator.ClanName) {
-				h.push(`</br>[${MainParser.GetGuildLink(Calculator.ClanId, Calculator.ClanName)}]`);
+				h.push(`<br>[${MainParser.GetGuildLink(Calculator.ClanId, Calculator.ClanName)}]`);
 			}
 
-			h.push('</span>');
+			h.push('</span></strong>');
 		}
 
-        h.push('</strong><br>' + i18n('Boxes.Calculator.Step') + '' + Level + ' &rarr; ' + (Level + 1) + ' | ' + i18n('Boxes.Calculator.MaxLevel') + ': ' + MaxLevel + '</p>');
-
-        // FP im Lager
-        h.push('<p>' + i18n('Boxes.Calculator.AvailableFP') + ': <strong class="fp-storage">' + HTML.Format(StrategyPoints.AvailableFP) + '</strong></p>');
+        h.push('<p style="margin: 8px 0 0">'+i18n('Boxes.Calculator.Step') + '' + Level + ' &rarr; ' + (Level + 1) + ' | ' + i18n('Boxes.Calculator.MaxLevel') + ': ' + MaxLevel + '</p></div>');
 
 		h.push('</div>');
 
@@ -222,7 +219,7 @@ let Calculator = {
         // Wieviel fehlt noch bis zum leveln?
 		let rest = (Calculator.CityMapEntity['state']['invested_forge_points'] === undefined ? Calculator.CityMapEntity['state']['forge_points_for_level_up'] : Calculator.CityMapEntity['state']['forge_points_for_level_up'] - Calculator.CityMapEntity['state']['invested_forge_points']);
 
-		h.push('<div class="text-center" style="margin-top:5px;margin-bottom:5px;"><em>' + i18n('Boxes.Calculator.Up2LevelUp') + ': <span id="up-to-level-up" style="color:#FFB539">' + HTML.Format(rest) + '</span> ' + i18n('Boxes.Calculator.FP') + '</em></div>');
+		h.push('<div class="text-center dark-bg" style="padding-top:5px;padding-bottom:5px;"><em>' + i18n('Boxes.Calculator.Up2LevelUp') + ': <span id="up-to-level-up" style="color:#FFB539">' + HTML.Format(rest) + '</span> ' + i18n('Boxes.Calculator.FP') + '</em></div>');
 
 		h.push(Calculator.GetRecurringQuestsLine(Calculator.PlayInfoSound));
 
@@ -233,7 +230,6 @@ let Calculator = {
         // Stufe ist noch nicht freigeschaltet
 		if (Calculator.CityMapEntity['level'] === Calculator.CityMapEntity['max_level']) {
             $('#costCalculator').find('#costCalculatorBody').append($('<div />').addClass('lg-not-possible').attr('data-text', i18n('Boxes.Calculator.LGNotOpen')));
-
 		}
 
 		// es fehlt eine Straßenanbindung
