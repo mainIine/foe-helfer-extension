@@ -25,9 +25,13 @@ FoEproxy.addHandler('ClanBattleService', 'deployDefendingArmy', (data, postData)
 	GvG.AddCount(data.responseData.__class__, postData[0]['requestMethod']);
 });
 
-FoEproxy.addHandler('ClanBattleService', 'getContinent', (data, postData) => {
+FoEproxy.addHandler('ClanBattleService', 'getContinent', (data, postData) => { // map overview
 	GvG.initActions();
 	GvG.setRecalc(data.responseData.continent.calculation_time.start_time, true);
+	GvGMap.Overview = data['responseData'];
+	if ($('#GvGMapWrap').length > 0) {
+		GvGMap.showOverview();
+	}
 });
 
 FoEproxy.addHandler('ClanBattleService', 'getProvinceDetailed', (data, postData) => {	
@@ -97,7 +101,7 @@ let GvG = {
 
 			$('body').append(div).promise().done(function() {
 				div.append('<div class="independences">'+GvG.Actions.Independences+'/4</div>')
-					.append('<button class="btn-default mapbutton" onclick="GvGMap.show()"></button>')
+					.append('<button class="btn-default mapbutton" onclick="GvGMap.showOverview()"></button>') // hier
 					.attr('title', i18n('GvG.Independences.Tooltip') + '<br><em>' + i18n('GvG.Independences.Tooltip.Warning') + '</em>')
 					.tooltip(
 						{
@@ -188,11 +192,12 @@ let GvG = {
 }
 
 let GvGMap = {
-	OnloadDataTime: 0,
+	OnloadDataTime: MainParser.getCurrentDate(),
 	Canvas: {},
 	CanvasCTX: {},
 	GuildData: {},
 	ProvinceData: {},
+	Overview: {},
 	OnloadData: null,
 	Map: {
 		Sectors: [],
@@ -288,7 +293,7 @@ let GvGMap = {
             [{r:37,g:48,b:37},{r:6,g:87,b:0},{r:21,g:58,b:24},{r:30,g:67,b:0}] 
 		]
     },
-	NoGuild: { id: 0, name: i18n('Boxes.GvGMap.Log.NPC'), color: {r:100,g:100,b:100} },
+	NoGuild: { id: 0, name: i18n('Boxes.GvGMap.Log.NPC'), color: {r:50,g:50,b:50} },
 	CurrentGuild: { id: 0, name: i18n('Boxes.GvGMap.Log.NPC'), color: {r:100,g:100,b:100} },
 	ActiveTab: 1,
 	ZoomOptions: ['mini','small','big'],
@@ -306,7 +311,7 @@ let GvGMap = {
 		GvGMap.Map.Era = GvGMap.OnloadData.province_detailed.era;
 		GvGMap.Map.Guilds = [];
 		GvGMap.Map.Sectors = [];
-		GvGMap.OwnGuild.Id = GvGMap.OnloadData.clan_data.clan.id;
+		GvGMap.OwnGuild.Id = ExtGuildID;
 		GvGMap.OwnGuild.Members = GvGMap.OnloadData.clan_data.clan.members;
 	},
 
@@ -314,8 +319,8 @@ let GvGMap = {
 		let hexWidth = 50;
 		let hexHeight = 40;
 		if (size === 'mini') {
-			hexWidth = 22;
-			hexHeight = 22;
+			hexWidth = 16;
+			hexHeight = 15;
 		}
 		else if (size === 'big') {
 			hexWidth = 90;
@@ -327,8 +332,14 @@ let GvGMap = {
 		GvGMap.Map.HexWidth = hexWidth;
 		GvGMap.Map.HexHeight = hexHeight;
 		GvGMap.Size = size;
-		GvGMap.Map.Width = (GvGMap.ProvinceData.bounds.x_max - GvGMap.ProvinceData.bounds.x_min)*GvGMap.Map.HexWidth+GvGMap.Map.HexWidth/2;
-		GvGMap.Map.Height = (GvGMap.ProvinceData.bounds.y_max - GvGMap.ProvinceData.bounds.y_min)*GvGMap.Map.HexHeight*0.8;
+		if(size === 'mini') { // overview
+			GvGMap.Map.Width = 67*GvGMap.Map.HexWidth+GvGMap.Map.HexWidth/2;
+			GvGMap.Map.Height = 85*GvGMap.Map.HexHeight*0.8;
+		}
+		else {
+			GvGMap.Map.Width = (GvGMap.ProvinceData.bounds.x_max - GvGMap.ProvinceData.bounds.x_min)*GvGMap.Map.HexWidth+GvGMap.Map.HexWidth/2;
+			GvGMap.Map.Height = (GvGMap.ProvinceData.bounds.y_max - GvGMap.ProvinceData.bounds.y_min)*GvGMap.Map.HexHeight*0.8;
+		}
 		GvGMap.CurrentGuild = GvGMap.NoGuild;
 	},
 
@@ -353,6 +364,30 @@ let GvGMap = {
 		}
 		else {
 			GvGMap.buildMap();
+		}
+	},
+
+	/**
+	 * Show GvG Map
+	 */
+	showOverview: () => {
+		if ($('#gvg-map').length === 0) {
+
+			moment.locale(MainParser.Language);
+
+			HTML.Box({
+				id: 'GvGMap',
+				title: i18n('Boxes.GvGMap.Title'),
+				auto_close: true,
+				dragdrop: true,
+				minimize: true,
+				resize: true
+			});
+
+			GvGMap.buildMapOverview();
+		}
+		else {
+			GvGMap.buildMapOverview();
 		}
 	},
 
@@ -399,11 +434,27 @@ let GvGMap = {
 		$('#GvGMapBody').html(h.join(''));
 	},
 
+	buildOverviewContent: () => {
+		let h = [];
+		let collapsed = 'collapsed';
+		if (GvGMap.Actions.list) {
+			collapsed = '';
+		}
+		h.push('<div id="toggleOptions" class="'+collapsed+'"></div><div id="GvGMapContent" class="mapFeature">');
+		h.push('<div id="GvGMapWrap" class="mapFeature">');
+		h.push('<canvas id="gvg-map"></canvas>');
+		h.push('</div></div>');
+		h.push('<div id="GvGMapInfo" class="mapFeature"></div>');
+		h.push('<div id="gvgOptions" class="'+collapsed+'"><div id="gvgOptionsContent"></div></div>');
+
+		$('#GvGMapBody').html(h.join(''));
+	},
+
 	/**
 	 * Build GvG Map
 	 */
 	buildMap: (mapSize = 'small', initial = true) => {
-		let t = [], h = [];
+		let t = [];
 		if (GvGMap.OnloadData != null) {
 			GvGMap.Tabs = [];
 			GvGMap.TabsContent = [];
@@ -463,12 +514,21 @@ let GvGMap = {
 			});
 			setTimeout(function(){ }, 500);
 		}
-		else { // map overview
-			h.push('<div class="dark-bg text-center" style="width: 100%;"><h2>Please open a map!</h2></div>');
+	},
 
-			$('#GvGMapBody').html(h.join(''));
-			GvGMap.hide();
-		}
+	buildMapOverview: () => {
+		let t = [];
+		GvGMap.buildOverviewContent();
+		GvGMap.populateOverviewCanvas('mini',true);
+		GvGMap.drawCanvasInfo();
+		GvGMap.showOverviewGuilds();
+		GvGMap.mapDrag();
+			
+		t.push('<div class="gvg-tabs tabs">');
+		t.push( GvGMap.GetTabs() );
+		t.push( GvGMap.GetTabContent() );
+		t.push('</div>');
+		$('#gvgOptionsContent').html(t.join(''));
 	},
 
 	events: () => {
@@ -574,64 +634,141 @@ let GvGMap = {
 		
 		GvGMap.CanvasCTX.clearRect(0, 0, GvGMap.Map.Width, GvGMap.Map.Height);
 
-		if (GvGMap.Map.Guilds.length <= 3) { // this is to prevent a bug and a stupid solution
-			GvGMap.GuildData.forEach(function (guild) {
-				let guildOnMap = GvGMap.createGuild(guild);
-				GvGMap.Map.Guilds.push(guildOnMap);
-				if ((guild.id) === GvGMap.OwnGuild.Id) {
-					GvGMap.CurrentGuild = guildOnMap;
-				}
-			});
-		}
-		else { // on zoom or clicking when already opened
-			GvGMap.Map.Guilds.forEach(function (guild) {
-				guild.flagCoordinates = GvGMap.getFlagImageCoordinates(guild.flag);
-			});
-		}
-
-		if (GvGMap.Map.Sectors.length === 0) {
-			GvGMap.ProvinceData.sectors.forEach(function (sector) {
-				if (sector.hitpoints != undefined) { 
-					let newSector = {};
-					let realX = (sector.position.x - GvGMap.ProvinceData.bounds.x_min) * GvGMap.Map.HexWidth;
-					if (sector.position.y === undefined) sector.position.y = 0;
-					let realY = (sector.position.y - GvGMap.ProvinceData.bounds.y_min) * GvGMap.Map.HexHeight;
-
-					if (sector.position.y % 2 === 0) 
-						newSector = MapSector.create(realX, realY * 0.75, sector);
-					else 
-						newSector = MapSector.create(realX + (GvGMap.Map.HexWidth * 0.5), realY * 0.75, sector);
-					
-					GvGMap.Map.Sectors.push(newSector);
-					
-					let guild = MapSector.getOwnerById(newSector.owner.id);
-					if (guild != null) {
-						guild.power += newSector.power;
-						guild.sectors++;
-						guild.costs = GvGMap.calcCosts(guild);
+		if(mapSize !== 'mini') { // if not overview
+			if (GvGMap.Map.Guilds.length <= 3) { // this is to prevent a bug and a stupid solution
+				GvGMap.GuildData.forEach(function (guild) {
+					let guildOnMap = GvGMap.createGuild(guild);
+					GvGMap.Map.Guilds.push(guildOnMap);
+					if ((guild.id) === GvGMap.OwnGuild.Id) {
+						GvGMap.CurrentGuild = guildOnMap;
 					}
-					MapSector.draw(newSector);
+				});
+			}
+			else { // on zoom or clicking when already opened
+				GvGMap.Map.Guilds.forEach(function (guild) {
+					guild.flagCoordinates = GvGMap.getFlagImageCoordinates(guild.flag);
+				});
+			}
+	
+			if (GvGMap.Map.Sectors.length === 0) {
+				GvGMap.ProvinceData.sectors.forEach(function (sector) {
+					if (sector.hitpoints != undefined) { 
+						let newSector = {};
+						let realX = (sector.position.x - GvGMap.ProvinceData.bounds.x_min) * GvGMap.Map.HexWidth;
+						if (sector.position.y === undefined) sector.position.y = 0;
+						let realY = (sector.position.y - GvGMap.ProvinceData.bounds.y_min) * GvGMap.Map.HexHeight;
+	
+						if (sector.position.y % 2 === 0) 
+							newSector = MapSector.create(realX, realY * 0.75, sector);
+						else 
+							newSector = MapSector.create(realX + (GvGMap.Map.HexWidth * 0.5), realY * 0.75, sector);
+						
+						GvGMap.Map.Sectors.push(newSector);
+						
+						let guild = MapSector.getOwnerById(newSector.owner.id);
+						if (guild != null) {
+							guild.power += newSector.power;
+							guild.sectors++;
+							guild.costs = GvGMap.calcCosts(guild);
+						}
+						MapSector.draw(newSector);
+					}
+				});
+			}
+			else { // on zoom or clicking when already opened
+				GvGMap.Map.Sectors.forEach(function (sector) {
+					let realX = (sector.coordinates.x - GvGMap.ProvinceData.bounds.x_min) * GvGMap.Map.HexWidth;
+					let realY = (sector.coordinates.y - GvGMap.ProvinceData.bounds.y_min) * GvGMap.Map.HexHeight;
+					sector.position.x = realX;
+					sector.position.y = realY * 0.75;
+	
+					if (sector.coordinates.y % 2 === 0) 
+						sector.position.y = realY * 0.75;
+					else 
+						sector.position.x = realX + (GvGMap.Map.HexWidth * 0.5);
+					MapSector.draw(sector);
+				});
+			}
+		}
+	},
+
+	/**
+	 * @param {*} mapSize - string, sizes are small, mini, big
+	 */
+	populateOverviewCanvas: (mapSize, initial) => {
+		GvGMap.initMap(mapSize,initial);
+
+		$(GvGMap.Canvas).attr({
+			'id': 'gvg-map',
+			'width': GvGMap.Map.Width,
+			'height': GvGMap.Map.Height
+		});
+		
+		GvGMap.CanvasCTX.clearRect(0, 0, GvGMap.Map.Width, GvGMap.Map.Height);
+
+		GvGMap.Overview.continent.provinces.forEach(function (province) {
+			province.top_clans.forEach(function (guild) {
+				let guildExists = (GvGMap.getGuildById(guild.id) !== undefined);
+				if (!guildExists) {
+					let newGuild = {
+						id: guild.id,
+						name: guild.name,
+						flag: guild.flag,
+						color: {r:0,g:0,b:0},
+					};
+					let guildOnMap = GvGMap.createGuild(newGuild);
+					GvGMap.Map.Guilds.push(guildOnMap);
+				}
+				else {
+					let currentGuild = GvGMap.getGuildById(guild.id);
+					//console.log('hiiiilfe',currentGuild.id,currentGuild.name);
+					if (currentGuild.id+'' === currentGuild.name) {
+						let updatedGuild = GvGMap.getGuildById(guild.id);
+						updatedGuild.name = guild.name;
+						updatedGuild.flag = guild.flag;
+						updatedGuild.color = GvGMap.getGuildColor(guild);
+					}
 				}
 			});
-		}
-		else { // on zoom or clicking when already opened
-			GvGMap.Map.Sectors.forEach(function (sector) {
-				let realX = (sector.coordinates.x - GvGMap.ProvinceData.bounds.x_min) * GvGMap.Map.HexWidth;
-				let realY = (sector.coordinates.y - GvGMap.ProvinceData.bounds.y_min) * GvGMap.Map.HexHeight;
-				sector.position.x = realX;
-				sector.position.y = realY * 0.75;
+		});
+		console.log(GvGMap.Map.Guilds);
+		GvGMap.Overview.continent.provinces.forEach(function (province) {
+			province.sectors.forEach(function (sector) {
+				let newSector = {};
+				let realX = sector.position.x * GvGMap.Map.HexWidth;
+				if (sector.position.y === undefined) sector.position.y = 0;
+				let realY = sector.position.y * GvGMap.Map.HexHeight;
 
-				if (sector.coordinates.y % 2 === 0) 
-					sector.position.y = realY * 0.75;
+				if (sector.position.y % 2 === 0) 
+					newSector = MapSector.create(realX, realY * 0.75, sector);
 				else 
-					sector.position.x = realX + (GvGMap.Map.HexWidth * 0.5);
-				MapSector.draw(sector);
+					newSector = MapSector.create(realX + (GvGMap.Map.HexWidth * 0.5), realY * 0.75, sector);
+
+				if (sector.owner_id > 0) {
+					if (GvGMap.getGuildById(sector.owner_id) === undefined) {
+						let guild = {
+							id: sector.owner_id,
+							name: sector.owner_id+'',
+							color: {r:0,g:0,b:0},
+						};
+						let guildOnMap = GvGMap.createGuild(guild);
+						GvGMap.Map.Guilds.push(guildOnMap);
+					}
+					else {
+						let guild = GvGMap.getGuildById(sector.owner_id);
+						guild.sectors++;
+					}
+				}
+
+				MapSector.draw(newSector);
 			});
-		}
+		});
+		console.log(GvGMap.Map.Guilds);
 	},
 
 	drawCanvasInfo: () => {
 		let era = (Technologies.Eras[GvGMap.Map.Era] != 0) ? i18n('Eras.'+Technologies.Eras[GvGMap.Map.Era]) : i18n('Eras.GvGAllAge');
+		if (era === "Eras.undefined") era = 'Map Overview';
 		GvGMap.CanvasCTX.font = "bold 22px Arial";
 		GvGMap.CanvasCTX.textAlign = "left";
 		GvGMap.CanvasCTX.fillStyle = '#ffb539';
@@ -812,6 +949,16 @@ let GvGMap = {
         });
 	},
 
+	sortGuildsBySectorAmount: () => {
+        GvGMap.Map.Guilds.sort(function(a, b) {
+            if (a.sectors > b.sectors)
+                return -1;
+            if (a.sectors < b.sectors)
+                return 1;
+            return 0;
+        });
+	},
+
 	showGuilds: () => {
         let t = [];
 
@@ -837,34 +984,59 @@ let GvGMap = {
 		GvGMap.SetTabContent('gvgmapguilds', t.join(''));
 	},
 
+	showOverviewGuilds: () => {
+        let t = [];
+
+		GvGMap.sortGuildsBySectorAmount();
+
+		t.push('<table id="GvGGuilds" class="foe-table">');
+		t.push('<thead><tr>');
+		t.push('<th>'+i18n('Boxes.GvGMap.Guild.Name')+'</th>');
+		t.push('<th>'+i18n('Boxes.GvGMap.Guild.Sectors')+'</th>');
+		t.push('</tr></thead>');
+		GvGMap.Map.Guilds.forEach(function (guild) {
+			if (guild.sectors > 0) {
+				t.push('<tr id="id-'+guild.id+'">');
+				t.push('<td><span class="guildflag '+guild.flag+'" style="background-color: '+GvGMap.colorToString(guild.color)+'"></span>' + GvGMap.encodeGuildName(guild.name) + '</td>');
+				t.push('<td class="text-center">'+guild.sectors+'</td>');
+				t.push('</tr>');
+			}
+		});
+		t.push('</table>');
+		
+		GvGMap.SetTabContent('gvgmapguilds', t.join(''));
+	},
+
 	getGuildColor: (guild) => {
-        flag = guild.flag.split("_") || null;
-        let color = {r:255,g:255,b:255};
+		let color = {r:255,g:255,b:255};
+		if (guild.flag) {
+			let flag = guild.flag.split("_") || null;
 
-        if (flag != null)  {
-            if (flag[0].search("premium") >= 0) {
-				let colorAmount = GvGMap.Colors.premium[flag[flag.length-1]-1].length;
-				color = GvGMap.Colors.premium[flag[flag.length-1]-1][Math.round(guild.id/colorAmount)%colorAmount];
-			}
-            else if (flag[flag.length - 1].toLowerCase() === 'r') {
-				let colorAmount = GvGMap.Colors.r.length;
-                color = GvGMap.Colors.r[Math.round(guild.id/colorAmount)%colorAmount];
-			}
-            else if (flag[flag.length - 1].toLowerCase() === 'g') {
-				let colorAmount = GvGMap.Colors.g.length;
-                color = GvGMap.Colors.g[Math.round(guild.id/colorAmount)%colorAmount];
-			}
-            else
-				if (flag.length != 1) {
-					let colorAmount = GvGMap.Colors.b.length;
-					color = GvGMap.Colors.b[Math.round(guild.id/colorAmount)%colorAmount];
+			if (flag != null)  {
+				if (flag[0].search("premium") >= 0) {
+					let colorAmount = GvGMap.Colors.premium[flag[flag.length-1]-1].length;
+					color = GvGMap.Colors.premium[flag[flag.length-1]-1][Math.round(guild.id/colorAmount)%colorAmount];
 				}
+				else if (flag[flag.length - 1].toLowerCase() === 'r') {
+					let colorAmount = GvGMap.Colors.r.length;
+					color = GvGMap.Colors.r[Math.round(guild.id/colorAmount)%colorAmount];
+				}
+				else if (flag[flag.length - 1].toLowerCase() === 'g') {
+					let colorAmount = GvGMap.Colors.g.length;
+					color = GvGMap.Colors.g[Math.round(guild.id/colorAmount)%colorAmount];
+				}
+				else
+					if (flag.length != 1) {
+						let colorAmount = GvGMap.Colors.b.length;
+						color = GvGMap.Colors.b[Math.round(guild.id/colorAmount)%colorAmount];
+					}
 
-        }
+			}
+		}
         return color;
     },
 
-	getFlagImageCoordinates: (flag) => {
+	getFlagImageCoordinates: (flag = 'flag_2') => {
 		// sizes of each image slice
 		let cutoutWidth = (GvGMap.Map.HexWidth >= 90) ? 90 : 50;
 		let cutoutHeight = (GvGMap.Map.HexWidth >= 90) ? 72 : 40;
@@ -885,6 +1057,32 @@ let GvGMap = {
 
 	colorToString: (color) => {
 		return "rgb("+color.r+","+color.g+","+color.b+")";
+	},
+
+	createColorFromId: (id) => {
+		let guild = GvGMap.getGuildById(id);
+		let defaultColors = {
+			r: 255,
+			g: 255,
+			b: 255
+		};
+		let color =  {
+			r: id%255,
+			g: id%199,
+			b: id%149,
+		};
+		if (guild) {
+			if (guild.flag)
+				color = guild.color;
+		}
+		if (id <= 0) {
+			color =  {
+				r: 50,
+				g: 50,
+				b: 50,
+			}
+		}
+		return color;
 	},
 
 	showGuildFlagAndName: (id) => {
@@ -1072,8 +1270,17 @@ let GvGLog = {
 let MapSector = {
 	create: (x, y, info) => {
 		let owner = MapSector.getOwnerById(info.owner_id);
-		if (owner.id === GvGMap.NoGuild.id) {
-			owner.color = MapSector.getColorByTerrain(info);
+		if (GvGMap.Size !== 'mini') {
+			if (owner.id === GvGMap.NoGuild.id) {
+				owner.color = MapSector.getColorByTerrain(info);
+			}
+		}
+		else {
+			owner = {
+				id: info.owner_id,
+				color: GvGMap.createColorFromId(info.owner_id),
+				name: info.owner_id
+			}
 		}
 		
 		return {
@@ -1163,6 +1370,7 @@ let MapSector = {
 				color = {r:50,g:50,b:50};
 			if (sector.terrain === "water")
 				color = {r:4,g:28,b:45};
+			color = GvGMap.NoGuild.color;
 		}
 		return color;
 	},
@@ -1190,12 +1398,17 @@ let MapSector = {
 	 * Draws Sector hexagon in its owners color
 	 */
 	drawHex: (sector, color = false) => {
-		if (sector.owner.id <= 0)
+		if (sector.owner.id <= 0) // NPC
 			color = GvGMap.colorToString(MapSector.getColorByTerrain(sector));
-		else if (sector.owner.id > 0 && !color)
-			color = GvGMap.colorToString(sector.owner.color);
-		if (GvGMap.Size === 'mini' && sector.owner.id === GvGMap.OwnGuild.Id) 
-			color = '#fff';
+		else if (sector.owner.id > 0 && !color) {
+			if (sector.owner.color !== undefined) 
+				color = GvGMap.colorToString(sector.owner.color);
+		}
+		if (GvGMap.Size === 'mini') { // map overview
+			if (sector.owner.id === ExtGuildID) {
+				color = '#fff';
+			}
+		}
 
 		GvGMap.CanvasCTX.fillStyle = color;
 		GvGMap.CanvasCTX.beginPath();
@@ -1208,6 +1421,8 @@ let MapSector = {
 		GvGMap.CanvasCTX.closePath();
 		GvGMap.CanvasCTX.fill();
 		GvGMap.CanvasCTX.strokeStyle = "rgba(0,0,0,0.2)";
+		if (GvGMap.Size === 'mini')
+			GvGMap.CanvasCTX.strokeStyle = "rgba(200,200,200,0.5)";
 		GvGMap.CanvasCTX.stroke();
 	},
 
