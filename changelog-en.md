@@ -9,12 +9,19 @@
 	- choose the desired GB, enter a level range you are interested in and go hunting
 	- "resetting" will clear the list and reset the filter
 
+**Update**
+- GB Calculator:
+	- new formatting
+
 **BugFix**
 - Menu:
 	- tooltips could be left behind when the menu mode was force-changed due to zooming or the like
 
 - StPatrick:
 	- did not update anymore properly
+
+- GBG:
+	- X1 was not tracked properly
 
 ---
 

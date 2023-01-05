@@ -9,12 +9,19 @@
 	- wähle das gewünschte LB aus, gib gegebenenfalls einen Stufenbereich an und geh auf die Jagd
 	- "zurücksetzen" löscht die Liste und den Filter
 
+**Update**
+- LB Rechner:
+	- neue Formatierung
+
 **BugFix**
 - Menü:
 	- Es konnte passieren, dass Tooltips zurückgelassen wurden, wenn das Menü durch Zoom oder ähnliche Aktionen von einem Modus in einen anderen Modus gezwungen wurde.
 
 - StPatrick:
 	- aktualisierte nicht mehr korrekt
+
+- GG:
+	- X1 wurde nicht korrekt aktualisiert
 
 ---
 
