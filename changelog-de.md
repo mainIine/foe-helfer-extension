@@ -13,6 +13,10 @@
 - LB Rechner:
 	- neue Formatierung
 
+- GvG:
+	- BA Kosten für die nächste Belagerung wurden hinzugefügt
+	- Macht Bonus für die ersten drei Gilden auf einer Karte wurde hinzugefügt
+
 **BugFix**
 - Menü:
 	- Es konnte passieren, dass Tooltips zurückgelassen wurden, wenn das Menü durch Zoom oder ähnliche Aktionen von einem Modus in einen anderen Modus gezwungen wurde.
