@@ -13,6 +13,8 @@
 - Menu:
 	- tooltips could be left behind when the menu mode was force-changed due to zooming or the like
 
+- StPatrick:
+	- did not update anymore properly
 
 ---
 
