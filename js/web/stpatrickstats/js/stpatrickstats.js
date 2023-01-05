@@ -72,10 +72,10 @@ FoEproxy.addHandler('IdleGameService', 'getState', (data, postData) => {
 
 FoEproxy.addRequestHandler('IdleGameService', 'performActions', (postData) => {
 	
-    if(postData[0]['requestClass'] !== 'IdleGameService')
+    if(postData['requestClass'] !== 'IdleGameService')
     	return;
 
-	let game = postData[0]['requestData'][1];
+	let game = postData['requestData'][1];
 
     for (let x in game)
 	{
