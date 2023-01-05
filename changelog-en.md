@@ -13,6 +13,10 @@
 - GB Calculator:
 	- new formatting
 
+- GvG:
+	- Costs for the next siege have been added to the list
+	- Ranking bonus for the first three guilds on a map has been added
+
 **BugFix**
 - Menu:
 	- tooltips could be left behind when the menu mode was force-changed due to zooming or the like
@@ -21,7 +25,7 @@
 	- did not update anymore properly
 
 - GBG:
-	- X1 was not tracked properly
+	- X1 (and A1 on the volcano map) was not tracked properly
 
 ---
 
