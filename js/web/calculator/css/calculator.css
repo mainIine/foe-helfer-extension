@@ -58,21 +58,22 @@
 	color: var(--text-bright);
 }
 
-#costCalculator #costCalculatorBody p.header {
+#costCalculator #costCalculatorBody .header {
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
+	margin: 3px 0;
 }
 
-#costCalculator #costCalculatorBody p.header span {
+#costCalculator #costCalculatorBody .header span {
 	color: var(--text-normal);
 }
 
-#costCalculator #costCalculatorBody p.header .building-name {
+#costCalculator #costCalculatorBody .header .building-name {
 	font-size: 115%;
 }
 
-#costCalculator #costCalculatorBody p.header .player-name {
+#costCalculator #costCalculatorBody .header .player-name {
 	display: block;
 	white-space: nowrap;
 	color: var(--text-bright);

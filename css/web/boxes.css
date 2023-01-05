@@ -496,6 +496,9 @@ p {
 [id$=infobox-Btn] span {
 	background-image: url('../images/menu/info.png');
 }
+[id$=findGB-Btn] span {
+	background-image: url('../images/menu/findGB.png');
+}
 
 [id$=unit-Btn] span {
 	background-image: url('../images/menu/units.png');

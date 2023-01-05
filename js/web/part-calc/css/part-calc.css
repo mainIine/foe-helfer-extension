@@ -68,6 +68,9 @@
 	font-size: 85%;
 }
 
+#OwnPartBox #OwnPartBoxBody h1 {
+	padding: 0;
+}
 
 #OwnPartBox #OwnPartBoxBody strong {
 	color: var(--text-bright);
@@ -87,6 +90,10 @@
 
 #OwnPartBox #OwnPartTable .error {
 	color: #ec4d4d;
+}
+
+#OwnPartBox #OwnPartBoxBody .lb-info {
+	flex-grow: 2;
 }
 
 #OwnPartBox #OwnPartTable input, #PowerLevelingBox input {
@@ -118,7 +125,6 @@
 }
 
 #OwnPartBox .bottom-buttons {
-	padding: 0 0.3rem 0.3rem;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
