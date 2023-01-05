@@ -117,6 +117,7 @@ let _menu_bottom = {
 		_menu.HudCount = Math.min(_menu.HudCount, MenuItemCount);
 		if (_menu.HudCount <= 0) {
 			$('#foe-helper-hud').remove();
+			$('.tooltip').remove();
 			window.onresize = function(){};
 			_menu.CallSelectedMenu('Box');
 			return;

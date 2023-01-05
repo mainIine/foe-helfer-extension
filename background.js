@@ -646,6 +646,7 @@ alertsDB.version(1).stores({
 					},
 					body: request.data
 				});
+				return APIsuccess(true);
 			}
 
 			case 'showNotification': { // type
@@ -665,6 +666,7 @@ alertsDB.version(1).stores({
 				}
 				catch( error ){
 					console.error('NotificationManager.notify: ', error );
+					console.log(request);
 					return APIsuccess(false);
 				}
 				return APIsuccess(true);

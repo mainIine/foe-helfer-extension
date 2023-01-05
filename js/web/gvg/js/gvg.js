@@ -342,7 +342,7 @@ let GvGMap = {
 
 			HTML.Box({
 				id: 'GvGMap',
-				title: i18n('Boxes.GvGMap.Title')+ ' - BETA!',
+				title: i18n('Boxes.GvGMap.Title'),
 				auto_close: true,
 				dragdrop: true,
 				minimize: true,
@@ -554,7 +554,8 @@ let GvGMap = {
 			color: GvGMap.getGuildColor(data),
 			flagCoordinates: GvGMap.getFlagImageCoordinates(data.flag),
 			power: 0,
-			sectors: 0
+			sectors: 0,
+			costs: 0
 		};
 		return guild;
 	},
@@ -607,6 +608,7 @@ let GvGMap = {
 					if (guild != null) {
 						guild.power += newSector.power;
 						guild.sectors++;
+						guild.costs = GvGMap.calcCosts(guild);
 					}
 					MapSector.draw(newSector);
 				}
@@ -720,22 +722,51 @@ let GvGMap = {
     },
 
 	recalcGuildProvinces: (oldGuild, newGuild, sector) => {
-		if (oldGuild.id > 0) {
+		oldGuild = GvGMap.Map.Guilds.find(x => x.id  === oldGuild.id);
+		if (oldGuild !== undefined) {
 			oldGuild.sectors--;
 			oldGuild.power -= sector.power;
+			GvGMap.calcCosts(oldGuild);
+			GvGMap.updateGuildData(oldGuild);
 		}
 
-		if (newGuild.id > 0) {
+		newGuild = GvGMap.Map.Guilds.find(x => x.id  === newGuild.id);
+		if (newGuild !== undefined) {
 			newGuild.sectors++;
 			newGuild.power += sector.power;
+			GvGMap.calcCosts(newGuild);
+			GvGMap.updateGuildData(newGuild);
 		}
 
-		GvGMap.updateGuildData(oldGuild);
-		GvGMap.updateGuildData(newGuild);
+	},
+
+	calcCosts: (guild) => {
+		guild = GvGMap.Map.Guilds.find(x => x.id  === guild.id);
+		if (guild != undefined) {
+			guild.costs = Math.round((3 * Math.pow(guild.sectors, 1.5) + 0.045 * Math.pow(guild.sectors, 3.1)) / 5 + 1) * 5;
+			if (Technologies.Eras[GvGMap.Map.Era] == 0)
+				guild.costs *= 5;
+			return guild.costs;
+		}
+		return 0;
 	},
 
 	encodeGuildName: (guildname) => {
 		return guildname.replace('<', '&lt;');
+	},
+
+	showPowerBonus: (guild) => {
+		GvGMap.sortGuilds();
+		if (GvGMap.Map.Guilds[0] == guild) 
+			return '<b class="rank-first" title="#1">'+Math.round(guild.power*1.15)+'</b>';
+
+		else if (GvGMap.Map.Guilds[1] == guild) 
+			return '<b class="rank-second" title="#2">'+Math.round(guild.power*1.1)+'</b>';
+
+		else if (GvGMap.Map.Guilds[2] == guild) 
+			return '<b class="rank-third"  title="#3">'+Math.round(guild.power*1.05)+'</b>';
+
+		return guild.power;
 	},
 
 	updateGuildData: (guild) => {
@@ -743,7 +774,8 @@ let GvGMap = {
 		if (tableRow != null) {
 			let html = '<td><span class="guildflag '+guild.flag+'" style="background-color: '+GvGMap.colorToString(guild.color)+'"></span>' + GvGMap.encodeGuildName(guild.name) +'</td>';
 			html += '<td class="text-center">'+guild.sectors+'</td>';
-			html += '<td class="text-center">'+guild.power+'</td>';
+			html += '<td class="text-center">'+GvGMap.showPowerBonus(guild)+'</td>';
+			html += '<td class="text-center">'+guild.costs+'</td>';
 			tableRow.innerHTML = html;
 		}
 	},
@@ -770,9 +802,7 @@ let GvGMap = {
 		document.getElementById("GvGMapInfo").innerHTML = html;
     },
 
-	showGuilds: () => {
-        let t = [];
-
+	sortGuilds: () => {
         GvGMap.Map.Guilds.sort(function(a, b) {
             if (a.power > b.power)
                 return -1;
@@ -780,18 +810,26 @@ let GvGMap = {
                 return 1;
             return 0;
         });
+	},
+
+	showGuilds: () => {
+        let t = [];
+
+		GvGMap.sortGuilds();
 
 		t.push('<table id="GvGGuilds" class="foe-table">');
 		t.push('<thead><tr>');
 		t.push('<th>'+i18n('Boxes.GvGMap.Guild.Name')+'</th>');
 		t.push('<th>'+i18n('Boxes.GvGMap.Guild.Sectors')+'</th>');
 		t.push('<th>'+i18n('Boxes.GvGMap.Guild.Power')+'</th>');
+		t.push('<th>'+i18n('Boxes.GvGMap.Guild.Costs')+'</th>');
 		t.push('</tr></thead>');
 		GvGMap.Map.Guilds.forEach(function (guild) {
 			t.push('<tr id="id-'+guild.id+'">');
 			t.push('<td><span class="guildflag '+guild.flag+'" style="background-color: '+GvGMap.colorToString(guild.color)+'"></span>' + GvGMap.encodeGuildName(guild.name) + '</td>');
 			t.push('<td class="text-center">'+guild.sectors+'</td>');
-			t.push('<td class="text-center">'+guild.power+'</td>');
+			t.push('<td class="text-center">'+GvGMap.showPowerBonus(guild)+'</td>');
+			t.push('<td class="text-center">'+guild.costs+'</td>');
 			t.push('</tr>');
 		});
 		t.push('</table>');

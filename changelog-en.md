@@ -1,5 +1,34 @@
 ## Changelog - Extension
 
+##### 3.1.0.0
+
+**New**
+- GB Tracker:
+	- helps you finding specific GBs - e.g. for BP hunting
+	- while you click through the GB ranking or view GB Lists of other Players (e.g. neighbours, friends, guild) the tracker will record all GB that match your criteria
+	- choose the desired GB, enter a level range you are interested in and go hunting
+	- "resetting" will clear the list and reset the filter
+
+**Update**
+- GB Calculator:
+	- new formatting
+
+- GvG:
+	- Costs for the next siege have been added to the list
+	- Ranking bonus for the first three guilds on a map has been added
+
+**BugFix**
+- Menu:
+	- tooltips could be left behind when the menu mode was force-changed due to zooming or the like
+
+- StPatrick:
+	- did not update anymore properly
+
+- GBG:
+	- X1 (and A1 on the volcano map) was not tracked properly
+
+---
+
 ##### 3.0.0.1
 
 **BugFix**

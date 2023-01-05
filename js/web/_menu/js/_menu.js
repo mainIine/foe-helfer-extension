@@ -61,7 +61,8 @@ let _menu = {
 		'minigame_aztecs',
 		'recurringQuests',
 		'compare_friends_threads',
-		'discord'
+		'discord',
+		'findGB'
 		// 'marketOffers',
 	],
 
@@ -111,6 +112,7 @@ let _menu = {
 		} else {
 			if (!flag && selMenu != MainParser.SelectedMenu) {			
 			$('#menu_box').remove();
+			$('.tooltip').remove();
 			_menu.CallSelectedMenu(MainParser.SelectedMenu);
 			}
 		}
@@ -493,6 +495,22 @@ let _menu = {
 		});
 
 		return btn_Info.append(btn_Inf);
+	},
+	/**
+	 * tracked GB nach Filterbedingung
+	 *
+	 * @returns {*|jQuery}
+	 */
+	
+	findGB_Btn: () => {
+
+		let btn_ = _menu.MakeButton('findGB', i18n('Boxes.findGB.Title'), i18n('Menu.findGB.Desc'));
+
+		let btn = $('<span />').on('click', function () {
+			findGB.ShowDialog();
+		});
+
+		return btn_.append(btn);
 	},
 
 	/**
