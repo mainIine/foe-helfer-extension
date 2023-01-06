@@ -507,6 +507,7 @@
     "Boxes.GvGMap.Log.siege_defeated": "BA vernichtet",
     "Boxes.GvGMap.Log.siege_deleted": "BA gelöscht",
     "Boxes.GvGMap.Log.siege_deployed": "BA gestellt",
+    "Boxes.GvGMap.OverviewExplainer": "Bitte besuche alle Karten einmal, um die Macht und Gildendaten zu sammeln.",
     "Boxes.GvGMap.Sector.Coords": "Koordinaten",
     "Boxes.GvGMap.Sector.Hitpoints": "Lebenspunkte",
     "Boxes.GvGMap.Sector.Power": "Macht",
