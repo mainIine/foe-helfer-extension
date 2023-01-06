@@ -1092,7 +1092,7 @@ let GuildFights = {
 			if (!mapdata.hasOwnProperty(i)) 
 				break;
 
-			let id = mapdata[i]['id'];
+			let id = mapdata[i]['id'] || 0;
 
 			for (let x in gbgGuilds) {
 				if (!gbgGuilds.hasOwnProperty(x)) {
@@ -1437,16 +1437,16 @@ let GuildFights = {
 				break;
 			}
 
+			if (!data['id']) {
+				data['id'] = 0; // A1 delivers no ID, set to 0
+			}
+
 			let d = data['conquestProgress'][i],
 				max = d['maxProgress'],
 				progess = d['progress'],
 				cell = $(`tr#province-${data['id']}`),
 				pColor = ProvinceMap.getSectorColors(GuildFights.MapData.map?.provinces[data.id]?.ownerId),
 				p = GuildFights.MapData['battlegroundParticipants'].find(o => (o['participantId'] === d['participantId']));
-
-			if (!data['id']) {
-				continue;
-			}
 
 			// <tr> is not present, create it
 			if (cell.length === 0) {

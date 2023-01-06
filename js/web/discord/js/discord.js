@@ -1,7 +1,7 @@
 /*
  * *************************************************************************************
  *
- * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2023 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -171,7 +171,7 @@ let Discord = {
 				}
 
 				let url = Discord.WebHooksUrls[i];
-				console.log('url: ',url);
+
 				h.push(`<option${url && data && (url['url'] === data['url'] || Discord.WebHooksUrls.length === 1) ? ' selected' : ''} value="${url['url']}">${url['name']}</option>`);
 			}
 

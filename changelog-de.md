@@ -1,5 +1,34 @@
 ## Changelog - Extension
 
+##### 3.1.0.0
+
+**Neu**
+- LB Spürhund:
+	- hilft bei der LB-Suche - z.B. bei der BP-Jagd
+	- während durch die LB-Rangliste oder die LB-Liste anderer Spieler geklickt wird, zeichnet der LB-Spürhund alle LB auf, die angegebenen Kriterien entsprechen
+	- wähle das gewünschte LB aus, gib gegebenenfalls einen Stufenbereich an und geh auf die Jagd
+	- "zurücksetzen" löscht die Liste und den Filter
+
+**Update**
+- LB Rechner:
+	- neue Formatierung
+
+- GvG:
+	- BA Kosten für die nächste Belagerung wurden hinzugefügt
+	- Macht Bonus für die ersten drei Gilden auf einer Karte wurde hinzugefügt
+
+**BugFix**
+- Menü:
+	- Es konnte passieren, dass Tooltips zurückgelassen wurden, wenn das Menü durch Zoom oder ähnliche Aktionen von einem Modus in einen anderen Modus gezwungen wurde.
+
+- StPatrick:
+	- aktualisierte nicht mehr korrekt
+
+- GG:
+	- X1 wurde nicht korrekt aktualisiert
+
+---
+
 ##### 3.0.0.1
 
 **BugFix**
