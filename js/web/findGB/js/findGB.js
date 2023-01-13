@@ -91,7 +91,7 @@ let findGB = {
         for (let GB of data) {
             let progress = Math.round((((GB.points || 0) + (GB.current_progress || 0))/((GB.requiredPoints || 0) + (GB.max_progress || 0)) || 0)*100);
             if (GB.name == name && GB.level>=min && GB.level<=max && ((p && progress > 0) || !p)) {
-                let testGB = {player: GB.player.name, GB: GB.name, level: GB.level, playerID:GB.player.id, progress:progress}
+                let testGB = {player: GB.player.name, GB: GB.name, level: GB.level, playerID:GB.player.player_id, progress:progress}
                 if (!findGB.found.find(obj => obj.player==testGB.player && obj.GB==testGB.GB && obj.level==testGB.level)) {
                     findGB.found.push(testGB);
                     $('#foundGB').append(findGB.row(testGB));
