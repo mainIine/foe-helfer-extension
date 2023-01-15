@@ -167,7 +167,7 @@ alertsDB.version(1).stores({
 		 * @param {!number} playerId the associated playerId
 		 * @returns {Promise<number>} the id number of the new alert
 		 */
-		function createAlert(data, server, playerId) {
+		async function createAlert(data, server, playerId) {
 			/** @type {FoEAlert} */
 			const alert = createAlertData(data, server, playerId);
 			return db.alerts
@@ -321,8 +321,8 @@ alertsDB.version(1).stores({
 		});
 
 		// upon start cleanup alerts which didn't get removed properly.
-		cleanupAlerts();
-
+		//cleanupAlerts(); // deactivated - is triggered too often and deletes correct/active alarms (it seems the background.js is unloaded/reloaded regularly and this is triggered then unintentionally)
+				
 		return {
 			getValidData: getValidateAlertData,
 			/**
