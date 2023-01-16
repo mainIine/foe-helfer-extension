@@ -224,7 +224,7 @@ alertsDB.version(1).stores({
 		}
 
 		/**
-		 * deletes all Alerts marked for deletion which don't have a notification displayed.
+		 * deletes all Alerts marked for deletion which don't have a notification displayed. // does not seem to work properly as future alerts are beeing deleted as well
 		 */
 		async function cleanupAlerts() {
 			const alerts = await getAllAlerts();
