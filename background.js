@@ -354,8 +354,9 @@ alertsDB.version(1).stores({
 
 	browser.runtime.onInstalled.addListener(() => {
 		"use strict";
-		const version = browser.runtime.getManifest().version;
+		//const version = browser.runtime.getManifest().version;
 		let lng = browser.i18n.getUILanguage();
+		/**
 		const ask = {
 				de: 'Es wurde gerade ein Update f%FCr den FoE Helfer installiert.%0A%0ADarf das Spiel jetzt neu geladen werden oder m%F6chtest Du es sp%E4ter selber machen%3F',
 				en: 'An update for the FoE Helper has just been installed.%0A%0ACan the game be reloaded now or do you want to do it yourself later%3F'
@@ -365,16 +366,19 @@ alertsDB.version(1).stores({
 		if(lng.indexOf('-') > -1){
 			lng = lng.split('-')[0];
 		}
-
+		*/
 		// Fallback to "en"
 		if(lng !== 'de' && lng !== 'en'){
 			lng = 'en';
 		}
 
-		/** @type {string} */
 		// @ts-ignore
-		const askText = ask[lng];
-		// No developer and player ask if the game can be reloaded
+		//const askText = ask[lng];
+		
+		if(!isDevMode() ) browser.tabs.create({
+			url: `https://foe-helper.com/extension/update?lang=${lng}`
+		});
+		/** // No developer and player ask if the game can be reloaded
 		if(!isDevMode() && confirm(unescape(askText)) === true){
 			browser.tabs.query({active: true, currentWindow: true}).then((tabs)=> {
 				// are we in FoE?
@@ -384,11 +388,7 @@ alertsDB.version(1).stores({
 					browser.tabs.reload(tabs[0].id);
 				}
 			});
-
-			browser.tabs.create({
-				url: `https://foe-helper.com/extension/update?lang=${lng}`
-			});
-		}
+		}*/
 	});
 
 
