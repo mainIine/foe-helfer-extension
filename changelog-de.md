@@ -8,6 +8,9 @@
 	- GG-Daten
 	- Gildenmitglieder-Daten
 
+- Musik-Modul:
+	- neuer Track hinzugefügt (aktuell nur auf Beta-Server verfügbar)
+
 **BugFix**
 - Alarme:
 	- Alarme wurden vorzeitig gelöscht
