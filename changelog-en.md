@@ -1,5 +1,25 @@
 ## Changelog - Extension
 
+##### 3.1.0.1
+
+**Update**
+- Player-ID added to the export of:
+	- GE Data
+	- GBG Data
+	- Guildmember data
+
+- Music-Modul:
+	- added new Track (currently only availble on Beta-Server)
+
+**BugFix**
+- Alerts:
+	- Alerts were deleted prematurely
+
+- General:
+	- this page was not opened anymore automatically after an update
+
+---
+
 ##### 3.1.0.0
 
 **New**
