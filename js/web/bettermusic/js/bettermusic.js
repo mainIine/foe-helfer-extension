@@ -277,18 +277,19 @@ let betterMusic = {
         "foe_music_pvp_arena": {Volume:.6, Name:"PvP Arena"},
         "FoE_BattleTheme_Vs1": {Volume:.7, Name:"Battle Theme"},
         "foe_music_stpatricks_v2": {Volume:.6, Name:"St Patricks Day Event", Event:"st_patricks_event"},
-        "foe_music_wildlife": {Volume:1, Name:"Wildlife Event", Event:"wildlife_event"},
+        "age23_background_music": {Volume:1, Name:"Anniversary Event", Path:"/sounds/shared/seasonalevents/2023_anni/age23_background_music.mp3"},
+        "foe_music_anniversary": {Volume:.5, Name:"Ages Event", Event:"forge_ages_event"},
+        "foe_music_wildlife": {Volume:.6, Name:"Wildlife Event", Event:"wildlife_event"},
         "foe_music_archeology": {Volume:.6, Name:"Archaeology  Event", Event:"archeology_event"},
-        "foe_music_hero": {Volume:.7, Name:"Fellowship Event", Event:"hero_event"},
+        "foe_music_hero": {Volume:.6, Name:"Fellowship Event", Event:"hero_event"},
         "foe_music_summer": {Volume:.7, Name:"Summer Event", Event:"summer_event"},
         "foe_music_halloween": {Volume:.6, Name:"Halloween Event", Event:"halloween_event"},
         "foe_music_winter": {Volume:.6, Name:"Winter Event", Event:"winter_event"},
-        "foe_music_anniversary": {Volume:1, Name:"Anniversary Event", Event:"forge_ages_event"},
         "foe_music_vikings": {Volume:1, Name:"Viking Settlement", Settlement:"vikings"},
         "foe_music_japanese": {Volume:1, Name:"Japanese Settlement", Settlement:"japanese"},
         "foe_music_egyptians": {Volume:1, Name:"Egypt Settlement", Settlement:"egyptians"},
         "foe_music_aztecs": {Volume:1, Name:"Aztec Settlement", Settlement:"aztecs"},
-        "foe_music_mughals": {Volume:1, Name:"Mughal Settlement", Settlement:"mughals"},
+        "foe_music_mughals": {Volume:1, Name:"Mughal Settlement", Settlement:"mughals"}
     },
 
     
@@ -381,8 +382,8 @@ let betterMusic = {
     switchTrack: (newTrack, transition = betterMusic.Settings.TransitionTime) => {
         let $SoundC = $(`#${betterMusic.Ids.shift()}`);
         let $SoundN = $(`#${betterMusic.Ids[0]}`);
-        
-        if ($SoundC[0].src == srcLinks.get('/sounds/shared/theme/'+ newTrack +'.ogg', true)) {
+        let path = srcLinks.get(betterMusic.PossibleTracks[newTrack].Path || '/sounds/shared/theme/'+ newTrack +'.ogg', true)
+        if ($SoundC[0].src == path) {
         
             betterMusic.Ids.unshift($SoundC[0].id);
             betterMusic.setEvent($SoundC[0].id, 0);
@@ -396,7 +397,7 @@ let betterMusic = {
             $SoundC.animate({volume: 0}, transition);
             
             $SoundN[0].volume = 0;
-            $SoundN[0].src = srcLinks.get('/sounds/shared/theme/'+ newTrack +'.ogg', true);
+            $SoundN[0].src = path;
             
             clearTimeout(betterMusic.nextEvent);
             var playPromise = $SoundN[0].play();
