@@ -20,6 +20,23 @@
 
 ---
 
+##### 3.1.0.1
+
+**Update**
+- Spieler-ID hinzugefügt zum Export von:
+	- Expeditionsdaten
+	- GG-Daten
+	- Gildenmitglieder-Daten
+
+**BugFix**
+- Alarme:
+	- Alarme wurden vorzeitig gelöscht
+
+- General:
+	- Die Changelog wurden nicht mehr aufgerufen, nachdem ein Update durchgeführt wurde
+
+---
+
 ##### 3.1.0.0
 
 **Neu**
