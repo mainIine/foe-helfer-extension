@@ -1,7 +1,7 @@
 /*
  * *************************************************************************************
  *
- * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2023 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -20,6 +20,7 @@ importScripts(
 
 // @ts-ignore
 let alertsDB = new Dexie("Alerts");
+
 // Define Database Schema
 alertsDB.version(1).stores({
 	alerts: "++id,[server+playerId],data.expires"
@@ -167,7 +168,7 @@ alertsDB.version(1).stores({
 		 * @param {!number} playerId the associated playerId
 		 * @returns {Promise<number>} the id number of the new alert
 		 */
-		function createAlert(data, server, playerId) {
+		async function createAlert(data, server, playerId) {
 			/** @type {FoEAlert} */
 			const alert = createAlertData(data, server, playerId);
 			return db.alerts
@@ -224,7 +225,7 @@ alertsDB.version(1).stores({
 		}
 
 		/**
-		 * deletes all Alerts marked for deletion which don't have a notification displayed.
+		 * deletes all Alerts marked for deletion which don't have a notification displayed. // does not seem to work properly as future alerts are beeing deleted as well
 		 */
 		async function cleanupAlerts() {
 			const alerts = await getAllAlerts();
@@ -321,8 +322,8 @@ alertsDB.version(1).stores({
 		});
 
 		// upon start cleanup alerts which didn't get removed properly.
-		cleanupAlerts();
-
+		//cleanupAlerts(); // deactivated - is triggered too often and deletes correct/active alarms (it seems the background.js is unloaded/reloaded regularly and this is triggered then unintentionally)
+				
 		return {
 			getValidData: getValidateAlertData,
 			/**
@@ -354,41 +355,20 @@ alertsDB.version(1).stores({
 
 	browser.runtime.onInstalled.addListener(() => {
 		"use strict";
-		const version = browser.runtime.getManifest().version;
+		//const version = browser.runtime.getManifest().version;
 		let lng = browser.i18n.getUILanguage();
-		const ask = {
-				de: 'Es wurde gerade ein Update f%FCr den FoE Helfer installiert.%0A%0ADarf das Spiel jetzt neu geladen werden oder m%F6chtest Du es sp%E4ter selber machen%3F',
-				en: 'An update for the FoE Helper has just been installed.%0A%0ACan the game be reloaded now or do you want to do it yourself later%3F'
-			};
-
-		// is a "-" in there? ==> en-en, en-us, en-gb etc ...
-		if(lng.indexOf('-') > -1){
-			lng = lng.split('-')[0];
-		}
 
 		// Fallback to "en"
 		if(lng !== 'de' && lng !== 'en'){
 			lng = 'en';
 		}
 
-		/** @type {string} */
 		// @ts-ignore
-		const askText = ask[lng];
-		// No developer and player ask if the game can be reloaded
-		if(!isDevMode() && confirm(unescape(askText)) === true){
-			browser.tabs.query({active: true, currentWindow: true}).then((tabs)=> {
-				// are we in FoE?
-				if(tabs[0].url && tabs[0].url.indexOf('forgeofempires.com/game/index') > -1){
-
-					// Yes? then reload
-					browser.tabs.reload(tabs[0].id);
-				}
-			});
-
-			browser.tabs.create({
-				url: `https://foe-helper.com/extension/update?lang=${lng}`
-			});
-		}
+		//const askText = ask[lng];
+		
+		if(!isDevMode() ) browser.tabs.create({
+			url: `https://foe-helper.com/extension/update?lang=${lng}`
+		});
 	});
 
 
@@ -405,13 +385,6 @@ alertsDB.version(1).stores({
 
 	const defaultInnoCDN = 'https://foede.innogamescdn.com/';
 
-	// // automatic update of local data
-	// window.addEventListener('storage', evt => {
-	// 	if (!evt.isTrusted) return;
-	// 	if (evt.key === 'PlayerData') {
-	// 		ChatData.player = JSON.parse(evt.newValue);
-	// 	}
-	// });
 
 	/**
 	 * creates the return value for a successfull api-call

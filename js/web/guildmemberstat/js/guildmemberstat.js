@@ -966,7 +966,7 @@ let GuildMemberStat = {
 		let CurrentMember = await GuildMemberStat.db.player.orderBy('score').reverse().toArray();
 		let exportData = GuildMemberStat.ExportData = [];
 
-		exportData.push(['rank', 'member', 'points', 'eraID', 'eraName', 'activity_warnings', 'messages', 'gex_participation', 'gbg_participation', 'won_battles', 'guildmember']);
+		exportData.push(['rank', 'member_id', 'member', 'points', 'eraID', 'eraName', 'activity_warnings', 'messages', 'gex_participation', 'gbg_participation', 'won_battles', 'guildmember']);
 
 		if (CurrentMember === undefined)
 		{
@@ -1129,7 +1129,7 @@ let GuildMemberStat = {
 			h.push(`<td class="is-number text-center" data-number="${gbgActivityCount}">${gbgActivityCount}</td>`);
 			h.push(`<td></td></tr>`);
 
-			exportData.push([(rank - deletedCount), member['name'], member['score'], Technologies.Eras[member['era']], i18n('Eras.' + Technologies.Eras[member['era']]), ActWarnCount, forumActivityCount, gexActivityCount, gbgActivityCount, member['won_battles'], deletedMember ? 0 : 1]);
+			exportData.push([(rank - deletedCount), member['player_id'], member['name'], member['score'], Technologies.Eras[member['era']], i18n('Eras.' + Technologies.Eras[member['era']]), ActWarnCount, forumActivityCount, gexActivityCount, gbgActivityCount, member['won_battles'], deletedMember ? 0 : 1]);
 
 		}
 
