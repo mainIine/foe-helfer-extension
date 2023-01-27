@@ -608,6 +608,7 @@ let GuildFights = {
 		GuildFights.PlayerBoxContent = [];
 
 		GuildFights.PlayerBoxContent.push({
+			player_id: 'player_id',
 			player: 'player',
 			negotiationsWon: 'negotiations',
 			battlesWon: 'battles',
@@ -704,6 +705,7 @@ let GuildFights = {
 			b.push('</tr>');
 
 			GuildFights.PlayerBoxContent.push({
+				player_id: playerNew['player_id'],
 				player: playerNew['name'],
 				negotiationsWon: playerNew['negotiationsWon'],
 				battlesWon: playerNew['battlesWon'],
@@ -1555,7 +1557,8 @@ let GuildFights = {
 				}
 
 				let r = GuildFights.PlayerBoxContent[i];
-				csv.push(`${r['player']};${r['negotiationsWon']};${r['battlesWon']};${r['total']}`);
+				console.log(r);
+				csv.push(`${r['player_id']};${r['player']};${r['negotiationsWon']};${r['battlesWon']};${r['total']}`);
 			}
 
 			blob = new Blob([BOM + csv.join('\r\n')], {

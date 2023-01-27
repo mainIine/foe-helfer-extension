@@ -884,7 +884,7 @@ let GexStat = {
 
 		return series;
 	},
-
+	// yvi
 	ExportContent: async (content, type) => {
 
 		let exportLimit = $('#gexsExportLimit').length ? parseInt($('#gexsExportLimit').val()) : GexStat.Settings.exportLimit;
@@ -917,12 +917,12 @@ let GexStat = {
 			case 'Participation':
 				let Participation = await GexStat.db.participation.reverse().limit(exportLimit).toArray();
 				if (!Participation) { return; }
-				exportData.push(['gexWeek', 'player', 'expeditionPoints', 'solvedEncounters', 'rank']);
+				exportData.push(['gexWeek', 'player ID', 'player', 'expeditionPoints', 'solvedEncounters', 'rank']);
 				Participation.sort((a, b) => a.gexweek - b.gexweek).forEach(gexweek => {
 					let participation = gexweek.participation;
 					let weekdate = moment(gexweek.gexweek * 1000).format(i18n('Date'));
 					participation.sort((a, b) => a.rank - b.rank).forEach(participant => {
-						exportData.push([weekdate, participant.name, participant.expeditionPoints, participant.solvedEncounters, participant.rank]);
+						exportData.push([weekdate, participant.player_id, participant.name, participant.expeditionPoints, participant.solvedEncounters, participant.rank]);
 					});
 				});
 				break;

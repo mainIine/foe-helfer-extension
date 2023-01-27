@@ -4,7 +4,7 @@
 
 **New**
 - GB Tracker:
-	- helps you finding specific GBs - e.g. for BP hunting
+	- helps you find specific GBs - e.g. for BP hunting
 	- while you click through the GB ranking or view GB Lists of other Players (e.g. neighbours, friends, guild) the tracker will record all GB that match your criteria
 	- choose the desired GB, enter a level range you are interested in and go hunting
 	- "resetting" will clear the list and reset the filter
