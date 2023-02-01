@@ -12,12 +12,12 @@
  */
 
 let srcLinks= {
-    FileList: null,
+    FileList: JSON.parse(localStorage.getItem("PortraitsFileList")),
     init: () => {
-        let x = document.querySelectorAll("script[src]")
+        let x = document.querySelectorAll("script[src]");
         for (let i in x) {
             if (x[i] && x[i].src && x[i].src.indexOf("ForgeHX")>0) {
-                srcLinks.getScriptContent(x[i])
+                srcLinks.getScriptContent(x[i]);
             }
         }
     },
@@ -39,6 +39,13 @@ let srcLinks= {
         HXscript = HXscript.substring(0,end);
         try {
             srcLinks.FileList = JSON.parse(HXscript);
+            let portraits={};
+            for (let x in srcLinks.FileList) {
+                if (x.indexOf("avatars/portrait")>-1) {
+                    portraits[x] = srcLinks.FileList[x];
+                }
+            }
+            if (Object.keys(portraits).length >0) localStorage.setItem("PortraitsFileList",JSON.stringify(portraits));
         } 
         catch {
             console.log("parsing of ForgeHX failed");
