@@ -10,6 +10,9 @@
 	- second cost column added to the right side of tabel 
 	- highlighling of the most efficient option now also is in the respective cost column
 
+- Kits:
+	- The list may now be filtered - for name of item or set
+
 **BugFix**
 - General:
 	- Player-Portraits were not loaded when modules were opened too soon after loading the game
