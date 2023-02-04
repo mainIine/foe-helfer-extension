@@ -1,5 +1,38 @@
 ## Changelog - Extension
 
+##### 3.1.0.2
+
+**Update**
+- Music-Modul:
+	- added new Track (will be avalable on live latest with the anniversary event, currently only available on beta)
+
+- Event cost calculator:
+	- second cost column added to the right side of tabel 
+	- highlighling of the most efficient option now also is in the respective cost column
+
+**BugFix**
+- General:
+	- Player-Portraits were not loaded when modules were opened too soon after loading the game
+
+---
+
+##### 3.1.0.1
+
+**Update**
+- Player-ID added to the export of:
+	- GE Data
+	- BGB Data
+	- Guidmember-Data
+
+**BugFix**
+- Alerts:
+	- Alerts were deleted prematurely
+
+- General:
+	- Changelogs were not opened anymore after an update was installed
+
+---
+
 ##### 3.1.0.0
 
 **New**
