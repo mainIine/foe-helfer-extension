@@ -12,16 +12,28 @@
  */
 
 /**
- * @type {{ItemTd: ((function(*=): string)|*), init: Kits.init, ShowMissing: number, ReadSets: Kits.ReadSets, ItemDiv: (function(*): string), GetInvententoryArray: (function(): *[]), ToggleView: Kits.ToggleView, KitsjSON: null, BuildBox: Kits.BuildBox}}
+ * A {@link HTML.Box box} for listing owned (in inventory) and missing buildings, and according kits and assets.
+ * @namespace
  */
 let Kits = {
 
+	/**
+	 * The parsed JSON of all known sets.
+	 * @type {object[]}
+	 */
 	KitsjSON: null,
+	/**
+	 * Determines which sets and assets to create. Valid values:
+	 * - `0`: Shows owned sets and assets only
+	 * - `1`: Shows owned sets and according assets (owned and missing)
+	 * - `2`: Shows all known sets and assets
+	 * @type {number}
+	 */
 	ShowMissing: 0,
 
 
 	/**
-	 * Get all sets from the server
+	 * Loads all known sets {@link Kits.KitsjSON JSON} and creates the {@link HTML.Box DOM box}.
 	 */
 	init: ()=> {
 		MainParser.loadJSON(extUrl + 'js/web/kits/data/sets.json', (data)=> {
@@ -32,13 +44,9 @@ let Kits = {
 
 
 	/**
-	 * Create the box
-	 *
-	 * @constructor
+	 * Creates the {@link HTML.Box box} with displayed sets.
 	 */
 	BuildBox: ()=> {
-
-
 		if ( $('#kits').length === 0 ) {
 
 			HTML.AddCssFile('kits');
@@ -52,7 +60,33 @@ let Kits = {
 				resize: true
 			});
 
-			$('#kitsBody').append( $('<div />').attr('id','kitsBodyInner'), $('<div />').attr('id','kitsBodyBottombar') );
+			$('#kitsBody').append(
+				$('<div />').attr('id', 'kitsBodyTopbar'),
+				$('<div />').attr('id', 'kitsBodyInner'),
+				$('<div />').attr('id', 'kitsBodyBottombar')
+			);
+
+			$('#kitsBodyTopbar').append(
+				$('<label />').attr({
+					class: 'game-cursor'
+				}).text(i18n('Boxes.Kits.FilterSets') + ':\xA0').append(
+					$('<input />').attr({
+						class: 'game-cursor',
+						type: 'text',
+						'data-type': 'filter-sets-text',
+						placeholder: 'e.g. sent||cherry||winter'
+					}).on('change', Kits._filterSets)
+				)
+			).append(
+				$('<label />').attr({class: 'game-cursor'}).text(i18n('Boxes.Kits.FilterItems') + ':\xA0').append(
+					$('<input />').attr({
+						class: 'game-cursor',
+						type: 'text',
+						'data-type': 'filter-items-text',
+						placeholder: 'e.g. car||field'
+					}).on('change', Kits._filterItems)
+				)
+			);
 
 			$('#kitsBodyBottombar').append(
 				$('<span />').attr({
@@ -80,9 +114,7 @@ let Kits = {
 
 
 	/**
-	 * Compare
-	 *
-	 * @constructor
+	 * Creates all displayed set elements.
 	 */
 	ReadSets: ()=> {
 		let inv = Kits.GetInvententoryArray(),
@@ -91,11 +123,6 @@ let Kits = {
 
 		let t = '<table class="foe-table">';
 
-		t += 	`<tr class="headline" style="display:table-row">
-					<th colspan="2">${i18n('Boxes.Kits.Name')}</th>
-					<th colspan="2">${i18n('Boxes.Kits.KitName')}</th>
-				</tr>`;
-
 		// Sets durchsteppen
 		for (let set in kits) {
 
@@ -103,9 +130,13 @@ let Kits = {
 				break;
 			}
 
+			/** @type {SetItem[][]} */
 			let buildings = [],
+				/** @type {SetItem[][]} */
 				missings = [],
+				/** @type {SetItem[]} */
 				assetRow = [],
+				/** @type {SetItem[]} */
 				kitRow = [],
 				show = false;
 
@@ -117,6 +148,7 @@ let Kits = {
 				}
 
 				const building = kits[set]['buildings'][i];
+				/** @type {SetItem[]} */
 				let itemRow = [];
 
 				// Level 1
@@ -235,14 +267,14 @@ let Kits = {
 
 					if (asset && asset['inStock'] > 0) {
 						assetRow.push({
-							element: 'asset',
+							type: 'asset',
 							item: asset,
 							missing: false
 						});
 					} 
 					else if (show && Kits.ShowMissing > 0) {
 						assetRow.push({
-							element: 'asset',
+							type: 'asset',
 							item: entities[kits[set]['assets'][a]],
 							missing: true
 						});
@@ -302,10 +334,10 @@ let Kits = {
 				show = true;
 			}
 
-			if (show) {
-				let Name = kits[set]['name'],
-					GroupName = kits[set]['groupname'],
-					ChainSetIco = '';
+			const Name = kits[set]['name'],
+				GroupName = kits[set]['groupname'];
+			if (show || GroupName || !Name && !GroupName) {
+				let ChainSetIco = '';
 
 				if (Name) { //Name is set
 					let sName = Name.toLowerCase().replace(/_set/g, '');
@@ -412,7 +444,7 @@ let Kits = {
 				}
 
 				// Kit listing
-				if (kitRow.length > 1) {
+				if (kitRow.length) {
 					t += `<tr><td colspan="4" class="assets-header">${i18n('Boxes.Kits.SelectionKit')}</td></tr>`;
 					let rowTd = '<td colspan="4"><div class="kits-row">';
 
@@ -421,14 +453,6 @@ let Kits = {
 					});
 
 					rowTd += '</div></td>';
-
-					t += '<tr>' + rowTd + '</tr>';
-				}
-				else if (kitRow.length) {
-					t += `<tr><td colspan="4" class="assets-header">${i18n('Boxes.Kits.SelectionKit')}</td></tr>`;
-
-					let rowTd = Kits.ItemTd(kitRow[0]);
-					rowTd += '<td colspan="2"></td>';
 
 					t += '<tr>' + rowTd + '</tr>';
 				}
@@ -442,11 +466,9 @@ let Kits = {
 
 
 	/**
-	 * Create two td's for a level1 oder update building
-	 *
-	 * @param el
-	 * @returns {string}
-	 * @constructor
+	 * Creates two `td`'s for a level1 or update building.
+	 * @param {SetItem} el
+	 * @returns {string} HTML string of the two `td` elements.
 	 */
 	ItemTd: (el)=> {
 		if (!el || el['item'] == undefined) {
@@ -532,11 +554,9 @@ let Kits = {
 
 
 	/**
-	 * Create a div-row for assets of a set
-	 *
-	 * @param el
-	 * @returns {string}
-	 * @constructor
+	 * Creates a `div` for any asset of a set.
+	 * @param {SetItem} el
+	 * @returns {string} HTML string of the `div` element.
 	 */
 	ItemAssetDiv: (el)=> {
 		if (!el || el['item'] == undefined) {
@@ -554,11 +574,9 @@ let Kits = {
 	},
 	
 	/**
-	 * Create a div-row for multible kits of a set
-	 *
-	 * @param el
-	 * @returns {string}
-	 * @constructor
+	 * Creates a `div` for any kit of a set.
+	 * @param {SetItem} el
+	 * @returns {string} HTML string of the `div` element.
 	 */
 	ItemKitDiv: (el)=> {
 		if (!el || el['item'] == undefined) {
@@ -627,10 +645,8 @@ let Kits = {
 
 
 	/**
-	 * Return MainParser.Inventory as array
-	 *
-	 * @returns {[]}
-	 * @constructor
+	 * Returns {@link MainParser.Inventory} as array.
+	 * @returns {any[]}
 	 */
 	GetInvententoryArray: ()=> {
 		let Ret = [];
@@ -660,16 +676,110 @@ let Kits = {
 
 
 	/**
-	 * Toggle view
-	 *
-	 * @constructor
+	 * Toggles displaying of owned, missing and all set items.
 	 */
 	ToggleView: ()=> {
 		Kits.ShowMissing === 0 ? Kits.ShowMissing = 1 : Kits.ShowMissing === 1 ? Kits.ShowMissing = 2 : Kits.ShowMissing = 0;
 
 		$('#kitsBodyInner').html('');
 		Kits.ReadSets();
+		Kits._filterSets();
+		Kits._filterItems();
 
 		$('#kits-triplestate-button').text(Kits.ShowMissing === 0 ? i18n('Boxes.Kits.TripleStateButton0') : Kits.ShowMissing === 1 ? i18n('Boxes.Kits.TripleStateButton1') : i18n('Boxes.Kits.TripleStateButton2'))
+	},
+
+
+	/**
+	 * Filters whole sets by name patterns.
+	 */
+	_filterSets: () => {
+		const filterRegExps = $('#kitsBodyTopbar input[data-type="filter-sets-text"]').val()
+			.split('||').filter(it => it.trim().length > 0).map(it => new RegExp(it, 'i'));
+		const allRows = $('#kitsBodyInner tr:not(.headline)');
+		if (!filterRegExps || filterRegExps.length < 1) {
+			allRows.removeClass('filter-set-hide');
+		} else {
+			const allRowHeads = allRows.has('th.head');
+			allRowHeads.each((i, e) => {
+				const trSetHead = $(e);
+				if (trSetHead.next().has('th.head').length > 0) {
+					// A `head` directly followed by another `head`, that's a groupname heading; ignore those, i.e. never hide.
+					return;
+				}
+				const from = allRows.index(trSetHead);
+				const to = (i + 1) < allRowHeads.length ? allRows.index(allRowHeads[i + 1]) : allRows.length;
+				allRows.slice(from, to).toggleClass('filter-set-hide', !filterRegExps.some(it => it.test(trSetHead.text())));
+			});
+		}
+	},
+
+
+	/**
+	 * Filters all items by name patterns.
+	 */
+	_filterItems: () => {
+		const filterRegExps = $('#kitsBodyTopbar input[data-type="filter-items-text"]').val()
+			.split('||').filter(it => it.trim().length > 0).map(it => new RegExp(it, 'i'));
+		const allRows = $('#kitsBodyInner tr:not(.headline)');
+		let lastSetHead, lastAssetHead;
+		let visibleSetItemsCount = 0, visibleAssetItemsCount = 0;
+		allRows.each((i, e) => {
+			// Check each row and hide those being filtered out.
+			// Also hide empty `head`-rows of assets/kits and set accordingly.
+			const row = $(e);
+			const isSetHead = row.has('th.head').length > 0;
+			if (isSetHead && row.next().has('th.head').length > 0) {
+				// A `head` directly followed by another `head`, that's a groupname heading; ignore those, i.e. never hide.
+				return;
+			}
+			const isAssetHead = row.has('td.assets-header').length > 0;
+			if (isSetHead) {
+				if (lastSetHead) lastSetHead.toggleClass('filter-item-empty', visibleSetItemsCount < 1);
+				lastSetHead = row;
+				visibleSetItemsCount = 0;
+				if (lastAssetHead) lastAssetHead.toggleClass('filter-item-empty', visibleAssetItemsCount < 1);
+				lastAssetHead = null;
+				visibleAssetItemsCount = 0;
+			} else if (isAssetHead) {
+				if (lastAssetHead) lastAssetHead.toggleClass('filter-item-empty', visibleAssetItemsCount < 1);
+				lastAssetHead = row;
+				visibleAssetItemsCount = 0;
+			} else {
+				let visibleItemsCount = 0;
+				const assetOrKitDivs = row.find('div.item-asset, div.item-kits');
+				if (assetOrKitDivs.length > 0) {
+					assetOrKitDivs.each((i, e) => {
+						const item = $(e);
+						const show = !filterRegExps || filterRegExps.length < 1 || filterRegExps.some(it => it.test(item.text()) || it.test(item.html()));
+						item.toggleClass('filter-item-hide', !show);
+						if (show) visibleItemsCount++;
+					});
+				} else {
+					const buildingTds = row.find('td:not(:has(> div.kits-row, > div.assets-row))');
+					for (let i = 0; i < buildingTds.length; i++) {
+						if (buildingTds.eq(i).attr('colspan') === '2') continue;
+						const itemImg = buildingTds.eq(i);
+						const itemText = buildingTds.eq(i + 1);
+						const show = !filterRegExps || filterRegExps.length < 1 || filterRegExps.some(it => it.test(itemText.text()) || it.test(itemImg.html()));
+						buildingTds.slice(i, i + 2).toggleClass('filter-item-hide', !show);
+						if (show) visibleItemsCount++;
+						i++; //for 2 `td`s were processed
+					}
+				}
+				visibleAssetItemsCount += visibleItemsCount;
+				visibleSetItemsCount += visibleItemsCount;
+				row.toggleClass('filter-item-empty', visibleItemsCount < 1);
+			}
+		});
+		if (lastSetHead) lastSetHead.toggleClass('filter-item-empty', visibleSetItemsCount < 1);
+		if (lastAssetHead) lastAssetHead.toggleClass('filter-item-empty', visibleAssetItemsCount < 1);
 	}
 };
+
+/**
+ * @typedef SetItem
+ * @property {string} type 'first', 'update', 'kit' or 'asset'
+ * @property {string|object} item
+ * @property {boolean} missing
+ */
