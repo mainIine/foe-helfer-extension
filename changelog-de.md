@@ -10,6 +10,9 @@
 	- zweite Kostenspalte am Ende der Tabelle eingefügt 
 	- Hervorheben der günstigsten Option erfolgt jetzt zusätzlich in der entsprechenden Kostenspalte
 
+- Kits:
+	- Die Liste kann nun gefiltert werden - nach Name des Gegenstands oder des Sets
+
 **BugFix**
 - General:
 	- Spieler-Portraits wurden manchmal nicht angezeigt, wenn Module zu zeitig nach Spielstart geöffnet wurden
