@@ -51,14 +51,14 @@ let srcLinks= {
             console.log("parsing of ForgeHX failed");
         }
     },
-    get: (filename, full=false) => {
+    get: (filename, full=false, noerror=false) => {
         if (!srcLinks.FileList) {
-            console.log ("Source file list not loaded!");
+            if (!noerror) console.log ("Source file list not loaded!");
             return filename;
         }
         let CS = srcLinks.FileList[filename];
         if (!CS) {
-            console.log("file " + filename + " not in list!");
+            if (!noerror) console.log("file " + filename + " not in list!");
             return filename;
         }
         let CSfilename = filename.substring(0,filename.length-4) + "-" + CS + filename.substring(filename.length-4);
@@ -71,6 +71,14 @@ let srcLinks= {
     },
     getFullPath: (file) => {
         return MainParser.InnoCDN + 'assets' + file;
+    },
+    getReward:(icon) => {
+        let url1 = srcLinks.get(`/shared/icons/reward_icons/reward_icon_${icon}.png`,true, true);
+        let url2 = srcLinks.get(`/shared/icons/goods_large/${icon}.png`,true, true);
+        if (url1.length > url2.length + 13) {
+            return url1;
+        }
+        return url2;
     }
 
 }
