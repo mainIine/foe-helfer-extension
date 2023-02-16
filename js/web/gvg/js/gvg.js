@@ -775,6 +775,7 @@ let GvGMap = {
 
 		let guilds = JSON.parse(localStorage.getItem('GvGMapGuilds'));
 
+		// gather guilds
 		GvGMap.Overview.continent.provinces.forEach(function (province) {
 			province.top_clans.forEach(function (guild) {
 				if (guilds === null) guilds = [];
@@ -798,44 +799,80 @@ let GvGMap = {
 				}
 			});
 		});
-		console.log(GvGMap.Overview.continent)
+		// paint sectors
+		let provinces = [];
 		GvGMap.Overview.continent.provinces.forEach(function (province) {
+			provinces.push({
+				era: province.era,
+				guilds: []
+			});
+
 			let mapDataFromStorage = JSON.parse(localStorage.getItem('GvGMapEra_'+province.era));
+			let currentProvince = provinces.find(x => x.era = province.era);
 
-			province.sectors.forEach(function (sector) {
-				let newSector = {};
-				let realX = sector.position.x * GvGMap.Map.HexWidth;
-				if (sector.position.y === undefined) sector.position.y = 0;
-				let realY = sector.position.y * GvGMap.Map.HexHeight;
-
-				if (sector.position.y % 2 === 0) 
-					newSector = MapSector.create(realX, realY * 0.75, sector);
-				else 
-					newSector = MapSector.create(realX + (GvGMap.Map.HexWidth * 0.5), realY * 0.75, sector);
+			province.sectors.forEach(function (sector, i, arr) {
+				let newSector = GvGMap.buildOverviewSector(sector); // has no color yet
 
 				if (sector.owner_id > 0) {
-					if (GvGMap.getGuildById(sector.owner_id) === undefined) {
-						let guild = {
-							id: sector.owner_id,
-							name: sector.owner_id+'',
-							color: {r:0,g:0,b:0},
-						};
-						let guildOnMap = GvGMap.createGuild(guild);
+					let guild = {
+						id: sector.owner_id,
+						name: sector.owner_id+'',
+						color: {r:0,g:0,b:0},
+					};
+					let guildOnMap = GvGMap.createGuild(guild);
+
+					// for general guild list
+					if (GvGMap.getGuildById(sector.owner_id) === undefined) { // if guild is unknown
 						GvGMap.Map.Guilds.push(guildOnMap);
 					}
 					else {
 						let guild = GvGMap.getGuildById(sector.owner_id);
 						guild.sectors++;
 					}
-					if (mapDataFromStorage != null) {
-						let guild = GvGMap.getGuildById(sector.owner_id);
+
+					// for guild province list
+					let provinceGuild = currentProvince.guilds.find(x => x.id = sector.owner_id);
+					if (provinceGuild)
+						console.log(provinceGuild, sector);
+
+					if (mapDataFromStorage != null) { // if sector power and terrain are known
 						let storedSector = mapDataFromStorage.sectors.find(x => x.sector_id = sector.sector_id);
-						guild.power += storedSector.power;
+						let guild = GvGMap.getGuildById(sector.owner_id);
+
+						if (provinceGuild) {
+							provinceGuild.power += storedSector.power;
+						}
+						else {
+							currentProvince.guilds.push(guildOnMap);
+						}
+						guild.power += storedSector.power; // for general guild list
 					}
 				}
+				else {
+					if (mapDataFromStorage != null) 
+						newSector.color = MapSector.getColorByTerrain(sector);
+				}
 				MapSector.draw(newSector);
+				if (i === arr.length - 1) { 
+					console.log(province.era, provinces.find(x => x.era = province.era)); 
+				}
 			});
+			//console.log(province.era, provinces.find(x => x.era = province.era));
 		});
+	},
+
+	buildOverviewSector: (sector) => {
+		let newSector = {};
+		let realX = sector.position.x * GvGMap.Map.HexWidth;
+		if (sector.position.y === undefined) sector.position.y = 0;
+		let realY = sector.position.y * GvGMap.Map.HexHeight;
+
+		if (sector.position.y % 2 === 0) 
+			newSector = MapSector.create(realX, realY * 0.75, sector);
+		else 
+			newSector = MapSector.create(realX + (GvGMap.Map.HexWidth * 0.5), realY * 0.75, sector);
+
+		return newSector;
 	},
 
 	drawCanvasInfo: () => {
@@ -847,7 +884,7 @@ let GvGMap = {
 		GvGMap.CanvasCTX.fillText(era, 10, 25);
 		GvGMap.CanvasCTX.font = "12px Arial";
 		GvGMap.CanvasCTX.fillStyle = '#ccc';
-		GvGMap.CanvasCTX.fillText(moment(GvGMap.OnloadDataTime).format('D.M.YY'), 10, 45);
+		GvGMap.CanvasCTX.fillText(moment(GvGMap.OnloadDataTime).format('D.M.YYYY'), 10, 45);
 	},
 
 	getGuildById: (id) => {
@@ -1060,7 +1097,7 @@ let GvGMap = {
         let t = [];
 		let mapCounter = localStorage.getItem('GvGMapCount') || 0;
 
-		if (mapCounter == 13) // all map data avalable
+		if (mapCounter >= 13) // all map data available
 			GvGMap.sortGuilds();
 		else
 			GvGMap.sortGuildsBySectorAmount();
@@ -1450,21 +1487,25 @@ let MapSector = {
 		}
 	},
 
-	getColorByTerrain: (sector) => { // TO DO: does not work anymore
+	getColorByTerrain: (sector) => { 
 		let powerMultiplicator = sector.powerMultiplicator || 1;
 		let color = {};
 		if (sector.terrain === "beach") {
 			color = {r:233,g:233,b:114-(parseInt(powerMultiplicator)+1)*10};
 		}
 		else if (sector.terrain === "plain") {
-			color = {r:126-(parseInt(powerMultiplicator)+1)*10,g:222-(parseInt(powerMultiplicator)+1)*10,b:110-(parseInt(powerMultiplicator)+1)*10};
+			color = {
+				r:126-(parseInt(powerMultiplicator)+1)*10,
+				g:222-(parseInt(powerMultiplicator)+1)*10,
+				b:110-(parseInt(powerMultiplicator)+1)*10
+			};
 		}
 		else {
+			color = {r:50,g:50,b:50};
 			if (sector.terrain === "rocks")
 				color = {r:50,g:50,b:50};
 			if (sector.terrain === "water")
 				color = {r:4,g:28,b:45};
-			color = GvGMap.NoGuild.color;
 		}
 		return color;
 	},
