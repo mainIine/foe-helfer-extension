@@ -1,6 +1,10 @@
 ## Changelog - Extension
 
-##### 3.1.0.2
+##### 3.2.0.0
+
+**New**
+- Merger Game (Geburtstagsevent Minispiel)
+	- gibt einen Überblick über die auf dem Spielbrett vorhandenen Schlüsselteile
 
 **Update**
 - Musik-Modul:
