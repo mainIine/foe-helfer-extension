@@ -14,8 +14,8 @@
 #mergerGameDialog {
 	top: 50px;
 	left: calc(100vw - 350px);
-	width: 280px;
-    height: auto;
+	width: 285px;
+    height: 500px;
 }
 
 #mergerGameDialog img {
@@ -24,10 +24,6 @@
 }
 
 #mergerGameDialogBody {
-    display: block;
-    justify-content: center;
-    align-items: center;
     text-align: center;
-    font-size: 100%;
     overflow-y: auto;
 }

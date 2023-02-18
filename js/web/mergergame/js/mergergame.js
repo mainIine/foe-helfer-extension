@@ -19,7 +19,7 @@ FoEproxy.addHandler('MergerGameService', 'getOverview', (data, postData) => {
 	mergerGame.cells = data.responseData.cells;
 	mergerGame.init()
 	mergerGame.checkSave();
-
+	mergerGame.resetCost = data.responseData.resetCost.resources.anniversary_energy;
 	// Don't create a new box while another one is still open
     if ($('#mergerGameDialog').length === 0) {
 		mergerGame.ShowDialog();
@@ -33,6 +33,8 @@ FoEproxy.addHandler('MergerGameService', 'resetBoard', (data, postData) => {
 	}
 	mergerGame.cells = data.responseData.cells;
 	mergerGame.init()
+	mergerGame.energyUsed += mergerGame.resetCost;
+	mergerGame.resetCost = data.responseData.resetCost.resources.anniversary_energy;
 	mergerGame.UpdateDialog();
 
 // Don't create a new box while another one is still open
@@ -68,7 +70,9 @@ FoEproxy.addHandler('MergerGameService', 'mergePieces', (data, postData) => {
 	let target = mergerGame.cells.findIndex((e) => e.id == t_id);
 	let origin = mergerGame.cells.findIndex((e) => e.id == o_id);
 
-	if (mergerGame.cells[target].isFixed) mergerGame.state.progress += Math.pow(2,mergerGame.cells[target].level-1)
+	if (mergerGame.cells[target].isFixed) mergerGame.state.progress += Math.pow(2,mergerGame.cells[target].level-1);
+	if (mergerGame.state.progress == mergerGame.state.maxProgress) mergerGame.resetCost = 0;
+	
 	mergerGame.cells[target] = data.responseData;
 	mergerGame.cells.splice(origin,1);
 
@@ -101,6 +105,8 @@ let mergerGame = {
 	cells:[],
 
 	state: {},
+
+	resetCost: 0,
 
 	init: ()=> {
 	
@@ -184,37 +190,19 @@ let mergerGame = {
 		let table = mergerGame.state.table
 	
 		let remainingProgress = mergerGame.state.maxProgress - mergerGame.state.progress;
-		let totalValue = mergerGame.state.progress + mergerGame.keyValue();
+		let keys = mergerGame.keyValue();
+		let totalValue = mergerGame.state.progress + keys;
 		let efficiency = (totalValue / mergerGame.state.energyUsed).toFixed(2);
 		
 		let colors = ["white","yellow","blue"];
 		let order = ["bottom","top","full"]
 		
 		html = `<table class="foe-table">`
-		html += `<tr><td>Remaining Progress:</td><td>${remainingProgress} / ${mergerGame.state.maxProgress} <img src="${srcLinks.get("/shared/seasonalevents/league/league_anniversary_icon_progress.png",true)}"></td></tr>`
-		html += `<tr><td>Energy used:</td><td>${mergerGame.state.energyUsed} <img src="${srcLinks.get("/shared/seasonalevents/anniversary/event/anniversary_energy.png",true)}"></td></tr>`
-		html += `<tr><td>Efficiency (incl. keys):</td><td style="font-weight:bold; color: ${efficiency > 0.4 ? 'var(--text-success)' : efficiency < 0.3 ? 'red' : 'var(--text-bright)'}">${efficiency} <img src="${srcLinks.get("/shared/seasonalevents/league/league_anniversary_icon_progress.png",true)}"> /<img src="${srcLinks.get("/shared/seasonalevents/anniversary/event/anniversary_energy.png",true)}"></td></tr>`
+		html += `<tr><td>${i18n("Boxes.MergerGame.Progress")}</td><td>${remainingProgress} / ${mergerGame.state.maxProgress} <img src="${srcLinks.get("/shared/seasonalevents/league/league_anniversary_icon_progress.png",true)}"></td></tr>`
+		html += `<tr><td>${i18n("Boxes.MergerGame.Energy")}</td><td>${mergerGame.state.energyUsed} <img src="${srcLinks.get("/shared/seasonalevents/anniversary/event/anniversary_energy.png",true)}"></td></tr>`
+		html += `<tr><td>${i18n("Boxes.MergerGame.Keys")}</td><td>${keys} <img src="${srcLinks.get("/shared/seasonalevents/anniversary/event/anniversay_icon_key_full_white.png",true)}"><img src="${srcLinks.get("/shared/seasonalevents/anniversary/event/anniversay_icon_key_full_yellow.png",true)}"><img src="${srcLinks.get("/shared/seasonalevents/anniversary/event/anniversay_icon_key_full_blue.png",true)}"></td></tr>`
+		html += `<tr><td>${i18n("Boxes.MergerGame.Efficiency")}</td><td style="font-weight:bold; color: ${efficiency > 0.4 ? 'var(--text-success)' : efficiency < 0.3 ? 'red' : 'var(--text-bright)'}">${efficiency} <img src="${srcLinks.get("/shared/seasonalevents/league/league_anniversary_icon_progress.png",true)}"> /<img src="${srcLinks.get("/shared/seasonalevents/anniversary/event/anniversary_energy.png",true)}"></td></tr>`
 		html += `</table>`
-		
-		/**vertical table
-		for (let i of colors) {
-			html += `<table class="Foe-Table"><tr><th></th>`
-			for (let o of order) {
-				html += `<th><img src="${srcLinks.get("/shared/seasonalevents/anniversary/event/anniversay_icon_key_"+o+"_"+i+".png",true)}"></th>`
-			}
-			for (let lev = 4; lev>0; lev--) {
-				html += `</tr><tr><td><img src="${srcLinks.get("/shared/seasonalevents/anniversary/event/anniversary_gem_"+i+"_"+lev+".png",true)}"></td>`
-				for (let o of order) {
-					html += `<td>${table[i]["level"+lev][o]}</td>`
-				}
-			}
-			html += `</tr><tr><td></td>`
-			for (let o of order) {
-				html += `<td>${table[i].level1[o] + table[i].level2[o] + table[i].level3[o] + table[i].level4[o]}</td>`
-			}
-			html += `</tr></table>`
-		}
-		*/
 
 		/* horizontal table*/
 		let totalPieces = {"white": {"top":0,"bottom":0,"full:":0,"min":0},"yellow": {"top":0,"bottom":0,"full:":0,"min":0},"blue": {"top":0,"bottom":0,"full:":0,"min":0},}
@@ -233,10 +221,12 @@ let mergerGame = {
 			for (let o of order) {
 				let m = totalPieces[i].min;
 				let t = totalPieces[i][o];
-				html += `</tr><tr><td ${(t==m && o != "full") ? 'style="font-weight:bold"' : ''}>${t}${(o == "full") ? '/'+ (t+m) : ''}`;
+				html += `</tr><tr><td ${((t==m && o != "full") || (0==m && o == "full") ) ? 'style="font-weight:bold"' : ''}>${t}${(o == "full") ? '/'+ (t+m) : ''}`;
 				html += `<img src="${srcLinks.get("/shared/seasonalevents/anniversary/event/anniversay_icon_key_"+o+"_"+i+".png",true)}"></td>`
 				for (let lev = 4; lev>0; lev--) {
-					html += `<td ${(o=="full" && lev==3 && table[i]["level"+lev][o]>1)?'style="font-weight:bold; color:red"':''}>${table[i]["level"+lev][o]}</td>`
+					val = table[i]["level"+lev][o];
+					if (val==0) val = "-";
+					html += `<td style="${val != "-" ? 'font-weight:bold;' : ''}${(o=="full" && lev==3 && table[i]["level"+lev][o]>1)?' color:red"': ''}">${val}</td>`
 				}
 			}
 			html += `</tr></table>`
