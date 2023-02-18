@@ -48,7 +48,7 @@ FoEproxy.addHandler('MergerGameService', 'spawnPieces', (data, postData) => {
 		return;
 	}
 	
-	mergerGame.cells.push(data.responseData)
+	mergerGame.cells.push(data.responseData[0])
 	mergerGame.state.energyUsed += 10;
 	mergerGame.updateTable();
 	mergerGame.saveState();
@@ -61,12 +61,12 @@ FoEproxy.addHandler('MergerGameService', 'mergePieces', (data, postData) => {
 		return;
 	}
 	
-	let t = data.responseData.id;
-	let o = postData[0].requestData[1];
-	if (o==t) o = postData[0].requestData[2];
+	let t_id = data.responseData.id;
+	let o_id = postData[0].requestData[1];
+	if (o_id==t_id) o_id = postData[0].requestData[2];
 
-	let target = mergerGame.cells.findIndex((e) => e.id == t);
-	let origin = mergerGame.cells.findIndex((e) => e.id == o);
+	let target = mergerGame.cells.findIndex((e) => e.id == t_id);
+	let origin = mergerGame.cells.findIndex((e) => e.id == o_id);
 
 	if (mergerGame.cells[target].isFixed) mergerGame.state.progress += Math.pow(2,mergerGame.cells[target].level-1)
 	mergerGame.cells[target] = data.responseData;
@@ -76,6 +76,7 @@ FoEproxy.addHandler('MergerGameService', 'mergePieces', (data, postData) => {
 	mergerGame.saveState();
 
 	mergerGame.UpdateDialog();
+
 });
 
 FoEproxy.addHandler('MergerGameService', 'convertPiece', (data, postData) => {
@@ -133,8 +134,6 @@ let mergerGame = {
 		let oldState=JSON.parse(x);
 		let oldTable=JSON.stringify(oldState.table);
 		let newTable=JSON.stringify(mergerGame.state.table);
-		console.log(oldTable)		
-		console.log(newTable)		
 		if (oldTable==newTable) {
 			mergerGame.state.maxProgress = oldState.maxProgress;
 			mergerGame.state.progress = oldState.progress;
