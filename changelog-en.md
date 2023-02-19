@@ -3,16 +3,16 @@
 ##### 3.2.0.0
 
 **New**
-- Merger Game (Anniversary Event Minigame)
-	- gives an overview about the keypieces present on the board
+- Merger Game (Anniversary Event Mini game)
+	- gives an overview about the key pieces present on the board
 
 **Update**
 - Music-Modul:
-	- added new Track (will be avalable on live latest with the anniversary event, currently only available on beta)
+	- added new Track (will be available on live latest with the anniversary event, currently only available on beta)
 
 - Event cost calculator:
-	- second cost column added to the right side of tabel 
-	- highlighling of the most efficient option now also is in the respective cost column
+	- second cost column added to the right side of table 
+	- highlighting of the most efficient option now also is in the respective cost column
 
 - Kits:
 	- The list may now be filtered - for name of item or set
