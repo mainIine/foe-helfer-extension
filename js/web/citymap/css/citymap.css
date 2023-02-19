@@ -190,7 +190,7 @@
 
 #city-map-overlayBody {
 	--background-color-military: #fff;
-	--border-color-military: #fff;
+	--border-color-military: #bbb;
 	--background-color-residential: #7abaff;
 	--border-color-residential: #219eff;
 	--background-color-decoration: #497445;
@@ -285,15 +285,15 @@
 }
 
 @-webkit-keyframes pulse {
-	0% { -webkit-transform: scale(0.9); opacity: 0.7; }
-	50% { -webkit-transform: scale(1); opacity: 1; }
-	100% { -webkit-transform: scale(0.9); opacity: 0.7; }
+	0% { -webkit-transform: scale(1); opacity: 1; }
+	50% { -webkit-transform: scale(0.9); opacity: 0.5; }
+	100% { -webkit-transform: scale(1); opacity: 1; }
 }
 
 @keyframes pulse {
-	0% { transform: scale(0.9); opacity: 0.7; }
-	50% { transform: scale(1); opacity: 1; }
-	100% { transform: scale(0.9); opacity: 0.7; }
+	0% { transform: scale(1); opacity: 1; }
+	50% { transform: scale(0.9); opacity: 0.5; }	
+	100% { -webkit-transform: scale(1); opacity: 1; }
 }
 
 .pulsate {

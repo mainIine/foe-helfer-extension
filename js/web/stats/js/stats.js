@@ -97,6 +97,8 @@ FoEproxy.addHandler('ResourceService', 'getPlayerResources', async (data, postDa
 		date: moment().startOf('hour').toDate(),
 		resources: r.resources
 	});
+
+	StockAlarm.checkResources();
 });
 
 // Clan Treasure log
@@ -119,6 +121,8 @@ FoEproxy.addHandler('ClanService', 'getTreasury', async (data, postData) => {
 		clanId: ExtGuildID,
 		resources: r.resources
 	});
+	
+	StockAlarm.checkTreasury();
 });
 
 // Player Army log
@@ -146,6 +150,8 @@ FoEproxy.addHandler('ArmyUnitManagementService', 'getArmyInfo', async (data, pos
 		date: moment().startOf('hour').toDate(),
 		army
 	});
+
+	StockAlarm.checkArmy();
 });
 
 /**
@@ -1332,12 +1338,9 @@ let Stats = {
 			let pointImage = '';
 			if (rewardInfo.type != 'unit') {
 				let url = '';
-				let url2 = '';
 				if ((rewardInfo.iconAssetName || rewardInfo.assembledReward && rewardInfo.assembledReward.iconAssetName)) {
 					const icon = rewardInfo.assembledReward && rewardInfo.assembledReward.iconAssetName ? rewardInfo.assembledReward.iconAssetName : rewardInfo.iconAssetName;
-					url = srcLinks.get(`/shared/icons/reward_icons/reward_icon_${icon}.png`, true);
-					url2 = srcLinks.get(`/shared/icons/goods_large/${icon}.png`, true);
-					
+					url = srcLinks.getReward(icon);
 					//fix for fragment missing images for buildings
 					if (rewardInfo.type == 'good' && rewardInfo.iconAssetName == 'random_goods' && rewardInfo.subType) {
 						url = srcLinks.get(`/shared/icons/reward_icons/reward_icon_random_goods.png`, true);
@@ -1351,8 +1354,7 @@ let Stats = {
 						url = srcLinks.get(`/city/buildings/${rewardInfo.subType.replace(/^(\w)_/, '$1_SS_')}.png`, true);
 				}
 				if (url) {
-					pointImage = `<object data="${url}" style="width: 45px; height: 45px; margin-right: 4px;" type="image/png">${url2 != '' ? '<img src="'+url2+'" style="width: 45px; height: 45px; margin-right: 4px;">':''}</object>`;
-					//pointImage = `<img src="${url}" style="width: 45px; height: 45px; margin-right: 4px;" onerror="this.onerror=null; this.src='${url2}'">`;
+					pointImage = `<img src="${url}" style="width: 45px; height: 45px; margin-right: 4px;">`
 				}
 			}
 			return {
@@ -1542,3 +1544,245 @@ let Stats = {
 		await IndexDB.db.statsGBGPlayerCache.bulkPut(playersForCache);		
     },
 };
+let StockAlarm = {
+	Alarms: JSON.parse(localStorage.getItem('StockAlarms') || '[]'),
+	triggered: [],
+	OptionsR: "",
+	OptionsT: "",
+	OptionsA: "",
+	Type: null,
+	Repeat: null,
+			
+	checkArmy: async () => {
+		if (StockAlarm.Alarms == []) return;
+		let alm = StockAlarm.Alarms.filter(data => data.type=="A")
+		if (alm.length == 0) return
+		await IndexDB.getDB();
+		let x=IndexDB.db.statsUnitsH.orderBy('date').reverse().limit(2).toArray();
+		await x;
+		let oldX = x._value[1]?.army || {};
+		let newX = x._value[0]?.army || {};
+		StockAlarm.check(alm, oldX, newX);
+	},
+
+	checkResources: async () => {
+		if (StockAlarm.Alarms == []) return;
+		let alm = StockAlarm.Alarms.filter(data => data.type=="R")
+		if (alm.length == 0) return
+		await IndexDB.getDB();
+		let x=IndexDB.db.statsTreasurePlayerH.orderBy('date').reverse().limit(2).toArray();
+		await x;
+		let oldX = x._value[1]?.resources || {};
+		let newX = x._value[0]?.resources || {};
+		StockAlarm.check(alm, oldX, newX);
+	},
+
+	checkTreasury: async () => {
+		if (StockAlarm.Alarms == []) return;
+		let alm = StockAlarm.Alarms.filter(data => data.type=="T")
+		if (alm.length == 0) return
+		await IndexDB.getDB();
+		let x=IndexDB.db.statsTreasureClanH.orderBy('date').reverse().limit(2).toArray();
+		await x;
+		let oldX = x._value[1]?.resources || {};
+		let newX = x._value[0]?.resources || {};
+		StockAlarm.check(alm, oldX, newX);
+	},
+
+	check: (alm, oldX, newX) => {
+		for (a of alm) {
+			if (newX[a.id]<a.value) {
+				switch (a.repeat) {
+					case 0: //alarm every time
+						trigger(a);
+						break;
+					case 1: //alarm once per session
+						if (!StockAlarm.triggered.some(e => (e.id === a.id && e.type===a.type))) {
+							trigger(a)
+						}
+						break;
+					case 2: //alarm once
+						if (oldX[a.id] > a.value) trigger(a);
+						break;
+
+				}
+			}
+		}
+	},
+
+	trigger: (alm) => {
+		StockAlarm.triggered.push({type:alm.type,id:alm.id})
+		HTML.ShowToastMsg({
+			head: i18n('Boxes.LowStock.LowStockHeader'),
+			text: replace(replace(i18n('Boxes.LowStock.LowStockMessage'),'%name%',alm.name),'%amount%',alm.value),
+			type: 'warning',
+			hideAfter: 20000,
+		});
+	},
+
+	showDialogue: async () => {
+		StockAlarm.Type ="R";
+		StockAlarm.Repeat = 1;
+	
+		await IndexDB.getDB();
+		let xA=IndexDB.db.statsUnitsH.orderBy('date').reverse().limit(1).toArray();
+		await xA;
+		let A=xA._value[0]?.army || {};
+		let xR=IndexDB.db.statsTreasurePlayerH.orderBy('date').reverse().limit(1).toArray();
+		await xR;
+		let R = xR._value[0]?.resources || {};
+		let xT=IndexDB.db.statsTreasureClanH.orderBy('date').reverse().limit(1).toArray();
+		await xT;
+		let T = xT._value[0]?.resources || {};
+		let OR = [];
+		let OT = [];
+		let OA = [];
+		era="";
+		setClass = true;
+		for (x of GoodsList) {
+			if (era != x.era) {
+				setClass = !setClass;
+				era = x.era;
+			}
+			if (R[x.id]>0) OR.unshift(`<option value="${x.id}" data-name="${x.name}" class="${setClass ? 'LShighlight':''}">${x.name} (${R[x.id]})</option>`)
+			if (T[x.id]>0) OT.unshift(`<option value="${x.id}" data-name="${x.name}" class="${setClass ? 'LShighlight':''}">${x.name} (${T[x.id]})</option>`)
+		};
+		era="";
+		setClass = true;
+		for (x of Unit.Types) {
+			if (era != x.minEra) {
+				setClass = !setClass;
+				era = x.minEra;
+			}
+			if (A[x.unitTypeId]>0) OA.unshift(`<option value="${x.unitTypeId}" data-name="${x.name}" class="${setClass ? 'LShighlight':''}">${x.name} (${A[x.unitTypeId]})</option>`)
+		};
+		StockAlarm.OptionsR=OR.join();
+		StockAlarm.OptionsA=OA.join();
+		StockAlarm.OptionsT=OT.join();
+		
+		HTML.AddCssFile('stats');
+        
+        HTML.Box({
+            id: 'LowStock',
+            title: i18n('Boxes.LowStock.Title'),
+            auto_close: true,
+            dragdrop: true,
+            minimize: true,
+			resize : true
+        });
+
+		let htmltext = `<span id="LowStockType">`;
+		htmltext += `<img class="options selected" data-type="R" src="${srcLinks.get("/shared/icons/reward_icons/reward_icon_random_goods.png",true)}">`;
+		htmltext += `<img class="options" data-type="T" src="${srcLinks.get("/shared/icons/reward_icons/reward_icon_treasury_goods.png",true)}">`;
+		htmltext += `<img class="options" data-type="A" src="${srcLinks.get("/shared/icons/reward_icons/reward_icon_all_units.png",true)}"></span>`;
+		htmltext += `<select id="LowStockID">${StockAlarm.OptionsR}</select>`;
+		htmltext += `<input id="LowStockValue" "type="Number" placeholder="alert threshold">`; //Add i18n!!
+		htmltext += `<span id="LowStockRepeat">`;
+		htmltext += `<img class="options" data-repeat="2" src="${extUrl}js/web/stats/images/once.png">`;
+		htmltext += `<img class="options  selected" data-repeat="1" src="${extUrl}js/web/stats/images/once_per_session.png">`;
+		htmltext += `<img class="options" data-repeat="0" src="${extUrl}js/web/stats/images/always.png"></span>`
+		htmltext += `<span id="LowStockAddBtn" class="btn btn-default btn-green" onclick="StockAlarm.addbtn">+</span>`;
+		htmltext += `<table class="foe-table" id="LowStockAlarmsList">`;
+		htmltext += `<tr><th>type</th><th>name</th><th>threshold</th><th>repeat</th><th></th></tr>` //Add i18n!!
+		htmltext += `</table>`;
+		
+		
+		$('#LowStockBody').html(htmltext);
+
+		for (let x of StockAlarm.Alarms) {
+			StockAlarm.addline(x.type, x.id, x.name, x.value, x.repeat);
+		}
+
+		$('#LowStockType .options').on("click", (e) => {
+			$('#LowStockType .options').removeClass("selected");
+			e.target.classList.add("selected");
+			StockAlarm.Type = e.target.dataset.type;
+			$('#LowStockID').html(StockAlarm["Options" + StockAlarm.Type]);
+		});
+		$('#LowStockRepeat .options').on("click", (e) => {
+			$('#LowStockRepeat .options').removeClass("selected");
+			e.target.classList.add("selected");
+			StockAlarm.Repeat = Number(e.target.dataset.repeat);
+		});
+		$('#LowStockAddBtn').on("click", (e) => {
+			let IDel = document.getElementById("LowStockID");
+			let id = IDel.value;
+			let name = IDel.options[IDel.selectedIndex].dataset.name;
+			let value = Number(document.getElementById("LowStockValue").value);
+			StockAlarm.add(StockAlarm.Type,id, name,value,StockAlarm.Repeat);
+			StockAlarm.addline(StockAlarm.Type,id, name,value,StockAlarm.Repeat);
+		});
+	},
+
+	rembtn:(e) =>{
+		let line= e.target.parentElement.parentElement;
+		let type= e.target.dataset.type;
+		let id= e.target.dataset.id;
+		let name= e.target.dataset.name;
+		let value= Number(e.target.dataset.value);
+		let repeat= Number(e.target.dataset.repeat);
+		StockAlarm.remove(type,id, name,value,repeat)
+		line.remove()
+	},
+	
+	add: (type, id, name, value, repeat) => {
+		StockAlarm.Alarms.push({
+			type: type,
+			id: id,
+			name: name,
+			value: value,
+			repeat: repeat
+		})
+		localStorage.setItem("StockAlarms",JSON.stringify(StockAlarm.Alarms));
+	},
+
+	addline: (type, id, name, value, repeat)=>{
+		let table = document.getElementById('LowStockAlarmsList');
+		let row = table.insertRow(1);
+		let typeImg = '';
+		switch (type) {
+			case "R": 
+				typeImg = srcLinks.get("/shared/icons/reward_icons/reward_icon_random_goods.png",true);
+				break;
+			case "T":
+				typeImg = srcLinks.get("/shared/icons/reward_icons/reward_icon_treasury_goods.png",true);
+				break;
+			case "A":
+				typeImg = srcLinks.get("/shared/icons/reward_icons/reward_icon_all_units.png",true);
+				break;
+		}
+		let repeatImg = '';
+		switch (repeat) {
+			case 0: 
+				repeatImg = extUrl + "js/web/stats/images/always.png";
+				break;
+			case 1:
+				repeatImg = extUrl + "js/web/stats/images/once_per_session.png";
+				break;
+			case 2:
+				repeatImg = extUrl + "js/web/stats/images/once.png";
+				break;
+		}
+		html = `<td><img src="${typeImg}"></td>`;
+		html += `<td>${name}</td>`;
+		html += `<td>${value}</td>`;
+		html += `<td><img src="${repeatImg}"></td>`;
+		html += `<td><span class="btn btn-default btn-delete LowStockRemBtn" data-id="${id}" data-name="${name}" data-value="${value}" data-repeat="${repeat}" data-type="${type}" onclick="StockAlarm.rembtn(event)">-</span></td>`;
+		
+		row.innerHTML = html;
+		
+	},
+
+	remove: (type, id, name, value, repeat) => {
+		let i = StockAlarm.Alarms.findIndex( x => x.type==type && x.id==id && x.name == name && x.repeat == repeat && x.value == value);
+		if (i>-1) {
+			StockAlarm.Alarms.splice(i,1);
+			localStorage.setItem("StockAlarms",JSON.stringify(StockAlarm.Alarms));
+			$(`#LowStockType [data-type="${type}"]`).trigger("click");
+			$(`#LowStockRepeat [data-repeat="${repeat}"]`).trigger("click");
+			$(`#LowStockValue`).val(value);
+			$(`#LowStockValue option[value="${id}"]`).prop('selected', true)
+		}
+	}
+
+}
