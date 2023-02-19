@@ -505,7 +505,7 @@ const FoEproxy = (function () {
 		}
 
 		// nur die jSON mit den Daten abfangen
-		if (url.indexOf("game/json?h=") > -1) {
+		if (url.match(/\?h\=\w+/) !== null) {
 
 			let d = /** @type {FoE_NETWORK_TYPE[]} */(JSON.parse(this.responseText));
 
