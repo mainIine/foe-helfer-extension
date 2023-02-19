@@ -19,7 +19,7 @@ FoEproxy.addHandler('MergerGameService', 'getOverview', (data, postData) => {
 	mergerGame.cells = data.responseData.cells;
 	mergerGame.init()
 	mergerGame.checkSave();
-	mergerGame.resetCost = data.responseData.resetCost.resources.anniversary_energy;
+	mergerGame.resetCost = data.responseData.resetCost?.resources?.anniversary_energy || 0;
 	// Don't create a new box while another one is still open
     if ($('#mergerGameDialog').length === 0) {
 		mergerGame.ShowDialog();
@@ -33,8 +33,8 @@ FoEproxy.addHandler('MergerGameService', 'resetBoard', (data, postData) => {
 	}
 	mergerGame.cells = data.responseData.cells;
 	mergerGame.init()
-	mergerGame.energyUsed += mergerGame.resetCost;
-	mergerGame.resetCost = data.responseData.resetCost.resources.anniversary_energy;
+	mergerGame.state.energyUsed += mergerGame.resetCost;
+	mergerGame.resetCost = data.responseData.resetCost?.resources?.anniversary_energy || 0;
 	mergerGame.UpdateDialog();
 
 // Don't create a new box while another one is still open
