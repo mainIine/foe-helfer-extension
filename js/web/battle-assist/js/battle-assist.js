@@ -10,7 +10,7 @@
  *
  * **************************************************************************************
  */
-
+HTML.AddCssFile('battle-assist');
 FoEproxy.addHandler('BattlefieldService', 'all', (data, postData) => {
 
 	// if setting is true?
@@ -68,7 +68,6 @@ let BattleAssist = {
 	 * @constructor
 	 */
     ShowNextEraDialog: (nT=false) => {
-        HTML.AddCssFile('battle-assist');
         
         HTML.Box({
             'id': 'battleAssistNextEraDialog',
@@ -87,8 +86,6 @@ let BattleAssist = {
 	 * @constructor
 	 */
     ShowRogueDialog: () => {
-        HTML.AddCssFile('battle-assist');
-
         HTML.Box({
             'id': 'battleAssistRogueDialog',
             'title': i18n('Boxes.BattleAssist.Title'),
@@ -99,3 +96,4 @@ let BattleAssist = {
         $('#battleAssistRogueDialogBody').html(`${i18n('Boxes.BattleAssist.Text.Rogue')}`);
     },
 };
+
