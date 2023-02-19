@@ -35,6 +35,7 @@ FoEproxy.addHandler('MergerGameService', 'resetBoard', (data, postData) => {
 	mergerGame.init()
 	mergerGame.state.energyUsed += mergerGame.resetCost;
 	mergerGame.resetCost = data.responseData.resetCost?.resources?.anniversary_energy || 0;
+	mergerGame.saveState();
 	mergerGame.UpdateDialog();
 
 // Don't create a new box while another one is still open
