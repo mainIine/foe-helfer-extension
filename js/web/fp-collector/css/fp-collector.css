@@ -215,3 +215,7 @@
 .foehelper-accordion-head.winter_event-head span.image {
 	background-image: url('../../x_img/winter_event.png') !important;
 }
+/*Anniversary Event*/
+.foehelper-accordion-head.anniversary_event-head span.image {
+	background-image: url('../../x_img/anniversary_event.png') !important;
+}

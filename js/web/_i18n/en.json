@@ -324,6 +324,7 @@
     "Boxes.FPCollector.task_reward": "Task Reward",
     "Boxes.FPCollector.wildlife_event": "Wildpark-Event",
     "Boxes.FPCollector.winter_event": "Winter-Event",
+    "Boxes.FPCollector.anniversary_event": "Anniversary-Event",
     "Boxes.General.Export": "Export",
     "Boxes.General.ExportCSV": "Export as CSV",
     "Boxes.General.ExportJSON": "Export as jSON",
