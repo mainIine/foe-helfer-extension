@@ -39,7 +39,7 @@ FoEproxy.addHandler('MergerGameService', 'all', (data, postData) => {
 		mergerGame.checkSave();
 		mergerGame.ShowDialog();
 	} else { //resetBoard
-		mergerGame.state.energyUsed += 20;// mergerGame.resetCost;
+		mergerGame.state.energyUsed +=  mergerGame.resetCost;
 		mergerGame.saveState();
 		mergerGame.UpdateDialog();
 	}
