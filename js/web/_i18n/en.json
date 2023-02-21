@@ -653,6 +653,8 @@
     "Boxes.MergerGame.Energy":"Energy used",
     "Boxes.MergerGame.Keys":"Total keys",
     "Boxes.MergerGame.Efficiency":"Efficiency (incl. keys)",
+    "Boxes.MergerGame.KeyValue":"Value per key",
+    "Boxes.MergerGame.KeysLeft":"There are keys remaining on the board!",
     "Boxes.MoppelHelper.Attacks": "Attacks",
     "Boxes.MoppelHelper.CityProtected": "This players city can not be attacked",
     "Boxes.MoppelHelper.Days": "__days__ day(s)",
