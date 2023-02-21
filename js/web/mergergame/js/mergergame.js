@@ -11,39 +11,42 @@
  * **************************************************************************************
  */
 
-FoEproxy.addHandler('MergerGameService', 'getOverview', (data, postData) => {
+FoEproxy.addHandler('MergerGameService', 'all', (data, postData) => {
+	
+	if (data.requestMethod != "getOverview" && data.requestMethod != "resetBoard") return;
 	//Do not show window if deactivated in settings
 	if(!Settings.GetSetting('ShowEventChest')){
 		return;
 	}
 	mergerGame.cells = data.responseData.cells;
-	mergerGame.init()
-	mergerGame.checkSave();
-	mergerGame.resetCost = data.responseData.resetCost?.resources?.anniversary_energy || 0;
-	// Don't create a new box while another one is still open
-    if ($('#mergerGameDialog').length === 0) {
+	mergerGame.levelValues = data.responseData?.lookup?.pieceConfig[0]?.grandPrizeProgress || {1:1,2:2,3:3,4:4};
+	mergerGame.keyValues = {3:data.responseData?.lookup?.keyConversion[0]?.amount || 1,4:data.responseData?.lookup?.keyConversion[1]?.amount|| 3}
+	mergerGame.spawnCost = data.responseData?.cells[1]?.spawnCost?.resources?.anniversary_energy || 10;
+	mergerGame.state["maxProgress"]= 0;
+	mergerGame.state["energyUsed"]= 0;
+	mergerGame.state["progress"]= 0;
+	mergerGame.state["keys"]= 0;
+	for (let x of mergerGame.cells) {
+		if (x.isFixed) mergerGame.state.maxProgress += mergerGame.levelValues[x.level];
+	};
+	for (let x of mergerGame.cells[1].spawnChances) {
+		if (!x) continue;
+		mergerGame.spawnChances[x.type.value][x.level] = x.spawnChance;
+	}
+	mergerGame.updateTable();
+	
+	if (data.requestMethod == "getOverview") {
+		mergerGame.checkSave();
 		mergerGame.ShowDialog();
+	} else { //resetBoard
+		mergerGame.state.energyUsed += 20;// mergerGame.resetCost;
+		mergerGame.saveState();
+		mergerGame.UpdateDialog();
 	}
-});
-
-FoEproxy.addHandler('MergerGameService', 'resetBoard', (data, postData) => {
-	//Do not show window if deactivated in settings
-	if(!Settings.GetSetting('ShowEventChest')){
-		return;
-	}
-	mergerGame.cells = data.responseData.cells;
-	mergerGame.init()
-	mergerGame.state.energyUsed += mergerGame.resetCost;
 	mergerGame.resetCost = data.responseData.resetCost?.resources?.anniversary_energy || 0;
-	mergerGame.saveState();
-	mergerGame.UpdateDialog();
-
-// Don't create a new box while another one is still open
-if ($('#mergerGameDialog').length === 0) {
-	mergerGame.ShowDialog();
-}
-
+	
 });
+
 
 FoEproxy.addHandler('MergerGameService', 'spawnPieces', (data, postData) => {
 	// Don't handle when module not open
@@ -52,7 +55,7 @@ FoEproxy.addHandler('MergerGameService', 'spawnPieces', (data, postData) => {
 	}
 	
 	mergerGame.cells.push(data.responseData[0])
-	mergerGame.state.energyUsed += 10;
+	mergerGame.state.energyUsed += mergerGame.spawnCost;
 	mergerGame.updateTable();
 	mergerGame.saveState();
 	mergerGame.UpdateDialog();
@@ -71,7 +74,7 @@ FoEproxy.addHandler('MergerGameService', 'mergePieces', (data, postData) => {
 	let target = mergerGame.cells.findIndex((e) => e.id == t_id);
 	let origin = mergerGame.cells.findIndex((e) => e.id == o_id);
 
-	if (mergerGame.cells[target].isFixed) mergerGame.state.progress += Math.pow(2,mergerGame.cells[target].level-1);
+	if (mergerGame.cells[target].isFixed) mergerGame.state.progress += mergerGame.levelValues[mergerGame.cells[target].level];
 	if (mergerGame.state.progress == mergerGame.state.maxProgress) mergerGame.resetCost = 0;
 	
 	mergerGame.cells[target] = data.responseData;
@@ -104,24 +107,14 @@ FoEproxy.addHandler('MergerGameService', 'convertPiece', (data, postData) => {
 let mergerGame = {
 
 	cells:[],
-
+	spawnChances:{white:{1:14,2:8,3:5,4:3},blue:{1:14,2:8,3:5,4:3},yellow:{1:16,2:10,3:7,4:4}},
 	state: {},
-
 	resetCost: 0,
+	spawnCost: 10,
+	levelValues: {},
+	keyValues: {},
+	keyValue: Number(localStorage.getItem("MergerGameKeyValue") ||"2.25"),
 
-	init: ()=> {
-	
-		mergerGame.state["maxProgress"]= 0;
-		mergerGame.state["energyUsed"]= 0;
-		mergerGame.state["progress"]= 0;
-		mergerGame.state["keys"]= 0;
-		for (let x of mergerGame.cells) {
-			if (x.isFixed) mergerGame.state.maxProgress += Math.pow(2,x.level-1);
-		};
-		mergerGame.updateTable();
-
-	},
-	
 	updateTable: () => {
 		let table = {
 			white:  {level4:{top:0,bottom:0,full:0},level3:{top:0,bottom:0,full:0},level2:{top:0,bottom:0,full:0},level1:{top:0,bottom:0,full:0}},
@@ -148,14 +141,27 @@ let mergerGame = {
 			mergerGame.state.keys = oldState.keys;
 		}
 	},
+	
 	saveState:() => {
 		localStorage.setItem("mergerGameState",JSON.stringify(mergerGame.state))
 	},
 
-	keyValue:() => {
+	keySum:() => {
 		let sum = 0;
 		for (let x of mergerGame.cells) {
-			if (x.keyType?.value == "full") sum += x.level == 3 ? 1 : 3
+			if (x.keyType?.value == "full") sum += mergerGame.keyValues[x.level];
+		}
+		if (sum>0) {
+			if ($('#mergerGameResetBlocker').length === 0) {
+				let blocker = document.createElement("img");
+				blocker.id = 'mergerGameResetBlocker';
+				blocker.src = extUrl + "js/web/x_img/mergerGameResetBlocker.png";
+				blocker.title = i18n("Boxes.MergerGame.KeysLeft");
+				blocker.onclick = "this.remove()";
+				$('#game_body')[0].append(blocker);
+			} 
+		} else {
+			$('#mergerGameResetBlocker').remove()
 		}
 		return mergerGame.state.keys + sum;
 	},
@@ -166,21 +172,26 @@ let mergerGame = {
      * @constructor
      */
     ShowDialog: () => {
-        HTML.AddCssFile('mergergame');
         
-        HTML.Box({
-            id: 'mergerGameDialog',
-            title: 'Merger Game',
-            auto_close: true,
-            dragdrop: true,
-            minimize: true,
-			resize : true
-        });
+		// Don't create a new box while another one is still open
+		if ($('#mergerGameDialog').length === 0) {
+			HTML.AddCssFile('mergergame');
+			
+			HTML.Box({
+				id: 'mergerGameDialog',
+				title: 'Merger Game',
+				auto_close: true,
+				dragdrop: true,
+				minimize: true,
+				resize : true,
+				settings: 'mergerGame.ShowSettingsButton()'
+			});
 
+			$('#mergerGameDialogclose').on("click",()=>{$('#mergerGameResetBlocker').remove()})
+		}
+		
 		mergerGame.UpdateDialog();
-
     },
-
 	
 	UpdateDialog: () => {
 		if ($('#mergerGameDialog').length === 0) {
@@ -191,8 +202,8 @@ let mergerGame = {
 		let table = mergerGame.state.table
 	
 		let remainingProgress = mergerGame.state.maxProgress - mergerGame.state.progress;
-		let keys = mergerGame.keyValue();
-		let totalValue = mergerGame.state.progress + keys;
+		let keys = mergerGame.keySum();
+		let totalValue = mergerGame.state.progress + keys*mergerGame.keyValue;
 		let efficiency = (totalValue / mergerGame.state.energyUsed).toFixed(2);
 		
 		let colors = ["white","yellow","blue"];
@@ -217,7 +228,7 @@ let mergerGame = {
 		for (let i of colors) {
 			html += `<table class="foe-table"><tr><th></th>`
 			for (let lev = 4; lev>0; lev--) {
-				html += `<th><img src="${srcLinks.get("/shared/seasonalevents/anniversary/event/anniversary_gem_"+i+"_"+lev+".png",true)}"></th>`
+				html += `<th><img src="${srcLinks.get("/shared/seasonalevents/anniversary/event/anniversary_gem_"+i+"_"+lev+".png",true)}" title="${mergerGame.spawnChances[i][lev]}%"></th>`
 			}
 			for (let o of order) {
 				let m = totalPieces[i].min;
@@ -233,9 +244,21 @@ let mergerGame = {
 			html += `</tr></table>`
 		}
 		
-
-
 		$('#mergerGameDialogBody').html(html);
 	},
+
+	ShowSettingsButton: () => {
+        let h = [];
+        h.push(`<p class="text-center"><label for="MGkeyValue">${i18n('Boxes.MergerGame.KeyValue')}<label><br>`);
+        h.push(`<input type="Number" id="MGkeyValue" oninput="mergerGame.SaveSettings(this.value)" value="${mergerGame.keyValue}"></p>`);
+        
+		$('#mergerGameDialogSettingsBox').html(h.join(''));
+    },
+
+    SaveSettings: (value='2.25') => {
+        mergerGame.keyValue = Number(value) || 2.25;
+		localStorage.setItem('MergerGameKeyValue', value);
+        mergerGame.UpdateDialog();
+    }
 };
 

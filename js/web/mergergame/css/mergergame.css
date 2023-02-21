@@ -27,3 +27,15 @@
     text-align: center;
     overflow-y: auto;
 }
+
+#mergerGameResetBlocker {
+    width: 55px;
+    height: 55px;
+    top: calc(50vh + 206px);
+    left: calc(50vw - 345px);
+    position: absolute;
+    z-index: 100;
+    background-color: #ff9400;
+    border-radius: 10px;
+    border: red solid 2px;
+}
