@@ -1,5 +1,16 @@
 ## Changelog - Extension
 
+##### 3.2.1.0
+
+**Update**
+- Merger Game:
+	- geänderte Werte (Inno Update) - sollte jetzt robuster sein, sollten weitere Änderungen kommen
+
+- FP-Einsammlungen:
+	- Geburtstags-Event ergänzt
+	
+---
+
 ##### 3.2.0.0
 
 **New**
