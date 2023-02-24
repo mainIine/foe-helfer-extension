@@ -39,7 +39,7 @@
 - Player-ID added to the export of:
 	- GE Data
 	- BGB Data
-	- Guidmember-Data
+	- Guild-member-Data
 
 **BugFix**
 - Alerts:
