@@ -1,5 +1,15 @@
 ## Changelog - Extension
 
+##### 3.2.1.0
+
+**Update**
+- Merger Game:
+	- changes values (Inno Update) - should now be more robust against future changes
+
+- FP-Collector:
+	- added Anniversary-Event
+	
+---
 ##### 3.2.0.0
 
 **New**
@@ -29,7 +39,7 @@
 - Player-ID added to the export of:
 	- GE Data
 	- BGB Data
-	- Guidmember-Data
+	- Guild-member-Data
 
 **BugFix**
 - Alerts:
