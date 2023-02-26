@@ -57,7 +57,7 @@ FoEproxy.addHandler('RewardService', 'collectReward', (data, postData) => {
     
 });
 
-$('#container')[0].addEventListener("click", function (e) {
+$('#container').on("click", function (e) {
     if ($('#Wildlife').length === 0) return;
     if (Wildlife.rewardactive==0) return;
     
