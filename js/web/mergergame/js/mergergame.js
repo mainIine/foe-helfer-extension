@@ -191,7 +191,8 @@ let mergerGame = {
 				settings: 'mergerGame.ShowSettingsButton()'
 			});
 
-			$('#mergerGameDialogclose').on("click",()=>{$('#mergerGameResetBlocker').remove()})
+			$('#mergerGameDialogclose').on("click",()=>{$('#mergerGameResetBlocker').remove()});
+			$('#mergerGameDialogButtons .window-minimize').on("click",()=>{$('#mergerGameResetBlocker').remove()});
 		}
 		
 		mergerGame.UpdateDialog();

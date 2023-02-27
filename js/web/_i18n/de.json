@@ -649,7 +649,7 @@
     "Boxes.MergerGame.Keys":"Schlüssel",
     "Boxes.MergerGame.Efficiency":"Effizienz (inkl. Schlüssel)",
     "Boxes.MergerGame.KeyValue":"Wert eines Schlüssels",
-    "Boxes.MergerGame.KeysLeft":"Es liegen noch Schlüssel auf dem Spielfeld!",
+    "Boxes.MergerGame.KeysLeft":"FoE-Helfer: Es liegen noch Schlüssel auf dem Spielfeld!",
     "Boxes.MoppelHelper.Attacks": "Angriffe",
     "Boxes.MoppelHelper.CityProtected": "Die Stadt dieses Spielers kann nicht angegriffen werden",
     "Boxes.MoppelHelper.Days": "__days__ Tag(e)",

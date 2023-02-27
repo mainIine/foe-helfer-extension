@@ -648,7 +648,7 @@
     "Boxes.MergerGame.Energy": "Énergie utilisée",
     "Boxes.MergerGame.KeyValue": "Valeur par clé",
     "Boxes.MergerGame.Keys": "Total clés",
-    "Boxes.MergerGame.KeysLeft": "Il y a des clés restante sur le tableau !",
+    "Boxes.MergerGame.KeysLeft": "FoE-Assistant: Il y a des clés restante sur le tableau !",
     "Boxes.MergerGame.Progress": "Progrès restant",
     "Boxes.MoppelHelper.Attacks": "Attaques",
     "Boxes.MoppelHelper.CityProtected": "La cité de ce joueur ne peut pas être attaquées",
