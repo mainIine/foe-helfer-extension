@@ -43,7 +43,11 @@ FoEproxy.addHandler('MergerGameService', 'all', (data, postData) => {
 		mergerGame.saveState();
 		mergerGame.UpdateDialog();
 	}
-	mergerGame.resetCost = data.responseData.resetCost?.resources?.anniversary_energy || 0;
+	if (mergerGame.state.progress == mergerGame.state.maxProgress) {
+		mergerGame.resetCost = 0;
+	} else {
+		mergerGame.resetCost = data.responseData.resetCost?.resources?.anniversary_energy || 0;
+	}
 	
 });
 
@@ -76,7 +80,7 @@ FoEproxy.addHandler('MergerGameService', 'mergePieces', (data, postData) => {
 
 	if (mergerGame.cells[target].isFixed) mergerGame.state.progress += mergerGame.levelValues[mergerGame.cells[target].level];
 	if (mergerGame.state.progress == mergerGame.state.maxProgress) mergerGame.resetCost = 0;
-	
+
 	mergerGame.cells[target] = data.responseData;
 	mergerGame.cells.splice(origin,1);
 
@@ -187,7 +191,8 @@ let mergerGame = {
 				settings: 'mergerGame.ShowSettingsButton()'
 			});
 
-			$('#mergerGameDialogclose').on("click",()=>{$('#mergerGameResetBlocker').remove()})
+			$('#mergerGameDialogclose').on("click",()=>{$('#mergerGameResetBlocker').remove()});
+			$('#mergerGameDialogButtons .window-minimize').on("click",()=>{$('#mergerGameResetBlocker').remove()});
 		}
 		
 		mergerGame.UpdateDialog();
