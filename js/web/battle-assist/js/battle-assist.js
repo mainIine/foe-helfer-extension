@@ -116,11 +116,12 @@ FoEproxy.addHandler('BattlefieldService', 'startByBattleType', (data, postData) 
     
     $('#battleAssistArmyAdvice').remove();
     if (!data.responseData.state.winnerBit) return;
+    let HPstart=0;
+    let HPcurrent=0;
+    let unitsLost=0;
+        
     if (data.responseData.state.winnerBit==1) {
         let units = data.responseData.state.unitsOrder;
-        let HPstart=0;
-        let HPcurrent=0;
-        let unitsLost=0;
         units.forEach(x=>{
             if (x.unitID<0) return;
             HPstart += x.startHitpoints;
