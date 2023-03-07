@@ -64,50 +64,13 @@ FoEproxy.addHandler('BattlefieldService', 'getArmyPreview', (data, postData) => 
     $('#battleAssistArmyAdvice').remove();
     $('#battleAssistAddAdvice').remove();
     
-    let id=""
     let bonus = data.responseData[0].units[0]?.bonuses[0]?.value || 0;
     let wave1 = data.responseData[0].units.map((x) => x.unitTypeId);
-    if (!BattleAssist.UnitOrder) {
-        BattleAssist.UnitOrder={};
-        let temp = Unit.Types.map(x=> ({id:x.unitTypeId,era:x.minEra}));
-        temp.sort((a,b)=>{
-            if (a.id < b.id) {
-              return -1;
-            }
-            if (a.id > b.id) {
-              return 1;
-            }
-            return 0;
-        });
-        temp.sort((a,b)=> Technologies.Eras[a.era]-Technologies.Eras[b.era]);
-        temp.forEach((x,i)=> BattleAssist.UnitOrder[x.id] = i);
-    }
-    
-    //wave1.sort()
-    console.log(wave1)
-    wave1.sort((a,b) => BattleAssist.UnitOrder[b] - BattleAssist.UnitOrder[a]);
-    console.log(wave1)
-    wave1.forEach(x => id+=x);
-    
     let wave2 = null;
     if (data.responseData[1]) {
         wave2 = data.responseData[1].units.map((x) => x.unitTypeId);
-        wave2.sort((a,b) => BattleAssist.UnitOrder[b] - BattleAssist.UnitOrder[a]);
-        //wave2.sort();
-        wave2.forEach(x => id+=x);
     }
-    
-    let army= {id:id,wave1:wave1, wave2:wave2, bonus:bonus};
-    let i= BattleAssist.armyRecent.findIndex(x => x.id==id);
-    if (i>-1) BattleAssist.armyRecent.splice(i,1);
-    BattleAssist.armyRecent.unshift(army);
-    if (BattleAssist.armyRecent.length>5) BattleAssist.armyRecent.pop;    
-    if (BattleAssist.armyAdvice[id] && BattleAssist.armyAdvice[id].bonus <= bonus) {
-        BattleAssist.ShowArmyAdvice(BattleAssist.armyAdvice[id].advice);
-    }
-    
-    if ($('#battleAssistAAConfig').length > 0) BattleAssist.ShowArmyAdviceConfig();
-    
+    BattleAssist.processArmies(wave1,wave2,bonus);
 });
 
 FoEproxy.addHandler('BattlefieldService', 'startByBattleType', (data, postData) => {
@@ -123,7 +86,7 @@ FoEproxy.addHandler('BattlefieldService', 'startByBattleType', (data, postData) 
     if (data.responseData.state.winnerBit==1) {
         let units = data.responseData.state.unitsOrder;
         units.forEach(x=>{
-            if (x.unitID<0) return;
+            if (x.unitId<0) return;
             HPstart += x.startHitpoints;
             if (!x.currentHitpoints) {
                 unitsLost+=1;
@@ -142,6 +105,20 @@ FoEproxy.addHandler('BattlefieldService', 'surrender', (data, postData) => {
     if(!Settings.GetSetting('ShowArmyAdvice'))	return;
     if (!BattleAssist.AASettings.battleSurrendered) return
     if(!BattleAssist.armyAdvice[BattleAssist.armyRecent[0].id]) BattleAssist.ShowAddAdvice();
+});
+FoEproxy.addHandler('GuildExpeditionService', 'getEncounter', (data, postData) => {
+    if(!Settings.GetSetting('ShowArmyAdvice'))	return;
+    
+    $('#battleAssistArmyAdvice').remove();
+    $('#battleAssistAddAdvice').remove();
+    
+    let bonus = data.responseData.armyWaves[0].units[0]?.bonuses[0]?.value || 0;
+    let wave1 = data.responseData.armyWaves[0].units.map((x) => x.unitTypeId);
+    let wave2 = null;
+    if (data.responseData.armyWaves[1]) {
+        wave2 = data.responseData.armyWaves[1].units.map((x) => x.unitTypeId);
+    }
+    BattleAssist.processArmies(wave1,wave2,bonus);
 });
 
 /**
@@ -392,6 +369,42 @@ let BattleAssist = {
         BattleAssist.AASettings.battleLost = $('#AAbattleLost')[0].checked;
 		BattleAssist.AASettings.battleSurrendered = $('#AAbattleSurrendered')[0].checked;
 		localStorage.setItem('BattleAssistAASettings', JSON.stringify(BattleAssist.AASettings));
+    },
+    processArmies: (wave1, wave2, bonus) => {
+        let id="";
+        if (!BattleAssist.UnitOrder) {
+            BattleAssist.UnitOrder={};
+            let temp = Unit.Types.map(x=> ({id:x.unitTypeId,era:x.minEra}));
+            temp.sort((a,b)=>{
+                if (a.id < b.id) {
+                  return -1;
+                }
+                if (a.id > b.id) {
+                  return 1;
+                }
+                return 0;
+            });
+            temp.sort((a,b)=> Technologies.Eras[a.era]-Technologies.Eras[b.era]);
+            temp.forEach((x,i)=> BattleAssist.UnitOrder[x.id] = i);
+        }
+        
+        wave1.sort((a,b) => BattleAssist.UnitOrder[b] - BattleAssist.UnitOrder[a]);
+        wave1.forEach(x => id+=x);
+        if (wave2) {
+            wave2.sort((a,b) => BattleAssist.UnitOrder[b] - BattleAssist.UnitOrder[a]);
+            wave2.forEach(x => id+=x);
+        }
+        
+        let army= {id:id,wave1:wave1, wave2:wave2, bonus:bonus};
+        let i= BattleAssist.armyRecent.findIndex(x => x.id==id);
+        if (i>-1) BattleAssist.armyRecent.splice(i,1);
+        BattleAssist.armyRecent.unshift(army);
+        if (BattleAssist.armyRecent.length>5) BattleAssist.armyRecent.pop;    
+        if (BattleAssist.armyAdvice[id] && BattleAssist.armyAdvice[id].bonus <= bonus) {
+            BattleAssist.ShowArmyAdvice(BattleAssist.armyAdvice[id].advice);
+        }
+        
+        if ($('#battleAssistAAConfig').length > 0) BattleAssist.ShowArmyAdviceConfig();
     }
 };
 
