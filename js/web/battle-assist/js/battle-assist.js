@@ -104,9 +104,14 @@ FoEproxy.addHandler('BattlefieldService', 'startByBattleType', (data, postData) 
 });
 
 FoEproxy.addHandler('BattlefieldService', 'surrender', (data, postData) => {
-    if(!Settings.GetSetting('ShowArmyAdvice'))	return;
+    if (!Settings.GetSetting('ShowArmyAdvice'))	return;
     if (!BattleAssist.AASettings.battleSurrendered) return
-    if(!BattleAssist.armyAdvice[BattleAssist.armyRecent[0].id]) BattleAssist.ShowAddAdvice();
+    if (BattleAssist.armyRecent[0] && !BattleAssist.armyAdvice[BattleAssist.armyRecent[0].id]) BattleAssist.ShowAddAdvice();
+});
+FoEproxy.addHandler('BattlefieldService', 'surrenderWave', (data, postData) => {
+    if (!Settings.GetSetting('ShowArmyAdvice'))	return;
+    if (!BattleAssist.AASettings.battleSurrendered) return
+    if (BattleAssist.armyRecent[0] && !BattleAssist.armyAdvice[BattleAssist.armyRecent[0].id]) BattleAssist.ShowAddAdvice();
 });
 FoEproxy.addHandler('GuildExpeditionService', 'getEncounter', (data, postData) => {
     if(!Settings.GetSetting('ShowArmyAdvice'))	return;
@@ -190,7 +195,8 @@ let BattleAssist = {
 	 * @constructor
 	 */
     ShowAddAdvice: () => {
-        if ($('#battleAssistAAConfig').length !== 0) return
+        if ($('#battleAssistAAConfig').length !== 0) return;
+        if ($('#battleAssistAddAdvice').length !== 0) return;
         HTML.Box({
             'id': 'battleAssistAddAdvice',
             'title': i18n('Boxes.BattleAssistAddAdvice.Title'),
