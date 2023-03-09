@@ -1,5 +1,21 @@
 ## Changelog - Extension
 
+##### 3.2.2.0
+
+**Update**
+- Merger Game:
+	- The parameter determinning the color of the efficiency may now be changed in the settings
+		- Progress per key (Key value): A key is worth about this much progress (from buying chests - default: 1.3)
+		- Target Progress: this far you want to get into the grand prizes (default: 3750 for the golden kit)
+		- Available Currency/Energy: this much Energy is available during the whole event (default: 11000 - 10500 for Quests and about  500 from incidents)
+			- if you buy currency, you should add that amount here
+		- Efficiency is red when 5% below the target value
+		- Efficiency is green when 15% above the target value
+		- Efficiency is yellow when just about enough to reach the target progress
+	- when pointing at the Efficiency, a Tooltip will show, how much total progress is possible with that efficiency value (current progress not taken into account)
+	- when pointing at the used energy, a Tooltip will show, how much progress you should make on the current board in relation to the spent energy to reach the target
+	- if you do (not) want the reset-blocker to vanish when the box is minimized, this can now be configured
+
 ##### 3.2.1.0
 
 **Update**

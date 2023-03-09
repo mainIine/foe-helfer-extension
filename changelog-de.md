@@ -1,5 +1,21 @@
 ## Changelog - Extension
 
+##### 3.2.2.0
+
+**Update**
+- Merger Game:
+	- Die Parameter die die Farbe der Effizienz bestimmen können nun in den Optionen eingestellt werden
+		- Fortschritt je Schlüssel: Soviel Fortschritt ist ein Schlüssel etwa wert (Kistenkauf - Standard:1,3)
+		- Zielfortschritt: soweit willst du kommen in den Hauptpreisen (Standard: 3750 für goldenes Kit)
+		- vorhandene Währung: soviel Energie steht zur Verfügung (Standard: 11000 - 10500 von Quests und geschätzte 500 von Ereignissen)
+			- gekaufte Währung sollte entsprechend aufaddiert werden
+		- Die Effizienz wird rot, wenn 5% unterhalb des Zielwerts
+		- Die Effizienz ist grün 15% oberhalb des Zielwerts
+		- Die Effizienz ist also gelb, wenn gerade gut genug, um Ziel zu erreichen
+	- wenn auf die Effizienz gezeigt wird, wird in einem Tooltip ausgegeben, wieviel Fortschritt mit dieser Effizienz erreicht werden kann
+	- wenn auf die Energie gezeigt wird, wird in einem Tooltip ausgegeben, wieviel Fortschritt für die aktuell ausgegebene Enrgie auf dem Brett gemacht werden sollte, um den Zielfortschritt zu erreichen
+	- wenn der Reset-Blocker (nicht) verschwinden soll, wenn die Box minimiet wird, kann das nun eingestellt werden
+	
 ##### 3.2.1.0
 
 **Update**
