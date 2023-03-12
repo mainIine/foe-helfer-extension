@@ -1,6 +1,6 @@
 [	
 	{
-		"udate": "20.07.2022"
+		"udate": "12.03.2023"
 	},
 	{
 		"groupname": "Guild_Battlegrounds"
@@ -81,7 +81,7 @@
 				"update": "upgrade_kit_animal_crossing"
 			}
 		],
-		"kit": "selection_kit_animal_crossing"
+		"kit": ["selection_kit_animal_crossing","selection_kit_epic_WILD23"]
 	},
 	{
 		"name": "Gentiana_Windmill",
@@ -133,7 +133,7 @@
 				"update": "upgrade_kit_golden_orrery"
 			}
 		],
-		"kit": "selection_kit_golden_orrery"
+		"kit": ["selection_kit_golden_orrery","selection_kit_epic_ANNI23"]
 	},
 	{
 		"name": "Grand_Monarchs_Set",
@@ -150,7 +150,8 @@
 		"kit": [
 			"selection_kit_grand_monarchs",
 			"selection_kit_grand_king",
-			"selection_kit_grand_queen"
+			"selection_kit_grand_queen",
+			"selection_kit_epic_ANNI23"
 		]
 	},
 	{
@@ -161,7 +162,7 @@
 				"update": "upgrade_kit_celtic_farmstead"
 			}
 		],
-		"kit": "selection_kit_celtic_farmstead"
+		"kit": ["selection_kit_celtic_farmstead","selection_kit_PAT23"]
 	},
 	{
 		"name": "Fiore_Village",
@@ -171,7 +172,7 @@
 				"update": "upgrade_kit_fiore_village"
 			}
 		],
-		"kit": "selection_kit_fiore_village"
+		"kit": ["selection_kit_fiore_village","selection_kit_epic_BOWL23"]
 	},
 	{
 		"name": "Winter_Canal",
@@ -233,7 +234,7 @@
 			"D_MultiAge_SummerBonus21Pier",
 			"D_MultiAge_SummerBonus21Sharks"
 		],
-		"kit": "selection_kit_pirates_hideout"
+		"kit": ["selection_kit_pirates_hideout","selection_kit_epic_SUM23"]
 	},
 	{
 		"name": "Mountain_Reserve",
@@ -243,7 +244,7 @@
 				"update": "upgrade_kit_mountain_reserve"
 			}
 		],
-		"kit": "selection_kit_mountain_reserve"
+		"kit": ["selection_kit_mountain_reserve","selection_kit_epic_WILD23"]
 	},
 	{
 		"name": "Athlon_Abbey",
@@ -283,7 +284,7 @@
 				"update": "upgrade_kit_druid_temple"
 			}
 		],
-		"kit": "selection_kit_druid_temple"
+		"kit": ["selection_kit_druid_temple","selection_kit_PAT23"]
 	},
 	{
 		"name": "Terracotta_Vineyard",
@@ -302,7 +303,8 @@
 		"kit": [
 			"selection_kit_vineyard_estate",
 			"selection_kit_terracotta_vineyard",
-			"selection_kit_vineyard_fields"
+			"selection_kit_vineyard_fields",
+			"selection_kit_epic_BOWL23"
 		]
 	},
 	{
@@ -355,7 +357,7 @@
 				"update": "upgrade_kit_governors_villa"
 			}
 		],
-		"kit": "selection_kit_govenors_villa"
+		"kit": ["selection_kit_govenors_villa","selection_kit_epic_SUM23"]
 	},
 	{
 		"name": "Hall_of_Fame",
@@ -406,6 +408,36 @@
 		"kit": "selection_kit_airship"
 	},
 	{
+		"name": "Druid_Hut",
+		"buildings": [
+			{
+				"first": "W_MultiAge_PAT23A1",
+				"update": "upgrade_kit_PAT23A"
+			}
+		],
+		"kit": ["selection_kit_PAT23A","ultimate_upgrade_kit_PAT23A"]
+	},
+	{
+		"name": "Tower_of_Conjunction",
+		"buildings": [
+			{
+				"first": "W_MultiAge_ANNI23A1",
+				"update": "upgrade_kit_ANNI23A"
+			}
+		],
+		"kit": ["selection_kit_ANNI23A","golden_upgrade_kit_ANNI23A"]
+	},
+	{
+		"name": "Key_Master's_Workshop",
+		"buildings": [
+			{
+				"first": "W_MultiAge_ANNI23B1",
+				"update": "upgrade_kit_ANNI23B"
+			}
+		],
+		"kit": "selection_kit_ANNI23B"
+	},
+	{
 		"name": "Hanami_Bridge",
 		"buildings": [
 			{
@@ -439,7 +471,12 @@
 				"update": "upgrade_kit_druid_willow"
 			}
 		],
-		"kit": "selection_kit_celtic_forest_set"
+		"kit": [
+			"selection_kit_celtic_forest_set",
+			"selection_kit_celtic_trees",
+			"selection_kit_celtic_altars",
+			"selection_kit_PAT23"
+		]
 	},
 	{
 		"name": "Olympic_Treasury",
@@ -449,7 +486,27 @@
 				"update": "upgrade_kit_olympic_treasury"
 			}
 		],
-		"kit": "selection_kit_olympic_treasury"
+		"kit": ["selection_kit_olympic_treasury","selection_kit_epic_BOWL23"]
+	},
+	{
+		"name": "Tarot_Card_Caravans",
+		"buildings": [
+			{
+				"first": "W_MultiAge_HalloweenBonusGP22a",
+				"update": "upgrade_kit_tarot_card_caravans"
+			}
+		],
+		"kit": "selection_kit_tarot_card_caravans"
+	},
+	{
+		"name": "Chocolatery",
+		"buildings": [
+			{
+				"first": "W_MultiAge_WIN23A1",
+				"update": "upgrade_kit_chocolatery"
+			}
+		],
+		"kit": "selection_kit_chocolatery"
 	},
 	{
 		"name": "Winter_Train",
@@ -517,7 +574,7 @@
 				"update": "upgrade_kit_crows_nest"
 			}
 		],
-		"kit": "selection_kit_crows_nest"
+		"kit": ["selection_kit_crows_nest","selection_kit_epic_SUM23"]
 	},
 	{
 		"name": "Altar_Garden",
@@ -577,7 +634,17 @@
 				"update": "upgrade_kit_colossus"
 			}
 		],
-		"kit": "selection_kit_colossus"
+		"kit": ["selection_kit_colossus","selection_kit_epic_BOWL23"]
+	},
+	{
+		"name": "Pergola",
+		"buildings": [
+			{
+				"first": "W_MultiAge_BOWL23A1",
+				"update": "upgrade_kit_BOWL23A"
+			}
+		],
+		"kit": "selection_kit_BOWL23A"
 	},
 	{
 		"name": "Classical_Garden_Set",
@@ -592,7 +659,7 @@
 				"first": "A_MultiAge_SportBonusSet18"
 			}
 		],
-		"kit": "selection_kit_classical_garden"
+		"kit": ["selection_kit_classical_garden","selection_kit_epic_BOWL23"]
 	},
 	{
 		"name": "Winter_Spire",
@@ -626,7 +693,8 @@
 			"selection_kit_the_ship",
 			"selection_kit_pirate",
 			"selection_kit_trader",
-			"selection_kit_royal"
+			"selection_kit_royal",
+			"selection_kit_epic_SUM23"
 		]
 	},
 	{
