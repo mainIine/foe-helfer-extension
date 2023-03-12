@@ -678,6 +678,7 @@
     "Boxes.MergerGame.KeysLeft":"FoE-Helper: There are keys remaining on the board!",
     "Boxes.MergerGame.targetProgress":"Target progress",
     "Boxes.MergerGame.Progress":"Remaining Progress",
+    "Boxes.MergerGame.HelpLink": "https://docs.foe-helper.com/english/module/mergergame",
     "Boxes.MoppelHelper.Attacks": "Attacks",
     "Boxes.MoppelHelper.CityProtected": "This players city can not be attacked",
     "Boxes.MoppelHelper.Days": "__days__ day(s)",

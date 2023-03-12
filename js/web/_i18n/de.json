@@ -673,6 +673,7 @@
     "Boxes.MergerGame.targetProgress":"Fortschrittsziel",
     "Boxes.MergerGame.EfficiencyTargetProgress":"Zielfortschritt für verbrauchte Energie: ",
     "Boxes.MergerGame.EfficiencyTotalProgress":"Gesamtfortschritt basierend auf dieser Effizienz: ",
+    "Boxes.MergerGame.HelpLink": "https://docs.foe-helper.com/deutsch/module/merger-game",
     "Boxes.MoppelHelper.Attacks": "Angriffe",
     "Boxes.MoppelHelper.CityProtected": "Die Stadt dieses Spielers kann nicht angegriffen werden",
     "Boxes.MoppelHelper.Days": "__days__ Tag(e)",
