@@ -99,19 +99,22 @@ FoEproxy.addHandler('BattlefieldService', 'startByBattleType', (data, postData) 
     }
     if (data.responseData.state.winnerBit!=2 && unitsLost < BattleAssist.AASettings.lostUnits && HPstart - HPcurrent < BattleAssist.AASettings.lostHP) return;
     if (data.responseData.state.winnerBit==2 && !BattleAssist.AASettings.battleLost) return;
-    if (!BattleAssist.armyAdvice[BattleAssist.armyRecent[0].id]) BattleAssist.ShowAddAdvice();
+    if (BattleAssist.armyAdvice[BattleAssist.armyRecent[0].id] && BattleAssist.armyAdvice[BattleAssist.armyRecent[0].id].bonus < BattleAssist.armyRecent[0].bonus) return
+    BattleAssist.ShowAddAdvice();
     
 });
 
 FoEproxy.addHandler('BattlefieldService', 'surrender', (data, postData) => {
     if (!Settings.GetSetting('ShowArmyAdvice'))	return;
     if (!BattleAssist.AASettings.battleSurrendered) return
-    if (BattleAssist.armyRecent[0] && !BattleAssist.armyAdvice[BattleAssist.armyRecent[0].id]) BattleAssist.ShowAddAdvice();
+    if (BattleAssist.armyRecent[0] && BattleAssist.armyAdvice[BattleAssist.armyRecent[0].id] && BattleAssist.armyAdvice[BattleAssist.armyRecent[0].id].bonus < BattleAssist.armyRecent[0].bonus) return
+    BattleAssist.ShowAddAdvice();
 });
 FoEproxy.addHandler('BattlefieldService', 'surrenderWave', (data, postData) => {
     if (!Settings.GetSetting('ShowArmyAdvice'))	return;
     if (!BattleAssist.AASettings.battleSurrendered) return
-    if (BattleAssist.armyRecent[0] && !BattleAssist.armyAdvice[BattleAssist.armyRecent[0].id]) BattleAssist.ShowAddAdvice();
+    if (BattleAssist.armyRecent[0] && BattleAssist.armyAdvice[BattleAssist.armyRecent[0].id] && BattleAssist.armyAdvice[BattleAssist.armyRecent[0].id].bonus < BattleAssist.armyRecent[0].bonus) return
+    BattleAssist.ShowAddAdvice();
 });
 FoEproxy.addHandler('GuildExpeditionService', 'getEncounter', (data, postData) => {
     if(!Settings.GetSetting('ShowArmyAdvice'))	return;
