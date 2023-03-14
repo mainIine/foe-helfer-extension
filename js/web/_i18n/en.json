@@ -719,6 +719,7 @@
     "Boxes.Negotiation.TryEnd": "No more attempts",
     "Boxes.Negotiation.WrongGoods": "Wrong goods selected, please finish manually",
     "Boxes.Negotiation.confirmGoodsMissmatch": "Ok",
+    "Boxes.Negotiation.KeyboardTooltip": "Press __place__ and __slot__ on your keyboard to insert this suggestion.",
     "Boxes.Notice.ContentHeadIsFriend": "Friend",
     "Boxes.Notice.ContentHeadIsGuild": "Guild member",
     "Boxes.Notice.ContentHeadIsNeighbor": "Neighbour",

@@ -391,8 +391,7 @@ let Negotiation = {
 				if (slotSugestion) {
 					h.push('<td class="text-center">');
 					h.push(`<span class="goods-sprite ${good_id}"></span>`);
-					h.push(`<span class="numberIcon">${place+1}-${(slotSugestion.id+1) % 10}</span>`);
-					h.push('</td>');
+					h.push(`<span class="numberIcon" title="${HTML.i18nReplacer(i18n("Boxes.Negotiation.KeyboardTooltip"), {place: place + 1, slot: (slotSugestion.id+1) % 10})}">${place+1}-${(slotSugestion.id+1) % 10}</span>`);					h.push('</td>');
 				} else {
 					h.push('<td>&nbsp;</td>');
 				}
