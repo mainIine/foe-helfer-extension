@@ -714,6 +714,7 @@
     "Boxes.Negotiation.TryEnd": "Versuche zu Ende",
     "Boxes.Negotiation.WrongGoods": "Falsche Güter ausgewählt, bitte manuell fertig spielen",
     "Boxes.Negotiation.confirmGoodsMissmatch": "Ok",
+    "Boxes.Negotiation.KeyboardTooltip": "Drücke __place__ and __slot__ auf der Tastatur, um diese Empfehlung zu übernehmen.",
     "Boxes.Notice.ContentHeadIsFriend": "Freund",
     "Boxes.Notice.ContentHeadIsGuild": "Gilden Mitglied",
     "Boxes.Notice.ContentHeadIsNeighbor": "nachbar",
