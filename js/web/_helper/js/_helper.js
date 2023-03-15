@@ -28,6 +28,8 @@ let ranking = helper.arr.multisort(peoples, ['points', 'name'], ['DESC','ASC']);
 
 */
 
+// Ark Test
+
 if( typeof helper == 'undefined' ) {
 	var helper = { } ;
 }
