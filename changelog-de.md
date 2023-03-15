@@ -15,7 +15,16 @@
 	- wenn auf die Effizienz gezeigt wird, wird in einem Tooltip ausgegeben, wieviel Fortschritt mit dieser Effizienz erreicht werden kann
 	- wenn auf die Energie gezeigt wird, wird in einem Tooltip ausgegeben, wieviel Fortschritt für die aktuell ausgegebene Enrgie auf dem Brett gemacht werden sollte, um den Zielfortschritt zu erreichen
 	- wenn der Reset-Blocker (nicht) verschwinden soll, wenn die Box minimiet wird, kann das nun eingestellt werden
-	
+
+- Statistik:
+	- Belohnungen können nun nach Namen gefiltert werden
+
+- Verhandlungshelfer:
+	- Tooltip für den Hinweise zur Tastenkombination hinzugefügt
+
+- Sets und Kits:
+	- fehlende Teile hinzugefügt
+
 ##### 3.2.1.0
 
 **Update**

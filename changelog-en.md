@@ -16,6 +16,15 @@
 	- when pointing at the used energy, a Tooltip will show, how much progress you should make on the current board in relation to the spent energy to reach the target
 	- if you do (not) want the reset-blocker to vanish when the box is minimized, this can now be configured
 
+- Statistics:
+	- rewards may now be filtered by their name
+
+- Negotiation Assistant:
+	- Tooltip added for the keyboard hint
+
+- Sets and Kits:
+	- added missing pieces
+
 ##### 3.2.1.0
 
 **Update**
