@@ -198,9 +198,22 @@ let Wildlife = {
             $('#WLdestroyer')[0].addEventListener('click', function(){
                 Wildlife.selectTool('destroyer');
             });
-        } 
 
+            let box = $('#Wildlife'),
+            open = box.hasClass('open');
+            Wildlife.minimized = JSON.parse(localStorage.getItem("WildlifeMinimized") || "true");
+            if (open === true && Wildlife.minimized) {
+                box.removeClass('open');
+                box.addClass('closed');
+                box.find('.window-body').css("visibility", "hidden");
+            }
+            $('#WildlifeButtons > span.window-minimize').on('click', function() {
+                Wildlife.minimized = !Wildlife.minimized;
+                localStorage.setItem('WildlifeMinimized', JSON.stringify(Wildlife.minimized));
+            });
+        } 
     },
+
     Close: () => {
         HTML.CloseOpenBox('Wildlife');
     },
