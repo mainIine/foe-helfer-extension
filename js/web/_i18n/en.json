@@ -933,6 +933,7 @@
     "Boxes.Stats.SourceTitle.statsUnitsD": "Units - Daily",
     "Boxes.Stats.SourceTitle.statsUnitsH": "Your Units - Hourly",
     "Boxes.Stats.Title": "Statistics Overview",
+    "Boxes.Stats.FilterRewards":"Filter Rewards",
     "Boxes.Technologies.DescInStock": "Available",
     "Boxes.Technologies.DescRequired": "Required",
     "Boxes.Technologies.DescStillMissing": "<span style='color:#29b206'>Remaining</span> / <span style='color:#ff4040'>Needed</span>",

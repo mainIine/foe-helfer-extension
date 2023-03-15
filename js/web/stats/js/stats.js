@@ -177,7 +177,8 @@ let Stats = {
 		isGroupByEra: false,
 		showAnnotations: false, // GvG annotations
 		rewardSource: 'battlegrounds_conquest', // filter by type of reward
-		currentType: null
+		currentType: null,
+		filter:"",
 	},
 
 	/*
@@ -537,6 +538,9 @@ let Stats = {
 								<ul class="horizontal">
 									${btnsRewardSelect.join('')}
 								</ul>
+							</div>
+							<div class="StatsRewardFilter">
+								<input type="text" id="StatsRewardFilter" placeholder="${i18n("Boxes.Stats.FilterRewards")}" value="${Stats.state.filter}" oninput="Stats.state.filter=this.value;Stats.updateCharts();">
 							</div>`;
 		}
 		else {
@@ -1331,7 +1335,7 @@ let Stats = {
 		});
 
 		const seriesMapBySource = groupedByRewardSource[rewardSource] || {};
-		const serieData = Object.keys(seriesMapBySource).map(it => {
+		let serieData = Object.keys(seriesMapBySource).map(it => {
 			const rewardInfo = (rewardTypes.find(r => r.id === it) || {name: it});
 			const iconClass = rewardInfo.type === 'unit' ? `unit_icon ${rewardInfo.subType}" style="background-image:url('${srcLinks.get("/shared/unit_portraits/armyuniticons_50x50/armyuniticons_50x50_0.png", true)}')` : '';
 			// Asset image if not unit
@@ -1364,6 +1368,11 @@ let Stats = {
 				y: seriesMapBySource[it]
 			};
 		}).sort((a, b) => b.y - a.y);
+
+		if (Stats.state.filter !="") {
+			serieData = serieData.filter( a => a.name.toLowerCase().includes(Stats.state.filter.toLowerCase()))
+		}
+
 
 		return {
 			title: i18n('Boxes.Stats.Rewards.SourceTitle.' + rewardSource),
