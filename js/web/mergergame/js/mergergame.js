@@ -117,7 +117,6 @@ let mergerGame = {
 	spawnCost: 10,
 	levelValues: {},
 	keyValues: {},
-	//keyValue: Number(localStorage.getItem("MergerGameKeyValue") ||"2.25"),
 	settings: JSON.parse(localStorage.getItem("MergerGameSettings") || '{"keyValue":1.3,"targetProgress":3750,"availableCurrency":11000,"hideOverlay":true}'),
 
 	updateTable: () => {
