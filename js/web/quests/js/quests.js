@@ -12,8 +12,8 @@
  */
 
 // Quest is aborted?
-FoEproxy.addHandler('QuestService', 'getUpdates', (data, postData) => {
-	if(postData[0]['requestClass'] === 'QuestService' && postData[0]['requestMethod'] === 'abortQuest'){
+FoEproxy.addRequestHandler('QuestService', 'abortQuest', (postData) => {
+	if(postData['requestClass'] === 'QuestService' && postData['requestMethod'] === 'abortQuest'){
 		Quests.UpdateCounter();
 	}
 });
