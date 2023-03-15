@@ -928,6 +928,7 @@
     "Boxes.Stats.SourceTitle.statsUnitsD": "Deine Einheiten - täglich",
     "Boxes.Stats.SourceTitle.statsUnitsH": "Deine Einheiten - stündlich",
     "Boxes.Stats.Title": "Statistiken",
+    "Boxes.Stats.FilterRewards":"Belohnungen filtern",
     "Boxes.Technologies.DescInStock": "Vorhanden",
     "Boxes.Technologies.DescRequired": "Benötigt",
     "Boxes.Technologies.DescStillMissing": "<span style='color:#29b206'>Überschuss</span> / <span style='color:#ff4040'>Fehlt</span>",
