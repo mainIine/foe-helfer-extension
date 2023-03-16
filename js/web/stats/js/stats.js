@@ -70,12 +70,8 @@ FoEproxy.addHandler('RewardService', 'collectReward', async (data, postData) => 
 		}
 
 		// Add reward incident record
-		await IndexDB.db.statsRewards.add({
-			date: MainParser.getCurrentDate(),
-			type: rewardIncidentSource,
-			amount: reward.amount || 0,
-			reward: reward.id
-		});
+
+		await Stats.addReward(rewardIncidentSource, reward.amount ||0, reward.id);
 	}
 });
 
@@ -1552,6 +1548,22 @@ let Stats = {
 		}));
 		await IndexDB.db.statsGBGPlayerCache.bulkPut(playersForCache);		
     },
+
+	addReward: async (type,amount,reward) => {
+		//console.log(`add ${type} -  ${reward}: ${amount}`);
+		IndexDB.db.statsRewards.add({
+			date: MainParser.getCurrentDate(),
+			type: type,
+			amount: amount,
+			reward: reward
+		}).catch(error => {
+			if (error.message == "Key already exists in the object store.") {
+				setTimeout(()=>{Stats.addReward(type,amount,reward)},1) //retry if two rewards came in "at the same time"
+			} else {
+				console.log(error)
+			}
+		});
+	}
 };
 let StockAlarm = {
 	Alarms: JSON.parse(localStorage.getItem('StockAlarms') || '[]'),
