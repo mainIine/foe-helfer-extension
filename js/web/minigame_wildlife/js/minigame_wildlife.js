@@ -53,7 +53,10 @@ FoEproxy.addHandler('RewardService', 'collectReward', (data, postData) => {
     if ($('#Wildlife').length === 0) return;
     if (data.responseData[1]!=='wildlife_event') return;
     Wildlife.rewardactive += 1;
-    if ($('#Wildlife.open').length > 0) $('#Wildlife .window-minimize')[0].click();
+    if ($('#Wildlife.open').length > 0) {
+        $('#Wildlife').removeClass("open");
+        $('#Wildlife').addClass("closed");
+    };
     
 });
 
@@ -66,12 +69,14 @@ $('#container').on("click", function (e) {
         Xc = window.innerWidth/2,
         Yc = window.innerHeight/2;
     
-    if (X>Xc-432 && X<Xc+432 && Y<Yc+296 && Y>Yc-296 && (X<Xc-58 || X>Xc+73 || Y<Yc+144 ||Y>Yc+167)) return;
+    if (X>Xc-313 && X<Xc+290 && Y<Yc+297 && Y>Yc-324 && (X<Xc-56 || X>Xc+73 || Y<Yc+151 ||Y>Yc+172)) return;
     
     if (Wildlife.rewardactive > 0) Wildlife.rewardactive -= 1;
     if ($('#Wildlife.closed').length === 0) return;
     if (Wildlife.rewardactive!==0) return;
-    $('#Wildlife .window-minimize')[0].click();
+    if (Wildlife.minimized) return;
+    $('#Wildlife').addClass("open");
+    $('#Wildlife').removeClass("closed");
 });
 
 
@@ -174,6 +179,7 @@ let Wildlife = {
 
     Show: () => {
         if ($('#Wildlife').length === 0) {
+            Wildlife.rewardactive = 0;
             // CSS in den DOM prügeln
             HTML.AddCssFile('minigame_wildlife');
             // Box in den DOM
