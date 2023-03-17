@@ -415,7 +415,6 @@ let BattleAssist = {
         if (BattleAssist.armyAdvice[id] && BattleAssist.armyAdvice[id].bonus <= bonus) {
             BattleAssist.ShowArmyAdvice(BattleAssist.armyAdvice[id].advice);
         }
-        console.log(id)
         if ($('#battleAssistAAConfig').length > 0) BattleAssist.ShowArmyAdviceConfig();
     }
 };
