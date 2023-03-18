@@ -178,8 +178,8 @@ let Wildlife = {
     rewardactive:0,
 
     Show: () => {
+        Wildlife.rewardactive = 0;
         if ($('#Wildlife').length === 0) {
-            Wildlife.rewardactive = 0;
             // CSS in den DOM prügeln
             HTML.AddCssFile('minigame_wildlife');
             // Box in den DOM
