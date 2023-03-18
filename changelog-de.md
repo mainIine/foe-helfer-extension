@@ -25,6 +25,9 @@
 - Sets und Kits:
 	- fehlende Teile hinzugefügt
 
+- Boxen:
+	- können nun nicht mehr über den Fensterrand hinaus vergrößert werden
+
 ##### 3.2.1.0
 
 **Update**

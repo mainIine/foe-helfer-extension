@@ -191,7 +191,7 @@ let Wildlife = {
                 'dragdrop': false
             });
             let body='<div style="background:#553815">';
-            body+=`<div id="WLwarning">When no tool is selected, the window below is click-through - clicking interacts with the game!!!</div>`;
+            body+=`<div id="WLwarning">${i18n("Boxes.Wildlife.Warning")}</div>`;
             body+=`<div id="WLhammer" class="WLtool"></div>`;
             body+=`<div id="WLdestroyer" class="WLtool"></div>`;
             body+='</div><div id="WLwrapper"><div class="WLwrapper"></div></div>'

@@ -25,6 +25,9 @@
 - Sets and Kits:
 	- added missing pieces
 
+- Boxes:
+	- may no longer be resized beyond the window borders
+
 ##### 3.2.1.0
 
 **Update**
