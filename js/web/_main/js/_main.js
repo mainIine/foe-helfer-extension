@@ -55,7 +55,8 @@ let ApiURL = 'https://api.foe-rechner.de/',
 	IsLevelScroll = false,
 	EventCountdown = false,
 	GameTimeOffset = 0,
-	StartUpDone = false,
+	StartUpDone = new Promise(resolve => 
+			window.addEventListener('foe-helper#StartUpDone', resolve(), {once: true, passive: true})),
 	Fights = [],
 	OwnUnits = [],
 	EnemyUnits = [],
@@ -686,22 +687,23 @@ GetFights = () =>{
 	// ende der Verarbeiter von data für foe-rechner.de
 
 
-	FoEproxy.addHandler('TimeService', 'updateTime', (data, postData) => {
-		if (!StartUpDone) return;
-
-		if (!MainMenuLoaded) {
-			MainMenuLoaded = true;
-			
-			let MenuSetting = localStorage.getItem('SelectedMenu');
-			MenuSetting = MenuSetting || 'BottomBar';
-			MainParser.SelectedMenu = MenuSetting;
-			_menu.CallSelectedMenu(MenuSetting);
-			
-			MainParser.setLanguage();
-
-			Quests.init();
-		}
+	FoEproxy.addHandler('TimeService', 'updateTime', async (data, postData) => {
 		GameTimeOffset = data.responseData.time * 1000 - new Date().getTime();
+		
+		if (MainMenuLoaded) return;
+	
+		MainMenuLoaded = true;
+		await StartUpDone;	
+		let MenuSetting = localStorage.getItem('SelectedMenu');
+		MenuSetting = MenuSetting || 'BottomBar';
+		MainParser.SelectedMenu = MenuSetting;
+		_menu.CallSelectedMenu(MenuSetting);
+		
+		MainParser.setLanguage();
+
+		Quests.init();
+	
+	
 	});
 
 
@@ -1171,8 +1173,7 @@ let MainParser = {
 		Settings.Init(false);
 
 		MainParser.VersionSpecificStartupCode();
-
-		StartUpDone = true;
+		window.dispatchEvent(new CustomEvent('foe-helper#StartUpDone'))
 		ExtGuildID = d['clan_id'];
 		ExtGuildPermission = d['clan_permissions'];
 		//ExtWorld = window.location.hostname.split('.')[0];

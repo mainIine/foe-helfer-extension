@@ -48,6 +48,12 @@
 		"sort": 7
 	},
 	{
+		"name": "ShowArmyAdvice",
+		"status": false,
+		"group": "Boxes",
+		"sort": 7
+	},
+	{
 		"name": "ShowBlueGalaxyHelper",
 		"status": true,
 		"group": "Boxes",

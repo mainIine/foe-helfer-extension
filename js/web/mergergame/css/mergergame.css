@@ -39,3 +39,7 @@
     border-radius: 10px;
     border: red solid 2px;
 }
+
+#mergerGameDialogSettingsBox input{
+    width:4.5em;
+}

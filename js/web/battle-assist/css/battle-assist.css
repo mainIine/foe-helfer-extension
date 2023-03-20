@@ -59,3 +59,101 @@
     75% {color: #fcfcb2;}
     100% {color: #fafa6c;}
 }
+
+#battleAssistAddAdvice {
+    top: 50px;
+    left: calc(50vw - 50px);
+    width: 100px;
+    height: 100px;
+}
+#battleAssistAddAdviceBody {
+    color: #000;
+    background: orange;
+    font-weight: 300;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+}
+#battleAssistArmyAdvice {
+    top: calc(50vh - 269px);
+    left: calc(50vw - 258px);
+    width: 646px;
+    height: 80px;
+    overflow-y: hidden;
+}
+#battleAssistArmyAdviceBody {
+    background: 5px;
+    color: #000;
+    background-color: orange;
+}
+#battleAssistArmyAdviceBody span {
+    margin-left: 5px;
+}
+
+#battleAssistAAConfig .BattleWave {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    height: 75px;
+    width: 150px;
+    align-content: flex-start;
+}
+
+#battleAssistAAConfig .BattleWave img {
+    border: 1px #000 solid;
+    height: 35px;
+}
+
+#battleAssistAAConfigBody {
+    overflow-y: auto;
+}
+#battleAssistAAConfig .explanation {
+    color: var(--text-bright);
+    margin: 3px;
+    border: solid 1px;
+    border-radius: 4px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-bottom: 5px;
+}
+#battleAssistAAConfig .closed {
+    float:right;
+}
+#battleAssistAAConfig h1 {
+    color: var(--text-bright);
+    margin-left: 5px;
+}
+#battleAssistAAConfigSettingsBox input{
+    width: 35px;
+}
+.AASetAdvice textarea {
+    width: 300px;
+    height: 75px;
+    overflow: hidden;
+}
+.AASetBonus input {
+    width: 50px;
+}
+
+.AASetAdvice {
+    width:300px;
+}
+
+.AASetBonus {
+    width:80px;
+}
+
+#battleAssistAAConfigBody table th:nth-child(1) {
+    min-width:150px;
+}
+#battleAssistAAConfigBody table th:nth-child(2) {
+    min-width:150px;
+}
+#battleAssistAAConfigBody table th:nth-child(5) {
+    min-width:300px;
+}
+
+#battleAssistAAConfigBody [data-id^="GE5"] {
+    background: var(--background-table-info);
+}
