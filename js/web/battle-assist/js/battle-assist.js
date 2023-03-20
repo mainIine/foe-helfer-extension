@@ -125,10 +125,11 @@ FoEproxy.addHandler('GuildExpeditionService', 'getEncounter', (data, postData) =
     let bonus = data.responseData.armyWaves[0].units[0]?.bonuses[0]?.value || 0;
     let wave1 = data.responseData.armyWaves[0].units.map((x) => x.unitTypeId);
     let wave2 = null;
+    let GE5 = data.responseData.hasOwnProperty("availableBuildings") && data.responseData.availableBuildings.length > 0;
     if (data.responseData.armyWaves[1]) {
         wave2 = data.responseData.armyWaves[1].units.map((x) => x.unitTypeId);
     }
-    BattleAssist.processArmies(wave1,wave2,bonus);
+    BattleAssist.processArmies(wave1,wave2,bonus,GE5);
 });
 
 /**
@@ -381,8 +382,8 @@ let BattleAssist = {
 		BattleAssist.AASettings.battleSurrendered = $('#AAbattleSurrendered')[0].checked;
 		localStorage.setItem('BattleAssistAASettings', JSON.stringify(BattleAssist.AASettings));
     },
-    processArmies: (wave1, wave2, bonus) => {
-        let id="";
+    processArmies: (wave1, wave2, bonus, GE5=false) => {
+        let id= GE5? "GE5":"";
         if (!BattleAssist.UnitOrder) {
             BattleAssist.UnitOrder={};
             let temp = Unit.Types.map(x=> ({id:x.unitTypeId,era:x.minEra}));
@@ -414,7 +415,6 @@ let BattleAssist = {
         if (BattleAssist.armyAdvice[id] && BattleAssist.armyAdvice[id].bonus <= bonus) {
             BattleAssist.ShowArmyAdvice(BattleAssist.armyAdvice[id].advice);
         }
-        
         if ($('#battleAssistAAConfig').length > 0) BattleAssist.ShowArmyAdviceConfig();
     }
 };

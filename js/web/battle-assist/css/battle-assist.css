@@ -154,4 +154,6 @@
     min-width:300px;
 }
 
-
+#battleAssistAAConfigBody [data-id^="GE5"] {
+    background: var(--background-table-info);
+}
