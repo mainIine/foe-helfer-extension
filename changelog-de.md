@@ -4,7 +4,7 @@
 
 **Update**
 - Merger Game:
-	- Die Parameter die die Farbe der Effizienz bestimmen können nun in den Optionen eingestellt werden
+	- Die Parameter, die die Farbe der Effizienz bestimmen können nun in den Optionen eingestellt werden
 		- Fortschritt je Schlüssel: Soviel Fortschritt ist ein Schlüssel etwa wert (Kistenkauf - Standard:1,3)
 		- Zielfortschritt: soweit willst du kommen in den Hauptpreisen (Standard: 3750 für goldenes Kit)
 		- vorhandene Währung: soviel Energie steht zur Verfügung (Standard: 11000 - 10500 von Quests und geschätzte 500 von Ereignissen)
@@ -12,10 +12,26 @@
 		- Die Effizienz wird rot, wenn 5% unterhalb des Zielwerts
 		- Die Effizienz ist grün 15% oberhalb des Zielwerts
 		- Die Effizienz ist also gelb, wenn gerade gut genug, um Ziel zu erreichen
-	- wenn auf die Effizienz gezeigt wird, wird in einem Tooltip ausgegeben, wieviel Fortschritt mit dieser Effizienz erreicht werden kann
-	- wenn auf die Energie gezeigt wird, wird in einem Tooltip ausgegeben, wieviel Fortschritt für die aktuell ausgegebene Enrgie auf dem Brett gemacht werden sollte, um den Zielfortschritt zu erreichen
-	- wenn der Reset-Blocker (nicht) verschwinden soll, wenn die Box minimiet wird, kann das nun eingestellt werden
-	
+	- wenn auf die Effizienz gezeigt wird, wird in einem Tooltip ausgegeben, wie viel Fortschritt mit dieser Effizienz erreicht werden kann
+	- wenn auf die Energie gezeigt wird, wird in einem Tooltip ausgegeben, wie viel Fortschritt für die aktuell ausgegebene Enrgie auf dem Brett gemacht werden sollte, um den Zielfortschritt zu erreichen
+	- wenn der Reset-Blocker (nicht) verschwinden soll, wenn die Box minimiert wird, kann das nun eingestellt werden
+
+- Statistik:
+	- Belohnungen können nun nach Namen gefiltert werden
+
+- Verhandlungshelfer:
+	- Tooltip für die Hinweise zur Tastenkombination hinzugefügt
+
+- Sets und Kits:
+	- fehlende Teile hinzugefügt
+
+- Boxen:
+	- können nun nicht mehr über den Fensterrand hinaus vergrößert werden
+
+**BugFix**
+- Quest zähler:
+	- [#2541](https://github.com/mainIine/foe-helfer-extension/issues/2541) wurden mehrere Wiederkehrenden Quests in kurzer Folge abgebrochen wurde nur eine gezählt
+
 ##### 3.2.1.0
 
 **Update**

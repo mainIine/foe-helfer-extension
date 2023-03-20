@@ -4,7 +4,7 @@
 
 **Update**
 - Merger Game:
-	- The parameter determinning the color of the efficiency may now be changed in the settings
+	- The parameter determining the color of the efficiency may now be changed in the settings
 		- Progress per key (Key value): A key is worth about this much progress (from buying chests - default: 1.3)
 		- Target Progress: this far you want to get into the grand prizes (default: 3750 for the golden kit)
 		- Available Currency/Energy: this much Energy is available during the whole event (default: 11000 - 10500 for Quests and about  500 from incidents)
@@ -15,6 +15,22 @@
 	- when pointing at the Efficiency, a Tooltip will show, how much total progress is possible with that efficiency value (current progress not taken into account)
 	- when pointing at the used energy, a Tooltip will show, how much progress you should make on the current board in relation to the spent energy to reach the target
 	- if you do (not) want the reset-blocker to vanish when the box is minimized, this can now be configured
+
+- Statistics:
+	- rewards may now be filtered by their name
+
+- Negotiation Assistant:
+	- Tooltip added for the keyboard hint
+
+- Sets and Kits:
+	- added missing pieces
+
+- Boxes:
+	- may no longer be resized beyond the window borders
+
+**BugFix**
+- Quest counter:
+	- [#2541](https://github.com/mainIine/foe-helfer-extension/issues/2541) if multiple recurring quests were abondoned in quick succession, only one was counted
 
 ##### 3.2.1.0
 
