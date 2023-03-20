@@ -4,7 +4,7 @@
 
 **Update**
 - Merger Game:
-	- The parameter determinning the color of the efficiency may now be changed in the settings
+	- The parameter determining the color of the efficiency may now be changed in the settings
 		- Progress per key (Key value): A key is worth about this much progress (from buying chests - default: 1.3)
 		- Target Progress: this far you want to get into the grand prizes (default: 3750 for the golden kit)
 		- Available Currency/Energy: this much Energy is available during the whole event (default: 11000 - 10500 for Quests and about  500 from incidents)
