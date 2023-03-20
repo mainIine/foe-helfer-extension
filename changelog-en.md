@@ -28,6 +28,10 @@
 - Boxes:
 	- may no longer be resized beyond the window borders
 
+**BugFix**
+- Quest counter:
+	- [#2541](https://github.com/mainIine/foe-helfer-extension/issues/2541) if multiple recurring quests were abondoned in quick succession, only one was counted
+
 ##### 3.2.1.0
 
 **Update**

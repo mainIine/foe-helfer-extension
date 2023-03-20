@@ -28,6 +28,10 @@
 - Boxen:
 	- können nun nicht mehr über den Fensterrand hinaus vergrößert werden
 
+**BugFix**
+- Quest zähler:
+	- [#2541](https://github.com/mainIine/foe-helfer-extension/issues/2541) wurden mehrere Wiederkehrenden Quests in kurzer Folge abgebrochen wurde nur eine gezählt
+
 ##### 3.2.1.0
 
 **Update**
