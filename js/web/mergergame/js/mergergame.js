@@ -111,7 +111,7 @@ FoEproxy.addHandler('MergerGameService', 'convertPiece', (data, postData) => {
 let mergerGame = {
 
 	cells:[],
-	spawnChances:{white:{1:14,2:8,3:5,4:3},blue:{1:14,2:8,3:5,4:3},yellow:{1:16,2:10,3:7,4:4}},
+	spawnChances:{white:{1:14,2:8,3:5,4:3},blue:{1:14,2:8,3:5,4:3},yellow:{1:19,2:10,3:7,4:4}},
 	state: {},
 	resetCost: 0,
 	spawnCost: 10,
