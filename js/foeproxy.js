@@ -538,16 +538,18 @@ const FoEproxy = (function () {
 		if (!data) return;
 		try {
 			
-			let post;
+			let posts=[];
 
 			if (typeof data === 'object' && data instanceof ArrayBuffer)
-				post = JSON.parse(new TextDecoder().decode(data))[0];
+				posts = JSON.parse(new TextDecoder().decode(data));
 			else 
-				post = JSON.parse(data)[0];
+				posts = JSON.parse(data);
 
 			//console.log(post);
-			if (!post || !post.requestClass || !post.requestMethod || !post.requestData) return;
-			proxyRequestAction(post.requestClass, post.requestMethod, post);
+			for (let post of posts) {
+				if (!post || !post.requestClass || !post.requestMethod || !post.requestData) return;
+				proxyRequestAction(post.requestClass, post.requestMethod, post);
+			}
 		} catch (e) {
 			console.log('Can\'t parse postData: ', data);
 		}

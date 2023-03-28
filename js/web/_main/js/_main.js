@@ -1,6 +1,7 @@
 /*
- * **************************************************************************************
- * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
+ * *************************************************************************************
+ *
+ * Copyright (C) 2023 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -8,7 +9,7 @@
  * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
  * for full license details.
  *
- * **************************************************************************************
+ * *************************************************************************************
  */
 
 let ExtbaseData = JSON.parse(localStorage.getItem("HelperBaseData")||"{}");
@@ -55,7 +56,8 @@ let ApiURL = 'https://api.foe-rechner.de/',
 	IsLevelScroll = false,
 	EventCountdown = false,
 	GameTimeOffset = 0,
-	StartUpDone = false,
+	StartUpDone = new Promise(resolve => 
+			window.addEventListener('foe-helper#StartUpDone', resolve(), {once: true, passive: true})),
 	Fights = [],
 	OwnUnits = [],
 	EnemyUnits = [],
@@ -577,6 +579,10 @@ GetFights = () =>{
 				lgUpdateData.Bonus = Bonus;
 				lgUpdateData.Era = Era;
 
+				if(lgUpdateData.Rankings && lgUpdateData.CityMapEntity){
+					if(!IsLevelScroll) MainParser.SendLGData(lgUpdateData);
+				}
+
 				lgUpdate();
 			}
 		}
@@ -686,22 +692,23 @@ GetFights = () =>{
 	// ende der Verarbeiter von data für foe-rechner.de
 
 
-	FoEproxy.addHandler('TimeService', 'updateTime', (data, postData) => {
-		if (!StartUpDone) return;
-
-		if (!MainMenuLoaded) {
-			MainMenuLoaded = true;
-			
-			let MenuSetting = localStorage.getItem('SelectedMenu');
-			MenuSetting = MenuSetting || 'BottomBar';
-			MainParser.SelectedMenu = MenuSetting;
-			_menu.CallSelectedMenu(MenuSetting);
-			
-			MainParser.setLanguage();
-
-			Quests.init();
-		}
+	FoEproxy.addHandler('TimeService', 'updateTime', async (data, postData) => {
 		GameTimeOffset = data.responseData.time * 1000 - new Date().getTime();
+		
+		if (MainMenuLoaded) return;
+	
+		MainMenuLoaded = true;
+		await StartUpDone;	
+		let MenuSetting = localStorage.getItem('SelectedMenu');
+		MenuSetting = MenuSetting || 'BottomBar';
+		MainParser.SelectedMenu = MenuSetting;
+		_menu.CallSelectedMenu(MenuSetting);
+		
+		MainParser.setLanguage();
+
+		Quests.init();
+	
+	
 	});
 
 
@@ -1171,8 +1178,7 @@ let MainParser = {
 		Settings.Init(false);
 
 		MainParser.VersionSpecificStartupCode();
-
-		StartUpDone = true;
+		window.dispatchEvent(new CustomEvent('foe-helper#StartUpDone'))
 		ExtGuildID = d['clan_id'];
 		ExtGuildPermission = d['clan_permissions'];
 		//ExtWorld = window.location.hostname.split('.')[0];
@@ -1239,6 +1245,31 @@ let MainParser = {
 			type: 'send2Api',
 			url: `${ApiURL}SelfPlayer/?player_id=${ExtPlayerID}&guild_id=${ExtGuildID}&world=${ExtWorld}&v=${extVersion}`,
 			data: JSON.stringify(data)
+		});
+	},
+
+
+	/**
+	 * Collect some stats
+	 *
+	 * @param d
+	 * @returns {boolean}
+	 * @constructor
+	 */
+	SendLGData: (d)=> {
+
+		const dataEntity = d['CityMapEntity']['responseData'][0],
+			realData = {
+				entity: dataEntity,
+				ranking: d['Rankings'],
+				bonus: d['Bonus'],
+				era: d['Era'],
+			}
+
+		MainParser.sendExtMessage({
+			type: 'send2Api',
+			url: `${ApiURL}OwnLGData/?world=${ExtWorld}${MainParser.DebugMode ? '&debug' : ''}&v=${extVersion}`,
+			data: JSON.stringify(realData)
 		});
 	},
 

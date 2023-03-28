@@ -1,0 +1,45 @@
+/*
+ * **************************************************************************************
+ * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
+ *
+ * See file LICENSE.md or go to
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
+ *
+ * **************************************************************************************
+ */
+
+#mergerGameDialog {
+	top: 50px;
+	left: calc(100vw - 350px);
+	width: 285px;
+    height: 500px;
+}
+
+#mergerGameDialog img {
+    width: 25px;
+    height: 25px;
+}
+
+#mergerGameDialogBody {
+    text-align: center;
+    overflow-y: auto;
+}
+
+#mergerGameResetBlocker {
+    width: 55px;
+    height: 55px;
+    top: calc(50vh + 206px);
+    left: calc(50vw - 345px);
+    position: absolute;
+    z-index: 100;
+    background-color: #ff9400;
+    border-radius: 10px;
+    border: red solid 2px;
+}
+
+#mergerGameDialogSettingsBox input{
+    width:4.5em;
+}

@@ -53,11 +53,14 @@ FoEproxy.addHandler('RewardService', 'collectReward', (data, postData) => {
     if ($('#Wildlife').length === 0) return;
     if (data.responseData[1]!=='wildlife_event') return;
     Wildlife.rewardactive += 1;
-    if ($('#Wildlife.open').length > 0) $('#Wildlife .window-minimize')[0].click();
+    if ($('#Wildlife.open').length > 0) {
+        $('#Wildlife').removeClass("open");
+        $('#Wildlife').addClass("closed");
+    };
     
 });
 
-$('#container')[0].addEventListener("click", function (e) {
+$('#container').on("click", function (e) {
     if ($('#Wildlife').length === 0) return;
     if (Wildlife.rewardactive==0) return;
     
@@ -66,12 +69,14 @@ $('#container')[0].addEventListener("click", function (e) {
         Xc = window.innerWidth/2,
         Yc = window.innerHeight/2;
     
-    if (X>Xc-432 && X<Xc+432 && Y<Yc+296 && Y>Yc-296 && (X<Xc-58 || X>Xc+73 || Y<Yc+144 ||Y>Yc+167)) return;
+    if (X>Xc-313 && X<Xc+290 && Y<Yc+297 && Y>Yc-324 && (X<Xc-56 || X>Xc+73 || Y<Yc+151 ||Y>Yc+172)) return;
     
     if (Wildlife.rewardactive > 0) Wildlife.rewardactive -= 1;
     if ($('#Wildlife.closed').length === 0) return;
     if (Wildlife.rewardactive!==0) return;
-    $('#Wildlife .window-minimize')[0].click();
+    if (Wildlife.minimized) return;
+    $('#Wildlife').addClass("open");
+    $('#Wildlife').removeClass("closed");
 });
 
 
@@ -173,6 +178,7 @@ let Wildlife = {
     rewardactive:0,
 
     Show: () => {
+        Wildlife.rewardactive = 0;
         if ($('#Wildlife').length === 0) {
             // CSS in den DOM prügeln
             HTML.AddCssFile('minigame_wildlife');
@@ -185,7 +191,7 @@ let Wildlife = {
                 'dragdrop': false
             });
             let body='<div style="background:#553815">';
-            body+=`<div id="WLwarning">When no tool is selected, the window below is click-through - clicking interacts with the game!!!</div>`;
+            body+=`<div id="WLwarning">${i18n("Boxes.Wildlife.Warning")}</div>`;
             body+=`<div id="WLhammer" class="WLtool"></div>`;
             body+=`<div id="WLdestroyer" class="WLtool"></div>`;
             body+='</div><div id="WLwrapper"><div class="WLwrapper"></div></div>'
@@ -198,9 +204,22 @@ let Wildlife = {
             $('#WLdestroyer')[0].addEventListener('click', function(){
                 Wildlife.selectTool('destroyer');
             });
-        } 
 
+            let box = $('#Wildlife'),
+            open = box.hasClass('open');
+            Wildlife.minimized = JSON.parse(localStorage.getItem("WildlifeMinimized") || "true");
+            if (open === true && Wildlife.minimized) {
+                box.removeClass('open');
+                box.addClass('closed');
+                box.find('.window-body').css("visibility", "hidden");
+            }
+            $('#WildlifeButtons > span.window-minimize').on('click', function() {
+                Wildlife.minimized = !Wildlife.minimized;
+                localStorage.setItem('WildlifeMinimized', JSON.stringify(Wildlife.minimized));
+            });
+        } 
     },
+
     Close: () => {
         HTML.CloseOpenBox('Wildlife');
     },

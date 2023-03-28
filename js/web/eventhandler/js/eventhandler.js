@@ -29,6 +29,8 @@ let EventHandler = {
 	EventIDs: {},
 
 	db: null,
+	dbLoaded: new Promise(resolve => 
+		window.addEventListener('foe-helper#eventDBloaded', resolve, {capture: false, once: true, passive: true})),
 
 	CurrentPlayerGroup: null,
 	
@@ -61,6 +63,7 @@ let EventHandler = {
 		});
 
 		EventHandler.db.open();
+		window.dispatchEvent(new CustomEvent('foe-helper#eventDBloaded'))
 	},
 
 
@@ -69,6 +72,7 @@ let EventHandler = {
 	 * @returns {boolean} true if the data is new in the database
 	 */
 	insertIntoDB: async (data) => {
+		await EventHandler.dbLoaded;
 		const db = EventHandler.db;
 		const eventsDB = db.Events;
 		const id = data.eventid;

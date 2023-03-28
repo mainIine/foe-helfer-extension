@@ -1,22 +1,68 @@
 ## Changelog - Extension
 
-##### 3.1.0.1
+##### 3.2.2.0
 
 **Update**
-- Spieler-ID hinzugefügt zum Export von:
-	- Expeditionsdaten
-	- GG-Daten
-	- Gildenmitglieder-Daten
+- Merger Game:
+	- Die Parameter, die die Farbe der Effizienz bestimmen können nun in den Optionen eingestellt werden
+		- Fortschritt je Schlüssel: Soviel Fortschritt ist ein Schlüssel etwa wert (Kistenkauf - Standard:1,3)
+		- Zielfortschritt: soweit willst du kommen in den Hauptpreisen (Standard: 3750 für goldenes Kit)
+		- vorhandene Währung: soviel Energie steht zur Verfügung (Standard: 11000 - 10500 von Quests und geschätzte 500 von Ereignissen)
+			- gekaufte Währung sollte entsprechend aufaddiert werden
+		- Die Effizienz wird rot, wenn 5% unterhalb des Zielwerts
+		- Die Effizienz ist grün 15% oberhalb des Zielwerts
+		- Die Effizienz ist also gelb, wenn gerade gut genug, um Ziel zu erreichen
+	- wenn auf die Effizienz gezeigt wird, wird in einem Tooltip ausgegeben, wie viel Fortschritt mit dieser Effizienz erreicht werden kann
+	- wenn auf die Energie gezeigt wird, wird in einem Tooltip ausgegeben, wie viel Fortschritt für die aktuell ausgegebene Enrgie auf dem Brett gemacht werden sollte, um den Zielfortschritt zu erreichen
+	- wenn der Reset-Blocker (nicht) verschwinden soll, wenn die Box minimiert wird, kann das nun eingestellt werden
 
+- Statistik:
+	- Belohnungen können nun nach Namen gefiltert werden
+
+- Verhandlungshelfer:
+	- Tooltip für die Hinweise zur Tastenkombination hinzugefügt
+
+- Sets und Kits:
+	- fehlende Teile hinzugefügt
+
+- Boxen:
+	- können nun nicht mehr über den Fensterrand hinaus vergrößert werden
+
+**BugFix**
+- Quest zähler:
+	- [#2541](https://github.com/mainIine/foe-helfer-extension/issues/2541) wurden mehrere Wiederkehrenden Quests in kurzer Folge abgebrochen wurde nur eine gezählt
+
+##### 3.2.1.0
+
+**Update**
+- Merger Game:
+	- geänderte Werte (Inno Update) - sollte jetzt robuster sein, sollten weitere Änderungen kommen
+
+- FP-Einsammlungen:
+	- Geburtstags-Event ergänzt
+	
+---
+
+##### 3.2.0.0
+
+**New**
+- Merger Game (Geburtstagsevent Minispiel)
+	- gibt einen Überblick über die auf dem Spielbrett vorhandenen Schlüsselteile
+
+**Update**
 - Musik-Modul:
 	- neuer Track hinzugefügt (aktuell nur auf Beta-Server verfügbar)
 
-**BugFix**
-- Alarme:
-	- Alarme wurden vorzeitig gelöscht
+- Event-Kosten Rechner:
+	- zweite Kostenspalte am Ende der Tabelle eingefügt 
+	- Hervorheben der günstigsten Option erfolgt jetzt zusätzlich in der entsprechenden Kostenspalte
 
+- Kits:
+	- Die Liste kann nun gefiltert werden - nach Name des Gegenstands oder des Sets
+
+**BugFix**
 - General:
-	- Die Changelog wurden nicht mehr aufgerufen nachdem ein Update durchgeführt wurde
+	- Spieler-Portraits wurden manchmal nicht angezeigt, wenn Module zu zeitig nach Spielstart geöffnet wurden
 
 ---
 
