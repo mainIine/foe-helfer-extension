@@ -277,7 +277,7 @@ let betterMusic = {
         "foe_music_pvp_arena": {Volume:.6, Name:"PvP Arena"},
         "FoE_BattleTheme_Vs1": {Volume:.7, Name:"Battle Theme"},
         "foe_music_stpatricks_v2": {Volume:.6, Name:"St Patricks Day Event", Event:"st_patricks_event"},
-        "age23_background_music": {Volume:1, Name:"Anniversary Event", Path:"/sounds/shared/seasonalevents/2023_anni/age23_background_music.mp3"},
+        "age23_background_music": {Volume:.6, Name:"Anniversary Event", Event:"anniversary_event"},
         "foe_music_anniversary": {Volume:.5, Name:"Ages Event", Event:"forge_ages_event"},
         "foe_music_wildlife": {Volume:.6, Name:"Wildlife Event", Event:"wildlife_event"},
         "foe_music_archeology": {Volume:.6, Name:"Archaeology  Event", Event:"archeology_event"},

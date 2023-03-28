@@ -20,6 +20,22 @@
 	transform: translateX(-50%);
 }
 
+#kitsBody {
+	display: flex;
+	flex-direction: column;
+}
+
+#kits #kitsBodyTopbar {
+	padding: 2px;
+	border-bottom: 1px solid var(--border-table-bottom);
+	display: flex;
+	justify-content: space-evenly;
+}
+
+#kits #kitsBodyTopbar label {
+	padding: 0 2px;
+}
+
 #kits #kitsBodyInner {
     height: calc(100% - 28px);
     overflow: hidden;
@@ -27,6 +43,14 @@
     border-bottom: 1px solid var(--border-table-bottom);
 }
 
+
+#kits #kitsBodyInner table {
+	table-layout: fixed;
+}
+
+#kits #kitsBodyInner table :is(.filter-set-hide, .filter-item-hide, .filter-item-empty) {
+	display: none;
+}
 
 #kits #kitsBody tr.headline th {
 	z-index: 1;
@@ -84,6 +108,7 @@
 #kits td div.kits-row,
 #kits td div.assets-row {
 	display: flex;
+	overflow: auto hidden;
 }
 
 #kits td div.kits-row .item-kits:not(:first-child),

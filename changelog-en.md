@@ -1,5 +1,87 @@
 ## Changelog - Extension
 
+##### 3.2.2.0
+
+**Update**
+- Merger Game:
+	- The parameter determining the color of the efficiency may now be changed in the settings
+		- Progress per key (Key value): A key is worth about this much progress (from buying chests - default: 1.3)
+		- Target Progress: this far you want to get into the grand prizes (default: 3750 for the golden kit)
+		- Available Currency/Energy: this much Energy is available during the whole event (default: 11000 - 10500 for Quests and about  500 from incidents)
+			- if you buy currency, you should add that amount here
+		- Efficiency is red when 5% below the target value
+		- Efficiency is green when 15% above the target value
+		- Efficiency is yellow when just about enough to reach the target progress
+	- when pointing at the Efficiency, a Tooltip will show, how much total progress is possible with that efficiency value (current progress not taken into account)
+	- when pointing at the used energy, a Tooltip will show, how much progress you should make on the current board in relation to the spent energy to reach the target
+	- if you do (not) want the reset-blocker to vanish when the box is minimized, this can now be configured
+
+- Statistics:
+	- rewards may now be filtered by their name
+
+- Negotiation Assistant:
+	- Tooltip added for the keyboard hint
+
+- Sets and Kits:
+	- added missing pieces
+
+- Boxes:
+	- may no longer be resized beyond the window borders
+
+**BugFix**
+- Quest counter:
+	- [#2541](https://github.com/mainIine/foe-helfer-extension/issues/2541) if multiple recurring quests were abondoned in quick succession, only one was counted
+
+##### 3.2.1.0
+
+**Update**
+- Merger Game:
+	- changes values (Inno Update) - should now be more robust against future changes
+
+- FP-Collector:
+	- added Anniversary-Event
+	
+---
+##### 3.2.0.0
+
+**New**
+- Merger Game (Anniversary Event Mini game)
+	- gives an overview about the key pieces present on the board
+
+**Update**
+- Music-Modul:
+	- added new Track (will be available on live latest with the anniversary event, currently only available on beta)
+
+- Event cost calculator:
+	- second cost column added to the right side of table 
+	- highlighting of the most efficient option now also is in the respective cost column
+
+- Kits:
+	- The list may now be filtered - for name of item or set
+
+**BugFix**
+- General:
+	- Player-Portraits were not loaded when modules were opened too soon after loading the game
+
+---
+
+##### 3.1.0.1
+
+**Update**
+- Player-ID added to the export of:
+	- GE Data
+	- BGB Data
+	- Guild-member-Data
+
+**BugFix**
+- Alerts:
+	- Alerts were deleted prematurely
+
+- General:
+	- Changelogs were not opened anymore after an update was installed
+
+---
+
 ##### 3.1.0.0
 
 **New**

@@ -12,12 +12,12 @@
  */
 
 let srcLinks= {
-    FileList: null,
+    FileList: JSON.parse(localStorage.getItem("PortraitsFileList")),
     init: () => {
-        let x = document.querySelectorAll("script[src]")
+        let x = document.querySelectorAll("script[src]");
         for (let i in x) {
             if (x[i] && x[i].src && x[i].src.indexOf("ForgeHX")>0) {
-                srcLinks.getScriptContent(x[i])
+                srcLinks.getScriptContent(x[i]);
             }
         }
     },
@@ -39,19 +39,26 @@ let srcLinks= {
         HXscript = HXscript.substring(0,end);
         try {
             srcLinks.FileList = JSON.parse(HXscript);
+            let portraits={};
+            for (let x in srcLinks.FileList) {
+                if (x.indexOf("avatars/portrait")>-1) {
+                    portraits[x] = srcLinks.FileList[x];
+                }
+            }
+            if (Object.keys(portraits).length >0) localStorage.setItem("PortraitsFileList",JSON.stringify(portraits));
         } 
         catch {
             console.log("parsing of ForgeHX failed");
         }
     },
-    get: (filename, full=false) => {
+    get: (filename, full=false, noerror=false) => {
         if (!srcLinks.FileList) {
-            console.log ("Source file list not loaded!");
+            if (!noerror) console.log ("Source file list not loaded!");
             return filename;
         }
         let CS = srcLinks.FileList[filename];
         if (!CS) {
-            console.log("file " + filename + " not in list!");
+            if (!noerror) console.log("file " + filename + " not in list!");
             return filename;
         }
         let CSfilename = filename.substring(0,filename.length-4) + "-" + CS + filename.substring(filename.length-4);
@@ -64,6 +71,14 @@ let srcLinks= {
     },
     getFullPath: (file) => {
         return MainParser.InnoCDN + 'assets' + file;
+    },
+    getReward:(icon) => {
+        let url1 = srcLinks.get(`/shared/icons/reward_icons/reward_icon_${icon}.png`,true, true);
+        let url2 = srcLinks.get(`/shared/icons/goods_large/${icon}.png`,true, true);
+        if (url1.length > url2.length + 13) {
+            return url1;
+        }
+        return url2;
     }
 
 }
