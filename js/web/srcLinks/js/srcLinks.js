@@ -12,21 +12,26 @@
  */
 
 let srcLinks= {
-    FileList: JSON.parse(localStorage.getItem("PortraitsFileList")),
+    FileList: null,
     init: () => {
+        localStorage.removeItem("PortraitsFileList");
         let x = document.querySelectorAll("script[src]");
+        let found=false;
         for (let i in x) {
-            if (x[i] && x[i].src && x[i].src.indexOf("ForgeHX")>0) {
+            if (x[i] && x[i].src && x[i].src.indexOf("ForgeHX")>=0) {
+                found=true;
                 srcLinks.getScriptContent(x[i]);
             }
         }
+        
+        if (!found) setTimeout(srcLinks.init, 30);
     },
     getScriptContent: (script) => {
         var xhr = new XMLHttpRequest();
         xhr.open("GET",script.src)
         xhr.onreadystatechange = function () {
-        if(xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-            srcLinks.readHX(xhr.responseText);
+            if(xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+                srcLinks.readHX(xhr.responseText);
         }
         };
         xhr.send();
@@ -39,13 +44,6 @@ let srcLinks= {
         HXscript = HXscript.substring(0,end);
         try {
             srcLinks.FileList = JSON.parse(HXscript);
-            let portraits={};
-            for (let x in srcLinks.FileList) {
-                if (x.indexOf("avatars/portrait")>-1) {
-                    portraits[x] = srcLinks.FileList[x];
-                }
-            }
-            if (Object.keys(portraits).length >0) localStorage.setItem("PortraitsFileList",JSON.stringify(portraits));
         } 
         catch {
             console.log("parsing of ForgeHX failed");
@@ -57,10 +55,7 @@ let srcLinks= {
             return filename;
         }
         let CS = srcLinks.FileList[filename];
-        if (!CS) {
-            if (!noerror) console.log("file " + filename + " not in list!");
-            return filename;
-        }
+
         let CSfilename = filename.substring(0,filename.length-4) + "-" + CS + filename.substring(filename.length-4);
         if (full) return srcLinks.getFullPath(CSfilename);
         return CSfilename;
