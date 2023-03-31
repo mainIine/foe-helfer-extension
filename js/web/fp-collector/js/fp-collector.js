@@ -178,7 +178,7 @@ FoEproxy.addHandler('FriendsTavernService', 'getOtherTavern', (data, postData) =
 
 	StrategyPoints.insertIntoDB({
 		event: 'satDown',
-		notes: player ? `<img src="${srcLinks.GetPortrait(Player['Avatar'])}"><span>${MainParser.GetPlayerLink(player['PlayerID'], player['PlayerName'])}</span>` : '',
+		notes: player ? `<img alt="${player['PlayerName']}" src="${srcLinks.GetPortrait(player['Avatar'])}"><span>${MainParser.GetPlayerLink(player['PlayerID'], player['PlayerName'])}</span>` : '',
 		amount: d['rewardResources']['resources']['strategy_points'],
 		date: moment(MainParser.getCurrentDate()).format('YYYY-MM-DD')
 	});
@@ -208,7 +208,7 @@ FoEproxy.addHandler('OtherPlayerService', 'rewardPlunder', (data, postData) => {
 
 				StrategyPoints.insertIntoDB({
 					event: 'plunderReward',
-					notes: player ? `<img src="${srcLinks.GetPortrait(MainParser.PlayerPortraits[Player['Avatar']])}"><span>${MainParser.GetPlayerLink(player['PlayerID'], player['PlayerName'])}${entity ? ' - ' + entity['name'] : ''}</span>` : '',
+					notes: player ? `<img src="${srcLinks.GetPortrait(MainParser.PlayerPortraits[player['Avatar']])}"><span>${MainParser.GetPlayerLink(player['PlayerID'], player['PlayerName'])}${entity ? ' - ' + entity['name'] : ''}</span>` : '',
 					amount: PlunderedFP,
 					date: moment(MainParser.getCurrentDate()).format('YYYY-MM-DD')
 				});
