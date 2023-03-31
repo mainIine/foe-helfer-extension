@@ -27,8 +27,9 @@ let srcLinks = {
             let x = document.querySelectorAll("script[src]");
 
             for (let i in x) {
-                if (x[i] && x[i].src && x[i].src.indexOf("ForgeHX")>0) {
+                if (x[i] && x[i].src && x[i].src.indexOf("ForgeHX") > 0) {
                     srcLinks.getScriptContent(x[i]);
+                    return;
                 }
             }
         });
@@ -53,13 +54,6 @@ let srcLinks = {
         HXscript = HXscript.substring(0, end);
         try {
             srcLinks.FileList = JSON.parse(HXscript);
-            let portraits={};
-            for (let x in srcLinks.FileList) {
-                if (x.indexOf("avatars/portrait")>-1) {
-                    portraits[x] = srcLinks.FileList[x];
-                }
-            }
-            if (Object.keys(portraits).length >0) localStorage.setItem("PortraitsFileList",JSON.stringify(portraits));
         } 
         catch {
             console.log("parsing of ForgeHX failed");
@@ -73,13 +67,6 @@ let srcLinks = {
         }
 
         let CS = srcLinks.FileList[filename];
-
-        if (!CS) {
-            if (!noerror) {
-                console.log("file " + filename + " not in list!");
-            }
-            return filename;
-        }
 
         let CSfilename = filename.substring(0,filename.length-4) + "-" + CS + filename.substring(filename.length-4);
 
