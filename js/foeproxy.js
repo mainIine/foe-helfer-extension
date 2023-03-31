@@ -358,7 +358,7 @@ const FoEproxy = (function () {
 		}
 	}
 
-	// Achtung! Die WebSocket.prototype.send funktion wird nicht zurück ersetzt, falls anderer code den prototypen auch austauscht.
+	// Attention. The WebSocket.prototype.send function is not replaced back if other code also replaces the prototype
 	const observedWebsockets = new WeakSet();
 	const oldWSSend = WebSocket.prototype.send;
 	WebSocket.prototype.send = function (data) {
