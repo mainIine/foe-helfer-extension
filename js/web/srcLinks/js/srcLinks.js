@@ -14,28 +14,17 @@
 let srcLinks = {
     FileList: JSON.parse(localStorage.getItem('PortraitsFileList')),
 
-    init: () => {
+    init: async () => {
         // wait for ForgeHX is loaded, then read the full script url
         const isElementLoaded = async name => {
             while ( document.querySelector('script[src*="' + name + '"]') === null) {
                 await new Promise( resolve => requestAnimationFrame(resolve))
             }
-            return document.querySelector(name);
+            return document.querySelector('script[src*="' + name + '"]');
         };
 
-        isElementLoaded('ForgeHX').then(() => {
-            let x = document.querySelectorAll("script[src]");
-
-            for (let i in x) {
-                if (x[i] && x[i].src && x[i].src.indexOf("ForgeHX") > 0) {
-                    srcLinks.getScriptContent(x[i]);
-                    return;
-                }
-            }
-        });
-    },
-
-    getScriptContent: (script) => {
+        script = await isElementLoaded('ForgeHX')
+        
         let xhr = new XMLHttpRequest();
         xhr.open("GET", script.src)
         xhr.onreadystatechange = function () {
@@ -67,11 +56,16 @@ let srcLinks = {
         }
 
         let CS = srcLinks.FileList[filename];
+        
+        if (!CS) {
+            if (!noerror) console.log (`file "${filename}" not in List`);
+            return filename;
+        }
 
         let CSfilename = filename.substring(0,filename.length-4) + "-" + CS + filename.substring(filename.length-4);
 
         if (full){
-            return srcLinks.getFullPath(CSfilename);
+            return MainParser.InnoCDN + 'assets' + CSfilename;
         }
 
         return CSfilename;
@@ -81,10 +75,6 @@ let srcLinks = {
         let file = MainParser.PlayerPortraits[id] || 'portrait_433';
 
         return srcLinks.get('/shared/avatars/' + file + '.jpg', true);
-    },
-
-    getFullPath: (file) => {
-        return MainParser.InnoCDN + 'assets' + file;
     },
 
     getReward:(icon) => {
