@@ -178,7 +178,7 @@ FoEproxy.addHandler('FriendsTavernService', 'getOtherTavern', (data, postData) =
 
 	StrategyPoints.insertIntoDB({
 		event: 'satDown',
-		notes: player ? `<img src="${srcLinks.GetPortrait(player['Avatar'])}"><span>${MainParser.GetPlayerLink(player['PlayerID'], player['PlayerName'])}</span>` : '',
+		notes: player ? `<img alt="${player['PlayerName']}" src="${srcLinks.GetPortrait(player['Avatar'])}"><span>${MainParser.GetPlayerLink(player['PlayerID'], player['PlayerName'])}</span>` : '',
 		amount: d['rewardResources']['resources']['strategy_points'],
 		date: moment(MainParser.getCurrentDate()).format('YYYY-MM-DD')
 	});
