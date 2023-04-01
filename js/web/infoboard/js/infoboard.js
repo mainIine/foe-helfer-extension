@@ -362,11 +362,15 @@ let Infoboard = {
 	ShowSettings: () => {
 		let autoOpen = Settings.GetSetting('AutoOpenInfoBox');
 		let messagesAmount = localStorage.getItem('EntryCount');
+        let gbgProvShortNameFl = parseInt(localStorage.getItem('InfoBox.GbgProvShortNameFl')) || 0; // short name vs. full name of GBG provinces
 
         let EntryCountTitle = i18n('Settings.InfoboxEntryCount.Title'); //Dummy usage. Dont mark i18n key for disposal yet. Might be useful later
 
         let h = [];
-        h.push(`<p><input id="autoStartInfoboard" name="autoStartInfoboard" value="1" type="checkbox" ${(autoOpen === true) ? ' checked="checked"' : ''} /> <label for="autoStartInfoboard">${i18n('Boxes.Settings.Autostart')}</label>`);
+        h.push(`<p><input id="autoStartInfoboard" name="autoStartInfoboard" value="1" type="checkbox" ${(autoOpen === true) ? ' checked="checked"' : ''} />` 
+            + ` <label for="autoStartInfoboard">${i18n('Boxes.Settings.Autostart')}</label>`);
+        h.push(`<p><input id="gbgProvShortNameFl" name="gbgProvShortNameFl" value="1" type="checkbox" ${(gbgProvShortNameFl === 1) ? ' checked="checked"' : ''} />` 
+            + ` <label for="gbgProvShortNameFl">${i18n('Settings.InfoboxGbgProvShortNameFl.Desc')}</label>`);
         h.push(`<p><label for="infoboxentry-length">${i18n('Settings.InfoboxEntryCount.Desc')}</label><input class="setting-input" type="number" id="infoboxentry-length" step="1" min="1" max="2000" value="${(messagesAmount)}"></p>`);
         h.push(`<p><button onclick="Infoboard.SaveSettings()" id="saveInfoboardSettings" class="btn btn-default" style="width:100%">${i18n('Boxes.Settings.Save')}</button></p>`);
 
@@ -379,6 +383,7 @@ let Infoboard = {
     */
     SaveSettings: () => {
         localStorage.setItem('AutoOpenInfoBox', $("#autoStartInfoboard").is(':checked'));
+        localStorage.setItem('InfoBox.GbgProvShortNameFl', $("#gbgProvShortNameFl").is(':checked') ? 1 : 0);
         localStorage.setItem('EntryCount', $("#infoboxentry-length").val());
 
 		$(`#BackgroundInfoSettingsBox`).remove();
@@ -582,17 +587,22 @@ let Info = {
                 continue;
             }
 
+            let provLabel = (parseInt(localStorage.getItem('InfoBox.GbgProvShortNameFl')) || 0) === 0 ? prov['name'] : prov['short'];
+
             if (color) {
                 let tc = colors['highlight'], sc = color['highlight'],
                     ts = colors['shadow'], ss = color['shadow'];
 
-                t += '<span style="color:' + tc + ';text-shadow: 0 1px 1px ' + ts + '">' + p['clan']['name'] + '</span> ⚔ <span style="color:' + sc + ';text-shadow: 0 1px 1px ' + ss + '">' + prov['name'] + '</span> (<strong>' + d['progress'] + '</strong>/<strong>' + d['maxProgress'] + '</strong>)<br>';
+                t += '<span style="color:' + tc + ';text-shadow: 0 1px 1px ' + ts + '">' + p['clan']['name'] + '</span>'
+                  + ' ⚔ <span style="color:' + sc + ';text-shadow: 0 1px 1px ' + ss + '">' + provLabel + '</span>'
+                  + ' (<strong>' + d['progress'] + '</strong>/<strong>' + d['maxProgress'] + '</strong>)<br>';
             }
             else {
                 let tc = colors['highlight'],
                     ts = colors['shadow'];
 
-                t += '<span style="color:' + tc + ';text-shadow: 0 1px 1px ' + ts + '">' + p['clan']['name'] + '</span> ⚔ ' + prov['name'] + ' (<strong>' + d['progress'] + '</strong>/<strong>' + d['maxProgress'] + '</strong>)<br>';
+                t += '<span style="color:' + tc + ';text-shadow: 0 1px 1px ' + ts + '">' + p['clan']['name'] + '</span>'
+                  + ' ⚔ ' + provLabel + ' (<strong>' + d['progress'] + '</strong>/<strong>' + d['maxProgress'] + '</strong>)<br>';
 
             }
 
