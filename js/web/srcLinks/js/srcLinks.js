@@ -53,20 +53,25 @@ let srcLinks = {
     },
 
     get: (filename, full=false, noerror=false) => {
+        let CS = ""
+        let CSfilename = filename.substring(0,filename.length-4);
+        
         if (!srcLinks.FileList) {
             if (!noerror) console.log ("Source file list not loaded!");
             return filename;
         }
+        else {
+            CS = srcLinks.FileList[filename];
+        }
 
-        let CS = srcLinks.FileList[filename];
         
         if (!CS) {
             if (!noerror) console.log (`file "${filename}" not in List`);
-            return filename;
         }
-
-        let CSfilename = filename.substring(0,filename.length-4) + "-" + CS + filename.substring(filename.length-4);
-
+        
+        CSfilename += "-" + CS + filename.substring(filename.length-4);
+        
+        
         if (full){
             return MainParser.InnoCDN + 'assets' + CSfilename;
         }
