@@ -1115,7 +1115,7 @@ let Parts = {
 
 		// Container zusammen setzen
 		let div = $('<div />').addClass('OwnPartBoxBackground'),
-			a = $('<div />').addClass('outerArrow').append( $('<span />').addClass('arrow game-cursor') ).append( $('<div />').addClass('OwnPartBoxBackgroundBody window-box').append(h.join('')) );
+			a = $('<div />').addClass('outerArrow').append( $('<span />').addClass('arrow game-cursor').attr('id', 'OwnPartBoxArrow') ).append( $('<div />').addClass('OwnPartBoxBackgroundBody window-box').append(h.join('')) );
 
 		$OwnPartBox
 			.append( div.append(a) )
@@ -1124,7 +1124,7 @@ let Parts = {
 
 		// der "Toogle"-Pfeil wurde geklickt,
 		// lasst die Spiele beginnen
-		$('.arrow').bind('click', function(){
+		$('#OwnPartBoxArrow').bind('click', function(){
 			if( $OwnPartBox.hasClass('show') ){
 				Parts.BackGroundBoxAnimation(false);
 			} else {
