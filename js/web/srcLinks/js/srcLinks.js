@@ -53,7 +53,7 @@ let srcLinks = {
     },
 
     get: (filename, full=false, noerror=false) => {
-        let CS = ""
+        let CS = undefined;
         let CSfilename = filename.substring(0,filename.length-4);
         
         if (!srcLinks.FileList) {
@@ -82,10 +82,9 @@ let srcLinks = {
 
     getReward:(icon) => {
         let url1 = srcLinks.get(`/shared/icons/reward_icons/reward_icon_${icon}.png`,true, true);
-
         let url2 = srcLinks.get(`/shared/icons/goods_large/${icon}.png`,true, true);
-
-        if (url1.length > url2.length + 13) {
+        
+        if (url2.indexOf("undefined") > -1) {
             return url1;
         }
 
