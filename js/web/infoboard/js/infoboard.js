@@ -35,7 +35,7 @@ let Infoboard = {
     DebugWebSocket: false,
     History: [],
     MaxEntries: 0,
-    GbgProvShortNameFl: false,
+    GbgProvShortNameFl: JSON.parse(localStorage.getItem("InfoBox.Settings.GbgProvShortNameFl") || "false"),
     OriginalDocumentTitle: document.title,
     TitleBlinkEvent: null,
 
@@ -164,7 +164,6 @@ let Infoboard = {
         });
 
         Infoboard.MaxEntries = localStorage.getItem("EntryCount") || 0;
-        Infoboard.GbgProvShortNameFl = localStorage.getItem("InfoBox.Settings.GbgProvShortNameFl") || false;
 
         for (let i = 0; i < Infoboard.History.length; i++) {
             const element = Infoboard.History[i];
@@ -364,14 +363,13 @@ let Infoboard = {
 	ShowSettings: () => {
 		let autoOpen = Settings.GetSetting('AutoOpenInfoBox');
 		let messagesAmount = localStorage.getItem('EntryCount');
-        let gbgProvShortNameFl = JSON.parse(localStorage.getItem('InfoBox.Settings.GbgProvShortNameFl')); // short name vs. full name of GBG provinces
 
         let EntryCountTitle = i18n('Settings.InfoboxEntryCount.Title'); //Dummy usage. Dont mark i18n key for disposal yet. Might be useful later
 
         let h = [];
         h.push(`<p><input id="autoStartInfoboard" name="autoStartInfoboard" value="1" type="checkbox" ${(autoOpen === true) ? ' checked="checked"' : ''} />` 
             + ` <label for="autoStartInfoboard">${i18n('Boxes.Settings.Autostart')}</label>`);
-        h.push(`<p><input id="gbgProvShortNameFl" name="gbgProvShortNameFl" value="1" type="checkbox" ${(gbgProvShortNameFl === true) ? ' checked="checked"' : ''} />` 
+        h.push(`<p><input id="gbgProvShortNameFl" name="gbgProvShortNameFl" value="1" type="checkbox" ${(Infoboard.GbgProvShortNameFl === true) ? ' checked="checked"' : ''} />` 
             + ` <label for="gbgProvShortNameFl">${i18n('Boxes.Infobox.Settings.GbgProvShortName')}</label>`);
         h.push(`<p><label for="infoboxentry-length">${i18n('Settings.InfoboxEntryCount.Desc')}</label><input class="setting-input" type="number" id="infoboxentry-length" step="1" min="1" max="2000" value="${(messagesAmount)}"></p>`);
         h.push(`<p><button onclick="Infoboard.SaveSettings()" id="saveInfoboardSettings" class="btn btn-default" style="width:100%">${i18n('Boxes.Settings.Save')}</button></p>`);
