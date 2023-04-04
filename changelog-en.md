@@ -9,6 +9,7 @@
 **BugFix**
 - external images:
 	- when the game file was not in cache, it could happen that images from Innogames were not loaded properly
+  
 - GB-Calculator:
 	- if the Infobox was open before the GB Calculator, it could happen that by clicking the filter in the Infobox, the settings of the GB Calculator were opened
 
