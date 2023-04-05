@@ -353,6 +353,12 @@ let GexStat = {
 			return a.rank - b.rank;
 		});
 		let sEncounters = GexParticipation.solvedEncounters;
+		if (isNaN(sEncounters)) {
+			sEncounters = 0
+			for (let x = 0; x < participation.length; x++)	{
+				sEncounters += participation[x].solvedEncounters || 0;
+			}
+		}
 		let aEncounters = GexParticipation.countMember * 48;
 		let processing = Number((sEncounters / aEncounters) * 100).toFixed(2);
 
