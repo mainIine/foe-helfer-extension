@@ -9,6 +9,7 @@
 **BugFix**
 - externe Bilder:
 	- wenn die Spieldatei nicht im Cache vorlag, konnte es passieren, dass Bilder von Innogames nicht korrekt geladen wurden
+
 - Eigenanteils-Rechner:
 	- war die Infobox vor dem Eigenanteilsrechner offen, konnte es passieren, dass durch Klick auf den Filter in der Infobox, die Einstellungen des Eigenanteilrechners geöffnet wurde.
 
