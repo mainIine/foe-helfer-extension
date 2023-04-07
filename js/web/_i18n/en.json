@@ -806,6 +806,7 @@
     "Boxes.PowerLeveling.CopyValues": "Copy values",
     "Boxes.PowerLeveling.DoubleCollection": "Double Collection",
     "Boxes.PowerLeveling.Level": "Level",
+    "Boxes.PowerLeveling.MinLevel": "Min level",
     "Boxes.PowerLeveling.MaxLevel": "Max level",
     "Boxes.PowerLeveling.OwnPartBrutto": "Own part gross",
     "Boxes.PowerLeveling.OwnPartNetto": "Own part net",
