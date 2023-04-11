@@ -1,5 +1,18 @@
 ## Changelog - Extension
 
+##### 3.2.3.0
+
+**Update**
+- Infobox:
+	- es kann nun eingestellt werden, dass statt des vollen GG-Provinznamen nur das Kürzel ausgegeben wird.
+
+**BugFix**
+- externe Bilder:
+	- wenn die Spieldatei nicht im Cache vorlag, konnte es passieren, dass Bilder von Innogames nicht korrekt geladen wurden
+
+- Eigenanteils-Rechner:
+	- war die Infobox vor dem Eigenanteilsrechner offen, konnte es passieren, dass durch Klick auf den Filter in der Infobox, die Einstellungen des Eigenanteilrechners geöffnet wurde.
+
 ##### 3.2.2.0
 
 **Update**

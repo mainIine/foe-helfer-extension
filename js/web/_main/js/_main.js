@@ -202,6 +202,15 @@ GetFights = () =>{
 		}
 	});
 
+	// Track Unit Icon-Images
+	FoEproxy.addRawHandler((xhr, requestData) => {
+		const idx = requestData.url.indexOf("armyuniticons_");
+
+		if (idx !== -1) {
+			Unit.CoordsRaw = JSON.parse(xhr.responseText);
+		}
+	});
+
 	// --------------------------------------------------------------------------------------------------
 	// Player- und Gilden-ID setzen
 	FoEproxy.addHandler('StartupService', 'getData', (data, postData) => {
@@ -688,8 +697,6 @@ GetFights = () =>{
 			GreatBuildings.HandleEventPage(data.responseData['events']);
 		}
 	});
-
-	// ende der Verarbeiter von data für foe-rechner.de
 
 
 	FoEproxy.addHandler('TimeService', 'updateTime', async (data, postData) => {
