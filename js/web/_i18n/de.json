@@ -545,6 +545,7 @@
     "Boxes.Infobox.FilterLevel": "LB",
     "Boxes.Infobox.FilterMessage": "Nachricht",
     "Boxes.Infobox.FilterTrade": "Handel",
+    "Boxes.Infobox.Settings.GbgProvShortName": "Zeige nur Kürzel für GG Provinzen.",
     "Boxes.Infobox.Messages.Auction": "<strong>__player__</strong> hat gerade __amount__ Münzen geboten.",
     "Boxes.Infobox.Messages.GEX": "<strong>__player__</strong> hat gerade __points__ Punkte in der GEX bekommen.",
     "Boxes.Infobox.Messages.GildFightOccupied": "Provinz <span style=\"color:#ffb539\">__provinceName__</span> wurde von <span style=\"color:__attackerColor__;text-shadow: 0 1px 1px __attackerShadow__\">__attackerName__</span> übernommen und ist bis __untilOccupied__ Uhr gesperrt.",

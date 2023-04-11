@@ -7,10 +7,10 @@
 A complete manual for installing can be found here: [FoE Helper Docs](https://docs.foe-helper.com/english/installing)
 
 [![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/J3J52SY3V)
-
+docs.
 ###### FAQ
 
-For questions and answers please use our [forum](https://discuss.foe-helper.com.de/) or discus with us on our [Discord](https://discord.gg/z97KZq4) server.
+For questions and answers please use our [forum](https://discuss.foe-helper.com/) or discus with us on our [Discord](https://discord.gg/z97KZq4) server.
 
 
 ###### Bugs & Wishes
