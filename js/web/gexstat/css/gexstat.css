@@ -260,6 +260,9 @@
 #GexStat span.level.level4 {
 	background: transparent url(./images/gex_level4.png) 0 0 no-repeat;
 }
+#GexStat span.level.level5 {
+	background: transparent url(./images/gex_level5.png) 0 0 no-repeat;
+}
 
 #GexStat .winner-rank {
 	background: transparent url(./images/winner-rank.png) 0 -74px no-repeat;
