@@ -693,6 +693,7 @@
     "Boxes.MoppelHelper.HeaderWarning": "ATTENTION: To update these values, you must scroll through all new events in the History Event tab in: Town Hall > News > Event History",
     "Boxes.MoppelHelper.MoppelEvents": "Motivate/Polish",
     "Boxes.MoppelHelper.Name": "Name",
+    "Boxes.MoppelHelper.GuildName": "Guild",
     "Boxes.MoppelHelper.Neighbors": "Neighbours",
     "Boxes.MoppelHelper.NeighborsSocialTabTT": "Click on the neighbours tab in the game to unlock the event list of your neighbours",
     "Boxes.MoppelHelper.Never": "NEVER",
