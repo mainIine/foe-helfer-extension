@@ -427,6 +427,9 @@ let EventHandler = {
 		h.push('<th columnname="Rank" class="is-number ascending" data-type="moppelhelper">' + i18n('Boxes.MoppelHelper.Rank') + '</th>');
 		h.push('<th></th>');
 		h.push('<th columnname="Name" data-type="moppelhelper">' + i18n('Boxes.MoppelHelper.Name') + '</th>');
+		if (EventHandler.CurrentPlayerGroup != 'Guild') {
+			h.push('<th columnname="GuildName" data-type="moppelhelper">' + i18n('Boxes.MoppelHelper.GuildName') + '</th>');
+		}
 		h.push('<th columnname="Era" data-type="moppelhelper">' + i18n('Boxes.MoppelHelper.Era') + '</th>');
 		h.push('<th columnname="Points" class="is-number" data-type="moppelhelper">' + i18n('Boxes.MoppelHelper.Points') + '</th>');
 
@@ -475,29 +478,41 @@ let EventHandler = {
 
 			Visits = Visits.sort(function (a, b) {
 				return b['date'] - a['date'];
-			});	
+			});				
 			
 			h.push('<tr>');
+			
+			// Rank column
 			h.push('<td class="is-number" data-number="' + (i + 1) + '">#' + (i + 1) + '</td>');
 
+			// Portrait column
 			h.push(`<td><img style="max-width: 22px" src="${srcLinks.GetPortrait(Player['Avatar'])}" alt="${Player['PlayerName']}"></td>`);
-
+			
+			// Player Name column
 			h.push('<td style="white-space:nowrap;text-align:left;" data-text="' + Player['PlayerName'].toLowerCase().replace(/[\W_ ]+/g, "") + '">');
 
 			if (EventHandler.CurrentPlayerGroup === 'Friends' || (EventHandler.CurrentPlayerGroup === 'Guild' && HasGuildPermission)) {
 				h.push(`<span class="activity activity_${Player['Activity']}"></span> `);
             }
 			h.push(MainParser.GetPlayerLink(Player['PlayerID'], Player['PlayerName']));
-			let pTime=EventHandler.isProtected[Player['PlayerID']] | 0;
-			let pImg= (EventHandler.CurrentPlayerGroup === 'Neighbors' && (pTime == -1 || pTime * 1000 > MainParser.getCurrentDateTime())) ? pImage : '';
+
+			// Guild name column
+			if (EventHandler.CurrentPlayerGroup != 'Guild') {
+				h.push('<td style="white-space:nowrap;text-align:left;" data-text="' + (Player['ClanName']?.toLowerCase().replace(/[\W_ ]+/g, "") || "has_no_guild") + '">');
+				h.push(Player['ClanName'] ? MainParser.GetGuildLink(Player['ClanId'], Player['ClanName']) : "");
+			}
+
+			// Player Age column (with shield icons if protected)
+			let pTime = EventHandler.isProtected[Player['PlayerID']] | 0;
+			let pImg = (EventHandler.CurrentPlayerGroup === 'Neighbors' && (pTime == -1 || pTime * 1000 > MainParser.getCurrentDateTime())) ? pImage : '';
 			h.push(`<td data-text="${i18n('Eras.' + Technologies.Eras[Player['Era']])}">${pImg + i18n('Eras.' + Technologies.Eras[Player['Era']]) + pImg}</td>`);
 
+			// Player points column
 			h.push('<td class="is-number" data-number="' + Player['Score'] + '">' + HTML.Format(Player['Score']) + '</td>');
 
-			for (let j = 0; j < EventHandler.MaxVisitCount; j++)
-			{
-				if (j < Visits.length)
-				{
+			// Event columns
+			for (let j = 0; j < EventHandler.MaxVisitCount; j++) {
+				if (j < Visits.length) {
 					let Seconds = (MainParser.getCurrentDateTime() - Visits[j]['date'].getTime()) / 1000;
 					let Days = Seconds / 86400; //24*3600
 					let StrongColor = (Days < 3 * (j + 1) ? HTML.GetColorGradient(Days, 0, 3 * (j + 1), '00ff00', 'ffff00') : HTML.GetColorGradient(Days, 3 * (j + 1), 7 * (j + 1), 'ffff00', 'ff0000'));
