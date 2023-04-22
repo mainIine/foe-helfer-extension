@@ -478,7 +478,7 @@ let EventHandler = {
 
 			Visits = Visits.sort(function (a, b) {
 				return b['date'] - a['date'];
-			});				
+			});
 			
 			h.push('<tr>');
 			
