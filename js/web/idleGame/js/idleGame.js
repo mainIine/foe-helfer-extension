@@ -16,6 +16,8 @@ FoEproxy.addHandler('IdleGameService', 'getState', (data, postData) => {
 	if(!Settings.GetSetting('ShowEventChest')){
 		return;
 	}
+	idleGame.event = data.responseData.context;
+	idleGame.selectEventData();
 	// Don't create a new box while another one is still open
     if ($('#idleGameDialog').length === 0) {
 		idleGame.ShowDialog();
@@ -107,33 +109,7 @@ FoEproxy.addRequestHandler('IdleGameService', 'performActions', (postData) => {
 });
 
 FoEproxy.addMetaHandler('idle_game', (data, postData) => {
-
-    let resp = JSON.parse(data['response']);
-
-    for (let x in resp['configs'][0]['characters'])
-	{
-		if (!Object.hasOwnProperty.call(resp['configs'][0]['characters'], x)) continue;
-		let d = resp['configs'][0]['characters'][x];
-
-		if(!d['id'])
-		{
-			continue;
-		}
-		idleGame.data[d['id']]['baseData'] = d;
-    }
-	for (let t in resp['configs'][0]['tasks'])
-	{
-		if (!Object.hasOwnProperty.call(resp['configs'][0]['tasks'], t)) continue;
-		let task = resp['configs'][0]['tasks'][t];
-
-		if(!task['id'])
-		{
-			continue;
-		}
-		idleGame.Tasks[task['id']] = task;
-    }
-	idleGame.event=resp.contexts[0];
-	
+    idleGame.meta= JSON.parse(data['response']);
 });
 
 
@@ -160,7 +136,13 @@ let idleGame = {
 			market_1:"/shared/seasonalevents/stpatricks/event/stpatrick_task_parade_thumb.png"
 		}
 	},
-	event: null,
+	texts:{
+		st_patricks_event: {
+			Production: i18n('Boxes.idleGame.Production.StPat')
+		}
+	},
+	
+	event: "st_patricks_event",
 
     Strategy: {},
 	Tasks : {},
@@ -192,6 +174,33 @@ let idleGame = {
 		6 : i18n('Boxes.idleGame.QT')
 	},
 
+	selectEventData: ()=>{
+		let i=0;
+		for (i in idleGame.meta.configs) {
+			if (idleGame.meta.configs[i].context==idleGame.event) break;
+		}
+		let data = idleGame.meta.configs[i];
+		for (let x in data.characters)	{
+			if (!Object.hasOwnProperty.call(data.characters, x)) continue;
+			let d = data.characters[x];
+
+			if(!d['id'])
+			{
+				continue;
+			}
+			idleGame.data[d['id']]['baseData'] = d;
+		}
+		for (let t in data.tasks) {
+			if (!Object.hasOwnProperty.call(data.tasks, t)) continue;
+			let task = data.tasks[t];
+
+			if(!task['id'])
+			{
+				continue;
+			}
+			idleGame.Tasks[task['id']] = task;
+		}
+	},
 
     /**
      * Shows a User Box with the current production stats
@@ -214,7 +223,7 @@ let idleGame = {
         htmltext += `<img src="${srcLinks.get(idleGame.images[idleGame.event].idleCurrency, true)}" alt="" >`;
         htmltext += `${i18n('Boxes.idleGame.Hourly')}</th></tr><tr>`;
         htmltext += `<td>${idleGame.data.market_1.baseData.name}<br><span id="idleGame_Fest"></span></td>`;
-        htmltext += `<td rowspan="2">${i18n('Boxes.idleGame.Production')}<br><span id="idleGame_Work"></span></td>`;
+        htmltext += `<td rowspan="2">${idleGame.texts[idleGame.event].Production}<br><span id="idleGame_Work"></span></td>`;
         htmltext += `</tr><tr><td>${idleGame.data.transport_1.baseData.name}<br><span id="idleGame_Ship"></span></td>`;
         htmltext += `</tr><tr><td colspan="3" style="color: var(--text-bright);font-size:smaller">${i18n('Boxes.idleGame.Warning')}</td></tr></table>`;
         
