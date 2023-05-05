@@ -402,6 +402,7 @@
     "Boxes.GreatBuildings.TTRewardPerDay": "Optional: Wie viele FP bekommst du per Tag als Mäzenbelohnungen? Diese Information wird benutzt um die Rentabilität von weiteren Archelveln zu berechnen. Um diesen Wert automatisch zu berechnen gehe zu 'Rathaus'> 'Neuigkeiten'> 'Ereignisübersicht' und scrolle alle Seiten durch",
     "Boxes.GreatBuildings.Title": "LG Investitionen",
     "Boxes.GuildFights.Copy": "Kopieren",
+    "Boxes.GuildFights.CopyAll": "Alle Kopieren",
     "Boxes.GuildFights.CopyToClipBoard.Desc": "Die Angriffszeiten für die ausgewählten Provinzen wurde kopiert.",
     "Boxes.GuildFights.CopyToClipBoard.Title": "Kopiert!",
     "Boxes.GuildFights.Count": "in",
