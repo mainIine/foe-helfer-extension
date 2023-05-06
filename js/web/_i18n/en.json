@@ -407,7 +407,7 @@
     "Boxes.GreatBuildings.TTRewardPerDay": "Optional: How many FP rewards do you get per day? This information is used to calculate profitability for further Arc levels. To get a suggestion go to: Town Hall > News > Event History and scroll through all pages",
     "Boxes.GreatBuildings.Title": "GB Investment Overview",
     "Boxes.GuildFights.Copy": "Copy",
-    "Boxes.GuildFights.CopyAll": "Copy all",
+    "Boxes.GuildFights.SelectAll": "Select all",
     "Boxes.GuildFights.CopyToClipBoard.Desc": "Attack times for the selected province have been copied.",
     "Boxes.GuildFights.CopyToClipBoard.Title": "Copied!",
     "Boxes.GuildFights.Count": "in",

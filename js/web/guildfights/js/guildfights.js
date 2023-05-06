@@ -1040,7 +1040,7 @@ let GuildFights = {
 		h.push('<div class="gbg-tabs tabs">');
 		h.push(GuildFights.GetTabs());
 		h.push(GuildFights.GetTabContent());
-		h.push('<button class="btn-default copybutton all" onclick="GuildFights.CopyToClipBoard(event)">'+ i18n('Boxes.GuildFights.CopyAll') +'</button>');
+		h.push('<button class="btn-default copybutton all" onclick="GuildFights.CopyToClipBoard(event)">'+ i18n('Boxes.GuildFights.SelectAll') +'</button>');
 		h.push('<button class="btn-default mapbutton" onclick="ProvinceMap.build()">'+ i18n('Boxes.GuildFights.OpenMap') +'</button>');
 		h.push('</div>');
 
@@ -1288,21 +1288,31 @@ let GuildFights = {
 
 
 	ToggleCopyButton: () => {
-		if ($('#nextup').is(':visible') && $('.timer.highlight-row').length > 0) {
+		if ($('#nextup').is(':visible')) {
+			$('.copybutton').show();
+		} else {
+			$('.copybutton').hide();
+			return;
+		}
+		if ($('.timer.highlight-row').length > 0) {
 			$('.copybutton').html(i18n('Boxes.GuildFights.Copy'));
 			$('.copybutton').removeClass('all');
 		} else {
-			$('.copybutton').html(i18n('Boxes.GuildFights.CopyAll'));
+			$('.copybutton').html(i18n('Boxes.GuildFights.SelectAll'));
 			$('.copybutton').addClass('all');
 		}
 	},
 
 
 	CopyToClipBoard: (e) => {
+		if (e.target.classList.contains('all')) {
+			$('.timer').addClass('highlight-row');
+			GuildFights.ToggleCopyButton();
+			return;
+		}
 		let copy = '';
 		let copycache = [];
-		let lines = e.target.classList.contains('all') ? $('.timer') : $('.timer.highlight-row');
-		lines.each(function () {
+		$('.timer.highlight-row').each(function () {
 			copycache.push(GuildFights.MapData['map']['provinces'].find((mapItem) => mapItem.id == $(this).data('id')));
 		});
 
