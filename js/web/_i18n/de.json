@@ -485,7 +485,7 @@
     "Boxes.GuildMemberStat.Rank": "Rang",
     "Boxes.GuildMemberStat.ResetMessageCounter": "Nachrichtenzähler zurücksetzen",
     "Boxes.GuildMemberStat.Search": "Suche",
-    "Boxes.GuildMemberStat.ShowBattlesWon": "Kampfpunkte anzeigen",
+    "Boxes.GuildMemberStat.ShowBattlesWon": "gewonnene Kämpfe anzeigen",
     "Boxes.GuildMemberStat.ShowDeletedMembers": "Ex-Mitglieder anzeigen",
     "Boxes.GuildMemberStat.ShowSearchbar": "Suchleiste anzeigen",
     "Boxes.GuildMemberStat.ShowZeroValues": "Zeige 0-Werte an (Gex/GG)",

@@ -490,7 +490,7 @@
     "Boxes.GuildMemberStat.Rank": "Rank",
     "Boxes.GuildMemberStat.ResetMessageCounter": "reset message counter",
     "Boxes.GuildMemberStat.Search": "Search",
-    "Boxes.GuildMemberStat.ShowBattlesWon": "show battle points",
+    "Boxes.GuildMemberStat.ShowBattlesWon": "show battles won",
     "Boxes.GuildMemberStat.ShowDeletedMembers": "show ex-members",
     "Boxes.GuildMemberStat.ShowSearchbar": "show searchbar",
     "Boxes.GuildMemberStat.ShowZeroValues": "show 0-values (GE/GBG)",
