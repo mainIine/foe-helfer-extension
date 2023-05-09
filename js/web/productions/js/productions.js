@@ -265,9 +265,7 @@ let Productions = {
 			EntityID = d['cityentity_id'],
 			CityEntity = MainParser.CityEntities[EntityID],
 			BuildingSize = CityMap.GetBuildingSize(d);
-		if (d.id==21508) {
-			console.log("test")
-		}
+			
 		// Münzboost ausrechnen und bereitstellen falls noch nicht initialisiert
 		if (Productions.Boosts['money'] === undefined) Productions.Boosts['money'] = ((MainParser.BoostSums['coin_production'] + 100) / 100);
 		if (Productions.Boosts['supplies'] === undefined) Productions.Boosts['supplies'] = ((MainParser.BoostSums['supply_production'] + 100) / 100);
