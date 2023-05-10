@@ -569,6 +569,9 @@ let Productions = {
 			if (d.state && d['state']['current_product']) {
 				if (d['state']['current_product']['product'] && d['state']['current_product']['product']['resources']) {
 					CurrentResources = Object.assign({}, d['state']['current_product']['product']['resources']);
+					if (CurrentResources['strategy_points']) {
+						CurrentResources['strategy_points'] = Math.round(CurrentResources['strategy_points'] * Productions.Boosts['fp']);
+					}
 				}
 
 				if (d['state']['current_product']['clan_power']) {
