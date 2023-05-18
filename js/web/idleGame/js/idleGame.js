@@ -18,6 +18,8 @@ FoEproxy.addHandler('IdleGameService', 'getState', (data, postData) => {
 	}
 	idleGame.event = data.responseData.context;
 	idleGame.selectEventData();
+	if (!idleGame.settings['Strategy']) idleGame.settings['Strategy']={};
+	if (!idleGame.settings.Strategy[idleGame.event]) idleGame.settings.Strategy[idleGame.event]={}
 	// Don't create a new box while another one is still open
     if ($('#idleGameDialog').length === 0) {
 		idleGame.ShowDialog();
@@ -65,6 +67,15 @@ FoEproxy.addHandler('IdleGameService', 'getState', (data, postData) => {
 
 	if (data.responseData.stage) {
 		idleGame.Stage = data.responseData.stage;
+		idleGame.Variant = (idleGame.Stage-1) % 3 + 1;
+		if (!idleGame.settings.Strategy['CurrentVariant']) idleGame.settings.Strategy['CurrentVariant'] = idleGame.Variant;
+		if (idleGame.Variant != idleGame.settings.Strategy.CurrentVariant) {
+			idleGame.settings.Strategy.CurrentVariant = idleGame.Variant;
+			if (!idleGame.settings.Strategy[idleGame.event][idleGame.Variant]) idleGame.settings.Strategy[idleGame.event][idleGame.Variant]=[];
+			for (let x in idleGame.settings.Strategy[idleGame.event][idleGame.Variant]) {
+				idleGame.settings.Strategy[idleGame.event][idleGame.Variant][x].check = false;
+			}
+		}
 	}
 
 	idleGame.idleGameUpdateDialog();
@@ -134,18 +145,30 @@ let idleGame = {
 			workshop_5:"/shared/seasonalevents/stpatricks/event/stpatrick_task_goods_fireworks_thumb.png",
 			transport_1:"/shared/seasonalevents/stpatricks/event/stpatrick_task_shipyard_thumb.png",
 			market_1:"/shared/seasonalevents/stpatricks/event/stpatrick_task_parade_thumb.png"
+		},
+		fellowship_event: {
+			idleCurrency:"/shared/seasonalevents/fellowship/event/fellowship_task_idle_currency_thumb.png",
+			workshop_1:"/shared/seasonalevents/fellowship/event/fellowship_task_goods_spices_thumb.png",
+			workshop_2:"/shared/seasonalevents/fellowship/event/fellowship_task_goods_drinks_thumb.png",
+			workshop_3:"/shared/seasonalevents/fellowship/event/fellowship_task_goods_farm_thumb.png",
+			workshop_4:"/shared/seasonalevents/fellowship/event/fellowship_task_goods_bakery_thumb.png",
+			workshop_5:"/shared/seasonalevents/fellowship/event/fellowship_task_goods_butchery_thumb.png",
+			transport_1:"/shared/seasonalevents/fellowship/event/fellowship_task_carriage_thumb.png",
+			market_1:"/shared/seasonalevents/fellowship/event/fellowship_task_banquette_thumb.png"
 		}
 	},
 	texts:{
 		st_patricks_event: {
 			Production: i18n('Boxes.idleGame.Production.StPat')
+		},
+		fellowship_event: {
+			Production: i18n('Boxes.idleGame.Production.StPat')
 		}
 	},
 	
-	event: "st_patricks_event",
+	event: "fellowship_event",
 
-    Strategy: {},
-	Tasks : {},
+    Tasks : {},
 	Tasklist: [],
 	Taskprogress:[],
 
@@ -276,6 +299,13 @@ let idleGame = {
         htmltext += `<tr><td id="idleGame_Task6"></td></tr>`;
         htmltext += `<tr><td id="idleGame_Task7"></td></tr>`;
         htmltext += `<tr><td id="idleGame_Task8"></td></tr>`;
+        htmltext += `</table>`;
+		htmltext += `<table id="idleGame_Strategy" class="foe-table" style="width:100%"><tr>`;
+		htmltext += `<th style="width:25px" onclick="idleGame.modifyStrategy()">✏️</th>`;
+		htmltext += `<th colspan="2" onclick="idleGame.hide('#idleGame_Strategy')"><span style="margin-right:25px">${i18n('Boxes.idleGame.Strategy')}</span><i></i></th></tr>`;
+		htmltext += `<tr><td colspan="2" id="idleGame_StratPrev"></td><td style="width:25px" id="idleGame_StratUndo" onclick="idleGame.StratUndo()"></td></tr>`;
+        htmltext += `<tr><td colspan="2" id="idleGame_Strat"></td><td id="idleGame_StratCheck" onclick="idleGame.StratCheck()"></td></tr>`;
+        htmltext += `<tr><td colspan="2" id="idleGame_StratNext"></td><td></td></tr>`;
         htmltext += `</table>`;
 		htmltext += `<div id="idleGame_Town" style="color:var(--text-bright); font-weight:bold"></div>`;
         
@@ -470,8 +500,14 @@ let idleGame = {
 				$('#idleGame_Task'+ t).addClass('hide');
 			}
 		}
+		let strat = 0;
+		for (strat = 0; strat < idleGame.settings.Strategy[idleGame.event][idleGame.Variant].length;strat++) {
+			if (idleGame.settings.Strategy[idleGame.event][idleGame.Variant][strat].check == false) break;
+		}
+		idleGame.DisplayStrat(strat);
+		
 
-		$('#idleGame_Town').html(`${i18n('Boxes.idleGame.CurrentRun')}: ${idleGame.Stage} / ${i18n('Boxes.idleGame.Variant')}: ${(idleGame.Stage-1) % 3 + 1}<br>${i18n('Boxes.idleGame.NextTown')} 8.4 Q: ${idleGame.time(8.4,5,sum,degree,idleGame.Progress,idleGame.ProgressDegree)}`);
+		$('#idleGame_Town').html(`${i18n('Boxes.idleGame.CurrentRun')}: ${idleGame.Stage} / ${i18n('Boxes.idleGame.Variant')}: ${idleGame.Variant}<br>${i18n('Boxes.idleGame.NextTown')} 8.4 Q: ${idleGame.time(8.4,5,sum,degree,idleGame.Progress,idleGame.ProgressDegree)}`);
 
 	},
 
@@ -625,4 +661,86 @@ let idleGame = {
 	saveSettings:() => {
 		localStorage.setItem('idleGameSettings', JSON.stringify(idleGame.settings));
 	},
+
+	StratUndo:() =>{
+		let strat = 0;
+		for (strat = 0; strat < idleGame.settings.Strategy[idleGame.event][idleGame.Variant].length;strat++) {
+			if (idleGame.settings.Strategy[idleGame.event][idleGame.Variant][strat].check == false) break;
+		}
+		if (strat==0) return;
+		if (strat==idleGame.settings.Strategy[idleGame.event][idleGame.Variant].length) $('#idleGame_StratCheck').html("check");
+		strat--;
+		idleGame.settings.Strategy[idleGame.event][idleGame.Variant][strat].check = false;
+
+		idleGame.DisplayStrat(strat);
+		idleGame.saveSettings();
+	},
+	
+	StratCheck:() =>{
+		let strat = 0;
+		for (strat = 0; strat < idleGame.settings.Strategy[idleGame.event][idleGame.Variant].length;strat++) {
+			if (idleGame.settings.Strategy[idleGame.event][idleGame.Variant][strat].check == false) break;
+		}
+		if (strat==idleGame.settings.Strategy[idleGame.event][idleGame.Variant].length) return;
+		idleGame.settings.Strategy[idleGame.event][idleGame.Variant][strat].check = true;
+		strat++;
+		idleGame.DisplayStrat(strat);
+		idleGame.saveSettings();		
+	},
+
+	DisplayStrat:(strat) => {
+		if (strat-1>=0) {
+			$('#idleGame_StratPrev').html(idleGame.settings.Strategy[idleGame.event][idleGame.Variant][strat-1].text);
+			$('#idleGame_StratUndo').html('☑');
+		} else {
+			$('#idleGame_StratPrev').html('');
+			$('#idleGame_StratUndo').html('');
+		}
+
+		if (strat<idleGame.settings.Strategy[idleGame.event][idleGame.Variant].length) {
+			$('#idleGame_StratCheck').html('☐');
+			$('#idleGame_Strat').html(idleGame.settings.Strategy[idleGame.event][idleGame.Variant][strat].text);
+		
+		} else {
+			$('#idleGame_StratCheck').html('');
+			$('#idleGame_Strat').html('');
+		}
+		
+		if (strat+1<idleGame.settings.Strategy[idleGame.event][idleGame.Variant].length) {
+			$('#idleGame_StratNext').html(idleGame.settings.Strategy[idleGame.event][idleGame.Variant][strat+1].text);
+		} else {
+			$('#idleGame_StratNext').html('');
+		}
+	},
+
+	modifyStrategy:()=>{
+		let list = idleGame.settings.Strategy[idleGame.event][idleGame.Variant].map(x => x.text).join('\n')		
+		if ($('#idleGameStrategyDialog').length == 0) {
+			HTML.Box({
+				id: 'idleGameStrategyDialog',
+				title: i18n('Boxes.idleGame.Strategy.Title'),
+				auto_close: true,
+				dragdrop: true,
+				minimize: false,
+				resize : true
+			});
+		}
+		let h = `<textarea id="idleGameStratText">${list}</textarea><button id="idleGameStratSave" class="btn-default" onclick="idleGame.saveStrategy()">${i18n('General.Save')}</button>`;
+		$('#idleGameStrategyDialogBody').html(h)
+	},
+
+	saveStrategy:()=>{
+		let lines = $('#idleGameStratText').val().split('\n');
+		idleGame.settings.Strategy[idleGame.event][idleGame.Variant] = lines.map(x=>{return {"text": x,"check": false}});
+		idleGame.saveSettings();
+		idleGame.DisplayStrat(0);
+		HTML.CloseOpenBox('idleGameStrategyDialog')
+	},
+
+	test:()=>{
+		idleGame.Variant=1
+		idleGame.selectEventData()
+		idleGame.ShowDialog()
+		idleGame.idleGameUpdateDialog()
+	}
 };
