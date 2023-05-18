@@ -62,14 +62,19 @@
     padding-left: 2px;
 }
 
-#idleGame_Next.hide td, #idleGame_Tasks.hide td, #idleGame_Tasks td.hide, #idleGame_TasksActive.hide td, #idleGame_TasksActive td.hide {
+#idleGame_Next.hide td, 
+#idleGame_Tasks.hide td, 
+#idleGame_Tasks td.hide, 
+#idleGame_TasksActive.hide td, 
+#idleGame_TasksActive td.hide, 
+#idleGame_Strategy.hide td {
     display: none;
 }
 
-#idleGame_Next th, #idleGame_Tasks th, #idleGame_TasksActive th {
+#idleGame_Next th, #idleGame_Tasks th, #idleGame_TasksActive th , #idleGame_Strategy th {
     position: relative;
 }
-#idleGame_Next.hide i, #idleGame_Tasks.hide i, #idleGame_TasksActive.hide i {
+#idleGame_Next.hide i, #idleGame_Tasks.hide i, #idleGame_TasksActive.hide i, #idleGame_Strategy.hide i {
     border: solid var(--text-bright);
     border-width: 0 2px 2px 0;
     display: inline-block;
@@ -80,7 +85,7 @@
     -webkit-transform: rotate(135deg);
     margin-top: 4px;
 }
-#idleGame_Next:not(.hide) i, #idleGame_Tasks:not(.hide) i, #idleGame_TasksActive:not(.hide) i {
+#idleGame_Next:not(.hide) i, #idleGame_Tasks:not(.hide) i, #idleGame_TasksActive:not(.hide) i, #idleGame_Strategy:not(.hide) i  {
     border: solid var(--text-bright);
     border-width: 0 2px 2px 0;
     display: inline-block;
@@ -91,3 +96,34 @@
     -webkit-transform: rotate(45deg);
     margin-top: 4px;
 }
+
+#idleGame_StratUndo {
+    font-family: arial;
+    color: var(--text-success);
+}
+#idleGame_StratCheck {
+    font-family: arial;
+    color: var(--text-bright);
+}
+#idleGame_StratPrev {
+    color: var(--text-btn-disabled);
+}
+#idleGame_StratNext {
+    color: var(--text-btn-disabled);
+}
+#idleGame_Strat {
+    color: var(--text-bright);
+}
+#idleGameStratText {
+    width: 100%;
+    resize: none;
+    overflow-y: scroll;
+    height: 100%;
+}
+#idleGameStratSave {
+    position: absolute;
+    right: 5px;
+    bottom: 5px;
+}
+
+
