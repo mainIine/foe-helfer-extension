@@ -791,6 +791,8 @@
     "Boxes.OwnpartCalculator.OptionsLevelUp": "Please level up",
     "Boxes.OwnpartCalculator.OptionsOwnPart": "Owner's Contribution",
     "Boxes.OwnpartCalculator.OptionsPlayer": "Player",
+    "Boxes.OwnpartCalculator.danger": "danger",
+    "Boxes.OwnpartCalculator.levelt": "will level",
     "Boxes.OwnpartCalculator.Order": "Sequence",
     "Boxes.OwnpartCalculator.OwnPart": "Owner to Add",
     "Boxes.OwnpartCalculator.OwnPartRemaining": "Owner to Add Remaining",
