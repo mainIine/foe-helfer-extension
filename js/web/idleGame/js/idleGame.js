@@ -500,11 +500,10 @@ let idleGame = {
 				$('#idleGame_Task'+ t).addClass('hide');
 			}
 		}
-		let strat = 0;
-		for (strat = 0; strat < idleGame.settings.Strategy[idleGame.event][idleGame.Variant].length;strat++) {
-			if (idleGame.settings.Strategy[idleGame.event][idleGame.Variant][strat].check == false) break;
-		}
-		idleGame.DisplayStrat(strat);
+		
+		idleGame.checkStrat();
+		
+		idleGame.DisplayStrat(idleGame.checkStrat());
 		
 
 		$('#idleGame_Town').html(`${i18n('Boxes.idleGame.CurrentRun')}: ${idleGame.Stage} / ${i18n('Boxes.idleGame.Variant')}: ${idleGame.Variant}<br>${i18n('Boxes.idleGame.NextTown')} 8.4 Q: ${idleGame.time(8.4,5,sum,degree,idleGame.Progress,idleGame.ProgressDegree)}`);
@@ -688,6 +687,52 @@ let idleGame = {
 		idleGame.saveSettings();		
 	},
 
+	checkStrat:()=>{
+		let strat = 0;
+		for (strat = 0; strat < idleGame.settings.Strategy[idleGame.event][idleGame.Variant].length;strat++) {
+			if (idleGame.settings.Strategy[idleGame.event][idleGame.Variant][strat].check == false) {
+				let conditions = idleGame.settings.Strategy[idleGame.event][idleGame.Variant][strat].conditions || []
+				if (conditions.length ==0) break;
+				let clear = true
+				for (let condition of conditions) {
+					let type=condition[0]
+					let building = ""
+					let value = 0
+					if (type != "T") {
+						building=condition[1];
+						switch (building) {
+							case "M": building="market_1"; break;
+							case "T": building="transport_1"; break;
+							default: building="workshop_"+building;
+						}
+						value = Number(condition.slice(3))
+					} else {
+						value = Number(condition.slice(2))
+					}
+
+					switch (type) {
+						case "T": //Task
+							if (idleGame.Tasklist.indexOf(value)>=0) clear = false;
+							break;
+						case "M": //Manager
+							if (idleGame.data[building].manager < value) clear = false;
+							break;
+						case "L": //Building Level
+							if (idleGame.data[building].level < value) clear = false;
+							break;
+					}
+
+				}
+				if (clear) {
+					idleGame.settings.Strategy[idleGame.event][idleGame.Variant][strat].check = true
+				} else {
+					break;
+				}
+			}
+		}
+		return strat
+	},
+
 	DisplayStrat:(strat) => {
 		if (strat-1>=0) {
 			$('#idleGame_StratPrev').html(idleGame.settings.Strategy[idleGame.event][idleGame.Variant][strat-1].text);
@@ -714,7 +759,7 @@ let idleGame = {
 	},
 
 	modifyStrategy:()=>{
-		let list = idleGame.settings.Strategy[idleGame.event][idleGame.Variant].map(x => x.text).join('\n')		
+		let list = idleGame.settings.Strategy[idleGame.event][idleGame.Variant].map(x => x.text + (x.conditions.length > 0 ? "#":"") + x.conditions.join('#')).join('\n');
 		if ($('#idleGameStrategyDialog').length == 0) {
 			HTML.Box({
 				id: 'idleGameStrategyDialog',
@@ -731,7 +776,10 @@ let idleGame = {
 
 	saveStrategy:()=>{
 		let lines = $('#idleGameStratText').val().split('\n');
-		idleGame.settings.Strategy[idleGame.event][idleGame.Variant] = lines.map(x=>{return {"text": x,"check": false}});
+		
+		idleGame.settings.Strategy[idleGame.event][idleGame.Variant] = lines.map(x=>{
+			let conditions= x.split('#'); 
+			return {"text": conditions[0],"check": false,"conditions":conditions.slice(1)}});
 		idleGame.saveSettings();
 		idleGame.DisplayStrat(0);
 		HTML.CloseOpenBox('idleGameStrategyDialog')
