@@ -1227,6 +1227,7 @@ let MainParser = {
 		ExtPlayerAvatar = d.portrait_id;
 
 		Infoboard.Init();
+		EventHandler.Init();
 	},
 
 
