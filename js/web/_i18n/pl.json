@@ -766,7 +766,7 @@
     "Boxes.PowerLeveling.CopyValues": "Kopiuj wartości",
     "Boxes.PowerLeveling.DoubleCollection": "Podwójna kolekcja",
     "Boxes.PowerLeveling.Level": "Poziom",
-    "Boxes.PowerLeveling.MaxLevel": "Docelowy poziom",
+    "Boxes.PowerLeveling.EndLevel": "Docelowy poziom",
     "Boxes.PowerLeveling.OwnPartBrutto": "Część własna brutto",
     "Boxes.PowerLeveling.OwnPartNetto": "Wpłata własna",
     "Boxes.PowerLeveling.OwnPartSum": "Suma części własnej",
