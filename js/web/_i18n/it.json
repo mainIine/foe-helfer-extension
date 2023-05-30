@@ -794,7 +794,7 @@
     "Boxes.PowerLeveling.CopyValues": "Copia dei valori",
     "Boxes.PowerLeveling.DoubleCollection": "Doppia raccolta",
     "Boxes.PowerLeveling.Level": "Livello",
-    "Boxes.PowerLeveling.MaxLevel": "Livello massimo",
+    "Boxes.PowerLeveling.EndLevel": "Livello massimo",
     "Boxes.PowerLeveling.OwnPartBrutto": "Contrib. proprio lordo",
     "Boxes.PowerLeveling.OwnPartNetto": "Contrib. proprio netto",
     "Boxes.PowerLeveling.OwnPartSum": "Totale proprio contributo",

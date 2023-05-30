@@ -570,7 +570,7 @@
     "Boxes.PowerLeveling.CopyValues": "Kopiera värden",
     "Boxes.PowerLeveling.DoubleCollection": "Dubbelskörd",
     "Boxes.PowerLeveling.Level": "Nivå",
-    "Boxes.PowerLeveling.MaxLevel": "Max nivå",
+    "Boxes.PowerLeveling.EndLevel": "Max nivå",
     "Boxes.PowerLeveling.OwnPartBrutto": "Egen del brutto",
     "Boxes.PowerLeveling.OwnPartNetto": "Egen del netto",
     "Boxes.PowerLeveling.OwnPartSum": "Egen del summa",

@@ -571,7 +571,7 @@
     "Boxes.OwnpartCalculator.Trust": "Доверие",
     "Boxes.PowerLeveling.DoubleCollection": "Двойной сбор",
     "Boxes.PowerLeveling.Level": "Уровень",
-    "Boxes.PowerLeveling.MaxLevel": "Макс. уровень",
+    "Boxes.PowerLeveling.EndLevel": "Макс. уровень",
     "Boxes.PowerLeveling.OwnPartBrutto": "Вклад владельца",
     "Boxes.PowerLeveling.OwnPartNetto": "Вклад владельца нетто",
     "Boxes.PowerLeveling.OwnPartSum": "Требуется всего СО",
