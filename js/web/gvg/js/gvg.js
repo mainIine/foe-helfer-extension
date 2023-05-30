@@ -819,7 +819,7 @@ let GvGMap = {
 
 		t.push('<table id="GvGGuilds" class="foe-table">');
 		t.push('<thead><tr>');
-		t.push('<th>'+i18n('Boxes.GvGMap.Guild.Name')+'</th>');
+		t.push('<th>'+i18n('General.Guild')+'</th>');
 		t.push('<th>'+i18n('Boxes.GvGMap.Guild.Sectors')+'</th>');
 		t.push('<th>'+i18n('Boxes.GvGMap.Guild.Power')+'</th>');
 		t.push('<th>'+i18n('Boxes.GvGMap.Guild.Costs')+'</th>');
