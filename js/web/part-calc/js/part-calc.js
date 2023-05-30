@@ -784,10 +784,10 @@ let Parts = {
 			{
 				h.push('<td class="text-center"><strong class="' + (PlayerID === ExtPlayerID ? '' : 'success') + '">' + (Parts.Maezens[i] > 0 ? HTML.Format(Parts.Maezens[i]) : '-') + '</strong >' + '</td>');
 				if (Parts.LeveltLG[i]) {
-					h.push('<td class="text-center"><strong class="error">levelt</strong></td>');
+					h.push(`<td class="text-center"><strong class="error">${i18n("Boxes.OwnpartCalculator.levelt")}</strong></td>`);
 				}
 				else if (Parts.DangerPlaces[i] > 5) {
-					h.push('<td class="text-center"><strong class="error">danger (' + HTML.Format(Parts.DangerPlaces[i]) + 'FP)</strong></td>');
+					h.push(`<td class="text-center"><strong class="error">${i18n("Boxes.OwnpartCalculator.danger")} (${HTML.Format(Parts.DangerPlaces[i])}FP)</strong></td>`);
 				}
 				else {
 					h.push('<td class="text-center"><strong class="info">-</strong></td>');

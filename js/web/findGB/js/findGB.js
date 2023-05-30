@@ -46,7 +46,7 @@ let findGB = {
                 title: i18n('Boxes.findGB.Title'),
                 auto_close: true,
                 dragdrop: true,
-                minimize: false,
+                minimize: true,
                 resize: true,
                 //ask: i18n('Boxes.findGB.HelpLink'),
             });
