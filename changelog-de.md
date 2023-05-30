@@ -28,6 +28,16 @@
 - Gildengefechte
 	- wenn in der Provinzübersicht keine Zeile ausgewählt ist, können nun alle Zeilen kopiert werden
 
+- Moppelhelfer
+	- Spalte "Gilde" hinzugefügt
+	- es kann nun ausgewählt werden, welche der Spalten Gilde, Era und Punkte angezeigt werden
+
+- Powerleveln
+	- Es kann nun ein Start Level angegeben werden
+
+- Freunde in Gruppen finden
+	- zeigt nun die Spieleraktivität
+
 **BugFix**
 - Wiederkehrenden Quests (Diamanten Check)
 	- die Questliste setzt sich nun ordentlich zurück bei ZA-Wechsel
