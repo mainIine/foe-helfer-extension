@@ -371,7 +371,6 @@
 }
 
 #LiveGildFightingBody .tabs>button.copybutton {
-	display: none;
 	position: absolute;
 	top: 40px;
 	right: 64px;
