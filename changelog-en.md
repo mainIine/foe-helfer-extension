@@ -28,6 +28,16 @@
 - Guild Battegrounds
 	- when in the province overview no line is selected, the copy button will now copying all shown entries
 
+- Mo/Po helper
+	- column "guild" added
+	- columns guild, era and points can now be selected to be shown/hidden
+
+- power leveling
+	- a start level can now be selected
+
+- compare friends with threads
+	- now display the player activity
+
 **BugFix**
 - Recurring quests (diamonds tracker)
 	- the quest list now properly resets when changing Era
