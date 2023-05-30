@@ -192,8 +192,6 @@ let CompareFriendsThreads = {
 		for (let p in PlayerList)
 		{
 			let Player = PlayerList[p];
-			let PlayerPortrait = 
-
 			t.push('<tr>');
 
 			t.push(`<td>#${(parseInt(p) + 1)} <img style="max-width: 22px" src="${srcLinks.GetPortrait(Player['Avatar'])}" alt="${Player['PlayerName']}"> ` 
