@@ -1,5 +1,42 @@
 ## Changelog - Extension
 
+##### 3.2.4.0
+
+**Update**
+- Idle Game:
+	- funktioniert nun auch im Gemeinschaftsevent
+	- Strategy-Liste hinzugefügt
+		- wenn du z.B. mooing cats Strategie Guides magst, wird dir dies helfen, diese auch umzusetzen ohne ständig nachschauen zu müssen
+		- die Schritte des Guides können in der Event Box manuell hinzugefügt werden und werden für jedes Event und jeden Stadttyp unabhängig gespeichert. Format:
+			- ...Beschreibung...#Bedingung1#Bedingung2#Bedingung3
+			- Es kann beliebig viele Bedingungen geben
+			- Bedingungs-Typen: L(evel) M(anager) T(ask)
+			- Gebäudetypen: T(ransport) (Schiff, Kutsche), M(arkt) (Festival, Banquette), 1, 2, 3, 4, 5 (Fabriken 1-5)
+			- e.g.:
+				- Festival Manager 3 + Ship Manager 3  #MM-3#MT-3
+				- Hüte Manager 3, Level 10  #M1-3#L1-10
+				- Warten bis 50B Blumen gesammelt sind#T-67
+			- Die Bedingungen sind optional und werden nur benötgt, wenn du willst, dass der Helfer die Schritte automatisch abhakt
+			- Schritte können manuell abgehakt und wieder geöffnet werden
+
+- Produktionsübersicht und -effizienz:
+	- die neuen Armee-Boosts (Angriff+Verteidigung) und der FP boost werden nun korrekt verarbeitet
+
+- GB Spürhund
+	- kann nun minimiert werden
+
+- Gildengefechte
+	- wenn in der Provinzübersicht keine Zeile ausgewählt ist, können nun alle Zeilen kopiert werden
+
+**BugFix**
+- Wiederkehrenden Quests (Diamanten Check)
+	- die Questliste setzt sich nun ordentlich zurück bei ZA-Wechsel
+
+- Gildenexpedtions-Statistik
+	- gelegentlich wurden für einzelne Spieler NaA angezeigt
+	- Teilnahme% für GE seit Einführung von GE5 geändert
+	- korrektes Icon für GE5
+
 ##### 3.2.3.0
 
 **Update**
