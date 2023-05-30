@@ -485,7 +485,7 @@
     "Boxes.GvGMap.Action.Drag": "Húzás",
     "Boxes.GvGMap.Action.Edit": "Szerkesztés",
     "Boxes.GvGMap.Action.Zoom": "Zoom",
-    "Boxes.GvGMap.Guild.Name": "Céh",
+    "General.Guild": "Céh",
     "Boxes.GvGMap.Guild.Power": "Haderő",
     "Boxes.GvGMap.Guild.Sectors": "Szektorok",
     "Boxes.GvGMap.Guilds": "Céhek",

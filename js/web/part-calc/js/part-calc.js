@@ -42,7 +42,7 @@ FoEproxy.addFoeHelperHandler('QuestsUpdated', data => {
 
 /**
  *
- * @type {{FirstCycle: boolean, IsNextLevel: boolean, CalcBackgroundBody: Parts.CalcBackgroundBody, BuildBoxPowerLeveling: Parts.BuildBoxPowerLeveling, CopyStrings: {}, LastLevel: null, TrustExistingPlaces: boolean, RemainingOwnPart: null, CopyIncludeFP: boolean, CopyOwnPlayerName: null, CopyBuildingName: null, CopyIncludeLevelString: boolean, PowerLevelingMinLevel: number, PowerLevelingMaxLevel: number, CopyDescending: boolean, CopyPlaces: boolean[], CopyIncludeGB: boolean, CopyModeAuto: boolean, CurrentMaezens: *[], UpdateTableBodyPowerLeveling: Parts.UpdateTableBodyPowerLeveling, Exts: number[], SettingsRemoveRow: Parts.SettingsRemoveRow, CopyModeAutoUnsafe: boolean, CityMapEntity: undefined, SafePlaces: undefined, DangerPlaces: undefined, LeveltLG: undefined, Rankings: undefined, Level: undefined, Show: Parts.Show, ArcPercents: number[], GetCopyStringEx: (function(*, *, *, *, *, *, *, *, *): string), DefaultButtons: (number|string)[], CalcBody: Parts.CalcBody, GetCopyString: (function(): string), CalcBodyPowerLevelingData: (function(): {HasDoubleCollection: boolean, DoubleCollections: [], EigenNettos: [], CityEntity: *, EigenBruttos: [], MaxLevel: number | number, OwnPartSum: number, MinLevel: *, Places: []}), PowerLevelingData: null, CopyModeAll: boolean, CopyFunction: (function(*, *): string), CopyFormatPerGB: boolean, CalcBodyPowerLeveling: Parts.CalcBodyPowerLeveling, SettingsInsertNewRow: Parts.SettingsInsertNewRow, CopyDangerPrefix: string, CopyDangerSuffix: string, CopyIncludeDanger: boolean, CopyIncludePlayer: boolean, CopyIncludeOwnPart: boolean, LastPlayerID: null, ShowCalculatorSettings: Parts.ShowCalculatorSettings, GetStorageKey: ((function(*, *): string)|*), SettingsSaveValues: Parts.SettingsSaveValues, LockExistingPlaces: boolean, BackGroundBoxAnimation: Parts.BackGroundBoxAnimation, CopyPlayerName: null, PlaceAvailables: *[], LastEntityID: null, Maezens: *[], CalcTableBodyPowerLeveling: Parts.CalcTableBodyPowerLeveling, CopyString: null, CopyPreP: boolean, CopyIncludeLevel: boolean, IsPreviousLevel: boolean, ShowPowerLeveling: Parts.ShowPowerLeveling, PlayInfoSound: null}}
+ * @type {{FirstCycle: boolean, IsNextLevel: boolean, CalcBackgroundBody: Parts.CalcBackgroundBody, BuildBoxPowerLeveling: Parts.BuildBoxPowerLeveling, CopyStrings: {}, LastLevel: null, TrustExistingPlaces: boolean, RemainingOwnPart: null, CopyIncludeFP: boolean, CopyOwnPlayerName: null, CopyBuildingName: null, CopyIncludeLevelString: boolean, PowerLevelingStartLevel: number, PowerLevelingEndLevel: number, CopyDescending: boolean, CopyPlaces: boolean[], CopyIncludeGB: boolean, CopyModeAuto: boolean, CurrentMaezens: *[], UpdateTableBodyPowerLeveling: Parts.UpdateTableBodyPowerLeveling, Exts: number[], SettingsRemoveRow: Parts.SettingsRemoveRow, CopyModeAutoUnsafe: boolean, CityMapEntity: undefined, SafePlaces: undefined, DangerPlaces: undefined, LeveltLG: undefined, Rankings: undefined, Level: undefined, Show: Parts.Show, ArcPercents: number[], GetCopyStringEx: (function(*, *, *, *, *, *, *, *, *): string), DefaultButtons: (number|string)[], CalcBody: Parts.CalcBody, GetCopyString: (function(): string), CalcBodyPowerLevelingData: (function(): {HasDoubleCollection: boolean, DoubleCollections: [], EigenNettos: [], CityEntity: *, EigenBruttos: [], MaxLevel: number | number, OwnPartSum: number, MinLevel: *, Places: []}), PowerLevelingData: null, CopyModeAll: boolean, CopyFunction: (function(*, *): string), CopyFormatPerGB: boolean, CalcBodyPowerLeveling: Parts.CalcBodyPowerLeveling, SettingsInsertNewRow: Parts.SettingsInsertNewRow, CopyDangerPrefix: string, CopyDangerSuffix: string, CopyIncludeDanger: boolean, CopyIncludePlayer: boolean, CopyIncludeOwnPart: boolean, LastPlayerID: null, ShowCalculatorSettings: Parts.ShowCalculatorSettings, GetStorageKey: ((function(*, *): string)|*), SettingsSaveValues: Parts.SettingsSaveValues, LockExistingPlaces: boolean, BackGroundBoxAnimation: Parts.BackGroundBoxAnimation, CopyPlayerName: null, PlaceAvailables: *[], LastEntityID: null, Maezens: *[], CalcTableBodyPowerLeveling: Parts.CalcTableBodyPowerLeveling, CopyString: null, CopyPreP: boolean, CopyIncludeLevel: boolean, IsPreviousLevel: boolean, ShowPowerLeveling: Parts.ShowPowerLeveling, PlayInfoSound: null}}
  */
 let Parts = {
 	CityMapEntity: undefined,
@@ -59,8 +59,8 @@ let Parts = {
 	CurrentMaezens: [],
 	RemainingOwnPart: null,
 
-	PowerLevelingMinLevel: null,
-	PowerLevelingMaxLevel: 999999,
+	PowerLevelingStartLevel: null,
+	PowerLevelingEndLevel: 999999,
 	PowerLevelingData: null,
 
 	PlaceAvailables: [],
@@ -230,8 +230,8 @@ let Parts = {
 
 			$('#OwnPartBox').on('click', '.button-powerleveling', function () {
 				// Reset power leveling range
-				Parts.PowerLevelingMinLevel = Parts.Level;
-				Parts.PowerLevelingMaxLevel = 999999;
+				Parts.PowerLevelingStartLevel = Parts.Level;
+				Parts.PowerLevelingEndLevel = 999999;
 				Parts.ShowPowerLeveling(false);
 			});
 
@@ -1298,29 +1298,29 @@ let Parts = {
 
 			// Events on the `minLevel` input field
 			box.on('blur', '#minlevel', function () {
-				Parts.PowerLevelingMinLevel = parseFloat($('#minlevel').val());
+				Parts.PowerLevelingStartLevel = parseFloat($('#minlevel').val());
 				Parts.UpdateTableBodyPowerLeveling();
 			});
 			box.on('keydown', '#minlevel', function (e) {
 				const key = e.key;
 				const input = e.target;
 				if (key === "ArrowUp") {
-					Parts.PowerLevelingMinLevel = Number.parseInt(input.value) + 1;
+					Parts.PowerLevelingStartLevel = Number.parseInt(input.value) + 1;
 					Parts.UpdateTableBodyPowerLeveling();
 					e.preventDefault();
 				} else if (key === "ArrowDown") {
-					Parts.PowerLevelingMinLevel = Number.parseInt(input.value) - 1;
+					Parts.PowerLevelingStartLevel = Number.parseInt(input.value) - 1;
 					Parts.UpdateTableBodyPowerLeveling();
 					e.preventDefault();
 				} else if (key === "Enter") {
-					Parts.PowerLevelingMinLevel = Number.parseInt(input.value);
+					Parts.PowerLevelingStartLevel = Number.parseInt(input.value);
 					Parts.UpdateTableBodyPowerLeveling();
 				}
 			});
 
 			// Events on the `maxLevel` input field
 			box.on('blur', '#maxlevel', function () {
-				Parts.PowerLevelingMaxLevel = parseFloat($('#maxlevel').val());
+				Parts.PowerLevelingEndLevel = parseFloat($('#maxlevel').val());
 				Parts.UpdateTableBodyPowerLeveling();
 				//Parts.CalcBodyPowerLeveling();
 			});
@@ -1328,15 +1328,15 @@ let Parts = {
 				const key = e.key;
 				const input = e.target;
 				if (key === "ArrowUp") {
-					Parts.PowerLevelingMaxLevel = Number.parseInt(input.value) + 1;
+					Parts.PowerLevelingEndLevel = Number.parseInt(input.value) + 1;
 					Parts.UpdateTableBodyPowerLeveling();
 					e.preventDefault();
 				} else if (key === "ArrowDown") {
-					Parts.PowerLevelingMaxLevel = Number.parseInt(input.value) - 1;
+					Parts.PowerLevelingEndLevel = Number.parseInt(input.value) - 1;
 					Parts.UpdateTableBodyPowerLeveling();
 					e.preventDefault();
 				} else if (key === "Enter") {
-					Parts.PowerLevelingMaxLevel = Number.parseInt(input.value);
+					Parts.PowerLevelingEndLevel = Number.parseInt(input.value);
 					Parts.UpdateTableBodyPowerLeveling();
 				}
 			});
@@ -1365,8 +1365,8 @@ let Parts = {
 			CityEntity = MainParser.CityEntities[EntityID],
 			EraName = GreatBuildings.GetEraName(EntityID),
 			Era = Technologies.Eras[EraName],
-			MinLevel = Parts.PowerLevelingMinLevel,
-			MaxLevel = (GreatBuildings.Rewards[Era] ? Math.min(Parts.PowerLevelingMaxLevel, GreatBuildings.Rewards[Era].length) : 0);
+			MinLevel = Parts.PowerLevelingStartLevel,
+			MaxLevel = (GreatBuildings.Rewards[Era] ? Math.min(Parts.PowerLevelingEndLevel, GreatBuildings.Rewards[Era].length) : 0);
 
 		// Limit minimum value for the power leveling range
 		MinLevel = MinLevel < 0 ? 0 : MinLevel;
@@ -1459,7 +1459,7 @@ let Parts = {
 
 		for (let i = MinLevel; i < MaxLevel; i++) {
 			h.push('<tr>');
-			h.push('<td class="bright" style="white-space:nowrap">' + i + ' → ' + (i + 1) + (i === Parts.Level ? '*' : '') + '</td>'); // Mark current level
+			h.push('<td class="bright" style="white-space:nowrap">' + i + ' → ' + (i + 1) + '</td>');
 			h.push('<td><span class="hidden-text"> - #1 (</span>' + HTML.Format(Places[i][0]) + '<span class="hidden-text">)</span></td>');
 			h.push('<td class="text-light"><span class="hidden-text"> - #2 (</span>' + HTML.Format(Places[i][1]) + '<span class="hidden-text">)</span></td>');
 			h.push('<td><span class="hidden-text"> - #3 (</span>' + HTML.Format(Places[i][2]) + '<span class="hidden-text">)</span></td>');
@@ -1492,14 +1492,14 @@ let Parts = {
 			if (minlevel.value != '' + Parts.PowerLevelingData.MinLevel) {
 				minlevel.value = '' + Parts.PowerLevelingData.MinLevel;
 			}
-			Parts.PowerLevelingMinLevel = Parts.PowerLevelingData.MinLevel;
+			Parts.PowerLevelingStartLevel = Parts.PowerLevelingData.MinLevel;
 
 			// Max level
 			const maxlevel = /** @type {HTMLInputElement} */(document.getElementById('maxlevel'));
 			if (maxlevel.value != '' + Parts.PowerLevelingData.MaxLevel) {
 				maxlevel.value = '' + Parts.PowerLevelingData.MaxLevel;
 			}
-			Parts.PowerLevelingMaxLevel = Parts.PowerLevelingData.MaxLevel;
+			Parts.PowerLevelingEndLevel = Parts.PowerLevelingData.MaxLevel;
 
 			const ownPartSum = /** @type {HTMLElement} */(document.getElementById('PowerLevelingBoxOwnPartSum'));
 			ownPartSum.innerText = HTML.Format(MainParser.round(Parts.PowerLevelingData.OwnPartSum));
