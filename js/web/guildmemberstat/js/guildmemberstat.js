@@ -840,6 +840,7 @@ let GuildMemberStat = {
 				avatar: Member['avatar'],
 				score: Member['score'],
 				prev_score: CurrentMember.score,
+				prev_battles: CurrentMember.won_battles,
 				rank: [prevRank, Member['rank']],
 				is_online: Member['is_online'],
 				is_active: Member['is_active'],
@@ -1116,7 +1117,8 @@ let GuildMemberStat = {
 
 			if (GuildMemberStat.Settings.showBattlesWon)
 			{
-				h.push(`<td class="is-number" data-number="${member['won_battles']}">${HTML.Format(member['won_battles'] ? member['won_battles'] : 0)}</td>`);
+				let battleDiff = member.won_battles - member.prev_battles;
+				h.push(`<td class="is-number" data-number="${member['won_battles']}">${HTML.Format(member['won_battles'] ? member['won_battles'] : 0)}${battleDiff > 0 ? '<span class="prev_score green">+' + HTML.Format(battleDiff) + '</span>' : ''}</td>`);
 			}
 
 			h.push(`<td class="is-number" data-number="${Technologies.Eras[member['era']]}">${i18n('Eras.' + Technologies.Eras[member['era']])}</td>`);

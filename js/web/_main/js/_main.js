@@ -1227,6 +1227,7 @@ let MainParser = {
 		ExtPlayerAvatar = d.portrait_id;
 
 		Infoboard.Init();
+		EventHandler.Init();
 	},
 
 
@@ -1337,6 +1338,14 @@ let MainParser = {
 
 			if (MainParser.BoostSums[d[i]['type']] !== undefined) {
 				MainParser.BoostSums[d[i]['type']] += d[i]['value']
+			}
+			if (MainParser.BoostMapper[d[i]['type']]) {
+				if (d[i]['type'] !== 'happiness') { //Nicht als Boost zählen => Wird Productions extra geprüft und ausgewiesen
+					let Boosts = MainParser.BoostMapper[d[i]['type']];
+					for (let j = 0; j < Boosts.length;j++) {
+						MainParser.BoostSums[Boosts[j]] += d[i]['value'];
+					}
+				}
 			}
 		}
 	},
