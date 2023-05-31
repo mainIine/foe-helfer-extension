@@ -181,13 +181,13 @@ let Productions = {
 					building['motivatedproducts']['supplies'] = MainParser.round(building['motivatedproducts']['supplies'] * Productions.Boosts['supplies']);
 				}
 
-				if (building['products']['strategy_points']) {
-					building['products']['strategy_points'] = MainParser.round(building['products']['strategy_points'] * Productions.Boosts['fp']);
-				}
+				//if (building['products']['strategy_points']) {
+				//	building['products']['strategy_points'] = MainParser.round(building['products']['strategy_points'] * Productions.Boosts['fp']);
+				//}
 
-				if (building['motivatedproducts']['strategy_points']) {
-					building['motivatedproducts']['strategy_points'] = MainParser.round(building['motivatedproducts']['strategy_points'] * Productions.Boosts['fp']);
-				}
+				//if (building['motivatedproducts']['strategy_points']) {
+				//	building['motivatedproducts']['strategy_points'] = MainParser.round(building['motivatedproducts']['strategy_points'] * Productions.Boosts['fp']);
+				//}
 			}
 
 			// Nach Produkt
@@ -265,7 +265,7 @@ let Productions = {
 			EntityID = d['cityentity_id'],
 			CityEntity = MainParser.CityEntities[EntityID],
 			BuildingSize = CityMap.GetBuildingSize(d);
-
+			
 		// Münzboost ausrechnen und bereitstellen falls noch nicht initialisiert
 		if (Productions.Boosts['money'] === undefined) Productions.Boosts['money'] = ((MainParser.BoostSums['coin_production'] + 100) / 100);
 		if (Productions.Boosts['supplies'] === undefined) Productions.Boosts['supplies'] = ((MainParser.BoostSums['supply_production'] + 100) / 100);
@@ -329,8 +329,10 @@ let Productions = {
 							if (!MotivatedProducts[ResName]) MotivatedProducts[ResName] = 0;
 
 							if (!CurrentProduct['onlyWhenMotivated'] || IsPolivated) {
-								Products[ResName] += Resources[ResName];
-								MotivatedProducts[ResName] += Resources[ResName];
+								let ResAmount = Resources[ResName]
+								if (ResName == 'strategy_points') ResAmount = Math.round(ResAmount*(Productions.Boosts['fp']));
+								Products[ResName] += ResAmount;
+								MotivatedProducts[ResName] += ResAmount;
 							}
 						}
 					}
@@ -399,8 +401,9 @@ let Productions = {
 											else {
 												if (!Products[ResName]) Products[ResName] = 0;
 												if (!MotivatedProducts[ResName]) MotivatedProducts[ResName] = 0;
-
-												MotivatedProducts[ResName] += Resources[ResName];
+												let resAmount = Resources[ResName]
+												if (ResName=='strategy_points') resAmount = Math.round(resAmount*Productions.Boosts['fp']);
+												MotivatedProducts[ResName] += resAmount;
 											}
 
 										}
@@ -425,52 +428,68 @@ let Productions = {
 			}
 
 			if (d['state'] && d['state']['__class__'] !== 'ConstructionState') {
-				let EraName = Technologies.EraNames[era],
+				let checkEras = [Technologies.EraNames[era],"AllAge"]
+					
+				for (let EraName of checkEras) {
 					EraComponents = CityEntity['components'][EraName];
 
-				if (EraComponents) {
-					if (EraComponents['staticResources'] && EraComponents['staticResources']['resources'] && EraComponents['staticResources']['resources']['resources']) {
-						let Population = EraComponents['staticResources']['resources']['resources']['population'];
-						if (Population) {
-							if (!Products['population']) Products['population'] = 0;
-							Products['population'] += Population;
+					if (EraComponents) {
+						if (EraComponents['staticResources'] && EraComponents['staticResources']['resources'] && EraComponents['staticResources']['resources']['resources']) {
+							let Population = EraComponents['staticResources']['resources']['resources']['population'];
+							if (Population) {
+								if (!Products['population']) Products['population'] = 0;
+								Products['population'] += Population;
 
-							if (!MotivatedProducts['population']) MotivatedProducts['population'] = 0;
-							MotivatedProducts['population'] += Population;
-                        }
-					}
-
-					if (BuildingSize['is_connected']) {
-						if (EraComponents['happiness']) {
-							let Happiness = EraComponents['happiness']['provided'];
-
-							if (Happiness) {
-								if (d['state']['__class__'] === 'PolishedState') Happiness *= 2;
-
-								if (!Products['happiness']) Products['happiness'] = 0;
-								Products['happiness'] += Happiness;
-
-								if (!MotivatedProducts['happiness']) MotivatedProducts['happiness'] = 0;
-								MotivatedProducts['happiness'] += Happiness;
+								if (!MotivatedProducts['population']) MotivatedProducts['population'] = 0;
+								MotivatedProducts['population'] += Population;
 							}
 						}
 
-						if (EraComponents['boosts'] && EraComponents['boosts']['boosts']) {
-							for (let i = 0; i < EraComponents['boosts']['boosts'].length; i++) {
-								let Boost = EraComponents['boosts']['boosts'][i],
-									BoostType = Boost['type'];
+						if (BuildingSize['is_connected']) {
+							if (EraComponents['happiness']) {
+								let Happiness = EraComponents['happiness']['provided'];
 
-								if (Boost['type'] === 'att_boost_attacker' || Boost['type'] === 'att_boost_defender' || Boost['type'] === 'def_boost_attacker' || Boost['type'] === 'def_boost_defender') {
+								if (Happiness) {
+									if (d['state']['__class__'] === 'PolishedState') Happiness *= 2;
 
-									if (!Products[BoostType]) Products[BoostType] = 0;
-									Products[BoostType] += Boost['value'];
+									if (!Products['happiness']) Products['happiness'] = 0;
+									Products['happiness'] += Happiness;
 
-									if (!MotivatedProducts[BoostType]) MotivatedProducts[BoostType] = 0;
-									MotivatedProducts[BoostType] += Boost['value'];
+									if (!MotivatedProducts['happiness']) MotivatedProducts['happiness'] = 0;
+									MotivatedProducts['happiness'] += Happiness;
 								}
-                            }
-                        }
-                    }
+							}
+
+							if (EraComponents['boosts'] && EraComponents['boosts']['boosts']) {
+								for (let i = 0; i < EraComponents['boosts']['boosts'].length; i++) {
+									let Boost = EraComponents['boosts']['boosts'][i],
+										BoostType = Boost['type'];
+
+									if (Boost['type'] === 'att_boost_attacker' || 
+										Boost['type'] === 'att_boost_defender' || 
+										Boost['type'] === 'def_boost_attacker' || 
+										Boost['type'] === 'def_boost_defender') {
+
+										if (!Products[BoostType]) Products[BoostType] = 0;
+										Products[BoostType] += Boost['value'];
+
+										if (!MotivatedProducts[BoostType]) MotivatedProducts[BoostType] = 0;
+										MotivatedProducts[BoostType] += Boost['value'];
+									}
+									if (Boost['type'] === 'att_def_boost_defender' || 
+										Boost['type'] === 'att_def_boost_attacker') {
+										for (let MappedBoost of MainParser.BoostMapper[Boost['type']]) {
+											if (!Products[MappedBoost]) Products[MappedBoost] = 0;
+											Products[MappedBoost] += Boost['value'];
+
+											if (!MotivatedProducts[MappedBoost]) MotivatedProducts[MappedBoost] = 0;
+											MotivatedProducts[MappedBoost] += Boost['value'];
+										}
+									}
+								}
+							}
+						}
+					}
 				}
 			}
 
@@ -520,7 +539,9 @@ let Productions = {
 								}
 								else {
 									if (!AdditionalResources[Resource]) AdditionalResources[Resource] = 0;
-									AdditionalResources[Resource] += NewResources[Resource];
+									let resAmount = NewResources[Resource];
+									if (Resource=='strategy_points') resAmount = Math.round(Productions.Boosts['fp']*resAmount);
+									AdditionalResources[Resource] += resAmount;
 								}
 							}
 						}
@@ -531,7 +552,9 @@ let Productions = {
 							for (let Resource in NewResources) {
 								if (!NewResources.hasOwnProperty(Resource)) continue;
 								if (!AdditionalResources[Resource]) AdditionalResources[Resource] = 0;
-								AdditionalResources[Resource] += NewResources[Resource];
+								let resAmount = NewResources[Resource];
+								if (Resource=='strategy_points') resAmount = Math.round(Productions.Boosts['fp']*resAmount);
+								AdditionalResources[Resource] += resAmount;
 							}
 						}
 					}
@@ -546,6 +569,9 @@ let Productions = {
 			if (d.state && d['state']['current_product']) {
 				if (d['state']['current_product']['product'] && d['state']['current_product']['product']['resources']) {
 					CurrentResources = Object.assign({}, d['state']['current_product']['product']['resources']);
+					if (CurrentResources['strategy_points']) {
+						CurrentResources['strategy_points'] = Math.round(CurrentResources['strategy_points'] * Productions.Boosts['fp']);
+					}
 				}
 
 				if (d['state']['current_product']['clan_power']) {
@@ -612,8 +638,18 @@ let Productions = {
 						Products['happiness'] = (Products['happiness'] ? Products['happiness'] : 0) + Boost['value'];
 					}
 
-					if (Boost['type'] === 'att_boost_attacker' || Boost['type'] === 'att_boost_defender' || Boost['type'] === 'def_boost_attacker' || Boost['type'] === 'def_boost_defender') {
+					if (Boost['type'] === 'att_boost_attacker' || 
+						Boost['type'] === 'att_boost_defender' || 
+						Boost['type'] === 'def_boost_attacker' || 
+						Boost['type'] === 'def_boost_defender') {
 						Products[Boost['type']] = (Products[Boost['type']] ? Products[Boost['type']] : 0) + Boost['value'];
+					}
+					if (Boost['type'] === 'att_def_boost_defender' || 
+						Boost['type'] === 'att_def_boost_attacker') {
+						for (let MappedBoost of MainParser.BoostMapper[Boost['type']]) {
+							if (!Products[MappedBoost]) Products[MappedBoost] = 0;
+							Products[MappedBoost] += Boost['value'];
+						}
 					}
 				}
 			}
