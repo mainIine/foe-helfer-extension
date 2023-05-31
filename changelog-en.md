@@ -11,16 +11,16 @@
 			- ...Description Text...#condition1#condition2#condition3
 			- there can be arbitrarily many conditions per task
 			- Condition types: L(evel) M(anager) T(ask)
-			- Building types: T(ransport) (Ship, Carriage), M(arket), 1, 2, 3, 4, 5 (Workshops 1-5)
+			- Building types: T(ransport - Ship, Carriage), F(estival), 1, 2, 3, 4, 5 (Workshops 1-5)
 			- e.g.:
-				- Festival Manager 3 + Ship Manager 3  #MT-3#MM-3
+				- Festival Manager 3 + Ship Manager 3  #MT-3#MF-3
 				- Hats Manager 3, Level 10  #M1-3#L1-10
 				- Wait for 50B Flowers#T-67
 			- the conditions are optional and only needed if you want the helper to automatically check the tasks when they are done
 			- tasks can be checked and unchecked manually
 
 - Production Overview and Production Efficiency:
-	- the new combinatioon boosts (attack+defense) and the FP boost are now properly processed
+	- the new combination boosts (attack+defense) and the FP boost are now properly processed
 
 - GB Tracker
 	- can now be minimized

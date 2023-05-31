@@ -11,9 +11,9 @@
 			- ...Beschreibung...#Bedingung1#Bedingung2#Bedingung3
 			- Es kann beliebig viele Bedingungen geben
 			- Bedingungs-Typen: L(evel) M(anager) T(ask)
-			- Gebäudetypen: T(ransport) (Schiff, Kutsche), M(arkt) (Festival, Banquette), 1, 2, 3, 4, 5 (Fabriken 1-5)
-			- e.g.:
-				- Festival Manager 3 + Ship Manager 3  #MM-3#MT-3
+			- Gebäudetypen: T(ransport) (Schiff, Kutsche), F(estival), 1, 2, 3, 4, 5 (Fabriken 1-5)
+			- z.B.:
+				- Festival Manager 3 + Ship Manager 3  #MF-3#MT-3
 				- Hüte Manager 3, Level 10  #M1-3#L1-10
 				- Warten bis 50B Blumen gesammelt sind#T-67
 			- Die Bedingungen sind optional und werden nur benötgt, wenn du willst, dass der Helfer die Schritte automatisch abhakt
