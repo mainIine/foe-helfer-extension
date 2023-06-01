@@ -436,7 +436,7 @@ let idleGame = {
 			if (!Object.hasOwnProperty.call(idleGame.data, x)) continue;
 			$('#idleGame_'+x+'Level').text(`${idleGame.data[x].level} → ${idleGame.data[x].next}`);
 			$('#idleGame_'+x).text(`${idleGame.bigNum(idleGame.data[x].need)} ${idleGame.iGNums[idleGame.data[x].ndegree]}`);
-			$('#idleGame_'+x+'Time').text(`(${idleGame.time(idleGame.data[x].need,idleGame.data[x].ndegree,sum,degree,0,0)})`);
+			$('#idleGame_'+x+'Time').html(`(${idleGame.time(idleGame.data[x].need,idleGame.data[x].ndegree,sum,degree,0,0)})`);
 			$('#idleGame_'+x).attr('title', `${idleGame.bigNum(idleGame.data[x].need)} ${idleGame.iGNumTitles[idleGame.data[x].ndegree]}`);
 		
 		}
@@ -478,7 +478,7 @@ let idleGame = {
 				targetDegree = workd;
 			}
 			
-			$('#time'+ t).text(`${idleGame.time(Task.requiredProgress.value,
+			$('#time'+ t).html(`${idleGame.time(Task.requiredProgress.value,
 												Task.requiredProgress.degree,
 												targetProduction,
 												targetDegree,
@@ -638,6 +638,7 @@ let idleGame = {
 		hours = Math.floor(hours);
 		time = hours >= 1000 ? `>999h` : `${hours}h`
 		time += hours < 24 ? `:${minutes}m` : ``
+		time += ` <img title="${i18n("Boxes.idleGame.SetTimer")}" src="${srcLinks.get("/shared/gui/plus_offer/plus_offer_time.png", true)}" alt="" onclick="idleGame.addAlert(${hours},${minutes})">`
 		return time;
 	},
 
@@ -790,5 +791,34 @@ let idleGame = {
 		idleGame.selectEventData()
 		idleGame.ShowDialog()
 		idleGame.idleGameUpdateDialog()
+	},
+
+	addAlert:(hours,minutes)=>{
+					
+			const data = {
+				title: "Idle Game",
+				body: i18n("Boxes.idleGame.AlertText"),
+				expires: moment().add(hours,"hours").add(minutes,"minutes").valueOf(),
+				repeat: -1,
+				persistent: true,
+				tag: '',
+				category: 'event',
+				vibrate: false,
+				actions: [{action:"OK",title:"OK"},{action:"OK2",title:"OK2"}]
+			};
+	
+			MainParser.sendExtMessage({
+				type: 'alerts',
+				playerId: ExtPlayerID,
+				action: 'create',
+				data: data,
+			}).then((aId) => {
+				HTML.ShowToastMsg({
+					head: "Idle Game",
+					text: HTML.i18nReplacer(i18n('Boxes.idleGame.AlertSetText'), { minutes: minutes,hours: hours }),
+					type: 'success',
+					hideAfter: 5000
+				});
+			});
 	}
 };
