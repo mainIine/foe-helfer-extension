@@ -47,6 +47,8 @@
 	- Teilnahme% für GE seit Einführung von GE5 geändert
 	- korrektes Icon für GE5
 
+---
+
 ##### 3.2.3.0
 
 **Update**
