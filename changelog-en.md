@@ -26,7 +26,7 @@
 	- can now be minimized
 
 - Guild Battegrounds
-	- when in the province overview no line is selected, the copy button will now copying all shown entries
+	- when in the province overview no line is selected, there now will be a "select all" button
 
 - Mo/Po helper
 	- column "guild" added
