@@ -26,7 +26,7 @@
 	- kann nun minimiert werden
 
 - Gildengefechte
-	- wenn in der Provinzübersicht keine Zeile ausgewählt ist, können nun alle Zeilen kopiert werden
+	- wenn in der Provinzübersicht keine Zeile ausgewählt ist, wird nun ein "alle auswählen" Button angezeigt
 
 - Moppelhelfer
 	- Spalte "Gilde" hinzugefügt
