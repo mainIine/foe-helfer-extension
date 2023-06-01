@@ -192,10 +192,11 @@ let CompareFriendsThreads = {
 		for (let p in PlayerList)
 		{
 			let Player = PlayerList[p];
-
 			t.push('<tr>');
 
-			t.push(`<td>#${(parseInt(p) + 1)} <img style="max-width: 22px" src="${srcLinks.GetPortrait(Player['Avatar'])}" alt="${Player['PlayerName']}"> ${MainParser.GetPlayerLink(Player['PlayerID'], Player['PlayerName'])}</td>`);
+			t.push(`<td>#${(parseInt(p) + 1)} <img style="max-width: 22px" src="${srcLinks.GetPortrait(Player['Avatar'])}" alt="${Player['PlayerName']}"> ` 
+				+ `${`<span class="activity activity_${Player['Activity']}"></span> ` 
+				+ MainParser.GetPlayerLink(Player['PlayerID'], Player['PlayerName'])}</td>`);
 
 			for(let x in CompareFriendsThreads.Threads)
 			{

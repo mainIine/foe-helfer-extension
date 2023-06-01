@@ -79,8 +79,13 @@
 #moppelhelper #moppelhelperBody table.foe-table tr th {
     text-align: center;
 }
-
+/*
 #moppelhelper #moppelhelperBody table.foe-table tr th:nth-child(3) {
+    text-align: left;
+}
+*/
+
+#moppelhelper #moppelhelperBody table.foe-table tr th.name-col {
     text-align: left;
 }
 

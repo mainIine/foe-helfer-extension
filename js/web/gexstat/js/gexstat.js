@@ -353,7 +353,14 @@ let GexStat = {
 			return a.rank - b.rank;
 		});
 		let sEncounters = GexParticipation.solvedEncounters;
-		let aEncounters = GexParticipation.countMember * 48;
+		if (isNaN(sEncounters)) {
+			sEncounters = 0
+			for (let x = 0; x < participation.length; x++)	{
+				sEncounters += participation[x].solvedEncounters || 0;
+			}
+		}
+		let base = gexweek > 1680501600 ? 64 : 48;
+		let aEncounters = GexParticipation.countMember * base;
 		let processing = Number((sEncounters / aEncounters) * 100).toFixed(2);
 
 		h.push(`<div class="participation_overview justify-content-between"><div>${i18n('Boxes.GexStat.Points')}<br />${HTML.Format(GexParticipation.expeditionPoints)}</div>` +
@@ -385,7 +392,7 @@ let GexStat = {
 				`<div class="membername">${MainParser.GetPlayerLink(member.player_id, member.name)}</div></td>`);
 			h.push(`<td class="is-number" data-number="${member.expeditionPoints}">${HTML.Format(member.expeditionPoints)}</td>`);
 			h.push(`<td class="is-number" data-number="${level}">${level}</td>`);
-			h.push(`<td class="is-number" data-number="${member.solvedEncounters||0}">${member.solvedEncounters||0}/48</td>`);
+			h.push(`<td class="is-number" data-number="${member.solvedEncounters||0}">${member.solvedEncounters||0}/${base}</td>`);
 
 			h.push(`</tr>`);
 
