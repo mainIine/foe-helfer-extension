@@ -47,6 +47,8 @@
 	- corrected participation % for GE since addition for GE5
 	- correct icon for GE5
 
+---
+
 ##### 3.2.3.0
 
 **Update**
