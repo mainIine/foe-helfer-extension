@@ -634,7 +634,7 @@ let idleGame = {
 		amount = amount - stock;
 		if (amount <= 0) return "0h:0m";
 		hours = amount / hourly * Math.pow(1000,da-dh);
-		minutes = Math.floor((hours - Math.floor(hours))*60);
+		minutes = Math.ceil((hours - Math.floor(hours))*60);
 		hours = Math.floor(hours);
 		time = hours >= 1000 ? `>999h` : `${hours}h`
 		time += hours < 24 ? `:${minutes}m` : ``
