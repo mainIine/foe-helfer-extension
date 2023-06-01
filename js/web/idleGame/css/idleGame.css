@@ -11,19 +11,19 @@
  * **************************************************************************************
  */
 
-#stPatrickDialog {
+#idleGameDialog {
 	top: 50px;
 	left: calc(100vw - 350px);
 	width: 280px;
     height: auto;
 }
 
-#stPatrickDialog img {
+#idleGameDialog img {
     width: 25px;
     height: 25px;
 }
 
-#stPatrickDialogBody {
+#idleGameDialogBody {
     display: block;
     justify-content: center;
     align-items: center;
@@ -33,43 +33,48 @@
 }
 
 
-#stPatTable th {
+#idleGame_Table th {
     font-weight: bold;
 }
 
-#stPatTable td {
+#idleGame_Table td {
     padding-right: 10px;
     padding-left: 10px;
     padding-bottom: 5px;
 }
 
-#stPatTable .highlight {
+#idleGame_Table .highlight {
     color: rgb(255, 82, 0);
     font-weight: bold;
 
 }
-#stPatNext td {
+#idleGame_Next td {
     padding-right: 5px;
     padding-left: 5px;
 }
 
-#stPatNext td.align-right {
+#idleGame_Next td.align-right {
     text-align: right;
     padding-right: 2px;
 }
-#stPatNext td.align-left {
+#idleGame_Next td.align-left {
     text-align: left;
     padding-left: 2px;
 }
 
-#stPatNext.hide td, #stPatTasks.hide td, #stPatTasks td.hide, #stPatTasksActive.hide td, #stPatTasksActive td.hide {
+#idleGame_Next.hide td, 
+#idleGame_Tasks.hide td, 
+#idleGame_Tasks td.hide, 
+#idleGame_TasksActive.hide td, 
+#idleGame_TasksActive td.hide, 
+#idleGame_Strategy.hide td {
     display: none;
 }
 
-#stPatNext th, #stPatTasks th, #stPatTasksActive th {
+#idleGame_Next th, #idleGame_Tasks th, #idleGame_TasksActive th , #idleGame_Strategy th {
     position: relative;
 }
-#stPatNext.hide i, #stPatTasks.hide i, #stPatTasksActive.hide i {
+#idleGame_Next.hide i, #idleGame_Tasks.hide i, #idleGame_TasksActive.hide i, #idleGame_Strategy.hide i {
     border: solid var(--text-bright);
     border-width: 0 2px 2px 0;
     display: inline-block;
@@ -80,7 +85,7 @@
     -webkit-transform: rotate(135deg);
     margin-top: 4px;
 }
-#stPatNext:not(.hide) i, #stPatTasks:not(.hide) i, #stPatTasksActive:not(.hide) i {
+#idleGame_Next:not(.hide) i, #idleGame_Tasks:not(.hide) i, #idleGame_TasksActive:not(.hide) i, #idleGame_Strategy:not(.hide) i  {
     border: solid var(--text-bright);
     border-width: 0 2px 2px 0;
     display: inline-block;
@@ -91,3 +96,34 @@
     -webkit-transform: rotate(45deg);
     margin-top: 4px;
 }
+
+#idleGame_StratUndo {
+    font-family: arial;
+    color: var(--text-success);
+}
+#idleGame_StratCheck {
+    font-family: arial;
+    color: var(--text-bright);
+}
+#idleGame_StratPrev {
+    color: var(--text-btn-disabled);
+}
+#idleGame_StratNext {
+    color: var(--text-btn-disabled);
+}
+#idleGame_Strat {
+    color: var(--text-bright);
+}
+#idleGameStratText {
+    width: 100%;
+    resize: none;
+    overflow-y: scroll;
+    height: 100%;
+}
+#idleGameStratSave {
+    position: absolute;
+    right: 5px;
+    bottom: 5px;
+}
+
+
