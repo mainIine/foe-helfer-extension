@@ -638,7 +638,7 @@ let idleGame = {
 		hours = Math.floor(hours);
 		time = hours >= 1000 ? `>999h` : `${hours}h`
 		time += hours < 24 ? `:${minutes}m` : ``
-		time += ` <img title="${i18n("Boxes.idleGame.SetTimer")}" src="${srcLinks.get("/shared/gui/plus_offer/plus_offer_time.png", true)}" alt="" onclick="idleGame.addAlert(${hours},${minutes})">`
+		time += hours < 24 ? ` <img title="${i18n("Boxes.idleGame.SetTimer")}" src="${srcLinks.get("/shared/gui/plus_offer/plus_offer_time.png", true)}" alt="" onclick="idleGame.addAlert(${hours},${minutes})">` : ``
 		return time;
 	},
 
@@ -696,26 +696,29 @@ let idleGame = {
 				if (conditions.length ==0) break;
 				let clear = true
 				for (let condition of conditions) {
-					let type=condition[0]
-					let building = ""
-					let value = 0
-					if (type != "T") {
+					let type=condition[0];
+					let building = "";
+					let value = 0;
+					if (type == "M" || type == "L") {
 						building=condition[1];
 						switch (building) {
 							case "F": building="market_1"; break;
 							case "T": building="transport_1"; break;
 							default: building="workshop_"+building;
 						}
-						value = Number(condition.slice(3))
+						value = Number(condition.slice(3));
 					} else {
-						value = Number(condition.slice(2))
+						value = Number(condition.slice(2));
 					}
 
 					switch (type) {
-						case "T": //Task
+						case "T": //Task complete?
 							if (idleGame.Tasklist.indexOf(value)>=0) clear = false;
 							break;
-						case "M": //Manager
+						case "W": //Task active or complete?
+							if (idleGame.Tasklist.indexOf(value)>=3) clear = false;
+							break;
+						case "M": //Manager Level
 							if (idleGame.data[building].manager < value) clear = false;
 							break;
 						case "L": //Building Level
@@ -804,7 +807,7 @@ let idleGame = {
 				tag: '',
 				category: 'event',
 				vibrate: false,
-				actions: [{action:"OK",title:"OK"},{action:"OK2",title:"OK2"}]
+				actions: [{title:"OK"}]
 			};
 	
 			MainParser.sendExtMessage({
