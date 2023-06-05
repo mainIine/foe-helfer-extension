@@ -110,7 +110,7 @@ FoEproxy.addHandler('MergerGameService', 'convertPiece', (data, postData) => {
 });
 
 let mergerGame = {
-	event:"merge_cup",
+	event:"soccer",
 	cells:[],
 	spawnChances:{white:{1:14,2:8,3:5,4:3},blue:{1:14,2:8,3:5,4:3},yellow:{1:19,2:10,3:7,4:4}},
 	state: {},
@@ -121,7 +121,7 @@ let mergerGame = {
 	settings: JSON.parse(localStorage.getItem("MergerGameSettings") || '{"keyValue":1.3,"targetProgress":3750,"availableCurrency":11000,"hideOverlay":true}'),
 	eventData:{
 		anniversary: {progress:"progress",keyfile:"/shared/seasonalevents/anniversary/event/anniversay_icon_key_"},
-		merge_cup:{progress:"progression",keyfile:"/shared/seasonalevents/merge_cup/event/merge_cup_icon_key_"}
+		soccer:{progress:"progression",keyfile:"/shared/seasonalevents/soccer/event/soccer_icon_key_"}
 	},
 
 	updateTable: () => {
