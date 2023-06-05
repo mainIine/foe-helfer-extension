@@ -330,7 +330,7 @@ let Productions = {
 
 							if (!CurrentProduct['onlyWhenMotivated'] || IsPolivated) {
 								let ResAmount = Resources[ResName]
-								if (ResName == 'strategy_points') ResAmount = Math.round(ResAmount*(Productions.Boosts['fp']));
+								if (ResName == 'strategy_points' && ['residential','production','generic_building'].includes(d['type'])) ResAmount = Math.round(ResAmount*(Productions.Boosts['fp']));
 								Products[ResName] += ResAmount;
 								MotivatedProducts[ResName] += ResAmount;
 							}
@@ -402,7 +402,7 @@ let Productions = {
 												if (!Products[ResName]) Products[ResName] = 0;
 												if (!MotivatedProducts[ResName]) MotivatedProducts[ResName] = 0;
 												let resAmount = Resources[ResName]
-												if (ResName=='strategy_points') resAmount = Math.round(resAmount*Productions.Boosts['fp']);
+												if (ResName=='strategy_points' && ['residential','production','generic_building'].includes(d['type'])) resAmount = Math.round(resAmount*Productions.Boosts['fp']);
 												MotivatedProducts[ResName] += resAmount;
 											}
 
@@ -540,7 +540,7 @@ let Productions = {
 								else {
 									if (!AdditionalResources[Resource]) AdditionalResources[Resource] = 0;
 									let resAmount = NewResources[Resource];
-									if (Resource=='strategy_points') resAmount = Math.round(Productions.Boosts['fp']*resAmount);
+									if (Resource=='strategy_points' && ['residential','production','generic_building'].includes(d['type'])) resAmount = Math.round(Productions.Boosts['fp']*resAmount);
 									AdditionalResources[Resource] += resAmount;
 								}
 							}
@@ -553,7 +553,7 @@ let Productions = {
 								if (!NewResources.hasOwnProperty(Resource)) continue;
 								if (!AdditionalResources[Resource]) AdditionalResources[Resource] = 0;
 								let resAmount = NewResources[Resource];
-								if (Resource=='strategy_points') resAmount = Math.round(Productions.Boosts['fp']*resAmount);
+								if (Resource=='strategy_points'&& ['residential','production','generic_building'].includes(d['type'])) resAmount = Math.round(Productions.Boosts['fp']*resAmount);
 								AdditionalResources[Resource] += resAmount;
 							}
 						}
@@ -569,7 +569,7 @@ let Productions = {
 			if (d.state && d['state']['current_product']) {
 				if (d['state']['current_product']['product'] && d['state']['current_product']['product']['resources']) {
 					CurrentResources = Object.assign({}, d['state']['current_product']['product']['resources']);
-					if (CurrentResources['strategy_points']) {
+					if (CurrentResources['strategy_points'] && ['residential','production','generic_building'].includes(d['type'])) {
 						CurrentResources['strategy_points'] = Math.round(CurrentResources['strategy_points'] * Productions.Boosts['fp']);
 					}
 				}
@@ -1890,7 +1890,7 @@ let Productions = {
 					if (!Production['motivatedproducts'].hasOwnProperty(Type)) continue;
 
 					if (Productions.TypeHasProduction(Type)) Production.motivatedproducts[Type] *= Production['dailyfactor'];
-					if (Building['type'] === 'residential' || Building['type'] === 'production' || Building['type'] === 'generic_building') {
+					if (['residential','production','generic_building'].includes(Building['type'])) {
 						if (Type === 'money') Production.motivatedproducts[Type] *= (Productions.Boosts['money']);
 						if (Type === 'supplies') Production.motivatedproducts[Type] *= (Productions.Boosts['supplies']);
 					}
