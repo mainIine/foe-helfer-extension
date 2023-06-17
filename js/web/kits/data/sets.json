@@ -418,6 +418,23 @@
 		"kit": ["selection_kit_PAT23A","ultimate_upgrade_kit_PAT23A"]
 	},
 	{
+		"name": "Trading_Post",
+		"buildings": [
+			{
+				"first": "W_MultiAge_SUM23A1",
+				"update": "upgrade_kit_SUM23A"
+			}
+		],
+		"kit": [
+			"selection_kit_SUM23A",
+			"golden_upgrade_kit_SUM23A",
+			"fragment#building_W_MultiAge_SUM23A1",
+			"fragment#selection_kit_SUM23A",
+			"fragment#upgrade_kit_SUM23A",
+			"fragment#golden_upgrade_kit_SUM23A"
+		]
+	},
+	{
 		"name": "Tower_of_Conjunction",
 		"buildings": [
 			{
@@ -425,7 +442,11 @@
 				"update": "upgrade_kit_ANNI23A"
 			}
 		],
-		"kit": ["selection_kit_ANNI23A","golden_upgrade_kit_ANNI23A"]
+		"kit": [
+			"selection_kit_ANNI23A",
+			"golden_upgrade_kit_ANNI23A",
+			"fragment#selection_kit_ANNI23A"
+		]
 	},
 	{
 		"name": "Key_Master's_Workshop",
