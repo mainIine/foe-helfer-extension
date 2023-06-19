@@ -1,6 +1,6 @@
 [	
 	{
-		"udate": "12.03.2023"
+		"udate": "16.06.2023"
 	},
 	{
 		"groupname": "Guild_Battlegrounds"
@@ -61,7 +61,7 @@
 				"update": "upgrade_kit_privateers_boathouse"
 			}
 		],
-		"kit": "selection_kit_privateers_boathouse"
+		"kit": ["selection_kit_privateers_boathouse","selection_kit_epic_SUM23"]
 	},
 	{
 		"name": "Heroes_Tavern",
@@ -71,7 +71,17 @@
 				"update": "upgrade_kit_heroes_tavern"
 			}
 		],
-		"kit": "selection_kit_heroes_tavern"
+		"kit": ["selection_kit_heroes_tavern","selection_kit_epic_FELLOW23"]
+	},
+	{
+		"name": "Summerhold_Manor",
+		"buildings": [
+			{
+				"first": "W_MultiAge_FELL23A1",
+				"update": "upgrade_kit_FELLOW23A"
+			}
+		],
+		"kit": ["selection_kit_FELLOW23A","golden_upgrade_kit_FELLOW23A"]
 	},
 	{
 		"name": "Animal_Crossing",
