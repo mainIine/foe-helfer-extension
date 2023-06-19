@@ -1,5 +1,30 @@
 ## Changelog - Extension
 
+##### 3.2.5.0
+
+**Update**
+- Raumfahrt Titan:
+	- diverse Komponenten wurden auf Raumfahrt Titan angepasst
+
+- Burg System:
+	- GE5 wird nun beachtet
+
+- Gebäude Kits:
+	- neue Teile wurden ergänzt
+
+- Idle Game:
+	- neue Bedingung "W"(arte bis Aufgabe aktiv oder erfüllt ist) wurde hinzugefügt:
+		- ähnlich zu Typ "T", aber wird auch schon erfüllt, sobald die angegebene Aufgabe aktiv ist
+		- z.B.: "warte bis aktualisiere 100 Gebäude aktiv #W-26"
+
+**BugFix**
+- Produktionsübersicht:
+	- FP Boost wurde auch auf LB angewandt
+  
+- Idle Game:
+	- Wecker/Timer werden nun korrekt gesetzt - beschränkt auf zeiten geringer als 24 Stunden
+
+---
 ##### 3.2.4.0
 
 **Update**
