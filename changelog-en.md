@@ -1,5 +1,30 @@
 ## Changelog - Extension
 
+##### 3.2.5.0
+
+**Update**
+- Space Age Titan:
+	- updated various components to accomodate for SAT
+
+- Castle System:
+	- updated display for GE5
+
+- Building Kits:
+	- updated possible contents
+
+- Idle Game:
+	- added condition type W(ait till task is active or completed):
+		- similar to type T, but also completes when the task is active
+		- e.g.: "await task 100 upgrades #W-26"
+
+**BugFix**
+- Production Overview:
+	- FP Boost was applied to Great Buildings
+  
+- Idle Game:
+	- setting timers now works properly - limited to times below 24 hours
+
+---
 ##### 3.2.4.0
 
 **Update**
@@ -61,6 +86,7 @@
   
 - GB-Calculator:
 	- if the Infobox was open before the GB Calculator, it could happen that by clicking the filter in the Infobox, the settings of the GB Calculator were opened
+---
 
 ##### 3.2.2.0
 
@@ -93,7 +119,7 @@
 **BugFix**
 - Quest counter:
 	- [#2541](https://github.com/mainIine/foe-helfer-extension/issues/2541) if multiple recurring quests were abondoned in quick succession, only one was counted
-
+---
 ##### 3.2.1.0
 
 **Update**
