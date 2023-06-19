@@ -1268,6 +1268,7 @@ let MainParser = {
 
 		const dataEntity = d['CityMapEntity']['responseData'][0],
 			realData = {
+				image: srcLinks.get(`/city/buildings/${dataEntity['cityentity_id'].replace('X_', 'X_SS_')}.png`, true),
 				entity: dataEntity,
 				ranking: d['Rankings'],
 				bonus: d['Bonus'],
