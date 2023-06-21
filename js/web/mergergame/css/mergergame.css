@@ -43,3 +43,8 @@
 #mergerGameDialogSettingsBox input{
     width:4.5em;
 }
+
+#mergerGameDialog .toprightcorner{
+    object-fit: none;
+    object-position: top right;
+}   
