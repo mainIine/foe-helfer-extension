@@ -27,11 +27,14 @@ FoEproxy.addHandler('MergerGameService', 'all', (data, postData) => {
 	mergerGame.state["energyUsed"]= 0;
 	mergerGame.state["progress"]= 0;
 	mergerGame.state["keys"]= 0;
+	mergerGame.colors = mergerGame.eventData[mergerGame.event].colors;
+	mergerGame.types = mergerGame.eventData[mergerGame.event].types;
 	for (let x of mergerGame.cells) {
 		if (x.isFixed) mergerGame.state.maxProgress += mergerGame.levelValues[x.level];
 	};
 	for (let x of mergerGame.cells[1].spawnChances) {
 		if (!x) continue;
+		if (!mergerGame.spawnChances[x.type.value]) mergerGame.spawnChances[x.type.value] = {}
 		mergerGame.spawnChances[x.type.value][x.level] = x.spawnChance;
 	}
 	mergerGame.updateTable();
@@ -42,7 +45,7 @@ FoEproxy.addHandler('MergerGameService', 'all', (data, postData) => {
 	} else { //resetBoard
 		mergerGame.state.energyUsed +=  mergerGame.resetCost;
 		mergerGame.saveState();
-		mergerGame.UpdateDialog();
+		mergerGame.updateDialog();
 	}
 	if (mergerGame.state.progress == mergerGame.state.maxProgress) {
 		mergerGame.resetCost = 0;
@@ -63,7 +66,7 @@ FoEproxy.addHandler('MergerGameService', 'spawnPieces', (data, postData) => {
 	mergerGame.state.energyUsed += mergerGame.spawnCost;
 	mergerGame.updateTable();
 	mergerGame.saveState();
-	mergerGame.UpdateDialog();
+	mergerGame.updateDialog();
 });
 
 FoEproxy.addHandler('MergerGameService', 'mergePieces', (data, postData) => {
@@ -88,7 +91,7 @@ FoEproxy.addHandler('MergerGameService', 'mergePieces', (data, postData) => {
 	mergerGame.updateTable();
 	mergerGame.saveState();
 
-	mergerGame.UpdateDialog();
+	mergerGame.updateDialog();
 
 });
 
@@ -106,35 +109,85 @@ FoEproxy.addHandler('MergerGameService', 'convertPiece', (data, postData) => {
 	mergerGame.updateTable();
 	mergerGame.saveState();
 
-	mergerGame.UpdateDialog();
+	mergerGame.updateDialog();
 });
 
 let mergerGame = {
+	//event:"anniversary",
+	//colors: ["white","yellow","blue"],
+	//types: ["top","bottom","full"],
 	event:"soccer",
+	colors: ["attacker","midfielder","defender"],
+	types: ["left","right","full"],
 	cells:[],
-	spawnChances:{white:{1:14,2:8,3:5,4:3},blue:{1:14,2:8,3:5,4:3},yellow:{1:19,2:10,3:7,4:4}},
-	state: {},
+	spawnChances:{white:{1:14,2:8,3:5,4:3},blue:{1:14,2:8,3:5,4:3},yellow:{1:19,2:10,3:7,4:4},defender:{1:14,2:8,3:5,4:3},attacker:{1:14,2:8,3:5,4:3},midfielder:{1:19,2:10,3:7,4:4}},
+	state: {
+		maxProgress: 0,
+		energyUsed:0,
+		progress:0,
+		keys: 0
+	},
 	resetCost: 0,
 	spawnCost: 10,
-	levelValues: {},
-	keyValues: {},
+	levelValues: {1:1,2:1,3:1,4:2},
+	keyValues: {3:1, 4:3},
 	settings: JSON.parse(localStorage.getItem("MergerGameSettings") || '{"keyValue":1.3,"targetProgress":3750,"availableCurrency":11000,"hideOverlay":true}'),
 	eventData:{
-		anniversary: {progress:"progress",keyfile:"/shared/seasonalevents/anniversary/event/anniversay_icon_key_"},
-		soccer:{progress:"progression",keyfile:"/shared/seasonalevents/soccer/event/soccer_icon_key_"}
+		anniversary: {
+			progress:"/shared/seasonalevents/league/league_anniversary_icon_progress.png",
+			energy:"/shared/seasonalevents/anniversary/event/anniversary_energy.png",
+			keyfile:"/shared/seasonalevents/anniversary/event/anniversay_icon_key_",
+			colors: ["white","yellow","blue"],
+			CSScolors: {white:"#7fecba",yellow:"#e14709",blue:"#08a9f7"},
+			types: ["top","bottom","full"],
+			partname:"key",
+			tile:"gem"
+		},
+		soccer:{
+			progress:"/shared/seasonalevents/league/league_soccer_icon_progression.png",
+			energy:"/shared/seasonalevents/soccer/event/soccer_football.png",
+			keyfile:"/shared/seasonalevents/soccer/event/soccer_icon_badge_",
+			colors: ["attacker","midfielder","defender"],
+			types: ["left","right","full"],
+			CSScolors: {attacker:"#ec673a",midfielder:"#e7d20a",defender:"#44d3e2"},
+			partname:"badge",
+			tile:"player"
+		}
 	},
+	solved: {keys:0,progress:0, value:0},
+	simulation: {},
+	simKeys:null,
+	simProgress:null,
 
 	updateTable: () => {
-		let table = {
-			white:  {level4:{top:0,bottom:0,full:0, none:0},level3:{top:0,bottom:0,full:0, none:0},level2:{top:0,bottom:0,full:0, none:0},level1:{top:0,bottom:0,full:0, none:0}},
-			yellow: {level4:{top:0,bottom:0,full:0, none:0},level3:{top:0,bottom:0,full:0, none:0},level2:{top:0,bottom:0,full:0, none:0},level1:{top:0,bottom:0,full:0, none:0}},
-			blue:   {level4:{top:0,bottom:0,full:0, none:0},level3:{top:0,bottom:0,full:0, none:0},level2:{top:0,bottom:0,full:0, none:0},level1:{top:0,bottom:0,full:0, none:0}}}
-		
-			for (let x of mergerGame.cells) {
-				if (! x.id || x.id<0) continue;
-				if (x.keyType?.value) table[x.type.value]["level" + x.level][x.keyType.value]++;
-			};
-			mergerGame.state["table"] = table;
+		let table = {},
+			unlocked = {};
+		for (x of mergerGame.colors) {
+			table[x]={}
+			unlocked[x]={}
+			for (l of [1,2,3,4]) {
+				table[x][l]={}
+				unlocked[x][l]={}
+				for (t of mergerGame.types) {
+					table[x][l][t]=0;
+					unlocked[x][l][t]=0;
+				}
+				unlocked[x][l]["none"]=0;
+			}
+		}
+		for (let x of mergerGame.cells) {
+			if (! x.id || x.id<0) continue;
+			if (!x.keyType?.value) continue;
+			if (x.keyType.value !="none") {
+				table[x.type.value][x.level][x.keyType.value]++;
+			}
+			if (!x.isFixed) {
+				unlocked[x.type.value][x.level][x.keyType.value]++;
+			}
+		};
+		mergerGame.state["table"] = table;
+		mergerGame.state["unlocked"] = unlocked;
+		mergerGame.solve();
 	},
 
 	checkSave: () => {
@@ -164,8 +217,8 @@ let mergerGame = {
 			if ($('#mergerGameResetBlocker').length === 0) {
 				let blocker = document.createElement("img");
 				blocker.id = 'mergerGameResetBlocker';
-				blocker.src = extUrl + "js/web/x_img/mergerGameResetBlocker.png";
-				blocker.title = i18n("Boxes.MergerGame.KeysLeft");
+				blocker.src = srcLinks.get("/city/gui/great_building_bonus_icons/great_building_bonus_plunder_repel.png", true);
+				blocker.title = i18n("Boxes.MergerGame.KeysLeft."+mergerGame.event);
 				$('#game_body')[0].append(blocker);
 				$('#mergerGameResetBlocker').on("click",()=>{$('#mergerGameResetBlocker').remove()});
 			} 
@@ -203,10 +256,12 @@ let mergerGame = {
 			});
 		}
 		
-		mergerGame.UpdateDialog();
+		mergerGame.updateDialog();
     },
 	
-	UpdateDialog: () => {
+	updateDialog: () => {
+		let type1 = mergerGame.types[1],
+			type2 = mergerGame.types[0];
 		if ($('#mergerGameDialog').length === 0) {
 			return;
 		}
@@ -214,45 +269,48 @@ let mergerGame = {
 		
 		let table = mergerGame.state.table
 	
-		let remainingProgress = mergerGame.state.maxProgress - mergerGame.state.progress;
-		let keys = mergerGame.keySum();
-		let totalValue = mergerGame.state.progress + keys*mergerGame.settings.keyValue;
-		let efficiency = (totalValue / mergerGame.state.energyUsed).toFixed(2);
+		let remainingProgress = mergerGame.state.maxProgress - mergerGame.state.progress|0;
+		let keys = mergerGame.keySum()|0;
+		let totalValue = mergerGame.state.progress + keys*mergerGame.settings.keyValue|0;
+		let efficiency = (totalValue / mergerGame.state.energyUsed).toFixed(2)|0;
 		
-		let colors = ["white","yellow","blue"];
-		let order = ["bottom","top","full"];
 		let targetEfficiency = mergerGame.settings.targetProgress/mergerGame.settings.availableCurrency;
 		html = `<table class="foe-table">`
-		html += `<tr><td>${i18n("Boxes.MergerGame.Progress")}</td><td>${remainingProgress} / ${mergerGame.state.maxProgress} <img src="${srcLinks.get(`/shared/seasonalevents/league/league_${mergerGame.event}_icon_${mergerGame.eventData[mergerGame.event].progress}.png`,true)}"></td></tr>`
-		html += `<tr><td>${i18n("Boxes.MergerGame.Energy")}</td><td title="${i18n("Boxes.MergerGame.EfficiencyTargetProgress")+Math.floor(totalValue)+"/"+Math.floor(mergerGame.state.energyUsed*targetEfficiency)}">${mergerGame.state.energyUsed} <img src="${srcLinks.get(`/shared/seasonalevents/${mergerGame.event}/event/${mergerGame.event}_energy.png`,true)}"></td></tr>`
-		html += `<tr><td>${i18n("Boxes.MergerGame.Keys")}</td><td>${keys} <img src="${srcLinks.get(`${mergerGame.eventData[mergerGame.event].keyfile}full_white.png`,true)}"><img src="${srcLinks.get(`${mergerGame.eventData[mergerGame.event].keyfile}full_yellow.png`,true)}"><img src="${srcLinks.get(`${mergerGame.eventData[mergerGame.event].keyfile}full_blue.png`,true)}"></td></tr>`
-		//html += `<tr><td>${i18n("Boxes.MergerGame.Keys")}</td><td>${keys} <img src="${srcLinks.get(`/shared/seasonalevents/${mergerGame.event}/event/${mergerGame.event}_icon_key_full_white.png`,true)}"><img src="${srcLinks.get(`/shared/seasonalevents/${mergerGame.event}/event/${mergerGame.event}_icon_key_full_yellow.png`,true)}"><img src="${srcLinks.get(`/shared/seasonalevents/${mergerGame.event}/event/${mergerGame.event}_icon_key_full_blue.png`,true)}"></td></tr>`
-		html += `<tr><td>${i18n("Boxes.MergerGame.Efficiency")}</td><td style="font-weight:bold; color: ${efficiency > targetEfficiency*1.15 ? 'var(--text-success)' : efficiency < targetEfficiency * 0.95 ? 'red' : 'var(--text-bright)'}" title="${i18n("Boxes.MergerGame.EfficiencyTotalProgress") + Math.floor(efficiency*mergerGame.settings.availableCurrency)}">${efficiency} <img src="${srcLinks.get(`/shared/seasonalevents/league/league_${mergerGame.event}_icon_${mergerGame.eventData[mergerGame.event].progress}.png`,true)}"> /<img src="${srcLinks.get(`/shared/seasonalevents/${mergerGame.event}/event/${mergerGame.event}_energy.png`,true)}"></td></tr>`
+		html += `<tr><td>${i18n("Boxes.MergerGame.Progress")}</td><td>${remainingProgress} / ${mergerGame.state.maxProgress} <img src="${srcLinks.get(mergerGame.eventData[mergerGame.event].progress,true)}"></td></tr>`
+		html += `<tr><td>${i18n("Boxes.MergerGame.Energy."+mergerGame.event)}</td><td title="${i18n("Boxes.MergerGame.EfficiencyTargetProgress."+mergerGame.event)+Math.floor(totalValue)+"/"+Math.floor(mergerGame.state.energyUsed*targetEfficiency)|0}">${mergerGame.state.energyUsed} <img src="${srcLinks.get(mergerGame.eventData[mergerGame.event].energy,true)}"></td></tr>`
+		html += `<tr><td>${i18n("Boxes.MergerGame.Keys."+mergerGame.event)}</td><td>${keys} <img ${mergerGame.event=="soccer"?'class="toprightcorner"':''} src="${srcLinks.get(`${mergerGame.eventData[mergerGame.event].keyfile}full_${mergerGame.colors[0]}.png`,true)}"><img ${mergerGame.event=="soccer"?'class="toprightcorner"':''} src="${srcLinks.get(`${mergerGame.eventData[mergerGame.event].keyfile}full_${mergerGame.colors[1]}.png`,true)}"><img ${mergerGame.event=="soccer"?'class="toprightcorner"':''} src="${srcLinks.get(`${mergerGame.eventData[mergerGame.event].keyfile}full_${mergerGame.colors[0]}.png`,true)}"></td></tr>`
+		html += `<tr><td>${i18n("Boxes.MergerGame.Efficiency."+mergerGame.event)}</td><td style="font-weight:bold; color: ${efficiency > targetEfficiency*1.15 ? 'var(--text-success)' : efficiency < targetEfficiency * 0.95 ? 'red' : 'var(--text-bright)'}" title="${i18n("Boxes.MergerGame.EfficiencyTotalProgress") + Math.floor(efficiency*mergerGame.settings.availableCurrency)}">${efficiency} <img src="${srcLinks.get(mergerGame.eventData[mergerGame.event].progress,true)}"> /<img src="${srcLinks.get(mergerGame.eventData[mergerGame.event].energy,true)}"></td></tr>`
 		html += `</table>`
 
-		let totalPieces = {"white": {"top":0,"bottom":0,"full:":0,"min":0},"yellow": {"top":0,"bottom":0,"full:":0,"min":0},"blue": {"top":0,"bottom":0,"full:":0,"min":0},}
-		for (let i of colors) {
-			for (let o of order) {
-				totalPieces[i][o] = table[i].level1[o] + table[i].level2[o] + table[i].level3[o] + table[i].level4[o];
+		let totalPieces = {}
+		for (x of mergerGame.colors) {
+			totalPieces[x]={}
+			for (t of mergerGame.types) {
+				totalPieces[x][t]=0;
 			}
-			totalPieces[i].min = Math.min(totalPieces[i].bottom,totalPieces[i].top);
 		}
 
-		for (let i of colors) {
+		for (let i of mergerGame.colors) {
+			for (let t of mergerGame.types) {
+				totalPieces[i][t] = table[i][1][t] + table[i][2][t] + table[i][3][t] + table[i][4][t];
+			}
+			totalPieces[i]["min"] = Math.min(totalPieces[i][type1],totalPieces[i][type2]);
+		}
+
+		for (let i of mergerGame.colors) {
 			html += `<table class="foe-table"><tr><th></th>`
 			for (let lev = 4; lev>0; lev--) {
-				html += `<th><img src="${srcLinks.get(`/shared/seasonalevents/${mergerGame.event}/event/${mergerGame.event}_gem_${i}_${lev}.png`,true)}" title="${mergerGame.spawnChances[i][lev]}%"></th>`
+				html += `<th>${mergerGame.state.unlocked[i][lev].none}<img src="${srcLinks.get(`/shared/seasonalevents/${mergerGame.event}/event/${mergerGame.event}_${mergerGame.eventData[mergerGame.event].tile}_${i}_${lev}.png`,true)}" title="${mergerGame.spawnChances[i][lev]}%"></th>`
 			}
-			for (let o of order) {
+			for (let o of mergerGame.types) {
 				let m = totalPieces[i].min;
 				let t = totalPieces[i][o];
 				html += `</tr><tr><td ${((t==m && o != "full") || (0==m && o == "full") ) ? 'style="font-weight:bold"' : ''}>${t}${(o == "full") ? '/'+ (t+m) : ''}`;
-				html += `<img src="${srcLinks.get(`${mergerGame.eventData[mergerGame.event].keyfile}${o}_${i}.png`,true)}"></td>`
-				//html += `<img src="${srcLinks.get(`/shared/seasonalevents/${mergerGame.event}/event/${mergerGame.event}_icon_key_${o}_${i}.png`,true)}"></td>`
+				html += `<img ${mergerGame.event=="soccer"?'class="toprightcorner"':''} src="${srcLinks.get(`${mergerGame.eventData[mergerGame.event].keyfile}${o}_${i}.png`,true)}"></td>`
 				for (let lev = 4; lev>0; lev--) {
-					val = table[i]["level"+lev][o];
+					val = table[i][lev][o];
 					if (val==0) val = "-";
-					html += `<td style="${val != "-" ? 'font-weight:bold;' : ''}${(o=="full" && lev==3 && table[i]["level"+lev][o]>1)?' color:red"': ''}">${val}</td>`
+					html += `<td style="${val != "-" ? 'font-weight:bold;' : ''}${(o=="full" && lev==3 && table[i][lev][o]>1)?' color:red"': ''}">${val}</td>`
 				}
 			}
 			html += `</tr></table>`
@@ -264,9 +322,9 @@ let mergerGame = {
 	ShowSettingsButton: () => {
         let h = [];
 		h.push(`<table class="foe-table"><tr><td>`)
-        h.push(`${i18n('Boxes.MergerGame.KeyValue')}</td><td>`);
+        h.push(`${i18n('Boxes.MergerGame.KeyValue.'+mergerGame.event)}</td><td>`);
         h.push(`<input type="Number" id="MGkeyValue" oninput="mergerGame.SaveSettings()" value="${mergerGame.settings.keyValue}"></td></tr><tr><td>`);
-        h.push(`${i18n('Boxes.MergerGame.availableCurrency')}</td><td>`);
+        h.push(`${i18n('Boxes.MergerGame.availableCurrency.'+mergerGame.event)}</td><td>`);
         h.push(`<input type="Number" id="MGavailableCurrency" oninput="mergerGame.SaveSettings()" value="${mergerGame.settings.availableCurrency}"></td></tr><tr><td>`);
         h.push(`${i18n('Boxes.MergerGame.targetProgress')}</td><td>`);
         h.push(`<input type="Number" id="MGtargetProgress" oninput="mergerGame.SaveSettings()" value="${mergerGame.settings.targetProgress}"></td></tr><tr><td>`);
@@ -287,7 +345,1237 @@ let mergerGame = {
 		mergerGame.settings.availableCurrency = Number($('#MGavailableCurrency').val()) || 10500;
 		mergerGame.settings.hideOverlay = $('#MGhideOverlay')[0].checked;
 		localStorage.setItem('MergerGameSettings', JSON.stringify(mergerGame.settings));
-        mergerGame.UpdateDialog();
-    }
-};
+        mergerGame.updateDialog();
+    },
 
+	
+	simStart:(i=20)=> {
+		mergerGame.cells = [0];
+		for (let i=1;i<=32;i++) {
+			let color= mergerGame.colors[Math.floor(Math.random()*3)];
+			let level=Math.floor(Math.random()*4)+1;
+			let type= mergerGame.types[Math.floor(Math.random()*2)]
+			mergerGame.cells.push({id:i,keyType:{value:type},type:{value:color},level:level,isFixed:true})
+		}
+		mergerGame.updateTable();
+		mergerGame.ShowDialog();
+		while (i>0) {
+			mergerGame.simSpawn()
+			i--;
+			if (mergerGame.simProgress.max==0) break
+		}
+	},
+	simSpawn:()=> {
+		let x={}
+		x["id"] = mergerGame.cells.length;
+		x["isFixed"] = false;
+		x["keyType"]={value:"none"}
+		let c=Math.floor(Math.random()*100);
+		if (c<14) {
+			x["type"]={value:mergerGame.colors[2]};
+			x["level"]=1;
+		} else if (c<22) {
+			x["type"]={value:mergerGame.colors[2]};
+			x["level"]=2;
+		} else if (c<27) {
+			x["type"]={value:mergerGame.colors[2]};
+			x["level"]=3;
+		} else if (c<30) {
+			x["type"]={value:mergerGame.colors[2]};
+			x["level"]=4;
+		} else if (c<44) {
+			x["type"]={value:mergerGame.colors[0]};
+			x["level"]=1;
+		} else if (c<52) {
+			x["type"]={value:mergerGame.colors[0]};
+			x["level"]=2;
+		} else if (c<57) {
+			x["type"]={value:mergerGame.colors[0]};
+			x["level"]=3;
+		} else if (c<60) {
+			x["type"]={value:mergerGame.colors[0]};
+			x["level"]=4;
+		} else if (c<79) {
+			x["type"]={value:mergerGame.colors[1]};
+			x["level"]=1;
+		} else if (c<89) {
+			x["type"]={value:mergerGame.colors[1]};
+			x["level"]=2;
+		} else if (c<96) {
+			x["type"]={value:mergerGame.colors[1]};
+			x["level"]=3;
+		} else {
+			x["type"]={value:mergerGame.colors[1]};
+			x["level"]=4;
+		}
+		mergerGame.cells.push(x);
+		//console.log("color",x.type.value);
+		//console.log("level",x.level);
+		mergerGame.updateTable();
+		mergerGame.ShowDialog();
+	},
+
+	solve:() => {
+		let type1 = mergerGame.types[1],
+			type2 = mergerGame.types[0];
+		
+		let solved = {}
+		
+		for (let c of mergerGame.colors) {
+			let locked= {}
+			locked[type1]=[]
+			locked[type2]=[]
+			let free = {full:[], none:[]}
+			free[type1]=[]
+			free[type2]=[]
+			for (let t of mergerGame.types.concat(["none"])) {
+				for (let l of [1,2,3,4]) {
+					free[t].push(mergerGame.state.unlocked[c][l][t])
+					if (t=="full"||t=="none") continue
+					locked[t].push(mergerGame.state.table[c][l][t]-mergerGame.state.unlocked[c][l][t]);
+					
+				}
+			}
+			solved[c] = mergerGame.solver(locked,free,c, false);
+		}
+		
+		let progress = 0
+		for (let c of mergerGame.colors) {
+			progress += solved[c].progress;
+		}
+		
+		mergerGame.solved.progress = progress;
+		//keys
+		let keys = 0
+		for (let c of mergerGame.colors) {
+			keys += solved[c].keys;
+		}
+		mergerGame.solved.keys = keys;
+		[mergerGame.simKeys,mergerGame.simProgress] = mergerGame.simulate(solved);
+	},
+	simulate:(solved) => {
+		let keys = {min:10,max:0,average:0};
+		let progress = {min:100,max:0,average:0};
+		for (let c of mergerGame.colors) {
+			for (let l of [1,2,3,4]) {
+					let free = window.structuredClone(solved[c].free)
+					free["none"][l-1] += 1
+					let simulated = mergerGame.solver(window.structuredClone(solved[c].locked),window.structuredClone(free),c,true)
+					let addKeys = simulated.keys - solved[c].keys;
+					let addProgress = simulated.progress - solved[c].progress;
+					if (addKeys<0 || addProgress<0) {
+						mergerGame.solver(window.structuredClone(solved[c].locked),window.structuredClone(free),c,false)
+						console.error("solver not working properly",mergerGame.convertToMoo({color:c, level:l,solved:solved,free:free}))
+						console.log("progress",solved[c].progress)
+						console.log("keys",solved[c].keys)
+						console.log("simKeys",simulated.keys);
+						console.log("simProgress",simulated.progress);
+					}
+					if (addKeys<keys.min) keys.min = addKeys;
+					if (addKeys>keys.max) keys.max = addKeys;
+					keys.average += mergerGame.spawnChances[c][l]/100*addKeys;
+					if (addProgress<progress.min) progress.min = addProgress;
+					if (addProgress>progress.max) progress.max = addProgress;
+					progress.average += mergerGame.spawnChances[c][l]/100*addProgress;
+					
+					let simulated2 = mergerGame.solverMooOriginal(window.structuredClone(solved[c].locked),window.structuredClone(free),c,true)
+					let addKeys2 = simulated.keys - simulated2.keys;
+					let addProgress2 = simulated2.progress - simulated2.progress;
+					if (addKeys2<0 || addProgress2<0) {
+						mergerGame.solver(window.structuredClone(solved[c].locked),window.structuredClone(free),c,false);
+						mergerGame.solverMooOriginal(window.structuredClone(solved[c].locked),window.structuredClone(free),c,false);
+						console.error("solver is worse than Moos original",mergerGame.convertToMoo({color:c, level:l,solved:solved,free:free}))
+						console.log("mooprogress",simulated2.progress)
+						console.log("mookeys",simulated2.keys)
+						console.log("simKeys",simulated.keys);
+						console.log("simProgress",simulated.progress);
+						console.count("MooBetter")
+					}
+					if ((addKeys2>0 && addProgress2>=0) || (addKeys2>=0 && addProgress2>0) ) {
+						console.count("MooWorse")
+					}
+					console.count("comparisons")
+			}
+		}
+		return [keys,progress]
+	}, 
+
+
+	solver:(locked,free, color, sim=true)=>{
+		let type1 = mergerGame.types[1],
+			type2 = mergerGame.types[0];
+		let lockedO = window.structuredClone(locked),
+			freeO = window.structuredClone(free),
+			totalB = locked[type2].reduce((a, b) => a + b, 0)+free[type2].reduce((a, b) => a + b, 0),
+			totalT = locked[type1].reduce((a, b) => a + b, 0)+free[type1].reduce((a, b) => a + b, 0),
+			totalB2 = locked[type2][1] + locked[type2][2] + locked[type2][3],
+			totalT2 = locked[type1][1] + locked[type1][2] + locked[type1][3],
+			startProgress = 0;
+
+		//Progress:
+		for (let t of [type1,type2]) {
+			for (let l of [1,2,3,4]) {
+				startProgress += locked[t][l-1]*mergerGame.levelValues[l]
+			}
+		}
+		
+		if (!sim) console.log ("%c=======Solver=======","color:"+mergerGame.eventData[mergerGame.event].CSScolors[color])
+		//if (!sim) console.log ("==Level 1 Merges==")
+		while (true) {
+			if (free.none[0] == 0) break;
+			
+			if (locked[type2][0] == 0 && locked[type1][0] == 0) {
+				if (free.none[0] >= 2) {
+					free.none[0] -= 2
+					free.none[1] += 1
+					if (!sim) console.log ("Free L1 + Free L1")
+					continue;
+				} else break;
+			}
+			let pick = null
+			if (totalB2 == totalT2) {
+				if (totalB > totalT) {
+					if (locked[type1][0] > 0)
+						pick = `${type1}`
+					else
+						pick = `${type2}`
+				} else {
+					if (locked[type2][0] > 0)
+						pick = `${type2}`
+					else
+						pick = `${type1}`
+				}
+			} else if (totalB2 > totalT2) {
+				if (locked[type1][0] > 0)
+					pick = `${type1}`
+				else
+					pick = `${type2}`
+			} else {
+				if (locked[type2][0] > 0)
+					pick = `${type2}`
+				else
+					pick = `${type1}`
+			}        
+			if (pick == `${type1}`) {
+				free.none[0] -= 1
+				free[type1][1] += 1
+				locked[type1][0] -= 1
+				totalT2 += 1
+				if (!sim) console.log (`Free L1 + Locked L1 ${type1}`)
+			} else {
+				free.none[0] -= 1
+				free[type2][1] += 1
+				locked[type2][0] -= 1
+				totalB2 += 1
+				if (!sim) console.log (`Free L1 + Locked L1 ${type2}`)
+			}
+		}
+
+		//Level 4 easy cleanup
+		while (true) {
+			if (free.none[3] > 0 && locked[type2][3] > 0 && locked[type1][3] > 0) {
+				free.none[3] -= 1
+				locked[type1][3] -= 1
+				locked[type2][3] -= 1
+				free.full[3] += 1
+				if (!sim) console.log (`Free L4 + Locked L4 ${type1} + Locked L4 ${type2}`)
+			} else break
+		}
+
+		let totalB3 = locked[type2][2] + locked[type2][3];
+		let totalT3 = locked[type1][2] + locked[type1][3];
+		//if (!sim) console.log ("==Level 2 Merges==")
+		while (true) {
+			if ((free.none[1] > 0 && locked[type1][1] > 0 && (locked[type2][2]+free[type2][2]) > 0)&&(free.none[1] > 0 &&  locked[type2][1] > 0 && (locked[type1][2]+free[type1][2]) > 0)) {
+				if (totalB3>totalT3) {
+					free.none[1] -= 1
+					locked[type1][1] -= 1
+					free.full[3] += 1
+					if (!sim) console.log (`Free L2 + Locked L2 ${type1}`)
+					if (locked[type2][2]>0) {
+						locked[type2][2]-= 1
+						if (!sim) console.log (`Free L3 ${type1} + Locked L3 ${type2}`)
+					} else {
+						free[type2][2]-= 1
+						if (!sim) console.log (`Free L3 ${type1} + Free L3 ${type2}`)
+					}
+				} else {
+					free.none[1] -= 1
+					locked[type2][1] -= 1
+					free.full[3] += 1
+					if (!sim) console.log (`Free L2 + Locked L2 ${type2}`)
+					if (locked[type1][2]>0) {
+						locked[type1][2] -= 1
+						if (!sim) console.log (`Free L3 ${type2} + Locked L3 ${type1}`)
+					} else {
+						free[type1][2]-= 1
+						if (!sim) console.log (`Free L3 ${type2} + Free L3 ${type1}`)
+					}
+				}
+			} 
+			
+			else if (free.none[1] > 0 && locked[type1][1] > 0 && (locked[type2][2]+free[type2][2]) > 0) {
+				free.none[1] -= 1
+				locked[type1][1] -= 1
+				free.full[3] += 1
+				if (!sim) console.log (`Free L2 + Locked L2 ${type1}`)
+				if (locked[type2][2]>0) {
+					locked[type2][2]-= 1
+					if (!sim) console.log (`Free L3 ${type1} + Locked L3 ${type2}`)
+				} else {
+					free[type2][2]-= 1
+					if (!sim) console.log (`Free L3 ${type1} + Free L3 ${type2}`)
+				}
+			} else if (free.none[1] > 0 &&  locked[type2][1] > 0 && (locked[type1][2]+free[type1][2]) > 0) {
+				free.none[1] -= 1
+				locked[type2][1] -= 1
+				free.full[3] += 1
+				if (!sim) console.log (`Free L2 + Locked L2 ${type2}`)
+				if (locked[type1][2]>0) {
+					locked[type1][2] -= 1
+					if (!sim) console.log (`Free L3 ${type2} + Locked L3 ${type1}`)
+				} else {
+					free[type1][2]-= 1
+					if (!sim) console.log (`Free L3 ${type2} + Free L3 ${type1}`)
+				}
+			} else if (free[type2][1] > 0 && free[type1][1] > 0) {
+				free[type2][1] -= 1
+				free[type1][1] -= 1
+				free.full[2] += 1
+				if (!sim) console.log (`Free L2 ${type2} + Free L2 ${type1}`)
+			} else if (free.none[1] > 1 && (locked[type1][1] + free[type1][1] > 0) && (locked[type2][1] + free[type2][1] > 0) && (locked[type1][2] + free[type1][2] > 0) && (locked[type2][2] + free[type2][2] > 0)) {
+				//console.log("L2 double used")
+				if (locked[type1][1] > 0) {
+					free.none[1] -= 1
+					locked[type1][1] -= 1
+					free[type1][2] += 1
+					if (!sim) console.log (`Free L2 + Locked L2 ${type1}`)
+				} else {
+					free.none[1] -= 1
+					free[type1][1] -= 1
+					free[type1][2] += 1
+					if (!sim) console.log (`Free L2 + Free L2 ${type1}`)
+				}
+				if (locked[type2][1] > 0) {
+					free.none[1] -= 1
+					locked[type2][1] -= 1
+					free[type2][2] += 1
+					if (!sim) console.log (`Free L2 + Locked L2 ${type2}`)
+				} else {
+					free.none[1] -= 1
+					free[type2][1] -= 1
+					free[type2][2] += 1
+					if (!sim) console.log (`Free L2 + Free L2 ${type2}`)
+				}
+				if (locked[type1][2] > 0) {
+					locked[type1][2] -= 1
+					free[type2][2] -= 1
+					free.full[3] += 1
+					if (!sim) console.log (`Free L3 ${type2} + Locked L3 ${type1}`)
+				} else {
+					free[type1][2] -= 1
+					free[type2][2] -= 1
+					free.full[3] += 1
+					if (!sim) console.log (`Free L3 ${type2} + Free L3 ${type1}`)
+				}
+				if (locked[type2][2] > 0) {
+					free[type1][2] -= 1
+					locked[type2][2] -= 1
+					free.full[3] += 1
+					if (!sim) console.log (`Free L3 ${type1} + Locked L3 ${type2}`)
+				} else {
+					free[type2][2] -= 1
+					free[type1][2] -= 1
+					free.full[3] += 1
+					if (!sim) console.log (`Free L3 ${type1} + Free L3 ${type2}`)
+				}
+				
+
+			} else if (free[type1][1] > 0 && locked[type2][1] > 0) {
+				free[type1][1] -= 1
+				free.full[2] += 1
+				locked[type2][1] -= 1
+				if (!sim) console.log (`Free L2 ${type1} + Locked L2 ${type2}`)
+			} else if (free[type2][1] > 0 && locked[type1][1] > 0) {
+				free[type2][1] -= 1
+				free.full[2] += 1
+				locked[type1][1] -= 1
+				if (!sim) console.log (`Free L2 ${type2} + Locked L2 ${type1}`)
+			} 
+			
+			else if (free.none[1] > 0 && (locked[type1][1] + locked[type2][1]) > 0) {
+				let pick = null
+				if (totalB3 == totalT3) {
+					if (totalB > totalT) {
+						if (locked[type1][1] > 0)
+							pick = `${type1}`
+						else
+							pick = `${type2}`
+					} else {
+						if (locked[type2][1] > 0)
+							pick = `${type2}`
+						else
+							pick = `${type1}`
+					}
+				} else if (totalB3 > totalT3) {
+					if (locked[type1][1] > 0)
+						pick = `${type1}`
+					else
+						pick = `${type2}`
+				} else {
+					if (locked[type2][1] > 0)
+						pick = `${type2}`
+					else
+						pick = `${type1}`
+				}
+				if (pick == `${type1}`) {
+					free.none[1] -= 1
+					free[type1][2] += 1
+					locked[type1][1] -= 1
+					totalT3 += 1
+					if (!sim) console.log (`Free L2 + Locked L2 ${type1}`)
+				} else {
+					free.none[1] -= 1
+					free[type2][2] += 1
+					locked[type2][1] -= 1
+					totalB3 += 1
+					if (!sim) console.log (`Free L2 + Locked L2 ${type2}`)
+				}
+			} else if (free[type1][1] > 0 && locked[type1][1] > 0) {
+				free[type1][1] -= 1
+				locked[type1][1] -= 1
+				free[type1][2] += 1
+				if (!sim) console.log (`Free L2 ${type1} + Locked L2 ${type1}`)
+			} else if (free[type2][1] > 0 && locked[type2][1] > 0) {
+				free[type2][1] -= 1
+				locked[type2][1] -= 1
+				free[type2][2] += 1
+				if (!sim) console.log (`Free L2 ${type2} + Locked L2 ${type2}`)
+			} else if (free[type2][1] > 0 && free.none[1] > 0) {
+				free[type2][1] -= 1
+				free.none[1] -= 1
+				free[type2][2] += 1
+				if (!sim) console.log (`Free L2 + Free L2 ${type2}`)
+			} else if (free[type1][1] > 0 && free.none[1] > 0) {
+				free[type1][1] -= 1
+				free.none[1] -= 1
+				free[type1][2] += 1
+				if (!sim) console.log (`Free L2 + Free L2 ${type1}`)
+			} else if (free.none[1] >= 2) {
+				free.none[1] -= 2
+				free.none[2] += 1
+				if (!sim) console.log ("Free L2 + Free L2")
+			} else if (free[type1][1] >= 2) {
+				free[type1][1] -= 2
+				free[type1][2] += 1
+				if (!sim) console.log (`Free L2 ${type1} + Free L2 ${type1}`)
+			} else if (free[type2][1] >= 2) {
+				free[type2][1] -= 2
+				free[type2][2] += 1
+				if (!sim) console.log (`Free L2 ${type2} + Free L2 ${type2}`)
+			} else break
+		}      
+		//if (!sim) console.log ("==Level 3 Merges==")
+		let totalB4 = locked[type2][3]
+		let totalT4 = locked[type1][3]
+		while (true) {
+			
+			let numtopTrios = Math.min(free.none[3],locked[type1][3],locked[type2][3])
+			if (free[type1][2] > 0 && locked[type2][2] > 0) {
+				free[type1][2] -= 1
+				free.full[3] += 1
+				locked[type2][2] -= 1
+				if (!sim) console.log (`Free L3 ${type1} + Locked L3 ${type2}`)
+			} else if ( free[type2][2] > 0 && locked[type1][2] > 0) {
+				free[type2][2] -= 1
+				free.full[3] += 1
+				locked[type1][2] -= 1
+				if (!sim) console.log (`Free L3 ${type2} + Locked L3 ${type1}`)
+			} else if (free.none[2] > 0 && locked[type1][2] > 0 && (locked[type2][3]+free[type2][3]) > 0) {
+				free.none[2] -= 1
+				locked[type1][2] -= 1
+				free.full[3] += 1
+				if (!sim) console.log (`Free L3 + Locked L3 ${type1} `)
+				if (locked[type2][3]>0) {
+					locked[type2][3]-= 1
+					if (!sim) console.log (`Free L4 ${type1} + Locked L4 ${type2}`)
+				} else {
+					free[type2][3]-= 1
+					if (!sim) console.log (`Free L4 ${type1} + Free L4 ${type2}`)
+				}
+			} else if (free.none[2] > 0 &&  locked[type2][2] > 0 && (locked[type1][3]+free[type1][3]) > 0) {
+				free.none[2] -= 1
+				locked[type2][2] -= 1
+				free.full[3] += 1
+				if (!sim) console.log (`Free L3 + Locked L3 ${type2}`)
+				if (locked[type1][3]>0) {
+					locked[type1][3]-= 1
+					if (!sim) console.log (`Free L4 ${type2} + Locked L4 ${type1}`)
+				} else {
+					free[type1][3]-= 1
+					if (!sim) console.log (`Free L4 ${type2} + Free L4 ${type1}`)
+				}
+			} else if (free.none[2] > 1 && (locked[type1][2] + free[type1][2] > 0) && (locked[type2][2] + free[type2][2] > 0) && (locked[type1][3] - numtopTrios + free[type1][3] > 0) && (locked[type2][3] - numtopTrios + free[type2][3] > 0)) {
+				//console.log("L3 double used")
+				if (locked[type1][2] > 0) {
+					free.none[2] -= 1
+					locked[type1][2] -= 1
+					free[type1][3] += 1
+					if (!sim) console.log (`Free L3 + Locked L3 ${type1}`)
+				} else {
+					free.none[2] -= 1
+					free[type1][2] -= 1
+					free[type1][3] += 1
+					if (!sim) console.log (`Free L3 + Free L3 ${type1} `)
+				}
+				if (locked[type2][2] > 0) {
+					free.none[2] -= 1
+					locked[type2][2] -= 1
+					free[type2][3] += 1
+					if (!sim) console.log (`Free L3 + Locked L3 ${type2}`)
+				} else {
+					free.none[2] -= 1
+					free[type2][2] -= 1
+					free[type2][3] += 1
+					if (!sim) console.log (`Free L3 + Free L3 ${type2}`)
+				}
+				if (locked[type1][3] > 0) {
+					free[type2][3] -= 1
+					locked[type1][3] -= 1
+					free.full[3] += 1
+					if (!sim) console.log (`Free L4 ${type2} + Locked L4 ${type1}`)
+				} else {
+					free[type2][3] -= 1
+					free[type1][3] -= 1
+					free.full[3] += 1
+					if (!sim) console.log (`Free L4 ${type2} + Free L4 ${type1} `)
+				}
+				if (locked[type2][3] > 0) {
+					free[type1][3] -= 1
+					locked[type2][3] -= 1
+					free.full[3] += 1
+					if (!sim) console.log (`Free L4 ${type1} + Locked L4 ${type2}`)
+				} else {
+					free[type1][3] -= 1
+					free[type2][3] -= 1
+					free.full[3] += 1
+					if (!sim) console.log (`Free L4 ${type1} + Free L4 ${type2}`)
+				}
+			} else if ( free[type2][2] > 0 && free[type1][2] > 0) {
+				free[type2][2] -= 1
+				free[type1][2] -= 1
+				free.full[3] += 1
+				if (!sim) console.log (`Free L3 ${type2} + Free L3 ${type1}`)
+			} else if ( free.none[2] > 0 && locked[type1][2] > 0 && (locked[type2][3] - numtopTrios) > free[type1][3]) {
+				free.none[2] -= 1
+				locked[type1][2] -= 1
+				locked[type2][3] -= 1
+				free.full[3] += 1
+				if (!sim) console.log (`Free L3 + Locked L3 ${type1}`)
+				if (!sim) console.log (`Free L4 ${type1} + Locked L4 ${type2}`)
+			} else if ( free.none[2] > 0 && locked[type2][2] > 0 && (locked[type1][3] - numtopTrios) > free[type2][3]) {
+				free.none[2] -= 1
+				locked[type2][2] -= 1
+				locked[type1][3] -= 1
+				free.full[3] += 1
+				if (!sim) console.log (`Free L3 + Locked L3 ${type2}`)
+				if (!sim) console.log (`Free L4 ${type2} + Locked L4 ${type1}`)
+			} else if (free.none[2] > 0 && free[type1][2] > 0 && (locked[type2][3] + free[type2][3]) > 0) {
+				free.none[2] -= 1
+				free[type1][2] -= 1
+				free.full[3] += 1
+				if (!sim) console.log (`Free L3 + Locked L3 ${type1} `)
+				if (locked[type2][3]>0) {
+					locked[type2][3]-= 1
+					if (!sim) console.log (`Free L4 ${type1} + Locked L4 ${type2}`)
+				} else {
+					free[type2][3]-= 1
+					if (!sim) console.log (`Free L4 ${type1} + Free L4 ${type2}`)
+				}
+			} else if (free.none[2] > 0 &&  free[type2][2] > 0 && locked[type1][3] > 0) {
+				free.none[2] -= 1
+				free[type2][2] -= 1
+				free.full[3] += 1
+				if (!sim) console.log (`Free L3 + Locked L3 ${type2}`)
+				if (locked[type1][3]>0) {
+					locked[type1][3]-= 1
+					if (!sim) console.log (`Free L4 ${type2} + Locked L4 ${type1}`)
+				} else {
+					free[type1][3]-= 1
+					if (!sim) console.log (`Free L4 ${type2} + Free L4 ${type1}`)
+				}
+			} else if (free[type1][2] >0 && locked[type1][2]>0 && locked[type2][3]>0) {
+				free[type1][2] -= 1
+				locked[type1][2] -= 1
+				free.full[3] += 1
+				if (!sim) console.log (`Free L3 ${type1} + Locked L3 ${type1}`)
+				if (locked[type2][3]>0) {
+					locked[type2][3]-= 1
+					if (!sim) console.log (`Free L4 ${type1} + Locked L4 ${type2}`)
+				} else {
+					free[type2][3]-= 1
+					if (!sim) console.log (`Free L4 ${type1} + Free L4 ${type2}`)
+				}
+			} else if (free[type2][2] >0 && locked[type2][2]>0 && locked[type1][3]>0) {
+				free[type2][2] -= 1
+				locked[type2][2] -= 1
+				free.full[3] += 1
+				if (!sim) console.log (`Free L3 ${type2} + Locked L3 ${type2}`)
+				if (locked[type1][3]>0) {
+					locked[type1][3]-= 1
+					if (!sim) console.log (`Free L4 ${type2} + Locked L4 ${type1}`)
+				} else {
+					free[type1][3]-= 1
+					if (!sim) console.log (`Free L4 ${type2} + Free L4 ${type1}`)
+				}
+			} else if ((free.none[2]+locked[type1][2]+locked[type2][2] - free.full[2] > 1) && free.none[2]>1 && locked[type2][2]>0 && locked[type1][2]>0) {
+				free.none[2] -= 2
+				locked[type2][2] -= 1
+				locked[type1][2] -= 1
+				free.full[3] += 1
+				if (!sim) console.log (`Free L3 + Locked L3 ${type2}`)
+				if (!sim) console.log (`Free L3 + Locked L3 ${type1}`)
+				if (!sim) console.log (`Free L4 ${type2} + Free L4 ${type1}`)
+			} else if (free.full[2] > 0 && ((free.none[2] + free[type2][2] + free[type1][2] + locked[type2][2] + locked[type1][2]) > 0 || free.full[2] >= 2)) {
+				if (locked[type2][2] > 0) {
+					free.full[2] -= 1
+					locked[type2][2] -= 1
+					free.full[3] += 1
+					if (!sim) console.log (`Free L3 Full + Locked L3 ${type2}`)
+				} else if ( locked[type1][2] > 0) {
+					free.full[2] -= 1
+					locked[type1][2] -= 1
+					free.full[3] += 1
+					if (!sim) console.log (`Free L3 Full + Locked L3 ${type1}`)
+				} else if ( free.none[2] > 0) {
+					free.full[2] -= 1
+					free.none[2] -= 1
+					free.full[3] += 1
+					if (!sim) console.log ("Free L3 Full + Free L3")
+				} else if ( free[type1][2] > 0) {
+					free.full[2] -= 1
+					free[type1][2] -= 1
+					free.full[3] += 1
+					if (!sim) console.log (`Free L3 Full + Free L3 ${type1}`)
+				} else if ( free[type2][2] > 0) {
+					free.full[2] -= 1
+					free[type2][2] -= 1
+					free.full[3] += 1
+					if (!sim) console.log (`Free L3 Full + Free L3 ${type2}`)
+				} else {
+					free.full[2] -= 2
+					free.full[3] += 1
+					if (!sim) console.log ("Free L3 Full + Free L3 Full")
+				}
+			} else if ( free.none[2] > 0 && (locked[type1][2] + locked[type2][2]) > 0) {
+				pick = null
+				if (totalB4 == totalT4) {
+					if (totalB > totalT) {
+						if (locked[type1][2] > 0)
+							pick = `${type1}`
+						else
+							pick = `${type2}`
+					} else {
+						if (locked[type2][2] > 0)
+							pick = `${type2}`
+						else
+							pick = `${type1}`
+					}
+				} else if ( totalB4 > totalT4) {
+					if (locked[type1][2] > 0)
+						pick = `${type1}`
+					else
+						pick = `${type2}`
+				} else {
+					if (locked[type2][2] > 0)
+						pick = `${type2}`
+					else
+						pick = `${type1}`
+				}
+				if (pick == `${type1}`) {
+					free.none[2] -= 1
+					free[type1][3] += 1
+					locked[type1][2] -= 1
+					totalT4 += 1
+					if (!sim) console.log (`Free L3 + Locked L3 ${type1}`)
+				} else {
+					free.none[2] -= 1
+					free[type2][3] += 1
+					locked[type2][2] -= 1
+					totalB4 += 1
+					if (!sim) console.log (`Free L3 + Locked L3 ${type2}`)
+				}
+			} else if ( free[type1][2] > 0 && locked[type1][2] > 0) {
+				free[type1][2] -= 1
+				locked[type1][2] -= 1
+				free[type1][3] += 1
+				if (!sim) console.log (`Free L3 ${type1} + Locked L3 ${type1}`)
+			} else if ( free[type2][2] > 0 && locked[type2][2] > 0) {
+				free[type2][2] -= 1
+				locked[type2][2] -= 1
+				free[type2][3] += 1
+				if (!sim) console.log (`Free L3 ${type2} + Locked L3 ${type2}`)
+			} else if ( free[type2][2] > 0 && free.none[2] > 0) {
+				free[type2][2] -= 1
+				free.none[2] -= 1
+				free[type2][3] += 1
+				if (!sim) console.log (`Free L3 + Free L3 ${type2}`)
+			} else if ( free[type1][2] > 0 && free.none[2] > 0) {
+				free[type1][2] -= 1
+				free.none[2] -= 1
+				free[type1][3] += 1
+				if (!sim) console.log (`Free L3 + Free L3 ${type1}`)
+			} else if ( free.none[2] >= 2) {
+				free.none[2] -= 2
+				free.none[3] += 1
+				if (!sim) console.log ("Free L3 + Free L3")
+			} else if ( free[type1][2] >= 2) {
+				free[type1][2] -= 2
+				free[type1][3] += 1
+				if (!sim) console.log (`Free L3 ${type1} + Free L3 ${type1}`)
+			} else if ( free[type2][2] >= 2) {
+				free[type2][2] -= 2
+				free[type2][3] += 1
+				if (!sim) console.log (`Free L3 ${type2} + Free L3${type2}`)
+			} else break
+		}            
+		//if (!sim) console.log ("==Level 4 Merges==")
+		totalB4 = locked[type2][3]
+		totalT4 = locked[type1][3]
+		while (true) {
+			if (free[type1][3] > 0 && locked[type2][3] > 0) {
+				free[type1][3] -= 1
+				free.full[3] += 1
+				locked[type2][3] -= 1
+				if (!sim) console.log (`Free L4 ${type1} + Locked L4 ${type2}`)
+			} else if ( free[type2][3] > 0 && locked[type1][3] > 0) {
+				free[type2][3] -= 1
+				free.full[3] += 1
+				locked[type1][3] -= 1
+				if (!sim) console.log (`Free L4 ${type2} + Locked L4 ${type1}`)
+			} else if ( free[type2][3] > 0 && free[type1][3] > 0) {
+				free[type2][3] -= 1
+				free[type1][3] -= 1
+				free.full[3] += 1
+				if (!sim) console.log (`Free L4 ${type2} + Free L4 ${type1}`)
+			} else if ( free.none[3] > 0 && (locked[type1][3] + locked[type2][3]) > 0) {
+				pick = null
+				if (totalB4 == totalT4) {
+					if (totalB > totalT) {
+						if (locked[type1][3] > 0) 
+							pick = `${type1}`
+						else
+							pick = `${type2}`
+					} else {
+						if (locked[type2][3] > 0)
+							pick = `${type2}`
+						else
+							pick = `${type1}`
+					}
+				} else if ( totalB4 > totalT4) {
+					if (locked[type1][3] > 0) 
+						pick = `${type1}`
+					else
+						pick = `${type2}`
+				} else {
+					if (locked[type2][3] > 0)
+						pick = `${type2}`
+					else
+						pick = `${type1}`
+				}   
+				if (pick == `${type1}`) {
+					free.none[3] -= 1
+					free[type1][3] += 1
+					locked[type1][3] -= 1
+					totalT4 -= 1
+					if (!sim) console.log (`Free L4 + Locked L4 ${type1}`)
+				} else {
+					free.none[3] -= 1
+					free[type2][3] += 1
+					locked[type2][3] -= 1
+					totalB4 -= 1
+					if (!sim) console.log (`Free L4 + Locked L4 ${type2}`)
+				}
+			} else if (free.full[3] > 0 && (locked[type2][3] + locked[type1][3]) > 0) {
+				if (locked[type2][3] > 0) {
+					free.full[3] -= 1
+					locked[type2][3] -= 1
+					free.full[3] += 1
+					if (!sim) console.log (`Free L4 Full + Locked L4 ${type2}`)
+				} else if (locked[type1][3] > 0) {
+					free.full[3] -= 1
+					locked[type1][3] -= 1
+					free.full[3] += 1
+					if (!sim) console.log (`Free L4 Full + Locked L4 ${type1}`)
+				}
+			} else break
+		}
+		//if (!sim) console.log ("==Results==")
+		let endProgress = 0;
+		//Progress:
+		for (let t of [type1,type2]) {
+			for (let l of [1,2,3,4]) {
+				endProgress += locked[t][l-1]*mergerGame.levelValues[l]
+			}
+		}
+		//Progress:
+		let keys = 0
+		for (let l of [3,4]) {
+			keys += free["full"][l-1]*mergerGame.keyValues[l]
+		}
+			
+		return {keys:keys, progress:startProgress-endProgress,locked:lockedO, free:freeO}
+	},
+		convertToMoo:(x)=>{
+		let out=[`Original (color ${x.color}):`];
+		//out.push(`freeBot = ${JSON.stringify(x.solved[x.color].free[type2])}`)
+		//out.push(`freeTop = ${JSON.stringify(x.solved[x.color].free[type1])}`)
+		//out.push(`freeFull = ${JSON.stringify(x.solved[x.color].free.full)}`)
+		//out.push(`free = ${JSON.stringify(x.solved[x.color].free.none)}`)
+		//out.push(`lockedB = ${JSON.stringify(x.solved[x.color].locked[type2])}`)
+		//out.push(`lockedT = ${JSON.stringify(x.solved[x.color].locked[type1])}`)
+		//out.push(``);
+		out.push(`modified by level ${x.level}):`);
+		//out.push(`freeBot = ${JSON.stringify(x.free[type2])}`)
+		//out.push(`freeTop = ${JSON.stringify(x.free[type1])}`)
+		//out.push(`freeFull = ${JSON.stringify(x.free.full)}`)
+		//out.push(`free = ${JSON.stringify(x.free.none)}`)
+		//out.push(`lockedB = ${JSON.stringify(x.solved[x.color].locked[type2])}`)
+		//out.push(`lockedT = ${JSON.stringify(x.solved[x.color].locked[type1])}`)
+		out.push(`mergerGame.cells = ${JSON.stringify(mergerGame.cells)}`)
+		out.push(`mergerGame.updateTable()`)
+		out.push(`mergerGame.updateDialog()`)
+		return out.join('\n')
+	},
+	solverMooOriginal:(locked,free, color, sim=true)=>{
+		let lockedO = window.structuredClone(locked),
+			freeO = window.structuredClone(free),
+			type1 = mergerGame.types[1],
+			type2 = mergerGame.types[0],
+			totalB = locked[type2].reduce((a, b) => a + b, 0)+free[type2].reduce((a, b) => a + b, 0),
+			totalT = locked[type1].reduce((a, b) => a + b, 0)+free[type1].reduce((a, b) => a + b, 0),
+			totalB2 = locked[type2][1] + locked[type2][2] + locked[type2][3],
+			totalT2 = locked[type1][1] + locked[type1][2] + locked[type1][3],
+			startProgress = 0;
+		
+		;
+
+		//Progress:
+		for (let t of [type1,type2]) {
+			for (let l of [1,2,3,4]) {
+				startProgress += locked[t][l-1]*mergerGame.levelValues[l]
+			}
+		}
+		
+		if (!sim) console.log ("%c=======Mooing cat's solver=======","color:"+mergerGame.eventData[mergerGame.event].CSScolors[color])
+		if (!sim) console.log ("==Level 1 Merges==")
+		while (true) {
+			if (free.none[0] == 0) break;
+			
+			if (locked[type2][0] == 0 && locked[type1][0] == 0) {
+				if (free.none[0] >= 2) {
+					free.none[0] -= 2
+					free.none[1] += 1
+					if (!sim) console.log ("Free L1 + Free L1")
+					continue;
+				} else break;
+			}
+			let pick = null
+			if (totalB2 == totalT2) {
+				if (totalB > totalT) {
+					if (locked[type1][0] > 0)
+						pick = `${type1}`
+					else
+						pick = `${type2}`
+				} else {
+					if (locked[type2][0] > 0)
+						pick = `${type2}`
+					else
+						pick = `${type1}`
+				}
+			} else if (totalB2 > totalT2) {
+				if (locked[type1][0] > 0)
+					pick = `${type1}`
+				else
+					pick = `${type2}`
+			} else {
+				if (locked[type2][0] > 0)
+					pick = `${type2}`
+				else
+					pick = `${type1}`
+			}        
+			if (pick == `${type1}`) {
+				free.none[0] -= 1
+				free[type1][1] += 1
+				locked[type1][0] -= 1
+				totalT2 += 1
+				if (!sim) console.log (`Free L1 + Locked L1 ${type1}`)
+			} else {
+				free.none[0] -= 1
+				free[type2][1] += 1
+				locked[type2][0] -= 1
+				totalB2 += 1
+				if (!sim) console.log (`Free L1 + Locked L1 ${type2}`)
+			}
+		}
+		let totalB3 = locked[type2][2] + locked[type2][3];
+		let totalT3 = locked[type1][2] + locked[type1][3];
+		if (!sim) console.log ("==Level 2 Merges==")
+		while (true) {
+			
+			
+			if (free.none[1] > 1 && (locked[type1][1] + free[type1][1] > 0) && (locked[type2][1] + free[type2][1] > 0) && (locked[type1][2] + free[type1][2] > 0) && (locked[type2][2] + free[type2][2] > 0)) {
+				if (locked[type1][1] > 0) {
+					free.none[1] -= 1
+					locked[type1][1] -= 1
+					free[type1][2] += 1
+					if (!sim) console.log (`Free L2 + Locked L2 ${type1}`)
+				} else {
+					free.none[1] -= 1
+					free[type1][1] -= 1
+					free[type1][2] += 1
+					if (!sim) console.log (`Free L2 + Free L2 ${type1}`)
+				}
+				if (locked[type2][1] > 0) {
+					free.none[1] -= 1
+					locked[type2][1] -= 1
+					free[type2][2] += 1
+					if (!sim) console.log (`Free L2 + Locked L2 ${type2}`)
+				} else {
+					free.none[1] -= 1
+					free[type2][1] -= 1
+					free[type2][2] += 1
+					if (!sim) console.log (`Free L2 + Free L2 ${type2}`)
+				}
+			} else if (free[type1][1] > 0 && locked[type2][1] > 0) {
+				free[type1][1] -= 1
+				free.full[2] += 1
+				locked[type2][1] -= 1
+				if (!sim) console.log (`Free L2 ${type1} + Locked L2 ${type2}`)
+			} else if (free[type2][1] > 0 && locked[type1][1] > 0) {
+				free[type2][1] -= 1
+				free.full[2] += 1
+				locked[type1][1] -= 1
+				if (!sim) console.log (`Free L2 ${type2} + Locked L2 ${type1}`)
+			} else if (free[type2][1] > 0 && free[type1][1] > 0) {
+				free[type2][1] -= 1
+				free[type1][1] -= 1
+				free.full[2] += 1
+				if (!sim) console.log (`Free L2 ${type2} + Free L2 ${type1}`)
+			} else if (free.none[1] > 0 && (locked[type1][1] + locked[type2][1]) > 0) {
+				let pick = null
+				if (totalB3 == totalT3) {
+					if (totalB > totalT) {
+						if (locked[type1][1] > 0)
+							pick = `${type1}`
+						else
+							pick = `${type2}`
+					} else {
+						if (locked[type2][1] > 0)
+							pick = `${type2}`
+						else
+							pick = `${type1}`
+					}
+				} else if (totalB3 > totalT3) {
+					if (locked[type1][1] > 0)
+						pick = `${type1}`
+					else
+						pick = `${type2}`
+				} else {
+					if (locked[type2][1] > 0)
+						pick = `${type2}`
+					else
+						pick = `${type1}`
+				}
+				if (pick == `${type1}`) {
+					free.none[1] -= 1
+					free[type1][2] += 1
+					locked[type1][1] -= 1
+					totalT3 += 1
+					if (!sim) console.log (`Free L2 + Locked L2 ${type1}`)
+				} else {
+					free.none[1] -= 1
+					free[type2][2] += 1
+					locked[type2][1] -= 1
+					totalB3 += 1
+					if (!sim) console.log (`Free L2 + Locked L2 ${type2}`)
+				}
+			} else if (free[type1][1] > 0 && locked[type1][1] > 0) {
+				free[type1][1] -= 1
+				locked[type1][1] -= 1
+				free[type1][2] += 1
+				if (!sim) console.log (`Free L2 ${type1} + Locked L2 ${type1}`)
+			} else if (free[type2][1] > 0 && locked[type2][1] > 0) {
+				free[type2][1] -= 1
+				locked[type2][1] -= 1
+				free[type2][2] += 1
+				if (!sim) console.log (`Free L2 ${type2} + Locked L2 ${type2}`)
+			} else if (free[type2][1] > 0 && free.none[1] > 0) {
+				free[type2][1] -= 1
+				free.none[1] -= 1
+				free[type2][2] += 1
+				if (!sim) console.log (`Free L2 + Free L2 ${type2}`)
+			} else if (free[type1][1] > 0 && free.none[1] > 0) {
+				free[type1][1] -= 1
+				free.none[1] -= 1
+				free[type1][2] += 1
+				if (!sim) console.log (`Free L2 + Free L2 ${type1}`)
+			} else if (free.none[1] >= 2) {
+				free.none[1] -= 2
+				free.none[2] += 1
+				if (!sim) console.log ("Free L2 + Free L2")
+			} else if (free[type1][1] >= 2) {
+				free[type1][1] -= 2
+				free[type1][2] += 1
+				if (!sim) console.log (`Free L2 ${type1} + Free L2 ${type1}`)
+			} else if (free[type2][1] >= 2) {
+				free[type2][1] -= 2
+				free[type2][2] += 1
+				if (!sim) console.log (`Free L2 ${type2} + Free L2 ${type2}`)
+			} else break
+		}      
+		if (!sim) console.log ("==Level 3 Merges==")
+		let totalB4 = locked[type2][3]
+		let totalT4 = locked[type1][3]
+		while (true) {
+			
+			let numtopTrios = Math.min(free.none[3],locked[type1][3],locked[type2][3])
+			if (free.none[2] > 1 && (locked[type1][2] + free[type1][2] > 0) && (locked[type2][2] + free[type2][2] > 0) && (locked[type1][3] - numtopTrios + free[type1][3] > 0) && (locked[type2][3] - numtopTrios + free[type2][3] > 0)) {
+				if (locked[type1][2] > 0) {
+					free.none[2] -= 1
+					locked[type1][2] -= 1
+					free[type1][3] += 1
+					if (!sim) console.log (`Free L3 + Locked L3 ${type1}`)
+				} else {
+					free.none[2] -= 1
+					free[type1][2] -= 1
+					free[type1][3] += 1
+					if (!sim) console.log (`Free L3 + Free L3 ${type1} `)
+				}
+				if (locked[type2][2] > 0) {
+					free.none[2] -= 1
+					locked[type2][2] -= 1
+					free[type2][3] += 1
+					if (!sim) console.log (`Free L3 + Locked L3 ${type2}`)
+				} else {
+					free.none[2] -= 1
+					free[type2][2] -= 1
+					free[type2][3] += 1
+					if (!sim) console.log (`Free L3 + Free L3 ${type2}`)
+				}
+			} else if (free[type1][2] > 0 && locked[type2][2] > 0) {
+				free[type1][2] -= 1
+				free.full[3] += 1
+				locked[type2][2] -= 1
+				if (!sim) console.log (`Free L3 ${type1} + Locked L3 ${type2}`)
+			} else if ( free[type2][2] > 0 && locked[type1][2] > 0) {
+				free[type2][2] -= 1
+				free.full[3] += 1
+				locked[type1][2] -= 1
+				if (!sim) console.log (`Free L3 ${type2} + Locked L3 ${type1}`)
+			} else if ( free[type2][2] > 0 && free[type1][2] > 0) {
+				free[type2][2] -= 1
+				free[type1][2] -= 1
+				free.full[3] += 1
+				if (!sim) console.log (`Free L3 ${type2} + Free L3 ${type1}`)
+			} else if ( free.none[2] > 0 && locked[type1][2] > 0 && (locked[type2][3] - numtopTrios) > free[type1][3]) {
+				free.none[2] -= 1
+				locked[type1][2] -= 1
+				free[type1][3] += 1
+				if (!sim) console.log (`Free L3 + Locked L3 ${type1}`)
+			} else if ( free.none[2] > 0 && locked[type2][2] > 0 && (locked[type1][3] - numtopTrios) > free[type2][3]) {
+				free.none[2] -= 1
+				locked[type2][2] -= 1
+				free[type2][3] += 1
+				if (!sim) console.log (`Free L3 + Locked L3 ${type2}`)
+			} else if ( free.full[2] > 0 && ((free.none[2] + free[type2][2] + free[type1][2] + locked[type2][2] + locked[type1][2]) > 0 || free.full[2] >= 2)) {
+				if (locked[type2][2] > 0) {
+					free.full[2] -= 1
+					locked[type2][2] -= 1
+					free.full[3] += 1
+					if (!sim) console.log (`Free L3 Full + Locked L3 ${type2}`)
+				} else if ( locked[type1][2] > 0) {
+					free.full[2] -= 1
+					locked[type1][2] -= 1
+					free.full[3] += 1
+					if (!sim) console.log (`Free L3 Full + Locked L3 ${type1}`)
+				} else if ( free.none[2] > 0) {
+					free.full[2] -= 1
+					free.none[2] -= 1
+					free.full[3] += 1
+					if (!sim) console.log ("Free L3 Full + Free L3")
+				} else if ( free[type1][2] > 0) {
+					free.full[2] -= 1
+					free[type1][2] -= 1
+					free.full[3] += 1
+					if (!sim) console.log (`Free L3 Full + Free L3 ${type1}`)
+				} else if ( free[type2][2] > 0) {
+					free.full[2] -= 1
+					free[type2][2] -= 1
+					free.full[3] += 1
+					if (!sim) console.log (`Free L3 Full + Free L3 ${type2}`)
+				} else {
+					free.full[2] -= 2
+					free.full[3] += 1
+					if (!sim) console.log ("Free L3 Full + Free L3 Full")
+				}
+			} else if ( free.none[2] > 0 && (locked[type1][2] + locked[type2][2]) > 0) {
+				pick = null
+				if (totalB4 == totalT4) {
+					if (totalB > totalT) {
+						if (locked[type1][2] > 0)
+							pick = `${type1}`
+						else
+							pick = `${type2}`
+					} else {
+						if (locked[type2][2] > 0)
+							pick = `${type2}`
+						else
+							pick = `${type1}`
+					}
+				} else if ( totalB4 > totalT4) {
+					if (locked[type1][2] > 0)
+						pick = `${type1}`
+					else
+						pick = `${type2}`
+				} else {
+					if (locked[type2][2] > 0)
+						pick = `${type2}`
+					else
+						pick = `${type1}`
+				}
+				if (pick == `${type1}`) {
+					free.none[2] -= 1
+					free[type1][3] += 1
+					locked[type1][2] -= 1
+					totalT4 += 1
+					if (!sim) console.log (`Free L3 + Locked L3 ${type1}`)
+				} else {
+					free.none[2] -= 1
+					free[type2][3] += 1
+					locked[type2][2] -= 1
+					totalB4 += 1
+					if (!sim) console.log (`Free L3 + Locked L3 ${type2}`)
+				}
+			} else if ( free[type1][2] > 0 && locked[type1][2] > 0) {
+				free[type1][2] -= 1
+				locked[type1][2] -= 1
+				free[type1][3] += 1
+				if (!sim) console.log (`Free L3 ${type1} + Locked L3 ${type1}`)
+			} else if ( free[type2][2] > 0 && locked[type2][2] > 0) {
+				free[type2][2] -= 1
+				locked[type2][2] -= 1
+				free[type2][3] += 1
+				if (!sim) console.log (`Free L3 ${type2} + Locked L3 ${type2}`)
+			} else if ( free[type2][2] > 0 && free.none[2] > 0) {
+				free[type2][2] -= 1
+				free.none[2] -= 1
+				free[type2][3] += 1
+				if (!sim) console.log (`Free L3 + Free L3 ${type2}`)
+			} else if ( free[type1][2] > 0 && free.none[2] > 0) {
+				free[type1][2] -= 1
+				free.none[2] -= 1
+				free[type1][3] += 1
+				if (!sim) console.log (`Free L3 + Free L3 ${type1}`)
+			} else if ( free.none[2] >= 2) {
+				free.none[2] -= 2
+				free.none[3] += 1
+				if (!sim) console.log ("Free L3 + Free L3")
+			} else if ( free[type1][2] >= 2) {
+				free[type1][2] -= 2
+				free[type1][3] += 1
+				if (!sim) console.log (`Free L3 ${type1} + Free L3 ${type1}`)
+			} else if ( free[type2][2] >= 2) {
+				free[type2][2] -= 2
+				free[type2][3] += 1
+				if (!sim) console.log (`Free L3 ${type2} + Free L3${type2}`)
+			} else break
+		}            
+		if (!sim) console.log ("==Level 4 Merges==")
+		totalB4 = locked[type2][3]
+		totalT4 = locked[type1][3]
+		while (true) {
+			if (free[type1][3] > 0 && locked[type2][3] > 0) {
+				free[type1][3] -= 1
+				free.full[3] += 1
+				locked[type2][3] -= 1
+				if (!sim) console.log (`Free L4 ${type1} + Locked L4 ${type2}`)
+			} else if ( free[type2][3] > 0 && locked[type1][3] > 0) {
+				free[type2][3] -= 1
+				free.full[3] += 1
+				locked[type1][3] -= 1
+				if (!sim) console.log (`Free L4 ${type2} + Locked L4 ${type1}`)
+			} else if ( free[type2][3] > 0 && free[type1][3] > 0) {
+				free[type2][3] -= 1
+				free[type1][3] -= 1
+				free.full[3] += 1
+				if (!sim) console.log (`Free L4 ${type2} + Free L4 ${type1}`)
+			} else if ( free.none[3] > 0 && (locked[type1][3] + locked[type2][3]) > 0) {
+				pick = null
+				if (totalB4 == totalT4) {
+					if (totalB > totalT) {
+						if (locked[type1][3] > 0) 
+							pick = `${type1}`
+						else
+							pick = `${type2}`
+					} else {
+						if (locked[type2][3] > 0)
+							pick = `${type2}`
+						else
+							pick = `${type1}`
+					}
+				} else if ( totalB4 > totalT4) {
+					if (locked[type1][3] > 0) 
+						pick = `${type1}`
+					else
+						pick = `${type2}`
+				} else {
+					if (locked[type2][3] > 0)
+						pick = `${type2}`
+					else
+						pick = `${type1}`
+				}   
+				if (pick == `${type1}`) {
+					free.none[3] -= 1
+					free[type1][3] += 1
+					locked[type1][3] -= 1
+					totalT4 -= 1
+					if (!sim) console.log (`Free L4 + Locked L4 ${type1}`)
+				} else {
+					free.none[3] -= 1
+					free[type2][3] += 1
+					locked[type2][3] -= 1
+					totalB4 -= 1
+					if (!sim) console.log (`Free L4 + Locked L4 ${type2}`)
+				}
+			} else if (free.full[3] > 0 && (locked[type2][3] + locked[type1][3]) > 0) {
+				if (locked[type2][3] > 0) {
+					free.full[3] -= 1
+					locked[type2][3] -= 1
+					free.full[3] += 1
+					if (!sim) console.log (`Free L4 Full + Locked L4 ${type2}`)
+				} else if (locked[type1][3] > 0) {
+					free.full[3] -= 1
+					locked[type1][3] -= 1
+					free.full[3] += 1
+					if (!sim) console.log (`Free L4 Full + Locked L4 ${type1}`)
+				}
+			} else break
+		}
+		//if (!sim) console.log ("==Results==")
+		let endProgress = 0;
+		//Progress:
+		for (let t of [type1,type2]) {
+			for (let l of [1,2,3,4]) {
+				endProgress += locked[t][l-1]*mergerGame.levelValues[l]
+			}
+		}
+		//Progress:
+		let keys = 0
+		for (let l of [3,4]) {
+			keys += free["full"][l-1]*mergerGame.keyValues[l]
+		}
+			
+		return {keys:keys, progress:startProgress-endProgress,locked:lockedO, free:freeO}
+	},
+}
