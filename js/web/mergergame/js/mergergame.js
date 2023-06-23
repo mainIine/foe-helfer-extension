@@ -113,12 +113,12 @@ FoEproxy.addHandler('MergerGameService', 'convertPiece', (data, postData) => {
 });
 
 let mergerGame = {
-	//event:"anniversary",
-	//colors: ["white","yellow","blue"],
-	//types: ["top","bottom","full"],
-	event:"soccer",
+	event:"anniversary",
+	colors: ["white","yellow","blue"],
+	types: ["top","bottom","full"],
+	/*event:"soccer",
 	colors: ["attacker","midfielder","defender"],
-	types: ["left","right","full"],
+	types: ["left","right","full"],*/
 	cells:[],
 	spawnChances:{white:{1:14,2:8,3:5,4:3},blue:{1:14,2:8,3:5,4:3},yellow:{1:19,2:10,3:7,4:4},defender:{1:14,2:8,3:5,4:3},attacker:{1:14,2:8,3:5,4:3},midfielder:{1:19,2:10,3:7,4:4}},
 	state: {
@@ -278,7 +278,7 @@ let mergerGame = {
 		html = `<table class="foe-table">`
 		html += `<tr><td>${i18n("Boxes.MergerGame.Progress")}</td><td>${remainingProgress} / ${mergerGame.state.maxProgress} <img src="${srcLinks.get(mergerGame.eventData[mergerGame.event].progress,true)}"></td></tr>`
 		html += `<tr><td>${i18n("Boxes.MergerGame.Energy."+mergerGame.event)}</td><td title="${i18n("Boxes.MergerGame.EfficiencyTargetProgress."+mergerGame.event)+Math.floor(totalValue)+"/"+Math.floor(mergerGame.state.energyUsed*targetEfficiency)|0}">${mergerGame.state.energyUsed} <img src="${srcLinks.get(mergerGame.eventData[mergerGame.event].energy,true)}"></td></tr>`
-		html += `<tr><td>${i18n("Boxes.MergerGame.Keys."+mergerGame.event)}</td><td>${keys} <img ${mergerGame.event=="soccer"?'class="toprightcorner"':''} src="${srcLinks.get(`${mergerGame.eventData[mergerGame.event].keyfile}full_${mergerGame.colors[0]}.png`,true)}"><img ${mergerGame.event=="soccer"?'class="toprightcorner"':''} src="${srcLinks.get(`${mergerGame.eventData[mergerGame.event].keyfile}full_${mergerGame.colors[1]}.png`,true)}"><img ${mergerGame.event=="soccer"?'class="toprightcorner"':''} src="${srcLinks.get(`${mergerGame.eventData[mergerGame.event].keyfile}full_${mergerGame.colors[0]}.png`,true)}"></td></tr>`
+		html += `<tr><td>${i18n("Boxes.MergerGame.Keys."+mergerGame.event)}</td><td>${keys} <img ${mergerGame.event=="soccer"?'class="toprightcorner"':''} src="${srcLinks.get(`${mergerGame.eventData[mergerGame.event].keyfile}full_${mergerGame.colors[2]}.png`,true)}"><img ${mergerGame.event=="soccer"?'class="toprightcorner"':''} src="${srcLinks.get(`${mergerGame.eventData[mergerGame.event].keyfile}full_${mergerGame.colors[1]}.png`,true)}"><img ${mergerGame.event=="soccer"?'class="toprightcorner"':''} src="${srcLinks.get(`${mergerGame.eventData[mergerGame.event].keyfile}full_${mergerGame.colors[0]}.png`,true)}"></td></tr>`
 		html += `<tr><td>${i18n("Boxes.MergerGame.Efficiency."+mergerGame.event)}</td><td style="font-weight:bold; color: ${efficiency > targetEfficiency*1.15 ? 'var(--text-success)' : efficiency < targetEfficiency * 0.95 ? 'red' : 'var(--text-bright)'}" title="${i18n("Boxes.MergerGame.EfficiencyTotalProgress") + Math.floor(efficiency*mergerGame.settings.availableCurrency)}">${efficiency} <img src="${srcLinks.get(mergerGame.eventData[mergerGame.event].progress,true)}"> /<img src="${srcLinks.get(mergerGame.eventData[mergerGame.event].energy,true)}"></td></tr>`
 		html += `</table>`
 
@@ -436,14 +436,14 @@ let mergerGame = {
 					
 				}
 			}
-			solved[c] = mergerGame.solver(locked,free,c, false);
+			solved[c] = mergerGame.solver(locked,free,c);
+			for (x of solved[c].solution) x.css ? console.log(x.text,x.css) : console.log(x)
 		}
-		
+
 		let progress = 0
 		for (let c of mergerGame.colors) {
 			progress += solved[c].progress;
 		}
-		
 		mergerGame.solved.progress = progress;
 		//keys
 		let keys = 0
@@ -465,11 +465,13 @@ let mergerGame = {
 					let addProgress = simulated.progress - solved[c].progress;
 					if (addKeys<0 || addProgress<0) {
 						mergerGame.solver(window.structuredClone(solved[c].locked),window.structuredClone(free),c,false)
-						console.error("solver not working properly",mergerGame.convertToMoo({color:c, level:l,solved:solved,free:free}))
+						console.error("solver not working properly",mergerGame.debugginfo({color:c, level:l,solved:solved,free:free}))
 						console.log("progress",solved[c].progress)
 						console.log("keys",solved[c].keys)
 						console.log("simKeys",simulated.keys);
 						console.log("simProgress",simulated.progress);
+						console.count("inconsistent");
+						for (x of simulated.solution) x.css ? console.log(x.text,x.css) : console.log(x)
 					}
 					if (addKeys<keys.min) keys.min = addKeys;
 					if (addKeys>keys.max) keys.max = addKeys;
@@ -477,40 +479,53 @@ let mergerGame = {
 					if (addProgress<progress.min) progress.min = addProgress;
 					if (addProgress>progress.max) progress.max = addProgress;
 					progress.average += mergerGame.spawnChances[c][l]/100*addProgress;
-					
-					let simulated2 = mergerGame.solverMooOriginal(window.structuredClone(solved[c].locked),window.structuredClone(free),c,true)
-					let addKeys2 = simulated.keys - simulated2.keys;
-					let addProgress2 = simulated2.progress - simulated2.progress;
-					if (addKeys2<0 || addProgress2<0) {
-						mergerGame.solver(window.structuredClone(solved[c].locked),window.structuredClone(free),c,false);
-						mergerGame.solverMooOriginal(window.structuredClone(solved[c].locked),window.structuredClone(free),c,false);
-						console.error("solver is worse than Moos original",mergerGame.convertToMoo({color:c, level:l,solved:solved,free:free}))
-						console.log("mooprogress",simulated2.progress)
-						console.log("mookeys",simulated2.keys)
-						console.log("simKeys",simulated.keys);
-						console.log("simProgress",simulated.progress);
-						console.count("MooBetter")
-					}
-					if ((addKeys2>0 && addProgress2>=0) || (addKeys2>=0 && addProgress2>0) ) {
-						console.count("MooWorse")
-					}
-					console.count("comparisons")
 			}
 		}
 		return [keys,progress]
 	}, 
 
+	simulate2:(solved,c) => {
+		let best = window.structuredClone(solved);
+		for (let l of [1,2,3,4]) {
+			if (solved.free.none[l-1] == 0) continue 
+			let free = window.structuredClone(solved.free),
+				locked=window.structuredClone(solved.locked);
+			free["none"][l-1] -= 1;
+			let simulated = mergerGame.solver(locked,free,c);
+			if (simulated.keys*mergerGame.settings.keyValue+simulated.progress>best.keys*mergerGame.settings.keyValue+best.progress) best = window.structuredClone(simulated);
+		}
+		return best
+	}, 
 
-	solver:(locked,free, color, sim=true)=>{
-		let type1 = mergerGame.types[1],
-			type2 = mergerGame.types[0];
+	solver: (locked,free, color,sim=false) =>{
+		let result1 = mergerGame.solver1(window.structuredClone(locked),window.structuredClone(free),color);
+		let result2 = mergerGame.solver2(window.structuredClone(locked),window.structuredClone(free),color);
+		let result = null
+
+		if (result1.keys*mergerGame.settings.keyValue+result1.progress>result2.keys*mergerGame.settings.keyValue+result2.progress) 
+			result = result1
+		else
+			result = result2;
+		
+		if (sim) {
+			result = mergerGame.simulate2(result,color)
+		}
+		
+		return result;
+		
+	},
+
+	solver1:(locked,free, color)=>{
 		let lockedO = window.structuredClone(locked),
 			freeO = window.structuredClone(free),
-			totalB = locked[type2].reduce((a, b) => a + b, 0)+free[type2].reduce((a, b) => a + b, 0),
-			totalT = locked[type1].reduce((a, b) => a + b, 0)+free[type1].reduce((a, b) => a + b, 0),
-			totalB2 = locked[type2][1] + locked[type2][2] + locked[type2][3],
-			totalT2 = locked[type1][1] + locked[type1][2] + locked[type1][3],
-			startProgress = 0;
+			type1 = mergerGame.types[0],
+			type2 = mergerGame.types[1],
+			total1_ = locked[type1].reduce((a, b) => a + b, 0)+free[type1].reduce((a, b) => a + b, 0),
+			total2_ = locked[type2].reduce((a, b) => a + b, 0)+free[type2].reduce((a, b) => a + b, 0),
+			total1_2 = total1_ - locked[type1][0],
+			total2_2 = total2_ - locked[type2][0],
+			startProgress = 0,
+			Solution=[];
 
 		//Progress:
 		for (let t of [type1,type2]) {
@@ -519,8 +534,8 @@ let mergerGame = {
 			}
 		}
 		
-		if (!sim) console.log ("%c=======Solver=======","color:"+mergerGame.eventData[mergerGame.event].CSScolors[color])
-		//if (!sim) console.log ("==Level 1 Merges==")
+		Solution.push ({text:"%c=======Modified Solver=======",css: "color:"+mergerGame.eventData[mergerGame.event].CSScolors[color]})
+		//Solution.push ("==Level 1 Merges==")
 		while (true) {
 			if (free.none[0] == 0) break;
 			
@@ -528,589 +543,577 @@ let mergerGame = {
 				if (free.none[0] >= 2) {
 					free.none[0] -= 2
 					free.none[1] += 1
-					if (!sim) console.log ("Free L1 + Free L1")
+					Solution.push ("Free L1 + Free L1")
 					continue;
 				} else break;
 			}
 			let pick = null
-			if (totalB2 == totalT2) {
-				if (totalB > totalT) {
-					if (locked[type1][0] > 0)
-						pick = `${type1}`
-					else
-						pick = `${type2}`
-				} else {
-					if (locked[type2][0] > 0)
-						pick = `${type2}`
-					else
-						pick = `${type1}`
-				}
-			} else if (totalB2 > totalT2) {
-				if (locked[type1][0] > 0)
-					pick = `${type1}`
+			if (total2_2 == total1_2) {
+				if (locked[type1][0] > locked[type2][0])
+					pick = type1
 				else
-					pick = `${type2}`
+					pick = type2
+			} else if (total2_2 > total1_2) {
+				if (locked[type1][0] > 0)
+					pick = type1
+				else
+					pick = type2
 			} else {
 				if (locked[type2][0] > 0)
-					pick = `${type2}`
+					pick = type2
 				else
-					pick = `${type1}`
+					pick = type1
 			}        
-			if (pick == `${type1}`) {
+			if (pick == type1) {
 				free.none[0] -= 1
 				free[type1][1] += 1
 				locked[type1][0] -= 1
-				totalT2 += 1
-				if (!sim) console.log (`Free L1 + Locked L1 ${type1}`)
+				total1_2 += 1
+				Solution.push (`Free L1 + Locked L1 ${type1}`)
 			} else {
 				free.none[0] -= 1
 				free[type2][1] += 1
 				locked[type2][0] -= 1
-				totalB2 += 1
-				if (!sim) console.log (`Free L1 + Locked L1 ${type2}`)
+				total2_2 += 1
+				Solution.push (`Free L1 + Locked L1 ${type2}`)
 			}
 		}
 
-		//Level 4 easy cleanup
+		//Level 4 + 3 easy cleanup
 		while (true) {
 			if (free.none[3] > 0 && locked[type2][3] > 0 && locked[type1][3] > 0) {
 				free.none[3] -= 1
 				locked[type1][3] -= 1
 				locked[type2][3] -= 1
 				free.full[3] += 1
-				if (!sim) console.log (`Free L4 + Locked L4 ${type1} + Locked L4 ${type2}`)
+				Solution.push (`Free L4 + Locked L4 ${type1} + Locked L4 ${type2}`)
+			} else if (free[type1][3] > 0 && locked[type2][3]>0) {
+				free[type1][3] -= 1
+				locked[type2][3] -= 1
+				free.full[3] += 1
+				Solution.push (`Free L4 ${type1} + Locked L4 ${type2}`)
+			} else if (free[type2][3] > 0 && locked[type1][3]>0) {
+				free[type2][3] -= 1
+				locked[type1][3] -= 1
+				free.full[3] += 1
+				Solution.push (`Free L4 ${type2} + Locked L4 ${type1}`)
+			} else if (free.none[2] >= locked[type2][3] + locked[type1][3] && 
+						locked[type2][3] > 0 && locked[type1][2]>0) {
+				locked[type2][3] -= 1
+				locked[type1][2] -= 1
+				free.none[2] -= 1
+				free.full[3] += 1
+				Solution.push (`Free L3 + Locked L3 ${type1} + Locked L4 ${type2}`)
+			} else if (free.none[2] >= locked[type2][3] + locked[type1][3] && 
+						locked[type1][3] > 0 && locked[type2][2]>0) {
+				locked[type2][2] -= 1
+				locked[type1][3] -= 1
+				free.none[2] -= 1
+				free.full[3] += 1
+				Solution.push (`Free L3 + Locked L3 ${type2} + Locked L4 ${type1}`)
+			} else if (free.none[2]> 0 && free.none[2] < locked[type2][3] + locked[type1][3] && 
+						locked[type2][2]+locked[type2][1]+locked[type2][0]>=locked[type1][2]+locked[type1][1]+locked[type1][0] &&
+						locked[type2][3] > 0 && locked[type1][2]>0) {
+				locked[type2][3] -= 1
+				locked[type1][2] -= 1
+				free.none[2] -= 1
+				free.full[3] += 1
+				Solution.push (`Free L3 + Locked L3 ${type1} + Locked L4 ${type2}`)
+			} else if (free.none[2]> 0 && free.none[2] < locked[type2][3] + locked[type1][3] && 
+						locked[type2][2]+locked[type2][1]+locked[type2][0]<=locked[type1][2]+locked[type1][1]+locked[type1][0] &&
+						locked[type1][3] > 0 && locked[type2][2]>0) {
+				locked[type2][2] -= 1
+				locked[type1][3] -= 1
+				free.none[2] -= 1
+				free.full[3] += 1
+				Solution.push (`Free L3 + Locked L3 ${type2} + Locked L4 ${type1}`)
 			} else break
 		}
 
-		let totalB3 = locked[type2][2] + locked[type2][3];
-		let totalT3 = locked[type1][2] + locked[type1][3];
-		//if (!sim) console.log ("==Level 2 Merges==")
+		let total1_3 = locked[type1][2] + locked[type1][3] + free[type1][2] + free[type1][3];
+		let total2_3 = locked[type2][2] + locked[type2][3] + free[type2][2] + free[type2][3];
+		//Solution.push ("==Level 2 Merges==")
+		let occupied1_3=0;
+		let occupied2_3=0;
 		while (true) {
-			if ((free.none[1] > 0 && locked[type1][1] > 0 && (locked[type2][2]+free[type2][2]) > 0)&&(free.none[1] > 0 &&  locked[type2][1] > 0 && (locked[type1][2]+free[type1][2]) > 0)) {
-				if (totalB3>totalT3) {
-					free.none[1] -= 1
-					locked[type1][1] -= 1
-					free.full[3] += 1
-					if (!sim) console.log (`Free L2 + Locked L2 ${type1}`)
-					if (locked[type2][2]>0) {
-						locked[type2][2]-= 1
-						if (!sim) console.log (`Free L3 ${type1} + Locked L3 ${type2}`)
-					} else {
-						free[type2][2]-= 1
-						if (!sim) console.log (`Free L3 ${type1} + Free L3 ${type2}`)
-					}
-				} else {
-					free.none[1] -= 1
-					locked[type2][1] -= 1
-					free.full[3] += 1
-					if (!sim) console.log (`Free L2 + Locked L2 ${type2}`)
-					if (locked[type1][2]>0) {
-						locked[type1][2] -= 1
-						if (!sim) console.log (`Free L3 ${type2} + Locked L3 ${type1}`)
-					} else {
-						free[type1][2]-= 1
-						if (!sim) console.log (`Free L3 ${type2} + Free L3 ${type1}`)
-					}
-				}
-			} 
 			
-			else if (free.none[1] > 0 && locked[type1][1] > 0 && (locked[type2][2]+free[type2][2]) > 0) {
-				free.none[1] -= 1
-				locked[type1][1] -= 1
-				free.full[3] += 1
-				if (!sim) console.log (`Free L2 + Locked L2 ${type1}`)
-				if (locked[type2][2]>0) {
-					locked[type2][2]-= 1
-					if (!sim) console.log (`Free L3 ${type1} + Locked L3 ${type2}`)
-				} else {
-					free[type2][2]-= 1
-					if (!sim) console.log (`Free L3 ${type1} + Free L3 ${type2}`)
-				}
-			} else if (free.none[1] > 0 &&  locked[type2][1] > 0 && (locked[type1][2]+free[type1][2]) > 0) {
+			if (free.none[1] > free[type2][1] && locked[type1][1] > 0 && (locked[type2][2]+free[type2][2]-occupied2_3) > 0 && (total1_3<=total2_3 || locked[type2][1] == 0 )) {
+				free.none[1] -= 1;
+				locked[type1][1] -= 1;
+				free[type1][2] += 1;
+				total1_3 +=1;
+				occupied1_3 += 1;
+				occupied2_3 += 1;
+				Solution.push (`Free L2 + Locked L2 ${type1}`)
+			} else if (free.none[1] > free[type1][1] &&  locked[type2][1] > 0 && (locked[type1][2]+free[type1][2]-occupied1_3) > 0) {
 				free.none[1] -= 1
 				locked[type2][1] -= 1
-				free.full[3] += 1
-				if (!sim) console.log (`Free L2 + Locked L2 ${type2}`)
-				if (locked[type1][2]>0) {
-					locked[type1][2] -= 1
-					if (!sim) console.log (`Free L3 ${type2} + Locked L3 ${type1}`)
-				} else {
-					free[type1][2]-= 1
-					if (!sim) console.log (`Free L3 ${type2} + Free L3 ${type1}`)
-				}
-			} else if (free[type2][1] > 0 && free[type1][1] > 0) {
-				free[type2][1] -= 1
+				free[type2][2] += 1
+				total2_3 +=1;
+				occupied1_3 += 1;
+				occupied2_3 += 1;
+				Solution.push (`Free L2 + Locked L2 ${type2}`)
+			} else if (free.none[1] > 1 && free.none[1] > free[type1][1]+free[type2][1] && (locked[type1][1]> 0) && (locked[type2][1]> 0) && (locked[type1][2] + free[type1][2] -occupied1_3> 0) && (locked[type2][2] + free[type2][2] -occupied2_3> 0)) {
+				free.none[1] -= 1
+				locked[type1][1] -= 1
+				free[type1][2] += 1
+				total1_3 +=1;
+				Solution.push (`Free L2 + Locked L2 ${type1}`)
+				free.none[1] -= 1
+				locked[type2][1] -= 1
+				free[type2][2] += 1
+				total2_3 +=1;
+				Solution.push (`Free L2 + Locked L2 ${type2}`)
+				occupied1_3 += 2;
+				occupied2_3 += 2;
+			} else if (free[type1][1]> 0 && locked[type2][1]> 0 && (locked[type1][2] + free[type1][2] + locked[type2][2] + free[type2][2] - occupied1_3 - occupied2_3 - free.none[2] > 0)) {
 				free[type1][1] -= 1
+				locked[type2][1] -= 1
 				free.full[2] += 1
-				if (!sim) console.log (`Free L2 ${type2} + Free L2 ${type1}`)
-			} else if (free.none[1] > 1 && (locked[type1][1] + free[type1][1] > 0) && (locked[type2][1] + free[type2][1] > 0) && (locked[type1][2] + free[type1][2] > 0) && (locked[type2][2] + free[type2][2] > 0)) {
-				//console.log("L2 double used")
+				if (locked[type1][2]+free[type1][2]-occupied1_3>free[type2][2]+locked[type2][2]-occupied2_3) 
+					occupied1_3 += 1 
+				else 
+					occupied2_3 += 1;
+				Solution.push (`Free L2 ${type1} + Locked L2 ${type2}`)
+			} else if (free[type2][1]> 0 && locked[type1][1]> 0 && (locked[type1][2] + free[type1][2] + locked[type2][2] + free[type2][2] - occupied1_3 - occupied2_3 - free.none[2] > 0)) {
+				free[type2][1] -= 1
+				locked[type1][1] -= 1
+				free.full[2] += 1
+				if (locked[type1][2]+free[type1][2]-occupied1_3>free[type2][2]+locked[type2][2]-occupied2_3) 
+					occupied1_3 += 1 
+				else 
+					occupied2_3 += 1;
+				Solution.push (`Free L2 ${type2} + Locked L2 ${type1} (1)`)
+			} else if (free.none[1] > 1 && free.none[1] > free[type1][1]+free[type2][1] && (locked[type1][1] + free[type1][1] > 0) && (locked[type2][1] + free[type2][1] > 0) && (locked[type1][2] + free[type1][2] -occupied1_3> 0) && (locked[type2][2] + free[type2][2] -occupied2_3> 0)) {
 				if (locked[type1][1] > 0) {
 					free.none[1] -= 1
 					locked[type1][1] -= 1
 					free[type1][2] += 1
-					if (!sim) console.log (`Free L2 + Locked L2 ${type1}`)
+					Solution.push (`Free L2 + Locked L2 ${type1}`)
 				} else {
 					free.none[1] -= 1
 					free[type1][1] -= 1
 					free[type1][2] += 1
-					if (!sim) console.log (`Free L2 + Free L2 ${type1}`)
+					Solution.push (`Free L2 + Free L2 ${type1}`)
 				}
 				if (locked[type2][1] > 0) {
 					free.none[1] -= 1
 					locked[type2][1] -= 1
 					free[type2][2] += 1
-					if (!sim) console.log (`Free L2 + Locked L2 ${type2}`)
+					Solution.push (`Free L2 + Locked L2 ${type2}`)
 				} else {
 					free.none[1] -= 1
 					free[type2][1] -= 1
 					free[type2][2] += 1
-					if (!sim) console.log (`Free L2 + Free L2 ${type2}`)
+					Solution.push (`Free L2 + Free L2 ${type2}`)
 				}
-				if (locked[type1][2] > 0) {
-					locked[type1][2] -= 1
-					free[type2][2] -= 1
-					free.full[3] += 1
-					if (!sim) console.log (`Free L3 ${type2} + Locked L3 ${type1}`)
-				} else {
-					free[type1][2] -= 1
-					free[type2][2] -= 1
-					free.full[3] += 1
-					if (!sim) console.log (`Free L3 ${type2} + Free L3 ${type1}`)
-				}
-				if (locked[type2][2] > 0) {
-					free[type1][2] -= 1
-					locked[type2][2] -= 1
-					free.full[3] += 1
-					if (!sim) console.log (`Free L3 ${type1} + Locked L3 ${type2}`)
-				} else {
-					free[type2][2] -= 1
-					free[type1][2] -= 1
-					free.full[3] += 1
-					if (!sim) console.log (`Free L3 ${type1} + Free L3 ${type2}`)
-				}
-				
-
+				occupied1_3 += 2;
+				occupied2_3 += 2;
 			} else if (free[type1][1] > 0 && locked[type2][1] > 0) {
 				free[type1][1] -= 1
 				free.full[2] += 1
 				locked[type2][1] -= 1
-				if (!sim) console.log (`Free L2 ${type1} + Locked L2 ${type2}`)
+				Solution.push (`Free L2 ${type1} + Locked L2 ${type2}`)
 			} else if (free[type2][1] > 0 && locked[type1][1] > 0) {
 				free[type2][1] -= 1
 				free.full[2] += 1
 				locked[type1][1] -= 1
-				if (!sim) console.log (`Free L2 ${type2} + Locked L2 ${type1}`)
-			} 
-			
-			else if (free.none[1] > 0 && (locked[type1][1] + locked[type2][1]) > 0) {
+				Solution.push (`Free L2 ${type2} + Locked L2 ${type1} (2)`)
+			} else if (free[type2][1] > 0 && free[type1][1] > 0) {
+				free[type2][1] -= 1
+				free[type1][1] -= 1
+				free.full[2] += 1
+				Solution.push (`Free L2 ${type2} + Free L2 ${type1} (1)`)
+			} else if (free.none[1] > 0 && (locked[type1][1] + locked[type2][1]) > 0) {
 				let pick = null
-				if (totalB3 == totalT3) {
-					if (totalB > totalT) {
+				if (total2_3 == total1_3) {
+					if (total2_ > total1_) {
 						if (locked[type1][1] > 0)
-							pick = `${type1}`
+							pick = type1
 						else
-							pick = `${type2}`
+							pick = type2
 					} else {
 						if (locked[type2][1] > 0)
-							pick = `${type2}`
+							pick = type2
 						else
-							pick = `${type1}`
+							pick = type1
 					}
-				} else if (totalB3 > totalT3) {
+				} else if (total2_3 > total1_3) {
 					if (locked[type1][1] > 0)
-						pick = `${type1}`
+						pick = type1
 					else
-						pick = `${type2}`
+						pick = type2
 				} else {
 					if (locked[type2][1] > 0)
-						pick = `${type2}`
+						pick = type2
 					else
-						pick = `${type1}`
+						pick = type1
 				}
-				if (pick == `${type1}`) {
+				if (pick == type1) {
 					free.none[1] -= 1
 					free[type1][2] += 1
 					locked[type1][1] -= 1
-					totalT3 += 1
-					if (!sim) console.log (`Free L2 + Locked L2 ${type1}`)
+					total1_3 += 1
+					Solution.push (`Free L2 + Locked L2 ${type1}`)
 				} else {
 					free.none[1] -= 1
 					free[type2][2] += 1
 					locked[type2][1] -= 1
-					totalB3 += 1
-					if (!sim) console.log (`Free L2 + Locked L2 ${type2}`)
+					total2_3 += 1
+					Solution.push (`Free L2 + Locked L2 ${type2}`)
 				}
 			} else if (free[type1][1] > 0 && locked[type1][1] > 0) {
 				free[type1][1] -= 1
 				locked[type1][1] -= 1
 				free[type1][2] += 1
-				if (!sim) console.log (`Free L2 ${type1} + Locked L2 ${type1}`)
+				Solution.push (`Free L2 ${type1} + Locked L2 ${type1}`)
 			} else if (free[type2][1] > 0 && locked[type2][1] > 0) {
 				free[type2][1] -= 1
 				locked[type2][1] -= 1
 				free[type2][2] += 1
-				if (!sim) console.log (`Free L2 ${type2} + Locked L2 ${type2}`)
+				Solution.push (`Free L2 ${type2} + Locked L2 ${type2}`)
 			} else if (free[type2][1] > 0 && free.none[1] > 0) {
 				free[type2][1] -= 1
 				free.none[1] -= 1
 				free[type2][2] += 1
-				if (!sim) console.log (`Free L2 + Free L2 ${type2}`)
+				Solution.push (`Free L2 + Free L2 ${type2}`)
 			} else if (free[type1][1] > 0 && free.none[1] > 0) {
 				free[type1][1] -= 1
 				free.none[1] -= 1
 				free[type1][2] += 1
-				if (!sim) console.log (`Free L2 + Free L2 ${type1}`)
+				Solution.push (`Free L2 + Free L2 ${type1}`)
 			} else if (free.none[1] >= 2) {
 				free.none[1] -= 2
 				free.none[2] += 1
-				if (!sim) console.log ("Free L2 + Free L2")
+				Solution.push ("Free L2 + Free L2")
 			} else if (free[type1][1] >= 2) {
 				free[type1][1] -= 2
 				free[type1][2] += 1
-				if (!sim) console.log (`Free L2 ${type1} + Free L2 ${type1}`)
+				Solution.push (`Free L2 ${type1} + Free L2 ${type1}`)
 			} else if (free[type2][1] >= 2) {
 				free[type2][1] -= 2
 				free[type2][2] += 1
-				if (!sim) console.log (`Free L2 ${type2} + Free L2 ${type2}`)
+				Solution.push (`Free L2 ${type2} + Free L2 ${type2}`)
 			} else break
 		}      
-		//if (!sim) console.log ("==Level 3 Merges==")
-		let totalB4 = locked[type2][3]
-		let totalT4 = locked[type1][3]
+		//Solution.push ("==Level 3 Merges==")
+		let total1_4 = locked[type1][3] + free[type1][3];
+		let total2_4 = locked[type2][3] + free[type2][3];
+		let occupied1_4=0;
+		let occupied2_4=0;
 		while (true) {
 			
-			let numtopTrios = Math.min(free.none[3],locked[type1][3],locked[type2][3])
-			if (free[type1][2] > 0 && locked[type2][2] > 0) {
-				free[type1][2] -= 1
-				free.full[3] += 1
-				locked[type2][2] -= 1
-				if (!sim) console.log (`Free L3 ${type1} + Locked L3 ${type2}`)
-			} else if ( free[type2][2] > 0 && locked[type1][2] > 0) {
-				free[type2][2] -= 1
-				free.full[3] += 1
-				locked[type1][2] -= 1
-				if (!sim) console.log (`Free L3 ${type2} + Locked L3 ${type1}`)
-			} else if (free.none[2] > 0 && locked[type1][2] > 0 && (locked[type2][3]+free[type2][3]) > 0) {
+			if (free.none[2] >= locked[type1][2]+locked[type2][2]+free[type1][2]+free[type2][2] + free["full"][2] && locked[type1][2]+locked[type2][2]+free[type1][2]+free[type2][2]+ free["full"][2] > 0) {
+				for (let x=0; x<locked[type1][2];x++) Solution.push (`Free L3 + Locked L3 ${type1}`)
+				free[type1][3] += locked[type1][2];
+				for (let x=0; x<free[type1][2];x++) Solution.push (`Free L3 + Free L3 ${type1}`)
+				free[type1][3] += free[type1][2];
+				for (let x=0; x<locked[type2][2];x++) Solution.push (`Free L3 + Locked L3 ${type2}`)
+				free[type2][3] += locked[type2][2];
+				for (let x=0; x<free[type2][2];x++) Solution.push (`Free L3 + Free L3 ${type2}`)
+				free[type2][3] += free[type2][2];
+				for (let x=0; x<free["full"][2];x++) Solution.push (`Free L3 + Free L3 full`)
+				free["full"][3] += free["full"][2];
+				
+				free.none[2] -= locked[type1][2]+locked[type2][2]+free[type1][2]+free[type2][2]+free["full"][2];
+				locked[type1][2] = 0;
+				free[type1][2] = 0;
+				locked[type2][2] = 0;
+				free[type2][2] = 0;
+				free["full"][2] = 0;
+				
+			} else if (free.none[2] > 0 && locked[type1][2] > 0 && (locked[type2][3]+free[type2][3]-occupied2_4) > 0 && (total1_4<=total2_4 || locked[type2][2]==0)) {
 				free.none[2] -= 1
 				locked[type1][2] -= 1
-				free.full[3] += 1
-				if (!sim) console.log (`Free L3 + Locked L3 ${type1} `)
-				if (locked[type2][3]>0) {
-					locked[type2][3]-= 1
-					if (!sim) console.log (`Free L4 ${type1} + Locked L4 ${type2}`)
-				} else {
-					free[type2][3]-= 1
-					if (!sim) console.log (`Free L4 ${type1} + Free L4 ${type2}`)
-				}
-			} else if (free.none[2] > 0 &&  locked[type2][2] > 0 && (locked[type1][3]+free[type1][3]) > 0) {
+				free[type1][3] += 1
+				Solution.push (`Free L3 + Locked L3 ${type1} `)
+				total1_4 +=1;
+				occupied1_4 +=1;
+				occupied2_4 +=1;
+			} else if (free.none[2] > 0 &&  locked[type2][2] > 0 && (locked[type1][3]+free[type1][3]-occupied1_4) > 0) {
 				free.none[2] -= 1
 				locked[type2][2] -= 1
-				free.full[3] += 1
-				if (!sim) console.log (`Free L3 + Locked L3 ${type2}`)
-				if (locked[type1][3]>0) {
-					locked[type1][3]-= 1
-					if (!sim) console.log (`Free L4 ${type2} + Locked L4 ${type1}`)
-				} else {
-					free[type1][3]-= 1
-					if (!sim) console.log (`Free L4 ${type2} + Free L4 ${type1}`)
-				}
-			} else if (free.none[2] > 1 && (locked[type1][2] + free[type1][2] > 0) && (locked[type2][2] + free[type2][2] > 0) && (locked[type1][3] - numtopTrios + free[type1][3] > 0) && (locked[type2][3] - numtopTrios + free[type2][3] > 0)) {
+				free[type2][3] += 1
+				Solution.push (`Free L3 + Locked L3 ${type2}`)
+				total2_4 +=1;
+				occupied1_4 +=1;
+				occupied2_4 +=1;
+			} else if (free.none[2] > 1 && (locked[type1][2] + free[type1][2] > 0) && (locked[type2][2] + free[type2][2] > 0) && (locked[type1][3] + free[type1][3] - occupied1_4 > 0) && (locked[type2][3] + free[type2][3] - occupied2_4 > 0)) {
 				//console.log("L3 double used")
 				if (locked[type1][2] > 0) {
 					free.none[2] -= 1
 					locked[type1][2] -= 1
 					free[type1][3] += 1
-					if (!sim) console.log (`Free L3 + Locked L3 ${type1}`)
+					Solution.push (`Free L3 + Locked L3 ${type1}`)
 				} else {
 					free.none[2] -= 1
 					free[type1][2] -= 1
 					free[type1][3] += 1
-					if (!sim) console.log (`Free L3 + Free L3 ${type1} `)
+					Solution.push (`Free L3 + Free L3 ${type1} `)
 				}
 				if (locked[type2][2] > 0) {
 					free.none[2] -= 1
 					locked[type2][2] -= 1
 					free[type2][3] += 1
-					if (!sim) console.log (`Free L3 + Locked L3 ${type2}`)
+					Solution.push (`Free L3 + Locked L3 ${type2}`)
 				} else {
 					free.none[2] -= 1
 					free[type2][2] -= 1
 					free[type2][3] += 1
-					if (!sim) console.log (`Free L3 + Free L3 ${type2}`)
+					Solution.push (`Free L3 + Free L3 ${type2}`)
 				}
-				if (locked[type1][3] > 0) {
-					free[type2][3] -= 1
-					locked[type1][3] -= 1
-					free.full[3] += 1
-					if (!sim) console.log (`Free L4 ${type2} + Locked L4 ${type1}`)
-				} else {
-					free[type2][3] -= 1
-					free[type1][3] -= 1
-					free.full[3] += 1
-					if (!sim) console.log (`Free L4 ${type2} + Free L4 ${type1} `)
-				}
-				if (locked[type2][3] > 0) {
-					free[type1][3] -= 1
-					locked[type2][3] -= 1
-					free.full[3] += 1
-					if (!sim) console.log (`Free L4 ${type1} + Locked L4 ${type2}`)
-				} else {
-					free[type1][3] -= 1
-					free[type2][3] -= 1
-					free.full[3] += 1
-					if (!sim) console.log (`Free L4 ${type1} + Free L4 ${type2}`)
-				}
+				occupied1_4 += 2;
+				occupied2_4 += 2;
+				
+			} else if (free[type1][2] > 0 && locked[type2][2] > 0) {
+				free[type1][2] -= 1
+				locked[type2][2] -= 1
+				free.full[3] += 1
+				Solution.push (`Free L3 ${type1} + Locked L3 ${type2}`)
+			} else if ( free[type2][2] > 0 && locked[type1][2] > 0) {
+				free[type2][2] -= 1
+				locked[type1][2] -= 1
+				free.full[3] += 1
+				Solution.push (`Free L3 ${type2} + Locked L3 ${type1}`)
 			} else if ( free[type2][2] > 0 && free[type1][2] > 0) {
 				free[type2][2] -= 1
 				free[type1][2] -= 1
 				free.full[3] += 1
-				if (!sim) console.log (`Free L3 ${type2} + Free L3 ${type1}`)
-			} else if ( free.none[2] > 0 && locked[type1][2] > 0 && (locked[type2][3] - numtopTrios) > free[type1][3]) {
+				Solution.push (`Free L3 ${type2} + Free L3 ${type1}`)
+			} else if ( free.none[2] > 0 && locked[type1][2] > 0 && (locked[type2][3] + free[type2][3] - occupied2_4) > 0) {
 				free.none[2] -= 1
 				locked[type1][2] -= 1
-				locked[type2][3] -= 1
-				free.full[3] += 1
-				if (!sim) console.log (`Free L3 + Locked L3 ${type1}`)
-				if (!sim) console.log (`Free L4 ${type1} + Locked L4 ${type2}`)
-			} else if ( free.none[2] > 0 && locked[type2][2] > 0 && (locked[type1][3] - numtopTrios) > free[type2][3]) {
+				locked[type1][3] += 1
+				occupied1_4 +=1
+				occupied2_4 += 1
+				Solution.push (`Free L3 + Locked L3 ${type1}`)
+				
+			} else if ( free.none[2] > 0 && locked[type2][2] > 0 && (locked[type1][3] + free[type1][3] - occupied1_4) > 0) {
 				free.none[2] -= 1
 				locked[type2][2] -= 1
-				locked[type1][3] -= 1
-				free.full[3] += 1
-				if (!sim) console.log (`Free L3 + Locked L3 ${type2}`)
-				if (!sim) console.log (`Free L4 ${type2} + Locked L4 ${type1}`)
-			} else if (free.none[2] > 0 && free[type1][2] > 0 && (locked[type2][3] + free[type2][3]) > 0) {
+				locked[type2][3] += 1
+				occupied1_4 +=1
+				occupied2_4 += 1
+				Solution.push (`Free L3 + Locked L3 ${type2}`)
+				
+			} else if (free.none[2] > 0 && free[type1][2] > 0 && (locked[type2][3] + free[type2][3] - occupied2_4) > 0) {
 				free.none[2] -= 1
 				free[type1][2] -= 1
-				free.full[3] += 1
-				if (!sim) console.log (`Free L3 + Locked L3 ${type1} `)
-				if (locked[type2][3]>0) {
-					locked[type2][3]-= 1
-					if (!sim) console.log (`Free L4 ${type1} + Locked L4 ${type2}`)
-				} else {
-					free[type2][3]-= 1
-					if (!sim) console.log (`Free L4 ${type1} + Free L4 ${type2}`)
-				}
-			} else if (free.none[2] > 0 &&  free[type2][2] > 0 && locked[type1][3] > 0) {
+				free[type1][3] += 1
+				occupied1_4 +=1
+				occupied2_4 += 1
+				Solution.push (`Free L3 + Free L3 ${type1} `)
+				
+			} else if (free.none[2] > 0 &&  free[type2][2] > 0 && (locked[type1][3] + free[type1][3] - occupied1_4) > 0) {
 				free.none[2] -= 1
 				free[type2][2] -= 1
-				free.full[3] += 1
-				if (!sim) console.log (`Free L3 + Locked L3 ${type2}`)
-				if (locked[type1][3]>0) {
-					locked[type1][3]-= 1
-					if (!sim) console.log (`Free L4 ${type2} + Locked L4 ${type1}`)
-				} else {
-					free[type1][3]-= 1
-					if (!sim) console.log (`Free L4 ${type2} + Free L4 ${type1}`)
-				}
-			} else if (free[type1][2] >0 && locked[type1][2]>0 && locked[type2][3]>0) {
+				free[type2][3] += 1
+				occupied1_4 += 1
+				occupied2_4 += 1
+				Solution.push (`Free L3 + Free L3 ${type2}`)
+
+			} else if (free[type1][2] >0 && locked[type1][2]>0 && (locked[type2][3] + free[type2][3] - occupied2_4) > 0) {
 				free[type1][2] -= 1
 				locked[type1][2] -= 1
-				free.full[3] += 1
-				if (!sim) console.log (`Free L3 ${type1} + Locked L3 ${type1}`)
-				if (locked[type2][3]>0) {
-					locked[type2][3]-= 1
-					if (!sim) console.log (`Free L4 ${type1} + Locked L4 ${type2}`)
-				} else {
-					free[type2][3]-= 1
-					if (!sim) console.log (`Free L4 ${type1} + Free L4 ${type2}`)
-				}
-			} else if (free[type2][2] >0 && locked[type2][2]>0 && locked[type1][3]>0) {
+				free[type1][3] += 1
+				occupied1_4 += 1
+				occupied2_4 += 1
+				Solution.push (`Free L3 ${type1} + Locked L3 ${type1}`)
+			
+			} else if (free[type2][2] >0 && locked[type2][2]>0 && (locked[type1][3] + free[type1][3] - occupied1_4)>0) {
 				free[type2][2] -= 1
 				locked[type2][2] -= 1
-				free.full[3] += 1
-				if (!sim) console.log (`Free L3 ${type2} + Locked L3 ${type2}`)
-				if (locked[type1][3]>0) {
-					locked[type1][3]-= 1
-					if (!sim) console.log (`Free L4 ${type2} + Locked L4 ${type1}`)
-				} else {
-					free[type1][3]-= 1
-					if (!sim) console.log (`Free L4 ${type2} + Free L4 ${type1}`)
-				}
+				free[type2][3] += 1
+				occupied1_4 += 1
+				occupied2_4 += 1
+				Solution.push (`Free L3 ${type2} + Locked L3 ${type2}`)
+			
 			} else if ((free.none[2]+locked[type1][2]+locked[type2][2] - free.full[2] > 1) && free.none[2]>1 && locked[type2][2]>0 && locked[type1][2]>0) {
 				free.none[2] -= 2
 				locked[type2][2] -= 1
 				locked[type1][2] -= 1
-				free.full[3] += 1
-				if (!sim) console.log (`Free L3 + Locked L3 ${type2}`)
-				if (!sim) console.log (`Free L3 + Locked L3 ${type1}`)
-				if (!sim) console.log (`Free L4 ${type2} + Free L4 ${type1}`)
+				free[type2][3] += 1
+				free[type1][3] += 1
+				occupied1_4 += 1
+				occupied2_4 += 1
+				Solution.push (`Free L3 + Locked L3 ${type2}`)
+				Solution.push (`Free L3 + Locked L3 ${type1}`)
+			
 			} else if (free.full[2] > 0 && ((free.none[2] + free[type2][2] + free[type1][2] + locked[type2][2] + locked[type1][2]) > 0 || free.full[2] >= 2)) {
 				if (locked[type2][2] > 0) {
 					free.full[2] -= 1
 					locked[type2][2] -= 1
 					free.full[3] += 1
-					if (!sim) console.log (`Free L3 Full + Locked L3 ${type2}`)
+					Solution.push (`Free L3 Full + Locked L3 ${type2}`)
 				} else if ( locked[type1][2] > 0) {
 					free.full[2] -= 1
 					locked[type1][2] -= 1
 					free.full[3] += 1
-					if (!sim) console.log (`Free L3 Full + Locked L3 ${type1}`)
+					Solution.push (`Free L3 Full + Locked L3 ${type1}`)
 				} else if ( free.none[2] > 0) {
 					free.full[2] -= 1
 					free.none[2] -= 1
 					free.full[3] += 1
-					if (!sim) console.log ("Free L3 Full + Free L3")
+					Solution.push ("Free L3 Full + Free L3")
 				} else if ( free[type1][2] > 0) {
 					free.full[2] -= 1
 					free[type1][2] -= 1
 					free.full[3] += 1
-					if (!sim) console.log (`Free L3 Full + Free L3 ${type1}`)
+					Solution.push (`Free L3 Full + Free L3 ${type1}`)
 				} else if ( free[type2][2] > 0) {
 					free.full[2] -= 1
 					free[type2][2] -= 1
 					free.full[3] += 1
-					if (!sim) console.log (`Free L3 Full + Free L3 ${type2}`)
+					Solution.push (`Free L3 Full + Free L3 ${type2}`)
 				} else {
 					free.full[2] -= 2
 					free.full[3] += 1
-					if (!sim) console.log ("Free L3 Full + Free L3 Full")
+					Solution.push ("Free L3 Full + Free L3 Full")
 				}
 			} else if ( free.none[2] > 0 && (locked[type1][2] + locked[type2][2]) > 0) {
 				pick = null
-				if (totalB4 == totalT4) {
-					if (totalB > totalT) {
+				if (total2_4 == total1_4) {
+					if (total2_ > total1_) {
 						if (locked[type1][2] > 0)
-							pick = `${type1}`
+							pick = type1
 						else
-							pick = `${type2}`
+							pick = type2
 					} else {
 						if (locked[type2][2] > 0)
-							pick = `${type2}`
+							pick = type2
 						else
-							pick = `${type1}`
+							pick = type1
 					}
-				} else if ( totalB4 > totalT4) {
+				} else if ( total2_4 > total1_4) {
 					if (locked[type1][2] > 0)
-						pick = `${type1}`
+						pick = type1
 					else
-						pick = `${type2}`
+						pick = type2
 				} else {
 					if (locked[type2][2] > 0)
-						pick = `${type2}`
+						pick = type2
 					else
-						pick = `${type1}`
+						pick = type1
 				}
-				if (pick == `${type1}`) {
+				if (pick == type1) {
 					free.none[2] -= 1
 					free[type1][3] += 1
 					locked[type1][2] -= 1
-					totalT4 += 1
-					if (!sim) console.log (`Free L3 + Locked L3 ${type1}`)
+					total1_4 += 1
+					Solution.push (`Free L3 + Locked L3 ${type1}`)
 				} else {
 					free.none[2] -= 1
 					free[type2][3] += 1
 					locked[type2][2] -= 1
-					totalB4 += 1
-					if (!sim) console.log (`Free L3 + Locked L3 ${type2}`)
+					total2_4 += 1
+					Solution.push (`Free L3 + Locked L3 ${type2}`)
 				}
 			} else if ( free[type1][2] > 0 && locked[type1][2] > 0) {
 				free[type1][2] -= 1
 				locked[type1][2] -= 1
 				free[type1][3] += 1
-				if (!sim) console.log (`Free L3 ${type1} + Locked L3 ${type1}`)
+				Solution.push (`Free L3 ${type1} + Locked L3 ${type1}`)       ///////////////////warum????
 			} else if ( free[type2][2] > 0 && locked[type2][2] > 0) {
 				free[type2][2] -= 1
 				locked[type2][2] -= 1
 				free[type2][3] += 1
-				if (!sim) console.log (`Free L3 ${type2} + Locked L3 ${type2}`)
+				Solution.push (`Free L3 ${type2} + Locked L3 ${type2}`)
 			} else if ( free[type2][2] > 0 && free.none[2] > 0) {
 				free[type2][2] -= 1
 				free.none[2] -= 1
 				free[type2][3] += 1
-				if (!sim) console.log (`Free L3 + Free L3 ${type2}`)
+				Solution.push (`Free L3 + Free L3 ${type2}`)
 			} else if ( free[type1][2] > 0 && free.none[2] > 0) {
 				free[type1][2] -= 1
 				free.none[2] -= 1
 				free[type1][3] += 1
-				if (!sim) console.log (`Free L3 + Free L3 ${type1}`)
+				Solution.push (`Free L3 + Free L3 ${type1}`)
 			} else if ( free.none[2] >= 2) {
 				free.none[2] -= 2
 				free.none[3] += 1
-				if (!sim) console.log ("Free L3 + Free L3")
+				Solution.push ("Free L3 + Free L3")
 			} else if ( free[type1][2] >= 2) {
 				free[type1][2] -= 2
 				free[type1][3] += 1
-				if (!sim) console.log (`Free L3 ${type1} + Free L3 ${type1}`)
+				Solution.push (`Free L3 ${type1} + Free L3 ${type1}`)
 			} else if ( free[type2][2] >= 2) {
 				free[type2][2] -= 2
 				free[type2][3] += 1
-				if (!sim) console.log (`Free L3 ${type2} + Free L3${type2}`)
+				Solution.push (`Free L3 ${type2} + Free L3 ${type2}`)
 			} else break
 		}            
-		//if (!sim) console.log ("==Level 4 Merges==")
-		totalB4 = locked[type2][3]
-		totalT4 = locked[type1][3]
+		//Solution.push ("==Level 4 Merges==")
+		total2_4 = locked[type2][3]
+		total1_4 = locked[type1][3]
 		while (true) {
 			if (free[type1][3] > 0 && locked[type2][3] > 0) {
 				free[type1][3] -= 1
 				free.full[3] += 1
 				locked[type2][3] -= 1
-				if (!sim) console.log (`Free L4 ${type1} + Locked L4 ${type2}`)
+				Solution.push (`Free L4 ${type1} + Locked L4 ${type2}`)
 			} else if ( free[type2][3] > 0 && locked[type1][3] > 0) {
 				free[type2][3] -= 1
 				free.full[3] += 1
 				locked[type1][3] -= 1
-				if (!sim) console.log (`Free L4 ${type2} + Locked L4 ${type1}`)
+				Solution.push (`Free L4 ${type2} + Locked L4 ${type1}`)
 			} else if ( free[type2][3] > 0 && free[type1][3] > 0) {
 				free[type2][3] -= 1
 				free[type1][3] -= 1
 				free.full[3] += 1
-				if (!sim) console.log (`Free L4 ${type2} + Free L4 ${type1}`)
+				Solution.push (`Free L4 ${type2} + Free L4 ${type1}`)
 			} else if ( free.none[3] > 0 && (locked[type1][3] + locked[type2][3]) > 0) {
 				pick = null
-				if (totalB4 == totalT4) {
-					if (totalB > totalT) {
+				if (total2_4 == total1_4) {
+					if (total2_ > total1_) {
 						if (locked[type1][3] > 0) 
-							pick = `${type1}`
+							pick = type1
 						else
-							pick = `${type2}`
+							pick = type2
 					} else {
 						if (locked[type2][3] > 0)
-							pick = `${type2}`
+							pick = type2
 						else
-							pick = `${type1}`
+							pick = type1
 					}
-				} else if ( totalB4 > totalT4) {
+				} else if ( total2_4 > total1_4) {
 					if (locked[type1][3] > 0) 
-						pick = `${type1}`
+						pick = type1
 					else
-						pick = `${type2}`
+						pick = type2
 				} else {
 					if (locked[type2][3] > 0)
-						pick = `${type2}`
+						pick = type2
 					else
-						pick = `${type1}`
+						pick = type1
 				}   
-				if (pick == `${type1}`) {
+				if (pick == type1) {
 					free.none[3] -= 1
 					free[type1][3] += 1
 					locked[type1][3] -= 1
-					totalT4 -= 1
-					if (!sim) console.log (`Free L4 + Locked L4 ${type1}`)
+					total1_4 -= 1
+					Solution.push (`Free L4 + Locked L4 ${type1}`)
 				} else {
 					free.none[3] -= 1
 					free[type2][3] += 1
 					locked[type2][3] -= 1
-					totalB4 -= 1
-					if (!sim) console.log (`Free L4 + Locked L4 ${type2}`)
+					total2_4 -= 1
+					Solution.push (`Free L4 + Locked L4 ${type2}`)
 				}
 			} else if (free.full[3] > 0 && (locked[type2][3] + locked[type1][3]) > 0) {
 				if (locked[type2][3] > 0) {
 					free.full[3] -= 1
 					locked[type2][3] -= 1
 					free.full[3] += 1
-					if (!sim) console.log (`Free L4 Full + Locked L4 ${type2}`)
+					Solution.push (`Free L4 Full + Locked L4 ${type2}`)
 				} else if (locked[type1][3] > 0) {
 					free.full[3] -= 1
 					locked[type1][3] -= 1
 					free.full[3] += 1
-					if (!sim) console.log (`Free L4 Full + Locked L4 ${type1}`)
+					Solution.push (`Free L4 Full + Locked L4 ${type1}`)
 				}
 			} else break
 		}
-		//if (!sim) console.log ("==Results==")
+		//Solution.push ("==Results==")
 		let endProgress = 0;
 		//Progress:
 		for (let t of [type1,type2]) {
@@ -1124,9 +1127,9 @@ let mergerGame = {
 			keys += free["full"][l-1]*mergerGame.keyValues[l]
 		}
 			
-		return {keys:keys, progress:startProgress-endProgress,locked:lockedO, free:freeO}
+		return {keys:keys, progress:startProgress-endProgress,locked:lockedO, free:freeO,solution:Solution}
 	},
-		convertToMoo:(x)=>{
+	debugginfo:(x)=>{
 		let out=[`Original (color ${x.color}):`];
 		//out.push(`freeBot = ${JSON.stringify(x.solved[x.color].free[type2])}`)
 		//out.push(`freeTop = ${JSON.stringify(x.solved[x.color].free[type1])}`)
@@ -1144,22 +1147,20 @@ let mergerGame = {
 		//out.push(`lockedT = ${JSON.stringify(x.solved[x.color].locked[type1])}`)
 		out.push(`mergerGame.cells = ${JSON.stringify(mergerGame.cells)}`)
 		out.push(`mergerGame.updateTable()`)
-		out.push(`mergerGame.updateDialog()`)
+		out.push(`mergerGame.ShowDialog()`)
 		return out.join('\n')
 	},
-	solverMooOriginal:(locked,free, color, sim=true)=>{
+	solver2:(locked,free, color)=>{
 		let lockedO = window.structuredClone(locked),
 			freeO = window.structuredClone(free),
-			type1 = mergerGame.types[1],
-			type2 = mergerGame.types[0],
-			totalB = locked[type2].reduce((a, b) => a + b, 0)+free[type2].reduce((a, b) => a + b, 0),
-			totalT = locked[type1].reduce((a, b) => a + b, 0)+free[type1].reduce((a, b) => a + b, 0),
-			totalB2 = locked[type2][1] + locked[type2][2] + locked[type2][3],
-			totalT2 = locked[type1][1] + locked[type1][2] + locked[type1][3],
-			startProgress = 0;
-		
-		;
-
+			type1 = mergerGame.types[0],
+			type2 = mergerGame.types[1],
+			total1_ = locked[type1].reduce((a, b) => a + b, 0)+free[type1].reduce((a, b) => a + b, 0),
+			total2_ = locked[type2].reduce((a, b) => a + b, 0)+free[type2].reduce((a, b) => a + b, 0),
+			total1_2 = total1_ - locked[type1][0],
+			total2_2 = total2_ - locked[type2][0],
+			startProgress = 0,
+			Solution=[];
 		//Progress:
 		for (let t of [type1,type2]) {
 			for (let l of [1,2,3,4]) {
@@ -1167,8 +1168,8 @@ let mergerGame = {
 			}
 		}
 		
-		if (!sim) console.log ("%c=======Mooing cat's solver=======","color:"+mergerGame.eventData[mergerGame.event].CSScolors[color])
-		if (!sim) console.log ("==Level 1 Merges==")
+		Solution.push ({text:"%c=======Mooing cat's solver=======",css:"color:"+mergerGame.eventData[mergerGame.event].CSScolors[color]})
+		Solution.push ("==Level 1 Merges==")
 		while (true) {
 			if (free.none[0] == 0) break;
 			
@@ -1176,51 +1177,51 @@ let mergerGame = {
 				if (free.none[0] >= 2) {
 					free.none[0] -= 2
 					free.none[1] += 1
-					if (!sim) console.log ("Free L1 + Free L1")
+					Solution.push ("Free L1 + Free L1")
 					continue;
 				} else break;
 			}
 			let pick = null
-			if (totalB2 == totalT2) {
-				if (totalB > totalT) {
+			if (total2_2 == total1_2) {
+				if (total2_ > total1_) {
 					if (locked[type1][0] > 0)
-						pick = `${type1}`
+						pick = type1
 					else
-						pick = `${type2}`
+						pick = type2
 				} else {
 					if (locked[type2][0] > 0)
-						pick = `${type2}`
+						pick = type2
 					else
-						pick = `${type1}`
+						pick = type1
 				}
-			} else if (totalB2 > totalT2) {
+			} else if (total2_2 > total1_2) {
 				if (locked[type1][0] > 0)
-					pick = `${type1}`
+					pick = type1
 				else
-					pick = `${type2}`
+					pick = type2
 			} else {
 				if (locked[type2][0] > 0)
-					pick = `${type2}`
+					pick = type2
 				else
-					pick = `${type1}`
+					pick = type1
 			}        
-			if (pick == `${type1}`) {
+			if (pick == type1) {
 				free.none[0] -= 1
 				free[type1][1] += 1
 				locked[type1][0] -= 1
-				totalT2 += 1
-				if (!sim) console.log (`Free L1 + Locked L1 ${type1}`)
+				total1_2 += 1
+				Solution.push (`Free L1 + Locked L1 ${type1}`)
 			} else {
 				free.none[0] -= 1
 				free[type2][1] += 1
 				locked[type2][0] -= 1
-				totalB2 += 1
-				if (!sim) console.log (`Free L1 + Locked L1 ${type2}`)
+				total2_2 += 1
+				Solution.push (`Free L1 + Locked L1 ${type2}`)
 			}
 		}
-		let totalB3 = locked[type2][2] + locked[type2][3];
-		let totalT3 = locked[type1][2] + locked[type1][3];
-		if (!sim) console.log ("==Level 2 Merges==")
+		let total2_3 = locked[type2][2] + locked[type2][3];
+		let total1_3 = locked[type1][2] + locked[type1][3];
+		Solution.push ("==Level 2 Merges==")
 		while (true) {
 			
 			
@@ -1229,114 +1230,114 @@ let mergerGame = {
 					free.none[1] -= 1
 					locked[type1][1] -= 1
 					free[type1][2] += 1
-					if (!sim) console.log (`Free L2 + Locked L2 ${type1}`)
+					Solution.push (`Free L2 + Locked L2 ${type1}`)
 				} else {
 					free.none[1] -= 1
 					free[type1][1] -= 1
 					free[type1][2] += 1
-					if (!sim) console.log (`Free L2 + Free L2 ${type1}`)
+					Solution.push (`Free L2 + Free L2 ${type1}`)
 				}
 				if (locked[type2][1] > 0) {
 					free.none[1] -= 1
 					locked[type2][1] -= 1
 					free[type2][2] += 1
-					if (!sim) console.log (`Free L2 + Locked L2 ${type2}`)
+					Solution.push (`Free L2 + Locked L2 ${type2}`)
 				} else {
 					free.none[1] -= 1
 					free[type2][1] -= 1
 					free[type2][2] += 1
-					if (!sim) console.log (`Free L2 + Free L2 ${type2}`)
+					Solution.push (`Free L2 + Free L2 ${type2}`)
 				}
 			} else if (free[type1][1] > 0 && locked[type2][1] > 0) {
 				free[type1][1] -= 1
 				free.full[2] += 1
 				locked[type2][1] -= 1
-				if (!sim) console.log (`Free L2 ${type1} + Locked L2 ${type2}`)
+				Solution.push (`Free L2 ${type1} + Locked L2 ${type2}`)
 			} else if (free[type2][1] > 0 && locked[type1][1] > 0) {
 				free[type2][1] -= 1
 				free.full[2] += 1
 				locked[type1][1] -= 1
-				if (!sim) console.log (`Free L2 ${type2} + Locked L2 ${type1}`)
+				Solution.push (`Free L2 ${type2} + Locked L2 ${type1}`)
 			} else if (free[type2][1] > 0 && free[type1][1] > 0) {
 				free[type2][1] -= 1
 				free[type1][1] -= 1
 				free.full[2] += 1
-				if (!sim) console.log (`Free L2 ${type2} + Free L2 ${type1}`)
+				Solution.push (`Free L2 ${type2} + Free L2 ${type1}`)
 			} else if (free.none[1] > 0 && (locked[type1][1] + locked[type2][1]) > 0) {
 				let pick = null
-				if (totalB3 == totalT3) {
-					if (totalB > totalT) {
+				if (total2_3 == total1_3) {
+					if (total2_ > total1_) {
 						if (locked[type1][1] > 0)
-							pick = `${type1}`
+							pick = type1
 						else
-							pick = `${type2}`
+							pick = type2
 					} else {
 						if (locked[type2][1] > 0)
-							pick = `${type2}`
+							pick = type2
 						else
-							pick = `${type1}`
+							pick = type1
 					}
-				} else if (totalB3 > totalT3) {
+				} else if (total2_3 > total1_3) {
 					if (locked[type1][1] > 0)
-						pick = `${type1}`
+						pick = type1
 					else
-						pick = `${type2}`
+						pick = type2
 				} else {
 					if (locked[type2][1] > 0)
-						pick = `${type2}`
+						pick = type2
 					else
-						pick = `${type1}`
+						pick = type1
 				}
-				if (pick == `${type1}`) {
+				if (pick == type1) {
 					free.none[1] -= 1
 					free[type1][2] += 1
 					locked[type1][1] -= 1
-					totalT3 += 1
-					if (!sim) console.log (`Free L2 + Locked L2 ${type1}`)
+					total1_3 += 1
+					Solution.push (`Free L2 + Locked L2 ${type1}`)
 				} else {
 					free.none[1] -= 1
 					free[type2][2] += 1
 					locked[type2][1] -= 1
-					totalB3 += 1
-					if (!sim) console.log (`Free L2 + Locked L2 ${type2}`)
+					total2_3 += 1
+					Solution.push (`Free L2 + Locked L2 ${type2}`)
 				}
 			} else if (free[type1][1] > 0 && locked[type1][1] > 0) {
 				free[type1][1] -= 1
 				locked[type1][1] -= 1
 				free[type1][2] += 1
-				if (!sim) console.log (`Free L2 ${type1} + Locked L2 ${type1}`)
+				Solution.push (`Free L2 ${type1} + Locked L2 ${type1}`)
 			} else if (free[type2][1] > 0 && locked[type2][1] > 0) {
 				free[type2][1] -= 1
 				locked[type2][1] -= 1
 				free[type2][2] += 1
-				if (!sim) console.log (`Free L2 ${type2} + Locked L2 ${type2}`)
+				Solution.push (`Free L2 ${type2} + Locked L2 ${type2}`)
 			} else if (free[type2][1] > 0 && free.none[1] > 0) {
 				free[type2][1] -= 1
 				free.none[1] -= 1
 				free[type2][2] += 1
-				if (!sim) console.log (`Free L2 + Free L2 ${type2}`)
+				Solution.push (`Free L2 + Free L2 ${type2}`)
 			} else if (free[type1][1] > 0 && free.none[1] > 0) {
 				free[type1][1] -= 1
 				free.none[1] -= 1
 				free[type1][2] += 1
-				if (!sim) console.log (`Free L2 + Free L2 ${type1}`)
+				Solution.push (`Free L2 + Free L2 ${type1}`)
 			} else if (free.none[1] >= 2) {
 				free.none[1] -= 2
 				free.none[2] += 1
-				if (!sim) console.log ("Free L2 + Free L2")
+				Solution.push ("Free L2 + Free L2")
 			} else if (free[type1][1] >= 2) {
 				free[type1][1] -= 2
 				free[type1][2] += 1
-				if (!sim) console.log (`Free L2 ${type1} + Free L2 ${type1}`)
+				Solution.push (`Free L2 ${type1} + Free L2 ${type1}`)
 			} else if (free[type2][1] >= 2) {
 				free[type2][1] -= 2
 				free[type2][2] += 1
-				if (!sim) console.log (`Free L2 ${type2} + Free L2 ${type2}`)
+				Solution.push (`Free L2 ${type2} + Free L2 ${type2}`)
 			} else break
 		}      
-		if (!sim) console.log ("==Level 3 Merges==")
-		let totalB4 = locked[type2][3]
-		let totalT4 = locked[type1][3]
+		Solution.push ("==Level 3 Merges==")
+		let total2_4 = locked[type2][3]
+		let total1_4 = locked[type1][3]
 		while (true) {
 			
 			let numtopTrios = Math.min(free.none[3],locked[type1][3],locked[type2][3])
@@ -1345,224 +1346,224 @@ let mergerGame = {
 					free.none[2] -= 1
 					locked[type1][2] -= 1
 					free[type1][3] += 1
-					if (!sim) console.log (`Free L3 + Locked L3 ${type1}`)
+					Solution.push (`Free L3 + Locked L3 ${type1}`)
 				} else {
 					free.none[2] -= 1
 					free[type1][2] -= 1
 					free[type1][3] += 1
-					if (!sim) console.log (`Free L3 + Free L3 ${type1} `)
+					Solution.push (`Free L3 + Free L3 ${type1} `)
 				}
 				if (locked[type2][2] > 0) {
 					free.none[2] -= 1
 					locked[type2][2] -= 1
 					free[type2][3] += 1
-					if (!sim) console.log (`Free L3 + Locked L3 ${type2}`)
+					Solution.push (`Free L3 + Locked L3 ${type2}`)
 				} else {
 					free.none[2] -= 1
 					free[type2][2] -= 1
 					free[type2][3] += 1
-					if (!sim) console.log (`Free L3 + Free L3 ${type2}`)
+					Solution.push (`Free L3 + Free L3 ${type2}`)
 				}
 			} else if (free[type1][2] > 0 && locked[type2][2] > 0) {
 				free[type1][2] -= 1
 				free.full[3] += 1
 				locked[type2][2] -= 1
-				if (!sim) console.log (`Free L3 ${type1} + Locked L3 ${type2}`)
+				Solution.push (`Free L3 ${type1} + Locked L3 ${type2}`)
 			} else if ( free[type2][2] > 0 && locked[type1][2] > 0) {
 				free[type2][2] -= 1
 				free.full[3] += 1
 				locked[type1][2] -= 1
-				if (!sim) console.log (`Free L3 ${type2} + Locked L3 ${type1}`)
+				Solution.push (`Free L3 ${type2} + Locked L3 ${type1}`)
 			} else if ( free[type2][2] > 0 && free[type1][2] > 0) {
 				free[type2][2] -= 1
 				free[type1][2] -= 1
 				free.full[3] += 1
-				if (!sim) console.log (`Free L3 ${type2} + Free L3 ${type1}`)
+				Solution.push (`Free L3 ${type2} + Free L3 ${type1}`)
 			} else if ( free.none[2] > 0 && locked[type1][2] > 0 && (locked[type2][3] - numtopTrios) > free[type1][3]) {
 				free.none[2] -= 1
 				locked[type1][2] -= 1
 				free[type1][3] += 1
-				if (!sim) console.log (`Free L3 + Locked L3 ${type1}`)
+				Solution.push (`Free L3 + Locked L3 ${type1}`)
 			} else if ( free.none[2] > 0 && locked[type2][2] > 0 && (locked[type1][3] - numtopTrios) > free[type2][3]) {
 				free.none[2] -= 1
 				locked[type2][2] -= 1
 				free[type2][3] += 1
-				if (!sim) console.log (`Free L3 + Locked L3 ${type2}`)
+				Solution.push (`Free L3 + Locked L3 ${type2}`)
 			} else if ( free.full[2] > 0 && ((free.none[2] + free[type2][2] + free[type1][2] + locked[type2][2] + locked[type1][2]) > 0 || free.full[2] >= 2)) {
 				if (locked[type2][2] > 0) {
 					free.full[2] -= 1
 					locked[type2][2] -= 1
 					free.full[3] += 1
-					if (!sim) console.log (`Free L3 Full + Locked L3 ${type2}`)
+					Solution.push (`Free L3 Full + Locked L3 ${type2}`)
 				} else if ( locked[type1][2] > 0) {
 					free.full[2] -= 1
 					locked[type1][2] -= 1
 					free.full[3] += 1
-					if (!sim) console.log (`Free L3 Full + Locked L3 ${type1}`)
+					Solution.push (`Free L3 Full + Locked L3 ${type1}`)
 				} else if ( free.none[2] > 0) {
 					free.full[2] -= 1
 					free.none[2] -= 1
 					free.full[3] += 1
-					if (!sim) console.log ("Free L3 Full + Free L3")
+					Solution.push ("Free L3 Full + Free L3")
 				} else if ( free[type1][2] > 0) {
 					free.full[2] -= 1
 					free[type1][2] -= 1
 					free.full[3] += 1
-					if (!sim) console.log (`Free L3 Full + Free L3 ${type1}`)
+					Solution.push (`Free L3 Full + Free L3 ${type1}`)
 				} else if ( free[type2][2] > 0) {
 					free.full[2] -= 1
 					free[type2][2] -= 1
 					free.full[3] += 1
-					if (!sim) console.log (`Free L3 Full + Free L3 ${type2}`)
+					Solution.push (`Free L3 Full + Free L3 ${type2}`)
 				} else {
 					free.full[2] -= 2
 					free.full[3] += 1
-					if (!sim) console.log ("Free L3 Full + Free L3 Full")
+					Solution.push ("Free L3 Full + Free L3 Full")
 				}
 			} else if ( free.none[2] > 0 && (locked[type1][2] + locked[type2][2]) > 0) {
 				pick = null
-				if (totalB4 == totalT4) {
-					if (totalB > totalT) {
+				if (total2_4 == total1_4) {
+					if (total2_ > total1_) {
 						if (locked[type1][2] > 0)
-							pick = `${type1}`
+							pick = type1
 						else
-							pick = `${type2}`
+							pick = type2
 					} else {
 						if (locked[type2][2] > 0)
-							pick = `${type2}`
+							pick = type2
 						else
-							pick = `${type1}`
+							pick = type1
 					}
-				} else if ( totalB4 > totalT4) {
+				} else if ( total2_4 > total1_4) {
 					if (locked[type1][2] > 0)
-						pick = `${type1}`
+						pick = type1
 					else
-						pick = `${type2}`
+						pick = type2
 				} else {
 					if (locked[type2][2] > 0)
-						pick = `${type2}`
+						pick = type2
 					else
-						pick = `${type1}`
+						pick = type1
 				}
-				if (pick == `${type1}`) {
+				if (pick == type1) {
 					free.none[2] -= 1
 					free[type1][3] += 1
 					locked[type1][2] -= 1
-					totalT4 += 1
-					if (!sim) console.log (`Free L3 + Locked L3 ${type1}`)
+					total1_4 += 1
+					Solution.push (`Free L3 + Locked L3 ${type1}`)
 				} else {
 					free.none[2] -= 1
 					free[type2][3] += 1
 					locked[type2][2] -= 1
-					totalB4 += 1
-					if (!sim) console.log (`Free L3 + Locked L3 ${type2}`)
+					total2_4 += 1
+					Solution.push (`Free L3 + Locked L3 ${type2}`)
 				}
 			} else if ( free[type1][2] > 0 && locked[type1][2] > 0) {
 				free[type1][2] -= 1
 				locked[type1][2] -= 1
 				free[type1][3] += 1
-				if (!sim) console.log (`Free L3 ${type1} + Locked L3 ${type1}`)
+				Solution.push (`Free L3 ${type1} + Locked L3 ${type1}`)
 			} else if ( free[type2][2] > 0 && locked[type2][2] > 0) {
 				free[type2][2] -= 1
 				locked[type2][2] -= 1
 				free[type2][3] += 1
-				if (!sim) console.log (`Free L3 ${type2} + Locked L3 ${type2}`)
+				Solution.push (`Free L3 ${type2} + Locked L3 ${type2}`)
 			} else if ( free[type2][2] > 0 && free.none[2] > 0) {
 				free[type2][2] -= 1
 				free.none[2] -= 1
 				free[type2][3] += 1
-				if (!sim) console.log (`Free L3 + Free L3 ${type2}`)
+				Solution.push (`Free L3 + Free L3 ${type2}`)
 			} else if ( free[type1][2] > 0 && free.none[2] > 0) {
 				free[type1][2] -= 1
 				free.none[2] -= 1
 				free[type1][3] += 1
-				if (!sim) console.log (`Free L3 + Free L3 ${type1}`)
+				Solution.push (`Free L3 + Free L3 ${type1}`)
 			} else if ( free.none[2] >= 2) {
 				free.none[2] -= 2
 				free.none[3] += 1
-				if (!sim) console.log ("Free L3 + Free L3")
+				Solution.push ("Free L3 + Free L3")
 			} else if ( free[type1][2] >= 2) {
 				free[type1][2] -= 2
 				free[type1][3] += 1
-				if (!sim) console.log (`Free L3 ${type1} + Free L3 ${type1}`)
+				Solution.push (`Free L3 ${type1} + Free L3 ${type1}`)
 			} else if ( free[type2][2] >= 2) {
 				free[type2][2] -= 2
 				free[type2][3] += 1
-				if (!sim) console.log (`Free L3 ${type2} + Free L3${type2}`)
+				Solution.push (`Free L3 ${type2} + Free L3 ${type2}`)
 			} else break
 		}            
-		if (!sim) console.log ("==Level 4 Merges==")
-		totalB4 = locked[type2][3]
-		totalT4 = locked[type1][3]
+		Solution.push ("==Level 4 Merges==")
+		total2_4 = locked[type2][3]
+		total1_4 = locked[type1][3]
 		while (true) {
 			if (free[type1][3] > 0 && locked[type2][3] > 0) {
 				free[type1][3] -= 1
 				free.full[3] += 1
 				locked[type2][3] -= 1
-				if (!sim) console.log (`Free L4 ${type1} + Locked L4 ${type2}`)
+				Solution.push (`Free L4 ${type1} + Locked L4 ${type2}`)
 			} else if ( free[type2][3] > 0 && locked[type1][3] > 0) {
 				free[type2][3] -= 1
 				free.full[3] += 1
 				locked[type1][3] -= 1
-				if (!sim) console.log (`Free L4 ${type2} + Locked L4 ${type1}`)
+				Solution.push (`Free L4 ${type2} + Locked L4 ${type1}`)
 			} else if ( free[type2][3] > 0 && free[type1][3] > 0) {
 				free[type2][3] -= 1
 				free[type1][3] -= 1
 				free.full[3] += 1
-				if (!sim) console.log (`Free L4 ${type2} + Free L4 ${type1}`)
+				Solution.push (`Free L4 ${type2} + Free L4 ${type1}`)
 			} else if ( free.none[3] > 0 && (locked[type1][3] + locked[type2][3]) > 0) {
 				pick = null
-				if (totalB4 == totalT4) {
-					if (totalB > totalT) {
+				if (total2_4 == total1_4) {
+					if (total2_ > total1_) {
 						if (locked[type1][3] > 0) 
-							pick = `${type1}`
+							pick = type1
 						else
-							pick = `${type2}`
+							pick = type2
 					} else {
 						if (locked[type2][3] > 0)
-							pick = `${type2}`
+							pick = type2
 						else
-							pick = `${type1}`
+							pick = type1
 					}
-				} else if ( totalB4 > totalT4) {
+				} else if ( total2_4 > total1_4) {
 					if (locked[type1][3] > 0) 
-						pick = `${type1}`
+						pick = type1
 					else
-						pick = `${type2}`
+						pick = type2
 				} else {
 					if (locked[type2][3] > 0)
-						pick = `${type2}`
+						pick = type2
 					else
-						pick = `${type1}`
+						pick = type1
 				}   
-				if (pick == `${type1}`) {
+				if (pick == type1) {
 					free.none[3] -= 1
 					free[type1][3] += 1
 					locked[type1][3] -= 1
-					totalT4 -= 1
-					if (!sim) console.log (`Free L4 + Locked L4 ${type1}`)
+					total1_4 -= 1
+					Solution.push (`Free L4 + Locked L4 ${type1}`)
 				} else {
 					free.none[3] -= 1
 					free[type2][3] += 1
 					locked[type2][3] -= 1
-					totalB4 -= 1
-					if (!sim) console.log (`Free L4 + Locked L4 ${type2}`)
+					total2_4 -= 1
+					Solution.push (`Free L4 + Locked L4 ${type2}`)
 				}
 			} else if (free.full[3] > 0 && (locked[type2][3] + locked[type1][3]) > 0) {
 				if (locked[type2][3] > 0) {
 					free.full[3] -= 1
 					locked[type2][3] -= 1
 					free.full[3] += 1
-					if (!sim) console.log (`Free L4 Full + Locked L4 ${type2}`)
+					Solution.push (`Free L4 Full + Locked L4 ${type2}`)
 				} else if (locked[type1][3] > 0) {
 					free.full[3] -= 1
 					locked[type1][3] -= 1
 					free.full[3] += 1
-					if (!sim) console.log (`Free L4 Full + Locked L4 ${type1}`)
+					Solution.push (`Free L4 Full + Locked L4 ${type1}`)
 				}
 			} else break
 		}
-		//if (!sim) console.log ("==Results==")
+		//Solution.push ("==Results==")
 		let endProgress = 0;
 		//Progress:
 		for (let t of [type1,type2]) {
@@ -1576,6 +1577,6 @@ let mergerGame = {
 			keys += free["full"][l-1]*mergerGame.keyValues[l]
 		}
 			
-		return {keys:keys, progress:startProgress-endProgress,locked:lockedO, free:freeO}
+		return {keys:keys, progress:startProgress-endProgress,locked:lockedO, free:freeO,solution:Solution}
 	},
-}
+		}
