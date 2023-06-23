@@ -19,8 +19,9 @@
 }
 
 #mergerGameDialog img {
-    width: 25px;
-    height: 25px;
+    width: 33px;
+    height: 33px;
+    zoom: 75%;
 }
 
 #mergerGameDialogBody {
