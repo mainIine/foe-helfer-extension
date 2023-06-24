@@ -17,6 +17,12 @@
 		- ähnlich zu Typ "T", aber wird auch schon erfüllt, sobald die angegebene Aufgabe aktiv ist
 		- z.B.: "warte bis aktualisiere 100 Gebäude aktiv #W-26"
 
+- Merger Game:
+	- jetzt kompatibel mit dem Soccer Event
+	- Es wurde Mooing Cat's Solver implementiert - dieser ist über die erste Zelle in der Spalte "Sim" erreichbar
+	- In der Spalte "Sim" ist zu sehen, wieviel Fortschritt bzw. Spieler/Schlüssel mit der aktuellen Konfiguration erreichbar sind und wie effizient das ist
+	- In der Spalte "nächster Spawn" wird angezeigt, wieviel Fortschritt/Spieler/Schlüssel durch das Erzeugen eines weiteren Spielsteins erreichbar sind und wie Effizient das wäre: Min - Max (Mittel)
+
 **BugFix**
 - Produktionsübersicht:
 	- FP Boost wurde auch auf LB angewandt

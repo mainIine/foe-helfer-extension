@@ -49,3 +49,16 @@
     object-fit: none;
     object-position: top right;
 }   
+
+#mergerGameSolutionBody {
+    overflow-y: auto;
+}
+
+#mergerGameSolutionBody div{
+    margin:5px;
+    color:var(--text-bright);
+}
+#mergerGameDialogBody svg{
+    height:15px;
+    fill:var(--text-bright);
+}
