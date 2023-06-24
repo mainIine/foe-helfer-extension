@@ -103,7 +103,7 @@ FoEproxy.addHandler('MergerGameService', 'convertPiece', (data, postData) => {
 	
 	target = mergerGame.cells.findIndex((e) => e.id == postData[0].requestData[1]);
 	
-	mergerGame.state.keys += mergerGame.cells[target].level == 3 ? 1 : 3;
+	mergerGame.state.keys += mergerGame.keyValues[mergerGame.cells[target].level];
 	mergerGame.cells.splice(target,1);
 
 	mergerGame.updateTable();
@@ -113,12 +113,14 @@ FoEproxy.addHandler('MergerGameService', 'convertPiece', (data, postData) => {
 });
 
 let mergerGame = {
-	event:"anniversary",
+	/*event:"anniversary",
 	colors: ["white","yellow","blue"],
 	types: ["top","bottom","full"],
-	/*event:"soccer",
+	spawnCost: 10,*/
+	event:"soccer",
 	colors: ["attacker","midfielder","defender"],
-	types: ["left","right","full"],*/
+	types: ["left","right","full"],
+	spawnCost: 5,
 	cells:[],
 	spawnChances:{white:{1:14,2:8,3:5,4:3},blue:{1:14,2:8,3:5,4:3},yellow:{1:19,2:10,3:7,4:4},defender:{1:14,2:8,3:5,4:3},attacker:{1:14,2:8,3:5,4:3},midfielder:{1:19,2:10,3:7,4:4}},
 	state: {
@@ -128,7 +130,6 @@ let mergerGame = {
 		keys: 0
 	},
 	resetCost: 0,
-	spawnCost: 10,
 	levelValues: {1:1,2:1,3:1,4:2},
 	keyValues: {3:1, 4:3},
 	settings: JSON.parse(localStorage.getItem("MergerGameSettings") || '{"keyValue":1.3,"targetProgress":3750,"availableCurrency":11000,"hideOverlay":true}'),
@@ -154,10 +155,9 @@ let mergerGame = {
 			tile:"player"
 		}
 	},
-	solved: {keys:0,progress:0, value:0},
+	solved: {keys:0,progress:0},
 	simulation: {},
-	simKeys:null,
-	simProgress:null,
+	simResult:null,
 
 	updateTable: () => {
 		let table = {},
@@ -275,11 +275,42 @@ let mergerGame = {
 		let efficiency = (totalValue / mergerGame.state.energyUsed).toFixed(2)|0;
 		
 		let targetEfficiency = mergerGame.settings.targetProgress/mergerGame.settings.availableCurrency;
-		html = `<table class="foe-table">`
-		html += `<tr><td>${i18n("Boxes.MergerGame.Progress")}</td><td>${remainingProgress} / ${mergerGame.state.maxProgress} <img src="${srcLinks.get(mergerGame.eventData[mergerGame.event].progress,true)}"></td></tr>`
-		html += `<tr><td>${i18n("Boxes.MergerGame.Energy."+mergerGame.event)}</td><td title="${i18n("Boxes.MergerGame.EfficiencyTargetProgress."+mergerGame.event)+Math.floor(totalValue)+"/"+Math.floor(mergerGame.state.energyUsed*targetEfficiency)|0}">${mergerGame.state.energyUsed} <img src="${srcLinks.get(mergerGame.eventData[mergerGame.event].energy,true)}"></td></tr>`
-		html += `<tr><td>${i18n("Boxes.MergerGame.Keys."+mergerGame.event)}</td><td>${keys} <img ${mergerGame.event=="soccer"?'class="toprightcorner"':''} src="${srcLinks.get(`${mergerGame.eventData[mergerGame.event].keyfile}full_${mergerGame.colors[2]}.png`,true)}"><img ${mergerGame.event=="soccer"?'class="toprightcorner"':''} src="${srcLinks.get(`${mergerGame.eventData[mergerGame.event].keyfile}full_${mergerGame.colors[1]}.png`,true)}"><img ${mergerGame.event=="soccer"?'class="toprightcorner"':''} src="${srcLinks.get(`${mergerGame.eventData[mergerGame.event].keyfile}full_${mergerGame.colors[0]}.png`,true)}"></td></tr>`
-		html += `<tr><td>${i18n("Boxes.MergerGame.Efficiency."+mergerGame.event)}</td><td style="font-weight:bold; color: ${efficiency > targetEfficiency*1.15 ? 'var(--text-success)' : efficiency < targetEfficiency * 0.95 ? 'red' : 'var(--text-bright)'}" title="${i18n("Boxes.MergerGame.EfficiencyTotalProgress") + Math.floor(efficiency*mergerGame.settings.availableCurrency)}">${efficiency} <img src="${srcLinks.get(mergerGame.eventData[mergerGame.event].progress,true)}"> /<img src="${srcLinks.get(mergerGame.eventData[mergerGame.event].energy,true)}"></td></tr>`
+		html = `<table class="foe-table"><tr><th colspan="2">${i18n("Boxes.MergerGame.Status")}</th>`
+		html += `<th style="border-left: 1px solid var(--border-tab)">${i18n("Boxes.MergerGame.Simulation")}</th>`
+		html += `<th colspan="2" style="border-left: 1px solid var(--border-tab)">${i18n("Boxes.MergerGame.NextSpawn")}</th></tr>`
+		//Energy
+		html += `<tr><td title="${i18n("Boxes.MergerGame.Energy."+mergerGame.event)}">`
+		html += `<img src="${srcLinks.get(mergerGame.eventData[mergerGame.event].energy,true)}"></td>`
+		html += `<td title="${i18n("Boxes.MergerGame.EfficiencyTargetProgress."+mergerGame.event)+Math.floor(totalValue)+"/"+Math.floor(mergerGame.state.energyUsed*targetEfficiency)|0}">${mergerGame.state.energyUsed} </td>`
+		html += `<td style="border-left: 1px solid var(--border-tab);" onclick="mergerGame.ShowSolution()">${LinkIcon}</td>`
+		html += `<td colspan="2" style="border-left: 1px solid var(--border-tab)">${mergerGame.spawnCost}</td></tr>`
+		//Progress
+		html += `<tr><td title="${i18n("Boxes.MergerGame.Progress")}">`
+		html += `<img src="${srcLinks.get(mergerGame.eventData[mergerGame.event].progress,true)}"></td>`
+		html += `<td>${remainingProgress} / ${mergerGame.state.maxProgress} </td>`
+		html += `<td style="border-left: 1px solid var(--border-tab)">${mergerGame.state.progress + mergerGame.solved.progress}</td>`
+		html += `<td title="min - max (avg)" style="border-left: 1px solid var(--border-tab); text-align:right">${mergerGame.simResult.progress.min} - ${mergerGame.simResult.progress.max}</td>`
+		html += `<td title="min - max (avg)" style="text-align:left">(${Math.round(mergerGame.simResult.progress.average*10)/10})</td></tr>`
+		//html += `<td title="${mergerGame.simResult.progress.min} - ${mergerGame.simResult.progress.max}">${Math.round(mergerGame.simResult.progress.average*10)/10}</td></tr>`
+		//Keys
+		html += `<tr><td title="${i18n("Boxes.MergerGame.Keys."+mergerGame.event)}">`
+		html += `<img ${mergerGame.event=="soccer"?'class="toprightcorner"':''} src="${srcLinks.get(`${mergerGame.eventData[mergerGame.event].keyfile}full_${mergerGame.colors[2]}.png`,true)}">`
+		html += `<img ${mergerGame.event=="soccer"?'class="toprightcorner" style="margin-left: -24px"':'style="margin-left: -15px" '} src="${srcLinks.get(`${mergerGame.eventData[mergerGame.event].keyfile}full_${mergerGame.colors[1]}.png`,true)}">`
+		html += `<img ${mergerGame.event=="soccer"?'class="toprightcorner" style="margin-left: -18px"':'style="margin-left: -15px"'} src="${srcLinks.get(`${mergerGame.eventData[mergerGame.event].keyfile}full_${mergerGame.colors[0]}.png`,true)}"></td>`
+		html += `<td>${keys}</td>`
+		html += `<td style="border-left: 1px solid var(--border-tab)">${mergerGame.state.keys + mergerGame.solved.keys}</td>`
+		html += `<td title="min - max (avg)" style="border-left: 1px solid var(--border-tab); text-align:right">${mergerGame.simResult.keys.min} - ${mergerGame.simResult.keys.max}</td>`
+		html += `<td title="min - max (avg)" style="text-align:left">(${Math.round(mergerGame.simResult.keys.average*10)/10})</td></tr>`
+		//html += `<td title="${mergerGame.simResult.keys.min} - ${mergerGame.simResult.keys.max}">${Math.round(mergerGame.simResult.keys.average*10)/10}</td></tr>`
+		//Efficiency
+		html += `<tr><td title="${i18n("Boxes.MergerGame.Efficiency."+mergerGame.event)}">`
+		html += `<img src="${srcLinks.get(mergerGame.eventData[mergerGame.event].progress,true)}">/<img src="${srcLinks.get(mergerGame.eventData[mergerGame.event].energy,true)}"></td>`
+		html += `<td style="font-weight:bold; color: ${efficiency > targetEfficiency*1.15 ? 'var(--text-success)' : efficiency < targetEfficiency * 0.95 ? 'red' : 'var(--text-bright)'}" title="${i18n("Boxes.MergerGame.EfficiencyTotalProgress") + Math.floor(efficiency*mergerGame.settings.availableCurrency)}">${efficiency} </td>`
+		html += `<td style="border-left: 1px solid var(--border-tab)">${Math.round((mergerGame.state.progress + mergerGame.solved.progress + (mergerGame.state.keys + mergerGame.solved.keys)*mergerGame.settings.keyValue)/mergerGame.state.energyUsed*100)/100||0}</td>`
+		html += `<td title="min - max (avg)" style="border-left: 1px solid var(--border-tab); text-align:right">${Math.round(mergerGame.simResult.value.min/mergerGame.spawnCost*100)/100} - ${Math.round(mergerGame.simResult.value.max/mergerGame.spawnCost*100)/100}</td>`
+		html += `<td title="min - max (avg)" style="text-align:left">(${Math.round(mergerGame.simResult.value.average/mergerGame.spawnCost*100)/100})</td></tr>`
+		//html += `<td title="${Math.round(mergerGame.simResult.value.min/mergerGame.spawnCost*100)/100} - ${Math.round(mergerGame.simResult.value.max/mergerGame.spawnCost*100)/100}">${Math.round(mergerGame.simResult.value.average/mergerGame.spawnCost*100)/100}</td></tr>`
+		
 		html += `</table>`
 
 		let totalPieces = {}
@@ -338,7 +369,39 @@ let mergerGame = {
 			}
 		});
     },
-
+	
+	updateSolution:(solved=null)=>{
+		if (solved) {
+			let out = []
+			out.push(`<div>There may be configurations, where the proposed solution is not ideal!<br>For Soccer: "left" refers to the icon in the top row.</div>`)
+			out.push(`<table class="foe-table">`)
+			for (c of Object.keys(solved)) {
+				for (x of solved[c].solution) {
+					out.push(`<tr><td ${x.css ? `style="${x.css}"`: ``}>${x.css ? x.text: x}</td></tr>`)
+				}
+			}
+			out.push(`</table>`)
+			mergerGame.Solution = out.join('');
+		}
+		if ($('#mergerGameSolution').length > 0) $('#mergerGameSolutionBody').html(mergerGame.Solution||"")
+	},
+	ShowSolution: () => {
+        
+		// Don't create a new box while another one is still open
+		if ($('#mergerGameSolution').length === 0) {
+			
+			HTML.Box({
+				id: 'mergerGameSolution',
+				title: 'Merger Game Solution',
+				auto_close: true,
+				dragdrop: true,
+				minimize: true,
+				resize : true,
+			});
+		}
+		mergerGame.updateSolution();
+    },
+	
     SaveSettings: () => {
         mergerGame.settings.keyValue = Number($('#MGkeyValue').val()) || 1;
 		mergerGame.settings.targetProgress = Number($('#MGtargetProgress').val()) || 3250;
@@ -348,21 +411,28 @@ let mergerGame = {
         mergerGame.updateDialog();
     },
 
-	
-	simStart:(i=20)=> {
+	simStart:(j=1000)=> {
+		let jstart=j;
 		mergerGame.cells = [0];
+		mergerGame.state.energyUsed=0;
+		
 		for (let i=1;i<=32;i++) {
 			let color= mergerGame.colors[Math.floor(Math.random()*3)];
 			let level=Math.floor(Math.random()*4)+1;
 			let type= mergerGame.types[Math.floor(Math.random()*2)]
 			mergerGame.cells.push({id:i,keyType:{value:type},type:{value:color},level:level,isFixed:true})
 		}
+		mergerGame.state.maxProgress=0;
+		for (let x of mergerGame.cells) {
+			if (x.isFixed) mergerGame.state.maxProgress += mergerGame.levelValues[x.level];
+		};
+
 		mergerGame.updateTable();
 		mergerGame.ShowDialog();
-		while (i>0) {
+		while (j>0) {
 			mergerGame.simSpawn()
-			i--;
-			if (mergerGame.simProgress.max==0) break
+			j--;
+			if (mergerGame.simResult.progress.max==0) break
 		}
 	},
 	simSpawn:()=> {
@@ -409,8 +479,7 @@ let mergerGame = {
 			x["level"]=4;
 		}
 		mergerGame.cells.push(x);
-		//console.log("color",x.type.value);
-		//console.log("level",x.level);
+		mergerGame.state.energyUsed+=mergerGame.spawnCost;
 		mergerGame.updateTable();
 		mergerGame.ShowDialog();
 	},
@@ -436,8 +505,7 @@ let mergerGame = {
 					
 				}
 			}
-			solved[c] = mergerGame.solver(locked,free,c);
-			for (x of solved[c].solution) x.css ? console.log(x.text,x.css) : console.log(x)
+			solved[c] = mergerGame.solver(locked,free,c,true);
 		}
 
 		let progress = 0
@@ -451,11 +519,13 @@ let mergerGame = {
 			keys += solved[c].keys;
 		}
 		mergerGame.solved.keys = keys;
-		[mergerGame.simKeys,mergerGame.simProgress] = mergerGame.simulate(solved);
+		mergerGame.simResult = mergerGame.simulateNextSpawn(solved);
+		mergerGame.updateSolution(solved)
 	},
-	simulate:(solved) => {
+	simulateNextSpawn:(solved) => {
 		let keys = {min:10,max:0,average:0};
 		let progress = {min:100,max:0,average:0};
+		let value = {min:100,max:0,average:0}
 		for (let c of mergerGame.colors) {
 			for (let l of [1,2,3,4]) {
 					let free = window.structuredClone(solved[c].free)
@@ -463,28 +533,22 @@ let mergerGame = {
 					let simulated = mergerGame.solver(window.structuredClone(solved[c].locked),window.structuredClone(free),c,true)
 					let addKeys = simulated.keys - solved[c].keys;
 					let addProgress = simulated.progress - solved[c].progress;
-					if (addKeys<0 || addProgress<0) {
-						mergerGame.solver(window.structuredClone(solved[c].locked),window.structuredClone(free),c,false)
-						console.error("solver not working properly",mergerGame.debugginfo({color:c, level:l,solved:solved,free:free}))
-						console.log("progress",solved[c].progress)
-						console.log("keys",solved[c].keys)
-						console.log("simKeys",simulated.keys);
-						console.log("simProgress",simulated.progress);
-						console.count("inconsistent");
-						for (x of simulated.solution) x.css ? console.log(x.text,x.css) : console.log(x)
-					}
+					let addValue = simulated.keys*mergerGame.settings.keyValue + simulated.progress - solved[c].progress - solved[c].keys*mergerGame.settings.keyValue;
 					if (addKeys<keys.min) keys.min = addKeys;
 					if (addKeys>keys.max) keys.max = addKeys;
 					keys.average += mergerGame.spawnChances[c][l]/100*addKeys;
 					if (addProgress<progress.min) progress.min = addProgress;
 					if (addProgress>progress.max) progress.max = addProgress;
 					progress.average += mergerGame.spawnChances[c][l]/100*addProgress;
+					if (addValue<value.min) value.min = addValue;
+					if (addValue>value.max) value.max = addValue;
+					value.average += mergerGame.spawnChances[c][l]/100*addValue;
 			}
 		}
-		return [keys,progress]
+		return {keys:keys,progress:progress,value:value}
 	}, 
 
-	simulate2:(solved,c) => {
+	checkInconsistencies:(solved,c) => {
 		let best = window.structuredClone(solved);
 		for (let l of [1,2,3,4]) {
 			if (solved.free.none[l-1] == 0) continue 
@@ -493,6 +557,10 @@ let mergerGame = {
 			free["none"][l-1] -= 1;
 			let simulated = mergerGame.solver(locked,free,c);
 			if (simulated.keys*mergerGame.settings.keyValue+simulated.progress>best.keys*mergerGame.settings.keyValue+best.progress) best = window.structuredClone(simulated);
+		}
+		if (solved.progress>best.progress) {
+			best.solution.push({text:"CHECK FOR REMAINING MERGES - solution might have ignored a piece", css:"background:red,color:black"})
+			best.progress = solved.progress;
 		}
 		return best
 	}, 
@@ -508,14 +576,14 @@ let mergerGame = {
 			result = result2;
 		
 		if (sim) {
-			result = mergerGame.simulate2(result,color)
+			result = mergerGame.checkInconsistencies(result,color)
 		}
 		
 		return result;
 		
 	},
 
-	solver1:(locked,free, color)=>{
+	solver1:(locked,free, color)=>{ //modified version of Moos solver - generally better but also has some oddities
 		let lockedO = window.structuredClone(locked),
 			freeO = window.structuredClone(free),
 			type1 = mergerGame.types[0],
@@ -534,7 +602,7 @@ let mergerGame = {
 			}
 		}
 		
-		Solution.push ({text:"%c=======Modified Solver=======",css: "color:"+mergerGame.eventData[mergerGame.event].CSScolors[color]})
+		Solution.push ({text:"=======Modified Solver=======",css: "color:"+mergerGame.eventData[mergerGame.event].CSScolors[color]})
 		//Solution.push ("==Level 1 Merges==")
 		while (true) {
 			if (free.none[0] == 0) break;
@@ -1012,7 +1080,7 @@ let mergerGame = {
 				free[type1][2] -= 1
 				locked[type1][2] -= 1
 				free[type1][3] += 1
-				Solution.push (`Free L3 ${type1} + Locked L3 ${type1}`)       ///////////////////warum????
+				Solution.push (`Free L3 ${type1} + Locked L3 ${type1}`)
 			} else if ( free[type2][2] > 0 && locked[type2][2] > 0) {
 				free[type2][2] -= 1
 				locked[type2][2] -= 1
@@ -1150,7 +1218,7 @@ let mergerGame = {
 		out.push(`mergerGame.ShowDialog()`)
 		return out.join('\n')
 	},
-	solver2:(locked,free, color)=>{
+	solver2:(locked,free, color)=>{ //Moo Original
 		let lockedO = window.structuredClone(locked),
 			freeO = window.structuredClone(free),
 			type1 = mergerGame.types[0],
@@ -1168,8 +1236,8 @@ let mergerGame = {
 			}
 		}
 		
-		Solution.push ({text:"%c=======Mooing cat's solver=======",css:"color:"+mergerGame.eventData[mergerGame.event].CSScolors[color]})
-		Solution.push ("==Level 1 Merges==")
+		Solution.push ({text:"=======Mooing cat's solver=======",css:"color:"+mergerGame.eventData[mergerGame.event].CSScolors[color]})
+		//Solution.push ("==Level 1 Merges==")
 		while (true) {
 			if (free.none[0] == 0) break;
 			
@@ -1221,7 +1289,7 @@ let mergerGame = {
 		}
 		let total2_3 = locked[type2][2] + locked[type2][3];
 		let total1_3 = locked[type1][2] + locked[type1][3];
-		Solution.push ("==Level 2 Merges==")
+		//Solution.push ("==Level 2 Merges==")
 		while (true) {
 			
 			
@@ -1335,7 +1403,7 @@ let mergerGame = {
 				Solution.push (`Free L2 ${type2} + Free L2 ${type2}`)
 			} else break
 		}      
-		Solution.push ("==Level 3 Merges==")
+		//Solution.push ("==Level 3 Merges==")
 		let total2_4 = locked[type2][3]
 		let total1_4 = locked[type1][3]
 		while (true) {
@@ -1492,7 +1560,7 @@ let mergerGame = {
 				Solution.push (`Free L3 ${type2} + Free L3 ${type2}`)
 			} else break
 		}            
-		Solution.push ("==Level 4 Merges==")
+		//Solution.push ("==Level 4 Merges==")
 		total2_4 = locked[type2][3]
 		total1_4 = locked[type1][3]
 		while (true) {
