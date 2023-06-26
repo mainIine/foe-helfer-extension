@@ -4,7 +4,7 @@
 
 **Update**
 - Raumfahrt Titan:
-	- diverse Komponenten wurden auf Raumfahrt Titan angepasst
+	- diverse Komponenten wurden für Raumfahrt Titan angepasst
 
 - Burg System:
 	- GE5 wird nun beachtet

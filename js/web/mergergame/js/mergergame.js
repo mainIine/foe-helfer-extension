@@ -145,7 +145,7 @@ let mergerGame = {
 			tile:"gem"
 		},
 		soccer:{
-			progress:"/shared/seasonalevents/league/league_soccer_icon_progression.png",
+			progress:"/shared/icons/reward_icons/reward_icon_soccer_trophy.png",
 			energy:"/shared/seasonalevents/soccer/event/soccer_football.png",
 			keyfile:"/shared/seasonalevents/soccer/event/soccer_icon_badge_",
 			colors: ["attacker","midfielder","defender"],
@@ -273,11 +273,32 @@ let mergerGame = {
 		let keys = mergerGame.keySum()|0;
 		let totalValue = mergerGame.state.progress + keys*mergerGame.settings.keyValue|0;
 		let efficiency = (totalValue / mergerGame.state.energyUsed).toFixed(2)|0;
+		let simEff = Math.round((mergerGame.state.progress + mergerGame.solved.progress + (mergerGame.state.keys + mergerGame.solved.keys)*mergerGame.settings.keyValue)/mergerGame.state.energyUsed*100)/100||0
 		
+		let simMinEff = Math.round((simEff * mergerGame.state.energyUsed + mergerGame.simResult.value.min)/(mergerGame.state.energyUsed + mergerGame.spawnCost)*100)/100
+		let simMaxEff = Math.round((simEff * mergerGame.state.energyUsed + mergerGame.simResult.value.max)/(mergerGame.state.energyUsed + mergerGame.spawnCost)*100)/100
+		let simAvgEff = Math.round((simEff * mergerGame.state.energyUsed + mergerGame.simResult.value.average)/(mergerGame.state.energyUsed + mergerGame.spawnCost)*100)/100
+
+		let totalPieces = {}
+		for (x of mergerGame.colors) {
+			totalPieces[x]={}
+			for (t of mergerGame.types) {
+				totalPieces[x][t]=0;
+			}
+		}
+		let maxKeys= 0;
+		for (let i of mergerGame.colors) {
+			for (let t of mergerGame.types) {
+				totalPieces[i][t] = table[i][1][t] + table[i][2][t] + table[i][3][t] + table[i][4][t];
+			}
+			totalPieces[i]["min"] = Math.min(totalPieces[i][type1],totalPieces[i][type2]);
+			maxKeys+=totalPieces[i]["min"]*mergerGame.keyValues[4];
+		}
+
 		let targetEfficiency = mergerGame.settings.targetProgress/mergerGame.settings.availableCurrency;
-		html = `<table class="foe-table"><tr><th colspan="2">${i18n("Boxes.MergerGame.Status")}</th>`
-		html += `<th style="border-left: 1px solid var(--border-tab)">${i18n("Boxes.MergerGame.Simulation")}</th>`
-		html += `<th colspan="2" style="border-left: 1px solid var(--border-tab)">${i18n("Boxes.MergerGame.NextSpawn")}</th></tr>`
+		html = `<table class="foe-table"><tr><th colspan="2" title="${i18n("Boxes.MergerGame.Status.Title")}">${i18n("Boxes.MergerGame.Status")}</th>`
+		html += `<th style="border-left: 1px solid var(--border-tab)" title="${i18n("Boxes.MergerGame.Simulation.Title")}">${i18n("Boxes.MergerGame.Simulation")}</th>`
+		html += `<th colspan="2" style="border-left: 1px solid var(--border-tab)" title="${i18n("Boxes.MergerGame.NextSpawn.Title")}">${i18n("Boxes.MergerGame.NextSpawn")}</th></tr>`
 		//Energy
 		html += `<tr><td title="${i18n("Boxes.MergerGame.Energy."+mergerGame.event)}">`
 		html += `<img src="${srcLinks.get(mergerGame.eventData[mergerGame.event].energy,true)}"></td>`
@@ -285,9 +306,9 @@ let mergerGame = {
 		html += `<td style="border-left: 1px solid var(--border-tab);" onclick="mergerGame.ShowSolution()">${LinkIcon}</td>`
 		html += `<td colspan="2" style="border-left: 1px solid var(--border-tab)">${mergerGame.spawnCost}</td></tr>`
 		//Progress
-		html += `<tr><td title="${i18n("Boxes.MergerGame.Progress")}">`
+		html += `<tr><td title="${i18n("Boxes.MergerGame.ProgressCollected")}">`
 		html += `<img src="${srcLinks.get(mergerGame.eventData[mergerGame.event].progress,true)}"></td>`
-		html += `<td>${remainingProgress} / ${mergerGame.state.maxProgress} </td>`
+		html += `<td>${mergerGame.state.progress} / ${mergerGame.state.maxProgress} </td>`
 		html += `<td style="border-left: 1px solid var(--border-tab)">${mergerGame.state.progress + mergerGame.solved.progress}</td>`
 		html += `<td title="min - max (avg)" style="border-left: 1px solid var(--border-tab); text-align:right">${mergerGame.simResult.progress.min} - ${mergerGame.simResult.progress.max}</td>`
 		html += `<td title="min - max (avg)" style="text-align:left">(${Math.round(mergerGame.simResult.progress.average*10)/10})</td></tr>`
@@ -297,7 +318,7 @@ let mergerGame = {
 		html += `<img ${mergerGame.event=="soccer"?'class="toprightcorner"':''} src="${srcLinks.get(`${mergerGame.eventData[mergerGame.event].keyfile}full_${mergerGame.colors[2]}.png`,true)}">`
 		html += `<img ${mergerGame.event=="soccer"?'class="toprightcorner" style="margin-left: -24px"':'style="margin-left: -15px" '} src="${srcLinks.get(`${mergerGame.eventData[mergerGame.event].keyfile}full_${mergerGame.colors[1]}.png`,true)}">`
 		html += `<img ${mergerGame.event=="soccer"?'class="toprightcorner" style="margin-left: -18px"':'style="margin-left: -15px"'} src="${srcLinks.get(`${mergerGame.eventData[mergerGame.event].keyfile}full_${mergerGame.colors[0]}.png`,true)}"></td>`
-		html += `<td>${keys}</td>`
+		html += `<td>${keys} / ${maxKeys}</td>`
 		html += `<td style="border-left: 1px solid var(--border-tab)">${mergerGame.state.keys + mergerGame.solved.keys}</td>`
 		html += `<td title="min - max (avg)" style="border-left: 1px solid var(--border-tab); text-align:right">${mergerGame.simResult.keys.min} - ${mergerGame.simResult.keys.max}</td>`
 		html += `<td title="min - max (avg)" style="text-align:left">(${Math.round(mergerGame.simResult.keys.average*10)/10})</td></tr>`
@@ -305,28 +326,15 @@ let mergerGame = {
 		//Efficiency
 		html += `<tr><td title="${i18n("Boxes.MergerGame.Efficiency."+mergerGame.event)}">`
 		html += `<img src="${srcLinks.get(mergerGame.eventData[mergerGame.event].progress,true)}">/<img src="${srcLinks.get(mergerGame.eventData[mergerGame.event].energy,true)}"></td>`
-		html += `<td style="font-weight:bold; color: ${efficiency > targetEfficiency*1.15 ? 'var(--text-success)' : efficiency < targetEfficiency * 0.95 ? 'red' : 'var(--text-bright)'}" title="${i18n("Boxes.MergerGame.EfficiencyTotalProgress") + Math.floor(efficiency*mergerGame.settings.availableCurrency)}">${efficiency} </td>`
-		html += `<td style="border-left: 1px solid var(--border-tab)">${Math.round((mergerGame.state.progress + mergerGame.solved.progress + (mergerGame.state.keys + mergerGame.solved.keys)*mergerGame.settings.keyValue)/mergerGame.state.energyUsed*100)/100||0}</td>`
-		html += `<td title="min - max (avg)" style="border-left: 1px solid var(--border-tab); text-align:right">${Math.round(mergerGame.simResult.value.min/mergerGame.spawnCost*100)/100} - ${Math.round(mergerGame.simResult.value.max/mergerGame.spawnCost*100)/100}</td>`
-		html += `<td title="min - max (avg)" style="text-align:left">(${Math.round(mergerGame.simResult.value.average/mergerGame.spawnCost*100)/100})</td></tr>`
+		html += `<td style="font-weight:bold; color: ${efficiency > targetEfficiency*1.15 ? 'var(--text-success)' : efficiency > targetEfficiency*1 ? 'yellow' : efficiency < targetEfficiency * 0.95 ? 'red' : 'var(--text-bright)'}" title="${i18n("Boxes.MergerGame.EfficiencyTotalProgress") + Math.floor(efficiency*mergerGame.settings.availableCurrency)}">${efficiency} </td>`
+		html += `<td style="border-left: 1px solid var(--border-tab); color: ${simEff > targetEfficiency*1.15 ? 'var(--text-success)' : simEff > targetEfficiency*1.05 ? 'yellow' : simEff < targetEfficiency * 0.95 ? 'red' : 'var(--text-bright)'}">${simEff}</td>`
+		html += `<td title="min - max (avg)" style="border-left: 1px solid var(--border-tab); text-align:right"><span style="color: ${simMinEff > targetEfficiency*1.15 ? 'var(--text-success)' : simMinEff > targetEfficiency**1.05 ? 'yellow' : simMinEff < targetEfficiency * 0.95 ? 'red' : 'var(--text-bright)'}">${simMinEff}</span> - <span style="color: ${simMaxEff > targetEfficiency*1.15 ? 'var(--text-success)' : simMaxEff > targetEfficiency*1 ? 'yellow' : simMaxEff < targetEfficiency * 0.95 ? 'red' : 'var(--text-bright)'}">${simMaxEff}</span></td>`
+		html += `<td title="min - max (avg)" style="text-align:left;color: ${simAvgEff > targetEfficiency*1.15 ? 'var(--text-success)' : simAvgEff > targetEfficiency*1.05 ? 'yellow' : simAvgEff < targetEfficiency * 0.95 ? 'red' : 'var(--text-bright)'}">(${simAvgEff})</td></tr>`
+		//html += `<td title="min - max (avg)" style="border-left: 1px solid var(--border-tab); text-align:right"><span style="color: ${simMinEff > targetEfficiency*1.15 ? 'var(--text-success)' : simMinEff > targetEfficiency**1.05 ? 'yellow' : simMinEff < targetEfficiency * 0.95 ? 'red' : 'var(--text-bright)'}">${Math.round(mergerGame.simResult.value.min/mergerGame.spawnCost*100)/100}</span> - <span style="color: ${simMaxEff > targetEfficiency*1.15 ? 'var(--text-success)' : simMaxEff > targetEfficiency*1 ? 'yellow' : simMaxEff < targetEfficiency * 0.95 ? 'red' : 'var(--text-bright)'}">${Math.round(mergerGame.simResult.value.max/mergerGame.spawnCost*100)/100}</span></td>`
+		//html += `<td title="min - max (avg)" style="text-align:left;color: ${simAvgEff > targetEfficiency*1.15 ? 'var(--text-success)' : simAvgEff > targetEfficiency*1.05 ? 'yellow' : simAvgEff < targetEfficiency * 0.95 ? 'red' : 'var(--text-bright)'}">(${Math.round(mergerGame.simResult.value.average/mergerGame.spawnCost*100)/100})</td></tr>`
 		//html += `<td title="${Math.round(mergerGame.simResult.value.min/mergerGame.spawnCost*100)/100} - ${Math.round(mergerGame.simResult.value.max/mergerGame.spawnCost*100)/100}">${Math.round(mergerGame.simResult.value.average/mergerGame.spawnCost*100)/100}</td></tr>`
 		
 		html += `</table>`
-
-		let totalPieces = {}
-		for (x of mergerGame.colors) {
-			totalPieces[x]={}
-			for (t of mergerGame.types) {
-				totalPieces[x][t]=0;
-			}
-		}
-
-		for (let i of mergerGame.colors) {
-			for (let t of mergerGame.types) {
-				totalPieces[i][t] = table[i][1][t] + table[i][2][t] + table[i][3][t] + table[i][4][t];
-			}
-			totalPieces[i]["min"] = Math.min(totalPieces[i][type1],totalPieces[i][type2]);
-		}
 
 		for (let i of mergerGame.colors) {
 			html += `<table class="foe-table"><tr><th></th>`
