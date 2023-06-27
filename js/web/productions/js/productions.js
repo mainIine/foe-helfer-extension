@@ -2020,21 +2020,11 @@ let Productions = {
     },
 
 	GetDefaultProdPerTile: (Type) => {
-		if (Type === 'strategy_points') {
-			return 0.2;
-		}
-		if (Type === 'money') {
-			return 0;
-		}
-		if (Type === 'supplies') {
-			return 0;
-		}
-		if (Type === 'medals') {
-			return 0;
-		}
-		if (Type === 'units') {
-			return 0.2;
-		}
+		if (Type === 'strategy_points') return 0.2;
+		if (Type === 'money') return 0;
+		if (Type === 'supplies') return 0;
+		if (Type === 'medals') return 0;
+		if (Type === 'units') return 0.2;
 		if (Type === 'clan_power') {
 			let Entity = MainParser.CityEntities['Z_MultiAge_CupBonus1b'] //Hall of fame lvl2
 				Level = CurrentEraID - 1;
@@ -2043,32 +2033,14 @@ let Productions = {
 
 			return 2 * Entity['entity_levels'][Level]['clan_power'] / 10.5; //Motivated hall of fame lvl2
 		}
-		if (Type === 'clan_goods') {
-			return 0;
-		}
-		if (Type === 'population') {
-			return 0;
-		}
-		if (Type === 'happiness') {
-			return 0;
-		}
-		if (Type === 'att_boost_attacker') {
-			return 1;
-		}
-		if (Type === 'def_boost_attacker') {
-			return 1;
-		}
-		if (Type === 'att_boost_defender') {
-			return 4;
-		}
-		if (Type === 'def_boost_defender') {
-			return 6;
-		}
-		if (Type === 'goods') {
-			return 1;
-		}
-		else {
-			return 0;
-        }
+		if (Type === 'clan_goods') return 0;
+		if (Type === 'population') return 0;
+		if (Type === 'happiness') return 0;
+		if (Type === 'att_boost_attacker') return 1;
+		if (Type === 'def_boost_attacker') return 1;
+		if (Type === 'att_boost_defender') return 4;
+		if (Type === 'def_boost_defender') return 6;
+		if (Type === 'goods') return 1;
+		else return 0;
 	},
 };
