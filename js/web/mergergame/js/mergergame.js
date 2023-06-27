@@ -50,7 +50,7 @@ FoEproxy.addHandler('MergerGameService', 'all', (data, postData) => {
 	if (mergerGame.state.progress == mergerGame.state.maxProgress) {
 		mergerGame.resetCost = 0;
 	} else {
-		mergerGame.resetCost = data.responseData.resetCost?.resources[`${mergerGame.event}_energy`] || 0;
+		mergerGame.resetCost = data.responseData.resetCost?.resources[mergerGame.eventData[mergerGame.event].currency] || 0;
 	}
 	
 });
@@ -142,7 +142,8 @@ let mergerGame = {
 			CSScolors: {white:"#7fecba",yellow:"#e14709",blue:"#08a9f7"},
 			types: ["top","bottom","full"],
 			partname:"key",
-			tile:"gem"
+			tile:"gem",
+			currency:`anniversary_energy`
 		},
 		soccer:{
 			progress:"/shared/icons/reward_icons/reward_icon_soccer_trophy.png",
@@ -152,7 +153,8 @@ let mergerGame = {
 			types: ["left","right","full"],
 			CSScolors: {attacker:"#ec673a",midfielder:"#e7d20a",defender:"#44d3e2"},
 			partname:"badge",
-			tile:"player"
+			tile:"player",
+			currency:`soccer_football`
 		}
 	},
 	solved: {keys:0,progress:0},
