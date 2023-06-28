@@ -18,7 +18,8 @@
     height: 500px;
 }
 
-#mergerGameDialog img {
+#mergerGameDialog img,
+#mergerGameSolutionBody img {
     width: 33px;
     height: 33px;
     zoom: 75%;
@@ -45,7 +46,8 @@
     width:4.5em;
 }
 
-#mergerGameDialog .toprightcorner{
+#mergerGameDialog .toprightcorner,
+#mergerGameSolutionBody .toprightcorner{
     object-fit: none;
     object-position: top right;
 }   
