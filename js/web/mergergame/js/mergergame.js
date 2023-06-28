@@ -273,10 +273,10 @@ let mergerGame = {
 		
 		let table = mergerGame.state.table
 	
-		let remainingProgress = mergerGame.state.maxProgress - mergerGame.state.progress|0;
-		let keys = mergerGame.keySum()|0;
-		let totalValue = mergerGame.state.progress + keys*mergerGame.settings.keyValue|0;
-		let efficiency = (totalValue / mergerGame.state.energyUsed).toFixed(2)|0;
+		let remainingProgress = mergerGame.state.maxProgress - mergerGame.state.progress;
+		let keys = mergerGame.keySum();
+		let totalValue = mergerGame.state.progress + keys*mergerGame.settings.keyValue;
+		let efficiency = (totalValue / mergerGame.state.energyUsed).toFixed(2);
 		let simEff = Math.round((mergerGame.state.progress + mergerGame.solved.progress + (mergerGame.state.keys + mergerGame.solved.keys)*mergerGame.settings.keyValue)/mergerGame.state.energyUsed*100)/100||0
 		
 		let simMinEff = Math.round((simEff * mergerGame.state.energyUsed + mergerGame.simResult.value.min)/(mergerGame.state.energyUsed + mergerGame.spawnCost)*100)/100
