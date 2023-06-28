@@ -144,7 +144,7 @@ let mergerGame = {
 			partname:"key",
 			tile:"gem",
 			currency:`anniversary_energy`,
-			solverOut:{top:"tip",bottom:"handle",full:"Full"}
+			solverOut:{top:"Tip",bottom:"Handle",full:"Full"}
 		},
 		soccer:{
 			progress:"/shared/icons/reward_icons/reward_icon_soccer_trophy.png",
@@ -156,7 +156,7 @@ let mergerGame = {
 			partname:"badge",
 			tile:"player",
 			currency:`soccer_football`,
-			solverOut:{left:"right",right:"left",full:"Full"}
+			solverOut:{left:"Right",right:"Left",full:"Full"}
 		}
 	},
 	solved: {keys:0,progress:0},
