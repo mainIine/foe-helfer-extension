@@ -1,6 +1,6 @@
 [	
 	{
-		"udate": "16.06.2023"
+		"udate": "28.06.2023"
 	},
 	{
 		"groupname": "Guild_Battlegrounds"
@@ -81,7 +81,28 @@
 				"update": "upgrade_kit_FELLOW23A"
 			}
 		],
-		"kit": ["selection_kit_FELLOW23A","golden_upgrade_kit_FELLOW23A"]
+		"kit": [
+			"selection_kit_FELLOW23A",
+			"selection_kit_FELLOW23A",
+			"fragment#golden_upgrade_kit_FELLOW23A",
+			"fragment#golden_upgrade_kit_FELLOW23A"
+		]
+	},
+	{
+		"name": "Aegean_Resort",
+		"buildings": [
+			{
+				"first": "W_MultiAge_CUP23A1",
+				"update": "upgrade_kit_CUP23A"
+			}
+		],
+		"kit": [
+			"selection_kit_CUP23A",
+			"fragment#selection_kit_CUP23A",
+			"golden_upgrade_kit_CUP23A",
+			"golden_selection_kit_CUP23A",
+			"fragment#golden_selection_kit_CUP23A"
+		]
 	},
 	{
 		"name": "Animal_Crossing",
@@ -110,7 +131,9 @@
 		"kit": [
 			"selection_kit_gentiana_windmill_farm",
 			"selection_kit_gentiana_windmill",
-			"selection_kit_gentiana_farmland"
+			"selection_kit_gentiana_farmland",
+			"selection_kit_epic_CUP23",
+			"golden_upgrade_kit_CUP22A"
 		]
 	},
 	{
@@ -264,7 +287,11 @@
 				"update": "upgrade_kit_athlon_abbey"
 			}
 		],
-		"kit": "selection_kit_athlon_abbey"
+		"kit": [
+			"selection_kit_athlon_abbey",
+			"golden_upgrade_kit_CUP22A",
+			"selection_kit_epic_CUP23"
+		]
 	},
 	{
 		"name": "Ferris_Wheel",
@@ -377,7 +404,10 @@
 				"update": "upgrade_kit_hall_of_fame"
 			}
 		],
-		"kit": "selection_kit_hall_of_fame"
+		"kit": [
+			"selection_kit_hall_of_fame",
+			"selection_kit_epic_CUP23"
+		]
 	},
 	{
 		"name": "Hippodrome",
@@ -404,7 +434,8 @@
 			"selection_kit_hippodrome_sphendone",
 			"selection_kit_hippodrome_carceres",
 			"selection_kit_hippodrome_track",
-			"selection_kit_hippodrome_middle_sections"
+			"selection_kit_hippodrome_middle_sections",
+			"selection_kit_epic_CUP23"
 		]
 	},
 	{
@@ -617,7 +648,8 @@
 		],
 		"kit": [
 			"selection_kit_altar_garden",
-			"selection_kit_divine"
+			"selection_kit_divine",
+			"selection_kit_epic_CUP23"
 		]
 	},
 	{
@@ -746,7 +778,10 @@
 				"update": "upgrade_kit_grand_bridge"
 			}
 		],
-		"kit": "selection_kit_grand_bridge"
+		"kit": [
+			"selection_kit_grand_bridge",
+			"selection_kit_epic_CUP23"
+		]
 	},
 	{
 		"name": "Pillar_of_Heroes",
@@ -767,7 +802,10 @@
 				"update": "upgrade_kit_winners_plaza"
 			}
 		],
-		"kit": "selection_kit_winners_plaza"
+		"kit": [
+			"selection_kit_winners_plaza",
+			"selection_kit_epic_CUP23"
+		]
 	},
 	{
 		"name": "Winter_Village_Set",
