@@ -30,6 +30,7 @@ FoEproxy.addHandler('ClanBattleService', 'getContinent', (data, postData) => { /
 	GvGMap.OnloadData = null;
 	GvGMap.Map = {
 		Sectors: [],
+		AllProvinces: [],
 		Guilds: [],
 		Width: 0,
 		Height: 0,
@@ -596,6 +597,11 @@ let GvGMap = {
 		t.push( GvGMap.GetTabContent() );
 		t.push('</div>');
 		$('#gvgOptionsContent').html(t.join(''));
+
+		$('#GvGGuilds .collapsable td').on('click',function(){
+			$(this).parent('tr').toggleClass('open');
+			$(this).parent('tr').next('tr').toggle();
+		});
 	},
 
 	events: () => {
@@ -800,16 +806,17 @@ let GvGMap = {
 			});
 		});
 		// paint sectors
-		let provinces = [];
+		GvGMap.Map.AllProvinces = [];
 		GvGMap.Overview.continent.provinces.forEach(function (province) {
-			provinces.push({
+			GvGMap.Map.AllProvinces.push({
 				era: province.era,
 				guilds: []
 			});
 
-			let mapDataFromStorage = JSON.parse(localStorage.getItem('GvGMapEra_'+province.era));
-			let currentProvince = provinces.find(x => x.era = province.era);
+			let mapDataFromStorage = JSON.parse(localStorage.getItem('GvGMapEra_'+province.era)); // look if province is stored
+			let xCurrentProvince = GvGMap.Map.AllProvinces.find(x => x.era == province.era);
 
+			// general summary list
 			province.sectors.forEach(function (sector, i, arr) {
 				let newSector = GvGMap.buildOverviewSector(sector); // has no color yet
 
@@ -821,45 +828,65 @@ let GvGMap = {
 					};
 					let guildOnMap = GvGMap.createGuild(guild);
 
-					// for general guild list
-					if (GvGMap.getGuildById(sector.owner_id) === undefined) { // if guild is unknown
+					if (GvGMap.getGuildById(sector.owner_id) === undefined)  // if guild is unknown
 						GvGMap.Map.Guilds.push(guildOnMap);
-					}
 					else {
 						let guild = GvGMap.getGuildById(sector.owner_id);
 						guild.sectors++;
 					}
 
-					// for guild province list
-					let provinceGuild = currentProvince.guilds.find(x => x.id = sector.owner_id);
-					if (provinceGuild)
-						console.log(provinceGuild, sector);
-
 					if (mapDataFromStorage != null) { // if sector power and terrain are known
 						let storedSector = mapDataFromStorage.sectors.find(x => x.sector_id = sector.sector_id);
 						let guild = GvGMap.getGuildById(sector.owner_id);
-
-						if (provinceGuild) {
-							provinceGuild.power += storedSector.power;
-						}
-						else {
-							currentProvince.guilds.push(guildOnMap);
-						}
-						guild.power += storedSector.power; // for general guild list
+						guild.power += storedSector.power; 
 					}
 				}
-				else {
+				else { // if NPC sector
 					if (mapDataFromStorage != null) 
 						newSector.color = MapSector.getColorByTerrain(sector);
 				}
 				MapSector.draw(newSector);
-				if (i === arr.length - 1) { 
-					console.log(province.era, provinces.find(x => x.era = province.era)); 
-				}
 			});
-			//console.log(province.era, provinces.find(x => x.era = province.era));
+
+			// guild province summary
+			if (mapDataFromStorage != null) {
+				province.sectors.forEach(function (sector, i, arr) {
+					if (sector.owner_id > 0) {
+						let storedSector = mapDataFromStorage.sectors.find(x => x.sector_id == sector.sector_id);
+						if (storedSector != undefined) {
+							let guild = GvGMap.getGuildById(sector.owner_id);
+							let guildInProvince = xCurrentProvince.guilds.find(x => x.id == guild.id);
+							let xProvinceGuild = {};
+							if (guildInProvince == undefined) {
+								xProvinceGuild = {
+									id: guild.id,
+									name: guild.name,
+									sectors: 1,
+									power: storedSector.power,
+								};
+								xCurrentProvince.guilds.push(xProvinceGuild);
+							}
+							else {
+								xProvinceGuild = guildInProvince;
+								xProvinceGuild.sectors++;
+								xProvinceGuild.power+= storedSector.power;
+							}
+						}
+					}
+				});
+				xCurrentProvince.guilds.sort(function(a, b) { // sort guilds by power
+					if (a.power > b.power)
+						return -1;
+					if (a.power < b.power)
+						return 1;
+					return 0;
+				});
+			}
 		});
+		console.log(GvGMap.Map.AllProvinces);
 	},
+
+	// to do gildennamen aktualisieren
 
 	buildOverviewSector: (sector) => {
 		let newSector = {};
@@ -1015,6 +1042,20 @@ let GvGMap = {
 		return guild.power;
 	},
 
+	addPowerBonus: () => { // for overview
+		GvGMap.Map.AllProvinces.forEach(function (province) {
+			console.log(province);
+			if (province.guilds != []) {
+				if (province.guilds[0]) 
+					province.guilds[0].power = Math.round(province.guilds[0].power*1.15);
+				if (province.guilds[1]) 
+					province.guilds[1].power = Math.round(province.guilds[1].power*1.1);
+				if (province.guilds[2]) 
+					province.guilds[2].power = Math.round(province.guilds[2].power*1.05);
+			}
+		});
+	},
+
 	updateGuildData: (guild) => {
 		let tableRow = document.getElementById("id-"+guild.id);
 		if (tableRow != null) {
@@ -1101,13 +1142,15 @@ let GvGMap = {
 			GvGMap.sortGuilds();
 		else
 			GvGMap.sortGuildsBySectorAmount();
+		
+		GvGMap.addPowerBonus(); // add province power bonus
 
 		t.push('<table id="GvGGuilds" class="foe-table">');
 		t.push('<thead><tr>');
-		t.push('<th>'+i18n('Boxes.GvGMap.Guild.Name')+'</th>');
+		t.push('<th>'+i18n('General.Guild')+'</th>');
 		t.push('<th>'+i18n('Boxes.GvGMap.Guild.Sectors')+'</th>');
 		if (mapCounter == 13) // all map data avalable
-			t.push('<th>'+i18n('Boxes.GvGMap.Guild.Power')+'</th>');
+			t.push('<th colspan="2">'+i18n('Boxes.GvGMap.Guild.Power')+'</th>');
 		t.push('</tr></thead>');
 		if (mapCounter < 13) {
 			t.push('<tr>');
@@ -1116,11 +1159,34 @@ let GvGMap = {
 		}
 		GvGMap.Map.Guilds.forEach(function (guild) {
 			if (guild.sectors > 0) {
-				t.push('<tr id="id-'+guild.id+'">');
+				let guildPower = 0;
+				GvGMap.Map.AllProvinces.forEach(function(province) { // calculate true guildpower with bonus
+					let guildInProvince = province.guilds.find(x => x.id == guild.id);
+					if (guildInProvince) 
+						guildPower += guildInProvince.power;
+				});
+
+				t.push('<tr id="id-'+guild.id+'" class="collapsable">');
 				t.push('<td><span class="guildflag '+guild.flag+'" style="background-color: '+GvGMap.colorToString(guild.color)+'"></span>' + GvGMap.encodeGuildName(guild.name) + '</td>');
 				t.push('<td class="text-center">'+guild.sectors+'</td>');
-				if (mapCounter == 13) // all map data avalable
-					t.push('<td class="text-center">'+guild.power+'</td>');
+
+				if (mapCounter == 13) {// all map data avalable
+					t.push('<td class="text-center">'+guildPower+'</td><td></td>');
+					t.push('<tr style="display:none;"><td colspan="4" style="padding:0"><table class="foe-table"><tr><th>Era</th><th class="text-center">'+i18n('Boxes.GexStat.Rank')+'</th><th class="text-center">'+i18n('Boxes.GvGMap.Guild.Sectors')+'</th><th class="text-center">'+i18n('Boxes.GvGMap.Guild.Power')+'</th></tr>');
+					GvGMap.Map.AllProvinces.forEach(function(province){
+						let guildInProvince = province.guilds.find(x => x.id == guild.id);
+						if (guildInProvince) {
+							t.push('<tr>');
+							t.push('<td>'+province.era+'</td>')
+							t.push('<td class="text-center">'+((province.guilds.indexOf(guildInProvince))+1)+'</td>')
+							t.push('<td class="text-center">'+guildInProvince.sectors+'</td>')
+							t.push('<td class="text-center">'+guildInProvince.power+'</td>')
+							t.push('</tr>');
+						}
+					});
+					t.push('</table></td></tr>');
+				}
+
 				t.push('</tr>');
 			}
 		});
