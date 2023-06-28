@@ -18,9 +18,11 @@
     height: 500px;
 }
 
-#mergerGameDialog img {
-    width: 25px;
-    height: 25px;
+#mergerGameDialog img,
+#mergerGameSolutionBody img {
+    width: 33px;
+    height: 33px;
+    zoom: 75%;
 }
 
 #mergerGameDialogBody {
@@ -42,4 +44,23 @@
 
 #mergerGameDialogSettingsBox input{
     width:4.5em;
+}
+
+#mergerGameDialog .toprightcorner,
+#mergerGameSolutionBody .toprightcorner{
+    object-fit: none;
+    object-position: top right;
+}   
+
+#mergerGameSolutionBody {
+    overflow-y: auto;
+}
+
+#mergerGameSolutionBody div{
+    margin:5px;
+    color:var(--text-bright);
+}
+#mergerGameDialogBody svg{
+    height:15px;
+    fill:var(--text-bright);
 }

@@ -1,5 +1,37 @@
 ## Changelog - Extension
 
+##### 3.2.5.0
+
+**Update**
+- Raumfahrt Titan:
+	- diverse Komponenten wurden für Raumfahrt Titan angepasst
+
+- Burg System:
+	- GE5 wird nun beachtet
+
+- Gebäude Kits:
+	- neue Teile wurden ergänzt
+
+- Idle Game:
+	- neue Bedingung "W"(arte bis Aufgabe aktiv oder erfüllt ist) wurde hinzugefügt:
+		- ähnlich zu Typ "T", aber wird auch schon erfüllt, sobald die angegebene Aufgabe aktiv ist
+		- z.B.: "warte bis aktualisiere 100 Gebäude aktiv #W-26"
+
+- Merger Game:
+	- jetzt kompatibel mit dem Soccer Event
+	- die Tabelle zeigt nun in der jeweils ersten Zeile die Anzahl an freien Teilen an
+	- Es wurde Mooing Cat's Solver implementiert - dieser ist über die erste Zelle in der Spalte "Sim" erreichbar
+	- In der Spalte "Sim" ist zu sehen, wieviel Fortschritt bzw. Spieler/Schlüssel mit der aktuellen Konfiguration erreichbar sind und wie effizient das ist
+	- In der Spalte "nächster Spawn" wird angezeigt, wieviel Fortschritt/Spieler/Schlüssel durch das Erzeugen eines weiteren Spielsteins erreichbar sind und wie Effizient das wäre: Min - Max (Mittel)
+
+**BugFix**
+- Produktionsübersicht:
+	- FP Boost wurde auch auf LB angewandt
+  
+- Idle Game:
+	- Wecker/Timer werden nun korrekt gesetzt - beschränkt auf zeiten geringer als 24 Stunden
+
+---
 ##### 3.2.4.0
 
 **Update**
@@ -26,7 +58,7 @@
 	- kann nun minimiert werden
 
 - Gildengefechte
-	- wenn in der Provinzübersicht keine Zeile ausgewählt ist, können nun alle Zeilen kopiert werden
+	- wenn in der Provinzübersicht keine Zeile ausgewählt ist, wird nun ein "alle auswählen" Button angezeigt
 
 - Moppelhelfer
 	- Spalte "Gilde" hinzugefügt
@@ -46,6 +78,8 @@
 	- gelegentlich wurden für einzelne Spieler NaA angezeigt
 	- Teilnahme% für GE seit Einführung von GE5 geändert
 	- korrektes Icon für GE5
+
+---
 
 ##### 3.2.3.0
 
