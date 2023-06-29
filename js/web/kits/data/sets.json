@@ -1142,7 +1142,8 @@
 				"first": "P_MultiAge_Expedition16",
 				"update": "upgrade_kit_terrace_farm"
 			}
-		]
+		],
+		"kit": ["selection_kit_gex4"]
 	},
 	{
 		"name": "Fountain_of_Youth",
@@ -1160,7 +1161,8 @@
 				"first": "R_MultiAge_Expedition16b",
 				"update": "upgrade_kit_sacred_sky"
 			}
-		]
+		],
+		"kit": ["selection_kit_gex3"]
 	},
 	{
 		"name": "Tribal_Square",
@@ -1169,7 +1171,8 @@
 				"first": "R_MultiAge_Expedition16a",
 				"update": "upgrade_kit_tribal_square"
 			}
-		]
+		],
+		"kit": ["selection_kit_gex3"]
 	},
 	{
 		"name": "Gate_of_the_Sun_God",
@@ -1178,7 +1181,8 @@
 				"first": "D_MultiAge_Expedition16b",
 				"update": "upgrade_kit_gate_of_the_sun_god"
 			}
-		]
+		],
+		"kit": ["selection_kit_gex1"]
 	},
 	{
 		"name": "Face_of_the_Ancient",
@@ -1187,7 +1191,8 @@
 				"first": "D_MultiAge_Expedition16a",
 				"update": "upgrade_kit_face_of_the_ancient"
 			}
-		]
+		],
+		"kit": ["selection_kit_gex1"]
 	},
 	{
 		"name": "Ritual_Flame",
@@ -1196,7 +1201,8 @@
 				"first": "T_AllAge_Expedition16",
 				"update": "upgrade_kit_ritual_flame"
 			}
-		]
+		],
+		"kit": ["selection_kit_gex2"]
 	},
 	{
 		"groupname": "Antiques_Dealer"
