@@ -33,8 +33,8 @@
 #mergerGameResetBlocker {
     width: 55px;
     height: 55px;
-    top: calc(50vh + 206px);
-    left: calc(50vw - 345px);
+    top: calc(50vh + 243px);
+    left: calc(50vw - 334px);
     position: absolute;
     z-index: 100;
     background-color: #ff9400;
