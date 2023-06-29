@@ -1,5 +1,13 @@
 ## Changelog - Extension
 
+##### 3.2.6.0
+
+**Update**
+- GvG Overview: you can now click on the button in the GvG Overview to see the realtime GvG power of all guilds including their ranking on all maps. Please visit all maps once to load the power data from each map.
+
+**BugFix**
+- Discord Invite links were broken, so we replaced them
+
 ##### 3.2.5.0
 
 **Update**
@@ -488,7 +496,7 @@
 **New**
 - Beta-Mode:
 	- in the settings you can now choose to use the current beta version of Github instead of the installed one.
-	- When using this mode, there may be more bugs - please report bugs on [Discord](https://discord.gg/z97KZq4) or on [Github](https://github.com/mainIine/foe-helfer-extension/issues)!
+	- When using this mode, there may be more bugs - please report bugs on [Discord](https://discord.gg/uQY7rqDJ7z) or on [Github](https://github.com/mainIine/foe-helfer-extension/issues)!
 
 **Update**
 - St. Patrick's Box:

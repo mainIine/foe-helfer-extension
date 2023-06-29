@@ -75,12 +75,23 @@
 	height: 500px;
 }
 
+#GvGMapOverview {
+	left: calc(50vw - 400px);
+	top: calc(50vw - 250px);
+	width: 800px;
+	height: 500px;
+}
+
 #GvGMapBody.window-body {
 	display: flex;
 	align-items: stretch;
 	overflow: hidden;
 	justify-content: space-between;
 	height: calc(100% - 19px);
+}
+
+#GvGMapBody.GvGMapOverview.window-body {
+	height: calc(100% - 12px);
 }
 
 #GvGMapContent {
@@ -157,6 +168,10 @@
 	flex-grow: 2;
 	position: relative;
 	border-left: 2px solid var(--text-dark);
+}
+
+#GvGMapBody.GvGMapOverview #gvgOptions {
+	height: calc(100% - 25px);
 }
 
 .rank-first { color: var(--text-bright) }
