@@ -882,7 +882,6 @@ let GvGMap = {
 				});
 			}
 		});
-		console.log(GvGMap.Map.AllProvinces);
 	},
 
 	// to do gildennamen aktualisieren
@@ -1043,7 +1042,6 @@ let GvGMap = {
 
 	addPowerBonus: () => { // for overview
 		GvGMap.Map.AllProvinces.forEach(function (province) {
-			console.log(province);
 			if (province.guilds != []) {
 				if (province.guilds[0]) 
 					province.guilds[0].power = Math.round(province.guilds[0].power*1.15);
