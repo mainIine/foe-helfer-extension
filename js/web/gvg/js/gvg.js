@@ -500,6 +500,7 @@ let GvGMap = {
 		h.push('<div id="gvgOptions" class="'+collapsed+'"><div id="gvgOptionsContent"></div></div>');
 
 		$('#GvGMapBody').html(h.join(''));
+		$('#GvGMapBody').removeClass('GvGMapOverview');
 	},
 
 	buildOverviewContent: () => {
@@ -516,6 +517,7 @@ let GvGMap = {
 		h.push('<div id="gvgOptions" class="'+collapsed+'"><div id="gvgOptionsContent"></div></div>');
 
 		$('#GvGMapBody').html(h.join(''));
+		$('#GvGMapBody').addClass('GvGMapOverview');
 	},
 
 	/**
@@ -592,10 +594,7 @@ let GvGMap = {
 		GvGMap.showOverviewGuilds();
 		GvGMap.mapDrag();
 			
-		t.push('<div class="gvg-tabs tabs">');
-		t.push( GvGMap.GetTabs() );
 		t.push( GvGMap.GetTabContent() );
-		t.push('</div>');
 		$('#gvgOptionsContent').html(t.join(''));
 
 		$('#GvGGuilds .collapsable td').on('click',function(){
