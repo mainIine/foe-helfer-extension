@@ -1,5 +1,13 @@
 ## Changelog - Extension
 
+##### 3.2.6.0
+
+**Update**
+- GvG Übersicht: Man kann jetzt in der GvG Übersicht ebenfalls auf den orange farnenen Button klickt, um die gesamte Macht und alle Gilden inklusive Daten einzelner Karten zu sehen. Bitte einmal alle Karten durchklicken, damit die Gilden und Sektoren erfasst werden können.
+
+**BugFix**
+- Die Einladungslinks zu Discord waren abgelaufen, wir haben sie ersetzt.
+
 ##### 3.2.5.0
 
 **Update**
@@ -470,7 +478,7 @@
 **New**
 - Beta-Modus:
 	- in den Einstellungen kann nun eingestellt werden, dass die aktuelle Beta-Version von Github verwendet werden soll statt der installierten 
-	- Wenn dieser Modus benutzt wird, kann es vermehrt zum Auftreten von Fehlern kommen - bitte berichtet Fehler auf dem [Discord](https://discord.gg/z97KZq4) oder auf [Github](https://github.com/mainIine/foe-helfer-extension/issues)!
+	- Wenn dieser Modus benutzt wird, kann es vermehrt zum Auftreten von Fehlern kommen - bitte berichtet Fehler auf dem [Discord](https://discord.gg/uQY7rqDJ7z) oder auf [Github](https://github.com/mainIine/foe-helfer-extension/issues)!
 
 **Update**
 - St.Patricks Box:
