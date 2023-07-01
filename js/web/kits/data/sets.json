@@ -394,7 +394,7 @@
 				"update": "upgrade_kit_governors_villa"
 			}
 		],
-		"kit": ["selection_kit_govenors_villa","selection_kit_epic_SUM23"]
+		"kit": ["selection_kit_govenors_villa","selection_kit_epic_SUM23","golden_upgrade_kit_SUM20A","fragment#golden_upgrade_kit_SUM20A"]
 	},
 	{
 		"name": "Hall_of_Fame",
