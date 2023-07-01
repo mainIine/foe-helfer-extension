@@ -42,6 +42,19 @@
     border: red solid 2px;
 }
 
+#MGstatus.hideDaily th:nth-child(3),
+#MGstatus.hideDaily td:nth-child(3){
+        display:none;
+}
+#MGstatus:not(.hideDaily) th:nth-child(2),
+#MGstatus:not(.hideDaily) td:nth-child(2){
+        display:none;
+}
+#MGstatus th:nth-child(2),
+#MGstatus th:nth-child(3){
+        color:var(--text-bright);
+}
+
 #mergerGameDialogSettingsBox input{
     width:4.5em;
 }

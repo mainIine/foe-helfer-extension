@@ -18,11 +18,22 @@ FoEproxy.addHandler('MergerGameService', 'all', (data, postData) => {
 	if(!Settings.GetSetting('ShowEventChest')){
 		return;
 	}
+	if (!mergerGame.state.day) mergerGame.state.day = moment.unix(GameTime).dayOfYear()
+	if (data.requestMethod == "resetBoard") {
+		if (mergerGame.state.day == moment.unix(GameTime).dayOfYear())  {//gleicher Tag wie zuvor
+			mergerGame.state.daily.progress += mergerGame.state.progress;
+			mergerGame.state.daily.energyUsed += mergerGame.state.energyUsed;
+			mergerGame.state.daily.keys += mergerGame.state.keys;		
+		} else {
+			mergerGame.state.daily={progress:0,keys:0,energyUsed:0}
+		}
+		mergerGame.state.day = moment.unix(GameTime).dayOfYear()
+	}
 	mergerGame.event = data.responseData.context.replace("_event","")
 	mergerGame.cells = data.responseData.cells;
 	mergerGame.levelValues = data.responseData?.lookup?.pieceConfig[0]?.grandPrizeProgress || {1:1,2:2,3:3,4:4};
 	mergerGame.keyValues = {3:data.responseData?.lookup?.keyConversion[0]?.amount || 1,4:data.responseData?.lookup?.keyConversion[1]?.amount|| 3};
-	mergerGame.spawnCost = data.responseData?.cells[1]?.spawnCost?.resources[`${mergerGame.event}_energy`] || 10;
+	mergerGame.spawnCost = data.responseData?.cells[1]?.spawnCost?.resources[mergerGame.eventData[mergerGame.event].currency] || 10;
 	mergerGame.state["maxProgress"]= 0;
 	mergerGame.state["energyUsed"]= 0;
 	mergerGame.state["progress"]= 0;
@@ -43,7 +54,7 @@ FoEproxy.addHandler('MergerGameService', 'all', (data, postData) => {
 		mergerGame.checkSave();
 		mergerGame.ShowDialog();
 	} else { //resetBoard
-		mergerGame.state.energyUsed +=  mergerGame.resetCost;
+		mergerGame.state.energyUsed += (mergerGame.settings.useAverage && mergerGame.settings.useAverage > 0 && mergerGame.resetCost != 0) ? mergerGame.settings.useAverage : mergerGame.resetCost;
 		mergerGame.saveState();
 		mergerGame.updateDialog();
 	}
@@ -113,10 +124,6 @@ FoEproxy.addHandler('MergerGameService', 'convertPiece', (data, postData) => {
 });
 
 let mergerGame = {
-	/*event:"anniversary",
-	colors: ["white","yellow","blue"],
-	types: ["top","bottom","full"],
-	spawnCost: 10,*/
 	event:"soccer",
 	colors: ["attacker","midfielder","defender"],
 	types: ["left","right","full"],
@@ -124,6 +131,7 @@ let mergerGame = {
 	cells:[],
 	spawnChances:{white:{1:14,2:8,3:5,4:3},blue:{1:14,2:8,3:5,4:3},yellow:{1:19,2:10,3:7,4:4},defender:{1:14,2:8,3:5,4:3},attacker:{1:14,2:8,3:5,4:3},midfielder:{1:19,2:10,3:7,4:4}},
 	state: {
+		daily:{progress:0,keys:0,energyUsed:0},
 		maxProgress: 0,
 		energyUsed:0,
 		progress:0,
@@ -132,7 +140,7 @@ let mergerGame = {
 	resetCost: 0,
 	levelValues: {1:1,2:1,3:1,4:2},
 	keyValues: {3:1, 4:3},
-	settings: JSON.parse(localStorage.getItem("MergerGameSettings") || '{"keyValue":1.3,"targetProgress":3750,"availableCurrency":11000,"hideOverlay":true}'),
+	settings: JSON.parse(localStorage.getItem("MergerGameSettings") || '{"keyValue":1.3,"targetProgress":3750,"availableCurrency":11000,"hideOverlay":true,"useAverage":0}'),
 	eventData:{
 		anniversary: {
 			progress:"/shared/seasonalevents/league/league_anniversary_icon_progress.png",
@@ -205,6 +213,7 @@ let mergerGame = {
 			mergerGame.state.progress = oldState.progress;
 			mergerGame.state.energyUsed = oldState.energyUsed;
 			mergerGame.state.keys = oldState.keys;
+			mergerGame.state.daily = oldState.daily || {progress:0,keys:0,energyUsed:0}
 		}
 	},
 	
@@ -283,6 +292,8 @@ let mergerGame = {
 		let simMaxEff = Math.round((simEff * mergerGame.state.energyUsed + mergerGame.simResult.value.max)/(mergerGame.state.energyUsed + mergerGame.spawnCost)*100)/100
 		let simAvgEff = Math.round((simEff * mergerGame.state.energyUsed + mergerGame.simResult.value.average)/(mergerGame.state.energyUsed + mergerGame.spawnCost)*100)/100
 
+		let dailyEff = Math.round(((mergerGame.state.progress + mergerGame.state.daily.progress + (mergerGame.state.keys + mergerGame.state.daily.keys)*mergerGame.settings.keyValue)/(mergerGame.state.energyUsed+mergerGame.state.daily.energyUsed))*100)/100;
+
 		let totalPieces = {}
 		for (x of mergerGame.colors) {
 			totalPieces[x]={}
@@ -300,19 +311,23 @@ let mergerGame = {
 		}
 
 		let targetEfficiency = mergerGame.settings.targetProgress/mergerGame.settings.availableCurrency;
-		html = `<table class="foe-table"><tr><th colspan="2" title="${i18n("Boxes.MergerGame.Status.Title")}">${i18n("Boxes.MergerGame.Status")}</th>`
+		html = `<table class="foe-table hideDaily" id="MGstatus"><tr><th title="${i18n("Boxes.MergerGame.Status.Title")}">${i18n("Boxes.MergerGame.Status")}</th>`
+		html += `<th onclick="$('#MGstatus').toggleClass('hideDaily')" title="${i18n("Boxes.MergerGame.Round.Title")}">${i18n("Boxes.MergerGame.Round")}</th>`
+		html += `<th onclick="$('#MGstatus').toggleClass('hideDaily')" title="${i18n("Boxes.MergerGame.Day.Title")}">${i18n("Boxes.MergerGame.Day")}</th>`
 		html += `<th style="border-left: 1px solid var(--border-tab)" title="${i18n("Boxes.MergerGame.Simulation.Title")}">${i18n("Boxes.MergerGame.Simulation")}</th>`
 		html += `<th colspan="2" style="border-left: 1px solid var(--border-tab)" title="${i18n("Boxes.MergerGame.NextSpawn.Title")}">${i18n("Boxes.MergerGame.NextSpawn")}</th></tr>`
 		//Energy/fooballs
 		html += `<tr><td title="${i18n("Boxes.MergerGame.Energy."+mergerGame.event)}">`
 		html += `<img src="${srcLinks.get(mergerGame.eventData[mergerGame.event].energy,true)}"></td>`
 		html += `<td title="${i18n("Boxes.MergerGame.EfficiencyTargetProgress."+mergerGame.event)+Math.floor(totalValue)+"/"+Math.floor(mergerGame.state.energyUsed*targetEfficiency)|0}">${mergerGame.state.energyUsed} </td>`
+		html += `<td>${mergerGame.state.energyUsed+mergerGame.state.daily.energyUsed}</td>`
 		html += `<td style="border-left: 1px solid var(--border-tab);" onclick="mergerGame.ShowSolution()">${LinkIcon}</td>`
 		html += `<td colspan="2" style="border-left: 1px solid var(--border-tab)">${mergerGame.spawnCost}</td></tr>`
 		//Progress
 		html += `<tr><td title="${i18n("Boxes.MergerGame.ProgressCollected")}">`
 		html += `<img src="${srcLinks.get(mergerGame.eventData[mergerGame.event].progress,true)}"></td>`
-		html += `<td>${mergerGame.state.progress} / ${mergerGame.state.maxProgress} </td>`
+		html += `<td>${mergerGame.state.progress} / ${mergerGame.state.maxProgress}</td>`
+		html += `<td>${mergerGame.state.progress + mergerGame.state.daily.progress}</td>`
 		html += `<td style="border-left: 1px solid var(--border-tab)">${mergerGame.state.progress + mergerGame.solved.progress}</td>`
 		html += `<td title="min - max (avg)" style="border-left: 1px solid var(--border-tab); text-align:right">${mergerGame.simResult.progress.min} - ${mergerGame.simResult.progress.max}</td>`
 		html += `<td title="min - max (avg)" style="text-align:left">(${Math.round(mergerGame.simResult.progress.average*10)/10})</td></tr>`
@@ -323,6 +338,7 @@ let mergerGame = {
 		html += `<img ${mergerGame.event=="soccer"?'class="toprightcorner" style="margin-left: -24px"':'style="margin-left: -15px" '} src="${srcLinks.get(`${mergerGame.eventData[mergerGame.event].keyfile}full_${mergerGame.colors[1]}.png`,true)}">`
 		html += `<img ${mergerGame.event=="soccer"?'class="toprightcorner" style="margin-left: -18px"':'style="margin-left: -15px"'} src="${srcLinks.get(`${mergerGame.eventData[mergerGame.event].keyfile}full_${mergerGame.colors[0]}.png`,true)}"></td>`
 		html += `<td>${keys} / ${maxKeys}</td>`
+		html += `<td>${keys + mergerGame.state.daily.keys}</td>`
 		html += `<td style="border-left: 1px solid var(--border-tab)">${mergerGame.state.keys + mergerGame.solved.keys}</td>`
 		html += `<td title="min - max (avg)" style="border-left: 1px solid var(--border-tab); text-align:right">${mergerGame.simResult.keys.min} - ${mergerGame.simResult.keys.max}</td>`
 		html += `<td title="min - max (avg)" style="text-align:left">(${Math.round(mergerGame.simResult.keys.average*10)/10})</td></tr>`
@@ -331,6 +347,7 @@ let mergerGame = {
 		html += `<tr><td title="${i18n("Boxes.MergerGame.Efficiency."+mergerGame.event)}">`
 		html += `<img src="${srcLinks.get(mergerGame.eventData[mergerGame.event].progress,true)}">/<img src="${srcLinks.get(mergerGame.eventData[mergerGame.event].energy,true)}"></td>`
 		html += `<td style="font-weight:bold; color: ${efficiency > targetEfficiency*1.15 ? 'var(--text-success)' : efficiency > targetEfficiency*1 ? 'yellow' : efficiency < targetEfficiency * 0.95 ? 'red' : 'var(--text-bright)'}" title="${i18n("Boxes.MergerGame.EfficiencyTotalProgress") + Math.floor(efficiency*mergerGame.settings.availableCurrency)}">${efficiency} </td>`
+		html += `<td style="font-weight:bold; color: ${dailyEff > targetEfficiency*1.15 ? 'var(--text-success)' : dailyEff > targetEfficiency*1 ? 'yellow' : dailyEff < targetEfficiency * 0.95 ? 'red' : 'var(--text-bright)'}" >${dailyEff.toFixed(2)} </td>`
 		html += `<td style="border-left: 1px solid var(--border-tab); color: ${simEff > targetEfficiency*1.15 ? 'var(--text-success)' : simEff > targetEfficiency*1.05 ? 'yellow' : simEff > targetEfficiency * 0.95 ? 'var(--text-bright)' : 'red'}">${simEff}</td>`
 		html += `<td title="min - max (avg)" style="border-left: 1px solid var(--border-tab); text-align:right"><span style="color: ${simMinEff > targetEfficiency*1.15 ? 'var(--text-success)' : simMinEff > targetEfficiency*1.05 ? 'yellow' : simMinEff > targetEfficiency * 0.95 ? 'red' : 'var(--text-bright)'}">${simMinEff}</span> - <span style="color: ${simMaxEff > targetEfficiency*1.15 ? 'var(--text-success)' : simMaxEff > targetEfficiency*1 ? 'yellow' : simMaxEff > targetEfficiency * 0.95 ? 'var(--text-bright)' : 'red'}">${simMaxEff}</span></td>`
 		html += `<td title="min - max (avg)" style="text-align:left;color: ${simAvgEff > targetEfficiency*1.15 ? 'var(--text-success)' : simAvgEff > targetEfficiency*1.05 ? 'yellow' : simAvgEff > targetEfficiency * 0.95 ? 'var(--text-bright)' : 'red' }">(${simAvgEff})</td></tr>`
@@ -372,7 +389,9 @@ let mergerGame = {
         h.push(`${i18n('Boxes.MergerGame.targetProgress')}</td><td>`);
         h.push(`<input type="Number" id="MGtargetProgress" oninput="mergerGame.SaveSettings()" value="${mergerGame.settings.targetProgress}"></td></tr><tr><td>`);
         h.push(`${i18n('Boxes.MergerGame.hideOverlay')}</td><td>`);
-        h.push(`<input type="checkbox" id="MGhideOverlay" oninput="mergerGame.SaveSettings()"${mergerGame.settings.hideOverlay ? ' checked' : ''}></td></tr></table>`);
+        h.push(`<input type="checkbox" id="MGhideOverlay" oninput="mergerGame.SaveSettings()"${mergerGame.settings.hideOverlay ? ' checked' : ''}></td></tr><tr><td>`);
+        h.push(`${i18n('Boxes.MergerGame.useAverage')}</td><td>`);
+        h.push(`<input type="Number" id="MGuseAverage" oninput="mergerGame.SaveSettings()" value="${mergerGame.settings.useAverage || 0}"></td></tr></table>`);
         
 		$('#mergerGameDialogSettingsBox').html(h.join(''));
 		$("#mergerGameDialogSettingsBox input").keyup(function(event) {
@@ -380,6 +399,16 @@ let mergerGame = {
 				$("#mergerGameDialogButtons .window-settings").trigger("click");
 			}
 		});
+    },
+	
+	SaveSettings: () => {
+        mergerGame.settings["keyValue"] = Number($('#MGkeyValue').val()) || 1;
+		mergerGame.settings["targetProgress"] = Number($('#MGtargetProgress').val()) || 3250;
+		mergerGame.settings["availableCurrency"] = Number($('#MGavailableCurrency').val()) || 10500;
+		mergerGame.settings["useAverage"] = Number($('#MGuseAverage').val()) || 0;
+		mergerGame.settings["hideOverlay"] = $('#MGhideOverlay')[0].checked;
+		localStorage.setItem('MergerGameSettings', JSON.stringify(mergerGame.settings));
+        mergerGame.updateDialog();
     },
 	
 	updateSolution:(solved=null)=>{
@@ -414,16 +443,7 @@ let mergerGame = {
 		mergerGame.updateSolution();
     },
 	
-    SaveSettings: () => {
-        mergerGame.settings.keyValue = Number($('#MGkeyValue').val()) || 1;
-		mergerGame.settings.targetProgress = Number($('#MGtargetProgress').val()) || 3250;
-		mergerGame.settings.availableCurrency = Number($('#MGavailableCurrency').val()) || 10500;
-		mergerGame.settings.hideOverlay = $('#MGhideOverlay')[0].checked;
-		localStorage.setItem('MergerGameSettings', JSON.stringify(mergerGame.settings));
-        mergerGame.updateDialog();
-    },
-
-	simStart:(j=1000)=> {
+    simStart:(j=1000)=> {
 		let jstart=j;
 		mergerGame.cells = [0];
 		mergerGame.state.energyUsed=0;
