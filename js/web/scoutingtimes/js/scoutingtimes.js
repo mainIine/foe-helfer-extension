@@ -198,7 +198,7 @@ let scoutingTimes = {
                     title: i18n('Boxes.scoutingTimes.Title'),
                     auto_close: true,
                     dragdrop: true,
-                    minimize: false,
+                    minimize: true,
                     ask: i18n('Boxes.scoutingTimes.HelpLink'),
                     settings: 'scoutingTimes.ShowSettings()',
                 });
