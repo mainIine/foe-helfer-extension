@@ -170,6 +170,7 @@ let mergerGame = {
 	solved: {keys:0,progress:0},
 	simulation: {},
 	simResult:null,
+	hideDaily:true,
 
 	updateTable: () => {
 		let table = {},
@@ -213,7 +214,7 @@ let mergerGame = {
 			mergerGame.state.progress = oldState.progress;
 			mergerGame.state.energyUsed = oldState.energyUsed;
 			mergerGame.state.keys = oldState.keys;
-			mergerGame.state.daily = oldState.daily || {progress:0,keys:0,energyUsed:0}
+			if (mergerGame.state.day==oldState.day) mergerGame.state.daily = oldState.daily || {progress:0,keys:0,energyUsed:0}
 		}
 	},
 	
@@ -230,6 +231,7 @@ let mergerGame = {
 			if ($('#mergerGameResetBlocker').length === 0) {
 				let blocker = document.createElement("img");
 				blocker.id = 'mergerGameResetBlocker';
+				blocker.classList = mergerGame.event;
 				blocker.src = srcLinks.get("/city/gui/great_building_bonus_icons/great_building_bonus_plunder_repel.png", true);
 				blocker.title = i18n("Boxes.MergerGame.KeysLeft."+mergerGame.event);
 				$('#game_body')[0].append(blocker);
@@ -311,9 +313,9 @@ let mergerGame = {
 		}
 
 		let targetEfficiency = mergerGame.settings.targetProgress/mergerGame.settings.availableCurrency;
-		html = `<table class="foe-table hideDaily" id="MGstatus"><tr><th title="${i18n("Boxes.MergerGame.Status.Title")}">${i18n("Boxes.MergerGame.Status")}</th>`
-		html += `<th onclick="$('#MGstatus').toggleClass('hideDaily')" title="${i18n("Boxes.MergerGame.Round.Title")}">${i18n("Boxes.MergerGame.Round")}</th>`
-		html += `<th onclick="$('#MGstatus').toggleClass('hideDaily')" title="${i18n("Boxes.MergerGame.Day.Title")}">${i18n("Boxes.MergerGame.Day")}</th>`
+		html = `<table class="foe-table ${mergerGame.hideDaily ? 'hideDaily':''}" id="MGstatus"><tr><th title="${i18n("Boxes.MergerGame.Status.Title")}">${i18n("Boxes.MergerGame.Status")}</th>`
+		html += `<th onclick="$('#MGstatus').toggleClass('hideDaily'); mergerGame.hideDaily=!mergerGame.hideDaily" title="${i18n("Boxes.MergerGame.Round.Title")}">${i18n("Boxes.MergerGame.Round")}</th>`
+		html += `<th onclick="$('#MGstatus').toggleClass('hideDaily'); mergerGame.hideDaily=!mergerGame.hideDaily" title="${i18n("Boxes.MergerGame.Day.Title")}">${i18n("Boxes.MergerGame.Day")}</th>`
 		html += `<th style="border-left: 1px solid var(--border-tab)" title="${i18n("Boxes.MergerGame.Simulation.Title")}">${i18n("Boxes.MergerGame.Simulation")}</th>`
 		html += `<th colspan="2" style="border-left: 1px solid var(--border-tab)" title="${i18n("Boxes.MergerGame.NextSpawn.Title")}">${i18n("Boxes.MergerGame.NextSpawn")}</th></tr>`
 		//Energy/fooballs
