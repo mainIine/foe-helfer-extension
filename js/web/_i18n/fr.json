@@ -978,7 +978,7 @@
     "Boxes.UnitsGex.NoUnitsAvailable": "Aucune donnée d'unités disponible. Merci d'appuyer sur la touche \"U\"",
     "Boxes.UnitsGex.Stage": "Étape",
     "Boxes.UnitsGex.Won": "Gagné",
-    "Boxes.Wildlife.Warning": "Lorsqu'aucun outil n'est sélectionné, la zone ci-dessous est cliquable - cliquer interagit avec le jeu !",
+    "Boxes.Popgame.Warning": "Lorsqu'aucun outil n'est sélectionné, la zone ci-dessous est cliquable - cliquer interagit avec le jeu !",
     "Boxes.doubleFPprevention.Text": "Prévention",
     "Boxes.doubleFPprevention.Title": "Don double",
     "Boxes.findGB.Title": "Trouver un GM",

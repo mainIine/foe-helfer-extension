@@ -1007,7 +1007,7 @@
     "Boxes.UnitsGex.NoUnitsAvailable": "No unit data available. Please press \"U\" to launch the Army Management console",
     "Boxes.UnitsGex.Stage": "Stage",
     "Boxes.UnitsGex.Won": "Won",
-    "Boxes.Wildlife.Warning": "When no tool is selected, the area below is click-through - clicking interacts with the game!",
+    "Boxes.Popgame.Warning": "When no tool is selected, the area below is click-through - clicking interacts with the game!",
     "Boxes.doubleFPprevention.Text": "Prevention",
     "Boxes.doubleFPprevention.Title": "Double donation",
     "Boxes.mapTradeWarning.Text": "Prevention",
