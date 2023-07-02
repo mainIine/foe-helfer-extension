@@ -33,13 +33,19 @@
 #mergerGameResetBlocker {
     width: 55px;
     height: 55px;
-    top: calc(50vh + 243px);
-    left: calc(50vw - 334px);
     position: absolute;
     z-index: 100;
     background-color: #ff9400;
     border-radius: 10px;
     border: red solid 2px;
+}
+#mergerGameResetBlocker.soccer {
+    top: calc(50vh + 243px);
+    left: calc(50vw - 334px);
+}
+#mergerGameResetBlocker.anniversary {
+    top: calc(50vh + 206px);
+    left: calc(50vw - 345px);
 }
 
 #MGstatus.hideDaily th:nth-child(3),
