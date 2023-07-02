@@ -11,7 +11,7 @@
  * **************************************************************************************
  */
 
-#Wildlife {
+#Popgame {
 	width: 520px;
     height: 494px;
     top: calc(50% - 281px);
@@ -19,30 +19,33 @@
     pointer-events: none;
 }
 
-#Wildlife #WildlifeHeader {
+#Popgame #PopgameHeader {
     pointer-events: auto;
 }
 
-#Wildlife #WildlifeBody {
+#Popgame #PopgameBody {
 	overflow: none;
 }
-#WLwrapper {
+#PGwrapper {
     height: 404px;
 }
-#WLdestroyer {
+#PGdestroyer {
     background-image: url("../img/destroyer.png") ;
 }
-#WLhammer {
+#PGhammer {
     background-image: url("../img/hammer.png") ;
 }
-#WLwarning {
+#PGfork {
+    background-image: url("../img/hammer.png") ;
+}
+#PGwarning {
     width: 400px;
     display: inline-block;
     vertical-align: top;
     text-shadow: 1px 1px black;
     color: orangered;
 }
-.WLtool {
+.PGtool {
     height: 50px;
     width: 50px;
     background-size: 50px;
@@ -51,64 +54,64 @@
     pointer-events: auto;
 }
 
-.WLselected {
+.PGselected {
     border: white solid 2px;
 }
 
-.WLcolumn {
+.PGcolumn {
 	display: table-cell;
 	vertical-align: bottom;
     width:47px;
     
 }
 
-.WLwrapper {
+.PGwrapper {
 	display: table-row;
     height: 400px;
 }
 
-.WLcell {
-    background: url('../img/Wildlife.png');
+.PGcell {
+    background: url('../img/Popgame.png');
     width: 47px;
     height: 49px;
 }
 
-.WLred{
+.PG_wildife_red{
     background-position:97px 58px; 
 }
-.WLblue{
+.PG_wildife_blue{
     background-position:192px 58px;
 }
-.WLpurple{
+.PG_wildife_purple{
     background-position:332px 58px;
 }
-.WLgreen{
+.PG_wildife_green{
     background-position:238px 58px;
 }
-.WLyellow{
+.PG_wildife_yellow{
     background-position:145px 58px;
 }
-.WLorange{
+.PG_wildife_orange{
     background-position:285px 58px;
 }
-.WLred_chest{
+.PG_wildife_red_reward{
     background-position:98px -6px; 
 }
-.WLblue_chest{
+.PG_wildife_blue_reward{
     background-position:192px -6px;
 }
-.WLpurple_chest{
+.PG_wildife_purple_reward{
     background-position:333px -6px;
 }
-.WLgreen_chest{
+.PG_wildife_green_reward{
     background-position:239px -6px;
 }
-.WLyellow_chest{
+.PG_wildife_yellow_reward{
     background-position:145px -6px;
 }
-.WLorange_chest{
+.PG_wildife_orange_reward{
     background-position:286px -6px;
 }
-.WLpaw{
+.PG_wildife_grandPrize{
     background-position:51px -6px;
 }
