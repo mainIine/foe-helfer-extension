@@ -54,7 +54,7 @@ FoEproxy.addHandler('MergerGameService', 'all', (data, postData) => {
 		mergerGame.checkSave();
 		mergerGame.ShowDialog();
 	} else { //resetBoard
-		mergerGame.state.energyUsed += (mergerGame.settings.useAverage && mergerGame.settings.useAverage > 0 && mergerGame.resetCost != 0) ? mergerGame.settings.useAverage : mergerGame.resetCost;
+		mergerGame.state.energyUsed += (mergerGame.settings.useAverage && mergerGame.settings.useAverage > 0) ? mergerGame.settings.useAverage : mergerGame.resetCost;
 		mergerGame.saveState();
 		mergerGame.updateDialog();
 	}
@@ -214,7 +214,8 @@ let mergerGame = {
 			mergerGame.state.progress = oldState.progress;
 			mergerGame.state.energyUsed = oldState.energyUsed;
 			mergerGame.state.keys = oldState.keys;
-			if (mergerGame.state.day==oldState.day) mergerGame.state.daily = oldState.daily || {progress:0,keys:0,energyUsed:0}
+			mergerGame.state.day = oldState.day;
+			mergerGame.state.daily = oldState.daily || {progress:0,keys:0,energyUsed:0}
 		}
 	},
 	
