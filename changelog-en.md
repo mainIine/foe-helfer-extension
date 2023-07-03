@@ -5,6 +5,19 @@
 **Update**
 - GvG Overview: you can now click on the button in the GvG Overview to see the realtime GvG power of all guilds including their ranking on all maps. Please visit all maps once to load the power data from each map.
 
+- Merger Game:
+	- added a daily overview - you can switch between current game status and daily status by clicking the second column head
+	- fixed blocker position
+	- An optioon was added to set a specific reset cost to be used instead of the correct one 
+		- you should enter the average of the epected reset costs here (e.g.: 3 games per day --> 20, 4 games per day --> 35)
+		- this should help to improve the efficiency evaluation as they are not influenced by the reset costs anymore
+
+- Wildlife Preview --> Popgame Preview
+	- made some preparations for the Fall event
+
+- Kits/Sets
+	- added some missing pieces
+
 **BugFix**
 - Discord Invite links were broken, so we replaced them
 

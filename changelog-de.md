@@ -5,6 +5,19 @@
 **Update**
 - GvG Übersicht: Man kann jetzt in der GvG Übersicht ebenfalls auf den orange farnenen Button klickt, um die gesamte Macht und alle Gilden inklusive Daten einzelner Karten zu sehen. Bitte einmal alle Karten durchklicken, damit die Gilden und Sektoren erfasst werden können.
 
+- Merger Game:
+	- tägliche Übersicht hinzugefügt - es kann zwischen der Übersicht für den Tag und das aktuelle Spiel durch Klick auf den Kopf der zweiten Salte gewechslet werden
+	- Position des Blockers korrigiert
+	- Es wurde eine Option hinzugefügt, die es erlaubt einen spezifischen Wert für die Rücksetzkosten (Reset) anzugeben der statt der tatäschlichen verwendet werden soll 
+		- es sollte der Mittelwert der zu erwartenden Rücksetzkosten eingetragen werden (z.B.: 3 Spiele pro Tag --> 20, 4 Spiele pro Tag --> 35)
+		- dies hilft dabei, die Effizienz eines Spiels besser abzuschätzen, da diese nicht mehr durch die Reset-Kosten beeinflusst wird
+
+- Wildlife Preview --> Popgame Preview
+	- Modul wurde für das Herbstevent vorbereitet
+
+- Kits/Sets
+	- ein paar fehlende Teile wurden ergänzt
+
 **BugFix**
 - Die Einladungslinks zu Discord waren abgelaufen, wir haben sie ersetzt.
 
