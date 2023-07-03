@@ -810,6 +810,7 @@
     "Boxes.Productions.def_boost_attacker": "Pojačanje odbrane nap. armije",
     "Boxes.Productions.def_boost_defender": "Pojačanje odbrane odb. armije",
     "Boxes.Productions.goods": "Roba",
+    "Boxes.Productions.fragments":"Fragmenti",
     "Boxes.ProductionsRating.BuildingName": "Objekat",
     "Boxes.ProductionsRating.Enabled": "Otključano",
     "Boxes.ProductionsRating.ProdPerTile": "Očekivana dnevna proizvodnja/dio",

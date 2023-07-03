@@ -850,6 +850,7 @@
     "Boxes.Productions.def_boost_attacker": "Potenziamento difesa attacco esercito",
     "Boxes.Productions.def_boost_defender": "Potenziamento della difesa esercito",
     "Boxes.Productions.goods": "Beni",
+    "Boxes.Productions.fragments": "Frammenti",
     "Boxes.ProductionsRating.BuildingName": "Costruzione",
     "Boxes.ProductionsRating.Enabled": "Abilitato",
     "Boxes.ProductionsRating.ProdPerTile": "Produzione/tassello giornaliera prevista",

@@ -864,6 +864,7 @@
     "Boxes.Productions.def_boost_attacker": "Verteidiungsbonus angr. Armee",
     "Boxes.Productions.def_boost_defender": "Verteidigungsbonus vert. Armee",
     "Boxes.Productions.goods": "Güter",
+    "Boxes.Productions.fragments": "Fragmente",
     "Boxes.ProductionsRating.BuildingName": "Gebäude",
     "Boxes.ProductionsRating.Enabled": "Aktiviert",
     "Boxes.ProductionsRating.ProdPerTile": "Erwartete Tagesproduktion/Feld",

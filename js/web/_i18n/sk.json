@@ -794,6 +794,7 @@
     "Boxes.Productions.def_boost_attacker": "Obranný bonus útočnej armády",
     "Boxes.Productions.def_boost_defender": "Obranný bonus obrannej armády",
     "Boxes.Productions.goods": "Tovary",
+    "Boxes.Productions.fragments": "Fragmenty",
     "Boxes.ProductionsRating.BuildingName": "Budovy",
     "Boxes.ProductionsRating.Enabled": "Povolené",
     "Boxes.ProductionsRating.ProdPerTile": "Očakávaná denná produkcia/pole",

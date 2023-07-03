@@ -858,6 +858,7 @@
     "Boxes.Productions.def_boost_attacker": "Boost de défense (armée d'attaque)",
     "Boxes.Productions.def_boost_defender": "Boost de défense (armée de défense)",
     "Boxes.Productions.goods": "Marchandises",
+    "Boxes.Productions.fragments": "Fragments",
     "Boxes.ProductionsRating.BuildingName": "Bâtiment",
     "Boxes.ProductionsRating.Enabled": "Activé",
     "Boxes.ProductionsRating.ProdPerTile": "Production quotidienne prévue/case",
