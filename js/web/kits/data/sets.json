@@ -1,6 +1,6 @@
 [	
 	{
-		"udate": "28.06.2023"
+		"udate": "03.07.2023"
 	},
 	{
 		"groupname": "Guild_Battlegrounds"
@@ -311,7 +311,7 @@
 				"update": "upgrade_kit_suishun_mill"
 			}
 		],
-		"kit": "selection_kit_suishun_mill"
+		"kit": ["selection_kit_suishun_mill","selection_kit_epic_SPR"]
 	},
 	{
 		"name": "Druid_Temple",
@@ -507,7 +507,7 @@
 				"update": "upgrade_kit_hanami_bridge"
 			}
 		],
-		"kit": "selection_kit_hanami_bridge"
+		"kit": ["selection_kit_hanami_bridge","selection_kit_epic_SPR"]
 	},
 	{
 		"name": "Celtic_Forest_Set",
@@ -933,7 +933,7 @@
 				"update": "upgrade_kit_pagoda"
 			}
 		],
-		"kit": "selection_kit_pagoda"
+		"kit": ["selection_kit_pagoda","selection_kit_epic_SPR"]
 	},
 	{
 		"name": "Cherry_Garden_Set",
@@ -965,7 +965,8 @@
 			"selection_kit_emperors_entrance",
 			"selection_kit_nishikigoi_pond",
 			"selection_kit_zen_zone",
-			"selection_kit_sakura_rock"
+			"selection_kit_sakura_rock",
+			"selection_kit_epic_SPR"
 		]
 	},
 	{
