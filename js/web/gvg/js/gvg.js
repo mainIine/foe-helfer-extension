@@ -1169,18 +1169,21 @@ let GvGMap = {
 
 				if (mapCounter == 13) {// all map data avalable
 					t.push('<td class="text-center">'+guildPower+'</td><td></td>');
-					t.push('<tr style="display:none;"><td colspan="4" style="padding:0"><table class="foe-table"><tr><th>Era</th><th class="text-center">'+i18n('Boxes.GexStat.Rank')+'</th><th class="text-center">'+i18n('Boxes.GvGMap.Guild.Sectors')+'</th><th class="text-center">'+i18n('Boxes.GvGMap.Guild.Power')+'</th></tr>');
-					GvGMap.Map.AllProvinces.forEach(function(province){
+					t.push('<tr style="display:none;" class="no-hover clickToCopy"><td colspan="4" style="padding:0"><table class="foe-table"><tr><th>'+i18n('Boxes.GuildMemberStat.Eras')+'</th><th class="text-center">'+i18n('Boxes.GexStat.Rank')+'</th><th class="text-center">'+i18n('Boxes.GvGMap.Guild.Sectors')+'</th><th class="text-center">'+i18n('Boxes.GvGMap.Guild.Power')+'</th></tr>');
+
+					GvGMap.Map.AllProvinces.forEach(function(province, i){
 						let guildInProvince = province.guilds.find(x => x.id == guild.id);
 						if (guildInProvince) {
+							let era = (i <= 11) ? i18n('Eras.'+((i+3))) : i18n('Eras.GvGAllAge');
 							t.push('<tr>');
-							t.push('<td>'+province.era+'</td>')
+							t.push('<td>'+era+'</td>')
 							t.push('<td class="text-center">'+((province.guilds.indexOf(guildInProvince))+1)+'</td>')
 							t.push('<td class="text-center">'+guildInProvince.sectors+'</td>')
 							t.push('<td class="text-center">'+guildInProvince.power+'</td>')
 							t.push('</tr>');
 						}
 					});
+
 					t.push('</table></td></tr>');
 				}
 
