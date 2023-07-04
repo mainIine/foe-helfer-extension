@@ -1449,7 +1449,7 @@ let Productions = {
     * @param Type
     */
 	TypeHasProduction: (Type) => {
-		if (Type === 'population' || Type === 'happiness' || Type === 'att_boost_attacker' || Type === 'att_boost_defender' || Type === 'def_boost_attacker' || Type === 'def_boost_defender' || Type === 'fragments') {
+		if (Type === 'population' || Type === 'happiness' || Type === 'att_boost_attacker' || Type === 'att_boost_defender' || Type === 'def_boost_attacker' || Type === 'def_boost_defender') {
 			return false;
 		}
 		else {
