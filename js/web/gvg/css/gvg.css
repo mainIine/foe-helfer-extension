@@ -178,6 +178,10 @@
 .rank-second { color: #69b0d6 }
 .rank-third { color: #f24c25 }
 
+.clickToCopy {
+	user-select: all
+}
+
 #gvgOptions.collapsed {
 	width: 0;
 	min-width: 0;
