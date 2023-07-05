@@ -75,22 +75,22 @@
     background-image: url("../img/hammer.png") ;
 }
 .PG_wildlife_red{
-    background-position:97px 58px; 
+    background-position:98px 176px; 
 }
 .PG_wildlife_blue{
-    background-position:192px 58px;
+    background-position:192px 176px;
 }
 .PG_wildlife_purple{
-    background-position:332px 58px;
+    background-position:332px 176px;
 }
 .PG_wildlife_green{
-    background-position:238px 58px;
+    background-position:238px 176px;
 }
 .PG_wildlife_yellow{
-    background-position:145px 58px;
+    background-position:145px 176px;
 }
 .PG_wildlife_orange{
-    background-position:285px 58px;
+    background-position:285px 176px;
 }
 .PG_wildlife_red_reward{
     background-position:98px -6px; 
@@ -118,7 +118,7 @@
     background-image: url("../img/fork.png") ;
 }
 .PG_fall_red{ 
-    background-position:97px 58px; 
+    background-position:98px 58px; 
 }
 .PG_fall_blue{
     background-position:192px 58px;
@@ -136,23 +136,23 @@
     background-position:285px 58px;
 }
 .PG_fall_red_reward{
-    background-position:98px -6px; 
+    background-position:98px 114px; 
 }
 .PG_fall_blue_reward{
-    background-position:192px -6px;
+    background-position:192px 114px;
 }
 .PG_fall_purple_reward{
-    background-position:333px -6px;
+    background-position:333px 114px;
 }
 .PG_fall_green_reward{
-    background-position:239px -6px;
+    background-position:239px 114px;
 }
 .PG_fall_yellow_reward{
-    background-position:145px -6px;
+    background-position:145px 114px;
 }
 .PG_fall_orange_reward{
-    background-position:286px -6px;
+    background-position:286px 114px;
 }
 .PG_fall_grandPrize{
-    background-position:51px -6px;
+    background-position:51px 114px;
 }

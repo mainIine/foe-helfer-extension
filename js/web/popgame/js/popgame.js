@@ -111,6 +111,7 @@ FoEproxy.addHandler('PopGameService', 'useBooster', (data, postData) => {
     Popgame.CoordsCheck(x, y);
     //if (ResourceStock.wildlife_pop_moves <= 0) Popgame.Close();
 });
+
 $(window).mousemove( function(e){
     if ($('#PopgameBody .PGwrapper').length === 0) return;
     if ($('#PopgameBody').css('visibility') === 'hidden') return;
@@ -148,7 +149,7 @@ let Popgame = {
     check:null,
     tool:null,
     rewardactive:0,
-    event:"wildlife",
+    event:"fall",
 
     Show: () => {
         Popgame.rewardactive = 0;
@@ -175,16 +176,21 @@ let Popgame = {
             //let body='<div class="PGwrapper"></div>'
             $('#PopgameBody').html(body);
             Popgame.Update();
-            $('#PGhammer')[0].addEventListener('click', function(){
-                Popgame.selectTool('hammer');
-            });
-            $('#PGfork')[0].addEventListener('click', function(){
-                Popgame.selectTool('hammer');
-            });
-            $('#PGdestroyer')[0].addEventListener('click', function(){
-                Popgame.selectTool('destroyer');
-            });
-
+            if ($('#PGhammer')[0]) {
+                $('#PGhammer')[0].addEventListener('click', function(){
+                    Popgame.selectTool('hammer');
+                });
+            }
+            if ($('#PGfork')[0]) {
+                    $('#PGfork')[0].addEventListener('click', function(){
+                    Popgame.selectTool('fork');
+                });
+            }
+            if ($('#PGdestroyer')[0]) {
+                $('#PGdestroyer')[0].addEventListener('click', function(){
+                    Popgame.selectTool('destroyer');
+                });
+            }
             let box = $('#Popgame'),
             open = box.hasClass('open');
             Popgame.minimized = JSON.parse(localStorage.getItem("PopgameMinimized") || "true");
@@ -237,7 +243,7 @@ let Popgame = {
             $(`.PG_${Popgame.event}_${c}`).fadeOut('fast');
         } else {
             Popgame.check = c;
-            if (Popgame.tool === "hammer") {
+            if (Popgame.tool === "hammer" || Popgame.tool === "fork") {
                 Popgame.hide.push(`PGcellX${x}Y${y}`);
             } else {
                 Popgame.CheckNeighbours(x,y);
