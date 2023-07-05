@@ -37,17 +37,17 @@ FoEproxy.addHandler('ResourceShopService', 'buyOffer', (data, postData) => {
     if(!Settings.GetSetting('ShowEventChest')) return;
     if (!Array.isArray(data.responseData)) return;
     for (let G of data.responseData) {
-        if (G.gains?.resources?.wildlife_pop_moves) {
+        if (G.gains?.resources?.[`${Popgame.event}_pop_moves`]) {
             Popgame.Show();        
             return;
-        };        
+        };              
     }
 });
 
 FoEproxy.addHandler('RewardService', 'collectReward', (data, postData) => {
     //hide when reward window pops up
     if ($('#Popgame').length === 0) return;
-    if (data.responseData[1]!=='wildlife_event') return;
+    if (data.responseData[1]!==Popgame.event+'_event') return;
     Popgame.rewardactive += 1;
     if ($('#Popgame.open').length > 0) {
         $('#Popgame').removeClass("open");
@@ -91,7 +91,7 @@ FoEproxy.addHandler('PopGameService', 'popTile', (data, postData) => {
     Popgame.prevC=null;
     Popgame.Update();
     Popgame.CoordsCheck(x, y);
-    if (ResourceStock.wildlife_pop_moves <= 0) Popgame.Close();
+    if (ResourceStock[`${Popgame.event}_pop_moves`] <= 0) Popgame.Close();
 });
 
 FoEproxy.addHandler('PopGameService', 'useBooster', (data, postData) => {
@@ -109,7 +109,6 @@ FoEproxy.addHandler('PopGameService', 'useBooster', (data, postData) => {
     Popgame.prevC=null;
     Popgame.Update();
     Popgame.CoordsCheck(x, y);
-    //if (ResourceStock.wildlife_pop_moves <= 0) Popgame.Close();
 });
 
 $(window).mousemove( function(e){
@@ -169,11 +168,11 @@ let Popgame = {
             if (Popgame.event=="wildlife") {
                 body+=`<div id="PGhammer" class="PGtool"></div>`;
                 body+=`<div id="PGdestroyer" class="PGtool"></div>`;
-            } else {
+            } else if (Popgame.event=="fall"){
                 body+=`<div id="PGfork" class="PGtool"></div>`;
             }
             body+='</div><div id="PGwrapper"><div class="PGwrapper"></div></div>'
-            //let body='<div class="PGwrapper"></div>'
+            
             $('#PopgameBody').html(body);
             Popgame.Update();
             if ($('#PGhammer')[0]) {
@@ -260,7 +259,6 @@ let Popgame = {
                 $(`#${cell}`).fadeOut('fast');
             }
         }
-        //Popgame.hideDrops()
         setTimeout(Popgame.hideDrops,250);
     },
 
