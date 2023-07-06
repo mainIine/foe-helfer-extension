@@ -164,7 +164,7 @@ let mergerGame = {
 			partname:"badge",
 			tile:"player",
 			currency:`soccer_football`,
-			solverOut:{left:"Filling",right:"Border",full:"Full"}
+			solverOut:{left:"Core",right:"Frame",full:"Full"}
 		}
 	},
 	solved: {keys:0,progress:0},
