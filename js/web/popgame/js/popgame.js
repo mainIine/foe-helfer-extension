@@ -175,21 +175,9 @@ let Popgame = {
             
             $('#PopgameBody').html(body);
             Popgame.Update();
-            if ($('#PGhammer')[0]) {
-                $('#PGhammer')[0].addEventListener('click', function(){
-                    Popgame.selectTool('hammer');
-                });
-            }
-            if ($('#PGfork')[0]) {
-                    $('#PGfork')[0].addEventListener('click', function(){
-                    Popgame.selectTool('fork');
-                });
-            }
-            if ($('#PGdestroyer')[0]) {
-                $('#PGdestroyer')[0].addEventListener('click', function(){
-                    Popgame.selectTool('destroyer');
-                });
-            }
+            $('.PGtool').on("click", (event)=>{
+                Popgame.selectTool(event.target.id.replace("PG",""));
+            })
             let box = $('#Popgame'),
             open = box.hasClass('open');
             Popgame.minimized = JSON.parse(localStorage.getItem("PopgameMinimized") || "true");
@@ -325,17 +313,5 @@ let Popgame = {
             let y = tile.position?.y || 0;
             Popgame.grid[x][y] = tile.type + ((tile.popType === "default" || tile.type === "grandPrize") ? "" : "_reward");
         }
-    },
-    test:(event="fall")=>{
-        Popgame.event=event;
-        Popgame.width=3;
-        Popgame.height=5;
-        Popgame.grid=[];
-        Popgame.grid[0]=["red","yellow","purple","green","orange"];
-        Popgame.grid[1]=["red_reward","yellow_reward","purple_reward","green_reward","orange_reward"];
-        Popgame.grid[2]=["grandPrize","grandPrize","grandPrize","grandPrize","grandPrize"];
-        Popgame.Show()
-        
-    }
-    
+    }    
 };
