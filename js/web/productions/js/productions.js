@@ -325,13 +325,8 @@ let Productions = {
 
 					if((CurrentProduct['type'] && CurrentProduct['type']==='genericReward') && (CurrentProduct['reward'] && CurrentProduct['reward']['subType'] && CurrentProduct['reward']['subType']==='fragment' )){
 						let displayName = CurrentProduct['reward']['name'].replace(/[0-9]/g, '').trimStart().replace(/Fragment\b/g, 'Fragments');
-						let rewardName = CurrentProduct['reward']['name'];
-						if (CurrentProduct['onlyWhenMotivated'] && !IsPolivated){
-							displayName = displayName+" "
-							rewardName = "0/"+rewardName
-						} 
 						Products[displayName] = Products[displayName] ? Number(Products[displayName]) + Number(`${CurrentProduct['reward']['amount']}`) : `${CurrentProduct['reward']['amount']}`
-						Products['fragments'] = Products['fragments'] ? Products['fragments'] + "<br>" + rewardName : rewardName
+						Products['fragments'] = Products['fragments'] ? Products['fragments'] + "<br>" + CurrentProduct['reward']['name'] : CurrentProduct['reward']['name']
 					}
 
 					if (CurrentProduct['playerResources'] && CurrentProduct['playerResources']['resources']) {
