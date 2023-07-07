@@ -18,20 +18,34 @@ FoEproxy.addHandler('MergerGameService', 'all', (data, postData) => {
 	if(!Settings.GetSetting('ShowEventChest')){
 		return;
 	}
+	if (!mergerGame.state.day) mergerGame.state.day = moment.unix(GameTime).dayOfYear()
+	if (data.requestMethod == "resetBoard") {
+		if (mergerGame.state.day == moment.unix(GameTime).dayOfYear())  {//gleicher Tag wie zuvor
+			mergerGame.state.daily.progress += mergerGame.state.progress;
+			mergerGame.state.daily.energyUsed += mergerGame.state.energyUsed;
+			mergerGame.state.daily.keys += mergerGame.state.keys;		
+		} else {
+			mergerGame.state.daily={progress:0,keys:0,energyUsed:0}
+		}
+		mergerGame.state.day = moment.unix(GameTime).dayOfYear()
+	}
 	mergerGame.event = data.responseData.context.replace("_event","")
 	mergerGame.cells = data.responseData.cells;
 	mergerGame.levelValues = data.responseData?.lookup?.pieceConfig[0]?.grandPrizeProgress || {1:1,2:2,3:3,4:4};
 	mergerGame.keyValues = {3:data.responseData?.lookup?.keyConversion[0]?.amount || 1,4:data.responseData?.lookup?.keyConversion[1]?.amount|| 3};
-	mergerGame.spawnCost = data.responseData?.cells[1]?.spawnCost?.resources[`${mergerGame.event}_energy`] || 10;
+	mergerGame.spawnCost = data.responseData?.cells[1]?.spawnCost?.resources[mergerGame.eventData[mergerGame.event].currency] || 10;
 	mergerGame.state["maxProgress"]= 0;
 	mergerGame.state["energyUsed"]= 0;
 	mergerGame.state["progress"]= 0;
 	mergerGame.state["keys"]= 0;
+	mergerGame.colors = mergerGame.eventData[mergerGame.event].colors;
+	mergerGame.types = mergerGame.eventData[mergerGame.event].types;
 	for (let x of mergerGame.cells) {
 		if (x.isFixed) mergerGame.state.maxProgress += mergerGame.levelValues[x.level];
 	};
 	for (let x of mergerGame.cells[1].spawnChances) {
 		if (!x) continue;
+		if (!mergerGame.spawnChances[x.type.value]) mergerGame.spawnChances[x.type.value] = {}
 		mergerGame.spawnChances[x.type.value][x.level] = x.spawnChance;
 	}
 	mergerGame.updateTable();
@@ -40,14 +54,14 @@ FoEproxy.addHandler('MergerGameService', 'all', (data, postData) => {
 		mergerGame.checkSave();
 		mergerGame.ShowDialog();
 	} else { //resetBoard
-		mergerGame.state.energyUsed +=  mergerGame.resetCost;
+		mergerGame.state.energyUsed += (mergerGame.settings.useAverage && mergerGame.settings.useAverage > 0) ? mergerGame.settings.useAverage : mergerGame.resetCost;
 		mergerGame.saveState();
-		mergerGame.UpdateDialog();
+		mergerGame.updateDialog();
 	}
 	if (mergerGame.state.progress == mergerGame.state.maxProgress) {
 		mergerGame.resetCost = 0;
 	} else {
-		mergerGame.resetCost = data.responseData.resetCost?.resources[`${mergerGame.event}_energy`] || 0;
+		mergerGame.resetCost = data.responseData.resetCost?.resources[mergerGame.eventData[mergerGame.event].currency] || 0;
 	}
 	
 });
@@ -63,7 +77,7 @@ FoEproxy.addHandler('MergerGameService', 'spawnPieces', (data, postData) => {
 	mergerGame.state.energyUsed += mergerGame.spawnCost;
 	mergerGame.updateTable();
 	mergerGame.saveState();
-	mergerGame.UpdateDialog();
+	mergerGame.updateDialog();
 });
 
 FoEproxy.addHandler('MergerGameService', 'mergePieces', (data, postData) => {
@@ -88,7 +102,7 @@ FoEproxy.addHandler('MergerGameService', 'mergePieces', (data, postData) => {
 	mergerGame.updateTable();
 	mergerGame.saveState();
 
-	mergerGame.UpdateDialog();
+	mergerGame.updateDialog();
 
 });
 
@@ -100,41 +114,93 @@ FoEproxy.addHandler('MergerGameService', 'convertPiece', (data, postData) => {
 	
 	target = mergerGame.cells.findIndex((e) => e.id == postData[0].requestData[1]);
 	
-	mergerGame.state.keys += mergerGame.cells[target].level == 3 ? 1 : 3;
+	mergerGame.state.keys += mergerGame.keyValues[mergerGame.cells[target].level];
 	mergerGame.cells.splice(target,1);
 
 	mergerGame.updateTable();
 	mergerGame.saveState();
 
-	mergerGame.UpdateDialog();
+	mergerGame.updateDialog();
 });
 
 let mergerGame = {
-	event:"merge_cup",
+	event:"soccer",
+	colors: ["attacker","midfielder","defender"],
+	types: ["left","right","full"],
+	spawnCost: 5,
 	cells:[],
-	spawnChances:{white:{1:14,2:8,3:5,4:3},blue:{1:14,2:8,3:5,4:3},yellow:{1:19,2:10,3:7,4:4}},
-	state: {},
-	resetCost: 0,
-	spawnCost: 10,
-	levelValues: {},
-	keyValues: {},
-	settings: JSON.parse(localStorage.getItem("MergerGameSettings") || '{"keyValue":1.3,"targetProgress":3750,"availableCurrency":11000,"hideOverlay":true}'),
-	eventData:{
-		anniversary: {progress:"progress",keyfile:"/shared/seasonalevents/anniversary/event/anniversay_icon_key_"},
-		merge_cup:{progress:"progression",keyfile:"/shared/seasonalevents/merge_cup/event/merge_cup_icon_key_"}
+	spawnChances:{white:{1:14,2:8,3:5,4:3},blue:{1:14,2:8,3:5,4:3},yellow:{1:19,2:10,3:7,4:4},defender:{1:14,2:8,3:5,4:3},attacker:{1:14,2:8,3:5,4:3},midfielder:{1:19,2:10,3:7,4:4}},
+	state: {
+		daily:{progress:0,keys:0,energyUsed:0},
+		maxProgress: 0,
+		energyUsed:0,
+		progress:0,
+		keys: 0
 	},
+	resetCost: 0,
+	levelValues: {1:1,2:1,3:1,4:2},
+	keyValues: {3:1, 4:3},
+	settings: JSON.parse(localStorage.getItem("MergerGameSettings") || '{"keyValue":1.3,"targetProgress":3750,"availableCurrency":11000,"hideOverlay":true,"useAverage":0}'),
+	eventData:{
+		anniversary: {
+			progress:"/shared/seasonalevents/league/league_anniversary_icon_progress.png",
+			energy:"/shared/seasonalevents/anniversary/event/anniversary_energy.png",
+			keyfile:"/shared/seasonalevents/anniversary/event/anniversay_icon_key_",
+			colors: ["white","yellow","blue"],
+			CSScolors: {white:"#7fecba",yellow:"#e14709",blue:"#08a9f7"},
+			types: ["top","bottom","full"],
+			partname:"key",
+			tile:"gem",
+			currency:`anniversary_energy`,
+			solverOut:{top:"Tip",bottom:"Handle",full:"Full"}
+		},
+		soccer:{
+			progress:"/shared/icons/reward_icons/reward_icon_soccer_trophy.png",
+			energy:"/shared/seasonalevents/soccer/event/soccer_football.png",
+			keyfile:"/shared/seasonalevents/soccer/event/soccer_icon_badge_",
+			colors: ["attacker","midfielder","defender"],
+			CSScolors: {attacker:"#ec673a",midfielder:"#e7d20a",defender:"#44d3e2"},
+			types: ["left","right","full"],
+			partname:"badge",
+			tile:"player",
+			currency:`soccer_football`,
+			solverOut:{left:"Core",right:"Frame",full:"Full"}
+		}
+	},
+	solved: {keys:0,progress:0},
+	simulation: {},
+	simResult:null,
+	hideDaily:true,
 
 	updateTable: () => {
-		let table = {
-			white:  {level4:{top:0,bottom:0,full:0, none:0},level3:{top:0,bottom:0,full:0, none:0},level2:{top:0,bottom:0,full:0, none:0},level1:{top:0,bottom:0,full:0, none:0}},
-			yellow: {level4:{top:0,bottom:0,full:0, none:0},level3:{top:0,bottom:0,full:0, none:0},level2:{top:0,bottom:0,full:0, none:0},level1:{top:0,bottom:0,full:0, none:0}},
-			blue:   {level4:{top:0,bottom:0,full:0, none:0},level3:{top:0,bottom:0,full:0, none:0},level2:{top:0,bottom:0,full:0, none:0},level1:{top:0,bottom:0,full:0, none:0}}}
-		
-			for (let x of mergerGame.cells) {
-				if (! x.id || x.id<0) continue;
-				if (x.keyType?.value) table[x.type.value]["level" + x.level][x.keyType.value]++;
-			};
-			mergerGame.state["table"] = table;
+		let table = {},
+			unlocked = {};
+		for (x of mergerGame.colors) {
+			table[x]={}
+			unlocked[x]={}
+			for (l of [1,2,3,4]) {
+				table[x][l]={}
+				unlocked[x][l]={}
+				for (t of mergerGame.types) {
+					table[x][l][t]=0;
+					unlocked[x][l][t]=0;
+				}
+				unlocked[x][l]["none"]=0;
+			}
+		}
+		for (let x of mergerGame.cells) {
+			if (! x.id || x.id<0) continue;
+			if (!x.keyType?.value) continue;
+			if (x.keyType.value !="none") {
+				table[x.type.value][x.level][x.keyType.value]++;
+			}
+			if (!x.isFixed) {
+				unlocked[x.type.value][x.level][x.keyType.value]++;
+			}
+		};
+		mergerGame.state["table"] = table;
+		mergerGame.state["unlocked"] = unlocked;
+		mergerGame.solve();
 	},
 
 	checkSave: () => {
@@ -148,6 +214,8 @@ let mergerGame = {
 			mergerGame.state.progress = oldState.progress;
 			mergerGame.state.energyUsed = oldState.energyUsed;
 			mergerGame.state.keys = oldState.keys;
+			mergerGame.state.day = oldState.day;
+			mergerGame.state.daily = oldState.daily || {progress:0,keys:0,energyUsed:0}
 		}
 	},
 	
@@ -164,8 +232,9 @@ let mergerGame = {
 			if ($('#mergerGameResetBlocker').length === 0) {
 				let blocker = document.createElement("img");
 				blocker.id = 'mergerGameResetBlocker';
-				blocker.src = extUrl + "js/web/x_img/mergerGameResetBlocker.png";
-				blocker.title = i18n("Boxes.MergerGame.KeysLeft");
+				blocker.classList = mergerGame.event;
+				blocker.src = srcLinks.get("/city/gui/great_building_bonus_icons/great_building_bonus_plunder_repel.png", true);
+				blocker.title = i18n("Boxes.MergerGame.KeysLeft."+mergerGame.event);
 				$('#game_body')[0].append(blocker);
 				$('#mergerGameResetBlocker').on("click",()=>{$('#mergerGameResetBlocker').remove()});
 			} 
@@ -203,56 +272,104 @@ let mergerGame = {
 			});
 		}
 		
-		mergerGame.UpdateDialog();
+		mergerGame.updateDialog();
     },
 	
-	UpdateDialog: () => {
+	updateDialog: () => {
+		let type1 = mergerGame.types[1],
+			type2 = mergerGame.types[0];
 		if ($('#mergerGameDialog').length === 0) {
 			return;
 		}
 		htmltext=``
 		
 		let table = mergerGame.state.table
-	
-		let remainingProgress = mergerGame.state.maxProgress - mergerGame.state.progress;
+		let targetEfficiency = mergerGame.settings.targetProgress/mergerGame.settings.availableCurrency;
+		let effcolor = (eff,target=targetEfficiency) => {
+			return eff > target*1.15 ? 'var(--text-success)' : eff > target*1 ? 'yellow' : eff > target * 0.95 ? 'var(--text-bright)' : 'red';
+		}
 		let keys = mergerGame.keySum();
 		let totalValue = mergerGame.state.progress + keys*mergerGame.settings.keyValue;
 		let efficiency = (totalValue / mergerGame.state.energyUsed).toFixed(2);
+		let simEff = Math.round((mergerGame.state.progress + mergerGame.solved.progress + (mergerGame.state.keys + mergerGame.solved.keys)*mergerGame.settings.keyValue)/mergerGame.state.energyUsed*100)/100||0
 		
-		let colors = ["white","yellow","blue"];
-		let order = ["bottom","top","full"];
-		let targetEfficiency = mergerGame.settings.targetProgress/mergerGame.settings.availableCurrency;
-		html = `<table class="foe-table">`
-		html += `<tr><td>${i18n("Boxes.MergerGame.Progress")}</td><td>${remainingProgress} / ${mergerGame.state.maxProgress} <img src="${srcLinks.get(`/shared/seasonalevents/league/league_${mergerGame.event}_icon_${mergerGame.eventData[mergerGame.event].progress}.png`,true)}"></td></tr>`
-		html += `<tr><td>${i18n("Boxes.MergerGame.Energy")}</td><td title="${i18n("Boxes.MergerGame.EfficiencyTargetProgress")+Math.floor(totalValue)+"/"+Math.floor(mergerGame.state.energyUsed*targetEfficiency)}">${mergerGame.state.energyUsed} <img src="${srcLinks.get(`/shared/seasonalevents/${mergerGame.event}/event/${mergerGame.event}_energy.png`,true)}"></td></tr>`
-		html += `<tr><td>${i18n("Boxes.MergerGame.Keys")}</td><td>${keys} <img src="${srcLinks.get(`${mergerGame.eventData[mergerGame.event].keyfile}full_white.png`,true)}"><img src="${srcLinks.get(`${mergerGame.eventData[mergerGame.event].keyfile}full_yellow.png`,true)}"><img src="${srcLinks.get(`${mergerGame.eventData[mergerGame.event].keyfile}full_blue.png`,true)}"></td></tr>`
-		//html += `<tr><td>${i18n("Boxes.MergerGame.Keys")}</td><td>${keys} <img src="${srcLinks.get(`/shared/seasonalevents/${mergerGame.event}/event/${mergerGame.event}_icon_key_full_white.png`,true)}"><img src="${srcLinks.get(`/shared/seasonalevents/${mergerGame.event}/event/${mergerGame.event}_icon_key_full_yellow.png`,true)}"><img src="${srcLinks.get(`/shared/seasonalevents/${mergerGame.event}/event/${mergerGame.event}_icon_key_full_blue.png`,true)}"></td></tr>`
-		html += `<tr><td>${i18n("Boxes.MergerGame.Efficiency")}</td><td style="font-weight:bold; color: ${efficiency > targetEfficiency*1.15 ? 'var(--text-success)' : efficiency < targetEfficiency * 0.95 ? 'red' : 'var(--text-bright)'}" title="${i18n("Boxes.MergerGame.EfficiencyTotalProgress") + Math.floor(efficiency*mergerGame.settings.availableCurrency)}">${efficiency} <img src="${srcLinks.get(`/shared/seasonalevents/league/league_${mergerGame.event}_icon_${mergerGame.eventData[mergerGame.event].progress}.png`,true)}"> /<img src="${srcLinks.get(`/shared/seasonalevents/${mergerGame.event}/event/${mergerGame.event}_energy.png`,true)}"></td></tr>`
-		html += `</table>`
+		let simMinEff = Math.round((simEff * mergerGame.state.energyUsed + mergerGame.simResult.value.min)/(mergerGame.state.energyUsed + mergerGame.spawnCost)*100)/100
+		let simMaxEff = Math.round((simEff * mergerGame.state.energyUsed + mergerGame.simResult.value.max)/(mergerGame.state.energyUsed + mergerGame.spawnCost)*100)/100
+		let simAvgEff = Math.round((simEff * mergerGame.state.energyUsed + mergerGame.simResult.value.average)/(mergerGame.state.energyUsed + mergerGame.spawnCost)*100)/100
 
-		let totalPieces = {"white": {"top":0,"bottom":0,"full:":0,"min":0},"yellow": {"top":0,"bottom":0,"full:":0,"min":0},"blue": {"top":0,"bottom":0,"full:":0,"min":0},}
-		for (let i of colors) {
-			for (let o of order) {
-				totalPieces[i][o] = table[i].level1[o] + table[i].level2[o] + table[i].level3[o] + table[i].level4[o];
+		let dailyEff = Math.round(((mergerGame.state.progress + mergerGame.state.daily.progress + (mergerGame.state.keys + mergerGame.state.daily.keys)*mergerGame.settings.keyValue)/(mergerGame.state.energyUsed+mergerGame.state.daily.energyUsed))*100)/100;
+
+		let totalPieces = {}
+		for (x of mergerGame.colors) {
+			totalPieces[x]={}
+			for (t of mergerGame.types) {
+				totalPieces[x][t]=0;
 			}
-			totalPieces[i].min = Math.min(totalPieces[i].bottom,totalPieces[i].top);
+		}
+		let maxKeys= 0;
+		for (let i of mergerGame.colors) {
+			for (let t of mergerGame.types) {
+				totalPieces[i][t] = table[i][1][t] + table[i][2][t] + table[i][3][t] + table[i][4][t];
+			}
+			totalPieces[i]["min"] = Math.min(totalPieces[i][type1],totalPieces[i][type2]);
+			maxKeys+=totalPieces[i]["min"]*mergerGame.keyValues[4];
 		}
 
-		for (let i of colors) {
+		html = `<table class="foe-table ${mergerGame.hideDaily ? 'hideDaily':''}" id="MGstatus"><tr><th title="${i18n("Boxes.MergerGame.Status.Title")}">${i18n("Boxes.MergerGame.Status")}</th>`
+		html += `<th onclick="$('#MGstatus').toggleClass('hideDaily'); mergerGame.hideDaily=!mergerGame.hideDaily" title="${i18n("Boxes.MergerGame.Round.Title")}">${i18n("Boxes.MergerGame.Round")}</th>`
+		html += `<th onclick="$('#MGstatus').toggleClass('hideDaily'); mergerGame.hideDaily=!mergerGame.hideDaily" title="${i18n("Boxes.MergerGame.Day.Title")}">${i18n("Boxes.MergerGame.Day")}</th>`
+		html += `<th style="border-left: 1px solid var(--border-tab)" title="${i18n("Boxes.MergerGame.Simulation.Title")}">${i18n("Boxes.MergerGame.Simulation")}</th>`
+		html += `<th colspan="2" style="border-left: 1px solid var(--border-tab)" title="${i18n("Boxes.MergerGame.NextSpawn.Title")}">${i18n("Boxes.MergerGame.NextSpawn")}</th></tr>`
+		//Energy/fooballs
+		html += `<tr><td title="${i18n("Boxes.MergerGame.Energy."+mergerGame.event)}">`
+		html += `<img src="${srcLinks.get(mergerGame.eventData[mergerGame.event].energy,true)}"></td>`
+		html += `<td title="${i18n("Boxes.MergerGame.EfficiencyTargetProgress."+mergerGame.event)+Math.floor(totalValue)+"/"+Math.floor(mergerGame.state.energyUsed*targetEfficiency)|0}">${mergerGame.state.energyUsed} </td>`
+		html += `<td>${mergerGame.state.energyUsed+mergerGame.state.daily.energyUsed}</td>`
+		html += `<td style="border-left: 1px solid var(--border-tab);" onclick="mergerGame.ShowSolution()">${LinkIcon}</td>`
+		html += `<td colspan="2" style="border-left: 1px solid var(--border-tab)">${mergerGame.spawnCost}</td></tr>`
+		//Progress
+		html += `<tr><td title="${i18n("Boxes.MergerGame.ProgressCollected")}">`
+		html += `<img src="${srcLinks.get(mergerGame.eventData[mergerGame.event].progress,true)}"></td>`
+		html += `<td>${mergerGame.state.progress} / ${mergerGame.state.maxProgress}</td>`
+		html += `<td>${mergerGame.state.progress + mergerGame.state.daily.progress}</td>`
+		html += `<td style="border-left: 1px solid var(--border-tab)">${mergerGame.state.progress + mergerGame.solved.progress}</td>`
+		html += `<td title="min - max (avg)" style="border-left: 1px solid var(--border-tab); text-align:right">${mergerGame.simResult.progress.min} - ${mergerGame.simResult.progress.max}</td>`
+		html += `<td title="min - max (avg)" style="text-align:left">(${Math.round(mergerGame.simResult.progress.average*10)/10})</td></tr>`
+		//Keys/badges
+		html += `<tr><td title="${i18n("Boxes.MergerGame.Keys."+mergerGame.event)}">`
+		html += `<img ${mergerGame.event=="soccer"?'class="toprightcorner full"':''} src="${srcLinks.get(`${mergerGame.eventData[mergerGame.event].keyfile}full_${mergerGame.colors[2]}.png`,true)}">`
+		html += `<img ${mergerGame.event=="soccer"?'class="toprightcorner full"':''} style="margin-left: -15px" src="${srcLinks.get(`${mergerGame.eventData[mergerGame.event].keyfile}full_${mergerGame.colors[1]}.png`,true)}">`
+		html += `<img ${mergerGame.event=="soccer"?'class="toprightcorner full"':''} style="margin-left: -15px" src="${srcLinks.get(`${mergerGame.eventData[mergerGame.event].keyfile}full_${mergerGame.colors[0]}.png`,true)}"></td>`
+		html += `<td>${keys} / ${maxKeys}</td>`
+		html += `<td>${keys + mergerGame.state.daily.keys}</td>`
+		html += `<td style="border-left: 1px solid var(--border-tab)">${mergerGame.state.keys + mergerGame.solved.keys}</td>`
+		html += `<td title="min - max (avg)" style="border-left: 1px solid var(--border-tab); text-align:right">${mergerGame.simResult.keys.min} - ${mergerGame.simResult.keys.max}</td>`
+		html += `<td title="min - max (avg)" style="text-align:left">(${Math.round(mergerGame.simResult.keys.average*10)/10})</td></tr>`
+		//Efficiency
+		html += `<tr><td title="${i18n("Boxes.MergerGame.Efficiency."+mergerGame.event)}">`
+		html += `<img src="${srcLinks.get(mergerGame.eventData[mergerGame.event].progress,true)}">/<img src="${srcLinks.get(mergerGame.eventData[mergerGame.event].energy,true)}"></td>`
+		html += `<td style="font-weight:bold; color: ${effcolor(efficiency)}" title="${i18n("Boxes.MergerGame.EfficiencyTotalProgress") + Math.floor(efficiency*mergerGame.settings.availableCurrency)}">${efficiency} </td>`
+		html += `<td style="font-weight:bold; color: ${effcolor(dailyEff)}">${dailyEff.toFixed(2)} </td>`
+		html += `<td style="border-left: 1px solid var(--border-tab); color: ${effcolor(simEff)}">${simEff}</td>`
+		html += `<td title="min - max (avg)" style="border-left: 1px solid var(--border-tab); text-align:right"><span style="color: ${effcolor(simMinEff)}">${simMinEff}</span> - <span style="color: ${effcolor(simMaxEff)}">${simMaxEff}</span></td>`
+		html += `<td title="min - max (avg)" style="text-align:left;color: ${effcolor(simAvgEff)}">(${simAvgEff})</td></tr>`
+		
+		html += `</table>`
+
+		for (let i of mergerGame.colors) {
 			html += `<table class="foe-table"><tr><th></th>`
 			for (let lev = 4; lev>0; lev--) {
-				html += `<th><img src="${srcLinks.get(`/shared/seasonalevents/${mergerGame.event}/event/${mergerGame.event}_gem_${i}_${lev}.png`,true)}" title="${mergerGame.spawnChances[i][lev]}%"></th>`
+				html += `<th>${mergerGame.state.unlocked[i][lev].none}<img src="${srcLinks.get(`/shared/seasonalevents/${mergerGame.event}/event/${mergerGame.event}_${mergerGame.eventData[mergerGame.event].tile}_${i}_${lev}.png`,true)}" title="${mergerGame.spawnChances[i][lev]}%"></th>`
 			}
-			for (let o of order) {
+			for (let o of mergerGame.types) {
 				let m = totalPieces[i].min;
 				let t = totalPieces[i][o];
 				html += `</tr><tr><td ${((t==m && o != "full") || (0==m && o == "full") ) ? 'style="font-weight:bold"' : ''}>${t}${(o == "full") ? '/'+ (t+m) : ''}`;
-				html += `<img src="${srcLinks.get(`${mergerGame.eventData[mergerGame.event].keyfile}${o}_${i}.png`,true)}"></td>`
-				//html += `<img src="${srcLinks.get(`/shared/seasonalevents/${mergerGame.event}/event/${mergerGame.event}_icon_key_${o}_${i}.png`,true)}"></td>`
+				html += `<img class="${mergerGame.event=="soccer"? 'toprightcorner':''}${o=="full" ? ' full':''}" src="${srcLinks.get(`${mergerGame.eventData[mergerGame.event].keyfile}${o}_${i}.png`,true)}"></td>`
 				for (let lev = 4; lev>0; lev--) {
-					val = table[i]["level"+lev][o];
+					val = table[i][lev][o];
 					if (val==0) val = "-";
-					html += `<td style="${val != "-" ? 'font-weight:bold;' : ''}${(o=="full" && lev==3 && table[i]["level"+lev][o]>1)?' color:red"': ''}">${val}</td>`
+					html += `<td style="${val != "-" ? 'font-weight:bold;' : ''}${(o=="full" && lev==3 && table[i][lev][o]>1)?' color:red"': ''}">${val}</td>`
 				}
 			}
 			html += `</tr></table>`
@@ -264,14 +381,16 @@ let mergerGame = {
 	ShowSettingsButton: () => {
         let h = [];
 		h.push(`<table class="foe-table"><tr><td>`)
-        h.push(`${i18n('Boxes.MergerGame.KeyValue')}</td><td>`);
+        h.push(`${i18n('Boxes.MergerGame.KeyValue.'+mergerGame.event)}</td><td>`);
         h.push(`<input type="Number" id="MGkeyValue" oninput="mergerGame.SaveSettings()" value="${mergerGame.settings.keyValue}"></td></tr><tr><td>`);
-        h.push(`${i18n('Boxes.MergerGame.availableCurrency')}</td><td>`);
+        h.push(`${i18n('Boxes.MergerGame.availableCurrency.'+mergerGame.event)}</td><td>`);
         h.push(`<input type="Number" id="MGavailableCurrency" oninput="mergerGame.SaveSettings()" value="${mergerGame.settings.availableCurrency}"></td></tr><tr><td>`);
         h.push(`${i18n('Boxes.MergerGame.targetProgress')}</td><td>`);
         h.push(`<input type="Number" id="MGtargetProgress" oninput="mergerGame.SaveSettings()" value="${mergerGame.settings.targetProgress}"></td></tr><tr><td>`);
         h.push(`${i18n('Boxes.MergerGame.hideOverlay')}</td><td>`);
-        h.push(`<input type="checkbox" id="MGhideOverlay" oninput="mergerGame.SaveSettings()"${mergerGame.settings.hideOverlay ? ' checked' : ''}></td></tr></table>`);
+        h.push(`<input type="checkbox" id="MGhideOverlay" oninput="mergerGame.SaveSettings()"${mergerGame.settings.hideOverlay ? ' checked' : ''}></td></tr><tr><td>`);
+        h.push(`${i18n('Boxes.MergerGame.useAverage')}</td><td>`);
+        h.push(`<input type="Number" id="MGuseAverage" oninput="mergerGame.SaveSettings()" value="${mergerGame.settings.useAverage || 0}"></td></tr></table>`);
         
 		$('#mergerGameDialogSettingsBox').html(h.join(''));
 		$("#mergerGameDialogSettingsBox input").keyup(function(event) {
@@ -280,14 +399,1191 @@ let mergerGame = {
 			}
 		});
     },
-
-    SaveSettings: () => {
-        mergerGame.settings.keyValue = Number($('#MGkeyValue').val()) || 1;
-		mergerGame.settings.targetProgress = Number($('#MGtargetProgress').val()) || 3250;
-		mergerGame.settings.availableCurrency = Number($('#MGavailableCurrency').val()) || 10500;
-		mergerGame.settings.hideOverlay = $('#MGhideOverlay')[0].checked;
+	
+	SaveSettings: () => {
+        mergerGame.settings["keyValue"] = Number($('#MGkeyValue').val()) || 1;
+		mergerGame.settings["targetProgress"] = Number($('#MGtargetProgress').val()) || 3250;
+		mergerGame.settings["availableCurrency"] = Number($('#MGavailableCurrency').val()) || 10500;
+		mergerGame.settings["useAverage"] = Number($('#MGuseAverage').val()) || 0;
+		mergerGame.settings["hideOverlay"] = $('#MGhideOverlay')[0].checked;
 		localStorage.setItem('MergerGameSettings', JSON.stringify(mergerGame.settings));
-        mergerGame.UpdateDialog();
-    }
-};
+        mergerGame.updateDialog();
+    },
+	
+	updateSolution:(solved=null)=>{
+		if (solved) {
+			let out = []
+			out.push(`<div>There may be configurations, where the proposed solution is not ideal!`)
+			out.push(`<table class="foe-table">`)
+			for (c of Object.keys(solved)) {
+				for (x of solved[c].solution) {
+					out.push(`<tr><td ${x.css ? `style="${x.css}"`: ``}>${x.css ? x.text: x}</td></tr>`)
+				}
+			}
+			out.push(`</table>`)
+			mergerGame.Solution = out.join('');
+		}
+		if ($('#mergerGameSolution').length > 0) $('#mergerGameSolutionBody').html(mergerGame.Solution||"")
+	},
+	ShowSolution: () => {
+        
+		// Don't create a new box while another one is still open
+		if ($('#mergerGameSolution').length === 0) {
+			
+			HTML.Box({
+				id: 'mergerGameSolution',
+				title: 'Merger Game Solution',
+				auto_close: true,
+				dragdrop: true,
+				minimize: true,
+				resize : true,
+			});
+		}
+		mergerGame.updateSolution();
+    },
+	solve:() => {
+		let type1 = mergerGame.types[1],
+			type2 = mergerGame.types[0];
+		
+		let solved = {}
+		
+		for (let c of mergerGame.colors) {
+			let locked= {}
+			locked[type1]=[]
+			locked[type2]=[]
+			let free = {full:[], none:[]}
+			free[type1]=[]
+			free[type2]=[]
+			for (let t of mergerGame.types.concat(["none"])) {
+				for (let l of [1,2,3,4]) {
+					free[t].push(mergerGame.state.unlocked[c][l][t])
+					if (t=="full"||t=="none") continue
+					locked[t].push(mergerGame.state.table[c][l][t]-mergerGame.state.unlocked[c][l][t]);
+					
+				}
+			}
+			solved[c] = mergerGame.solver(locked,free,c,true);
+		}
 
+		let progress = 0
+		for (let c of mergerGame.colors) {
+			progress += solved[c].progress;
+		}
+		mergerGame.solved.progress = progress;
+		//keys
+		let keys = 0
+		for (let c of mergerGame.colors) {
+			keys += solved[c].keys;
+		}
+		mergerGame.solved.keys = keys;
+		mergerGame.simResult = mergerGame.simulateNextSpawn(solved);
+		mergerGame.updateSolution(solved)
+	},
+	simulateNextSpawn:(solved) => {
+		let keys = {min:10,max:0,average:0};
+		let progress = {min:100,max:0,average:0};
+		let value = {min:100,max:0,average:0}
+		for (let c of mergerGame.colors) {
+			for (let l of [1,2,3,4]) {
+					let free = window.structuredClone(solved[c].free)
+					free["none"][l-1] += 1
+					let simulated = mergerGame.solver(window.structuredClone(solved[c].locked),window.structuredClone(free),c,true)
+					let addKeys = simulated.keys - solved[c].keys;
+					let addProgress = simulated.progress - solved[c].progress;
+					let addValue = simulated.keys*mergerGame.settings.keyValue + simulated.progress - solved[c].progress - solved[c].keys*mergerGame.settings.keyValue;
+					if (addKeys<keys.min) keys.min = addKeys;
+					if (addKeys>keys.max) keys.max = addKeys;
+					keys.average += mergerGame.spawnChances[c][l]/100*addKeys;
+					if (addProgress<progress.min) progress.min = addProgress;
+					if (addProgress>progress.max) progress.max = addProgress;
+					progress.average += mergerGame.spawnChances[c][l]/100*addProgress;
+					if (addValue<value.min) value.min = addValue;
+					if (addValue>value.max) value.max = addValue;
+					value.average += mergerGame.spawnChances[c][l]/100*addValue;
+			}
+		}
+		return {keys:keys,progress:progress,value:value}
+	}, 
+
+	checkInconsistencies:(solved,c) => {
+		let best = window.structuredClone(solved);
+		for (let l of [1,2,3,4]) {
+			if (solved.free.none[l-1] == 0) continue 
+			let free = window.structuredClone(solved.free),
+				locked=window.structuredClone(solved.locked);
+			free["none"][l-1] -= 1;
+			let simulated = mergerGame.solver(locked,free,c);
+			if (simulated.keys*mergerGame.settings.keyValue+simulated.progress>best.keys*mergerGame.settings.keyValue+best.progress) best = window.structuredClone(simulated);
+		}
+		if (solved.progress>best.progress) {
+			best.solution.push({text:"CHECK FOR REMAINING MERGES - solution might have ignored a piece", css:"background:red,color:black"})
+			best.progress = solved.progress;
+		}
+		return best
+	}, 
+
+	solver: (locked,free, color,sim=false) =>{
+		let result1 = mergerGame.solver1(window.structuredClone(locked),window.structuredClone(free),color);
+		let result2 = mergerGame.solver2(window.structuredClone(locked),window.structuredClone(free),color);
+		let result = null
+
+		if (result1.keys*mergerGame.settings.keyValue+result1.progress>result2.keys*mergerGame.settings.keyValue+result2.progress) 
+			result = result1
+		else
+			result = result2;
+		
+		if (sim) {
+			result = mergerGame.checkInconsistencies(result,color)
+		}
+		
+		return result;
+		
+	},
+	solverOut:(type,color) => mergerGame.eventData[mergerGame.event].solverOut[type] + `<img class="${mergerGame.event=="soccer"?'toprightcorner':''}${type=="full"?" full":""}" src="${srcLinks.get(`${mergerGame.eventData[mergerGame.event].keyfile}${type}_${color}.png`,true)}">`,
+	
+	solver1:(locked,free, color)=>{ //modified version of Moos solver - generally better but also has some oddities
+		let lockedO = window.structuredClone(locked),
+			freeO = window.structuredClone(free),
+			type1 = mergerGame.types[0],
+			type2 = mergerGame.types[1],
+			total1_ = locked[type1].reduce((a, b) => a + b, 0)+free[type1].reduce((a, b) => a + b, 0),
+			total2_ = locked[type2].reduce((a, b) => a + b, 0)+free[type2].reduce((a, b) => a + b, 0),
+			total1_2 = total1_ - locked[type1][0],
+			total2_2 = total2_ - locked[type2][0],
+			startProgress = 0,
+			Solution=[],
+			out = mergerGame.solverOut;
+
+		//Progress:
+		for (let t of [type1,type2]) {
+			for (let l of [1,2,3,4]) {
+				startProgress += locked[t][l-1]*mergerGame.levelValues[l]
+			}
+		}
+		
+		Solution.push ({text:"=======Modified Solver=======",css: "color:"+mergerGame.eventData[mergerGame.event].CSScolors[color]})
+		//Solution.push ("==Level 1 Merges==")
+		while (true) {
+			if (free.none[0] == 0) break;
+			
+			if (locked[type2][0] == 0 && locked[type1][0] == 0) {
+				if (free.none[0] >= 2) {
+					free.none[0] -= 2
+					free.none[1] += 1
+					Solution.push ("Free L1 + Free L1")
+					continue;
+				} else break;
+			}
+			let pick = null
+			if (total2_2 == total1_2) {
+				if (locked[type1][0] > locked[type2][0])
+					pick = type1
+				else
+					pick = type2
+			} else if (total2_2 > total1_2) {
+				if (locked[type1][0] > 0)
+					pick = type1
+				else
+					pick = type2
+			} else {
+				if (locked[type2][0] > 0)
+					pick = type2
+				else
+					pick = type1
+			}        
+			if (pick == type1) {
+				free.none[0] -= 1
+				free[type1][1] += 1
+				locked[type1][0] -= 1
+				total1_2 += 1
+				Solution.push (`Free L1 + Locked L1 ${out(type1,color)}`)
+			} else {
+				free.none[0] -= 1
+				free[type2][1] += 1
+				locked[type2][0] -= 1
+				total2_2 += 1
+				Solution.push (`Free L1 + Locked L1 ${out(type2,color)}`)
+			}
+		}
+
+		//Level 4 + 3 easy cleanup
+		while (true) {
+			if (free.none[3] > 0 && locked[type2][3] > 0 && locked[type1][3] > 0) {
+				free.none[3] -= 1
+				locked[type1][3] -= 1
+				locked[type2][3] -= 1
+				free.full[3] += 1
+				Solution.push (`Free L4 + Locked L4 ${out(type1,color)} + Locked L4 ${out(type2,color)}`)
+			} else if (free[type1][3] > 0 && locked[type2][3]>0) {
+				free[type1][3] -= 1
+				locked[type2][3] -= 1
+				free.full[3] += 1
+				Solution.push (`Free L4 ${out(type1,color)} + Locked L4 ${out(type2,color)}`)
+			} else if (free[type2][3] > 0 && locked[type1][3]>0) {
+				free[type2][3] -= 1
+				locked[type1][3] -= 1
+				free.full[3] += 1
+				Solution.push (`Free L4 ${out(type2,color)} + Locked L4 ${out(type1,color)}`)
+			} else if (free.none[2] >= locked[type2][3] + locked[type1][3] && 
+						locked[type2][3] > 0 && locked[type1][2]>0) {
+				locked[type2][3] -= 1
+				locked[type1][2] -= 1
+				free.none[2] -= 1
+				free.full[3] += 1
+				Solution.push (`Free L3 + Locked L3 ${out(type1,color)} + Locked L4 ${out(type2,color)}`)
+			} else if (free.none[2] >= locked[type2][3] + locked[type1][3] && 
+						locked[type1][3] > 0 && locked[type2][2]>0) {
+				locked[type2][2] -= 1
+				locked[type1][3] -= 1
+				free.none[2] -= 1
+				free.full[3] += 1
+				Solution.push (`Free L3 + Locked L3 ${out(type2,color)} + Locked L4 ${out(type1,color)}`)
+			} else if (free.none[2]> 0 && free.none[2] < locked[type2][3] + locked[type1][3] && 
+						locked[type2][2]+locked[type2][1]+locked[type2][0]>=locked[type1][2]+locked[type1][1]+locked[type1][0] &&
+						locked[type2][3] > 0 && locked[type1][2]>0) {
+				locked[type2][3] -= 1
+				locked[type1][2] -= 1
+				free.none[2] -= 1
+				free.full[3] += 1
+				Solution.push (`Free L3 + Locked L3 ${out(type1,color)} + Locked L4 ${out(type2,color)}`)
+			} else if (free.none[2]> 0 && free.none[2] < locked[type2][3] + locked[type1][3] && 
+						locked[type2][2]+locked[type2][1]+locked[type2][0]<=locked[type1][2]+locked[type1][1]+locked[type1][0] &&
+						locked[type1][3] > 0 && locked[type2][2]>0) {
+				locked[type2][2] -= 1
+				locked[type1][3] -= 1
+				free.none[2] -= 1
+				free.full[3] += 1
+				Solution.push (`Free L3 + Locked L3 ${out(type2,color)} + Locked L4 ${out(type1,color)}`)
+			} else break
+		}
+
+		let total1_3 = locked[type1][2] + locked[type1][3] + free[type1][2] + free[type1][3];
+		let total2_3 = locked[type2][2] + locked[type2][3] + free[type2][2] + free[type2][3];
+		//Solution.push ("==Level 2 Merges==")
+		let occupied1_3=0;
+		let occupied2_3=0;
+		while (true) {
+			
+			if (free.none[1] > free[type2][1] && locked[type1][1] > 0 && (locked[type2][2]+free[type2][2]-occupied2_3) > 0 && (total1_3<=total2_3 || locked[type2][1] == 0 )) {
+				free.none[1] -= 1;
+				locked[type1][1] -= 1;
+				free[type1][2] += 1;
+				total1_3 +=1;
+				occupied1_3 += 1;
+				occupied2_3 += 1;
+				Solution.push (`Free L2 + Locked L2 ${out(type1,color)}`)
+			} else if (free.none[1] > free[type1][1] &&  locked[type2][1] > 0 && (locked[type1][2]+free[type1][2]-occupied1_3) > 0) {
+				free.none[1] -= 1
+				locked[type2][1] -= 1
+				free[type2][2] += 1
+				total2_3 +=1;
+				occupied1_3 += 1;
+				occupied2_3 += 1;
+				Solution.push (`Free L2 + Locked L2 ${out(type2,color)}`)
+			} else if (free.none[1] > 1 && free.none[1] > free[type1][1]+free[type2][1] && (locked[type1][1]> 0) && (locked[type2][1]> 0) && (locked[type1][2] + free[type1][2] -occupied1_3> 0) && (locked[type2][2] + free[type2][2] -occupied2_3> 0)) {
+				free.none[1] -= 1
+				locked[type1][1] -= 1
+				free[type1][2] += 1
+				total1_3 +=1;
+				Solution.push (`Free L2 + Locked L2 ${out(type1,color)}`)
+				free.none[1] -= 1
+				locked[type2][1] -= 1
+				free[type2][2] += 1
+				total2_3 +=1;
+				Solution.push (`Free L2 + Locked L2 ${out(type2,color)}`)
+				occupied1_3 += 2;
+				occupied2_3 += 2;
+			} else if (free[type1][1]> 0 && locked[type2][1]> 0 && (locked[type1][2] + free[type1][2] + locked[type2][2] + free[type2][2] - occupied1_3 - occupied2_3 - free.none[2] > 0)) {
+				free[type1][1] -= 1
+				locked[type2][1] -= 1
+				free.full[2] += 1
+				if (locked[type1][2]+free[type1][2]-occupied1_3>free[type2][2]+locked[type2][2]-occupied2_3) 
+					occupied1_3 += 1 
+				else 
+					occupied2_3 += 1;
+				Solution.push (`Free L2 ${out(type1,color)} + Locked L2 ${out(type2,color)}`)
+			} else if (free[type2][1]> 0 && locked[type1][1]> 0 && (locked[type1][2] + free[type1][2] + locked[type2][2] + free[type2][2] - occupied1_3 - occupied2_3 - free.none[2] > 0)) {
+				free[type2][1] -= 1
+				locked[type1][1] -= 1
+				free.full[2] += 1
+				if (locked[type1][2]+free[type1][2]-occupied1_3>free[type2][2]+locked[type2][2]-occupied2_3) 
+					occupied1_3 += 1 
+				else 
+					occupied2_3 += 1;
+				Solution.push (`Free L2 ${out(type2,color)} + Locked L2 ${out(type1,color)} (1)`)
+			} else if (free.none[1] > 1 && free.none[1] > free[type1][1]+free[type2][1] && (locked[type1][1] + free[type1][1] > 0) && (locked[type2][1] + free[type2][1] > 0) && (locked[type1][2] + free[type1][2] -occupied1_3> 0) && (locked[type2][2] + free[type2][2] -occupied2_3> 0)) {
+				if (locked[type1][1] > 0) {
+					free.none[1] -= 1
+					locked[type1][1] -= 1
+					free[type1][2] += 1
+					Solution.push (`Free L2 + Locked L2 ${out(type1,color)}`)
+				} else {
+					free.none[1] -= 1
+					free[type1][1] -= 1
+					free[type1][2] += 1
+					Solution.push (`Free L2 + Free L2 ${out(type1,color)}`)
+				}
+				if (locked[type2][1] > 0) {
+					free.none[1] -= 1
+					locked[type2][1] -= 1
+					free[type2][2] += 1
+					Solution.push (`Free L2 + Locked L2 ${out(type2,color)}`)
+				} else {
+					free.none[1] -= 1
+					free[type2][1] -= 1
+					free[type2][2] += 1
+					Solution.push (`Free L2 + Free L2 ${out(type2,color)}`)
+				}
+				occupied1_3 += 2;
+				occupied2_3 += 2;
+			} else if (free[type1][1] > 0 && locked[type2][1] > 0) {
+				free[type1][1] -= 1
+				free.full[2] += 1
+				locked[type2][1] -= 1
+				Solution.push (`Free L2 ${out(type1,color)} + Locked L2 ${out(type2,color)}`)
+			} else if (free[type2][1] > 0 && locked[type1][1] > 0) {
+				free[type2][1] -= 1
+				free.full[2] += 1
+				locked[type1][1] -= 1
+				Solution.push (`Free L2 ${out(type2,color)} + Locked L2 ${out(type1,color)} (2)`)
+			} else if (free[type2][1] > 0 && free[type1][1] > 0) {
+				free[type2][1] -= 1
+				free[type1][1] -= 1
+				free.full[2] += 1
+				Solution.push (`Free L2 ${out(type2,color)} + Free L2 ${out(type1,color)} (1)`)
+			} else if (free.none[1] > 0 && (locked[type1][1] + locked[type2][1]) > 0) {
+				let pick = null
+				if (total2_3 == total1_3) {
+					if (total2_ > total1_) {
+						if (locked[type1][1] > 0)
+							pick = type1
+						else
+							pick = type2
+					} else {
+						if (locked[type2][1] > 0)
+							pick = type2
+						else
+							pick = type1
+					}
+				} else if (total2_3 > total1_3) {
+					if (locked[type1][1] > 0)
+						pick = type1
+					else
+						pick = type2
+				} else {
+					if (locked[type2][1] > 0)
+						pick = type2
+					else
+						pick = type1
+				}
+				if (pick == type1) {
+					free.none[1] -= 1
+					free[type1][2] += 1
+					locked[type1][1] -= 1
+					total1_3 += 1
+					Solution.push (`Free L2 + Locked L2 ${out(type1,color)}`)
+				} else {
+					free.none[1] -= 1
+					free[type2][2] += 1
+					locked[type2][1] -= 1
+					total2_3 += 1
+					Solution.push (`Free L2 + Locked L2 ${out(type2,color)}`)
+				}
+			} else if (free[type1][1] > 0 && locked[type1][1] > 0) {
+				free[type1][1] -= 1
+				locked[type1][1] -= 1
+				free[type1][2] += 1
+				Solution.push (`Free L2 ${out(type1,color)} + Locked L2 ${out(type1,color)}`)
+			} else if (free[type2][1] > 0 && locked[type2][1] > 0) {
+				free[type2][1] -= 1
+				locked[type2][1] -= 1
+				free[type2][2] += 1
+				Solution.push (`Free L2 ${out(type2,color)} + Locked L2 ${out(type2,color)}`)
+			} else if (free[type2][1] > 0 && free.none[1] > 0) {
+				free[type2][1] -= 1
+				free.none[1] -= 1
+				free[type2][2] += 1
+				Solution.push (`Free L2 + Free L2 ${out(type2,color)}`)
+			} else if (free[type1][1] > 0 && free.none[1] > 0) {
+				free[type1][1] -= 1
+				free.none[1] -= 1
+				free[type1][2] += 1
+				Solution.push (`Free L2 + Free L2 ${out(type1,color)}`)
+			} else if (free.none[1] >= 2) {
+				free.none[1] -= 2
+				free.none[2] += 1
+				Solution.push ("Free L2 + Free L2")
+			} else if (free[type1][1] >= 2) {
+				free[type1][1] -= 2
+				free[type1][2] += 1
+				Solution.push (`Free L2 ${out(type1,color)} + Free L2 ${out(type1,color)}`)
+			} else if (free[type2][1] >= 2) {
+				free[type2][1] -= 2
+				free[type2][2] += 1
+				Solution.push (`Free L2 ${out(type2,color)} + Free L2 ${out(type2,color)}`)
+			} else break
+		}      
+		//Solution.push ("==Level 3 Merges==")
+		let total1_4 = locked[type1][3] + free[type1][3];
+		let total2_4 = locked[type2][3] + free[type2][3];
+		let occupied1_4=0;
+		let occupied2_4=0;
+		while (true) {
+			
+			if (free.none[2] >= locked[type1][2]+locked[type2][2]+free[type1][2]+free[type2][2] + free["full"][2] && locked[type1][2]+locked[type2][2]+free[type1][2]+free[type2][2]+ free["full"][2] > 0) {
+				for (let x=0; x<locked[type1][2];x++) Solution.push (`Free L3 + Locked L3 ${out(type1,color)}`)
+				free[type1][3] += locked[type1][2];
+				for (let x=0; x<free[type1][2];x++) Solution.push (`Free L3 + Free L3 ${out(type1,color)}`)
+				free[type1][3] += free[type1][2];
+				for (let x=0; x<locked[type2][2];x++) Solution.push (`Free L3 + Locked L3 ${out(type2,color)}`)
+				free[type2][3] += locked[type2][2];
+				for (let x=0; x<free[type2][2];x++) Solution.push (`Free L3 + Free L3 ${out(type2,color)}`)
+				free[type2][3] += free[type2][2];
+				for (let x=0; x<free["full"][2];x++) Solution.push (`Free L3 + Free L3 ${out("full",color)}`)
+				free["full"][3] += free["full"][2];
+				
+				free.none[2] -= locked[type1][2]+locked[type2][2]+free[type1][2]+free[type2][2]+free["full"][2];
+				locked[type1][2] = 0;
+				free[type1][2] = 0;
+				locked[type2][2] = 0;
+				free[type2][2] = 0;
+				free["full"][2] = 0;
+				
+			} else if (free.none[2] > 0 && locked[type1][2] > 0 && (locked[type2][3]+free[type2][3]-occupied2_4) > 0 && (total1_4<=total2_4 || locked[type2][2]==0)) {
+				free.none[2] -= 1
+				locked[type1][2] -= 1
+				free[type1][3] += 1
+				Solution.push (`Free L3 + Locked L3 ${out(type1,color)} `)
+				total1_4 +=1;
+				occupied1_4 +=1;
+				occupied2_4 +=1;
+			} else if (free.none[2] > 0 &&  locked[type2][2] > 0 && (locked[type1][3]+free[type1][3]-occupied1_4) > 0) {
+				free.none[2] -= 1
+				locked[type2][2] -= 1
+				free[type2][3] += 1
+				Solution.push (`Free L3 + Locked L3 ${out(type2,color)}`)
+				total2_4 +=1;
+				occupied1_4 +=1;
+				occupied2_4 +=1;
+			} else if (free.none[2] > 1 && (locked[type1][2] + free[type1][2] > 0) && (locked[type2][2] + free[type2][2] > 0) && (locked[type1][3] + free[type1][3] - occupied1_4 > 0) && (locked[type2][3] + free[type2][3] - occupied2_4 > 0)) {
+				//console.log("L3 double used")
+				if (locked[type1][2] > 0) {
+					free.none[2] -= 1
+					locked[type1][2] -= 1
+					free[type1][3] += 1
+					Solution.push (`Free L3 + Locked L3 ${out(type1,color)}`)
+				} else {
+					free.none[2] -= 1
+					free[type1][2] -= 1
+					free[type1][3] += 1
+					Solution.push (`Free L3 + Free L3 ${out(type1,color)} `)
+				}
+				if (locked[type2][2] > 0) {
+					free.none[2] -= 1
+					locked[type2][2] -= 1
+					free[type2][3] += 1
+					Solution.push (`Free L3 + Locked L3 ${out(type2,color)}`)
+				} else {
+					free.none[2] -= 1
+					free[type2][2] -= 1
+					free[type2][3] += 1
+					Solution.push (`Free L3 + Free L3 ${out(type2,color)}`)
+				}
+				occupied1_4 += 2;
+				occupied2_4 += 2;
+				
+			} else if (free[type1][2] > 0 && locked[type2][2] > 0) {
+				free[type1][2] -= 1
+				locked[type2][2] -= 1
+				free.full[3] += 1
+				Solution.push (`Free L3 ${out(type1,color)} + Locked L3 ${out(type2,color)}`)
+			} else if ( free[type2][2] > 0 && locked[type1][2] > 0) {
+				free[type2][2] -= 1
+				locked[type1][2] -= 1
+				free.full[3] += 1
+				Solution.push (`Free L3 ${out(type2,color)} + Locked L3 ${out(type1,color)}`)
+			} else if ( free[type2][2] > 0 && free[type1][2] > 0) {
+				free[type2][2] -= 1
+				free[type1][2] -= 1
+				free.full[3] += 1
+				Solution.push (`Free L3 ${out(type2,color)} + Free L3 ${out(type1,color)}`)
+			} else if ( free.none[2] > 0 && locked[type1][2] > 0 && (locked[type2][3] + free[type2][3] - occupied2_4) > 0) {
+				free.none[2] -= 1
+				locked[type1][2] -= 1
+				locked[type1][3] += 1
+				occupied1_4 +=1
+				occupied2_4 += 1
+				Solution.push (`Free L3 + Locked L3 ${out(type1,color)}`)
+				
+			} else if ( free.none[2] > 0 && locked[type2][2] > 0 && (locked[type1][3] + free[type1][3] - occupied1_4) > 0) {
+				free.none[2] -= 1
+				locked[type2][2] -= 1
+				locked[type2][3] += 1
+				occupied1_4 +=1
+				occupied2_4 += 1
+				Solution.push (`Free L3 + Locked L3 ${out(type2,color)}`)
+				
+			} else if (free.none[2] > 0 && free[type1][2] > 0 && (locked[type2][3] + free[type2][3] - occupied2_4) > 0) {
+				free.none[2] -= 1
+				free[type1][2] -= 1
+				free[type1][3] += 1
+				occupied1_4 +=1
+				occupied2_4 += 1
+				Solution.push (`Free L3 + Free L3 ${out(type1,color)} `)
+				
+			} else if (free.none[2] > 0 &&  free[type2][2] > 0 && (locked[type1][3] + free[type1][3] - occupied1_4) > 0) {
+				free.none[2] -= 1
+				free[type2][2] -= 1
+				free[type2][3] += 1
+				occupied1_4 += 1
+				occupied2_4 += 1
+				Solution.push (`Free L3 + Free L3 ${out(type2,color)}`)
+
+			} else if (free[type1][2] >0 && locked[type1][2]>0 && (locked[type2][3] + free[type2][3] - occupied2_4) > 0) {
+				free[type1][2] -= 1
+				locked[type1][2] -= 1
+				free[type1][3] += 1
+				occupied1_4 += 1
+				occupied2_4 += 1
+				Solution.push (`Free L3 ${out(type1,color)} + Locked L3 ${out(type1,color)}`)
+			
+			} else if (free[type2][2] >0 && locked[type2][2]>0 && (locked[type1][3] + free[type1][3] - occupied1_4)>0) {
+				free[type2][2] -= 1
+				locked[type2][2] -= 1
+				free[type2][3] += 1
+				occupied1_4 += 1
+				occupied2_4 += 1
+				Solution.push (`Free L3 ${out(type2,color)} + Locked L3 ${out(type2,color)}`)
+			
+			} else if ((free.none[2]+locked[type1][2]+locked[type2][2] - free.full[2] > 1) && free.none[2]>1 && locked[type2][2]>0 && locked[type1][2]>0) {
+				free.none[2] -= 2
+				locked[type2][2] -= 1
+				locked[type1][2] -= 1
+				free[type2][3] += 1
+				free[type1][3] += 1
+				occupied1_4 += 1
+				occupied2_4 += 1
+				Solution.push (`Free L3 + Locked L3 ${out(type2,color)}`)
+				Solution.push (`Free L3 + Locked L3 ${out(type1,color)}`)
+			
+			} else if (free.full[2] > 0 && ((free.none[2] + free[type2][2] + free[type1][2] + locked[type2][2] + locked[type1][2]) > 0 || free.full[2] >= 2)) {
+				if (locked[type2][2] > 0) {
+					free.full[2] -= 1
+					locked[type2][2] -= 1
+					free.full[3] += 1
+					Solution.push (`Free L3 ${out("full",color)} + Locked L3 ${out(type2,color)}`)
+				} else if ( locked[type1][2] > 0) {
+					free.full[2] -= 1
+					locked[type1][2] -= 1
+					free.full[3] += 1
+					Solution.push (`Free L3 ${out("full",color)} + Locked L3 ${out(type1,color)}`)
+				} else if ( free.none[2] > 0) {
+					free.full[2] -= 1
+					free.none[2] -= 1
+					free.full[3] += 1
+					Solution.push ("Free L3 Full + Free L3")
+				} else if ( free[type1][2] > 0) {
+					free.full[2] -= 1
+					free[type1][2] -= 1
+					free.full[3] += 1
+					Solution.push (`Free L3 ${out("full",color)} + Free L3 ${out(type1,color)}`)
+				} else if ( free[type2][2] > 0) {
+					free.full[2] -= 1
+					free[type2][2] -= 1
+					free.full[3] += 1
+					Solution.push (`Free L3 ${out("full",color)} + Free L3 ${out(type2,color)}`)
+				} else {
+					free.full[2] -= 2
+					free.full[3] += 1
+					Solution.push ("Free L3 Full + Free L3 Full")
+				}
+			} else if ( free.none[2] > 0 && (locked[type1][2] + locked[type2][2]) > 0) {
+				pick = null
+				if (total2_4 == total1_4) {
+					if (total2_ > total1_) {
+						if (locked[type1][2] > 0)
+							pick = type1
+						else
+							pick = type2
+					} else {
+						if (locked[type2][2] > 0)
+							pick = type2
+						else
+							pick = type1
+					}
+				} else if ( total2_4 > total1_4) {
+					if (locked[type1][2] > 0)
+						pick = type1
+					else
+						pick = type2
+				} else {
+					if (locked[type2][2] > 0)
+						pick = type2
+					else
+						pick = type1
+				}
+				if (pick == type1) {
+					free.none[2] -= 1
+					free[type1][3] += 1
+					locked[type1][2] -= 1
+					total1_4 += 1
+					Solution.push (`Free L3 + Locked L3 ${out(type1,color)}`)
+				} else {
+					free.none[2] -= 1
+					free[type2][3] += 1
+					locked[type2][2] -= 1
+					total2_4 += 1
+					Solution.push (`Free L3 + Locked L3 ${out(type2,color)}`)
+				}
+			} else if ( free[type1][2] > 0 && locked[type1][2] > 0) {
+				free[type1][2] -= 1
+				locked[type1][2] -= 1
+				free[type1][3] += 1
+				Solution.push (`Free L3 ${out(type1,color)} + Locked L3 ${out(type1,color)}`)
+			} else if ( free[type2][2] > 0 && locked[type2][2] > 0) {
+				free[type2][2] -= 1
+				locked[type2][2] -= 1
+				free[type2][3] += 1
+				Solution.push (`Free L3 ${out(type2,color)} + Locked L3 ${out(type2,color)}`)
+			} else if ( free[type2][2] > 0 && free.none[2] > 0) {
+				free[type2][2] -= 1
+				free.none[2] -= 1
+				free[type2][3] += 1
+				Solution.push (`Free L3 + Free L3 ${out(type2,color)}`)
+			} else if ( free[type1][2] > 0 && free.none[2] > 0) {
+				free[type1][2] -= 1
+				free.none[2] -= 1
+				free[type1][3] += 1
+				Solution.push (`Free L3 + Free L3 ${out(type1,color)}`)
+			} else if ( free.none[2] >= 2) {
+				free.none[2] -= 2
+				free.none[3] += 1
+				Solution.push ("Free L3 + Free L3")
+			} else if ( free[type1][2] >= 2) {
+				free[type1][2] -= 2
+				free[type1][3] += 1
+				Solution.push (`Free L3 ${out(type1,color)} + Free L3 ${out(type1,color)}`)
+			} else if ( free[type2][2] >= 2) {
+				free[type2][2] -= 2
+				free[type2][3] += 1
+				Solution.push (`Free L3 ${out(type2,color)} + Free L3 ${out(type2,color)}`)
+			} else break
+		}            
+		//Solution.push ("==Level 4 Merges==")
+		total2_4 = locked[type2][3]
+		total1_4 = locked[type1][3]
+		while (true) {
+			if (free[type1][3] > 0 && locked[type2][3] > 0) {
+				free[type1][3] -= 1
+				free.full[3] += 1
+				locked[type2][3] -= 1
+				Solution.push (`Free L4 ${out(type1,color)} + Locked L4 ${out(type2,color)}`)
+			} else if ( free[type2][3] > 0 && locked[type1][3] > 0) {
+				free[type2][3] -= 1
+				free.full[3] += 1
+				locked[type1][3] -= 1
+				Solution.push (`Free L4 ${out(type2,color)} + Locked L4 ${out(type1,color)}`)
+			} else if ( free[type2][3] > 0 && free[type1][3] > 0) {
+				free[type2][3] -= 1
+				free[type1][3] -= 1
+				free.full[3] += 1
+				Solution.push (`Free L4 ${out(type2,color)} + Free L4 ${out(type1,color)}`)
+			} else if ( free.none[3] > 0 && (locked[type1][3] + locked[type2][3]) > 0) {
+				pick = null
+				if (total2_4 == total1_4) {
+					if (total2_ > total1_) {
+						if (locked[type1][3] > 0) 
+							pick = type1
+						else
+							pick = type2
+					} else {
+						if (locked[type2][3] > 0)
+							pick = type2
+						else
+							pick = type1
+					}
+				} else if ( total2_4 > total1_4) {
+					if (locked[type1][3] > 0) 
+						pick = type1
+					else
+						pick = type2
+				} else {
+					if (locked[type2][3] > 0)
+						pick = type2
+					else
+						pick = type1
+				}   
+				if (pick == type1) {
+					free.none[3] -= 1
+					free[type1][3] += 1
+					locked[type1][3] -= 1
+					total1_4 -= 1
+					Solution.push (`Free L4 + Locked L4 ${out(type1,color)}`)
+				} else {
+					free.none[3] -= 1
+					free[type2][3] += 1
+					locked[type2][3] -= 1
+					total2_4 -= 1
+					Solution.push (`Free L4 + Locked L4 ${out(type2,color)}`)
+				}
+			} else if (free.full[3] > 0 && (locked[type2][3] + locked[type1][3]) > 0) {
+				if (locked[type2][3] > 0) {
+					free.full[3] -= 1
+					locked[type2][3] -= 1
+					free.full[3] += 1
+					Solution.push (`Free L4 ${out("full",color)} + Locked L4 ${out(type2,color)}`)
+				} else if (locked[type1][3] > 0) {
+					free.full[3] -= 1
+					locked[type1][3] -= 1
+					free.full[3] += 1
+					Solution.push (`Free L4 ${out("full",color)} + Locked L4 ${out(type1,color)}`)
+				}
+			} else break
+		}
+		//Solution.push ("==Results==")
+		let endProgress = 0;
+		//Progress:
+		for (let t of [type1,type2]) {
+			for (let l of [1,2,3,4]) {
+				endProgress += locked[t][l-1]*mergerGame.levelValues[l]
+			}
+		}
+		//Progress:
+		let keys = 0
+		for (let l of [3,4]) {
+			keys += free["full"][l-1]*mergerGame.keyValues[l]
+		}
+			
+		return {keys:keys, progress:startProgress-endProgress,locked:lockedO, free:freeO,solution:Solution}
+	},
+	solver2:(locked,free, color)=>{ //Moo Original
+		let lockedO = window.structuredClone(locked),
+			freeO = window.structuredClone(free),
+			type1 = mergerGame.types[0],
+			type2 = mergerGame.types[1],
+			total1_ = locked[type1].reduce((a, b) => a + b, 0)+free[type1].reduce((a, b) => a + b, 0),
+			total2_ = locked[type2].reduce((a, b) => a + b, 0)+free[type2].reduce((a, b) => a + b, 0),
+			total1_2 = total1_ - locked[type1][0],
+			total2_2 = total2_ - locked[type2][0],
+			startProgress = 0,
+			Solution=[],
+			out = mergerGame.solverOut;
+		//Progress:
+		for (let t of [type1,type2]) {
+			for (let l of [1,2,3,4]) {
+				startProgress += locked[t][l-1]*mergerGame.levelValues[l]
+			}
+		}
+		
+		Solution.push ({text:"=======Mooing cat's solver=======",css:"color:"+mergerGame.eventData[mergerGame.event].CSScolors[color]})
+		//Solution.push ("==Level 1 Merges==")
+		while (true) {
+			if (free.none[0] == 0) break;
+			
+			if (locked[type2][0] == 0 && locked[type1][0] == 0) {
+				if (free.none[0] >= 2) {
+					free.none[0] -= 2
+					free.none[1] += 1
+					Solution.push ("Free L1 + Free L1")
+					continue;
+				} else break;
+			}
+			let pick = null
+			if (total2_2 == total1_2) {
+				if (total2_ > total1_) {
+					if (locked[type1][0] > 0)
+						pick = type1
+					else
+						pick = type2
+				} else {
+					if (locked[type2][0] > 0)
+						pick = type2
+					else
+						pick = type1
+				}
+			} else if (total2_2 > total1_2) {
+				if (locked[type1][0] > 0)
+					pick = type1
+				else
+					pick = type2
+			} else {
+				if (locked[type2][0] > 0)
+					pick = type2
+				else
+					pick = type1
+			}        
+			if (pick == type1) {
+				free.none[0] -= 1
+				free[type1][1] += 1
+				locked[type1][0] -= 1
+				total1_2 += 1
+				Solution.push (`Free L1 + Locked L1 ${out(type1,color)}`)
+			} else {
+				free.none[0] -= 1
+				free[type2][1] += 1
+				locked[type2][0] -= 1
+				total2_2 += 1
+				Solution.push (`Free L1 + Locked L1 ${out(type2,color)}`)
+			}
+		}
+		let total2_3 = locked[type2][2] + locked[type2][3];
+		let total1_3 = locked[type1][2] + locked[type1][3];
+		//Solution.push ("==Level 2 Merges==")
+		while (true) {
+			
+			
+			if (free.none[1] > 1 && (locked[type1][1] + free[type1][1] > 0) && (locked[type2][1] + free[type2][1] > 0) && (locked[type1][2] + free[type1][2] > 0) && (locked[type2][2] + free[type2][2] > 0)) {
+				if (locked[type1][1] > 0) {
+					free.none[1] -= 1
+					locked[type1][1] -= 1
+					free[type1][2] += 1
+					Solution.push (`Free L2 + Locked L2 ${out(type1,color)}`)
+				} else {
+					free.none[1] -= 1
+					free[type1][1] -= 1
+					free[type1][2] += 1
+					Solution.push (`Free L2 + Free L2 ${out(type1,color)}`)
+				}
+				if (locked[type2][1] > 0) {
+					free.none[1] -= 1
+					locked[type2][1] -= 1
+					free[type2][2] += 1
+					Solution.push (`Free L2 + Locked L2 ${out(type2,color)}`)
+				} else {
+					free.none[1] -= 1
+					free[type2][1] -= 1
+					free[type2][2] += 1
+					Solution.push (`Free L2 + Free L2 ${out(type2,color)}`)
+				}
+			} else if (free[type1][1] > 0 && locked[type2][1] > 0) {
+				free[type1][1] -= 1
+				free.full[2] += 1
+				locked[type2][1] -= 1
+				Solution.push (`Free L2 ${out(type1,color)} + Locked L2 ${out(type2,color)}`)
+			} else if (free[type2][1] > 0 && locked[type1][1] > 0) {
+				free[type2][1] -= 1
+				free.full[2] += 1
+				locked[type1][1] -= 1
+				Solution.push (`Free L2 ${out(type2,color)} + Locked L2 ${out(type1,color)}`)
+			} else if (free[type2][1] > 0 && free[type1][1] > 0) {
+				free[type2][1] -= 1
+				free[type1][1] -= 1
+				free.full[2] += 1
+				Solution.push (`Free L2 ${out(type2,color)} + Free L2 ${out(type1,color)}`)
+			} else if (free.none[1] > 0 && (locked[type1][1] + locked[type2][1]) > 0) {
+				let pick = null
+				if (total2_3 == total1_3) {
+					if (total2_ > total1_) {
+						if (locked[type1][1] > 0)
+							pick = type1
+						else
+							pick = type2
+					} else {
+						if (locked[type2][1] > 0)
+							pick = type2
+						else
+							pick = type1
+					}
+				} else if (total2_3 > total1_3) {
+					if (locked[type1][1] > 0)
+						pick = type1
+					else
+						pick = type2
+				} else {
+					if (locked[type2][1] > 0)
+						pick = type2
+					else
+						pick = type1
+				}
+				if (pick == type1) {
+					free.none[1] -= 1
+					free[type1][2] += 1
+					locked[type1][1] -= 1
+					total1_3 += 1
+					Solution.push (`Free L2 + Locked L2 ${out(type1,color)}`)
+				} else {
+					free.none[1] -= 1
+					free[type2][2] += 1
+					locked[type2][1] -= 1
+					total2_3 += 1
+					Solution.push (`Free L2 + Locked L2 ${out(type2,color)}`)
+				}
+			} else if (free[type1][1] > 0 && locked[type1][1] > 0) {
+				free[type1][1] -= 1
+				locked[type1][1] -= 1
+				free[type1][2] += 1
+				Solution.push (`Free L2 ${out(type1,color)} + Locked L2 ${out(type1,color)}`)
+			} else if (free[type2][1] > 0 && locked[type2][1] > 0) {
+				free[type2][1] -= 1
+				locked[type2][1] -= 1
+				free[type2][2] += 1
+				Solution.push (`Free L2 ${out(type2,color)} + Locked L2 ${out(type2,color)}`)
+			} else if (free[type2][1] > 0 && free.none[1] > 0) {
+				free[type2][1] -= 1
+				free.none[1] -= 1
+				free[type2][2] += 1
+				Solution.push (`Free L2 + Free L2 ${out(type2,color)}`)
+			} else if (free[type1][1] > 0 && free.none[1] > 0) {
+				free[type1][1] -= 1
+				free.none[1] -= 1
+				free[type1][2] += 1
+				Solution.push (`Free L2 + Free L2 ${out(type1,color)}`)
+			} else if (free.none[1] >= 2) {
+				free.none[1] -= 2
+				free.none[2] += 1
+				Solution.push ("Free L2 + Free L2")
+			} else if (free[type1][1] >= 2) {
+				free[type1][1] -= 2
+				free[type1][2] += 1
+				Solution.push (`Free L2 ${out(type1,color)} + Free L2 ${out(type1,color)}`)
+			} else if (free[type2][1] >= 2) {
+				free[type2][1] -= 2
+				free[type2][2] += 1
+				Solution.push (`Free L2 ${out(type2,color)} + Free L2 ${out(type2,color)}`)
+			} else break
+		}      
+		//Solution.push ("==Level 3 Merges==")
+		let total2_4 = locked[type2][3]
+		let total1_4 = locked[type1][3]
+		while (true) {
+			
+			let numtopTrios = Math.min(free.none[3],locked[type1][3],locked[type2][3])
+			if (free.none[2] > 1 && (locked[type1][2] + free[type1][2] > 0) && (locked[type2][2] + free[type2][2] > 0) && (locked[type1][3] - numtopTrios + free[type1][3] > 0) && (locked[type2][3] - numtopTrios + free[type2][3] > 0)) {
+				if (locked[type1][2] > 0) {
+					free.none[2] -= 1
+					locked[type1][2] -= 1
+					free[type1][3] += 1
+					Solution.push (`Free L3 + Locked L3 ${out(type1,color)}`)
+				} else {
+					free.none[2] -= 1
+					free[type1][2] -= 1
+					free[type1][3] += 1
+					Solution.push (`Free L3 + Free L3 ${out(type1,color)} `)
+				}
+				if (locked[type2][2] > 0) {
+					free.none[2] -= 1
+					locked[type2][2] -= 1
+					free[type2][3] += 1
+					Solution.push (`Free L3 + Locked L3 ${out(type2,color)}`)
+				} else {
+					free.none[2] -= 1
+					free[type2][2] -= 1
+					free[type2][3] += 1
+					Solution.push (`Free L3 + Free L3 ${out(type2,color)}`)
+				}
+			} else if (free[type1][2] > 0 && locked[type2][2] > 0) {
+				free[type1][2] -= 1
+				free.full[3] += 1
+				locked[type2][2] -= 1
+				Solution.push (`Free L3 ${out(type1,color)} + Locked L3 ${out(type2,color)}`)
+			} else if ( free[type2][2] > 0 && locked[type1][2] > 0) {
+				free[type2][2] -= 1
+				free.full[3] += 1
+				locked[type1][2] -= 1
+				Solution.push (`Free L3 ${out(type2,color)} + Locked L3 ${out(type1,color)}`)
+			} else if ( free[type2][2] > 0 && free[type1][2] > 0) {
+				free[type2][2] -= 1
+				free[type1][2] -= 1
+				free.full[3] += 1
+				Solution.push (`Free L3 ${out(type2,color)} + Free L3 ${out(type1,color)}`)
+			} else if ( free.none[2] > 0 && locked[type1][2] > 0 && (locked[type2][3] - numtopTrios) > free[type1][3]) {
+				free.none[2] -= 1
+				locked[type1][2] -= 1
+				free[type1][3] += 1
+				Solution.push (`Free L3 + Locked L3 ${out(type1,color)}`)
+			} else if ( free.none[2] > 0 && locked[type2][2] > 0 && (locked[type1][3] - numtopTrios) > free[type2][3]) {
+				free.none[2] -= 1
+				locked[type2][2] -= 1
+				free[type2][3] += 1
+				Solution.push (`Free L3 + Locked L3 ${out(type2,color)}`)
+			} else if ( free.full[2] > 0 && ((free.none[2] + free[type2][2] + free[type1][2] + locked[type2][2] + locked[type1][2]) > 0 || free.full[2] >= 2)) {
+				if (locked[type2][2] > 0) {
+					free.full[2] -= 1
+					locked[type2][2] -= 1
+					free.full[3] += 1
+					Solution.push (`Free L3 ${out("full",color)} + Locked L3 ${out(type2,color)}`)
+				} else if ( locked[type1][2] > 0) {
+					free.full[2] -= 1
+					locked[type1][2] -= 1
+					free.full[3] += 1
+					Solution.push (`Free L3 ${out("full",color)} + Locked L3 ${out(type1,color)}`)
+				} else if ( free.none[2] > 0) {
+					free.full[2] -= 1
+					free.none[2] -= 1
+					free.full[3] += 1
+					Solution.push ("Free L3 Full + Free L3")
+				} else if ( free[type1][2] > 0) {
+					free.full[2] -= 1
+					free[type1][2] -= 1
+					free.full[3] += 1
+					Solution.push (`Free L3 ${out("full",color)} + Free L3 ${out(type1,color)}`)
+				} else if ( free[type2][2] > 0) {
+					free.full[2] -= 1
+					free[type2][2] -= 1
+					free.full[3] += 1
+					Solution.push (`Free L3 ${out("full",color)} + Free L3 ${out(type2,color)}`)
+				} else {
+					free.full[2] -= 2
+					free.full[3] += 1
+					Solution.push ("Free L3 Full + Free L3 Full")
+				}
+			} else if ( free.none[2] > 0 && (locked[type1][2] + locked[type2][2]) > 0) {
+				pick = null
+				if (total2_4 == total1_4) {
+					if (total2_ > total1_) {
+						if (locked[type1][2] > 0)
+							pick = type1
+						else
+							pick = type2
+					} else {
+						if (locked[type2][2] > 0)
+							pick = type2
+						else
+							pick = type1
+					}
+				} else if ( total2_4 > total1_4) {
+					if (locked[type1][2] > 0)
+						pick = type1
+					else
+						pick = type2
+				} else {
+					if (locked[type2][2] > 0)
+						pick = type2
+					else
+						pick = type1
+				}
+				if (pick == type1) {
+					free.none[2] -= 1
+					free[type1][3] += 1
+					locked[type1][2] -= 1
+					total1_4 += 1
+					Solution.push (`Free L3 + Locked L3 ${out(type1,color)}`)
+				} else {
+					free.none[2] -= 1
+					free[type2][3] += 1
+					locked[type2][2] -= 1
+					total2_4 += 1
+					Solution.push (`Free L3 + Locked L3 ${out(type2,color)}`)
+				}
+			} else if ( free[type1][2] > 0 && locked[type1][2] > 0) {
+				free[type1][2] -= 1
+				locked[type1][2] -= 1
+				free[type1][3] += 1
+				Solution.push (`Free L3 ${out(type1,color)} + Locked L3 ${out(type1,color)}`)
+			} else if ( free[type2][2] > 0 && locked[type2][2] > 0) {
+				free[type2][2] -= 1
+				locked[type2][2] -= 1
+				free[type2][3] += 1
+				Solution.push (`Free L3 ${out(type2,color)} + Locked L3 ${out(type2,color)}`)
+			} else if ( free[type2][2] > 0 && free.none[2] > 0) {
+				free[type2][2] -= 1
+				free.none[2] -= 1
+				free[type2][3] += 1
+				Solution.push (`Free L3 + Free L3 ${out(type2,color)}`)
+			} else if ( free[type1][2] > 0 && free.none[2] > 0) {
+				free[type1][2] -= 1
+				free.none[2] -= 1
+				free[type1][3] += 1
+				Solution.push (`Free L3 + Free L3 ${out(type1,color)}`)
+			} else if ( free.none[2] >= 2) {
+				free.none[2] -= 2
+				free.none[3] += 1
+				Solution.push ("Free L3 + Free L3")
+			} else if ( free[type1][2] >= 2) {
+				free[type1][2] -= 2
+				free[type1][3] += 1
+				Solution.push (`Free L3 ${out(type1,color)} + Free L3 ${out(type1,color)}`)
+			} else if ( free[type2][2] >= 2) {
+				free[type2][2] -= 2
+				free[type2][3] += 1
+				Solution.push (`Free L3 ${out(type2,color)} + Free L3 ${out(type2,color)}`)
+			} else break
+		}            
+		//Solution.push ("==Level 4 Merges==")
+		total2_4 = locked[type2][3]
+		total1_4 = locked[type1][3]
+		while (true) {
+			if (free[type1][3] > 0 && locked[type2][3] > 0) {
+				free[type1][3] -= 1
+				free.full[3] += 1
+				locked[type2][3] -= 1
+				Solution.push (`Free L4 ${out(type1,color)} + Locked L4 ${out(type2,color)}`)
+			} else if ( free[type2][3] > 0 && locked[type1][3] > 0) {
+				free[type2][3] -= 1
+				free.full[3] += 1
+				locked[type1][3] -= 1
+				Solution.push (`Free L4 ${out(type2,color)} + Locked L4 ${out(type1,color)}`)
+			} else if ( free[type2][3] > 0 && free[type1][3] > 0) {
+				free[type2][3] -= 1
+				free[type1][3] -= 1
+				free.full[3] += 1
+				Solution.push (`Free L4 ${out(type2,color)} + Free L4 ${out(type1,color)}`)
+			} else if ( free.none[3] > 0 && (locked[type1][3] + locked[type2][3]) > 0) {
+				pick = null
+				if (total2_4 == total1_4) {
+					if (total2_ > total1_) {
+						if (locked[type1][3] > 0) 
+							pick = type1
+						else
+							pick = type2
+					} else {
+						if (locked[type2][3] > 0)
+							pick = type2
+						else
+							pick = type1
+					}
+				} else if ( total2_4 > total1_4) {
+					if (locked[type1][3] > 0) 
+						pick = type1
+					else
+						pick = type2
+				} else {
+					if (locked[type2][3] > 0)
+						pick = type2
+					else
+						pick = type1
+				}   
+				if (pick == type1) {
+					free.none[3] -= 1
+					free[type1][3] += 1
+					locked[type1][3] -= 1
+					total1_4 -= 1
+					Solution.push (`Free L4 + Locked L4 ${out(type1,color)}`)
+				} else {
+					free.none[3] -= 1
+					free[type2][3] += 1
+					locked[type2][3] -= 1
+					total2_4 -= 1
+					Solution.push (`Free L4 + Locked L4 ${out(type2,color)}`)
+				}
+			} else if (free.full[3] > 0 && (locked[type2][3] + locked[type1][3]) > 0) {
+				if (locked[type2][3] > 0) {
+					free.full[3] -= 1
+					locked[type2][3] -= 1
+					free.full[3] += 1
+					Solution.push (`Free L4 ${out("full",color)} + Locked L4 ${out(type2,color)}`)
+				} else if (locked[type1][3] > 0) {
+					free.full[3] -= 1
+					locked[type1][3] -= 1
+					free.full[3] += 1
+					Solution.push (`Free L4 ${out("full",color)} + Locked L4 ${out(type1,color)}`)
+				}
+			} else break
+		}
+		//Solution.push ("==Results==")
+		let endProgress = 0;
+		//Progress:
+		for (let t of [type1,type2]) {
+			for (let l of [1,2,3,4]) {
+				endProgress += locked[t][l-1]*mergerGame.levelValues[l]
+			}
+		}
+		//Progress:
+		let keys = 0
+		for (let l of [3,4]) {
+			keys += free["full"][l-1]*mergerGame.keyValues[l]
+		}
+			
+		return {keys:keys, progress:startProgress-endProgress,locked:lockedO, free:freeO,solution:Solution}
+	},
+		}

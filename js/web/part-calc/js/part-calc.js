@@ -97,7 +97,7 @@ let Parts = {
 	CopyIncludeDanger: false,
 	CopyIncludePlayer: true,
 	CopyIncludeGB: true,
-	CopyIncludeLevel: true,
+	CopyIncludeLevel: false,
 	CopyIncludeFP: true,
 	CopyIncludeOwnPart: false,
 	CopyPreP: true,

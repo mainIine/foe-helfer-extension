@@ -18,9 +18,11 @@
     height: 500px;
 }
 
-#mergerGameDialog img {
-    width: 25px;
-    height: 25px;
+#mergerGameDialog img,
+#mergerGameSolutionBody img {
+    width: 33px;
+    height: 33px;
+    zoom: 75%;
 }
 
 #mergerGameDialogBody {
@@ -31,15 +33,60 @@
 #mergerGameResetBlocker {
     width: 55px;
     height: 55px;
-    top: calc(50vh + 206px);
-    left: calc(50vw - 345px);
     position: absolute;
     z-index: 100;
     background-color: #ff9400;
     border-radius: 10px;
     border: red solid 2px;
 }
+#mergerGameResetBlocker.soccer {
+    top: calc(50vh + 243px);
+    left: calc(50vw - 334px);
+}
+#mergerGameResetBlocker.anniversary {
+    top: calc(50vh + 206px);
+    left: calc(50vw - 345px);
+}
+
+#MGstatus.hideDaily th:nth-child(3),
+#MGstatus.hideDaily td:nth-child(3){
+        display:none;
+}
+#MGstatus:not(.hideDaily) th:nth-child(2),
+#MGstatus:not(.hideDaily) td:nth-child(2){
+        display:none;
+}
+#MGstatus th:nth-child(2),
+#MGstatus th:nth-child(3){
+        color:var(--text-bright);
+}
 
 #mergerGameDialogSettingsBox input{
     width:4.5em;
+}
+
+#mergerGameDialog .toprightcorner,
+#mergerGameSolutionBody .toprightcorner{
+    object-fit: none;
+    object-position: top right;
+}   
+
+#mergerGameDialog .toprightcorner.full,
+#mergerGameSolutionBody .toprightcorner.full{
+    width: 35px;
+    height: 40px;
+    zoom: 60%;
+}   
+
+#mergerGameSolutionBody {
+    overflow-y: auto;
+}
+
+#mergerGameSolutionBody div{
+    margin:5px;
+    color:var(--text-bright);
+}
+#mergerGameDialogBody svg{
+    height:15px;
+    fill:var(--text-bright);
 }

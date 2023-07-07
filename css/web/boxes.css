@@ -349,6 +349,10 @@ table.foe-table:not(.no-hover) tbody tr:hover {
 	background-color: var(--background-table-hover);
 }
 
+table.foe-table tbody tr.no-hover, table.foe-table tbody tr.no-hover:hover {
+	background-color: var(--black-50);
+}
+
 table.foe-table.vertical-top td {
 	vertical-align: top;
 }

@@ -105,7 +105,8 @@ let Technologies = {
         SpaceAgeAsteroidBelt: 19,
         SpaceAgeVenus: 20,
         SpaceAgeJupiterMoon: 21,
-        NextEra: 22,
+        SpaceAgeTitan: 22,
+        NextEra:23,
     },
 
 
@@ -132,6 +133,7 @@ let Technologies = {
         19: 'SpaceAgeAsteroidBelt',
         20: 'SpaceAgeVenus',
         21: 'SpaceAgeJupiterMoon',
+        22: 'SpaceAgeTitan'
     },
 
 

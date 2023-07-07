@@ -75,12 +75,23 @@
 	height: 500px;
 }
 
+#GvGMapOverview {
+	left: calc(50vw - 400px);
+	top: calc(50vw - 250px);
+	width: 800px;
+	height: 500px;
+}
+
 #GvGMapBody.window-body {
 	display: flex;
 	align-items: stretch;
 	overflow: hidden;
 	justify-content: space-between;
 	height: calc(100% - 19px);
+}
+
+#GvGMapBody.GvGMapOverview.window-body {
+	height: calc(100% - 12px);
 }
 
 #GvGMapContent {
@@ -159,9 +170,17 @@
 	border-left: 2px solid var(--text-dark);
 }
 
+#GvGMapBody.GvGMapOverview #gvgOptions {
+	height: calc(100% - 25px);
+}
+
 .rank-first { color: var(--text-bright) }
 .rank-second { color: #69b0d6 }
 .rank-third { color: #f24c25 }
+
+.clickToCopy {
+	user-select: all
+}
 
 #gvgOptions.collapsed {
 	width: 0;
@@ -194,6 +213,18 @@
 #toggleOptions::before {
 	content: '>';
 	display: block;
+}
+
+#GvGGuilds tr.collapsable td:last-child {
+    background-image: url('../../../../css/images/hud/chevron-left.svg');
+    background-size: 20px 20px;
+	background-position: center right;
+	background-repeat: no-repeat;
+	min-width: 4px;
+}
+
+#GvGGuilds tr.collapsable.open td:last-child {
+	background-image: url('../../../../css/images/hud/chevron-down.svg');
 }
 
 #toggleOptions.collapsed::before {
