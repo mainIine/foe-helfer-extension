@@ -56,6 +56,7 @@ let ApiURL = 'https://api.foe-rechner.de/',
 	IsLevelScroll = false,
 	EventCountdown = false,
 	GameTimeOffset = 0,
+	GameTime = 0,
 	StartUpDone = new Promise(resolve => 
 			window.addEventListener('foe-helper#StartUpDone', resolve(), {once: true, passive: true})),
 	Fights = [],
@@ -701,7 +702,7 @@ GetFights = () =>{
 
 	FoEproxy.addHandler('TimeService', 'updateTime', async (data, postData) => {
 		GameTimeOffset = data.responseData.time * 1000 - new Date().getTime();
-		
+		GameTime = data.responseData.time;
 		if (MainMenuLoaded) return;
 	
 		MainMenuLoaded = true;
@@ -1268,6 +1269,7 @@ let MainParser = {
 
 		const dataEntity = d['CityMapEntity']['responseData'][0],
 			realData = {
+				image: srcLinks.get(`/city/buildings/${dataEntity['cityentity_id'].replace('X_', 'X_SS_')}.png`, true),
 				entity: dataEntity,
 				ranking: d['Rankings'],
 				bonus: d['Bonus'],

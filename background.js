@@ -98,7 +98,7 @@ alertsDB.version(1).stores({
 			if (typeof data.body  !== 'string')       throw 'Alert: "data.body" needs to be a string';
 			if (!Number.isInteger(data.expires))      throw 'Alert: "data.expires" needs to be a integer';
 			if (!Number.isInteger(data.repeat))       throw 'Alert: "data.repeat" needs to be a integer';
-			if (data.actions instanceof Array)        throw 'Alert: "data.actions" needs to be an array';
+			if (data.actions != null && !(data.actions instanceof Array))        throw 'Alert: "data.actions" needs to be an array';
 			if (typeof data.category   !== 'string')  throw 'Alert: "data.category" needs to be a string';
 			if (typeof data.persistent !== 'boolean') throw 'Alert: "data.persistent" needs to be a boolean';
 			if (typeof data.tag        !== 'string')  throw 'Alert: "data.tag" needs to be a string';
@@ -251,6 +251,8 @@ alertsDB.version(1).stores({
 					type: 'basic',
 					title: alert.data.title,
 					message: alert.data.body,
+					buttons: alert.data.actions,
+					requireInteraction: alert.data.persistent||false,
 					// @ts-ignore
 					contextMessage: 'FoE-Helper − '+trimPrefix(alert.server, "https://"),
 					iconUrl: '/images/app128.png',

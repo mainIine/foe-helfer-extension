@@ -1,6 +1,6 @@
 [	
 	{
-		"udate": "12.03.2023"
+		"udate": "03.07.2023"
 	},
 	{
 		"groupname": "Guild_Battlegrounds"
@@ -61,7 +61,7 @@
 				"update": "upgrade_kit_privateers_boathouse"
 			}
 		],
-		"kit": "selection_kit_privateers_boathouse"
+		"kit": ["selection_kit_privateers_boathouse","selection_kit_epic_SUM23"]
 	},
 	{
 		"name": "Heroes_Tavern",
@@ -71,7 +71,38 @@
 				"update": "upgrade_kit_heroes_tavern"
 			}
 		],
-		"kit": "selection_kit_heroes_tavern"
+		"kit": ["selection_kit_heroes_tavern","selection_kit_epic_FELLOW23"]
+	},
+	{
+		"name": "Summerhold_Manor",
+		"buildings": [
+			{
+				"first": "W_MultiAge_FELL23A1",
+				"update": "upgrade_kit_FELLOW23A"
+			}
+		],
+		"kit": [
+			"selection_kit_FELLOW23A",
+			"selection_kit_FELLOW23A",
+			"fragment#golden_upgrade_kit_FELLOW23A",
+			"fragment#golden_upgrade_kit_FELLOW23A"
+		]
+	},
+	{
+		"name": "Aegean_Resort",
+		"buildings": [
+			{
+				"first": "W_MultiAge_CUP23A1",
+				"update": "upgrade_kit_CUP23A"
+			}
+		],
+		"kit": [
+			"selection_kit_CUP23A",
+			"fragment#selection_kit_CUP23A",
+			"golden_upgrade_kit_CUP23A",
+			"golden_selection_kit_CUP23A",
+			"fragment#golden_selection_kit_CUP23A"
+		]
 	},
 	{
 		"name": "Animal_Crossing",
@@ -100,7 +131,9 @@
 		"kit": [
 			"selection_kit_gentiana_windmill_farm",
 			"selection_kit_gentiana_windmill",
-			"selection_kit_gentiana_farmland"
+			"selection_kit_gentiana_farmland",
+			"selection_kit_epic_CUP23",
+			"golden_upgrade_kit_CUP22A"
 		]
 	},
 	{
@@ -254,7 +287,11 @@
 				"update": "upgrade_kit_athlon_abbey"
 			}
 		],
-		"kit": "selection_kit_athlon_abbey"
+		"kit": [
+			"selection_kit_athlon_abbey",
+			"golden_upgrade_kit_CUP22A",
+			"selection_kit_epic_CUP23"
+		]
 	},
 	{
 		"name": "Ferris_Wheel",
@@ -274,7 +311,7 @@
 				"update": "upgrade_kit_suishun_mill"
 			}
 		],
-		"kit": "selection_kit_suishun_mill"
+		"kit": ["selection_kit_suishun_mill","selection_kit_epic_SPR"]
 	},
 	{
 		"name": "Druid_Temple",
@@ -357,7 +394,7 @@
 				"update": "upgrade_kit_governors_villa"
 			}
 		],
-		"kit": ["selection_kit_govenors_villa","selection_kit_epic_SUM23"]
+		"kit": ["selection_kit_govenors_villa","selection_kit_epic_SUM23","golden_upgrade_kit_SUM20A","fragment#golden_upgrade_kit_SUM20A"]
 	},
 	{
 		"name": "Hall_of_Fame",
@@ -367,7 +404,10 @@
 				"update": "upgrade_kit_hall_of_fame"
 			}
 		],
-		"kit": "selection_kit_hall_of_fame"
+		"kit": [
+			"selection_kit_hall_of_fame",
+			"selection_kit_epic_CUP23"
+		]
 	},
 	{
 		"name": "Hippodrome",
@@ -394,7 +434,8 @@
 			"selection_kit_hippodrome_sphendone",
 			"selection_kit_hippodrome_carceres",
 			"selection_kit_hippodrome_track",
-			"selection_kit_hippodrome_middle_sections"
+			"selection_kit_hippodrome_middle_sections",
+			"selection_kit_epic_CUP23"
 		]
 	},
 	{
@@ -418,6 +459,23 @@
 		"kit": ["selection_kit_PAT23A","ultimate_upgrade_kit_PAT23A"]
 	},
 	{
+		"name": "Trading_Post",
+		"buildings": [
+			{
+				"first": "W_MultiAge_SUM23A1",
+				"update": "upgrade_kit_SUM23A"
+			}
+		],
+		"kit": [
+			"selection_kit_SUM23A",
+			"golden_upgrade_kit_SUM23A",
+			"fragment#building_W_MultiAge_SUM23A1",
+			"fragment#selection_kit_SUM23A",
+			"fragment#upgrade_kit_SUM23A",
+			"fragment#golden_upgrade_kit_SUM23A"
+		]
+	},
+	{
 		"name": "Tower_of_Conjunction",
 		"buildings": [
 			{
@@ -425,7 +483,11 @@
 				"update": "upgrade_kit_ANNI23A"
 			}
 		],
-		"kit": ["selection_kit_ANNI23A","golden_upgrade_kit_ANNI23A"]
+		"kit": [
+			"selection_kit_ANNI23A",
+			"golden_upgrade_kit_ANNI23A",
+			"fragment#selection_kit_ANNI23A"
+		]
 	},
 	{
 		"name": "Key_Master's_Workshop",
@@ -445,7 +507,7 @@
 				"update": "upgrade_kit_hanami_bridge"
 			}
 		],
-		"kit": "selection_kit_hanami_bridge"
+		"kit": ["selection_kit_hanami_bridge","selection_kit_epic_SPR"]
 	},
 	{
 		"name": "Celtic_Forest_Set",
@@ -586,7 +648,8 @@
 		],
 		"kit": [
 			"selection_kit_altar_garden",
-			"selection_kit_divine"
+			"selection_kit_divine",
+			"selection_kit_epic_CUP23"
 		]
 	},
 	{
@@ -715,7 +778,10 @@
 				"update": "upgrade_kit_grand_bridge"
 			}
 		],
-		"kit": "selection_kit_grand_bridge"
+		"kit": [
+			"selection_kit_grand_bridge",
+			"selection_kit_epic_CUP23"
+		]
 	},
 	{
 		"name": "Pillar_of_Heroes",
@@ -736,7 +802,10 @@
 				"update": "upgrade_kit_winners_plaza"
 			}
 		],
-		"kit": "selection_kit_winners_plaza"
+		"kit": [
+			"selection_kit_winners_plaza",
+			"selection_kit_epic_CUP23"
+		]
 	},
 	{
 		"name": "Winter_Village_Set",
@@ -864,7 +933,7 @@
 				"update": "upgrade_kit_pagoda"
 			}
 		],
-		"kit": "selection_kit_pagoda"
+		"kit": ["selection_kit_pagoda","selection_kit_epic_SPR"]
 	},
 	{
 		"name": "Cherry_Garden_Set",
@@ -896,7 +965,8 @@
 			"selection_kit_emperors_entrance",
 			"selection_kit_nishikigoi_pond",
 			"selection_kit_zen_zone",
-			"selection_kit_sakura_rock"
+			"selection_kit_sakura_rock",
+			"selection_kit_epic_SPR"
 		]
 	},
 	{
@@ -1073,7 +1143,8 @@
 				"first": "P_MultiAge_Expedition16",
 				"update": "upgrade_kit_terrace_farm"
 			}
-		]
+		],
+		"kit": ["selection_kit_gex4"]
 	},
 	{
 		"name": "Fountain_of_Youth",
@@ -1091,7 +1162,8 @@
 				"first": "R_MultiAge_Expedition16b",
 				"update": "upgrade_kit_sacred_sky"
 			}
-		]
+		],
+		"kit": ["selection_kit_gex3"]
 	},
 	{
 		"name": "Tribal_Square",
@@ -1100,7 +1172,8 @@
 				"first": "R_MultiAge_Expedition16a",
 				"update": "upgrade_kit_tribal_square"
 			}
-		]
+		],
+		"kit": ["selection_kit_gex3"]
 	},
 	{
 		"name": "Gate_of_the_Sun_God",
@@ -1109,7 +1182,8 @@
 				"first": "D_MultiAge_Expedition16b",
 				"update": "upgrade_kit_gate_of_the_sun_god"
 			}
-		]
+		],
+		"kit": ["selection_kit_gex1"]
 	},
 	{
 		"name": "Face_of_the_Ancient",
@@ -1118,7 +1192,8 @@
 				"first": "D_MultiAge_Expedition16a",
 				"update": "upgrade_kit_face_of_the_ancient"
 			}
-		]
+		],
+		"kit": ["selection_kit_gex1"]
 	},
 	{
 		"name": "Ritual_Flame",
@@ -1127,7 +1202,8 @@
 				"first": "T_AllAge_Expedition16",
 				"update": "upgrade_kit_ritual_flame"
 			}
-		]
+		],
+		"kit": ["selection_kit_gex2"]
 	},
 	{
 		"groupname": "Antiques_Dealer"

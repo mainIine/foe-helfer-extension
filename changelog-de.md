@@ -1,5 +1,59 @@
 ## Changelog - Extension
 
+##### 3.2.6.0
+
+**Update**
+- GvG Übersicht: 
+  - Man kann jetzt in der GvG Übersicht ebenfalls auf den orange farbenen Button klickt, um die gesamte Macht und alle Gilden inklusive Daten einzelner Karten zu sehen. Bitte einmal alle Karten durchklicken, damit die Gilden und Sektoren erfasst werden können.
+
+- Merger Game:
+	- tägliche Übersicht hinzugefügt - es kann zwischen der Übersicht für den Tag und das aktuelle Spiel durch Klick auf den Kopf der zweiten Spalte gewechselt werden
+	- Position des Blockers korrigiert
+	- Es wurde eine Option hinzugefügt, die es erlaubt einen spezifischen Wert für die Rücksetz-Kosten (Reset) anzugeben der statt der tatsächlichen verwendet werden soll 
+		- es sollte der Mittelwert der zu erwartenden Rücksetz-Kosten eingetragen werden (z.B.: 3 Spiele pro Tag --> 20, 4 Spiele pro Tag --> 35)
+		- dies hilft dabei, die Effizienz eines Spiels besser abzuschätzen, da diese nicht mehr durch die Reset-Kosten beeinflusst wird
+
+- Wildlife Preview --> Pop-Game Preview
+	- Modul wurde für das Herbstevent vorbereitet
+
+- Kits/Sets
+	- ein paar fehlende Teile wurden ergänzt
+
+**BugFix**
+- Die Einladungslinks zu Discord waren abgelaufen, wir haben sie ersetzt.
+
+##### 3.2.5.0
+
+**Update**
+- Raumfahrt Titan:
+	- diverse Komponenten wurden für Raumfahrt Titan angepasst
+
+- Burg System:
+	- GE5 wird nun beachtet
+
+- Gebäude Kits:
+	- neue Teile wurden ergänzt
+
+- Idle Game:
+	- neue Bedingung "W"(arte bis Aufgabe aktiv oder erfüllt ist) wurde hinzugefügt:
+		- ähnlich zu Typ "T", aber wird auch schon erfüllt, sobald die angegebene Aufgabe aktiv ist
+		- z.B.: "warte bis aktualisiere 100 Gebäude aktiv #W-26"
+
+- Merger Game:
+	- jetzt kompatibel mit dem Soccer Event
+	- die Tabelle zeigt nun in der jeweils ersten Zeile die Anzahl an freien Teilen an
+	- Es wurde Mooing Cat's Solver implementiert - dieser ist über die erste Zelle in der Spalte "Sim" erreichbar
+	- In der Spalte "Sim" ist zu sehen, wieviel Fortschritt bzw. Spieler/Schlüssel mit der aktuellen Konfiguration erreichbar sind und wie effizient das ist
+	- In der Spalte "nächster Spawn" wird angezeigt, wieviel Fortschritt/Spieler/Schlüssel durch das Erzeugen eines weiteren Spielsteins erreichbar sind und wie Effizient das wäre: Min - Max (Mittel)
+
+**BugFix**
+- Produktionsübersicht:
+	- FP Boost wurde auch auf LB angewandt
+  
+- Idle Game:
+	- Wecker/Timer werden nun korrekt gesetzt - beschränkt auf zeiten geringer als 24 Stunden
+
+---
 ##### 3.2.4.0
 
 **Update**
@@ -438,7 +492,7 @@
 **New**
 - Beta-Modus:
 	- in den Einstellungen kann nun eingestellt werden, dass die aktuelle Beta-Version von Github verwendet werden soll statt der installierten 
-	- Wenn dieser Modus benutzt wird, kann es vermehrt zum Auftreten von Fehlern kommen - bitte berichtet Fehler auf dem [Discord](https://discord.gg/z97KZq4) oder auf [Github](https://github.com/mainIine/foe-helfer-extension/issues)!
+	- Wenn dieser Modus benutzt wird, kann es vermehrt zum Auftreten von Fehlern kommen - bitte berichtet Fehler auf dem [Discord](https://discord.gg/uQY7rqDJ7z) oder auf [Github](https://github.com/mainIine/foe-helfer-extension/issues)!
 
 **Update**
 - St.Patricks Box:
