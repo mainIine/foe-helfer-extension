@@ -822,6 +822,7 @@
     "Boxes.Productions.def_boost_attacker": "Bonus do obrony armii atakującej",
     "Boxes.Productions.def_boost_defender": "Bonus do obrony armii broniącej",
     "Boxes.Productions.goods": "Towary",
+    "Boxes.Productions.fragments": "Paprochy",
     "Boxes.ProductionsRating.BuildingName": "Budynki",
     "Boxes.ProductionsRating.Enabled": "Włączone",
     "Boxes.ProductionsRating.ProdPerTile": "Oczekiwana dzienna produkcja na kratkę",

@@ -831,6 +831,7 @@
     "Boxes.Productions.def_boost_attacker": "Verdediging boost aanv. leger",
     "Boxes.Productions.def_boost_defender": "Verdediging boost verd. leger",
     "Boxes.Productions.goods": "Goederen",
+    "Boxes.Productions.fragments": "Fragmenten",
     "Boxes.ProductionsRating.BuildingName": "Gebouw",
     "Boxes.ProductionsRating.Enabled": "Zet aan",
     "Boxes.ProductionsRating.ProdPerTile": "Verwachte dagelijkse productie per tegel",
