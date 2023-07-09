@@ -80,6 +80,7 @@ let Productions = {
 		'def_boost_defender', //Verteidigungsbonus verteidigenden Armee
 		'goods',				// Güter Gruppe (5 verschieden z.B.)
 	],
+	fragmentsSet: new Set(),
 
 
 	/**
@@ -327,6 +328,7 @@ let Productions = {
 						let displayName = CurrentProduct['reward']['name'].replace(/[0-9]/g, '').trimStart().replace(/Fragment\b/g, 'Fragments');
 						Products[displayName] = Products[displayName] ? Number(Products[displayName]) + Number(`${CurrentProduct['reward']['amount']}`) : `${CurrentProduct['reward']['amount']}`
 						Products['fragments'] = Products['fragments'] ? Products['fragments'] + "<br>" + CurrentProduct['reward']['name'] : CurrentProduct['reward']['name']
+						Productions.fragmentsSet.add(displayName);
 					}
 
 					if (CurrentProduct['playerResources'] && CurrentProduct['playerResources']['resources']) {
@@ -1058,7 +1060,7 @@ let Productions = {
 						{
 							if (!buildings[i]['motivatedproducts'].hasOwnProperty(p)) continue;
 
-							if (Productions.Types.includes(p) === false && !p.toLowerCase().includes('fragment')) {
+							if (Productions.Types.includes(p) === false && !Productions.fragmentsSet.has(p)) {
 								if (countProducts[p] === undefined) {
 									countProducts[p] = 0;
 									countProductsMotivated[p] = 0;
