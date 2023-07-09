@@ -625,6 +625,7 @@
     "Boxes.Productions.def_boost_attacker": "Бонус защиты атакующей армии",
     "Boxes.Productions.def_boost_defender": "Бонус защиты обороняющейся армии",
     "Boxes.Productions.goods": "Товары",
+    "Boxes.Productions.fragments": "Фрагменты",
     "Boxes.ProductionsRating.BuildingName": "Строение",
     "Boxes.ProductionsRating.Enabled": "Включено",
     "Boxes.ProductionsRating.ProdPerTile": "Ожидаемое ежедневное производство/клетка",

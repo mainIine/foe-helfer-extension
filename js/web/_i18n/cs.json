@@ -794,6 +794,7 @@
     "Boxes.Productions.def_boost_attacker": "Obraný bonus útočné armády",
     "Boxes.Productions.def_boost_defender": "Obraný bonus obrané armády",
     "Boxes.Productions.goods": "Zboží (suroviny)",
+    "Boxes.Productions.fragments": "Fragmenty",
     "Boxes.ProductionsRating.BuildingName": "Budovy",
     "Boxes.ProductionsRating.Enabled": "Povoleno",
     "Boxes.ProductionsRating.ProdPerTile": "Předpoklad denní produkce / políčko",

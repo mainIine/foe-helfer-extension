@@ -623,6 +623,7 @@
     "Boxes.Productions.def_boost_attacker": "Defensiv Attack armé-boost (DA%)",
     "Boxes.Productions.def_boost_defender": "Defensiv Defensiv armé-boost (DD%)",
     "Boxes.Productions.goods": "Gods",
+    "Boxes.Productions.fragments": "Fragment",
     "Boxes.ProductionsRating.BuildingName": "Byggnad",
     "Boxes.ProductionsRating.Enabled": "Aktiverad",
     "Boxes.ProductionsRating.ProdPerTile": "Förväntad daglig produktion/ruta",
