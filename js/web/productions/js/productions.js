@@ -325,7 +325,7 @@ let Productions = {
 					let CurrentProduct = CurrentProducts[i];
 
 					if((CurrentProduct['type'] && CurrentProduct['type']==='genericReward') && (CurrentProduct['reward'] && CurrentProduct['reward']['subType'] && CurrentProduct['reward']['subType']==='fragment' )){
-						let displayName = CurrentProduct['reward']['name'].replace(/[0-9]/g, '').trimStart().replace(/Fragment\b/g, 'Fragments');
+						let displayName = CurrentProduct['reward']['name'].replace(/^\d+\s*/, '').replace(/Fragment\b/g, 'Fragments');
 						Products[displayName] = Products[displayName] ? Number(Products[displayName]) + Number(`${CurrentProduct['reward']['amount']}`) : `${CurrentProduct['reward']['amount']}`
 						Products['fragments'] = Products['fragments'] ? Products['fragments'] + "<br>" + CurrentProduct['reward']['name'] : CurrentProduct['reward']['name']
 						Productions.fragmentsSet.add(displayName);
