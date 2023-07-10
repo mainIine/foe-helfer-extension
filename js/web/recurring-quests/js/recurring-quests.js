@@ -24,7 +24,7 @@ FoEproxy.addHandler('QuestService', 'getUpdates', (data, postData) => {
         if (quest.id >= 900000 && quest.id < 1000000) {
             if (quest.genericRewards?.length > 0) {
                 if (!Recurring.data.Questlist[quest.id] && quest.genericRewards[0].flags.includes('random')) {
-                    Recurring.data.Questlist[quest.id] = {'title':quest.title, 'diamonds': false, 'tasks':tasks};
+                    Recurring.data.Questlist[quest.id] = {'title':quest.title, 'diamonds': false};
                 }
                 if (quest.genericRewards[0].subType == "medals" || quest.genericRewards[0].subType == "premium") {
                     Recurring.data.Questlist[quest.id].diamonds = true;
