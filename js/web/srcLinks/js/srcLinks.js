@@ -90,6 +90,16 @@ let srcLinks = {
         }
 
         return url2;
+    },
+    getQuest:(icon) => {
+        let url1 = srcLinks.get(`/shared/icons/quest_icons/${icon}.png`,true, true);
+        let url2 = srcLinks.get(`/shared/icons/${icon}.png`,true, true);
+        
+        if (url1.indexOf("undefined") > -1) {
+            return url2;
+        }
+
+        return url1;
     }
 }
 
