@@ -164,7 +164,7 @@ let mergerGame = {
 			partname:"badge",
 			tile:"player",
 			currency:`soccer_football`,
-			solverOut:{left:"Right",right:"Left",full:"Full"}
+			solverOut:{left:"Core",right:"Frame",full:"Full"}
 		}
 	},
 	solved: {keys:0,progress:0},
@@ -337,9 +337,9 @@ let mergerGame = {
 		html += `<td title="min - max (avg)" style="text-align:left">(${Math.round(mergerGame.simResult.progress.average*10)/10})</td></tr>`
 		//Keys/badges
 		html += `<tr><td title="${i18n("Boxes.MergerGame.Keys."+mergerGame.event)}">`
-		html += `<img ${mergerGame.event=="soccer"?'class="toprightcorner"':''} src="${srcLinks.get(`${mergerGame.eventData[mergerGame.event].keyfile}full_${mergerGame.colors[2]}.png`,true)}">`
-		html += `<img ${mergerGame.event=="soccer"?'class="toprightcorner" style="margin-left: -24px"':'style="margin-left: -15px" '} src="${srcLinks.get(`${mergerGame.eventData[mergerGame.event].keyfile}full_${mergerGame.colors[1]}.png`,true)}">`
-		html += `<img ${mergerGame.event=="soccer"?'class="toprightcorner" style="margin-left: -18px"':'style="margin-left: -15px"'} src="${srcLinks.get(`${mergerGame.eventData[mergerGame.event].keyfile}full_${mergerGame.colors[0]}.png`,true)}"></td>`
+		html += `<img ${mergerGame.event=="soccer"?'class="toprightcorner full"':''} src="${srcLinks.get(`${mergerGame.eventData[mergerGame.event].keyfile}full_${mergerGame.colors[2]}.png`,true)}">`
+		html += `<img ${mergerGame.event=="soccer"?'class="toprightcorner full"':''} style="margin-left: -15px" src="${srcLinks.get(`${mergerGame.eventData[mergerGame.event].keyfile}full_${mergerGame.colors[1]}.png`,true)}">`
+		html += `<img ${mergerGame.event=="soccer"?'class="toprightcorner full"':''} style="margin-left: -15px" src="${srcLinks.get(`${mergerGame.eventData[mergerGame.event].keyfile}full_${mergerGame.colors[0]}.png`,true)}"></td>`
 		html += `<td>${keys} / ${maxKeys}</td>`
 		html += `<td>${keys + mergerGame.state.daily.keys}</td>`
 		html += `<td style="border-left: 1px solid var(--border-tab)">${mergerGame.state.keys + mergerGame.solved.keys}</td>`
@@ -365,7 +365,7 @@ let mergerGame = {
 				let m = totalPieces[i].min;
 				let t = totalPieces[i][o];
 				html += `</tr><tr><td ${((t==m && o != "full") || (0==m && o == "full") ) ? 'style="font-weight:bold"' : ''}>${t}${(o == "full") ? '/'+ (t+m) : ''}`;
-				html += `<img ${mergerGame.event=="soccer"?'class="toprightcorner"':''} src="${srcLinks.get(`${mergerGame.eventData[mergerGame.event].keyfile}${o}_${i}.png`,true)}"></td>`
+				html += `<img class="${mergerGame.event=="soccer"? 'toprightcorner':''}${o=="full" ? ' full':''}" src="${srcLinks.get(`${mergerGame.eventData[mergerGame.event].keyfile}${o}_${i}.png`,true)}"></td>`
 				for (let lev = 4; lev>0; lev--) {
 					val = table[i][lev][o];
 					if (val==0) val = "-";
@@ -539,7 +539,7 @@ let mergerGame = {
 		return result;
 		
 	},
-	solverOut:(type,color) => mergerGame.eventData[mergerGame.event].solverOut[type] + `<img ${mergerGame.event=="soccer"?'class="toprightcorner"':''} src="${srcLinks.get(`${mergerGame.eventData[mergerGame.event].keyfile}${type}_${color}.png`,true)}">`,
+	solverOut:(type,color) => mergerGame.eventData[mergerGame.event].solverOut[type] + `<img class="${mergerGame.event=="soccer"?'toprightcorner':''}${type=="full"?" full":""}" src="${srcLinks.get(`${mergerGame.eventData[mergerGame.event].keyfile}${type}_${color}.png`,true)}">`,
 	
 	solver1:(locked,free, color)=>{ //modified version of Moos solver - generally better but also has some oddities
 		let lockedO = window.structuredClone(locked),

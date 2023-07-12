@@ -37,17 +37,17 @@ FoEproxy.addHandler('ResourceShopService', 'buyOffer', (data, postData) => {
     if(!Settings.GetSetting('ShowEventChest')) return;
     if (!Array.isArray(data.responseData)) return;
     for (let G of data.responseData) {
-        if (G.gains?.resources?.wildlife_pop_moves) {
+        if (G.gains?.resources?.[`${Popgame.event}_pop_moves`]) {
             Popgame.Show();        
             return;
-        };        
+        };              
     }
 });
 
 FoEproxy.addHandler('RewardService', 'collectReward', (data, postData) => {
     //hide when reward window pops up
     if ($('#Popgame').length === 0) return;
-    if (data.responseData[1]!=='wildlife_event') return;
+    if (data.responseData[1]!==Popgame.event+'_event') return;
     Popgame.rewardactive += 1;
     if ($('#Popgame.open').length > 0) {
         $('#Popgame').removeClass("open");
@@ -91,7 +91,7 @@ FoEproxy.addHandler('PopGameService', 'popTile', (data, postData) => {
     Popgame.prevC=null;
     Popgame.Update();
     Popgame.CoordsCheck(x, y);
-    if (ResourceStock.wildlife_pop_moves <= 0) Popgame.Close();
+    if (ResourceStock[`${Popgame.event}_pop_moves`] <= 0) Popgame.Close();
 });
 
 FoEproxy.addHandler('PopGameService', 'useBooster', (data, postData) => {
@@ -109,8 +109,8 @@ FoEproxy.addHandler('PopGameService', 'useBooster', (data, postData) => {
     Popgame.prevC=null;
     Popgame.Update();
     Popgame.CoordsCheck(x, y);
-    //if (ResourceStock.wildlife_pop_moves <= 0) Popgame.Close();
 });
+
 $(window).mousemove( function(e){
     if ($('#PopgameBody .PGwrapper').length === 0) return;
     if ($('#PopgameBody').css('visibility') === 'hidden') return;
@@ -148,7 +148,7 @@ let Popgame = {
     check:null,
     tool:null,
     rewardactive:0,
-    event:"wildlife",
+    event:"fall",
 
     Show: () => {
         Popgame.rewardactive = 0;
@@ -168,23 +168,16 @@ let Popgame = {
             if (Popgame.event=="wildlife") {
                 body+=`<div id="PGhammer" class="PGtool"></div>`;
                 body+=`<div id="PGdestroyer" class="PGtool"></div>`;
-            } else {
+            } else if (Popgame.event=="fall"){
                 body+=`<div id="PGfork" class="PGtool"></div>`;
             }
             body+='</div><div id="PGwrapper"><div class="PGwrapper"></div></div>'
-            //let body='<div class="PGwrapper"></div>'
+            
             $('#PopgameBody').html(body);
             Popgame.Update();
-            $('#PGhammer')[0].addEventListener('click', function(){
-                Popgame.selectTool('hammer');
-            });
-            $('#PGfork')[0].addEventListener('click', function(){
-                Popgame.selectTool('hammer');
-            });
-            $('#PGdestroyer')[0].addEventListener('click', function(){
-                Popgame.selectTool('destroyer');
-            });
-
+            $('.PGtool').on("click", (event)=>{
+                Popgame.selectTool(event.target.id.replace("PG",""));
+            })
             let box = $('#Popgame'),
             open = box.hasClass('open');
             Popgame.minimized = JSON.parse(localStorage.getItem("PopgameMinimized") || "true");
@@ -237,7 +230,7 @@ let Popgame = {
             $(`.PG_${Popgame.event}_${c}`).fadeOut('fast');
         } else {
             Popgame.check = c;
-            if (Popgame.tool === "hammer") {
+            if (Popgame.tool === "hammer" || Popgame.tool === "fork") {
                 Popgame.hide.push(`PGcellX${x}Y${y}`);
             } else {
                 Popgame.CheckNeighbours(x,y);
@@ -254,7 +247,6 @@ let Popgame = {
                 $(`#${cell}`).fadeOut('fast');
             }
         }
-        //Popgame.hideDrops()
         setTimeout(Popgame.hideDrops,250);
     },
 
@@ -321,5 +313,5 @@ let Popgame = {
             let y = tile.position?.y || 0;
             Popgame.grid[x][y] = tile.type + ((tile.popType === "default" || tile.type === "grandPrize") ? "" : "_reward");
         }
-    }
+    }    
 };

@@ -71,6 +71,13 @@
     object-position: top right;
 }   
 
+#mergerGameDialog .toprightcorner.full,
+#mergerGameSolutionBody .toprightcorner.full{
+    width: 35px;
+    height: 40px;
+    zoom: 60%;
+}   
+
 #mergerGameSolutionBody {
     overflow-y: auto;
 }
