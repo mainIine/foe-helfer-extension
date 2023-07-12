@@ -177,7 +177,7 @@ let Recurring = {
             for (let c of groups[x].conditionIds) {
                 let d= conditions.find(item => item.id==c).description;
                 let img= srcLinks.getQuest(conditions.find(item => item.id==c).iconType);
-                t += tOr + (title ? d: (`<img src="${img}">` + d.substring(0,30) + (d.length>30 ?'...':'')));
+                t += tOr + (title ? d: (`<img src="${img}">` + d.substring(0,20) + (d.length>20 ?'...':'')));
                 //t += tOr + (title ? d: `<img src="${img}">`);
                 tOr = (title ? `\n`:`<br><pre style="display:inline">&emsp;</pre>`) +`${i18n('Boxes.RecurringQuests.OR')} `;
                 //tOr = (title ? `\n`:` `) +`${i18n('Boxes.RecurringQuests.OR')} `;
