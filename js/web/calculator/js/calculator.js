@@ -251,11 +251,11 @@ let Calculator = {
 
 		// Schleifenquest für "Benutze FP" suchen
 		for (let Quest of MainParser.Quests) {
-			if ((Quest.questGiver.id === 'scientist' && Quest.type === 'generic' && Quest.abortable === true) || Quest.id == 933010) {
+			if (Quest.id >= 900000 && Quest.id < 1000000) {
 				for (let cond of Quest.successConditions) {
-					let CurrentProgress = cond.currentProgress !== undefined ? cond.currentProgress : 0;
+					let CurrentProgress = cond.currentProgress || 0;
 					let MaxProgress = cond.maxProgress;
-					if ((CurrentEraID <= 3 && MaxProgress >= 3) || MaxProgress > 20) { // Unterscheidung Buyquests von UseQuests: Bronze/Eiszeit haben nur UseQuests, Rest hat Anzahl immer >15, Buyquests immer <=15
+					if (cond.iconType=="icon_quest_alchemie" && ((CurrentEraID <= 3 && MaxProgress >= 3) || (MaxProgress > 15 && CurrentEraID <=15) || MaxProgress>=100)) { // Unterscheidung Buyquests von UseQuests: Bronze/Eiszeit haben nur UseQuests, Rest hat Anzahl immer >15, Buyquests immer <=15
 						let RecurringQuestString;
 						if (MaxProgress - CurrentProgress !== 0) {
 							RecurringQuestString = HTML.Format(MaxProgress - CurrentProgress) + i18n('Boxes.Calculator.FP');
