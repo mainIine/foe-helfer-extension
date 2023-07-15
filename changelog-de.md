@@ -1,5 +1,10 @@
 ## Changelog - Extension
 
+##### 3.2.6.1
+
+**BugFix**
+- Kleine Bugs gefixt
+
 ##### 3.2.6.0
 
 **Update**
@@ -42,7 +47,6 @@
 - Merger Game:
 	- jetzt kompatibel mit dem Soccer Event
 	- die Tabelle zeigt nun in der jeweils ersten Zeile die Anzahl an freien Teilen an
-	- Es wurde Mooing Cat's Solver implementiert - dieser ist über die erste Zelle in der Spalte "Sim" erreichbar
 	- In der Spalte "Sim" ist zu sehen, wieviel Fortschritt bzw. Spieler/Schlüssel mit der aktuellen Konfiguration erreichbar sind und wie effizient das ist
 	- In der Spalte "nächster Spawn" wird angezeigt, wieviel Fortschritt/Spieler/Schlüssel durch das Erzeugen eines weiteren Spielsteins erreichbar sind und wie Effizient das wäre: Min - Max (Mittel)
 
