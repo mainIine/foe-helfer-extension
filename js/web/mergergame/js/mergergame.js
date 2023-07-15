@@ -325,7 +325,7 @@ let mergerGame = {
 		html += `<img src="${srcLinks.get(mergerGame.eventData[mergerGame.event].energy,true)}"></td>`
 		html += `<td title="${i18n("Boxes.MergerGame.EfficiencyTargetProgress."+mergerGame.event)+Math.floor(totalValue)+"/"+Math.floor(mergerGame.state.energyUsed*targetEfficiency)|0}">${mergerGame.state.energyUsed} </td>`
 		html += `<td>${mergerGame.state.energyUsed+mergerGame.state.daily.energyUsed}</td>`
-		html += `<td></td>`
+		html += `<td style="border-left: 1px solid var(--border-tab)"></td>`
 		html += `<td colspan="2" style="border-left: 1px solid var(--border-tab)">${mergerGame.spawnCost}</td></tr>`
 		//Progress
 		html += `<tr><td title="${i18n("Boxes.MergerGame.ProgressCollected")}">`

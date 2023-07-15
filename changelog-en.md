@@ -1,9 +1,12 @@
 ## Changelog - Extension
 
-##### 3.2.6.1
+##### 3.2.7.0
+**Update**
+- Recurring Quests
+	- it can now be switched between displaying the title and tasks of the quests
 
 **BugFix**
-- Fixed small bugs
+- Fixed small bugs (mainly Titan related)
 
 ##### 3.2.6.0
 
