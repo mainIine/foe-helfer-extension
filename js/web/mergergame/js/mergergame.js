@@ -168,6 +168,8 @@ let mergerGame = {
 		}
 	},
 	solved: {keys:0,progress:0},
+	simulation: {},
+	simResult:null,
 	hideDaily:true,
 
 	updateTable: () => {
@@ -198,6 +200,7 @@ let mergerGame = {
 		};
 		mergerGame.state["table"] = table;
 		mergerGame.state["unlocked"] = unlocked;
+		mergerGame.solve();
 	},
 
 	checkSave: () => {
@@ -288,7 +291,12 @@ let mergerGame = {
 		let keys = mergerGame.keySum();
 		let totalValue = mergerGame.state.progress + keys*mergerGame.settings.keyValue;
 		let efficiency = (totalValue / mergerGame.state.energyUsed).toFixed(2);
+		let simEff = Math.round((mergerGame.state.progress + mergerGame.solved.progress + (mergerGame.state.keys + mergerGame.solved.keys)*mergerGame.settings.keyValue)/mergerGame.state.energyUsed*100)/100||0
 		
+		let simMinEff = Math.round((simEff * mergerGame.state.energyUsed + mergerGame.simResult.value.min)/(mergerGame.state.energyUsed + mergerGame.spawnCost)*100)/100
+		let simMaxEff = Math.round((simEff * mergerGame.state.energyUsed + mergerGame.simResult.value.max)/(mergerGame.state.energyUsed + mergerGame.spawnCost)*100)/100
+		let simAvgEff = Math.round((simEff * mergerGame.state.energyUsed + mergerGame.simResult.value.average)/(mergerGame.state.energyUsed + mergerGame.spawnCost)*100)/100
+
 		let dailyEff = Math.round(((mergerGame.state.progress + mergerGame.state.daily.progress + (mergerGame.state.keys + mergerGame.state.daily.keys)*mergerGame.settings.keyValue)/(mergerGame.state.energyUsed+mergerGame.state.daily.energyUsed))*100)/100;
 
 		let totalPieces = {}
@@ -307,25 +315,44 @@ let mergerGame = {
 			maxKeys+=totalPieces[i]["min"]*mergerGame.keyValues[4];
 		}
 
-		html = `<table class="foe-table ${mergerGame.hideDaily ? 'hideDaily':''}" id="MGstatus">`
+		html = `<table class="foe-table ${mergerGame.hideDaily ? 'hideDaily':''}" id="MGstatus"><tr><th title="${i18n("Boxes.MergerGame.Status.Title")}">${i18n("Boxes.MergerGame.Status")}</th>`
+		html += `<th onclick="$('#MGstatus').toggleClass('hideDaily'); mergerGame.hideDaily=!mergerGame.hideDaily" title="${i18n("Boxes.MergerGame.Round.Title")}">${i18n("Boxes.MergerGame.Round")}</th>`
+		html += `<th onclick="$('#MGstatus').toggleClass('hideDaily'); mergerGame.hideDaily=!mergerGame.hideDaily" title="${i18n("Boxes.MergerGame.Day.Title")}">${i18n("Boxes.MergerGame.Day")}</th>`
+		html += `<th style="border-left: 1px solid var(--border-tab)" title="${i18n("Boxes.MergerGame.Simulation.Title")}">${i18n("Boxes.MergerGame.Simulation")}</th>`
+		html += `<th colspan="2" style="border-left: 1px solid var(--border-tab)" title="${i18n("Boxes.MergerGame.NextSpawn.Title")}">${i18n("Boxes.MergerGame.NextSpawn")}</th></tr>`
 		//Energy/fooballs
-		html += `<tr><td class="textleft">${i18n("Boxes.MergerGame.Energy."+mergerGame.event)}</td>`
+		html += `<tr><td title="${i18n("Boxes.MergerGame.Energy."+mergerGame.event)}">`
+		html += `<img src="${srcLinks.get(mergerGame.eventData[mergerGame.event].energy,true)}"></td>`
 		html += `<td title="${i18n("Boxes.MergerGame.EfficiencyTargetProgress."+mergerGame.event)+Math.floor(totalValue)+"/"+Math.floor(mergerGame.state.energyUsed*targetEfficiency)|0}">${mergerGame.state.energyUsed} </td>`
-		html += `<td><img src="${srcLinks.get(mergerGame.eventData[mergerGame.event].energy,true)}"> ${mergerGame.state.energyUsed+mergerGame.state.daily.energyUsed}</td>`
+		html += `<td>${mergerGame.state.energyUsed+mergerGame.state.daily.energyUsed}</td>`
+		html += `<td></td>`
+		html += `<td colspan="2" style="border-left: 1px solid var(--border-tab)">${mergerGame.spawnCost}</td></tr>`
 		//Progress
-		html += `<tr><td class="textleft">${i18n("Boxes.MergerGame.ProgressCollected")}</td>`
-		html += `<td><img src="${srcLinks.get(mergerGame.eventData[mergerGame.event].progress,true)}"> ${mergerGame.state.progress} / ${mergerGame.state.maxProgress}</td>`
+		html += `<tr><td title="${i18n("Boxes.MergerGame.ProgressCollected")}">`
+		html += `<img src="${srcLinks.get(mergerGame.eventData[mergerGame.event].progress,true)}"></td>`
+		html += `<td>${mergerGame.state.progress} / ${mergerGame.state.maxProgress}</td>`
 		html += `<td>${mergerGame.state.progress + mergerGame.state.daily.progress}</td>`
+		html += `<td style="border-left: 1px solid var(--border-tab)">${mergerGame.state.progress + mergerGame.solved.progress}</td>`
+		html += `<td title="min - max (avg)" style="border-left: 1px solid var(--border-tab); text-align:right">${mergerGame.simResult.progress.min} - ${mergerGame.simResult.progress.max}</td>`
+		html += `<td title="min - max (avg)" style="text-align:left">(${Math.round(mergerGame.simResult.progress.average*10)/10})</td></tr>`
 		//Keys/badges
-		html += `<tr><td class="textleft">${i18n("Boxes.MergerGame.Keys."+mergerGame.event)}</td>`
-		html += `<td><img ${mergerGame.event=="soccer"?'class="toprightcorner full"':''} src="${srcLinks.get(`${mergerGame.eventData[mergerGame.event].keyfile}full_${mergerGame.colors[2]}.png`,true)}">`
+		html += `<tr><td title="${i18n("Boxes.MergerGame.Keys."+mergerGame.event)}">`
+		html += `<img ${mergerGame.event=="soccer"?'class="toprightcorner full"':''} src="${srcLinks.get(`${mergerGame.eventData[mergerGame.event].keyfile}full_${mergerGame.colors[2]}.png`,true)}">`
 		html += `<img ${mergerGame.event=="soccer"?'class="toprightcorner full"':''} style="margin-left: -15px" src="${srcLinks.get(`${mergerGame.eventData[mergerGame.event].keyfile}full_${mergerGame.colors[1]}.png`,true)}">`
-		html += `<img ${mergerGame.event=="soccer"?'class="toprightcorner full"':''} style="margin-left: -15px" src="${srcLinks.get(`${mergerGame.eventData[mergerGame.event].keyfile}full_${mergerGame.colors[0]}.png`,true)}"> ${keys} / ${maxKeys}</td>`
+		html += `<img ${mergerGame.event=="soccer"?'class="toprightcorner full"':''} style="margin-left: -15px" src="${srcLinks.get(`${mergerGame.eventData[mergerGame.event].keyfile}full_${mergerGame.colors[0]}.png`,true)}"></td>`
+		html += `<td>${keys} / ${maxKeys}</td>`
 		html += `<td>${keys + mergerGame.state.daily.keys}</td>`
+		html += `<td style="border-left: 1px solid var(--border-tab)">${mergerGame.state.keys + mergerGame.solved.keys}</td>`
+		html += `<td title="min - max (avg)" style="border-left: 1px solid var(--border-tab); text-align:right">${mergerGame.simResult.keys.min} - ${mergerGame.simResult.keys.max}</td>`
+		html += `<td title="min - max (avg)" style="text-align:left">(${Math.round(mergerGame.simResult.keys.average*10)/10})</td></tr>`
 		//Efficiency
-		html += `<tr><td class="textleft">${i18n("Boxes.MergerGame.Efficiency."+mergerGame.event)}</td>`
-		html += `<td style="font-weight:bold; color: ${effcolor(efficiency)}" title="${i18n("Boxes.MergerGame.EfficiencyTotalProgress") + Math.floor(efficiency*mergerGame.settings.availableCurrency)}"> <img src="${srcLinks.get(mergerGame.eventData[mergerGame.event].progress,true)}">/<img src="${srcLinks.get(mergerGame.eventData[mergerGame.event].energy,true)}">${efficiency} </td>`
+		html += `<tr><td title="${i18n("Boxes.MergerGame.Efficiency."+mergerGame.event)}">`
+		html += `<img src="${srcLinks.get(mergerGame.eventData[mergerGame.event].progress,true)}">/<img src="${srcLinks.get(mergerGame.eventData[mergerGame.event].energy,true)}"></td>`
+		html += `<td style="font-weight:bold; color: ${effcolor(efficiency)}" title="${i18n("Boxes.MergerGame.EfficiencyTotalProgress") + Math.floor(efficiency*mergerGame.settings.availableCurrency)}">${efficiency} </td>`
 		html += `<td style="font-weight:bold; color: ${effcolor(dailyEff)}">${dailyEff.toFixed(2)} </td>`
+		html += `<td style="border-left: 1px solid var(--border-tab); color: ${effcolor(simEff)}">${simEff}</td>`
+		html += `<td title="min - max (avg)" style="border-left: 1px solid var(--border-tab); text-align:right"><span style="color: ${effcolor(simMinEff)}">${simMinEff}</span> - <span style="color: ${effcolor(simMaxEff)}">${simMaxEff}</span></td>`
+		html += `<td title="min - max (avg)" style="text-align:left;color: ${effcolor(simAvgEff)}">(${simAvgEff})</td></tr>`
 		
 		html += `</table>`
 
@@ -382,4 +409,1006 @@ let mergerGame = {
 		localStorage.setItem('MergerGameSettings', JSON.stringify(mergerGame.settings));
         mergerGame.updateDialog();
     },
-}
+
+	solve:() => {
+		let type1 = mergerGame.types[1],
+			type2 = mergerGame.types[0];
+		
+		let solved = {}
+		
+		for (let c of mergerGame.colors) {
+			let locked= {}
+			locked[type1]=[]
+			locked[type2]=[]
+			let free = {full:[], none:[]}
+			free[type1]=[]
+			free[type2]=[]
+			for (let t of mergerGame.types.concat(["none"])) {
+				for (let l of [1,2,3,4]) {
+					free[t].push(mergerGame.state.unlocked[c][l][t])
+					if (t=="full"||t=="none") continue
+					locked[t].push(mergerGame.state.table[c][l][t]-mergerGame.state.unlocked[c][l][t]);
+					
+				}
+			}
+			solved[c] = mergerGame.solver(locked,free,c,true);
+		}
+
+		let progress = 0
+		for (let c of mergerGame.colors) {
+			progress += solved[c].progress;
+		}
+		mergerGame.solved.progress = progress;
+		//keys
+		let keys = 0
+		for (let c of mergerGame.colors) {
+			keys += solved[c].keys;
+		}
+		mergerGame.solved.keys = keys;
+		mergerGame.simResult = mergerGame.simulateNextSpawn(solved);
+	},
+	simulateNextSpawn:(solved) => {
+		let keys = {min:10,max:0,average:0};
+		let progress = {min:100,max:0,average:0};
+		let value = {min:100,max:0,average:0}
+		for (let c of mergerGame.colors) {
+			for (let l of [1,2,3,4]) {
+					let free = window.structuredClone(solved[c].free)
+					free["none"][l-1] += 1
+					let simulated = mergerGame.solver(window.structuredClone(solved[c].locked),window.structuredClone(free),c,true)
+					let addKeys = simulated.keys - solved[c].keys;
+					let addProgress = simulated.progress - solved[c].progress;
+					let addValue = simulated.keys*mergerGame.settings.keyValue + simulated.progress - solved[c].progress - solved[c].keys*mergerGame.settings.keyValue;
+					if (addKeys<keys.min) keys.min = addKeys;
+					if (addKeys>keys.max) keys.max = addKeys;
+					keys.average += mergerGame.spawnChances[c][l]/100*addKeys;
+					if (addProgress<progress.min) progress.min = addProgress;
+					if (addProgress>progress.max) progress.max = addProgress;
+					progress.average += mergerGame.spawnChances[c][l]/100*addProgress;
+					if (addValue<value.min) value.min = addValue;
+					if (addValue>value.max) value.max = addValue;
+					value.average += mergerGame.spawnChances[c][l]/100*addValue;
+			}
+		}
+		return {keys:keys,progress:progress,value:value}
+	}, 
+
+	checkInconsistencies:(solved,c) => {
+		let best = window.structuredClone(solved);
+		for (let l of [1,2,3,4]) {
+			if (solved.free.none[l-1] == 0) continue 
+			let free = window.structuredClone(solved.free),
+				locked=window.structuredClone(solved.locked);
+			free["none"][l-1] -= 1;
+			let simulated = mergerGame.solver(locked,free);
+			if (simulated.keys*mergerGame.settings.keyValue+simulated.progress>best.keys*mergerGame.settings.keyValue+best.progress) best = window.structuredClone(simulated);
+		}
+		if (solved.progress>best.progress) {
+			best.progress = solved.progress;
+		}
+		return best
+	}, 
+
+	solver: (locked,free,sim=false) =>{
+		let result1 = mergerGame.solver1(window.structuredClone(locked),window.structuredClone(free));
+		let result2 = mergerGame.solver2(window.structuredClone(locked),window.structuredClone(free));
+		let result = null
+
+		if (result1.keys*mergerGame.settings.keyValue+result1.progress>result2.keys*mergerGame.settings.keyValue+result2.progress) 
+			result = result1
+		else
+			result = result2;
+		
+		if (sim) {
+			result = mergerGame.checkInconsistencies(result)
+		}
+		
+		return result;
+		
+	},
+	
+	solver1:(locked,free)=>{ //modified version of Moos solver - generally better but also has some oddities
+		let lockedO = window.structuredClone(locked),
+			freeO = window.structuredClone(free),
+			type1 = mergerGame.types[0],
+			type2 = mergerGame.types[1],
+			total1_ = locked[type1].reduce((a, b) => a + b, 0)+free[type1].reduce((a, b) => a + b, 0),
+			total2_ = locked[type2].reduce((a, b) => a + b, 0)+free[type2].reduce((a, b) => a + b, 0),
+			total1_2 = total1_ - locked[type1][0],
+			total2_2 = total2_ - locked[type2][0],
+			startProgress = 0;
+
+		//Progress:
+		for (let t of [type1,type2]) {
+			for (let l of [1,2,3,4]) {
+				startProgress += locked[t][l-1]*mergerGame.levelValues[l]
+			}
+		}
+		
+		while (true) {
+			if (free.none[0] == 0) break;
+			
+			if (locked[type2][0] == 0 && locked[type1][0] == 0) {
+				if (free.none[0] >= 2) {
+					free.none[0] -= 2
+					free.none[1] += 1
+					continue;
+				} else break;
+			}
+			let pick = null
+			if (total2_2 == total1_2) {
+				if (locked[type1][0] > locked[type2][0])
+					pick = type1
+				else
+					pick = type2
+			} else if (total2_2 > total1_2) {
+				if (locked[type1][0] > 0)
+					pick = type1
+				else
+					pick = type2
+			} else {
+				if (locked[type2][0] > 0)
+					pick = type2
+				else
+					pick = type1
+			}        
+			if (pick == type1) {
+				free.none[0] -= 1
+				free[type1][1] += 1
+				locked[type1][0] -= 1
+				total1_2 += 1
+			} else {
+				free.none[0] -= 1
+				free[type2][1] += 1
+				locked[type2][0] -= 1
+				total2_2 += 1
+			}
+		}
+
+		//Level 4 + 3 easy cleanup
+		while (true) {
+			if (free.none[3] > 0 && locked[type2][3] > 0 && locked[type1][3] > 0) {
+				free.none[3] -= 1
+				locked[type1][3] -= 1
+				locked[type2][3] -= 1
+				free.full[3] += 1
+			} else if (free[type1][3] > 0 && locked[type2][3]>0) {
+				free[type1][3] -= 1
+				locked[type2][3] -= 1
+				free.full[3] += 1
+			} else if (free[type2][3] > 0 && locked[type1][3]>0) {
+				free[type2][3] -= 1
+				locked[type1][3] -= 1
+				free.full[3] += 1
+			} else if (free.none[2] >= locked[type2][3] + locked[type1][3] && 
+						locked[type2][3] > 0 && locked[type1][2]>0) {
+				locked[type2][3] -= 1
+				locked[type1][2] -= 1
+				free.none[2] -= 1
+				free.full[3] += 1
+			} else if (free.none[2] >= locked[type2][3] + locked[type1][3] && 
+						locked[type1][3] > 0 && locked[type2][2]>0) {
+				locked[type2][2] -= 1
+				locked[type1][3] -= 1
+				free.none[2] -= 1
+				free.full[3] += 1
+			} else if (free.none[2]> 0 && free.none[2] < locked[type2][3] + locked[type1][3] && 
+						locked[type2][2]+locked[type2][1]+locked[type2][0]>=locked[type1][2]+locked[type1][1]+locked[type1][0] &&
+						locked[type2][3] > 0 && locked[type1][2]>0) {
+				locked[type2][3] -= 1
+				locked[type1][2] -= 1
+				free.none[2] -= 1
+				free.full[3] += 1
+			} else if (free.none[2]> 0 && free.none[2] < locked[type2][3] + locked[type1][3] && 
+						locked[type2][2]+locked[type2][1]+locked[type2][0]<=locked[type1][2]+locked[type1][1]+locked[type1][0] &&
+						locked[type1][3] > 0 && locked[type2][2]>0) {
+				locked[type2][2] -= 1
+				locked[type1][3] -= 1
+				free.none[2] -= 1
+				free.full[3] += 1
+			} else break
+		}
+
+		let total1_3 = locked[type1][2] + locked[type1][3] + free[type1][2] + free[type1][3];
+		let total2_3 = locked[type2][2] + locked[type2][3] + free[type2][2] + free[type2][3];
+		let occupied1_3=0;
+		let occupied2_3=0;
+		while (true) {
+			
+			if (free.none[1] > free[type2][1] && locked[type1][1] > 0 && (locked[type2][2]+free[type2][2]-occupied2_3) > 0 && (total1_3<=total2_3 || locked[type2][1] == 0 )) {
+				free.none[1] -= 1;
+				locked[type1][1] -= 1;
+				free[type1][2] += 1;
+				total1_3 +=1;
+				occupied1_3 += 1;
+				occupied2_3 += 1;
+			} else if (free.none[1] > free[type1][1] &&  locked[type2][1] > 0 && (locked[type1][2]+free[type1][2]-occupied1_3) > 0) {
+				free.none[1] -= 1
+				locked[type2][1] -= 1
+				free[type2][2] += 1
+				total2_3 +=1;
+				occupied1_3 += 1;
+				occupied2_3 += 1;
+			} else if (free.none[1] > 1 && free.none[1] > free[type1][1]+free[type2][1] && (locked[type1][1]> 0) && (locked[type2][1]> 0) && (locked[type1][2] + free[type1][2] -occupied1_3> 0) && (locked[type2][2] + free[type2][2] -occupied2_3> 0)) {
+				free.none[1] -= 1
+				locked[type1][1] -= 1
+				free[type1][2] += 1
+				total1_3 +=1;
+				free.none[1] -= 1
+				locked[type2][1] -= 1
+				free[type2][2] += 1
+				total2_3 +=1;
+				occupied1_3 += 2;
+				occupied2_3 += 2;
+			} else if (free[type1][1]> 0 && locked[type2][1]> 0 && (locked[type1][2] + free[type1][2] + locked[type2][2] + free[type2][2] - occupied1_3 - occupied2_3 - free.none[2] > 0)) {
+				free[type1][1] -= 1
+				locked[type2][1] -= 1
+				free.full[2] += 1
+				if (locked[type1][2]+free[type1][2]-occupied1_3>free[type2][2]+locked[type2][2]-occupied2_3) 
+					occupied1_3 += 1 
+				else 
+					occupied2_3 += 1;
+			} else if (free[type2][1]> 0 && locked[type1][1]> 0 && (locked[type1][2] + free[type1][2] + locked[type2][2] + free[type2][2] - occupied1_3 - occupied2_3 - free.none[2] > 0)) {
+				free[type2][1] -= 1
+				locked[type1][1] -= 1
+				free.full[2] += 1
+				if (locked[type1][2]+free[type1][2]-occupied1_3>free[type2][2]+locked[type2][2]-occupied2_3) 
+					occupied1_3 += 1 
+				else 
+					occupied2_3 += 1;
+			} else if (free.none[1] > 1 && free.none[1] > free[type1][1]+free[type2][1] && (locked[type1][1] + free[type1][1] > 0) && (locked[type2][1] + free[type2][1] > 0) && (locked[type1][2] + free[type1][2] -occupied1_3> 0) && (locked[type2][2] + free[type2][2] -occupied2_3> 0)) {
+				if (locked[type1][1] > 0) {
+					free.none[1] -= 1
+					locked[type1][1] -= 1
+					free[type1][2] += 1
+				} else {
+					free.none[1] -= 1
+					free[type1][1] -= 1
+					free[type1][2] += 1
+				}
+				if (locked[type2][1] > 0) {
+					free.none[1] -= 1
+					locked[type2][1] -= 1
+					free[type2][2] += 1
+				} else {
+					free.none[1] -= 1
+					free[type2][1] -= 1
+					free[type2][2] += 1
+				}
+				occupied1_3 += 2;
+				occupied2_3 += 2;
+			} else if (free[type1][1] > 0 && locked[type2][1] > 0) {
+				free[type1][1] -= 1
+				free.full[2] += 1
+				locked[type2][1] -= 1
+			} else if (free[type2][1] > 0 && locked[type1][1] > 0) {
+				free[type2][1] -= 1
+				free.full[2] += 1
+				locked[type1][1] -= 1
+			} else if (free[type2][1] > 0 && free[type1][1] > 0) {
+				free[type2][1] -= 1
+				free[type1][1] -= 1
+				free.full[2] += 1
+			} else if (free.none[1] > 0 && (locked[type1][1] + locked[type2][1]) > 0) {
+				let pick = null
+				if (total2_3 == total1_3) {
+					if (total2_ > total1_) {
+						if (locked[type1][1] > 0)
+							pick = type1
+						else
+							pick = type2
+					} else {
+						if (locked[type2][1] > 0)
+							pick = type2
+						else
+							pick = type1
+					}
+				} else if (total2_3 > total1_3) {
+					if (locked[type1][1] > 0)
+						pick = type1
+					else
+						pick = type2
+				} else {
+					if (locked[type2][1] > 0)
+						pick = type2
+					else
+						pick = type1
+				}
+				if (pick == type1) {
+					free.none[1] -= 1
+					free[type1][2] += 1
+					locked[type1][1] -= 1
+					total1_3 += 1
+				} else {
+					free.none[1] -= 1
+					free[type2][2] += 1
+					locked[type2][1] -= 1
+					total2_3 += 1
+				}
+			} else if (free[type1][1] > 0 && locked[type1][1] > 0) {
+				free[type1][1] -= 1
+				locked[type1][1] -= 1
+				free[type1][2] += 1
+			} else if (free[type2][1] > 0 && locked[type2][1] > 0) {
+				free[type2][1] -= 1
+				locked[type2][1] -= 1
+				free[type2][2] += 1
+			} else if (free[type2][1] > 0 && free.none[1] > 0) {
+				free[type2][1] -= 1
+				free.none[1] -= 1
+				free[type2][2] += 1
+			} else if (free[type1][1] > 0 && free.none[1] > 0) {
+				free[type1][1] -= 1
+				free.none[1] -= 1
+				free[type1][2] += 1
+			} else if (free.none[1] >= 2) {
+				free.none[1] -= 2
+				free.none[2] += 1
+			} else if (free[type1][1] >= 2) {
+				free[type1][1] -= 2
+				free[type1][2] += 1
+			} else if (free[type2][1] >= 2) {
+				free[type2][1] -= 2
+				free[type2][2] += 1
+			} else break
+		}      
+		let total1_4 = locked[type1][3] + free[type1][3];
+		let total2_4 = locked[type2][3] + free[type2][3];
+		let occupied1_4=0;
+		let occupied2_4=0;
+		while (true) {
+			
+			if (free.none[2] >= locked[type1][2]+locked[type2][2]+free[type1][2]+free[type2][2] + free["full"][2] && locked[type1][2]+locked[type2][2]+free[type1][2]+free[type2][2]+ free["full"][2] > 0) {
+				free[type1][3] += locked[type1][2];
+				free[type1][3] += free[type1][2];
+				free[type2][3] += locked[type2][2];
+				free[type2][3] += free[type2][2];
+				free["full"][3] += free["full"][2];
+				
+				free.none[2] -= locked[type1][2]+locked[type2][2]+free[type1][2]+free[type2][2]+free["full"][2];
+				locked[type1][2] = 0;
+				free[type1][2] = 0;
+				locked[type2][2] = 0;
+				free[type2][2] = 0;
+				free["full"][2] = 0;
+				
+			} else if (free.none[2] > 0 && locked[type1][2] > 0 && (locked[type2][3]+free[type2][3]-occupied2_4) > 0 && (total1_4<=total2_4 || locked[type2][2]==0)) {
+				free.none[2] -= 1
+				locked[type1][2] -= 1
+				free[type1][3] += 1
+				total1_4 +=1;
+				occupied1_4 +=1;
+				occupied2_4 +=1;
+			} else if (free.none[2] > 0 &&  locked[type2][2] > 0 && (locked[type1][3]+free[type1][3]-occupied1_4) > 0) {
+				free.none[2] -= 1
+				locked[type2][2] -= 1
+				free[type2][3] += 1
+				total2_4 +=1;
+				occupied1_4 +=1;
+				occupied2_4 +=1;
+			} else if (free.none[2] > 1 && (locked[type1][2] + free[type1][2] > 0) && (locked[type2][2] + free[type2][2] > 0) && (locked[type1][3] + free[type1][3] - occupied1_4 > 0) && (locked[type2][3] + free[type2][3] - occupied2_4 > 0)) {
+				//console.log("L3 double used")
+				if (locked[type1][2] > 0) {
+					free.none[2] -= 1
+					locked[type1][2] -= 1
+					free[type1][3] += 1
+				} else {
+					free.none[2] -= 1
+					free[type1][2] -= 1
+					free[type1][3] += 1
+				}
+				if (locked[type2][2] > 0) {
+					free.none[2] -= 1
+					locked[type2][2] -= 1
+					free[type2][3] += 1
+				} else {
+					free.none[2] -= 1
+					free[type2][2] -= 1
+					free[type2][3] += 1
+				}
+				occupied1_4 += 2;
+				occupied2_4 += 2;
+				
+			} else if (free[type1][2] > 0 && locked[type2][2] > 0) {
+				free[type1][2] -= 1
+				locked[type2][2] -= 1
+				free.full[3] += 1
+			} else if ( free[type2][2] > 0 && locked[type1][2] > 0) {
+				free[type2][2] -= 1
+				locked[type1][2] -= 1
+				free.full[3] += 1
+			} else if ( free[type2][2] > 0 && free[type1][2] > 0) {
+				free[type2][2] -= 1
+				free[type1][2] -= 1
+				free.full[3] += 1
+			} else if ( free.none[2] > 0 && locked[type1][2] > 0 && (locked[type2][3] + free[type2][3] - occupied2_4) > 0) {
+				free.none[2] -= 1
+				locked[type1][2] -= 1
+				locked[type1][3] += 1
+				occupied1_4 +=1
+				occupied2_4 += 1
+				
+			} else if ( free.none[2] > 0 && locked[type2][2] > 0 && (locked[type1][3] + free[type1][3] - occupied1_4) > 0) {
+				free.none[2] -= 1
+				locked[type2][2] -= 1
+				locked[type2][3] += 1
+				occupied1_4 +=1
+				occupied2_4 += 1
+				
+			} else if (free.none[2] > 0 && free[type1][2] > 0 && (locked[type2][3] + free[type2][3] - occupied2_4) > 0) {
+				free.none[2] -= 1
+				free[type1][2] -= 1
+				free[type1][3] += 1
+				occupied1_4 +=1
+				occupied2_4 += 1
+				
+			} else if (free.none[2] > 0 &&  free[type2][2] > 0 && (locked[type1][3] + free[type1][3] - occupied1_4) > 0) {
+				free.none[2] -= 1
+				free[type2][2] -= 1
+				free[type2][3] += 1
+				occupied1_4 += 1
+				occupied2_4 += 1
+
+			} else if (free[type1][2] >0 && locked[type1][2]>0 && (locked[type2][3] + free[type2][3] - occupied2_4) > 0) {
+				free[type1][2] -= 1
+				locked[type1][2] -= 1
+				free[type1][3] += 1
+				occupied1_4 += 1
+				occupied2_4 += 1
+			
+			} else if (free[type2][2] >0 && locked[type2][2]>0 && (locked[type1][3] + free[type1][3] - occupied1_4)>0) {
+				free[type2][2] -= 1
+				locked[type2][2] -= 1
+				free[type2][3] += 1
+				occupied1_4 += 1
+				occupied2_4 += 1
+			
+			} else if ((free.none[2]+locked[type1][2]+locked[type2][2] - free.full[2] > 1) && free.none[2]>1 && locked[type2][2]>0 && locked[type1][2]>0) {
+				free.none[2] -= 2
+				locked[type2][2] -= 1
+				locked[type1][2] -= 1
+				free[type2][3] += 1
+				free[type1][3] += 1
+				occupied1_4 += 1
+				occupied2_4 += 1
+			
+			} else if (free.full[2] > 0 && ((free.none[2] + free[type2][2] + free[type1][2] + locked[type2][2] + locked[type1][2]) > 0 || free.full[2] >= 2)) {
+				if (locked[type2][2] > 0) {
+					free.full[2] -= 1
+					locked[type2][2] -= 1
+					free.full[3] += 1
+				} else if ( locked[type1][2] > 0) {
+					free.full[2] -= 1
+					locked[type1][2] -= 1
+					free.full[3] += 1
+				} else if ( free.none[2] > 0) {
+					free.full[2] -= 1
+					free.none[2] -= 1
+					free.full[3] += 1
+				} else if ( free[type1][2] > 0) {
+					free.full[2] -= 1
+					free[type1][2] -= 1
+					free.full[3] += 1
+				} else if ( free[type2][2] > 0) {
+					free.full[2] -= 1
+					free[type2][2] -= 1
+					free.full[3] += 1
+				} else {
+					free.full[2] -= 2
+					free.full[3] += 1
+				}
+			} else if ( free.none[2] > 0 && (locked[type1][2] + locked[type2][2]) > 0) {
+				pick = null
+				if (total2_4 == total1_4) {
+					if (total2_ > total1_) {
+						if (locked[type1][2] > 0)
+							pick = type1
+						else
+							pick = type2
+					} else {
+						if (locked[type2][2] > 0)
+							pick = type2
+						else
+							pick = type1
+					}
+				} else if ( total2_4 > total1_4) {
+					if (locked[type1][2] > 0)
+						pick = type1
+					else
+						pick = type2
+				} else {
+					if (locked[type2][2] > 0)
+						pick = type2
+					else
+						pick = type1
+				}
+				if (pick == type1) {
+					free.none[2] -= 1
+					free[type1][3] += 1
+					locked[type1][2] -= 1
+					total1_4 += 1
+				} else {
+					free.none[2] -= 1
+					free[type2][3] += 1
+					locked[type2][2] -= 1
+					total2_4 += 1
+				}
+			} else if ( free[type1][2] > 0 && locked[type1][2] > 0) {
+				free[type1][2] -= 1
+				locked[type1][2] -= 1
+				free[type1][3] += 1
+			} else if ( free[type2][2] > 0 && locked[type2][2] > 0) {
+				free[type2][2] -= 1
+				locked[type2][2] -= 1
+				free[type2][3] += 1
+			} else if ( free[type2][2] > 0 && free.none[2] > 0) {
+				free[type2][2] -= 1
+				free.none[2] -= 1
+				free[type2][3] += 1
+			} else if ( free[type1][2] > 0 && free.none[2] > 0) {
+				free[type1][2] -= 1
+				free.none[2] -= 1
+				free[type1][3] += 1
+			} else if ( free.none[2] >= 2) {
+				free.none[2] -= 2
+				free.none[3] += 1
+			} else if ( free[type1][2] >= 2) {
+				free[type1][2] -= 2
+				free[type1][3] += 1
+			} else if ( free[type2][2] >= 2) {
+				free[type2][2] -= 2
+				free[type2][3] += 1
+			} else break
+		}            
+		total2_4 = locked[type2][3]
+		total1_4 = locked[type1][3]
+		while (true) {
+			if (free[type1][3] > 0 && locked[type2][3] > 0) {
+				free[type1][3] -= 1
+				free.full[3] += 1
+				locked[type2][3] -= 1
+			} else if ( free[type2][3] > 0 && locked[type1][3] > 0) {
+				free[type2][3] -= 1
+				free.full[3] += 1
+				locked[type1][3] -= 1
+			} else if ( free[type2][3] > 0 && free[type1][3] > 0) {
+				free[type2][3] -= 1
+				free[type1][3] -= 1
+				free.full[3] += 1
+			} else if ( free.none[3] > 0 && (locked[type1][3] + locked[type2][3]) > 0) {
+				pick = null
+				if (total2_4 == total1_4) {
+					if (total2_ > total1_) {
+						if (locked[type1][3] > 0) 
+							pick = type1
+						else
+							pick = type2
+					} else {
+						if (locked[type2][3] > 0)
+							pick = type2
+						else
+							pick = type1
+					}
+				} else if ( total2_4 > total1_4) {
+					if (locked[type1][3] > 0) 
+						pick = type1
+					else
+						pick = type2
+				} else {
+					if (locked[type2][3] > 0)
+						pick = type2
+					else
+						pick = type1
+				}   
+				if (pick == type1) {
+					free.none[3] -= 1
+					free[type1][3] += 1
+					locked[type1][3] -= 1
+					total1_4 -= 1
+				} else {
+					free.none[3] -= 1
+					free[type2][3] += 1
+					locked[type2][3] -= 1
+					total2_4 -= 1
+				}
+			} else if (free.full[3] > 0 && (locked[type2][3] + locked[type1][3]) > 0) {
+				if (locked[type2][3] > 0) {
+					free.full[3] -= 1
+					locked[type2][3] -= 1
+					free.full[3] += 1
+				} else if (locked[type1][3] > 0) {
+					free.full[3] -= 1
+					locked[type1][3] -= 1
+					free.full[3] += 1
+				}
+			} else break
+		}
+		let endProgress = 0;
+		//Progress:
+		for (let t of [type1,type2]) {
+			for (let l of [1,2,3,4]) {
+				endProgress += locked[t][l-1]*mergerGame.levelValues[l]
+			}
+		}
+		//Progress:
+		let keys = 0
+		for (let l of [3,4]) {
+			keys += free["full"][l-1]*mergerGame.keyValues[l]
+		}
+			
+		return {keys:keys, progress:startProgress-endProgress,locked:lockedO, free:freeO}
+	},
+	solver2:(locked,free)=>{ //Moo Original
+		let lockedO = window.structuredClone(locked),
+			freeO = window.structuredClone(free),
+			type1 = mergerGame.types[0],
+			type2 = mergerGame.types[1],
+			total1_ = locked[type1].reduce((a, b) => a + b, 0)+free[type1].reduce((a, b) => a + b, 0),
+			total2_ = locked[type2].reduce((a, b) => a + b, 0)+free[type2].reduce((a, b) => a + b, 0),
+			total1_2 = total1_ - locked[type1][0],
+			total2_2 = total2_ - locked[type2][0],
+			startProgress = 0;
+		//Progress:
+		for (let t of [type1,type2]) {
+			for (let l of [1,2,3,4]) {
+				startProgress += locked[t][l-1]*mergerGame.levelValues[l]
+			}
+		}
+		
+		while (true) {
+			if (free.none[0] == 0) break;
+			
+			if (locked[type2][0] == 0 && locked[type1][0] == 0) {
+				if (free.none[0] >= 2) {
+					free.none[0] -= 2
+					free.none[1] += 1
+					continue;
+				} else break;
+			}
+			let pick = null
+			if (total2_2 == total1_2) {
+				if (total2_ > total1_) {
+					if (locked[type1][0] > 0)
+						pick = type1
+					else
+						pick = type2
+				} else {
+					if (locked[type2][0] > 0)
+						pick = type2
+					else
+						pick = type1
+				}
+			} else if (total2_2 > total1_2) {
+				if (locked[type1][0] > 0)
+					pick = type1
+				else
+					pick = type2
+			} else {
+				if (locked[type2][0] > 0)
+					pick = type2
+				else
+					pick = type1
+			}        
+			if (pick == type1) {
+				free.none[0] -= 1
+				free[type1][1] += 1
+				locked[type1][0] -= 1
+				total1_2 += 1
+			} else {
+				free.none[0] -= 1
+				free[type2][1] += 1
+				locked[type2][0] -= 1
+				total2_2 += 1
+			}
+		}
+		let total2_3 = locked[type2][2] + locked[type2][3];
+		let total1_3 = locked[type1][2] + locked[type1][3];
+		while (true) {
+			
+			
+			if (free.none[1] > 1 && (locked[type1][1] + free[type1][1] > 0) && (locked[type2][1] + free[type2][1] > 0) && (locked[type1][2] + free[type1][2] > 0) && (locked[type2][2] + free[type2][2] > 0)) {
+				if (locked[type1][1] > 0) {
+					free.none[1] -= 1
+					locked[type1][1] -= 1
+					free[type1][2] += 1
+				} else {
+					free.none[1] -= 1
+					free[type1][1] -= 1
+					free[type1][2] += 1
+				}
+				if (locked[type2][1] > 0) {
+					free.none[1] -= 1
+					locked[type2][1] -= 1
+					free[type2][2] += 1
+				} else {
+					free.none[1] -= 1
+					free[type2][1] -= 1
+					free[type2][2] += 1
+				}
+			} else if (free[type1][1] > 0 && locked[type2][1] > 0) {
+				free[type1][1] -= 1
+				free.full[2] += 1
+				locked[type2][1] -= 1
+			} else if (free[type2][1] > 0 && locked[type1][1] > 0) {
+				free[type2][1] -= 1
+				free.full[2] += 1
+				locked[type1][1] -= 1
+			} else if (free[type2][1] > 0 && free[type1][1] > 0) {
+				free[type2][1] -= 1
+				free[type1][1] -= 1
+				free.full[2] += 1
+			} else if (free.none[1] > 0 && (locked[type1][1] + locked[type2][1]) > 0) {
+				let pick = null
+				if (total2_3 == total1_3) {
+					if (total2_ > total1_) {
+						if (locked[type1][1] > 0)
+							pick = type1
+						else
+							pick = type2
+					} else {
+						if (locked[type2][1] > 0)
+							pick = type2
+						else
+							pick = type1
+					}
+				} else if (total2_3 > total1_3) {
+					if (locked[type1][1] > 0)
+						pick = type1
+					else
+						pick = type2
+				} else {
+					if (locked[type2][1] > 0)
+						pick = type2
+					else
+						pick = type1
+				}
+				if (pick == type1) {
+					free.none[1] -= 1
+					free[type1][2] += 1
+					locked[type1][1] -= 1
+					total1_3 += 1
+				} else {
+					free.none[1] -= 1
+					free[type2][2] += 1
+					locked[type2][1] -= 1
+					total2_3 += 1
+				}
+			} else if (free[type1][1] > 0 && locked[type1][1] > 0) {
+				free[type1][1] -= 1
+				locked[type1][1] -= 1
+				free[type1][2] += 1
+			} else if (free[type2][1] > 0 && locked[type2][1] > 0) {
+				free[type2][1] -= 1
+				locked[type2][1] -= 1
+				free[type2][2] += 1
+			} else if (free[type2][1] > 0 && free.none[1] > 0) {
+				free[type2][1] -= 1
+				free.none[1] -= 1
+				free[type2][2] += 1
+			} else if (free[type1][1] > 0 && free.none[1] > 0) {
+				free[type1][1] -= 1
+				free.none[1] -= 1
+				free[type1][2] += 1
+			} else if (free.none[1] >= 2) {
+				free.none[1] -= 2
+				free.none[2] += 1
+			} else if (free[type1][1] >= 2) {
+				free[type1][1] -= 2
+				free[type1][2] += 1
+			} else if (free[type2][1] >= 2) {
+				free[type2][1] -= 2
+				free[type2][2] += 1
+			} else break
+		}      
+		let total2_4 = locked[type2][3]
+		let total1_4 = locked[type1][3]
+		while (true) {
+			
+			let numtopTrios = Math.min(free.none[3],locked[type1][3],locked[type2][3])
+			if (free.none[2] > 1 && (locked[type1][2] + free[type1][2] > 0) && (locked[type2][2] + free[type2][2] > 0) && (locked[type1][3] - numtopTrios + free[type1][3] > 0) && (locked[type2][3] - numtopTrios + free[type2][3] > 0)) {
+				if (locked[type1][2] > 0) {
+					free.none[2] -= 1
+					locked[type1][2] -= 1
+					free[type1][3] += 1
+				} else {
+					free.none[2] -= 1
+					free[type1][2] -= 1
+					free[type1][3] += 1
+				}
+				if (locked[type2][2] > 0) {
+					free.none[2] -= 1
+					locked[type2][2] -= 1
+					free[type2][3] += 1
+				} else {
+					free.none[2] -= 1
+					free[type2][2] -= 1
+					free[type2][3] += 1
+				}
+			} else if (free[type1][2] > 0 && locked[type2][2] > 0) {
+				free[type1][2] -= 1
+				free.full[3] += 1
+				locked[type2][2] -= 1
+			} else if ( free[type2][2] > 0 && locked[type1][2] > 0) {
+				free[type2][2] -= 1
+				free.full[3] += 1
+				locked[type1][2] -= 1
+			} else if ( free[type2][2] > 0 && free[type1][2] > 0) {
+				free[type2][2] -= 1
+				free[type1][2] -= 1
+				free.full[3] += 1
+			} else if ( free.none[2] > 0 && locked[type1][2] > 0 && (locked[type2][3] - numtopTrios) > free[type1][3]) {
+				free.none[2] -= 1
+				locked[type1][2] -= 1
+				free[type1][3] += 1
+			} else if ( free.none[2] > 0 && locked[type2][2] > 0 && (locked[type1][3] - numtopTrios) > free[type2][3]) {
+				free.none[2] -= 1
+				locked[type2][2] -= 1
+				free[type2][3] += 1
+			} else if ( free.full[2] > 0 && ((free.none[2] + free[type2][2] + free[type1][2] + locked[type2][2] + locked[type1][2]) > 0 || free.full[2] >= 2)) {
+				if (locked[type2][2] > 0) {
+					free.full[2] -= 1
+					locked[type2][2] -= 1
+					free.full[3] += 1
+				} else if ( locked[type1][2] > 0) {
+					free.full[2] -= 1
+					locked[type1][2] -= 1
+					free.full[3] += 1
+				} else if ( free.none[2] > 0) {
+					free.full[2] -= 1
+					free.none[2] -= 1
+					free.full[3] += 1
+				} else if ( free[type1][2] > 0) {
+					free.full[2] -= 1
+					free[type1][2] -= 1
+					free.full[3] += 1
+				} else if ( free[type2][2] > 0) {
+					free.full[2] -= 1
+					free[type2][2] -= 1
+					free.full[3] += 1
+				} else {
+					free.full[2] -= 2
+					free.full[3] += 1
+				}
+			} else if ( free.none[2] > 0 && (locked[type1][2] + locked[type2][2]) > 0) {
+				pick = null
+				if (total2_4 == total1_4) {
+					if (total2_ > total1_) {
+						if (locked[type1][2] > 0)
+							pick = type1
+						else
+							pick = type2
+					} else {
+						if (locked[type2][2] > 0)
+							pick = type2
+						else
+							pick = type1
+					}
+				} else if ( total2_4 > total1_4) {
+					if (locked[type1][2] > 0)
+						pick = type1
+					else
+						pick = type2
+				} else {
+					if (locked[type2][2] > 0)
+						pick = type2
+					else
+						pick = type1
+				}
+				if (pick == type1) {
+					free.none[2] -= 1
+					free[type1][3] += 1
+					locked[type1][2] -= 1
+					total1_4 += 1
+				} else {
+					free.none[2] -= 1
+					free[type2][3] += 1
+					locked[type2][2] -= 1
+					total2_4 += 1
+				}
+			} else if ( free[type1][2] > 0 && locked[type1][2] > 0) {
+				free[type1][2] -= 1
+				locked[type1][2] -= 1
+				free[type1][3] += 1
+			} else if ( free[type2][2] > 0 && locked[type2][2] > 0) {
+				free[type2][2] -= 1
+				locked[type2][2] -= 1
+				free[type2][3] += 1
+			} else if ( free[type2][2] > 0 && free.none[2] > 0) {
+				free[type2][2] -= 1
+				free.none[2] -= 1
+				free[type2][3] += 1
+			} else if ( free[type1][2] > 0 && free.none[2] > 0) {
+				free[type1][2] -= 1
+				free.none[2] -= 1
+				free[type1][3] += 1
+			} else if ( free.none[2] >= 2) {
+				free.none[2] -= 2
+				free.none[3] += 1
+			} else if ( free[type1][2] >= 2) {
+				free[type1][2] -= 2
+				free[type1][3] += 1
+			} else if ( free[type2][2] >= 2) {
+				free[type2][2] -= 2
+				free[type2][3] += 1
+			} else break
+		}            
+		total2_4 = locked[type2][3]
+		total1_4 = locked[type1][3]
+		while (true) {
+			if (free[type1][3] > 0 && locked[type2][3] > 0) {
+				free[type1][3] -= 1
+				free.full[3] += 1
+				locked[type2][3] -= 1
+			} else if ( free[type2][3] > 0 && locked[type1][3] > 0) {
+				free[type2][3] -= 1
+				free.full[3] += 1
+				locked[type1][3] -= 1
+			} else if ( free[type2][3] > 0 && free[type1][3] > 0) {
+				free[type2][3] -= 1
+				free[type1][3] -= 1
+				free.full[3] += 1
+			} else if ( free.none[3] > 0 && (locked[type1][3] + locked[type2][3]) > 0) {
+				pick = null
+				if (total2_4 == total1_4) {
+					if (total2_ > total1_) {
+						if (locked[type1][3] > 0) 
+							pick = type1
+						else
+							pick = type2
+					} else {
+						if (locked[type2][3] > 0)
+							pick = type2
+						else
+							pick = type1
+					}
+				} else if ( total2_4 > total1_4) {
+					if (locked[type1][3] > 0) 
+						pick = type1
+					else
+						pick = type2
+				} else {
+					if (locked[type2][3] > 0)
+						pick = type2
+					else
+						pick = type1
+				}   
+				if (pick == type1) {
+					free.none[3] -= 1
+					free[type1][3] += 1
+					locked[type1][3] -= 1
+					total1_4 -= 1
+				} else {
+					free.none[3] -= 1
+					free[type2][3] += 1
+					locked[type2][3] -= 1
+					total2_4 -= 1
+				}
+			} else if (free.full[3] > 0 && (locked[type2][3] + locked[type1][3]) > 0) {
+				if (locked[type2][3] > 0) {
+					free.full[3] -= 1
+					locked[type2][3] -= 1
+					free.full[3] += 1
+				} else if (locked[type1][3] > 0) {
+					free.full[3] -= 1
+					locked[type1][3] -= 1
+					free.full[3] += 1
+				}
+			} else break
+		}
+		
+		let endProgress = 0;
+		//Progress:
+		for (let t of [type1,type2]) {
+			for (let l of [1,2,3,4]) {
+				endProgress += locked[t][l-1]*mergerGame.levelValues[l]
+			}
+		}
+		//Progress:
+		let keys = 0
+		for (let l of [3,4]) {
+			keys += free["full"][l-1]*mergerGame.keyValues[l]
+		}
+			
+		return {keys:keys, progress:startProgress-endProgress,locked:lockedO, free:freeO}
+	},
+		}
