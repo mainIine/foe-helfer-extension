@@ -1,9 +1,12 @@
 ## Changelog - Extension
 
-##### 3.2.6.1
+##### 3.2.7.0
+**Update**
+- Wiederkehrende Quests
+	- man kann nun zwischen dem Titel der Quest und den Aufgaben der Quest hin und her schalten
 
 **BugFix**
-- Kleine Bugs gefixt
+- Kleine Bugs gefixt - vor allem in Bezug auf Titan
 
 ##### 3.2.6.0
 
