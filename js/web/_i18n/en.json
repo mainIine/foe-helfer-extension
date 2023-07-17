@@ -686,7 +686,7 @@
     "Boxes.MergerGame.Round": "Round ⇋",
     "Boxes.MergerGame.Round.Title": "Values for the current Round",
     "Boxes.MergerGame.Simulation": "Sim",
-    "Boxes.MergerGame.Simulation.Title": "This is achievable when following the solver",
+    "Boxes.MergerGame.Simulation.Title": "This is achievable when playing perfect",
     "Boxes.MergerGame.Status": "Status",
     "Boxes.MergerGame.Status.Title": "The current Satus of the game",
     "Boxes.MergerGame.availableCurrency.anniversary": "Available energy",

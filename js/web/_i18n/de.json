@@ -688,7 +688,7 @@
     "Boxes.MergerGame.NextSpawn":"Nächster Spawn",
     "Boxes.MergerGame.ProgressCollected":"Eingesammelter Fortschritt",
     "Boxes.MergerGame.Status.Title":"Aktueller Zustand des Spiels",
-    "Boxes.MergerGame.Simulation.Title":"Dies ist erreichbar, wenn dem Solver gefolgt wird",
+    "Boxes.MergerGame.Simulation.Title":"Dies ist erreichbar, wenn ideal gespielt wird",
     "Boxes.MergerGame.NextSpawn.Title":"Gibt minimalen, maximalen und durchschnittlichen Fortschritt und Effizienz für das nächste gespawnte Teil an",
     "Boxes.MergerGame.Day.Title":"Werte für den aktuellen Tag",
     "Boxes.MergerGame.Day":"Tag ⇋",
