@@ -322,7 +322,11 @@ let Technologies = {
                 OutputList[OutputList.length] = GoodsList[i]['id'];
             }
             OutputList[OutputList.length] = 'unknown_dna';
-            for (let i = 95; i < GoodsList.length; i++) {
+            for (let i = 95; i < 100; i++) {
+                OutputList[OutputList.length] = GoodsList[i]['id'];
+            }
+            OutputList[OutputList.length] = 'crystallized_hydrocarbons';
+            for (let i = 100; i < GoodsList.length; i++) {
                 OutputList[OutputList.length] = GoodsList[i]['id'];
             }
 

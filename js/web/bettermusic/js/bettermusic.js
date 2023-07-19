@@ -287,6 +287,7 @@ let betterMusic = {
         "cup23_background_music": {Volume:.6, Name:"Soccer Event", Event:"soccer_event"},
         "foe_music_fellowship": {Volume:.6, Name:"Fellowship Event 23", Event:"fellowship_event"},
         "foe_music_summer": {Volume:.7, Name:"Summer Event", Event:"summer_event"},
+        "foe_music_fall": {Volume:.7, Name:"Fall Event", Event:"fall_event"},
         "foe_music_halloween": {Volume:.6, Name:"Halloween Event", Event:"halloween_event"},
         "foe_music_winter": {Volume:.6, Name:"Winter Event", Event:"winter_event"},
         "foe_music_vikings": {Volume:1, Name:"Viking Settlement", Settlement:"vikings"},

@@ -42,3 +42,19 @@
 #RecurringQuestsBoxBody td:last-child {
     color:orange;
 }
+#recurringTable.hideTasks th:nth-child(1),
+#recurringTable.hideTasks td:nth-child(1){
+        display:none;
+}
+#recurringTable:not(.hideTasks) th:nth-child(2),
+#recurringTable:not(.hideTasks) td:nth-child(2){
+        display:none;
+}
+#recurringTable th:nth-child(1),
+#recurringTable th:nth-child(2){
+        color:var(--text-bright);
+}
+
+#recurringTable img{
+        height: 25px;
+}

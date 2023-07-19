@@ -323,9 +323,9 @@ let mergerGame = {
 		//Energy/fooballs
 		html += `<tr><td title="${i18n("Boxes.MergerGame.Energy."+mergerGame.event)}">`
 		html += `<img src="${srcLinks.get(mergerGame.eventData[mergerGame.event].energy,true)}"></td>`
-		html += `<td title="${i18n("Boxes.MergerGame.EfficiencyTargetProgress."+mergerGame.event)+Math.floor(totalValue)+"/"+Math.floor(mergerGame.state.energyUsed*targetEfficiency)|0}">${mergerGame.state.energyUsed} </td>`
+		html += `<td title="${i18n("Boxes.MergerGame.EfficiencyTargetProgress."+mergerGame.event)+Math.floor(totalValue)+"/"+(Math.floor(mergerGame.state.energyUsed*targetEfficiency)||0)}">${mergerGame.state.energyUsed} </td>`
 		html += `<td>${mergerGame.state.energyUsed+mergerGame.state.daily.energyUsed}</td>`
-		html += `<td style="border-left: 1px solid var(--border-tab);" onclick="mergerGame.ShowSolution()">${LinkIcon}</td>`
+		html += `<td style="border-left: 1px solid var(--border-tab)"></td>`
 		html += `<td colspan="2" style="border-left: 1px solid var(--border-tab)">${mergerGame.spawnCost}</td></tr>`
 		//Progress
 		html += `<tr><td title="${i18n("Boxes.MergerGame.ProgressCollected")}">`
@@ -409,38 +409,7 @@ let mergerGame = {
 		localStorage.setItem('MergerGameSettings', JSON.stringify(mergerGame.settings));
         mergerGame.updateDialog();
     },
-	
-	updateSolution:(solved=null)=>{
-		if (solved) {
-			let out = []
-			out.push(`<div>There may be configurations, where the proposed solution is not ideal!`)
-			out.push(`<table class="foe-table">`)
-			for (c of Object.keys(solved)) {
-				for (x of solved[c].solution) {
-					out.push(`<tr><td ${x.css ? `style="${x.css}"`: ``}>${x.css ? x.text: x}</td></tr>`)
-				}
-			}
-			out.push(`</table>`)
-			mergerGame.Solution = out.join('');
-		}
-		if ($('#mergerGameSolution').length > 0) $('#mergerGameSolutionBody').html(mergerGame.Solution||"")
-	},
-	ShowSolution: () => {
-        
-		// Don't create a new box while another one is still open
-		if ($('#mergerGameSolution').length === 0) {
-			
-			HTML.Box({
-				id: 'mergerGameSolution',
-				title: 'Merger Game Solution',
-				auto_close: true,
-				dragdrop: true,
-				minimize: true,
-				resize : true,
-			});
-		}
-		mergerGame.updateSolution();
-    },
+
 	solve:() => {
 		let type1 = mergerGame.types[1],
 			type2 = mergerGame.types[0];
@@ -477,7 +446,6 @@ let mergerGame = {
 		}
 		mergerGame.solved.keys = keys;
 		mergerGame.simResult = mergerGame.simulateNextSpawn(solved);
-		mergerGame.updateSolution(solved)
 	},
 	simulateNextSpawn:(solved) => {
 		let keys = {min:10,max:0,average:0};
@@ -512,19 +480,18 @@ let mergerGame = {
 			let free = window.structuredClone(solved.free),
 				locked=window.structuredClone(solved.locked);
 			free["none"][l-1] -= 1;
-			let simulated = mergerGame.solver(locked,free,c);
+			let simulated = mergerGame.solver(locked,free);
 			if (simulated.keys*mergerGame.settings.keyValue+simulated.progress>best.keys*mergerGame.settings.keyValue+best.progress) best = window.structuredClone(simulated);
 		}
 		if (solved.progress>best.progress) {
-			best.solution.push({text:"CHECK FOR REMAINING MERGES - solution might have ignored a piece", css:"background:red,color:black"})
 			best.progress = solved.progress;
 		}
 		return best
 	}, 
 
-	solver: (locked,free, color,sim=false) =>{
-		let result1 = mergerGame.solver1(window.structuredClone(locked),window.structuredClone(free),color);
-		let result2 = mergerGame.solver2(window.structuredClone(locked),window.structuredClone(free),color);
+	solver: (locked,free,sim=false) =>{
+		let result1 = mergerGame.solver1(window.structuredClone(locked),window.structuredClone(free));
+		let result2 = mergerGame.solver2(window.structuredClone(locked),window.structuredClone(free));
 		let result = null
 
 		if (result1.keys*mergerGame.settings.keyValue+result1.progress>result2.keys*mergerGame.settings.keyValue+result2.progress) 
@@ -533,15 +500,14 @@ let mergerGame = {
 			result = result2;
 		
 		if (sim) {
-			result = mergerGame.checkInconsistencies(result,color)
+			result = mergerGame.checkInconsistencies(result)
 		}
 		
 		return result;
 		
 	},
-	solverOut:(type,color) => mergerGame.eventData[mergerGame.event].solverOut[type] + `<img class="${mergerGame.event=="soccer"?'toprightcorner':''}${type=="full"?" full":""}" src="${srcLinks.get(`${mergerGame.eventData[mergerGame.event].keyfile}${type}_${color}.png`,true)}">`,
 	
-	solver1:(locked,free, color)=>{ //modified version of Moos solver - generally better but also has some oddities
+	solver1:(locked,free)=>{ //modified version of Moos solver - generally better but also has some oddities
 		let lockedO = window.structuredClone(locked),
 			freeO = window.structuredClone(free),
 			type1 = mergerGame.types[0],
@@ -550,9 +516,7 @@ let mergerGame = {
 			total2_ = locked[type2].reduce((a, b) => a + b, 0)+free[type2].reduce((a, b) => a + b, 0),
 			total1_2 = total1_ - locked[type1][0],
 			total2_2 = total2_ - locked[type2][0],
-			startProgress = 0,
-			Solution=[],
-			out = mergerGame.solverOut;
+			startProgress = 0;
 
 		//Progress:
 		for (let t of [type1,type2]) {
@@ -561,8 +525,6 @@ let mergerGame = {
 			}
 		}
 		
-		Solution.push ({text:"=======Modified Solver=======",css: "color:"+mergerGame.eventData[mergerGame.event].CSScolors[color]})
-		//Solution.push ("==Level 1 Merges==")
 		while (true) {
 			if (free.none[0] == 0) break;
 			
@@ -570,7 +532,6 @@ let mergerGame = {
 				if (free.none[0] >= 2) {
 					free.none[0] -= 2
 					free.none[1] += 1
-					Solution.push ("Free L1 + Free L1")
 					continue;
 				} else break;
 			}
@@ -596,13 +557,11 @@ let mergerGame = {
 				free[type1][1] += 1
 				locked[type1][0] -= 1
 				total1_2 += 1
-				Solution.push (`Free L1 + Locked L1 ${out(type1,color)}`)
 			} else {
 				free.none[0] -= 1
 				free[type2][1] += 1
 				locked[type2][0] -= 1
 				total2_2 += 1
-				Solution.push (`Free L1 + Locked L1 ${out(type2,color)}`)
 			}
 		}
 
@@ -613,31 +572,26 @@ let mergerGame = {
 				locked[type1][3] -= 1
 				locked[type2][3] -= 1
 				free.full[3] += 1
-				Solution.push (`Free L4 + Locked L4 ${out(type1,color)} + Locked L4 ${out(type2,color)}`)
 			} else if (free[type1][3] > 0 && locked[type2][3]>0) {
 				free[type1][3] -= 1
 				locked[type2][3] -= 1
 				free.full[3] += 1
-				Solution.push (`Free L4 ${out(type1,color)} + Locked L4 ${out(type2,color)}`)
 			} else if (free[type2][3] > 0 && locked[type1][3]>0) {
 				free[type2][3] -= 1
 				locked[type1][3] -= 1
 				free.full[3] += 1
-				Solution.push (`Free L4 ${out(type2,color)} + Locked L4 ${out(type1,color)}`)
 			} else if (free.none[2] >= locked[type2][3] + locked[type1][3] && 
 						locked[type2][3] > 0 && locked[type1][2]>0) {
 				locked[type2][3] -= 1
 				locked[type1][2] -= 1
 				free.none[2] -= 1
 				free.full[3] += 1
-				Solution.push (`Free L3 + Locked L3 ${out(type1,color)} + Locked L4 ${out(type2,color)}`)
 			} else if (free.none[2] >= locked[type2][3] + locked[type1][3] && 
 						locked[type1][3] > 0 && locked[type2][2]>0) {
 				locked[type2][2] -= 1
 				locked[type1][3] -= 1
 				free.none[2] -= 1
 				free.full[3] += 1
-				Solution.push (`Free L3 + Locked L3 ${out(type2,color)} + Locked L4 ${out(type1,color)}`)
 			} else if (free.none[2]> 0 && free.none[2] < locked[type2][3] + locked[type1][3] && 
 						locked[type2][2]+locked[type2][1]+locked[type2][0]>=locked[type1][2]+locked[type1][1]+locked[type1][0] &&
 						locked[type2][3] > 0 && locked[type1][2]>0) {
@@ -645,7 +599,6 @@ let mergerGame = {
 				locked[type1][2] -= 1
 				free.none[2] -= 1
 				free.full[3] += 1
-				Solution.push (`Free L3 + Locked L3 ${out(type1,color)} + Locked L4 ${out(type2,color)}`)
 			} else if (free.none[2]> 0 && free.none[2] < locked[type2][3] + locked[type1][3] && 
 						locked[type2][2]+locked[type2][1]+locked[type2][0]<=locked[type1][2]+locked[type1][1]+locked[type1][0] &&
 						locked[type1][3] > 0 && locked[type2][2]>0) {
@@ -653,13 +606,11 @@ let mergerGame = {
 				locked[type1][3] -= 1
 				free.none[2] -= 1
 				free.full[3] += 1
-				Solution.push (`Free L3 + Locked L3 ${out(type2,color)} + Locked L4 ${out(type1,color)}`)
 			} else break
 		}
 
 		let total1_3 = locked[type1][2] + locked[type1][3] + free[type1][2] + free[type1][3];
 		let total2_3 = locked[type2][2] + locked[type2][3] + free[type2][2] + free[type2][3];
-		//Solution.push ("==Level 2 Merges==")
 		let occupied1_3=0;
 		let occupied2_3=0;
 		while (true) {
@@ -671,7 +622,6 @@ let mergerGame = {
 				total1_3 +=1;
 				occupied1_3 += 1;
 				occupied2_3 += 1;
-				Solution.push (`Free L2 + Locked L2 ${out(type1,color)}`)
 			} else if (free.none[1] > free[type1][1] &&  locked[type2][1] > 0 && (locked[type1][2]+free[type1][2]-occupied1_3) > 0) {
 				free.none[1] -= 1
 				locked[type2][1] -= 1
@@ -679,18 +629,15 @@ let mergerGame = {
 				total2_3 +=1;
 				occupied1_3 += 1;
 				occupied2_3 += 1;
-				Solution.push (`Free L2 + Locked L2 ${out(type2,color)}`)
 			} else if (free.none[1] > 1 && free.none[1] > free[type1][1]+free[type2][1] && (locked[type1][1]> 0) && (locked[type2][1]> 0) && (locked[type1][2] + free[type1][2] -occupied1_3> 0) && (locked[type2][2] + free[type2][2] -occupied2_3> 0)) {
 				free.none[1] -= 1
 				locked[type1][1] -= 1
 				free[type1][2] += 1
 				total1_3 +=1;
-				Solution.push (`Free L2 + Locked L2 ${out(type1,color)}`)
 				free.none[1] -= 1
 				locked[type2][1] -= 1
 				free[type2][2] += 1
 				total2_3 +=1;
-				Solution.push (`Free L2 + Locked L2 ${out(type2,color)}`)
 				occupied1_3 += 2;
 				occupied2_3 += 2;
 			} else if (free[type1][1]> 0 && locked[type2][1]> 0 && (locked[type1][2] + free[type1][2] + locked[type2][2] + free[type2][2] - occupied1_3 - occupied2_3 - free.none[2] > 0)) {
@@ -701,7 +648,6 @@ let mergerGame = {
 					occupied1_3 += 1 
 				else 
 					occupied2_3 += 1;
-				Solution.push (`Free L2 ${out(type1,color)} + Locked L2 ${out(type2,color)}`)
 			} else if (free[type2][1]> 0 && locked[type1][1]> 0 && (locked[type1][2] + free[type1][2] + locked[type2][2] + free[type2][2] - occupied1_3 - occupied2_3 - free.none[2] > 0)) {
 				free[type2][1] -= 1
 				locked[type1][1] -= 1
@@ -710,29 +656,24 @@ let mergerGame = {
 					occupied1_3 += 1 
 				else 
 					occupied2_3 += 1;
-				Solution.push (`Free L2 ${out(type2,color)} + Locked L2 ${out(type1,color)} (1)`)
 			} else if (free.none[1] > 1 && free.none[1] > free[type1][1]+free[type2][1] && (locked[type1][1] + free[type1][1] > 0) && (locked[type2][1] + free[type2][1] > 0) && (locked[type1][2] + free[type1][2] -occupied1_3> 0) && (locked[type2][2] + free[type2][2] -occupied2_3> 0)) {
 				if (locked[type1][1] > 0) {
 					free.none[1] -= 1
 					locked[type1][1] -= 1
 					free[type1][2] += 1
-					Solution.push (`Free L2 + Locked L2 ${out(type1,color)}`)
 				} else {
 					free.none[1] -= 1
 					free[type1][1] -= 1
 					free[type1][2] += 1
-					Solution.push (`Free L2 + Free L2 ${out(type1,color)}`)
 				}
 				if (locked[type2][1] > 0) {
 					free.none[1] -= 1
 					locked[type2][1] -= 1
 					free[type2][2] += 1
-					Solution.push (`Free L2 + Locked L2 ${out(type2,color)}`)
 				} else {
 					free.none[1] -= 1
 					free[type2][1] -= 1
 					free[type2][2] += 1
-					Solution.push (`Free L2 + Free L2 ${out(type2,color)}`)
 				}
 				occupied1_3 += 2;
 				occupied2_3 += 2;
@@ -740,17 +681,14 @@ let mergerGame = {
 				free[type1][1] -= 1
 				free.full[2] += 1
 				locked[type2][1] -= 1
-				Solution.push (`Free L2 ${out(type1,color)} + Locked L2 ${out(type2,color)}`)
 			} else if (free[type2][1] > 0 && locked[type1][1] > 0) {
 				free[type2][1] -= 1
 				free.full[2] += 1
 				locked[type1][1] -= 1
-				Solution.push (`Free L2 ${out(type2,color)} + Locked L2 ${out(type1,color)} (2)`)
 			} else if (free[type2][1] > 0 && free[type1][1] > 0) {
 				free[type2][1] -= 1
 				free[type1][1] -= 1
 				free.full[2] += 1
-				Solution.push (`Free L2 ${out(type2,color)} + Free L2 ${out(type1,color)} (1)`)
 			} else if (free.none[1] > 0 && (locked[type1][1] + locked[type2][1]) > 0) {
 				let pick = null
 				if (total2_3 == total1_3) {
@@ -781,49 +719,39 @@ let mergerGame = {
 					free[type1][2] += 1
 					locked[type1][1] -= 1
 					total1_3 += 1
-					Solution.push (`Free L2 + Locked L2 ${out(type1,color)}`)
 				} else {
 					free.none[1] -= 1
 					free[type2][2] += 1
 					locked[type2][1] -= 1
 					total2_3 += 1
-					Solution.push (`Free L2 + Locked L2 ${out(type2,color)}`)
 				}
 			} else if (free[type1][1] > 0 && locked[type1][1] > 0) {
 				free[type1][1] -= 1
 				locked[type1][1] -= 1
 				free[type1][2] += 1
-				Solution.push (`Free L2 ${out(type1,color)} + Locked L2 ${out(type1,color)}`)
 			} else if (free[type2][1] > 0 && locked[type2][1] > 0) {
 				free[type2][1] -= 1
 				locked[type2][1] -= 1
 				free[type2][2] += 1
-				Solution.push (`Free L2 ${out(type2,color)} + Locked L2 ${out(type2,color)}`)
 			} else if (free[type2][1] > 0 && free.none[1] > 0) {
 				free[type2][1] -= 1
 				free.none[1] -= 1
 				free[type2][2] += 1
-				Solution.push (`Free L2 + Free L2 ${out(type2,color)}`)
 			} else if (free[type1][1] > 0 && free.none[1] > 0) {
 				free[type1][1] -= 1
 				free.none[1] -= 1
 				free[type1][2] += 1
-				Solution.push (`Free L2 + Free L2 ${out(type1,color)}`)
 			} else if (free.none[1] >= 2) {
 				free.none[1] -= 2
 				free.none[2] += 1
-				Solution.push ("Free L2 + Free L2")
 			} else if (free[type1][1] >= 2) {
 				free[type1][1] -= 2
 				free[type1][2] += 1
-				Solution.push (`Free L2 ${out(type1,color)} + Free L2 ${out(type1,color)}`)
 			} else if (free[type2][1] >= 2) {
 				free[type2][1] -= 2
 				free[type2][2] += 1
-				Solution.push (`Free L2 ${out(type2,color)} + Free L2 ${out(type2,color)}`)
 			} else break
 		}      
-		//Solution.push ("==Level 3 Merges==")
 		let total1_4 = locked[type1][3] + free[type1][3];
 		let total2_4 = locked[type2][3] + free[type2][3];
 		let occupied1_4=0;
@@ -831,15 +759,10 @@ let mergerGame = {
 		while (true) {
 			
 			if (free.none[2] >= locked[type1][2]+locked[type2][2]+free[type1][2]+free[type2][2] + free["full"][2] && locked[type1][2]+locked[type2][2]+free[type1][2]+free[type2][2]+ free["full"][2] > 0) {
-				for (let x=0; x<locked[type1][2];x++) Solution.push (`Free L3 + Locked L3 ${out(type1,color)}`)
 				free[type1][3] += locked[type1][2];
-				for (let x=0; x<free[type1][2];x++) Solution.push (`Free L3 + Free L3 ${out(type1,color)}`)
 				free[type1][3] += free[type1][2];
-				for (let x=0; x<locked[type2][2];x++) Solution.push (`Free L3 + Locked L3 ${out(type2,color)}`)
 				free[type2][3] += locked[type2][2];
-				for (let x=0; x<free[type2][2];x++) Solution.push (`Free L3 + Free L3 ${out(type2,color)}`)
 				free[type2][3] += free[type2][2];
-				for (let x=0; x<free["full"][2];x++) Solution.push (`Free L3 + Free L3 ${out("full",color)}`)
 				free["full"][3] += free["full"][2];
 				
 				free.none[2] -= locked[type1][2]+locked[type2][2]+free[type1][2]+free[type2][2]+free["full"][2];
@@ -853,7 +776,6 @@ let mergerGame = {
 				free.none[2] -= 1
 				locked[type1][2] -= 1
 				free[type1][3] += 1
-				Solution.push (`Free L3 + Locked L3 ${out(type1,color)} `)
 				total1_4 +=1;
 				occupied1_4 +=1;
 				occupied2_4 +=1;
@@ -861,7 +783,6 @@ let mergerGame = {
 				free.none[2] -= 1
 				locked[type2][2] -= 1
 				free[type2][3] += 1
-				Solution.push (`Free L3 + Locked L3 ${out(type2,color)}`)
 				total2_4 +=1;
 				occupied1_4 +=1;
 				occupied2_4 +=1;
@@ -871,23 +792,19 @@ let mergerGame = {
 					free.none[2] -= 1
 					locked[type1][2] -= 1
 					free[type1][3] += 1
-					Solution.push (`Free L3 + Locked L3 ${out(type1,color)}`)
 				} else {
 					free.none[2] -= 1
 					free[type1][2] -= 1
 					free[type1][3] += 1
-					Solution.push (`Free L3 + Free L3 ${out(type1,color)} `)
 				}
 				if (locked[type2][2] > 0) {
 					free.none[2] -= 1
 					locked[type2][2] -= 1
 					free[type2][3] += 1
-					Solution.push (`Free L3 + Locked L3 ${out(type2,color)}`)
 				} else {
 					free.none[2] -= 1
 					free[type2][2] -= 1
 					free[type2][3] += 1
-					Solution.push (`Free L3 + Free L3 ${out(type2,color)}`)
 				}
 				occupied1_4 += 2;
 				occupied2_4 += 2;
@@ -896,24 +813,20 @@ let mergerGame = {
 				free[type1][2] -= 1
 				locked[type2][2] -= 1
 				free.full[3] += 1
-				Solution.push (`Free L3 ${out(type1,color)} + Locked L3 ${out(type2,color)}`)
 			} else if ( free[type2][2] > 0 && locked[type1][2] > 0) {
 				free[type2][2] -= 1
 				locked[type1][2] -= 1
 				free.full[3] += 1
-				Solution.push (`Free L3 ${out(type2,color)} + Locked L3 ${out(type1,color)}`)
 			} else if ( free[type2][2] > 0 && free[type1][2] > 0) {
 				free[type2][2] -= 1
 				free[type1][2] -= 1
 				free.full[3] += 1
-				Solution.push (`Free L3 ${out(type2,color)} + Free L3 ${out(type1,color)}`)
 			} else if ( free.none[2] > 0 && locked[type1][2] > 0 && (locked[type2][3] + free[type2][3] - occupied2_4) > 0) {
 				free.none[2] -= 1
 				locked[type1][2] -= 1
 				locked[type1][3] += 1
 				occupied1_4 +=1
 				occupied2_4 += 1
-				Solution.push (`Free L3 + Locked L3 ${out(type1,color)}`)
 				
 			} else if ( free.none[2] > 0 && locked[type2][2] > 0 && (locked[type1][3] + free[type1][3] - occupied1_4) > 0) {
 				free.none[2] -= 1
@@ -921,7 +834,6 @@ let mergerGame = {
 				locked[type2][3] += 1
 				occupied1_4 +=1
 				occupied2_4 += 1
-				Solution.push (`Free L3 + Locked L3 ${out(type2,color)}`)
 				
 			} else if (free.none[2] > 0 && free[type1][2] > 0 && (locked[type2][3] + free[type2][3] - occupied2_4) > 0) {
 				free.none[2] -= 1
@@ -929,7 +841,6 @@ let mergerGame = {
 				free[type1][3] += 1
 				occupied1_4 +=1
 				occupied2_4 += 1
-				Solution.push (`Free L3 + Free L3 ${out(type1,color)} `)
 				
 			} else if (free.none[2] > 0 &&  free[type2][2] > 0 && (locked[type1][3] + free[type1][3] - occupied1_4) > 0) {
 				free.none[2] -= 1
@@ -937,7 +848,6 @@ let mergerGame = {
 				free[type2][3] += 1
 				occupied1_4 += 1
 				occupied2_4 += 1
-				Solution.push (`Free L3 + Free L3 ${out(type2,color)}`)
 
 			} else if (free[type1][2] >0 && locked[type1][2]>0 && (locked[type2][3] + free[type2][3] - occupied2_4) > 0) {
 				free[type1][2] -= 1
@@ -945,7 +855,6 @@ let mergerGame = {
 				free[type1][3] += 1
 				occupied1_4 += 1
 				occupied2_4 += 1
-				Solution.push (`Free L3 ${out(type1,color)} + Locked L3 ${out(type1,color)}`)
 			
 			} else if (free[type2][2] >0 && locked[type2][2]>0 && (locked[type1][3] + free[type1][3] - occupied1_4)>0) {
 				free[type2][2] -= 1
@@ -953,7 +862,6 @@ let mergerGame = {
 				free[type2][3] += 1
 				occupied1_4 += 1
 				occupied2_4 += 1
-				Solution.push (`Free L3 ${out(type2,color)} + Locked L3 ${out(type2,color)}`)
 			
 			} else if ((free.none[2]+locked[type1][2]+locked[type2][2] - free.full[2] > 1) && free.none[2]>1 && locked[type2][2]>0 && locked[type1][2]>0) {
 				free.none[2] -= 2
@@ -963,39 +871,31 @@ let mergerGame = {
 				free[type1][3] += 1
 				occupied1_4 += 1
 				occupied2_4 += 1
-				Solution.push (`Free L3 + Locked L3 ${out(type2,color)}`)
-				Solution.push (`Free L3 + Locked L3 ${out(type1,color)}`)
 			
 			} else if (free.full[2] > 0 && ((free.none[2] + free[type2][2] + free[type1][2] + locked[type2][2] + locked[type1][2]) > 0 || free.full[2] >= 2)) {
 				if (locked[type2][2] > 0) {
 					free.full[2] -= 1
 					locked[type2][2] -= 1
 					free.full[3] += 1
-					Solution.push (`Free L3 ${out("full",color)} + Locked L3 ${out(type2,color)}`)
 				} else if ( locked[type1][2] > 0) {
 					free.full[2] -= 1
 					locked[type1][2] -= 1
 					free.full[3] += 1
-					Solution.push (`Free L3 ${out("full",color)} + Locked L3 ${out(type1,color)}`)
 				} else if ( free.none[2] > 0) {
 					free.full[2] -= 1
 					free.none[2] -= 1
 					free.full[3] += 1
-					Solution.push ("Free L3 Full + Free L3")
 				} else if ( free[type1][2] > 0) {
 					free.full[2] -= 1
 					free[type1][2] -= 1
 					free.full[3] += 1
-					Solution.push (`Free L3 ${out("full",color)} + Free L3 ${out(type1,color)}`)
 				} else if ( free[type2][2] > 0) {
 					free.full[2] -= 1
 					free[type2][2] -= 1
 					free.full[3] += 1
-					Solution.push (`Free L3 ${out("full",color)} + Free L3 ${out(type2,color)}`)
 				} else {
 					free.full[2] -= 2
 					free.full[3] += 1
-					Solution.push ("Free L3 Full + Free L3 Full")
 				}
 			} else if ( free.none[2] > 0 && (locked[type1][2] + locked[type2][2]) > 0) {
 				pick = null
@@ -1027,49 +927,39 @@ let mergerGame = {
 					free[type1][3] += 1
 					locked[type1][2] -= 1
 					total1_4 += 1
-					Solution.push (`Free L3 + Locked L3 ${out(type1,color)}`)
 				} else {
 					free.none[2] -= 1
 					free[type2][3] += 1
 					locked[type2][2] -= 1
 					total2_4 += 1
-					Solution.push (`Free L3 + Locked L3 ${out(type2,color)}`)
 				}
 			} else if ( free[type1][2] > 0 && locked[type1][2] > 0) {
 				free[type1][2] -= 1
 				locked[type1][2] -= 1
 				free[type1][3] += 1
-				Solution.push (`Free L3 ${out(type1,color)} + Locked L3 ${out(type1,color)}`)
 			} else if ( free[type2][2] > 0 && locked[type2][2] > 0) {
 				free[type2][2] -= 1
 				locked[type2][2] -= 1
 				free[type2][3] += 1
-				Solution.push (`Free L3 ${out(type2,color)} + Locked L3 ${out(type2,color)}`)
 			} else if ( free[type2][2] > 0 && free.none[2] > 0) {
 				free[type2][2] -= 1
 				free.none[2] -= 1
 				free[type2][3] += 1
-				Solution.push (`Free L3 + Free L3 ${out(type2,color)}`)
 			} else if ( free[type1][2] > 0 && free.none[2] > 0) {
 				free[type1][2] -= 1
 				free.none[2] -= 1
 				free[type1][3] += 1
-				Solution.push (`Free L3 + Free L3 ${out(type1,color)}`)
 			} else if ( free.none[2] >= 2) {
 				free.none[2] -= 2
 				free.none[3] += 1
-				Solution.push ("Free L3 + Free L3")
 			} else if ( free[type1][2] >= 2) {
 				free[type1][2] -= 2
 				free[type1][3] += 1
-				Solution.push (`Free L3 ${out(type1,color)} + Free L3 ${out(type1,color)}`)
 			} else if ( free[type2][2] >= 2) {
 				free[type2][2] -= 2
 				free[type2][3] += 1
-				Solution.push (`Free L3 ${out(type2,color)} + Free L3 ${out(type2,color)}`)
 			} else break
 		}            
-		//Solution.push ("==Level 4 Merges==")
 		total2_4 = locked[type2][3]
 		total1_4 = locked[type1][3]
 		while (true) {
@@ -1077,17 +967,14 @@ let mergerGame = {
 				free[type1][3] -= 1
 				free.full[3] += 1
 				locked[type2][3] -= 1
-				Solution.push (`Free L4 ${out(type1,color)} + Locked L4 ${out(type2,color)}`)
 			} else if ( free[type2][3] > 0 && locked[type1][3] > 0) {
 				free[type2][3] -= 1
 				free.full[3] += 1
 				locked[type1][3] -= 1
-				Solution.push (`Free L4 ${out(type2,color)} + Locked L4 ${out(type1,color)}`)
 			} else if ( free[type2][3] > 0 && free[type1][3] > 0) {
 				free[type2][3] -= 1
 				free[type1][3] -= 1
 				free.full[3] += 1
-				Solution.push (`Free L4 ${out(type2,color)} + Free L4 ${out(type1,color)}`)
 			} else if ( free.none[3] > 0 && (locked[type1][3] + locked[type2][3]) > 0) {
 				pick = null
 				if (total2_4 == total1_4) {
@@ -1118,29 +1005,24 @@ let mergerGame = {
 					free[type1][3] += 1
 					locked[type1][3] -= 1
 					total1_4 -= 1
-					Solution.push (`Free L4 + Locked L4 ${out(type1,color)}`)
 				} else {
 					free.none[3] -= 1
 					free[type2][3] += 1
 					locked[type2][3] -= 1
 					total2_4 -= 1
-					Solution.push (`Free L4 + Locked L4 ${out(type2,color)}`)
 				}
 			} else if (free.full[3] > 0 && (locked[type2][3] + locked[type1][3]) > 0) {
 				if (locked[type2][3] > 0) {
 					free.full[3] -= 1
 					locked[type2][3] -= 1
 					free.full[3] += 1
-					Solution.push (`Free L4 ${out("full",color)} + Locked L4 ${out(type2,color)}`)
 				} else if (locked[type1][3] > 0) {
 					free.full[3] -= 1
 					locked[type1][3] -= 1
 					free.full[3] += 1
-					Solution.push (`Free L4 ${out("full",color)} + Locked L4 ${out(type1,color)}`)
 				}
 			} else break
 		}
-		//Solution.push ("==Results==")
 		let endProgress = 0;
 		//Progress:
 		for (let t of [type1,type2]) {
@@ -1154,9 +1036,9 @@ let mergerGame = {
 			keys += free["full"][l-1]*mergerGame.keyValues[l]
 		}
 			
-		return {keys:keys, progress:startProgress-endProgress,locked:lockedO, free:freeO,solution:Solution}
+		return {keys:keys, progress:startProgress-endProgress,locked:lockedO, free:freeO}
 	},
-	solver2:(locked,free, color)=>{ //Moo Original
+	solver2:(locked,free)=>{ //Moo Original
 		let lockedO = window.structuredClone(locked),
 			freeO = window.structuredClone(free),
 			type1 = mergerGame.types[0],
@@ -1165,9 +1047,7 @@ let mergerGame = {
 			total2_ = locked[type2].reduce((a, b) => a + b, 0)+free[type2].reduce((a, b) => a + b, 0),
 			total1_2 = total1_ - locked[type1][0],
 			total2_2 = total2_ - locked[type2][0],
-			startProgress = 0,
-			Solution=[],
-			out = mergerGame.solverOut;
+			startProgress = 0;
 		//Progress:
 		for (let t of [type1,type2]) {
 			for (let l of [1,2,3,4]) {
@@ -1175,8 +1055,6 @@ let mergerGame = {
 			}
 		}
 		
-		Solution.push ({text:"=======Mooing cat's solver=======",css:"color:"+mergerGame.eventData[mergerGame.event].CSScolors[color]})
-		//Solution.push ("==Level 1 Merges==")
 		while (true) {
 			if (free.none[0] == 0) break;
 			
@@ -1184,7 +1062,6 @@ let mergerGame = {
 				if (free.none[0] >= 2) {
 					free.none[0] -= 2
 					free.none[1] += 1
-					Solution.push ("Free L1 + Free L1")
 					continue;
 				} else break;
 			}
@@ -1217,18 +1094,15 @@ let mergerGame = {
 				free[type1][1] += 1
 				locked[type1][0] -= 1
 				total1_2 += 1
-				Solution.push (`Free L1 + Locked L1 ${out(type1,color)}`)
 			} else {
 				free.none[0] -= 1
 				free[type2][1] += 1
 				locked[type2][0] -= 1
 				total2_2 += 1
-				Solution.push (`Free L1 + Locked L1 ${out(type2,color)}`)
 			}
 		}
 		let total2_3 = locked[type2][2] + locked[type2][3];
 		let total1_3 = locked[type1][2] + locked[type1][3];
-		//Solution.push ("==Level 2 Merges==")
 		while (true) {
 			
 			
@@ -1237,39 +1111,32 @@ let mergerGame = {
 					free.none[1] -= 1
 					locked[type1][1] -= 1
 					free[type1][2] += 1
-					Solution.push (`Free L2 + Locked L2 ${out(type1,color)}`)
 				} else {
 					free.none[1] -= 1
 					free[type1][1] -= 1
 					free[type1][2] += 1
-					Solution.push (`Free L2 + Free L2 ${out(type1,color)}`)
 				}
 				if (locked[type2][1] > 0) {
 					free.none[1] -= 1
 					locked[type2][1] -= 1
 					free[type2][2] += 1
-					Solution.push (`Free L2 + Locked L2 ${out(type2,color)}`)
 				} else {
 					free.none[1] -= 1
 					free[type2][1] -= 1
 					free[type2][2] += 1
-					Solution.push (`Free L2 + Free L2 ${out(type2,color)}`)
 				}
 			} else if (free[type1][1] > 0 && locked[type2][1] > 0) {
 				free[type1][1] -= 1
 				free.full[2] += 1
 				locked[type2][1] -= 1
-				Solution.push (`Free L2 ${out(type1,color)} + Locked L2 ${out(type2,color)}`)
 			} else if (free[type2][1] > 0 && locked[type1][1] > 0) {
 				free[type2][1] -= 1
 				free.full[2] += 1
 				locked[type1][1] -= 1
-				Solution.push (`Free L2 ${out(type2,color)} + Locked L2 ${out(type1,color)}`)
 			} else if (free[type2][1] > 0 && free[type1][1] > 0) {
 				free[type2][1] -= 1
 				free[type1][1] -= 1
 				free.full[2] += 1
-				Solution.push (`Free L2 ${out(type2,color)} + Free L2 ${out(type1,color)}`)
 			} else if (free.none[1] > 0 && (locked[type1][1] + locked[type2][1]) > 0) {
 				let pick = null
 				if (total2_3 == total1_3) {
@@ -1300,49 +1167,39 @@ let mergerGame = {
 					free[type1][2] += 1
 					locked[type1][1] -= 1
 					total1_3 += 1
-					Solution.push (`Free L2 + Locked L2 ${out(type1,color)}`)
 				} else {
 					free.none[1] -= 1
 					free[type2][2] += 1
 					locked[type2][1] -= 1
 					total2_3 += 1
-					Solution.push (`Free L2 + Locked L2 ${out(type2,color)}`)
 				}
 			} else if (free[type1][1] > 0 && locked[type1][1] > 0) {
 				free[type1][1] -= 1
 				locked[type1][1] -= 1
 				free[type1][2] += 1
-				Solution.push (`Free L2 ${out(type1,color)} + Locked L2 ${out(type1,color)}`)
 			} else if (free[type2][1] > 0 && locked[type2][1] > 0) {
 				free[type2][1] -= 1
 				locked[type2][1] -= 1
 				free[type2][2] += 1
-				Solution.push (`Free L2 ${out(type2,color)} + Locked L2 ${out(type2,color)}`)
 			} else if (free[type2][1] > 0 && free.none[1] > 0) {
 				free[type2][1] -= 1
 				free.none[1] -= 1
 				free[type2][2] += 1
-				Solution.push (`Free L2 + Free L2 ${out(type2,color)}`)
 			} else if (free[type1][1] > 0 && free.none[1] > 0) {
 				free[type1][1] -= 1
 				free.none[1] -= 1
 				free[type1][2] += 1
-				Solution.push (`Free L2 + Free L2 ${out(type1,color)}`)
 			} else if (free.none[1] >= 2) {
 				free.none[1] -= 2
 				free.none[2] += 1
-				Solution.push ("Free L2 + Free L2")
 			} else if (free[type1][1] >= 2) {
 				free[type1][1] -= 2
 				free[type1][2] += 1
-				Solution.push (`Free L2 ${out(type1,color)} + Free L2 ${out(type1,color)}`)
 			} else if (free[type2][1] >= 2) {
 				free[type2][1] -= 2
 				free[type2][2] += 1
-				Solution.push (`Free L2 ${out(type2,color)} + Free L2 ${out(type2,color)}`)
 			} else break
 		}      
-		//Solution.push ("==Level 3 Merges==")
 		let total2_4 = locked[type2][3]
 		let total1_4 = locked[type1][3]
 		while (true) {
@@ -1353,79 +1210,64 @@ let mergerGame = {
 					free.none[2] -= 1
 					locked[type1][2] -= 1
 					free[type1][3] += 1
-					Solution.push (`Free L3 + Locked L3 ${out(type1,color)}`)
 				} else {
 					free.none[2] -= 1
 					free[type1][2] -= 1
 					free[type1][3] += 1
-					Solution.push (`Free L3 + Free L3 ${out(type1,color)} `)
 				}
 				if (locked[type2][2] > 0) {
 					free.none[2] -= 1
 					locked[type2][2] -= 1
 					free[type2][3] += 1
-					Solution.push (`Free L3 + Locked L3 ${out(type2,color)}`)
 				} else {
 					free.none[2] -= 1
 					free[type2][2] -= 1
 					free[type2][3] += 1
-					Solution.push (`Free L3 + Free L3 ${out(type2,color)}`)
 				}
 			} else if (free[type1][2] > 0 && locked[type2][2] > 0) {
 				free[type1][2] -= 1
 				free.full[3] += 1
 				locked[type2][2] -= 1
-				Solution.push (`Free L3 ${out(type1,color)} + Locked L3 ${out(type2,color)}`)
 			} else if ( free[type2][2] > 0 && locked[type1][2] > 0) {
 				free[type2][2] -= 1
 				free.full[3] += 1
 				locked[type1][2] -= 1
-				Solution.push (`Free L3 ${out(type2,color)} + Locked L3 ${out(type1,color)}`)
 			} else if ( free[type2][2] > 0 && free[type1][2] > 0) {
 				free[type2][2] -= 1
 				free[type1][2] -= 1
 				free.full[3] += 1
-				Solution.push (`Free L3 ${out(type2,color)} + Free L3 ${out(type1,color)}`)
 			} else if ( free.none[2] > 0 && locked[type1][2] > 0 && (locked[type2][3] - numtopTrios) > free[type1][3]) {
 				free.none[2] -= 1
 				locked[type1][2] -= 1
 				free[type1][3] += 1
-				Solution.push (`Free L3 + Locked L3 ${out(type1,color)}`)
 			} else if ( free.none[2] > 0 && locked[type2][2] > 0 && (locked[type1][3] - numtopTrios) > free[type2][3]) {
 				free.none[2] -= 1
 				locked[type2][2] -= 1
 				free[type2][3] += 1
-				Solution.push (`Free L3 + Locked L3 ${out(type2,color)}`)
 			} else if ( free.full[2] > 0 && ((free.none[2] + free[type2][2] + free[type1][2] + locked[type2][2] + locked[type1][2]) > 0 || free.full[2] >= 2)) {
 				if (locked[type2][2] > 0) {
 					free.full[2] -= 1
 					locked[type2][2] -= 1
 					free.full[3] += 1
-					Solution.push (`Free L3 ${out("full",color)} + Locked L3 ${out(type2,color)}`)
 				} else if ( locked[type1][2] > 0) {
 					free.full[2] -= 1
 					locked[type1][2] -= 1
 					free.full[3] += 1
-					Solution.push (`Free L3 ${out("full",color)} + Locked L3 ${out(type1,color)}`)
 				} else if ( free.none[2] > 0) {
 					free.full[2] -= 1
 					free.none[2] -= 1
 					free.full[3] += 1
-					Solution.push ("Free L3 Full + Free L3")
 				} else if ( free[type1][2] > 0) {
 					free.full[2] -= 1
 					free[type1][2] -= 1
 					free.full[3] += 1
-					Solution.push (`Free L3 ${out("full",color)} + Free L3 ${out(type1,color)}`)
 				} else if ( free[type2][2] > 0) {
 					free.full[2] -= 1
 					free[type2][2] -= 1
 					free.full[3] += 1
-					Solution.push (`Free L3 ${out("full",color)} + Free L3 ${out(type2,color)}`)
 				} else {
 					free.full[2] -= 2
 					free.full[3] += 1
-					Solution.push ("Free L3 Full + Free L3 Full")
 				}
 			} else if ( free.none[2] > 0 && (locked[type1][2] + locked[type2][2]) > 0) {
 				pick = null
@@ -1457,49 +1299,39 @@ let mergerGame = {
 					free[type1][3] += 1
 					locked[type1][2] -= 1
 					total1_4 += 1
-					Solution.push (`Free L3 + Locked L3 ${out(type1,color)}`)
 				} else {
 					free.none[2] -= 1
 					free[type2][3] += 1
 					locked[type2][2] -= 1
 					total2_4 += 1
-					Solution.push (`Free L3 + Locked L3 ${out(type2,color)}`)
 				}
 			} else if ( free[type1][2] > 0 && locked[type1][2] > 0) {
 				free[type1][2] -= 1
 				locked[type1][2] -= 1
 				free[type1][3] += 1
-				Solution.push (`Free L3 ${out(type1,color)} + Locked L3 ${out(type1,color)}`)
 			} else if ( free[type2][2] > 0 && locked[type2][2] > 0) {
 				free[type2][2] -= 1
 				locked[type2][2] -= 1
 				free[type2][3] += 1
-				Solution.push (`Free L3 ${out(type2,color)} + Locked L3 ${out(type2,color)}`)
 			} else if ( free[type2][2] > 0 && free.none[2] > 0) {
 				free[type2][2] -= 1
 				free.none[2] -= 1
 				free[type2][3] += 1
-				Solution.push (`Free L3 + Free L3 ${out(type2,color)}`)
 			} else if ( free[type1][2] > 0 && free.none[2] > 0) {
 				free[type1][2] -= 1
 				free.none[2] -= 1
 				free[type1][3] += 1
-				Solution.push (`Free L3 + Free L3 ${out(type1,color)}`)
 			} else if ( free.none[2] >= 2) {
 				free.none[2] -= 2
 				free.none[3] += 1
-				Solution.push ("Free L3 + Free L3")
 			} else if ( free[type1][2] >= 2) {
 				free[type1][2] -= 2
 				free[type1][3] += 1
-				Solution.push (`Free L3 ${out(type1,color)} + Free L3 ${out(type1,color)}`)
 			} else if ( free[type2][2] >= 2) {
 				free[type2][2] -= 2
 				free[type2][3] += 1
-				Solution.push (`Free L3 ${out(type2,color)} + Free L3 ${out(type2,color)}`)
 			} else break
 		}            
-		//Solution.push ("==Level 4 Merges==")
 		total2_4 = locked[type2][3]
 		total1_4 = locked[type1][3]
 		while (true) {
@@ -1507,17 +1339,14 @@ let mergerGame = {
 				free[type1][3] -= 1
 				free.full[3] += 1
 				locked[type2][3] -= 1
-				Solution.push (`Free L4 ${out(type1,color)} + Locked L4 ${out(type2,color)}`)
 			} else if ( free[type2][3] > 0 && locked[type1][3] > 0) {
 				free[type2][3] -= 1
 				free.full[3] += 1
 				locked[type1][3] -= 1
-				Solution.push (`Free L4 ${out(type2,color)} + Locked L4 ${out(type1,color)}`)
 			} else if ( free[type2][3] > 0 && free[type1][3] > 0) {
 				free[type2][3] -= 1
 				free[type1][3] -= 1
 				free.full[3] += 1
-				Solution.push (`Free L4 ${out(type2,color)} + Free L4 ${out(type1,color)}`)
 			} else if ( free.none[3] > 0 && (locked[type1][3] + locked[type2][3]) > 0) {
 				pick = null
 				if (total2_4 == total1_4) {
@@ -1548,29 +1377,25 @@ let mergerGame = {
 					free[type1][3] += 1
 					locked[type1][3] -= 1
 					total1_4 -= 1
-					Solution.push (`Free L4 + Locked L4 ${out(type1,color)}`)
 				} else {
 					free.none[3] -= 1
 					free[type2][3] += 1
 					locked[type2][3] -= 1
 					total2_4 -= 1
-					Solution.push (`Free L4 + Locked L4 ${out(type2,color)}`)
 				}
 			} else if (free.full[3] > 0 && (locked[type2][3] + locked[type1][3]) > 0) {
 				if (locked[type2][3] > 0) {
 					free.full[3] -= 1
 					locked[type2][3] -= 1
 					free.full[3] += 1
-					Solution.push (`Free L4 ${out("full",color)} + Locked L4 ${out(type2,color)}`)
 				} else if (locked[type1][3] > 0) {
 					free.full[3] -= 1
 					locked[type1][3] -= 1
 					free.full[3] += 1
-					Solution.push (`Free L4 ${out("full",color)} + Locked L4 ${out(type1,color)}`)
 				}
 			} else break
 		}
-		//Solution.push ("==Results==")
+		
 		let endProgress = 0;
 		//Progress:
 		for (let t of [type1,type2]) {
@@ -1584,6 +1409,6 @@ let mergerGame = {
 			keys += free["full"][l-1]*mergerGame.keyValues[l]
 		}
 			
-		return {keys:keys, progress:startProgress-endProgress,locked:lockedO, free:freeO,solution:Solution}
+		return {keys:keys, progress:startProgress-endProgress,locked:lockedO, free:freeO}
 	},
 		}
