@@ -816,7 +816,7 @@ let GvGMap = {
 			let xCurrentProvince = GvGMap.Map.AllProvinces.find(x => x.era == province.era);
 
 			// general summary list
-			province.sectors.forEach(function (sector, i, arr) {
+			province.sectors.forEach(function (sector) {
 				let newSector = GvGMap.buildOverviewSector(sector); // has no color yet
 
 				if (sector.owner_id > 0) {
@@ -849,7 +849,7 @@ let GvGMap = {
 
 			// guild province summary
 			if (mapDataFromStorage != null) {
-				province.sectors.forEach(function (sector, i, arr) {
+				province.sectors.forEach(function (sector) {
 					if (sector.owner_id > 0) {
 						let storedSector = mapDataFromStorage.sectors.find(x => x.sector_id == sector.sector_id);
 						if (storedSector != undefined) {

@@ -1,6 +1,6 @@
 [	
 	{
-		"udate": "03.07.2023"
+		"udate": "07.07.2023"
 	},
 	{
 		"groupname": "Guild_Battlegrounds"
@@ -592,6 +592,46 @@
 		]
 	},
 	{
+		"name": "Panda_Reserve",
+		"buildings": [
+			{
+				"first": "R_MultiAge_WILD23A1",
+				"update": "upgrade_kit_WILD23A"
+			}
+		],
+		"assets": [
+			"D_MultiAge_WILD23B",
+			"D_MultiAge_WILD23C",
+			"D_MultiAge_WILD23D"
+		],
+		"kit": [ 
+			"selection_kit_WILD23A",
+			"selection_kit_WILD23BCD",
+			"golden_upgrade_kit_WILD23A",
+			"fragment#golden_upgrade_kit_WILD23A"
+		]
+	},
+	{
+		"name": "Rhododendron_Field",
+		"buildings": [
+			{
+				"first": "W_MultiAge_WILD23F1",
+				"update": "upgrade_kit_WILD23F"
+			}
+		],
+		"kit": "selection_kit_WILD23EF"
+	},
+	{
+		"name": "Himalayan_Firs",
+		"buildings": [
+			{
+				"first": "W_MultiAge_WILD23E1",
+				"update": "upgrade_kit_WILD23E"
+			}
+		],
+		"kit": "selection_kit_WILD23EF"
+	},
+	{
 		"name": "Abandoned_Asylum",
 		"buildings": [
 			{
@@ -601,7 +641,7 @@
 		],
 		"kit": "selection_kit_abandoned_asylum"
 	},
-		{
+	{
 		"name": "September_Cottage",
 		"buildings": [
 			{

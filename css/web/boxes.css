@@ -76,7 +76,7 @@ a[target="_blank"] svg {
 	background-color: var(--background-light);
 	border-radius: 4px;
 
-	color: var(--text-medium);
+	color: var(--text-dark);
 	padding: .2rem;
 
 	white-space: nowrap;
@@ -1346,7 +1346,7 @@ FP-Bar */
 	height: 24px;
 	line-height: 24px;
 	background-color: var(--background-light);
-	color: var(--text-medium);
+	color: var(--text-dark);
 	cursor: pointer;
 	width: 130px;
 }
@@ -1379,7 +1379,7 @@ FP-Bar */
 	display: block;
 	padding: 0 10px;
 	font-size: 0.8rem;
-	color: var(--text-medium);
+	color: var(--text-dark);
 	line-height: 24px;
 	transition: all 0.5s;
 }
@@ -1844,6 +1844,10 @@ span.activity {
     border-radius: 50%;
     background: #ccc;
     box-shadow: 0 0 2px 1px #000;
+}
+
+.textleft {
+	text-align: left;
 }
 
 span.activity.activity_2 { background: var(--background-tabs-active); }
