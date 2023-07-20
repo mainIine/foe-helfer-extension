@@ -312,10 +312,8 @@ let idleGame = {
         
         $('#idleGameDialogBody').html(htmltext);
 
-		for (let t in idleGame.hiddenTables) {
-			if (!Object.hasOwnProperty.call(idleGame.hiddenTables, t)) continue;
-			table= idleGame.hiddenTables[t];
-			$(table).toggleClass("hide");
+		for (let t of idleGame.settings.hiddenTables) {
+			$(t).toggleClass("hide");
 		}
 
 		let box = $('#idleGameDialog'),
