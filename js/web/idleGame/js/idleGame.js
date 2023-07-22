@@ -629,11 +629,11 @@ let idleGame = {
 	time: (amount, da, hourly, dh, stock, ds) => {
 		
 		stock = stock * Math.pow(1000, ds - da);
-		amount = amount - stock;
-		if (amount <= 0) return "0h:0m";
-		hours = amount / hourly * Math.pow(1000,da-dh);
-		minutes = Math.ceil((hours - Math.floor(hours))*60);
-		hours = Math.floor(hours);
+		let diff = amount - stock;
+		if (diff <= 0) return "0h:0m";
+		let minutes = Math.ceil(diff / hourly * Math.pow(1000,da-dh) * 60)
+		let hours = Math.floor(minutes / 60)
+		minutes -= hours*60;
 		time = hours >= 1000 ? `>999h` : `${hours}h`
 		time += hours < 24 ? `:${minutes}m` : ``
 		time += hours < 24 ? ` <img title="${i18n("Boxes.idleGame.SetTimer")}" src="${srcLinks.get("/shared/gui/plus_offer/plus_offer_time.png", true)}" alt="" onclick="idleGame.addAlert(${hours},${minutes})">` : ``
