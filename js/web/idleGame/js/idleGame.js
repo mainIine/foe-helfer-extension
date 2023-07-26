@@ -435,6 +435,11 @@ let idleGame = {
 			$('#idleGame_'+x+'Level').text(`${idleGame.data[x].level} → ${idleGame.data[x].next}`);
 			$('#idleGame_'+x).text(`${idleGame.bigNum(idleGame.data[x].need)} ${idleGame.iGNums[idleGame.data[x].ndegree]}`);
 			$('#idleGame_'+x+'Time').html(`(${idleGame.time(idleGame.data[x].need,idleGame.data[x].ndegree,sum,degree,0,0)})`);
+			if (degree<festd || (festd==degree && sum < fest) ) {
+				$('#idleGame_'+x+'Time').attr("title", `(${idleGame.time(idleGame.data[x].need,idleGame.data[x].ndegree,fest,festd,0,0,true)})`);
+			} else {
+				$('#idleGame_'+x+'Time').attr("title", ``);
+			}
 			$('#idleGame_'+x).attr('title', `${idleGame.bigNum(idleGame.data[x].need)} ${idleGame.iGNumTitles[idleGame.data[x].ndegree]}`);
 		
 		}
@@ -626,7 +631,7 @@ let idleGame = {
 	},
 
 	
-	time: (amount, da, hourly, dh, stock, ds) => {
+	time: (amount, da, hourly, dh, stock, ds,title=false) => {
 		
 		stock = stock * Math.pow(1000, ds - da);
 		let diff = amount - stock;
@@ -636,7 +641,8 @@ let idleGame = {
 		minutes -= hours*60;
 		time = hours >= 1000 ? `>999h` : `${hours}h`
 		time += hours < 24 ? `:${minutes}m` : ``
-		time += hours < 24 ? ` <img title="${i18n("Boxes.idleGame.SetTimer")}" src="${srcLinks.get("/shared/gui/plus_offer/plus_offer_time.png", true)}" alt="" onclick="idleGame.addAlert(${hours},${minutes})">` : ``
+		time += (hours < 24 && !title) ? ` <img title="${i18n("Boxes.idleGame.SetTimer")}" src="${srcLinks.get("/shared/gui/plus_offer/plus_offer_time.png", true)}" alt="" onclick="idleGame.addAlert(${hours},${minutes})">` : ``
+		time += title ? i18n("Boxes.idleGame.noBottleneck"):'';
 		return time;
 	},
 

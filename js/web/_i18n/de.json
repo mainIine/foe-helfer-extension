@@ -1044,6 +1044,7 @@
     "Boxes.idleGame.AlertText": "Timer abgelaufen",
     "Boxes.idleGame.SetTimer": "Timer setzen",
     "Boxes.idleGame.AlertSetText": "Timer gesetzt für __hours__ Stunden und __minutes__ Minuten",
+    "Boxes.idleGame.noBottleneck": " ohne Engpässe",
     "Date": "DD.MM.YYYY",
     "DateShort": "DD.MM",
     "DateTime": "DD.MM.YYYY HH:mm [Uhr]",
