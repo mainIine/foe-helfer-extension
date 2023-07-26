@@ -1036,6 +1036,7 @@
     "Boxes.idleGame.UpcomingTasks": "Upcoming Tasks",
     "Boxes.idleGame.Variant": "Variant",
     "Boxes.idleGame.Warning": "The values may update slow - depending on server feedback. Given times do not take updates of current stock into account.",
+    "Boxes.idleGame.noBottleneck": " ignoring bottlenecks",
     "Boxes.mapTradeWarning.Text": "Prevention",
     "Boxes.mapTradeWarning.Title": "Trade",
     "Boxes.scoutingTimes.HelpLink": "https://docs.foe-helper.com/english/module/scouting",
