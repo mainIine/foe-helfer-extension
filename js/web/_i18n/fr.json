@@ -1037,6 +1037,7 @@
     "Boxes.idleGame.UpcomingTasks": "Tâches à venir",
     "Boxes.idleGame.Variant": "Variante",
     "Boxes.idleGame.Warning": "Ces valeurs peuvent être mise à jour lentement - en fonction des réponses du serveur. Les délais indiqués ne tiennent pas compte des mises à jour du stock actuel.",
+    "Boxes.idleGame.noBottleneck": " Ignorer goulots d'étranglement",
     "Boxes.mapTradeWarning.Text": "Prévention",
     "Boxes.mapTradeWarning.Title": "Commerce",
     "Boxes.scoutingTimes.HelpLink": "https://docs.foe-helper.com/francais/module/eclaireur",
