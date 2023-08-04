@@ -19,7 +19,7 @@
 		"kit": [
 			"selection_kit_statue_of_honor",
 			"fragment#selection_kit_statue_of_honor",
-			"fragment#building_road_to_victory"
+			"fragment#building_D_SS_MultiAge_Battlegrounds2"
 		]
 	},
 	{
@@ -36,7 +36,7 @@
 		"kit": [
 			"selection_kit_great_elephant",
 			"fragment#selection_kit_great_elephant",
-			"fragment#building_iridescent_garden"
+			"fragment#building_D_SS_MultiAge_Battlegrounds4"
 		]
 	},
 	{
@@ -195,7 +195,7 @@
 				"update": "upgrade_kit_celtic_farmstead"
 			}
 		],
-		"kit": ["selection_kit_celtic_farmstead","selection_kit_PAT23"]
+		"kit": ["selection_kit_celtic_farmstead","selection_kit_epic_PAT23A"]
 	},
 	{
 		"name": "Fiore_Village",
@@ -469,7 +469,7 @@
 		"kit": [
 			"selection_kit_SUM23A",
 			"golden_upgrade_kit_SUM23A",
-			"fragment#building_W_MultiAge_SUM23A1",
+			"fragment#building_W_SS_MultiAge_SUM23A1",
 			"fragment#selection_kit_SUM23A",
 			"fragment#upgrade_kit_SUM23A",
 			"fragment#golden_upgrade_kit_SUM23A"
@@ -1035,7 +1035,7 @@
 				"first": "R_MultiAge_EasterBonus16"
 			}
 		],
-		"kit": "fragment#building_shrine_of_inspiration"
+		"kit": "fragment#building_R_SS_MultiAge_EasterBonus16"
 	},
 	{
 		"name": "Confectionary",
@@ -1267,7 +1267,7 @@
 			}
 		],
 		"kit": [
-			"fragment#building_shrine_of_knowledge",
+			"fragment#building_R_SS_MultiAge_EasterBonus5",
 			"fragment#upgrade_kit_shrine_of_knowledge"
 		]
 	},
@@ -1294,7 +1294,7 @@
 		],
 		"kit": [
 			"selection_kit_diplomatic_gifts",
-			"fragment#building_wishing_well",
+			"fragment#building_L_SS_AllAge_EasterBonus1",
 			"fragment#shrink_kit_wishing_well"
 		]
 	},
