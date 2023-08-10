@@ -883,6 +883,7 @@
     "Boxes.Productions.def_boost_attacker": "Defense boost att. army",
     "Boxes.Productions.def_boost_defender": "Defense boost def. army",
     "Boxes.Productions.goods": "Goods",
+    "Boxes.Productions.fragments": "Fragments",
     "Boxes.ProductionsRating.BuildingName": "Building",
     "Boxes.ProductionsRating.Enabled": "Enabled",
     "Boxes.ProductionsRating.ProdPerTile": "Expected daily production/tile",

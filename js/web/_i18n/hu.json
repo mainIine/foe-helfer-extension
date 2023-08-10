@@ -883,6 +883,7 @@
     "Boxes.Productions.def_boost_attacker": "Véd. bónusz támadó seregnek",
     "Boxes.Productions.def_boost_defender": "Véd. bónusz védekező seregnek",
     "Boxes.Productions.goods": "Termékek",
+    "Boxes.Productions.fragments": "Töredékek",
     "Boxes.ProductionsRating.BuildingName": "Épület",
     "Boxes.ProductionsRating.Enabled": "Aktív",
     "Boxes.ProductionsRating.ProdPerTile": "Elvárt napi termelés/terület",
