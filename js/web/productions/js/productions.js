@@ -40,6 +40,7 @@ let Productions = {
 		'att_boost_defender', //Angriffsbonus verteidigenden Armee
 		'def_boost_defender', //Verteidigungsbonus verteidigenden Armee
 		'goods',			// Güter Gruppe (5 verschieden z.B.)
+		'fragments',			
 	],
 
 	Boosts: [],
@@ -79,6 +80,7 @@ let Productions = {
 		'def_boost_defender', //Verteidigungsbonus verteidigenden Armee
 		'goods',				// Güter Gruppe (5 verschieden z.B.)
 	],
+	fragmentsSet: new Set(),
 
 
 	/**
@@ -321,6 +323,13 @@ let Productions = {
 
 				for (let i = 0; i < CurrentProducts.length; i++) {
 					let CurrentProduct = CurrentProducts[i];
+
+					if((CurrentProduct['type'] && CurrentProduct['type']==='genericReward') && (CurrentProduct['reward'] && CurrentProduct['reward']['subType'] && CurrentProduct['reward']['subType']==='fragment' )){
+						let displayName = CurrentProduct['reward']['name'].replace(/^\d+\s*/, '').replace(/Fragment\b/g, 'Fragments');
+						Products[displayName] = Products[displayName] ? Number(Products[displayName]) + Number(`${CurrentProduct['reward']['amount']}`) : `${CurrentProduct['reward']['amount']}`
+						Products['fragments'] = Products['fragments'] ? Products['fragments'] + "<br>" + CurrentProduct['reward']['name'] : CurrentProduct['reward']['name']
+						Productions.fragmentsSet.add(displayName);
+					}
 
 					if (CurrentProduct['playerResources'] && CurrentProduct['playerResources']['resources']) {
 						let Resources = CurrentProduct['playerResources']['resources'];
@@ -978,7 +987,11 @@ let Productions = {
 
 						rowA.push('<tr>');
 						rowA.push('<td data-text="' + buildings[i]['name'].cleanup() + '">' + buildings[i]['name'] + '</td>');
-						rowA.push('<td class="text-right is-number" data-number="' + MotivatedProductCount + '">' + HTML.Format(ProductCount) + (ProductCount !== MotivatedProductCount ? '/' + HTML.Format(MotivatedProductCount) : '') + '</td>');
+						
+						if (type === 'fragments')
+							rowA.push('<td data-text="' + buildings[i]['products']['fragments'].cleanup + '">' + buildings[i]['products']['fragments'] + '</td>');
+						else
+							rowA.push('<td class="text-right is-number" data-number="' + MotivatedProductCount + '">' + HTML.Format(ProductCount) + (ProductCount !== MotivatedProductCount ? '/' + HTML.Format(MotivatedProductCount) : '') + '</td>');
 						
 						let size = sizes[buildings[i]['eid']];
 
@@ -989,7 +1002,7 @@ let Productions = {
 
 						let EfficiencyString;
 
-						if (size !== 0) {
+						if (size !== 0 && type !== 'fragments') {
 							if (type === 'strategy_points') {
 								EfficiencyString = HTML.Format(MainParser.round(efficiency * 100) / 100);
 							}
@@ -1047,7 +1060,7 @@ let Productions = {
 						{
 							if (!buildings[i]['motivatedproducts'].hasOwnProperty(p)) continue;
 
-							if (Productions.Types.includes(p) === false) {
+							if (Productions.Types.includes(p) === false && !Productions.fragmentsSet.has(p)) {
 								if (countProducts[p] === undefined) {
 									countProducts[p] = 0;
 									countProductsMotivated[p] = 0;
@@ -1214,32 +1227,34 @@ let Productions = {
 				table.push('</tr>');
 			}
 			else {
-				table.push('<thead>');
+				if(type !== 'fragments'){
+					table.push('<thead>');
 
-				table.push('<tr class="other-header">');
+					table.push('<tr class="other-header">');
 
-				table.push('<th colspan="3">');
+					table.push('<th colspan="3">');
 
-				if (Productions.TypeHasProduction(type)) {
-					if (Productions.ShowDaily) {
-						table.push('<span class="btn-default change-daily game-cursor" data-value="' + (pt - (-1)) + '">' + i18n('Boxes.Productions.ModeDaily') + '</span>');
+					if (Productions.TypeHasProduction(type)) {
+						if (Productions.ShowDaily) {
+							table.push('<span class="btn-default change-daily game-cursor" data-value="' + (pt - (-1)) + '">' + i18n('Boxes.Productions.ModeDaily') + '</span>');
+						}
+						else {
+							table.push('<span class="btn-default change-daily game-cursor" data-value="' + (pt - (-1)) + '">' + i18n('Boxes.Productions.ModeCurrent') + '</span>');
+						}
 					}
-					else {
-						table.push('<span class="btn-default change-daily game-cursor" data-value="' + (pt - (-1)) + '">' + i18n('Boxes.Productions.ModeCurrent') + '</span>');
+
+					table.push('<span class="btn-default change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeSingle') + '</span>');
+					table.push('</th>');
+
+					table.push('<th colspan="6" class="text-right"><strong>' + Productions.GetGoodName(type) + ': ' + HTML.Format(countAll) + (countAll !== countAllMotivated ? '/' + HTML.Format(countAllMotivated) : '') + '</strong>');
+					if (Productions.TypeHasProduction(type)) {
+						table.push(' <strong class="success">' + i18n('Boxes.Productions.Done') + ': ' + HTML.Format(countAllDone) + '</strong>');
 					}
+					table.push('</th>');
+					table.push('</tr>');
+
+					table.push('</thead>');
 				}
-
-				table.push('<span class="btn-default change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeSingle') + '</span>');
-				table.push('</th>');
-
-				table.push('<th colspan="6" class="text-right"><strong>' + Productions.GetGoodName(type) + ': ' + HTML.Format(countAll) + (countAll !== countAllMotivated ? '/' + HTML.Format(countAllMotivated) : '') + '</strong>');
-				if (Productions.TypeHasProduction(type)) {
-					table.push(' <strong class="success">' + i18n('Boxes.Productions.Done') + ': ' + HTML.Format(countAllDone) + '</strong>');
-				}
-				table.push('</th>');
-				table.push('</tr>');
-
-				table.push('</thead>');
 				table.push('<tbody class="' + type + '-mode ' + type + '-single">');
 
 				// Sortierung - Einzelheader
@@ -1307,6 +1322,7 @@ let Productions = {
 				{
 					if(prod.hasOwnProperty(p))
 					{
+						if (p==='fragments') continue;
 						pA.push(HTML.Format(Productions.GetDaily(prod[p], building[i]['dailyfactor'], p)) + ' ' + Productions.GetGoodName(p));
 						if (Productions.TypeHasProduction(p)) {
 							ShowTime = true;
@@ -1666,6 +1682,9 @@ let Productions = {
 		else if (GoodType === 'goods') {
 			return i18n('Boxes.Productions.goods');
         }
+		else if (GoodType === 'fragments') {
+			return i18n('Boxes.Productions.fragments');
+        }		
 		else {
 			if(GoodType && GoodsData[GoodType]){
 				return GoodsData[GoodType]['name'];
