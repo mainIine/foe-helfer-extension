@@ -450,7 +450,7 @@ let mergerGame = {
 	simulateNextSpawn:(solved) => {
 		let keys = {min:10,max:0,average:0};
 		let progress = {min:100,max:0,average:0};
-		let value = {min:100,max:0,average:0}
+		let value = {min:100,max:0,average:0};
 		for (let c of mergerGame.colors) {
 			for (let l of [1,2,3,4]) {
 					let free = window.structuredClone(solved[c].free)
