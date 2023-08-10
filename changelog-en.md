@@ -2,6 +2,9 @@
 
 ##### 3.2.8.0
 **Update**
+- Productions (cutesy of bencptest/apophis):
+	- added fragments tab - all fragments are shown here that are currently produced (non-motivated producitons are ignored)
+
 - Idle Game:
 	- when the market (festival or banquet) is bottlenecked by the other buildings, hovering over the time for producing the upgrade costs will now give a time assuming no bottlenecks (i.e. for cases when there is a backlog at the intermediate storage sites)
 
