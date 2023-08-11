@@ -8,6 +8,9 @@
 - Idle Game:
 	- when the market (festival or banquet) is bottlenecked by the other buildings, hovering over the time for producing the upgrade costs will now give a time assuming no bottlenecks (i.e. for cases when there is a backlog at the intermediate storage sites)
 
+- Popgame:
+	- changes in regards to fall event
+
 **BugFix**
 - Idle Game:
 	- it was possible that times like "1h:60min" were given - this is now corrected
