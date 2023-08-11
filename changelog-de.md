@@ -8,9 +8,13 @@
 - Idle Game:
 	- wenn der Markt (Festival/Bankett) eine höhere Produktion hat als die anderen Gebäude, wird nun in einem Tooltip über der Zeit für die Produktion der Upgrade-Kosten die Zeit angegeben unter der Annahme, dass kein Engpass vorliegt (z.B. wenn an den Zwischenlagern genug Vorrat anliegt)
 
+- Popgame:
+	- Anpassungen für Herbstevent
+
 **BugFix**
 - Idle Game:
 	- es war möglich, dass Zeiten wie "1h:60min" ausgegebn wurden - dies passiert nun nicht mehr
+
 ---
 ##### 3.2.7.0
 **Update**
