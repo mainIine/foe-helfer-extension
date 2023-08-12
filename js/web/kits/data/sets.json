@@ -19,7 +19,7 @@
 		"kit": [
 			"selection_kit_statue_of_honor",
 			"fragment#selection_kit_statue_of_honor",
-			"fragment#building_D_SS_MultiAge_Battlegrounds2"
+			"fragment#building_road_to_victory"
 		]
 	},
 	{
@@ -36,7 +36,7 @@
 		"kit": [
 			"selection_kit_great_elephant",
 			"fragment#selection_kit_great_elephant",
-			"fragment#building_D_SS_MultiAge_Battlegrounds4"
+			"fragment#building_iridescent_garden"
 		]
 	},
 	{
@@ -195,7 +195,7 @@
 				"update": "upgrade_kit_celtic_farmstead"
 			}
 		],
-		"kit": ["selection_kit_celtic_farmstead","selection_kit_epic_PAT23A"]
+		"kit": ["selection_kit_celtic_farmstead","selection_kit_epic_PAT23"]
 	},
 	{
 		"name": "Fiore_Village",
@@ -321,7 +321,7 @@
 				"update": "upgrade_kit_druid_temple"
 			}
 		],
-		"kit": ["selection_kit_druid_temple","selection_kit_PAT23"]
+		"kit": ["selection_kit_druid_temple","selection_kit_epic_PAT23"]
 	},
 	{
 		"name": "Terracotta_Vineyard",
@@ -467,11 +467,10 @@
 			}
 		],
 		"kit": [
+			"fragment#building_W_MultiAge_SUM23A1",
 			"selection_kit_SUM23A",
-			"golden_upgrade_kit_SUM23A",
-			"fragment#building_W_SS_MultiAge_SUM23A1",
-			"fragment#selection_kit_SUM23A",
 			"fragment#upgrade_kit_SUM23A",
+			"golden_upgrade_kit_SUM23A",
 			"fragment#golden_upgrade_kit_SUM23A"
 		]
 	},
@@ -537,7 +536,7 @@
 			"selection_kit_celtic_forest_set",
 			"selection_kit_celtic_trees",
 			"selection_kit_celtic_altars",
-			"selection_kit_PAT23"
+			"selection_kit_epic_PAT23"
 		]
 	},
 	{
@@ -1035,7 +1034,9 @@
 				"first": "R_MultiAge_EasterBonus16"
 			}
 		],
-		"kit": "fragment#building_R_SS_MultiAge_EasterBonus16"
+		"kit": [
+			"fragment#building_shrine_of_inspiration"
+		]
 	},
 	{
 		"name": "Confectionary",
@@ -1267,7 +1268,7 @@
 			}
 		],
 		"kit": [
-			"fragment#building_R_SS_MultiAge_EasterBonus5",
+			"fragment#building_shrine_of_knowledge",
 			"fragment#upgrade_kit_shrine_of_knowledge"
 		]
 	},
@@ -1294,7 +1295,7 @@
 		],
 		"kit": [
 			"selection_kit_diplomatic_gifts",
-			"fragment#building_L_SS_AllAge_EasterBonus1",
+			"fragment#building_wishing_well",
 			"fragment#shrink_kit_wishing_well"
 		]
 	},
