@@ -13,10 +13,6 @@
 
 FoEproxy.addHandler('QuestService', 'getUpdates', (data, postData) => {
     
-    if (Recurring.data.currentEra < CurrentEraID) {
-        Recurring.data.Questlist = {};
-        Recurring.data.currentEra = CurrentEraID;
-    }
     if (!data.responseData) return;
     for (let q in data.responseData) {
         if (!data.responseData.hasOwnProperty(q)) continue;
@@ -31,8 +27,8 @@ FoEproxy.addHandler('QuestService', 'getUpdates', (data, postData) => {
                 }
                 if (!Recurring.data.Questlist[quest.id].era) Recurring.data.Questlist[quest.id].era = CurrentEraID;
                 if (!Recurring.data.Questlist[quest.id].conditions) {
-                    Recurring.data.Questlist[quest.id]["conditions"] = quest.successConditions;
-                    Recurring.data.Questlist[quest.id]["groups"] = quest.successConditionGroups;
+                    Recurring.data.Questlist[quest.id].conditions = quest.successConditions;
+                    Recurring.data.Questlist[quest.id].groups = quest.successConditionGroups;
                 }
             }
         }
@@ -59,7 +55,7 @@ FoEproxy.addHandler('QuestService', 'getUpdates', (data, postData) => {
 });
 
 let Recurring = {
-    data: JSON.parse(localStorage.getItem('Recurring')) || {"Questlist": {}, "currentEra": 0, "count":0, "showCounter": false,"hideTasks":true},
+    data: JSON.parse(localStorage.getItem('Recurring')) || {"Questlist": {}, "count":0, "showCounter": false,"hideTasks":true},
     
 	/**
 	 * Box in den DOM
@@ -72,7 +68,6 @@ let Recurring = {
             HTML.Box({
                 'id': 'RecurringQuestsBox',
                 'title': i18n('Boxes.RecurringQuests.Title'),
-                //'ask': i18n('Boxes.RecurringQuests.HelpLink'),
                 'auto_close': true,
                 'dragdrop': true,
                 'minimize': true,
@@ -171,17 +166,12 @@ let Recurring = {
             if (!groups[x]) continue;
             t += tAnd;
             tAnd = (title ? `\n-------\n` : `<br>`) + `${i18n('Boxes.RecurringQuests.AND')} `;
-            //tAnd = (title ? `\n-------\n` : ` `) + `${i18n('Boxes.RecurringQuests.AND')} `;
-            //tAnd = (title ? `\n-------\n` : ` + `);
             let tOr= '';
             for (let c of groups[x].conditionIds) {
                 let d= conditions.find(item => item.id==c).description;
                 let img= srcLinks.getQuest(conditions.find(item => item.id==c).iconType);
                 t += tOr + (title ? d: (`<img src="${img}">` + d.substring(0,20) + (d.length>20 ?'...':'')));
-                //t += tOr + (title ? d: `<img src="${img}">`);
                 tOr = (title ? `\n`:`<br><pre style="display:inline">&emsp;</pre>`) +`${i18n('Boxes.RecurringQuests.OR')} `;
-                //tOr = (title ? `\n`:` `) +`${i18n('Boxes.RecurringQuests.OR')} `;
-                //tOr = title ? `\n${i18n('Boxes.RecurringQuests.OR')} `:`/`;
             }
         }
         return t;

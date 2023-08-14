@@ -496,7 +496,7 @@ let Kits = {
 				url_fragment = `<img class="kits-fragment-image" src="${url}" alt="${item['name']}"/>`;
 			}
 
-			url = srcLinks.get('/shared/icons/reward_icons/reward_icon_' + aName + '.png', true);
+			url = '/shared/icons/reward_icons/reward_icon_' + aName + '.png';
 
 			if (aName.includes('building_')) {
 				if (!item['item']) {
@@ -522,8 +522,9 @@ let Kits = {
 				else {
 					aName = item['item']['reward']['assembledReward']['subType'];
 				}
-				url = srcLinks.get('/city/buildings/' + [aName.slice(0, 1), '_SS', aName.slice(1)].join('') + '.png', true);
+				url = '/city/buildings/' + [aName.slice(0, 1), '_SS', aName.slice(1)].join('') + '.png';
 			}
+			url = srcLinks.get(url, true)
 		}
 
 		if (el['missing']) {
@@ -594,7 +595,7 @@ let Kits = {
 			url_fragment = `<img class="kits-fragment-image" src="${url}" alt="${item['name']}" />`;
 		}
 
-		url = srcLinks.get('/shared/icons/reward_icons/reward_icon_' + aName + '.png', true);
+		url = '/shared/icons/reward_icons/reward_icon_' + aName + '.png';
 
 		if (aName.includes('building_')) {
 			if (!item['item']) {
@@ -620,8 +621,9 @@ let Kits = {
 			else {
 				aName = item['item']['reward']['assembledReward']['subType'];
 			}
-			url = srcLinks.get('/city/buildings/' + [aName.slice(0, 1), '_SS', aName.slice(1)].join('') + '.png', true);
+			url = '/city/buildings/' + [aName.slice(0, 1), '_SS', aName.slice(1)].join('') + '.png';
 		}
+		url = srcLinks.get(url,true)
 		
 		let title = '';
 		if (!el['missing']) {

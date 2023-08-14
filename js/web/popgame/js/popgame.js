@@ -171,7 +171,7 @@ let Popgame = {
             } else if (Popgame.event=="fall"){
                 body+=`<div id="PGfork" class="PGtool"></div>`;
             }
-            body+='</div><div id="PGwrapper"><div class="PGwrapper"></div></div>'
+            body+=`</div><div id="PGwrapper" class="${Popgame.event}"><div class="PGwrapper"></div></div>`
             
             $('#PopgameBody').html(body);
             Popgame.Update();
@@ -285,7 +285,7 @@ let Popgame = {
         h=$('#Popgame')[0].clientHeight;
         if (drops.length >0) {
             for (let drop of drops) {
-                if((h-drop.offsetTop)<60 && (h-drop.offsetTop)>50) {
+                if((h - drop.offsetTop) < 155 && (h - drop.offsetTop) > 145) {
                     c+=1;
                     $(`#${drop.id}`).fadeOut('fast');
                 };

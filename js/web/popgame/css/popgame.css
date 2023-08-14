@@ -19,6 +19,7 @@
     pointer-events: none;
 }
 
+
 #Popgame #PopgameHeader {
     pointer-events: auto;
 }
@@ -28,6 +29,11 @@
 }
 #PGwrapper {
     height: 404px;
+    &.fall{
+        position: relative;
+        top: calc(50% - 226px);
+        left: calc(50% - 258px);
+    }
 }
 #PGwarning {
     width: 400px;

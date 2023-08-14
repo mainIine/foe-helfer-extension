@@ -1,14 +1,30 @@
 ## Changelog - Extension
 
+##### 3.2.8.0
+**Update**
+- Produktionen (Dank an bencptest/apophis):
+	- Fragmente Tab wurde ergänzt - hier werden alle Fragmente angezeigt die aktuell produziert werden (unmotivierte Produktionen werden ignoriert)
+	
+- Idle Game:
+	- wenn der Markt (Festival/Bankett) eine höhere Produktion hat als die anderen Gebäude, wird nun in einem Tooltip über der Zeit für die Produktion der Upgrade-Kosten die Zeit angegeben unter der Annahme, dass kein Engpass vorliegt (z.B. wenn an den Zwischenlagern genug Vorrat anliegt)
+
+- Popgame:
+	- Anpassungen für Herbstevent
+
+**BugFix**
+- Idle Game:
+	- es war möglich, dass Zeiten wie "1h:60min" ausgegeben wurden - dies passiert nun nicht mehr
+
+---
 ##### 3.2.7.0
 **Update**
 - Wiederkehrende Quests:
-	- man kann nun zwischen dem Titel der Quest und den Aufgaben der Quest hin und her schalten
+	- man kann nun zwischen dem Titel der Quest und den Aufgaben der Quest hin und her schalten (Spaltenkopf klicken - Shuffle-Pfeile)
 
 **BugFix**
 - Extension:
 	- Kleine Bugs gefixt - vor allem in Bezug auf Titan
-
+---
 ##### 3.2.6.0
 
 **Update**
@@ -30,7 +46,7 @@
 
 **BugFix**
 - Die Einladungslinks zu Discord waren abgelaufen, wir haben sie ersetzt.
-
+---
 ##### 3.2.5.0
 
 **Update**

@@ -1,6 +1,6 @@
 [	
 	{
-		"udate": "07.07.2023"
+		"udate": "04.08.2023"
 	},
 	{
 		"groupname": "Guild_Battlegrounds"
@@ -71,7 +71,7 @@
 				"update": "upgrade_kit_heroes_tavern"
 			}
 		],
-		"kit": ["selection_kit_heroes_tavern","selection_kit_epic_FELLOW23"]
+		"kit": ["selection_kit_heroes_tavern","selection_kit_epic_FELLOW23","golden_upgrade_kit_FELLOW22A"]
 	},
 	{
 		"name": "Summerhold_Manor",
@@ -83,8 +83,8 @@
 		],
 		"kit": [
 			"selection_kit_FELLOW23A",
-			"selection_kit_FELLOW23A",
-			"fragment#golden_upgrade_kit_FELLOW23A",
+			"fragment#selection_kit_FELLOW23A",
+			"golden_upgrade_kit_FELLOW23A",
 			"fragment#golden_upgrade_kit_FELLOW23A"
 		]
 	},
@@ -195,7 +195,7 @@
 				"update": "upgrade_kit_celtic_farmstead"
 			}
 		],
-		"kit": ["selection_kit_celtic_farmstead","selection_kit_PAT23"]
+		"kit": ["selection_kit_celtic_farmstead","selection_kit_epic_PAT23"]
 	},
 	{
 		"name": "Fiore_Village",
@@ -321,7 +321,7 @@
 				"update": "upgrade_kit_druid_temple"
 			}
 		],
-		"kit": ["selection_kit_druid_temple","selection_kit_PAT23"]
+		"kit": ["selection_kit_druid_temple","selection_kit_epic_PAT23"]
 	},
 	{
 		"name": "Terracotta_Vineyard",
@@ -467,11 +467,10 @@
 			}
 		],
 		"kit": [
-			"selection_kit_SUM23A",
-			"golden_upgrade_kit_SUM23A",
 			"fragment#building_W_MultiAge_SUM23A1",
-			"fragment#selection_kit_SUM23A",
+			"selection_kit_SUM23A",
 			"fragment#upgrade_kit_SUM23A",
+			"golden_upgrade_kit_SUM23A",
 			"fragment#golden_upgrade_kit_SUM23A"
 		]
 	},
@@ -537,7 +536,7 @@
 			"selection_kit_celtic_forest_set",
 			"selection_kit_celtic_trees",
 			"selection_kit_celtic_altars",
-			"selection_kit_PAT23"
+			"selection_kit_epic_PAT23"
 		]
 	},
 	{
@@ -1035,7 +1034,9 @@
 				"first": "R_MultiAge_EasterBonus16"
 			}
 		],
-		"kit": "fragment#building_shrine_of_inspiration"
+		"kit": [
+			"fragment#building_shrine_of_inspiration"
+		]
 	},
 	{
 		"name": "Confectionary",
