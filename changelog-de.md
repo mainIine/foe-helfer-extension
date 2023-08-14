@@ -13,13 +13,13 @@
 
 **BugFix**
 - Idle Game:
-	- es war möglich, dass Zeiten wie "1h:60min" ausgegebn wurden - dies passiert nun nicht mehr
+	- es war möglich, dass Zeiten wie "1h:60min" ausgegeben wurden - dies passiert nun nicht mehr
 
 ---
 ##### 3.2.7.0
 **Update**
 - Wiederkehrende Quests:
-	- man kann nun zwischen dem Titel der Quest und den Aufgaben der Quest hin und her schalten (Spaltenkopf klicken - Shuffle-Pfeilfe)
+	- man kann nun zwischen dem Titel der Quest und den Aufgaben der Quest hin und her schalten (Spaltenkopf klicken - Shuffle-Pfeile)
 
 **BugFix**
 - Extension:
