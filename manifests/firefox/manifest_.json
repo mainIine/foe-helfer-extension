@@ -2,22 +2,25 @@
 	"name": "__MSG_appName__",
 	"description": "__MSG_appDesc__",
 	"default_locale": "en",
-	"version": "3.2.7.0",
- 	
-	"manifest_version": 2,
+	"version": "3.2.8.0",
+
+	"manifest_version": 3,
 	"permissions": [
 		"alarms",
 		"storage",
 		"tabs",
-	  	"notifications",
-		"clipboardWrite",
+		"notifications",
+		"clipboardWrite"
+	],
+
+	"host_permissions": [
 		"https://*.forgeofempires.com/*",
 		"https://foe-helper.com/*",
 		"https://*.foe-helper.com/*",
 		"https://*.foe-rechner.de/*"
 	],
 
-	"browser_action": {
+	"action": {
 		"default_icon": "images/app16.png",
 		"default_popup": "content/popup.html",
 		"default_title": "__MSG_appName__"
@@ -30,18 +33,17 @@
 	},
 
 	"web_accessible_resources": [
-		"css/web/*.css",
-		"vendor/*.js",
-		"vendor/sounds/*.mp3",
-		"js/web/*.*",
-		"images/*.*",
-		"css/images/*.*",
-		"content/*.html",
-		"js/vendor.json",
-		"js/internal.json",
-		"js/foeproxy.js"
+		{
+			"resources": [
+				"js/*",
+				"vendor/*",
+				"css/*",
+				"content/*"
+			],
+			"matches": [ "https://*/*" ]
+		}
 	],
-	
+
 	"content_scripts": [
 		{
 			"matches": ["https://*.forgeofempires.com/*"],
@@ -61,11 +63,13 @@
 	},
 
 	"background": {
-		"scripts": [
-			"vendor/browser-polyfill/browser-polyfill.min.js",
-			"vendor/dexie/dexie.min.js",
-			"background.js"
-		],
-		"persistent": true
+		"scripts": ["background.js"]
+	},
+
+	"browser_specific_settings": {
+		"gecko": {
+			"id": "{0668a87f-e3bb-4ed3-a096-e145c1e9f1d2}",
+			"strict_min_version": "91.0"
+		}
 	}
 }

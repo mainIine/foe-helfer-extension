@@ -1,13 +1,28 @@
 ## Changelog - Extension
 
+##### 3.2.8.0
+**Update**
+- Productions (cutesy of bencptest/apophis):
+	- added fragments tab - all fragments are shown here that are currently produced (non-motivated producitons are ignored)
+
+- Idle Game:
+	- when the market (festival or banquet) is bottlenecked by the other buildings, hovering over the time for producing the upgrade costs will now give a time assuming no bottlenecks (i.e. for cases when there is a backlog at the intermediate storage sites)
+
+- Popgame:
+	- changes in regards to fall event
+
+**BugFix**
+- Idle Game:
+	- it was possible that times like "1h:60min" were given - this is now corrected
+---
 ##### 3.2.7.0
 **Update**
 - Recurring Quests
-	- it can now be switched between displaying the title and tasks of the quests
+	- it can now be switched between displaying the title and tasks of the quests (click the shuffle arrows in the column header)
 
 **BugFix**
 - Fixed small bugs (mainly Titan related)
-
+---
 ##### 3.2.6.0
 
 **Update**
@@ -28,7 +43,7 @@
 
 **BugFix**
 - Discord Invite links were broken, so we replaced them
-
+---
 ##### 3.2.5.0
 
 **Update**

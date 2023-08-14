@@ -312,10 +312,8 @@ let idleGame = {
         
         $('#idleGameDialogBody').html(htmltext);
 
-		for (let t in idleGame.hiddenTables) {
-			if (!Object.hasOwnProperty.call(idleGame.hiddenTables, t)) continue;
-			table= idleGame.hiddenTables[t];
-			$(table).toggleClass("hide");
+		for (let t of idleGame.settings.hiddenTables) {
+			$(t).toggleClass("hide");
 		}
 
 		let box = $('#idleGameDialog'),
@@ -437,6 +435,11 @@ let idleGame = {
 			$('#idleGame_'+x+'Level').text(`${idleGame.data[x].level} → ${idleGame.data[x].next}`);
 			$('#idleGame_'+x).text(`${idleGame.bigNum(idleGame.data[x].need)} ${idleGame.iGNums[idleGame.data[x].ndegree]}`);
 			$('#idleGame_'+x+'Time').html(`(${idleGame.time(idleGame.data[x].need,idleGame.data[x].ndegree,sum,degree,0,0)})`);
+			if (degree<festd || (festd==degree && sum < fest) ) {
+				$('#idleGame_'+x+'Time').attr("title", `(${idleGame.time(idleGame.data[x].need,idleGame.data[x].ndegree,fest,festd,0,0,true)})`);
+			} else {
+				$('#idleGame_'+x+'Time').attr("title", ``);
+			}
 			$('#idleGame_'+x).attr('title', `${idleGame.bigNum(idleGame.data[x].need)} ${idleGame.iGNumTitles[idleGame.data[x].ndegree]}`);
 		
 		}
@@ -628,17 +631,18 @@ let idleGame = {
 	},
 
 	
-	time: (amount, da, hourly, dh, stock, ds) => {
+	time: (amount, da, hourly, dh, stock, ds,title=false) => {
 		
 		stock = stock * Math.pow(1000, ds - da);
-		amount = amount - stock;
-		if (amount <= 0) return "0h:0m";
-		hours = amount / hourly * Math.pow(1000,da-dh);
-		minutes = Math.ceil((hours - Math.floor(hours))*60);
-		hours = Math.floor(hours);
+		let diff = amount - stock;
+		if (diff <= 0) return "0h:0m";
+		let minutes = Math.ceil(diff / hourly * Math.pow(1000,da-dh) * 60)
+		let hours = Math.floor(minutes / 60)
+		minutes -= hours*60;
 		time = hours >= 1000 ? `>999h` : `${hours}h`
 		time += hours < 24 ? `:${minutes}m` : ``
-		time += hours < 24 ? ` <img title="${i18n("Boxes.idleGame.SetTimer")}" src="${srcLinks.get("/shared/gui/plus_offer/plus_offer_time.png", true)}" alt="" onclick="idleGame.addAlert(${hours},${minutes})">` : ``
+		time += (hours < 24 && !title) ? ` <img title="${i18n("Boxes.idleGame.SetTimer")}" src="${srcLinks.get("/shared/gui/plus_offer/plus_offer_time.png", true)}" alt="" onclick="idleGame.addAlert(${hours},${minutes})">` : ``
+		time += title ? i18n("Boxes.idleGame.noBottleneck"):'';
 		return time;
 	},
 
