@@ -63,7 +63,8 @@ let EventHandler = {
 	Init: () => {
 		// Keys not saved in the local storage are added from the attribute
 		let vShowHideColumns = JSON.parse(localStorage.getItem('MoppelHelper.Settings.ShowHideColumns')) || {};
-		for(var iColKey in EventHandler.ShowHideColumns) {
+
+		for(let iColKey in EventHandler.ShowHideColumns) {
 			if (!vShowHideColumns.hasOwnProperty(iColKey)) {
 				vShowHideColumns[iColKey] = EventHandler.ShowHideColumns[iColKey];
 			}
@@ -72,12 +73,14 @@ let EventHandler = {
 		EventHandler.SaveSettings();
 	},
 
+
 	/**
 	 * Save settings to LocalStorage
 	 */
 	SaveSettings:() => {
 		localStorage.setItem('MoppelHelper.Settings.ShowHideColumns', JSON.stringify(EventHandler.ShowHideColumns));
 	},
+
 
 	/**
 	*

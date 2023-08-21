@@ -1147,13 +1147,8 @@ let MainParser = {
 	 */
 	send2Server: (data, ep, successCallback) => {
 
-		const pID = ExtPlayerID;
-		const cW = ExtWorld;
-		const gID = ExtGuildID;
-
-
 		let req = fetch(
-			ApiURL + ep + '/?player_id=' + pID + '&guild_id=' + gID + '&world=' + cW,
+			ApiURL + ep + '/?player_id=' + ExtPlayerID + '&guild_id=' + ExtGuildID + '&world=' + ExtWorld,
 			{
 				method: 'POST',
 				headers: {
