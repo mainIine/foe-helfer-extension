@@ -40,13 +40,33 @@ let srcLinks = {
     },
 
     readHX: (HXscript) => {
+
         let startString = "baseUrl,";
         let start = HXscript.indexOf(startString) + startString.length;
         HXscript = HXscript.substring(start);
+
         let end = HXscript.indexOf("}")+1;
         HXscript = HXscript.substring(0, end);
+
         try {
             srcLinks.FileList = JSON.parse(HXscript);
+
+            // ExtPlayerId is not available on this point
+            let c = localStorage.getItem('current_player_id');
+
+            // if mainline self
+            if(c !== null && parseInt(c) === 103416) {
+
+                if(sessionStorage.getItem('sendListToday') === null) {
+                    MainParser.sendExtMessage({
+                        type: 'send2Api',
+                        url: `${ApiURL}BuildingList/?world=${ExtWorld}&v=${extVersion}`,
+                        data: JSON.stringify(srcLinks.FileList)
+                    });
+
+                    sessionStorage.setItem('sendListToday', 'true');
+                }
+            }
         } 
         catch {
             console.log("parsing of ForgeHX failed");
@@ -75,11 +95,13 @@ let srcLinks = {
         return CSfilename;
     },
 
+
     GetPortrait: (id)=> {
         let file = MainParser.PlayerPortraits[id] || 'portrait_433';
 
         return srcLinks.get('/shared/avatars/' + file + '.jpg', true);
     },
+
 
     getReward:(icon) => {
         let url1 = srcLinks.get(`/shared/icons/reward_icons/reward_icon_${icon}.png`,true, true);
@@ -91,6 +113,8 @@ let srcLinks = {
 
         return url2;
     },
+
+
     getQuest:(icon) => {
         let url1 = srcLinks.get(`/shared/icons/quest_icons/${icon}.png`,true, true);
         let url2 = srcLinks.get(`/shared/icons/${icon}.png`,true, true);
