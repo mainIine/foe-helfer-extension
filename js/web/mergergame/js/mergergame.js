@@ -824,7 +824,7 @@ let mergerGame = {
 			} else if ( free.none[2] > 0 && locked[type1][2] > 0 && (locked[type2][3] + free[type2][3] - occupied2_4) > 0) {
 				free.none[2] -= 1
 				locked[type1][2] -= 1
-				free[type1][3] -= 1
+				free[type1][3] += 1
 				occupied1_4 +=1
 				occupied2_4 += 1
 				
