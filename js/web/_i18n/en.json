@@ -1091,6 +1091,7 @@
     "HiddenRewards.Table.expires": "Status",
     "HiddenRewards.Table.position": "Location",
     "HiddenRewards.Table.type": "Type",
+    "InactiveBuildingsAlert.title":"Expired Limited Buildings:",
     "Local": "en-US",
     "Menu.Alerts.Desc": "Create and manage reminders",
     "Menu.Alerts.Title": "Alerts",

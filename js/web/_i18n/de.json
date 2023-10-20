@@ -1091,6 +1091,7 @@
     "HiddenRewards.Table.expires": "Verschwindet am/um",
     "HiddenRewards.Table.position": "Position",
     "HiddenRewards.Table.type": "Typ",
+    "InactiveBuildingsAlert.title":"Abgelaufene beschränkte Gebäude:",
     "Local": "de-DE",
     "Menu.Alerts.Desc": "Verwaltet Alarme und verpasse nichts mehr",
     "Menu.Alerts.Title": "Alarm",
