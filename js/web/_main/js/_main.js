@@ -1709,15 +1709,28 @@ let MainParser = {
 	},
 
 	checkInactives: () => {
-		//get List of all possible limited buildings exired state
-		let limited = Object.values(MainParser.CityEntities).filter(x => x?.components?.AllAge?.limited?.config?.targetCityEntityId).map(x => x?.components?.AllAge?.limited?.config?.targetCityEntityId);
+		//get list of buildings for which an alert is already set
+		let LB = JSON.parse(localStorage.getItem("LimitedBuildingsAlertSet")||'{}')
 		
 		//get list of expired limited buildings in city
-		let inactives = Object.values(MainParser.CityMapData).filter(value => 
-			limited.includes(value.cityentity_id)).map(value => MainParser.CityEntities[value.cityentity_id].name)
+		let inactives = Object.values(MainParser.CityMapData).filter(value => !!value.decayedFromCityEntityId).map(value => MainParser.CityEntities[value.cityentity_id].name)
+		
+		//remove buildings that were already tracked
+		for (let i = inactives.length-1;i>=0;i--) {
+			if (LB[inactives[i]]) {
+				inactives.splice(i,1)
+			}
+		}
+		//remove tracked buildings if time ran out
+		for (let x in LB) {
+			if (!LB[x]) continue;
+			if (LB[x]<GameTime*1000-GameTimeOffset) delete LB[x];
+			localStorage.setItem("LimitedBuildingsAlertSet",JSON.stringify(LB));
+		}
+		
 		//create instant alert for currently expired buildings		
 		if (inactives.length > 0) {
-			const data = {
+				const data = {
 				title: i18n("InactiveBuildingsAlert.title"),
 				body: inactives.join("\n"),
 				expires: moment().add(1,"seconds").valueOf(),
@@ -1736,12 +1749,10 @@ let MainParser = {
 				data: data,
 			})
 		}
-		//get list of buildings for which an alert is already set
-		let LB = JSON.parse(localStorage.getItem("LimitedBuildingsAlertSet")||'[]')
 		let buildings = Object.values(MainParser.CityMapData)
 		for (let building of buildings) {
 			// set alerts for limited buildings that will run out in the future and that have no alert yet
-			if (!LB.includes(building.id) && MainParser.CityEntities[building.cityentity_id]?.components?.AllAge?.limited?.config?.expireTime) {
+			if (!LB[building.id] && MainParser.CityEntities[building.cityentity_id]?.components?.AllAge?.limited?.config?.expireTime) {
 				const data = {
 					title: i18n("InactiveBuildingsAlert.title"),
 					body: MainParser.CityEntities[MainParser.CityEntities[building.cityentity_id]?.components?.AllAge?.limited?.config?.targetCityEntityId].name,
@@ -1760,8 +1771,8 @@ let MainParser = {
 					action: 'create',
 					data: data,
 				}).then((aId) => {
-					LB.push(building.id)
-					localStorage.setItem("LimitedBuildingsAlertSet",JSON.stringify(LB))
+					LB[building.id]=(MainParser.CityEntities[building.cityentity_id]?.components?.AllAge?.limited?.config?.expireTime + building.state.constructionFinishedAt)*1000 - GameTimeOffset;
+					localStorage.setItem("LimitedBuildingsAlertSet",JSON.stringify(LB));
 				})
 			}
 		}

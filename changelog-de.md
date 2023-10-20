@@ -1,5 +1,14 @@
 ## Changelog - Extension
 
+##### 3.2.9.0
+**Update**
+- Sets/Kits:
+	- Gebäude Stand Halloween 2023 hinzugefügt
+	
+- Allgmein:
+	- wenn ein beschränktes Gebäude verfällt, wird nun ein Alarm ausgegeben
+
+---
 ##### 3.2.8.0
 **Update**
 - Produktionen (Dank an bencptest/apophis):

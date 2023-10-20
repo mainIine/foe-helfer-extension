@@ -1,5 +1,14 @@
 ## Changelog - Extension
 
+##### 3.2.9.0
+**Update**
+- Sets/Kits:
+	- added buildings until Halloween 2023
+	
+- General:
+	- when a limited building expires, an Alert is triggert
+
+---
 ##### 3.2.8.0
 **Update**
 - Productions (cutesy of bencptest/apophis):
