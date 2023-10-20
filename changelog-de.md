@@ -5,7 +5,7 @@
 - Sets/Kits:
 	- Gebäude Stand Halloween 2023 hinzugefügt
 	
-- Allgmein:
+- Allgemein:
 	- wenn ein beschränktes Gebäude verfällt, wird nun ein Alarm ausgegeben
 
 ---
