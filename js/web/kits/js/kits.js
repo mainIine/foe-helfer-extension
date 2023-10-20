@@ -30,7 +30,7 @@ let Kits = {
 	 * @type {number}
 	 */
 	ShowMissing: 0,
-
+	Fragments:{},
 
 	/**
 	 * Loads all known sets {@link Kits.KitsjSON JSON} and creates the {@link HTML.Box DOM box}.
@@ -117,7 +117,7 @@ let Kits = {
 	 * Creates all displayed set elements.
 	 */
 	ReadSets: ()=> {
-		let inv = Kits.GetInvententoryArray(),
+		let inv = Kits.GetInventoryArray(),
 			entities = MainParser.CityEntities,
 			kits = Kits.KitsjSON;
 
@@ -650,17 +650,15 @@ let Kits = {
 	 * Returns {@link MainParser.Inventory} as array.
 	 * @returns {any[]}
 	 */
-	GetInvententoryArray: ()=> {
+	GetInventoryArray: ()=> {
 		let Ret = [];
 		for (let i in MainParser.Inventory) {
 			if (!MainParser.Inventory.hasOwnProperty(i)) continue;
 			
-			let itemIdx = Ret.findIndex(e => e['itemAssetName'] == MainParser.Inventory[i]['itemAssetName']);
-
-			if (MainParser.Inventory[i]['itemAssetName'] == 'icon_fragment') {
-				itemIdx = Ret.findIndex(e => e['itemAssetName'] == MainParser.Inventory[i]['item']['reward']['id']);
-			}
-
+			let search = (MainParser.Inventory[i]['itemAssetName'] == 'icon_fragment') ? "fragment#"+MainParser.Inventory[i]['item']['reward']['assembledReward']['iconAssetName'] : MainParser.Inventory[i]['itemAssetName'];
+			
+			itemIdx = Ret.findIndex(e => e['itemAssetName'] == search);
+			
 			if (itemIdx > -1) {
 				Ret[itemIdx]['inStock'] += MainParser.Inventory[i]['inStock'];
 			} 
@@ -670,7 +668,7 @@ let Kits = {
 		}
 		for (let i in Ret) {
 			if (Ret[i]['itemAssetName'] == "icon_fragment") {
-				Ret[i]['itemAssetName'] = Ret[i]['item']['reward']['id'];
+				Ret[i]['itemAssetName'] = "fragment#"+Ret[i]['item']['reward']['assembledReward']['iconAssetName'];
 			}
 		}
 		return Ret;
