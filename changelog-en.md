@@ -1,5 +1,12 @@
 ## Changelog - Extension
 
+##### 3.3.0.0
+**New**
+- Card Game (Halloween Event):
+	- provides a table of the remaining cards
+	- warns, when continuing would be the end of the round
+
+---
 ##### 3.2.9.0
 **Update**
 - Sets/Kits:
