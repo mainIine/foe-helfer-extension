@@ -25,6 +25,8 @@
 #cardGameDialog .cardtop {
 	clip-path: inset(30px 25px 300px 30px);
     margin: -30px -25px -300px -30px;
+    z-index: -1;
+    position: relative;
 }
 #cardGameDialog .cardbonus {
     clip-path: inset(295px 45px 40px 140px);
@@ -50,8 +52,11 @@
         border-left: 2px solid #ff9400;
     }
 }
-#cardGameDialog .highlight2 td{
-	border: 1px solid #00ff2a;
+#cardGameDialog .highlightStrong{
+    background: #15ff2c42
+}
+#cardGameDialog .highlightWeak{
+    background: #cf0e0e52;
 }
 #cardGameDialog th{
     width:95px;
