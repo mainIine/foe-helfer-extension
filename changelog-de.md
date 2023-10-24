@@ -1,5 +1,12 @@
 ## Changelog - Extension
 
+##### 3.3.0.0
+**New**
+- Card Game (Halloween Event):
+	- gibt eine Übersichtstabelle mit den verbleibenden Karten
+	- warnt, wenn die Durchführung des nächsten Zuges das Ende der Runde bedeutet
+
+---
 ##### 3.2.9.0
 **Update**
 - Sets/Kits:
