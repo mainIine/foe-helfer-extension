@@ -306,7 +306,7 @@ let mergerGame = {
 				totalPieces[x][t]=0;
 			}
 		}
-		let maxKeys= 0;
+		let maxKeys= keys;
 		for (let i of mergerGame.colors) {
 			for (let t of mergerGame.types) {
 				totalPieces[i][t] = table[i][1][t] + table[i][2][t] + table[i][3][t] + table[i][4][t];
@@ -824,14 +824,14 @@ let mergerGame = {
 			} else if ( free.none[2] > 0 && locked[type1][2] > 0 && (locked[type2][3] + free[type2][3] - occupied2_4) > 0) {
 				free.none[2] -= 1
 				locked[type1][2] -= 1
-				locked[type1][3] += 1
+				free[type1][3] += 1
 				occupied1_4 +=1
 				occupied2_4 += 1
 				
 			} else if ( free.none[2] > 0 && locked[type2][2] > 0 && (locked[type1][3] + free[type1][3] - occupied1_4) > 0) {
 				free.none[2] -= 1
 				locked[type2][2] -= 1
-				locked[type2][3] += 1
+				free[type2][3] += 1
 				occupied1_4 +=1
 				occupied2_4 += 1
 				
