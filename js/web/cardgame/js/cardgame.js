@@ -153,14 +153,14 @@ let cardGame = {
 		h +=`<tr><th></th><th>${i18n('Boxes.cardGame.Attack')}</th><th>${i18n('Boxes.cardGame.Bonus')}</th></tr>`
 		for (c of cards) {
 			h+=`<tr ${c == cardGame.card.id ? 'class="highlight"':""}>`
-			h+=`<td><img class="cardtop" src="${srcLinks.get("/shared/seasonalevents/halloween/event/"+cardGame.cards[c].assetName+".png",true)}" title="${cardGame.cards[c].description}"></td>`;
+			h+=`<td ${cardGame.cards[c].cardFactionId == cardGame.enemy.card.abilities[1].factionId ? 'class="highlightWeak"':""}><img class="cardtop" src="${srcLinks.get("/shared/seasonalevents/halloween/event/"+cardGame.cards[c].assetName+".png",true)}" title="${cardGame.cards[c].description}"></td>`;
 			let img=`<img class="cardattack" src="${srcLinks.get("/shared/seasonalevents/halloween/event/"+cardGame.cards[c].assetName+".png",true)}">`
 			h+=`<td>${img}${cardGame.cards[c]?.cardType?.value=="ability" ? cardGame.avgDmg(cardGame.cards[c]) : (-cardGame.cards[c].abilities[0].maxValue) + " - " + (-cardGame.cards[c].abilities[0].minValue)}</td>`;
 			img="";
 			if (cardGame.cards[c]?.cardType?.value!="ability" && cardGame.cards[c].abilities?.[1]?.factionId) {
 				img = `<img class="cardbonus" src="${srcLinks.get("/shared/seasonalevents/halloween/event/"+cardGame.cards[c].assetName+".png",true)}">`
 			}
-			h+=`<td>${img}${img!="" ? -cardGame.cards[c].abilities[1].amount:""}</td></tr>`;
+			h+=`<td ${(img != "" && cardGame.cards[c].abilities[1].factionId == cardGame.enemy.card.cardFactionId) ? 'class="highlightStrong"':""}>${img}${img!="" ? -cardGame.cards[c].abilities[1].amount:""}</td></tr>`;
 		}
 		h+='</table>';
 		$('#cardGameDialogBody').html(h);
