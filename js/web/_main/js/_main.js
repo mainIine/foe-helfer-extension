@@ -156,6 +156,7 @@ GetFights = () =>{
 			let CityEntity = MainParser.CityEntities[i];
 			if (!CityEntity.type) CityEntity.type = CityEntity?.components?.AllAge?.tags?.tags?.find(value => value.hasOwnProperty('buildingType')).buildingType;
         }
+		MainParser.checkInactives();
 	});
 
 	// Building-Upgrades
@@ -714,9 +715,7 @@ GetFights = () =>{
 		
 		MainParser.setLanguage();
 
-		Quests.init();
-	
-	
+		Quests.init();	
 	});
 
 
@@ -1147,13 +1146,8 @@ let MainParser = {
 	 */
 	send2Server: (data, ep, successCallback) => {
 
-		const pID = ExtPlayerID;
-		const cW = ExtWorld;
-		const gID = ExtGuildID;
-
-
 		let req = fetch(
-			ApiURL + ep + '/?player_id=' + pID + '&guild_id=' + gID + '&world=' + cW,
+			ApiURL + ep + '/?player_id=' + ExtPlayerID + '&guild_id=' + ExtGuildID + '&world=' + ExtWorld,
 			{
 				method: 'POST',
 				headers: {
@@ -1712,7 +1706,80 @@ let MainParser = {
 			a.click();
 			document.body.removeChild(a);
 		}
+	},
+
+	checkInactives: () => {
+		//get list of buildings for which an alert is already set
+		let LB = JSON.parse(localStorage.getItem("LimitedBuildingsAlertSet")||'{}')
+		
+		//get list of expired limited buildings in city
+		let inactives = Object.values(MainParser.CityMapData).filter(value => !!value.decayedFromCityEntityId).map(value => MainParser.CityEntities[value.cityentity_id].name)
+		
+		//remove buildings that were already tracked
+		for (let i = inactives.length-1;i>=0;i--) {
+			if (LB[inactives[i]]) {
+				inactives.splice(i,1)
+			}
+		}
+		//remove tracked buildings if time ran out
+		for (let x in LB) {
+			if (!LB[x]) continue;
+			if (LB[x]<GameTime*1000-GameTimeOffset) delete LB[x];
+			localStorage.setItem("LimitedBuildingsAlertSet",JSON.stringify(LB));
+		}
+		
+		//create instant alert for currently expired buildings		
+		if (inactives.length > 0) {
+				const data = {
+				title: i18n("InactiveBuildingsAlert.title"),
+				body: inactives.join("\n"),
+				expires: moment().add(1,"seconds").valueOf(),
+				repeat: -1,
+				persistent: true,
+				tag: '',
+				category: 'event',
+				vibrate: false,
+				actions: [{title:"OK"}]
+			};
+	
+			MainParser.sendExtMessage({
+				type: 'alerts',
+				playerId: ExtPlayerID,
+				action: 'create',
+				data: data,
+			})
+		}
+		let buildings = Object.values(MainParser.CityMapData)
+		for (let building of buildings) {
+			// set alerts for limited buildings that will run out in the future and that have no alert yet
+			if (!LB[building.id] && MainParser.CityEntities[building.cityentity_id]?.components?.AllAge?.limited?.config?.expireTime) {
+				const data = {
+					title: i18n("InactiveBuildingsAlert.title"),
+					body: MainParser.CityEntities[MainParser.CityEntities[building.cityentity_id]?.components?.AllAge?.limited?.config?.targetCityEntityId].name,
+					expires: (MainParser.CityEntities[building.cityentity_id]?.components?.AllAge?.limited?.config?.expireTime + building.state.constructionFinishedAt)*1000 - GameTimeOffset,
+					repeat: -1,
+					persistent: true,
+					tag: '',
+					category: 'event',
+					vibrate: false,
+					actions: [{title:"OK"}]
+				};
+		
+				MainParser.sendExtMessage({
+					type: 'alerts',
+					playerId: ExtPlayerID,
+					action: 'create',
+					data: data,
+				}).then((aId) => {
+					LB[building.id]=(MainParser.CityEntities[building.cityentity_id]?.components?.AllAge?.limited?.config?.expireTime + building.state.constructionFinishedAt)*1000 - GameTimeOffset;
+					localStorage.setItem("LimitedBuildingsAlertSet",JSON.stringify(LB));
+				})
+			}
+		}
+
+
 	}
+
 };
 
 if (window.foeHelperBgApiHandler !== undefined && window.foeHelperBgApiHandler instanceof Function) {

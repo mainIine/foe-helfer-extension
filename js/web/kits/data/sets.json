@@ -1,6 +1,6 @@
 [	
 	{
-		"udate": "04.08.2023"
+		"udate": "Halloween 2023 (20 Oct 2023)"
 	},
 	{
 		"groupname": "Guild_Battlegrounds"
@@ -50,7 +50,28 @@
 				"update": "upgrade_kit_sunflower_oil_press"
 			}
 		],
-		"kit": "selection_kit_sunflower_oil_press"
+		"kit": [
+			"selection_kit_sunflower_oil_press",
+			"selection_kit_epic_FALL23",
+			"golden_upgrade_kit_FALL22A"
+		]
+	},
+	{
+		"name": "Autumn_Vinyard",
+		"buildings": [
+			{
+				"first": "W_MultiAge_FALL23A1",
+				"update": "upgrade_kit_FALL23A"
+			}
+		],
+		"kit": [
+			"selection_kit_FALL23A",
+			"fragment#selection_kit_FALL23A",
+			"silver_upgrade_kit_FALL23A",
+			"fragment#silver_upgrade_kit_FALL23A",
+			"golden_upgrade_kit_FALL23A",
+			"fragment#golden_upgrade_kit_FALL23A"
+			]
 	},
 	{
 		"name": "Privateers_Boathouse",
@@ -241,7 +262,10 @@
 				"update": "upgrade_kit_clown_town"
 			}
 		],
-		"kit": "selection_kit_horror_circus"
+		"kit": [
+			"selection_kit_horror_circus",
+			"selection_kit_epic_HAL23"
+		]
 	},
 	{
 		"name": "Golden_Crops",
@@ -251,7 +275,10 @@
 				"update": "upgrade_kit_golden_crops"
 			}
 		],
-		"kit": "selection_kit_golden_crops"
+		"kit": [
+			"selection_kit_golden_crops",
+			"selection_kit_epic_FALL23"
+		]
 	},
 	{
 		"name": "Pirates_Hideout",
@@ -289,8 +316,8 @@
 		],
 		"kit": [
 			"selection_kit_athlon_abbey",
-			"golden_upgrade_kit_CUP22A",
-			"selection_kit_epic_CUP23"
+			"selection_kit_epic_CUP23",
+			"golden_upgrade_kit_CUP21A"
 		]
 	},
 	{
@@ -362,7 +389,10 @@
 				"update": "upgrade_kit_house_of_horrors"
 			}
 		],
-		"kit": "selection_kit_house_of_horrors"
+		"kit": [
+			"selection_kit_house_of_horrors",
+			"selection_kit_epic_HAL23"
+		]
 	},
 	{
 		"name": "Harvest_Farm_Set",
@@ -382,7 +412,8 @@
 		],
 		"kit": [ 
 			"selection_kit_harvest_farm",
-			"selection_kit_harvest_fields"
+			"selection_kit_harvest_fields",
+			"selection_kit_epic_FALL23"
 		]
 	},
 	{
@@ -557,7 +588,41 @@
 				"update": "upgrade_kit_tarot_card_caravans"
 			}
 		],
-		"kit": "selection_kit_tarot_card_caravans"
+		"kit": [
+			"selection_kit_tarot_card_caravans",
+			"selection_kit_epic_HAL23",
+			"golden_upgrade_kit_HAL22A"
+		]
+	},
+	{
+		"name": "Laboratory_of_Monstrosities",
+		"buildings": [
+			{
+				"first": "W_MultiAge_HAL23A1",
+				"update": "upgrade_kit_HAL23A"
+			}
+		],
+		"kit": [
+			"selection_kit_HAL23A",
+			"fragment#selection_kit_HAL23A",
+			"silver_upgrade_kit_HAL23A",
+			"fragment#silver_upgrade_kit_HAL23A",
+			"golden_upgrade_kit_HAL23A",
+			"fragment#golden_upgrade_kit_HAL23A"
+		]
+	},
+	{
+		"name": "Sparkborn_Stormspire",
+		"buildings": [
+			{
+				"first": "W_MultiAge_HAL23B1",
+				"update": "upgrade_kit_HAL23B"
+			}
+		],
+		"kit": [
+			"silver_upgrade_kit_HAL23B",
+			"golden_upgrade_kit_HAL23B"
+		]
 	},
 	{
 		"name": "Chocolatery",
@@ -638,7 +703,10 @@
 				"update": "upgrade_kit_abandoned_asylum"
 			}
 		],
-		"kit": "selection_kit_abandoned_asylum"
+		"kit": [
+			"selection_kit_abandoned_asylum",
+			"selection_kit_epic_HAL23"
+		]
 	},
 	{
 		"name": "September_Cottage",
@@ -648,7 +716,10 @@
 				"update": "upgrade_kit_september_cottage"
 			}
 		],
-		"kit": "selection_kit_september_cottage"
+		"kit": [
+			"selection_kit_september_cottage",
+			"selection_kit_epic_FALL23"
+		]
 	},
 	{
 		"name": "Guard_Post",
@@ -781,7 +852,10 @@
 				"update": "upgrade_kit_mill_of_fall"
 			}
 		],
-		"kit": "selection_kit_mill_of_fall"
+		"kit": [
+			"selection_kit_mill_of_fall",
+			"selection_kit_epic_FALL23"
+		]
 	},
 	{
 		"name": "The_Ship",
@@ -1016,7 +1090,10 @@
 				"update": "upgrade_kit_cider_mill"
 			}
 		],
-		"kit": "selection_kit_cider_mill"
+		"kit": [
+			"selection_kit_cider_mill",
+			"selection_kit_epic_FALL23"
+		]
 	},
 	{
 		"name": "Maypole",
