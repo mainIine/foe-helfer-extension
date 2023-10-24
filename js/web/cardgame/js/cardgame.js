@@ -153,7 +153,7 @@ let cardGame = {
 		h +=`<tr><th></th><th>${i18n('Boxes.cardGame.Attack')}</th><th>${i18n('Boxes.cardGame.Bonus')}</th></tr>`
 		for (c of cards) {
 			h+=`<tr ${c == cardGame.card.id ? 'class="highlight"':""}>`
-			h+=`<td ${cardGame.cards[c].cardFactionId == cardGame.enemy.card.abilities[1].factionId ? 'class="highlightWeak"':""}><img class="cardtop" src="${srcLinks.get("/shared/seasonalevents/halloween/event/"+cardGame.cards[c].assetName+".png",true)}" title="${cardGame.cards[c].description}"></td>`;
+			h+=`<td title="${cardGame.cards[c].description}" ${cardGame.cards[c].cardFactionId == cardGame.enemy.card.abilities[1].factionId ? 'class="highlightWeak"':""}><img class="cardtop" src="${srcLinks.get("/shared/seasonalevents/halloween/event/"+cardGame.cards[c].assetName+".png",true)}"></td>`;
 			let img=`<img class="cardattack" src="${srcLinks.get("/shared/seasonalevents/halloween/event/"+cardGame.cards[c].assetName+".png",true)}">`
 			h+=`<td>${img}${cardGame.cards[c]?.cardType?.value=="ability" ? cardGame.avgDmg(cardGame.cards[c]) : (-cardGame.cards[c].abilities[0].maxValue) + " - " + (-cardGame.cards[c].abilities[0].minValue)}</td>`;
 			img="";
