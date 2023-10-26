@@ -216,4 +216,4 @@ let cardGame = {
 		return dmg;
 	}
 }
-HTML.AddCssFile('cardGame');
+HTML.AddCssFile('cardgame');
