@@ -23,14 +23,40 @@ FoEproxy.addHandler('CardGameService', 'all', (data, postData) => {
 	}
 	if (data.requestMethod=="getOverview") {
 		cardGame.cards = data.responseData.cards;
-		if (data.responseData.ongoingGame?.level?.nodes) cardGame.nodes = data.responseData.ongoingGame.level.nodes;
-		cardGame.isLastLevel = cardGame.nodes[data.responseData.ongoingGame.playerState.currentNodeId].nextNodeIds.length == 0;
-		cardGame.enemy = cardGame.nodes[data.responseData.ongoingGame.playerState.currentNodeId].enemy;
-
-		cardGame.health = data.responseData.ongoingGame.playerState.currentHealth;
-		cardGame.cardsLeft = data.responseData.ongoingGame.playerState.drawPileCardIds;
-		cardGame.card = cardGame.cards[data.responseData.ongoingGame.playerState.handCardIds[0]];
+		if (data.responseData.ongoingGame) {
+			cardGame.nodes = data.responseData.ongoingGame.level.nodes;
+			cardGame.health = data.responseData.ongoingGame.playerState.currentHealth;
+			cardGame.cardsLeft = data.responseData.ongoingGame.playerState.drawPileCardIds;
+			cardGame.card = cardGame.cards[data.responseData.ongoingGame.playerState.handCardIds[0]];
+			cardGame.isLastLevel = cardGame.nodes[data.responseData.ongoingGame.playerState.currentNodeId].nextNodeIds.length == 0;
+			cardGame.enemy = cardGame.nodes[data.responseData.ongoingGame.playerState.currentNodeId].enemy;
+		} else {
+			cardGame.cardsLeft=[];
+			cardGame.card={};
+			cardGame.health=0;
+			cardGame.enemy={};
+			cardGame.nodes={};
+			cardGame.isLastLevel=false;
+		}
 	}
+	if (data.requestMethod=="startLevel") {
+		if (data.responseData.state) {
+			cardGame.nodes = data.responseData.state.level.nodes;
+			cardGame.health = data.responseData.state.playerState.currentHealth;
+			cardGame.cardsLeft = data.responseData.state.playerState.drawPileCardIds;
+			cardGame.card = cardGame.cards[data.responseData.state.playerState.handCardIds[0]];
+			cardGame.isLastLevel = cardGame.nodes[data.responseData.state.playerState.currentNodeId].nextNodeIds.length == 0;
+			cardGame.enemy = cardGame.nodes[data.responseData.state.playerState.currentNodeId].enemy;
+		} else {
+			cardGame.cardsLeft=[];
+			cardGame.card={};
+			cardGame.health=0;
+			cardGame.enemy={};
+			cardGame.nodes={};
+			cardGame.isLastLevel=false;
+		}
+	}
+	
 	if (["useCard","finishCardBuying"].includes(data.requestMethod)) {
 		cardGame.isLastLevel = cardGame.nodes[data.responseData.playerState.currentNodeId].nextNodeIds.length == 0;
 		if(data.responseData?.nodeUpdates?.length>0) cardGame.enemy = data.responseData.nodeUpdates[data.responseData.nodeUpdates.length-1].enemy;
@@ -48,8 +74,12 @@ FoEproxy.addHandler('CardGameService', 'all', (data, postData) => {
 		cardGame.health = data.responseData.updatedPlayerHealth;
 	}
 
-	cardGame.checkHealth();
-	cardGame.showCardsList();
+	if (cardGame.health!=0) {
+		cardGame.checkHealth();
+		cardGame.showCardsList();
+	}
+
+	
 	
 });
 
