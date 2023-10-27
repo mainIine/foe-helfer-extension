@@ -1,0 +1,82 @@
+/*
+ * **************************************************************************************
+ * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
+ *
+ * See file LICENSE.md or go to
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
+ *
+ * **************************************************************************************
+ */
+
+ #cardGameDialog {
+	top: 50px;
+	left: 350px;
+	width: 200px;
+    height: 200px;
+
+}
+#cardGameDialogBody {
+    overflow-y: auto;
+}
+
+#cardGameDialog .cardtop {
+	clip-path: inset(30px 25px 300px 30px);
+    margin: -30px -25px -300px -30px;
+    z-index: -1;
+    position: relative;
+}
+#cardGameDialog .cardbonus {
+    clip-path: inset(295px 45px 40px 140px);
+    margin: -295px -86px -40px -140px;
+    z-index: -1;
+    position: relative;
+}
+#cardGameDialog .cardattack {
+    clip-path: inset(295px 136px 40px 47px);
+    margin: -295px -176px -40px -47px;
+    z-index: -1;
+    position: relative;
+}
+
+#cardGameDialog .highlight td{
+	border-top: 2px solid #ff9400;
+    border-bottom: 2px solid #ff9400;
+    
+    &:last-child {
+        border-right: 2px solid #ff9400;
+    }
+    &:first-child {
+        border-left: 2px solid #ff9400;
+    }
+}
+#cardGameDialog .highlightStrong{
+    background: #15ff2c42
+}
+#cardGameDialog .highlightWeak{
+    background: #cf0e0e52;
+}
+#cardGameDialog th{
+    width:95px;
+}
+#cardGameDialog th:first-child{
+    width: 220px;
+}
+#cardGameDialog td{
+    font-weight:600;
+}
+
+#cardGameFightBlocker {
+    width: 110px;
+    height: 110px;
+    position: absolute;
+    z-index: 100;
+    background-color: #ff9400;
+    border-radius: 30px;
+    border: red solid 3px;
+    top: calc(50vh - 39px);
+    left: calc(50vw - 58px);
+}
+
