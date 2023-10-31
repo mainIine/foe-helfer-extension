@@ -893,6 +893,7 @@
     "Settings.Help.Github": "GitHub: para mais relatórios técnicos de bugs, ideias concretas e ajuda no desenvolvimento.",
     "Settings.Help.Title": "Ajuda e Comunidade",
     "Settings.Help.Website": "Site: informações sobre a extensão e documentação das suas funcionalidades.",
+    "Settings.LoadBeta.Desc": "Apenas disponível na <a href=\"https://github.com/mainIine/foe-helfer-extension/archive/refs/heads/betaLoader.zip\">extensão em separado</a>!!!<br>Tem que ser feita a transferência e adicionada manualmente às extensões.<br>Não deve ser usada em conjunto com a extensão habitual Foe-Helper!<br><br>Na versão beta, é mais provável acontecerem erro do que na versão da loja! Por favor façam-nos chegar algum bug que encontrem através do Discord ou do Github! <br>Tempos de carregamento da extensão podem ser mais altos do que o normal!<br>O jogo precisa de ser recarregado para trocar de modos!",
     "Settings.MenuLength.Desc": "Quantos elementos, em altura, deverá o menu ter?<br> Vazio ou \"0\" define uma altura automática.",
     "Settings.MenuLength.Title": "Altura do Menu",
     "Settings.NotificationPosition.ToastTestBody": "Esta foi a posição que escolheste.<br>Antes de testares a próxima posição, aguarda que esta mensagem desapareça.",
