@@ -136,7 +136,7 @@ let cardGame = {
 				}
 			}
 		} else {
-			minHealth += (cardGame.card.cardFactionId == cardGame.enemy.card.abilities[1].factionId ? cardGame.enemy.card.abilities[1].amount:0);
+			minHealth += (cardGame.card.cardFactionId == cardGame.enemy.card.abilities[1]?.factionId ? cardGame.enemy.card.abilities[1].amount:0);
 			maxHealth = minHealth + cardGame.enemy.card.abilities[0].maxValue;
 			minHealth += cardGame.enemy.card.abilities[0].minValue;
 		}
@@ -152,7 +152,7 @@ let cardGame = {
 				} 
 			}	
 			else {
-				enemyHealth = cardGame.enemy.currentHealth + (cardGame.card.abilities[1].factionId == cardGame.enemy.card.cardFactionId ? cardGame.card.abilities[1].amount:0) + cardGame.card.abilities[0].maxValue;;
+				enemyHealth = cardGame.enemy.currentHealth + (cardGame.card.abilities[1]?.factionId == cardGame.enemy.card.cardFactionId ? cardGame.card.abilities[1].amount:0) + cardGame.card.abilities[0].maxValue;;
 			}
 			if (enemyHealth <=0) warning = undefined;
 		}
@@ -183,14 +183,14 @@ let cardGame = {
 		h +=`<tr><th></th><th>${i18n('Boxes.cardGame.Attack')}</th><th>${i18n('Boxes.cardGame.Bonus')}</th></tr>`
 		for (c of cards) {
 			h+=`<tr ${c == cardGame.card.id ? 'class="highlight"':""}>`
-			h+=`<td title="${cardGame.cards[c].description}" ${cardGame.cards[c].cardFactionId == cardGame.enemy.card.abilities[1].factionId ? 'class="highlightWeak"':""}><img class="cardtop" src="${srcLinks.get("/shared/seasonalevents/halloween/event/"+cardGame.cards[c].assetName+".png",true)}"></td>`;
+			h+=`<td title="${cardGame.cards[c].description}" ${cardGame.cards[c].cardFactionId == cardGame.enemy.card.abilities[1]?.factionId ? 'class="highlightWeak"':""}><img class="cardtop" src="${srcLinks.get("/shared/seasonalevents/halloween/event/"+cardGame.cards[c].assetName+".png",true)}"></td>`;
 			let img=`<img class="cardattack" src="${srcLinks.get("/shared/seasonalevents/halloween/event/"+cardGame.cards[c].assetName+".png",true)}">`
 			h+=`<td>${img}${cardGame.cards[c]?.cardType?.value=="ability" ? cardGame.avgDmg(cardGame.cards[c]) : (-cardGame.cards[c].abilities[0].maxValue) + " - " + (-cardGame.cards[c].abilities[0].minValue)}</td>`;
 			img="";
 			if (cardGame.cards[c]?.cardType?.value!="ability" && cardGame.cards[c].abilities?.[1]?.factionId) {
 				img = `<img class="cardbonus" src="${srcLinks.get("/shared/seasonalevents/halloween/event/"+cardGame.cards[c].assetName+".png",true)}">`
 			}
-			h+=`<td ${(img != "" && cardGame.cards[c].abilities[1].factionId == cardGame.enemy.card.cardFactionId) ? 'class="highlightStrong"':""}>${img}${img!="" ? -cardGame.cards[c].abilities[1].amount:""}</td></tr>`;
+			h+=`<td ${(img != "" && cardGame.cards[c].abilities[1]?.factionId == cardGame.enemy.card.cardFactionId) ? 'class="highlightStrong"':""}>${img}${img!="" ? -cardGame.cards[c].abilities[1].amount:""}</td></tr>`;
 		}
 		h+='</table>';
 		$('#cardGameDialogBody').html(h);
