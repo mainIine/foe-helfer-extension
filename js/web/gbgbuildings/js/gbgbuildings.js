@@ -92,11 +92,13 @@ let GBGBuildings = {
 			let needed = [...s.all];
 			let costs = {};
 			let leftStanding=[];
+			let keep=[];
 			for (b of GBGBuildings.buildings) {
 				let i = needed.findIndex(x => x==b);
-				if (i>=0) 
-					needed.splice(i,1) 
-				else 
+				if (i>=0) {
+					needed.splice(i,1);
+					keep.push(b)
+				} else 
 					leftStanding.push(b);
 			}
 			if (leftStanding.length > 0) {
@@ -122,7 +124,7 @@ let GBGBuildings = {
 				tot += costs[c];
 			}
 			s["needed"]=needed;
-			s["keep"]=leftStanding;
+			s["keep"]=keep;
 			s["relCosts"]=rel;
 			s["absCosts"]=tot;
 		}		
