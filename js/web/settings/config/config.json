@@ -54,6 +54,12 @@
 		"sort": 7
 	},
 	{
+		"name": "ShowGBGBuildings",
+		"status": true,
+		"group": "Boxes",
+		"sort": 7
+	},
+	{
 		"name": "ShowBlueGalaxyHelper",
 		"status": true,
 		"group": "Boxes",
