@@ -1972,7 +1972,7 @@ let ProvinceMap = {
 
 		Province.prototype.drawProgress = function(mapStuff) {
 			ProvinceMap.MapCTX.strokeStyle = ProvinceMap.StrokeColor;
-			if (this.conquestProgress !== undefined && this.conquestProgress !== [])
+			if (this.conquestProgress !== undefined && this.conquestProgress.length > 0)
 				this.conquestProgress.forEach(function(prog, index) {
 					let progDiff = (prog.progress / prog.maxProgress);
 					let color = GuildFights.SortedColors.find(c => (c.id === prog.participantId));
@@ -2084,7 +2084,7 @@ let ProvinceMap = {
 				if (prov.totalBuildingSlots) 
 					data.totalBuildingSlots = prov.totalBuildingSlots;
 
-				if (prov.conquestProgress !== []) 
+				if (prov.conquestProgress.length > 0) 
 					data.conquestProgress = prov.conquestProgress;
 
 				// round map
