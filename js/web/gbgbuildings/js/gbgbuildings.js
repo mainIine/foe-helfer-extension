@@ -122,6 +122,7 @@ let GBGBuildings = {
 				tot += costs[c];
 			}
 			s["needed"]=needed;
+			s["keep"]=leftStanding;
 			s["relCosts"]=rel;
 			s["absCosts"]=tot;
 		}		
@@ -169,6 +170,10 @@ let GBGBuildings = {
 			for (let b of s.needed) {
 				if (b=="free") continue;
 				h+=`<img class="building" src="${srcLinks.get("/guild_battlegrounds/hud/guild_battlegrounds_sector_buildings_"+b+".png",true)}" title="${GBGBuildings.BuildingData[b].name}">`
+			}
+			for (let b of s.keep) {
+				if (b=="free") continue;
+				h+=`<img class="building keep" src="${srcLinks.get("/guild_battlegrounds/hud/guild_battlegrounds_sector_buildings_"+b+".png",true)}" title="${GBGBuildings.BuildingData[b].name}">`
 			}
 			h+=`</td><td>${s.block}%</td><td title="${i18n('Boxes.GBGBuildings.relativeCosts')}">${s.relCosts.toPrecision(2)}</td><td title="${i18n('Boxes.GBGBuildings.absoluteCosts')}">${s.absCosts}</td></tr>`;
 		}

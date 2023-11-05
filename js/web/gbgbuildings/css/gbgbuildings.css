@@ -27,3 +27,6 @@
 #GBGBuildingsBody .building {
 	width: 80px;
 }
+#GBGBuildingsBody .keep {
+	opacity: 40%;
+}
