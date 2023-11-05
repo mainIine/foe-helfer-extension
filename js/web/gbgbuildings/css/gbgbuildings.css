@@ -21,9 +21,13 @@
 	overflow-y: auto;
 }
 
-#GBGBuildingsBody th {
+#GBGBuildingsBody th, #GBGBuildingsBody td {
 	text-align: center;
+	&:first-child {
+		text-align: left;
+	}
 }
+
 
 #GBGBuildingsBody .building {
 	width: 80px;
