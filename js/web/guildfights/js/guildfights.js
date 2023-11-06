@@ -197,7 +197,7 @@ let GuildFights = {
 			}
 			sumNegotiations += d[i]['negotiationsWon'] || 0;
 			sumBattles += d[i]['battlesWon'] || 0;
-			sumBattles += d[i]['attrition'] || 0;
+			sumAttrition += d[i]['attrition'] || 0;
 
 			players.push({
 				gbground: GuildFights.CurrentGBGRound,
@@ -613,6 +613,7 @@ let GuildFights = {
 			b = [],
 			tN = 0,
 			tF = 0,
+			tA = 0,
 			histView = false;
 
 		GuildFights.PlayerBoxContent = [];
@@ -701,6 +702,7 @@ let GuildFights = {
 
 			tN += playerNew['negotiationsWon'];
 			tF += playerNew['battlesWon'];
+			tA += playerNew['attrition']
 
 			b.push('<tr data-player="' + playerNew['player_id'] + '" data-gbground="' + gbground + '" class="' + newProgressClass + (!histView ? 'showdetailview ' : '') + (playerNew['player_id'] === ExtPlayerID ? 'mark-player ' : '') + (change === true ? 'bg-green' : '') + '">');
 			b.push('<td class="tdmin">' + (parseInt(i) + 1) + '.</td>');
@@ -757,7 +759,7 @@ let GuildFights = {
 		t.push('<th class="text-center"><span class="negotiation" title="' + HTML.i18nTooltip(i18n('Boxes.GuildFights.Negotiations')) + '"></span> <strong class="text-warning">(' + HTML.Format(tN) + ')</strong></th>');
 		t.push('<th class="text-center"><span class="fight" title="' + HTML.i18nTooltip(i18n('Boxes.GuildFights.Fights')) + '"></span> <strong class="text-warning">(' + HTML.Format(tF) + ')</strong></th>');
 		t.push('<th class="text-center">' + i18n('Boxes.GuildFights.Total') + ' <strong class="text-warning">(' + HTML.Format(tNF) + ')</strong></th>');
-		t.push('<th class="text-center">' + i18n('Boxes.GuildFights.Attrition') + ' <strong class="text-warning">(' + HTML.Format(tNF) + ')</strong></th>');
+		t.push('<th class="text-center">' + i18n('Boxes.GuildFights.Attrition') + ' <strong class="text-warning">(' + HTML.Format(tA) + ')</strong></th>');
 
 		t.push('<th></th>');
 		t.push('</tr>');
