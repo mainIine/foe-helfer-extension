@@ -31,18 +31,23 @@ FoEproxy.addHandler('GuildBattlegroundService', 'getPlayerLeaderboard', (data, p
 
 // Gildengefechte
 FoEproxy.addHandler('GuildBattlegroundStateService', 'getState', (data, postData) => {
-	if (data.responseData['stateId'] !== 'participating')
-	{
-		GuildFights.CurrentGBGRound = parseInt(data.responseData['startsAt']) - 259200;
+	GuildFights.GlobalRankingTimeout = setTimeout(()=>{
+		if (data.responseData['stateId'] !== 'participating')	{
+			GuildFights.CurrentGBGRound = parseInt(data.responseData['startsAt']) - 259200;
 
-		if (GuildFights.curDateFilter === null || GuildFights.curDateEndFilter === null)
-		{
-			GuildFights.curDateFilter = moment.unix(GuildFights.CurrentGBGRound).subtract(11, 'd').format('YYYYMMDD');
-			GuildFights.curDateEndFilter = moment.unix(GuildFights.CurrentGBGRound).format('YYYYMMDD');
+			if (GuildFights.curDateFilter === null || GuildFights.curDateEndFilter === null)
+			{
+				GuildFights.curDateFilter = moment.unix(GuildFights.CurrentGBGRound).subtract(11, 'd').format('YYYYMMDD');
+				GuildFights.curDateEndFilter = moment.unix(GuildFights.CurrentGBGRound).format('YYYYMMDD');
+			}
+
+			GuildFights.HandlePlayerLeaderboard(data.responseData['playerLeaderboardEntries']);
 		}
+	},150)
+});
 
-		GuildFights.HandlePlayerLeaderboard(data.responseData['playerLeaderboardEntries']);
-	}
+FoEproxy.addHandler('RankingService', 'searchRanking', (data, postData) => {
+	clearTimeout(GuildFights.GlobalRankingTimeout);
 });
 
 // Gildengefechte - Map, Gilden
@@ -78,7 +83,7 @@ FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postDa
 let GuildFights = {
 
 	Alerts: [],
-
+	GlobalRankingTimeout:null,
 	PrevAction: null,
 	PrevActionTimestamp: null,
 	NewAction: null,
