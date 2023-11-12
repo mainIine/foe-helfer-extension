@@ -76,6 +76,17 @@
         border-left: 2px solid #ff9400;
     }
 }
+#cardGameDialog .highlightOptions td{
+	border-top: 2px solid #ff00bf;
+    border-bottom: 2px solid #ff00bf;
+    
+    &:last-child {
+        border-right: 2px solid #ff00bf;
+    }
+    &:first-child {
+        border-left: 2px solid #ff00bf;
+    }
+}
 #cardGameDialog .highlightStrong{
     border: 2px solid var(--text-success);
 }
