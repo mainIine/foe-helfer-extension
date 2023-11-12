@@ -187,7 +187,7 @@ let Infoboard = {
 
 
     /**
-     * Setzt eine neue Zeile für die Box zusammen
+     * Composes a new line for the box
      *
      * @param dir
      * @param data
@@ -209,18 +209,25 @@ let Infoboard = {
             console.log(JSON.stringify(data))
         }
 
-        // Gibt es eine Funktion dafür?
+        // Is there a function for this?
+        /* Explanation: Name of the functios are based on the "requestClass" and "requestMethod" (optionally responseData.type), see above
+         * E.g. ConversationService_getNewMessage, ItemAuctionService_updateBid, GuildBattlegroundService_getProvinces, etc.
+         * Functions, in this way, called dynamically.
+         */
         if (!Info[s]) {
+            //console.error("Missing function: " + s);
+            // [2023.10.21]: "Missing" functions: ChatService_joinChat, ChatService_messages, FriendsTavernService_getSittingPlayersCount
             return;
         }
 
+        // "Info[s]" references a function below, this will return the content put in the Infoboard.
         let bd = Info[s](Msg['responseData']);
 
         if (!bd) {
             return;
         }
 
-        // Der Spieler hat den FoE Tab verlassen
+        // The player has left the FoE tab (?)
         window.onblur = function() {
             // Infoboard.StartTitleBlinking()
         };
@@ -246,9 +253,11 @@ let Infoboard = {
             let status = $('input[data-type="' + bd['class'] + '"]').prop('checked'),
                 textfilter = $('input[data-type="text"]').val().split("|"),
                 msg = bd['msg'], img = bd['img'], type = bd['type'], tr = $('<tr />'),
-				filterStatus = textfilter.some(e => msg.toLowerCase().includes(e.toLowerCase()));
+                // This is needed because "msg" contains e.g. hex color codes (~GBG messages) which gives false result when filtering messages
+                // Regex stolen from: https://www.geeksforgeeks.org/how-to-strip-out-html-tags-from-a-string-using-javascript/
+				filterStatus = textfilter.some(e => msg.replace(/(<([^>]+)>)/ig, '').toLowerCase().includes(e.toLowerCase()));
 
-            // wenn nicht angezeigt werden soll, direkt verstecken
+            // if not to be displayed, hide directly
             if ((!status || !filterStatus) && bd.class !== 'welcome')
             {
                 tr.hide();
@@ -295,6 +304,7 @@ let Infoboard = {
         $('#BackgroundInfo').on('change', '.filter-msg', function () {
             let active = [];
 
+            // active array will contain the rows based on the selected type in the filter dropdown
             $('.filter-msg').each(function () {
                 if ($(this).is(':checked') || ($(this).data("type") === "text" && $(this).val() !== "")) {
                     active.push($(this).data('type'));
@@ -313,11 +323,13 @@ let Infoboard = {
             $('#BackgroundInfoTable tbody tr').each(function () {
                 let tr = $(this),
                     textfilter = $('input[data-type="text"]').val().split("|"),
-                    type = tr.attr('class');
+                    type = tr.attr('class'); // =technically the message type, can be "msg-important", "gbg-<color>" (where color is e.g. yellow, teal, etc.), "level", etc.
 
-                if ((active.some(e => type.startsWith(e)) && textfilter.some(e => $(tr.children()[2]).html().toLowerCase().includes(e.toLowerCase()))) || tr.hasClass('welcome')) {
+                // The 3rd element (tr) contains the "meaningful" content of the message, that's what we filter
+                if ((active.some(e => type.startsWith(e)) && textfilter.some(e => $(tr.children()[2]).text().toLowerCase().includes(e.toLowerCase()))) || tr.hasClass('welcome')) {
                     tr.show();
                 } else {
+                    console.log("hide:" + $(tr.children()[2]).text().toLowerCase());
                     tr.hide();
                 }
             });
@@ -396,19 +408,27 @@ let Infoboard = {
 let Info = {
 
     /**
-     * Cache zum "merken" der kämpfenden Gilden
+     * Cache to "remember" the fighting guilds
      */
     GildPoints: {},
 
 
     /**
-     * Jmd hat in einer Auktion mehr geboten
+     * Someone bid more in an auction
      *
      * @param d
-     * @returns {{class: 'auction', msg: string, type: string}}
+     * @returns {{class: 'auction', type: string, msg: string, msgPlainText: string}}
      */
     ItemAuctionService_updateBid: (d) => {
-        let PlayerLink = MainParser.GetPlayerLink(d['player']['player_id'], d['player']['name']);
+        let PlayerLink = MainParser.GetPlayerLink(d['player']['player_id'], d['player']['name']),
+            messagePlainText = HTML.i18nReplacer(
+                i18n('Boxes.Infobox.Messages.Auction'), {
+                    player: d['player']['name'],
+                    amount: HTML.Format(d['amount']),
+                }
+            );
+        
+        messagePlainText = messagePlainText.replace("<strong>", "").replace("</strong>", "");
 
         return {
             class: 'auction',
@@ -418,34 +438,37 @@ let Info = {
                     player: PlayerLink,
                     amount: HTML.Format(d['amount']),
                 }
-            )
+            ),
+            msgPlainText: messagePlainText
         };
     },
 
 
     /**
-     * Nachricht in einem bekannten Chat
+     * Message in a known chat
      *
      * @param d
-     * @returns {class: 'message', msg: string, type: string, img: string | undefined}
+     * @returns {class: 'message', type: string, msg: string, msgPlainText: string, img: string | undefined}
      */
     ConversationService_getNewMessage: (d) => {
         let chat = MainParser.Conversations.find(obj => obj.id === d['conversationId']),
-            header, message, image;
+            header, message, messagePlainText, image;
 
         if (chat && chat['hidden']){
             return undefined;
         }
 
+        // Normal message
         if (d['text'] !== '') {
-            // normale Nachricht
-            message = d['text'].replace(/(\r\n|\n|\r)/gm, '<br>');
+            message = d['text'].replace(/(\r\n|\n|\r)/gm, '<br>'); // Replace all linebreaks with <br>
+            messagePlainText = d['text'].replace(/(\r\n|\n|\r)/gm, ''); // Replace all linebreaks with nothing
         }
+        // GB or Trade message
         else if (d['attachment'])
         {
             if (d['attachment']['type'] === 'great_building')
             {
-                // legendäres Bauwerk
+                // GB message
                 message = HTML.i18nReplacer(
                     i18n('Boxes.Infobox.Messages.MsgBuilding'), {
                     building: MainParser.CityEntities[d['attachment']['cityEntityId']]['name'],
@@ -453,13 +476,13 @@ let Info = {
                 });
             }
             else if (d['attachment']['type'] === 'trade_offer') {
-                // Handelsangebot
+                // Trade offer
                 message = `<div class="offer"><span title="${GoodsData[d['attachment']['offeredResource']]['name']}" class="goods-sprite-50 ${d['attachment']['offeredResource']}"></span> <span>x<strong>${d['attachment']['offeredAmount']}</strong></span> <span class="sign">&#187</span> <span title="${GoodsData[d['attachment']['neededResource']]['name']}" class="goods-sprite-50 ${d['attachment']['neededResource']}"></span> <span>x<strong>${d['attachment']['neededAmount']}</strong></span></div>`;
             }
         }
 
         if (chat) {
-            // passendes Bildchen wählen
+            // Choose a suitable picture
             if (chat['important'])
             {
                 image = 'msg-important';
@@ -470,7 +493,7 @@ let Info = {
 
             if (d['sender'] && d['sender']['name'])
             {
-                // normale Chatnachricht (bekannte ID)
+                // normal chat message (known ID)
                 if (d['sender']['name'] === chat['title'])
                 {
                     header = '<div><strong class="bright">' + MainParser.GetPlayerLink(d['sender']['player_id'], d['sender']['name']) + '</strong></div>';
@@ -480,7 +503,7 @@ let Info = {
                 }
             }
             else {
-                // Chatnachricht vom System (Betreten/Verlassen)
+                // Chat message from the system (enter/exit)
                 header = '<div><strong class="bright">' + HTML.escapeHtml(chat['title']) + '</strong></div>';
             }
         }
@@ -492,32 +515,36 @@ let Info = {
             class: 'msg',
             type: i18n('Boxes.Infobox.FilterMessage'),
             msg: header + message,
+            msgPlainText: messagePlainText,
             img: image
         };
     },
 
 
     /**
-     * Nachricht in einem unbekannten Chat
+     * Message in an unknown chat
      *
      * @param d
-     * @returns {class: 'message', msg: string, type: string}
+     * @returns {class: 'message', type: string, msg: string, msgPlainText: string}
      */
     ConversationService_getConversationUpdate: (d) => {
         let chat = MainParser.Conversations.find(obj => obj.id === d['conversationId']);
         if (chat) return undefined;
 
         let message = '<div><strong class="bright">' + i18n('Boxes.Infobox.UnknownConversation') + '</strong></div>';
+        let messagePlainText = i18n('Boxes.Infobox.UnknownConversation');
+        
         return {
             class: 'message',
             type: i18n('Boxes.Infobox.FilterMessage'),
-            msg: message
+            msg: message,
+            msgPlainText: messagePlainText
         };
     },
 
 
     /**
-     * Auf der GG-Map kämpft jemand
+     * Someone is fighting on the GBG map
      *
      * @param d
      * @returns {{msg: string, type: string, class: string}}
@@ -542,7 +569,7 @@ let Info = {
 
         if (data['lockedUntil'] !== undefined) {
 
-            // keine Übernahme
+            // No takeover
             if (data['lockedUntil'] < Math.floor(MainParser.getCurrentDateTime() / 1000) + 14390) return undefined;
 
             let p = bP.find(o => (o['participantId'] === data['ownerId'])),
@@ -562,15 +589,18 @@ let Info = {
                     attackerName: p['clan']['name'],
                     untilOccupied: moment.unix(data['lockedUntil']).format('HH:mm:ss')
                 }),
+                // TODO: msgPlainText:
                 img: 'gbg-lock'
             };
         }
 
-        // kein aktiver Kampf
+        // Sector without progress (?)
         if (!data['conquestProgress'][0]) return undefined;
 
-        // Es wird gerade gekämpft
-        let color = GuildFights.SortedColors.find(c => (c['id'] === data['ownerId'])), t = '', image;
+        // There is a fight going on
+        let color = GuildFights.SortedColors.find(c => (c['id'] === data['ownerId'])), 
+            t = '', 
+            image;
 
         for (let i in data['conquestProgress']) {
             if (!data['conquestProgress'].hasOwnProperty(i)) {
@@ -581,7 +611,7 @@ let Info = {
                 p = bP.find(o => (o['participantId'] === d['participantId'])),
                 colors = GuildFights.SortedColors.find(c => (c['id'] === d['participantId']));
 
-            // es gibt mehrere Gilden in einer Provinz, aber eine kämpft gar nicht, überspringen
+            // There are several guilds in a province, but one is not fighting at all, skip
             if (Info.GildPoints[data['id']] !== undefined &&
                 Info.GildPoints[data['id']][d['participantId']] !== undefined &&
                 Info.GildPoints[data['id']][d['participantId']] === d['progress']) {
@@ -633,7 +663,7 @@ let Info = {
 
 
     /**
-     * LG wurde gelevelt
+     * Greatbuilding has been leveled
      *
      * @param d
      * @returns {{class: 'level', msg: string, type: string}}
@@ -674,7 +704,7 @@ let Info = {
 
 
     /**
-     * Handel wurde angenommen
+     * Trade was accepted
      *
      * @param d
      * @returns {{class: 'trade', msg: string, type: string}}
@@ -699,7 +729,7 @@ let Info = {
 
 
     /**
-     * Ein Gildenmitglied hat in der GEX gekämpft
+     * A guild member fought in the GE/GEX
      *
      * @param d
      * @returns {boolean|{msg: *, type: string, class: string}}
