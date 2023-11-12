@@ -1907,7 +1907,8 @@ let ProvinceMap = {
 				colors: ProvinceMap.getSectorColors(data.ownerID),
 			};
 			this.lockedUntil = data.lockedUntil;
-			this.conquestProgress = data.conquestProgress;
+			// Sectors which are open but with no progress are missing the "conquestProgress" key in the response
+			this.conquestProgress = data.conquestProgress || [];
 			this.circlePosition = data.circlePosition;
 			this.totalBuildingSlots = data.totalBuildingSlots;
 
