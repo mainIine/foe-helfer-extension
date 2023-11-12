@@ -11,16 +11,6 @@
  * **************************************************************************************
  */
 
-/* ToDo:
-	- add HP and Level overview
-	- UI for logged keys + teeth
-	- change ability cards attack value to "min-max" ✓
-	- include Bonus when sorting cards ✓
-	- highlight cards currently in redraw selection ✓
-	- log teeth spent (individual redraw/ability cards/heal) ✓
-	- log keys got ✓
-*/
-
 FoEproxy.addHandler('CardGameService', 'all', (data, postData) => {
 	
 	if(!Settings.GetSetting('ShowEventChest')){
@@ -177,7 +167,6 @@ let cardGame = {
 		if ($('#cardGameFightBlocker').length === 0) {
 			let blocker = document.createElement("img");
 			blocker.id = 'cardGameFightBlocker';
-			//blocker.classList = cardGame.event;
 			blocker.src = srcLinks.get("/city/gui/great_building_bonus_icons/great_building_bonus_plunder_repel.png", true);
 			blocker.title = warning;
 			$('#game_body')[0].append(blocker);
@@ -233,8 +222,7 @@ let cardGame = {
 				dragdrop: true,
 				minimize: true,
 				resize : true,
-				//ask: i18n('Boxes.cardGame.HelpLink'),
-				//settings: 'cardGame.ShowSettingsButton()'
+
 			});
 		}
 		let dmg = {}
@@ -285,7 +273,6 @@ let cardGame = {
 		let teeth=`<img style="height:25px" src=${srcLinks.get("/shared/icons/reward_icons/reward_icon_halloween_teeth.png",true)}>`
 		h +=`</tr><tr><td style="text-align:right"><img style="height:40px" src=${srcLinks.get("/shared/seasonalevents/halloween/event/halloween_card_enemy_reward_card_icon.png",true)}></td style="text-align:left"><td>${cardGame.currencySpent.ability+teeth}</td>`;
 		h +=`<td style="text-align:right"><img style="height:40px" src=${srcLinks.get("/shared/seasonalevents/halloween/event/halloween_life_option_2.png",true)}></td><td style="text-align:left">${cardGame.currencySpent.heal+teeth}</td>`;
-		//h +=`<td style="text-align:right;font-size:27px">♻️</td><td style="text-align:left">${cardGame.currencySpent.redraw+teeth}</td>`;
 		h +=`<td style="text-align:right"><img style="height:30px" src="${srcLinks.get("/shared/seasonalevents/halloween/event/halloween_card_enemy_reward_card_icon.png",true)}"><img style="margin-left: -20px;height: 19px;margin-top: 10px;" src="${srcLinks.get("/shared/gui/pvp_arena/hud/pvp_arena_icon_refresh.png",true)}"></td><td style="text-align:left">${cardGame.currencySpent.redraw+teeth}</td>`;
 		h +=`</tr></table><table class="foe-table">`;
 		h +=`<tr><th></th><th>${i18n('Boxes.cardGame.Attack')}</th><th>${i18n('Boxes.cardGame.Bonus')}</th></tr>`;
@@ -303,10 +290,7 @@ let cardGame = {
 			h+=`</tr>`;
 		}
 		h+='</table>';
-		/*for (let r in cardGame.rewardcount) {
-			if (!cardGame.rewardcount[r]) continue;
-			h += `<img style="height:40px" src="${srcLinks.get(`/shared/icons/reward_icons/reward_icon_${r}.png`,true)}">` + cardGame.rewardcount[r] + `&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`
-		} */
+
 		$('#cardGameDialogBody').html(h);
 	},
 }
