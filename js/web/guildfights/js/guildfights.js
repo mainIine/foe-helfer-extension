@@ -240,12 +240,7 @@ let GuildFights = {
 
 		if (content === 'history')
 		{
-			await GuildFights.db.history.put({ 
-					gbground: GuildFights.CurrentGBGRound, 
-					sumNegotiations: data.sumNegotiations, 
-					sumBattles: data.sumBattles, 
-					participation: data.participation 
-				});
+			await GuildFights.db.history.put({ gbground: GuildFights.CurrentGBGRound, sumNegotiations: data.sumNegotiations, sumBattles: data.sumBattles, participation: data.participation });
 		}
 
 		if (content === 'player')
@@ -658,20 +653,19 @@ let GuildFights = {
 
 			let fightAddOn = '',
 				negotaionAddOn = '',
-				attritionAddOn = '',
 				diffNegotiations = 0,
 				diffBattles = 0,
 				diffAttr = 0,
 				newProgressClass = '',
 				change = false;
 
-			// is there an older snapshot available?
+			// gibt es einen älteren Snapshot?
 			if (GuildFights.PrevAction !== null && histView === false)
 			{
 
 				let playerOld = GuildFights.PrevAction.find(p => (p['player_id'] === playerNew['player_id']));
 
-				// Is there any data on this player?
+				// gibt es zu diesem Spieler Daten?
 				if (playerOld !== undefined)
 				{
 
@@ -692,7 +686,7 @@ let GuildFights = {
 					if (playerOld['attrition'] < playerNew['attrition'])
 					{
 						diffAttr = playerNew['attrition'] - playerOld['attrition'];
-						attritionAddOn = ' <small class="text-success">&#8593; ' + diffAttr + '</small>';
+						fightAddOn = ' <small class="text-success">&#8593; ' + diffAttr + '</small>';
 						change = true;
 					}
 				}
@@ -700,18 +694,7 @@ let GuildFights = {
 
 			if ((change === true || newRound === true) && GuildFights.GBGHistoryView === false)
 			{
-				await GuildFights.UpdateDB('player', { 
-						gbground: GuildFights.CurrentGBGRound, 
-						player_id: playerNew['player_id'], 
-						name: playerNew['name'], 
-						battles: playerNew['battlesWon'], 
-						negotiations: playerNew['negotiationsWon'], 
-						attrition: playerNew['attrition'], 
-						diffbat: diffBattles, 
-						diffneg: diffNegotiations, 
-						diffattr: diffAttr,
-						time: moment().unix() 
-					});
+				await GuildFights.UpdateDB('player', { gbground: GuildFights.CurrentGBGRound, player_id: playerNew['player_id'], name: playerNew['name'], battles: playerNew['battlesWon'], negotiations: playerNew['negotiationsWon'], diffbat: diffBattles, diffneg: diffNegotiations, time: moment().unix() });
 				updateDetailView = true;
 			}
 
@@ -741,7 +724,7 @@ let GuildFights = {
 			b.push('</td>');
 
 			b.push('<td class="text-center">');
-			b.push(playerNew['attrition'] + attritionAddOn);
+			b.push(playerNew['attrition'] + fightAddOn);
 			b.push('</td>');
 
 			b.push('<td></td>');
