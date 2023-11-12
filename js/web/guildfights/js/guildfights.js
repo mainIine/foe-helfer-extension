@@ -43,7 +43,7 @@ FoEproxy.addHandler('GuildBattlegroundStateService', 'getState', (data, postData
 
 			GuildFights.HandlePlayerLeaderboard(data.responseData['playerLeaderboardEntries']);
 		}
-	},150)
+	},500)
 });
 
 FoEproxy.addHandler('RankingService', 'searchRanking', (data, postData) => {
