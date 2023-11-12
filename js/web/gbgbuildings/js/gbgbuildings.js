@@ -33,7 +33,7 @@ FoEproxy.addHandler('GuildBattlegroundBuildingService', 'getBuildings', (data, p
 	
 	GBGBuildings.Timeout.B = setTimeout(() => {
 		GBGBuildings.clearTO("B")
-	}, 200);
+	}, 500);
 });
 
 FoEproxy.addMetaHandler('battleground_buildings',(data,postData) => {
@@ -49,7 +49,7 @@ FoEproxy.addHandler('ClanService', 'getTreasury', (data, postData) => {
 	
 	GBGBuildings.Timeout.T = setTimeout(() => {
 		GBGBuildings.clearTO("T")
-	}, 200);
+	}, 350);
 });
 
 let GBGBuildings = {
@@ -71,8 +71,10 @@ let GBGBuildings = {
 	free:0,
 	costs:{},
 	buildings:[],
-	target:80,
-	max:80,
+	settings: {
+		target:80,
+		max:80
+	},
 	BuildingData:{},
 
 	clearTO:(X)=>{
@@ -115,22 +117,32 @@ let GBGBuildings = {
 					}
 				}
 			}
-			let rel=0;
-			let tot=0;
+			let rel=0,
+				abs=0,
+				avg=0,
+				num=Object.keys(costs).length,
+			 	max=0;
 			for (c in costs) {
 				let r=costs[c]/GBGBuildings.treasury[c];
-				if (r>1) r=100;
+				num++;
+				avg += r/num;
 				rel += r;
-				tot += costs[c];
+				abs += costs[c];
+				max = r>max ? r : max;
 			}
 			s["needed"]=needed;
 			s["keep"]=keep;
 			s["relCosts"]=rel;
-			s["absCosts"]=tot;
-		}		
-		sets.sort((a,b)=> b.block-a.block + a.relCosts-b.relCosts)
+			s["maxCosts"]=max;
+			s["avgCosts"]=avg;
+			s["absCosts"]=abs;
+		}
+		let sortby = "maxCosts"
+		sets.sort((a,b)=> a.absCosts - b.absCosts);
+		sets.sort((a,b)=> b.block-a.block + a[sortby]-b[sortby])
 
 		for (let i = 0; i<sets.length; i++) {
+			if (sets[i].maxCosts>1) sets[i]["ignore"]=true;
 			if (sets[i].ignore) continue;
 			for (let j = i+1; j<sets.length; j++) {
 				if (sets[j].ignore) continue;
@@ -177,7 +189,7 @@ let GBGBuildings = {
 				if (b=="free") continue;
 				h+=`<img class="building keep" src="${srcLinks.get("/guild_battlegrounds/hud/guild_battlegrounds_sector_buildings_"+b+".png",true)}" title="${GBGBuildings.BuildingData[b].name}">`
 			}
-			h+=`</td><td>${s.block}%</td><td title="${i18n('Boxes.GBGBuildings.relativeCosts')}">${s.relCosts.toPrecision(2)}</td><td title="${i18n('Boxes.GBGBuildings.absoluteCosts')}">${s.absCosts}</td></tr>`;
+			h+=`</td><td>${s.block}%</td><td title="${i18n('Boxes.GBGBuildings.relativeCosts')}">${s[sortby].toPrecision(2)}</td><td title="${i18n('Boxes.GBGBuildings.absoluteCosts')}">${s.absCosts}</td></tr>`;
 		}
 		h+='</table>';
 		$('#GBGBuildingsBody').html(h);
@@ -187,12 +199,12 @@ let GBGBuildings = {
 		let sets={};
 		const blockTotal = (arr)=> {
 			let s = arr.map(x=> GBGBuildings.block[x]).reduce((a,b)=>a+b,0);
-			if (s>GBGBuildings.max) return GBGBuildings.max;
+			if (s>GBGBuildings.settings.max) return GBGBuildings.settings.max;
 			return s;
 		}
 		let current = blockTotal(GBGBuildings.buildings);
 		let num = GBGBuildings.buildings.length;
-		if (current >= GBGBuildings.target) return []
+		if (current >= GBGBuildings.settings.target) return []
 		let b = [...Object.keys(GBGBuildings.costs).filter(value => Object.keys(GBGBuildings.block).includes(value)),"free"]
 		let one = b.map(x=>[x]);
 		let two=[];
