@@ -79,13 +79,13 @@ FoEproxy.addHandler('CardGameService', 'all', (data, postData) => {
 		}
 	}
 	if (["useCard"].includes(data.requestMethod)) {
-		cardGame.level += 1;
+		if (data.responseData?.nodeUpdates?.length>0 && data.responseData.playerState.state.value != "level_completed") cardGame.level += 1;
 	}
 	if (["useCard","finishCardBuying"].includes(data.requestMethod)) {
 		cardGame.isLastLevel = cardGame.nodes[data.responseData.playerState.currentNodeId].nextNodeIds.length == 0;
 		if (data.responseData?.nodeUpdates?.length>0) cardGame.enemy = data.responseData.nodeUpdates[data.responseData.nodeUpdates.length-1].enemy;
 		if (data.responseData?.playerState?.cardShop?.buyOptions) cardGame.showWarning(undefined);
-		cardGame.health = data.responseData.playerState.currentHealth;
+		cardGame.health = data.responseData.playerState.currentHealth || 0;
 		cardGame.cardsLeft = data.responseData.playerState.drawPileCardIds;
 		cardGame.card = cardGame.cards[data.responseData.playerState.handCardIds[0]];
 		cardGame.cardCost=0;
@@ -126,6 +126,7 @@ FoEproxy.addHandler('RewardService', 'collectRewardSet', (data, postData) => {
 	for (let r of data.responseData.reward.rewards) {
 		if (Object.keys(cardGame.rewardcount).includes(r.iconAssetName)) cardGame.rewardcount[r.iconAssetName] += r.amount;
 	}
+	cardGame.showCardsList();
 });
 
 let cardGame = {
@@ -281,7 +282,7 @@ let cardGame = {
 			h+=`<td title="${cardGame.cards[c].description}">`;
 			h+=`<div class="cardtop ${cardGame.cards[c].cardFactionId == cardGame.enemy.card.abilities[1]?.factionId ? 'highlightWeak':""}" style="background-image:url('${srcLinks.get("/shared/seasonalevents/halloween/event/"+cardGame.cards[c].assetName+".png",true)}')"></div></td>`;
 			let highlight=`class="cardattack" style="background-image:url('${srcLinks.get("/shared/seasonalevents/halloween/event/"+cardGame.cards[c].assetName+".png",true)}')"`
-			h+=`<td><div ${highlight}>${cardGame.cards[c]?.cardType?.value=="ability" ? dmg[c]["min"] + (dmg[c]["max"] > dmg[c]["min"] ? " - " + dmg[c]["max"]:"") : (-cardGame.cards[c].abilities[0].maxValue) + " - " + (-cardGame.cards[c].abilities[0].minValue)}</div></td>`;
+			h+=`<td><div ${highlight}>${cardGame.cards[c]?.cardType?.value=="ability" ? dmg[c]["min"] + (dmg[c]["max"] > dmg[c]["min"] ? ((dmg[c].min+""+dmg[c].max).length>2?"-":" - ") + dmg[c]["max"]:"") : (-cardGame.cards[c].abilities[0].maxValue) + " - " + (-cardGame.cards[c].abilities[0].minValue)}</div></td>`;
 			highlight="";
 			if (cardGame.cards[c]?.cardType?.value!="ability" && cardGame.cards[c].abilities?.[1]?.factionId) {
 				highlight = `class="cardbonus ${(cardGame.cards[c].abilities[1]?.factionId == cardGame.enemy.card.cardFactionId) ? 'highlightStrong':""}" style="background-image:url('${srcLinks.get("/shared/seasonalevents/halloween/event/"+cardGame.cards[c].assetName+".png",true)}')"`
