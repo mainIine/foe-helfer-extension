@@ -277,7 +277,7 @@ let cardGame = {
 		h +=`<tr><td style="text-align:center"><img style="height:40px" src=${srcLinks.get("/shared/seasonalevents/halloween/event/halloween_card_enemy_deck_icon.png",true)}>${cardGame.level}</td>`;
 		h +=`<td style="text-align:center"><img style="height:40px" src=${srcLinks.get("/shared/seasonalevents/halloween/event/halloween_card_player_health_icon.png",true)}>${cardGame.health}</td>`;
 		h +=`<td style="text-align:center"><img style="height:40px" src=${srcLinks.get("/shared/icons/reward_icons/reward_icon_halloween_teeth.png",true)}>${Object.values(cardGame.currencySpent).reduce((a, b) => a + b, 0)}</td>`;
-		h +=`<td colspan="3">`;
+		h +=`<td colspan="3" style="text-align:center">`;
 		for (let r in cardGame.rewardcount) {
 			if (!cardGame.rewardcount[r]) continue;
 			h += `<img style="height:40px" src="${srcLinks.get(`/shared/icons/reward_icons/reward_icon_${r}.png`,true)}">` + cardGame.rewardcount[r] + `&nbsp;&nbsp;`
