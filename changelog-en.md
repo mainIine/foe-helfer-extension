@@ -1,5 +1,22 @@
 ## Changelog - Extension
 
+##### 3.4.0.0
+**New**
+- GBG Buildings optmizer:
+	- provides a list of suitable combinations of province buildings that have the least impact on treasury
+
+**Update**
+- Card Game:
+	- couple data collection added (teeth spent in run, current level, current health, keys gotten)
+
+- GBG contribution table:
+	- added Attrition Column
+
+**BugFix**
+- GBG province list and map:
+	- code adapted to changed data structure received from server (thanks Arklur!)
+
+---
 ##### 3.3.0.0
 **New**
 - Card Game (Halloween Event):
