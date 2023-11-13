@@ -29,6 +29,7 @@ FoEproxy.addHandler('CardGameService', 'all', (data, postData) => {
 	if (data.requestMethod=="buyCard") {
 		cardGame.currencySpent.ability += cardGame.cardCost;
 		cardGame.cardCost = data.responseData.cost.resources.halloween_teeth;
+		cardGame.freshbuys = data.responseData.buyOptions.filter(x=>!x.isAvailable).map(x=>x.card.id);
 	}
 	if (data.requestMethod=="redrawCard") {
 		cardGame.cardOptions = data.responseData.handCardIds;
@@ -89,7 +90,9 @@ FoEproxy.addHandler('CardGameService', 'all', (data, postData) => {
 		cardGame.health = data.responseData.playerState.currentHealth || 0;
 		cardGame.cardsLeft = data.responseData.playerState.drawPileCardIds;
 		cardGame.card = cardGame.cards[data.responseData.playerState.handCardIds[0]];
+		if (data.responseData.playerState.state.value == "card_buying") cardGame.card.id="none";
 		cardGame.cardCost=0;
+		cardGame.freshbuys=[];
 	}
 	if (data.requestMethod=="selectRedrawnCard") {
 		cardGame.health = data.responseData.currentHealth;
@@ -108,6 +111,7 @@ FoEproxy.addHandler('CardGameService', 'all', (data, postData) => {
 	}
 	
 	if (["getHealthOffers","buyCard"].includes(data.requestMethod)) {
+		cardGame.showCardsList();
 		return
 	}
 
@@ -146,6 +150,7 @@ let cardGame = {
 	maxHealth:14,
 	cardCost:0,
 	cardOptions:[],
+	freshbuys:[],
 
 	init:() => {
 		cardGame.rewardcount= {
@@ -228,7 +233,8 @@ let cardGame = {
 			});
 		}
 		let dmg = {}
-		let cards = cardGame.cardsLeft.concat(cardGame.card.id);
+		let cards = cardGame.cardsLeft.concat(cardGame.freshbuys)
+		cards = cardGame.card.id=="none" ? cards : cards.concat(cardGame.card.id);
 		for (let c of cards) {
 			if (!dmg[c]) {
 				dmg[c]={}
