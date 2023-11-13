@@ -79,7 +79,8 @@ FoEproxy.addHandler('CardGameService', 'all', (data, postData) => {
 		}
 	}
 	if (["useCard"].includes(data.requestMethod)) {
-		if (data.responseData?.nodeUpdates?.length>0 && data.responseData.playerState.state.value != "level_completed") cardGame.level += 1;
+		if (data.responseData?.nodeUpdates?.length==2 || 
+			(data.responseData?.nodeUpdates?.length==1 && data.responseData.playerState.state.value == "card_buying")) cardGame.level += 1;
 	}
 	if (["useCard","finishCardBuying"].includes(data.requestMethod)) {
 		cardGame.isLastLevel = cardGame.nodes[data.responseData.playerState.currentNodeId].nextNodeIds.length == 0;
