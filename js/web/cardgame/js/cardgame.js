@@ -158,7 +158,7 @@ let cardGame = {
 			ability:0,
 			redraw:0,
 		};
-		cardCost=0
+		cardGame.cardCost=0
 	},
 
 	showWarning: (warning) => {
