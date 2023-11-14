@@ -122,20 +122,23 @@ let GBGBuildings = {
 				avg=0,
 				num=Object.keys(costs).length,
 			 	max=0;
+				title=[];
 			for (c in costs) {
 				let r=costs[c]/GBGBuildings.treasury[c];
-				num++;
 				avg += r/num;
 				rel += r;
 				abs += costs[c];
 				max = r>max ? r : max;
+				title.push({good:c,rel:r})
 			}
+
 			s["needed"]=needed;
 			s["keep"]=keep;
 			s["relCosts"]=rel;
 			s["maxCosts"]=max;
 			s["avgCosts"]=avg;
 			s["absCosts"]=abs;
+			s["title"] = title.sort((a,b)=>b.rel-a.rel).map(x=>HTML.i18nReplacer(i18n('Boxes.GBGBuildings.relativeCosts'),{good:GoodsData[x.good].name,amount:(x.rel*100).toPrecision(2)})).join("\n");
 		}
 		let sortby = "maxCosts"
 		sets.sort((a,b)=> a.absCosts - b.absCosts);
@@ -189,7 +192,7 @@ let GBGBuildings = {
 				if (b=="free") continue;
 				h+=`<img class="building keep" src="${srcLinks.get("/guild_battlegrounds/hud/guild_battlegrounds_sector_buildings_"+b+".png",true)}" title="${GBGBuildings.BuildingData[b].name}">`
 			}
-			h+=`</td><td>${s.block}%</td><td title="${i18n('Boxes.GBGBuildings.relativeCosts')}">${s[sortby].toPrecision(2)}</td><td title="${i18n('Boxes.GBGBuildings.absoluteCosts')}">${s.absCosts}</td></tr>`;
+			h+=`</td><td>${s.block}%</td><td title="${s.title}">${(s[sortby]*100).toPrecision(2)}%</td><td title="${i18n('Boxes.GBGBuildings.absoluteCosts')}">${s.absCosts}</td></tr>`;
 		}
 		h+='</table>';
 		$('#GBGBuildingsBody').html(h);
