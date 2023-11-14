@@ -35,6 +35,7 @@ FoEproxy.addHandler('CardGameService', 'all', (data, postData) => {
 		cardGame.cardOptions = data.responseData.handCardIds;
 		cardGame.currencySpent.redraw += cardGame.redraw;
 		cardGame.redraw = data.responseData.redrawCost.resources.halloween_teeth;
+		cardGame.card["nohighlight"]=true;
 	}
 	if (data.requestMethod=="getOverview") {
 		cardGame.cardCost=0;
@@ -44,7 +45,7 @@ FoEproxy.addHandler('CardGameService', 'all', (data, postData) => {
 			cardGame.health = data.responseData.ongoingGame.playerState.currentHealth;
 			cardGame.maxHealth = data.responseData.ongoingGame.playerState.maxHealth;
 			cardGame.cardsLeft = data.responseData.ongoingGame.playerState.drawPileCardIds;
-			cardGame.card = cardGame.cards[data.responseData.ongoingGame.playerState.handCardIds[0]];
+			cardGame.card = {...cardGame.cards[data.responseData.ongoingGame.playerState.handCardIds[0]]};
 			cardGame.level = Object.values(cardGame.nodes).filter(x => !!x.enemy).length;
 			cardGame.isLastLevel = cardGame.nodes[data.responseData.ongoingGame.playerState.currentNodeId].nextNodeIds.length == 0;
 			cardGame.enemy = cardGame.nodes[data.responseData.ongoingGame.playerState.currentNodeId].enemy;
@@ -64,7 +65,7 @@ FoEproxy.addHandler('CardGameService', 'all', (data, postData) => {
 			cardGame.nodes = data.responseData.state.level.nodes;
 			cardGame.health = data.responseData.state.playerState.currentHealth;
 			cardGame.cardsLeft = data.responseData.state.playerState.drawPileCardIds;
-			cardGame.card = cardGame.cards[data.responseData.state.playerState.handCardIds[0]];
+			cardGame.card = {...cardGame.cards[data.responseData.state.playerState.handCardIds[0]]};
 			cardGame.level = 1;
 			cardGame.isLastLevel = cardGame.nodes[data.responseData.state.playerState.currentNodeId].nextNodeIds.length == 0;
 			cardGame.enemy = cardGame.nodes[data.responseData.state.playerState.currentNodeId].enemy;
@@ -89,15 +90,18 @@ FoEproxy.addHandler('CardGameService', 'all', (data, postData) => {
 		if (data.responseData?.playerState?.cardShop?.buyOptions) cardGame.showWarning(undefined);
 		cardGame.health = data.responseData.playerState.currentHealth || 0;
 		cardGame.cardsLeft = data.responseData.playerState.drawPileCardIds;
-		cardGame.card = cardGame.cards[data.responseData.playerState.handCardIds[0]];
-		if (data.responseData.playerState.state.value == "card_buying") cardGame.card.id="none";
+		cardGame.card = {...cardGame.cards[data.responseData.playerState.handCardIds[0]]};
+		if (data.responseData.playerState.state.value == "card_buying") {
+			cardGame.card.id="used";
+			cardGame.enemy.card.cardFactionId = "replaced"
+		}
 		cardGame.cardCost=0;
 		cardGame.freshbuys=[];
 	}
 	if (data.requestMethod=="selectRedrawnCard") {
 		cardGame.health = data.responseData.currentHealth;
 		cardGame.cardsLeft = data.responseData.drawPileCardIds;
-		cardGame.card = cardGame.cards[data.responseData.handCardIds[0]];
+		cardGame.card = {...cardGame.cards[data.responseData.handCardIds[0]]};
 		cardGame.cardOptions = [];
 		cardGame.redraw = data.responseData.redrawCost.resources.halloween_teeth;
 	}
@@ -234,7 +238,7 @@ let cardGame = {
 		}
 		let dmg = {}
 		let cards = cardGame.cardsLeft.concat(cardGame.freshbuys)
-		cards = cardGame.card.id=="none" ? cards : cards.concat(cardGame.card.id);
+		cards = cardGame.card.id=="used" ? cards : cards.concat(cardGame.card.id);
 		for (let c of cards) {
 			if (!dmg[c]) {
 				dmg[c]={}
@@ -285,7 +289,7 @@ let cardGame = {
 		h +=`</tr></table><table class="foe-table">`;
 		h +=`<tr><th></th><th>${i18n('Boxes.cardGame.Attack')}</th><th>${i18n('Boxes.cardGame.Bonus')}</th></tr>`;
 		for (let c of cards) {
-			h+=`<tr ${cardGame.cardOptions.includes(c) ? 'class="highlightOptions"': c == cardGame.card.id ? 'class="highlight"':""}>`;
+			h+=`<tr ${cardGame.cardOptions.includes(c) ? 'class="highlightOptions"': (c == cardGame.card.id && !cardGame.card.nohighlight) ? 'class="highlight"':""}>`;
 			h+=`<td title="${cardGame.cards[c].description}">`;
 			h+=`<div class="cardtop ${cardGame.cards[c].cardFactionId == cardGame.enemy.card.abilities[1]?.factionId ? 'highlightWeak':""}" style="background-image:url('${srcLinks.get("/shared/seasonalevents/halloween/event/"+cardGame.cards[c].assetName+".png",true)}')"></div></td>`;
 			let highlight=`class="cardattack" style="background-image:url('${srcLinks.get("/shared/seasonalevents/halloween/event/"+cardGame.cards[c].assetName+".png",true)}')"`
