@@ -346,7 +346,7 @@
     "Boxes.GBGBuildings.toBuild":"Zu bauen",
     "Boxes.GBGBuildings.totalChance":"Chance",
     "Boxes.GBGBuildings.Costs":"Kosten",
-    "Boxes.GBGBuildings.relativeCosts":"__amount__% vom __good__ Vorrat",
+    "Boxes.GBGBuildings.relativeCosts":"__amount__% vom __good__ Vorrat (__era__)",
     "Boxes.GBGBuildings.absoluteCosts":"absolute Kosten",
     "Boxes.General.Export": "Export",
     "Boxes.General.ExportCSV": "Exportieren als CSV",
