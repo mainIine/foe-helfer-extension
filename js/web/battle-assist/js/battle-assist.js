@@ -76,8 +76,8 @@ FoEproxy.addHandler('BattlefieldService', 'getArmyPreview', (data, postData) => 
 FoEproxy.addHandler('BattlefieldService', 'startByBattleType', (data, postData) => {
     
     if(!Settings.GetSetting('ShowArmyAdvice'))	return;
-    let bt=data.responseData.battleType.type;
-    if (bt=="pvp_arena" || bt=="pvp" || bt=="campaign") return;
+    let bt=data.responseData?.battleType?.type;
+    if (!bt || bt=="pvp_arena" || bt=="pvp" || bt=="campaign") return;
 
     $('#battleAssistArmyAdvice').remove();
     if (!data.responseData.state.winnerBit) return;
