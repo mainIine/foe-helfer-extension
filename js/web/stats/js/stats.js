@@ -1371,7 +1371,7 @@ let Stats = {
 			else {
 				let url	= srcLinks.get("/shared/unit_portraits/armyuniticons_50x50/armyuniticons_50x50_"+rewardInfo.subType+".jpg", true);
 				pointImage = `<img src="${url}" style="width: 45px; height: 45px; margin-right: 4px;">`
-				console.log(rewardInfo)
+				//console.log(rewardInfo)
 				return {
 					iconClass,
 					pointImage,
