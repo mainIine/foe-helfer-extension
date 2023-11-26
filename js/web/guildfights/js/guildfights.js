@@ -752,7 +752,7 @@ let GuildFights = {
 				player: playerNew['name'],
 				negotiationsWon: playerNew['negotiationsWon'],
 				battlesWon: playerNew['battlesWon'],
-				battlesWon: playerNew['attrition'],
+				attrition: playerNew['attrition'],
 				total: both
 			})
 		}
@@ -1622,7 +1622,7 @@ let GuildFights = {
 
 				let r = GuildFights.PlayerBoxContent[i];
 				console.log(r);
-				csv.push(`${r['player_id']};${r['player']};${r['negotiationsWon']};${r['battlesWon']};${r['total']}`);
+				csv.push(`${r['player_id']};${r['player']};${r['negotiationsWon']};${r['battlesWon']};${r['attrition']};${r['total']}`);
 			}
 
 			blob = new Blob([BOM + csv.join('\r\n')], {
