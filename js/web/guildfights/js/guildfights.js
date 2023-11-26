@@ -144,7 +144,7 @@ let GuildFights = {
 
 		if (GuildFights.InjectionLoaded === false) {
 			FoEproxy.addWsHandler('GuildBattlegroundService', 'all', data => {
-				if (!data['responseData'][0]) return
+				if (!data?.['responseData'][0]) return
 				let Pid = data.responseData[0].id || 0;
 				for (let x in data.responseData[0]) {
 					if (!data.responseData[0].hasOwnProperty(x) || x === "id") continue;
