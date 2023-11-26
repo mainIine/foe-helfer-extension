@@ -1134,6 +1134,7 @@ let GuildFights = {
 		}
 
 		progress.push('<th>' + i18n('Boxes.GuildFights.Progress') + '</th>');
+		progress.push('<th>' + i18n('Boxes.GuildFights.RequiredProgress') + '</th>');
 		progress.push('</tr></thead><tbody>');
 
 		for (let i in mapdata) {
@@ -1169,6 +1170,8 @@ let GuildFights = {
 							let color = ProvinceMap.getSectorColors(provinceProgress[y]['participantId']);
 							progress.push(`<span class="attack attacker-${provinceProgress[y]['participantId']} gbg-${color['cid']}">${provinceProgress[y]['progress']}</span>`);
 						}
+
+						progress.push('</td><td data-field="' + id + '" class="required-progress">' + mapdata[i]['conquestProgress'][0].maxProgress + '</td>');
 					}
 				}
 			}
@@ -1194,6 +1197,8 @@ let GuildFights = {
 
 					progress.push(`<span class="attack attacker-${provinceProgress[y]['participantId']} gbg-${color['cid']}">${provinceProgress[y]['progress']}</span>`);
 				}
+
+				progress.push('</td><td data-field="' + id + '" class="required-progress">' + mapdata[i]['conquestProgress'][0].maxProgress + '</td>');
 			}
 		}
 
