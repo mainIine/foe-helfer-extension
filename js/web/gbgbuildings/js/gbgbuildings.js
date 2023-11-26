@@ -201,7 +201,7 @@ let GBGBuildings = {
 	createSets:()=>{
 		let sets={};
 		const blockTotal = (arr)=> {
-			let s = arr.map(x=> GBGBuildings.block[x]).reduce((a,b)=>a+b,0);
+			let s = arr.map(x=> GBGBuildings.block[x]||0).reduce((a,b)=>a+b,0);
 			if (s>GBGBuildings.settings.max) return GBGBuildings.settings.max;
 			return s;
 		}
