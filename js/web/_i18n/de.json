@@ -431,6 +431,7 @@
     "Boxes.GuildFights.Progress": "Fortschritt",
     "Boxes.GuildFights.ProgressFilterDesc": "Filtert alle Mitglieder mit vorhandenem neuen Fortschritt.",
     "Boxes.GuildFights.Province": "Provinz",
+    "Boxes.GuildFights.RequiredProgress": "Benötigt",
     "Boxes.GuildFights.SaveAlert": "Provinz __provinceName__ wird entsperrt",
     "Boxes.GuildFights.SaveMessage.Desc": "Der Alarm für die Provinz __provinceName__ wurde gespeichert!",
     "Boxes.GuildFights.SaveMessage.Title": "Gespeichert!",
