@@ -42,6 +42,12 @@
 		"sort": 6
 	},
 	{
+		"name": "ShowBuildingsExpired",
+		"status": true,
+		"group": "Boxes",
+		"sort": 6
+	},
+	{
 		"name": "ShowRougeUnitWarning",
 		"status": true,
 		"group": "Boxes",
