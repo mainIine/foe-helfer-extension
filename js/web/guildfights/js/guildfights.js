@@ -1534,9 +1534,12 @@ let GuildFights = {
 						$('<td />').attr({
 							field: `${data['id']}-${data['ownerId']}`,
 							class: 'guild-progress'
-						})
-					)
-				);
+						}),
+						$('<td />').attr({
+							field: `${data['id']}-${data['ownerId']}`,
+							class: 'required-progress'
+						}).text(data['conquestProgress'][0].maxProgress))
+					);
 
 				cell = $(`#province-${data['id']}`);
 			}
