@@ -752,7 +752,7 @@ let GuildFights = {
 				player: playerNew['name'],
 				negotiationsWon: playerNew['negotiationsWon'],
 				battlesWon: playerNew['battlesWon'],
-				battlesWon: playerNew['attrition'],
+				attrition: playerNew['attrition'],
 				total: both
 			})
 		}
@@ -1134,6 +1134,7 @@ let GuildFights = {
 		}
 
 		progress.push('<th>' + i18n('Boxes.GuildFights.Progress') + '</th>');
+		progress.push('<th>' + i18n('Boxes.GuildFights.RequiredProgress') + '</th>');
 		progress.push('</tr></thead><tbody>');
 
 		for (let i in mapdata) {
@@ -1169,6 +1170,8 @@ let GuildFights = {
 							let color = ProvinceMap.getSectorColors(provinceProgress[y]['participantId']);
 							progress.push(`<span class="attack attacker-${provinceProgress[y]['participantId']} gbg-${color['cid']}">${provinceProgress[y]['progress']}</span>`);
 						}
+
+						progress.push('</td><td data-field="' + id + '" class="required-progress">' + mapdata[i]['conquestProgress'][0].maxProgress + '</td>');
 					}
 				}
 			}
@@ -1194,6 +1197,8 @@ let GuildFights = {
 
 					progress.push(`<span class="attack attacker-${provinceProgress[y]['participantId']} gbg-${color['cid']}">${provinceProgress[y]['progress']}</span>`);
 				}
+
+				progress.push('</td><td data-field="' + id + '" class="required-progress">' + mapdata[i]['conquestProgress'][0].maxProgress + '</td>');
 			}
 		}
 
@@ -1529,9 +1534,12 @@ let GuildFights = {
 						$('<td />').attr({
 							field: `${data['id']}-${data['ownerId']}`,
 							class: 'guild-progress'
-						})
-					)
-				);
+						}),
+						$('<td />').attr({
+							field: `${data['id']}-${data['ownerId']}`,
+							class: 'required-progress'
+						}).text(data['conquestProgress'][0].maxProgress))
+					);
 
 				cell = $(`#province-${data['id']}`);
 			}
@@ -1617,7 +1625,7 @@ let GuildFights = {
 
 				let r = GuildFights.PlayerBoxContent[i];
 				console.log(r);
-				csv.push(`${r['player_id']};${r['player']};${r['negotiationsWon']};${r['battlesWon']};${r['total']}`);
+				csv.push(`${r['player_id']};${r['player']};${r['negotiationsWon']};${r['battlesWon']};${r['attrition']};${r['total']}`);
 			}
 
 			blob = new Blob([BOM + csv.join('\r\n')], {
