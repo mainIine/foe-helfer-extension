@@ -1477,7 +1477,7 @@ let MainParser = {
 	 * @param Items
 	 */
 	UpdateInventory: (Items) => {
-		MainParser.Inventory = {};
+		//MainParser.Inventory = {};
 		for (let i = 0; i < Items.length; i++) {
 			let ID = Items[i]['id'];
 			MainParser.Inventory[ID] = Items[i];
@@ -1504,16 +1504,10 @@ let MainParser = {
 	 * @param Item
 	 */
 	UpdateInventoryAmount: (Item) => {
-		try {
 			let ID = Item[0],
 			Amount = Item[1];
 			MainParser.Inventory[ID].inStock = Amount;
 			Kits.UpdateBoxIfVisible();
-		} catch (error) {
-			console.log(error);
-			console.log(Item);
-			console.log({...MainParser.Inventory});
-		} 
 	},
 
 
