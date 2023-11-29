@@ -194,7 +194,7 @@
             rtn = assignNumberToString(val);
 
         } else {
-            rtn = assignNumberToString(val.toLowerCase());
+            rtn = assignNumberToString((``+val).toLowerCase());
         }
 
         if (isNaN(rtn)) {
