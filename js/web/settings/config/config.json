@@ -61,7 +61,7 @@
 	},
 	{
 		"name": "ShowGBGBuildings",
-		"status": true,
+		"status": false,
 		"group": "Boxes",
 		"sort": 7
 	},
