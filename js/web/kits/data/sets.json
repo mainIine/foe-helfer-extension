@@ -698,7 +698,8 @@
 			"fragment#silver_upgrade_kit_WIN23A",
 			"golden_upgrade_kit_WIN23A",
 			"fragment#golden_upgrade_kit_WIN23A",
-			"silver_selection_kit_WIN23A",
+			"silver_selection_kit_WIN23A",			
+			"fragment#silver_selection_kit_WIN23A"			,
 			"golden_selection_kit_WIN23A",			
 			"fragment#golden_selection_kit_WIN23A"			
 		]
