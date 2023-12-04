@@ -15,6 +15,8 @@
 **BugFix**
 - GBG province list and map:
 	- code adapted to changed data structure received from server (thanks Arklur!)
+- General:
+	- randomly occuring problem with loading the local Database could lead to the helper not beeing fully functional - this should no longer happen
 
 ---
 ##### 3.3.0.0
