@@ -89,7 +89,12 @@ let IndexDB = {
 
         const db = IndexDB.db = new Dexie(primaryDBName);
         IndexDB._applyIndexSchema(db);
-        db.open();
+        db.open().catch((e) => {
+            //console.error(e);
+            setTimeout(() => {
+                IndexDB.Init(playerId);
+            }, 100);
+        });
 
         try {
             if (isNewDB) {
