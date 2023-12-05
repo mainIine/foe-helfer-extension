@@ -202,7 +202,7 @@ let Infoboard = {
 
         let c = Msg['requestClass'],
             m = Msg['requestMethod'],
-            t = Msg['responseData']['type'] || '',
+            t = Msg['responseData']?.['type'] || '',
             s = c + '_' + m + t;
 
         if (Infoboard.DebugWebSocket) {

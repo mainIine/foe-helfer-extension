@@ -42,6 +42,12 @@
 		"sort": 6
 	},
 	{
+		"name": "ShowBuildingsExpired",
+		"status": true,
+		"group": "Boxes",
+		"sort": 6
+	},
+	{
 		"name": "ShowRougeUnitWarning",
 		"status": true,
 		"group": "Boxes",
@@ -49,6 +55,12 @@
 	},
 	{
 		"name": "ShowArmyAdvice",
+		"status": false,
+		"group": "Boxes",
+		"sort": 7
+	},
+	{
+		"name": "ShowGBGBuildings",
 		"status": false,
 		"group": "Boxes",
 		"sort": 7

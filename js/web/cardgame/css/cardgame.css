@@ -23,22 +23,46 @@
 }
 
 #cardGameDialog .cardtop {
-	clip-path: inset(30px 25px 300px 30px);
-    margin: -30px -25px -300px -30px;
+	background-position: 233px -34px;
+    height: 29px;
+    width: 207px;
     z-index: -1;
     position: relative;
+    border-radius: 4px;
 }
-#cardGameDialog .cardbonus {
-    clip-path: inset(295px 45px 40px 140px);
-    margin: -295px -86px -40px -140px;
-    z-index: -1;
-    position: relative;
+
+#cardGameDialog .cardtop.highlightWeak::before {
+    display: block;
+    height: 29px;
+    width: 207px;
+    background-color: var(--background-table-error);
+    content:'';
+}
+#cardGameDialog .cardbonus, #cardGameDialog .cardattack {
+    background-position: 122px 68px;
+    height: 25px;
+    width: 33px;
+    padding-left: 41px;
+    border-radius: 4px;
+    line-height: 23px;
+    border: 2px solid #0c070e;
 }
 #cardGameDialog .cardattack {
-    clip-path: inset(295px 136px 40px 47px);
-    margin: -295px -176px -40px -47px;
-    z-index: -1;
-    position: relative;
+    background-position: 477px 68px;
+}
+
+#cardGameDialog .cardbonus.highlightStrong::before, #cardGameDialog .cardbonus.highlightWeak::before {
+    display: block;
+    height: 28px;
+    width: 79px;
+    margin-left: -41px;
+    margin-bottom: -28px;
+    background-color: var(--background-table-success);
+    content:'';
+}
+
+#cardGameDialog .cardbonus.highlightWeak::before {
+    background-color: var(--background-table-error);
 }
 
 #cardGameDialog .highlight td{
@@ -52,11 +76,22 @@
         border-left: 2px solid #ff9400;
     }
 }
+#cardGameDialog .highlightOptions td{
+	border-top: 2px solid #ff00bf;
+    border-bottom: 2px solid #ff00bf;
+    
+    &:last-child {
+        border-right: 2px solid #ff00bf;
+    }
+    &:first-child {
+        border-left: 2px solid #ff00bf;
+    }
+}
 #cardGameDialog .highlightStrong{
-    background: #15ff2c42
+    border: 2px solid var(--text-success);
 }
 #cardGameDialog .highlightWeak{
-    background: #cf0e0e52;
+    border: 2px solid var(--hud-border-error)
 }
 #cardGameDialog th{
     width:95px;
@@ -73,10 +108,14 @@
     height: 110px;
     position: absolute;
     z-index: 100;
-    background-color: #ff9400;
+    background: var(--background-btn-active);
     border-radius: 30px;
-    border: red solid 3px;
+    border: 3px solid var(--hud-border-error);
     top: calc(50vh - 39px);
     left: calc(50vw - 58px);
+}
+
+#cardGameFightBlocker:hover {
+    background: var(--background-btn-red);
 }
 

@@ -1,5 +1,24 @@
 ## Changelog - Extension
 
+##### 3.4.0.0
+**New**
+- GG Gebäude Optimierer:
+	- gibt eine Liste von Provinz-Gebäude Kombinationen die die geringste Belastung für die Gildenkasse darstellen
+
+**Update**
+- Card Game:
+	- Datenerfassung ergänzt (Ausgegebene Zähne, aktuelles Level, aktuelle LP, erhaltene Schlüssel)
+
+- GG Beteiligungstabelle:
+	- Zermürbungsspalte hinzugefügt
+
+**BugFix**
+- GG Provinz Liste und Karte:
+	- Code wurde an neue Datenstruktur der Serverübertragung angepasst (Danke Arklur!)
+- Allgemein:
+	- es konnte ein Problem beim Laden der lokalen Datenbanken auftreten, das eine Funktionsfähigkeit des Helfers beschränkte  - dies sollte nun behoben sein
+
+---
 ##### 3.3.0.0
 **New**
 - Card Game (Halloween Event):

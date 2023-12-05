@@ -17,19 +17,39 @@ FoEproxy.addHandler('CardGameService', 'all', (data, postData) => {
 		return;
 	}
 	
-	if (["redrawCard","buyCard","getHealthOffers"].includes(data.requestMethod)) {
-		cardGame.showWarning(undefined)
-		return
+	if (data.requestMethod=="getHealthOffers") {
+		cardGame.healthShop={}
+		let offers = [...data.responseData.healthOffers].sort((a,b) => a.amount-b.amount)
+		for (h of offers) {
+			let newhealth = (cardGame.health + h.amount) > cardGame.maxHealth ? cardGame.maxHealth : cardGame.health + h.amount;
+
+			if (!cardGame.healthShop[newhealth]) cardGame.healthShop[newhealth] = h.cost.resources.halloween_teeth;
+		}
+	}
+	if (data.requestMethod=="buyCard") {
+		cardGame.currencySpent.ability += cardGame.cardCost;
+		cardGame.cardCost = data.responseData.cost.resources.halloween_teeth;
+		cardGame.freshbuys = data.responseData.buyOptions.filter(x=>!x.isAvailable).map(x=>x.card.id);
+	}
+	if (data.requestMethod=="redrawCard") {
+		cardGame.cardOptions = data.responseData.handCardIds;
+		cardGame.currencySpent.redraw += cardGame.redraw;
+		cardGame.redraw = data.responseData.redrawCost.resources.halloween_teeth;
+		cardGame.card["nohighlight"]=true;
 	}
 	if (data.requestMethod=="getOverview") {
+		cardGame.cardCost=0;
 		cardGame.cards = data.responseData.cards;
 		if (data.responseData.ongoingGame) {
 			cardGame.nodes = data.responseData.ongoingGame.level.nodes;
 			cardGame.health = data.responseData.ongoingGame.playerState.currentHealth;
+			cardGame.maxHealth = data.responseData.ongoingGame.playerState.maxHealth;
 			cardGame.cardsLeft = data.responseData.ongoingGame.playerState.drawPileCardIds;
-			cardGame.card = cardGame.cards[data.responseData.ongoingGame.playerState.handCardIds[0]];
+			cardGame.card = {...cardGame.cards[data.responseData.ongoingGame.playerState.handCardIds[0]]};
+			cardGame.level = Object.values(cardGame.nodes).filter(x => !!x.enemy).length;
 			cardGame.isLastLevel = cardGame.nodes[data.responseData.ongoingGame.playerState.currentNodeId].nextNodeIds.length == 0;
 			cardGame.enemy = cardGame.nodes[data.responseData.ongoingGame.playerState.currentNodeId].enemy;
+			cardGame.redraw = data.responseData.ongoingGame.playerState.redrawCost.resources.halloween_teeth;
 		} else {
 			cardGame.cardsLeft=[];
 			cardGame.card={};
@@ -40,13 +60,17 @@ FoEproxy.addHandler('CardGameService', 'all', (data, postData) => {
 		}
 	}
 	if (data.requestMethod=="startLevel") {
+		cardGame.init();
 		if (data.responseData.state) {
 			cardGame.nodes = data.responseData.state.level.nodes;
 			cardGame.health = data.responseData.state.playerState.currentHealth;
 			cardGame.cardsLeft = data.responseData.state.playerState.drawPileCardIds;
-			cardGame.card = cardGame.cards[data.responseData.state.playerState.handCardIds[0]];
+			cardGame.card = {...cardGame.cards[data.responseData.state.playerState.handCardIds[0]]};
+			cardGame.level = 1;
 			cardGame.isLastLevel = cardGame.nodes[data.responseData.state.playerState.currentNodeId].nextNodeIds.length == 0;
 			cardGame.enemy = cardGame.nodes[data.responseData.state.playerState.currentNodeId].enemy;
+			cardGame.redraw = data.responseData.state.playerState.redrawCost.resources.halloween_teeth;
+
 		} else {
 			cardGame.cardsLeft=[];
 			cardGame.card={};
@@ -56,67 +80,104 @@ FoEproxy.addHandler('CardGameService', 'all', (data, postData) => {
 			cardGame.isLastLevel=false;
 		}
 	}
-	
+	if (["useCard"].includes(data.requestMethod)) {
+		if (data.responseData?.nodeUpdates?.length==2 || 
+			(data.responseData?.nodeUpdates?.length==1 && data.responseData.playerState.state.value == "card_buying")) cardGame.level += 1;
+	}
 	if (["useCard","finishCardBuying"].includes(data.requestMethod)) {
 		cardGame.isLastLevel = cardGame.nodes[data.responseData.playerState.currentNodeId].nextNodeIds.length == 0;
-		if(data.responseData?.nodeUpdates?.length>0) cardGame.enemy = data.responseData.nodeUpdates[data.responseData.nodeUpdates.length-1].enemy;
+		if (data.responseData?.nodeUpdates?.length>0) cardGame.enemy = data.responseData.nodeUpdates[data.responseData.nodeUpdates.length-1].enemy;
 		if (data.responseData?.playerState?.cardShop?.buyOptions) cardGame.showWarning(undefined);
-		cardGame.health = data.responseData.playerState.currentHealth;
+		cardGame.health = data.responseData.playerState.currentHealth || 0;
 		cardGame.cardsLeft = data.responseData.playerState.drawPileCardIds;
-		cardGame.card = cardGame.cards[data.responseData.playerState.handCardIds[0]];
+		cardGame.card = {...cardGame.cards[data.responseData.playerState.handCardIds[0]]};
+		if (data.responseData.playerState.state.value == "card_buying") {
+			cardGame.card.id="used";
+			cardGame.enemy.card.cardFactionId = "replaced"
+		}
+		cardGame.cardCost=0;
+		cardGame.freshbuys=[];
 	}
 	if (data.requestMethod=="selectRedrawnCard") {
 		cardGame.health = data.responseData.currentHealth;
 		cardGame.cardsLeft = data.responseData.drawPileCardIds;
-		cardGame.card = cardGame.cards[data.responseData.handCardIds[0]];
+		cardGame.card = {...cardGame.cards[data.responseData.handCardIds[0]]};
+		cardGame.cardOptions = [];
+		cardGame.redraw = data.responseData.redrawCost.resources.halloween_teeth;
 	}
 	if (data.requestMethod=="buyHealthOffer") {
 		cardGame.health = data.responseData.updatedPlayerHealth;
+		cardGame.currencySpent.heal += cardGame.healthShop[cardGame.health];
+	}
+	
+	if (["redrawCard","buyCard","getHealthOffers"].includes(data.requestMethod)) {
+		cardGame.showWarning(undefined);
+	}
+	
+	if (["getHealthOffers","buyCard"].includes(data.requestMethod)) {
+		cardGame.showCardsList();
+		return
 	}
 
 	if (cardGame.health!=0) {
 		cardGame.checkHealth();
 		cardGame.showCardsList();
 	}
-
-	
-	
 });
 
 
-FoEproxy.addHandler('CardGameService', 'selectRedrawnCard', (data, postData) => {
-	if(!Settings.GetSetting('ShowEventChest')){
-		return;
-	}	
+FoEproxy.addHandler('EventPassService', 'getPreview', (data, postData) => {
+	if (["halloween_event"].includes(data.responseData.context)) cardGame.context = data.responseData.context;
 });
 
-FoEproxy.addHandler('CardGameService', 'selectRedrawnCard', (data, postData) => {
-	if(!Settings.GetSetting('ShowEventChest')){
-		return;
-	}	
-	cardGame.health = data.responseData.currentHealth;
-	cardGame.cardsLeft = data.responseData.drawPileCardIds;
-	cardGame.card = cardGame.cards[data.responseData.handCardIds[0]];
+FoEproxy.addHandler('RewardService', 'collectRewardSet', (data, postData) => {
+	if(data.responseData.context != cardGame.context) return;
+	for (let r of data.responseData.reward.rewards) {
+		if (Object.keys(cardGame.rewardcount).includes(r.iconAssetName)) cardGame.rewardcount[r.iconAssetName] += r.amount;
+	}
+	cardGame.showCardsList();
 });
 
 let cardGame = {
+	context:"halloween_event",
 	cards:{},
 	cardsLeft:[],
 	card:{},
 	health:0,
 	enemy:{},
 	nodes:{},
+	redraw:5,
+	level:0,
 	isLastLevel:false,
+	rewardcount:{},
+	currencySpent: {},
+	maxHealth:14,
+	cardCost:0,
+	cardOptions:[],
+	freshbuys:[],
+
+	init:() => {
+		cardGame.rewardcount= {
+			halloween_bronze_key:0,
+			halloween_silver_key:0,
+			halloween_golden_key:0,
+		};
+		cardGame.currencySpent= {
+			heal:0,
+			ability:0,
+			redraw:0,
+		};
+		cardGame.cardCost=0
+	},
 
 	showWarning: (warning) => {
 		if (!warning) {
-			$('#cardGameFightBlocker').remove();
+			setTimeout(() => {$('#cardGameFightBlocker').remove()},150);
 			return;
 		}
 		if ($('#cardGameFightBlocker').length === 0) {
 			let blocker = document.createElement("img");
 			blocker.id = 'cardGameFightBlocker';
-			//blocker.classList = cardGame.event;
 			blocker.src = srcLinks.get("/city/gui/great_building_bonus_icons/great_building_bonus_plunder_repel.png", true);
 			blocker.title = warning;
 			$('#game_body')[0].append(blocker);
@@ -136,7 +197,7 @@ let cardGame = {
 				}
 			}
 		} else {
-			minHealth += (cardGame.card.cardFactionId == cardGame.enemy.card.abilities[1].factionId ? cardGame.enemy.card.abilities[1].amount:0);
+			minHealth += (cardGame.card.cardFactionId == cardGame.enemy.card.abilities[1]?.factionId ? cardGame.enemy.card.abilities[1].amount:0);
 			maxHealth = minHealth + cardGame.enemy.card.abilities[0].maxValue;
 			minHealth += cardGame.enemy.card.abilities[0].minValue;
 		}
@@ -152,7 +213,7 @@ let cardGame = {
 				} 
 			}	
 			else {
-				enemyHealth = cardGame.enemy.currentHealth + (cardGame.card.abilities[1].factionId == cardGame.enemy.card.cardFactionId ? cardGame.card.abilities[1].amount:0) + cardGame.card.abilities[0].maxValue;;
+				enemyHealth = cardGame.enemy.currentHealth + (cardGame.card.abilities[1]?.factionId == cardGame.enemy.card.cardFactionId ? cardGame.card.abilities[1].amount:0) + cardGame.card.abilities[0].maxValue;;
 			}
 			if (enemyHealth <=0) warning = undefined;
 		}
@@ -172,48 +233,78 @@ let cardGame = {
 				dragdrop: true,
 				minimize: true,
 				resize : true,
-				//ask: i18n('Boxes.cardGame.HelpLink'),
-				//settings: 'cardGame.ShowSettingsButton()'
+
 			});
 		}
-
-		let cards = cardGame.cardsLeft.concat(cardGame.card.id).sort((a,b) => cardGame.avgDmg(cardGame.cards[a])-cardGame.avgDmg(cardGame.cards[b]))
-		
-		let h='<table class="foe-table">';
-		h +=`<tr><th></th><th>${i18n('Boxes.cardGame.Attack')}</th><th>${i18n('Boxes.cardGame.Bonus')}</th></tr>`
-		for (c of cards) {
-			h+=`<tr ${c == cardGame.card.id ? 'class="highlight"':""}>`
-			h+=`<td title="${cardGame.cards[c].description}" ${cardGame.cards[c].cardFactionId == cardGame.enemy.card.abilities[1].factionId ? 'class="highlightWeak"':""}><img class="cardtop" src="${srcLinks.get("/shared/seasonalevents/halloween/event/"+cardGame.cards[c].assetName+".png",true)}"></td>`;
-			let img=`<img class="cardattack" src="${srcLinks.get("/shared/seasonalevents/halloween/event/"+cardGame.cards[c].assetName+".png",true)}">`
-			h+=`<td>${img}${cardGame.cards[c]?.cardType?.value=="ability" ? cardGame.avgDmg(cardGame.cards[c]) : (-cardGame.cards[c].abilities[0].maxValue) + " - " + (-cardGame.cards[c].abilities[0].minValue)}</td>`;
-			img="";
-			if (cardGame.cards[c]?.cardType?.value!="ability" && cardGame.cards[c].abilities?.[1]?.factionId) {
-				img = `<img class="cardbonus" src="${srcLinks.get("/shared/seasonalevents/halloween/event/"+cardGame.cards[c].assetName+".png",true)}">`
+		let dmg = {}
+		let cards = cardGame.cardsLeft.concat(cardGame.freshbuys)
+		cards = cardGame.card.id=="used" ? cards : cards.concat(cardGame.card.id);
+		for (let c of cards) {
+			if (!dmg[c]) {
+				dmg[c]={}
+			} else {
+				continue
 			}
-			h+=`<td ${(img != "" && cardGame.cards[c].abilities[1].factionId == cardGame.enemy.card.cardFactionId) ? 'class="highlightStrong"':""}>${img}${img!="" ? -cardGame.cards[c].abilities[1].amount:""}</td></tr>`;
+			let card = cardGame.cards[c];
+			dmg[c]["min"]=0;
+			dmg[c]["max"]=0;
+			if (card?.cardType?.value == "ability") {
+				for (a of card.abilities){
+					if (a.__class__=="CardGameOpponentSelfAttackAbility") {
+						dmg[c]["min"] -= (cardGame.enemy.card.abilities[0].maxValue * a.factor);
+						dmg[c]["max"] -= (cardGame.enemy.card.abilities[0].minValue * a.factor);
+					}
+					if (a.__class__=="CardGameModifyHealthAbility" && a.target.value=="opponent") {
+						dmg[c]["min"] -= a.maxValue;
+						dmg[c]["max"] -= a.minValue;
+					}
+					if (a.__class__=="CardGameModifyHealthPercentageAbility" && a.target.value=="opponent") {
+						dmg[c]["min"] -= Math.round(cardGame.enemy.maxHealth * a.percentage/100);
+						dmg[c]["max"] -= Math.round(cardGame.enemy.maxHealth * a.percentage/100);
+					}
+	
+				}
+			} else if (card?.cardType?.value == "attack"){
+				dmg[c]["min"] -= card.abilities[0].maxValue + (cardGame.cards[c].abilities[1]?.factionId == cardGame.enemy.card.cardFactionId ? cardGame.cards[c].abilities[1].amount : 0);
+				dmg[c]["max"] -= card.abilities[0].minValue + (cardGame.cards[c].abilities[1]?.factionId == cardGame.enemy.card.cardFactionId ? cardGame.cards[c].abilities[1].amount : 0);
+			}
+		}
+		
+		cards.sort((a,b) => dmg[a].max-dmg[b].max);
+		cards.sort((a,b) => dmg[a].min-dmg[b].min);
+		
+		let h=`</tr></table><table class="foe-table">`
+		h +=`<tr><td style="text-align:center"><img style="height:40px" src=${srcLinks.get("/shared/seasonalevents/halloween/event/halloween_card_enemy_deck_icon.png",true)}>${cardGame.level}</td>`;
+		h +=`<td style="text-align:center"><img style="height:40px" src=${srcLinks.get("/shared/seasonalevents/halloween/event/halloween_card_player_health_icon.png",true)}>${cardGame.health}</td>`;
+		h +=`<td style="text-align:center"><img style="height:40px" src=${srcLinks.get("/shared/icons/reward_icons/reward_icon_halloween_teeth.png",true)}>${Object.values(cardGame.currencySpent).reduce((a, b) => a + b, 0)}</td>`;
+		h +=`<td colspan="3" style="text-align:center">`;
+		for (let r in cardGame.rewardcount) {
+			if (!cardGame.rewardcount[r]) continue;
+			h += `<img style="height:40px" src="${srcLinks.get(`/shared/icons/reward_icons/reward_icon_${r}.png`,true)}">` + cardGame.rewardcount[r] + `&nbsp;&nbsp;`
+		}
+		let teeth=`<img style="height:25px" src=${srcLinks.get("/shared/icons/reward_icons/reward_icon_halloween_teeth.png",true)}>`
+		h +=`</tr><tr><td style="text-align:right"><img style="height:40px" src=${srcLinks.get("/shared/seasonalevents/halloween/event/halloween_card_enemy_reward_card_icon.png",true)}></td style="text-align:left"><td>${cardGame.currencySpent.ability+teeth}</td>`;
+		h +=`<td style="text-align:right"><img style="height:40px" src=${srcLinks.get("/shared/seasonalevents/halloween/event/halloween_life_option_2.png",true)}></td><td style="text-align:left">${cardGame.currencySpent.heal+teeth}</td>`;
+		h +=`<td style="text-align:right"><img style="height:30px" src="${srcLinks.get("/shared/seasonalevents/halloween/event/halloween_card_enemy_reward_card_icon.png",true)}"><img style="margin-left: -20px;height: 19px;margin-top: 10px;" src="${srcLinks.get("/shared/gui/pvp_arena/hud/pvp_arena_icon_refresh.png",true)}"></td><td style="text-align:left">${cardGame.currencySpent.redraw+teeth}</td>`;
+		h +=`</tr></table><table class="foe-table">`;
+		h +=`<tr><th></th><th>${i18n('Boxes.cardGame.Attack')}</th><th>${i18n('Boxes.cardGame.Bonus')}</th></tr>`;
+		for (let c of cards) {
+			h+=`<tr ${cardGame.cardOptions.includes(c) ? 'class="highlightOptions"': (c == cardGame.card.id && !cardGame.card.nohighlight) ? 'class="highlight"':""}>`;
+			h+=`<td title="${cardGame.cards[c].description}">`;
+			h+=`<div class="cardtop ${cardGame.cards[c].cardFactionId == cardGame.enemy.card.abilities[1]?.factionId ? 'highlightWeak':""}" style="background-image:url('${srcLinks.get("/shared/seasonalevents/halloween/event/"+cardGame.cards[c].assetName+".png",true)}')"></div></td>`;
+			let highlight=`class="cardattack" style="background-image:url('${srcLinks.get("/shared/seasonalevents/halloween/event/"+cardGame.cards[c].assetName+".png",true)}')"`
+			h+=`<td><div ${highlight}>${cardGame.cards[c]?.cardType?.value=="ability" ? dmg[c]["min"] + (dmg[c]["max"] > dmg[c]["min"] ? ((dmg[c].min+""+dmg[c].max).length>2?"-":" - ") + dmg[c]["max"]:"") : (-cardGame.cards[c].abilities[0].maxValue) + " - " + (-cardGame.cards[c].abilities[0].minValue)}</div></td>`;
+			highlight="";
+			if (cardGame.cards[c]?.cardType?.value!="ability" && cardGame.cards[c].abilities?.[1]?.factionId) {
+				highlight = `class="cardbonus ${(cardGame.cards[c].abilities[1]?.factionId == cardGame.enemy.card.cardFactionId) ? 'highlightStrong':""}" style="background-image:url('${srcLinks.get("/shared/seasonalevents/halloween/event/"+cardGame.cards[c].assetName+".png",true)}')"`
+			}
+			h+=`<td><div ${highlight}>${highlight!="" ? -cardGame.cards[c].abilities[1].amount:""}</div></td>`;
+			h+=`</tr>`;
 		}
 		h+='</table>';
+
 		$('#cardGameDialogBody').html(h);
 	},
-	avgDmg:(card)=>{
-		let dmg=0;
-		if (card?.cardType?.value == "ability") {
-			for (a of card.abilities){
-				if (a.__class__=="CardGameOpponentSelfAttackAbility") {
-					dmg -= (cardGame.enemy.card.abilities[0].maxValue+cardGame.enemy.card.abilities[0].minValue)/2 * a.factor;
-				}
-				if (a.__class__=="CardGameModifyHealthAbility" && a.target.value=="opponent") {
-					dmg -= (a.maxValue+a.minValue)/2;
-				}
-				if (a.__class__=="CardGameModifyHealthPercentageAbility" && a.target.value=="opponent") {
-					dmg -= Math.round(cardGame.enemy.maxHealth * a.percentage/100);
-				}
-
-			}
-		} else if (card?.cardType?.value == "attack"){
-			dmg = -(card.abilities[0].minValue+card.abilities[0].maxValue)/2;
-		}
-		return dmg;
-	}
 }
+cardGame.init();
 HTML.AddCssFile('cardgame');

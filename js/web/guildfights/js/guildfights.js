@@ -31,18 +31,23 @@ FoEproxy.addHandler('GuildBattlegroundService', 'getPlayerLeaderboard', (data, p
 
 // Gildengefechte
 FoEproxy.addHandler('GuildBattlegroundStateService', 'getState', (data, postData) => {
-	if (data.responseData['stateId'] !== 'participating')
-	{
-		GuildFights.CurrentGBGRound = parseInt(data.responseData['startsAt']) - 259200;
+	GuildFights.GlobalRankingTimeout = setTimeout(()=>{
+		if (data.responseData['stateId'] !== 'participating')	{
+			GuildFights.CurrentGBGRound = parseInt(data.responseData['startsAt']) - 259200;
 
-		if (GuildFights.curDateFilter === null || GuildFights.curDateEndFilter === null)
-		{
-			GuildFights.curDateFilter = moment.unix(GuildFights.CurrentGBGRound).subtract(11, 'd').format('YYYYMMDD');
-			GuildFights.curDateEndFilter = moment.unix(GuildFights.CurrentGBGRound).format('YYYYMMDD');
+			if (GuildFights.curDateFilter === null || GuildFights.curDateEndFilter === null)
+			{
+				GuildFights.curDateFilter = moment.unix(GuildFights.CurrentGBGRound).subtract(11, 'd').format('YYYYMMDD');
+				GuildFights.curDateEndFilter = moment.unix(GuildFights.CurrentGBGRound).format('YYYYMMDD');
+			}
+
+			GuildFights.HandlePlayerLeaderboard(data.responseData['playerLeaderboardEntries']);
 		}
+	},500)
+});
 
-		GuildFights.HandlePlayerLeaderboard(data.responseData['playerLeaderboardEntries']);
-	}
+FoEproxy.addHandler('RankingService', 'searchRanking', (data, postData) => {
+	clearTimeout(GuildFights.GlobalRankingTimeout);
 });
 
 // Gildengefechte - Map, Gilden
@@ -78,7 +83,7 @@ FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postDa
 let GuildFights = {
 
 	Alerts: [],
-
+	GlobalRankingTimeout:null,
 	PrevAction: null,
 	PrevActionTimestamp: null,
 	NewAction: null,
@@ -139,7 +144,7 @@ let GuildFights = {
 
 		if (GuildFights.InjectionLoaded === false) {
 			FoEproxy.addWsHandler('GuildBattlegroundService', 'all', data => {
-				if (!data['responseData'][0]) return
+				if (!data['responseData']?.[0]) return
 				let Pid = data.responseData[0].id || 0;
 				for (let x in data.responseData[0]) {
 					if (!data.responseData[0].hasOwnProperty(x) || x === "id") continue;
@@ -181,6 +186,7 @@ let GuildFights = {
 		let players = [];
 		let sumNegotiations = 0;
 		let sumBattles = 0;
+		let sumAttrition = 0;
 
 		for (let i in d)
 		{
@@ -191,6 +197,7 @@ let GuildFights = {
 			}
 			sumNegotiations += d[i]['negotiationsWon'] || 0;
 			sumBattles += d[i]['battlesWon'] || 0;
+			sumAttrition += d[i]['attrition'] || 0;
 
 			players.push({
 				gbground: GuildFights.CurrentGBGRound,
@@ -199,7 +206,8 @@ let GuildFights = {
 				name: d[i]['player']['name'],
 				avatar: d[i]['player']['avatar'],
 				battlesWon: d[i]['battlesWon'] || 0,
-				negotiationsWon: d[i]['negotiationsWon'] || 0
+				negotiationsWon: d[i]['negotiationsWon'] || 0,
+				attrition: d[i]['attrition'] || 0
 			});
 		}
 
@@ -232,14 +240,20 @@ let GuildFights = {
 
 		if (content === 'history')
 		{
-			await GuildFights.db.history.put({ gbground: GuildFights.CurrentGBGRound, sumNegotiations: data.sumNegotiations, sumBattles: data.sumBattles, participation: data.participation });
+			await GuildFights.db.history.put({ 
+					gbground: GuildFights.CurrentGBGRound, 
+					sumNegotiations: data.sumNegotiations, 
+					sumBattles: data.sumBattles, 
+					participation: data.participation 
+				});
 		}
 
 		if (content === 'player')
 		{
 
 			let battles = 0,
-				negotiations = 0;
+				negotiations = 0,
+				attrition = 0;
 
 			let CurrentSnapshot = await GuildFights.db.snapshots
 				.where({
@@ -252,11 +266,13 @@ let GuildFights = {
 			{
 				battles = data.battles;
 				negotiations = data.negotiations;
+				attrition = data.attrition;
 			}
 			else
 			{
 				battles = data.diffbat;
 				negotiations = data.diffneg;
+				attrition = data.diffattr;
 			}
 
 			await GuildFights.db.snapshots.add({
@@ -266,7 +282,8 @@ let GuildFights = {
 				date: parseInt(moment.unix(data.time).format("YYYYMMDD")),
 				time: data.time,
 				battles: battles,
-				negotiations: negotiations
+				negotiations: negotiations,
+				attrition: attrition
 			});
 		}
 
@@ -532,8 +549,6 @@ let GuildFights = {
 				resize: true,
 				settings: 'GuildFights.ShowPlayerBoxSettings()'
 			});
-
-			// CSS in den DOM prügeln
 			HTML.AddCssFile('guildfights');
 		}
 
@@ -603,6 +618,7 @@ let GuildFights = {
 			b = [],
 			tN = 0,
 			tF = 0,
+			tA = 0,
 			histView = false;
 
 		GuildFights.PlayerBoxContent = [];
@@ -612,6 +628,7 @@ let GuildFights = {
 			player: 'player',
 			negotiationsWon: 'negotiations',
 			battlesWon: 'battles',
+			attrition: 'attrition',
 			total: 'total'
 		});
 
@@ -641,18 +658,20 @@ let GuildFights = {
 
 			let fightAddOn = '',
 				negotaionAddOn = '',
+				attritionAddOn = '',
 				diffNegotiations = 0,
 				diffBattles = 0,
+				diffAttr = 0,
 				newProgressClass = '',
 				change = false;
 
-			// gibt es einen älteren Snapshot?
+			// is there an older snapshot available?
 			if (GuildFights.PrevAction !== null && histView === false)
 			{
 
 				let playerOld = GuildFights.PrevAction.find(p => (p['player_id'] === playerNew['player_id']));
 
-				// gibt es zu diesem Spieler Daten?
+				// Is there any data on this player?
 				if (playerOld !== undefined)
 				{
 
@@ -669,12 +688,30 @@ let GuildFights = {
 						fightAddOn = ' <small class="text-success">&#8593; ' + diffBattles + '</small>';
 						change = true;
 					}
+
+					if (playerOld['attrition'] < playerNew['attrition'])
+					{
+						diffAttr = playerNew['attrition'] - playerOld['attrition'];
+						attritionAddOn = ' <small class="text-success">&#8593; ' + diffAttr + '</small>';
+						change = true;
+					}
 				}
 			}
 
 			if ((change === true || newRound === true) && GuildFights.GBGHistoryView === false)
 			{
-				await GuildFights.UpdateDB('player', { gbground: GuildFights.CurrentGBGRound, player_id: playerNew['player_id'], name: playerNew['name'], battles: playerNew['battlesWon'], negotiations: playerNew['negotiationsWon'], diffbat: diffBattles, diffneg: diffNegotiations, time: moment().unix() });
+				await GuildFights.UpdateDB('player', { 
+						gbground: GuildFights.CurrentGBGRound, 
+						player_id: playerNew['player_id'], 
+						name: playerNew['name'], 
+						battles: playerNew['battlesWon'], 
+						negotiations: playerNew['negotiationsWon'], 
+						attrition: playerNew['attrition'], 
+						diffbat: diffBattles, 
+						diffneg: diffNegotiations, 
+						diffattr: diffAttr,
+						time: moment().unix() 
+					});
 				updateDetailView = true;
 			}
 
@@ -682,6 +719,7 @@ let GuildFights = {
 
 			tN += playerNew['negotiationsWon'];
 			tF += playerNew['battlesWon'];
+			tA += playerNew['attrition']
 
 			b.push('<tr data-player="' + playerNew['player_id'] + '" data-gbground="' + gbground + '" class="' + newProgressClass + (!histView ? 'showdetailview ' : '') + (playerNew['player_id'] === ExtPlayerID ? 'mark-player ' : '') + (change === true ? 'bg-green' : '') + '">');
 			b.push('<td class="tdmin">' + (parseInt(i) + 1) + '.</td>');
@@ -701,6 +739,11 @@ let GuildFights = {
 			let both = playerNew['battlesWon'] + (playerNew['negotiationsWon'] * 2);
 			b.push(both);
 			b.push('</td>');
+
+			b.push('<td class="text-center">');
+			b.push(playerNew['attrition'] + attritionAddOn);
+			b.push('</td>');
+
 			b.push('<td></td>');
 			b.push('</tr>');
 
@@ -709,6 +752,7 @@ let GuildFights = {
 				player: playerNew['name'],
 				negotiationsWon: playerNew['negotiationsWon'],
 				battlesWon: playerNew['battlesWon'],
+				attrition: playerNew['attrition'],
 				total: both
 			})
 		}
@@ -732,6 +776,8 @@ let GuildFights = {
 		t.push('<th class="text-center"><span class="negotiation" title="' + HTML.i18nTooltip(i18n('Boxes.GuildFights.Negotiations')) + '"></span> <strong class="text-warning">(' + HTML.Format(tN) + ')</strong></th>');
 		t.push('<th class="text-center"><span class="fight" title="' + HTML.i18nTooltip(i18n('Boxes.GuildFights.Fights')) + '"></span> <strong class="text-warning">(' + HTML.Format(tF) + ')</strong></th>');
 		t.push('<th class="text-center">' + i18n('Boxes.GuildFights.Total') + ' <strong class="text-warning">(' + HTML.Format(tNF) + ')</strong></th>');
+		t.push('<th class="text-center">' + i18n('Boxes.GuildFights.Attrition') + ' <strong class="text-warning">(' + HTML.Format(tA) + ')</strong></th>');
+
 		t.push('<th></th>');
 		t.push('</tr>');
 		t.push('</thead>');
@@ -1088,6 +1134,7 @@ let GuildFights = {
 		}
 
 		progress.push('<th>' + i18n('Boxes.GuildFights.Progress') + '</th>');
+		progress.push('<th>' + i18n('Boxes.GuildFights.RequiredProgress') + '</th>');
 		progress.push('</tr></thead><tbody>');
 
 		for (let i in mapdata) {
@@ -1123,6 +1170,8 @@ let GuildFights = {
 							let color = ProvinceMap.getSectorColors(provinceProgress[y]['participantId']);
 							progress.push(`<span class="attack attacker-${provinceProgress[y]['participantId']} gbg-${color['cid']}">${provinceProgress[y]['progress']}</span>`);
 						}
+
+						progress.push('</td><td data-field="' + id + '" class="required-progress">' + mapdata[i]['conquestProgress'][0].maxProgress + '</td>');
 					}
 				}
 			}
@@ -1148,6 +1197,8 @@ let GuildFights = {
 
 					progress.push(`<span class="attack attacker-${provinceProgress[y]['participantId']} gbg-${color['cid']}">${provinceProgress[y]['progress']}</span>`);
 				}
+
+				progress.push('</td><td data-field="' + id + '" class="required-progress">' + mapdata[i]['conquestProgress'][0].maxProgress + '</td>');
 			}
 		}
 
@@ -1483,9 +1534,12 @@ let GuildFights = {
 						$('<td />').attr({
 							field: `${data['id']}-${data['ownerId']}`,
 							class: 'guild-progress'
-						})
-					)
-				);
+						}),
+						$('<td />').attr({
+							field: `${data['id']}-${data['ownerId']}`,
+							class: 'required-progress'
+						}).text(data['conquestProgress'][0].maxProgress))
+					);
 
 				cell = $(`#province-${data['id']}`);
 			}
@@ -1571,7 +1625,7 @@ let GuildFights = {
 
 				let r = GuildFights.PlayerBoxContent[i];
 				console.log(r);
-				csv.push(`${r['player_id']};${r['player']};${r['negotiationsWon']};${r['battlesWon']};${r['total']}`);
+				csv.push(`${r['player_id']};${r['player']};${r['negotiationsWon']};${r['battlesWon']};${r['attrition']};${r['total']}`);
 			}
 
 			blob = new Blob([BOM + csv.join('\r\n')], {
@@ -1861,7 +1915,8 @@ let ProvinceMap = {
 				colors: ProvinceMap.getSectorColors(data.ownerID),
 			};
 			this.lockedUntil = data.lockedUntil;
-			this.conquestProgress = data.conquestProgress;
+			// Sectors which are open but with no progress are missing the "conquestProgress" key in the response
+			this.conquestProgress = data.conquestProgress || [];
 			this.circlePosition = data.circlePosition;
 			this.totalBuildingSlots = data.totalBuildingSlots;
 
@@ -1972,7 +2027,7 @@ let ProvinceMap = {
 
 		Province.prototype.drawProgress = function(mapStuff) {
 			ProvinceMap.MapCTX.strokeStyle = ProvinceMap.StrokeColor;
-			if (this.conquestProgress !== undefined && this.conquestProgress !== [])
+			if (this.conquestProgress !== undefined && this.conquestProgress.length > 0)
 				this.conquestProgress.forEach(function(prog, index) {
 					let progDiff = (prog.progress / prog.maxProgress);
 					let color = GuildFights.SortedColors.find(c => (c.id === prog.participantId));
@@ -2084,7 +2139,7 @@ let ProvinceMap = {
 				if (prov.totalBuildingSlots) 
 					data.totalBuildingSlots = prov.totalBuildingSlots;
 
-				if (prov.conquestProgress !== []) 
+				if (prov.conquestProgress.length > 0) 
 					data.conquestProgress = prov.conquestProgress;
 
 				// round map

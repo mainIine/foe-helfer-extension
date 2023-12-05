@@ -236,7 +236,10 @@
 				"update": "upgrade_kit_winter_canal"
 			}
 		],
-		"kit": "selection_kit_winter_canal"
+		"kit": [
+			"selection_kit_winter_canal",
+			"selection_kit_epic_WIN23"
+		]
 	},
 	{
 		"name": "Horror_Circus_Set",
@@ -379,7 +382,10 @@
 				"update": "upgrade_kit_winter_bakery"
 			}
 		],
-		"kit": "selection_kit_winter_bakery"
+		"kit": [
+			"selection_kit_winter_bakery",
+			"selection_kit_epic_WIN23"
+		]
 	},
 	{
 		"name": "House_of_Horrors",
@@ -628,11 +634,32 @@
 		"name": "Chocolatery",
 		"buildings": [
 			{
-				"first": "W_MultiAge_WIN23A1",
+				"first": "W_MultiAge_WIN22A1",
 				"update": "upgrade_kit_chocolatery"
 			}
 		],
-		"kit": "selection_kit_chocolatery"
+		"kit": [
+			"selection_kit_chocolatery",
+			"selection_kit_epic_WIN23",
+			"golden_upgrade_kit_WIN22Aa",
+			"golden_upgrade_kit_WIN22Ab",
+			"golden_upgrade_kit_WIN22A"			
+		]
+	},
+	{
+		"name": "Nutcracker_Guardhouse",
+		"buildings": [
+			{
+				"first": "W_MultiAge_WIN22B1",
+				"update": "upgrade_kit_WIN22B"
+			}
+		],
+		"kit": [
+			"fragment#building_W_MultiAge_WIN22B1",
+			"selection_kit_epic_WIN23",
+			"selection_kit_WIN22B",
+			"fragment#selection_kit_WIN22B"
+			]
 	},
 	{
 		"name": "Winter_Train",
@@ -652,7 +679,42 @@
 			"selection_kit_winter_railway",
 			"selection_kit_winter_train",
 			"selection_kit_winter_train_carriage",
-			"selection_kit_winter_train_carriages"
+			"selection_kit_winter_train_carriages",
+			"selection_kit_epic_WIN23"
+		]
+	},
+	{
+		"name": "Winter_Wonderland_Pyramid",
+		"buildings": [
+			{
+				"first": "W_MultiAge_WIN23A1",
+				"update": "upgrade_kit_WIN23A"
+			}
+		],
+		"kit": [
+			"selection_kit_WIN23A",
+			"fragment#selection_kit_WIN23A",
+			"silver_upgrade_kit_WIN23A",
+			"fragment#silver_upgrade_kit_WIN23A",
+			"golden_upgrade_kit_WIN23A",
+			"fragment#golden_upgrade_kit_WIN23A",
+			"silver_selection_kit_WIN23A",			
+			"fragment#silver_selection_kit_WIN23A"			,
+			"golden_selection_kit_WIN23A",			
+			"fragment#golden_selection_kit_WIN23A"			
+		]
+	},
+	{
+		"name": "Elfies_Nog_Shop",
+		"buildings": [
+			{
+				"first": "W_MultiAge_WIN23C1",
+				"update": "upgrade_kit_WIN23C"
+			}
+		],
+		"kit": [
+			"silver_upgrade_kit_WIN23C",
+			"golden_upgrade_kit_WIN23C"
 		]
 	},
 	{
@@ -842,7 +904,10 @@
 				"update": "upgrade_kit_winter_spire"
 			}
 		],
-		"kit": "selection_kit_winter_spire"
+		"kit": [
+			"selection_kit_winter_spire",
+			"selection_kit_epic_WIN23"
+		]
 	},
 	{
 		"name": "Mill_of_Fall",
@@ -951,7 +1016,10 @@
 				"first": "R_MultiAge_WinterBonusSet17c"
 			}
 		],
-		"kit": "selection_kit_winter_village"
+		"kit": [
+			"selection_kit_winter_village",
+			"selection_kit_epic_WIN23"
+		]
 	},
 	{
 		"name": "Winterdeco_Set",
@@ -1122,7 +1190,8 @@
 				"first": "P_MultiAge_ChristmasBonus1",
 				"update": "upgrade_kit_confectionary"
 			}
-		]
+		],
+		"kit":	"selection_kit_epic_WIN23"
 	},
 	{
 		"name": "Graveyard",
