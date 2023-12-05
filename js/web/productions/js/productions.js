@@ -1898,8 +1898,8 @@ let Productions = {
 					if (SkipBuilding) continue;
 				}
 
-				//Keine LGs, keine Straßen, keine Millitärgebäude
-				if (Entity['type'] === 'greatbuilding' || Entity['type'] === 'street' || Entity['type'] === 'military') continue;
+				//keine Straßen, keine Millitärgebäude
+				if (Entity['type'] === 'street' || Entity['type'] === 'military') continue;
 
 				let Production = Productions.readType(Building);
 				//let Score = 0;
