@@ -2,7 +2,7 @@
 	"name": "__MSG_appName__",
 	"description": "__MSG_appDesc__",
 	"default_locale": "en",
-	"version": "3.3.0.0",
+	"version": "3.4.0.0",
 
 	"manifest_version": 3,
 	"permissions": [
@@ -69,7 +69,7 @@
 	"browser_specific_settings": {
 		"gecko": {
 			"id": "{0668a87f-e3bb-4ed3-a096-e145c1e9f1d2}",
-			"strict_min_version": "91.0"
+			"strict_min_version": "101.0"
 		}
 	}
 }

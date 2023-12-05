@@ -1,0 +1,231 @@
+/*
+ *
+ *  * **************************************************************************************
+ *  * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
+ *  * You may use, distribute and modify this code under the
+ *  * terms of the AGPL license.
+ *  *
+ *  * See file LICENSE.md or go to
+ *  * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
+ *  * for full license details.
+ *  *
+ *  * **************************************************************************************
+ *
+ */
+
+
+FoEproxy.addHandler('GuildBattlegroundBuildingService', 'getBuildings', (data, postData) => {
+	if (!Settings.GetSetting('ShowGBGBuildings')) return;
+
+	GBGBuildings.costs={};
+	data.responseData.availableBuildings.forEach(x => GBGBuildings.costs[x.buildingId] = x.costs.resources);
+	GBGBuildings.buildings = data.responseData.placedBuildings.map(x=>x.id).sort((a,b)=> (GBGBuildings.block[b]||0) - (GBGBuildings.block[a]||0));
+	let free=data.responseData.freeSlots||0;
+	
+	for (let i=0;i<free;i++) {
+		GBGBuildings.buildings.push("free")
+	}
+
+	if (GBGBuildings.Timeout.T) {
+		GBGBuildings.calc()
+		return
+	}
+	
+	GBGBuildings.Timeout.B = setTimeout(() => {
+		GBGBuildings.clearTO("B")
+	}, 500);
+});
+
+FoEproxy.addMetaHandler('battleground_buildings',(data,postData) => {
+	GBGBuildings.BuildingData = Object.assign({}, ...JSON.parse(data.responseText).map((x) => ({ [x.id]: x })));
+});
+
+FoEproxy.addHandler('ClanService', 'getTreasury', (data, postData) => {
+	if (data.responseData.resources) GBGBuildings.treasury = data.responseData.resources
+	if (GBGBuildings.Timeout.B) {
+		GBGBuildings.calc()
+		return
+	}
+	
+	GBGBuildings.Timeout.T = setTimeout(() => {
+		GBGBuildings.clearTO("T")
+	}, 350);
+});
+
+let GBGBuildings = {
+	treasury:{},
+	block:{
+		"free":0,
+		"watchtower":8,
+		"guild_command_post_improvised":20,
+		"barracks_improvised":20,
+		"guild_command_post_forward":40,
+		"barracks":40,
+		"guild_command_post_fortified":60,
+		"barracks_reinforced":60,
+		"guild_fieldcamp_small": 26,
+		"guild_fieldcamp": 52,
+		"guild_fieldcamp_fortified": 80
+	},
+	Timeout:{"B":null,"T":null},
+	free:0,
+	costs:{},
+	buildings:[],
+	settings: {
+		target:80,
+		max:80
+	},
+	BuildingData:{},
+
+	clearTO:(X)=>{
+		if (!GBGBuildings.Timeout[X]) return;
+		clearTimeout(GBGBuildings.Timeout[X]);
+		GBGBuildings.Timeout[X] = null;
+	},
+
+	calc:()=>{
+		$('#GBGBuildings').remove();
+		GBGBuildings.clearTO("T");
+		GBGBuildings.clearTO("B");
+		let sets = GBGBuildings.createSets();
+		if (sets.length==0) return;
+		
+		for (s of sets) {
+			let needed = [...s.all];
+			let costs = {};
+			let leftStanding=[];
+			let keep=[];
+			for (b of GBGBuildings.buildings) {
+				let i = needed.findIndex(x => x==b);
+				if (i>=0) {
+					needed.splice(i,1);
+					keep.push(b)
+				} else 
+					leftStanding.push(b);
+			}
+			if (leftStanding.length > 0) {
+				for (b of needed) {
+					let i = leftStanding.findIndex(x => GBGBuildings.block[x]>=GBGBuildings.block[b] && b != "free");
+					if (i>=0) s["ignore"] = true;
+				}
+			}
+			if (!s.ignore) {
+				for (let n of needed) {
+					for (c in GBGBuildings.costs[n]) {
+						if (!GBGBuildings.costs[n][c]) continue;
+						costs[c] = GBGBuildings.costs[n][c] + (costs[c] || 0);
+					}
+				}
+			}
+			let rel=0,
+				abs=0,
+				avg=0,
+				num=Object.keys(costs).length,
+			 	max=0;
+				title=[];
+			for (c in costs) {
+				let r=costs[c]/GBGBuildings.treasury[c];
+				avg += r/num;
+				rel += r;
+				abs += costs[c];
+				max = r>max ? r : max;
+				title.push({good:c,rel:r})
+			}
+
+			s["needed"]=needed;
+			s["keep"]=keep;
+			s["relCosts"]=rel;
+			s["maxCosts"]=max;
+			s["avgCosts"]=avg;
+			s["absCosts"]=abs;
+			s["title"] = title.sort((a,b)=>b.rel-a.rel).map(x=>HTML.i18nReplacer(i18n('Boxes.GBGBuildings.relativeCosts'),{good:GoodsData[x.good].name,amount:(x.rel*100).toPrecision(2),era:i18n("Eras."+Technologies.Eras[GoodsData[x.good].era])})).join("\n");
+		}
+		let sortby = "maxCosts"
+		sets.sort((a,b)=> a.absCosts - b.absCosts);
+		sets.sort((a,b)=> b.block-a.block + a[sortby]-b[sortby])
+
+		for (let i = 0; i<sets.length; i++) {
+			if (sets[i].maxCosts>1) sets[i]["ignore"]=true;
+			if (sets[i].ignore) continue;
+			for (let j = i+1; j<sets.length; j++) {
+				if (sets[j].ignore) continue;
+				if (sets[j].avgCosts>sets[i].avgCosts && sets[j].absCosts>=sets[i].absCosts) {
+					sets[j].ignore = true;
+					continue;
+				}
+				let iAll=[...sets[i].all];
+				let jAll=[...sets[j].all];
+				for (b of jAll) {
+					let idx = iAll.findIndex(x => x==b);
+					if (idx >= 0) 
+						iAll.splice(idx,1);
+				}
+				if (iAll.length==0) sets[j].ignore = true;
+			}	
+		}
+		
+		//console.log(sets)
+
+		// Don't create a new box while another one is still open
+		if ($('#GBGBuildings').length === 0) {
+			HTML.Box({
+				id: 'GBGBuildings',
+				title: i18n('Boxes.GBGBuildings.title'),
+				auto_close: true,
+				dragdrop: true,
+				minimize: true,
+				resize : true,
+			});
+			HTML.AddCssFile('gbgbuildings');
+		}
+
+		let h='<table class="foe-table">';
+		h += `<tr><th>${i18n('Boxes.GBGBuildings.toBuild')}</th><th>${i18n('Boxes.GBGBuildings.totalChance')}</th><th colspan="2">${i18n('Boxes.GBGBuildings.Costs')}</th></tr>`
+		for (let s of sets) {
+			if (s.ignore) continue;
+			h+=`<tr ><td >`
+			for (let b of s.needed) {
+				if (b=="free") continue;
+				h+=`<img class="building" src="${srcLinks.get("/guild_battlegrounds/hud/guild_battlegrounds_sector_buildings_"+b+".png",true)}" title="${GBGBuildings.BuildingData[b].name}">`
+			}
+			for (let b of s.keep) {
+				if (b=="free") continue;
+				h+=`<img class="building keep" src="${srcLinks.get("/guild_battlegrounds/hud/guild_battlegrounds_sector_buildings_"+b+".png",true)}" title="${GBGBuildings.BuildingData[b].name}">`
+			}
+			h+=`</td><td>${s.block}%</td><td title="${s.title}">${(s[sortby]*100).toPrecision(2)}%</td><td title="${i18n('Boxes.GBGBuildings.absoluteCosts')}">${s.absCosts}</td></tr>`;
+		}
+		h+='</table>';
+		$('#GBGBuildingsBody').html(h);
+	},
+
+	createSets:()=>{
+		let sets={};
+		const blockTotal = (arr)=> {
+			let s = arr.map(x=> GBGBuildings.block[x]||0).reduce((a,b)=>a+b,0);
+			if (s>GBGBuildings.settings.max) return GBGBuildings.settings.max;
+			return s;
+		}
+		let current = blockTotal(GBGBuildings.buildings);
+		let num = GBGBuildings.buildings.length;
+		if (current >= GBGBuildings.settings.target) return []
+		let b = [...Object.keys(GBGBuildings.costs).filter(value => Object.keys(GBGBuildings.block).includes(value)),"free"]
+		let one = b.map(x=>[x]);
+		let two=[];
+		if (num >= 2) {
+			one.forEach(x => {b.forEach(y => {two.push([x,y].flat())})})
+		}
+		let three=[];
+		if (num >=3) {
+			two.forEach(x => {b.forEach(y => {three.push([x,y].flat())})})
+		}
+		
+		let all = num==1 ? one : num==2 ? two : three;
+
+		all.forEach( x => {
+			t = blockTotal(x);
+			if (t>current) sets[JSON.stringify(x.sort())] = {all: x.sort((a,b)=> (GBGBuildings.block[b]||0) - (GBGBuildings.block[a]||0)),block:t}
+		})
+		
+		return Object.values(sets);
+	},
+}

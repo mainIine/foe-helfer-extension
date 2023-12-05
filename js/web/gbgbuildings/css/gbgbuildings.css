@@ -1,0 +1,37 @@
+/*
+ * **************************************************************************************
+ * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
+ *
+ * See file LICENSE.md or go to
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
+ *
+ * **************************************************************************************
+ */
+
+
+#GBGBuildings {
+	width: 420px;
+	height: 400px;
+}
+
+#GBGBuildingsBody {
+	overflow-y: auto;
+}
+
+#GBGBuildingsBody th, #GBGBuildingsBody td {
+	text-align: center;
+	&:first-child {
+		text-align: left;
+	}
+}
+
+
+#GBGBuildingsBody .building {
+	width: 65px;
+}
+#GBGBuildingsBody .keep {
+	opacity: 40%;
+}

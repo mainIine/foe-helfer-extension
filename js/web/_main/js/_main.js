@@ -1477,7 +1477,7 @@ let MainParser = {
 	 * @param Items
 	 */
 	UpdateInventory: (Items) => {
-		MainParser.Inventory = {};
+		//MainParser.Inventory = {};
 		for (let i = 0; i < Items.length; i++) {
 			let ID = Items[i]['id'];
 			MainParser.Inventory[ID] = Items[i];
@@ -1504,10 +1504,10 @@ let MainParser = {
 	 * @param Item
 	 */
 	UpdateInventoryAmount: (Item) => {
-		let ID = Item[0],
+			let ID = Item[0],
 			Amount = Item[1];
-		MainParser.Inventory[ID].inStock = Amount;
-		Kits.UpdateBoxIfVisible();
+			MainParser.Inventory[ID].inStock = Amount;
+			Kits.UpdateBoxIfVisible();
 	},
 
 
@@ -1727,7 +1727,9 @@ let MainParser = {
 			if (LB[x]<GameTime*1000-GameTimeOffset) delete LB[x];
 			localStorage.setItem("LimitedBuildingsAlertSet",JSON.stringify(LB));
 		}
-		
+		if(!Settings.GetSetting('ShowBuildingsExpired')){
+			return;
+		}
 		//create instant alert for currently expired buildings		
 		if (inactives.length > 0) {
 				const data = {
