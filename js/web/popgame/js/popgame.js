@@ -314,5 +314,44 @@ let Popgame = {
             let y = tile.position?.y || 0;
             Popgame.grid[x][y] = tile.type + ((tile.popType === "default" || tile.type === "grandPrize") ? "" : "_reward");
         }
-    }    
+    },
+    tracking : JSON.parse(localStorage.getItem("popgameTracking")||`{"start":{"total":0,"grandPrize":0},"afterPop":{"total":0,"grandPrize":0}}`),
+    trackingReset:()=>{
+        Popgame.tracking = {start:{total:0,grandPrize:0},afterPop:{total:0,grandPrize:0}};
+        localStorage.setItem("popgameTracking",JSON.stringify(Popgame.tracking));
+    }
+    
 };
+
+// Handlers for Tracking:
+FoEproxy.addHandler('PopGameService', 'getOverview', (data, postData) => {
+   
+    if (postData[0].requestMethod != "startGame") return;
+    
+    for (let x of data.responseData.currentGame.tiles) {
+        Popgame.tracking.start.total++;
+        if (x.type=="grandPrize") Popgame.tracking.start.grandPrize++;
+        localStorage.setItem("popgameTracking",JSON.stringify(Popgame.tracking));
+    };
+
+});
+
+FoEproxy.addHandler('PopGameService', 'popTile', (data, postData) => {
+    for (let c of data.responseData.changes) {
+        for (let x of c.newTiles) {
+            Popgame.tracking.afterPop.total++;
+            if (x.type=="grandPrize") Popgame.tracking.afterPop.grandPrize++;
+            localStorage.setItem("popgameTracking",JSON.stringify(Popgame.tracking));
+        }
+    }
+});
+
+FoEproxy.addHandler('PopGameService', 'useBooster', (data, postData) => {
+    for (let c of data.responseData.changes) {
+        for (let x of c.newTiles) {
+            Popgame.tracking.afterPop.total++;
+            if (x.type=="grandPrize") Popgame.tracking.afterPop.grandPrize++;
+            localStorage.setItem("popgameTracking",JSON.stringify(Popgame.tracking));
+        }
+    }
+});
