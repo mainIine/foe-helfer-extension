@@ -15,8 +15,6 @@
 **BugFix**
 - GG Provinz Liste und Karte:
 	- Code wurde an neue Datenstruktur der Serverübertragung angepasst (Danke Arklur!)
-- Allgemein:
-	- es konnte ein Problem beim Laden der lokalen Datenbanken auftreten, das eine Funktionsfähigkeit des Helfers beschränkte  - dies sollte nun behoben sein
 
 ---
 ##### 3.3.0.0
