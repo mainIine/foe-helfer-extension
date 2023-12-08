@@ -133,7 +133,7 @@
 				"update": "upgrade_kit_animal_crossing"
 			}
 		],
-		"kit": ["selection_kit_animal_crossing","selection_kit_epic_WILD23"]
+		"kit": ["selection_kit_animal_crossing","selection_kit_epic_WILD23","selection_kit_epic_WILD24","golden_upgrade_kit_WILD22A"]
 	},
 	{
 		"name": "Gentiana_Windmill",
@@ -307,7 +307,8 @@
 				"update": "upgrade_kit_mountain_reserve"
 			}
 		],
-		"kit": ["selection_kit_mountain_reserve","selection_kit_epic_WILD23"]
+		"kit": ["selection_kit_mountain_reserve","selection_kit_epic_WILD23",
+		"selection_kit_epic_WILD24"]
 	},
 	{
 		"name": "Athlon_Abbey",
@@ -734,7 +735,53 @@
 			"selection_kit_WILD23A",
 			"selection_kit_WILD23BCD",
 			"golden_upgrade_kit_WILD23A",
-			"fragment#golden_upgrade_kit_WILD23A"
+			"fragment#golden_upgrade_kit_WILD23A",
+			"selection_kit_epic_WILD24"
+		]
+	},
+	{
+		"name": "Flamingo_Habitat",
+		"buildings": [
+			{
+				"first": "W_MultiAge_WILD24A1",
+				"update": "upgrade_kit_WILD24A"
+			}
+		],
+		"kit": [ 
+			"selection_kit_WILD24A",
+			"fragment#selection_kit_WILD24A",
+			"silver_upgrade_kit_WILD24A",
+			"fragment#silver_upgrade_kit_WILD24A",
+			"golden_upgrade_kit_WILD24A",
+			"fragment#golden_upgrade_kit_WILD24A"
+		]
+	},
+	{
+		"name": "Tapir_Trails",
+		"buildings": [
+			{
+				"first": "W_MultiAge_WILD24C1",
+				"update": "upgrade_kit_WILD24C"
+			}
+		],
+		"kit": [
+			"fragment#upgrade_kit_WILD24C",
+			"selection_kit_WILD24CD",
+			"fragment#selection_kit_WILD24CD"
+		]
+	},
+	{
+		"name": "Alligator_Swamp",
+		"buildings": [
+			{
+				"first": "W_MultiAge_WILD24D1",
+				"update": "upgrade_kit_WILD24D"
+			}
+		],
+		"kit": [
+			"fragment#upgrade_kit_WILD24D",
+			"selection_kit_WILD24CD",
+			"fragment#selection_kit_WILD24CD"
 		]
 	},
 	{
@@ -745,7 +792,10 @@
 				"update": "upgrade_kit_WILD23F"
 			}
 		],
-		"kit": "selection_kit_WILD23EF"
+		"kit": [
+			"selection_kit_WILD23EF",
+			"selection_kit_epic_WILD24"
+		]
 	},
 	{
 		"name": "Himalayan_Firs",
@@ -755,7 +805,10 @@
 				"update": "upgrade_kit_WILD23E"
 			}
 		],
-		"kit": "selection_kit_WILD23EF"
+		"kit": [
+			"selection_kit_WILD23EF",
+			"selection_kit_epic_WILD24"
+		]
 	},
 	{
 		"name": "Abandoned_Asylum",
