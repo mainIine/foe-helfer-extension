@@ -360,7 +360,10 @@ FoEproxy.addHandler('PopGameService', 'endGame', (data, postData) => {
     let x = Popgame.grid.reduce((a,b) => [...a,...b]);
     for (let c of x) {
         Popgame.tracking.afterPop.total++;
-        if (c=="grandPrize") Popgame.tracking.leftOnBoard.grandPrize++;
+        if (c=="grandPrize") {
+            if (!Popgame.tracking?.leftOnBoard?.grandPrize) Popgame.trackingReset();
+            Popgame.tracking.leftOnBoard.grandPrize++;
+        }
         localStorage.setItem("popgameTracking",JSON.stringify(Popgame.tracking));
     }
 });
