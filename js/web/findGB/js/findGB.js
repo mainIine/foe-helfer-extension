@@ -25,7 +25,7 @@ FoEproxy.addMetaHandler('city_entities', (data, postData) => {
 });
 
 FoEproxy.addHandler('RankingService', 'getRanking', (data, postData) => {
-    if (data.responseData.category != "great_building" || $('#findGBDialog').length === 0) return;
+    if (data.responseData.category.value != "great_building" || $('#findGBDialog').length === 0) return;
     findGB.check(data.responseData.rankings);
 });
 FoEproxy.addHandler('GreatBuildingsService', 'getOtherPlayerOverview', (data, postData) => {
