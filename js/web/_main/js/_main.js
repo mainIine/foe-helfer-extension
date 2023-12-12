@@ -1437,6 +1437,7 @@ let MainParser = {
 	UpdatePlayerDictCore: (Player) => {
 
 		let PlayerID = Player['player_id'];
+		let HasGuildPermission = ((ExtGuildPermission & GuildMemberStat.GuildPermission_Leader) > 0 || (ExtGuildPermission & GuildMemberStat.GuildPermission_Founder) > 0);
 
 		if (PlayerID !== undefined) {
 			if (PlayerDict[PlayerID] === undefined) PlayerDict[PlayerID] = {};
@@ -1451,7 +1452,12 @@ let MainParser = {
 			if (Player['is_friend'] !== undefined) PlayerDict[PlayerID]['IsFriend'] = Player['is_friend'];
 			if (Player['is_self'] !== undefined) PlayerDict[PlayerID]['IsSelf'] = Player['is_self'];
 			if (Player['score'] !== undefined) PlayerDict[PlayerID]['Score'] = Player['score'];
-			if (Player['activity'] !== undefined) PlayerDict[PlayerID]['Activity'] = Player['activity'];
+			
+			if (Player['activity'] !== undefined) {
+				PlayerDict[PlayerID]['Activity'] = Player['activity'];
+			} else {
+				if (Player['is_friend'] || (Player['is_guild_member'] && HasGuildPermission)) PlayerDict[PlayerID]['Activity'] = 0
+			}
 			if (Player['era'] !== undefined) PlayerDict[PlayerID]['Era'] = Player['era'];
 		}
 	},

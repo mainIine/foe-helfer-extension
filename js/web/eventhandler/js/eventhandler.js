@@ -530,7 +530,6 @@ let EventHandler = {
 
 		h.push('</tr>');
 
-		let HasGuildPermission = ((ExtGuildPermission & GuildMemberStat.GuildPermission_Leader) > 0 || (ExtGuildPermission & GuildMemberStat.GuildPermission_Founder) > 0);
 		let pImage = `<img style="max-width: 22px" src="${srcLinks.get('/shared/gui/tavern/shop/tavern_shop_boost_shield1_icon.png', true)}" title="${i18n('Boxes.MoppelHelper.CityProtected')}" alt="${i18n('Boxes.MoppelHelper.CityProtected')}"></img>`
 		for (let i = 0; i < PlayerList.length; i++)
 		{
@@ -582,7 +581,6 @@ let EventHandler = {
 			h.push('<td style="white-space:nowrap;text-align:left;" data-text="' + Player['PlayerName'].toLowerCase().replace(/[\W_ ]+/g, "") + '">');
 
 			h.push(`<span class="activity activity_${Player['Activity']}"></span> `);
-            
 			h.push(MainParser.GetPlayerLink(Player['PlayerID'], Player['PlayerName']));
 
 			// Guild name column
