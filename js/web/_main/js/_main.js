@@ -1439,7 +1439,7 @@ let MainParser = {
 		let PlayerID = Player['player_id'];
 
 		if (PlayerID !== undefined) {
-			if (PlayerDict[PlayerID] === undefined) PlayerDict[PlayerID] = {'Activity': 0};
+			if (PlayerDict[PlayerID] === undefined) PlayerDict[PlayerID] = {};
 
 			PlayerDict[PlayerID]['PlayerID'] = PlayerID;
 			if (Player['name'] !== undefined) PlayerDict[PlayerID]['PlayerName'] = Player['name'];
