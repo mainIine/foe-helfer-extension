@@ -1293,7 +1293,7 @@
     "Settings.ResetBoxPositions.Title": "Box Coordinates",
     "Settings.SelectedMenu.Desc": "Choose your preferred menu from the drop-down list (game will automatically reload)",
     "Settings.SelectedMenu.Title": "Change Menu",
-    "Settings.Show2kQuestMark.Desc": "Shows a small badge with a counter of how many quests you can still refuse.",
+    "Settings.Show2kQuestMark.Desc": "Shows a small bagde with a counter of how many quests you can still refuse.",
     "Settings.Show2kQuestMark.Title": "2000 Quest Mark",
     "Settings.ShowArmyAdvice.Desc": "Shows Advice (added by the player) for specific opposing armies.<br> <button onclick='BattleAssist.ShowArmyAdviceConfig()' class='btn-default'>Advice settings</button>",
     "Settings.ShowArmyAdvice.Title": "Show Army Advice",
