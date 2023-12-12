@@ -581,7 +581,7 @@ let EventHandler = {
 			// Player Name column
 			h.push('<td style="white-space:nowrap;text-align:left;" data-text="' + Player['PlayerName'].toLowerCase().replace(/[\W_ ]+/g, "") + '">');
 
-			if (Player['Activity']) h.push(`<span class="activity activity_${Player['Activity']}"></span> `);
+			h.push(`<span class="activity activity_${Player['Activity']}"></span> `);
             
 			h.push(MainParser.GetPlayerLink(Player['PlayerID'], Player['PlayerName']));
 
