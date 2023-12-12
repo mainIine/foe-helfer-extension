@@ -495,12 +495,12 @@ GetFights = () =>{
 			MainParser.UpdatePlayerDict(data.responseData, 'PlayerList', data.requestMethod);
 		}
 		if (data.requestMethod === 'getSocialList') {
-			if (data.responseData.friends) 
-				MainParser.UpdatePlayerDict(data.responseData.friends, 'PlayerList', 'getFriendsList');
-			if (data.responseData.guildMembers) 
-				MainParser.UpdatePlayerDict(data.responseData.guildMembers, 'PlayerList', 'getClanMemberList');
 			if (data.responseData.neighbours) 
 				MainParser.UpdatePlayerDict(data.responseData.neighbours, 'PlayerList', 'getNeighborList');
+			if (data.responseData.guildMembers) 
+				MainParser.UpdatePlayerDict(data.responseData.guildMembers, 'PlayerList', 'getClanMemberList');
+			if (data.responseData.friends) 
+				MainParser.UpdatePlayerDict(data.responseData.friends, 'PlayerList', 'getFriendsList');
 		}
 	});
 
@@ -1440,7 +1440,9 @@ let MainParser = {
 		let HasGuildPermission = ((ExtGuildPermission & GuildMemberStat.GuildPermission_Leader) > 0 || (ExtGuildPermission & GuildMemberStat.GuildPermission_Founder) > 0);
 
 		if (PlayerID !== undefined) {
-			if (PlayerDict[PlayerID] === undefined) PlayerDict[PlayerID] = {};
+			if (PlayerDict[PlayerID] === undefined) PlayerDict[PlayerID] = {
+										Activity: (Player['is_friend'] || (Player['is_guild_member'] && HasGuildPermission)) ? 0 : undefined
+									};
 
 			PlayerDict[PlayerID]['PlayerID'] = PlayerID;
 			if (Player['name'] !== undefined) PlayerDict[PlayerID]['PlayerName'] = Player['name'];
@@ -1452,12 +1454,7 @@ let MainParser = {
 			if (Player['is_friend'] !== undefined) PlayerDict[PlayerID]['IsFriend'] = Player['is_friend'];
 			if (Player['is_self'] !== undefined) PlayerDict[PlayerID]['IsSelf'] = Player['is_self'];
 			if (Player['score'] !== undefined) PlayerDict[PlayerID]['Score'] = Player['score'];
-			
-			if (Player['activity'] !== undefined) {
-				PlayerDict[PlayerID]['Activity'] = Player['activity'];
-			} else {
-				if (Player['is_friend'] || (Player['is_guild_member'] && HasGuildPermission)) PlayerDict[PlayerID]['Activity'] = 0
-			}
+			if (Player['activity'] !== undefined) PlayerDict[PlayerID]['Activity'] = Player['activity'];
 			if (Player['era'] !== undefined) PlayerDict[PlayerID]['Era'] = Player['era'];
 		}
 	},
