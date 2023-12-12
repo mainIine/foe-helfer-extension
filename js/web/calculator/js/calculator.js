@@ -163,7 +163,7 @@ let Calculator = {
 
 		if (Calculator.PlayerName) {
 			h.push('<span class="player-name">' 
-				+ (PlayerDict[PlayerID]['Activity'] ? `<span style="position: relative; top: 3px" class="activity activity_${PlayerDict[PlayerID]['Activity']}"></span> `: ``)
+				+ `<span class="activity activity_${PlayerDict[PlayerID]['Activity']}"></span> `
 				+ MainParser.GetPlayerLink(PlayerID, Calculator.PlayerName));
 
 			if (Calculator.ClanName) {
