@@ -315,11 +315,33 @@ let Popgame = {
             Popgame.grid[x][y] = tile.type + ((tile.popType === "default" || tile.type === "grandPrize") ? "" : "_reward");
         }
     },
-    tracking : JSON.parse(localStorage.getItem("popgameTracking")||{"start":{"total":0,"grandPrize":0},"afterPop":{"total":0,"grandPrize":0},"leftOnBoard":{"grandPrize":0}}),
+    tracking: Popgame.trackingInit(),
     trackingReset:()=>{
         Popgame.tracking = {start:{total:0,grandPrize:0},afterPop:{total:0,grandPrize:0},leftOnBoard:{grandPrize:0}};
         localStorage.setItem("popgameTracking",JSON.stringify(Popgame.tracking));
+    },
+    trackingInit:()=>{
+        let ret = {
+            start:{
+                total:0,
+                grandPrize:0
+            },
+            afterPop:{
+                total:0,
+                grandPrize:0
+            },
+            leftOnBoard:{grandPrize:0}};
+        
+        let save = localStorage.getItem("popgameTracking");
+        if (save) {
+            try {
+                let x = JSON.parse(save);
+                if (x.leftOnBoard?.grandPrize) return x
+            } catch {}
+        }
+        return ret;
     }
+
     
 };
 
