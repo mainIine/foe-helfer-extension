@@ -315,7 +315,7 @@ let Popgame = {
             Popgame.grid[x][y] = tile.type + ((tile.popType === "default" || tile.type === "grandPrize") ? "" : "_reward");
         }
     },
-    tracking: Popgame.trackingInit(),
+    tracking: null,
     trackingReset:()=>{
         Popgame.tracking = {start:{total:0,grandPrize:0},afterPop:{total:0,grandPrize:0},leftOnBoard:{grandPrize:0}};
         localStorage.setItem("popgameTracking",JSON.stringify(Popgame.tracking));
@@ -341,10 +341,9 @@ let Popgame = {
         }
         return ret;
     }
-
-    
+  
 };
-
+Popgame.trackingInit();
 // Handlers for Tracking:
 FoEproxy.addHandler('PopGameService', 'getOverview', (data, postData) => {
    
