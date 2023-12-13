@@ -321,7 +321,7 @@ let Popgame = {
         localStorage.setItem("popgameTracking",JSON.stringify(Popgame.tracking));
     },
     trackingInit:()=>{
-        let ret = {
+        Popgame.tracking = {
             start:{
                 total:0,
                 grandPrize:0
@@ -336,10 +336,9 @@ let Popgame = {
         if (save) {
             try {
                 let x = JSON.parse(save);
-                if (x.leftOnBoard?.grandPrize) return x
+                if (x.leftOnBoard?.grandPrize) Popgame.tracking = x;
             } catch {}
         }
-        return ret;
     }
   
 };
