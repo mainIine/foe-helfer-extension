@@ -163,32 +163,20 @@ let BlueGalaxy = {
         let h = [];
         h.push('<div class="text-center dark-bg header">');
 
-        let Title;
-        if (BlueGalaxy.DoubleCollections === 0) {
-            Title = i18n('Boxes.BlueGalaxy.NoChargesLeft');
-        }
-        else if (Buildings.length === 0) {
-            Title = i18n('Boxes.BlueGalaxy.NoProductionsDone');
-        }
-        else {
-            Title = i18n('Boxes.BlueGalaxy.DoneProductionsTitle');
-        }
+        let Title = i18n('Boxes.BlueGalaxy.DoneProductionsTitle');
 
         h.push('<strong class="title">' + Title + '</strong><br>');
 
-        if (BlueGalaxy.DoubleCollections > 0 && Buildings.length > 0) {
             h.push('<br>');
             h.push(i18n('Boxes.BlueGalaxy.GoodsValue') + ' ');
             h.push('<input type="number" id="goodsValue" step="0.01" min="0" max="1000" value="' + BlueGalaxy.GoodsValue + '" title="' + HTML.i18nTooltip(i18n('Boxes.BlueGalaxy.TTGoodsValue')) + '">');   
             if (BlueGalaxy.GoodsValue > 0) {
                 h.push('<small> (' + HTML.i18nReplacer(i18n('Boxes.BlueGalaxy.GoodsPerFP'), {goods: Math.round(1/BlueGalaxy.GoodsValue*100)/100}) + ')</small>')
             }
-        }
 
         h.push('</div>');       
 
         let table = [];
-        if (BlueGalaxy.DoubleCollections > 0 && Buildings.length > 0) { 
 
             table.push('<table class="foe-table">');
 
@@ -206,8 +194,7 @@ let BlueGalaxy = {
                 FPBonusSum = 0,
                 GoodsBonusSum = 0;
 
-            for (let i = 0; i < Buildings.length; i++) {
-                if (CollectionsLeft <= 0) break;
+            for (let i = 0; i < 15; i++) { // limits the list to 15 items
 
                 let BuildingName = MainParser.CityEntities[Buildings[i]['EntityID']]['name'];
 
@@ -229,11 +216,6 @@ let BlueGalaxy = {
 
                 table.push('<td class="text-right"><span class="show-entity" data-id="' + Buildings[i]['ID'] + '"><img class="game-cursor" src="' + extUrl + 'css/images/hud/open-eye.png"></span></td>');
                 table.push('</tr>');
-
-                // nur so viele ausgeben wie es auch Versuche gibt
-                //if(BlueGalaxy.DoubleCollections === (i +1)){
-                //    break;
-                //}
             }
 
             table.push('</table');
@@ -242,7 +224,6 @@ let BlueGalaxy = {
                 h.push(HTML.i18nReplacer(i18n('Boxes.BlueGalaxy.EstimatedBonus'), { FP: Math.round(FPBonusSum), Goods: Math.round(GoodsBonusSum)}));
                 h.push('<br>');
             }
-        }
 
         h.push(table.join(''));
 
