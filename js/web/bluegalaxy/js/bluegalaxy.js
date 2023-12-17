@@ -129,8 +129,6 @@ let BlueGalaxy = {
 
             let Production = Productions.readType(CityMap[i]);
 
-            //console.log(Production);
-
             if (Production['products']) {
                 let FP = Production['products']['strategy_points'];
                 if (!FP) FP = 0;
@@ -143,14 +141,22 @@ let BlueGalaxy = {
                     }
                 }
 
-                Buildings.push({
-                    ID: ID, 
-                    EntityID: EntityID, 
-                    FP: FP, 
-                    Goods: GoodsSum, 
-                    In: Production['in'], 
-                    At: Production['at']
-                });
+                let Fragments = '';
+                if (Production['products'].fragments) {
+                    Fragments = Production['products'].fragments;
+                }
+
+                if (GoodsSum > 0 || FP > 0 || Fragments != '') {
+                    Buildings.push({
+                        ID: ID, 
+                        EntityID: EntityID,
+                        Fragments: Fragments, 
+                        FP: FP, 
+                        Goods: GoodsSum, 
+                        In: Production['in'], 
+                        At: Production['at']
+                    });
+                }
             }
         }
                 
@@ -183,6 +189,7 @@ let BlueGalaxy = {
             table.push('<thead>' +
                 '<tr>' +
                 '<th>' + i18n('Boxes.BlueGalaxy.Building') + '</th>' +
+                '<th colspan="2">' + i18n('Boxes.BlueGalaxy.Fragments') + '</th>' +
                 '<th>' + i18n('Boxes.BlueGalaxy.FP') + '</th>' +
                 '<th>' + i18n('Boxes.BlueGalaxy.Goods') + '</th>' +
                 '<th>' + i18n('Boxes.BlueGalaxy.DoneIn') + '</th>' +
@@ -192,14 +199,23 @@ let BlueGalaxy = {
 
             let CollectionsLeft = BlueGalaxy.DoubleCollections,
                 FPBonusSum = 0,
+                FragmentsSum = '',
                 GoodsBonusSum = 0;
 
-            for (let i = 0; i < 15; i++) { // limits the list to 15 items
+            for (let i = 0; i < 15 && i < Buildings.length; i++) { // limits the list to max 15 items
 
                 let BuildingName = MainParser.CityEntities[Buildings[i]['EntityID']]['name'];
+                let FragmentAmount = 0;
+                let FragmentName = '';
+                if (Buildings[i]['Fragments']) {
+                    FragmentAmount = parseInt(Buildings[i]['Fragments'].split(' ')[0]);
+                    FragmentName = Buildings[i]['Fragments'].slice(String(FragmentAmount).length+1);
+                }
 
                 table.push('<tr>');
                 table.push('<td>' + BuildingName + '</td>');
+                table.push('<td class="text-center">' + HTML.Format(FragmentAmount) + '</td>');
+                table.push('<td>' + FragmentName + '</td>');
                 table.push('<td class="text-center">' + HTML.Format(Buildings[i]['FP']) + '</td>');
                 table.push('<td class="text-center">' + HTML.Format(Buildings[i]['Goods']) + '</td>');
 
@@ -207,6 +223,7 @@ let BlueGalaxy = {
                     table.push('<td style="white-space:nowrap"><strong class="success">' + i18n('Boxes.BlueGalaxy.Done') + '</strong></td>');
                     CollectionsLeft -= 1;
 
+                    FragmentsSum += FragmentAmount * BlueGalaxy.GalaxyFactor;
                     FPBonusSum += Buildings[i]['FP'] * BlueGalaxy.GalaxyFactor;
                     GoodsBonusSum += Buildings[i]['Goods'] * BlueGalaxy.GalaxyFactor;
                 }
@@ -218,7 +235,7 @@ let BlueGalaxy = {
                 table.push('</tr>');
             }
 
-            table.push('</table');
+            table.push('</table>');
 
             if (FPBonusSum > 0 || GoodsBonusSum > 0) {
                 h.push(HTML.i18nReplacer(i18n('Boxes.BlueGalaxy.EstimatedBonus'), { FP: Math.round(FPBonusSum), Goods: Math.round(GoodsBonusSum)}));
