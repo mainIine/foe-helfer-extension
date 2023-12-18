@@ -157,6 +157,7 @@ GetFights = () =>{
 			if (!CityEntity.type) CityEntity.type = CityEntity?.components?.AllAge?.tags?.tags?.find(value => value.hasOwnProperty('buildingType')).buildingType;
         }
 		MainParser.checkInactives();
+		MainParser.createCityBuildings();
 	});
 
 	// Building-Upgrades
@@ -812,6 +813,7 @@ let MainParser = {
 
 	// all buildings of the player
 	CityMapData: {},
+	NewCityMapData: [],
 	CityMapEraOutpostData: null,
 	OtherPlayerCityMapData: {},
 
@@ -828,7 +830,6 @@ let MainParser = {
 	SelectionKits: null,
 
 	InnoCDN: 'https://foede.innogamescdn.com/',
-
 
 	/**
 	* Version specific StartUp Code
@@ -860,6 +861,42 @@ let MainParser = {
 
 		localStorage.setItem('LastStartedVersion', extVersion);
 		localStorage.setItem('LastAgreedVersion', extVersion); //Comment out this line if you have something the player must agree on
+	},
+
+
+	createCityBuildings: () => {
+
+		//console.log(Object.values(MainParser.CityEntities));
+
+		for (const [key, data] of Object.entries(MainParser.CityMapData)) {
+			if (data.id < 2000000000 && data.type != "hub_part") { // do not include outpost buildings and harbours
+				let ceData = Object.values(MainParser.CityEntities).find(x => x.id == data.cityentity_id);
+				let eraID = Technologies.getEraIdByEntityIdOrLevel(data.cityentity_id, data.level);
+				let cityMapEntity = {
+					entityId: data.cityentity_id,
+					name: ceData.name,
+					id: data.id,
+					type: data.type,
+					player_id: data.player_id,
+					
+					coords: { x: data.x, y: data.y },
+					size: { width: ceData.width, length: ceData.length },
+
+					population: 0, // TODO
+					happiness: ceData.provided_happiness,
+					connected: (data.connected == 1 ? true : false), // fyi: decorations are always connected
+					state: (data.state.__class__ == "IdleState" ? 'idle' : data.state), // huge TODO
+					eraId: eraID,
+
+					level: (data.type == "greatbuilding" ? data.level : undefined), // level also includes eraId in raw data, we do not like that
+					max_level: (data.type == "greatbuilding" ? data.max_level : undefined)
+				}
+				//if (cityMapEntity.state != 'idle' && cityMapEntity.type != 'generic_building')
+				//	console.log(data.state);
+
+				MainParser.NewCityMapData.push(cityMapEntity);
+			}
+		}
 	},
 
 
