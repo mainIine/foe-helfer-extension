@@ -866,44 +866,64 @@ let MainParser = {
 
 	createCityBuildings: () => {
 
-		function getPopulation(data, eraID) {
-			if (!data.components) { 	// not a generic building
-				if (data.entity_levels.length > 0) {
-					if (data.entity_levels[eraID].required_population)
-						return data.entity_levels[eraID].required_population * -1; 	// needs population, e.g. military
-					else if (data.entity_levels[eraID].provided_population)
-						return data.entity_levels[eraID].provided_population; 		// provides population, e.g. residential
+		function getPopulation(ceData, eraID) {
+			let population = 0;
+
+			if (!ceData.components) { // not a generic building
+				if (ceData.entity_levels.length > 0) {
+					if (ceData.entity_levels[eraID].required_population)
+						return ceData.entity_levels[eraID].required_population * -1; 	// needs population, e.g. military
+					else if (ceData.entity_levels[eraID].provided_population)
+						return ceData.entity_levels[eraID].provided_population; 		// provides population, e.g. residential
 				}
-				else if (data.requirements) {
-					if (data.requirements.cost)
-						return data.requirements.cost.resources.population * -1;
+				else if (ceData.requirements) {
+					if (ceData.requirements.cost)
+						return ceData.requirements.cost.resources.population * -1;
 				}
 			}
-			else { 						// generic building
+			else { // generic building
 				let era = Technologies.EraNames[eraID];
-				let population = data.components[era].staticResources.resources.resources.population;
-				if (population)
+				let staticResources = ceData.components[era].staticResources;
+
+				if (staticResources) {
+					population = staticResources.resources.resources.population;
 					return population;
+				}
 			}
-			return undefined;
+			return population;
 		};
 
-		function getHappiness(data, eraID) { // TODO military, goods?, generic_building
-			if (!data.components) { // not a generic building
-				if (data.entity_levels.length > 0) {
-					if (data.entity_levels[eraID].provided_happiness)
-						return data.entity_levels[eraID].provided_happiness;
+		function getHappiness(ceData, data, eraID) { // TODO military, goods?, generic_building
+			let happiness = 0;
+			let bgHappiness = data.bonus;
+			if (!ceData.components) { // not a generic building
+				if (ceData.entity_levels.length > 0) { // special building
+					if (ceData.entity_levels[eraID].provided_happiness)
+						return ceData.entity_levels[eraID].provided_happiness;
+					return happiness;
+				}
+				else if (bgHappiness) { // great building, e.g. Alcatraz
+					return bgHappiness.value;
+				}
+				else if (ceData.provided_happiness) { // decorations etc.
+					return ceData.provided_happiness;
+				}
+				else {
+					return happiness;
 				}
 			}
-			else {
-				if (data.provided_happiness)
-					return data.provided_happiness;
+			else { //generic building
+				let era = Technologies.EraNames[eraID];
+				let bHappiness = ceData.components[era].happiness;
+				if (bHappiness)
+					return (bHappiness.provided ? bHappiness.provided : happiness);
+				return happiness;
 			}
-			return undefined;
 		};
 
 		//console.log(Object.values(MainParser.CityEntities));
 
+		// loop through all city buildings
 		for (const [key, data] of Object.entries(MainParser.CityMapData)) {
 			if (data.id < 2000000000 && data.type != "hub_part") { // do not include outpost buildings and harbours
 				let ceData = Object.values(MainParser.CityEntities).find(x => x.id == data.cityentity_id);
@@ -920,7 +940,7 @@ let MainParser = {
 					size: { width: ceData.width, length: ceData.length },
 
 					population: getPopulation(ceData, eraID-1), // -1 because ingame counts differently
-					happiness: getHappiness(ceData, eraID-1), // TODO
+					happiness: getHappiness(ceData, data, eraID-1),
 					connected: (data.connected == 1 ? true : false), // fyi: decorations are always connected
 					state: (data.state.__class__ == "IdleState" ? 'idle' : data.state), // huge TODO
 					eraId: eraID,
@@ -928,8 +948,8 @@ let MainParser = {
 					level: (data.type == "greatbuilding" ? data.level : undefined), // level also includes eraId in raw data, we do not like that
 					max_level: (data.type == "greatbuilding" ? data.max_level : undefined)
 				}
-				if (cityMapEntity.happiness == undefined && cityMapEntity.type != "street")
-					console.log(cityMapEntity);
+				if (cityMapEntity.type != "generic_building")
+					console.log(cityMapEntity.name, ceData);
 
 				MainParser.NewCityMapData.push(cityMapEntity);
 			}
