@@ -866,6 +866,42 @@ let MainParser = {
 
 	createCityBuildings: () => {
 
+		function getPopulation(data, eraID) {
+			if (!data.components) { 	// not a generic building
+				if (data.entity_levels.length > 0) {
+					if (data.entity_levels[eraID].required_population)
+						return data.entity_levels[eraID].required_population * -1; 	// needs population, e.g. military
+					else if (data.entity_levels[eraID].provided_population)
+						return data.entity_levels[eraID].provided_population; 		// provides population, e.g. residential
+				}
+				else if (data.requirements) {
+					if (data.requirements.cost)
+						return data.requirements.cost.resources.population * -1;
+				}
+			}
+			else { 						// generic building
+				let era = Technologies.EraNames[eraID];
+				let population = data.components[era].staticResources.resources.resources.population;
+				if (population)
+					return population;
+			}
+			return undefined;
+		};
+
+		function getHappiness(data, eraID) { // TODO military, goods?, generic_building
+			if (!data.components) { // not a generic building
+				if (data.entity_levels.length > 0) {
+					if (data.entity_levels[eraID].provided_happiness)
+						return data.entity_levels[eraID].provided_happiness;
+				}
+			}
+			else {
+				if (data.provided_happiness)
+					return data.provided_happiness;
+			}
+			return undefined;
+		};
+
 		//console.log(Object.values(MainParser.CityEntities));
 
 		for (const [key, data] of Object.entries(MainParser.CityMapData)) {
@@ -873,17 +909,18 @@ let MainParser = {
 				let ceData = Object.values(MainParser.CityEntities).find(x => x.id == data.cityentity_id);
 				let eraID = Technologies.getEraIdByEntityIdOrLevel(data.cityentity_id, data.level);
 				let cityMapEntity = {
+					player_id: data.player_id,
+					id: data.id,
+
 					entityId: data.cityentity_id,
 					name: ceData.name,
-					id: data.id,
 					type: data.type,
-					player_id: data.player_id,
 					
 					coords: { x: data.x, y: data.y },
 					size: { width: ceData.width, length: ceData.length },
 
-					population: 0, // TODO
-					happiness: ceData.provided_happiness,
+					population: getPopulation(ceData, eraID-1), // -1 because ingame counts differently
+					happiness: getHappiness(ceData, eraID-1), // TODO
 					connected: (data.connected == 1 ? true : false), // fyi: decorations are always connected
 					state: (data.state.__class__ == "IdleState" ? 'idle' : data.state), // huge TODO
 					eraId: eraID,
@@ -891,8 +928,8 @@ let MainParser = {
 					level: (data.type == "greatbuilding" ? data.level : undefined), // level also includes eraId in raw data, we do not like that
 					max_level: (data.type == "greatbuilding" ? data.max_level : undefined)
 				}
-				//if (cityMapEntity.state != 'idle' && cityMapEntity.type != 'generic_building')
-				//	console.log(data.state);
+				if (cityMapEntity.happiness == undefined && cityMapEntity.type != "street")
+					console.log(cityMapEntity);
 
 				MainParser.NewCityMapData.push(cityMapEntity);
 			}
