@@ -870,7 +870,7 @@ let MainParser = {
 			let population = 0;
 
 			if (!ceData.components) { // not a generic building
-				if (ceData.entity_levels.length > 0) {
+				if (ceData.entity_levels.length > 0) {  // special building
 					if (ceData.entity_levels[eraID].required_population)
 						return ceData.entity_levels[eraID].required_population * -1; 	// needs population, e.g. military
 					else if (ceData.entity_levels[eraID].provided_population)
@@ -921,11 +921,35 @@ let MainParser = {
 			}
 		};
 
+		function getPolivation(data, ceData) { // need to test better
+			if (data.type != "generic_building") {
+				if (ceData.is_special) {
+					if (data.state.boosted)
+						return data.state.boosted;
+					else if (data.state.next_state_transition_in) // wrong
+						return true;
+					else 
+						return undefined;
+				}
+				else { // decorations etc.
+					if (data.state.next_state_transition_in) // wrong
+						return true;
+					return undefined;
+				}
+			}
+			else { // generic buildings
+				if (data.state.socialInteractionStartedAt) // wrong
+					return true;
+				else
+					return false;
+			}
+		}
+
 		//console.log(Object.values(MainParser.CityEntities));
 
 		// loop through all city buildings
 		for (const [key, data] of Object.entries(MainParser.CityMapData)) {
-			if (data.id < 2000000000 && data.type != "hub_part") { // do not include outpost buildings and harbours
+			if (data.id < 2000000000 && data.type != "hub_part" && data.type != "hub_main") { // do not include outpost buildings and harbours
 				let ceData = Object.values(MainParser.CityEntities).find(x => x.id == data.cityentity_id);
 				let eraID = Technologies.getEraIdByEntityIdOrLevel(data.cityentity_id, data.level);
 				let cityMapEntity = {
@@ -945,11 +969,13 @@ let MainParser = {
 					state: (data.state.__class__ == "IdleState" ? 'idle' : data.state), // huge TODO
 					eraId: eraID,
 
+					isPolivated: getPolivation(data, ceData), // returns undefined if it cannot be polivated
+
 					level: (data.type == "greatbuilding" ? data.level : undefined), // level also includes eraId in raw data, we do not like that
 					max_level: (data.type == "greatbuilding" ? data.max_level : undefined)
 				}
-				if (cityMapEntity.type != "generic_building")
-					console.log(cityMapEntity.name, ceData);
+				if (cityMapEntity.type == "generic_building")
+					console.log(cityMapEntity.name, cityMapEntity.isPolivated, ceData, data);
 
 				MainParser.NewCityMapData.push(cityMapEntity);
 			}
