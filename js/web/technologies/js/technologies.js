@@ -137,6 +137,14 @@ let Technologies = {
     },
 
 
+    getEraIdByEntityIdOrLevel: (entityId, level) => {
+        let eraName = entityId.split('_')[1];
+        if (eraName == 'MultiAge')
+            return level;
+        return Technologies.Eras[eraName];
+    },
+
+
 	/**
 	 * Zeigt
 	 */
