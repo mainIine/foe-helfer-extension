@@ -866,6 +866,7 @@ let MainParser = {
 
 	createCityBuildings: () => {
 
+		// returns negative numbers for builidings that use population, 0 for buildings that dont provide or use it
 		function getPopulation(ceData, eraID) {
 			let population = 0;
 
@@ -893,7 +894,8 @@ let MainParser = {
 			return population;
 		};
 
-		function getHappiness(ceData, data, eraID) { // TODO military, goods?, generic_building
+		// returns 0 if building does not provide or substracts happiness
+		function getHappiness(ceData, data, eraID) {
 			let happiness = 0;
 			let bgHappiness = data.bonus;
 			if (!ceData.components) { // not a generic building
@@ -921,31 +923,31 @@ let MainParser = {
 			}
 		};
 
-		function getPolivation(data, ceData) { // need to test better
-			if (data.type != "generic_building") {
-				if (ceData.is_special) {
-					if (data.state.boosted)
-						return data.state.boosted;
-					else if (data.state.next_state_transition_in) // wrong
-						return true;
-					else 
-						return undefined;
+		// returns undefined if building cannot be motivated or polished
+		function getPolivation(data, ceData) { 
+			let isPolivationable = (ceData.abilities[0].__class__ == "MotivatableAbility" || ceData.abilities[0].__class__ == "PolishableAbility" ); // todo improve this, make it more sturdy
+			let isPolishable = (ceData.abilities[0].__class__ == "PolishableAbility");
+			if (isPolivationable) {
+				if (data.type != "generic_building") {
+						if (data.state.boosted)
+							return data.state.boosted;
+						else if (data.state.is_motivated) 
+							return true;
+						else if (isPolishable) {// decorations etc.
+							if (data.state.next_state_transition_in) 
+								return true;
+						}
+						return false;
 				}
-				else { // decorations etc.
-					if (data.state.next_state_transition_in) // wrong
+				else { // generic buildings
+					if (data.state.socialInteractionStartedAt) 
 						return true;
-					return undefined;
+					else
+						return false;
 				}
 			}
-			else { // generic buildings
-				if (data.state.socialInteractionStartedAt) // wrong
-					return true;
-				else
-					return false;
-			}
+			return undefined;
 		}
-
-		//console.log(Object.values(MainParser.CityEntities));
 
 		// loop through all city buildings
 		for (const [key, data] of Object.entries(MainParser.CityMapData)) {
@@ -969,13 +971,13 @@ let MainParser = {
 					state: (data.state.__class__ == "IdleState" ? 'idle' : data.state), // huge TODO
 					eraId: eraID,
 
-					isPolivated: getPolivation(data, ceData), // returns undefined if it cannot be polivated
+					isPolivated: getPolivation(data, ceData),
 
 					level: (data.type == "greatbuilding" ? data.level : undefined), // level also includes eraId in raw data, we do not like that
 					max_level: (data.type == "greatbuilding" ? data.max_level : undefined)
 				}
-				if (cityMapEntity.type == "generic_building")
-					console.log(cityMapEntity.name, cityMapEntity.isPolivated, ceData, data);
+				
+				console.log(cityMapEntity.name, cityMapEntity.isPolivated, ceData, data);
 
 				MainParser.NewCityMapData.push(cityMapEntity);
 			}
