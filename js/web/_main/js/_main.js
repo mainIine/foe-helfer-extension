@@ -967,6 +967,16 @@ let MainParser = {
 			return chainId;
 		}
 
+		// returns setId (string), returns undefined if not a chain building
+		function getSetBuilding(ceData) {
+			let setId = undefined;
+			ceData.abilities.forEach(ability => {
+				if (ability.setId)
+					setId = ability.setId;
+			});
+			return setId;
+		}
+
 		// returns an array with all boosts, array is empty when there are none
 		function getBuildingBoosts(ceData, data, era) {
 			let eraName = (era == 'AllAge' ? 'BronzeAge' : era); // for some reason Watchtower Level 2 (example) has an era list even though the boost is the same everywhere. thx inno
@@ -975,7 +985,7 @@ let MainParser = {
 				ceData.abilities.forEach(ability => {
 					if (ability.boostHints) {
 						ability.boostHints.forEach(abilityBoost => {
-							if (abilityBoost.boostHintEraMap[era] != undefined) { // has different boosts for different eras
+							if (abilityBoost.boostHintEraMap[eraName] != undefined) { // has different boosts for different eras
 								// example data: targetedFeature: "all", type: "att_boost_attacker", value: 11
 								let boost = {
 									feature: abilityBoost.boostHintEraMap[eraName].targetedFeature,
@@ -1091,11 +1101,12 @@ let MainParser = {
 					population: getPopulation(ceData, era), 
 					happiness: getHappiness(ceData, data, era),
 					connected: (data.connected == 1 ? true : false), // fyi: decorations are always connected
-					state: getState(data), // huge TODO
+					state: getState(data),
 					eraName: era,
 
 					isPolivated: getPolivation(data, ceData),
 					chainBuilding: getChainBuilding(ceData),
+					setBuilding: getSetBuilding(ceData),
 
 					boosts: getBuildingBoosts(ceData, data, era),
 					//production: getProductions(ceData, data, era),
