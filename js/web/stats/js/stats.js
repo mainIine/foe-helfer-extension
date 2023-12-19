@@ -171,7 +171,6 @@ let Stats = {
 		eras: {}, // Selected era for filtering data,
 		eraSelectOpen: false, // Dropdown
 		isGroupByEra: false,
-		showAnnotations: false, // GvG annotations
 		rewardSource: 'battlegrounds_conquest', // filter by type of reward
 		currentType: null,
 		filter:"",
@@ -333,10 +332,6 @@ let Stats = {
 					Stats.RemoveTable();
 					break;
 
-				case 'toggleAnnotations':
-					Stats.state.showAnnotations = !Stats.state.showAnnotations;
-					break;
-
 				default:
 					return;
 			}
@@ -480,14 +475,6 @@ let Stats = {
 			dataType: 'groupByToggle',
 		});
 
-		const btnTglAnnotations = Stats.RenderBox({
-			name: i18n('Boxes.Stats.BtnToggleAnnotations'),
-			title: i18n('Boxes.Stats.BtnToggleAnnotationsTitle'),
-			disabled: Stats.isSelectedRewardSources(),
-			isActive: Stats.state.showAnnotations,
-			dataType: 'toggleAnnotations',
-		});
-
 		const sourceBtns = [
 			'statsTreasurePlayerD',
 			'statsTreasureClanD',
@@ -554,7 +541,7 @@ let Stats = {
 					</span>
 				</div>
 				<div class="option-chart-type-wrap text-center">
-					${btnTglAnnotations}<br>
+					<br>
 					<span class="btn-group">
 					${chartTypes.join('')}
 					</span>
@@ -1115,102 +1102,6 @@ let Stats = {
 
 
 	/**
-	 * Get annotations
-	 *
-	 * @returns {Promise<{xAxisPlotLines: {color: string, dashStyle: string, width: number, value: *}[], annotations: [{useHTML: boolean, labelOptions: {verticalAlign: string, backgroundColor: string, y: number, style: {fontSize: string}}, labels: {text: string, point: {xAxis: number, x: *, y: number}}[]}]}>}
-	 */
-	getAnnotations: async () => {
-		let data = await IndexDB.db.statsTreasureClanH.orderBy('date').toArray();
-		data = data.filter(it => it.clanId === ExtGuildID);
-
-		const gvgDates = [];
-		const BASE_LEVEL = -100; // only create annotation when more than 100 goods are lost
-
-		data.forEach((dataItem, index) => {
-			if (!index) return; // skip first
-			const prevDataItem = data[index - 1];
-			const resources = dataItem.resources;
-			const prevResources = prevDataItem.resources;
-			const delta = Object.keys(resources).reduce((acc, goodsName) => {
-				acc[goodsName] = (resources[goodsName] || 0) - (prevResources[goodsName] || 0);
-				return acc;
-			}, {});
-
-			// Find era where minimum 3 kind of goods are reduce with almost same value (15% deviation)
-			const erasGvG = {};
-			Stats.PlayableEras.forEach(era => {
-				const goodsDiffs = Stats.ResMap[era].map(goodsName => delta[goodsName]);
-				if (goodsDiffs.length > 1) {
-					const matchedIndexes = [];
-					let decreasedGoods = 0;
-					for (let i = 0; i < goodsDiffs.length; i++) {
-						const a = goodsDiffs[i];
-						const b = i - 1 < 0 ? goodsDiffs[goodsDiffs.length - 1] : goodsDiffs[i - 1];
-						const diffBetween2Goods = Math.abs((a - b) / a);
-						if (diffBetween2Goods < 0.15 && a < BASE_LEVEL) {
-							matchedIndexes.push(i);
-							if (a < decreasedGoods) {
-								decreasedGoods = a;
-							}
-						}
-					}
-					if (matchedIndexes.length >= 3) {
-						erasGvG[era] = decreasedGoods * goodsDiffs.length;
-					}
-				}
-
-				if (delta.medals < BASE_LEVEL) {
-					erasGvG.NoAge = delta.medals;
-				}
-
-				if (Object.keys(erasGvG).length) {
-					gvgDates.push([+dataItem.date, erasGvG]);
-				}
-			});
-		});
-
-		const annotationLabels = gvgDates.map(([date, eras]) => {
-			const statsStr = Object.keys(eras).map(it => `${Stats.shortEraName(it)}: ${Stats.kilos(eras[it])}`).join('<br />');
-			return {
-				point: {
-					xAxis: 0,
-					x: date,
-					y: 0
-				},
-				text: 'GvG<br/>' + statsStr
-			}
-		});
-
-		// Highchart annotations
-		const annotations = [{
-			useHTML: true,
-			labelOptions: {
-				style: {
-					fontSize: '10px'
-				},
-				backgroundColor: 'rgba(200,200,128,0.9)',
-				verticalAlign: 'top',
-				y: 18
-			},
-			labels: annotationLabels
-		}];
-
-		// Highchart's line for highlight GvG
-		const xAxisPlotLines = gvgDates.map(([it, eras]) => ({
-			dashStyle: 'Dot',
-			color: '#b20000',
-			width: 1,
-			value: it
-		}));
-
-		return {
-			annotations,
-			xAxisPlotLines
-		};
-	},
-
-
-	/**
 	 * Update chart
 	 *
 	 * @param series
@@ -1225,7 +1116,6 @@ let Stats = {
 		pointFormat = pointFormat || '<tr><td><span style="color:{point.color}">●</span> {series.name}:</td><td class="text-right"><b>{point.y}</b></td></tr>';
 		footerFormat = footerFormat || '</table>';
 
-		const {annotations, xAxisPlotLines} = Stats.state.showAnnotations ? (await Stats.getAnnotations()) : {};
 		const title = i18n('Boxes.Stats.SourceTitle.' + Stats.state.source);
 
 		Highcharts.chart('highcharts', {
@@ -1254,7 +1144,6 @@ let Stats = {
 			},
 			xAxis: {
 				type: 'datetime',
-				plotLines: xAxisPlotLines,
 			},
 			tooltip: {
 				useHTML: true,
@@ -1265,13 +1154,12 @@ let Stats = {
 				footerFormat,
 			},
 			yAxis: {
-				maxPadding: annotations ? 0.2 : 0,
+				maxPadding: 0,
 				title: {text: null},
 				visible: chartType !== 'streamgraph',
 				startOnTick: chartType !== 'streamgraph',
 				endOnTick: chartType !== 'streamgraph',
 			},
-			annotations,
 			legend: {enabled: series.length < 26},
 			plotOptions: {
 				series: {
