@@ -966,8 +966,9 @@ let MainParser = {
 			return chainId;
 		}
 
+		// returns an array with all boosts, array is empty when there are none
 		function getBuildingBoosts(ceData, data, eraID) {
-			let era = Technologies.EraNames[eraID];
+			let era = (eraID == 1 ? 'BronzeAge' : Technologies.EraNames[eraID]); // for some reason Watchtower Level 2 (example) has an era list even though it's the same everywhere. thx inno
 			let boosts = [];
 			if (data.type != "generic_building") { // TODO: test with military building with boost
 				ceData.abilities.forEach(ability => {
@@ -978,7 +979,7 @@ let MainParser = {
 								let boost = {
 									feature: abilityBoost.boostHintEraMap[era].targetedFeature,
 									type: abilityBoost.boostHintEraMap[era].type,
-									value: abilityBoost.boostHintEraMap[era].value,
+									value: abilityBoost.boostHintEraMap[era].value
 								};
 								boosts.push(boost);
 							}
@@ -986,7 +987,7 @@ let MainParser = {
 								let boost = {
 									feature: abilityBoost.boostHintEraMap.AllAge.targetedFeature,
 									type: abilityBoost.boostHintEraMap.AllAge.type,
-									value: abilityBoost.boostHintEraMap.AllAge.value,
+									value: abilityBoost.boostHintEraMap.AllAge.value
 								};
 								boosts.push(boost);
 							}
@@ -1041,9 +1042,8 @@ let MainParser = {
 					level: (data.type == "greatbuilding" ? data.level : undefined), // level also includes eraId in raw data, we do not like that
 					max_level: (data.type == "greatbuilding" ? data.max_level : undefined)
 				}
-				
-				//if(cityMapEntity.boosts)
-				//	console.log(cityMapEntity.name, cityMapEntity, ceData, data);
+
+				console.log(cityMapEntity.name, cityMapEntity, ceData, data);
 
 				MainParser.NewCityMapData.push(cityMapEntity);
 			}
