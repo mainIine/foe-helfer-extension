@@ -865,7 +865,6 @@ let MainParser = {
 
 
 	createCityBuildings: () => {
-
 		// returns negative numbers for builidings that use population, 0 for buildings that dont provide or use it
 		function getPopulation(ceData, eraID) {
 			let population = 0;
@@ -894,7 +893,7 @@ let MainParser = {
 			return population;
 		};
 
-		// returns 0 if building does not provide or substracts happiness
+		// returns 0 if building does not provide or substract happiness
 		function getHappiness(ceData, data, eraID) {
 			let happiness = 0;
 			let bgHappiness = data.bonus;
@@ -925,15 +924,23 @@ let MainParser = {
 
 		// returns undefined if building cannot be motivated or polished
 		function getPolivation(data, ceData) { 
-			let isPolivationable = (ceData.abilities[0].__class__ == "MotivatableAbility" || ceData.abilities[0].__class__ == "PolishableAbility" ); // todo improve this, make it more sturdy
-			let isPolishable = (ceData.abilities[0].__class__ == "PolishableAbility");
+			let isPolivationable = false;
+			let isPolishable = false;
+			ceData.abilities.forEach(ability => {
+				if (ability.__class__ == "MotivatableAbility")
+					isPolivationable = true
+				else if (ability.__class__ == "PolishableAbility") {
+					isPolivationable = true
+					isPolishable = true
+				}
+			});
 			if (isPolivationable) {
 				if (data.type != "generic_building") {
 						if (data.state.boosted)
 							return data.state.boosted;
 						else if (data.state.is_motivated) 
 							return true;
-						else if (isPolishable) {// decorations etc.
+						else if (isPolishable) { // decorations etc.
 							if (data.state.next_state_transition_in) 
 								return true;
 						}
@@ -949,11 +956,65 @@ let MainParser = {
 			return undefined;
 		}
 
+		// returns chainId (string), returns undefined if not a chain building
+		function getChainBuilding(ceData) {
+			let chainId = undefined;
+			ceData.abilities.forEach(ability => {
+				if (ability.chainId)
+					chainId = ability.chainId;
+			});
+			return chainId;
+		}
+
+		function getBuildingBoosts(ceData, data, eraID) {
+			let era = Technologies.EraNames[eraID];
+			let boosts = [];
+			if (data.type != "generic_building") { // TODO: test with military building with boost
+				ceData.abilities.forEach(ability => {
+					if (ability.boostHints) {
+						ability.boostHints.forEach(abilityBoost => {
+							if (abilityBoost.boostHintEraMap[era] != undefined) { // has different boosts for different eras
+								// example data: targetedFeature: "all", type: "att_boost_attacker", value: 11
+								let boost = {
+									feature: abilityBoost.boostHintEraMap[era].targetedFeature,
+									type: abilityBoost.boostHintEraMap[era].type,
+									value: abilityBoost.boostHintEraMap[era].value,
+								};
+								boosts.push(boost);
+							}
+							else { // if only AllAge boost
+								let boost = {
+									feature: abilityBoost.boostHintEraMap.AllAge.targetedFeature,
+									type: abilityBoost.boostHintEraMap.AllAge.type,
+									value: abilityBoost.boostHintEraMap.AllAge.value,
+								};
+								boosts.push(boost);
+							}
+						});
+					}
+				});
+			}
+			else {
+				if (ceData.components[era].boosts) {
+					ceData.components[era].boosts.boosts.forEach(abilityBoost => {
+						// example data: targetedFeature: "all", type: "att_boost_attacker", value: 11
+						boost = {
+							feature: abilityBoost.targetedFeature,
+							type: abilityBoost.type,
+							value: abilityBoost.value,
+						};
+						boosts.push(boost);
+					});
+				}
+			}
+			return boosts;
+		}
+
 		// loop through all city buildings
 		for (const [key, data] of Object.entries(MainParser.CityMapData)) {
 			if (data.id < 2000000000 && data.type != "hub_part" && data.type != "hub_main") { // do not include outpost buildings and harbours
 				let ceData = Object.values(MainParser.CityEntities).find(x => x.id == data.cityentity_id);
-				let eraID = Technologies.getEraIdByEntityIdOrLevel(data.cityentity_id, data.level);
+				let eraID = Technologies.getEraIdByEntityIdOrLevel(data.cityentity_id, data.level); // todo needs to be verified
 				let cityMapEntity = {
 					player_id: data.player_id,
 					id: data.id,
@@ -968,16 +1029,21 @@ let MainParser = {
 					population: getPopulation(ceData, eraID-1), // -1 because ingame counts differently
 					happiness: getHappiness(ceData, data, eraID-1),
 					connected: (data.connected == 1 ? true : false), // fyi: decorations are always connected
-					state: (data.state.__class__ == "IdleState" ? 'idle' : data.state), // huge TODO
+					state: (data.state.__class__ == "IdleState" ? 'idle' : 'producing'), // huge TODO
 					eraId: eraID,
 
 					isPolivated: getPolivation(data, ceData),
+					chainBuilding: getChainBuilding(ceData),
+
+					production: (data.state.__class__ != "IdleState" ? data.state : undefined),
+					boosts: getBuildingBoosts(ceData, data, eraID+1), // also has stoneAge, i hate this
 
 					level: (data.type == "greatbuilding" ? data.level : undefined), // level also includes eraId in raw data, we do not like that
 					max_level: (data.type == "greatbuilding" ? data.max_level : undefined)
 				}
 				
-				console.log(cityMapEntity.name, cityMapEntity.isPolivated, ceData, data);
+				//if(cityMapEntity.boosts)
+				//	console.log(cityMapEntity.name, cityMapEntity, ceData, data);
 
 				MainParser.NewCityMapData.push(cityMapEntity);
 			}
