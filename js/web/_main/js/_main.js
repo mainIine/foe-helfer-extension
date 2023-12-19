@@ -866,15 +866,16 @@ let MainParser = {
 
 	createCityBuildings: () => {
 		// returns negative numbers for builidings that use population, 0 for buildings that dont provide or use it
-		function getPopulation(ceData, eraID) {
+		function getPopulation(ceData, era) {
 			let population = 0;
+			let eraId = Technologies.InnoEras[era];
 
 			if (!ceData.components) { // not a generic building
 				if (ceData.entity_levels.length > 0) {  // special building
-					if (ceData.entity_levels[eraID].required_population)
-						return ceData.entity_levels[eraID].required_population * -1; 	// needs population, e.g. military
-					else if (ceData.entity_levels[eraID].provided_population)
-						return ceData.entity_levels[eraID].provided_population; 		// provides population, e.g. residential
+					if (ceData.entity_levels[eraId].required_population)
+						return ceData.entity_levels[eraId].required_population * -1; 	// needs population, e.g. military
+					else if (ceData.entity_levels[eraId].provided_population)
+						return ceData.entity_levels[eraId].provided_population; 		// provides population, e.g. residential
 				}
 				else if (ceData.requirements) {
 					if (ceData.requirements.cost)
@@ -882,7 +883,6 @@ let MainParser = {
 				}
 			}
 			else { // generic building
-				let era = Technologies.EraNames[eraID];
 				let staticResources = ceData.components[era].staticResources;
 
 				if (staticResources) {
@@ -894,13 +894,15 @@ let MainParser = {
 		};
 
 		// returns 0 if building does not provide or substract happiness
-		function getHappiness(ceData, data, eraID) {
+		function getHappiness(ceData, data, era) {
 			let happiness = 0;
+			let eraId = Technologies.InnoEras[era];
+
 			let bgHappiness = data.bonus;
 			if (!ceData.components) { // not a generic building
 				if (ceData.entity_levels.length > 0) { // special building
-					if (ceData.entity_levels[eraID].provided_happiness)
-						return ceData.entity_levels[eraID].provided_happiness;
+					if (ceData.entity_levels[eraId].provided_happiness)
+						return ceData.entity_levels[eraId].provided_happiness;
 					return happiness;
 				}
 				else if (bgHappiness) { // great building, e.g. Alcatraz
@@ -914,7 +916,6 @@ let MainParser = {
 				}
 			}
 			else { //generic building
-				let era = Technologies.EraNames[eraID];
 				let bHappiness = ceData.components[era].happiness;
 				if (bHappiness)
 					return (bHappiness.provided ? bHappiness.provided : happiness);
@@ -967,8 +968,8 @@ let MainParser = {
 		}
 
 		// returns an array with all boosts, array is empty when there are none
-		function getBuildingBoosts(ceData, data, eraID) {
-			let era = (eraID == 1 ? 'BronzeAge' : Technologies.EraNames[eraID]); // for some reason Watchtower Level 2 (example) has an era list even though it's the same everywhere. thx inno
+		function getBuildingBoosts(ceData, data, era) {
+			let eraName = (era == 'AllAge' ? 'BronzeAge' : era); // for some reason Watchtower Level 2 (example) has an era list even though the boost is the same everywhere. thx inno
 			let boosts = [];
 			if (data.type != "generic_building") { // TODO: test with military building with boost
 				ceData.abilities.forEach(ability => {
@@ -977,9 +978,9 @@ let MainParser = {
 							if (abilityBoost.boostHintEraMap[era] != undefined) { // has different boosts for different eras
 								// example data: targetedFeature: "all", type: "att_boost_attacker", value: 11
 								let boost = {
-									feature: abilityBoost.boostHintEraMap[era].targetedFeature,
-									type: abilityBoost.boostHintEraMap[era].type,
-									value: abilityBoost.boostHintEraMap[era].value
+									feature: abilityBoost.boostHintEraMap[eraName].targetedFeature,
+									type: abilityBoost.boostHintEraMap[eraName].type,
+									value: abilityBoost.boostHintEraMap[eraName].value
 								};
 								boosts.push(boost);
 							}
@@ -998,8 +999,7 @@ let MainParser = {
 			else {
 				if (ceData.components[era].boosts) {
 					ceData.components[era].boosts.boosts.forEach(abilityBoost => {
-						// example data: targetedFeature: "all", type: "att_boost_attacker", value: 11
-						boost = {
+						let boost = {
 							feature: abilityBoost.targetedFeature,
 							type: abilityBoost.type,
 							value: abilityBoost.value,
@@ -1011,11 +1011,72 @@ let MainParser = {
 			return boosts;
 		}
 
+		// returns undefined if building is idle
+		function getProductions(ceData, data, eraID) {
+			//console.log(ceData.name, ceData, data);
+			let productions = [];
+			if (data.state.__class__ != "IdleState") {
+				if (data.type != "generic_building") {
+					if (data.state.current_product) {
+						let produce = [];
+						if (data.state.current_product.product) {
+							if (data.state.current_product.product.resources)
+								produce = data.state.current_product.product.resources;
+						}
+						let production = {
+							name: data.state.current_product.name,
+							time: data.state.current_product.production_time,
+							product: data.state.current_product.product,
+							needsMotivation: undefined,
+							isRandom: undefined,
+							type: "TODO",
+						}
+						productions.push(production);
+					}
+				}
+				else {
+					if (data.state.productionOption) {
+						let produce = [];
+						data.state.productionOption.products.forEach(componentProduction => {
+							let type = componentProduction.type;
+							let name = componentProduction.type;
+							let subType = undefined;
+							if (componentProduction.playerResources)
+								produce = componentProduction.playerResources;
+							else if (componentProduction.reward) {
+								type = componentProduction.reward.type;
+								subType = componentProduction.reward.subType;
+								name = componentProduction.reward.name;
+								produce = componentProduction.reward.amount;
+							}
+							let production = {
+								name: name,
+								type: type,
+								subType: subType,
+								product: produce,
+								needsMotivation: componentProduction.onlyWhenMotivated,
+								isRandom: componentProduction.isRandom,
+							};
+							productions.push(production);
+						});
+					}
+				}
+				return productions;
+			}
+			return undefined;
+		}
+
+		// todo: add times when building is not idle
+		function getState(data) { 
+			return (data.state.__class__ == "IdleState" ? 'idle' : 'producing');
+		}
+
 		// loop through all city buildings
+		// TODO: eras are mostly off by one
 		for (const [key, data] of Object.entries(MainParser.CityMapData)) {
 			if (data.id < 2000000000 && data.type != "hub_part" && data.type != "hub_main") { // do not include outpost buildings and harbours
 				let ceData = Object.values(MainParser.CityEntities).find(x => x.id == data.cityentity_id);
-				let eraID = Technologies.getEraIdByEntityIdOrLevel(data.cityentity_id, data.level); // todo needs to be verified
+				let era = Technologies.getEraName(data.cityentity_id, data.level); // todo needs to be verified
 				let cityMapEntity = {
 					player_id: data.player_id,
 					id: data.id,
@@ -1027,23 +1088,24 @@ let MainParser = {
 					coords: { x: data.x, y: data.y },
 					size: { width: ceData.width, length: ceData.length },
 
-					population: getPopulation(ceData, eraID-1), // -1 because ingame counts differently
-					happiness: getHappiness(ceData, data, eraID-1),
+					population: getPopulation(ceData, era), 
+					happiness: getHappiness(ceData, data, era),
 					connected: (data.connected == 1 ? true : false), // fyi: decorations are always connected
-					state: (data.state.__class__ == "IdleState" ? 'idle' : 'producing'), // huge TODO
-					eraId: eraID,
+					state: getState(data), // huge TODO
+					eraName: era,
 
 					isPolivated: getPolivation(data, ceData),
 					chainBuilding: getChainBuilding(ceData),
 
-					production: (data.state.__class__ != "IdleState" ? data.state : undefined),
-					boosts: getBuildingBoosts(ceData, data, eraID+1), // also has stoneAge, i hate this
+					boosts: getBuildingBoosts(ceData, data, era),
+					//production: getProductions(ceData, data, era),
 
+					// GBs probably need more stuff
 					level: (data.type == "greatbuilding" ? data.level : undefined), // level also includes eraId in raw data, we do not like that
 					max_level: (data.type == "greatbuilding" ? data.max_level : undefined)
 				}
 
-				console.log(cityMapEntity.name, cityMapEntity, ceData, data);
+				console.log(cityMapEntity.name, cityMapEntity, ceData, data)
 
 				MainParser.NewCityMapData.push(cityMapEntity);
 			}
