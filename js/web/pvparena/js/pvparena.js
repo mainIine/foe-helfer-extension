@@ -60,10 +60,10 @@ const PvPArena = {
         let h = [];
         h.push('<div class="tabs">');
         h.push('<ul class="horizontal">');
-        h.push(`<li class=""><a class="toggle-fights" data-value="Fights">${i18n('Boxes.PvPArena.Tabs.AllFights')}</a></li>`);
-        h.push(`<li class=""><a class="toggle-fights" data-value="AttackFights">${i18n('Boxes.PvPArena.Tabs.AttackFights')}</a></li>`);
-        h.push(`<li class=""><a class="toggle-fights" data-value="DefenseFights">${i18n('Boxes.PvPArena.Tabs.DefenseFights')}</a></li>`);
-        h.push(`<li class="active"><a class="toggle-fights" data-value="LostAttackFights">${i18n('Boxes.PvPArena.Tabs.LostAttackFights')}</a></li>`);
+        h.push(`<li class="${PvPArena.activeTable === "Fights" ? "active" : ""}"><a class="toggle-fights" data-value="Fights">${i18n('Boxes.PvPArena.Tabs.AllFights')}</a></li>`);
+        h.push(`<li class="${PvPArena.activeTable === "AttackFights" ? "active" : ""}"><a class="toggle-fights" data-value="AttackFights">${i18n('Boxes.PvPArena.Tabs.AttackFights')}</a></li>`);
+        h.push(`<li class="${PvPArena.activeTable === "DefenseFights" ? "active" : ""}"><a class="toggle-fights" data-value="DefenseFights">${i18n('Boxes.PvPArena.Tabs.DefenseFights')}</a></li>`);
+        h.push(`<li class="${PvPArena.activeTable === "LostAttackFights  " ? "active" : ""}"><a class="toggle-fights" data-value="LostAttackFights">${i18n('Boxes.PvPArena.Tabs.LostAttackFights')}</a></li>`);
         h.push('</ul>');
         h.push('</div>');
         h.push('<div id="PvPArenaTable">');
