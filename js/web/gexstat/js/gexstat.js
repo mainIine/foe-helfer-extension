@@ -387,7 +387,7 @@ let GexStat = {
 			h.push(`<tr>`);
 			h.push(`<td class="text-center is-number" data-number="${member.rank}">${member.rank}</td>`);
 			h.push(`<td class="text-center is-number" data-number="${level}"><span class="level${encounterClass}" title="${HTML.i18nTooltip(i18n('Boxes.GexStat.Level') + ' ' + level)}"></span></td>`);
-			h.push(`<td class="case-sensitive" data-text="${member.name.toLowerCase().replace(/[\W_ ]+/g, "")}">` +
+			h.push(`<td class="case-sensitive" data-text="${helper.str.cleanup(member.name)}">` +
 				`<div class="avatar"><img src="${srcLinks.GetPortrait(member.avatar)}" /></div>` +
 				`<div class="membername">${MainParser.GetPlayerLink(member.player_id, member.name)}</div></td>`);
 			h.push(`<td class="is-number" data-number="${member.expeditionPoints}">${HTML.Format(member.expeditionPoints)}</td>`);

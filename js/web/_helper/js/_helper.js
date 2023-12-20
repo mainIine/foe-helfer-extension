@@ -63,7 +63,7 @@ helper.str = {
 		copyFrom.remove();
 	},
 
-	cleanup: (textToCleanup) => textToCleanup.toLowerCase().replace(/[^a-zA-Z0-9]+/g, ''),
+	cleanup: (textToCleanup) => textToCleanup.toLowerCase().replace(/[\W_ ]+/g, ''),
 };
 
 helper.arr = {

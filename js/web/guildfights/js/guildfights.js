@@ -940,7 +940,7 @@ let GuildFights = {
 				let sum = (e.battles + e.negotiations * 2);
 				h.push('<tr data-id="' + e.time + '" id="gbgtime_' + e.time + '">');
 				h.push(`<td class="is-number" data-number="${e.time}">${moment.unix(e.time).format(i18n('DateTime'))}</td>`);
-				h.push(`<td class="case-sensitive" data-text="${e.name.toLowerCase().replace(/[\W_ ]+/g, "")}">${e.name}</td>`);
+				h.push(`<td class="case-sensitive" data-text="${helper.str.cleanup(e.name)}">${e.name}</td>`);
 				h.push(`<td class="is-number text-center" data-number="${e.negotiations}">${HTML.Format(e.negotiations)}</td>`);
 				h.push(`<td class="is-number text-center" data-number="${e.battles}">${HTML.Format(e.battles)}</td>`);
 				h.push(`<td class="is-number text-center" data-number="${sum}">${HTML.Format(sum)}</td>`);
