@@ -1021,14 +1021,23 @@ let MainParser = {
 			return boosts;
 		}
 
-		// returns undefined if building is idle
-		function getProductions(ceData, data, eraID) {
-			//console.log(ceData.name, ceData, data);
+		// returns undefined if building is idle, returns an empty array if there are no productions (yet)
+		function getCurrentProductions(data) {
 			let productions = [];
 			if (data.state.__class__ != "IdleState") {
 				if (data.type != "generic_building") {
+					let produce = [];
 					if (data.state.current_product) {
-						let produce = [];
+						if (data.state.current_product.guildProduct) {
+							let production = {
+								name: "guildResources",
+								time: data.state.current_product.production_time,
+								product: data.state.current_product.guildProduct,
+								type: "guildResources",
+								subType: undefined,
+							}
+							productions.push(production);
+						}
 						if (data.state.current_product.product) {
 							if (data.state.current_product.product.resources)
 								produce = data.state.current_product.product.resources;
@@ -1037,9 +1046,8 @@ let MainParser = {
 							name: data.state.current_product.name,
 							time: data.state.current_product.production_time,
 							product: data.state.current_product.product,
-							needsMotivation: undefined,
-							isRandom: undefined,
-							type: "TODO",
+							type: "resources",
+							subType: undefined,
 						}
 						productions.push(production);
 					}
@@ -1064,8 +1072,6 @@ let MainParser = {
 								type: type,
 								subType: subType,
 								product: produce,
-								needsMotivation: componentProduction.onlyWhenMotivated,
-								isRandom: componentProduction.isRandom,
 							};
 							productions.push(production);
 						});
@@ -1076,13 +1082,85 @@ let MainParser = {
 			return undefined;
 		}
 
-		// todo: add times when building is not idle
+		// returns undefined if building is idle
+		function getAllProductions(ceData, data, era) {
+			let productions = [];
+			if (data.type != "generic_building") {
+					
+				if (ceData.is_special) { // special building
+					ceData.abilities.forEach(ability => {
+						if (ability.__class__ == "AddResourcesAbility" || ability.__class__ == "AddResourcesWhenMotivatedAbility") { 
+
+							let multiAgeProduct = {};
+							let allAgeProduct = {};
+							let product = {}
+							if (ability.additionalResources[era]) // MultiAge
+								multiAgeProduct = ability.additionalResources[era];
+							if (ability.additionalResources.AllAge) { // some buildings have only AllAge productions, some have additional AllAge productions
+								allAgeProduct = ability.additionalResources.AllAge;
+							} 
+							product.resources = {};
+
+							// mash all resources into one thing
+							if (Object.keys(multiAgeProduct).length > 0) {
+								for (const [key, value] of Object.entries(multiAgeProduct.resources)) {
+									product.resources[key] = value;
+								}
+							}
+							if (Object.keys(allAgeProduct).length > 0) {
+								for (const [key, value] of Object.entries(allAgeProduct.resources)) {
+									product.resources[key] = value;
+								}
+							}
+
+							let production = {
+								product: product,
+								needsMotivation: true,
+							};
+
+							productions.push(production);
+						}
+					});
+					// todo: production buildings like sleigh builder?
+				}
+				return productions;
+			}
+			else {
+				// todo generic buildings
+			}
+			return undefined;
+		}
+
 		function getState(data) { 
-			return (data.state.__class__ == "IdleState" ? 'idle' : 'producing');
+			if (data.state.__class__ == "IdleState")
+				return "idle";
+			else if (data.state.__class__ == "ProductionFinishedState")
+				return "collectable";
+			return "producing";
+		}
+
+		function isSpecialBuilding(ceData) { 
+			if (ceData.__class__ == "GenericCityEntity")
+				return true; // generic buildings are always special (for now)
+			return ceData.is_special;
+		}
+
+		function needsStreet(ceData, data) {
+			let needsStreet = false;
+			if (data.type != "generic_building") {
+				if (data.type != "tower" && data.type != "street" && data.type != "main_building" && data.type != "decoration") // todo: might have forgotten something
+					needsStreet = true;
+			}
+			else {
+				ceData.abilities.forEach(ability => {
+					if (ability.__class__ == "StreetConnectionRequirementComponent")
+						needsStreet = true;
+				});
+			}
+			return needsStreet;
 		}
 
 		// loop through all city buildings
-		// TODO: eras are mostly off by one
 		for (const [key, data] of Object.entries(MainParser.CityMapData)) {
 			if (data.id < 2000000000 && data.type != "hub_part" && data.type != "hub_main") { // do not include outpost buildings and harbours
 				let ceData = Object.values(MainParser.CityEntities).find(x => x.id == data.cityentity_id);
@@ -1094,12 +1172,15 @@ let MainParser = {
 					entityId: data.cityentity_id,
 					name: ceData.name,
 					type: data.type,
+					isSpecial: isSpecialBuilding(ceData),
+					// add transitiontimes etc
 					
 					coords: { x: data.x, y: data.y },
 					size: { width: ceData.width, length: ceData.length },
 
 					population: getPopulation(ceData, era), 
 					happiness: getHappiness(ceData, data, era),
+					needsStreet: needsStreet(ceData, data),
 					connected: (data.connected == 1 ? true : false), // fyi: decorations are always connected
 					state: getState(data),
 					eraName: era,
@@ -1109,14 +1190,15 @@ let MainParser = {
 					setBuilding: getSetBuilding(ceData),
 
 					boosts: getBuildingBoosts(ceData, data, era),
-					//production: getProductions(ceData, data, era),
+					currentProduction: getCurrentProductions(data),
+					motivatedExtraProduction: getAllProductions(ceData, data, era),
 
 					// GBs probably need more stuff
 					level: (data.type == "greatbuilding" ? data.level : undefined), // level also includes eraId in raw data, we do not like that
 					max_level: (data.type == "greatbuilding" ? data.max_level : undefined)
 				}
 
-				console.log(cityMapEntity.name, cityMapEntity, ceData, data)
+				console.log(ceData.name, cityMapEntity, ceData);
 
 				MainParser.NewCityMapData.push(cityMapEntity);
 			}
