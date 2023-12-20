@@ -153,5 +153,7 @@ const PvPArena = {
 }
 
 FoEproxy.addHandler('PVPArenaService', 'getOverview', ({ responseData }) => {
-    PvPArena.StartPvPArena((responseData));
+    if (Settings.GetSetting('ShowPvPArena') || $('#PvPArena').length > 0) {
+        PvPArena.StartPvPArena((responseData));
+    }
 });
