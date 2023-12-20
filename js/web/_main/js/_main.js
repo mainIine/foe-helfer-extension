@@ -1026,7 +1026,6 @@ let MainParser = {
 			let productions = [];
 			if (data.state.__class__ != "IdleState") {
 				if (data.type != "generic_building") {
-					let produce = [];
 					if (data.state.current_product) {
 						if (data.state.current_product.guildProduct) {
 							let production = {
@@ -1127,8 +1126,37 @@ let MainParser = {
 			}
 			else {
 				// todo generic buildings
+				if (ceData.components[era].production) {
+					ceData.components[era].production.options[0].products.forEach(product => {
+						if (product.onlyWhenMotivated) {
+							let type = product.type;
+							let produce = {};
+							if (product.playerResources)
+								produce = product.playerResources;
+							else if (product.guildResources) 
+								produce = product.guildResources;
+							else if (product.type == "random") {
+								let rewards = [];
+								if (product.products.length > 1) {
+									product.products.forEach(reward => {
+										rewards.push(reward.product.reward)
+									});
+									produce = rewards;
+								}
+								else {
+									console.log("müll"); // WAS IST DAS FÜR MÜLL
+								}
+							}
+							let production = {
+								type: type,
+								product: produce,
+							};
+							productions.push(production);
+						}
+					});
+				}
+				return productions;
 			}
-			return undefined;
 		}
 
 		function getState(data) { 
