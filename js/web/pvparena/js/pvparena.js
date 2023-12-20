@@ -128,10 +128,7 @@ const PvPArena = {
         PvPArena.LostFights = PvPArena.Fights.filter(fight => fight.rankingPointsChange < 0);
 
         const playersSet = new Set();
-        PvPArena.LostAttackFights = helper.arr.multisort(
-            PvPArena.LostFights.filter(fight => fight.type === "attack" && !playersSet.has(fight.playerName) && playersSet.add(fight.playerName)),
-            ['playerName']
-        );
+        PvPArena.LostAttackFights = PvPArena.LostFights.filter(fight => fight.type === "attack" && !playersSet.has(fight.playerName) && playersSet.add(fight.playerName));
 
         PvPArena.Show();
     },
