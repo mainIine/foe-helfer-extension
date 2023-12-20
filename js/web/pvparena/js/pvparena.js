@@ -1,7 +1,3 @@
-String.prototype.cleanup = function () {
-    return this.toLowerCase().replace(/[^a-zA-Z0-9]+/g, '');
-};
-
 const PvPArena = {
     Fights: [],
     AttackFights: [],
@@ -97,7 +93,7 @@ const PvPArena = {
         for (let i = 0; i < PvPArena[PvPArena.activeTable].length; i++) {
             h.push(`<tr>`);
             h.push(`<td><div class="${PvPArena[PvPArena.activeTable][i].type}"></div></td>`);
-            h.push(`<td class="" data-text="${PvPArena[PvPArena.activeTable][i].playerName.cleanup()}">${PvPArena[PvPArena.activeTable][i].playerName}</td>`);
+            h.push(`<td class="" data-text="${helper.str.cleanup(PvPArena[PvPArena.activeTable][i].playerName)}">${PvPArena[PvPArena.activeTable][i].playerName}</td>`);
             h.push(`<td class="is-number text-right text-${PvPArena[PvPArena.activeTable][i].rankingPointsChange < 0 ? 'danger' : 'success'}" data-number="${PvPArena[PvPArena.activeTable][i].rankingPointsChange}">${PvPArena[PvPArena.activeTable][i].rankingPointsChange}</td>`);
             h.push(`</tr>`)
         }
