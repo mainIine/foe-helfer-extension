@@ -61,7 +61,9 @@ helper.str = {
 		copyFrom.select();
 		document.execCommand('copy');
 		copyFrom.remove();
-    },
+	},
+
+	cleanup: (textToCleanup) => textToCleanup.toLowerCase().replace(/[^a-zA-Z0-9]+/g, ''),
 };
 
 helper.arr = {

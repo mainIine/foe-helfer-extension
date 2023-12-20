@@ -138,6 +138,12 @@
 		"sort": 18
 	},
 	{
+		"name": "ShowPvPArena",
+		"status": true,
+		"group": "Boxes",
+		"sort": 19
+	},
+	{
 		"name": "ChangeLanguage",
 		"callback": "LanguageDropdown",
 		"group": "Extension",
