@@ -1034,7 +1034,7 @@ let MainParser = {
 		}
 
 		// returns undefined if building is idle, returns an empty array if there are no productions (yet)
-		function getCurrentProductions(data, ceData) {
+		function getCurrentProductions(data, ceData, era) {
 			let productions = {};
 			if (data.state.__class__ != "IdleState") {
 				if (data.type != "generic_building") {
@@ -1071,25 +1071,45 @@ let MainParser = {
 							resources: []
 						};
 						data.state.productionOption.products.forEach(componentProduction => {
-							let resource = {}
-							let type = componentProduction.type;
-							let name = componentProduction.type;
-							let subType = undefined;
-							if (componentProduction.playerResources)
-								produce = componentProduction.playerResources;
-							else if (componentProduction.reward) {
-								type = componentProduction.reward.type;
-								subType = componentProduction.reward.subType;
-								name = componentProduction.reward.name;
-								produce = componentProduction.reward.amount;
+							let resource = {
+								type: componentProduction.type,
+								resources: {}
 							}
-							resource = {
-								name: name,
-								type: type,
-								subType: subType,
-								resources: produce,
-							};
-							console.log("HIER", ceData.name, ceData, data, resource)
+							if (componentProduction.type == "resources")
+								resource.resources = componentProduction.playerResources.resources;
+							else if (componentProduction.type == "guildResources")
+								resource.resources = componentProduction.guildResources.resources;
+							else if (componentProduction.type == "genericReward") {
+								//console.log("HIER", ceData.name, ceData, data, resource)
+								let lookupData = false;
+								if (ceData.components[era])
+									lookupData = ceData.components[era].lookup.rewards[componentProduction.reward.id];
+								let name = "";
+								// todo
+								if (lookupData) {
+									if (lookupData.type == "unit")
+										name = lookupData.unit.unitTypeId
+									else if (lookupData.subType == "fragment")
+										name = lookupData.assembledReward.name
+									else if (lookupData.type == "resource")
+										name = lookupData.iconAssetName
+									else if (lookupData.type == "blueprint")
+										name = lookupData.iconAssetName
+								}
+								else {
+									name = componentProduction.reward.id
+								}
+								resource.resources = {
+									id: componentProduction.reward.id,
+									name: name, //TODO
+									type: componentProduction.reward.type, //TODO lookup, match
+									subType: componentProduction.reward.subType,
+									amount: componentProduction.reward.amount,
+								};
+							}
+							else {
+								console.log(ceData.name, "stuff is missing")
+							}
 							productions.resources.push(resource);
 						});
 					}
@@ -1097,6 +1117,24 @@ let MainParser = {
 				return productions;
 			}
 			return undefined;
+		}
+
+		function getGenericReward(product, ceData, data, era) {
+			let lookupData = ceData.components[era].lookup.rewards[product.reward.id];
+			let name = "";
+			if (lookupData.type != "chest") // should be a fragment
+				name = lookupData.assembledReward.name;
+			else
+				name = lookupData.iconAssetName;
+
+			let reward = {
+				id: product.reward.id,
+				name: name,
+				type: lookupData.type,
+				subType: lookupData.subType,
+				amount: lookupData.amount
+			}
+			return reward;
 		}
 
 		// returns undefined if building is idle
@@ -1187,21 +1225,7 @@ let MainParser = {
 								}
 							}
 							else if (product.type == "genericReward") {
-								let lookupData = ceData.components[era].lookup.rewards[product.reward.id];
-								let name = "";
-								if (lookupData.type != "chest") // should be a fragment
-									name = lookupData.assembledReward.name;
-								else
-									name = lookupData.iconAssetName;
-
-								let newReward = {
-									id: product.reward.id,
-									name: name,
-									type: lookupData.type,
-									subType: lookupData.subType,
-									amount: lookupData.amount
-								}
-								resource.resources = newReward;
+								resource.resources = getGenericReward(product, ceData, data, era);
 							}
 							else {
 								console.log("getBoostedProductions() is missing an option")
