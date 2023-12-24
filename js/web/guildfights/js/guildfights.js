@@ -1254,7 +1254,7 @@ let GuildFights = {
 				if (!prov[x].hasOwnProperty('neighbor')) {
 					showCountdowns = false;
 				} else
-					showCountdowns = (prov[x]['neighbor'].includes(own['participantId']));
+					showCountdowns = (prov[x]['neighbor'].includes(own['participantId']) || (prov[x]['owner'] == own['clan']['name'] && GuildFights.showOwnSectors));
 
 			if (showCountdowns) {
 				let countDownDate = moment.unix(prov[x]['lockedUntil'] - 2),
