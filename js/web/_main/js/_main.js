@@ -1302,6 +1302,8 @@ let MainParser = {
 					if (ability.__class__ == "StreetConnectionRequirementComponent")
 						needsStreet = 1;
 				});
+				if (ceData.components.AllAge.streetConnectionRequirement)
+					needsStreet = ceData.components.AllAge.streetConnectionRequirement.requiredLevel;
 			}
 			return needsStreet;
 		}
@@ -1385,7 +1387,6 @@ let MainParser = {
 				//	console.log(ceData.name, cityMapEntity, ceData, data);
 
 				MainParser.NewCityMapData[cityMapEntity.entityId] = cityMapEntity;
-				console.log(cityMapEntity, ceData);
 			}
 		}
 	},
