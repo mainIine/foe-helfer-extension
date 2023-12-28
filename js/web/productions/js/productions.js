@@ -892,10 +892,6 @@ let Productions = {
 	 */
 	showBox: () => {
 
-		String.prototype.cleanup = function () {
-			return this.toLowerCase().replace(/[^a-zA-Z0-9]+/g, '');
-		};
-
 		if ($('#Productions').length > 0){
 			HTML.CloseOpenBox('Productions');
 
@@ -986,10 +982,10 @@ let Productions = {
 						countAllDone += (buildings[i]['at'] * 1000 < MainParser.getCurrentDateTime() ? ProductCount : 0);
 
 						rowA.push('<tr>');
-						rowA.push('<td data-text="' + buildings[i]['name'].cleanup() + '">' + buildings[i]['name'] + '</td>');
+						rowA.push('<td data-text="' + helper.str.cleanup(buildings[i]['name']) + '">' + buildings[i]['name'] + '</td>');
 						
 						if (type === 'fragments')
-							rowA.push('<td data-text="' + buildings[i]['products']['fragments'].cleanup + '">' + buildings[i]['products']['fragments'] + '</td>');
+							rowA.push('<td data-text="' + helper.str.cleanup(buildings[i]['products']['fragments']) + '">' + buildings[i]['products']['fragments'] + '</td>');
 						else
 							rowA.push('<td class="text-right is-number" data-number="' + MotivatedProductCount + '">' + HTML.Format(ProductCount) + (ProductCount !== MotivatedProductCount ? '/' + HTML.Format(MotivatedProductCount) : '') + '</td>');
 						
@@ -1050,7 +1046,7 @@ let Productions = {
 					// nur Gebäude mit Gütern
 					else {
 
-						let tds = '<td data-text="' + buildings[i]['name'].cleanup() + '">' + buildings[i]['name'] + '</td>';
+						let tds = '<td data-text="' + helper.str.cleanup(buildings[i]['name']) + '">' + buildings[i]['name'] + '</td>';
 
 						let pA = [],
 							CurrentBuildingCount = 0,
@@ -1131,7 +1127,7 @@ let Productions = {
 									
 						let tds = '<tr>' +
 							'<td class="text-right is-number" data-number="' + groups[i]['count'] + '">' + groups[i]['count'] + 'x </td>' +
-							'<td colspan="3" data-text="' + groups[i]['name'].cleanup() + '">' + groups[i]['name'] + '</td>' +
+							'<td colspan="3" data-text="' + helper.str.cleanup(groups[i]['name']) + '">' + groups[i]['name'] + '</td>' +
 							'<td class="is-number" data-number="' + MotivatedProductCount + '">' + HTML.Format(ProductCount) + (ProductCount !== MotivatedProductCount ? '/' + HTML.Format(MotivatedProductCount) : '') + '</td>' +
 							'<td class="text-right is-number addon-info" data-number="' + (size*groups[i]['count']) + '">' + (size*groups[i]['count']) + '</td>'+
 							'<td class="text-right is-number addon-info" data-number="' + efficiency + '">' + EfficiencyString + '</td>'+

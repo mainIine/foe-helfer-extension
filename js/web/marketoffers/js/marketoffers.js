@@ -157,7 +157,7 @@ let MarketOffers = {
             h.push('<tr>');
             h.push('<td class="is-number" data-number="' + i + '">' + i18n('Eras.' + Era) + '</td>');
             h.push('<td class="goods-image"><span class="goods-sprite-50 sm ' + GoodID + '"></span></td>');
-            h.push('<td data-text="' + CurrentGood['name'].toLowerCase().replace(/[\W_ ]+/g, "") + '"><strong>' + CurrentGood['name'] + '</strong></td>');
+            h.push('<td data-text="' + helper.str.cleanup(CurrentGood['name']) + '"><strong>' + CurrentGood['name'] + '</strong></td>');
             h.push('<td class="is-number" data-number="' + Inventory + '">' + HTML.Format(Inventory) + '</td>');
             h.push('<td class="is-number" data-number="' + OfferSum + '">' + (OfferCount > 0 ? '<button class="btn btn-default btn-filter-offer" data-value="' + i + '" style="white-space:nowrap">' + HTML.Format(OfferSum) + ' (' + OfferCount + ')' + '</button>' : '-') + '</td>');
             h.push('<td class="is-number" data-number="' + NeedSum + '">' + (NeedCount > 0 ? '<button class="btn btn-default btn-filter-need" data-value="' + i + '" style="white-space:nowrap">' + HTML.Format(NeedSum) + ' (' + NeedCount + ')' + '</button>' : '-') + '</td>');
@@ -332,15 +332,15 @@ let MarketOffers = {
             h.push('<td class="is-number" data-number="' + (Event['date'].getTime()) + '">' + (Event['date'] ? moment.unix(Event['date'] / 1000).format(i18n('DateTime')) : i18n('Boxes.MarketOffersEvents.DateNA')) + '</td>');
 
             h.push('<td class="goods-image"><span class="goods-sprite-50 sm ' + GoodsData[OfferGoodID]['id'] + '"></span></td>');
-            h.push('<td data-text="' + GoodsData[OfferGoodID]['name'].toLowerCase().replace(/[\W_ ]+/g, "") + '"><strong class="td-tooltip" title="' + HTML.i18nTooltip(OfferTT) + '">' + GoodsData[OfferGoodID]['name'] + '</strong></td>');
+            h.push('<td data-text="' + helper.str.cleanup(GoodsData[OfferGoodID]['name']) + '"><strong class="td-tooltip" title="' + HTML.i18nTooltip(OfferTT) + '">' + GoodsData[OfferGoodID]['name'] + '</strong></td>');
             h.push('<td class="is-number" data-number="' + Event['offer']['value'] + '"><strong class="td-tooltip" title="' + HTML.i18nTooltip(OfferTT) + '">' + Event['offer']['value'] + '</strong></td>');
 
             h.push('<td class="goods-image"><span class="goods-sprite-50 sm ' + GoodsData[NeedGoodID]['id'] + '"></span></td>');
-            h.push('<td data-text="' + GoodsData[NeedGoodID]['name'].toLowerCase().replace(/[\W_ ]+/g, "") + '"><strong class="td-tooltip" title="' + HTML.i18nTooltip(NeedTT) + '">' + GoodsData[NeedGoodID]['name'] + '</strong></td>');
+            h.push('<td data-text="' + helper.str.cleanup(GoodsData[NeedGoodID]['name']) + '"><strong class="td-tooltip" title="' + HTML.i18nTooltip(NeedTT) + '">' + GoodsData[NeedGoodID]['name'] + '</strong></td>');
             h.push('<td class="is-number" data-number="' + Event['need']['value'] + '"><strong class="td-tooltip" title="' + HTML.i18nTooltip(NeedTT) + '">' + Event['need']['value'] + '</strong></td>');
 
             h.push('<td class="text-center" data-number="' + Event['offer']['value'] / Event['need']['value'] + '">' + HTML.Format(MainParser.round(Event['offer']['value'] / Event['need']['value'] * 100) / 100) + '</td>');
-            if (MarketOffers.CurrentEventsTab === 'accepted') h.push('<td data-text="' + PlayerName.toLowerCase().replace(/[\W_ ]+/g, "") + '">' + MainParser.GetPlayerLink(PlayerID, PlayerName) + '</td>');
+            if (MarketOffers.CurrentEventsTab === 'accepted') h.push('<td data-text="' + helper.str.cleanup(PlayerName) + '">' + MainParser.GetPlayerLink(PlayerID, PlayerName) + '</td>');
             h.push('</tr>');
         }
 
