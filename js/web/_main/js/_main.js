@@ -866,11 +866,11 @@ let MainParser = {
 
 	createCityBuildings: () => {
 		// returns negative numbers for builidings that use population, 0 for buildings that dont provide or use it
-		function getPopulation(ceData, era) {
+		function getPopulation(ceData, data, era) {
 			let population = 0;
 			let eraId = Technologies.InnoEras[era];
 
-			if (!ceData.components) { // not a generic building
+			if (data.type != "generic_building") { // not a generic building
 				if (ceData.entity_levels.length > 0) {  // special building
 					if (ceData.entity_levels[eraId].required_population)
 						return ceData.entity_levels[eraId].required_population * -1; 	// needs population, e.g. military
@@ -883,11 +883,12 @@ let MainParser = {
 				}
 			}
 			else { // generic building
-				let staticResources = ceData.components[era].staticResources;
-
-				if (staticResources) {
-					population = staticResources.resources.resources.population;
-					return population;
+				if (ceData.components[era]) { // (time) limited buildings lose their era data after expiring
+					let staticResources = ceData.components[era].staticResources;
+					if (staticResources) {
+						population = staticResources.resources.resources.population;
+						return population;
+					}
 				}
 			}
 			return population;
@@ -905,7 +906,7 @@ let MainParser = {
 						return ceData.entity_levels[eraId].provided_happiness;
 					return happiness;
 				}
-				else if (bgHappiness)  // great building, e.g. Alcatraz TODO check
+				else if (bgHappiness)  // great building, e.g. Alcatraz
 					return bgHappiness.value;
 				else if (ceData.provided_happiness)  // decorations etc.
 					return ceData.provided_happiness;
@@ -913,10 +914,12 @@ let MainParser = {
 					return happiness;
 			}
 			else { //generic building
-				let bHappiness = ceData.components[era].happiness;
-				if (bHappiness)
-					return (bHappiness.provided ? bHappiness.provided : happiness);
-				return happiness;
+				if (ceData.components[era]) {
+					let bHappiness = ceData.components[era].happiness;
+					if (bHappiness)
+						return (bHappiness.provided ? bHappiness.provided : happiness);
+					return happiness;
+				}
 			}
 		};
 
@@ -993,7 +996,7 @@ let MainParser = {
 		function getBuildingBoosts(ceData, data, era) {
 			let eraName = (era == 'AllAge' ? 'BronzeAge' : era); // for some reason Watchtower Level 2 (example) has an era list even though the boost is the same everywhere. thx inno
 			let boosts = [];
-			if (data.type != "generic_building") { // TODO: test with military building with boost
+			if (data.type != "generic_building") {
 				ceData.abilities.forEach(ability => {
 					if (ability.boostHints) {
 						ability.boostHints.forEach(abilityBoost => {
@@ -1019,57 +1022,70 @@ let MainParser = {
 				});
 			}
 			else {
-				if (ceData.components[era].boosts) {
-					ceData.components[era].boosts.boosts.forEach(abilityBoost => {
-						let boost = {
-							feature: abilityBoost.targetedFeature,
-							type: abilityBoost.type,
-							value: abilityBoost.value,
-						};
-						boosts.push(boost);
-					});
-				}
+				if (ceData.components[era]) 
+					if (ceData.components[era].boosts) {
+						ceData.components[era].boosts.boosts.forEach(abilityBoost => {
+							let boost = {
+								feature: abilityBoost.targetedFeature,
+								type: abilityBoost.type,
+								value: abilityBoost.value,
+							};
+							boosts.push(boost);
+						});
+					}
 			}
 			return boosts;
 		}
 
 		// returns undefined if building is idle, returns an empty array if there are no productions (yet)
 		function getCurrentProductions(data, ceData, era) {
-			let productions = {};
+			let productions = {
+				time: 0, 
+				resources: []
+			};
 			if (data.state.__class__ != "IdleState") {
 				if (data.type != "generic_building") {
 					if (data.state.current_product) {
+						productions.time = data.state.current_product.production_time;
+
 						if (data.state.current_product.guildProduct) {
 							let production = {
-								name: "guildResources",
-								time: data.state.current_product.production_time,
-								product: data.state.current_product.guildProduct,
+								resources: data.state.current_product.guildProduct,
 								type: "guildResources",
-								subType: undefined,
 							}
-							//productions.push(production);
+							productions.resources.push(production);
 						}
 						if (data.state.current_product.product) {
-							if (data.state.current_product.product.resources)
-								produce = data.state.current_product.product.resources;
+							if (data.state.current_product.product.resources) {
+								let production = {
+									resources: data.state.current_product.product.resources,
+									type: "resources",
+								}
+								productions.resources.push(production);
+							}
 						}
-						let production = {
-							name: data.state.current_product.name,
-							time: data.state.current_product.production_time,
-							product: data.state.current_product.product,
-							type: "resources",
-							subType: undefined,
+						if (data.state.current_product.goods) { // great buildings
+							if (data.type == "greatbuilding") {
+								if (data.state.current_product.name == "clan_goods") {
+									let resources = {}
+									data.state.current_product.goods.forEach(good => {
+										resources[good.good_id] = good.value;
+									});
+									let production = {
+										resources: resources,
+										type: "guildResources",
+									}
+									productions.resources.push(production);
+								}
+							}
 						}
-						//productions.push(production);
+						// todo: e.g. panda shrine units missing, because they are here: ceData.abilities["RandomUnitOfAgeWhenMotivatedAbility"]
+						console.log(ceData.name, data)
 					}
 				}
-				else {
+				else { // generic building
 					if (data.state.productionOption) {
-						productions = {
-							time: 0, // TODO
-							autoStart: 0,
-							resources: []
-						};
+						// productions.time todo
 						data.state.productionOption.products.forEach(componentProduction => {
 							let resource = {
 								type: componentProduction.type,
@@ -1079,37 +1095,11 @@ let MainParser = {
 								resource.resources = componentProduction.playerResources.resources;
 							else if (componentProduction.type == "guildResources")
 								resource.resources = componentProduction.guildResources.resources;
-							else if (componentProduction.type == "genericReward") {
-								//console.log("HIER", ceData.name, ceData, data, resource)
-								let lookupData = false;
-								if (ceData.components[era])
-									lookupData = ceData.components[era].lookup.rewards[componentProduction.reward.id];
-								let name = "";
-								// todo
-								if (lookupData) {
-									if (lookupData.type == "unit")
-										name = lookupData.unit.unitTypeId
-									else if (lookupData.subType == "fragment")
-										name = lookupData.assembledReward.name
-									else if (lookupData.type == "resource")
-										name = lookupData.iconAssetName
-									else if (lookupData.type == "blueprint")
-										name = lookupData.iconAssetName
-								}
-								else {
-									name = componentProduction.reward.id
-								}
-								resource.resources = {
-									id: componentProduction.reward.id,
-									name: name, //TODO
-									type: componentProduction.reward.type, //TODO lookup, match
-									subType: componentProduction.reward.subType,
-									amount: componentProduction.reward.amount,
-								};
-							}
-							else {
-								console.log(ceData.name, "stuff is missing")
-							}
+							else if (componentProduction.type == "genericReward") 
+								resource.resources = getGenericReward(componentProduction, ceData, data, era);
+							else 
+								console.log(ceData.name, "production is missing")
+							
 							productions.resources.push(resource);
 						});
 					}
@@ -1120,19 +1110,65 @@ let MainParser = {
 		}
 
 		function getGenericReward(product, ceData, data, era) {
-			let lookupData = ceData.components[era].lookup.rewards[product.reward.id];
+			let amount = 0
+
+			if (product.reward.amount != undefined) {
+				amount = product.reward.amount;
+			}
+
+			let lookupData = false;
+			if (ceData.components[era]) {
+				if (product.reward.id.search("blueprint") != -1) {
+					if (ceData.components[era].lookup.rewards[product.reward.id])
+						lookupData = ceData.components[era].lookup.rewards[product.reward.id]
+					else {
+						for (const [key, reward] of Object.entries(ceData.components[era].lookup.rewards)) {
+							if (reward.id.search("blueprint") != -1)
+								lookupData = reward;
+						}
+					}
+				}
+				else if (product.reward.id.search("unit") != -1) {
+					if (ceData.components[era].lookup.rewards[product.reward.id])
+						lookupData = ceData.components[era].lookup.rewards[product.reward.id]
+					else {
+						for (const [key, reward] of Object.entries(ceData.components[era].lookup.rewards)) {
+							if (reward.id.search("unit") != -1)
+								lookupData = reward;
+						}
+					}
+				}
+				else
+					lookupData = ceData.components[era].lookup.rewards[product.reward.id];
+			}
+			if (amount == 0) {
+				amount = lookupData.amount;
+			}
+
 			let name = "";
-			if (lookupData.type != "chest") // should be a fragment
-				name = lookupData.assembledReward.name;
-			else
-				name = lookupData.iconAssetName;
+			if (lookupData) {
+				if (lookupData.subType == "fragment") 
+					name = lookupData.assembledReward.name
+				else if (lookupData.subType == "reward_item" || lookupData.type == "chest" || lookupData.subType == "boost_item" || lookupData.type == "forgepoint_package" || lookupData.type == "resource" || lookupData.type == "blueprint") 
+					name = lookupData.name
+				else if (lookupData.type == "unit")
+					name = lookupData.unit.unitTypeId
+				else {
+					console.log("forgotten sth", lookupData.type, lookupData.subType)
+				}
+			}
+			else {
+				console.log("BUILDING DATA MISSING", ceData.name, ceData, data);
+				name = "DEFINE NAME"
+			}
 
 			let reward = {
 				id: product.reward.id,
 				name: name,
 				type: lookupData.type,
 				subType: lookupData.subType,
-				amount: lookupData.amount
+				amount: amount, // amount can be undefined for blueprints or units if buiilding is not motivated
+				icon: lookupData.iconAssetName
 			}
 			return reward;
 		}
@@ -1142,7 +1178,6 @@ let MainParser = {
 			if (data.type != "generic_building") {
 				let productions = {
 					time: 0, // todo
-					autoStart: 0, // todo
 					resources: []
 				};
 				if (ceData.is_special) { // special building
@@ -1174,80 +1209,81 @@ let MainParser = {
 							productions.resources.push(resource);
 						}
 					});
-					// todo: production buildings like sleigh builder?
 				}
 				return productions;
 			}
 			else {
-				if (ceData.components[era].production) {
-					productions = {
-						time: ceData.components[era].production.options[0].time, // TODO
-						autoStart: ceData.components[era].production.autoStart,
-						resources: []
-					};
-					ceData.components[era].production.options[0].products.forEach(product => {
-						if (product.onlyWhenMotivated == true) {
-							let resource = {
-								type: product.type,
-								resources: {}
-							};
-							if (product.type == "resources") {
-								resource.resources = product.playerResources.resources;
-							}
-							else if (product.type == "guildResources") {
-								resource.resources = product.guildResources.resources;
-							}
-							else if (product.type == "random") {
-								let rewards = [];
-								if (product.products.length > 1) {
-									product.products.forEach(reward => {
-										let lookupData = ceData.components[era].lookup.rewards[reward.product.reward.id];
-										let name = "";
-										if (lookupData.type == "unit")
-											name = lookupData.unit.unitTypeId
-										else if (lookupData.subType == "fragment")
-											name = lookupData.assembledReward.name
-										else if (lookupData.type == "resource")
-											name = lookupData.iconAssetName
-										else if (lookupData.type == "blueprint")
-											name = lookupData.iconAssetName
-										let newReward = {
-											id: reward.product.reward.id,
-											name: name,
-											type: lookupData.type,
-											subType: lookupData.subType,
-											amount: lookupData.amount,
-											dropChance: reward.dropChance,
-										}
-										rewards.push(newReward);
-									});
-									resource.resources = rewards;
+				if (ceData.components[era]) 
+					if (ceData.components[era].production) {
+						productions = {
+							time: ceData.components[era].production.options[0].time, // TODO
+							resources: []
+						};
+						ceData.components[era].production.options[0].products.forEach(product => {
+							if (product.onlyWhenMotivated == true) {
+								let resource = {
+									type: product.type,
+									resources: {}
+								};
+								if (product.type == "resources") {
+									resource.resources = product.playerResources.resources;
 								}
+								else if (product.type == "guildResources") {
+									resource.resources = product.guildResources.resources;
+								}
+								else if (product.type == "random") {
+									let rewards = [];
+									if (product.products.length > 1) {
+										product.products.forEach(reward => {
+											let lookupData = ceData.components[era].lookup.rewards[reward.product.reward.id];
+											let name = "";
+											// todo unify with getGenericReward
+											if (lookupData.type == "unit")
+												name = lookupData.unit.unitTypeId
+											else if (lookupData.subType == "fragment")
+												name = lookupData.assembledReward.name
+											else if (lookupData.type == "resource")
+												name = lookupData.iconAssetName
+											else if (lookupData.type == "blueprint")
+												name = lookupData.iconAssetName
+											let newReward = {
+												id: reward.product.reward.id,
+												name: name,
+												type: lookupData.type,
+												subType: lookupData.subType,
+												amount: lookupData.amount,
+												dropChance: reward.dropChance,
+											}
+											rewards.push(newReward);
+										});
+										resource.resources = rewards;
+									}
+								}
+								else if (product.type == "genericReward") {
+									resource.resources = getGenericReward(product, ceData, data, era);
+								}
+								else {
+									console.log("getBoostedProductions() is missing an option")
+								}
+								productions.resources.push(resource);
 							}
-							else if (product.type == "genericReward") {
-								resource.resources = getGenericReward(product, ceData, data, era);
-							}
-							else {
-								console.log("getBoostedProductions() is missing an option")
-							}
-							productions.resources.push(resource);
-						}
-					});
-				}
+						});
+					}
 				return productions;
 			}
 		}
 
-		// todo: check pludered buildings
 		function getState(data) { 
 			if (data.state.__class__ == "IdleState")
 				return "idle";
 			else if (data.state.__class__ == "ProductionFinishedState")
 				return "collectable";
+			else if (data.state.__class__ == "PlunderedState")
+				return "pludered";
 			return "producing";
 		}
 
-		// means building is not in construction menu
+		// building is not in construction menu
 		function isSpecialBuilding(ceData) { 
 			if (ceData.__class__ == "GenericCityEntity")
 				return true; // generic buildings are always special (for now)
@@ -1258,7 +1294,7 @@ let MainParser = {
 		function needsStreet(ceData, data) {
 			let needsStreet = false;
 			if (data.type != "generic_building") {
-				if (data.type != "tower" && data.type != "street" && data.type != "main_building" && data.type != "decoration") // todo: might have forgotten something
+				if (data.type != "tower" && data.type != "street" && data.type != "main_building" && data.type != "decoration") // might have forgotten something
 					needsStreet = true;
 			}
 			else {
@@ -1270,11 +1306,45 @@ let MainParser = {
 			return needsStreet;
 		}
 
+		function getStateTimes(data) {
+			let state = getState(data);
+			if (state == "producing")
+				return { at: data.state.next_state_transition_at, in: data.state.next_state_transition_in }
+			return undefined;
+		}
+
+		function isExpiredBuilding(data) {
+			if (data.type == "generic_building")
+				if (data.decayedFromCityEntityId != undefined)
+					return true;
+			return false;
+		}
+
+		// returns false or time or total collections, todo: needs more data returned
+		function isLimitedBuilding(data, ceData) {
+			if (data.type == "generic_building")
+				if (ceData.components.AllAge.limited != undefined) {
+					if (ceData.components.AllAge.limited.config.expireTime != undefined)
+						return ceData.components.AllAge.limited.config.expireTime;
+					if (ceData.components.AllAge.limited.config.collectionAmount != undefined)
+						return ceData.components.AllAge.limited.config.collectionAmount;
+				}
+			return false;
+		}
+
+		// returns undefined or time the building was built
+		function buildTime(data) {
+			if (data.type == "generic_building")
+				if (data.state.construchtionFinishedAt != undefined) 
+					return data.state.construchtionFinishedAt;
+			return undefined;
+		}
+
 		// loop through all city buildings
 		for (const [key, data] of Object.entries(MainParser.CityMapData)) {
 			if (data.id < 2000000000 && data.type != "hub_part" && data.type != "hub_main") { // do not include outpost buildings and harbours
 				let ceData = Object.values(MainParser.CityEntities).find(x => x.id == data.cityentity_id);
-				let era = Technologies.getEraName(data.cityentity_id, data.level); // todo needs to be verified
+				let era = Technologies.getEraName(data.cityentity_id, data.level);
 				let cityMapEntity = {
 					player_id: data.player_id,
 					id: data.id,
@@ -1283,12 +1353,15 @@ let MainParser = {
 					name: ceData.name,
 					type: data.type,
 					isSpecial: isSpecialBuilding(ceData),
-					// todo add transitiontimes etc
+					isExpired: isExpiredBuilding(data),
+					isLimited: isLimitedBuilding(data, ceData),
+					buildTime: buildTime(data),
+					times: getStateTimes(data),
 					
 					coords: { x: data.x, y: data.y },
 					size: getSize(ceData),
 
-					population: getPopulation(ceData, era), 
+					population: getPopulation(ceData, data, era), 
 					happiness: getHappiness(ceData, data, era),
 					needsStreet: needsStreet(ceData, data),
 					connected: (data.connected == 1 ? true : false), // fyi: decorations are always connected
@@ -1300,16 +1373,16 @@ let MainParser = {
 					setBuilding: getSetBuilding(ceData),
 
 					boosts: getBuildingBoosts(ceData, data, era),
-					currentProduction: getCurrentProductions(data, ceData),
+					currentProduction: getCurrentProductions(data, ceData, era),
 					motivatedExtraProduction: getBoostedProductions(ceData, data, era),
 
-					// GBs probably need more stuff
+					// todo GBs probably need more stuff
 					level: (data.type == "greatbuilding" ? data.level : undefined), // level also includes eraId in raw data, we do not like that
 					max_level: (data.type == "greatbuilding" ? data.max_level : undefined)
 				}
 
-				if (cityMapEntity.type != "street")
-					console.log(ceData.name, cityMapEntity, ceData, data);
+				//if (cityMapEntity.type != "street")
+				//	console.log(ceData.name, cityMapEntity, ceData, data);
 
 				MainParser.NewCityMapData.push(cityMapEntity);
 			}
