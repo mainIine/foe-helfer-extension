@@ -531,6 +531,7 @@ let CityMap = {
 
 	GetBuildingSize: (CityMapEntity) => {
 		let CityEntity = MainParser.NewCityMapData[CityMapEntity['cityentity_id']];
+		let oldCityEntity = MainParser.CityEntities[CityMapEntity['cityentity_id']];
 
 		let Ret = {};
 
@@ -538,6 +539,18 @@ let CityMap = {
 		Ret['xsize'] = CityEntity.size.width;
 		Ret['ysize'] = CityEntity.size.length;
 		Ret['streets_required'] = CityEntity.needsStreet;
+
+		if (oldCityEntity['requirements']) {
+			if (oldCityEntity['type'] !== 'street') {
+				Ret['streets_required'] = oldCityEntity['requirements']['street_connection_level'] | 0;
+			}
+			else {
+				Ret['streets_required'] = 0;
+			}
+		}
+		else {
+			Ret['streets_required'] = oldCityEntity?.components?.AllAge?.streetConnectionRequirement?.requiredLevel | 0;
+		}
 
 		Ret['building_area'] = Ret['xsize'] * Ret['ysize'];
 		Ret['street_area'] = (Ret['is_connected'] ? parseFloat(Math.min(Ret['xsize'], Ret['ysize'])) * Ret['streets_required'] / 2 : 0);
