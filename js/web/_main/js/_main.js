@@ -1080,7 +1080,6 @@ let MainParser = {
 							}
 						}
 						// todo: e.g. panda shrine units missing, because they are here: ceData.abilities["RandomUnitOfAgeWhenMotivatedAbility"]
-						console.log(ceData.name, data)
 					}
 				}
 				else { // generic building
