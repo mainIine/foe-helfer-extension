@@ -1289,11 +1289,11 @@ let MainParser = {
 			return ceData.is_special;
 		}
 
-		// returns street level (1 or 2) or false
+		// returns street level (1 or 2) or 0
 		function needsStreet(ceData, data) {
-			let needsStreet = false;
+			let needsStreet = 0;
 			if (data.type != "generic_building") {
-				if (data.type != "tower" && data.type != "street" && data.type != "decoration") { // might have forgotten something {
+				if (data.type != "tower" && data.type != "decoration") { // might have forgotten something {
 					needsStreet = ceData.requirements.street_connection_level;
 				}
 			}
@@ -1385,6 +1385,7 @@ let MainParser = {
 				//	console.log(ceData.name, cityMapEntity, ceData, data);
 
 				MainParser.NewCityMapData[cityMapEntity.entityId] = cityMapEntity;
+				console.log(cityMapEntity, ceData);
 			}
 		}
 	},
