@@ -813,7 +813,7 @@ let MainParser = {
 
 	// all buildings of the player
 	CityMapData: {},
-	NewCityMapData: [],
+	NewCityMapData: {},
 	CityMapEraOutpostData: null,
 	OtherPlayerCityMapData: {},
 
@@ -1289,17 +1289,18 @@ let MainParser = {
 			return ceData.is_special;
 		}
 
-		// maybe todo: add street level
+		// returns street level (1 or 2) or false
 		function needsStreet(ceData, data) {
 			let needsStreet = false;
 			if (data.type != "generic_building") {
-				if (data.type != "tower" && data.type != "street" && data.type != "main_building" && data.type != "decoration") // might have forgotten something
-					needsStreet = true;
+				if (data.type != "tower" && data.type != "street" && data.type != "decoration") { // might have forgotten something {
+					needsStreet = ceData.requirements.street_connection_level;
+				}
 			}
 			else {
 				ceData.abilities.forEach(ability => {
 					if (ability.__class__ == "StreetConnectionRequirementComponent")
-						needsStreet = true;
+						needsStreet = 1;
 				});
 			}
 			return needsStreet;
@@ -1383,7 +1384,7 @@ let MainParser = {
 				//if (cityMapEntity.type != "street")
 				//	console.log(ceData.name, cityMapEntity, ceData, data);
 
-				MainParser.NewCityMapData.push(cityMapEntity);
+				MainParser.NewCityMapData[cityMapEntity.entityId] = cityMapEntity;
 			}
 		}
 	},
