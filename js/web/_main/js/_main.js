@@ -400,6 +400,7 @@ GetFights = () =>{
 		if (data.requestMethod === 'pickupProduction' || data.requestMethod === 'pickupAll' || data.requestMethod === 'startProduction' || data.requestMethod === 'cancelProduction') {
 			let Buildings = data.responseData['updatedEntities'];
 			if (!Buildings) return;
+			console.log(data.responseData);
 
 			MainParser.UpdateCityMap(Buildings)
 		}
@@ -787,9 +788,7 @@ let HelperBeta = {
 	active: JSON.parse(localStorage.getItem('HelperBetaActive'))
 };
 
-/**
- * @type {{BuildingSelectionKits: null, StartUpType: null, SetArkBonus: MainParser.SetArkBonus, setGoodsData: MainParser.setGoodsData, SaveBuildings: MainParser.SaveBuildings, Conversations: *[], UpdateCityMap: MainParser.UpdateCityMap, BuildingChains: null, UpdateInventory: MainParser.UpdateInventory, SelectedMenu: string, foeHelperBgApiHandler: ((function(({type: string}&Object)): Promise<{ok: true, data: *}|{ok: false, error: string}>)|null), CityEntities: null, GetPlayerLink: ((function(*, *): (string|*))|*), ArkBonus: number, InnoCDN: string, Boosts: {}, obj2FormData: obj2FormData, UpdatePlayerDict: MainParser.UpdatePlayerDict, PlayerPortraits: *[], Quests: null, i18n: null, ResizeFunctions: MainParser.ResizeFunctions, getAddedDateTime: (function(*, *=): number), loadJSON: MainParser.loadJSON, ExportFile: MainParser.ExportFile, getCurrentDate: (function(): Date), activateDownload: boolean, Inventory: {}, compareTime: ((function(number, number): (string|boolean))|*), EmissaryService: null, setLanguage: MainParser.setLanguage, BoostMapper: Record<string, string>, SelfPlayer: MainParser.SelfPlayer, UnlockedAreas: null, CollectBoosts: MainParser.CollectBoosts, sendExtMessage: ((function(*): Promise<*|undefined>)|*), BoostSums: {supply_production: number, def_boost_attacker: number, coin_production: number, def_boost_defender: number, att_boost_attacker: number, att_boost_defender: number, happiness_amount: number}, ClearText: (function(*): *), VersionSpecificStartupCode: MainParser.VersionSpecificStartupCode, checkNextUpdate: (function(*): string|boolean), Language: string, SendLGData: ((function(*): boolean)|*), UpdatePlayerDictCore: MainParser.UpdatePlayerDictCore, GetBuildingLink: ((function(*, *): (string|*))|*), BonusService: null, setConversations: MainParser.setConversations, StartUp: MainParser.StartUp, CityMapData: {}, DebugMode: boolean, OtherPlayerCityMapData: {}, CityMapEraOutpostData: null, CastleSystemLevels: null, getCurrentDateTime: (function(): number), round: ((function(number): number)|*), savedFight: null, BuildingSets: null, loadFile: MainParser.loadFile, MetaIds: {}, send2Server: MainParser.send2Server, GetGuildLink: ((function(*, *): (string|*))|*)}}
- */
+
 let MainParser = {
 
 	foeHelperBgApiHandler: /** @type {null|((request: {type: string}&object) => Promise<{ok:true, data: any}|{ok:false, error:string}>)}*/ (null),
@@ -1349,14 +1348,11 @@ let MainParser = {
 			return (needsStreet(ceData, data) == 0);
 		}
 
-		// loop through all city buildings
-		for (const [key, data] of Object.entries(MainParser.CityMapData)) {
-			let ceData = Object.values(MainParser.CityEntities).find(x => x.id == data.cityentity_id);
-			let era = Technologies.getEraName(data.cityentity_id, data.level);
-			let cityMapEntity = {
+		function createNewCityMapEntity(ceData, data, era) {
+			return {
 				player_id: data.player_id,
 				id: data.id,
-
+	
 				entityId: data.cityentity_id,
 				name: ceData.name,
 				type: data.type,
@@ -1368,29 +1364,36 @@ let MainParser = {
 				
 				coords: { x: data.x, y: data.y },
 				size: getSize(ceData),
-
+	
 				population: getPopulation(ceData, data, era), 
 				happiness: getHappiness(ceData, data, era),
 				needsStreet: needsStreet(ceData, data),
-				connected: getConnection(ceData, data), // fyi: decorations are always connected
+				connected: (data.connected == 1 ? true : false), // fyi: decorations are always connected
 				state: getState(data),
 				eraName: era,
-
+	
 				isPolivated: getPolivation(data, ceData),
 				chainBuilding: getChainBuilding(ceData),
 				setBuilding: getSetBuilding(ceData),
-
+	
 				boosts: getBuildingBoosts(ceData, data, era),
 				currentProduction: getCurrentProductions(data, ceData, era),
 				motivatedExtraProduction: getBoostedProductions(ceData, data, era),
-
+	
 				// todo GBs probably need more stuff
 				level: (data.type == "greatbuilding" ? data.level : undefined), // level also includes eraId in raw data, we do not like that
 				max_level: (data.type == "greatbuilding" ? data.max_level : undefined)
 			}
+		}
+
+		// loop through all city buildings
+		for (const [key, data] of Object.entries(MainParser.CityMapData)) {
+			let ceData = Object.values(MainParser.CityEntities).find(x => x.id == data.cityentity_id);
+			let era = Technologies.getEraName(data.cityentity_id, data.level);
+			let cityMapEntity = createNewCityMapEntity(ceData,data,era)
 
 			//if (cityMapEntity.type != "street")
-			//	console.log(ceData.name, ceData, data, data.connected);
+			//	console.log(ceData.name, cityMapEntity, ceData, data);
 
 			MainParser.NewCityMapData[cityMapEntity.entityId] = cityMapEntity;
 		}
