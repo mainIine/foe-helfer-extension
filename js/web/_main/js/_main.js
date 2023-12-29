@@ -401,6 +401,13 @@ GetFights = () =>{
 			let Buildings = data.responseData['updatedEntities'];
 			if (!Buildings) return;
 			console.log(data.responseData);
+			Buildings.forEach(building => {
+				let ceData = Object.values(MainParser.CityEntities).find(x => x.id == building.cityentity_id);
+				let era = Technologies.getEraName(building.cityentity_id, data.level);
+				let newCityEntity = MainParser.createNewCityMapEntity(ceData, data, era);
+				MainParser.NewCityMapData[building.id] = newCityEntity;
+				console.log(newCityEntity);
+			});
 
 			MainParser.UpdateCityMap(Buildings)
 		}
@@ -1147,12 +1154,12 @@ let MainParser = {
 			if (lookupData) {
 				if (lookupData.subType == "fragment") 
 					name = lookupData.assembledReward.name
-				else if (lookupData.subType == "reward_item" || lookupData.type == "chest" || lookupData.subType == "boost_item" || lookupData.type == "forgepoint_package" || lookupData.type == "resource" || lookupData.type == "blueprint") 
+				else if (lookupData.subType == "speedup_item" || lookupData.subType == "reward_item" || lookupData.type == "chest" || lookupData.subType == "boost_item" || lookupData.type == "forgepoint_package" || lookupData.type == "resource" || lookupData.type == "blueprint") 
 					name = lookupData.name
 				else if (lookupData.type == "unit")
 					name = lookupData.unit.unitTypeId
 				else {
-					console.log("forgotten sth", lookupData.type, lookupData.subType)
+					console.log("forgotten sth", ceData.name, lookupData, lookupData.type, lookupData.subType)
 				}
 			}
 			else {
