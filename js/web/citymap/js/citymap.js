@@ -529,25 +529,31 @@ let CityMap = {
 		});
 	},
 
+
 	GetBuildingSize: (CityMapEntity) => {
-		let CityEntity = MainParser.NewCityMapData[CityMapEntity['cityentity_id']];
-		let oldCityEntity = MainParser.CityEntities[CityMapEntity['cityentity_id']];
+		let CityEntity = MainParser.CityEntities[CityMapEntity['cityentity_id']];
 
 		let Ret = {};
-		Ret['is_connected'] = CityEntity.connected;
-		Ret['xsize'] = CityEntity.size.width;
-		Ret['ysize'] = CityEntity.size.length;
-		Ret['streets_required'] = CityEntity.needsStreet;
 
-		if (oldCityEntity['requirements']) {
-			if (oldCityEntity['type'] !== 'street') 
-				Ret['streets_required'] = oldCityEntity['requirements']['street_connection_level'] | 0;
-			else 
+		Ret['is_connected'] = (CityMapEntity['state']['__class__'] !== 'UnconnectedState' && CityMapEntity['state']['pausedAt'] === undefined && CityMapEntity['state']['pausedState'] === undefined);
+
+		if (CityEntity['requirements']) {
+			Ret['xsize'] = CityEntity['width'];
+			Ret['ysize'] = CityEntity['length'];
+
+			if (CityEntity['type'] !== 'street') {
+				Ret['streets_required'] = CityEntity['requirements']['street_connection_level'] | 0;
+			}
+			else {
 				Ret['streets_required'] = 0;
-			
+			}
 		}
 		else {
-			Ret['streets_required'] = oldCityEntity?.components?.AllAge?.streetConnectionRequirement?.requiredLevel | 0;
+			let Size = CityEntity['components']['AllAge']['placement']['size'];
+
+			Ret['xsize'] = Size['x'];
+			Ret['ysize'] = Size['y'];
+			Ret['streets_required'] = CityEntity?.components?.AllAge?.streetConnectionRequirement?.requiredLevel | 0;
 		}
 
 		Ret['building_area'] = Ret['xsize'] * Ret['ysize'];
@@ -574,8 +580,41 @@ let CityMap = {
 
 
 	GetBuildingEra: (CityMapEntity) => {
-		let CityEntity = MainParser.NewCityMapData[CityMapEntity['cityentity_id']];
+		let CityEntity = MainParser.CityEntities[CityMapEntity['cityentity_id']];
 
-		return Technologies.Eras[CityEntity.eraName];
+		// Great building
+		if (CityEntity['type'] === 'greatbuilding') {
+			return CurrentEraID;
+		}
+		// AllAge
+		else if (CityMapEntity['cityentity_id'].indexOf("AllAge") > -1) {
+			return CurrentEraID;
+		}
+		// Multi era
+		else if (CityMapEntity['level']) {
+			return CityMapEntity['level'] + 1;
+		}
+		// new format
+		else if (CityEntity?.components?.AllAge?.era?.era) {
+			return Technologies.Eras[CityEntity.components.AllAge.era.era];
+		}
+		// Zeitalter suchen
+		else {
+			let regExString = new RegExp("(?:_)((.[\\s\\S]*))(?:_)", "ig"),
+				testEra = regExString.exec(CityMapEntity['cityentity_id']);
+
+			if (testEra && testEra.length > 1) {
+				era = Technologies.Eras[testEra[1]];
+
+				// AllAge => Current era
+				if (era === 0) {
+					era = CurrentEraID;
+				}
+				return era;
+			}
+			else {
+				return CurrentEraID;
+			}
+		}
 	}
 };
