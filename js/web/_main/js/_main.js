@@ -1285,7 +1285,7 @@ let MainParser = {
 		// building is not in construction menu
 		function isSpecialBuilding(ceData) { 
 			if (ceData.__class__ == "GenericCityEntity")
-				return true; // generic buildings are always special (for now)
+				return true; // generic buildings are always special
 			return ceData.is_special;
 		}
 
@@ -1342,52 +1342,55 @@ let MainParser = {
 			return undefined;
 		}
 
+		// returns undefined or time the building was built
+		function getConnection(ceData, data) {
+			return (needsStreet(ceData, data) == 0);
+		}
+
 		// loop through all city buildings
 		for (const [key, data] of Object.entries(MainParser.CityMapData)) {
-			if (data.id < 2000000000 && data.type != "hub_part" && data.type != "hub_main") { // do not include outpost buildings and harbours
-				let ceData = Object.values(MainParser.CityEntities).find(x => x.id == data.cityentity_id);
-				let era = Technologies.getEraName(data.cityentity_id, data.level);
-				let cityMapEntity = {
-					player_id: data.player_id,
-					id: data.id,
+			let ceData = Object.values(MainParser.CityEntities).find(x => x.id == data.cityentity_id);
+			let era = Technologies.getEraName(data.cityentity_id, data.level);
+			let cityMapEntity = {
+				player_id: data.player_id,
+				id: data.id,
 
-					entityId: data.cityentity_id,
-					name: ceData.name,
-					type: data.type,
-					isSpecial: isSpecialBuilding(ceData),
-					isExpired: isExpiredBuilding(data),
-					isLimited: isLimitedBuilding(data, ceData),
-					buildTime: buildTime(data),
-					times: getStateTimes(data),
-					
-					coords: { x: data.x, y: data.y },
-					size: getSize(ceData),
+				entityId: data.cityentity_id,
+				name: ceData.name,
+				type: data.type,
+				isSpecial: isSpecialBuilding(ceData),
+				isExpired: isExpiredBuilding(data),
+				isLimited: isLimitedBuilding(data, ceData),
+				buildTime: buildTime(data),
+				times: getStateTimes(data),
+				
+				coords: { x: data.x, y: data.y },
+				size: getSize(ceData),
 
-					population: getPopulation(ceData, data, era), 
-					happiness: getHappiness(ceData, data, era),
-					needsStreet: needsStreet(ceData, data),
-					connected: (data.connected == 1 ? true : false), // fyi: decorations are always connected
-					state: getState(data),
-					eraName: era,
+				population: getPopulation(ceData, data, era), 
+				happiness: getHappiness(ceData, data, era),
+				needsStreet: needsStreet(ceData, data),
+				connected: getConnection(ceData, data), // fyi: decorations are always connected
+				state: getState(data),
+				eraName: era,
 
-					isPolivated: getPolivation(data, ceData),
-					chainBuilding: getChainBuilding(ceData),
-					setBuilding: getSetBuilding(ceData),
+				isPolivated: getPolivation(data, ceData),
+				chainBuilding: getChainBuilding(ceData),
+				setBuilding: getSetBuilding(ceData),
 
-					boosts: getBuildingBoosts(ceData, data, era),
-					currentProduction: getCurrentProductions(data, ceData, era),
-					motivatedExtraProduction: getBoostedProductions(ceData, data, era),
+				boosts: getBuildingBoosts(ceData, data, era),
+				currentProduction: getCurrentProductions(data, ceData, era),
+				motivatedExtraProduction: getBoostedProductions(ceData, data, era),
 
-					// todo GBs probably need more stuff
-					level: (data.type == "greatbuilding" ? data.level : undefined), // level also includes eraId in raw data, we do not like that
-					max_level: (data.type == "greatbuilding" ? data.max_level : undefined)
-				}
-
-				//if (cityMapEntity.type != "street")
-				//	console.log(ceData.name, cityMapEntity, ceData, data);
-
-				MainParser.NewCityMapData[cityMapEntity.entityId] = cityMapEntity;
+				// todo GBs probably need more stuff
+				level: (data.type == "greatbuilding" ? data.level : undefined), // level also includes eraId in raw data, we do not like that
+				max_level: (data.type == "greatbuilding" ? data.max_level : undefined)
 			}
+
+			//if (cityMapEntity.type != "street")
+			//	console.log(ceData.name, ceData, data, data.connected);
+
+			MainParser.NewCityMapData[cityMapEntity.entityId] = cityMapEntity;
 		}
 	},
 
