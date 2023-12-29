@@ -186,7 +186,10 @@ let BlueGalaxy = {
 
         let Title = i18n('Boxes.BlueGalaxy.DoneProductionsTitle');
 
+
         h.push('<strong class="title">' + Title + '</strong><br>');
+        if (BlueGalaxy.DoubleCollections > 0)
+            h.push(i18n('Boxes.BlueGalaxy.AvailableCollections')+ " " + BlueGalaxy.DoubleCollections+"<br>");
 
             h.push('<br>');
             h.push(i18n('Boxes.BlueGalaxy.GoodsValue') + ' ');
@@ -257,10 +260,10 @@ let BlueGalaxy = {
 
             table.push('</table>');
 
-            if (FPBonusSum > 0 || GoodsBonusSum > 0) {
-                h.push(HTML.i18nReplacer(i18n('Boxes.BlueGalaxy.EstimatedBonus'), { FP: Math.round(FPBonusSum), Goods: Math.round(GoodsBonusSum)}));
-                h.push('<br>');
-            }
+            //if (FPBonusSum > 0 || GoodsBonusSum > 0) {
+            //    h.push(HTML.i18nReplacer(i18n('Boxes.BlueGalaxy.EstimatedBonus'), { FP: Math.round(FPBonusSum), Goods: Math.round(GoodsBonusSum)}));
+            //    h.push('<br>');
+            //}
 
         h.push(table.join(''));
 
