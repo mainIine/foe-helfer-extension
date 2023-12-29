@@ -534,19 +534,17 @@ let CityMap = {
 		let oldCityEntity = MainParser.CityEntities[CityMapEntity['cityentity_id']];
 
 		let Ret = {};
-
 		Ret['is_connected'] = CityEntity.connected;
 		Ret['xsize'] = CityEntity.size.width;
 		Ret['ysize'] = CityEntity.size.length;
 		Ret['streets_required'] = CityEntity.needsStreet;
 
 		if (oldCityEntity['requirements']) {
-			if (oldCityEntity['type'] !== 'street') {
+			if (oldCityEntity['type'] !== 'street') 
 				Ret['streets_required'] = oldCityEntity['requirements']['street_connection_level'] | 0;
-			}
-			else {
+			else 
 				Ret['streets_required'] = 0;
-			}
+			
 		}
 		else {
 			Ret['streets_required'] = oldCityEntity?.components?.AllAge?.streetConnectionRequirement?.requiredLevel | 0;
