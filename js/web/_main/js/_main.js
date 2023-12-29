@@ -1312,7 +1312,9 @@ let MainParser = {
 			let state = getState(data);
 			if (state == "producing")
 				return { at: data.state.next_state_transition_at, in: data.state.next_state_transition_in }
-			return undefined;
+			else if (state == "collectable")
+				return { at: undefined, in: 0 }
+			return { at: undefined, in: undefined };
 		}
 
 		function isExpiredBuilding(data) {
