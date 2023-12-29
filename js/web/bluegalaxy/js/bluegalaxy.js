@@ -230,7 +230,7 @@ let BlueGalaxy = {
                 table.push('<td>');
                 if (Buildings[i].Fragments.length > 0) {
                     Buildings[i].Fragments.forEach(fragment => {
-                        table.push(fragment.amount+ " " +fragment.name+"<br>")
+                        table.push(fragment.amount+ "x " +fragment.name+"<br>")
                         FragmentAmount += fragment.amount;
                     })
                 }
