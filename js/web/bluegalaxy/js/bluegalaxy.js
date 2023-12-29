@@ -157,7 +157,6 @@ let BlueGalaxy = {
                     
                    
                 });
-                console.log(CityEntity.name, FP, GoodsSum, Fragments)
 
                 if (GoodsSum > 0 || FP > 0 || FragmentAmount > 0) {
                     Buildings.push({
