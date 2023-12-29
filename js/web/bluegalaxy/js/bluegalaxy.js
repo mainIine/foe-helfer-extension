@@ -175,7 +175,7 @@ let BlueGalaxy = {
             }
         }
                 
-        Buildings = Buildings.filter(obj => ((obj['FP'] > 0 || obj['Goods'] > 0) && obj['In'] < 23 * 3600)); // Hide everything above 23h
+        //Buildings = Buildings.filter(obj => ((obj['FP'] > 0 || obj['Goods'] > 0) && obj['In'] < 23 * 3600)); // Hide everything above 23h
 
         Buildings = Buildings.sort(function (a, b) {
             return (b['FP'] - a['FP']) + BlueGalaxy.GoodsValue * (b['Goods'] - a['Goods'] + (b['FragmentAmount'] - a['FragmentAmount'])*10);
