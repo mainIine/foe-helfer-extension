@@ -226,7 +226,7 @@ let BlueGalaxy = {
             let FragmentAmount = 0;
 
             table.push('<tr>');
-            table.push('<td>' + (isPolivated ? '<span class="text-bright">★</span>' : '☆') + '</td>');
+            table.push('<td>' + (isPolivated != undefined ? (isPolivated ? '<span class="text-bright">★</span>' : '☆') : '') + '</td>');
             table.push('<td>' + BuildingName + '</td>');
             table.push('<td>');
             if (Buildings[i].Fragments.length > 0) {
