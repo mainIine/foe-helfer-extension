@@ -125,7 +125,6 @@ let BlueGalaxy = {
 
             if (CityEntity.type === 'main_building' || CityEntity.type === 'greatbuilding') continue;
 
-
             if (CityEntity.currentProduction) {
                 let FP = 0;
                 let GoodsSum = 0;
@@ -201,63 +200,63 @@ let BlueGalaxy = {
 
         let table = [];
 
-            table.push('<table class="foe-table">');
+        table.push('<table class="foe-table">');
 
-            table.push('<thead>' +
-                '<tr>' +
-                '<th colspan="2">' + i18n('Boxes.BlueGalaxy.Building') + '</th>' +
-                '<th class="icon fragments" title="' + i18n('Boxes.BlueGalaxy.Fragments') + '"></th>' +
-                '<th class="icon fp" title="' + i18n('Boxes.BlueGalaxy.FP') + '"></th>' +
-                '<th class="icon goods" title="' + i18n('Boxes.BlueGalaxy.Goods') + '"></th>' +
-                '<th class="icon guildgoods" title="' + i18n('Boxes.GuildMemberStat.GuildGoods') + '"></th>' +
-                '<th>' + i18n('Boxes.BlueGalaxy.DoneIn') + '</th>' +
-                '<th></th>' +
-                '</tr>' +
-                '</thead>');
+        table.push('<thead>' +
+            '<tr>' +
+            '<th colspan="2">' + i18n('Boxes.BlueGalaxy.Building') + '</th>' +
+            '<th class="icon fragments" title="' + i18n('Boxes.BlueGalaxy.Fragments') + '"></th>' +
+            '<th class="icon fp" title="' + i18n('Boxes.BlueGalaxy.FP') + '"></th>' +
+            '<th class="icon goods" title="' + i18n('Boxes.BlueGalaxy.Goods') + '"></th>' +
+            '<th class="icon guildgoods" title="' + i18n('Boxes.GuildMemberStat.GuildGoods') + '"></th>' +
+            '<th>' + i18n('Boxes.BlueGalaxy.DoneIn') + '</th>' +
+            '<th></th>' +
+            '</tr>' +
+            '</thead>');
 
-            let CollectionsLeft = BlueGalaxy.DoubleCollections,
-                FPBonusSum = 0,
-                FragmentsSum = '',
-                GoodsBonusSum = 0;
+        let CollectionsLeft = BlueGalaxy.DoubleCollections,
+            FPBonusSum = 0,
+            FragmentsSum = '',
+            GoodsBonusSum = 0;
 
-            for (let i = 0; i < 32 && i < Buildings.length; i++) { // limits the list to max 15 items
+        for (let i = 0; i < 50 && i < Buildings.length; i++) { // limits the list to max 15 items
 
-                let BuildingName = MainParser.NewCityMapData[Buildings[i]['EntityID']].name;
-                let isPolivated = MainParser.NewCityMapData[Buildings[i]['EntityID']].isPolivated;
-                let FragmentAmount = 0;
+            let BuildingName = MainParser.NewCityMapData[Buildings[i]['ID']].name;
+            let isPolivated = MainParser.NewCityMapData[Buildings[i]['ID']].isPolivated;
+            let FragmentAmount = 0;
 
-                table.push('<tr>');
-                table.push('<td>' + (isPolivated ? '<span class="text-bright">★</span>' : '☆') + '</td>');
-                table.push('<td>' + BuildingName + '</td>');
-                table.push('<td>');
-                if (Buildings[i].Fragments.length > 0) {
-                    Buildings[i].Fragments.forEach(fragment => {
-                        table.push(fragment.amount+ "x " +fragment.name+"<br>")
-                        FragmentAmount += fragment.amount;
-                    })
-                }
-                table.push('</td>');
-                table.push('<td class="text-center">' + HTML.Format(Buildings[i]['FP']) + '</td>');
-                table.push('<td class="text-center">' + HTML.Format(Buildings[i]['Goods']) + '</td>');
-                table.push('<td class="text-center">' + HTML.Format(Buildings[i]['GuildGoods']) + '</td>');
+            table.push('<tr>');
+            table.push('<td>' + (isPolivated ? '<span class="text-bright">★</span>' : '☆') + '</td>');
+            table.push('<td>' + BuildingName + '</td>');
+            table.push('<td>');
+            if (Buildings[i].Fragments.length > 0) {
+                Buildings[i].Fragments.forEach(fragment => {
+                    table.push(fragment.amount+ "x " +fragment.name+"<br>")
+                    FragmentAmount += fragment.amount;
+                })
+            }
+            table.push('</td>');
+            table.push('<td class="text-center">' + HTML.Format(Buildings[i]['FP']) + '</td>');
+            table.push('<td class="text-center">' + HTML.Format(Buildings[i]['Goods']) + '</td>');
+            table.push('<td class="text-center">' + HTML.Format(Buildings[i]['GuildGoods']) + '</td>');
 
-                if (Buildings[i]['At'] * 1000 <= MainParser.getCurrentDateTime()) {
-                    table.push('<td style="white-space:nowrap"><strong class="success">' + i18n('Boxes.BlueGalaxy.Done') + '</strong></td>');
-                    CollectionsLeft -= 1;
+            if (Buildings[i]['At'] * 1000 <= MainParser.getCurrentDateTime()) {
+                table.push('<td style="white-space:nowrap"><strong class="success">' + i18n('Boxes.BlueGalaxy.Done') + '</strong></td>');
+                CollectionsLeft -= 1;
 
-                    FragmentsSum += FragmentAmount * BlueGalaxy.GalaxyFactor;
-                    FPBonusSum += Buildings[i]['FP'] * BlueGalaxy.GalaxyFactor;
-                    GoodsBonusSum += Buildings[i]['Goods'] * BlueGalaxy.GalaxyFactor;
-                }
-                else {
-                    table.push('<td style="white-space:nowrap"><strong class="error">' + moment.unix(Buildings[i]['At']).fromNow() + '</strong></td>');
-                }
-
-                table.push('<td class="text-right"><span class="show-entity" data-id="' + Buildings[i]['ID'] + '"><img class="game-cursor" src="' + extUrl + 'css/images/hud/open-eye.png"></span></td>');
-                table.push('</tr>');
+                FragmentsSum += FragmentAmount * BlueGalaxy.GalaxyFactor;
+                FPBonusSum += Buildings[i]['FP'] * BlueGalaxy.GalaxyFactor;
+                GoodsBonusSum += Buildings[i]['Goods'] * BlueGalaxy.GalaxyFactor;
+            }
+            else {
+                table.push('<td style="white-space:nowrap"><strong class="error">' + moment.unix(Buildings[i]['At']).fromNow() + '</strong></td>');
             }
 
-            table.push('</table>');
+            table.push('<td class="text-right"><span class="show-entity" data-id="' + Buildings[i]['ID'] + '"><img class="game-cursor" src="' + extUrl + 'css/images/hud/open-eye.png"></span></td>');
+            table.push('</tr>');
+        }
+
+        table.push('</table>');
 
             //if (FPBonusSum > 0 || GoodsBonusSum > 0) {
             //    h.push(HTML.i18nReplacer(i18n('Boxes.BlueGalaxy.EstimatedBonus'), { FP: Math.round(FPBonusSum), Goods: Math.round(GoodsBonusSum)}));
