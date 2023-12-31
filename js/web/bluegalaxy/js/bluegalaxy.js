@@ -135,8 +135,10 @@ let BlueGalaxy = {
                 CityEntity.currentProduction.resources.forEach(product => {
                     if (product.resources.strategy_points)
                         FP += product.resources.strategy_points
-                    if (product.type == "genericReward" && product.resources.subType == "strategy_points")
+                    else if (product.type == "genericReward" && product.resources.subType == "strategy_points")
                         FP += product.resources.amount;
+                    else if (product.type == "genericReward" && product.resources.type == "forgepoint_package")
+                        FP += parseInt(product.resources.subType)
 
                     if (product.type == "resources" || product.type == "guildResources")
                         for (let j = 0; j < GoodsList.length; j++) {
