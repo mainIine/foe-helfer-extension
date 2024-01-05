@@ -119,6 +119,59 @@ let GuildFights = {
 
 
 	/**
+	 * Reset the module state for testing purposes
+	 * @returns {Promise<void>}
+	 */
+	_reset: async function() {
+		// ensure we are in the test environment
+		expect(tt).toBeDefined();
+
+		// todo: remove UI
+		// todo: remove proxy handlers
+		// todo: delete databases
+
+		localStorage.removeItem('GuildFights.NewAction');
+		localStorage.removeItem('GuildFights.NewActionTimestamp');
+		localStorage.removeItem('GuildFightsPlayerBoxSettings');
+		localStorage.removeItem('GildPlayersDetailViewCords');
+		localStorage.removeItem('LiveFightSettings');
+
+		this.Alerts = [];
+		this.GlobalRankingTimeout = null;
+		this.PrevAction = null;
+		this.PrevActionTimestamp = null;
+		this.NewAction = null;
+		this.NewActionTimestamp = null;
+		this.MapData = null;
+		this.Neighbours = [];
+		this.PlayersPortraits = null;
+		this.Colors = null;
+		this.SortedColors = null;
+		this.ProvinceNames = null;
+		this.InjectionLoaded = false;
+		this.PlayerBoxContent = [];
+		this.CurrentGBGRound = null;
+		this.GBGRound = null;
+		this.GBGAllRounds = null;
+		this.GBGHistoryView = false;
+		this.LogDatePicker = null;
+		this.curDateFilter = null;
+		this.curDateEndFilter = null;
+		this.curDetailViewFilter = null;
+		this.PlayerBoxSettings = {
+			showRoundSelector: 1,
+			showLogButton: 1,
+			showProgressFilter: 1,
+			showOnlyActivePlayers: 0,
+		};
+		this.showGuildColumn = 0;
+		this.showAdjacentSectors = 0;
+		this.showOwnSectors = 0;
+		this.Tabs = [];
+		this.TabsContent = [];
+	},
+
+	/**
 	 *
 	 * @returns {Promise<void>}
 	 */
