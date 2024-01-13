@@ -1,5 +1,45 @@
 ## Changelog - Extension
 
+##### 3.5.0.0
+**New**
+- PvP Arena Protokoll
+	- Es muss nicht durch protokoll geklickt werden
+	- Protokolleinträge kategorisiert 
+	- kann in den Einstellungen aktiviert werden, damit es beim Öffnen der Arena aufpoppt
+
+- Armee Empfehlung
+	- wurde bereits vor einiger Zeit hinzugefügt, aber nie in einem Changelog erwähnt
+	- kann in den Einstellungen aktiviert werden
+	- verfolgt die durchgeführten Kämpfe
+	- wenn ein Kampf unvorteilhaft verläuft (z.B. 2 oder mehr Einheiten Verlust) erfolgt ein Pop-Up
+	- der Spieler kann für Gegnerkombinationen und deren Boni Empfehlungen festlegen, die dann bei der Armeeauswahl angezeigt werden
+
+**Update**
+- Blaue Galaxie:
+	- jetzt immer verfügbar
+	- Fragmente und Gildengüter hinzugefügt
+	- Auswertung der Gebäudeproduktion verbessert (z.B. Ägäisches Resort)
+
+- Popgame:
+	- Layout für kommendes Event angepasst
+
+- Gebäudeeffizienz:
+	- listet auch LB
+
+- LB Spürhund:
+	- an veränderte Server-Daten angepasst
+
+- LB/Eigenanteil Rechner:
+	- Spieler-Aktivitätsindikator hinzugefügt
+
+**BugFix**
+- Moppelhelfer:
+	- Sortierung nach Zeitalter gefixt
+
+- GG
+	- Eigene Provinzen wurden manchmal nicht in der "gesperrt" Liste geführt
+
+---
 ##### 3.4.0.0
 **New**
 - GG Gebäude Optimierer:
