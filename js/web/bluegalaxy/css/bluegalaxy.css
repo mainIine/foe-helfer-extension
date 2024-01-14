@@ -22,7 +22,6 @@
 #bluegalaxy #bluegalaxyBody {
     overflow-x: hidden;
     overflow-y: auto;
-    max-height: 600px;
 }
 
 #bluegalaxy #bluegalaxyBody strong.success {
@@ -44,6 +43,26 @@
 #bluegalaxy .header {
     margin-bottom: 2px;
     padding: 1em 0;
+}
+
+#bluegalaxy table th.icon::before  {
+    background: transparent url('../../productions/images/productions.png') -233px 2px no-repeat;
+    width: 27px;
+    height: 30px;
+    content: "";
+    display: block;
+}
+
+#bluegalaxy table th.icon.goods::before  {
+    background-position: -104px 3px;
+}
+
+#bluegalaxy table th.icon.fragments::before  {
+    background-position: -415px 3px;
+}
+
+#bluegalaxy table th.icon.fp::before  {
+    background-position: 0 3px;
 }
 
 #bluegalaxy #bluegalaxyBody td {

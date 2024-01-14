@@ -1,5 +1,46 @@
 ## Changelog - Extension
 
+##### 3.5.0.0
+**New**
+- PvP Arena Protokoll
+	- Es muss nicht durch protokoll geklickt werden
+	- Protokolleinträge kategorisiert 
+	- kann in den Einstellungen aktiviert werden, damit es beim Öffnen der Arena aufpoppt
+
+- Armee Empfehlung
+	- wurde bereits vor einiger Zeit hinzugefügt, aber nie in einem Changelog erwähnt
+	- kann in den Einstellungen aktiviert werden
+	- verfolgt die durchgeführten Kämpfe
+	- wenn ein Kampf unvorteilhaft verläuft (z.B. 2 oder mehr Einheiten Verlust) erfolgt ein Pop-Up
+	- der Spieler kann für Gegnerkombinationen und deren Boni Empfehlungen festlegen, die dann bei der Armeeauswahl angezeigt werden
+
+**Update**
+- Blaue Galaxie:
+	- jetzt immer verfügbar
+	- Fragmente und Gildengüter hinzugefügt
+	- Auswertung der Gebäudeproduktion verbessert (z.B. Ägäisches Resort)
+
+- Popgame:
+	- Layout für kommendes Event angepasst
+
+- Gebäudeeffizienz:
+	- listet auch LB
+
+- LB Spürhund:
+	- an veränderte Server-Daten angepasst
+
+- LB/Eigenanteil Rechner:
+	- Spieler-Aktivitätsindikator hinzugefügt
+
+**BugFix**
+- Moppelhelfer:
+	- Sortierung nach Zeitalter gefixt
+
+- GG
+	- Eigene Provinzen wurden manchmal nicht in der "gesperrt" Liste geführt
+
+---
+
 ##### 3.4.0.0
 **New**
 - GG Gebäude Optimierer:
@@ -15,10 +56,9 @@
 **BugFix**
 - GG Provinz Liste und Karte:
 	- Code wurde an neue Datenstruktur der Serverübertragung angepasst (Danke Arklur!)
-- Allgemein:
-	- es konnte ein Problem beim Laden der lokalen Datenbanken auftreten, das eine Funktionsfähigkeit des Helfers beschränkte  - dies sollte nun behoben sein
 
 ---
+
 ##### 3.3.0.0
 **New**
 - Card Game (Halloween Event):
@@ -26,6 +66,7 @@
 	- warnt, wenn die Durchführung des nächsten Zuges das Ende der Runde bedeutet
 
 ---
+
 ##### 3.2.9.0
 **Update**
 - Sets/Kits:
@@ -35,6 +76,7 @@
 	- wenn ein beschränktes Gebäude verfällt, wird nun ein Alarm ausgegeben
 
 ---
+
 ##### 3.2.8.0
 **Update**
 - Produktionen (Dank an bencptest/apophis):
@@ -51,6 +93,7 @@
 	- es war möglich, dass Zeiten wie "1h:60min" ausgegeben wurden - dies passiert nun nicht mehr
 
 ---
+
 ##### 3.2.7.0
 **Update**
 - Wiederkehrende Quests:
@@ -59,7 +102,9 @@
 **BugFix**
 - Extension:
 	- Kleine Bugs gefixt - vor allem in Bezug auf Titan
+
 ---
+
 ##### 3.2.6.0
 
 **Update**
@@ -81,7 +126,9 @@
 
 **BugFix**
 - Die Einladungslinks zu Discord waren abgelaufen, wir haben sie ersetzt.
+
 ---
+
 ##### 3.2.5.0
 
 **Update**
@@ -113,6 +160,7 @@
 	- Wecker/Timer werden nun korrekt gesetzt - beschränkt auf zeiten geringer als 24 Stunden
 
 ---
+
 ##### 3.2.4.0
 
 **Update**

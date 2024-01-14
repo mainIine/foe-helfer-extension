@@ -688,7 +688,7 @@ let Parts = {
 		h.push('<div class="flex" style="justify-content: space-between;align-items:center;margin-bottom:8px;">');
 		h.push('<div class="lb-info">');
 		h.push('<h1>' + CityEntity['name'] + '</h1>');
-		if (PlayerName) h.push('<strong>' + MainParser.GetPlayerLink(PlayerID, PlayerName) + '</strong>');
+		if (PlayerName) h.push(`<span class="activity activity_${PlayerDict[PlayerID]['Activity']}"></span><strong>${MainParser.GetPlayerLink(PlayerID, PlayerName)}</strong>`);
 		h.push('</div>');
 
 		h.push('<div class="level-switch">');

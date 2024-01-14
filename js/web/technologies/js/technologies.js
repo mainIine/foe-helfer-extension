@@ -109,6 +109,33 @@ let Technologies = {
         NextEra:23,
     },
 
+    // need this for cityentities
+    InnoEras: {
+        StoneAge: 0,
+        BronzeAge: 1,
+        IronAge: 2,
+        EarlyMiddleAge: 3,
+        HighMiddleAge: 4,
+        LateMiddleAge: 5,
+        ColonialAge: 6,
+        IndustrialAge: 7,
+        ProgressiveEra: 8,
+        ModernEra: 9,
+        PostModernEra: 10,
+        ContemporaryEra: 11,
+        TomorrowEra: 12,
+        FutureEra: 13,
+        ArcticFuture: 14,
+        OceanicFuture: 15,
+        VirtualFuture: 16,
+        SpaceAgeMars: 17,
+        SpaceAgeAsteroidBelt: 18,
+        SpaceAgeVenus: 19,
+        SpaceAgeJupiterMoon: 20,
+        SpaceAgeTitan: 21,
+        NextEra:22,
+    },
+
 
     EraNames: {
         0: 'NoAge',
@@ -134,6 +161,40 @@ let Technologies = {
         20: 'SpaceAgeVenus',
         21: 'SpaceAgeJupiterMoon',
         22: 'SpaceAgeTitan'
+    },
+
+    // need this for cityentities
+    InnoEraNames: {
+        0: 'StoneAge',
+        1: 'BronzeAge',
+        2: 'IronAge',
+        3: 'EarlyMiddleAge',
+        4: 'HighMiddleAge',
+        5: 'LateMiddleAge',
+        6: 'ColonialAge',
+        7: 'IndustrialAge',
+        8: 'ProgressiveEra',
+        9: 'ModernEra',
+        10: 'PostModernEra',
+        11: 'ContemporaryEra',
+        12: 'TomorrowEra',
+        13: 'FutureEra',
+        14: 'ArcticFuture',
+        15: 'OceanicFuture',
+        16: 'VirtualFuture',
+        17: 'SpaceAgeMars',
+        18: 'SpaceAgeAsteroidBelt',
+        19: 'SpaceAgeVenus',
+        20: 'SpaceAgeJupiterMoon',
+        21: 'SpaceAgeTitan'
+    },
+
+
+    getEraName: (entityId, level) => {
+        let eraName = entityId.split('_')[1];
+        if (eraName == 'MultiAge')
+            return Technologies.InnoEraNames[level]; // one off
+        return eraName;
     },
 
 

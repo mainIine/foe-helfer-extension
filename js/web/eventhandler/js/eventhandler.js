@@ -517,7 +517,7 @@ let EventHandler = {
 			h.push('<th columnname="GuildName" data-type="moppelhelper" class="name-col">' + i18n('General.Guild') + '</th>');
 		}
 		if (EventHandler.ShowHideColumns.Era) {
-			h.push('<th columnname="Era" data-type="moppelhelper">' + i18n('Boxes.MoppelHelper.Era') + '</th>');
+			h.push('<th class="is-number" columnname="Era" data-type="moppelhelper">' + i18n('Boxes.MoppelHelper.Era') + '</th>');
 		}
 		if (EventHandler.ShowHideColumns.Points) {
 			h.push('<th columnname="Points" class="is-number" data-type="moppelhelper">' + i18n('Boxes.MoppelHelper.Points') + '</th>');
@@ -530,7 +530,6 @@ let EventHandler = {
 
 		h.push('</tr>');
 
-		let HasGuildPermission = ((ExtGuildPermission & GuildMemberStat.GuildPermission_Leader) > 0 || (ExtGuildPermission & GuildMemberStat.GuildPermission_Founder) > 0);
 		let pImage = `<img style="max-width: 22px" src="${srcLinks.get('/shared/gui/tavern/shop/tavern_shop_boost_shield1_icon.png', true)}" title="${i18n('Boxes.MoppelHelper.CityProtected')}" alt="${i18n('Boxes.MoppelHelper.CityProtected')}"></img>`
 		for (let i = 0; i < PlayerList.length; i++)
 		{
@@ -579,16 +578,14 @@ let EventHandler = {
 			h.push(`<td><img style="max-width: 22px" src="${srcLinks.GetPortrait(Player['Avatar'])}" alt="${Player['PlayerName']}"></td>`);
 			
 			// Player Name column
-			h.push('<td style="white-space:nowrap;text-align:left;" data-text="' + Player['PlayerName'].toLowerCase().replace(/[\W_ ]+/g, "") + '">');
+			h.push('<td style="white-space:nowrap;text-align:left;" data-text="' + helper.str.cleanup(Player['PlayerName']) + '">');
 
-			if (EventHandler.CurrentPlayerGroup === 'Friends' || (EventHandler.CurrentPlayerGroup === 'Guild' && HasGuildPermission)) {
-				h.push(`<span class="activity activity_${Player['Activity']}"></span> `);
-            }
+			h.push(`<span class="activity activity_${Player['Activity']}"></span> `);
 			h.push(MainParser.GetPlayerLink(Player['PlayerID'], Player['PlayerName']));
 
 			// Guild name column
 			if (EventHandler.CurrentPlayerGroup != 'Guild' && EventHandler.ShowHideColumns.GuildName) {
-				h.push('<td style="white-space:nowrap;text-align:left;" data-text="' + (Player['ClanName']?.toLowerCase().replace(/[\W_ ]+/g, "") || "has_no_guild") + '">');
+				h.push('<td style="white-space:nowrap;text-align:left;" data-text="' + (helper.str.cleanup(Player['ClanName'] || "")) + '">');
 				h.push(Player['ClanName'] ? MainParser.GetGuildLink(Player['ClanId'], Player['ClanName']) : "");
 			}
 
@@ -596,7 +593,7 @@ let EventHandler = {
 			if (EventHandler.ShowHideColumns.Era) {
 				let pTime = EventHandler.isProtected[Player['PlayerID']] | 0;
 				let pImg = (EventHandler.CurrentPlayerGroup === 'Neighbors' && (pTime == -1 || pTime * 1000 > MainParser.getCurrentDateTime())) ? pImage : '';
-				h.push(`<td data-text="${i18n('Eras.' + Technologies.Eras[Player['Era']])}">${pImg + i18n('Eras.' + Technologies.Eras[Player['Era']]) + pImg}</td>`);
+				h.push(`<td data-number="${Technologies.Eras[Player['Era']]}" exportvalue="${i18n('Eras.' + Technologies.Eras[Player['Era']])}">${pImg + i18n('Eras.' + Technologies.Eras[Player['Era']]) + pImg}</td>`);
 			}
 
 			// Player points column

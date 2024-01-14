@@ -136,7 +136,7 @@ let Calculator = {
 		let PlayerID = Calculator.CityMapEntity['player_id'],
             h = [];
 
-        // Wenn sich Spieler geändert hat, dann BuildingName/PlayerName zurücksetzen
+        // If the player has changed, then reset BuildingName/PlayerName
 		if (Calculator.CityMapEntity['player_id'] !== Calculator.LastPlayerID) {
 			Calculator.PlayerName = undefined;
 			Calculator.ClanId = undefined;
@@ -151,18 +151,20 @@ let Calculator = {
 			Calculator.ClanName = PlayerDict[PlayerID]['ClanName'];
 		}
 
-        // BuildingName konnte nicht aus der BuildingInfo geladen werden
+        // BuildingName could not be loaded from the BuildingInfo
 		let BuildingName = MainParser.CityEntities[Calculator.CityMapEntity['cityentity_id']]['name'];
 		let Level = (Calculator.CityMapEntity['level'] !== undefined ? Calculator.CityMapEntity['level'] : 0);
 		let MaxLevel = (Calculator.CityMapEntity['max_level'] !== undefined ? Calculator.CityMapEntity['max_level'] : 0);
 
         h.push('<div class="text-center dark-bg" style="padding:5px 0 3px;">');
 
-        // LG - Daten + Spielername
+        // BG - Data + player name
 		h.push('<div class="header"><strong><span class="building-name">' + BuildingName + '</span>');
 
 		if (Calculator.PlayerName) {
-			h.push('<span class="player-name">' + MainParser.GetPlayerLink(PlayerID, Calculator.PlayerName));
+			h.push('<span class="player-name">' 
+				+ `<span class="activity activity_${PlayerDict[PlayerID]['Activity']}"></span> `
+				+ MainParser.GetPlayerLink(PlayerID, Calculator.PlayerName));
 
 			if (Calculator.ClanName) {
 				h.push(`<br>[${MainParser.GetGuildLink(Calculator.ClanId, Calculator.ClanName)}]`);

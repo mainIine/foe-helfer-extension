@@ -506,7 +506,7 @@ let Settings = {
 		}
 
 		$('#SettingsBox').on('keyup', '#doubleFPtimeoutinput', function () {
-			let value = $(this).val();
+			let value = Number($(this).val());
 			if (value > 0) {
 				localStorage.setItem('doubleFPtimeout', value);
 			} else {
