@@ -57,6 +57,7 @@
 	- code adapted to changed data structure received from server (thanks Arklur!)
 
 ---
+
 ##### 3.3.0.0
 **New**
 - Card Game (Halloween Event):
@@ -64,6 +65,7 @@
 	- warns, when continuing would be the end of the round
 
 ---
+
 ##### 3.2.9.0
 **Update**
 - Sets/Kits:
@@ -73,6 +75,7 @@
 	- when a limited building expires, an Alert is triggert
 
 ---
+
 ##### 3.2.8.0
 **Update**
 - Productions (cutesy of bencptest/apophis):
@@ -87,7 +90,9 @@
 **BugFix**
 - Idle Game:
 	- it was possible that times like "1h:60min" were given - this is now corrected
+
 ---
+
 ##### 3.2.7.0
 **Update**
 - Recurring Quests
@@ -95,7 +100,9 @@
 
 **BugFix**
 - Fixed small bugs (mainly Titan related)
+
 ---
+
 ##### 3.2.6.0
 
 **Update**
@@ -116,6 +123,7 @@
 
 **BugFix**
 - Discord Invite links were broken, so we replaced them
+- 
 ---
 ##### 3.2.5.0
 
@@ -242,7 +250,9 @@
 **BugFix**
 - Quest counter:
 	- [#2541](https://github.com/mainIine/foe-helfer-extension/issues/2541) if multiple recurring quests were abondoned in quick succession, only one was counted
+
 ---
+
 ##### 3.2.1.0
 
 **Update**
@@ -253,6 +263,7 @@
 	- added Anniversary-Event
 	
 ---
+
 ##### 3.2.0.0
 
 **New**
