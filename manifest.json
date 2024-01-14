@@ -63,6 +63,13 @@
 	},
 
 	"background": {
-		"service_worker": "background.js"
+		"scripts": ["background.js"]
+	},
+
+	"browser_specific_settings": {
+		"gecko": {
+			"id": "{0668a87f-e3bb-4ed3-a096-e145c1e9f1d2}",
+			"strict_min_version": "101.0"
+		}
 	}
 }
