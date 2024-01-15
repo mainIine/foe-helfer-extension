@@ -9,7 +9,7 @@
 
 ##### 3.5.0.0
 **New**
-- PvP Arena Protokoll
+- PvP Arena Protokoll (thanks to dersiedler1)
 	- Es muss nicht durch protokoll geklickt werden
 	- Protokolleinträge kategorisiert 
 	- kann in den Einstellungen aktiviert werden, damit es beim Öffnen der Arena aufpoppt

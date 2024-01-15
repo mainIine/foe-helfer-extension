@@ -8,7 +8,7 @@
 ---
 ##### 3.5.0.0
 **New**
-- PvP Arena Protocol
+- PvP Arena Protocol (Dank an dersiedler1)
 	- no need to click though protocol pages
 	- categorized protocol entries
 	- can be activated in the settings to pop-up when opening the Arena
