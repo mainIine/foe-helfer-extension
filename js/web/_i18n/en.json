@@ -211,7 +211,7 @@
     "Boxes.Castle.VisitGexWarning": "Open the GE overview to update the data.",
     "Boxes.CityMap.CavalierPerspecitve": "Side View",
     "Boxes.CityMap.CopyMetaInfos": "Copy citymap data",
-    "Boxes.CityMap.Desc1": "To plan your city, we need to send your data to foe-helper.com. You can then let off steam there. <br>If you don't have an account there yet, your basic data will be sent along with this transmission. You can then register your account on the website.",
+    "Boxes.CityMap.Desc1": "To plan your city on foe-helper.com, we need to send your data to the website. <br>If you don't have an account there yet, your basic data will be sent along with this transmission. You can then register your account on the website.",
     "Boxes.CityMap.FilterBuildings": "Search Building",
     "Boxes.CityMap.FreeArea": "Available Squares: ",
     "Boxes.CityMap.HighlightOldBuildings": "Highlight lower Era buildings",

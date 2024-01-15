@@ -48,6 +48,7 @@
 	bottom: 0;
 	left: 0;
 	border-right: 2px solid #281207;
+	background-color: var(--black-50);
 }
 
 /* Nachbar */
@@ -359,7 +360,6 @@
 }
 
 .blinking {
-
     border: 3px solid rgb(175 75 75) !important;
     animation-name: blinking;
     animation-duration: 0.75s;
