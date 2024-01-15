@@ -170,32 +170,20 @@ a[target="_blank"] svg {
 }
 
 .btn-default[disabled], .btn-default[disabled]:hover {
-	color: var(--text-btn-disabled);
-	background: var(--background-btn-disabled-fallback);
-	background: var(--background-btn-disabled-moz);
-	background: var(--background-btn-disabled-webkit);
-	background: var(--background-btn-disabled);
+	filter: saturate(10%) brightness(80%);
 }
 
 .btn-default:not([disabled]):hover,
 .btn-active:not([disabled]),
 .btn-active:not([disabled]):hover {
-	background: var(--background-btn-active-fallback);
-	background: var(--background-btn-active-moz);
-	background: var(--background-btn-active-webkit);
-	background: var(--background-btn-active);
-	color: var(--text-light);
+	filter: brightness(140%);
 	cursor: url('../images/cursor_hover.cur'), auto;
 	text-shadow: 0 1px 1px var(--black);
 }
 
 .btn-default:not([disabled]):active,
 .btn-active:not([disabled]):active {
-	background: var(--background-btn-onclick-fallback);
-	background: var(--background-btn-onclick-moz);
-	background: var(--background-btn-onclick-webkit);
-	background: var(--background-btn-onclick);
-	color: var(--text-light);
+	filter: brightness(150%) saturate(120%);
 	cursor: url('../images/cursor_hover.cur'), auto;
 	text-shadow: 0 1px 1px var(--black);
 }

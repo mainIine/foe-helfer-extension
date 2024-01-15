@@ -263,9 +263,15 @@ let CityMap = {
 				y = (CityMap.CityData[b]['y'] === undefined ? 0 : ((parseInt(CityMap.CityData[b]['y']) * CityMap.ScaleUnit) / 100)),
 				xsize = ((parseInt(BuildingSize['xsize']) * CityMap.ScaleUnit) / 100),
 				ysize = ((parseInt(BuildingSize['ysize']) * CityMap.ScaleUnit) / 100),
-				// to do noStreet = (CityMap.NewCityMapData[CityMap.CityData[b]['id']].needsStreet == 0 ? ' noStreet' : '')
+				noStreet = '', isSpecial = '', chainBuilding = ''
 
-				f = $('<span />').addClass('entity ' + d['type']).css({
+				if(CityMap.IsExtern === false) {
+					noStreet = (MainParser.NewCityMapData[CityMap.CityData[b]['id']].needsStreet == 0 ? ' noStreet' : '')
+					isSpecial = (MainParser.NewCityMapData[CityMap.CityData[b]['id']].isSpecial ? ' special' : '')
+					chainBuilding = (MainParser.NewCityMapData[CityMap.CityData[b]['id']].chainBuilding != undefined ? ' chain' : '')
+				}
+				
+				f = $('<span />').addClass('entity ' + d['type'] + noStreet + isSpecial + chainBuilding).css({
 					width: xsize + 'em',
 					height: ysize + 'em',
 					left: x + 'em',
@@ -1191,7 +1197,7 @@ let CityMap = {
 			level: (data.type == "greatbuilding" ? data.level : undefined), // level also includes eraId in raw data, we do not like that
 			max_level: (data.type == "greatbuilding" ? data.max_level : undefined)
 		}
-		//console.log('entity',entity.name, entity, ceData, data)
+		console.log('entity',entity.name, entity, ceData, data)
 		return entity
 	},
 };
