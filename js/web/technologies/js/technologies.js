@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2024 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -191,10 +191,10 @@ let Technologies = {
 
 
     getEraName: (entityId, level) => {
-        let eraName = entityId.split('_')[1];
+        let eraName = entityId.split('_')[1]
         if (eraName == 'MultiAge')
-            return Technologies.InnoEraNames[level]; // one off
-        return eraName;
+            return Technologies.InnoEraNames[level]
+        return eraName
     },
 
 

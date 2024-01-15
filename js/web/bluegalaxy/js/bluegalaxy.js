@@ -1,7 +1,7 @@
 ﻿/*
  * *************************************************************************************
  *
- * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2024 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -125,14 +125,14 @@ let BlueGalaxy = {
 
             if (CityEntity.type === 'main_building' || CityEntity.type === 'greatbuilding') continue;
 
-            if (CityEntity.currentProduction) {
+            if (CityEntity.state.production) {
                 let FP = 0;
                 let GoodsSum = 0;
                 let GuildGoodsSum = 0;
                 let Fragments = [];
                 let FragmentAmount = 0;
 
-                CityEntity.currentProduction.resources.forEach(product => {
+                CityEntity.state.production.resources.forEach(product => {
                     if (product.resources.strategy_points)
                         FP += product.resources.strategy_points
                     else if (product.type == "genericReward" && product.resources.subType == "strategy_points")
@@ -224,7 +224,7 @@ let BlueGalaxy = {
         for (let i = 0; i < 50 && i < Buildings.length; i++) { // limits the list to max 15 items
 
             let BuildingName = MainParser.NewCityMapData[Buildings[i]['ID']].name;
-            let isPolivated = MainParser.NewCityMapData[Buildings[i]['ID']].isPolivated;
+            let isPolivated = MainParser.NewCityMapData[Buildings[i]['ID']].state.isPolivated;
             let FragmentAmount = 0;
 
             table.push('<tr>');
