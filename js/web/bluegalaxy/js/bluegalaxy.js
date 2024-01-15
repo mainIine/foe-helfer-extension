@@ -178,7 +178,7 @@ let BlueGalaxy = {
         //Buildings = Buildings.filter(obj => ((obj['FP'] > 0 || obj['Goods'] > 0) && obj['In'] < 23 * 3600)); // Hide everything above 23h
 
         Buildings = Buildings.sort(function (a, b) {
-            return (b['FP'] - a['FP']) + BlueGalaxy.GoodsValue * (b['Goods'] - a['Goods'] + (b['FragmentAmount'] - a['FragmentAmount'])*10);
+            return (b['FP'] - a['FP']) + BlueGalaxy.GoodsValue * (b['Goods'] - a['Goods'] + (b['FragmentAmount'] - a['FragmentAmount'])*2);
         });
 
         let h = [];
@@ -211,8 +211,7 @@ let BlueGalaxy = {
             '<th class="is-number icon fp" title="' + i18n('Boxes.BlueGalaxy.FP') + '" data-type="bg-group"></th>' +
             '<th class="is-number icon goods" title="' + i18n('Boxes.BlueGalaxy.Goods') + '" data-type="bg-group"></th>' +
             '<th class="is-number icon guildgoods" title="' + i18n('Boxes.GuildMemberStat.GuildGoods') + '" data-type="bg-group"></th>' +
-            '<th>' + i18n('Boxes.BlueGalaxy.DoneIn') + '</th>' +
-            '<th></th>' +
+            '<th colspan="2" class="case-sensitive" data-type="bg-group">' + i18n('Boxes.BlueGalaxy.DoneIn') + '</th>' +
             '</tr>' +
             '</thead>');
             table.push('<tbody data-type="bg-group">');
@@ -270,9 +269,9 @@ let BlueGalaxy = {
 
         BlueGalaxy.SetCounter();
 
-        $('#bluegalaxyBody').html(h.join(''));
-
-		$('#BGTable').tableSorter();
+        $('#bluegalaxyBody').html(h.join('')).promise().done(function () {
+		    $('#BGTable').tableSorter();
+        })
     },
 
 
