@@ -206,8 +206,8 @@ let BlueGalaxy = {
 
         table.push('<thead>' +
             '<tr class="sorter-header">' +
-            '<th></th><th class="case-sensitive" data-type="bg-group">' + i18n('Boxes.BlueGalaxy.Building') + '</th>' +
-            '<th class="icon fragments" title="' + i18n('Boxes.BlueGalaxy.Fragments') + '" data-type="bg-group"></th>' +
+            '<th></th><th data-type="bg-group">' + i18n('Boxes.BlueGalaxy.Building') + '</th>' +
+            '<th class="is-number icon fragments" title="' + i18n('Boxes.BlueGalaxy.Fragments') + '" data-type="bg-group"></th>' +
             '<th class="is-number icon fp" title="' + i18n('Boxes.BlueGalaxy.FP') + '" data-type="bg-group"></th>' +
             '<th class="is-number icon goods" title="' + i18n('Boxes.BlueGalaxy.Goods') + '" data-type="bg-group"></th>' +
             '<th class="is-number icon guildgoods" title="' + i18n('Boxes.GuildMemberStat.GuildGoods') + '" data-type="bg-group"></th>' +
@@ -228,7 +228,7 @@ let BlueGalaxy = {
             let FragmentAmount = 0;
             table.push('<tr>');
             table.push('<td>' + (isPolivated != undefined ? (isPolivated ? '<span class="text-bright">★</span>' : '☆') : '') + '</td>');
-            table.push('<td data-text="'+BuildingName+'">' + BuildingName + '</td>');
+            table.push('<td data-text="'+BuildingName.replace(/[. -]/g,"")+'">' + BuildingName + '</td>');
             let frags=""
             if (Buildings[i].Fragments.length > 0) {
                 Buildings[i].Fragments.forEach(fragment => {
@@ -236,7 +236,7 @@ let BlueGalaxy = {
                     FragmentAmount += fragment.amount;
                 })
             }
-            table.push('<td data-text="'+frags+'">'+frags+'</td>');
+            table.push('<td data-number="'+FragmentAmount+'">'+frags+'</td>');
             table.push('<td class="text-center" data-number="'+Buildings[i]['FP']+'">' + HTML.Format(Buildings[i]['FP']) + '</td>');
             table.push('<td class="text-center" data-number="'+Buildings[i]['Goods']+'">' + HTML.Format(Buildings[i]['Goods']) + '</td>');
             table.push('<td class="text-center" data-number="'+Buildings[i]['GuildGoods']+'">' + HTML.Format(Buildings[i]['GuildGoods']) + '</td>');
