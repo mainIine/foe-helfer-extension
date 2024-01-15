@@ -260,7 +260,7 @@ GetFights = () =>{
 		LastMapPlayerID = ExtPlayerID;
 		MainParser.CityMapData = Object.assign({}, ...data.responseData.city_map.entities.map((x) => ({ [x.id]: x })));
 		MainParser.SaveBuildings(MainParser.CityMapData);
-
+		MainParser.SetArkBonus2();
 		// Güterliste
 		GoodsList = data.responseData.goodsList;
 
@@ -338,6 +338,7 @@ GetFights = () =>{
 		LastMapPlayerID = ExtPlayerID;
 
 		MainParser.CityMapData = Object.assign({}, ...data.responseData.map((x) => ({ [x.id]: x })));
+		MainParser.SetArkBonus2();
 
 		let buildings = data.responseData;
 		buildings.forEach(building => {
@@ -895,9 +896,6 @@ let MainParser = {
 			let era = Technologies.getEraName(data.cityentity_id, data.level);
 			let cityMapEntity = CityMap.createNewCityMapEntity(ceData,data,era)
 
-			//if (cityMapEntity.type != "street")
-			//	console.log(ceData.name, cityMapEntity, ceData, data);
-
 			MainParser.NewCityMapData[cityMapEntity.id] = cityMapEntity;
 		}
 	},
@@ -1404,7 +1402,17 @@ let MainParser = {
 			}
 		}
 
-		MainParser.ArkBonus = ArkBonus;
+		if (ArkBonus > MainParser.ArkBonus) MainParser.ArkBonus = ArkBonus;
+	},
+
+	SetArkBonus2: () => {
+		let ArkBonus = 0;
+
+		for (let i of Object.values(MainParser.CityMapData).filter(x => x?.bonus?.type=="contribution_boost")) {
+			ArkBonus += i.bonus.value;
+		}
+
+		if (ArkBonus > MainParser.ArkBonus) MainParser.ArkBonus = ArkBonus;
 	},
 
 
@@ -1573,6 +1581,7 @@ let MainParser = {
 				MainParser.CityMapEraOutpostData[ID] = Buildings[i];
 			}
 		}
+		MainParser.SetArkBonus2();
 
 		if ($('#bluegalaxy').length > 0) {
 			BlueGalaxy.CalcBody();
