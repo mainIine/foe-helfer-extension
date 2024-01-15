@@ -202,31 +202,31 @@ let BlueGalaxy = {
 
         let table = [];
 
-        table.push('<table class="foe-table">');
+        table.push('<table id="BGTable" class="foe-table">');
 
         table.push('<thead>' +
-            '<tr>' +
-            '<th colspan="2">' + i18n('Boxes.BlueGalaxy.Building') + '</th>' +
-            '<th class="icon fragments" title="' + i18n('Boxes.BlueGalaxy.Fragments') + '"></th>' +
-            '<th class="icon fp" title="' + i18n('Boxes.BlueGalaxy.FP') + '"></th>' +
-            '<th class="icon goods" title="' + i18n('Boxes.BlueGalaxy.Goods') + '"></th>' +
-            '<th class="icon guildgoods" title="' + i18n('Boxes.GuildMemberStat.GuildGoods') + '"></th>' +
+            '<tr class="sorter-header">' +
+            '<th class="case-sensitive" colspan="2" data-type="bg-group">' + i18n('Boxes.BlueGalaxy.Building') + '</th>' +
+            '<th class="icon fragments" title="' + i18n('Boxes.BlueGalaxy.Fragments') + '" data-type="bg-group"></th>' +
+            '<th class="is-number icon fp" title="' + i18n('Boxes.BlueGalaxy.FP') + '" data-type="bg-group"></th>' +
+            '<th class="is-number icon goods" title="' + i18n('Boxes.BlueGalaxy.Goods') + '" data-type="bg-group"></th>' +
+            '<th class="is-number icon guildgoods" title="' + i18n('Boxes.GuildMemberStat.GuildGoods') + '" data-type="bg-group"></th>' +
             '<th>' + i18n('Boxes.BlueGalaxy.DoneIn') + '</th>' +
             '<th></th>' +
             '</tr>' +
             '</thead>');
+            table.push('<tbody data-type="bg-group">');
 
         let CollectionsLeft = BlueGalaxy.DoubleCollections,
             FPBonusSum = 0,
             FragmentsSum = '',
             GoodsBonusSum = 0;
 
-        for (let i = 0; i < 50 && i < Buildings.length; i++) { // limits the list to max 15 items
+        for (let i = 0; i < 50 && i < Buildings.length; i++) { // limits the list to max 50 items
 
             let BuildingName = MainParser.NewCityMapData[Buildings[i]['ID']].name;
             let isPolivated = MainParser.NewCityMapData[Buildings[i]['ID']].state.isPolivated;
             let FragmentAmount = 0;
-
             table.push('<tr>');
             table.push('<td>' + (isPolivated != undefined ? (isPolivated ? '<span class="text-bright">★</span>' : '☆') : '') + '</td>');
             table.push('<td>' + BuildingName + '</td>');
@@ -258,6 +258,7 @@ let BlueGalaxy = {
             table.push('</tr>');
         }
 
+        table.push('</tbody>');
         table.push('</table>');
 
             //if (FPBonusSum > 0 || GoodsBonusSum > 0) {
@@ -270,6 +271,8 @@ let BlueGalaxy = {
         BlueGalaxy.SetCounter();
 
         $('#bluegalaxyBody').html(h.join(''));
+
+		$('#BGTable').tableSorter();
     },
 
 
