@@ -1010,13 +1010,14 @@ let CityMap = {
 		let name = ""
 		if (lookupData.subType == "fragment") 
 			name = lookupData.assembledReward.name
-		else if (lookupData.__class__ == "GenericRewardSet") { // this is a dirty workaround for trees of patience, because i lack patience
+		else if (lookupData.__class__ == "GenericRewardSet") // this is a dirty workaround for trees of patience, because i lack patience
 			name = lookupData.rewards[0].name 
-		}
 		else if (lookupData.subType == "speedup_item" || lookupData.subType == "reward_item" || lookupData.type == "chest" || lookupData.subType == "boost_item" || lookupData.type == "forgepoint_package" || lookupData.type == "resource" || lookupData.type == "blueprint") 
 			name = lookupData.name
 		else if (lookupData.type == "unit")
 			name = lookupData.unit.unitTypeId
+		else if (lookupData.subType == "self_aid_kit")
+			name = lookupData.name
 		else {
 			console.log("undefined name from type", ceData.name, lookupData, lookupData.type, lookupData.subType)
 		}
