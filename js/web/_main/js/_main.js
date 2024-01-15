@@ -400,7 +400,7 @@ GetFights = () =>{
 		else if (data.requestMethod === 'placeBuilding') {
 			let building = data.responseData[0];
 			if (building && building.id) {
-				MainParser.CityMapData[building.id] = Building;
+				MainParser.CityMapData[building.id] = building;
 
 				let ceData = Object.values(MainParser.CityEntities).find(x => x.id == building.cityentity_id)
 				let era = Technologies.getEraName(building.cityentity_id, building.level)
