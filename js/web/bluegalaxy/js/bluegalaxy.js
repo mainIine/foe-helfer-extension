@@ -118,7 +118,11 @@ let BlueGalaxy = {
 	 */
     CalcBody: () => {
         let Buildings = [],
-            CityMap = Object.values(MainParser.NewCityMapData);
+            CityMap = Object.values(MainParser.NewCityMapData),
+            FPB = Productions.Boosts['fp'] === undefined ? (MainParser.BoostSums['forge_points_production'] + 100) / 100 : Productions.Boosts['fp']
+            FPBoost = (FP) => {
+                return Math.round(FP * FPB)
+            }; 
 
         for (let i = 0; i < CityMap.length; i++) {
             let CityEntity = CityMap[i];
@@ -131,12 +135,13 @@ let BlueGalaxy = {
                 let GuildGoodsSum = 0;
                 let Fragments = [];
                 let FragmentAmount = 0;
+                               
 
                 CityEntity.state.production.resources.forEach(product => {
                     if (product.resources.strategy_points)
-                        FP += product.resources.strategy_points
+                        FP += FPBoost(product.resources.strategy_points)
                     else if (product.type == "genericReward" && product.resources.subType == "strategy_points")
-                        FP += product.resources.amount;
+                        FP += FPBoost(product.resources.amount);
                     else if (product.type == "genericReward" && product.resources.type == "forgepoint_package")
                         FP += parseInt(product.resources.subType)
 
