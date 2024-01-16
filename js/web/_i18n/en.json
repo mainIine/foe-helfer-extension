@@ -221,6 +221,7 @@
     "Boxes.CityMap.OlderThan3Era": " are 3 Ages behind",
     "Boxes.CityMap.OlderThan4Era": " are 4+ Ages behind",
     "Boxes.CityMap.OutpostSubmit": "Submit to City-Planner",
+    "Boxes.CityMap.ShowNoStreetBuildings": "Highlight buildings that do not need streets",
     "Boxes.CityMap.ShowSubmitBox": "Show Submit box",
     "Boxes.CityMap.Submit": "Submit",
     "Boxes.CityMap.SubmitError": "Your city data could not be sent to the server. Please report this error directly to ",
