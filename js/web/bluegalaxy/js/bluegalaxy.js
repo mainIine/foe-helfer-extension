@@ -179,8 +179,8 @@ let BlueGalaxy = {
                 }
             }
         }
-                
-        Buildings = Buildings.filter(obj => ((obj['FP'] > 0 || obj['Goods'] > 0) && obj['In'] < 23.5 * 3600)); // Hide everything above 23h
+        if (BlueGalaxy.DoubleCollections > 0)
+            Buildings = Buildings.filter(obj => ((obj['FP'] > 0 || obj['Goods'] > 0) && obj['In'] < 23.5 * 3600)); // Hide everything above 23h
 
         Buildings = Buildings.sort(function (a, b) {
             return (b['FP'] - a['FP']) + BlueGalaxy.GoodsValue * (b['Goods'] - a['Goods'] + (b['FragmentAmount'] - a['FragmentAmount'])*3);
@@ -190,7 +190,6 @@ let BlueGalaxy = {
         h.push('<div class="text-center dark-bg header">');
 
         let Title = i18n('Boxes.BlueGalaxy.DoneProductionsTitle');
-
 
         h.push('<strong class="title">' + Title + '</strong><br>');
         if (BlueGalaxy.DoubleCollections > 0)
