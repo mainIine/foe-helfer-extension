@@ -1,9 +1,15 @@
 ## Changelog - Extension
 
-##### 3.5.0.1
+##### 3.5.1.1
+**Update**
+- Stadtübersicht
+	- Gebäude-Highlighting verbessert
+	- Markierung für Gebäude, die keine Straße benötigen, hinzugefügt
+
 **BugFix**
 - Galaxie Helfer:
 	- Liste hat sich nicht immer aktualisiert
+	- Liste war zu lang
 
 ---
 

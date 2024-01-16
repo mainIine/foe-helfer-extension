@@ -1621,15 +1621,16 @@ let Productions = {
 
 		CityMap.init(MainParser.CityMapData);
 
-		$('[data-entityid]').removeClass('pulsate');
+		$('#grid-outer').removeClass('desaturate');
+		$('[data-entityid]').removeClass('highlighted');
 
 		setTimeout(() => {
+			$('#grid-outer').addClass('desaturate');
 			for (let i = 0; i < IDArray.length; i++) {
 				let target = $('[data-entityid="' + IDArray[i] + '"]');
 
 				if(i === 0) $('#map-container').scrollTo(target, 800, { offset: { left: -280, top: -280 }, easing: 'swing' });
-
-				target.addClass('pulsate');
+				target.addClass('highlighted');
             }		
 		}, 500);
 	},

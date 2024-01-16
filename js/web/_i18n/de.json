@@ -221,6 +221,7 @@
     "Boxes.CityMap.OlderThan3Era": " liegen 3 ZA zurück",
     "Boxes.CityMap.OlderThan4Era": " liegen 4+ ZA zurück",
     "Boxes.CityMap.OutpostSubmit": "Zum Stadtplaner schicken",
+    "Boxes.CityMap.ShowNoStreetBuildings": "Markiere Gebäude, die keine Straße brauchen",
     "Boxes.CityMap.ShowSubmitBox": "zeige Übermittlungs Box",
     "Boxes.CityMap.Submit": "Abschicken",
     "Boxes.CityMap.SubmitError": "Deine Stadtdaten konnten nicht an den Server gesendet werden. Bitte melden Sie diesen Fehler direkt an ",
