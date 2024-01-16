@@ -1783,7 +1783,7 @@ let MainParser = {
 			return;
 		}
 		//create instant alert for currently expired buildings		
-		if (inactives.length > 10) { // CHANGE THIS BACK TO 0
+		if (inactives.length > 0) {
 				const data = {
 				title: i18n("InactiveBuildingsAlert.title"),
 				body: inactives.join("\n"),

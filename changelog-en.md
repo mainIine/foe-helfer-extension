@@ -1,6 +1,11 @@
 ## Changelog - Extension
 
 ##### 3.5.0.1
+**Update**
+- City Map
+	- Better visibility for highlighted buildings 
+	- Added highlighting for buildings that do not require streets
+
 **BugFix**
 - BG Helper:
 	- List did not always refresh
