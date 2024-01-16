@@ -33,11 +33,12 @@
 	display: flex;
 	flex-direction: row;
 	top: 0;
-	right: 0;
+	right: 220px;
 	left: 0;
 	border-bottom: 2px solid #281207;
 	z-index: 5000;
 	padding: 2px;
+	box-sizing: border-box;
 }
 
 /* eigene Stadt */

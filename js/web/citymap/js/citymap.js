@@ -200,7 +200,7 @@ let CityMap = {
 
 		/* In das Menü "schieben" */
 		oB.append(wrapper);
-		$('#map-container').prepend(menu);
+		$('#citymap-wrapper').append(menu);
 	},
 
 
@@ -1096,11 +1096,11 @@ let CityMap = {
 
 	// returns false if building is idle or does not produce anything
 	getAllProductions(ceData, data, era) {
+		let productions = {
+			time: 0, // todo
+			resources: []
+		};
 		if (data.type != "generic_building" && data.type != "greatbuilding") {
-			let productions = {
-				time: 0, // todo
-				resources: []
-			};
 			if (ceData.is_special) { // special building
 				if (ceData.available_products !== undefined) { // TO DO production buildings
 					if (Array.isArray(ceData.available_products))
@@ -1133,10 +1133,7 @@ let CityMap = {
 		else if (data.type === "generic_building") {
 			if (ceData.components[era]) 
 				if (ceData.components[era].production) {
-					productions = {
-						time: ceData.components[era].production.options[0].time, // TODO
-						resources: []
-					};
+					productions.time = ceData.components[era].production.options[0].time; // TODO
 					ceData.components[era].production.options[0].products.forEach(product => {
 						let resource = {
 							type: product.type,
@@ -1230,7 +1227,7 @@ let CityMap = {
 			level: (data.type == "greatbuilding" ? data.level : undefined), // level also includes eraId in raw data, we do not like that
 			max_level: (data.type == "greatbuilding" ? data.max_level : undefined)
 		}
-		console.log('entity',entity.name, entity, ceData, data)
+		//console.log('entity',entity.name, entity, ceData, data)
 		return entity
 	},
 };
