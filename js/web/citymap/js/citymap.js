@@ -116,9 +116,19 @@ let CityMap = {
 	 */
 	PrepareBox: (Title)=> {
 		let oB = $('#city-map-overlayBody'),
-			w = $('<div />').attr({'id':'citymap-wrapper'});
+			wrapper = $('<div />').attr({'id':'citymap-wrapper'}),
+			mapfilters = $('<div />').attr({'id': 'map-filters'});
 
-		w.append( $('<div />').attr('id', 'map-container').append( $('<div />').attr('id', 'grid-outer').attr('data-unit', CityMap.ScaleUnit).attr('data-view', CityMap.CityView).append( $('<div />').attr('id', 'map-grid') ) ) ).append( $('<div />').attr({'id': 'sidebar'}) );
+		wrapper.append( 
+			$('<div />').attr('id', 'map-container')
+				.append( $('<div />').attr('id', 'grid-outer').attr('data-unit', CityMap.ScaleUnit).attr('data-view', CityMap.CityView)
+					.append( $('<div />').attr('id', 'map-grid') ) 
+				) 
+			)
+			.append( 
+				$('<div />').attr({'id': 'sidebar'}) 
+					.append( mapfilters )
+			);
 
 		$('#city-map-overlayHeader > .title').attr('id', 'map' + CityMap.hashCode(Title));
 
@@ -170,15 +180,27 @@ let CityMap = {
 		// Button for submit Box
 		if (CityMap.IsExtern === false) {
 			menu.append($('<input type="text" id="BuildingsFilter" placeholder="'+ i18n('Boxes.CityMap.FilterBuildings') +'" oninput="CityMap.filterBuildings(this.value)">'));
-			menu.append($('<button />').addClass('btn-default ml-auto').attr({ id: 'highlight-old-buildings', onclick: 'CityMap.highlightOldBuildings()' }).text(i18n('Boxes.CityMap.HighlightOldBuildings')));
-			menu.append($('<button />').addClass('btn-default ml-auto').attr({ id: 'copy-meta-infos', onclick: 'CityMap.copyMetaInfos()' }).text(i18n('Boxes.CityMap.CopyMetaInfos')));
-			menu.append($('<button />').addClass('btn-default ml-auto').attr({ id: 'show-submit-box', onclick: 'CityMap.showSubmitBox()' }).text(i18n('Boxes.CityMap.ShowSubmitBox')));
+			menu.append(
+				$('<div />').addClass('btn-group')
+					.append($('<button />').addClass('btn-default ml-auto').attr({ id: 'copy-meta-infos', onclick: 'CityMap.copyMetaInfos()' }).text(i18n('Boxes.CityMap.CopyMetaInfos')))
+					.append($('<button />').addClass('btn-default ml-auto').attr({ id: 'show-submit-box', onclick: 'CityMap.showSubmitBox()' }).text(i18n('Boxes.CityMap.ShowSubmitBox')))
+			);
+
+			mapfilters.append(
+				$('<label />').attr({ for: 'highlight-old-buildings' }).text(i18n('Boxes.CityMap.HighlightOldBuildings'))
+					.prepend($('<input />').attr({ type: 'checkbox', id: 'highlight-old-buildings', onclick: 'CityMap.highlightOldBuildings()' }))
+				);
+
+			mapfilters.append(
+				$('<label />').attr({ for: 'show-nostreet-buildings' }).text(i18n('Boxes.CityMap.ShowNoStreetBuildings'))
+					.prepend($('<input />').attr({ type: 'checkbox', id: 'show-nostreet-buildings', onclick: 'CityMap.showNoStreetBuildings()' }))
+				);
 		}
 
 
 		/* In das Menü "schieben" */
-		w.prepend(menu);
-		oB.append(w);
+		oB.append(wrapper);
+		$('#map-container').prepend(menu);
 	},
 
 
@@ -455,7 +477,15 @@ let CityMap = {
 	 */
 	highlightOldBuildings: ()=> {
 		$('.oldBuildings').toggleClass('diagonal');
-		$('.building-count-area, .to-old-legends').fadeToggle();
+		$('.building-count-area, .to-old-legends').toggle();
+	},
+
+
+	/**
+	 * Show Buildings that do not need a street
+	 */
+	showNoStreetBuildings: ()=> {
+		$('.noStreet').toggleClass('highlight');
 	},
 
 

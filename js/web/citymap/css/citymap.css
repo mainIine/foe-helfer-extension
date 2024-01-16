@@ -36,19 +36,22 @@
 	right: 0;
 	left: 0;
 	border-bottom: 2px solid #281207;
-	height: 30px;
+	z-index: 5000;
+	padding: 2px;
 }
 
 /* eigene Stadt */
 #map-container {
 	overflow: hidden;
 	position: absolute;
-	top: 32px;
+	top: 0;
 	right: 220px;
 	bottom: 0;
 	left: 0;
 	border-right: 2px solid #281207;
 	background-color: var(--black-50);
+	box-sizing: border-box;
+	padding: 40px;
 }
 
 /* Nachbar */
@@ -58,13 +61,30 @@
 
 #sidebar {
 	position: absolute;
-	width: 190px;
+	width: 220px;
 	padding: 15px;
 	right: 0;
-	top: 32px;
+	top: 0;
 	bottom: 0;
 	overflow: hidden;
 	overflow-y: auto;
+	box-sizing: border-box;
+}
+
+#sidebar p {
+	margin-bottom: 5px;
+}
+
+#map-filters {
+	margin-bottom: 10px;
+	border-bottom: 1px solid var(--black-50);
+	padding-bottom: 5px;
+}
+
+#map-filters label {
+	display: block;
+	font-size: 90%;
+	margin-bottom: 5px;
 }
 
 #grid-outer {
@@ -196,7 +216,7 @@
 	--border-color-residential: #219eff;
 	--background-color-special: #51e5ff;
 	--border-color-special: #08b6d4;
-	--background-color-noStreet: #674bce;
+	--background-color-noStreet: #793bc9;
 	--border-color-noStreet: #3d2783;
 	--background-color-chain: #bb23ae;
 	--border-color-chain: #86127d;
@@ -241,17 +261,14 @@
 }
 
 #grid-outer span.residential {
-	background-image: none;
 	background-color: var(--background-color-residential);
 	border-color: var(--border-color-residential);
 }
 #grid-outer span.tower {
-	background-image: none;
 	background-color: var(--background-color-tower);
 	border-color: var(--border-color-tower);
 }
 #grid-outer span.decoration {
-	background-image: none;
 	background-color: var(--background-color-decoration);
 	border-color: var(--border-color-decoration);
 }
@@ -259,13 +276,16 @@
 	background-color: var(--background-color-special);
 	border-color: var(--border-color-special);
 }*/
-#grid-outer span.noStreet {
-	background-image: none;
+#grid-outer span.noStreet.highlight {
 	background-color: var(--background-color-noStreet);
 	border-color: var(--border-color-noStreet);
+	animation-name: color;
+    animation-duration: 1s;
+	animation-iteration-count: infinite;
+	animation-direction: alternate;
+	animation-timing-function: ease-in-out;
 }
 /*#grid-outer span.chain {
-	background-image: none;
 	background-color: var(--background-color-chain);
 	border-color: var(--border-color-chain);
 }*/
@@ -278,17 +298,14 @@
 	border-color: var(--border-color-goods);
 }
 #grid-outer span.culture {
-	background-image: none;
 	background-color: var(--background-color-culture);
 	border-color: var(--border-color-culture);
 }
 #grid-outer span.main_building {
-	background-image: none;
 	background-color: var(--background-color-main_building);
 	border-color: var(--border-color-main_building);
 }
 #grid-outer span.production {
-	background-image: none;
 	background-color: var(--background-color-production);
 	border-color: var(--border-color-production);
 }
@@ -419,18 +436,23 @@ span.to-old.diagonal {
 
 #city-map-overlay #grid-outer span.highlighted {
     border-width: 2px !important;
-    filter: saturate(1.2) brightness(1.2) !important;
+    filter: saturate(1.3) brightness(1.3) !important;
 	mix-blend-mode: color-dodge;
 	animation-name: sizing;
-    animation-duration: 0.75s;
+    animation-duration: 0.5s;
 	z-index: 2000;
     opacity: 100%;
 	animation-iteration-count: infinite;
 	animation-direction: alternate;
 	animation-timing-function: ease-in-out;
-  }
+}
 
-  @keyframes sizing {
+@keyframes sizing {
     0% {transform: scale(1,1);}
     100% {transform: scale(1.2,1.2);}
-  }
+}
+
+@keyframes color {
+    0% {filter: saturate(1) brightness(1)}
+    100% {filter: saturate(1.3) brightness(0.8);}
+}
