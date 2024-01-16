@@ -162,7 +162,7 @@ let CityMap = {
 
 			CityMap.SetBuildings(CityMap.CityData, false);
 
-			$('#map-container').scrollTo( $('.pulsate') , 800, {offset: {left: -280, top: -280}, easing: 'swing'});
+			$('#map-container').scrollTo( $('.highlighted') , 800, {offset: {left: -280, top: -280}, easing: 'swing'});
 			$('.to-old-legends').hide();
 			$('.building-count-area').show();
 		});
@@ -231,7 +231,7 @@ let CityMap = {
 
 		// https://foede.innogamescdn.com/assets/city/buildings/R_SS_MultiAge_SportBonus18i.png
 
-		let ActiveId = $('#grid-outer').find('.pulsate').data('entityid') || null;
+		let ActiveId = $('#grid-outer').find('.highlighted').data('entityid') || null;
 
 		// einmal komplett leer machen, wenn gewünscht
 		$('#grid-outer').find('.map-bg').remove();
@@ -322,7 +322,7 @@ let CityMap = {
 			// die Größe wurde geändert, wieder aktivieren
 			if (ActiveId !== null && ActiveId === CityMap.CityData[b]['id'])
 			{
-				f.addClass('pulsate');
+				f.addClass('highlighted');
 			}
 
 			$('#grid-outer').append( f );
@@ -574,13 +574,15 @@ let CityMap = {
 		for (sp of spans) {
 			let title = $(sp).attr('data-original-title');
 			if ((string != "") && (title.substr(0,title.indexOf("<em>")).toLowerCase().indexOf(string.toLowerCase()) > -1)) {
-				$(sp).addClass('blinking');
+				$(sp).addClass('highlighted');
 			} else {
-				$(sp).removeClass('blinking');
+				$(sp).removeClass('highlighted');
 			}
-
 		}
-
+		$('#grid-outer').addClass('desaturate');
+		if (string == '') {
+			$('#grid-outer').removeClass('desaturate');
+		}
 	},
 
 

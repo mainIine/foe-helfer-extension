@@ -933,9 +933,6 @@ FP-Bar */
 	height: 22px;
 	position: relative;
 }
-.window-ask:hover {
-	background-position: -28px -1px, -28px -26px;
-}
 
 .window-speaker {
 	height: 22px;
@@ -947,6 +944,7 @@ FP-Bar */
 }
 .window-speaker:hover {
 	background-position: -146px -2px, -28px -26px;
+	filter: brightness(120%);
 }
 
 .window-speaker.deactivated {
@@ -965,16 +963,9 @@ FP-Bar */
 	display: inline-block;
 	position: relative;
 }
-.open .window-minimize:hover {
-	background-position: -53px -2px, -28px -26px;
-}
 .closed .window-minimize {
 	background-position: -77px -1px, -2px -26px;
 }
-.closed .window-minimize:hover {
-	background-position: -77px -1px, -28px -26px;
-}
-
 
 .window-settings {
 	background-position: -192px -2px, -2px -26px;
@@ -983,10 +974,6 @@ FP-Bar */
 	height: 22px;
 	position: relative;
 	margin-right: 2px;
-}
-
-.window-settings:hover {
-	background-position: -192px -2px, -28px -26px;
 }
 
 .window-map {
@@ -1000,9 +987,6 @@ FP-Bar */
     background-size: 11px , 240px;
 	background-position: 6px, -2px -26px;
 }
-.window-map:hover {
-	background-position: 6px, -28px -26px;
-}
 
 .window-close {
 	background-position: -2px -2px, -2px -26px;
@@ -1011,8 +995,9 @@ FP-Bar */
 	height: 22px;
 	position: relative;
 }
-.window-close:hover {
-	background-position: -2px -2px, -28px -26px;
+
+.window-ask:hover, .open .window-minimize:hover, .closed .window-minimize:hover, .window-settings:hover, .window-map:hover, .window-close:hover {
+	filter: brightness(130%);
 }
 
 .window-body {

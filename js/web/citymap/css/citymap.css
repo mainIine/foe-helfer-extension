@@ -212,12 +212,16 @@
 	--border-color-main_building: #ffb300;
 	--background-color-production: #416dff;
 	--border-color-production: #2732ff;
-	--background-color-greatbuilding: #da6548;
-	--border-color-greatbuilding: #af5041;
+	--background-color-greatbuilding: #e6542f;
+	--border-color-greatbuilding: #af3d2b;
 	--background-color-random_production: #a8ff18;
 	--border-color-random_production: #4cff11;
 	--background-color-tower: #cdcdcd;
 	--border-color-tower: #787a7a;
+}
+
+#grid-outer.desaturate span.entity, #grid-outer.desaturate span.map-bg {
+	filter: saturate(0.9) brightness(0.6) !important;
 }
 
 #grid-outer span.entity {
@@ -311,32 +315,6 @@
 	display: inline-block;
 }
 
-@-webkit-keyframes pulse {
-	0% { -webkit-transform: scale(1); opacity: 1; }
-	50% { -webkit-transform: scale(0.9); opacity: 0.5; }
-	100% { -webkit-transform: scale(1); opacity: 1; }
-}
-
-@keyframes pulse {
-	0% { transform: scale(1); opacity: 1; }
-	50% { transform: scale(0.9); opacity: 0.5; }	
-	100% { -webkit-transform: scale(1); opacity: 1; }
-}
-
-.pulsate {
-	-webkit-animation: pulse 1s infinite ease-in-out;
-	-o-animation: pulse 1s infinite ease-in-out;
-	-ms-animation: pulse 1s infinite ease-in-out;
-	-moz-animation: pulse 1s infinite ease-in-out;
-	animation: pulse 1s infinite ease-in-out;
-}
-.pulsateSlow {
-	-webkit-animation: pulse 3s infinite ease-in-out;
-	-o-animation: pulse 3s infinite ease-in-out;
-	-ms-animation: pulse 3s infinite ease-in-out;
-	-moz-animation: pulse 3s infinite ease-in-out;
-	animation: pulse 3s infinite ease-in-out;
-}
 /* mark old buildings*/
 span.older-1.diagonal {
 	background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, rgb(128, 152, 93) 2px, rgb(128, 152, 93) 7px)
@@ -384,21 +362,6 @@ span.to-old.diagonal {
 #CityMapSubmit #CityMapSubmitBody {
 	padding: 0.3rem;
 }
-
-.blinking {
-    border: 3px solid rgb(175 75 75) !important;
-    animation-name: blinking;
-    animation-duration: 0.75s;
-    opacity: 100%;
-	animation-iteration-count: infinite;
-	animation-direction: alternate;
-	animation-timing-function: ease-in-out;
-  }
-
-  @keyframes blinking {
-    0% {opacity: 100%;}
-    100% {opacity: 70%;}
-  }
 
 #BuildingsFilter {
 	margin-left: auto;
@@ -453,3 +416,21 @@ span.to-old.diagonal {
 	background-color: var(--background-color-tower);
 	border-color: var(--border-color-tower);
 }
+
+#city-map-overlay #grid-outer span.highlighted {
+    border-width: 2px !important;
+    filter: saturate(1.2) brightness(1.2) !important;
+	mix-blend-mode: color-dodge;
+	animation-name: sizing;
+    animation-duration: 0.75s;
+	z-index: 2000;
+    opacity: 100%;
+	animation-iteration-count: infinite;
+	animation-direction: alternate;
+	animation-timing-function: ease-in-out;
+  }
+
+  @keyframes sizing {
+    0% {transform: scale(1,1);}
+    100% {transform: scale(1.2,1.2);}
+  }
