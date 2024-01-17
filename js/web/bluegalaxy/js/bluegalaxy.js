@@ -122,8 +122,9 @@ let BlueGalaxy = {
             FPB = Productions.Boosts['fp'] === undefined ? (MainParser.BoostSums['forge_points_production'] + 100) / 100 : Productions.Boosts['fp']
             FPBoost = (FP) => {
                 return Math.round(FP * FPB)
-            }; 
-
+            },
+            showBGFragments = JSON.parse(localStorage.getItem('showBGFragments')||"true");
+        
         for (let i = 0; i < CityMap.length; i++) {
             let CityEntity = CityMap[i];
 
@@ -183,7 +184,7 @@ let BlueGalaxy = {
             Buildings = Buildings.filter(obj => ((obj['FP'] > 0 || obj['Goods'] > 0) && obj['In'] < 23.5 * 3600)); // Hide everything above 23h
 
         Buildings = Buildings.sort(function (a, b) {
-            return (b['FP'] - a['FP']) + BlueGalaxy.GoodsValue * (b['Goods'] - a['Goods'] + (b['FragmentAmount'] - a['FragmentAmount'])*3);
+            return (b['FP'] - a['FP']) + BlueGalaxy.GoodsValue * (b['Goods'] - a['Goods'] + (showBGFragments ? (b['FragmentAmount'] - a['FragmentAmount'])*3 : 0));
         });
 
         let h = [];
@@ -211,7 +212,7 @@ let BlueGalaxy = {
         table.push('<thead>' +
             '<tr class="sorter-header">' +
             '<th></th><th data-type="bg-group">' + i18n('Boxes.BlueGalaxy.Building') + '</th>' +
-            '<th class="is-number icon fragments" title="' + i18n('Boxes.BlueGalaxy.Fragments') + '" data-type="bg-group"></th>' +
+            (showBGFragments ? '<th class="is-number icon fragments" title="' + i18n('Boxes.BlueGalaxy.Fragments') + '" data-type="bg-group"></th>' : '') +
             '<th class="is-number icon fp" title="' + i18n('Boxes.BlueGalaxy.FP') + '" data-type="bg-group"></th>' +
             '<th class="is-number icon goods" title="' + i18n('Boxes.BlueGalaxy.Goods') + '" data-type="bg-group"></th>' +
             '<th class="is-number icon guildgoods" title="' + i18n('Boxes.GuildMemberStat.GuildGoods') + '" data-type="bg-group"></th>' +
@@ -225,7 +226,7 @@ let BlueGalaxy = {
             FragmentsSum = '',
             GoodsBonusSum = 0;
 
-        for (let i = 0; i < 50 && i < Buildings.length; i++) { // limits the list to max 50 items
+        for (let i = 0; i < 500 && i < Buildings.length; i++) { // limits the list to max 50 items
 
             let BuildingName = MainParser.NewCityMapData[Buildings[i]['ID']].name;
             let isPolivated = MainParser.NewCityMapData[Buildings[i]['ID']].state.isPolivated;
@@ -233,14 +234,16 @@ let BlueGalaxy = {
             table.push('<tr>');
             table.push('<td>' + (isPolivated != undefined ? (isPolivated ? '<span class="text-bright">★</span>' : '☆') : '') + '</td>');
             table.push('<td data-text="'+BuildingName.replace(/[. -]/g,"")+'">' + BuildingName + '</td>');
-            let frags=""
-            if (Buildings[i].Fragments.length > 0) {
-                Buildings[i].Fragments.forEach(fragment => {
-                    frags+=(fragment.amount+ "x " +fragment.name+"<br>")
-                    FragmentAmount += fragment.amount;
-                })
+            if (showBGFragments) {
+                let frags=""
+                if (Buildings[i].Fragments.length > 0) {
+                    Buildings[i].Fragments.forEach(fragment => {
+                        frags+=(fragment.amount+ "x " +fragment.name+"<br>")
+                        FragmentAmount += fragment.amount;
+                    })
+                }
+                table.push('<td data-number="'+FragmentAmount+'">'+frags+'</td>');
             }
-            table.push('<td data-number="'+FragmentAmount+'">'+frags+'</td>');
             table.push('<td class="text-center" data-number="'+Buildings[i]['FP']+'">' + HTML.Format(Buildings[i]['FP']) + '</td>');
             table.push('<td class="text-center" data-number="'+Buildings[i]['Goods']+'">' + HTML.Format(Buildings[i]['Goods']) + '</td>');
             table.push('<td class="text-center" data-number="'+Buildings[i]['GuildGoods']+'">' + HTML.Format(Buildings[i]['GuildGoods']) + '</td>');
@@ -298,9 +301,11 @@ let BlueGalaxy = {
     */
 	ShowSettings: () => {
 		let autoOpen = Settings.GetSetting('ShowBlueGalaxyHelper');
+        let showBGFragments = JSON.parse(localStorage.getItem('showBGFragments')||"true");
 
         let h = [];
         h.push(`<p><input id="autoStartBGHelper" name="autoStartBGHelper" value="1" type="checkbox" ${(autoOpen === true) ? ' checked="checked"' : ''} /> <label for="autoStartBGHelper">${i18n('Boxes.Settings.Autostart')}</label></p>`);
+        h.push(`<p><input id="showBGFragments" name="showBGFragments" value="1" type="checkbox" ${(showBGFragments === true) ? ' checked="checked"' : ''} /> <label for="autoStartBGHelper">${i18n('Boxes.Settings.showBGFragments')}</label></p>`);
         h.push(`<p><button onclick="BlueGalaxy.SaveSettings()" id="save-bghelper-settings" class="btn btn-default" style="width:100%">${i18n('Boxes.Settings.Save')}</button></p>`);
 
         $('#bluegalaxySettingsBox').html(h.join(''));
@@ -315,6 +320,14 @@ let BlueGalaxy = {
 		if ($("#autoStartBGHelper").is(':checked'))
 			value = true;
 		localStorage.setItem('ShowBlueGalaxyHelper', value);
+        let showBGFragments = false;
+		if ($("#showBGFragments").is(':checked'))
+            showBGFragments = true;
+        if (localStorage.getItem('showBGFragments') != showBGFragments) {
+            localStorage.setItem('showBGFragments', showBGFragments);
+            BlueGalaxy.CalcBody();
+        }
+		
 		$(`#bluegalaxySettingsBox`).remove();
     },
 };
