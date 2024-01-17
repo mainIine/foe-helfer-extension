@@ -164,7 +164,9 @@ let CityMap = {
 
 		$('#city-map-overlay').on('change', '#scale-view', function(){
 			let unit = parseInt($('#scale-view option:selected').data('scale'));
-
+			$('#highlight-old-buildings')[0].checked=false;
+			$('#show-nostreet-buildings')[0].checked=false;
+			
 			CityMap.ScaleUnit = unit;
 
 			$('#grid-outer').attr('data-unit', unit);
