@@ -923,6 +923,7 @@
     "Boxes.RecurringQuests.showCounter": "Display counter for open quests in menu",
     "Boxes.Settings.Active": "Active",
     "Boxes.Settings.Autostart": "Open window automatically",
+    "Boxes.Settings.showBGFragments": "Show Fragments",
     "Boxes.Settings.DeletedBoxCoordsBody": "All the coords from the boxes are deleted.",
     "Boxes.Settings.DeletedBoxCoordsHead": "Deleted!",
     "Boxes.Settings.Inactive": "Inactive",
