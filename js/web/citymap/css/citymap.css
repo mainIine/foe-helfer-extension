@@ -52,7 +52,7 @@
 	border-right: 2px solid #281207;
 	background-color: var(--black-50);
 	box-sizing: border-box;
-	padding: 40px;
+	padding: 40px 20px;
 }
 
 /* Nachbar */
@@ -383,6 +383,7 @@ span.to-old.diagonal {
 
 #BuildingsFilter {
 	margin-left: auto;
+	width: 130px;
 }
 
 #area-state .building-count-area span.square {
