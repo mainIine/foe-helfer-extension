@@ -47,7 +47,14 @@
     padding: 1em 0;
 }
 
-#bluegalaxy table th.icon::before  {
+#bluegalaxy table th.icon span  {
+    display: block;
+    position: absolute;
+    top: -2px;
+    right: 18px;
+    min-width: 30px;
+}
+#bluegalaxy table th.icon span::before  {
     background: transparent url('../../productions/images/productions.png') -233px 2px no-repeat;
     width: 27px;
     height: 30px;
@@ -59,15 +66,19 @@
     cursor: pointer
 }
 
-#bluegalaxy table th.icon.goods::before  {
+#bluegalaxy table th.icon.goods span::before  {
     background-position: -104px 3px;
 }
 
-#bluegalaxy table th.icon.fragments::before  {
+#bluegalaxy table th.icon.fragments span  {
+    right: unset;
+    left: 10px;
+}
+#bluegalaxy table th.icon.fragments span::before  {
     background-position: -415px 3px;
 }
 
-#bluegalaxy table th.icon.fp::before  {
+#bluegalaxy table th.icon.fp span::before  {
     background-position: 0 3px;
 }
 

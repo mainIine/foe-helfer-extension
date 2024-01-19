@@ -1697,10 +1697,10 @@ let Productions = {
 	 * Ermittelt die täglichen Güter, falls die Option ShowDaily gesetzt ist
 	 *
 	 * */
-	GetDaily: (Amount, dailyfactor, type) => {
+	GetDaily: (Amount, daily_factor, type) => {
 		let Factor;
 		if (Productions.ShowDaily && Productions.TypeHasProduction(type)) {
-			Factor = dailyfactor;
+			Factor = daily_factor;
 		}
 		else {
 			Factor = 1;
@@ -1812,10 +1812,9 @@ let Productions = {
 		Productions.CalcRatingBody();
 	},
 
+
 	CalcRatingBody: () => {
 		let h = [];
-
-		if (!Productions.RatingCurrentTab) CurrentTab = 'Settings';
 
 		h.push('<div class="tabs">');
 		h.push('<ul class="horizontal dark-bg">');
@@ -2035,6 +2034,7 @@ let Productions = {
 		$('#ProductionsRatingBody').html(h.join(''));
     },
 
+
 	GetDefaultProdPerTile: (Type) => {
 		if (Type === 'strategy_points') return 0.2;
 		if (Type === 'money') return 0;
@@ -2042,7 +2042,7 @@ let Productions = {
 		if (Type === 'medals') return 0;
 		if (Type === 'units') return 0.2;
 		if (Type === 'clan_power') {
-			let Entity = MainParser.CityEntities['Z_MultiAge_CupBonus1b'] //Hall of fame lvl2
+			let Entity = MainParser.CityEntities['Z_MultiAge_CupBonus1b'], //Hall of fame lvl2
 				Level = CurrentEraID - 1;
 
 			if (!Entity || !Entity['entity_levels'] || !Entity['entity_levels'][Level] || !Entity['entity_levels'][Level]['clan_power']) return 0;
