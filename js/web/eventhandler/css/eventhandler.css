@@ -62,20 +62,6 @@
     color: var(--text-success);
 }
 
-#moppelhelper #moppelhelperBody table .sorter-header .ascending:after {
-    content: "↑";
-	color: var(--text-bright);
-	left: 4px;
-	position: relative;
-}
-
-#moppelhelper #moppelhelperBody table .sorter-header .descending:after {
-    content: "↓";
-	color: var(--text-bright);
-	left: 4px;
-	position: relative;
-}
-
 #moppelhelper #moppelhelperBody table.foe-table tr th {
     text-align: center;
 }

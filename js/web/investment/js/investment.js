@@ -170,7 +170,7 @@ let Investment = {
 			'<tr class="sorter-header">' +
 			'<th class="case-sensitive" data-type="invest-group">' + i18n('Boxes.Investment.Overview.Player') + '</th>' +
 			'<th class="case-sensitive" data-type="invest-group">' + i18n('Boxes.Investment.Overview.Building') + '</th>' +
-			'<th class="is-number text-center" data-type="invest-group"></th>');
+			'<th class="is-number text-center no-sort" data-type="invest-group"></th>');
 
 		if (showEntryDate)
 		{
@@ -203,7 +203,7 @@ let Investment = {
 			h.push('<th class="is-number text-center" data-type="invest-group"><span class="blueprints" title="' + HTML.i18nTooltip(i18n('Boxes.Investment.Overview.Blueprints')) + '"></span></th>');
 		}
 		
-		h.push('<th></th></tr></thead><tbody class="invest-group">');
+		h.push('<th class="no-sort"></th></tr></thead><tbody class="invest-group">');
 
 		let CurrentGB = await IndexDB.db.investhistory.reverse().toArray();
 
@@ -653,6 +653,7 @@ let Investment = {
 
 	},
 
+
 	ToggleHidden: () => {
 
 		let value = JSON.parse(localStorage.getItem('InvestmentSettings') || '{}');
@@ -663,6 +664,7 @@ let Investment = {
 
 		Investment.Show();
 	},
+
 
 	SettingsSaveValues: () => {
 

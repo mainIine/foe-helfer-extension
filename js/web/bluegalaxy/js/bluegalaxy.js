@@ -211,11 +211,11 @@ let BlueGalaxy = {
 
         table.push('<thead>' +
             '<tr class="sorter-header">' +
-            '<th></th><th data-type="bg-group">' + i18n('Boxes.BlueGalaxy.Building') + '</th>' +
-            (showBGFragments ? '<th class="is-number icon fragments" title="' + i18n('Boxes.BlueGalaxy.Fragments') + '" data-type="bg-group"></th>' : '') +
-            '<th class="is-number icon fp" title="' + i18n('Boxes.BlueGalaxy.FP') + '" data-type="bg-group"></th>' +
-            '<th class="is-number icon goods" title="' + i18n('Boxes.BlueGalaxy.Goods') + '" data-type="bg-group"></th>' +
-            '<th class="is-number icon guildgoods" title="' + i18n('Boxes.GuildMemberStat.GuildGoods') + '" data-type="bg-group"></th>' +
+            '<th class="no-sort"></th><th data-type="bg-group">' + i18n('Boxes.BlueGalaxy.Building') + '</th>' +
+            (showBGFragments ? '<th class="is-number icon fragments" title="' + i18n('Boxes.BlueGalaxy.Fragments') + '" data-type="bg-group"><span></span></th>' : '') +
+            '<th class="is-number icon fp" title="' + i18n('Boxes.BlueGalaxy.FP') + '" data-type="bg-group"><span></span></th>' +
+            '<th class="is-number icon goods" title="' + i18n('Boxes.BlueGalaxy.Goods') + '" data-type="bg-group"><span></span></th>' +
+            '<th class="is-number icon guildgoods" title="' + i18n('Boxes.GuildMemberStat.GuildGoods') + '" data-type="bg-group"><span></span></th>' +
             '<th colspan="2" class="case-sensitive" data-type="bg-group">' + i18n('Boxes.BlueGalaxy.DoneIn') + '</th>' +
             '</tr>' +
             '</thead>');

@@ -317,7 +317,11 @@ table.foe-table th,
 .dark-bg,
 .thead th {
 	background: url('../images/hud/box-bg.png') center center repeat;
-	box-shadow: inset 0px 0px 0px 2000px var(--black-50), 0 1px 0 0 var(--border-table-top), 0 2px 0 0 var(--border-table-bottom);
+	box-shadow: inset 0 0 0 2000px var(--black-50), 0 1px 0 0 var(--border-table-top), 0 2px 0 0 var(--border-table-bottom);
+}
+
+table.foe-table thead th {
+	height: 26px;
 }
 
 .windowbody .dark-bg:last-child {
@@ -1829,3 +1833,39 @@ span.activity.activity_2 { background: var(--background-tabs-active); }
 span.activity.activity_1 { background: var(--background-btn-active); }
 span.activity.activity_0 { background: var(--background-btn-red); }
 span.activity.activity_undefined {display:none}
+
+
+tr.sorter-header th:not(.no-sort) {
+	cursor: url('../images/cursor_hover.cur'), auto;
+	position: relative;
+	padding-right: 26px;
+	min-width: 35px;
+}
+
+tr.sorter-header th:not(.no-sort):before,
+tr.sorter-header th:not(.no-sort):after {
+	color: var(--text-bright);
+	position: absolute;
+	display: block;
+	opacity: .125;
+	right: 10px;
+	font-size: .8em;
+}
+
+tr.sorter-header th:not(.no-sort):before,
+tr.sorter-header th:not(.no-sort).ascending:before {
+	bottom: 15px;
+	content: "▲";
+}
+
+tr.sorter-header th:not(.no-sort):after,
+tr.sorter-header th:not(.no-sort).descending:after {
+	bottom: 5px;
+	content: "▼";
+}
+
+tr.sorter-header th:not(.no-sort).ascending:before,
+tr.sorter-header th:not(.no-sort).descending:after {
+	opacity: .6;
+}
+
