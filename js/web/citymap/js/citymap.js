@@ -1223,7 +1223,7 @@ let CityMap = {
 			setBuilding: this.getSetBuilding(ceData),
 
 			boosts: this.getBuildingBoosts(ceData, data, era),
-			production: this.getAllProductions(ceData, data, era),
+			//production: this.getAllProductions(ceData, data, era),
 
 			// todo GBs probably need more stuff
 			level: (data.type == "greatbuilding" ? data.level : undefined), // level also includes eraId in raw data, we do not like that
