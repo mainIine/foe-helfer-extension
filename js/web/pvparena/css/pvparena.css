@@ -23,49 +23,15 @@
     overflow-y: auto;
 }
 
-#PvPArena #PvPArenaBody table .sorter-header th {
-    position: relative;
-}
-
-#PvPArena #PvPArenaBody table .sorter-header .ascending:after,
-#PvPArena #PvPArenaBody table .sorter-header .descending:after {
-    color: var(--text-bright);
-    position: absolute;
-    top: -3px;
-    font-size: 20px;
-}
-
-#PvPArena #PvPArenaBody table .sorter-header .ascending:after {
-    content: "↑";
-}
-
-#PvPArena #PvPArenaBody table .sorter-header .descending:after {
-    content: "↓";
-}
-
-#PvPArena #PvPArenaBody table tbody.parent th {
-    background-color: #3f2a1b;
-    color: var(--text-bright);
-    padding-top: 15px;
-    position: sticky;
-    top: 0;
-}
-
-#PvPArena #PvPArenaBody table tr.sorter-header th {
-    position: sticky;
-    top: 0;
-    background-color: rgba(0,0,0, 0.35);
-}
-
 #PvPArena #PvPArenaBody table tr td div.attack {
-    background: url(../../x_img/pvp_attack.png) center no-repeat;
+    background: url('../../x_img/pvp_attack.png') center no-repeat;
     background-size: contain;
     width: 25px;
     height: 25px;
 }
 
 #PvPArena #PvPArenaBody table tr td div.defense {
-    background: url(../../x_img/pvp_defense.png) center no-repeat;
+    background: url('../../x_img/pvp_defense.png') center no-repeat;
     background-size: contain;
     width: 25px;
     height: 25px;

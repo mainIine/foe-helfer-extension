@@ -1,7 +1,7 @@
 /*
  * *************************************************************************************
  *
- * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2024 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -170,32 +170,20 @@ a[target="_blank"] svg {
 }
 
 .btn-default[disabled], .btn-default[disabled]:hover {
-	color: var(--text-btn-disabled);
-	background: var(--background-btn-disabled-fallback);
-	background: var(--background-btn-disabled-moz);
-	background: var(--background-btn-disabled-webkit);
-	background: var(--background-btn-disabled);
+	filter: saturate(10%) brightness(80%);
 }
 
 .btn-default:not([disabled]):hover,
 .btn-active:not([disabled]),
 .btn-active:not([disabled]):hover {
-	background: var(--background-btn-active-fallback);
-	background: var(--background-btn-active-moz);
-	background: var(--background-btn-active-webkit);
-	background: var(--background-btn-active);
-	color: var(--text-light);
+	filter: brightness(140%);
 	cursor: url('../images/cursor_hover.cur'), auto;
 	text-shadow: 0 1px 1px var(--black);
 }
 
 .btn-default:not([disabled]):active,
 .btn-active:not([disabled]):active {
-	background: var(--background-btn-onclick-fallback);
-	background: var(--background-btn-onclick-moz);
-	background: var(--background-btn-onclick-webkit);
-	background: var(--background-btn-onclick);
-	color: var(--text-light);
+	filter: brightness(150%) saturate(120%);
 	cursor: url('../images/cursor_hover.cur'), auto;
 	text-shadow: 0 1px 1px var(--black);
 }
@@ -329,7 +317,11 @@ table.foe-table th,
 .dark-bg,
 .thead th {
 	background: url('../images/hud/box-bg.png') center center repeat;
-	box-shadow: inset 0px 0px 0px 2000px var(--black-50), 0 1px 0 0 var(--border-table-top), 0 2px 0 0 var(--border-table-bottom);
+	box-shadow: inset 0 0 0 2000px var(--black-50), 0 1px 0 0 var(--border-table-top), 0 2px 0 0 var(--border-table-bottom);
+}
+
+table.foe-table thead th {
+	height: 26px;
 }
 
 .windowbody .dark-bg:last-child {
@@ -945,9 +937,6 @@ FP-Bar */
 	height: 22px;
 	position: relative;
 }
-.window-ask:hover {
-	background-position: -28px -1px, -28px -26px;
-}
 
 .window-speaker {
 	height: 22px;
@@ -959,6 +948,7 @@ FP-Bar */
 }
 .window-speaker:hover {
 	background-position: -146px -2px, -28px -26px;
+	filter: brightness(120%);
 }
 
 .window-speaker.deactivated {
@@ -977,16 +967,9 @@ FP-Bar */
 	display: inline-block;
 	position: relative;
 }
-.open .window-minimize:hover {
-	background-position: -53px -2px, -28px -26px;
-}
 .closed .window-minimize {
 	background-position: -77px -1px, -2px -26px;
 }
-.closed .window-minimize:hover {
-	background-position: -77px -1px, -28px -26px;
-}
-
 
 .window-settings {
 	background-position: -192px -2px, -2px -26px;
@@ -995,10 +978,6 @@ FP-Bar */
 	height: 22px;
 	position: relative;
 	margin-right: 2px;
-}
-
-.window-settings:hover {
-	background-position: -192px -2px, -28px -26px;
 }
 
 .window-map {
@@ -1012,9 +991,6 @@ FP-Bar */
     background-size: 11px , 240px;
 	background-position: 6px, -2px -26px;
 }
-.window-map:hover {
-	background-position: 6px, -28px -26px;
-}
 
 .window-close {
 	background-position: -2px -2px, -2px -26px;
@@ -1023,8 +999,9 @@ FP-Bar */
 	height: 22px;
 	position: relative;
 }
-.window-close:hover {
-	background-position: -2px -2px, -28px -26px;
+
+.window-ask:hover, .open .window-minimize:hover, .closed .window-minimize:hover, .window-settings:hover, .window-map:hover, .window-close:hover {
+	filter: brightness(130%);
 }
 
 .window-body {
@@ -1856,3 +1833,39 @@ span.activity.activity_2 { background: var(--background-tabs-active); }
 span.activity.activity_1 { background: var(--background-btn-active); }
 span.activity.activity_0 { background: var(--background-btn-red); }
 span.activity.activity_undefined {display:none}
+
+
+tr.sorter-header th:not(.no-sort) {
+	cursor: url('../images/cursor_hover.cur'), auto;
+	position: relative;
+	padding-right: 26px;
+	min-width: 30px;
+}
+
+tr.sorter-header th:not(.no-sort):before,
+tr.sorter-header th:not(.no-sort):after {
+	color: var(--text-bright);
+	position: absolute;
+	display: block;
+	opacity: .125;
+	right: 10px;
+	font-size: .8em;
+}
+
+tr.sorter-header th:not(.no-sort):before,
+tr.sorter-header th:not(.no-sort).ascending:before {
+	bottom: 15px;
+	content: "▲";
+}
+
+tr.sorter-header th:not(.no-sort):after,
+tr.sorter-header th:not(.no-sort).descending:after {
+	bottom: 5px;
+	content: "▼";
+}
+
+tr.sorter-header th:not(.no-sort).ascending:before,
+tr.sorter-header th:not(.no-sort).descending:after {
+	opacity: .6;
+}
+

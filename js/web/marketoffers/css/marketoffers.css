@@ -79,20 +79,6 @@
     display: inline-block;
 }
 
-#MarketOffers #MarketOffersBody table .sorter-header .ascending:after {
-    content: "↑";
-    color: var(--text-bright);
-    left: 4px;
-    position: relative;
-}
-
-#MarketOffers #MarketOffersBody table .sorter-header .descending:after {
-    content: "↓";
-    color: var(--text-bright);
-    left: 4px;
-    position: relative;
-}
-
 #MarketOffersEvents {
     top: 100px;
     right: 100px;
