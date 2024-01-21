@@ -1,8 +1,20 @@
 ## Changelog - Extension
 
+##### 3.5.0.1
+**Update**
+- City Map
+	- Better visibility for highlighted buildings 
+	- Added highlighting for buildings that do not require streets
+    - Added a global sorting layout
+
+**BugFix**
+- BG Helper:
+	- List did not always refresh
+
+---
 ##### 3.5.0.0
 **New**
-- PvP Arena Protocol
+- PvP Arena Protocol (Dank an dersiedler1)
 	- no need to click though protocol pages
 	- categorized protocol entries
 	- can be activated in the settings to pop-up when opening the Arena

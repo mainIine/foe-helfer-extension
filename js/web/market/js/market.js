@@ -1,6 +1,7 @@
 /*
- * **************************************************************************************
- * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
+ * *************************************************************************************
+ *
+ * Copyright (C) 2024 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -8,7 +9,7 @@
  * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
  * for full license details.
  *
- * **************************************************************************************
+ * *************************************************************************************
  */
 
 // Market
@@ -313,10 +314,10 @@ let Market = {
 
         h.push('<thead>');
         h.push('<tr>');
-        h.push('<th columnname2="Offered goods" columnname3="Offered amount" colspan="3">' + i18n('Boxes.Market.OfferColumn') + '</th>');
-        h.push('<th columnname2="Requested goods" columnname3="Requested amount"colspan="3">' + i18n('Boxes.Market.NeedColumn') + '</th>');
-        h.push('<th columnname="Rate">' + i18n('Boxes.Market.RateColumn') + '</th>');
-        h.push('<th columnname="Player">' + i18n('Boxes.Market.PlayerColumn') + '</th>');
+        h.push('<th data-export2="Offered goods" data-export3="Offered amount" colspan="3">' + i18n('Boxes.Market.OfferColumn') + '</th>');
+        h.push('<th data-export2="Requested goods" data-export3="Requested amount" colspan="3">' + i18n('Boxes.Market.NeedColumn') + '</th>');
+        h.push('<th data-export="Rate">' + i18n('Boxes.Market.RateColumn') + '</th>');
+        h.push('<th data-export="Player">' + i18n('Boxes.Market.PlayerColumn') + '</th>');
         h.push('<th>' + i18n('Boxes.Market.PageColumn') + '</th>');
         h.push('</tr>');
         h.push('</thead>');

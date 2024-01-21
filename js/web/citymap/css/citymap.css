@@ -33,21 +33,26 @@
 	display: flex;
 	flex-direction: row;
 	top: 0;
-	right: 0;
+	right: 220px;
 	left: 0;
 	border-bottom: 2px solid #281207;
-	height: 30px;
+	z-index: 5000;
+	padding: 2px;
+	box-sizing: border-box;
 }
 
 /* eigene Stadt */
 #map-container {
 	overflow: hidden;
 	position: absolute;
-	top: 32px;
+	top: 0;
 	right: 220px;
 	bottom: 0;
 	left: 0;
 	border-right: 2px solid #281207;
+	background-color: var(--black-50);
+	box-sizing: border-box;
+	padding: 40px 20px;
 }
 
 /* Nachbar */
@@ -57,13 +62,30 @@
 
 #sidebar {
 	position: absolute;
-	width: 190px;
+	width: 220px;
 	padding: 15px;
 	right: 0;
-	top: 32px;
+	top: 0;
 	bottom: 0;
 	overflow: hidden;
 	overflow-y: auto;
+	box-sizing: border-box;
+}
+
+#sidebar p {
+	margin-bottom: 5px;
+}
+
+#map-filters {
+	margin-bottom: 10px;
+	border-bottom: 1px solid var(--black-50);
+	padding-bottom: 5px;
+}
+
+#map-filters label {
+	display: block;
+	font-size: 90%;
+	margin-bottom: 5px;
 }
 
 #grid-outer {
@@ -193,24 +215,34 @@
 	--border-color-military: #bbb;
 	--background-color-residential: #7abaff;
 	--border-color-residential: #219eff;
+	--background-color-special: #51e5ff;
+	--border-color-special: #08b6d4;
+	--background-color-noStreet: #793bc9;
+	--border-color-noStreet: #3d2783;
+	--background-color-chain: #bb23ae;
+	--border-color-chain: #86127d;
 	--background-color-decoration: #497445;
 	--border-color-decoration: #1c7430;
-	--background-color-street: #6c757d;
-	--border-color-street: #4d565e;
+	--background-color-street: #666666;
+	--border-color-street: #636363;
 	--background-color-goods: #7d2a4d;
 	--border-color-goods: #6a2a3a;
 	--background-color-culture: #7d4900;
 	--border-color-culture: #582c00;
-	--background-color-main_building: #ffb100;
-	--border-color-main_building: #ffb100;
+	--background-color-main_building: #ffb300;
+	--border-color-main_building: #ffb300;
 	--background-color-production: #416dff;
 	--border-color-production: #2732ff;
-	--background-color-greatbuilding: #ff5026;
-	--border-color-greatbuilding: #ff2101;
+	--background-color-greatbuilding: #e6542f;
+	--border-color-greatbuilding: #af3d2b;
 	--background-color-random_production: #a8ff18;
 	--border-color-random_production: #4cff11;
 	--background-color-tower: #cdcdcd;
 	--border-color-tower: #787a7a;
+}
+
+#grid-outer.desaturate span.entity, #grid-outer.desaturate span.map-bg {
+	filter: saturate(0.9) brightness(0.6) !important;
 }
 
 #grid-outer span.entity {
@@ -233,10 +265,31 @@
 	background-color: var(--background-color-residential);
 	border-color: var(--border-color-residential);
 }
+#grid-outer span.tower {
+	background-color: var(--background-color-tower);
+	border-color: var(--border-color-tower);
+}
 #grid-outer span.decoration {
 	background-color: var(--background-color-decoration);
 	border-color: var(--border-color-decoration);
 }
+/*#grid-outer span.special {
+	background-color: var(--background-color-special);
+	border-color: var(--border-color-special);
+}*/
+#grid-outer span.noStreet.highlight {
+	background-color: var(--background-color-noStreet);
+	border-color: var(--border-color-noStreet);
+	animation-name: color;
+    animation-duration: 1s;
+	animation-iteration-count: infinite;
+	animation-direction: alternate;
+	animation-timing-function: ease-in-out;
+}
+/*#grid-outer span.chain {
+	background-color: var(--background-color-chain);
+	border-color: var(--border-color-chain);
+}*/
 #grid-outer span.street {
 	background-color: var(--background-color-street);
 	border-color: var(--border-color-street);
@@ -265,10 +318,6 @@
 	background-color: var(--background-color-random_production);
 	border-color: var(--border-color-random_production);
 }
-#grid-outer span.tower {
-	background-color: var(--background-color-tower);
-	border-color: var(--border-color-tower);
-}
 
 #grid-outer span span {
 	display: none;
@@ -284,43 +333,17 @@
 	display: inline-block;
 }
 
-@-webkit-keyframes pulse {
-	0% { -webkit-transform: scale(1); opacity: 1; }
-	50% { -webkit-transform: scale(0.9); opacity: 0.5; }
-	100% { -webkit-transform: scale(1); opacity: 1; }
-}
-
-@keyframes pulse {
-	0% { transform: scale(1); opacity: 1; }
-	50% { transform: scale(0.9); opacity: 0.5; }	
-	100% { -webkit-transform: scale(1); opacity: 1; }
-}
-
-.pulsate {
-	-webkit-animation: pulse 1s infinite ease-in-out;
-	-o-animation: pulse 1s infinite ease-in-out;
-	-ms-animation: pulse 1s infinite ease-in-out;
-	-moz-animation: pulse 1s infinite ease-in-out;
-	animation: pulse 1s infinite ease-in-out;
-}
-.pulsateSlow {
-	-webkit-animation: pulse 3s infinite ease-in-out;
-	-o-animation: pulse 3s infinite ease-in-out;
-	-ms-animation: pulse 3s infinite ease-in-out;
-	-moz-animation: pulse 3s infinite ease-in-out;
-	animation: pulse 3s infinite ease-in-out;
-}
 /* mark old buildings*/
-.older-1.diagonal {
+span.older-1.diagonal {
 	background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, rgb(128, 152, 93) 2px, rgb(128, 152, 93) 7px)
 }
-.older-2.diagonal {
+span.older-2.diagonal {
 	background-image: repeating-linear-gradient(317deg, transparent, transparent 5px, rgb(133, 95, 14) 2px, rgb(133, 95, 14) 7px)
 }
-.older-3.diagonal {
+span.older-3.diagonal {
 	background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, rgb(165, 74, 62) 2px, rgb(165, 74, 62) 7px);
 }
-.to-old.diagonal {
+span.to-old.diagonal {
 	background-image: repeating-linear-gradient(202deg, transparent, transparent 5px, rgb(171, 26, 13) 2px, rgb(171, 26, 13) 7px)
 }
 
@@ -358,24 +381,9 @@
 	padding: 0.3rem;
 }
 
-.blinking {
-
-    border: 3px solid rgb(175 75 75) !important;
-    animation-name: blinking;
-    animation-duration: 0.75s;
-    opacity: 100%;
-	animation-iteration-count: infinite;
-	animation-direction: alternate;
-	animation-timing-function: ease-in-out;
-  }
-
-  @keyframes blinking {
-    0% {opacity: 100%;}
-    100% {opacity: 70%;}
-  }
-
 #BuildingsFilter {
 	margin-left: auto;
+	width: 130px;
 }
 
 #area-state .building-count-area span.square {
@@ -426,4 +434,27 @@
 #area-state .building-count-area span.square.tower {
 	background-color: var(--background-color-tower);
 	border-color: var(--border-color-tower);
+}
+
+#city-map-overlay #grid-outer span.highlighted {
+    border-width: 2px !important;
+    filter: saturate(1.3) brightness(1.3) !important;
+	mix-blend-mode: color-dodge;
+	animation-name: sizing;
+    animation-duration: 0.5s;
+	z-index: 2000;
+    opacity: 100%;
+	animation-iteration-count: infinite;
+	animation-direction: alternate;
+	animation-timing-function: ease-in-out;
+}
+
+@keyframes sizing {
+    0% {transform: scale(1,1);}
+    100% {transform: scale(1.2,1.2);}
+}
+
+@keyframes color {
+    0% {filter: saturate(1) brightness(1)}
+    100% {filter: saturate(1.3) brightness(0.8);}
 }

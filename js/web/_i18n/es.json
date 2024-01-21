@@ -113,7 +113,7 @@
     "Boxes.CityMap.FreeArea": "Zonas sin uso: ",
     "Boxes.CityMap.NormalPerspecitve": "Estándar",
     "Boxes.CityMap.ShowSubmitBox": "Mostrar ventana de envío",
-    "Boxes.CityMap.Submit": "<button class='btn-default' id='submit-data' onclick='CityMap.SubmitData()'>Enviar</button>",
+    "Boxes.CityMap.Submit": "Enviar",
     "Boxes.CityMap.SubmitSuccess": "Los datos fueron transferidos con éxito. . . Ahora visita ",
     "Boxes.CityMap.TitleSend": "Enviar datos",
     "Boxes.CityMap.WholeArea": "Área completa: ",

@@ -50,25 +50,6 @@
 	color: var(--text-bright);
 }
 
-#Productions #ProductionsBody table .sorter-header th {
-	position: relative;
-}
-
-#Productions #ProductionsBody table .sorter-header .ascending:after,
-#Productions #ProductionsBody table .sorter-header .descending:after {
-	color: var(--text-bright);
-	position: absolute;
-	top: -3px;
-	font-size: 20px;
-}
-
-#Productions #ProductionsBody table .sorter-header .ascending:after {
-	content: "↑";
-}
-#Productions #ProductionsBody table .sorter-header .descending:after {
-	content: "↓";
-}
-
 #Productions #ProductionsBody table td {
 	font-size: 85%;
 }

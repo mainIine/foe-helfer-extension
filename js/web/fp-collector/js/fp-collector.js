@@ -412,7 +412,7 @@ let FPCollector = {
 
 				tr.push(	`<div class="foehelper-accordion-head game-cursor ${event}-head" onclick="FPCollector.ToggleHeader('${event}')">
 								<span class="image"></span>
-								<strong class="text-warning">${sumTotal}${i18n('Boxes.FPCollector.FP')}</strong>
+								<strong class="text-warning">${sumTotal} ${i18n('Boxes.FPCollector.FP')}</strong>
 								<span>${i18n('Boxes.FPCollector.' + event)}</span>
 							</div>`);
 
@@ -420,7 +420,7 @@ let FPCollector = {
 
 				 entriesEvent.forEach(e => {
 					 tr.push(`<div>
-								<span class="fps">${e.amount.toLocaleString(i18n('Local'))}${i18n('Boxes.FPCollector.FP')}</span>
+								<span class="fps">${e.amount.toLocaleString(i18n('Local'))} ${i18n('Boxes.FPCollector.FP')}</span>
 								<span class="desc">${i18n('Boxes.FPCollector.' + e.event)}</span>
 								<span class="building">${e.notes ? e.notes : ''}</span>
 						</div>`);
