@@ -1,5 +1,13 @@
 ## Changelog - Extension
 
+##### 3.5.0.2
+
+**BugFix**
+- Export-Function:
+	- Typo in code fixed
+
+---
+
 ##### 3.5.0.1
 **Update**
 - City Map
@@ -12,6 +20,7 @@
 	- List did not always refresh
 
 ---
+
 ##### 3.5.0.0
 **New**
 - PvP Arena Protocol (Dank an dersiedler1)
