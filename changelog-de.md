@@ -1,6 +1,6 @@
 ## Changelog - Extension
 
-##### 3.5.1.1
+##### 3.5.0.1
 **Update**
 - Stadtübersicht
 	- Gebäude-Highlighting verbessert
