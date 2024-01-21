@@ -1,5 +1,6 @@
 /*
- * **************************************************************************************
+ * *************************************************************************************
+ *
  * Copyright (C) 2024 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
@@ -8,7 +9,7 @@
  * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
  * for full license details.
  *
- * **************************************************************************************
+ * *************************************************************************************
  */
 
 FoEproxy.addMetaHandler('research', (xhr, postData) => {
@@ -349,10 +350,10 @@ let Technologies = {
 
         h.push('<thead>' +
             '<tr>' +
-            '<th colspan="2" columnname2="resource">' + i18n('Boxes.Technologies.Resource') + '</th>' +
-            '<th columnname="required">' + i18n('Boxes.Technologies.DescRequired') + '</th>' +
-            '<th columnname="instock">' + i18n('Boxes.Technologies.DescInStock') + '</th>' +
-            '<th columnname="remaining" class="text-right">' + i18n('Boxes.Technologies.DescStillMissing') + '</th>' +
+            '<th colspan="2" data-export2="resource">' + i18n('Boxes.Technologies.Resource') + '</th>' +
+            '<th data-export="required">' + i18n('Boxes.Technologies.DescRequired') + '</th>' +
+            '<th data-export="instock">' + i18n('Boxes.Technologies.DescInStock') + '</th>' +
+            '<th data-export="remaining" class="text-right">' + i18n('Boxes.Technologies.DescStillMissing') + '</th>' +
             '</tr>' +
             '</thead>');
 
