@@ -1,5 +1,13 @@
 ## Changelog - Extension
 
+##### 3.5.0.2
+
+**BugFix**
+- Export-Funktion:
+	- Typo im Code gefixt
+
+---
+
 ##### 3.5.0.1
 **Update**
 - Stadtübersicht

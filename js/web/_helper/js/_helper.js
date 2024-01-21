@@ -861,11 +861,11 @@ let HTML = {
                 }
 
 				if (ColumnCount === 1) {
-					ColumnNames.push($(this).data('export-name'))
+					ColumnNames.push($(this).data('export'))
 				}
 				else {
 					for (let i = 0; i < ColumnCount; i++) {
-						ColumnNames.push($(this).data('export-name' + (i + 1)));
+						ColumnNames.push($(this).data('export' + (i + 1)));
 					}
                 }
 			});

@@ -2,7 +2,7 @@
 	"name": "__MSG_appName__",
 	"description": "__MSG_appDesc__",
 	"default_locale": "en",
-	"version": "3.5.0.1",
+	"version": "3.5.0.2",
 
 	"manifest_version": 3,
 	"permissions": [
@@ -63,13 +63,6 @@
 	},
 
 	"background": {
-		"scripts": ["background.js"]
-	},
-
-	"browser_specific_settings": {
-		"gecko": {
-			"id": "{0668a87f-e3bb-4ed3-a096-e145c1e9f1d2}",
-			"strict_min_version": "101.0"
-		}
+		"service_worker": "background.js"
 	}
 }
