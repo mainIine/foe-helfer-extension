@@ -527,7 +527,7 @@ const FoEproxy = (function () {
 				}
 
 			} catch (e) {
-				console.log('Can\'t parse postData: ', postData);
+				console.log('Can\'t parse postData: ', postData, e);
 			}
 
 		}
@@ -540,18 +540,37 @@ const FoEproxy = (function () {
 			
 			let posts=[];
 
-			if (typeof data === 'object' && data instanceof ArrayBuffer)
-				posts = JSON.parse(new TextDecoder().decode(data));
-			else 
+			if (typeof data === 'object' && data instanceof ArrayBuffer) {
+				if (data.bytes[0] === 31 && data.bytes[1] === 139 && data.bytes[2] === 8) {
+					// gzipped, ignore
+					return
+				} else {
+					// try plaintext
+					posts = JSON.parse(new TextDecoder().decode(data));
+				}
+			} else if (typeof data === 'object' && data instanceof Uint8Array) {
+				if (data[0] === 31 && data[1] === 139 && data[2] === 8) {
+					// gzipped, ignore
+					return
+				} else {
+					// try plaintext
+					posts = JSON.parse(new TextDecoder().decode(data));
+				}
+			} else
 				posts = JSON.parse(data);
 
 			//console.log(post);
+			if (!(posts instanceof Array)) {
+				// ignore (probably) game-unrelated request
+				return;
+			}
+
 			for (let post of posts) {
 				if (!post || !post.requestClass || !post.requestMethod || !post.requestData) return;
 				proxyRequestAction(post.requestClass, post.requestMethod, post);
 			}
 		} catch (e) {
-			console.log('Can\'t parse postData: ', data);
+			console.log('Can\'t parse postData: ', data, e);
 		}
 	}
 
