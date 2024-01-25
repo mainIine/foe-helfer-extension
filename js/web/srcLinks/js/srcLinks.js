@@ -14,6 +14,7 @@
 
 let srcLinks = {
     FileList: null,
+    raw:null,
 
     init: async () => {
         //clear storage - can be removed down the line
@@ -33,14 +34,15 @@ let srcLinks = {
         xhr.open("GET", script.src)
         xhr.onreadystatechange = function () {
             if(xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-                srcLinks.readHX(xhr.responseText);
+                srcLinks.raw = xhr.responseText;
+                srcLinks.readHX();
             }
         };
         xhr.send();
     },
 
-    readHX: (HXscript) => {
-
+    readHX: () => {
+        let HXscript = srcLinks.raw+"";
         let startString = "baseUrl,";
         let start = HXscript.indexOf(startString) + startString.length;
         HXscript = HXscript.substring(start);
