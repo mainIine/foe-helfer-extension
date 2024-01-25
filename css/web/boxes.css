@@ -1,7 +1,7 @@
 /*
  * *************************************************************************************
  *
- * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2024 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -1839,7 +1839,7 @@ tr.sorter-header th:not(.no-sort) {
 	cursor: url('../images/cursor_hover.cur'), auto;
 	position: relative;
 	padding-right: 26px;
-	min-width: 35px;
+	min-width: 30px;
 }
 
 tr.sorter-header th:not(.no-sort):before,
