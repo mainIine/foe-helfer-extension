@@ -1462,7 +1462,7 @@ let Stats = {
 			amount: amount,
 			reward: reward
 		}).catch(error => {
-			if (error.message == "Key already exists in the object store.") {
+			if (error.inner.name == "ConstraintError") {
 				setTimeout(()=>{Stats.addReward(type,amount,reward)},1) //retry if two rewards came in "at the same time"
 			} else {
 				console.log(error)
