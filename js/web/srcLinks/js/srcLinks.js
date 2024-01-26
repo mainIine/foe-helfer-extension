@@ -77,7 +77,8 @@ let srcLinks = {
 
     get: (filename, full = false, noerror = false) => {
         let CS = undefined;
-        let CSfilename = filename.substring(0,filename.length-4);
+        let filenameP = filename.split(".");
+        let CSfilename = filenameP[0]
         
         if (!srcLinks.FileList) {
             if (!noerror) console.log ("Source file list not loaded!");
@@ -89,7 +90,7 @@ let srcLinks = {
             }
         }
         
-        CSfilename += "-" + CS + filename.substring(filename.length-4);
+        CSfilename += "-" + CS + "." + filenameP[1];
         
         if (full){
             return MainParser.InnoCDN + 'assets' + CSfilename;
