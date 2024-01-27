@@ -276,6 +276,8 @@ GetFights = () =>{
 		MainParser.UnlockedFeatures = data.responseData.unlocked_features.map(function(obj) { return obj.feature; });
 
 		Stats.Init();
+		Alerts.init();
+
 	});
 
 	// --------------------------------------------------------------------------------------------------
@@ -1402,7 +1404,7 @@ let MainParser = {
 			}
 		}
 
-		if (ArkBonus > MainParser.ArkBonus) MainParser.ArkBonus = ArkBonus;
+		MainParser.updateArkBonus(ArkBonus,"Limited Bonuses");
 	},
 
 	SetArkBonus2: () => {
@@ -1412,9 +1414,27 @@ let MainParser = {
 			ArkBonus += i.bonus.value;
 		}
 
-		if (ArkBonus > MainParser.ArkBonus) MainParser.ArkBonus = ArkBonus;
+		MainParser.updateArkBonus(ArkBonus,"City Map");
 	},
 
+	updateArkBonus:(ArkBonus, Source)=>{
+		if (ArkBonus > MainParser.ArkBonus) {
+			if (MainParser.ArkBonus > 0) {
+				const s = `SetArkBonus: updated ArkBonus from ${MainParser.ArkBonus} to ${ArkBonus} by ${Source}`;
+				console.log(s);
+				if (devMode === 'true') {
+					HTML.ShowToastMsg({
+						show: true,
+						head: 'Developer log',
+						text: s,
+						type: 'info',
+						hideAfter: 20000,
+					});
+				}
+			}
+			MainParser.ArkBonus = ArkBonus;
+		}
+	},
 
 	/**
 	 * Player information Updating message list & Website data
