@@ -139,7 +139,7 @@ FoEproxy.addHandler('RewardService', 'collectRewardSet', (data, postData) => {
 });
 
 let cardGame = {
-	context:"halloween_event",
+	context:"history_event",
 	cards:{},
 	cardsLeft:[],
 	card:{},
@@ -300,22 +300,23 @@ let cardGame = {
 		
 		cards.sort((a,b) => dmg[a].max-dmg[b].max);
 		cards.sort((a,b) => dmg[a].min-dmg[b].min);
+		let data= cardGame.data[cardGame.context];
 		let imgs=data.imgPath;
 
 		let h=`</tr></table><table class="foe-table">`
 		h +=`<tr><td style="text-align:center"><img style="height:40px" src=${imgs.enemyDeck}>${cardGame.level}</td>`;
 		h +=`<td style="text-align:center"><img style="height:40px" src=${imgs.playerHealth}>${cardGame.health}</td>`;
-		h +=`<td style="text-align:center"><img style="height:40px" src=${srcLinks.get("/shared/icons/reward_icons/reward_icon_"+cardGame.data[cardGame.context].mainResource+".png",true)}>${Object.values(cardGame.currencySpent).reduce((a, b) => a + b, 0)}</td>`;
+		h +=`<td style="text-align:center"><img style="height:40px" src=${srcLinks.get("/shared/icons/reward_icons/reward_icon_"+data.mainResource+".png",true)}>${Object.values(cardGame.currencySpent).reduce((a, b) => a + b, 0)}</td>`;
 		h +=`<td colspan="3" style="text-align:center">`;
 		for (let r in cardGame.rewardcount) {
 			if (!cardGame.rewardcount[r]) continue;
 			if (!r.contains(cardGame.context.replace("_event",""))) continue;
 			h += `<img style="height:40px" src="${srcLinks.get(`/shared/icons/reward_icons/reward_icon_${r}.png`,true)}">` + cardGame.rewardcount[r] + `&nbsp;&nbsp;`
 		}
-		let currency=`<img style="height:25px" src=${srcLinks.get("/shared/icons/reward_icons/reward_icon_"+cardGame.data[cardGame.context].mainResource+".png",true)}>`
+		let currency=`<img style="height:25px" src=${srcLinks.get("/shared/icons/reward_icons/reward_icon_"+data.mainResource+".png",true)}>`
 		h +=`</tr><tr><td style="text-align:right"><img style="height:40px" src=${imgs.spentAbility}></td style="text-align:left"><td>${cardGame.currencySpent.ability+currency}</td>`;
 		h +=`<td style="text-align:right"><img style="height:40px" src=${imgs.spentHealth}></td><td style="text-align:left">${cardGame.currencySpent.heal+currency}</td>`;
-		h +=`<td style="text-align:right"><img style="height:30px" src="${img.spentRedraw}"><img style="margin-left: -20px;height: 19px;margin-top: 10px;" src="${srcLinks.get("/shared/gui/pvp_arena/hud/pvp_arena_icon_refresh.png",true)}"></td><td style="text-align:left">${cardGame.currencySpent.redraw+currency}</td>`;
+		h +=`<td style="text-align:right"><img style="height:30px" src="${imgs.spentRedraw}"><img style="margin-left: -20px;height: 19px;margin-top: 10px;" src="${srcLinks.get("/shared/gui/pvp_arena/hud/pvp_arena_icon_refresh.png",true)}"></td><td style="text-align:left">${cardGame.currencySpent.redraw+currency}</td>`;
 		h +=`</tr></table><table class="foe-table">`;
 		h +=`<tr><th></th><th>${i18n('Boxes.cardGame.Attack')}</th><th>${i18n('Boxes.cardGame.Bonus')}</th></tr>`;
 		for (let c of cards) {
