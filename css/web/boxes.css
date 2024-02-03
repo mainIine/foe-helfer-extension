@@ -294,10 +294,12 @@ a[target="_blank"] svg {
 }
 
 /* Firefox */
-.window-box,
-.window-body {
-	scrollbar-color: #281207 #57250c;
-	scrollbar-width: thin;
+@supports(-moz-appearance:none) {
+	.window-box,
+	.window-body {
+		scrollbar-color: #281207 #57250c;
+		scrollbar-width: thin;
+	}
 }
 
 table {
