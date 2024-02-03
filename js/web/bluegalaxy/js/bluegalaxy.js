@@ -50,7 +50,7 @@ let BlueGalaxy = {
     GoodsValue : 0.2,
     DoubleCollections : 0,
     GalaxyFactor : 0,
-
+    sort: JSON.parse(localStorage.getItem("BlueGalaxySorting")||'{"col":null,"order":null}'),
 
     /**
      * Zeigt die Box an
@@ -166,11 +166,15 @@ let BlueGalaxy = {
                 });
 
                 if (GoodsSum > 0 || FP > 0 || FragmentAmount > 0) {
+                    
+                    let FragmentText= Fragments.map(fragment=>fragment.amount+ "x " +fragment.name+"<br>").join()
                     Buildings.push({
                         ID: CityEntity.id, 
                         EntityID: CityEntity.entityId,
+                        name: MainParser.NewCityMapData[CityEntity.id].name,
                         Fragments: Fragments, 
                         FragmentAmount: FragmentAmount,
+                        FragmentText: FragmentText,
                         FP: FP, 
                         Goods: GoodsSum, 
                         GuildGoods: GuildGoodsSum, 
@@ -181,10 +185,14 @@ let BlueGalaxy = {
             }
         }
         if (BlueGalaxy.DoubleCollections > 0)
-            Buildings = Buildings.filter(obj => ((obj['FP'] > 0 || obj['Goods'] > 0) && obj['In'] < 23.5 * 3600)); // Hide everything above 23h
+            Buildings = Buildings.filter(obj => ((obj['FP'] > 0 || obj['Goods'] > 0 || obj['GuildGoods']>0 || obj['FragmentAmount']>0) && obj['In'] < 23.5 * 3600)); // Hide everything above 23h
 
         Buildings = Buildings.sort(function (a, b) {
-            return (b['FP'] - a['FP']) + BlueGalaxy.GoodsValue * (b['Goods'] - a['Goods'] + (showBGFragments ? (b['FragmentAmount'] - a['FragmentAmount'])*3 : 0));
+            if (BlueGalaxy.sort.col) {
+                return (BlueGalaxy.sort.order=="ascending" ? -1 : 1)*(b[BlueGalaxy.sort.col] - a[BlueGalaxy.sort.col]);
+            } else {
+                return (b['FP'] - a['FP']) + BlueGalaxy.GoodsValue * (b['Goods'] - a['Goods'] + (showBGFragments ? (b['FragmentAmount'] - a['FragmentAmount'])*3 : 0));
+            }
         });
 
         let h = [];
@@ -211,50 +219,45 @@ let BlueGalaxy = {
 
         table.push('<thead>' +
             '<tr class="sorter-header">' +
-            '<th class="no-sort"></th><th data-type="bg-group">' + i18n('Boxes.BlueGalaxy.Building') + '</th>' +
-            (showBGFragments ? '<th class="is-number icon fragments" title="' + i18n('Boxes.BlueGalaxy.Fragments') + '" data-type="bg-group"><span></span></th>' : '') +
-            '<th class="is-number icon fp" title="' + i18n('Boxes.BlueGalaxy.FP') + '" data-type="bg-group"><span></span></th>' +
-            '<th class="is-number icon goods" title="' + i18n('Boxes.BlueGalaxy.Goods') + '" data-type="bg-group"><span></span></th>' +
-            '<th class="is-number icon guildgoods" title="' + i18n('Boxes.GuildMemberStat.GuildGoods') + '" data-type="bg-group"><span></span></th>' +
-            '<th colspan="2" class="case-sensitive" data-type="bg-group">' + i18n('Boxes.BlueGalaxy.DoneIn') + '</th>' +
+            '<th class="no-sort"></th>'+
+            '<th class="no-sort" data-type="bg-group">' + i18n('Boxes.BlueGalaxy.Building') + '</th>' +
+            (showBGFragments ? '<th class="is-number icon fragments ' + (BlueGalaxy.sort.col=="FragmentAmount" ? BlueGalaxy.sort.order : "") + '" title="' + i18n('Boxes.BlueGalaxy.Fragments') + '" data-type="bg-group" data-colname="FragmentAmount"><span></span></th>' : '') +
+            '<th class="is-number icon fp ' + (BlueGalaxy.sort.col=="FP" ? BlueGalaxy.sort.order : "") + '" title="' + i18n('Boxes.BlueGalaxy.FP') + '" data-type="bg-group" data-colname="FP"><span></span></th>' +
+            '<th class="is-number icon goods ' + (BlueGalaxy.sort.col=="Goods" ? BlueGalaxy.sort.order : "") + '" title="' + i18n('Boxes.BlueGalaxy.Goods') + '" data-type="bg-group" data-colname="Goods"><span></span></th>' +
+            '<th class="is-number icon guildgoods ' + (BlueGalaxy.sort.col=="GuildGoods" ? BlueGalaxy.sort.order : "") + '" title="' + i18n('Boxes.GuildMemberStat.GuildGoods') + '" data-type="bg-group" data-colname="GuildGoods"><span></span></th>' +
+            '<th colspan="2" class="case-sensitive no-sort" data-type="bg-group">' + i18n('Boxes.BlueGalaxy.DoneIn') + '</th>' +
             '</tr>' +
             '</thead>');
             table.push('<tbody class="bg-group">');
 
-        let CollectionsLeft = BlueGalaxy.DoubleCollections,
-            FPBonusSum = 0,
-            FragmentsSum = '',
-            GoodsBonusSum = 0;
+        //let CollectionsLeft = BlueGalaxy.DoubleCollections;
+            // FPBonusSum = 0,
+            // FragmentsSum = 0,
+            // GoodsBonusSum = 0,
+            // GuildGoodsSum = 0;
 
-        for (let i = 0; i < 500 && i < Buildings.length; i++) { // limits the list to max 50 items
+        for (let i = 0; i < 50 && i < Buildings.length; i++) { // limits the list to max 50 items
 
-            let BuildingName = MainParser.NewCityMapData[Buildings[i]['ID']].name;
             let isPolivated = MainParser.NewCityMapData[Buildings[i]['ID']].state.isPolivated;
-            let FragmentAmount = 0;
             table.push('<tr>');
             table.push('<td>' + (isPolivated != undefined ? (isPolivated ? '<span class="text-bright">★</span>' : '☆') : '') + '</td>');
-            table.push('<td data-text="'+BuildingName.replace(/[. -]/g,"")+'">' + BuildingName + '</td>');
+            table.push('<td data-text="'+Buildings[i]['name'].replace(/[. -]/g,"")+'">' + Buildings[i]['name'] + '</td>');
             if (showBGFragments) {
-                let frags=""
-                if (Buildings[i].Fragments.length > 0) {
-                    Buildings[i].Fragments.forEach(fragment => {
-                        frags+=(fragment.amount+ "x " +fragment.name+"<br>")
-                        FragmentAmount += fragment.amount;
-                    })
-                }
-                table.push('<td data-number="'+FragmentAmount+'">'+frags+'</td>');
+                table.push('<td data-number="'+Buildings[i].FragmentAmount+'">'+Buildings[i].FragmentText+'</td>');
             }
-            table.push('<td class="text-center" data-number="'+Buildings[i]['FP']+'">' + HTML.Format(Buildings[i]['FP']) + '</td>');
-            table.push('<td class="text-center" data-number="'+Buildings[i]['Goods']+'">' + HTML.Format(Buildings[i]['Goods']) + '</td>');
-            table.push('<td class="text-center" data-number="'+Buildings[i]['GuildGoods']+'">' + HTML.Format(Buildings[i]['GuildGoods']) + '</td>');
+            table.push('<td class="text-center" data-number="'+Buildings[i].FP+'">' + HTML.Format(Buildings[i]['FP']) + '</td>');
+            table.push('<td class="text-center" data-number="'+Buildings[i].Goods+'">' + HTML.Format(Buildings[i]['Goods']) + '</td>');
+            table.push('<td class="text-center" data-number="'+Buildings[i].GuildGoods+'">' + HTML.Format(Buildings[i]['GuildGoods']) + '</td>');
 
             if (Buildings[i]['At'] * 1000 <= MainParser.getCurrentDateTime()) {
                 table.push('<td style="white-space:nowrap"><strong class="success">' + i18n('Boxes.BlueGalaxy.Done') + '</strong></td>');
-                CollectionsLeft -= 1;
-
-                FragmentsSum += FragmentAmount * BlueGalaxy.GalaxyFactor;
-                FPBonusSum += Buildings[i]['FP'] * BlueGalaxy.GalaxyFactor;
-                GoodsBonusSum += Buildings[i]['Goods'] * BlueGalaxy.GalaxyFactor;
+            
+                //CollectionsLeft -= 1;
+                //FragmentsSum += Buildings[i].FragmentAmount * BlueGalaxy.GalaxyFactor;
+                //FPBonusSum += Buildings[i].FP * BlueGalaxy.GalaxyFactor;
+                //GoodsBonusSum += Buildings[i].Goods * BlueGalaxy.GalaxyFactor;
+                //GuildGoodsSum += Buildings[i].GuildGoods * BlueGalaxy.GalaxyFactor;
+                
             }
             else {
                 table.push('<td style="white-space:nowrap"><strong class="error">' + moment.unix(Buildings[i]['At']).fromNow() + '</strong></td>');
@@ -267,10 +270,10 @@ let BlueGalaxy = {
         table.push('</tbody>');
         table.push('</table>');
 
-            //if (FPBonusSum > 0 || GoodsBonusSum > 0) {
-            //    h.push(HTML.i18nReplacer(i18n('Boxes.BlueGalaxy.EstimatedBonus'), { FP: Math.round(FPBonusSum), Goods: Math.round(GoodsBonusSum)}));
-            //    h.push('<br>');
-            //}
+           // if (FPBonusSum > 0 || GoodsBonusSum > 0 || FragmentsSum >0 || GuildGoodsSum > 0) {
+           //     h.push(HTML.i18nReplacer(i18n('Boxes.BlueGalaxy.EstimatedBonus'), { FP: Math.round(FPBonusSum), Goods: Math.round(GoodsBonusSum)}));
+           //     h.push('<br>');
+           // }
 
         h.push(table.join(''));
 
@@ -278,6 +281,19 @@ let BlueGalaxy = {
 
         $('#bluegalaxyBody').html(h.join('')).promise().done(function () {
 		    $('#BGTable').tableSorter();
+        })
+        $('#BGTable th').on("click",(e)=>{
+            let el=e.target;
+            if (el.name != "TH") el = el.parentElement;
+            if(el.classList.contains("no-sort")) return;
+            if(el.classList.contains("descending")) {
+                BlueGalaxy.sort = {col:null,order:null}
+            } else {
+                BlueGalaxy.sort = {col:el.dataset.colname,order:"descending"}
+            }
+            localStorage.setItem("BlueGalaxySorting",JSON.stringify(BlueGalaxy.sort))
+            BlueGalaxy.CalcBody();
+            
         })
     },
 
