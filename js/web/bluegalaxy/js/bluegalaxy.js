@@ -284,7 +284,7 @@ let BlueGalaxy = {
         })
         $('#BGTable th').on("click",(e)=>{
             let el=e.target;
-            if (el.name != "TH") el = el.parentElement;
+            if (el.nodeName != "TH") el = el.parentElement;
             if(el.classList.contains("no-sort")) return;
             if(el.classList.contains("descending")) {
                 BlueGalaxy.sort = {col:null,order:null}
