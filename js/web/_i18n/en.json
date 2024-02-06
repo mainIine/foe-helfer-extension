@@ -1260,6 +1260,8 @@
     "Settings.Entry.ShowPvPArena": "PvP-Arena-Protocol",
     "Settings.ShowBuildingsExpired.Desc": "Notifications are created, that inform about the expiration of a limited building. (after deactivating this function, alerts that were created in the past may still show)",
     "Settings.ShowBuildingsExpired.Title": "Create Limited Building Alerts",
+    "Settings.ShowOwnPartBP.Desc": "Show Blueprints",
+    "Settings.ShowOwnPartMedals.Desc": "Show Medals",
     "Settings.Entry.ShowGuildTreasuryLogExport": "Guild Treasury Export Log",
     "Settings.Entry.ShowInvestments": "Display FP Investment Sum",
     "Settings.Entry.ShowLinks": "Links",

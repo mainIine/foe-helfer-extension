@@ -247,7 +247,7 @@ let Parts = {
 				Parts.CalcBody(Parts.Level);
 			});
 
-			//CopyBox
+			// CopyBox
 			$('#OwnPartBox').on('blur', '#player-name', function () {
 				let PlayerName = $('#player-name').val();
 
@@ -688,7 +688,7 @@ let Parts = {
 		h.push('<div class="flex" style="justify-content: space-between;align-items:center;margin-bottom:8px;">');
 		h.push('<div class="lb-info">');
 		h.push('<h1>' + CityEntity['name'] + '</h1>');
-		if (PlayerName) h.push(`<span class="activity activity_${PlayerDict[PlayerID]['Activity']}"></span><strong>${MainParser.GetPlayerLink(PlayerID, PlayerName)}</strong>`);
+		if (PlayerName) h.push(`<span class="activity activity_${PlayerDict[PlayerID]['Activity']}"></span> <strong>${MainParser.GetPlayerLink(PlayerID, PlayerName)}</strong>`);
 		h.push('</div>');
 
 		h.push('<div class="level-switch">');
@@ -737,6 +737,11 @@ let Parts = {
 
 		h.push('</span>');		
 		h.push('</div>');
+		
+		let medalsEnabled = (localStorage.getItem('OwnPartShowMedals') == "true")
+		if (localStorage.getItem('OwnPartShowMedals') == null) medalsEnabled = true
+		let printsEnabled = (localStorage.getItem('OwnPartShowBP') == "true")
+		if (localStorage.getItem('OwnPartShowBP') == null) printsEnabled = true
 
 		h.push('<table id="OwnPartTable" class="foe-table" style="margin-top:3px">');
 		h.push('<thead>');
@@ -745,8 +750,8 @@ let Parts = {
 		h.push('<th>' + i18n('Boxes.OwnpartCalculator.Order') + '</th>');
 		h.push('<th class="text-center"><span class="forgepoints" title="' + HTML.i18nTooltip(i18n('Boxes.OwnpartCalculator.Deposit')) + '"></th>');
 		h.push('<th class="text-center">' + i18n('Boxes.OwnpartCalculator.Done') + '</th>');
-		h.push('<th class="text-center"><span class="blueprint" title="' + HTML.i18nTooltip(i18n('Boxes.OwnpartCalculator.BPs')) + '"></span></th>');
-		h.push('<th class="text-center"><span class="medal" title="' + HTML.i18nTooltip(i18n('Boxes.OwnpartCalculator.Meds')) + '"></span></th>');
+		if (printsEnabled) h.push('<th class="text-center"><span class="blueprint" title="' + HTML.i18nTooltip(i18n('Boxes.OwnpartCalculator.BPs')) + '"></span></th>');
+		if (medalsEnabled) h.push('<th class="text-center"><span class="medal" title="' + HTML.i18nTooltip(i18n('Boxes.OwnpartCalculator.Meds')) + '"></span></th>');
 		h.push('<th class="text-center">' + i18n('Boxes.OwnpartCalculator.Ext') + '</th>');
 		h.push('<th class="text-center">' + i18n('Boxes.OwnpartCalculator.Arc') + '</th>');
 		h.push('</tr>');
@@ -764,7 +769,9 @@ let Parts = {
 				h.push('<td>' + i18n('Boxes.OwnpartCalculator.OwnPart') + '</td>');
 				h.push('<td class="text-center"><strong class="' + (PlayerID === ExtPlayerID ? 'success' : '') + '">' + (Eigens[i] > 0 ? HTML.Format(Eigens[i]) + ' <small>(=' + HTML.Format(Eigens[i] + EigenStart) + ')</small>' : '-') + '</strong></td>');
 				h.push('<td class="text-center"><strong class="info">' + HTML.Format(EigenStart) + '</strong></td>');
-				h.push('<td colspan="4"></td>');
+				if (printsEnabled && medalsEnabled) h.push('<td colspan="4"></td>');
+				else if (printsEnabled || medalsEnabled) h.push('<td colspan="3"></td>');
+				else h.push('<td colspan="2"></td>');
 				h.push('</tr>');
 			}
 			else {
@@ -772,7 +779,9 @@ let Parts = {
 					h.push('<tr>');
 					h.push('<td>' + i18n('Boxes.OwnpartCalculator.OwnPart') + '</td>');
 					h.push('<td class="text-center"><strong class="' + (PlayerID === ExtPlayerID ? 'success' : '') + '">' + HTML.Format(Eigens[i]) + (EigenCounter > Eigens[i] ? ' <small>(=' + HTML.Format(EigenCounter) + ')</small>' : '') + '</strong></td>');
-					h.push('<td colspan="5"></td>');
+					if (printsEnabled && medalsEnabled) h.push('<td colspan="5"></td>');
+					else if (printsEnabled || medalsEnabled) h.push('<td colspan="4"></td>');
+					else h.push('<td colspan="3"></td>');
 					h.push('</tr>');
 				}
 			}
@@ -810,8 +819,8 @@ let Parts = {
 				h.push('<td class="text-center"><strong class="info">' + MaezenString + '</strong>' + MaezenDiffString + '</td>');
 			}
 
-			h.push('<td class="text-center">' + HTML.Format(BPRewards[i]) + '</td>');
-			h.push('<td class="text-center">' + HTML.Format(MedalRewards[i]) + '</td>');
+			if (printsEnabled) h.push('<td class="text-center">' + HTML.Format(BPRewards[i]) + '</td>');
+			if (medalsEnabled) h.push('<td class="text-center">' + HTML.Format(MedalRewards[i]) + '</td>');
 			h.push('<td class="text-center"><input min="0" step="1" type="number" class="ext-part-input' + i + '" value="' + Parts.Exts[i] + '"></td>');
 			h.push('<td class="text-center"><input type="number" class="arc-percent-input" step="0.1" min="12" max="200" value="' + Parts.ArcPercents[i] + '"></td>');
 
@@ -1567,6 +1576,8 @@ let Parts = {
 			defaults = Parts.DefaultButtons,
 			sB = localStorage.getItem('CustomPartCalcButtons'),
 			allGB = localStorage.getItem('ShowOwnPartOnAllGBs'),
+			showMedals = localStorage.getItem('OwnPartShowMedals'),
+			showPrints = localStorage.getItem('OwnPartShowBP'),
 			nV = `<p class="new-row">${i18n('Boxes.Calculator.Settings.newValue')}: <input type="number" class="settings-values" style="width:30px"> <span class="btn btn-default btn-green" onclick="Parts.SettingsInsertNewRow()">+</span></p>`;
 
 		if(sB) {
@@ -1582,18 +1593,20 @@ let Parts = {
 
 		buttons.forEach(bonus => {
 			if(bonus === 'ark') {
-				c.push(`<p class="text-center"><input type="hidden" class="settings-values" value="ark"> <button class="btn btn-default">${MainParser.ArkBonus}%</button></p>`);
+				c.push(`<span><input type="hidden" class="settings-values" value="ark"> <button class="btn btn-default">${MainParser.ArkBonus}%</button></span>`);
 			}
 			else {
-				c.push(`<p class="btn-group flex"><button class="btn btn-default">${bonus}%</button> <input type="hidden" class="settings-values" value="${bonus}"> <span class="btn btn-default btn-delete" onclick="Parts.SettingsRemoveRow(this)">x</span> </p>`);
+				c.push(`<p class="btn-group" style="margin: 3px"><button class="btn btn-default">${bonus}%</button> <input type="hidden" class="settings-values" value="${bonus}"> <span class="btn btn-default btn-delete" onclick="Parts.SettingsRemoveRow(this)">x</span> </p>`);
 			}
 		});
 
 		// new own button
 		c.push(nV);
 
-		c.push('<p><input id="copyformatpergb" class="copyformatpergb game-cursor" ' + (Parts.CopyFormatPerGB ? 'checked' : '') + ' type="checkbox"> ' + i18n('Boxes.OwnpartCalculator.CopyFormatPerGB'));
-		c.push('<br><input type="checkbox" id="openonaliengb" class="openonaliengb game-cursor" ' + ((allGB == 'true') ? 'checked' : '') + '> ' + i18n('Settings.ShowOwnPartOnAllGBs.Desc')) + '</p>';
+		c.push('<p><input id="copyformatpergb" class="copyformatpergb game-cursor" ' + (Parts.CopyFormatPerGB ? 'checked' : '') + ' type="checkbox"> <label for="copyformatpergb">' + i18n('Boxes.OwnpartCalculator.CopyFormatPerGB') +'</label>');
+		c.push('<br><input type="checkbox" id="openonaliengb" class="openonaliengb game-cursor" ' + ((allGB == 'true') ? 'checked' : '') + '> <label for="openonaliengb">' + i18n('Settings.ShowOwnPartOnAllGBs.Desc')) + '</label>';
+		c.push('<br><input type="checkbox" id="showmedals" class="showmedals game-cursor" ' + ((showMedals == 'true') ? 'checked' : '') + '> <label for="showmedals">' + i18n('Settings.ShowOwnPartMedals.Desc')) + '</label>';
+		c.push('<br><input type="checkbox" id="showprints" class="showprints game-cursor" ' + ((showPrints == 'true') ? 'checked' : '') + '> <label for="showprints">' + i18n('Settings.ShowOwnPartBP.Desc')) + '</label></p>';
 
 		// save button
 		c.push(`<p><button id="save-calculator-settings" class="btn btn-default" style="width:100%" onclick="Parts.SettingsSaveValues()">${i18n('Boxes.Calculator.Settings.Save')}</button></p>`);
@@ -1641,10 +1654,20 @@ let Parts = {
 		Parts.CopyFormatPerGB = $('.copyformatpergb').prop('checked');
 		localStorage.setItem(Parts.GetStorageKey('CopyFormatPerGB', null), Parts.CopyFormatPerGB);
 
-		let openforeignGB = false;
-		if ($("#openonaliengb").is(':checked'))
-			openforeignGB = true;
+		let openforeignGB = true;
+		if ($("#openonaliengb").is(':not(:checked)'))
+			openforeignGB = false;
 		localStorage.setItem('ShowOwnPartOnAllGBs',openforeignGB);
+
+		let showMedals = true;
+		if ($("#showmedals").is(':not(:checked)'))
+			showMedals = false;
+		localStorage.setItem('OwnPartShowMedals',showMedals);
+
+		let showPrints = true;
+		if ($("#showprints").is(':not(:checked)'))
+			showPrints = false;
+		localStorage.setItem('OwnPartShowBP',showPrints);
 
 		$(`#OwnPartBoxSettingsBox`).fadeToggle('fast', function(){
 			$(this).remove();
