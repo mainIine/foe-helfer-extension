@@ -1259,6 +1259,8 @@
     "Settings.Entry.ShowPvPArena": "PvP-Arena-Protokoll",
     "Settings.ShowBuildingsExpired.Desc": "Es werden Meldungen erstellt, die anzeigen, dass ein beschränktes Gebäude abgelaufen ist. (Bei Deaktivierung der Funktion werden in der Vergangenheit gesetzte Alarme nicht gelöscht)",
     "Settings.ShowBuildingsExpired.Title": "Beschränkte Gebäude Alarme erstellen",
+    "Settings.ShowOwnPartBP.Desc": "Zeige Blaupausen",
+    "Settings.ShowOwnPartMedals.Desc": "Zeige Medaillen",
     "Settings.Entry.ShowGuildTreasuryLogExport": "Gilden Kassen Export",
     "Settings.Entry.ShowInvestments": "FP Investitionen",
     "Settings.Entry.ShowLinks": "Links",
