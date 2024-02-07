@@ -145,6 +145,8 @@ let StrategyPoints = {
 			const availableFPs = (ResourceStock['strategy_points'] !== undefined ? ResourceStock['strategy_points'] : 0);
 
 			$('.fp-bar-main').find('.number').text(availableFPs);
+			$('.fp-bar-main').removeClass('full');
+			$('.fp-bar-main').attr('title',HTML.i18nTooltip(i18n('StrategyPoints.FPInBar')));
 
 			const $bar = $('.fp-bar-main').find('.bars');
 
@@ -152,7 +154,7 @@ let StrategyPoints = {
 			$bar.find('span').remove();
 			for (let i = 0; i < availableFPs; i++) {
 				$bar.append(`<span />`);
-				if (i === 9) { break; }
+				if (i === 9) { $('.fp-bar-main').addClass('full'); break; }
 			}
 		}, 800);
 
