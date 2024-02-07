@@ -1579,9 +1579,8 @@ let Parts = {
 			showMedals = localStorage.getItem('OwnPartShowMedals') || 'true',
 			showPrints = localStorage.getItem('OwnPartShowBP') || 'true',
 			nV = `<p class="new-row">${i18n('Boxes.Calculator.Settings.newValue')}: <input type="number" class="settings-values" style="width:30px"> <span class="btn btn-default btn-green" onclick="Parts.SettingsInsertNewRow()">+</span></p>`;
-
-		console.log(localStorage.getItem('OwnPartShowMedals'));
-		if(sB) {
+		
+			if(sB) {
 			// buttons = [...new Set([...defaults,...JSON.parse(sB)])];
 			buttons = JSON.parse(sB);
 
