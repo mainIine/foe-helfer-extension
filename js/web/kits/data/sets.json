@@ -19,7 +19,9 @@
 		"kit": [
 			"selection_kit_statue_of_honor",
 			"fragment#selection_kit_statue_of_honor",
-			"fragment#building_road_to_victory"
+			"fragment#building_road_to_victory",
+			"selection_kit_GBG23_1",
+			"fragment#selection_kit_GBG23_1"
 		]
 	},
 	{
@@ -36,7 +38,9 @@
 		"kit": [
 			"selection_kit_great_elephant",
 			"fragment#selection_kit_great_elephant",
-			"fragment#building_iridescent_garden"
+			"fragment#building_iridescent_garden",
+			"selection_kit_GBG23_2",
+			"fragment#selection_kit_GBG23_2"
 		]
 	},
 	{
@@ -216,7 +220,7 @@
 				"update": "upgrade_kit_celtic_farmstead"
 			}
 		],
-		"kit": ["selection_kit_celtic_farmstead","selection_kit_epic_PAT23"]
+		"kit": ["selection_kit_celtic_farmstead","selection_kit_epic_PAT23","selection_kit_epic_PAT24"]
 	},
 	{
 		"name": "Fiore_Village",
@@ -352,7 +356,7 @@
 				"update": "upgrade_kit_druid_temple"
 			}
 		],
-		"kit": ["selection_kit_druid_temple","selection_kit_epic_PAT23"]
+		"kit": ["selection_kit_druid_temple","selection_kit_epic_PAT23","selection_kit_epic_PAT24"]
 	},
 	{
 		"name": "Terracotta_Vineyard",
@@ -494,7 +498,27 @@
 				"update": "upgrade_kit_PAT23A"
 			}
 		],
-		"kit": ["selection_kit_PAT23A","ultimate_upgrade_kit_PAT23A"]
+		"kit": ["selection_kit_PAT23A","ultimate_upgrade_kit_PAT23A","selection_kit_epic_PAT24","platinum_upgrade_kit_PAT23A"]
+	},
+	{
+		"name": "Celtic_Tavern",
+		"buildings": [
+			{
+				"first": "W_MultiAge_PAT24A1",
+				"update": "upgrade_kit_PAT24A"
+			}
+		],
+		"kit": ["selection_kit_PAT24A","silver_upgrade_kit_PAT24A","golden_upgrade_kit_PAT24A"]
+	},
+	{
+		"name": "Celtic_Glassworks",
+		"buildings": [
+			{
+				"first": "W_MultiAge_PAT24C1",
+				"update": "upgrade_kit_PAT24C"
+			}
+		],
+		"kit": ["selection_kit_PAT24C"]
 	},
 	{
 		"name": "Trading_Post",
@@ -574,8 +598,69 @@
 			"selection_kit_celtic_forest_set",
 			"selection_kit_celtic_trees",
 			"selection_kit_celtic_altars",
-			"selection_kit_epic_PAT23"
+			"selection_kit_epic_PAT23",
+			"selection_kit_epic_PAT24"
 		]
+	},
+	{
+		"name": "Tree_of_Silence",
+		"buildings": [
+			{
+				"first": "W_MultiAge_PAT23B1",
+				"update": "upgrade_kit_PAT23B"
+			}
+		],
+		"kit": [
+			"selection_kit_PAT23BC",
+			"selection_kit_PAT23BCD",
+			"fragment#selection_kit_PAT23BCD",
+			"selection_kit_epic_PAT24",
+			"fragment#upgrade_kit_PAT23B"			
+		]
+	},
+	{
+		"name": "Tree_of_Patience",
+		"buildings": [
+			{
+				"first": "W_MultiAge_PAT23C1",
+				"update": "upgrade_kit_PAT23C"
+			}
+		],
+		"kit": [
+			"fragment#building_W_MultiAge_PAT23C1",
+			"selection_kit_PAT23BC",
+			"selection_kit_PAT23BCD",
+			"fragment#selection_kit_PAT23BCD",
+			"selection_kit_epic_PAT24",
+			"fragment#upgrade_kit_PAT23C"
+		]
+	},
+	{
+		"name": "Tree_of_Vitality",
+		"buildings": [
+			{
+				"first": "W_MultiAge_PAT23D1",
+				"update": "upgrade_kit_PAT23D"
+			}
+		],
+		"kit": [
+			"fragment#building_W_MultiAge_PAT23D1",
+			"selection_kit_PAT23BC",
+			"selection_kit_PAT23BCD",
+			"fragment#selection_kit_PAT23BCD",
+			"selection_kit_epic_PAT24",
+			"fragment#upgrade_kit_PAT23D"
+		]
+	},
+	{
+		"name": "Olympic_Treasury",
+		"buildings": [
+			{
+				"first": "R_MultiAge_SportBonus20a",
+				"update": "upgrade_kit_olympic_treasury"
+			}
+		],
+		"kit": ["selection_kit_olympic_treasury","selection_kit_epic_BOWL23"]
 	},
 	{
 		"name": "Olympic_Treasury",
@@ -643,8 +728,7 @@
 			"selection_kit_chocolatery",
 			"selection_kit_epic_WIN23",
 			"golden_upgrade_kit_WIN22Aa",
-			"golden_upgrade_kit_WIN22Ab",
-			"golden_upgrade_kit_WIN22A"			
+			"golden_upgrade_kit_WIN22Ab"
 		]
 	},
 	{
