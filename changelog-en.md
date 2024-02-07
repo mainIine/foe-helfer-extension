@@ -1,5 +1,11 @@
 ## Changelog - Extension
 
+##### 3.6.0.0
+
+**Update**
+- GB Calculator:
+	- New settings: deactivate BP and medals
+
 ##### 3.5.0.2
 
 **BugFix**
