@@ -431,6 +431,7 @@
 			{
 				"first": "W_MultiAge_PAT24A1",
 				"update": "upgrade_kit_PAT24A",
+				"silver": "silver_upgrade_kit_PAT24A",
 				"golden": "golden_upgrade_kit_PAT24A"
 			}
 		]
