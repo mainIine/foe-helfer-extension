@@ -83,15 +83,12 @@
 #kits table.foe-table th.head {
 	border-top: 1px solid var(--text-bright);
 }
-#kits .item-kits,
-#kits .item-asset {
+
+#kits .item-kits {
 	padding: 5px;
 }
 
-#kits .kits-image,
-#kits .kits-fragment-image,
-#kits .kits-image-container,
-#kits .asset-image {
+#kits .kits-image {
 	display: inline-block;
 	text-align: center;
 	max-width: 90px;
@@ -99,11 +96,6 @@
 	image-rendering: -webkit-optimize-contrast;
 }
 
-#kits .kits-fragment-image {
-	position: relative;
-	top: -67px;
-	right: -7px;
-}
 #kits .ItemFragment {
 	height: 20px;
 }
