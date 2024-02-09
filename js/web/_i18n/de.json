@@ -1355,6 +1355,7 @@
     "Settings.Version.World": "Welt:",
     "Settings.doubleFPtimeout.Desc": "Zeigt eine Box über dem LB Einzahlfeld an, nachdem eine Einzahlung getätigt wurde. Der Wert bestimmt, wie lange die Box angezeigt wird in Sekunden - bei 0 wird die Box gar nicht angezeigt.",
     "Settings.doubleFPtimeout.Title": "Doppeleinzahlungsblocker",
-    "StrategyPoints.BuyableFP": "Anzahl der Forge Punkte, welche mit Münzen gekauft werden können.",
+    "StrategyPoints.BuyableFP": "FoE-Helper: Anzahl der Forge Punkte, welche mit Münzen gekauft werden können.",
+    "StrategyPoints.FPInBar": "FoE-Helper: Anzahl der Forge Punkte, in der FP-Leiste.",
     "_Language": "Deutsch"
 }
