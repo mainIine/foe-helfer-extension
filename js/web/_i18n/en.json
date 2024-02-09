@@ -1355,6 +1355,7 @@
     "Settings.Version.World": "World:",
     "Settings.doubleFPtimeout.Desc": "Shows a box that temporarily covers the FP entry field in GB after a donation. The value determines the duration the box is shown in seconds - when 0, the box does not show",
     "Settings.doubleFPtimeout.Title": "Double donation blocker",
-    "StrategyPoints.BuyableFP": "Number of FPs that can be bought with coins.",
+    "StrategyPoints.BuyableFP": "FoE-Helper: Number of FPs that can be bought with coins.",
+    "StrategyPoints.FPInBar": "FoE-Helper: Number of FPs in your bar.",
     "_Language": "English"
 }

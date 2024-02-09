@@ -1575,12 +1575,12 @@ let Parts = {
 			buttons,
 			defaults = Parts.DefaultButtons,
 			sB = localStorage.getItem('CustomPartCalcButtons'),
-			allGB = localStorage.getItem('ShowOwnPartOnAllGBs'),
-			showMedals = localStorage.getItem('OwnPartShowMedals'),
-			showPrints = localStorage.getItem('OwnPartShowBP'),
+			allGB = localStorage.getItem('ShowOwnPartOnAllGBs') || 'true',
+			showMedals = localStorage.getItem('OwnPartShowMedals') || 'true',
+			showPrints = localStorage.getItem('OwnPartShowBP') || 'true',
 			nV = `<p class="new-row">${i18n('Boxes.Calculator.Settings.newValue')}: <input type="number" class="settings-values" style="width:30px"> <span class="btn btn-default btn-green" onclick="Parts.SettingsInsertNewRow()">+</span></p>`;
-
-		if(sB) {
+		
+			if(sB) {
 			// buttons = [...new Set([...defaults,...JSON.parse(sB)])];
 			buttons = JSON.parse(sB);
 
@@ -1604,9 +1604,9 @@ let Parts = {
 		c.push(nV);
 
 		c.push('<p><input id="copyformatpergb" class="copyformatpergb game-cursor" ' + (Parts.CopyFormatPerGB ? 'checked' : '') + ' type="checkbox"> <label for="copyformatpergb">' + i18n('Boxes.OwnpartCalculator.CopyFormatPerGB') +'</label>');
-		c.push('<br><input type="checkbox" id="openonaliengb" class="openonaliengb game-cursor" ' + ((allGB == 'true') ? 'checked' : '') + '> <label for="openonaliengb">' + i18n('Settings.ShowOwnPartOnAllGBs.Desc')) + '</label>';
-		c.push('<br><input type="checkbox" id="showmedals" class="showmedals game-cursor" ' + ((showMedals == 'true') ? 'checked' : '') + '> <label for="showmedals">' + i18n('Settings.ShowOwnPartMedals.Desc')) + '</label>';
-		c.push('<br><input type="checkbox" id="showprints" class="showprints game-cursor" ' + ((showPrints == 'true') ? 'checked' : '') + '> <label for="showprints">' + i18n('Settings.ShowOwnPartBP.Desc')) + '</label></p>';
+		c.push('<br><input type="checkbox" id="openonaliengb" class="openonaliengb game-cursor" ' + ((allGB == 'true') ? 'checked' : '') + '> <label for="openonaliengb">' + i18n('Settings.ShowOwnPartOnAllGBs.Desc') + '</label>');
+		c.push('<br><input type="checkbox" id="showmedals" class="showmedals game-cursor" ' + ((showMedals == 'true') ? 'checked' : '') + '> <label for="showmedals">' + i18n('Settings.ShowOwnPartMedals.Desc') + '</label>');
+		c.push('<br><input type="checkbox" id="showprints" class="showprints game-cursor" ' + ((showPrints == 'true') ? 'checked' : '') + '> <label for="showprints">' + i18n('Settings.ShowOwnPartBP.Desc') + '</label></p>');
 
 		// save button
 		c.push(`<p><button id="save-calculator-settings" class="btn btn-default" style="width:100%" onclick="Parts.SettingsSaveValues()">${i18n('Boxes.Calculator.Settings.Save')}</button></p>`);
