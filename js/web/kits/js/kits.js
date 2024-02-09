@@ -41,7 +41,10 @@ let Kits = {
 		"icon_selection_kit_governors_villa":"selection_kit_govenors_villa",
 		"selection_kit_classic_garden_set":"selection_kit_classical_garden",
 		"selection_kit_winter_village_set":"selection_kit_winter_village",
-		"selection_kit_royal_garden_set":"selection_kit_royal_garden"
+		"selection_kit_royal_garden_set":"selection_kit_royal_garden",
+		"selection_kit_gentiana_windmill_farmland":"selection_kit_gentiana_farmland",
+		"selection_kit_W_MultiAge_WIN22A":"selection_kit_chocolatery",
+		"selection_kit_winter_cars":"selection_kit_winter_train_carriage",
 	},
 
 	/**
