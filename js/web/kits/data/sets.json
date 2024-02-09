@@ -1,6 +1,6 @@
 [	
 	{
-		"udate": "Halloween 2023 (20 Oct 2023)"
+		"udate": "St Patrick 2024 (09 Feb 2024)"
 	},
 	{
 		"groupname": "Guild_Battlegrounds"
@@ -15,13 +15,6 @@
 		],
 		"assets": [
 			"D_MultiAge_Battlegrounds2"
-		],
-		"kit": [
-			"selection_kit_statue_of_honor",
-			"fragment#selection_kit_statue_of_honor",
-			"fragment#building_road_to_victory",
-			"selection_kit_GBG23_1",
-			"fragment#selection_kit_GBG23_1"
 		]
 	},
 	{
@@ -34,13 +27,42 @@
 		],
 		"assets": [
 			"D_MultiAge_Battlegrounds4"
-		],
-		"kit": [
-			"selection_kit_great_elephant",
-			"fragment#selection_kit_great_elephant",
-			"fragment#building_iridescent_garden",
-			"selection_kit_GBG23_2",
-			"fragment#selection_kit_GBG23_2"
+		]
+	},
+	{
+		"name": "Tower_of_Champions",
+		"buildings": [
+			{
+				"first": "W_MultiAge_GBGWatchtower2023A",
+				"update": "upgrade_kit_GBG23A"
+			}
+		]
+	},
+	{
+		"name": "Royal_Tower_of_Champions",
+		"buildings": [
+			{
+				"first": "W_MultiAge_GBGWatchtower2023C1",
+				"update": "upgrade_kit_GBG23C"
+			}
+		]
+	},
+	{
+		"name": "Wyverntide_Spire_of_Victory",
+		"buildings": [
+			{
+				"first": "W_MultiAge_GBG24A1",
+				"update": "upgrade_kit_GBG24A"
+			}
+		]
+	},
+	{
+		"name": "Wyverntide_Smithy",
+		"buildings": [
+			{
+				"first": "W_MultiAge_GBG24B1",
+				"update": "upgrade_kit_GBG24B"
+			}
 		]
 	},
 	{
@@ -51,13 +73,9 @@
 		"buildings": [
 			{
 				"first": "R_MultiAge_FallBonus22a",
-				"update": "upgrade_kit_sunflower_oil_press"
+				"update": "upgrade_kit_sunflower_oil_press",
+				"golden": "golden_upgrade_kit_FALL22A"
 			}
-		],
-		"kit": [
-			"selection_kit_sunflower_oil_press",
-			"selection_kit_epic_FALL23",
-			"golden_upgrade_kit_FALL22A"
 		]
 	},
 	{
@@ -65,17 +83,11 @@
 		"buildings": [
 			{
 				"first": "W_MultiAge_FALL23A1",
-				"update": "upgrade_kit_FALL23A"
+				"update": "upgrade_kit_FALL23A",
+				"silver": "silver_upgrade_kit_FALL23A",
+				"golden": "golden_upgrade_kit_FALL23A"
 			}
-		],
-		"kit": [
-			"selection_kit_FALL23A",
-			"fragment#selection_kit_FALL23A",
-			"silver_upgrade_kit_FALL23A",
-			"fragment#silver_upgrade_kit_FALL23A",
-			"golden_upgrade_kit_FALL23A",
-			"fragment#golden_upgrade_kit_FALL23A"
-			]
+		]
 	},
 	{
 		"name": "Privateers_Boathouse",
@@ -85,32 +97,26 @@
 				"first": "W_MultiAge_SummerBonus22a",
 				"update": "upgrade_kit_privateers_boathouse"
 			}
-		],
-		"kit": ["selection_kit_privateers_boathouse","selection_kit_epic_SUM23"]
+		]
 	},
 	{
 		"name": "Heroes_Tavern",
 		"buildings": [
 			{
 				"first": "R_MultiAge_HeroBonus22a",
-				"update": "upgrade_kit_heroes_tavern"
+				"update": "upgrade_kit_heroes_tavern",
+				"golden": "golden_upgrade_kit_FELLOW22A"
 			}
-		],
-		"kit": ["selection_kit_heroes_tavern","selection_kit_epic_FELLOW23","golden_upgrade_kit_FELLOW22A"]
+		]
 	},
 	{
 		"name": "Summerhold_Manor",
 		"buildings": [
 			{
 				"first": "W_MultiAge_FELL23A1",
-				"update": "upgrade_kit_FELLOW23A"
+				"update": "upgrade_kit_FELLOW23A",
+				"golden": "golden_upgrade_kit_FELLOW23A"
 			}
-		],
-		"kit": [
-			"selection_kit_FELLOW23A",
-			"fragment#selection_kit_FELLOW23A",
-			"golden_upgrade_kit_FELLOW23A",
-			"fragment#golden_upgrade_kit_FELLOW23A"
 		]
 	},
 	{
@@ -118,15 +124,9 @@
 		"buildings": [
 			{
 				"first": "W_MultiAge_CUP23A1",
-				"update": "upgrade_kit_CUP23A"
+				"update": "upgrade_kit_CUP23A",
+				"golden": "golden_upgrade_kit_CUP23A"
 			}
-		],
-		"kit": [
-			"selection_kit_CUP23A",
-			"fragment#selection_kit_CUP23A",
-			"golden_upgrade_kit_CUP23A",
-			"golden_selection_kit_CUP23A",
-			"fragment#golden_selection_kit_CUP23A"
 		]
 	},
 	{
@@ -134,17 +134,18 @@
 		"buildings": [
 			{
 				"first": "R_MultiAge_WildBonus22a",
-				"update": "upgrade_kit_animal_crossing"
+				"update": "upgrade_kit_animal_crossing",
+				"golden": "golden_upgrade_kit_WILD22A"
 			}
-		],
-		"kit": ["selection_kit_animal_crossing","selection_kit_epic_WILD23","selection_kit_epic_WILD24","golden_upgrade_kit_WILD22A"]
+		]
 	},
 	{
 		"name": "Gentiana_Windmill",
 		"buildings": [
 			{
 				"first": "R_MultiAge_SoccerBonus22a",
-				"update": "upgrade_kit_gentiana_windmill"
+				"update": "upgrade_kit_gentiana_windmill",
+				"golden": "golden_upgrade_kit_CUP22A"
 			}
 		],
 		"assets": [
@@ -152,13 +153,6 @@
 			"D_MultiAge_SoccerBonus22rockypath",
 			"D_MultiAge_SoccerBonus22olivepath",
 			"D_MultiAge_SoccerBonus22wheatpath"
-		],
-		"kit": [
-			"selection_kit_gentiana_windmill_farm",
-			"selection_kit_gentiana_windmill",
-			"selection_kit_gentiana_farmland",
-			"selection_kit_epic_CUP23",
-			"golden_upgrade_kit_CUP22A"
 		]
 	},
 	{
@@ -176,11 +170,6 @@
 			"D_MultiAge_ArcheologyBonus22c",
 			"L_AllAge_ArcheologyBonus22a",
 			"L_AllAge_ArcheologyBonus22b"
-		],
-		"kit": [
-			"selection_kit_butterfly_sanctuary",
-			"selection_kit_butterfly_house",
-			"selection_kit_butterfly_gardens"
 		]
 	},
 	{
@@ -190,8 +179,7 @@
 				"first": "W_MultiAge_AgeBonus22a",
 				"update": "upgrade_kit_golden_orrery"
 			}
-		],
-		"kit": ["selection_kit_golden_orrery","selection_kit_epic_ANNI23"]
+		]
 	},
 	{
 		"name": "Grand_Monarchs_Set",
@@ -204,12 +192,6 @@
 				"first": "R_MultiAge_BirthdayBonus22c",
 				"update": "upgrade_kit_grand_queen"
 			}
-		],
-		"kit": [
-			"selection_kit_grand_monarchs",
-			"selection_kit_grand_king",
-			"selection_kit_grand_queen",
-			"selection_kit_epic_ANNI23"
 		]
 	},
 	{
@@ -219,8 +201,7 @@
 				"first": "R_MultiAge_PatrickBonus22a",
 				"update": "upgrade_kit_celtic_farmstead"
 			}
-		],
-		"kit": ["selection_kit_celtic_farmstead","selection_kit_epic_PAT23","selection_kit_epic_PAT24"]
+		]
 	},
 	{
 		"name": "Fiore_Village",
@@ -229,8 +210,7 @@
 				"first": "R_MultiAge_ForgeBonus22a",
 				"update": "upgrade_kit_fiore_village"
 			}
-		],
-		"kit": ["selection_kit_fiore_village","selection_kit_epic_BOWL23"]
+		]
 	},
 	{
 		"name": "Winter_Canal",
@@ -239,10 +219,6 @@
 				"first": "R_MultiAge_WinterBonus21a",
 				"update": "upgrade_kit_winter_canal"
 			}
-		],
-		"kit": [
-			"selection_kit_winter_canal",
-			"selection_kit_epic_WIN23"
 		]
 	},
 	{
@@ -268,10 +244,6 @@
 				"first": "R_MultiAge_HalloweenBonusSet21c",
 				"update": "upgrade_kit_clown_town"
 			}
-		],
-		"kit": [
-			"selection_kit_horror_circus",
-			"selection_kit_epic_HAL23"
 		]
 	},
 	{
@@ -281,10 +253,6 @@
 				"first": "W_MultiAge_FallBonus21a",
 				"update": "upgrade_kit_golden_crops"
 			}
-		],
-		"kit": [
-			"selection_kit_golden_crops",
-			"selection_kit_epic_FALL23"
 		]
 	},
 	{
@@ -300,8 +268,7 @@
 			"D_MultiAge_SummerBonus21Boat",
 			"D_MultiAge_SummerBonus21Pier",
 			"D_MultiAge_SummerBonus21Sharks"
-		],
-		"kit": ["selection_kit_pirates_hideout","selection_kit_epic_SUM23"]
+		]
 	},
 	{
 		"name": "Mountain_Reserve",
@@ -310,22 +277,16 @@
 				"first": "R_MultiAge_WildBonus21a",
 				"update": "upgrade_kit_mountain_reserve"
 			}
-		],
-		"kit": ["selection_kit_mountain_reserve","selection_kit_epic_WILD23",
-		"selection_kit_epic_WILD24"]
+		]
 	},
 	{
 		"name": "Athlon_Abbey",
 		"buildings": [
 			{
 				"first": "R_MultiAge_SoccerBonus21a",
-				"update": "upgrade_kit_athlon_abbey"
+				"update": "upgrade_kit_athlon_abbey",
+				"golden": "golden_upgrade_kit_CUP21A"
 			}
-		],
-		"kit": [
-			"selection_kit_athlon_abbey",
-			"selection_kit_epic_CUP23",
-			"golden_upgrade_kit_CUP21A"
 		]
 	},
 	{
@@ -335,8 +296,7 @@
 				"first": "R_MultiAge_ArcheologyBonus21a",
 				"update": "upgrade_kit_ferris_wheel"
 			}
-		],
-		"kit": "selection_kit_ferris_wheel"
+		]
 	},
 	{
 		"name": "Suishun_Mill",
@@ -345,8 +305,7 @@
 				"first": "R_MultiAge_SpringBonus21a",
 				"update": "upgrade_kit_suishun_mill"
 			}
-		],
-		"kit": ["selection_kit_suishun_mill","selection_kit_epic_SPR"]
+		]
 	},
 	{
 		"name": "Druid_Temple",
@@ -355,8 +314,7 @@
 				"first": "R_MultiAge_PatrickBonus21a",
 				"update": "upgrade_kit_druid_temple"
 			}
-		],
-		"kit": ["selection_kit_druid_temple","selection_kit_epic_PAT23","selection_kit_epic_PAT24"]
+		]
 	},
 	{
 		"name": "Terracotta_Vineyard",
@@ -371,12 +329,6 @@
 			"D_MultiAge_SportBonus21Lavender",
 			"D_MultiAge_SportBonus21Cypress",
 			"D_MultiAge_SportBonus21Olive"
-		],
-		"kit": [
-			"selection_kit_vineyard_estate",
-			"selection_kit_terracotta_vineyard",
-			"selection_kit_vineyard_fields",
-			"selection_kit_epic_BOWL23"
 		]
 	},
 	{
@@ -386,10 +338,6 @@
 				"first": "R_MultiAge_WinterBonus20a",
 				"update": "upgrade_kit_winter_bakery"
 			}
-		],
-		"kit": [
-			"selection_kit_winter_bakery",
-			"selection_kit_epic_WIN23"
 		]
 	},
 	{
@@ -399,10 +347,6 @@
 				"first": "R_MultiAge_HalloweenBonus20a",
 				"update": "upgrade_kit_house_of_horrors"
 			}
-		],
-		"kit": [
-			"selection_kit_house_of_horrors",
-			"selection_kit_epic_HAL23"
 		]
 	},
 	{
@@ -420,11 +364,6 @@
 			"D_MultiAge_FallBonus20b",
 			"L_AllAge_FallBonus20a",
 			"L_AllAge_FallBonus20b"
-		],
-		"kit": [ 
-			"selection_kit_harvest_farm",
-			"selection_kit_harvest_fields",
-			"selection_kit_epic_FALL23"
 		]
 	},
 	{
@@ -433,10 +372,10 @@
 		"buildings": [
 			{
 				"first": "R_MultiAge_SummerBonus20a",
-				"update": "upgrade_kit_governors_villa"
+				"update": "upgrade_kit_governors_villa",
+				"golden":"golden_upgrade_kit_SUM20A"
 			}
-		],
-		"kit": ["selection_kit_govenors_villa","selection_kit_epic_SUM23","golden_upgrade_kit_SUM20A","fragment#golden_upgrade_kit_SUM20A"]
+		]
 	},
 	{
 		"name": "Hall_of_Fame",
@@ -445,10 +384,6 @@
 				"first": "Z_MultiAge_CupBonus1",
 				"update": "upgrade_kit_hall_of_fame"
 			}
-		],
-		"kit": [
-			"selection_kit_hall_of_fame",
-			"selection_kit_epic_CUP23"
 		]
 	},
 	{
@@ -468,16 +403,6 @@
 			"D_MultiAge_SoccerBonus20Leukoi",
 			"D_MultiAge_SoccerBonus20Rousioi",
 			"D_MultiAge_SoccerBonus20Venetoi"
-		],
-		"kit": [ 
-			"selection_kit_hippodrome",
-			"selection_kit_hippodrome_buildings",
-			"selection_kit_hippodrome_end_buildings",
-			"selection_kit_hippodrome_sphendone",
-			"selection_kit_hippodrome_carceres",
-			"selection_kit_hippodrome_track",
-			"selection_kit_hippodrome_middle_sections",
-			"selection_kit_epic_CUP23"
 		]
 	},
 	{
@@ -487,28 +412,28 @@
 				"first": "R_MultiAge_ArcheologyBonus20a",
 				"update": "upgrade_kit_airship"
 			}
-		],
-		"kit": "selection_kit_airship"
+		]
 	},
 	{
 		"name": "Druid_Hut",
 		"buildings": [
 			{
 				"first": "W_MultiAge_PAT23A1",
-				"update": "upgrade_kit_PAT23A"
+				"update": "upgrade_kit_PAT23A",
+				"golden": "ultimate_upgrade_kit_PAT23A",
+				"platinum": "platinum_upgrade_kit_PAT23A"
 			}
-		],
-		"kit": ["selection_kit_PAT23A","ultimate_upgrade_kit_PAT23A","selection_kit_epic_PAT24","platinum_upgrade_kit_PAT23A"]
+		]
 	},
 	{
 		"name": "Celtic_Tavern",
 		"buildings": [
 			{
 				"first": "W_MultiAge_PAT24A1",
-				"update": "upgrade_kit_PAT24A"
+				"update": "upgrade_kit_PAT24A",
+				"golden": "golden_upgrade_kit_PAT24A"
 			}
-		],
-		"kit": ["selection_kit_PAT24A","silver_upgrade_kit_PAT24A","golden_upgrade_kit_PAT24A"]
+		]
 	},
 	{
 		"name": "Celtic_Glassworks",
@@ -517,23 +442,16 @@
 				"first": "W_MultiAge_PAT24C1",
 				"update": "upgrade_kit_PAT24C"
 			}
-		],
-		"kit": ["selection_kit_PAT24C"]
+		]
 	},
 	{
 		"name": "Trading_Post",
 		"buildings": [
 			{
 				"first": "W_MultiAge_SUM23A1",
-				"update": "upgrade_kit_SUM23A"
+				"update": "upgrade_kit_SUM23A",
+				"golden": "golden_upgrade_kit_SUM23A"
 			}
-		],
-		"kit": [
-			"fragment#building_W_MultiAge_SUM23A1",
-			"selection_kit_SUM23A",
-			"fragment#upgrade_kit_SUM23A",
-			"golden_upgrade_kit_SUM23A",
-			"fragment#golden_upgrade_kit_SUM23A"
 		]
 	},
 	{
@@ -541,13 +459,9 @@
 		"buildings": [
 			{
 				"first": "W_MultiAge_ANNI23A1",
-				"update": "upgrade_kit_ANNI23A"
+				"update": "upgrade_kit_ANNI23A",
+				"golden": "golden_upgrade_kit_ANNI23A"
 			}
-		],
-		"kit": [
-			"selection_kit_ANNI23A",
-			"golden_upgrade_kit_ANNI23A",
-			"fragment#selection_kit_ANNI23A"
 		]
 	},
 	{
@@ -557,8 +471,7 @@
 				"first": "W_MultiAge_ANNI23B1",
 				"update": "upgrade_kit_ANNI23B"
 			}
-		],
-		"kit": "selection_kit_ANNI23B"
+		]
 	},
 	{
 		"name": "Hanami_Bridge",
@@ -567,8 +480,7 @@
 				"first": "R_MultiAge_SpringBonus20a",
 				"update": "upgrade_kit_hanami_bridge"
 			}
-		],
-		"kit": ["selection_kit_hanami_bridge","selection_kit_epic_SPR"]
+		]
 	},
 	{
 		"name": "Celtic_Forest_Set",
@@ -593,13 +505,6 @@
 				"first": "A_MultiAge_PatrickBonusSet20a",
 				"update": "upgrade_kit_druid_willow"
 			}
-		],
-		"kit": [
-			"selection_kit_celtic_forest_set",
-			"selection_kit_celtic_trees",
-			"selection_kit_celtic_altars",
-			"selection_kit_epic_PAT23",
-			"selection_kit_epic_PAT24"
 		]
 	},
 	{
@@ -609,13 +514,6 @@
 				"first": "W_MultiAge_PAT23B1",
 				"update": "upgrade_kit_PAT23B"
 			}
-		],
-		"kit": [
-			"selection_kit_PAT23BC",
-			"selection_kit_PAT23BCD",
-			"fragment#selection_kit_PAT23BCD",
-			"selection_kit_epic_PAT24",
-			"fragment#upgrade_kit_PAT23B"			
 		]
 	},
 	{
@@ -625,14 +523,6 @@
 				"first": "W_MultiAge_PAT23C1",
 				"update": "upgrade_kit_PAT23C"
 			}
-		],
-		"kit": [
-			"fragment#building_W_MultiAge_PAT23C1",
-			"selection_kit_PAT23BC",
-			"selection_kit_PAT23BCD",
-			"fragment#selection_kit_PAT23BCD",
-			"selection_kit_epic_PAT24",
-			"fragment#upgrade_kit_PAT23C"
 		]
 	},
 	{
@@ -642,14 +532,6 @@
 				"first": "W_MultiAge_PAT23D1",
 				"update": "upgrade_kit_PAT23D"
 			}
-		],
-		"kit": [
-			"fragment#building_W_MultiAge_PAT23D1",
-			"selection_kit_PAT23BC",
-			"selection_kit_PAT23BCD",
-			"fragment#selection_kit_PAT23BCD",
-			"selection_kit_epic_PAT24",
-			"fragment#upgrade_kit_PAT23D"
 		]
 	},
 	{
@@ -659,31 +541,16 @@
 				"first": "R_MultiAge_SportBonus20a",
 				"update": "upgrade_kit_olympic_treasury"
 			}
-		],
-		"kit": ["selection_kit_olympic_treasury","selection_kit_epic_BOWL23"]
-	},
-	{
-		"name": "Olympic_Treasury",
-		"buildings": [
-			{
-				"first": "R_MultiAge_SportBonus20a",
-				"update": "upgrade_kit_olympic_treasury"
-			}
-		],
-		"kit": ["selection_kit_olympic_treasury","selection_kit_epic_BOWL23"]
+		]
 	},
 	{
 		"name": "Tarot_Card_Caravans",
 		"buildings": [
 			{
 				"first": "W_MultiAge_HalloweenBonusGP22a",
-				"update": "upgrade_kit_tarot_card_caravans"
+				"update": "upgrade_kit_tarot_card_caravans",
+				"golden": "golden_upgrade_kit_HAL22A"
 			}
-		],
-		"kit": [
-			"selection_kit_tarot_card_caravans",
-			"selection_kit_epic_HAL23",
-			"golden_upgrade_kit_HAL22A"
 		]
 	},
 	{
@@ -691,16 +558,10 @@
 		"buildings": [
 			{
 				"first": "W_MultiAge_HAL23A1",
-				"update": "upgrade_kit_HAL23A"
+				"update": "upgrade_kit_HAL23A",
+				"silver": "silver_upgrade_kit_HAL23A",
+				"golden": "golden_upgrade_kit_HAL23A"
 			}
-		],
-		"kit": [
-			"selection_kit_HAL23A",
-			"fragment#selection_kit_HAL23A",
-			"silver_upgrade_kit_HAL23A",
-			"fragment#silver_upgrade_kit_HAL23A",
-			"golden_upgrade_kit_HAL23A",
-			"fragment#golden_upgrade_kit_HAL23A"
 		]
 	},
 	{
@@ -708,12 +569,10 @@
 		"buildings": [
 			{
 				"first": "W_MultiAge_HAL23B1",
-				"update": "upgrade_kit_HAL23B"
+				"update": "upgrade_kit_HAL23B",
+				"silver" :"silver_upgrade_kit_HAL23B",
+				"gilden" : "golden_upgrade_kit_HAL23B"
 			}
-		],
-		"kit": [
-			"silver_upgrade_kit_HAL23B",
-			"golden_upgrade_kit_HAL23B"
 		]
 	},
 	{
@@ -721,14 +580,10 @@
 		"buildings": [
 			{
 				"first": "W_MultiAge_WIN22A1",
-				"update": "upgrade_kit_chocolatery"
+				"update": "upgrade_kit_chocolatery",
+				"goldenA": "golden_upgrade_kit_WIN22Aa",
+				"goldenB": "golden_upgrade_kit_WIN22Ab"
 			}
-		],
-		"kit": [
-			"selection_kit_chocolatery",
-			"selection_kit_epic_WIN23",
-			"golden_upgrade_kit_WIN22Aa",
-			"golden_upgrade_kit_WIN22Ab"
 		]
 	},
 	{
@@ -738,13 +593,7 @@
 				"first": "W_MultiAge_WIN22B1",
 				"update": "upgrade_kit_WIN22B"
 			}
-		],
-		"kit": [
-			"fragment#building_W_MultiAge_WIN22B1",
-			"selection_kit_epic_WIN23",
-			"selection_kit_WIN22B",
-			"fragment#selection_kit_WIN22B"
-			]
+		]
 	},
 	{
 		"name": "Winter_Train",
@@ -759,13 +608,6 @@
 			"D_MultiAge_WinterBonus19Freight",
 			"D_MultiAge_WinterBonus19Sleeping",
 			"D_MultiAge_WinterBonus21Parlor"
-		],
-		"kit": [ 
-			"selection_kit_winter_railway",
-			"selection_kit_winter_train",
-			"selection_kit_winter_train_carriage",
-			"selection_kit_winter_train_carriages",
-			"selection_kit_epic_WIN23"
 		]
 	},
 	{
@@ -773,20 +615,10 @@
 		"buildings": [
 			{
 				"first": "W_MultiAge_WIN23A1",
-				"update": "upgrade_kit_WIN23A"
+				"update": "upgrade_kit_WIN23A",
+				"silver": "silver_selection_kit_WIN23A",			
+				"golden": "golden_selection_kit_WIN23A"	
 			}
-		],
-		"kit": [
-			"selection_kit_WIN23A",
-			"fragment#selection_kit_WIN23A",
-			"silver_upgrade_kit_WIN23A",
-			"fragment#silver_upgrade_kit_WIN23A",
-			"golden_upgrade_kit_WIN23A",
-			"fragment#golden_upgrade_kit_WIN23A",
-			"silver_selection_kit_WIN23A",			
-			"fragment#silver_selection_kit_WIN23A"			,
-			"golden_selection_kit_WIN23A",			
-			"fragment#golden_selection_kit_WIN23A"			
 		]
 	},
 	{
@@ -794,12 +626,10 @@
 		"buildings": [
 			{
 				"first": "W_MultiAge_WIN23C1",
-				"update": "upgrade_kit_WIN23C"
+				"update": "upgrade_kit_WIN23C",
+				"silver": "silver_upgrade_kit_WIN23C",
+				"golden" : "golden_upgrade_kit_WIN23C"
 			}
-		],
-		"kit": [
-			"silver_upgrade_kit_WIN23C",
-			"golden_upgrade_kit_WIN23C"
 		]
 	},
 	{
@@ -807,20 +637,14 @@
 		"buildings": [
 			{
 				"first": "R_MultiAge_WILD23A1",
-				"update": "upgrade_kit_WILD23A"
+				"update": "upgrade_kit_WILD23A",
+				"golden" : "golden_upgrade_kit_WILD23A"
 			}
 		],
 		"assets": [
 			"D_MultiAge_WILD23B",
 			"D_MultiAge_WILD23C",
 			"D_MultiAge_WILD23D"
-		],
-		"kit": [ 
-			"selection_kit_WILD23A",
-			"selection_kit_WILD23BCD",
-			"golden_upgrade_kit_WILD23A",
-			"fragment#golden_upgrade_kit_WILD23A",
-			"selection_kit_epic_WILD24"
 		]
 	},
 	{
@@ -828,16 +652,10 @@
 		"buildings": [
 			{
 				"first": "W_MultiAge_WILD24A1",
-				"update": "upgrade_kit_WILD24A"
+				"update": "upgrade_kit_WILD24A",
+				"silver": "silver_upgrade_kit_WILD24A",
+				"golden": "golden_upgrade_kit_WILD24A"
 			}
-		],
-		"kit": [ 
-			"selection_kit_WILD24A",
-			"fragment#selection_kit_WILD24A",
-			"silver_upgrade_kit_WILD24A",
-			"fragment#silver_upgrade_kit_WILD24A",
-			"golden_upgrade_kit_WILD24A",
-			"fragment#golden_upgrade_kit_WILD24A"
 		]
 	},
 	{
@@ -847,11 +665,6 @@
 				"first": "W_MultiAge_WILD24C1",
 				"update": "upgrade_kit_WILD24C"
 			}
-		],
-		"kit": [
-			"fragment#upgrade_kit_WILD24C",
-			"selection_kit_WILD24CD",
-			"fragment#selection_kit_WILD24CD"
 		]
 	},
 	{
@@ -861,11 +674,6 @@
 				"first": "W_MultiAge_WILD24D1",
 				"update": "upgrade_kit_WILD24D"
 			}
-		],
-		"kit": [
-			"fragment#upgrade_kit_WILD24D",
-			"selection_kit_WILD24CD",
-			"fragment#selection_kit_WILD24CD"
 		]
 	},
 	{
@@ -875,10 +683,6 @@
 				"first": "W_MultiAge_WILD23F1",
 				"update": "upgrade_kit_WILD23F"
 			}
-		],
-		"kit": [
-			"selection_kit_WILD23EF",
-			"selection_kit_epic_WILD24"
 		]
 	},
 	{
@@ -888,10 +692,6 @@
 				"first": "W_MultiAge_WILD23E1",
 				"update": "upgrade_kit_WILD23E"
 			}
-		],
-		"kit": [
-			"selection_kit_WILD23EF",
-			"selection_kit_epic_WILD24"
 		]
 	},
 	{
@@ -901,10 +701,6 @@
 				"first": "R_MultiAge_HalloweenBonus19a",
 				"update": "upgrade_kit_abandoned_asylum"
 			}
-		],
-		"kit": [
-			"selection_kit_abandoned_asylum",
-			"selection_kit_epic_HAL23"
 		]
 	},
 	{
@@ -914,10 +710,6 @@
 				"first": "R_MultiAge_FallBonus19a",
 				"update": "upgrade_kit_september_cottage"
 			}
-		],
-		"kit": [
-			"selection_kit_september_cottage",
-			"selection_kit_epic_FALL23"
 		]
 	},
 	{
@@ -933,8 +725,7 @@
 			{
 				"first": "D_MultiAge_SummerBonus19Pirate"
 			}
-		],
-		"kit": "selection_kit_guard_post"
+		]
 	},
 	{
 		"name": "The_Crows_Nest",
@@ -944,8 +735,7 @@
 				"first": "R_MultiAge_SummerBonus19a",
 				"update": "upgrade_kit_crows_nest"
 			}
-		],
-		"kit": ["selection_kit_crows_nest","selection_kit_epic_SUM23"]
+		]
 	},
 	{
 		"name": "Altar_Garden",
@@ -954,11 +744,6 @@
 				"first": "R_MultiAge_SoccerBonus19a",
 				"update": "upgrade_kit_altar_garden"
 			}
-		],
-		"kit": [
-			"selection_kit_altar_garden",
-			"selection_kit_divine",
-			"selection_kit_epic_CUP23"
 		]
 	},
 	{
@@ -969,8 +754,7 @@
 				"first": "R_MultiAge_ArcheologyBonus19a",
 				"update": "upgrade_kit_worlds_fair"
 			}
-		],
-		"kit": "selection_kit_worlds_fair"
+		]
 	},
 	{
 		"name": "Piazza_Set",
@@ -995,8 +779,7 @@
 				"first": "L_AllAge_CarnivalBonus19a",
 				"update": "upgrade_kit_piazza_mask_vendor"
 			}
-		],
-		"kit": "selection_kit_piazza_set"
+		]
 	},
 	{
 		"name": "Colossus",
@@ -1005,8 +788,7 @@
 				"first": "R_MultiAge_SportBonus19a",
 				"update": "upgrade_kit_colossus"
 			}
-		],
-		"kit": ["selection_kit_colossus","selection_kit_epic_BOWL23"]
+		]
 	},
 	{
 		"name": "Pergola",
@@ -1015,8 +797,7 @@
 				"first": "W_MultiAge_BOWL23A1",
 				"update": "upgrade_kit_BOWL23A"
 			}
-		],
-		"kit": "selection_kit_BOWL23A"
+		]
 	},
 	{
 		"name": "Classical_Garden_Set",
@@ -1030,8 +811,7 @@
 			{
 				"first": "A_MultiAge_SportBonusSet18"
 			}
-		],
-		"kit": ["selection_kit_classical_garden","selection_kit_epic_BOWL23"]
+		]
 	},
 	{
 		"name": "Winter_Spire",
@@ -1040,10 +820,6 @@
 				"first": "R_MultiAge_WinterBonus18a",
 				"update": "upgrade_kit_winter_spire"
 			}
-		],
-		"kit": [
-			"selection_kit_winter_spire",
-			"selection_kit_epic_WIN23"
 		]
 	},
 	{
@@ -1053,10 +829,6 @@
 				"first": "R_MultiAge_FallBonus18a",
 				"update": "upgrade_kit_mill_of_fall"
 			}
-		],
-		"kit": [
-			"selection_kit_mill_of_fall",
-			"selection_kit_epic_FALL23"
 		]
 	},
 	{
@@ -1066,13 +838,6 @@
 				"first": "R_MultiAge_SummerBonus18a",
 				"update": "upgrade_kit_the_ship"
 			}
-		],
-		"kit": [
-			"selection_kit_the_ship",
-			"selection_kit_pirate",
-			"selection_kit_trader",
-			"selection_kit_royal",
-			"selection_kit_epic_SUM23"
 		]
 	},
 	{
@@ -1082,8 +847,7 @@
 				"first": "R_MultiAge_SportBonus18a",
 				"update": "upgrade_kit_tholos_of_idols"
 			}
-		],
-		"kit": "selection_kit_tholos_of_idols"
+		]
 	},
 	{
 		"name": "Grand_Bridge",
@@ -1092,10 +856,6 @@
 				"first": "R_MultiAge_CarnivalBonus18a",
 				"update": "upgrade_kit_grand_bridge"
 			}
-		],
-		"kit": [
-			"selection_kit_grand_bridge",
-			"selection_kit_epic_CUP23"
 		]
 	},
 	{
@@ -1105,8 +865,7 @@
 				"first": "R_MultiAge_SportBonus17a",
 				"update": "upgrade_kit_pillar"
 			}
-		],
-		"kit": "selection_kit_pillar_of_heroes"
+		]
 	},
 	{
 		"name": "Winners_Plaza",
@@ -1116,10 +875,6 @@
 				"first": "A_MultiAge_SportBonus17",
 				"update": "upgrade_kit_winners_plaza"
 			}
-		],
-		"kit": [
-			"selection_kit_winners_plaza",
-			"selection_kit_epic_CUP23"
 		]
 	},
 	{
@@ -1152,10 +907,6 @@
 			{
 				"first": "R_MultiAge_WinterBonusSet17c"
 			}
-		],
-		"kit": [
-			"selection_kit_winter_village",
-			"selection_kit_epic_WIN23"
 		]
 	},
 	{
@@ -1183,8 +934,7 @@
 			{
 				"first": "D_MultiAge_ChristmasBonusSet1b"
 			}
-		],
-		"kit": "selection_kit_winter_deco"
+		]
 	},
 	{
 		"name": "Indian_Palace_Set",
@@ -1204,8 +954,7 @@
 			{
 				"first": "D_MultiAge_SummerBonusSetA17a"
 			}
-		],
-		"kit": "selection_kit_indian_palace"
+		]
 	},
 	{
 		"name": "Indian_Fountain_Set",
@@ -1225,8 +974,7 @@
 			{
 				"first": "R_MultiAge_SummerBonusSetB17a"
 			}
-		],
-		"kit": "selection_kit_indian_fountain"
+		]
 	},
 	{
 		"name": "Royal_Garden_Set",
@@ -1240,8 +988,7 @@
 			{
 				"first": "D_MultiAge_RoyalBonusSet17a"
 			}
-		],
-		"kit": "selection_kit_royal_garden"
+		]
 	},
 	{
 		"name": "Pagoda",
@@ -1250,8 +997,7 @@
 				"first": "R_MultiAge_SpringBonus17a",
 				"update": "upgrade_kit_pagoda"
 			}
-		],
-		"kit": ["selection_kit_pagoda","selection_kit_epic_SPR"]
+		]
 	},
 	{
 		"name": "Cherry_Garden_Set",
@@ -1276,15 +1022,6 @@
 				"first": "D_MultiAge_SpringBonusSet17b",
 				"update": "upgrade_kit_sakura_rock"
 			}
-		],
-		"kit": [ 
-			"selection_kit_spring_set",
-			"selection_kit_gong_of_wisdom",
-			"selection_kit_emperors_entrance",
-			"selection_kit_nishikigoi_pond",
-			"selection_kit_zen_zone",
-			"selection_kit_sakura_rock",
-			"selection_kit_epic_SPR"
 		]
 	},
 	{
@@ -1294,10 +1031,6 @@
 				"first": "P_MultiAge_FallBonus16",
 				"update": "upgrade_kit_cider_mill"
 			}
-		],
-		"kit": [
-			"selection_kit_cider_mill",
-			"selection_kit_epic_FALL23"
 		]
 	},
 	{
@@ -1310,25 +1043,13 @@
 		]
 	},
 	{
-		"name": "Shrine_of_Inspiration",
-		"buildings": [
-			{
-				"first": "R_MultiAge_EasterBonus16"
-			}
-		],
-		"kit": [
-			"fragment#building_shrine_of_inspiration"
-		]
-	},
-	{
 		"name": "Confectionary",
 		"buildings": [
 			{
 				"first": "P_MultiAge_ChristmasBonus1",
 				"update": "upgrade_kit_confectionary"
 			}
-		],
-		"kit":	"selection_kit_epic_WIN23"
+		]
 	},
 	{
 		"name": "Graveyard",
@@ -1337,10 +1058,6 @@
 				"first": "A_MultiAge_HalloweenBonus1",
 				"update": "upgrade_kit_graveyard"
 			}
-		],
-		"kit": [
-			"selection_kit_graveyard",
-			"fragment#upgrade_kit_graveyard"
 		]
 	},
 	{
@@ -1362,10 +1079,6 @@
 				"first": "R_MultiAge_CulturalBuilding2a",
 				"update": "upgrade_kit_greater_rune_stone"
 			}
-		],
-		"kit": [
-			"selection_kit_greater_rune_stone",
-			"fragment#selection_kit_greater_rune_stone"
 		]
 	},
 	{
@@ -1384,10 +1097,6 @@
 				"first": "R_MultiAge_CulturalBuilding4a",
 				"update": "upgrade_kit_timeless_dojo"
 			}
-		],
-		"kit": [
-			"selection_kit_timeless_dojo",
-			"fragment#selection_kit_timeless_dojo"
 		]
 	},
 	{
@@ -1406,10 +1115,6 @@
 				"first": "R_MultiAge_CulturalBuilding5a",
 				"update": "upgrade_kit_ancient_obelisk"
 			}
-		],
-		"kit": [
-			"selection_kit_ancient_obelisk",
-			"fragment#selection_kit_ancient_obelisk"
 		]
 	},
 	{
@@ -1428,10 +1133,6 @@
 				"first": "R_MultiAge_CulturalBuilding8a",
 				"update": "upgrade_kit_jade_statue"
 			}
-		],
-		"kit": [
-			"selection_kit_jade_statue",
-			"fragment#selection_kit_jade_statue"
 		]
 	},
 	{
@@ -1451,10 +1152,6 @@
 				"first": "R_MultiAge_CulturalBuilding10a",
 				"update": "upgrade_kit_minaret"
 			}
-		],
-		"kit": [
-			"selection_kit_minaret",
-			"fragment#selection_kit_minaret"
 		]
 	},
 	{
@@ -1467,8 +1164,7 @@
 				"first": "P_MultiAge_Expedition16",
 				"update": "upgrade_kit_terrace_farm"
 			}
-		],
-		"kit": ["selection_kit_gex4"]
+		]
 	},
 	{
 		"name": "Fountain_of_Youth",
@@ -1486,8 +1182,7 @@
 				"first": "R_MultiAge_Expedition16b",
 				"update": "upgrade_kit_sacred_sky"
 			}
-		],
-		"kit": ["selection_kit_gex3"]
+		]
 	},
 	{
 		"name": "Tribal_Square",
@@ -1496,8 +1191,7 @@
 				"first": "R_MultiAge_Expedition16a",
 				"update": "upgrade_kit_tribal_square"
 			}
-		],
-		"kit": ["selection_kit_gex3"]
+		]
 	},
 	{
 		"name": "Gate_of_the_Sun_God",
@@ -1506,8 +1200,7 @@
 				"first": "D_MultiAge_Expedition16b",
 				"update": "upgrade_kit_gate_of_the_sun_god"
 			}
-		],
-		"kit": ["selection_kit_gex1"]
+		]
 	},
 	{
 		"name": "Face_of_the_Ancient",
@@ -1516,8 +1209,7 @@
 				"first": "D_MultiAge_Expedition16a",
 				"update": "upgrade_kit_face_of_the_ancient"
 			}
-		],
-		"kit": ["selection_kit_gex1"]
+		]
 	},
 	{
 		"name": "Ritual_Flame",
@@ -1526,8 +1218,16 @@
 				"first": "T_AllAge_Expedition16",
 				"update": "upgrade_kit_ritual_flame"
 			}
-		],
-		"kit": ["selection_kit_gex2"]
+		]
+	},
+	{
+		"name": "feathered",
+		"buildings": [
+			{
+				"first": "T_AllAge_Expedition16",
+				"update": "upgrade_kit_ritual_flame"
+			}
+		]
 	},
 	{
 		"groupname": "Antiques_Dealer"
@@ -1539,8 +1239,7 @@
 				"first": "R_MultiAge_AntiquesDealerBonus19a",
 				"update": "upgrade_kit_art_exhibition"
 			}
-		],
-		"kit": "selection_kit_art_exhibition"
+		]
 	},
 	{
 		"name": "Shrine_of_Knowledge",
@@ -1549,10 +1248,6 @@
 				"first": "R_MultiAge_EasterBonus5",
 				"update": "upgrade_kit_shrine_of_knowledge"
 			}
-		],
-		"kit": [
-			"fragment#building_shrine_of_knowledge",
-			"fragment#upgrade_kit_shrine_of_knowledge"
 		]
 	},
 	{
@@ -1565,8 +1260,7 @@
 				"first": "M_AllAge_EasterBonus1",
 				"update": "shrink_kit_rogue_hideout"
 			}
-		],
-		"kit": "selection_kit_spoils_of_war"
+		]
 	},
 	{
 		"name": "Wishing_Well",
@@ -1575,11 +1269,6 @@
 				"first": "L_AllAge_EasterBonus1",
 				"update": "shrink_kit_wishing_well"
 			}
-		],
-		"kit": [
-			"selection_kit_diplomatic_gifts",
-			"fragment#building_wishing_well",
-			"fragment#shrink_kit_wishing_well"
 		]
 	},
 	{
@@ -1588,7 +1277,6 @@
 		"kit": [
 			"renovation_kit",
 			"one_up_kit",
-			"fragment#one_up_kit",
 			"store_building"
 		]
 	},
@@ -1602,8 +1290,7 @@
 				"first": "T_AllAge_SportBonus20a",
 				"update": "upgrade_kit_sentinel_outpost"
 			}
-		],
-		"kit": "selection_kit_sentinel_outpost"
+		]
 	},
 	{
 		"name": "Tacticians_Tower",
@@ -1616,12 +1303,17 @@
 		]
 	},
 	{
-		"name": "Watchfire",
+		"name": "serpent_statue",
 		"buildings": [
 			{
-				"first": "T_AllAge_EasterBonus1",
-				"update": "upgrade_kit_watchfire"
+				"first": "R_MultiAge_Expedition22a",
+				"update": "upgrade_kit_feathered_serpent_statue"
 			}
+		],
+		"assets": [
+			"D_MultiAge_Expedition22Feathers",
+			"D_MultiAge_Expedition22Spikes",
+			"D_MultiAge_Expedition22Scales"
 		]
 	},
 	{
