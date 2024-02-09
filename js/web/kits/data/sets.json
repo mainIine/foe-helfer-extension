@@ -617,8 +617,8 @@
 			{
 				"first": "W_MultiAge_WIN23A1",
 				"update": "upgrade_kit_WIN23A",
-				"silver": "silver_selection_kit_WIN23A",			
-				"golden": "golden_selection_kit_WIN23A"	
+				"silver": "silver_upgrade_kit_WIN23A",			
+				"golden": "golden_upgrade_kit_WIN23A"	
 			}
 		]
 	},
@@ -629,7 +629,7 @@
 				"first": "W_MultiAge_WIN23C1",
 				"update": "upgrade_kit_WIN23C",
 				"silver": "silver_upgrade_kit_WIN23C",
-				"golden" : "golden_upgrade_kit_WIN23C"
+				"golden": "golden_upgrade_kit_WIN23C"
 			}
 		]
 	},
