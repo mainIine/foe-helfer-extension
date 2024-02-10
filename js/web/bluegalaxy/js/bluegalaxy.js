@@ -178,8 +178,8 @@ let BlueGalaxy = {
                         FP: FP, 
                         Goods: GoodsSum, 
                         GuildGoods: GuildGoodsSum, 
-                        In: CityEntity.times.in, 
-                        At: CityEntity.times.at
+                        In: CityEntity.state.times.in, 
+                        At: CityEntity.state.times.at
                     });
                 }
             }
