@@ -665,13 +665,21 @@ let CityMap = {
 		if (data.type != "generic_building") { // not a generic building
 			if (ceData.entity_levels.length > 0) {  // special building
 				if (ceData.entity_levels[eraId].required_population)
-					return ceData.entity_levels[eraId].required_population * -1; 	// needs population, e.g. military
+					return ceData.entity_levels[eraId].required_population * -1		// needs population, e.g. military
 				else if (ceData.entity_levels[eraId].provided_population)
-					return ceData.entity_levels[eraId].provided_population; 		// provides population, e.g. residential
+					return ceData.entity_levels[eraId].provided_population			// provides population, e.g. residential
 			}
 			else if (ceData.requirements) {
-				if (ceData.requirements.cost)
-					return ceData.requirements.cost.resources.population * -1;
+				if (ceData.requirements.cost) {
+					if (data.type === "decoration")
+						return 0
+					else if (data.type === "greatbuilding") 
+						if (data.bonus)
+							if (data.bonus.type === "population")
+								return data.bonus.value
+					
+					return ceData.requirements.cost.resources.population * -1
+				}
 			}
 		}
 		else { // generic building
@@ -688,29 +696,32 @@ let CityMap = {
 	
 	// returns 0 if building does not provide or substract happiness
 	getHappiness(ceData, data, era) {
-		let happiness = 0;
-		let eraId = Technologies.InnoEras[era];
+		let happiness = 0
+		let eraId = Technologies.InnoEras[era]
 
-		let bgHappiness = data.bonus;
+		let bgHappiness = data.bonus
 		if (data.type != "generic_building") {
 			if (ceData.entity_levels.length > 0) { // special building
 				if (ceData.entity_levels[eraId].provided_happiness)
-					return ceData.entity_levels[eraId].provided_happiness;
-				return happiness;
+					return ceData.entity_levels[eraId].provided_happiness
+				return happiness
 			}
-			else if (bgHappiness)  // great building, e.g. Alcatraz
-				return bgHappiness.value;
+			else if (bgHappiness) { // great building, e.g. Alcatraz
+				if (bgHappiness.type == "happiness")
+					return bgHappiness.value
+				return 0
+			} 
 			else if (ceData.provided_happiness)  // decorations etc.
-				return ceData.provided_happiness;
+				return ceData.provided_happiness
 			else 
-				return happiness;
+				return happiness
 		}
 		else { //generic building
 			if (ceData.components[era]) {
-				let bHappiness = ceData.components[era].happiness;
+				let bHappiness = ceData.components[era].happiness
 				if (bHappiness)
-					return (bHappiness.provided ? bHappiness.provided : happiness);
-				return happiness;
+					return (bHappiness.provided ? bHappiness.provided : happiness)
+				return happiness
 			}
 		}
 	},
@@ -1191,6 +1202,8 @@ let CityMap = {
 	},
 	
 	createNewCityMapEntity(ceData, data, era) {
+		let x = data.x || 0
+		let y = data.y || 0
 		let entity = {
 			player_id: data.player_id,
 			id: data.id,
@@ -1202,9 +1215,10 @@ let CityMap = {
 			isExpired: this.isExpiredBuilding(data),
 			isLimited: this.isLimitedBuilding(data, ceData),
 			buildTime: this.getBuildTime(data),
-			times: this.getStateTimes(data),
+			chainBuilding: this.getChainBuilding(ceData),
+			setBuilding: this.getSetBuilding(ceData),
 			
-			coords: { x: data.x, y: data.y },
+			coords: { x: x, y: y },
 			size: this.getSize(ceData),
 
 			population: this.getPopulation(ceData, data, era), 
@@ -1213,14 +1227,12 @@ let CityMap = {
 			
 			state: {
 				name: this.getState(data),
+				times: this.getStateTimes(data),
 				isPolivated: this.getPolivation(data, ceData),
 				connected: this.getConnection(ceData, data), // fyi: decorations are always connected
 				production: this.getCurrentProductions(data, ceData, era),
 			},
 			eraName: era,
-			
-			chainBuilding: this.getChainBuilding(ceData),
-			setBuilding: this.getSetBuilding(ceData),
 
 			boosts: this.getBuildingBoosts(ceData, data, era),
 			//production: this.getAllProductions(ceData, data, era),
@@ -1229,7 +1241,8 @@ let CityMap = {
 			level: (data.type == "greatbuilding" ? data.level : undefined), // level also includes eraId in raw data, we do not like that
 			max_level: (data.type == "greatbuilding" ? data.max_level : undefined)
 		}
-		//console.log('entity',entity.name, entity, ceData, data)
+		//console.log('entity',entity.name, entity.type, ceData, data)
+		//console.log(entity.name, entity.state.production)//, ceData, data)
 		return entity
 	},
 };
