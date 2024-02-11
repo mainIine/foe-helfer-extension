@@ -3,671 +3,7 @@
 		"udate": "Anniversary 2024 (11 Feb 2024)"
 	},
 	{
-		"groupname": "Guild_Battlegrounds"
-	},
-	{
-		"name": "Statue_of_Honor",
-		"buildings": [
-			{
-				"first": "R_MultiAge_Battlegrounds1a",
-				"update": "upgrade_kit_statue_of_honor"
-			}
-		],
-		"assets": [
-			"D_MultiAge_Battlegrounds2"
-		]
-	},
-	{
-		"name": "The_Great_Elephant",
-		"buildings": [
-			{
-				"first": "R_MultiAge_Battlegrounds3a",
-				"update": "upgrade_kit_great_elephant"
-			}
-		],
-		"assets": [
-			"D_MultiAge_Battlegrounds4"
-		]
-	},
-	{
-		"name": "Tower_of_Champions",
-		"buildings": [
-			{
-				"first": "W_MultiAge_GBGWatchtower2023A",
-				"update": "upgrade_kit_GBG23A"
-			}
-		]
-	},
-	{
-		"name": "Royal_Tower_of_Champions",
-		"buildings": [
-			{
-				"first": "W_MultiAge_GBGWatchtower2023C1",
-				"update": "upgrade_kit_GBG23C"
-			}
-		]
-	},
-	{
-		"name": "Wyverntide_Spire_of_Victory",
-		"buildings": [
-			{
-				"first": "W_MultiAge_GBG24A1",
-				"update": "upgrade_kit_GBG24A"
-			}
-		]
-	},
-	{
-		"name": "Wyverntide_Smithy",
-		"buildings": [
-			{
-				"first": "W_MultiAge_GBG24B1",
-				"update": "upgrade_kit_GBG24B"
-			}
-		]
-	},
-	{
 		"groupname": "Events"
-	},
-	{
-		"name": "Sunflower_Oil_Press",
-		"buildings": [
-			{
-				"first": "R_MultiAge_FallBonus22a",
-				"update": "upgrade_kit_sunflower_oil_press",
-				"golden": "golden_upgrade_kit_FALL22A"
-			}
-		]
-	},
-	{
-		"name": "Autumn_Vinyard",
-		"buildings": [
-			{
-				"first": "W_MultiAge_FALL23A1",
-				"update": "upgrade_kit_FALL23A",
-				"silver": "silver_upgrade_kit_FALL23A",
-				"golden": "golden_upgrade_kit_FALL23A"
-			}
-		]
-	},
-	{
-		"name": "Privateers_Boathouse",
-		"link": "Privateer%27s_Boathouse",
-		"buildings": [
-			{
-				"first": "W_MultiAge_SummerBonus22a",
-				"update": "upgrade_kit_privateers_boathouse"
-			}
-		]
-	},
-	{
-		"name": "Heroes_Tavern",
-		"buildings": [
-			{
-				"first": "R_MultiAge_HeroBonus22a",
-				"update": "upgrade_kit_heroes_tavern",
-				"golden": "golden_upgrade_kit_FELLOW22A"
-			}
-		]
-	},
-	{
-		"name": "Summerhold_Manor",
-		"buildings": [
-			{
-				"first": "W_MultiAge_FELL23A1",
-				"update": "upgrade_kit_FELLOW23A",
-				"golden": "golden_upgrade_kit_FELL23A"
-			}
-		]
-	},
-	{
-		"name": "Aegean_Resort",
-		"buildings": [
-			{
-				"first": "W_MultiAge_CUP23A1",
-				"update": "upgrade_kit_CUP23A",
-				"golden": "golden_upgrade_kit_CUP23A"
-			}
-		]
-	},
-	{
-		"name": "Animal_Crossing",
-		"buildings": [
-			{
-				"first": "R_MultiAge_WildBonus22a",
-				"update": "upgrade_kit_animal_crossing",
-				"golden": "golden_upgrade_kit_WILD22A"
-			}
-		]
-	},
-	{
-		"name": "Gentiana_Windmill",
-		"buildings": [
-			{
-				"first": "R_MultiAge_SoccerBonus22a",
-				"update": "upgrade_kit_gentiana_windmill",
-				"golden": "golden_upgrade_kit_CUP22A"
-			}
-		],
-		"assets": [
-			"D_MultiAge_SoccerBonus22flowerpath",
-			"D_MultiAge_SoccerBonus22rockypath",
-			"D_MultiAge_SoccerBonus22olivepath",
-			"D_MultiAge_SoccerBonus22wheatpath"
-		]
-	},
-	{
-		"name": "Butterfly_Sanctuary_Set",
-		"buildings": [
-			{
-				"first": "R_MultiAge_ArcheologyBonus22a",
-				"update": "upgrade_kit_butterfly_house"
-			}
-		],
-		"assets": [
-			"A_MultiAge_ArcheologyBonus22a",
-			"D_MultiAge_ArcheologyBonus22a",
-			"D_MultiAge_ArcheologyBonus22b",
-			"D_MultiAge_ArcheologyBonus22c",
-			"L_AllAge_ArcheologyBonus22a",
-			"L_AllAge_ArcheologyBonus22b"
-		]
-	},
-	{
-		"name": "Golden_Orrery",
-		"buildings": [
-			{
-				"first": "W_MultiAge_AgeBonus22a",
-				"update": "upgrade_kit_golden_orrery",
-				"golden": "golden_upgrade_kit_ANNI22A"
-			}
-		]
-	},
-	{
-		"name": "Stage_of_Ages",
-		"buildings": [
-			{
-				"first": "W_MultiAge_AgeBonus22",
-				"update": "upgrade_kit_ANNI22B"
-			}
-		]
-	},
-	{
-		"name": "Metro_Station",
-		"buildings": [
-			{
-				"first": "W_MultiAge_ANNI24A1",
-				"update": "upgrade_kit_ANNI24A",
-				"silver": "silver_upgrade_kit_ANNI24A",
-				"golden": "golden_upgrade_kit_ANNI24A"
-			}
-		]
-	},
-	{
-		"name": "Grand_Monarchs_Set",
-		"buildings": [
-			{
-				"first": "R_MultiAge_BirthdayBonus22a",
-				"update": "upgrade_kit_grand_king"
-			},
-			{
-				"first": "R_MultiAge_BirthdayBonus22c",
-				"update": "upgrade_kit_grand_queen"
-			}
-		]
-	},
-	{
-		"name": "Celtic_Farmstead",
-		"buildings": [
-			{
-				"first": "R_MultiAge_PatrickBonus22a",
-				"update": "upgrade_kit_celtic_farmstead"
-			}
-		]
-	},
-	{
-		"name": "Fiore_Village",
-		"buildings": [
-			{
-				"first": "R_MultiAge_ForgeBonus22a",
-				"update": "upgrade_kit_fiore_village"
-			}
-		]
-	},
-	{
-		"name": "Winter_Canal",
-		"buildings": [
-			{
-				"first": "R_MultiAge_WinterBonus21a",
-				"update": "upgrade_kit_winter_canal"
-			}
-		]
-	},
-	{
-		"name": "Horror_Circus_Set",
-		"buildings": [
-			{
-				"first": "A_MultiAge_HalloweenBonusSet21a",
-				"update": "upgrade_kit_terror_teacups"
-			},
-			{
-				"first": "L_AllAge_HalloweenBonusSet21a",
-				"update": "upgrade_kit_wheel_of_death"
-			},
-			{
-				"first": "D_MultiAge_HalloweenBonusSet21a",
-				"update": "upgrade_kit_mystical_organ"
-			},
-			{
-				"first": "R_MultiAge_HalloweenBonusSet21a",
-				"update": "upgrade_kit_helter_skelter"
-			},
-			{
-				"first": "R_MultiAge_HalloweenBonusSet21c",
-				"update": "upgrade_kit_clown_town"
-			}
-		]
-	},
-	{
-		"name": "Golden_Crops",
-		"buildings": [
-			{
-				"first": "W_MultiAge_FallBonus21a",
-				"update": "upgrade_kit_golden_crops"
-			}
-		]
-	},
-	{
-		"name": "Pirates_Hideout",
-		"link": "Pirate%27s_Hideout",
-		"buildings": [
-			{
-				"first": "R_MultiAge_SummerBonus21a",
-				"update": "upgrade_kit_pirates_hideout"
-			}
-		],
-		"assets": [
-			"D_MultiAge_SummerBonus21Boat",
-			"D_MultiAge_SummerBonus21Pier",
-			"D_MultiAge_SummerBonus21Sharks"
-		]
-	},
-	{
-		"name": "Mountain_Reserve",
-		"buildings": [
-			{
-				"first": "R_MultiAge_WildBonus21a",
-				"update": "upgrade_kit_mountain_reserve"
-			}
-		]
-	},
-	{
-		"name": "Athlon_Abbey",
-		"buildings": [
-			{
-				"first": "R_MultiAge_SoccerBonus21a",
-				"update": "upgrade_kit_athlon_abbey",
-				"golden": "golden_upgrade_kit_CUP21A"
-			}
-		]
-	},
-	{
-		"name": "Ferris_Wheel",
-		"buildings": [
-			{
-				"first": "R_MultiAge_ArcheologyBonus21a",
-				"update": "upgrade_kit_ferris_wheel"
-			}
-		]
-	},
-	{
-		"name": "Suishun_Mill",
-		"buildings": [
-			{
-				"first": "R_MultiAge_SpringBonus21a",
-				"update": "upgrade_kit_suishun_mill"
-			}
-		]
-	},
-	{
-		"name": "Druid_Temple",
-		"buildings": [
-			{
-				"first": "R_MultiAge_PatrickBonus21a",
-				"update": "upgrade_kit_druid_temple"
-			}
-		]
-	},
-	{
-		"name": "Terracotta_Vineyard",
-		"buildings": [
-			{
-				"first": "R_MultiAge_SportBonus21a",
-				"update": "upgrade_kit_terracotta_vineyard"
-			}
-		],
-		"assets": [
-			"D_MultiAge_SportBonus21Grapevines",
-			"D_MultiAge_SportBonus21Lavender",
-			"D_MultiAge_SportBonus21Cypress",
-			"D_MultiAge_SportBonus21Olive"
-		]
-	},
-	{
-		"name": "Winter_Bakery",
-		"buildings": [
-			{
-				"first": "R_MultiAge_WinterBonus20a",
-				"update": "upgrade_kit_winter_bakery"
-			}
-		]
-	},
-	{
-		"name": "House_of_Horrors",
-		"buildings": [
-			{
-				"first": "R_MultiAge_HalloweenBonus20a",
-				"update": "upgrade_kit_house_of_horrors"
-			}
-		]
-	},
-	{
-		"name": "Harvest_Farm_Set",
-		"buildings": [
-			{
-				"first": "R_MultiAge_FallBonus20a",
-				"update": "upgrade_kit_harvest_barn"
-			}
-		],
-		"assets": [
-			"A_MultiAge_FallBonus20",
-			"R_MultiAge_FallBonus20e",
-			"D_MultiAge_FallBonus20a",
-			"D_MultiAge_FallBonus20b",
-			"L_AllAge_FallBonus20a",
-			"L_AllAge_FallBonus20b"
-		]
-	},
-	{
-		"name": "Governors_Villa",
-		"link": "Governor%27s_Villa",
-		"buildings": [
-			{
-				"first": "R_MultiAge_SummerBonus20a",
-				"update": "upgrade_kit_governors_villa",
-				"golden":"golden_upgrade_kit_SUM20A"
-			}
-		]
-	},
-	{
-		"name": "Hall_of_Fame",
-		"buildings": [
-			{
-				"first": "Z_MultiAge_CupBonus1",
-				"update": "upgrade_kit_hall_of_fame"
-			}
-		]
-	},
-	{
-		"name": "Hippodrome",
-		"link": "Selection_Kit#Hippodrome_Selection_Kit",
-		"buildings": [
-			{
-				"first": "R_MultiAge_SoccerBonus20a",
-				"update": "upgrade_kit_carceres"
-			},
-			{
-				"first": "R_MultiAge_SoccerBonus20g",
-				"update": "upgrade_kit_sphendone"
-			}
-		],
-		"assets": [
-			"D_MultiAge_SoccerBonus20Leukoi",
-			"D_MultiAge_SoccerBonus20Rousioi",
-			"D_MultiAge_SoccerBonus20Venetoi"
-		]
-	},
-	{
-		"name": "Airship",
-		"buildings": [
-			{
-				"first": "R_MultiAge_ArcheologyBonus20a",
-				"update": "upgrade_kit_airship"
-			}
-		]
-	},
-	{
-		"name": "Druid_Hut",
-		"buildings": [
-			{
-				"first": "W_MultiAge_PAT23A1",
-				"update": "upgrade_kit_PAT23A",
-				"golden": "ultimate_upgrade_kit_PAT23A",
-				"platinum": "platinum_upgrade_kit_PAT23A"
-			}
-		]
-	},
-	{
-		"name": "Celtic_Tavern",
-		"buildings": [
-			{
-				"first": "W_MultiAge_PAT24A1",
-				"update": "upgrade_kit_PAT24A",
-				"silver": "silver_upgrade_kit_PAT24A",
-				"golden": "golden_upgrade_kit_PAT24A"
-			}
-		]
-	},
-	{
-		"name": "Celtic_Glassworks",
-		"buildings": [
-			{
-				"first": "W_MultiAge_PAT24C1",
-				"update": "upgrade_kit_PAT24C"
-			}
-		]
-	},
-	{
-		"name": "Trading_Post",
-		"buildings": [
-			{
-				"first": "W_MultiAge_SUM23A1",
-				"update": "upgrade_kit_SUM23A",
-				"golden": "golden_upgrade_kit_SUM23A"
-			}
-		]
-	},
-	{
-		"name": "Tower_of_Conjunction",
-		"buildings": [
-			{
-				"first": "W_MultiAge_ANNI23A1",
-				"update": "upgrade_kit_ANNI23A",
-				"golden": "golden_upgrade_kit_ANNI23A"
-			}
-		]
-	},
-	{
-		"name": "Key_Master's_Workshop",
-		"buildings": [
-			{
-				"first": "W_MultiAge_ANNI23B1",
-				"update": "upgrade_kit_ANNI23B"
-			}
-		]
-	},
-	{
-		"name": "Hanami_Bridge",
-		"buildings": [
-			{
-				"first": "R_MultiAge_SpringBonus20a",
-				"update": "upgrade_kit_hanami_bridge"
-			}
-		]
-	},
-	{
-		"name": "Celtic_Forest_Set",
-		"buildings": [
-			{
-				"first": "R_MultiAge_PatrickBonusSet20a",
-				"update": "upgrade_kit_moon_gate"
-			},
-			{
-				"first": "R_MultiAge_PatrickBonusSet20c",
-				"update": "upgrade_kit_faery_rings"
-			},
-			{
-				"first": "L_AllAge_PatrickBonusSet20a",
-				"update": "upgrade_kit_majestic_fawn"
-			},
-			{
-				"first": "D_MultiAge_PatrickBonusSet20a",
-				"update": "upgrade_kit_standing_stone"
-			},
-			{
-				"first": "A_MultiAge_PatrickBonusSet20a",
-				"update": "upgrade_kit_druid_willow"
-			}
-		]
-	},
-	{
-		"name": "Tree_of_Silence",
-		"buildings": [
-			{
-				"first": "W_MultiAge_PAT23B1",
-				"update": "upgrade_kit_PAT23B"
-			}
-		]
-	},
-	{
-		"name": "Tree_of_Patience",
-		"buildings": [
-			{
-				"first": "W_MultiAge_PAT23C1",
-				"update": "upgrade_kit_PAT23C"
-			}
-		]
-	},
-	{
-		"name": "Tree_of_Vitality",
-		"buildings": [
-			{
-				"first": "W_MultiAge_PAT23D1",
-				"update": "upgrade_kit_PAT23D"
-			}
-		]
-	},
-	{
-		"name": "Olympic_Treasury",
-		"buildings": [
-			{
-				"first": "R_MultiAge_SportBonus20a",
-				"update": "upgrade_kit_olympic_treasury"
-			}
-		]
-	},
-	{
-		"name": "Tarot_Card_Caravans",
-		"buildings": [
-			{
-				"first": "W_MultiAge_HalloweenBonusGP22a",
-				"update": "upgrade_kit_tarot_card_caravans",
-				"golden": "golden_upgrade_kit_HAL22A"
-			}
-		]
-	},
-	{
-		"name": "Laboratory_of_Monstrosities",
-		"buildings": [
-			{
-				"first": "W_MultiAge_HAL23A1",
-				"update": "upgrade_kit_HAL23A",
-				"silver": "silver_upgrade_kit_HAL23A",
-				"golden": "golden_upgrade_kit_HAL23A"
-			}
-		]
-	},
-	{
-		"name": "Sparkborn_Stormspire",
-		"buildings": [
-			{
-				"first": "W_MultiAge_HAL23B1",
-				"update": "upgrade_kit_HAL23B",
-				"silver" :"silver_upgrade_kit_HAL23B",
-				"gilden" : "golden_upgrade_kit_HAL23B"
-			}
-		]
-	},
-	{
-		"name": "Chocolatery",
-		"buildings": [
-			{
-				"first": "W_MultiAge_WIN22A1",
-				"update": "upgrade_kit_chocolatery",
-				"goldenA": "golden_upgrade_kit_WIN22Aa",
-				"goldenB": "golden_upgrade_kit_WIN22Ab"
-			}
-		]
-	},
-	{
-		"name": "Nutcracker_Guardhouse",
-		"buildings": [
-			{
-				"first": "W_MultiAge_WIN22B1",
-				"update": "upgrade_kit_WIN22B"
-			}
-		]
-	},
-	{
-		"name": "Winter_Train",
-		"buildings": [
-			{
-				"first": "R_MultiAge_WinterBonus19a",
-				"update": "upgrade_kit_winter_train"
-			}
-		],
-		"assets": [
-			"D_MultiAge_WinterBonus19Dining",
-			"D_MultiAge_WinterBonus19Freight",
-			"D_MultiAge_WinterBonus19Sleeping",
-			"D_MultiAge_WinterBonus21Parlor"
-		]
-	},
-	{
-		"name": "Winter_Wonderland_Pyramid",
-		"buildings": [
-			{
-				"first": "W_MultiAge_WIN23A1",
-				"update": "upgrade_kit_WIN23A",
-				"silver": "silver_upgrade_kit_WIN23A",			
-				"golden": "golden_upgrade_kit_WIN23A"	
-			}
-		]
-	},
-	{
-		"name": "Elfies_Nog_Shop",
-		"buildings": [
-			{
-				"first": "W_MultiAge_WIN23C1",
-				"update": "upgrade_kit_WIN23C",
-				"silver": "silver_upgrade_kit_WIN23C",
-				"golden": "golden_upgrade_kit_WIN23C"
-			}
-		]
-	},
-	{
-		"name": "Panda_Reserve",
-		"buildings": [
-			{
-				"first": "R_MultiAge_WILD23A1",
-				"update": "upgrade_kit_WILD23A",
-				"golden" : "golden_upgrade_kit_WILD23A"
-			}
-		],
-		"assets": [
-			"D_MultiAge_WILD23B",
-			"D_MultiAge_WILD23C",
-			"D_MultiAge_WILD23D"
-		]
 	},
 	{
 		"name": "Flamingo_Habitat",
@@ -699,6 +35,21 @@
 		]
 	},
 	{
+		"name": "Panda_Reserve",
+		"buildings": [
+			{
+				"first": "R_MultiAge_WILD23A1",
+				"update": "upgrade_kit_WILD23A",
+				"golden" : "golden_upgrade_kit_WILD23A"
+			}
+		],
+		"assets": [
+			"D_MultiAge_WILD23B",
+			"D_MultiAge_WILD23C",
+			"D_MultiAge_WILD23D"
+		]
+	},
+	{
 		"name": "Rhododendron_Field",
 		"buildings": [
 			{
@@ -717,121 +68,63 @@
 		]
 	},
 	{
-		"name": "Abandoned_Asylum",
+		"name": "Animal_Crossing",
 		"buildings": [
 			{
-				"first": "R_MultiAge_HalloweenBonus19a",
-				"update": "upgrade_kit_abandoned_asylum"
+				"first": "R_MultiAge_WildBonus22a",
+				"update": "upgrade_kit_animal_crossing",
+				"golden": "golden_upgrade_kit_WILD22A"
 			}
 		]
 	},
 	{
-		"name": "September_Cottage",
+		"name": "Mountain_Reserve",
 		"buildings": [
 			{
-				"first": "R_MultiAge_FallBonus19a",
-				"update": "upgrade_kit_september_cottage"
+				"first": "R_MultiAge_WildBonus21a",
+				"update": "upgrade_kit_mountain_reserve"
 			}
 		]
 	},
 	{
-		"name": "Guard_Post",
-		"link": "Selection_Kit#Guard_Post_Selection_Kit",
+		"name": "Winter_Wonderland_Pyramid",
 		"buildings": [
 			{
-				"first": "D_MultiAge_SummerBonus19Royal"
-			},
-			{
-				"first": "D_MultiAge_SummerBonus19Trader"
-			},
-			{
-				"first": "D_MultiAge_SummerBonus19Pirate"
+				"first": "W_MultiAge_WIN23A1",
+				"update": "upgrade_kit_WIN23A",
+				"silver": "silver_upgrade_kit_WIN23A",			
+				"golden": "golden_upgrade_kit_WIN23A"	
 			}
 		]
 	},
 	{
-		"name": "The_Crows_Nest",
-		"link": "The_Crow%27s_Nest",
+		"name": "Elfies_Nog_Shop",
 		"buildings": [
 			{
-				"first": "R_MultiAge_SummerBonus19a",
-				"update": "upgrade_kit_crows_nest"
+				"first": "W_MultiAge_WIN23C1",
+				"update": "upgrade_kit_WIN23C",
+				"silver": "silver_upgrade_kit_WIN23C",
+				"golden": "golden_upgrade_kit_WIN23C"
 			}
 		]
 	},
 	{
-		"name": "Altar_Garden",
+		"name": "Chocolatery",
 		"buildings": [
 			{
-				"first": "R_MultiAge_SoccerBonus19a",
-				"update": "upgrade_kit_altar_garden"
+				"first": "W_MultiAge_WIN22A1",
+				"update": "upgrade_kit_chocolatery",
+				"goldenA": "golden_upgrade_kit_WIN22Aa",
+				"goldenB": "golden_upgrade_kit_WIN22Ab"
 			}
 		]
 	},
 	{
-		"name": "Worlds_Fair",
-		"link": "World%27s_Fair",
+		"name": "Nutcracker_Guardhouse",
 		"buildings": [
 			{
-				"first": "R_MultiAge_ArcheologyBonus19a",
-				"update": "upgrade_kit_worlds_fair"
-			}
-		]
-	},
-	{
-		"name": "Piazza_Set",
-		"buildings": [
-			{
-				"first": "R_MultiAge_CarnivalBonus19a",
-				"update": "upgrade_kit_piazza_homes"
-			},
-			{
-				"first": "D_MultiAge_CarnivalBonus19a",
-				"update": "upgrade_kit_piazza_fountain"
-			},
-			{
-				"first": "A_MultiAge_CarnivalBonus19a",
-				"update": "upgrade_kit_piazza_clock_tower"
-			},
-			{
-				"first": "R_MultiAge_CarnivalBonus19c",
-				"update": "upgrade_kit_piazza_cafe"
-			},
-			{
-				"first": "L_AllAge_CarnivalBonus19a",
-				"update": "upgrade_kit_piazza_mask_vendor"
-			}
-		]
-	},
-	{
-		"name": "Colossus",
-		"buildings": [
-			{
-				"first": "R_MultiAge_SportBonus19a",
-				"update": "upgrade_kit_colossus"
-			}
-		]
-	},
-	{
-		"name": "Pergola",
-		"buildings": [
-			{
-				"first": "W_MultiAge_BOWL23A1",
-				"update": "upgrade_kit_BOWL23A"
-			}
-		]
-	},
-	{
-		"name": "Classical_Garden_Set",
-		"buildings": [
-			{
-				"first": "R_MultiAge_SportBonusSet18"
-			},
-			{
-				"first": "D_MultiAge_SportBonusSet18"
-			},
-			{
-				"first": "A_MultiAge_SportBonusSet18"
+				"first": "W_MultiAge_WIN22B1",
+				"update": "upgrade_kit_WIN22B"
 			}
 		]
 	},
@@ -845,57 +138,11 @@
 		]
 	},
 	{
-		"name": "Mill_of_Fall",
+		"name": "Confectionary",
 		"buildings": [
 			{
-				"first": "R_MultiAge_FallBonus18a",
-				"update": "upgrade_kit_mill_of_fall"
-			}
-		]
-	},
-	{
-		"name": "The_Ship",
-		"buildings": [
-			{
-				"first": "R_MultiAge_SummerBonus18a",
-				"update": "upgrade_kit_the_ship"
-			}
-		]
-	},
-	{
-		"name": "Tholos_of_Idols",
-		"buildings": [
-			{
-				"first": "R_MultiAge_SportBonus18a",
-				"update": "upgrade_kit_tholos_of_idols"
-			}
-		]
-	},
-	{
-		"name": "Grand_Bridge",
-		"buildings": [
-			{
-				"first": "R_MultiAge_CarnivalBonus18a",
-				"update": "upgrade_kit_grand_bridge"
-			}
-		]
-	},
-	{
-		"name": "Pillar_of_Heroes",
-		"buildings": [
-			{
-				"first": "R_MultiAge_SportBonus17a",
-				"update": "upgrade_kit_pillar"
-			}
-		]
-	},
-	{
-		"name": "Winners_Plaza",
-		"link": "Winners%27_Plaza",
-		"buildings": [
-			{
-				"first": "A_MultiAge_SportBonus17",
-				"update": "upgrade_kit_winners_plaza"
+				"first": "P_MultiAge_ChristmasBonus1",
+				"update": "upgrade_kit_confectionary"
 			}
 		]
 	},
@@ -959,6 +206,209 @@
 		]
 	},
 	{
+		"name": "Winter_Train",
+		"buildings": [
+			{
+				"first": "R_MultiAge_WinterBonus19a",
+				"update": "upgrade_kit_winter_train"
+			}
+		],
+		"assets": [
+			"D_MultiAge_WinterBonus19Dining",
+			"D_MultiAge_WinterBonus19Freight",
+			"D_MultiAge_WinterBonus19Sleeping",
+			"D_MultiAge_WinterBonus21Parlor"
+		]
+	},
+	{
+		"name": "Winter_Bakery",
+		"buildings": [
+			{
+				"first": "R_MultiAge_WinterBonus20a",
+				"update": "upgrade_kit_winter_bakery"
+			}
+		]
+	},
+	{
+		"name": "Tarot_Card_Caravans",
+		"buildings": [
+			{
+				"first": "W_MultiAge_HalloweenBonusGP22a",
+				"update": "upgrade_kit_tarot_card_caravans",
+				"golden": "golden_upgrade_kit_HAL22A"
+			}
+		]
+	},
+	{
+		"name": "Laboratory_of_Monstrosities",
+		"buildings": [
+			{
+				"first": "W_MultiAge_HAL23A1",
+				"update": "upgrade_kit_HAL23A",
+				"silver": "silver_upgrade_kit_HAL23A",
+				"golden": "golden_upgrade_kit_HAL23A"
+			}
+		]
+	},
+	{
+		"name": "Sparkborn_Stormspire",
+		"buildings": [
+			{
+				"first": "W_MultiAge_HAL23B1",
+				"update": "upgrade_kit_HAL23B",
+				"silver" :"silver_upgrade_kit_HAL23B",
+				"gilden" : "golden_upgrade_kit_HAL23B"
+			}
+		]
+	},
+	{
+		"name": "Tarot_Card_Caravans",
+		"buildings": [
+			{
+				"first": "W_MultiAge_HalloweenBonusGP22a",
+				"update": "upgrade_kit_tarot_card_caravans",
+				"golden": "golden_upgrade_kit_HAL22A"
+			}
+		]
+	},
+	{
+		"name": "Horror_Circus_Set",
+		"buildings": [
+			{
+				"first": "A_MultiAge_HalloweenBonusSet21a",
+				"update": "upgrade_kit_terror_teacups"
+			},
+			{
+				"first": "L_AllAge_HalloweenBonusSet21a",
+				"update": "upgrade_kit_wheel_of_death"
+			},
+			{
+				"first": "D_MultiAge_HalloweenBonusSet21a",
+				"update": "upgrade_kit_mystical_organ"
+			},
+			{
+				"first": "R_MultiAge_HalloweenBonusSet21a",
+				"update": "upgrade_kit_helter_skelter"
+			},
+			{
+				"first": "R_MultiAge_HalloweenBonusSet21c",
+				"update": "upgrade_kit_clown_town"
+			}
+		]
+	},
+	{
+		"name": "House_of_Horrors",
+		"buildings": [
+			{
+				"first": "R_MultiAge_HalloweenBonus20a",
+				"update": "upgrade_kit_house_of_horrors"
+			}
+		],
+		"assets": [
+			"A_MultiAge_FallBonus20",
+			"R_MultiAge_FallBonus20e",
+			"D_MultiAge_FallBonus20a",
+			"D_MultiAge_FallBonus20b",
+			"L_AllAge_FallBonus20a",
+			"L_AllAge_FallBonus20b"
+		]
+	},
+	{
+		"name": "Abandoned_Asylum",
+		"buildings": [
+			{
+				"first": "R_MultiAge_HalloweenBonus19a",
+				"update": "upgrade_kit_abandoned_asylum"
+			}
+		]
+	},
+	{
+		"name": "Autumn_Vinyard",
+		"buildings": [
+			{
+				"first": "W_MultiAge_FALL23A1",
+				"update": "upgrade_kit_FALL23A",
+				"silver": "silver_upgrade_kit_FALL23A",
+				"golden": "golden_upgrade_kit_FALL23A"
+			}
+		]
+	},
+	{
+		"name": "Sunflower_Oil_Press",
+		"buildings": [
+			{
+				"first": "R_MultiAge_FallBonus22a",
+				"update": "upgrade_kit_sunflower_oil_press",
+				"golden": "golden_upgrade_kit_FALL22A"
+			}
+		]
+	},
+	{
+		"name": "Golden_Crops",
+		"buildings": [
+			{
+				"first": "W_MultiAge_FallBonus21a",
+				"update": "upgrade_kit_golden_crops"
+			}
+		]
+	},
+	{
+		"name": "Indian_Palace_Set",
+		"buildings": [
+			{
+				"first": "R_MultiAge_FallBonus20a",
+				"update": "upgrade_kit_harvest_barn"
+			}
+		],
+		"assets": [
+			"A_MultiAge_FallBonus20",
+			"R_MultiAge_FallBonus20e",
+			"D_MultiAge_FallBonus20a",
+			"D_MultiAge_FallBonus20b",
+			"L_AllAge_FallBonus20a",
+			"L_AllAge_FallBonus20b"
+		]
+	},
+	{
+		"name": "September_Cottage",
+		"buildings": [
+			{
+				"first": "R_MultiAge_FallBonus19a",
+				"update": "upgrade_kit_september_cottage"
+			}
+		]
+	},
+	{
+		"name": "Governors_Villa",
+		"link": "Governor%27s_Villa",
+		"buildings": [
+			{
+				"first": "R_MultiAge_SummerBonus20a",
+				"update": "upgrade_kit_governors_villa",
+				"golden":"golden_upgrade_kit_SUM20A"
+			}
+		]
+	},
+	{
+		"name": "Privateers_Boathouse",
+		"link": "Privateer%27s_Boathouse",
+		"buildings": [
+			{
+				"first": "W_MultiAge_SummerBonus22a",
+				"update": "upgrade_kit_privateers_boathouse"
+			}
+		]
+	},
+	{
+		"name": "The_Ship",
+		"buildings": [
+			{
+				"first": "R_MultiAge_SummerBonus18a",
+				"update": "upgrade_kit_the_ship"
+			}
+		]
+	},
+	{
 		"name": "Indian_Palace_Set",
 		"buildings": [
 			{
@@ -999,6 +449,489 @@
 		]
 	},
 	{
+		"name": "Summerhold_Manor",
+		"buildings": [
+			{
+				"first": "W_MultiAge_FELL23A1",
+				"update": "upgrade_kit_FELLOW23A",
+				"golden": "golden_upgrade_kit_FELL23A"
+			}
+		]
+	},
+	{
+		"name": "Pirates_Hideout",
+		"link": "Pirate%27s_Hideout",
+		"buildings": [
+			{
+				"first": "R_MultiAge_SummerBonus21a",
+				"update": "upgrade_kit_pirates_hideout"
+			}
+		],
+		"assets": [
+			"D_MultiAge_SummerBonus21Boat",
+			"D_MultiAge_SummerBonus21Pier",
+			"D_MultiAge_SummerBonus21Sharks"
+		]
+	},
+	{
+		"name": "Guard_Post",
+		"link": "Selection_Kit#Guard_Post_Selection_Kit",
+		"buildings": [
+			{
+				"first": "D_MultiAge_SummerBonus19Royal"
+			},
+			{
+				"first": "D_MultiAge_SummerBonus19Trader"
+			},
+			{
+				"first": "D_MultiAge_SummerBonus19Pirate"
+			}
+		],
+		"assets": [
+			"D_MultiAge_SoccerBonus22flowerpath",
+			"D_MultiAge_SoccerBonus22rockypath",
+			"D_MultiAge_SoccerBonus22olivepath",
+			"D_MultiAge_SoccerBonus22wheatpath"
+		]
+	},
+	{
+		"name": "The_Crows_Nest",
+		"link": "The_Crow%27s_Nest",
+		"buildings": [
+			{
+				"first": "R_MultiAge_SummerBonus19a",
+				"update": "upgrade_kit_crows_nest"
+			}
+		]
+	},
+	{
+		"name": "Summerhold_Manor",
+		"buildings": [
+			{
+				"first": "W_MultiAge_FELL23A1",
+				"update": "upgrade_kit_FELLOW23A",
+				"golden": "golden_upgrade_kit_FELL23A"
+			}
+		]
+	},
+	{
+		"name": "Heroes_Tavern",
+		"buildings": [
+			{
+				"first": "R_MultiAge_HeroBonus22a",
+				"update": "upgrade_kit_heroes_tavern",
+				"golden": "golden_upgrade_kit_FELLOW22A"
+			}
+		]
+	},
+	{
+		"name": "Gentiana_Windmill",
+		"buildings": [
+			{
+				"first": "R_MultiAge_SoccerBonus22a",
+				"update": "upgrade_kit_gentiana_windmill",
+				"golden": "golden_upgrade_kit_CUP22A"
+			}
+		],
+		"assets": [
+			"D_MultiAge_SoccerBonus22flowerpath",
+			"D_MultiAge_SoccerBonus22rockypath",
+			"D_MultiAge_SoccerBonus22olivepath",
+			"D_MultiAge_SoccerBonus22wheatpath"
+		]
+	},
+	{
+		"name": "Athlon_Abbey",
+		"buildings": [
+			{
+				"first": "R_MultiAge_SoccerBonus21a",
+				"update": "upgrade_kit_athlon_abbey",
+				"golden": "golden_upgrade_kit_CUP21A"
+			}
+		]
+	},
+	{
+		"name": "Hippodrome",
+		"link": "Selection_Kit#Hippodrome_Selection_Kit",
+		"buildings": [
+			{
+				"first": "R_MultiAge_SoccerBonus20a",
+				"update": "upgrade_kit_carceres"
+			},
+			{
+				"first": "R_MultiAge_SoccerBonus20g",
+				"update": "upgrade_kit_sphendone"
+			}
+		],
+		"assets": [
+			"D_MultiAge_SoccerBonus20Leukoi",
+			"D_MultiAge_SoccerBonus20Rousioi",
+			"D_MultiAge_SoccerBonus20Venetoi"
+		]
+	},
+	{
+		"name": "Altar_Garden",
+		"buildings": [
+			{
+				"first": "R_MultiAge_SoccerBonus19a",
+				"update": "upgrade_kit_altar_garden"
+			}
+		]
+	},
+	{
+		"name": "Celtic_Tavern",
+		"buildings": [
+			{
+				"first": "W_MultiAge_PAT24A1",
+				"update": "upgrade_kit_PAT24A",
+				"silver": "silver_upgrade_kit_PAT24A",
+				"golden": "golden_upgrade_kit_PAT24A"
+			}
+		]
+	},
+	{
+		"name": "Celtic_Glassworks",
+		"buildings": [
+			{
+				"first": "W_MultiAge_PAT24C1",
+				"update": "upgrade_kit_PAT24C"
+			}
+		]
+	},
+	{
+		"name": "Druid_Hut",
+		"buildings": [
+			{
+				"first": "W_MultiAge_PAT23A1",
+				"update": "upgrade_kit_PAT23A",
+				"golden": "ultimate_upgrade_kit_PAT23A",
+				"platinum": "platinum_upgrade_kit_PAT23A"
+			}
+		]
+	},
+	{
+		"name": "Tree_of_Silence",
+		"buildings": [
+			{
+				"first": "W_MultiAge_PAT23B1",
+				"update": "upgrade_kit_PAT23B"
+			}
+		]
+	},
+	{
+		"name": "Tree_of_Patience",
+		"buildings": [
+			{
+				"first": "W_MultiAge_PAT23C1",
+				"update": "upgrade_kit_PAT23C"
+			}
+		]
+	},
+	{
+		"name": "Tree_of_Vitality",
+		"buildings": [
+			{
+				"first": "W_MultiAge_PAT23D1",
+				"update": "upgrade_kit_PAT23D"
+			}
+		]
+	},
+	{
+		"name": "Celtic_Farmstead",
+		"buildings": [
+			{
+				"first": "R_MultiAge_PatrickBonus22a",
+				"update": "upgrade_kit_celtic_farmstead"
+			}
+		]
+	},
+	{
+		"name": "Druid_Temple",
+		"buildings": [
+			{
+				"first": "R_MultiAge_PatrickBonus21a",
+				"update": "upgrade_kit_druid_temple"
+			}
+		]
+	},
+	{
+		"name": "Celtic_Forest_Set",
+		"buildings": [
+			{
+				"first": "R_MultiAge_PatrickBonusSet20a",
+				"update": "upgrade_kit_moon_gate"
+			},
+			{
+				"first": "R_MultiAge_PatrickBonusSet20c",
+				"update": "upgrade_kit_faery_rings"
+			},
+			{
+				"first": "L_AllAge_PatrickBonusSet20a",
+				"update": "upgrade_kit_majestic_fawn"
+			},
+			{
+				"first": "D_MultiAge_PatrickBonusSet20a",
+				"update": "upgrade_kit_standing_stone"
+			},
+			{
+				"first": "A_MultiAge_PatrickBonusSet20a",
+				"update": "upgrade_kit_druid_willow"
+			}
+		]
+	},
+	{
+		"name": "Tower_of_Conjunction",
+		"buildings": [
+			{
+				"first": "W_MultiAge_ANNI23A1",
+				"update": "upgrade_kit_ANNI23A",
+				"golden": "golden_upgrade_kit_ANNI23A"
+			}
+		]
+	},
+	{
+		"name": "Key_Master's_Workshop",
+		"buildings": [
+			{
+				"first": "W_MultiAge_ANNI23B1",
+				"update": "upgrade_kit_ANNI23B"
+			}
+		]
+	},
+	{
+		"name": "Golden_Orrery",
+		"buildings": [
+			{
+				"first": "W_MultiAge_AgeBonus22a",
+				"update": "upgrade_kit_golden_orrery",
+				"silver": "silver_update_kit_ANNI24A",
+				"golden": "golden_update_kit_ANNI22A"
+			}
+		]
+	},
+	{
+		"name": "Stage_of_Ages",
+		"buildings": [
+			{
+				"first": "W_MultiAge_AgeBonus22",
+				"update": "update_kit_ANNI22B"
+			}
+		]
+	},
+	{
+		"name": "Worlds_Fair",
+		"link": "World%27s_Fair",
+		"buildings": [
+			{
+				"first": "R_MultiAge_ArcheologyBonus19a",
+				"update": "upgrade_kit_worlds_fair"
+			}
+		]
+	},
+	{
+		"name": "Grand_Monarchs_Set",
+		"buildings": [
+			{
+				"first": "R_MultiAge_BirthdayBonus22a",
+				"update": "upgrade_kit_grand_king"
+			},
+			{
+				"first": "R_MultiAge_BirthdayBonus22c",
+				"update": "upgrade_kit_grand_queen"
+			}
+		]
+	},
+	{
+		"name": "Butterfly_Sanctuary_Set",
+		"buildings": [
+			{
+				"first": "R_MultiAge_ArcheologyBonus22a",
+				"update": "upgrade_kit_butterfly_house"
+			}
+		],
+		"assets": [
+			"A_MultiAge_ArcheologyBonus22a",
+			"D_MultiAge_ArcheologyBonus22a",
+			"D_MultiAge_ArcheologyBonus22b",
+			"D_MultiAge_ArcheologyBonus22c",
+			"L_AllAge_ArcheologyBonus22a",
+			"L_AllAge_ArcheologyBonus22b"
+		]
+	},
+	{
+		"name": "Ferris_Wheel",
+		"buildings": [
+			{
+				"first": "R_MultiAge_ArcheologyBonus21a",
+				"update": "upgrade_kit_ferris_wheel"
+			}
+		]
+	},
+	{
+		"name": "Airship",
+		"buildings": [
+			{
+				"first": "R_MultiAge_ArcheologyBonus20a",
+				"update": "upgrade_kit_airship"
+			}
+		]
+	},
+	{
+		"name": "Hall_of_Fame",
+		"buildings": [
+			{
+				"first": "Z_MultiAge_CupBonus1",
+				"update": "upgrade_kit_hall_of_fame"
+			}
+		]
+	},
+	{
+		"name": "Olympic_Treasury",
+		"buildings": [
+			{
+				"first": "R_MultiAge_SportBonus20a",
+				"update": "upgrade_kit_olympic_treasury"
+			}
+		]
+	},
+	{
+		"name": "Piazza_Set",
+		"buildings": [
+			{
+				"first": "R_MultiAge_CarnivalBonus19a",
+				"update": "upgrade_kit_piazza_homes"
+			},
+			{
+				"first": "D_MultiAge_CarnivalBonus19a",
+				"update": "upgrade_kit_piazza_fountain"
+			},
+			{
+				"first": "A_MultiAge_CarnivalBonus19a",
+				"update": "upgrade_kit_piazza_clock_tower"
+			},
+			{
+				"first": "R_MultiAge_CarnivalBonus19c",
+				"update": "upgrade_kit_piazza_cafe"
+			},
+			{
+				"first": "L_AllAge_CarnivalBonus19a",
+				"update": "upgrade_kit_piazza_mask_vendor"
+			}
+		]
+	},
+	{
+		"name": "Colossus",
+		"buildings": [
+			{
+				"first": "R_MultiAge_SportBonus19a",
+				"update": "upgrade_kit_colossus"
+			}
+		]
+	},
+	{
+		"name": "Pergola",
+		"buildings": [
+			{
+				"first": "W_MultiAge_BOWL23A1",
+				"update": "upgrade_kit_BOWL23A"
+			}
+		]
+	},
+	{
+		"name": "Fiore_Village",
+		"buildings": [
+			{
+				"first": "R_MultiAge_ForgeBonus22a",
+				"update": "upgrade_kit_fiore_village"
+			}
+		]
+	},
+	{
+		"name": "Terracotta_Vineyard",
+		"buildings": [
+			{
+				"first": "R_MultiAge_SportBonus21a",
+				"update": "upgrade_kit_terracotta_vineyard"
+			}
+		],
+		"assets": [
+			"D_MultiAge_SportBonus21Grapevines",
+			"D_MultiAge_SportBonus21Lavender",
+			"D_MultiAge_SportBonus21Cypress",
+			"D_MultiAge_SportBonus21Olive"
+		]
+	},
+	{
+		"name": "Aegean_Resort",
+		"buildings": [
+			{
+				"first": "W_MultiAge_CUP23A1",
+				"update": "upgrade_kit_CUP23A",
+				"golden": "golden_upgrade_kit_CUP23A"
+			}
+		]
+	},
+	{
+		"name": "Classical_Garden_Set",
+		"buildings": [
+			{
+				"first": "R_MultiAge_SportBonusSet18"
+			},
+			{
+				"first": "D_MultiAge_SportBonusSet18"
+			},
+			{
+				"first": "A_MultiAge_SportBonusSet18"
+			}
+		]
+	},
+	{
+		"name": "Mill_of_Fall",
+		"buildings": [
+			{
+				"first": "R_MultiAge_FallBonus18a",
+				"update": "upgrade_kit_mill_of_fall"
+			}
+		]
+	},
+	{
+		"name": "Tholos_of_Idols",
+		"buildings": [
+			{
+				"first": "R_MultiAge_SportBonus18a",
+				"update": "upgrade_kit_tholos_of_idols"
+			}
+		]
+	},
+	{
+		"name": "Grand_Bridge",
+		"buildings": [
+			{
+				"first": "R_MultiAge_CarnivalBonus18a",
+				"update": "upgrade_kit_grand_bridge"
+			}
+		]
+	},
+	{
+		"name": "Pillar_of_Heroes",
+		"buildings": [
+			{
+				"first": "R_MultiAge_SportBonus17a",
+				"update": "upgrade_kit_pillar"
+			}
+		]
+	},
+	{
+		"name": "Winners_Plaza",
+		"link": "Winners%27_Plaza",
+		"buildings": [
+			{
+				"first": "A_MultiAge_SportBonus17",
+				"update": "upgrade_kit_winners_plaza"
+			}
+		]
+	},
+	{
 		"name": "Royal_Garden_Set",
 		"buildings": [
 			{
@@ -1009,6 +942,24 @@
 			},
 			{
 				"first": "D_MultiAge_RoyalBonusSet17a"
+			}
+		]
+	},
+	{
+		"name": "Suishun_Mill",
+		"buildings": [
+			{
+				"first": "R_MultiAge_SpringBonus21a",
+				"update": "upgrade_kit_suishun_mill"
+			}
+		]
+	},
+	{
+		"name": "Hanami_Bridge",
+		"buildings": [
+			{
+				"first": "R_MultiAge_SpringBonus20a",
+				"update": "upgrade_kit_hanami_bridge"
 			}
 		]
 	},
@@ -1061,15 +1012,6 @@
 			{
 				"first": "A_MultiAge_MayDayBonus16",
 				"update": "upgrade_kit_maypole"
-			}
-		]
-	},
-	{
-		"name": "Confectionary",
-		"buildings": [
-			{
-				"first": "P_MultiAge_ChristmasBonus1",
-				"update": "upgrade_kit_confectionary"
 			}
 		]
 	},
@@ -1173,6 +1115,69 @@
 			{
 				"first": "R_MultiAge_CulturalBuilding10a",
 				"update": "upgrade_kit_minaret"
+			}
+		]
+	},
+	{
+		"groupname": "Guild_Battlegrounds"
+	},
+	{
+		"name": "Statue_of_Honor",
+		"buildings": [
+			{
+				"first": "R_MultiAge_Battlegrounds1a",
+				"update": "upgrade_kit_statue_of_honor"
+			}
+		],
+		"assets": [
+			"D_MultiAge_Battlegrounds2"
+		]
+	},
+	{
+		"name": "The_Great_Elephant",
+		"buildings": [
+			{
+				"first": "R_MultiAge_Battlegrounds3a",
+				"update": "upgrade_kit_great_elephant"
+			}
+		],
+		"assets": [
+			"D_MultiAge_Battlegrounds4"
+		]
+	},
+	{
+		"name": "Tower_of_Champions",
+		"buildings": [
+			{
+				"first": "W_MultiAge_GBGWatchtower2023A",
+				"update": "upgrade_kit_GBG23A"
+			}
+		]
+	},
+	{
+		"name": "Royal_Tower_of_Champions",
+		"buildings": [
+			{
+				"first": "W_MultiAge_GBGWatchtower2023C1",
+				"update": "upgrade_kit_GBG23C"
+			}
+		]
+	},
+	{
+		"name": "Wyverntide_Spire_of_Victory",
+		"buildings": [
+			{
+				"first": "W_MultiAge_GBG24A1",
+				"update": "upgrade_kit_GBG24A"
+			}
+		]
+	},
+	{
+		"name": "Wyverntide_Smithy",
+		"buildings": [
+			{
+				"first": "W_MultiAge_GBG24B1",
+				"update": "upgrade_kit_GBG24B"
 			}
 		]
 	},
