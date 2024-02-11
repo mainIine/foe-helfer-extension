@@ -405,8 +405,12 @@ let Kits = {
 				id =  (x.item.reward.assembledReward.type == "building") ? "fragment#"+x.item.reward.assembledReward.subType : id = "fragment#"+x.item.reward.assembledReward.id ;
 				amount = x.inStock*x.item.reward.amount;
 				required = x.item.reward.requiredAmount;
-			}	
-			Ret[id] = {id:id,name:x.name,inStock:amount,required:required,itemAssetName:x.itemAssetName}
+			}
+			if (!Ret[id]) {
+				Ret[id] = {id:id,name:x.name,inStock:amount,required:required,itemAssetName:x.itemAssetName}
+			} else {
+				Ret[id].inStock += amount
+			}
 		}
 		return Ret;
     },
