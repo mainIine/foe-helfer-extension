@@ -45,6 +45,7 @@ let Kits = {
 		"selection_kit_gentiana_windmill_farmland":"selection_kit_gentiana_farmland",
 		"selection_kit_W_MultiAge_WIN22A":"selection_kit_chocolatery",
 		"selection_kit_winter_cars":"selection_kit_winter_train_carriage",
+		"golden_upgrade_kit_FELL23A":"golden_upgrade_kit_FELLOW23A"
 	},
 
 	/**
@@ -171,7 +172,7 @@ let Kits = {
 						item: inv[id] || (type=="first" ? entities[id] : (type=="asset" ? entities[id] : id)),
 						fragments: inv["fragment#" + id]?.inStock,
 						reqFragments: inv["fragment#" + id]?.required,
-						missing: (inv[id]?.inStock || 0) < 1
+						missing: ((inv[id]?.inStock || 0) < 1) && (((inv["fragment#" + id]?.inStock)||0) < 1)
 			}				
 			return item
 		}
@@ -208,17 +209,15 @@ let Kits = {
 				// Level 1
 
 				if (building.first) {
-					let missing = ((inv[building.first]?.inStock || 0) < 1) && (((inv["fragment#" + building.first]?.inStock)||0) < 1);
-					itemRow.push(create('first',building.first));
-					if (!missing) showB = true;
+					let l = itemRow.push(create('first',building.first));
+					if (!itemRow[l-1].missing) showB = true; 
 				}
 
 				for (let i in building) {
 					if (!building.hasOwnProperty(i)) continue;
 					if (i=="first")	continue;
-					let missing = ((inv[building[i]]?.inStock || 0) < 1) && (((inv["fragment#" + building[i]]?.inStock)||0) < 1);
-					itemRow.push(create('update',building[i]));
-					if (!missing) showB = true; 
+					let l = itemRow.push(create('update',building[i]));
+					if (!itemRow[l-1].missing) showB = true; 
 				}
 
 				buildings.push(itemRow)
@@ -227,18 +226,16 @@ let Kits = {
 			// Building has asset buildings?
 			if (kits[set].assets) {
 				for (let a of kits[set].assets) {
-					let missing=((inv[a]?.inStock || 0) < 1) && (((inv["fragment#" + a]?.inStock)||0) < 1)
-					assetRow.push(create('asset',a));
-					if (!missing) showA = true;
+					let l = assetRow.push(create('asset',a));
+					if (!assetRow[l-1].missing) showA = true; 
 				}
 			}
 			
 			// selection kit exist?
 			if (kits[set].kit) {
 				for (let a of kits[set].kit) {
-					let missing = ((inv[a]?.inStock || 0) < 1) && (((inv["fragment#" + a]?.inStock)||0) < 1);
-					kitRow.push(create('kit',a));
-					if (!missing) showK = true;
+					let l = kitRow.push(create('kit',a));
+					if (!kitRow[l-1].missing) showK = true; 
 				}
 			}
 			show = showB || showA || showK;
@@ -383,7 +380,7 @@ let Kits = {
 				title = MainParser.SelectionKits[item] ? MainParser.SelectionKits[item].name : i18n('Boxes.Kits.SelectionKit');
 			}
 		}
-		return 	`<div class="item${((el.missing && !el.fragments) ? ' is-missing' : '')}">
+		return 	`<div class="item${(el.missing ? ' is-missing' : '')}">
 					<img class="kits-image" src="${url}" alt="${item.name}" /><br>
 					${title}<br>${i18n('Boxes.Kits.InStock')}: <strong class="text-warning">${(item.inStock ? item.inStock : '-') + 
 					(el.fragments ? `<br><img class="ItemFragment" src="${Kits.fragmentURL}">` + el.fragments + '/' + el.reqFragments : '')}</strong>
