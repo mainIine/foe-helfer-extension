@@ -1,6 +1,6 @@
 [	
 	{
-		"udate": "St Patrick 2024 (09 Feb 2024)"
+		"udate": "Anniversary 2024 (11 Feb 2024)"
 	},
 	{
 		"groupname": "Guild_Battlegrounds"
@@ -177,7 +177,28 @@
 		"buildings": [
 			{
 				"first": "W_MultiAge_AgeBonus22a",
-				"update": "upgrade_kit_golden_orrery"
+				"update": "upgrade_kit_golden_orrery",
+				"golden": "golden_update_kit_ANNI22A"
+			}
+		]
+	},
+	{
+		"name": "Stage_of_Ages",
+		"buildings": [
+			{
+				"first": "W_MultiAge_AgeBonus22",
+				"update": "update_kit_ANNI22B"
+			}
+		]
+	},
+	{
+		"name": "Golden_Orrery",
+		"buildings": [
+			{
+				"first": "W_MultiAge_ANNI24A1",
+				"update": "upgrade_kit_golden_orrery",
+				"silver": "silver_update_kit_ANNI24A",
+				"golden": "golden_update_kit_ANNI24A"
 			}
 		]
 	},
@@ -1222,12 +1243,17 @@
 		]
 	},
 	{
-		"name": "feathered",
+		"name": "serpent_statue",
 		"buildings": [
 			{
-				"first": "T_AllAge_Expedition16",
-				"update": "upgrade_kit_ritual_flame"
+				"first": "R_MultiAge_Expedition22a",
+				"update": "upgrade_kit_feathered_serpent_statue"
 			}
+		],
+		"assets": [
+			"D_MultiAge_Expedition22Feathers",
+			"D_MultiAge_Expedition22Spikes",
+			"D_MultiAge_Expedition22Scales"
 		]
 	},
 	{
@@ -1304,17 +1330,12 @@
 		]
 	},
 	{
-		"name": "serpent_statue",
+		"name": "Watchfire",
 		"buildings": [
 			{
-				"first": "R_MultiAge_Expedition22a",
-				"update": "upgrade_kit_feathered_serpent_statue"
+				"first": "T_AllAge_EasterBonus1",
+				"update": "upgrade_kit_watchfire"
 			}
-		],
-		"assets": [
-			"D_MultiAge_Expedition22Feathers",
-			"D_MultiAge_Expedition22Spikes",
-			"D_MultiAge_Expedition22Scales"
 		]
 	},
 	{
