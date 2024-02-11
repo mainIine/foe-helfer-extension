@@ -178,7 +178,7 @@
 			{
 				"first": "W_MultiAge_AgeBonus22a",
 				"update": "upgrade_kit_golden_orrery",
-				"golden": "golden_update_kit_ANNI22A"
+				"golden": "golden_upgrade_kit_ANNI22A"
 			}
 		]
 	},
@@ -187,18 +187,18 @@
 		"buildings": [
 			{
 				"first": "W_MultiAge_AgeBonus22",
-				"update": "update_kit_ANNI22B"
+				"update": "upgrade_kit_ANNI22B"
 			}
 		]
 	},
 	{
-		"name": "Golden_Orrery",
+		"name": "Metro_Station",
 		"buildings": [
 			{
 				"first": "W_MultiAge_ANNI24A1",
-				"update": "upgrade_kit_golden_orrery",
-				"silver": "silver_update_kit_ANNI24A",
-				"golden": "golden_update_kit_ANNI24A"
+				"update": "upgrade_kit_ANNI24A",
+				"silver": "silver_upgrade_kit_ANNI24A",
+				"golden": "golden_upgrade_kit_ANNI24A"
 			}
 		]
 	},
