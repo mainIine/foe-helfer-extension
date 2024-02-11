@@ -18,6 +18,23 @@ body {
 	width: 100% !important;
 }
 
+h1, h2, h3 {
+	margin: 0;
+}
+
+h1 {
+	font-size: 135%;
+	padding: 0.25em 0 0;
+}
+
+h2 {
+	font-size: 110%;
+}
+
+h3 {
+	font-size: 100%;
+}
+
 .overflowHidden {
 	overflow: hidden;
 }
@@ -1029,12 +1046,6 @@ FP-Bar */
 .window-body {
 	height: calc(100% - 36px);
 	overflow: hidden;
-}
-
-.window-body h1 {
-	font-size: 135%;
-	margin: 0;
-	padding: 0.25em 0 0;
 }
 
 .window-body input[type=text]:focus,
