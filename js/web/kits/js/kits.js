@@ -138,7 +138,7 @@ let Kits = {
 			entities = MainParser.CityEntities,
 			kits = Kits.KitsjSON;
 
-		let t = '<table class="foe-table">';
+		let t = '<div class="foe-table">';
 		if (!Kits.fragmentURL) Kits.fragmentURL = srcLinks.get("/shared/icons/icon_tooltip_fragment.png",true)
 		selectionKits = {}
 		for (let k in MainParser.SelectionKits) {
@@ -245,7 +245,7 @@ let Kits = {
 			
 			let ChainSetIco = '';
 
-			if (Name) { //Name is set
+			if (Name) { // Name is set
 				let sName = Name.toLowerCase().replace(/_set/g, '');
 
 				if (Name === 'Kits') {
@@ -287,7 +287,7 @@ let Kits = {
 				let Link = kits[set].link ? kits[set].link : Name;
 				KitText = MainParser.GetBuildingLink(Link, KitText);
 			}
-			else if (GroupName) { //Group is set
+			else if (GroupName) { // Group is set
 				let i18nKey = 'Boxes.Kits.' + GroupName,
 					i18nTranslation = i18n(i18nKey);
 
@@ -295,59 +295,61 @@ let Kits = {
 
 				KitText = i18nTranslation;
 				show = true;
+				if (GroupName !== 'Events')
+					t += '</div>'
+				t += `<div class="group"><h1 class="grouphead" onclick="Kits.toggleGroup()">` + KitText + '</h1>'
 			}
-			else { //No name and group set => Show udate
+			else { // No name and group set => Show udate
 				KitText = i18n('Boxes.Kits.Udate') + kits[set].udate;
 				show = true;
 			}
-
-			t += `<tr class="${!show ? "all-missing" : ""}"><th colspan="4" class="head">` + ChainSetIco +' '+ KitText + '</th></tr>';
-
+			if (!GroupName) {
+				t += '<div class="item-row '+ (!show ? "all-missing" : "") +'">'
+				t += `<h2 class="head">` + ChainSetIco +' '+ KitText + '</h2>'
+			}
 			if(buildings.length) {
 				buildings.forEach((building) => {
-					let rowTd = `<td colspan="4"><div class="item-row">`;
+					let rowTd = ''
 					let showR = false
 					building.forEach((e)=> {
 						rowTd += Kits.ItemDiv(e);
 						if (!e.missing) showR = true;
 					});
 
-					rowTd += '</div></td>';
-
-					t += `<tr class="${!show ? "all-missing" : (!showR ? "row-missing" : "")}">` + rowTd + '</tr>';
+					//t += `<div class="">` + rowTd + '</div>';
+					t += rowTd
 				})
+			}
+
+			// Kit listing
+			if (kitRow.length) {
+				let rowTd = ''//`<div class="item-row">`;
+
+				kitRow.forEach((e)=> {
+					rowTd += Kits.ItemDiv(e, 'kit');
+				});
+
+				//rowTd += '</div>';
+				//t += `<div class="${!show ? "all-missing" : (!showK ? "row-missing" : "")}">` + rowTd + '</div>';
+				t += rowTd
 			}
 
 			// Asset listing
 			if (assetRow.length) {
-				t += `<tr class="${!show ? "all-missing" : (!showA ? "row-missing" : "")}"><td colspan="4" class="assets-header">${i18n('Boxes.Kits.Extensions')}</td></tr>`;
-				let rowTd = `<td colspan="4"><div class="item-row">`;
+				t += `<h3 class="assets-header ${!show ? "all-missing" : (!showA ? "row-missing" : "")}">${i18n('Boxes.Kits.Extensions')}</h3>`;
+				let rowTd = ''
 				assetRow.forEach((e)=> {
 					rowTd += Kits.ItemDiv(e);
 
 				});
 
-				rowTd += '</div></td>';
-
-				t += `<tr class="${!show ? "all-missing" : (!showA ? "row-missing" : "")}">` + rowTd + '</tr>';
+				t += `<div class="item-row  ${!show ? "all-missing" : (!showA ? "row-missing" : "")}">` + rowTd + '</div>';
 			}
-
-			// Kit listing
-			if (kitRow.length) {
-				t += `<tr class="${!show ? "all-missing" : (!showK ? "row-missing" : "")}"><td colspan="4" class="assets-header">${i18n('Boxes.Kits.SelectionKit')}</td></tr>`;
-				let rowTd = `<td colspan="4"><div class="item-row">`;
-
-				kitRow.forEach((e)=> {
-					rowTd += Kits.ItemDiv(e);
-				});
-
-				rowTd += '</div></td>';
-
-				t += `<tr class="${!show ? "all-missing" : (!showK ? "row-missing" : "")}">` + rowTd + '</tr>';
-			}
+			if (!GroupName)
+				t += '</div>';
 		}
 
-		t += '</table>';
+		t += '</div>';
 
 		$('#kitsBodyInner').html(t);
 	},
@@ -358,7 +360,7 @@ let Kits = {
 	 * @param {SetItem} el
 	 * @returns {string} HTML string of the `div` element.
 	 */
-	ItemDiv: (el)=> {
+	ItemDiv: (el, type)=> {
 
 		if (!el?.item) return '';
 	
@@ -380,10 +382,12 @@ let Kits = {
 				title = MainParser.SelectionKits[item] ? MainParser.SelectionKits[item].name : i18n('Boxes.Kits.SelectionKit');
 			}
 		}
-		return 	`<div class="item${(el.missing ? ' is-missing' : '')}">
-					<img class="kits-image" src="${url}" alt="${item.name}" /><br>
-					${title}<br>${i18n('Boxes.Kits.InStock')}: <strong class="text-warning">${(item.inStock ? item.inStock : '-') + 
-					(el.fragments ? `<br><img class="ItemFragment" src="${Kits.fragmentURL}">` + el.fragments + '/' + el.reqFragments : '')}</strong>
+
+		return 	`<div class="item${((el.missing) ? ' is-missing' : '')}">
+					<div class="image"><img src="${url}" alt="${item.name}" /></div>
+					<strong class="in-stock" title="${i18n('Boxes.Kits.InStock')}">${(item.inStock ? item.inStock : '-')}</strong>
+					<span>${title}</span>
+					<span class="fragments">${(el.fragments ? `<img class="ItemFragment" src="${Kits.fragmentURL}"> ` + el.fragments + '/' + el.reqFragments : '')}</span>
 				</div>`;
 	},
 
@@ -427,9 +431,13 @@ let Kits = {
 		$('#kits-triplestate-button').text(Kits.ShowMissing === 0 ? i18n('Boxes.Kits.TripleStateButton0') : Kits.ShowMissing === 1 ? i18n('Boxes.Kits.TripleStateButton1') : i18n('Boxes.Kits.TripleStateButton2'))
 	},
 
+	toggleGroup: ()=> {
+		console.log(this)
+	},
+
 	_filter:()=>{
-		$('#kitsBodyInner tr').show()
-		$('#kitsBodyInner div.item').show()
+		$('#kitsBodyInner .item-row').show()
+		$('#kitsBodyInner .item').show()
 		Kits._filterSets();
 		Kits._filterItems();
 		Kits._filterMissing();
@@ -438,31 +446,28 @@ let Kits = {
 	/**
 	 * Filters whole sets by name patterns.
 	 */
+
 	_filterMissing:()=>{
 		if (Kits.ShowMissing == 0) {
 			$('.is-missing').hide();
-			$('tr.row-missing').hide();
-			$('tr.all-missing').hide();
+			$('.row-missing').hide();
+			$('.all-missing').hide();
 		}
 		if (Kits.ShowMissing == 1) {
-			$('tr.all-missing').hide();
+			$('.all-missing').hide();
 		}
 	},
+
 	_filterSets: () => {
 		const filterRegExps = $('#kitsBodyTopbar input[data-type="filter-sets-text"]').val()
 			.split('||').filter(it => it.trim().length > 0).map(it => new RegExp(it, 'i'));
 		if (filterRegExps && filterRegExps.length >= 1) {
-			const allRows = $('#kitsBodyInner tr:not(.headline)');
-			const allRowHeads = allRows.has('th.head');
+			const allRowHeads = $('#kitsBodyInner .head');
 			allRowHeads.each((i, e) => {
-				const trSetHead = $(e);
-				if (trSetHead.next().has('th.head').length > 0) {
-					// A `head` directly followed by another `head`, that's a groupname heading; ignore those, i.e. never hide.
-					return;
+				const setHead = $(e);
+				if (!filterRegExps.some(it => it.test(setHead.text()))) {
+					setHead.parent('.item-row').hide();
 				}
-				const from = allRows.index(trSetHead);
-				const to = (i + 1) < allRowHeads.length ? allRows.index(allRowHeads[i + 1]) : allRows.length;
-				if (!filterRegExps.some(it => it.test(trSetHead.text()))) allRows.slice(from, to).hide();
 			});
 		}
 	},
@@ -475,60 +480,31 @@ let Kits = {
 		const filterRegExps = $('#kitsBodyTopbar input[data-type="filter-items-text"]').val()
 			.split('||').filter(it => it.trim().length > 0).map(it => new RegExp(it, 'i'));
 		if (filterRegExps && filterRegExps.length >= 1) {
-			const allRows = $('#kitsBodyInner tr:not(.headline)');
-			let lastSetHead, lastAssetHead;
-			let visibleSetItemsCount = 0, visibleAssetItemsCount = 0;
+			const allRows = $('#kitsBodyInner .item-row');
+			let lastSetHead;
+			let visibleSetItemsCount = 0;
 			allRows.each((i, e) => {
-				// Check each row and hide those being filtered out.
-				// Also hide empty `head`-rows of assets/kits and set accordingly.
 				const row = $(e);
-				const isSetHead = row.has('th.head').length > 0;
-				if (isSetHead && row.next().has('th.head').length > 0) {
-					// A `head` directly followed by another `head`, that's a groupname heading; ignore those, i.e. never hide.
-					return;
-				}
-				const isAssetHead = row.has('td.assets-header').length > 0;
-				if (isSetHead) {
-					if (lastSetHead) {
-						if (visibleSetItemsCount < 1)  lastSetHead.hide();
-					}
-					lastSetHead = row;
-					visibleSetItemsCount = 0;
-					if (lastAssetHead) {
-						if (visibleAssetItemsCount < 1)  lastAssetHead.hide();
-					}
-					lastAssetHead = null;
-					visibleAssetItemsCount = 0;
-				} else if (isAssetHead) {
-					if (lastAssetHead) {
-						if (visibleAssetItemsCount < 1)  lastAssetHead.hide();
-					}
-					lastAssetHead = row;
-					visibleAssetItemsCount = 0;
-				} else {
-					let visibleItemsCount = 0;
-					const itemDivs = row.find('div.item');
-					if (itemDivs.length > 0) {
-						itemDivs.each((i, e) => {
-							const item = $(e);
-							const show = filterRegExps.some(it => it.test(item.text()) || it.test(item.html()));
-							if (show) {
-								visibleItemsCount++;
-							} else {
-								item.hide();
-							}
-						});
-					} 
-					visibleAssetItemsCount += visibleItemsCount;
-					visibleSetItemsCount += visibleItemsCount;
-					if (visibleItemsCount < 1) row.hide();
+				let visibleItemsCount = 0;
+				const itemDivs = row.find('.item');
+				if (itemDivs.length > 0) {
+					itemDivs.each((i, e) => {
+						const item = $(e);
+						const show = filterRegExps.some(it => it.test(item.text()) || it.test(item.html()));
+						if (show) {
+							visibleItemsCount++;
+						} else {
+							item.hide();
+						}
+					});
+				} 
+				visibleSetItemsCount += visibleItemsCount;
+				if (visibleItemsCount < 1) {
+					row.hide();
 				}
 			});
 			if (lastSetHead) {
 				if (visibleSetItemsCount < 1)  lastSetHead.hide();
-			}
-			if (lastAssetHead) {
-				if (visibleAssetItemsCount < 1)  lastAssetHead.hide();
 			}
 		}
 	}
