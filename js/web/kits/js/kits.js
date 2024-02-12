@@ -212,7 +212,7 @@ let Kits = {
 				b => Object.entries(b).filter(bu => bu[0] === 'first' && bu[1] === id).length > 0).length > 0
 			);
 			if (kits_for_upg.length === 0) {
-				//console.log(`First building ${id} (${MainParser.CityEntities[id]?.name}) of upgrade(s) ${upg.upgradeList.join(',')} not found in Kits' json.`, upg);
+				if (devMode=="true") console.log(`\t\t{\n\t\t\t"name": ${MainParser.CityEntities[id]?.name},\n\t\t\t"buildings": [\n\t\t\t\t{"first": ${id}}\n\t\t\t]\n\t\t}`) //`First building ${id} (${MainParser.CityEntities[id]?.name}) of upgrade(s) ${upg.upgradeList.join(',')} not found in Kits' json.`, upg);
 				if (newCat) {
 					newCat = false;
 					kits.push({"groupname": "new_not_categorized"})	
