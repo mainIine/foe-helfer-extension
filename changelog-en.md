@@ -1,5 +1,37 @@
 ## Changelog - Extension
 
+##### 3.6.1.0
+
+**Update**
+- FP-Bar:
+	- new design
+
+- Kits/Sets:
+	- new design
+	- League rewards are now listed
+	- added new buildings (up to Anniversary 2024)
+
+- Mergergame (Anniversary-Event):
+	- prepared for Changes
+	- removed simulation and expected rewards
+
+- Cardgame (Fellowship Event):
+	- prepared for new Event
+
+- Blue Galaxy:
+	- sorting is now saved
+	- sorting may be switched between combined value and individual values (FP/Goods/Guild-Goods/Fragments)
+
+- Efficiency:
+	- Values 0 and below are now also shown
+
+- Gild Member Overview
+	- Guild-goods production of certain buildings added
+
+**BugFix**
+- GB Calculator:
+	- Settings are nor saved/evaluated properly
+
 ##### 3.6.0.0
 
 **Update**
