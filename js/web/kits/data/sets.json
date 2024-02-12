@@ -1094,6 +1094,48 @@
 		]
 	},
 	{
+		"groupname": "Quantum_Incursion"
+	},
+	{
+		"name": "Neo_Colossus",
+		"buildings": [
+			{
+				"first": "W_MultiAge_GR23A1",
+				"update": "upgrade_kit_GR23A",
+				"silver": "silver_upgrade_kit_GR23A",
+				"golden": "golden_upgrade_kit_GR23A"
+			}
+		]
+	},
+	{
+		"name": "Neo_Winners_Plaza",
+		"buildings": [
+			{
+				"first": "W_MultiAge_GR23B1",
+				"update": "upgrade_kit_GR23B"
+
+			}
+		]
+	},
+	{
+		"name": "Neo_Marble _Gate",
+		"buildings": [
+			{
+				"first": "W_MultiAge_GR23C1",
+				"update": "upgrade_kit_GR23C"
+			}
+		]
+	},
+	{
+		"name": "Neo_Botanical_Rotunda",
+		"buildings": [
+			{
+				"first": "W_MultiAge_GBR23D1",
+				"update": "upgrade_kit_GR23D"
+			}
+		]
+	},
+	{
 		"groupname": "Guild_Expeditions"
 	},
 	{
@@ -1301,10 +1343,12 @@
 	{
 		"name": "Kits",
 		"link": "Category:Building_Items",
-		"kit": [
-			"renovation_kit",
-			"one_up_kit",
-			"store_building"
+		"buildings": [
+			{
+				"reno":"renovation_kit",
+				"oneup":"one_up_kit",
+				"store":"store_building"
+			}
 		]
 	},
 	{
