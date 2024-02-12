@@ -141,7 +141,7 @@ let Kits = {
 		let t = '<div class="foe-table">';
 		if (!Kits.fragmentURL) Kits.fragmentURL = srcLinks.get("/shared/icons/icon_tooltip_fragment.png",true)
 		
-		selectionKits = {}
+		selectionKits = {};
 		
 		for (let k in MainParser.SelectionKits) {
 			if (!MainParser.SelectionKits.hasOwnProperty(k)) continue;
@@ -151,11 +151,12 @@ let Kits = {
 				selectionKits[o.itemAssetName].push(k);
 			}
 		}
+
 		let addItems = (set,id) => {
 			for (let r of set) {
 				if (r.type=="set") {
 					addItems (r.rewards,id)
-				} else if (r.type == "selection_kit") {
+				} else if (r.subType == "selection_kit") {
 					for (o of MainParser.SelectionKits[r.id].eraOptions.BronzeAge.options) {
 						selectionKits[o.itemAssetName].push(id);
 					}
@@ -177,6 +178,33 @@ let Kits = {
 
 		}
 
+		let upgradeKits = {}
+
+		for (let u of Object.values(MainParser.BuildingUpgrades)) {
+			let upgradeList = [u.upgradeItem.iconAssetName];
+			let buildingList=[];
+			for (let i = 1;i<u.upgradeSteps.length;i++) {
+				for (b of u.upgradeSteps[i].buildingIds) {
+					buildingList.push(b)
+					if (upgradeKits[b]) {
+						buildingList = [...buildingList,...upgradeKits[b].buildingList];
+						upgradeList = [...upgradeList,...upgradeKits[b].upgradeList];
+						delete upgradeKits[b]						
+					}
+				}
+			}
+			for (let b of u.upgradeSteps[0].buildingIds) {
+				let i = Object.keys(upgradeKits)[Object.values(upgradeKits).findIndex(x=>x.buildingList.includes(b))]
+				if (i) {
+					upgradeKits[i].buildingList = [...upgradeKits[i].buildingList,...buildingList];
+					upgradeKits[i].upgradeList = [...upgradeKits[i].upgradeList,...upgradeList];
+				} else {				
+					upgradeKits[b] = {upgradeList:upgradeList,buildingList:buildingList};
+				}
+			}
+		}
+		console.log(upgradeKits)
+
 		for (let k in kits) {
 			if (! kits[k].buildings) continue;
 			if (kits[k].kit) {
@@ -184,22 +212,27 @@ let Kits = {
 				continue;
 			}
 			let s = [];
-			for (let b of kits[k].buildings) {
-				for (let i of Object.values(b)) {
+			for (let b in kits[k].buildings) {
+				if (!kits[k].buildings.hasOwnProperty(b)) continue;
+				if (kits[k].buildings[b].first && upgradeKits?.[kits[k].buildings[b].first]?.upgradeList) {
+					upgradeKits[kits[k].buildings[b].first]?.upgradeList.forEach(x => kits[k].buildings[b][x]=x);
+				}
+				for (let i of Object.values(kits[k].buildings[b])) {
 					s.push(...(selectionKits[i] || []));
 				}
 			}
 			kits[k].kit = Array.from(new Set(s));
 		}
 		
-		let create = (type,id) => {
+		let create = (type,id,showMissing=true) => {
 			
 			let item = {
 						type: type,
 						item: inv[id] || (type=="first" ? entities[id] : (type=="asset" ? entities[id] : id)),
 						fragments: inv["fragment#" + id]?.inStock,
 						reqFragments: inv["fragment#" + id]?.required,
-						missing: ((inv[id]?.inStock || 0) < 1) && (((inv["fragment#" + id]?.inStock)||0) < 1)
+						missing: ((inv[id]?.inStock || 0) < 1) && (((inv["fragment#" + id]?.inStock)||0) < 1),
+						showMissing:showMissing
 			}				
 			return item
 		}
@@ -238,6 +271,12 @@ let Kits = {
 				if (building.first) {
 					let l = itemRow.push(create('first',building.first));
 					if (!itemRow[l-1].missing) showB = true; 
+					if (upgradeKits[building.first]) {
+						for (let b of upgradeKits[building.first].buildingList) {
+							let l = itemRow.push(create('first',b,false));
+							if (!itemRow[l-1].missing) showB = true; 				
+						}
+					}
 				}
 
 				for (let i in building) {
@@ -390,7 +429,7 @@ let Kits = {
 	ItemDiv: (el, type)=> {
 
 		if (!el?.item) return '';
-	
+		if (el.missing && !el.showMissing) return '';
 		let item = el.item,
 			aName = item.itemAssetName || item.asset_id || MainParser.BuildingUpgrades[item]?.upgradeItem?.iconAssetName || Kits.specialCases[item] || item,
 			url = '/shared/icons/reward_icons/reward_icon_' + aName + '.png',
