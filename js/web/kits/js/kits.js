@@ -140,7 +140,9 @@ let Kits = {
 
 		let t = '<div class="foe-table">';
 		if (!Kits.fragmentURL) Kits.fragmentURL = srcLinks.get("/shared/icons/icon_tooltip_fragment.png",true)
+		
 		selectionKits = {}
+		
 		for (let k in MainParser.SelectionKits) {
 			if (!MainParser.SelectionKits.hasOwnProperty(k)) continue;
 			for (o of MainParser.SelectionKits[k].eraOptions.BronzeAge.options) {
@@ -148,6 +150,31 @@ let Kits = {
 				if (!selectionKits[o.itemAssetName]) selectionKits[o.itemAssetName] = [];
 				selectionKits[o.itemAssetName].push(k);
 			}
+		}
+		let addItems = (set,id) => {
+			for (let r of set) {
+				if (r.type=="set") {
+					addItems (r.rewards,id)
+				} else if (r.type == "selection_kit") {
+					for (o of MainParser.SelectionKits[r.id].eraOptions.BronzeAge.options) {
+						selectionKits[o.itemAssetName].push(id);
+					}
+				} else {
+					let reward=r.id;
+					if (r.type == "building") {
+						reward=r.subType;
+					}
+					if (!selectionKits[reward]) selectionKits[reward] = [];
+					selectionKits[reward].push(id);
+				}	
+			}
+		}
+		for (let k in MainParser.Inventory) {
+			if (! MainParser.Inventory.hasOwnProperty(k)) continue
+			if (MainParser.Inventory[k]?.item?.reward?.type=="set") {
+				addItems(MainParser.Inventory[k].item.reward.rewards,MainParser.Inventory[k].itemAssetName)
+			}
+
 		}
 
 		for (let k in kits) {
@@ -404,14 +431,18 @@ let Kits = {
 			let amount = x.inStock;
 			let required = null;
 			let id = x.itemAssetName;
+			let asset= id;
 			if (x.item.__class__=="SelectionKitPayload") id = x.item.selectionKitId;
 			if (x.item.__class__=="FragmentItemPayload") {
 				id =  (x.item.reward.assembledReward.type == "building") ? "fragment#"+x.item.reward.assembledReward.subType : id = "fragment#"+x.item.reward.assembledReward.id ;
 				amount = x.inStock*x.item.reward.amount;
 				required = x.item.reward.requiredAmount;
 			}
+			if (x?.item?.reward?.type == "set") {
+				asset = x.item.reward.iconAssetName;
+			}
 			if (!Ret[id]) {
-				Ret[id] = {id:id,name:x.name,inStock:amount,required:required,itemAssetName:x.itemAssetName}
+				Ret[id] = {id:id,name:x.name,inStock:amount,required:required,itemAssetName:asset}
 			} else {
 				Ret[id].inStock += amount
 			}
