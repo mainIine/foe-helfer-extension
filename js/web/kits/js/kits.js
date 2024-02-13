@@ -45,7 +45,8 @@ let Kits = {
 		"selection_kit_gentiana_windmill_farmland":"selection_kit_gentiana_farmland",
 		"selection_kit_W_MultiAge_WIN22A":"selection_kit_chocolatery",
 		"selection_kit_winter_cars":"selection_kit_winter_train_carriage",
-		"golden_upgrade_kit_FELL23A":"golden_upgrade_kit_FELLOW23A"
+		"golden_upgrade_kit_FELL23A":"golden_upgrade_kit_FELLOW23A",
+		"selection_kit_hippodrome_tracks": "selection_kit_hippodrome_track"
 	},
 
 	/**
@@ -183,6 +184,7 @@ let Kits = {
 		for (let u of Object.values(MainParser.BuildingUpgrades)) {
 			let upgradeList = [u.upgradeItem.iconAssetName];
 			let buildingList=[];
+			let sK=[]
 			for (let i = 1;i<u.upgradeSteps.length;i++) {
 				for (b of u.upgradeSteps[i].buildingIds) {
 					buildingList.push(b)
@@ -191,9 +193,11 @@ let Kits = {
 						upgradeList = [...upgradeList,...upgradeKits[b].upgradeList];
 						delete upgradeKits[b]						
 					}
+					if (selectionKits[b]) sK.push(...selectionKits[b])
 				}
 			}
 			for (let b of u.upgradeSteps[0].buildingIds) {
+				if (sK.length>0) selectionKits[b] = Array.from(new Set([...sK,...(selectionKits[b]||[])]))
 				let i = Object.keys(upgradeKits)[Object.values(upgradeKits).findIndex(x=>x.buildingList.includes(b))]
 				if (i) {
 					upgradeKits[i].buildingList = [...upgradeKits[i].buildingList,...buildingList];
