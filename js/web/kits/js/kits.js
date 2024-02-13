@@ -222,22 +222,33 @@ let Kits = {
 		}
 
 		for (let k in kits) {
-			if (! kits[k].buildings) continue;
 			if (kits[k].kit) {
 				if (!Array.isArray(kits[k].kit)) kits[k].kit = [kits[k].kit]
 				continue;
 			}
 			let s = [];
-			for (let b in kits[k].buildings) {
-				if (!kits[k].buildings.hasOwnProperty(b)) continue;
-				if (kits[k].buildings[b].first && upgradeKits?.[kits[k].buildings[b].first]?.upgradeList) {
-					upgradeKits[kits[k].buildings[b].first]?.upgradeList.forEach(x => kits[k].buildings[b][x]=x);
-				}
-				for (let i of Object.values(kits[k].buildings[b])) {
-					s.push(...(selectionKits[i] || []));
+			if (kits[k].buildings) {
+				for (let b in kits[k].buildings) {
+					if (!kits[k].buildings.hasOwnProperty(b)) continue;
+					if (kits[k].buildings[b].first && upgradeKits?.[kits[k].buildings[b].first]?.upgradeList) {
+						upgradeKits[kits[k].buildings[b].first]?.upgradeList.forEach(x => kits[k].buildings[b][x]=x);
+					}
+					for (let i of Object.values(kits[k].buildings[b])) {
+						s.push(...(selectionKits[i] || []));
+					}
 				}
 			}
 			kits[k].kit = Array.from(new Set(s));
+			s=[]
+			if (kits[k].assets) {
+				for (let b of kits[k].assets) {
+					for (i of selectionKits[b]) {
+						//if (!kits[k].kit.includes(i)) 
+							s.push(i);
+					}
+				}
+				kits[k].assetKits = Array.from(new Set(s));
+			}
 		}
 		
 		let create = (type,id,showMissing=true) => {
@@ -309,7 +320,19 @@ let Kits = {
 			if (kits[set].assets) {
 				for (let a of kits[set].assets) {
 					let l = assetRow.push(create('asset',a));
-					if (!assetRow[l-1].missing) showA = true; 
+					if (!assetRow[l-1].missing) showA = true;
+					if (upgradeKits[a]) {
+						for (let b of upgradeKits[a].buildingList) {
+							let l = assetRow.push(create('update',b,false));
+							if (!assetRow[l-1].missing) showA = true; 				
+						}
+					} 
+				}
+			}
+			if (kits[set].assetKits) {
+				for (let a of kits[set].assetKits) {
+					let l = assetRow.push(create('kit',a));
+					if (!assetRow[l-1].missing) showA = true;
 				}
 			}
 			
