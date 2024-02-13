@@ -207,7 +207,6 @@ let Kits = {
 				}
 			}
 		}
-		//console.log(upgradeKits)
 		// check if all upgrade kits' first buildings reference known buildings
 		let newCat=true;
 		for (let id in upgradeKits) {
@@ -247,8 +246,7 @@ let Kits = {
 			if (kits[k].assets) {
 				for (let b of kits[k].assets) {
 					for (i of selectionKits[b]) {
-						//if (!kits[k].kit.includes(i)) 
-							s.push(i);
+						s.push(i);
 					}
 				}
 				kits[k].assetKits = Array.from(new Set(s));
@@ -419,27 +417,21 @@ let Kits = {
 			if(buildings.length) {
 				buildings.forEach((building) => {
 					let rowTd = ''
-					let showR = false
 					building.forEach((e)=> {
 						rowTd += Kits.ItemDiv(e);
-						if (!e.missing) showR = true;
 					});
-
-					//t += `<div class="">` + rowTd + '</div>';
 					t += rowTd
 				})
 			}
 
 			// Kit listing
 			if (kitRow.length) {
-				let rowTd = ''//`<div class="item-row">`;
+				let rowTd = ''
 
 				kitRow.forEach((e)=> {
-					rowTd += Kits.ItemDiv(e, 'kit');
+					rowTd += Kits.ItemDiv(e);
 				});
 
-				//rowTd += '</div>';
-				//t += `<div class="${!show ? "all-missing" : (!showK ? "row-missing" : "")}">` + rowTd + '</div>';
 				t += rowTd
 			}
 
@@ -469,7 +461,7 @@ let Kits = {
 	 * @param {SetItem} el
 	 * @returns {string} HTML string of the `div` element.
 	 */
-	ItemDiv: (el, type)=> {
+	ItemDiv: (el)=> {
 
 		if (!el?.item) return '';
 		if (el.missing && !el.showMissing) return '';
