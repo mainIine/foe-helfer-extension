@@ -28,15 +28,12 @@
 - Gildenmitgliederübersicht
 	- Gildengüterproduction einiger Gebäude hinzugefügt
 
+- Eigenanteils-Rechner:
+	- Einstellungen hinzugefügt: Medaillen- und Blaupausen-Anzeige deaktiveren
+
 **BugFix**
 - Eigenanteils-Rechner:
 	- Einstellungen korrekt speichern/auswerten
-
-##### 3.6.0.0
-
-**Update**
-- Eigenanteils-Rechner:
-	- Einstellungen hinzugefügt: Medaillen- und Blaupausen-Anzeige deaktiveren
 
 ##### 3.5.0.2
 
