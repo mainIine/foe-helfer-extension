@@ -25,15 +25,12 @@
 - Gild Member Overview
 	- Guild-goods production of certain buildings added
 
+- GB Calculator:
+	- New settings: deactivate BP and medals
+
 **BugFix**
 - GB Calculator:
 	- Settings are nor saved/evaluated properly
-
-##### 3.6.0.0
-
-**Update**
-- GB Calculator:
-	- New settings: deactivate BP and medals
 
 ##### 3.5.0.2
 
