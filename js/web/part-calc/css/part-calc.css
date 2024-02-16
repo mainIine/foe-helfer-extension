@@ -232,9 +232,9 @@
 	overflow: hidden;
 	overflow-y: auto;
 	top: 0;
-	left: 55px;
-	padding: 0 15px;
-	border-width: 0 5px 5px 5px;
+	left: 3px;
+	padding: 0 7px;
+	border-width: 0 3px 3px 3px;
 	opacity: 0;
 	border-radius: 0 0 5px 5px;
 }

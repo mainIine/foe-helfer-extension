@@ -1749,4 +1749,3 @@ let TimeManager = function(){
 // let timer = new Timer();
 // TimeManager.subscribe(timer);
 TimeManager.start();
-Alerts.init();

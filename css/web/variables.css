@@ -65,15 +65,15 @@
 	--border-table-bottom: #3D250F;
 	--border-table-bottom-darker: #170602;
 
-	--hud-counter: #3180bf;
-	--hud-counter-success: #497b0b;
+	--hud-counter: #468fca;
+	--hud-counter-success: #5c8d20;
 
 	--grey: #444;
 	--black: #000;
 	--black-50: rgba(0, 0, 0, 0.5);
 	--black-65: rgba(0,0,0, 0.65);
 
-	--text-success: #29b206;
-	--text-info: #2196f3;
-	--text-danger: #ff4040;
+	--text-success: #5fc745;
+	--text-info: #42a1ee;
+	--text-danger: #f34f4f;
 }

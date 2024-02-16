@@ -18,6 +18,23 @@ body {
 	width: 100% !important;
 }
 
+h1, h2, h3 {
+	margin: 0;
+}
+
+h1 {
+	font-size: 135%;
+	padding: 0.25em 0 0;
+}
+
+h2 {
+	font-size: 110%;
+}
+
+h3 {
+	font-size: 100%;
+}
+
 .overflowHidden {
 	overflow: hidden;
 }
@@ -294,10 +311,12 @@ a[target="_blank"] svg {
 }
 
 /* Firefox */
-.window-box,
-.window-body {
-	scrollbar-color: #281207 #57250c;
-	scrollbar-width: thin;
+@supports(-moz-appearance:none) {
+	.window-box,
+	.window-body {
+		scrollbar-color: #281207 #57250c;
+		scrollbar-width: thin;
+	}
 }
 
 table {
@@ -754,21 +773,22 @@ FP-Bar */
 #fp-bar .fp-storage,
 #fp-bar .buyable-fp {
 	margin: 1px 1px 0 0;
-	width: 87px;
 	height: 26px;
 }
 
-#fp-bar .fp-storage {
-	background: url('../../js/web/strategy-points/images/fp-bar-storage-bg.png') 0 0 no-repeat;
-	background-color: rgba(0, 0, 0, 0.50);
+#fp-bar .fp-storage div,
+#fp-bar .buyable-fp div {
+	padding: 0 6px;
+}
+
+#fp-bar .fp-storage, #fp-bar .buyable-fp {
+	background: rgba(0, 0, 0, 0.50) url('../../js/web/strategy-points/images/fp-bar-storage-bg.png') 0 0 no-repeat;
 	border: 1px solid rgba(113, 74, 35, 1);
 	border-radius: 4px;
 }
+
 #fp-bar .buyable-fp {
-	background: url('../../js/web/strategy-points/images/fp-bar-buyable-bg.png') 0 0 no-repeat;
-	background-color: rgba(0, 0, 0, 0.50);
-	border: 1px solid rgba(113, 74, 35, 1);
-	border-radius: 4px;
+	background: rgba(0, 0, 0, 0.50) url('../../js/web/strategy-points/images/fp-bar-buyable-bg.png') 0 0 no-repeat;
 }
 
 #fp-bar .fp-storage div, 
@@ -780,7 +800,6 @@ FP-Bar */
 #fp-bar .small-screen .buyable-fp {
 	background-color: rgba(0, 0, 0, 0.75);
 	border: 1px solid rgba(243, 214, 160, 0.65);
-	border-radius: 4px;
 }
 
 #fp-bar .main .small-screen {
@@ -794,36 +813,56 @@ FP-Bar */
 
 #fp-bar .fp-bar-main {
 	height: 16px;
-	width: 109px;
-	background: transparent url('../../js/web/strategy-points/images/fp-bar-bg.png') center left no-repeat;
+	background-image: linear-gradient(to left, #4b1b0b 25%, transparent 25%), linear-gradient(to top, #8d4e31 0%,#72381d 1%,#4f221d 99%,#8d533b 100%);
+	background-position: 0 0, 16px 0;
+	background-size: 5px 16px;
+	background-repeat: repeat;
 	position: relative;
 	top: 7px;
 	text-align: left;
 	display: flex;
+	border: 1px solid #4b1b0b;
+	width: 49px;
+}
+
+#fp-bar .fp-bar-main.full {
+	animation-name: brightness;
+    animation-duration: 0.8s;
+	animation-iteration-count: infinite;
+	animation-direction: alternate;
+	animation-timing-function: ease-in-out;
+}
+
+@keyframes brightness {
+    0% {filter: brightness(1)}
+    100% {filter: brightness(1.2);}
 }
 
 #fp-bar .fp-bar-main .number {
-	width: 27px;
 	text-align: center;
-	margin-top: -2px;
-}
-
-#fp-bar .fp-bar-main .bars {
-	width: 82px;
+	margin-top: -1px;
+	position: absolute;
+	top: 0;
+	width: 49px;
+	z-index: 500;
+	text-shadow: 0 0 4px #000, 0 0 1px #000, 0 0 2px #000, 0 0 3px #000;
+	font-weight: bold;
+	font-size: 95%;
+	color: var(--text-tab-active);
 }
 
 #fp-bar .fp-bar-main .bars span {
-	width: 8px;
-	height: 14px;
+	width: 4px;
+	height: 16px;
 	display: inline-block;
-	background: transparent url('../../js/web/strategy-points/images/fp-bar.png') center left;
+	background: linear-gradient(to bottom, #b87d10 0%,#b3770b 1%,#f1af33 30%,#b3770b 60%,#b3770b 99%,#b87d10 100%);
+	border-left: 1px solid #a16126;
 	background-size: contain;
 	position: relative;
-	top: 1px;
 }
 
 #fp-bar .fp-bar-main .bars span:first-child {
-	margin-left: 2px;
+	border-left-width: 0;
 }
 
 /*******************************************************************************/
@@ -1007,12 +1046,6 @@ FP-Bar */
 .window-body {
 	height: calc(100% - 36px);
 	overflow: hidden;
-}
-
-.window-body h1 {
-	font-size: 135%;
-	margin: 0;
-	padding: 0.25em 0 0;
 }
 
 .window-body input[type=text]:focus,
