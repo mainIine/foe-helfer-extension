@@ -13,7 +13,7 @@
 
 - Mergergame (Geburtags-Event):
 	- vorbereitet für Änderungen
-	- Vorhersage für nächstes Teil und vorraussichtliche Belohnungen entfernt
+	- Vorhersage für nächstes Teil und voraussichtliche Belohnungen entfernt
 
 - Blaue Galaxie:
 	- Sortierung wird nun gespeichert
@@ -22,11 +22,11 @@
 - Effizienzbewertung:
 	- werte 0 und kleiner werden auch angezeigt
 
-- Gildenmitgliederübersicht
+- Gildenmitglieder übersicht
 	- Gildengüterproduktion einiger Gebäude hinzugefügt
 
 - Eigenanteils-Rechner:
-	- Einstellungen hinzugefügt: Medaillen- und Blaupausen-Anzeige deaktiveren
+	- Einstellungen hinzugefügt: Medaillen- und Blaupausen-Anzeige deaktivieren
 
 **BugFix**
 - Eigenanteils-Rechner:
