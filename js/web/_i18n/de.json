@@ -614,6 +614,8 @@
     "Boxes.Investment.UpdateRequired": "Deine Investitionen sind älter als 30 Minuten. Bitte aktualisiere sie über das Rathaus.",
     "Boxes.Kits.Antiques_Dealer": "Antiquitätenhändler",
     "Boxes.Kits.Cultural_Settlements": "Kulturellen-Siedlungen",
+    "Boxes.Kits.Quantum_Incursion": "Quanten-Inkursion",
+    "Boxes.Kits.new_not_categorized": "Neu / noch nicht Kategorisiert",
     "Boxes.Kits.Events": "Events",
     "Boxes.Kits.Extensions": "Erweiterungen",
     "Boxes.Kits.FilterItems": "Filter Gegenstände",
@@ -1259,6 +1261,8 @@
     "Settings.Entry.ShowPvPArena": "PvP-Arena-Protokoll",
     "Settings.ShowBuildingsExpired.Desc": "Es werden Meldungen erstellt, die anzeigen, dass ein beschränktes Gebäude abgelaufen ist. (Bei Deaktivierung der Funktion werden in der Vergangenheit gesetzte Alarme nicht gelöscht)",
     "Settings.ShowBuildingsExpired.Title": "Beschränkte Gebäude Alarme erstellen",
+    "Settings.ShowOwnPartBP.Desc": "Zeige Blaupausen",
+    "Settings.ShowOwnPartMedals.Desc": "Zeige Medaillen",
     "Settings.Entry.ShowGuildTreasuryLogExport": "Gilden Kassen Export",
     "Settings.Entry.ShowInvestments": "FP Investitionen",
     "Settings.Entry.ShowLinks": "Links",
@@ -1353,6 +1357,7 @@
     "Settings.Version.World": "Welt:",
     "Settings.doubleFPtimeout.Desc": "Zeigt eine Box über dem LB Einzahlfeld an, nachdem eine Einzahlung getätigt wurde. Der Wert bestimmt, wie lange die Box angezeigt wird in Sekunden - bei 0 wird die Box gar nicht angezeigt.",
     "Settings.doubleFPtimeout.Title": "Doppeleinzahlungsblocker",
-    "StrategyPoints.BuyableFP": "Anzahl der Forge Punkte, welche mit Münzen gekauft werden können.",
+    "StrategyPoints.BuyableFP": "FoE-Helper: Anzahl der Forge Punkte, welche mit Münzen gekauft werden können.",
+    "StrategyPoints.FPInBar": "FoE-Helper: Anzahl der Forge Punkte, in der FP-Leiste.",
     "_Language": "Deutsch"
 }

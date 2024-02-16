@@ -2018,7 +2018,7 @@ let Productions = {
 
 				let ScorePercent = Math.round(GroupStat['Score'] * 100);
 
-				h.push('<td><strong class="' + (ScorePercent >= 100 ? 'success' : 'error') + '">' + (ScorePercent > 0 ? ScorePercent + '%' : 'N/A') + '</strong></td>');
+				h.push('<td><strong class="' + (ScorePercent >= 100 ? 'success' : 'error') + '">' + ScorePercent + '%</strong></td>');//(ScorePercent > 0 ? ScorePercent + '%' : 'N/A') + '</strong></td>');
 				h.push('<td class="text-right"><span class="show-entity" data-id="' + GroupStat['GroupType'] + '=' + GroupStat['ID'] + '"><img class="game-cursor" src="' + extUrl + 'css/images/hud/open-eye.png"></span></td>');
 				h.push('</tr>');
             }

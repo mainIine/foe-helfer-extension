@@ -391,6 +391,37 @@ let GuildMemberStat = {
 							GuildGoodsBuildings.push({ gbid: GBTempID, entity_id: EntityID, name: CityEntity['name'], resources: { totalgoods: goodSum, goods: goods, onlywhenmotivated: onlywhenmotivated }, level: EntityEraId, era: EntityEra });
 						}
 					}
+				} else if (EntityEra && CityEntity?.components?.AllAge?.production?.options) {
+					let opt = CityEntity.components.AllAge.production.options;
+					let goods = null;
+					let goodSum = 0;
+
+					for (let o in opt)
+					{
+						if (!opt.hasOwnProperty(o) || opt[o]['products'] === undefined) { continue; }
+
+						let products = opt[o]['products'];
+
+						for (let p in products)
+						{
+							if (!products.hasOwnProperty(p) || products[p]['guildResources'] === undefined || products[p]['guildResources']['resources'] === undefined) { continue; }
+
+							let onlywhenmotivated = products[p].onlyWhenMotivated && products[p].onlyWhenMotivated === true ? true : false;
+
+							if (products[p]['guildResources']['resources']['all_goods_of_age'])
+							{
+								goodSum += products[p]['guildResources']['resources']['all_goods_of_age'];
+
+								goods = Object.values(GoodsData).filter(function (Good) {
+									return Good.era === EntityEra && Good.abilities.goodsProduceable !== undefined;
+								}).map(function (row) {
+									return { good_id: row.id, value: products[p]['guildResources']['resources']['all_goods_of_age'] / 5 };
+								}).sort(function (a, b) { return a.good_id.localeCompare(b.good_id) });
+							}
+
+							GuildGoodsBuildings.push({ gbid: GBTempID, entity_id: EntityID, name: CityEntity['name'], resources: { totalgoods: goodSum, goods: goods, onlywhenmotivated: onlywhenmotivated }, level: EntityEraId, era: EntityEra });
+						}
+					}
 				}
 
 				if (entity[i].state && entity[i]['state']['current_product'])

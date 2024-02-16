@@ -1,5 +1,37 @@
 ## Changelog - Extension
 
+##### 3.6.1.0
+
+**Update**
+- FP-Leiste:
+	- neues Design
+
+- Kits/Set:
+	- neues Design
+	- Liga-Belohnungen werden nun auch gefunden
+	- neue Gebäude bis Geburtstag 2024 hinzugefügt
+
+- Mergergame (Geburtags-Event):
+	- vorbereitet für Änderungen
+	- Vorhersage für nächstes Teil und voraussichtliche Belohnungen entfernt
+
+- Blaue Galaxie:
+	- Sortierung wird nun gespeichert
+	- Sortierung umschaltbar zwischen kombinierter Wertung und Einzelwertung (FP/Güter/Gildengüter/Fragmente)
+
+- Effizienzbewertung:
+	- werte 0 und kleiner werden auch angezeigt
+
+- Gildenmitglieder übersicht
+	- Gildengüterproduktion einiger Gebäude hinzugefügt
+
+- Eigenanteils-Rechner:
+	- Einstellungen hinzugefügt: Medaillen- und Blaupausen-Anzeige deaktivieren
+
+**BugFix**
+- Eigenanteils-Rechner:
+	- Einstellungen korrekt speichern/auswerten
+
 ##### 3.5.0.2
 
 **BugFix**
