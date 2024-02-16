@@ -15,22 +15,19 @@
 	- vorbereitet für Änderungen
 	- Vorhersage für nächstes Teil und vorraussichtliche Belohnungen entfernt
 
-- Cardgame (Gemeinschaftsevent):
-	- vorbereitet für neues Event
-
 - Blaue Galaxie:
 	- Sortierung wird nun gespeichert
 	- Sortierung umschaltbar zwischen kombinierter Wertung und Einzelwertung (FP/Güter/Gildengüter/Fragmente)
 
 - Effizienzbewertung:
-	- werte 0 und kleiner auch anzeigen
+	- werte 0 und kleiner werden auch angezeigt
 
 - Gildenmitgliederübersicht
-	- Gildengüterproduction einiger Gebäude hinzugefügt
+	- Gildengüterproduktion einiger Gebäude hinzugefügt
 
 **BugFix**
 - Eigenanteils-Rechner:
-	- Einstellungen korrekt speichern/auswerten
+	- Einstellungen korrekt speichern/anwenden
 
 ##### 3.6.0.0
 

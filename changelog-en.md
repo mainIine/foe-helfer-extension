@@ -15,9 +15,6 @@
 	- prepared for Changes
 	- removed simulation and expected rewards
 
-- Cardgame (Fellowship Event):
-	- prepared for new Event
-
 - Blue Galaxy:
 	- sorting is now saved
 	- sorting may be switched between combined value and individual values (FP/Goods/Guild-Goods/Fragments)
