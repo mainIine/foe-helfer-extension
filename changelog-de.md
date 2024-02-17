@@ -6,6 +6,8 @@
 - FP-Leiste:
 	- Auf vielen Geräten hat die Animation zu Problemen geführt, wurde entfernt
 
+---
+
 ##### 3.6.1.0
 
 **Update**
@@ -37,6 +39,8 @@
 **BugFix**
 - Eigenanteils-Rechner:
 	- Einstellungen korrekt speichern/auswerten
+
+---
 
 ##### 3.5.0.2
 
