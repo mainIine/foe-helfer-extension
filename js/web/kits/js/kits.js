@@ -510,7 +510,7 @@ let Kits = {
 			let asset= id;
 			if (x.item.__class__=="SelectionKitPayload") id = x.item.selectionKitId;
 			if (x.item.__class__=="FragmentItemPayload") {
-				id =  (x.item.reward.assembledReward.type == "building") ? "fragment#"+x.item.reward.assembledReward.subType : id = "fragment#"+x.item.reward.assembledReward.id ;
+				id =  (x.item.reward.assembledReward.type == "building") ? "fragment#"+(Kits.specialCases[x.item.reward.assembledReward.subType] || x.item.reward.assembledReward.subType) : id = "fragment#"+(Kits.specialCases[x.item.reward.assembledReward.id] || x.item.reward.assembledReward.id) ;
 				amount = x.inStock*x.item.reward.amount;
 				required = x.item.reward.requiredAmount;
 			}
