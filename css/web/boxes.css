@@ -826,16 +826,7 @@ FP-Bar */
 }
 
 #fp-bar .fp-bar-main.full {
-	animation-name: brightness;
-    animation-duration: 0.8s;
-	animation-iteration-count: infinite;
-	animation-direction: alternate;
-	animation-timing-function: ease-in-out;
-}
-
-@keyframes brightness {
-    0% {filter: brightness(1)}
-    100% {filter: brightness(1.2);}
+	filter: brightness(1.2);
 }
 
 #fp-bar .fp-bar-main .number {

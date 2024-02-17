@@ -1,5 +1,11 @@
 ## Changelog - Extension
 
+##### 3.6.1.1
+
+**BugFix**
+- FP Bar:
+	- The animation of the full FP bar lead to issues for many users, we removed it
+
 ##### 3.6.1.0
 
 **Update**
