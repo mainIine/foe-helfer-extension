@@ -159,6 +159,8 @@ let Kits = {
 					addItems (r.rewards,id)
 				} else if (r.subType == "selection_kit") {
 					for (o of MainParser.SelectionKits[r.id].eraOptions.BronzeAge.options) {
+						if (!["BuildingItemPayload","UpgradeKitPayload"].includes(o.item.__class__)) continue;
+						if (!selectionKits[o.itemAssetName]) selectionKits[o.itemAssetName] = [];
 						selectionKits[o.itemAssetName].push(id);
 					}
 				} else {
