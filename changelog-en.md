@@ -6,6 +6,8 @@
 - FP Bar:
 	- The animation of the full FP bar lead to issues for many users, we removed it
 
+---
+
 ##### 3.6.1.0
 
 **Update**
@@ -37,6 +39,8 @@
 **BugFix**
 - GB Calculator:
 	- Settings are nor saved/evaluated properly
+
+---
 
 ##### 3.5.0.2
 
