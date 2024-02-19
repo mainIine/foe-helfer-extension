@@ -189,14 +189,14 @@ let Kits = {
 			let upgradeList = [u.upgradeItem.id];
 			let buildingList=[];
 			let sK=[]
-			let upgradeCount=JSON.parse(`[{"${u.upgradeItem.id.split("_")[0]}":${u.upgradeSteps.length-1}}]`)
+			let upgradeCount=JSON.parse(`{"${u.upgradeItem.id.split("_")[0]}":${u.upgradeSteps.length-1}}`)
 			for (let i = 1;i<u.upgradeSteps.length;i++) {
 				for (b of u.upgradeSteps[i].buildingIds) {
 					buildingList.push(b)
 					if (Kits.upgradeKits[b]) {
 						buildingList = [...buildingList,...Kits.upgradeKits[b].buildingList];
 						upgradeList = [...upgradeList,...Kits.upgradeKits[b].upgradeList];
-						upgradeList = [...upgradeCount,...Kits.upgradeKits[b].upgradeCount];
+						upgradeCount = {...upgradeCount,...Kits.upgradeKits[b].upgradeCount};
 						delete Kits.upgradeKits[b]						
 					}
 					if (selectionKits[b]) sK.push(...selectionKits[b])
@@ -208,7 +208,7 @@ let Kits = {
 				if (i) {
 					Kits.upgradeKits[i].buildingList = [...Kits.upgradeKits[i].buildingList,...buildingList];
 					Kits.upgradeKits[i].upgradeList = [...Kits.upgradeKits[i].upgradeList,...upgradeList];
-					Kits.upgradeKits[i].upgradeCount = [...Kits.upgradeKits[i].upgradeCount,...upgradeCount];
+					Kits.upgradeKits[i].upgradeCount = {...Kits.upgradeKits[i].upgradeCount,...upgradeCount};
 				} else {				
 					Kits.upgradeKits[b] = {upgradeList:upgradeList,buildingList:buildingList,upgradeCount:upgradeCount};
 				}
@@ -357,7 +357,8 @@ let Kits = {
 
 			const Name = kits[set].name,
 				GroupName = kits[set].groupname;
-			
+			let upgrades = "";
+
 			let ChainSetIco = '';
 
 			if (Name) { // Name is set
@@ -384,6 +385,18 @@ let Kits = {
 					let itemName = MainParser.CityEntities[kits[set].buildings[0].first].name;
 					let idx = itemName.indexOf(' - ', 0);
 					
+					let upgradeCount = Kits.upgradeKits?.[kits[set].buildings[0].first]?.upgradeCount;
+					if (upgradeCount) {
+						upgrades = " ("
+						let first = true
+						for (let i in upgradeCount) {
+							if (!upgradeCount[i]) continue
+							upgrades += (first ? "" : " + ") + `${upgradeCount[i]} ${i}`
+							first = false;
+						}
+						upgrades+=")"
+					}
+
 					if (idx === -1) {
 						idx = itemName.indexOf(' – ', 0); // looks the same but it isn't ¯\_(ツ)_/¯
 					}
@@ -420,7 +433,7 @@ let Kits = {
 			}
 			if (!GroupName) {
 				t += '<div class="item-row '+ (!show ? "all-missing" : "") +'">'
-				t += `<h2 class="head">` + ChainSetIco +' '+ KitText + '</h2>'
+				t += `<h2 class="head">` + ChainSetIco +' '+ KitText + upgrades + '</h2>'
 			}
 			if(buildings.length) {
 				buildings.forEach((building) => {
