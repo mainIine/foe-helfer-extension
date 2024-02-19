@@ -45,9 +45,9 @@ let Kits = {
 		"selection_kit_gentiana_windmill_farmland":"selection_kit_gentiana_farmland",
 		"selection_kit_W_MultiAge_WIN22A":"selection_kit_chocolatery",
 		"selection_kit_winter_cars":"selection_kit_winter_train_carriage",
-		"golden_upgrade_kit_FELL23A":"golden_upgrade_kit_FELLOW23A",
 		"selection_kit_hippodrome_tracks": "selection_kit_hippodrome_track"
 	},
+	upgradeKits:null,
 
 	/**
 	 * Loads all known sets {@link Kits.KitsjSON JSON} and creates the {@link HTML.Box DOM box}.
@@ -148,20 +148,22 @@ let Kits = {
 			if (!MainParser.SelectionKits.hasOwnProperty(k)) continue;
 			for (o of MainParser.SelectionKits[k].eraOptions.BronzeAge.options) {
 				if (!["BuildingItemPayload","UpgradeKitPayload"].includes(o.item.__class__)) continue;
-				if (!selectionKits[o.itemAssetName]) selectionKits[o.itemAssetName] = [];
-				selectionKits[o.itemAssetName].push(k);
+				let id = o.item.upgradeItemId||o.item.selectionKitId||o.item.cityEntityId;
+				if (!selectionKits[id]) selectionKits[id] = [];
+				selectionKits[id].push(k);
 			}
 		}
 
-		let addItems = (set,id) => {
+		let addItems = (set,idx) => {
 			for (let r of set) {
 				if (r.type=="set") {
-					addItems (r.rewards,id)
+					addItems (r.rewards,idx)
 				} else if (r.subType == "selection_kit") {
 					for (o of MainParser.SelectionKits[r.id].eraOptions.BronzeAge.options) {
 						if (!["BuildingItemPayload","UpgradeKitPayload"].includes(o.item.__class__)) continue;
-						if (!selectionKits[o.itemAssetName]) selectionKits[o.itemAssetName] = [];
-						selectionKits[o.itemAssetName].push(id);
+						let id = o.item.upgradeItemId||o.item.selectionKitId||o.item.cityEntityId;
+						if (!selectionKits[id]) selectionKits[id] = [];
+						selectionKits[id].push(idx);
 					}
 				} else {
 					let reward=r.id;
@@ -169,50 +171,54 @@ let Kits = {
 						reward=r.subType;
 					}
 					if (!selectionKits[reward]) selectionKits[reward] = [];
-					selectionKits[reward].push(id);
+					selectionKits[reward].push(idx);
 				}	
 			}
 		}
 		for (let k in MainParser.Inventory) {
 			if (! MainParser.Inventory.hasOwnProperty(k)) continue
 			if (MainParser.Inventory[k]?.item?.reward?.type=="set") {
-				addItems(MainParser.Inventory[k].item.reward.rewards,MainParser.Inventory[k].itemAssetName)
+				addItems(MainParser.Inventory[k].item.reward.rewards,MainParser.Inventory[k].item.reward.id)
 			}
 
 		}
 
-		let upgradeKits = {}
+		Kits.upgradeKits = {}
 
 		for (let u of Object.values(MainParser.BuildingUpgrades)) {
-			let upgradeList = [u.upgradeItem.iconAssetName];
+			let upgradeList = [u.upgradeItem.id];
 			let buildingList=[];
 			let sK=[]
+			let upgradeCount=JSON.parse(`[{"${u.upgradeItem.id.split("_")[0]}":${u.upgradeSteps.length-1}}]`)
 			for (let i = 1;i<u.upgradeSteps.length;i++) {
 				for (b of u.upgradeSteps[i].buildingIds) {
 					buildingList.push(b)
-					if (upgradeKits[b]) {
-						buildingList = [...buildingList,...upgradeKits[b].buildingList];
-						upgradeList = [...upgradeList,...upgradeKits[b].upgradeList];
-						delete upgradeKits[b]						
+					if (Kits.upgradeKits[b]) {
+						buildingList = [...buildingList,...Kits.upgradeKits[b].buildingList];
+						upgradeList = [...upgradeList,...Kits.upgradeKits[b].upgradeList];
+						upgradeList = [...upgradeCount,...Kits.upgradeKits[b].upgradeCount];
+						delete Kits.upgradeKits[b]						
 					}
 					if (selectionKits[b]) sK.push(...selectionKits[b])
 				}
 			}
 			for (let b of u.upgradeSteps[0].buildingIds) {
 				if (sK.length>0) selectionKits[b] = Array.from(new Set([...sK,...(selectionKits[b]||[])]))
-				let i = Object.keys(upgradeKits)[Object.values(upgradeKits).findIndex(x=>x.buildingList.includes(b))]
+				let i = Object.keys(Kits.upgradeKits)[Object.values(Kits.upgradeKits).findIndex(x=>x.buildingList.includes(b))]
 				if (i) {
-					upgradeKits[i].buildingList = [...upgradeKits[i].buildingList,...buildingList];
-					upgradeKits[i].upgradeList = [...upgradeKits[i].upgradeList,...upgradeList];
+					Kits.upgradeKits[i].buildingList = [...Kits.upgradeKits[i].buildingList,...buildingList];
+					Kits.upgradeKits[i].upgradeList = [...Kits.upgradeKits[i].upgradeList,...upgradeList];
+					Kits.upgradeKits[i].upgradeCount = [...Kits.upgradeKits[i].upgradeCount,...upgradeCount];
 				} else {				
-					upgradeKits[b] = {upgradeList:upgradeList,buildingList:buildingList};
+					Kits.upgradeKits[b] = {upgradeList:upgradeList,buildingList:buildingList,upgradeCount:upgradeCount};
 				}
 			}
 		}
 		// check if all upgrade kits' first buildings reference known buildings
 		let newCat=true;
-		for (let id in upgradeKits) {
-			const upg = upgradeKits[id];
+
+		for (let id in Kits.upgradeKits) {
+			const upg = Kits.upgradeKits[id];
 			const kits_for_upg = kits.filter(o => (o?.buildings instanceof Array) && o.buildings.filter(
 				b => Object.entries(b).filter(bu => bu[0] === 'first' && bu[1] === id).length > 0).length > 0
 			);
@@ -235,8 +241,8 @@ let Kits = {
 			if (kits[k].buildings) {
 				for (let b in kits[k].buildings) {
 					if (!kits[k].buildings.hasOwnProperty(b)) continue;
-					if (kits[k].buildings[b].first && upgradeKits?.[kits[k].buildings[b].first]?.upgradeList) {
-						upgradeKits[kits[k].buildings[b].first]?.upgradeList.forEach(x => kits[k].buildings[b][x]=x);
+					if (kits[k].buildings[b].first && Kits.upgradeKits?.[kits[k].buildings[b].first]?.upgradeList) {
+						Kits.upgradeKits[kits[k].buildings[b].first]?.upgradeList.forEach(x => kits[k].buildings[b][x]=x);
 					}
 					for (let i of Object.values(kits[k].buildings[b])) {
 						s.push(...(selectionKits[i] || []));
@@ -302,8 +308,8 @@ let Kits = {
 				if (building.first) {
 					let l = itemRow.push(create('first',building.first));
 					if (!itemRow[l-1].missing) showB = true; 
-					if (upgradeKits[building.first]) {
-						for (let b of upgradeKits[building.first].buildingList) {
+					if (Kits.upgradeKits[building.first]) {
+						for (let b of Kits.upgradeKits[building.first].buildingList) {
 							let l = itemRow.push(create('first',b,false));
 							if (!itemRow[l-1].missing) showB = true; 				
 						}
@@ -325,8 +331,8 @@ let Kits = {
 				for (let a of kits[set].assets) {
 					let l = assetRow.push(create('asset',a));
 					if (!assetRow[l-1].missing) showA = true;
-					if (upgradeKits[a]) {
-						for (let b of upgradeKits[a].buildingList) {
+					if (Kits.upgradeKits[a]) {
+						for (let b of Kits.upgradeKits[a].buildingList) {
 							let l = assetRow.push(create('update',b,false));
 							if (!assetRow[l-1].missing) showA = true; 				
 						}
@@ -472,7 +478,13 @@ let Kits = {
 			url = '/shared/icons/reward_icons/reward_icon_' + aName + '.png',
 			title = '';
 			
-		if (el.type == "first" || el.type == "asset") url = '/city/buildings/' + [aName.slice(0, 1), '_SS', aName.slice(1)].join('') + '.png';
+		try {
+			if (el.type == "first" || el.type == "asset") url = '/city/buildings/' + [aName.slice(0, 1), '_SS', aName.slice(1)].join('') + '.png';
+		} 
+		catch {
+			console.log(el)
+		}
+
 		url = srcLinks.get(url,true)
 
 		title = item.name;
@@ -482,12 +494,12 @@ let Kits = {
 				title = MainParser.BuildingUpgrades[item] ? MainParser.BuildingUpgrades[item].upgradeItem.name : i18n('Boxes.Kits.UpgradeKit');
 			}
 			else if (el.type === 'kit') {
-				title = MainParser.SelectionKits[item] ? MainParser.SelectionKits[item].name : i18n('Boxes.Kits.SelectionKit');
+				title = MainParser.SelectionKits[Kits.specialCases[item]||item] ? MainParser.SelectionKits[Kits.specialCases[item]||item].name : i18n('Boxes.Kits.SelectionKit');
 			}
 		}
 
 		return 	`<div class="item${((el.missing) ? ' is-missing' : '')}">
-					<div class="image"><img src="${url}" alt="${item.name}" /></div>
+					<div class="image"><img src="${url}" alt="${title}" /></div>
 					<strong class="in-stock" title="${i18n('Boxes.Kits.InStock')}">${(item.inStock ? item.inStock : '-')}</strong>
 					<span>${title}</span>
 					<span class="fragments">${(el.fragments ? `<img class="ItemFragment" src="${Kits.fragmentURL}"> ` + el.fragments + '/' + el.reqFragments : '')}</span>
@@ -506,19 +518,24 @@ let Kits = {
 			let x = MainParser.Inventory[i]
 			let amount = x.inStock;
 			let required = null;
-			let id = x.itemAssetName;
-			let asset= id;
-			if (x.item.__class__=="SelectionKitPayload") id = x.item.selectionKitId;
+			let id = x.item.upgradeItemId||x.item.selectionKitId||x.item.cityEntityId;
+			let asset= x.itemAssetName;
+			let name = x.name;
 			if (x.item.__class__=="FragmentItemPayload") {
-				id =  (x.item.reward.assembledReward.type == "building") ? "fragment#"+(Kits.specialCases[x.item.reward.assembledReward.subType] || x.item.reward.assembledReward.subType) : id = "fragment#"+(Kits.specialCases[x.item.reward.assembledReward.id] || x.item.reward.assembledReward.id) ;
+				id =  "fragment#"+ ((x.item.reward.assembledReward.type == "building") ? 
+										(x.item.reward.assembledReward.subType) : 
+										(Kits.specialCases[x.item.reward.assembledReward.id] || x.item.reward.assembledReward.id));
 				amount = x.inStock*x.item.reward.amount;
 				required = x.item.reward.requiredAmount;
+				asset = x.item.reward.assembledReward.iconAssetName;
+				name = x.item.reward.assembledReward.name;
 			}
 			if (x?.item?.reward?.type == "set") {
+				id = x.item.reward.id;
 				asset = x.item.reward.iconAssetName;
 			}
 			if (!Ret[id]) {
-				Ret[id] = {id:id,name:x.name,inStock:amount,required:required,itemAssetName:asset}
+				Ret[id] = {id:id,name:name,inStock:amount,required:required,itemAssetName:asset}
 			} else {
 				Ret[id].inStock += amount
 			}
