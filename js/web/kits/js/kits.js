@@ -357,8 +357,7 @@ let Kits = {
 
 			const Name = kits[set].name,
 				GroupName = kits[set].groupname;
-			let upgrades = "";
-
+			
 			let ChainSetIco = '';
 
 			if (Name) { // Name is set
@@ -385,18 +384,6 @@ let Kits = {
 					let itemName = MainParser.CityEntities[kits[set].buildings[0].first].name;
 					let idx = itemName.indexOf(' - ', 0);
 					
-					let upgradeCount = Kits.upgradeKits?.[kits[set].buildings[0].first]?.upgradeCount;
-					if (upgradeCount) {
-						upgrades = " ("
-						let first = true
-						for (let i in upgradeCount) {
-							if (!upgradeCount[i]) continue
-							upgrades += (first ? "" : " + ") + `${upgradeCount[i]} ${i}`
-							first = false;
-						}
-						upgrades+=")"
-					}
-
 					if (idx === -1) {
 						idx = itemName.indexOf(' – ', 0); // looks the same but it isn't ¯\_(ツ)_/¯
 					}
@@ -430,6 +417,21 @@ let Kits = {
 			else { // No name and group set => Show udate
 				KitText = i18n('Boxes.Kits.Udate') + kits[set].udate;
 				show = true;
+			}
+
+			let upgrades = "";
+			if (kits[set].buildings?.[0]?.first && MainParser.CityEntities[kits[set].buildings[0].first]) {
+				let upgradeCount = Kits.upgradeKits?.[kits[set].buildings[0].first]?.upgradeCount;
+				if (upgradeCount) {
+					upgrades = " ("
+					let first = true
+					for (let i in upgradeCount) {
+						if (!upgradeCount[i]) continue
+						upgrades += (first ? "" : " + ") + `${upgradeCount[i]} ${i}`
+						first = false;
+					}
+					upgrades+=")"
+				}
 			}
 			if (!GroupName) {
 				t += '<div class="item-row '+ (!show ? "all-missing" : "") +'">'
