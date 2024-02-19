@@ -821,8 +821,8 @@ FP-Bar */
 	top: 7px;
 	text-align: left;
 	display: flex;
-	border: 1px solid #4b1b0b;
-	width: 49px;
+	width: 50px;
+	overflow: hidden;
 }
 
 #fp-bar .fp-bar-main.full {
