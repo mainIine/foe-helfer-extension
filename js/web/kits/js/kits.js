@@ -507,7 +507,7 @@ let Kits = {
 				title = MainParser.BuildingUpgrades[item] ? MainParser.BuildingUpgrades[item].upgradeItem.name : i18n('Boxes.Kits.UpgradeKit');
 			}
 			else if (el.type === 'kit') {
-				title = MainParser.SelectionKits[Kits.specialCases[item]||item] ? MainParser.SelectionKits[Kits.specialCases[item]||item].name : i18n('Boxes.Kits.SelectionKit');
+				title = MainParser.SelectionKits[item] ? MainParser.SelectionKits[item].name : i18n('Boxes.Kits.SelectionKit');
 			}
 		}
 
@@ -537,7 +537,7 @@ let Kits = {
 			if (x.item.__class__=="FragmentItemPayload") {
 				id =  "fragment#"+ ((x.item.reward.assembledReward.type == "building") ? 
 										(x.item.reward.assembledReward.subType) : 
-										(Kits.specialCases[x.item.reward.assembledReward.id] || x.item.reward.assembledReward.id));
+										(x.item.reward.assembledReward.id));
 				amount = x.inStock*x.item.reward.amount;
 				required = x.item.reward.requiredAmount;
 				asset = x.item.reward.assembledReward.iconAssetName;
