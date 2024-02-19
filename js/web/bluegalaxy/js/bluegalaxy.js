@@ -138,12 +138,12 @@ let BlueGalaxy = {
                 let FragmentAmount = 0;
                                
 
-                CityEntity.state.production.resources.forEach(product => {
-                    if (product.resources.strategy_points)
+                CityEntity.state.production.forEach(product => {
+                    if (product.resources?.strategy_points)
                         FP += FPBoost(product.resources.strategy_points)
-                    else if (product.type == "genericReward" && product.resources.subType == "strategy_points")
+                    else if (product.type == "genericReward" && product.resources?.subType == "strategy_points")
                         FP += FPBoost(product.resources.amount);
-                    else if (product.type == "genericReward" && product.resources.type == "forgepoint_package")
+                    else if (product.type == "genericReward" && product.resources?.type == "forgepoint_package")
                         FP += parseInt(product.resources.subType)
 
                     if (product.type == "resources" || product.type == "guildResources")
@@ -157,7 +157,7 @@ let BlueGalaxy = {
                             }
                         }
                     
-                    if (product.type == "genericReward" && product.resources.subType == "fragment") {
+                    if (product.type == "genericReward" && product.resources?.subType == "fragment") {
                         Fragments.push(product.resources);
                         FragmentAmount += product.resources.amount;
                     }
