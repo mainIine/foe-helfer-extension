@@ -533,13 +533,13 @@ let Kits = {
 			let x = MainParser.Inventory[i]
 			let amount = x.inStock;
 			let required = null;
-			let id = x.item.upgradeItemId||x.item.selectionKitId||x.item.cityEntityId;
+			let id = x.item.upgradeItemId||x.item.selectionKitId||x.item.cityEntityId||x.itemAssetName;
 			let asset= x.itemAssetName;
 			let name = x.name;
 			if (x.item.__class__=="FragmentItemPayload") {
 				id =  "fragment#"+ ((x.item.reward.assembledReward.type == "building") ? 
 										(x.item.reward.assembledReward.subType) : 
-										(x.item.reward.assembledReward.id));
+										(x.item.reward.assembledReward.id||x.item.reward.assembledReward.iconAssetName));
 				amount = x.inStock*x.item.reward.amount;
 				required = x.item.reward.requiredAmount;
 				asset = x.item.reward.assembledReward.iconAssetName;
