@@ -1150,10 +1150,10 @@ FP-Bar */
 .tooltip-inner {
 	max-width: 250px;
 	padding: 8px;
-	color: #fff;
+	color: var(--text-tab-active);
 	text-align: center;
 	text-decoration: none;
-	background-color: var(--black);
+	background-color: var(--text-darkest);
 	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;
 	border-radius: 4px;
@@ -1171,7 +1171,7 @@ FP-Bar */
 	bottom: 0;
 	left: 50%;
 	margin-left: -5px;
-	border-top-color: var(--black);
+	border-top-color: var(--text-darkest);
 	border-width: 5px 5px 0;
 }
 
@@ -1179,7 +1179,7 @@ FP-Bar */
 	top: 50%;
 	left: 0;
 	margin-top: -5px;
-	border-right-color: var(--black);
+	border-right-color: var(--text-darkest);
 	border-width: 5px 5px 5px 0;
 }
 
@@ -1187,7 +1187,7 @@ FP-Bar */
 	top: 50%;
 	right: 0;
 	margin-top: -5px;
-	border-left-color: var(--black);
+	border-left-color: var(--text-darkest);
 	border-width: 5px 0 5px 5px;
 }
 
@@ -1195,7 +1195,7 @@ FP-Bar */
 	top: 0;
 	left: 50%;
 	margin-left: -5px;
-	border-bottom-color: var(--black);
+	border-bottom-color: var(--text-darkest);
 	border-width: 0 5px 5px;
 }
 

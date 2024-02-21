@@ -103,14 +103,18 @@
 	height: 22px;
 	align-items: center;
 	color: #74c409;
-	margin-left: 9px
+	margin-left: 4px;
+	padding: 0 4px;
+	background-color: var(--black-50);
+	border-radius: 20px;
 }
 
-#kits .upgrades span::before {
+#kits .upgrades span::after {
 	content: '';
 	display: inline-block;
-	width: 18px;
+	width: 17px;
 	height: 22px;
+	margin-left: 2px;
 	background: url('../../x_img/upgrades.png') no-repeat left top;
 	background-size: auto 100%;
 }
@@ -119,7 +123,7 @@
 	color: var(--text-normal);
 }
 
-#kits .upgrades .base::before {
+#kits .upgrades .base::after {
 	background-position: -72px 0;
 	width: 20px;
 }
@@ -128,7 +132,7 @@
 	color: #b8b9b9;
 }
 
-#kits .upgrades .silver::before {
+#kits .upgrades .silver::after {
 	background-position: -18px 0;
 }
 
@@ -136,7 +140,7 @@
 	color: #fedc00;
 }
 
-#kits .upgrades .golden::before {
+#kits .upgrades .golden::after {
 	background-position: -36px 0;
 }
 
@@ -144,7 +148,7 @@
 	color: #e9ceef;
 }
 
-#kits .upgrades .platinum::before {
+#kits .upgrades .platinum::after {
 	background-position: -52px 0;
 }
 
