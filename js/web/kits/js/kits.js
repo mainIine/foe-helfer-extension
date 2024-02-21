@@ -423,11 +423,11 @@ let Kits = {
 			if (kits[set].buildings?.[0]?.first && MainParser.CityEntities[kits[set].buildings[0].first]) {
 				let upgradeCount = Kits.upgradeKits?.[kits[set].buildings[0].first]?.upgradeCount;
 				if (upgradeCount) {
-					upgrades = '<span class="upgrades">'
+					upgrades = '<span class="upgrades" data-original-title="'+i18n('Boxes.Kits.Upgrades')+'" data-toggle="tooltip">'
 					let first = true
 					for (let i in upgradeCount) {
 						if (!upgradeCount[i]) continue
-						upgrades += (first ? '<span class="base">1</span>' : "") + `<span class="${i}">${upgradeCount[i]}</span>`
+						upgrades += (first ? '<span class="base" title="'+i18n('Boxes.Kits.Base')+'">1</span>' : "") + `<span class="${i}">${upgradeCount[i]}</span>`
 						first = false;
 					}
 					upgrades+= '</span>'
@@ -476,6 +476,10 @@ let Kits = {
 		t += '</div>';
 
 		$('#kitsBodyInner').html(t);
+		$('.upgrades').tooltip({
+			html: true,
+			container: '#kits'
+		});
 	},
 
 

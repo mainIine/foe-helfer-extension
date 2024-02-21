@@ -315,6 +315,9 @@ GetFights = () =>{
 		if (ActiveMap === 'era_outpost') {
 			MainParser.CityMapEraOutpostData = Object.assign({}, ...data.responseData['entities'].map((x) => ({ [x.id]: x })));
 		}
+		else if (ActiveMap === 'guild_raids') {
+			MainParser.CityMapQIData = Object.assign({}, ...data.responseData['entities'].map((x) => ({ [x.id]: x })));
+		}
 	});
 
 
@@ -843,6 +846,7 @@ let MainParser = {
 	CityMapData: {},
 	NewCityMapData: {},
 	CityMapEraOutpostData: null,
+	CityMapQIData: null,
 	OtherPlayerCityMapData: {},
 
 	// Unlocked extensions
