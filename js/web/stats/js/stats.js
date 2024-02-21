@@ -386,14 +386,20 @@ let Stats = {
 					startDate: Stats.DatePickerFrom,
 					resetButton: true,
 					onSelect: async function (start, end) {
-						$('#StatsDatePicker').text(`${Stats.formatRange()}`);
-
 						// get now if day is today
-						if (end.getDate() === MainParser.getCurrentDate().getDate() && end.getMonth() === MainParser.getCurrentDate().getMonth()) 
+						if (end.getDate() === MainParser.getCurrentDate().getDate() && end.getMonth() === MainParser.getCurrentDate().getMonth() && end.getYear() === MainParser.getCurrentDate().getYear()) 
 							end = MainParser.getCurrentDate();
+						else
+							// otherwise, take end of day for end date
+							end.setHours(23);
+							end.setMinutes(59);
+							end.setSeconds(59);
+							end.setMilliseconds(999);
 
 						Stats.DatePickerFrom = start;
 						Stats.DatePickerTo = end;
+						
+						$('#StatsDatePicker').text(`${Stats.formatRange()}`);
 
 						return await Stats.updateCharts({ s: start, e: end });
 					},
