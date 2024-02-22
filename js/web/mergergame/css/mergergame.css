@@ -31,8 +31,8 @@
 }
 
 #mergerGameResetBlocker {
-    width: 55px;
-    height: 55px;
+    width: 60px;
+    height: 56px;
     position: absolute;
     z-index: 100;
     background-color: #ff9400;
@@ -44,8 +44,8 @@
     left: calc(50vw - 334px);
 }
 #mergerGameResetBlocker.anniversary {
-    top: calc(50vh + 206px);
-    left: calc(50vw - 345px);
+    top: calc(50vh + 248px);
+    left: calc(50vw + 288px);
 }
 
 #MGstatus.hideDaily th:nth-child(3),
