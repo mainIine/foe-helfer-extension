@@ -804,25 +804,36 @@ let CityMap = {
 				if (ability.boostHints) {
 					ability.boostHints.forEach(abilityBoost => {
 						if (abilityBoost.boostHintEraMap[eraName] != undefined) { // has different boosts for different eras
-							// example data: targetedFeature: "all", type: "att_boost_attacker", value: 11
+							// example data: targetedFeature: "all", type: [], value: 11
 							let boost = {
 								feature: abilityBoost.boostHintEraMap[eraName].targetedFeature,
-								type: abilityBoost.boostHintEraMap[eraName].type,
+								type: MainParser.BoostMapper[abilityBoost.boostHintEraMap[eraName].type] || [abilityBoost.boostHintEraMap[eraName].type],
 								value: abilityBoost.boostHintEraMap[eraName].value
-							};
+							}
 							boosts.push(boost)
 						}
 						else { // if only AllAge boost
 							let boost = {
 								feature: abilityBoost.boostHintEraMap.AllAge.targetedFeature,
-								type: abilityBoost.boostHintEraMap.AllAge.type,
+								type: MainParser.BoostMapper[abilityBoost.boostHintEraMap.AllAge.type] || [abilityBoost.boostHintEraMap.AllAge.type],
 								value: abilityBoost.boostHintEraMap.AllAge.value
-							};
+							}
 							boosts.push(boost)
 						}
 					})
 				}
 			});
+			if (data.type === "greatbuilding") { 
+				if (data.bonus?.type) {
+					let boost = {
+						feature: "all",
+						type: MainParser.BoostMapper[data.bonus.type] || [data.bonus.type],
+						value: data.bonus.value
+					}
+					if (data.bonus.type !== "happiness_amount" && data.bonus.type !== "population")
+						boosts.push(boost)
+				}
+			}
 		}
 		else {
 			if (ceData.components[era]) 
@@ -830,7 +841,7 @@ let CityMap = {
 					ceData.components[era].boosts.boosts.forEach(abilityBoost => {
 						let boost = {
 							feature: abilityBoost.targetedFeature,
-							type: abilityBoost.type,
+							type: MainParser.BoostMapper[abilityBoost.type] || [abilityBoost.type],
 							value: abilityBoost.value,
 						};
 						boosts.push(boost)
@@ -1311,8 +1322,8 @@ let CityMap = {
 			level: (data.type == "greatbuilding" ? data.level : undefined), // level also includes eraId in raw data, we do not like that
 			max_level: (data.type == "greatbuilding" ? data.max_level : undefined)
 		}
-		//if (entity.type == 'generic_building')
-		//	console.log('entity ',entity.name, entity.production)//, ceData, data)
+		//if (entity.type == 'greatbuilding')
+		//	console.log('entity ',entity.name, entity, ceData, data)
 		return entity
 	},
 };
