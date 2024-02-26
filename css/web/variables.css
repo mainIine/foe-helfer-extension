@@ -19,6 +19,7 @@
 	--text-medium2: #7b5730;
 	--text-dark: #4c2f1e;
 	--text-darker: #271911;
+	--text-darkest: #180d07;
 	--text-muted: #8a8a8a;
 
 	--text-tab-active: #e2e2e2;
@@ -32,6 +33,8 @@
 
 	--background-hud-btn: linear-gradient(to bottom, #c38236, #894422);
 	--background-hud-btn-hover: linear-gradient(to bottom, #d8cf56, #d58f4a);
+
+	--bg-tooltip: #5e5a4e;
 
 	--background-window-head: linear-gradient(0deg, #44150a, #48170c, #4c190e, #501b10, #541d12, #581f13, #5d2115, #612316);
 	--background-window-boxmenu-head: linear-gradient(#384354, #293344);

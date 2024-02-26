@@ -1,5 +1,22 @@
 ## Changelog - Extension
 
+##### 3.6.2.0
+
+**Update**
+- Mergergame:
+	- Eventänderungen eingearbeitet
+
+- Kits/Sets Modul:
+	- benötigte Anzahl an Teilen für volles Gebäude wird angezeigt
+
+**BugFix**
+- Siedlungen:
+	- beim ersten Durchlauf einer Siedlung wird nun die korrekte 4x Chance angezeigt
+
+- Statistiken:
+	- verbesserte Datumsauswahl (thanks Linnum!)
+---
+
 ##### 3.6.1.1
 
 **BugFix**

@@ -135,10 +135,9 @@ let Outposts = {
 		const plannedTiles = Outposts.PlannedTiles[OutpostData.content] || {};
 
 		const currentRun = {
-			id: OutpostData.completedPlaythroughs,
-			productionBonusProbability: OutpostData.completedPlaythroughs < OutpostData.playthroughs.length ? OutpostData.playthroughs[OutpostData.completedPlaythroughs].productionBonusProbability : OutpostData.playthroughs[OutpostData.playthroughs.length-1].productionBonusProbability,
+			id: OutpostData.completedPlaythroughs || 0,
+			productionBonusProbability: OutpostData.completedPlaythroughs === undefined ? OutpostData.playthroughs[0].productionBonusProbability : (OutpostData.completedPlaythroughs < OutpostData.playthroughs.length ? OutpostData.playthroughs[OutpostData.completedPlaythroughs].productionBonusProbability : OutpostData.playthroughs[OutpostData.playthroughs.length-1].productionBonusProbability),
 		}
-
 
 		// Diplomatische Gebäude raussuchen, die erforscht sind
 		/** @type {{name: string, diplomacy: number}[]}} */
@@ -587,7 +586,7 @@ let Outposts = {
 	 * @returns {void}
 	 */
 	CollectResources: () => {
-		if (Outposts.OutpostData === null) return; //Kein Außenposten aktiv
+		if (Outposts.OutpostData === null) return; // Kein Außenposten aktiv
 		Outposts.RequestGUIUpdate();
 	},
 
