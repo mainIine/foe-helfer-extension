@@ -14,7 +14,7 @@
 - Settlements:
 	- fix 4x chance for first run
 
-- statistics:
+- Statistics:
 	- improved datepicker (thanks Linnum!)
 
 ---
