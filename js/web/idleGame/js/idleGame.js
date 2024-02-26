@@ -19,7 +19,13 @@ FoEproxy.addHandler('IdleGameService', 'getState', (data, postData) => {
 	idleGame.event = data.responseData.context;
 	idleGame.selectEventData();
 	if (!idleGame.settings['Strategy']) idleGame.settings['Strategy']={};
-	if (!idleGame.settings.Strategy[idleGame.event]) idleGame.settings.Strategy[idleGame.event]={}
+	if (!idleGame.settings.Strategy[idleGame.event]) {
+		idleGame.settings.Strategy[idleGame.event]={}
+	}
+	if (!idleGame.settings.currentEvent || idleGame.settings.currentEvent != idleGame.event) {
+		idleGame.settings.Strategy['CurrentVariant'] = 0;
+		idleGame.settings.currentEvent = idleGame.event;
+	}
 	// Don't create a new box while another one is still open
     if ($('#idleGameDialog').length === 0) {
 		idleGame.ShowDialog();
@@ -76,6 +82,7 @@ FoEproxy.addHandler('IdleGameService', 'getState', (data, postData) => {
 				idleGame.settings.Strategy[idleGame.event][idleGame.Variant][x].check = false;
 			}
 		}
+		if (!idleGame.settings.Strategy[idleGame.event][idleGame.Variant]) idleGame.settings.Strategy[idleGame.event][idleGame.Variant]=[];
 	}
 
 	idleGame.idleGameUpdateDialog();
