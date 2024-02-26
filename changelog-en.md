@@ -1,5 +1,24 @@
 ## Changelog - Extension
 
+
+##### 3.6.2.0
+
+**Update**
+- Mergergame:
+	- adapted to event changes
+
+- Kits/Sets Module:
+	- now shows the amount of items needed for a full building
+
+**BugFix**
+- Settlements:
+	- fix 4x chance for first run
+
+- Statistics:
+	- improved datepicker (thanks Linnum!)
+
+---
+
 ##### 3.6.1.1
 
 **BugFix**

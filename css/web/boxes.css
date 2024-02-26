@@ -821,8 +821,8 @@ FP-Bar */
 	top: 7px;
 	text-align: left;
 	display: flex;
-	border: 1px solid #4b1b0b;
-	width: 49px;
+	width: 50px;
+	overflow: hidden;
 }
 
 #fp-bar .fp-bar-main.full {
@@ -1150,10 +1150,10 @@ FP-Bar */
 .tooltip-inner {
 	max-width: 250px;
 	padding: 8px;
-	color: #fff;
+	color: var(--text-tab-active);
 	text-align: center;
 	text-decoration: none;
-	background-color: var(--black);
+	background-color: var(--text-darkest);
 	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;
 	border-radius: 4px;
@@ -1171,7 +1171,7 @@ FP-Bar */
 	bottom: 0;
 	left: 50%;
 	margin-left: -5px;
-	border-top-color: var(--black);
+	border-top-color: var(--text-darkest);
 	border-width: 5px 5px 0;
 }
 
@@ -1179,7 +1179,7 @@ FP-Bar */
 	top: 50%;
 	left: 0;
 	margin-top: -5px;
-	border-right-color: var(--black);
+	border-right-color: var(--text-darkest);
 	border-width: 5px 5px 5px 0;
 }
 
@@ -1187,7 +1187,7 @@ FP-Bar */
 	top: 50%;
 	right: 0;
 	margin-top: -5px;
-	border-left-color: var(--black);
+	border-left-color: var(--text-darkest);
 	border-width: 5px 0 5px 5px;
 }
 
@@ -1195,7 +1195,7 @@ FP-Bar */
 	top: 0;
 	left: 50%;
 	margin-left: -5px;
-	border-bottom-color: var(--black);
+	border-bottom-color: var(--text-darkest);
 	border-width: 0 5px 5px;
 }
 
@@ -1207,40 +1207,40 @@ FP-Bar */
 }
 
 .tooltip.top.foe-skin > .tooltip-arrow {
-	border-top-color: #606052 !important;
+	border-top-color: var(--bg-tooltip) !important;
 	border-top-width: 11px;
 }
 
 .tooltip.bottom.foe-skin > .tooltip-arrow {
-	border-bottom-color: #3f4444 !important;
+	border-bottom-color: var(--bg-tooltip) !important;
 }
 
 .tooltip.right.foe-skin > .tooltip-arrow {
-	border-right-color: #606052 !important;
+	border-right-color: var(--bg-tooltip) !important;
 }
 
 .tooltip.left.foe-skin > .tooltip-arrow {
-	border-left-color: #606052 !important;
+	border-left-color: var(--bg-tooltip) !important;
 }
 
 .tooltip.foe-skin > .tooltip-inner {
 	text-align: left;
 	width: 180px;
 	border: 2px solid #373c32;
-	background-color: #5e5a4e;
-	border-radius: 0;
+	background-color: var(--bg-tooltip);
 	z-index: 999;
 	color: #f2ede1;
-	padding: 3px;
+	padding: 5px;
 	pointer-events: none;
 	user-select: none;
 	margin: 0;
 	opacity: 1;
-	box-shadow: 0 0 1px 1px #764f27, 0 0 2px 1px var(--black-65);
+	box-shadow: 0 0 2px 1px var(--black-65);
+	box-sizing: border-box;
 }
 
 .tooltip.foe-skin h3 + .tooltip-inner {
-	padding: 25px 3px 3px;
+	padding: 27px 5px 5px;
 }
 
 .tooltip.foe-skin .tooltip-inner em {
@@ -1250,11 +1250,12 @@ FP-Bar */
 .tooltip.foe-skin h3 {
 	color: #bdc5cb;
 	background: #313d45 !important;
-	box-shadow: inset 0 0 2px var(--black);
-	margin: 0 3px -23px;
+	border-top: 2px solid var(--bg-tooltip);
+	border-radius: 3px 3px 0 0;
+	margin: 1px 4px -28px;
 	position: relative;
 	z-index: 1000;
-	padding: 0 5px 1.3px;
+	padding: 2px 5px;
 	font-weight: normal;
 	font-size: inherit;
 	text-align: left;
@@ -1621,7 +1622,7 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 .hud-btn-up-active:hover, .hud-btn-down-active:hover {
-	background: var(--background-hud-btn-hover);
+	filter: brightness(1.3) contrast(1.1);
 }
 
 .hud-btn-up {
@@ -1704,7 +1705,7 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 .hud-btn-right:hover, .hud-btn-left:hover {
-	background: linear-gradient(to bottom, #d8cf56, #d58f4a);
+	filter: brightness(1.3) contrast(1.1);
 }
 
 .hud-btn-left::before,
@@ -1739,6 +1740,10 @@ input[type="range"]::-webkit-slider-thumb {
 	box-shadow: inset 0 0 3px 2px #301e0f, 0 0 2px #00000087;
 	background: linear-gradient(#553419, #553419) padding-box, linear-gradient(to bottom, #82ae4c, #4f7421) border-box;
 	text-align: center;
+}
+
+.hud-btn:hover {
+	filter: brightness(1.2);
 }
 
 .hud-btn-red {
