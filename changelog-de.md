@@ -1,5 +1,10 @@
 ## Changelog - Extension
 
+##### 3.6.2.1
+**BugFix**
+- St Patrick:
+	- es konnte passieren, dass die Strategie nicht bearbeitet werden konnte
+
 ##### 3.6.2.0
 
 **Update**
