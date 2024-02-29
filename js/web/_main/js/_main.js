@@ -313,10 +313,16 @@ GetFights = () =>{
 		// $('#fp-bar').removeClass(possibleMaps).addClass(ActiveMap);
 
 		if (ActiveMap === 'era_outpost') {
-			MainParser.CityMapEraOutpostData = Object.assign({}, ...data.responseData['entities'].map((x) => ({ [x.id]: x })));
+			CityMap.EraOutpostData = Object.assign({}, ...data.responseData['entities'].map((x) => ({ [x.id]: x })));
+			CityMap.EraOutpostAreas = data.responseData['unlocked_areas'];
 		}
 		else if (ActiveMap === 'guild_raids') {
-			MainParser.CityMapQIData = Object.assign({}, ...data.responseData['entities'].map((x) => ({ [x.id]: x })));
+			CityMap.QIData = Object.assign({}, ...data.responseData['entities'].map((x) => ({ [x.id]: x })));
+			CityMap.QIAreas = data.responseData['unlocked_areas'];
+		}
+		else if (ActiveMap === 'cultural_outpost') {
+			CityMap.CulturalOutpostData = Object.assign({}, ...data.responseData['entities'].map((x) => ({ [x.id]: x })));
+			CityMap.CulturalOutpostAreas = data.responseData['unlocked_areas'];
 		}
 	});
 
@@ -845,8 +851,6 @@ let MainParser = {
 	// all buildings of the player
 	CityMapData: {},
 	NewCityMapData: {},
-	CityMapEraOutpostData: null,
-	CityMapQIData: null,
 	OtherPlayerCityMapData: {},
 
 	// Unlocked extensions
@@ -1601,8 +1605,8 @@ let MainParser = {
 			if (MainParser.CityMapData[ID]) {
 				MainParser.CityMapData[ID] = Buildings[i];
 			}
-			if (MainParser.CityMapEraOutpostData && MainParser.CityMapEraOutpostData[ID]) {
-				MainParser.CityMapEraOutpostData[ID] = Buildings[i];
+			if (CityMap.EraOutpostData && CityMap.EraOutpostData[ID]) {
+				CityMap.EraOutpostData[ID] = Buildings[i];
 			}
 		}
 		MainParser.SetArkBonus2();
