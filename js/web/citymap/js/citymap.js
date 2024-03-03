@@ -27,6 +27,13 @@ let CityMap = {
 	OccupiedArea: 0,
 	EfficiencyFactor: 0,
 	IsExtern: false,
+	OutpostScaleUnit: 100,
+	CulturalOutpostData: {},
+	CulturalOutpostAreas: [],
+	EraOutpostData: null,
+	EraOutpostAreas: [],
+	QIData: null,
+	QIAreas: [],
 
 
 	/**
@@ -41,9 +48,17 @@ let CityMap = {
 			CityMap.IsExtern = false
 			Data = MainParser.CityMapData
 			CityMap.OwnCityData = MainParser.NewCityMapData
+			if (ActiveMap === "cultural_outpost") {
+				Data = CityMap.CulturalOutpostData
+			}
+			else if (ActiveMap === "era_outpost") {
+				Data = CityMap.EraOutpostData
+			}
+			else if (ActiveMap === "guild_raids") {
+				Data = CityMap.QIData
+			}
 		}
-		// Neighbor or other modul
-		else {
+		else { // Neighbor or other modul
 			CityMap.IsExtern = true;
 		}
 
@@ -53,18 +68,20 @@ let CityMap = {
 		});
 
 		let scale = localStorage.getItem('CityMapScale'),
+			outpostScale = localStorage.getItem('OutpostMapScale'),
 			view = localStorage.getItem('CityMapView');
 
-		// a scaling has already been set?
-		if(null !== scale){
+		if(null !== scale) { // scaling has already been set?
 			CityMap.ScaleUnit = parseInt(scale);
 		}
 
-		// a view has already been set?
-		if(null !== view){
+		if(null !== view) { // view has already been set?
 			CityMap.CityView = view;
 		}
 
+		if(null !== outpostScale) { // scaling has already been set?
+			CityMap.OutpostScaleUnit = parseInt(outpostScale);
+		}
 
 		if( $('#city-map-overlay').length < 1 )
 		{
@@ -92,13 +109,10 @@ let CityMap = {
 		}
 
 		setTimeout(()=>{
-
 			// separate city
-			if(Data === false)
-			{
-				setTimeout(()=>{
+			if(Data === false) {
+				setTimeout(()=> {
 					CityMap.SetBuildings();
-
 				}, 100);
 
 			} else {
@@ -132,6 +146,10 @@ let CityMap = {
 
 		$('#city-map-overlayHeader > .title').attr('id', 'map' + CityMap.hashCode(Title));
 
+		if (ActiveMap === "cultural_outpost" || ActiveMap === "era_outpost" || ActiveMap === "guild_raids") {
+			oB.addClass('outpost')
+		}
+
 		let menu = $('<div />').attr('id', 'city-map-menu');
 
 		/* Ansicht wechseln */
@@ -150,14 +168,18 @@ let CityMap = {
 
 
 		/* Scalierung wechseln */
+		let scaleUnit = CityMap.ScaleUnit;
+		if (ActiveMap == "cultural_outpost" || ActiveMap === "era_outpost" || ActiveMap === "guild_raids") {
+			scaleUnit = CityMap.OutpostScaleUnit;
+		}
 		let scaleView = $('<select />').attr('id', 'scale-view').addClass('game-cursor')
-			.append( $('<option />').prop('selected', CityMap.ScaleUnit === 60).attr('data-scale', 60).text('60%').addClass('game-cursor') )
-			.append( $('<option />').prop('selected', CityMap.ScaleUnit === 80).attr('data-scale', 80).text('80%').addClass('game-cursor') )
-			.append( $('<option />').prop('selected', CityMap.ScaleUnit === 100).attr('data-scale', 100).text('100%').addClass('game-cursor') )
-			.append( $('<option />').prop('selected', CityMap.ScaleUnit === 120).attr('data-scale', 120).text('120%').addClass('game-cursor') )
-			.append( $('<option />').prop('selected', CityMap.ScaleUnit === 140).attr('data-scale', 140).text('140%').addClass('game-cursor') )
-			.append( $('<option />').prop('selected', CityMap.ScaleUnit === 160).attr('data-scale', 160).text('160%').addClass('game-cursor') )
-			.append( $('<option />').prop('selected', CityMap.ScaleUnit === 180).attr('data-scale', 180).text('180%').addClass('game-cursor') )
+			.append( $('<option />').prop('selected', scaleUnit === 60).attr('data-scale', 60).text('60%').addClass('game-cursor') )
+			.append( $('<option />').prop('selected', scaleUnit === 80).attr('data-scale', 80).text('80%').addClass('game-cursor') )
+			.append( $('<option />').prop('selected', scaleUnit === 100).attr('data-scale', 100).text('100%').addClass('game-cursor') )
+			.append( $('<option />').prop('selected', scaleUnit === 120).attr('data-scale', 120).text('120%').addClass('game-cursor') )
+			.append( $('<option />').prop('selected', scaleUnit === 140).attr('data-scale', 140).text('140%').addClass('game-cursor') )
+			.append( $('<option />').prop('selected', scaleUnit === 160).attr('data-scale', 160).text('160%').addClass('game-cursor') )
+			.append( $('<option />').prop('selected', scaleUnit === 180).attr('data-scale', 180).text('180%').addClass('game-cursor') )
 		;
 
 		menu.append(scaleView);
@@ -166,11 +188,17 @@ let CityMap = {
 			let unit = parseInt($('#scale-view option:selected').data('scale'));
 			$('#highlight-old-buildings')[0].checked=false;
 			$('#show-nostreet-buildings')[0].checked=false;
-			
-			CityMap.ScaleUnit = unit;
 
 			$('#grid-outer').attr('data-unit', unit);
-			localStorage.setItem('CityMapScale', unit);
+
+			if (ActiveMap == "cultural_outpost" || ActiveMap === "era_outpost" || ActiveMap === "guild_raids") {
+				localStorage.setItem('OutpostMapScale', unit);
+				CityMap.OutpostScaleUnit = unit;
+			}
+			else {
+				localStorage.setItem('CityMapScale', unit);
+				CityMap.ScaleUnit = unit;	
+			}
 
 			CityMap.SetBuildings(CityMap.CityData, false);
 
@@ -205,14 +233,30 @@ let CityMap = {
 		$('#citymap-wrapper').append(menu);
 	},
 
-
 	/**
 	 * Erzeugt ein Raster für den Hintergrund
-	 *
 	 */
 	BuildGrid:()=> {
-
 		let ua = CityMap.UnlockedAreas;
+		let xOffset = 0;
+		let yOffset = 0;
+		let scaleUnit = CityMap.ScaleUnit;
+		if (ActiveMap === "cultural_outpost") {
+			ua = CityMap.CulturalOutpostAreas;
+			xOffset = 500;
+			scaleUnit = CityMap.OutpostScaleUnit;
+		}
+		else if (ActiveMap === "era_outpost") {
+			ua = CityMap.EraOutpostAreas;
+			yOffset = 500;
+			scaleUnit = CityMap.OutpostScaleUnit;
+		}
+		else if (ActiveMap === "guild_raids") {
+			ua = CityMap.QIAreas;
+			yOffset = 500;
+			xOffset = 500;
+			scaleUnit = CityMap.OutpostScaleUnit;
+		}
 
 		for(let i in ua)
 		{
@@ -220,24 +264,23 @@ let CityMap = {
 				break;
 			}
 
-			let w = ((ua[i]['width'] * CityMap.ScaleUnit) / 100 ),
-				h = ((ua[i]['length'] * CityMap.ScaleUnit) / 100 ),
-				x = ((ua[i]['x'] * CityMap.ScaleUnit) / 100 ),
-				y = ((ua[i]['y'] * CityMap.ScaleUnit) / 100 ),
+			let w = ((ua[i]['width'] * scaleUnit) / 100 ),
+				h = ((ua[i]['length'] * scaleUnit) / 100 ),
+				x = (((ua[i]['x']-xOffset) * scaleUnit) / 100 ),
+				y = (((ua[i]['y']-yOffset) * scaleUnit) / 100 ),
+				G = $('#map-grid')
 
-				G = $('#map-grid'),
-
-				a = $('<span />')
-					.addClass('map-bg')
-					.css({
-						width: w + 'em',
-						height: h + 'em',
-						left: x + 'em',
-						top: y + 'em',
-					});
+			let a = $('<span />')
+				.addClass('map-bg')
+				.css({
+					width: w + 'em',
+					height: h + 'em',
+					left: x + 'em',
+					top: y + 'em',
+				});
 
 			// Ist es das Startfeld?
-			if(ua[i]['width'] === 16 && ua[i]['length'] === 16){
+			if(ua[i]['width'] === 16 && ua[i]['length'] === 16) {
 				a.addClass('startmap');
 			}
 
@@ -251,8 +294,74 @@ let CityMap = {
 	 *
 	 * @param Data
 	 */
-	SetBuildings: (Data = null)=> {
+	SetOutpostBuildings: ()=> {
+		// einmal komplett leer machen, wenn gewünscht
+		$('#grid-outer').find('.map-bg').remove();
+		$('#grid-outer').find('.entity').remove();
 
+		CityMap.BuildGrid()
+
+		let buildings = CityMap.CulturalOutpostData
+		let xOffset = 0, yOffset = 0
+		if (ActiveMap == "era_outpost") {
+			buildings = CityMap.EraOutpostData
+			yOffset = 500
+		}
+		else if (ActiveMap == "cultural_outpost") {
+			xOffset = 500
+		}
+		else if (ActiveMap == "guild_raids") {
+			buildings = CityMap.QIData
+			xOffset = 500
+			yOffset = 500
+		}
+
+		for (let b in buildings) {
+			let x = (buildings[b]['x'] || 0) - xOffset
+			let y = (buildings[b]['y'] || 0) - yOffset
+			let CityMapEntity = buildings[b],
+				d = MainParser.CityEntities[CityMapEntity['cityentity_id']],
+				BuildingSize = CityMap.GetBuildingSize(CityMapEntity),
+
+				xx = (parseInt(x) * CityMap.OutpostScaleUnit) / 100,
+				yy = (parseInt(y) * CityMap.OutpostScaleUnit) / 100,
+				xsize = ((parseInt(BuildingSize['xsize']) * CityMap.OutpostScaleUnit) / 100),
+				ysize = ((parseInt(BuildingSize['ysize']) * CityMap.OutpostScaleUnit) / 100)
+				
+				f = $('<span />').addClass('entity ' + d['type']).css({
+					width: xsize + 'em',
+					height: ysize + 'em',
+					left: xx + 'em',
+					top: yy + 'em'
+				})
+				.attr('title', d['name'] + ', ' + BuildingSize['xsize']+ 'x' +BuildingSize['ysize'])
+				.attr('data-entityid', CityMapEntity['id']);
+
+			$('#grid-outer').append( f );
+		}
+
+		// Gebäudenamen via Tooltip
+		$('.entity').tooltip({
+			container: '#city-map-overlayBody',
+			html: true
+		});
+
+		$('#grid-outer').draggable();
+	},
+
+
+	/**
+	 * Container gemäß den Koordianten zusammensetzen
+	 *
+	 * @param Data
+	 */
+	SetBuildings: (Data = null)=> {
+		
+		if (ActiveMap === "cultural_outpost" || ActiveMap === "era_outpost" || ActiveMap === "guild_raids") {
+			CityMap.SetOutpostBuildings()
+			return
+		}
+		
 		// https://foede.innogamescdn.com/assets/city/buildings/R_SS_MultiAge_SportBonus18i.png
 
 		let ActiveId = $('#grid-outer').find('.highlighted').data('entityid') || null;
@@ -315,7 +424,7 @@ let CityMap = {
 
 			if(era){
 				f.attr({
-					title: `${d['name']}<br><em>${i18n('Eras.' + era )}</em>`
+					title: `${d['name']}, ${BuildingSize['ysize']}x${BuildingSize['xsize']}<br><em>${i18n('Eras.' + era )}</em>`
 				})
 
 				if (era < CurrentEraID) {
@@ -876,7 +985,7 @@ let CityMap = {
 	needsStreet(ceData, data) {
 		let needsStreet = 0;
 		if (data.type != "generic_building") {
-			if (data.type != "tower" && data.type != "decoration") 
+			if (ceData.requirements?.street_connection_level) 
 				needsStreet = ceData.requirements.street_connection_level
 		}
 		else {
@@ -1160,6 +1269,7 @@ let CityMap = {
 			})
 			resource.resources = rewards
 		}
+		// wunschbrunnen
 
 		let multiAgeProduct = {}
 		let allAgeProduct = {}
@@ -1322,8 +1432,8 @@ let CityMap = {
 			level: (data.type == "greatbuilding" ? data.level : undefined), // level also includes eraId in raw data, we do not like that
 			max_level: (data.type == "greatbuilding" ? data.max_level : undefined)
 		}
-		//if (entity.type == 'greatbuilding')
-		//	console.log('entity ',entity.name, entity, ceData, data)
+		if (entity.type == 'random_production')
+			console.log('entity ',entity.name, entity, ceData, data)
 		return entity
 	},
 };

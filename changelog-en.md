@@ -1,10 +1,17 @@
 ## Changelog - Extension
 
 
-##### 3.6.2.1
+##### 3.6.3.0
+
+**Update**
+- City Overview:
+	- New: City Overview for settlements, colonies and Quantum Incursions
+
 **BugFix**
 - St Patrick:
 	- it was possible that the strategy could not be edited
+
+---
 
 ##### 3.6.2.0
 
