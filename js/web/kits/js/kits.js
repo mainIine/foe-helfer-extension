@@ -127,6 +127,7 @@ let Kits = {
 	UpdateBoxIfVisible: ()=> {
 		if ($('#kits').length !== 0) {
 			Kits.ReadSets();
+			Kits._filter();
 		}
 	},
 
