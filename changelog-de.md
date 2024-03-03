@@ -1,9 +1,16 @@
 ## Changelog - Extension
 
-##### 3.6.2.1
+##### 3.6.3.0
+
+**Update**
+- Stadtübersicht:
+	- Neu: Stadtübersicht auch bei Siedlungen, Kolonien und Quantum Inkursionen
+
 **BugFix**
 - St Patrick:
 	- es konnte passieren, dass die Strategie nicht bearbeitet werden konnte
+
+---
 
 ##### 3.6.2.0
 
@@ -20,6 +27,7 @@
 
 - Statistiken:
 	- verbesserte Datumsauswahl (thanks Linnum!)
+
 ---
 
 ##### 3.6.1.1
