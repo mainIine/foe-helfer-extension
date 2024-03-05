@@ -411,6 +411,19 @@ GetFights = () =>{
 		else if (data.requestMethod === 'placeBuilding') {
 			let building = data.responseData[0];
 			if (building && building.id) {
+				if (ActiveMap === "cultural_outpost") {
+					CityMap.CulturalOutpostData[building.id] = building
+					return
+				}
+				else if (ActiveMap === "era_outpost") {
+					CityMap.EraOutpostData[building.id] = building
+					return
+				}
+				else if (ActiveMap === "guild_raids") {
+					CityMap.QIData[building.id] = building
+					return
+				}
+
 				MainParser.CityMapData[building.id] = building;
 
 				let ceData = Object.values(MainParser.CityEntities).find(x => x.id == building.cityentity_id)
@@ -421,6 +434,18 @@ GetFights = () =>{
 		}
 		else if (data.requestMethod === 'removeBuilding') {
 			let ID = postData[0].requestData[0];
+			if (ActiveMap === "cultural_outpost") {
+				delete CityMap.CulturalOutpostData[ID];
+				return
+			}
+			else if (ActiveMap === "era_outpost") {
+				delete CityMap.EraOutpostData[ID];
+				return
+			}
+			else if (ActiveMap === "guild_raids") {
+				delete CityMap.QIData[ID];
+				return
+			}
 			if (ID && MainParser.CityMapData[ID]) {
 				delete MainParser.CityMapData[ID];
 			}
@@ -1604,9 +1629,15 @@ let MainParser = {
 			let ID = Buildings[i]['id'];
 			if (MainParser.CityMapData[ID]) {
 				MainParser.CityMapData[ID] = Buildings[i];
-			}
-			if (CityMap.EraOutpostData && CityMap.EraOutpostData[ID]) {
+			} // hier
+			if (ActiveMap === "era_outpost") {
 				CityMap.EraOutpostData[ID] = Buildings[i];
+			}
+			else if (ActiveMap === "cultural_outpost") {
+				CityMap.CulturalOutpostData[ID] = Buildings[i];
+			}
+			else if (ActiveMap === "guild_raids") {
+				CityMap.QIData[ID] = Buildings[i];
 			}
 		}
 		MainParser.SetArkBonus2();
