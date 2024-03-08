@@ -42,7 +42,6 @@ const FoEproxy = (function () {
 	// startup Queues
 	let xhrQueue = [];
 	let wsQueue = [];
-
 	const proxy = {
 		/**
 		 * Fügt einen datenhandler für Antworten von game/json hinzu.
@@ -267,13 +266,18 @@ const FoEproxy = (function () {
 	};
 
 	window.addEventListener('foe-helper#loaded', () => {
-		const xhrQ = xhrQueue;
+		while (xhrQueue.length > 0) {
+			let xhrRequest = xhrQueue.shift()
+			xhrOnLoadHandlerExec.call(xhrRequest)
+		}
 		xhrQueue = null;
-		const wsQ = wsQueue;
+
+		while (wsQueue.length > 0) {
+			let wsMessage = wsQueue.shift()
+			wsMessageHandlerExec(wsMessage)
+		}
 		wsQueue = null;
 
-		xhrQ.forEach(xhrRequest => xhrOnLoadHandler.call(xhrRequest));
-		wsQ.forEach(wsMessage => wsMessageHandler(wsMessage));
 	}, { capture: false, once: true, passive: true });
 
 	window.addEventListener('foe-helper#error-loading', () => {
@@ -331,6 +335,9 @@ const FoEproxy = (function () {
 			wsQueue.push(evt);
 			return;
 		}
+		wsMessageHandlerExec(evt);
+	}
+	function wsMessageHandlerExec(evt) {
 		try {
 			if (evt.data === 'PONG') return;
 			/** @type {FoE_NETWORK_TYPE[]|FoE_NETWORK_TYPE} */
@@ -467,7 +474,9 @@ const FoEproxy = (function () {
 			xhrQueue.push(this);
 			return;
 		}
-
+		xhrOnLoadHandlerExec.call(this);
+	 }
+	 function xhrOnLoadHandlerExec() {
 		const requestData = getRequestData(this);
 		const url = requestData.url;
 		const postData = requestData.postData;
