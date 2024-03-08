@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2024 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -258,46 +258,46 @@ let idleGame = {
         htmltext += `</tr><tr><td colspan="3" style="color: var(--text-bright);font-size:smaller">${i18n('Boxes.idleGame.Warning')}</td></tr></table>`;
         
 		htmltext += `<table id="idleGame_Next" class="foe-table" style="width:100%"><tr><th colspan="4"  onclick="idleGame.hide('#idleGame_Next')">${i18n('Boxes.idleGame.BuildingUpgrades')}<i></i></tr>`;
-		htmltext += `<tr title="${idleGame.data.workshop_1.baseData.name}">`;
-        htmltext += `<td><img src="${srcLinks.get(idleGame.images[idleGame.event].workshop_1, true)}" alt="" ></td>`;
+		htmltext += `<tr>`;
+        htmltext += `<td><img data-original-title="${idleGame.data.workshop_1.baseData.name}" src="${srcLinks.get(idleGame.images[idleGame.event].workshop_1, true)}" alt="" ></td>`;
         htmltext += `<td><span id="idleGame_workshop_1Level" class="levelSelect" data-station="workshop_1"></span></td>`;
-		htmltext += `<td id="idleGame_workshop_1" class="align-right"></td>`;
-		htmltext += `<td id="idleGame_workshop_1Time" class="align-left"></td></tr>`;
-		htmltext += `<tr title="${idleGame.data.workshop_2.baseData.name}">`;
-        htmltext += `<td><img src="${srcLinks.get(idleGame.images[idleGame.event].workshop_2, true)}" alt="" ></td>`;
+		htmltext += `<td class="align-right"><span id="idleGame_workshop_1"></span></td>`;
+		htmltext += `<td class="align-left"><span id="idleGame_workshop_1Time"></span></td></tr>`;
+		htmltext += `<tr>`;
+        htmltext += `<td><img data-original-title="${idleGame.data.workshop_2.baseData.name}" src="${srcLinks.get(idleGame.images[idleGame.event].workshop_2, true)}" alt="" ></td>`;
         htmltext += `<td><span id="idleGame_workshop_2Level" class="levelSelect" data-station="workshop_2"></span></td>`;
 		htmltext += `<td id="idleGame_workshop_2" class="align-right"></td>`;
 		htmltext += `<td id="idleGame_workshop_2Time" class="align-left"></td></tr>`;
-		htmltext += `<tr title="${idleGame.data.workshop_3.baseData.name}">`;
-        htmltext += `<td><img src="${srcLinks.get(idleGame.images[idleGame.event].workshop_3, true)}" alt="" ></td>`;
+		htmltext += `<tr>`;
+        htmltext += `<td><img data-original-title="${idleGame.data.workshop_3.baseData.name}" src="${srcLinks.get(idleGame.images[idleGame.event].workshop_3, true)}" alt="" ></td>`;
         htmltext += `<td><span id="idleGame_workshop_3Level" class="levelSelect" data-station="workshop_3"></span></td>`;
 		htmltext += `<td id="idleGame_workshop_3" class="align-right"></td>`;
 		htmltext += `<td id="idleGame_workshop_3Time" class="align-left"></td></tr>`
-		htmltext += `<tr title="${idleGame.data.workshop_4.baseData.name}">`;
-        htmltext += `<td><img src="${srcLinks.get(idleGame.images[idleGame.event].workshop_4, true)}" alt="" ></td>`;
+		htmltext += `<tr>`;
+        htmltext += `<td><img data-original-title="${idleGame.data.workshop_4.baseData.name}" src="${srcLinks.get(idleGame.images[idleGame.event].workshop_4, true)}" alt="" ></td>`;
         htmltext += `<td><span id="idleGame_workshop_4Level" class="levelSelect" data-station="workshop_4"></span></td>`;
-		htmltext += `<td id="idleGame_workshop_4" class="align-right"></td>`;
-		htmltext += `<td id="idleGame_workshop_4Time" class="align-left"></td></tr>`;
-		htmltext += `<tr title="${idleGame.data.workshop_5.baseData.name}">`;
-        htmltext += `<td><img src="${srcLinks.get(idleGame.images[idleGame.event].workshop_5, true)}" alt="" ></td>`;
+		htmltext += `<td class="align-right"><span id="idleGame_workshop_4"></span></td>`;
+		htmltext += `<td class="align-left"><span id="idleGame_workshop_4Time"></span></td></tr>`;
+		htmltext += `<tr>`;
+        htmltext += `<td><img data-original-title="${idleGame.data.workshop_5.baseData.name}" src="${srcLinks.get(idleGame.images[idleGame.event].workshop_5, true)}" alt="" ></td>`;
         htmltext += `<td><span id="idleGame_workshop_5Level" class="levelSelect" data-station="workshop_5"></span></td>`;
 		htmltext += `<td id="idleGame_workshop_5" class="align-right"></td>`;
 		htmltext += `<td id="idleGame_workshop_5Time" class="align-left"></td></tr>`;
-		htmltext += `<tr title="${idleGame.data.transport_1.baseData.name}">`;
-        htmltext += `<td><img src="${srcLinks.get(idleGame.images[idleGame.event].transport_1, true)}" alt="" ></td>`;
+		htmltext += `<tr>`;
+        htmltext += `<td><img data-original-title="${idleGame.data.transport_1.baseData.name}" src="${srcLinks.get(idleGame.images[idleGame.event].transport_1, true)}" alt="" ></td>`;
         htmltext += `<td><span id="idleGame_transport_1Level" class="levelSelect" data-station="transport_1"></span></td>`;
 		htmltext += `<td id="idleGame_transport_1" class="align-right"></td>`;
 		htmltext += `<td id="idleGame_transport_1Time" class="align-left"></td></tr>`;
-		htmltext += `<tr title="${idleGame.data.market_1.baseData.name}">`;
-        htmltext += `<td><img src="${srcLinks.get(idleGame.images[idleGame.event].market_1, true)}" alt="" ></td>`;
+		htmltext += `<tr>`;
+        htmltext += `<td><img data-original-title="${idleGame.data.market_1.baseData.name}" src="${srcLinks.get(idleGame.images[idleGame.event].market_1, true)}" alt="" ></td>`;
         htmltext += `<td><span id="idleGame_market_1Level" class="levelSelect" data-station="market_1"></span></td>`;
 		htmltext += `<td id="idleGame_market_1" class="align-right"></td>`;
 		htmltext += `<td id="idleGame_market_1Time" class="align-left"></td></tr>`;
         htmltext += `</table>`;
         htmltext += `<table id="idleGame_TasksActive" class="foe-table" style="width:100%"><tr><th colspan="2" onclick="idleGame.hide('#idleGame_TasksActive')">${i18n('Boxes.idleGame.ActiveTasks')}<i></i></th></tr>`;
-		htmltext += `<tr><td id="idleGame_Task0"></td><td id="time0"></td></tr>`;
-        htmltext += `<tr><td id="idleGame_Task1"></td><td id="time1"></td></tr>`;
-        htmltext += `<tr><td id="idleGame_Task2"></td><td id="time2"></td></tr>`;
+		htmltext += `<tr><td id="idleGame_Task0"></td><td><span id="time0"></span></td></tr>`;
+        htmltext += `<tr><td id="idleGame_Task1"></td><td id="time1"></span></td></tr>`;
+        htmltext += `<tr><td id="idleGame_Task2"></td><td id="time2"></span></td></tr>`;
         htmltext += `</table>`;
 		htmltext += `<table id="idleGame_Tasks" class="foe-table" style="width:100%"><tr><th onclick="idleGame.hide('#idleGame_Tasks')">${i18n('Boxes.idleGame.UpcomingTasks')}<i></i></th></tr>`;
 		htmltext += `<tr><td id="idleGame_Task3"></td></tr>`;
@@ -318,6 +318,8 @@ let idleGame = {
         
         
         $('#idleGameDialogBody').html(htmltext);
+
+		$('#idleGameDialogBody img, #idleGameDialogBody span').tooltip();
 
 		for (let t of idleGame.settings.hiddenTables) {
 			$(t).toggleClass("hide");
@@ -443,20 +445,20 @@ let idleGame = {
 			$('#idleGame_'+x).text(`${idleGame.bigNum(idleGame.data[x].need)} ${idleGame.iGNums[idleGame.data[x].ndegree]}`);
 			$('#idleGame_'+x+'Time').html(`(${idleGame.time(idleGame.data[x].need,idleGame.data[x].ndegree,sum,degree,0,0)})`);
 			if (degree<festd || (festd==degree && sum < fest) ) {
-				$('#idleGame_'+x+'Time').attr("title", `(${idleGame.time(idleGame.data[x].need,idleGame.data[x].ndegree,fest,festd,0,0,true)})`);
+				$('#idleGame_'+x+'Time').attr("data-original-title", `(${idleGame.time(idleGame.data[x].need,idleGame.data[x].ndegree,fest,festd,0,0,true)})`);
 			} else {
-				$('#idleGame_'+x+'Time').attr("title", ``);
+				$('#idleGame_'+x+'Time').attr("data-original-title", ``);
 			}
-			$('#idleGame_'+x).attr('title', `${idleGame.bigNum(idleGame.data[x].need)} ${idleGame.iGNumTitles[idleGame.data[x].ndegree]}`);
+			$('#idleGame_'+x).attr('data-original-title', `${idleGame.bigNum(idleGame.data[x].need)} ${idleGame.iGNumTitles[idleGame.data[x].ndegree]}`);
 		
 		}
 
 		$('#idleGame_Work').text(`${idleGame.bigNum(work)} ${idleGame.iGNums[workd]}`);
-		$('#idleGame_Work').attr('title', `${idleGame.bigNum(work)} ${idleGame.iGNumTitles[workd]}\n----------${worktitle}`);
+		$('#idleGame_Work').attr('data-original-title', `${idleGame.bigNum(work)} ${idleGame.iGNumTitles[workd]}<br>${worktitle}`);
 		$('#idleGame_Ship').text(`${idleGame.bigNum(ship)} ${idleGame.iGNums[shipd]}`);
-		$('#idleGame_Ship').attr('title', `${idleGame.bigNum(ship)} ${idleGame.iGNumTitles[shipd]}`);
+		$('#idleGame_Ship').attr('data-original-title', `${idleGame.bigNum(ship)} ${idleGame.iGNumTitles[shipd]}`);
 		$('#idleGame_Fest').text(`${idleGame.bigNum(fest)} ${idleGame.iGNums[festd]}`);
-		$('#idleGame_Fest').attr('title', `${idleGame.bigNum(fest)} ${idleGame.iGNumTitles[festd]}`);
+		$('#idleGame_Fest').attr('data-original-title', `${idleGame.bigNum(fest)} ${idleGame.iGNumTitles[festd]}`);
 
 		let i = Math.min(idleGame.Tasklist.length, 9);
 
@@ -495,10 +497,8 @@ let idleGame = {
 												idleGame.Taskprogress[idleGame.Tasklist[t]]?.value || 0,
 												idleGame.Taskprogress[idleGame.Tasklist[t]]?.degree || 0)}`);
 			$('#time'+ t).removeClass('hide');
-			
-			
-			
 		}
+
 		for (let t = 3;t<9;t++) {
 			if (t < i) {
 				let Task = idleGame.Tasks[idleGame.Tasklist[t]];
@@ -651,7 +651,7 @@ let idleGame = {
 		minutes -= hours*60;
 		time = hours >= 1000 ? `>999h` : `${hours}h`
 		time += hours < 24 ? `:${minutes}m` : ``
-		time += (hours < 24 && !title) ? ` <img title="${i18n("Boxes.idleGame.SetTimer")}" src="${srcLinks.get("/shared/gui/plus_offer/plus_offer_time.png", true)}" alt="" onclick="idleGame.addAlert(${hours},${minutes})">` : ``
+		time += (hours < 24 && !title) ? ` <img data-original-title="${i18n("Boxes.idleGame.SetTimer")}" src="${srcLinks.get("/shared/gui/plus_offer/plus_offer_time.png", true)}" alt="" onclick="idleGame.addAlert(${hours},${minutes})">` : ``
 		time += title ? i18n("Boxes.idleGame.noBottleneck"):'';
 		return time;
 	},
