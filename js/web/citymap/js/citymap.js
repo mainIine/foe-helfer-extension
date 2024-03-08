@@ -1432,8 +1432,8 @@ let CityMap = {
 			level: (data.type == "greatbuilding" ? data.level : undefined), // level also includes eraId in raw data, we do not like that
 			max_level: (data.type == "greatbuilding" ? data.max_level : undefined)
 		}
-		if (entity.type == 'random_production')
-			console.log('entity ',entity.name, entity, ceData, data)
+		//if (entity.type == 'random_production')
+		//	console.log('entity ',entity.name, entity, ceData, data)
 		return entity
 	},
 };
