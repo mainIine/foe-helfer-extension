@@ -81,6 +81,8 @@ FoEproxy.addHandler('IdleGameService', 'getState', (data, postData) => {
 			for (let x in idleGame.settings.Strategy[idleGame.event][idleGame.Variant]) {
 				idleGame.settings.Strategy[idleGame.event][idleGame.Variant][x].check = false;
 			}
+			idleGame.settings.targets = {"workshop_1": 0, "workshop_2": 0, "workshop_3": 0, "workshop_4": 0, "workshop_5": 0, "transport_1": 0, "market_1": 0};
+			idleGame.saveSettings();
 		}
 		if (!idleGame.settings.Strategy[idleGame.event][idleGame.Variant]) idleGame.settings.Strategy[idleGame.event][idleGame.Variant]=[];
 	}
@@ -526,8 +528,6 @@ let idleGame = {
 	Production: (building) => {
 
 		if (building.level === 0) {
-			idleGame.settings.targets[building.baseData.id] = 0;
-			idleGame.saveSettings();
 			building.next = 1;
 			building.need = building.baseData.buyCostValue;
 			building.ndegree = building.baseData.buyCostDegree||0;
