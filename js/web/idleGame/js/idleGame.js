@@ -268,12 +268,12 @@ let idleGame = {
 		htmltext += `<tr>`;
         htmltext += `<td><img data-original-title="${idleGame.data.workshop_2.baseData.name}" src="${srcLinks.get(idleGame.images[idleGame.event].workshop_2, true)}" alt="" ></td>`;
         htmltext += `<td><span id="idleGame_workshop_2Level" class="levelSelect" data-station="workshop_2"></span></td>`;
-		htmltext += `<td><span><span id="idleGame_workshop_2"></span></td>`;
+		htmltext += `<td><span id="idleGame_workshop_2"></span></td>`;
 		htmltext += `<td class="align-right"><span><span id="idleGame_workshop_2Time"></span></td></tr>`;
 		htmltext += `<tr>`;
         htmltext += `<td><img data-original-title="${idleGame.data.workshop_3.baseData.name}" src="${srcLinks.get(idleGame.images[idleGame.event].workshop_3, true)}" alt="" ></td>`;
         htmltext += `<td><span id="idleGame_workshop_3Level" class="levelSelect" data-station="workshop_3"></span></td>`;
-		htmltext += `<td><span><span id="idleGame_workshop_3"></span></td>`;
+		htmltext += `<td><span id="idleGame_workshop_3"></span></td>`;
 		htmltext += `<td class="align-right"><span id="idleGame_workshop_3Time"></span></td></tr>`
 		htmltext += `<tr>`;
         htmltext += `<td><img data-original-title="${idleGame.data.workshop_4.baseData.name}" src="${srcLinks.get(idleGame.images[idleGame.event].workshop_4, true)}" alt="" ></td>`;
@@ -283,12 +283,12 @@ let idleGame = {
 		htmltext += `<tr>`;
         htmltext += `<td><img data-original-title="${idleGame.data.workshop_5.baseData.name}" src="${srcLinks.get(idleGame.images[idleGame.event].workshop_5, true)}" alt="" ></td>`;
         htmltext += `<td><span id="idleGame_workshop_5Level" class="levelSelect" data-station="workshop_5"></span></td>`;
-		htmltext += `<td><span><span id="idleGame_workshop_5"></span></td>`;
+		htmltext += `<td><span id="idleGame_workshop_5"></span></td>`;
 		htmltext += `<td class="align-right"><span id="idleGame_workshop_5Time"></span></td></tr>`;
 		htmltext += `<tr>`;
         htmltext += `<td><img data-original-title="${idleGame.data.transport_1.baseData.name}" src="${srcLinks.get(idleGame.images[idleGame.event].transport_1, true)}" alt="" ></td>`;
         htmltext += `<td><span id="idleGame_transport_1Level" class="levelSelect" data-station="transport_1"></span></td>`;
-		htmltext += `<td><span><span id="idleGame_transport_1"></span></td>`;
+		htmltext += `<td><span id="idleGame_transport_1"></span></td>`;
 		htmltext += `<td class="align-right"><span id="idleGame_transport_1Time"></span></td></tr>`;
 		htmltext += `<tr>`;
         htmltext += `<td><img data-original-title="${idleGame.data.market_1.baseData.name}" src="${srcLinks.get(idleGame.images[idleGame.event].market_1, true)}" alt="" ></td>`;
