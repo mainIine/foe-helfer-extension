@@ -1105,12 +1105,9 @@ let CityMap = {
 							resource.resources = this.getUnitReward(production)
 						else if (production.type == "genericReward") {
 							let reward = this.getGenericReward(production, ceData, data, era)
-							if (reward.type !== 'unit' && reward.subType !== 'unit')
-								resource.resources = reward
-							else {
-								resource.resources = this.getUnitReward(production)
+							resource.resources = reward
+							if (reward.type == undefined)  // genericReward can also return a unit reward, change type
 								resource.type = 'unit'
-							}
 						}
 						else
 							console.log(ceData.name, "CityMap.getCurrentProductions() production is missing")
@@ -1125,6 +1122,7 @@ let CityMap = {
 		return undefined
 	},
 	
+	// returns a generic reward or a unit reward
 	getGenericReward(product, ceData, data, era) {
 		let amount = 0
 
@@ -1169,9 +1167,10 @@ let CityMap = {
 		
 		// random units
 		if (lookupData.type == "chest" && lookupData.id.search("genb_random_unit_chest") != -1) {
-			lookupData.subType = "unit"
-			amount = parseInt(lookupData.id.replace("genb_random_unit_chest","")) || 1 // no number = one unit
-			return { "random": parseInt(amount) }
+			return this.getUnitReward(product)
+		}
+		if (lookupData.type == "unit") {
+			return this.getUnitReward(product)
 		}
 		// trees of patience
 		if (lookupData.type == "set") {
@@ -1194,11 +1193,9 @@ let CityMap = {
 	getUnitReward(product) {
 		let amount, type
 		if (product.type == 'genericReward') {
-			amount = product.reward.amount
-			if (product.reward.iconAssetName !== "")
-				type = product.reward.iconAssetName // data: fast_unit, ranged_unit, light_unit, etc
-			else 
-				type = product.reward.subType // data: rogue
+			let amountFromString = product.reward.id.match(/\d+$/)
+			amount = parseInt(amountFromString ? amountFromString[0] : 1)
+			type = product.reward.id.split("_")[1].replace(/\d+/,"") // grabs e.g. "heavy" from unit_heavy_melee3 or rogue from unit_rogue3
 		}
 		else if (product.type == 'unit') {
 			amount = product.amount
@@ -1340,9 +1337,8 @@ let CityMap = {
 					}
 					else if (product.type == "genericReward") {
 						resource.resources = this.getGenericReward(product, ceData, data, era) 
-						if (resource.resources.random !== undefined) {
+						if (resource.resources.type === undefined)  // genericReward can also return a unit reward, change type
 							resource.type = "unit"
-						}
 					}
 					else if (product.type == "unit") {
 						resource.resources = this.getUnitReward(product)
