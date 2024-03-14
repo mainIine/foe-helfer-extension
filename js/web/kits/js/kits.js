@@ -110,7 +110,7 @@ let Kits = {
 					id: 'kits-triplestate-button',
 					class: 'btn-default btn-tight',
 					onclick: 'Kits.ToggleView()'
-				}).text(Kits.ShowMissing === 0 ? i18n('Boxes.Kits.TripleStateButton0') : Kits.ShowMissing === 1 ? i18n('Boxes.Kits.TripleStateButton1') : i18n('Boxes.Kits.TripleStateButton2'))
+				}).text(i18n('Boxes.Kits.TripleStateButton'+Kits.ShowMissing))
 			);
 		}
 		else {
@@ -568,11 +568,11 @@ let Kits = {
 	 * Toggles displaying of owned, missing and all set items.
 	 */
 	ToggleView: ()=> {
-		Kits.ShowMissing === 0 ? Kits.ShowMissing = 1 : Kits.ShowMissing === 1 ? Kits.ShowMissing = 2 : Kits.ShowMissing = 0;
+		Kits.ShowMissing = (Kits.ShowMissing +1) % 3;
 		
 		Kits._filter()
 		
-		$('#kits-triplestate-button').text(Kits.ShowMissing === 0 ? i18n('Boxes.Kits.TripleStateButton0') : Kits.ShowMissing === 1 ? i18n('Boxes.Kits.TripleStateButton1') : i18n('Boxes.Kits.TripleStateButton2'))
+		$('#kits-triplestate-button').text(i18n('Boxes.Kits.TripleStateButton'+Kits.ShowMissing))
 	},
 
 	toggleGroup: ()=> {
