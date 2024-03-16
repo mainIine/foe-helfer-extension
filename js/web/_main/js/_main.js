@@ -1610,7 +1610,10 @@ let MainParser = {
 	UpdateInventoryAmount: (Item) => {
 			let ID = Item[0],
 			Amount = Item[1];
-			MainParser.Inventory[ID].inStock = Amount;
+			try {
+				MainParser.Inventory[ID].inStock = Amount;
+			} catch (e) {
+			}
 			Kits.UpdateBoxIfVisible();
 	},
 
