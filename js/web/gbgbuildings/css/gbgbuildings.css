@@ -35,3 +35,11 @@
 #GBGBuildingsBody .keep {
 	opacity: 40%;
 }
+#GBGBuildingsBody .highlight {
+	font-weight: 800;
+	color: var(--text-bright);
+}
+#GBGBuildingsBody .breakline td {
+	border-top: 2px solid var(--text-bright);
+}
+
