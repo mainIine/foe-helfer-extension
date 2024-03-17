@@ -1,6 +1,6 @@
 [	
 	{
-		"udate": "Anniversary 2024 (11 Feb 2024)"
+		"udate": "History Event 2024 (17 March 2024)"
 	},
 	{
 		"groupname": "Events"
@@ -469,6 +469,36 @@
 		]
 	},
 	{
+		"name": "Ascendant_Grove_Sanctuary",
+		"buildings": [
+			{"first": "W_MultiAge_HERO24A1"}
+		]
+	},
+	{
+		"name": "Lilac_Garden",
+		"buildings": [
+			{"first": "W_MultiAge_HERO24B1"}
+		]
+	},
+	{
+		"name": "Ethereal_Fountain",
+		"buildings": [
+			{"first": "W_MultiAge_HERO24C1"}
+		]
+	},
+	{
+		"name": "Fromage_Pavilion",
+		"buildings": [
+			{"first": "W_MultiAge_HERO24D1"}
+		]
+	},
+	{
+		"name": "Mortar_Garrison",
+		"buildings": [
+			{"first": "W_MultiAge_HERO24H1"}
+		]
+	},
+	{
 		"name": "Classical_Garden_Set",
 		"buildings": [
 			{"first": "R_MultiAge_SportBonusSet18"},
@@ -720,6 +750,19 @@
 		"name": "Neo_Botanical_Rotunda",
 		"buildings": [
 			{"first": "W_MultiAge_GR23D1"}
+		]
+	},
+	{
+		"name": "Neo_Sentinel_Outpost",
+		"buildings": [
+			{"first": "W_MultiAge_GR24B1"}
+		]
+	},
+	{
+		"name": "Neo_Tacticians_Tower",
+		"link": "Neo_Tactician%27s_Tower",
+		"buildings": [
+			{"first": "W_MultiAge_GR24A1"}
 		]
 	},
 	{
