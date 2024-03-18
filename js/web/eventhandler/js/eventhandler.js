@@ -297,7 +297,7 @@ let EventHandler = {
 				return moment( refDate, moment.defaultFormat).toDate();
 			}
 		}
-
+		moment.locale(OldLocale);
 		return undefined;
 	},
 
