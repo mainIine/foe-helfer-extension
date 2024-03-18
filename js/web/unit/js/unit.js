@@ -95,7 +95,7 @@ let Unit = {
 			};
 
 			HTML.Box(args);
-			moment.locale(i18n('Local'));
+			//moment.locale(18n('Local'));
 
 		} else {
 			HTML.CloseOpenBox('UnitOverview');

@@ -418,7 +418,7 @@ let GvGMap = {
 	showMap: () => {
 		if ($('#gvg-map').length === 0) {
 
-			moment.locale(MainParser.Language);
+			//moment.locale(MainParser.Language);
 
 			HTML.Box({
 				id: 'GvGMap',
@@ -441,7 +441,7 @@ let GvGMap = {
 	 */
 	showOverview: () => {
 		if ($('#gvg-map').length === 0) {
-			moment.locale(MainParser.Language);
+			//moment.locale(MainParser.Language);
 
 			HTML.Box({
 				id: 'GvGMap',

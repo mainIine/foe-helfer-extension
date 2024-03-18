@@ -235,6 +235,7 @@ let EventHandler = {
 
 		// Fallback @Todo: Was könnte dann passieren?
 		if(!matcher){
+			moment.locale(OldLocale);
 			return undefined;
 		}
 
@@ -302,7 +303,7 @@ let EventHandler = {
 
 
 	ShowMoppelHelper: () => {
-		moment.locale(i18n('Local'));
+		//moment.locale(18n('Local'));
 
 		if ($('#moppelhelper').length === 0) {
 			HTML.Box({

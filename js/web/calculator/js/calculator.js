@@ -42,7 +42,7 @@ let Calculator = {
 	 */
 	Show: (action = '') => {
         // moment.js global setzen
-        moment.locale(MainParser.Language);
+        //moment.locale(MainParser.Language);
 
         // close at the second click
 		if ($('#costCalculator').length > 0 && action === 'menu')
