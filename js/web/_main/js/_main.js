@@ -383,6 +383,12 @@ GetFights = () =>{
 		$('#fp-bar').removeClass(possibleMaps).addClass(ActiveMap);
 	});
 
+	// QI is entered
+	FoEproxy.addHandler('GuildRaidsMapService', 'getOverview', (data, postData) => {
+		ActiveMap = 'guild_raids';
+		$('#fp-bar').removeClass(possibleMaps).addClass(ActiveMap);
+	});
+
 	// visiting another player
 	FoEproxy.addHandler('OtherPlayerService', 'visitPlayer', (data, postData) => {
 		LastMapPlayerID = data.responseData['other_player']['player_id'];

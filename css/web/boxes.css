@@ -811,6 +811,10 @@ FP-Bar */
 	top: 80px;
 }
 
+#fp-bar.guild_raids.small-screen {
+	left: calc(50vw - 260px);
+}
+
 #fp-bar .fp-bar-main {
 	height: 16px;
 	background-image: linear-gradient(to left, #4b1b0b 25%, transparent 25%), linear-gradient(to top, #8d4e31 0%,#72381d 1%,#4f221d 99%,#8d533b 100%);
