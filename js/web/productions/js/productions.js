@@ -88,7 +88,7 @@ let Productions = {
 	 */
 	init: () => {
 
-		moment.locale(i18n('Local'));
+		//moment.locale(18n('Local'));
 
 		Productions.CombinedCityMapData = MainParser.CityMapData;
 		if (CityMap.EraOutpostData) {

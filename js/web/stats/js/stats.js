@@ -234,7 +234,7 @@ let Stats = {
 			};
 
 			HTML.Box(args);
-			moment.locale(i18n('Local'));
+			//moment.locale(18n('Local'));
 			HTML.AddCssFile('stats');
 			HTML.AddCssFile('unit');
 		}

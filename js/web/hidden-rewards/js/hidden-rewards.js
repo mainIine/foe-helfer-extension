@@ -71,7 +71,7 @@ let HiddenRewards = {
                 'settings': 'HiddenRewards.ShowSettingsButton()'
             });
 
-            moment.locale(i18n('Local'));
+            //moment.locale(18n('Local'));
 
             HiddenRewards.RefreshGui();
 

@@ -303,7 +303,7 @@ let FPCollector = {
 	 * @constructor
 	 */
 	ShowFPCollectorBox: async ()=> {
-		moment.locale(i18n('Local'));
+		//moment.locale(18n('Local'));
 
 		if ( $('#fp-collector').length < 1 )
 		{

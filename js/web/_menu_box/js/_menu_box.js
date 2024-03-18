@@ -25,7 +25,7 @@ let _menu_box = {
 	 * Create a html box and put it into the DOM
 	 */
 	Show: () => {
-        moment.locale(i18n('Local'));
+        //moment.locale(18n('Local'));
 
 		HTML.Box({
 			id: 'menu_box',

@@ -60,7 +60,7 @@ let BlueGalaxy = {
      * @constructor
      */
     Show: (event= false, auto_close = false) => {
-        moment.locale(i18n('Local'));
+        //moment.locale(18n('Local'));
 
         if ($('#bluegalaxy').length === 0) {
 
