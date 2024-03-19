@@ -811,7 +811,7 @@ FP-Bar */
 	top: 80px;
 }
 
-#fp-bar.guild_raids.small-screen {
+#fp-bar.guild_raids {
 	left: calc(50vw - 260px);
 }
 
