@@ -1084,6 +1084,7 @@ let CityMap = {
 									resources: { "random": ability.amount },
 									type: "unit",
 								}
+								// console.log(ceData.name, production.resources)
 								productions.push(production)
 							}
 						})
@@ -1101,13 +1102,17 @@ let CityMap = {
 							resource.resources = production.playerResources.resources
 						else if (production.type == "guildResources")
 							resource.resources = production.guildResources.resources
-						else if (production.type == "unit") 
+						else if (production.type == "unit") {
 							resource.resources = this.getUnitReward(production)
+							//console.log(ceData.name, resource.resources)
+						}
 						else if (production.type == "genericReward") {
 							let reward = this.getGenericReward(production, ceData, data, era)
 							resource.resources = reward
-							if (reward.type == undefined)  // genericReward can also return a unit reward, change type
+							if (reward.type == undefined) { // genericReward can also return a unit reward, change type
 								resource.type = 'unit'
+								// console.log(ceData.name, reward)
+							}
 						}
 						else
 							console.log(ceData.name, "CityMap.getCurrentProductions() production is missing")
@@ -1165,12 +1170,11 @@ let CityMap = {
 			name = "DEFINE NAME"
 		}
 		
-		// random units
-		if (lookupData.type == "chest" && lookupData.id.search("genb_random_unit_chest") != -1) {
-			return this.getUnitReward(product)
-		}
-		if (lookupData.type == "unit") {
-			return this.getUnitReward(product)
+		// units
+		if (lookupData.type == "chest" && lookupData.id.search("genb_random_unit_chest") != -1 || lookupData.type == "unit") {
+			let units = this.getUnitReward(product)
+			//console.log(ceData.name, units)
+			return units
 		}
 		// trees of patience
 		if (lookupData.type == "set") {
@@ -1190,12 +1194,22 @@ let CityMap = {
 		return reward;
 	},
 
+	// returns { unit_type: amount } 
+	// unit_type can be: random, rogue, light_melee, heavy_melee, short_ranged, long_ranged, fast, next#light_melee -> next# for next era units
 	getUnitReward(product) {
 		let amount, type
 		if (product.type == 'genericReward') {
 			let amountFromString = product.reward.id.match(/\d+$/)
-			amount = parseInt(amountFromString ? amountFromString[0] : 1)
-			type = product.reward.id.split("_")[1].replace(/\d+/,"") // grabs e.g. "heavy" from unit_heavy_melee3 or rogue from unit_rogue3
+			amount = parseInt(amountFromString ? amountFromString[0] : 1) 	// if its only one unit, there is no number in the string
+			type = product.reward.id.replace("unit_","").replace(/\d+/,"") 	// grabs e.g. "heavy_melee" from unit_heavy_melee3 or rogue from unit_rogue3 
+			if (type.search("random") != -1) type = "random"
+			if (product.reward.id.search("#") != -1) { // era_unit#light_melee#NextEra#1
+				let prefix = ""
+				if (product.reward.id.search("NextEra") != -1) {
+					prefix = "next#"
+				}
+				type = prefix + product.reward.id.split("#")[1]
+			}
 		}
 		else if (product.type == 'unit') {
 			amount = product.amount
@@ -1212,8 +1226,18 @@ let CityMap = {
 			name = lookupData.rewards[0].name 
 		else if (lookupData.subType == "speedup_item" || lookupData.subType == "reward_item" || lookupData.type == "chest" || lookupData.subType == "boost_item" || lookupData.type == "forgepoint_package" || lookupData.type == "resource" || lookupData.type == "blueprint") 
 			name = lookupData.name
-		else if (lookupData.type == "unit")
-			name = lookupData.unit.unitTypeId
+		else if (lookupData.type == "unit") {
+			if (lookupData.id.search("#") != -1) { // era_unit#light_melee#NextEra#1
+				let prefix = ""
+				if (lookupData.id.search("NextEra") != -1) {
+					prefix = "next_"
+				}
+				name = prefix + lookupData.id.split("#")[1]
+			}
+			else {
+				name = lookupData.id.replace("unit_","").replace(/\d+/,"")
+			}
+		}
 		else if (lookupData.subType == "self_aid_kit")
 			name = lookupData.name
 		else {
@@ -1342,6 +1366,7 @@ let CityMap = {
 					}
 					else if (product.type == "unit") {
 						resource.resources = this.getUnitReward(product)
+						//console.log(ceData.name, resource.resources)
 					}
 					else if (product.type == "random") {
 						let rewards = [];
