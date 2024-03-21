@@ -108,7 +108,7 @@ let GBGBuildings = {
 					let i = leftStanding.findIndex(x => GBGBuildings.block[x]>=GBGBuildings.block[b] && b != "free");
 					if (i>=0) s["ignore"] = true;
 				}
-				if (leftStanding.length <= needed.filter(x => x=="free").length) s["ignore"] = true;
+				if (leftStanding.length <= keep.filter(x => x=="free").length) s["ignore"] = true;
 			}
 			if (!s.ignore) {
 				for (let n of needed) {
