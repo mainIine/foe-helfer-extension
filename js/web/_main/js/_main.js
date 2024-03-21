@@ -63,7 +63,7 @@ let ApiURL = 'https://api.foe-rechner.de/',
 	OwnUnits = [],
 	EnemyUnits = [],
 	UnlockedFeatures = [],
-	possibleMaps = ['main', 'gex', 'gg', 'era_outpost', 'gvg'],
+	possibleMaps = ['main', 'gex', 'gg', 'era_outpost', 'guild_raids', 'cultural_outpost'],
 	PlayerLinkFormat = 'https://foe.scoredb.io/__world__/Player/__playerid__',
 	GuildLinkFormat = 'https://foe.scoredb.io/__world__/Guild/__guildid__',
 	BuildingsLinkFormat = 'https://forgeofempires.fandom.com/wiki/__buildingid__',
@@ -383,9 +383,9 @@ GetFights = () =>{
 		$('#fp-bar').removeClass(possibleMaps).addClass(ActiveMap);
 	});
 
-	// gvg is entered
-	FoEproxy.addHandler('ClanBattleService', 'getContinent', (data, postData) => {
-		ActiveMap = 'gvg';
+	// QI is entered
+	FoEproxy.addHandler('GuildRaidsMapService', 'getOverview', (data, postData) => {
+		ActiveMap = 'guild_raids';
 		$('#fp-bar').removeClass(possibleMaps).addClass(ActiveMap);
 	});
 
