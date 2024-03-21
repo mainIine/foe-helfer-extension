@@ -687,7 +687,7 @@ let CityMap = {
 			Ret['xsize'] = CityEntity['width'];
 			Ret['ysize'] = CityEntity['length'];
 
-			if (CityEntity['type'] !== 'street') {
+			if (!['street','main_building'].includes(CityEntity['type'])) {
 				Ret['streets_required'] = CityEntity['requirements']['street_connection_level'] | 0;
 			}
 			else {
