@@ -233,6 +233,7 @@ let CityMap = {
 		$('#citymap-wrapper').append(menu);
 	},
 
+
 	/**
 	 * Erzeugt ein Raster für den Hintergrund
 	 */
@@ -613,7 +614,8 @@ let CityMap = {
 					name: ExtPlayerName,
 					id: ExtPlayerID,
 					world: ExtWorld,
-					avatar: ExtPlayerAvatar
+					avatar: ExtPlayerAvatar,
+					avatarUrl: srcLinks.GetPortrait(ExtPlayerAvatar)
 				},
 				eras: Technologies.Eras,
 				entities: MainParser.CityMapData,
