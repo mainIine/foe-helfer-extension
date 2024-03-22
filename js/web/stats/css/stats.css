@@ -210,6 +210,9 @@
 #stats .tabs ul li.pvp_arena a span {
 	background-image: url(../../x_img/pvp_arena.png);
 }
+#stats .tabs ul li.guild_raids a span {
+	background-image: url(../../x_img/guild_raids.png);
+}
 #stats .tabs ul li.shards a span {
 	background-image: url(../../x_img/shards.png);
 }
