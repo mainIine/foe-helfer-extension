@@ -75,6 +75,44 @@ FoEproxy.addHandler('RewardService', 'collectReward', async (data, postData) => 
 	}
 });
 
+FoEproxy.addHandler('RewardService', 'collectRewardSet', async (data, postData) => {
+
+	let rewardIncidentSource = data.responseData.context;
+	let rewards = data.responseData.reward.rewards;
+    await IndexDB.getDB();
+	
+	for (let reward of rewards) {
+
+		if (rewardIncidentSource === 'default') {
+			//split flying island incidents from normal ones
+			if (isCurrentlyInOutpost === 1){
+				rewardIncidentSource = 'shards';
+			}
+			//split league rewards and fragment assembly from incidents
+			if(postData[0].requestMethod === 'useItem'){
+				continue;
+			}
+			//split quest rewards from incidents
+			if(postData[0].requestMethod === 'advanceQuest'){
+				continue;
+			}
+		}
+		// Add reward info to the db
+		if (!(await IndexDB.db.statsRewardTypes.get(reward.id))) {
+			// Reduce amount of saved data
+			if (reward.unit) {
+				delete reward.unit;
+			}
+			delete reward.__class__;
+			await IndexDB.db.statsRewardTypes.put(reward);
+		}
+
+		// Add reward incident record
+
+		await Stats.addReward(rewardIncidentSource, reward.amount ||0, reward.id);
+	}
+});
+
 // Player treasure log
 FoEproxy.addHandler('ResourceService', 'getPlayerResources', async (data, postData) => {
 	const r = data.responseData;
@@ -511,6 +549,7 @@ let Stats = {
 				'__event', //event rewards
 				'battlegrounds_conquest', // Battlegrounds
 				'guildExpedition', // Temple of Relics
+				'guild_raids', //Quantum Incursion
 				'pvp_arena', //PvP Arena
 				'spoilsOfWar', // Himeji Castle
 				'diplomaticGifts', //Space Carrier
