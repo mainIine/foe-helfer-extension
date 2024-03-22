@@ -1274,46 +1274,78 @@ let Stats = {
 			//} 
 			// Asset image if not unit
 			let pointImage = '';
-			if (rewardInfo.type != 'unit') {
-				let url = '';
-				if ((rewardInfo.iconAssetName || rewardInfo.assembledReward && rewardInfo.assembledReward.iconAssetName)) {
-					const icon = rewardInfo.assembledReward && rewardInfo.assembledReward.iconAssetName ? rewardInfo.assembledReward.iconAssetName : rewardInfo.iconAssetName;
-					url = srcLinks.getReward(icon);
-					//fix for fragment missing images for buildings
-					if (rewardInfo.type == 'good' && rewardInfo.iconAssetName == 'random_goods' && rewardInfo.subType) {
-						url = srcLinks.get(`/shared/icons/reward_icons/reward_icon_random_goods.png`, true);
+			let url = '';
+			let text = '';
+			let amount = seriesMapBySource[it] || 1;
+			switch (rewardInfo.type) {
+				case 'unit':
+					if (rewardInfo.subType == "rogue") {
+						url	= srcLinks.get("/shared/unit_portraits/armyuniticons_50x50/armyuniticons_50x50_rogue.jpg", true);
+						text = rewardInfo.name;
+					} else {
+						url = srcLinks.get("/shared/gui/pvp_arena/hud/pvp_arena_icon_army.png",true);
+						text = rewardInfo.amount + " " + (rewardInfo.amount > 1 ? i18n("General.Units"):i18n("General.Unit"));
 					}
-					if (rewardInfo.subType == 'fragment' && rewardInfo.subType) {
-						if (rewardInfo.assembledReward.type == 'building' && rewardInfo.subType){
-							url = srcLinks.get(`/city/buildings/${rewardInfo.assembledReward.subType.replace(/^(\w)_/, '$1_SS_')}.png`, true);
-						}
-					}
-				}else if (rewardInfo.type == 'building' && rewardInfo.subType) {
-						url = srcLinks.get(`/city/buildings/${rewardInfo.subType.replace(/^(\w)_/, '$1_SS_')}.png`, true);
-				}
-				if (url) {
 					pointImage = `<img src="${url}" style="width: 45px; height: 45px; margin-right: 4px;">`
-				}
-				return {
-					iconClass,
-					pointImage,
-					name: rewardInfo.name,
-					y: seriesMapBySource[it]
-				};
-			}
-			else {
-				let url	= srcLinks.get("/shared/unit_portraits/armyuniticons_50x50/armyuniticons_50x50_"+rewardInfo.subType+".jpg", true);
-				pointImage = `<img src="${url}" style="width: 45px; height: 45px; margin-right: 4px;">`
-				//console.log(rewardInfo)
-				return {
-					iconClass,
-					pointImage,
-					name: rewardInfo.name,
-					y: seriesMapBySource[it]
-				};
+					//console.log(rewardInfo)
+					return {
+						iconClass,
+						pointImage,
+						name: text,
+						y: amount
+					};
+				case 'good':
+					url = srcLinks.get("/shared/icons/goods/goods.png",true);
+					text = rewardInfo.amount + " " + (rewardInfo.amount > 1 ? i18n("General.Goods"):i18n("General.Good"));
+
+					pointImage = `<img src="${url}" style="width: 45px; height: 45px; margin-right: 4px;">`
+					return {
+						iconClass,
+						pointImage,
+						name: text,
+						y: amount
+					};
+				default:
+					url = '';
+					if ((rewardInfo.iconAssetName || rewardInfo.assembledReward && rewardInfo.assembledReward.iconAssetName)) {
+						const icon = rewardInfo.assembledReward && rewardInfo.assembledReward.iconAssetName ? rewardInfo.assembledReward.iconAssetName : rewardInfo.iconAssetName;
+						url = srcLinks.getReward(icon);
+						//fix for fragment missing images for buildings
+						if (rewardInfo.type == 'good' && rewardInfo.iconAssetName == 'random_goods' && rewardInfo.subType) {
+							url = srcLinks.get(`/shared/icons/reward_icons/reward_icon_random_goods.png`, true);
+						}
+						if (rewardInfo.subType == 'fragment' && rewardInfo.subType) {
+							if (rewardInfo.assembledReward.type == 'building' && rewardInfo.subType){
+								url = srcLinks.get(`/city/buildings/${rewardInfo.assembledReward.subType.replace(/^(\w)_/, '$1_SS_')}.png`, true);
+							}
+						}
+					} else if (rewardInfo.type == 'building' && rewardInfo.subType) {
+							url = srcLinks.get(`/city/buildings/${rewardInfo.subType.replace(/^(\w)_/, '$1_SS_')}.png`, true);
+					}
+					if (url) {
+						pointImage = `<img src="${url}" style="width: 45px; height: 45px; margin-right: 4px;">`
+					}
+					return {
+						iconClass,
+						pointImage,
+						name: rewardInfo.name,
+						y: amount
+					};
 			}
 
-		}).sort((a, b) => b.y - a.y);
+		})
+		let i=0;
+		while (i<serieData.length) {
+			let x = serieData.findIndex((it,j) => j > i && it.name == serieData[i].name)
+			if (x>=1) {
+				serieData[i].y+=serieData[x].y;
+				serieData.splice(x,1);
+			} else {
+				i+=1;
+			}
+		} 
+
+		serieData = serieData.sort((a, b) => b.y - a.y);
 
 		if (Stats.state.filter !="") {
 			serieData = serieData.filter( a => a.name.toLowerCase().includes(Stats.state.filter.toLowerCase()))
