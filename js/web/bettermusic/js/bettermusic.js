@@ -494,8 +494,10 @@ let betterMusic = {
     loadSettings: ()=> {
 
 		tempSettings = JSON.parse(localStorage.getItem('betterMusicSettings') || '{}');
-        for (let i of Object.keys(tempSettings.Scenes)) {
-            if (!betterMusic.Settings.Scenes[i]) delete tempSettings.Scenes[i];
+        if (tempSettings.Scenes) {
+            for (let i of Object.keys(tempSettings.Scenes)) {
+                if (!betterMusic.Settings.Scenes[i]) delete tempSettings.Scenes[i];
+            }
         }
         betterMusic.Settings = betterMusic.update(betterMusic.Settings,tempSettings);
     },
