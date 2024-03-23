@@ -69,6 +69,14 @@
     background-color: var(--black-50);
 }
 
+#nodeMap .garrison .img {
+    background-position: -320px 3px;
+}
+
+#nodeMap .mini-boss .img {
+    background-position: -154px 0;
+}
+
 #nodeMap .start .img {
     background-position: -78px 0;
 }
