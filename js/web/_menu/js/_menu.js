@@ -586,11 +586,12 @@ let _menu = {
 	 * @returns {*|jQuery}
 	 */
 	qiMap_Btn: () => {
-		let btn_QIMapBG = _menu.MakeButton('cityMap', i18n('Menu.Citymap.Title'), i18n('Menu.Citymap.Desc'));
+		let btn_QIMapBG = _menu.MakeButton('qiMap', i18n('Menu.QIMap.Title'), i18n('Menu.QIMap.Desc'), true);
 
 		let btn_QIMap = $('<span />').on('click', function () {
-			if (QIMap.CurrentMapData != {})
-				QIMap.showBox();
+			if (Object.keys(QIMap.CurrentMapData).length > 0) 
+				QIMap.showBox()
+			
 		});
 
 		return btn_QIMapBG.append(btn_QIMap);

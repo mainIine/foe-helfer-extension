@@ -488,6 +488,10 @@ p {
 	background-image: url('../images/menu/citymap.png');
 }
 
+[id$=qiMap-Btn] span {
+	background-image: url('../images/menu/qimap.png');
+}
+
 [id$=chat-Btn] span {
 	background-image: url('../images/menu/chat.png');
 }

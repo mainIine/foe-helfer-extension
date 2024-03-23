@@ -2,7 +2,7 @@ const QIMap = {
     CurrentMapData: {},
 
     init: (responseData) => {
-        this.CurrentMapData = responseData.nodes
+        QIMap.CurrentMapData = responseData
     },
 
 	showBox: () => {
@@ -23,14 +23,14 @@ const QIMap = {
 			resize: true
 		})
 
+		QIMap.init(QIMap.CurrentMapData)
 		QIMap.showBody()
 	},
 
     showBody: () => {
-        console.log(this.CurrentMapData);
         let out = '<div id="nodeMap">'
         let maxX, maxY, minX, minY = 0
-        this.CurrentMapData.forEach(node => {
+        QIMap.CurrentMapData.nodes.forEach(node => {
             let x = (node.position.x - 4) * 4 || 0 // - 4 needs to be made non-static depending on the minimum value of x of all nodes
             let y = node.position.y * 3 || 0
             maxX = (x > maxX ? x : maxX)
