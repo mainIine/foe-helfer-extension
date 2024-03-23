@@ -31,18 +31,28 @@ FoEproxy.addHandler('ResourceShopService', 'buyOffer', (data)=> {
 
 // GEX started
 FoEproxy.addHandler('GuildExpeditionService', 'getOverview', (data, postData) => {
-	ActiveMap = 'gex';
-	StrategyPoints.ShowFPBar();
+	StrategyPoints.ShowFPBar(true);
+	$('#fp-bar').removeClass(possibleMaps).addClass(ActiveMap);
+
 });
 
 // Guildfights enter
 FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postData) => {
-	StrategyPoints.ShowFPBar();
+	StrategyPoints.ShowFPBar(true);
+	$('#fp-bar').removeClass(possibleMaps).addClass(ActiveMap);
+
+});
+// QI enter
+FoEproxy.addHandler("GuildRaidsService", "getState", (data, postData) => {
+	StrategyPoints.ShowFPBar(true);
+	$('#fp-bar').removeClass(possibleMaps).addClass(ActiveMap);
+
 });
 
 // main is entered
 FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, postData) => {
 	StrategyPoints.HideFPBar();
+	$('#fp-bar').removeClass(possibleMaps).addClass(ActiveMap);
 });
 
 
@@ -127,9 +137,9 @@ let StrategyPoints = {
 	},
 
 
-	ShowFPBar: ()=>{
+	ShowFPBar: (force=false)=>{
 
-		if(ActiveMap === 'main'){
+		if(ActiveMap === 'main' && !force){
 			return ;
 		}
 
