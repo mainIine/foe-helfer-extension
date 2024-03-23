@@ -29,14 +29,22 @@ const QIMap = {
 
     showBody: () => {
         let out = '<div id="nodeMap">'
-        let maxX, maxY, minX, minY = 0
+        let maxX = 0 
+        let maxY = 0
+        let minX = 100
+        let minY = 100
         QIMap.CurrentMapData.nodes.forEach(node => {
-            let x = (node.position.x - 4) * 4 || 0 // - 4 needs to be made non-static depending on the minimum value of x of all nodes
-            let y = node.position.y * 3 || 0
+            let x = (node.position.x ? node.position.x : 0)
             maxX = (x > maxX ? x : maxX)
-            maxY = (y > maxY ? y : maxY)
+            maxY = ((node.position.y || 0) > maxY ? (node.position.y || 0) : maxY)
+            minX = (x < minX ? x : minX)
+            minY = ((node.position.y || 0) < minY ? (node.position.y || 0) : minY)
+        })
+        QIMap.CurrentMapData.nodes.forEach(node => {
+            let x = (node.position.x - minX) * 4 + 1 || 1 
+            let y = (node.position.y - minY) * 3 + 1 || 1
             let type = (node.type.type !== undefined ? node.type.type : node.type.fightType)
-            let currentProgress = (node.state.state === "open" ? node.state.currentProgress + "/" : (node.state.state === "finished") ? node.type.requiredProgress + "/" : '')
+            let currentProgress = (node.state.state === "open" ? (node.state.currentProgress || 0) + "/" : (node.state.state === "finished") ? node.type.requiredProgress + "/" : '')
             if (node.type.__class__ !== "GuildRaidsMapNodeStart") {
                 out += '<span style="left:'+x+'em;top:'+y+'em" class="'+node.state.state+ " " + type + " " + (node.type.armyType ? node.type.armyType : '') + (node.state.hasTarget ? ' target' : '') + '">'
                     out += '<span class="img"></span>'
@@ -55,7 +63,7 @@ const QIMap = {
         out += '</div>'
         
         $('#QIMap').find('#QIMapBody').html(out).promise().done(function () {
-            $('#QIMapBody').css({'height': maxY+100+'em','width': maxX+3+'em'})
+            $('#QIMapBody').css({'height': maxY*3+2+'em','width': maxX*4+9+'em'})
         })
     }
 }
