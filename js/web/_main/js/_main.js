@@ -303,6 +303,15 @@ GetFights = () =>{
 		MainParser.CollectBoosts(data.responseData);
 	});
 
+	
+	// QI map
+	FoEproxy.addHandler('GuildRaidsMapService', 'getOverview', (data, postData) => {
+		if (devMode != "true") return
+		
+		QIMap.init(data.responseData)
+		QIMap.showBox()
+	})
+
 
 	// --------------------------------------------------------------------------------------------------
 	// Karte wird gewechselt zum Außenposten

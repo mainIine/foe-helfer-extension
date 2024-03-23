@@ -62,7 +62,8 @@ let _menu = {
 		'recurringQuests',
 		'compare_friends_threads',
 		'discord',
-		'findGB'
+		'findGB',
+		'qiMap'
 		// 'marketOffers',
 	],
 
@@ -577,6 +578,22 @@ let _menu = {
 		});
 
 		return btn_CityBG.append(btn_City);
+	},
+
+	/**
+	 * citymap
+	 *
+	 * @returns {*|jQuery}
+	 */
+	qiMap_Btn: () => {
+		let btn_QIMapBG = _menu.MakeButton('cityMap', i18n('Menu.Citymap.Title'), i18n('Menu.Citymap.Desc'));
+
+		let btn_QIMap = $('<span />').on('click', function () {
+			if (QIMap.CurrentMapData != {})
+				QIMap.showBox();
+		});
+
+		return btn_QIMapBG.append(btn_QIMap);
 	},
 
 	/**
