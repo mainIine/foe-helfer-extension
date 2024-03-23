@@ -41,6 +41,7 @@ const QIMap = {
             minY = ((node.position.y || 0) < minY ? (node.position.y || 0) : minY)
         })
         QIMap.CurrentMapData.nodes.forEach(node => {
+            console.log(node)
             let x = (node.position.x - minX) * 4 + 1 || 1 
             let y = (node.position.y - minY) * 3 + 1 || 1
             let type = (node.type.type !== undefined ? node.type.type : node.type.fightType)
@@ -52,6 +53,12 @@ const QIMap = {
                     if (node.mapEffects?.effectActiveBeforeFinish?.boosts) {
                         out += '<br>'
                         node.mapEffects.effectActiveBeforeFinish.boosts.forEach(boost => {
+                            out += '<i class="' + boost.type + '">' + boost.value + '</i> '
+                        })
+                    }
+                    if (node.mapEffects?.effectActiveAfterFinish?.boosts) {
+                        out += '<br>'
+                        node.mapEffects.effectActiveAfterFinish.boosts.forEach(boost => {
                             out += '<i class="' + boost.type + '">' + boost.value + '</i> '
                         })
                     }
