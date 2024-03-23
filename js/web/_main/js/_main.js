@@ -370,32 +370,27 @@ GetFights = () =>{
 		});
 
 		ActiveMap = 'main';
-		$('#fp-bar').removeClass(possibleMaps).addClass(ActiveMap);
 	});
 
 
 	// main is entered
 	FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, postData) => {
 		ActiveMap = 'main';
-		$('#fp-bar').removeClass(possibleMaps).addClass(ActiveMap);
 	});
 
 	// gex is entered
 	FoEproxy.addHandler('GuildExpeditionService', 'getOverview', (data, postData) => {
 		ActiveMap = 'gex';
-		$('#fp-bar').removeClass(possibleMaps).addClass(ActiveMap);
 	});
 
 	// gg is entered
 	FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postData) => {
 		ActiveMap = 'gg';
-		$('#fp-bar').removeClass(possibleMaps).addClass(ActiveMap);
 	});
 
 	// QI is entered
 	FoEproxy.addHandler('GuildRaidsMapService', 'getOverview', (data, postData) => {
 		ActiveMap = 'guild_raids';
-		$('#fp-bar').removeClass(possibleMaps).addClass(ActiveMap);
 	});
 
 	// visiting another player
