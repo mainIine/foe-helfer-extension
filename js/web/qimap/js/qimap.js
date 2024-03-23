@@ -63,7 +63,7 @@ const QIMap = {
         out += '</div>'
         
         $('#QIMap').find('#QIMapBody').html(out).promise().done(function () {
-            $('#QIMapBody').css({'height': maxY*3+2+'em','width': maxX*4+9+'em'})
+            $('#QIMapBody').css({'height': maxY*3+9+'em','width': maxX*4+9+'em'})
         })
     }
 }
