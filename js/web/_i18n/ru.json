@@ -319,6 +319,7 @@
     "Boxes.GreatBuildings.TTGoodsValue": "Это значение используется, для определения ценности зданий, производящих товары. Сколько СО стоит для вас один товар?",
     "Boxes.GreatBuildings.TTRewardPerDay": "Дополнительно: Сколько наград СО вы получаете в день? Эта информация используется для расчета прибыльности для дальнейших уровней Арки. Чтобы получить предложение, перейдите в раздел: Ратуша > Новости > Лента событий и просмотрите все страницы",
     "Boxes.GreatBuildings.Title": "Обзор вложений в ВС",
+    "Boxes.GuildFights.Attrition": "Истощение",
     "Boxes.GuildFights.Count": "через",
     "Boxes.GuildFights.DeleteAlert": "Ужалить напоминание",
     "Boxes.GuildFights.DeleteMessage.Title": "Удалено!",
