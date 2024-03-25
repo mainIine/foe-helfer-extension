@@ -44,6 +44,7 @@ FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postDa
 });
 // QI enter
 FoEproxy.addHandler("GuildRaidsService", "getState", (data, postData) => {
+	if (!data.responseData?.endsAt) return;
 	StrategyPoints.ShowFPBar(true);
 	$('#fp-bar').removeClass(possibleMaps).addClass('guild_raids');
 
