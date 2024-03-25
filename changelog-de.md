@@ -26,7 +26,7 @@
 	- beim ersten Durchlauf einer Siedlung wird nun die korrekte 4x Chance angezeigt
 
 - Statistiken:
-	- verbesserte Datumsauswahl (thanks Linnum!)
+	- verbesserte Datumsauswahl (thanks Linnun!)
 
 ---
 

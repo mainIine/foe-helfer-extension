@@ -27,7 +27,7 @@
 	- fix 4x chance for first run
 
 - Statistics:
-	- improved datepicker (thanks Linnum!)
+	- improved datepicker (thanks Linnun!)
 
 ---
 
