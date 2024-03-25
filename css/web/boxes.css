@@ -816,7 +816,7 @@ FP-Bar */
 }
 
 #fp-bar.guild_raids {
-	left: calc(50vw - 260px);
+	left: 237px;
 }
 
 #fp-bar .fp-bar-main {
