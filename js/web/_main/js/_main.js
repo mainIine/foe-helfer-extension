@@ -317,9 +317,7 @@ GetFights = () =>{
 	// Karte wird gewechselt zum Außenposten
 	FoEproxy.addHandler('CityMapService', 'getCityMap', (data, postData) => {
 		ActiveMap = data.responseData.gridId;
-
-		// update FP-Bar for more customizable
-		// $('#fp-bar').removeClass(possibleMaps).addClass(ActiveMap);
+		FoEproxy.doEvent("ActiveMapUpdated");
 
 		if (ActiveMap === 'era_outpost') {
 			CityMap.EraOutpostData = Object.assign({}, ...data.responseData['entities'].map((x) => ({ [x.id]: x })));
@@ -369,29 +367,30 @@ GetFights = () =>{
 			MainParser.NewCityMapData[building.id] = newCityEntity;
 		});
 
-		ActiveMap = 'main';
+		MainParser.UpdateActiveMap('main');
 	});
 
 
 	// main is entered
 	FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, postData) => {
-		ActiveMap = 'main';
+		MainParser.UpdateActiveMap('main');
 	});
 
 	// gex is entered
 	FoEproxy.addHandler('GuildExpeditionService', 'getOverview', (data, postData) => {
-		ActiveMap = 'gex';
+		MainParser.UpdateActiveMap('gex');
 	});
 
 	// gg is entered
 	FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postData) => {
-		ActiveMap = 'gg';
+		MainParser.UpdateActiveMap('gg');
 	});
 
 	// QI is entered
-	FoEproxy.addHandler('GuildRaidsMapService', 'getOverview', (data, postData) => {
+	FoEproxy.addHandler('GuildRaidsService', 'getState', (data, postData) => {
 		if (!data.responseData?.endsAt) return;
-		ActiveMap = 'guild_raids';
+		MainParser.UpdateActiveMap('guild_raids');
+
 	});
 
 	// visiting another player
@@ -1899,6 +1898,10 @@ let MainParser = {
 		}
 
 
+	},
+	UpdateActiveMap: (map)=>{
+		ActiveMap=map;
+		FoEproxy.doEvent("ActiveMapUpdated");
 	}
 
 };

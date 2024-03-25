@@ -30,32 +30,15 @@ FoEproxy.addHandler('ResourceShopService', 'buyOffer', (data)=> {
 
 
 // GEX started
-FoEproxy.addHandler('GuildExpeditionService', 'getOverview', (data, postData) => {
-	StrategyPoints.ShowFPBar(true);
-	$('#fp-bar').removeClass(possibleMaps).addClass('gex');
+FoEproxy.addEventHandler('ActiveMapUpdated', () => {
+	if (['gex','gg','guild_raids'].includes(ActiveMap)) {
+		StrategyPoints.ShowFPBar(true);
+	} else {
+		StrategyPoints.HideFPBar();
+	}
+	$('#fp-bar').removeClass(possibleMaps).addClass(ActiveMap);
 
 });
-
-// Guildfights enter
-FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postData) => {
-	StrategyPoints.ShowFPBar(true);
-	$('#fp-bar').removeClass(possibleMaps).addClass('gg');
-
-});
-// QI enter
-FoEproxy.addHandler("GuildRaidsService", "getState", (data, postData) => {
-	if (!data.responseData?.endsAt) return;
-	StrategyPoints.ShowFPBar(true);
-	$('#fp-bar').removeClass(possibleMaps).addClass('guild_raids');
-
-});
-
-// main is entered
-FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, postData) => {
-	StrategyPoints.HideFPBar();
-	$('#fp-bar').removeClass(possibleMaps).addClass('main');
-});
-
 
 /**
  * @type {{readonly AvailableFP: (*|number), ShowFPBar: (function(): (undefined)), HideFPBar: StrategyPoints.HideFPBar, OldStrategyPoints: number, checkForDB: (function(*): Promise<void>), pickupProductionId: null, pickupProductionBuilding: null, HandleWindowResize: StrategyPoints.HandleWindowResize, insertIntoDB: (function(*=): Promise<void>), RefreshBuyableForgePoints: StrategyPoints.RefreshBuyableForgePoints, RefreshBar: (function(*=): (undefined)), InventoryFP: number, db: null}}
