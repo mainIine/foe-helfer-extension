@@ -123,7 +123,7 @@
 .goods-sprite.icon_fine_cypress::before{background-position:-156px -291px;width:49px;height:41px;transform:rotate(-90deg)}
 .goods-sprite.icon_fine_porcelain::before{background-position:-174px -334px;width:33px;height:50px;transform:rotate(-90deg)}
 .goods-sprite.porcelain::before{background-position:-174px -334px;width:33px;height:50px;transform:rotate(-90deg)}
-.goods-sprite.fine_coconuts::before{background-position:-391px -53px;width:42px;height:50px;transform:rotate(-90deg)}
+.goods-sprite.coconuts::before{background-position:-391px -53px;width:42px;height:50px;transform:rotate(-90deg)}
 .goods-sprite.fine_mars_ore::before{background-position:-391px -104px;width:42px;height:49px}
 .goods-sprite.mars_ore::before{background-position:-391px -104px;width:42px;height:49px}
 .goods-sprite.fine_robotics_factory::before{background-position:-390px -154px;width:45px;height:49px}
@@ -147,7 +147,7 @@
 .goods-sprite.fine_crystallized_hydrocarbons::before{background-position:-706px -49px;width:46px;height:47px}
 .goods-sprite.brass::before{background-position:-341px -200px;width:48px;height:45px;transform:rotate(-90deg)}
 .goods-sprite.icon_fine_brass_ore::before{background-position:-341px -200px;width:48px;height:45px;transform:rotate(-90deg)}
-.goods-sprite.fine_fresh_fish::before{background-position:-291px -201px;width:48px;height:45px;transform:rotate(-90deg)}
+.goods-sprite.fresh_fish::before{background-position:-291px -201px;width:48px;height:45px;transform:rotate(-90deg)}
 .goods-sprite.fine_soy::before{background-position:-244px -204px;width:46px;height:47px}
 .goods-sprite.soy::before{background-position:-244px -204px;width:46px;height:47px}
 .goods-sprite.bio_creatures::before{background-position:-207px -207px;width:35px;height:42px}
@@ -175,7 +175,7 @@
 .goods-sprite.fine_lubricants::before{background-position:-247px -335px;width:43px;height:47px}
 .goods-sprite.lubricants::before{background-position:-247px -335px;width:43px;height:47px}
 .goods-sprite.fine_random_guild_raids_goods::before{background-position:-294px -296px;width:48px;height:39px}
-.goods-sprite.fine_kava::before{background-position:-292px -337px;width:42px;height:47px}
+.goods-sprite.kava::before{background-position:-292px -337px;width:42px;height:47px}
 .goods-sprite.asteroid_ice::before{background-position:-335px -337px;width:40px;height:47px}
 .goods-sprite.fine_asteroid_ice::before{background-position:-335px -337px;width:40px;height:47px}
 .goods-sprite.fine_maize::before{background-position:-344px -294px;width:44px;height:41px}
@@ -424,7 +424,7 @@
 .goods-sprite-50.icon_fine_cypress::before{background-position:-98px -182px;width:31px;height:26px;transform:rotate(-90deg)}
 .goods-sprite-50.icon_fine_porcelain::before{background-position:-109px -209px;width:21px;height:31px;transform:rotate(-90deg)}
 .goods-sprite-50.porcelain::before{background-position:-109px -209px;width:21px;height:31px;transform:rotate(-90deg)}
-.goods-sprite-50.fine_coconuts::before{background-position:-245px -33px;width:26px;height:31px;transform:rotate(-90deg)}
+.goods-sprite-50.coconuts::before{background-position:-245px -33px;width:26px;height:31px;transform:rotate(-90deg)}
 .goods-sprite-50.fine_mars_ore::before{background-position:-245px -65px;width:27px;height:31px}
 .goods-sprite-50.mars_ore::before{background-position:-245px -65px;width:27px;height:31px}
 .goods-sprite-50.fine_robotics_factory::before{background-position:-244px -97px;width:28px;height:31px}
@@ -435,7 +435,7 @@
 .goods-sprite-50.fine_basmati::before{background-position:-302px -33px;width:30px;height:30px}
 .goods-sprite-50.cryptocash::before{background-position:-332px -33px;width:30px;height:29px}
 .goods-sprite-50.fine_cryptocash::before{background-position:-332px -33px;width:30px;height:29px}
-.goods-sprite-50.fine_catamarans::before{background-position:-363px -33px;width:30px;height:29px}
+.goods-sprite-50.catamarans::before{background-position:-363px -33px;width:30px;height:29px}
 .goods-sprite-50.fine_sugar_crystals::before{background-position:-272px -64px;width:28px;height:31px;transform:rotate(-90deg)}
 .goods-sprite-50.sugar_crystals::before{background-position:-272px -64px;width:28px;height:31px;transform:rotate(-90deg)}
 .goods-sprite-50.fine_lotus::before{background-position:-273px -95px;width:27px;height:31px;transform:rotate(-90deg)}
@@ -448,7 +448,7 @@
 .goods-sprite-50.fine_crystallized_hydrocarbons::before{background-position:-441px -31px;width:29px;height:30px}
 .goods-sprite-50.brass::before{background-position:-213px -125px;width:30px;height:28px;transform:rotate(-90deg)}
 .goods-sprite-50.icon_fine_brass_ore::before{background-position:-213px -125px;width:30px;height:28px;transform:rotate(-90deg)}
-.goods-sprite-50.fine_fresh_fish::before{background-position:-182px -126px;width:30px;height:28px;transform:rotate(-90deg)}
+.goods-sprite-50.fresh_fish::before{background-position:-182px -126px;width:30px;height:28px;transform:rotate(-90deg)}
 .goods-sprite-50.fine_soy::before{background-position:-153px -128px;width:29px;height:30px}
 .goods-sprite-50.soy::before{background-position:-153px -128px;width:29px;height:30px}
 .goods-sprite-50.bio_creatures::before{background-position:-130px -130px;width:22px;height:27px}
@@ -476,7 +476,7 @@
 .goods-sprite-50.fine_lubricants::before{background-position:-155px -210px;width:27px;height:30px}
 .goods-sprite-50.lubricants::before{background-position:-155px -210px;width:27px;height:30px}
 .goods-sprite-50.fine_random_guild_raids_goods::before{background-position:-184px -185px;width:30px;height:25px}
-.goods-sprite-50.fine_kava::before{background-position:-183px -211px;width:26px;height:30px}
+.goods-sprite-50.kava::before{background-position:-183px -211px;width:26px;height:30px}
 .goods-sprite-50.asteroid_ice::before{background-position:-210px -211px;width:25px;height:30px}
 .goods-sprite-50.fine_asteroid_ice::before{background-position:-210px -211px;width:25px;height:30px}
 .goods-sprite-50.fine_maize::before{background-position:-215px -184px;width:28px;height:26px}
@@ -613,3 +613,42 @@
 .goods-sprite-50.unit_class_fast::before{background-position:-517px -211px;width:19px;height:17px}
 /* EOF generated */
 
+.goods-sprite.supplies::before,
+.goods-sprite.money::before,
+.goods-sprite.medals::before,
+.goods-sprite.empty::before,
+.goods-sprite.strategy_points::before {background:url('../images/goods/goods-extra.png') top left no-repeat;background-size:314px 90px;width:45px;height:45px;}
+.goods-sprite.supplies::before{background-position: 0 0;}
+.goods-sprite.money::before{background-position: -45px 0;}
+.goods-sprite.medals::before{background-position: -94px 0;width:40px;}
+.goods-sprite.empty::before {background-position: -138px 0;}
+
+.goods-sprite-50.supplies::before,
+.goods-sprite-50.money::before,
+.goods-sprite-50.medals::before,
+.goods-sprite-50.premium::before,
+.goods-sprite-50.tavern_silver::before,
+.goods-sprite-50.empty::before,
+.goods-sprite-50.copper_coins::before,
+.goods-sprite-50.koban_coins::before,
+.goods-sprite-50.deben::before,
+.goods-sprite-50.diplomacy::before,
+.goods-sprite-50.egyptians_loot::before,
+.goods-sprite-50.rupees::before,
+.goods-sprite-50.strategy_points::before,
+.goods-sprite-50.cocoa_beans::before,
+.goods-sprite-50.shells::before{background:url('../images/goods/goods-extra.png') top left no-repeat;background-size: 157px 45px;width:24px;height:24px;top:0;right:0;bottom:0;left:0;margin:auto}
+
+.goods-sprite-50.medals::before{background-position: -44px 1px;}
+.goods-sprite-50.premium::before{background-position: -184px 1px; background-size: 210px 59px;}
+.goods-sprite-50.tavern_silver::before{background-position: -113px 1px;}
+.goods-sprite-50.empty::before {background-position: -66px 0;}
+.goods-sprite-50.strategy_points::before{background-position: -89px 0;}
+.goods-sprite-50.copper_coins::before{background-position:-45px -41px;background-size:251px 72px;width: 26px;}
+.goods-sprite-50.koban_coins::before{background-position:-21px -41px;background-size:251px 72px;}
+.goods-sprite-50.deben::before{background-position:1px -41px;background-size:251px 72px;}
+.goods-sprite-50.diplomacy::before{background-position:-74px -42px;background-size:251px 72px;width:40px;}
+.goods-sprite-50.egyptians_loot::before{background-position:-114px -35px;background-size:251px 72px;width:28px;height:35px;}
+.goods-sprite-50.cocoa_beans::before{background-position:-147px -36px;background-size:251px 72px;width:28px;height:35px;}
+.goods-sprite-50.rupees::before{background-position:-177px -36px;background-size:251px 72px;width:28px;height:35px;}
+.goods-sprite-50.shells::before{background-position:-210px -36px;background-size:251px 72px;width:28px;height:35px;}
