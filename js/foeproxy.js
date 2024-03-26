@@ -28,8 +28,7 @@ const FoEproxy = (function () {
 	/** @type {Record<string, undefined|Record<string, undefined|((data: FoE_NETWORK_TYPE, postData: any) => void)[]>>} */
 	const proxyMap = {};
 	const proxyRequestsMap = {};
-	const ExtEvents = {};
-
+	
 	/** @type {Record<string, undefined|((data: any, requestData: any) => void)[]>} */
 	const proxyMetaMap = {};
 
@@ -262,7 +261,7 @@ const FoEproxy = (function () {
 				return;
 			}
 			map[method] = list.filter(c => c !== callback);
-		},
+		}
 	};
 
 	window.addEventListener('foe-helper#loaded', () => {
