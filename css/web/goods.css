@@ -640,6 +640,7 @@
 .goods-sprite-50.shells::before{background:url('../images/goods/goods-extra.png') top left no-repeat;background-size: 157px 45px;width:24px;height:24px;top:0;right:0;bottom:0;left:0;margin:auto}
 
 .goods-sprite-50.medals::before{background-position: -44px 1px;}
+.goods-sprite-50.money::before{background-position: -22px 1px;}
 .goods-sprite-50.premium::before{background-position: -184px 1px; background-size: 210px 59px;}
 .goods-sprite-50.tavern_silver::before{background-position: -113px 1px;}
 .goods-sprite-50.empty::before {background-position: -66px 0;}
