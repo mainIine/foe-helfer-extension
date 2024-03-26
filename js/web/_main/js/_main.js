@@ -308,8 +308,8 @@ GetFights = () =>{
 	FoEproxy.addHandler('GuildRaidsMapService', 'getOverview', (data, postData) => {
 		if (devMode != "true") return
 		
-		//QIMap.init(data.responseData)
-		//QIMap.showBox()
+		QIMap.init(data.responseData)
+		QIMap.showBox()
 	})
 
 
