@@ -317,7 +317,7 @@ GetFights = () =>{
 	// Karte wird gewechselt zum Außenposten
 	FoEproxy.addHandler('CityMapService', 'getCityMap', (data, postData) => {
 		ActiveMap = data.responseData.gridId;
-		FoEproxy.doEvent("ActiveMapUpdated");
+		FoEproxy.triggerFoeHelperHandler("ActiveMapUpdated");
 
 		if (ActiveMap === 'era_outpost') {
 			CityMap.EraOutpostData = Object.assign({}, ...data.responseData['entities'].map((x) => ({ [x.id]: x })));
@@ -810,7 +810,7 @@ GetFights = () =>{
 
 		MainParser.Quests = data.responseData;
 
-		FoEproxy.pushFoeHelperMessage('QuestsUpdated');
+		FoEproxy.triggerFoeHelperHandler('QuestsUpdated');
 	});
 
 	// Update unlocked features
@@ -1901,7 +1901,7 @@ let MainParser = {
 	},
 	UpdateActiveMap: (map)=>{
 		ActiveMap=map;
-		FoEproxy.doEvent("ActiveMapUpdated");
+		FoEproxy.triggerFoeHelperHandler("ActiveMapUpdated");
 	}
 
 };

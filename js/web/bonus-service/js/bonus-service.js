@@ -35,7 +35,7 @@ FoEproxy.addHandler('OtherPlayerService', 'visitPlayer', (data, postData) => {
 FoEproxy.addHandler('BonusService', 'getLimitedBonuses', (data, postData) => {
 	BonusService.Bonuses = data['responseData'];
 
-	FoEproxy.pushFoeHelperMessage('BonusUpdated');
+	FoEproxy.triggerFoeHelperHandler('BonusUpdated');
 
 	if ($('#bonus-hud').length > 0) {
 		BonusService.CalcBonusData();

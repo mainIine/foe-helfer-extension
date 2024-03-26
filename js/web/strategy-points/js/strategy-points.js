@@ -30,7 +30,7 @@ FoEproxy.addHandler('ResourceShopService', 'buyOffer', (data)=> {
 
 
 // GEX started
-FoEproxy.addEventHandler('ActiveMapUpdated', () => {
+FoEproxy.addFoeHelperHandler('ActiveMapUpdated', () => {
 	if (['gex','gg','guild_raids'].includes(ActiveMap)) {
 		StrategyPoints.ShowFPBar(true);
 	} else {

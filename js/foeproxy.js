@@ -212,8 +212,7 @@ const FoEproxy = (function () {
 			wsRawHandler = wsRawHandler.filter(c => c !== callback);
 		},
 
-		pushFoeHelperMessage: function (method, data = null) {
-			_proxyWsAction('FoeHelperService', method, data);
+		triggerFoeHelperHandler: function (method, data = null) {
 			_proxyWsAction('FoeHelperService', method, data);
 		},
 	
@@ -264,24 +263,6 @@ const FoEproxy = (function () {
 			}
 			map[method] = list.filter(c => c !== callback);
 		},
-
-		addEventHandler: function(event,callback) {
-			let list = ExtEvents[event];
-			if (!list) {
-				ExtEvents[event] = list = [];
-			}
-			if (list.indexOf(callback) !== -1) {
-				// already registered
-				return;
-			}
-			list.push(callback);
-		},
-
-		doEvent: function(event) {
-			let list = ExtEvents[event];
-			if (!list) return;
-			for (callback of list) callback();
-		}
 	};
 
 	window.addEventListener('foe-helper#loaded', () => {
