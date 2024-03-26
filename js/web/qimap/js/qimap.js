@@ -57,21 +57,19 @@ const QIMap = {
 
             // BUG works the first time, then adds more to the array
             node.connectedNodes.forEach(connection => {
-                let findDuplicates = QIMap.NodeConnections.find(x => x.id === connection.targetNodeId)
-                if (!findDuplicates && findDuplicates?.connectedNode !== node.id) {
+                let findDuplicates = QIMap.NodeConnections.find(x => x.id == node.id && x.connectedNode == connection.targetNodeId)
+                if (!findDuplicates) {
                     let newNode = {
                         id: node.id, 
                         nodePosition: node.position,
                         connectedNode: connection.targetNodeId, 
-                        connectedNodePosition: connection.pathTiles[0]
+                        connectedNodePosition: connection.pathTiles
                     }
-                    if (findDuplicates !== newNode)
-                        QIMap.NodeConnections.push(newNode)
+                    QIMap.NodeConnections.push(newNode)
                 }
             })
         })
-
-        //console.log(QIMap.NodeConnections)
+        
         QIMap.showNodeConnections()
 
         QIMap.CurrentMapData.nodes.forEach(node => {
@@ -82,7 +80,7 @@ const QIMap = {
             if (node.type.__class__ !== "GuildRaidsMapNodeStart") {
                 out += '<span id="'+ node.id +'" style="left:'+x+'px;top:'+y+'px" class="'+node.state.state+ " " + type + " " + (node.type.armyType ? node.type.armyType : '') + (node.state.hasTarget ? ' target' : '') + '">'
                     out += '<span class="img"></span>'
-                    out += '<b></b>'+node.id +" "+currentProgress + node.type.requiredProgress
+                    out += '<b></b>'+currentProgress + node.type.requiredProgress
                     if (node.mapEffects?.effectActiveBeforeFinish?.boosts) {
                         out += '<br>'
                         node.mapEffects.effectActiveBeforeFinish.boosts.forEach(boost => {
@@ -104,25 +102,37 @@ const QIMap = {
         
         $('#QIMap').find('#QIMapBody').html(out).promise().done(function () {
             $('#nodeMap').append(QIMap.Map)
-            $('#QIMapBody, #nodeConnections').css({'width': QIMap.MaxY*QIMap.XMultiplier+QIMap.XOffset+'px','height': QIMap.MaxY*QIMap.YMultiplier+QIMap.YOffset+'px'})
+            $('#QIMapBody, #nodeConnections').css({'width': QIMap.MaxY*QIMap.XMultiplier+QIMap.XOffset+QIMap.XOffset+'px','height': QIMap.MaxY*QIMap.YMultiplier+QIMap.YOffset+80+'px'})
         })
     },
 
     showNodeConnections: () => {
-        QIMap.NodeConnections.forEach(connection => {
-            let addLength = ((connection.nodePosition.x || 0) === (connection.connectedNodePosition.x || 0) ? 60 : 0)
-            let x = ((connection.nodePosition.x || 0) - QIMap.MinX) * QIMap.XMultiplier + QIMap.XOffset || QIMap.XOffset
-            let y = (connection.nodePosition.y - QIMap.MinY) * QIMap.YMultiplier + QIMap.YOffset || QIMap.YOffset
-            let targetX = ((connection.connectedNodePosition.x || 0) - QIMap.MinX) * QIMap.XMultiplier + QIMap.XOffset || QIMap.XOffset
-            let targetY = (connection.connectedNodePosition.y - QIMap.MinY) * QIMap.YMultiplier + QIMap.YOffset || QIMap.YOffset
-    
-            QIMap.MapCTX.beginPath()
-            QIMap.MapCTX.moveTo(x, y)
-            QIMap.MapCTX.lineTo(targetX, targetY)
-            QIMap.MapCTX.closePath()
-            QIMap.MapCTX.stroke()
+        QIMap.MapCTX.strokeStyle = '#000'
+        QIMap.MapCTX.lineWidth = 3
 
-            //console.log(x,y,targetX,targetY)
+        QIMap.NodeConnections.forEach(connection => {
+            let prevX = '', prevY = ''
+            connection.connectedNodePosition.forEach(path => {
+                let x = 0, y = 0, targetX = 0, targetY = 0
+                if (prevX == '') {
+                    x = ((connection.nodePosition.x || 0) - QIMap.MinX) * QIMap.XMultiplier *1.2 + QIMap.XOffset +80 || QIMap.XOffset
+                    y = (connection.nodePosition.y - QIMap.MinY) * QIMap.YMultiplier *1.45 + QIMap.YOffset +40 || QIMap.YOffset +40
+                }
+                else {
+                    x = prevX
+                    y = prevY
+                }
+                targetX = ((path.x || 0) - QIMap.MinX) * QIMap.XMultiplier *1.2 + QIMap.XOffset +80 || QIMap.XOffset
+                targetY = (path.y - QIMap.MinY) * QIMap.YMultiplier *1.45 + QIMap.YOffset +40 || QIMap.YOffset +40
+    
+                QIMap.MapCTX.beginPath()
+                QIMap.MapCTX.moveTo(x, y)
+                QIMap.MapCTX.lineTo(targetX, targetY)
+                QIMap.MapCTX.closePath()
+                QIMap.MapCTX.stroke()
+                
+                prevX = targetX, prevY = targetY
+            })
         })
     }
 }
