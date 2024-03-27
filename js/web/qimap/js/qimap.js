@@ -12,6 +12,7 @@ const QIMap = {
 
     init: (responseData) => {
         QIMap.CurrentMapData = responseData
+        $('#qiMap-Btn').removeClass('hud-btn-red')
     },
 
 	showBox: () => {
@@ -37,7 +38,7 @@ const QIMap = {
 	},
 
     showBody: () => {
-        let out = '<div id="nodeMap">'
+        let out = '<div id="mapWrapper"><div id="nodeMap">'
         
 		QIMap.Map = document.createElement("canvas");
 		QIMap.MapCTX = QIMap.Map.getContext('2d');
@@ -98,11 +99,12 @@ const QIMap = {
             else 
                 out += '<span style="left:'+x+'px;top:'+y+'px" class="start"><span class="img"></span></span>'
         })
-        out += '</div>'
+        out += '</div></div>'
         
         $('#QIMap').find('#QIMapBody').html(out).promise().done(function () {
             $('#nodeMap').append(QIMap.Map)
-            $('#QIMapBody, #nodeConnections').css({'width': QIMap.MaxY*QIMap.XMultiplier+QIMap.XOffset+QIMap.XOffset+'px','height': QIMap.MaxY*QIMap.YMultiplier+QIMap.YOffset+80+'px'})
+            $('#nodeMap, #nodeConnections').css({'width': QIMap.MaxY*QIMap.XMultiplier+QIMap.XOffset+QIMap.XOffset+'px','height': QIMap.MaxY*QIMap.YMultiplier+QIMap.YOffset+120+'px'})
+            QIMap.mapDrag()
         })
     },
 
@@ -134,5 +136,42 @@ const QIMap = {
                 prevX = targetX, prevY = targetY
             })
         })
-    }
+    },
+
+	mapDrag: () => {
+		const wrapper = document.getElementById('mapWrapper');
+		let pos = { top: 0, left: 0, x: 0, y: 0 }
+		
+		const mouseDownHandler = function(e) {	
+			pos = {
+				left: wrapper.scrollLeft,
+				top: wrapper.scrollTop,
+				x: e.clientX,
+				y: e.clientY,
+			}
+	
+			document.addEventListener('mousemove', mouseMoveHandler)
+			document.addEventListener('mouseup', mouseUpHandler)
+
+            console.log(pos)
+		}
+	
+		const mouseMoveHandler = function(e) {
+			const dx = e.clientX - pos.x
+			const dy = e.clientY - pos.y
+			wrapper.scrollTop = pos.top - dy
+			wrapper.scrollLeft = pos.left - dx
+
+            console.log(dx,dy)
+		};
+	
+		const mouseUpHandler = function() {	
+			document.removeEventListener('mousemove', mouseMoveHandler)
+			document.removeEventListener('mouseup', mouseUpHandler)
+		};
+
+        QIMap.Map.addEventListener('mousedown', function (e) {
+            wrapper.addEventListener('mousedown', mouseDownHandler)
+        }, false)
+	},
 }
