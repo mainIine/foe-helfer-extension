@@ -152,8 +152,6 @@ const QIMap = {
 	
 			document.addEventListener('mousemove', mouseMoveHandler)
 			document.addEventListener('mouseup', mouseUpHandler)
-
-            console.log(pos)
 		}
 	
 		const mouseMoveHandler = function(e) {
@@ -161,8 +159,6 @@ const QIMap = {
 			const dy = e.clientY - pos.y
 			wrapper.scrollTop = pos.top - dy
 			wrapper.scrollLeft = pos.left - dx
-
-            console.log(dx,dy)
 		};
 	
 		const mouseUpHandler = function() {	
