@@ -97,6 +97,20 @@ FoEproxy.addHandler('RewardService', 'collectRewardSet', async (data, postData) 
 				continue;
 			}
 		}
+
+		//QI reward splitting
+		let n = 1
+		if (rewardIncidentSource == 'guild_raids') {
+			let ref = Stats.QI.RewardLookUp?.[Stats.QI.currentNode]?.[reward.type+"#"+reward.subType];
+			if (!ref) return;
+			n = reward.amount / ref.amount;
+			if (n!=Math.floor(n)) {
+				n = 1
+			} else {
+				reward = ref;
+			}
+		}
+
 		// Add reward info to the db
 		if (!(await IndexDB.db.statsRewardTypes.get(reward.id))) {
 			// Reduce amount of saved data
@@ -108,10 +122,41 @@ FoEproxy.addHandler('RewardService', 'collectRewardSet', async (data, postData) 
 		}
 
 		// Add reward incident record
-
-		await Stats.addReward(rewardIncidentSource, reward.amount ||0, reward.id);
+		for (let i=0;i<n;i++) {
+			await Stats.addReward(rewardIncidentSource, reward.amount ||0, reward.id);
+		}
 	}
 });
+
+//reward split for QI
+FoEproxy.addHandler('GuildRaidsMapService', 'getNodeExtendedInfo', async (data, postData) => {
+	let rewards = data.responseData?.reward?.reward?.possible_rewards
+	let nodeId = postData?.[0]?.requestData?.[0];
+	
+	if (!nodeId) return;
+	
+	Stats.QI.RewardLookUp[nodeId]={}
+	
+	if (!rewards) 	return
+	
+	for (let r of rewards) {
+		if (r.reward.type == 'chest') {
+			for (let c of r.reward.possible_rewards) {
+				Stats.QI.RewardLookUp[nodeId][c.reward.type+"#"+c.reward.subType] = c.reward;
+			}
+		} else {
+			Stats.QI.RewardLookUp[nodeId][r.reward.type+"#"+r.reward.subType] = r.reward;
+		}
+	}
+}),
+
+FoEproxy.addHandler('GuildRaidsMapService', 'getOverview', async (data, postData) => {
+	Stats.QI.currentNode = data.responseData.currentNode;
+}),
+FoEproxy.addHandler('GuildRaidsMapService', 'move', async (data, postData) => {
+	Stats.QI.currentNode = postData[0].requestData[0].pop();
+}),
+
 
 // Player treasure log
 FoEproxy.addHandler('ResourceService', 'getPlayerResources', async (data, postData) => {
@@ -200,6 +245,11 @@ let Stats = {
 		special: ['promethium', 'orichalcum', 'mars_ore', 'asteroid_ice', 'venus_carbon', 'unknown_dna','crystallized_hydrocarbons'],
 	},
 
+	QI:{
+		RewardLookUp:{},
+		stage:"",
+		currentNode:""
+	},
 	PlayableEras: [],
 
 	// State for UI
