@@ -12,6 +12,7 @@ const QIMap = {
 
     init: (responseData) => {
         QIMap.CurrentMapData = responseData
+        $('#qiMap-Btn').removeClass('hud-btn-red')
     },
 
 	showBox: () => {
@@ -37,7 +38,7 @@ const QIMap = {
 	},
 
     showBody: () => {
-        let out = '<div id="nodeMap">'
+        let out = '<div id="mapWrapper"><div id="nodeMap">'
         
 		QIMap.Map = document.createElement("canvas");
 		QIMap.MapCTX = QIMap.Map.getContext('2d');
@@ -57,21 +58,19 @@ const QIMap = {
 
             // BUG works the first time, then adds more to the array
             node.connectedNodes.forEach(connection => {
-                let findDuplicates = QIMap.NodeConnections.find(x => x.id === connection.targetNodeId)
-                if (!findDuplicates && findDuplicates?.connectedNode !== node.id) {
+                let findDuplicates = QIMap.NodeConnections.find(x => x.id == node.id && x.connectedNode == connection.targetNodeId)
+                if (!findDuplicates) {
                     let newNode = {
                         id: node.id, 
                         nodePosition: node.position,
                         connectedNode: connection.targetNodeId, 
-                        connectedNodePosition: connection.pathTiles[0]
+                        connectedNodePosition: connection.pathTiles
                     }
-                    if (findDuplicates !== newNode)
-                        QIMap.NodeConnections.push(newNode)
+                    QIMap.NodeConnections.push(newNode)
                 }
             })
         })
-
-        //console.log(QIMap.NodeConnections)
+        
         QIMap.showNodeConnections()
 
         QIMap.CurrentMapData.nodes.forEach(node => {
@@ -82,7 +81,7 @@ const QIMap = {
             if (node.type.__class__ !== "GuildRaidsMapNodeStart") {
                 out += '<span id="'+ node.id +'" style="left:'+x+'px;top:'+y+'px" class="'+node.state.state+ " " + type + " " + (node.type.armyType ? node.type.armyType : '') + (node.state.hasTarget ? ' target' : '') + '">'
                     out += '<span class="img"></span>'
-                    out += '<b></b>'+node.id +" "+currentProgress + node.type.requiredProgress
+                    out += '<b></b>'+currentProgress + node.type.requiredProgress
                     if (node.mapEffects?.effectActiveBeforeFinish?.boosts) {
                         out += '<br>'
                         node.mapEffects.effectActiveBeforeFinish.boosts.forEach(boost => {
@@ -100,29 +99,75 @@ const QIMap = {
             else 
                 out += '<span style="left:'+x+'px;top:'+y+'px" class="start"><span class="img"></span></span>'
         })
-        out += '</div>'
+        out += '</div></div>'
         
         $('#QIMap').find('#QIMapBody').html(out).promise().done(function () {
             $('#nodeMap').append(QIMap.Map)
-            $('#QIMapBody, #nodeConnections').css({'width': QIMap.MaxY*QIMap.XMultiplier+QIMap.XOffset+'px','height': QIMap.MaxY*QIMap.YMultiplier+QIMap.YOffset+'px'})
+            $('#nodeMap, #nodeConnections').css({'width': QIMap.MaxY*QIMap.XMultiplier+QIMap.XOffset+QIMap.XOffset+'px','height': QIMap.MaxY*QIMap.YMultiplier+QIMap.YOffset+120+'px'})
+            QIMap.mapDrag()
         })
     },
 
     showNodeConnections: () => {
-        QIMap.NodeConnections.forEach(connection => {
-            let addLength = ((connection.nodePosition.x || 0) === (connection.connectedNodePosition.x || 0) ? 60 : 0)
-            let x = ((connection.nodePosition.x || 0) - QIMap.MinX) * QIMap.XMultiplier + QIMap.XOffset || QIMap.XOffset
-            let y = (connection.nodePosition.y - QIMap.MinY) * QIMap.YMultiplier + QIMap.YOffset || QIMap.YOffset
-            let targetX = ((connection.connectedNodePosition.x || 0) - QIMap.MinX) * QIMap.XMultiplier + QIMap.XOffset || QIMap.XOffset
-            let targetY = (connection.connectedNodePosition.y - QIMap.MinY) * QIMap.YMultiplier + QIMap.YOffset || QIMap.YOffset
-    
-            QIMap.MapCTX.beginPath()
-            QIMap.MapCTX.moveTo(x, y)
-            QIMap.MapCTX.lineTo(targetX, targetY)
-            QIMap.MapCTX.closePath()
-            QIMap.MapCTX.stroke()
+        QIMap.MapCTX.strokeStyle = '#000'
+        QIMap.MapCTX.lineWidth = 3
 
-            //console.log(x,y,targetX,targetY)
+        QIMap.NodeConnections.forEach(connection => {
+            let prevX = '', prevY = ''
+            connection.connectedNodePosition.forEach(path => {
+                let x = 0, y = 0, targetX = 0, targetY = 0
+                if (prevX == '') {
+                    x = ((connection.nodePosition.x || 0) - QIMap.MinX) * QIMap.XMultiplier *1.2 + QIMap.XOffset +80 || QIMap.XOffset
+                    y = (connection.nodePosition.y - QIMap.MinY) * QIMap.YMultiplier *1.45 + QIMap.YOffset +40 || QIMap.YOffset +40
+                }
+                else {
+                    x = prevX
+                    y = prevY
+                }
+                targetX = ((path.x || 0) - QIMap.MinX) * QIMap.XMultiplier *1.2 + QIMap.XOffset +80 || QIMap.XOffset
+                targetY = (path.y - QIMap.MinY) * QIMap.YMultiplier *1.45 + QIMap.YOffset +40 || QIMap.YOffset +40
+    
+                QIMap.MapCTX.beginPath()
+                QIMap.MapCTX.moveTo(x, y)
+                QIMap.MapCTX.lineTo(targetX, targetY)
+                QIMap.MapCTX.closePath()
+                QIMap.MapCTX.stroke()
+                
+                prevX = targetX, prevY = targetY
+            })
         })
-    }
+    },
+
+	mapDrag: () => {
+		const wrapper = document.getElementById('mapWrapper');
+		let pos = { top: 0, left: 0, x: 0, y: 0 }
+		
+		const mouseDownHandler = function(e) {	
+			pos = {
+				left: wrapper.scrollLeft,
+				top: wrapper.scrollTop,
+				x: e.clientX,
+				y: e.clientY,
+			}
+	
+			document.addEventListener('mousemove', mouseMoveHandler)
+			document.addEventListener('mouseup', mouseUpHandler)
+		}
+	
+		const mouseMoveHandler = function(e) {
+			const dx = e.clientX - pos.x
+			const dy = e.clientY - pos.y
+			wrapper.scrollTop = pos.top - dy
+			wrapper.scrollLeft = pos.left - dx
+		};
+	
+		const mouseUpHandler = function() {	
+			document.removeEventListener('mousemove', mouseMoveHandler)
+			document.removeEventListener('mouseup', mouseUpHandler)
+		};
+
+        QIMap.Map.addEventListener('mousedown', function (e) {
+            wrapper.addEventListener('mousedown', mouseDownHandler)
+        }, false)
+	},
 }

@@ -3,12 +3,22 @@
 }
 
 #QIMapBody {
-    width: 500px;
-    height: 500px;
+    width: inherit;
+    height: inherit;
+    position: relative;
+    overflow: visible;
+    background-color: var(--black-50);
+}
+
+#mapWrapper {
+    position: relative;
+    width: inherit;
+    height: inherit;
+    overflow: hidden;
 }
 
 #nodeMap {
-    position: relative;
+    position: absolute;
 }
 
 #nodeMap > span {
