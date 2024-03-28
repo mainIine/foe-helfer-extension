@@ -105,13 +105,12 @@ FoEproxy.addHandler('RewardService', 'collectRewardSet', async (data, postData) 
 			for (ref of Stats.QI.RewardLookUp?.[Stats.QI.currentNode]?.[reward.type+"#"+reward.subType]) {
 				n = reward.amount / ref.amount;
 				if (n!=Math.floor(n)) {
-					n = 1
+					n = 1;
 				} else {
 					break;
 				}
 			}			
-			if (!ref) return;
-			reward = ref;
+			if (n!=1) reward = ref;
 		}
 
 		// Add reward info to the db
