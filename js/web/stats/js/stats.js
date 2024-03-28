@@ -101,14 +101,17 @@ FoEproxy.addHandler('RewardService', 'collectRewardSet', async (data, postData) 
 		//QI reward splitting
 		let n = 1
 		if (rewardIncidentSource == 'guild_raids') {
-			let ref = Stats.QI.RewardLookUp?.[Stats.QI.currentNode]?.[reward.type+"#"+reward.subType];
+			let ref = null
+			for (ref of Stats.QI.RewardLookUp?.[Stats.QI.currentNode]?.[reward.type+"#"+reward.subType]) {
+				n = reward.amount / ref.amount;
+				if (n!=Math.floor(n)) {
+					n = 1
+				} else {
+					break;
+				}
+			}			
 			if (!ref) return;
-			n = reward.amount / ref.amount;
-			if (n!=Math.floor(n)) {
-				n = 1
-			} else {
-				reward = ref;
-			}
+			reward = ref;
 		}
 
 		// Add reward info to the db
@@ -142,10 +145,12 @@ FoEproxy.addHandler('GuildRaidsMapService', 'getNodeExtendedInfo', async (data, 
 	for (let r of rewards) {
 		if (r.reward.type == 'chest') {
 			for (let c of r.reward.possible_rewards) {
-				Stats.QI.RewardLookUp[nodeId][c.reward.type+"#"+c.reward.subType] = c.reward;
+				if (!Stats.QI.RewardLookUp[nodeId][c.reward.type+"#"+c.reward.subType]) Stats.QI.RewardLookUp[nodeId][c.reward.type+"#"+c.reward.subType]=[];
+				Stats.QI.RewardLookUp[nodeId][c.reward.type+"#"+c.reward.subType].push(c.reward);
 			}
 		} else {
-			Stats.QI.RewardLookUp[nodeId][r.reward.type+"#"+r.reward.subType] = r.reward;
+			if (!Stats.QI.RewardLookUp[nodeId][r.reward.type+"#"+r.reward.subType]) Stats.QI.RewardLookUp[nodeId][r.reward.type+"#"+r.reward.subType]=[];
+			Stats.QI.RewardLookUp[nodeId][r.reward.type+"#"+r.reward.subType].push(r.reward);
 		}
 	}
 }),
