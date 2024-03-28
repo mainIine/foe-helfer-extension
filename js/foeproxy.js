@@ -307,7 +307,7 @@ const FoEproxy = (function () {
 			try {
 				callback(data);
 			} catch (e) {
-				console.error(e);
+				console.error(e, 'data:', data);
 			}
 		}
 	}
@@ -347,7 +347,7 @@ const FoEproxy = (function () {
 				try {
 					callback(data);
 				} catch (e) {
-					console.error(e);
+					console.error(e, 'data:', data);
 				}
 			}
 
@@ -360,7 +360,7 @@ const FoEproxy = (function () {
 				proxyWsAction(data.requestClass, data.requestMethod, data);
 			}
 		} catch (e) {
-			console.error(e);
+			console.error(e, 'evt:', evt);
 		}
 	}
 
@@ -395,7 +395,7 @@ const FoEproxy = (function () {
 			try {
 				callback(data, postData);
 			} catch (e) {
-				console.error(e);
+				console.error(e, 'data:', data, 'postData:', postData);
 			}
 		}
 	}
@@ -428,7 +428,7 @@ const FoEproxy = (function () {
 			try {
 				callback(postData);
 			} catch (e) {
-				console.error(e);
+				console.error(e, 'postData:', postData);
 			}
 		}
 	}
@@ -485,7 +485,7 @@ const FoEproxy = (function () {
 			try {
 				callback(this, requestData);
 			} catch (e) {
-				console.error(e);
+				console.error(e, 'requestData:', requestData);
 			}
 		}
 
@@ -506,7 +506,7 @@ const FoEproxy = (function () {
 					try {
 						callback(this, postData);
 					} catch (e) {
-						console.error(e);
+						console.error(e, 'postData:', postData);
 					}
 				}
 			}

@@ -113,7 +113,7 @@ function inject (loadBeta = false, extUrl = chrome.runtime.getURL(''), betaDate=
 	}
 
 	// is there a translation?
-	if (Languages.PossibleLanguages[lng] === undefined) {
+	if (typeof Languages === 'object' && Languages.PossibleLanguages[lng] === undefined) {
 		lng = 'en';
 	}
 

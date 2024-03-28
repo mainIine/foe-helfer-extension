@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>FoE Helper Spec Runner</title>
+
+  <link rel="shortcut icon" type="image/png" href="images/app32.png">
+  <link rel="stylesheet" href="vendor/jasmine/jasmine.css">
+
+  <script src="vendor/jasmine/jasmine.js"></script>
+  <script src="vendor/jasmine/jasmine-html.js"></script>
+  <script src="vendor/jasmine/boot0.js"></script>
+  <script src="test/boot1.js"></script>
+
+  <script src="test/testtools.js"></script>
+
+  <!-- include source files here... -->
+  <!-- in release, jQuery is loaded by the game itself;
+       for testing, load own jQuery -->
+  <script src="vendor/jQuery/jquery.min.js"></script>
+  <script src="vendor/browser-polyfill/browser-polyfill.min.js"></script>
+  <!-- in release, _languages.js is marked in manifest for loading;
+       for testing, currently both injecting and injected result are in the same extension context, and _languages.js can't be included twice -->
+  <!--script src="js/web/_languages/js/_languages.js"></script-->
+  <script src="js/inject.js"></script>
+
+  <!-- include spec files here... -->
+  <script src="test/testtoolsspecs.js"></script>
+
+  <script src="js/web/eventhandler/test/eventhandler.js"></script>
+  <script src="js/web/guildfights/test/guildfights.js"></script>
+  <script src="js/web/mergergame/test/mergergame.js"></script>
+  <script src="js/web/popgame/test/popgame.js"></script>
+
+</head>
+
+<body>
+</body>
+</html>
