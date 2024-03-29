@@ -541,6 +541,9 @@ let Kits = {
 			let id = x.item.upgradeItemId||x.item.selectionKitId||x.item.cityEntityId||x.itemAssetName;
 			let asset= x.itemAssetName;
 			let name = x.name;
+			if (x.item.__class__=="BuildingItemPayload") {
+				asset=MainParser.CityEntities[id].asset_id;
+			}
 			if (x.item.__class__=="FragmentItemPayload") {
 				id =  "fragment#"+ ((x.item.reward.assembledReward.type == "building") ? 
 										(x.item.reward.assembledReward.subType) : 
