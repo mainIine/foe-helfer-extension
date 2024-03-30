@@ -37,6 +37,11 @@ const QIMap = {
 		QIMap.showBody()
 	},
 
+    countProgress: (nodeId) => {
+        if (nodeId !== null)
+            console.log(nodeId)
+    },
+
     showBody: () => {
         let out = '<div id="mapWrapper"><div id="nodeMap">'
         
@@ -56,7 +61,6 @@ const QIMap = {
             QIMap.MinX = (x < QIMap.MinX ? x : QIMap.MinX)
             QIMap.MinY = ((node.position.y || 0) < QIMap.MinY ? (node.position.y || 0) : QIMap.MinY)
 
-            // BUG works the first time, then adds more to the array
             node.connectedNodes.forEach(connection => {
                 let findDuplicates = QIMap.NodeConnections.find(x => x.id == node.id && x.connectedNode == connection.targetNodeId)
                 if (!findDuplicates) {
@@ -97,7 +101,7 @@ const QIMap = {
                 out +='</span>'
             }
             else 
-                out += '<span style="left:'+x+'px;top:'+y+'px" class="start"><span class="img"></span></span>'
+                out += '<span id="'+ node.id +'" style="left:'+x+'px;top:'+y+'px" class="start"><span class="img"></span></span>'
         })
         out += '</div></div>'
         
@@ -105,6 +109,7 @@ const QIMap = {
             $('#nodeMap').append(QIMap.Map)
             $('#nodeMap, #nodeConnections').css({'width': QIMap.MaxY*QIMap.XMultiplier+QIMap.XOffset+QIMap.XOffset+'px','height': QIMap.MaxY*QIMap.YMultiplier+QIMap.YOffset+120+'px'})
             QIMap.mapDrag()
+            //document.addEventListener("click", QIMap.countProgress(#nope#))
         })
     },
 
@@ -114,18 +119,27 @@ const QIMap = {
 
         QIMap.NodeConnections.forEach(connection => {
             let prevX = '', prevY = ''
-            connection.connectedNodePosition.forEach(path => {
+            for (const [i, path] of connection.connectedNodePosition.entries()) {
                 let x = 0, y = 0, targetX = 0, targetY = 0
                 if (prevX == '') {
-                    x = ((connection.nodePosition.x || 0) - QIMap.MinX) * QIMap.XMultiplier *1.2 + QIMap.XOffset +80 || QIMap.XOffset
-                    y = (connection.nodePosition.y - QIMap.MinY) * QIMap.YMultiplier *1.45 + QIMap.YOffset +40 || QIMap.YOffset +40
+                    x = ((connection.nodePosition.x || 0) - QIMap.MinX) * QIMap.XMultiplier + QIMap.XOffset + (((connection.nodePosition.x || 0) - QIMap.MinX)*50) || QIMap.XOffset
+                    y = (connection.nodePosition.y - QIMap.MinY) * QIMap.YMultiplier + QIMap.YOffset + ((connection.nodePosition.y - QIMap.MinY)*50) || QIMap.YOffset +50
                 }
                 else {
                     x = prevX
                     y = prevY
                 }
-                targetX = ((path.x || 0) - QIMap.MinX) * QIMap.XMultiplier *1.2 + QIMap.XOffset +80 || QIMap.XOffset
-                targetY = (path.y - QIMap.MinY) * QIMap.YMultiplier *1.45 + QIMap.YOffset +40 || QIMap.YOffset +40
+
+                targetX = ((path.x || 0) - QIMap.MinX) * QIMap.XMultiplier + QIMap.XOffset + (((path.x || 0) - QIMap.MinX)*50) || QIMap.XOffset
+                targetY = (path.y - QIMap.MinY) * QIMap.YMultiplier + QIMap.YOffset + ((path.y - QIMap.MinY)*50) || QIMap.YOffset +50
+
+                if (i === connection.connectedNodePosition.length-1) {
+                    let longerX = (targetX != x ? 40 : 0)
+                    let longerY = (targetY != y ? 30 : 0)
+
+                    targetX = targetX + longerX
+                    targetY = targetY + longerY
+                }
     
                 QIMap.MapCTX.beginPath()
                 QIMap.MapCTX.moveTo(x, y)
@@ -134,7 +148,7 @@ const QIMap = {
                 QIMap.MapCTX.stroke()
                 
                 prevX = targetX, prevY = targetY
-            })
+            }
         })
     },
 
