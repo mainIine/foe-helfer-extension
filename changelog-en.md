@@ -5,11 +5,19 @@
 
 **Update**
 - City Overview:
-	- New: City Overview for settlements, colonies and Quantum Incursions
+	- New: City Overview for Settlements, Space Colonies and Quantum Incursions
+- St Patrick:
+	- Added 6.3Q alert
 
 **BugFix**
 - St Patrick:
-	- it was possible that the strategy could not be edited
+	- It was possible that the strategy could not be edited
+- Polynesia Settlement:
+	- Added missing images
+- FP Bar:
+	- Moved it to the left in QI
+- Titan GBs:
+	- Some boosts were wrong
 
 ---
 
