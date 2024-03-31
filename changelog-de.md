@@ -5,10 +5,18 @@
 **Update**
 - Stadtübersicht:
 	- Neu: Stadtübersicht auch bei Siedlungen, Kolonien und Quantum Inkursionen
+- St Patrick:
+	- 6.3Q Benachrichtigung hinzugefügt
 
 **BugFix**
 - St Patrick:
-	- es konnte passieren, dass die Strategie nicht bearbeitet werden konnte
+	- Es konnte passieren, dass die Strategie nicht bearbeitet werden konnte
+- Polynesien Siedlung:
+	- Fehlende Bilder hinzugefügt
+- FP Leiste:
+	- Wurde in der QI nach links verschoben
+- Titan LB:
+	- Manche boosts waren vertauscht
 
 ---
 
