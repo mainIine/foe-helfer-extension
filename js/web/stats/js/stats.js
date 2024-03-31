@@ -76,7 +76,7 @@ FoEproxy.addHandler('RewardService', 'collectReward', async (data, postData) => 
 });
 
 FoEproxy.addHandler('RewardService', 'collectRewardSet', async (data, postData) => {
-	console.log(JSON.parse(JSON.stringify(data)))
+	//console.log(JSON.parse(JSON.stringify(data)))
 	let rewardIncidentSource = data.responseData.context;
 	if (rewardIncidentSource.indexOf('event')<0 && rewardIncidentSource != 'guild_raids') return
 	let rewards = data.responseData.reward.rewards;
