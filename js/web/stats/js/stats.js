@@ -76,28 +76,14 @@ FoEproxy.addHandler('RewardService', 'collectReward', async (data, postData) => 
 });
 
 FoEproxy.addHandler('RewardService', 'collectRewardSet', async (data, postData) => {
-
+	console.log(JSON.parse(JSON.stringify(data)))
 	let rewardIncidentSource = data.responseData.context;
+	if (rewardIncidentSource.indexOf('event')<0 && rewardIncidentSource != 'guild_raids') return
 	let rewards = data.responseData.reward.rewards;
     await IndexDB.getDB();
 	
 	for (let reward of rewards) {
-
-		if (rewardIncidentSource === 'default') {
-			//split flying island incidents from normal ones
-			if (isCurrentlyInOutpost === 1){
-				rewardIncidentSource = 'shards';
-			}
-			//split league rewards and fragment assembly from incidents
-			if(postData[0].requestMethod === 'useItem'){
-				continue;
-			}
-			//split quest rewards from incidents
-			if(postData[0].requestMethod === 'advanceQuest'){
-				continue;
-			}
-		}
-
+		
 		//QI reward splitting
 		let n = 1
 		if (rewardIncidentSource == 'guild_raids') {
@@ -210,6 +196,7 @@ FoEproxy.addHandler('ClanService', 'getTreasury', async (data, postData) => {
 
 // Player Army log
 FoEproxy.addHandler('ArmyUnitManagementService', 'getArmyInfo', async (data, postData) => {
+	console.log("Army-Info on "+ActiveMap);
 	if (ActiveMap !== 'main') {
 		return;
 	}
