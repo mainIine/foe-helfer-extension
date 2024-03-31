@@ -43,6 +43,10 @@ FoEproxy.addHandler('RewardService', 'collectReward', async (data, postData) => 
 	var [rewards, rewardIncidentSource] = r; // pair, 1st is reward list, second source of incident, e.g spoilsOfWar
     await IndexDB.getDB();
 	
+	if (rewardIncidentSource == "event_pass") {
+		if (postData[0].requestData[0].indexOf('guild_raids') >=0) rewardIncidentSource = 'guild_raids'
+	}
+
 	for (let reward of rewards) {
 
 		if (rewardIncidentSource === 'default') {
@@ -78,7 +82,8 @@ FoEproxy.addHandler('RewardService', 'collectReward', async (data, postData) => 
 FoEproxy.addHandler('RewardService', 'collectRewardSet', async (data, postData) => {
 	//console.log(JSON.parse(JSON.stringify(data)))
 	let rewardIncidentSource = data.responseData.context;
-	if (rewardIncidentSource.indexOf('event')<0 && rewardIncidentSource != 'guild_raids') return
+	if (rewardIncidentSource.indexOf('guild_raids')>=0) rewardIncidentSource='guild_raids';
+	if (rewardIncidentSource.indexOf('event')<0 && rewardIncidentSource != 'guild_raids') return;
 	let rewards = data.responseData.reward.rewards;
     await IndexDB.getDB();
 	
