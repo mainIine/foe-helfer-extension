@@ -201,7 +201,6 @@ FoEproxy.addHandler('ClanService', 'getTreasury', async (data, postData) => {
 
 // Player Army log
 FoEproxy.addHandler('ArmyUnitManagementService', 'getArmyInfo', async (data, postData) => {
-	console.log("Army-Info on "+ActiveMap);
 	if (ActiveMap !== 'main') {
 		return;
 	}
