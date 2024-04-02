@@ -30,23 +30,16 @@ FoEproxy.addHandler('RewardService', 'collectRewardSet', (data, postData) => {
 		amount = d.reward?.totalAmount || 0;
 
 	if (d.context.toLowerCase().includes("guild_raids")) {
-		event = d.context.toLowerCase();
+		event = d.context.toLowerCase()
 	}
 
 	if (d.reward.rewards[0].subType === "strategy_points") {// not really stable
-		console.log("FP!")
-		console.log({
+		StrategyPoints.insertIntoDB({
 			event: event,
 			notes: notes ? notes : '',
 			amount: amount,
 			date: moment(MainParser.getCurrentDate()).format('YYYY-MM-DD')
-		});
-		/*StrategyPoints.insertIntoDB({
-			event: event,
-			notes: notes ? notes : '',
-			amount: amount,
-			date: moment(MainParser.getCurrentDate()).format('YYYY-MM-DD')
-		});*/
+		})
 	}
 });
 
