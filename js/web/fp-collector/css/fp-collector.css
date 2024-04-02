@@ -156,6 +156,10 @@
 
 /* Events */
 
+.foehelper-accordion-head.event_pass-head span.image {
+	background-image: url('../../x_img/event_pass.png') !important;
+}
+
 .foehelper-accordion-head.leagueReward-head span.image {
 	background-image: url('../../x_img/leagueReward.png') !important;
 }
