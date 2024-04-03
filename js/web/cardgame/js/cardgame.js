@@ -205,9 +205,6 @@ let cardGame = {
 			halloween_bronze_key:0,
 			halloween_silver_key:0,
 			halloween_golden_key:0,
-			history_bronze_key:0,
-			history_silver_key:0,
-			history_golden_key:0,
 
 		};
 		cardGame.currencySpent= {
