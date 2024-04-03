@@ -33,9 +33,10 @@ FoEproxy.addHandler('CardGameService', 'all', (data, postData) => {
 	}
 	if (data.requestMethod=="redrawCard") {
 		cardGame.cardOptions = data.responseData.handCardIds;
+		cardGame.cardsLeft = data.responseData.drawPileCardIds;
 		cardGame.currencySpent.redraw += cardGame.redraw;
 		cardGame.redraw = data.responseData.redrawCost.resources[cardGame.data[cardGame.context].mainResource];
-		cardGame.card["nohighlight"]=true;
+		cardGame.card={};
 	}
 	if (data.requestMethod=="getOverview") {
 		if (data.responseData.factions) {
@@ -51,14 +52,19 @@ FoEproxy.addHandler('CardGameService', 'all', (data, postData) => {
 			cardGame.health = data.responseData.ongoingGame.playerState.currentHealth;
 			cardGame.maxHealth = data.responseData.ongoingGame.playerState.maxHealth;
 			cardGame.cardsLeft = data.responseData.ongoingGame.playerState.drawPileCardIds;
-			cardGame.card = {...cardGame.cards[data.responseData.ongoingGame.playerState.handCardIds[0]]};
+			cardGame.cardOptions = data.responseData.ongoingGame.playerState.handCardIds;
+			if (data.responseData.ongoingGame.playerState.handCardIds.length > 1) {
+				cardGame.card = null;
+			} else {
+				cardGame.card = {...cardGame.cards[data.responseData.ongoingGame.playerState.handCardIds[0]]};
+			}
 			cardGame.level = Object.values(cardGame.nodes).filter(x => !!x.enemy).length;
 			cardGame.isLastLevel = cardGame.nodes[data.responseData.ongoingGame.playerState.currentNodeId].nextNodeIds.length == 0;
 			cardGame.enemy = cardGame.nodes[data.responseData.ongoingGame.playerState.currentNodeId].enemy;
 			cardGame.redraw = data.responseData.ongoingGame.playerState.redrawCost.resources[cardGame.data[cardGame.context].mainResource];
 		} else {
 			cardGame.cardsLeft=[];
-			cardGame.card={};
+			cardGame.card=null;
 			cardGame.health=0;
 			cardGame.enemy={};
 			cardGame.nodes={};
@@ -67,12 +73,12 @@ FoEproxy.addHandler('CardGameService', 'all', (data, postData) => {
 	}
 	if (data.requestMethod=="startLevel") {
 		cardGame.init();
-		//if (data.responseData.factions) cardGame.factions = data.responseData.factions;
 		if (data.responseData.state) {
 			cardGame.nodes = data.responseData.state.level.nodes;
 			cardGame.health = data.responseData.state.playerState.currentHealth;
 			cardGame.cardsLeft = data.responseData.state.playerState.drawPileCardIds;
 			cardGame.card = {...cardGame.cards[data.responseData.state.playerState.handCardIds[0]]};
+			cardGame.cardOptions = data.responseData.state.playerState.handCardIds
 			cardGame.level = 1;
 			cardGame.isLastLevel = cardGame.nodes[data.responseData.state.playerState.currentNodeId].nextNodeIds.length == 0;
 			cardGame.enemy = cardGame.nodes[data.responseData.state.playerState.currentNodeId].enemy;
@@ -84,13 +90,14 @@ FoEproxy.addHandler('CardGameService', 'all', (data, postData) => {
 				cardGame.health = data.responseData.playerState.currentHealth;
 				cardGame.cardsLeft = data.responseData.playerState.drawPileCardIds;
 				cardGame.card = {...cardGame.cards[data.responseData.playerState.handCardIds[0]]};
+				cardGame.cardOptions = data.responseData.playerState.handCardIds;
 				cardGame.level = 1;
 				cardGame.isLastLevel = cardGame.nodes[data.responseData.playerState.currentNodeId].nextNodeIds.length == 0;
 				cardGame.enemy = cardGame.nodes[data.responseData.playerState.currentNodeId].enemy;
 				cardGame.redraw = data.responseData.playerState.redrawCost.resources[cardGame.data[cardGame.context].mainResource];
 			} catch {
 				cardGame.cardsLeft=[];
-				cardGame.card={};
+				cardGame.card=null;
 				cardGame.health=0;
 				cardGame.enemy={};
 				cardGame.nodes={};
@@ -108,10 +115,10 @@ FoEproxy.addHandler('CardGameService', 'all', (data, postData) => {
 		if (data.responseData?.playerState?.cardShop?.buyOptions) cardGame.showWarning(undefined);
 		cardGame.health = data.responseData.playerState.currentHealth || 0;
 		cardGame.cardsLeft = data.responseData.playerState.drawPileCardIds;
+		cardGame.cardOptions = data.responseData.playerState.handCardIds;
 		cardGame.card = {...cardGame.cards[data.responseData.playerState.handCardIds[0]]};
 		if (data.responseData.playerState.state.value == "card_buying") {
-			cardGame.card.id="used";
-			cardGame.enemy.card.cardFactionId = "replaced"
+			cardGame.card=null;
 		}
 		cardGame.cardCost=0;
 		cardGame.freshbuys=[];
@@ -120,7 +127,7 @@ FoEproxy.addHandler('CardGameService', 'all', (data, postData) => {
 		cardGame.health = data.responseData.currentHealth;
 		cardGame.cardsLeft = data.responseData.drawPileCardIds;
 		cardGame.card = {...cardGame.cards[data.responseData.handCardIds[0]]};
-		cardGame.cardOptions = [];
+		cardGame.cardOptions = data.responseData.handCardIds;
 		cardGame.redraw = data.responseData.redrawCost.resources[cardGame.data[cardGame.context].mainResource];
 	}
 	if (data.requestMethod=="buyHealthOffer") {
@@ -160,7 +167,7 @@ let cardGame = {
 	context:"history_event",
 	cards:{},
 	cardsLeft:[],
-	card:{},
+	card:null,
 	health:0,
 	enemy:{},
 	nodes:{},
@@ -232,6 +239,7 @@ let cardGame = {
 	},
 	
 	checkHealth:()=> {
+		if (!cardGame.card?.cardType?.value) return;
 		let minHealth = cardGame.health
 		let maxHealth = cardGame.health;
 
@@ -249,6 +257,7 @@ let cardGame = {
 		}
 
 		let warning = maxHealth <= 0 ? i18n("Boxes.cardGame.WarningCertainDeath"): minHealth <= 0 ? i18n("Boxes.cardGame.WarningPossibleDeath"):undefined;
+		/*
 		if (cardGame.isLastLevel && warning) {
 			let enemyHealth;
 			if (cardGame.card.cardType.value == "ability") {
@@ -261,9 +270,9 @@ let cardGame = {
 			else {
 				enemyHealth = cardGame.enemy.currentHealth + (cardGame.enemy.card.cardFactionId == cardGame.weakAgainst[cardGame.card.cardFactionId] ? cardGame.card.abilities[1].amount:0) + cardGame.card.abilities[0].maxValue;;
 			}
-			//if (enemyHealth <=0) warning = undefined;
+			if (enemyHealth <=0) warning = undefined;
 		}
-
+		*/
 		cardGame.showWarning(warning)
 	},
 
@@ -284,7 +293,7 @@ let cardGame = {
 		}
 		let dmg = {}
 		let cards = cardGame.cardsLeft.concat(cardGame.freshbuys)
-		cards = cardGame.card.id=="used" ? cards : cards.concat(cardGame.card.id);
+		cards = cards.concat(cardGame.cardOptions);
 		for (let c of cards) {
 			if (!dmg[c]) {
 				dmg[c]={}
@@ -322,7 +331,7 @@ let cardGame = {
 		let imgs=data.imgPath;
 
 		let h=`</tr></table><table class="foe-table">`
-		h +=`<tr><td style="text-align:center"><img style="height:40px" src=${srcLinks.get(imgs.enemyDeck,true)}>${cardGame.level}</td>`;
+		h +=`<tr><td style="text-align:center"><img style="height:40px" src=${srcLinks.get(imgs.enemyDeck,true)}>${cardGame.level}/${Object.keys(cardGame.nodes).length}</td>`;
 		h +=`<td style="text-align:center"><img style="height:40px" src=${srcLinks.get(imgs.playerHealth,true)}>${cardGame.health}</td>`;
 		h +=`<td style="text-align:center"><img style="height:40px" src=${srcLinks.get("/shared/icons/reward_icons/reward_icon_"+data.mainResource+".png",true)}>${Object.values(cardGame.currencySpent).reduce((a, b) => a + b, 0)}</td>`;
 		h +=`<td colspan="3" style="text-align:center">`;
@@ -339,30 +348,27 @@ let cardGame = {
 		h +=`</tr></table><table class="foe-table">`;
 		h +=`<tr><th></th><th>${i18n('Boxes.cardGame.Attack')}</th><th>${i18n('Boxes.cardGame.Bonus')}</th></tr>`;
 		for (let c of cards) {
+			h+=`<tr ${(cardGame.cardOptions.includes(c) && cardGame.cardOptions.length > 1) ? 'class="highlightOptions"': (cardGame.cardOptions.includes(c) && cardGame.cardOptions.length == 1) ? 'class="highlight"':""}>`;
+			h+=`<td title="${cardGame.cards[c].description}">`;
 			if (cardGame.context=="halloween_event") {
-				h+=`<tr ${cardGame.cardOptions.includes(c) ? 'class="highlightOptions"': (c == cardGame.card.id && !cardGame.card.nohighlight) ? 'class="highlight"':""}>`;
-				h+=`<td title="${cardGame.cards[c].description}">`;
-				h+=`<div class="cardtop ${cardGame.cards[c].cardFactionId == cardGame.enemy.card.abilities[1]?.factionId ? 'highlightWeak':""}" style="background-image:url('${srcLinks.get(imgs.cards+cardGame.cards[c].assetName+".png",true)}')"></div></td>`;
+				h+=`<div class="cardtop ${cardGame.cards[c].cardFactionId == cardGame.weakAgainst[cardGame.enemy.card.cardFactionId] ? 'highlightWeak':""}" style="background-image:url('${srcLinks.get(imgs.cards+cardGame.cards[c].assetName+".png",true)}')"></div></td>`;
 				let highlight=`class="cardattack" style="background-image:url('${srcLinks.get(imgs.cards+cardGame.cards[c].assetName+".png",true)}')"`
 				h+=`<td><div ${highlight}>${cardGame.cards[c]?.cardType?.value=="ability" ? dmg[c]["min"] + (dmg[c]["max"] > dmg[c]["min"] ? ((dmg[c].min+""+dmg[c].max).length>2?"-":" - ") + dmg[c]["max"]:"") : (-cardGame.cards[c].abilities[0].maxValue) + " - " + (-cardGame.cards[c].abilities[0].minValue)}</div></td>`;
 				highlight="";
-				if (cardGame.cards[c]?.cardType?.value!="ability" && cardGame.cards[c].abilities?.[1]?.factionId) {
-					highlight = `class="cardbonus ${(cardGame.cards[c].abilities[1]?.factionId == cardGame.enemy.card.cardFactionId) ? 'highlightStrong':""}" style="background-image:url('${srcLinks.get(imgs.cards+cardGame.cards[c].assetName+".png",true)}')"`
+				if (cardGame.cards[c]?.cardType?.value!="ability" && cardGame.cards[c].abilities?.[1]) {
+					highlight = `class="cardbonus ${(cardGame.enemy.card.cardFactionId == cardGame.weakAgainst[cardGame.cards[c].cardFactionId]) ? 'highlightStrong':""}" style="background-image:url('${srcLinks.get(imgs.cards+cardGame.cards[c].assetName+".png",true)}')"`
 				}
 				h+=`<td><div ${highlight}>${highlight!="" ? -cardGame.cards[c].abilities[1].amount:""}</div></td>`;
-				h+=`</tr>`;
 			} else {
-				h+=`<tr ${cardGame.cardOptions.includes(c) ? 'class="highlightOptions"': (c == cardGame.card.id && !cardGame.card.nohighlight) ? 'class="highlight"':""}>`;
-				h+=`<td title="${cardGame.cards[c].description}">`;
 				h+=`<div class="${cardGame.cards[c].cardFactionId == cardGame.weakAgainst[cardGame.enemy.card.cardFactionId] ? 'highlightWeak':""}">`
-				h+=`<span style="background-image:url('${cardGame.cards[c].cardType.value=="abiltity" ? imgs.ability : srcLinks.get(imgs.cards+cardGame.cards[c].cardFactionId+".png",true)}')"></span>${cardGame.cards[c].name}</div></td>`;
+				h+=`<span style="background-image:url('${cardGame.cards[c]?.cardType?.value=="ability" ? imgs.ability : srcLinks.get(imgs.cards+cardGame.cards[c].cardFactionId+".png",true)}')"></span>${cardGame.cards[c].name}</div></td>`;
 				h+=`<td><span style="background-image:url('${imgs.attack}')"></span>`
 				h+= `${cardGame.cards[c]?.cardType?.value=="ability" ? dmg[c]["min"] + (dmg[c]["max"] > dmg[c]["min"] ? ((dmg[c].min+""+dmg[c].max).length>2?"-":" - ") + dmg[c]["max"]:"") : (-cardGame.cards[c].abilities[0].maxValue) + " - " + (-cardGame.cards[c].abilities[0].minValue)}</div></td>`;
 				highlight = `class="${(cardGame.enemy.card.cardFactionId == cardGame.weakAgainst[cardGame.cards[c].cardFactionId]) ? 'highlightStrong':""}"`
 				h+=`<td><div ${highlight}><span style=background-image:url('${cardGame.cards[c]?.cardType?.value=="ability" ? "" : (cardGame.weakAgainst[cardGame.cards[c].cardFactionId] == "" ? "" : srcLinks.get(imgs.cards+cardGame.weakAgainst[cardGame.cards[c].cardFactionId]+".png",true))}')"></span>${cardGame.cards[c].abilities?.[1]?.amount ? -cardGame.cards[c].abilities[1].amount:""}</div></td>`;
-				h+=`</tr>`;
-
 			}
+			h+=`</tr>`;
+
 		}
 		h+='</table>';
 
