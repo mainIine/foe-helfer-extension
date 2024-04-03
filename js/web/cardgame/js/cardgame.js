@@ -225,6 +225,7 @@ let cardGame = {
 			blocker.id = 'cardGameFightBlocker';
 			blocker.src = srcLinks.get("/city/gui/great_building_bonus_icons/great_building_bonus_plunder_repel.png", true);
 			blocker.title = warning;
+			blocker.className = cardGame.context;
 			$('#game_body')[0].append(blocker);
 			$('#cardGameFightBlocker').on("click",()=>{$('#cardGameFightBlocker').remove()});
 		} 
