@@ -659,12 +659,37 @@ let Productions = {
 			})
 			if (building.state.production) {
 				building.state.production.forEach(production => {
-					if (production.type == "guildResources") // problem: güter und gildenmacht sind hier beide drin
+					if (production.type == "guildResources") { 
 						Productions.BuildingsProducts["clan_goods"].push(building.id)
-					
+						if (production.resources.clan_power > 0)
+							Productions.BuildingsProducts["clan_power"].push(building.id)
+					}
+					if (production.type == "unit") { 
+						Productions.BuildingsProducts["units"].push(building.id)
+					}
+					if (production.resources.money) { 
+						Productions.BuildingsProducts["money"].push(building.id)
+					}
+					if (production.resources.medals) { 
+						Productions.BuildingsProducts["medals"].push(building.id)
+					}
+					if (production.resources.premium) { 
+						Productions.BuildingsProducts["premium"].push(building.id)
+					}
+					if (production.resources.strategy_points) { 
+						Productions.BuildingsProducts["strategy_points"].push(building.id)
+					}
+					if (production.resources.supplies) { 
+						Productions.BuildingsProducts["supplies"].push(building.id)
+					}
 				})
 			}
-
+			if (building.happiness !== 0) {
+				Productions.BuildingsProducts["happiness"].push(building.id)
+			}
+			if (building.population !== 0) {
+				Productions.BuildingsProducts["population"].push(building.id)
+			}
 		})
 
 		console.log(Productions.BuildingsProducts)
@@ -1106,8 +1131,6 @@ let Productions = {
 				minimize: true,
 				resize: true
 			});
-
-			// CSS in den DOM prügeln
 			HTML.AddCssFile('productions');
 
 			// Ein Gebäude soll auf der Karte dargestellt werden
