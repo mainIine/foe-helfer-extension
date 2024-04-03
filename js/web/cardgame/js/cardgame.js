@@ -38,6 +38,12 @@ FoEproxy.addHandler('CardGameService', 'all', (data, postData) => {
 		cardGame.card["nohighlight"]=true;
 	}
 	if (data.requestMethod=="getOverview") {
+		if (data.responseData.factions) {
+			cardGame.weakAgainst = {}
+			for (let f of data.responseData.factions) {
+				cardGame.weakAgainst[f.id] = f.strongAgainstFactionId || "";
+			};
+		}
 		cardGame.cardCost=0;
 		cardGame.cards = data.responseData.cards;
 		if (data.responseData.ongoingGame) {
@@ -61,6 +67,7 @@ FoEproxy.addHandler('CardGameService', 'all', (data, postData) => {
 	}
 	if (data.requestMethod=="startLevel") {
 		cardGame.init();
+		//if (data.responseData.factions) cardGame.factions = data.responseData.factions;
 		if (data.responseData.state) {
 			cardGame.nodes = data.responseData.state.level.nodes;
 			cardGame.health = data.responseData.state.playerState.currentHealth;
@@ -72,12 +79,23 @@ FoEproxy.addHandler('CardGameService', 'all', (data, postData) => {
 			cardGame.redraw = data.responseData.state.playerState.redrawCost.resources[cardGame.data[cardGame.context].mainResource];
 
 		} else {
-			cardGame.cardsLeft=[];
-			cardGame.card={};
-			cardGame.health=0;
-			cardGame.enemy={};
-			cardGame.nodes={};
-			cardGame.isLastLevel=false;
+			try {
+				cardGame.nodes = data.responseData.level.nodes;
+				cardGame.health = data.responseData.playerState.currentHealth;
+				cardGame.cardsLeft = data.responseData.playerState.drawPileCardIds;
+				cardGame.card = {...cardGame.cards[data.responseData.playerState.handCardIds[0]]};
+				cardGame.level = 1;
+				cardGame.isLastLevel = cardGame.nodes[data.responseData.playerState.currentNodeId].nextNodeIds.length == 0;
+				cardGame.enemy = cardGame.nodes[data.responseData.playerState.currentNodeId].enemy;
+				cardGame.redraw = data.responseData.playerState.redrawCost.resources[cardGame.data[cardGame.context].mainResource];
+			} catch {
+				cardGame.cardsLeft=[];
+				cardGame.card={};
+				cardGame.health=0;
+				cardGame.enemy={};
+				cardGame.nodes={};
+				cardGame.isLastLevel=false;
+			}
 		}
 	}
 	if (["useCard"].includes(data.requestMethod)) {
@@ -170,12 +188,14 @@ let cardGame = {
 		"history_event":{
 			mainResource:"history_coins",
 			imgPath:{
-				enemyDeck: "/shared/seasonalevents/history/event/history_card_enemy_deck_icon.png",
-				playerHealth: "/shared/seasonalevents/history/event/history_card_player_health_icon.png",
-				spentAbility: "/shared/seasonalevents/history/event/history_card_enemy_reward_card_icon.png",
+				enemyDeck: "/shared/seasonalevents/history/event/history_battle_fight_button_icon.png",
+				playerHealth: "/shared/seasonalevents/history/event/history_health_currency.png",
+				spentAbility: "/shared/seasonalevents/history/event/history_battle_icon_special.png",
 				spentHealth: "/shared/seasonalevents/history/event/history_life_option_2.png",
-				spentRedraw: "/shared/seasonalevents/history/event/history_card_enemy_reward_card_icon.png",
-				cards:"/shared/seasonalevents/history/event/",
+				spentRedraw: "/shared/seasonalevents/history/event/history_card_player_deck_icon.png",
+				cards:"/shared/seasonalevents/history/event/history_icon_",
+				ability: /*enter custom img path for ability icon here*/"",
+				attack: /*enter custom img path for attack icon here*/"",
 			}
 		}
 	},
@@ -225,7 +245,7 @@ let cardGame = {
 				}
 			}
 		} else {
-			minHealth += (cardGame.card.cardFactionId == cardGame.enemy.card.abilities[1]?.factionId ? cardGame.enemy.card.abilities[1].amount:0);
+			minHealth += (cardGame.card.cardFactionId == cardGame.weakAgainst[cardGame.enemy.card.cardFactionId] ? cardGame.enemy.card.abilities[1].amount:0);
 			maxHealth = minHealth + cardGame.enemy.card.abilities[0].maxValue;
 			minHealth += cardGame.enemy.card.abilities[0].minValue;
 		}
@@ -241,9 +261,9 @@ let cardGame = {
 				} 
 			}	
 			else {
-				enemyHealth = cardGame.enemy.currentHealth + (cardGame.card.abilities[1]?.factionId == cardGame.enemy.card.cardFactionId ? cardGame.card.abilities[1].amount:0) + cardGame.card.abilities[0].maxValue;;
+				enemyHealth = cardGame.enemy.currentHealth + (cardGame.enemy.card.cardFactionId == cardGame.weakAgainst[cardGame.card.cardFactionId] ? cardGame.card.abilities[1].amount:0) + cardGame.card.abilities[0].maxValue;;
 			}
-			if (enemyHealth <=0) warning = undefined;
+			//if (enemyHealth <=0) warning = undefined;
 		}
 
 		cardGame.showWarning(warning)
@@ -293,8 +313,8 @@ let cardGame = {
 	
 				}
 			} else if (card?.cardType?.value == "attack"){
-				dmg[c]["min"] -= card.abilities[0].maxValue + (cardGame.cards[c].abilities[1]?.factionId == cardGame.enemy.card.cardFactionId ? cardGame.cards[c].abilities[1].amount : 0);
-				dmg[c]["max"] -= card.abilities[0].minValue + (cardGame.cards[c].abilities[1]?.factionId == cardGame.enemy.card.cardFactionId ? cardGame.cards[c].abilities[1].amount : 0);
+				dmg[c]["min"] -= card.abilities[0].maxValue + (cardGame.enemy.card.cardFactionId == cardGame.weakAgainst[cardGame.cards[c].cardFactionId] ? cardGame.cards[c].abilities[1].amount : 0);
+				dmg[c]["max"] -= card.abilities[0].minValue + (cardGame.enemy.card.cardFactionId == cardGame.weakAgainst[cardGame.cards[c].cardFactionId] ? cardGame.cards[c].abilities[1].amount : 0);
 			}
 		}
 		
@@ -308,11 +328,12 @@ let cardGame = {
 		h +=`<td style="text-align:center"><img style="height:40px" src=${srcLinks.get(imgs.playerHealth,true)}>${cardGame.health}</td>`;
 		h +=`<td style="text-align:center"><img style="height:40px" src=${srcLinks.get("/shared/icons/reward_icons/reward_icon_"+data.mainResource+".png",true)}>${Object.values(cardGame.currencySpent).reduce((a, b) => a + b, 0)}</td>`;
 		h +=`<td colspan="3" style="text-align:center">`;
-		for (let r in cardGame.rewardcount) {
-			if (!cardGame.rewardcount[r]) continue;
-			if (!r.contains(cardGame.context.replace("_event",""))) continue;
-			h += `<img style="height:40px" src="${srcLinks.get(`/shared/icons/reward_icons/reward_icon_${r}.png`,true)}">` + cardGame.rewardcount[r] + `&nbsp;&nbsp;`
-		}
+		if (cardGame.context == "halloween_event"){
+			for (let r in cardGame.rewardcount) {
+				if (!cardGame.rewardcount[r]) continue;
+				h += `<img style="height:40px" src="${srcLinks.get(`/shared/icons/reward_icons/reward_icon_${r}.png`,true)}">` + cardGame.rewardcount[r] + `&nbsp;&nbsp;`
+			}
+		}  
 		let currency=`<img style="height:25px" src=${srcLinks.get("/shared/icons/reward_icons/reward_icon_"+data.mainResource+".png",true)}>`
 		h +=`</tr><tr><td style="text-align:right"><img style="height:40px" src=${srcLinks.get(imgs.spentAbility,true)}></td style="text-align:left"><td>${cardGame.currencySpent.ability+currency}</td>`;
 		h +=`<td style="text-align:right"><img style="height:40px" src=${srcLinks.get(imgs.spentHealth,true)}></td><td style="text-align:left">${cardGame.currencySpent.heal+currency}</td>`;
@@ -320,17 +341,30 @@ let cardGame = {
 		h +=`</tr></table><table class="foe-table">`;
 		h +=`<tr><th></th><th>${i18n('Boxes.cardGame.Attack')}</th><th>${i18n('Boxes.cardGame.Bonus')}</th></tr>`;
 		for (let c of cards) {
-			h+=`<tr ${cardGame.cardOptions.includes(c) ? 'class="highlightOptions"': (c == cardGame.card.id && !cardGame.card.nohighlight) ? 'class="highlight"':""}>`;
-			h+=`<td title="${cardGame.cards[c].description}">`;
-			h+=`<div class="cardtop ${cardGame.cards[c].cardFactionId == cardGame.enemy.card.abilities[1]?.factionId ? 'highlightWeak':""}" style="background-image:url('${srcLinks.get(imgs.cards+cardGame.cards[c].assetName+".png",true)}')"></div></td>`;
-			let highlight=`class="cardattack" style="background-image:url('${srcLinks.get(imgs.cards+cardGame.cards[c].assetName+".png",true)}')"`
-			h+=`<td><div ${highlight}>${cardGame.cards[c]?.cardType?.value=="ability" ? dmg[c]["min"] + (dmg[c]["max"] > dmg[c]["min"] ? ((dmg[c].min+""+dmg[c].max).length>2?"-":" - ") + dmg[c]["max"]:"") : (-cardGame.cards[c].abilities[0].maxValue) + " - " + (-cardGame.cards[c].abilities[0].minValue)}</div></td>`;
-			highlight="";
-			if (cardGame.cards[c]?.cardType?.value!="ability" && cardGame.cards[c].abilities?.[1]?.factionId) {
-				highlight = `class="cardbonus ${(cardGame.cards[c].abilities[1]?.factionId == cardGame.enemy.card.cardFactionId) ? 'highlightStrong':""}" style="background-image:url('${srcLinks.get(imgs.cards+cardGame.cards[c].assetName+".png",true)}')"`
+			if (cardGame.context=="halloween_event") {
+				h+=`<tr ${cardGame.cardOptions.includes(c) ? 'class="highlightOptions"': (c == cardGame.card.id && !cardGame.card.nohighlight) ? 'class="highlight"':""}>`;
+				h+=`<td title="${cardGame.cards[c].description}">`;
+				h+=`<div class="cardtop ${cardGame.cards[c].cardFactionId == cardGame.enemy.card.abilities[1]?.factionId ? 'highlightWeak':""}" style="background-image:url('${srcLinks.get(imgs.cards+cardGame.cards[c].assetName+".png",true)}')"></div></td>`;
+				let highlight=`class="cardattack" style="background-image:url('${srcLinks.get(imgs.cards+cardGame.cards[c].assetName+".png",true)}')"`
+				h+=`<td><div ${highlight}>${cardGame.cards[c]?.cardType?.value=="ability" ? dmg[c]["min"] + (dmg[c]["max"] > dmg[c]["min"] ? ((dmg[c].min+""+dmg[c].max).length>2?"-":" - ") + dmg[c]["max"]:"") : (-cardGame.cards[c].abilities[0].maxValue) + " - " + (-cardGame.cards[c].abilities[0].minValue)}</div></td>`;
+				highlight="";
+				if (cardGame.cards[c]?.cardType?.value!="ability" && cardGame.cards[c].abilities?.[1]?.factionId) {
+					highlight = `class="cardbonus ${(cardGame.cards[c].abilities[1]?.factionId == cardGame.enemy.card.cardFactionId) ? 'highlightStrong':""}" style="background-image:url('${srcLinks.get(imgs.cards+cardGame.cards[c].assetName+".png",true)}')"`
+				}
+				h+=`<td><div ${highlight}>${highlight!="" ? -cardGame.cards[c].abilities[1].amount:""}</div></td>`;
+				h+=`</tr>`;
+			} else {
+				h+=`<tr ${cardGame.cardOptions.includes(c) ? 'class="highlightOptions"': (c == cardGame.card.id && !cardGame.card.nohighlight) ? 'class="highlight"':""}>`;
+				h+=`<td title="${cardGame.cards[c].description}">`;
+				h+=`<div class="${cardGame.cards[c].cardFactionId == cardGame.weakAgainst[cardGame.enemy.card.cardFactionId] ? 'highlightWeak':""}">`
+				h+=`<span style="background-image:url('${cardGame.cards[c].cardType.value=="abiltity" ? imgs.ability : srcLinks.get(imgs.cards+cardGame.cards[c].cardFactionId+".png",true)}')"></span>${cardGame.cards[c].name}</div></td>`;
+				h+=`<td><span style="background-image:url('${imgs.attack}')"></span>`
+				h+= `${cardGame.cards[c]?.cardType?.value=="ability" ? dmg[c]["min"] + (dmg[c]["max"] > dmg[c]["min"] ? ((dmg[c].min+""+dmg[c].max).length>2?"-":" - ") + dmg[c]["max"]:"") : (-cardGame.cards[c].abilities[0].maxValue) + " - " + (-cardGame.cards[c].abilities[0].minValue)}</div></td>`;
+				highlight = `class="${(cardGame.enemy.card.cardFactionId == cardGame.weakAgainst[cardGame.cards[c].cardFactionId]) ? 'highlightStrong':""}"`
+				h+=`<td><div ${highlight}><span style=background-image:url('${cardGame.cards[c]?.cardType?.value=="ability" ? "" : (cardGame.weakAgainst[cardGame.cards[c].cardFactionId] == "" ? "" : srcLinks.get(imgs.cards+cardGame.weakAgainst[cardGame.cards[c].cardFactionId]+".png",true))}')"></span>${cardGame.cards[c].abilities?.[1]?.amount ? -cardGame.cards[c].abilities[1].amount:""}</div></td>`;
+				h+=`</tr>`;
+
 			}
-			h+=`<td><div ${highlight}>${highlight!="" ? -cardGame.cards[c].abilities[1].amount:""}</div></td>`;
-			h+=`</tr>`;
 		}
 		h+='</table>';
 

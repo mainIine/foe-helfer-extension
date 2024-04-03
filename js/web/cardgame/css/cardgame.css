@@ -111,8 +111,13 @@
     background: var(--background-btn-active);
     border-radius: 30px;
     border: 3px solid var(--hud-border-error);
-    top: calc(50vh - 39px);
-    left: calc(50vw - 58px);
+    top: calc(50vh + 188px);
+    left: calc(50vw - 62px);
+    &.halloween_event {
+        top: calc(50vh - 39px);
+        left: calc(50vw - 58px);
+    }
+
 }
 
 #cardGameFightBlocker:hover {
