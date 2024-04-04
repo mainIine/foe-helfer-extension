@@ -37,19 +37,18 @@
 }
 
 #cardGameDialog .name {
-    text-transform: uppercase;
     color: var(--text-darker);
     text-shadow: none;
     font-weight: bold;
     display: flex;
     margin: -2px -5px;
-    text-shadow: 0 0 3px #fff8;
+    text-shadow: 0 0 3px #0008, 0 1px 1px #0009;
 
-    &.commander { background: linear-gradient(to right, #ea9f39 10%, #ea9f3900 70%); }
-    &.manipulator { background: linear-gradient(to right, #655fbc 10%, #655fbc00 70%); }
-    &.genius { background: linear-gradient(to right, #5faee3 10%, #5faee300 70%); }
-    &.champion { background: linear-gradient(to right, #b72b2b 10%, #b72b2b00 70%); }
-    &.none { background: linear-gradient(to right, #11b4b5 10%, #11b4b500 70%); 
+    &.commander { color: #ffbb60; }
+    &.manipulator { color: #8680e7; }
+    &.genius { color: #73c7ff; }
+    &.champion { color: #cf3939; }
+    &.none { color: #22bcbd; 
         & .faction { background-image: url(../../x_img/hero_ability.png) }
     }
 
@@ -58,41 +57,41 @@
         height: 23px;
         display: inline-block;
         background-size: contain;
+        flex-shrink: 0;
     }
 
-    &.highlightWeak { 
-        color: #300; 
-
-        & .cardName::before {
-            display: inline-block;
-            background-color: var(--hud-border-error);
-            content: '!';
-            border-radius: 50px;
-            color: var(--text-light);
-            text-align: center;
-            text-shadow: none;
-            width: 20px;
-            height: 20px;
-            font-weight: bold;
-            margin-right: 2px;
-            margin-top: 2px;
-        }
+    &.highlightWeak .cardName::before {
+        display: inline-block;
+        background-color: var(--hud-border-error);
+        content: '!';
+        border-radius: 50px;
+        color: var(--text-light);
+        text-align: center;
+        text-shadow: none;
+        width: 20px;
+        height: 20px;
+        font-weight: bold;
+        margin-right: 2px;
+        margin-top: 2px;
     }
 }
 
 #cardGameDialog .highlight, #cardGameDialog .highlightOptions {
     color: var(--text-light);
     box-shadow: inset 0 0 20px #0009;
+    text-transform: uppercase;
+    font-style: italic;
 
     & .name {
         font-weight: bolder;
         filter: saturate(1.2) brightness(1.2);
+        text-shadow: 0 0 3px #000a, 0 1px 1px #000a;
 
-        &.commander { background: linear-gradient(to right, #ea9f39 45%, #ea9f3900 80%); }
-        &.manipulator { background: linear-gradient(to right, #655fbc 45%, #655fbc00 80%); }
-        &.genius { background: linear-gradient(to right, #5faee3 45%, #5faee300 80%); }
-        &.champion { background: linear-gradient(to right, #b72b2b 45%, #b72b2b00 80%); }
-        &.none { background: linear-gradient(to right, #11b4b5 45%, #11b4b500 80%); }
+        &.commander { background: linear-gradient(to right, #ea9f3944 45%, #ea9f3900 80%); }
+        &.manipulator { background: linear-gradient(to right, #655fbc44 45%, #655fbc00 80%); }
+        &.genius { background: linear-gradient(to right, #5faee344 45%, #5faee300 80%); }
+        &.champion { background: linear-gradient(to right, #b72b2b44 45%, #b72b2b00 80%); }
+        &.none { background: linear-gradient(to right, #11b4b544 45%, #11b4b500 80%); }
     }
 }
 
