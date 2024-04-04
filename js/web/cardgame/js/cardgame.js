@@ -346,7 +346,7 @@ let cardGame = {
 		h +=`<td style="text-align:right"><img style="height:40px" src=${srcLinks.get(imgs.spentHealth,true)}></td><td style="text-align:left">${cardGame.currencySpent.heal+currency}</td>`;
 		h +=`<td style="text-align:right"><img style="height:30px" src="${srcLinks.get(imgs.spentRedraw,true)}"><img style="margin-left: -20px;height: 19px;margin-top: 10px;" src="${srcLinks.get("/shared/gui/pvp_arena/hud/pvp_arena_icon_refresh.png",true)}"></td><td style="text-align:left">${cardGame.currencySpent.redraw+currency}</td>`;
 		h +=`</tr></table><table class="foe-table">`;
-		h +=`<tr><th></th><th>${i18n('Boxes.cardGame.Attack')}</th><th>${i18n('Boxes.cardGame.Bonus')}</th></tr>`;
+		h +=`<tr><th></th><th class="attack">${i18n('Boxes.cardGame.Attack')}</th><th class="bonus">${i18n('Boxes.cardGame.Bonus')}</th></tr>`;
 		for (let c of cards) {
 			h+=`<tr ${(cardGame.cardOptions.includes(c) && cardGame.cardOptions.length > 1) ? 'class="highlightOptions"': (cardGame.cardOptions.includes(c) && cardGame.cardOptions.length == 1) ? 'class="highlight"':""}>`;
 			h+=`<td title="${cardGame.cards[c].description}">`;
@@ -360,12 +360,13 @@ let cardGame = {
 				}
 				h+=`<td><div ${highlight}>${highlight!="" ? -cardGame.cards[c].abilities[1].amount:""}</div></td>`;
 			} else {
-				h+=`<div class="${cardGame.cards[c].cardFactionId == cardGame.weakAgainst[cardGame.enemy.card.cardFactionId] ? 'highlightWeak':""}">`
-				h+=`<span style="background-image:url('${cardGame.cards[c]?.cardType?.value=="ability" ? imgs.ability : srcLinks.get(imgs.cards+cardGame.cards[c].cardFactionId+".png",true)}')"></span>${cardGame.cards[c].name}</div></td>`;
-				h+=`<td><span style="background-image:url('${imgs.attack}')"></span>`
-				h+= `${cardGame.cards[c]?.cardType?.value=="ability" ? dmg[c]["min"] + (dmg[c]["max"] > dmg[c]["min"] ? ((dmg[c].min+""+dmg[c].max).length>2?"-":" - ") + dmg[c]["max"]:"") : (-cardGame.cards[c].abilities[0].maxValue) + " - " + (-cardGame.cards[c].abilities[0].minValue)}</div></td>`;
-				highlight = `class="${(cardGame.enemy.card.cardFactionId == cardGame.weakAgainst[cardGame.cards[c].cardFactionId]) ? 'highlightStrong':""}"`
-				h+=`<td><div ${highlight}><span style=background-image:url('${cardGame.cards[c]?.cardType?.value=="ability" ? "" : (cardGame.weakAgainst[cardGame.cards[c].cardFactionId] == "" ? "" : srcLinks.get(imgs.cards+cardGame.weakAgainst[cardGame.cards[c].cardFactionId]+".png",true))}')"></span>${cardGame.cards[c].abilities?.[1]?.amount ? -cardGame.cards[c].abilities[1].amount:""}</div></td>`;
+				h+=`<div class="name ${cardGame.cards[c].cardFactionId} ${cardGame.cards[c].cardFactionId == cardGame.weakAgainst[cardGame.enemy.card.cardFactionId] ? 'highlightWeak':""}">`
+				let img = (cardGame.cards[c]?.cardType?.value == "ability" ? "" : `style="background-image:url('${srcLinks.get(imgs.cards+cardGame.cards[c].cardFactionId+".png",true)}')"`)
+				h+=`<span class="faction" ${img}></span><span class="cardName">${cardGame.cards[c].name}</span></div></td>`;
+				h+=`<td class="attack"><span style="background-image:url('${imgs.attack}')"></span>`
+				h+= `${cardGame.cards[c]?.cardType?.value=="ability" ? dmg[c]["min"] + (dmg[c]["max"] > dmg[c]["min"] ? ((dmg[c].min+""+dmg[c].max).length>2?"-":" - ") + dmg[c]["max"]:"") : (-cardGame.cards[c].abilities[0].maxValue) + " - " + (-cardGame.cards[c].abilities[0].minValue)}</td>`;
+				highlight = `${(cardGame.enemy.card.cardFactionId == cardGame.weakAgainst[cardGame.cards[c].cardFactionId]) ? 'highlightStrong':""}`
+				h+=`<td class="bonus ${highlight}"><div><span style=background-image:url('${cardGame.cards[c]?.cardType?.value=="ability" ? "" : (cardGame.weakAgainst[cardGame.cards[c].cardFactionId] == "" ? "" : srcLinks.get(imgs.cards+cardGame.weakAgainst[cardGame.cards[c].cardFactionId]+".png",true))}')"></span>${cardGame.cards[c].abilities?.[1]?.amount ? -cardGame.cards[c].abilities[1].amount:""}</div></td>`;
 			}
 			h+=`</tr>`;
 
