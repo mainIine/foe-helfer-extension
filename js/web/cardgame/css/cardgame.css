@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2024 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -36,6 +36,8 @@
     text-align: center;
 }
 
+#cardGameDialog table.foe-table tbody tr:nth-child(odd) { background-color: transparent; }
+
 #cardGameDialog .name {
     color: var(--text-darker);
     text-shadow: none;
@@ -44,11 +46,11 @@
     margin: -2px -5px;
     text-shadow: 0 0 3px #0008, 0 1px 1px #0009;
 
-    &.commander { color: #ffbb60; }
+    &.commander { color: #f5bc72; }
     &.manipulator { color: #8680e7; }
-    &.genius { color: #73c7ff; }
-    &.champion { color: #cf3939; }
-    &.none { color: #22bcbd; 
+    &.genius { color: #89c7f0; }
+    &.champion { color: #d64d4d; }
+    &.none { color: #3ec9c9; 
         & .faction { background-image: url(../../x_img/hero_ability.png) }
     }
 
@@ -68,8 +70,8 @@
         color: var(--text-light);
         text-align: center;
         text-shadow: none;
-        width: 20px;
-        height: 20px;
+        width: 19px;
+        height: 19px;
         font-weight: bold;
         margin-right: 2px;
         margin-top: 2px;
@@ -78,7 +80,7 @@
 
 #cardGameDialog .highlight, #cardGameDialog .highlightOptions {
     color: var(--text-light);
-    box-shadow: inset 0 0 20px #0009;
+    box-shadow: inset 0 0 20px #000c;
     text-transform: uppercase;
     font-style: italic;
 
@@ -87,11 +89,11 @@
         filter: saturate(1.2) brightness(1.2);
         text-shadow: 0 0 3px #000a, 0 1px 1px #000a;
 
-        &.commander { background: linear-gradient(to right, #ea9f3944 45%, #ea9f3900 80%); }
-        &.manipulator { background: linear-gradient(to right, #655fbc44 45%, #655fbc00 80%); }
-        &.genius { background: linear-gradient(to right, #5faee344 45%, #5faee300 80%); }
-        &.champion { background: linear-gradient(to right, #b72b2b44 45%, #b72b2b00 80%); }
-        &.none { background: linear-gradient(to right, #11b4b544 45%, #11b4b500 80%); }
+        &.commander { background: linear-gradient(to right, #ea9f3944 10%, #ea9f3900 40%); }
+        &.manipulator { background: linear-gradient(to right, #655fbc44 10%, #655fbc00 40%); }
+        &.genius { background: linear-gradient(to right, #5faee344 10%, #5faee300 40%); }
+        &.champion { background: linear-gradient(to right, #b72b2b44 10%, #b72b2b00 40%); }
+        &.none { background: linear-gradient(to right, #11b4b544 10%, #11b4b500 40%); }
     }
 }
 
