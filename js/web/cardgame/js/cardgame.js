@@ -331,10 +331,10 @@ let cardGame = {
 		let imgs=data.imgPath;
 
 		let h=`</tr></table><table class="foe-table">`
-		h +=`<tr><td style="text-align:center"><img style="height:40px" src=${srcLinks.get(imgs.enemyDeck,true)}>${cardGame.level}/${Object.keys(cardGame.nodes).length}</td>`;
-		h +=`<td style="text-align:center"><img style="height:40px" src=${srcLinks.get(imgs.playerHealth,true)}>${cardGame.health}</td>`;
-		h +=`<td style="text-align:center"><img style="height:40px" src=${srcLinks.get("/shared/icons/reward_icons/reward_icon_"+data.mainResource+".png",true)}>${Object.values(cardGame.currencySpent).reduce((a, b) => a + b, 0)}</td>`;
-		h +=`<td colspan="3" style="text-align:center">`;
+		h +=`<tr><td colspan="2" style="text-align:center"><img style="height:40px" src=${srcLinks.get(imgs.enemyDeck,true)}>${cardGame.level}/${Object.keys(cardGame.nodes).length}</td>`;
+		h +=`<td colspan="2" style="text-align:center"><img style="height:40px" src=${srcLinks.get(imgs.playerHealth,true)}>${cardGame.health}</td>`;
+		h +=`<td colspan="2" style="text-align:center"><img style="height:40px" src=${srcLinks.get("/shared/icons/reward_icons/reward_icon_"+data.mainResource+".png",true)}>${Object.values(cardGame.currencySpent).reduce((a, b) => a + b, 0)}</td>`;
+		//h +=`<td colspan="3" style="text-align:center">`;
 		if (cardGame.context == "halloween_event"){
 			for (let r in cardGame.rewardcount) {
 				if (!cardGame.rewardcount[r]) continue;
