@@ -383,7 +383,10 @@ GetFights = () =>{
 
 	// QI is entered
 	FoEproxy.addHandler('GuildRaidsService', 'getState', (data, postData) => {
+		if (!data.responseData?.guildRaidsType) return;
+		if (data.responseData?.__class__ != "GuildRaidsRunningState") return;
 		if (!data.responseData?.endsAt) return;
+
 		MainParser.UpdateActiveMap('guild_raids');
 
 	});
