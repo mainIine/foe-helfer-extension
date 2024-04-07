@@ -31,22 +31,28 @@ FoEproxy.addHandler('ResourceShopService', 'buyOffer', (data)=> {
 
 // GEX started
 FoEproxy.addFoeHelperHandler('ActiveMapUpdated', () => {
-	if (['gex','gg','guild_raids'].includes(ActiveMap)) {
-		StrategyPoints.ShowFPBar(true);
-	} else {
-		StrategyPoints.HideFPBar();
-	}
-	$('#fp-bar').removeClass(possibleMaps).addClass(ActiveMap);
+	StrategyPoints.ShowFPBar();
+});
 
+FoEproxy.addFoeHelperHandler('ResourcesUpdated', () => {
+	StrategyPoints.ShowFPBar();
+});
+
+FoEproxy.addFoeHelperHandler('InventoryUpdated', () => {
+	//Fp packages often trigger more than one Inventory Update - only update the bar once
+	if (StrategyPoints.delay) clearTimeout(StrategyPoints.delay);
+	StrategyPoints.delay = setTimeout(()=>{
+		StrategyPoints.RefreshBar();
+		StrategyPoints.delay = null;
+	},100);
 });
 
 /**
- * @type {{readonly AvailableFP: (*|number), ShowFPBar: (function(): (undefined)), HideFPBar: StrategyPoints.HideFPBar, OldStrategyPoints: number, checkForDB: (function(*): Promise<void>), pickupProductionId: null, pickupProductionBuilding: null, HandleWindowResize: StrategyPoints.HandleWindowResize, insertIntoDB: (function(*=): Promise<void>), RefreshBuyableForgePoints: StrategyPoints.RefreshBuyableForgePoints, RefreshBar: (function(*=): (undefined)), InventoryFP: number, db: null}}
+ * @type {{readonly AvailableFP: (*|number), ShowFPBar: (function(): (undefined)), OldStrategyPoints: number, checkForDB: (function(*): Promise<void>), pickupProductionId: null, pickupProductionBuilding: null, HandleWindowResize: StrategyPoints.HandleWindowResize, insertIntoDB: (function(*=): Promise<void>), RefreshBuyableForgePoints: StrategyPoints.RefreshBuyableForgePoints, RefreshBar: (function(*=): (undefined)), InventoryFP: number, db: null}}
  */
 let StrategyPoints = {
-	OldStrategyPoints: 0,
 	InventoryFP: 0,
-
+	delay: null,
 	pickupProductionId: null,
 	pickupProductionBuilding: null,
 
@@ -121,28 +127,26 @@ let StrategyPoints = {
 	},
 
 
-	ShowFPBar: (force=false)=>{
+	ShowFPBar: ()=>{
 
-		if(ActiveMap === 'main' && !force){
-			return ;
-		}
-
+		$('#fp-bar').removeClass(possibleMaps).addClass(ActiveMap);
 		if( $('.fp-bar-main').length === 0){
-			$('#fp-bar').addClass(`game-cursor ${ActiveMap}`).append(`<div class="fp-bar-main"><div class="number"></div><div class="bars"></div></div>`);
-
-		} else {
-			$('.fp-bar-main').show();
+			$('#fp-bar').addClass(`game-cursor`).append(`<div class="fp-bar-main"><div class="number"></div><div class="bars"></div></div>`);
 		}
-
 		// necessary to wait for gift in gg + diplomatic gift
 		setTimeout(()=>{
 			const availableFPs = (ResourceStock['strategy_points'] !== undefined ? ResourceStock['strategy_points'] : 0);
+			if(availableFPs > 999){
+				$('#fp-bar').addClass("over1k");
+			} else {
+				$('#fp-bar').removeClass("over1k");
+			}
+			const $main = $('.fp-bar-main')
+			$main.find('.number').text(availableFPs);
+			$main.removeClass('full');
+			$main.attr('title',HTML.i18nTooltip(i18n('StrategyPoints.FPInBar')));
 
-			$('.fp-bar-main').find('.number').text(availableFPs);
-			$('.fp-bar-main').removeClass('full');
-			$('.fp-bar-main').attr('title',HTML.i18nTooltip(i18n('StrategyPoints.FPInBar')));
-
-			const $bar = $('.fp-bar-main').find('.bars');
+			const $bar = $main.find('.bars');
 
 			// make empty
 			$bar.find('span').remove();
@@ -150,14 +154,11 @@ let StrategyPoints = {
 				$bar.append(`<span />`);
 				if (i === 9) { $('.fp-bar-main').addClass('full'); break; }
 			}
+			
 		}, 800);
 
 	},
 
-
-	HideFPBar: ()=> {
-		$('.fp-bar-main').hide();
-	},
 
 
 	/**
@@ -198,7 +199,7 @@ let StrategyPoints = {
 	 * @param value
 	 * @constructor
 	 */
-	RefreshBar: ( value ) => {
+	RefreshBar: () => {
 		// noch nicht im DOM?
 		if( $('#fp-bar').length < 1 ){
 			let div = $('<div />').attr({
@@ -209,16 +210,14 @@ let StrategyPoints = {
 			$('body').append(div);
 			StrategyPoints.HandleWindowResize();
 		}
-
-		if ( isNaN( value ) ){ return; }
-
-		StrategyPoints.InventoryFP = value;
+		let old = StrategyPoints.InventoryFP;
+		StrategyPoints.InventoryFP = Object.values(MainParser.Inventory).filter(x=>x.item.__class__ == "ForgePointPackagePayload").reduce((total,x) => total + (x.inStock || 0) * (x.item?.resource_package?.gain || 0),0)
 
 		let delimiter = Number(1000).toLocaleString().substring(1,2);
 
 		// the animation function checks if start_value != end_value
 		$('#fp-bar div.fp-storage div').easy_number_animate({
-			start_value: StrategyPoints.OldStrategyPoints,
+			start_value: old,
 			end_value: StrategyPoints.InventoryFP,
 			delimiter: delimiter,
 			duration: 750,
@@ -230,7 +229,7 @@ let StrategyPoints = {
 			}
 		});
 
-		StrategyPoints.OldStrategyPoints = StrategyPoints.InventoryFP;
+		StrategyPoints.ShowFPBar();
 	},
 
 

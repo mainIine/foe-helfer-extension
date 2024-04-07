@@ -15,6 +15,11 @@
  * A {@link HTML.Box box} for listing owned (in inventory) and missing buildings, and according kits and assets.
  * @namespace
  */
+
+FoEproxy.addFoeHelperHandler('InventoryUpdated', () => {
+	Kits.UpdateBoxIfVisible();
+});
+
 let Kits = {
 
 	/**
