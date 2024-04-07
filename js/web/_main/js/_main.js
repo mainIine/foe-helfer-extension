@@ -797,7 +797,7 @@ GetFights = () =>{
 
 		// Goods Update after accepted Trade
 		if (requestMethod === "newEvent" && responseData.type === "trade_accepted") {
-			ResourceStock[reponseData.need.good_id] += responseData.need.value;
+			ResourceStock[responseData.need.good_id] += responseData.need.value;
 			FoEproxy.triggerFoeHelperHandler("ResourcesUpdated");
 		}
 		// Inventory Update, e.g. when receiving FP packages from GB leveling	
