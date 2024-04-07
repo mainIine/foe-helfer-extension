@@ -5,18 +5,50 @@
 **Update**
 - Stadtübersicht:
 	- Neu: Stadtübersicht auch bei Siedlungen, Kolonien und Quantum Inkursionen
-- St Patrick:
-	- 6.3Q Benachrichtigung hinzugefügt
+- Card Game:
+	- an Änderungen des Geschichts-Events 2024 angepasst
+- Quests:
+	- Wenn eine Rivalen-Quest erfüllt ist, wird ein Ton abgespielt (kann in den Einstellungen deaktiviert werden)
+- FP Sammlung:
+	- QI und Event-Pass als mögliche Quellen hinzugefügt
+- Statistik:
+	- QI-Belohnungen werden erfasst
+	- Güter- und Einheiten-Belohnungen werden nun gruppiert angezeigt, statt für jeden Typ einzeln
+- Siedlungen:
+	- Bilder für Polynesien hinzugefügt
+- GvG:
+	- Modul entfernt
+- FP Leiste:
+	- wird in QI nun auf der linken Seite angzeigt
+	- wird nun auch in der Stadt angezeigt, wenn mehr als 999 FP in der Leiste sind
+- GG Gebäudeempfehlung:
+	- einige Empfehlungen wurden entfernt
+	- Empfehlungen werden nun hervorgehoben um darzustellen, warum diese empfohlen werden.
+- Musik:
+	- neue Titel hinzugefügt (Polynesien und Geschichtsevent)
+	- Kategorie GvG entfernt
+- Kits:
+	- neue Gebäude bis Geschichtsevent 2024 hinzugefügt
+- Idle-game:
+	- es wurde ein separater Timer für 6.3Q (25% Rabatt) hinzugefügt
+- Kampf-Empfehlungen:
+	- Desing angepasst
 
 **BugFix**
-- St Patrick:
+- Idle Game:
 	- Es konnte passieren, dass die Strategie nicht bearbeitet werden konnte
-- Polynesien Siedlung:
-	- Fehlende Bilder hinzugefügt
-- FP Leiste:
-	- Wurde in der QI nach links verschoben
 - Titan LB:
 	- Manche boosts waren vertauscht
+- Kits:
+	- ein seltenen Fällen wurden falsche Bild-Daten genutzt
+- Produktions-Übersicht:
+	- für das Rathaus wurde bei Berechnung des Platzbedarf angenommen, dass dies eine Straße braucht
+- Kampf-Empfehlungen:
+	- Einheiten Bilder für QI korrigiert
+- Merger-Game:
+	- Schlüssel-Werte korrigiert
+- Wiederkehrende Quests (Diamanten-abhaken):
+	- es war möglich, dass 1 oder 2 Quests aus einem früheren Zeitalter in der Liste stehen blieben - dies sollte nun nichtmehr passieren, sobald der Spieler das nächste Zeitalter erreicht
 
 ---
 
