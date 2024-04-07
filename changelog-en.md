@@ -5,7 +5,7 @@
 
 **Update**
 - City Overview:
-	- New: City Overview for Settlements, Space Colonies and Quantum Incursions
+	- new: City Overview for Settlements, Space Colonies and Quantum Incursions
 - Card Game:
 	- adapted to History 2024 changes
 - Quests:
@@ -16,11 +16,11 @@
 	- added rewards from QI
 	- goods rewards and units rewards will now be grouped instead of beeing listed individually for every type
 - Settlements:
-	- Added images for polynesia
+	- added images for polynesia
 - GvG:
 	removed the module	
 - FP Bar:
-	- Moved it to the left in QI
+	- moved it to the left in QI
 	- now also shows in the main city when more than 999 FP in bar
 - GBG Building suggestion:
 	- removed some suggestions
@@ -37,13 +37,13 @@
 
 **BugFix**
 - St Patrick:
-	- It was possible that the strategy could not be edited
+	- it was possible that the strategy could not be edited
 - Titan GBs:
-	- Some boosts were wrong
+	- some boosts were wrong
 - Kits:
 	- wrong image data was used in some cases
 - Production:
-	- Townhall space requirement assumed the needs for a road
+	- townhall space requirement assumed the needs for a road
 - Battle Advisor:
 	- corrected army images for QI
 - Merger-Game:
