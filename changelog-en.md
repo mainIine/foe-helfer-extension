@@ -6,18 +6,50 @@
 **Update**
 - City Overview:
 	- New: City Overview for Settlements, Space Colonies and Quantum Incursions
-- St Patrick:
-	- Added 6.3Q alert
+- Card Game:
+	- adapted to History 2024 changes
+- Quests:
+	- when a rival quest is done, a sound will alert the player of that (can be deactivated in the settings)
+- FP Collector:
+	- added sources "QI and "Event pass"
+- Statistics:
+	- added rewards from QI
+	- goods rewards and units rewards will now be grouped instead of beeing listed individually for every type
+- Settlements:
+	- Added images for polynesia
+- GvG:
+	removed the module	
+- FP Bar:
+	- Moved it to the left in QI
+	- now also shows in the main city when more than 999 FP in bar
+- GBG Building suggestion:
+	- removed some suggestions
+	- added some highlighting
+- Music:
+	- added new tracks (polynesia and history)
+	- removed category GvG
+- Kits:
+	- added items up to history event 2024
+- idle-game:
+	- now has a separate timer for 6.3Q (25% Discount)
+- Battle Advisor:
+	- updated styling
 
 **BugFix**
 - St Patrick:
 	- It was possible that the strategy could not be edited
-- Polynesia Settlement:
-	- Added missing images
-- FP Bar:
-	- Moved it to the left in QI
 - Titan GBs:
 	- Some boosts were wrong
+- Kits:
+	- wrong image data was used in some cases
+- Production:
+	- Townhall space requirement assumed the needs for a road
+- Battle Advisor:
+	- corrected army images for QI
+- Merger-Game:
+	- corrected key values
+- Recurring Quests (diamonds tracker):
+	- it was possible for 1 or 2 quests of the previous era to show up in the next era - this should no longer happen as soon as the player enters the next era
 
 ---
 
