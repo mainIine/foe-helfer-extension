@@ -62,7 +62,7 @@
 	border-top: 1px solid var(--border-table-top);
 }
 
-#kits #kits-triplestate-button {
+#kits #kits-triplestate-button, #kits #kits-showFavourites {
 	min-width: 150px;
 }
 
