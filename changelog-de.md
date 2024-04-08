@@ -19,7 +19,7 @@
 - GvG:
 	- Modul entfernt
 - FP Leiste:
-	- Wird in QI nun auf der linken Seite angzeigt
+	- Wird in QI nun auf der linken Seite angezeigt
 	- Wird nun auch in der Stadt angezeigt, wenn mehr als 999 FP in der Leiste sind
 - GG Gebäudeempfehlung:
 	- Einige Empfehlungen wurden entfernt
