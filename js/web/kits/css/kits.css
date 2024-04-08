@@ -239,3 +239,10 @@
 #kits .chain-set-ico {
 	margin: -7px 0 -3px;
 }
+
+#kits .FavStar {
+	width: 1em;
+	height: 1em;
+	display: inline-block;
+    background-size: 1em;
+}
