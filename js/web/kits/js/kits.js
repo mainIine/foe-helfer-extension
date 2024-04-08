@@ -37,6 +37,7 @@ let Kits = {
 	ShowMissing: 0,
 	Fragments:{},
 	fragmentURL:null,
+	favourites:JSON.parse(localStorage.getItem("Kits.favourites")||"[]"),
 	specialCases:{
 		"selection_kit_watchtower_1_gbg" : "selection_kit_watchtower1_gbg",
 		"selection_kit_ind_palace_set" :"selection_kit_indian_palace",
@@ -365,8 +366,11 @@ let Kits = {
 				GroupName = kits[set].groupname;
 			
 			let ChainSetIco = '';
-
+			let favourite = "";
+			let favClass = "";
 			if (Name) { // Name is set
+				favourite = `<span class="FavStar" data-name="${Name}" onclick="Kits.toggleFavourite(event)" style="background-image:url('${Kits.favourites.includes(Name)? srcLinks.get("/shared/gui/guild_meta_layer/guild_meta_layer_recommend_star_fill.png",true) : srcLinks.get("/shared/gui/guild_meta_layer/guild_meta_layer_recommend_star_empty.png",true)}')"></span>`
+				favClass = Kits.favourites.includes(Name) ? "":" notFavourite";
 				let sName = Name.toLowerCase().replace(/_set/g, '');
 
 				if (Name === 'Kits') {
@@ -439,9 +443,10 @@ let Kits = {
 					upgrades+= '</span>'
 				}
 			}
+			
 			if (!GroupName) {
-				t += '<div class="item-row '+ (!show ? "all-missing" : "") +'">'
-				t += `<h2 class="head">` + ChainSetIco +' '+ KitText + upgrades + '</h2>'
+				t += '<div class="item-row'+ (!show ? " all-missing" : "") + favClass + '">'
+				t += `<h2 class="head">` + favourite + ChainSetIco +' '+ KitText + upgrades + '</h2>'
 			}
 			if(buildings.length) {
 				buildings.forEach((building) => {
@@ -570,13 +575,25 @@ let Kits = {
 		}
 		return Ret;
     },
+	toggleFavourite:(e) => {
+		let name = e.target.dataset.name
+		let index = Kits.favourites.indexOf(name);
 
+		if (index === -1) {
+			Kits.favourites.push(name);
+		} else {
+			Kits.favourites.splice(index, 1);
+		}
+		e.target.style = `background-image:url('${Kits.favourites.includes(name)? srcLinks.get("/shared/gui/guild_meta_layer/guild_meta_layer_recommend_star_fill.png",true) : srcLinks.get("/shared/gui/guild_meta_layer/guild_meta_layer_recommend_star_empty.png",true)}')`
+		localStorage.setItem("Kits.favourites",JSON.stringify(Kits.favourites));
+		e.target.parentElement.parentElement.classList.toggle("notFavourite");
+	},
 
 	/**
 	 * Toggles displaying of owned, missing and all set items.
 	 */
 	ToggleView: ()=> {
-		Kits.ShowMissing = (Kits.ShowMissing +1) % 3;
+		Kits.ShowMissing = (Kits.ShowMissing + 1) % 4;
 		
 		Kits._filter()
 		
@@ -607,6 +624,9 @@ let Kits = {
 		}
 		if (Kits.ShowMissing == 1) {
 			$('.all-missing').hide();
+		}
+		if (Kits.ShowMissing == 3) {
+			$('.notFavourite').hide();
 		}
 	},
 
