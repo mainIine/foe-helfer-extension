@@ -19,7 +19,7 @@
 - GvG:
 	- Modul entfernt
 - FP Leiste:
-	- Wird in QI nun auf der linken Seite angzeigt
+	- Wird in QI nun auf der linken Seite angezeigt
 	- Wird nun auch in der Stadt angezeigt, wenn mehr als 999 FP in der Leiste sind
 - GG Gebäudeempfehlung:
 	- Einige Empfehlungen wurden entfernt
@@ -29,6 +29,7 @@
 	- Kategorie GvG entfernt
 - Kits:
 	- Neue Gebäude bis Geschichtsevent 2024 hinzugefügt
+	- Favoriten-Option hinzugefügt
 - Idle-Game:
 	- Es wurde ein separater Timer für 6.3Q (25% Rabatt) hinzugefügt
 - Kampf-Empfehlungen:

@@ -30,6 +30,7 @@
 	- removed category GvG
 - Kits:
 	- added items up to history event 2024
+	- added a way to make items favourites and a highlight Option for that
 - idle-game:
 	- now has a separate timer for 6.3Q (25% Discount)
 - Battle Advisor:
