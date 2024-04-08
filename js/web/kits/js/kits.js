@@ -118,6 +118,13 @@ let Kits = {
 					onclick: 'Kits.ToggleView()'
 				}).text(i18n('Boxes.Kits.TripleStateButton'+Kits.ShowMissing))
 			);
+			$('#kitsBodyBottombar').append(
+				$('<span />').attr({
+					id: 'kits-showFavourites',
+					class: 'btn-default btn-tight',
+					onclick: 'Kits.ToggleFavouritesBtn()'
+				}).text(i18n('Boxes.Kits.ShowFavourites'))
+			);
 		}
 		else {
 			HTML.CloseOpenBox('kits');
@@ -593,11 +600,21 @@ let Kits = {
 	 * Toggles displaying of owned, missing and all set items.
 	 */
 	ToggleView: ()=> {
-		Kits.ShowMissing = (Kits.ShowMissing + 1) % 4;
+		Kits.ShowMissing = (Kits.ShowMissing + 1) % 3;
 		
 		Kits._filter()
 		
 		$('#kits-triplestate-button').text(i18n('Boxes.Kits.TripleStateButton'+Kits.ShowMissing))
+	},
+
+	ToggleFavouritesBtn:() => {
+		let e = $('#kits-showFavourites')[0]
+		e.classList.toggle("btn-active");
+		if (e.classList.contains("btn-active")) {
+			$('.notFavourite').hide();
+		} else {
+			$('.notFavourite').show();
+		}
 	},
 
 	toggleGroup: ()=> {
@@ -624,9 +641,6 @@ let Kits = {
 		}
 		if (Kits.ShowMissing == 1) {
 			$('.all-missing').hide();
-		}
-		if (Kits.ShowMissing == 3) {
-			$('.notFavourite').hide();
 		}
 	},
 
