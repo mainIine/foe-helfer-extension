@@ -15,6 +15,11 @@
  * A {@link HTML.Box box} for listing owned (in inventory) and missing buildings, and according kits and assets.
  * @namespace
  */
+
+FoEproxy.addFoeHelperHandler('InventoryUpdated', () => {
+	Kits.UpdateBoxIfVisible();
+});
+
 let Kits = {
 
 	/**
@@ -32,6 +37,7 @@ let Kits = {
 	ShowMissing: 0,
 	Fragments:{},
 	fragmentURL:null,
+	favourites:JSON.parse(localStorage.getItem("Kits.favourites")||"[]"),
 	specialCases:{
 		"selection_kit_watchtower_1_gbg" : "selection_kit_watchtower1_gbg",
 		"selection_kit_ind_palace_set" :"selection_kit_indian_palace",
@@ -110,7 +116,14 @@ let Kits = {
 					id: 'kits-triplestate-button',
 					class: 'btn-default btn-tight',
 					onclick: 'Kits.ToggleView()'
-				}).text(Kits.ShowMissing === 0 ? i18n('Boxes.Kits.TripleStateButton0') : Kits.ShowMissing === 1 ? i18n('Boxes.Kits.TripleStateButton1') : i18n('Boxes.Kits.TripleStateButton2'))
+				}).text(i18n('Boxes.Kits.TripleStateButton'+Kits.ShowMissing))
+			);
+			$('#kitsBodyBottombar').append(
+				$('<span />').attr({
+					id: 'kits-showFavourites',
+					class: 'btn-default btn-tight',
+					onclick: 'Kits.ToggleFavouritesBtn()'
+				}).text(i18n('Boxes.Kits.ShowFavourites'))
 			);
 		}
 		else {
@@ -127,6 +140,7 @@ let Kits = {
 	UpdateBoxIfVisible: ()=> {
 		if ($('#kits').length !== 0) {
 			Kits.ReadSets();
+			Kits._filter();
 		}
 	},
 
@@ -223,7 +237,7 @@ let Kits = {
 				b => Object.entries(b).filter(bu => bu[0] === 'first' && bu[1] === id).length > 0).length > 0
 			);
 			if (kits_for_upg.length === 0) {
-				if (devMode=="true") console.log(`\t\t{\n\t\t\t"name": ${MainParser.CityEntities[id]?.name},\n\t\t\t"buildings": [\n\t\t\t\t{"first": ${id}}\n\t\t\t]\n\t\t}`) //`First building ${id} (${MainParser.CityEntities[id]?.name}) of upgrade(s) ${upg.upgradeList.join(',')} not found in Kits' json.`, upg);
+				if (devMode=="true") console.log(`\t\t{\n\t\t\t"name": "${MainParser.CityEntities[id]?.name}",\n\t\t\t"buildings": [\n\t\t\t\t{"first": "${id}"}\n\t\t\t]\n\t\t},\n`) //`First building ${id} (${MainParser.CityEntities[id]?.name}) of upgrade(s) ${upg.upgradeList.join(',')} not found in Kits' json.`, upg);
 				if (newCat) {
 					newCat = false;
 					kits.push({"groupname": "new_not_categorized"})	
@@ -359,8 +373,11 @@ let Kits = {
 				GroupName = kits[set].groupname;
 			
 			let ChainSetIco = '';
-
+			let favourite = "";
+			let favClass = "";
 			if (Name) { // Name is set
+				favourite = `<span class="FavStar" data-name="${Name}" onclick="Kits.toggleFavourite(event)" style="background-image:url('${Kits.favourites.includes(Name)? srcLinks.get("/shared/gui/guild_meta_layer/guild_meta_layer_recommend_star_fill.png",true) : srcLinks.get("/shared/gui/guild_meta_layer/guild_meta_layer_recommend_star_empty.png",true)}')"></span>`
+				favClass = Kits.favourites.includes(Name) ? "":" notFavourite";
 				let sName = Name.toLowerCase().replace(/_set/g, '');
 
 				if (Name === 'Kits') {
@@ -433,9 +450,10 @@ let Kits = {
 					upgrades+= '</span>'
 				}
 			}
+			
 			if (!GroupName) {
-				t += '<div class="item-row '+ (!show ? "all-missing" : "") +'">'
-				t += `<h2 class="head">` + ChainSetIco +' '+ KitText + upgrades + '</h2>'
+				t += '<div class="item-row'+ (!show ? " all-missing" : "") + favClass + '">'
+				t += `<h2 class="head">` + favourite + ChainSetIco +' '+ KitText + upgrades + '</h2>'
 			}
 			if(buildings.length) {
 				buildings.forEach((building) => {
@@ -540,6 +558,9 @@ let Kits = {
 			let id = x.item.upgradeItemId||x.item.selectionKitId||x.item.cityEntityId||x.itemAssetName;
 			let asset= x.itemAssetName;
 			let name = x.name;
+			if (x.item.__class__=="BuildingItemPayload") {
+				asset=MainParser.CityEntities[id].asset_id;
+			}
 			if (x.item.__class__=="FragmentItemPayload") {
 				id =  "fragment#"+ ((x.item.reward.assembledReward.type == "building") ? 
 										(x.item.reward.assembledReward.subType) : 
@@ -561,17 +582,34 @@ let Kits = {
 		}
 		return Ret;
     },
+	toggleFavourite:(e) => {
+		let name = e.target.dataset.name
+		let index = Kits.favourites.indexOf(name);
 
+		if (index === -1) {
+			Kits.favourites.push(name);
+		} else {
+			Kits.favourites.splice(index, 1);
+		}
+		e.target.style = `background-image:url('${Kits.favourites.includes(name)? srcLinks.get("/shared/gui/guild_meta_layer/guild_meta_layer_recommend_star_fill.png",true) : srcLinks.get("/shared/gui/guild_meta_layer/guild_meta_layer_recommend_star_empty.png",true)}')`
+		localStorage.setItem("Kits.favourites",JSON.stringify(Kits.favourites));
+		e.target.parentElement.parentElement.classList.toggle("notFavourite");
+	},
 
 	/**
 	 * Toggles displaying of owned, missing and all set items.
 	 */
 	ToggleView: ()=> {
-		Kits.ShowMissing === 0 ? Kits.ShowMissing = 1 : Kits.ShowMissing === 1 ? Kits.ShowMissing = 2 : Kits.ShowMissing = 0;
+		Kits.ShowMissing = (Kits.ShowMissing + 1) % 3;
 		
 		Kits._filter()
 		
-		$('#kits-triplestate-button').text(Kits.ShowMissing === 0 ? i18n('Boxes.Kits.TripleStateButton0') : Kits.ShowMissing === 1 ? i18n('Boxes.Kits.TripleStateButton1') : i18n('Boxes.Kits.TripleStateButton2'))
+		$('#kits-triplestate-button').text(i18n('Boxes.Kits.TripleStateButton'+Kits.ShowMissing))
+	},
+
+	ToggleFavouritesBtn:() => {
+		$('#kits-showFavourites')[0].classList.toggle("btn-active");
+		Kits._filter()
 	},
 
 	toggleGroup: ()=> {
@@ -584,6 +622,7 @@ let Kits = {
 		Kits._filterSets();
 		Kits._filterItems();
 		Kits._filterMissing();
+		if ($('#kits-showFavourites')[0].classList.contains("btn-active")) $('.notFavourite').hide(); 
 	},
 
 	/**

@@ -88,11 +88,11 @@ let Productions = {
 	 */
 	init: () => {
 
-		moment.locale(i18n('Local'));
+		//moment.locale(18n('Local'));
 
 		Productions.CombinedCityMapData = MainParser.CityMapData;
-		if (MainParser.CityMapEraOutpostData) {
-			Productions.CombinedCityMapData = Object.assign({}, Productions.CombinedCityMapData, MainParser.CityMapEraOutpostData);
+		if (CityMap.EraOutpostData) {
+			Productions.CombinedCityMapData = Object.assign({}, Productions.CombinedCityMapData, CityMap.EraOutpostData);
 		}
 
 		// leere Arrays erzeugen
@@ -1181,13 +1181,13 @@ let Productions = {
 					table.push('<span class="btn-default change-daily game-cursor" data-value="' + (pt - (-1)) + '">' + i18n('Boxes.Productions.ModeCurrent') + '</span>');
 				}
 
-				if (CurrentEraID === 18 && !MainParser.CityMapEraOutpostData) {
+				if (CurrentEraID === 18 && !CityMap.EraOutpostData) {
 					table.push('<tr><th colspan="6">' + i18n('Boxes.Productions.NoMarsDataWarning') + '</th></tr>');
 				}
-				if (CurrentEraID === 19 && !MainParser.CityMapEraOutpostData) {
+				if (CurrentEraID === 19 && !CityMap.EraOutpostData) {
 					table.push('<tr><th colspan="6">' + i18n('Boxes.Productions.NoAsteroidDataWarning') + '</th></tr>');
 				}
-				if (CurrentEraID === 20 && !MainParser.CityMapEraOutpostData) {
+				if (CurrentEraID === 20 && !CityMap.EraOutpostData) {
 					table.push('<tr><th colspan="6">' + i18n('Boxes.Productions.NoVenusDataWarning') + '</th></tr>');
 				}
 

@@ -21,11 +21,6 @@ FoEproxy.addHandler('CampaignService', 'start', (data, postData) => {
 	BonusService.InitBonus();
 });
 
-// GvG Map is opend
-FoEproxy.addHandler('ClanBattleService', 'getContinent', (data, postData) => {
-	BonusService.InitBonus();
-});
-
 // neihbor is visit
 FoEproxy.addHandler('OtherPlayerService', 'visitPlayer', (data, postData) => {
 	let OtherPlayer = data.responseData.other_player;
@@ -40,7 +35,7 @@ FoEproxy.addHandler('OtherPlayerService', 'visitPlayer', (data, postData) => {
 FoEproxy.addHandler('BonusService', 'getLimitedBonuses', (data, postData) => {
 	BonusService.Bonuses = data['responseData'];
 
-	FoEproxy.pushFoeHelperMessage('BonusUpdated');
+	FoEproxy.triggerFoeHelperHandler('BonusUpdated');
 
 	if ($('#bonus-hud').length > 0) {
 		BonusService.CalcBonusData();
@@ -50,6 +45,8 @@ FoEproxy.addHandler('BonusService', 'getLimitedBonuses', (data, postData) => {
 FoEproxy.addFoeHelperHandler('QuestsUpdated', data => {
 	if ($('#bonus-hud').length > 0) {
 		BonusService.CalcBonusData();
+	} else if (Settings.GetSetting('RivalSound') && Settings.GetSetting('EnableSound')) {
+		BonusService.checkRivalComplete();
 	}
 });
 
@@ -260,7 +257,7 @@ let BonusService = {
 					si.addClass('bonus-blink');
 
 					if (bt[i] === 'donequests') {
-						if (Settings.GetSetting('EnableSound')) Calculator.SoundFile.play();
+						if (Settings.GetSetting('EnableSound')) helper.sounds.message.play();
 					}
 
 					setTimeout(()=>{
@@ -284,5 +281,15 @@ let BonusService = {
 			if (Quest['state'] === 'collectReward') Ret += 1;
 		}
 		return Ret;
-    }
+    },
+
+	checkRivalComplete: () => {
+		if (!MainParser.Quests) return; 
+		for (let Quest of MainParser.Quests) {
+			if (Quest?.questGiver?.id.indexOf("rival") >=0 && Quest.state == 'collectReward') {
+				helper.sounds.message.play();
+				break;
+			}
+		}
+	}
 }

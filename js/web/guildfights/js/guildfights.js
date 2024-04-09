@@ -61,7 +61,6 @@ FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postDa
 	}
 
 	GuildFights.MapData = data['responseData'];
-	ActiveMap = 'gg';
 
 	$('#gildFight-Btn').removeClass('hud-btn-red');
 	$('#selectorCalc-Btn-closed').remove();
@@ -138,7 +137,7 @@ let GuildFights = {
 
 	init: () => {
 		// moment.js global set
-		moment.locale(MainParser.Language);
+		//moment.locale(MainParser.Language);
 
 		GuildFights.GetAlerts();
 
@@ -538,7 +537,7 @@ let GuildFights = {
 		if ($('#GildPlayers').length === 0)
 		{
 
-			moment.locale(MainParser.Language);
+			//moment.locale(MainParser.Language);
 
 			HTML.Box({
 				id: 'GildPlayers',

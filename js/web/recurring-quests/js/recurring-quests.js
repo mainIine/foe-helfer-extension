@@ -45,7 +45,7 @@ FoEproxy.addHandler('QuestService', 'getUpdates', (data, postData) => {
             } else {
                 Recurring.data.filter2.push(q);
             }
-        } else if (CurrentEraID - Recurring.data.Questlist[q].era > 0) {
+        } else if (CurrentEraID - Recurring.data.Questlist[q].era > 1) {
             delete Recurring.data.Questlist[q];
         }
     }

@@ -62,12 +62,6 @@ FoEproxy.addHandler('CampaignService', 'start', (data, postData) => {
     
 });
 
-FoEproxy.addHandler('ClanBattleService', 'all', (data, postData) => {
-       
-    betterMusic.setScene("gvg");
-    
-});
-
 FoEproxy.addHandler('CityMapService', 'getCityMap', (data, postData) => {
     
     if (!data.responseData?.gridId) return;
@@ -190,7 +184,8 @@ let betterMusic = {
                 "foe_music_jupiter_moon_city": true,
                 "foe_music_tavern": true,
                 "foe_music_stpatricks_v2": true,
-                "foe_music_anniversary": true
+                "foe_music_anniversary": true,
+                "foe_music_history":true
             },
             "settlement": {
                 "foe_music_expedition": true,
@@ -200,7 +195,8 @@ let betterMusic = {
                 "foe_music_japanese": true,
                 "foe_music_egyptians": true,
                 "foe_music_aztecs": true,
-                "foe_music_mughals": true
+                "foe_music_mughals": true,
+                "foe_music_polynesia":true
             },
             "colony": {
                 "foe_music_mars": true,
@@ -213,18 +209,15 @@ let betterMusic = {
                 "foe_music_wildlife": true,
                 "foe_music_archeology": true,
                 "foe_music_aztecs": true,
-                "foe_music_mughals": true
+                "foe_music_mughals": true,
+                "foe_music_polynesia":true
             },
             "gbg": {
                 "foe_music_expedition": true,
                 "foe_music_battlegrounds": true,
                 "foe_music_pvp_arena": true,
-                "FoE_BattleTheme_Vs1": true
-            },
-            "gvg": {
-                "foe_music_battlegrounds": true,
-                "foe_music_pvp_arena": true,
-                "FoE_BattleTheme_Vs1": true
+                "FoE_BattleTheme_Vs1": true,
+                "foe_music_polynesia":true
             },
             "battle": {
                 "foe_music_battlegrounds": true,
@@ -256,7 +249,6 @@ let betterMusic = {
         "colony":{Name: i18n('Boxes.BetterMusic.Colony'), TitleList: []},
         "ge":{Name: i18n('Boxes.BetterMusic.GE'), TitleList: []},
         "gbg":{Name: i18n('Boxes.BetterMusic.GBG'), TitleList: []},
-        "gvg":{Name: i18n('Boxes.BetterMusic.GvG'), TitleList: []},
         "battle":{Name: i18n('Boxes.BetterMusic.Battle'), TitleList: []},
         "map":{Name: i18n('Boxes.BetterMusic.Map'), TitleList: []},
     },
@@ -286,6 +278,7 @@ let betterMusic = {
         "foe_music_hero": {Volume:.6, Name:"Fellowship Event 22", Event:"hero_event"},
         "cup23_background_music": {Volume:.6, Name:"Soccer Event", Event:"soccer_event"},
         "foe_music_fellowship": {Volume:.6, Name:"Fellowship Event 23", Event:"fellowship_event"},
+        "foe_music_history": {Volume:1, Name:"History Event", Event:"history_event"},
         "foe_music_summer": {Volume:.7, Name:"Summer Event", Event:"summer_event"},
         "foe_music_fall": {Volume:.7, Name:"Fall Event", Event:"fall_event"},
         "foe_music_halloween": {Volume:.6, Name:"Halloween Event", Event:"halloween_event"},
@@ -294,7 +287,8 @@ let betterMusic = {
         "foe_music_japanese": {Volume:1, Name:"Japanese Settlement", Settlement:"japanese"},
         "foe_music_egyptians": {Volume:1, Name:"Egypt Settlement", Settlement:"egyptians"},
         "foe_music_aztecs": {Volume:1, Name:"Aztec Settlement", Settlement:"aztecs"},
-        "foe_music_mughals": {Volume:1, Name:"Mughal Settlement", Settlement:"mughals"}
+        "foe_music_mughals": {Volume:1, Name:"Mughal Settlement", Settlement:"mughals"},
+        "foe_music_polynesia": {Volume:1, Name:"Polynesia Settlement", Settlement:"polynesia"},
     },
 
     
@@ -500,8 +494,12 @@ let betterMusic = {
     loadSettings: ()=> {
 
 		tempSettings = JSON.parse(localStorage.getItem('betterMusicSettings') || '{}');
+        if (tempSettings.Scenes) {
+            for (let i of Object.keys(tempSettings.Scenes)) {
+                if (!betterMusic.Settings.Scenes[i]) delete tempSettings.Scenes[i];
+            }
+        }
         betterMusic.Settings = betterMusic.update(betterMusic.Settings,tempSettings);
-
     },
     
     saveSettings: ()=> {

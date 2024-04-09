@@ -488,6 +488,10 @@ p {
 	background-image: url('../images/menu/citymap.png');
 }
 
+[id$=qiMap-Btn] span {
+	background-image: url('../images/menu/qimap.png');
+}
+
 [id$=chat-Btn] span {
 	background-image: url('../images/menu/chat.png');
 }
@@ -809,6 +813,16 @@ FP-Bar */
 
 #fp-bar .gex .small-screen {
 	top: 80px;
+}
+
+#fp-bar.guild_raids {
+	left: 237px;
+}
+#fp-bar.main .fp-bar-main{
+	display:none;
+}
+#fp-bar.main.over1k .fp-bar-main{
+	display: flex;
 }
 
 #fp-bar .fp-bar-main {

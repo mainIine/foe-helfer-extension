@@ -32,7 +32,12 @@ FoEproxy.addHandler('MergerGameService', 'all', (data, postData) => {
 	mergerGame.event = data.responseData.context.replace("_event","")
 	mergerGame.cells = data.responseData.cells;
 	mergerGame.levelValues = data.responseData?.lookup?.pieceConfig[0]?.grandPrizeProgress || {1:1,2:2,3:3,4:4};
-	mergerGame.keyValues = {3:data.responseData?.lookup?.keyConversion[0]?.amount || 1,4:data.responseData?.lookup?.keyConversion[1]?.amount|| 3};
+	if (data.responseData?.lookup?.keyConversion) {
+		mergerGame.keyValues = {};
+		for (x of data.responseData?.lookup?.keyConversion) {
+			mergerGame.keyValues[x.level] = x.amount;
+		}
+	}
 	mergerGame.spawnCost = data.responseData?.cells[1]?.spawnCost?.resources[mergerGame.eventData[mergerGame.event].currency] || 10;
 	mergerGame.state["maxProgress"]= 0;
 	mergerGame.state["energyUsed"]= 0;
@@ -161,7 +166,7 @@ let mergerGame = {
 	},
 	resetCost: 0,
 	levelValues: {1:1,2:1,3:1,4:2},
-	keyValues: {3:1, 4:3},
+	keyValues: {1:1, 2:1, 3:1, 4:3},
 	settings: JSON.parse(localStorage.getItem("MergerGameSettings") || '{"keyValue":1.3,"targetProgress":3750,"availableCurrency":11000,"hideOverlay":true,"useAverage":0}'),
 	eventData:{
 		anniversary: {
@@ -395,7 +400,7 @@ let mergerGame = {
 				for (let lev = 4; lev>0; lev--) {
 					val = table[i][lev][o];
 					if (val==0) val = "-";
-					html += `<td style="${val != "-" ? 'font-weight:bold;' : ''}${(o=="full" && lev==3 && table[i][lev][o]>1)?' color:red"': ''}">${val}</td>`
+					html += `<td style="${val != "-" ? 'font-weight:bold;' : ''}${(o=="full" && lev==3 && table[i][lev][o]>1)?' color:red"': ((o=="full" && lev<3 && table[i][lev][o]>1)?' color:orange"': '')}">${val}</td>`
 				}
 			}
 			html += `</tr></table>`

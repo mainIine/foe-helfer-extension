@@ -23,13 +23,12 @@ FoEproxy.addHandler('ConversationService', 'getCategory', (data, postData) => {
 });
 
 /**
- * @type {{MaxEntries: number, GbgProvShortNameFl: boolean, DebugWebSocket: boolean, OriginalDocumentTitle: string, TitleBlinkEvent: null, ResetBox: Infoboard.ResetBox, SavedFilter: string[], SoundFile: HTMLAudioElement, SavedTextFilter: string, HandleMessage: Infoboard.HandleMessage, Box: ((function(): (boolean|undefined))|*), History: *[], StartTitleBlinking: Infoboard.StartTitleBlinking, Init: Infoboard.Init, InjectionLoaded: boolean, StopTitleBlinking: Infoboard.StopTitleBlinking, FilterInput: Infoboard.FilterInput, Show: Infoboard.Show, PostMessage: Infoboard.PostMessage, PlayInfoSound: boolean}}
+ * @type {{MaxEntries: number, GbgProvShortNameFl: boolean, DebugWebSocket: boolean, OriginalDocumentTitle: string, TitleBlinkEvent: null, ResetBox: Infoboard.ResetBox, SavedFilter: string[], SavedTextFilter: string, HandleMessage: Infoboard.HandleMessage, Box: ((function(): (boolean|undefined))|*), History: *[], StartTitleBlinking: Infoboard.StartTitleBlinking, Init: Infoboard.Init, InjectionLoaded: boolean, StopTitleBlinking: Infoboard.StopTitleBlinking, FilterInput: Infoboard.FilterInput, Show: Infoboard.Show, PostMessage: Infoboard.PostMessage, PlayInfoSound: boolean}}
  */
 let Infoboard = {
 
     InjectionLoaded: false,
     PlayInfoSound: true,
-    SoundFile: new Audio(extUrl + 'vendor/sounds/ping.mp3'),
     SavedFilter: ["auction", "gex", "gbg", "trade", "level", "msg", "text"],
     SavedTextFilter: "",
     DebugWebSocket: false,
@@ -281,7 +280,7 @@ let Infoboard = {
 
             if (Infoboard.PlayInfoSound && status && filterStatus)
             {
-                if (Settings.GetSetting('EnableSound')) Infoboard.SoundFile.play();
+                if (Settings.GetSetting('EnableSound')) helper.sounds.ping.play();
             }
         }
     },
