@@ -273,11 +273,11 @@
 	background-color: var(--background-color-residential);
 	border-color: var(--border-color-residential);
 }
-#grid-outer span.tower {
+#grid-outer span.tower, #grid-outer span.impediment {
 	background-color: var(--background-color-tower);
 	border-color: var(--border-color-tower);
 }
-#grid-outer span.decoration, #grid-outer span.impediment {
+#grid-outer span.decoration {
 	background-color: var(--background-color-decoration);
 	border-color: var(--border-color-decoration);
 }

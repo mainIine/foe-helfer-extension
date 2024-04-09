@@ -28,7 +28,7 @@ const FoEproxy = (function () {
 	/** @type {Record<string, undefined|Record<string, undefined|((data: FoE_NETWORK_TYPE, postData: any) => void)[]>>} */
 	const proxyMap = {};
 	const proxyRequestsMap = {};
-
+	
 	/** @type {Record<string, undefined|((data: any, requestData: any) => void)[]>} */
 	const proxyMetaMap = {};
 
@@ -211,8 +211,7 @@ const FoEproxy = (function () {
 			wsRawHandler = wsRawHandler.filter(c => c !== callback);
 		},
 
-		pushFoeHelperMessage: function (method, data = null) {
-			_proxyWsAction('FoeHelperService', method, data);
+		triggerFoeHelperHandler: function (method, data = null) {
 			_proxyWsAction('FoeHelperService', method, data);
 		},
 	

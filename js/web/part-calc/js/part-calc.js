@@ -29,7 +29,7 @@ FoEproxy.addWsHandler('OtherPlayerService', 'newEvent', data => {
 		let NewLevel = data.responseData['level'];
 		Parts.CalcBody(NewLevel);
 		if (Parts.PlayInfoSound) {
-			if (Settings.GetSetting('EnableSound')) Calculator.SoundFile.play();
+			if (Settings.GetSetting('EnableSound')) helper.sounds.message.play();
 		}
 	}
 });

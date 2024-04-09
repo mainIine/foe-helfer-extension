@@ -4,11 +4,52 @@
 
 **Update**
 - Stadtübersicht:
-	- Neu: Stadtübersicht auch bei Siedlungen, Kolonien und Quantum Inkursionen
+	- Neu: Stadtübersicht auch bei Siedlungen, Kolonien und Quanten Invasionen
+- Card Game:
+	- An Änderungen des Geschichts-Events 2024 angepasst
+- Quests:
+	- Wenn eine Rivalen-Quest erfüllt ist, wird ein Ton abgespielt. Kann in den Einstellungen deaktiviert werden
+- FP Sammlung:
+	- QI und Event-Pass als mögliche Quellen hinzugefügt
+- Statistik:
+	- QI-Belohnungen werden erfasst
+	- Güter- und Einheiten-Belohnungen werden nun gruppiert angezeigt, statt für jeden Typ einzeln
+- Siedlungen:
+	- Bilder für Polynesien hinzugefügt
+- GvG:
+	- Modul entfernt
+- FP Leiste:
+	- Wird in QI nun auf der linken Seite angezeigt
+	- Wird nun auch in der Stadt angezeigt, wenn mehr als 999 FP in der Leiste sind
+- GG Gebäudeempfehlung:
+	- Einige Empfehlungen wurden entfernt
+	- Empfehlungen werden nun hervorgehoben um darzustellen, warum diese empfohlen werden.
+- Musik:
+	- Neue Titel hinzugefügt (Polynesien und Geschichtsevent)
+	- Kategorie GvG entfernt
+- Kits:
+	- Neue Gebäude bis Geschichtsevent 2024 hinzugefügt
+	- Favoriten-Option hinzugefügt
+- Idle-Game:
+	- Es wurde ein separater Timer für 6.3Q (25% Rabatt) hinzugefügt
+- Kampf-Empfehlungen:
+	- Design angepasst
 
 **BugFix**
-- St Patrick:
-	- es konnte passieren, dass die Strategie nicht bearbeitet werden konnte
+- Idle Game:
+	- Es konnte passieren, dass die Strategie nicht bearbeitet werden konnte
+- Titan LB:
+	- Manche Boosts waren vertauscht
+- Kits:
+	- In seltenen Fällen wurden falsche Bild-Daten genutzt
+- Produktions-Übersicht:
+	- Für das Rathaus wurde bei Berechnung des Platzbedarf angenommen, dass dies eine Straße braucht
+- Kampf-Empfehlungen:
+	- Einheiten Bilder für QI korrigiert
+- Merger-Game:
+	- Schlüssel-Werte korrigiert
+- Wiederkehrende Quests (Diamanten-Abhaken):
+	- Es war möglich, dass 1 oder 2 Quests aus einem früheren Zeitalter in der Liste stehen blieben - dies sollte nun nicht mehr passieren, sobald man das nächste Zeitalter erreicht
 
 ---
 
@@ -26,7 +67,7 @@
 	- beim ersten Durchlauf einer Siedlung wird nun die korrekte 4x Chance angezeigt
 
 - Statistiken:
-	- verbesserte Datumsauswahl (thanks Linnum!)
+	- verbesserte Datumsauswahl (thanks Linnun!)
 
 ---
 
