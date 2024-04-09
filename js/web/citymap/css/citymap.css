@@ -55,6 +55,10 @@
 	padding: 40px 20px;
 }
 
+.outpost #map-container {
+	right: 0;
+}
+
 /* Nachbar */
 #map-container.with-sidebar {
 	right: 0;
@@ -70,6 +74,10 @@
 	overflow: hidden;
 	overflow-y: auto;
 	box-sizing: border-box;
+}
+
+.outpost #sidebar, .outpost #BuildingsFilter, .outpost #city-map-menu .btn-group {
+	display: none;
 }
 
 #sidebar p {
@@ -265,7 +273,7 @@
 	background-color: var(--background-color-residential);
 	border-color: var(--border-color-residential);
 }
-#grid-outer span.tower {
+#grid-outer span.tower, #grid-outer span.impediment {
 	background-color: var(--background-color-tower);
 	border-color: var(--border-color-tower);
 }
@@ -294,7 +302,7 @@
 	background-color: var(--background-color-street);
 	border-color: var(--border-color-street);
 }
-#grid-outer span.goods {
+#grid-outer span.goods, #grid-outer span.cultural_goods_production {
 	background-color: var(--background-color-goods);
 	border-color: var(--border-color-goods);
 }
@@ -306,7 +314,7 @@
 	background-color: var(--background-color-main_building);
 	border-color: var(--border-color-main_building);
 }
-#grid-outer span.production {
+#grid-outer span.production, #grid-outer span.diplomacy {
 	background-color: var(--background-color-production);
 	border-color: var(--border-color-production);
 }

@@ -150,7 +150,15 @@
 	background-image: url('../../x_img/castle_system_daily_reward_chest.png') !important;
 }
 
+.foehelper-accordion-head.guild_raids-head span.image {
+	background-image: url('../../x_img/guild_raids.png') !important;
+}
+
 /* Events */
+
+.foehelper-accordion-head.event_pass-head span.image {
+	background-image: url('../../x_img/event_pass.png') !important;
+}
 
 .foehelper-accordion-head.leagueReward-head span.image {
 	background-image: url('../../x_img/leagueReward.png') !important;
@@ -168,7 +176,7 @@
 	background-image: url('../../x_img/archeology_event.png') !important;
 }
 /*St Patrick's Day Event*/
-.foehelper-accordion-head.st_patricks_event-head span.image {
+.foehelper-accordion-head.st_patricks_event-head span.image, .foehelper-accordion-head.st_patricks_event_task_reward-head span.image {
 	background-image: url('../../x_img/st_patricks_event.png') !important;
 }
 /*May-Day Event*/

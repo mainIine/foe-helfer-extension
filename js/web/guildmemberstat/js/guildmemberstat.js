@@ -234,7 +234,7 @@ let GuildMemberStat = {
 			return;
 		}
 
-		moment.locale(i18n('Local'));
+		//moment.locale(18n('Local'));
 
 		GuildMemberStat.InitSettings();
 

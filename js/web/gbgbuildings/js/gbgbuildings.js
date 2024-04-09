@@ -57,14 +57,14 @@ let GBGBuildings = {
 	block:{
 		"free":0,
 		"watchtower":8,
-		"guild_command_post_improvised":20,
 		"barracks_improvised":20,
-		"guild_command_post_forward":40,
-		"barracks":40,
-		"guild_command_post_fortified":60,
-		"barracks_reinforced":60,
+		"guild_command_post_improvised":20,
 		"guild_fieldcamp_small": 26,
+		"barracks":40,
+		"guild_command_post_forward":40,
 		"guild_fieldcamp": 52,
+		"barracks_reinforced":60,
+		"guild_command_post_fortified":60,
 		"guild_fieldcamp_fortified": 80
 	},
 	Timeout:{"B":null,"T":null},
@@ -108,6 +108,7 @@ let GBGBuildings = {
 					let i = leftStanding.findIndex(x => GBGBuildings.block[x]>=GBGBuildings.block[b] && b != "free");
 					if (i>=0) s["ignore"] = true;
 				}
+				if (leftStanding.length <= keep.filter(x => x=="free").length) s["ignore"] = true;
 			}
 			if (!s.ignore) {
 				for (let n of needed) {
@@ -149,7 +150,7 @@ let GBGBuildings = {
 			if (sets[i].ignore) continue;
 			for (let j = i+1; j<sets.length; j++) {
 				if (sets[j].ignore) continue;
-				if (sets[j].avgCosts>sets[i].avgCosts && sets[j].absCosts>=sets[i].absCosts) {
+				if (sets[j][sortby]>sets[i][sortby] && sets[j].absCosts>=sets[i].absCosts) {
 					sets[j].ignore = true;
 					continue;
 				}
@@ -181,9 +182,21 @@ let GBGBuildings = {
 
 		let h='<table class="foe-table">';
 		h += `<tr><th>${i18n('Boxes.GBGBuildings.toBuild')}</th><th>${i18n('Boxes.GBGBuildings.totalChance')}</th><th colspan="2">${i18n('Boxes.GBGBuildings.Costs')}</th></tr>`
+		let lastBlock = 1000;
+		let lastCost = 10000;
 		for (let s of sets) {
 			if (s.ignore) continue;
-			h+=`<tr ><td >`
+			let highlight=null;
+			if (s.absCosts < lastCost) {
+				lastCost = s.absCosts;
+				highlight = "cost";
+			}
+			if (s.block < lastBlock) {
+				lastBlock = s.block;
+				lastCost = s.absCosts;
+				highlight = "chance"
+			}
+			h+=`<tr ${highlight=="chance"?'class="breakline"':''}><td >`
 			for (let b of s.needed) {
 				if (b=="free") continue;
 				h+=`<img class="building" src="${srcLinks.get("/guild_battlegrounds/hud/guild_battlegrounds_sector_buildings_"+b+".png",true)}" title="${GBGBuildings.BuildingData[b].name}">`
@@ -192,7 +205,7 @@ let GBGBuildings = {
 				if (b=="free") continue;
 				h+=`<img class="building keep" src="${srcLinks.get("/guild_battlegrounds/hud/guild_battlegrounds_sector_buildings_"+b+".png",true)}" title="${GBGBuildings.BuildingData[b].name}">`
 			}
-			h+=`</td><td>${s.block}%</td><td title="${s.title}">${(s[sortby]*100).toPrecision(2)}%</td><td title="${i18n('Boxes.GBGBuildings.absoluteCosts')}">${s.absCosts}</td></tr>`;
+			h+=`</td><td ${highlight == "chance"? 'class="highlight"':''}>${s.block}%</td><td title="${s.title}">${(s[sortby]*100).toPrecision(2)}%</td><td title="${i18n('Boxes.GBGBuildings.absoluteCosts')}" ${highlight == "cost"? 'class="highlight"':''}>${s.absCosts}</td></tr>`;
 		}
 		h+='</table>';
 		$('#GBGBuildingsBody').html(h);
@@ -200,12 +213,8 @@ let GBGBuildings = {
 
 	createSets:()=>{
 		let sets={};
-		const blockTotal = (arr)=> {
-			let s = arr.map(x=> GBGBuildings.block[x]||0).reduce((a,b)=>a+b,0);
-			if (s>GBGBuildings.settings.max) return GBGBuildings.settings.max;
-			return s;
-		}
-		let current = blockTotal(GBGBuildings.buildings);
+		let current = GBGBuildings.buildings.map(x=> GBGBuildings.block[x]||0).reduce((a,b)=>a+b,0);
+		if (current>GBGBuildings.settings.max) current= GBGBuildings.settings.max;
 		let num = GBGBuildings.buildings.length;
 		if (current >= GBGBuildings.settings.target) return []
 		let b = [...Object.keys(GBGBuildings.costs).filter(value => Object.keys(GBGBuildings.block).includes(value)),"free"]
@@ -220,10 +229,20 @@ let GBGBuildings = {
 		}
 		
 		let all = num==1 ? one : num==2 ? two : three;
-
+		let sortOrder = Object.keys(GBGBuildings.block)
 		all.forEach( x => {
-			t = blockTotal(x);
-			if (t>current) sets[JSON.stringify(x.sort())] = {all: x.sort((a,b)=> (GBGBuildings.block[b]||0) - (GBGBuildings.block[a]||0)),block:t}
+			let t = 0;
+			let ignore = false;
+			x.sort((a,b)=> (sortOrder.indexOf(b) - sortOrder.indexOf(a)))
+			for (i of x) {
+				if (t>=GBGBuildings.settings.max && i!="free") {
+					ignore = true;
+					break;
+				}
+				t += GBGBuildings.block[i];
+			}
+			if (t>=GBGBuildings.settings.max) t=GBGBuildings.settings.max;
+			if (t > current && ignore == false) sets[JSON.stringify(x)] = {all: x,block:t}
 		})
 		
 		return Object.values(sets);

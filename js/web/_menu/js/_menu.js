@@ -63,6 +63,7 @@ let _menu = {
 		'compare_friends_threads',
 		'discord',
 		'findGB'
+		//'qiMap'
 		// 'marketOffers',
 	],
 
@@ -577,6 +578,23 @@ let _menu = {
 		});
 
 		return btn_CityBG.append(btn_City);
+	},
+
+	/**
+	 * citymap
+	 *
+	 * @returns {*|jQuery}
+	 */
+	qiMap_Btn: () => {
+		let btn_QIMapBG = _menu.MakeButton('qiMap', i18n('Menu.QIMap.Title'), i18n('Menu.QIMap.Desc'), true);
+
+		let btn_QIMap = $('<span />').on('click', function () {
+			if (Object.keys(QIMap.CurrentMapData).length > 0) 
+				QIMap.showBox()
+			
+		});
+
+		return btn_QIMapBG.append(btn_QIMap);
 	},
 
 	/**

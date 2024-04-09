@@ -61,20 +61,42 @@
 }
 
 #battleAssistAddAdvice {
-    top: 50px;
-    left: calc(50vw - 50px);
-    width: 100px;
-    height: 100px;
+    top: calc(50vh - 299px);
+    left: calc(50vw + 115px);
+    width: 120px;
+    height: 34px;
+}
+
+#battleAssistAddAdviceHeader {
+    background: none;
+    border-bottom-width: 0;
+    box-shadow: none;
+    justify-content: right;
+}
+
+#battleAssistAddAdviceHeader .title {
+    display: none;
+}
+
+#battleAssistAddAdviceHeader .box-buttons {
+    z-index: 1001;
 }
 #battleAssistAddAdviceBody {
-    color: #000;
-    background: orange;
-    font-weight: 300;
+    background: var(--background-btn);
     display: flex;
     justify-content: center;
     flex-direction: column;
-    text-align: center;
+    box-sizing: border-box;
+    padding: 0.2rem 0.4rem;
+    position: relative;
+    top: -34px;
+    height: 34px;
+    border-radius: 3px;
 }
+#battleAssistAddAdviceBody:hover {
+    background: var(--background-btn-active);
+}
+
 #battleAssistArmyAdvice {
     top: calc(50vh - 269px);
     left: calc(50vw - 258px);

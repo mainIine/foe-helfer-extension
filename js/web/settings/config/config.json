@@ -144,6 +144,12 @@
 		"sort": 19
 	},
 	{
+		"name": "RivalSound",
+		"status": true,
+		"group": "Boxes",
+		"sort": 20
+	},
+	{
 		"name": "ChangeLanguage",
 		"callback": "LanguageDropdown",
 		"group": "Extension",
