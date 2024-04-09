@@ -150,7 +150,7 @@ let GBGBuildings = {
 			if (sets[i].ignore) continue;
 			for (let j = i+1; j<sets.length; j++) {
 				if (sets[j].ignore) continue;
-				if (sets[j].avgCosts>sets[i].avgCosts && sets[j].absCosts>=sets[i].absCosts) {
+				if (sets[j][sortby]>sets[i][sortby] && sets[j].absCosts>=sets[i].absCosts) {
 					sets[j].ignore = true;
 					continue;
 				}

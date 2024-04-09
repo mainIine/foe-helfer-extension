@@ -1,0 +1,128 @@
+#QIMap {
+    overflow: hidden;
+}
+
+#QIMapBody {
+    width: inherit;
+    height: inherit;
+    position: relative;
+    overflow: visible;
+    background-color: var(--black-50);
+}
+
+#mapWrapper {
+    position: relative;
+    width: inherit;
+    height: inherit;
+    overflow: hidden;
+}
+
+#nodeMap {
+    position: absolute;
+}
+
+#nodeMap > span {
+    position: absolute;
+    width: 120px;
+    text-align: center;
+}
+
+#nodeMap .defending .img {
+    background-color: #0e1e2d;
+    border-color: #0e1e2d
+}
+
+#nodeMap .attacking .img {
+    background-color: #790808;
+    border-color: #790808
+}
+
+#nodeMap .finished b::before {
+    content: '✔'
+}
+
+#nodeMap .finished .img {
+    outline-color: #229963
+}
+
+#nodeMap .blocked .img {
+    outline-color: var(--text-danger)
+}
+
+#nodeMap .open {
+    font-weight: bold;
+}
+
+#nodeMap .open .img {
+    outline-color: var(--text-normal);
+    box-shadow: 0 0 9px 3px var(--text-normal);
+}
+
+#nodeMap .target .img {
+    border-radius: 0;
+    outline-color: var(--text-bright);
+    box-shadow: 0 0 9px 3px var(--text-bright);
+}
+
+#nodeMap .img {
+    background-image: url('../../x_img/qinodes.png');
+    background-repeat: no-repeat;
+    height: 35px;
+    width: 35px;
+    display: block;
+    margin: 0 auto;
+    padding: 3px;
+    outline: 2px solid var(--text-darker);
+    border: 2px solid var(--text-darker);
+    border-radius: 50px;
+    background-position: 3px 0;
+    background-color: var(--black-50);
+}
+
+#nodeMap .garrison .img {
+    background-position: -320px 3px;
+}
+
+#nodeMap .mini-boss .img {
+    background-position: -154px 0;
+}
+
+#nodeMap .start .img {
+    background-position: -78px 0;
+}
+
+#nodeMap .stronghold .img {
+    background-position: -115px 0;
+}
+
+#nodeMap .regular .img {
+    background-position: -274px 0;
+    width: 37px;
+}
+
+#nodeMap .resources .img {
+    background-position: -231px 0;
+}
+
+#nodeMap .final-boss .img {
+    background-position: -191px 0;
+}
+
+#nodeMap i {
+    display: inline-flex;
+    justify-content: center;
+    font-weight: normal;
+}
+
+#nodeMap i::before {
+    content: '';
+    width: 22px;
+    height: 22px;
+    display: inline-block;
+    background-image: url('../../x_img/qiboosts.png');
+    background-position: -2px -2px;
+}
+
+#nodeMap i.att_def_boost_attacker::before {
+    background-position: -27px -2px;
+}
