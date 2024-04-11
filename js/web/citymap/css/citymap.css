@@ -76,9 +76,47 @@
 	box-sizing: border-box;
 }
 
-.outpost #sidebar, .outpost #BuildingsFilter, .outpost #city-map-menu .btn-group {
+.outpost #sidebar, .outpost #BuildingsFilter, .outpost #city-map-menu .btn-group, .outpost #map-filters {
 	display: none;
 }
+
+.outpost.guild_raids #sidebar {
+	display: block;
+	width: 400px;
+	padding: 3px;
+}
+
+.outpost.guild_raids #map-container, .outpost.guild_raids #city-map-menu {
+	right: 400px;
+}
+
+#city-map-overlayBody .prod::before {
+	background: transparent url('../../productions/images/productions.png') -233px 2px no-repeat;
+	background-size: auto 100%;
+	display: inline-block;
+	content: '';
+	width: 20px;
+	height: 20px;
+}
+
+#city-map-overlayBody .prod.population::before { background-position: -142px 3px; }
+#city-map-overlayBody .prod.happiness::before { background-position: -122px 3px; }
+#city-map-overlayBody .prod.guild_raids_money::before { background-position: -20px 3px; }
+#city-map-overlayBody .prod.guild_raids_supplies::before { background-position: -40px 3px; }
+#city-map-overlayBody .prod.att_def_boost_attacker::before { background-position: -340px 1px; }
+#city-map-overlayBody .prod.att_def_boost_defender::before { background-position: -362px 1px; }
+#city-map-overlayBody .prod.guild_raids_action_points_collection::before { background-position: -383px 2px; }
+
+#city-map-overlayBody th.population::before, #city-map-overlayBody th.happiness::before {
+	background: transparent url('../../productions/images/productions.png') -233px 2px no-repeat;
+	background-size: auto 100%;
+	display: inline-block;
+	content: '';
+	width: 23px;
+	height: 23px;
+}
+#city-map-overlayBody th.population::before { background-position: -162px 3px; }
+#city-map-overlayBody th.happiness::before { background-position: -140px 3px; }
 
 #sidebar p {
 	margin-bottom: 5px;
