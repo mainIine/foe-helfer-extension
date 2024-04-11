@@ -745,6 +745,19 @@ let CityMap = {
 	 */
 	SubmitData: ()=> {
 
+		let apiToken = localStorage.getItem('ApiToken');
+
+		if(apiToken === null) {
+			HTML.ShowToastMsg({
+				head: i18n('Boxes.CityMap.MissingApiKeyErrorHeader'),
+				text: i18n('Boxes.CityMap.MissingApiKeySubmitError'),
+				type: 'error',
+				hideAfter: 10000,
+			});
+
+			return;
+		}
+
 		let currentDate = new Date(),
 			d = {
 				time: currentDate.toISOString().split('T')[0] + ' ' + currentDate.getHours() + ':' + currentDate.getMinutes() + ':' + currentDate.getSeconds(),
@@ -755,6 +768,7 @@ let CityMap = {
 					avatar: ExtPlayerAvatar,
 					avatarUrl: srcLinks.GetPortrait(ExtPlayerAvatar)
 				},
+				apiToken: apiToken,
 				eras: Technologies.Eras,
 				entities: MainParser.CityMapData,
 				areas: CityMap.UnlockedAreas,
@@ -783,10 +797,7 @@ let CityMap = {
 			else {
 				HTML.ShowToastMsg({
 					head: i18n('Boxes.CityMap.SubmitErrorHeader'),
-					text: [
-						i18n('Boxes.CityMap.SubmitError'),
-						'<a href="https://github.com/mainIine/foe-helfer-extension/issues" target="_blank">Github</a>'
-					],
+					text: resp['msg'],
 					type: 'error',
 					hideAfter: 10000,
 				});

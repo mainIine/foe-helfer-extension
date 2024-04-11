@@ -608,13 +608,8 @@ let Kits = {
 	},
 
 	ToggleFavouritesBtn:() => {
-		let e = $('#kits-showFavourites')[0]
-		e.classList.toggle("btn-active");
-		if (e.classList.contains("btn-active")) {
-			$('.notFavourite').hide();
-		} else {
-			$('.notFavourite').show();
-		}
+		$('#kits-showFavourites')[0].classList.toggle("btn-active");
+		Kits._filter()
 	},
 
 	toggleGroup: ()=> {
@@ -627,6 +622,7 @@ let Kits = {
 		Kits._filterSets();
 		Kits._filterItems();
 		Kits._filterMissing();
+		if ($('#kits-showFavourites')[0].classList.contains("btn-active")) $('.notFavourite').hide(); 
 	},
 
 	/**
