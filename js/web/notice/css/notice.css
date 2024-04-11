@@ -155,6 +155,10 @@
 	align-items: center;
 }
 
+#notices-modal-playersBody .custom-select__trigger {
+	width: 260px;
+}
+
 #notices-modal-playersBody .custom-option .avatar {
 	display: inline-block;
 	width: 30px;
