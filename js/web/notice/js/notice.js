@@ -116,7 +116,7 @@ let Notice = {
 				if(n['player_group']){
 					switch (n['player_group']){
 						case 'guild': tabName = `🛡 ${i18n('Boxes.Notice.SelectPlayerGroupGuild')}`; break;
-						case 'friend': tabName = `👩🏼‍🤝‍🧑 ${i18n('Boxes.Notice.SelectPlayerGroupFriend')}`; break;
+						case 'friend': tabName = `👩🏼🤝🧑 ${i18n('Boxes.Notice.SelectPlayerGroupFriend')}`; break;
 						case 'neighbor': tabName = `⚔ ${i18n('Boxes.Notice.SelectPlayerGroupNeighbor')}`; break;
 					}
 
@@ -146,9 +146,7 @@ let Notice = {
 											<span class="clan-name"><em>#${player['PlayerID']}</em> ${player['ClanName'] ? '[' + player['ClanName'] + ']' : '&nbsp;'}</span>
 										</div>
 										<div class="info-text">
-											${i18n('Boxes.Notice.ContentHeadIsGuild')}: ${player['IsGuildMember']}<br>
-											${i18n('Boxes.Notice.ContentHeadIsFriend')}: ${player['IsFriend']}<br>
-											${i18n('Boxes.Notice.ContentHeadIsNeighbor')}: ${player['IsFriend']}<br>
+											
 										</div>
 									</div>`);
 
@@ -157,7 +155,7 @@ let Notice = {
 					}
 
 
-					subdiv.push(`<div class="content-text" contenteditable="true">${itm['content']}</div>
+					subdiv.push(`<div class="content-text" contenteditable="true">${itm['content'] || ''}</div>
 								</div>`);
 				}
 
@@ -297,6 +295,7 @@ let Notice = {
 
 		$('body').on('click', '.custom-option-noticePlayers', function(){
 			Notice.SavePlayerToGroup($(this).data('value'));
+			$(this).unbind('click');
 		});
 
 		// check if user changes the box size
@@ -358,7 +357,7 @@ let Notice = {
 				class: `btn-default save-${type}-name`,
 				'data-id': id,
 				'data-type': type,
-				onclick: (type === 'itm' ? `Notice.SaveItemModal(${(id === 'new' ? "'new'" : id)})` : `Notice.SaveModal('${type}', ${(id === 'new' ? "'new'" : id)})`)
+				onclick: (type === 'itm' ? `Notice.SaveItemModal('${(id === 'new' ? "new" : id)})` : `Notice.SaveModal('${type}', ${(id === 'new' ? "new" : id)}')`)
 			})
 			.text(i18n('Boxes.Notice.Save'))
 			.wrap('<div class="text-right" />');
@@ -386,7 +385,7 @@ let Notice = {
 			let sort = $('<input />').attr({
 				type: 'number',
 				class: `inp-${type}-sort`,
-				placeholder: i18n('Boxes.Notice.Sorting'),
+				placeholder: i18n('Boxes.Notice.Sorting')
 			});
 
 			sort.wrap('<div />').insertAfter(`.inp-${type}-name`);
@@ -394,7 +393,6 @@ let Notice = {
 
 		if(type === 'grp' && id === 'new'){
 			$('#notices-modalBody').append(
-				$('<hr>'),
 				$('<p />').append(
 					$('<select />').attr({
 						id: 'player-grp',
@@ -436,11 +434,13 @@ let Notice = {
 			data = {
 				id: id,
 				type: type,
-				name: txt
-			}
+				name: txt,
+				sort: $(`.inp-grp-sort`).val() || 1
+			},
+			grpSel = $('#player-grp option:selected');
 
-		if( $('#player-grp option:selected').data('value') !== -1 ){
-			data['player_group'] = $('#player-grp option:selected').data('value');
+		if( grpSel.data('value') !== -1 ){
+			data['player_group'] = grpSel.data('value');
 
 		} else if(txt === '') {
 			return;
@@ -480,8 +480,8 @@ let Notice = {
 	SaveItemModal: (id)=> {
 		let nN = $('.inp-itm-name').val(),
 			txt = nN.trim(),
-			grp = parseInt($('ul.horizontal').find('li.active a').data('id')),
-			sortVal = !$(`inp-itm-sort`).val() || ($(`#tab-${grp}`).find('ul.vertical li').length +1);
+			grp = $('ul.horizontal').find('li.active a').data('id'),
+			sortVal = !$(`.inp-itm-sort`).val() || ($(`#tab-${grp}`).find('ul.vertical li').length +1);
 
 		if(txt === ''){
 			return;
@@ -521,10 +521,14 @@ let Notice = {
 	 * @constructor
 	 */
 	SaveContent: ($this)=> {
-		let itmID = parseInt($this.data('id')),
-			grpID = parseInt($this.data('parent')),
+		let itmID = $this.data('id'),
+			grpID = $this.data('parent'),
 			head = $this.find('.content-head').html(),
 			cont = $this.find('.content-text').html();
+
+		if(cont === null) {
+			return;
+		}
 
 		// send content changes to server und change local object
 		MainParser.send2Server({id:itmID,grp:grpID,type:'cnt',head:head,cont:cont,}, 'Notice/set', (resp)=>{
@@ -586,7 +590,7 @@ let Notice = {
 			const p = players[i],
 				a = srcLinks.GetPortrait(p['Avatar']);
 
-			content += `<span class="custom-option custom-option-noticePlayers" data-value="${p['PlayerID']}"><span class="avatar" style="background-image:url("${a}")"></span>${p['PlayerName']}</span>`;
+			content += `<span class="custom-option custom-option-noticePlayers" data-value="${p['PlayerID']}"><span class="avatar" style="background-image:url('${a}')"></span>${p['PlayerName']}</span>`;
 		}
 
 		content +=		`</div>
@@ -630,6 +634,8 @@ let Notice = {
 			});
 
 			Notice.buildBox();
+
+			$('.custom-option-noticePlayers').bind('click');
 		});
 	},
 
