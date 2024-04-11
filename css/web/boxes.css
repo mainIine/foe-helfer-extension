@@ -1861,6 +1861,10 @@ input[type="range"]::-webkit-slider-thumb {
 	text-align: left;
 }
 
+.textright {
+	text-align: right;
+}
+
 span.activity {
     display: inline-block;
     height: 14px;
