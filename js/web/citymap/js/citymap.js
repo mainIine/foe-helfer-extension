@@ -375,7 +375,7 @@ let CityMap = {
 					}
 				}
 				if (building.production !== null) {
-					if (building.type !== "military" && building.type !== "goods") {
+					if (building.type !== "military" && building.type !== "goods" && building.type !== "main_building") {
 						if (building.production.guild_raids_supplies)
 							supplies += building.production.guild_raids_supplies
 						if (building.production.guild_raids_money)
@@ -405,8 +405,8 @@ let CityMap = {
 			totalPopulation: totalPopulation,
 			euphoria: euphoria,
 			euphoriaBoost: euphoriaBoost,
-			money: money*euphoriaBoost,
-			supplies: supplies*euphoriaBoost,
+			money: money*euphoriaBoost+10000,
+			supplies: supplies*euphoriaBoost+10000,
 			att_def_boost_attacker: att_def_boost_attacker,
 			att_def_boost_defender: att_def_boost_defender,
 		}
