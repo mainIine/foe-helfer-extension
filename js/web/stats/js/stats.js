@@ -234,7 +234,7 @@ FoEproxy.addHandler('ArmyUnitManagementService', 'getArmyInfo', async (data, pos
 let Stats = {
 
 	isVisitingCulturalOutpost: false,
-
+	goodsSubTypes:[],
 	ResMap: {
 		NoAge: ['money', 'supplies', 'tavern_silver', 'medals', 'premium'],
 		special: ['promethium', 'orichalcum', 'mars_ore', 'asteroid_ice', 'venus_carbon', 'unknown_dna','crystallized_hydrocarbons'],
@@ -273,7 +273,11 @@ let Stats = {
 			Stats.ResMap[EraName] = [];
 
 			for (let i = 0; i < 5; i++) {
-				if (GoodsList[(Era - 2) * 5 + i]) Stats.ResMap[EraName].push(GoodsList[(Era - 2) * 5 + i].id);
+				if (GoodsList[(Era - 2) * 5 + i]) {
+					let g = GoodsList[(Era - 2) * 5 + i].id
+					Stats.ResMap[EraName].push(g);
+					Stats.goodsSubTypes.push(g);
+				}
             }
 		}
     },
@@ -1322,6 +1326,7 @@ let Stats = {
 			let url = '';
 			let text = '';
 			let amount = seriesMapBySource[it] || 1;
+			if (rewardInfo.type == "resource" && Stats.goodsSubTypes.includes(rewardInfo.subType)) rewardInfo.type="good";
 			switch (rewardInfo.type) {
 				case 'unit':
 					if (rewardInfo.subType == "rogue") {
