@@ -375,10 +375,12 @@ let CityMap = {
 					}
 				}
 				if (building.production !== null) {
-					if (building.production.guild_raids_supplies)
-						supplies += building.production.guild_raids_supplies
-					if (building.production.guild_raids_money)
-						money += building.production.guild_raids_money
+					if (building.type !== "military" && building.type !== "goods") {
+						if (building.production.guild_raids_supplies)
+							supplies += building.production.guild_raids_supplies
+						if (building.production.guild_raids_money)
+							money += building.production.guild_raids_money
+					}
 				}
 			}
 		}
@@ -434,7 +436,7 @@ let CityMap = {
 			  return 1
 			}
 			return 0
-		  })
+		})
 
 		let out = '<table class="foe-table">'
 		out += '<thead><tr><th>'+i18n('Boxes.CityMap.Building')+'</th><th class="population textright"></th><th class="happiness textright"></th><th>'+i18n('Boxes.CityMap.Boosts')+'</th></tr></thead>'
@@ -448,8 +450,16 @@ let CityMap = {
 				out += '<td class="textright">' + building.euphoria + "</td>"
 				out += "<td>"
 				if (building.production !== null) {
-					out += (building.production.guild_raids_supplies ? '<span class="prod guild_raids_supplies">'+HTML.Format(building.production.guild_raids_supplies*CityMap.QIStats.euphoriaBoost)+'</span> ' : " ")
-					out += (building.production.guild_raids_money ? '<span class="prod guild_raids_money">'+HTML.Format(building.production.guild_raids_money*CityMap.QIStats.euphoriaBoost)+'</span> ' : "")
+					if (building.type === "goods" || building.type === "military") {
+						out += (building.type === "goods" ? "+20 = " : "+10 = ")
+						out += (building.production.guild_raids_supplies ? '<span class="prod guild_raids_supplies">'+HTML.Format(building.production.guild_raids_supplies*-1.0)+'</span> ' : " ")
+						out += (building.production.guild_raids_money ? '<span class="prod guild_raids_money">'+HTML.Format(building.production.guild_raids_money*-1.0)+'</span> ' : "")	
+					}
+					else {
+						let eBoost = (building.type === "main_building" ? 1.0 : CityMap.QIStats.euphoriaBoost)
+						out += (building.production.guild_raids_supplies ? '<span class="prod guild_raids_supplies">'+HTML.Format(building.production.guild_raids_supplies*eBoost)+'</span> ' : " ")
+						out += (building.production.guild_raids_money ? '<span class="prod guild_raids_money">'+HTML.Format(building.production.guild_raids_money*eBoost)+'</span> ' : "")
+					}
 				}
 				if (building.boosts !== null) {
 					for (let i in building.boosts) {
@@ -469,6 +479,8 @@ let CityMap = {
 		let production = data.components?.AllAge?.production?.options
 		if (production !== undefined && production.length === 1) // goods and units have multiple production options, rest has one
 			production = data.components?.AllAge?.production?.options[0]?.products[0]?.playerResources?.resources
+		else if (production !== undefined && production.length > 1) 
+			production = data.components?.AllAge?.production?.options[3]?.products[0]?.requirements?.resources
 		if (data.type === "main_building")
 			production = data.available_products[0].product.resources
 
