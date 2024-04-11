@@ -775,7 +775,7 @@
     "Boxes.Notice.Edit": "Bearbeiten",
     "Boxes.Notice.GlobalSendRequired": "Dieses Modul funktioniert nur mit eingeschalteter Option \"Übermittlung an foe-helper.com\".<br>Bitte aktivere diese Option um die Notizen benutzen zu können.",
     "Boxes.Notice.GroupName": "Gruppenname",
-    "Boxes.Notice.HelpLink": "https://foe-helper.com/docs/de/notizen/?lang=de",
+    "Boxes.Notice.HelpLink": "https://docs.foe-helper.com/deutsch/module/notizen",
     "Boxes.Notice.ModalChoosePlayer": "Wähle einen Spieler",
     "Boxes.Notice.ModalMissingPlayers": "Gibt es Spieler, die auf der Auswahlliste fehlen? Schließe diese Box, klicken Sie auf die beiden anderen Reiter unten in der Sozialleiste (Nachbarn, Gildenmitglieder, Freunde) und öffne dann diese Box erneut.",
     "Boxes.Notice.NewGroup": "Gruppe",

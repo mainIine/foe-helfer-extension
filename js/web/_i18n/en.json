@@ -774,7 +774,7 @@
     "Boxes.Notice.Edit": "Edit",
     "Boxes.Notice.GlobalSendRequired": "This module only works with \"Upload to foe-helper.com\" switched on.<br>Please activate this option to use the notes.",
     "Boxes.Notice.GroupName": "Group Name",
-    "Boxes.Notice.HelpLink": "https://foe-helper.com/docs/2/notes",
+    "Boxes.Notice.HelpLink": "https://docs.foe-helper.com/english/module/notes",
     "Boxes.Notice.ModalChoosePlayer": "Choose a player",
     "Boxes.Notice.ModalMissingPlayers": "Are there players missing from the shortlist? Then close this box, click on the other two tabs at the bottom of the Social Bar (Neighbours, Guild Members, Friends) and then re-open this box.",
     "Boxes.Notice.NewGroup": "Group",
