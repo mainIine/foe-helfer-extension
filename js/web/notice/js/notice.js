@@ -146,9 +146,7 @@ let Notice = {
 											<span class="clan-name"><em>#${player['PlayerID']}</em> ${player['ClanName'] ? '[' + player['ClanName'] + ']' : '&nbsp;'}</span>
 										</div>
 										<div class="info-text">
-											${i18n('Boxes.Notice.ContentHeadIsGuild')}: ${player['IsGuildMember']}<br>
-											${i18n('Boxes.Notice.ContentHeadIsFriend')}: ${player['IsFriend']}<br>
-											${i18n('Boxes.Notice.ContentHeadIsNeighbor')}: ${player['IsFriend']}<br>
+											
 										</div>
 									</div>`);
 
@@ -297,6 +295,7 @@ let Notice = {
 
 		$('body').on('click', '.custom-option-noticePlayers', function(){
 			Notice.SavePlayerToGroup($(this).data('value'));
+			$(this).unbind('click');
 		});
 
 		// check if user changes the box size
@@ -481,7 +480,7 @@ let Notice = {
 	SaveItemModal: (id)=> {
 		let nN = $('.inp-itm-name').val(),
 			txt = nN.trim(),
-			grp = parseInt($('ul.horizontal').find('li.active a').data('id')),
+			grp = $('ul.horizontal').find('li.active a').data('id'),
 			sortVal = !$(`.inp-itm-sort`).val() || ($(`#tab-${grp}`).find('ul.vertical li').length +1);
 
 		if(txt === ''){
@@ -522,8 +521,8 @@ let Notice = {
 	 * @constructor
 	 */
 	SaveContent: ($this)=> {
-		let itmID = parseInt($this.data('id')),
-			grpID = parseInt($this.data('parent')),
+		let itmID = $this.data('id'),
+			grpID = $this.data('parent'),
 			head = $this.find('.content-head').html(),
 			cont = $this.find('.content-text').html();
 
@@ -635,6 +634,8 @@ let Notice = {
 			});
 
 			Notice.buildBox();
+
+			$('.custom-option-noticePlayers').bind('click');
 		});
 	},
 
