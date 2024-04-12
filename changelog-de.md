@@ -1,5 +1,25 @@
 ## Changelog - Extension
 
+##### 3.6.4.0
+
+**Update**
+- Website Kommunikation:
+	- Datenübertragung an die Webseite (Notizen + Stadtplaner) benötigt nun einen Token
+	- der Token wird nach Registrierung auf der Webseite generiert und muss in die Helfer Einstellungen übertragen werden
+
+- Stadt-Übersicht:
+	- zeigt in den QI eine Produktionsübersicht
+- Cardgame:
+	- die Warnung wegen geringer Lebenspunkte schließt sich nun gemeinsam mit dem Helfer-Fenster
+- Kits:
+	- Es können nun Favoriten angelegt und gefiltert werden
+
+**BugFix**
+- Statistik:
+	- einige Güterbelohnungen wurden nicht kombiniert
+
+---
+
 ##### 3.6.3.0
 
 **Update**

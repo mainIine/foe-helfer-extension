@@ -395,7 +395,7 @@ let CityMap = {
 			euphoriaBoost = 1
 		else if (euphoriaFactor > 1.20 && euphoriaFactor <= 1.40)
 			euphoriaBoost = 1.1
-		else if (euphoriaFactor > 1.40 && euphoriaFactor <= 2.0)
+		else if (euphoriaFactor > 1.40 && euphoriaFactor < 2.0)
 			euphoriaBoost = 1.2
 		else 
 			euphoriaBoost = 1.5
