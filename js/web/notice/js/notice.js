@@ -35,6 +35,8 @@ let Notice = {
 
 	ApiToken: null,
 
+	initDone:false,
+
 	/**
 	 * On init get the content
 	 */
@@ -279,21 +281,6 @@ let Notice = {
 			Notice.ShowModal('itm', $(this).data('id'));
 		});
 
-		$('body').on('click', '.btn-delete', function(){
-			Notice.DeleteElement($(this).data('type'), $(this).data('id'));
-		});
-
-		$('body').on('click', '#notices-modalclose, #notices-modal-playersclose', function(){
-			$('.foe-helper-overlay').remove();
-		});
-
-		// save content when close box
-		$('body').on('click', '#noticesclose', function(){
-			let $this = $('.sub-tab:visible');
-
-			Notice.SaveContent($this);
-		});
-
 		// toggle edit buttons
 		$('#notices').on('click', '#notices-settings', function(){
 			if(!Notice.EditMode){
@@ -322,6 +309,21 @@ let Notice = {
 				return false;
 			}
 		});
+		if (Notice.initDone) return;
+		$('body').on('click', '.btn-delete', function(){
+			Notice.DeleteElement($(this).data('type'), $(this).data('id'));
+		});
+
+		$('body').on('click', '#notices-modalclose, #notices-modal-playersclose', function(){
+			$('.foe-helper-overlay').remove();
+		});
+
+		// save content when close box
+		$('body').on('click', '#noticesclose', function(){
+			let $this = $('.sub-tab:visible');
+			if ($this.length == 0) return;
+			Notice.SaveContent($this);
+		});
 
 		// check if user changes the box size
 		let id;
@@ -330,6 +332,7 @@ let Notice = {
 			clearTimeout(id);
 			id = setTimeout(Notice.SetHeights(), 150);
 		});
+		Notice.initDone = true;
 	},
 
 
