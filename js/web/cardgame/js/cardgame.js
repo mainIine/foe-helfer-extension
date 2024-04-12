@@ -290,6 +290,8 @@ let cardGame = {
 				resize : true,
 
 			});
+			$('#cardGameDialogclose').on("click",()=>{$('#cardGameFightBlocker').remove()});
+
 		}
 		let dmg = {}
 		let cards = cardGame.cardsLeft.concat(cardGame.freshbuys)
