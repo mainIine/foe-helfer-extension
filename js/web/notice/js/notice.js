@@ -387,7 +387,7 @@ let Notice = {
 				class: `btn-default save-${type}-name`,
 				'data-id': id,
 				'data-type': type,
-				onclick: (type === 'itm' ? `Notice.SaveItemModal('${(id === 'new' ? "new" : id)})` : `Notice.SaveModal('${type}', ${(id === 'new' ? "new" : id)}')`)
+				onclick: (type === 'itm' ? `Notice.SaveItemModal('${(id === 'new' ? "new" : id)}')` : `Notice.SaveModal('${type}', '${(id === 'new' ? "new" : id)}')`)
 			})
 			.text(i18n('Boxes.Notice.Save'))
 			.wrap('<div class="text-right" />');
