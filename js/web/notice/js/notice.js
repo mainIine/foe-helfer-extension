@@ -323,11 +323,6 @@ let Notice = {
 			}
 		});
 
-		$('body').on('click', '.custom-option-noticePlayers', function(){
-			Notice.SavePlayerToGroup($(this).data('value'));
-			$(this).unbind('click');
-		});
-
 		// check if user changes the box size
 		let id;
 
@@ -651,7 +646,7 @@ let Notice = {
 			const p = players[i],
 				a = srcLinks.GetPortrait(p['Avatar']);
 
-			content += `<span class="custom-option custom-option-noticePlayers" data-value="${p['PlayerID']}"><span class="avatar" style="background-image:url('${a}')"></span>${p['PlayerName']}</span>`;
+			content += `<span class="custom-option" onclick="Notice.SavePlayerToGroup(${p['PlayerID']})" data-value="${p['PlayerID']}"><span class="avatar" style="background-image:url('${a}')"></span>${p['PlayerName']}</span>`;
 		}
 
 		content +=		`</div>
