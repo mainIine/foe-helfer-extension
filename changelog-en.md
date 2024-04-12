@@ -1,6 +1,26 @@
 ## Changelog - Extension
 
 
+##### 3.6.4.0
+
+**Update**
+- Website Communication:
+	- Transmitting data (Notes + City planner) to the website now needs a token
+	- the token will be generated on the website after registration and needs to be entered in the helper settings
+
+- City Overview:
+	- in QI gives a production overview
+- Cardgame:
+	- the low health blocker now closes together with the helper box
+- Kits:
+	- Favourites can be selected and filtered for
+
+**BugFix**
+- Statistics:
+	- some goods rewards were not combined
+
+---
+
 ##### 3.6.3.0
 
 **Update**
