@@ -168,7 +168,7 @@ let CityMap = {
 		});
 
 
-		/* Scalierung wechseln */
+		/* Skalierung wechseln */
 		let scaleUnit = CityMap.ScaleUnit;
 		if (ActiveMap == "cultural_outpost" || ActiveMap === "era_outpost" || ActiveMap === "guild_raids") {
 			scaleUnit = CityMap.OutpostScaleUnit;
@@ -187,8 +187,11 @@ let CityMap = {
 
 		$('#city-map-overlay').on('change', '#scale-view', function(){
 			let unit = parseInt($('#scale-view option:selected').data('scale'));
-			$('#highlight-old-buildings')[0].checked=false;
-			$('#show-nostreet-buildings')[0].checked=false;
+			
+			if(ActiveMap === 'main'){
+				$('#highlight-old-buildings')[0].checked=false;
+				$('#show-nostreet-buildings')[0].checked=false;
+			}
 
 			$('#grid-outer').attr('data-unit', unit);
 
