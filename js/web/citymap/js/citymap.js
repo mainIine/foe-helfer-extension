@@ -762,7 +762,10 @@ let CityMap = {
 		if(apiToken === null) {
 			HTML.ShowToastMsg({
 				head: i18n('Boxes.CityMap.MissingApiKeyErrorHeader'),
-				text: i18n('Boxes.CityMap.MissingApiKeySubmitError'),
+				text: [
+					i18n('Boxes.CityMap.MissingApiKeySubmitError'),
+					`<a target="_blank" href="${i18n('Settings.ApiTokenUrl')}">${i18n('Settings.ApiTokenUrl')}</a>`
+				],
 				type: 'error',
 				hideAfter: 10000,
 			});

@@ -12,7 +12,7 @@
  */
 
 /**
- * @type {{ActualGrp: number, init: Notice.init, notes: null, Listener: Notice.Listener, SetHeights: Notice.SetHeights, buildBox: Notice.buildBox, BuildSettingButtons: Notice.BuildSettingButtons, prepareContent: Notice.prepareContent, ActiveTab: number, ShowModal: Notice.ShowModal, ShowPlayerModal: Notice.ShowPlayerModal, SavePlayerToGroup: (function(*): (undefined)), SaveContent: Notice.SaveContent, EditMode: boolean, SaveModal: (function(*=, *=): (undefined)), SaveItemModal: (function(*=): (undefined)), DeleteElement: Notice.DeleteElement, ActiveSubTab: number, Players: {}}}
+ * @type {{ActualGrp: number, init: Notice.init, notes: null, Listener: Notice.Listener, SetHeights: Notice.SetHeights, buildBox: Notice.buildBox, BuildSettingButtons: Notice.BuildSettingButtons, prepareContent: Notice.prepareContent, ActiveTab: number, ShowModal: Notice.ShowModal, ShowPlayerModal: Notice.ShowPlayerModal, SavePlayerToGroup: Notice.SavePlayerToGroup, SaveContent: Notice.SaveContent, EditMode: boolean, ApiToken: null, SaveModal: Notice.SaveModal, SaveItemModal: Notice.SaveItemModal, DeleteElement: Notice.DeleteElement, ActiveSubTab: number, Players: {}}}
  */
 let Notice = {
 
@@ -33,16 +33,46 @@ let Notice = {
 	ActiveTab: 1,
 	ActiveSubTab: 1,
 
+	ApiToken: null,
+
 	/**
 	 * On init get the content
 	 */
 	init: ()=> {
 
-		if(Notice.notes === null){
-			MainParser.send2Server({isEmpty:true}, 'Notice/get',(resp)=>{
-				Notice.notes = resp.notice;
+		let apiToken = localStorage.getItem('ApiToken');
 
-				Notice.buildBox(false);
+		if(apiToken === null) {
+			HTML.ShowToastMsg({
+				head: i18n('Boxes.CityMap.MissingApiKeyErrorHeader'),
+				text: [
+					i18n('Boxes.CityMap.MissingApiKeySubmitError'),
+					`<a target="_blank" href="${i18n('Settings.ApiTokenUrl')}">${i18n('Settings.ApiTokenUrl')}</a>`
+				],
+				type: 'error',
+				hideAfter: 10000,
+			});
+
+			return;
+		}
+
+		Notice.ApiToken = apiToken;
+
+		if(Notice.notes === null){
+			MainParser.send2Server({apiToken:apiToken}, 'Notice/get',(resp)=>{
+				if(resp['status'] === 'ERROR') {
+					HTML.ShowToastMsg({
+						head: 'Error',
+						text: resp['msg'],
+						type: 'error',
+						hideAfter: 10000,
+					});
+				}
+				else {
+					Notice.notes = resp['notice'];
+
+					Notice.buildBox(false);
+				}
 			});
 
 		} else {
@@ -435,7 +465,8 @@ let Notice = {
 				id: id,
 				type: type,
 				name: txt,
-				sort: $(`.inp-grp-sort`).val() || 1
+				sort: $(`.inp-grp-sort`).val() || 1,
+				apiToken: Notice.ApiToken
 			},
 			grpSel = $('#player-grp option:selected');
 
@@ -450,23 +481,33 @@ let Notice = {
 		}
 
 		MainParser.send2Server(data, 'Notice/set', (resp)=>{
-			Notice.notes = resp['notice'];
-
-			if(id === 'new'){
-				Notice.ActiveTab = Notice.notes[Notice.notes.length -1];
-
-			} else {
-				Notice.ActiveTab = Notice.notes.findIndex(idx => (idx.id === id)) +1;
+			if(resp['status'] === 'ERROR') {
+				HTML.ShowToastMsg({
+					head: 'Error',
+					text: resp['msg'],
+					type: 'error',
+					hideAfter: 10000,
+				});
 			}
+			else {
+				Notice.notes = resp['notice'];
 
-			$('#notices-modal').fadeToggle('fast', function(){
-				$(this).remove();
+				if(id === 'new'){
+					Notice.ActiveTab = Notice.notes[Notice.notes.length -1];
 
-				$('.foe-helper-overlay').remove();
-			});
+				} else {
+					Notice.ActiveTab = Notice.notes.findIndex(idx => (idx.id === id)) +1;
+				}
 
-			Notice.EditMode = false;
-			Notice.buildBox();
+				$('#notices-modal').fadeToggle('fast', function(){
+					$(this).remove();
+
+					$('.foe-helper-overlay').remove();
+				});
+
+				Notice.EditMode = false;
+				Notice.buildBox();
+			}
 		});
 	},
 
@@ -489,27 +530,37 @@ let Notice = {
 
 		txt = MainParser.ClearText(txt);
 
-		MainParser.send2Server({id:id,type:'itm',name:txt,grp:grp,sort:sortVal}, 'Notice/set', (resp)=>{
-			Notice.notes = resp['notice'];
-
-			const group = Notice.notes.find(e => (e.id === grp));
-			Notice.ActiveTab = Notice.notes.findIndex(idx => (idx.id === grp)) +1;
-
-			if(id === 'new'){
-				Notice.ActiveSubTab = group.items.length +1;
-
-			} else {
-				Notice.ActiveSubTab = group.items.findIndex(i => (i.id === id)) +1;
+		MainParser.send2Server({id:id,type:'itm',name:txt,grp:grp,sort:sortVal,apiToken:Notice.ApiToken}, 'Notice/set', (resp)=>{
+			if(resp['status'] === 'ERROR') {
+				HTML.ShowToastMsg({
+					head: 'Error',
+					text: resp['msg'],
+					type: 'error',
+					hideAfter: 10000,
+				});
 			}
+			else {
+				Notice.notes = resp['notice'];
 
-			$('#notices-modal').fadeToggle('fast', function(){
-				$(this).remove();
+				const group = Notice.notes.find(e => (e.id === grp));
+				Notice.ActiveTab = Notice.notes.findIndex(idx => (idx.id === grp)) +1;
 
-				$('.foe-helper-overlay').remove();
-			});
+				if(id === 'new'){
+					Notice.ActiveSubTab = group.items.length +1;
 
-			Notice.EditMode = false;
-			Notice.buildBox();
+				} else {
+					Notice.ActiveSubTab = group.items.findIndex(i => (i.id === id)) +1;
+				}
+
+				$('#notices-modal').fadeToggle('fast', function(){
+					$(this).remove();
+
+					$('.foe-helper-overlay').remove();
+				});
+
+				Notice.EditMode = false;
+				Notice.buildBox();
+			}
 		});
 	},
 
@@ -531,16 +582,26 @@ let Notice = {
 		}
 
 		// send content changes to server und change local object
-		MainParser.send2Server({id:itmID,grp:grpID,type:'cnt',head:head,cont:cont,}, 'Notice/set', (resp)=>{
+		MainParser.send2Server({id:itmID,grp:grpID,type:'cnt',head:head,cont:cont,apiToken:Notice.ApiToken}, 'Notice/set', (resp)=>{
 
-			let grpIdx = Notice.notes.findIndex(g => g.id === grpID),
-				itmIdx = Notice.notes[grpIdx].items.findIndex(i => i.id === itmID);
+			if(resp['status'] === 'ERROR') {
+				HTML.ShowToastMsg({
+					head: 'Error',
+					text: resp['msg'],
+					type: 'error',
+					hideAfter: 10000,
+				});
+			}
+			else {
+				let grpIdx = Notice.notes.findIndex(g => g.id === grpID),
+					itmIdx = Notice.notes[grpIdx].items.findIndex(i => i.id === itmID);
 
-			Notice.notes[grpIdx].items[itmIdx]['title'] = head;
-			Notice.notes[grpIdx].items[itmIdx]['content'] = cont;
+				Notice.notes[grpIdx].items[itmIdx]['title'] = head;
+				Notice.notes[grpIdx].items[itmIdx]['content'] = cont;
 
-			Notice.ActiveTab = (grpIdx + 1);
-			Notice.ActiveSubTab = (itmIdx + 1);
+				Notice.ActiveTab = (grpIdx + 1);
+				Notice.ActiveSubTab = (itmIdx + 1);
+			}
 		});
 	},
 
@@ -609,7 +670,8 @@ let Notice = {
 			type: 'itm',
 			name: PlayerDict[id]['PlayerName'],
 			grp: Notice.ActualGrp,
-			player: JSON.stringify(PlayerDict[id])
+			player: JSON.stringify(PlayerDict[id]),
+			apiToken: Notice.ApiToken
 		};
 
 		// check if not double
@@ -625,17 +687,27 @@ let Notice = {
 		Notice.ActiveTab = Notice.notes.findIndex(idx => idx.id === Notice.ActualGrp) + 1;
 
 		MainParser.send2Server(data, 'Notice/set', (resp)=>{
-			Notice.notes = resp['notice'];
+			if(resp['status'] === 'ERROR') {
+				HTML.ShowToastMsg({
+					head: 'Error',
+					text: resp['msg'],
+					type: 'error',
+					hideAfter: 10000,
+				});
+			}
+			else {
+				Notice.notes = resp['notice'];
 
-			$('#notices-modal-players').fadeToggle('fast', function(){
-				$(this).remove();
+				$('#notices-modal-players').fadeToggle('fast', function(){
+					$(this).remove();
 
-				$('.foe-helper-overlay').remove();
-			});
+					$('.foe-helper-overlay').remove();
+				});
 
-			Notice.buildBox();
+				Notice.buildBox();
 
-			$('.custom-option-noticePlayers').bind('click');
+				$('.custom-option-noticePlayers').bind('click');
+			}
 		});
 	},
 
@@ -664,11 +736,21 @@ let Notice = {
 					});
 				});
 
-				MainParser.send2Server({type:'grp',grps:grps}, 'Notice/sort', (resp)=>{
-					Notice.notes = resp['notice'];
+				MainParser.send2Server({type:'grp',grps:grps,apiToken:Notice.ApiToken}, 'Notice/sort', (resp)=>{
+					if(resp['status'] === 'ERROR') {
+						HTML.ShowToastMsg({
+							head: 'Error',
+							text: resp['msg'],
+							type: 'error',
+							hideAfter: 10000,
+						});
+					}
+					else {
+						Notice.notes = resp['notice'];
 
-					$('.notices').tabslet();
-					Notice.BuildSettingButtons();
+						$('.notices').tabslet();
+						Notice.BuildSettingButtons();
+					}
 				});
 			}
 		});
@@ -712,11 +794,21 @@ let Notice = {
 						});
 					});
 
-					MainParser.send2Server({type:'itm',itms:itms}, 'Notice/sort', (resp)=>{
-						Notice.notes = resp['notice'];
+					MainParser.send2Server({type:'itm',itms:itms,apiToken:Notice.ApiToken}, 'Notice/sort', (resp)=>{
+						if(resp['status'] === 'ERROR') {
+							HTML.ShowToastMsg({
+								head: 'Error',
+								text: resp['msg'],
+								type: 'error',
+								hideAfter: 10000,
+							});
+						}
+						else {
+							Notice.notes = resp['notice'];
 
-						$('.tabs-sub').tabslet();
-						Notice.BuildSettingButtons();
+							$('.tabs-sub').tabslet();
+							Notice.BuildSettingButtons();
+						}
 					});
 				}
 			});
@@ -750,17 +842,27 @@ let Notice = {
 	 * @constructor
 	 */
 	DeleteElement: (type, id)=> {
-		MainParser.send2Server({type:type,id:id}, 'Notice/del', (resp)=>{
-			Notice.notes = resp['notice'];
+		MainParser.send2Server({type:type,id:id,apiToken:Notice.ApiToken}, 'Notice/del', (resp)=>{
+			if(resp['status'] === 'ERROR') {
+				HTML.ShowToastMsg({
+					head: 'Error',
+					text: resp['msg'],
+					type: 'error',
+					hideAfter: 10000,
+				});
+			}
+			else {
+				Notice.notes = resp['notice'];
 
-			$('#notices-modal').fadeToggle('fast', function(){
-				$(this).remove();
+				$('#notices-modal').fadeToggle('fast', function(){
+					$(this).remove();
 
-				$('.foe-helper-overlay').remove();
-			});
+					$('.foe-helper-overlay').remove();
+				});
 
-			Notice.EditMode = false;
-			Notice.buildBox();
+				Notice.EditMode = false;
+				Notice.buildBox();
+			}
 		});
 	},
 
