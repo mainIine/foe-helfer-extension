@@ -82,8 +82,8 @@ FoEproxy.addHandler('RewardService', 'collectReward', async (data, postData) => 
 FoEproxy.addHandler('RewardService', 'collectRewardSet', async (data, postData) => {
 	//console.log(JSON.parse(JSON.stringify(data)))
 	let rewardIncidentSource = data.responseData.context;
-	if (rewardIncidentSource.indexOf('guild_raids')>=0) rewardIncidentSource='guild_raids';
-	if (rewardIncidentSource.indexOf('event')<0 && rewardIncidentSource != 'guild_raids') return;
+	if (rewardIncidentSource!='guild_raids' && rewardIncidentSource.indexOf('guild_raids')>=0) rewardIncidentSource='guild_raidsP'; //QI-Pass detection
+	if (rewardIncidentSource.indexOf('event')<0 && !["guild_raids","guild_raidsP"].includes(rewardIncidentSource)) return; //exclude Main city collection "collect all", "aid_all"
 	let rewards = data.responseData.reward.rewards;
     await IndexDB.getDB();
 	
@@ -93,7 +93,7 @@ FoEproxy.addHandler('RewardService', 'collectRewardSet', async (data, postData) 
 		let n = 1
 		if (rewardIncidentSource == 'guild_raids') {
 			let ref = null
-			for (ref of Stats.QI.RewardLookUp?.[Stats.QI.currentNode]?.[reward.type+"#"+reward.subType]) {
+			for (ref of (Stats.QI.RewardLookUp?.[Stats.QI.currentNode]?.[reward.type+"#"+reward.subType] || [])) {
 				n = reward.amount / ref.amount;
 				if (n!=Math.floor(n)) {
 					n = 1;
@@ -116,7 +116,8 @@ FoEproxy.addHandler('RewardService', 'collectRewardSet', async (data, postData) 
 
 		// Add reward incident record
 		for (let i=0;i<n;i++) {
-			await Stats.addReward(rewardIncidentSource, reward.amount ||0, reward.id);
+			let ris = rewardIncidentSource == 'guild_raidsP' ? 'guild_raids' : rewardIncidentSource;
+			await Stats.addReward(ris, reward.amount ||0, reward.id);
 		}
 	}
 });
