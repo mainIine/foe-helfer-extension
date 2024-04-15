@@ -223,6 +223,7 @@
     "Boxes.CityMap.OlderThan3Era": " are 3 Ages behind",
     "Boxes.CityMap.OlderThan4Era": " are 4+ Ages behind",
     "Boxes.CityMap.OutpostSubmit": "Submit to City-Planner",
+	"Boxes.CityMap.QIActionRechargeCycle": "every hour",
     "Boxes.CityMap.QICycle": "every 10 hours",
     "Boxes.CityMap.QIHint": "All displayed values assume your buildings have finished construction.",
     "Boxes.CityMap.ShowNoStreetBuildings": "Highlight buildings that do not need streets",
