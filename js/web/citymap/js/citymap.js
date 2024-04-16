@@ -1409,7 +1409,45 @@ let CityMap = {
 				return productions
 			return false
 		}
-		// to do: GB handling
+		// todo: GB handling
+		else if (data.type === "greatbuilding") {
+			let resource = {
+				type: 'resources',
+				resources: {}
+			}
+			if (data.state.current_product) {
+				if (data.state.current_product.product?.resources) {
+					resource.resources = data.state.current_product.product.resources
+				}
+				if (data.state.current_product.name === "clan_goods") {
+					resource.type = 'guildResources'
+				}
+				console.log(resource)
+			}
+			return false
+		}
+	},
+
+	getBuildingById(id) {
+		return Object.values(MainParser.NewCityMapData).find(x => x.id === id)
+	},
+
+	// todo
+	getBuildingProductionByCategory(building, category) {
+		//console.log(building.name, building.production)
+		let prod = 0
+		if (building.production) {
+			building.production.forEach(production => {
+				//console.log(production.resources[category])
+				if (production.resources[category]) {
+					let doubleMoney = (production.doubleWhenMotivated ? 2 : 1)
+					prod += production.resources[category] * doubleMoney
+				}
+			})
+		}
+		if (prod !== 0)
+			return prod
+		return category
 	},
 	
 	createNewCityMapEntity(ceData, data, era) {
@@ -1431,7 +1469,7 @@ let CityMap = {
 
 			population: this.setPopulation(ceData, data, era), 
 			happiness: this.setHappiness(ceData, data, era),
-			needsStreet: this.needsStreet(ceData, data),
+			needsStreet: this.needsStreet(ceData, data), // todo: check GB
 			
 			boosts: this.setBuildingBoosts(ceData, data, era),
 			production: this.setAllProductions(ceData, data, era),

@@ -287,8 +287,113 @@ let Productions = {
 
 		h.push('<div class="production-tabs tabs">');
 
+		Productions.BuildingsAll.forEach(building => {
+			let boosts = Object.keys(MainParser.BoostSums)
+			boosts.forEach(boost => {
+				let buildingBoost = {}
+				Productions.getBoost(building, boost, function(result) { buildingBoost = result })
+				if (buildingBoost != {}) {
+					if (buildingBoost.feature === "all")
+						if (Productions.BuildingsProducts[boost])
+							Productions.BuildingsProducts[boost].push(building.id)
+				}
+			})
+			if (building.state.production) {
+				building.state.production.forEach(production => {
+					if (production.type == "guildResources") { 
+						Productions.BuildingsProducts["clan_goods"].push(building.id)
+						if (production.resources.clan_power > 0)
+							Productions.BuildingsProducts["clan_power"].push(building.id)
+					}
+					if (production.type == "unit") { 
+						Productions.BuildingsProducts["units"].push(building.id)
+					}
+					if (production.resources.money) { 
+						Productions.BuildingsProducts["money"].push(building.id)
+					}
+					if (production.resources.medals) { 
+						Productions.BuildingsProducts["medals"].push(building.id)
+					}
+					if (production.resources.premium) { 
+						Productions.BuildingsProducts["premium"].push(building.id)
+					}
+					if (production.resources.strategy_points) { 
+						Productions.BuildingsProducts["strategy_points"].push(building.id)
+					}
+					if (production.resources.supplies) { 
+						Productions.BuildingsProducts["supplies"].push(building.id)
+					}
+				})
+			}
+			if (building.happiness !== 0) {
+				Productions.BuildingsProducts["happiness"].push(building.id)
+			}
+			if (building.population !== 0) {
+				Productions.BuildingsProducts["population"].push(building.id)
+			}
+		})
+
+		console.log(Productions.BuildingsProducts, Productions.Types)
+
+		Productions.Types.forEach(type => {
+			let buildingIds = Productions.BuildingsProducts[type]
+
+			Productions.SetTabs(type)
+
+			let groups = Productions.BuildingsProductsGroups[type],
+			table = [],
+			rowA = [],
+			rowB = [],
+			countProducts = [],
+			countProductsMotivated = [],
+			countProductsDone = [],
+			countAll = 0,
+			countAllMotivated = 0,
+			countAllDone = 0,
+			sizes = [],
+			sizetooltips = [];
+
+			buildingIds.forEach(id => {
+				let building = CityMap.getBuildingById(id)
+				rowA.push('<tr>')
+				rowA.push('<td>')
+				rowA.push((building.state.isPolivated !== undefined ? (building.state.isPolivated ? '<span class="text-bright">★</span>' : '☆') : ''))
+				rowA.push('</td>')
+				rowA.push('<td>' + building.name + '</td>')
+				rowA.push('<td>' + CityMap.getBuildingProductionByCategory(building, type) + '</td>')
+				rowA.push('<td>')
+				rowA.push(building.needsStreet !== 0 ? building.size.width*building.size.length+building.needsStreet + "???" : building.size.width*building.size.length)
+				rowA.push('</td>')
+				rowA.push('<td>' + i18n("Eras."+Technologies.Eras[building.eraName]) + '</td>')
+				rowA.push('<td style="white-space:nowrap">' + moment.unix(building.state.times?.at).fromNow() + '</td>')
+				rowA.push('<td class="text-right">')
+				rowA.push('<span class="show-entity" data-id="' + building.id + '"><img class="game-cursor" src="' + extUrl + 'css/images/hud/open-eye.png"></span>')
+				rowA.push('</td>')
+				rowA.push('</tr>')
+			})
+
+			table.push('<table class="foe-table sortable-table">')
+			table.push('<thead>')
+			table.push('<tr>')
+			table.push('<th> </th>')
+			table.push('<th>' + i18n('Boxes.BlueGalaxy.Building') + '</th>')
+			table.push('<th>' + i18n('Boxes.Productions.Headings.number') + '</th>')
+			table.push('<th>' + i18n('Boxes.Productions.Headings.size') + '</th>')
+			table.push('<th>' + i18n('Boxes.Productions.Headings.era') + '</th>')
+			table.push('<th>' + i18n('Boxes.Productions.Headings.Done') + '</th>')
+			table.push('<th> </th>')
+			table.push('</tr>')
+			table.push('</thead>')
+			table.push('<tbody>')
+			table.push( rowA.join('') )
+			table.push('</tbody>')
+			table.push('</table>')
+
+			Productions.SetTabContent(type, table.join(''));
+		})
+
 		// einzelne Güterarten durchsteppen
-		for(let pt in Productions.Types) {
+		/*for(let pt in Productions.Types) {
 			if (!Productions.Types.hasOwnProperty(pt)) break;
 			
 			let type = Productions.Types[pt];
@@ -644,55 +749,7 @@ let Productions = {
 			table.push('</table>');
 
 			Productions.SetTabContent(type, table.join(''));
-		}
-
-		Productions.BuildingsAll.forEach(building => {
-			let boosts = Object.keys(MainParser.BoostSums)
-			boosts.forEach(boost => {
-				let buildingBoost = {}
-				Productions.getBoost(building, boost, function(result) { buildingBoost = result })
-				if (buildingBoost != {}) {
-					if (buildingBoost.feature === "all")
-						if (Productions.BuildingsProducts[boost])
-							Productions.BuildingsProducts[boost].push(building.id)
-				}
-			})
-			if (building.state.production) {
-				building.state.production.forEach(production => {
-					if (production.type == "guildResources") { 
-						Productions.BuildingsProducts["clan_goods"].push(building.id)
-						if (production.resources.clan_power > 0)
-							Productions.BuildingsProducts["clan_power"].push(building.id)
-					}
-					if (production.type == "unit") { 
-						Productions.BuildingsProducts["units"].push(building.id)
-					}
-					if (production.resources.money) { 
-						Productions.BuildingsProducts["money"].push(building.id)
-					}
-					if (production.resources.medals) { 
-						Productions.BuildingsProducts["medals"].push(building.id)
-					}
-					if (production.resources.premium) { 
-						Productions.BuildingsProducts["premium"].push(building.id)
-					}
-					if (production.resources.strategy_points) { 
-						Productions.BuildingsProducts["strategy_points"].push(building.id)
-					}
-					if (production.resources.supplies) { 
-						Productions.BuildingsProducts["supplies"].push(building.id)
-					}
-				})
-			}
-			if (building.happiness !== 0) {
-				Productions.BuildingsProducts["happiness"].push(building.id)
-			}
-			if (building.population !== 0) {
-				Productions.BuildingsProducts["population"].push(building.id)
-			}
-		})
-
-		console.log(Productions.BuildingsProducts)
+		}*/
 
 		// alles auf einmal ausgeben
 		console.log(Productions.BuildingsAll)
