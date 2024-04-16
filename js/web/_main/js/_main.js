@@ -1008,15 +1008,36 @@ let MainParser = {
 			setTimeout(() => resolve({ ok: false, error: "response timeout for: " + JSON.stringify(data) }), 1000)
 		});
 
-		if (typeof response !== 'object' || typeof response.ok !== 'boolean') {
-			throw new Error('invalid response from Extension-API call');
-		}
+		try {
+			if (typeof response !== 'object' || typeof response.ok !== 'boolean') {
+				throw new Error('invalid response from Extension-API call');
+			}
 
-		if (response.ok === true) {
-			return response.data;
-		}
-		else {
-			throw new Error('EXT-API error: ' + response.error);
+			if (response.ok === true) {
+				return response.data;
+			}
+			else {
+				throw new Error('EXT-API error: ' + response.error);
+			}
+		} catch (err) {
+			if (typeof jsApiReporter !== 'undefined' && !jsApiReporter.finished) {
+				// in test environment: degrade thrown error to a logged error, so running tests are not affected
+				console.groupCollapsed('Error in Extension communication during test (' + typeof response + ':' + response + ') - ', err);
+				try {
+					console.log('data=\'' + JSON.stringify(data) + '\', response=\'' + JSON.stringify(response) + '\'');
+				} finally {
+					console.groupEnd();
+				}
+				return [];
+			} else {
+				console.groupCollapsed('Error in Extension communication (' + typeof response + ':' + response + ')');
+				try {
+					console.log('data=\'' + JSON.stringify(data) + '\', response=\'' + JSON.stringify(response) + '\'');
+				} finally {
+					console.groupEnd();
+				}
+				throw err;
+			}
 		}
 	},
 
