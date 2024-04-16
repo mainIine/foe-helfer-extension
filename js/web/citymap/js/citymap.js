@@ -411,7 +411,7 @@ let CityMap = {
 			supplies: supplies*euphoriaBoost,
 			att_def_boost_attacker: att_def_boost_attacker,
 			att_def_boost_defender: att_def_boost_defender,
-			actions:actions,
+			actions: actions,
 		}
 
 		out = '<div class="text-center" style="padding-bottom: 10px">'
@@ -1208,7 +1208,10 @@ let CityMap = {
 
 	// returns true or false
 	setConnection(ceData, data) {
-		return (this.needsStreet(ceData, data) == 0);
+		let connected = (this.needsStreet(ceData, data) == 0)
+		if (!connected) 
+			connected = (data.connected == 1)
+		return connected
 	},
 
 	// returns undefined if building is idle or there are no productions (yet)
@@ -1580,8 +1583,7 @@ let CityMap = {
 				return productions
 			return false
 		}
-		// todo: GB handling
-		else if (data.type === "greatbuilding") {
+		else if (data.type === 'greatbuilding') {
 			let resource = {
 				type: 'resources',
 				resources: {}
@@ -1590,13 +1592,21 @@ let CityMap = {
 				if (data.state.current_product.product?.resources) {
 					resource.resources = data.state.current_product.product.resources
 				}
-				if (data.state.current_product.name === "clan_goods") {
-					resource.type = 'guildResources'
+				if (data.state.current_product.name === 'penal_unit') { // alcatraz
+					resource.resources = {'random': data.state.current_product.amount}
+					resource.type = 'unit'
 				}
-				console.log(resource)
+				if (data.state.current_product.name === 'clan_goods') {
+					resource.type = 'guildResources'
+					resource.resources = {'all_goods_of_age': data.state.current_product.goods[0].value*5}
+				}
+				productions.push(resource)
 			}
+			if (productions.length > 0)
+				return productions
 			return false
 		}
+		// todo: rathaus
 	},
 
 	getBuildingById(id) {
@@ -1605,15 +1615,24 @@ let CityMap = {
 
 	// todo
 	getBuildingProductionByCategory(building, category) {
-		//console.log(building.name, building.production)
 		let prod = 0
 		if (building.production) {
 			building.production.forEach(production => {
-				//console.log(production.resources[category])
+				if (production.type == 'random') { // currently not in the production list
+					production.resources.forEach(resource => { // todo
+						if (resource.type+"s" == category) { // units 
+							prod += resource.amount * resource.dropChance
+						}
+					})
+				}
 				if (production.resources[category]) {
 					let doubleMoney = (production.doubleWhenMotivated ? 2 : 1)
 					prod += production.resources[category] * doubleMoney
 				}
+				if (production.type+"s" == category) { // units
+					prod += Object.values(production.resources)[0]
+				}
+				
 			})
 		}
 		if (prod !== 0)
@@ -1661,8 +1680,8 @@ let CityMap = {
 			level: (data.type == "greatbuilding" ? data.level : undefined), // level also includes eraId in raw data, we do not like that
 			max_level: (data.type == "greatbuilding" ? data.max_level : undefined)
 		}
-		//if (entity.type == 'random_production')
-		//	console.log('entity ',entity.name, entity, ceData, data)
+		if (entity.type != 'street')
+			console.log('entity ',entity.name, entity, ceData, data)
 		return entity
 	},
 };

@@ -298,8 +298,8 @@ let Productions = {
 							Productions.BuildingsProducts[boost].push(building.id)
 				}
 			})
-			if (building.state.production) {
-				building.state.production.forEach(production => {
+			if (building.production) {
+				building.production.forEach(production => {
 					if (production.type == "guildResources") { 
 						Productions.BuildingsProducts["clan_goods"].push(building.id)
 						if (production.resources.clan_power > 0)
@@ -323,6 +323,7 @@ let Productions = {
 					if (production.resources.supplies) { 
 						Productions.BuildingsProducts["supplies"].push(building.id)
 					}
+					// todo: random production?!
 				})
 			}
 			if (building.happiness !== 0) {
@@ -355,17 +356,21 @@ let Productions = {
 
 			buildingIds.forEach(id => {
 				let building = CityMap.getBuildingById(id)
+				let shortSide = parseFloat(Math.min(building.size.width, building.size.length))
+				let size = building.size.width*building.size.length
+				let sizeWithStreets = size + (building.state.connected == true ? (building.needsStreet > 0 ? shortSide * building.needsStreet / 2 : 0) : 0)
+
 				rowA.push('<tr>')
 				rowA.push('<td>')
 				rowA.push((building.state.isPolivated !== undefined ? (building.state.isPolivated ? '<span class="text-bright">★</span>' : '☆') : ''))
 				rowA.push('</td>')
 				rowA.push('<td>' + building.name + '</td>')
-				rowA.push('<td>' + CityMap.getBuildingProductionByCategory(building, type) + '</td>')
-				rowA.push('<td>')
-				rowA.push(building.needsStreet !== 0 ? building.size.width*building.size.length+building.needsStreet + "???" : building.size.width*building.size.length)
-				rowA.push('</td>')
+				rowA.push('<td data-number="'+CityMap.getBuildingProductionByCategory(building, type)+'">' + CityMap.getBuildingProductionByCategory(building, type) + '</td>')
+				rowA.push('<td>' + sizeWithStreets + '</td>')
 				rowA.push('<td>' + i18n("Eras."+Technologies.Eras[building.eraName]) + '</td>')
 				rowA.push('<td style="white-space:nowrap">' + moment.unix(building.state.times?.at).fromNow() + '</td>')
+				// todo: invalid date
+				rowA.push('<td style="white-space:nowrap">' + (building.state.times?.at * 1000 <= MainParser.getCurrentDateTime() ? '<strong class="success">' + i18n('Boxes.Productions.Done') : '') + '</strong></td>')
 				rowA.push('<td class="text-right">')
 				rowA.push('<span class="show-entity" data-id="' + building.id + '"><img class="game-cursor" src="' + extUrl + 'css/images/hud/open-eye.png"></span>')
 				rowA.push('</td>')
@@ -380,6 +385,7 @@ let Productions = {
 			table.push('<th>' + i18n('Boxes.Productions.Headings.number') + '</th>')
 			table.push('<th>' + i18n('Boxes.Productions.Headings.size') + '</th>')
 			table.push('<th>' + i18n('Boxes.Productions.Headings.era') + '</th>')
+			table.push('<th>' + i18n('Boxes.Productions.Headings.earning') + '</th>')
 			table.push('<th>' + i18n('Boxes.Productions.Headings.Done') + '</th>')
 			table.push('<th> </th>')
 			table.push('</tr>')
