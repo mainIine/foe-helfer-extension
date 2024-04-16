@@ -488,6 +488,10 @@ p {
 	background-image: url('../images/menu/citymap.png');
 }
 
+[id$=qiMap-Btn] span {
+	background-image: url('../images/menu/qimap.png');
+}
+
 [id$=chat-Btn] span {
 	background-image: url('../images/menu/chat.png');
 }
@@ -812,7 +816,13 @@ FP-Bar */
 }
 
 #fp-bar.guild_raids {
-	left: calc(50vw - 260px);
+	left: 237px;
+}
+#fp-bar.main .fp-bar-main{
+	display:none;
+}
+#fp-bar.main.over1k .fp-bar-main{
+	display: flex;
 }
 
 #fp-bar .fp-bar-main {
@@ -1849,6 +1859,10 @@ input[type="range"]::-webkit-slider-thumb {
 
 .textleft {
 	text-align: left;
+}
+
+.textright {
+	text-align: right;
 }
 
 span.activity {

@@ -1,6 +1,6 @@
 [	
 	{
-		"udate": "History Event 2024 (17 March 2024)"
+		"udate": "History Event 2024 (21 March 2024)"
 	},
 	{
 		"groupname": "Events"
@@ -619,7 +619,7 @@
 	{
 		"name": "Yggdrasil",
 		"buildings": [
-			{"first": "R_MultiAge_CulturalBuilding1a"}
+			{"first": "W_MultiAge_COP24A1"}
 		]
 	},
 	{
@@ -631,7 +631,7 @@
 	{
 		"name": "Shinto_Temple",
 		"buildings": [
-			{"first": "R_MultiAge_CulturalBuilding3a"}
+			{"first": "W_MultiAge_COP24B1"}
 		]
 	},
 	{
@@ -643,7 +643,7 @@
 	{
 		"name": "Royal_Bathhouse",
 		"buildings": [
-			{"first": "R_MultiAge_CulturalBuilding6a"}
+			{"first": "W_MultiAge_COP24C1"}
 		]
 	},
 	{
@@ -655,7 +655,7 @@
 	{
 		"name": "Sun_Temple",
 		"buildings": [
-			{"first": "R_MultiAge_CulturalBuilding7a"}
+			{"first": "W_MultiAge_COP24D1"}
 		]
 	},
 	{
@@ -668,13 +668,25 @@
 		"name": "Mughals_Temple",
 		"link": "Mughal%27s_Temple",
 		"buildings": [
-			{"first": "R_MultiAge_CulturalBuilding9a"}
+			{"first": "W_MultiAge_COP24E1"}
 		]
 	},
 	{
 		"name": "Minaret",
 		"buildings": [
 			{"first": "R_MultiAge_CulturalBuilding10a"}
+		]
+	},
+	{
+		"name": "Hut_of_the_Sacred_Instruments",
+		"buildings": [
+			{"first": "W_MultiAge_COP24J1"}
+		]
+	},
+	{
+		"name": "Great_Dance_Stage",
+		"buildings": [
+			{"first": "W_MultiAge_COP24JB1"}
 		]
 	},
 	{

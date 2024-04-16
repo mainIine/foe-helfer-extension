@@ -124,7 +124,7 @@ let Settings = {
 						)
 					);
 
-				if ("SelectedMenu" !== d['name'] && 'NotificationsPosition' !== d['name']) {
+				if ("SelectedMenu" !== d['name'] && 'NotificationsPosition' !== d['name'] && 'ApiToken' !== d['name']) {
 
 					let s = localStorage.getItem(d['name']);
 
@@ -393,7 +393,6 @@ let Settings = {
 	Help: () => {
 		return '<ul class="helplist">' +
 			'<li><a href="https://foe-helper.com" target="_blank"><span class="website">&nbsp;</span>' + i18n('Settings.Help.Website') + '</a></li>' +
-			'<li><a href="https://discuss.foe-helper.com/" target="_blank"><span class="forums">&nbsp;</span>' + i18n('Settings.Help.Forums') + '</a></li>' +
 			'<li><a href="https://discord.gg/uQY7rqDJ7z" target="_blank"><span class="discord">&nbsp;</span>' + i18n('Settings.Help.Discord') + '</a></li>' +
 			'<li><a href="https://github.com/mainIine/foe-helfer-extension/issues" target="_blank"><span class="github">&nbsp;</span>' + i18n('Settings.Help.Github') + '</a></li>' +
 			'</ul>';
@@ -659,9 +658,8 @@ let Settings = {
 			}),
 			value = localStorage.getItem('NotificationStack');
 
-		ip[0].defaultValue = ip[0].value = value;
-
 		if (null !== value) {
+			ip[0].defaultValue = ip[0].value = value;
 			ip.val(value);
 		}
 
@@ -670,6 +668,7 @@ let Settings = {
 
 			if (value > 0) {
 				localStorage.setItem('NotificationStack', value);
+
 			} else {
 				localStorage.removeItem('NotificationStack');
 			}
@@ -677,6 +676,47 @@ let Settings = {
 
 		return ip;
 	},
+
+
+	ApiTokenInput: ()=> {
+		let ip = $('<input />').addClass('setting-input').attr({
+				type: 'text',
+				id: 'api-token',
+				style: 'width:20em',
+				spellcheck: 'false',
+			}),
+			token = localStorage.getItem('ApiToken');
+
+		if (token !== null) {
+			ip[0].defaultValue = ip[0].value = token;
+			ip.val(token);
+		}
+
+		$('#SettingsBox').on('keyup blur', '#api-token', function () {
+			let value = $(this).val();
+
+			if (value !== '') {
+				if(value.length !== 36) {
+					HTML.ShowToastMsg({
+						head: i18n('Boxes.Settings.ApiTokenLengthWrongHeader'),
+						text: [
+							i18n('Boxes.Settings.ApiTokenLengthWrongBody')
+						],
+						type: 'error',
+						hideAfter: 10000,
+					});
+				}
+				else {
+					localStorage.setItem('ApiToken', value);
+				}
+
+			} else {
+				localStorage.removeItem('ApiToken');
+			}
+		});
+
+		return ip;
+	},
 };
 
-Settings.Init(); // Darf hier aufgerufen werden, da keine anderen Module benötigt werden. config.json soll bis zum StartUp geladen sein
+Settings.Init(); // May be called here, as no other modules are required. config.json should be loaded by StartUp

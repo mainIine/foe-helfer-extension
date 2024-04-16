@@ -20,7 +20,6 @@ FoEproxy.addFoeHelperHandler('QuestsUpdated', data => {
 let Calculator = {
 
 	ForderBonus: 90,
-    SoundFile: new Audio(extUrl + 'vendor/sounds/message.mp3'),
     PlayerName: undefined,
     LastPlayerID: 0,
     PlayInfoSound: null,
@@ -275,7 +274,7 @@ let Calculator = {
 
 		if (Calculator.LastRecurringQuests !== undefined && RecurringQuests !== Calculator.LastRecurringQuests) { //Schleifenquest gestartet oder abgeschlossen
 			if (PlaySound) { //Nicht durch Funktion PlaySound ersetzen!!! GetRecurringQuestLine wird auch vom EARechner aufgerufen.
-				if (Settings.GetSetting('EnableSound')) Calculator.SoundFile.play();
+				if (Settings.GetSetting('EnableSound')) helper.sounds.message.play();
 			}
         }
 
@@ -685,7 +684,7 @@ let Calculator = {
 	 */
     PlaySound: () => {
         if (Calculator.PlayInfoSound) {
-			if (Settings.GetSetting('EnableSound')) Calculator.SoundFile.play();
+			if (Settings.GetSetting('EnableSound')) helper.sounds.message.play();
         }
     },
 

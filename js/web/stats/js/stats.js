@@ -43,6 +43,10 @@ FoEproxy.addHandler('RewardService', 'collectReward', async (data, postData) => 
 	var [rewards, rewardIncidentSource] = r; // pair, 1st is reward list, second source of incident, e.g spoilsOfWar
     await IndexDB.getDB();
 	
+	if (rewardIncidentSource == "event_pass") {
+		if (postData[0].requestData[0].indexOf('guild_raids') >=0) rewardIncidentSource = 'guild_raids'
+	}
+
 	for (let reward of rewards) {
 
 		if (rewardIncidentSource === 'default') {
@@ -74,6 +78,81 @@ FoEproxy.addHandler('RewardService', 'collectReward', async (data, postData) => 
 		await Stats.addReward(rewardIncidentSource, reward.amount ||0, reward.id);
 	}
 });
+
+FoEproxy.addHandler('RewardService', 'collectRewardSet', async (data, postData) => {
+	//console.log(JSON.parse(JSON.stringify(data)))
+	let rewardIncidentSource = data.responseData.context;
+	if (rewardIncidentSource!='guild_raids' && rewardIncidentSource.indexOf('guild_raids')>=0) rewardIncidentSource='guild_raidsP'; //QI-Pass detection
+	if (rewardIncidentSource.indexOf('event')<0 && !["guild_raids","guild_raidsP"].includes(rewardIncidentSource)) return; //exclude Main city collection "collect all", "aid_all"
+	let rewards = data.responseData.reward.rewards;
+    await IndexDB.getDB();
+	
+	for (let reward of rewards) {
+		
+		//QI reward splitting
+		let n = 1
+		if (rewardIncidentSource == 'guild_raids') {
+			let ref = null
+			for (ref of (Stats.QI.RewardLookUp?.[Stats.QI.currentNode]?.[reward.type+"#"+reward.subType] || [])) {
+				n = reward.amount / ref.amount;
+				if (n!=Math.floor(n)) {
+					n = 1;
+				} else {
+					break;
+				}
+			}			
+			if (n!=1) reward = ref;
+		}
+
+		// Add reward info to the db
+		if (!(await IndexDB.db.statsRewardTypes.get(reward.id))) {
+			// Reduce amount of saved data
+			if (reward.unit) {
+				delete reward.unit;
+			}
+			delete reward.__class__;
+			await IndexDB.db.statsRewardTypes.put(reward);
+		}
+
+		// Add reward incident record
+		for (let i=0;i<n;i++) {
+			let ris = rewardIncidentSource == 'guild_raidsP' ? 'guild_raids' : rewardIncidentSource;
+			await Stats.addReward(ris, reward.amount ||0, reward.id);
+		}
+	}
+});
+
+//reward split for QI
+FoEproxy.addHandler('GuildRaidsMapService', 'getNodeExtendedInfo', async (data, postData) => {
+	let rewards = data.responseData?.reward?.reward?.possible_rewards
+	let nodeId = postData?.[0]?.requestData?.[0];
+	
+	if (!nodeId) return;
+	
+	Stats.QI.RewardLookUp[nodeId]={}
+	
+	if (!rewards) 	return
+	
+	for (let r of rewards) {
+		if (r.reward.type == 'chest') {
+			for (let c of r.reward.possible_rewards) {
+				if (!Stats.QI.RewardLookUp[nodeId][c.reward.type+"#"+c.reward.subType]) Stats.QI.RewardLookUp[nodeId][c.reward.type+"#"+c.reward.subType]=[];
+				Stats.QI.RewardLookUp[nodeId][c.reward.type+"#"+c.reward.subType].push(c.reward);
+			}
+		} else {
+			if (!Stats.QI.RewardLookUp[nodeId][r.reward.type+"#"+r.reward.subType]) Stats.QI.RewardLookUp[nodeId][r.reward.type+"#"+r.reward.subType]=[];
+			Stats.QI.RewardLookUp[nodeId][r.reward.type+"#"+r.reward.subType].push(r.reward);
+		}
+	}
+}),
+
+FoEproxy.addHandler('GuildRaidsMapService', 'getOverview', async (data, postData) => {
+	Stats.QI.currentNode = data.responseData.currentNode;
+}),
+FoEproxy.addHandler('GuildRaidsMapService', 'move', async (data, postData) => {
+	Stats.QI.currentNode = postData[0].requestData[0].pop();
+}),
+
 
 // Player treasure log
 FoEproxy.addHandler('ResourceService', 'getPlayerResources', async (data, postData) => {
@@ -156,12 +235,17 @@ FoEproxy.addHandler('ArmyUnitManagementService', 'getArmyInfo', async (data, pos
 let Stats = {
 
 	isVisitingCulturalOutpost: false,
-
+	goodsSubTypes:[],
 	ResMap: {
 		NoAge: ['money', 'supplies', 'tavern_silver', 'medals', 'premium'],
 		special: ['promethium', 'orichalcum', 'mars_ore', 'asteroid_ice', 'venus_carbon', 'unknown_dna','crystallized_hydrocarbons'],
 	},
 
+	QI:{
+		RewardLookUp:{},
+		stage:"",
+		currentNode:""
+	},
 	PlayableEras: [],
 
 	// State for UI
@@ -190,7 +274,11 @@ let Stats = {
 			Stats.ResMap[EraName] = [];
 
 			for (let i = 0; i < 5; i++) {
-				if (GoodsList[(Era - 2) * 5 + i]) Stats.ResMap[EraName].push(GoodsList[(Era - 2) * 5 + i].id);
+				if (GoodsList[(Era - 2) * 5 + i]) {
+					let g = GoodsList[(Era - 2) * 5 + i].id
+					Stats.ResMap[EraName].push(g);
+					Stats.goodsSubTypes.push(g);
+				}
             }
 		}
     },
@@ -511,6 +599,7 @@ let Stats = {
 				'__event', //event rewards
 				'battlegrounds_conquest', // Battlegrounds
 				'guildExpedition', // Temple of Relics
+				'guild_raids', //Quantum Incursion
 				'pvp_arena', //PvP Arena
 				'spoilsOfWar', // Himeji Castle
 				'diplomaticGifts', //Space Carrier
@@ -1235,46 +1324,79 @@ let Stats = {
 			//} 
 			// Asset image if not unit
 			let pointImage = '';
-			if (rewardInfo.type != 'unit') {
-				let url = '';
-				if ((rewardInfo.iconAssetName || rewardInfo.assembledReward && rewardInfo.assembledReward.iconAssetName)) {
-					const icon = rewardInfo.assembledReward && rewardInfo.assembledReward.iconAssetName ? rewardInfo.assembledReward.iconAssetName : rewardInfo.iconAssetName;
-					url = srcLinks.getReward(icon);
-					//fix for fragment missing images for buildings
-					if (rewardInfo.type == 'good' && rewardInfo.iconAssetName == 'random_goods' && rewardInfo.subType) {
-						url = srcLinks.get(`/shared/icons/reward_icons/reward_icon_random_goods.png`, true);
+			let url = '';
+			let text = '';
+			let amount = seriesMapBySource[it] || 1;
+			if (rewardInfo.type == "resource" && Stats.goodsSubTypes.includes(rewardInfo.subType)) rewardInfo.type="good";
+			switch (rewardInfo.type) {
+				case 'unit':
+					if (rewardInfo.subType == "rogue") {
+						url	= srcLinks.get("/shared/unit_portraits/armyuniticons_50x50/armyuniticons_50x50_rogue.jpg", true);
+						text = rewardInfo.name;
+					} else {
+						url = srcLinks.get("/shared/gui/pvp_arena/hud/pvp_arena_icon_army.png",true);
+						text = rewardInfo.amount + " " + (rewardInfo.amount > 1 ? i18n("General.Units"):i18n("General.Unit"));
 					}
-					if (rewardInfo.subType == 'fragment' && rewardInfo.subType) {
-						if (rewardInfo.assembledReward.type == 'building' && rewardInfo.subType){
-							url = srcLinks.get(`/city/buildings/${rewardInfo.assembledReward.subType.replace(/^(\w)_/, '$1_SS_')}.png`, true);
-						}
-					}
-				}else if (rewardInfo.type == 'building' && rewardInfo.subType) {
-						url = srcLinks.get(`/city/buildings/${rewardInfo.subType.replace(/^(\w)_/, '$1_SS_')}.png`, true);
-				}
-				if (url) {
 					pointImage = `<img src="${url}" style="width: 45px; height: 45px; margin-right: 4px;">`
-				}
-				return {
-					iconClass,
-					pointImage,
-					name: rewardInfo.name,
-					y: seriesMapBySource[it]
-				};
-			}
-			else {
-				let url	= srcLinks.get("/shared/unit_portraits/armyuniticons_50x50/armyuniticons_50x50_"+rewardInfo.subType+".jpg", true);
-				pointImage = `<img src="${url}" style="width: 45px; height: 45px; margin-right: 4px;">`
-				//console.log(rewardInfo)
-				return {
-					iconClass,
-					pointImage,
-					name: rewardInfo.name,
-					y: seriesMapBySource[it]
-				};
+					//console.log(rewardInfo)
+					return {
+						iconClass,
+						pointImage,
+						name: text,
+						y: amount
+					};
+				case 'good':
+					url = srcLinks.get("/shared/icons/goods/goods.png",true);
+					text = rewardInfo.amount + " " + (rewardInfo.amount > 1 ? i18n("General.Goods"):i18n("General.Good"));
+
+					pointImage = `<img src="${url}" style="width: 45px; height: 45px; margin-right: 4px;">`
+					return {
+						iconClass,
+						pointImage,
+						name: text,
+						y: amount
+					};
+				default:
+					url = '';
+					if ((rewardInfo.iconAssetName || rewardInfo.assembledReward && rewardInfo.assembledReward.iconAssetName)) {
+						const icon = rewardInfo.assembledReward && rewardInfo.assembledReward.iconAssetName ? rewardInfo.assembledReward.iconAssetName : rewardInfo.iconAssetName;
+						url = srcLinks.getReward(icon);
+						//fix for fragment missing images for buildings
+						if (rewardInfo.type == 'good' && rewardInfo.iconAssetName == 'random_goods' && rewardInfo.subType) {
+							url = srcLinks.get(`/shared/icons/reward_icons/reward_icon_random_goods.png`, true);
+						}
+						if (rewardInfo.subType == 'fragment' && rewardInfo.subType) {
+							if (rewardInfo.assembledReward.type == 'building' && rewardInfo.subType){
+								url = srcLinks.get(`/city/buildings/${rewardInfo.assembledReward.subType.replace(/^(\w)_/, '$1_SS_')}.png`, true);
+							}
+						}
+					} else if (rewardInfo.type == 'building' && rewardInfo.subType) {
+							url = srcLinks.get(`/city/buildings/${rewardInfo.subType.replace(/^(\w)_/, '$1_SS_')}.png`, true);
+					}
+					if (url) {
+						pointImage = `<img src="${url}" style="width: 45px; height: 45px; margin-right: 4px;">`
+					}
+					return {
+						iconClass,
+						pointImage,
+						name: rewardInfo.name,
+						y: amount
+					};
 			}
 
-		}).sort((a, b) => b.y - a.y);
+		})
+		let i=0;
+		while (i<serieData.length) {
+			let x = serieData.findIndex((it,j) => j > i && it.name == serieData[i].name)
+			if (x>=1) {
+				serieData[i].y+=serieData[x].y;
+				serieData.splice(x,1);
+			} else {
+				i+=1;
+			}
+		} 
+
+		serieData = serieData.sort((a, b) => b.y - a.y);
 
 		if (Stats.state.filter !="") {
 			serieData = serieData.filter( a => a.name.toLowerCase().includes(Stats.state.filter.toLowerCase()))

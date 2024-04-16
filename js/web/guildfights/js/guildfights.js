@@ -61,7 +61,6 @@ FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postDa
 	}
 
 	GuildFights.MapData = data['responseData'];
-	ActiveMap = 'gg';
 
 	$('#gildFight-Btn').removeClass('hud-btn-red');
 	$('#selectorCalc-Btn-closed').remove();

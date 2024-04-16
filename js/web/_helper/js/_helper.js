@@ -136,6 +136,10 @@ helper.permutations = (()=>{
 	return permutations;
 })();
 
+helper.sounds = {
+	ping: new Audio(extUrl + 'vendor/sounds/ping.mp3'),
+    message: new Audio(extUrl + 'vendor/sounds/message.mp3'),
+};
 
 let HTML = {
 
@@ -396,7 +400,8 @@ let HTML = {
 	MinimizeBeforeBattle: () => {
 		let HideHelperDuringBattle = localStorage.getItem('HideHelperDuringBattle');
 		let MenuSetting = localStorage.getItem('SelectedMenu');
-		if (HideHelperDuringBattle == 'true' && MenuSetting == 'Box' && $('body').find("#menu_box").hasClass('open')) {
+
+		if (HideHelperDuringBattle === 'true' && MenuSetting === 'Box' && $('body').find("#menu_box").hasClass('open')) {
 			HTML.Minimize();
 			HTML.boxWasMinimizedForBattle = true;
 		}
@@ -608,7 +613,7 @@ let HTML = {
 
 
 	/**
-	 * Zweiter Klick auf das Menü-Icon schliesst eine ggf. offene Box
+	 * A second click on the menu icon closes any open box
 	 *
 	 * @param cssid
 	 * @returns {boolean}
@@ -704,7 +709,7 @@ let HTML = {
 
 
 	/**
-	 * Ersetzt Variablen in einem String mit Argumenten
+	 * Replaces variables in a string with arguments
 	 *
 	 * @param string
 	 * @param args
@@ -728,12 +733,11 @@ let HTML = {
 
 
 	/**
-	* Ersetzt " durch &quot;
-	*
-	* @param string
-	* @param args
-	* @returns {*}
-	*/
+	 * Replaces " with &quot;
+	 *
+	 * @param string
+	 * @returns {*}
+	 */
 	i18nTooltip: (string) => {
 		return string.replace(/"/g, "&quot;")
 	},

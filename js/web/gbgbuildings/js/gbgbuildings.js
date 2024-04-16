@@ -101,13 +101,14 @@ let GBGBuildings = {
 					needed.splice(i,1);
 					keep.push(b)
 				} else 
-					leftStanding.push(b);
+				if (b!="free") leftStanding.push(b);
 			}
 			if (leftStanding.length > 0) {
 				for (b of needed) {
 					let i = leftStanding.findIndex(x => GBGBuildings.block[x]>=GBGBuildings.block[b] && b != "free");
 					if (i>=0) s["ignore"] = true;
 				}
+				if (leftStanding.length <= keep.filter(x => x=="free").length) s["ignore"] = true;
 			}
 			if (!s.ignore) {
 				for (let n of needed) {
@@ -149,7 +150,7 @@ let GBGBuildings = {
 			if (sets[i].ignore) continue;
 			for (let j = i+1; j<sets.length; j++) {
 				if (sets[j].ignore) continue;
-				if (sets[j].avgCosts>sets[i].avgCosts && sets[j].absCosts>=sets[i].absCosts) {
+				if (sets[j][sortby]>sets[i][sortby] && sets[j].absCosts>=sets[i].absCosts) {
 					sets[j].ignore = true;
 					continue;
 				}
