@@ -33,6 +33,7 @@ let CityMap = {
 	EraOutpostData: null,
 	EraOutpostAreas: [],
 	QIData: null,
+	QIStats: null,
 	QIAreas: [],
 
 
@@ -147,7 +148,7 @@ let CityMap = {
 		$('#city-map-overlayHeader > .title').attr('id', 'map' + CityMap.hashCode(Title));
 
 		if (ActiveMap === "cultural_outpost" || ActiveMap === "era_outpost" || ActiveMap === "guild_raids") {
-			oB.addClass('outpost')
+			oB.addClass('outpost').addClass(ActiveMap)
 		}
 
 		let menu = $('<div />').attr('id', 'city-map-menu');
@@ -208,7 +209,7 @@ let CityMap = {
 		});
 
 		// Button for submit Box
-		if (CityMap.IsExtern === false) {
+		if (CityMap.IsExtern === false && ActiveMap === 'main') {
 			menu.append($('<input type="text" id="BuildingsFilter" placeholder="'+ i18n('Boxes.CityMap.FilterBuildings') +'" oninput="CityMap.filterBuildings(this.value)">'));
 			menu.append(
 				$('<div />').addClass('btn-group')
@@ -227,11 +228,16 @@ let CityMap = {
 				);
 		}
 
+		oB.append(wrapper)
+		$('#citymap-wrapper').append(menu)
 
-		/* In das Menü "schieben" */
-		oB.append(wrapper);
-		$('#citymap-wrapper').append(menu);
+		if (ActiveMap === "guild_raids") {
+			$("#sidebar").append(CityMap.showQIStats())
+			$("#sidebar").append(CityMap.showQIBuildings())
+		}
+
 	},
+
 
 	/**
 	 * Erzeugt ein Raster für den Hintergrund
@@ -340,13 +346,158 @@ let CityMap = {
 			$('#grid-outer').append( f );
 		}
 
-		// Gebäudenamen via Tooltip
 		$('.entity').tooltip({
 			container: '#city-map-overlayBody',
 			html: true
 		});
 
 		$('#grid-outer').draggable();
+	},
+
+
+	showQIStats: () => {
+		let buildings = Object.values(CityMap.QIData)
+		let population = 0, totalPopulation = 0, euphoria = 0, euphoriaBoost = 0, supplies = 0, money = 0, att_def_boost_attacker = 0, att_def_boost_defender = 0
+		for (let b in buildings) {
+			let building = CityMap.setQIBuilding(MainParser.CityEntities[buildings[b]['cityentity_id']])
+			if (building.type !== "impediment" && building.type !== "street") {
+				population += building.population
+				euphoria += building.euphoria
+				totalPopulation += (building.population > 0 ? building.population : 0)
+				
+				if (building.boosts !== null) {
+					for (let i in building.boosts) {
+						let boost = building.boosts[i]
+						if (boost.type === "att_def_boost_attacker")
+							att_def_boost_attacker += boost.value 
+						if (boost.type === "att_def_boost_defender")
+							att_def_boost_defender += boost.value 
+					}
+				}
+				if (building.production !== null) {
+					if (building.type !== "military" && building.type !== "goods" && building.type !== "main_building") {
+						if (building.production.guild_raids_supplies)
+							supplies += building.production.guild_raids_supplies
+						if (building.production.guild_raids_money)
+							money += building.production.guild_raids_money
+					}
+				}
+			}
+		}
+		let euphoriaFactor = euphoria/totalPopulation
+		if (euphoriaFactor < 0.2)
+			euphoriaBoost = 0.2
+		else if (euphoriaFactor > 0.20 && euphoriaFactor <= 0.60)
+			euphoriaBoost = 0.6
+		else if (euphoriaFactor > 0.60 && euphoriaFactor <= 0.80)
+			euphoriaBoost = 0.8
+		else if (euphoriaFactor > 0.80 && euphoriaFactor <= 1.20)
+			euphoriaBoost = 1
+		else if (euphoriaFactor > 1.20 && euphoriaFactor <= 1.40)
+			euphoriaBoost = 1.1
+		else if (euphoriaFactor > 1.40 && euphoriaFactor < 2.0)
+			euphoriaBoost = 1.2
+		else 
+			euphoriaBoost = 1.5
+
+		CityMap.QIStats = {
+			population: population,
+			totalPopulation: totalPopulation,
+			euphoria: euphoria,
+			euphoriaBoost: euphoriaBoost,
+			money: money*euphoriaBoost,
+			supplies: supplies*euphoriaBoost,
+			att_def_boost_attacker: att_def_boost_attacker,
+			att_def_boost_defender: att_def_boost_defender,
+		}
+
+		out = '<div class="text-center" style="padding-bottom: 10px">'
+		out += '<p><i>'+i18n('Boxes.CityMap.QIHint')+'</i></p>'
+		out += '<span class="prod population">'+CityMap.QIStats.population+'/'+CityMap.QIStats.totalPopulation+'</span> '
+		out += '<span class="prod happiness">'+CityMap.QIStats.euphoriaBoost*100+'%</span> <br>'
+		out += '<span class="prod guild_raids_money">'+HTML.Format(CityMap.QIStats.money)+'</span> + '
+		out += '<span class="prod guild_raids_supplies">'+HTML.Format(CityMap.QIStats.supplies)+'</span> '+i18n('Boxes.CityMap.QICycle')+'<br>'
+		out += '<span class="prod att_def_boost_attacker">'+CityMap.QIStats.att_def_boost_attacker+'</span> '
+		out += '<span class="prod att_def_boost_defender">'+CityMap.QIStats.att_def_boost_defender+'</span> '
+		out += "<div>"
+		return out
+	},
+
+
+	showQIBuildings: () => {
+		let buildings = Object.values(CityMap.QIData)
+		buildings.sort((a, b) => {
+			const nameA = a.cityentity_id; 
+			const nameB = b.cityentity_id;
+			if (nameA < nameB) {
+			  return -1
+			}
+			if (nameA > nameB) {
+			  return 1
+			}
+			return 0
+		})
+
+		let out = '<table class="foe-table">'
+		out += '<thead><tr><th>'+i18n('Boxes.CityMap.Building')+'</th><th class="population textright"></th><th class="happiness textright"></th><th>'+i18n('Boxes.CityMap.Boosts')+'</th></tr></thead>'
+		out += "<tbody>"
+		for (let b in buildings) {
+			let building = CityMap.setQIBuilding(MainParser.CityEntities[buildings[b]['cityentity_id']])
+
+			if (building.type !== "impediment" && building.type !== "street") {
+				out += "<tr><td>" + building.name + "</td>"
+				out += '<td class="textright">' + building.population + "</td>"
+				out += '<td class="textright">' + building.euphoria + "</td>"
+				out += "<td>"
+				if (building.production !== null) {
+					if (building.type === "goods" || building.type === "military") {
+						out += (building.type === "goods" ? "+20 = " : "+10 = ")
+						out += (building.production.guild_raids_supplies ? '<span class="prod guild_raids_supplies">'+HTML.Format(building.production.guild_raids_supplies*-1.0)+'</span> ' : " ")
+						out += (building.production.guild_raids_money ? '<span class="prod guild_raids_money">'+HTML.Format(building.production.guild_raids_money*-1.0)+'</span> ' : "")	
+					}
+					else {
+						let eBoost = (building.type === "main_building" ? 1.0 : CityMap.QIStats.euphoriaBoost)
+						out += (building.production.guild_raids_supplies ? '<span class="prod guild_raids_supplies">'+HTML.Format(building.production.guild_raids_supplies*eBoost)+'</span> ' : " ")
+						out += (building.production.guild_raids_money ? '<span class="prod guild_raids_money">'+HTML.Format(building.production.guild_raids_money*eBoost)+'</span> ' : "")
+					}
+				}
+				if (building.boosts !== null) {
+					for (let i in building.boosts) {
+						let boost = building.boosts[i]
+						out += '<span class="prod '+boost.type+'">' + boost.value + '</span> '
+					}
+				}
+				out += "</td></tr>"
+			}
+		}
+		out += "</tbody></table>"
+		return out
+	},
+
+
+	setQIBuilding: (data) => {
+		let production = data.components?.AllAge?.production?.options
+		if (production !== undefined && production.length === 1) // goods and units have multiple production options, rest has one
+			production = data.components?.AllAge?.production?.options[0]?.products[0]?.playerResources?.resources
+		else if (production !== undefined && production.length > 1) 
+			production = data.components?.AllAge?.production?.options[3]?.products[0]?.requirements?.resources
+		if (data.type === "main_building")
+			production = data.available_products[0].product.resources
+
+		let euphoria = data.components?.AllAge?.staticResources?.resources?.resources?.guild_raids_happiness
+		let boosts = data.components?.AllAge?.boosts?.boosts
+		let population = data.components?.AllAge?.staticResources?.resources?.resources.guild_raids_population
+
+		let building = {
+			name: data.name,
+			boosts: boosts || null,
+			euphoria: euphoria || 0,
+			population: population || 0,
+			production: production || null,
+			type: data.type
+		}
+
+		return building
 	},
 
 
@@ -606,6 +757,22 @@ let CityMap = {
 	 */
 	SubmitData: ()=> {
 
+		let apiToken = localStorage.getItem('ApiToken');
+
+		if(apiToken === null) {
+			HTML.ShowToastMsg({
+				head: i18n('Boxes.CityMap.MissingApiKeyErrorHeader'),
+				text: [
+					i18n('Boxes.CityMap.MissingApiKeySubmitError'),
+					`<a target="_blank" href="${i18n('Settings.ApiTokenUrl')}">${i18n('Settings.ApiTokenUrl')}</a>`
+				],
+				type: 'error',
+				hideAfter: 10000,
+			});
+
+			return;
+		}
+
 		let currentDate = new Date(),
 			d = {
 				time: currentDate.toISOString().split('T')[0] + ' ' + currentDate.getHours() + ':' + currentDate.getMinutes() + ':' + currentDate.getSeconds(),
@@ -613,8 +780,10 @@ let CityMap = {
 					name: ExtPlayerName,
 					id: ExtPlayerID,
 					world: ExtWorld,
-					avatar: ExtPlayerAvatar
+					avatar: ExtPlayerAvatar,
+					avatarUrl: srcLinks.GetPortrait(ExtPlayerAvatar)
 				},
+				apiToken: apiToken,
 				eras: Technologies.Eras,
 				entities: MainParser.CityMapData,
 				areas: CityMap.UnlockedAreas,
@@ -643,10 +812,7 @@ let CityMap = {
 			else {
 				HTML.ShowToastMsg({
 					head: i18n('Boxes.CityMap.SubmitErrorHeader'),
-					text: [
-						i18n('Boxes.CityMap.SubmitError'),
-						'<a href="https://github.com/mainIine/foe-helfer-extension/issues" target="_blank">Github</a>'
-					],
+					text: resp['msg'],
 					type: 'error',
 					hideAfter: 10000,
 				});
@@ -687,7 +853,7 @@ let CityMap = {
 			Ret['xsize'] = CityEntity['width'];
 			Ret['ysize'] = CityEntity['length'];
 
-			if (CityEntity['type'] !== 'street') {
+			if (!['street','main_building'].includes(CityEntity['type'])) {
 				Ret['streets_required'] = CityEntity['requirements']['street_connection_level'] | 0;
 			}
 			else {

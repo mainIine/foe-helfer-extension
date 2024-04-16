@@ -6,6 +6,12 @@
 		"sort": 0
 	},
 	{
+		"name": "ApiToken",
+		"callback": "ApiTokenInput",
+		"group": "Sending",
+		"sort": 1
+	},
+	{
 		"name": "AutomaticNegotiation",
 		"status": true,
 		"group": "Boxes",
@@ -144,6 +150,12 @@
 		"sort": 19
 	},
 	{
+		"name": "RivalSound",
+		"status": true,
+		"group": "Boxes",
+		"sort": 20
+	},
+	{
 		"name": "ChangeLanguage",
 		"callback": "LanguageDropdown",
 		"group": "Extension",
@@ -153,61 +165,61 @@
 		"name": "SelectedMenu",
 		"callback": "MenuSelected",
 		"group": "Extension",
-		"sort": 1
+		"sort": 2
 	},
 	{
 		"name": "MenuContent",
 		"callback": "MenuContent",
 		"group": "Extension",
-		"sort": 2
+		"sort": 3
 	},
 	{
 		"name": "MenuLength",
 		"callback": "MenuInputLength",
 		"group": "Extension",
-		"sort": 3
+		"sort": 4
 	},
 	{
 		"name": "ResetBoxPositions",
 		"button": "ResetBoxCoords",
 		"group": "Extension",
-		"sort": 4
+		"sort": 5
 	},
 	{
 		"name": "ExportSettings",
 		"callback": "ExportView",
 		"group": "Extension",
-		"sort": 5
+		"sort": 6
 	},
 	{
 		"name": "EnableSound",
 		"status": true,
 		"group": "Extension",
-		"sort": 6
+		"sort": 7
 	},
 	{
 		"name": "ShowNotifications",
 		"status": true,
 		"group": "Extension",
-		"sort": 7
+		"sort": 8
 	},
 	{
 		"name": "NotificationsPosition",
 		"callback": "NotificationView",
 		"group": "Extension",
 		"status": "bottom-right",
-		"sort": 8
+		"sort": 9
 	},
 	{
 		"name": "NotificationsStack",
 		"callback": "NotificationStack",
 		"group": "Extension",
-		"sort": 9
+		"sort": 10
 	},
 	{
 		"name": "LoadBeta",
 		"group": "Extension",
-		"sort": 9
+		"sort": 11
 	},
 	{
 		"name": "About",

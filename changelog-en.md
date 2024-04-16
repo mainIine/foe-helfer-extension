@@ -1,15 +1,76 @@
 ## Changelog - Extension
 
 
+##### 3.6.4.0
+
+**Update**
+- Website Communication:
+	- Transmitting data (Notes + City planner) to the website now needs a token
+	- the token will be generated on the website after registration and needs to be entered in the helper settings
+
+- City Overview:
+	- in QI gives a production overview
+- Cardgame:
+	- the low health blocker now closes together with the helper box
+- Kits:
+	- Favourites can be selected and filtered for
+
+**BugFix**
+- Statistics:
+	- some goods rewards were not combined
+
+---
+
 ##### 3.6.3.0
 
 **Update**
 - City Overview:
-	- New: City Overview for settlements, colonies and Quantum Incursions
+	- new: City Overview for Settlements, Space Colonies and Quantum Incursions
+- Card Game:
+	- adapted to History 2024 changes
+- Quests:
+	- when a rival quest is done, a sound will alert the player of that (can be deactivated in the settings)
+- FP Collector:
+	- added sources "QI and "Event pass"
+- Statistics:
+	- added rewards from QI
+	- goods rewards and units rewards will now be grouped instead of beeing listed individually for every type
+- Settlements:
+	- added images for polynesia
+- GvG:
+	removed the module	
+- FP Bar:
+	- moved it to the left in QI
+	- now also shows in the main city when more than 999 FP in bar
+- GBG Building suggestion:
+	- removed some suggestions
+	- added some highlighting
+- Music:
+	- added new tracks (polynesia and history)
+	- removed category GvG
+- Kits:
+	- added items up to history event 2024
+	- added a way to make items favourites and a highlight Option for that
+- idle-game:
+	- now has a separate timer for 6.3Q (25% Discount)
+- Battle Advisor:
+	- updated styling
 
 **BugFix**
 - St Patrick:
 	- it was possible that the strategy could not be edited
+- Titan GBs:
+	- some boosts were wrong
+- Kits:
+	- wrong image data was used in some cases
+- Production:
+	- townhall space requirement assumed the needs for a road
+- Battle Advisor:
+	- corrected army images for QI
+- Merger-Game:
+	- corrected key values
+- Recurring Quests (diamonds tracker):
+	- it was possible for 1 or 2 quests of the previous era to show up in the next era - this should no longer happen as soon as the player enters the next era
 
 ---
 
@@ -27,7 +88,7 @@
 	- fix 4x chance for first run
 
 - Statistics:
-	- improved datepicker (thanks Linnum!)
+	- improved datepicker (thanks Linnun!)
 
 ---
 
