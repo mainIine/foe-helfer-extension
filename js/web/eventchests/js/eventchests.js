@@ -108,7 +108,7 @@ let EventChests = {
         h.push('<thead>' +
             '<tr>' +
             '<th colspan="3" class="text-center">' + i18n('Boxes.EventChests.MainPrize') + '</th>' +
-            '<th colspan="3" class="text-center">' + i18n('Boxes.EventChests.MainPrizeTitle') + EventChests.Chests[0]['dailyprizename'] + '</th>' +
+            '<th colspan="3" class="text-center">' + i18n('Boxes.EventChests.MainPrizeTitle') + '</th>' +
             '</tr>' +
 
             '<tr>' +
