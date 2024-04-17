@@ -144,9 +144,12 @@ FoEproxy.addHandler('CardGameService', 'all', (data, postData) => {
 		return
 	}
 
-	if (cardGame.health!=0) {
+	if (cardGame.health!=0 && !data.responseData.enemiesDefeated) {
 		cardGame.checkHealth();
 		cardGame.showCardsList();
+	} else {
+		$('#cardGameDialog').remove()
+		$('#cardGameFightBlocker').remove();
 	}
 });
 
