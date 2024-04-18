@@ -1264,6 +1264,13 @@ let CityMap = {
 							}
 						}
 					}
+					if (data.state.current_product.name === 'penal_unit') { // alcatraz
+						let production = {
+							resources: {'random': parseFloat(data.state.current_product.amount)},
+							type: "unit",
+						}
+						productions.push(production)
+					}
 					if (data.state.is_motivated) { 
 						ceData.abilities.forEach(ability => { // random units are not in the data, they are in the ceData for some reason
 							if (ability.__class__ === "RandomUnitOfAgeWhenMotivatedAbility") {
@@ -1608,7 +1615,7 @@ let CityMap = {
 					resource.resources = data.state.current_product.product.resources
 				}
 				if (data.state.current_product.name === 'penal_unit') { // alcatraz
-					resource.resources = {'random': data.state.current_product.amount}
+					resource.resources = {'random': parseFloat(data.state.current_product.amount)}
 					resource.type = 'unit'
 				}
 				if (data.state.current_product.name === 'clan_goods') {
@@ -1664,6 +1671,7 @@ let CityMap = {
 		let prod = 0
 		if (building.state.production) {
 			building.state.production.forEach(production => {
+				//console.log(building.name, production)
 				if (production.type == 'random') { // currently not in the production list
 					production.resources.forEach(resource => { // todo
 						if (resource.type+"s" == category) { // units 
@@ -1677,6 +1685,7 @@ let CityMap = {
 				}
 				if (production.type+"s" == category) { // units
 					prod += Object.values(production.resources)[0]
+					console.log(building.name, prod, production)
 				}
 				if (category == "clan_goods" && production.type == "guildResources") { // units
 					prod = production.resources.all_goods_of_age
@@ -1742,8 +1751,8 @@ let CityMap = {
 			max_level: (data.type == "greatbuilding" ? data.max_level : undefined)
 		}
 		
-		//if (entity.type != 'street')
-		//	console.log('entity ',entity.name, entity, ceData, data)
+		if (entity.type != 'street')
+			console.log('entity ',entity.name, entity, ceData, data)
 		return entity
 	},
 };
