@@ -126,11 +126,11 @@ let Productions = {
 
 		let ProdBonus = 0;
 		if (HappinessSum < PopulationSum) 
-			ProdBonus = 0.5
+			ProdBonus = -0.5
 		else if (HappinessSum < 1.4 * PopulationSum) 
 			ProdBonus = 0
 		else 
-			ProdBonus = 1.2
+			ProdBonus = 0.2
 
 		Productions.HappinessBoost = ProdBonus
 		Productions.Boosts['money'] += ProdBonus
@@ -363,7 +363,7 @@ let Productions = {
 			countProductsDone = [],
 			countAll = 0,
 			countAllMotivated = 0,
-			countAllDone = 0,
+			typeSum = 0,
 			sizes = [],
 			sizetooltips = [];
 
@@ -378,34 +378,28 @@ let Productions = {
 				rowA.push((building.state.isPolivated !== undefined ? (building.state.isPolivated ? '<span class="text-bright">★</span>' : '☆') : ''))
 				rowA.push('</td>')
 				rowA.push('<td>' + building.name + '</td>')
-				if (building.state.isPolivated == false) {
-					if (type != 'fragments') {
-						let amount = parseFloat(CityMap.getBuildingProductionByCategory(building, type))
-						if (type == 'money' && building.type != "greatbuilding") {
-							amount = amount + (amount * MainParser.BoostSums.coin_production / 100)
-						}
-						rowA.push('<td data-number="'+amount+'">')
-						rowA.push(HTML.Format(amount))
-						rowA.push('</td>')
+				// todo: warum haben hüpfkürbisse ne produktion obwohl sie nicht laufen
+				// todo: yeah.. something
+				if (type != 'fragments') {
+					let amount = parseFloat(CityMap.getBuildingCurrentProductionByCategory(building, type))
+					if (building.state.isPolivated == false) {
+						amount = parseFloat(CityMap.getBuildingProductionByCategory(building, type))
 					}
-					else {
-						rowA.push('<td>' + CityMap.getBuildingFragments(building) + '</td>')
+
+					if (type == 'money' && building.type != "greatbuilding") {
+						amount = Math.round(amount + (amount * ((MainParser.BoostSums.coin_production + (Productions.HappinessBoost * 100)) / 100)))
 					}
+					else if (type == 'supplies' && building.type != "greatbuilding") {
+						amount = Math.round(amount + (amount *((MainParser.BoostSums.supply_production + (Productions.HappinessBoost * 100)) / 100)))
+					}
+					rowA.push('<td data-number="'+amount+'">')
+					rowA.push(HTML.Format(amount))
+					rowA.push('</td>')
+
+					typeSum += amount
 				}
-				else { // polivated buildings
-					if (type != 'fragments') {
-						let amount = parseFloat(CityMap.getBuildingCurrentProductionByCategory(building, type))
-						if (type == 'money' && building.type != "greatbuilding") {
-							console.log(building.name, Productions.HappinessBoost, MainParser.BoostSums.coin_production / 100)
-							amount = amount + (amount * MainParser.BoostSums.coin_production / 100 * Productions.HappinessBoost) 
-						}
-						rowA.push('<td data-number="'+amount+'">')
-						rowA.push(HTML.Format(amount))
-						rowA.push('</td>')
-					}
-					else {
-						rowA.push('<td>' + CityMap.getBuildingFragments(building) + '</td>')
-					}
+				else {
+					rowA.push('<td>' + CityMap.getBuildingFragments(building) + '</td>')
 				}
 				rowA.push('<td>' + i18n("Eras."+Technologies.Eras[building.eraName]) + '</td>')
 				rowA.push('<td style="white-space:nowrap">' + moment.unix(building.state.times?.at).fromNow() + '</td>')
@@ -419,6 +413,9 @@ let Productions = {
 
 			table.push('<table class="foe-table sortable-table">')
 			table.push('<thead>')
+			table.push('<tr>')
+			table.push('<th colspan="7" class="textright">'+HTML.Format(parseFloat(typeSum))+'</th>')
+			table.push('</tr>')
 			table.push('<tr>')
 			table.push('<th> </th>')
 			table.push('<th>' + i18n('Boxes.BlueGalaxy.Building') + '</th>')
