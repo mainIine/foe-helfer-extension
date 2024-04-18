@@ -982,25 +982,38 @@ let CityMap = {
 		let bgHappiness = data.bonus
 		if (data.type != "generic_building") {
 			if (ceData.entity_levels.length > 0) { // special building
-				if (ceData.entity_levels[eraId].provided_happiness)
-					return ceData.entity_levels[eraId].provided_happiness
+				if (ceData.entity_levels[eraId].provided_happiness) 
+					return (data.state.__class__ == "PolishedState" ? ceData.entity_levels[eraId].provided_happiness*2 : ceData.entity_levels[eraId].provided_happiness)
 				return happiness
 			}
 			else if (bgHappiness) { // great building, e.g. Alcatraz
-				if (bgHappiness.type == "happiness")
+				if (bgHappiness.type == "happiness") 
 					return bgHappiness.value
 				return 0
 			} 
-			else if (ceData.provided_happiness)  // decorations etc.
-				return ceData.provided_happiness
+			else if (ceData.provided_happiness) { // decorations etc.
+				return (data.state.__class__ == "PolishedState" ? ceData.provided_happiness*2 : ceData.provided_happiness)
+			}
 			else 
 				return happiness
 		}
-		else { //generic building
+		else { // generic building
 			if (ceData.components[era]) {
+				//console.log(ceData.name, ceData.components[era].happiness)
 				let bHappiness = ceData.components[era].happiness
-				if (bHappiness)
+				if (bHappiness) {
 					return (bHappiness.provided ? bHappiness.provided : happiness)
+				}
+				return happiness
+			}
+			else if (ceData.components.AllAge) {
+				let bHappiness = ceData.components.AllAge.happiness
+				if (bHappiness) {
+					if (ceData.components.AllAge.socialInteraction?.interactionType === 'polish' && data.state.socialInteractionId === 'polish') 
+						return (bHappiness.provided ? bHappiness.provided*2 : happiness)
+					else
+						return (bHappiness.provided ? bHappiness.provided : happiness)
+				}
 				return happiness
 			}
 		}
@@ -1334,6 +1347,7 @@ let CityMap = {
 		}
 		if (amount == 0) 
 			amount = lookupData.amount
+		// todo: something is undefined with the amounts of BP from vineyard
 
 		let name = ""
 		if (lookupData) 
@@ -1518,6 +1532,7 @@ let CityMap = {
 			return false
 		}
 		else if (data.type === "generic_building") {
+			// fyi: generic_building supplies and coins are always doubled when motivated
 			let production = ceData.components[era]?.production || ceData.components.AllAge.production // currently it is either allage or era, never both
 			if (production) {
 				production.options[0].products.forEach(product => {
@@ -1632,12 +1647,58 @@ let CityMap = {
 				if (production.type+"s" == category) { // units
 					prod += Object.values(production.resources)[0]
 				}
-				
+				if (category == "clan_goods" && production.type == "guildResources") { // units
+					prod = production.resources.all_goods_of_age
+				}
+				if (category == "fragments" && production.resources.subType == "fragment") { 
+					return CityMap.getBuildingFragments(building)
+				}
 			})
 		}
 		if (prod !== 0)
 			return prod
 		return category
+	},
+	// todo
+	getBuildingCurrentProductionByCategory(building, category) {
+		let prod = 0
+		if (building.state.production) {
+			building.state.production.forEach(production => {
+				if (production.type == 'random') { // currently not in the production list
+					production.resources.forEach(resource => { // todo
+						if (resource.type+"s" == category) { // units 
+							prod += resource.amount * resource.dropChance
+						}
+					})
+				}
+				if (production.resources[category]) {
+					let doubleMoney = (production.doubleWhenMotivated ? 2 : 1)
+					prod += production.resources[category] * doubleMoney
+				}
+				if (production.type+"s" == category) { // units
+					prod += Object.values(production.resources)[0]
+				}
+				if (category == "clan_goods" && production.type == "guildResources") { // units
+					prod = production.resources.all_goods_of_age
+				}
+				if (category == "fragments" && production.resources.subType == "fragment") { 
+					return CityMap.getBuildingFragments(building)
+				}
+			})
+		}
+		if (prod !== 0)
+			return prod
+		return category
+	},
+
+	getBuildingFragments(building) {
+		let allFragments = ''
+		building.production.forEach(production => {
+			if (production.resources.subType == "fragment") {
+				allFragments += production.resources.amount + " " + production.resources.name + "<br>"
+			}
+		})
+		return allFragments
 	},
 	
 	createNewCityMapEntity(ceData, data, era) {
@@ -1680,8 +1741,9 @@ let CityMap = {
 			level: (data.type == "greatbuilding" ? data.level : undefined), // level also includes eraId in raw data, we do not like that
 			max_level: (data.type == "greatbuilding" ? data.max_level : undefined)
 		}
-		if (entity.type != 'street')
-			console.log('entity ',entity.name, entity, ceData, data)
+		
+		//if (entity.type != 'street')
+		//	console.log('entity ',entity.name, entity, ceData, data)
 		return entity
 	},
 };
