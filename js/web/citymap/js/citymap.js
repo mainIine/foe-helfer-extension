@@ -1547,7 +1547,7 @@ let CityMap = {
 						type: product.type,
 						needsMotivation: (product.onlyWhenMotivated == true),
 						resources: {}
-					};
+					}
 					if (product.type == "resources") {
 						resource.resources = product.playerResources.resources;
 					}
@@ -1636,10 +1636,13 @@ let CityMap = {
 	},
 
 	// todo
-	getBuildingProductionByCategory(building, category) {
+	getBuildingProductionByCategory(current = false, building, category) {
 		let prod = 0
-		if (building.production) {
-			building.production.forEach(production => {
+		let productions = (current ? building.state.production : building.production)
+
+		if (productions) {
+			productions.forEach(production => {
+				//console.log(building.name, production, category)
 				if (production.type == 'random') { // currently not in the production list
 					production.resources.forEach(resource => { // todo
 						if (resource.type+"s" == category) { // units 
@@ -1647,57 +1650,42 @@ let CityMap = {
 						}
 					})
 				}
-				if (production.resources[category]) {
-					let doubleMoney = (production.doubleWhenMotivated ? 2 : 1)
-					prod += production.resources[category] * doubleMoney
+				if (production.type = "resources") {
+					if (production.resources[category]) {
+						let doubleMoney = (production.doubleWhenMotivated ? 2 : 1)
+						prod += production.resources[category] * doubleMoney
+					}
+					// todo: güter
+					if (production.resources.all_goods_of_age && category == "goods")
+						prod += production.resources.all_goods_of_age
+					else if (production.resources.random_good_of_age && category == "goods")
+						prod += production.resources.random_good_of_age
+					else if (production.resources.all_goods_of_previous_age && category == "goods")
+						prod += production.resources.all_goods_of_previous_age
 				}
 				if (production.type+"s" == category) { // units
 					prod += Object.values(production.resources)[0]
 				}
-				if (category == "clan_goods" && production.type == "guildResources") { // units
-					prod = production.resources.all_goods_of_age
+				if (category == "clan_goods" && production.type == "guildResources") {
+					if (production.resources.all_goods_of_age)
+						prod = production.resources.all_goods_of_age
+					else
+						prod = production.resources.compressed_matter_capsule*5 // todo: fetch one good, multiply by 5
 				}
 				if (category == "fragments" && production.resources.subType == "fragment") { 
 					return CityMap.getBuildingFragments(building)
 				}
 			})
 		}
-		if (prod !== 0)
-			return prod
-		return category
-	},
-	// todo
-	getBuildingCurrentProductionByCategory(building, category) {
-		let prod = 0
-		if (building.state.production) {
-			building.state.production.forEach(production => {
-				//console.log(building.name, production)
-				if (production.type == 'random') { // currently not in the production list
-					production.resources.forEach(resource => { // todo
-						if (resource.type+"s" == category) { // units 
-							prod += resource.amount * resource.dropChance
-						}
-					})
-				}
-				if (production.resources[category]) {
-					let doubleMoney = (production.doubleWhenMotivated ? 2 : 1)
-					prod += production.resources[category] * doubleMoney
-				}
-				if (production.type+"s" == category) { // units
-					prod += Object.values(production.resources)[0]
-					console.log(building.name, prod, production)
-				}
-				if (category == "clan_goods" && production.type == "guildResources") { // units
-					prod = production.resources.all_goods_of_age
-				}
-				if (category == "fragments" && production.resources.subType == "fragment") { 
-					return CityMap.getBuildingFragments(building)
-				}
-			})
+		if (building.population && category == "population") {
+			prod += building.population
 		}
-		if (prod !== 0)
+		if (building.happiness && category == "happiness") {
+			prod += building.happiness
+		}
+		//if (prod !== 0)
 			return prod
-		return category
+		//return 0
 	},
 
 	getBuildingFragments(building) {
