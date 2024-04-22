@@ -278,9 +278,11 @@ let Productions = {
 			if (building.production) {
 				building.production.forEach(production => {
 					if (production.type == "guildResources") { // todo
-						Productions.BuildingsProducts["clan_goods"].push(saveBuilding)
+						if (Productions.BuildingsProducts.clan_goods.find(x => x.id == building.id) == undefined)
+							Productions.BuildingsProducts["clan_goods"].push(saveBuilding)
 						if (production.resources.clan_power > 0)
-							Productions.BuildingsProducts["clan_power"].push(saveBuilding)
+							if (Productions.BuildingsProducts.clan_power.find(x => x.id == building.id) == undefined)
+								Productions.BuildingsProducts["clan_power"].push(saveBuilding)
 					}
 					if (production.type == "unit") { 
 						Productions.BuildingsProducts["units"].push(saveBuilding)
@@ -296,25 +298,29 @@ let Productions = {
 					}
 					if (production.type == "resources") {
 						if (production.resources.money) { 
-							Productions.BuildingsProducts["money"].push(saveBuilding)
+							if (Productions.BuildingsProducts.money.find(x => x.id == building.id) == undefined)
+								Productions.BuildingsProducts["money"].push(saveBuilding)
 						}
-						else if (production.resources.medals) { 
-							Productions.BuildingsProducts["medals"].push(saveBuilding)
+						if (production.resources.medals) { 
+							if (Productions.BuildingsProducts.medals.find(x => x.id == building.id) == undefined)
+								Productions.BuildingsProducts["medals"].push(saveBuilding)
 						}
-						else if (production.resources.premium) { 
+						if (production.resources.premium) { 
 							Productions.BuildingsProducts["premium"].push(saveBuilding)
 						}
-						else if (production.resources.strategy_points) { 
-							Productions.BuildingsProducts["strategy_points"].push(saveBuilding)
+						if (production.resources.strategy_points) { 
+							if (Productions.BuildingsProducts.strategy_points.find(x => x.id == building.id) == undefined)
+								Productions.BuildingsProducts["strategy_points"].push(saveBuilding)
 						}
-						else if (production.resources.supplies) { 
-							Productions.BuildingsProducts["supplies"].push(saveBuilding)
+						if (production.resources.supplies) { 
+							if (Productions.BuildingsProducts.supplies.find(x => x.id == building.id) == undefined)
+								Productions.BuildingsProducts["supplies"].push(saveBuilding)
 						}
-						else {
+						/*if {
 							// todo: goods
 							console.log(building.name, production.resources)
 							Productions.BuildingsProducts["goods"].push(saveBuilding)
-						}
+						}*/
 					}
 				})
 			}
@@ -382,13 +388,15 @@ let Productions = {
 			countProductsMotivated = [],
 			countProductsDone = [],
 			countAll = 0,
-			typeMotivatedSum = 0,
+			typeCurrentSum = 0,
 			typeSum = 0,
 			sizes = [],
 			sizetooltips = [];
 
 			buildingIds.forEach(b => {
 				let building = CityMap.getBuildingById(b.id)
+				if (type == "strategy_points")
+					console.log(type, building.name)
 				//let shortSide = parseFloat(Math.min(building.size.width, building.size.length))
 				//let size = building.size.width*building.size.length
 				//let sizeWithStreets = size + (building.state.connected == true ? (building.needsStreet > 0 ? shortSide * building.needsStreet / 2 : 0) : 0)
@@ -400,50 +408,35 @@ let Productions = {
 				rowA.push('<td>' + building.name + '</td>')
 				// todo: warum haben hüpfkürbisse ne produktion obwohl sie nicht laufen
 				// todo: yeah.. something
-				let motivatedAmount = 0
+				
+				// keine ahnung
 				if (type != 'fragments') {
-					motivatedAmount = parseFloat(CityMap.getBuildingProductionByCategory(true, building, type))
+					currentAmount = parseFloat(CityMap.getBuildingProductionByCategory(true, building, type))
+					amount = parseFloat(CityMap.getBuildingProductionByCategory(false, building, type))
 
 					if (type == 'money' && building.type != "greatbuilding") {
-						motivatedAmount = Math.round(motivatedAmount + (motivatedAmount * ((MainParser.BoostSums.coin_production + (Productions.HappinessBoost * 100)) / 100)))
+						amount = Math.round(amount + (amount * ((MainParser.BoostSums.coin_production + (Productions.HappinessBoost * 100)) / 100)))
 					}
 					else if (type == 'supplies' && building.type != "greatbuilding") {
-						motivatedAmount = Math.round(motivatedAmount + (motivatedAmount *((MainParser.BoostSums.supply_production + (Productions.HappinessBoost * 100)) / 100)))
+						amount = Math.round(amount + (amount *((MainParser.BoostSums.supply_production + (Productions.HappinessBoost * 100)) / 100)))
 					}
-					rowA.push('<td '+(building.state.isPolivated !== false ? 'colspan="2" class="textright" ' : '')+'data-number="'+motivatedAmount+'">')
-					rowA.push(HTML.Format(motivatedAmount))
+					else if (type == 'strategy_points' && building.type != "greatbuilding") {
+						amount = Math.round(amount + (amount *((MainParser.BoostSums.forge_points_production) / 100)))
+					}
+					rowA.push('<td data-number="'+amount+'" class="textright">')
+					if (currentAmount != amount)
+						rowA.push(HTML.Format(currentAmount) + '/' + HTML.Format(amount))
+					else 
+						rowA.push(HTML.Format(currentAmount))
 					rowA.push('</td>')
-
-					typeMotivatedSum += motivatedAmount
+					
+					typeSum += amount
+					typeCurrentSum += currentAmount
 				}
-				// keine ahnung
-				if (building.state.isPolivated == false) {
-					if (type != 'fragments') {
-						amount = parseFloat(CityMap.getBuildingProductionByCategory(false, building, type))
-
-						if (type == 'money' && building.type != "greatbuilding") {
-							amount = Math.round(amount + (amount * ((MainParser.BoostSums.coin_production + (Productions.HappinessBoost * 100)) / 100)))
-						}
-						else if (type == 'supplies' && building.type != "greatbuilding") {
-							amount = Math.round(amount + (amount *((MainParser.BoostSums.supply_production + (Productions.HappinessBoost * 100)) / 100)))
-						}
-						else if (type == 'strategy_points' && building.type != "greatbuilding") {
-							amount = Math.round(amount + (amount *((MainParser.BoostSums.forge_points_production) / 100)))
-						}
-						if (amount != motivatedAmount) {
-							rowA.push('<td data-number="'+amount+'" class="textright">')
-							rowA.push(HTML.Format(amount))
-							rowA.push('</td>')
-						}
-						else {
-							rowA.push('<td></td>')
-						}
-						typeSum += amount
-					}
-					else {
-						rowA.push('<td>' + CityMap.getBuildingFragments(building) + '</td>')
-					}
+				else {
+					rowA.push('<td>' + CityMap.getBuildingFragments(building) + '</td>')
 				}
+
 				rowA.push('<td>' + i18n("Eras."+Technologies.Eras[building.eraName]) + '</td>')
 				rowA.push('<td style="white-space:nowrap">' + moment.unix(building.state.times?.at).fromNow() + '</td>')
 				// todo: invalid date
@@ -457,7 +450,8 @@ let Productions = {
 			table.push('<table class="foe-table sortable-table">')
 			table.push('<thead>')
 			table.push('<tr>')
-			table.push('<th colspan="8" class="textright">'+HTML.Format(parseFloat(typeMotivatedSum))+ "/" +HTML.Format(parseFloat(typeSum))+'</th>')
+			// todo: happiness is off by 250
+			table.push('<th colspan="8" class="textright">'+HTML.Format(parseFloat(typeCurrentSum))+ "/" +HTML.Format(parseFloat(typeSum))+'</th>')
 			table.push('</tr>')
 			table.push('<tr>')
 			table.push('<th> </th>')
@@ -808,6 +802,7 @@ let Productions = {
 
 		// alles auf einmal ausgeben
 		console.log(Productions.BuildingsAll)
+		console.log(Productions.BuildingsProducts)
 		Productions.BuildingsAll = helper.arr.multisort(Productions.BuildingsAll, ['name'], ['ASC']);
 		Productions.SetTabs('all');
 
