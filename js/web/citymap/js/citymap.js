@@ -1129,17 +1129,26 @@ let CityMap = {
 			}
 		}
 		else {
-			if (ceData.components[era]) 
-				if (ceData.components[era].boosts) {
-					ceData.components[era].boosts.boosts.forEach(abilityBoost => {
-						let boost = {
-							feature: abilityBoost.targetedFeature,
-							type: MainParser.BoostMapper[abilityBoost.type] || [abilityBoost.type],
-							value: abilityBoost.value,
-						};
-						boosts.push(boost)
-					})
-				}
+			if (ceData.components[era]?.boosts) {
+				ceData.components[era].boosts.boosts.forEach(abilityBoost => {
+					let boost = {
+						feature: abilityBoost.targetedFeature,
+						type: MainParser.BoostMapper[abilityBoost.type] || [abilityBoost.type],
+						value: abilityBoost.value,
+					};
+					boosts.push(boost)
+				})
+			}
+			if (ceData.components.AllAge?.boosts) {
+				ceData.components.AllAge.boosts.boosts.forEach(abilityBoost => {
+					let boost = {
+						feature: abilityBoost.targetedFeature,
+						type: MainParser.BoostMapper[abilityBoost.type] || [abilityBoost.type],
+						value: abilityBoost.value,
+					};
+					boosts.push(boost)
+				})
+			}
 		}
 		if (boosts.length > 0)
 			return boosts
