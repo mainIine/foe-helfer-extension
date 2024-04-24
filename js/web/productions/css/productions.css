@@ -75,7 +75,7 @@
 	line-height: 18px;
 }
 
-#Productions #ProductionsBody table tr.sorter-header th {
+#Productions #ProductionsBody table thead {
 	position: sticky;
 	top: 0;
 	background-color: rgba(0,0,0, 0.35);
@@ -105,12 +105,41 @@
 	padding: 0 3px;
 }
 
-#Productions #ProductionsBody .tabs ul li a span {
+#Productions #ProductionsBody .tabs ul li a span, #Productions th.boost span {
 	width: 27px;
 }
 
-#Productions #ProductionsBody .tabs ul li a span {
+#Productions #ProductionsBody .tabs ul li a span, #Productions th.boost span {
 	background: transparent url('../images/productions.png') -233px 2px no-repeat;
+}
+
+#Productions th.boost span {
+	height: 25px;
+	display: block;
+}
+#Productions th.boost.battleground span {
+	background: transparent url('../../x_img/gbg-green.png') no-repeat;
+	background-size: contain;
+}
+#Productions th.boost.guild_expedition span {
+	background: transparent url('../../x_img/ge.png') no-repeat;
+	background-size: contain;
+}
+#Productions th.boost.guild_raids span {
+	background: transparent url('../../x_img/guild_raids.png') no-repeat;
+	background-size: contain;
+}
+#Productions th.boost.att_boost_attacker span {
+	background-position: -311px 0px;
+}
+#Productions th.boost.att_boost_defender span {
+	background-position: -338px 0px;
+}
+#Productions th.boost.def_boost_attacker span {
+	background-position: -365px 0px;
+}
+#Productions th.boost.def_boost_defender span {
+	background-position: -390px 0px;
 }
 #Productions #ProductionsBody .tabs ul li.strategy_points a span {
 	background-position: 0 2px;

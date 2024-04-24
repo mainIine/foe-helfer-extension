@@ -86,24 +86,20 @@ let Productions = {
 	fragmentsSet: new Set(),
 
 
-	/**
-	 *  Start der ganzen Prozedur
-	 */
 	init: () => {
-		//moment.locale(18n('Local'));
+		Productions.CombinedCityMapData = MainParser.NewCityMapData
 
-		Productions.CombinedCityMapData = MainParser.NewCityMapData;
 		if (CityMap.EraOutpostData) {
-			Productions.CombinedCityMapData = Object.assign({}, Productions.CombinedCityMapData, CityMap.EraOutpostData);
+			Productions.CombinedCityMapData = Object.assign({}, Productions.CombinedCityMapData, CityMap.EraOutpostData)
 		}
 
 		// leere Arrays erzeugen
 		for(let i in Productions.Types) {
-			if (!Productions.Types.hasOwnProperty(i)) continue;
+			if (!Productions.Types.hasOwnProperty(i)) continue
 
-			Productions.BuildingsProducts[Productions.Types[i]] = [];
-			if (Productions.Types[i] === 'goods') continue;
-			Productions.BuildingsProductsGroups[ Productions.Types[i] ] = [];
+			Productions.BuildingsProducts[Productions.Types[i]] = []
+			if (Productions.Types[i] === 'goods') continue
+			Productions.BuildingsProductsGroups[ Productions.Types[i] ] = []
 		}
 
 		Productions.ReadData();
@@ -137,40 +133,36 @@ let Productions = {
 		Productions.HappinessBoost = ProdBonus
 		Productions.Boosts['money'] += ProdBonus
 		Productions.Boosts['supplies'] += ProdBonus
-
+		/*
 		Productions.BuildingsAll.forEach(building => {
+			building.state.production?.forEach(production => {
+				if (Productions.Types.includes(production.resources)) {
+					// Alle Gebäude einzeln auflisten, nach Produkt sortiert
+					Productions.BuildingsProducts[x].push(building);
 
-			// Nach Produkt
-			if (building.state.production)
-				building.state.production.forEach(production => {
-					if (Productions.Types.includes(production.resources)) {
-						// Alle Gebäude einzeln auflisten, nach Produkt sortiert
-						Productions.BuildingsProducts[x].push(building);
+					let index = Productions.BuildingsProductsGroups[x].map((el) => el.eid).indexOf(building['eid']);
 
-						let index = Productions.BuildingsProductsGroups[x].map((el) => el.eid).indexOf(building['eid']);
+					// Alle Gebäude gruppieren und
+					if (index === -1) {
+						let ni = Productions.BuildingsProductsGroups[x].length + 1;
 
-						// Alle Gebäude gruppieren und
-						if (index === -1) {
-							let ni = Productions.BuildingsProductsGroups[x].length + 1;
+						Productions.BuildingsProductsGroups[x][ni] = [];
+						Productions.BuildingsProductsGroups[x][ni]['name'] = building['name'];
+						Productions.BuildingsProductsGroups[x][ni]['eid'] = building['eid'];
+						Productions.BuildingsProductsGroups[x][ni]['era'] = building['era'];
+						Productions.BuildingsProductsGroups[x][ni]['dailyfactor'] = building['dailyfactor'];
+						Productions.BuildingsProductsGroups[x][ni]['units'] = building['units'];
+						Productions.BuildingsProductsGroups[x][ni]['products'] = Productions.GetDaily(parseInt(building['products'][x]), building['dailyfactor'], x);
+						Productions.BuildingsProductsGroups[x][ni]['motivatedproducts'] = Productions.GetDaily(parseInt(building['motivatedproducts'][x]), building['dailyfactor'], x);
+						Productions.BuildingsProductsGroups[x][ni]['count'] = 1;
 
-							Productions.BuildingsProductsGroups[x][ni] = [];
-							Productions.BuildingsProductsGroups[x][ni]['name'] = building['name'];
-							Productions.BuildingsProductsGroups[x][ni]['eid'] = building['eid'];
-							Productions.BuildingsProductsGroups[x][ni]['era'] = building['era'];
-							Productions.BuildingsProductsGroups[x][ni]['dailyfactor'] = building['dailyfactor'];
-							Productions.BuildingsProductsGroups[x][ni]['units'] = building['units'];
-							Productions.BuildingsProductsGroups[x][ni]['products'] = Productions.GetDaily(parseInt(building['products'][x]), building['dailyfactor'], x);
-							Productions.BuildingsProductsGroups[x][ni]['motivatedproducts'] = Productions.GetDaily(parseInt(building['motivatedproducts'][x]), building['dailyfactor'], x);
-							Productions.BuildingsProductsGroups[x][ni]['count'] = 1;
-
-						}
-						else {
-							Productions.BuildingsProductsGroups[x][index]['products'] += parseInt(building['products'][x]);
-							Productions.BuildingsProductsGroups[x][index]['motivatedproducts'] += parseInt(building['motivatedproducts'][x]);
-							Productions.BuildingsProductsGroups[x][index]['count']++;
-						}
 					}
-/*
+					else {
+						Productions.BuildingsProductsGroups[x][index]['products'] += parseInt(building['products'][x]);
+						Productions.BuildingsProductsGroups[x][index]['motivatedproducts'] += parseInt(building['motivatedproducts'][x]);
+						Productions.BuildingsProductsGroups[x][index]['count']++;
+					}
+				}
 				else {
 					let mId = Productions.BuildingsAll[i]['eid'] + '_' + Productions.BuildingsAll[i]['id'];
 
@@ -188,38 +180,12 @@ let Productions = {
 
 					Productions.BuildingsProducts['goods'][mId]['products'][x] = building['products'][x];
 					Productions.BuildingsProducts['goods'][mId]['motivatedproducts'][x] = building['motivatedproducts'][x];
-				}*/
+				}
 			}) 
-			// wenn boosts citymap.getboosts oder so
-		})
+		})*/
 
 		Productions.showBox();
 	},
-
-
-	/**
-	 * Calculates average reward of a GenericReward
-	 * */
-	CalcAverageRewards: (GenericReward, DropChance=100) => {
-		let Ret = {};
-
-		if (GenericReward['type'] === 'resource' || GenericReward['type'] === 'good') {
-			Ret[GenericReward['subType']] = GenericReward['amount'] * DropChance/100.0;
-		}
-		else if(GenericReward['type'] === 'chest') {
-			for (let i = 0; i < GenericReward['possible_rewards'].length; i++) {
-				let CurrentReward = GenericReward['possible_rewards'][i];
-
-				let Rewards = Productions.CalcAverageRewards(CurrentReward['reward'], CurrentReward['drop_chance']);
-				for (let ResName in Rewards) {
-					if (!Ret[ResName]) Ret[ResName] = 0;
-					Ret[ResName] += Rewards[ResName];
-                }
-            }
-		}
-
-		return Ret;
-    },
 
 	/**
 	 * HTML Box erstellen und einblenden
@@ -265,14 +231,17 @@ let Productions = {
 			let boosts = Object.keys(MainParser.BoostSums)
 			let saveBuilding = {id: building.id, entityId: building.entityId}
 
+			// todo: units, clan_goods arrays are empty when closing and opening again
+
 			boosts.forEach(boost => {
-				let buildingBoost = {}
-				Productions.getBoost(building, boost, function(result) { buildingBoost = result })
-				if (buildingBoost != {}) {
-					if (buildingBoost.feature === "all")
-						if (Productions.BuildingsProducts[boost])
-							Productions.BuildingsProducts[boost].push(saveBuilding)
-				}
+				Productions.getBoost(building, boost, function(result) { 
+					if (result != undefined) {
+						if (Productions.BuildingsProducts[boost]) {
+							if (Productions.BuildingsProducts[boost].find(x => x.id == building.id) == undefined)
+								Productions.BuildingsProducts[boost].push(saveBuilding)
+						}
+					}
+				})
 			})
 			
 			if (building.production) {
@@ -285,17 +254,17 @@ let Productions = {
 								Productions.BuildingsProducts["clan_power"].push(saveBuilding)
 					}
 					if (production.type == "unit") { 
-						Productions.BuildingsProducts["units"].push(saveBuilding)
+						if (Productions.BuildingsProducts.units.find(x => x.id == building.id) == undefined)
+							Productions.BuildingsProducts["units"].push(saveBuilding)
 					}
 					if (production.resources.subType == "fragment") { 
 						Productions.BuildingsProducts["fragments"].push(saveBuilding)
 					}
-					if (production.type == "random") { // todo: random production?!
+					/*if (production.type == "random") { // todo: random production?!
 						production.resources.forEach(resource => {
 							// todo: type == "forgepoint_package", amount ist in subType als string
-							// console.log(building.name, resource.type, (resource.type == "consumable" ? resource.subType : ''), resource.amount)
 						})
-					}
+					}*/
 					if (production.type == "resources") {
 						if (production.resources.money) { 
 							if (Productions.BuildingsProducts.money.find(x => x.id == building.id) == undefined)
@@ -371,6 +340,18 @@ let Productions = {
 			if (building.population !== 0) {
 				Productions.BuildingsProducts["population"].push(saveBuilding)
 			}
+
+			Productions.BuildingsProducts.forEach(type => {
+				type.sort((a,b) => {
+					if (a.entityId < b.entityIdif) {
+						return -1
+					}
+					if (a.entityId > b.entityIdif) {
+						return 1
+					}
+					return 0
+				})
+			})
 		})
 
 		console.log(Productions.BuildingsProducts, Productions.Types)
@@ -387,6 +368,10 @@ let Productions = {
 			countProducts = [],
 			countProductsMotivated = [],
 			countProductsDone = [],
+			boostCounter = {'att_boost_attacker': {all: 0, battleground: 0, guild_expedition: 0, guild_raids: 0},
+			'def_boost_attacker': {all: 0, battleground: 0, guild_expedition: 0, guild_raids: 0},
+			'att_boost_defender': {all: 0, battleground: 0, guild_expedition: 0, guild_raids: 0},
+			'def_boost_defender': {all: 0, battleground: 0, guild_expedition: 0, guild_raids: 0}}
 			countAll = 0,
 			typeCurrentSum = 0,
 			typeSum = 0,
@@ -395,8 +380,6 @@ let Productions = {
 
 			buildingIds.forEach(b => {
 				let building = CityMap.getBuildingById(b.id)
-				if (type == "strategy_points")
-					console.log(type, building.name)
 				//let shortSide = parseFloat(Math.min(building.size.width, building.size.length))
 				//let size = building.size.width*building.size.length
 				//let sizeWithStreets = size + (building.state.connected == true ? (building.needsStreet > 0 ? shortSide * building.needsStreet / 2 : 0) : 0)
@@ -410,31 +393,72 @@ let Productions = {
 				// todo: yeah.. something
 				
 				// keine ahnung
-				if (type != 'fragments') {
-					currentAmount = parseFloat(CityMap.getBuildingProductionByCategory(true, building, type))
-					amount = parseFloat(CityMap.getBuildingProductionByCategory(false, building, type))
+				if (!type.includes('att') && !type.includes('def')) {
+					if (type != 'fragments') {
+						currentAmount = parseFloat(CityMap.getBuildingProductionByCategory(true, building, type))
+						amount = parseFloat(CityMap.getBuildingProductionByCategory(false, building, type))
 
-					if (type == 'money' && building.type != "greatbuilding") {
-						amount = Math.round(amount + (amount * ((MainParser.BoostSums.coin_production + (Productions.HappinessBoost * 100)) / 100)))
+						if (type == 'money' && building.type != "greatbuilding") {
+							amount = Math.round(amount + (amount * ((MainParser.BoostSums.coin_production + (Productions.HappinessBoost * 100)) / 100)))
+							currentAmount = Math.round(currentAmount + (currentAmount * ((MainParser.BoostSums.coin_production + (Productions.HappinessBoost * 100)) / 100)))
+						}
+						else if (type == 'supplies' && building.type != "greatbuilding") {
+							amount = Math.round(amount + (amount *((MainParser.BoostSums.supply_production + (Productions.HappinessBoost * 100)) / 100)))
+							currentAmount = Math.round(currentAmount + (currentAmount *((MainParser.BoostSums.supply_production + (Productions.HappinessBoost * 100)) / 100)))
+						}
+						else if (type == 'strategy_points' && building.type != "greatbuilding") {
+							amount = Math.round(amount + (amount *((MainParser.BoostSums.forge_points_production) / 100)))
+							currentAmount = Math.round(currentAmount + (currentAmount *((MainParser.BoostSums.forge_points_production) / 100)))
+						}
+						rowA.push('<td data-number="'+amount+'" class="textright" colspan="4">')
+						if (currentAmount != amount)
+							rowA.push(HTML.Format(currentAmount) + '/' + HTML.Format(amount))
+						else 
+							rowA.push(HTML.Format(currentAmount))
+						rowA.push('</td>')
+						
+						typeSum += amount
+						typeCurrentSum += currentAmount
 					}
-					else if (type == 'supplies' && building.type != "greatbuilding") {
-						amount = Math.round(amount + (amount *((MainParser.BoostSums.supply_production + (Productions.HappinessBoost * 100)) / 100)))
+					else {
+						rowA.push('<td colspan="4">' + CityMap.getBuildingFragments(building) + '</td>')
 					}
-					else if (type == 'strategy_points' && building.type != "greatbuilding") {
-						amount = Math.round(amount + (amount *((MainParser.BoostSums.forge_points_production) / 100)))
-					}
-					rowA.push('<td data-number="'+amount+'" class="textright">')
-					if (currentAmount != amount)
-						rowA.push(HTML.Format(currentAmount) + '/' + HTML.Format(amount))
-					else 
-						rowA.push(HTML.Format(currentAmount))
-					rowA.push('</td>')
-					
-					typeSum += amount
-					typeCurrentSum += currentAmount
 				}
 				else {
-					rowA.push('<td>' + CityMap.getBuildingFragments(building) + '</td>')
+					if (building.boosts !== undefined) {
+						boosts = {
+							all: 0,
+							battleground: 0,
+							guild_expedition: 0,
+							guild_raids: 0
+						}
+						building.boosts.forEach(boost => {
+							if (boost.type.find(x => x == type) == type) {
+								if (boost.feature == "all") {
+									boosts.all = boost.value
+									boostCounter[type][boost.feature] += boost.value
+								}
+								if (boost.feature == "battleground") {
+									boosts.battleground = boost.value
+									boostCounter[type][boost.feature] += boost.value
+								}
+								if (boost.feature == "guild_expedition") {
+									boosts.guild_expedition = boost.value
+									boostCounter[type][boost.feature] += boost.value
+								}
+								if (boost.feature == "guild_raids") {
+									boosts.guild_raids = boost.value
+									boostCounter[type][boost.feature] += boost.value
+								}
+							}
+						})
+						// todo: add castle system
+						rowA.push('<td data-number="'+boosts.all+'">'+ (boosts.all != 0 ? HTML.Format(boosts.all) : '') +'</td>')
+						rowA.push('<td data-number="'+boosts.battleground+'">'+ (boosts.battleground != 0 ? HTML.Format(boosts.battleground) : '') +'</td>')
+						rowA.push('<td data-number="'+boosts.guild_expedition+'">'+ (boosts.guild_expedition != 0 ? HTML.Format(boosts.guild_expedition) : '') +'</td>')
+						rowA.push('<td data-number="'+boosts.guild_raids+'">'+ (boosts.guild_raids != 0 ? HTML.Format(boosts.guild_raids) : '') +'</td>')
+					}
+					
 				}
 
 				rowA.push('<td>' + i18n("Eras."+Technologies.Eras[building.eraName]) + '</td>')
@@ -451,12 +475,23 @@ let Productions = {
 			table.push('<thead>')
 			table.push('<tr>')
 			// todo: happiness is off by 250
-			table.push('<th colspan="8" class="textright">'+HTML.Format(parseFloat(typeCurrentSum))+ "/" +HTML.Format(parseFloat(typeSum))+'</th>')
+			if (!type.includes('att') && !type.includes('def')) 
+				table.push('<th colspan="12" class="textright">'+HTML.Format(parseFloat(typeCurrentSum))+ "/" +HTML.Format(parseFloat(typeSum))+'</th>')
+			else {
+				table.push('<th colspan="12" class="textright"></th>')
+			}
 			table.push('</tr>')
 			table.push('<tr>')
 			table.push('<th> </th>')
 			table.push('<th>' + i18n('Boxes.BlueGalaxy.Building') + '</th>')
-			table.push('<th colspan="2">' + i18n('Boxes.Productions.Headings.number') + '</th>')
+			if (!type.includes('att') && !type.includes('def')) 
+				table.push('<th colspan="4">' + i18n('Boxes.Productions.Headings.number') + '</th>')
+			else {
+				table.push('<th class="boost '+type+'"><span></span>'+boostCounter[type].all+'</th>')
+				table.push('<th class="boost battleground"><span></span>'+boostCounter[type].battleground+'</th>')
+				table.push('<th class="boost guild_expedition"><span></span>'+boostCounter[type].guild_expedition+'</th>')
+				table.push('<th class="boost guild_raids"><span></span>'+boostCounter[type].guild_raids+'</th>')
+			}
 			table.push('<th>' + i18n('Boxes.Productions.Headings.era') + '</th>')
 			table.push('<th>' + i18n('Boxes.Productions.Headings.earning') + '</th>')
 			table.push('<th>' + i18n('Boxes.Productions.Headings.Done') + '</th>')
@@ -801,7 +836,7 @@ let Productions = {
 		}*/
 
 		// alles auf einmal ausgeben
-		console.log(Productions.BuildingsAll)
+		//console.log(Productions.BuildingsAll)
 		console.log(Productions.BuildingsProducts)
 		Productions.BuildingsAll = helper.arr.multisort(Productions.BuildingsAll, ['name'], ['ASC']);
 		Productions.SetTabs('all');
@@ -900,6 +935,31 @@ let Productions = {
 			});
 		});
 	},
+
+
+	/**
+	 * Calculates average reward of a GenericReward
+	 * */
+	CalcAverageRewards: (GenericReward, DropChance=100) => {
+		let Ret = {};
+
+		if (GenericReward['type'] === 'resource' || GenericReward['type'] === 'good') {
+			Ret[GenericReward['subType']] = GenericReward['amount'] * DropChance/100.0;
+		}
+		else if(GenericReward['type'] === 'chest') {
+			for (let i = 0; i < GenericReward['possible_rewards'].length; i++) {
+				let CurrentReward = GenericReward['possible_rewards'][i];
+
+				let Rewards = Productions.CalcAverageRewards(CurrentReward['reward'], CurrentReward['drop_chance']);
+				for (let ResName in Rewards) {
+					if (!Ret[ResName]) Ret[ResName] = 0;
+					Ret[ResName] += Rewards[ResName];
+                }
+            }
+		}
+
+		return Ret;
+    },
 	
 	/**
 	* alle Produkte auslesen
@@ -1544,15 +1604,19 @@ let Productions = {
 		$('#ProductionsRatingBody').html(h.join(''));
     },
 
+
 	getBoost: (building, boostName, callback) => {
-		if (building.boosts)
-			building.boosts.forEach(boost => {
-				let type = boost.type.find(x => x == boostName)
-				if (type !== undefined) {
-					const value = { feature: boost.feature, value: boost.value }
-					callback(value)
-				}
-			})
+		building.boosts?.forEach(boost => {
+			let type = boost.type.find(x => x == boostName)
+			if (type !== undefined) {
+				//const value = {[type]: { feature: boost.feature, value: boost.value }}
+				const value = { feature: boost.feature, value: boost.value }
+				callback(value)
+			}
+			else {
+				callback(undefined)
+			}
+		})
 	},
 
 

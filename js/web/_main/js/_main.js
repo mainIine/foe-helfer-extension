@@ -970,7 +970,6 @@ let MainParser = {
 		'def_boost_attacker': 0,
 		'att_boost_defender': 0,
 		'def_boost_defender': 0,
-		'happiness_amount': 0,			
 		'coin_production': 0,
 		'supply_production': 0,
 		'forge_points_production':0,
