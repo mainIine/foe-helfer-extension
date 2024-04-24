@@ -1047,10 +1047,11 @@ let CityMap = {
 					return false;
 			}
 			else { // generic buildings
+				// todo: inaktiver vergessener tempel muss anders behandelt werden
 				if (data.state.socialInteractionStartedAt > 0) 
-					return true;
+					return true
 				else
-					return false;
+					return false
 			}
 		}
 		return undefined;

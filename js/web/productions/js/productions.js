@@ -361,11 +361,11 @@ let Productions = {
 
 			Productions.SetTabs(type)
 
-			let groups = Productions.BuildingsProductsGroups[type],
-			table = [],
+			let table = [],
+			tableGr = [],
 			rowA = [],
 			rowB = [],
-			countProducts = [],
+			groupedBuildings = [],
 			countProductsMotivated = [],
 			countProductsDone = [],
 			boostCounter = {'att_boost_attacker': {all: 0, battleground: 0, guild_expedition: 0, guild_raids: 0},
@@ -390,7 +390,6 @@ let Productions = {
 				rowA.push('</td>')
 				rowA.push('<td>' + building.name + '</td>')
 				// todo: warum haben hüpfkürbisse ne produktion obwohl sie nicht laufen
-				// todo: yeah.. something
 				
 				// keine ahnung
 				if (!type.includes('att') && !type.includes('def')) {
@@ -458,7 +457,21 @@ let Productions = {
 						rowA.push('<td data-number="'+boosts.guild_expedition+'">'+ (boosts.guild_expedition != 0 ? HTML.Format(boosts.guild_expedition) : '') +'</td>')
 						rowA.push('<td data-number="'+boosts.guild_raids+'">'+ (boosts.guild_raids != 0 ? HTML.Format(boosts.guild_raids) : '') +'</td>')
 					}
-					
+				}
+
+				let updateGroup = groupedBuildings.find(x => x.name == building.name)
+				if (updateGroup == undefined) {
+					groupedBuildings.push({
+						name: building.name,
+						amount: 1,
+						currentValues: currentAmount,
+						values: amount
+					})
+				}
+				else {
+					updateGroup.amount++
+					updateGroup.currentValues += currentAmount
+					updateGroup.values += amount
 				}
 
 				rowA.push('<td>' + i18n("Eras."+Technologies.Eras[building.eraName]) + '</td>')
@@ -471,14 +484,15 @@ let Productions = {
 				rowA.push('</tr>')
 			})
 
-			table.push('<table class="foe-table sortable-table">')
+			table.push('<table class="foe-table sortable-table '+type+'-list active">')
 			table.push('<thead>')
 			table.push('<tr>')
-			// todo: happiness is off by 250
+			// todo: happiness is off by 250 with unmotivated inactive forgotten temple -> citymap
+			table.push('<th colspan="3"><span class="btn-default change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeGroups') + '</span></th>')
 			if (!type.includes('att') && !type.includes('def')) 
-				table.push('<th colspan="12" class="textright">'+HTML.Format(parseFloat(typeCurrentSum))+ "/" +HTML.Format(parseFloat(typeSum))+'</th>')
+				table.push('<th colspan="9" class="textright">'+HTML.Format(parseFloat(typeCurrentSum))+ "/" +HTML.Format(parseFloat(typeSum))+'</th>')
 			else {
-				table.push('<th colspan="12" class="textright"></th>')
+				table.push('<th colspan="9" class="textright"></th>')
 			}
 			table.push('</tr>')
 			table.push('<tr>')
@@ -503,337 +517,34 @@ let Productions = {
 			table.push('</tbody>')
 			table.push('</table>')
 
-			Productions.SetTabContent(type, table.join(''));
+			// grouped buildings
+			tableGr.push('<table class="foe-table sortable-table '+type+'-group">')
+			tableGr.push('<thead>')
+			tableGr.push('<tr>')
+			tableGr.push('<th colspan="3"><span class="btn-default change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeSingle') + '</span></th>')
+			tableGr.push('</tr>')
+			tableGr.push('<tr>')
+			tableGr.push('<th>' + i18n('Boxes.Productions.Headings.number') + '</th>')
+			tableGr.push('<th>' + i18n('Boxes.BlueGalaxy.Building') + '</th>')
+			tableGr.push('<th>' + i18n('Boxes.Productions.Headings.earning') + '</th>')
+			tableGr.push('</tr>')
+			tableGr.push('</thead>')
+			tableGr.push('<tbody>')
+				groupedBuildings.forEach(building => {
+					rowB.push('<tr>')
+					rowB.push('<td data-number="'+building.amount+'">'+building.amount+'x </td>')
+					rowB.push('<td>'+ building.name +'</td>')
+					rowB.push('<td data-number="'+building.currentValues+'">'+building.currentValues+'/'+building.values+'</td>')
+					rowB.push('</tr>')
+				})
+			tableGr.push( rowB.join('') )
+			tableGr.push('</tbody>')
+			tableGr.push('</table>')
+
+			let content = table.join('') + tableGr.join('')
+
+			Productions.SetTabContent(type, content)
 		})
-
-		// einzelne Güterarten durchsteppen
-		/*for(let pt in Productions.Types) {
-			if (!Productions.Types.hasOwnProperty(pt)) break;
-			
-			let type = Productions.Types[pt];
-
-			if (!Productions.BuildingsProducts.hasOwnProperty(type)) break;
-			
-			Productions.SetTabs(type);
-
-			Productions.BuildingsProducts[type] = helper.arr.multisort(Productions.BuildingsProducts[type], ['name'], ['ASC']);
-
-			if(type !== 'goods') Productions.BuildingsProductsGroups[type] = helper.arr.multisort(Productions.BuildingsProductsGroups[type], ['name'], ['ASC']);
-
-			let buildings = Productions.BuildingsProducts[type],
-				groups = Productions.BuildingsProductsGroups[type],
-				table = [],
-				rowA = [],
-				rowB = [],
-				countProducts = [],
-				countProductsMotivated = [],
-				countProductsDone = [],
-				countAll = 0,
-				countAllMotivated = 0,
-				countAllDone = 0,
-				sizes = [],
-				sizetooltips = [];
-      
-				// Gebäudegrößen für Effizienzberechnung laden
-				for (const [key, building] of Object.entries(Productions.CombinedCityMapData)) {
-					sizes[building] = building.size.width * building.size.length;
-					sizetooltips[building] = (building.needsStreet > 0 ? HTML.i18nReplacer(i18n('Boxes.Productions.SizeTT'), { 'streetnettosize': building.needsStreet }) : '');
-	            }
-
-			// einen Typ durchsteppen [money,supplies,strategy_points,...]
-			for(let i in buildings) {
-				if(buildings.hasOwnProperty(i)) {
-					if(type !== 'goods') {
-						let ProductCount = Productions.GetDaily(buildings[i]['products'][type], buildings[i]['dailyfactor'], type),
-							MotivatedProductCount = Productions.GetDaily(buildings[i]['motivatedproducts'][type], buildings[i]['dailyfactor'], type);
-
-						countAll += ProductCount;
-						countAllMotivated += MotivatedProductCount;
-						countAllDone += (buildings[i]['at'] * 1000 < MainParser.getCurrentDateTime() ? ProductCount : 0);
-
-						rowA.push('<tr>');
-						rowA.push('<td data-text="' + helper.str.cleanup(buildings[i]['name']) + '">' + buildings[i]['name'] + '</td>');
-						
-						if (type === 'fragments')
-							rowA.push('<td data-text="' + helper.str.cleanup(buildings[i]['products']['fragments']) + '">' + buildings[i]['products']['fragments'] + '</td>');
-						else
-							rowA.push('<td class="text-right is-number" data-number="' + MotivatedProductCount + '">' + HTML.Format(ProductCount) + (ProductCount !== MotivatedProductCount ? '/' + HTML.Format(MotivatedProductCount) : '') + '</td>');
-						
-						let size = sizes[buildings[i]['eid']];
-					
-						rowA.push('<td class="addon-info is-number" data-number="' + buildings[i]['era'] + '">' + i18n('Eras.' + buildings[i]['era']) + '</td>');
-						
-						if (Productions.TypeHasProduction(type)) {
-							rowA.push('<td class="wsnw is-date" data-date="' + buildings[i]['at'] + '">' + (buildings[i]['at'] ? moment.unix(buildings[i]['at']).format(i18n('DateTime')) : i18n('Boxes.Productions.DateNA')) + '</td>');
-							if (!buildings[i]['at']) { //No date available
-								rowA.push('<td>');
-                            }						
-							else if (buildings[i]['at'] * 1000 <= MainParser.getCurrentDateTime()) {
-								rowA.push('<td style="white-space:nowrap"><strong class="success">' + i18n('Boxes.Productions.Done') + '</strong></td>');
-							}
-							else {
-								rowA.push('<td style="white-space:nowrap">' + moment.unix(buildings[i]['at']).fromNow() + '</td>');
-							}
-						}
-						else {
-							rowA.push('<td><td>');
-						}
-
-						rowA.push('<td class="text-right"><span class="show-entity" data-id="' + buildings[i]['id'] + '"><img class="game-cursor" src="' + extUrl + 'css/images/hud/open-eye.png"></span></td>');
-						rowA.push('</tr>');
-					}
-
-					// nur Gebäude mit Gütern
-					else {
-
-						let tds = '<td data-text="' + helper.str.cleanup(buildings[i]['name']) + '">' + buildings[i]['name'] + '</td>';
-
-						let pA = [],
-							CurrentBuildingCount = 0,
-							CurrentBuildingMotivatedCount = 0;
-
-						for(let p in buildings[i]['motivatedproducts'])
-						{
-							if (!buildings[i]['motivatedproducts'].hasOwnProperty(p)) continue;
-
-							if (Productions.Types.includes(p) === false && !Productions.fragmentsSet.has(p)) {
-								if (countProducts[p] === undefined) {
-									countProducts[p] = 0;
-									countProductsMotivated[p] = 0;
-									countProductsDone[p] = 0;
-								}
-
-								let Amount = Productions.GetDaily(buildings[i]['products'][p], buildings[i]['dailyfactor'], p),
-									MotivatedAmount = Productions.GetDaily(buildings[i]['motivatedproducts'][p], buildings[i]['dailyfactor'], p);
-
-								countProducts[p] += Amount;
-								countProductsMotivated[p] += MotivatedAmount;
-
-								CurrentBuildingCount += Amount;
-								CurrentBuildingMotivatedCount += MotivatedAmount;
-
-								countAll += Amount;
-								countAllMotivated += MotivatedAmount;
-
-								if (buildings[i]['at'] * 1000 < MainParser.getCurrentDateTime()) {
-									countProductsDone[p] += Amount;
-									countAllDone += Amount;
-								}
-
-								pA.push(HTML.Format(Amount) + (Amount !== MotivatedAmount ? '/' + HTML.Format(MotivatedAmount) : '') + ' ' + Productions.GetGoodName(p));
-							}
-						}
-
-						tds += '<td class="is-number" data-number="' + CurrentBuildingCount + '">' + pA.join('<br>') + '</td>' +
-							'<td class="addon-info is-number" data-number="' + buildings[i]['era'] + '" title="' + HTML.i18nTooltip(i18n('Boxes.Productions.TTGoodsEra')) + '">' + i18n('Eras.' + buildings[i]['era']) + '</td>' +
-							'<td class="wsnw is-date" data-date="' + buildings[i]['at'] + '">' + (buildings[i]['at'] ? moment.unix(buildings[i]['at']).format(i18n('DateTime')) : i18n('Boxes.Productions.DateNA')) + '</td>';
-
-						if (!buildings[i]['at']) {
-							tds += '<td></td>';
-                        }
-						else if (buildings[i]['at'] * 1000 <= MainParser.getCurrentDateTime()) {
-							tds += '<td style="white-space:nowrap"><strong class="success">' + i18n('Boxes.Productions.Done') + '</strong></td>';
-						}
-						else {
-							tds += '<td style="white-space:nowrap">' + moment.unix(buildings[i]['at']).fromNow() + '</td>';
-						}
-
-						tds += '<td class="text-right"><span class="show-entity" data-id="' + buildings[i]['id'] + '"><img class="game-cursor" src="' + extUrl + 'css/images/hud/open-eye.png"></span></td>' +
-							'</tr>';
-
-						rowA.push(tds);
-					}
-				}
-			}
-
-			// Gruppierte Ansicht
-			if(type !== 'goods') {
-
-				for (let i in groups) {
-					if (groups.hasOwnProperty(i)) {
-
-						let ProductCount = Productions.GetDaily(groups[i]['products'], groups[i]['dailyfactor'], type),
-							MotivatedProductCount = Productions.GetDaily(groups[i]['motivatedproducts'], groups[i]['dailyfactor'], type),
-							size = sizes[groups[i]['eid']],
-							efficiency = (MotivatedProductCount / (size * groups[i]['count']));
-
-						let EfficiencyString;
-						if (type === 'strategy_points') {
-							EfficiencyString = HTML.Format(MainParser.round(efficiency * 100) / 100);
-						}
-						else {
-							EfficiencyString = HTML.Format(MainParser.round(efficiency));
-						}
-									
-						let tds = '<tr>' +
-							'<td class="text-right is-number" data-number="' + groups[i]['count'] + '">' + groups[i]['count'] + 'x </td>' +
-							'<td colspan="3" data-text="' + helper.str.cleanup(groups[i]['name']) + '">' + groups[i]['name'] + '</td>' +
-							'<td class="is-number" data-number="' + MotivatedProductCount + '">' + HTML.Format(ProductCount) + (ProductCount !== MotivatedProductCount ? '/' + HTML.Format(MotivatedProductCount) : '') + '</td>' +
-							'<td class="text-right is-number addon-info" data-number="' + (size*groups[i]['count']) + '">' + (size*groups[i]['count']) + '</td>'+
-							'<td class="text-right is-number addon-info" data-number="' + efficiency + '">' + EfficiencyString + '</td>'+
-							'</tr>';
-
-						rowB.push(tds);
-					}
-				}
-			}
-
-			table.push('<table class="foe-table sortable-table">');
-
-
-			// alle Güter nach Zeitalter
-			if(Productions.isEmpty(countProducts) === false) {
-				let eras = [],
-					eraSums = [],
-					eraSumsMotivated = [],
-					eraSumsDone = [];
-
-				// nach Zeitalter gruppieren und Array zusammen fummlen
-				for(let ca in countProducts)
-				{
-					if (!countProducts.hasOwnProperty(ca)) continue;
-
-					let era = Technologies.Eras[GoodsData[ca]['era']];
-
-					if (eras[era] === undefined) eras[era] = [];
-
-					eras[era].push('<span>' + Productions.GetGoodName(ca) + ' <strong>' + HTML.Format(countProducts[ca]) + (countProducts[ca] !== countProductsMotivated[ca] ? '/' + HTML.Format(countProductsMotivated[ca]) : '') + '</strong></span>');
-
-					if (eraSums[era] === undefined) {
-						eraSums[era] = 0;
-						eraSumsMotivated[era] = 0;
-						eraSumsDone[era] = 0;
-					}
-					eraSums[era] += countProducts[ca];
-					eraSumsMotivated[era] += countProductsMotivated[ca];
-					eraSumsDone[era] += countProductsDone[ca];
-				}
-
-
-				table.push('<thead>');
-
-				if (Productions.ShowDaily)
-				{
-					table.push('<span class="btn-default change-daily game-cursor" data-value="' + (pt - (-1)) + '">' + i18n('Boxes.Productions.ModeDaily') + '</span>');
-				}
-				else {
-					table.push('<span class="btn-default change-daily game-cursor" data-value="' + (pt - (-1)) + '">' + i18n('Boxes.Productions.ModeCurrent') + '</span>');
-				}
-
-				if (CurrentEraID === 18 && !CityMap.EraOutpostData) {
-					table.push('<tr><th colspan="6">' + i18n('Boxes.Productions.NoMarsDataWarning') + '</th></tr>');
-				}
-				if (CurrentEraID === 19 && !CityMap.EraOutpostData) {
-					table.push('<tr><th colspan="6">' + i18n('Boxes.Productions.NoAsteroidDataWarning') + '</th></tr>');
-				}
-				if (CurrentEraID === 20 && !CityMap.EraOutpostData) {
-					table.push('<tr><th colspan="6">' + i18n('Boxes.Productions.NoVenusDataWarning') + '</th></tr>');
-				}
-
-				// Zeitalterweise in die Tabelle legen
-				for (let era = eras.length; era >= 0; era--)
-				{
-					if (!eras.hasOwnProperty(era)) continue;
-					
-					table.push('<tr><th colspan="3"><strong class="text-warning">' + i18n('Eras.' + era) + '</strong></th>');
-					table.push('<th colspan="3" class="text-right text-warning" style="font-weight:normal"><span>' + i18n('Boxes.Productions.GoodEraTotal') + ':</span> <strong>' + HTML.Format(eraSums[era]) + (eraSums[era] !== eraSumsMotivated[era] ? '/' + HTML.Format(eraSumsMotivated[era]) : '') + '</strong>');
-					table.push(' <span class="success">' + i18n('Boxes.Productions.Done') + ':</span> <strong class="success">' + HTML.Format(eraSumsDone[era]) + '</strong></th ></tr > ');
-
-					table.push('<tr><td colspan="6" class="all-products">');
-
-					table.push(eras[era].join(''));
-
-					table.push('</td></tr>');
-				}
-				table.push('</thead>');
-
-				table.push('<tbody class="goods-mode goods-single">');
-
-				table.push('<tr class="other-header"><td class="total-products text-right" colspan="6"><strong>' + i18n('Boxes.Productions.Total') + HTML.Format(countAll) + '</strong>');
-				table.push(' <strong class="success">' + i18n('Boxes.Productions.Done') + ': ' + HTML.Format(countAllDone) + '</strong></td ></tr > ');
-
-				table.push('<tr class="sorter-header">');
-				table.push('<th class="ascending game-cursor" data-type="goods-single">' + i18n('Boxes.Productions.Headings.name') + '</th>');
-				table.push('<th class="is-number game-cursor" data-type="goods-single">' + i18n('Boxes.Productions.Headings.amount') + '</th>');
-				table.push('<th class="is-number game-cursor" data-type="goods-single">' + i18n('Boxes.Productions.Headings.era') + '</th>');
-				table.push('<th class="is-date game-cursor" data-type="goods-single">' + i18n('Boxes.Productions.Headings.earning') + '</th>');
-				table.push('<th class="no-sort">&nbsp;</th>');
-				table.push('<th class="no-sort">&nbsp;</th>');
-				table.push('</tr>');
-			}
-			else {
-				if(type !== 'fragments'){
-					table.push('<thead>');
-
-					table.push('<tr class="other-header">');
-
-					table.push('<th colspan="3">');
-
-					if (Productions.TypeHasProduction(type)) {
-						if (Productions.ShowDaily) {
-							table.push('<span class="btn-default change-daily game-cursor" data-value="' + (pt - (-1)) + '">' + i18n('Boxes.Productions.ModeDaily') + '</span>');
-						}
-						else {
-							table.push('<span class="btn-default change-daily game-cursor" data-value="' + (pt - (-1)) + '">' + i18n('Boxes.Productions.ModeCurrent') + '</span>');
-						}
-					}
-
-					table.push('<span class="btn-default change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeSingle') + '</span>');
-					table.push('</th>');
-
-					table.push('<th colspan="6" class="text-right"><strong>' + Productions.GetGoodName(type) + ': ' + HTML.Format(countAll) + (countAll !== countAllMotivated ? '/' + HTML.Format(countAllMotivated) : '') + '</strong>');
-					if (Productions.TypeHasProduction(type)) {
-						table.push(' <strong class="success">' + i18n('Boxes.Productions.Done') + ': ' + HTML.Format(countAllDone) + '</strong>');
-					}
-					table.push('</th>');
-					table.push('</tr>');
-
-					table.push('</thead>');
-				}
-				table.push('<tbody class="' + type + '-mode ' + type + '-single">');
-
-				// Sortierung - Einzelheader
-				table.push('<tr class="sorter-header">');
-				table.push('<th class="ascending game-cursor" data-type="' + type + '-single">' + i18n('Boxes.Productions.Headings.name') + '</th>');
-				table.push('<th class="is-number game-cursor text-right" data-type="' + type + '-single">' + i18n('Boxes.Productions.Headings.amount') + '</th>');
-				table.push('<th class="is-number game-cursor text-right" data-type="' + type + '-single">' + i18n('Boxes.Productions.Headings.size') + '</th>');
-				table.push('<th class="is-number game-cursor text-right" data-type="' + type + '-single">' + i18n('Boxes.Productions.Headings.efficiency') + '</th>');
-				table.push('<th class="is-number game-cursor" data-type="' + type + '-single">' + i18n('Boxes.Productions.Headings.era') + '</th>');
-				if (Productions.TypeHasProduction(type)) {
-					table.push('<th class="is-date game-cursor" data-type="' + type + '-single">' + i18n('Boxes.Productions.Headings.earning') + '</th>');
-				}
-				else {
-					table.push('<th class="no-sort">&nbsp;</th>');
-				}
-				table.push('<th class="no-sort">&nbsp;</th>');
-				table.push('<th class="no-sort">&nbsp;</th>');
-				table.push('</tr>');
-			}
-
-			table.push( rowA.join('') );
-			table.push('</tbody>');
-
-			// Gruppierte Ansicht drunter
-			if(Productions.isEmpty(rowB) === false) {
-				table.push('<tbody class="' + type + '-mode ' + type + '-groups" style="display:none">');
-
-				// Sortierung - Gruppiert-Header
-				table.push('<tr class="sorter-header">');
-				table.push('<th colspan="1" class="game-cursor text-right is-number" data-type="' + type + '-groups">' + i18n('Boxes.Productions.Headings.number') + '</th>');
-				table.push('<th colspan="3" class="ascending game-cursor" data-type="' + type + '-groups">Name</th>');
-				table.push('<th colspan="1" class="is-number game-cursor" data-type="' + type + '-groups">' + i18n('Boxes.Productions.Headings.amount') + '</th>');
-				table.push('<th colspan="1" class="is-number game-cursor text-right" data-type="' + type + '-groups">' + i18n('Boxes.Productions.Headings.area') + '</th>');
-				table.push('<th colspan="1" class="is-number game-cursor text-right" data-type="' + type + '-groups">' + i18n('Boxes.Productions.Headings.efficiency') + '</th>');
-				table.push('</tr>');
-
-				table.push( rowB.join('') );
-				table.push('</tbody>');
-			}
-
-			table.push('</table>');
-
-			Productions.SetTabContent(type, table.join(''));
-		}*/
 
 		// alles auf einmal ausgeben
 		//console.log(Productions.BuildingsAll)
@@ -1037,35 +748,17 @@ let Productions = {
 	 *
 	 */
 	SwitchFunction: ()=>{
-		$('#Productions').on('click', '.change-view', function(){
-			let btn = $(this),
-				t = $(this).data('type'),
-				hiddenTb = $('.' + t + '-mode:hidden'),
-				vissibleTb = $('.' + t + '-mode:visible');
+		$('#Productions').on('click', '.change-view', function() {
+			// todo: dumm
+			let activeTable = $(this).parent().parent().parent().parent('table'),
+				hiddenTable = $(this).parent().parent().parent().parent().parent('#'+$(this).data('type')).children('table:not(.active)')
 
-			vissibleTb.fadeOut(400, function(){
-				hiddenTb.fadeIn(400);
-
-				if( $('.' + t + '-single').is(':visible') ){
-					btn.text(i18n('Boxes.Productions.ModeSingle'));
-				} else {
-					btn.text(i18n('Boxes.Productions.ModeGroups'));
-				}
+			console.log(activeTable, hiddenTable)
+			activeTable.fadeOut(400, function(){
+				hiddenTable.fadeIn(400)
+				activeTable.removeClass('active')
+				hiddenTable.addClass('active')
 			});
-		});
-
-		$('#Productions').on('click', '.change-daily', function () {
-			let Tab = $(this).data('value');
-			Productions.ActiveTab = Tab;
-			Productions.ShowDaily = !Productions.ShowDaily;
-			if (Productions.ShowDaily) {
-				$(this).text(i18n('Boxes.Productions.ModeDaily'));
-			}
-			else {
-				$(this).text(i18n('Boxes.Productions.ModeCurrent'));
-			}
-
-			Productions.CalcBody();
 		});
 	},
 
