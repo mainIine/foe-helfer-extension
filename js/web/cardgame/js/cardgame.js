@@ -144,9 +144,12 @@ FoEproxy.addHandler('CardGameService', 'all', (data, postData) => {
 		return
 	}
 
-	if (cardGame.health!=0) {
+	if (cardGame.health!=0 && !data.responseData.enemiesDefeated) {
 		cardGame.checkHealth();
 		cardGame.showCardsList();
+	} else {
+		$('#cardGameDialog').remove()
+		$('#cardGameFightBlocker').remove();
 	}
 });
 
@@ -232,7 +235,7 @@ let cardGame = {
 			blocker.id = 'cardGameFightBlocker';
 			blocker.src = srcLinks.get("/city/gui/great_building_bonus_icons/great_building_bonus_plunder_repel.png", true);
 			blocker.title = warning;
-			blocker.className = cardGame.context;
+			blocker.className = cardGame.context+" helper-blocker";
 			$('#game_body')[0].append(blocker);
 			$('#cardGameFightBlocker').on("click",()=>{$('#cardGameFightBlocker').remove()});
 		} 
