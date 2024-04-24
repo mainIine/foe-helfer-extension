@@ -1749,8 +1749,8 @@ let CityMap = {
 			max_level: (data.type == "greatbuilding" ? data.max_level : undefined)
 		}
 		
-		if (entity.type != 'street')
-			console.log('entity ',entity.name, entity, ceData, data)
+		//if (entity.type != 'street')
+		//	console.log('entity ',entity.name, entity, ceData, data)
 		return entity
 	},
 };
