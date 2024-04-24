@@ -263,7 +263,7 @@ let mergerGame = {
 			if ($('#mergerGameResetBlocker').length === 0) {
 				let blocker = document.createElement("img");
 				blocker.id = 'mergerGameResetBlocker';
-				blocker.classList = mergerGame.event;
+				blocker.className = mergerGame.event+" helper-blocker";
 				blocker.src = srcLinks.get("/city/gui/great_building_bonus_icons/great_building_bonus_plunder_repel.png", true);
 				blocker.title = i18n("Boxes.MergerGame.KeysLeft."+mergerGame.event);
 				$('#game_body')[0].append(blocker);
