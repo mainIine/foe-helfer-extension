@@ -1279,6 +1279,7 @@ let CityMap = {
 							resources: {'random': parseFloat(data.state.current_product.amount)},
 							type: "unit",
 						}
+						console.log(ceData.name, production)
 						productions.push(production)
 					}
 					if (data.state.is_motivated) { 
@@ -1546,6 +1547,33 @@ let CityMap = {
 			}
 			if (productions.length > 0) 
 				return productions
+			if (data.type == "main_building") { // add emissary production to town hall
+				MainParser.EmissaryService.forEach(emissary => {
+					let resource = {
+						type: (emissary.bonus.type != "unit" ? "resources" : emissary.bonus.type),
+						needsMotivation: false,
+						resources: {[emissary.bonus.subType]: emissary.bonus.amount} 
+					}
+					productions.push(resource)
+				})
+				return productions
+			}
+			if (data.cityentity_id.includes("CastleSystem")) { // add castle system stuff
+				let currentLevel = Castle.curLevel
+				era = "SpaceAgeTitan" // todo: gucken, wo man das eigene zeitalter findet
+				console.log(MainParser.CastleSystemLevels[(currentLevel-1)].dailyReward[era], Castle.curLevel)
+				MainParser.CastleSystemLevels[(currentLevel-1)].dailyReward[era].rewards.forEach(reward => {
+					// todo: güter anpassen
+					let resource = {
+						type: "resources",
+						needsMotivation: false,
+						resources: {[reward.subType]: reward.amount} 
+					}
+					productions.push(resource)
+				})
+				return productions
+			}
+			// todo: ruhmeshalle
 			return false
 		}
 		else if (data.type === "generic_building") {
@@ -1749,8 +1777,8 @@ let CityMap = {
 			max_level: (data.type == "greatbuilding" ? data.max_level : undefined)
 		}
 		
-		//if (entity.type != 'street')
-		//	console.log('entity ',entity.name, entity, ceData, data)
+		if (entity.type != 'street')
+			console.log('entity ',entity.name, entity, ceData, data)
 		return entity
 	},
 };

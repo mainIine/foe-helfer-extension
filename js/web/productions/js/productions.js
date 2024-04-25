@@ -391,11 +391,13 @@ let Productions = {
 				rowA.push('<td data-text="'+building.name.replace(/[. -]/g,"")+'">' + building.name + '</td>')
 				// todo: warum haben hüpfkürbisse ne produktion obwohl sie nicht laufen
 				
-				// keine ahnung
+				
 				if (!type.includes('att') && !type.includes('def')) {
 					if (type != 'fragments') {
 						currentAmount = parseFloat(CityMap.getBuildingProductionByCategory(true, building, type))
 						amount = parseFloat(CityMap.getBuildingProductionByCategory(false, building, type))
+						if (type == "units")
+							console.log(building.name, currentAmount, building.production)
 
 						if (type == 'money' && building.type != "greatbuilding") {
 							amount = Math.round(amount + (amount * ((MainParser.BoostSums.coin_production + (Productions.HappinessBoost * 100)) / 100)))
@@ -420,7 +422,7 @@ let Productions = {
 						typeCurrentSum += currentAmount
 					}
 					else {
-						rowA.push('<td colspan="4">' + CityMap.getBuildingFragments(building) + '</td>')
+						rowA.push('<td colspan="4" data-number="1">' + CityMap.getBuildingFragments(building) + '</td>')
 					}
 				}
 				else {
@@ -462,7 +464,7 @@ let Productions = {
 				let updateGroup = groupedBuildings.find(x => x.name == building.name)
 				if (updateGroup == undefined) {
 					groupedBuildings.push({
-						name: building.name,
+						building: building,
 						amount: 1,
 						currentValues: currentAmount,
 						values: amount
@@ -496,23 +498,23 @@ let Productions = {
 			}
 			table.push('</tr>')
 			table.push('<tr class="sorter-header">')
-			table.push('<th class="no-sort"> </th>')
-			table.push('<th data-type="prod-group">' + i18n('Boxes.BlueGalaxy.Building') + '</th>')
+			table.push('<th class="no-sort" data-type="prodlist'+type+'"> </th>')
+			table.push('<th class="ascending" data-type="prodlist'+type+'">' + i18n('Boxes.BlueGalaxy.Building') + '</th>')
 			if (!type.includes('att') && !type.includes('def')) 
-				table.push('<th colspan="4" data-type="prod-group" class="is-number">' + i18n('Boxes.Productions.Headings.number') + '</th>')
+				table.push('<th colspan="4" data-type="prodlist'+type+'" class="is-number">' + i18n('Boxes.Productions.Headings.number') + '</th>')
 			else {
-				table.push('<th class="boost '+type+' is-number" data-type="prod-group"><span></span>'+boostCounter[type].all+'</th>')
-				table.push('<th class="boost battleground is-number" data-type="prod-group"><span></span>'+boostCounter[type].battleground+'</th>')
-				table.push('<th class="boost guild_expedition is-number" data-type="prod-group"><span></span>'+boostCounter[type].guild_expedition+'</th>')
-				table.push('<th class="boost guild_raids is-number" data-type="prod-group"><span></span>'+boostCounter[type].guild_raids+'</th>')
+				table.push('<th class="boost '+type+' is-number text-center" data-type="prodlist'+type+'"><span></span>'+boostCounter[type].all+'</th>')
+				table.push('<th class="boost battleground is-number text-center" data-type="prodlist'+type+'"><span></span>'+boostCounter[type].battleground+'</th>')
+				table.push('<th class="boost guild_expedition is-number text-center" data-type="prodlist'+type+'"><span></span>'+boostCounter[type].guild_expedition+'</th>')
+				table.push('<th class="boost guild_raids is-number text-center" data-type="prodlist'+type+'"><span></span>'+boostCounter[type].guild_raids+'</th>')
 			}
-			table.push('<th data-type="prod-group">' + i18n('Boxes.Productions.Headings.era') + '</th>')
-			table.push('<th data-type="prod-group">' + i18n('Boxes.Productions.Headings.earning') + '</th>')
-			table.push('<th data-type="prod-group">' + i18n('Boxes.Productions.Headings.Done') + '</th>')
-			table.push('<th data-type="prod-group" class="no-sort"> </th>')
+			table.push('<th data-type="prodlist'+type+'">' + i18n('Boxes.Productions.Headings.era') + '</th>')
+			table.push('<th data-type="prodlist'+type+'" class="no-sort">' + i18n('Boxes.Productions.Headings.earning') + '</th>')
+			table.push('<th data-type="prodlist'+type+'" class="no-sort">' + i18n('Boxes.Productions.Headings.Done') + '</th>')
+			table.push('<th data-type="prodlist'+type+'" class="no-sort"> </th>')
 			table.push('</tr>')
 			table.push('</thead>')
-			table.push('<tbody>')
+			table.push('<tbody class="prodlist'+type+'">')
 			table.push( rowA.join('') )
 			table.push('</tbody>')
 			table.push('</table>')
@@ -521,20 +523,22 @@ let Productions = {
 			tableGr.push('<table class="foe-table sortable-table '+type+'-group">')
 			tableGr.push('<thead>')
 			tableGr.push('<tr>')
-			tableGr.push('<th colspan="3"><span class="btn-default change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeSingle') + '</span></th>')
+			tableGr.push('<th colspan="4"><span class="btn-default change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeSingle') + '</span></th>')
 			tableGr.push('</tr>')
 			tableGr.push('<tr class="sorter-header">')
-			tableGr.push('<th data-type="prod-gr" class="is-number">' + i18n('Boxes.Productions.Headings.number') + '</th>')
-			tableGr.push('<th data-type="prod-gr">' + i18n('Boxes.BlueGalaxy.Building') + '</th>')
-			tableGr.push('<th data-type="prod-gr" class="is-number">' + i18n('Boxes.Productions.Headings.earning') + '</th>')
+			tableGr.push('<th data-type="prodgroup'+type+'" class="is-number">' + i18n('Boxes.Productions.Headings.number') + '</th>')
+			tableGr.push('<th data-type="prodgroup'+type+'">' + i18n('Boxes.BlueGalaxy.Building') + '</th>')
+			tableGr.push('<th data-type="prodgroup'+type+'" class="is-number">' + i18n('Boxes.Productions.Headings.number') + '</th>')
+			tableGr.push('<th data-type="prodgroup'+type+'" class="is-number">' + i18n('Boxes.Productions.Headings.size') + '</th>')
 			tableGr.push('</tr>')
 			tableGr.push('</thead>')
-			tableGr.push('<tbody>')
+			tableGr.push('<tbody class="prodgroup'+type+'">')
 				groupedBuildings.forEach(building => {
 					rowB.push('<tr>')
 					rowB.push('<td data-number="'+building.amount+'">'+building.amount+'x </td>')
-					rowB.push('<td data-text="'+building.name.replace(/[. -]/g,"")+'">'+ building.name +'</td>')
+					rowB.push('<td data-text="'+building.building.name.replace(/[. -]/g,"")+'">'+ building.building.name +'</td>')
 					rowB.push('<td data-number="'+building.currentValues+'">'+HTML.Format(building.currentValues)+'/'+HTML.Format(building.values)+'</td>')
+					rowB.push('<td data-number="'+(building.building.size.length*building.building.size.width)+'">'+building.building.size.length+'x'+building.building.size.width+'</td>')
 					rowB.push('</tr>')
 				})
 			tableGr.push( rowB.join('') )
