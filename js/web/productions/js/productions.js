@@ -396,8 +396,9 @@ let Productions = {
 					if (type != 'fragments') {
 						currentAmount = parseFloat(CityMap.getBuildingProductionByCategory(true, building, type))
 						amount = parseFloat(CityMap.getBuildingProductionByCategory(false, building, type))
-						if (type == "units")
-							console.log(building.name, currentAmount, building.production)
+
+						if (type == "clan_power")
+							console.log(CityMap.getBuildingProductionByCategory(true, building, type))
 
 						if (type == 'money' && building.type != "greatbuilding") {
 							amount = Math.round(amount + (amount * ((MainParser.BoostSums.coin_production + (Productions.HappinessBoost * 100)) / 100)))
@@ -407,7 +408,7 @@ let Productions = {
 							amount = Math.round(amount + (amount *((MainParser.BoostSums.supply_production + (Productions.HappinessBoost * 100)) / 100)))
 							currentAmount = Math.round(currentAmount + (currentAmount *((MainParser.BoostSums.supply_production + (Productions.HappinessBoost * 100)) / 100)))
 						}
-						else if (type == 'strategy_points' && building.type != "greatbuilding") {
+						else if (type == 'strategy_points' && building.type != "greatbuilding" && building.type != "main_building" && !building.entityId.includes("CastleSystem")) {
 							amount = Math.round(amount + (amount *((MainParser.BoostSums.forge_points_production) / 100)))
 							currentAmount = Math.round(currentAmount + (currentAmount *((MainParser.BoostSums.forge_points_production) / 100)))
 						}

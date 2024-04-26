@@ -1128,6 +1128,17 @@ let CityMap = {
 						boosts.push(boost)
 				}
 			}
+			if (data.cityentity_id.includes("CastleSystem")) {
+				MainParser.Boosts[data.id].forEach(castleBoost => {
+					let boost = {
+						feature: "all",
+						type: MainParser.BoostMapper[castleBoost.type] || undefined, // do not include weird boosts
+						value: castleBoost.value
+					}
+					if (boost.type !== undefined)
+						boosts.push(boost)
+				})
+			}
 		}
 		else {
 			if (ceData.components[era]?.boosts) {
@@ -1157,15 +1168,16 @@ let CityMap = {
 	},
 
 	
-
 	setState(data) { 
-		if (data.state.__class__ == "IdleState")
-			return "idle";
+		if (data.state.__class__ == "IdleState" && !data.cityentity_id.includes("CastleSystem"))
+			return "idle"
 		else if (data.state.__class__ == "ProductionFinishedState")
-			return "collectable";
+			return "collectable"
 		else if (data.state.__class__ == "PlunderedState")
-			return "pludered";
-		return "producing";
+			return "plundered"
+		else if (data.cityentity_id.includes("CastleSystem"))
+			return "producing"
+		return "producing"
 	},
 
 	// building is not in construction menu
@@ -1194,9 +1206,14 @@ let CityMap = {
 	},
 	
 	setStateTimes(data) {
-		let state = this.setState(data);
-		if (state == "producing")
+		let state = this.setState(data)
+		
+		if (state == "producing") {
+			if (data.cityentity_id.includes("CastleSystem")) {
+				return { at: MainParser.CastleSystemChest.dailyRewardCollectionAvailableAt, in: MainParser.CastleSystemChest.dailyRewardCollectionAvailableAt - parseInt(Date.now()/1000) }
+			}
 			return { at: data.state.next_state_transition_at, in: data.state.next_state_transition_in }
+		}
 		else if (state == "collectable")
 			return { at: moment().unix(), in: 0 }
 		return { at: undefined, in: undefined };
@@ -1235,6 +1252,175 @@ let CityMap = {
 		if (!connected) 
 			connected = (data.connected == 1)
 		return connected
+	},	
+	
+	// returns false if building does not produce anything
+	setAllProductions(ceData, data, era) {
+		let productions = []
+		if (data.type != "generic_building" && data.type != "greatbuilding") {
+			if (ceData.is_special) { // special building
+				if (ceData.available_products !== undefined) { 
+					// to do: to think about: should all goods production options be gathered here?
+					if (Array.isArray(ceData.available_products))
+						ceData.available_products.forEach(product => {
+							let resource = {
+								type: "unknown", 
+								needsMotivation: false,
+								resources: {}
+							}
+						});
+				}
+				if (ceData.entity_levels[Technologies.InnoEras[era]] !== undefined) { // base money is here
+					let money = ceData.entity_levels[Technologies.InnoEras[era]].produced_money
+					if (money)
+						productions.push({ type: 'resources', needsMotivation: false, resources: { money: money }, doubleWhenMotivated: true})
+					let power = ceData.entity_levels[Technologies.InnoEras[era]].clan_power // hall of fame lvl 1
+					if (power)
+						productions.push({ type: 'guildResources', needsMotivation: false, resources: { clan_power: power }, doubleWhenMotivated: true})
+				}
+				ceData.abilities.forEach(ability => {
+					let resource = this.setOldProductionResourceFromAbility(ability, era)
+					
+					if (Object.keys(resource.resources).length > 0) 
+						productions.push(resource)
+				})
+			}
+			if (productions.length > 0) 
+				return productions
+			if (data.type == "main_building") { // add emissary production to town hall
+				MainParser.EmissaryService.forEach(emissary => {
+					let resource = {
+						type: (emissary.bonus.type != "unit" ? "resources" : emissary.bonus.type),
+						needsMotivation: false,
+						resources: {[emissary.bonus.subType]: emissary.bonus.amount} 
+					}
+					productions.push(resource)
+				})
+				MainParser.BonusService?.forEach(bonus => { // guild FP
+					if (bonus.type == "daily_strategypoint") {
+						let resource = {
+							type: "resources",
+							needsMotivation: false,
+							resources: { strategy_points: bonus.value} 
+						}
+						productions.push(resource)
+					}
+				})
+				return productions
+			}
+			if (data.cityentity_id.includes("CastleSystem")) { // add castle system stuff
+				let currentLevel = Castle.curLevel
+				era = CurrentEra 
+				MainParser.CastleSystemLevels[(currentLevel-1)].dailyReward[era].rewards.forEach(reward => {
+					let resources = {[reward.subType]: reward.amount} 
+					if (reward.id.search("#") != -1) { // "goods#random#CurrentEra#30" "goods#random#PreviousEra#15"
+						amount = reward.id.match(/\d+$/)[0]
+						if (reward.id.search("goods") != -1 && reward.id.search("CurrentEra") != -1)
+							resources = { random_good_of_age: amount }
+						else if (reward.id.search("goods") != -1 && reward.id.search("PreviousEra") != -1)
+							resources = { random_good_of_previous_age: amount }
+					}
+					let resource = {
+						type: "resources",
+						needsMotivation: false,
+						resources: resources
+					}
+					productions.push(resource)
+				})
+				return productions
+			}
+			return false
+		}
+		else if (data.type === "generic_building") {
+			// fyi: generic_building supplies and coins are always doubled when motivated
+			let production = ceData.components[era]?.production || ceData.components.AllAge.production // currently it is either allage or era, never both
+			if (production) {
+				production.options[0].products.forEach(product => {
+					let resource = {
+						type: product.type,
+						needsMotivation: (product.onlyWhenMotivated == true),
+						resources: {}
+					}
+					if (product.type == "resources") {
+						resource.resources = product.playerResources.resources;
+					}
+					else if (product.type == "guildResources") {
+						resource.resources = product.guildResources.resources;
+					}
+					else if (product.type == "genericReward") {
+						resource.resources = this.setGenericReward(product, ceData, data, era) 
+						if (resource.resources.type === undefined)  // genericReward can also return a unit reward, change type
+							resource.type = "unit"
+					}
+					else if (product.type == "unit") {
+						resource.resources = this.setUnitReward(product)
+						//console.log(ceData.name, resource.resources)
+					}
+					else if (product.type == "random") {
+						let rewards = [];
+						if (product.products.length > 1) {
+							product.products.forEach(reward => {
+								if (reward.product.type === "genericReward") { // currently: everything but forge points
+									let lookupData = ceData.components[era]?.lookup.rewards[reward.product.reward.id] || ceData.components.AllAge.lookup.rewards[reward.product.reward.id]
+									let name = this.setRewardNameFromLookupData(lookupData, ceData)
+									let newReward = {
+										id: reward.product.reward.id,
+										name: name,
+										type: lookupData.type,
+										subType: lookupData.subType,
+										amount: lookupData.amount,
+										dropChance: reward.dropChance,
+									}
+									rewards.push(newReward)
+								}
+								else if (reward.product.type === "resources") { // currently: playerResources.resources.strategy_points
+									let newReward = {
+										id: null,
+										type: "resources",
+										name: i18n('Boxes.OwnpartCalculator.OptionsFP'), // ugly
+										subType: Object.keys(reward.product.playerResources.resources)[0], // hacky
+										amount: reward.product.playerResources.resources.strategy_points, // hacky
+										dropChance: reward.dropChance,
+									}
+									rewards.push(newReward)
+								}
+							});
+							resource.resources = rewards
+						}
+					}
+					else {
+						console.log("CityMap.setAllProductions() is missing an option for ",ceData.name)
+					}
+					productions.push(resource)
+				});
+			}
+			if (productions.length > 0)
+				return productions
+			return false
+		}
+		else if (data.type === 'greatbuilding') {
+			let resource = {
+				type: 'resources',
+				resources: {}
+			}
+			if (data.state.current_product) {
+				if (data.state.current_product.product?.resources) {
+					resource.resources = data.state.current_product.product.resources
+				}
+				if (data.state.current_product.name === 'penal_unit') { // alcatraz
+					resource.resources = {'random': parseFloat(data.state.current_product.amount)}
+					resource.type = 'unit'
+				}
+				if (data.state.current_product.name === 'clan_goods') {
+					resource.type = 'guildResources'
+					resource.resources = {'all_goods_of_age': data.state.current_product.goods[0].value*5}
+				}
+				productions.push(resource)
+			}
+			if (productions.length > 0)
+				return productions
+			return false
+		}
 	},
 
 	// returns undefined if building is idle or there are no productions (yet)
@@ -1246,6 +1432,13 @@ let CityMap = {
 					if (data.state.current_product.guildProduct) {
 						let production = {
 							resources: data.state.current_product.guildProduct.resources,
+							type: "guildResources",
+						}
+						productions.push(production)
+					}
+					if (data.state.current_product.clan_power) { // HoF
+						let production = {
+							resources: { clan_power: data.state.current_product.clan_power },
 							type: "guildResources",
 						}
 						productions.push(production)
@@ -1279,7 +1472,6 @@ let CityMap = {
 							resources: {'random': parseFloat(data.state.current_product.amount)},
 							type: "unit",
 						}
-						console.log(ceData.name, production)
 						productions.push(production)
 					}
 					if (data.state.is_motivated) { 
@@ -1293,6 +1485,10 @@ let CityMap = {
 							}
 						})
 					}
+				}
+				if (data.type == "main_building") {
+					let prod = productions.concat(CityMap.setAllProductions(ceData, data, era))
+					return prod
 				}
 			}
 			else { // generic building
@@ -1327,6 +1523,9 @@ let CityMap = {
 			}
 			if (productions.length > 0)
 				return productions
+		}
+		if (data.cityentity_id.includes("CastleSystem")) {
+
 		}
 		return undefined
 	},
@@ -1517,158 +1716,6 @@ let CityMap = {
 		return resource
 	},
 
-	// returns false if building does not produce anything
-	setAllProductions(ceData, data, era) {
-		let productions = []
-		if (data.type != "generic_building" && data.type != "greatbuilding") {
-			if (ceData.is_special) { // special building
-				if (ceData.available_products !== undefined) { 
-					// to do: to think about: should all goods production options be gathered here?
-					if (Array.isArray(ceData.available_products))
-						ceData.available_products.forEach(product => {
-							let resource = {
-								type: "unknown", 
-								needsMotivation: false,
-								resources: {}
-							}
-						});
-				}
-				if (ceData.entity_levels[Technologies.InnoEras[era]] !== undefined) { // base money is here
-					let money = ceData.entity_levels[Technologies.InnoEras[era]].produced_money
-					if (money)
-						productions.push({type: 'resources', needsMotivation: false, resources: { money: money}, doubleWhenMotivated: true})
-				}
-				ceData.abilities.forEach(ability => {
-					let resource = this.setOldProductionResourceFromAbility(ability, era)
-					
-					if (Object.keys(resource.resources).length > 0) 
-						productions.push(resource)
-				})
-			}
-			if (productions.length > 0) 
-				return productions
-			if (data.type == "main_building") { // add emissary production to town hall
-				MainParser.EmissaryService.forEach(emissary => {
-					let resource = {
-						type: (emissary.bonus.type != "unit" ? "resources" : emissary.bonus.type),
-						needsMotivation: false,
-						resources: {[emissary.bonus.subType]: emissary.bonus.amount} 
-					}
-					productions.push(resource)
-				})
-				return productions
-			}
-			if (data.cityentity_id.includes("CastleSystem")) { // add castle system stuff
-				let currentLevel = Castle.curLevel
-				era = "SpaceAgeTitan" // todo: gucken, wo man das eigene zeitalter findet
-				console.log(MainParser.CastleSystemLevels[(currentLevel-1)].dailyReward[era], Castle.curLevel)
-				MainParser.CastleSystemLevels[(currentLevel-1)].dailyReward[era].rewards.forEach(reward => {
-					// todo: güter anpassen
-					let resource = {
-						type: "resources",
-						needsMotivation: false,
-						resources: {[reward.subType]: reward.amount} 
-					}
-					productions.push(resource)
-				})
-				return productions
-			}
-			// todo: ruhmeshalle
-			return false
-		}
-		else if (data.type === "generic_building") {
-			// fyi: generic_building supplies and coins are always doubled when motivated
-			let production = ceData.components[era]?.production || ceData.components.AllAge.production // currently it is either allage or era, never both
-			if (production) {
-				production.options[0].products.forEach(product => {
-					let resource = {
-						type: product.type,
-						needsMotivation: (product.onlyWhenMotivated == true),
-						resources: {}
-					}
-					if (product.type == "resources") {
-						resource.resources = product.playerResources.resources;
-					}
-					else if (product.type == "guildResources") {
-						resource.resources = product.guildResources.resources;
-					}
-					else if (product.type == "genericReward") {
-						resource.resources = this.setGenericReward(product, ceData, data, era) 
-						if (resource.resources.type === undefined)  // genericReward can also return a unit reward, change type
-							resource.type = "unit"
-					}
-					else if (product.type == "unit") {
-						resource.resources = this.setUnitReward(product)
-						//console.log(ceData.name, resource.resources)
-					}
-					else if (product.type == "random") {
-						let rewards = [];
-						if (product.products.length > 1) {
-							product.products.forEach(reward => {
-								if (reward.product.type === "genericReward") { // currently: everything but forge points
-									let lookupData = ceData.components[era]?.lookup.rewards[reward.product.reward.id] || ceData.components.AllAge.lookup.rewards[reward.product.reward.id]
-									let name = this.setRewardNameFromLookupData(lookupData, ceData)
-									let newReward = {
-										id: reward.product.reward.id,
-										name: name,
-										type: lookupData.type,
-										subType: lookupData.subType,
-										amount: lookupData.amount,
-										dropChance: reward.dropChance,
-									}
-									rewards.push(newReward)
-								}
-								else if (reward.product.type === "resources") { // currently: playerResources.resources.strategy_points
-									let newReward = {
-										id: null,
-										type: "resources",
-										name: i18n('Boxes.OwnpartCalculator.OptionsFP'), // ugly
-										subType: Object.keys(reward.product.playerResources.resources)[0], // hacky
-										amount: reward.product.playerResources.resources.strategy_points, // hacky
-										dropChance: reward.dropChance,
-									}
-									rewards.push(newReward)
-								}
-							});
-							resource.resources = rewards
-						}
-					}
-					else {
-						console.log("CityMap.setAllProductions() is missing an option for ",ceData.name)
-					}
-					productions.push(resource)
-				});
-			}
-			if (productions.length > 0)
-				return productions
-			return false
-		}
-		else if (data.type === 'greatbuilding') {
-			let resource = {
-				type: 'resources',
-				resources: {}
-			}
-			if (data.state.current_product) {
-				if (data.state.current_product.product?.resources) {
-					resource.resources = data.state.current_product.product.resources
-				}
-				if (data.state.current_product.name === 'penal_unit') { // alcatraz
-					resource.resources = {'random': parseFloat(data.state.current_product.amount)}
-					resource.type = 'unit'
-				}
-				if (data.state.current_product.name === 'clan_goods') {
-					resource.type = 'guildResources'
-					resource.resources = {'all_goods_of_age': data.state.current_product.goods[0].value*5}
-				}
-				productions.push(resource)
-			}
-			if (productions.length > 0)
-				return productions
-			return false
-		}
-		// todo: rathaus
-	},
-
 	getBuildingById(id) {
 		return Object.values(MainParser.NewCityMapData).find(x => x.id === id)
 	},
@@ -1680,15 +1727,14 @@ let CityMap = {
 
 		if (productions) {
 			productions.forEach(production => {
-				//console.log(building.name, production, category)
-				if (production.type == 'random') { // currently not in the production list
+				if (production.type == 'random') { // currently not in the list
 					production.resources.forEach(resource => { // todo
 						if (resource.type+"s" == category) { // units 
 							prod += resource.amount * resource.dropChance
 						}
 					})
 				}
-				if (production.type = "resources") {
+				if (production.type == "resources") {
 					if (production.resources[category]) {
 						let doubleMoney = (production.doubleWhenMotivated ? 2 : 1)
 						prod += production.resources[category] * doubleMoney
@@ -1709,6 +1755,10 @@ let CityMap = {
 						prod = production.resources.all_goods_of_age
 					else
 						prod = production.resources.compressed_matter_capsule*5 // todo: fetch one good, multiply by 5
+				}
+				if (category == "clan_power" && production.type == "guildResources") {
+					if (production.resources.clan_power)
+						prod = production.resources.clan_power
 				}
 				if (category == "fragments" && production.resources.subType == "fragment") { 
 					return CityMap.getBuildingFragments(building)

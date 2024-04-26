@@ -308,6 +308,11 @@ GetFights = () =>{
 		QIMap.init(data.responseData)
 	})
 
+	// CastleSystem rewards
+	FoEproxy.addHandler('CastleSystemService', 'getOverview', (data, postData) => {
+		MainParser.CastleSystemChest = data.responseData;
+	});
+
 	// --------------------------------------------------------------------------------------------------
 	// Karte wird gewechselt zum Außenposten
 	FoEproxy.addHandler('CityMapService', 'getCityMap', (data, postData) => {
@@ -886,6 +891,7 @@ let MainParser = {
 	CastleSystemLevels: null,
 	StartUpType: null,
 	OpenConversation: null,
+	CastleSystemChest: null,
 
 	// all buildings of the player
 	CityMapData: {},
@@ -1414,6 +1420,8 @@ let MainParser = {
 			let Boost = d[i];
 
 			let EntityID = Boost['entityId'];
+			if (Boost.origin == "castle_system")
+				EntityID = 2000000023; // castle system has entityid 2000000023
 			if (!EntityID) EntityID = 0;
 			if (!MainParser.Boosts[EntityID]) MainParser.Boosts[EntityID] = [];
 			MainParser.Boosts[EntityID].push(Boost);
@@ -1422,7 +1430,7 @@ let MainParser = {
 				MainParser.BoostSums[d[i]['type']] += d[i]['value']
 			}
 			if (MainParser.BoostMapper[d[i]['type']]) {
-				if (d[i]['type'] !== 'happiness') { //Nicht als Boost zählen => Wird Productions extra geprüft und ausgewiesen
+				if (d[i]['type'] !== 'happiness') { // => Wird Productions extra geprüft und ausgewiesen
 					let Boosts = MainParser.BoostMapper[d[i]['type']];
 					for (let j = 0; j < Boosts.length;j++) {
 						MainParser.BoostSums[Boosts[j]] += d[i]['value'];
