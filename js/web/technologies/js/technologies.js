@@ -134,7 +134,7 @@ let Technologies = {
         SpaceAgeVenus: 19,
         SpaceAgeJupiterMoon: 20,
         SpaceAgeTitan: 21,
-        NextEra:22,
+        NextEra: 22,
     },
 
 
@@ -196,6 +196,14 @@ let Technologies = {
         if (eraName == 'MultiAge')
             return Technologies.InnoEraNames[level]
         return eraName
+    },
+
+    getPreviousEraByCurrentEraName: (eraName) => {
+        return Technologies.InnoEraNames[Technologies.InnoEras[eraName]-1]
+    },
+
+    getNextEraByCurrentEraName: (eraName) => {
+        return Technologies.InnoEraNames[Technologies.InnoEras[eraName]+1]
     },
 
 

@@ -116,6 +116,7 @@
 #Productions th.boost span {
 	height: 25px;
 	display: block;
+	margin: 0 auto;
 }
 #Productions th.boost.battleground span {
 	background: transparent url('../../x_img/gbg-green.png') no-repeat;
