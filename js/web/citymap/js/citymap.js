@@ -978,6 +978,7 @@ let CityMap = {
 	setHappiness(ceData, data, era) {
 		let happiness = 0
 		let eraId = Technologies.InnoEras[era]
+		let isPolivated = CityMap.setPolivation(data, ceData)
 
 		let bgHappiness = data.bonus
 		if (data.type != "generic_building") {
@@ -992,14 +993,13 @@ let CityMap = {
 				return 0
 			} 
 			else if (ceData.provided_happiness) { // decorations etc.
-				return (data.state.__class__ == "PolishedState" ? ceData.provided_happiness*2 : ceData.provided_happiness)
+				return (isPolivated ? ceData.provided_happiness*2 : ceData.provided_happiness)
 			}
 			else 
 				return happiness
 		}
 		else { // generic building
 			if (ceData.components[era]) {
-				//console.log(ceData.name, ceData.components[era].happiness)
 				let bHappiness = ceData.components[era].happiness
 				if (bHappiness) {
 					return (bHappiness.provided ? bHappiness.provided : happiness)
@@ -1009,7 +1009,7 @@ let CityMap = {
 			else if (ceData.components.AllAge) {
 				let bHappiness = ceData.components.AllAge.happiness
 				if (bHappiness) {
-					if (ceData.components.AllAge.socialInteraction?.interactionType === 'polish' && data.state.socialInteractionId === 'polish') 
+					if (isPolivated) 
 						return (bHappiness.provided ? bHappiness.provided*2 : happiness)
 					else
 						return (bHappiness.provided ? bHappiness.provided : happiness)
@@ -1047,9 +1047,11 @@ let CityMap = {
 					return false;
 			}
 			else { // generic buildings
-				// todo: inaktiver vergessener tempel muss anders behandelt werden
-				if (data.state.socialInteractionStartedAt > 0) 
+				if (data.state.socialInteractionStartedAt > 0) {
+					if (data.state.socialInteractionStartedAt + 43200 - parseInt(Date.now()/1000) < 0)
+						return false
 					return true
+				}
 				else
 					return false
 			}
@@ -1529,6 +1531,9 @@ let CityMap = {
 		}
 		return undefined
 	},
+
+	// todo: set buildings
+	// todo: chain buildings
 	
 	// returns a generic reward or a unit reward
 	setGenericReward(product, ceData, data, era) {
@@ -1740,12 +1745,12 @@ let CityMap = {
 						prod += production.resources[category] * doubleMoney
 					}
 					// todo: güter
-					if (production.resources.all_goods_of_age && category == "goods")
-						prod += production.resources.all_goods_of_age
-					else if (production.resources.random_good_of_age && category == "goods")
-						prod += production.resources.random_good_of_age
-					else if (production.resources.all_goods_of_previous_age && category == "goods")
-						prod += production.resources.all_goods_of_previous_age
+					//if (production.resources.all_goods_of_age && category == "goods")
+					//	prod += production.resources.all_goods_of_age
+					//else if (production.resources.random_good_of_age && category == "goods")
+					//	prod += production.resources.random_good_of_age
+					//else if (production.resources.all_goods_of_previous_age && category == "goods")
+					//	prod += production.resources.all_goods_of_previous_age
 				}
 				if (production.type+"s" == category) { // units
 					prod += Object.values(production.resources)[0]
@@ -1753,8 +1758,11 @@ let CityMap = {
 				if (category == "clan_goods" && production.type == "guildResources") {
 					if (production.resources.all_goods_of_age)
 						prod = production.resources.all_goods_of_age
-					else
-						prod = production.resources.compressed_matter_capsule*5 // todo: fetch one good, multiply by 5
+					else {
+						let good = GoodsList.find(x => x.era == CurrentEra)
+						if (good != undefined)
+							prod = production.resources[good.id]*5
+					}
 				}
 				if (category == "clan_power" && production.type == "guildResources") {
 					if (production.resources.clan_power)
@@ -1765,18 +1773,67 @@ let CityMap = {
 				}
 			})
 		}
+
 		if (building.population && category == "population") {
 			prod += building.population
 		}
 		if (building.happiness && category == "happiness") {
 			prod += building.happiness
 		}
+		
+		if (category == "goods") {
+			// todo: hier nach zeitalter filtern und separat zusammenzählen
+			return CityMap.getBuildingGoodsByEra(current, building)
+		}
 		//if (prod !== 0)
-			return prod
-		//return 0
+		return prod
 	},
 
-	getBuildingFragments(building) {
+	getBuildingGoodsByEra(current, building,) {
+		let productions = (current ? building.state.production : building.production)
+		let goods = {}
+		if (productions) {
+			productions.forEach(production => {
+				if (production.type = 'resources') {
+					Object.keys(production.resources).forEach(name => {
+						// todo: funktioniert nicht richtig, güter fehlen
+						let good = GoodsList.find(x => x.id == name)
+						let goodEra = building.eraName
+						let isGood = false
+						if (good != undefined) {
+							goodEra = good.era
+							name = good.id
+							isGood = true
+						}
+						else if (name.includes('previous')) {
+							goodEra = Technologies.getPreviousEraByCurrentEraName(building.eraName)
+							isGood = true
+						}
+						else if (name.includes('next')) {
+							goodEra = Technologies.getNextEraByCurrentEraName(building.eraName)
+							isGood = true
+						}
+						else if (name.includes('current') || name == 'random_good_of_age') {
+							isGood = true
+						}
+
+						if (isGood) {
+							if (goods[goodEra] == undefined) {
+								goods[goodEra] = parseInt(production.resources[name])
+							}
+							else {
+								goods[goodEra] += parseInt(production.resources[name])
+							}
+						}
+					})
+				}
+			})
+		}
+		if (Object.keys(goods).length > 0) 
+			return goods
+	},
+
+	showBuildingFragments(building) {
 		let allFragments = ''
 		building.production.forEach(production => {
 			if (production.resources.subType == "fragment") {
@@ -1787,6 +1844,7 @@ let CityMap = {
 	},
 	
 	createNewCityMapEntity(ceData, data, era) {
+		// todo: for some reason other players buildings are also added. check where that happens.
 		let x = data.x || 0
 		let y = data.y || 0
 		let entity = {
