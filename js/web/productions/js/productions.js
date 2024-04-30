@@ -318,135 +318,127 @@ let Productions = {
 			let table = [],
 			tableGr = [],
 			rowA = [],
-			rowB = [],
 			groupedBuildings = [],
 			boostCounter = {'att_boost_attacker': {all: 0, battleground: 0, guild_expedition: 0, guild_raids: 0},
 			'def_boost_attacker': {all: 0, battleground: 0, guild_expedition: 0, guild_raids: 0},
 			'att_boost_defender': {all: 0, battleground: 0, guild_expedition: 0, guild_raids: 0},
-			'def_boost_defender': {all: 0, battleground: 0, guild_expedition: 0, guild_raids: 0}}
-			countAll = 0,
+			'def_boost_defender': {all: 0, battleground: 0, guild_expedition: 0, guild_raids: 0}},
 			typeCurrentSum = 0,
 			typeSum = 0,
-			goods = {}
+			goods = {},
+			boosts = {}
 
-			buildingIds.forEach(b => {
-				let building = CityMap.getBuildingById(b.id)
-				if (building.player_id == ExtPlayerID) {
-				//let shortSide = parseFloat(Math.min(building.size.width, building.size.length))
-				//let size = building.size.width*building.size.length
-				//let sizeWithStreets = size + (building.state.connected == true ? (building.needsStreet > 0 ? shortSide * building.needsStreet / 2 : 0) : 0)
+			if (type != 'goods') {
+				buildingIds.forEach(b => {
+					let building = CityMap.getBuildingById(b.id)
+					if (building.player_id == ExtPlayerID) {
+					//let shortSide = parseFloat(Math.min(building.size.width, building.size.length))
+					//let size = building.size.width*building.size.length
+					//let sizeWithStreets = size + (building.state.connected == true ? (building.needsStreet > 0 ? shortSide * building.needsStreet / 2 : 0) : 0)
 
-				rowA.push('<tr>')
-				rowA.push('<td>')
-				rowA.push((building.state.isPolivated !== undefined ? (building.state.isPolivated ? '<span class="text-bright">★</span>' : '☆') : ''))
-				rowA.push('</td>')
-				rowA.push('<td data-text="'+building.name.replace(/[. -]/g,"")+'">' + building.name + '</td>')
-				// todo: warum haben hüpfkürbisse ne produktion obwohl sie nicht laufen
-				
-				if (!type.includes('att') && !type.includes('def')) {
-					if (type != 'fragments') {
-						currentAmount = parseFloat(CityMap.getBuildingProductionByCategory(true, building, type))
-						amount = parseFloat(CityMap.getBuildingProductionByCategory(false, building, type))
+					rowA.push('<tr>')
+					rowA.push('<td>')
+					rowA.push((building.state.isPolivated !== undefined ? (building.state.isPolivated ? '<span class="text-bright">★</span>' : '☆') : ''))
+					rowA.push('</td>')
+					rowA.push('<td data-text="'+building.name.replace(/[. -]/g,"")+'">' + building.name + '</td>')
+					// todo: hüpfkürbisse produktion
+					
+					if (!type.includes('att') && !type.includes('def')) {
+						if (type != 'fragments') {
+							currentAmount = parseFloat(CityMap.getBuildingProductionByCategory(true, building, type))
+							amount = parseFloat(CityMap.getBuildingProductionByCategory(false, building, type))
 
-						if (type == 'money' && building.type != "greatbuilding") {
-							amount = Math.round(amount + (amount * ((MainParser.BoostSums.coin_production + (Productions.HappinessBoost * 100)) / 100)))
-							currentAmount = Math.round(currentAmount + (currentAmount * ((MainParser.BoostSums.coin_production + (Productions.HappinessBoost * 100)) / 100)))
-						}
-						else if (type == 'supplies' && building.type != "greatbuilding") {
-							amount = Math.round(amount + (amount *((MainParser.BoostSums.supply_production + (Productions.HappinessBoost * 100)) / 100)))
-							currentAmount = Math.round(currentAmount + (currentAmount *((MainParser.BoostSums.supply_production + (Productions.HappinessBoost * 100)) / 100)))
-						}
-						else if (type == 'strategy_points' && building.type != "greatbuilding" && building.type != "main_building" && !building.entityId.includes("CastleSystem")) {
-							amount = Math.round(amount + (amount *((MainParser.BoostSums.forge_points_production) / 100)))
-							currentAmount = Math.round(currentAmount + (currentAmount *((MainParser.BoostSums.forge_points_production) / 100)))
-						}
+							if (type == 'money' && building.type != "greatbuilding") {
+								amount = Math.round(amount + (amount * ((MainParser.BoostSums.coin_production + (Productions.HappinessBoost * 100)) / 100)))
+								currentAmount = Math.round(currentAmount + (currentAmount * ((MainParser.BoostSums.coin_production + (Productions.HappinessBoost * 100)) / 100)))
+							}
+							else if (type == 'supplies' && building.type != "greatbuilding") {
+								amount = Math.round(amount + (amount *((MainParser.BoostSums.supply_production + (Productions.HappinessBoost * 100)) / 100)))
+								currentAmount = Math.round(currentAmount + (currentAmount *((MainParser.BoostSums.supply_production + (Productions.HappinessBoost * 100)) / 100)))
+							}
+							else if (type == 'strategy_points' && building.type != "greatbuilding" && building.type != "main_building" && !building.entityId.includes("CastleSystem")) {
+								amount = Math.round(amount + (amount *((MainParser.BoostSums.forge_points_production) / 100)))
+								currentAmount = Math.round(currentAmount + (currentAmount *((MainParser.BoostSums.forge_points_production) / 100)))
+							}
 
-						if (type != 'goods') {
 							rowA.push('<td data-number="'+amount+'" class="textright" colspan="4">')
 							if (currentAmount != amount)
 								rowA.push(HTML.Format(currentAmount) + '/' + HTML.Format(amount))
 							else
 								rowA.push(HTML.Format(currentAmount))
 							rowA.push('</td>')
+							
+							typeSum += amount
+							typeCurrentSum += currentAmount
 						}
 						else {
-							rowA.push('<td data-number="'+amount+'" class="textright" colspan="4">')
-							let currentGoods = CityMap.getBuildingProductionByCategory(true, building, type)
-							let allGoods = CityMap.getBuildingProductionByCategory(false, building, type)
-							console.log("hallo", building.name, currentGoods, allGoods)
-							rowA.push('</td>')
-							// todo: foreach über das object und im goods objekt speichern für die summen..
-							// todo: hä wie viele spalten müssen erstellt werden und so, complicado
+							rowA.push('<td colspan="4" data-number="1">' + CityMap.showBuildingFragments(building) + '</td>')
 						}
-						
-						typeSum += amount
-						typeCurrentSum += currentAmount
 					}
 					else {
-						rowA.push('<td colspan="4" data-number="1">' + CityMap.showBuildingFragments(building) + '</td>')
-					}
-				}
-				else {
-					if (building.boosts !== undefined) {
-						boosts = {
-							all: 0,
-							battleground: 0,
-							guild_expedition: 0,
-							guild_raids: 0
-						}
-						building.boosts.forEach(boost => {
-							if (boost.type.find(x => x == type) == type) {
-								if (boost.feature == "all") {
-									boosts.all = boost.value
-									boostCounter[type][boost.feature] += boost.value
-								}
-								if (boost.feature == "battleground") {
-									boosts.battleground = boost.value
-									boostCounter[type][boost.feature] += boost.value
-								}
-								if (boost.feature == "guild_expedition") {
-									boosts.guild_expedition = boost.value
-									boostCounter[type][boost.feature] += boost.value
-								}
-								if (boost.feature == "guild_raids") {
-									boosts.guild_raids = boost.value
-									boostCounter[type][boost.feature] += boost.value
-								}
+						if (building.boosts !== undefined) {
+							boosts = {
+								all: 0,
+								battleground: 0,
+								guild_expedition: 0,
+								guild_raids: 0
 							}
-						})
-						rowA.push('<td data-number="'+boosts.all+'" class="text-center">'+ (boosts.all != 0 ? HTML.Format(boosts.all) : '') +'</td>')
-						rowA.push('<td data-number="'+boosts.battleground+'" class="text-center">'+ (boosts.battleground != 0 ? HTML.Format(boosts.battleground) : '') +'</td>')
-						rowA.push('<td data-number="'+boosts.guild_expedition+'" class="text-center">'+ (boosts.guild_expedition != 0 ? HTML.Format(boosts.guild_expedition) : '') +'</td>')
-						rowA.push('<td data-number="'+boosts.guild_raids+'" class="text-center">'+ (boosts.guild_raids != 0 ? HTML.Format(boosts.guild_raids) : '') +'</td>')
+							building.boosts.forEach(boost => {
+								if (boost.type.find(x => x == type) == type) {
+									if (boost.feature == "all") {
+										boosts.all = boost.value
+										boostCounter[type][boost.feature] += boost.value
+									}
+									if (boost.feature == "battleground") {
+										boosts.battleground = boost.value
+										boostCounter[type][boost.feature] += boost.value
+									}
+									if (boost.feature == "guild_expedition") {
+										boosts.guild_expedition = boost.value
+										boostCounter[type][boost.feature] += boost.value
+									}
+									if (boost.feature == "guild_raids") {
+										boosts.guild_raids = boost.value
+										boostCounter[type][boost.feature] += boost.value
+									}
+								}
+							})
+							rowA.push('<td data-number="'+boosts.all+'" class="text-center">'+ (boosts.all != 0 ? HTML.Format(boosts.all) : '') +'</td>')
+							rowA.push('<td data-number="'+boosts.battleground+'" class="text-center">'+ (boosts.battleground != 0 ? HTML.Format(boosts.battleground) : '') +'</td>')
+							rowA.push('<td data-number="'+boosts.guild_expedition+'" class="text-center">'+ (boosts.guild_expedition != 0 ? HTML.Format(boosts.guild_expedition) : '') +'</td>')
+							rowA.push('<td data-number="'+boosts.guild_raids+'" class="text-center">'+ (boosts.guild_raids != 0 ? HTML.Format(boosts.guild_raids) : '') +'</td>')
+						}
 					}
-				}
 
-				let updateGroup = groupedBuildings.find(x => x.name == building.name)
-				if (updateGroup == undefined) {
-					groupedBuildings.push({
-						building: building,
-						amount: 1,
-						currentValues: currentAmount,
-						values: amount
-					})
-				}
-				else {
-					updateGroup.amount++
-					updateGroup.currentValues += currentAmount
-					updateGroup.values += amount
-				}
+					// boosts werden nicht gruppiert, nande
+					let updateGroup = groupedBuildings.find(x => x.building.name == building.name)
+					if (updateGroup == undefined) {
+						groupedBuildings.push({
+							building: building,
+							amount: 1,
+							currentValues: currentAmount,
+							values: amount,
+							boosts: boosts
+						})
+					}
+					else {
+						updateGroup.amount++
+						updateGroup.currentValues += currentAmount
+						updateGroup.values += amount
+					}
 
-				rowA.push('<td '+((type.includes('att') || type.includes('def')) ? 'colspan="3"' : '')+' data-text="'+i18n("Eras."+Technologies.Eras[building.eraName]).replace(/[. -]/g,"")+'">' + i18n("Eras."+Technologies.Eras[building.eraName]) + '</td>')
-				if (!type.includes('att') && !type.includes('def')) {
-					rowA.push('<td style="white-space:nowrap">' + moment.unix(building.state.times?.at).fromNow() + '</td>')
-					rowA.push('<td style="white-space:nowrap">' + (building.state.times?.at * 1000 <= MainParser.getCurrentDateTime() ? '<strong class="success">' + i18n('Boxes.Productions.Done') : '') + '</strong></td>')
-				}
-				rowA.push('<td class="text-right">')
-				rowA.push('<span class="show-entity" data-id="' + building.id + '"><img class="game-cursor" src="' + extUrl + 'css/images/hud/open-eye.png"></span>')
-				rowA.push('</td>')
-				rowA.push('</tr>')
-				}
-			})
+					rowA.push('<td '+((type.includes('att') || type.includes('def')) ? 'colspan="3"' : '')+' data-text="'+i18n("Eras."+Technologies.Eras[building.eraName]).replace(/[. -]/g,"")+'">' + i18n("Eras."+Technologies.Eras[building.eraName]) + '</td>')
+					if (!type.includes('att') && !type.includes('def')) {
+						rowA.push('<td style="white-space:nowrap">' + moment.unix(building.state.times?.at).fromNow() + '</td>')
+						rowA.push('<td style="white-space:nowrap">' + (building.state.times?.at * 1000 <= MainParser.getCurrentDateTime() ? '<strong class="success">' + i18n('Boxes.Productions.Done') : '') + '</strong></td>')
+					}
+					rowA.push('<td class="text-right">')
+					rowA.push('<span class="show-entity" data-id="' + building.id + '"><img class="game-cursor" src="' + extUrl + 'css/images/hud/open-eye.png"></span>')
+					rowA.push('</td>')
+					rowA.push('</tr>')
+					}
+				})
+			}
 
 			table.push('<table class="foe-table sortable-table '+type+'-list active">')
 			table.push('<thead>')
@@ -482,120 +474,16 @@ let Productions = {
 			table.push('</tbody>')
 			table.push('</table>')
 
+
 			// grouped buildings
-			// todo: grouped boosts
-			tableGr.push('<table class="foe-table sortable-table '+type+'-group">')
-			tableGr.push('<thead>')
-			tableGr.push('<tr>')
-			tableGr.push('<th colspan="4"><span class="btn-default change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeSingle') + '</span></th>')
-			tableGr.push('</tr>')
-			tableGr.push('<tr class="sorter-header">')
-			tableGr.push('<th data-type="prodgroup'+type+'" class="is-number">' + i18n('Boxes.Productions.Headings.number') + '</th>')
-			tableGr.push('<th data-type="prodgroup'+type+'">' + i18n('Boxes.BlueGalaxy.Building') + '</th>')
-			tableGr.push('<th data-type="prodgroup'+type+'" class="is-number">' + i18n('Boxes.Productions.Headings.number') + '</th>')
-			tableGr.push('<th data-type="prodgroup'+type+'" class="is-number">' + i18n('Boxes.Productions.Headings.size') + '</th>')
-			tableGr.push('</tr>')
-			tableGr.push('</thead>')
-			tableGr.push('<tbody class="prodgroup'+type+'">')
-				groupedBuildings.forEach(building => {
-					rowB.push('<tr>')
-					rowB.push('<td data-number="'+building.amount+'">'+building.amount+'x </td>')
-					rowB.push('<td data-text="'+building.building.name.replace(/[. -]/g,"")+'">'+ building.building.name +'</td>')
-					if (building.currentValues !== building.values) // todo: funktioniert nicht
-						rowB.push('<td data-number="'+building.currentValues+'">'+HTML.Format(building.currentValues)+'</td>')
-					else
-						rowB.push('<td data-number="'+building.currentValues+'">'+HTML.Format(building.currentValues)+'/'+HTML.Format(building.values)+'</td>')
-					rowB.push('<td data-number="'+(building.building.size.length*building.building.size.width)+'">'+building.building.size.length+'x'+building.building.size.width+'</td>')
-					rowB.push('</tr>')
-				})
-			tableGr.push( rowB.join('') )
-			tableGr.push('</tbody>')
-			tableGr.push('</table>')
+			tableGr = Productions.buildGroupedTable(type, groupedBuildings, boostCounter)
 
 			let content = table.join('') + tableGr.join('')
+			if (type == 'goods')
+				content = Productions.buildGoodsTable(buildingIds, type) // goods have their own table
 
 			Productions.SetTabContent(type, content)
 		})
-
-		// alles auf einmal ausgeben
-		//console.log(Productions.BuildingsAll)
-		Productions.BuildingsAll = helper.arr.multisort(Productions.BuildingsAll, ['name'], ['ASC']);
-		Productions.SetTabs('all');
-
-		let building = Productions.BuildingsAll,
-			TableAll = [],
-			rowC = [];
-
-		for(let i in building) {
-			if(building.hasOwnProperty(i)) {
-				let pA = [],
-					prod = building[i]['products'],
-					ShowTime = false;
-
-				for(let p in prod) {
-					if(prod.hasOwnProperty(p)) {
-						if (p==='fragments') continue;
-						pA.push(HTML.Format(Productions.GetDaily(prod[p], building[i]['dailyfactor'], p)) + ' ' + Productions.GetGoodName(p));
-						if (Productions.TypeHasProduction(p)) {
-							ShowTime = true;
-						}
-					}
-				}
-
-				rowC.push('<tr class="' + building[i]['type'] + ' ' + (!ShowTime || building[i]['at'] * 1000 >= MainParser.getCurrentDateTime() ? 'notdone' : '') + '">');
-				rowC.push('<td>' + building[i]['name'] + '</td>');
-
-				rowC.push('<td>' + pA.join('<br>') + '</td>');
-
-				rowC.push('<td>' + i18n('Eras.' + building[i]['era']) + '</td>');
-
-				if (ShowTime) {
-					rowC.push('<td>' + (building[i]['at'] ? moment.unix(building[i]['at']).format(i18n('DateTime')) : i18n('Boxes.Productions.DateNA')) + '</td>');
-
-					if (!building[i]['at']) {
-						rowC.push('<td></td>');
-                    }
-					else if (building[i]['at'] * 1000 <= MainParser.getCurrentDateTime()) {
-						rowC.push('<td style="white-space:nowrap"><strong class="success">' + i18n('Boxes.Productions.Done') + '</strong></td>');
-					}
-					else {
-						rowC.push('<td style="white-space:nowrap" colspan="2">' + moment.unix(building[i]['at']).fromNow() + '</td>');
-					}
-				}
-				else {
-					rowC.push('<td></td><td colspan="2"></td>');
-				}
-                rowC.push('</tr>');
-			}
-		}
-
-		TableAll.push('<table class="foe-table">');
-
-		TableAll.push('<thead>');
-		TableAll.push('<tr>');
-		TableAll.push('<th><input type="text" id="all-search" placeholder="' + i18n('Boxes.Productions.SearchInput') + '" onkeyup="Productions.Filter()">');
-
-		if (Productions.ShowDaily) {
-			TableAll.push('<span class="btn-default change-daily game-cursor" data-value="' + (Productions.Types.length - (-1)) + '">' + i18n('Boxes.Productions.ModeDaily') + '</span>');
-		}
-		else {
-			TableAll.push('<span class="btn-default change-daily game-cursor" data-value="' + (Productions.Types.length - (-1)) + '">' + i18n('Boxes.Productions.ModeCurrent') + '</span>');
-		}
-
-		TableAll.push('</th>');
-
-		TableAll.push('<th class="text-right" id="all-dropdown-th"></th>');
-		TableAll.push('</tr>');
-		TableAll.push('</thead>');
-
-		TableAll.push('</table>');
-
-		TableAll.push('<table class="foe-table all-mode">');
-		TableAll.push( rowC.join('') );
-		TableAll.push('</table>');
-
-		Productions.SetTabContent('all', TableAll.join(''));
-
 
 		// alles zusammen basteln
 		h.push( Productions.GetTabs() );
@@ -608,13 +496,183 @@ let Productions = {
 			// Zusatzfunktionen für die Tabelle
 			$('.production-tabs').tabslet({ active: Productions.ActiveTab });
 			$('.sortable-table').tableSorter();
-			Productions.SortingAllTab();
 
 			// Ein Gebäude soll auf der Karte dargestellt werden
 			$('#Productions').on('click', '.foe-table .show-entity', function () {
 				Productions.ShowFunction($(this).data('id'));
 			});
 		});
+	},
+
+
+	buildGoodsTable: (buildingIds, type = "goods") => {
+		let table = [],
+			tableGr = [],
+			rowA = [],
+			groupedBuildings = [],
+			typeCurrentSum = 0,
+			typeSum = 0,
+			eras = []
+
+		buildingIds.forEach(b => {
+			let building = CityMap.getBuildingById(b.id)
+			if (building.player_id == ExtPlayerID) {
+				let allGoods = CityMap.getBuildingProductionByCategory(false, building, type)
+				if (allGoods != undefined) {
+					for (const [era, value] of Object.entries(allGoods)) {
+						if (eras.find(x => x == era) == undefined) 
+							eras.push(era)
+					}
+				}
+			}
+		})
+
+		eras.sort().reverse()
+
+		buildingIds.forEach(b => {
+			let building = CityMap.getBuildingById(b.id)
+			if (building.player_id == ExtPlayerID) {
+			//let shortSide = parseFloat(Math.min(building.size.width, building.size.length))
+			//let size = building.size.width*building.size.length
+			//let sizeWithStreets = size + (building.state.connected == true ? (building.needsStreet > 0 ? shortSide * building.needsStreet / 2 : 0) : 0)
+
+			rowA.push('<tr>')
+			rowA.push('<td>')
+			rowA.push((building.state.isPolivated !== undefined ? (building.state.isPolivated ? '<span class="text-bright">★</span>' : '☆') : ''))
+			rowA.push('</td>')
+			rowA.push('<td data-text="'+building.name.replace(/[. -]/g,"")+'">' + building.name + '</td>')
+			
+			currentAmount = parseFloat(CityMap.getBuildingProductionByCategory(true, building, type))
+			amount = parseFloat(CityMap.getBuildingProductionByCategory(false, building, type))
+			
+			eras.forEach(era => {
+				let currentGoods = CityMap.getBuildingProductionByCategory(true, building, type)
+				let allGoods = CityMap.getBuildingProductionByCategory(false, building, type)
+				let currentGoodAmount = 0
+				let goodAmount = 0
+				if (allGoods != undefined) {
+					if (currentGoods != undefined) {
+						for (const [key, value] of Object.entries(currentGoods)) {
+							if (key == era) {
+								currentGoodAmount = value
+							}
+						}
+					}
+					for (const [key, value] of Object.entries(allGoods)) {
+						if (key == era) {
+							goodAmount = value
+						}
+					}
+				}
+				rowA.push('<td data-number="'+currentGoodAmount+'">')
+					if (currentGoodAmount != goodAmount)
+						rowA.push(currentGoodAmount+'/'+goodAmount)
+					else if (goodAmount > 0)
+						rowA.push(goodAmount)
+				rowA.push('</td>')
+			})
+			
+			typeSum += amount
+			typeCurrentSum += currentAmount
+
+			let updateGroup = groupedBuildings.find(x => x.building.name == building.name)
+			if (updateGroup == undefined) {
+				groupedBuildings.push({
+					building: building,
+					amount: 1,
+					currentValues: currentAmount,
+					values: amount
+				})
+			}
+			else {
+				updateGroup.amount++
+				updateGroup.currentValues += currentAmount
+				updateGroup.values += amount
+			}
+
+			rowA.push('<td data-text="'+i18n("Eras."+Technologies.Eras[building.eraName]).replace(/[. -]/g,"")+'">' + i18n("Eras."+Technologies.Eras[building.eraName]) + '</td>')
+			rowA.push('<td style="white-space:nowrap">' + moment.unix(building.state.times?.at).fromNow() + '</td>')
+			rowA.push('<td style="white-space:nowrap">' + (building.state.times?.at * 1000 <= MainParser.getCurrentDateTime() ? '<strong class="success">' + i18n('Boxes.Productions.Done') : '') + '</strong></td>')
+			rowA.push('<td class="text-right">')
+			rowA.push('<span class="show-entity" data-id="' + building.id + '"><img class="game-cursor" src="' + extUrl + 'css/images/hud/open-eye.png"></span>')
+			rowA.push('</td>')
+			rowA.push('</tr>')
+			}
+		})
+
+		table.push('<table class="foe-table sortable-table '+type+'-list active">')
+		table.push('<thead>')
+		table.push('<tr>')
+		table.push('<th colspan="2"><span class="btn-default change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeGroups') + '</span></th>')
+		table.push('<th colspan="'+(4+eras.length)+'" class="textright"></th>')
+		table.push('</tr>')
+		table.push('<tr class="sorter-header">')
+		table.push('<th class="no-sort" data-type="prodlist'+type+'"> </th>')
+		table.push('<th class="ascending" data-type="prodlist'+type+'">' + i18n('Boxes.BlueGalaxy.Building') + '</th>')
+		eras.forEach(era => {
+			table.push('<th data-type="prodlist'+type+'" class="is-number">' + i18n('Eras.'+(parseInt(era)+1)+'.short') + '</span></th>')
+		})
+		table.push('<th data-type="prodlist'+type+'">' + i18n('Boxes.Productions.Headings.era') + '</th>')
+		table.push('<th data-type="prodlist'+type+'" class="no-sort"> </th>')
+		table.push('<th data-type="prodlist'+type+'" class="no-sort"> </th>')
+		table.push('<th data-type="prodlist'+type+'" class="no-sort"> </th>')
+		table.push('</tr>')
+		table.push('</thead>')
+		table.push('<tbody class="prodlist'+type+'">')
+		table.push( rowA.join('') )
+		table.push('</tbody>')
+		table.push('</table>')
+
+		return table.join('')
+	},
+
+
+	buildGroupedTable: (type, groupedBuildings, boostCounter) => {
+		let tableGr = [], rowB = []
+		tableGr.push('<table class="foe-table sortable-table '+type+'-group">')
+		tableGr.push('<thead>')
+		tableGr.push('<tr>')
+		tableGr.push('<th colspan="7"><span class="btn-default change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeSingle') + '</span></th>')
+		tableGr.push('</tr>')
+		tableGr.push('<tr class="sorter-header">')
+		tableGr.push('<th data-type="prodgroup'+type+'" class="is-number">' + i18n('Boxes.Productions.Headings.number') + '</th>')
+		tableGr.push('<th data-type="prodgroup'+type+'">' + i18n('Boxes.BlueGalaxy.Building') + '</th>')
+		if (type.includes('att') || type.includes('def')) {
+			tableGr.push('<th class="boost '+type+' is-number text-center" data-type="prodgroup'+type+'"><span></span>'+boostCounter[type].all+'</th>')
+			tableGr.push('<th class="boost battleground is-number text-center" data-type="prodgroup'+type+'"><span></span>'+boostCounter[type].battleground+'</th>')
+			tableGr.push('<th class="boost guild_expedition is-number text-center" data-type="prodgroup'+type+'"><span></span>'+boostCounter[type].guild_expedition+'</th>')
+			tableGr.push('<th class="boost guild_raids is-number text-center" data-type="prodgroup'+type+'"><span></span>'+boostCounter[type].guild_raids+'</th>')
+		}
+		else
+			tableGr.push('<th colspan="4" data-type="prodgroup'+type+'" class="is-number">' + i18n('Boxes.Productions.Headings.number') + '</th>')
+		tableGr.push('<th data-type="prodgroup'+type+'" class="is-number">' + i18n('Boxes.Productions.Headings.size') + '</th>')
+		tableGr.push('</tr>')
+		tableGr.push('</thead>')
+		tableGr.push('<tbody class="prodgroup'+type+'">')
+			groupedBuildings.forEach(building => {
+				rowB.push('<tr>')
+				rowB.push('<td data-number="'+building.amount+'">'+building.amount+'x </td>')
+				rowB.push('<td data-text="'+building.building.name.replace(/[. -]/g,"")+'">'+ building.building.name +'</td>')
+				if (type.includes('att') || type.includes('def')) {
+					rowB.push('<td data-number="'+building.boosts.all*building.amount+'" class="text-center">'+ (building.boosts.all != 0 ? HTML.Format(building.boosts.all*building.amount) : '') +'</td>')
+					rowB.push('<td data-number="'+building.boosts.battleground*building.amount+'" class="text-center">'+ (building.boosts.battleground != 0 ? HTML.Format(building.boosts.battleground*building.amount) : '') +'</td>')
+					rowB.push('<td data-number="'+building.boosts.guild_expedition*building.amount+'" class="text-center">'+ (building.boosts.guild_expedition != 0 ? HTML.Format(building.boosts.guild_expedition*building.amount) : '') +'</td>')
+					rowB.push('<td data-number="'+building.boosts.guild_raids*building.amount+'" class="text-center">'+ (building.boosts.guild_raids != 0 ? HTML.Format(building.boosts.guild_raids*building.amount) : '') +'</td>')
+				}
+				else {
+					if (building.currentValues !== building.values) // todo: funktioniert nicht
+						rowB.push('<td colspan="4" data-number="'+building.currentValues+'">'+HTML.Format(building.currentValues)+'</td>')
+					else
+						rowB.push('<td colspan="4" data-number="'+building.currentValues+'">'+HTML.Format(building.currentValues)+'/'+HTML.Format(building.values)+'</td>')
+				}
+				rowB.push('<td data-number="'+(building.building.size.length*building.building.size.width)+'">'+building.building.size.length+'x'+building.building.size.width+'</td>')
+				rowB.push('</tr>')
+			})
+		tableGr.push( rowB.join('') )
+		tableGr.push('</tbody>')
+		tableGr.push('</table>')
+
+		return tableGr
 	},
 
 
@@ -729,53 +787,6 @@ let Productions = {
 				hiddenTable.addClass('active')
 			});
 		});
-	},
-
-
-	/**
-	 * Sortiert alle Gebäude des letzten Tabs
-	 *
-	 */
-	SortingAllTab: ()=>{
-
-		// Gruppiert die Gebäude
-		$('#all tr').each(function(){
-
-			let regex = /([a-z_])*/i;
-			let matches = regex.exec( $(this).attr('class') );
-
-			if(matches.length && matches[0] !== "undefined")
-			{
-				if(!$('#parent-' + matches[0]).length)
-				{
-					$('<tbody id="parent-' + matches[0] + '" class="parent"><tr><th colspan="5">' + i18n('Boxes.Productions.Headings.' + matches[0]) + '</th></tr></tbody>').appendTo('.all-mode');
-				}
-
-				$(this).appendTo( $('#parent-' + matches[0]) );
-			}
-		});
-
-
-		// Dropdown zum Filtern
-		let drop = $('<select />').attr('id', 'all-drop').addClass('game-cursor');
-
-		drop.append( $('<option />').attr('data-type', 'all').text( i18n('Boxes.Productions.Headings.all') ) )
-
-		for(let i in Productions.Buildings)
-		{
-			if(Productions.Buildings.hasOwnProperty(i))
-			{
-				drop.append($('<option />').attr('data-type', Productions.Buildings[i]).text(i18n('Boxes.Productions.Headings.' + Productions.Buildings[i])).addClass('game-cursor') )
-			}
-		}
-
-		drop.append($('<option />').attr('data-type', 'done').text(i18n('Boxes.Productions.Headings.Done')))
-
-		$('#all-dropdown-th').append(drop);
-
-		setTimeout(()=>{
-			Productions.Dropdown();
-		}, 100)
 	},
 
 

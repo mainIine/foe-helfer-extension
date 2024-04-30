@@ -97,6 +97,22 @@
 	white-space: nowrap;
 }
 
+#Productions #ProductionsBody th.rotated {
+	width: 30px;
+	overflow: visible;
+	position: relative;
+	height: 100px;
+}
+
+#Productions #ProductionsBody span.rotated {
+	transform: rotate(-90deg);
+	display: block;
+	width: 100px;
+	position: absolute;
+	top: 28px;
+	left: -34px;
+}
+
 #Productions #ProductionsBody .tabs ul li {
 	margin: 0 1px 0 0;
 }

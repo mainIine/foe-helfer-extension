@@ -198,12 +198,12 @@ let Technologies = {
         return eraName
     },
 
-    getPreviousEraByCurrentEraName: (eraName) => {
-        return Technologies.InnoEraNames[Technologies.InnoEras[eraName]-1]
+    getPreviousEraIdByCurrentEraName: (eraName) => {
+        return parseInt(Technologies.InnoEras[eraName]-1)
     },
 
-    getNextEraByCurrentEraName: (eraName) => {
-        return Technologies.InnoEraNames[Technologies.InnoEras[eraName]+1]
+    getNextEraIdByCurrentEraName: (eraName) => {
+        return parseInt(Technologies.InnoEras[eraName]+1)
     },
 
 

@@ -1042,14 +1042,17 @@ let CityMap = {
 						return true;
 					else if (isPolishable) { // decorations etc.
 						if (data.state.next_state_transition_in) 
-							return true;
+							return true
 					}
 					return false;
 			}
 			else { // generic buildings
-				if (data.state.socialInteractionStartedAt > 0) {
+				if (data.state.socialInteractionStartedAt > 0 && data.state.socialInteractionId == "polish") {
 					if (data.state.socialInteractionStartedAt + 43200 - parseInt(Date.now()/1000) < 0)
 						return false
+					return true
+				}
+				else if (data.state.socialInteractionStartedAt > 0 && data.state.socialInteractionId == "motivate") {
 					return true
 				}
 				else
@@ -1739,18 +1742,11 @@ let CityMap = {
 						}
 					})
 				}
-				if (production.type == "resources") {
+				if (production.type == "resources" && category != "goods") {
 					if (production.resources[category]) {
 						let doubleMoney = (production.doubleWhenMotivated ? 2 : 1)
 						prod += production.resources[category] * doubleMoney
 					}
-					// todo: güter
-					//if (production.resources.all_goods_of_age && category == "goods")
-					//	prod += production.resources.all_goods_of_age
-					//else if (production.resources.random_good_of_age && category == "goods")
-					//	prod += production.resources.random_good_of_age
-					//else if (production.resources.all_goods_of_previous_age && category == "goods")
-					//	prod += production.resources.all_goods_of_previous_age
 				}
 				if (production.type+"s" == category) { // units
 					prod += Object.values(production.resources)[0]
@@ -1789,7 +1785,7 @@ let CityMap = {
 		return prod
 	},
 
-	getBuildingGoodsByEra(current, building,) {
+	getBuildingGoodsByEra(current, building) {
 		let productions = (current ? building.state.production : building.production)
 		let goods = {}
 		if (productions) {
@@ -1798,22 +1794,22 @@ let CityMap = {
 					Object.keys(production.resources).forEach(name => {
 						// todo: funktioniert nicht richtig, güter fehlen
 						let good = GoodsList.find(x => x.id == name)
-						let goodEra = building.eraName
+						let goodEra = Technologies.InnoEras[building.eraName]
 						let isGood = false
 						if (good != undefined) {
-							goodEra = good.era
+							goodEra = Technologies.InnoEras[good.era]
 							name = good.id
 							isGood = true
 						}
 						else if (name.includes('previous')) {
-							goodEra = Technologies.getPreviousEraByCurrentEraName(building.eraName)
+							goodEra = Technologies.getPreviousEraIdByCurrentEraName(building.eraName)
 							isGood = true
 						}
 						else if (name.includes('next')) {
-							goodEra = Technologies.getNextEraByCurrentEraName(building.eraName)
+							goodEra = Technologies.getNextEraIdByCurrentEraName(building.eraName)
 							isGood = true
 						}
-						else if (name.includes('current') || name == 'random_good_of_age') {
+						else if (name.includes('current') || name == 'random_good_of_age' || name == 'all_goods_of_age') {
 							isGood = true
 						}
 
