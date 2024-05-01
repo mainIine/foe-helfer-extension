@@ -567,7 +567,7 @@
     "Boxes.Notice.Edit": "Правка",
     "Boxes.Notice.GlobalSendRequired": "Этот модуль работает только с включенной функцией \"Передача данных на foe-helper.com\" switched on.<br>Пожалуйста, активируйте эту опцию, чтобы использовать примечания.",
     "Boxes.Notice.GroupName": "Название группы",
-    "Boxes.Notice.HelpLink": "https://foe-helper.com/docs/2/notes",
+    "Boxes.Notice.HelpLink": "https://docs.foe-helper.com/english/module/notes",
     "Boxes.Notice.ModalChoosePlayer": "Выберите игрока",
     "Boxes.Notice.ModalMissingPlayers": "Нужного игрока нет в списке? Закройте это окно, откройте две другие вкладки на социальной панели (Соседи, Согильдийцы, Друзья) и снова откройте это окно.",
     "Boxes.Notice.NewGroup": "Группа",
