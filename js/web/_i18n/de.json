@@ -867,6 +867,7 @@
     "Boxes.PowerLeveling.Title": "Powerleveln",
     "Boxes.Productions.DateNA": "Unbekannt",
     "Boxes.Productions.Done": "Fertig",
+    "Boxes.Productions.EmptyList": "Du hast keine Gebäude in dieser Kategorie.",
     "Boxes.Productions.GoodEraTotal": "Gesamt",
     "Boxes.Productions.GuildGoods": "Gildengüter",
     "Boxes.Productions.GuildPower": "Gildenmacht",
