@@ -40,7 +40,7 @@ let Productions = {
 		'att_boost_defender', //Angriffsbonus verteidigenden Armee
 		'def_boost_defender', //Verteidigungsbonus verteidigenden Armee
 		'goods',			// Güter Gruppe (5 verschieden z.B.)
-		'fragments',			
+		'items',			
 	],
 
 	HappinessBoost: 0,
@@ -194,7 +194,7 @@ let Productions = {
 			
 			if (building.production) {
 				building.production.forEach(production => {
-					if (production.type == "guildResources") { // todo
+					if (production.type == "guildResources") {
 						if (Productions.BuildingsProducts.clan_goods.find(x => x.id == building.id) == undefined)
 							Productions.BuildingsProducts["clan_goods"].push(saveBuilding)
 						if (production.resources.clan_power > 0)
@@ -205,14 +205,27 @@ let Productions = {
 						if (Productions.BuildingsProducts.units.find(x => x.id == building.id) == undefined)
 							Productions.BuildingsProducts["units"].push(saveBuilding)
 					}
-					if (production.resources.subType == "fragment") { 
-						Productions.BuildingsProducts["fragments"].push(saveBuilding)
+					if (production.type == "genericReward") { 
+						if (Productions.BuildingsProducts.items.find(x => x.id == building.id) == undefined)
+							Productions.BuildingsProducts["items"].push(saveBuilding)
 					}
-					/*if (production.type == "random") { // todo: random production?!
+					if (production.type == "random") { // todo: random production?!
 						production.resources.forEach(resource => {
 							// todo: type == "forgepoint_package", amount ist in subType als string
+							if (resource.type == "unit") {
+								if (Productions.BuildingsProducts.units.find(x => x.id == building.id) == undefined)
+									Productions.BuildingsProducts["units"].push(saveBuilding)
+							}
+							if (resource.type == "forgepoint_package") { // e.g. grilling grove
+								if (Productions.BuildingsProducts.strategy_points.find(x => x.id == building.id) == undefined)
+									Productions.BuildingsProducts["strategy_points"].push(saveBuilding)
+							}
+							if (resource.subType == "fragment") { // e.g. grilling grove
+								if (Productions.BuildingsProducts.items.find(x => x.id == building.id) == undefined)
+									Productions.BuildingsProducts["items"].push(saveBuilding)
+							}
 						})
-					}*/
+					}
 					if (production.type == "resources") {
 						if (production.resources.money) { 
 							if (Productions.BuildingsProducts.money.find(x => x.id == building.id) == undefined)
@@ -243,7 +256,7 @@ let Productions = {
 			}
 			if (building.state.production) {
 				building.state.production.forEach(production => {
-					if (production.type == "guildResources") { // todo
+					if (production.type == "guildResources") {
 						if (Productions.BuildingsProducts.clan_goods.find(x => x.id == building.id) == undefined)
 							Productions.BuildingsProducts.clan_goods.push(saveBuilding)
 						if (production.resources.clan_power > 0)
@@ -254,9 +267,9 @@ let Productions = {
 						if (Productions.BuildingsProducts.units.find(x => x.id == building.id) == undefined)
 							Productions.BuildingsProducts.units.push(saveBuilding)
 					}
-					if (production.resources.subType == "fragment") { 
-						if (Productions.BuildingsProducts.fragments.find(x => x.id == building.id) == undefined)
-						Productions.BuildingsProducts.fragments.push(saveBuilding)
+					if (production.type == "genericReward") { 
+						if (Productions.BuildingsProducts.items.find(x => x.id == building.id) == undefined)
+							Productions.BuildingsProducts.items.push(saveBuilding)
 					}
 					if (production.type == "resources") {
 						if (production.resources.money) { 
@@ -344,7 +357,7 @@ let Productions = {
 					// todo: hüpfkürbisse produktion
 					
 					if (!type.includes('att') && !type.includes('def')) {
-						if (type != 'fragments') {
+						if (type != 'items') {
 							currentAmount = parseFloat(CityMap.getBuildingProductionByCategory(true, building, type))
 							amount = parseFloat(CityMap.getBuildingProductionByCategory(false, building, type))
 
@@ -372,7 +385,7 @@ let Productions = {
 							typeCurrentSum += currentAmount
 						}
 						else {
-							rowA.push('<td colspan="4" data-number="1">' + CityMap.showBuildingFragments(building) + '</td>')
+							rowA.push('<td colspan="4" data-number="1">' + Productions.showBuildingItems(building) + '</td>')
 						}
 					}
 					else {
@@ -672,33 +685,36 @@ let Productions = {
 		tableGr.push('</tbody>')
 		tableGr.push('</table>')
 
-		return tableGr
+		return tableGrs
 	},
 
 
-	/**
-	 * Calculates average reward of a GenericReward
-	 * */
-	CalcAverageRewards: (GenericReward, DropChance=100) => {
-		let Ret = {};
-
-		if (GenericReward['type'] === 'resource' || GenericReward['type'] === 'good') {
-			Ret[GenericReward['subType']] = GenericReward['amount'] * DropChance/100.0;
+	showBuildingItems(building) {
+		let allItems = ''
+		if (building.state.isPolivated == true) {
+			building.state.production.forEach(production => {
+				if (production.type == "genericReward") {
+					let frag = (production.resources.subType == "fragment" ? "frag " : "")
+					allItems += production.resources.amount + "x " + frag + production.resources.name + "<br>"
+				}
+			})
 		}
-		else if(GenericReward['type'] === 'chest') {
-			for (let i = 0; i < GenericReward['possible_rewards'].length; i++) {
-				let CurrentReward = GenericReward['possible_rewards'][i];
-
-				let Rewards = Productions.CalcAverageRewards(CurrentReward['reward'], CurrentReward['drop_chance']);
-				for (let ResName in Rewards) {
-					if (!Ret[ResName]) Ret[ResName] = 0;
-					Ret[ResName] += Rewards[ResName];
-                }
-            }
+		else {
+			building.production.forEach(production => {
+				if (production.type == "random") {
+					production.resources.forEach(resource => {
+						let frag = (production.resources.subType == "fragment" ? "frag " : "")
+						allItems += "Ø " + parseFloat(Math.round(resource.amount*resource.dropChance * 100) / 100) + "x " + resource.name + "<br>"
+					})
+				}
+				if (production.resources.subType == "fragment") {
+					let frag = (production.resources.subType == "fragment" ? "frag " : "")
+					allItems += production.resources.amount + "x " + frag + production.resources.name + "<br>"
+				}
+			})
 		}
-
-		return Ret;
-    },
+		return allItems
+	},
 	
 	/**
 	* alle Produkte auslesen
@@ -925,7 +941,7 @@ let Productions = {
 		else if (GoodType === 'goods') {
 			return i18n('Boxes.Productions.goods');
         }
-		else if (GoodType === 'fragments') {
+		else if (GoodType === 'items') {
 			return i18n('Boxes.Productions.fragments');
         }		
 		else {

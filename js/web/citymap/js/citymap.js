@@ -1293,7 +1293,7 @@ let CityMap = {
 			if (productions.length > 0) 
 				return productions
 			if (data.type == "main_building") { // add emissary production to town hall
-				MainParser.EmissaryService.forEach(emissary => {
+				MainParser.EmissaryService?.forEach(emissary => {
 					let resource = {
 						type: (emissary.bonus.type != "unit" ? "resources" : emissary.bonus.type),
 						needsMotivation: false,
@@ -1383,14 +1383,16 @@ let CityMap = {
 										id: null,
 										type: "resources",
 										name: i18n('Boxes.OwnpartCalculator.OptionsFP'), // ugly
-										subType: Object.keys(reward.product.playerResources.resources)[0], // hacky
-										amount: reward.product.playerResources.resources.strategy_points, // hacky
+										subType: Object.keys(reward.product.playerResources.resources)[0], // warning: hacky
+										amount: reward.product.playerResources.resources.strategy_points, // warning: hacky
 										dropChance: reward.dropChance,
 									}
 									rewards.push(newReward)
 								}
 							});
 							resource.resources = rewards
+							resource.type = "random"
+							//console.log("hä", resource)
 						}
 					}
 					else {
@@ -1516,7 +1518,6 @@ let CityMap = {
 							resource.resources = reward
 							if (reward.type == undefined) { // genericReward can also return a unit reward, change type
 								resource.type = 'unit'
-								// console.log(ceData.name, reward)
 							}
 						}
 						else
@@ -1526,11 +1527,12 @@ let CityMap = {
 					});
 				}
 			}
-			if (productions.length > 0)
+			if (productions.length > 0) {
 				return productions
+			}
 		}
 		if (data.cityentity_id.includes("CastleSystem")) {
-
+			// todo: ggf güter?
 		}
 		return undefined
 	},
@@ -1764,9 +1766,6 @@ let CityMap = {
 					if (production.resources.clan_power)
 						prod = production.resources.clan_power
 				}
-				if (category == "fragments" && production.resources.subType == "fragment") { 
-					return CityMap.getBuildingFragments(building)
-				}
 			})
 		}
 
@@ -1790,7 +1789,7 @@ let CityMap = {
 		let goods = {}
 		if (productions) {
 			productions.forEach(production => {
-				if (production.type = 'resources') {
+				if (production.type == 'resources') {
 					Object.keys(production.resources).forEach(name => {
 						// todo: funktioniert nicht richtig, güter fehlen
 						let good = GoodsList.find(x => x.id == name)
@@ -1828,19 +1827,10 @@ let CityMap = {
 		if (Object.keys(goods).length > 0) 
 			return goods
 	},
-
-	showBuildingFragments(building) {
-		let allFragments = ''
-		building.production.forEach(production => {
-			if (production.resources.subType == "fragment") {
-				allFragments += production.resources.amount + " " + production.resources.name + "<br>"
-			}
-		})
-		return allFragments
-	},
 	
 	createNewCityMapEntity(ceData, data, era) {
 		// todo: for some reason other players buildings are also added. check where that happens.
+		// todo: deleting does not update stuff?
 		let x = data.x || 0
 		let y = data.y || 0
 		let entity = {
