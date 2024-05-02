@@ -60,6 +60,7 @@ FoEproxy.addHandler('BattlefieldService', 'all', (data, postData) => {
 FoEproxy.addHandler('BattlefieldService', 'getArmyPreview', (data, postData) => {
     
     if(!Settings.GetSetting('ShowArmyAdvice'))	return;
+    if (data.responseData?.__class__=="Error") return;
     
     $('#battleAssistArmyAdvice').remove();
     $('#battleAssistAddAdvice').remove();

@@ -1021,7 +1021,8 @@ let MainParser = {
 			return response.data;
 		}
 		else {
-			throw new Error('EXT-API error: ' + response.error);
+			if (response.error.indexOf('"type":"alerts"')== -1 && response.error.indexOf('"action":"getAll"') == -1)
+				throw new Error('EXT-API error: ' + response.error);
 		}
 	},
 
