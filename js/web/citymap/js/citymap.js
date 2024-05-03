@@ -1340,6 +1340,7 @@ let CityMap = {
 			// fyi: generic_building supplies and coins are always doubled when motivated
 			let production = ceData.components[era]?.production || ceData.components.AllAge.production // currently it is either allage or era, never both
 			if (production) {
+				if (ceData.type == "production") return false // production buildings do not have a default production
 				production.options[0].products.forEach(product => {
 					let resource = {
 						type: product.type,
@@ -1433,7 +1434,8 @@ let CityMap = {
 	// returns undefined if building is idle or there are no productions (yet)
 	setCurrentProductions(data, ceData, era) {
 		let productions = []
-		if (data.state.__class__ != "IdleState") {
+		let state = CityMap.setState(data)
+		if (state != "idle") {
 			if (data.type !== "generic_building") {
 				if (data.state.current_product) {
 					if (data.state.current_product.guildProduct) {
@@ -1511,7 +1513,6 @@ let CityMap = {
 							resource.resources = production.guildResources.resources
 						else if (production.type == "unit") {
 							resource.resources = this.setUnitReward(production)
-							//console.log(ceData.name, resource.resources)
 						}
 						else if (production.type == "genericReward") {
 							let reward = this.setGenericReward(production, ceData, data, era)
@@ -1730,60 +1731,6 @@ let CityMap = {
 		return Object.values(MainParser.NewCityMapData).find(x => x.id === id)
 	},
 
-	// todo
-	getBuildingProductionByCategory(current = false, building, category) {
-		let prod = 0
-		let productions = (current ? building.state.production : building.production)
-
-		if (productions) {
-			productions.forEach(production => {
-				if (production.type == 'random') { // currently not in the list
-					production.resources.forEach(resource => { // todo
-						if (resource.type+"s" == category) { // units 
-							prod += resource.amount * resource.dropChance
-						}
-					})
-				}
-				if (production.type == "resources" && category != "goods") {
-					if (production.resources[category]) {
-						let doubleMoney = (production.doubleWhenMotivated ? 2 : 1)
-						prod += production.resources[category] * doubleMoney
-					}
-				}
-				if (production.type+"s" == category) { // units
-					prod += Object.values(production.resources)[0]
-				}
-				if (category == "clan_goods" && production.type == "guildResources") {
-					if (production.resources.all_goods_of_age)
-						prod = production.resources.all_goods_of_age
-					else {
-						let good = GoodsList.find(x => x.era == CurrentEra)
-						if (good != undefined)
-							prod = production.resources[good.id]*5
-					}
-				}
-				if (category == "clan_power" && production.type == "guildResources") {
-					if (production.resources.clan_power)
-						prod = production.resources.clan_power
-				}
-			})
-		}
-
-		if (building.population && category == "population") {
-			prod += building.population
-		}
-		if (building.happiness && category == "happiness") {
-			prod += building.happiness
-		}
-		
-		if (category == "goods") {
-			// todo: hier nach zeitalter filtern und separat zusammenzählen
-			return CityMap.getBuildingGoodsByEra(current, building)
-		}
-		//if (prod !== 0)
-		return prod
-	},
-
 	getBuildingGoodsByEra(current, building) {
 		let productions = (current ? building.state.production : building.production)
 		let goods = {}
@@ -1791,7 +1738,6 @@ let CityMap = {
 			productions.forEach(production => {
 				if (production.type == 'resources') {
 					Object.keys(production.resources).forEach(name => {
-						// todo: funktioniert nicht richtig, güter fehlen
 						let good = GoodsList.find(x => x.id == name)
 						let goodEra = Technologies.InnoEras[building.eraName]
 						let isGood = false
@@ -1827,6 +1773,12 @@ let CityMap = {
 		if (Object.keys(goods).length > 0) 
 			return goods
 	},
+
+	setType(data,ceData) {
+		if (data.type == "generic_building")
+			return ceData.type
+		return data.type
+	},
 	
 	createNewCityMapEntity(ceData, data, era) {
 		// todo: for some reason other players buildings are also added. check where that happens.
@@ -1839,7 +1791,7 @@ let CityMap = {
 
 			entityId: data.cityentity_id,
 			name: ceData.name,
-			type: data.type,
+			type: this.setType(data, ceData),
 			eraName: era,
 			isSpecial: this.isSpecialBuilding(ceData),
 			isLimited: this.isLimitedBuilding(data, ceData),
@@ -1871,8 +1823,8 @@ let CityMap = {
 			max_level: (data.type == "greatbuilding" ? data.max_level : undefined)
 		}
 		
-		if (entity.type != 'street')
-			console.log('entity ',entity.name, entity, ceData, data)
+		//if (entity.type == "production")
+		//	console.log('entity ',entity.name, entity.type)
 		return entity
 	},
 };
