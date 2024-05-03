@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2024 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -26,21 +26,21 @@ let Productions = {
 
 	Types: [
 		'strategy_points',	// Forge Punkte
+		'goods',			// Güter Gruppe (5 verschieden z.B.)
+		'items',			// fragments, blueprints, boosts etc
 		'money',			// Münzen
 		'supplies',			// Werkzeuge
 		'medals',			// Medaillien
-		'units',			// Einheiten
 		'premium',			// Diamanten
-		'clan_power',		// Macht der Gilde
-		'clan_goods',		// Gildengüter (Arche, Ehrenstatue etc.)
 		'population',		// Bevölkerung
 		'happiness',		// Zufriedenheit
+		'units',			// Einheiten
 		'att_boost_attacker', //Angriffsbonus angreifende Armee
 		'def_boost_attacker', //Verteidigungsbonus angreifende Armee
 		'att_boost_defender', //Angriffsbonus verteidigenden Armee
 		'def_boost_defender', //Verteidigungsbonus verteidigenden Armee
-		'goods',			// Güter Gruppe (5 verschieden z.B.)
-		'items',			
+		'clan_power',		// Macht der Gilde
+		'clan_goods',		// Gildengüter (Arche, Ehrenstatue etc.)
 	],
 
 	HappinessBoost: 0,
@@ -209,18 +209,17 @@ let Productions = {
 						if (Productions.BuildingsProducts.items.find(x => x.id == building.id) == undefined)
 							Productions.BuildingsProducts["items"].push(saveBuilding)
 					}
-					if (production.type == "random") { // todo: random production?!
+					if (production.type == "random") {
 						production.resources.forEach(resource => {
-							// todo: type == "forgepoint_package", amount ist in subType als string
 							if (resource.type == "unit") {
 								if (Productions.BuildingsProducts.units.find(x => x.id == building.id) == undefined)
 									Productions.BuildingsProducts["units"].push(saveBuilding)
 							}
-							if (resource.type == "forgepoint_package") { // e.g. grilling grove
+							if (resource.type == "forgepoint_package" || resource.subType == "forgepoint_package") { // e.g. grilling grove
 								if (Productions.BuildingsProducts.strategy_points.find(x => x.id == building.id) == undefined)
 									Productions.BuildingsProducts["strategy_points"].push(saveBuilding)
 							}
-							if (resource.subType == "fragment") { // e.g. grilling grove
+							if (resource.type == "consumable") {
 								if (Productions.BuildingsProducts.items.find(x => x.id == building.id) == undefined)
 									Productions.BuildingsProducts["items"].push(saveBuilding)
 							}
@@ -309,18 +308,6 @@ let Productions = {
 			if (building.population !== 0) {
 				Productions.BuildingsProducts["population"].push(saveBuilding)
 			}
-
-			Productions.BuildingsProducts.forEach(type => {
-				type.sort((a,b) => {
-					if (a.entityId < b.entityIdif) {
-						return -1
-					}
-					if (a.entityId > b.entityIdif) {
-						return 1
-					}
-					return 0
-				})
-			})
 		})
 
 		Productions.Types.forEach(type => {
@@ -338,7 +325,9 @@ let Productions = {
 			'def_boost_defender': {all: 0, battleground: 0, guild_expedition: 0, guild_raids: 0}},
 			typeCurrentSum = 0,
 			typeSum = 0,
-			goods = {},
+			currentAmount = 0,
+			amount = 0,
+			hasRandomProductions = false,
 			boosts = {}
 
 			if (type != 'goods') {
@@ -348,25 +337,27 @@ let Productions = {
 					//let shortSide = parseFloat(Math.min(building.size.width, building.size.length))
 					//let size = building.size.width*building.size.length
 					//let sizeWithStreets = size + (building.state.connected == true ? (building.needsStreet > 0 ? shortSide * building.needsStreet / 2 : 0) : 0)
+					if (type == 'items' && Productions.showBuildingItems(building) == false) return // make random productions with resources disappear from the item list
 
 					rowA.push('<tr>')
 					rowA.push('<td>')
 					rowA.push((building.state.isPolivated !== undefined ? (building.state.isPolivated ? '<span class="text-bright">★</span>' : '☆') : ''))
 					rowA.push('</td>')
 					rowA.push('<td data-text="'+building.name.replace(/[. -]/g,"")+'">' + building.name + '</td>')
-					// todo: hüpfkürbisse produktion
 					
 					if (!type.includes('att') && !type.includes('def')) {
 						if (type != 'items') {
-							currentAmount = parseFloat(CityMap.getBuildingProductionByCategory(true, building, type))
-							amount = parseFloat(CityMap.getBuildingProductionByCategory(false, building, type))
+							currentAmount = parseFloat(Productions.getBuildingProductionByCategory(true, building, type).amount)
+							amount = parseFloat(Productions.getBuildingProductionByCategory(false, building, type).amount)
+							hasRandomProductions = Productions.getBuildingProductionByCategory(false, building, type).hasRandomProductions
+							let doubled = Productions.getBuildingProductionByCategory(false, building, type).doubleWhenMotivated // todo: irgendwie falsch
 
 							if (type == 'money' && building.type != "greatbuilding") {
 								amount = Math.round(amount + (amount * ((MainParser.BoostSums.coin_production + (Productions.HappinessBoost * 100)) / 100)))
 								currentAmount = Math.round(currentAmount + (currentAmount * ((MainParser.BoostSums.coin_production + (Productions.HappinessBoost * 100)) / 100)))
 							}
 							else if (type == 'supplies' && building.type != "greatbuilding") {
-								amount = Math.round(amount + (amount *((MainParser.BoostSums.supply_production + (Productions.HappinessBoost * 100)) / 100)))
+								amount = Math.round(amount + (amount *((MainParser.BoostSums.supply_production + (Productions.HappinessBoost * 100)) / 100))) * (doubled ? 2 : 1)
 								currentAmount = Math.round(currentAmount + (currentAmount *((MainParser.BoostSums.supply_production + (Productions.HappinessBoost * 100)) / 100)))
 							}
 							else if (type == 'strategy_points' && building.type != "greatbuilding" && building.type != "main_building" && !building.entityId.includes("CastleSystem")) {
@@ -375,8 +366,8 @@ let Productions = {
 							}
 
 							rowA.push('<td data-number="'+amount+'" class="textright" colspan="4">')
-							if (currentAmount != amount)
-								rowA.push(HTML.Format(currentAmount) + '/' + HTML.Format(amount))
+							if (currentAmount != amount && building.type != 'production')
+								rowA.push(HTML.Format(currentAmount) + '/' + (hasRandomProductions ? 'Ø' : '') + HTML.Format(amount))
 							else
 								rowA.push(HTML.Format(currentAmount))
 							rowA.push('</td>')
@@ -423,7 +414,6 @@ let Productions = {
 						}
 					}
 
-					// boosts werden nicht gruppiert, nande
 					let updateGroup = groupedBuildings.find(x => x.building.name == building.name)
 					if (updateGroup == undefined) {
 						groupedBuildings.push({
@@ -431,7 +421,8 @@ let Productions = {
 							amount: 1,
 							currentValues: currentAmount,
 							values: amount,
-							boosts: boosts
+							boosts: boosts,
+							hasRandomProductions: hasRandomProductions,
 						})
 					}
 					else {
@@ -453,44 +444,49 @@ let Productions = {
 				})
 			}
 
-			table.push('<table class="foe-table sortable-table '+type+'-list active">')
-			table.push('<thead>')
-			table.push('<tr>')
-			table.push('<th colspan="3"><span class="btn-default change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeGroups') + '</span></th>')
-			if (!type.includes('att') && !type.includes('def')) 
-				table.push('<th colspan="9" class="textright">'+HTML.Format(parseFloat(typeCurrentSum))+ "/" +HTML.Format(parseFloat(typeSum))+'</th>')
+			if (rowA.length > 0) {
+				table.push('<table class="foe-table sortable-table '+type+'-list active">')
+				table.push('<thead>')
+				table.push('<tr>')
+				table.push('<th colspan="3"><span class="btn-default change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeGroups') + '</span></th>')
+				if (!type.includes('att') && !type.includes('def')) 
+					table.push('<th colspan="9" class="textright">'+HTML.Format(parseFloat(typeCurrentSum))+ "/" +HTML.Format(parseFloat(typeSum))+'</th>')
+				else {
+					table.push('<th colspan="9" class="textright"></th>')
+				}
+				table.push('</tr>')
+				table.push('<tr class="sorter-header">')
+				table.push('<th class="no-sort" data-type="prodlist'+type+'"> </th>')
+				table.push('<th class="ascending" data-type="prodlist'+type+'">' + i18n('Boxes.BlueGalaxy.Building') + '</th>')
+				if (!type.includes('att') && !type.includes('def')) 
+					table.push('<th colspan="4" data-type="prodlist'+type+'" class="is-number">' + i18n('Boxes.Productions.Headings.number') + '</th>')
+				else {
+					table.push('<th class="boost '+type+' is-number text-center" data-type="prodlist'+type+'"><span></span>'+boostCounter[type].all+'</th>')
+					table.push('<th class="boost battleground is-number text-center" data-type="prodlist'+type+'"><span></span>'+boostCounter[type].battleground+'</th>')
+					table.push('<th class="boost guild_expedition is-number text-center" data-type="prodlist'+type+'"><span></span>'+boostCounter[type].guild_expedition+'</th>')
+					table.push('<th class="boost guild_raids is-number text-center" data-type="prodlist'+type+'"><span></span>'+boostCounter[type].guild_raids+'</th>')
+				}
+				table.push('<th data-type="prodlist'+type+'">' + i18n('Boxes.Productions.Headings.era') + '</th>')
+				if (!type.includes('att') && !type.includes('def')) {
+					table.push('<th data-type="prodlist'+type+'" class="no-sort">' + i18n('Boxes.Productions.Headings.earning') + '</th>')
+					table.push('<th data-type="prodlist'+type+'" class="no-sort">' + i18n('Boxes.Productions.Headings.Done') + '</th>')
+				}
+				table.push('<th data-type="prodlist'+type+'" class="no-sort" '+((type.includes('att') || type.includes('def')) ? 'colspan="3"' : '')+'> </th>')
+				table.push('</tr>')
+				table.push('</thead>')
+				table.push('<tbody class="prodlist'+type+'">')
+				table.push( rowA.join('') )
+				table.push('</tbody>')
+				table.push('</table>')
+
+
+				// grouped buildings
+				tableGr = Productions.buildGroupedTable(type, groupedBuildings, boostCounter)
+
+			}
 			else {
-				table.push('<th colspan="9" class="textright"></th>')
+				table.push('<div class="empty-list">'+i18n('Boxes.Productions.EmptyList')+'</div>')
 			}
-			table.push('</tr>')
-			table.push('<tr class="sorter-header">')
-			table.push('<th class="no-sort" data-type="prodlist'+type+'"> </th>')
-			table.push('<th class="ascending" data-type="prodlist'+type+'">' + i18n('Boxes.BlueGalaxy.Building') + '</th>')
-			if (!type.includes('att') && !type.includes('def')) 
-				table.push('<th colspan="4" data-type="prodlist'+type+'" class="is-number">' + i18n('Boxes.Productions.Headings.number') + '</th>')
-			else {
-				table.push('<th class="boost '+type+' is-number text-center" data-type="prodlist'+type+'"><span></span>'+boostCounter[type].all+'</th>')
-				table.push('<th class="boost battleground is-number text-center" data-type="prodlist'+type+'"><span></span>'+boostCounter[type].battleground+'</th>')
-				table.push('<th class="boost guild_expedition is-number text-center" data-type="prodlist'+type+'"><span></span>'+boostCounter[type].guild_expedition+'</th>')
-				table.push('<th class="boost guild_raids is-number text-center" data-type="prodlist'+type+'"><span></span>'+boostCounter[type].guild_raids+'</th>')
-			}
-			table.push('<th data-type="prodlist'+type+'">' + i18n('Boxes.Productions.Headings.era') + '</th>')
-			if (!type.includes('att') && !type.includes('def')) {
-				table.push('<th data-type="prodlist'+type+'" class="no-sort">' + i18n('Boxes.Productions.Headings.earning') + '</th>')
-				table.push('<th data-type="prodlist'+type+'" class="no-sort">' + i18n('Boxes.Productions.Headings.Done') + '</th>')
-			}
-			table.push('<th data-type="prodlist'+type+'" class="no-sort" '+((type.includes('att') || type.includes('def')) ? 'colspan="3"' : '')+'> </th>')
-			table.push('</tr>')
-			table.push('</thead>')
-			table.push('<tbody class="prodlist'+type+'">')
-			table.push( rowA.join('') )
-			table.push('</tbody>')
-			table.push('</table>')
-
-
-			// grouped buildings
-			tableGr = Productions.buildGroupedTable(type, groupedBuildings, boostCounter)
-
 			let content = table.join('') + tableGr.join('')
 			if (type == 'goods')
 				content = Productions.buildGoodsTable(buildingIds, type) // goods have their own table
@@ -518,6 +514,7 @@ let Productions = {
 	},
 
 
+	// todo: grouped
 	buildGoodsTable: (buildingIds, type = "goods") => {
 		let table = [],
 			tableGr = [],
@@ -530,7 +527,7 @@ let Productions = {
 		buildingIds.forEach(b => {
 			let building = CityMap.getBuildingById(b.id)
 			if (building.player_id == ExtPlayerID) {
-				let allGoods = CityMap.getBuildingProductionByCategory(false, building, type)
+				let allGoods = Productions.getBuildingProductionByCategory(false, building, type)
 				if (allGoods != undefined) {
 					for (const [era, value] of Object.entries(allGoods)) {
 						if (eras.find(x => x == era) == undefined) 
@@ -555,12 +552,12 @@ let Productions = {
 			rowA.push('</td>')
 			rowA.push('<td data-text="'+building.name.replace(/[. -]/g,"")+'">' + building.name + '</td>')
 			
-			currentAmount = parseFloat(CityMap.getBuildingProductionByCategory(true, building, type))
-			amount = parseFloat(CityMap.getBuildingProductionByCategory(false, building, type))
+			currentAmount = parseFloat(Productions.getBuildingProductionByCategory(true, building, type))
+			amount = parseFloat(Productions.getBuildingProductionByCategory(false, building, type))
 			
 			eras.forEach(era => {
-				let currentGoods = CityMap.getBuildingProductionByCategory(true, building, type)
-				let allGoods = CityMap.getBuildingProductionByCategory(false, building, type)
+				let currentGoods = Productions.getBuildingProductionByCategory(true, building, type)
+				let allGoods = Productions.getBuildingProductionByCategory(false, building, type)
 				let currentGoodAmount = 0
 				let goodAmount = 0
 				if (allGoods != undefined) {
@@ -673,10 +670,11 @@ let Productions = {
 					rowB.push('<td data-number="'+building.boosts.guild_raids*building.amount+'" class="text-center">'+ (building.boosts.guild_raids != 0 ? HTML.Format(building.boosts.guild_raids*building.amount) : '') +'</td>')
 				}
 				else {
-					if (building.currentValues !== building.values) // todo: funktioniert nicht
+					if (building.currentValues == building.values) 
 						rowB.push('<td colspan="4" data-number="'+building.currentValues+'">'+HTML.Format(building.currentValues)+'</td>')
-					else
-						rowB.push('<td colspan="4" data-number="'+building.currentValues+'">'+HTML.Format(building.currentValues)+'/'+HTML.Format(building.values)+'</td>')
+					else {
+						rowB.push('<td colspan="4" data-number="'+building.currentValues+'">'+HTML.Format(building.currentValues)+'/'+(groupedBuildings.hasRandomProductions ? 'Ø' : '')+HTML.Format(building.values)+'</td>')
+					}
 				}
 				rowB.push('<td data-number="'+(building.building.size.length*building.building.size.width)+'">'+building.building.size.length+'x'+building.building.size.width+'</td>')
 				rowB.push('</tr>')
@@ -685,7 +683,73 @@ let Productions = {
 		tableGr.push('</tbody>')
 		tableGr.push('</table>')
 
-		return tableGrs
+		return tableGr
+	},
+
+
+	getBuildingProductionByCategory(current = false, building, category) {
+		let prod = {
+			amount: 0,
+			hasRandomProductions: false,
+			doubleWhenMotivated: false
+		}
+		let productions = (current ? building.state.production : building.production)
+
+		if (productions) {
+			productions.forEach(production => {
+				if (production.type == 'random') {
+					production.resources.forEach(resource => {
+						if (resource.type+"s" == category) { // units 
+							prod.amount += resource.amount * resource.dropChance
+							prod.hasRandomProductions = true
+						}
+						if (resource.type == "guild_goods" && category == "clan_goods") {
+							prod.amount += resource.amount * resource.dropChance
+							prod.hasRandomProductions = true
+						}
+						if (resource.subType == "strategy_points" && category == "strategy_points") {
+							prod.amount += resource.amount * resource.dropChance
+							prod.hasRandomProductions = true
+						}
+					})
+				}
+				if (production.type == "resources" && category != "goods") {
+					if (production.resources[category]) {
+						let doubleMoney = (production.doubleWhenMotivated ? 2 : 1) // todo: bug?!
+						prod.doubleWhenMotivated = production.doubleWhenMotivated
+						prod.amount += production.resources[category] * doubleMoney
+					}
+				}
+				if (production.type+"s" == category) { // units
+					prod.amount += Object.values(production.resources)[0]
+				}
+				if (category == "clan_goods" && production.type == "guildResources") {
+					if (production.resources.all_goods_of_age)
+						prod.amount = production.resources.all_goods_of_age
+					else {
+						let good = GoodsList.find(x => x.era == CurrentEra)
+						if (good != undefined)
+							prod.amount = production.resources[good.id]*5
+					}
+				}
+				if (category == "clan_power" && production.type == "guildResources") {
+					if (production.resources.clan_power)
+						prod.amount = production.resources.clan_power
+				}
+			})
+		}
+
+		if (building.population && category == "population") {
+			prod.amount += building.population
+		}
+		if (building.happiness && category == "happiness") {
+			prod.amount += building.happiness
+		}
+		
+		if (category == "goods") {
+			return CityMap.getBuildingGoodsByEra(current, building)
+		}
+		return prod
 	},
 
 
@@ -694,21 +758,23 @@ let Productions = {
 		if (building.state.isPolivated == true) {
 			building.state.production.forEach(production => {
 				if (production.type == "genericReward") {
-					let frag = (production.resources.subType == "fragment" ? "frag " : "")
+					let frag = (production.resources.subType == "fragment" ? "🧩 " : "")
 					allItems += production.resources.amount + "x " + frag + production.resources.name + "<br>"
 				}
 			})
+			if (allItems == '')
+				return false // to prevent rows without items in the item table
 		}
 		else {
 			building.production.forEach(production => {
 				if (production.type == "random") {
 					production.resources.forEach(resource => {
-						let frag = (production.resources.subType == "fragment" ? "frag " : "")
-						allItems += "Ø " + parseFloat(Math.round(resource.amount*resource.dropChance * 100) / 100) + "x " + resource.name + "<br>"
+						let frag = (resource.subType == "fragment" ? "🧩 " : "")
+						allItems += "Ø " + parseFloat(Math.round(resource.amount*resource.dropChance * 100) / 100) + "x " + frag + resource.name + "<br>"
 					})
 				}
 				if (production.resources.subType == "fragment") {
-					let frag = (production.resources.subType == "fragment" ? "frag " : "")
+					let frag = (production.resources.subType == "fragment" ? "🧩 " : "")
 					allItems += production.resources.amount + "x " + frag + production.resources.name + "<br>"
 				}
 			})
@@ -788,14 +854,12 @@ let Productions = {
 
 
 	/**
-	 * Schalter für die Tabs [Einzelansicht|Gesamtansicht]
-	 *
+	 * Schalter für die Tabs [List|Group]
 	 */
 	SwitchFunction: ()=>{
 		$('#Productions').on('click', '.change-view', function() {
-			// todo: dumm
-			let activeTable = $(this).parent().parent().parent().parent('table'),
-				hiddenTable = $(this).parent().parent().parent().parent().parent('#'+$(this).data('type')).children('table:not(.active)')
+			let activeTable = $(this).parents('table'),
+				hiddenTable = $(this).parents('#'+$(this).data('type')).children('table:not(.active)')
 
 			activeTable.fadeOut(400, function(){
 				hiddenTable.fadeIn(400)
@@ -898,13 +962,7 @@ let Productions = {
 	},
 
 
-	/**
-	 * Namen der Güter ermitteln
-	 *
-	 * @param GoodType
-	 * @returns {*|string}
-	 */
-	GetGoodName: (GoodType)=> {
+	GetTypeName: (GoodType)=> {
 
 		if (GoodType === 'happiness') {
 			return i18n('Boxes.Productions.Happiness');
@@ -952,23 +1010,6 @@ let Productions = {
 				return GoodType;
 			}
 		}
-	},
-
-
-	/**
-	 * Ermittelt die täglichen Güter, falls die Option ShowDaily gesetzt ist
-	 *
-	 * */
-	GetDaily: (Amount, daily_factor, type) => {
-		let Factor;
-		if (Productions.ShowDaily && Productions.TypeHasProduction(type)) {
-			Factor = daily_factor;
-		}
-		else {
-			Factor = 1;
-		}
-
-		return Amount * Factor;
 	},
 
 
@@ -1102,7 +1143,7 @@ let Productions = {
 
 				h.push('<tr>');
 				h.push('<td style="width:1%" class="text-center"><span class="resicon ' + Type + '"></span></td>');
-				h.push('<td>' + Productions.GetGoodName(Type) + '</td>');
+				h.push('<td>' + Productions.GetTypeName(Type) + '</td>');
 				h.push('<td class="text-center"><input id="Enabled-' + Type + '" class="enabled game-cursor" ' + (Productions.RatingEnableds[Type] ? 'checked' : '') + ' type="checkbox"></td>');
 				if (Productions.RatingEnableds[Type]) {
 					h.push('<td class="text-center"><input type="number" id="ProdPerTile-' + Type + '" step="0.01" min="0" max="1000000" value="' + Productions.RatingProdPerTiles[Type] + '"></td>');

@@ -54,6 +54,20 @@
 	font-size: 85%;
 }
 
+#Productions #ProductionsBody .empty-list {
+	text-align: center;
+	padding: 2em;
+	font-size: 120%;
+}
+
+#Productions #ProductionsBody table {
+	display: none;
+}
+
+#Productions #ProductionsBody table.active {
+	display: table;
+}
+
 #Productions #ProductionsBody table tbody.parent th {
 	background-color: #3f2a1b;
 	color: var(--text-bright);
@@ -97,24 +111,12 @@
 	white-space: nowrap;
 }
 
-#Productions #ProductionsBody th.rotated {
-	width: 30px;
-	overflow: visible;
-	position: relative;
-	height: 100px;
-}
-
-#Productions #ProductionsBody span.rotated {
-	transform: rotate(-90deg);
-	display: block;
-	width: 100px;
-	position: absolute;
-	top: 28px;
-	left: -34px;
-}
-
 #Productions #ProductionsBody .tabs ul li {
 	margin: 0 1px 0 0;
+
+	&.premium, &.happiness, &.def_boost_defender {
+		margin: 0 7px 0 0;
+	}
 }
 
 #Productions #ProductionsBody .tabs ul li a {
@@ -204,7 +206,7 @@
 #Productions #ProductionsBody .tabs ul li.def_boost_defender a span {
 	background-position: -390px 3px;
 }
-#Productions #ProductionsBody .tabs ul li.fragments a span {
+#Productions #ProductionsBody .tabs ul li.items a span {
 	background-position: -415px 3px;
 }
 
