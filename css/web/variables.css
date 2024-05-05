@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2024 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -13,7 +13,7 @@
 
 :root {
 	--text-light: #fff;
-	--text-normal: #f3D6A0;
+	--text-normal: #ffe7ba;
 	--text-bright: #ffB539;
 	--text-medium: #93795D;
 	--text-medium2: #7b5730;

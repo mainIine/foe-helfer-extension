@@ -64,7 +64,7 @@ let Productions = {
 	],
 
 	RatingCurrentTab: 'Settings',
-	RatingEnableds: {},
+	Rating: {},
 	RatingProdPerTiles: {},
 
 	RatingTypes: [
@@ -72,16 +72,30 @@ let Productions = {
 		'money',			// Münzen
 		'supplies',			// Werkzeuge
 		'medals',			// Medaillien
-		'units',			// Einheiten
 		'clan_power',		// Macht der Gilde
 		'clan_goods',		// Gildengüter (Arche, Ehrenstatue etc.)
 		'population',		// Bevölkerung
 		'happiness',		// Zufriedenheit
-		'att_boost_attacker', //Angriffsbonus angreifende Armee
-		'def_boost_attacker', //Verteidigungsbonus angreifende Armee
-		'att_boost_defender', //Angriffsbonus verteidigenden Armee
-		'def_boost_defender', //Verteidigungsbonus verteidigenden Armee
-		'goods',				// Güter Gruppe (5 verschieden z.B.)
+		'units',			// Einheiten
+		'att_boost_attacker-all', //Angriffsbonus angreifende Armee
+		'att_boost_attacker-guild_expedition',
+		'att_boost_attacker-battleground',
+		'att_boost_attacker-guild_raids',
+		'def_boost_attacker-all', //Verteidigungsbonus angreifende Armee
+		'def_boost_attacker-guild_expedition',
+		'def_boost_attacker-battleground',
+		'def_boost_attacker-guild_raids',
+		'att_boost_defender-all', //Angriffsbonus verteidigenden Armee
+		'att_boost_defender-guild_expedition',
+		'att_boost_defender-battleground',
+		'att_boost_defender-guild_raids',
+		'def_boost_defender-all', //Verteidigungsbonus verteidigenden Armee
+		'def_boost_defender-guild_expedition',
+		'def_boost_defender-battleground',
+		'def_boost_defender-guild_raids',
+		'goods-next',
+		'goods-current',
+		'goods-previous',
 	],
 	fragmentsSet: new Set(),
 
@@ -479,10 +493,7 @@ let Productions = {
 				table.push('</tbody>')
 				table.push('</table>')
 
-
-				// grouped buildings
 				tableGr = Productions.buildGroupedTable(type, groupedBuildings, boostCounter)
-
 			}
 			else {
 				table.push('<div class="empty-list">'+i18n('Boxes.Productions.EmptyList')+'</div>')
@@ -494,7 +505,6 @@ let Productions = {
 			Productions.SetTabContent(type, content)
 		})
 
-		// alles zusammen basteln
 		h.push( Productions.GetTabs() );
 		h.push( Productions.GetTabContent() );
 
@@ -756,7 +766,7 @@ let Productions = {
 	showBuildingItems(building) {
 		let allItems = ''
 		if (building.state.isPolivated == true) {
-			building.state.production.forEach(production => {
+			building.state.production?.forEach(production => {
 				if (production.type == "genericReward") {
 					let frag = (production.resources.subType == "fragment" ? "🧩 " : "")
 					allItems += production.resources.amount + "x " + frag + production.resources.name + "<br>"
@@ -766,18 +776,20 @@ let Productions = {
 				return false // to prevent rows without items in the item table
 		}
 		else {
-			building.production.forEach(production => {
-				if (production.type == "random") {
-					production.resources.forEach(resource => {
-						let frag = (resource.subType == "fragment" ? "🧩 " : "")
-						allItems += "Ø " + parseFloat(Math.round(resource.amount*resource.dropChance * 100) / 100) + "x " + frag + resource.name + "<br>"
-					})
-				}
-				if (production.resources.subType == "fragment") {
-					let frag = (production.resources.subType == "fragment" ? "🧩 " : "")
-					allItems += production.resources.amount + "x " + frag + production.resources.name + "<br>"
-				}
-			})
+			if (building.production) {
+				building.production.forEach(production => {
+					if (production.type == "random") {
+						production.resources.forEach(resource => {
+							let frag = (resource.subType == "fragment" ? "🧩 " : "")
+							allItems += "Ø " + parseFloat(Math.round(resource.amount*resource.dropChance * 100) / 100) + "x " + frag + resource.name + "<br>"
+						})
+					}
+					if (production.resources.type == "consumable") {
+						let frag = (production.resources.subType == "fragment" ? "🧩 " : "")
+						allItems += production.resources.amount + "x " + frag + production.resources.name + "<br>"
+					}
+				})
+			}
 		}
 		return allItems
 	},
@@ -871,73 +883,6 @@ let Productions = {
 
 
 	/**
-	 * Blendet je nach Dropdown die Typen ein
-	 */
-	Dropdown: ()=>{
-		$('#Productions').on('change', '#all-drop', function() {
-			let t = $('select#all-drop :selected').data('type');
-
-			if (t === 'all') {
-				$('.all-mode').find('.parent').show();
-				$('.all-mode').find('.notdone').show();
-			}
-			else if (t === 'done') {
-				$('.all-mode').find('.parent').show();
-				$('.all-mode').find('.notdone').hide();
-            }
-			else {
-				$('.all-mode').find('.parent').hide();
-				$('.all-mode').find('#parent-' + t).show();
-				$('.all-mode').find('.notdone').show();
-			}
-		});
-	},
-
-
-	/**
-	 * Kleine Suche für die "Gesamt"-Liste
-	 *
-	 */
-	Filter: ()=>{
-		let input, filter, tr, td, i, txtValue;
-
-		input = $("#all-search").val();
-		filter = input.toUpperCase();
-		tr = $('#all').find('tr');
-
-		// durch alle TRs rennen
-		for (i = 0; i < tr.length; i++) {
-			td = $(tr[i]).find('td')[0];
-
-			if (td) {
-				txtValue = $(td).text();
-
-				if (txtValue.toUpperCase().indexOf(filter) > -1) {
-					tr[i].style.display = "";
-				} else {
-					tr[i].style.display = "none";
-				}
-			}
-		}
-	},
-
-
-	/**
-	 * Hilfsfunktion zum Prüfen auf "leer"
-	 *
-	 * @param obj
-	 * @returns {boolean}
-	 */
-	isEmpty: (obj)=> {
-		for(let key in obj) {
-			if(obj.hasOwnProperty(key))
-				return false;
-		}
-		return true;
-	},
-
-
-	/**
 	 * Zeigt pulsierend ein Gebäude auf der Map
 	 *
 	 * @param ids
@@ -963,38 +908,29 @@ let Productions = {
 
 
 	GetTypeName: (GoodType)=> {
-
 		if (GoodType === 'happiness') {
 			return i18n('Boxes.Productions.Happiness');
-
 		}
 		else if (GoodType === 'clan_power') {
 			return i18n('Boxes.Productions.GuildPower');
-
 		}
 		else if (GoodType === 'clan_goods') {
 			return i18n('Boxes.Productions.GuildGoods');
-
         }
 		else if (GoodType === 'units'){
 			return i18n('Boxes.Productions.Units');
-
 		}
-		else if (GoodType === 'att_boost_attacker') {
+		else if (GoodType === 'att_boost_attacker' || GoodType === 'att_boost_attacker-all') {
 			return i18n('Boxes.Productions.att_boost_attacker');
-
 		}
-		else if (GoodType === 'att_boost_defender') {
+		else if (GoodType === 'att_boost_defender' || GoodType === 'att_boost_defender-all') {
 			return i18n('Boxes.Productions.att_boost_defender');
-
 		}
-		else if (GoodType === 'def_boost_attacker') {
+		else if (GoodType === 'def_boost_attacker' || GoodType === 'def_boost_attacker-all') {
 			return i18n('Boxes.Productions.def_boost_attacker');
-
 		}
-		else if (GoodType === 'def_boost_defender') {
+		else if (GoodType === 'def_boost_defender' || GoodType === 'def_boost_defender-all') {
 			return i18n('Boxes.Productions.def_boost_defender');
-
 		}
 		else if (GoodType === 'goods') {
 			return i18n('Boxes.Productions.goods');
@@ -1005,7 +941,6 @@ let Productions = {
 		else {
 			if(GoodType && GoodsData[GoodType]){
 				return GoodsData[GoodType]['name'];
-
 			} else {
 				return GoodType;
 			}
@@ -1016,9 +951,9 @@ let Productions = {
 	ShowRating: () => {
 		if ($('#ProductionsRating').length === 0) {
 
-			let RatingEnableds = localStorage.getItem('ProductionRatingEnableds');
-			if (RatingEnableds !== null) {
-				Productions.RatingEnableds = JSON.parse(RatingEnableds);
+			let Rating = localStorage.getItem('ProductionRatingEnableds2');
+			if (Rating !== null) {
+				Productions.Rating = JSON.parse(Rating);
 			}
 
 			let RatingProdPerTiles = localStorage.getItem('ProductionRatingProdPerTiles');
@@ -1029,7 +964,7 @@ let Productions = {
 			for (let i = 0; i < Productions.RatingTypes.length; i++) {
 				let Type = Productions.RatingTypes[i];
 
-				if (Productions.RatingEnableds[Type] === undefined) Productions.RatingEnableds[Type] = true;
+				if (Productions.Rating[Type] === undefined) Productions.Rating[Type] = true;
 				if (Productions.RatingProdPerTiles[Type] === undefined) Productions.RatingProdPerTiles[Type] = Productions.GetDefaultProdPerTile(Type);
             }
 
@@ -1043,42 +978,10 @@ let Productions = {
 			});
 			HTML.AddCssFile('productions');
 
-			// Ein Gebäude soll auf der Karte dargestellt werden
-			$('#ProductionsRating').on('click', '.foe-table .show-entity', function () {
-				let ID = $(this).data('id');
-
-				let Parts = ID.split('='),
-					GroupType = (Parts.length >= 1 ? Parts[0] : ''),
-					GroupID = (Parts.length >= 2 ? Parts[1] : '');
-									
-				let IDs = [];
-				for (let i in MainParser.CityMapData) {
-					if (!MainParser.CityMapData.hasOwnProperty(i)) continue;
-
-					let CurrentBuilding = MainParser.CityMapData[i];
-
-					if (GroupType === 'cityentity_id') {
-						if (CurrentBuilding['cityentity_id'] === GroupID) IDs.push(i);
-					}
-					else if (GroupType === 'setId' || GroupType === 'chainId') {
-						let Entity = MainParser.CityEntities[CurrentBuilding['cityentity_id']];
-
-						if (!Entity['abilities']) continue;
-						for (let j = 0; j < Entity['abilities'].length; j++) {
-							let Ability = Entity['abilities'][j];
-
-							if (Ability[GroupType] === GroupID) IDs.push(i);
-						}
-					}
-                }
-
-				Productions.ShowFunction(IDs);
-			});
-
-			$('#ProductionsRating').on('click', '.toggle-tab', function () {
+			$('#ProductionsRating').on('click', '.toggle-tab', async function () {
 				Productions.RatingCurrentTab = $(this).data('value');
 
-				Productions.CalcRatingBody();
+				await Productions.CalcRatingBody();
 			});
 
 			for (let i = 0; i < Productions.RatingTypes.length; i++) {
@@ -1089,13 +992,13 @@ let Productions = {
 						v = $this.prop('checked');
 
 					if (v) {
-						Productions.RatingEnableds[Type] = true;
+						Productions.Rating[Type] = true;
 					}
 					else {
-						Productions.RatingEnableds[Type] = false;
+						Productions.Rating[Type] = false;
                     }
 
-					localStorage.setItem('ProductionRatingEnableds', JSON.stringify(Productions.RatingEnableds));
+					localStorage.setItem('ProductionRatingEnableds2', JSON.stringify(Productions.Rating));
 					Productions.CalcRatingBody();
 				});
 
@@ -1126,205 +1029,79 @@ let Productions = {
 
 		//Einstellungen
 		if (Productions.RatingCurrentTab === 'Settings') {
-			h.push('<table class="foe-table">');
+			h.push('<div>');
+			h.push('<ul class="foe-table">');
 
-			h.push('<thead>')
-			h.push('<tr>');
-			h.push('<th></th>'); //Symbol
-			h.push('<th></th>'); //ResourceName
-			h.push('<th class="text-center">' + i18n('Boxes.ProductionsRating.Enabled') + '</th>');
-			h.push('<th class="text-center">' + i18n('Boxes.ProductionsRating.ProdPerTile') + '</th>');
-			h.push('</tr>');
-			h.push('</thead>')
+			h.push('<li class="dark-bg">')
+			h.push('<span>' + i18n('Boxes.ProductionsRating.Enabled') + '</span>');
+			h.push('<span></span>'); //Symbol
+			h.push('<span></span>'); //ResourceName
+			h.push('<span class="text-right">' + i18n('Boxes.ProductionsRating.ProdPerTile') + '</span>');
+			h.push('</li>')
 
-			h.push('<tbody>');
 			for (let i = 0; i < Productions.RatingTypes.length; i++) {
 				let Type = Productions.RatingTypes[i];
 
-				h.push('<tr>');
-				h.push('<td style="width:1%" class="text-center"><span class="resicon ' + Type + '"></span></td>');
-				h.push('<td>' + Productions.GetTypeName(Type) + '</td>');
-				h.push('<td class="text-center"><input id="Enabled-' + Type + '" class="enabled game-cursor" ' + (Productions.RatingEnableds[Type] ? 'checked' : '') + ' type="checkbox"></td>');
-				if (Productions.RatingEnableds[Type]) {
-					h.push('<td class="text-center"><input type="number" id="ProdPerTile-' + Type + '" step="0.01" min="0" max="1000000" value="' + Productions.RatingProdPerTiles[Type] + '"></td>');
+				h.push('<li class="'+Type+'">');
+				h.push('<input id="Enabled-' + Type + '" class="no-grow enabled game-cursor" ' + (Productions.Rating[Type] ? 'checked' : '') + ' type="checkbox">');
+				h.push('<span class="no-grow resicon ' + Type + '"></span>');
+				h.push('<label for="Enabled-'+Type+'">' + Productions.GetTypeName(Type) + '</label>');
+				if (Productions.Rating[Type]) {
+					h.push('<input type="number" id="ProdPerTile-' + Type + '" step="0.01" min="0" max="1000000" class="no-grow" value="' + Productions.RatingProdPerTiles[Type] + '">');
 				}
 				else {
-					h.push('<td></td>');
-                }
-				h.push('</tr>');
+					h.push('<span></span>');
+				}
+				h.push('</li>');
 			}
-			h.push('</tbody>');
-
-			h.push('</table>');
+			h.push('</ul>')
+			h.push('</div>')
 		}
+
 		//Ergebnisse
 		else if (Productions.RatingCurrentTab === 'Results') {
-			//Schritt1: Berechnung
-			let BuildingGroups = {};
-			for (let i in MainParser.CityMapData) {
-				if (!MainParser.CityMapData.hasOwnProperty(i)) continue;
 
-				let Building = MainParser.CityMapData[i],
-					Entity = MainParser.CityEntities[Building['cityentity_id']],
-					GroupID = Building['cityentity_id'],
-					GroupName = Entity['name'],
-					GroupType = 'cityentity_id';
+			let buildingType = [];
+			// todo: this only grabs one of each, it does not look at the era. should probably be different?
+			Object.values(MainParser.NewCityMapData).forEach(building => {
+				if (building.type == 'street' || building.type == 'military' || building.type == 'off_grid' || building.type == 'hub_part') return
 
-				if (Entity['abilities']) {
-					let SkipBuilding = false;
-					for (let j = 0; j < Entity['abilities'].length; j++) {
-						let Ability = Entity['abilities'][j],
-							Class = Ability['__class__'];
+				if (buildingType.find(x => x.name == building.name) == undefined)
+					buildingType.push(building)
+			})
+			
+			ratedBuildings = Productions.rateBuildings(buildingType)
+			// todo: sort by score
 
-						if (Class === 'NotsellableAbility') { //Keine Gebäude, die man nicht abreißen kann
-							SkipBuilding = true;
-							break;
-						}
-						else if (Ability['chainId']) {
-							GroupID = Ability['chainId'];
-							GroupName = (MainParser.BuildingChains[Ability['chainId']] ? MainParser.BuildingChains[Ability['chainId']]['name'] : Ability['chainId']);
-							GroupType = 'chainId';
-						}
-						else if (Ability['setId']) {
-							GroupID = Ability['setId'];
-							GroupName = (MainParser.BuildingSets[Ability['setId']] ? MainParser.BuildingSets[Ability['setId']]['name'] : Ability['setId']);
-							GroupType = 'setId';
-
-                        }
-					}
-					if (SkipBuilding) continue;
-				}
-
-				//keine Straßen, keine Millitärgebäude
-				if (Entity['type'] === 'street' || Entity['type'] === 'military') continue;
-
-				//let Score = 0;
-
-				Production['motivatedproducts']['goods'] = 0;
-				for (let Type in Production['motivatedproducts']) {
-					if (!Production['motivatedproducts'].hasOwnProperty(Type)) continue;
-
-					if (Productions.TypeHasProduction(Type)) Production.motivatedproducts[Type] *= Production['dailyfactor'];
-					if (['residential','production','generic_building'].includes(Building['type'])) {
-						if (Type === 'money') Production.motivatedproducts[Type] *= (Productions.Boosts['money']);
-						if (Type === 'supplies') Production.motivatedproducts[Type] *= (Productions.Boosts['supplies']);
-					}
-				}
-
-				for (let Type in Production['motivatedproducts']) {
-					//Güter zusammenfassen
-					if (!Productions.Types.includes(Type)) {
-						Production.motivatedproducts['goods'] += Production.motivatedproducts[Type];
-						delete Production.motivatedproducts[Type];
-					}
-				}
-
-				for (let Type in Production['motivatedproducts']) {
-					if (!Production['motivatedproducts'].hasOwnProperty(Type)) continue;
-
-					if (!Productions.RatingEnableds[Type]) {
-						delete Production.motivatedproducts[Type];						
-					}
-				}
-				if (!BuildingGroups[GroupID]) BuildingGroups[GroupID] = [];
-
-				Production.GroupName = GroupName;
-				Production.GroupType = GroupType;
-				BuildingGroups[GroupID].push(Production);
-			}
-
-			let GroupStats = [];
-			for (let GroupID in BuildingGroups) {
-				if (!BuildingGroups.hasOwnProperty(GroupID)) continue;
-
-				let CurrentGroup = BuildingGroups[GroupID],
-					TotalProducts = {},
-					TotalTiles = 0;
-
-				for (let i = 0; i < CurrentGroup.length; i++) {
-					let CurrentBuilding = CurrentGroup[i],
-						Entity = MainParser.CityEntities[CurrentBuilding['eid']];
-
-					for (let ResName in CurrentBuilding['motivatedproducts']) {
-						if (!CurrentBuilding['motivatedproducts'].hasOwnProperty(ResName)) continue;
-
-						if (!TotalProducts[ResName]) TotalProducts[ResName] = 0;
-						TotalProducts[ResName] += CurrentBuilding['motivatedproducts'][ResName];
-					}
-
-					let BuildingSize = CityMap.GetBuildingSize(MainParser.CityMapData[CurrentBuilding['id']]);
-
-					TotalTiles += BuildingSize['total_area'];
-				}
-
-				let TotalPoints = 0;
-				for (let ResName in TotalProducts) {
-					if (!TotalProducts.hasOwnProperty(ResName)) continue;
-
-					if (!Productions.RatingEnableds[ResName] || Productions.RatingProdPerTiles[ResName] <= 0) continue;
-
-					TotalPoints += TotalProducts[ResName] / Productions.RatingProdPerTiles[ResName];
-				}
-
-				let GroupStat = {};
-				GroupStat['ID'] = GroupID;
-				GroupStat['GroupName'] = CurrentGroup[0]['GroupName'];
-				GroupStat['GroupType'] = CurrentGroup[0]['GroupType'];
-				GroupStat['Count'] = CurrentGroup.length;
-				GroupStat['TotalProducts'] = TotalProducts;
-				GroupStat['Score'] = TotalPoints / TotalTiles;
-
-				GroupStats.push(GroupStat);
-            }
-
-			GroupStats = GroupStats.sort(function (a, b) {
-				return a['Score'] - b['Score'];
-			});
-
-			//Schritt2: Header
 			h.push('<table class="foe-table sortable-table">');
 
 			h.push('<thead>');
 			h.push('<tr>');
 			h.push('<th>' + i18n('Boxes.ProductionsRating.BuildingName') + '</th>');
+			h.push('<th>' + i18n('Boxes.ProductionsRating.Score') + '</th>');
 			for (let i = 0; i < Productions.RatingTypes.length; i++) {
 				let Type = Productions.RatingTypes[i];
-
-				if (!Productions.RatingEnableds[Type]) continue;
-
+				if (!Productions.Rating[Type]) continue;
 				h.push('<th style="width:1%" class="text-center"><span class="resicon ' + Type + '"></span></th>');
 			}
-			h.push('<th>' + i18n('Boxes.ProductionsRating.Score') + '</th>');
-			h.push('<th></th>');
+			h.push('<th>Items</th>');
 			h.push('</tr>');
 			h.push('<thead>');
 
 			//Schritt3: Body
 			h.push('<tbody>');
-			
-			for (let i = 0; i < GroupStats.length; i++) {
-				let GroupStat = GroupStats[i];
-
-				h.push('<tr>');
-				h.push('<td>' + GroupStat['Count'] + 'x ' + GroupStat['GroupName'] + '</td>');
-				for (let j = 0; j < Productions.RatingTypes.length; j++) {
-					let Type = Productions.RatingTypes[j];
-
-					if (!Productions.RatingEnableds[Type]) continue;
-
-					let Amount = (GroupStat['TotalProducts'][Type] ? GroupStat['TotalProducts'][Type] : 0);
-					h.push('<td class="text-center">' + HTML.Format(Math.round(Amount)) + '</td>');
+			for (const building of ratedBuildings) {
+				h.push('<tr>')
+				h.push('<td>'+building.building.name+'</td>')
+				h.push('<td>'+building.score+'</td>')
+				for (const type of Productions.RatingTypes) {
+					if (building[type] != undefined)
+						h.push('<td>'+building[type]+'</td>')
 				}
-
-				let ScorePercent = Math.round(GroupStat['Score'] * 100);
-
-				h.push('<td><strong class="' + (ScorePercent >= 100 ? 'success' : 'error') + '">' + ScorePercent + '%</strong></td>');//(ScorePercent > 0 ? ScorePercent + '%' : 'N/A') + '</strong></td>');
-				h.push('<td class="text-right"><span class="show-entity" data-id="' + GroupStat['GroupType'] + '=' + GroupStat['ID'] + '"><img class="game-cursor" src="' + extUrl + 'css/images/hud/open-eye.png"></span></td>');
-				h.push('</tr>');
-            }
-
+				h.push('<td>'+(Productions.showBuildingItems(building.building) != false ? Productions.showBuildingItems(building.building) : '')+'</td>')
+				h.push('</tr>')
+			}
 			h.push('</tbody>');
-
 			h.push('</table>');
 		}
 		else {
@@ -1335,26 +1112,82 @@ let Productions = {
     },
 
 
+	rateBuildings: (buildingType) => {
+		let ratedBuildings = []
+		for(const building of buildingType) {
+			let ratedBuilding = {
+				building: building
+			}
+			for(const type of Object.keys(Productions.Rating)) {
+				if (Productions.Rating[type] != false) {
+					let typeValue = Productions.getRatingValueForType(building, type)
+					ratedBuilding[type] = ( Math.round( typeValue * 100 ) / 100 ) || 0
+				}
+			}
+			ratedBuilding.score = 200
+			ratedBuildings.push(ratedBuilding)
+		}
+		return ratedBuildings
+	},
+
+
+	getRatingValueForType: (building, type) => {
+		if (type == "happiness")
+			return building.happiness
+		else if (type == "population")
+			return building.population
+		else if (type.includes('att') || type.includes('def')) {
+			if (building.boosts != undefined)
+				for (const boost of building.boosts) {
+					let feature = type.split('-')[1]
+					let bType = boost.type.find(x => x == type.split('-')[0])
+					if (bType !== undefined && feature == boost.feature) {
+						return boost.value
+					}
+				}
+		}
+		else if (type == "strategy_points" || type == "medals" || type == "premium" || type == "money" || type == "supplies" || type == "clan_goods" || type == "clan_power")
+			return Productions.getBuildingProductionByCategory(false, building, type).amount
+		else if (type.includes("goods")) {
+			let allGoods = CityMap.getBuildingGoodsByEra(false, building)
+			let eraId = Technologies.InnoEras[CurrentEra]
+			if (allGoods != undefined) {
+				if (type == "goods-current") {
+					if (allGoods[eraId] != undefined)
+						return allGoods[eraId]
+				}
+				if (type == "goods-next") {
+					if (allGoods[eraId+1] != undefined)
+						return allGoods[eraId+1]
+				}
+				if (type == "goods-previous") {
+					if (allGoods[eraId-1] != undefined)
+						return allGoods[eraId-1]
+				}
+			}
+		}
+		else
+			return 0
+	},
+
+
 	getBoost: (building, boostName, callback) => {
 		building.boosts?.forEach(boost => {
 			let type = boost.type.find(x => x == boostName)
-			if (type !== undefined) {
-				//const value = {[type]: { feature: boost.feature, value: boost.value }}
-				const value = { feature: boost.feature, value: boost.value }
-				callback(value)
+			if (!boostName.includes('-')) {
+				if (type !== undefined) {
+					const value = { feature: boost.feature, value: boost.value }
+					callback(value)
+				}
 			}
-			else {
-				callback(undefined)
-			}
+			callback(undefined)
 		})
 	},
 
 
 	GetDefaultProdPerTile: (Type) => {
 		if (Type === 'strategy_points') return 0.2;
-		if (Type === 'money') return 0;
-		if (Type === 'supplies') return 0;
-		if (Type === 'medals') return 0;
+		if (Type === 'money'|| Type === 'supplies' || Type === 'medals' || Type === 'clan_goods' || Type === 'population' || Type === 'happiness') return 0;
 		if (Type === 'units') return 0.2;
 		if (Type === 'clan_power') {
 			let Entity = MainParser.CityEntities['Z_MultiAge_CupBonus1b'], //Hall of fame lvl2
@@ -1364,13 +1197,10 @@ let Productions = {
 
 			return 2 * Entity['entity_levels'][Level]['clan_power'] / 10.5; //Motivated hall of fame lvl2
 		}
-		if (Type === 'clan_goods') return 0;
-		if (Type === 'population') return 0;
-		if (Type === 'happiness') return 0;
-		if (Type === 'att_boost_attacker') return 1;
-		if (Type === 'def_boost_attacker') return 1;
+		if (Type === 'att_boost_attacker') return 3;
+		if (Type === 'def_boost_attacker') return 3;
 		if (Type === 'att_boost_defender') return 4;
-		if (Type === 'def_boost_defender') return 6;
+		if (Type === 'def_boost_defender') return 4;
 		if (Type === 'goods') return 1;
 		else return 0;
 	},

@@ -1783,6 +1783,7 @@ let CityMap = {
 	createNewCityMapEntity(ceData, data, era) {
 		// todo: for some reason other players buildings are also added. check where that happens.
 		// todo: deleting does not update stuff?
+		// todo: settlement stuff gets added to productions population upon collection
 		let x = data.x || 0
 		let y = data.y || 0
 		let entity = {
@@ -1818,13 +1819,12 @@ let CityMap = {
 				isExpired: this.isExpiredBuilding(data),
 			},
 
-			// todo GBs probably need more stuff
 			level: (data.type == "greatbuilding" ? data.level : undefined), // level also includes eraId in raw data, we do not like that
 			max_level: (data.type == "greatbuilding" ? data.max_level : undefined)
 		}
 		
-		//if (entity.type == "production")
-		//	console.log('entity ',entity.name, entity.type)
+		//if (entity.type != "street")
+		//	console.log('entity ',entity.name, entity, ceData, data)
 		return entity
 	},
 };
