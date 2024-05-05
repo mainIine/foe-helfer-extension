@@ -289,7 +289,7 @@ input[id*="ProdPerTile"] {
 #ProductionsRating #ProductionsRatingBody span.resicon.happiness {
 	background-position: -158px 2px;
 }
-#ProductionsRating #ProductionsRatingBody span.resicon.goods {
+#ProductionsRating #ProductionsRatingBody span.resicon.goods-current {
 	background-position: -104px 2px;
 }
 #ProductionsRating #ProductionsRatingBody span.resicon.premium {
@@ -315,4 +315,10 @@ input[id*="ProdPerTile"] {
 }
 #ProductionsRating #ProductionsRatingBody span.resicon.def_boost_defender {
 	background-position: -390px 2px;
+}
+#ProductionsRating #ProductionsRatingBody span.resicon.goods-next {
+	background-position: -550px 2px;
+}
+#ProductionsRating #ProductionsRatingBody span.resicon.goods-previous {
+	background-position: -524px 2px;
 }
