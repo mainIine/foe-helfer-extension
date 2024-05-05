@@ -432,14 +432,8 @@ let CityMap = {
 	showQIBuildings: () => {
 		let buildings = Object.values(CityMap.QIData)
 		buildings.sort((a, b) => {
-			const nameA = a.cityentity_id; 
-			const nameB = b.cityentity_id;
-			if (nameA < nameB) {
-			  return -1
-			}
-			if (nameA > nameB) {
-			  return 1
-			}
+			if (a.cityentity_id < b.cityentity_id) return -1
+			if (a.cityentity_id > b.cityentity_id) return 1
 			return 0
 		})
 
