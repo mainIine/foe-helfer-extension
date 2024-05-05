@@ -1082,7 +1082,12 @@ let Productions = {
 			})
 			
 			ratedBuildings = Productions.rateBuildings(buildingType)
-			// todo: sort ratedBuildings by score
+
+			ratedBuildings.sort((a, b) => {
+				if (a.score < b.score) return -1
+				if (a.score > b.score) return 1
+				return 0
+			})
 
 			h.push('<table class="foe-table sortable-table">');
 
