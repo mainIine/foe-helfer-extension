@@ -93,9 +93,9 @@ let Productions = {
 		'def_boost_defender-guild_expedition',
 		'def_boost_defender-battleground',
 		'def_boost_defender-guild_raids',
-		'goods-next',
-		'goods-current',
 		'goods-previous',
+		'goods-current',
+		'goods-next',
 	],
 	fragmentsSet: new Set(),
 
@@ -932,8 +932,23 @@ let Productions = {
 		else if (GoodType === 'def_boost_defender' || GoodType === 'def_boost_defender-all') {
 			return i18n('Boxes.Productions.def_boost_defender');
 		}
-		else if (GoodType === 'goods') {
-			return i18n('Boxes.Productions.goods');
+		else if (GoodType.includes('battleground')) {
+			return i18n('Boxes.Kits.Guild_Battlegrounds');
+		}
+		else if (GoodType.includes('guild_expedition')) {
+			return i18n('Gilden-Expeditionen');
+		}
+		else if (GoodType.includes('guild_raids')) {
+			return i18n('Boxes.Kits.Quantum_Incursion');
+		}
+		else if (GoodType === 'goods-next') {
+			return i18n('Boxes.Productions.goods_next');
+        }
+		else if (GoodType === 'goods-current') {
+			return i18n('Boxes.Productions.goods_current');
+        }
+		else if (GoodType === 'goods-previous') {
+			return i18n('Boxes.Productions.goods_previous');
         }
 		else if (GoodType === 'items') {
 			return i18n('Boxes.Productions.fragments');
@@ -1027,15 +1042,13 @@ let Productions = {
 		h.push('</ul>');
 		h.push('</div>');
 
-		//Einstellungen
 		if (Productions.RatingCurrentTab === 'Settings') {
 			h.push('<div>');
 			h.push('<ul class="foe-table">');
 
 			h.push('<li class="dark-bg">')
 			h.push('<span>' + i18n('Boxes.ProductionsRating.Enabled') + '</span>');
-			h.push('<span></span>'); //Symbol
-			h.push('<span></span>'); //ResourceName
+			h.push('<span></span><span></span>');
 			h.push('<span class="text-right">' + i18n('Boxes.ProductionsRating.ProdPerTile') + '</span>');
 			h.push('</li>')
 
@@ -1058,9 +1071,7 @@ let Productions = {
 			h.push('</div>')
 		}
 
-		//Ergebnisse
 		else if (Productions.RatingCurrentTab === 'Results') {
-
 			let buildingType = [];
 			// todo: this only grabs one of each, it does not look at the era. should probably be different?
 			Object.values(MainParser.NewCityMapData).forEach(building => {
@@ -1071,7 +1082,7 @@ let Productions = {
 			})
 			
 			ratedBuildings = Productions.rateBuildings(buildingType)
-			// todo: sort by score
+			// todo: sort ratedBuildings by score
 
 			h.push('<table class="foe-table sortable-table">');
 
@@ -1088,7 +1099,6 @@ let Productions = {
 			h.push('</tr>');
 			h.push('<thead>');
 
-			//Schritt3: Body
 			h.push('<tbody>');
 			for (const building of ratedBuildings) {
 				h.push('<tr>')
@@ -1114,17 +1124,30 @@ let Productions = {
 
 	rateBuildings: (buildingType) => {
 		let ratedBuildings = []
+		let tileRatings = JSON.parse(localStorage.getItem('ProductionRatingProdPerTiles'))
 		for(const building of buildingType) {
+			let size = building.size.width * building.size.length // todo: include street requirement
+			let score = 0
 			let ratedBuilding = {
 				building: building
 			}
 			for(const type of Object.keys(Productions.Rating)) {
 				if (Productions.Rating[type] != false) {
-					let typeValue = Productions.getRatingValueForType(building, type)
+					let desiredValuePerTile = parseFloat(tileRatings[type]) || 0
+					let typeValue = Productions.getRatingValueForType(building, type) || 0
+					let valuePerTile = typeValue / size
+
+					if (desiredValuePerTile != 0)
+						score += (valuePerTile / desiredValuePerTile)
+
+					if (building.name == "Yggdrasil - St. 9")
+						console.log(type, desiredValuePerTile, typeValue, valuePerTile, score)
+
 					ratedBuilding[type] = ( Math.round( typeValue * 100 ) / 100 ) || 0
+					ratedBuilding[type+'-tile'] = valuePerTile || 0
 				}
 			}
-			ratedBuilding.score = 200
+			ratedBuilding.score = score
 			ratedBuildings.push(ratedBuilding)
 		}
 		return ratedBuildings
@@ -1187,7 +1210,6 @@ let Productions = {
 
 	GetDefaultProdPerTile: (Type) => {
 		if (Type === 'strategy_points') return 0.2;
-		if (Type === 'money'|| Type === 'supplies' || Type === 'medals' || Type === 'clan_goods' || Type === 'population' || Type === 'happiness') return 0;
 		if (Type === 'units') return 0.2;
 		if (Type === 'clan_power') {
 			let Entity = MainParser.CityEntities['Z_MultiAge_CupBonus1b'], //Hall of fame lvl2
