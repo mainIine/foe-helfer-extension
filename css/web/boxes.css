@@ -324,11 +324,28 @@ table {
     border-collapse: separate;
 }
 
-.foe-table, table.foe-table {
+.foe-table, table.foe-table, ul.foe-table {
 	border-spacing: 0;
 	border-collapse: separate;
 	width: 100%;
 	background-color: transparent;
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+ul.foe-table li {
+	display: flex;
+	gap: 0.5em;
+	align-items: center;
+}
+
+ul.foe-table li > * {
+	flex-grow: 2;
+}
+
+ul.foe-table li > .no-grow {
+	flex-grow: unset;
 }
 
 table.foe-table thead tr th,
@@ -353,7 +370,7 @@ table.foe-table thead th {
 	background-color: var(--black-50) !important;
 }
 
-table.foe-table tbody tr:nth-child(odd) {
+table.foe-table tbody tr:nth-child(odd), ul.foe-table li:nth-child(odd) {
 	background-color: var(--background-table-odd);
 }
 
@@ -370,11 +387,11 @@ table.foe-table.vertical-top td {
 }
 
 table.foe-table tr th,
-table.foe-table tr td {
+table.foe-table tr td, ul.foe-table li {
 	padding: 2px 5px;
 }
 
-table.foe-table tr td {
+table.foe-table tr td, ul.foe-table li {
 	border-top: 1px solid var(--border-table-top);
 	border-bottom: 1px solid var(--border-table-bottom);
 }
@@ -1072,7 +1089,7 @@ FP-Bar */
 .window-body select,
 .window-body textarea {
 	background-color: var(--background-light);
-	color: var(--text-medium);
+	color: var(--text-dark);
 	background-clip: padding-box;
 	border: 1px solid var(--text-dark);
 	font-size: 0.8rem;
@@ -1080,6 +1097,10 @@ FP-Bar */
 	padding: 2px 5px;
 	border-radius: 2px;
 	box-sizing: border-box;
+}
+
+.window-body input[type=number] {
+	text-align: center;
 }
 
 .window-body textarea {
