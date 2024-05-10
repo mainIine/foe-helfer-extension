@@ -64,8 +64,6 @@ let BlueGalaxy = {
     Show: (event= false, auto_close = false) => {
         //moment.locale(18n('Local'));
 
-        console.log(JSON.stringify(localStorage, null, 4));
-        
         if ($('#bluegalaxy').length === 0) {
 
             let GoodsValue = localStorage.getItem('BlueGalaxyGoodsValue');
@@ -91,7 +89,6 @@ let BlueGalaxy = {
             HTML.AddCssFile('bluegalaxy');
 
             $('#bluegalaxy').on('blur', '#goodsValue', function () {
-                console.log("Updateing BG GoodsValue");
                 BlueGalaxy.GoodsValue = parseFloat($('#goodsValue').val());
                 if (isNaN(BlueGalaxy.GoodsValue)) BlueGalaxy.GoodsValue = 0;
                 localStorage.setItem('BlueGalaxyGoodsValue', BlueGalaxy.GoodsValue);
@@ -101,7 +98,6 @@ let BlueGalaxy = {
 
 
             $('#bluegalaxy').on('blur', '#OlderGoodsValue', function () {
-                console.log("Updateing BG OlderGoodsValue");
                 BlueGalaxy.OlderGoodsValue = parseFloat($('#OlderGoodsValue').val());
                 if (isNaN(BlueGalaxy.OlderGoodsValue)) BlueGalaxy.OlderGoodsValue = 0;
                 localStorage.setItem('BlueGalaxyOlderGoodsValue', BlueGalaxy.OlderGoodsValue);
@@ -143,18 +139,13 @@ let BlueGalaxy = {
                 return Math.round(FP * FPB)
             },
             showBGFragments = JSON.parse(localStorage.getItem('showBGFragments')||"true");
-//        console.log("Buildings:" + Buildings);
-//        console.log("CityMap:" + CityMap);
-        // console.log(JSON.stringify(GoodsList, null, 4));
 
         let BGCurrentAge = "unknown";
         for (let i = 0; i < CityMap.length; i++) {
             let CityEntity = CityMap[i];
 
             if (CityEntity.type === 'main_building') {
-                // console.log(JSON.stringify(CityEntity, null, 4));
                 BGCurrentAge = CityEntity.eraName;
-                console.log("Setting current era name from main building to " + BGCurrentAge);
             }
         }
         
@@ -243,8 +234,6 @@ let BlueGalaxy = {
 
         let Title = i18n('Boxes.BlueGalaxy.DoneProductionsTitle');
 
-        console.log("BG Goods values: Old:" + BlueGalaxy.OlderGoodsValue + " , current goods:" + BlueGalaxy.GoodsValue);
-        
         h.push('<strong class="title">' + Title + '</strong><br>');
         if (BlueGalaxy.DoubleCollections > 0)
             h.push(i18n('Boxes.BlueGalaxy.AvailableCollections')+ " " + BlueGalaxy.DoubleCollections+"<br>");
