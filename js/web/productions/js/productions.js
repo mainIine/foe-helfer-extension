@@ -125,6 +125,7 @@ let Productions = {
 	 */
 	ReadData: ()=> {
 		Productions.BuildingsAll = Object.values(Productions.CombinedCityMapData);
+		Productions.setChainsAndSets(Productions.BuildingsAll)
 
 		Productions.PopulationSum = 0,
 		Productions.HappinessSum = 0;
@@ -356,6 +357,10 @@ let Productions = {
 					rowA.push('<tr>')
 					rowA.push('<td>')
 					rowA.push((building.state.isPolivated !== undefined ? (building.state.isPolivated ? '<span class="text-bright">★</span>' : '☆') : ''))
+					if (building.setBuilding !== undefined)
+						rowA.push('<img src="' + srcLinks.get('/shared/icons/' + building.setBuilding.name + '.png', true) + '" class="chain-set-ico">')
+					if (building.chainBuilding !== undefined)
+						rowA.push('<img src="' + srcLinks.get('/shared/icons/' + building.chainBuilding.name + '.png', true) + '" class="chain-set-ico">')
 					rowA.push('</td>')
 					rowA.push('<td data-text="'+building.name.replace(/[. -]/g,"")+'">' + building.name + '</td>')
 					
@@ -521,6 +526,34 @@ let Productions = {
 				Productions.ShowFunction($(this).data('id'));
 			});
 		});
+	},
+
+
+	setChainsAndSets(buildings) {
+		for (const building of buildings) {
+			if (building.setBuilding !== undefined) {
+				// todo
+				CityMap.findAdjacentSetBuildingByCoords(building.coords.x, building.coords.y, building.setBuilding.name)
+			} 
+			else if (building.chainBuilding !== undefined && building.chainBuilding?.type == "start") {
+
+				function findLinks(building, arr = []) {
+					let nextBuilding = CityMap.getBuildingByCoords(building?.coords?.x + building?.chainBuilding?.chainPosX || 0, building?.coords?.y + building?.chainBuilding?.chainPosY || 0)
+					if (nextBuilding === undefined || nextBuilding.chainBuilding === undefined || nextBuilding.chainBuilding?.name !== building.chainBuilding.name)
+						return arr
+					arr.push(nextBuilding)
+					return findLinks(nextBuilding, arr)
+				}
+
+				let allLinks = findLinks(building)
+				if (allLinks.length > 0) {
+					console.log(allLinks)
+					let fullBuilding = CityMap.createChainedBuilding(building, allLinks)
+					console.log(fullBuilding)
+				}
+			}
+			// todo: remove linked buildings and start from allbuildings list because they would be in there twice
+		}
 	},
 
 
@@ -1108,7 +1141,7 @@ let Productions = {
 			for (const building of ratedBuildings) {
 				h.push('<tr>')
 				h.push('<td>'+building.building.name+'</td>')
-				h.push('<td>'+building.score+'</td>')
+				h.push('<td>'+Math.round(building.score * 100) +'</td>')
 				for (const type of Productions.RatingTypes) {
 					if (building[type] != undefined)
 						h.push('<td>'+building[type]+'</td>')
@@ -1144,9 +1177,6 @@ let Productions = {
 
 					if (desiredValuePerTile != 0)
 						score += (valuePerTile / desiredValuePerTile)
-
-					if (building.name == "Yggdrasil - St. 9")
-						console.log(type, desiredValuePerTile, typeValue, valuePerTile, score)
 
 					ratedBuilding[type] = ( Math.round( typeValue * 100 ) / 100 ) || 0
 					ratedBuilding[type+'-tile'] = valuePerTile || 0

@@ -119,6 +119,11 @@
 	}
 }
 
+#Productions .chain-set-ico {
+	padding-right: 3px;
+	height: 18px;
+}
+
 #Productions #ProductionsBody .tabs ul li a {
 	padding: 0 3px;
 }

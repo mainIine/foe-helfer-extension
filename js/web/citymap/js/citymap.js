@@ -1058,22 +1058,49 @@ let CityMap = {
 	
 	// returns chainId (string), returns undefined if not a chain building
 	setChainBuilding(ceData) {
-		let chainId = undefined;
+		let chainId = undefined
+		let type = null, x = 0, y = 0
 		ceData.abilities.forEach(ability => {
-			if (ability.chainId)
-				chainId = ability.chainId;
+			if (ability.chainId) {
+				chainId = ability.chainId
+				type = (ability.__class__ == "ChainStartAbility" ? "start" : "link")
+				// currently all chains only have ONE side where you can attach builidngs (except mughals)
+				x = ability.linkPositions[0].topLeftPoint.x || 0 
+				y = ability.linkPositions[0].topLeftPoint.y || 0 
+			}
 		});
-		return chainId;
+		if (chainId !== undefined)
+			return { name: chainId, type: type, chainPosX: x, chainPosY: y }
+	},
+
+	// this creates a pseudo building for effiency ratings etc
+	createChainedBuilding(building, allLinkedBuildings = []) {
+		let chainedBuilding = building
+		chainedBuilding.name = building.name + " +" + allLinkedBuildings.length
+		chainedBuilding.chainBuilding.type = "linked"
+
+		for (link of allLinkedBuildings) {
+			chainedBuilding.size.width = chainedBuilding.size.width + (link.coords.x != chainedBuilding.coords.x ? link.size.width : 0)
+			chainedBuilding.size.length = chainedBuilding.size.length + (link.coords.y != chainedBuilding.coords.y ? link.size.length : 0)
+
+			if (link.boosts !== undefined)
+				chainedBuilding.boosts = [...chainedBuilding.boosts, ...link.boosts]
+			if (link.production !== undefined)
+				chainedBuilding.production = [...chainedBuilding.production, ...link.production]
+		}
+
+		return chainedBuilding
 	},
 
 	// returns setId (string), returns undefined if not a chain building
 	setSetBuilding(ceData) {
-		let setId = undefined;
+		let setId = undefined
 		ceData.abilities.forEach(ability => {
 			if (ability.setId)
-				setId = ability.setId;
+				setId = ability.setId
 		});
-		return setId;
+		if (setId !== undefined)
+			return { name: setId }
 	},
 
 	// returns an object with the buildings size
@@ -1092,7 +1119,9 @@ let CityMap = {
 	setBuildingBoosts(ceData, data, era) {
 		let eraName = (era == 'AllAge' ? 'BronzeAge' : era) // for some reason Watchtower Level 2 (example) has an era list even though the boost is the same everywhere. thx inno
 		let boosts = []
-		if (data.type != "generic_building") {
+		let isSet = this.setSetBuilding(ceData)
+		let isChain = this.setChainBuilding(ceData)
+		if (data.type !== "generic_building") {
 			ceData.abilities.forEach(ability => {
 				if (ability.boostHints) {
 					ability.boostHints.forEach(abilityBoost => {
@@ -1115,6 +1144,32 @@ let CityMap = {
 						}
 					})
 				}
+				if ((isSet !== undefined && ability.__class__ === "BonusOnSetAdjacencyAbility") || (isChain !== undefined && ability.__class__ === "ChainLinkAbility")) {
+					// todo: this needs to be overwritten by the actual link/set status
+					for (const bonus of ability.bonuses) {
+						if (bonus.boost.length == 0) return
+						else {
+							if (bonus.boost[eraName]) { // todo: make variable, less code
+								let boost = {
+									feature: bonus.boost[eraName].targetedFeature,
+									type: MainParser.BoostMapper[bonus.boost[eraName].type] || [bonus.boost[eraName].type],
+									value: bonus.boost[eraName].value,
+									needsLink: true
+								}
+								boosts.push(boost)
+							}
+							else if (bonus.boost.AllAge) {
+								let boost = {
+									feature: bonus.boost.AllAge.targetedFeature,
+									type: MainParser.BoostMapper[bonus.boost.AllAge.type] || [bonus.boost.AllAge.type],
+									value: bonus.boost.AllAge.value,
+									needsLink: true
+								}
+								boosts.push(boost)
+							}
+						}
+					}
+				}
 			});
 			if (data.type === "greatbuilding") { 
 				if (data.bonus?.type) {
@@ -1127,7 +1182,7 @@ let CityMap = {
 						boosts.push(boost)
 				}
 			}
-			if (data.cityentity_id.includes("CastleSystem")) {
+			else if (data.cityentity_id.includes("CastleSystem")) {
 				MainParser.Boosts[data.id].forEach(castleBoost => {
 					let boost = {
 						feature: "all",
@@ -1251,7 +1306,26 @@ let CityMap = {
 		if (!connected) 
 			connected = (data.connected == 1)
 		return connected
-	},	
+	},
+
+	// todo: find out if a chain link building is connected to the chain start building (through other links)
+	// needed for reseting chain link productions and boosts
+	isLinked(building) {
+
+		return true
+	},
+
+	// todo: need it for sets and chains
+	findAdjacentSetBuildingByCoords(x,y, linkName = "") {
+		for (let i = x; i >= (x-10); i--) {
+			for (let j = y; j >= (y-10); j--) {
+				let building = this.getBuildingByCoords(i,j)
+				if (building != undefined && building?.setBuilding?.name == linkName) {
+					return console.log(building)
+				}
+			}
+		}
+	},
 	
 	// returns false if building does not produce anything
 	setAllProductions(ceData, data, era) {
@@ -1284,8 +1358,6 @@ let CityMap = {
 						productions.push(resource)
 				})
 			}
-			if (productions.length > 0) 
-				return productions
 			if (data.type == "main_building") { // add emissary production to town hall
 				MainParser.EmissaryService?.forEach(emissary => {
 					let resource = {
@@ -1305,7 +1377,6 @@ let CityMap = {
 						productions.push(resource)
 					}
 				})
-				return productions
 			}
 			if (data.cityentity_id.includes("CastleSystem")) { // add castle system stuff
 				let currentLevel = Castle.curLevel
@@ -1326,8 +1397,38 @@ let CityMap = {
 					}
 					productions.push(resource)
 				})
-				return productions
 			}
+			let isChain = this.setChainBuilding(ceData)
+			if (isChain !== undefined) {
+				for (const ability of ceData.abilities) {
+					if (ability.__class__ == "ChainLinkAbility")
+						for (const bonus of ability.bonuses) {
+							if (bonus.revenue.length == 0) return
+							else {
+								if (bonus.revenue[Technologies.InnoEras[era]]) { // todo: make variable, less code
+									let resource = {
+										type: "resources", // currently there are no chains that give anything else
+										needsMotivation: false,
+										resources: bonus.revenue[Technologies.InnoEras[era]].resources
+									}
+									productions.push(resource)
+								}
+								else if (bonus.revenue.AllAge) {
+									let resource = {
+										type: "resources", // currently there are no chains that give anything else
+										needsMotivation: false,
+										resources: bonus.revenue.AllAge.resources
+									}
+									productions.push(resource)
+								}
+							}
+						}
+				}
+			}
+
+			if (productions.length > 0) 
+				return productions
+			
 			return false
 		}
 		else if (data.type === "generic_building") {
@@ -1725,6 +1826,10 @@ let CityMap = {
 		return Object.values(MainParser.NewCityMapData).find(x => x.id === id)
 	},
 
+	getBuildingByCoords(x,y) {
+		return Object.values(MainParser.NewCityMapData).find(b => b.coords.x === x && b.coords.y === y)
+	},
+
 	getBuildingGoodsByEra(current, building) {
 		let productions = (current ? building.state.production : building.production)
 		let goods = {}
@@ -1817,8 +1922,8 @@ let CityMap = {
 			max_level: (data.type == "greatbuilding" ? data.max_level : undefined)
 		}
 		
-		//if (entity.type != "street")
-		//	console.log('entity ',entity.name, entity, ceData, data)
+		if (entity.type != "street")
+			console.log('entity ',entity.name, entity, ceData, data)
 		return entity
 	},
 };
