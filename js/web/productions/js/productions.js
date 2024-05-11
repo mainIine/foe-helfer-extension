@@ -354,12 +354,23 @@ let Productions = {
 					//let sizeWithStreets = size + (building.state.connected == true ? (building.needsStreet > 0 ? shortSide * building.needsStreet / 2 : 0) : 0)
 					if (type == 'items' && Productions.showBuildingItems(building) == false) return // make random productions with resources disappear from the item list
 
+					if (building.chainBuilding !== undefined && building.chainBuilding?.type == "link") {
+						let isLinked = CityMap.isLinked(building)
+						if (isLinked) return
+						else {
+							building.boosts = undefined
+							building.production = false
+							building.state.production = false
+						}
+					}
+					if (building.chainBuilding !== undefined && building.chainBuilding?.type == "start") return
+
 					rowA.push('<tr>')
 					rowA.push('<td>')
-					rowA.push((building.state.isPolivated !== undefined ? (building.state.isPolivated ? '<span class="text-bright">★</span>' : '☆') : ''))
-					if (building.setBuilding !== undefined)
+						rowA.push((building.state.isPolivated !== undefined ? (building.state.isPolivated ? '<span class="text-bright">★</span>' : '☆') : ''))
+						if (building.setBuilding !== undefined)
 						rowA.push('<img src="' + srcLinks.get('/shared/icons/' + building.setBuilding.name + '.png', true) + '" class="chain-set-ico">')
-					if (building.chainBuilding !== undefined)
+						if (building.chainBuilding !== undefined)
 						rowA.push('<img src="' + srcLinks.get('/shared/icons/' + building.chainBuilding.name + '.png', true) + '" class="chain-set-ico">')
 					rowA.push('</td>')
 					rowA.push('<td data-text="'+building.name.replace(/[. -]/g,"")+'">' + building.name + '</td>')
@@ -380,7 +391,7 @@ let Productions = {
 								currentAmount = Math.round(currentAmount + (currentAmount *((MainParser.BoostSums.supply_production + (Productions.HappinessBoost * 100)) / 100)))
 							}
 							else if (type == 'strategy_points' && building.type != "greatbuilding" && building.type != "main_building" && !building.entityId.includes("CastleSystem")) {
-								amount = Math.round(amount + (amount *((MainParser.BoostSums.forge_points_production) / 100)))
+								amount = Math.round(amount + (amount *((MainParser.BoostSums.forge_points_production) / 100))) // todo: inno ist doof, FP boost muss bei ketten anders berechnet werden
 								currentAmount = Math.round(currentAmount + (currentAmount *((MainParser.BoostSums.forge_points_production) / 100)))
 							}
 
@@ -409,19 +420,19 @@ let Productions = {
 							building.boosts.forEach(boost => {
 								if (boost.type.find(x => x == type) == type) {
 									if (boost.feature == "all") {
-										boosts.all = boost.value
+										boosts.all += boost.value
 										boostCounter[type][boost.feature] += boost.value
 									}
 									if (boost.feature == "battleground") {
-										boosts.battleground = boost.value
+										boosts.battleground += boost.value
 										boostCounter[type][boost.feature] += boost.value
 									}
 									if (boost.feature == "guild_expedition") {
-										boosts.guild_expedition = boost.value
+										boosts.guild_expedition += boost.value
 										boostCounter[type][boost.feature] += boost.value
 									}
 									if (boost.feature == "guild_raids") {
-										boosts.guild_raids = boost.value
+										boosts.guild_raids += boost.value
 										boostCounter[type][boost.feature] += boost.value
 									}
 								}
@@ -547,12 +558,12 @@ let Productions = {
 
 				let allLinks = findLinks(building)
 				if (allLinks.length > 0) {
-					console.log(allLinks)
 					let fullBuilding = CityMap.createChainedBuilding(building, allLinks)
 					console.log(fullBuilding)
+					let index = Productions.BuildingsAll.findIndex(x => x.id == fullBuilding.id)
+					Productions.BuildingsAll[index] = fullBuilding
 				}
 			}
-			// todo: remove linked buildings and start from allbuildings list because they would be in there twice
 		}
 	},
 

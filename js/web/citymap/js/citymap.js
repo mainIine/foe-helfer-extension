@@ -1082,10 +1082,11 @@ let CityMap = {
 		for (link of allLinkedBuildings) {
 			chainedBuilding.size.width = chainedBuilding.size.width + (link.coords.x != chainedBuilding.coords.x ? link.size.width : 0)
 			chainedBuilding.size.length = chainedBuilding.size.length + (link.coords.y != chainedBuilding.coords.y ? link.size.length : 0)
+			chainedBuilding.happiness += link.happiness
 
-			if (link.boosts !== undefined)
+			if (link.boosts !== undefined) // todo: boosts (eg panda att_def not added properly)
 				chainedBuilding.boosts = [...chainedBuilding.boosts, ...link.boosts]
-			if (link.production !== undefined)
+			if (link.production !== undefined) // todo: production not calculated properly: eg elephant fp
 				chainedBuilding.production = [...chainedBuilding.production, ...link.production]
 		}
 
@@ -1308,11 +1309,24 @@ let CityMap = {
 		return connected
 	},
 
-	// todo: find out if a chain link building is connected to the chain start building (through other links)
-	// needed for reseting chain link productions and boosts
-	isLinked(building) {
+	// find out if a chain link building is connected to the chain start building (through other links)
+	isLinked(building, x = 0, y = 0) {
+		let xNeg = building?.chainBuilding?.chainPosX > 0 ? -1 : 1
+		let yNeg = building?.chainBuilding?.chainPosY > 0 ? -1 : 1
+		let x1 = (building?.chainBuilding?.chainPosX != 0 ? building?.chainBuilding?.chainPosX / Math.abs(building?.chainBuilding?.chainPosX) : 0) - x*xNeg
+		let y1 = (building?.chainBuilding?.chainPosY != 0 ? building?.chainBuilding?.chainPosY / Math.abs(building?.chainBuilding?.chainPosY) : 0) - y*yNeg
 
-		return true
+		let prevBuilding = CityMap.getBuildingByCoords(building?.coords?.x - x1, building?.coords?.y - y1)
+
+		if (y1 < 0 || x1 < 0 || x1 > 72 || y1 > 72) return false // min and max of current map
+		else {
+			if (prevBuilding !== undefined) {
+				if (prevBuilding.chainBuilding === undefined || prevBuilding.chainBuilding?.name !== building.chainBuilding.name) return false
+				if (prevBuilding.chainBuilding?.name === building.chainBuilding.name && prevBuilding.chainBuilding?.type == ("linked" || "start"))
+					return true
+			}
+			return this.isLinked(building, x1, y1)
+		}
 	},
 
 	// todo: need it for sets and chains
