@@ -21,9 +21,9 @@ FoEproxy.addHandler('CardGameService', 'all', (data, postData) => {
 		cardGame.healthShop={}
 		let offers = [...data.responseData.healthOffers].sort((a,b) => a.amount-b.amount)
 		for (h of offers) {
-			let newhealth = (cardGame.health + h.amount) > cardGame.maxHealth ? cardGame.maxHealth : cardGame.health + h.amount;
-
-			if (!cardGame.healthShop[newhealth]) cardGame.healthShop[newhealth] = h.cost.resources[cardGame.data[cardGame.context].mainResource];
+			let newhealth = (cardGame.health + h.amount);
+			if (newhealth > cardGame.maxHealth) continue;
+			cardGame.healthShop[newhealth] = h.cost.resources[cardGame.data[cardGame.context].mainResource];
 		}
 	}
 	if (data.requestMethod=="buyCard") {
@@ -83,6 +83,7 @@ FoEproxy.addHandler('CardGameService', 'all', (data, postData) => {
 			cardGame.isLastLevel = cardGame.nodes[data.responseData.state.playerState.currentNodeId].nextNodeIds.length == 0;
 			cardGame.enemy = cardGame.nodes[data.responseData.state.playerState.currentNodeId].enemy;
 			cardGame.redraw = data.responseData.state.playerState.redrawCost.resources[cardGame.data[cardGame.context].mainResource];
+			cardGame.maxHealth = data.responseData.playerState.maxHealth;
 
 		} else {
 			try {
