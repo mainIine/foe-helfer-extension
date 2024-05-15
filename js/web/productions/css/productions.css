@@ -132,6 +132,11 @@
 	width: 27px;
 }
 
+#Productions #ProductionsBody table .unit {
+	background: transparent url('../../unit/images/unit_skill.png') -233px 2px no-repeat;
+}
+
+
 #Productions #ProductionsBody .tabs ul li a span, #Productions th.boost span {
 	background: transparent url('../images/productions.png') -233px 2px no-repeat;
 }

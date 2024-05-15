@@ -398,8 +398,11 @@ let Productions = {
 							rowA.push('<td data-number="'+amount+'" class="textright" colspan="4">')
 							if (currentAmount != amount && building.type != 'production')
 								rowA.push(HTML.Format(currentAmount) + '/' + (hasRandomProductions ? 'Ø' : '') + HTML.Format(amount))
-							else
+							else {
+								unitType = Productions.getBuildingProductionByCategory(true, building, type).type
+								if (unitType != null) rowA.push('<span class="unit_skill ' + unitType + '" title="'+ i18n("Boxes.Units." + unitType ) + '"></span> ')
 								rowA.push(HTML.Format(currentAmount))
+							}
 							rowA.push('</td>')
 							
 							typeSum += amount
@@ -476,7 +479,7 @@ let Productions = {
 
 			if (rowA.length > 0) {
 				table.push('<table class="foe-table sortable-table '+type+'-list active">')
-				table.push('<thead>')
+				table.push('<thead style="z-index:100">')
 				table.push('<tr>')
 				table.push('<th colspan="3"><span class="btn-default change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeGroups') + '</span></th>')
 				if (!type.includes('att') && !type.includes('def')) 
@@ -548,7 +551,7 @@ let Productions = {
 			} 
 			else if (building.chainBuilding !== undefined && building.chainBuilding?.type == "start") {
 
-				function findLinks(building, arr = []) {
+				function findLinks(building, arr = []) { // recursion is fun
 					let nextBuilding = CityMap.getBuildingByCoords(building?.coords?.x + building?.chainBuilding?.chainPosX || 0, building?.coords?.y + building?.chainBuilding?.chainPosY || 0)
 					if (nextBuilding === undefined || nextBuilding.chainBuilding === undefined || nextBuilding.chainBuilding?.name !== building.chainBuilding.name)
 						return arr
@@ -559,7 +562,6 @@ let Productions = {
 				let allLinks = findLinks(building)
 				if (allLinks.length > 0) {
 					let fullBuilding = CityMap.createChainedBuilding(building, allLinks)
-					console.log(fullBuilding)
 					let index = Productions.BuildingsAll.findIndex(x => x.id == fullBuilding.id)
 					Productions.BuildingsAll[index] = fullBuilding
 				}
@@ -744,6 +746,7 @@ let Productions = {
 	getBuildingProductionByCategory(current = false, building, category) {
 		let prod = {
 			amount: 0,
+			type: null, // units
 			hasRandomProductions: false,
 			doubleWhenMotivated: false
 		}
@@ -776,6 +779,8 @@ let Productions = {
 				}
 				if (production.type+"s" == category) { // units
 					prod.amount += Object.values(production.resources)[0]
+					if (current == true)
+						prod.type = Object.keys(production.resources)[0]
 				}
 				if (category == "clan_goods" && production.type == "guildResources") {
 					if (production.resources.all_goods_of_age)
@@ -1119,7 +1124,7 @@ let Productions = {
 			let buildingType = [];
 			// todo: this only grabs one of each, it does not look at the era. should probably be different?
 			Object.values(MainParser.NewCityMapData).forEach(building => {
-				if (building.type == 'street' || building.type == 'military' || building.type == 'off_grid' || building.type == 'hub_part') return
+				if (building.type == 'street' || building.type == 'military' || building.id >= 2000000000 || building.type.includes('hub')) return
 
 				if (buildingType.find(x => x.name == building.name) == undefined)
 					buildingType.push(building)

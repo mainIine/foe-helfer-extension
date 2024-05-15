@@ -406,6 +406,7 @@ GetFights = () =>{
 	FoEproxy.addHandler('CityMapService', (data, postData) => {
 		if (data.requestMethod === 'moveEntity' || data.requestMethod === 'moveEntities' || data.requestMethod === 'updateEntity') {
 			let Buildings = data.responseData;
+			if (Buildings[0].player_id != ExtPlayerID) return // opened another players GB
 			Buildings.forEach(building => {
 				let responseData = data.responseData.find(x => x.id == building.id);
 				let ceData = Object.values(MainParser.CityEntities).find(x => x.id == building.cityentity_id);
@@ -463,7 +464,8 @@ GetFights = () =>{
 	FoEproxy.addHandler('CityProductionService', (data, postData) => {
 		if (data.requestMethod === 'pickupProduction' || data.requestMethod === 'pickupAll' || data.requestMethod === 'startProduction' || data.requestMethod === 'cancelProduction') {
 			let Buildings = data.responseData['updatedEntities'];
-			if (!Buildings) return;
+			if (!Buildings) return
+			if (ActiveMap != "main") return // do not add outpost buildings
 			Buildings.forEach(building => {
 				let responseData = data.responseData.updatedEntities.find(x => x.id == building.id);
 				let ceData = Object.values(MainParser.CityEntities).find(x => x.id == building.cityentity_id);
