@@ -1894,9 +1894,7 @@ let CityMap = {
 	},
 	
 	createNewCityMapEntity(ceData, data, era) {
-		// todo: for some reason other players buildings are also added. check where that happens.
 		// todo: deleting does not update stuff?
-		// todo: settlement stuff gets added to productions population upon collection
 		let x = data.x || 0
 		let y = data.y || 0
 		let entity = {

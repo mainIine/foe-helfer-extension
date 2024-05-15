@@ -1053,6 +1053,8 @@
     "Boxes.Units.light_melee": "Leichte Einheit",
     "Boxes.Units.long_ranged": "Artillerie-Einheit",
     "Boxes.Units.pool": "Einheiten-Vorrat",
+    "Boxes.Units.random": "Zufällig",
+    "Boxes.Units.rogue": "Agent",
     "Boxes.Units.short_ranged": "Fernkampf-Einheit",
     "Boxes.UnitsGex.Lost": "Verloren",
     "Boxes.UnitsGex.NoUnitsAvailable": "Drücke zuerst die Taste \"U\" um deine Einheiten zu laden.",

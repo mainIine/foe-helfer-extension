@@ -1054,6 +1054,8 @@
     "Boxes.Units.long_ranged": "Artillery Unit",
     "Boxes.Units.pool": "Unit's-pool",
     "Boxes.Units.short_ranged": "Ranged Unit",
+    "Boxes.Units.random": "random",
+    "Boxes.Units.rogue": "Rogue",
     "Boxes.UnitsGex.Lost": "Lost",
     "Boxes.UnitsGex.NoUnitsAvailable": "No unit data available. Please press \"U\" to launch the Army Management console",
     "Boxes.UnitsGex.Stage": "Stage",
