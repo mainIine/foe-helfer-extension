@@ -785,10 +785,7 @@
 	{
 		"name": "Neo_Winners_Plaza",
 		"buildings": [
-			{
-				"first": "W_MultiAge_GR23B1"
-
-			}
+			{"first": "W_MultiAge_GR23B1"}
 		]
 	},
 	{
