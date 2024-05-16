@@ -536,7 +536,7 @@ let Kits = {
 		}
 
 		return 	`<div class="item${((el.missing) ? ' is-missing' : '')}">
-					<div class="image"><img src="${url}" alt="${title}" /></div>
+					<div class="image"><img loading="lazy" src="${url}" alt="${title}" /></div>
 					<strong class="in-stock" title="${i18n('Boxes.Kits.InStock')}">${(item.inStock ? item.inStock : '-')}</strong>
 					<span>${title}</span>
 					<span class="fragments">${(el.fragments ? `<img class="ItemFragment" src="${Kits.fragmentURL}"> ` + el.fragments + '/' + el.reqFragments : '')}</span>
