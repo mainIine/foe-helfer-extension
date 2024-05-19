@@ -204,7 +204,7 @@
 #stats .tabs ul li.__event a span {
 	background-image: url(../../x_img/event.png);
 }
-#stats .tabs ul li.default a span {
+#stats .tabs ul li.hidden_reward a span {
 	background-image: url(../../x_img/incident.png);
 }
 #stats .tabs ul li.pvp_arena a span {
