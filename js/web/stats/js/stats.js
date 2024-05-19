@@ -49,16 +49,22 @@ FoEproxy.addHandler('RewardService', 'collectReward', async (data, postData) => 
 
 	for (let reward of rewards) {
 
-		if (rewardIncidentSource === 'default') {
-			//split flying island incidents from normal ones
+		if (rewardIncidentSource === 'hidden_reward') {
+			//split flying island incidents from Ad-chests
 			if (isCurrentlyInOutpost === 1){
 				rewardIncidentSource = 'shards';
 			}
-			//split league rewards and fragment assembly from incidents
+		}
+		if (rewardIncidentSource === 'living_city') {
+			rewardIncidentSource = 'hidden_reward'
+		}
+		
+		if (rewardIncidentSource === 'default') {
+			//ignore league rewards and fragment assembly
 			if(postData[0].requestMethod === 'useItem'){
 				continue;
 			}
-			//split quest rewards from incidents
+			//ignore quest rewards
 			if(postData[0].requestMethod === 'advanceQuest'){
 				continue;
 			}
@@ -595,7 +601,7 @@ let Stats = {
 		let moreOptions = ``;
 		if (Stats.isSelectedRewardSources()) {
 			const btnsRewardSelect = [
-				'default', //incidents
+				'hidden_reward', //incidents
 				'__event', //event rewards
 				'battlegrounds_conquest', // Battlegrounds
 				'guildExpedition', // Temple of Relics

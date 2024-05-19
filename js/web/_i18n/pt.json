@@ -678,7 +678,7 @@
     "Boxes.Stats.HelpLink": "https://foe-helper.com/docs/en/statistics/",
     "Boxes.Stats.Rewards.Source.__event": "Evento",
     "Boxes.Stats.Rewards.Source.battlegrounds_conquest": "CdB",
-    "Boxes.Stats.Rewards.Source.default": "Incidentes",
+    "Boxes.Stats.Rewards.Source.hidden_reward": "Incidentes",
     "Boxes.Stats.Rewards.Source.diplomaticGifts": "Prendas diplomáticas",
     "Boxes.Stats.Rewards.Source.guildExpedition": "EG",
     "Boxes.Stats.Rewards.Source.shards": "Fragmentos",
