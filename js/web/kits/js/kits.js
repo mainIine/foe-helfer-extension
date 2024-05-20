@@ -203,7 +203,7 @@ let Kits = {
 			let upgradeList = [u.upgradeItem.id];
 			let buildingList=[];
 			let sK=[]
-			let upgradeCount=JSON.parse(`{"${u.upgradeItem.id.split("_")[0]}":${u.upgradeSteps.length-1}}`)
+			let upgradeCount=JSON.parse(`{"${u.upgradeItem.id.includes("ascended")?"ascended" : u.upgradeItem.id.split("_")[0]}":${u.upgradeSteps.length-1}}`)
 			for (let i = 1;i<u.upgradeSteps.length;i++) {
 				for (b of u.upgradeSteps[i].buildingIds) {
 					buildingList.push(b)
@@ -536,7 +536,7 @@ let Kits = {
 		}
 
 		return 	`<div class="item${((el.missing) ? ' is-missing' : '')}">
-					<div class="image"><img src="${url}" alt="${title}" /></div>
+					<div class="image"><img loading="lazy" src="${url}" alt="${title}" /></div>
 					<strong class="in-stock" title="${i18n('Boxes.Kits.InStock')}">${(item.inStock ? item.inStock : '-')}</strong>
 					<span>${title}</span>
 					<span class="fragments">${(el.fragments ? `<img class="ItemFragment" src="${Kits.fragmentURL}"> ` + el.fragments + '/' + el.reqFragments : '')}</span>

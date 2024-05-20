@@ -1,6 +1,6 @@
 [	
 	{
-		"udate": "History Event 2024 (21 March 2024)"
+		"udate": "Summer Event 2024 (16 May 2024)"
 	},
 	{
 		"groupname": "Events"
@@ -297,6 +297,33 @@
 		"name": "Trading_Post",
 		"buildings": [
 			{"first": "W_MultiAge_SUM23A1"}
+		]
+	},
+	{
+		"name": "Dragons_Breath",
+		"link": "Dragon%27s_Breath",
+		"buildings": [
+			{"first": "W_MultiAge_SUM24A1"}
+		]
+	},
+	{
+		"name": "Golden_Dragon_Gong",
+		"buildings": [
+			{"first": "W_MultiAge_SUM24B1"}
+		]
+	},
+	{
+		"name": "Zhengs_Golden_Bell",
+		"link": "Zheng%27s_Golden_Bell",
+		"buildings": [
+			{"first": "W_MultiAge_SUM24C1"}
+		]
+	},
+	{
+		"name": "Sailmakers Workshop",
+		"link": "Sailmaker%27s_Workshop",
+		"buildings": [
+			{"first": "W_MultiAge_SUM24F1"}
 		]
 	},
 	{
@@ -735,6 +762,18 @@
 		]
 	},
 	{
+		"name": "Thunderdrake_Citadel",
+		"buildings": [
+			{"first": "W_MultiAge_GBG24C1"}
+		]
+	},
+	{
+		"name": "Thunderdrake_Siegeshop",
+		"buildings": [
+			{"first": "W_MultiAge_GBG24D1"}
+		]
+	},
+	{
 		"groupname": "Quantum_Incursion"
 	},
 	{
@@ -746,10 +785,7 @@
 	{
 		"name": "Neo_Winners_Plaza",
 		"buildings": [
-			{
-				"first": "W_MultiAge_GR23B1"
-
-			}
+			{"first": "W_MultiAge_GR23B1"}
 		]
 	},
 	{

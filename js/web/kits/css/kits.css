@@ -152,6 +152,14 @@
 	background-position: -52px 0;
 }
 
+#kits .upgrades .ascended {
+	color: #ffae33e0;
+}
+
+#kits .upgrades .ascended::after {
+	background-position: -92px 0;
+}
+
 #kits .item-kits {
 	padding: 5px;
 }

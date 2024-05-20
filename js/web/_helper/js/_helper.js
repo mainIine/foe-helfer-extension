@@ -141,6 +141,19 @@ helper.sounds = {
     message: new Audio(extUrl + 'vendor/sounds/message.mp3'),
 };
 
+helper.preloader = { 
+	show: function(id) {
+		$('#gms-loading-data').remove();
+		$(id).append('<div id="gms-loading-data"><div class="loadericon"></div></div>');
+	},
+
+	hide: function() {
+		$('#gms-loading-data').fadeOut(500, function () {
+			$(this).remove();
+		})
+	}
+};
+
 let HTML = {
 
 	customFunctions: [],
