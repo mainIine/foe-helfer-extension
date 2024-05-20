@@ -117,12 +117,14 @@ let BlueGalaxy = {
 	 * @constructor
 	 */
     CalcBody: () => {
-        for (building of Object.values(MainParser.CityMapData)) {
-			let metaData = Object.values(MainParser.CityEntities).find(x => x.id == building.cityentity_id)
-			let era = Technologies.getEraName(building.cityentity_id, building.level)
-			let newCityEntity = CityMap.createNewCityMapEntity(metaData, building, era)
-			MainParser.NewCityMapData[building.id] = newCityEntity
-		}
+        if (Object.values(MainParser.NewCityMapData).length === 0) {
+            for (building of Object.values(MainParser.CityMapData)) {
+                let metaData = Object.values(MainParser.CityEntities).find(x => x.id == building.cityentity_id)
+                let era = Technologies.getEraName(building.cityentity_id, building.level)
+                let newCityEntity = CityMap.createNewCityMapEntity(metaData, building, era)
+                MainParser.NewCityMapData[building.id] = newCityEntity
+            }
+        }
 
         let Buildings = [],
             FPB = Productions.Boosts['fp'] === undefined ? (MainParser.BoostSums['forge_points_production'] + 100) / 100 : Productions.Boosts['fp']
