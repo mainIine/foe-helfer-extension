@@ -1086,6 +1086,7 @@ let CityMap = {
 		let chainedBuilding = building
 		chainedBuilding.name = building.name + " +" + allLinkedBuildings.length
 		chainedBuilding.chainBuilding.type = "linked"
+		console.log(chainedBuilding.name, chainedBuilding.boosts)
 
 		for (link of allLinkedBuildings) {
 			chainedBuilding.size.width = chainedBuilding.size.width + (link.coords.x != chainedBuilding.coords.x ? link.size.width : 0)
@@ -1093,7 +1094,7 @@ let CityMap = {
 			chainedBuilding.happiness += link.happiness
 
 			if (link.boosts !== undefined) // todo: boosts (eg panda att_def not added properly)
-				chainedBuilding.boosts = [...chainedBuilding.boosts, ...link.boosts]
+				chainedBuilding.boosts = [...chainedBuilding.boosts, ...link.boosts] // todo: can break?
 			if (link.production !== undefined) // todo: production not calculated properly: eg elephant fp
 				chainedBuilding.production = [...chainedBuilding.production, ...link.production]
 		}

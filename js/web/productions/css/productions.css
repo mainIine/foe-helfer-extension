@@ -244,6 +244,11 @@
 	box-shadow: 0 0 500px #0007;
 }
 
+#ProductionsRating #ProductionsRatingBody div p {
+	max-width: 600px;
+	margin: 1em auto;
+}
+
 input[id*="ProdPerTile"] {
 	width: 100px;
 }

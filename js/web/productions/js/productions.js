@@ -333,11 +333,45 @@ let Productions = {
 		})
 
 		Productions.Types.forEach(type => {
-			let buildingIds = Productions.BuildingsProducts[type]
-
 			Productions.SetTabs(type)
+			Productions.SetTabContent(type, "") // empty content, fill later
+		})
 
-			let table = [],
+		h.push( Productions.GetTabs() );
+		h.push( Productions.GetTabContent() );
+	
+		h.push('</div>');
+
+		$('#Productions').find('#ProductionsBody').html(h.join('')).promise().done(function () {
+			// fill first table
+			let type = Productions.Types[0]
+			let firstTabContent = Productions.buildTableByType(type)
+			$("#Productions #"+type).html(firstTabContent)
+
+			// fill other tables on demand
+			$('.production-tabs li').click(function() {
+				let type = $("a", this).attr("href").replace("#","")
+				
+				if ($("#Productions #"+type).html().length === 0) {
+					let content = Productions.buildTableByType(type)
+					$("#Productions #"+type).html(content)
+				}
+			});
+
+			// extra functionality
+			$('.production-tabs').tabslet({ active: Productions.ActiveTab });
+			$('.sortable-table').tableSorter();
+
+			// show a building on the map
+			$('#Productions').on('click', '.foe-table .show-entity', function () {
+				Productions.ShowFunction($(this).data('id'));
+			});
+		});			
+	},
+
+
+	buildTableByType(type) {
+		let table = [],
 			tableGr = [],
 			rowA = [],
 			groupedBuildings = [],
@@ -350,7 +384,8 @@ let Productions = {
 			currentAmount = 0,
 			amount = 0,
 			hasRandomProductions = false,
-			boosts = {}
+			boosts = {},
+			buildingIds = Productions.BuildingsProducts[type]
 
 			if (type != 'goods') {
 				buildingIds.forEach(b => {
@@ -528,25 +563,7 @@ let Productions = {
 			if (type == 'goods')
 				content = Productions.buildGoodsTable(buildingIds, type) // goods have their own table
 
-			Productions.SetTabContent(type, content)
-		})
-
-		h.push( Productions.GetTabs() );
-		h.push( Productions.GetTabContent() );
-
-		h.push('</div>');
-
-		$('#Productions').find('#ProductionsBody').html(h.join('')).promise().done(function () {
-
-			// Zusatzfunktionen für die Tabelle
-			$('.production-tabs').tabslet({ active: Productions.ActiveTab });
-			$('.sortable-table').tableSorter();
-
-			// Ein Gebäude soll auf der Karte dargestellt werden
-			$('#Productions').on('click', '.foe-table .show-entity', function () {
-				Productions.ShowFunction($(this).data('id'));
-			});
-		});
+			return content
 	},
 
 
@@ -1061,7 +1078,7 @@ let Productions = {
 			$('#ProductionsRating').on('click', '.toggle-tab', async function () {
 				Productions.RatingCurrentTab = $(this).data('value');
 
-				await Productions.CalcRatingBody();
+				Productions.CalcRatingBody();
 			});
 
 			for (let i = 0; i < Productions.RatingTypes.length; i++) {
@@ -1133,6 +1150,8 @@ let Productions = {
 				h.push('</li>');
 			}
 			h.push('</ul>')
+			h.push('<p>'+i18n('Boxes.ProductionsRating.Explainer')+'</p>')
+			h.push('<p>'+i18n('Boxes.ProductionsRating.Disclaimer')+'</p>')
 			h.push('</div>')
 		}
 
