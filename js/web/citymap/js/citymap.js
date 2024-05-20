@@ -539,16 +539,19 @@ let CityMap = {
 			let metaData = Object.values(MainParser.CityEntities).find(x => x.id == building.cityentity_id)
 			let era = Technologies.getEraName(building.cityentity_id, building.level)
 			let newCityEntity = CityMap.createNewCityMapEntity(metaData, building, era)
-			MainParser.NewCityMapData[building.id] = newCityEntity
+			if (CityMap.IsExtern === true)
+				MainParser.OtherPlayerCityMapData[building.id] = newCityEntity
+			else
+				MainParser.NewCityMapData[building.id] = newCityEntity
 		}
 
-		for (let b in CityMap.CityData)
-		{
+		for (let b in CityMap.CityData) {
 			if (!CityMap.CityData.hasOwnProperty(b) || CityMap.CityData[b]['x'] < MinX || CityMap.CityData[b]['x'] > MaxX || CityMap.CityData[b]['y'] < MinY || CityMap.CityData[b]['y'] > MaxY) continue;
 
 			let CityMapEntity = CityMap.CityData[b],
 				d = MainParser.CityEntities[CityMapEntity['cityentity_id']],
 				BuildingSize = CityMap.GetBuildingSize(CityMapEntity),
+				citymapdata = (CityMap.IsExtern === true) ? MainParser.OtherPlayerCityMapData : MainParser.NewCityMapData
 
 				x = (CityMap.CityData[b]['x'] === undefined ? 0 : ((parseInt(CityMap.CityData[b]['x']) * CityMap.ScaleUnit) / 100)),
 				y = (CityMap.CityData[b]['y'] === undefined ? 0 : ((parseInt(CityMap.CityData[b]['y']) * CityMap.ScaleUnit) / 100)),
@@ -556,11 +559,9 @@ let CityMap = {
 				ysize = ((parseInt(BuildingSize['ysize']) * CityMap.ScaleUnit) / 100),
 				noStreet = '', isSpecial = '', chainBuilding = ''
 
-				//if(CityMap.IsExtern === false) {
-					noStreet = (MainParser.NewCityMapData[CityMap.CityData[b]['id']].needsStreet == 0 ? ' noStreet' : '')
-					isSpecial = (MainParser.NewCityMapData[CityMap.CityData[b]['id']].isSpecial ? ' special' : '')
-					chainBuilding = (MainParser.NewCityMapData[CityMap.CityData[b]['id']].chainBuilding != undefined ? ' chain' : '')
-				//}
+				noStreet = (citymapdata[CityMap.CityData[b]['id']].needsStreet == 0 ? ' noStreet' : '')
+				isSpecial = (citymapdata[CityMap.CityData[b]['id']].isSpecial ? ' special' : '')
+				chainBuilding = (citymapdata[CityMap.CityData[b]['id']].chainBuilding != undefined ? ' chain' : '')
 				
 				f = $('<span />').addClass('entity ' + d['type'] + noStreet + isSpecial + chainBuilding).css({
 					width: xsize + 'em',

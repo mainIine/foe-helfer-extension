@@ -101,6 +101,7 @@ let Productions = {
 
 
 	init: () => {
+		// todo: bug: after visiting another player the wrong data is in citymapdata
 		for (building of Object.values(MainParser.CityMapData)) {
 			let metaData = Object.values(MainParser.CityEntities).find(x => x.id == building.cityentity_id)
 			let era = Technologies.getEraName(building.cityentity_id, building.level)
@@ -351,7 +352,7 @@ let Productions = {
 			// fill other tables on demand
 			$('.production-tabs li').click(function() {
 				let type = $("a", this).attr("href").replace("#","")
-				
+
 				if ($("#Productions #"+type).html().length === 0) {
 					let content = Productions.buildTableByType(type)
 					$("#Productions #"+type).html(content)
@@ -597,7 +598,7 @@ let Productions = {
 	// todo: grouped
 	buildGoodsTable: (buildingIds, type = "goods") => {
 		let table = [],
-			tableGr = [],
+			rowB = [],
 			rowA = [],
 			groupedBuildings = [],
 			typeCurrentSum = 0,
@@ -622,9 +623,6 @@ let Productions = {
 		buildingIds.forEach(b => {
 			let building = CityMap.getBuildingById(b.id)
 			if (building.player_id == ExtPlayerID) {
-			//let shortSide = parseFloat(Math.min(building.size.width, building.size.length))
-			//let size = building.size.width*building.size.length
-			//let sizeWithStreets = size + (building.state.connected == true ? (building.needsStreet > 0 ? shortSide * building.needsStreet / 2 : 0) : 0)
 
 			rowA.push('<tr>')
 			rowA.push('<td>')
@@ -634,6 +632,22 @@ let Productions = {
 			
 			currentAmount = parseFloat(Productions.getBuildingProductionByCategory(true, building, type))
 			amount = parseFloat(Productions.getBuildingProductionByCategory(false, building, type))
+
+			let updateGroup = groupedBuildings.find(x => x.building.name == building.name)
+			if (updateGroup == undefined) {
+				let gBuilding = {
+					building: building,
+					amount: 1,
+				}
+				for (era of eras) {
+					gBuilding[era] = 0
+				}
+				updateGroup = gBuilding
+				groupedBuildings.push(gBuilding)
+			}
+			else {
+				updateGroup.amount++
+			}
 			
 			eras.forEach(era => {
 				let currentGoods = Productions.getBuildingProductionByCategory(true, building, type)
@@ -643,14 +657,14 @@ let Productions = {
 				if (allGoods != undefined) {
 					if (currentGoods != undefined) {
 						for (const [key, value] of Object.entries(currentGoods)) {
-							if (key == era) {
+							if (key == era) 
 								currentGoodAmount = value
-							}
 						}
 					}
 					for (const [key, value] of Object.entries(allGoods)) {
 						if (key == era) {
 							goodAmount = value
+							updateGroup[era] += goodAmount
 						}
 					}
 				}
@@ -664,21 +678,6 @@ let Productions = {
 			
 			typeSum += amount
 			typeCurrentSum += currentAmount
-
-			let updateGroup = groupedBuildings.find(x => x.building.name == building.name)
-			if (updateGroup == undefined) {
-				groupedBuildings.push({
-					building: building,
-					amount: 1,
-					currentValues: currentAmount,
-					values: amount
-				})
-			}
-			else {
-				updateGroup.amount++
-				updateGroup.currentValues += currentAmount
-				updateGroup.values += amount
-			}
 
 			rowA.push('<td data-text="'+i18n("Eras."+Technologies.Eras[building.eraName]).replace(/[. -]/g,"")+'">' + i18n("Eras."+Technologies.Eras[building.eraName]) + '</td>')
 			rowA.push('<td style="white-space:nowrap">' + moment.unix(building.state.times?.at).fromNow() + '</td>')
@@ -710,6 +709,38 @@ let Productions = {
 		table.push('</thead>')
 		table.push('<tbody class="prodlist'+type+'">')
 		table.push( rowA.join('') )
+		table.push('</tbody>')
+		table.push('</table>')
+
+		// grouped
+		table.push('<table class="foe-table sortable-table '+type+'-group">')
+		table.push('<thead>')
+		table.push('<tr>')
+		table.push('<th colspan="7"><span class="btn-default change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeSingle') + '</span></th>')
+		table.push('</tr>')
+		table.push('<tr class="sorter-header">')
+		table.push('<th data-type="prodgroup'+type+'" class="is-number">' + i18n('Boxes.Productions.Headings.number') + '</th>')
+		table.push('<th data-type="prodgroup'+type+'">' + i18n('Boxes.BlueGalaxy.Building') + '</th>')
+		eras.forEach(era => {
+			table.push('<th data-type="prodgroup'+type+'" class="is-number">' + i18n('Eras.'+(parseInt(era)+1)+'.short') + '</span></th>')
+		})
+		table.push('<th data-type="prodgroup'+type+'" class="is-number">' + i18n('Boxes.Productions.Headings.size') + '</th>')
+		table.push('</tr>')
+		table.push('</thead>')
+		table.push('<tbody class="prodgroup'+type+'">')
+			groupedBuildings.forEach(building => {
+				rowB.push('<tr>')
+				rowB.push('<td data-number="'+building.amount+'">'+building.amount+'x </td>')
+				rowB.push('<td data-text="'+building.building.name.replace(/[. -]/g,"")+'">'+ building.building.name +'</td>')
+				eras.forEach(era => { // todo
+					rowB.push('<td data-number="'+building[era]+'">')
+					rowB.push(building[era])
+					rowB.push('</td>')
+				})
+				rowB.push('<td data-number="'+(building.building.size.length*building.building.size.width)+'">'+building.building.size.length+'x'+building.building.size.width+'</td>')
+				rowB.push('</tr>')
+			})
+		table.push( rowB.join('') )
 		table.push('</tbody>')
 		table.push('</table>')
 
