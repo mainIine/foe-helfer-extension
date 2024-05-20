@@ -1022,6 +1022,15 @@ let Productions = {
 	ShowRating: () => {
 		if ($('#ProductionsRating').length === 0) {
 
+			if (Object.values(MainParser.NewCityMapData).length === 0) {
+				for (building of Object.values(MainParser.CityMapData)) {
+					let metaData = Object.values(MainParser.CityEntities).find(x => x.id == building.cityentity_id)
+					let era = Technologies.getEraName(building.cityentity_id, building.level)
+					let newCityEntity = CityMap.createNewCityMapEntity(metaData, building, era)
+					MainParser.NewCityMapData[building.id] = newCityEntity
+				}
+			}
+
 			let Rating = localStorage.getItem('ProductionRatingEnableds2');
 			if (Rating !== null) {
 				Productions.Rating = JSON.parse(Rating);
