@@ -117,16 +117,20 @@ let BlueGalaxy = {
 	 * @constructor
 	 */
     CalcBody: () => {
+        for (building of Object.values(MainParser.CityMapData)) {
+			let metaData = Object.values(MainParser.CityEntities).find(x => x.id == building.cityentity_id)
+			let era = Technologies.getEraName(building.cityentity_id, building.level)
+			let newCityEntity = CityMap.createNewCityMapEntity(metaData, building, era)
+			MainParser.NewCityMapData[building.id] = newCityEntity
+		}
+
         let Buildings = [],
-            CityMap = Object.values(MainParser.NewCityMapData),
             FPB = Productions.Boosts['fp'] === undefined ? (MainParser.BoostSums['forge_points_production'] + 100) / 100 : Productions.Boosts['fp']
-            FPBoost = (FP) => {
-                return Math.round(FP * FPB)
-            },
+            FPBoost = (FP) => { return Math.round(FP * FPB) },
             showBGFragments = JSON.parse(localStorage.getItem('showBGFragments')||"true");
         
-        for (let i = 0; i < CityMap.length; i++) {
-            let CityEntity = CityMap[i];
+        for (let i = 0; i < Object.values(MainParser.NewCityMapData).length; i++) {
+            let CityEntity = Object.values(MainParser.NewCityMapData)[i];
 
             if (CityEntity.type === 'main_building' || CityEntity.type === 'greatbuilding') continue;
 
@@ -136,7 +140,6 @@ let BlueGalaxy = {
                 let GuildGoodsSum = 0;
                 let Fragments = [];
                 let FragmentAmount = 0;
-                               
 
                 CityEntity.state.production.forEach(product => {
                     if (product.resources?.strategy_points)
