@@ -101,6 +101,13 @@ let Productions = {
 
 
 	init: () => {
+		for (building of Object.values(MainParser.CityMapData)) {
+			let metaData = Object.values(MainParser.CityEntities).find(x => x.id == building.cityentity_id)
+			let era = Technologies.getEraName(building.cityentity_id, building.level)
+			let newCityEntity = CityMap.createNewCityMapEntity(metaData, building, era)
+			MainParser.NewCityMapData[building.id] = newCityEntity
+		}
+
 		Productions.CombinedCityMapData = MainParser.NewCityMapData
 
 		if (CityMap.EraOutpostData) {
@@ -391,7 +398,7 @@ let Productions = {
 								currentAmount = Math.round(currentAmount + (currentAmount *((MainParser.BoostSums.supply_production + (Productions.HappinessBoost * 100)) / 100)))
 							}
 							else if (type == 'strategy_points' && building.type != "greatbuilding" && building.type != "main_building" && !building.entityId.includes("CastleSystem")) {
-								amount = Math.round(amount + (amount *((MainParser.BoostSums.forge_points_production) / 100))) // todo: inno ist doof, FP boost muss bei ketten anders berechnet werden
+								amount = Math.round(amount + (amount *((MainParser.BoostSums.forge_points_production) / 100)))
 								currentAmount = Math.round(currentAmount + (currentAmount *((MainParser.BoostSums.forge_points_production) / 100)))
 							}
 

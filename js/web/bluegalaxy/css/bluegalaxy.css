@@ -51,8 +51,8 @@
     display: block;
     position: absolute;
     top: -2px;
-    right: 18px;
-    min-width: 30px;
+    right: 8px;
+    min-width: 35px;
 }
 #bluegalaxy table th.icon span::before  {
     background: transparent url('../../productions/images/productions.png') -233px 2px no-repeat;

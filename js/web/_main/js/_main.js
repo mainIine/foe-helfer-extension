@@ -157,7 +157,6 @@ GetFights = () =>{
 			if (!CityEntity.type) CityEntity.type = CityEntity?.components?.AllAge?.tags?.tags?.find(value => value.hasOwnProperty('buildingType')).buildingType;
         }
 		MainParser.checkInactives();
-		MainParser.createCityBuildings();
 	});
 
 	// Building-Upgrades
@@ -358,15 +357,6 @@ GetFights = () =>{
 		MainParser.CityMapData = Object.assign({}, ...data.responseData.map((x) => ({ [x.id]: x })));
 		MainParser.SetArkBonus2();
 
-		let buildings = data.responseData;
-		buildings.forEach(building => {
-			let responseData = data.responseData.find(x => x.id == building.id);
-			let ceData = Object.values(MainParser.CityEntities).find(x => x.id == building.cityentity_id);
-			let era = Technologies.getEraName(building.cityentity_id, responseData.level);
-			let newCityEntity = CityMap.createNewCityMapEntity(ceData, responseData, era);
-			MainParser.NewCityMapData[building.id] = newCityEntity;
-		});
-
 		MainParser.UpdateActiveMap('main');
 	});
 
@@ -407,13 +397,6 @@ GetFights = () =>{
 		if (data.requestMethod === 'moveEntity' || data.requestMethod === 'moveEntities' || data.requestMethod === 'updateEntity') {
 			let Buildings = data.responseData;
 			if (Buildings[0].player_id != ExtPlayerID) return // opened another players GB
-			Buildings.forEach(building => {
-				let responseData = data.responseData.find(x => x.id == building.id);
-				let ceData = Object.values(MainParser.CityEntities).find(x => x.id == building.cityentity_id);
-				let era = Technologies.getEraName(building.cityentity_id, responseData.level);
-				let newCityEntity = CityMap.createNewCityMapEntity(ceData, responseData, era);
-				MainParser.NewCityMapData[building.id] = newCityEntity;
-			});
 			MainParser.UpdateCityMap(data.responseData);
 		}
 		else if (data.requestMethod === 'placeBuilding') {
@@ -433,11 +416,6 @@ GetFights = () =>{
 				}
 
 				MainParser.CityMapData[building.id] = building;
-
-				let ceData = Object.values(MainParser.CityEntities).find(x => x.id == building.cityentity_id)
-				let era = Technologies.getEraName(building.cityentity_id, building.level)
-				let newCityEntity = CityMap.createNewCityMapEntity(ceData, building, era)
-				MainParser.NewCityMapData[building.id] = newCityEntity
 			}
 		}
 		else if (data.requestMethod === 'removeBuilding') {
@@ -466,14 +444,6 @@ GetFights = () =>{
 			let Buildings = data.responseData['updatedEntities'];
 			if (!Buildings) return
 			if (ActiveMap != "main") return // do not add outpost buildings
-			Buildings.forEach(building => {
-				let responseData = data.responseData.updatedEntities.find(x => x.id == building.id);
-				let ceData = Object.values(MainParser.CityEntities).find(x => x.id == building.cityentity_id);
-				let era = Technologies.getEraName(building.cityentity_id, responseData.level);
-				let newCityEntity = CityMap.createNewCityMapEntity(ceData, responseData, era);
-				MainParser.NewCityMapData[building.id] = newCityEntity;
-			});
-
 			MainParser.UpdateCityMap(Buildings)
 		}
 	});
