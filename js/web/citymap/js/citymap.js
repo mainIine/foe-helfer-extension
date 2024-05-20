@@ -216,17 +216,17 @@ let CityMap = {
 					.append($('<button />').addClass('btn-default ml-auto').attr({ id: 'copy-meta-infos', onclick: 'CityMap.copyMetaInfos()' }).text(i18n('Boxes.CityMap.CopyMetaInfos')))
 					.append($('<button />').addClass('btn-default ml-auto').attr({ id: 'show-submit-box', onclick: 'CityMap.showSubmitBox()' }).text(i18n('Boxes.CityMap.ShowSubmitBox')))
 			);
-
-			mapfilters.append(
-				$('<label />').attr({ for: 'highlight-old-buildings' }).text(i18n('Boxes.CityMap.HighlightOldBuildings'))
-					.prepend($('<input />').attr({ type: 'checkbox', id: 'highlight-old-buildings', onclick: 'CityMap.highlightOldBuildings()' }))
-				);
-
-			mapfilters.append(
-				$('<label />').attr({ for: 'show-nostreet-buildings' }).text(i18n('Boxes.CityMap.ShowNoStreetBuildings'))
-					.prepend($('<input />').attr({ type: 'checkbox', id: 'show-nostreet-buildings', onclick: 'CityMap.showNoStreetBuildings()' }))
-				);
 		}
+
+		mapfilters.append(
+			$('<label />').attr({ for: 'highlight-old-buildings' }).text(i18n('Boxes.CityMap.HighlightOldBuildings'))
+				.prepend($('<input />').attr({ type: 'checkbox', id: 'highlight-old-buildings', onclick: 'CityMap.highlightOldBuildings()' }))
+			);
+
+		mapfilters.append(
+			$('<label />').attr({ for: 'show-nostreet-buildings' }).text(i18n('Boxes.CityMap.ShowNoStreetBuildings'))
+				.prepend($('<input />').attr({ type: 'checkbox', id: 'show-nostreet-buildings', onclick: 'CityMap.showNoStreetBuildings()' }))
+			);
 
 		oB.append(wrapper)
 		$('#citymap-wrapper').append(menu)
@@ -534,6 +534,14 @@ let CityMap = {
 			MaxX = 71,
 			MaxY = 71;
 
+		// create buildings with new structure
+		for (building of CityMap.CityData) {
+			let metaData = Object.values(MainParser.CityEntities).find(x => x.id == building.cityentity_id)
+			let era = Technologies.getEraName(building.cityentity_id, building.level)
+			let newCityEntity = CityMap.createNewCityMapEntity(metaData, building, era)
+			MainParser.NewCityMapData[building.id] = newCityEntity
+		}
+
 		for (let b in CityMap.CityData)
 		{
 			if (!CityMap.CityData.hasOwnProperty(b) || CityMap.CityData[b]['x'] < MinX || CityMap.CityData[b]['x'] > MaxX || CityMap.CityData[b]['y'] < MinY || CityMap.CityData[b]['y'] > MaxY) continue;
@@ -548,11 +556,11 @@ let CityMap = {
 				ysize = ((parseInt(BuildingSize['ysize']) * CityMap.ScaleUnit) / 100),
 				noStreet = '', isSpecial = '', chainBuilding = ''
 
-				if(CityMap.IsExtern === false) {
+				//if(CityMap.IsExtern === false) {
 					noStreet = (MainParser.NewCityMapData[CityMap.CityData[b]['id']].needsStreet == 0 ? ' noStreet' : '')
 					isSpecial = (MainParser.NewCityMapData[CityMap.CityData[b]['id']].isSpecial ? ' special' : '')
 					chainBuilding = (MainParser.NewCityMapData[CityMap.CityData[b]['id']].chainBuilding != undefined ? ' chain' : '')
-				}
+				//}
 				
 				f = $('<span />').addClass('entity ' + d['type'] + noStreet + isSpecial + chainBuilding).css({
 					width: xsize + 'em',
@@ -1934,8 +1942,8 @@ let CityMap = {
 			max_level: (data.type == "greatbuilding" ? data.max_level : undefined)
 		}
 		
-		if (entity.type != "street")
-			console.log('entity ',entity.name, entity, ceData, data)
+		//if (entity.type != "street")
+		//	console.log('entity ',entity.name, entity, ceData, data)
 		return entity
 	},
 };
