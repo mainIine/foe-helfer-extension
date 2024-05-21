@@ -101,7 +101,6 @@ let Productions = {
 
 
 	init: () => {
-		// todo: bug: after visiting another player the wrong data is in citymapdata
 		for (building of Object.values(MainParser.CityMapData)) {
 			let metaData = Object.values(MainParser.CityEntities).find(x => x.id == building.cityentity_id)
 			let era = Technologies.getEraName(building.cityentity_id, building.level)
@@ -595,7 +594,6 @@ let Productions = {
 	},
 
 
-	// todo: grouped
 	buildGoodsTable: (buildingIds, type = "goods") => {
 		let table = [],
 			rowB = [],
@@ -1189,6 +1187,8 @@ let Productions = {
 		else if (Productions.RatingCurrentTab === 'Results') {
 			let buildingType = [];
 			// todo: this only grabs one of each, it does not look at the era. should probably be different?
+			// todo: shrine of inspiration etc
+			// todo: negative values ??? 1000 is better than 100 ??
 			Object.values(MainParser.NewCityMapData).forEach(building => {
 				if (building.type == 'street' || building.type == 'military' || building.id >= 2000000000 || building.type.includes('hub')) return
 
@@ -1205,7 +1205,7 @@ let Productions = {
 			})
 
 			h.push('<table class="foe-table sortable-table">');
-
+			// todo: sortable
 			h.push('<thead>');
 			h.push('<tr>');
 			h.push('<th>' + i18n('Boxes.ProductionsRating.BuildingName') + '</th>');
@@ -1223,10 +1223,12 @@ let Productions = {
 			for (const building of ratedBuildings) {
 				h.push('<tr>')
 				h.push('<td>'+building.building.name+'</td>')
-				h.push('<td>'+Math.round(building.score * 100) +'</td>')
+				h.push('<td class="text-right">'+Math.round(building.score) +'</td>')
 				for (const type of Productions.RatingTypes) {
-					if (building[type] != undefined)
-						h.push('<td>'+building[type]+'</td>')
+					if (building[type] != undefined) {
+						h.push('<td class="text-right">'+(building[type] !== 0 ? building[type] : '-' )+'</td>')
+						console.log(building)
+					}
 				}
 				h.push('<td>'+(Productions.showBuildingItems(building.building) != false ? Productions.showBuildingItems(building.building) : '')+'</td>')
 				h.push('</tr>')
@@ -1251,14 +1253,17 @@ let Productions = {
 			let ratedBuilding = {
 				building: building
 			}
-			for(const type of Object.keys(Productions.Rating)) {
+			for (const type of Object.keys(Productions.Rating)) {
 				if (Productions.Rating[type] != false) {
-					let desiredValuePerTile = parseFloat(tileRatings[type]) || 0
-					let typeValue = Productions.getRatingValueForType(building, type) || 0
+					let desiredValuePerTile = parseFloat(tileRatings[type]) || 0 
+					let typeValue = Productions.getRatingValueForType(building, type) || 0 // production amount
 					let valuePerTile = typeValue / size
 
-					if (desiredValuePerTile != 0)
-						score += (valuePerTile / desiredValuePerTile)
+					if (valuePerTile != 0)
+						score += (valuePerTile - desiredValuePerTile)
+
+					if (type == "population")
+						console.log(building.name, valuePerTile, desiredValuePerTile, score)
 
 					ratedBuilding[type] = ( Math.round( typeValue * 100 ) / 100 ) || 0
 					ratedBuilding[type+'-tile'] = valuePerTile || 0
@@ -1286,7 +1291,7 @@ let Productions = {
 					}
 				}
 		}
-		else if (type == "strategy_points" || type == "medals" || type == "premium" || type == "money" || type == "supplies" || type == "clan_goods" || type == "clan_power")
+		else if (type == "strategy_points" || type == "medals" || type == "premium" || type == "money" || type == "supplies" || type == "units" || type == "clan_goods" || type == "clan_power")
 			return Productions.getBuildingProductionByCategory(false, building, type).amount
 		else if (type.includes("goods")) {
 			let allGoods = CityMap.getBuildingGoodsByEra(false, building)
