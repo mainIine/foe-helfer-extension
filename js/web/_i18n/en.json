@@ -923,6 +923,7 @@
     "Boxes.ProductionsRating.Disclaimer": "For chain buildings the whole chain is treated as one single building. For sets we assume that all parts are fully connected.",
     "Boxes.ProductionsRating.Enabled": "Enabled",
     "Boxes.ProductionsRating.Explainer": "How does this work? Select how much each of you buildings should produce per tile. The balance between all selected values is important for the final rating.",
+    "Boxes.ProductionsRating.FindBuilding": "Search",
     "Boxes.ProductionsRating.ProdPerTile": "Expected daily production/tile",
     "Boxes.ProductionsRating.Results": "Result",
     "Boxes.ProductionsRating.Score": "Score",

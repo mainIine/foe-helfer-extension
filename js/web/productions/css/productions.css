@@ -146,29 +146,77 @@
 	display: block;
 	margin: 0 auto;
 }
-#Productions th.boost.battleground span, #ProductionsRating #ProductionsRatingBody span.resicon[class$="battleground"] {
+#Productions th.boost.battleground span {
 	background: transparent url('../../x_img/gbg-green.png') no-repeat;
 	background-size: contain;
 }
-#Productions th.boost.guild_expedition span, #ProductionsRating #ProductionsRatingBody span.resicon[class$="guild_expedition"] {
+#Productions th.boost.guild_expedition span {
 	background: transparent url('../../x_img/ge.png') no-repeat;
 	background-size: contain;
 }
-#Productions th.boost.guild_raids span, #ProductionsRating #ProductionsRatingBody span.resicon[class$="guild_raids"] {
+#Productions th.boost.guild_raids span {
 	background: transparent url('../../x_img/guild_raids.png') no-repeat;
 	background-size: contain;
 }
+
+
+#ProductionsRating #ProductionsRatingBody span.resicon.att_boost_attacker-guild_expedition, #ProductionsRating #ProductionsRatingBody span.resicon.def_boost_attacker-guild_expedition, #ProductionsRating #ProductionsRatingBody span.resicon.att_boost_defender-guild_expedition, #ProductionsRating #ProductionsRatingBody span.resicon.def_boost_defender-guild_expedition {
+	background-image: url('../../x_img/ge.png'), url('../images/productions.png');
+	background-size: 75%, auto;
+	background-repeat: no-repeat;
+	background-position: center center, -312px 0px;
+}
+#ProductionsRating #ProductionsRatingBody span.resicon.def_boost_attacker-guild_expedition {
+	background-position: center center, -366px 0px;
+}
+#ProductionsRating #ProductionsRatingBody span.resicon.att_boost_defender-guild_expedition {
+	background-position: center center, -340px 0px;
+}
+#ProductionsRating #ProductionsRatingBody span.resicon.def_boost_defender-guild_expedition {
+	background-position: center center, -391px 0px;
+}
+#ProductionsRating #ProductionsRatingBody span.resicon.att_boost_attacker-guild_raids, #ProductionsRating #ProductionsRatingBody span.resicon.def_boost_attacker-guild_raids, #ProductionsRating #ProductionsRatingBody span.resicon.att_boost_defender-guild_raids, #ProductionsRating #ProductionsRatingBody span.resicon.def_boost_defender-guild_raids {
+	background-image: url('../../x_img/guild_raids.png'), url('../images/productions.png');
+	background-size: 75%, auto;
+	background-repeat: no-repeat;
+	background-position: center center, -312px 0px;
+}
+#ProductionsRating #ProductionsRatingBody span.resicon.def_boost_attacker-guild_raids {
+	background-position: center center, -366px 0px;
+}
+#ProductionsRating #ProductionsRatingBody span.resicon.att_boost_defender-guild_raids {
+	background-position: center center, -340px 0px;
+}
+#ProductionsRating #ProductionsRatingBody span.resicon.def_boost_defender-guild_raids {
+	background-position: center center, -391px 0px;
+}
+#ProductionsRating #ProductionsRatingBody span.resicon.att_boost_attacker-battleground, #ProductionsRating #ProductionsRatingBody span.resicon.def_boost_attacker-battleground, #ProductionsRating #ProductionsRatingBody span.resicon.att_boost_defender-battleground, #ProductionsRating #ProductionsRatingBody span.resicon.def_boost_defender-battleground {
+	background-image: url('../../x_img/gbg-green.png'), url('../images/productions.png');
+	background-size: contain, auto;
+	background-repeat: no-repeat;
+	background-position: center center, -312px 0px;
+}
+#ProductionsRating #ProductionsRatingBody span.resicon.def_boost_attacker-battleground {
+	background-position: center center, -366px 0px;
+}
+#ProductionsRating #ProductionsRatingBody span.resicon.att_boost_defender-battleground {
+	background-position: center center, -340px 0px;
+}
+#ProductionsRating #ProductionsRatingBody span.resicon.def_boost_defender-battleground {
+	background-position: center center, -391px 0px;
+}
+
 #Productions th.boost.att_boost_attacker span, #ProductionsRating #ProductionsRatingBody span.resicon.att_boost_attacker-all {
 	background-position: -311px 0px;
 }
 #Productions th.boost.att_boost_defender span, #ProductionsRating #ProductionsRatingBody span.resicon.att_boost_defender-all {
-	background-position: -338px 0px;
+	background-position: -340px 0px;
 }
 #Productions th.boost.def_boost_attacker span, #ProductionsRating #ProductionsRatingBody span.resicon.def_boost_attacker-all {
-	background-position: -365px 0px;
+	background-position: -366px 0px;
 }
 #Productions th.boost.def_boost_defender span, #ProductionsRating #ProductionsRatingBody span.resicon.def_boost_defender-all {
-	background-position: -390px 0px;
+	background-position: -391px 0px;
 }
 #Productions #ProductionsBody .tabs ul li.strategy_points a span {
 	background-position: 0 2px;

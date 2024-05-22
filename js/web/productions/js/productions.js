@@ -355,6 +355,7 @@ let Productions = {
 				if ($("#Productions #"+type).html().length === 0) {
 					let content = Productions.buildTableByType(type)
 					$("#Productions #"+type).html(content)
+					$('.sortable-table').tableSorter();
 				}
 			});
 
