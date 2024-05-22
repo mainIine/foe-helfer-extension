@@ -927,6 +927,8 @@
     "Boxes.ProductionsRating.Results": "Ergebnis",
     "Boxes.ProductionsRating.Score": "Bewertung",
     "Boxes.ProductionsRating.Settings": "Einstellungen",
+    "Boxes.ProductionsRating.ShowItems": "Zeige Zufalls- und Sonderproduktionen",
+    "Boxes.ProductionsRating.ShowValuesPerTile": "Zeige Werte pro Feld",
     "Boxes.ProductionsRating.Title": "Gebäude - Effizienzberechnung",
     "Boxes.PvPArena.Title": "PvP-Arena",
     "Boxes.PvPArena.Type": "Art",
