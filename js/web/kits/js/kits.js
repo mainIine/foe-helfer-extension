@@ -228,6 +228,7 @@ let Kits = {
 				}
 			}
 		}
+
 		// check if all upgrade kits' first buildings reference known buildings
 		let newCat=true;
 
@@ -435,13 +436,14 @@ let Kits = {
 				KitText = i18n('Boxes.Kits.Udate') + kits[set].udate;
 				show = true;
 			}
-
+			//let upgradeOrder=["upgrade","silver","golden","platinum","ascended"];
 			let upgrades = "";
 			if (kits[set].buildings?.[0]?.first && MainParser.CityEntities[kits[set].buildings[0].first]) {
 				let upgradeCount = Kits.upgradeKits?.[kits[set].buildings[0].first]?.upgradeCount;
 				if (upgradeCount) {
 					upgrades = '<span class="upgrades" data-original-title="'+i18n('Boxes.Kits.Upgrades')+'" data-toggle="tooltip">'
 					let first = true
+					//for (let i of upgradeOrder) {
 					for (let i in upgradeCount) {
 						if (!upgradeCount[i]) continue
 						upgrades += (first ? '<span class="base" title="'+i18n('Boxes.Kits.Base')+'">1</span>' : "") + `<span class="${i}">${upgradeCount[i]}</span>`
