@@ -223,9 +223,6 @@
 
 
 
-
-
-
 #ProductionsRating {
 	top: 100px;
 	left: 100px;
@@ -249,6 +246,17 @@
 	margin: 1em auto;
 }
 
+#ProductionsRating #ProductionsRatingBody .settings {
+	display: flex;
+	gap: 10px;
+	padding: 5px;
+	border-bottom: 1px dotted var(--text-darker);
+}
+
+#ProductionsRating #ProductionsRatingBody .tilevalue {
+	display: none;
+}
+
 input[id*="ProdPerTile"] {
 	width: 100px;
 }
@@ -263,6 +271,20 @@ input[id*="ProdPerTile"] {
 
 #ProductionsRating #ProductionsRatingBody table td {
 	font-size: 85%;
+}
+
+#ProductionsRating #ProductionsRatingBody table td:first-child {
+	font-size: 95%;
+	width: 50px;
+	font-weight: bold;
+}
+
+#ProductionsRating #ProductionsRatingBody table td:first-child[data-number^="-"] {
+	color: var(--text-danger)
+}
+
+#ProductionsRating #ProductionsRatingBody table td:first-child[data-number^="1"], #ProductionsRating #ProductionsRatingBody table td:first-child[data-number^="2"], #ProductionsRating #ProductionsRatingBody table td:first-child[data-number^="3"], #ProductionsRating #ProductionsRatingBody table td:first-child[data-number^="4"], #ProductionsRating #ProductionsRatingBody table td:first-child[data-number^="5"], #ProductionsRating #ProductionsRatingBody table td:first-child[data-number^="6"], #ProductionsRating #ProductionsRatingBody table td:first-child[data-number^="7"], #ProductionsRating #ProductionsRatingBody table td:first-child[data-number^="8"], #ProductionsRating #ProductionsRatingBody table td:first-child[data-number^="9"] {
+	color: var(--text-success)
 }
 
 #ProductionsRating #ProductionsRatingBody li[class$="guild_expedition"], #ProductionsRating #ProductionsRatingBody li[class$="battleground"], #ProductionsRating #ProductionsRatingBody li[class$="guild_raids"] {

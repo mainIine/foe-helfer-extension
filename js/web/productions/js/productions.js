@@ -1204,43 +1204,66 @@ let Productions = {
 				return 0
 			})
 
+			h.push('<div class="ratingtable">');
+			h.push('<div class="settings dark-bg">')
+				h.push('<div>')
+				h.push('<input type="checkbox" id="tilevalues"><label for="tilevalues">' + i18n('Boxes.ProductionsRating.ShowValuesPerTile') + '</label><br>')
+				h.push('</div><div>');
+				h.push('<input type="checkbox" id="showitems"><label for="showitems">' + i18n('Boxes.ProductionsRating.ShowItems') + '</label>')
+				h.push('</div>');
+			h.push('</div>');
 			h.push('<table class="foe-table sortable-table">');
-			// todo: sortable
 			h.push('<thead>');
-			h.push('<tr>');
-			h.push('<th>' + i18n('Boxes.ProductionsRating.BuildingName') + '</th>');
-			h.push('<th>' + i18n('Boxes.ProductionsRating.Score') + '</th>');
+			h.push('<tr class="sorter-header">');
+			h.push('<th data-type="ratinglist" class="is-number ascending">' + i18n('Boxes.ProductionsRating.Score') + '</th>');
+			h.push('<th data-type="ratinglist">' + i18n('Boxes.ProductionsRating.BuildingName') + '</th>');
+			let tileRatings = JSON.parse(localStorage.getItem('ProductionRatingProdPerTiles'))
 			for (let i = 0; i < Productions.RatingTypes.length; i++) {
-				let Type = Productions.RatingTypes[i];
-				if (!Productions.Rating[Type]) continue;
-				h.push('<th style="width:1%" class="text-center"><span class="resicon ' + Type + '"></span></th>');
+				let type = Productions.RatingTypes[i];
+				if (!Productions.Rating[type]) continue;
+				h.push('<th data-type="ratinglist" style="width:1%" class="is-number text-center"><span class="resicon ' + type + '"></span>'+parseFloat(tileRatings[type])+'</th>');
 			}
-			h.push('<th>Items</th>');
+			h.push('<th data-type="ratinglist" class="no-sort items">Items</th>');
 			h.push('</tr>');
 			h.push('<thead>');
 
-			h.push('<tbody>');
+			h.push('<tbody class="ratinglist">');
 			for (const building of ratedBuildings) {
 				h.push('<tr>')
-				h.push('<td>'+building.building.name+'</td>')
-				h.push('<td class="text-right">'+Math.round(building.score) +'</td>')
+				h.push('<td class="text-right" data-number="'+building.score * 100 +'">'+Math.round(building.score * 100)+'</td>')
+				h.push('<td data-text="'+helper.str.cleanup(building.building.name)+'">'+building.building.name+'</td>')
 				for (const type of Productions.RatingTypes) {
 					if (building[type] != undefined) {
-						h.push('<td class="text-right">'+(building[type] !== 0 ? building[type] : '-' )+'</td>')
-						console.log(building)
+						h.push('<td class="text-right" data-number="'+Math.round(building[type])+'">')
+						h.push('<span class="buildingvalue">'+HTML.Format(building[type])+'</span>')
+						let roundingFactor = building[type+'-tile'] > 100 || building[type+'-tile'] < -100 ? 1 : 100
+						h.push('<span class="tilevalue">'+HTML.Format(Math.round(building[type+'-tile'] * roundingFactor) / roundingFactor)+'</span>')
+						h.push('</td>')
 					}
 				}
-				h.push('<td>'+(Productions.showBuildingItems(building.building) != false ? Productions.showBuildingItems(building.building) : '')+'</td>')
+				h.push('<td class="no-sort items">'+(Productions.showBuildingItems(building.building) != false ? Productions.showBuildingItems(building.building) : '')+'</td>')
 				h.push('</tr>')
 			}
 			h.push('</tbody>');
 			h.push('</table>');
+			h.push('</div>');
 		}
 		else {
 			h.push('Tab error...');
         }
 
-		$('#ProductionsRatingBody').html(h.join(''));
+		$('#ProductionsRatingBody').html(h.join('')).promise().done(function () {
+			$('.sortable-table').tableSorter();
+
+			$('#tilevalues, label[tilevalues]').on('click', function () {
+				$("#ProductionsRatingBody .buildingvalue").toggle();
+				$("#ProductionsRatingBody .tilevalue").toggle();
+			});
+
+			$('#showitems, label[showitems]').on('click', function () {
+				$("#ProductionsRatingBody table .items").toggle();
+			});
+		});	
     },
 
 
@@ -1248,11 +1271,12 @@ let Productions = {
 		let ratedBuildings = []
 		let tileRatings = JSON.parse(localStorage.getItem('ProductionRatingProdPerTiles'))
 		for(const building of buildingType) {
-			let size = building.size.width * building.size.length // todo: include street requirement
+			let size = building.size.width * building.size.length // todo: include street requirement?
 			let score = 0
 			let ratedBuilding = {
 				building: building
 			}
+			let ratingsCounter= 0
 			for (const type of Object.keys(Productions.Rating)) {
 				if (Productions.Rating[type] != false) {
 					let desiredValuePerTile = parseFloat(tileRatings[type]) || 0 
@@ -1260,16 +1284,18 @@ let Productions = {
 					let valuePerTile = typeValue / size
 
 					if (valuePerTile != 0)
-						score += (valuePerTile - desiredValuePerTile)
+						score += (valuePerTile / desiredValuePerTile) // todo? when using / negative values behave weirdly
 
 					if (type == "population")
 						console.log(building.name, valuePerTile, desiredValuePerTile, score)
 
 					ratedBuilding[type] = ( Math.round( typeValue * 100 ) / 100 ) || 0
 					ratedBuilding[type+'-tile'] = valuePerTile || 0
+
+					ratingsCounter++
 				}
 			}
-			ratedBuilding.score = score
+			ratedBuilding.score = score // / (ratingsCounter > 0 ? ratingsCounter : 1)
 			ratedBuildings.push(ratedBuilding)
 		}
 		return ratedBuildings
