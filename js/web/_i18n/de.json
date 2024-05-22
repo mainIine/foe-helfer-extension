@@ -923,6 +923,7 @@
     "Boxes.ProductionsRating.Disclaimer": "Bei Kettengebäuden wird die gesamte Kette als ein Gebäude betrachtet. Bei Sets wird angenommen, dass alle Einzelteile komplett verbunden sind.",
     "Boxes.ProductionsRating.Enabled": "Aktiviert",
     "Boxes.ProductionsRating.Explainer": "How does this work? Here is some text that explains it roughly.. at least I hope there will be some text for this in the future.",
+    "Boxes.ProductionsRating.FindBuilding": "Suche",
     "Boxes.ProductionsRating.ProdPerTile": "Erwartete Tagesproduktion/Feld",
     "Boxes.ProductionsRating.Results": "Ergebnis",
     "Boxes.ProductionsRating.Score": "Bewertung",
