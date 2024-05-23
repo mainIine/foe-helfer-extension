@@ -340,6 +340,10 @@ ul.foe-table li {
 	align-items: center;
 }
 
+ul.foe-table li:hover {
+	background-color: var(--background-table-hover);
+}
+
 ul.foe-table li > * {
 	flex-grow: 2;
 }
@@ -1941,6 +1945,18 @@ tr.sorter-header th:not(.no-sort).descending:after {
 tr.sorter-header th:not(.no-sort).ascending:before,
 tr.sorter-header th:not(.no-sort).descending:after {
 	opacity: 1;
+}
+
+.scrollup {
+	border-radius: 50%;
+	width: 30px;
+	height: 30px;
+	background: var(--background-btn);
+	display: none;
+	position: absolute;
+	bottom: 1em;
+	right: 1em;
+	z-index: 101;
 }
 
 /*fallback for all tools that do not specify their own scale*/

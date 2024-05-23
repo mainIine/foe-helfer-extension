@@ -395,7 +395,7 @@ let Productions = {
 					//let shortSide = parseFloat(Math.min(building.size.width, building.size.length))
 					//let size = building.size.width*building.size.length
 					//let sizeWithStreets = size + (building.state.connected == true ? (building.needsStreet > 0 ? shortSide * building.needsStreet / 2 : 0) : 0)
-					if (type == 'items' && Productions.showBuildingItems(building) == false) return // make random productions with resources disappear from the item list
+					if (type == 'items' && Productions.showBuildingItems(true, building) == false) return // make random productions with resources disappear from the item list
 
 					if (building.chainBuilding !== undefined && building.chainBuilding?.type == "link") {
 						let isLinked = CityMap.isLinked(building)
@@ -452,7 +452,7 @@ let Productions = {
 							typeCurrentSum += currentAmount
 						}
 						else {
-							rowA.push('<td colspan="4" data-number="1">' + Productions.showBuildingItems(building) + '</td>')
+							rowA.push('<td colspan="4" data-number="1">' + Productions.showBuildingItems(true, building) + '</td>')
 						}
 					}
 					else {
@@ -866,9 +866,9 @@ let Productions = {
 	},
 
 
-	showBuildingItems(building) {
+	showBuildingItems(current = false, building) {
 		let allItems = ''
-		if (building.state.isPolivated == true) {
+		if (building.state.isPolivated == true && current === true) {
 			building.state.production?.forEach(production => {
 				if (production.type == "genericReward") {
 					let frag = (production.resources.subType == "fragment" ? "🧩 " : "")
@@ -1069,6 +1069,7 @@ let Productions = {
 	ShowRating: () => {
 		if ($('#ProductionsRating').length === 0) {
 
+			// todo: this needs to be a seperate function where i also build the chainedbuildings
 			if (Object.values(MainParser.NewCityMapData).length === 0) {
 				for (building of Object.values(MainParser.CityMapData)) {
 					let metaData = Object.values(MainParser.CityEntities).find(x => x.id == building.cityentity_id)
@@ -1206,6 +1207,7 @@ let Productions = {
 			})
 
 			h.push('<div class="ratingtable">');
+			h.push('<span class="scrollup" onclick="topFunction()"></span>')
 			h.push('<div class="settings dark-bg">')
 				h.push('<div>')
 				h.push('<input type="checkbox" id="tilevalues"><label for="tilevalues">' + i18n('Boxes.ProductionsRating.ShowValuesPerTile') + '</label><br>')
@@ -1242,7 +1244,7 @@ let Productions = {
 						h.push('</td>')
 					}
 				}
-				h.push('<td class="no-sort items">'+(Productions.showBuildingItems(building.building) != false ? Productions.showBuildingItems(building.building) : '')+'</td>')
+				h.push('<td class="no-sort items">'+(Productions.showBuildingItems(false, building.building) != false ? Productions.showBuildingItems(false, building.building) : '')+'</td>')
 				h.push('</tr>')
 			}
 			h.push('</tbody>');
@@ -1265,6 +1267,23 @@ let Productions = {
 				$("#ProductionsRatingBody table .items").toggle();
 			});
 		});	
+		// todo: make scroll button work
+		window.onscroll = function() {scrollFunction()};
+
+		function scrollFunction() {
+			if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+				$('scrollup').toggle()
+			} else {
+				$('scrollup').toggle()
+			}
+		}
+
+		// When the user clicks on the button, scroll to the top of the document
+		function topFunction() {
+			console.log(this)
+			document.body.scrollTop = 0;
+			document.documentElement.scrollTop = 0;
+		}
     },
 
 

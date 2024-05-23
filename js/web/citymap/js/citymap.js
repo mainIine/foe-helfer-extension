@@ -111,7 +111,7 @@ let CityMap = {
 
 		setTimeout(()=>{
 			// separate city
-			if(Data === false) {
+			if (Data === false) {
 				setTimeout(()=> {
 					CityMap.SetBuildings();
 				}, 100);
@@ -201,7 +201,7 @@ let CityMap = {
 				CityMap.ScaleUnit = unit;	
 			}
 
-			CityMap.SetBuildings(CityMap.CityData, false);
+			CityMap.SetBuildings(false);
 
 			$('#map-container').scrollTo( $('.highlighted') , 800, {offset: {left: -280, top: -280}, easing: 'swing'});
 			$('.to-old-legends').hide();
@@ -511,8 +511,6 @@ let CityMap = {
 			CityMap.SetOutpostBuildings()
 			return
 		}
-		
-		// https://foede.innogamescdn.com/assets/city/buildings/R_SS_MultiAge_SportBonus18i.png
 
 		let ActiveId = $('#grid-outer').find('.highlighted').data('entityid') || null;
 
@@ -535,57 +533,53 @@ let CityMap = {
 			MaxY = 71;
 
 		// create buildings with new structure
-		for (building of CityMap.CityData) {
-			let metaData = Object.values(MainParser.CityEntities).find(x => x.id == building.cityentity_id)
-			let era = Technologies.getEraName(building.cityentity_id, building.level)
-			let newCityEntity = CityMap.createNewCityMapEntity(metaData, building, era)
-			if (CityMap.IsExtern === true)
-				MainParser.OtherPlayerCityMapData[building.id] = newCityEntity
-			else
-				MainParser.NewCityMapData[building.id] = newCityEntity
-		}
+		// todo: does not update when removing stuff, adding stuff.. etc
+		if (CityMap.IsExtern == true)
+			buildingData = CityMap.createNewCityMapEntities(Object.values(MainParser.OtherPlayerCityMapData))
+		else
+			buildingData = CityMap.createNewCityMapEntities(Object.values(MainParser.CityMapData))
 
-		for (let b in CityMap.CityData) {
-			if (!CityMap.CityData.hasOwnProperty(b) || CityMap.CityData[b]['x'] < MinX || CityMap.CityData[b]['x'] > MaxX || CityMap.CityData[b]['y'] < MinY || CityMap.CityData[b]['y'] > MaxY) continue;
+		for (const building of Object.values(buildingData)) {
+			if (building.coords.x < MinX || building.coords.x > MaxX || building.coords.y < MinY || building.coords.y > MaxY) continue
 
-			let CityMapEntity = CityMap.CityData[b],
-				d = MainParser.CityEntities[CityMapEntity['cityentity_id']],
-				BuildingSize = CityMap.GetBuildingSize(CityMapEntity),
-				citymapdata = (CityMap.IsExtern === true) ? MainParser.OtherPlayerCityMapData : MainParser.NewCityMapData
+			//let CityMapEntity = CityMap.CityData[building.id],
+			//	d = MainParser.CityEntities[CityMapEntity['cityentity_id']],
+			//	BuildingSize = CityMap.GetBuildingSize(CityMapEntity),
 
-				x = (CityMap.CityData[b]['x'] === undefined ? 0 : ((parseInt(CityMap.CityData[b]['x']) * CityMap.ScaleUnit) / 100)),
-				y = (CityMap.CityData[b]['y'] === undefined ? 0 : ((parseInt(CityMap.CityData[b]['y']) * CityMap.ScaleUnit) / 100)),
-				xsize = ((parseInt(BuildingSize['xsize']) * CityMap.ScaleUnit) / 100),
-				ysize = ((parseInt(BuildingSize['ysize']) * CityMap.ScaleUnit) / 100),
-				noStreet = '', isSpecial = '', chainBuilding = ''
+			let x = (building.coords.x === undefined ? 0 : parseInt((building.coords.x * CityMap.ScaleUnit)) / 100),
+			y = (building.coords.y === undefined ? 0 : parseInt((building.coords.y * CityMap.ScaleUnit)) / 100),
+			xsize = (building.size.width * CityMap.ScaleUnit) / 100,
+			ysize = (building.size.length * CityMap.ScaleUnit) / 100,
+			noStreet = '', isSpecial = '', chainBuilding = ''
 
-				noStreet = (citymapdata[CityMap.CityData[b]['id']].needsStreet == 0 ? ' noStreet' : '')
-				isSpecial = (citymapdata[CityMap.CityData[b]['id']].isSpecial ? ' special' : '')
-				chainBuilding = (citymapdata[CityMap.CityData[b]['id']].chainBuilding != undefined ? ' chain' : '')
-				
-				f = $('<span />').addClass('entity ' + d['type'] + noStreet + isSpecial + chainBuilding).css({
-					width: xsize + 'em',
-					height: ysize + 'em',
-					left: x + 'em',
-					top: y + 'em'
-				})
-					.attr('title', d['name'])
-					.attr('data-entityid', CityMap.CityData[b]['id']);
+			noStreet = (building.needsStreet == 0 ? ' noStreet' : '')
+			isSpecial = (building.isSpecial ? ' special' : '')
+			chainBuilding = (building.chainBuilding != undefined ? ' chain' : '')
+			
+			f = $('<span />').addClass('entity ' + building.type + noStreet + isSpecial + chainBuilding).css({
+				width: xsize + 'em',
+				height: ysize + 'em',
+				left: x + 'em',
+				top: y + 'em'
+			})
+				.attr('title', building.name)
+				.attr('data-entityid', building.entityId);
 
-			CityMap.OccupiedArea += (BuildingSize['building_area']);
+			CityMap.OccupiedArea += (building.size.width * building.size.length);
 
-			if (!CityMap.OccupiedArea2[d.type]) CityMap.OccupiedArea2[d.type] = 0;
-			CityMap.OccupiedArea2[d.type] += (BuildingSize['building_area']);
+			if (!CityMap.OccupiedArea2[building.type]) CityMap.OccupiedArea2[building.type] = 0;
+			CityMap.OccupiedArea2[building.type] += (building.size.width * building.size.length);
 
-			StreetsNeeded += BuildingSize['street_area'];
+			StreetsNeeded += (building.state.connected ? parseFloat(Math.min(building.size.width, building.size.length)) * building.needsStreet / 2 : 0);
 
-			let era = CityMap.GetBuildingEra(CityMapEntity);
+			if(building.eraName){
+				let era = Technologies.InnoEras[building.eraName]
 
-			if(era){
 				f.attr({
-					title: `${d['name']}, ${BuildingSize['ysize']}x${BuildingSize['xsize']}<br><em>${i18n('Eras.' + era )}</em>`
+					title: `${building.name}, ${building.size.length}x${building.size.width}<br><em>${i18n('Eras.' + era )}</em>`
 				})
 
+				// todo: broken
 				if (era < CurrentEraID) {
                     f.addClass('oldBuildings');
 
@@ -612,8 +606,7 @@ let CityMap = {
 			}
 
 			// die Größe wurde geändert, wieder aktivieren
-			if (ActiveId !== null && ActiveId === CityMap.CityData[b]['id'])
-			{
+			if (ActiveId !== null && ActiveId === building.id) {
 				f.addClass('highlighted');
 			}
 
@@ -1669,6 +1662,7 @@ let CityMap = {
 
 		let lookupData = false
 		if (ceData.components[era]) {
+			// todo: __class__: "BlueprintReward" -> runengarten
 			if (product.reward.id.search("blueprint") != -1) {
 				if (ceData.components[era].lookup.rewards[product.reward.id])
 					lookupData = ceData.components[era].lookup.rewards[product.reward.id]
@@ -1860,10 +1854,12 @@ let CityMap = {
 		if (productions) {
 			productions.forEach(production => {
 				if (production.type == 'resources') {
+					// todo: random production
 					Object.keys(production.resources).forEach(name => {
 						let good = GoodsList.find(x => x.id == name)
 						let goodEra = Technologies.InnoEras[building.eraName]
 						let isGood = false
+						let multipler = 1
 						if (good != undefined) {
 							goodEra = Technologies.InnoEras[good.era]
 							name = good.id
@@ -1879,14 +1875,16 @@ let CityMap = {
 						}
 						else if (name.includes('current') || name == 'random_good_of_age' || name == 'all_goods_of_age') {
 							isGood = true
+							if (name == 'all_goods_of_age')
+								multipler = 5
 						}
 
 						if (isGood) {
 							if (goods[goodEra] == undefined) {
-								goods[goodEra] = parseInt(production.resources[name])
+								goods[goodEra] = parseInt(production.resources[name]) * multipler
 							}
 							else {
-								goods[goodEra] += parseInt(production.resources[name])
+								goods[goodEra] += (parseInt(production.resources[name]) * multipler)
 							}
 						}
 					})
@@ -1901,6 +1899,26 @@ let CityMap = {
 		if (data.type == "generic_building")
 			return ceData.type
 		return data.type
+	},
+
+	createNewCityMapEntities(data) {
+		if (data === undefined) {
+			data = Object.values(MainParser.CityMapData)
+		}
+
+		for (building of data) {
+			if (CityMap.IsExtern === true && building.eraName !== undefined) continue
+			let metaData = Object.values(MainParser.CityEntities).find(x => x.id == building.cityentity_id)
+			let era = Technologies.getEraName(building.cityentity_id, building.level)
+			let newCityEntity = CityMap.createNewCityMapEntity(metaData, building, era)
+
+			if (CityMap.IsExtern === true) 
+				MainParser.OtherPlayerCityMapData[building.id] = newCityEntity
+			else
+				MainParser.NewCityMapData[building.id] = newCityEntity
+		}
+
+		return (CityMap.IsExtern === true ? MainParser.OtherPlayerCityMapData : MainParser.NewCityMapData) 
 	},
 	
 	createNewCityMapEntity(ceData, data, era) {
