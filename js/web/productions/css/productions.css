@@ -137,6 +137,10 @@
 }
 
 
+#Productions #ProductionsBody .ratingtable {
+	position: relative;
+}
+
 #Productions #ProductionsBody .tabs ul li a span, #Productions th.boost span {
 	background: transparent url('../images/productions.png') -233px 2px no-repeat;
 }

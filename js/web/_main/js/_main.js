@@ -434,6 +434,8 @@ GetFights = () =>{
 			}
 			if (ID && MainParser.CityMapData[ID]) {
 				delete MainParser.CityMapData[ID];
+				if (MainParser.NewCityMapData[ID])
+					delete MainParser.NewCityMapData[ID];
 			}
 		}
 	});
@@ -914,17 +916,6 @@ let MainParser = {
 
 		localStorage.setItem('LastStartedVersion', extVersion);
 		localStorage.setItem('LastAgreedVersion', extVersion); //Comment out this line if you have something the player must agree on
-	},
-
-	createCityBuildings: () => {
-		// loop through all city buildings
-		for (const [key, data] of Object.entries(MainParser.CityMapData)) {
-			let ceData = Object.values(MainParser.CityEntities).find(x => x.id == data.cityentity_id);
-			let era = Technologies.getEraName(data.cityentity_id, data.level);
-			let cityMapEntity = CityMap.createNewCityMapEntity(ceData,data,era)
-
-			MainParser.NewCityMapData[cityMapEntity.id] = cityMapEntity;
-		}
 	},
 
 
@@ -1626,7 +1617,7 @@ let MainParser = {
 			let ID = Buildings[i]['id'];
 			if (MainParser.CityMapData[ID]) {
 				MainParser.CityMapData[ID] = Buildings[i];
-			} // hier
+			} 
 			if (ActiveMap === "era_outpost") {
 				CityMap.EraOutpostData[ID] = Buildings[i];
 			}
@@ -1640,7 +1631,7 @@ let MainParser = {
 		MainParser.SetArkBonus2();
 
 		if ($('#bluegalaxy').length > 0) {
-			BlueGalaxy.CalcBody();
+			BlueGalaxy.CalcBody(Buildings);
 		}
 
 		FPCollector.CityMapDataNew = Buildings;
@@ -1860,7 +1851,7 @@ let MainParser = {
 			})
 		}
 		let buildings = Object.values(MainParser.CityMapData)
-		for (let building of buildings) {
+		for (const building of buildings) {
 			// set alerts for limited buildings that will run out in the future and that have no alert yet
 			if (!LB[building.id] && MainParser.CityEntities[building.cityentity_id]?.components?.AllAge?.limited?.config?.expireTime) {
 				const data = {
