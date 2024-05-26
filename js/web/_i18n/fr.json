@@ -1348,7 +1348,7 @@
     "Settings.ShowAztecHelper.Title": "Assistant Aztèque",
     "Settings.ShowBlueGalaxyHelper.Desc": "Affiche un outil suggérant des bâtiments à récolter avec le bonus de la galaxie bleue",
     "Settings.ShowBlueGalaxyHelper.Title": "Afficher l'assistant Galaxie Bleue",
-    "Settings.ShowBuildingsExpired.Desc": "Des notifications sont créées pour informer de l'expiration d'un bâtiment limité. (après avoir désactivé cette fonction, les alertes créées dans le passé peuvent toujours s'afficher)",
+    "Settings.ShowBuildingsExpired.Desc": "Des notifications sont créées pour informer de l'expiration d'un bâtiment limité. (après avoir désactivé cette fonction, les alertes créées dans le passé peuvent toujours s'afficher) <br> <button onclick='MainParser.Inactives.showSettings()' class='btn-default'>Do not create alerts for selected buildings</button> <br> <button onclick='MainParser.Inactives.showSettings()' class='btn-default'>Do not create alerts for selected buildings</button>",
     "Settings.ShowBuildingsExpired.Title": "Créer des alertes de bâtiment limitées",
     "Settings.ShowEventChest.Desc": "Affiche différents assistants d'événement, quand la fenêtre d'un événement supporté est ouverte.",
     "Settings.ShowEventChest.Title": "Afficher l'assistant d'événement",

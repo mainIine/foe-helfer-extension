@@ -732,7 +732,7 @@ let GuildMemberStat = {
 				})
 				.first();
 
-			if (CurrentData === undefined)
+			if (!CurrentData)
 			{
 				let m = [];
 				m.push(message_id);
@@ -1049,7 +1049,7 @@ let GuildMemberStat = {
 
 			// Get available activity warnings
 			activityWarnings = CurrentActivityWarnings.filter(function (item) {
-				return item.player_id === MemberID;
+				return item?.player_id === MemberID;
 			});
 
 			if (activityWarnings.length && activityWarnings[0] !== undefined)
@@ -1060,7 +1060,7 @@ let GuildMemberStat = {
 
 			// Get GEX activities
 			gexActivity = CurrentGexActivity.filter(function (item) {
-				return item.player_id === MemberID;
+				return item?.player_id === MemberID;
 			});
 
 			if (gexActivity.length)
@@ -1071,7 +1071,7 @@ let GuildMemberStat = {
 
 			// Get GBG activities
 			gbgActivity = CurrentGbgActivity.filter(function (item) {
-				return item.player_id === MemberID;
+				return item?.player_id === MemberID;
 			});
 
 			if (gbgActivity.length)
@@ -1082,7 +1082,7 @@ let GuildMemberStat = {
 
 			// Get Message Center activity
 			forumActivity = CurrentForumActivity.filter(function (item) {
-				return item.player_id === MemberID;
+				return item?.player_id === MemberID;
 			});
 
 			if (forumActivity.length)
