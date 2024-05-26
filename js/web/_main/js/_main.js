@@ -157,7 +157,6 @@ GetFights = () =>{
 			if (!CityEntity.type) CityEntity.type = CityEntity?.components?.AllAge?.tags?.tags?.find(value => value.hasOwnProperty('buildingType')).buildingType;
         }
 		MainParser.Inactives.check();
-		MainParser.createCityBuildings();
 	});
 
 	// Building-Upgrades
@@ -1403,7 +1402,6 @@ let MainParser = {
 				}
 			}
 		}
-		console.log(MainParser.BoostSums)
 	},
 
 
