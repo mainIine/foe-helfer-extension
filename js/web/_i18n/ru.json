@@ -1046,7 +1046,7 @@
     "Settings.ShowAztecHelper.Title": "Ацтек Helper",
     "Settings.ShowBlueGalaxyHelper.Desc": "Показывает окно, которое предлагает наилучшие здания для сбора с Синей Галактикой",
     "Settings.ShowBlueGalaxyHelper.Title": "Показывать помощник Синей Галактики",
-    "Settings.ShowBuildingsExpired.Desc": "Создаются уведомления, сообщающие об истечении срока действия ограниченной постройки. (после деактивации этой функции оповещения, созданные в прошлом, все равно могут отображаться)",
+    "Settings.ShowBuildingsExpired.Desc": "Создаются уведомления, сообщающие об истечении срока действия ограниченной постройки. (после деактивации этой функции оповещения, созданные в прошлом, все равно могут отображаться) <br> <button onclick='MainParser.Inactives.showSettings()' class='btn-default'>Do not create alerts for selected buildings</button>",
     "Settings.ShowBuildingsExpired.Title": "Создавать ограниченные оповещения о зданиях",
     "Settings.ShowEventChest.Desc": "Отображает различные помощники событий, когда открыто окно поддерживаемого события.",
     "Settings.ShowEventChest.Title": "Показывать Ассистента Ивента",
