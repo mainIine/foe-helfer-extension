@@ -1091,7 +1091,7 @@ let CityMap = {
 			if (link.production !== undefined) // todo: production not calculated properly: eg elephant fp
 				chainedBuilding.production = [...chainedBuilding.production, ...link.production]
 
-			console.log(chainedBuilding.name, chainedBuilding.boosts)
+			//console.log(chainedBuilding.name, chainedBuilding.boosts)
 		}
 
 		return chainedBuilding
@@ -1466,7 +1466,7 @@ let CityMap = {
 					else if (product.type == "guildResources") {
 						resource.resources = product.guildResources.resources;
 					}
-					else if (product.type == "genericReward") {
+					else if (product.type == "genericReward" || product.type == "blueprint") {
 						resource.resources = this.setGenericReward(product, ceData, data, era) 
 						if (resource.resources.type === undefined)  // genericReward can also return a unit reward, change type
 							resource.type = "unit"
@@ -1506,7 +1506,6 @@ let CityMap = {
 							});
 							resource.resources = rewards
 							resource.type = "random"
-							//console.log("hä", resource)
 						}
 					}
 					else {
@@ -1665,8 +1664,9 @@ let CityMap = {
 		if (ceData.components[era]) {
 			// todo: __class__: "BlueprintReward" -> runengarten
 			if (product.reward.id.search("blueprint") != -1) {
-				if (ceData.components[era].lookup.rewards[product.reward.id])
+				if (ceData.components[era].lookup.rewards[product.reward.id]) {
 					lookupData = ceData.components[era].lookup.rewards[product.reward.id]
+				}
 				else {
 					for (const [key, reward] of Object.entries(ceData.components[era].lookup.rewards)) {
 						if (reward.id.search("blueprint") != -1)
@@ -1702,10 +1702,9 @@ let CityMap = {
 		// units
 		if (lookupData?.type == "chest" && lookupData.id.search("genb_random_unit_chest") != -1 || lookupData?.type == "unit") {
 			let units = this.setUnitReward(product)
-			//console.log(ceData.name, units)
 			return units
 		}
-		// trees of patience
+		// trees of patience, todo: heiliger baum der geduld
 		if (lookupData?.type == "set") {
 			lookupData.type = "consumable"
 			lookupData.subType = lookupData.rewards[0].subType
@@ -1753,7 +1752,7 @@ let CityMap = {
 			name = lookupData.assembledReward.name
 		else if (lookupData.__class__ == "GenericRewardSet") // this is a dirty workaround for trees of patience, because i lack patience
 			name = lookupData.rewards[0].name 
-		else if (lookupData.subType == "speedup_item" || lookupData.subType == "reward_item" || lookupData.type == "chest" || lookupData.subType == "boost_item" || lookupData.type == "forgepoint_package" || lookupData.type == "resource" || lookupData.type == "blueprint") 
+		else if (lookupData.subType == "speedup_item" || lookupData.subType == "reward_item" || lookupData.type == "chest" || lookupData.subType == "boost_item" || lookupData.type == "forgepoint_package" || lookupData.type == "resource") 
 			name = lookupData.name
 		else if (lookupData.type == "unit") {
 			if (lookupData.id.search("#") != -1) { // era_unit#light_melee#NextEra#1
@@ -1766,6 +1765,9 @@ let CityMap = {
 			else {
 				name = lookupData.id.replace("unit_","").replace(/\d+/,"")
 			}
+		}
+		else if (lookupData.type == "blueprint") { // id: "blueprint#random#3"
+			name = lookupData.name.replace(/^\d+\s*/,"")
 		}
 		else if (lookupData.subType == "self_aid_kit")
 			name = lookupData.name
