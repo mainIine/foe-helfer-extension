@@ -1394,7 +1394,7 @@ let MainParser = {
 				MainParser.BoostSums[d[i]['type']] += d[i]['value']
 			}
 			if (MainParser.BoostMapper[d[i]['type']]) {
-				if (d[i]['type'] !== 'happiness') { // => Wird Productions extra geprüft und ausgewiesen
+				if (d[i]['type'] !== 'happiness') { // => Wird in Productions extra geprüft und ausgewiesen
 					let Boosts = MainParser.BoostMapper[d[i]['type']];
 					for (let j = 0; j < Boosts.length;j++) {
 						MainParser.BoostSums[Boosts[j]] += d[i]['value'];
@@ -1402,6 +1402,7 @@ let MainParser = {
 				}
 			}
 		}
+		console.log(MainParser.BoostSums)
 	},
 
 
