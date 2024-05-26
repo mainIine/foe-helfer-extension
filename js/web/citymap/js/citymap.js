@@ -576,7 +576,7 @@ let CityMap = {
 				let era = Technologies.InnoEras[building.eraName]
 
 				f.attr({
-					title: `${building.name}, ${building.size.length}x${building.size.width}<br><em>${i18n('Eras.' + era )}</em>`
+					title: `${building.name}, ${building.size.length}x${building.size.width}<br><em>${i18n('Eras.' + (era || 0) )}</em>`
 				})
 
 				// todo: broken
@@ -1080,17 +1080,18 @@ let CityMap = {
 		let chainedBuilding = building
 		chainedBuilding.name = building.name + " +" + allLinkedBuildings.length
 		chainedBuilding.chainBuilding.type = "linked"
-		console.log(chainedBuilding.name, chainedBuilding.boosts)
 
 		for (link of allLinkedBuildings) {
 			chainedBuilding.size.width = chainedBuilding.size.width + (link.coords.x != chainedBuilding.coords.x ? link.size.width : 0)
 			chainedBuilding.size.length = chainedBuilding.size.length + (link.coords.y != chainedBuilding.coords.y ? link.size.length : 0)
 			chainedBuilding.happiness += link.happiness
 
-			if (link.boosts !== undefined) // todo: boosts (eg panda att_def not added properly)
-				chainedBuilding.boosts = [...chainedBuilding.boosts, ...link.boosts] // todo: can break?
+			if (link.boosts !== undefined)
+				chainedBuilding.boosts = [...building.boosts, ...link.boosts] // todo: can break?
 			if (link.production !== undefined) // todo: production not calculated properly: eg elephant fp
 				chainedBuilding.production = [...chainedBuilding.production, ...link.production]
+
+			console.log(chainedBuilding.name, chainedBuilding.boosts)
 		}
 
 		return chainedBuilding

@@ -463,9 +463,10 @@ let Productions = {
 								guild_expedition: 0,
 								guild_raids: 0
 							}
-							building.boosts.forEach(boost => {
+							building.boosts.forEach(boost => { // todo: bugged: e.g. 31 att_def, 110 att_att
 								if (boost.type.find(x => x == type) == type) {
 									if (boost.feature == "all") {
+										//console.log(boost.type, building.name, boostCounter[type][boost.feature], boost.value, boostCounter[type][boost.feature] + boost.value)
 										boosts.all += boost.value
 										boostCounter[type][boost.feature] += boost.value
 									}
