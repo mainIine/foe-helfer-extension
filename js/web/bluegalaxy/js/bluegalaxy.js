@@ -118,9 +118,7 @@ let BlueGalaxy = {
 	 */
     CalcBody: (data) => {
         
-        if (data != undefined) {
-            CityMap.createNewCityMapEntities(data)
-        }
+        CityMap.createNewCityMapEntities(data)
 
         let Buildings = [],
             FPB = Productions.Boosts['fp'] === undefined ? (MainParser.BoostSums['forge_points_production'] + 100) / 100 : Productions.Boosts['fp']

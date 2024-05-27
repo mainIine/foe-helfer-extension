@@ -532,8 +532,6 @@ let CityMap = {
 			MaxX = 71,
 			MaxY = 71;
 
-		// create buildings with new structure
-		// todo: does not update when removing stuff, adding stuff.. etc
 		if (CityMap.IsExtern == true)
 			buildingData = CityMap.createNewCityMapEntities(Object.values(MainParser.OtherPlayerCityMapData))
 		else
@@ -1078,22 +1076,24 @@ let CityMap = {
 	// this creates a pseudo building for effiency ratings etc
 	createChainedBuilding(building, allLinkedBuildings = []) {
 		let chainedBuilding = building
-		chainedBuilding.name = building.name + " +" + allLinkedBuildings.length
-		chainedBuilding.chainBuilding.type = "linked"
 
 		for (link of allLinkedBuildings) {
 			chainedBuilding.size.width = chainedBuilding.size.width + (link.coords.x != chainedBuilding.coords.x ? link.size.width : 0)
 			chainedBuilding.size.length = chainedBuilding.size.length + (link.coords.y != chainedBuilding.coords.y ? link.size.length : 0)
 			chainedBuilding.happiness += link.happiness
 
-			if (link.boosts !== undefined)
-				chainedBuilding.boosts = [...building.boosts, ...link.boosts] // todo: can break?
+			if (link.boosts !== undefined) {
+				chainedBuilding.boosts = [...building.boosts || [], ...link.boosts]
+			}
 			if (link.production !== undefined) // todo: production not calculated properly: eg elephant fp
 				chainedBuilding.production = [...chainedBuilding.production, ...link.production]
 
 			//console.log(chainedBuilding.name, chainedBuilding.boosts)
 		}
-
+		if (allLinkedBuildings.length > 0) {
+			chainedBuilding.name = building.name + " +" + allLinkedBuildings.length
+			chainedBuilding.chainBuilding.type = "linked"
+		}
 		return chainedBuilding
 	},
 
@@ -1150,7 +1150,7 @@ let CityMap = {
 					})
 				}
 				if ((isSet !== undefined && ability.__class__ === "BonusOnSetAdjacencyAbility") || (isChain !== undefined && ability.__class__ === "ChainLinkAbility")) {
-					// todo: this needs to be overwritten by the actual link/set status
+					// todo: this needs to be overwritten by the actual link/set status?
 					for (const bonus of ability.bonuses) {
 						if (bonus.boost.length == 0) return
 						else {
@@ -1322,12 +1322,21 @@ let CityMap = {
 
 		let prevBuilding = CityMap.getBuildingByCoords(building?.coords?.x - x1, building?.coords?.y - y1)
 
+		// todo: aaaaaaaaaaaaaaaaaaaa
+		/*if (prevBuilding?.chainBuilding?.name == "hippodrome") {
+			console.log(prevBuilding?.name)
+			//console.log((building?.chainBuilding?.chainPosX != 0 ? building?.chainBuilding?.chainPosX +"/"+ Math.abs(building?.chainBuilding?.chainPosX) : 0) +"-"+ x+"*"+xNeg)
+			//console.log((building?.chainBuilding?.chainPosY != 0 ? building?.chainBuilding?.chainPosY +"/"+ Math.abs(building?.chainBuilding?.chainPosY) : 0) +"-"+ y+"*"+yNeg)
+			console.log((prevBuilding?.coords?.x - x1)+","+(prevBuilding?.coords?.y - y1), prevBuilding?.coords?.x+","+prevBuilding?.coords?.y, x1+","+y1)
+		}*/
+
 		if (y1 < 0 || x1 < 0 || x1 > 72 || y1 > 72) return false // min and max of current map
 		else {
 			if (prevBuilding !== undefined) {
 				if (prevBuilding.chainBuilding === undefined || prevBuilding.chainBuilding?.name !== building.chainBuilding.name) return false
-				if (prevBuilding.chainBuilding?.name === building.chainBuilding.name && prevBuilding.chainBuilding?.type == ("linked" || "start"))
+				if (prevBuilding.chainBuilding?.name === building.chainBuilding.name && prevBuilding.chainBuilding?.type == ("linked" || "start")) {
 					return true
+				}
 			}
 			return this.isLinked(building, x1, y1)
 		}
@@ -1338,9 +1347,9 @@ let CityMap = {
 		for (let i = x; i >= (x-10); i--) {
 			for (let j = y; j >= (y-10); j--) {
 				let building = this.getBuildingByCoords(i,j)
-				if (building != undefined && building?.setBuilding?.name == linkName) {
-					return console.log(building)
-				}
+				//if (building != undefined && building?.setBuilding?.name == linkName) {
+				//	return console.log(building)
+				//}
 			}
 		}
 	},
@@ -1473,7 +1482,6 @@ let CityMap = {
 					}
 					else if (product.type == "unit") {
 						resource.resources = this.setUnitReward(product)
-						//console.log(ceData.name, resource.resources)
 					}
 					else if (product.type == "random") {
 						let rewards = [];
@@ -1487,12 +1495,13 @@ let CityMap = {
 										name: name,
 										type: lookupData.type,
 										subType: lookupData.subType,
-										amount: lookupData.amount,
+										amount: (lookupData.totalAmount || lookupData.amount),
 										dropChance: reward.dropChance,
 									}
 									rewards.push(newReward)
 								}
 								else if (reward.product.type === "resources") { // currently: playerResources.resources.strategy_points
+									// todo, ggf verbessern console.log(ceData.name, reward.product)
 									let newReward = {
 										id: null,
 										type: "resources",
@@ -1651,7 +1660,6 @@ let CityMap = {
 	},
 
 	// todo: set buildings
-	// todo: chain buildings
 	
 	// returns a generic reward or a unit reward
 	setGenericReward(product, ceData, data, era) {
@@ -1706,6 +1714,7 @@ let CityMap = {
 		}
 		// trees of patience, todo: heiliger baum der geduld
 		if (lookupData?.type == "set") {
+			console.log("yoooooo", ceData.name, lookupData)
 			lookupData.type = "consumable"
 			lookupData.subType = lookupData.rewards[0].subType
 			amount = lookupData.totalAmount
@@ -1714,7 +1723,7 @@ let CityMap = {
 		let reward = {
 			id: product.reward.id,
 			name: name,
-			type: lookupData.type || "consumable",
+			type: lookupData?.type || "consumable",
 			subType: lookupData.subType,
 			amount: amount, // amount can be undefined for blueprints or units if buiilding is not motivated
 			icon: lookupData.iconAssetName
