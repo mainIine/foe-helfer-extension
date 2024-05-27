@@ -101,13 +101,7 @@ let Productions = {
 
 
 	init: () => {
-		for (building of Object.values(MainParser.CityMapData)) {
-			let metaData = Object.values(MainParser.CityEntities).find(x => x.id == building.cityentity_id)
-			let era = Technologies.getEraName(building.cityentity_id, building.level)
-			let newCityEntity = CityMap.createNewCityMapEntity(metaData, building, era)
-			MainParser.NewCityMapData[building.id] = newCityEntity
-		}
-
+		CityMap.createNewCityMapEntities()
 		Productions.CombinedCityMapData = MainParser.NewCityMapData
 
 		if (CityMap.EraOutpostData) {
@@ -397,8 +391,11 @@ let Productions = {
 					//let sizeWithStreets = size + (building.state.connected == true ? (building.needsStreet > 0 ? shortSide * building.needsStreet / 2 : 0) : 0)
 					if (type == 'items' && Productions.showBuildingItems(true, building) == false) return // make random productions with resources disappear from the item list
 
+					// if a chain link is connected to the start building, remove boosts and production, so it does not show twice in the list
+					// todo: hippodrome sphendome not showing in list, rogue linked buildings in list (train cars, rousioi)
 					if (building.chainBuilding !== undefined && building.chainBuilding?.type == "link") {
 						let isLinked = CityMap.isLinked(building)
+						//console.log(building.name, building.coords, isLinked)
 						if (isLinked) return
 						else {
 							building.boosts = undefined
@@ -406,7 +403,6 @@ let Productions = {
 							building.state.production = false
 						}
 					}
-					if (building.chainBuilding !== undefined && building.chainBuilding?.type == "start") return
 
 					rowA.push('<tr>')
 					rowA.push('<td>')
@@ -463,7 +459,7 @@ let Productions = {
 								guild_expedition: 0,
 								guild_raids: 0
 							}
-							building.boosts.forEach(boost => { // todo: bugged: e.g. 31 att_def, 110 att_att
+							building.boosts.forEach(boost => {
 								if (boost.type.find(x => x == type) == type) {
 									if (boost.feature == "all") {
 										//console.log(boost.type, building.name, boostCounter[type][boost.feature], boost.value, boostCounter[type][boost.feature] + boost.value)
@@ -508,7 +504,7 @@ let Productions = {
 						updateGroup.values += amount
 					}
 
-					rowA.push('<td '+((type.includes('att') || type.includes('def')) ? 'colspan="3"' : '')+' data-text="'+i18n("Eras."+Technologies.Eras[building.eraName]).replace(/[. -]/g,"")+'">' + i18n("Eras."+Technologies.Eras[building.eraName]) + '</td>')
+					rowA.push('<td '+((type.includes('att') || type.includes('def')) ? 'colspan="3"' : '')+' data-text="'+i18n("Eras."+Technologies.Eras[building.eraName]+".short").replace(/[. -]/g,"")+'">' + i18n("Eras."+Technologies.Eras[building.eraName]+".short") + '</td>')
 					if (!type.includes('att') && !type.includes('def')) {
 						rowA.push('<td style="white-space:nowrap">' + moment.unix(building.state.times?.at).fromNow() + '</td>')
 						rowA.push('<td style="white-space:nowrap">' + (building.state.times?.at * 1000 <= MainParser.getCurrentDateTime() ? '<strong class="success">' + i18n('Boxes.Productions.Done') : '') + '</strong></td>')
@@ -539,8 +535,8 @@ let Productions = {
 					table.push('<th colspan="4" data-type="prodlist'+type+'" class="is-number">' + i18n('Boxes.Productions.Headings.number') + '</th>')
 				else {
 					table.push('<th class="boost '+type+' is-number text-center" data-type="prodlist'+type+'"><span></span>'+boostCounter[type].all+'</th>')
-					table.push('<th class="boost battleground is-number text-center" data-type="prodlist'+type+'"><span></span>'+boostCounter[type].battleground+'</th>')
-					table.push('<th class="boost guild_expedition is-number text-center" data-type="prodlist'+type+'"><span></span>'+boostCounter[type].guild_expedition+'</th>')
+					table.push('<th class="boost battleground is-number text-center" data-type="prodlist'+type+'"><span></span>'+(boostCounter[type].battleground)+'</th>')
+					table.push('<th class="boost guild_expedition is-number text-center" data-type="prodlist'+type+'"><span></span>'+(boostCounter[type].guild_expedition)+'</th>')
 					table.push('<th class="boost guild_raids is-number text-center" data-type="prodlist'+type+'"><span></span>'+boostCounter[type].guild_raids+'</th>')
 				}
 				table.push('<th data-type="prodlist'+type+'">' + i18n('Boxes.Productions.Headings.era') + '</th>')
@@ -679,7 +675,7 @@ let Productions = {
 			typeSum += amount
 			typeCurrentSum += currentAmount
 
-			rowA.push('<td data-text="'+i18n("Eras."+Technologies.Eras[building.eraName]).replace(/[. -]/g,"")+'">' + i18n("Eras."+Technologies.Eras[building.eraName]) + '</td>')
+			rowA.push('<td data-text="'+i18n("Eras."+Technologies.Eras[building.eraName]+".short").replace(/[. -]/g,"")+'">' + i18n("Eras."+Technologies.Eras[building.eraName]+".short") + '</td>')
 			rowA.push('<td style="white-space:nowrap">' + moment.unix(building.state.times?.at).fromNow() + '</td>')
 			rowA.push('<td style="white-space:nowrap">' + (building.state.times?.at * 1000 <= MainParser.getCurrentDateTime() ? '<strong class="success">' + i18n('Boxes.Productions.Done') : '') + '</strong></td>')
 			rowA.push('<td class="text-right">')
@@ -1070,7 +1066,7 @@ let Productions = {
 	ShowRating: () => {
 		if ($('#ProductionsRating').length === 0) {
 
-			// todo: this needs to be a seperate function where i also build the chainedbuildings
+			// todo: use a seperate function
 			if (Object.values(MainParser.NewCityMapData).length === 0) {
 				for (building of Object.values(MainParser.CityMapData)) {
 					let metaData = Object.values(MainParser.CityEntities).find(x => x.id == building.cityentity_id)
