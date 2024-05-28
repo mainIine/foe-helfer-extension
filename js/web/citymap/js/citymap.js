@@ -561,7 +561,7 @@ let CityMap = {
 				top: y + 'em'
 			})
 				.attr('title', building.name)
-				.attr('data-entityid', building.entityId);
+				.attr('data-id', building.id);
 
 			CityMap.OccupiedArea += (building.size.width * building.size.length);
 
@@ -1064,9 +1064,10 @@ let CityMap = {
 			if (ability.chainId) {
 				chainId = ability.chainId
 				type = (ability.__class__ == "ChainStartAbility" ? "start" : "link")
-				// currently all chains only have ONE side where you can attach builidngs (except mughals)
+				// currently all chains only have ONE side where you can attach builidings (except mughals and hippodrome)
 				x = ability.linkPositions[0].topLeftPoint.x || 0 
 				y = ability.linkPositions[0].topLeftPoint.y || 0 
+				// todo: add other topleft point for hippodrome tracks
 			}
 		});
 		if (chainId !== undefined)
@@ -1082,13 +1083,10 @@ let CityMap = {
 			chainedBuilding.size.length = chainedBuilding.size.length + (link.coords.y != chainedBuilding.coords.y ? link.size.length : 0)
 			chainedBuilding.happiness += link.happiness
 
-			if (link.boosts !== undefined) {
-				chainedBuilding.boosts = [...building.boosts || [], ...link.boosts]
-			}
-			if (link.production !== undefined) // todo: production not calculated properly: eg elephant fp
+			if (link.boosts !== undefined) 
+				chainedBuilding.boosts = [...chainedBuilding.boosts || [], ...link.boosts]
+			if (link.production !== undefined)
 				chainedBuilding.production = [...chainedBuilding.production, ...link.production]
-
-			//console.log(chainedBuilding.name, chainedBuilding.boosts)
 		}
 		if (allLinkedBuildings.length > 0) {
 			chainedBuilding.name = building.name + " +" + allLinkedBuildings.length
@@ -1322,14 +1320,6 @@ let CityMap = {
 
 		let prevBuilding = CityMap.getBuildingByCoords(building?.coords?.x - x1, building?.coords?.y - y1)
 
-		// todo: aaaaaaaaaaaaaaaaaaaa
-		/*if (prevBuilding?.chainBuilding?.name == "hippodrome") {
-			console.log(prevBuilding?.name)
-			//console.log((building?.chainBuilding?.chainPosX != 0 ? building?.chainBuilding?.chainPosX +"/"+ Math.abs(building?.chainBuilding?.chainPosX) : 0) +"-"+ x+"*"+xNeg)
-			//console.log((building?.chainBuilding?.chainPosY != 0 ? building?.chainBuilding?.chainPosY +"/"+ Math.abs(building?.chainBuilding?.chainPosY) : 0) +"-"+ y+"*"+yNeg)
-			console.log((prevBuilding?.coords?.x - x1)+","+(prevBuilding?.coords?.y - y1), prevBuilding?.coords?.x+","+prevBuilding?.coords?.y, x1+","+y1)
-		}*/
-
 		if (y1 < 0 || x1 < 0 || x1 > 72 || y1 > 72) return false // min and max of current map
 		else {
 			if (prevBuilding !== undefined) {
@@ -1493,7 +1483,7 @@ let CityMap = {
 									let newReward = {
 										id: reward.product.reward.id,
 										name: name,
-										type: lookupData.type,
+										type: (lookupData.type == "set" ? "consumable" : lookupData.type),
 										subType: lookupData.subType,
 										amount: (lookupData.totalAmount || lookupData.amount),
 										dropChance: reward.dropChance,
@@ -1712,9 +1702,8 @@ let CityMap = {
 			let units = this.setUnitReward(product)
 			return units
 		}
-		// trees of patience, todo: heiliger baum der geduld
+		// self aid kits have type set
 		if (lookupData?.type == "set") {
-			console.log("yoooooo", ceData.name, lookupData)
 			lookupData.type = "consumable"
 			lookupData.subType = lookupData.rewards[0].subType
 			amount = lookupData.totalAmount
@@ -1725,7 +1714,7 @@ let CityMap = {
 			name: name,
 			type: lookupData?.type || "consumable",
 			subType: lookupData.subType,
-			amount: amount, // amount can be undefined for blueprints or units if buiilding is not motivated
+			amount: amount, // amount can be undefined for blueprints or units if building is not motivated
 			icon: lookupData.iconAssetName
 		}
 		return reward;
@@ -1821,7 +1810,7 @@ let CityMap = {
 
 				let newReward = {
 					id: reward.reward.id,
-					name: reward.reward.name,
+					name: (type.includes("good") ? reward.reward.name.replace(/^\d+\s*/,"") : reward.reward.name),
 					type: type,
 					amount: amount,
 					dropChance: reward.drop_chance / 100, // the generic buildings data is 0.05 while this is 5
@@ -1830,7 +1819,7 @@ let CityMap = {
 			})
 			resource.resources = rewards
 		}
-		// wunschbrunnen
+		// todo: wunschbrunnen?
 
 		let multiAgeProduct = {}
 		let allAgeProduct = {}
@@ -1888,7 +1877,7 @@ let CityMap = {
 						else if (name.includes('current') || name == 'random_good_of_age' || name == 'all_goods_of_age') {
 							isGood = true
 							if (name == 'all_goods_of_age')
-								multipler = 5
+								multipler = 1 // 5
 						}
 
 						if (isGood) {

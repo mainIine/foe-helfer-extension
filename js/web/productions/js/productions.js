@@ -462,7 +462,6 @@ let Productions = {
 							building.boosts.forEach(boost => {
 								if (boost.type.find(x => x == type) == type) {
 									if (boost.feature == "all") {
-										//console.log(boost.type, building.name, boostCounter[type][boost.feature], boost.value, boostCounter[type][boost.feature] + boost.value)
 										boosts.all += boost.value
 										boostCounter[type][boost.feature] += boost.value
 									}
@@ -880,8 +879,10 @@ let Productions = {
 				building.production.forEach(production => {
 					if (production.type == "random") {
 						production.resources.forEach(resource => {
-							let frag = (resource.subType == "fragment" ? "🧩 " : "")
-							allItems += "Ø " + parseFloat(Math.round(resource.amount*resource.dropChance * 100) / 100) + "x " + frag + resource.name + "<br>"
+							if (!resource.type.includes("good") && resource.type !== "resources") {
+								let frag = (resource.subType == "fragment" ? "🧩 " : "")
+								allItems += "Ø " + parseFloat(Math.round(resource.amount*resource.dropChance * 100) / 100) + "x " + frag + resource.name + "<br>"
+							}
 						})
 					}
 					if (production.resources.type == "consumable") {
@@ -993,12 +994,12 @@ let Productions = {
 		CityMap.init(MainParser.CityMapData);
 
 		$('#grid-outer').removeClass('desaturate');
-		$('[data-entityid]').removeClass('highlighted');
+		$('[data-id]').removeClass('highlighted');
 
 		setTimeout(() => {
 			$('#grid-outer').addClass('desaturate');
 			for (let i = 0; i < IDArray.length; i++) {
-				let target = $('[data-entityid="' + IDArray[i] + '"]');
+				let target = $('[data-id="' + IDArray[i] + '"]');
 
 				if(i === 0) $('#map-container').scrollTo(target, 800, { offset: { left: -280, top: -280 }, easing: 'swing' });
 				target.addClass('highlighted');
@@ -1303,8 +1304,8 @@ let Productions = {
 					if (valuePerTile != 0)
 						score += (valuePerTile / desiredValuePerTile) // todo? when using / negative values behave weirdly
 
-					if (type == "population")
-						console.log(building.name, valuePerTile, desiredValuePerTile, score)
+					//if (type == "population")
+					//	console.log(building.name, valuePerTile, desiredValuePerTile, score)
 
 					ratedBuilding[type] = ( Math.round( typeValue * 100 ) / 100 ) || 0
 					ratedBuilding[type+'-tile'] = valuePerTile || 0
