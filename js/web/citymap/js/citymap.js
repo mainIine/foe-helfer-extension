@@ -568,18 +568,17 @@ let CityMap = {
 			if (!CityMap.OccupiedArea2[building.type]) CityMap.OccupiedArea2[building.type] = 0;
 			CityMap.OccupiedArea2[building.type] += (building.size.width * building.size.length);
 
-			StreetsNeeded += (building.state.connected ? parseFloat(Math.min(building.size.width, building.size.length)) * building.needsStreet / 2 : 0);
+			StreetsNeeded += (building.state.connected && building.type != "street" ? parseFloat(Math.min(building.size.width, building.size.length)) * building.needsStreet / 2 : 0);
 
 			if(building.eraName){
-				let era = Technologies.InnoEras[building.eraName]
+				let era = Technologies.Eras[building.eraName]
 
 				f.attr({
 					title: `${building.name}, ${building.size.length}x${building.size.width}<br><em>${i18n('Eras.' + (era || 0) )}</em>`
 				})
 
-				// todo: broken
-				if (era < CurrentEraID) {
-                    f.addClass('oldBuildings');
+				if (era < CurrentEraID && building.type != "greatbuilding" && era != 0) {
+					f.addClass('oldBuildings');
 
 					let eraDiff = CurrentEraID - era;
 					
@@ -611,6 +610,7 @@ let CityMap = {
 			$('#grid-outer').append( f );
 		}
 
+		// todo: this is wrong
 		let StreetsUsed = CityMap.OccupiedArea2['street'] | 0;
 		CityMap.EfficiencyFactor = StreetsNeeded / StreetsUsed;
 
@@ -1660,7 +1660,6 @@ let CityMap = {
 
 		let lookupData = false
 		if (ceData.components[era]) {
-			// todo: __class__: "BlueprintReward" -> runengarten
 			if (product.reward.id.search("blueprint") != -1) {
 				if (ceData.components[era].lookup.rewards[product.reward.id]) {
 					lookupData = ceData.components[era].lookup.rewards[product.reward.id]

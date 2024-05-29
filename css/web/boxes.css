@@ -341,7 +341,7 @@ ul.foe-table li {
 }
 
 ul.foe-table li:hover {
-	background-color: var(--background-table-hover);
+	background-color: var(--background-table-hover) !important;
 }
 
 ul.foe-table li > * {
