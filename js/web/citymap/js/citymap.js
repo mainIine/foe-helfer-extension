@@ -610,7 +610,6 @@ let CityMap = {
 			$('#grid-outer').append( f );
 		}
 
-		// todo: this is wrong
 		let StreetsUsed = CityMap.OccupiedArea2['street'] | 0;
 		CityMap.EfficiencyFactor = StreetsNeeded / StreetsUsed;
 
@@ -1491,7 +1490,6 @@ let CityMap = {
 									rewards.push(newReward)
 								}
 								else if (reward.product.type === "resources") { // currently: playerResources.resources.strategy_points
-									// todo, ggf verbessern console.log(ceData.name, reward.product)
 									let newReward = {
 										id: null,
 										type: "resources",
@@ -1922,7 +1920,6 @@ let CityMap = {
 	},
 	
 	createNewCityMapEntity(ceData, data, era) {
-		// todo: deleting does not update stuff?
 		let x = data.x || 0
 		let y = data.y || 0
 		let entity = {
@@ -1932,7 +1929,7 @@ let CityMap = {
 			entityId: data.cityentity_id,
 			name: ceData.name,
 			type: this.setType(data, ceData),
-			eraName: era,
+			eraName: (data.cityentity_id.includes("CastleSystem") ? CurrentEra : era),
 			isSpecial: this.isSpecialBuilding(ceData),
 			isLimited: this.isLimitedBuilding(data, ceData),
 			chainBuilding: this.setChainBuilding(ceData),
@@ -1941,7 +1938,7 @@ let CityMap = {
 
 			population: this.setPopulation(ceData, data, era), 
 			happiness: this.setHappiness(ceData, data, era),
-			needsStreet: this.needsStreet(ceData, data), // todo: check GB
+			needsStreet: this.needsStreet(ceData, data),
 			
 			boosts: this.setBuildingBoosts(ceData, data, era),
 			production: this.setAllProductions(ceData, data, era),

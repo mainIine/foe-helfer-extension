@@ -261,7 +261,7 @@ let Productions = {
 							if (Productions.BuildingsProducts.strategy_points.find(x => x.id == building.id) == undefined)
 								Productions.BuildingsProducts["strategy_points"].push(saveBuilding)
 						}
-						if (production.resources.all_goods_of_age || production.resources.random_goods_of_age || production.resources.all_goods_of_previous_age) {
+						if (production.resources.all_goods_of_age || production.resources.random_goods_of_age || production.resources.random_good_of_age || production.resources.all_goods_of_previous_age) {
 							if (Productions.BuildingsProducts.goods.find(x => x.id == building.id) == undefined)
 								Productions.BuildingsProducts["goods"].push(saveBuilding)
 
@@ -614,6 +614,10 @@ let Productions = {
 		})
 
 		eras.sort().reverse()
+		let erasTotal = {};
+		for (const era of eras) {
+			erasTotal[era] = 0;
+	   }
 
 		buildingIds.forEach(b => {
 			let building = CityMap.getBuildingById(b.id)
@@ -643,17 +647,21 @@ let Productions = {
 			else {
 				updateGroup.amount++
 			}
+
 			
 			eras.forEach(era => {
 				let currentGoods = Productions.getBuildingProductionByCategory(true, building, type)
 				let allGoods = Productions.getBuildingProductionByCategory(false, building, type)
+
 				let currentGoodAmount = 0
 				let goodAmount = 0
 				if (allGoods != undefined) {
 					if (currentGoods != undefined) {
 						for (const [key, value] of Object.entries(currentGoods)) {
-							if (key == era) 
+							if (key == era) {
 								currentGoodAmount = value
+								erasTotal[era] += currentGoodAmount
+							}
 						}
 					}
 					for (const [key, value] of Object.entries(allGoods)) {
@@ -663,11 +671,11 @@ let Productions = {
 						}
 					}
 				}
-				rowA.push('<td data-number="'+currentGoodAmount+'">')
+				rowA.push('<td data-number="'+currentGoodAmount+'" class="text-center">')
 					if (currentGoodAmount != goodAmount)
-						rowA.push(currentGoodAmount+'/'+goodAmount)
-					else if (goodAmount > 0)
-						rowA.push(goodAmount)
+						rowA.push(HTML.Format(currentGoodAmount)+'/'+HTML.Format(goodAmount))
+					else
+						rowA.push(HTML.Format(goodAmount))
 				rowA.push('</td>')
 			})
 			
@@ -694,7 +702,7 @@ let Productions = {
 		table.push('<th class="no-sort" data-type="prodlist'+type+'"> </th>')
 		table.push('<th class="ascending" data-type="prodlist'+type+'">' + i18n('Boxes.BlueGalaxy.Building') + '</th>')
 		eras.forEach(era => {
-			table.push('<th data-type="prodlist'+type+'" class="is-number">' + i18n('Eras.'+(parseInt(era)+1)+'.short') + '</span></th>')
+			table.push('<th data-type="prodlist'+type+'" class="is-number text-center">' + i18n('Eras.'+(parseInt(era)+1)+'.short') + '</span><br>'+HTML.Format(erasTotal[era])+'</th>')
 		})
 		table.push('<th data-type="prodlist'+type+'">' + i18n('Boxes.Productions.Headings.era') + '</th>')
 		table.push('<th data-type="prodlist'+type+'" class="no-sort"> </th>')
@@ -717,7 +725,7 @@ let Productions = {
 		table.push('<th data-type="prodgroup'+type+'" class="is-number">' + i18n('Boxes.Productions.Headings.number') + '</th>')
 		table.push('<th data-type="prodgroup'+type+'">' + i18n('Boxes.BlueGalaxy.Building') + '</th>')
 		eras.forEach(era => {
-			table.push('<th data-type="prodgroup'+type+'" class="is-number">' + i18n('Eras.'+(parseInt(era)+1)+'.short') + '</span></th>')
+			table.push('<th data-type="prodgroup'+type+'" class="is-number text-center">' + i18n('Eras.'+(parseInt(era)+1)+'.short') + '</span><br>'+HTML.Format(erasTotal[era])+'</th>')
 		})
 		table.push('<th data-type="prodgroup'+type+'" class="is-number">' + i18n('Boxes.Productions.Headings.size') + '</th>')
 		table.push('</tr>')
@@ -727,9 +735,9 @@ let Productions = {
 				rowB.push('<tr>')
 				rowB.push('<td data-number="'+building.amount+'">'+building.amount+'x </td>')
 				rowB.push('<td data-text="'+building.building.name.replace(/[. -]/g,"")+'">'+ building.building.name +'</td>')
-				eras.forEach(era => { // todo
-					rowB.push('<td data-number="'+building[era]+'">')
-					rowB.push(building[era])
+				eras.forEach(era => {
+					rowB.push('<td data-number="'+building[era]+'" class="text-center">')
+					rowB.push(HTML.Format(building[era]))
 					rowB.push('</td>')
 				})
 				rowB.push('<td data-number="'+(building.building.size.length*building.building.size.width)+'">'+building.building.size.length+'x'+building.building.size.width+'</td>')
@@ -1303,9 +1311,6 @@ let Productions = {
 
 					if (valuePerTile != 0)
 						score += (valuePerTile / desiredValuePerTile) // todo? when using / negative values behave weirdly
-
-					//if (type == "population")
-					//	console.log(building.name, valuePerTile, desiredValuePerTile, score)
 
 					ratedBuilding[type] = ( Math.round( typeValue * 100 ) / 100 ) || 0
 					ratedBuilding[type+'-tile'] = valuePerTile || 0
