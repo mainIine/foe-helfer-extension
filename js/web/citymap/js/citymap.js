@@ -1848,16 +1848,17 @@ let CityMap = {
 
 	getBuildingGoodsByEra(current, building) {
 		let productions = (current ? building.state.production : building.production)
-		let goods = {}
+		let goods = {
+			hasRandomProduction: false,
+			eras: {}
+		}
 		if (productions) {
 			productions.forEach(production => {
 				if (production.type == 'resources') {
-					// todo: random production
 					Object.keys(production.resources).forEach(name => {
 						let good = GoodsList.find(x => x.id == name)
 						let goodEra = Technologies.InnoEras[building.eraName]
 						let isGood = false
-						let multipler = 1
 						if (good != undefined) {
 							goodEra = Technologies.InnoEras[good.era]
 							name = good.id
@@ -1873,19 +1874,38 @@ let CityMap = {
 						}
 						else if (name.includes('current') || name == 'random_good_of_age' || name == 'all_goods_of_age') {
 							isGood = true
-							if (name == 'all_goods_of_age')
-								multipler = 1 // 5
 						}
 
 						if (isGood) {
-							if (goods[goodEra] == undefined) {
-								goods[goodEra] = parseInt(production.resources[name]) * multipler
+							if (goods.eras[goodEra] == undefined) {
+								goods.eras[goodEra] = parseInt(production.resources[name])
 							}
 							else {
-								goods[goodEra] += (parseInt(production.resources[name]) * multipler)
+								goods.eras[goodEra] += parseInt(production.resources[name])
 							}
 						}
 					})
+				}
+				if (production.type == 'random') {
+					for (const resource of production.resources) {
+						if (resource.type?.includes("good") && !resource.type?.includes("guild")) {
+							goods.hasRandomProduction = true // todo: this is not a perfect solution, because it is general & not per good
+
+							let goodEra = Technologies.InnoEras[building.eraName]
+							if (resource.type.includes('previous')) {
+								goodEra = Technologies.getPreviousEraIdByCurrentEraName(building.eraName)
+							}
+							else if (resource.type.includes('next')) {
+								goodEra = Technologies.getNextEraIdByCurrentEraName(building.eraName)
+							}
+							
+							if (goods[goodEra] == undefined) 
+								goods.eras[goodEra] = parseFloat(resource.amount * resource.dropChance)
+							else 
+								goods.eras[goodEra] += parseFloat(resource.amount * resource.dropChance)
+						}
+					}
+					
 				}
 			})
 		}
