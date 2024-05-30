@@ -239,6 +239,18 @@ let Productions = {
 								if (Productions.BuildingsProducts.items.find(x => x.id == building.id) == undefined)
 									Productions.BuildingsProducts["items"].push(saveBuilding)
 							}
+							if (resource.type == "resources" && resource.subType == "strategy_points") {
+								if (Productions.BuildingsProducts.strategy_points.find(x => x.id == building.id) == undefined)
+									Productions.BuildingsProducts["strategy_points"].push(saveBuilding)
+							}
+							if (resource.type.includes("goods") && !resource.type.includes("guild")) {
+								if (Productions.BuildingsProducts.goods.find(x => x.id == building.id) == undefined)
+									Productions.BuildingsProducts["goods"].push(saveBuilding)
+							}
+							if (resource.type.includes("goods") && resource.type.includes("guild")) {
+								if (Productions.BuildingsProducts.clan_goods.find(x => x.id == building.id) == undefined)
+									Productions.BuildingsProducts.clan_goods.push(saveBuilding)
+							}
 						})
 					}
 					if (production.type == "resources") {
@@ -605,7 +617,7 @@ let Productions = {
 			if (building.player_id == ExtPlayerID) {
 				let allGoods = Productions.getBuildingProductionByCategory(false, building, type)
 				if (allGoods != undefined) {
-					for (const [era, value] of Object.entries(allGoods)) {
+					for (const [era, value] of Object.entries(allGoods.eras)) {
 						if (eras.find(x => x == era) == undefined) 
 							eras.push(era)
 					}
@@ -647,7 +659,6 @@ let Productions = {
 			else {
 				updateGroup.amount++
 			}
-
 			
 			eras.forEach(era => {
 				let currentGoods = Productions.getBuildingProductionByCategory(true, building, type)
@@ -657,14 +668,14 @@ let Productions = {
 				let goodAmount = 0
 				if (allGoods != undefined) {
 					if (currentGoods != undefined) {
-						for (const [key, value] of Object.entries(currentGoods)) {
+						for (const [key, value] of Object.entries(currentGoods.eras)) {
 							if (key == era) {
 								currentGoodAmount = value
 								erasTotal[era] += currentGoodAmount
 							}
 						}
 					}
-					for (const [key, value] of Object.entries(allGoods)) {
+					for (const [key, value] of Object.entries(allGoods.eras)) {
 						if (key == era) {
 							goodAmount = value
 							updateGroup[era] += goodAmount
@@ -672,8 +683,10 @@ let Productions = {
 					}
 				}
 				rowA.push('<td data-number="'+currentGoodAmount+'" class="text-center">')
-					if (currentGoodAmount != goodAmount)
-						rowA.push(HTML.Format(currentGoodAmount)+'/'+HTML.Format(goodAmount))
+					if (currentGoodAmount != goodAmount) {
+						let isAverage = (allGoods.hasRandomProduction ? "Ø" : "")
+						rowA.push(HTML.Format(currentGoodAmount)+'/'+isAverage+HTML.Format(goodAmount))
+					}
 					else
 						rowA.push(HTML.Format(goodAmount))
 				rowA.push('</td>')
