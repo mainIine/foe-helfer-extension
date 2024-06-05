@@ -33,5 +33,7 @@
 
 #combat-power .boost-amount {
     display: inline-block;
-
+    width: 40px;
+    text-align: right;
+    margin-right: 5px;
 }

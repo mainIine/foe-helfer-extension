@@ -26,43 +26,43 @@ let CombatPower = {
 
 	Init: ()=> {
 
-		CombatPower.Buildings = [];
+		CombatPower.Buildings = []
 
 		for(let id in MainParser.CityEntities) {
 			if(!MainParser.CityEntities.hasOwnProperty(id)){
-				continue;
+				continue
 			}
 
 			// if starts not with "W_", continue
 			if(id.slice(0, 2) !== 'W_'){
-				continue;
+				continue
 			}
 
 			let entity = MainParser.CityEntities[id],
 				asset_id = entity['asset_id'],
 				ageBoost = entity['components'][CurrentEra],
-				sizes = entity['components']['AllAge']['placement']['size'];
+				sizes = entity['components']['AllAge']['placement']['size']
 
 
 			for(let i in MainParser.Inventory){
 				if(!MainParser.Inventory.hasOwnProperty(i)){
-					continue;
+					continue
 				}
 
-				let InventoryItem = MainParser.Inventory[i];
+				let InventoryItem = MainParser.Inventory[i]
 
 				if(InventoryItem['item']['cityEntityId'] === asset_id){
 					if(ageBoost === undefined){
-						continue;
+						continue
 					}
 
 					if(ageBoost['boosts'] === undefined){
-						continue;
+						continue
 					}
 
-					let extra = Object.values(MainParser.NewCityMapData).find(obj => (obj['entityId'] === id)) || [];
+					let extra = Object.values(MainParser.NewCityMapData).find(obj => (obj['entityId'] === id)) || []
 
-					console.log(id + ' - extra: ', extra);
+					console.log(id + ' - extra: ', extra)
 
 					CombatPower.Buildings.push({
 						id: id,
@@ -80,9 +80,9 @@ let CombatPower = {
 			}
 		}
 
-		console.log(CombatPower.Buildings);
+		console.log(CombatPower.Buildings)
 
-		CombatPower.BuildBox();
+		CombatPower.BuildBox()
 	},
 
 
@@ -90,8 +90,8 @@ let CombatPower = {
 
 		if ($('#combat-power').length > 0)
 		{
-			HTML.CloseOpenBox('combat-power');
-			return;
+			HTML.CloseOpenBox('combat-power')
+			return
 		}
 
 		HTML.Box({
@@ -102,37 +102,37 @@ let CombatPower = {
 			dragdrop: true,
 			minimize: true,
 			resize: true
-		});
+		})
 
 		// CSS in den DOM prügeln
-		HTML.AddCssFile('combat_power');
+		HTML.AddCssFile('combat_power')
 
-		let c = [];
+		let c = []
 
-		c.push(`<table class="foe-table sortable-table">`);
+		c.push(`<table class="foe-table sortable-table">`)
 
-		c.push('<thead>');
-		c.push('<tr class="sorter-header">');
+		c.push('<thead>')
+		c.push('<tr class="sorter-header">')
 
-		c.push('<td></td>');
-		c.push('<td>Name</td>');
-		c.push('<td>Bestand / Größe</td>');
-		c.push('<td>Werte</td>');
-		c.push('<td>Straße</td>');
+		c.push('<td></td>')
+		c.push('<td>Name</td>')
+		c.push('<td>Bestand / Größe</td>')
+		c.push('<td>Werte</td>')
+		c.push('<td>Straße</td>')
 
-		c.push('</tr>');
-		c.push('</thead>');
+		c.push('</tr>')
+		c.push('</thead>')
 
-		c.push('<tbody>');
+		c.push('<tbody>')
 
 		for(let i in CombatPower.Buildings){
-			let b = CombatPower.Buildings[i];
+			let b = CombatPower.Buildings[i]
 
-			c.push(`<tr>`);
+			c.push(`<tr>`)
 
 			let url = '/city/buildings/' + [b['asset_id'].slice(0, 1), '_SS', b['asset_id'].slice(1)].join('') + '.png'
 
-			url = srcLinks.get(url,true);
+			url = srcLinks.get(url,true)
 
 			c.push(`<td><img style="max-width:110px;max-height:110px" src="${url}" alt=""></td>`)
 			c.push(`<td>${b['name']}<br><small>${b['id']}</small></td>`)
@@ -145,19 +145,19 @@ let CombatPower = {
 				// https://foezz.innogamescdn.com/assets/shared/icons/att_boost_attacker-6070a3719.png
 				let icon = srcLinks.get(`/shared/icons/${y['type']}${CombatPower.Mapping[y['targetedFeature']]}.png`,true)
 
-				c.push(`<span class="boost-amount">${y['value']}%</span> - <img src="${icon}" alt=""> - ${i18n('Boxes.Productions.' + y['type'])}<br>`);
+				c.push(`<span class="boost-amount">${y['value']}%</span><img src="${icon}" alt=""> - ${i18n('Boxes.Productions.' + y['type'])}<br>`)
 			}
 
 			c.push(`</td>`)
-			c.push(`<td class="text-center text-success" style="font-size: 140%;">${b['street'] ? '✓' : ''}</td>`)
+			c.push(`<td class="text-center text-success" style="font-size: 140%">${b['street'] ? '✓' : ''}</td>`)
 
-			c.push(`</tr>`);
+			c.push(`</tr>`)
 		}
 
-		c.push('</tbody>');
+		c.push('</tbody>')
 
-		c.push(`</table>`);
+		c.push(`</table>`)
 
-		$('#combat-powerBody').html(c.join(''));
+		$('#combat-powerBody').html(c.join(''))
 	},
 }

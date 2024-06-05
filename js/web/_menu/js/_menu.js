@@ -935,7 +935,7 @@ let _menu = {
 	 * Castle System
 	 */
 	combat_power_Btn: () => {
-		let btn = _menu.MakeButton('combat', i18n('Menu.CombatPower.Title'), i18n('Menu.Combat.Desc'));
+		let btn = _menu.MakeButton('combat', i18n('Menu.CombatPower.Title'), i18n('Menu.CombatPower.Desc'));
 
 		let btn_sp = $('<span />').bind('click', function () {
 			CombatPower.Init();
