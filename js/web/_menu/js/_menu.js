@@ -1,7 +1,7 @@
 /*
  * *************************************************************************************
  *
- * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2024 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -62,7 +62,8 @@ let _menu = {
 		'recurringQuests',
 		'compare_friends_threads',
 		'discord',
-		'findGB'
+		'findGB',
+		'combat_power'
 		//'qiMap'
 		// 'marketOffers',
 	],
@@ -930,6 +931,18 @@ let _menu = {
 		return btn.append(btn_sp);
 	},
 
+	/**
+	 * Castle System
+	 */
+	combat_power_Btn: () => {
+		let btn = _menu.MakeButton('combat', i18n('Menu.CombatPower.Title'), i18n('Menu.Combat.Desc'));
+
+		let btn_sp = $('<span />').bind('click', function () {
+			CombatPower.Init();
+		});
+
+		return btn.append(btn_sp);
+	},
 
 	/**
 	 * Compare friends and threads

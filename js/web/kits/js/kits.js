@@ -1,6 +1,7 @@
 /*
- * **************************************************************************************
- * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
+ * *************************************************************************************
+ *
+ * Copyright (C) 2024 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -8,7 +9,7 @@
  * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
  * for full license details.
  *
- * **************************************************************************************
+ * *************************************************************************************
  */
 
 /**
@@ -191,7 +192,7 @@ let Kits = {
 		}
 		for (let k in MainParser.Inventory) {
 			if (! MainParser.Inventory.hasOwnProperty(k)) continue
-			if (MainParser.Inventory[k]?.item?.reward?.type=="set") {
+			if (MainParser.Inventory[k]?.item?.reward?.type==="set") {
 				addItems(MainParser.Inventory[k].item.reward.rewards,MainParser.Inventory[k].item.reward.id)
 			}
 
@@ -238,7 +239,7 @@ let Kits = {
 				b => Object.entries(b).filter(bu => bu[0] === 'first' && bu[1] === id).length > 0).length > 0
 			);
 			if (kits_for_upg.length === 0) {
-				if (devMode=="true") console.log(`\t\t{\n\t\t\t"name": "${MainParser.CityEntities[id]?.name}",\n\t\t\t"buildings": [\n\t\t\t\t{"first": "${id}"}\n\t\t\t]\n\t\t},\n`) //`First building ${id} (${MainParser.CityEntities[id]?.name}) of upgrade(s) ${upg.upgradeList.join(',')} not found in Kits' json.`, upg);
+				if (devMode==="true") console.log(`\t\t{\n\t\t\t"name": "${MainParser.CityEntities[id]?.name}",\n\t\t\t"buildings": [\n\t\t\t\t{"first": "${id}"}\n\t\t\t]\n\t\t},\n`) //`First building ${id} (${MainParser.CityEntities[id]?.name}) of upgrade(s) ${upg.upgradeList.join(',')} not found in Kits' json.`, upg);
 				if (newCat) {
 					newCat = false;
 					kits.push({"groupname": "new_not_categorized"})	
@@ -280,7 +281,7 @@ let Kits = {
 			
 			let item = {
 						type: type,
-						item: inv[id] || (type=="first" ? entities[id] : (type=="asset" ? entities[id] : id)),
+						item: inv[id] || (type==="first" ? entities[id] : (type==="asset" ? entities[id] : id)),
 						fragments: inv["fragment#" + id]?.inStock,
 						reqFragments: inv["fragment#" + id]?.required,
 						missing: ((inv[id]?.inStock || 0) < 1) && (((inv["fragment#" + id]?.inStock)||0) < 1),
@@ -333,7 +334,7 @@ let Kits = {
 
 				for (let i in building) {
 					if (!building.hasOwnProperty(i)) continue;
-					if (i=="first")	continue;
+					if (i==="first")	continue;
 					let l = itemRow.push(create('update',building[i]));
 					if (!itemRow[l-1].missing) showB = true; 
 				}
@@ -401,7 +402,7 @@ let Kits = {
 				else if (MainParser.CityEntities[kits[set].buildings[0].first]) {
 					let itemName = MainParser.CityEntities[kits[set].buildings[0].first].name;
 					let idx = itemName.indexOf(' - ', 0);
-					
+
 					if (idx === -1) {
 						idx = itemName.indexOf(' – ', 0); // looks the same but it isn't ¯\_(ツ)_/¯
 					}
@@ -518,7 +519,7 @@ let Kits = {
 			title = '';
 			
 		try {
-			if (el.type == "first" || el.type == "asset") url = '/city/buildings/' + [aName.slice(0, 1), '_SS', aName.slice(1)].join('') + '.png';
+			if (el.type === "first" || el.type === "asset") url = '/city/buildings/' + [aName.slice(0, 1), '_SS', aName.slice(1)].join('') + '.png';
 		} 
 		catch {
 			console.log(el)
@@ -584,6 +585,8 @@ let Kits = {
 		}
 		return Ret;
     },
+
+
 	toggleFavourite:(e) => {
 		let name = e.target.dataset.name
 		let index = Kits.favourites.indexOf(name);
