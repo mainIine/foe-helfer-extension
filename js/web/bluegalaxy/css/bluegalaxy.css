@@ -76,6 +76,10 @@
     background-position: -104px 3px;
 }
 
+#bluegalaxy table th.icon.old_goods span::before  {
+    background-position: -524px 3px;
+}
+
 #bluegalaxy table th.icon.fragments span  {
     right: unset;
     left: 10px;

@@ -1342,13 +1342,13 @@ let CityMap = {
 		}
 		
 		// units
-		if (lookupData.type == "chest" && lookupData.id.search("genb_random_unit_chest") != -1 || lookupData.type == "unit") {
+		if (lookupData?.type == "chest" && lookupData.id.search("genb_random_unit_chest") != -1 || lookupData?.type == "unit") {
 			let units = this.getUnitReward(product)
 			//console.log(ceData.name, units)
 			return units
 		}
 		// trees of patience
-		if (lookupData.type == "set") {
+		if (lookupData?.type == "set") {
 			lookupData.type = "consumable"
 			lookupData.subType = lookupData.rewards[0].subType
 			amount = lookupData.totalAmount
@@ -1357,7 +1357,7 @@ let CityMap = {
 		let reward = {
 			id: product.reward.id,
 			name: name,
-			type: lookupData.type,
+			type: lookupData.type || "consumable",
 			subType: lookupData.subType,
 			amount: amount, // amount can be undefined for blueprints or units if buiilding is not motivated
 			icon: lookupData.iconAssetName
