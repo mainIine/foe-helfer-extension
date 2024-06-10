@@ -122,7 +122,7 @@ let Productions = {
 
 
 	/**
-	 * Calculate Happiness Boost
+	 * Calculate Boosts
 	 */
 	ReadData: ()=> {
 		Productions.BuildingsAll = Object.values(Productions.CombinedCityMapData);
@@ -392,29 +392,17 @@ let Productions = {
 			amount = 0,
 			hasRandomProductions = false,
 			boosts = {},
-			buildingIds = Productions.BuildingsProducts[type]
+			buildingIds = Productions.BuildingsProducts[type],
+			inADay = Math.floor(Date.now() / 1000) + 86400
 
 			if (type != 'goods') {
 				buildingIds.forEach(b => {
 					let building = CityMap.getBuildingById(b.id)
-					if (building.player_id == ExtPlayerID) {
+					if (building.player_id == ExtPlayerID) { // todo: breaks with popuplation etc for chainedBuildings
 					//let shortSide = parseFloat(Math.min(building.size.width, building.size.length))
 					//let size = building.size.width*building.size.length
 					//let sizeWithStreets = size + (building.state.connected == true ? (building.needsStreet > 0 ? shortSide * building.needsStreet / 2 : 0) : 0)
-					if (type == 'items' && Productions.showBuildingItems(true, building) == false) return // make random productions with resources disappear from the item list
-
-					// if a chain link is connected to the start building, remove boosts and production, so it does not show twice in the list
-					// todo: hippodrome sphendome not showing in list, rogue linked buildings in list (train cars, rousioi)
-					if (building.chainBuilding !== undefined && building.chainBuilding?.type == "link") {
-						let isLinked = CityMap.isLinked(building)
-						//console.log(building.name, building.coords, isLinked)
-						if (isLinked) return
-						else {
-							building.boosts = undefined
-							building.production = false
-							building.state.production = false
-						}
-					}
+					if (type == 'items' && Productions.showBuildingItems(true, building) == false || building.chainBuilding?.type == "linked") return // make random productions with resources and others disappear from the item list
 
 					rowA.push('<tr>')
 					rowA.push('<td>')
@@ -517,7 +505,8 @@ let Productions = {
 
 					rowA.push('<td '+((type.includes('att') || type.includes('def')) ? 'colspan="3"' : '')+' data-text="'+i18n("Eras."+Technologies.Eras[building.eraName]+".short").replace(/[. -]/g,"")+'">' + i18n("Eras."+Technologies.Eras[building.eraName]+".short") + '</td>')
 					if (!type.includes('att') && !type.includes('def')) {
-						rowA.push('<td style="white-space:nowrap">' + moment.unix(building.state.times?.at).fromNow() + '</td>')
+						let time = (building.state.times?.at <= inADay) ? moment.unix(building.state.times?.at).format('HH:mm') : moment.unix(building.state.times?.at).format('dddd, HH:mm')
+						rowA.push('<td style="white-space:nowrap">' + time + '</td>')
 						rowA.push('<td style="white-space:nowrap">' + (building.state.times?.at * 1000 <= MainParser.getCurrentDateTime() ? '<strong class="success">' + i18n('Boxes.Productions.Done') : '') + '</strong></td>')
 					}
 					rowA.push('<td class="text-right">')
@@ -577,26 +566,20 @@ let Productions = {
 
 
 	setChainsAndSets(buildings) {
+		if (buildings === undefined) buildings = Object.values(MainParser.NewCityMapData)
 		for (const building of buildings) {
 			if (building.setBuilding !== undefined) {
 				// todo
 				CityMap.findAdjacentSetBuildingByCoords(building.coords.x, building.coords.y, building.setBuilding.name)
 			} 
 			else if (building.chainBuilding !== undefined && building.chainBuilding?.type == "start") {
-
-				function findLinks(building, arr = []) { // recursion is fun
-					let nextBuilding = CityMap.getBuildingByCoords(building?.coords?.x + building?.chainBuilding?.chainPosX || 0, building?.coords?.y + building?.chainBuilding?.chainPosY || 0)
-					if (nextBuilding === undefined || nextBuilding.chainBuilding === undefined || nextBuilding.chainBuilding?.name !== building.chainBuilding.name)
-						return arr
-					arr.push(nextBuilding)
-					return findLinks(nextBuilding, arr)
-				}
-
-				let allLinks = findLinks(building)
-				if (allLinks.length > 0) {
-					let fullBuilding = CityMap.createChainedBuilding(building, allLinks)
-					let index = Productions.BuildingsAll.findIndex(x => x.id == fullBuilding.id)
-					Productions.BuildingsAll[index] = fullBuilding
+				
+				let linkedBuildings = CityMap.hasLinks(building)
+				//console.log(building.name, building.coords, linkedBuildings)
+				if (linkedBuildings.length > 1) {
+					let fullBuilding = CityMap.createChainedBuilding(linkedBuildings)
+					// todo: remove duplicate start building from list - Productions.BuildingsAll
+					console.log(fullBuilding.name)
 				}
 			}
 		}
@@ -696,7 +679,7 @@ let Productions = {
 			typeCurrentSum += currentAmount
 
 			rowA.push('<td data-text="'+i18n("Eras."+Technologies.Eras[building.eraName]+".short").replace(/[. -]/g,"")+'">' + i18n("Eras."+Technologies.Eras[building.eraName]+".short") + '</td>')
-			rowA.push('<td style="white-space:nowrap">' + moment.unix(building.state.times?.at).fromNow() + '</td>')
+			rowA.push('<td style="white-space:nowrap">' + moment.unix(building.state.times?.at).format('HH:mm') + '</td>')
 			rowA.push('<td style="white-space:nowrap">' + (building.state.times?.at * 1000 <= MainParser.getCurrentDateTime() ? '<strong class="success">' + i18n('Boxes.Productions.Done') : '') + '</strong></td>')
 			rowA.push('<td class="text-right">')
 			rowA.push('<span class="show-entity" data-id="' + building.id + '"><img class="game-cursor" src="' + extUrl + 'css/images/hud/open-eye.png"></span>')
@@ -850,8 +833,10 @@ let Productions = {
 				}
 				if (production.type+"s" == category) { // units
 					prod.amount += Object.values(production.resources)[0]
-					if (current == true)
+					if (current == true && building.type != "main_building" && building.type != "greatbuilding")
 						prod.type = Object.keys(production.resources)[0]
+					else
+						prod.type = null
 				}
 				if (category == "clan_goods" && production.type == "guildResources") {
 					if (production.resources.all_goods_of_age)
@@ -1087,26 +1072,15 @@ let Productions = {
 
 	ShowRating: () => {
 		if ($('#ProductionsRating').length === 0) {
-
-			// todo: use a seperate function
-			if (Object.values(MainParser.NewCityMapData).length === 0) {
-				for (building of Object.values(MainParser.CityMapData)) {
-					let metaData = Object.values(MainParser.CityEntities).find(x => x.id == building.cityentity_id)
-					let era = Technologies.getEraName(building.cityentity_id, building.level)
-					let newCityEntity = CityMap.createNewCityMapEntity(metaData, building, era)
-					MainParser.NewCityMapData[building.id] = newCityEntity
-				}
-			}
+			
+			CityMap.createNewCityMapEntities()
+			Productions.setChainsAndSets()
 
 			let Rating = localStorage.getItem('ProductionRatingEnableds2');
-			if (Rating !== null) {
-				Productions.Rating = JSON.parse(Rating);
-			}
+			if (Rating !== null) Productions.Rating = JSON.parse(Rating)
 
 			let RatingProdPerTiles = localStorage.getItem('ProductionRatingProdPerTiles');
-			if (RatingProdPerTiles !== null) {
-				Productions.RatingProdPerTiles = JSON.parse(RatingProdPerTiles);
-			}
+			if (RatingProdPerTiles !== null) Productions.RatingProdPerTiles = JSON.parse(RatingProdPerTiles);
 
 			for (let i = 0; i < Productions.RatingTypes.length; i++) {
 				let Type = Productions.RatingTypes[i];
@@ -1243,7 +1217,7 @@ let Productions = {
 			for (let i = 0; i < Productions.RatingTypes.length; i++) {
 				let type = Productions.RatingTypes[i];
 				if (!Productions.Rating[type]) continue;
-				h.push('<th data-type="ratinglist" style="width:1%" class="is-number text-center"><span class="resicon ' + type + '"></span>'+parseFloat(tileRatings[type])+'</th>');
+				h.push('<th data-type="ratinglist" style="width:1%" class="is-number text-center"><span class="resicon ' + type + '"></span>'+(tileRatings?.[type] !== undefined ? parseFloat(tileRatings[type]) : Productions.GetDefaultProdPerTile(type))+'</th>');
 			}
 			h.push('<th data-type="ratinglist" class="no-sort items">Items</th>');
 			h.push('</tr>');
@@ -1253,7 +1227,7 @@ let Productions = {
 			for (const building of ratedBuildings) {
 				h.push('<tr>')
 				h.push('<td class="text-right" data-number="'+building.score * 100 +'">'+Math.round(building.score * 100)+'</td>')
-				h.push('<td data-text="'+helper.str.cleanup(building.building.name)+'">'+building.building.name+'</td>')
+				h.push('<td data-text="'+helper.str.cleanup(building.building.name)+'">'+building.building.name+" ("+i18n("Eras."+Technologies.Eras[building.building.eraName]+".short") +')</td>')
 				for (const type of Productions.RatingTypes) {
 					if (building[type] != undefined) {
 						h.push('<td class="text-right" data-number="'+Math.round(building[type])+'">')
@@ -1309,7 +1283,7 @@ let Productions = {
 	rateBuildings: (buildingType) => {
 		let ratedBuildings = []
 		let tileRatings = JSON.parse(localStorage.getItem('ProductionRatingProdPerTiles'))
-		for(const building of buildingType) {
+		for (const building of buildingType) {
 			let size = building.size.width * building.size.length // todo: include street requirement?
 			let score = 0
 			let ratedBuilding = {
@@ -1318,12 +1292,13 @@ let Productions = {
 			let ratingsCounter= 0
 			for (const type of Object.keys(Productions.Rating)) {
 				if (Productions.Rating[type] != false) {
-					let desiredValuePerTile = parseFloat(tileRatings[type]) || 0 
+					let desiredValuePerTile = tileRatings != undefined ? parseFloat(tileRatings[type]) : Productions.GetDefaultProdPerTile(type)
 					let typeValue = Productions.getRatingValueForType(building, type) || 0 // production amount
 					let valuePerTile = typeValue / size
 
-					if (valuePerTile != 0)
+					if (valuePerTile != 0 && desiredValuePerTile != 0) {
 						score += (valuePerTile / desiredValuePerTile) // todo? when using / negative values behave weirdly
+					}
 
 					ratedBuilding[type] = ( Math.round( typeValue * 100 ) / 100 ) || 0
 					ratedBuilding[type+'-tile'] = valuePerTile || 0
@@ -1355,21 +1330,26 @@ let Productions = {
 		}
 		else if (type == "strategy_points" || type == "medals" || type == "premium" || type == "money" || type == "supplies" || type == "units" || type == "clan_goods" || type == "clan_power")
 			return Productions.getBuildingProductionByCategory(false, building, type).amount
+		
+
+		// todo: güter müssen anhand des gebäudezeitalters angezeigt werden, nicht anhand des spielerzeitalters T_T
 		else if (type.includes("goods")) {
 			let allGoods = CityMap.getBuildingGoodsByEra(false, building)
-			let eraId = Technologies.InnoEras[CurrentEra]
+			let eraId = Technologies.InnoEras[building.eraName]
+			if (building.type == "greatbuilding")
+				eraId = Technologies.InnoEras[CurrentEra]
 			if (allGoods != undefined) {
 				if (type == "goods-current") {
-					if (allGoods[eraId] != undefined)
-						return allGoods[eraId]
+					if (allGoods.eras[eraId] != undefined)
+						return allGoods.eras[eraId]
 				}
 				if (type == "goods-next") {
-					if (allGoods[eraId+1] != undefined)
-						return allGoods[eraId+1]
+					if (allGoods.eras[eraId+1] != undefined)
+						return allGoods.eras[eraId+1]
 				}
 				if (type == "goods-previous") {
-					if (allGoods[eraId-1] != undefined)
-						return allGoods[eraId-1]
+					if (allGoods.eras[eraId-1] != undefined)
+						return allGoods.eras[eraId-1]
 				}
 			}
 		}
