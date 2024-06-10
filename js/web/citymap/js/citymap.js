@@ -931,19 +931,19 @@ let CityMap = {
 	},
 
 	// returns negative numbers for builidings that use population, 0 for buildings that dont provide or use it
-	setPopulation: (ceData, data, era) => {
+	setPopulation: (metaData, data, era) => {
 		let population = 0;
 		let eraId = Technologies.InnoEras[era];
 
 		if (data.type != "generic_building") { // not a generic building
-			if (ceData.entity_levels.length > 0) {  // special building
-				if (ceData.entity_levels[eraId].required_population)
-					return ceData.entity_levels[eraId].required_population * -1		// needs population, e.g. military
-				else if (ceData.entity_levels[eraId].provided_population)
-					return ceData.entity_levels[eraId].provided_population			// provides population, e.g. residential
+			if (metaData.entity_levels.length > 0) {  // special building
+				if (metaData.entity_levels[eraId].required_population)
+					return metaData.entity_levels[eraId].required_population * -1		// needs population, e.g. military
+				else if (metaData.entity_levels[eraId].provided_population)
+					return metaData.entity_levels[eraId].provided_population			// provides population, e.g. residential
 			}
-			else if (ceData.requirements) {
-				if (ceData.requirements.cost) {
+			else if (metaData.requirements) {
+				if (metaData.requirements.cost) {
 					if (data.type === "decoration")
 						return 0
 					else if (data.type === "greatbuilding") 
@@ -951,13 +951,13 @@ let CityMap = {
 							if (data.bonus.type === "population")
 								return data.bonus.value
 					
-					return ceData.requirements.cost.resources.population * -1
+					return metaData.requirements.cost.resources.population * -1
 				}
 			}
 		}
 		else { // generic building
-			if (ceData.components[era]) { // (time) limited buildings lose their era data after expiring
-				let staticResources = ceData.components[era].staticResources;
+			if (metaData.components[era]) { // (time) limited buildings lose their era data after expiring
+				let staticResources = metaData.components[era].staticResources;
 				if (staticResources) {
 					population = staticResources.resources.resources.population;
 					return population;
@@ -968,16 +968,16 @@ let CityMap = {
 	},
 	
 	// returns 0 if building does not provide or substract happiness
-	setHappiness(ceData, data, era) {
+	setHappiness(metaData, data, era) {
 		let happiness = 0
 		let eraId = Technologies.InnoEras[era]
-		let isPolivated = CityMap.setPolivation(data, ceData)
+		let isPolivated = CityMap.setPolivation(data, metaData)
 
 		let bgHappiness = data.bonus
 		if (data.type != "generic_building") {
-			if (ceData.entity_levels.length > 0) { // special building
-				if (ceData.entity_levels[eraId].provided_happiness) 
-					return (data.state.__class__ == "PolishedState" ? ceData.entity_levels[eraId].provided_happiness*2 : ceData.entity_levels[eraId].provided_happiness)
+			if (metaData.entity_levels.length > 0) { // special building
+				if (metaData.entity_levels[eraId].provided_happiness) 
+					return (data.state.__class__ == "PolishedState" ? metaData.entity_levels[eraId].provided_happiness*2 : metaData.entity_levels[eraId].provided_happiness)
 				return happiness
 			}
 			else if (bgHappiness) { // great building, e.g. Alcatraz
@@ -985,22 +985,22 @@ let CityMap = {
 					return bgHappiness.value
 				return 0
 			} 
-			else if (ceData.provided_happiness) { // decorations etc.
-				return (isPolivated ? ceData.provided_happiness*2 : ceData.provided_happiness)
+			else if (metaData.provided_happiness) { // decorations etc.
+				return (isPolivated ? metaData.provided_happiness*2 : metaData.provided_happiness)
 			}
 			else 
 				return happiness
 		}
 		else { // generic building
-			if (ceData.components[era]) {
-				let bHappiness = ceData.components[era].happiness
+			if (metaData.components[era]) {
+				let bHappiness = metaData.components[era].happiness
 				if (bHappiness) {
 					return (bHappiness.provided ? bHappiness.provided : happiness)
 				}
 				return happiness
 			}
-			else if (ceData.components.AllAge) {
-				let bHappiness = ceData.components.AllAge.happiness
+			else if (metaData.components.AllAge) {
+				let bHappiness = metaData.components.AllAge.happiness
 				if (bHappiness) {
 					if (isPolivated) 
 						return (bHappiness.provided ? bHappiness.provided*2 : happiness)
@@ -1013,10 +1013,10 @@ let CityMap = {
 	},
 	
 	// returns undefined if building cannot be motivated or polished
-	setPolivation(data, ceData) { 
+	setPolivation(data, metaData) { 
 		let isPolivationable = false;
 		let isPolishable = false;
-		ceData.abilities.forEach(ability => {
+		metaData.abilities.forEach(ability => {
 			if (ability.__class__ == "MotivatableAbility")
 				isPolivationable = true
 			else if (ability.__class__ == "PolishableAbility") {
@@ -1025,7 +1025,7 @@ let CityMap = {
 			}
 		});
 		if (data.type == "generic_building")
-			isPolivationable = (ceData.components.AllAge.socialInteraction != undefined);
+			isPolivationable = (metaData.components.AllAge.socialInteraction != undefined);
 		
 		if (isPolivationable) {
 			if (data.type != "generic_building") {
@@ -1045,9 +1045,8 @@ let CityMap = {
 						return false
 					return true
 				}
-				else if (data.state.socialInteractionStartedAt > 0 && data.state.socialInteractionId == "motivate") {
+				else if (data.state.socialInteractionStartedAt > 0 && data.state.socialInteractionId == "motivate") 
 					return true
-				}
 				else
 					return false
 			}
@@ -1056,17 +1055,16 @@ let CityMap = {
 	},
 	
 	// returns chainId (string), returns undefined if not a chain building
-	setChainBuilding(ceData) {
+	setChainBuilding(metaData) {
 		let chainId = undefined
 		let type = null, x = 0, y = 0
-		ceData.abilities.forEach(ability => {
+		metaData.abilities.forEach(ability => {
 			if (ability.chainId) {
 				chainId = ability.chainId
 				type = (ability.__class__ == "ChainStartAbility" ? "start" : "link")
-				// currently all chains only have ONE side where you can attach builidings (except mughals and hippodrome)
+				// currently all chains only have ONE side where you can attach builidings (except mughals main building and hippodrome tracks)
 				x = ability.linkPositions[0].topLeftPoint.x || 0 
 				y = ability.linkPositions[0].topLeftPoint.y || 0 
-				// todo: add other topleft point for hippodrome tracks
 			}
 		});
 		if (chainId !== undefined)
@@ -1074,30 +1072,34 @@ let CityMap = {
 	},
 
 	// this creates a pseudo building for effiency ratings etc
-	createChainedBuilding(building, allLinkedBuildings = []) {
-		let chainedBuilding = building
+	createChainedBuilding(allLinkedBuildings = []) {
+		let chainedBuilding = allLinkedBuildings[0] // first building is the start building
 
 		for (link of allLinkedBuildings) {
-			chainedBuilding.size.width = chainedBuilding.size.width + (link.coords.x != chainedBuilding.coords.x ? link.size.width : 0)
-			chainedBuilding.size.length = chainedBuilding.size.length + (link.coords.y != chainedBuilding.coords.y ? link.size.length : 0)
-			chainedBuilding.happiness += link.happiness
+			if (link.chainBuilding.type != "start") {
+				chainedBuilding.size.width = chainedBuilding.size.width + (link.coords.x != chainedBuilding.coords.x ? link.size.width : 0)
+				chainedBuilding.size.length = chainedBuilding.size.length + (link.coords.y != chainedBuilding.coords.y ? link.size.length : 0)
+				chainedBuilding.happiness += link.happiness
 
-			if (link.boosts !== undefined) 
-				chainedBuilding.boosts = [...chainedBuilding.boosts || [], ...link.boosts]
-			if (link.production !== undefined)
-				chainedBuilding.production = [...chainedBuilding.production, ...link.production]
+				if (link.boosts !== undefined) 
+					chainedBuilding.boosts = [...chainedBuilding.boosts || [], ...link.boosts]
+				if (link.production !== undefined && link.production !== false) {
+					console.log(link.production)
+					chainedBuilding.production = [...chainedBuilding.production, ...link.production]
+				}
+				link.chainBuilding.type = "linked"
+			}
 		}
-		if (allLinkedBuildings.length > 0) {
-			chainedBuilding.name = building.name + " +" + allLinkedBuildings.length
-			chainedBuilding.chainBuilding.type = "linked"
+		if (allLinkedBuildings.length > 1) {
+			chainedBuilding.name = chainedBuilding.name + " +" + (allLinkedBuildings.length-1)
 		}
 		return chainedBuilding
 	},
 
-	// returns setId (string), returns undefined if not a chain building
-	setSetBuilding(ceData) {
+	// returns setId (string), returns undefined if not a set building
+	setSetBuilding(metaData) {
 		let setId = undefined
-		ceData.abilities.forEach(ability => {
+		metaData.abilities.forEach(ability => {
 			if (ability.setId)
 				setId = ability.setId
 		});
@@ -1106,25 +1108,25 @@ let CityMap = {
 	},
 
 	// returns an object with the buildings size
-	setSize(ceData) {
+	setSize(metaData) {
 		let size = { width: 0, length: 0 }
-		if (ceData.length)
-			size = { width: ceData.width, length: ceData.length }
+		if (metaData.length)
+			size = { width: metaData.width, length: metaData.length }
 		else {
-			size.width = ceData.components.AllAge.placement.size.x
-			size.length = ceData.components.AllAge.placement.size.y
+			size.width = metaData.components.AllAge.placement.size.x
+			size.length = metaData.components.AllAge.placement.size.y
 		}
 		return size
 	},
 	
 	// returns an array with all boosts, returns undefined when there are none
-	setBuildingBoosts(ceData, data, era) {
+	setBuildingBoosts(metaData, data, era) {
 		let eraName = (era == 'AllAge' ? 'BronzeAge' : era) // for some reason Watchtower Level 2 (example) has an era list even though the boost is the same everywhere. thx inno
 		let boosts = []
-		let isSet = this.setSetBuilding(ceData)
-		let isChain = this.setChainBuilding(ceData)
+		let isSet = this.setSetBuilding(metaData)
+		let isChain = this.setChainBuilding(metaData)
 		if (data.type !== "generic_building") {
-			ceData.abilities.forEach(ability => {
+			metaData.abilities.forEach(ability => {
 				if (ability.boostHints) {
 					ability.boostHints.forEach(abilityBoost => {
 						if (abilityBoost.boostHintEraMap[eraName] != undefined) { // has different boosts for different eras
@@ -1147,11 +1149,10 @@ let CityMap = {
 					})
 				}
 				if ((isSet !== undefined && ability.__class__ === "BonusOnSetAdjacencyAbility") || (isChain !== undefined && ability.__class__ === "ChainLinkAbility")) {
-					// todo: this needs to be overwritten by the actual link/set status?
 					for (const bonus of ability.bonuses) {
 						if (bonus.boost.length == 0) return
 						else {
-							if (bonus.boost[eraName]) { // todo: make variable, less code
+							if (bonus.boost[eraName]) {
 								let boost = {
 									feature: bonus.boost[eraName].targetedFeature,
 									type: MainParser.BoostMapper[bonus.boost[eraName].type] || [bonus.boost[eraName].type],
@@ -1197,8 +1198,8 @@ let CityMap = {
 			}
 		}
 		else {
-			if (ceData.components[era]?.boosts) {
-				ceData.components[era].boosts.boosts.forEach(abilityBoost => {
+			if (metaData.components[era]?.boosts) {
+				metaData.components[era].boosts.boosts.forEach(abilityBoost => {
 					let boost = {
 						feature: abilityBoost.targetedFeature,
 						type: MainParser.BoostMapper[abilityBoost.type] || [abilityBoost.type],
@@ -1207,8 +1208,8 @@ let CityMap = {
 					boosts.push(boost)
 				})
 			}
-			if (ceData.components.AllAge?.boosts) {
-				ceData.components.AllAge.boosts.boosts.forEach(abilityBoost => {
+			if (metaData.components.AllAge?.boosts) {
+				metaData.components.AllAge.boosts.boosts.forEach(abilityBoost => {
 					let boost = {
 						feature: abilityBoost.targetedFeature,
 						type: MainParser.BoostMapper[abilityBoost.type] || [abilityBoost.type],
@@ -1237,28 +1238,24 @@ let CityMap = {
 	},
 
 	// building is not in construction menu
-	isSpecialBuilding(ceData) { 
-		if (ceData.__class__ == "GenericCityEntity")
+	isSpecialBuilding(metaData) { 
+		if (metaData.__class__ == "GenericCityEntity")
 			return true; // generic buildings are always special
-		return ceData.is_special;
+		return metaData.is_special;
 	},
 
 	// returns street level (1 or 2) or 0
-	needsStreet(ceData, data) {
-		let needsStreet = 0;
-		if (data.type != "generic_building") {
-			if (ceData.requirements?.street_connection_level) 
-				needsStreet = ceData.requirements.street_connection_level
-		}
-		else {
-			ceData.abilities.forEach(ability => {
+	needsStreet(metaData) {
+		let needsStreet = metaData.requirements?.street_connection_level
+		if (needsStreet == undefined) {
+			metaData.abilities.forEach(ability => {
 				if (ability.__class__ == "StreetConnectionRequirementComponent")
 					needsStreet = 1
 			});
-			if (ceData.components.AllAge.streetConnectionRequirement)
-				needsStreet = ceData.components.AllAge.streetConnectionRequirement.requiredLevel
+			if (metaData.components?.AllAge?.streetConnectionRequirement != undefined)
+				needsStreet = metaData.components.AllAge.streetConnectionRequirement.requiredLevel
 		}
-		return needsStreet
+		return (needsStreet == undefined ? 0 : needsStreet)
 	},
 	
 	setStateTimes(data) {
@@ -1282,16 +1279,15 @@ let CityMap = {
 		return false;
 	},
 
-	// returns false or time or total collections, todo: needs more data returned
-	isLimitedBuilding(data, ceData) {
-		if (data.type == "generic_building")
-			if (ceData.components.AllAge.limited != undefined) {
-				if (ceData.components.AllAge.limited.config.expireTime != undefined)
-					return ceData.components.AllAge.limited.config.expireTime;
-				if (ceData.components.AllAge.limited.config.collectionAmount != undefined)
-					return ceData.components.AllAge.limited.config.collectionAmount;
-			}
-		return false;
+	// returns false, time or total collections
+	isLimitedBuilding(metaData) {
+		if (metaData.components?.AllAge?.limited != undefined) {
+			if (metaData.components?.AllAge?.limited.config.expireTime != undefined)
+				return metaData.components.AllAge.limited.config.expireTime
+			if (metaData.components?.AllAge?.limited.config.collectionAmount != undefined)
+				return metaData.components.AllAge.limited.config.collectionAmount
+		}
+		return false
 	},
 
 	// returns undefined or time the building was built
@@ -1303,31 +1299,65 @@ let CityMap = {
 	},
 
 	// returns true or false
-	setConnection(ceData, data) {
-		let connected = (this.needsStreet(ceData, data) == 0)
+	setConnection(metaData, data) {
+		let connected = (this.needsStreet(metaData, data) == 0)
 		if (!connected) 
 			connected = (data.connected == 1)
 		return connected
 	},
 
+	// find out if a chain start building has links, return all buildings in an array
+	hasLinks(building, connectedBuildings = [], dirX = 0, dirY = 0) {
+		connectedBuildings.push(building)
+		
+		if (building.chainBuilding?.type == "start") {
+			dirX = building?.chainBuilding?.chainPosX != 0 ? parseInt(building?.chainBuilding?.chainPosX / Math.abs(building?.chainBuilding?.chainPosX)) : 0 // e.g. (-3/3) || 0
+			dirY = building?.chainBuilding?.chainPosY != 0 ? parseInt(building?.chainBuilding?.chainPosY / Math.abs(building?.chainBuilding?.chainPosY)) : 0
+		}
+		let x = building.coords.x + dirX
+		let y = building.coords.y + dirY
+
+		let nextBuilding = CityMap.getBuildingByCoords(x, y)
+		let x1 = x + dirX
+		let y1 = y + dirY
+		while (nextBuilding == undefined) {
+			nextBuilding = CityMap.getBuildingByCoords(x1, y1)
+			x1 += dirX
+			y1 += dirY
+			if (x1 < 0 || y1 < 0 || x1 > 72 || y1 > 72) break // min and max of current map
+		}
+
+		if (x < 0 || x < 0 || y > 72 || y > 72) return connectedBuildings // min and max of current map
+		else {
+			if (nextBuilding == undefined || nextBuilding.chainBuilding == undefined || nextBuilding.chainBuilding?.name !== building.chainBuilding.name || nextBuilding.chainBuilding?.type == "start")
+				return connectedBuildings
+
+			return this.hasLinks(nextBuilding, connectedBuildings, dirX, dirY)
+		}
+	},
+
 	// find out if a chain link building is connected to the chain start building (through other links)
 	isLinked(building, x = 0, y = 0) {
-		let xNeg = building?.chainBuilding?.chainPosX > 0 ? -1 : 1
-		let yNeg = building?.chainBuilding?.chainPosY > 0 ? -1 : 1
-		let x1 = (building?.chainBuilding?.chainPosX != 0 ? building?.chainBuilding?.chainPosX / Math.abs(building?.chainBuilding?.chainPosX) : 0) - x*xNeg
-		let y1 = (building?.chainBuilding?.chainPosY != 0 ? building?.chainBuilding?.chainPosY / Math.abs(building?.chainBuilding?.chainPosY) : 0) - y*yNeg
+		if (typeof building?.chainBuilding?.chainPosX === 'number') {
+			let posX = building?.chainBuilding?.chainPosX
+			let posY = building?.chainBuilding?.chainPosY
+			let xNeg = posX > 0 ? -1 : 1
+			let yNeg = posY > 0 ? -1 : 1
+			let x1 = (posX != 0 ? posX / Math.abs(posX) : 0) - x*xNeg
+			let y1 = (posY != 0 ? posY / Math.abs(posY) : 0) - y*yNeg
 
-		let prevBuilding = CityMap.getBuildingByCoords(building?.coords?.x - x1, building?.coords?.y - y1)
+			let prevBuilding = CityMap.getBuildingByCoords(building?.coords?.x - x1, building?.coords?.y - y1)
 
-		if (y1 < 0 || x1 < 0 || x1 > 72 || y1 > 72) return false // min and max of current map
-		else {
-			if (prevBuilding !== undefined) {
-				if (prevBuilding.chainBuilding === undefined || prevBuilding.chainBuilding?.name !== building.chainBuilding.name) return false
-				if (prevBuilding.chainBuilding?.name === building.chainBuilding.name && prevBuilding.chainBuilding?.type == ("linked" || "start")) {
-					return true
+			if (y1 < 0 || x1 < 0 || x1 > 72 || y1 > 72) return false // min and max of current map
+			else {
+				if (prevBuilding !== undefined) {
+					if (prevBuilding.chainBuilding === undefined || prevBuilding.chainBuilding?.name !== building.chainBuilding.name) return false
+					if (prevBuilding.chainBuilding?.name === building.chainBuilding.name && prevBuilding.chainBuilding?.type == ("linked" || "start")) {
+						return true
+					}
 				}
+				return this.isLinked(building, x1, y1)
 			}
-			return this.isLinked(building, x1, y1)
 		}
 	},
 
@@ -1344,14 +1374,14 @@ let CityMap = {
 	},
 	
 	// returns false if building does not produce anything
-	setAllProductions(ceData, data, era) {
+	setAllProductions(metaData, data, era) {
 		let productions = []
 		if (data.type != "generic_building" && data.type != "greatbuilding") {
-			if (ceData.is_special) { // special building
-				if (ceData.available_products !== undefined) { 
+			if (metaData.is_special) { // special building
+				if (metaData.available_products !== undefined) { 
 					// to do: to think about: should all goods production options be gathered here?
-					if (Array.isArray(ceData.available_products))
-						ceData.available_products.forEach(product => {
+					if (Array.isArray(metaData.available_products))
+						metaData.available_products.forEach(product => {
 							let resource = {
 								type: "unknown", 
 								needsMotivation: false,
@@ -1359,15 +1389,15 @@ let CityMap = {
 							}
 						});
 				}
-				if (ceData.entity_levels[Technologies.InnoEras[era]] !== undefined) { // base money is here
-					let money = ceData.entity_levels[Technologies.InnoEras[era]].produced_money
+				if (metaData.entity_levels[Technologies.InnoEras[era]] !== undefined) { // base money is here
+					let money = metaData.entity_levels[Technologies.InnoEras[era]].produced_money
 					if (money)
 						productions.push({ type: 'resources', needsMotivation: false, resources: { money: money }, doubleWhenMotivated: true})
-					let power = ceData.entity_levels[Technologies.InnoEras[era]].clan_power // hall of fame lvl 1
+					let power = metaData.entity_levels[Technologies.InnoEras[era]].clan_power // hall of fame lvl 1
 					if (power)
 						productions.push({ type: 'guildResources', needsMotivation: false, resources: { clan_power: power }, doubleWhenMotivated: true})
 				}
-				ceData.abilities.forEach(ability => {
+				metaData.abilities.forEach(ability => {
 					let resource = this.setOldProductionResourceFromAbility(ability, era)
 					
 					if (Object.keys(resource.resources).length > 0) 
@@ -1379,7 +1409,7 @@ let CityMap = {
 					let resource = {
 						type: (emissary.bonus.type != "unit" ? "resources" : emissary.bonus.type),
 						needsMotivation: false,
-						resources: {[emissary.bonus.subType]: emissary.bonus.amount} 
+						resources: (emissary.bonus.type == "unit" ? this.setUnitReward(emissary.bonus, true) : {[emissary.bonus.subType]: emissary.bonus.amount} )
 					}
 					productions.push(resource)
 				})
@@ -1414,14 +1444,14 @@ let CityMap = {
 					productions.push(resource)
 				})
 			}
-			let isChain = this.setChainBuilding(ceData)
+			let isChain = this.setChainBuilding(metaData)
 			if (isChain !== undefined) {
-				for (const ability of ceData.abilities) {
+				for (const ability of metaData.abilities) {
 					if (ability.__class__ == "ChainLinkAbility")
 						for (const bonus of ability.bonuses) {
 							if (bonus.revenue.length == 0) return
 							else {
-								if (bonus.revenue[Technologies.InnoEras[era]]) { // todo: make variable, less code
+								if (bonus.revenue[Technologies.InnoEras[era]]) {
 									let resource = {
 										type: "resources", // currently there are no chains that give anything else
 										needsMotivation: false,
@@ -1449,9 +1479,9 @@ let CityMap = {
 		}
 		else if (data.type === "generic_building") {
 			// fyi: generic_building supplies and coins are always doubled when motivated
-			let production = ceData.components[era]?.production || ceData.components.AllAge.production // currently it is either allage or era, never both
+			let production = metaData.components[era]?.production || metaData.components.AllAge.production // currently it is either allage or era, never both
 			if (production) {
-				if (ceData.type == "production") return false // production buildings do not have a default production
+				if (metaData.type == "production") return false // production buildings do not have a default production
 				production.options[0].products.forEach(product => {
 					let resource = {
 						type: product.type,
@@ -1465,7 +1495,7 @@ let CityMap = {
 						resource.resources = product.guildResources.resources;
 					}
 					else if (product.type == "genericReward" || product.type == "blueprint") {
-						resource.resources = this.setGenericReward(product, ceData, data, era) 
+						resource.resources = this.setGenericReward(product, metaData, era) 
 						if (resource.resources.type === undefined)  // genericReward can also return a unit reward, change type
 							resource.type = "unit"
 					}
@@ -1477,8 +1507,8 @@ let CityMap = {
 						if (product.products.length > 1) {
 							product.products.forEach(reward => {
 								if (reward.product.type === "genericReward") { // currently: everything but forge points
-									let lookupData = ceData.components[era]?.lookup.rewards[reward.product.reward.id] || ceData.components.AllAge.lookup.rewards[reward.product.reward.id]
-									let name = this.setRewardNameFromLookupData(lookupData, ceData)
+									let lookupData = metaData.components[era]?.lookup.rewards[reward.product.reward.id] || metaData.components.AllAge.lookup.rewards[reward.product.reward.id]
+									let name = this.setRewardNameFromLookupData(lookupData, metaData)
 									let newReward = {
 										id: reward.product.reward.id,
 										name: name,
@@ -1506,7 +1536,7 @@ let CityMap = {
 						}
 					}
 					else {
-						console.log("CityMap.setAllProductions() is missing an option for ",ceData.name)
+						console.log("CityMap.setAllProductions() is missing an option for ",metaData.name)
 					}
 					productions.push(resource)
 				});
@@ -1541,7 +1571,7 @@ let CityMap = {
 	},
 
 	// returns undefined if building is idle or there are no productions (yet)
-	setCurrentProductions(data, ceData, era) {
+	setCurrentProductions(data, metaData, era) {
 		let productions = []
 		let state = CityMap.setState(data)
 		if (state != "idle") {
@@ -1593,7 +1623,7 @@ let CityMap = {
 						productions.push(production)
 					}
 					if (data.state.is_motivated) { 
-						ceData.abilities.forEach(ability => { // random units are not in the data, they are in the ceData for some reason
+						metaData.abilities.forEach(ability => { // random units are not in the data, they are in the metaData for some reason
 							if (ability.__class__ === "RandomUnitOfAgeWhenMotivatedAbility") {
 								let production = {
 									resources: { "random": ability.amount },
@@ -1605,7 +1635,7 @@ let CityMap = {
 					}
 				}
 				if (data.type == "main_building") {
-					let prod = productions.concat(CityMap.setAllProductions(ceData, data, era))
+					let prod = productions.concat(CityMap.setAllProductions(metaData, data, era))
 					return prod
 				}
 			}
@@ -1620,18 +1650,16 @@ let CityMap = {
 							resource.resources = production.playerResources.resources
 						else if (production.type == "guildResources")
 							resource.resources = production.guildResources.resources
-						else if (production.type == "unit") {
+						else if (production.type == "unit") 
 							resource.resources = this.setUnitReward(production)
-						}
 						else if (production.type == "genericReward") {
-							let reward = this.setGenericReward(production, ceData, data, era)
+							let reward = this.setGenericReward(production, metaData, era)
 							resource.resources = reward
-							if (reward.type == undefined) { // genericReward can also return a unit reward, change type
+							if (reward.type == undefined) // genericReward can also return a unit reward, change type
 								resource.type = 'unit'
-							}
 						}
 						else
-							console.log(ceData.name, "CityMap.setCurrentProductions() production is missing")
+							console.log(metaData.name, "CityMap.setCurrentProductions() production is missing")
 						
 						productions.push(resource)
 					});
@@ -1650,37 +1678,43 @@ let CityMap = {
 	// todo: set buildings
 	
 	// returns a generic reward or a unit reward
-	setGenericReward(product, ceData, data, era) {
+	setGenericReward(product, metaData, era) {
 		let amount = 0
 
 		if (product.reward.amount != undefined) 
 			amount = product.reward.amount
 
 		let lookupData = false
-		if (ceData.components[era]) {
+		if (metaData.components[era]) {
 			if (product.reward.id.search("blueprint") != -1) {
-				if (ceData.components[era].lookup.rewards[product.reward.id]) {
-					lookupData = ceData.components[era].lookup.rewards[product.reward.id]
+				if (metaData.components[era].lookup.rewards[product.reward.id]) {
+					lookupData = metaData.components[era].lookup.rewards[product.reward.id]
 				}
 				else {
-					for (const [key, reward] of Object.entries(ceData.components[era].lookup.rewards)) {
+					for (const [key, reward] of Object.entries(metaData.components[era].lookup.rewards)) {
 						if (reward.id.search("blueprint") != -1)
 							lookupData = reward;
 					}
 				}
 			}
 			else if (product.reward.id.search("unit") != -1) {
-				if (ceData.components[era].lookup.rewards[product.reward.id])
-					lookupData = ceData.components[era].lookup.rewards[product.reward.id]
+				if (metaData.components[era].lookup.rewards[product.reward.id])
+					lookupData = metaData.components[era].lookup.rewards[product.reward.id]
 				else {
-					for (const [key, reward] of Object.entries(ceData.components[era].lookup.rewards)) {
+					for (const [key, reward] of Object.entries(metaData.components[era].lookup.rewards)) {
 						if (reward.id.search("unit") != -1)
 							lookupData = reward;
 					}
 				}
 			}
+			else if (product.reward.type == "good") { // this can break if there is more than one generic goods reward for a building
+				for (const [key, reward] of Object.entries(metaData.components[era].lookup.rewards)) {
+					if (reward.id.includes("good"))
+						lookupData = reward;
+				}
+			}
 			else
-				lookupData = ceData.components[era].lookup.rewards[product.reward.id];
+				lookupData = metaData.components[era].lookup.rewards[product.reward.id];
 		}
 		if (amount == 0) 
 			amount = lookupData.amount
@@ -1688,9 +1722,9 @@ let CityMap = {
 
 		let name = ""
 		if (lookupData) 
-			name = this.setRewardNameFromLookupData(lookupData, ceData)
+			name = this.setRewardNameFromLookupData(lookupData, metaData)
 		else {
-			console.log("CityMap.setGenericReward() data missing", ceData.name, ceData, data);
+			console.log("CityMap.setGenericReward() data missing", metaData.name, metaData);
 			name = "DEFINE NAME"
 		}
 		
@@ -1710,27 +1744,39 @@ let CityMap = {
 			id: product.reward.id,
 			name: name,
 			type: lookupData?.type || "consumable",
-			subType: lookupData.subType,
+			subType: lookupData?.subType, // todo lookupdata is undefined for Zheng's Golden Bell - Lv. 2 
 			amount: amount, // amount can be undefined for blueprints or units if building is not motivated
-			icon: lookupData.iconAssetName
+			icon: lookupData?.iconAssetName
 		}
 		return reward;
 	},
 
 	// returns { unit_type: amount } 
 	// unit_type can be: random, rogue, light_melee, heavy_melee, short_ranged, long_ranged, fast, next#light_melee -> next# for next era units
-	setUnitReward(product) {
+	setUnitReward(product, isEmissary = false) {
 		let amount, type
-		if (product.type == 'genericReward') {
+		if (isEmissary) {
+			amount = product.amount
+			if (product.id.search("#") != -1) { // era_unit#light_melee#NextEra#1
+				let prefix = ""
+				if (product.id.search("NextEra") != -1) 
+					prefix = "next#"
+				
+				type = prefix + product.id.split("#")[1]
+			}
+			else 
+				type = "random"
+		}
+		else if (product.type == 'genericReward') {
 			let amountFromString = product.reward.id.match(/\d+$/)
 			amount = parseInt(amountFromString ? amountFromString[0] : 1) 	// if its only one unit, there is no number in the string
 			type = product.reward.id.replace("unit_","").replace(/\d+/,"") 	// grabs e.g. "heavy_melee" from unit_heavy_melee3 or rogue from unit_rogue3 
 			if (type.search("random") != -1) type = "random"
 			if (product.reward.id.search("#") != -1) { // era_unit#light_melee#NextEra#1
 				let prefix = ""
-				if (product.reward.id.search("NextEra") != -1) {
+				if (product.reward.id.search("NextEra") != -1) 
 					prefix = "next#"
-				}
+				
 				type = prefix + product.reward.id.split("#")[1]
 			}
 		}
@@ -1741,7 +1787,7 @@ let CityMap = {
 		return { [type]: amount }
 	},
 
-	setRewardNameFromLookupData(lookupData, ceData) {
+	setRewardNameFromLookupData(lookupData, metaData) {
 		let name = ""
 		if (lookupData.subType == "fragment") 
 			name = lookupData.assembledReward.name
@@ -1749,25 +1795,23 @@ let CityMap = {
 			name = lookupData.rewards[0].name 
 		else if (lookupData.subType == "speedup_item" || lookupData.subType == "reward_item" || lookupData.type == "chest" || lookupData.subType == "boost_item" || lookupData.type == "forgepoint_package" || lookupData.type == "resource") 
 			name = lookupData.name
-		else if (lookupData.type == "unit") {
+		else if (lookupData.type == "unit") { // -> (next_)light_melee
 			if (lookupData.id.search("#") != -1) { // era_unit#light_melee#NextEra#1
 				let prefix = ""
-				if (lookupData.id.search("NextEra") != -1) {
+				if (lookupData.id.search("NextEra") != -1) 
 					prefix = "next_"
-				}
+				
 				name = prefix + lookupData.id.split("#")[1]
 			}
-			else {
+			else 
 				name = lookupData.id.replace("unit_","").replace(/\d+/,"")
-			}
 		}
-		else if (lookupData.type == "blueprint") { // id: "blueprint#random#3"
+		else if (lookupData.type == "blueprint")  // id: "blueprint#random#3"
 			name = lookupData.name.replace(/^\d+\s*/,"")
-		}
 		else if (lookupData.subType == "self_aid_kit")
 			name = lookupData.name
 		else {
-			console.log("CityMap.setRewardNameFromLookupData(): undefined name from type", ceData.name, lookupData, lookupData.type, lookupData.subType)
+			console.log("CityMap.setRewardNameFromLookupData(): undefined name from type", metaData.name, lookupData, lookupData.type, lookupData.subType)
 		}
 		return name
 	},
@@ -1816,7 +1860,6 @@ let CityMap = {
 			})
 			resource.resources = rewards
 		}
-		// todo: wunschbrunnen?
 
 		let multiAgeProduct = {}
 		let allAgeProduct = {}
@@ -1913,10 +1956,8 @@ let CityMap = {
 			return goods
 	},
 
-	setType(data,ceData) {
-		if (data.type == "generic_building")
-			return ceData.type
-		return data.type
+	setType(metaData) {
+		return metaData.type
 	},
 
 	createNewCityMapEntities(data) {
@@ -1939,48 +1980,45 @@ let CityMap = {
 		return (CityMap.IsExtern === true ? MainParser.OtherPlayerCityMapData : MainParser.NewCityMapData) 
 	},
 	
-	createNewCityMapEntity(ceData, data, era) {
-		let x = data.x || 0
-		let y = data.y || 0
+	createNewCityMapEntity(metaData, data, era) {
 		let entity = {
 			player_id: data.player_id,
 			id: data.id,
 
 			entityId: data.cityentity_id,
-			name: ceData.name,
-			type: this.setType(data, ceData),
+			name: metaData.name,
+			type: this.setType(metaData),
 			eraName: (data.cityentity_id.includes("CastleSystem") ? CurrentEra : era),
-			isSpecial: this.isSpecialBuilding(ceData),
-			isLimited: this.isLimitedBuilding(data, ceData),
-			chainBuilding: this.setChainBuilding(ceData),
-			setBuilding: this.setSetBuilding(ceData),
-			size: this.setSize(ceData),
+			isSpecial: this.isSpecialBuilding(metaData),
+			isLimited: this.isLimitedBuilding(metaData),
+			chainBuilding: this.setChainBuilding(metaData),
+			setBuilding: this.setSetBuilding(metaData),
+			size: this.setSize(metaData),
 
-			population: this.setPopulation(ceData, data, era), 
-			happiness: this.setHappiness(ceData, data, era),
-			needsStreet: this.needsStreet(ceData, data),
+			population: this.setPopulation(metaData, data, era), 
+			happiness: this.setHappiness(metaData, data, era),
+			needsStreet: this.needsStreet(metaData),
 			
-			boosts: this.setBuildingBoosts(ceData, data, era),
-			production: this.setAllProductions(ceData, data, era),
+			boosts: this.setBuildingBoosts(metaData, data, era),
+			production: this.setAllProductions(metaData, data, era),
 
-			coords: { x: x, y: y },
-			buildTime: this.setBuildTime(data),
+			coords: { x: data.x || 0, y: data.y || 0 },
 			
 			state: {
 				name: this.setState(data),
 				times: this.setStateTimes(data),
-				isPolivated: this.setPolivation(data, ceData),
-				connected: this.setConnection(ceData, data), // fyi: decorations are always connected
-				production: this.setCurrentProductions(data, ceData, era),
+				isPolivated: this.setPolivation(data, metaData),
+				connected: this.setConnection(metaData, data), // fyi: decorations are always connected
+				production: this.setCurrentProductions(data, metaData, era),
 				isExpired: this.isExpiredBuilding(data),
-			},
-
-			level: (data.type == "greatbuilding" ? data.level : undefined), // level also includes eraId in raw data, we do not like that
-			max_level: (data.type == "greatbuilding" ? data.max_level : undefined)
+				buildTime: this.setBuildTime(data),
+				level: (data.type == "greatbuilding" ? data.level : null), // level also includes eraId in raw data, we do not like that
+				max_level: (data.type == "greatbuilding" ? data.max_level : null)
+			}
 		}
 		
-		//if (entity.type != "street")
-		//	console.log('entity ',entity.name, entity, ceData, data)
+		if (entity.type != "street")
+			console.log('entity ',entity.name, entity, metaData, data)
 		return entity
 	},
 };
