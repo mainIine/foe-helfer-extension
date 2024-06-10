@@ -1357,10 +1357,10 @@ let CityMap = {
 		let reward = {
 			id: product.reward.id,
 			name: name,
-			type: lookupData.type || "consumable",
-			subType: lookupData.subType,
+			type: lookupData?.type || "consumable",
+			subType: lookupData?.subType,
 			amount: amount, // amount can be undefined for blueprints or units if buiilding is not motivated
-			icon: lookupData.iconAssetName
+			icon: lookupData?.iconAssetName
 		}
 		return reward;
 	},
