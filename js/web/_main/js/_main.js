@@ -150,6 +150,7 @@ GetFights = () =>{
 	FoEproxy.addMetaHandler('city_entities', (xhr, postData) => {
 		let EntityArray = JSON.parse(xhr.responseText);
 		MainParser.CityEntities = Object.assign({}, ...EntityArray.map((x) => ({ [x.id]: x })));
+
 		for (let i in MainParser.CityEntities) {
 			if (!MainParser.CityEntities.hasOwnProperty(i)) continue;
 
@@ -840,8 +841,9 @@ let HelperBeta = {
 	menu: [
 		'unitsGex',
 		'marketOffers',
+		'combat_power'
 	],
-	active: JSON.parse(localStorage.getItem('HelperBetaActive'))
+	active: JSON.parse(localStorage.getItem('HelperBetaActive')) || devMode == 'true' || loadBeta
 };
 
 
@@ -916,6 +918,18 @@ let MainParser = {
 
 		localStorage.setItem('LastStartedVersion', extVersion);
 		localStorage.setItem('LastAgreedVersion', extVersion); //Comment out this line if you have something the player must agree on
+	},
+
+
+	createCityBuildings: () => {
+		// loop through all city buildings
+		for (const [key, data] of Object.entries(MainParser.CityMapData)) {
+			let ceData = Object.values(MainParser.CityEntities).find(x => x.id === data.cityentity_id);
+			let era = Technologies.getEraName(data.cityentity_id, data.level);
+			let cityMapEntity = CityMap.createNewCityMapEntity(ceData,data,era)
+
+			MainParser.NewCityMapData[cityMapEntity.id] = cityMapEntity;
+		}
 	},
 
 
@@ -1657,7 +1671,7 @@ let MainParser = {
 		let day = Math.floor(Date.now()/86400000);
 		let LCUindex = MainParser.Conversations.findIndex((obj) => (obj.id === "__lastCleanup"));
 		let LCU = day;
-		if (LCUindex == -1) {
+		if (LCUindex === -1) {
 			MainParser.Conversations.forEach( (obj) => obj.lastSeen = day);
 			MainParser.Conversations.push({
 				id: "__lastCleanup",
