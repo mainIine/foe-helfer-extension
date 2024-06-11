@@ -1,6 +1,51 @@
 ## Changelog - Extension
 
 
+##### 3.6.5.0
+
+**New**
+- Summer Event:
+	- added a list of all possible rewards to the event chest helper
+
+**Update**
+- City Map:
+	- added QI Action Points in production overview when in QI Settlement
+
+- Cultural Settlements Overview:
+	- changed to 5-hour production cycle
+
+- close/hide all buttons now also close/hide minigame blockers
+
+- Blue Galaxy:
+	- current era goods and other goods are now handled separately
+
+- Kits:
+	- updated till Summer Event 2024
+	- images are now lazy-loaded to improve loading time
+	- ascended upgrades added to overview
+
+- limited buildings expired warning:
+	- now has a setting option to ignore selected buildings after they expire
+
+- Statistics:
+	- incidents and shards are now properly tracked again
+
+**BugFix**
+- GBG Building Recommendation:
+	- some combinations were ignored in 3-slot provinces
+
+- (QI) pass rewards were not processed correctly if more than one was collected at once
+
+- City Map:
+	- certain buildings caused the city map to not load properly
+
+- FP Collection:
+	- QI rewards were way too high
+
+- recurring questlist did not show proper images
+
+---
+
 ##### 3.6.4.0
 
 **Update**
