@@ -275,6 +275,9 @@ GetFights = () =>{
 		// Unlocked features
 		MainParser.UnlockedFeatures = data.responseData.unlocked_features.map(function(obj) { return obj.feature; });
 
+		//A/B Tests
+		MainParser.ABTests=Object.assign({}, ...data.responseData.active_ab_tests.map((x) => ({ [x.test_name]: x })));
+	
 		Stats.Init();
 		Alerts.init();
 

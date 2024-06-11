@@ -1,5 +1,51 @@
 ## Changelog - Extension
 
+##### 3.6.5.0
+
+**Neu**
+- Sommer Event:
+	- Der Event-Truhen-Helfer zeigt nun alle Preise eines Bretts an
+
+**Update**
+- Stadtübersicht:
+	- QI Aktionspunkte die durch Gebäude produzoert werden, werden jetzt in der Stadtübersicht angezeigt (wenn in QI)
+
+- Kulturelle Siedlungen:
+	- auf 5-Stunden Zyklus angepasst
+
+- Alle verstecken/schließen funktioniert nun auch für Minispiel-Blocker
+
+- Blaue Galaxie:
+	- aktuelle Güter werden nun separat gelistet
+
+- Kits:
+	- aktualisiert bis Sommer Event 2024
+	- Bilder werden nun erst geladen, wenn tatsächlich benötigt, um Ladezeiten zu verkürzen
+	- erhabene Upgrades werden nun auch in gelistet
+
+- Abgelaufene beschränkte Gebäude:
+	- es kann nun eingestellt werden, für welche Gebäude die "ist abgelaufen" Warnung bei Start nicht mehr angezeigt werden soll
+
+- Statistik:
+	- Ereignisse und Scherben werden wieder gelistet
+
+**BugFix**
+- GG Gebäude-Empfehlung:
+	- in 3er Provinzen wurden manche Kombination übergangen
+
+- (QI) Pass Belohnungen wurden nicht korrekt behandelt, wenn mehr als eine Belohnung auf einmal eingesammelt wurde
+
+- FP-Einsammlungen:
+	- QI-Belohnungen wurden falsch gezählt
+
+- Stadtübersicht:
+	- bestimmte Gebäude konnten verhindern, dass die Übersicht korrekt lädt
+
+- Bilder der Wiederkehrende Quest Übersicht werden wieder korrekt geladen
+
+
+---
+
 ##### 3.6.4.0
 
 **Update**
