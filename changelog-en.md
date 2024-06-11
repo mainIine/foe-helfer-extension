@@ -3,6 +3,10 @@
 
 ##### 3.6.5.0
 
+**New**
+- Summer Event:
+	- added a list of all possible rewards to the event chest helper
+
 **Update**
 - City Map:
 	- added QI Action Points in production overview when in QI Settlement
@@ -34,6 +38,9 @@
 
 - City Map:
 	- certain buildings caused the city map to not load properly
+
+- FP Collection:
+	- QI rewards were way too high
 
 - recurring questlist did not show proper images
 

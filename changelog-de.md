@@ -2,6 +2,10 @@
 
 ##### 3.6.5.0
 
+**Neu**
+- Sommer Event:
+	- Der Event-Truhen-Helfer zeigt nun alle Preise eines Bretts an
+
 **Update**
 - Stadtübersicht:
 	- QI Aktionspunkte die durch Gebäude produzoert werden, werden jetzt in der Stadtübersicht angezeigt (wenn in QI)
@@ -31,7 +35,10 @@
 
 - (QI) Pass Belohnungen wurden nicht korrekt behandelt, wenn mehr als eine Belohnung auf einmal eingesammelt wurde
 
-- Statdübersicht:
+- FP-Einsammlungen:
+	- QI-Belohnungen wurden falsch gezählt
+
+- Stadtübersicht:
 	- bestimmte Gebäude konnten verhindern, dass die Übersicht korrekt lädt
 
 - Bilder der Wiederkehrende Quest Übersicht werden wieder korrekt geladen
