@@ -125,7 +125,7 @@ let srcLinks = {
         let url1 = srcLinks.get(`/shared/icons/quest_icons/${icon}.png`,true, true);
         let url2 = srcLinks.get(`/shared/icons/${icon}.png`,true, true);
         
-        if (url1.indexOf("undefined") > -1) {
+        if (url1.indexOf("antiquedealer_flag") > -1) {
             return url2;
         }
 
