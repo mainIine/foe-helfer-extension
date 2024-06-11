@@ -89,6 +89,18 @@ FoEproxy.addHandler('PresentGameService', 'openPresent', (data, postData) => {
     EventPresents.Show()
 });
 
+FoEproxy.addHandler('PresentGameService', 'useBooster', (data, postData) => {
+
+	if(!Settings.GetSetting('ShowEventChest')) return
+    let presents = data.responseData.updatedPresentList
+
+    for (let present of presents) {
+        EventPresents.Presents[present.presentId] = present
+    }
+
+    EventPresents.Show()
+});
+
 let EventPresents = {
     Presents: null,
 
