@@ -39,7 +39,12 @@ helper.str = {
 	 */
 	copyToClipboard: async(textToCopy) => {
 		if (navigator && navigator.clipboard && navigator.clipboard.writeText) {
-			return navigator.clipboard.writeText(textToCopy);
+			try {
+				a = navigator.clipboard.writeText(textToCopy);
+				return a;
+			} catch (e) {
+				return resolve();
+			}
 		} else {
 			return new Promise(async (resolve) => {
 				let copyFrom = $('<textarea/>');
