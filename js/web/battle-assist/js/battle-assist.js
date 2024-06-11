@@ -174,6 +174,7 @@ let BattleAssist = {
             'dragdrop': false,
             'minimize': false
         });
+        if (MainParser.ABTests["foe_abtest_army_ux"].group != "control_group") $('#battleAssistRogueDialog').addClass("ABnew")
         $('#battleAssistRogueDialogBody').html(`${i18n('Boxes.BattleAssist.Text.Rogue')}`);
     },
     
