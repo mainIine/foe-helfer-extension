@@ -4,34 +4,35 @@
 
 **Neu**
 - Sommer Event:
-	- Der Event-Truhen-Helfer zeigt nun alle Preise eines Bretts an
+	- Der Event-Truhen-Helfer zeigt nun verdeckte Preise eines Bretts an
 
 **Update**
 - Stadtübersicht:
-	- QI Aktionspunkte die durch Gebäude produzoert werden, werden jetzt in der Stadtübersicht angezeigt (wenn in QI)
+	- QI Aktionspunkte die durch Gebäude produziert werden, werden jetzt in der Stadtübersicht angezeigt (wenn in QI)
+	- Man sieht nun auch bei anderen Spielern, welche Gebäude keine Straßenverbindungen benötigen
 
 - Kulturelle Siedlungen:
-	- auf 5-Stunden Zyklus angepasst
+	- Auf 5-Stunden Zyklus angepasst
 
 - Alle verstecken/schließen funktioniert nun auch für Minispiel-Blocker
 
 - Blaue Galaxie:
-	- aktuelle Güter werden nun separat gelistet
+	- Aktuelle Güter werden nun separat gelistet
 
 - Kits:
-	- aktualisiert bis Sommer Event 2024
+	- Aktualisiert bis Sommer Event 2024
 	- Bilder werden nun erst geladen, wenn tatsächlich benötigt, um Ladezeiten zu verkürzen
-	- erhabene Upgrades werden nun auch in gelistet
+	- Erhabene Upgrades werden nun auch in gelistet
 
 - Abgelaufene beschränkte Gebäude:
-	- es kann nun eingestellt werden, für welche Gebäude die "ist abgelaufen" Warnung bei Start nicht mehr angezeigt werden soll
+	- Es kann nun eingestellt werden, für welche Gebäude die "ist abgelaufen" Warnung bei Start nicht mehr angezeigt werden soll
 
 - Statistik:
 	- Ereignisse und Scherben werden wieder gelistet
 
 **BugFix**
 - GG Gebäude-Empfehlung:
-	- in 3er Provinzen wurden manche Kombination übergangen
+	- In 3er Provinzen wurden manche Kombination übergangen
 
 - (QI) Pass Belohnungen wurden nicht korrekt behandelt, wenn mehr als eine Belohnung auf einmal eingesammelt wurde
 
@@ -39,7 +40,7 @@
 	- QI-Belohnungen wurden falsch gezählt
 
 - Stadtübersicht:
-	- bestimmte Gebäude konnten verhindern, dass die Übersicht korrekt lädt
+	- Bestimmte Gebäude konnten verhindern, dass die Übersicht korrekt lädt
 
 - Bilder der Wiederkehrende Quest Übersicht werden wieder korrekt geladen
 
