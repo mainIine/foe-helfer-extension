@@ -60,6 +60,7 @@ FoEproxy.addHandler('BattlefieldService', 'all', (data, postData) => {
 FoEproxy.addHandler('BattlefieldService', 'getArmyPreview', (data, postData) => {
     
     if(!Settings.GetSetting('ShowArmyAdvice'))	return;
+    if (data.responseData?.__class__=="Error") return;
     
     $('#battleAssistArmyAdvice').remove();
     $('#battleAssistAddAdvice').remove();
@@ -173,6 +174,7 @@ let BattleAssist = {
             'dragdrop': false,
             'minimize': false
         });
+        if (MainParser.ABTests["foe_abtest_army_ux"].group != "control_group") $('#battleAssistRogueDialog').addClass("ABnew")
         $('#battleAssistRogueDialogBody').html(`${i18n('Boxes.BattleAssist.Text.Rogue')}`);
     },
     

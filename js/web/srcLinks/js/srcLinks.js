@@ -1,7 +1,7 @@
 /*
  * *************************************************************************************
  *
- * Copyright (C) 2023 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2024 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -110,14 +110,17 @@ let srcLinks = {
 
 
     getReward:(icon) => {
-        let url1 = srcLinks.get(`/shared/icons/reward_icons/reward_icon_${icon}.png`,true, true);
-        let url2 = srcLinks.get(`/shared/icons/goods_large/${icon}.png`,true, true);
-        
-        if (url2.indexOf("antiquedealer_flag") > -1) {
-            return url1;
-        }
+        let url3 = srcLinks.get(`/shared/unit_portraits/armyuniticons_90x90/armyuniticons_90x90_${icon}.png`,true, true) // does not work :(
+        let url2 = srcLinks.get(`/shared/icons/goods_large/${icon}.png`,true, true)
+        let url1 = srcLinks.get(`/shared/icons/reward_icons/reward_icon_${icon}.png`,true, true)
+        let url = url3
 
-        return url2;
+        if (url3.indexOf("antiquedealer_flag") > -1) 
+            url = url2
+        if (url2.indexOf("antiquedealer_flag") > -1) 
+            url = url1
+
+        return url;
     },
 
 
@@ -125,7 +128,7 @@ let srcLinks = {
         let url1 = srcLinks.get(`/shared/icons/quest_icons/${icon}.png`,true, true);
         let url2 = srcLinks.get(`/shared/icons/${icon}.png`,true, true);
         
-        if (url1.indexOf("undefined") > -1) {
+        if (url1.indexOf("antiquedealer_flag") > -1) {
             return url2;
         }
 

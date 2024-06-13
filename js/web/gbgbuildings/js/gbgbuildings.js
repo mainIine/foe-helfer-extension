@@ -101,7 +101,7 @@ let GBGBuildings = {
 					needed.splice(i,1);
 					keep.push(b)
 				} else 
-					leftStanding.push(b);
+				if (b!="free") leftStanding.push(b);
 			}
 			if (leftStanding.length > 0) {
 				for (b of needed) {

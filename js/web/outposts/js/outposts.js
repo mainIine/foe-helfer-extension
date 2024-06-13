@@ -173,7 +173,7 @@ let Outposts = {
 		;
 
 		/** @type {number} */
-		const current4HProductionRate = buildings.reduce(
+		const current5HProductionRate = buildings.reduce(
 			/** @type {(acc: number, building: FoE_JSON_CityMapEntity) => number} */
 			(acc, building) => {
 				const state = building.state;
@@ -186,12 +186,12 @@ let Outposts = {
 				if (production.__class__ === 'CityEntityProductionProduct') {
 					const amount = production.product.resources[primaryResourceId];
 					if (amount != null) {
-						return acc + amount*(60*60*4/* 4h */)/production.production_time;
+						return acc + amount/production.production_time*(60*60*5 /* 5h */);
 					}
 				} else if (production.__class__ === 'CityEntityResourcesWithRequirementsProduct') {
 					const amount = production.resources.resources[primaryResourceId];
 					if (amount != null) {
-						return acc + amount*(60*60*4/* 4h */)/production.production_time;
+						return acc + amount/production.production_time*(60*60*5 /* 5h */);
 					}
 				}
 				return acc;
@@ -234,8 +234,8 @@ let Outposts = {
 			'</span><span><strong>'
 			+ GoodsData[primaryResourceId].name + ': ' + HTML.Format(ResourceStock[primaryResourceId]||0)
 			+ '</strong> (+ '
-			+ (current4HProductionRate > 0 ? HTML.Format(MainParser.round(current4HProductionRate)) : '???')
-			+ '/4h)'
+			+ (current5HProductionRate > 0 ? HTML.Format(MainParser.round(current5HProductionRate)) : '???')
+			+ `/5h)`
 			+ '</span>'
 		);
 		t.push('</p>');

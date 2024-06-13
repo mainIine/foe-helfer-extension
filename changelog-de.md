@@ -1,5 +1,52 @@
 ## Changelog - Extension
 
+##### 3.6.5.0
+
+**Neu**
+- Sommer Event:
+	- Der Event-Truhen-Helfer zeigt nun verdeckte Preise eines Bretts an
+
+**Update**
+- Stadtübersicht:
+	- QI Aktionspunkte die durch Gebäude produziert werden, werden jetzt in der Stadtübersicht angezeigt (wenn in QI)
+	- Man sieht nun auch bei anderen Spielern, welche Gebäude keine Straßenverbindungen benötigen
+
+- Kulturelle Siedlungen:
+	- Auf 5-Stunden Zyklus angepasst
+
+- Alle verstecken/schließen funktioniert nun auch für Minispiel-Blocker
+
+- Blaue Galaxie:
+	- Aktuelle Güter werden nun separat gelistet
+
+- Kits:
+	- Aktualisiert bis Sommer Event 2024
+	- Bilder werden nun erst geladen, wenn tatsächlich benötigt, um Ladezeiten zu verkürzen
+	- Erhabene Upgrades werden nun auch in gelistet
+
+- Abgelaufene beschränkte Gebäude:
+	- Es kann nun eingestellt werden, für welche Gebäude die "ist abgelaufen" Warnung bei Start nicht mehr angezeigt werden soll
+
+- Statistik:
+	- Ereignisse und Scherben werden wieder gelistet
+
+**BugFix**
+- GG Gebäude-Empfehlung:
+	- In 3er-Provinzen wurden manche Kombination übergangen
+
+- (QI) Pass Belohnungen wurden nicht korrekt behandelt, wenn mehr als eine Belohnung auf einmal eingesammelt wurde
+
+- FP-Einsammlungen:
+	- QI-Belohnungen wurden falsch gezählt
+
+- Stadtübersicht:
+	- Bestimmte Gebäude konnten verhindern, dass die Übersicht korrekt lädt
+
+- Bilder der Wiederkehrende Quest Übersicht werden wieder korrekt geladen
+
+
+---
+
 ##### 3.6.4.0
 
 **Update**
@@ -9,8 +56,10 @@
 
 - Stadt-Übersicht:
 	- zeigt in den QI eine Produktionsübersicht
+
 - Cardgame:
 	- die Warnung wegen geringer Lebenspunkte schließt sich nun gemeinsam mit dem Helfer-Fenster
+
 - Kits:
 	- Es können nun Favoriten angelegt und gefiltert werden
 
@@ -26,7 +75,7 @@
 - Stadtübersicht:
 	- Neu: Stadtübersicht auch bei Siedlungen, Kolonien und Quanten Invasionen
 - Card Game:
-	- An Änderungen des Geschichts-Events 2024 angepasst
+	- An Änderungen des Geschichte-Events 2024 angepasst
 - Quests:
 	- Wenn eine Rivalen-Quest erfüllt ist, wird ein Ton abgespielt. Kann in den Einstellungen deaktiviert werden
 - FP Sammlung:

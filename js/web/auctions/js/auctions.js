@@ -56,7 +56,10 @@ let Auction = {
     
     updateClipboard: () => {
         newBid = Math.floor(Math.max(Auction.fak[Auction.index] * Auction.current, Auction.current + Auction.diff[Auction.index]));
-        helper.str.copyToClipboard(newBid);
+        try {
+            helper.str.copyToClipboard(newBid);
+        } catch (e) {
+        }
     },
 
 	BuildBody: ()=> {

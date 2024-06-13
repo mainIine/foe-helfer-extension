@@ -303,7 +303,7 @@ let Alerts = function(){
 			let ts = moment().valueOf();
 			return tmp.extAlerts.getAll()
 				.then(arr =>
-					arr
+					(arr || [])
 						.filter(elem => elem.data.expires > ts)
 						.map(tmp.data.flatenData)
 				)
@@ -393,7 +393,7 @@ let Alerts = function(){
 			tmp.data.options.timestamp.next = now + tmp.data.options.timestamp.increment;
 
 			return tmp.extAlerts.getAll()
-				.then(arr => arr.filter(
+				.then(arr => (arr || []).filter(
 						elem => elem.data.expires >= n
 							&& elem.data.expires <= tmp.data.options.timestamp.next
 					)
