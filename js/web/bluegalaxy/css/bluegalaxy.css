@@ -49,9 +49,6 @@
 
 #bluegalaxy table th.icon span  {
     display: block;
-    position: absolute;
-    top: -2px;
-    right: 8px;
     min-width: 35px;
 }
 #bluegalaxy table th.icon span::before  {
@@ -94,7 +91,7 @@
 
 #bluegalaxy #bluegalaxyBody td {
     position: relative;
-    font-size: 100%;
+    font-size: 95%;
 }
 
 #bluegalaxy #bluegalaxyBody .foe-table tr:first-child td:nth-child(5) strong {
