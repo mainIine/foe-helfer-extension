@@ -235,7 +235,7 @@ let Productions = {
 								if (Productions.BuildingsProducts.strategy_points.find(x => x.id == building.id) == undefined)
 									Productions.BuildingsProducts["strategy_points"].push(saveBuilding)
 							}
-							if (resource.type == "consumable") {
+							if (resource.type == "consumable" || resource.type.includes("chest") || resource.type.includes("genericReward")) { // todo: where wish fountain
 								if (Productions.BuildingsProducts.items.find(x => x.id == building.id) == undefined)
 									Productions.BuildingsProducts["items"].push(saveBuilding)
 							}
@@ -1181,14 +1181,19 @@ let Productions = {
 
 		else if (Productions.RatingCurrentTab === 'Results') {
 			let buildingType = [];
-			// todo: this only grabs one of each, it does not look at the era. should probably be different?
 			// todo: shrine of inspiration etc
 			// todo: negative values ??? 1000 is better than 100 ??
 			Object.values(MainParser.NewCityMapData).forEach(building => {
 				if (building.type == 'street' || building.type == 'military' || building.id >= 2000000000 || building.type.includes('hub')) return
 
-				if (buildingType.find(x => x.name == building.name) == undefined)
+				let foundBuildingIndex = buildingType.findIndex(x => x.name == building.name)
+				if (foundBuildingIndex == -1)
 					buildingType.push(building)
+				else {
+					let foundBuilding = buildingType.find(x => x.name == building.name)
+					if (Technologies.InnoEras[foundBuilding.eraName] < Technologies.InnoEras[building.eraName]) 
+						buildingType[foundBuildingIndex] = building
+				}
 			})
 			
 			ratedBuildings = Productions.rateBuildings(buildingType)
@@ -1227,7 +1232,11 @@ let Productions = {
 			for (const building of ratedBuildings) {
 				h.push('<tr>')
 				h.push('<td class="text-right" data-number="'+building.score * 100 +'">'+Math.round(building.score * 100)+'</td>')
-				h.push('<td data-text="'+helper.str.cleanup(building.building.name)+'">'+building.building.name+" ("+i18n("Eras."+Technologies.Eras[building.building.eraName]+".short") +')</td>')
+				h.push('<td data-text="'+helper.str.cleanup(building.building.name)+'">'+building.building.name)
+				let eraShortName = i18n("Eras."+Technologies.Eras[building.building.eraName]+".short")
+				if (eraShortName != "-")
+					h.push(" ("+i18n("Eras."+Technologies.Eras[building.building.eraName]+".short") +')')
+				h.push('</td>')
 				for (const type of Productions.RatingTypes) {
 					if (building[type] != undefined) {
 						h.push('<td class="text-right" data-number="'+Math.round(building[type])+'">')
@@ -1284,7 +1293,8 @@ let Productions = {
 		let ratedBuildings = []
 		let tileRatings = JSON.parse(localStorage.getItem('ProductionRatingProdPerTiles'))
 		for (const building of buildingType) {
-			let size = building.size.width * building.size.length // todo: include street requirement?
+			if (building.entityId.includes("AllAge_EasterBonus1") || building.entityId.includes("L_AllAge_Expedition16") || building.entityId.includes("L_AllAge_ShahBonus17")) continue // do not include wishingwell type buildings
+			let size = building.size.width * building.size.length + building.needsStreet // todo: include street requirement?
 			let score = 0
 			let ratedBuilding = {
 				building: building

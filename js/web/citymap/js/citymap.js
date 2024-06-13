@@ -1379,6 +1379,7 @@ let CityMap = {
 		if (data.type != "generic_building" && data.type != "greatbuilding") {
 			if (metaData.is_special) { // special building
 				if (metaData.available_products !== undefined) { 
+					// TODO: siegesturm produktion ist false?
 					// to do: to think about: should all goods production options be gathered here?
 					if (Array.isArray(metaData.available_products))
 						metaData.available_products.forEach(product => {
@@ -1403,6 +1404,10 @@ let CityMap = {
 					if (Object.keys(resource.resources).length > 0) 
 						productions.push(resource)
 				})
+				if (metaData.__class__ == "CityEntityRandomProductProductionBuilding") {
+					let currentProduction = this.setCurrentProductions(data, metaData, era)
+					productions = currentProduction
+				}
 			}
 			if (data.type == "main_building") { // add emissary production to town hall
 				MainParser.EmissaryService?.forEach(emissary => {
@@ -1680,11 +1685,11 @@ let CityMap = {
 	// returns a generic reward or a unit reward
 	setGenericReward(product, metaData, era) {
 		let amount = 0
+		let lookupData = false
 
 		if (product.reward.amount != undefined) 
 			amount = product.reward.amount
 
-		let lookupData = false
 		if (metaData.components[era]) {
 			if (product.reward.id.search("blueprint") != -1) {
 				if (metaData.components[era].lookup.rewards[product.reward.id]) {
@@ -1713,8 +1718,17 @@ let CityMap = {
 						lookupData = reward;
 				}
 			}
-			else
+			else {
 				lookupData = metaData.components[era].lookup.rewards[product.reward.id];
+				if (lookupData == undefined) {
+					let chest = Object.keys(metaData.components[era].lookup.rewards).find(x => x.includes("chest")) // currently only applies to wish fountain
+					for (possibleReward of metaData.components[era].lookup.rewards[chest].possible_rewards) {
+						
+						if (possibleReward.reward.id == product.reward.id)
+							lookupData = possibleReward.reward
+					}
+				}
+			}
 		}
 		if (amount == 0) 
 			amount = lookupData.amount
@@ -1724,7 +1738,7 @@ let CityMap = {
 		if (lookupData) 
 			name = this.setRewardNameFromLookupData(lookupData, metaData)
 		else {
-			console.log("CityMap.setGenericReward() data missing", metaData.name, metaData);
+			console.log("CityMap.setGenericReward() data missing for", metaData.name, metaData, product);
 			name = "DEFINE NAME"
 		}
 		
