@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2024 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -61,6 +61,92 @@ FoEproxy.addHandler('ChestEventService', 'getOverview', (data, postData) => {
     EventChests.Show();
 });
 
+FoEproxy.addHandler('PresentGameService', 'getOverview', (data, postData) => {
+
+	if(!Settings.GetSetting('ShowEventChest')) return
+    let presents = data.responseData.presentList
+
+    let presentData = []
+    for (let present of presents) {
+        presentData.push(present)
+    }
+
+    if (presentData.length === 0) return
+    EventPresents.Presents = presentData
+
+    EventPresents.Show()
+});
+
+FoEproxy.addHandler('PresentGameService', 'openPresent', (data, postData) => {
+
+	if(!Settings.GetSetting('ShowEventChest')) return
+    let presents = data.responseData.updatedPresentList
+
+    for (let present of presents) {
+        EventPresents.Presents[present.presentId] = present
+    }
+
+    EventPresents.Show()
+});
+
+FoEproxy.addHandler('PresentGameService', 'useBooster', (data, postData) => {
+
+	if(!Settings.GetSetting('ShowEventChest')) return
+    let presents = data.responseData.updatedPresentList
+
+    for (let present of presents) {
+        EventPresents.Presents[present.presentId] = present
+    }
+
+    EventPresents.Show()
+});
+
+let EventPresents = {
+    Presents: null,
+
+    Show: () => {
+        if ($('#eventpresents').length === 0) {
+            HTML.Box({
+                'id': 'eventpresents',
+                'title': i18n('Boxes.EventPresents.Title'),
+                'auto_close': true,
+                'dragdrop': true,
+                'minimize': true,
+                'resize': true
+            });
+
+            HTML.AddCssFile('eventchests');
+        }
+
+        EventPresents.BuildBox();
+    },
+
+    BuildBox: () => {
+        let h = [];
+
+        h.push('<table class="foe-table">');
+        h.push('<thead>' +
+            '<tr>' +
+            '<th colspan="3" class="text-center">' + i18n('Boxes.Discord.Name') + '</th>' +
+            '</tr>' +
+            '</thead>');
+
+        for (let present of EventPresents.Presents) {
+            if (present.status.value != "used") {
+                h.push('<tr class="'+present.status.value+'">');
+                let icon = (present.reward.type == "unit" ? srcLinks.getReward(present.reward.subType) : srcLinks.getReward(present.reward.iconAssetName))
+                h.push('<td>'+ (icon.search("antiquedealer_flag") == -1 ? '<img src="' + icon  + '">' : '') + '</td>');
+                h.push('<td>' + present.reward.name + (present.status.value == "visible" ? '<img class="visible" src="' + extUrl + 'css/images/hud/open-eye.png">' : '') +'</td>');
+                h.push('</tr>');
+            }
+        }
+
+        h.push('</table>');
+
+        $('#eventpresentsBody').html(h.join(''));
+    }
+}
+
 /**
  *
  * @type {{Show: EventChests.Show, BuildBox: EventChests.BuildBox, CalcBody: EventChests.CalcBody, Chests: null}}
@@ -73,7 +159,6 @@ let EventChests = {
      */
     Show: () => {
 
-
         if ($('#eventchests').length === 0) {
             HTML.Box({
                 'id': 'eventchests',
@@ -83,7 +168,6 @@ let EventChests = {
                 'minimize': true
             });
 
-            // add CSS tot the DOM
             HTML.AddCssFile('eventchests');
         }
 
@@ -108,7 +192,7 @@ let EventChests = {
         h.push('<thead>' +
             '<tr>' +
             '<th colspan="3" class="text-center">' + i18n('Boxes.EventChests.MainPrize') + '</th>' +
-            '<th colspan="3" class="text-center">' + i18n('Boxes.EventChests.MainPrizeTitle') + EventChests.Chests[0]['dailyprizename'] + '</th>' +
+            '<th colspan="3" class="text-center">' + i18n('Boxes.EventChests.MainPrizeTitle') + '</th>' +
             '</tr>' +
 
             '<tr>' +

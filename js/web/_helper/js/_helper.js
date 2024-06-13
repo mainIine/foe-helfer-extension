@@ -39,7 +39,12 @@ helper.str = {
 	 */
 	copyToClipboard: async(textToCopy) => {
 		if (navigator && navigator.clipboard && navigator.clipboard.writeText) {
-			return navigator.clipboard.writeText(textToCopy);
+			try {
+				a = navigator.clipboard.writeText(textToCopy);
+				return a;
+			} catch (e) {
+				return resolve();
+			}
 		} else {
 			return new Promise(async (resolve) => {
 				let copyFrom = $('<textarea/>');
@@ -139,6 +144,19 @@ helper.permutations = (()=>{
 helper.sounds = {
 	ping: new Audio(extUrl + 'vendor/sounds/ping.mp3'),
     message: new Audio(extUrl + 'vendor/sounds/message.mp3'),
+};
+
+helper.preloader = { 
+	show: function(id) {
+		$('#gms-loading-data').remove();
+		$(id).append('<div id="gms-loading-data"><div class="loadericon"></div></div>');
+	},
+
+	hide: function() {
+		$('#gms-loading-data').fadeOut(500, function () {
+			$(this).remove();
+		})
+	}
 };
 
 let HTML = {

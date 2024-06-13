@@ -150,13 +150,14 @@ GetFights = () =>{
 	FoEproxy.addMetaHandler('city_entities', (xhr, postData) => {
 		let EntityArray = JSON.parse(xhr.responseText);
 		MainParser.CityEntities = Object.assign({}, ...EntityArray.map((x) => ({ [x.id]: x })));
+
 		for (let i in MainParser.CityEntities) {
 			if (!MainParser.CityEntities.hasOwnProperty(i)) continue;
 
 			let CityEntity = MainParser.CityEntities[i];
 			if (!CityEntity.type) CityEntity.type = CityEntity?.components?.AllAge?.tags?.tags?.find(value => value.hasOwnProperty('buildingType')).buildingType;
         }
-		MainParser.checkInactives();
+		MainParser.Inactives.check();
 		MainParser.createCityBuildings();
 	});
 
@@ -275,6 +276,9 @@ GetFights = () =>{
 		// Unlocked features
 		MainParser.UnlockedFeatures = data.responseData.unlocked_features.map(function(obj) { return obj.feature; });
 
+		//A/B Tests
+		MainParser.ABTests=Object.assign({}, ...data.responseData.active_ab_tests.map((x) => ({ [x.test_name]: x })));
+	
 		Stats.Init();
 		Alerts.init();
 
@@ -861,8 +865,9 @@ let HelperBeta = {
 	menu: [
 		'unitsGex',
 		'marketOffers',
+		'combat_power'
 	],
-	active: JSON.parse(localStorage.getItem('HelperBetaActive'))
+	active: JSON.parse(localStorage.getItem('HelperBetaActive')) || devMode == 'true' || loadBeta
 };
 
 
@@ -938,10 +943,11 @@ let MainParser = {
 		localStorage.setItem('LastAgreedVersion', extVersion); //Comment out this line if you have something the player must agree on
 	},
 
+
 	createCityBuildings: () => {
 		// loop through all city buildings
 		for (const [key, data] of Object.entries(MainParser.CityMapData)) {
-			let ceData = Object.values(MainParser.CityEntities).find(x => x.id == data.cityentity_id);
+			let ceData = Object.values(MainParser.CityEntities).find(x => x.id === data.cityentity_id);
 			let era = Technologies.getEraName(data.cityentity_id, data.level);
 			let cityMapEntity = CityMap.createNewCityMapEntity(ceData,data,era)
 
@@ -1016,7 +1022,8 @@ let MainParser = {
 			return response.data;
 		}
 		else {
-			throw new Error('EXT-API error: ' + response.error);
+			if (response.error.indexOf('"type":"alerts"')== -1 && response.error.indexOf('"action":"getAll"') == -1)
+				throw new Error('EXT-API error: ' + response.error);
 		}
 	},
 
@@ -1686,7 +1693,7 @@ let MainParser = {
 		let day = Math.floor(Date.now()/86400000);
 		let LCUindex = MainParser.Conversations.findIndex((obj) => (obj.id === "__lastCleanup"));
 		let LCU = day;
-		if (LCUindex == -1) {
+		if (LCUindex === -1) {
 			MainParser.Conversations.forEach( (obj) => obj.lastSeen = day);
 			MainParser.Conversations.push({
 				id: "__lastCleanup",
@@ -1836,57 +1843,37 @@ let MainParser = {
 		}
 	},
 
-	checkInactives: () => {
-		//get list of buildings for which an alert is already set
-		let LB = JSON.parse(localStorage.getItem("LimitedBuildingsAlertSet")||'{}')
-		
-		//get list of expired limited buildings in city
-		let inactives = Object.values(MainParser.CityMapData).filter(value => !!value.decayedFromCityEntityId).map(value => MainParser.CityEntities[value.cityentity_id].name)
-		
-		//remove buildings that were already tracked
-		for (let i = inactives.length-1;i>=0;i--) {
-			if (LB[inactives[i]]) {
-				inactives.splice(i,1)
+	Inactives: {
+		list:[],
+		ignore: JSON.parse(localStorage.getItem("LimitedBuildingsIgnoreList")||'[]'),
+		check: () => {
+			//get list of buildings for which an alert is already set
+			let LB = JSON.parse(localStorage.getItem("LimitedBuildingsAlertSet")||'{}')
+			//get list of expired limited buildings in city
+			let list = Object.values(MainParser.CityMapData).filter(value => !!value.decayedFromCityEntityId).map(value => value.id);
+			//remove buildings that were already tracked and that should have just triggered an alert
+			for (let i = list.length-1;i>=0;i--) {
+				if (LB[list[i]] || MainParser.Inactives.ignore.includes(MainParser.CityMapData[list[i]].cityentity_id)) {
+					list.splice(i,1)
+				}
 			}
-		}
-		//remove tracked buildings if time ran out
-		for (let x in LB) {
-			if (!LB[x]) continue;
-			if (LB[x]<GameTime*1000-GameTimeOffset) delete LB[x];
-			localStorage.setItem("LimitedBuildingsAlertSet",JSON.stringify(LB));
-		}
-		if(!Settings.GetSetting('ShowBuildingsExpired')){
-			return;
-		}
-		//create instant alert for currently expired buildings		
-		if (inactives.length > 0) {
-				const data = {
-				title: i18n("InactiveBuildingsAlert.title"),
-				body: inactives.join("\n"),
-				expires: moment().add(1,"seconds").valueOf(),
-				repeat: -1,
-				persistent: true,
-				tag: '',
-				category: 'event',
-				vibrate: false,
-				actions: [{title:"OK"}]
-			};
-	
-			MainParser.sendExtMessage({
-				type: 'alerts',
-				playerId: ExtPlayerID,
-				action: 'create',
-				data: data,
-			})
-		}
-		let buildings = Object.values(MainParser.CityMapData)
-		for (let building of buildings) {
-			// set alerts for limited buildings that will run out in the future and that have no alert yet
-			if (!LB[building.id] && MainParser.CityEntities[building.cityentity_id]?.components?.AllAge?.limited?.config?.expireTime) {
-				const data = {
+			MainParser.Inactives.list = [...new Set(list.map(x=>MainParser.CityMapData[x].cityentity_id))];
+			
+			//remove tracked buildings if time ran out
+			for (let x in LB) {
+				if (!LB[x]) continue;
+				if (LB[x]<GameTime*1000-GameTimeOffset) delete LB[x];
+				localStorage.setItem("LimitedBuildingsAlertSet",JSON.stringify(LB));
+			}
+			if(!Settings.GetSetting('ShowBuildingsExpired')){
+				return;
+			}
+			//create instant alert for currently expired buildings		
+			if (list.length > 0) {
+					const data = {
 					title: i18n("InactiveBuildingsAlert.title"),
-					body: MainParser.CityEntities[MainParser.CityEntities[building.cityentity_id]?.components?.AllAge?.limited?.config?.targetCityEntityId].name,
-					expires: (MainParser.CityEntities[building.cityentity_id]?.components?.AllAge?.limited?.config?.expireTime + building.state.constructionFinishedAt)*1000 - GameTimeOffset,
+					body: list.map(x=>MainParser.CityEntities[MainParser.CityMapData[x].cityentity_id].name).join("\n"),
+					expires: moment().add(1,"seconds").valueOf(),
 					repeat: -1,
 					persistent: true,
 					tag: '',
@@ -1900,12 +1887,86 @@ let MainParser = {
 					playerId: ExtPlayerID,
 					action: 'create',
 					data: data,
-				}).then((aId) => {
-					LB[building.id]=(MainParser.CityEntities[building.cityentity_id]?.components?.AllAge?.limited?.config?.expireTime + building.state.constructionFinishedAt)*1000 - GameTimeOffset;
-					localStorage.setItem("LimitedBuildingsAlertSet",JSON.stringify(LB));
 				})
 			}
-		}
+			let buildings = Object.values(MainParser.CityMapData)
+			for (let building of buildings) {
+				// set alerts for limited buildings that will run out in the future and that have no alert yet
+				if (!LB[building.id] && MainParser.CityEntities[building.cityentity_id]?.components?.AllAge?.limited?.config?.expireTime) {
+					const data = {
+						title: i18n("InactiveBuildingsAlert.title"),
+						body: MainParser.CityEntities[MainParser.CityEntities[building.cityentity_id]?.components?.AllAge?.limited?.config?.targetCityEntityId].name,
+						expires: (MainParser.CityEntities[building.cityentity_id]?.components?.AllAge?.limited?.config?.expireTime + building.state.constructionFinishedAt)*1000 - GameTimeOffset,
+						repeat: -1,
+						persistent: true,
+						tag: '',
+						category: 'event',
+						vibrate: false,
+						actions: [{title:"OK"}]
+					};
+			
+					MainParser.sendExtMessage({
+						type: 'alerts',
+						playerId: ExtPlayerID,
+						action: 'create',
+						data: data,
+					}).then((aId) => {
+						LB[building.id]=(MainParser.CityEntities[building.cityentity_id]?.components?.AllAge?.limited?.config?.expireTime + building.state.constructionFinishedAt)*1000 - GameTimeOffset;
+						localStorage.setItem("LimitedBuildingsAlertSet",JSON.stringify(LB));
+					})
+				}
+			}
+		},
+		showSettings: ()=> {
+
+			if ($('#inactivesSettingsBox').length === 0) {
+				HTML.Box({
+					id: 'inactivesSettingsBox',
+					title: i18n('Boxes.InactivesSettings.Title'),
+					//ask: i18n('Boxes.AuctionSettings.HelpLink'),
+					auto_close: true,
+					dragdrop: true,
+					minimize: true,
+					resize: true,
+				});
+	
+				//HTML.AddCssFile('auctions');
+			}
+			MainParser.Inactives.updateSettings();
+		},
+		updateSettings:()=>{ 
+			let t=[];
+			//t.push(`<h2>${i18n('Boxes.InactivesSettings.Ignored')}</h2>`);
+			t.push(`<h2>${i18n('Boxes.InactivesSettings.Toggle')}</h2>`);
+			for (let id of MainParser.Inactives.ignore) {
+				t.push(`<span class="inactivesIgnoreToggle" data-id="${id}" title="${i18n('Boxes.InactivesSettings.NoAlert')}">🤐${MainParser.CityEntities[id].name}</span></br>`);
+			}
+			//t.push(`<h2>${i18n('Boxes.InactivesSettings.ClickToIgnore')}</h2>`);
+			
+			for (let id of MainParser.Inactives.list) {
+				t.push(`<span class="inactivesIgnoreToggle" data-id="${id}" title="${i18n('Boxes.InactivesSettings.AlertActive')}">⚠️${MainParser.CityEntities[id].name}</span></br>`);
+			}
+			
+			
+			$('#inactivesSettingsBoxBody').html(t.join(''));
+			
+			$('.inactivesIgnoreToggle').on("click", (e) => {
+				let id = e.target.dataset.id;
+				let i = MainParser.Inactives.ignore.findIndex(x => x==id);
+				if (i>=0) {
+					MainParser.Inactives.ignore.splice(i,1);
+					MainParser.Inactives.list.push(id);
+
+				} else {
+					i = MainParser.Inactives.list.findIndex(x => x==id);
+					MainParser.Inactives.list.splice(i,1);
+					MainParser.Inactives.ignore.push(id);
+
+				};
+				localStorage.setItem("LimitedBuildingsIgnoreList",JSON.stringify(MainParser.Inactives.ignore));
+				MainParser.Inactives.updateSettings();
+			});
+		},
 
 
 	},

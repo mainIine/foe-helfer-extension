@@ -26,20 +26,21 @@ FoEproxy.addHandler('TimedSpecialRewardService', 'getTimedSpecial', (data, postD
 FoEproxy.addHandler('RewardService', 'collectRewardSet', (data, postData) => {
 	const d = data.responseData;
 	let event = null, 
-		notes = null,
-		amount = d.reward?.totalAmount || 0;
+		notes = null;
 
 	if (d.context.toLowerCase().includes("guild_raids")) {
 		event = d.context.toLowerCase()
 	}
 
-	if (d.reward.rewards[0].subType === "strategy_points") {// not really stable
+	for (const reward of d.reward.rewards) {
+		if (reward.subType !== 'strategy_points') continue;
+
 		StrategyPoints.insertIntoDB({
 			event: event,
 			notes: notes ? notes : '',
-			amount: amount,
+			amount: reward.amount,
 			date: moment(MainParser.getCurrentDate()).format('YYYY-MM-DD')
-		})
+		});
 	}
 });
 

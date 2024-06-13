@@ -152,7 +152,7 @@ FoEproxy.addHandler('MergerGameService', 'convertPiece', (data, postData) => {
 let mergerGame = {
 	hasJoker:false,
 	event:"anniversary",
-	colors: ["white","yellow","blue","joker"],
+	colors: ["white","yellow","blue","colorless"],
 	types: ["top","bottom","full"],
 	spawnCost: 5,
 	cells:[],
@@ -183,11 +183,21 @@ let mergerGame = {
 			progress:"/shared/icons/reward_icons/reward_icon_soccer_trophy.png",
 			energy:"/shared/seasonalevents/soccer/event/soccer_football.png",
 			keyfile:"/shared/seasonalevents/soccer/event/soccer_icon_badge_",
-			colors: ["attacker","midfielder","defender","joker"],
+			colors: ["attacker","midfielder","defender"],
 			types: ["left","right","full"],
 			partname:"badge",
 			tile:"player",
 			currency:`soccer_football`,
+		},
+		care:{
+			progress:"/shared/icons/reward_icons/reward_icon_care_globe.png",
+			energy:"/shared/icons/reward_icons/reward_icon_care_worker.png",
+			keyfile:"/shared/seasonalevents/care/event/care_icon_key_",
+			colors: ["red","green","blue","colorless"],
+			types: ["left","right","full"],
+			partname:"",
+			tile:"gem",
+			currency:`care_worker`,
 		}
 	},
 	solved: {keys:0,progress:0},
@@ -263,7 +273,7 @@ let mergerGame = {
 			if ($('#mergerGameResetBlocker').length === 0) {
 				let blocker = document.createElement("img");
 				blocker.id = 'mergerGameResetBlocker';
-				blocker.classList = mergerGame.event;
+				blocker.className = mergerGame.event+" helper-blocker";
 				blocker.src = srcLinks.get("/city/gui/great_building_bonus_icons/great_building_bonus_plunder_repel.png", true);
 				blocker.title = i18n("Boxes.MergerGame.KeysLeft."+mergerGame.event);
 				$('#game_body')[0].append(blocker);
@@ -368,9 +378,9 @@ let mergerGame = {
 		html += `<td title="min - max (avg)" style="text-align:left">(${mergerGame.simResult.progress.average})</td></tr>`
 		//Keys/badges
 		html += `<tr><td title="${i18n("Boxes.MergerGame.Keys."+mergerGame.event)}">`
-		html += `<img ${mergerGame.event=="soccer"?'class="toprightcorner full"':''} src="${srcLinks.get(`${mergerGame.eventData[mergerGame.event].keyfile}full_${mergerGame.colors[2]}.png`,true)}">`
-		html += `<img ${mergerGame.event=="soccer"?'class="toprightcorner full"':''} style="margin-left: -15px" src="${srcLinks.get(`${mergerGame.eventData[mergerGame.event].keyfile}full_${mergerGame.colors[1]}.png`,true)}">`
-		html += `<img ${mergerGame.event=="soccer"?'class="toprightcorner full"':''} style="margin-left: -15px" src="${srcLinks.get(`${mergerGame.eventData[mergerGame.event].keyfile}full_${mergerGame.colors[0]}.png`,true)}"></td>`
+		html += `<img ${["soccer","care"].includes(mergerGame.event)?'class="toprightcorner full"':''} src="${srcLinks.get(`${mergerGame.eventData[mergerGame.event].keyfile}full_${mergerGame.colors[2]}.png`,true)}">`
+		html += `<img ${["soccer","care"].includes(mergerGame.event)?'class="toprightcorner full"':''} style="margin-left: -15px" src="${srcLinks.get(`${mergerGame.eventData[mergerGame.event].keyfile}full_${mergerGame.colors[1]}.png`,true)}">`
+		html += `<img ${["soccer","care"].includes(mergerGame.event)?'class="toprightcorner full"':''} style="margin-left: -15px" src="${srcLinks.get(`${mergerGame.eventData[mergerGame.event].keyfile}full_${mergerGame.colors[0]}.png`,true)}"></td>`
 		html += `<td>${keys} / ${maxKeys}</td>`
 		html += `<td>${keys + mergerGame.state.daily.keys}</td>`
 		html += `<td style="border-left: 1px solid var(--border-tab)">${mergerGame.state.keys + mergerGame.solved.keys}</td>`
@@ -390,13 +400,13 @@ let mergerGame = {
 		for (let i of mergerGame.colors) {
 			html += `<table class="foe-table"><tr><th></th>`
 			for (let lev = 4; lev>0; lev--) {
-				html += `<th>${mergerGame.state.unlocked[i][lev].none}<img src="${srcLinks.get(`/shared/seasonalevents/${mergerGame.event}/event/${mergerGame.event}_${mergerGame.eventData[mergerGame.event].tile}_${i=="colorless"?"joker":i}_${lev}.png`,true)}" title="${mergerGame.spawnChances?.[i]?.[lev]||0}%"></th>`
+				html += `<th>${mergerGame.state.unlocked[i][lev].none}<img src="${srcLinks.get(`/shared/seasonalevents/${mergerGame.event}/event/${mergerGame.event}_${mergerGame.eventData[mergerGame.event].tile}_${i}_${lev}.png`,true)}" title="${mergerGame.spawnChances?.[i]?.[lev]||0}%"></th>`
 			}
 			for (let o of mergerGame.types) {
 				let m = totalPieces[i].min;
 				let t = totalPieces[i][o];
 				html += `</tr><tr><td ${((t==m && o != "full") || (0==m && o == "full") ) ? 'style="font-weight:bold"' : ''}>${t}${(o == "full") ? '/'+ (t+m) : ''}`;
-				html += `<img class="${mergerGame.event=="soccer"? 'toprightcorner':''}${o=="full" ? ' full':''}" src="${srcLinks.get(`${mergerGame.eventData[mergerGame.event].keyfile}${o}_${i=="colorless"?"joker":i}.png`,true)}"></td>`
+				html += `<img class="${["soccer","care"].includes(mergerGame.event)? 'toprightcorner':''}${o=="full" ? ' full':''}" src="${srcLinks.get(`${mergerGame.eventData[mergerGame.event].keyfile}${o}_${i}.png`,true)}"></td>`
 				for (let lev = 4; lev>0; lev--) {
 					val = table[i][lev][o];
 					if (val==0) val = "-";

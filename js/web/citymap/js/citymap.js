@@ -357,7 +357,7 @@ let CityMap = {
 
 	showQIStats: () => {
 		let buildings = Object.values(CityMap.QIData)
-		let population = 0, totalPopulation = 0, euphoria = 0, euphoriaBoost = 0, supplies = 0, money = 0, att_def_boost_attacker = 0, att_def_boost_defender = 0
+		let population = 0, totalPopulation = 0, euphoria = 0, euphoriaBoost = 0, supplies = 0, money = 0, att_def_boost_attacker = 0, att_def_boost_defender = 0, actions = 0
 		for (let b in buildings) {
 			let building = CityMap.setQIBuilding(MainParser.CityEntities[buildings[b]['cityentity_id']])
 			if (building.type !== "impediment" && building.type !== "street") {
@@ -372,6 +372,8 @@ let CityMap = {
 							att_def_boost_attacker += boost.value 
 						if (boost.type === "att_def_boost_defender")
 							att_def_boost_defender += boost.value 
+						if (boost.type === "guild_raids_action_points_collection")
+							actions += boost.value 
 					}
 				}
 				if (building.production !== null) {
@@ -409,6 +411,7 @@ let CityMap = {
 			supplies: supplies*euphoriaBoost,
 			att_def_boost_attacker: att_def_boost_attacker,
 			att_def_boost_defender: att_def_boost_defender,
+			actions:actions,
 		}
 
 		out = '<div class="text-center" style="padding-bottom: 10px">'
@@ -417,8 +420,10 @@ let CityMap = {
 		out += '<span class="prod happiness">'+CityMap.QIStats.euphoriaBoost*100+'%</span> <br>'
 		out += '<span class="prod guild_raids_money">'+HTML.Format(CityMap.QIStats.money)+'</span> + '
 		out += '<span class="prod guild_raids_supplies">'+HTML.Format(CityMap.QIStats.supplies)+'</span> '+i18n('Boxes.CityMap.QICycle')+'<br>'
+		out += '<span class="prod guild_raids_action_points_collection">'+'+'+CityMap.QIStats.actions+'</span> '+i18n('Boxes.CityMap.QIActionRechargeCycle')+'<br>'
 		out += '<span class="prod att_def_boost_attacker">'+CityMap.QIStats.att_def_boost_attacker+'</span> '
 		out += '<span class="prod att_def_boost_defender">'+CityMap.QIStats.att_def_boost_defender+'</span> '
+		
 		out += "<div>"
 		return out
 	},
@@ -1337,13 +1342,13 @@ let CityMap = {
 		}
 		
 		// units
-		if (lookupData.type == "chest" && lookupData.id.search("genb_random_unit_chest") != -1 || lookupData.type == "unit") {
+		if (lookupData?.type == "chest" && lookupData.id.search("genb_random_unit_chest") != -1 || lookupData?.type == "unit") {
 			let units = this.getUnitReward(product)
 			//console.log(ceData.name, units)
 			return units
 		}
 		// trees of patience
-		if (lookupData.type == "set") {
+		if (lookupData?.type == "set") {
 			lookupData.type = "consumable"
 			lookupData.subType = lookupData.rewards[0].subType
 			amount = lookupData.totalAmount
@@ -1352,10 +1357,10 @@ let CityMap = {
 		let reward = {
 			id: product.reward.id,
 			name: name,
-			type: lookupData.type,
-			subType: lookupData.subType,
+			type: lookupData?.type || "consumable",
+			subType: lookupData?.subType,
 			amount: amount, // amount can be undefined for blueprints or units if buiilding is not motivated
-			icon: lookupData.iconAssetName
+			icon: lookupData?.iconAssetName
 		}
 		return reward;
 	},
