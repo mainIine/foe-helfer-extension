@@ -32,7 +32,7 @@
 
 **BugFix**
 - GG Gebäude-Empfehlung:
-	- In 3er Provinzen wurden manche Kombination übergangen
+	- In 3er-Provinzen wurden manche Kombination übergangen
 
 - (QI) Pass Belohnungen wurden nicht korrekt behandelt, wenn mehr als eine Belohnung auf einmal eingesammelt wurde
 
@@ -56,8 +56,10 @@
 
 - Stadt-Übersicht:
 	- zeigt in den QI eine Produktionsübersicht
+
 - Cardgame:
 	- die Warnung wegen geringer Lebenspunkte schließt sich nun gemeinsam mit dem Helfer-Fenster
+
 - Kits:
 	- Es können nun Favoriten angelegt und gefiltert werden
 
@@ -73,7 +75,7 @@
 - Stadtübersicht:
 	- Neu: Stadtübersicht auch bei Siedlungen, Kolonien und Quanten Invasionen
 - Card Game:
-	- An Änderungen des Geschichts-Events 2024 angepasst
+	- An Änderungen des Geschichte-Events 2024 angepasst
 - Quests:
 	- Wenn eine Rivalen-Quest erfüllt ist, wird ein Ton abgespielt. Kann in den Einstellungen deaktiviert werden
 - FP Sammlung:
