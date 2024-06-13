@@ -47,6 +47,10 @@
     top: calc(50vh + 248px);
     left: calc(50vw + 288px);
 }
+#mergerGameResetBlocker.care {
+    top: calc(50vh + 245px);
+    left: calc(50vw + 288px);
+}
 
 #MGstatus.hideDaily th:nth-child(3),
 #MGstatus.hideDaily td:nth-child(3){
@@ -65,18 +69,22 @@
     width:4.5em;
 }
 
-#mergerGameDialog .toprightcorner,
-#mergerGameSolutionBody .toprightcorner{
+#mergerGameDialog .toprightcorner{
     object-fit: none;
     object-position: top right;
 }   
+#mergerGameDialog .bottomrightcorner{
+    object-fit: none;
+    object-position: bottom right;
+}   
 
 #mergerGameDialog .toprightcorner.full,
-#mergerGameSolutionBody .toprightcorner.full{
+#mergerGameDialog .bottomrightcorner.full {
     width: 35px;
     height: 40px;
     zoom: 60%;
 }   
+
 
 #mergerGameSolutionBody {
     overflow-y: auto;
