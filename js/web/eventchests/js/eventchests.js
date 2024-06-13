@@ -130,15 +130,15 @@ let EventPresents = {
             '<th colspan="3" class="text-center">' + i18n('Boxes.Discord.Name') + '</th>' +
             '</tr>' +
             '</thead>');
-        
-        EventPresents.Presents.sort()
 
         for (let present of EventPresents.Presents) {
-            h.push('<tr class="'+present.status.value+'">');
-            let icon = (present.reward.type == "unit" ? srcLinks.getReward(present.reward.subType) : srcLinks.getReward(present.reward.iconAssetName))
-            h.push('<td>'+ (icon.search("antiquedealer_flag") == -1 ? '<img src="' + icon  + '">' : '') + '</td>');
-            h.push('<td>' + present.reward.name + (present.status.value == "visible" ? '<img class="visible" src="' + extUrl + 'css/images/hud/open-eye.png">' : '') +'</td>');
-            h.push('</tr>');
+            if (present.status.value != "used") {
+                h.push('<tr class="'+present.status.value+'">');
+                let icon = (present.reward.type == "unit" ? srcLinks.getReward(present.reward.subType) : srcLinks.getReward(present.reward.iconAssetName))
+                h.push('<td>'+ (icon.search("antiquedealer_flag") == -1 ? '<img src="' + icon  + '">' : '') + '</td>');
+                h.push('<td>' + present.reward.name + (present.status.value == "visible" ? '<img class="visible" src="' + extUrl + 'css/images/hud/open-eye.png">' : '') +'</td>');
+                h.push('</tr>');
+            }
         }
 
         h.push('</table>');
