@@ -45,7 +45,7 @@ FoEproxy.addHandler('BonusService', 'getLimitedBonuses', (data, postData) => {
 FoEproxy.addFoeHelperHandler('QuestsUpdated', data => {
 	if ($('#bonus-hud').length > 0) {
 		BonusService.CalcBonusData();
-	} else if (Settings.GetSetting('RivalSound') && Settings.GetSetting('EnableSound')) {
+	} else if (Settings.GetSetting('RivalSound')) {
 		BonusService.checkRivalComplete();
 	}
 });
@@ -257,7 +257,7 @@ let BonusService = {
 					si.addClass('bonus-blink');
 
 					if (bt[i] === 'donequests') {
-						if (Settings.GetSetting('EnableSound')) helper.sounds.message.play();
+						helper.sounds.play("message");
 					}
 
 					setTimeout(()=>{
@@ -287,7 +287,7 @@ let BonusService = {
 		if (!MainParser.Quests) return; 
 		for (let Quest of MainParser.Quests) {
 			if (Quest?.questGiver?.id.indexOf("rival") >=0 && Quest.state == 'collectReward') {
-				helper.sounds.message.play();
+				helper.sounds.play("message");
 				break;
 			}
 		}

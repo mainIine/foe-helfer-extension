@@ -13,25 +13,23 @@
 
 FoEproxy.addHandler('WorldChallengeService', 'getOverview', (data, postData) => {
 	
-	worldChallenge.count = data.responseData?.taskProgressPoints;
+	worldChallenge.count = data.responseData?.taskProgressPoints || 0;
 	
 });
 
-
 FoEproxy.addHandler('LeagueService', 'getRank', (data, postData) => {
-	if (worldChallenge.Leaguepoints == data.responseData.points) return;
-	worldChallenge.Leaguepoints = data.responseData.points;
+	if (worldChallenge.leaguepoints == data.responseData.points) return;
+	worldChallenge.leaguepoints = data.responseData.points;
 	if (["buyChest"].includes(postData[0].requestMethod)) return;
-	if (!worldChallenge.count) return;
+	if (worldChallenge.count === undefined) return;
 	worldChallenge.count++;
-	if (worldChallenge.count >=20 && Settings.GetSetting('EnableSound')) helper.sounds.message.play();
+	if (worldChallenge.count >=20) helper.sounds.play("message");
 
 });
-
 
 
 let worldChallenge = {
 	count: undefined,
-	Leaguepoints:0,
+	leaguepoints:0,
 
 }

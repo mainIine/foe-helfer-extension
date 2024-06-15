@@ -144,6 +144,9 @@ helper.permutations = (()=>{
 helper.sounds = {
 	ping: new Audio(extUrl + 'vendor/sounds/ping.mp3'),
     message: new Audio(extUrl + 'vendor/sounds/message.mp3'),
+	play: (sound) => {
+		if (Settings.GetSetting('EnableSound')) helper.sounds[sound].play();
+	},
 };
 
 helper.preloader = { 
