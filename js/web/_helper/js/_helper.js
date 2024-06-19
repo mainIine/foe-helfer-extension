@@ -38,13 +38,9 @@ helper.str = {
 	 * <a href="/param">@param</a> {string} [textToCopy] Source string
 	 */
 	copyToClipboard: async(textToCopy) => {
+		if (!document.hasFocus()) return;
 		if (navigator && navigator.clipboard && navigator.clipboard.writeText) {
-			try {
-				a = navigator.clipboard.writeText(textToCopy);
-				return a;
-			} catch (e) {
-				return resolve();
-			}
+			return navigator.clipboard.writeText(textToCopy);
 		} else {
 			return new Promise(async (resolve) => {
 				let copyFrom = $('<textarea/>');
