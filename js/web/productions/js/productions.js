@@ -398,7 +398,7 @@ let Productions = {
 			if (type != 'goods') {
 				buildingIds.forEach(b => {
 					let building = CityMap.getBuildingById(b.id)
-					if (building.player_id == ExtPlayerID) { // todo: breaks with population etc for chainedBuildings
+					if (building.player_id == ExtPlayerID) { // todo: breaks with population etc for chainedBuildings.. does it still break?
 					if (type == 'items' && Productions.showBuildingItems(true, building) == false || building.chainBuilding?.type == "linked") return // make random productions with resources and others disappear from the item list
 
 					rowA.push('<tr>')
