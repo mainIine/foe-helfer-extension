@@ -474,7 +474,7 @@ GetFights = () =>{
 	FoEproxy.addHandler('BattlefieldService', 'startByBattleType', (data, postData) => {
 
 		// battle finished
-		if (data.responseData["error_code"] === 901) {
+		if ([901,902].includes(data.responseData.error_code)) {
 			return;
 		}
 		if (data.responseData["armyId"] === 1 || data.responseData["state"]["round"] === 1 || data.responseData["battleType"]["totalWaves"] === 1) {
