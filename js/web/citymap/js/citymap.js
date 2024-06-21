@@ -935,14 +935,14 @@ let CityMap = {
 		let population = 0;
 		let eraId = Technologies.InnoEras[era];
 
-		if (data.type != "generic_building") { // not a generic building
+		if (metaData.__class__ != "GenericCityEntity") { // not a generic building
 			if (metaData.entity_levels.length > 0) {  // special building
 				if (metaData.entity_levels[eraId].required_population)
 					return metaData.entity_levels[eraId].required_population * -1		// needs population, e.g. military
 				else if (metaData.entity_levels[eraId].provided_population)
 					return metaData.entity_levels[eraId].provided_population			// provides population, e.g. residential
 			}
-			else if (metaData.requirements) {
+			else if (metaData.requirements) { // todo: try to use only metadata
 				if (metaData.requirements.cost) {
 					if (data.type === "decoration")
 						return 0
@@ -974,7 +974,7 @@ let CityMap = {
 		let isPolivated = CityMap.setPolivation(data, metaData)
 
 		let bgHappiness = data.bonus
-		if (data.type != "generic_building") {
+		if (metaData.__class__ != "GenericCityEntity") {
 			if (metaData.entity_levels.length > 0) { // special building
 				if (metaData.entity_levels[eraId].provided_happiness) 
 					return (data.state.__class__ == "PolishedState" ? metaData.entity_levels[eraId].provided_happiness*2 : metaData.entity_levels[eraId].provided_happiness)
@@ -1013,7 +1013,7 @@ let CityMap = {
 	},
 	
 	// returns undefined if building cannot be motivated or polished
-	setPolivation(data, metaData) { 
+	setPolivation(data, metaData) { // todo?? use only metaData if possible
 		let isPolivationable = false;
 		let isPolishable = false;
 		metaData.abilities.forEach(ability => {
@@ -1023,21 +1023,21 @@ let CityMap = {
 				isPolivationable = true
 				isPolishable = true
 			}
-		});
-		if (data.type == "generic_building")
-			isPolivationable = (metaData.components.AllAge.socialInteraction != undefined);
+		})
+		if (metaData.__class__ == "GenericCityEntity")
+			isPolivationable = (metaData.components.AllAge.socialInteraction != undefined)
 		
 		if (isPolivationable) {
-			if (data.type != "generic_building") {
-					if (data.state.boosted)
-						return data.state.boosted;
-					else if (data.state.is_motivated) 
-						return true;
-					else if (isPolishable) { // decorations etc.
-						if (data.state.next_state_transition_in) 
-							return true
-					}
-					return false;
+			if (metaData.__class__ != "GenericCityEntity") {
+				if (data.state.boosted)
+					return data.state.boosted;
+				else if (data.state.is_motivated) 
+					return true;
+				else if (isPolishable) { // decorations etc.
+					if (data.state.next_state_transition_in) 
+						return true
+				}
+				return false
 			}
 			else { // generic buildings
 				if (data.state.socialInteractionStartedAt > 0 && data.state.socialInteractionId == "polish") {
@@ -1051,7 +1051,7 @@ let CityMap = {
 					return false
 			}
 		}
-		return undefined;
+		return undefined
 	},
 	
 	// returns chainId (string), returns undefined if not a chain building
@@ -1125,7 +1125,7 @@ let CityMap = {
 		let boosts = []
 		let isSet = this.setSetBuilding(metaData)
 		let isChain = this.setChainBuilding(metaData)
-		if (data.type !== "generic_building") {
+		if (metaData.__class__ != "GenericCityEntity") {
 			metaData.abilities.forEach(ability => {
 				if (ability.boostHints) {
 					ability.boostHints.forEach(abilityBoost => {
@@ -1376,7 +1376,7 @@ let CityMap = {
 	// returns false if building does not produce anything, doubleWhenMotivated is for coins and supplies
 	setAllProductions(metaData, data, era) {
 		let productions = []
-		if (data.type != "generic_building" && data.type != "greatbuilding") {
+		if (metaData.__class__ != "GenericCityEntity" && metaData.type != "greatbuilding") {
 			if (metaData.is_special) { // special building
 				if (metaData.available_products !== undefined) { 
 					// TODO: siegesturm produktion ist false?
@@ -1404,12 +1404,12 @@ let CityMap = {
 					if (Object.keys(resource.resources).length > 0) 
 						productions.push(resource)
 				})
-				if (metaData.__class__ == "CityEntityRandomProductProductionBuilding") {
+				if (metaData.__class__ == "CityEntityRandomProductProductionBuilding") { // if weird old building, use current production
 					let currentProduction = this.setCurrentProductions(data, metaData, era)
 					productions = currentProduction
 				}
 			}
-			if (data.type == "main_building") { // add emissary production to town hall
+			if (metaData.type == "main_building") { // add emissary production to town hall
 				MainParser.EmissaryService?.forEach(emissary => {
 					let resource = {
 						type: (emissary.bonus.type != "unit" ? "resources" : emissary.bonus.type),
@@ -1429,7 +1429,7 @@ let CityMap = {
 					}
 				})
 			}
-			if (data.cityentity_id.includes("CastleSystem")) { // add castle system stuff
+			if (metaData.id.includes("CastleSystem")) { // add castle system stuff
 				let currentLevel = Castle.curLevel
 				era = CurrentEra 
 				MainParser.CastleSystemLevels[(currentLevel-1)].dailyReward[era].rewards.forEach(reward => {
@@ -1482,7 +1482,7 @@ let CityMap = {
 			
 			return false
 		}
-		else if (data.type === "generic_building") {
+		else if (metaData.__class__ === "GenericCityEntity") {
 			// fyi: generic_building supplies and coins are always doubled when motivated
 			let production = metaData.components[era]?.production || metaData.components.AllAge.production // currently it is either allage or era, never both
 			if (production) {
@@ -1551,7 +1551,7 @@ let CityMap = {
 				return productions
 			return false
 		}
-		else if (data.type === 'greatbuilding') {
+		else if (metaData.type === 'greatbuilding') {
 			let resource = {
 				type: 'resources',
 				resources: {}
@@ -1581,7 +1581,7 @@ let CityMap = {
 		let productions = []
 		let state = CityMap.setState(data)
 		if (state != "idle") {
-			if (data.type !== "generic_building") {
+			if (metaData.__class__ !== "GenericCityEntity") {
 				if (data.state.current_product) {
 					if (data.state.current_product.guildProduct) {
 						let production = {
@@ -2041,8 +2041,8 @@ let CityMap = {
 			}
 		}
 		
-		if (entity.type != "street")
-			console.log('entity ',entity.name, entity, metaData, data)
+		//if (entity.type != "street")
+		//	console.log('entity ',entity.name, entity, metaData, data)
 		return entity
 	},
 };
