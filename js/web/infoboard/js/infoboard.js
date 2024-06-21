@@ -280,7 +280,7 @@ let Infoboard = {
 
             if (Infoboard.PlayInfoSound && status && filterStatus)
             {
-                if (Settings.GetSetting('EnableSound')) helper.sounds.ping.play();
+                helper.sounds.play("ping");
             }
         }
     },
