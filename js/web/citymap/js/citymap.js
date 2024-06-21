@@ -1696,14 +1696,17 @@ let CityMap = {
 				if (metaData.components[era].lookup.rewards[product.reward.id]) {
 					lookupData = metaData.components[era].lookup.rewards[product.reward.id]
 				}
-				else {
+				else { // blueprint chest, e.g. vineyard
 					for (const [key, reward] of Object.entries(metaData.components[era].lookup.rewards)) {
 						if (reward.id.search("blueprint") != -1)
-							lookupData = reward;
+							lookupData = reward
 					}
+					//amount = lookupData.possible_rewards[0].reward.amount // hacky, because every chest item could have a different amount of blueprints
+					//console.log(metaData.name, amount)
 				}
 			}
-			else if (product.reward.id.search("unit") != -1) {
+			// may be unnecessary now
+			/*else if (product.reward.id.search("unit") != -1) {
 				if (metaData.components[era].lookup.rewards[product.reward.id])
 					lookupData = metaData.components[era].lookup.rewards[product.reward.id]
 				else {
@@ -1712,7 +1715,7 @@ let CityMap = {
 							lookupData = reward;
 					}
 				}
-			}
+			}*/
 			else if (product.reward.type == "good") { // this can break if there is more than one generic goods reward for a building
 				for (const [key, reward] of Object.entries(metaData.components[era].lookup.rewards)) {
 					if (reward.id.includes("good"))
@@ -1733,7 +1736,6 @@ let CityMap = {
 		}
 		if (amount == 0) 
 			amount = lookupData.amount
-		// todo: something is undefined with the amounts of BP from vineyard
 
 		let name = ""
 		if (lookupData) 
@@ -1759,7 +1761,7 @@ let CityMap = {
 			id: product.reward.id,
 			name: name,
 			type: lookupData?.type || "consumable",
-			subType: lookupData?.subType, // todo lookupdata is undefined for Zheng's Golden Bell - Lv. 2 
+			subType: lookupData?.subType,
 			amount: amount, // amount can be undefined for blueprints or units if building is not motivated
 			icon: lookupData?.iconAssetName
 		}
@@ -1808,7 +1810,7 @@ let CityMap = {
 			name = lookupData.assembledReward.name
 		else if (lookupData.__class__ == "GenericRewardSet") // this is a dirty workaround for trees of patience, because i lack patience
 			name = lookupData.rewards[0].name 
-		else if (lookupData.subType == "speedup_item" || lookupData.subType == "reward_item" || lookupData.type == "chest" || lookupData.subType == "boost_item" || lookupData.type == "forgepoint_package" || lookupData.type == "resource") 
+		else if (lookupData.subType == "speedup_item" || lookupData.subType == "reward_item" || lookupData.subType == "boost_item" || lookupData.type == "forgepoint_package" || lookupData.type == "resource") 
 			name = lookupData.name
 		else if (lookupData.type == "unit") { // -> (next_)light_melee
 			if (lookupData.id.search("#") != -1) { // era_unit#light_melee#NextEra#1
@@ -1822,7 +1824,14 @@ let CityMap = {
 				name = lookupData.id.replace("unit_","").replace(/\d+/,"")
 		}
 		else if (lookupData.type == "blueprint")  // id: "blueprint#random#3"
-			name = lookupData.name.replace(/^\d+\s*/,"")
+			name = lookupData.name.replace(/^\+/,"").replace(/^\d+\s*/,"")
+		else if (lookupData.type == "chest" && lookupData.id.includes("blueprint")) { // remove +20 from the name becuase the amount is in the amount
+			name = lookupData.name.replace(/^\+\d+\s*/,"")
+			name = name.replace(/^\d+\s*/,"") // just to be sure if there is no + at the start for other languages
+		}
+		else if (lookupData.type == "chest") { // chest can be: BP - see above, units, goods (next age)
+			name = lookupData.name
+		}
 		else if (lookupData.subType == "self_aid_kit")
 			name = lookupData.name
 		else {
