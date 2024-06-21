@@ -932,8 +932,8 @@ let CityMap = {
 
 	// returns negative numbers for builidings that use population, 0 for buildings that dont provide or use it
 	setPopulation: (metaData, data, era) => {
-		let population = 0;
-		let eraId = Technologies.InnoEras[era];
+		let population = 0
+		let eraId = Technologies.InnoEras[era]
 
 		if (metaData.__class__ != "GenericCityEntity") { // not a generic building
 			if (metaData.entity_levels.length > 0) {  // special building
@@ -942,11 +942,11 @@ let CityMap = {
 				else if (metaData.entity_levels[eraId].provided_population)
 					return metaData.entity_levels[eraId].provided_population			// provides population, e.g. residential
 			}
-			else if (metaData.requirements) { // todo: try to use only metadata
+			else if (metaData.requirements) {
 				if (metaData.requirements.cost) {
-					if (data.type === "decoration")
+					if (metaData.type === "decoration")
 						return 0
-					else if (data.type === "greatbuilding") 
+					else if (metaData.type === "greatbuilding") 
 						if (data.bonus)
 							if (data.bonus.type === "population")
 								return data.bonus.value
@@ -964,7 +964,7 @@ let CityMap = {
 				}
 			}
 		}
-		return population;
+		return population
 	},
 	
 	// returns 0 if building does not provide or substract happiness
@@ -1173,8 +1173,8 @@ let CityMap = {
 						}
 					}
 				}
-			});
-			if (data.type === "greatbuilding") { 
+			})
+			if (metaData.type === "greatbuilding") { 
 				if (data.bonus?.type) {
 					let boost = {
 						feature: "all",
@@ -1185,7 +1185,7 @@ let CityMap = {
 						boosts.push(boost)
 				}
 			}
-			else if (data.cityentity_id.includes("CastleSystem")) {
+			else if (metaData.id.includes("CastleSystem")) {
 				MainParser.Boosts[data.id].forEach(castleBoost => {
 					let boost = {
 						feature: "all",
@@ -1552,25 +1552,9 @@ let CityMap = {
 			return false
 		}
 		else if (metaData.type === 'greatbuilding') {
-			let resource = {
-				type: 'resources',
-				resources: {}
-			}
-			if (data.state.current_product) {
-				if (data.state.current_product.product?.resources) {
-					resource.resources = data.state.current_product.product.resources
-				}
-				if (data.state.current_product.name === 'penal_unit') { // alcatraz
-					resource.resources = {'random': parseFloat(data.state.current_product.amount)}
-					resource.type = 'unit'
-				}
-				if (data.state.current_product.name === 'clan_goods') {
-					resource.type = 'guildResources'
-					resource.resources = {'all_goods_of_age': data.state.current_product.goods[0].value*5}
-				}
-				productions.push(resource)
-			}
-			if (productions.length > 0)
+			productions = this.setCurrentProductions(data, metaData, era)
+			
+			if (productions?.length > 0)
 				return productions
 			return false
 		}
