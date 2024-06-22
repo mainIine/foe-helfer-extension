@@ -1373,7 +1373,7 @@ let CityMap = {
 		}
 	},
 	
-	// returns false if building does not produce anything, doubleWhenMotivated is for coins and supplies
+	// returns false if building does not produce anything
 	setAllProductions(metaData, data, era) {
 		let productions = []
 		if (metaData.__class__ != "GenericCityEntity" && metaData.type != "greatbuilding") {
@@ -1491,7 +1491,6 @@ let CityMap = {
 					let resource = {
 						type: product.type,
 						needsMotivation: (product.onlyWhenMotivated == true),
-						doubleWhenMotivated: true,
 						resources: {}
 					}
 					if (product.type == "resources") {
