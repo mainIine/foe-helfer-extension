@@ -413,23 +413,17 @@ let Productions = {
 					
 					if (!type.includes('att') && !type.includes('def')) {
 						if (type != 'items') {
-							let production = Productions.getBuildingProductionByCategory(true, building, type)
-							currentAmount = parseFloat(production.amount)
-							amount = parseFloat(production.amount)
-							hasRandomProductions = production.hasRandomProductions
+							currentAmount = parseFloat(Productions.getBuildingProductionByCategory(true, building, type).amount)
+							amount = parseFloat(Productions.getBuildingProductionByCategory(false, building, type).amount)
+							hasRandomProductions = Productions.getBuildingProductionByCategory(false, building, type).hasRandomProductions
+							let doubled = Productions.getBuildingProductionByCategory(false, building, type).doubleWhenMotivated // todo: irgendwie falsch
 
-							let doubled = production.doubleWhenMotivated 
-							if (building.state.isPolivated == undefined) doubled = false
-
-							if (type == 'money' && building.type != "greatbuilding" && building.type != "main_building") {
-								amount = Math.round((amount + (amount * ((MainParser.BoostSums.coin_production + (Productions.HappinessBoost * 100)) / 100))) * (doubled ? 2 : 1))
+							if (type == 'money' && building.type != "greatbuilding") {
+								amount = Math.round(amount + (amount * ((MainParser.BoostSums.coin_production + (Productions.HappinessBoost * 100)) / 100)))
 								currentAmount = Math.round(currentAmount + (currentAmount * ((MainParser.BoostSums.coin_production + (Productions.HappinessBoost * 100)) / 100)))
 							}
 							else if (type == 'supplies' && building.type != "greatbuilding") {
-								// gen b: if supplies are always produced, they are doubled, otherwise not - i think?!
-								doubled = false
-								if (production.needsMotivation == false) doubled = true
-								amount = Math.round((amount + (amount * ((MainParser.BoostSums.supply_production + (Productions.HappinessBoost * 100)) / 100)))) * (doubled ? 2 : 1)
+								amount = Math.round(amount + (amount *((MainParser.BoostSums.supply_production + (Productions.HappinessBoost * 100)) / 100))) * (doubled ? 2 : 1)
 								currentAmount = Math.round(currentAmount + (currentAmount *((MainParser.BoostSums.supply_production + (Productions.HappinessBoost * 100)) / 100)))
 							}
 							else if (type == 'strategy_points' && building.type != "greatbuilding" && building.type != "main_building" && !building.entityId.includes("CastleSystem")) {
@@ -525,7 +519,7 @@ let Productions = {
 				table.push('<thead style="z-index:100">')
 				table.push('<tr>')
 				table.push('<th colspan="3"><span class="btn-default change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeGroups') + '</span></th>')
-				if (!type.includes('att') && !type.includes('def'))
+				if (!type.includes('att') && !type.includes('def')) 
 					table.push('<th colspan="9" class="textright">'+HTML.Format(parseFloat(typeCurrentSum))+ "/" +HTML.Format(parseFloat(typeSum))+'</th>')
 				else {
 					table.push('<th colspan="9" class="textright"></th>')
@@ -578,10 +572,11 @@ let Productions = {
 			else if (building.chainBuilding !== undefined && building.chainBuilding?.type == "start") {
 				
 				let linkedBuildings = CityMap.hasLinks(building)
+				//console.log(building.name, building.coords, linkedBuildings)
 				if (linkedBuildings.length > 1) {
 					let fullBuilding = CityMap.createChainedBuilding(linkedBuildings)
-					// todo: remove "duplicate" linked building from list - Productions.BuildingsAll
-					// console.log(Productions.BuildingsAll)
+					// todo: remove duplicate start building from list - Productions.BuildingsAll
+					console.log(fullBuilding.name)
 				}
 			}
 		}
@@ -804,8 +799,7 @@ let Productions = {
 			amount: 0,
 			type: null, // units
 			hasRandomProductions: false,
-			doubleWhenMotivated: false,
-			needsMotivation: false
+			doubleWhenMotivated: false
 		}
 		let productions = (current ? building.state.production : building.production)
 
@@ -829,9 +823,9 @@ let Productions = {
 				}
 				if (production.type == "resources" && category != "goods") {
 					if (production.resources[category]) {
+						let doubleMoney = (production.doubleWhenMotivated ? 2 : 1) // todo: bug?!
 						prod.doubleWhenMotivated = production.doubleWhenMotivated
-						prod.needsMotivation = production.needsMotivation
-						prod.amount += production.resources[category] //* doubleMoney
+						prod.amount += production.resources[category] * doubleMoney
 					}
 				}
 				if (production.type+"s" == category) { // units
@@ -1297,7 +1291,7 @@ let Productions = {
 		let tileRatings = JSON.parse(localStorage.getItem('ProductionRatingProdPerTiles'))
 		for (const building of buildingType) {
 			if (building.entityId.includes("AllAge_EasterBonus1") || building.entityId.includes("L_AllAge_Expedition16") || building.entityId.includes("L_AllAge_ShahBonus17")) continue // do not include wishingwell type buildings
-			let size = building.size.width * building.size.length + building.needsStreet
+			let size = building.size.width * building.size.length + building.needsStreet // todo: include street requirement?
 			let score = 0
 			let ratedBuilding = {
 				building: building
@@ -1344,6 +1338,8 @@ let Productions = {
 		else if (type == "strategy_points" || type == "medals" || type == "premium" || type == "money" || type == "supplies" || type == "units" || type == "clan_goods" || type == "clan_power")
 			return Productions.getBuildingProductionByCategory(false, building, type).amount
 		
+
+		// todo: güter müssen anhand des gebäudezeitalters angezeigt werden, nicht anhand des spielerzeitalters T_T
 		else if (type.includes("goods")) {
 			let allGoods = CityMap.getBuildingGoodsByEra(false, building)
 			let eraId = Technologies.InnoEras[building.eraName]
