@@ -83,7 +83,7 @@ FoEproxy.addHandler('PresentGameService', 'openPresent', (data, postData) => {
     let presents = data.responseData.updatedPresentList
 
     for (let present of presents) {
-        EventPresents.Presents[present.presentId] = present
+        EventPresents.Presents[present.presentId || 0] = present
     }
 
     EventPresents.Show()
