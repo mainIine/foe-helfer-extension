@@ -1425,7 +1425,9 @@ let MainParser = {
 			if (!EntityID) EntityID = 0;
 			if (!MainParser.Boosts[EntityID]) MainParser.Boosts[EntityID] = [];
 			MainParser.Boosts[EntityID].push(Boost);
-
+			if (Boost.origin==="inventory_item") {
+				BoostPotions.activate(Boost.type,{expire:Boost.expireTime,target:Boost.targetedFeature||"all",value:Boost.value});
+			};
 			if (MainParser.BoostSums[d[i]['type']] !== undefined) {
 				MainParser.BoostSums[d[i]['type']] += d[i]['value']
 			}
