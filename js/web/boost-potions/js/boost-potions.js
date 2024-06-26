@@ -28,9 +28,6 @@ FoEproxy.addHandler('BoostService', 'addBoost', (data)=> {
 	BoostPotions.activate(b.type,{expire:b.expireTime,target:b.targetedFeature||"all",value:b.value});
 });
 
-
-
-
 /**
  * 
  */
@@ -71,10 +68,9 @@ let BoostPotions = {
 		let shortest=`<img src="${srcLinks.get("/shared/icons/boost_attack_medium.png",true)}">`;
 		$('#BoostPotions .shortest').html(shortest);
 		let active=``;
-		let b = null;
 		let d = null;
 		let a = false;
-		for (b of Object.keys(BoostPotions.active)) {
+		for (let b of Object.keys(BoostPotions.active)) {
 			if (!BoostPotions.active[b]) continue;
 			let duration = moment.duration(moment.unix(BoostPotions.active[b].expire).diff(moment(new Date())));
 			if (duration<0) {
@@ -131,43 +127,28 @@ let BoostPotions = {
 			table += `<tr><td><img src="${srcLinks.get(target=="all"?"/shared/icons/quest_icons/icon_quest_battle.png":`/shared/icons/booster_target_${target}.png`,true)}"></td>`;
 			for (let t of Object.keys(BoostPotions.list)) {
 				table += `<td>`
-				let c=true;
 				sorted = (BoostPotions.list[t][target]||[]).sort((a,b)=> {
 					let r = a.value-b.value;
 					if (r!=0) return r;
 					return a.duration-b.duration;
 				});
-				for (let b of sorted) {
-					table += c ? ``:`\n`
-					table += `${b.amount}x`;
-					c=false;
-				}
+				table += sorted.map(b=>`${b.amount}x`).join(`\n`);
 				table += `</td><td>`
-				c=true;
-				for (let b of sorted) {
-					table += c ? ``:`\n`
-					table += `${b.value}%`;
-					c=false;
-				}
+				table += sorted.map(b=>`${b.value}%`).join(`\n`);
 				table += `</td><td>`
-				c=true;
-				for (let b of sorted) {
-					table += c ? ``:`\n`
+				table += sorted.map(b=>{
 					let duration = moment.duration(b.duration*1000);
 					h=duration.hours();
 					m=duration.minutes();
 					s=duration.seconds();
-					table += `${h==0 ? "" : h+":"}${m<10 ? "0"+m:m}:${s<10 ? "0"+s:s}`;
-					c=false;
-				}
+					return `${h==0 ? "" : h+":"}${m<10 ? "0"+m:m}:${s<10 ? "0"+s:s}`;
+				}).join(`\n`);
 				table += `</td>`
 			}
 			table += `</tr>`		
 		}
 		table += `</table>`
 		
-		
-
 		if( $('#BoostPotions').length < 1 ){
 			BoostPotions.Show();
 		}
