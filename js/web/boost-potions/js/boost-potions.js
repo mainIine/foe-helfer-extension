@@ -69,6 +69,7 @@ let BoostPotions = {
 		}
 		
 		let shortest=`<img src="${srcLinks.get("/shared/icons/boost_attack_medium.png",true)}">`;
+		$('#BoostPotions .shortest').html(shortest);
 		let active=``;
 		let b = null;
 		let d = null;
@@ -77,7 +78,7 @@ let BoostPotions = {
 			if (!BoostPotions.active[b]) continue;
 			let duration = moment.duration(moment.unix(BoostPotions.active[b].expire).diff(moment(new Date())));
 			if (duration<0) {
-				BoostPotions.activate[b]=null;
+				BoostPotions.active[b]=null;
 				continue;
 			}
 			[h,m,s]=[duration.hours(),duration.minutes(),duration.seconds()];
@@ -131,7 +132,11 @@ let BoostPotions = {
 			for (let t of Object.keys(BoostPotions.list)) {
 				table += `<td>`
 				let c=true;
-				sorted = (BoostPotions.list[t][target]||[]).sort((a,b)=> a.value-b.value);
+				sorted = (BoostPotions.list[t][target]||[]).sort((a,b)=> {
+					let r = a.value-b.value;
+					if (r!=0) return r;
+					return a.duration-b.duration;
+				});
 				for (let b of sorted) {
 					table += c ? ``:`\n`
 					table += `${b.amount}x`;

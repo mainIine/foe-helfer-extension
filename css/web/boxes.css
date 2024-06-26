@@ -785,11 +785,12 @@ Potions */
 #BoostPotions .active span {
 	border: 2px solid #895022;
 	margin-right: 5px;
-	margin-top:3px;
-	padding-top:3px;
-	padding-right: 4px;
+	padding:3px;
 }
-
+#BoostPotions .active {
+	margin-top: 6px;
+    margin-bottom: 3px;
+}
 #BoostPotions td {
 	white-space: pre;
 }
