@@ -56,6 +56,14 @@ let BoostPotions = {
 
 	Show: () => {
 		// noch nicht im DOM?
+
+		if(!Settings.GetSetting('ShowPotions')) {
+			$('#BoostPotions').remove();
+			if (!BoostPotions.delay) return;
+			clearInterval(BoostPotions.delay);
+			BoostPotions.delay = null;
+			return;
+		} 
 		if( $('#BoostPotions').length < 1 ){
 			let div = $('<div />').attr({
 				id: 'BoostPotions',
@@ -104,6 +112,13 @@ let BoostPotions = {
 	},
 
 	updateList:()=>	{
+		if(!Settings.GetSetting('ShowPotions')) {
+			$('#BoostPotions').remove();
+			if (!BoostPotions.delay) return;
+			clearInterval(BoostPotions.delay);
+			BoostPotions.delay = null;
+			return;
+		} 
 		BoostPotions.list = {
 			att_boost_attacker: {},
 			att_boost_defender: {},
