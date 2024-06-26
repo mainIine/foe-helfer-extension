@@ -790,6 +790,70 @@ Accordion */
 }
 
 /*----------------------------------------------------------------------------------------------------------------------
+Potions */
+
+#BoostPotions {
+	z-index: 100;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+	font-size: 0.8rem;
+	color: var(--text-normal);
+	position: fixed;
+	top: 40px;
+	right: 10px;
+}
+
+#BoostPotions .shortest {
+	width: 50px;
+    height: 40px;
+    border: 3px solid #895022;
+    background: url('../images/hud/box-bg.png') center center repeat;
+}
+#BoostPotions .active span {
+	border: 2px solid #895022;
+	margin-right: 5px;
+	padding:3px;
+}
+#BoostPotions .active {
+	margin-top: 6px;
+    margin-bottom: 3px;
+}
+#BoostPotions td {
+	white-space: pre;
+}
+#BoostPotions td:nth-child(4),
+#BoostPotions td:nth-child(7),
+#BoostPotions td:nth-child(10) {
+	border-right: 1px solid var(--border-table-top);
+}
+#BoostPotions td:nth-child(2),
+#BoostPotions td:nth-child(5),
+#BoostPotions td:nth-child(8),
+#BoostPotions td:nth-child(11) {
+	text-align: right;
+}
+#BoostPotions td:nth-child(4),
+#BoostPotions td:nth-child(7),
+#BoostPotions td:nth-child(10),
+#BoostPotions td:nth-child(13) {
+	text-align: left;
+}
+
+#BoostPotions .list {
+    display: none;
+    background: url('../images/hud/box-bg.png') center center repeat;
+    position: absolute;
+    top: 20px;
+    right: 100%;
+    box-shadow: 0 0 1px 1px #000000aa;
+    border: 3px solid #895022;
+    border-radius: 5px;
+}
+
+#BoostPotions:hover .list {
+	display: block;
+}
+
+/*----------------------------------------------------------------------------------------------------------------------
 FP-Bar */
 
 #fp-bar {
