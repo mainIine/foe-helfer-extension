@@ -139,15 +139,6 @@ let BlueGalaxy = {
             FPB = Productions.Boosts['fp'] === undefined ? (MainParser.BoostSums['forge_points_production'] + 100) / 100 : Productions.Boosts['fp']
             FPBoost = (FP) => { return Math.round(FP * FPB) },
             showBGFragments = JSON.parse(localStorage.getItem('showBGFragments')||"true");
-
-        let BGCurrentAge = "unknown";
-        for (let i = 0; i < CityMap.length; i++) {
-            let CityEntity = CityMap[i];
-
-            if (CityEntity.type === 'main_building') {
-                BGCurrentAge = CityEntity.eraName;
-            }
-        }
         
         for (let i = 0; i < Object.values(MainParser.NewCityMapData).length; i++) {
             let CityEntity = Object.values(MainParser.NewCityMapData)[i];
@@ -178,10 +169,10 @@ let BlueGalaxy = {
                             let GoodEra = GoodsList[j]['era'];
                             if (product.resources[GoodID]) {
                                 if (product.type == "resources")
-                                    if(GoodEra == BGCurrentAge) {
-                                        GoodsSum += product.resources[GoodID];
+                                    if(GoodEra == CurrentEra) {
+                                        GoodsSum += product.resources[GoodID]
                                     } else {
-                                        OlderGoodsSum += product.resources[GoodID];
+                                        OlderGoodsSum += product.resources[GoodID]
                                     }
                                 else   
                                     GuildGoodsSum += product.resources[GoodID];
