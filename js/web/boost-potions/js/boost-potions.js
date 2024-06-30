@@ -35,8 +35,8 @@ let BoostPotions = {
 	delay:null,
 	active:{
 		att_boost_attacker: null,
-		att_boost_defender: null,
 		def_boost_attacker: null,
+		att_boost_defender: null,
 		def_boost_defender: null,
 	},
 	activeMapRelevance:{
@@ -121,8 +121,8 @@ let BoostPotions = {
 		} 
 		BoostPotions.list = {
 			att_boost_attacker: {},
-			att_boost_defender: {},
 			def_boost_attacker: {},
+			att_boost_defender: {},
 			def_boost_defender: {},
 		}
 

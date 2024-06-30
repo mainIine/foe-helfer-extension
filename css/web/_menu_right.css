@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2024 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -14,7 +14,7 @@
 
 #foe-helper-hud.hud-right {
 	right: 0;
-	top: 515px;
+	top: 400px;
 	width: 63px;
 	height: 270px;
 	border-radius: 8px 0 0 8px;
