@@ -399,7 +399,7 @@ let Productions = {
 				buildingIds.forEach(b => {
 					let building = CityMap.getBuildingById(b.id)
 					if (building.player_id == ExtPlayerID) { // todo: breaks with population etc for chainedBuildings.. does it still break?
-					if (type == 'items' && Productions.showBuildingItems(true, building) == false || building.chainBuilding?.type == "linked") return // make random productions with resources and others disappear from the item list
+					if (type == 'items' && Productions.showBuildingItems(true, building) == false || building.chainBuilding?.type == "linked") return // makes random productions with resources and others disappear from the item list
 
 					rowA.push('<tr>')
 					rowA.push('<td>')
@@ -416,14 +416,14 @@ let Productions = {
 							currentAmount = parseFloat(Productions.getBuildingProductionByCategory(true, building, type).amount)
 							amount = parseFloat(Productions.getBuildingProductionByCategory(false, building, type).amount)
 							hasRandomProductions = Productions.getBuildingProductionByCategory(false, building, type).hasRandomProductions
-							let doubled = Productions.getBuildingProductionByCategory(false, building, type).doubleWhenMotivated // todo: irgendwie falsch
+							let doubled = Productions.getBuildingProductionByCategory(false, building, type).doubleWhenMotivated
 
-							if (type == 'money' && building.type != "greatbuilding") {
-								amount = Math.round(amount + (amount * ((MainParser.BoostSums.coin_production + (Productions.HappinessBoost * 100)) / 100)))
+							if (type == 'money' && building.type != "greatbuilding" && building.type != "main_building") {
+								amount = Math.round(amount + (amount * ((MainParser.BoostSums.coin_production + (Productions.HappinessBoost * 100)) / 100))) * (doubled ? 2 : 1)
 								currentAmount = Math.round(currentAmount + (currentAmount * ((MainParser.BoostSums.coin_production + (Productions.HappinessBoost * 100)) / 100)))
 							}
 							else if (type == 'supplies' && building.type != "greatbuilding") {
-								amount = Math.round(amount + (amount *((MainParser.BoostSums.supply_production + (Productions.HappinessBoost * 100)) / 100))) * (doubled ? 2 : 1)
+								amount = Math.round(amount + (amount * ((MainParser.BoostSums.supply_production + (Productions.HappinessBoost * 100)) / 100))) * (doubled ? 2 : 1)
 								currentAmount = Math.round(currentAmount + (currentAmount *((MainParser.BoostSums.supply_production + (Productions.HappinessBoost * 100)) / 100)))
 							}
 							else if (type == 'strategy_points' && building.type != "greatbuilding" && building.type != "main_building" && !building.entityId.includes("CastleSystem")) {
@@ -432,12 +432,15 @@ let Productions = {
 							}
 
 							rowA.push('<td data-number="'+amount+'" class="textright" colspan="4">')
+							let parsedCurrentAmount = (currentAmount >= 10000 ? HTML.FormatNumberShort(currentAmount) : HTML.Format(currentAmount)) 
+							let parsedAmount = (currentAmount >= 10000 ? HTML.FormatNumberShort(amount) : HTML.Format(amount)) 
+
 							if (currentAmount != amount && building.type != 'production')
-								rowA.push(HTML.Format(currentAmount) + '/' + (hasRandomProductions ? 'Ø' : '') + HTML.Format(amount))
+								rowA.push(parsedCurrentAmount + '/' + (hasRandomProductions ? 'Ø' : '') + parsedAmount)
 							else {
 								unitType = Productions.getBuildingProductionByCategory(true, building, type).type
 								if (unitType != null) rowA.push('<span class="unit_skill ' + unitType + '" title="'+ i18n("Boxes.Units." + unitType ) + '"></span> ')
-								rowA.push(HTML.Format(currentAmount))
+								rowA.push(parsedCurrentAmount)
 							}
 							rowA.push('</td>')
 							
@@ -823,9 +826,8 @@ let Productions = {
 				}
 				if (production.type == "resources" && category != "goods") {
 					if (production.resources[category]) {
-						let doubleMoney = (production.doubleWhenMotivated ? 2 : 1) // todo: bug?!
 						prod.doubleWhenMotivated = production.doubleWhenMotivated
-						prod.amount += production.resources[category] * doubleMoney
+						prod.amount += production.resources[category] //* doubleMoney
 					}
 				}
 				if (production.type+"s" == category) { // units

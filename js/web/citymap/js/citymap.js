@@ -1054,6 +1054,21 @@ let CityMap = {
 		return undefined
 	},
 	
+	// returns undefined if building cannot be motivated or polished
+	setPolivationable(metaData) { // todo?? use only metaData if possible
+		let isPolivationable = false
+		metaData.abilities.forEach(ability => {
+			if (ability.__class__ == "MotivatableAbility")
+				isPolivationable = true
+			else if (ability.__class__ == "PolishableAbility") {
+				isPolivationable = true
+			}
+		})
+		if (metaData.__class__ == "GenericCityEntity")
+			isPolivationable = (metaData.components.AllAge.socialInteraction != undefined)
+		return isPolivationable
+	},
+	
 	// returns chainId (string), returns undefined if not a chain building
 	setChainBuilding(metaData) {
 		let chainId = undefined
@@ -1393,7 +1408,7 @@ let CityMap = {
 				if (metaData.entity_levels[Technologies.InnoEras[era]] !== undefined) { // base money is here
 					let money = metaData.entity_levels[Technologies.InnoEras[era]].produced_money
 					if (money)
-						productions.push({ type: 'resources', needsMotivation: false, resources: { money: money }, doubleWhenMotivated: true})
+						productions.push({ type: 'resources', needsMotivation: false, resources: { money: money }, doubleWhenMotivated: this.setPolivationable(metaData)})
 					let power = metaData.entity_levels[Technologies.InnoEras[era]].clan_power // hall of fame lvl 1
 					if (power)
 						productions.push({ type: 'guildResources', needsMotivation: false, resources: { clan_power: power }, doubleWhenMotivated: true})
@@ -1483,7 +1498,7 @@ let CityMap = {
 			return false
 		}
 		else if (metaData.__class__ === "GenericCityEntity") {
-			// fyi: generic_building supplies and coins are always doubled when motivated
+			// fyi: generic_building supplies and coins are doubled when motivated if they do not need motivation
 			let production = metaData.components[era]?.production || metaData.components.AllAge.production // currently it is either allage or era, never both
 			if (production) {
 				if (metaData.type == "production") return false // production buildings do not have a default production
@@ -1491,13 +1506,17 @@ let CityMap = {
 					let resource = {
 						type: product.type,
 						needsMotivation: (product.onlyWhenMotivated == true),
+						doubleWhenMotivated: false,
 						resources: {}
 					}
 					if (product.type == "resources") {
-						resource.resources = product.playerResources.resources;
+						resource.resources = product.playerResources.resources
+						//console.log(metaData.name, resource.resources, product)
+						if (product.onlyWhenMotivated !== true)
+							resource.doubleWhenMotivated = true
 					}
 					else if (product.type == "guildResources") {
-						resource.resources = product.guildResources.resources;
+						resource.resources = product.guildResources.resources
 					}
 					else if (product.type == "genericReward" || product.type == "blueprint") {
 						resource.resources = this.setGenericReward(product, metaData, era) 
@@ -2024,8 +2043,8 @@ let CityMap = {
 			}
 		}
 		
-		//if (entity.type != "street")
-		//	console.log('entity ',entity.name, entity, metaData, data)
+		if (entity.type != "street")
+			console.log('entity ',entity.name, entity, metaData, data)
 		return entity
 	},
 };

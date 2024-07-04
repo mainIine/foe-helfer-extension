@@ -82,7 +82,7 @@
 	padding-right: 10px;
 }
 
-.hidden {
+#stats .hidden {
 	visibility: hidden;
 }
 
