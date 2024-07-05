@@ -73,7 +73,7 @@ let BoostPotions = {
 			$('body').append(div);
 		}
 		
-		let shortest=`<img src="${srcLinks.get("/shared/icons/boost_attack_medium.png",true)}">`;
+		let shortest=`<img src="${srcLinks.get("/shared/icons/reward_icons/reward_icon_boost_attack_medium.png",true)}">`;
 		$('#BoostPotions .shortest').html(shortest);
 		let active=``;
 		let d = null;
@@ -93,7 +93,7 @@ let BoostPotions = {
 			if ((d<e && d!=null) || !e) continue;
 			if (!BoostPotions.activeMapRelevance[all ? "all" : BoostPotions.active[b].target].includes(ActiveMap)) continue;
 			d=e;
-			$('#BoostPotions .shortest').html(shortest+`<span><img src="${srcLinks.get(`/shared/icons/${b}.png`,true)}">${h==0 ? "" : h+":"}${m<10 ? "0"+m:m}:${s<10 ? "0"+s:s}</span>`);
+			$('#BoostPotions .shortest').html(shortest+`<span><img src="${srcLinks.get(`/shared/icons/${b}.png`,true)}">${h==0 ? "" : h+":"}${m<10 ? "0"+m:m}:${s<10 ? "0"+s:s}</span>`).addClass("boosted");
 		}
 
 		$('#BoostPotions .active').html(active);
