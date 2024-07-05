@@ -773,19 +773,30 @@ Potions */
 	color: var(--text-normal);
 	position: fixed;
 	top: 40px;
-	right: 10px;
+	right: 8px;
 }
 
 #BoostPotions .shortest {
 	width: 50px;
     height: 40px;
-    border: 3px solid #895022;
+    border: 2px solid #895022;
     background: url('../images/hud/box-bg.png') center center repeat;
+	border-radius: 5px;
+	box-shadow: inset 0 0 3px 2px #301e0f, inset 0 0 0 1px #000, 0 0 3px #000;
+	text-align: center;
 }
+#BoostPotions .shortest > img:first-child {
+	max-height: 24px;
+	filter: saturate(0.1) contrast(1.4);
+}
+#BoostPotions .shortest > img:first-child:only-child {
+	max-height: 100%;
+}
+
 #BoostPotions .active span {
 	border: 2px solid #895022;
 	margin-right: 5px;
-	padding:3px;
+	padding: 3px;
 }
 #BoostPotions .active {
 	margin-top: 6px;
