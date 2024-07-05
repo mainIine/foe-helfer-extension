@@ -18,6 +18,8 @@ FoEproxy.addHandler('WorldChallengeService', 'getOverview', (data, postData) => 
 });
 
 FoEproxy.addHandler('LeagueService', 'getRank', (data, postData) => {
+	return;
+	//deactivated as an ingame popup was implemented
 	if (worldChallenge.leaguepoints == data.responseData.points) return;
 	worldChallenge.leaguepoints = data.responseData.points;
 	if (["buyChest"].includes(postData[0].requestMethod)) return;

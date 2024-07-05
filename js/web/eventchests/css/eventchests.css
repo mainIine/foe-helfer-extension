@@ -68,7 +68,7 @@
     opacity: 0.8
 }
 
-#eventpresentsBody .hidden {
+#eventpresentsBody tr.hidden {
     visibility: inherit;
-    display: inherit;
+    display: revert;
 }
