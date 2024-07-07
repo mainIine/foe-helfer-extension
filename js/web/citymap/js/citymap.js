@@ -1013,7 +1013,7 @@ let CityMap = {
 	},
 	
 	// returns undefined if building cannot be motivated or polished
-	setPolivation(data, metaData) { // todo?? use only metaData if possible
+	setPolivation(data, metaData) { 
 		let isPolivationable = false;
 		let isPolishable = false;
 		metaData.abilities.forEach(ability => {
@@ -1055,7 +1055,7 @@ let CityMap = {
 	},
 	
 	// returns undefined if building cannot be motivated or polished
-	setPolivationable(metaData) { // todo?? use only metaData if possible
+	setPolivationable(metaData) {
 		let isPolivationable = false
 		metaData.abilities.forEach(ability => {
 			if (ability.__class__ == "MotivatableAbility")
@@ -1707,25 +1707,26 @@ let CityMap = {
 					//console.log(metaData.name, amount)
 				}
 			}
-			// may be unnecessary now
-			/*else if (product.reward.id.search("unit") != -1) {
-				if (metaData.components[era].lookup.rewards[product.reward.id])
-					lookupData = metaData.components[era].lookup.rewards[product.reward.id]
-				else {
-					for (const [key, reward] of Object.entries(metaData.components[era].lookup.rewards)) {
-						if (reward.id.search("unit") != -1)
-							lookupData = reward;
-					}
-				}
-			}*/
 			else if (product.reward.type == "good") { // this can break if there is more than one generic goods reward for a building
 				for (const [key, reward] of Object.entries(metaData.components[era].lookup.rewards)) {
 					if (reward.id.includes("good"))
 						lookupData = reward;
 				}
 			}
+			else if (product.reward.id.includes('goods')) { // for nextage goods, because the lookupdata is a chest
+				lookupData = metaData.components[era].lookup.rewards[product.reward.id] // take first chest reward and work with that
+
+				return {
+					id: product.reward.id,
+					name: lookupData.name.replace(/^\d+\s*/,""),
+					type: "resources",
+					subType: "good",
+					amount: 10, // lookupData.possible_rewards?[0].reward.amount, // amount can be undefined for blueprints or units if building is not motivated // TODO
+					icon: lookupData.iconAssetName
+				}
+			}
 			else {
-				lookupData = metaData.components[era].lookup.rewards[product.reward.id];
+				lookupData = metaData.components[era].lookup.rewards[product.reward.id]
 				if (lookupData == undefined) {
 					let chest = Object.keys(metaData.components[era].lookup.rewards).find(x => x.includes("chest")) // currently only applies to wish fountain
 					for (possibleReward of metaData.components[era].lookup.rewards[chest].possible_rewards) {
@@ -1922,6 +1923,7 @@ let CityMap = {
 			eras: {}
 		}
 		if (productions) {
+			console.log("??", building.name)
 			productions.forEach(production => {
 				if (production.type == 'resources') {
 					Object.keys(production.resources).forEach(name => {
@@ -1974,7 +1976,20 @@ let CityMap = {
 								goods.eras[goodEra] += parseFloat(resource.amount * resource.dropChance)
 						}
 					}
-					
+				}
+				if (production.type == 'genericReward') {
+					if (production.resources?.subType == "good") {
+						let goodEra = Technologies.InnoEras[building.eraName]
+						if (production.resources.id.includes('previous')) {
+							goodEra = Technologies.getPreviousEraIdByCurrentEraName(building.eraName)
+						}
+						else if (production.resources.id.includes('Next')) {
+							goodEra = Technologies.getNextEraIdByCurrentEraName(building.eraName)
+						}
+						console.log("hallo", building.name, production, goodEra)
+							
+						goods.eras[goodEra] += production.resources.amount
+					}
 				}
 			})
 		}
