@@ -779,6 +779,9 @@ let Productions = {
 					rowB.push('<td data-number="'+building.boosts.guild_expedition*building.amount+'" class="text-center">'+ (building.boosts.guild_expedition != 0 ? HTML.Format(building.boosts.guild_expedition*building.amount) : '') +'</td>')
 					rowB.push('<td data-number="'+building.boosts.guild_raids*building.amount+'" class="text-center">'+ (building.boosts.guild_raids != 0 ? HTML.Format(building.boosts.guild_raids*building.amount) : '') +'</td>')
 				}
+				else if (type == "items") {
+					rowB.push('<td colspan="4">'+Productions.showBuildingItems(false, building.building)+'</td>')
+				}
 				else {
 					if (building.currentValues == building.values) 
 						rowB.push('<td colspan="4" data-number="'+building.currentValues+'">'+HTML.Format(building.currentValues)+'</td>')
@@ -869,7 +872,7 @@ let Productions = {
 
 	showBuildingItems(current = false, building) {
 		let allItems = ''
-		if (building.state.isPolivated == true && current === true) {
+		if (building.state?.isPolivated == true && current === true) {
 			building.state.production?.forEach(production => {
 				if (production.type == "genericReward") {
 					let frag = (production.resources.subType == "fragment" ? "🧩 " : "")
@@ -1293,7 +1296,7 @@ let Productions = {
 		let tileRatings = JSON.parse(localStorage.getItem('ProductionRatingProdPerTiles'))
 		for (const building of buildingType) {
 			if (building.entityId.includes("AllAge_EasterBonus1") || building.entityId.includes("L_AllAge_Expedition16") || building.entityId.includes("L_AllAge_ShahBonus17")) continue // do not include wishingwell type buildings
-			let size = building.size.width * building.size.length + building.needsStreet // todo: include street requirement?
+			let size = building.size.width * building.size.length + building.needsStreet
 			let score = 0
 			let ratedBuilding = {
 				building: building
@@ -1340,8 +1343,6 @@ let Productions = {
 		else if (type == "strategy_points" || type == "medals" || type == "premium" || type == "money" || type == "supplies" || type == "units" || type == "clan_goods" || type == "clan_power")
 			return Productions.getBuildingProductionByCategory(false, building, type).amount
 		
-
-		// todo: güter müssen anhand des gebäudezeitalters angezeigt werden, nicht anhand des spielerzeitalters T_T
 		else if (type.includes("goods")) {
 			let allGoods = CityMap.getBuildingGoodsByEra(false, building)
 			let eraId = Technologies.InnoEras[building.eraName]
@@ -1353,10 +1354,13 @@ let Productions = {
 						return allGoods.eras[eraId]
 				}
 				if (type == "goods-next") {
+					// todo: does not work?
+					//console.log(building.name, allGoods)
 					if (allGoods.eras[eraId+1] != undefined)
 						return allGoods.eras[eraId+1]
 				}
 				if (type == "goods-previous") {
+					// todo: bronzezeit checken
 					if (allGoods.eras[eraId-1] != undefined)
 						return allGoods.eras[eraId-1]
 				}
@@ -1382,21 +1386,16 @@ let Productions = {
 
 
 	GetDefaultProdPerTile: (Type) => {
-		if (Type === 'strategy_points') return 0.2;
-		if (Type === 'units') return 0.2;
-		if (Type === 'clan_power') {
-			let Entity = MainParser.CityEntities['Z_MultiAge_CupBonus1b'], //Hall of fame lvl2
-				Level = CurrentEraID - 1;
-
-			if (!Entity || !Entity['entity_levels'] || !Entity['entity_levels'][Level] || !Entity['entity_levels'][Level]['clan_power']) return 0;
-
-			return 2 * Entity['entity_levels'][Level]['clan_power'] / 10.5; //Motivated hall of fame lvl2
-		}
-		if (Type === 'att_boost_attacker') return 3;
-		if (Type === 'def_boost_attacker') return 3;
-		if (Type === 'att_boost_defender') return 4;
-		if (Type === 'def_boost_defender') return 4;
-		if (Type === 'goods') return 1;
-		else return 0;
+		if (Type === 'strategy_points') return 2
+		if (Type === 'units') return 1		
+		if (Type === 'att_boost_attacker-all') return 3 
+		if (Type === 'att_boost_attacker-battleground') return 3 
+		if (Type === 'def_boost_attacker-all') return 3
+		if (Type === 'att_boost_defender-all') return 2
+		if (Type === 'def_boost_defender-all') return 2
+		if (Type === 'goods-previous') return 4
+		if (Type === 'goods-current') return 3
+		if (Type === 'goods-next') return 1
+		else return 0
 	},
 };
