@@ -1376,7 +1376,7 @@ let CityMap = {
 		}
 	},
 
-	// todo: need it for sets and chains
+	// todo: need it for sets
 	findAdjacentSetBuildingByCoords(x,y, linkName = "") {
 		for (let i = x; i >= (x-10); i--) {
 			for (let j = y; j >= (y-10); j--) {
@@ -1713,19 +1713,22 @@ let CityMap = {
 						lookupData = reward;
 				}
 			}
-			else if (product.reward.id.includes('goods')) { // for nextage goods, because the lookupdata is a chest
+			else if (product.reward.id.includes('goods')) { // for nextage goods, because they are in a chest
+				// !!!!!!!!! todo: does not work for current production, because the reward id is different
+				console.log("eco hub",product)
 				lookupData = metaData.components[era].lookup.rewards[product.reward.id] // take first chest reward and work with that
-
 				return {
 					id: product.reward.id,
 					name: lookupData.name.replace(/^\d+\s*/,""),
 					type: "resources",
 					subType: "good",
-					amount: 10, // lookupData.possible_rewards?[0].reward.amount, // amount can be undefined for blueprints or units if building is not motivated // TODO
+					amount: parseInt(product.reward.id.match(/\d+$/)[0]),
 					icon: lookupData.iconAssetName
 				}
 			}
 			else {
+				if (metaData.id == "W_MultiAge_CARE24A7")
+					console.log(1,"eco hub",product)
 				lookupData = metaData.components[era].lookup.rewards[product.reward.id]
 				if (lookupData == undefined) {
 					let chest = Object.keys(metaData.components[era].lookup.rewards).find(x => x.includes("chest")) // currently only applies to wish fountain
@@ -1749,7 +1752,7 @@ let CityMap = {
 		}
 		
 		// units
-		if (lookupData?.type == "chest" && lookupData.id.search("genb_random_unit_chest") != -1 || lookupData?.type == "unit") {
+		if (lookupData?.type == "chest" && lookupData.id.search("genb_random_") != -1 || lookupData?.type == "unit") {
 			let units = this.setUnitReward(product)
 			return units
 		}
@@ -1923,7 +1926,6 @@ let CityMap = {
 			eras: {}
 		}
 		if (productions) {
-			console.log("??", building.name)
 			productions.forEach(production => {
 				if (production.type == 'resources') {
 					Object.keys(production.resources).forEach(name => {
@@ -1977,19 +1979,18 @@ let CityMap = {
 						}
 					}
 				}
-				if (production.type == 'genericReward') {
-					if (production.resources?.subType == "good") {
-						let goodEra = Technologies.InnoEras[building.eraName]
-						if (production.resources.id.includes('previous')) {
-							goodEra = Technologies.getPreviousEraIdByCurrentEraName(building.eraName)
-						}
-						else if (production.resources.id.includes('Next')) {
-							goodEra = Technologies.getNextEraIdByCurrentEraName(building.eraName)
-						}
-						console.log("hallo", building.name, production, goodEra)
-							
-						goods.eras[goodEra] += production.resources.amount
-					}
+				if (production.type === 'genericReward' && production.resources?.icon == "next_age_goods") {
+					let goodEra = Technologies.InnoEras[building.eraName]
+					if (production.resources.id.includes('previous')) 
+						goodEra = Technologies.getPreviousEraIdByCurrentEraName(building.eraName)
+					else if (production.resources.icon == "next_age_goods") 
+						goodEra = Technologies.getNextEraIdByCurrentEraName(building.eraName)
+					
+					if (goods.eras[goodEra] == undefined) 
+						goods.eras[goodEra] = parseInt(production.resources.amount)
+					else 
+						goods.eras[goodEra] += parseInt(production.resources.amount)
+					
 				}
 			})
 		}

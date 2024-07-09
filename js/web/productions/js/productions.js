@@ -279,6 +279,10 @@ let Productions = {
 
 						}
 					}
+					if (production.resources.icon == "next_age_goods") {
+						if (Productions.BuildingsProducts.goods.find(x => x.id == building.id) == undefined)
+							Productions.BuildingsProducts["goods"].push(saveBuilding)
+					}
 				})
 			}
 			if (building.state.production) {
@@ -326,6 +330,10 @@ let Productions = {
 									Productions.BuildingsProducts["goods"].push(saveBuilding)
 							}
 						})
+					}
+					if (production.resources.icon == "next_age_goods") {
+						if (Productions.BuildingsProducts.goods.find(x => x.id == building.id) == undefined)
+							Productions.BuildingsProducts["goods"].push(saveBuilding)
 					}
 				})
 			}
@@ -1295,30 +1303,26 @@ let Productions = {
 		let ratedBuildings = []
 		let tileRatings = JSON.parse(localStorage.getItem('ProductionRatingProdPerTiles'))
 		for (const building of buildingType) {
-			if (building.entityId.includes("AllAge_EasterBonus1") || building.entityId.includes("L_AllAge_Expedition16") || building.entityId.includes("L_AllAge_ShahBonus17")) continue // do not include wishingwell type buildings
+			if (building.entityId.includes("AllAge_EasterBonus1") || building.entityId.includes("L_AllAge_Expedition16") || building.entityId.includes("L_AllAge_ShahBonus17") || building.type == "main_building") continue // do not include wishingwell type buildings, do not include townhall
 			let size = building.size.width * building.size.length + building.needsStreet
 			let score = 0
 			let ratedBuilding = {
 				building: building
 			}
-			let ratingsCounter= 0
 			for (const type of Object.keys(Productions.Rating)) {
 				if (Productions.Rating[type] != false) {
 					let desiredValuePerTile = tileRatings != undefined ? parseFloat(tileRatings[type]) : Productions.GetDefaultProdPerTile(type)
 					let typeValue = Productions.getRatingValueForType(building, type) || 0 // production amount
 					let valuePerTile = typeValue / size
 
-					if (valuePerTile != 0 && desiredValuePerTile != 0) {
-						score += (valuePerTile / desiredValuePerTile) // todo? when using / negative values behave weirdly
-					}
+					if (valuePerTile != 0 && desiredValuePerTile != 0) 
+						score += (valuePerTile / desiredValuePerTile)
 
 					ratedBuilding[type] = ( Math.round( typeValue * 100 ) / 100 ) || 0
 					ratedBuilding[type+'-tile'] = valuePerTile || 0
-
-					ratingsCounter++
 				}
 			}
-			ratedBuilding.score = score // / (ratingsCounter > 0 ? ratingsCounter : 1)
+			ratedBuilding.score = score
 			ratedBuildings.push(ratedBuilding)
 		}
 		return ratedBuildings
@@ -1354,8 +1358,6 @@ let Productions = {
 						return allGoods.eras[eraId]
 				}
 				if (type == "goods-next") {
-					// todo: does not work?
-					//console.log(building.name, allGoods)
 					if (allGoods.eras[eraId+1] != undefined)
 						return allGoods.eras[eraId+1]
 				}
