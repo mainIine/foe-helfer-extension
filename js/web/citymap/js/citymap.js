@@ -1099,7 +1099,7 @@ let CityMap = {
 				if (link.boosts !== undefined) 
 					chainedBuilding.boosts = [...chainedBuilding.boosts || [], ...link.boosts]
 				if (link.production !== undefined && link.production !== false) {
-					console.log(link.production)
+					// console.log(link.production)
 					chainedBuilding.production = [...chainedBuilding.production, ...link.production]
 				}
 				link.chainBuilding.type = "linked"
@@ -1511,7 +1511,6 @@ let CityMap = {
 					}
 					if (product.type == "resources") {
 						resource.resources = product.playerResources.resources
-						//console.log(metaData.name, resource.resources, product)
 						if (product.onlyWhenMotivated !== true)
 							resource.doubleWhenMotivated = true
 					}
@@ -1714,8 +1713,6 @@ let CityMap = {
 				}
 			}
 			else if (product.reward.id.includes('goods')) { // for nextage goods, because they are in a chest
-				// !!!!!!!!! todo: does not work for current production, because the reward id is different
-				console.log("eco hub",product)
 				lookupData = metaData.components[era].lookup.rewards[product.reward.id] // take first chest reward and work with that
 				return {
 					id: product.reward.id,
@@ -1727,8 +1724,6 @@ let CityMap = {
 				}
 			}
 			else {
-				if (metaData.id == "W_MultiAge_CARE24A7")
-					console.log(1,"eco hub",product)
 				lookupData = metaData.components[era].lookup.rewards[product.reward.id]
 				if (lookupData == undefined) {
 					let chest = Object.keys(metaData.components[era].lookup.rewards).find(x => x.includes("chest")) // currently only applies to wish fountain
@@ -2059,8 +2054,8 @@ let CityMap = {
 			}
 		}
 		
-		if (entity.type != "street")
-			console.log('entity ',entity.name, entity, metaData, data)
+		//if (entity.type != "street")
+		//	console.log('entity ',entity.name, entity, metaData, data)
 		return entity
 	},
 };
