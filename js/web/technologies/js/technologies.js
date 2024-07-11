@@ -78,6 +78,7 @@ let Technologies = {
     AllTechnologies: null,
     UnlockedTechnologies: false,
     SelectedEraID: undefined,
+    HighestAge: 21, // new age? change value 
 
     IgnorePrevEra: null,
     IgnoreCurrentEraOptional: null,
@@ -203,7 +204,9 @@ let Technologies = {
     },
 
     getNextEraIdByCurrentEraName: (eraName) => {
-        return parseInt(Technologies.InnoEras[eraName]+1)
+        // if player is in the highes era, return current age number
+        let era = (Technologies.InnoEras[eraName] === Technologies.HighestAge) ? parseInt(Technologies.InnoEras[eraName]) : parseInt(Technologies.InnoEras[eraName]+1)
+        return era
     },
 
 

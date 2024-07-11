@@ -443,7 +443,7 @@ let Productions = {
 							let parsedCurrentAmount = (currentAmount >= 10000 ? HTML.FormatNumberShort(currentAmount) : HTML.Format(currentAmount)) 
 							let parsedAmount = (currentAmount >= 10000 ? HTML.FormatNumberShort(amount) : HTML.Format(amount)) 
 
-							if (currentAmount != amount && building.type != 'production')
+							if (currentAmount < amount && building.type != 'production')
 								rowA.push(parsedCurrentAmount + '/' + (hasRandomProductions ? 'Ø' : '') + parsedAmount)
 							else {
 								unitType = Productions.getBuildingProductionByCategory(true, building, type).type
@@ -583,7 +583,6 @@ let Productions = {
 			else if (building.chainBuilding !== undefined && building.chainBuilding?.type == "start") {
 				
 				let linkedBuildings = CityMap.hasLinks(building)
-				//console.log(building.name, building.coords, linkedBuildings)
 				if (linkedBuildings.length > 1) {
 					let fullBuilding = CityMap.createChainedBuilding(linkedBuildings)
 					// todo: remove duplicate start building from list - Productions.BuildingsAll
@@ -601,27 +600,37 @@ let Productions = {
 			groupedBuildings = [],
 			typeCurrentSum = 0,
 			typeSum = 0,
-			eras = []
+			eras = [],
+			erasTotal = {}
 
+		// gather all different eras
 		buildingIds.forEach(b => {
 			let building = CityMap.getBuildingById(b.id)
 			if (building.player_id == ExtPlayerID) {
-				let allGoods = Productions.getBuildingProductionByCategory(false, building, type)
+				let allGoods = CityMap.getBuildingGoodsByEra(false, building)
 				if (allGoods != undefined) {
 					for (const [era, value] of Object.entries(allGoods.eras)) {
 						if (eras.find(x => x == era) == undefined) 
-							eras.push(era)
+							eras.push(parseInt(era))
 					}
 				}
 			}
 		})
 
-		eras.sort().reverse()
-		let erasTotal = {};
+		// sort by most advanced era first
+		eras.sort((a, b) => {
+			if (a < b) return -1
+			if (a > b) return 1
+			return 0
+		}).reverse()
+		
+		// prepare array with total number of goods for each era
 		for (const era of eras) {
-			erasTotal[era] = 0;
-	   }
+			erasTotal[era] = 0
+		}
 
+
+		// single view table content
 		buildingIds.forEach(b => {
 			let building = CityMap.getBuildingById(b.id)
 			if (building.player_id == ExtPlayerID) {
@@ -635,6 +644,7 @@ let Productions = {
 			currentAmount = parseFloat(Productions.getBuildingProductionByCategory(true, building, type))
 			amount = parseFloat(Productions.getBuildingProductionByCategory(false, building, type))
 
+			// prepare grouped buildings
 			let updateGroup = groupedBuildings.find(x => x.building.name == building.name)
 			if (updateGroup == undefined) {
 				let gBuilding = {
@@ -696,6 +706,7 @@ let Productions = {
 			}
 		})
 
+		// single view table
 		table.push('<table class="foe-table sortable-table '+type+'-list active">')
 		table.push('<thead>')
 		table.push('<tr>')
@@ -719,7 +730,8 @@ let Productions = {
 		table.push('</tbody>')
 		table.push('</table>')
 
-		// grouped
+
+		// grouped view
 		table.push('<table class="foe-table sortable-table '+type+'-group">')
 		table.push('<thead>')
 		table.push('<tr>')
@@ -1192,7 +1204,6 @@ let Productions = {
 		else if (Productions.RatingCurrentTab === 'Results') {
 			let buildingType = [];
 			// todo: shrine of inspiration etc
-			// todo: negative values ??? 1000 is better than 100 ??
 			Object.values(MainParser.NewCityMapData).forEach(building => {
 				if (building.type == 'street' || building.type == 'military' || building.id >= 2000000000 || building.type.includes('hub')) return
 
@@ -1215,7 +1226,6 @@ let Productions = {
 			})
 
 			h.push('<div class="ratingtable">');
-			h.push('<span class="scrollup" onclick="topFunction()"></span>')
 			h.push('<div class="settings dark-bg">')
 				h.push('<div>')
 				h.push('<input type="checkbox" id="tilevalues"><label for="tilevalues">' + i18n('Boxes.ProductionsRating.ShowValuesPerTile') + '</label><br>')
@@ -1277,25 +1287,8 @@ let Productions = {
 
 			$('#showitems, label[showitems]').on('click', function () {
 				$("#ProductionsRatingBody table .items").toggle();
-			});
+			});			
 		});	
-		// todo: make scroll button work
-		window.onscroll = function() {scrollFunction()};
-
-		function scrollFunction() {
-			if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-				$('scrollup').toggle()
-			} else {
-				$('scrollup').toggle()
-			}
-		}
-
-		// When the user clicks on the button, scroll to the top of the document
-		function topFunction() {
-			console.log(this)
-			document.body.scrollTop = 0;
-			document.documentElement.scrollTop = 0;
-		}
     },
 
 

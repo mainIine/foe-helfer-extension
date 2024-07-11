@@ -1492,7 +1492,7 @@ let CityMap = {
 				}
 			}
 
-			if (productions.length > 0) 
+			if (productions?.length > 0) 
 				return productions
 			
 			return false
@@ -1501,7 +1501,19 @@ let CityMap = {
 			// fyi: generic_building supplies and coins are doubled when motivated if they do not need motivation
 			let production = metaData.components[era]?.production || metaData.components.AllAge.production // currently it is either allage or era, never both
 			if (production) {
-				if (metaData.type == "production") return false // production buildings do not have a default production
+				if (metaData.type == "production") { // production buildings do not have a default production
+					for (product of production.options) {
+						let resource = {
+							type: product.products[0].type,
+							needsMotivation: false,
+							doubleWhenMotivated: true,
+							resources: product.products[0].playerResources?.resources, // breaks if buildings with guildresources or multiple productions would be added
+							time: product.time
+						}
+						productions.push(resource)
+					}
+					return productions 
+				} 
 				production.options[0].products.forEach(product => {
 					let resource = {
 						type: product.type,
@@ -1677,7 +1689,7 @@ let CityMap = {
 			}
 		}
 		if (data.cityentity_id.includes("CastleSystem")) {
-			// todo: ggf güter?
+			return this.setAllProductions(metaData, data, era)
 		}
 		return undefined
 	},
@@ -1989,8 +2001,9 @@ let CityMap = {
 				}
 			})
 		}
-		if (Object.keys(goods).length > 0) 
+		if (Object.keys(goods).length > 0) {
 			return goods
+		}
 	},
 
 	setType(metaData) {
@@ -2054,8 +2067,8 @@ let CityMap = {
 			}
 		}
 		
-		//if (entity.type != "street")
-		//	console.log('entity ',entity.name, entity, metaData, data)
+		if (entity.type != "street")
+			console.log('entity ',entity.name, entity, metaData, data)
 		return entity
 	},
 };
