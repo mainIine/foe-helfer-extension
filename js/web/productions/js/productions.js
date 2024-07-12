@@ -101,7 +101,7 @@ let Productions = {
 
 
 	init: () => {
-		CityMap.createNewCityMapEntities()
+		MainParser.NewCityMapData = CityMap.createNewCityMapEntities()
 		Productions.CombinedCityMapData = MainParser.NewCityMapData
 
 		if (CityMap.EraOutpostData) {
@@ -117,7 +117,7 @@ let Productions = {
 			Productions.BuildingsProductsGroups[ Productions.Types[i] ] = []
 		}
 
-		Productions.ReadData();
+		Productions.ReadData()
 	},
 
 
@@ -125,11 +125,11 @@ let Productions = {
 	 * Calculate Boosts
 	 */
 	ReadData: ()=> {
-		Productions.BuildingsAll = Object.values(Productions.CombinedCityMapData);
+		Productions.BuildingsAll = Object.values(Productions.CombinedCityMapData)
 		Productions.setChainsAndSets(Productions.BuildingsAll)
 
 		Productions.PopulationSum = 0,
-		Productions.HappinessSum = 0;
+		Productions.HappinessSum = 0
 
 		Productions.BuildingsAll.forEach(building => {
 			if (building.happiness)
@@ -138,7 +138,7 @@ let Productions = {
 				Productions.PopulationSum += building.population
 		})
 
-		let ProdBonus = 0;
+		let ProdBonus = 0
 		if (Productions.HappinessSum < Productions.PopulationSum) 
 			ProdBonus = -0.5
 		else if (Productions.HappinessSum < 1.4 * Productions.PopulationSum) 
@@ -406,7 +406,7 @@ let Productions = {
 			if (type != 'goods') {
 				buildingIds.forEach(b => {
 					let building = CityMap.getBuildingById(b.id)
-					if (building.player_id == ExtPlayerID) { // todo: breaks with population etc for chainedBuildings.. does it still break?
+					if (building.player_id == ExtPlayerID) {
 					if (type == 'items' && Productions.showBuildingItems(true, building) == false || building.chainBuilding?.type == "linked") return // makes random productions with resources and others disappear from the item list
 
 					rowA.push('<tr>')

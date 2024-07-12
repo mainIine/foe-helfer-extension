@@ -14,7 +14,6 @@
 
 /**
  * CityMap class
- *
  */
 let CityMap = {
 	CityData: null,
@@ -113,11 +112,11 @@ let CityMap = {
 			// separate city
 			if (Data === false) {
 				setTimeout(()=> {
-					CityMap.SetBuildings();
+					CityMap.SetMapBuildings();
 				}, 100);
 
 			} else {
-				CityMap.SetBuildings(Data);
+				CityMap.SetMapBuildings(Data);
 			}
 
 		}, 100);
@@ -201,7 +200,7 @@ let CityMap = {
 				CityMap.ScaleUnit = unit;	
 			}
 
-			CityMap.SetBuildings(false);
+			CityMap.SetMapBuildings(false);
 
 			$('#map-container').scrollTo( $('.highlighted') , 800, {offset: {left: -280, top: -280}, easing: 'swing'});
 			$('.to-old-legends').hide();
@@ -502,13 +501,11 @@ let CityMap = {
 
 	/**
 	 * Container gemäß den Koordianten zusammensetzen
-	 *
 	 * @param Data
 	 */
-	SetBuildings: (Data = null)=> {
-		
+	SetMapBuildings: (Data = null)=> {
 		if (ActiveMap === "cultural_outpost" || ActiveMap === "era_outpost" || ActiveMap === "guild_raids") {
-			CityMap.SetOutpostBuildings()
+			CityMap.SetOutpostBuildings() 
 			return
 		}
 
@@ -536,13 +533,10 @@ let CityMap = {
 			buildingData = CityMap.createNewCityMapEntities(Object.values(MainParser.OtherPlayerCityMapData))
 		else
 			buildingData = CityMap.createNewCityMapEntities(Object.values(MainParser.CityMapData))
+		console.log(buildingData)
 
 		for (const building of Object.values(buildingData)) {
 			if (building.coords.x < MinX || building.coords.x > MaxX || building.coords.y < MinY || building.coords.y > MaxY) continue
-
-			//let CityMapEntity = CityMap.CityData[building.id],
-			//	d = MainParser.CityEntities[CityMapEntity['cityentity_id']],
-			//	BuildingSize = CityMap.GetBuildingSize(CityMapEntity),
 
 			let x = (building.coords.x === undefined ? 0 : parseInt((building.coords.x * CityMap.ScaleUnit)) / 100),
 			y = (building.coords.y === undefined ? 0 : parseInt((building.coords.y * CityMap.ScaleUnit)) / 100),
@@ -795,8 +789,7 @@ let CityMap = {
 
 		MainParser.send2Server(d, 'CityPlanner', function(resp){
 
-			if(resp.status === 'OK')
-			{
+			if(resp.status === 'OK') {
 				HTML.ShowToastMsg({
 					head: i18n('Boxes.CityMap.SubmitSuccessHeader'),
 					text: [
@@ -1394,7 +1387,6 @@ let CityMap = {
 		if (metaData.__class__ != "GenericCityEntity" && metaData.type != "greatbuilding") {
 			if (metaData.is_special) { // special building
 				if (metaData.available_products !== undefined) { 
-					// TODO: siegesturm produktion ist false?
 					// to do: to think about: should all goods production options be gathered here?
 					if (Array.isArray(metaData.available_products))
 						metaData.available_products.forEach(product => {
@@ -1964,7 +1956,7 @@ let CityMap = {
 						}
 					})
 				}
-				else if (production.type == 'random') { // e.g. gentania windmill
+				if (production.type == 'random') { // e.g. gentania windmill
 					let goodEra = Technologies.InnoEras[building.eraName]
 					for (const resource of production.resources) {
 						if (resource.type?.includes("good") && !resource.type?.includes("guild")) {
@@ -1982,7 +1974,7 @@ let CityMap = {
 						}
 					}
 				}
-				else if (production.type === 'genericReward' && production.resources?.icon == "next_age_goods") { // e.g. eco hub
+				if (production.type === 'genericReward' && production.resources?.icon == "next_age_goods") { // e.g. eco hub
 					let goodEra = Technologies.InnoEras[building.eraName]
 					if (production.resources.id.includes('previous'))
 						goodEra = Technologies.getPreviousEraIdByCurrentEraName(building.eraName)
