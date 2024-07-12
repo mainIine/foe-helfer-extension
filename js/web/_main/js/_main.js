@@ -924,18 +924,6 @@ let MainParser = {
 	},
 
 
-	createCityBuildings: () => {
-		// loop through all city buildings
-		for (const [key, data] of Object.entries(MainParser.CityMapData)) {
-			let ceData = Object.values(MainParser.CityEntities).find(x => x.id === data.cityentity_id);
-			let era = Technologies.getEraName(data.cityentity_id, data.level);
-			let cityMapEntity = CityMap.createNewCityMapEntity(ceData,data,era)
-
-			MainParser.NewCityMapData[cityMapEntity.id] = cityMapEntity;
-		}
-	},
-
-
 	BoostMapper: {
 		'supplies_boost': ['supply_production'],
 		'happiness': ['happiness_amount'],
