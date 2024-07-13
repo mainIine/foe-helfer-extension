@@ -533,7 +533,6 @@ let CityMap = {
 			buildingData = CityMap.createNewCityMapEntities(Object.values(MainParser.OtherPlayerCityMapData))
 		else
 			buildingData = CityMap.createNewCityMapEntities(Object.values(MainParser.CityMapData))
-		console.log(buildingData)
 
 		for (const building of Object.values(buildingData)) {
 			if (building.coords.x < MinX || building.coords.x > MaxX || building.coords.y < MinY || building.coords.y > MaxY) continue
@@ -1382,6 +1381,7 @@ let CityMap = {
 	},
 	
 	// returns false if building does not produce anything
+	// production types: resources (coins, supplies, goods, medals etc), unit, genericReward (consumables like fragments), random, guildResources (power and goods)
 	setAllProductions(metaData, data, era) {
 		let productions = []
 		if (metaData.__class__ != "GenericCityEntity" && metaData.type != "greatbuilding") {
@@ -2055,8 +2055,8 @@ let CityMap = {
 			}
 		}
 		
-		if (entity.type != "street")
-			console.log('entity ',entity.name, entity, metaData, data)
+		//if (entity.type != "street")
+		//	console.log('entity ', entity.name, entity, metaData, data)
 		return entity
 	},
 };

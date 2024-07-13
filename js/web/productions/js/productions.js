@@ -575,18 +575,24 @@ let Productions = {
 
 	setChainsAndSets(buildings) {
 		if (buildings === undefined) buildings = Object.values(MainParser.NewCityMapData)
+		
 		for (const building of buildings) {
-			if (building.setBuilding !== undefined) {
+			if (building?.setBuilding !== undefined) {
 				// todo
-				CityMap.findAdjacentSetBuildingByCoords(building.coords.x, building.coords.y, building.setBuilding.name)
+				// CityMap.findAdjacentSetBuildingByCoords(building.coords.x, building.coords.y, building.setBuilding.name)
 			} 
-			else if (building.chainBuilding !== undefined && building.chainBuilding?.type == "start") {
+			else if (building?.chainBuilding !== undefined && building?.chainBuilding?.type == "start") {
 				
 				let linkedBuildings = CityMap.hasLinks(building)
 				if (linkedBuildings.length > 1) {
-					let fullBuilding = CityMap.createChainedBuilding(linkedBuildings)
-					// todo: remove duplicate start building from list - Productions.BuildingsAll
-					console.log(fullBuilding.name)
+					CityMap.createChainedBuilding(linkedBuildings)
+					
+					for (const link of linkedBuildings) {
+						if (link.chainBuilding.type == 'linked') {
+							let index = Productions.BuildingsAll.findIndex(x => x.id == link.id)
+							delete Productions.BuildingsAll[index]
+						}
+					}
 				}
 			}
 		}
@@ -1095,8 +1101,8 @@ let Productions = {
 	ShowRating: () => {
 		if ($('#ProductionsRating').length === 0) {
 			
-			CityMap.createNewCityMapEntities()
-			Productions.setChainsAndSets()
+			Productions.BuildingsAll = Object.values(CityMap.createNewCityMapEntities())
+			Productions.setChainsAndSets(Productions.BuildingsAll)
 
 			let Rating = localStorage.getItem('ProductionRatingEnableds2');
 			if (Rating !== null) Productions.Rating = JSON.parse(Rating)
@@ -1202,22 +1208,23 @@ let Productions = {
 		}
 
 		else if (Productions.RatingCurrentTab === 'Results') {
-			let buildingType = [];
+			let uniqueBuildings = []
 			// todo: shrine of inspiration etc
-			Object.values(MainParser.NewCityMapData).forEach(building => {
-				if (building.type == 'street' || building.type == 'military' || building.id >= 2000000000 || building.type.includes('hub')) return
+			// get one of each building, only highest available era
+			for (const building of Productions.BuildingsAll) {
+				if (building == undefined || building.type == 'street' || building.type == 'military' || building.id >= 2000000000 || building.type.includes('hub')) continue
 
-				let foundBuildingIndex = buildingType.findIndex(x => x.name == building.name)
+				let foundBuildingIndex = uniqueBuildings.findIndex(x => x.name == building?.name)
 				if (foundBuildingIndex == -1)
-					buildingType.push(building)
+					uniqueBuildings.push(building)
 				else {
-					let foundBuilding = buildingType.find(x => x.name == building.name)
+					let foundBuilding = uniqueBuildings.find(x => x.name == building.name)
 					if (Technologies.InnoEras[foundBuilding.eraName] < Technologies.InnoEras[building.eraName]) 
-						buildingType[foundBuildingIndex] = building
+						uniqueBuildings[foundBuildingIndex] = building
 				}
-			})
+			}
 			
-			ratedBuildings = Productions.rateBuildings(buildingType)
+			ratedBuildings = Productions.rateBuildings(uniqueBuildings)
 
 			ratedBuildings.sort((a, b) => {
 				if (a.score < b.score) return -1
@@ -1274,7 +1281,7 @@ let Productions = {
 			h.push('</div>');
 		}
 		else {
-			h.push('Tab error...');
+			h.push('Something went wrong');
         }
 
 		$('#ProductionsRatingBody').html(h.join('')).promise().done(function () {
