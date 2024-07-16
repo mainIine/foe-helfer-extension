@@ -40,7 +40,7 @@
     "Boxes.Alerts.Preferences.ComingSoon": "Em breve...  ",
     "Boxes.Alerts.Preferences.Early.Info": "Automaticamente gera temporizadores de alerta (mercador de antiguidades, campos de batalha da guilda etc.) usarão essa configuração para enviar uma notificação antes que o evento realmente aconteça. Por exemplo, definindo esse valor como 30 (segundos), os alertas do leilão serão exibidos 30s antes do final do leilão!",
     "Boxes.Alerts.Preferences.Early.Title": "Notificar deslocamento antecipado",
-    "Boxes.Alerts.Preferences.InGame.Info": "Mostrar notificação no jogo em vez da notificação nativa da área de trabalho quando a janela do jogo é focada",
+    "Boxes.Alerts.Preferences.InGame.Info": "Mostrar notificação no jogo em vez da notificação nativa da área de trabalho quando a janela do jogo é focada.",
     "Boxes.Alerts.Preferences.InGame.Title": "Notificações no jogo",
     "Boxes.Alerts.Preferences.MenuIcon.Info": "Mostra a próxima contagem regressiva de Alerta sobrepondo o ícone do Menu Principal",
     "Boxes.Alerts.Preferences.MenuIcon.Title": "Contagem regressiva do menu principal",
