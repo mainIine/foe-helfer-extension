@@ -1,6 +1,21 @@
 ## Changelog - Extension
 
 
+##### 3.7.0.0
+
+**New**
+- added potion overview icon in the top right corner to
+	- display the runtime of the potion with the shortest runtime left (potions are ignored when not relevant for currently selected game feature)
+	- display all currently active potions upon mouse over
+	- display inventory stock of all potions upon mouse over
+
+**Update**
+- Kits updated till Fall Event 2024
+
+- Mergergame updated for Care Event
+
+---
+
 ##### 3.6.5.0
 
 **New**
