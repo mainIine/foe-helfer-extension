@@ -1,6 +1,6 @@
 [	
 	{
-		"udate": "Summer Event 2024 (16 May 2024)"
+		"udate": "Fall Event 2024 (16 July 2024)"
 	},
 	{
 		"groupname": "Events"
@@ -244,15 +244,83 @@
 		]
 	},
 	{
+		"name": "Grape Stompin' Festival - Lv. 1",
+		"buildings": [
+			{"first": "W_MultiAge_FALL23B1"}
+		]
+	},
+	{
 		"name": "Autumn_Vinyard",
 		"buildings": [
 			{"first": "W_MultiAge_FALL23A1"}
 		]
 	},
 	{
+		"name": "Shroom_Throne",
+		"buildings": [
+			{"first": "W_MultiAge_FALL23E1"}
+		]
+	},
+	{
+		"name": "Granny_Auroras_Apple_Tree",
+		"buildings": [
+			{"first": "W_MultiAge_FALL23F1"}
+		]
+	},
+	{
+		"name": "Jumpin_Pumpkin",
+		"buildings": [
+			{"first": "W_MultiAge_FALL23C1"}
+		]
+	},
+	{
+		"name": "Cider_Garden",
+		"buildings": [
+			{"first": "W_MultiAge_FALL23D1"}
+		]
+	},
+	{
 		"name": "Sunflower_Oil_Press",
 		"buildings": [
-			{"first": "R_MultiAge_FallBonus22a"}
+			{"first": "R_MultiAge_FallBonus22a"},
+			{"first": "W_MultiAge_FALL22A1"}
+
+		]
+	},
+	{
+		"name": "Harvest_Squirrel_Hall",
+		"buildings": [
+			{"first": "W_MultiAge_FALL24A1"}
+		]
+	},
+	{
+		"name": "Vagabond_Library_Camp",
+		"buildings": [
+			{"first": "W_MultiAge_FALL24B1"}
+		]
+	},
+	{
+		"name": "Harvest_Celebration_Hub",
+		"buildings": [
+			{"first": "W_MultiAge_FALL24C1"}
+		]
+	},
+	{
+		"name": "Eco_Hub",
+		"buildings": [
+			{"first": "W_MultiAge_CARE24A1"}
+		]
+	},
+	{
+		"name": "Earths_Eden",
+		"buildings": [
+			{"first": "W_MultiAge_CARE24B1"}
+		]
+	},
+	{
+		"name": "Green_Guardians_Market",
+		"buildings": [
+			{"first": "W_MultiAge_CARE24C1"}
 		]
 	},
 	{
@@ -774,6 +842,18 @@
 		]
 	},
 	{
+		"name": "Glimmdrake_Tower",
+		"buildings": [
+			{"first": "W_MultiAge_GBG24E1"}
+		]
+	},
+	{
+		"name": "Glimmdrake_Riders",
+		"buildings": [
+			{"first": "W_MultiAge_GBG24F1"}
+		]
+	},
+	{
 		"groupname": "Quantum_Incursion"
 	},
 	{
@@ -814,6 +894,17 @@
 		]
 	},
 	{
+		"name": "Neo_King",
+		"buildings": [
+			{"first": "W_MultiAge_GR24C1"}
+		]
+	},
+	{
+		"name": "Neo_Queen",
+		"buildings": [
+			{"first": "W_MultiAge_GR24D1"}
+		]
+	},{
 		"groupname": "Guild_Expeditions"
 	},
 	{
