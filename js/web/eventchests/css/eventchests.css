@@ -67,3 +67,8 @@
     font-weight: bold;
     opacity: 0.8
 }
+
+#eventpresentsBody tr.hidden {
+    visibility: inherit;
+    display: revert;
+}

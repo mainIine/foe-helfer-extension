@@ -33,13 +33,14 @@
 
 #battleAssistRogueDialog {
     top: calc(50vh + 230px);
-    left: calc(50vw - 92px);
+    /*left: calc(50vw - 92px);*/
+    left: calc(50vw - 277px);
 }
-
+/*
 #battleAssistRogueDialog.ABnew {
     top: calc(50vh + 230px);
     left: calc(50vw - 277px);
-}
+}*/
 
 #battleAssistRogueDialogBody {
     width: 360px;

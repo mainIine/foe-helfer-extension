@@ -83,7 +83,7 @@ FoEproxy.addHandler('PresentGameService', 'openPresent', (data, postData) => {
     let presents = data.responseData.updatedPresentList
 
     for (let present of presents) {
-        EventPresents.Presents[present.presentId] = present
+        EventPresents.Presents[present.presentId || 0] = present
     }
 
     EventPresents.Show()
@@ -95,7 +95,7 @@ FoEproxy.addHandler('PresentGameService', 'useBooster', (data, postData) => {
     let presents = data.responseData.updatedPresentList
 
     for (let present of presents) {
-        EventPresents.Presents[present.presentId] = present
+        EventPresents.Presents[present.presentId || 0] = present
     }
 
     EventPresents.Show()
@@ -116,6 +116,8 @@ let EventPresents = {
             });
 
             HTML.AddCssFile('eventchests');
+
+            Unit.PrepareCoords();
         }
 
         EventPresents.BuildBox();
@@ -132,11 +134,22 @@ let EventPresents = {
             '</thead>');
 
         for (let present of EventPresents.Presents) {
-            if (present.status.value != "used") {
+            let icon;
+
+            if (present.status.value !== "used") {
                 h.push('<tr class="'+present.status.value+'">');
-                let icon = (present.reward.type == "unit" ? srcLinks.getReward(present.reward.subType) : srcLinks.getReward(present.reward.iconAssetName))
-                h.push('<td>'+ (icon.search("antiquedealer_flag") == -1 ? '<img src="' + icon  + '">' : '') + '</td>');
-                h.push('<td>' + present.reward.name + (present.status.value == "visible" ? '<img class="visible" src="' + extUrl + 'css/images/hud/open-eye.png">' : '') +'</td>');
+
+                if(present.reward.type === "unit") {
+                    if(Unit.CoordsRaw) {
+                        icon = `<span class="unit_icon ${present.reward.subType}"></span>`;
+                    }
+
+                } else {
+                    icon = `<img src="${srcLinks.getReward(present.reward.iconAssetName)}" alt="">`;
+                }
+
+                h.push('<td>'+ (icon.search("antiquedealer_flag") === -1 ? icon : '') + '</td>');
+                h.push('<td>' + present.reward.name + (present.status.value === "visible" ? '<img class="visible" src="' + extUrl + 'css/images/hud/open-eye.png" alt="">' : '') +'</td>');
                 h.push('</tr>');
             }
         }
