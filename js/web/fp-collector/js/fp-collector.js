@@ -12,6 +12,8 @@
  * *************************************************************************************
  */
 
+// todo: blue galaxy collections are not showing?
+
 FoEproxy.addHandler('GrandPrizeService', 'getGrandPrizes', (data, postData) => {
 	FPCollector.currentEvent = data.responseData[0]['context'].replace(/_tournament/g,'');
 });

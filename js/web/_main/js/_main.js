@@ -339,10 +339,11 @@ GetFights = () =>{
 
 	// Stadt wird wieder aufgerufen
 	FoEproxy.addHandler('CityMapService', 'getEntities', (data, postData) => {
+		CityMap.IsExtern = false
 
 		if (ActiveMap === 'gg') return; // getEntities wurde in den GG ausgelöst => Map nicht ändern
 
-		let MainGrid = false;
+		let MainGrid = false
 		for (let i = 0; i < postData.length; i++) {
 			let postDataItem = postData[i];
 
@@ -354,14 +355,17 @@ GetFights = () =>{
 			}
 		}
 
-		if (!MainGrid) return; // getEntities wurde in einer fremden Stadt ausgelöst => ActiveMap nicht ändern
+		if (!MainGrid) { 
+			CityMap.IsExtern = true
+			return
+		} // getEntities wurde in einer fremden Stadt ausgelöst => ActiveMap nicht ändern
 
-		LastMapPlayerID = ExtPlayerID;
+		LastMapPlayerID = ExtPlayerID
 
-		MainParser.CityMapData = Object.assign({}, ...data.responseData.map((x) => ({ [x.id]: x })));
-		MainParser.SetArkBonus2();
+		MainParser.CityMapData = Object.assign({}, ...data.responseData.map((x) => ({ [x.id]: x })))
+		MainParser.SetArkBonus2()
 
-		MainParser.UpdateActiveMap('main');
+		MainParser.UpdateActiveMap('main')
 	});
 
 
@@ -392,8 +396,9 @@ GetFights = () =>{
 
 	// visiting another player
 	FoEproxy.addHandler('OtherPlayerService', 'visitPlayer', (data, postData) => {
-		LastMapPlayerID = data.responseData['other_player']['player_id'];
-		MainParser.OtherPlayerCityMapData = Object.assign({}, ...data.responseData['city_map']['entities'].map((x) => ({ [x.id]: x })));
+		CityMap.IsExtern = true
+		LastMapPlayerID = data.responseData['other_player']['player_id']
+		MainParser.OtherPlayerCityMapData = Object.assign({}, ...data.responseData['city_map']['entities'].map((x) => ({ [x.id]: x })))
 	});
 
 	// move buildings, use self aid kits
@@ -1446,7 +1451,6 @@ let MainParser = {
 		if (ArkBonus > MainParser.ArkBonus) {
 			if (MainParser.ArkBonus > 0) {
 				const s = `SetArkBonus: updated ArkBonus from ${MainParser.ArkBonus} to ${ArkBonus} by ${Source}`;
-				console.log(s);
 				if (devMode === 'true') {
 					HTML.ShowToastMsg({
 						show: true,
@@ -1942,7 +1946,7 @@ let MainParser = {
 
 	},
 	UpdateActiveMap: (map)=>{
-		ActiveMap=map;
+		ActiveMap = map
 		FoEproxy.triggerFoeHelperHandler("ActiveMapUpdated");
 	}
 
