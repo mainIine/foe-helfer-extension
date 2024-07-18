@@ -568,12 +568,12 @@ let _menu = {
 
 		let btn_City = $('<span />').on('click', function () {
 			if (LastMapPlayerID === ExtPlayerID) {
-				CityMap.init(false);
+				CityMap.init(false, MainParser.NewCityMapData);
 			}
 			else {
 				let Player = PlayerDict[LastMapPlayerID];
 				let PlayerName = (Player ? Player['PlayerName'] : '???');
-				CityMap.init(false, MainParser.OtherPlayerCityMapData, PlayerName);
+				CityMap.init(false, MainParser.OtherPlayerCityMapData, PlayerName, true);
             }
 		});
 

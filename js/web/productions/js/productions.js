@@ -101,6 +101,8 @@ let Productions = {
 
 
 	init: () => {
+		if (CityMap.IsExtern) return
+
 		MainParser.NewCityMapData = CityMap.createNewCityMapEntities()
 		Productions.CombinedCityMapData = MainParser.NewCityMapData
 
@@ -531,7 +533,7 @@ let Productions = {
 				table.push('<tr>')
 				table.push('<th colspan="3"><span class="btn-default change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeGroups') + '</span></th>')
 				if (!type.includes('att') && !type.includes('def')) 
-					table.push('<th colspan="9" class="textright">'+HTML.Format(parseFloat(typeCurrentSum))+ "/" +HTML.Format(parseFloat(typeSum))+'</th>')
+					table.push('<th colspan="9" class="textright">'+(typeCurrentSum >= 10000 ? HTML.FormatNumberShort(typeCurrentSum) : HTML.Format(typeCurrentSum))+ "/" + (typeSum >= 10000 ? HTML.FormatNumberShort(typeSum) : HTML.Format(typeSum))+'</th>')
 				else {
 					table.push('<th colspan="9" class="textright"></th>')
 				}
@@ -589,8 +591,9 @@ let Productions = {
 					
 					for (const link of linkedBuildings) {
 						if (link.chainBuilding.type == 'linked') {
-							let index = Productions.BuildingsAll.findIndex(x => x.id == link.id)
-							delete Productions.BuildingsAll[index]
+							// todo: kann irgendwie kaputt gehen
+							// let index = Productions.BuildingsAll.findIndex(x => x.id == link.id)
+							// delete Productions.BuildingsAll[index]
 						}
 					}
 				}
@@ -1022,6 +1025,7 @@ let Productions = {
 	 *
 	 * @param ids
 	 */
+	// todo: zooms to the wrong place
 	ShowFunction: (ids) => {
 		let IDArray = (ids.length !== undefined ? ids : [ids]);
 
@@ -1099,6 +1103,8 @@ let Productions = {
 
 
 	ShowRating: () => {
+		if (CityMap.IsExtern) return
+		
 		if ($('#ProductionsRating').length === 0) {
 			
 			Productions.BuildingsAll = Object.values(CityMap.createNewCityMapEntities())

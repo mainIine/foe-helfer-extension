@@ -42,10 +42,13 @@ let CityMap = {
 	 * @param Data The City data
 	 * @param Title Name of the city
 	 */
-	init: (event, Data = null, Title = i18n('Boxes.CityMap.YourCity') + '...')=> {
+	init: (event, Data = null, Title = i18n('Boxes.CityMap.YourCity') + '...', isOtherPlayer = false)=> {
+		CityMap.IsExtern = false
+		if (isOtherPlayer) {
+			CityMap.IsExtern = true
+		}
 
 		if (Data === null) { // No data => own city
-			CityMap.IsExtern = false
 			Data = MainParser.CityMapData
 			CityMap.OwnCityData = MainParser.NewCityMapData
 			if (ActiveMap === "cultural_outpost") {
@@ -57,9 +60,6 @@ let CityMap = {
 			else if (ActiveMap === "guild_raids") {
 				Data = CityMap.QIData
 			}
-		}
-		else { // Neighbor or other modul
-			CityMap.IsExtern = true;
 		}
 
 		CityMap.CityData = Object.values(Data).sort(function (X1, X2) {
@@ -83,8 +83,7 @@ let CityMap = {
 			CityMap.OutpostScaleUnit = parseInt(outpostScale);
 		}
 
-		if( $('#city-map-overlay').length < 1 )
-		{
+		if( $('#city-map-overlay').length < 1 ) {
 			HTML.AddCssFile('citymap');
 
 			HTML.Box({
@@ -100,10 +99,8 @@ let CityMap = {
 			setTimeout(()=>{
 				CityMap.PrepareBox(Title);
 			}, 100);
-
 		}
-		else if (!event)
-		{
+		else if (!event) {
 			HTML.CloseOpenBox('city-map-overlay');
 			return;
 		}
@@ -503,6 +500,7 @@ let CityMap = {
 	 * Container gemäß den Koordianten zusammensetzen
 	 * @param Data
 	 */
+	// todo: too many buildings in list after visiting another player and opening citymap
 	SetMapBuildings: (Data = null)=> {
 		if (ActiveMap === "cultural_outpost" || ActiveMap === "era_outpost" || ActiveMap === "guild_raids") {
 			CityMap.SetOutpostBuildings() 
@@ -1999,6 +1997,8 @@ let CityMap = {
 	},
 
 	createNewCityMapEntities(data) {
+		MainParser.NewCityMapData = {}
+
 		if (data === undefined) {
 			data = Object.values(MainParser.CityMapData)
 		}
