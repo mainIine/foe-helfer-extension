@@ -1997,8 +1997,6 @@ let CityMap = {
 	},
 
 	createNewCityMapEntities(data) {
-		MainParser.NewCityMapData = {}
-
 		if (data === undefined) {
 			data = Object.values(MainParser.CityMapData)
 		}
@@ -2016,6 +2014,12 @@ let CityMap = {
 		}
 
 		return (CityMap.IsExtern === true ? MainParser.OtherPlayerCityMapData : MainParser.NewCityMapData) 
+	},
+
+	// todo: fix it, use it
+	setEra(data) {
+		let era = (data.type != "greatbuilding" ? data.level : 1)
+		return (data.cityentity_id.includes("CastleSystem") ? CurrentEra : Technologies.InnoEraNames[era])
 	},
 	
 	createNewCityMapEntity(metaData, data, era) {
