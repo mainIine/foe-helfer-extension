@@ -43,66 +43,66 @@ Dexie.delete('foe_helper_alerts_database');
 
 const BattlegroundSectorNames = {
 	volcano_archipelago: {
-		0: {title: "A1:M", name: "Mati Tudokk"},
-		1: {title: "B1:O", name: "Ofrus Remyr"},
-		2: {title: "C1:N", name: "Niali Diath"},
-		3: {title: "D1:B", name: "Brurat Andgiry"},
-		4: {title: "A2:S", name: "Sladisk Icro"},
-		5: {title: "A2:T", name: "Tevomospa"},
-		6: {title: "B2:S", name: "Subeblic"},
-		7: {title: "B2:T", name: "Taspac"},
-		8: {title: "C2:S", name: "Shadsterning"},
-		9: {title: "C2:T", name: "Tayencoria"},
-		10: {title: "D2:S", name: "Slandmonii"},
-		11: {title: "D2:T", name: "Tachmazer"},
-		12: {title: "A3:V", name: "Vobolize"},
-		13: {title: "A3:X", name: "Xemga"},
-		14: {title: "A3:Y", name: "Yelili"},
-		15: {title: "A3:Z", name: "Zamva"},
-		16: {title: "B3:V", name: "Vishrain"},
-		17: {title: "B3:X", name: "Xidorpupo"},
-		18: {title: "B3:Y", name: "Yepadlic"},
-		19: {title: "B3:Z", name: "Zilsier"},
-		20: {title: "C3:V", name: "Vilipne"},
-		21: {title: "C3:X", name: "Xistan"},
-		22: {title: "C3:Y", name: "Yeraim"},
-		23: {title: "C3:Z", name: "Zeaslo"},
-		24: {title: "D3:V", name: "Verdebu"},
-		25: {title: "D3:X", name: "Xiwait"},
-		26: {title: "D3:Y", name: "Yerat"},
-		27: {title: "D3:Z", name: "Zilgypt"},
-		28: {title: "A4:A", name: "Aithmirash"},
-		29: {title: "A4:B", name: "Bangma Mynia"},
-		30: {title: "A4:C", name: "Cuatishca"},
-		31: {title: "A4:D", name: "Dilandmoor"},
-		32: {title: "A4:E", name: "Eda Monwe"},
-		33: {title: "A4:F", name: "Frimoandbada"},
-		34: {title: "A4:G", name: "Gosolastan"},
-		35: {title: "A4:H", name: "Hasaint"},
-		36: {title: "B4:A", name: "Aguime"},
-		37: {title: "B4:B", name: "Bliclatan"},
-		38: {title: "B4:C", name: "Capepesk"},
-		39: {title: "B4:D", name: "Dalomstates"},
-		40: {title: "B4:E", name: "Engthio"},
-		41: {title: "B4:F", name: "Fradistaro"},
-		42: {title: "B4:G", name: "Goima"},
-		43: {title: "B4:H", name: "Hranreka"},
-		44: {title: "C4:A", name: "Andgalbou"},
-		45: {title: "C4:B", name: "Bangne Casau"},
-		46: {title: "C4:C", name: "Cagalpo"},
-		47: {title: "C4:D", name: "Denwana"},
-		48: {title: "C4:E", name: "Eastkiabumi"},
-		49: {title: "C4:F", name: "Francedian"},
-		50: {title: "C4:G", name: "Guayla"},
-		51: {title: "C4:H", name: "Hoguay"},
-		52: {title: "D4:A", name: "Arasruhana"},
-		53: {title: "D4:B", name: "Basainti"},
-		54: {title: "D4:C", name: "Camehermenle"},
-		55: {title: "D4:D", name: "Dabiala"},
-		56: {title: "D4:E", name: "Enggreboka"},
-		57: {title: "D4:F", name: "Finnited"},
-		58: {title: "D4:G", name: "Guayre Bhugera"},
-		59: {title: "D4:H", name: "Honbo"}
+		0: {title: "A1M", name: "Mati Tudokk"},
+		1: {title: "B1O", name: "Ofrus Remyr"},
+		2: {title: "C1N", name: "Niali Diath"},
+		3: {title: "D1B", name: "Brurat Andgiry"},
+		4: {title: "A2S", name: "Sladisk Icro"},
+		5: {title: "A2T", name: "Tevomospa"},
+		6: {title: "B2S", name: "Subeblic"},
+		7: {title: "B2T", name: "Taspac"},
+		8: {title: "C2S", name: "Shadsterning"},
+		9: {title: "C2T", name: "Tayencoria"},
+		10: {title: "D2S", name: "Slandmonii"},
+		11: {title: "D2T", name: "Tachmazer"},
+		12: {title: "A3V", name: "Vobolize"},
+		13: {title: "A3X", name: "Xemga"},
+		14: {title: "A3Y", name: "Yelili"},
+		15: {title: "A3Z", name: "Zamva"},
+		16: {title: "B3V", name: "Vishrain"},
+		17: {title: "B3X", name: "Xidorpupo"},
+		18: {title: "B3Y", name: "Yepadlic"},
+		19: {title: "B3Z", name: "Zilsier"},
+		20: {title: "C3V", name: "Vilipne"},
+		21: {title: "C3X", name: "Xistan"},
+		22: {title: "C3Y", name: "Yeraim"},
+		23: {title: "C3Z", name: "Zeaslo"},
+		24: {title: "D3V", name: "Verdebu"},
+		25: {title: "D3X", name: "Xiwait"},
+		26: {title: "D3Y", name: "Yerat"},
+		27: {title: "D3Z", name: "Zilgypt"},
+		28: {title: "A4A", name: "Aithmirash"},
+		29: {title: "A4B", name: "Bangma Mynia"},
+		30: {title: "A4C", name: "Cuatishca"},
+		31: {title: "A4D", name: "Dilandmoor"},
+		32: {title: "A4E", name: "Eda Monwe"},
+		33: {title: "A4F", name: "Frimoandbada"},
+		34: {title: "A4G", name: "Gosolastan"},
+		35: {title: "A4H", name: "Hasaint"},
+		36: {title: "B4A", name: "Aguime"},
+		37: {title: "B4B", name: "Bliclatan"},
+		38: {title: "B4C", name: "Capepesk"},
+		39: {title: "B4D", name: "Dalomstates"},
+		40: {title: "B4E", name: "Engthio"},
+		41: {title: "B4F", name: "Fradistaro"},
+		42: {title: "B4G", name: "Goima"},
+		43: {title: "B4H", name: "Hranreka"},
+		44: {title: "C4A", name: "Andgalbou"},
+		45: {title: "C4B", name: "Bangne Casau"},
+		46: {title: "C4C", name: "Cagalpo"},
+		47: {title: "C4D", name: "Denwana"},
+		48: {title: "C4E", name: "Eastkiabumi"},
+		49: {title: "C4F", name: "Francedian"},
+		50: {title: "C4G", name: "Guayla"},
+		51: {title: "C4H", name: "Hoguay"},
+		52: {title: "D4A", name: "Arasruhana"},
+		53: {title: "D4B", name: "Basainti"},
+		54: {title: "D4C", name: "Camehermenle"},
+		55: {title: "D4D", name: "Dabiala"},
+		56: {title: "D4E", name: "Enggreboka"},
+		57: {title: "D4F", name: "Finnited"},
+		58: {title: "D4G", name: "Guayre Bhugera"},
+		59: {title: "D4H", name: "Honbo"}
 	},
 	waterfall_archipelago: {
 		0: {title: "X1X", name: "Elleorus"},
@@ -849,7 +849,9 @@ let Alerts = function(){
 								'900': i18n('Boxes.Alerts.Time.15m'),
 								'3600': i18n('Boxes.Alerts.Time.1h'),
 								'14400': i18n('Boxes.Alerts.Time.4h'),
+								'18000': i18n('Boxes.Alerts.Time.5h'),
 								'28800': i18n('Boxes.Alerts.Time.8h'),
+								'36000': i18n('Boxes.Alerts.Time.10h'),
 								'86400': i18n('Boxes.Alerts.Time.1d'),
 							}
 						};
@@ -1215,7 +1217,9 @@ let Alerts = function(){
 							'15m': i18n('Boxes.Alerts.Time.15m'),
 							'1h': i18n('Boxes.Alerts.Time.1h'),
 							'4h': i18n('Boxes.Alerts.Time.4h'),
+							'5h': i18n('Boxes.Alerts.Time.5h'),
 							'8h': i18n('Boxes.Alerts.Time.8h'),
+							'10h': i18n('Boxes.Alerts.Time.10h'),
 							'1d': i18n('Boxes.Alerts.Time.1d'),
 						},
 						tags: {
@@ -1298,7 +1302,9 @@ let Alerts = function(){
 						<span class="btn-default datetime-preset" data-time="900">${labels.times['15m']}</span>
 						<span class="btn-default datetime-preset" data-time="3600">${labels.times['1h']}</span>
 						<span class="btn-default datetime-preset" data-time="14400">${labels.times['4h']}</span>
+						<span class="btn-default datetime-preset" data-time="18000">${labels.times['5h']}</span>
 						<span class="btn-default datetime-preset" data-time="28800">${labels.times['8h']}</span>
+						<span class="btn-default datetime-preset" data-time="36000">${labels.times['10h']}</span>
 						<span class="btn-default datetime-preset" data-time="86400">${labels.times['1d']}</span>
 					</div>
 				</div>
@@ -1335,8 +1341,12 @@ let Alerts = function(){
 						<label for="alert-repeat-1h" class="btn-default">${labels.times['1h']}</label>
 						<input id="alert-repeat-4h" type="radio" name="alert-repeat" class="hidden" value="14400"${repeats['14400']}>
 						<label for="alert-repeat-4h" class="btn-default">${labels.times['4h']}</label>
+						<input id="alert-repeat-5h" type="radio" name="alert-repeat" class="hidden" value="18000"${repeats['18000']}>
+						<label for="alert-repeat-5h" class="btn-default">${labels.times['5h']}</label>
 						<input id="alert-repeat-8h" type="radio" name="alert-repeat" class="hidden" value="28800"${repeats['28800']}>
 						<label for="alert-repeat-8h" class="btn-default">${labels.times['8h']}</label>
+						<input id="alert-repeat-10h" type="radio" name="alert-repeat" class="hidden" value="36000"${repeats['36000']}>
+						<label for="alert-repeat-10h" class="btn-default">${labels.times['10h']}</label>
 						<input id="alert-repeat-1d" type="radio" name="alert-repeat" class="hidden" value="86400"${repeats['86400']}>
 						<label for="alert-repeat-1d" class="btn-default">${labels.times['1d']}</label>
 					</span>
