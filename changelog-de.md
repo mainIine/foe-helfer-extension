@@ -1,5 +1,21 @@
 ## Changelog - Extension
 
+##### 3.7.0.0
+
+**New**
+- Tränke Übersicht hinzugefügt in der oberen rechten Ecke um
+	- die Laufzeit des Tranks mit kürzesten verbliebenen Laufzeit anzuzeigen (Tränke die für das aktuell gewählte Feature nicht relevant sind, werden ignoriert)
+	- alle aktuell aktiven Tränke in einem Mouse-Over Pop-Up anzuzeigen 
+	- alle im Inventar verfügbaren Tränke in einem Mouse-Over Pop-Up anzuzeigen
+
+**Update**
+- Kits - neue Teile hinzugefügt (bis Herbst 2024)
+
+- Mergergame an Care Event angepasst
+
+
+---
+
 ##### 3.6.5.0
 
 **Neu**
