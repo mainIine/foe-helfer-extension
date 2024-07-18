@@ -495,7 +495,7 @@ GetFights = () =>{
 	FoEproxy.addHandler('BattlefieldService', 'startByBattleType', (data, postData) => {
 
 		// battle finished
-		if (data.responseData["error_code"] === 901) {
+		if ([901,902].includes(data.responseData.error_code)) {
 			return;
 		}
 		if (data.responseData["armyId"] === 1 || data.responseData["state"]["round"] === 1 || data.responseData["battleType"]["totalWaves"] === 1) {
@@ -1425,7 +1425,9 @@ let MainParser = {
 			if (!EntityID) EntityID = 0;
 			if (!MainParser.Boosts[EntityID]) MainParser.Boosts[EntityID] = [];
 			MainParser.Boosts[EntityID].push(Boost);
-
+			if (Boost.origin==="inventory_item") {
+				BoostPotions.activate(Boost.type,{expire:Boost.expireTime,target:Boost.targetedFeature||"all",value:Boost.value});
+			};
 			if (MainParser.BoostSums[d[i]['type']] !== undefined) {
 				MainParser.BoostSums[d[i]['type']] += d[i]['value']
 			}

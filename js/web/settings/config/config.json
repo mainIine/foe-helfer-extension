@@ -84,6 +84,12 @@
 		"sort": 9
 	},
 	{
+		"name": "ShowPotions",
+		"status": true,
+		"group": "Boxes",
+		"sort": 9
+	},
+	{
 		"name": "AutoOpenInfoBox",
 		"status": false,
 		"group": "Boxes",
