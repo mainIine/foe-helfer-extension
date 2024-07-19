@@ -1191,15 +1191,16 @@ let CityMap = {
 				}
 			}
 			else if (metaData.id.includes("CastleSystem")) {
-				MainParser.Boosts[data.id].forEach(castleBoost => {
-					let boost = {
-						feature: "all",
-						type: MainParser.BoostMapper[castleBoost.type] || undefined, // do not include weird boosts
-						value: castleBoost.value
-					}
-					if (boost.type !== undefined)
-						boosts.push(boost)
-				})
+				if (MainParser.Boosts[data.id] != undefined)
+					MainParser.Boosts[data.id].forEach(castleBoost => {
+						let boost = {
+							feature: "all",
+							type: MainParser.BoostMapper[castleBoost.type] || undefined, // do not include weird boosts
+							value: castleBoost.value
+						}
+						if (boost.type !== undefined)
+							boosts.push(boost)
+					})
 			}
 		}
 		else {
@@ -1437,22 +1438,23 @@ let CityMap = {
 			if (metaData.id.includes("CastleSystem")) { // add castle system stuff
 				let currentLevel = Castle.curLevel
 				era = CurrentEra 
-				MainParser.CastleSystemLevels[(currentLevel-1)].dailyReward[era].rewards.forEach(reward => {
-					let resources = {[reward.subType]: reward.amount} 
-					if (reward.id.search("#") != -1) { // "goods#random#CurrentEra#30" "goods#random#PreviousEra#15"
-						amount = reward.id.match(/\d+$/)[0]
-						if (reward.id.search("goods") != -1 && reward.id.search("CurrentEra") != -1)
-							resources = { random_good_of_age: amount }
-						else if (reward.id.search("goods") != -1 && reward.id.search("PreviousEra") != -1)
-							resources = { random_good_of_previous_age: amount }
-					}
-					let resource = {
-						type: "resources",
-						needsMotivation: false,
-						resources: resources
-					}
-					productions.push(resource)
-				})
+				if (MainParser.CastleSystemLevels[(currentLevel-1)] != undefined)
+					MainParser.CastleSystemLevels[(currentLevel-1)].dailyReward[era].rewards.forEach(reward => {
+						let resources = {[reward.subType]: reward.amount} 
+						if (reward.id.search("#") != -1) { // "goods#random#CurrentEra#30" "goods#random#PreviousEra#15"
+							amount = reward.id.match(/\d+$/)[0]
+							if (reward.id.search("goods") != -1 && reward.id.search("CurrentEra") != -1)
+								resources = { random_good_of_age: amount }
+							else if (reward.id.search("goods") != -1 && reward.id.search("PreviousEra") != -1)
+								resources = { random_good_of_previous_age: amount }
+						}
+						let resource = {
+							type: "resources",
+							needsMotivation: false,
+							resources: resources
+						}
+						productions.push(resource)
+					})
 			}
 			let isChain = this.setChainBuilding(metaData)
 			if (isChain !== undefined) {
