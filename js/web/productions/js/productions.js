@@ -1039,6 +1039,7 @@ let Productions = {
 				let target = document.querySelector('.entity[data-id="' + IDArray[i] + '"]')
 				if (target) {
 					let targetStyle = window.getComputedStyle(document.querySelector('.entity[data-id="' + IDArray[i] + '"]'))
+					//let tLeft = targetStyle.getPropertyValue("left").str
 
 					if(i === 0) $('#map-container').scrollTo({left: targetStyle.getPropertyValue("left"), top: targetStyle.getPropertyValue("top")}, 800, { easing: 'swing' });
 					target.classList.add('highlighted');
@@ -1311,7 +1312,7 @@ let Productions = {
 		let ratedBuildings = []
 		let tileRatings = JSON.parse(localStorage.getItem('ProductionRatingProdPerTiles'))
 		for (const building of buildingType) {
-			if (building.entityId.includes("AllAge_EasterBonus1") || building.entityId.includes("L_AllAge_Expedition16") || building.entityId.includes("L_AllAge_ShahBonus17") || building.type == "main_building" || building.isSpecial == undefined) continue // do not include wishingwell type buildings, do not include townhall
+			if (building.entityId.includes("AllAge_EasterBonus1") || building.entityId.includes("L_AllAge_Expedition16") || building.entityId.includes("L_AllAge_ShahBonus17") || building.type == "main_building" || (building.isSpecial == undefined && building.type != "greatbuilding")) continue // do not include wishingwell type buildings, do not include townhall
 			let size = building.size.width * building.size.length + building.needsStreet
 			let score = 0
 			let ratedBuilding = {
