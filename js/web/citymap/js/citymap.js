@@ -42,7 +42,7 @@ let CityMap = {
 	 * @param Data The City data
 	 * @param Title Name of the city
 	 */
-	init: (event, Data = null, Title = i18n('Boxes.CityMap.YourCity') + '...', isOtherPlayer = false)=> {
+	init: (event, Data = null, Title = i18n('Boxes.CityMap.YourCity'), isOtherPlayer = false)=> {
 		CityMap.IsExtern = false
 		if (isOtherPlayer) {
 			CityMap.IsExtern = true
@@ -1246,8 +1246,8 @@ let CityMap = {
 	// building is not in construction menu
 	isSpecialBuilding(metaData) { 
 		if (metaData.__class__ == "GenericCityEntity")
-			return true; // generic buildings are always special
-		return metaData.is_special;
+			return true // generic buildings are always special
+		return metaData.is_special
 	},
 
 	// returns street level (1 or 2) or 0

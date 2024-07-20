@@ -108,7 +108,7 @@ let BlueGalaxy = {
 
             // A building should be shown on the map
             $('#bluegalaxy').on('click', '.foe-table .show-entity', function () {
-                Productions.ShowFunction($(this).data('id'));
+                Productions.ShowOnMap($(this).data('id'));
             });
 
             BlueGalaxy.CalcBody();

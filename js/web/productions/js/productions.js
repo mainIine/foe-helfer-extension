@@ -381,7 +381,7 @@ let Productions = {
 
 			// show a building on the map
 			$('#Productions').on('click', '.foe-table .show-entity', function () {
-				Productions.ShowFunction($(this).data('id'));
+				Productions.ShowOnMap($(this).data('id'));
 			});
 		});			
 	},
@@ -516,8 +516,9 @@ let Productions = {
 					rowA.push('<td '+((type.includes('att') || type.includes('def')) ? 'colspan="3"' : '')+' data-text="'+i18n("Eras."+Technologies.Eras[building.eraName]+".short").replace(/[. -]/g,"")+'">' + i18n("Eras."+Technologies.Eras[building.eraName]+".short") + '</td>')
 					if (!type.includes('att') && !type.includes('def')) {
 						let time = (building.state.times?.at <= inADay) ? moment.unix(building.state.times?.at).format('HH:mm') : moment.unix(building.state.times?.at).format('dddd, HH:mm')
-						rowA.push('<td style="white-space:nowrap">' + time + '</td>')
-						rowA.push('<td style="white-space:nowrap">' + (building.state.times?.at * 1000 <= MainParser.getCurrentDateTime() ? '<strong class="success">' + i18n('Boxes.Productions.Done') : '') + '</strong></td>')
+						rowA.push('<td style="white-space:nowrap" data-text="' + time + '">' + time + '</td>')
+						let done = (building.state.times?.at * 1000 <= MainParser.getCurrentDateTime() ? i18n('Boxes.Productions.Done') : '')
+						rowA.push('<td style="white-space:nowrap" data-text="' + done + '">' + done + '</strong></td>')
 					}
 					rowA.push('<td class="text-right">')
 					rowA.push('<span class="show-entity" data-id="' + building.id + '"><img class="game-cursor" src="' + extUrl + 'css/images/hud/open-eye.png"></span>')
@@ -551,8 +552,8 @@ let Productions = {
 				}
 				table.push('<th data-type="prodlist'+type+'">' + i18n('Boxes.Productions.Headings.era') + '</th>')
 				if (!type.includes('att') && !type.includes('def')) {
-					table.push('<th data-type="prodlist'+type+'" class="no-sort">' + i18n('Boxes.Productions.Headings.earning') + '</th>')
-					table.push('<th data-type="prodlist'+type+'" class="no-sort">' + i18n('Boxes.Productions.Headings.Done') + '</th>')
+					table.push('<th data-type="prodlist'+type+'">' + i18n('Boxes.Productions.Headings.earning') + '</th>')
+					table.push('<th data-type="prodlist'+type+'">' + i18n('Boxes.Productions.Headings.Done') + '</th>')
 				}
 				table.push('<th data-type="prodlist'+type+'" class="no-sort" '+((type.includes('att') || type.includes('def')) ? 'colspan="3"' : '')+'> </th>')
 				table.push('</tr>')
@@ -706,8 +707,8 @@ let Productions = {
 			typeCurrentSum += currentAmount
 
 			rowA.push('<td data-text="'+i18n("Eras."+Technologies.Eras[building.eraName]+".short").replace(/[. -]/g,"")+'">' + i18n("Eras."+Technologies.Eras[building.eraName]+".short") + '</td>')
-			rowA.push('<td style="white-space:nowrap">' + moment.unix(building.state.times?.at).format('HH:mm') + '</td>')
-			rowA.push('<td style="white-space:nowrap">' + (building.state.times?.at * 1000 <= MainParser.getCurrentDateTime() ? '<strong class="success">' + i18n('Boxes.Productions.Done') : '') + '</strong></td>')
+			let time = moment.unix(building.state.times?.at).format('HH:mm')
+			rowA.push('<td style="white-space:nowrap" data-text="'+time+'">' + time + '</td>')
 			rowA.push('<td class="text-right">')
 			rowA.push('<span class="show-entity" data-id="' + building.id + '"><img class="game-cursor" src="' + extUrl + 'css/images/hud/open-eye.png"></span>')
 			rowA.push('</td>')
@@ -726,11 +727,10 @@ let Productions = {
 		table.push('<th class="no-sort" data-type="prodlist'+type+'"> </th>')
 		table.push('<th class="ascending" data-type="prodlist'+type+'">' + i18n('Boxes.BlueGalaxy.Building') + '</th>')
 		eras.forEach(era => {
-			table.push('<th data-type="prodlist'+type+'" class="is-number text-center">' + i18n('Eras.'+(parseInt(era)+1)+'.short') + '</span><br>'+HTML.Format(erasTotal[era])+'</th>')
+			table.push('<th data-type="prodlist'+type+'" class="is-number text-center"><span data-original-title="'+i18n('Eras.'+(parseInt(era)+1))+'">' + i18n('Eras.'+(parseInt(era)+1)+'.short') + '<br>'+HTML.Format(erasTotal[era])+'</span></th>')
 		})
 		table.push('<th data-type="prodlist'+type+'">' + i18n('Boxes.Productions.Headings.era') + '</th>')
-		table.push('<th data-type="prodlist'+type+'" class="no-sort"> </th>')
-		table.push('<th data-type="prodlist'+type+'" class="no-sort"> </th>')
+		table.push('<th data-type="prodlist'+type+'">'+i18n('Boxes.Productions.Headings.earning')+'</th>')
 		table.push('<th data-type="prodlist'+type+'" class="no-sort"> </th>')
 		table.push('</tr>')
 		table.push('</thead>')
@@ -1025,11 +1025,10 @@ let Productions = {
 	 *
 	 * @param ids
 	 */
-	// todo: zooms to the wrong place
-	ShowFunction: (ids) => {
+	ShowOnMap: (ids) => {
 		let IDArray = (ids.length !== undefined ? ids : [ids]);
 
-		CityMap.init(MainParser.CityMapData);
+		CityMap.init(null, MainParser.CityMapData);
 
 		$('#grid-outer').removeClass('desaturate');
 		$('[data-id]').removeClass('highlighted');
@@ -1037,11 +1036,14 @@ let Productions = {
 		setTimeout(() => {
 			$('#grid-outer').addClass('desaturate');
 			for (let i = 0; i < IDArray.length; i++) {
-				let target = $('[data-id="' + IDArray[i] + '"]');
+				let target = document.querySelector('.entity[data-id="' + IDArray[i] + '"]')
+				if (target) {
+					let targetStyle = window.getComputedStyle(document.querySelector('.entity[data-id="' + IDArray[i] + '"]'))
 
-				if(i === 0) $('#map-container').scrollTo(target, 800, { offset: { left: -280, top: -280 }, easing: 'swing' });
-				target.addClass('highlighted');
-            }		
+					if(i === 0) $('#map-container').scrollTo({left: targetStyle.getPropertyValue("left"), top: targetStyle.getPropertyValue("top")}, 800, { easing: 'swing' });
+					target.classList.add('highlighted');
+				}
+            }
 		}, 500);
 	},
 
@@ -1309,7 +1311,7 @@ let Productions = {
 		let ratedBuildings = []
 		let tileRatings = JSON.parse(localStorage.getItem('ProductionRatingProdPerTiles'))
 		for (const building of buildingType) {
-			if (building.entityId.includes("AllAge_EasterBonus1") || building.entityId.includes("L_AllAge_Expedition16") || building.entityId.includes("L_AllAge_ShahBonus17") || building.type == "main_building") continue // do not include wishingwell type buildings, do not include townhall
+			if (building.entityId.includes("AllAge_EasterBonus1") || building.entityId.includes("L_AllAge_Expedition16") || building.entityId.includes("L_AllAge_ShahBonus17") || building.type == "main_building" || building.isSpecial == undefined) continue // do not include wishingwell type buildings, do not include townhall
 			let size = building.size.width * building.size.length + building.needsStreet
 			let score = 0
 			let ratedBuilding = {
