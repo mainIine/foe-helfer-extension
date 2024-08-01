@@ -237,7 +237,7 @@ let Productions = {
 								if (Productions.BuildingsProducts.strategy_points.find(x => x.id == building.id) == undefined)
 									Productions.BuildingsProducts["strategy_points"].push(saveBuilding)
 							}
-							if (resource.type == "consumable" || resource.type.includes("chest") || resource.type.includes("genericReward")) { // todo: where wish fountain
+							if (resource.type == "consumable" || resource.type.includes("chest")) {
 								if (Productions.BuildingsProducts.items.find(x => x.id == building.id) == undefined)
 									Productions.BuildingsProducts["items"].push(saveBuilding)
 							}
@@ -300,9 +300,10 @@ let Productions = {
 						if (Productions.BuildingsProducts.units.find(x => x.id == building.id) == undefined)
 							Productions.BuildingsProducts.units.push(saveBuilding)
 					}
-					if (production.type == "genericReward") { 
-						if (Productions.BuildingsProducts.items.find(x => x.id == building.id) == undefined)
+					if (production.type == "genericReward") {
+						if (Productions.BuildingsProducts.items.find(x => x.id == building.id) == undefined) {
 							Productions.BuildingsProducts.items.push(saveBuilding)
+						}
 					}
 					if (production.type == "resources") {
 						if (production.resources.money) { 
@@ -901,9 +902,10 @@ let Productions = {
 
 	showBuildingItems(current = false, building) {
 		let allItems = ''
-		if (building.state?.isPolivated == true && current === true) {
+		if ((building.state?.isPolivated == true || building.state?.isPolivated == undefined) && current === true) {
 			building.state.production?.forEach(production => {
 				if (production.type == "genericReward") {
+					if (production.resources.icon.includes("good")) return false
 					let frag = (production.resources.subType == "fragment" ? "🧩 " : "")
 					allItems += production.resources.amount + "x " + frag + production.resources.name + "<br>"
 				}
@@ -1039,9 +1041,11 @@ let Productions = {
 				let target = document.querySelector('.entity[data-id="' + IDArray[i] + '"]')
 				if (target) {
 					let targetStyle = window.getComputedStyle(document.querySelector('.entity[data-id="' + IDArray[i] + '"]'))
-					//let tLeft = targetStyle.getPropertyValue("left").str
+					let tLeft = (parseInt(targetStyle.getPropertyValue("left").replace("px","")) - 100)
+					let tTop = (parseInt(targetStyle.getPropertyValue("top").replace("px","")) - 100)
+					// todo: andere perspektive beachten, andere werte benutzen?
 
-					if(i === 0) $('#map-container').scrollTo({left: targetStyle.getPropertyValue("left"), top: targetStyle.getPropertyValue("top")}, 800, { easing: 'swing' });
+					if (i === 0) $('#map-container').scrollTo({left: tLeft, top: tTop}, 800, { easing: 'swing' });
 					target.classList.add('highlighted');
 				}
             }
