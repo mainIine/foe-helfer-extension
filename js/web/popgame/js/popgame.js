@@ -187,7 +187,7 @@ let Popgame = {
                 box.find('.window-body').css("visibility", "hidden");
             }
             $('#PopgameButtons > span.window-minimize').on('click', function() {
-                if (Popgame.minimized) Popgame.rewardactive = 0;
+                Popgame.rewardactive = 0;
                 Popgame.minimized = !Popgame.minimized;
                 localStorage.setItem('PopgameMinimized', JSON.stringify(Popgame.minimized));
             });
