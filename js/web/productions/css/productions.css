@@ -298,10 +298,7 @@
 	margin: 1em auto;
 }
 
-#ProductionsRating #ProductionsRatingBody .settings {
-	display: flex;
-	gap: 10px;
-	padding: 5px;
+#ProductionsRating #ProductionsRatingBody .settings th {
 	border-bottom: 1px dotted var(--text-darker);
 }
 
@@ -313,7 +310,7 @@ input[id*="ProdPerTile"] {
 	width: 100px;
 }
 
-#ProductionsRating #ProductionsRatingBody table th {
+#ProductionsRating #ProductionsRatingBody table thead {
 	font-size: 85%;
 	position: sticky;
 	top: 0;
