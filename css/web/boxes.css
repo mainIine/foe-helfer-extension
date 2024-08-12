@@ -170,6 +170,7 @@ a[target="_blank"] svg {
 	font-weight: 400;
 	text-align: center;
 	vertical-align: middle;
+	text-decoration: none;
 	user-select: none;
 	padding: 0.2rem 0.8rem;
 	font-size: 0.8rem;
