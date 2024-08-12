@@ -707,7 +707,7 @@ let Productions = {
 			typeSum += amount
 			typeCurrentSum += currentAmount
 
-			rowA.push('<td data-text="'+i18n("Eras."+Technologies.Eras[building.eraName]+".short").replace(/[. -]/g,"")+'">' + i18n("Eras."+Technologies.Eras[building.eraName]+".short") + '</td>')
+			rowA.push('<td data-number="'+Technologies.Eras[building.eraName]+'">' + i18n("Eras."+Technologies.Eras[building.eraName]+".short") + '</td>')
 			let time = moment.unix(building.state.times?.at).format('HH:mm')
 			rowA.push('<td style="white-space:nowrap" data-text="'+time+'">' + time + '</td>')
 			rowA.push('<td class="text-right">')
@@ -730,7 +730,7 @@ let Productions = {
 		eras.forEach(era => {
 			table.push('<th data-type="prodlist'+type+'" class="is-number text-center"><span data-original-title="'+i18n('Eras.'+(parseInt(era)+1))+'">' + i18n('Eras.'+(parseInt(era)+1)+'.short') + '<br>'+HTML.Format(erasTotal[era])+'</span></th>')
 		})
-		table.push('<th data-type="prodlist'+type+'">' + i18n('Boxes.Productions.Headings.era') + '</th>')
+		table.push('<th data-type="prodlist'+type+'" class="is-number">' + i18n('Boxes.Productions.Headings.era') + '</th>')
 		table.push('<th data-type="prodlist'+type+'">'+i18n('Boxes.Productions.Headings.earning')+'</th>')
 		table.push('<th data-type="prodlist'+type+'" class="no-sort"> </th>')
 		table.push('</tr>')
@@ -745,7 +745,7 @@ let Productions = {
 		table.push('<table class="foe-table sortable-table '+type+'-group">')
 		table.push('<thead>')
 		table.push('<tr>')
-		table.push('<th colspan="7"><span class="btn-default change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeSingle') + '</span></th>')
+		table.push('<th colspan="'+(3+eras.length)+'"><span class="btn-default change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeSingle') + '</span></th>')
 		table.push('</tr>')
 		table.push('<tr class="sorter-header">')
 		table.push('<th data-type="prodgroup'+type+'" class="is-number">' + i18n('Boxes.Productions.Headings.number') + '</th>')
@@ -1245,16 +1245,24 @@ let Productions = {
 				return 0
 			})
 
+			let colNumber = 0
+			for (let i = 0; i < Productions.RatingTypes.length; i++) {
+				let type = Productions.RatingTypes[i];
+				if (!Productions.Rating[type]) continue;
+				colNumber++
+			}
+
 			h.push('<div class="ratingtable">');
-			h.push('<div class="settings dark-bg">')
-				h.push('<div>')
-				h.push('<input type="checkbox" id="tilevalues"><label for="tilevalues">' + i18n('Boxes.ProductionsRating.ShowValuesPerTile') + '</label><br>')
-				h.push('</div><div>');
-				h.push('<input type="checkbox" id="showitems"><label for="showitems">' + i18n('Boxes.ProductionsRating.ShowItems') + '</label>')
-				h.push('</div>');
-			h.push('</div>');
 			h.push('<table class="foe-table sortable-table">');
 			h.push('<thead>');
+			
+			h.push('<tr class="settings">')
+				h.push('<th colspan="3">')
+				h.push('<input type="checkbox" id="tilevalues"><label for="tilevalues">' + i18n('Boxes.ProductionsRating.ShowValuesPerTile') + '</label><br>')
+				h.push('</th><th colspan="'+(colNumber)+'">');
+				h.push('<input type="checkbox" id="showitems"><label for="showitems">' + i18n('Boxes.ProductionsRating.ShowItems') + '</label>')
+				h.push('</th>');
+			h.push('</tr>');
 			h.push('<tr class="sorter-header">');
 			h.push('<th data-type="ratinglist" class="is-number ascending">' + i18n('Boxes.ProductionsRating.Score') + '</th>');
 			h.push('<th data-type="ratinglist">' + i18n('Boxes.ProductionsRating.BuildingName') + '</th>');
@@ -1262,7 +1270,7 @@ let Productions = {
 			for (let i = 0; i < Productions.RatingTypes.length; i++) {
 				let type = Productions.RatingTypes[i];
 				if (!Productions.Rating[type]) continue;
-				h.push('<th data-type="ratinglist" style="width:1%" class="is-number text-center"><span class="resicon ' + type + '"></span>'+(tileRatings?.[type] !== undefined ? parseFloat(tileRatings[type]) : Productions.GetDefaultProdPerTile(type))+'</th>');
+				h.push('<th data-type="ratinglist" style="width:1%" class="is-number text-center"><span class="resicon ' + type + '"></span><i>'+(tileRatings?.[type] !== undefined ? parseFloat(tileRatings[type]) : Productions.GetDefaultProdPerTile(type))+'</i></th>');
 			}
 			h.push('<th data-type="ratinglist" class="no-sort items">Items</th>');
 			h.push('</tr>');
