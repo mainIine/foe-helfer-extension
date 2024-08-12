@@ -1257,10 +1257,10 @@ let Productions = {
 			h.push('<thead>');
 			
 			h.push('<tr class="settings">')
-				h.push('<th colspan="3">')
-				h.push('<input type="checkbox" id="tilevalues"><label for="tilevalues">' + i18n('Boxes.ProductionsRating.ShowValuesPerTile') + '</label><br>')
-				h.push('</th><th colspan="'+(colNumber)+'">');
+				h.push('<th colspan="'+(colNumber+3)+'">')
+				h.push('<input type="checkbox" id="tilevalues"><label for="tilevalues">' + i18n('Boxes.ProductionsRating.ShowValuesPerTile') + '</label> - ')
 				h.push('<input type="checkbox" id="showitems"><label for="showitems">' + i18n('Boxes.ProductionsRating.ShowItems') + '</label>')
+				h.push('<a class="toggle-tab btn-default btn-tight" style="float:right" data-value="Settings">' + i18n('Boxes.ProductionsRating.Settings') + '</a>')
 				h.push('</th>');
 			h.push('</tr>');
 			h.push('<tr class="sorter-header">');
