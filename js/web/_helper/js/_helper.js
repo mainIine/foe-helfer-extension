@@ -63,7 +63,9 @@ helper.str = {
 		copyFrom.remove();
 	},
 
-	cleanup: (textToCleanup) => textToCleanup.toLowerCase().replace(/[\W_ ]+/g, ''),
+	cleanup: (textToCleanup) => {
+		return textToCleanup.toLowerCase().replace(/ä/g, 'a').replace(/ö/g, 'o').replace(/ü/g, 'u').replace(/[\W_ ]+/g, '')
+	},
 };
 
 helper.arr = {
