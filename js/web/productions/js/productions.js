@@ -1030,7 +1030,8 @@ let Productions = {
 	ShowOnMap: (ids) => {
 		let IDArray = (ids.length !== undefined ? ids : [ids]);
 
-		CityMap.init(null, MainParser.CityMapData);
+		if( $('#city-map-overlay').length < 1 )
+			CityMap.init(null, MainParser.CityMapData);
 
 		$('#grid-outer').removeClass('desaturate');
 		$('[data-id]').removeClass('highlighted');
@@ -1182,38 +1183,33 @@ let Productions = {
 	CalcRatingBody: () => {
 		let h = [];
 
-		h.push('<div class="tabs">');
-		h.push('<ul class="horizontal dark-bg">');
-		h.push('<li class="' + (Productions.RatingCurrentTab === 'Settings' ? 'active' : '')  + '"><a class="toggle-tab" data-value="Settings"><span>' + i18n('Boxes.ProductionsRating.Settings') + '</span></a></li>');
-		h.push('<li class="' + (Productions.RatingCurrentTab === 'Results' ? 'active' : '') + '"><a class="toggle-tab" data-value="Results"><span>' + i18n('Boxes.ProductionsRating.Results') + '</span></a></li>');
-		h.push('</ul>');
-		h.push('</div>');
-
 		if (Productions.RatingCurrentTab === 'Settings') {
-			h.push('<div>');
-			h.push('<ul class="foe-table">');
+			h.push('<div id="ProductionsRatingSettings">')
+			h.push('<a id="RatingsResults" class="toggle-tab btn-default btn-tight" data-value="Results"><span>' + i18n('Boxes.ProductionsRating.Results') + '</span></a>')
+			h.push('<ul class="foe-table">')
 
 			h.push('<li class="dark-bg">')
-			h.push('<span>' + i18n('Boxes.ProductionsRating.Enabled') + '</span>');
-			h.push('<span></span><span></span>');
-			h.push('<span class="text-right">' + i18n('Boxes.ProductionsRating.ProdPerTile') + '</span>');
+			h.push('<span>' + i18n('Boxes.ProductionsRating.Enabled') + '</span>')
+			h.push('<span></span><span></span>')
+			h.push('<span class="text-right">' + i18n('Boxes.ProductionsRating.ProdPerTile') + '</span>')
 			h.push('</li>')
 
 			for (let i = 0; i < Productions.RatingTypes.length; i++) {
-				let Type = Productions.RatingTypes[i];
+				let Type = Productions.RatingTypes[i]
 
-				h.push('<li class="'+Type+'">');
-				h.push('<input id="Enabled-' + Type + '" class="no-grow enabled game-cursor" ' + (Productions.Rating[Type] ? 'checked' : '') + ' type="checkbox">');
-				h.push('<span class="no-grow resicon ' + Type + '"></span>');
-				h.push('<label for="Enabled-'+Type+'">' + Productions.GetTypeName(Type) + '</label>');
+				h.push('<li class="'+Type+'">')
+				h.push('<input id="Enabled-' + Type + '" class="no-grow enabled game-cursor" ' + (Productions.Rating[Type] ? 'checked' : '') + ' type="checkbox">')
+				h.push('<span class="no-grow resicon ' + Type + '"></span>')
+				h.push('<label for="Enabled-'+Type+'">' + Productions.GetTypeName(Type) + '</label>')
 				if (Productions.Rating[Type]) {
-					h.push('<input type="number" id="ProdPerTile-' + Type + '" step="0.01" min="0" max="1000000" class="no-grow" value="' + Productions.RatingProdPerTiles[Type] + '">');
+					h.push('<input type="number" id="ProdPerTile-' + Type + '" step="0.01" min="0" max="1000000" class="no-grow" value="' + Productions.RatingProdPerTiles[Type] + '">')
 				}
 				else {
-					h.push('<span></span>');
+					h.push('<span></span>')
 				}
-				h.push('</li>');
+				h.push('</li>')
 			}
+			h.push('<li><a class="toggle-tab btn-default" data-value="Results"><span>' + i18n('Boxes.ProductionsRating.Results') + '</span></a></li>')
 			h.push('</ul>')
 			h.push('<p>'+i18n('Boxes.ProductionsRating.Explainer')+'</p>')
 			h.push('<p>'+i18n('Boxes.ProductionsRating.Disclaimer')+'</p>')
