@@ -500,7 +500,6 @@ let CityMap = {
 	 * Container gemäß den Koordianten zusammensetzen
 	 * @param Data
 	 */
-	// todo: too many buildings in list after visiting another player and opening citymap
 	SetMapBuildings: (Data = null)=> {
 		if (ActiveMap === "cultural_outpost" || ActiveMap === "era_outpost" || ActiveMap === "guild_raids") {
 			CityMap.SetOutpostBuildings() 
@@ -2061,8 +2060,8 @@ let CityMap = {
 			}
 		}
 		
-		if (entity.type != "street")
-			console.log('entity ', entity.name, entity, metaData, data)
+		//if (entity.type != "street")
+		//	console.log('entity ', entity.name, entity, metaData, data)
 		return entity
 	},
 };
