@@ -1731,7 +1731,6 @@ let CityMap = {
 				if (lookupData == undefined) {
 					let chest = Object.keys(metaData.components[era].lookup.rewards).find(x => x.includes("chest")) // currently only applies to wish fountain
 					for (possibleReward of metaData.components[era].lookup.rewards[chest].possible_rewards) {
-						
 						if (possibleReward.reward.id == product.reward.id)
 							lookupData = possibleReward.reward
 					}
@@ -2060,8 +2059,8 @@ let CityMap = {
 			}
 		}
 		
-		//if (entity.type != "street")
-		//	console.log('entity ', entity.name, entity, metaData, data)
+		if (entity.type != "street")
+			console.log('entity ', entity.name, entity, metaData, data)
 		return entity
 	},
 };

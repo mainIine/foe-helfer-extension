@@ -1054,6 +1054,19 @@ let Productions = {
 	},
 
 
+	ShowSearchOnMap: (name) => {
+		if( $('#city-map-overlay').length < 1 )
+			CityMap.init(null, MainParser.CityMapData);
+
+		$('#grid-outer').removeClass('desaturate');
+
+		setTimeout(() => {
+			CityMap.filterBuildings(name)
+			$('#BuildingsFilter').attr('value',name)
+		}, 500);
+	},
+
+
 	GetTypeName: (GoodType)=> {
 		if (GoodType === 'happiness') {
 			return i18n('Boxes.Productions.Happiness');
@@ -1280,6 +1293,7 @@ let Productions = {
 				let eraShortName = i18n("Eras."+Technologies.Eras[building.building.eraName]+".short")
 				if (eraShortName != "-")
 					h.push(" ("+i18n("Eras."+Technologies.Eras[building.building.eraName]+".short") +')')
+				h.push(' <span class="show-all" data-name="'+building.building.name+'"><img class="game-cursor" src="' + extUrl + 'css/images/hud/open-eye.png"></span>')
 				h.push('</td>')
 				for (const type of Productions.RatingTypes) {
 					if (building[type] != undefined) {
@@ -1311,7 +1325,11 @@ let Productions = {
 
 			$('#showitems, label[showitems]').on('click', function () {
 				$("#ProductionsRatingBody table .items").toggle();
-			});			
+			});
+
+			$('.show-all').on('click', function () {
+				Productions.ShowSearchOnMap($(this).attr('data-name'))
+			});
 		});	
     },
 

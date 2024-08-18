@@ -23,21 +23,21 @@
 	overflow-y: auto;
 }
 
-#Productions #ProductionsBody strong.success {
+#Productions strong.success {
 	color: var(--text-success);
 }
 
-#Productions #ProductionsBody span.success {
+#Productions span.success {
 	color: var(--text-success);
 }
 
-#Productions #ProductionsBody .show-entity {
+#Productions .show-entity {
 	display: inline-block;
 	width: 20px;
 	height: 20px;
 }
 
-#Productions #ProductionsBody .show-entity img {
+#Productions .show-entity img, #ProductionsRating .show-all img {
 	width: 20px;
 	height: 20px;
 }
