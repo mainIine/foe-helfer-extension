@@ -2059,8 +2059,8 @@ let CityMap = {
 			}
 		}
 		
-		if (entity.type != "street")
-			console.log('entity ', entity.name, entity, metaData, data)
+		//if (entity.type != "street")
+		//	console.log('entity ', entity.name, entity, metaData, data)
 		return entity
 	},
 };
