@@ -944,6 +944,7 @@
     "Boxes.ProductionsRating.Results": "Ergebnis",
     "Boxes.ProductionsRating.Score": "Bewertung",
     "Boxes.ProductionsRating.Settings": "Einstellungen",
+    "Boxes.ProductionsRating.ShowHighlighted": "Zeige nur markierte Gebäude",
     "Boxes.ProductionsRating.ShowItems": "Verstecke Zufalls- und Sonderproduktionen",
     "Boxes.ProductionsRating.ShowValuesPerTile": "Zeige Werte pro Feld",
     "Boxes.ProductionsRating.Title": "Gebäude - Effizienzberechnung",

@@ -1269,7 +1269,8 @@ let Productions = {
 			h.push('<tr class="settings">')
 				h.push('<th colspan="'+(colNumber+3)+'">')
 				h.push('<input type="checkbox" id="tilevalues"><label for="tilevalues">' + i18n('Boxes.ProductionsRating.ShowValuesPerTile') + '</label> - ')
-				h.push('<input type="checkbox" id="showitems"><label for="showitems">' + i18n('Boxes.ProductionsRating.ShowItems') + '</label>')
+				h.push('<input type="checkbox" id="showitems"><label for="showitems">' + i18n('Boxes.ProductionsRating.ShowItems') + '</label> - ')
+				h.push('<input type="checkbox" id="showhighlighted"><label for="showhighlighted">' + i18n('Boxes.ProductionsRating.ShowHighlighted') + '</label>')
 				h.push('</th>');
 			h.push('</tr>');
 			h.push('<tr class="sorter-header">');
@@ -1327,8 +1328,18 @@ let Productions = {
 				$("#ProductionsRatingBody table .items").toggle();
 			});
 
+			$('#showhighlighted, label[showhighlighted]').on('click', function () {
+				$("#ProductionsRatingBody tr").toggle();
+				$("#ProductionsRatingBody thead tr").toggle();
+				$("#ProductionsRatingBody tr.highlighted").toggle();
+			});
+
 			$('.show-all').on('click', function () {
 				Productions.ShowSearchOnMap($(this).attr('data-name'))
+			});
+
+			$('.ratinglist tr').on('click', function () {
+				$(this).toggleClass('highlighted')
 			});
 		});	
     },
