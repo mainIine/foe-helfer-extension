@@ -1262,6 +1262,7 @@ let Productions = {
 			}
 
 			h.push('<div class="ratingtable">');
+			h.push('<a id="RatingSettings" class="toggle-tab btn-default btn-tight" data-value="Settings">' + i18n('Boxes.ProductionsRating.Settings') + '</a>')
 			h.push('<table class="foe-table sortable-table">');
 			h.push('<thead>');
 			
@@ -1269,7 +1270,6 @@ let Productions = {
 				h.push('<th colspan="'+(colNumber+3)+'">')
 				h.push('<input type="checkbox" id="tilevalues"><label for="tilevalues">' + i18n('Boxes.ProductionsRating.ShowValuesPerTile') + '</label> - ')
 				h.push('<input type="checkbox" id="showitems"><label for="showitems">' + i18n('Boxes.ProductionsRating.ShowItems') + '</label>')
-				h.push('<a class="toggle-tab btn-default btn-tight" style="float:right" data-value="Settings">' + i18n('Boxes.ProductionsRating.Settings') + '</a>')
 				h.push('</th>');
 			h.push('</tr>');
 			h.push('<tr class="sorter-header">');

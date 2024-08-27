@@ -179,6 +179,16 @@
 #ProductionsRating #ProductionsRatingBody span.resicon.def_boost_defender-guild_expedition {
 	background-position: center center, -391px 0px;
 }
+#ProductionsRating #RatingSettings {
+	position: absolute;
+	top: 41px;
+	right: 10px;
+	z-index: 1500;
+}
+#ProductionsRating .show-all img {
+	width: 18px;
+	height: 18px;
+}
 #ProductionsRating #ProductionsRatingBody span.resicon.att_boost_attacker-guild_raids, #ProductionsRating #ProductionsRatingBody span.resicon.def_boost_attacker-guild_raids, #ProductionsRating #ProductionsRatingBody span.resicon.att_boost_defender-guild_raids, #ProductionsRating #ProductionsRatingBody span.resicon.def_boost_defender-guild_raids {
 	background-image: url('../../x_img/guild_raids.png'), url('../images/productions.png');
 	background-size: 75%, auto;
