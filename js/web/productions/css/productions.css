@@ -189,8 +189,20 @@
 	width: 18px;
 	height: 18px;
 }
-#ProductionsRating tr.highlighted td {
-	background-color: var(--black-50);
+#ProductionsRating tr.highlighted td:nth-child(2) {
+	color: var(--text-bright);
+}
+#ProductionsRating #ProductionsRatingBody tr.highlighted-explained, #ProductionsRating #ProductionsRatingBody .only-highlighted tr {
+	display: none;
+}
+#ProductionsRating #ProductionsRatingBody .only-highlighted tr.highlighted-explained, #ProductionsRating #ProductionsRatingBody .only-highlighted tr.highlighted {
+	display: table-row;
+}
+#ProductionsRating #ProductionsRatingBody tr.highlighted-explained td {
+	font-weight: normal !important;
+	padding: 1em;
+	text-align: center;
+	font-size: 120%;
 }
 #ProductionsRating #ProductionsRatingBody span.resicon.att_boost_attacker-guild_raids, #ProductionsRating #ProductionsRatingBody span.resicon.def_boost_attacker-guild_raids, #ProductionsRating #ProductionsRatingBody span.resicon.att_boost_defender-guild_raids, #ProductionsRating #ProductionsRatingBody span.resicon.def_boost_defender-guild_raids {
 	background-image: url('../../x_img/guild_raids.png'), url('../images/productions.png');
