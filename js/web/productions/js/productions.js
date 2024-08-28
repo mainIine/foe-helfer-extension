@@ -372,19 +372,39 @@ let Productions = {
 				if ($("#Productions #"+type).html().length === 0) {
 					let content = Productions.buildTableByType(type)
 					$("#Productions #"+type).html(content)
-					$('.sortable-table').tableSorter();
+					$('.sortable-table').tableSorter()
+					Productions.filterTable('#Productions .filterCurrentList')
 				}
 			});
 
 			// extra functionality
-			$('.production-tabs').tabslet({ active: Productions.ActiveTab });
-			$('.sortable-table').tableSorter();
+			$('.production-tabs').tabslet({ active: Productions.ActiveTab })
+			$('.sortable-table').tableSorter()
+			Productions.filterTable('#Productions .filterCurrentList')
 
 			// show a building on the map
 			$('#Productions').on('click', '.foe-table .show-entity', function () {
 				Productions.ShowOnMap($(this).data('id'));
 			});
 		});			
+	},
+
+	filterTable: (selector) => {
+		$(selector).on('keyup', function (e) {
+			let filter = $(this).val().toLowerCase()
+			let table = $(this).parents("table")
+			if (filter.length >= 2) {
+				$("tbody tr", table).hide()
+				$("tbody tr", table).filter(function() {
+					let foundText = ($(this).text().toLowerCase().indexOf(filter) > -1)
+					if (foundText)
+						$(this).show()
+				});
+			}
+			else {
+				$("tbody tr", table).show()
+			}
+		});
 	},
 
 
@@ -533,7 +553,7 @@ let Productions = {
 				table.push('<table class="foe-table sortable-table '+type+'-list active">')
 				table.push('<thead style="z-index:100">')
 				table.push('<tr>')
-				table.push('<th colspan="3"><span class="btn-default change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeGroups') + '</span></th>')
+				table.push('<th colspan="3"><span class="btn-default change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeGroups') + '</span> <input type="text" placeholder="' + i18n('Boxes.Productions.FilterTable') + '" class="filterCurrentList"></th>')
 				if (!type.includes('att') && !type.includes('def')) 
 					table.push('<th colspan="9" class="textright">'+(typeCurrentSum >= 10000 ? HTML.FormatNumberShort(typeCurrentSum) : HTML.Format(typeCurrentSum))+ "/" + (typeSum >= 10000 ? HTML.FormatNumberShort(typeSum) : HTML.Format(typeSum))+'</th>')
 				else {
@@ -721,7 +741,7 @@ let Productions = {
 		table.push('<table class="foe-table sortable-table '+type+'-list active">')
 		table.push('<thead>')
 		table.push('<tr>')
-		table.push('<th colspan="2"><span class="btn-default change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeGroups') + '</span></th>')
+		table.push('<th colspan="2"><span class="btn-default change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeGroups') + '</span> <input type="text" placeholder="' + i18n('Boxes.Productions.FilterTable') + '" class="filterCurrentList"></th>')
 		table.push('<th colspan="'+(4+eras.length)+'" class="textright"></th>')
 		table.push('</tr>')
 		table.push('<tr class="sorter-header">')
@@ -1308,6 +1328,7 @@ let Productions = {
 				h.push('<td class="no-sort items">'+(Productions.showBuildingItems(false, building.building) != false ? Productions.showBuildingItems(false, building.building) : '')+'</td>')
 				h.push('</tr>')
 			}
+			h.push('<tr class="highlighted-explained"><td colspan="'+(colNumber+3)+'">'+i18n('Boxes.ProductionsRating.HighlightsExplained')+'</td></tr>');
 			h.push('</tbody>');
 			h.push('</table>');
 			h.push('</div>');
@@ -1329,9 +1350,7 @@ let Productions = {
 			});
 
 			$('#showhighlighted, label[showhighlighted]').on('click', function () {
-				$("#ProductionsRatingBody tr").toggle();
-				$("#ProductionsRatingBody thead tr").toggle();
-				$("#ProductionsRatingBody tr.highlighted").toggle();
+				$("#ProductionsRatingBody tbody").toggleClass('only-highlighted');
 			});
 
 			$('.show-all').on('click', function () {
