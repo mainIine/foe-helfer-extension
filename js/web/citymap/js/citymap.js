@@ -1668,8 +1668,9 @@ let CityMap = {
 						else if (production.type == "genericReward") {
 							let reward = this.setGenericReward(production, metaData, era)
 							resource.resources = reward
-							if (reward.type == undefined) // genericReward can also return a unit reward, change type
+							if (reward.type == undefined) { // genericReward can also return a unit reward, change type
 								resource.type = 'unit'
+							}
 						}
 						else
 							console.log(metaData.name, "CityMap.setCurrentProductions() production is missing")
@@ -1752,9 +1753,13 @@ let CityMap = {
 		}
 		
 		// units
-		if (lookupData?.type == "chest" && lookupData.id.search("genb_random_") != -1 || lookupData?.type == "unit") {
+		if (lookupData?.type == "chest" && lookupData.id.search("genb_random_") != -1 && lookupData.id.search("fragment") == -1 || lookupData?.type == "unit") {
 			let units = this.setUnitReward(product)
 			return units
+		}
+		// wish fountain (AllProductions)
+		else if (lookupData?.type == "chest" && lookupData.id.search("fragment") != -1) {
+			lookupData.type = "consumable"
 		}
 		// self aid kits have type set
 		if (lookupData?.type == "set") {
