@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2024 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -27,9 +27,9 @@ let Settings = {
 	 */
 	BoxGroups: [
 		'About',
-		'Sending',
-		'Boxes',
-		'Extension'
+		'Extension',
+		'Auto',
+		'Boxes'
 	],
 
 	/**
@@ -67,13 +67,13 @@ let Settings = {
 	BuildBox: () => {
 		if ($('#SettingsBox').length < 1) {
 
-			// CSS in den DOM prügeln
 			HTML.AddCssFile('settings');
 
 			HTML.Box({
 				id: 'SettingsBox',
 				title: i18n('Boxes.Settings.Title'),
-				auto_close: true
+				auto_close: true,
+				dragdrop: true
 			});
 
 		} else {
