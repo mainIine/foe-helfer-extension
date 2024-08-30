@@ -45,14 +45,14 @@ FoEproxy.addHandler('BattlefieldService', 'all', (data, postData) => {
 
     let noTournament=!data?.responseData?.state?.ranking_data?.tournament_running || data?.responseData?.battleType?.type=="guild_expedition";
     // A unit from a future age has died
-    if (nextEraUnitDead)
-    	return BattleAssist.ShowNextEraDialog(noTournament);
+    //if (nextEraUnitDead)
+    //	return BattleAssist.ShowNextEraDialog(noTournament);
 
     // There are no other opponents
     if (winnerBit !== 1 || !ranking_data?.nextArmy)
     	return;
 
-    // Only agents are still alive
+    // Only rogues are still alive
     if (alive.filter(e => e !== 'rogue').length === 0)
     	return BattleAssist.ShowRogueDialog();
 });
@@ -134,7 +134,7 @@ FoEproxy.addHandler('GuildExpeditionService', 'getEncounter', (data, postData) =
 });
 
 /**
- * @type {{ShowRogueDialog: BattleAssist.ShowRogueDialog, ShowNextEraDialog: BattleAssist.ShowNextEraDialog}}
+ * @type {{ShowRogueDialog: BattleAssist.ShowRogueDialog}}
  */
 let BattleAssist = {
 
@@ -147,7 +147,7 @@ let BattleAssist = {
 	 * Shows a User Box when an army unit of the next age has died
 	 *
 	 * @constructor
-	 */
+	 *
     ShowNextEraDialog: (nT=false) => {
         
         HTML.Box({
