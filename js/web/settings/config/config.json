@@ -6,68 +6,50 @@
 		"sort": 0
 	},
 	{
-		"name": "ShowInvestments",
+		"name": "ShowEventChest",
 		"status": true,
 		"group": "Auto",
 		"sort": 1
 	},
 	{
-		"name": "ShowGuildTreasuryLogExport",
+		"name": "ShowRougeUnitWarning",
 		"status": true,
 		"group": "Auto",
 		"sort": 2
 	},
 	{
-		"name": "ShowMarketFilter",
-		"status": false,
+		"name": "ShowBlueGalaxyHelper",
+		"status": true,
 		"group": "Auto",
 		"sort": 3
 	},
 	{
-		"name": "ShowEventChest",
-		"status": true,
-		"group": "Auto",
-		"sort": 4
-	},
-	{
-		"name": "ShowRougeUnitWarning",
+		"name": "ShowInvestments",
 		"status": true,
 		"group": "Auto",
 		"sort": 5
 	},
 	{
-		"name": "ShowArmyAdvice",
-		"status": false,
+		"name": "ShowGuildTreasuryLogExport",
+		"status": true,
 		"group": "Auto",
-		"sort": 6
+		"sort": 7
 	},
 	{
 		"name": "ShowGBGBuildings",
 		"status": false,
 		"group": "Auto",
-		"sort": 7
-	},
-	{
-		"name": "ShowBlueGalaxyHelper",
-		"status": true,
-		"group": "Auto",
-		"sort": 8
+		"sort": 9
 	},
 	{
 		"name": "AutoOpenInfoBox",
 		"status": false,
 		"group": "Auto",
-		"sort": 9
+		"sort": 10
 	},
 	{
 		"name": "AutoOpenCloseBox",
 		"status": false,
-		"group": "Auto",
-		"sort": 10
-	},
-	{
-		"name": "ShowMapTradeWarning",
-		"status": true,
 		"group": "Auto",
 		"sort": 11
 	},
@@ -78,16 +60,34 @@
 		"sort": 12
 	},
 	{
-		"name": "ShowAztecHelper",
+		"name": "ShowMapTradeWarning",
 		"status": true,
 		"group": "Auto",
 		"sort": 13
 	},
 	{
-		"name": "ShowPvPArena",
+		"name": "ShowAztecHelper",
 		"status": true,
 		"group": "Auto",
 		"sort": 14
+	},
+	{
+		"name": "ShowPvPArena",
+		"status": true,
+		"group": "Auto",
+		"sort": 15
+	},
+	{
+		"name": "ShowArmyAdvice",
+		"status": false,
+		"group": "Auto",
+		"sort": 17
+	},
+	{
+		"name": "ShowMarketFilter",
+		"status": false,
+		"group": "Auto",
+		"sort": 19
 	},
 	{
 		"name": "ResetBoxPositions",
