@@ -552,15 +552,27 @@
 		]
 	},
 	{
-		"name": "Summerhold_Manor",
+		"name": "Whisperwood_Watermill",
 		"buildings": [
-			{"first": "W_MultiAge_FELL23A1"}
+			{"first": "W_MultiAge_FELL24A1"}
 		]
 	},
 	{
-		"name": "Heroes_Tavern",
+		"name": "Jolly_Oink_Pigsty",
 		"buildings": [
-			{"first": "R_MultiAge_HeroBonus22a"}
+			{"first": "W_MultiAge_FELL24B1"}
+		]
+	},
+	{
+		"name": "Royal_Carriage",
+		"buildings": [
+			{"first": "W_MultiAge_FELL24C1"}
+		]
+	},
+	{
+		"name": "Summerhold_Manor",
+		"buildings": [
+			{"first": "W_MultiAge_FELL23A1"}
 		]
 	},
 	{
@@ -591,6 +603,18 @@
 		"name": "Mortar_Garrison",
 		"buildings": [
 			{"first": "W_MultiAge_HERO24H1"}
+		]
+	},
+	{
+		"name": "Heroes_Tavern",
+		"buildings": [
+			{"first": "W_MultiAge_FELL22A1"}
+		]
+	},
+	{
+		"name": "Knights_Pavilion",
+		"buildings": [
+			{"first": "W_MultiAge_FELL22B1"}
 		]
 	},
 	{
