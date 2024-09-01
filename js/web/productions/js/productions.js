@@ -894,9 +894,9 @@ let Productions = {
 					if (production.resources.all_goods_of_age)
 						prod.amount = production.resources.all_goods_of_age
 					else {
-						let good = GoodsList.find(x => x.era == CurrentEra)
+						let good = GoodsList.find(x => x.id == Object.keys(production.resources)[0])
 						if (good != undefined)
-							prod.amount = production.resources[good.id]*5
+							prod.amount = production.resources[good.id]*5 // multiply found good by 5
 					}
 				}
 				if (category == "clan_power" && production.type == "guildResources") {
@@ -1160,8 +1160,8 @@ let Productions = {
 			for (let i = 0; i < Productions.RatingTypes.length; i++) {
 				let Type = Productions.RatingTypes[i];
 
-				if (Productions.Rating[Type] === undefined) Productions.Rating[Type] = true;
-				if (Productions.RatingProdPerTiles[Type] === undefined) Productions.RatingProdPerTiles[Type] = Productions.GetDefaultProdPerTile(Type);
+				if (Productions.Rating[Type] === undefined) Productions.Rating[Type] = true
+				if (Productions.RatingProdPerTiles[Type] === undefined) Productions.RatingProdPerTiles[Type] = Productions.GetDefaultProdPerTile(Type)
             }
 
 			HTML.Box({
@@ -1231,7 +1231,8 @@ let Productions = {
 				let Type = Productions.RatingTypes[i]
 
 				h.push('<li class="'+Type+'">')
-				h.push('<input id="Enabled-' + Type + '" class="no-grow enabled game-cursor" ' + (Productions.Rating[Type] ? 'checked' : '') + ' type="checkbox">')
+				let activeSetting = (Productions.RatingProdPerTiles[Type] == null ? false : Productions.Rating[Type])
+				h.push('<input id="Enabled-' + Type + '" class="no-grow enabled game-cursor" ' + (activeSetting ? 'checked' : '') + ' type="checkbox">')
 				h.push('<span class="no-grow resicon ' + Type + '"></span>')
 				h.push('<label for="Enabled-'+Type+'">' + Productions.GetTypeName(Type) + '</label>')
 				if (Productions.Rating[Type]) {
@@ -1299,7 +1300,7 @@ let Productions = {
 			let tileRatings = JSON.parse(localStorage.getItem('ProductionRatingProdPerTiles'))
 			for (let i = 0; i < Productions.RatingTypes.length; i++) {
 				let type = Productions.RatingTypes[i];
-				if (!Productions.Rating[type]) continue;
+				if (!Productions.Rating[type] || Productions.GetDefaultProdPerTile(type) == null) continue;
 				h.push('<th data-type="ratinglist" style="width:1%" class="is-number text-center"><span class="resicon ' + type + '"></span><i>'+(tileRatings?.[type] !== undefined ? parseFloat(tileRatings[type]) : Productions.GetDefaultProdPerTile(type))+'</i></th>');
 			}
 			h.push('<th data-type="ratinglist" class="no-sort items">Items</th>');
@@ -1317,7 +1318,7 @@ let Productions = {
 				h.push(' <span class="show-all" data-name="'+building.building.name+'"><img class="game-cursor" src="' + extUrl + 'css/images/hud/open-eye.png"></span>')
 				h.push('</td>')
 				for (const type of Productions.RatingTypes) {
-					if (building[type] != undefined) {
+					if (building[type] != undefined && Productions.GetDefaultProdPerTile(type) != null) {
 						h.push('<td class="text-right" data-number="'+Math.round(building[type])+'">')
 						h.push('<span class="buildingvalue">'+HTML.Format(building[type])+'</span>')
 						let roundingFactor = building[type+'-tile'] > 100 || building[type+'-tile'] < -100 ? 1 : 100
@@ -1376,15 +1377,17 @@ let Productions = {
 			}
 			for (const type of Object.keys(Productions.Rating)) {
 				if (Productions.Rating[type] != false) {
-					let desiredValuePerTile = tileRatings != undefined ? parseFloat(tileRatings[type]) : Productions.GetDefaultProdPerTile(type)
-					let typeValue = Productions.getRatingValueForType(building, type) || 0 // production amount
-					let valuePerTile = typeValue / size
+					let desiredValuePerTile = ((tileRatings != null && tileRatings != undefined) ? parseFloat(tileRatings[type]) : Productions.GetDefaultProdPerTile(type))
+					if (desiredValuePerTile !== null && !isNaN(desiredValuePerTile)) {
+						let typeValue = Productions.getRatingValueForType(building, type) || 0 // production amount
+						let valuePerTile = typeValue / size
 
-					if (valuePerTile != 0 && desiredValuePerTile != 0) 
-						score += (valuePerTile / desiredValuePerTile)
+						if (valuePerTile != 0 && desiredValuePerTile != 0) 
+							score += (valuePerTile / desiredValuePerTile)
 
-					ratedBuilding[type] = ( Math.round( typeValue * 100 ) / 100 ) || 0
-					ratedBuilding[type+'-tile'] = valuePerTile || 0
+						ratedBuilding[type] = ( Math.round( typeValue * 100 ) / 100 ) || 0
+						ratedBuilding[type+'-tile'] = valuePerTile || 0
+					}
 				}
 			}
 			ratedBuilding.score = score
@@ -1453,16 +1456,34 @@ let Productions = {
 
 
 	GetDefaultProdPerTile: (Type) => {
-		if (Type === 'strategy_points') return 2
-		if (Type === 'units') return 1		
+		if (Type === 'strategy_points') return 5
+		if (Type === 'money') return null
+		if (Type === 'supplies') return null
+		if (Type === 'medals') return null
+		if (Type === 'clan_power') return null
+		if (Type === 'clan_goods') return 10
+		if (Type === 'population') return null
+		if (Type === 'happiness') return null
+		if (Type === 'units') return 1
 		if (Type === 'att_boost_attacker-all') return 3 
+		if (Type === 'att_boost_attacker-guild_expedition') return null
 		if (Type === 'att_boost_attacker-battleground') return 3 
+		if (Type === 'att_boost_attacker-guild_raids') return null
 		if (Type === 'def_boost_attacker-all') return 3
+		if (Type === 'def_boost_attacker-guild_expedition') return null
+		if (Type === 'def_boost_attacker-battleground') return 3 
+		if (Type === 'def_boost_attacker-guild_raids') return null
 		if (Type === 'att_boost_defender-all') return 2
+		if (Type === 'att_boost_defender-guild_expedition') return null
+		if (Type === 'att_boost_defender-battleground') return null
+		if (Type === 'att_boost_defender-guild_raids') return null
 		if (Type === 'def_boost_defender-all') return 2
+		if (Type === 'def_boost_defender-guild_expedition') return null
+		if (Type === 'def_boost_defender-battleground') return null
+		if (Type === 'def_boost_defender-guild_raids') return null
 		if (Type === 'goods-previous') return 4
-		if (Type === 'goods-current') return 3
-		if (Type === 'goods-next') return 1
+		if (Type === 'goods-current') return 5
+		if (Type === 'goods-next') return null
 		else return 0
 	},
 };
