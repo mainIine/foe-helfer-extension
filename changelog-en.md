@@ -1,5 +1,21 @@
 ## Changelog - Extension
 
+##### 3.8.0.0
+
+**New**
+- Production Overview Update:
+	- Bugfixes, added missing buildings
+	- Removed some information to improve readability
+	- Overhauled goods view
+	- Added all fragments and items
+	- Added filter
+	- Categorized boosts
+
+- Buildings Efficiency Rating Update:
+	- New Categories
+	- New overview with more details
+	- Show values per tile added
+
 
 ##### 3.7.0.0
 
