@@ -1,8 +1,24 @@
 ## Changelog - Extension
 
+##### 3.8.0.0
+
+**Neu**
+- Produktionsubersicht Update:
+	- Fehlerkorrekturen und fehlende Gebäude hinzugefügt
+	- Güter-Übersicht überarbeitet
+	- Übersicht aller Fragmente und Items hinzugefügt
+	- Filter hinzugefügt
+	- Boosts kategorisiert
+
+- Effizienzbewertung Update:
+	- Neue Kategorien hinzugefügt
+	- Neue Übersicht inklusive Anzeige der produzierten Fragmente
+	- Anzeige der Werte pro Feld hinzugefügt
+
+
 ##### 3.7.0.0
 
-**New**
+**Neu**
 - Tränke Übersicht hinzugefügt in der oberen rechten Ecke um
 	- die Laufzeit des Tranks mit kürzesten verbliebenen Laufzeit anzuzeigen (Tränke die für das aktuell gewählte Feature nicht relevant sind, werden ignoriert)
 	- alle aktuell aktiven Tränke in einem Mouse-Over Pop-Up anzuzeigen 
