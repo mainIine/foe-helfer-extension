@@ -179,6 +179,38 @@
 #ProductionsRating #ProductionsRatingBody span.resicon.def_boost_defender-guild_expedition {
 	background-position: center center, -391px 0px;
 }
+#ProductionsRating #ProductionsRatingBody .overlay {
+	width: 100%;
+	height: calc(100% - 36px);
+	position: absolute;
+	top: 36px;
+	left: 0;
+	z-index: 2100;
+	background: var(--text-darker);
+	display: none;
+}
+#ProductionsRating #ProductionsRatingBody .overlay input {
+	width: 100%;
+	box-sizing: border-box;
+	padding: 0.5em;
+	font-size: 120%;
+}
+#ProductionsRating #ProductionsRatingBody .overlay .window-close {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+}
+#ProductionsRating #ProductionsRatingBody .overlay .content {
+	width: 60%;
+	min-width: 300px;
+	height: 300px;
+	margin: auto;
+	padding: 1em; 
+	background: var(--text-dark);
+	color: var(--text-normal);
+}
+
+
 #ProductionsRating #RatingSettings {
 	position: absolute;
 	top: 41px;

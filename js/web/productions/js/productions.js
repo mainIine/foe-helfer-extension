@@ -1200,7 +1200,6 @@ let Productions = {
 			h.push('<span class="text-right">' + i18n('Boxes.ProductionsRating.ProdPerTile') + '</span>')
 			h.push('</li>')
 
-			console.log(Productions.RatingProdPerTiles, Productions.Rating)
 			for (let type of Productions.RatingTypes) {
 				h.push('<li class="'+type+'">')
 				let activeSetting = (Productions.RatingProdPerTiles[type] != null && Productions.Rating[type] != false)
@@ -1264,6 +1263,7 @@ let Productions = {
 				h.push('<input type="checkbox" id="tilevalues"><label for="tilevalues">' + i18n('Boxes.ProductionsRating.ShowValuesPerTile') + '</label> - ')
 				h.push('<input type="checkbox" id="showitems"><label for="showitems">' + i18n('Boxes.ProductionsRating.ShowItems') + '</label> - ')
 				h.push('<input type="checkbox" id="showhighlighted"><label for="showhighlighted">' + i18n('Boxes.ProductionsRating.ShowHighlighted') + '</label>')
+				// h.push('<a class="btn-default" id="addMetaBuilding">META Building</a>') // beelzebob
 				h.push('</th>');
 			h.push('</tr>');
 			h.push('<tr class="sorter-header">');
@@ -1272,7 +1272,6 @@ let Productions = {
 			let tileRatings = JSON.parse(localStorage.getItem('ProductionRatingProdPerTiles'))
 			for (const type of Productions.RatingTypes) {
 				if (!Productions.Rating[type] || Productions.RatingProdPerTiles[type] == null) continue
-				console.log(Productions.RatingProdPerTiles[type] == null)
 				h.push('<th data-type="ratinglist" style="width:1%" class="is-number text-center"><span class="resicon ' + type + '"></span><i>'+(tileRatings?.[type] !== undefined ? parseFloat(tileRatings[type]) : Productions.GetDefaultProdPerTile(type))+'</i></th>');
 			}
 			h.push('<th data-type="ratinglist" class="no-sort items">Items</th>');
@@ -1304,7 +1303,13 @@ let Productions = {
 			h.push('<tr class="highlighted-explained"><td colspan="'+(colNumber+3)+'">'+i18n('Boxes.ProductionsRating.HighlightsExplained')+'</td></tr>');
 			h.push('</tbody>');
 			h.push('</table>');
-			h.push('</div>');
+				h.push('<div class="overlay"><a class="window-close" id="closeMetaBuilding"></a>')
+					h.push('<div class="content">')
+						h.push('<input id="findMetaBuilding" placeholder="GEBÄUDE FINDEN" value="">')
+						h.push('<ul class="results"></ul>')
+					h.push('</div>')
+				h.push('</div>')
+			h.push('</div>')
 		}
 		else {
 			h.push('Something went wrong');
@@ -1334,6 +1339,26 @@ let Productions = {
 				$(this).toggleClass('highlighted')
 			});
 
+			$('#addMetaBuilding').on('click',function (){
+				$('#ProductionsRatingBody .overlay').show()
+			})
+
+			$('#closeMetaBuilding').on('click',function () {
+				$(this).parent('.overlay').hide()
+			})
+
+			$('#findMetaBuilding').on('keyup', function () {
+				let buildingName = $(this).val()
+				if (buildingName.length > 3) {
+					let foundBuildings = Object.values(MainParser.CityEntities).filter(x => x.name.includes(buildingName))
+					let buildingEntityIds = []
+					for (building of foundBuildings) {
+						buildingEntityIds.push(building.id)
+						$('#ProductionsRatingBody .overlay .results').append('<li class="'+building.id+'">'+building.name+'</li>')
+					}
+				}
+			});
+
 			$('#ProductionsRatingSettings input[type=checkbox]').on('click', function () {
 				let elem = $(this)
 				let isChecked = elem.prop('checked')
@@ -1349,7 +1374,6 @@ let Productions = {
 	
 					localStorage.setItem('ProductionRatingProdPerTiles', JSON.stringify(Productions.RatingProdPerTiles))
 				}
-				console.log(Productions.RatingProdPerTiles)
 			})
 
 			$('#ProductionsRating input[type=number]').on('blur', function () {
