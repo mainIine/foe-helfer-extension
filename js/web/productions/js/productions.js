@@ -1157,11 +1157,9 @@ let Productions = {
 			let RatingProdPerTiles = localStorage.getItem('ProductionRatingProdPerTiles');
 			if (RatingProdPerTiles !== null) Productions.RatingProdPerTiles = JSON.parse(RatingProdPerTiles);
 
-			for (let i = 0; i < Productions.RatingTypes.length; i++) {
-				let Type = Productions.RatingTypes[i];
-
-				if (Productions.Rating[Type] === undefined) Productions.Rating[Type] = true
-				if (Productions.RatingProdPerTiles[Type] === undefined) Productions.RatingProdPerTiles[Type] = Productions.GetDefaultProdPerTile(Type)
+			for (let type of Productions.RatingTypes) {
+				if (Productions.Rating[type] === undefined) Productions.Rating[type] = true
+				if (Productions.RatingProdPerTiles[type] === undefined) Productions.RatingProdPerTiles[type] = Productions.GetDefaultProdPerTile(type)
             }
 
 			HTML.Box({
@@ -1180,31 +1178,6 @@ let Productions = {
 				Productions.CalcRatingBody();
 			});
 
-			for (let i = 0; i < Productions.RatingTypes.length; i++) {
-				let Type = Productions.RatingTypes[i];
-
-				$('#ProductionsRating').on('click', '#Enabled-' + Type, function () {
-					let $this = $(this),
-						v = $this.prop('checked');
-
-					if (v) {
-						Productions.Rating[Type] = true;
-					}
-					else {
-						Productions.Rating[Type] = false;
-                    }
-
-					localStorage.setItem('ProductionRatingEnableds2', JSON.stringify(Productions.Rating));
-					Productions.CalcRatingBody();
-				});
-
-				$('#ProductionsRating').on('blur', '#ProdPerTile-' + Type, function () {
-					Productions.RatingProdPerTiles[Type] = parseFloat($('#ProdPerTile-' + Type).val());
-					if (isNaN(Productions.RatingProdPerTiles[Type])) Productions.RatingProdPerTiles[Type] = 0;
-					localStorage.setItem('ProductionRatingProdPerTiles', JSON.stringify(Productions.RatingProdPerTiles));
-					Productions.CalcRatingBody();
-				});
-			}
 		} else {
 			HTML.CloseOpenBox('ProductionsRating');
 		}
@@ -1227,19 +1200,18 @@ let Productions = {
 			h.push('<span class="text-right">' + i18n('Boxes.ProductionsRating.ProdPerTile') + '</span>')
 			h.push('</li>')
 
-			for (let i = 0; i < Productions.RatingTypes.length; i++) {
-				let Type = Productions.RatingTypes[i]
-
-				h.push('<li class="'+Type+'">')
-				let activeSetting = (Productions.RatingProdPerTiles[Type] == null ? false : Productions.Rating[Type])
-				h.push('<input id="Enabled-' + Type + '" class="no-grow enabled game-cursor" ' + (activeSetting ? 'checked' : '') + ' type="checkbox">')
-				h.push('<span class="no-grow resicon ' + Type + '"></span>')
-				h.push('<label for="Enabled-'+Type+'">' + Productions.GetTypeName(Type) + '</label>')
-				if (Productions.Rating[Type]) {
-					h.push('<input type="number" id="ProdPerTile-' + Type + '" step="0.01" min="0" max="1000000" class="no-grow" value="' + Productions.RatingProdPerTiles[Type] + '">')
+			console.log(Productions.RatingProdPerTiles, Productions.Rating)
+			for (let type of Productions.RatingTypes) {
+				h.push('<li class="'+type+'">')
+				let activeSetting = (Productions.RatingProdPerTiles[type] != null && Productions.Rating[type] != false)
+				h.push('<input id="Enabled-' + type + '" class="no-grow enabled game-cursor" ' + (activeSetting ? 'checked' : '') + ' type="checkbox">')
+				h.push('<span class="no-grow resicon ' + type + '"></span>')
+				h.push('<label for="Enabled-'+type+'">' + Productions.GetTypeName(type) + '</label>')
+				if (Productions.RatingProdPerTiles[type] != null) {
+					h.push('<input type="number" id="ProdPerTile-' + type + '" step="0.01" min="0" max="1000000" class="no-grow '+(Productions.Rating[type] ? '': 'hidden')+'" value="' + Productions.RatingProdPerTiles[type] + '">')
 				}
 				else {
-					h.push('<span></span>')
+					h.push('<input type="number" class="hidden no-grow" id="ProdPerTile-' + type + '" step="0.01" min="0" max="1000000" value="0">')
 				}
 				h.push('</li>')
 			}
@@ -1298,9 +1270,9 @@ let Productions = {
 			h.push('<th data-type="ratinglist" class="is-number ascending">' + i18n('Boxes.ProductionsRating.Score') + '</th>');
 			h.push('<th data-type="ratinglist">' + i18n('Boxes.ProductionsRating.BuildingName') + '</th>');
 			let tileRatings = JSON.parse(localStorage.getItem('ProductionRatingProdPerTiles'))
-			for (let i = 0; i < Productions.RatingTypes.length; i++) {
-				let type = Productions.RatingTypes[i];
-				if (!Productions.Rating[type] || Productions.GetDefaultProdPerTile(type) == null) continue;
+			for (const type of Productions.RatingTypes) {
+				if (!Productions.Rating[type] || Productions.RatingProdPerTiles[type] == null) continue
+				console.log(Productions.RatingProdPerTiles[type] == null)
 				h.push('<th data-type="ratinglist" style="width:1%" class="is-number text-center"><span class="resicon ' + type + '"></span><i>'+(tileRatings?.[type] !== undefined ? parseFloat(tileRatings[type]) : Productions.GetDefaultProdPerTile(type))+'</i></th>');
 			}
 			h.push('<th data-type="ratinglist" class="no-sort items">Items</th>');
@@ -1318,7 +1290,7 @@ let Productions = {
 				h.push(' <span class="show-all" data-name="'+building.building.name+'"><img class="game-cursor" src="' + extUrl + 'css/images/hud/open-eye.png"></span>')
 				h.push('</td>')
 				for (const type of Productions.RatingTypes) {
-					if (building[type] != undefined && Productions.GetDefaultProdPerTile(type) != null) {
+					if (building[type] != undefined) {
 						h.push('<td class="text-right" data-number="'+Math.round(building[type])+'">')
 						h.push('<span class="buildingvalue">'+HTML.Format(building[type])+'</span>')
 						let roundingFactor = building[type+'-tile'] > 100 || building[type+'-tile'] < -100 ? 1 : 100
@@ -1360,6 +1332,36 @@ let Productions = {
 
 			$('.ratinglist tr').on('click', function () {
 				$(this).toggleClass('highlighted')
+			});
+
+			$('#ProductionsRatingSettings input[type=checkbox]').on('click', function () {
+				let elem = $(this)
+				let isChecked = elem.prop('checked')
+				let type = elem.attr('id').replace('Enabled-','')
+
+				elem.parent().children('input[type=number]').toggleClass('hidden')
+
+				Productions.Rating[type] = isChecked
+				localStorage.setItem('ProductionRatingEnableds2', JSON.stringify(Productions.Rating))
+				if (isChecked) {
+					Productions.RatingProdPerTiles[type] = parseFloat(elem.parent().children('input[type=number]').val())
+					if (isNaN(Productions.RatingProdPerTiles[type])) Productions.RatingProdPerTiles[type] = 0
+	
+					localStorage.setItem('ProductionRatingProdPerTiles', JSON.stringify(Productions.RatingProdPerTiles))
+				}
+				console.log(Productions.RatingProdPerTiles)
+			})
+
+			$('#ProductionsRating input[type=number]').on('blur', function () {
+				let elem = $(this)
+				let type = elem.attr('id').replace('ProdPerTile-','')
+
+				Productions.RatingProdPerTiles[type] = parseFloat(elem.val())
+				if (isNaN(Productions.RatingProdPerTiles[type])) Productions.RatingProdPerTiles[type] = 0
+
+				localStorage.setItem('ProductionRatingProdPerTiles', JSON.stringify(Productions.RatingProdPerTiles))
+
+				Productions.CalcRatingBody()
 			});
 		});	
     },
