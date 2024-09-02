@@ -185,6 +185,9 @@
 	right: 10px;
 	z-index: 1500;
 }
+#ProductionsRating #ProductionsRatingSettings .foe-table li input.hidden {
+	display: none;
+}
 #ProductionsRating .show-all img {
 	width: 18px;
 	height: 18px;
