@@ -1143,8 +1143,8 @@ let Productions = {
 	},
 
 
-	ShowRating: () => {
-		if (CityMap.IsExtern) return
+	ShowRating: (external = false) => {
+		if (CityMap.IsExtern && !external) return
 		
 		if ($('#ProductionsRating').length === 0) {
 			

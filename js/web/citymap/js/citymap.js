@@ -234,7 +234,9 @@ let CityMap = {
 			$("#sidebar").append(CityMap.showQIStats())
 			$("#sidebar").append(CityMap.showQIBuildings())
 		}
-
+		if (CityMap.IsExtern === true) {
+			$("#sidebar").append($('<a id="openEfficiencyRating" class="btn-default" onclick="Productions.ShowRating(true)">'+ i18n('Menu.ProductionsRating.Title') +'</a>'));
+		}
 	},
 
 
@@ -2005,8 +2007,11 @@ let CityMap = {
 	},
 
 	createNewCityMapEntities(data) {
-		if (data === undefined) {
+		if (data === undefined && !CityMap.IsExtern) {
 			data = Object.values(MainParser.CityMapData)
+		}
+		else if (CityMap.IsExtern) {
+			data = Object.values(MainParser.OtherPlayerCityMapData)
 		}
 
 		for (building of data) {
