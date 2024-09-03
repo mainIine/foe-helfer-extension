@@ -209,6 +209,24 @@
 	background: var(--text-dark);
 	color: var(--text-normal);
 }
+#ProductionsRating #ProductionsRatingBody tr.sorter-header th {
+	padding: 5px 6px 7px;
+}
+#ProductionsRating #ProductionsRatingBody tr.sorter-header th:not(.no-sort):hover, #ProductionsRating #ProductionsRatingBody tr.sorter-header th.ascending, #ProductionsRating #ProductionsRatingBody tr.sorter-header th.descending  {
+	color: var(--text-bright);
+}
+#ProductionsRating #ProductionsRatingBody tr.sorter-header th:before, #ProductionsRating #ProductionsRatingBody tr.sorter-header th:after {
+	display: none;
+	width: 100%;
+	text-align: center;
+	bottom: -5px;
+	right: 0;
+	font-size: 1em;
+	transform: scale(1.1,1);
+}
+#ProductionsRating #ProductionsRatingBody tr.sorter-header th.ascending:before, #ProductionsRating #ProductionsRatingBody tr.sorter-header th.descending:after {
+	display: block;
+}
 
 
 #ProductionsRating #RatingSettings {
