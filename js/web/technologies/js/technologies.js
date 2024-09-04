@@ -108,7 +108,8 @@ let Technologies = {
         SpaceAgeVenus: 20,
         SpaceAgeJupiterMoon: 21,
         SpaceAgeTitan: 22,
-        NextEra:23,
+        SpaceAgeSpaceHub: 23,
+        NextEra: 24,
     },
 
     // need this for cityentities
@@ -135,7 +136,8 @@ let Technologies = {
         SpaceAgeVenus: 19,
         SpaceAgeJupiterMoon: 20,
         SpaceAgeTitan: 21,
-        NextEra: 22,
+        SpaceAgeSpaceHub: 22,
+        NextEra: 23,
     },
 
 
@@ -162,7 +164,8 @@ let Technologies = {
         19: 'SpaceAgeAsteroidBelt',
         20: 'SpaceAgeVenus',
         21: 'SpaceAgeJupiterMoon',
-        22: 'SpaceAgeTitan'
+        22: 'SpaceAgeTitan',
+        23: 'SpaceAgeSpaceHub'
     },
 
     // need this for cityentities
@@ -188,7 +191,8 @@ let Technologies = {
         18: 'SpaceAgeAsteroidBelt',
         19: 'SpaceAgeVenus',
         20: 'SpaceAgeJupiterMoon',
-        21: 'SpaceAgeTitan'
+        21: 'SpaceAgeTitan',
+        21: 'SpaceAgeSpaceHub'
     },
 
 
