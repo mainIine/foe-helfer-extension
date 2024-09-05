@@ -952,6 +952,7 @@
     "Boxes.ProductionsRating.Title": "Buildings Efficiency Rating",
     "Boxes.ProductionsRating.Filter":"Search",
     "Boxes.ProductionsRating.AddBuilding":"Add Special Building",
+    "Boxes.ProductionsRating.FindSpecialBuilding":"Find Special Building",
     "Boxes.PvPArena.Title": "PvP-Arena",
     "Boxes.PvPArena.Type": "Type",
     "Boxes.PvPArena.PlayerName": "Player",
