@@ -1318,7 +1318,7 @@ let Productions = {
 			h.push('</table>');
 				h.push('<div class="overlay"><a class="window-close" id="closeMetaBuilding"></a>')
 					h.push('<div class="content">')
-						h.push('<input id="findMetaBuilding" placeholder="GEBÄUDE FINDEN" value="">')
+						h.push('<input id="findMetaBuilding" placeholder="'+i18n('Boxes.ProductionsRating.FindSpecialBuilding')+'" value="">')
 						h.push('<ul class="results"></ul>')
 					h.push('</div>')
 				h.push('</div>')
@@ -1367,9 +1367,13 @@ let Productions = {
 			});
 			let filterMeta = (regEx) => {
 				$('#ProductionsRatingBody .overlay .results').html("")
-				let foundBuildings = Object.values(Productions.AdditionalSpecialBuildings).filter(x => regEx.test(x.name))
+				let foundBuildings = Object.values(Productions.AdditionalSpecialBuildings).filter(x => regEx.test(x.name) && x.selected)
 				for (building of foundBuildings) {
-					$('#ProductionsRatingBody .overlay .results').append(`<li data-id="${building.id}">${building.selected?"✅":"❌"}${building.name}</li>`)
+					$('#ProductionsRatingBody .overlay .results').append(`<li data-id="${building.id}">✅${building.name}</li>`)
+				}
+				foundBuildings = Object.values(Productions.AdditionalSpecialBuildings).filter(x => regEx.test(x.name) && !x.selected)
+				for (building of foundBuildings) {
+					$('#ProductionsRatingBody .overlay .results').append(`<li data-id="${building.id}">❌${building.name}</li>`)
 				}
 			}
 			filterMeta(/./)
@@ -1408,9 +1412,10 @@ let Productions = {
 			});
 			
 			$('#efficiencyBuidlingFilter').on('input', e => {
-				let regEx=new RegExp($('#efficiencyBuidlingFilter').val(),"i");
+				let filter=$('#efficiencyBuidlingFilter').val();
+				let regEx=new RegExp(filter,"i");
 				$('.ratinglist tr td:nth-child(2)').each((x,y) => {
-					if (regEx.test($(y).text())) {
+					if (filter!="" && regEx.test($(y).text())) {
 						y.parentElement.classList.add('highlighted')
 					} else {
 						y.parentElement.classList.remove('highlighted')
