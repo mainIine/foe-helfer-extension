@@ -245,6 +245,10 @@
 #ProductionsRating tr.highlighted td:nth-child(2) {
 	color: var(--text-bright);
 }
+#ProductionsRating tr.additional td:nth-child(2) {
+	color: var(--text-bright);
+	font-style: italic;
+}
 #ProductionsRating #ProductionsRatingBody tr.highlighted-explained, #ProductionsRating #ProductionsRatingBody .only-highlighted tr {
 	display: none;
 }

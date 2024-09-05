@@ -1185,8 +1185,17 @@ let Productions = {
 		Productions.CalcRatingBody();
 	},
 
+	//AdditionalBuildings:[],
+	AdditionalSpecialBuildings:null,
 
 	CalcRatingBody: () => {
+		if (!Productions.AdditionalSpecialBuildings) {
+			let spB = Object.values(MainParser.CityEntities).filter(x=> x.is_special || x.id.substring(0,11)=="W_MultiAge_")
+			Productions.AdditionalSpecialBuildings = {}
+			for (x of spB) {
+				Productions.AdditionalSpecialBuildings[x.id] = {id:x.id,name:x.name,selected:false}
+			}
+		}
 		let h = [];
 
 		if (Productions.RatingCurrentTab === 'Settings') {
@@ -1229,17 +1238,20 @@ let Productions = {
 				if (building == undefined || building.type == 'street' || building.type == 'military' || building.id >= 2000000000 || building.type.includes('hub')) continue
 
 				let foundBuildingIndex = uniqueBuildings.findIndex(x => x.name == building?.name)
-				if (foundBuildingIndex == -1)
+				if (foundBuildingIndex == -1) {
 					uniqueBuildings.push(building)
-				else {
+					delete Productions.AdditionalSpecialBuildings[building.entityId]
+				} else {
 					let foundBuilding = uniqueBuildings.find(x => x.name == building.name)
 					if (Technologies.InnoEras[foundBuilding.eraName] < Technologies.InnoEras[building.eraName]) 
 						uniqueBuildings[foundBuildingIndex] = building
 				}
 			}
-			
-			ratedBuildings = Productions.rateBuildings(uniqueBuildings)
 
+			let selectedAdditionals = Object.values(Productions.AdditionalSpecialBuildings).filter(x=>x.selected).map(x=>x.id);
+			
+			ratedBuildings = Productions.rateBuildings(uniqueBuildings).concat(Productions.rateBuildings(selectedAdditionals,true)) 
+			
 			ratedBuildings.sort((a, b) => {
 				if (a.score < b.score) return -1
 				if (a.score > b.score) return 1
@@ -1262,8 +1274,10 @@ let Productions = {
 				h.push('<th colspan="'+(colNumber+3)+'">')
 				h.push('<input type="checkbox" id="tilevalues"><label for="tilevalues">' + i18n('Boxes.ProductionsRating.ShowValuesPerTile') + '</label> - ')
 				h.push('<input type="checkbox" id="showitems"><label for="showitems">' + i18n('Boxes.ProductionsRating.ShowItems') + '</label> - ')
-				h.push('<input type="checkbox" id="showhighlighted"><label for="showhighlighted">' + i18n('Boxes.ProductionsRating.ShowHighlighted') + '</label>')
-				// h.push('<a class="btn-default" id="addMetaBuilding">META Building</a>') // beelzebob
+				h.push('<input type="checkbox" id="showhighlighted"><label for="showhighlighted">' + i18n('Boxes.ProductionsRating.ShowHighlighted') + '</label> - ')
+				h.push('<label for="efficiencyBuidlingFilter">' + i18n('Boxes.ProductionsRating.Filter') + ":" + '</label><input type="text" id="efficiencyBuidlingFilter" size=20 placeholder="neo|eden">')
+				h.push('<a class="btn-default" id="addMetaBuilding">META Building</a>') // beelzebob
+				//h.push('<select label for="">' + i18n('Boxes.ProductionsRating.Filter') + ":" + '</label><input type="text" id="efficiencyBuidlingFilter" size=20 placeholder="neo|eden">')
 				h.push('</th>');
 			h.push('</tr>');
 			h.push('<tr class="sorter-header">');
@@ -1280,13 +1294,13 @@ let Productions = {
 
 			h.push('<tbody class="ratinglist">');
 			for (const building of ratedBuildings) {
-				h.push('<tr>')
+				h.push(`<tr ${building.highlight?'class="additional"':""}>`)
 				h.push('<td class="text-right" data-number="'+building.score * 100 +'">'+Math.round(building.score * 100)+'</td>')
 				h.push('<td data-text="'+helper.str.cleanup(building.building.name)+'">'+building.building.name)
 				let eraShortName = i18n("Eras."+Technologies.Eras[building.building.eraName]+".short")
 				if (eraShortName != "-")
 					h.push(" ("+i18n("Eras."+Technologies.Eras[building.building.eraName]+".short") +')')
-				h.push(' <span class="show-all" data-name="'+building.building.name+'"><img class="game-cursor" src="' + extUrl + 'css/images/hud/open-eye.png"></span>')
+				if (!building.highlight) h.push(' <span class="show-all" data-name="'+building.building.name+'"><img class="game-cursor" src="' + extUrl + 'css/images/hud/open-eye.png"></span>')
 				h.push('</td>')
 				for (const type of Productions.RatingTypes) {
 					if (building[type] != undefined) {
@@ -1345,20 +1359,26 @@ let Productions = {
 
 			$('#closeMetaBuilding').on('click',function () {
 				$(this).parent('.overlay').hide()
+				Productions.CalcRatingBody()
 			})
 
-			$('#findMetaBuilding').on('keyup', function () {
-				let buildingName = $(this).val()
-				if (buildingName.length > 3) {
-					let foundBuildings = Object.values(MainParser.CityEntities).filter(x => x.name.includes(buildingName))
-					let buildingEntityIds = []
-					for (building of foundBuildings) {
-						buildingEntityIds.push(building.id)
-						$('#ProductionsRatingBody .overlay .results').append('<li class="'+building.id+'">'+building.name+'</li>')
-					}
-				}
+			$('#findMetaBuilding').on('input', function () {
+				let regEx=new RegExp($(this).val(),"i");
+				filterMeta(regEx)
 			});
-
+			let filterMeta = (regEx) => {
+				$('#ProductionsRatingBody .overlay .results').html("")
+				let foundBuildings = Object.values(Productions.AdditionalSpecialBuildings).filter(x => regEx.test(x.name))
+				for (building of foundBuildings) {
+					$('#ProductionsRatingBody .overlay .results').append(`<li data-id="${building.id}">${building.selected?"✅":"❌"}${building.name}</li>`)
+				}
+			}
+			filterMeta(/./)
+			$('#ProductionsRatingBody .overlay .results').on("click","li",(e)=>{
+				let id = e.target.dataset.id
+				Productions.AdditionalSpecialBuildings[id].selected =!Productions.AdditionalSpecialBuildings[id].selected;
+				e.target.innerHTML=(Productions.AdditionalSpecialBuildings[id].selected?"✅":"❌") +Productions.AdditionalSpecialBuildings[id].name
+			})
 			$('#ProductionsRatingSettings input[type=checkbox]').on('click', function () {
 				let elem = $(this)
 				let isChecked = elem.prop('checked')
@@ -1387,13 +1407,27 @@ let Productions = {
 
 				Productions.CalcRatingBody()
 			});
+			
+			$('#efficiencyBuidlingFilter').on('input', e => {
+				let regEx=new RegExp($('#efficiencyBuidlingFilter').val(),"i");
+				$('.ratinglist tr td:nth-child(2)').each((x,y) => {
+					if (regEx.test($(y).text())) {
+						y.parentElement.classList.add('highlighted')
+					} else {
+						y.parentElement.classList.remove('highlighted')
+					}
+				});
+			});
 		});	
     },
 
 
-	rateBuildings: (buildingType) => {
+	rateBuildings: (buildingType,additional=false) => {
 		let ratedBuildings = []
 		let tileRatings = JSON.parse(localStorage.getItem('ProductionRatingProdPerTiles'))
+		if (additional) {
+			buildingType = buildingType.map(x=>CityMap.createNewCityMapEntity(x))
+		}
 		for (const building of buildingType) {
 			if (building.entityId.includes("AllAge_EasterBonus1") || building.entityId.includes("L_AllAge_Expedition16") || building.entityId.includes("L_AllAge_ShahBonus17") || building.type == "main_building" || (building.isSpecial == undefined && building.type != "greatbuilding")) continue // do not include wishingwell type buildings, do not include townhall
 			let size = building.size.width * building.size.length + building.needsStreet
@@ -1417,6 +1451,7 @@ let Productions = {
 				}
 			}
 			ratedBuilding.score = score
+			if (additional) ratedBuilding.highlight = true
 			ratedBuildings.push(ratedBuilding)
 		}
 		return ratedBuildings
