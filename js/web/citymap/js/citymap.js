@@ -971,7 +971,7 @@ let CityMap = {
 		if (metaData.__class__ != "GenericCityEntity") {
 			if (metaData.entity_levels.length > 0) { // special building
 				if (metaData.entity_levels[eraId].provided_happiness) 
-					return (data.state.__class__ == "PolishedState" ? metaData.entity_levels[eraId].provided_happiness*2 : metaData.entity_levels[eraId].provided_happiness)
+					return (data?.state?.__class__ == "PolishedState" ? metaData.entity_levels[eraId].provided_happiness*2 : metaData.entity_levels[eraId].provided_happiness)
 				return happiness
 			}
 			else if (bgHappiness) { // great building, e.g. Alcatraz
@@ -1023,23 +1023,23 @@ let CityMap = {
 		
 		if (isPolivationable) {
 			if (metaData.__class__ != "GenericCityEntity") {
-				if (data.state.boosted)
-					return data.state.boosted;
-				else if (data.state.is_motivated) 
+				if (data?.state?.boosted)
+					return data?.state?.boosted;
+				else if (data?.state?.is_motivated) 
 					return true;
 				else if (isPolishable) { // decorations etc.
-					if (data.state.next_state_transition_in) 
+					if (data?.state?.next_state_transition_in) 
 						return true
 				}
 				return false
 			}
 			else { // generic buildings
-				if (data.state.socialInteractionStartedAt > 0 && data.state.socialInteractionId == "polish") {
-					if (data.state.socialInteractionStartedAt + 43200 - parseInt(Date.now()/1000) < 0)
+				if (data?.state?.socialInteractionStartedAt > 0 && data?.state?.socialInteractionId == "polish") {
+					if (data?.state?.socialInteractionStartedAt + 43200 - parseInt(Date.now()/1000) < 0)
 						return false
 					return true
 				}
-				else if (data.state.socialInteractionStartedAt > 0 && data.state.socialInteractionId == "motivate") 
+				else if (data?.state?.socialInteractionStartedAt > 0 && data?.state?.socialInteractionId == "motivate") 
 					return true
 				else
 					return false
@@ -1236,11 +1236,11 @@ let CityMap = {
 
 	
 	setState(data) { 
-		if (data.state.__class__ == "IdleState" && !data.cityentity_id.includes("CastleSystem"))
+		if ((data?.state?.__class__ == "IdleState" && !data?.cityentity_id?.includes("CastleSystem")) || data?.state?.__class__ == undefined)
 			return "idle"
 		else if (data.state.__class__ == "ProductionFinishedState")
 			return "collectable"
-		else if (data.state.__class__ == "PlunderedState")
+		else if (data.state.__class__ == "PlunderedState" )
 			return "plundered"
 		else if (data.cityentity_id.includes("CastleSystem"))
 			return "producing"
@@ -1275,7 +1275,7 @@ let CityMap = {
 			if (data.cityentity_id.includes("CastleSystem")) {
 				return { at: MainParser.CastleSystemChest.dailyRewardCollectionAvailableAt, in: MainParser.CastleSystemChest.dailyRewardCollectionAvailableAt - parseInt(Date.now()/1000) }
 			}
-			return { at: data.state.next_state_transition_at, in: data.state.next_state_transition_in }
+			return { at: data?.state?.next_state_transition_at, in: data?.state?.next_state_transition_in }
 		}
 		else if (state == "collectable")
 			return { at: moment().unix(), in: 0 }
@@ -1303,8 +1303,8 @@ let CityMap = {
 	// returns undefined or time the building was built
 	setBuildTime(data) {
 		if (data.type == "generic_building")
-			if (data.state.constructionFinishedAt != undefined) 
-				return data.state.constructionFinishedAt;
+			if (data?.state?.constructionFinishedAt != undefined) 
+				return data?.state?.constructionFinishedAt;
 		return undefined;
 	},
 
@@ -1312,7 +1312,7 @@ let CityMap = {
 	setConnection(metaData, data) {
 		let connected = (this.needsStreet(metaData, data) == 0)
 		if (!connected) 
-			connected = (data.connected == 1)
+			connected = (data?.connected == 1)
 		return connected
 	},
 
@@ -1685,7 +1685,7 @@ let CityMap = {
 				return productions
 			}
 		}
-		if (data.cityentity_id.includes("CastleSystem")) {
+		if (data?.cityentity_id?.includes("CastleSystem")) {
 			return this.setAllProductions(metaData, data, era)
 		}
 		return undefined
@@ -1743,8 +1743,9 @@ let CityMap = {
 				}
 			}
 		}
-		if (amount == 0) 
-			amount = lookupData.amount
+		if (amount == 0)
+			amount = Number(lookupData?.name.replace(/^([+-]*[0-9]+?) .*/,"$1"));
+			if (isNaN(amount)) amount = lookupData.amount
 
 		let name = ""
 		if (lookupData) 
@@ -2018,7 +2019,7 @@ let CityMap = {
 			if (CityMap.IsExtern === true && building.eraName !== undefined) continue
 			let metaData = Object.values(MainParser.CityEntities).find(x => x.id == building.cityentity_id)
 			let era = Technologies.getEraName(building.cityentity_id, building.level)
-			let newCityEntity = CityMap.createNewCityMapEntity(metaData, building, era)
+			let newCityEntity = CityMap.createNewCityMapEntity(metaData, era, building)
 
 			if (CityMap.IsExtern === true) 
 				MainParser.OtherPlayerCityMapData[building.id] = newCityEntity
@@ -2035,15 +2036,18 @@ let CityMap = {
 		return (data.cityentity_id.includes("CastleSystem") ? CurrentEra : Technologies.InnoEraNames[era])
 	},
 	
-	createNewCityMapEntity(metaData, data, era) {
+	createNewCityMapEntity(metaData, era=CurrentEra, data={}) {
+		if (typeof(metaData)=="string") {
+			metaData=MainParser.CityEntities[metaData];
+		};
 		let entity = {
-			player_id: data.player_id,
-			id: data.id,
+			player_id: data.player_id||0,
+			id: data.id||0,
 
-			entityId: data.cityentity_id,
+			entityId: data.cityentity_id||metaData.id,
 			name: metaData.name,
 			type: this.setType(metaData),
-			eraName: (data.cityentity_id.includes("CastleSystem") ? CurrentEra : era),
+			eraName: ((data.cityentity_id||metaData.id).includes("CastleSystem") ? CurrentEra : era),
 			isSpecial: this.isSpecialBuilding(metaData),
 			isLimited: this.isLimitedBuilding(metaData),
 			chainBuilding: this.setChainBuilding(metaData),
