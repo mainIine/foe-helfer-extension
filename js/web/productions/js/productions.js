@@ -1276,8 +1276,7 @@ let Productions = {
 				h.push('<input type="checkbox" id="showitems"><label for="showitems">' + i18n('Boxes.ProductionsRating.ShowItems') + '</label> - ')
 				h.push('<input type="checkbox" id="showhighlighted"><label for="showhighlighted">' + i18n('Boxes.ProductionsRating.ShowHighlighted') + '</label> - ')
 				h.push('<label for="efficiencyBuidlingFilter">' + i18n('Boxes.ProductionsRating.Filter') + ":" + '</label><input type="text" id="efficiencyBuidlingFilter" size=20 placeholder="neo|eden">')
-				h.push('<a class="btn-default" id="addMetaBuilding">META Building</a>') // beelzebob
-				//h.push('<select label for="">' + i18n('Boxes.ProductionsRating.Filter') + ":" + '</label><input type="text" id="efficiencyBuidlingFilter" size=20 placeholder="neo|eden">')
+				h.push('<a class="btn-default" id="addMetaBuilding">' + i18n('Boxes.ProductionsRating.AddBuilding') + '</a>')
 				h.push('</th>');
 			h.push('</tr>');
 			h.push('<tr class="sorter-header">');
