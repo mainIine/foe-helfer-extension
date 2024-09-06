@@ -1468,14 +1468,17 @@ let Productions = {
 		else if (type == "population")
 			return building.population
 		else if (type.includes('att') || type.includes('def')) {
-			if (building.boosts != undefined)
+			if (building.boosts != undefined) {
+				let bsum=0
 				for (const boost of building.boosts) {
 					let feature = type.split('-')[1]
 					let bType = boost.type.find(x => x == type.split('-')[0])
 					if (bType !== undefined && feature == boost.feature) {
-						return boost.value
+						bsum+=boost.value		
 					}
 				}
+				return bsum
+			}
 		}
 		else if (type == "strategy_points" || type == "medals" || type == "premium" || type == "money" || type == "supplies" || type == "units" || type == "clan_goods" || type == "clan_power")
 			return Productions.getBuildingProductionByCategory(false, building, type).amount
