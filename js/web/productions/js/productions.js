@@ -1374,7 +1374,7 @@ let Productions = {
 							el.parentElement.classList.add("highlighted")
 						}
 					})
-					$('#efficiencyBuidlingFilter').val(search.source)
+					$('#efficiencyBuidlingFilter').val(search.source=="(?:)"?"":search.source)
 					$('#efficiencyBuidlingFilter').trigger("input")
 					if (tilevalues) $('#tilevalues').trigger("click")					
 					if (showitems) $('#showitems').trigger("click")					
@@ -1388,11 +1388,11 @@ let Productions = {
 			});
 			let filterMeta = (regEx) => {
 				$('#ProductionsRatingBody .overlay .results').html("")
-				let foundBuildings = Object.values(Productions.AdditionalSpecialBuildings).filter(x => regEx.test(x.name) && x.selected)
+				let foundBuildings = Object.values(Productions.AdditionalSpecialBuildings).filter(x => regEx.test(x.name) && x.selected).sort((a,b)=>(a.name>b.name?1:-1))
 				for (building of foundBuildings) {
 					$('#ProductionsRatingBody .overlay .results').append(`<li data-id="${building.id}">✅${building.name}</li>`)
 				}
-				foundBuildings = Object.values(Productions.AdditionalSpecialBuildings).filter(x => regEx.test(x.name) && !x.selected)
+				foundBuildings = Object.values(Productions.AdditionalSpecialBuildings).filter(x => regEx.test(x.name) && !x.selected).sort((a,b)=>(a.name>b.name?1:-1))
 				for (building of foundBuildings) {
 					$('#ProductionsRatingBody .overlay .results').append(`<li data-id="${building.id}">❌${building.name}</li>`)
 				}
