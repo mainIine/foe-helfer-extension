@@ -1190,7 +1190,7 @@ let Productions = {
 
 	CalcRatingBody: () => {
 		if (!Productions.AdditionalSpecialBuildings) {
-			let spB = Object.values(MainParser.CityEntities).filter(x=> x.is_special || x.id.substring(0,11)=="W_MultiAge_")
+			let spB = Object.values(MainParser.CityEntities).filter(x=> (x.is_special && x.id.substring(0,2)!="O_" && x.id.substring(0,2)!="U_") || x.id.substring(0,11)=="W_MultiAge_")
 			Productions.AdditionalSpecialBuildings = {}
 			for (x of spB) {
 				Productions.AdditionalSpecialBuildings[x.id] = {id:x.id,name:x.name,selected:false}
