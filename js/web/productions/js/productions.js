@@ -1416,9 +1416,9 @@ let Productions = {
 				let regEx=new RegExp(filter,"i");
 				$('.ratinglist tr td:nth-child(2)').each((x,y) => {
 					if (filter!="" && regEx.test($(y).text())) {
-						y.parentElement.classList.add('highlighted')
+						y.parentElement.classList.add('highlighted2')
 					} else {
-						y.parentElement.classList.remove('highlighted')
+						y.parentElement.classList.remove('highlighted2')
 					}
 				});
 			});
