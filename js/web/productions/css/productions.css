@@ -203,12 +203,18 @@
 #ProductionsRating #ProductionsRatingBody .overlay .content {
 	width: 60%;
 	min-width: 300px;
-	height: 300px;
+	height: inherit;
 	margin: auto;
 	padding: 1em; 
 	background: var(--text-dark);
 	color: var(--text-normal);
+	& ul {
+		height: calc(100% - 50px);
+		overflow: auto;
+		list-style-type: none;
+	}
 }
+
 #ProductionsRating #ProductionsRatingBody tr.sorter-header th {
 	padding: 5px 6px 7px;
 }
@@ -247,16 +253,15 @@
 		color: var(--text-success);
 		font-weight: 600;
 	}
-	&.highlighted td:nth-child(2) {
-		color: var(--text-bright);
-		font-weight: 600;
-	}
 	&.additional td:nth-child(2) {
 		color: var(--text-info);
 		font-style: italic;
 		font-weight: 600;
 	}
-
+	&.highlighted td:nth-child(2) {
+		color: var(--text-bright);
+		font-weight: 600;
+	}
 }
 #ProductionsRating #ProductionsRatingBody tr.highlighted-explained, #ProductionsRating #ProductionsRatingBody .only-highlighted tr {
 	display: none;
