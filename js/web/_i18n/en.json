@@ -941,7 +941,7 @@
     "Boxes.ProductionsRating.Enabled": "Enabled",
     "Boxes.ProductionsRating.Explainer": "How does this work? Select how much each of your buildings should ideally produce per tile. The balance between all selected values is important for the final rating. If you have more than one building of the same type, only the building with the highest era will be evaluated.",
     "Boxes.ProductionsRating.FindBuilding": "Search",
-    "Boxes.ProductionsRating.HighlightsExplained": "How to highlight buildings: Click any row to select the buildings you want to compare more easily.",
+    "Boxes.ProductionsRating.HighlightsExplained": "How to highlight buildings: Click any row to select the buildings you want to compare more easily. Search results are marked automatically.",
     "Boxes.ProductionsRating.ProdPerTile": "Expected daily production/tile",
     "Boxes.ProductionsRating.Results": "Result",
     "Boxes.ProductionsRating.Score": "Score",
