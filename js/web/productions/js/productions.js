@@ -1358,7 +1358,28 @@ let Productions = {
 
 			$('#closeMetaBuilding').on('click',function () {
 				$(this).parent('.overlay').hide()
+				
+				marked=[]
+				$(".ratingtable .highlighted td:nth-child(2)").each((x,el)=>{
+					marked.push(el.dataset.text)
+				})
+				tilevalues=$('#tilevalues').is(':checked')
+				showitems=$('#showitems').is(':checked')
+				showhighlighted=$('#showhighlighted').is(':checked')
+				search=new RegExp($('#efficiencyBuidlingFilter').val(),"i")
 				Productions.CalcRatingBody()
+				setTimeout(()=>{
+					$(".ratingtable td:nth-child(2)").each((x,el)=>{
+						if (marked.includes(el.dataset.text)) {
+							el.parentElement.classList.add("highlighted")
+						}
+					})
+					$('#efficiencyBuidlingFilter').val(search.source)
+					$('#efficiencyBuidlingFilter').trigger("input")
+					if (tilevalues) $('#tilevalues').trigger("click")					
+					if (showitems) $('#showitems').trigger("click")					
+					if (showhighlighted) $('#showhighlighted').trigger("click")										
+				},500)
 			})
 
 			$('#findMetaBuilding').on('input', function () {
