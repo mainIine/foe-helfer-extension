@@ -42,6 +42,12 @@
 		"sort": 9
 	},
 	{
+		"name": "ShowOtherGuildActivity",
+		"status": true,
+		"group": "Auto",
+		"sort": 9
+	},
+	{
 		"name": "AutoOpenInfoBox",
 		"status": false,
 		"group": "Auto",
