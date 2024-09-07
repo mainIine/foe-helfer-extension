@@ -64,7 +64,7 @@ let Productions = {
 	],
 
 	RatingCurrentTab: 'Settings',
-	Rating: {},
+	Rating: JSON.parse(localStorage.getItem('ProductionRatingEnableds2')||"{}"),
 	RatingProdPerTiles: {},
 
 	RatingTypes: [
