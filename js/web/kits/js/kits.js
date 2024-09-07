@@ -439,8 +439,10 @@ let Kits = {
 			}
 			//let upgradeOrder=["upgrade","silver","golden","platinum","ascended"];
 			let upgrades = "";
+			let eff=""
 			if (kits[set].buildings?.[0]?.first && MainParser.CityEntities[kits[set].buildings[0].first]) {
-				let upgradeCount = Kits.upgradeKits?.[kits[set].buildings[0].first]?.upgradeCount;
+				let f=Kits.upgradeKits?.[kits[set].buildings[0].first]
+				let upgradeCount = f?.upgradeCount;
 				if (upgradeCount) {
 					upgrades = '<span class="upgrades" data-original-title="'+i18n('Boxes.Kits.Upgrades')+'" data-toggle="tooltip">'
 					let first = true
@@ -452,11 +454,16 @@ let Kits = {
 					}
 					upgrades+= '</span>'
 				}
+				if (f) {
+					eff = '<span class="kitsEff">' + i18n('Boxes.Kits.Efficiency')+': '
+					eff += Math.round(100 * Productions.rateBuildings([f?.buildingList?.[f?.buildingList.length-1]],true)?.[0]?.score||0);
+					eff+= '</span>'
+				}
 			}
 			
 			if (!GroupName) {
 				t += '<div class="item-row'+ (!show ? " all-missing" : "") + favClass + '">'
-				t += `<h2 class="head">` + favourite + ChainSetIco +' '+ KitText + upgrades + '</h2>'
+				t += `<h2 class="head">` + favourite + ChainSetIco +' '+ KitText + (ChainSetIco!="" ? "": eff) + upgrades + '</h2>'
 			}
 			if(buildings.length) {
 				buildings.forEach((building) => {
