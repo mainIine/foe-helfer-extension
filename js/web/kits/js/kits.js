@@ -454,8 +454,8 @@ let Kits = {
 					}
 					upgrades+= '</span>'
 				}
-				if (f) {
-					let rating=Productions.rateBuildings(f?.buildingList?.slice(Math.max(f?.buildingList.length - 3,0)),true)
+				if (f?.buildingList) {
+					let rating=Productions.rateBuildings(f?.buildingList?.slice(-3),true)
 					let title=""
 					if (!rating) break
 					for (r of rating) {
