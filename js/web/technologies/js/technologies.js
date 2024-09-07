@@ -108,7 +108,7 @@ let Technologies = {
         SpaceAgeVenus: 20,
         SpaceAgeJupiterMoon: 21,
         SpaceAgeTitan: 22,
-        NextEra:23,
+        SpaceAgeSpaceHub:23,
     },
 
     // need this for cityentities
@@ -135,7 +135,7 @@ let Technologies = {
         SpaceAgeVenus: 19,
         SpaceAgeJupiterMoon: 20,
         SpaceAgeTitan: 21,
-        NextEra: 22,
+        SpaceAgeSpaceHub: 22,
     },
 
 
