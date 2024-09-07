@@ -455,8 +455,20 @@ let Kits = {
 					upgrades+= '</span>'
 				}
 				if (f) {
-					eff = '<span class="kitsEff">' + i18n('Boxes.Kits.Efficiency')+': '
-					eff += Math.round(100 * Productions.rateBuildings([f?.buildingList?.[f?.buildingList.length-1]],true)?.[0]?.score||0);
+					let rating=Productions.rateBuildings(f?.buildingList?.slice(Math.max(f?.buildingList.length - 3,0)),true)
+					let title=""
+					if (!rating) break
+					for (r of rating) {
+						console.log(r.building.name)
+						if (title=="") {
+							title = `${r.building.name}: ${Math.round(100 * r.score)}`
+						}else {
+							title =`${r.building.name}: ${Math.round(100 * r.score)}\n`+title
+						}
+					}
+					let top=rating.pop()
+					eff = `<span class="kitsEff" title="${title}">${i18n('Boxes.Kits.Efficiency')}: `
+					eff += Math.round(100 * top?.score||0);
 					eff+= '</span>'
 				}
 			}
