@@ -15,6 +15,19 @@
 	- Neue Übersicht inklusive Anzeige der produzierten Fragmente
 	- Anzeige der Werte pro Feld hinzugefügt
 
+- Boost-Inventar
+	- listet alle Gebäude aus dem Inventar, die Boosts (zum Beispiel für den Kampf) bereitstellen
+
+- Aktive Mitglieder anderer Gilden
+	- wenn innerhalb von 5 Minuten, zweimal nacheinander die Details der selben fremden Gilde aufgerufen werden (Hauptquartier in den GG) und zumindest ein Mitglied dieser Gilde aktiv war, wird ein Fenster geöffnet, in dem die aktiven Mitglieder gelistet werden
+
+**Update**
+- Kits:
+	- Effizienz-Werte der Gebäude hinzugefügt
+
+**BugFix**
+- Fenster:
+	- können nun nicht mehr verschoben werden, wenn die Maus auf einen der Buttons des Fensters zeigt
 
 ##### 3.7.0.0
 
