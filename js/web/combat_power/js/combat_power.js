@@ -64,9 +64,7 @@ let CombatPower = {
 						continue
 					}
 
-					let extra = Object.values(MainParser.NewCityMapData).find(obj => (obj['entityId'] === id)) || []
-
-					//console.log(id + ' - extra: ', extra)
+					let rating = Productions.rateBuildings([id],true)[0]
 
 					CombatPower.Buildings.push({
 						id: id,
@@ -76,7 +74,8 @@ let CombatPower = {
 						stock: InventoryItem['inStock'],
 						boosts: ageBoost['boosts']['boosts'],
 						name: entity['name'],
-						street: extra['needsStreet'] || 0,
+						street: rating.building.needsStreet || 0,
+						score: rating.score
 					})
 
 					break
@@ -135,19 +134,19 @@ let CombatPower = {
 			1:`</span><img src="${srcLinks.get('/shared/icons/road_required.png',true)}" alt="">`,
 			2:`</span><img src="${srcLinks.get('/shared/icons/street_required.png',true)}" alt="">`,
 		}
-		for(let i in CombatPower.Buildings){
-			let b = CombatPower.Buildings[i]
-
+		CombatPower.Buildings.sort((a,b)=>b.score-a.score)
+		for(let b of CombatPower.Buildings){
+			
 			c.push(`<tr>`)
 
 			let url = '/city/buildings/' + [b['asset_id'].slice(0, 1), '_SS', b['asset_id'].slice(1)].join('') + '.png'
-			let rating = Productions.rateBuildings([b.id],true)[0]
 			url = srcLinks.get(url,true)
 			
 			c.push(`<td><img src="${url}" alt=""></td>`)
 			c.push(`<td><strong class="in-stock">${b.stock}x</strong><br>${b.name}<br></td>`) //<small>${b.id}</small> removed
-			c.push(`<td>${b.width}x${b.length}<br>${streetImg[rating.building.needsStreet]}</td>`)
+			c.push(`<td>${b.width}x${b.length}<br>${streetImg[b.street]}</td>`)
 			c.push(`<td>`)
+	
 			for(let y of Object.values(b.boosts)){
 				let icon = srcLinks.get(`/shared/icons/${y['type']}${CombatPower.Mapping[y.targetedFeature]}.png`,true)
 
@@ -155,7 +154,7 @@ let CombatPower = {
 			}
 
 			c.push(`</td>`)
-			c.push(`<td title="${i18n('Boxes.CombatCalculator.EfficiencyTT')}">${Math.round(rating.score*100)}</td>`)
+			c.push(`<td title="${i18n('Boxes.CombatCalculator.EfficiencyTT')}">${Math.round(b.score*100)}</td>`)
 
 			c.push(`</tr>`)
 		}
