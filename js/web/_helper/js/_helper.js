@@ -269,6 +269,9 @@ let HTML = {
 				HTML.BringToFront(div);
 			}, 300);
 
+			$("#"+args['id'] + 'Header .box-buttons span').on("pointerdown",(e)=>{
+				e.stopPropagation()
+			})
 
 			if (args['auto_close']) {
 				$(`#${args.id}`).on('click', `#${args['id']}close`, function () {
