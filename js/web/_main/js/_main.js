@@ -848,8 +848,7 @@ let HelperBeta = {
 	},
 	menu: [
 		'unitsGex',
-		'marketOffers',
-		'combat_power'
+		'marketOffers'
 	],
 	active: JSON.parse(localStorage.getItem('HelperBetaActive')) || devMode == 'true' || loadBeta
 };
