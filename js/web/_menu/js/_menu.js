@@ -62,7 +62,8 @@ let _menu = {
 		'recurringQuests',
 		'compare_friends_threads',
 		'discord',
-		'findGB'
+		'findGB',
+		'combat_power'
 		//'qiMap'
 		// 'marketOffers',
 	],

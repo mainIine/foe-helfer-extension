@@ -12,6 +12,10 @@
  * *************************************************************************************
  */
 
+FoEproxy.addFoeHelperHandler('InventoryUpdated', () => {
+	if ($('#combat-power').length>0) CombatPower.Init(true);
+});
+
 let CombatPower = {
 
 	Buildings: [],
@@ -24,7 +28,7 @@ let CombatPower = {
 	},
 
 
-	Init: ()=> {
+	Init: (keepOpen=false)=> {
 
 		CombatPower.Buildings = []
 
@@ -62,7 +66,7 @@ let CombatPower = {
 
 					let extra = Object.values(MainParser.NewCityMapData).find(obj => (obj['entityId'] === id)) || []
 
-					console.log(id + ' - extra: ', extra)
+					//console.log(id + ' - extra: ', extra)
 
 					CombatPower.Buildings.push({
 						id: id,
@@ -80,32 +84,33 @@ let CombatPower = {
 			}
 		}
 
-		console.log(CombatPower.Buildings)
+		//console.log(CombatPower.Buildings)
 
-		CombatPower.BuildBox()
+		CombatPower.BuildBox(keepOpen)
 	},
 
 
-	BuildBox: ()=> {
+	BuildBox: (keepOpen=false) => {
 
 		if ($('#combat-power').length > 0)
 		{
-			HTML.CloseOpenBox('combat-power')
-			return
+			if (!keepOpen) {
+				HTML.CloseOpenBox('combat-power')
+				return
+			}
+		} else {
+			HTML.Box({
+				id: 'combat-power',
+				title: i18n('Boxes.CombatCalculator.Title'),
+				//ask: i18n('Boxes.CombatCalculator.HelpLink'),
+				auto_close: true,
+				dragdrop: true,
+				minimize: true,
+				resize: true
+			})
+			// CSS in den DOM prügeln
+			HTML.AddCssFile('combat_power')
 		}
-
-		HTML.Box({
-			id: 'combat-power',
-			title: i18n('Boxes.CombatCalculator.Title'),
-			ask: i18n('Boxes.CombatCalculator.HelpLink'),
-			auto_close: true,
-			dragdrop: true,
-			minimize: true,
-			resize: true
-		})
-
-		// CSS in den DOM prügeln
-		HTML.AddCssFile('combat_power')
 
 		let c = []
 
@@ -115,41 +120,42 @@ let CombatPower = {
 		c.push('<tr class="sorter-header">')
 
 		c.push('<td></td>')
-		c.push('<td>Name</td>')
-		c.push('<td>Bestand / Größe</td>')
-		c.push('<td>Werte</td>')
-		c.push('<td>Straße</td>')
+		c.push(`<td>${i18n('Boxes.CombatCalculator.Name')}</td>`)
+		c.push(`<td>${i18n('Boxes.CombatCalculator.Size')}</td>`)
+		c.push(`<td>${i18n('Boxes.CombatCalculator.Values')}</td>`)
+		c.push(`<td>${i18n('Boxes.CombatCalculator.Efficiency')}</td>`)
 
 		c.push('</tr>')
 		c.push('</thead>')
 
 		c.push('<tbody>')
 
+		let streetImg = {
+			0:"",
+			1:`</span><img src="${srcLinks.get('/shared/icons/road_required.png',true)}" alt="">`,
+			2:`</span><img src="${srcLinks.get('/shared/icons/street_required.png',true)}" alt="">`,
+		}
 		for(let i in CombatPower.Buildings){
 			let b = CombatPower.Buildings[i]
 
 			c.push(`<tr>`)
 
 			let url = '/city/buildings/' + [b['asset_id'].slice(0, 1), '_SS', b['asset_id'].slice(1)].join('') + '.png'
-
+			let rating = Productions.rateBuildings([b.id],true)[0]
 			url = srcLinks.get(url,true)
-
-			c.push(`<td><img style="max-width:110px;max-height:110px" src="${url}" alt=""></td>`)
-			c.push(`<td>${b['name']}<br><small>${b['id']}</small></td>`)
-			c.push(`<td><strong class="in-stock">${b['stock']}</strong> ${b['width']}x${b['length']}</td>`)
+			
+			c.push(`<td><img src="${url}" alt=""></td>`)
+			c.push(`<td><strong class="in-stock">${b.stock}x</strong><br>${b.name}<br></td>`) //<small>${b.id}</small> removed
+			c.push(`<td>${b.width}x${b.length}<br>${streetImg[rating.building.needsStreet]}</td>`)
 			c.push(`<td>`)
+			for(let y of Object.values(b.boosts)){
+				let icon = srcLinks.get(`/shared/icons/${y['type']}${CombatPower.Mapping[y.targetedFeature]}.png`,true)
 
-			for(let x in b['boosts']){
-				let y = b['boosts'][x]
-
-				// https://foezz.innogamescdn.com/assets/shared/icons/att_boost_attacker-6070a3719.png
-				let icon = srcLinks.get(`/shared/icons/${y['type']}${CombatPower.Mapping[y['targetedFeature']]}.png`,true)
-
-				c.push(`<span class="boost-amount">${y['value']}%</span><img src="${icon}" alt=""> - ${i18n('Boxes.Productions.' + y['type'])}<br>`)
+				c.push(`<span class="boost-amount">${y.value}%</span><img src="${icon}" alt=""><br>`)
 			}
 
 			c.push(`</td>`)
-			c.push(`<td class="text-center text-success" style="font-size: 140%">${b['street'] ? '✓' : ''}</td>`)
+			c.push(`<td title="${i18n('Boxes.CombatCalculator.EfficiencyTT')}">${Math.round(rating.score*100)}</td>`)
 
 			c.push(`</tr>`)
 		}
