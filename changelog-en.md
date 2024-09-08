@@ -16,6 +16,20 @@
 	- New overview with more details
 	- Show values per tile added
 
+- Boost-Inventory
+	- lists all Buildings in your Inventory that provide boosts (e.g. for battle)
+	- fragmented buildings are not considered!!
+
+- Active Members of other Guilds
+	- when within 5 minutes, the same guild (HQ in GBG) is inspected twice and at least one member of that guild was active, a list of the active guild members is displayed
+
+**Update**
+- Kits:
+	- added Efficiency Score of the respective buildings
+
+**BugFix**
+- Boxes:
+	- can not be draged anymore when the mouse is on of the buttons of the box
 
 ##### 3.7.0.0
 
