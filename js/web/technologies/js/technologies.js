@@ -109,6 +109,7 @@ let Technologies = {
         SpaceAgeJupiterMoon: 21,
         SpaceAgeTitan: 22,
         SpaceAgeSpaceHub:23,
+        NextEra:24,
     },
 
     // need this for cityentities
@@ -136,6 +137,7 @@ let Technologies = {
         SpaceAgeJupiterMoon: 20,
         SpaceAgeTitan: 21,
         SpaceAgeSpaceHub: 22,
+        NextEra:23,
     },
 
 
@@ -162,7 +164,7 @@ let Technologies = {
         19: 'SpaceAgeAsteroidBelt',
         20: 'SpaceAgeVenus',
         21: 'SpaceAgeJupiterMoon',
-        22: 'SpaceAgeTitan'
+        22: 'SpaceAgeTitan',
     },
 
     // need this for cityentities
@@ -188,7 +190,7 @@ let Technologies = {
         18: 'SpaceAgeAsteroidBelt',
         19: 'SpaceAgeVenus',
         20: 'SpaceAgeJupiterMoon',
-        21: 'SpaceAgeTitan'
+        21: 'SpaceAgeTitan',
     },
 
 
@@ -399,7 +401,11 @@ let Technologies = {
                 OutputList[OutputList.length] = GoodsList[i]['id'];
             }
             OutputList[OutputList.length] = 'crystallized_hydrocarbons';
-            for (let i = 100; i < GoodsList.length; i++) {
+            for (let i = 100; i < 105; i++) {
+                OutputList[OutputList.length] = GoodsList[i]['id'];
+            }
+            OutputList[OutputList.length] = 'dark_matter';
+            for (let i = 105; i < GoodsList.length; i++) {
                 OutputList[OutputList.length] = GoodsList[i]['id'];
             }
 
