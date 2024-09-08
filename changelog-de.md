@@ -25,6 +25,9 @@
 - Kits:
 	- Effizienz-Werte der Gebäude hinzugefügt
 
+- Technologien:
+	- Raumfahrt: Weltraumbasis Daten und Güter hinzugefügt
+
 **BugFix**
 - Fenster:
 	- können nun nicht mehr verschoben werden, wenn die Maus auf einen der Buttons des Fensters zeigt

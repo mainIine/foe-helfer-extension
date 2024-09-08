@@ -27,6 +27,9 @@
 - Kits:
 	- added Efficiency Score of the respective buildings
 
+- Technologies:
+	- added Space Age Space Hub assets
+
 **BugFix**
 - Boxes:
 	- can not be draged anymore when the mouse is on of the buttons of the box
