@@ -107,7 +107,6 @@ let CombatPower = {
 				minimize: true,
 				resize: true
 			})
-			// CSS in den DOM prügeln
 			HTML.AddCssFile('combat_power')
 		}
 
@@ -142,15 +141,15 @@ let CombatPower = {
 			let url = '/city/buildings/' + [b['asset_id'].slice(0, 1), '_SS', b['asset_id'].slice(1)].join('') + '.png'
 			url = srcLinks.get(url,true)
 			
-			c.push(`<td><img src="${url}" alt=""></td>`)
-			c.push(`<td><strong class="in-stock">${b.stock}x</strong><br>${b.name}<br></td>`) //<small>${b.id}</small> removed
+			c.push(`<td><div class="image"><img src="${url}" alt=""><strong class="in-stock">${b.stock}</strong></div></td>`)
+			c.push(`<td>${b.name}<br></td>`) //<small>${b.id}</small> removed
 			c.push(`<td>${b.width}x${b.length}<br>${streetImg[b.street]}</td>`)
 			c.push(`<td>`)
 	
 			for(let y of Object.values(b.boosts)){
 				let icon = srcLinks.get(`/shared/icons/${y['type']}${CombatPower.Mapping[y.targetedFeature]}.png`,true)
 
-				c.push(`<span class="boost-amount">${y.value}%</span><img src="${icon}" alt=""><br>`)
+				c.push(`<span class="boost-amount">${y.value}% <img loading="lazy" src="${icon}" alt=""></span>`)
 			}
 
 			c.push(`</td>`)
