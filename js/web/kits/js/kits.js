@@ -459,7 +459,6 @@ let Kits = {
 					let title=""
 					if (!rating) break
 					for (r of rating) {
-						console.log(r.building.name)
 						if (title=="") {
 							title = `${r.building.name}: ${Math.round(100 * r.score)}`
 						}else {

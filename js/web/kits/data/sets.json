@@ -1,6 +1,6 @@
 [	
 	{
-		"udate": "Fall Event 2024 (16 July 2024)"
+		"udate": "Halloween Event 2024 (09 Spetember 2024)"
 	},
 	{
 		"groupname": "Events"
@@ -204,6 +204,19 @@
 		]
 	},
 	{
+		"name": "Eerie Thrill Coaster",
+		"buildings": [
+			{"first": "W_MultiAge_HAL24A1"}
+		]
+	},
+	{
+		"name": "Jokers_Sinister_Spin",
+		"link": "Joker%27s_Sinister_Spin",
+		"buildings": [
+			{"first": "W_MultiAge_HAL24F1"}
+		]
+	},
+	{
 		"name": "Laboratory_of_Monstrosities",
 		"buildings": [
 			{"first": "W_MultiAge_HAL23A1"}
@@ -224,7 +237,7 @@
 	{
 		"name": "Abandoned_Asylum",
 		"buildings": [
-			{"first": "R_MultiAge_HalloweenBonus19a"}
+			{"first": "W_MultiAge_HAL19A1"}
 		]
 	},
 	{
@@ -282,7 +295,6 @@
 	{
 		"name": "Sunflower_Oil_Press",
 		"buildings": [
-			{"first": "R_MultiAge_FallBonus22a"},
 			{"first": "W_MultiAge_FALL22A1"}
 
 		]
