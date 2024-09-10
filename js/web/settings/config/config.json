@@ -87,6 +87,7 @@
 		"name": "ShowArmyAdvice",
 		"status": false,
 		"group": "Auto",
+		"button":"BattleAssist.ShowArmyAdviceConfig()",
 		"sort": 17
 	},
 	{
@@ -97,7 +98,7 @@
 	},
 	{
 		"name": "ResetBoxPositions",
-		"button": "ResetBoxCoords",
+		"button": "Settings.ResetBoxCoords()",
 		"group": "Boxes",
 		"sort": 0
 	},
@@ -129,6 +130,7 @@
 		"name": "Auctions",
 		"status": false,
 		"group": "Boxes",
+		"button":"Auction.BuildBody()",
 		"sort": 9
 	},
 	{
@@ -189,6 +191,7 @@
 		"name": "ShowBuildingsExpired",
 		"status": true,
 		"group": "Extension",
+		"button":"MainParser.Inactives.showSettings()",
 		"sort": 9
 	},
 	{
