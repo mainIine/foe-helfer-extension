@@ -928,7 +928,7 @@ let CityMap = {
 	setPopulation: (metaData, data, era) => {
 		let population = 0
 		let eraId = Technologies.InnoEras[era]
-
+		
 		if (metaData.__class__ != "GenericCityEntity") { // not a generic building
 			if (metaData.entity_levels.length > 0) {  // special building
 				if (metaData.entity_levels[eraId].required_population)

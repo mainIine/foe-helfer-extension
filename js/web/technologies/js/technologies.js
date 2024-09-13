@@ -78,7 +78,7 @@ let Technologies = {
     AllTechnologies: null,
     UnlockedTechnologies: false,
     SelectedEraID: undefined,
-    HighestAge: 21, // new age? change value 
+    HighestAge: 22, // new age? change value 
 
     IgnorePrevEra: null,
     IgnoreCurrentEraOptional: null,
@@ -108,8 +108,8 @@ let Technologies = {
         SpaceAgeVenus: 20,
         SpaceAgeJupiterMoon: 21,
         SpaceAgeTitan: 22,
-        SpaceAgeSpaceHub:23,
-        NextEra:24,
+        SpaceAgeSpaceHub: 23,
+        NextEra: 24,
     },
 
     // need this for cityentities
@@ -137,7 +137,7 @@ let Technologies = {
         SpaceAgeJupiterMoon: 20,
         SpaceAgeTitan: 21,
         SpaceAgeSpaceHub: 22,
-        NextEra:23,
+        NextEra: 23,
     },
 
 
@@ -165,6 +165,7 @@ let Technologies = {
         20: 'SpaceAgeVenus',
         21: 'SpaceAgeJupiterMoon',
         22: 'SpaceAgeTitan',
+        23: 'SpaceAgeSpaceHub'
     },
 
     // need this for cityentities
@@ -191,6 +192,7 @@ let Technologies = {
         19: 'SpaceAgeVenus',
         20: 'SpaceAgeJupiterMoon',
         21: 'SpaceAgeTitan',
+        22: 'SpaceAgeSpaceHub'
     },
 
 

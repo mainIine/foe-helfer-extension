@@ -87,6 +87,12 @@ let CombatPower = {
 
 		CombatPower.BuildBox(keepOpen)
 	},
+	
+	percent:(type)=>{
+		let GRtest = new RegExp("guild_raids_.*?_start")
+		if (GRtest.test(type)) return ""
+		return "%"
+	},
 
 
 	BuildBox: (keepOpen=false) => {
@@ -117,11 +123,11 @@ let CombatPower = {
 		c.push('<thead>')
 		c.push('<tr class="sorter-header">')
 
-		c.push('<td></td>')
-		c.push(`<td>${i18n('Boxes.CombatCalculator.Name')}</td>`)
-		c.push(`<td>${i18n('Boxes.CombatCalculator.Size')}</td>`)
-		c.push(`<td>${i18n('Boxes.CombatCalculator.Values')}</td>`)
-		c.push(`<td>${i18n('Boxes.CombatCalculator.Efficiency')}</td>`)
+		c.push('<th></th>')
+		c.push(`<th>${i18n('Boxes.CombatCalculator.Name')}</th>`)
+		c.push(`<th>${i18n('Boxes.CombatCalculator.Size')}</th>`)
+		c.push(`<th>${i18n('Boxes.CombatCalculator.Values')}</th>`)
+		c.push(`<th>${i18n('Boxes.CombatCalculator.Efficiency')}</th>`)
 
 		c.push('</tr>')
 		c.push('</thead>')
