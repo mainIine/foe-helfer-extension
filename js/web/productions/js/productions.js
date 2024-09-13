@@ -430,7 +430,7 @@ let Productions = {
 				buildingIds.forEach(b => {
 					let building = CityMap.getBuildingById(b.id)
 					if (building.player_id == ExtPlayerID) {
-					if (type == 'items' && Productions.showBuildingItems(true, building) == false || building.chainBuilding?.type == "linked") return // makes random productions with resources and others disappear from the item list
+					if (type == 'items' && Productions.showBuildingItems(true, building)[0] == "" || building.chainBuilding?.type == "linked") return // makes random productions with resources and others disappear from the item list
 
 					rowA.push('<tr>')
 					rowA.push('<td>')
@@ -479,7 +479,7 @@ let Productions = {
 							typeCurrentSum += currentAmount
 						}
 						else {
-							rowA.push('<td colspan="4" data-number="1">' + Productions.showBuildingItems(true, building) + '</td>')
+							rowA.push('<td colspan="4" data-number="1">' + Productions.showBuildingItems(true, building)[0] + '</td>')
 						}
 					}
 					else {
@@ -830,7 +830,7 @@ let Productions = {
 					rowB.push('<td data-number="'+building.boosts.guild_raids*building.amount+'" class="text-center">'+ (building.boosts.guild_raids != 0 ? HTML.Format(building.boosts.guild_raids*building.amount) : '') +'</td>')
 				}
 				else if (type == "items") {
-					rowB.push('<td colspan="4">'+Productions.showBuildingItems(false, building.building)+'</td>')
+					rowB.push('<td colspan="4">'+Productions.showBuildingItems(false, building.building)[0]+'</td>')
 				}
 				else {
 					if (building.currentValues == building.values) 
@@ -922,6 +922,7 @@ let Productions = {
 
 	showBuildingItems(current = false, building) {
 		let allItems = ''
+		let allUnits = ''
 		if ((building.state?.isPolivated == true || building.state?.isPolivated == undefined) && current === true) {
 			building.state.production?.forEach(production => {
 				if (production.type == "genericReward") {
@@ -930,8 +931,6 @@ let Productions = {
 					allItems += production.resources.amount + "x " + frag + production.resources.name + "<br>"
 				}
 			})
-			if (allItems == '')
-				return false // to prevent rows without items in the item table
 		}
 		else {
 			if (building.production) {
@@ -940,10 +939,19 @@ let Productions = {
 						production.resources.forEach(resource => {
 							if (!resource.type.includes("good") && resource.type !== "resources") {
 								let frag = (resource.subType == "fragment" ? "🧩 " : "")
-								allItems += "Ø " + parseFloat(Math.round(resource.amount*resource.dropChance * 100) / 100) + "x " + frag + resource.name + "<br>"
+								if (resource.type == "unit") {
+									allUnits += "Ø " + parseFloat(Math.round(resource.amount*resource.dropChance * 100) / 100) + "x " + frag + `<img src='${srcLinks.get("/shared/icons/"+resource.name.replace("next_","").replace("random","random_production")+".png",true)}'>` + "<br>"
+								} else {
+									allItems += "Ø " + parseFloat(Math.round(resource.amount*resource.dropChance * 100) / 100) + "x " + frag + resource.name + "<br>"
+								}
 							}
 						})
 					}
+					if (production.type == "unit") {
+						for (let u of Object.keys(production.resources)) {
+							allUnits += production.resources[u] + "x " + `<img src='${srcLinks.get("/shared/icons/"+u.replace("next_","").replace("random","random_production")+".png",true)}'>` + "<br>"
+						}
+					} 
 					if (production.resources.type == "consumable") {
 						let frag = (production.resources.subType == "fragment" ? "🧩 " : "")
 						allItems += production.resources.amount + "x " + frag + production.resources.name + "<br>"
@@ -951,7 +959,7 @@ let Productions = {
 				})
 			}
 		}
-		return allItems
+		return [allItems,allUnits]
 	},
 	
 	/**
@@ -1293,6 +1301,7 @@ let Productions = {
 
 			h.push('<tbody class="ratinglist">');
 			for (const building of ratedBuildings) {
+				[randomItems,randomUnits]=Productions.showBuildingItems(false, building.building)
 				h.push(`<tr ${building.highlight?'class="additional"':""}>`)
 				h.push('<td class="text-right" data-number="'+building.score * 100 +'">'+Math.round(building.score * 100)+'</td>')
 				h.push('<td data-text="'+helper.str.cleanup(building.building.name)+'">'+building.building.name)
@@ -1303,14 +1312,14 @@ let Productions = {
 				h.push('</td>')
 				for (const type of Productions.RatingTypes) {
 					if (building[type] != undefined) {
-						h.push('<td class="text-right" data-number="'+Math.round(building[type])+'">')
+						h.push(`<td class="text-right${type=="units" ? " units":""}" data-number="${Math.round(building[type])}" ${type=="units" ? `data-original-title="${randomUnits}"`:""}`)
 						h.push('<span class="buildingvalue">'+HTML.Format(building[type])+'</span>')
 						let roundingFactor = building[type+'-tile'] > 100 || building[type+'-tile'] < -100 ? 1 : 100
 						h.push('<span class="tilevalue">'+HTML.Format(Math.round(building[type+'-tile'] * roundingFactor) / roundingFactor)+'</span>')
 						h.push('</td>')
 					}
 				}
-				h.push('<td class="no-sort items">'+(Productions.showBuildingItems(false, building.building) != false ? Productions.showBuildingItems(false, building.building) : '')+'</td>')
+				h.push('<td class="no-sort items">'+randomItems+'</td>')
 				h.push('</tr>')
 			}
 			h.push('<tr class="highlighted-explained"><td colspan="'+(colNumber+3)+'">'+i18n('Boxes.ProductionsRating.HighlightsExplained')+'</td></tr>');
@@ -1327,7 +1336,7 @@ let Productions = {
 		else {
 			h.push('Something went wrong');
         }
-
+		
 		$('#ProductionsRatingBody').html(h.join('')).promise().done(function () {
 			$('.sortable-table').tableSorter();
 
@@ -1443,7 +1452,9 @@ let Productions = {
 					}
 				});
 			});
+			$('#ProductionsRatingBody td.units').tooltip({html:true});
 		});	
+		
     },
 
 
