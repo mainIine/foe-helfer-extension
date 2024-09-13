@@ -228,7 +228,7 @@
 	& .window-close {
 		position: absolute;
 		top: 10px;
-		right: calc(60% - 10px);
+		right: calc(20% - 50px);
 	}
 
 	& .content {
