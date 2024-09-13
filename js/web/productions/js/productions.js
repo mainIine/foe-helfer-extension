@@ -1312,7 +1312,7 @@ let Productions = {
 				h.push('</td>')
 				for (const type of Productions.RatingTypes) {
 					if (building[type] != undefined) {
-						h.push(`<td class="text-right${type=="units" ? " units":""}" data-number="${Math.round(building[type])}" ${type=="units" ? `data-original-title="${randomUnits}"`:""}`)
+						h.push(`<td class="text-right${type=="units" ? " units":""}" data-number="${Math.round(building[type])}" ${type=="units" ? `data-original-title="${randomUnits}"`:""}>`)
 						h.push('<span class="buildingvalue">'+HTML.Format(building[type])+'</span>')
 						let roundingFactor = building[type+'-tile'] > 100 || building[type+'-tile'] < -100 ? 1 : 100
 						h.push('<span class="tilevalue">'+HTML.Format(Math.round(building[type+'-tile'] * roundingFactor) / roundingFactor)+'</span>')
@@ -1452,7 +1452,7 @@ let Productions = {
 					}
 				});
 			});
-			$('#ProductionsRatingBody td.units').tooltip({html:true});
+			$('#ProductionsRatingBody td.units').tooltip({container: "#game_body", html:true});
 		});	
 		
     },
