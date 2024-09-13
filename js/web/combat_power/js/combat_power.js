@@ -26,11 +26,6 @@ let CombatPower = {
 		guild_expedition: '_gex',
 		battleground: '_gbg'
 	},
-	percent:(type)=>{
-		let GRtest = new RegExp("guild_raids_.*?_start")
-		if (GRtest.test(type)) return ""
-		return "%"
-	},
 
 
 	Init: (keepOpen=false)=> {
@@ -155,6 +150,7 @@ let CombatPower = {
 				let icon = srcLinks.get(`/shared/icons/${y['type']}${CombatPower.Mapping[y.targetedFeature]}.png`,true)
 
 				c.push(`<span class="boost-amount">${y.value}${CombatPower.percent(y.type)} <img loading="lazy" src="${icon}" alt=""></span>`)
+				c.push(`<span class="boost-amount">${y.value}${/guild_raids_.*?_start/.test(y.type)?"":"%"} <img loading="lazy" src="${icon}" alt=""></span>`)
 			}
 
 			c.push(`</td>`)
