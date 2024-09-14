@@ -1280,10 +1280,10 @@ let Productions = {
 			
 			h.push('<tr class="settings">')
 				h.push('<th colspan="'+(colNumber+3)+'">')
-				h.push('<input type="checkbox" id="tilevalues"><label for="tilevalues">' + i18n('Boxes.ProductionsRating.ShowValuesPerTile') + '</label> - ')
-				h.push('<input type="checkbox" id="showitems"><label for="showitems">' + i18n('Boxes.ProductionsRating.ShowItems') + '</label> - ')
-				h.push('<input type="checkbox" id="showhighlighted"><label for="showhighlighted">' + i18n('Boxes.ProductionsRating.ShowHighlighted') + '</label> - ')
-				h.push('<label for="efficiencyBuidlingFilter">' + i18n('Boxes.ProductionsRating.Filter') + ":" + '</label><input type="text" id="efficiencyBuidlingFilter" size=20 placeholder="neo|eden">')
+				h.push('<input type="checkbox" id="tilevalues"><label for="tilevalues">' + i18n('Boxes.ProductionsRating.ShowValuesPerTile') + '</label>')
+				h.push('<input type="checkbox" id="showitems"><label for="showitems">' + i18n('Boxes.ProductionsRating.ShowItems') + '</label>')
+				h.push('<input type="checkbox" id="showhighlighted"><label for="showhighlighted">' + i18n('Boxes.ProductionsRating.ShowHighlighted') + '</label>')
+				h.push('<label for="efficiencyBuidlingFilter">' + i18n('Boxes.ProductionsRating.Filter') + ": " + '<input type="text" id="efficiencyBuidlingFilter" size=20 placeholder="neo|eden"></label>')
 				h.push('<a class="btn-default" id="addMetaBuilding">' + i18n('Boxes.ProductionsRating.AddBuilding') + '</a>')
 				h.push('</th>');
 			h.push('</tr>');
@@ -1322,8 +1322,8 @@ let Productions = {
 				h.push('<td class="no-sort items">'+randomItems+'</td>')
 				h.push('</tr>')
 			}
-			h.push('<tr class="highlighted-explained"><td colspan="'+(colNumber+3)+'">'+i18n('Boxes.ProductionsRating.HighlightsExplained')+'</td></tr>');
 			h.push('</tbody>');
+			h.push('<tfoot><tr class="highlighted-explained"><td colspan="'+(colNumber+3)+'">'+i18n('Boxes.ProductionsRating.HighlightsExplained')+'</td></tr></tfoot>');
 			h.push('</table>');
 				h.push('<div class="overlay"><a class="window-close" id="closeMetaBuilding"></a>')
 					h.push('<div class="content">')
@@ -1399,18 +1399,18 @@ let Productions = {
 				$('#ProductionsRatingBody .overlay .results').html("")
 				let foundBuildings = Object.values(Productions.AdditionalSpecialBuildings).filter(x => regEx.test(x.name) && x.selected).sort((a,b)=>(a.name>b.name?1:-1))
 				for (building of foundBuildings) {
-					$('#ProductionsRatingBody .overlay .results').append(`<li data-id="${building.id}">✅${building.name}</li>`)
+					$('#ProductionsRatingBody .overlay .results').append(`<li data-id="${building.id}" class="selected">${building.name}</li>`)
 				}
 				foundBuildings = Object.values(Productions.AdditionalSpecialBuildings).filter(x => regEx.test(x.name) && !x.selected).sort((a,b)=>(a.name>b.name?1:-1))
 				for (building of foundBuildings) {
-					$('#ProductionsRatingBody .overlay .results').append(`<li data-id="${building.id}">❌${building.name}</li>`)
+					$('#ProductionsRatingBody .overlay .results').append(`<li data-id="${building.id}">${building.name}</li>`)
 				}
 			}
 			filterMeta(/./)
 			$('#ProductionsRatingBody .overlay .results').on("click","li",(e)=>{
 				let id = e.target.dataset.id
-				Productions.AdditionalSpecialBuildings[id].selected =!Productions.AdditionalSpecialBuildings[id].selected;
-				e.target.innerHTML=(Productions.AdditionalSpecialBuildings[id].selected?"✅":"❌") +Productions.AdditionalSpecialBuildings[id].name
+				Productions.AdditionalSpecialBuildings[id].selected =!Productions.AdditionalSpecialBuildings[id].selected
+				e.target.classList.toggle("selected")
 			})
 			$('#ProductionsRatingSettings input[type=checkbox]').on('click', function () {
 				let elem = $(this)
