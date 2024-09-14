@@ -449,24 +449,24 @@ let Kits = {
 					//for (let i of upgradeOrder) {
 					for (let i in upgradeCount) {
 						if (!upgradeCount[i]) continue
-						upgrades += (first ? '<span class="base" title="'+i18n('Boxes.Kits.Base')+'">1</span>' : "") + `<span class="${i}">${upgradeCount[i]}</span>`
+						upgrades += (first ? '<span class="base">1</span>' : "") + `<span class="${i}">${upgradeCount[i]}</span>` //title="'+i18n('Boxes.Kits.Base')+'"
 						first = false;
 					}
 					upgrades+= '</span>'
 				}
 				if (f?.buildingList) {
-					let rating=Productions.rateBuildings(f?.buildingList?.slice(-3),true)
+					let rating=Productions.rateBuildings([kits[set].buildings[0].first,...f?.buildingList]?.slice(-3),true)
 					let title=""
 					if (!rating) break
 					for (r of rating) {
 						if (title=="") {
 							title = `${r.building.name}: ${Math.round(100 * r.score)}`
 						}else {
-							title =`${r.building.name}: ${Math.round(100 * r.score)}\n`+title
+							title =`${r.building.name}: ${Math.round(100 * r.score)}<br>`+title
 						}
 					}
 					let top=rating.pop()
-					eff = `<span class="kitsEff" title="${title}">${i18n('Boxes.Kits.Efficiency')}: `
+					eff = `<span class="kitsEff" data-original-title="${title}">${i18n('Boxes.Kits.Efficiency')}: `
 					eff += Math.round(100 * top?.score||0);
 					eff+= '</span>'
 				}
@@ -515,7 +515,7 @@ let Kits = {
 		t += '</div>';
 
 		$('#kitsBodyInner').html(t);
-		$('.upgrades').tooltip({
+		$('#kitsBodyInner [data-original-title]').tooltip({
 			html: true,
 			container: '#kits'
 		});
@@ -558,7 +558,7 @@ let Kits = {
 
 		return 	`<div class="item${((el.missing) ? ' is-missing' : '')}">
 					<div class="image"><img loading="lazy" src="${url}" alt="${title}" /></div>
-					<strong class="in-stock" title="${i18n('Boxes.Kits.InStock')}">${(item.inStock ? item.inStock : '-')}</strong>
+					<strong class="in-stock" data-original-title="${i18n('Boxes.Kits.InStock')}">${(item.inStock ? item.inStock : '-')}</strong>
 					<span>${title}</span>
 					<span class="fragments">${(el.fragments ? `<img class="ItemFragment" src="${Kits.fragmentURL}"> ` + el.fragments + '/' + el.reqFragments : '')}</span>
 				</div>`;
