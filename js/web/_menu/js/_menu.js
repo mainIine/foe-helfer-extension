@@ -935,7 +935,7 @@ let _menu = {
 	 * Castle System
 	 */
 	boost_inventory_Btn: () => {
-		let btn = _menu.MakeButton('BoostInventory', i18n('Menu.BoostInventory.Title'), i18n('Menu.BoostInventory.Desc'));
+		let btn = _menu.MakeButton('boost_inventory', i18n('Menu.BoostInventory.Title'), i18n('Menu.BoostInventory.Desc'));
 
 		let btn_sp = $('<span />').bind('click', function () {
 			BoostInventory.Init();
