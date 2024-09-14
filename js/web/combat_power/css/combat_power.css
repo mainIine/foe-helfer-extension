@@ -34,7 +34,6 @@
 #combat-power thead {
     position: sticky;
     top: 0px;
-    background: var(--text-dark);
     font-weight: 600;
 }
 
