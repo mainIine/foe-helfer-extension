@@ -519,8 +519,8 @@ p {
 	background-image: url('../images/menu/chat.png');
 }
 
-[id$=combat_power-Btn] span {
-	background-image: url('../images/menu/combat-power.png');
+[id$=BoostInventory-Btn] span {
+	background-image: url('../images/menu/boost_inventory.png');
 }
 
 [id$=settings-Btn] span {

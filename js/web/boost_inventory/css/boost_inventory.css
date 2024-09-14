@@ -12,33 +12,33 @@
  * *************************************************************************************
  */
 
-#combat-power {
+#BoostInventory {
     width: 800px;
     height: 500px;
 }
 
-#combat-power #combat-powerBody {
+#BoostInventory #BoostInventoryBody {
     overflow-x: hidden;
     overflow-y: auto;
 }
 
-#combat-power .boost-amount {
+#BoostInventory .boost-amount {
     display: inline-block;
     margin-left: 9px;
 }
 
-#combat-power td:nth-child(3) img {
+#BoostInventory td:nth-child(3) img {
     zoom: 2;
 }
 
-#combat-power thead {
+#BoostInventory thead {
     position: sticky;
     top: 0px;
     font-weight: 600;
 }
 
-#combat-power td,
-#combat-power th{
+#BoostInventory td,
+#BoostInventory th{
     &:nth-child(3) {
         text-align: center;
     }
@@ -50,7 +50,7 @@
     }
 }
 
-#combat-power .image {
+#BoostInventory .image {
 	width: 100px;
 	height: 80px;
 	display: flex;
@@ -60,7 +60,7 @@
     position: relative;
 }
 
-#combat-power .image img {
+#BoostInventory .image img {
 	display: inline-block;
 	margin: auto;
 	text-align: center;
@@ -69,7 +69,7 @@
 	image-rendering: -webkit-optimize-contrast;
 }
 
-#combat-power .in-stock {
+#BoostInventory .in-stock {
 	position: absolute;
 	top: 55px;
 	left: calc(50% + 20px);
