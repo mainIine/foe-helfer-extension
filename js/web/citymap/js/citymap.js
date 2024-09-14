@@ -1848,7 +1848,7 @@ let CityMap = {
 		}
 		else if (lookupData.type == "consumable")
 			name = lookupData.name
-		else if (lookupData.type == "goods"){
+		else if (lookupData.type == "good"){
 			name = lookupData.name.replace(/^[\+\d+\s]*/,"")
 		} else {
 			console.log("CityMap.setRewardNameFromLookupData(): undefined name from type", metaData.name, lookupData, lookupData.type, lookupData.subType)
