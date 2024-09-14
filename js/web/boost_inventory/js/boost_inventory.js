@@ -13,10 +13,10 @@
  */
 
 FoEproxy.addFoeHelperHandler('InventoryUpdated', () => {
-	if ($('#combat-power').length>0) CombatPower.Init(true);
+	if ($('#BoostInventory').length>0) BoostInventory.Init(true);
 });
 
-let CombatPower = {
+let BoostInventory = {
 
 	Buildings: [],
 
@@ -30,7 +30,7 @@ let CombatPower = {
 
 	Init: (keepOpen=false)=> {
 
-		CombatPower.Buildings = []
+		BoostInventory.Buildings = []
 
 		for(let id in MainParser.CityEntities) {
 			if(!MainParser.CityEntities.hasOwnProperty(id)){
@@ -44,7 +44,8 @@ let CombatPower = {
 
 			let entity = MainParser.CityEntities[id],
 				asset_id = entity['asset_id'],
-				ageBoost = entity['components'][CurrentEra],
+				ageBoost = entity['components']?.[CurrentEra]?.boosts?.boosts,
+				allageBoost = entity['components']?.AllAge?.boosts?.boosts,
 				sizes = entity['components']['AllAge']['placement']['size']
 
 
@@ -56,23 +57,20 @@ let CombatPower = {
 				let InventoryItem = MainParser.Inventory[i]
 
 				if(InventoryItem['item']['cityEntityId'] === asset_id){
-					if(ageBoost === undefined){
+					if(ageBoost === undefined && allageBoost === undefined){
 						continue
 					}
 
-					if(ageBoost['boosts'] === undefined){
-						continue
-					}
+					let boosts = (ageBoost||[]).concat(allageBoost||[]),
+						rating = Productions.rateBuildings([id],true)[0]
 
-					let rating = Productions.rateBuildings([id],true)[0]
-
-					CombatPower.Buildings.push({
+					BoostInventory.Buildings.push({
 						id: id,
 						asset_id: asset_id,
 						width: sizes['y'],
 						length: sizes['x'],
 						stock: InventoryItem['inStock'],
-						boosts: ageBoost['boosts']['boosts'],
+						boosts: boosts,
 						name: entity['name'],
 						street: rating.building.needsStreet || 0,
 						score: rating.score
@@ -83,29 +81,22 @@ let CombatPower = {
 			}
 		}
 
-		//console.log(CombatPower.Buildings)
+		//console.log(BoostInventory.Buildings)
 
-		CombatPower.BuildBox(keepOpen)
+		BoostInventory.BuildBox(keepOpen)
 	},
 	
-	percent:(type)=>{
-		let GRtest = new RegExp("guild_raids_.*?_start")
-		if (GRtest.test(type)) return ""
-		return "%"
-	},
-
-
 	BuildBox: (keepOpen=false) => {
 
-		if ($('#combat-power').length > 0)
+		if ($('#BoostInventory').length > 0)
 		{
 			if (!keepOpen) {
-				HTML.CloseOpenBox('combat-power')
+				HTML.CloseOpenBox('BoostInventory')
 				return
 			}
 		} else {
 			HTML.Box({
-				id: 'combat-power',
+				id: 'BoostInventory',
 				title: i18n('Boxes.CombatCalculator.Title'),
 				//ask: i18n('Boxes.CombatCalculator.HelpLink'),
 				auto_close: true,
@@ -113,7 +104,7 @@ let CombatPower = {
 				minimize: true,
 				resize: true
 			})
-			HTML.AddCssFile('combat_power')
+			HTML.AddCssFile('boost_inventory')
 		}
 
 		let c = []
@@ -139,8 +130,8 @@ let CombatPower = {
 			1:`</span><img src="${srcLinks.get('/shared/icons/road_required.png',true)}" alt="">`,
 			2:`</span><img src="${srcLinks.get('/shared/icons/street_required.png',true)}" alt="">`,
 		}
-		CombatPower.Buildings.sort((a,b)=>b.score-a.score)
-		for(let b of CombatPower.Buildings){
+		BoostInventory.Buildings.sort((a,b)=>b.score-a.score)
+		for(let b of BoostInventory.Buildings){
 			
 			c.push(`<tr>`)
 
@@ -153,9 +144,8 @@ let CombatPower = {
 			c.push(`<td>`)
 	
 			for(let y of Object.values(b.boosts)){
-				let icon = srcLinks.get(`/shared/icons/${y['type']}${CombatPower.Mapping[y.targetedFeature]}.png`,true)
+				let icon = srcLinks.get(`/shared/icons/${y['type']}${BoostInventory.Mapping[y.targetedFeature]}.png`,true)
 
-				c.push(`<span class="boost-amount">${y.value}${CombatPower.percent(y.type)} <img loading="lazy" src="${icon}" alt=""></span>`)
 				c.push(`<span class="boost-amount">${y.value}${/guild_raids_.*?_start/.test(y.type)?"":"%"} <img loading="lazy" src="${icon}" alt=""></span>`)
 			}
 
@@ -169,6 +159,6 @@ let CombatPower = {
 
 		c.push(`</table>`)
 
-		$('#combat-powerBody').html(c.join(''))
+		$('#BoostInventoryBody').html(c.join(''))
 	},
 }

@@ -63,7 +63,7 @@ let _menu = {
 		'compare_friends_threads',
 		'discord',
 		'findGB',
-		'combat_power'
+		'boost_inventory'
 		//'qiMap'
 		// 'marketOffers',
 	],
@@ -934,11 +934,11 @@ let _menu = {
 	/**
 	 * Castle System
 	 */
-	combat_power_Btn: () => {
-		let btn = _menu.MakeButton('combat_power', i18n('Menu.CombatPower.Title'), i18n('Menu.CombatPower.Desc'));
+	boost_inventory_Btn: () => {
+		let btn = _menu.MakeButton('BoostInventory', i18n('Menu.BoostInventory.Title'), i18n('Menu.BoostInventory.Desc'));
 
 		let btn_sp = $('<span />').bind('click', function () {
-			CombatPower.Init();
+			BoostInventory.Init();
 		});
 
 		return btn.append(btn_sp);
