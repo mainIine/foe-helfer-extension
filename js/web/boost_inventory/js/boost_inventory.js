@@ -127,8 +127,8 @@ let BoostInventory = {
 
 		let streetImg = {
 			0:"",
-			1:`</span><img src="${srcLinks.get('/shared/icons/road_required.png',true)}" alt="">`,
-			2:`</span><img src="${srcLinks.get('/shared/icons/street_required.png',true)}" alt="">`,
+			1:`</span><img src="${srcLinks.get('/shared/icons/road_required.png',true)}" data-original-title="${i18n('Boxes.CombatCalculator.RoadRequired')}">`,
+			2:`</span><img src="${srcLinks.get('/shared/icons/street_required.png',true)}" data-original-title="${i18n('Boxes.CombatCalculator.StreetRequired')}">`,
 		}
 		BoostInventory.Buildings.sort((a,b)=>b.score-a.score)
 		for(let b of BoostInventory.Buildings){
@@ -160,5 +160,6 @@ let BoostInventory = {
 		c.push(`</table>`)
 
 		$('#BoostInventoryBody').html(c.join(''))
+		$('#BoostInventoryBody img').tooltip()
 	},
 }
