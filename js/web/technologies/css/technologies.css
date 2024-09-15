@@ -107,14 +107,14 @@
 	background-color: var(--black-50);
 }
 
-#technologies #technologiesBody .goods-sprite-50.sm {
+#technologies #technologiesBody .sprite-50.sm {
 	width: 25px;
 	height: 25px;
 	text-align: center;
 }
 
-#technologies #technologiesBody .goods-sprite-50.sm::before { 
-	zoom: 0.7; 
+#technologies #technologiesBody .sprite-50.sm::before { 
+	zoom: 0.35; 
 	overflow: hidden;
 	display: inline-block;
 }
