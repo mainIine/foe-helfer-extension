@@ -420,7 +420,7 @@ let Technologies = {
                     let Diff = Stock - Required;
 
                     h.push('<tr>');
-                    h.push('<td class="goods-image" style="width:25px"><span class="goods-sprite sprite-50 sm '+ GoodsData[ResourceName]['id'] +'"></span></td>');
+                    h.push('<td class="goods-image" style="width:25px"><span class="goods-sprite sprite-35 '+ GoodsData[ResourceName]['id'] +'"></span></td>');
                     h.push('<td>' + GoodsData[ResourceName]['name'] + '</td>');
                     h.push('<td>' + HTML.Format(Required) + '</td>');
                     h.push('<td>' + HTML.Format(Stock) + '</td>');

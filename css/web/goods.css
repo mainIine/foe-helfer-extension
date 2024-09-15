@@ -30,6 +30,7 @@
         zoom:0.8;
     }
     &.sprite-50::before{zoom:0.5;}
+    &.sprite-35::before{zoom:0.35;}
 
     &.guild_raids_supplies::before{background-position:-1px -1px;width:86px;height:85px}
     &.guild_raids_money::before{background-position:-1px -88px;width:78px;height:64px}

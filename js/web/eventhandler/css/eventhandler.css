@@ -75,15 +75,14 @@
     text-align: left;
 }
 
-#moppelhelper #moppelhelperBody .events-sprite-50.sm {
+#moppelhelper #moppelhelperBody .events-sprite-35 {
     text-align: center;
 	display: inline-block;
     margin-right: 2px;
     vertical-align: text-bottom;
 }
 
-#moppelhelper #moppelhelperBody .events-sprite-50.sm::before {
-    zoom: 0.7;
+#moppelhelper #moppelhelperBody .events-sprite-35::before {
     overflow: hidden;
     position: static;
     display: inline-block;
