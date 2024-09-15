@@ -461,14 +461,14 @@
     background-color: var(--background-table-odd);
 }
 
-#GuildMemberStat .goods-sprite-50.sm {
+#GuildMemberStat .sprite-50.sm {
     width: 25px;
     height: 19px;
     vertical-align: middle;
 }
 
-#GuildMemberStat .goods-sprite-50.sm::before {
-    zoom: 0.7;
+#GuildMemberStat .sprite-50.sm::before {
+    zoom: 0.35;
     overflow: hidden;
     position: static;
     display: inline-block;

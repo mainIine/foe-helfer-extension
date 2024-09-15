@@ -318,7 +318,7 @@ let Outposts = {
 		{
 			let IconID = resourceID;
 			if (resourceID === 'barley' || resourceID === 'pottery' || resourceID === 'flowers' || resourceID === 'sacrificial_offerings') IconID = 'fine_' + IconID;
-			t.push(`<th class="text-center"><span class="goods-sprite-50 ${IconID} goods-name" title="${GoodsData[resourceID].name}"></span></th>`);
+			t.push(`<th class="text-center"><span class="goods-sprite sprite-50 ${IconID} goods-name" title="${GoodsData[resourceID].name}"></span></th>`);
 		}
 
 		t.push('</tr>');

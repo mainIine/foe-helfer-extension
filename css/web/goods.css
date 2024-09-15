@@ -12,664 +12,370 @@
  * *************************************************************************************
  */
 
-.goods-sprite {display:inline-block;height:3em;position: relative;}
-.goods-sprite::before {content:"";display:block;background:url('../images/goods/fine_goods_large_0.png') top left no-repeat;background-size:965px 566px;position:absolute;top:0;right:0;bottom:0;left:0;margin:auto}
-.goods-sprite.guild_raids_supplies::before{background-position:-1px -1px;width:86px;height:85px}
-.goods-sprite.guild_raids_money::before{background-position:-1px -88px;width:78px;height:64px}
-.goods-sprite.guild_raids_action_points::before{background-position:-89px -1px;width:75px;height:66px}
-.goods-sprite.goods::before{background-position:-1px -154px;width:70px;height:58px}
-.goods-sprite.corals::before{background-position:-166px -1px;width:64px;height:64px}
-.goods-sprite.fine_corals::before{background-position:-166px -1px;width:64px;height:64px}
-.goods-sprite.fine_guild_raids_ebony::before{background-position:-1px -214px;width:64px;height:64px}
-.goods-sprite.guild_raids_ebony::before{background-position:-1px -214px;width:64px;height:64px}
-.goods-sprite.fine_guild_raids_gems::before{background-position:-232px -1px;width:64px;height:63px}
-.goods-sprite.guild_raids_gems::before{background-position:-232px -1px;width:64px;height:63px}
-.goods-sprite.fine_orichalcum::before{background-position:-1px -280px;width:64px;height:63px}
-.goods-sprite.orichalcum::before{background-position:-1px -280px;width:64px;height:63px}
-.goods-sprite.icon_fine_wire::before{background-position:-298px -1px;width:64px;height:63px}
-.goods-sprite.wire::before{background-position:-298px -1px;width:64px;height:63px}
-.goods-sprite.biolight::before{background-position:-1px -345px;width:62px;height:64px}
-.goods-sprite.fine_biolight::before{background-position:-1px -345px;width:62px;height:64px}
-.goods-sprite.fine_machineparts::before{background-position:-364px -1px;width:63px;height:63px}
-.goods-sprite.machineparts::before{background-position:-364px -1px;width:63px;height:63px}
-.goods-sprite.fine_wool::before{background-position:-429px -1px;width:63px;height:63px}
-.goods-sprite.wool::before{background-position:-429px -1px;width:63px;height:63px}
-.goods-sprite.bionics::before{background-position:-1px -411px;width:61px;height:64px;transform:rotate(-90deg)}
-.goods-sprite.fine_bionics_research_lab::before{background-position:-1px -411px;width:61px;height:64px;transform:rotate(-90deg)}
-.goods-sprite.fine_guild_raids_limestone::before{background-position:-494px -1px;width:64px;height:61px}
-.goods-sprite.guild_raids_limestone::before{background-position:-494px -1px;width:64px;height:61px}
-.goods-sprite.ebony::before{background-position:-1px -477px;width:62px;height:63px;transform:rotate(-90deg)}
-.goods-sprite.icon_fine_ebony_tree::before{background-position:-1px -477px;width:62px;height:63px;transform:rotate(-90deg)}
-.goods-sprite.fine_tinplate::before{background-position:-560px -1px;width:62px;height:61px}
-.goods-sprite.tinplate::before{background-position:-560px -1px;width:62px;height:61px}
-.goods-sprite.fine_mars_microbes::before{background-position:-624px -1px;width:62px;height:61px;transform:rotate(-90deg)}
-.goods-sprite.mars_microbes::before{background-position:-624px -1px;width:62px;height:61px;transform:rotate(-90deg)}
-.goods-sprite.asbestos::before{background-position:-688px -1px;width:62px;height:62px}
-.goods-sprite.fine_asbestos::before{background-position:-688px -1px;width:62px;height:62px}
-.goods-sprite.fine_tea_silk::before{background-position:-752px -1px;width:62px;height:62px}
-.goods-sprite.tea_silk::before{background-position:-752px -1px;width:62px;height:62px}
-.goods-sprite.ferroconcrete::before{background-position:-816px -1px;width:64px;height:58px}
-.goods-sprite.fine_ferroconcrete::before{background-position:-816px -1px;width:64px;height:58px}
-.goods-sprite.fine_guild_raids_lead::before{background-position:-882px -1px;width:64px;height:57px}
-.goods-sprite.guild_raids_lead::before{background-position:-882px -1px;width:64px;height:57px}
-.goods-sprite.herbs::before{background-position:-89px -69px;width:64px;height:45px}
-.goods-sprite.icon_fine_herbs::before{background-position:-89px -69px;width:64px;height:45px}
-.goods-sprite.fine_herbal_snack::before{background-position:-81px -116px;width:64px;height:48px}
-.goods-sprite.herbal_snack::before{background-position:-81px -116px;width:64px;height:48px}
-.goods-sprite.fine_unknown_dna::before{background-position:-73px -166px;width:64px;height:53px;transform:rotate(-90deg)}
-.goods-sprite.unknown_dna::before{background-position:-73px -166px;width:64px;height:53px;transform:rotate(-90deg)}
-.goods-sprite.fine_superconductors::before{background-position:-67px -221px;width:63px;height:59px}
-.goods-sprite.superconductors::before{background-position:-67px -221px;width:63px;height:59px}
-.goods-sprite.icon_fine_hemp::before{background-position:-67px -282px;width:63px;height:59px;transform:rotate(-90deg)}
-.goods-sprite.ropes::before{background-position:-67px -282px;width:63px;height:59px;transform:rotate(-90deg)}
-.goods-sprite.fine_preservatives::before{background-position:-132px -221px;width:54px;height:64px}
-.goods-sprite.preservatives::before{background-position:-132px -221px;width:54px;height:64px}
-.goods-sprite.gunpowder::before{background-position:-139px -166px;width:48px;height:53px}
-.goods-sprite.icon_fine_gunpowder::before{background-position:-139px -166px;width:48px;height:53px}
-.goods-sprite.fine_guild_raids_cloth::before{background-position:-132px -287px;width:54px;height:57px}
-.goods-sprite.guild_raids_cloth::before{background-position:-132px -287px;width:54px;height:57px}
-.goods-sprite.electromagnets::before{background-position:-147px -116px;width:45px;height:48px}
-.goods-sprite.fine_magnet_factory::before{background-position:-147px -116px;width:45px;height:48px}
-.goods-sprite.fine_luxury_materials::before{background-position:-155px -69px;width:60px;height:45px}
-.goods-sprite.luxury_materials::before{background-position:-155px -69px;width:60px;height:45px}
-.goods-sprite.compressed_matter_capsule::before{background-position:-194px -116px;width:25px;height:49px}
-.goods-sprite.fine_compressed_matter_capsule::before{background-position:-194px -116px;width:25px;height:49px}
-.goods-sprite.fine_plastics_plant::before{background-position:-189px -167px;width:30px;height:63px}
-.goods-sprite.plastics::before{background-position:-189px -167px;width:30px;height:63px}
-.goods-sprite.basalt::before{background-position:-188px -232px;width:54px;height:64px;transform:rotate(-90deg)}
-.goods-sprite.icon_fine_basalt::before{background-position:-188px -232px;width:54px;height:64px;transform:rotate(-90deg)}
-.goods-sprite.fine_microgreen_supplement::before{background-position:-188px -298px;width:61px;height:46px;transform:rotate(-90deg)}
-.goods-sprite.microgreen_supplement::before{background-position:-188px -298px;width:61px;height:46px;transform:rotate(-90deg)}
-.goods-sprite.convenience_food::before{background-position:-67px -343px;width:63px;height:38px;transform:rotate(-90deg)}
-.goods-sprite.fine_convenience_food::before{background-position:-67px -343px;width:63px;height:38px;transform:rotate(-90deg)}
-.goods-sprite.fine_nanites::before{background-position:-132px -346px;width:64px;height:56px}
-.goods-sprite.nanites::before{background-position:-132px -346px;width:64px;height:56px}
-.goods-sprite.cypress::before{background-position:-198px -346px;width:51px;height:61px}
-.goods-sprite.icon_fine_cypress::before{background-position:-198px -346px;width:51px;height:61px}
-.goods-sprite.icon_fine_paper::before{background-position:-65px -383px;width:64px;height:57px}
-.goods-sprite.paper::before{background-position:-65px -383px;width:64px;height:57px}
-.goods-sprite.fine_pearls::before{background-position:-131px -404px;width:64px;height:57px;transform:rotate(-90deg)}
-.goods-sprite.pearls::before{background-position:-131px -404px;width:64px;height:57px;transform:rotate(-90deg)}
-.goods-sprite.fine_coconuts::before{background-position:-197px -409px;width:62px;height:52px}
-.goods-sprite.fine_mead::before{background-position:-65px -442px;width:60px;height:62px}
-.goods-sprite.mead::before{background-position:-65px -442px;width:60px;height:62px}
-.goods-sprite.gems::before{background-position:-65px -506px;width:62px;height:59px}
-.goods-sprite.icon_fine_rough_gems::before{background-position:-65px -506px;width:62px;height:59px}
-.goods-sprite.icon_fine_porcelain::before{background-position:-127px -463px;width:62px;height:41px}
-.goods-sprite.porcelain::before{background-position:-127px -463px;width:62px;height:41px}
-.goods-sprite.fine_venus_carbon::before{background-position:-129px -506px;width:61px;height:59px;transform:rotate(-90deg)}
-.goods-sprite.venus_carbon::before{background-position:-129px -506px;width:61px;height:59px;transform:rotate(-90deg)}
-.goods-sprite.filters::before{background-position:-191px -463px;width:57px;height:41px;transform:rotate(-90deg)}
-.goods-sprite.fine_filters::before{background-position:-191px -463px;width:57px;height:41px;transform:rotate(-90deg)}
-.goods-sprite.axes::before{background-position:-192px -506px;width:60px;height:59px}
-.goods-sprite.fine_axes::before{background-position:-192px -506px;width:60px;height:59px}
-.goods-sprite.coffee::before{background-position:-816px -61px;width:63px;height:47px}
-.goods-sprite.icon_fine_coffee::before{background-position:-816px -61px;width:63px;height:47px}
-.goods-sprite.fine_whale::before{background-position:-494px -64px;width:63px;height:48px;transform:rotate(-90deg)}
-.goods-sprite.whaleoil::before{background-position:-494px -64px;width:63px;height:48px;transform:rotate(-90deg)}
-.goods-sprite.fine_paintings::before{background-position:-559px -64px;width:63px;height:49px}
-.goods-sprite.paintings::before{background-position:-559px -64px;width:63px;height:49px}
-.goods-sprite.fine_instruments::before{background-position:-624px -64px;width:62px;height:52px;transform:rotate(-90deg)}
-.goods-sprite.instruments::before{background-position:-624px -64px;width:62px;height:52px;transform:rotate(-90deg)}
-.goods-sprite.fine_textiles::before{background-position:-688px -65px;width:63px;height:54px}
-.goods-sprite.textiles::before{background-position:-688px -65px;width:63px;height:54px}
-.goods-sprite.fine_lotus::before{background-position:-753px -65px;width:61px;height:54px}
-.goods-sprite.lotus::before{background-position:-753px -65px;width:61px;height:54px}
-.goods-sprite.fine_superalloys::before{background-position:-816px -110px;width:62px;height:45px}
-.goods-sprite.superalloys::before{background-position:-816px -110px;width:62px;height:45px}
-.goods-sprite.fine_upcycled_hydrocarbons::before{background-position:-217px -67px;width:43px;height:47px}
-.goods-sprite.upcycled_hydrocarbons::before{background-position:-217px -67px;width:43px;height:47px}
-.goods-sprite.armor::before{background-position:-262px -66px;width:62px;height:53px;transform:rotate(-90deg)}
-.goods-sprite.fine_armor::before{background-position:-262px -66px;width:62px;height:53px;transform:rotate(-90deg)}
-.goods-sprite.fine_petroleum::before{background-position:-326px -66px;width:62px;height:57px;transform:rotate(-90deg)}
-.goods-sprite.petroleum::before{background-position:-326px -66px;width:62px;height:57px;transform:rotate(-90deg)}
-.goods-sprite.brick::before{background-position:-390px -66px;width:61px;height:57px}
-.goods-sprite.icon_fine_brick_clay::before{background-position:-390px -66px;width:61px;height:57px}
-.goods-sprite.alabaster::before{background-position:-453px -66px;width:39px;height:59px}
-.goods-sprite.icon_fine_alabaster::before{background-position:-453px -66px;width:39px;height:59px}
-.goods-sprite.fine_papercrete::before{background-position:-221px -116px;width:37px;height:58px;transform:rotate(-90deg)}
-.goods-sprite.papercrete::before{background-position:-221px -116px;width:37px;height:58px;transform:rotate(-90deg)}
-.goods-sprite.fine_topological_records::before{background-position:-221px -176px;width:46px;height:54px}
-.goods-sprite.topological_records::before{background-position:-221px -176px;width:46px;height:54px}
-.goods-sprite.fine_mars_ore::before{background-position:-260px -121px;width:61px;height:53px;transform:rotate(-90deg)}
-.goods-sprite.mars_ore::before{background-position:-260px -121px;width:61px;height:53px;transform:rotate(-90deg)}
-.goods-sprite.icon_fine_tar::before{background-position:-323px -125px;width:61px;height:49px}
-.goods-sprite.tar::before{background-position:-323px -125px;width:61px;height:49px}
-.goods-sprite.fine_sugar_crystals::before{background-position:-269px -176px;width:61px;height:55px}
-.goods-sprite.sugar_crystals::before{background-position:-269px -176px;width:61px;height:55px}
-.goods-sprite.granite::before{background-position:-386px -125px;width:61px;height:51px}
-.goods-sprite.icon_fine_granite::before{background-position:-386px -125px;width:61px;height:51px}
-.goods-sprite.fine_headdress::before{background-position:-332px -176px;width:52px;height:56px}
-.goods-sprite.headdress::before{background-position:-332px -176px;width:52px;height:56px}
-.goods-sprite.fine_robotics_factory::before{background-position:-386px -178px;width:61px;height:56px;transform:rotate(-90deg)}
-.goods-sprite.robots::before{background-position:-386px -178px;width:61px;height:56px;transform:rotate(-90deg)}
-.goods-sprite.fine_nutrition_food::before{background-position:-449px -127px;width:46px;height:61px}
-.goods-sprite.nutrition_research::before{background-position:-449px -127px;width:46px;height:61px}
-.goods-sprite.fine_horns::before{background-position:-497px -114px;width:60px;height:61px}
-.goods-sprite.horns::before{background-position:-497px -114px;width:60px;height:61px}
-.goods-sprite.data_crystals::before{background-position:-559px -115px;width:61px;height:60px}
-.goods-sprite.fine_data_crystals::before{background-position:-559px -115px;width:61px;height:60px}
-.goods-sprite.fine_plankton::before{background-position:-622px -118px;width:61px;height:60px;transform:rotate(-90deg)}
-.goods-sprite.plankton::before{background-position:-622px -118px;width:61px;height:60px;transform:rotate(-90deg)}
-.goods-sprite.fine_golden_rice::before{background-position:-685px -121px;width:61px;height:61px}
-.goods-sprite.golden_rice::before{background-position:-685px -121px;width:61px;height:61px}
-.goods-sprite.explosives::before{background-position:-748px -121px;width:60px;height:60px}
-.goods-sprite.fine_explosives::before{background-position:-748px -121px;width:60px;height:60px}
-.goods-sprite.fine_rubber::before{background-position:-244px -233px;width:60px;height:59px}
-.goods-sprite.rubber::before{background-position:-244px -233px;width:60px;height:59px}
-.goods-sprite.icon_fine_lead_ore::before{background-position:-251px -294px;width:52px;height:61px;transform:rotate(-90deg)}
-.goods-sprite.lead::before{background-position:-251px -294px;width:52px;height:61px;transform:rotate(-90deg)}
-.goods-sprite.asteroid_ice::before{background-position:-251px -357px;width:59px;height:50px;transform:rotate(-90deg)}
-.goods-sprite.fine_asteroid_ice::before{background-position:-251px -357px;width:59px;height:50px;transform:rotate(-90deg)}
-.goods-sprite.dye::before{background-position:-261px -409px;width:49px;height:54px;transform:rotate(-90deg)}
-.goods-sprite.icon_fine_flowers::before{background-position:-261px -409px;width:49px;height:54px;transform:rotate(-90deg)}
-.goods-sprite.fine_glowing_seaweed::before{background-position:-306px -234px;width:60px;height:58px;transform:rotate(-90deg)}
-.goods-sprite.glowing_seaweed::before{background-position:-306px -234px;width:60px;height:58px;transform:rotate(-90deg)}
-.goods-sprite.basmati::before{background-position:-305px -294px;width:59px;height:59px}
-.goods-sprite.fine_basmati::before{background-position:-305px -294px;width:59px;height:59px}
-.goods-sprite.icon_fine_silkworm_cocoons::before{background-position:-312px -355px;width:53px;height:60px;transform:rotate(-90deg)}
-.goods-sprite.silk::before{background-position:-312px -355px;width:53px;height:60px;transform:rotate(-90deg)}
-.goods-sprite.fine_soy_proteins::before{background-position:-312px -417px;width:57px;height:46px;transform:rotate(-90deg)}
-.goods-sprite.soy_proteins::before{background-position:-312px -417px;width:57px;height:46px;transform:rotate(-90deg)}
-.goods-sprite.brass::before{background-position:-368px -236px;width:60px;height:56px;transform:rotate(-90deg)}
-.goods-sprite.icon_fine_brass_ore::before{background-position:-368px -236px;width:60px;height:56px;transform:rotate(-90deg)}
-.goods-sprite.dark_matter::before{background-position:-366px -294px;width:59px;height:59px}
-.goods-sprite.fine_dark_matter::before{background-position:-366px -294px;width:59px;height:59px}
-.goods-sprite.fine_fresh_fish::before{background-position:-367px -355px;width:56px;height:60px}
-.goods-sprite.icon_fine_talc::before{background-position:-371px -417px;width:52px;height:46px}
-.goods-sprite.talc::before{background-position:-371px -417px;width:52px;height:46px}
-.goods-sprite.bio_creatures::before{background-position:-449px -190px;width:53px;height:44px;transform:rotate(-90deg)}
-.goods-sprite.fine_bio_creatures::before{background-position:-449px -190px;width:53px;height:44px;transform:rotate(-90deg)}
-.goods-sprite.fine_soy::before{background-position:-430px -236px;width:59px;height:57px;transform:rotate(-90deg)}
-.goods-sprite.soy::before{background-position:-430px -236px;width:59px;height:57px;transform:rotate(-90deg)}
-.goods-sprite.cryptocash::before{background-position:-427px -295px;width:59px;height:58px}
-.goods-sprite.fine_cryptocash::before{background-position:-427px -295px;width:59px;height:58px}
-.goods-sprite.fine_catamarans::before{background-position:-425px -355px;width:59px;height:58px}
-.goods-sprite.fine_random_guild_raids_goods::before{background-position:-425px -415px;width:60px;height:49px}
-.goods-sprite.crystallized_hydrocarbons::before{background-position:-504px -177px;width:59px;height:58px;transform:rotate(-90deg)}
-.goods-sprite.fine_crystallized_hydrocarbons::before{background-position:-504px -177px;width:59px;height:58px;transform:rotate(-90deg)}
-.goods-sprite.dna_data::before{background-position:-565px -177px;width:55px;height:57px}
-.goods-sprite.fine_dna_data::before{background-position:-565px -177px;width:55px;height:57px}
-.goods-sprite.fine_lubricants::before{background-position:-622px -180px;width:59px;height:54px;transform:rotate(-90deg)}
-.goods-sprite.lubricants::before{background-position:-622px -180px;width:59px;height:54px;transform:rotate(-90deg)}
-.goods-sprite.fertilizer::before{background-position:-683px -184px;width:60px;height:51px}
-.goods-sprite.fine_fertilizer::before{background-position:-683px -184px;width:60px;height:51px}
-.goods-sprite.fine_platinum_crystals::before{background-position:-491px -237px;width:59px;height:58px;transform:rotate(-90deg)}
-.goods-sprite.platinum_crystals::before{background-position:-491px -237px;width:59px;height:58px;transform:rotate(-90deg)}
-.goods-sprite.glass::before{background-position:-488px -297px;width:59px;height:58px;transform:rotate(-90deg)}
-.goods-sprite.icon_fine_quartz::before{background-position:-488px -297px;width:59px;height:58px;transform:rotate(-90deg)}
-.goods-sprite.icon_fine_limestone::before{background-position:-486px -357px;width:58px;height:56px}
-.goods-sprite.limestone::before{background-position:-486px -357px;width:58px;height:56px}
-.goods-sprite.fine_processed_material::before{background-position:-487px -415px;width:58px;height:50px}
-.goods-sprite.processed_material::before{background-position:-487px -415px;width:58px;height:50px}
-.goods-sprite.bromine::before{background-position:-250px -465px;width:57px;height:37px;transform:rotate(-90deg)}
-.goods-sprite.fine_bromine::before{background-position:-250px -465px;width:57px;height:37px;transform:rotate(-90deg)}
-.goods-sprite.biotech_crops::before{background-position:-254px -504px;width:47px;height:61px}
-.goods-sprite.fine_biotech_crops::before{background-position:-254px -504px;width:47px;height:61px}
-.goods-sprite.fine_fusion_reactors::before{background-position:-309px -465px;width:60px;height:47px;transform:rotate(-90deg)}
-.goods-sprite.fusion_reactors::before{background-position:-309px -465px;width:60px;height:47px;transform:rotate(-90deg)}
-.goods-sprite.fine_maize::before{background-position:-303px -514px;width:55px;height:51px}
-.goods-sprite.maize::before{background-position:-303px -514px;width:55px;height:51px}
-.goods-sprite.fine_barley::before{background-position:-360px -514px;width:55px;height:51px;transform:rotate(-90deg)}
-.goods-sprite.icon_fine_marble::before{background-position:-371px -465px;width:52px;height:47px;transform:rotate(-90deg)}
-.goods-sprite.marble::before{background-position:-371px -465px;width:52px;height:47px;transform:rotate(-90deg)}
-.goods-sprite.icon_fine_crude_salt::before{background-position:-417px -514px;width:52px;height:51px;transform:rotate(-90deg)}
-.goods-sprite.salt::before{background-position:-417px -514px;width:52px;height:51px;transform:rotate(-90deg)}
-.goods-sprite.experimental_data::before{background-position:-425px -466px;width:49px;height:46px;transform:rotate(-90deg)}
-.goods-sprite.fine_experimental_data::before{background-position:-425px -466px;width:49px;height:46px;transform:rotate(-90deg)}
-.goods-sprite.deep_space_data::before{background-position:-471px -514px;width:50px;height:51px;transform:rotate(-90deg)}
-.goods-sprite.fine_deep_space_data::before{background-position:-471px -514px;width:50px;height:51px;transform:rotate(-90deg)}
-.goods-sprite.fine_semiconductors::before{background-position:-476px -467px;width:57px;height:45px}
-.goods-sprite.semiconductors::before{background-position:-476px -467px;width:57px;height:45px}
-.goods-sprite.fine_kava::before{background-position:-810px -157px;width:59px;height:52px;transform:rotate(-90deg)}
-.goods-sprite.honey::before{background-position:-552px -237px;width:42px;height:58px}
-.goods-sprite.icon_fine_honeycombs::before{background-position:-552px -237px;width:42px;height:58px}
-.goods-sprite.algae::before{background-position:-596px -236px;width:56px;height:57px}
-.goods-sprite.fine_algae::before{background-position:-596px -236px;width:56px;height:57px}
-.goods-sprite.fine_random_goods::before{background-position:-549px -297px;width:47px;height:58px;transform:rotate(-90deg)}
-.goods-sprite.random_goods::before{background-position:-549px -297px;width:47px;height:58px;transform:rotate(-90deg)}
-.goods-sprite.fine_transester_gas::before{background-position:-598px -295px;width:54px;height:58px;transform:rotate(-90deg)}
-.goods-sprite.transester_gas::before{background-position:-598px -295px;width:54px;height:58px;transform:rotate(-90deg)}
-.goods-sprite.fine_flowers::before{background-position:-546px -357px;width:50px;height:56px}
-.goods-sprite.fine_nickel::before{background-position:-598px -355px;width:55px;height:57px}
-.goods-sprite.nickel::before{background-position:-598px -355px;width:55px;height:57px}
-.goods-sprite.fine_packaging::before{background-position:-547px -415px;width:49px;height:50px;transform:rotate(-90deg)}
-.goods-sprite.packaging::before{background-position:-547px -415px;width:49px;height:50px;transform:rotate(-90deg)}
-.goods-sprite.fine_spices::before{background-position:-598px -414px;width:55px;height:52px;transform:rotate(-90deg)}
-.goods-sprite.spices::before{background-position:-598px -414px;width:55px;height:52px;transform:rotate(-90deg)}
-.goods-sprite.icon_fine_gbg_resource::before{background-position:-535px -467px;width:58px;height:47px}
-.goods-sprite.fine_smart_materials::before{background-position:-523px -516px;width:54px;height:49px}
-.goods-sprite.smart_materials::before{background-position:-523px -516px;width:54px;height:49px}
-.goods-sprite.enhanced_porifera::before{background-position:-579px -516px;width:48px;height:49px}
-.goods-sprite.fine_enhanced_porifera::before{background-position:-579px -516px;width:48px;height:49px}
-.goods-sprite.unit_class_guild_raids_short_ranged::before{background-position:-595px -468px;width:45px;height:46px}
-.goods-sprite.ai_data::before{background-position:-629px -516px;width:35px;height:49px;transform:rotate(-90deg)}
-.goods-sprite.fine_ai_data::before{background-position:-629px -516px;width:35px;height:49px;transform:rotate(-90deg)}
-.goods-sprite.fine_saree::before{background-position:-654px -237px;width:56px;height:57px}
-.goods-sprite.saree::before{background-position:-654px -237px;width:56px;height:57px}
-.goods-sprite.biogeochemical_data::before{background-position:-654px -296px;width:56px;height:56px}
-.goods-sprite.fine_biogeochemical_data::before{background-position:-654px -296px;width:56px;height:56px}
-.goods-sprite.fine_flavorants::before{background-position:-655px -354px;width:55px;height:56px}
-.goods-sprite.flavorants::before{background-position:-655px -354px;width:55px;height:56px}
-.goods-sprite.fine_steel::before{background-position:-655px -412px;width:56px;height:54px}
-.goods-sprite.steel::before{background-position:-655px -412px;width:56px;height:54px}
-.goods-sprite.unit_class_long_ranged::before{background-position:-642px -468px;width:45px;height:46px;transform:rotate(-90deg)}
-.goods-sprite.fine_liquid_binder::before{background-position:-666px -516px;width:28px;height:49px}
-.goods-sprite.liquid_binder::before{background-position:-666px -516px;width:28px;height:49px}
-.goods-sprite.icon_fine_sandstone::before{background-position:-712px -237px;width:42px;height:58px;transform:rotate(-90deg)}
-.goods-sprite.sandstone::before{background-position:-712px -237px;width:42px;height:58px;transform:rotate(-90deg)}
-.goods-sprite.icon_fine_gex_resource::before{background-position:-712px -297px;width:47px;height:58px;transform:rotate(-90deg)}
-.goods-sprite.fine_paper_batteries::before{background-position:-712px -357px;width:57px;height:53px}
-.goods-sprite.paper_batteries::before{background-position:-712px -357px;width:57px;height:53px}
-.goods-sprite.bioplastics::before{background-position:-713px -412px;width:56px;height:55px}
-.goods-sprite.fine_bioplastics::before{background-position:-713px -412px;width:56px;height:55px}
-.goods-sprite.fine_translucent::before{background-position:-756px -183px;width:52px;height:37px}
-.goods-sprite.translucent_concrete::before{background-position:-756px -183px;width:52px;height:37px}
-.goods-sprite.artificial_scales::before{background-position:-756px -222px;width:55px;height:55px}
-.goods-sprite.fine_artificial_scales::before{background-position:-756px -222px;width:55px;height:55px}
-.goods-sprite.bronze::before{background-position:-813px -211px;width:50px;height:56px;transform:rotate(-90deg)}
-.goods-sprite.icon_fine_bronze_ore::before{background-position:-813px -211px;width:50px;height:56px;transform:rotate(-90deg)}
-.goods-sprite.icon_fine_raid_resource::before{background-position:-761px -279px;width:47px;height:58px;transform:rotate(-90deg)}
-.goods-sprite.fine_renewable_resources::before{background-position:-771px -339px;width:40px;height:57px}
-.goods-sprite.renewable_resources::before{background-position:-771px -339px;width:40px;height:57px}
-.goods-sprite.compound_fluid::before{background-position:-771px -398px;width:47px;height:57px}
-.goods-sprite.fine_compound_fluid::before{background-position:-771px -398px;width:47px;height:57px}
-.goods-sprite.fine_lng::before{background-position:-689px -469px;width:56px;height:43px;transform:rotate(-90deg)}
-.goods-sprite.gas::before{background-position:-689px -469px;width:56px;height:43px;transform:rotate(-90deg)}
-.goods-sprite.fine_nanowire::before{background-position:-696px -514px;width:54px;height:50px;transform:rotate(-90deg)}
-.goods-sprite.fine_nanowires::before{background-position:-696px -514px;width:54px;height:50px;transform:rotate(-90deg)}
-.goods-sprite.nanowire::before{background-position:-696px -514px;width:54px;height:50px;transform:rotate(-90deg)}
-.goods-sprite.dark_energy_battery::before{background-position:-747px -469px;width:25px;height:43px}
-.goods-sprite.fine_dark_energy_battery::before{background-position:-747px -469px;width:25px;height:43px}
-.goods-sprite.fine_nanoparticles::before{background-position:-774px -457px;width:47px;height:56px;transform:rotate(-90deg)}
-.goods-sprite.nanoparticles::before{background-position:-774px -457px;width:47px;height:56px;transform:rotate(-90deg)}
-.goods-sprite.fine_red_algae::before{background-position:-752px -515px;width:54px;height:50px;transform:rotate(-90deg)}
-.goods-sprite.red_algae::before{background-position:-752px -515px;width:54px;height:50px;transform:rotate(-90deg)}
-.goods-sprite.fine_oxygen_pills::before{background-position:-808px -515px;width:43px;height:50px;transform:rotate(-90deg)}
-.goods-sprite.oxygen_pills::before{background-position:-808px -515px;width:43px;height:50px;transform:rotate(-90deg)}
-.goods-sprite.fine_sacrificial_offerings::before{background-position:-865px -211px;width:34px;height:56px}
-.goods-sprite.fine_hypersleep_modules::before{background-position:-871px -157px;width:42px;height:52px;transform:rotate(-90deg)}
-.goods-sprite.hypersleep_modules::before{background-position:-871px -157px;width:42px;height:52px;transform:rotate(-90deg)}
-.goods-sprite.icon_fine_grapes::before{background-position:-901px -211px;width:43px;height:56px}
-.goods-sprite.wine::before{background-position:-901px -211px;width:43px;height:56px}
-.goods-sprite.fine_promethium::before{background-position:-813px -269px;width:57px;height:47px;transform:rotate(-90deg)}
-.goods-sprite.promethium::before{background-position:-813px -269px;width:57px;height:47px;transform:rotate(-90deg)}
-.goods-sprite.coke::before{background-position:-872px -269px;width:57px;height:48px}
-.goods-sprite.fine_coke::before{background-position:-872px -269px;width:57px;height:48px}
-.goods-sprite.gold::before{background-position:-813px -318px;width:57px;height:48px}
-.goods-sprite.icon_fine_gold_ore::before{background-position:-813px -318px;width:57px;height:48px}
-.goods-sprite.cloth::before{background-position:-872px -319px;width:52px;height:48px;transform:rotate(-90deg)}
-.goods-sprite.icon_fine_wool::before{background-position:-872px -319px;width:52px;height:48px;transform:rotate(-90deg)}
-.goods-sprite.fine_stone_figures::before{background-position:-926px -319px;width:38px;height:55px}
-.goods-sprite.stone_figures::before{background-position:-926px -319px;width:38px;height:55px}
-.goods-sprite.fine_vegetables::before{background-position:-820px -368px;width:48px;height:52px}
-.goods-sprite.vegetables::before{background-position:-820px -368px;width:48px;height:52px}
-.goods-sprite.fine_pottery::before{background-position:-870px -369px;width:53px;height:44px;transform:rotate(-90deg)}
-.goods-sprite.fine_silver_crystals::before{background-position:-925px -376px;width:39px;height:48px;transform:rotate(-90deg)}
-.goods-sprite.silver_crystals::before{background-position:-925px -376px;width:39px;height:48px;transform:rotate(-90deg)}
-.goods-sprite.fine_isolated_molecules::before{background-position:-820px -422px;width:44px;height:32px;transform:rotate(-90deg)}
-.goods-sprite.isolated_molecules::before{background-position:-820px -422px;width:44px;height:32px;transform:rotate(-90deg)}
-.goods-sprite.advanced_dna_data::before{background-position:-823px -456px;width:41px;height:53px}
-.goods-sprite.fine_advanced_dna_data::before{background-position:-823px -456px;width:41px;height:53px}
-.goods-sprite.fine_purified_water::before{background-position:-870px -415px;width:53px;height:40px;transform:rotate(-90deg)}
-.goods-sprite.purified_water::before{background-position:-870px -415px;width:53px;height:40px;transform:rotate(-90deg)}
-.goods-sprite.unit_class_guild_raids_heavy_melee::before{background-position:-925px -426px;width:39px;height:44px}
-.goods-sprite.unit_class_short_ranged::before{background-position:-866px -457px;width:47px;height:47px}
-.goods-sprite.unit_class_guild_raids_fast::before{background-position:-915px -472px;width:44px;height:37px;transform:rotate(-90deg)}
-.goods-sprite.unit_class_guild_raids_long_ranged::before{background-position:-853px -511px;width:43px;height:44px}
-.goods-sprite.unit_class_guild_raids_light_melee::before{background-position:-898px -511px;width:42px;height:43px}
-.goods-sprite.unit_class_heavy_melee::before{background-position:-882px -60px;width:42px;height:36px;transform:rotate(-90deg)}
-.goods-sprite.unit_class_light_melee::before{background-position:-926px -60px;width:38px;height:40px}
-.goods-sprite.unit_class_fast::before{background-position:-881px -98px;width:38px;height:34px;transform:rotate(-90deg)}
- 
-.goods-sprite-50 {display:inline-block;height:3em;position: relative;}
-.goods-sprite-50::before {content:"";display:block;background:url('../images/goods/fine_goods_large_0.png') top left no-repeat;background-size:483px 283px;position:absolute;top:0;right:0;bottom:0;left:0;margin:auto}
-.goods-sprite-50.guild_raids_supplies::before{background-position:-1px -1px;width:43px;height:43px}
-.goods-sprite-50.guild_raids_money::before{background-position:-1px -44px;width:39px;height:32px}
-.goods-sprite-50.guild_raids_action_points::before{background-position:-45px -1px;width:38px;height:33px}
-.goods-sprite-50.goods::before{background-position:-1px -77px;width:35px;height:29px}
-.goods-sprite-50.corals::before{background-position:-83px -1px;width:32px;height:32px}
-.goods-sprite-50.fine_corals::before{background-position:-83px -1px;width:32px;height:32px}
-.goods-sprite-50.fine_guild_raids_ebony::before{background-position:-1px -107px;width:32px;height:32px}
-.goods-sprite-50.guild_raids_ebony::before{background-position:-1px -107px;width:32px;height:32px}
-.goods-sprite-50.fine_guild_raids_gems::before{background-position:-116px -1px;width:32px;height:32px}
-.goods-sprite-50.guild_raids_gems::before{background-position:-116px -1px;width:32px;height:32px}
-.goods-sprite-50.fine_orichalcum::before{background-position:-1px -140px;width:32px;height:32px}
-.goods-sprite-50.orichalcum::before{background-position:-1px -140px;width:32px;height:32px}
-.goods-sprite-50.icon_fine_wire::before{background-position:-149px -1px;width:32px;height:32px}
-.goods-sprite-50.wire::before{background-position:-149px -1px;width:32px;height:32px}
-.goods-sprite-50.biolight::before{background-position:-1px -173px;width:31px;height:32px}
-.goods-sprite-50.fine_biolight::before{background-position:-1px -173px;width:31px;height:32px}
-.goods-sprite-50.fine_machineparts::before{background-position:-182px -1px;width:32px;height:32px}
-.goods-sprite-50.machineparts::before{background-position:-182px -1px;width:32px;height:32px}
-.goods-sprite-50.fine_wool::before{background-position:-215px -1px;width:32px;height:32px}
-.goods-sprite-50.wool::before{background-position:-215px -1px;width:32px;height:32px}
-.goods-sprite-50.bionics::before{background-position:-1px -206px;width:31px;height:32px;transform:rotate(-90deg)}
-.goods-sprite-50.fine_bionics_research_lab::before{background-position:-1px -206px;width:31px;height:32px;transform:rotate(-90deg)}
-.goods-sprite-50.fine_guild_raids_limestone::before{background-position:-247px -1px;width:32px;height:31px}
-.goods-sprite-50.guild_raids_limestone::before{background-position:-247px -1px;width:32px;height:31px}
-.goods-sprite-50.ebony::before{background-position:-1px -239px;width:31px;height:32px;transform:rotate(-90deg)}
-.goods-sprite-50.icon_fine_ebony_tree::before{background-position:-1px -239px;width:31px;height:32px;transform:rotate(-90deg)}
-.goods-sprite-50.fine_tinplate::before{background-position:-280px -1px;width:31px;height:31px}
-.goods-sprite-50.tinplate::before{background-position:-280px -1px;width:31px;height:31px}
-.goods-sprite-50.fine_mars_microbes::before{background-position:-312px -1px;width:31px;height:31px;transform:rotate(-90deg)}
-.goods-sprite-50.mars_microbes::before{background-position:-312px -1px;width:31px;height:31px;transform:rotate(-90deg)}
-.goods-sprite-50.asbestos::before{background-position:-344px -1px;width:31px;height:31px}
-.goods-sprite-50.fine_asbestos::before{background-position:-344px -1px;width:31px;height:31px}
-.goods-sprite-50.fine_tea_silk::before{background-position:-376px -1px;width:31px;height:31px}
-.goods-sprite-50.tea_silk::before{background-position:-376px -1px;width:31px;height:31px}
-.goods-sprite-50.ferroconcrete::before{background-position:-408px -1px;width:32px;height:29px}
-.goods-sprite-50.fine_ferroconcrete::before{background-position:-408px -1px;width:32px;height:29px}
-.goods-sprite-50.fine_guild_raids_lead::before{background-position:-441px -1px;width:32px;height:29px}
-.goods-sprite-50.guild_raids_lead::before{background-position:-441px -1px;width:32px;height:29px}
-.goods-sprite-50.herbs::before{background-position:-45px -35px;width:32px;height:23px}
-.goods-sprite-50.icon_fine_herbs::before{background-position:-45px -35px;width:32px;height:23px}
-.goods-sprite-50.fine_herbal_snack::before{background-position:-41px -58px;width:32px;height:24px}
-.goods-sprite-50.herbal_snack::before{background-position:-41px -58px;width:32px;height:24px}
-.goods-sprite-50.fine_unknown_dna::before{background-position:-37px -83px;width:32px;height:27px;transform:rotate(-90deg)}
-.goods-sprite-50.unknown_dna::before{background-position:-37px -83px;width:32px;height:27px;transform:rotate(-90deg)}
-.goods-sprite-50.fine_superconductors::before{background-position:-34px -111px;width:32px;height:30px}
-.goods-sprite-50.superconductors::before{background-position:-34px -111px;width:32px;height:30px}
-.goods-sprite-50.icon_fine_hemp::before{background-position:-34px -141px;width:32px;height:30px;transform:rotate(-90deg)}
-.goods-sprite-50.ropes::before{background-position:-34px -141px;width:32px;height:30px;transform:rotate(-90deg)}
-.goods-sprite-50.fine_preservatives::before{background-position:-66px -111px;width:27px;height:32px}
-.goods-sprite-50.preservatives::before{background-position:-66px -111px;width:27px;height:32px}
-.goods-sprite-50.gunpowder::before{background-position:-70px -83px;width:24px;height:27px}
-.goods-sprite-50.icon_fine_gunpowder::before{background-position:-70px -83px;width:24px;height:27px}
-.goods-sprite-50.fine_guild_raids_cloth::before{background-position:-66px -144px;width:27px;height:29px}
-.goods-sprite-50.guild_raids_cloth::before{background-position:-66px -144px;width:27px;height:29px}
-.goods-sprite-50.electromagnets::before{background-position:-74px -58px;width:23px;height:24px}
-.goods-sprite-50.fine_magnet_factory::before{background-position:-74px -58px;width:23px;height:24px}
-.goods-sprite-50.fine_luxury_materials::before{background-position:-78px -35px;width:30px;height:23px}
-.goods-sprite-50.luxury_materials::before{background-position:-78px -35px;width:30px;height:23px}
-.goods-sprite-50.compressed_matter_capsule::before{background-position:-97px -58px;width:13px;height:25px}
-.goods-sprite-50.fine_compressed_matter_capsule::before{background-position:-97px -58px;width:13px;height:25px}
-.goods-sprite-50.fine_plastics_plant::before{background-position:-95px -84px;width:15px;height:32px}
-.goods-sprite-50.plastics::before{background-position:-95px -84px;width:15px;height:32px}
-.goods-sprite-50.basalt::before{background-position:-94px -116px;width:27px;height:32px;transform:rotate(-90deg)}
-.goods-sprite-50.icon_fine_basalt::before{background-position:-94px -116px;width:27px;height:32px;transform:rotate(-90deg)}
-.goods-sprite-50.fine_microgreen_supplement::before{background-position:-94px -149px;width:31px;height:23px;transform:rotate(-90deg)}
-.goods-sprite-50.microgreen_supplement::before{background-position:-94px -149px;width:31px;height:23px;transform:rotate(-90deg)}
-.goods-sprite-50.convenience_food::before{background-position:-34px -172px;width:32px;height:19px;transform:rotate(-90deg)}
-.goods-sprite-50.fine_convenience_food::before{background-position:-34px -172px;width:32px;height:19px;transform:rotate(-90deg)}
-.goods-sprite-50.fine_nanites::before{background-position:-66px -173px;width:32px;height:28px}
-.goods-sprite-50.nanites::before{background-position:-66px -173px;width:32px;height:28px}
-.goods-sprite-50.cypress::before{background-position:-99px -173px;width:26px;height:31px}
-.goods-sprite-50.icon_fine_cypress::before{background-position:-99px -173px;width:26px;height:31px}
-.goods-sprite-50.icon_fine_paper::before{background-position:-33px -192px;width:32px;height:29px}
-.goods-sprite-50.paper::before{background-position:-33px -192px;width:32px;height:29px}
-.goods-sprite-50.fine_pearls::before{background-position:-66px -202px;width:32px;height:29px;transform:rotate(-90deg)}
-.goods-sprite-50.pearls::before{background-position:-66px -202px;width:32px;height:29px;transform:rotate(-90deg)}
-.goods-sprite-50.fine_coconuts::before{background-position:-99px -205px;width:31px;height:26px}
-.goods-sprite-50.fine_mead::before{background-position:-33px -221px;width:30px;height:31px}
-.goods-sprite-50.mead::before{background-position:-33px -221px;width:30px;height:31px}
-.goods-sprite-50.gems::before{background-position:-33px -253px;width:31px;height:30px}
-.goods-sprite-50.icon_fine_rough_gems::before{background-position:-33px -253px;width:31px;height:30px}
-.goods-sprite-50.icon_fine_porcelain::before{background-position:-64px -232px;width:31px;height:21px}
-.goods-sprite-50.porcelain::before{background-position:-64px -232px;width:31px;height:21px}
-.goods-sprite-50.fine_venus_carbon::before{background-position:-65px -253px;width:31px;height:30px;transform:rotate(-90deg)}
-.goods-sprite-50.venus_carbon::before{background-position:-65px -253px;width:31px;height:30px;transform:rotate(-90deg)}
-.goods-sprite-50.filters::before{background-position:-96px -232px;width:29px;height:21px;transform:rotate(-90deg)}
-.goods-sprite-50.fine_filters::before{background-position:-96px -232px;width:29px;height:21px;transform:rotate(-90deg)}
-.goods-sprite-50.axes::before{background-position:-96px -253px;width:30px;height:30px}
-.goods-sprite-50.fine_axes::before{background-position:-96px -253px;width:30px;height:30px}
-.goods-sprite-50.coffee::before{background-position:-408px -31px;width:32px;height:24px}
-.goods-sprite-50.icon_fine_coffee::before{background-position:-408px -31px;width:32px;height:24px}
-.goods-sprite-50.fine_whale::before{background-position:-247px -32px;width:32px;height:24px;transform:rotate(-90deg)}
-.goods-sprite-50.whaleoil::before{background-position:-247px -32px;width:32px;height:24px;transform:rotate(-90deg)}
-.goods-sprite-50.fine_paintings::before{background-position:-280px -32px;width:32px;height:25px}
-.goods-sprite-50.paintings::before{background-position:-280px -32px;width:32px;height:25px}
-.goods-sprite-50.fine_instruments::before{background-position:-312px -32px;width:31px;height:26px;transform:rotate(-90deg)}
-.goods-sprite-50.instruments::before{background-position:-312px -32px;width:31px;height:26px;transform:rotate(-90deg)}
-.goods-sprite-50.fine_textiles::before{background-position:-344px -33px;width:32px;height:27px}
-.goods-sprite-50.textiles::before{background-position:-344px -33px;width:32px;height:27px}
-.goods-sprite-50.fine_lotus::before{background-position:-377px -33px;width:31px;height:27px}
-.goods-sprite-50.lotus::before{background-position:-377px -33px;width:31px;height:27px}
-.goods-sprite-50.fine_superalloys::before{background-position:-408px -55px;width:31px;height:23px}
-.goods-sprite-50.superalloys::before{background-position:-408px -55px;width:31px;height:23px}
-.goods-sprite-50.fine_upcycled_hydrocarbons::before{background-position:-109px -34px;width:22px;height:24px}
-.goods-sprite-50.upcycled_hydrocarbons::before{background-position:-109px -34px;width:22px;height:24px}
-.goods-sprite-50.armor::before{background-position:-131px -33px;width:31px;height:27px;transform:rotate(-90deg)}
-.goods-sprite-50.fine_armor::before{background-position:-131px -33px;width:31px;height:27px;transform:rotate(-90deg)}
-.goods-sprite-50.fine_petroleum::before{background-position:-163px -33px;width:31px;height:29px;transform:rotate(-90deg)}
-.goods-sprite-50.petroleum::before{background-position:-163px -33px;width:31px;height:29px;transform:rotate(-90deg)}
-.goods-sprite-50.brick::before{background-position:-195px -33px;width:31px;height:29px}
-.goods-sprite-50.icon_fine_brick_clay::before{background-position:-195px -33px;width:31px;height:29px}
-.goods-sprite-50.alabaster::before{background-position:-227px -33px;width:20px;height:30px}
-.goods-sprite-50.icon_fine_alabaster::before{background-position:-227px -33px;width:20px;height:30px}
-.goods-sprite-50.fine_papercrete::before{background-position:-111px -58px;width:19px;height:29px;transform:rotate(-90deg)}
-.goods-sprite-50.papercrete::before{background-position:-111px -58px;width:19px;height:29px;transform:rotate(-90deg)}
-.goods-sprite-50.fine_topological_records::before{background-position:-111px -88px;width:23px;height:27px}
-.goods-sprite-50.topological_records::before{background-position:-111px -88px;width:23px;height:27px}
-.goods-sprite-50.fine_mars_ore::before{background-position:-130px -61px;width:31px;height:27px;transform:rotate(-90deg)}
-.goods-sprite-50.mars_ore::before{background-position:-130px -61px;width:31px;height:27px;transform:rotate(-90deg)}
-.goods-sprite-50.icon_fine_tar::before{background-position:-162px -63px;width:31px;height:25px}
-.goods-sprite-50.tar::before{background-position:-162px -63px;width:31px;height:25px}
-.goods-sprite-50.fine_sugar_crystals::before{background-position:-135px -88px;width:31px;height:28px}
-.goods-sprite-50.sugar_crystals::before{background-position:-135px -88px;width:31px;height:28px}
-.goods-sprite-50.granite::before{background-position:-193px -63px;width:31px;height:26px}
-.goods-sprite-50.icon_fine_granite::before{background-position:-193px -63px;width:31px;height:26px}
-.goods-sprite-50.fine_headdress::before{background-position:-166px -88px;width:26px;height:28px}
-.goods-sprite-50.headdress::before{background-position:-166px -88px;width:26px;height:28px}
-.goods-sprite-50.fine_robotics_factory::before{background-position:-193px -89px;width:31px;height:28px;transform:rotate(-90deg)}
-.goods-sprite-50.robots::before{background-position:-193px -89px;width:31px;height:28px;transform:rotate(-90deg)}
-.goods-sprite-50.fine_nutrition_food::before{background-position:-225px -64px;width:23px;height:31px}
-.goods-sprite-50.nutrition_research::before{background-position:-225px -64px;width:23px;height:31px}
-.goods-sprite-50.fine_horns::before{background-position:-249px -57px;width:30px;height:31px}
-.goods-sprite-50.horns::before{background-position:-249px -57px;width:30px;height:31px}
-.goods-sprite-50.data_crystals::before{background-position:-280px -58px;width:31px;height:30px}
-.goods-sprite-50.fine_data_crystals::before{background-position:-280px -58px;width:31px;height:30px}
-.goods-sprite-50.fine_plankton::before{background-position:-311px -59px;width:31px;height:30px;transform:rotate(-90deg)}
-.goods-sprite-50.plankton::before{background-position:-311px -59px;width:31px;height:30px;transform:rotate(-90deg)}
-.goods-sprite-50.fine_golden_rice::before{background-position:-343px -61px;width:31px;height:31px}
-.goods-sprite-50.golden_rice::before{background-position:-343px -61px;width:31px;height:31px}
-.goods-sprite-50.explosives::before{background-position:-374px -61px;width:30px;height:30px}
-.goods-sprite-50.fine_explosives::before{background-position:-374px -61px;width:30px;height:30px}
-.goods-sprite-50.fine_rubber::before{background-position:-122px -117px;width:30px;height:30px}
-.goods-sprite-50.rubber::before{background-position:-122px -117px;width:30px;height:30px}
-.goods-sprite-50.icon_fine_lead_ore::before{background-position:-126px -147px;width:26px;height:31px;transform:rotate(-90deg)}
-.goods-sprite-50.lead::before{background-position:-126px -147px;width:26px;height:31px;transform:rotate(-90deg)}
-.goods-sprite-50.asteroid_ice::before{background-position:-126px -179px;width:30px;height:25px;transform:rotate(-90deg)}
-.goods-sprite-50.fine_asteroid_ice::before{background-position:-126px -179px;width:30px;height:25px;transform:rotate(-90deg)}
-.goods-sprite-50.dye::before{background-position:-131px -205px;width:25px;height:27px;transform:rotate(-90deg)}
-.goods-sprite-50.icon_fine_flowers::before{background-position:-131px -205px;width:25px;height:27px;transform:rotate(-90deg)}
-.goods-sprite-50.fine_glowing_seaweed::before{background-position:-153px -117px;width:30px;height:29px;transform:rotate(-90deg)}
-.goods-sprite-50.glowing_seaweed::before{background-position:-153px -117px;width:30px;height:29px;transform:rotate(-90deg)}
-.goods-sprite-50.basmati::before{background-position:-153px -147px;width:30px;height:30px}
-.goods-sprite-50.fine_basmati::before{background-position:-153px -147px;width:30px;height:30px}
-.goods-sprite-50.icon_fine_silkworm_cocoons::before{background-position:-156px -178px;width:27px;height:30px;transform:rotate(-90deg)}
-.goods-sprite-50.silk::before{background-position:-156px -178px;width:27px;height:30px;transform:rotate(-90deg)}
-.goods-sprite-50.fine_soy_proteins::before{background-position:-156px -209px;width:29px;height:23px;transform:rotate(-90deg)}
-.goods-sprite-50.soy_proteins::before{background-position:-156px -209px;width:29px;height:23px;transform:rotate(-90deg)}
-.goods-sprite-50.brass::before{background-position:-184px -118px;width:30px;height:28px;transform:rotate(-90deg)}
-.goods-sprite-50.icon_fine_brass_ore::before{background-position:-184px -118px;width:30px;height:28px;transform:rotate(-90deg)}
-.goods-sprite-50.dark_matter::before{background-position:-183px -147px;width:30px;height:30px}
-.goods-sprite-50.fine_dark_matter::before{background-position:-183px -147px;width:30px;height:30px}
-.goods-sprite-50.fine_fresh_fish::before{background-position:-184px -178px;width:28px;height:30px}
-.goods-sprite-50.icon_fine_talc::before{background-position:-186px -209px;width:26px;height:23px}
-.goods-sprite-50.talc::before{background-position:-186px -209px;width:26px;height:23px}
-.goods-sprite-50.bio_creatures::before{background-position:-225px -95px;width:27px;height:22px;transform:rotate(-90deg)}
-.goods-sprite-50.fine_bio_creatures::before{background-position:-225px -95px;width:27px;height:22px;transform:rotate(-90deg)}
-.goods-sprite-50.fine_soy::before{background-position:-215px -118px;width:30px;height:29px;transform:rotate(-90deg)}
-.goods-sprite-50.soy::before{background-position:-215px -118px;width:30px;height:29px;transform:rotate(-90deg)}
-.goods-sprite-50.cryptocash::before{background-position:-214px -148px;width:30px;height:29px}
-.goods-sprite-50.fine_cryptocash::before{background-position:-214px -148px;width:30px;height:29px}
-.goods-sprite-50.fine_catamarans::before{background-position:-213px -178px;width:30px;height:29px}
-.goods-sprite-50.fine_random_guild_raids_goods::before{background-position:-213px -208px;width:30px;height:25px}
-.goods-sprite-50.crystallized_hydrocarbons::before{background-position:-252px -89px;width:30px;height:29px;transform:rotate(-90deg)}
-.goods-sprite-50.fine_crystallized_hydrocarbons::before{background-position:-252px -89px;width:30px;height:29px;transform:rotate(-90deg)}
-.goods-sprite-50.dna_data::before{background-position:-283px -89px;width:28px;height:29px}
-.goods-sprite-50.fine_dna_data::before{background-position:-283px -89px;width:28px;height:29px}
-.goods-sprite-50.fine_lubricants::before{background-position:-311px -90px;width:30px;height:27px;transform:rotate(-90deg)}
-.goods-sprite-50.lubricants::before{background-position:-311px -90px;width:30px;height:27px;transform:rotate(-90deg)}
-.goods-sprite-50.fertilizer::before{background-position:-342px -92px;width:30px;height:26px}
-.goods-sprite-50.fine_fertilizer::before{background-position:-342px -92px;width:30px;height:26px}
-.goods-sprite-50.fine_platinum_crystals::before{background-position:-246px -119px;width:30px;height:29px;transform:rotate(-90deg)}
-.goods-sprite-50.platinum_crystals::before{background-position:-246px -119px;width:30px;height:29px;transform:rotate(-90deg)}
-.goods-sprite-50.glass::before{background-position:-244px -149px;width:30px;height:29px;transform:rotate(-90deg)}
-.goods-sprite-50.icon_fine_quartz::before{background-position:-244px -149px;width:30px;height:29px;transform:rotate(-90deg)}
-.goods-sprite-50.icon_fine_limestone::before{background-position:-243px -179px;width:29px;height:28px}
-.goods-sprite-50.limestone::before{background-position:-243px -179px;width:29px;height:28px}
-.goods-sprite-50.fine_processed_material::before{background-position:-244px -208px;width:29px;height:25px}
-.goods-sprite-50.processed_material::before{background-position:-244px -208px;width:29px;height:25px}
-.goods-sprite-50.bromine::before{background-position:-125px -233px;width:29px;height:19px;transform:rotate(-90deg)}
-.goods-sprite-50.fine_bromine::before{background-position:-125px -233px;width:29px;height:19px;transform:rotate(-90deg)}
-.goods-sprite-50.biotech_crops::before{background-position:-127px -252px;width:24px;height:31px}
-.goods-sprite-50.fine_biotech_crops::before{background-position:-127px -252px;width:24px;height:31px}
-.goods-sprite-50.fine_fusion_reactors::before{background-position:-155px -233px;width:30px;height:24px;transform:rotate(-90deg)}
-.goods-sprite-50.fusion_reactors::before{background-position:-155px -233px;width:30px;height:24px;transform:rotate(-90deg)}
-.goods-sprite-50.fine_maize::before{background-position:-152px -257px;width:28px;height:26px}
-.goods-sprite-50.maize::before{background-position:-152px -257px;width:28px;height:26px}
-.goods-sprite-50.fine_barley::before{background-position:-180px -257px;width:28px;height:26px;transform:rotate(-90deg)}
-.goods-sprite-50.icon_fine_marble::before{background-position:-186px -233px;width:26px;height:24px;transform:rotate(-90deg)}
-.goods-sprite-50.marble::before{background-position:-186px -233px;width:26px;height:24px;transform:rotate(-90deg)}
-.goods-sprite-50.icon_fine_crude_salt::before{background-position:-209px -257px;width:26px;height:26px;transform:rotate(-90deg)}
-.goods-sprite-50.salt::before{background-position:-209px -257px;width:26px;height:26px;transform:rotate(-90deg)}
-.goods-sprite-50.experimental_data::before{background-position:-213px -233px;width:25px;height:23px;transform:rotate(-90deg)}
-.goods-sprite-50.fine_experimental_data::before{background-position:-213px -233px;width:25px;height:23px;transform:rotate(-90deg)}
-.goods-sprite-50.deep_space_data::before{background-position:-236px -257px;width:25px;height:26px;transform:rotate(-90deg)}
-.goods-sprite-50.fine_deep_space_data::before{background-position:-236px -257px;width:25px;height:26px;transform:rotate(-90deg)}
-.goods-sprite-50.fine_semiconductors::before{background-position:-238px -234px;width:29px;height:23px}
-.goods-sprite-50.semiconductors::before{background-position:-238px -234px;width:29px;height:23px}
-.goods-sprite-50.fine_kava::before{background-position:-405px -79px;width:30px;height:26px;transform:rotate(-90deg)}
-.goods-sprite-50.honey::before{background-position:-276px -119px;width:21px;height:29px}
-.goods-sprite-50.icon_fine_honeycombs::before{background-position:-276px -119px;width:21px;height:29px}
-.goods-sprite-50.algae::before{background-position:-298px -118px;width:28px;height:29px}
-.goods-sprite-50.fine_algae::before{background-position:-298px -118px;width:28px;height:29px}
-.goods-sprite-50.fine_random_goods::before{background-position:-275px -149px;width:24px;height:29px;transform:rotate(-90deg)}
-.goods-sprite-50.random_goods::before{background-position:-275px -149px;width:24px;height:29px;transform:rotate(-90deg)}
-.goods-sprite-50.fine_transester_gas::before{background-position:-299px -148px;width:27px;height:29px;transform:rotate(-90deg)}
-.goods-sprite-50.transester_gas::before{background-position:-299px -148px;width:27px;height:29px;transform:rotate(-90deg)}
-.goods-sprite-50.fine_flowers::before{background-position:-273px -179px;width:25px;height:28px}
-.goods-sprite-50.fine_nickel::before{background-position:-299px -178px;width:28px;height:29px}
-.goods-sprite-50.nickel::before{background-position:-299px -178px;width:28px;height:29px}
-.goods-sprite-50.fine_packaging::before{background-position:-274px -208px;width:25px;height:25px;transform:rotate(-90deg)}
-.goods-sprite-50.packaging::before{background-position:-274px -208px;width:25px;height:25px;transform:rotate(-90deg)}
-.goods-sprite-50.fine_spices::before{background-position:-299px -207px;width:28px;height:26px;transform:rotate(-90deg)}
-.goods-sprite-50.spices::before{background-position:-299px -207px;width:28px;height:26px;transform:rotate(-90deg)}
-.goods-sprite-50.icon_fine_gbg_resource::before{background-position:-268px -234px;width:29px;height:24px}
-.goods-sprite-50.fine_smart_materials::before{background-position:-262px -258px;width:27px;height:25px}
-.goods-sprite-50.smart_materials::before{background-position:-262px -258px;width:27px;height:25px}
-.goods-sprite-50.enhanced_porifera::before{background-position:-290px -258px;width:24px;height:25px}
-.goods-sprite-50.fine_enhanced_porifera::before{background-position:-290px -258px;width:24px;height:25px}
-.goods-sprite-50.unit_class_guild_raids_short_ranged::before{background-position:-298px -234px;width:23px;height:23px}
-.goods-sprite-50.ai_data::before{background-position:-315px -258px;width:18px;height:25px;transform:rotate(-90deg)}
-.goods-sprite-50.fine_ai_data::before{background-position:-315px -258px;width:18px;height:25px;transform:rotate(-90deg)}
-.goods-sprite-50.fine_saree::before{background-position:-327px -119px;width:28px;height:29px}
-.goods-sprite-50.saree::before{background-position:-327px -119px;width:28px;height:29px}
-.goods-sprite-50.biogeochemical_data::before{background-position:-327px -148px;width:28px;height:28px}
-.goods-sprite-50.fine_biogeochemical_data::before{background-position:-327px -148px;width:28px;height:28px}
-.goods-sprite-50.fine_flavorants::before{background-position:-328px -177px;width:28px;height:28px}
-.goods-sprite-50.flavorants::before{background-position:-328px -177px;width:28px;height:28px}
-.goods-sprite-50.fine_steel::before{background-position:-328px -206px;width:28px;height:27px}
-.goods-sprite-50.steel::before{background-position:-328px -206px;width:28px;height:27px}
-.goods-sprite-50.unit_class_long_ranged::before{background-position:-321px -234px;width:23px;height:23px;transform:rotate(-90deg)}
-.goods-sprite-50.fine_liquid_binder::before{background-position:-333px -258px;width:14px;height:25px}
-.goods-sprite-50.liquid_binder::before{background-position:-333px -258px;width:14px;height:25px}
-.goods-sprite-50.icon_fine_sandstone::before{background-position:-356px -119px;width:21px;height:29px;transform:rotate(-90deg)}
-.goods-sprite-50.sandstone::before{background-position:-356px -119px;width:21px;height:29px;transform:rotate(-90deg)}
-.goods-sprite-50.icon_fine_gex_resource::before{background-position:-356px -149px;width:24px;height:29px;transform:rotate(-90deg)}
-.goods-sprite-50.fine_paper_batteries::before{background-position:-356px -179px;width:29px;height:27px}
-.goods-sprite-50.paper_batteries::before{background-position:-356px -179px;width:29px;height:27px}
-.goods-sprite-50.bioplastics::before{background-position:-357px -206px;width:28px;height:28px}
-.goods-sprite-50.fine_bioplastics::before{background-position:-357px -206px;width:28px;height:28px}
-.goods-sprite-50.fine_translucent::before{background-position:-378px -92px;width:26px;height:19px}
-.goods-sprite-50.translucent_concrete::before{background-position:-378px -92px;width:26px;height:19px}
-.goods-sprite-50.artificial_scales::before{background-position:-378px -111px;width:28px;height:28px}
-.goods-sprite-50.fine_artificial_scales::before{background-position:-378px -111px;width:28px;height:28px}
-.goods-sprite-50.bronze::before{background-position:-407px -106px;width:25px;height:28px;transform:rotate(-90deg)}
-.goods-sprite-50.icon_fine_bronze_ore::before{background-position:-407px -106px;width:25px;height:28px;transform:rotate(-90deg)}
-.goods-sprite-50.icon_fine_raid_resource::before{background-position:-381px -140px;width:24px;height:29px;transform:rotate(-90deg)}
-.goods-sprite-50.fine_renewable_resources::before{background-position:-386px -170px;width:20px;height:29px}
-.goods-sprite-50.renewable_resources::before{background-position:-386px -170px;width:20px;height:29px}
-.goods-sprite-50.compound_fluid::before{background-position:-386px -199px;width:24px;height:29px}
-.goods-sprite-50.fine_compound_fluid::before{background-position:-386px -199px;width:24px;height:29px}
-.goods-sprite-50.fine_lng::before{background-position:-345px -235px;width:28px;height:22px;transform:rotate(-90deg)}
-.goods-sprite-50.gas::before{background-position:-345px -235px;width:28px;height:22px;transform:rotate(-90deg)}
-.goods-sprite-50.fine_nanowire::before{background-position:-348px -257px;width:27px;height:25px;transform:rotate(-90deg)}
-.goods-sprite-50.fine_nanowires::before{background-position:-348px -257px;width:27px;height:25px;transform:rotate(-90deg)}
-.goods-sprite-50.nanowire::before{background-position:-348px -257px;width:27px;height:25px;transform:rotate(-90deg)}
-.goods-sprite-50.dark_energy_battery::before{background-position:-374px -235px;width:13px;height:22px}
-.goods-sprite-50.fine_dark_energy_battery::before{background-position:-374px -235px;width:13px;height:22px}
-.goods-sprite-50.fine_nanoparticles::before{background-position:-387px -229px;width:24px;height:28px;transform:rotate(-90deg)}
-.goods-sprite-50.nanoparticles::before{background-position:-387px -229px;width:24px;height:28px;transform:rotate(-90deg)}
-.goods-sprite-50.fine_red_algae::before{background-position:-376px -258px;width:27px;height:25px;transform:rotate(-90deg)}
-.goods-sprite-50.red_algae::before{background-position:-376px -258px;width:27px;height:25px;transform:rotate(-90deg)}
-.goods-sprite-50.fine_oxygen_pills::before{background-position:-404px -258px;width:22px;height:25px;transform:rotate(-90deg)}
-.goods-sprite-50.oxygen_pills::before{background-position:-404px -258px;width:22px;height:25px;transform:rotate(-90deg)}
-.goods-sprite-50.fine_sacrificial_offerings::before{background-position:-433px -106px;width:17px;height:28px}
-.goods-sprite-50.fine_hypersleep_modules::before{background-position:-436px -79px;width:21px;height:26px;transform:rotate(-90deg)}
-.goods-sprite-50.hypersleep_modules::before{background-position:-436px -79px;width:21px;height:26px;transform:rotate(-90deg)}
-.goods-sprite-50.icon_fine_grapes::before{background-position:-451px -106px;width:22px;height:28px}
-.goods-sprite-50.wine::before{background-position:-451px -106px;width:22px;height:28px}
-.goods-sprite-50.fine_promethium::before{background-position:-407px -135px;width:29px;height:24px;transform:rotate(-90deg)}
-.goods-sprite-50.promethium::before{background-position:-407px -135px;width:29px;height:24px;transform:rotate(-90deg)}
-.goods-sprite-50.coke::before{background-position:-436px -135px;width:29px;height:24px}
-.goods-sprite-50.fine_coke::before{background-position:-436px -135px;width:29px;height:24px}
-.goods-sprite-50.gold::before{background-position:-407px -159px;width:29px;height:24px}
-.goods-sprite-50.icon_fine_gold_ore::before{background-position:-407px -159px;width:29px;height:24px}
-.goods-sprite-50.cloth::before{background-position:-436px -160px;width:26px;height:24px;transform:rotate(-90deg)}
-.goods-sprite-50.icon_fine_wool::before{background-position:-436px -160px;width:26px;height:24px;transform:rotate(-90deg)}
-.goods-sprite-50.fine_stone_figures::before{background-position:-463px -160px;width:19px;height:28px}
-.goods-sprite-50.stone_figures::before{background-position:-463px -160px;width:19px;height:28px}
-.goods-sprite-50.fine_vegetables::before{background-position:-410px -184px;width:24px;height:26px}
-.goods-sprite-50.vegetables::before{background-position:-410px -184px;width:24px;height:26px}
-.goods-sprite-50.fine_pottery::before{background-position:-435px -185px;width:27px;height:22px;transform:rotate(-90deg)}
-.goods-sprite-50.fine_silver_crystals::before{background-position:-463px -188px;width:20px;height:24px;transform:rotate(-90deg)}
-.goods-sprite-50.silver_crystals::before{background-position:-463px -188px;width:20px;height:24px;transform:rotate(-90deg)}
-.goods-sprite-50.fine_isolated_molecules::before{background-position:-410px -211px;width:22px;height:16px;transform:rotate(-90deg)}
-.goods-sprite-50.isolated_molecules::before{background-position:-410px -211px;width:22px;height:16px;transform:rotate(-90deg)}
-.goods-sprite-50.advanced_dna_data::before{background-position:-412px -228px;width:21px;height:27px}
-.goods-sprite-50.fine_advanced_dna_data::before{background-position:-412px -228px;width:21px;height:27px}
-.goods-sprite-50.fine_purified_water::before{background-position:-435px -208px;width:27px;height:20px;transform:rotate(-90deg)}
-.goods-sprite-50.purified_water::before{background-position:-435px -208px;width:27px;height:20px;transform:rotate(-90deg)}
-.goods-sprite-50.unit_class_guild_raids_heavy_melee::before{background-position:-463px -213px;width:20px;height:22px}
-.goods-sprite-50.unit_class_short_ranged::before{background-position:-433px -229px;width:24px;height:24px}
-.goods-sprite-50.unit_class_guild_raids_fast::before{background-position:-458px -236px;width:22px;height:19px;transform:rotate(-90deg)}
-.goods-sprite-50.unit_class_guild_raids_long_ranged::before{background-position:-427px -256px;width:22px;height:22px}
-.goods-sprite-50.unit_class_guild_raids_light_melee::before{background-position:-449px -256px;width:21px;height:22px}
-.goods-sprite-50.unit_class_heavy_melee::before{background-position:-441px -30px;width:21px;height:18px;transform:rotate(-90deg)}
-.goods-sprite-50.unit_class_light_melee::before{background-position:-463px -30px;width:19px;height:20px}
-.goods-sprite-50.unit_class_fast::before{background-position:-441px -49px;width:19px;height:17px;transform:rotate(-90deg)}
+.goods-sprite {
+    display:inline-block;
+    height:3em;
+    position: relative;
+    &::before {
+        content:"";
+        display:block;
+        background:url('../images/goods/fine_goods_large_0.png') top left no-repeat;
+        background-size:965px 566px;
+        position:absolute;
+        top:0;
+        right:0;
+        bottom:0;
+        left:0;
+        margin:auto;
+        zoom:0.8;
+    }
+    &.sprite-50::before{zoom:0.5;}
+
+    &.guild_raids_supplies::before{background-position:-1px -1px;width:86px;height:85px}
+    &.guild_raids_money::before{background-position:-1px -88px;width:78px;height:64px}
+    &.guild_raids_action_points::before{background-position:-89px -1px;width:75px;height:66px}
+    &.goods::before{background-position:-1px -154px;width:70px;height:58px}
+    &.corals::before{background-position:-166px -1px;width:64px;height:64px}
+    &.fine_corals::before{background-position:-166px -1px;width:64px;height:64px}
+    &.fine_guild_raids_ebony::before{background-position:-1px -214px;width:64px;height:64px}
+    &.guild_raids_ebony::before{background-position:-1px -214px;width:64px;height:64px}
+    &.fine_guild_raids_gems::before{background-position:-232px -1px;width:64px;height:63px}
+    &.guild_raids_gems::before{background-position:-232px -1px;width:64px;height:63px}
+    &.fine_orichalcum::before{background-position:-1px -280px;width:64px;height:63px}
+    &.orichalcum::before{background-position:-1px -280px;width:64px;height:63px}
+    &.icon_fine_wire::before{background-position:-298px -1px;width:64px;height:63px}
+    &.wire::before{background-position:-298px -1px;width:64px;height:63px}
+    &.biolight::before{background-position:-1px -345px;width:62px;height:64px}
+    &.fine_biolight::before{background-position:-1px -345px;width:62px;height:64px}
+    &.fine_machineparts::before{background-position:-364px -1px;width:63px;height:63px}
+    &.machineparts::before{background-position:-364px -1px;width:63px;height:63px}
+    &.fine_wool::before{background-position:-429px -1px;width:63px;height:63px}
+    &.wool::before{background-position:-429px -1px;width:63px;height:63px}
+    &.bionics::before{background-position:-1px -411px;width:61px;height:64px;transform:rotate(-90deg)}
+    &.fine_bionics_research_lab::before{background-position:-1px -411px;width:61px;height:64px;transform:rotate(-90deg)}
+    &.fine_guild_raids_limestone::before{background-position:-494px -1px;width:64px;height:61px}
+    &.guild_raids_limestone::before{background-position:-494px -1px;width:64px;height:61px}
+    &.ebony::before{background-position:-1px -477px;width:62px;height:63px;transform:rotate(-90deg)}
+    &.icon_fine_ebony_tree::before{background-position:-1px -477px;width:62px;height:63px;transform:rotate(-90deg)}
+    &.fine_tinplate::before{background-position:-560px -1px;width:62px;height:61px}
+    &.tinplate::before{background-position:-560px -1px;width:62px;height:61px}
+    &.fine_mars_microbes::before{background-position:-624px -1px;width:62px;height:61px;transform:rotate(-90deg)}
+    &.mars_microbes::before{background-position:-624px -1px;width:62px;height:61px;transform:rotate(-90deg)}
+    &.asbestos::before{background-position:-688px -1px;width:62px;height:62px}
+    &.fine_asbestos::before{background-position:-688px -1px;width:62px;height:62px}
+    &.fine_tea_silk::before{background-position:-752px -1px;width:62px;height:62px}
+    &.tea_silk::before{background-position:-752px -1px;width:62px;height:62px}
+    &.ferroconcrete::before{background-position:-816px -1px;width:64px;height:58px}
+    &.fine_ferroconcrete::before{background-position:-816px -1px;width:64px;height:58px}
+    &.fine_guild_raids_lead::before{background-position:-882px -1px;width:64px;height:57px}
+    &.guild_raids_lead::before{background-position:-882px -1px;width:64px;height:57px}
+    &.herbs::before{background-position:-89px -69px;width:64px;height:45px}
+    &.icon_fine_herbs::before{background-position:-89px -69px;width:64px;height:45px}
+    &.fine_herbal_snack::before{background-position:-81px -116px;width:64px;height:48px}
+    &.herbal_snack::before{background-position:-81px -116px;width:64px;height:48px}
+    &.fine_unknown_dna::before{background-position:-73px -166px;width:64px;height:53px;transform:rotate(-90deg)}
+    &.unknown_dna::before{background-position:-73px -166px;width:64px;height:53px;transform:rotate(-90deg)}
+    &.fine_superconductors::before{background-position:-67px -221px;width:63px;height:59px}
+    &.superconductors::before{background-position:-67px -221px;width:63px;height:59px}
+    &.icon_fine_hemp::before{background-position:-67px -282px;width:63px;height:59px;transform:rotate(-90deg)}
+    &.ropes::before{background-position:-67px -282px;width:63px;height:59px;transform:rotate(-90deg)}
+    &.fine_preservatives::before{background-position:-132px -221px;width:54px;height:64px}
+    &.preservatives::before{background-position:-132px -221px;width:54px;height:64px}
+    &.gunpowder::before{background-position:-139px -166px;width:48px;height:53px}
+    &.icon_fine_gunpowder::before{background-position:-139px -166px;width:48px;height:53px}
+    &.fine_guild_raids_cloth::before{background-position:-132px -287px;width:54px;height:57px}
+    &.guild_raids_cloth::before{background-position:-132px -287px;width:54px;height:57px}
+    &.electromagnets::before{background-position:-147px -116px;width:45px;height:48px}
+    &.fine_magnet_factory::before{background-position:-147px -116px;width:45px;height:48px}
+    &.fine_luxury_materials::before{background-position:-155px -69px;width:60px;height:45px}
+    &.luxury_materials::before{background-position:-155px -69px;width:60px;height:45px}
+    &.compressed_matter_capsule::before{background-position:-194px -116px;width:25px;height:49px}
+    &.fine_compressed_matter_capsule::before{background-position:-194px -116px;width:25px;height:49px}
+    &.fine_plastics_plant::before{background-position:-189px -167px;width:30px;height:63px}
+    &.plastics::before{background-position:-189px -167px;width:30px;height:63px}
+    &.basalt::before{background-position:-188px -232px;width:54px;height:64px;transform:rotate(-90deg)}
+    &.icon_fine_basalt::before{background-position:-188px -232px;width:54px;height:64px;transform:rotate(-90deg)}
+    &.fine_microgreen_supplement::before{background-position:-188px -298px;width:61px;height:46px;transform:rotate(-90deg)}
+    &.microgreen_supplement::before{background-position:-188px -298px;width:61px;height:46px;transform:rotate(-90deg)}
+    &.convenience_food::before{background-position:-67px -343px;width:63px;height:38px;transform:rotate(-90deg)}
+    &.fine_convenience_food::before{background-position:-67px -343px;width:63px;height:38px;transform:rotate(-90deg)}
+    &.fine_nanites::before{background-position:-132px -346px;width:64px;height:56px}
+    &.nanites::before{background-position:-132px -346px;width:64px;height:56px}
+    &.cypress::before{background-position:-198px -346px;width:51px;height:61px}
+    &.icon_fine_cypress::before{background-position:-198px -346px;width:51px;height:61px}
+    &.icon_fine_paper::before{background-position:-65px -383px;width:64px;height:57px}
+    &.paper::before{background-position:-65px -383px;width:64px;height:57px}
+    &.fine_pearls::before{background-position:-131px -404px;width:64px;height:57px;transform:rotate(-90deg)}
+    &.pearls::before{background-position:-131px -404px;width:64px;height:57px;transform:rotate(-90deg)}
+    &.fine_coconuts::before{background-position:-197px -409px;width:62px;height:52px}
+    &.fine_mead::before{background-position:-65px -442px;width:60px;height:62px}
+    &.mead::before{background-position:-65px -442px;width:60px;height:62px}
+    &.gems::before{background-position:-65px -506px;width:62px;height:59px}
+    &.icon_fine_rough_gems::before{background-position:-65px -506px;width:62px;height:59px}
+    &.icon_fine_porcelain::before{background-position:-127px -463px;width:62px;height:41px}
+    &.porcelain::before{background-position:-127px -463px;width:62px;height:41px}
+    &.fine_venus_carbon::before{background-position:-129px -506px;width:61px;height:59px;transform:rotate(-90deg)}
+    &.venus_carbon::before{background-position:-129px -506px;width:61px;height:59px;transform:rotate(-90deg)}
+    &.filters::before{background-position:-191px -463px;width:57px;height:41px;transform:rotate(-90deg)}
+    &.fine_filters::before{background-position:-191px -463px;width:57px;height:41px;transform:rotate(-90deg)}
+    &.axes::before{background-position:-192px -506px;width:60px;height:59px}
+    &.fine_axes::before{background-position:-192px -506px;width:60px;height:59px}
+    &.coffee::before{background-position:-816px -61px;width:63px;height:47px}
+    &.icon_fine_coffee::before{background-position:-816px -61px;width:63px;height:47px}
+    &.fine_whale::before{background-position:-494px -64px;width:63px;height:48px;transform:rotate(-90deg)}
+    &.whaleoil::before{background-position:-494px -64px;width:63px;height:48px;transform:rotate(-90deg)}
+    &.fine_paintings::before{background-position:-559px -64px;width:63px;height:49px}
+    &.paintings::before{background-position:-559px -64px;width:63px;height:49px}
+    &.fine_instruments::before{background-position:-624px -64px;width:62px;height:52px;transform:rotate(-90deg)}
+    &.instruments::before{background-position:-624px -64px;width:62px;height:52px;transform:rotate(-90deg)}
+    &.fine_textiles::before{background-position:-688px -65px;width:63px;height:54px}
+    &.textiles::before{background-position:-688px -65px;width:63px;height:54px}
+    &.fine_lotus::before{background-position:-753px -65px;width:61px;height:54px}
+    &.lotus::before{background-position:-753px -65px;width:61px;height:54px}
+    &.fine_superalloys::before{background-position:-816px -110px;width:62px;height:45px}
+    &.superalloys::before{background-position:-816px -110px;width:62px;height:45px}
+    &.fine_upcycled_hydrocarbons::before{background-position:-217px -67px;width:43px;height:47px}
+    &.upcycled_hydrocarbons::before{background-position:-217px -67px;width:43px;height:47px}
+    &.armor::before{background-position:-262px -66px;width:62px;height:53px;transform:rotate(-90deg)}
+    &.fine_armor::before{background-position:-262px -66px;width:62px;height:53px;transform:rotate(-90deg)}
+    &.fine_petroleum::before{background-position:-326px -66px;width:62px;height:57px;transform:rotate(-90deg)}
+    &.petroleum::before{background-position:-326px -66px;width:62px;height:57px;transform:rotate(-90deg)}
+    &.brick::before{background-position:-390px -66px;width:61px;height:57px}
+    &.icon_fine_brick_clay::before{background-position:-390px -66px;width:61px;height:57px}
+    &.alabaster::before{background-position:-453px -66px;width:39px;height:59px}
+    &.icon_fine_alabaster::before{background-position:-453px -66px;width:39px;height:59px}
+    &.fine_papercrete::before{background-position:-221px -116px;width:37px;height:58px;transform:rotate(-90deg)}
+    &.papercrete::before{background-position:-221px -116px;width:37px;height:58px;transform:rotate(-90deg)}
+    &.fine_topological_records::before{background-position:-221px -176px;width:46px;height:54px}
+    &.topological_records::before{background-position:-221px -176px;width:46px;height:54px}
+    &.fine_mars_ore::before{background-position:-260px -121px;width:61px;height:53px;transform:rotate(-90deg)}
+    &.mars_ore::before{background-position:-260px -121px;width:61px;height:53px;transform:rotate(-90deg)}
+    &.icon_fine_tar::before{background-position:-323px -125px;width:61px;height:49px}
+    &.tar::before{background-position:-323px -125px;width:61px;height:49px}
+    &.fine_sugar_crystals::before{background-position:-269px -176px;width:61px;height:55px}
+    &.sugar_crystals::before{background-position:-269px -176px;width:61px;height:55px}
+    &.granite::before{background-position:-386px -125px;width:61px;height:51px}
+    &.icon_fine_granite::before{background-position:-386px -125px;width:61px;height:51px}
+    &.fine_headdress::before{background-position:-332px -176px;width:52px;height:56px}
+    &.headdress::before{background-position:-332px -176px;width:52px;height:56px}
+    &.fine_robotics_factory::before{background-position:-386px -178px;width:61px;height:56px;transform:rotate(-90deg)}
+    &.robots::before{background-position:-386px -178px;width:61px;height:56px;transform:rotate(-90deg)}
+    &.fine_nutrition_food::before{background-position:-449px -127px;width:46px;height:61px}
+    &.nutrition_research::before{background-position:-449px -127px;width:46px;height:61px}
+    &.fine_horns::before{background-position:-497px -114px;width:60px;height:61px}
+    &.horns::before{background-position:-497px -114px;width:60px;height:61px}
+    &.data_crystals::before{background-position:-559px -115px;width:61px;height:60px}
+    &.fine_data_crystals::before{background-position:-559px -115px;width:61px;height:60px}
+    &.fine_plankton::before{background-position:-622px -118px;width:61px;height:60px;transform:rotate(-90deg)}
+    &.plankton::before{background-position:-622px -118px;width:61px;height:60px;transform:rotate(-90deg)}
+    &.fine_golden_rice::before{background-position:-685px -121px;width:61px;height:61px}
+    &.golden_rice::before{background-position:-685px -121px;width:61px;height:61px}
+    &.explosives::before{background-position:-748px -121px;width:60px;height:60px}
+    &.fine_explosives::before{background-position:-748px -121px;width:60px;height:60px}
+    &.fine_rubber::before{background-position:-244px -233px;width:60px;height:59px}
+    &.rubber::before{background-position:-244px -233px;width:60px;height:59px}
+    &.icon_fine_lead_ore::before{background-position:-251px -294px;width:52px;height:61px;transform:rotate(-90deg)}
+    &.lead::before{background-position:-251px -294px;width:52px;height:61px;transform:rotate(-90deg)}
+    &.asteroid_ice::before{background-position:-251px -357px;width:59px;height:50px;transform:rotate(-90deg)}
+    &.fine_asteroid_ice::before{background-position:-251px -357px;width:59px;height:50px;transform:rotate(-90deg)}
+    &.dye::before{background-position:-261px -409px;width:49px;height:54px;transform:rotate(-90deg)}
+    &.icon_fine_flowers::before{background-position:-261px -409px;width:49px;height:54px;transform:rotate(-90deg)}
+    &.fine_glowing_seaweed::before{background-position:-306px -234px;width:60px;height:58px;transform:rotate(-90deg)}
+    &.glowing_seaweed::before{background-position:-306px -234px;width:60px;height:58px;transform:rotate(-90deg)}
+    &.basmati::before{background-position:-305px -294px;width:59px;height:59px}
+    &.fine_basmati::before{background-position:-305px -294px;width:59px;height:59px}
+    &.icon_fine_silkworm_cocoons::before{background-position:-312px -355px;width:53px;height:60px;transform:rotate(-90deg)}
+    &.silk::before{background-position:-312px -355px;width:53px;height:60px;transform:rotate(-90deg)}
+    &.fine_soy_proteins::before{background-position:-312px -417px;width:57px;height:46px;transform:rotate(-90deg)}
+    &.soy_proteins::before{background-position:-312px -417px;width:57px;height:46px;transform:rotate(-90deg)}
+    &.brass::before{background-position:-368px -236px;width:60px;height:56px;transform:rotate(-90deg)}
+    &.icon_fine_brass_ore::before{background-position:-368px -236px;width:60px;height:56px;transform:rotate(-90deg)}
+    &.dark_matter::before{background-position:-366px -294px;width:59px;height:59px}
+    &.fine_dark_matter::before{background-position:-366px -294px;width:59px;height:59px}
+    &.fine_fresh_fish::before{background-position:-367px -355px;width:56px;height:60px}
+    &.icon_fine_talc::before{background-position:-371px -417px;width:52px;height:46px}
+    &.talc::before{background-position:-371px -417px;width:52px;height:46px}
+    &.bio_creatures::before{background-position:-449px -190px;width:53px;height:44px;transform:rotate(-90deg)}
+    &.fine_bio_creatures::before{background-position:-449px -190px;width:53px;height:44px;transform:rotate(-90deg)}
+    &.fine_soy::before{background-position:-430px -236px;width:59px;height:57px;transform:rotate(-90deg)}
+    &.soy::before{background-position:-430px -236px;width:59px;height:57px;transform:rotate(-90deg)}
+    &.cryptocash::before{background-position:-427px -295px;width:59px;height:58px}
+    &.fine_cryptocash::before{background-position:-427px -295px;width:59px;height:58px}
+    &.fine_catamarans::before{background-position:-425px -355px;width:59px;height:58px}
+    &.fine_random_guild_raids_goods::before{background-position:-425px -415px;width:60px;height:49px}
+    &.crystallized_hydrocarbons::before{background-position:-504px -177px;width:59px;height:58px;transform:rotate(-90deg)}
+    &.fine_crystallized_hydrocarbons::before{background-position:-504px -177px;width:59px;height:58px;transform:rotate(-90deg)}
+    &.dna_data::before{background-position:-565px -177px;width:55px;height:57px}
+    &.fine_dna_data::before{background-position:-565px -177px;width:55px;height:57px}
+    &.fine_lubricants::before{background-position:-622px -180px;width:59px;height:54px;transform:rotate(-90deg)}
+    &.lubricants::before{background-position:-622px -180px;width:59px;height:54px;transform:rotate(-90deg)}
+    &.fertilizer::before{background-position:-683px -184px;width:60px;height:51px}
+    &.fine_fertilizer::before{background-position:-683px -184px;width:60px;height:51px}
+    &.fine_platinum_crystals::before{background-position:-491px -237px;width:59px;height:58px;transform:rotate(-90deg)}
+    &.platinum_crystals::before{background-position:-491px -237px;width:59px;height:58px;transform:rotate(-90deg)}
+    &.glass::before{background-position:-488px -297px;width:59px;height:58px;transform:rotate(-90deg)}
+    &.icon_fine_quartz::before{background-position:-488px -297px;width:59px;height:58px;transform:rotate(-90deg)}
+    &.icon_fine_limestone::before{background-position:-486px -357px;width:58px;height:56px}
+    &.limestone::before{background-position:-486px -357px;width:58px;height:56px}
+    &.fine_processed_material::before{background-position:-487px -415px;width:58px;height:50px}
+    &.processed_material::before{background-position:-487px -415px;width:58px;height:50px}
+    &.bromine::before{background-position:-250px -465px;width:57px;height:37px;transform:rotate(-90deg)}
+    &.fine_bromine::before{background-position:-250px -465px;width:57px;height:37px;transform:rotate(-90deg)}
+    &.biotech_crops::before{background-position:-254px -504px;width:47px;height:61px}
+    &.fine_biotech_crops::before{background-position:-254px -504px;width:47px;height:61px}
+    &.fine_fusion_reactors::before{background-position:-309px -465px;width:60px;height:47px;transform:rotate(-90deg)}
+    &.fusion_reactors::before{background-position:-309px -465px;width:60px;height:47px;transform:rotate(-90deg)}
+    &.fine_maize::before{background-position:-303px -514px;width:55px;height:51px}
+    &.maize::before{background-position:-303px -514px;width:55px;height:51px}
+    &.fine_barley::before{background-position:-360px -514px;width:55px;height:51px;transform:rotate(-90deg)}
+    &.icon_fine_marble::before{background-position:-371px -465px;width:52px;height:47px;transform:rotate(-90deg)}
+    &.marble::before{background-position:-371px -465px;width:52px;height:47px;transform:rotate(-90deg)}
+    &.icon_fine_crude_salt::before{background-position:-417px -514px;width:52px;height:51px;transform:rotate(-90deg)}
+    &.salt::before{background-position:-417px -514px;width:52px;height:51px;transform:rotate(-90deg)}
+    &.experimental_data::before{background-position:-425px -466px;width:49px;height:46px;transform:rotate(-90deg)}
+    &.fine_experimental_data::before{background-position:-425px -466px;width:49px;height:46px;transform:rotate(-90deg)}
+    &.deep_space_data::before{background-position:-471px -514px;width:50px;height:51px;transform:rotate(-90deg)}
+    &.fine_deep_space_data::before{background-position:-471px -514px;width:50px;height:51px;transform:rotate(-90deg)}
+    &.fine_semiconductors::before{background-position:-476px -467px;width:57px;height:45px}
+    &.semiconductors::before{background-position:-476px -467px;width:57px;height:45px}
+    &.fine_kava::before{background-position:-810px -157px;width:59px;height:52px;transform:rotate(-90deg)}
+    &.honey::before{background-position:-552px -237px;width:42px;height:58px}
+    &.icon_fine_honeycombs::before{background-position:-552px -237px;width:42px;height:58px}
+    &.algae::before{background-position:-596px -236px;width:56px;height:57px}
+    &.fine_algae::before{background-position:-596px -236px;width:56px;height:57px}
+    &.fine_random_goods::before{background-position:-549px -297px;width:47px;height:58px;transform:rotate(-90deg)}
+    &.random_goods::before{background-position:-549px -297px;width:47px;height:58px;transform:rotate(-90deg)}
+    &.fine_transester_gas::before{background-position:-598px -295px;width:54px;height:58px;transform:rotate(-90deg)}
+    &.transester_gas::before{background-position:-598px -295px;width:54px;height:58px;transform:rotate(-90deg)}
+    &.fine_flowers::before{background-position:-546px -357px;width:50px;height:56px}
+    &.fine_nickel::before{background-position:-598px -355px;width:55px;height:57px}
+    &.nickel::before{background-position:-598px -355px;width:55px;height:57px}
+    &.fine_packaging::before{background-position:-547px -415px;width:49px;height:50px;transform:rotate(-90deg)}
+    &.packaging::before{background-position:-547px -415px;width:49px;height:50px;transform:rotate(-90deg)}
+    &.fine_spices::before{background-position:-598px -414px;width:55px;height:52px;transform:rotate(-90deg)}
+    &.spices::before{background-position:-598px -414px;width:55px;height:52px;transform:rotate(-90deg)}
+    &.icon_fine_gbg_resource::before{background-position:-535px -467px;width:58px;height:47px}
+    &.fine_smart_materials::before{background-position:-523px -516px;width:54px;height:49px}
+    &.smart_materials::before{background-position:-523px -516px;width:54px;height:49px}
+    &.enhanced_porifera::before{background-position:-579px -516px;width:48px;height:49px}
+    &.fine_enhanced_porifera::before{background-position:-579px -516px;width:48px;height:49px}
+    &.unit_class_guild_raids_short_ranged::before{background-position:-595px -468px;width:45px;height:46px}
+    &.ai_data::before{background-position:-629px -516px;width:35px;height:49px;transform:rotate(-90deg)}
+    &.fine_ai_data::before{background-position:-629px -516px;width:35px;height:49px;transform:rotate(-90deg)}
+    &.fine_saree::before{background-position:-654px -237px;width:56px;height:57px}
+    &.saree::before{background-position:-654px -237px;width:56px;height:57px}
+    &.biogeochemical_data::before{background-position:-654px -296px;width:56px;height:56px}
+    &.fine_biogeochemical_data::before{background-position:-654px -296px;width:56px;height:56px}
+    &.fine_flavorants::before{background-position:-655px -354px;width:55px;height:56px}
+    &.flavorants::before{background-position:-655px -354px;width:55px;height:56px}
+    &.fine_steel::before{background-position:-655px -412px;width:56px;height:54px}
+    &.steel::before{background-position:-655px -412px;width:56px;height:54px}
+    &.unit_class_long_ranged::before{background-position:-642px -468px;width:45px;height:46px;transform:rotate(-90deg)}
+    &.fine_liquid_binder::before{background-position:-666px -516px;width:28px;height:49px}
+    &.liquid_binder::before{background-position:-666px -516px;width:28px;height:49px}
+    &.icon_fine_sandstone::before{background-position:-712px -237px;width:42px;height:58px;transform:rotate(-90deg)}
+    &.sandstone::before{background-position:-712px -237px;width:42px;height:58px;transform:rotate(-90deg)}
+    &.icon_fine_gex_resource::before{background-position:-712px -297px;width:47px;height:58px;transform:rotate(-90deg)}
+    &.fine_paper_batteries::before{background-position:-712px -357px;width:57px;height:53px}
+    &.paper_batteries::before{background-position:-712px -357px;width:57px;height:53px}
+    &.bioplastics::before{background-position:-713px -412px;width:56px;height:55px}
+    &.fine_bioplastics::before{background-position:-713px -412px;width:56px;height:55px}
+    &.fine_translucent::before{background-position:-756px -183px;width:52px;height:37px}
+    &.translucent_concrete::before{background-position:-756px -183px;width:52px;height:37px}
+    &.artificial_scales::before{background-position:-756px -222px;width:55px;height:55px}
+    &.fine_artificial_scales::before{background-position:-756px -222px;width:55px;height:55px}
+    &.bronze::before{background-position:-813px -211px;width:50px;height:56px;transform:rotate(-90deg)}
+    &.icon_fine_bronze_ore::before{background-position:-813px -211px;width:50px;height:56px;transform:rotate(-90deg)}
+    &.icon_fine_raid_resource::before{background-position:-761px -279px;width:47px;height:58px;transform:rotate(-90deg)}
+    &.fine_renewable_resources::before{background-position:-771px -339px;width:40px;height:57px}
+    &.renewable_resources::before{background-position:-771px -339px;width:40px;height:57px}
+    &.compound_fluid::before{background-position:-771px -398px;width:47px;height:57px}
+    &.fine_compound_fluid::before{background-position:-771px -398px;width:47px;height:57px}
+    &.fine_lng::before{background-position:-689px -469px;width:56px;height:43px;transform:rotate(-90deg)}
+    &.gas::before{background-position:-689px -469px;width:56px;height:43px;transform:rotate(-90deg)}
+    &.fine_nanowire::before{background-position:-696px -514px;width:54px;height:50px;transform:rotate(-90deg)}
+    &.fine_nanowires::before{background-position:-696px -514px;width:54px;height:50px;transform:rotate(-90deg)}
+    &.nanowire::before{background-position:-696px -514px;width:54px;height:50px;transform:rotate(-90deg)}
+    &.dark_energy_battery::before{background-position:-747px -469px;width:25px;height:43px}
+    &.fine_dark_energy_battery::before{background-position:-747px -469px;width:25px;height:43px}
+    &.fine_nanoparticles::before{background-position:-774px -457px;width:47px;height:56px;transform:rotate(-90deg)}
+    &.nanoparticles::before{background-position:-774px -457px;width:47px;height:56px;transform:rotate(-90deg)}
+    &.fine_red_algae::before{background-position:-752px -515px;width:54px;height:50px;transform:rotate(-90deg)}
+    &.red_algae::before{background-position:-752px -515px;width:54px;height:50px;transform:rotate(-90deg)}
+    &.fine_oxygen_pills::before{background-position:-808px -515px;width:43px;height:50px;transform:rotate(-90deg)}
+    &.oxygen_pills::before{background-position:-808px -515px;width:43px;height:50px;transform:rotate(-90deg)}
+    &.fine_sacrificial_offerings::before{background-position:-865px -211px;width:34px;height:56px}
+    &.fine_hypersleep_modules::before{background-position:-871px -157px;width:42px;height:52px;transform:rotate(-90deg)}
+    &.hypersleep_modules::before{background-position:-871px -157px;width:42px;height:52px;transform:rotate(-90deg)}
+    &.icon_fine_grapes::before{background-position:-901px -211px;width:43px;height:56px}
+    &.wine::before{background-position:-901px -211px;width:43px;height:56px}
+    &.fine_promethium::before{background-position:-813px -269px;width:57px;height:47px;transform:rotate(-90deg)}
+    &.promethium::before{background-position:-813px -269px;width:57px;height:47px;transform:rotate(-90deg)}
+    &.coke::before{background-position:-872px -269px;width:57px;height:48px}
+    &.fine_coke::before{background-position:-872px -269px;width:57px;height:48px}
+    &.gold::before{background-position:-813px -318px;width:57px;height:48px}
+    &.icon_fine_gold_ore::before{background-position:-813px -318px;width:57px;height:48px}
+    &.cloth::before{background-position:-872px -319px;width:52px;height:48px;transform:rotate(-90deg)}
+    &.icon_fine_wool::before{background-position:-872px -319px;width:52px;height:48px;transform:rotate(-90deg)}
+    &.fine_stone_figures::before{background-position:-926px -319px;width:38px;height:55px}
+    &.stone_figures::before{background-position:-926px -319px;width:38px;height:55px}
+    &.fine_vegetables::before{background-position:-820px -368px;width:48px;height:52px}
+    &.vegetables::before{background-position:-820px -368px;width:48px;height:52px}
+    &.fine_pottery::before{background-position:-870px -369px;width:53px;height:44px;transform:rotate(-90deg)}
+    &.fine_silver_crystals::before{background-position:-925px -376px;width:39px;height:48px;transform:rotate(-90deg)}
+    &.silver_crystals::before{background-position:-925px -376px;width:39px;height:48px;transform:rotate(-90deg)}
+    &.fine_isolated_molecules::before{background-position:-820px -422px;width:44px;height:32px;transform:rotate(-90deg)}
+    &.isolated_molecules::before{background-position:-820px -422px;width:44px;height:32px;transform:rotate(-90deg)}
+    &.advanced_dna_data::before{background-position:-823px -456px;width:41px;height:53px}
+    &.fine_advanced_dna_data::before{background-position:-823px -456px;width:41px;height:53px}
+    &.fine_purified_water::before{background-position:-870px -415px;width:53px;height:40px;transform:rotate(-90deg)}
+    &.purified_water::before{background-position:-870px -415px;width:53px;height:40px;transform:rotate(-90deg)}
+    &.unit_class_guild_raids_heavy_melee::before{background-position:-925px -426px;width:39px;height:44px}
+    &.unit_class_short_ranged::before{background-position:-866px -457px;width:47px;height:47px}
+    &.unit_class_guild_raids_fast::before{background-position:-915px -472px;width:44px;height:37px;transform:rotate(-90deg)}
+    &.unit_class_guild_raids_long_ranged::before{background-position:-853px -511px;width:43px;height:44px}
+    &.unit_class_guild_raids_light_melee::before{background-position:-898px -511px;width:42px;height:43px}
+    &.unit_class_heavy_melee::before{background-position:-882px -60px;width:42px;height:36px;transform:rotate(-90deg)}
+    &.unit_class_light_melee::before{background-position:-926px -60px;width:38px;height:40px}
+    &.unit_class_fast::before{background-position:-881px -98px;width:38px;height:34px;transform:rotate(-90deg)}
+
+    &.supplies::before,
+    &.money::before,
+    &.medals::before,
+    &.empty::before,
+    &.premium::before,
+    &.tavern_silver::before,
+    &.strategy_points::before,
+    &.copper_coins::before,
+    &.koban_coins::before,
+    &.deben::before,
+    &.diplomacy::before,
+    &.egyptians_loot::before,
+    &.cocoa_beans::before,
+    &.rupees::before,
+    &.shells ::before{
+    background:url('../images/goods/goods-extra.png') top left no-repeat;
+        background-size:512px 128px;
+        width:64px;
+        height:64px;
+    }
+
+    &.supplies::before{background-position: 0 0;}
+    &.money::before{background-position: -64px 0;}
+    &.medals::before{background-position: -128px 0;}
+    &.tavern_silver::before{background-position: -192px 0;}
+    &.premium::before{background-position: -256px 0;}
+    &.strategy_points::before{background-position: -320px 0;}
+    &.empty ::before{background-position: -384px 0;}
+    &.diplomacy::before{background-position:-448px 0; }
+    
+    &.copper_coins::before{background-position:0 -64px;}
+    &.deben::before{background-position:-64px -64px;}
+    &.egyptians_loot::before{background-position:-128px -64px;}
+    &.koban_coins::before{background-position:-192px -64px;}
+    &.cocoa_beans::before{background-position:-256px -64px;}
+    &.rupees::before{background-position:-320px -64px;}
+    &.shells::before{background-position:-384x -64px;}
+}
 
 
-.goods-sprite.supplies::before,
-.goods-sprite.money::before,
-.goods-sprite.medals::before,
-.goods-sprite.empty::before,
-.goods-sprite.strategy_points::before {background:url('../images/goods/goods-extra.png') top left no-repeat;background-size:314px 90px;width:45px;height:45px;}
-.goods-sprite.supplies::before{background-position: 0 0;}
-.goods-sprite.money::before{background-position: -45px 0;}
-.goods-sprite.medals::before{background-position: -94px 0;width:40px;}
-.goods-sprite.empty::before {background-position: -138px 0;}
-
-.goods-sprite-50.supplies::before,
-.goods-sprite-50.money::before,
-.goods-sprite-50.medals::before,
-.goods-sprite-50.premium::before,
-.goods-sprite-50.tavern_silver::before,
-.goods-sprite-50.empty::before,
-.goods-sprite-50.copper_coins::before,
-.goods-sprite-50.koban_coins::before,
-.goods-sprite-50.deben::before,
-.goods-sprite-50.diplomacy::before,
-.goods-sprite-50.egyptians_loot::before,
-.goods-sprite-50.rupees::before,
-.goods-sprite-50.strategy_points::before,
-.goods-sprite-50.cocoa_beans::before,
-.goods-sprite-50.shells::before{background:url('../images/goods/goods-extra.png') top left no-repeat;background-size: 157px 45px;width:24px;height:24px;top:0;right:0;bottom:0;left:0;margin:auto}
-
-.goods-sprite-50.medals::before{background-position: -44px 1px;}
-.goods-sprite-50.money::before{background-position: -22px 1px;}
-.goods-sprite-50.premium::before{background-position: -184px 1px; background-size: 210px 59px;}
-.goods-sprite-50.tavern_silver::before{background-position: -113px 1px;}
-.goods-sprite-50.empty::before {background-position: -66px 0;}
-.goods-sprite-50.strategy_points::before{background-position: -89px 0;}
-.goods-sprite-50.copper_coins::before{background-position:-45px -41px;background-size:251px 72px;width: 26px;}
-.goods-sprite-50.koban_coins::before{background-position:-21px -41px;background-size:251px 72px;}
-.goods-sprite-50.deben::before{background-position:1px -41px;background-size:251px 72px;}
-.goods-sprite-50.diplomacy::before{background-position:-74px -42px;background-size:251px 72px;width:40px;}
-.goods-sprite-50.egyptians_loot::before{background-position:-114px -35px;background-size:251px 72px;width:28px;height:35px;}
-.goods-sprite-50.cocoa_beans::before{background-position:-147px -36px;background-size:251px 72px;width:28px;height:35px;}
-.goods-sprite-50.rupees::before{background-position:-177px -36px;background-size:251px 72px;width:28px;height:35px;}
-.goods-sprite-50.shells::before{background-position:-210px -36px;background-size:251px 72px;width:28px;height:35px;}
