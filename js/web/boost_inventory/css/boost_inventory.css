@@ -27,10 +27,6 @@
     margin-left: 9px;
 }
 
-#BoostInventory td:nth-child(3) img {
-    zoom: 2;
-}
-
 #BoostInventory thead {
     position: sticky;
     top: 0px;
