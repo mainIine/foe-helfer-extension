@@ -339,7 +339,8 @@
 
 	&.highlighted-explained,
 	&.highlighted,
-	&.highlighted2 {
+	&.highlighted2,
+	&.additional {
 		display: table-row;
 	}
 }
