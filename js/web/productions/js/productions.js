@@ -470,14 +470,27 @@ let Productions = {
 							let parsedCurrentAmount = (currentAmount >= 10000 ? HTML.FormatNumberShort(currentAmount) : HTML.Format(currentAmount)) 
 							let parsedAmount = (currentAmount >= 10000 ? HTML.FormatNumberShort(amount) : HTML.Format(amount)) 
 
-							if (currentAmount < amount && building.type != 'production')
-								rowA.push(parsedCurrentAmount + '/' + (hasRandomProductions ? 'Ø' : '') + parsedAmount)
-							else {
-								unitType = productionByCategoryTrue.type
-								if (unitType != null){
-									rowA.push('<span class="unit_skill ' + unitType.replace(/next./,"") + '" title="'+ i18n("Boxes.Units." + unitType.replace(/next./,"") ) + '"></span> ')
+							if (productionByCategoryFalse.units.length>0 || productionByCategoryTrue.units.length>0) {
+								if (productionByCategoryTrue.units.length > 0) 
+									rowA.push(productionByCategoryTrue.units.map(x=>`${x.amount}<span class="unit_skill ${x.type}" title="${i18n("Boxes.Units." + x.type)}"></span> `).join(" "))
+								else 
+									rowA.push(" - ")
+									rowA.push(" / ")
+
+								if (productionByCategoryFalse.units.length > 0) {
+									rowA.push(productionByCategoryFalse.units.map(x=>`${x.amount?x.amount:""}${x.amount && x. random ? "+":""}${x.random ? "Ø"+x.random:""}<span class="unit_skill ${x.type}" title="${i18n("Boxes.Units." + x.type)}"></span> `).join(" "))
 								}
-								rowA.push(parsedCurrentAmount)
+							} else {
+
+								if (currentAmount < amount && building.type != 'production')
+									rowA.push(parsedCurrentAmount + ' / ' + (hasRandomProductions ? 'Ø' : '') + parsedAmount)
+								else {
+									unitType = productionByCategoryTrue.type
+									if (unitType != null){
+										rowA.push('<span class="unit_skill ' + unitType.replace(/next./,"") + '" title="'+ i18n("Boxes.Units." + unitType.replace(/next./,"") ) + '"></span> ')
+									}
+									rowA.push(parsedCurrentAmount)
+								}
 							}
 							rowA.push('</td>')
 							
@@ -490,8 +503,12 @@ let Productions = {
 								}
 								let n = (u.type !== "rogue" ? u.era : "") + u.type;
 								if (Sum[n]) {
+									if(!Sum[n].theory) {
+										Sum[n].theory=u
+									} else {
 									Sum[n].theory.amount += u.amount || 0
-									Sum[n].theory.random += u.random || 0
+									Sum[n].theory.random += u.random || 0	
+									}
 								} else {
 									Sum[n] = {current:null,theory:u}
 								}
@@ -928,7 +945,7 @@ let Productions = {
 				let theoryamount =  (e.theory?.amount ? parseFloat(Math.round(e.theory.amount*100)/100) : "") 
 							+ (e.theory?.random && e.theory?.amount ? " + " : "") 
 							+ (e.theory?.random ? "Ø " + parseFloat(Math.round(e.theory.random*100)/100) : "")
-				table.push (`<tr><td>${currentamount}</td><td>${theoryamount}</td><td><span class="unit_skill ${(e.theory?.type||e.current.type).replace(/next./,"")}" title="${i18n("Boxes.Units." + (e.theory?.type||e.current.type).replace(/next./,"") )}"></span> </td><td>${i18n('Eras.'+(e.theory?.era||e.current.era)+'.short')}</td></tr>`)
+				table.push (`<tr><td>${currentamount}</td><td>${theoryamount}</td><td><span class="unit_skill ${(e.theory?.type||e.current.type).replace(/next./,"")}" title="${i18n("Boxes.Units." + (e.theory?.type||e.current.type).replace(/next./,"") )}"></span> </td><td>${(e.theory?.era===0 ||e.current?.era===0)? "" : i18n('Eras.'+(e.theory?.era||e.current?.era)+'.short')}</td></tr>`)
 			}
 		}
 		table.push('</tbody>')
@@ -979,6 +996,7 @@ let Productions = {
 					let Utype = Object.keys(production.resources)[0]
 					let UAmount = production.resources[Utype]
 					let Uera = Technologies.Eras[building.eraName]
+					if (!current && building.type == "main_building") Utype = "random" //does not work... why???
 					Uera = Uera + (Utype.includes("next") && Uera<Technologies.getMaxEra() ? 1 : 0)
 					prod.amount += UAmount
 					if (!current && building.type == "greatbuilding") {
@@ -991,12 +1009,12 @@ let Productions = {
 							prod.units.push({type:Rtype.replace(/next./,""),amount:0,random:RAmount,era:Rera})
 						})
 					} else {
-						prod.units.push({type:Utype.replace(/next./,""),amount:UAmount,random:0,era:Uera})
+						prod.units.push({type:Utype.replace(/next./,""),amount:UAmount,random:0,era:building.type == "greatbuilding"?0:Uera})
 					}
 					if (current == true && building.type != "main_building" && building.type != "greatbuilding")
 						prod.type = Utype
 					else
-						prod.type = "random"
+						prod.type = null
 				}
 				if (category == "clan_goods" && production.type == "guildResources") {
 					if (production.resources.all_goods_of_age)
