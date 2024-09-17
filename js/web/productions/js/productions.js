@@ -411,6 +411,7 @@ let Productions = {
 	buildTableByType(type) {
 		let table = [],
 			tableGr = [],
+			tableSum=[],
 			rowA = [],
 			groupedBuildings = [],
 			boostCounter = {'att_boost_attacker': {all: 0, battleground: 0, guild_expedition: 0, guild_raids: 0},
@@ -424,7 +425,8 @@ let Productions = {
 			hasRandomProductions = false,
 			boosts = {},
 			buildingIds = Productions.BuildingsProducts[type],
-			inADay = Math.floor(Date.now() / 1000) + 86400
+			inADay = Math.floor(Date.now() / 1000) + 86400,
+			Sum = {}
 
 			if (type != 'goods') {
 				buildingIds.forEach(b => {
@@ -479,7 +481,18 @@ let Productions = {
 							typeCurrentSum += currentAmount
 						}
 						else {
-							rowA.push('<td colspan="4" data-number="1">' + Productions.showBuildingItems(true, building)[0] + '</td>')
+							let items=Productions.showBuildingItems(true, building)
+							for (let i of items[2]) {
+								let n = (i.fragment ? "Fragment" : "") + i.name.replace(/\s/g,"")
+								if (Sum[n]) {
+									Sum[n].amount += i.amount || 0;
+									Sum[n].random += i.random || 0;
+								} else {
+									Sum[n] = i
+								}
+							}
+								
+							rowA.push('<td colspan="4" data-number="1">' + items[0] + '</td>')
 						}
 					}
 					else {
@@ -554,7 +567,7 @@ let Productions = {
 				table.push('<thead style="z-index:100">')
 				table.push('<tr>')
 				table.push('<th colspan="3"><span class="btn-default change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeGroups') + '</span> <input type="text" placeholder="' + i18n('Boxes.Productions.FilterTable') + '" class="filterCurrentList"></th>')
-				if (!type.includes('att') && !type.includes('def')) 
+				if (!type.includes('att') && !type.includes('def') && type!='items') 
 					table.push('<th colspan="9" class="textright">'+(typeCurrentSum >= 10000 ? HTML.FormatNumberShort(typeCurrentSum) : HTML.Format(typeCurrentSum))+ "/" + (typeSum >= 10000 ? HTML.FormatNumberShort(typeSum) : HTML.Format(typeSum))+'</th>')
 				else {
 					table.push('<th colspan="9" class="textright"></th>')
@@ -585,11 +598,12 @@ let Productions = {
 				table.push('</table>')
 
 				tableGr = Productions.buildGroupedTable(type, groupedBuildings, boostCounter)
+				tableSum = Productions.buildSumTable(type,Sum)
 			}
 			else {
 				table.push('<div class="empty-list">'+i18n('Boxes.Productions.EmptyList')+'</div>')
 			}
-			let content = table.join('') + tableGr.join('')
+			let content = table.join('') + tableGr.join('') + tableSum.join('')
 			if (type == 'goods')
 				content = Productions.buildGoodsTable(buildingIds, type) // goods have their own table
 
@@ -802,7 +816,7 @@ let Productions = {
 		tableGr.push('<table class="foe-table sortable-table '+type+'-group">')
 		tableGr.push('<thead>')
 		tableGr.push('<tr>')
-		tableGr.push('<th colspan="7"><span class="btn-default change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeSingle') + '</span></th>')
+		tableGr.push('<th colspan="7"><span class="btn-default change-view game-cursor" data-type="' + type + '">' + (type=="items" ?i18n('Boxes.Productions.ModeSum') : i18n('Boxes.Productions.ModeSingle')) + '</span></th>')
 		tableGr.push('</tr>')
 		tableGr.push('<tr class="sorter-header">')
 		tableGr.push('<th data-type="prodgroup'+type+'" class="is-number">' + i18n('Boxes.Productions.Headings.number') + '</th>')
@@ -847,6 +861,34 @@ let Productions = {
 		tableGr.push('</table>')
 
 		return tableGr
+	},
+
+	buildSumTable: (type,Sum) => {
+		if (Object.values(Sum).length==0) return []
+		let table = []
+		let items = Object.values(Sum).sort((a,b) => a.name>b.name?1:-1)
+
+		table.push('<table class="foe-table '+type+'-sum">')
+		table.push('<thead>')
+		table.push('<tr>')
+		table.push('<th colspan="9"><span class="btn-default change-view game-cursor">' + i18n('Boxes.Productions.ModeSingle') + '</span></th>')
+		table.push('</tr>')
+		table.push('<tr >')
+		table.push('<th >' + i18n('Boxes.Productions.Headings.number') + '</th>')
+		table.push('<th colspan="8" >' + i18n('Boxes.Productions.Headings.item') + '</th>')
+		table.push('</tr>')
+		table.push('</thead>')
+		table.push('<tbody>')
+		for (i of items) {
+			let amount = (i.amount ? parseFloat(Math.round(i.amount*100)/100) : "") 
+						+ (i.random && i.amount ? " + " : "") 
+						+ (i.random ? "Ø " + parseFloat(Math.round(i.random*100)/100) : "")
+			table.push (`<tr><td>${amount}</td><td>${(i.fragment ? "🧩 " : "" )}</td><td>${i.name}</td></tr>`)
+		}
+		table.push('</tbody>')
+		table.push('</table>')
+
+		return table
 	},
 
 
@@ -921,14 +963,16 @@ let Productions = {
 
 
 	showBuildingItems(current = false, building) {
-		let allItems = ''
-		let allUnits = ''
+		let allItems = '',
+			allUnits = '',
+			itemArray = []
 		if ((building.state?.isPolivated == true || building.state?.isPolivated == undefined) && current === true) {
 			building.state.production?.forEach(production => {
 				if (production.type == "genericReward") {
 					if (production.resources.icon.includes("good")) return false
-					let frag = (production.resources.subType == "fragment" ? "🧩 " : "")
-					allItems += production.resources.amount + "x " + frag + production.resources.name + "<br>"
+					let frag = production.resources.subType == "fragment"
+					allItems += production.resources.amount + "x " + (frag ? "🧩 " : "" ) + production.resources.name + "<br>"
+					itemArray.push({fragment:frag,name:production.resources.name,amount:production.resources.amount,random:0})
 				}
 			})
 		}
@@ -938,11 +982,13 @@ let Productions = {
 					if (production.type == "random") {
 						production.resources.forEach(resource => {
 							if (!resource.type.includes("good") && resource.type !== "resources") {
-								let frag = (resource.subType == "fragment" ? "🧩 " : "")
+								let frag = resource.subType == "fragment"
+								let amount = parseFloat(Math.round(resource.amount*resource.dropChance * 100) / 100)
 								if (resource.type == "unit") {
-									allUnits += "Ø " + parseFloat(Math.round(resource.amount*resource.dropChance * 100) / 100) + "x " + frag + `<img src='${srcLinks.get("/shared/icons/"+resource.name.replace("next_","").replace("random","random_production")+".png",true)}'>` + "<br>"
+									allUnits += "Ø " + amount + "x " + (frag ? "🧩 " : "" ) + `<img src='${srcLinks.get("/shared/icons/"+resource.name.replace("next_","").replace("random","random_production")+".png",true)}'>` + "<br>"
 								} else {
-									allItems += "Ø " + parseFloat(Math.round(resource.amount*resource.dropChance * 100) / 100) + "x " + frag + resource.name + "<br>"
+									allItems += "Ø " + amount + "x " + (frag ? "🧩 " : "" ) + resource.name + "<br>"
+									itemArray.push({fragment:frag,name:resource.name,amount:0,random:amount})
 								}
 							}
 						})
@@ -953,13 +999,14 @@ let Productions = {
 						}
 					} 
 					if (production.resources.type == "consumable") {
-						let frag = (production.resources.subType == "fragment" ? "🧩 " : "")
-						allItems += production.resources.amount + "x " + frag + production.resources.name + "<br>"
+						let frag = production.resources.subType == "fragment"
+						allItems += production.resources.amount + "x " + (frag ? "🧩 " : "" ) + production.resources.name + "<br>"
+						itemArray.push({fragment:frag,name:production.resources.name,amount:production.resources.amount,random:0})
 					}
 				})
 			}
 		}
-		return [allItems,allUnits]
+		return [allItems,allUnits,itemArray]
 	},
 	
 	/**
@@ -1039,8 +1086,10 @@ let Productions = {
 	SwitchFunction: ()=>{
 		$('#Productions').on('click', '.change-view', function() {
 			let activeTable = $(this).parents('table'),
-				hiddenTable = $(this).parents('#'+$(this).data('type')).children('table:not(.active)')
-
+				hiddenTable = activeTable.next('table') 
+				
+			if (hiddenTable.length==0) hiddenTable = activeTable.siblings('table').first();
+			
 			activeTable.fadeOut(400, function(){
 				hiddenTable.fadeIn(400)
 				activeTable.removeClass('active')
