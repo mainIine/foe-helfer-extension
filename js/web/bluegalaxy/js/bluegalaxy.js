@@ -271,7 +271,7 @@ let BlueGalaxy = {
             table.push('<td>' + (isPolivated != undefined ? (isPolivated ? '<span class="text-bright">★</span>' : '☆') : '') + '</td>');
             table.push('<td data-text="'+Buildings[i]['name'].replace(/[. -]/g,"")+'">' + Buildings[i]['name'] + '</td>');
             if (showBGFragments) {
-                let items = Productions.showBuildingItems(true, Buildings[i].building)
+                let items = Productions.showBuildingItems(true, Buildings[i].building)[0]
                 table.push('<td data-number="'+Buildings[i].FragmentAmount+'">'+(items != false ? items : "")+'</td>');
             }
             table.push('<td class="text-center" data-number="'+Buildings[i].FP+'">' + HTML.Format(Buildings[i]['FP']) + '</td>');
