@@ -194,7 +194,11 @@ let Technologies = {
         21: 'SpaceAgeTitan',
         22: 'SpaceAgeSpaceHub'
     },
-
+    maxEra:null,
+    getMaxEra:()=>{
+        if (!Technologies.maxEra) Technologies.maxEra = Math.max(...Object.values(MainParser.CityEntities).filter(x=>x.type=="greatbuilding").map(x=>Technologies.Eras[x.requirements.min_era]));
+        return Technologies.maxEra;
+    },
 
     getEraName: (entityId, level) => {
         let eraName = entityId.split('_')[1]

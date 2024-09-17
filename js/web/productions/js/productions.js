@@ -446,10 +446,12 @@ let Productions = {
 					
 					if (!type.includes('att') && !type.includes('def')) {
 						if (type != 'items') {
-							currentAmount = parseFloat(Productions.getBuildingProductionByCategory(true, building, type).amount)
-							amount = parseFloat(Productions.getBuildingProductionByCategory(false, building, type).amount)
-							hasRandomProductions = Productions.getBuildingProductionByCategory(false, building, type).hasRandomProductions
-							let doubled = Productions.getBuildingProductionByCategory(false, building, type).doubleWhenMotivated
+							let productionByCategoryTrue=Productions.getBuildingProductionByCategory(true, building, type)
+							let productionByCategoryFalse=Productions.getBuildingProductionByCategory(false, building, type)
+							currentAmount = parseFloat(productionByCategoryTrue.amount)
+							amount = parseFloat(productionByCategoryFalse.amount)
+							hasRandomProductions = productionByCategoryFalse.hasRandomProductions
+							let doubled = productionByCategoryFalse.doubleWhenMotivated
 
 							if (type == 'money' && building.type != "greatbuilding" && building.type != "main_building") {
 								amount = Math.round(amount + (amount * ((MainParser.BoostSums.coin_production + (Productions.HappinessBoost * 100)) / 100))) * (doubled ? 2 : 1)
@@ -471,22 +473,51 @@ let Productions = {
 							if (currentAmount < amount && building.type != 'production')
 								rowA.push(parsedCurrentAmount + '/' + (hasRandomProductions ? 'Ø' : '') + parsedAmount)
 							else {
-								unitType = Productions.getBuildingProductionByCategory(true, building, type).type
-								if (unitType != null) rowA.push('<span class="unit_skill ' + unitType + '" title="'+ i18n("Boxes.Units." + unitType ) + '"></span> ')
+								unitType = productionByCategoryTrue.type
+								if (unitType != null){
+									rowA.push('<span class="unit_skill ' + unitType.replace(/next./,"") + '" title="'+ i18n("Boxes.Units." + unitType.replace(/next./,"") ) + '"></span> ')
+								}
 								rowA.push(parsedCurrentAmount)
 							}
 							rowA.push('</td>')
 							
 							typeSum += amount
 							typeCurrentSum += currentAmount
+
+							for (let u of productionByCategoryFalse.units) {
+								if (u.type.includes("next")) {
+									a=a+1
+								}
+								let n = (u.type !== "rogue" ? u.era : "") + u.type;
+								if (Sum[n]) {
+									Sum[n].theory.amount += u.amount || 0
+									Sum[n].theory.random += u.random || 0
+								} else {
+									Sum[n] = {current:null,theory:u}
+								}
+							}
+							for (let u of productionByCategoryTrue.units) {
+								if (u.type.includes("next")) {
+									a=a+1
+								}
+								let n = (u.type !== "rogue" ? u.era : "") + u.type;
+								if (Sum[n]?.current) {
+									Sum[n].current.amount += u.amount || 0
+									Sum[n].current.random += u.random || 0
+								} else {
+									if (!Sum[n]) Sum[n] = {current:null,theory:null}
+									Sum[n].current = u
+								}
+							}
+
 						}
 						else {
 							let items=Productions.showBuildingItems(true, building)
 							for (let i of items[2]) {
 								let n = (i.fragment ? "Fragment" : "") + i.name.replace(/\s/g,"")
 								if (Sum[n]) {
-									Sum[n].amount += i.amount || 0;
-									Sum[n].random += i.random || 0;
+									Sum[n].amount += i.amount || 0
+									Sum[n].random += i.random || 0
 								} else {
 									Sum[n] = i
 								}
@@ -816,7 +847,7 @@ let Productions = {
 		tableGr.push('<table class="foe-table sortable-table '+type+'-group">')
 		tableGr.push('<thead>')
 		tableGr.push('<tr>')
-		tableGr.push('<th colspan="7"><span class="btn-default change-view game-cursor" data-type="' + type + '">' + (type=="items" ?i18n('Boxes.Productions.ModeSum') : i18n('Boxes.Productions.ModeSingle')) + '</span></th>')
+		tableGr.push('<th colspan="7"><span class="btn-default change-view game-cursor" data-type="' + type + '">' + (type=="items" || type=="units" ?i18n('Boxes.Productions.ModeSum') : i18n('Boxes.Productions.ModeSingle')) + '</span></th>')
 		tableGr.push('</tr>')
 		tableGr.push('<tr class="sorter-header">')
 		tableGr.push('<th data-type="prodgroup'+type+'" class="is-number">' + i18n('Boxes.Productions.Headings.number') + '</th>')
@@ -865,8 +896,14 @@ let Productions = {
 
 	buildSumTable: (type,Sum) => {
 		if (Object.values(Sum).length==0) return []
+
 		let table = []
-		let items = Object.values(Sum).sort((a,b) => a.name>b.name?1:-1)
+		let elements = []
+		if (type=="items") {
+			elements = Object.values(Sum).sort((a,b) => a.name>b.name?1:-1)
+		} else { //units
+			elements = Object.values(Sum).sort((b,a) => ((a.theory?.type=="rogue"?100:0)+(a.theory?.era||0))-((b.theory?.type=="rogue"?100:0)+(b.theory?.era||0)))
+		}
 
 		table.push('<table class="foe-table '+type+'-sum">')
 		table.push('<thead>')
@@ -874,16 +911,25 @@ let Productions = {
 		table.push('<th colspan="9"><span class="btn-default change-view game-cursor">' + i18n('Boxes.Productions.ModeSingle') + '</span></th>')
 		table.push('</tr>')
 		table.push('<tr >')
-		table.push('<th >' + i18n('Boxes.Productions.Headings.number') + '</th>')
-		table.push('<th colspan="8" >' + i18n('Boxes.Productions.Headings.item') + '</th>')
+		table.push('<th colspan="'+(type=="items"?1:2) +'">' + i18n('Boxes.Productions.Headings.number') + '</th>')
+		table.push('<th colspan="'+(type=="items"?7:6) +'" >' + (type=="items" ? i18n('Boxes.Productions.Headings.item'):i18n('Boxes.Units.Unit')) + '</th>')
 		table.push('</tr>')
 		table.push('</thead>')
 		table.push('<tbody>')
-		for (i of items) {
-			let amount = (i.amount ? parseFloat(Math.round(i.amount*100)/100) : "") 
-						+ (i.random && i.amount ? " + " : "") 
-						+ (i.random ? "Ø " + parseFloat(Math.round(i.random*100)/100) : "")
-			table.push (`<tr><td>${amount}</td><td>${(i.fragment ? "🧩 " : "" )}</td><td>${i.name}</td></tr>`)
+		for (e of elements) {
+			if (type=="items") {
+				let amount = (e.amount ? parseFloat(Math.round(e.amount*100)/100) : "") 
+							+ (e.random && e.amount ? " + " : "") 
+							+ (e.random ? "Ø " + parseFloat(Math.round(e.random*100)/100) : "")
+				table.push (`<tr><td>${amount}</td><td>${(e.fragment ? "🧩 " : "" )}</td><td>${e.name}</td></tr>`)
+			} else {//units
+				let currentamount = (e.current?.amount ? parseFloat(Math.round(e.current.amount*100)/100) : "0") 
+							 
+				let theoryamount =  (e.theory?.amount ? parseFloat(Math.round(e.theory.amount*100)/100) : "") 
+							+ (e.theory?.random && e.theory?.amount ? " + " : "") 
+							+ (e.theory?.random ? "Ø " + parseFloat(Math.round(e.theory.random*100)/100) : "")
+				table.push (`<tr><td>${currentamount}</td><td>${theoryamount}</td><td><span class="unit_skill ${(e.theory?.type||e.current.type).replace(/next./,"")}" title="${i18n("Boxes.Units." + (e.theory?.type||e.current.type).replace(/next./,"") )}"></span> </td><td>${i18n('Eras.'+(e.theory?.era||e.current.era)+'.short')}</td></tr>`)
+			}
 		}
 		table.push('</tbody>')
 		table.push('</table>')
@@ -896,6 +942,7 @@ let Productions = {
 		let prod = {
 			amount: 0,
 			type: null, // units
+			units:[],
 			hasRandomProductions: false,
 			doubleWhenMotivated: false
 		}
@@ -908,6 +955,9 @@ let Productions = {
 						if (resource.type+"s" == category) { // units 
 							prod.amount += resource.amount * resource.dropChance
 							prod.hasRandomProductions = true
+							let Uera = Technologies.Eras[building.eraName]
+							Uera = Uera + (resource.name.includes("next") && Uera<Technologies.getMaxEra() ? 1 : 0)
+							prod.units.push({type:resource.name.replace(/next./,""),amount:0,random:resource.amount * resource.dropChance,era:Uera})
 						}
 						if (resource.type == "guild_goods" && category == "clan_goods") {
 							prod.amount += resource.amount * resource.dropChance
@@ -926,11 +976,27 @@ let Productions = {
 					}
 				}
 				if (production.type+"s" == category) { // units
-					prod.amount += Object.values(production.resources)[0]
+					let Utype = Object.keys(production.resources)[0]
+					let UAmount = production.resources[Utype]
+					let Uera = Technologies.Eras[building.eraName]
+					Uera = Uera + (Utype.includes("next") && Uera<Technologies.getMaxEra() ? 1 : 0)
+					prod.amount += UAmount
+					if (!current && building.type == "greatbuilding") {
+						let m = Object.values(MainParser.CityMapData).filter(x=>x.type=="military")
+						let RAmount = UAmount/m.length
+						m.forEach (x => {
+							let Rtype = MainParser.CityEntities[x.cityentity_id].available_products[0].unit_class
+							if (MainParser.CityEntities[x.cityentity_id].available_products[0].unit_type_id=="rogue") Rtype="rogue"   //Banners + Drummers???
+							let Rera = Technologies.Eras[MainParser.CityEntities[x.cityentity_id].requirements.min_era]
+							prod.units.push({type:Rtype.replace(/next./,""),amount:0,random:RAmount,era:Rera})
+						})
+					} else {
+						prod.units.push({type:Utype.replace(/next./,""),amount:UAmount,random:0,era:Uera})
+					}
 					if (current == true && building.type != "main_building" && building.type != "greatbuilding")
-						prod.type = Object.keys(production.resources)[0]
+						prod.type = Utype
 					else
-						prod.type = null
+						prod.type = "random"
 				}
 				if (category == "clan_goods" && production.type == "guildResources") {
 					if (production.resources.all_goods_of_age)
@@ -985,7 +1051,7 @@ let Productions = {
 								let frag = resource.subType == "fragment"
 								let amount = parseFloat(Math.round(resource.amount*resource.dropChance * 100) / 100)
 								if (resource.type == "unit") {
-									allUnits += "Ø " + amount + "x " + (frag ? "🧩 " : "" ) + `<img src='${srcLinks.get("/shared/icons/"+resource.name.replace("next_","").replace("random","random_production")+".png",true)}'>` + "<br>"
+									allUnits += "Ø " + amount + "x " + (frag ? "🧩 " : "" ) + `<img src='${srcLinks.get("/shared/icons/"+resource.name.replace(/next./,"").replace("random","random_production")+".png",true)}'>` + "<br>"
 								} else {
 									allItems += "Ø " + amount + "x " + (frag ? "🧩 " : "" ) + resource.name + "<br>"
 									itemArray.push({fragment:frag,name:resource.name,amount:0,random:amount})
@@ -995,7 +1061,7 @@ let Productions = {
 					}
 					if (production.type == "unit") {
 						for (let u of Object.keys(production.resources)) {
-							allUnits += production.resources[u] + "x " + `<img src='${srcLinks.get("/shared/icons/"+u.replace("next_","").replace("random","random_production")+".png",true)}'>` + "<br>"
+							allUnits += production.resources[u] + "x " + `<img src='${srcLinks.get("/shared/icons/"+u.replace(/next./,"").replace("random","random_production")+".png",true)}'>` + "<br>"
 						}
 					} 
 					if (production.resources.type == "consumable") {

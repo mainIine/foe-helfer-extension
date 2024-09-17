@@ -482,7 +482,27 @@
 	background-position: -415px 3px;
 }
 
-
+#Productions .units-sum {
+	& td:nth-child(1) {
+		width: 35px;
+		text-align:right;
+	};
+	& td:nth-child(2) {
+		width: 80px;		
+	};
+	& td:nth-child(3) {
+		width: 15px;		
+	};
+}
+#Productions .items-sum {
+	& td:nth-child(1) {
+		width: 80px;
+		text-align:right;
+	};
+	& td:nth-child(2) {
+		width: 15px;		
+	};
+}
 
 
 #ProductionsRating {
