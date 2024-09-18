@@ -245,11 +245,11 @@ let Productions = {
 								if (Productions.BuildingsProducts.strategy_points.find(x => x.id == building.id) == undefined)
 									Productions.BuildingsProducts["strategy_points"].push(saveBuilding)
 							}
-							if (resource.type.includes("goods") && !resource.type.includes("guild")) {
+							if (resource.type.includes("good") && !resource.type.includes("guild")) {
 								if (Productions.BuildingsProducts.goods.find(x => x.id == building.id) == undefined)
 									Productions.BuildingsProducts["goods"].push(saveBuilding)
 							}
-							if (resource.type.includes("goods") && resource.type.includes("guild")) {
+							if (resource.type.includes("good") && resource.type.includes("guild")) {
 								if (Productions.BuildingsProducts.clan_goods.find(x => x.id == building.id) == undefined)
 									Productions.BuildingsProducts.clan_goods.push(saveBuilding)
 							}
