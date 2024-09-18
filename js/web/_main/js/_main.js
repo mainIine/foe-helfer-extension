@@ -189,6 +189,11 @@ GetFights = () =>{
 		MainParser.CastleSystemLevels = JSON.parse(xhr.responseText);
 	});
 
+	// Allies
+	FoEproxy.addMetaHandler('allies', (xhr, postData) => {
+		MainParser.Allies.setStats(JSON.parse(xhr.responseText));
+	});
+
 	// Portrait-Mapping für Spieler Avatare
 	FoEproxy.addRawHandler((xhr, requestData) => {
 		const idx = requestData.url.indexOf("/assets/shared/avatars/Portraits");
@@ -304,6 +309,16 @@ GetFights = () =>{
 	// Boosts zusammen tragen
 	FoEproxy.addHandler('BoostService', 'getAllBoosts', (data, postData) => {
 		MainParser.CollectBoosts(data.responseData);
+	});
+
+	FoEproxy.addHandler('AllyService', 'getAllies', (data, postData) => {
+		MainParser.Allies.getAllies(data.responseData);
+	});
+	FoEproxy.addHandler('AllyService', 'updateAlly', (data, postData) => {
+		MainParser.Allies.updateAlly(data.responseData);
+	});
+	FoEproxy.addHandler('AllyService', 'addAlly', (data, postData) => {
+		MainParser.Allies.addAlly(data.responseData);
 	});
 
 	// QI map
@@ -1387,6 +1402,70 @@ let MainParser = {
 			}
 		}
 	},
+	Allies:{
+		buildingList:null,
+		allyList:null,
+		stats:null,
+		getAllies:(allies)=>{
+			MainParser.Allies.allyList = Object.assign({}, ...allies.map(a=>({[a.id]:a})));
+			let list = MainParser.Allies.buildingList = {}
+			for (let ally of allies) {
+				if (!ally.mapEntityId) continue
+				if (list[ally.mapEntityId]) 
+					list[ally.mapEntityId][ally.id]=ally.id
+				else 
+				 	list[ally.mapEntityId] = {[ally.id]:ally.id}
+			}
+			//if (Object.keys(list).length>0) CityMap.createNewCityMapEntities(Object.keys(list))
+		},
+		updateAlly:(ally)=>{
+			if (ally.mapEntityId) {
+				let list = MainParser.Allies.buildingList
+				if (list[ally.mapEntityId]) 
+					list[ally.mapEntityId][ally.id]=ally.id
+				else 
+				 	list[ally.mapEntityId] = {[ally.id]:ally.id}
+				MainParser.Allies.allyList[ally.id] = ally
+				//CityMap.createNewCityMapEntities([ally.mapEntityId])
+			} else {
+				mapID=MainParser.Allies.allyList[ally.id].mapEntityId
+				delete MainParser.Allies.buildingList[mapID][ally.id]
+				if (Object.keys(MainParser.Allies.buildingList[mapID]).length==0) delete MainParser.Allies.buildingList[mapID]
+				MainParser.Allies.allyList[ally.id] = ally
+				//CityMap.createNewCityMapEntities([mapID])
+			}
+		},
+		addAlly:(ally)=>{
+			MainParser.Allies.allyList[ally.id]=ally
+		},
+		setStats:(rawStats)=>{
+			let stats = MainParser.Allies.stats = {}
+			for (ally of rawStats) {
+				stats[ally.id]={}
+				ally.rarityStats.forEach((r)=>{
+					stats[ally.id][r.rarity.value]=Object.assign({}, ...r.levels.map(l=>({[l.level]:l})))
+				})
+			}
+		},
+		getProd:(CityMapId) => {
+			let M= MainParser.Allies
+			if (!M.buildingList[CityMapId]) return null
+			let prod={}
+			Object.values(M.buildingList[CityMapId]).forEach(id=> {
+				let a=M.allyList[id]
+				let stat=M.stats[a.allyId][a.rarity.value][a.level]
+				for (let s of Object.keys(stat)) {
+					if (s=="level") continue
+					if (prod[s]) 
+						prod[s].concat(stat[s])
+					else
+						prod[s]=stat[s]
+				}
+			})
+			return prod
+		}
+	},
+
 
 
 	/**
