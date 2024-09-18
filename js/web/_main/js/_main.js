@@ -669,6 +669,16 @@ GetFights = () =>{
 		}
 	});
 
+	FoEproxy.addRequestHandler('InventoryService', 'useItem', (postData) => {
+		if (postData?.requestData?.[0]?.__class__=="UseItemOnBuildingPayload") {
+			if (MainParser.Inventory[postData?.requestData?.[0]?.itemId].itemAssetName =="store_building") {
+				let id= postData?.requestData?.[0]?.mapEntityId
+				if (MainParser.CityMapData[id]) delete MainParser.CityMapData[id]
+				if (MainParser.NewCityMapData[id]) delete MainParser.NewCityMapData[id]
+			}
+		}
+	});
+
 	// Update Funktion, die ausgeführt wird, sobald beide Informationen in lgUpdateData vorhanden sind.
 	function lgUpdate() {
 		const { CityMapEntity, Rankings, Bonus } = lgUpdateData;
