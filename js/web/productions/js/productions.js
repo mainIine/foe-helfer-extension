@@ -442,7 +442,7 @@ let Productions = {
 						if (building.chainBuilding !== undefined)
 						rowA.push('<img src="' + srcLinks.get('/shared/icons/' + building.chainBuilding.name + '.png', true) + '" class="chain-set-ico">')
 					rowA.push('</td>')
-					rowA.push('<td data-text="'+helper.str.cleanup(building.name)+'">' + building.name + '</td>')
+					rowA.push('<td data-text="'+helper.str.cleanup(building.name)+'"  class="' + (MainParser.Allies.buildingList[building.id]?"ally" : "") +'">' + building.name + '</td>')
 					
 					if (!type.includes('att') && !type.includes('def')) {
 						if (type != 'items') {
@@ -733,7 +733,7 @@ let Productions = {
 			rowA.push('<td>')
 			rowA.push((building.state.isPolivated !== undefined ? (building.state.isPolivated ? '<span class="text-bright">★</span>' : '☆') : ''))
 			rowA.push('</td>')
-			rowA.push('<td data-text="'+helper.str.cleanup(building.name)+'">' + building.name + '</td>')
+			rowA.push('<td data-text="'+helper.str.cleanup(building.name)+'"  class="' + (MainParser.Allies.buildingList[building.id]?"ally" : "") +'">' + building.name + '</td>')
 			
 			currentAmount = parseFloat(Productions.getBuildingProductionByCategory(true, building, type))
 			amount = parseFloat(Productions.getBuildingProductionByCategory(false, building, type))
@@ -843,7 +843,7 @@ let Productions = {
 			groupedBuildings.forEach(building => {
 				rowB.push('<tr>')
 				rowB.push('<td data-number="'+building.amount+'">'+building.amount+'x </td>')
-				rowB.push('<td data-text="'+building.building.name.replace(/[. -]/g,"")+'">'+ building.building.name +'</td>')
+				rowB.push('<td data-text="'+building.building.name.replace(/[. -]/g,"")+'"  class="' + (MainParser.Allies.buildingList[building.building.id]?"ally" : "") +'">'+ building.building.name +'</td>')
 				eras.forEach(era => {
 					rowB.push('<td data-number="'+building[era]+'" class="text-center">')
 					rowB.push(HTML.Format(building[era]))
@@ -885,7 +885,7 @@ let Productions = {
 			groupedBuildings.forEach(building => {
 				rowB.push('<tr>')
 				rowB.push('<td data-number="'+building.amount+'">'+building.amount+'x </td>')
-				rowB.push('<td data-text="'+building.building.name.replace(/[. -]/g,"")+'">'+ building.building.name +'</td>')
+				rowB.push('<td data-text="'+building.building.name.replace(/[. -]/g,"")+'" class="' + (MainParser.Allies.buildingList[building.building.id]?"ally" : "") +'">'+ building.building.name +'</td>')
 				if (type.includes('att') || type.includes('def')) {
 					rowB.push('<td data-number="'+building.boosts.all*building.amount+'" class="text-center">'+ (building.boosts.all != 0 ? HTML.Format(building.boosts.all*building.amount) : '') +'</td>')
 					rowB.push('<td data-number="'+building.boosts.battleground*building.amount+'" class="text-center">'+ (building.boosts.battleground != 0 ? HTML.Format(building.boosts.battleground*building.amount) : '') +'</td>')
@@ -1380,7 +1380,11 @@ let Productions = {
 			for (const building of Productions.BuildingsAll) {
 				if (building == undefined || building.type == 'street' || building.type == 'military' || building.id >= 2000000000 || building.type.includes('hub')) continue
 
-				let foundBuildingIndex = uniqueBuildings.findIndex(x => x.name == building?.name)
+				let compare = building.name
+				if (MainParser.Allies.buildingList[building.id]) {
+					compare += "+" + Object.keys(MainParser.Allies.buildingList[building.id]).join("+")
+				}
+				let foundBuildingIndex = uniqueBuildings.findIndex(x => x.name == compare)
 				if (foundBuildingIndex == -1) {
 					uniqueBuildings.push(building)
 					delete Productions.AdditionalSpecialBuildings[building.entityId]
@@ -1407,7 +1411,7 @@ let Productions = {
 				if (!Productions.Rating[type]) continue;
 				colNumber++
 			}
-
+			
 			h.push('<div class="ratingtable">');
 			h.push('<a id="RatingSettings" class="toggle-tab btn-default btn-tight" data-value="Settings">' + i18n('Boxes.ProductionsRating.Settings') + '</a>')
 			h.push('<table class="foe-table sortable-table">');
@@ -1418,7 +1422,7 @@ let Productions = {
 				h.push('<input type="checkbox" id="tilevalues"><label for="tilevalues">' + i18n('Boxes.ProductionsRating.ShowValuesPerTile') + '</label>')
 				h.push('<input type="checkbox" id="showitems"><label for="showitems">' + i18n('Boxes.ProductionsRating.ShowItems') + '</label>')
 				h.push('<input type="checkbox" id="showhighlighted"><label for="showhighlighted">' + i18n('Boxes.ProductionsRating.ShowHighlighted') + '</label>')
-				h.push('<label for="efficiencyBuidlingFilter">' + i18n('Boxes.ProductionsRating.Filter') + ": " + '<input type="text" id="efficiencyBuidlingFilter" size=20 placeholder="neo|eden"></label>')
+				h.push('<label for="efficiencyBuildingFilter">' + i18n('Boxes.ProductionsRating.Filter') + ": " + '<input type="text" id="efficiencyBuildingFilter" size=20 placeholder="neo|eden"></label>')
 				h.push('<a class="btn-default" id="addMetaBuilding">' + i18n('Boxes.ProductionsRating.AddBuilding') + '</a>')
 				h.push('</th>');
 			h.push('</tr>');
@@ -1439,7 +1443,7 @@ let Productions = {
 				[randomItems,randomUnits]=Productions.showBuildingItems(false, building.building)
 				h.push(`<tr ${building.highlight?'class="additional"':""}>`)
 				h.push('<td class="text-right" data-number="'+building.score * 100 +'">'+Math.round(building.score * 100)+'</td>')
-				h.push('<td data-text="'+helper.str.cleanup(building.building.name)+'">'+building.building.name)
+				h.push('<td data-text="'+helper.str.cleanup(building.building.name)+'" '+ MainParser.Allies.tooltip(building.building.id) + ' class="' + (MainParser.Allies.buildingList[building.building.id]?"ally" : "") +'">'+building.building.name)
 				let eraShortName = i18n("Eras."+Technologies.Eras[building.building.eraName]+".short")
 				if (eraShortName != "-")
 					h.push(" ("+i18n("Eras."+Technologies.Eras[building.building.eraName]+".short") +')')
@@ -1510,7 +1514,7 @@ let Productions = {
 				tilevalues=$('#tilevalues').is(':checked')
 				showitems=$('#showitems').is(':checked')
 				showhighlighted=$('#showhighlighted').is(':checked')
-				search=new RegExp($('#efficiencyBuidlingFilter').val(),"i")
+				search=new RegExp($('#efficiencyBuildingFilter').val(),"i")
 				Productions.CalcRatingBody()
 				setTimeout(()=>{
 					$(".ratingtable td:nth-child(2)").each((x,el)=>{
@@ -1518,8 +1522,8 @@ let Productions = {
 							el.parentElement.classList.add("highlighted")
 						}
 					})
-					$('#efficiencyBuidlingFilter').val(search.source=="(?:)"?"":search.source)
-					$('#efficiencyBuidlingFilter').trigger("input")
+					$('#efficiencyBuildingFilter').val(search.source=="(?:)"?"":search.source)
+					$('#efficiencyBuildingFilter').trigger("input")
 					if (tilevalues) $('#tilevalues').trigger("click")					
 					if (showitems) $('#showitems').trigger("click")					
 					if (showhighlighted) $('#showhighlighted').trigger("click")										
@@ -1576,8 +1580,8 @@ let Productions = {
 				Productions.CalcRatingBody()
 			});
 			
-			$('#efficiencyBuidlingFilter').on('input', e => {
-				let filter=$('#efficiencyBuidlingFilter').val();
+			$('#efficiencyBuildingFilter').on('input', e => {
+				let filter=$('#efficiencyBuildingFilter').val();
 				let regEx=new RegExp(filter,"i");
 				$('.ratinglist tr td:nth-child(2)').each((x,y) => {
 					if (filter!="" && regEx.test($(y).text())) {
@@ -1587,7 +1591,7 @@ let Productions = {
 					}
 				});
 			});
-			$('#ProductionsRatingBody td.units').tooltip({container: "#game_body", html:true});
+			$('#ProductionsRatingBody [data-original-title]').tooltip({container: "#game_body", html:true});
 		});	
 		
     },

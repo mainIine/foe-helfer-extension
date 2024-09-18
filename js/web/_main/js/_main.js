@@ -194,6 +194,10 @@ GetFights = () =>{
 		MainParser.Allies.setStats(JSON.parse(xhr.responseText));
 	});
 
+	FoEproxy.addMetaHandler('ally_rarities', (xhr, postData) => {
+		MainParser.Allies.setRarities(JSON.parse(xhr.responseText));
+	});
+
 	// Portrait-Mapping für Spieler Avatare
 	FoEproxy.addRawHandler((xhr, requestData) => {
 		const idx = requestData.url.indexOf("/assets/shared/avatars/Portraits");
@@ -1406,6 +1410,8 @@ let MainParser = {
 		buildingList:null,
 		allyList:null,
 		stats:null,
+		rarities:null,
+		names:null,
 		getAllies:(allies)=>{
 			MainParser.Allies.allyList = Object.assign({}, ...allies.map(a=>({[a.id]:a})));
 			let list = MainParser.Allies.buildingList = {}
@@ -1416,7 +1422,6 @@ let MainParser = {
 				else 
 				 	list[ally.mapEntityId] = {[ally.id]:ally.id}
 			}
-			//if (Object.keys(list).length>0) CityMap.createNewCityMapEntities(Object.keys(list))
 		},
 		updateAlly:(ally)=>{
 			if (ally.mapEntityId) {
@@ -1426,13 +1431,11 @@ let MainParser = {
 				else 
 				 	list[ally.mapEntityId] = {[ally.id]:ally.id}
 				MainParser.Allies.allyList[ally.id] = ally
-				//CityMap.createNewCityMapEntities([ally.mapEntityId])
 			} else {
 				mapID=MainParser.Allies.allyList[ally.id].mapEntityId
 				delete MainParser.Allies.buildingList[mapID][ally.id]
 				if (Object.keys(MainParser.Allies.buildingList[mapID]).length==0) delete MainParser.Allies.buildingList[mapID]
 				MainParser.Allies.allyList[ally.id] = ally
-				//CityMap.createNewCityMapEntities([mapID])
 			}
 		},
 		addAlly:(ally)=>{
@@ -1446,6 +1449,7 @@ let MainParser = {
 					stats[ally.id][r.rarity.value]=Object.assign({}, ...r.levels.map(l=>({[l.level]:l})))
 				})
 			}
+			MainParser.Allies.names = Object.assign({}, ...rawStats.map(a=>({[a.id]:a.name})))
 		},
 		getProd:(CityMapId) => {
 			let M= MainParser.Allies
@@ -1463,6 +1467,16 @@ let MainParser = {
 				}
 			})
 			return prod
+		},
+		tooltip:(id)=>{
+			if (!MainParser.Allies.buildingList[id]) return ""
+			return `data-original-title ="` + Object.keys(MainParser.Allies.buildingList[id]).map(a=> {
+				ally=MainParser.Allies.allyList[a]
+				return `<span style='color:`+MainParser.Allies.rarities[ally.rarity.value].textColor+`'>` + MainParser.Allies.names[ally.allyId] + " (" + MainParser.Allies.rarities[ally.rarity.value].name + " - " + ally.level +  ")</span>"
+			}).join("<br/>") + `"`
+		},
+		setRarities:(raw)=>{
+			MainParser.Allies.rarities=Object.assign({}, ...raw.map(r=>({[r.id.value]:r})))
 		}
 	},
 
