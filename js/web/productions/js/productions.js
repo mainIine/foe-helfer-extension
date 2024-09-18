@@ -975,7 +975,8 @@ let Productions = {
 							prod.hasRandomProductions = true
 							let Uera = Technologies.Eras[building.eraName]
 							Uera = Uera + (resource.name.includes("next") && Uera<Technologies.getMaxEra() ? 1 : 0)
-							prod.units.push({type:resource.name.replace(/next./,""),amount:0,random:resource.amount * resource.dropChance,era:Uera})
+							let Utype=resource.name
+							prod.units.push({type:Utype.replace(/next./,""),amount:0,random:resource.amount * resource.dropChance,era:Utype=="rogue"?0:Uera})
 						}
 						if (resource.type == "guild_goods" && category == "clan_goods") {
 							prod.amount += resource.amount * resource.dropChance
@@ -1007,10 +1008,10 @@ let Productions = {
 							let Rtype = MainParser.CityEntities[x.cityentity_id].available_products[0].unit_class
 							if (MainParser.CityEntities[x.cityentity_id].available_products[0].unit_type_id=="rogue") Rtype="rogue"   //Banners + Drummers???
 							let Rera = Technologies.Eras[MainParser.CityEntities[x.cityentity_id].requirements.min_era]
-							prod.units.push({type:Rtype.replace(/next./,""),amount:0,random:RAmount,era:Rera})
+							prod.units.push({type:Rtype.replace(/next./,""),amount:0,random:RAmount,era:Rtype=="rogue"?0:Rera})
 						})
 					} else {
-						prod.units.push({type:Utype.replace(/next./,""),amount:UAmount,random:0,era:building.type == "greatbuilding"?0:Uera})
+						prod.units.push({type:Utype.replace(/next./,""),amount:UAmount,random:0,era:building.type == "greatbuilding" || Utype=="rogue" ?0:Uera})
 					}
 					if (current == true && building.type != "main_building" && building.type != "greatbuilding")
 						prod.type = Utype
