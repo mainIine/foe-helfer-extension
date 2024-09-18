@@ -1453,7 +1453,7 @@ let MainParser = {
 		},
 		getProd:(CityMapId) => {
 			let M= MainParser.Allies
-			if (!M.buildingList[CityMapId]) return null
+			if (!M.buildingList?.[CityMapId]) return null
 			let prod={}
 			Object.values(M.buildingList[CityMapId]).forEach(id=> {
 				let a=M.allyList[id]
@@ -1469,7 +1469,7 @@ let MainParser = {
 			return prod
 		},
 		tooltip:(id)=>{
-			if (!MainParser.Allies.buildingList[id]) return ""
+			if (!MainParser.Allies.buildingList?.[id]) return ""
 			return `data-original-title ="` + Object.keys(MainParser.Allies.buildingList[id]).map(a=> {
 				ally=MainParser.Allies.allyList[a]
 				return `<span style='color:`+MainParser.Allies.rarities[ally.rarity.value].textColor+`'>` + MainParser.Allies.names[ally.allyId] + " (" + MainParser.Allies.rarities[ally.rarity.value].name + " - " + ally.level +  ")</span>"
