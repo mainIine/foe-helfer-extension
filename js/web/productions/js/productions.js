@@ -1600,7 +1600,7 @@ let Productions = {
 			buildingType = buildingType.map(x=>CityMap.createNewCityMapEntity(x))
 		}
 		for (const building of buildingType) {
-			if (building.entityId.includes("AllAge_EasterBonus1") || building.entityId.includes("L_AllAge_Expedition16") || building.entityId.includes("L_AllAge_ShahBonus17") || building.type == "main_building" || (building.isSpecial == undefined && building.type != "greatbuilding")) continue // do not include wishingwell type buildings, do not include townhall
+			if (building.entityId.includes("AllAge_EasterBonus1") || building.entityId.includes("L_AllAge_Expedition16") || building.entityId.includes("L_AllAge_ShahBonus17") || (building.isSpecial == undefined && building.type != "greatbuilding")) continue // do not include wishingwell type buildings
 			let size = building.size.width * building.size.length + building.needsStreet
 			let score = 0
 			let ratedBuilding = {
