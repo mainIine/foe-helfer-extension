@@ -78,7 +78,6 @@ let Technologies = {
     AllTechnologies: null,
     UnlockedTechnologies: false,
     SelectedEraID: undefined,
-    HighestAge: 22, // new age? change value 
 
     IgnorePrevEra: null,
     IgnoreCurrentEraOptional: null,
@@ -195,7 +194,7 @@ let Technologies = {
         22: 'SpaceAgeSpaceHub'
     },
     maxEra:null,
-    getMaxEra:()=>{
+    getMaxEra:()=>{ // 1 more than "InnoEra"
         if (!Technologies.maxEra) Technologies.maxEra = Math.max(...Object.values(MainParser.CityEntities).filter(x=>x.type=="greatbuilding").map(x=>Technologies.Eras[x.requirements.min_era]));
         return Technologies.maxEra;
     },
@@ -208,12 +207,12 @@ let Technologies = {
     },
 
     getPreviousEraIdByCurrentEraName: (eraName) => {
-        return parseInt(Technologies.InnoEras[eraName]-1)
+        return parseInt(Technologies.InnoEras[eraName]-1||1)
     },
 
     getNextEraIdByCurrentEraName: (eraName) => {
         // if player is in the highes era, return current age number
-        let era = (Technologies.InnoEras[eraName] === Technologies.HighestAge) ? parseInt(Technologies.InnoEras[eraName]) : parseInt(Technologies.InnoEras[eraName]+1)
+        let era = (Technologies.InnoEras[eraName] === Technologies.getMaxEra()-1) ? parseInt(Technologies.InnoEras[eraName]) : parseInt(Technologies.InnoEras[eraName]+1)
         return era
     },
 
