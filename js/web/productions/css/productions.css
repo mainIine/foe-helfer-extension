@@ -167,6 +167,10 @@
 	background: transparent url('../../x_img/guild_raids.png') no-repeat;
 	background-size: contain;
 }
+#Productions td.ally::after{
+	content: ' 🙋'
+}
+
 
 
 #ProductionsRating #ProductionsRatingBody span.resicon.att_boost_attacker-guild_expedition,
@@ -314,6 +318,20 @@
 			content: ' 🔎';
 		}
 	}
+	& td.ally:nth-child(2) {
+
+		&::after {
+			content: ' 🙋'
+		}
+	}
+	&.highlighted2 td.ally:nth-child(2) {
+		color: var(--text-light);
+
+		&::after {
+			content: ' 🙋 🔎';
+		}
+	}
+
 
 	&.additional td {
 		background: var(--background-table-info);
