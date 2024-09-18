@@ -1229,6 +1229,18 @@ let CityMap = {
 				})
 			}
 		}
+		let allyStats = MainParser.Allies.getProd(data.id||0)
+		if (allyStats?.boosts) {
+			allyStats?.boosts.forEach(abilityBoost => {
+				let boost = {
+					feature: abilityBoost.targetedFeature,
+					type: MainParser.BoostMapper[abilityBoost.type] || [abilityBoost.type],
+					value: abilityBoost.value,
+				};
+				boosts.push(boost)
+			})
+		}
+		
 		if (boosts.length > 0)
 			return boosts
 		return undefined
