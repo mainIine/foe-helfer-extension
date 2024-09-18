@@ -442,7 +442,7 @@ let Productions = {
 						if (building.chainBuilding !== undefined)
 						rowA.push('<img src="' + srcLinks.get('/shared/icons/' + building.chainBuilding.name + '.png', true) + '" class="chain-set-ico">')
 					rowA.push('</td>')
-					rowA.push('<td data-text="'+helper.str.cleanup(building.name)+'"  class="' + (MainParser.Allies.buildingList[building.id]?"ally" : "") +'">' + building.name + '</td>')
+					rowA.push('<td data-text="'+helper.str.cleanup(building.name)+'"  class="' + (MainParser.Allies.buildingList?.[building.id]?"ally" : "") +'">' + building.name + '</td>')
 					
 					if (!type.includes('att') && !type.includes('def')) {
 						if (type != 'items') {
@@ -733,7 +733,7 @@ let Productions = {
 			rowA.push('<td>')
 			rowA.push((building.state.isPolivated !== undefined ? (building.state.isPolivated ? '<span class="text-bright">★</span>' : '☆') : ''))
 			rowA.push('</td>')
-			rowA.push('<td data-text="'+helper.str.cleanup(building.name)+'"  class="' + (MainParser.Allies.buildingList[building.id]?"ally" : "") +'">' + building.name + '</td>')
+			rowA.push('<td data-text="'+helper.str.cleanup(building.name)+'"  class="' + (MainParser.Allies.buildingList?.[building.id]?"ally" : "") +'">' + building.name + '</td>')
 			
 			currentAmount = parseFloat(Productions.getBuildingProductionByCategory(true, building, type))
 			amount = parseFloat(Productions.getBuildingProductionByCategory(false, building, type))
@@ -843,7 +843,7 @@ let Productions = {
 			groupedBuildings.forEach(building => {
 				rowB.push('<tr>')
 				rowB.push('<td data-number="'+building.amount+'">'+building.amount+'x </td>')
-				rowB.push('<td data-text="'+building.building.name.replace(/[. -]/g,"")+'"  class="' + (MainParser.Allies.buildingList[building.building.id]?"ally" : "") +'">'+ building.building.name +'</td>')
+				rowB.push('<td data-text="'+building.building.name.replace(/[. -]/g,"")+'"  class="' + (MainParser.Allies.buildingList?.[building.building.id]?"ally" : "") +'">'+ building.building.name +'</td>')
 				eras.forEach(era => {
 					rowB.push('<td data-number="'+building[era]+'" class="text-center">')
 					rowB.push(HTML.Format(building[era]))
@@ -885,7 +885,7 @@ let Productions = {
 			groupedBuildings.forEach(building => {
 				rowB.push('<tr>')
 				rowB.push('<td data-number="'+building.amount+'">'+building.amount+'x </td>')
-				rowB.push('<td data-text="'+building.building.name.replace(/[. -]/g,"")+'" class="' + (MainParser.Allies.buildingList[building.building.id]?"ally" : "") +'">'+ building.building.name +'</td>')
+				rowB.push('<td data-text="'+building.building.name.replace(/[. -]/g,"")+'" class="' + (MainParser.Allies.buildingList?.[building.building.id]?"ally" : "") +'">'+ building.building.name +'</td>')
 				if (type.includes('att') || type.includes('def')) {
 					rowB.push('<td data-number="'+building.boosts.all*building.amount+'" class="text-center">'+ (building.boosts.all != 0 ? HTML.Format(building.boosts.all*building.amount) : '') +'</td>')
 					rowB.push('<td data-number="'+building.boosts.battleground*building.amount+'" class="text-center">'+ (building.boosts.battleground != 0 ? HTML.Format(building.boosts.battleground*building.amount) : '') +'</td>')
@@ -1381,8 +1381,8 @@ let Productions = {
 				if (building == undefined || building.type == 'street' || building.type == 'military' || building.id >= 2000000000 || building.type.includes('hub')) continue
 
 				let compare = building.name
-				if (MainParser.Allies.buildingList[building.id]) {
-					compare += "+" + Object.keys(MainParser.Allies.buildingList[building.id]).join("+")
+				if (MainParser.Allies.buildingList?.[building.id]) {
+					compare += "+" + Object.keys(MainParser.Allies.buildingList?.[building.id]).join("+")
 				}
 				let foundBuildingIndex = uniqueBuildings.findIndex(x => x.name == compare)
 				if (foundBuildingIndex == -1) {
@@ -1443,7 +1443,7 @@ let Productions = {
 				[randomItems,randomUnits]=Productions.showBuildingItems(false, building.building)
 				h.push(`<tr ${building.highlight?'class="additional"':""}>`)
 				h.push('<td class="text-right" data-number="'+building.score * 100 +'">'+Math.round(building.score * 100)+'</td>')
-				h.push('<td data-text="'+helper.str.cleanup(building.building.name)+'" '+ MainParser.Allies.tooltip(building.building.id) + ' class="' + (MainParser.Allies.buildingList[building.building.id]?"ally" : "") +'">'+building.building.name)
+				h.push('<td data-text="'+helper.str.cleanup(building.building.name)+'" '+ MainParser.Allies.tooltip(building.building.id) + ' class="' + (MainParser.Allies.buildingList?.[building.building.id]?"ally" : "") +'">'+building.building.name)
 				let eraShortName = i18n("Eras."+Technologies.Eras[building.building.eraName]+".short")
 				if (eraShortName != "-")
 					h.push(" ("+i18n("Eras."+Technologies.Eras[building.building.eraName]+".short") +')')
