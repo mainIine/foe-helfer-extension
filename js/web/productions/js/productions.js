@@ -472,14 +472,15 @@ let Productions = {
 
 							if (productionByCategoryFalse.units.length>0 || productionByCategoryTrue.units.length>0) {
 								if (productionByCategoryTrue.units.length > 0) 
-									rowA.push(productionByCategoryTrue.units.map(x=>`${x.amount}<span class="unit_skill ${x.type}" title="${i18n("Boxes.Units." + x.type)}"></span> `).join(" "))
+									rowA.push(productionByCategoryTrue.units.map(x=>`${x.amount}<span class="unit_skill ${x.type} ${x.era>CurrentEraID?"next_era":""}" title="${i18n("Boxes.Units." + x.type)}"></span> `).join(" "))
 								else 
 									rowA.push(" - ")
 									rowA.push(" / ")
 
-								if (productionByCategoryFalse.units.length > 0) {
-									rowA.push(productionByCategoryFalse.units.map(x=>`${x.amount?x.amount:""}${x.amount && x. random ? "+":""}${x.random ? "Ø"+x.random:""}<span class="unit_skill ${x.type}" title="${i18n("Boxes.Units." + x.type)}"></span> `).join(" "))
-								}
+								if (productionByCategoryFalse.units.length > 0) 
+									rowA.push(productionByCategoryFalse.units.map(x=>`${x.amount?x.amount:""}${x.amount && x. random ? "+":""}${x.random ? "Ø"+x.random:""}<span class="unit_skill ${x.type} ${x.era>CurrentEraID?"next_era":""}" title="${i18n("Boxes.Units." + x.type)}"></span> `).join(" "))
+								else 
+									rowA.push(" - ")
 							} else {
 
 								if (currentAmount < amount && building.type != 'production')
