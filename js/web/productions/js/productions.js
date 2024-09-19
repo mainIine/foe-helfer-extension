@@ -757,20 +757,8 @@ let Productions = {
 				let currentGoodAmount = 0
 				let goodAmount = 0
 				if (allGoods != undefined) {
-					if (currentGoods != undefined) {
-						for (const [key, value] of Object.entries(currentGoods.eras)) {
-							if (key == era) {
-								currentGoodAmount = value
-								erasTotal[era] += currentGoodAmount
-							}
-						}
-					}
-					for (const [key, value] of Object.entries(allGoods.eras)) {
-						if (key == era) {
-							goodAmount = value
-							updateGroup[era] += goodAmount
-						}
-					}
+					erasTotal[era] +=  currentGoodAmount = currentGoods?.eras?.[era] || 0
+					updateGroup[era] += goodAmount = allGoods?.eras?.[era] || 0
 				}
 				rowA.push('<td data-number="'+currentGoodAmount+'" class="text-center">')
 					if (currentGoodAmount != goodAmount) {
