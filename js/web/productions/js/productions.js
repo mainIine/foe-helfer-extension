@@ -692,8 +692,6 @@ let Productions = {
 			rowB = [],
 			rowA = [],
 			groupedBuildings = [],
-			typeCurrentSum = 0,
-			typeSum = 0,
 			eras = [],
 			erasTotal = {}
 
@@ -735,9 +733,6 @@ let Productions = {
 			rowA.push('</td>')
 			rowA.push('<td data-text="'+helper.str.cleanup(building.name)+'"  class="' + (MainParser.Allies.buildingList?.[building.id]?"ally" : "") +'">' + building.name + '</td>')
 			
-			currentAmount = parseFloat(Productions.getBuildingProductionByCategory(true, building, type))
-			amount = parseFloat(Productions.getBuildingProductionByCategory(false, building, type))
-
 			// prepare grouped buildings
 			let updateGroup = groupedBuildings.find(x => x.building.name == building.name)
 			if (updateGroup == undefined) {
@@ -755,10 +750,10 @@ let Productions = {
 				updateGroup.amount++
 			}
 			
-			eras.forEach(era => {
-				let currentGoods = Productions.getBuildingProductionByCategory(true, building, type)
-				let allGoods = Productions.getBuildingProductionByCategory(false, building, type)
+			let currentGoods = Productions.getBuildingProductionByCategory(true, building, type)
+			let allGoods = Productions.getBuildingProductionByCategory(false, building, type)
 
+			eras.forEach(era => {
 				let currentGoodAmount = 0
 				let goodAmount = 0
 				if (allGoods != undefined) {
@@ -787,9 +782,6 @@ let Productions = {
 				rowA.push('</td>')
 			})
 			
-			typeSum += amount
-			typeCurrentSum += currentAmount
-
 			rowA.push('<td data-number="'+Technologies.Eras[building.eraName]+'">' + i18n("Eras."+Technologies.Eras[building.eraName]+".short") + '</td>')
 			let time = moment.unix(building.state.times?.at).format('HH:mm')
 			rowA.push('<td style="white-space:nowrap" data-text="'+time+'">' + time + '</td>')
