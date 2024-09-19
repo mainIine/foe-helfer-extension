@@ -56,7 +56,7 @@ let BoostInventory = {
 
 				let InventoryItem = MainParser.Inventory[i]
 
-				if(InventoryItem['item']['cityEntityId'] === asset_id){
+				if(InventoryItem['item']['cityEntityId'] === id){
 					if(ageBoost === undefined && allageBoost === undefined){
 						continue
 					}
