@@ -1782,6 +1782,7 @@ let CityMap = {
 			lookupData.subType = lookupData.rewards[0].subType
 			amount = lookupData.totalAmount
 		}
+		if (lookupData?.type=="good" && lookupData?.subType.includes("all_")) amount = amount*5
 
 		let reward = {
 			id: product.reward.id,
@@ -1997,7 +1998,7 @@ let CityMap = {
 						}
 					}
 				}
-				if (production.type === 'genericReward' && production.resources?.icon == "next_age_goods") { // e.g. eco hub
+				if (production.type === 'genericReward' && /good.?/.test(production.resources?.type)) { // e.g. eco hub
 					let goodEra = Technologies.InnoEras[building.eraName]
 					if (production.resources.id.includes('previous'))
 						goodEra = Technologies.getPreviousEraIdByCurrentEraName(building.eraName)
