@@ -598,7 +598,7 @@ let Productions = {
 
 					rowA.push('<td '+((type.includes('att') || type.includes('def')) ? 'colspan="3"' : '')+' data-number="'+Technologies.Eras[building.eraName]+'">' + i18n("Eras."+Technologies.Eras[building.eraName]+".short") + '</td>')
 					if (!type.includes('att') && !type.includes('def')) {
-						let time = (building.state.times?.at <= inADay) ? moment.unix(building.state.times?.at).format('HH:mm') : moment.unix(building.state.times?.at).format('dddd, HH:mm')
+						let time = !building.state.times?.at ? "-" : (building.state.times?.at <= inADay) ? moment.unix(building.state.times?.at).format('HH:mm') : moment.unix(building.state.times?.at).format('dddd, HH:mm')
 						rowA.push('<td style="white-space:nowrap" data-text="' + time + '">' + time + '</td>')
 						let done = (building.state.times?.at * 1000 <= MainParser.getCurrentDateTime() ? i18n('Boxes.Productions.Done') : '')
 						rowA.push('<td style="white-space:nowrap" data-text="' + done + '">' + done + '</strong></td>')
