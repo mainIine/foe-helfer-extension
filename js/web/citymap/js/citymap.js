@@ -1735,7 +1735,7 @@ let CityMap = {
 						lookupData = reward;
 				}
 			}
-			else if (product.reward.id.includes('goods')) { // for nextage goods, because they are in a chest
+			else if (product.reward.id.includes('goods') && !/(fragment|rush)/.test(product.reward.id)) { // for nextage goods, because they are in a chest
 				lookupData = metaData.components[era].lookup.rewards[product.reward.id] // take first chest reward and work with that
 				return {
 					id: product.reward.id,
