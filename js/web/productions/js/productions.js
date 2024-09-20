@@ -921,11 +921,12 @@ let Productions = {
 							+ (e.random ? "Ø " + parseFloat(Math.round(e.random*100)/100) : "")
 				table.push (`<tr><td>${amount}</td><td>${(e.fragment ? "🧩 " : "" )}</td><td>${e.name}</td></tr>`)
 			} else {//units
-				let currentamount = (e.current?.amount ? parseFloat(Math.round(e.current.amount*100)/100) : "0") 
+				let currentamount = (e.current?.amount ? parseFloat(Math.round(e.current.amount*100)/100) : (e.theory?.type != "random" ? "0" :""))
 							 
 				let theoryamount =  (e.theory?.amount ? parseFloat(Math.round(e.theory.amount*100)/100) : "") 
 							+ (e.theory?.random && e.theory?.amount ? " + " : "") 
 							+ (e.theory?.random ? "Ø " + parseFloat(Math.round(e.theory.random*100)/100) : "")
+				theoryamount = (currentamount !="" && theoryamount != "" ? "/ ":"") + theoryamount
 				table.push (`<tr><td>${currentamount}</td><td>${theoryamount}</td><td><span class="unit_skill ${(e.theory?.type||e.current.type).replace(/next./,"")}" title="${i18n("Boxes.Units." + (e.theory?.type||e.current.type).replace(/next./,"") )}"></span> </td><td>${(e.theory?.era===0 ||e.current?.era===0)? "" : i18n('Eras.'+(e.theory?.era||e.current?.era)+'.short')}</td></tr>`)
 			}
 		}

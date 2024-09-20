@@ -699,8 +699,8 @@ let HTML = {
 	 * @param number
 	 * @returns {*}
 	 */
-	FormatNumberShort: (number) => {
-		if (number === 0) {
+	FormatNumberShort: (number,replaceZero=true) => {
+		if (number === 0 && replaceZero) {
 			return '-';
 		} else {
 			return Intl.NumberFormat(i18n('Local'), {
