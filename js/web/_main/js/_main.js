@@ -1472,7 +1472,7 @@ let MainParser = {
 			if (!MainParser.Allies.buildingList?.[id]) return ""
 			return `data-original-title ="` + Object.keys(MainParser.Allies.buildingList[id]).map(a=> {
 				ally=MainParser.Allies.allyList[a]
-				return `<span style='color:`+MainParser.Allies.rarities[ally.rarity.value].textColor+`'>` + MainParser.Allies.names[ally.allyId] + " (" + MainParser.Allies.rarities[ally.rarity.value].name + " - " + ally.level +  ")</span>"
+				return `<span style='color:`+MainParser.Allies.rarities[ally.rarity.value].textColor+`'>` + MainParser.Allies.names[ally.allyId] + " (" + i18n("Boxes.Productions.AllyRarity."+ally.rarity.value) + " - " + i18n("General.Level") + " " + ally.level + ")</span>"
 			}).join("<br/>") + `"`
 		},
 		setRarities:(raw)=>{
