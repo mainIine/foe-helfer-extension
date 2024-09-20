@@ -1405,11 +1405,13 @@ let CityMap = {
 					// to do: to think about: should all goods production options be gathered here?
 					if (Array.isArray(metaData.available_products))
 						metaData.available_products.forEach(product => {
-							let resource = {
-								type: "unknown", 
+							if (product.name!="Daily Bonus") return
+							resource = {
+								type: "resources", 
 								needsMotivation: false,
-								resources: {}
+								resources: product.product.resources
 							}
+							productions.push(resource)
 						});
 				}
 				if (metaData.entity_levels[Technologies.InnoEras[era]] !== undefined) { // base money is here
@@ -1662,7 +1664,7 @@ let CityMap = {
 					}
 				}
 				if (data.type == "main_building") {
-					let prod = productions.concat(CityMap.setAllProductions(metaData, data, era))
+					let prod = CityMap.setAllProductions(metaData, data, era)
 					return prod
 				}
 			}
