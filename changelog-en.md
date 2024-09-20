@@ -7,9 +7,10 @@
 	- Bugfixes, added missing buildings
 	- Removed some information to improve readability
 	- Overhauled goods view
-	- Added all fragments and items
+	- Added all fragments and items incl. sum accross all building
 	- Added filter
 	- Categorized boosts
+	- added sum table for unit production according to unit types
 
 - Buildings Efficiency Rating Update:
 	- New Categories

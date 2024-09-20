@@ -3,12 +3,13 @@
 ##### 3.8.0.0
 
 **Neu**
-- Produktionsubersicht Update:
+- Produktionsübersicht Update:
 	- Fehlerkorrekturen und fehlende Gebäude hinzugefügt
 	- Güter-Übersicht überarbeitet
-	- Übersicht aller Fragmente und Items hinzugefügt
+	- Übersicht aller Fragmente und Items hinzugefügt inkl. Summe über alle Gebäude
 	- Filter hinzugefügt
 	- Boosts kategorisiert
+	- Eiheitenproduktion nach Typ und ZA summiert
 
 - Effizienzbewertung Update:
 	- Neue Kategorien hinzugefügt
