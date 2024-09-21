@@ -688,6 +688,12 @@ GetFights = () =>{
 		}
 	});
 
+	FoEproxy.addWsHandler('CityMapService', 'updateEntity', data => {
+		for (let b of data.responseData) {
+			MainParser.CityMapData[b.id]=b;
+		}
+	});
+
 	FoEproxy.addRequestHandler('InventoryService', 'useItem', (postData) => {
 		if (postData?.requestData?.[0]?.__class__=="UseItemOnBuildingPayload") {
 			if (MainParser.Inventory[postData?.requestData?.[0]?.itemId].itemAssetName =="store_building") {
