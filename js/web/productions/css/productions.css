@@ -245,7 +245,7 @@
 		color: var(--text-normal);
 
 		& ul {
-			height: calc(100% - 50px);
+			height: calc(100% - 90px);
 			overflow: auto;
 			margin: 10px 0;
 			box-sizing: border-box;
@@ -502,18 +502,20 @@
 
 #Productions .units-sum {
 	& td:nth-child(1) {
-		width: auto;
-		text-align:right;
-	};
+		text-align: right;
+	}
 	& td:nth-child(2) {
-		width: auto;
-		white-space: no-wrap;		
-	};
-	& td:nth-child(3) {
-		width: auto;		
-	};
-	& td:nth-child(4) {
-		width: 100%;		
+		width: 80%;
+		& span {
+			display: inline-flex;
+			position: relative;
+			top: -3px;
+			
+			&[class*="skill"] {
+				zoom: 1.5;
+				top: 1px;
+			}
+		}
 	};
 }
 #Productions .items-sum {
