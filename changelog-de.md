@@ -8,13 +8,15 @@
 	- Güter-Übersicht überarbeitet
 	- Übersicht aller Fragmente und Items hinzugefügt inkl. Summe über alle Gebäude
 	- Filter hinzugefügt
-	- Boosts kategorisiert
-	- Eiheitenproduktion nach Typ und ZA summiert
+	- Kampf-Boosts kategorisiert
+	- Einheitenproduktion nach Typ und Zeitalter summiert
 
 - Effizienzbewertung Update:
 	- Neue Kategorien hinzugefügt
-	- Neue Übersicht inklusive Anzeige der produzierten Fragmente
-	- Anzeige der Werte pro Feld hinzugefügt
+	- Neue Übersicht inklusive Anzeige der produzierten Fragmente/Items
+	- Neu: Möglichkeit zu suchen und zu filtern
+	- Neu: Anzeige der Werte pro Feld hinzugefügt
+	- Neu: Gebäude, die man nicht hat, zum Vergleichen hinzufügen
 
 - Boost-Inventar
 	- listet alle Gebäude aus dem Inventar, die Boosts (zum Beispiel für den Kampf) bereitstellen
@@ -31,6 +33,10 @@
 
 - Technologien:
 	- Raumfahrt: Weltraumbasis Daten und Güter hinzugefügt
+
+- Einstellungen:
+	- Kategorien umstrukturiert
+	- Fenster vergrößert und verschiebbar gemacht
 
 **BugFix**
 - Fenster:
