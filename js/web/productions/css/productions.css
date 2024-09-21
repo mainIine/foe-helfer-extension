@@ -501,23 +501,27 @@
 }
 
 #Productions .units-sum {
-	& td:nth-child(1) {
-		text-align: right;
+	& td:nth-child(1),
+	& thead tr:nth-child(2) th:nth-child(1) {
+			text-align: right;
 	}
 	& td:nth-child(2) {
 		width: 80%;
-		& span {
-			display: inline-flex;
-			position: relative;
-			top: -3px;
-			
-			&[class*="skill"] {
-				zoom: 1.5;
-				top: 1px;
-			}
-		}
 	};
 }
+
+#Productions span[class*="skill"] {
+	display: inline-flex;
+	position: relative;
+	top: 4px;
+	margin-top: -8px;
+	
+	&::after {
+		zoom: 1.5;
+		top: 1px;
+	}
+}
+
 #Productions .items-sum {
 	& td:nth-child(1) {
 		width: 80px;
