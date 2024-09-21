@@ -9,30 +9,36 @@
 	- Overhauled goods view
 	- Added all fragments and items incl. sum accross all building
 	- Added filter
-	- Categorized boosts
-	- added sum table for unit production according to unit types
+	- Categorized army boosts
+	- Added sum table for unit production according to unit types
 
 - Buildings Efficiency Rating Update:
 	- New Categories
 	- New overview with more details
-	- Show values per tile added
+	- New: Search and filter for easier comparison
+	- New: Show values per tile
+	- New: Add any building to the list for comparison
 
 - Boost-Inventory
-	- lists all Buildings in your Inventory that provide boosts (e.g. for battle)
-	- fragmented buildings are not considered!!
+	- Lists all Buildings in your Inventory that provide boosts (e.g. for battle)
+	- Fragmented buildings are not considered!!
 
 - Active Members of other Guilds
-	- when within 5 minutes, the same guild (HQ in GBG) is inspected twice and at least one member of that guild was active, a list of the active guild members is displayed
+	- When within 5 minutes, the same guild (HQ in GBG) is inspected twice and at least one member of that guild was active, a list of the active guild members is displayed
 
 **Update**
 - Battle-Assist:
-	- there will be no warning message anymore, if higher age units die in battle as they can now be revived in the hospital
+	- There will be no warning message anymore, if higher age units die in battle as they can now be revived in the hospital
 
 - Kits:
-	- added Efficiency Score of the respective buildings
+	- Added Efficiency Score of the respective buildings
 
 - Technologies:
-	- added Space Age Space Hub assets
+	- Added Space Age Space Hub assets
+
+- Settings:
+	- Reorganized the menu
+	- Bigger and moveable window
 
 **BugFix**
 - Boxes:

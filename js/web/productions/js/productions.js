@@ -906,7 +906,7 @@ let Productions = {
 		table.push('<table class="foe-table '+type+'-sum">')
 		table.push('<thead>')
 		table.push('<tr>')
-		table.push('<th colspan="9"><span class="btn-default change-view game-cursor">' + i18n('Boxes.Productions.ModeSingle') + '</span></th>')
+		table.push('<th colspan="8"><span class="btn-default change-view game-cursor">' + i18n('Boxes.Productions.ModeSingle') + '</span></th>')
 		table.push('</tr>')
 		table.push('<tr >')
 		table.push('<th colspan="'+(type=="items"?1:2) +'">' + i18n('Boxes.Productions.Headings.number') + '</th>')
@@ -919,7 +919,7 @@ let Productions = {
 				let amount = (e.amount ? parseFloat(Math.round(e.amount*100)/100) : "") 
 							+ (e.random && e.amount ? " + " : "") 
 							+ (e.random ? "Ø " + parseFloat(Math.round(e.random*100)/100) : "")
-				table.push (`<tr><td>${amount}</td><td>${(e.fragment ? "🧩 " : "" )}</td><td>${e.name}</td></tr>`)
+				table.push (`<tr><td class="text-right">${amount}</td><td>${(e.fragment ? "🧩 " : "" )}</td><td colspan="5">${e.name}</td></tr>`)
 			} else {//units
 				let currentamount = (e.current?.amount ? parseFloat(Math.round(e.current.amount*100)/100) : (e.theory?.type != "random" ? "0" :""))
 							 
@@ -927,7 +927,7 @@ let Productions = {
 							+ (e.theory?.random && e.theory?.amount ? " + " : "") 
 							+ (e.theory?.random ? "Ø " + parseFloat(Math.round(e.theory.random*100)/100) : "")
 				theoryamount = (currentamount !="" && theoryamount != "" ? "/ ":"") + theoryamount
-				table.push (`<tr><td>${currentamount}</td><td>${theoryamount}</td><td><span class="unit_skill ${(e.theory?.type||e.current.type).replace(/next./,"")}" title="${i18n("Boxes.Units." + (e.theory?.type||e.current.type).replace(/next./,"") )}"></span> </td><td>${(e.theory?.era===0 ||e.current?.era===0)? "" : i18n('Eras.'+(e.theory?.era||e.current?.era)+'.short')}</td></tr>`)
+				table.push (`<tr><td colspan="2">${currentamount} ${theoryamount}</td><td colspan="6"><span class="unit_skill ${(e.theory?.type||e.current.type).replace(/next./,"")}" title="${i18n("Boxes.Units." + (e.theory?.type||e.current.type).replace(/next./,"") )}"></span> <span>${(e.theory?.era===0 ||e.current?.era===0)? "" : i18n('Eras.'+(e.theory?.era||e.current?.era))}</span></td></tr>`)
 			}
 		}
 		table.push('</tbody>')
@@ -1445,10 +1445,11 @@ let Productions = {
 			h.push('</tbody>');
 			h.push('<tfoot><tr class="highlighted-explained"><td colspan="'+(colNumber+3)+'">'+i18n('Boxes.ProductionsRating.HighlightsExplained')+'</td></tr></tfoot>');
 			h.push('</table>');
-				h.push('<div class="overlay"><a class="window-close" id="closeMetaBuilding"></a>')
+				h.push('<div class="overlay"><a class="window-close closeMetaBuilding"></a>')
 					h.push('<div class="content">')
 						h.push('<input id="findMetaBuilding" placeholder="'+i18n('Boxes.ProductionsRating.FindSpecialBuilding')+'" value="">')
 						h.push('<ul class="results"></ul>')
+						h.push('<a class="btn-default closeMetaBuilding btn-green">'+i18n('Boxes.ProductionsRating.AddBuildings')+'</a>')
 					h.push('</div>')
 				h.push('</div>')
 			h.push('</div>')
@@ -1485,7 +1486,7 @@ let Productions = {
 				$('#ProductionsRatingBody .overlay').show()
 			})
 
-			$('#closeMetaBuilding').on('click',function () {
+			$('.closeMetaBuilding').on('click',function () {
 				$(this).parent('.overlay').hide()
 				
 				marked=[]
