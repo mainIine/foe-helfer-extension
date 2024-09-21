@@ -23,6 +23,9 @@
 	- wenn innerhalb von 5 Minuten, zweimal nacheinander die Details der selben fremden Gilde aufgerufen werden (Hauptquartier in den GG) und zumindest ein Mitglied dieser Gilde aktiv war, wird ein Fenster geöffnet, in dem die aktiven Mitglieder gelistet werden
 
 **Update**
+- Kampf-Assistent:
+	- es wird keine Warnung mehr ausgegeben, wenn eine Einheit eines höheren Zeitalters gefallen ist, da diese Einheiten jetzt im Krankenhaus wiederbelebt werden können
+
 - Kits:
 	- Effizienz-Werte der Gebäude hinzugefügt
 
