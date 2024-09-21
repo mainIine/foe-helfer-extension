@@ -25,6 +25,9 @@
 	- when within 5 minutes, the same guild (HQ in GBG) is inspected twice and at least one member of that guild was active, a list of the active guild members is displayed
 
 **Update**
+- Battle-Assist:
+	- there will be no warning message anymore, if higher age units die in battle as they can now be revived in the hospital
+
 - Kits:
 	- added Efficiency Score of the respective buildings
 
