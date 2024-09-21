@@ -357,6 +357,7 @@ let CityMap = {
 
 
 	showQIStats: () => {
+		if (!CityMap.QIData) return
 		let buildings = Object.values(CityMap.QIData)
 		let population = 0, totalPopulation = 0, euphoria = 0, euphoriaBoost = 0, supplies = 0, money = 0, att_def_boost_attacker = 0, att_def_boost_defender = 0, actions = 0
 		for (let b in buildings) {
@@ -439,13 +440,20 @@ let CityMap = {
 		})
 
 		let out = '<table class="foe-table">'
-		out += '<thead><tr><th>'+i18n('Boxes.CityMap.Building')+'</th><th class="population textright"></th><th class="happiness textright"></th><th>'+i18n('Boxes.CityMap.Boosts')+'</th></tr></thead>'
+		out += '<thead><tr><th colspan="2">'+i18n('Boxes.CityMap.Building')+'</th><th class="population textright"></th><th class="happiness textright"></th><th>'+i18n('Boxes.CityMap.Boosts')+'</th></tr></thead>'
 		out += "<tbody>"
-		for (let b in buildings) {
-			let building = CityMap.setQIBuilding(MainParser.CityEntities[buildings[b]['cityentity_id']])
 
+		let uniques = {}
+		for (let b of buildings) {
+			if (!uniques[b.cityentity_id]) 
+				uniques[b.cityentity_id] = 1
+			else
+				uniques[b.cityentity_id] += 1
+		}
+		for (let [id,count] of Object.entries(uniques)) {
+			let building = CityMap.setQIBuilding(MainParser.CityEntities[id])
 			if (building.type !== "impediment" && building.type !== "street") {
-				out += "<tr><td>" + building.name + "</td>"
+				out += "<tr><td>" + building.name + "</td><td>" + (count>1?"x"+count:"") + "</td>"
 				out += '<td class="textright">' + building.population + "</td>"
 				out += '<td class="textright">' + building.euphoria + "</td>"
 				out += "<td>"
