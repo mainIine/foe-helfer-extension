@@ -1355,6 +1355,7 @@ let Productions = {
 		}
 
 		else if (Productions.RatingCurrentTab === 'Results') {
+			let buildingCount={}
 			let uniqueBuildings = []
 			// todo: shrine of inspiration etc
 			// get one of each building, only highest available era
@@ -1371,6 +1372,10 @@ let Productions = {
 					delete Productions.AdditionalSpecialBuildings[building.entityId]
 				} else {
 					let foundBuilding = uniqueBuildings.find(x => x.name == building.name)
+					if (buildingCount[building.entityId]) 
+						buildingCount[building.entityId] += 1
+					else
+						buildingCount[building.entityId] = 2
 					if (Technologies.InnoEras[foundBuilding.eraName] < Technologies.InnoEras[building.eraName]) 
 						uniqueBuildings[foundBuildingIndex] = building
 				}
@@ -1399,7 +1404,7 @@ let Productions = {
 			h.push('<thead>');
 			
 			h.push('<tr class="settings">')
-				h.push('<th colspan="'+(colNumber+3)+'">')
+				h.push('<th colspan="'+(colNumber+4)+'">')
 				h.push('<input type="checkbox" id="tilevalues"><label for="tilevalues">' + i18n('Boxes.ProductionsRating.ShowValuesPerTile') + '</label>')
 				h.push('<input type="checkbox" id="showitems"><label for="showitems">' + i18n('Boxes.ProductionsRating.ShowItems') + '</label>')
 				h.push('<input type="checkbox" id="showhighlighted"><label for="showhighlighted">' + i18n('Boxes.ProductionsRating.ShowHighlighted') + '</label>')
@@ -1409,7 +1414,7 @@ let Productions = {
 			h.push('</tr>');
 			h.push('<tr class="sorter-header">');
 			h.push('<th data-type="ratinglist" class="is-number ascending">' + i18n('Boxes.ProductionsRating.Score') + '</th>');
-			h.push('<th data-type="ratinglist">' + i18n('Boxes.ProductionsRating.BuildingName') + '</th>');
+			h.push('<th data-type="ratinglist" colspan=2>' + i18n('Boxes.ProductionsRating.BuildingName') + '</th>');
 			let tileRatings = JSON.parse(localStorage.getItem('ProductionRatingProdPerTiles'))
 			for (const type of Productions.RatingTypes) {
 				if (!Productions.Rating[type] || Productions.RatingProdPerTiles[type] == null) continue
@@ -1429,6 +1434,8 @@ let Productions = {
 				if (eraShortName != "-")
 					h.push(" ("+i18n("Eras."+Technologies.Eras[building.building.eraName]+".short") +')')
 				if (!building.highlight) h.push(' <span class="show-all" data-name="'+building.building.name+'"><img class="game-cursor" src="' + extUrl + 'css/images/hud/open-eye.png"></span>')
+				h.push('</td><td class="text-right">')
+				if (buildingCount[building.building.entityId]) h.push('<span data-original-title="'+i18n('Boxes.ProductionsRating.CountTooltip')+'">' + buildingCount[building.building.entityId]+'x</span>')
 				h.push('</td>')
 				for (const type of Productions.RatingTypes) {
 					if (building[type] != undefined) {

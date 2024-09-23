@@ -956,6 +956,7 @@
     "Boxes.ProductionsRating.AddBuilding": "Add Special Building",
     "Boxes.ProductionsRating.AddBuildings": "Add selected buildings",
     "Boxes.ProductionsRating.BuildingName": "Building",
+    "Boxes.ProductionsRating.CountTooltip": "For the scoring only the building with the highest era is considered!",
     "Boxes.ProductionsRating.Disclaimer": "For chain buildings the whole chain is treated as one single building. For sets we assume that all parts are fully connected.",
     "Boxes.ProductionsRating.Enabled": "Enabled",
     "Boxes.ProductionsRating.Explainer": "How does this work? Select how much each of your buildings should ideally produce per tile. The balance between all selected values is important for the final rating. If you have more than one building of the same type, only the building with the highest era will be evaluated.",
