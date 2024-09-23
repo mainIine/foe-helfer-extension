@@ -110,8 +110,6 @@ let Parts = {
 	 * HTML Box in den DOM drücken und ggf. Funktionen binden
 	 */
 	Show: () => {
-		if (ExtPlayerID == 4760199 && ExtWorld == "de3") return
-
 		// Gibt es schon? Raus...
 		if ($('#OwnPartBox').length === 0)
 		{

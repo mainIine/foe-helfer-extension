@@ -1433,9 +1433,9 @@ let Productions = {
 				let eraShortName = i18n("Eras."+Technologies.Eras[building.building.eraName]+".short")
 				if (eraShortName != "-")
 					h.push(" ("+i18n("Eras."+Technologies.Eras[building.building.eraName]+".short") +')')
-				if (!building.highlight) h.push(' <span class="show-all" data-name="'+building.building.name+'"><img class="game-cursor" src="' + extUrl + 'css/images/hud/open-eye.png"></span>')
 				h.push('</td><td class="text-right">')
 				if (buildingCount[building.building.entityId]) h.push('<span data-original-title="'+i18n('Boxes.ProductionsRating.CountTooltip')+'">' + buildingCount[building.building.entityId]+'x</span>')
+					if (!building.highlight) h.push(' <span class="show-all" data-name="'+building.building.name+'"><img class="game-cursor" src="' + extUrl + 'css/images/hud/open-eye.png"></span>')
 				h.push('</td>')
 				for (const type of Productions.RatingTypes) {
 					if (building[type] != undefined) {

@@ -527,6 +527,8 @@ let CityMap = {
 
 		CityMap.OccupiedArea = 0;
 		CityMap.OccupiedArea2 = [];
+		CityMap.buildingsTotal = 0
+		CityMap.streetsTotal = 0
 		let StreetsNeeded = 0;
 
 		if(CityMap.IsExtern === false) {
@@ -567,13 +569,17 @@ let CityMap = {
 				.attr('data-id', building.id);
 
 			CityMap.OccupiedArea += (building.size.width * building.size.length);
+			if (building.type == "street")
+				CityMap.streetsTotal++
+			else
+				CityMap.buildingsTotal++
 
 			if (!CityMap.OccupiedArea2[building.type]) CityMap.OccupiedArea2[building.type] = 0;
 			CityMap.OccupiedArea2[building.type] += (building.size.width * building.size.length);
 
-			StreetsNeeded += (building.state.connected && building.type != "street" ? parseFloat(Math.min(building.size.width, building.size.length)) * building.needsStreet / 2 : 0);
+			StreetsNeeded += (building.state.connected && building.type != "street" ? parseFloat(Math.min(building.size.width, building.size.length)) * building.needsStreet / 2 : 0)
 
-			if(building.eraName){
+			if (building.eraName) {
 				let era = Technologies.Eras[building.eraName]
 
 				f.attr({
@@ -581,9 +587,8 @@ let CityMap = {
 				})
 
 				if (era < CurrentEraID && building.type != "greatbuilding" && era != 0) {
-					f.addClass('oldBuildings');
-
-					let eraDiff = CurrentEraID - era;
+					f.addClass('oldBuildings')
+					let eraDiff = CurrentEraID - era
 					
 					switch(eraDiff){
 						case 1:
@@ -632,18 +637,21 @@ let CityMap = {
 	 * Statistiken in die rechte Sidebar
 	 */
 	getAreas: ()=>{
-		let total = ((CityMap.UnlockedAreas.length -1) * 16) + 256, // x + (4*4) und 1x die Startflache 16 * 16
+		let total = ((CityMap.UnlockedAreas.length -1) * 16) + 256, // x + (4*4) + 16 * 16
 			occupied = CityMap.OccupiedArea,
 			txtTotal = i18n('Boxes.CityMap.WholeArea') + total,
-			txtFree = i18n('Boxes.CityMap.FreeArea') + (total - occupied);
+			txtFree = i18n('Boxes.CityMap.FreeArea') + (total - occupied),
+			txtTotalBuildings = i18n('Boxes.CityMap.BuildingsAmount') + CityMap.buildingsTotal,
+			txtTotalStreets = i18n('Boxes.CityMap.StreetsAmount') + CityMap.streetsTotal;
 
 		if( $('#area-state').length === 0 ){
 			let aW = $('<div />').attr('id', 'area-state');
 
-			aW.append( $('<p />').addClass('total-area') );
-			aW.append( $('<p />').addClass('occupied-area') );
 			aW.append( $('<div />').addClass('building-count-area') );
 			aW.append( $('<p />').addClass('to-old-legends').hide() );
+			aW.append( $('<p />').addClass('total-area') );
+			aW.append( $('<p />').addClass('occupied-area') );
+			aW.append( $('<p />').addClass('total-buildings') );
 
 			$('#sidebar').append(aW);
 		}
@@ -652,6 +660,7 @@ let CityMap = {
 		if (!CityMap.IsExtern) {
 			$('.total-area').html(txtTotal);
 			$('.occupied-area').html(txtFree);
+			$('.total-buildings').html(txtTotalBuildings);
 		}
 
 		let sortable = [];
@@ -661,13 +670,11 @@ let CityMap = {
 
 		let txtCount = [];
 
-		for(let x in sortable )
-		{
-			if(!sortable.hasOwnProperty(x)){
-				break;
-			}
+		for(let x in sortable ) {
+			if(!sortable.hasOwnProperty(x))	break
 
 			let type =  sortable[x][0];
+
 			let TypeName = i18n('Boxes.CityMap.' + type)
 			const count = sortable[x][1];
 			const pct = parseFloat(100*count/CityMap.OccupiedArea).toFixed(1);
