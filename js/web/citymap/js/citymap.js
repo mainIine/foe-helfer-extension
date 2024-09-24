@@ -358,34 +358,18 @@ let CityMap = {
 
 	showQIStats: () => {
 		if (!CityMap.QIData) return
+		let boosts = MainParser.BoostSums
+		let supply_boost = boosts.guild_raids_supplies_production*0.01
+		let coin_boost = boosts.guild_raids_coins_production*0.01
 		let buildings = Object.values(CityMap.QIData)
-		let population = 0, totalPopulation = 0, euphoria = 0, euphoriaBoost = 0, supplies = 0, money = 0, att_def_boost_attacker = 0, att_def_boost_defender = 0, actions = 0
+		let population = 0, totalPopulation = 0, euphoria = 0, euphoriaBoost = 0, supplies = 0, money = 0, att_def_boost_attacker = 0, att_def_boost_defender = 0
+		let actions = boosts.guild_raids_action_points_collection
 		for (let b in buildings) {
 			let building = CityMap.setQIBuilding(MainParser.CityEntities[buildings[b]['cityentity_id']])
 			if (building.type !== "impediment" && building.type !== "street") {
 				population += building.population
-				euphoria += building.euphoria
 				totalPopulation += (building.population > 0 ? building.population : 0)
-				
-				if (building.boosts !== null) {
-					for (let i in building.boosts) {
-						let boost = building.boosts[i]
-						if (boost.type === "att_def_boost_attacker")
-							att_def_boost_attacker += boost.value 
-						if (boost.type === "att_def_boost_defender")
-							att_def_boost_defender += boost.value 
-						if (boost.type === "guild_raids_action_points_collection")
-							actions += boost.value 
-					}
-				}
-				if (building.production !== null) {
-					if (building.type !== "military" && building.type !== "goods" && building.type !== "main_building") {
-						if (building.production.guild_raids_supplies)
-							supplies += building.production.guild_raids_supplies
-						if (building.production.guild_raids_money)
-							money += building.production.guild_raids_money
-					}
-				}
+				euphoria += building.euphoria
 			}
 		}
 		let euphoriaFactor = euphoria/totalPopulation
@@ -403,14 +387,37 @@ let CityMap = {
 			euphoriaBoost = 1.2
 		else 
 			euphoriaBoost = 1.5
+		for (let b in buildings) {
+			let building = CityMap.setQIBuilding(MainParser.CityEntities[buildings[b]['cityentity_id']])
+			if (building.type !== "impediment" && building.type !== "street") {
+				
+				if (building.boosts !== null) {
+					for (let i in building.boosts) {
+						let boost = building.boosts[i]
+						if (boost.type === "att_def_boost_attacker")
+							att_def_boost_attacker += boost.value 
+						if (boost.type === "att_def_boost_defender")
+							att_def_boost_defender += boost.value 
+					}
+				}
+				if (building.production !== null) {
+					if (building.type !== "military" && building.type !== "goods" && building.type !== "main_building") {
+						if (building.production.guild_raids_supplies)
+							supplies += Math.round(building.production.guild_raids_supplies*(euphoriaBoost+supply_boost))
+						if (building.production.guild_raids_money)
+							money += Math.round(building.production.guild_raids_money*(euphoriaBoost+coin_boost))
+					}
+				}
+			}
+		}
 
 		CityMap.QIStats = {
 			population: population,
 			totalPopulation: totalPopulation,
 			euphoria: euphoria,
 			euphoriaBoost: euphoriaBoost,
-			money: money*euphoriaBoost,
-			supplies: supplies*euphoriaBoost,
+			money: money,
+			supplies: supplies,
 			att_def_boost_attacker: att_def_boost_attacker,
 			att_def_boost_defender: att_def_boost_defender,
 			actions: actions,
@@ -422,9 +429,9 @@ let CityMap = {
 		out += '<span class="prod happiness">'+CityMap.QIStats.euphoriaBoost*100+'%</span> <br>'
 		out += '<span class="prod guild_raids_money">'+HTML.Format(CityMap.QIStats.money)+'</span> + '
 		out += '<span class="prod guild_raids_supplies">'+HTML.Format(CityMap.QIStats.supplies)+'</span> '+i18n('Boxes.CityMap.QICycle')+'<br>'
-		out += '<span class="prod guild_raids_action_points_collection">'+'+'+CityMap.QIStats.actions+'</span> '+i18n('Boxes.CityMap.QIActionRechargeCycle')+'<br>'
 		out += '<span class="prod att_def_boost_attacker">'+CityMap.QIStats.att_def_boost_attacker+'</span> '
-		out += '<span class="prod att_def_boost_defender">'+CityMap.QIStats.att_def_boost_defender+'</span> '
+		out += '<span class="prod att_def_boost_defender">'+CityMap.QIStats.att_def_boost_defender+'</span> '+'<br>'
+		out += '<span class="prod guild_raids_action_points_collection">'+'+'+CityMap.QIStats.actions+'</span> '+i18n('Boxes.CityMap.QIActionRechargeCycle')
 		
 		out += "<div>"
 		return out
@@ -432,6 +439,10 @@ let CityMap = {
 
 
 	showQIBuildings: () => {
+		let boosts = MainParser.BoostSums
+		let supply_boost = 0, coin_boost = 0
+		coin_boost = boosts.guild_raids_coins_production*0.01
+		supply_boost = boosts.guild_raids_supplies_production*0.01
 		let buildings = Object.values(CityMap.QIData)
 		buildings.sort((a, b) => {
 			if (a.cityentity_id < b.cityentity_id) return -1
@@ -464,9 +475,14 @@ let CityMap = {
 						out += (building.production.guild_raids_money ? '<span class="prod guild_raids_money">'+HTML.Format(building.production.guild_raids_money*-1.0)+'</span> ' : "")	
 					}
 					else {
-						let eBoost = (building.type === "main_building" ? 1.0 : CityMap.QIStats.euphoriaBoost)
-						out += (building.production.guild_raids_supplies ? '<span class="prod guild_raids_supplies">'+HTML.Format(building.production.guild_raids_supplies*eBoost)+'</span> ' : " ")
-						out += (building.production.guild_raids_money ? '<span class="prod guild_raids_money">'+HTML.Format(building.production.guild_raids_money*eBoost)+'</span> ' : "")
+						let eBoost = CityMap.QIStats.euphoriaBoost
+						if (building.type === "main_building"){
+							out += (building.production.guild_raids_supplies ? '<span class="prod guild_raids_supplies">'+HTML.Format(Math.round(building.production.guild_raids_supplies))+'</span> ' : " ")
+							out += (building.production.guild_raids_money ? '<span class="prod guild_raids_money">'+HTML.Format(Math.round(building.production.guild_raids_money))+'</span> ' : "")
+						} else{
+							out += (building.production.guild_raids_supplies ? '<span class="prod guild_raids_supplies">'+HTML.Format(Math.round(building.production.guild_raids_supplies*(eBoost+supply_boost)))+'</span> ' : " ")
+							out += (building.production.guild_raids_money ? '<span class="prod guild_raids_money">'+HTML.Format(Math.round(building.production.guild_raids_money*(eBoost+coin_boost)))+'</span> ' : "")
+						}
 					}
 				}
 				if (building.boosts !== null) {

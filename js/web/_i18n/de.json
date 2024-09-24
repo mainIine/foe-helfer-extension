@@ -230,7 +230,7 @@
     "Boxes.CityMap.OutpostSubmit": "Zum Stadtplaner schicken",
     "Boxes.CityMap.QIActionRechargeCycle": "pro Stunde",
     "Boxes.CityMap.QICycle": "alle 10 Stunden",
-    "Boxes.CityMap.QIHint": "Alle Werte nehmen an, dass die Gebäude fertiggestellt sind.",
+    "Boxes.CityMap.QIHint": "Alle Werte, außer Aktionen pro Stunde, nehmen an, dass die Gebäude fertiggestellt sind.",
     "Boxes.CityMap.ShowNoStreetBuildings": "Markiere Gebäude, die keine Straße brauchen",
     "Boxes.CityMap.ShowSubmitBox": "Stadtplaner",
     "Boxes.CityMap.StreetsAmount": "Anzahl Straßen: ",
