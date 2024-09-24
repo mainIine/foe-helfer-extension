@@ -2019,7 +2019,7 @@ let CityMap = {
 						}
 					}
 				}
-				if (production.type === 'genericReward' && /good.?/.test(production.resources?.type)) { // e.g. eco hub
+				if (production.type === 'genericReward' && /good.?/.test(production.resources?.icon)) { // e.g. eco hub
 					let goodEra = Technologies.InnoEras[building.eraName]
 					if (production.resources.id.includes('previous'))
 						goodEra = Technologies.getPreviousEraIdByCurrentEraName(building.eraName)
