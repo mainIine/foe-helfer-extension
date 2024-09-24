@@ -38,6 +38,10 @@
 	- Kategorien umstrukturiert
 	- Fenster vergrößert und verschiebbar gemacht
 
+- Stadtübersicht QI:
+	- Gebäude werden nun nach Typ kategorisiert
+	- Münz- Vorrats- und Quantenaktionsboosts aus der Hauptstadt werden mitberechnet - danke Juber!
+
 **BugFix**
 - Fenster:
 	- können nun nicht mehr verschoben werden, wenn die Maus auf einen der Buttons des Fensters zeigt
