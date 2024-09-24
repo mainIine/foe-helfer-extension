@@ -986,6 +986,9 @@ let MainParser = {
 		'coin_production': 0,
 		'supply_production': 0,
 		'forge_points_production':0,
+		'guild_raids_coins_production': 0,
+		'guild_raids_supplies_production': 0,
+		'guild_raids_action_points_collection': 0
 	},
 
 
