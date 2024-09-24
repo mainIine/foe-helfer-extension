@@ -40,6 +40,10 @@
 	- Reorganized the menu
 	- Bigger and moveable window
 
+- QI City Map:
+	- Buildings are now grouped by type
+	- Coin, supply and quantum action boosts from your main city are now included - thx Juber!
+
 **BugFix**
 - Boxes:
 	- can not be draged anymore when the mouse is on of the buttons of the box
