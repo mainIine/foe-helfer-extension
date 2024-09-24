@@ -637,7 +637,7 @@ let CityMap = {
 	 * Statistiken in die rechte Sidebar
 	 */
 	getAreas: ()=>{
-		let total = ((CityMap.UnlockedAreas.length -1) * 16) + 256, // x + (4*4) + 16 * 16
+		let total = ((CityMap.UnlockedAreas.length -1) * 16) + 256, // x + (4*4) + 16*16
 			occupied = CityMap.OccupiedArea,
 			txtTotal = i18n('Boxes.CityMap.WholeArea') + total,
 			txtFree = i18n('Boxes.CityMap.FreeArea') + (total - occupied),
@@ -1740,14 +1740,14 @@ let CityMap = {
 						if (reward.id.search("blueprint") != -1)
 							lookupData = reward
 					}
-					//amount = lookupData.possible_rewards[0].reward.amount // hacky, because every chest item could have a different amount of blueprints
-					//console.log(metaData.name, amount)
+					// amount = lookupData.possible_rewards[0].reward.amount // hacky, because every chest item could have a different amount of blueprints
+					// console.log(metaData.name, amount)
 				}
 			}
 			else if (product.reward.type == "good") { // this can break if there is more than one generic goods reward for a building
 				for (const [key, reward] of Object.entries(metaData.components[era].lookup.rewards)) {
 					if (reward.id.includes("good"))
-						lookupData = reward;
+						lookupData = reward
 				}
 			}
 			else if (product.reward.id.includes('goods') && !/(fragment|rush)/.test(product.reward.id)) { // for nextage goods, because they are in a chest
@@ -1770,11 +1770,15 @@ let CityMap = {
 							lookupData = possibleReward.reward
 					}
 				}
+				else {
+					amount = lookupData.amount
+				}
 			}
 		}
-		if (amount == 0)
+		if (amount == 0) {
 			amount = Number(lookupData?.name.replace(/^([+-]*[0-9]+?) .*/,"$1"));
 			if (isNaN(amount)) amount = lookupData.amount
+		}
 
 		let name = ""
 		if (lookupData) 
@@ -1809,7 +1813,7 @@ let CityMap = {
 			amount: amount, // amount can be undefined for blueprints or units if building is not motivated
 			icon: lookupData?.iconAssetName
 		}
-		return reward;
+		return reward
 	},
 
 	// returns { unit_type: amount } 
@@ -2108,7 +2112,7 @@ let CityMap = {
 			}
 		}
 		
-		//if (entity.type != "street")
+		//if (entity.entityId != "street")
 		//	console.log('entity ', entity.name, entity, metaData, data)
 		return entity
 	},
