@@ -1872,10 +1872,9 @@ let CityMap = {
 				name = lookupData.id.replace("unit_","").replace(/\d+/,"")
 		}
 		else if (lookupData.type == "blueprint")  // id: "blueprint#random#3"
-			name = lookupData.name.replace(/^\+/,"").replace(/^\d+\s*/,"")
+			name = lookupData.name.replace(/^\+?\d+\s*/,"")
 		else if (lookupData.type == "chest" && lookupData.id.includes("blueprint")) { // remove +20 from the name becuase the amount is in the amount
-			name = lookupData.name.replace(/^\+\d+\s*/,"")
-			name = name.replace(/^\d+\s*/,"") // just to be sure if there is no + at the start for other languages
+			name = lookupData.name.replace(/^\+?\d+\s*/,"")
 		}
 		else if (lookupData.type == "chest") { // chest can be: BP - see above, units, goods (next age)
 			name = lookupData.name
@@ -1883,7 +1882,7 @@ let CityMap = {
 		else if (lookupData.type == "consumable")
 			name = lookupData.name
 		else if (lookupData.type == "good"){
-			name = lookupData.name.replace(/^[\+\d+\s]*/,"")
+			name = lookupData.name.replace(/^\+?\d+\s]*/,"")
 		} else {
 			console.log("CityMap.setRewardNameFromLookupData(): undefined name from type", metaData.name, lookupData, lookupData.type, lookupData.subType)
 		}
@@ -2019,7 +2018,7 @@ let CityMap = {
 						}
 					}
 				}
-				if (production.type === 'genericReward' && /good.?/.test(production.resources?.icon)) { // e.g. eco hub
+				if (production.type === 'genericReward' && /good/.test(production.resources?.icon)) { // e.g. eco hub
 					let goodEra = Technologies.InnoEras[building.eraName]
 					if (production.resources.id.includes('previous'))
 						goodEra = Technologies.getPreviousEraIdByCurrentEraName(building.eraName)
