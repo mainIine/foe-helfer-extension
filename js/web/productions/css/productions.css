@@ -602,6 +602,10 @@ input[id*="ProdPerTile"] {
 	font-weight: bold;
 }
 
+#ProductionsRating #ProductionsRatingBody table td:nth-child(3){
+	white-space: nowrap;
+}
+
 #ProductionsRating #ProductionsRatingBody table td:first-child[data-number^="-"] {
 	color: var(--text-danger)
 }
