@@ -30,59 +30,42 @@ let BoostInventory = {
 
 	Init: (keepOpen=false)=> {
 
-		BoostInventory.Buildings = []
+		BoostInventory.Buildings = {}
 
-		for(let id in MainParser.CityEntities) {
-			if(!MainParser.CityEntities.hasOwnProperty(id)){
-				continue
-			}
+		for(let InventoryItem of Object.values(MainParser.Inventory)){
+
+			let id = InventoryItem?.item?.cityEntityId
 
 			// if starts not with "W_", continue
-			if(id.slice(0, 2) !== 'W_'){
-				continue
-			}
+			if(!id || id.slice(0, 2) !== 'W_') continue
 
 			let entity = MainParser.CityEntities[id],
-				asset_id = entity['asset_id'],
-				ageBoost = entity['components']?.[CurrentEra]?.boosts?.boosts,
-				allageBoost = entity['components']?.AllAge?.boosts?.boosts,
-				sizes = entity['components']['AllAge']['placement']['size']
+				asset_id = entity.asset_id,
+				ageBoost = entity.components?.[CurrentEra]?.boosts?.boosts,
+				allageBoost = entity.components?.AllAge?.boosts?.boosts,
+				sizes = entity.components.AllAge.placement.size
 
+			
+			let boosts = (ageBoost||[]).concat(allageBoost||[]),
+				rating = Productions.rateBuildings([id],true)[0]
+			if (boosts.length == 0) continue
 
-			for(let i in MainParser.Inventory){
-				if(!MainParser.Inventory.hasOwnProperty(i)){
-					continue
+			if (!BoostInventory.Buildings[id]) {
+				BoostInventory.Buildings[id]={
+					id: id,
+					asset_id: asset_id,
+					width: sizes.y,
+					length: sizes.x,
+					stock: InventoryItem.inStock,
+					boosts: boosts,
+					name: entity.name,
+					street: rating.building.needsStreet || 0,
+					score: rating.score
 				}
-
-				let InventoryItem = MainParser.Inventory[i]
-
-				if(InventoryItem['item']['cityEntityId'] === id){
-					if(ageBoost === undefined && allageBoost === undefined){
-						continue
-					}
-
-					let boosts = (ageBoost||[]).concat(allageBoost||[]),
-						rating = Productions.rateBuildings([id],true)[0]
-
-					BoostInventory.Buildings.push({
-						id: id,
-						asset_id: asset_id,
-						width: sizes['y'],
-						length: sizes['x'],
-						stock: InventoryItem['inStock'],
-						boosts: boosts,
-						name: entity['name'],
-						street: rating.building.needsStreet || 0,
-						score: rating.score
-					})
-
-					break
-				}
+			} else {
+				BoostInventory.Buildings[id].stock += InventoryItem.inStock
 			}
 		}
-
-		//console.log(BoostInventory.Buildings)
-
 		BoostInventory.BuildBox(keepOpen)
 	},
 	
@@ -130,12 +113,12 @@ let BoostInventory = {
 			1:`</span><img src="${srcLinks.get('/shared/icons/road_required.png',true)}" data-original-title="${i18n('Boxes.CombatCalculator.RoadRequired')}">`,
 			2:`</span><img src="${srcLinks.get('/shared/icons/street_required.png',true)}" data-original-title="${i18n('Boxes.CombatCalculator.StreetRequired')}">`,
 		}
-		BoostInventory.Buildings.sort((a,b)=>b.score-a.score)
-		for(let b of BoostInventory.Buildings){
+		let buildings = Object.values(BoostInventory.Buildings).sort((a,b)=>b.score-a.score)
+		for(let b of buildings){
 			
 			c.push(`<tr>`)
 
-			let url = '/city/buildings/' + [b['asset_id'].slice(0, 1), '_SS', b['asset_id'].slice(1)].join('') + '.png'
+			let url = '/city/buildings/' + [b.asset_id.slice(0, 1), '_SS', b.asset_id.slice(1)].join('') + '.png'
 			url = srcLinks.get(url,true)
 			
 			c.push(`<td><div class="image"><img src="${url}" alt=""><strong class="in-stock">${b.stock}</strong></div></td>`)
@@ -144,7 +127,7 @@ let BoostInventory = {
 			c.push(`<td>`)
 	
 			for(let y of Object.values(b.boosts)){
-				let icon = srcLinks.get(`/shared/icons/${y['type']}${BoostInventory.Mapping[y.targetedFeature]}.png`,true)
+				let icon = srcLinks.get(`/shared/icons/${y.type}${BoostInventory.Mapping[y.targetedFeature]}.png`,true)
 
 				c.push(`<span class="boost-amount">${y.value}${/guild_raids_.*?_start/.test(y.type)?"":"%"} <img loading="lazy" src="${icon}" alt=""></span>`)
 			}
