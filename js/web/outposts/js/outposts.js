@@ -317,7 +317,7 @@ let Outposts = {
 		for (let resourceID of resourceIDs)
 		{
 			let IconID = resourceID;
-			if (resourceID === 'barley' || resourceID === 'pottery' || resourceID === 'flowers' || resourceID === 'sacrificial_offerings') IconID = 'fine_' + IconID;
+			if (['barley', 'pottery', 'flowers', 'sacrificial_offerings','fresh_fish','coconuts','kava','catamarans'].includes(resourceID)) IconID = 'fine_' + IconID;
 			t.push(`<th class="text-center"><span class="goods-sprite sprite-50 ${IconID} goods-name" title="${GoodsData[resourceID].name}"></span></th>`);
 		}
 
