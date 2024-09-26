@@ -381,7 +381,7 @@ console.log(out.join('\n'))
     &.egyptians_loot::before,
     &.cocoa_beans::before,
     &.rupees::before,
-    &.shells ::before{
+    &.shells::before{
     background:url('../images/goods/goods-extra.png') top left no-repeat;
         background-size:512px 128px;
         width:64px;
@@ -403,7 +403,7 @@ console.log(out.join('\n'))
     &.koban_coins::before{background-position:-192px -64px;}
     &.cocoa_beans::before{background-position:-256px -64px;}
     &.rupees::before{background-position:-320px -64px;}
-    &.shells::before{background-position:-384x -64px;}
+    &.shells::before{background-position:-384px -64px;}
 }
 
 
