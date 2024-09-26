@@ -2035,9 +2035,9 @@ let CityMap = {
 						if (resource.type?.includes("good") && !resource.type?.includes("guild")) {
 							goods.hasRandomProduction = true // this is not a perfect solution, because it is general & not per good
 
-							if (resource.type.includes('previous') || resource.subType.includes('previous'))
+							if (resource.type.includes('previous') || resource.subType?.toLowerCase().includes('previous') || resource.id?.toLowerCase().includes('previous'))
 								goodEra = Technologies.getPreviousEraIdByCurrentEraName(building.eraName)
-							else if (resource.type.includes('next') || resource.subType.includes('next'))
+							else if (resource.type.includes('next') || resource.subType?.toLowerCase().includes('next') || resource.id?.toLowerCase().includes('next'))
 								goodEra = Technologies.getNextEraIdByCurrentEraName(building.eraName)
 
 							if (goods.eras[goodEra] == undefined)
@@ -2051,14 +2051,13 @@ let CityMap = {
 					let goodEra = Technologies.InnoEras[building.eraName]
 					if (production.resources.id.includes('previous'))
 						goodEra = Technologies.getPreviousEraIdByCurrentEraName(building.eraName)
-					else if (production.resources.icon == "next_age_goods")
+					else if (production.resources.icon == "next_age_goods" || production.resources.id.includes('next'))
 						goodEra = Technologies.getNextEraIdByCurrentEraName(building.eraName)
-					
+
 					if (goods.eras[goodEra] == undefined)
 						goods.eras[goodEra] = parseInt(production.resources.amount)
 					else 
 						goods.eras[goodEra] += parseInt(production.resources.amount)
-					
 				}
 			})
 		}
