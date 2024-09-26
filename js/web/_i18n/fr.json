@@ -228,7 +228,7 @@
     "Boxes.CityMap.OutpostSubmit": "Envoyer au planificateur de ville",
     "Boxes.CityMap.QIActionRechargeCycle": "Toutes les heures",
     "Boxes.CityMap.QICycle": "toutes les 10 heures",
-    "Boxes.CityMap.QIHint": "Toutes les valeurs affichées supposent que la construction de vos bâtiments est terminée.",
+    "Boxes.CityMap.QIHint": "Toutes les valeurs affichées, à 'exception des actions par heure, supposent que la construction de vos bâtiments est terminée.",
     "Boxes.CityMap.ShowNoStreetBuildings": "Mettre en surbrillance les bâtiments qui n'ont pas besoin de route",
     "Boxes.CityMap.ShowSubmitBox": "Envoyer",
     "Boxes.CityMap.StreetsAmount": "Nombres de routes : ",
