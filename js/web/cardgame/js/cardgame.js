@@ -156,7 +156,7 @@ FoEproxy.addHandler('CardGameService', 'all', (data, postData) => {
 
 
 FoEproxy.addHandler('EventPassService', 'getPreview', (data, postData) => {
-	if (["halloween_event","history_event"].includes(data.responseData.context)) cardGame.context = data.responseData.context;
+	if (["history_event"].includes(data.responseData.context)) cardGame.context = data.responseData.context;
 });
 
 FoEproxy.addHandler('RewardService', 'collectRewardSet', (data, postData) => {
