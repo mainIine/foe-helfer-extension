@@ -107,7 +107,8 @@ let Technologies = {
         SpaceAgeVenus: 20,
         SpaceAgeJupiterMoon: 21,
         SpaceAgeTitan: 22,
-        NextEra:23,
+        SpaceAgeSpaceHub: 23,
+        NextEra: 24,
     },
 
     // need this for cityentities
@@ -134,7 +135,8 @@ let Technologies = {
         SpaceAgeVenus: 19,
         SpaceAgeJupiterMoon: 20,
         SpaceAgeTitan: 21,
-        NextEra:22,
+        SpaceAgeSpaceHub: 22,
+        NextEra: 23,
     },
 
 
@@ -161,7 +163,8 @@ let Technologies = {
         19: 'SpaceAgeAsteroidBelt',
         20: 'SpaceAgeVenus',
         21: 'SpaceAgeJupiterMoon',
-        22: 'SpaceAgeTitan'
+        22: 'SpaceAgeTitan',
+        23: 'SpaceAgeSpaceHub'
     },
 
     // need this for cityentities
@@ -187,15 +190,30 @@ let Technologies = {
         18: 'SpaceAgeAsteroidBelt',
         19: 'SpaceAgeVenus',
         20: 'SpaceAgeJupiterMoon',
-        21: 'SpaceAgeTitan'
+        21: 'SpaceAgeTitan',
+        22: 'SpaceAgeSpaceHub'
     },
-
+    maxEra:null,
+    getMaxEra:()=>{ // 1 more than "InnoEra"
+        if (!Technologies.maxEra) Technologies.maxEra = Math.max(...Object.values(MainParser.CityEntities).filter(x=>x.type=="greatbuilding").map(x=>Technologies.Eras[x.requirements.min_era]));
+        return Technologies.maxEra;
+    },
 
     getEraName: (entityId, level) => {
         let eraName = entityId.split('_')[1]
         if (eraName == 'MultiAge')
             return Technologies.InnoEraNames[level]
         return eraName
+    },
+
+    getPreviousEraIdByCurrentEraName: (eraName) => {
+        return parseInt(Technologies.InnoEras[eraName]-1||1)
+    },
+
+    getNextEraIdByCurrentEraName: (eraName) => {
+        // if player is in the highes era, return current age number
+        let era = (Technologies.InnoEras[eraName] === Technologies.getMaxEra()-1) ? parseInt(Technologies.InnoEras[eraName]) : parseInt(Technologies.InnoEras[eraName]+1)
+        return era
     },
 
 
@@ -388,7 +406,11 @@ let Technologies = {
                 OutputList[OutputList.length] = GoodsList[i]['id'];
             }
             OutputList[OutputList.length] = 'crystallized_hydrocarbons';
-            for (let i = 100; i < GoodsList.length; i++) {
+            for (let i = 100; i < 105; i++) {
+                OutputList[OutputList.length] = GoodsList[i]['id'];
+            }
+            OutputList[OutputList.length] = 'dark_matter';
+            for (let i = 105; i < GoodsList.length; i++) {
                 OutputList[OutputList.length] = GoodsList[i]['id'];
             }
 
@@ -401,7 +423,7 @@ let Technologies = {
                     let Diff = Stock - Required;
 
                     h.push('<tr>');
-                    h.push('<td class="goods-image" style="width:25px"><span class="goods-sprite-50 sm '+ GoodsData[ResourceName]['id'] +'"></span></td>');
+                    h.push('<td class="goods-image" style="width:25px"><span class="goods-sprite sprite-35 '+ GoodsData[ResourceName]['id'] +'"></span></td>');
                     h.push('<td>' + GoodsData[ResourceName]['name'] + '</td>');
                     h.push('<td>' + HTML.Format(Required) + '</td>');
                     h.push('<td>' + HTML.Format(Stock) + '</td>');

@@ -1,7 +1,7 @@
 /*
  * *************************************************************************************
  *
- * Copyright (C) 2023 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2024 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -186,7 +186,7 @@ FoEproxy.addHandler('GuildExpeditionService', 'openChest', (data, postData) => {
 });
 
 
-// Visit other players (satDown)
+// Visit taverns (satDown)
 FoEproxy.addHandler('FriendsTavernService', 'getOtherTavern', (data, postData) => {
 	const d = data['responseData'];
 
@@ -276,17 +276,19 @@ FoEproxy.addHandler('CityMapService', 'showAppliedBonus', (data, postData) => {
 		if (BonusId !== data['responseData']['bonus'][j]) continue;
 
 		let CityMapID = data['responseData']['entityId'],
-		Building = MainParser.CityMapData[CityMapID],
-		CityEntity = MainParser.CityEntities[Building['cityentity_id']];
+		buildingData = MainParser.CityMapData[CityMapID],
+		metaData = MainParser.CityEntities[buildingData.cityentity_id],
+		era = Technologies.getEraName(buildingData.cityentity_id, buildingData.level)
 
-		let Production = Productions.readType(Building);
-		let FP = Production?.products?.strategy_points;
+		let building = CityMap.createNewCityMapEntity(metaData, era, buildingData)
+		let FPproduction = parseFloat(Productions.getBuildingProductionByCategory(true, building, 'strategy_points').amount) 
+		let FP = FPproduction + Math.round(FPproduction * ((MainParser.BoostSums.forge_points_production) / 100))
 
 		if (!FP) continue;
 
 		StrategyPoints.insertIntoDB({
 			event: 'double_collection',
-			notes: CityEntity['name'],
+			notes: building.name,
 			amount: FP,
 			date: moment(MainParser.getCurrentDate()).format('YYYY-MM-DD')
 		});

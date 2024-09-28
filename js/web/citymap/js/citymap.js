@@ -14,7 +14,6 @@
 
 /**
  * CityMap class
- *
  */
 let CityMap = {
 	CityData: null,
@@ -43,10 +42,13 @@ let CityMap = {
 	 * @param Data The City data
 	 * @param Title Name of the city
 	 */
-	init: (event, Data = null, Title = i18n('Boxes.CityMap.YourCity') + '...')=> {
+	init: (event, Data = null, Title = i18n('Boxes.CityMap.YourCity'), isOtherPlayer = false)=> {
+		CityMap.IsExtern = false
+		if (isOtherPlayer) {
+			CityMap.IsExtern = true
+		}
 
 		if (Data === null) { // No data => own city
-			CityMap.IsExtern = false
 			Data = MainParser.CityMapData
 			CityMap.OwnCityData = MainParser.NewCityMapData
 			if (ActiveMap === "cultural_outpost") {
@@ -58,9 +60,6 @@ let CityMap = {
 			else if (ActiveMap === "guild_raids") {
 				Data = CityMap.QIData
 			}
-		}
-		else { // Neighbor or other modul
-			CityMap.IsExtern = true;
 		}
 
 		CityMap.CityData = Object.values(Data).sort(function (X1, X2) {
@@ -84,8 +83,7 @@ let CityMap = {
 			CityMap.OutpostScaleUnit = parseInt(outpostScale);
 		}
 
-		if( $('#city-map-overlay').length < 1 )
-		{
+		if( $('#city-map-overlay').length < 1 ) {
 			HTML.AddCssFile('citymap');
 
 			HTML.Box({
@@ -101,23 +99,21 @@ let CityMap = {
 			setTimeout(()=>{
 				CityMap.PrepareBox(Title);
 			}, 100);
-
 		}
-		else if (!event)
-		{
+		else if (!event) {
 			HTML.CloseOpenBox('city-map-overlay');
 			return;
 		}
 
 		setTimeout(()=>{
 			// separate city
-			if(Data === false) {
+			if (Data === false) {
 				setTimeout(()=> {
-					CityMap.SetBuildings();
+					CityMap.SetMapBuildings();
 				}, 100);
 
 			} else {
-				CityMap.SetBuildings(Data);
+				CityMap.SetMapBuildings(Data);
 			}
 
 		}, 100);
@@ -168,7 +164,7 @@ let CityMap = {
 		});
 
 
-		/* Scalierung wechseln */
+		/* Skalierung wechseln */
 		let scaleUnit = CityMap.ScaleUnit;
 		if (ActiveMap == "cultural_outpost" || ActiveMap === "era_outpost" || ActiveMap === "guild_raids") {
 			scaleUnit = CityMap.OutpostScaleUnit;
@@ -187,8 +183,11 @@ let CityMap = {
 
 		$('#city-map-overlay').on('change', '#scale-view', function(){
 			let unit = parseInt($('#scale-view option:selected').data('scale'));
-			$('#highlight-old-buildings')[0].checked=false;
-			$('#show-nostreet-buildings')[0].checked=false;
+			
+			if(ActiveMap === 'main'){
+				$('#highlight-old-buildings')[0].checked=false;
+				$('#show-nostreet-buildings')[0].checked=false;
+			}
 
 			$('#grid-outer').attr('data-unit', unit);
 
@@ -201,7 +200,7 @@ let CityMap = {
 				CityMap.ScaleUnit = unit;	
 			}
 
-			CityMap.SetBuildings(CityMap.CityData, false);
+			CityMap.SetMapBuildings(false);
 
 			$('#map-container').scrollTo( $('.highlighted') , 800, {offset: {left: -280, top: -280}, easing: 'swing'});
 			$('.to-old-legends').hide();
@@ -216,17 +215,17 @@ let CityMap = {
 					.append($('<button />').addClass('btn-default ml-auto').attr({ id: 'copy-meta-infos', onclick: 'CityMap.copyMetaInfos()' }).text(i18n('Boxes.CityMap.CopyMetaInfos')))
 					.append($('<button />').addClass('btn-default ml-auto').attr({ id: 'show-submit-box', onclick: 'CityMap.showSubmitBox()' }).text(i18n('Boxes.CityMap.ShowSubmitBox')))
 			);
-
-			mapfilters.append(
-				$('<label />').attr({ for: 'highlight-old-buildings' }).text(i18n('Boxes.CityMap.HighlightOldBuildings'))
-					.prepend($('<input />').attr({ type: 'checkbox', id: 'highlight-old-buildings', onclick: 'CityMap.highlightOldBuildings()' }))
-				);
-
-			mapfilters.append(
-				$('<label />').attr({ for: 'show-nostreet-buildings' }).text(i18n('Boxes.CityMap.ShowNoStreetBuildings'))
-					.prepend($('<input />').attr({ type: 'checkbox', id: 'show-nostreet-buildings', onclick: 'CityMap.showNoStreetBuildings()' }))
-				);
 		}
+
+		mapfilters.append(
+			$('<label />').attr({ for: 'highlight-old-buildings' }).text(i18n('Boxes.CityMap.HighlightOldBuildings'))
+				.prepend($('<input />').attr({ type: 'checkbox', id: 'highlight-old-buildings', onclick: 'CityMap.highlightOldBuildings()' }))
+			);
+
+		mapfilters.append(
+			$('<label />').attr({ for: 'show-nostreet-buildings' }).text(i18n('Boxes.CityMap.ShowNoStreetBuildings'))
+				.prepend($('<input />').attr({ type: 'checkbox', id: 'show-nostreet-buildings', onclick: 'CityMap.showNoStreetBuildings()' }))
+			);
 
 		oB.append(wrapper)
 		$('#citymap-wrapper').append(menu)
@@ -235,7 +234,9 @@ let CityMap = {
 			$("#sidebar").append(CityMap.showQIStats())
 			$("#sidebar").append(CityMap.showQIBuildings())
 		}
-
+		if (CityMap.IsExtern === true) {
+			$("#sidebar").append($('<a id="openEfficiencyRating" class="btn-default" onclick="Productions.ShowRating(true)">'+ i18n('Menu.ProductionsRating.Title') +'</a>'));
+		}
 	},
 
 
@@ -356,34 +357,19 @@ let CityMap = {
 
 
 	showQIStats: () => {
+		if (!CityMap.QIData) return
+		let boosts = MainParser.BoostSums
+		let supply_boost = boosts.guild_raids_supplies_production*0.01
+		let coin_boost = boosts.guild_raids_coins_production*0.01
 		let buildings = Object.values(CityMap.QIData)
-		let population = 0, totalPopulation = 0, euphoria = 0, euphoriaBoost = 0, supplies = 0, money = 0, att_def_boost_attacker = 0, att_def_boost_defender = 0, actions = 0
+		let population = 0, totalPopulation = 0, euphoria = 0, euphoriaBoost = 0, supplies = 0, money = 0, att_def_boost_attacker = 0, att_def_boost_defender = 0
+		let actions = boosts.guild_raids_action_points_collection
 		for (let b in buildings) {
 			let building = CityMap.setQIBuilding(MainParser.CityEntities[buildings[b]['cityentity_id']])
 			if (building.type !== "impediment" && building.type !== "street") {
 				population += building.population
-				euphoria += building.euphoria
 				totalPopulation += (building.population > 0 ? building.population : 0)
-				
-				if (building.boosts !== null) {
-					for (let i in building.boosts) {
-						let boost = building.boosts[i]
-						if (boost.type === "att_def_boost_attacker")
-							att_def_boost_attacker += boost.value 
-						if (boost.type === "att_def_boost_defender")
-							att_def_boost_defender += boost.value 
-						if (boost.type === "guild_raids_action_points_collection")
-							actions += boost.value 
-					}
-				}
-				if (building.production !== null) {
-					if (building.type !== "military" && building.type !== "goods" && building.type !== "main_building") {
-						if (building.production.guild_raids_supplies)
-							supplies += building.production.guild_raids_supplies
-						if (building.production.guild_raids_money)
-							money += building.production.guild_raids_money
-					}
-				}
+				euphoria += building.euphoria
 			}
 		}
 		let euphoriaFactor = euphoria/totalPopulation
@@ -401,17 +387,40 @@ let CityMap = {
 			euphoriaBoost = 1.2
 		else 
 			euphoriaBoost = 1.5
+		for (let b in buildings) {
+			let building = CityMap.setQIBuilding(MainParser.CityEntities[buildings[b]['cityentity_id']])
+			if (building.type !== "impediment" && building.type !== "street") {
+				
+				if (building.boosts !== null) {
+					for (let i in building.boosts) {
+						let boost = building.boosts[i]
+						if (boost.type === "att_def_boost_attacker")
+							att_def_boost_attacker += boost.value 
+						if (boost.type === "att_def_boost_defender")
+							att_def_boost_defender += boost.value 
+					}
+				}
+				if (building.production !== null) {
+					if (building.type !== "military" && building.type !== "goods" && building.type !== "main_building") {
+						if (building.production.guild_raids_supplies)
+							supplies += Math.round(building.production.guild_raids_supplies*(euphoriaBoost+supply_boost))
+						if (building.production.guild_raids_money)
+							money += Math.round(building.production.guild_raids_money*(euphoriaBoost+coin_boost))
+					}
+				}
+			}
+		}
 
 		CityMap.QIStats = {
 			population: population,
 			totalPopulation: totalPopulation,
 			euphoria: euphoria,
 			euphoriaBoost: euphoriaBoost,
-			money: money*euphoriaBoost,
-			supplies: supplies*euphoriaBoost,
+			money: money,
+			supplies: supplies,
 			att_def_boost_attacker: att_def_boost_attacker,
 			att_def_boost_defender: att_def_boost_defender,
-			actions:actions,
+			actions: actions,
 		}
 
 		out = '<div class="text-center" style="padding-bottom: 10px">'
@@ -420,9 +429,9 @@ let CityMap = {
 		out += '<span class="prod happiness">'+CityMap.QIStats.euphoriaBoost*100+'%</span> <br>'
 		out += '<span class="prod guild_raids_money">'+HTML.Format(CityMap.QIStats.money)+'</span> + '
 		out += '<span class="prod guild_raids_supplies">'+HTML.Format(CityMap.QIStats.supplies)+'</span> '+i18n('Boxes.CityMap.QICycle')+'<br>'
-		out += '<span class="prod guild_raids_action_points_collection">'+'+'+CityMap.QIStats.actions+'</span> '+i18n('Boxes.CityMap.QIActionRechargeCycle')+'<br>'
 		out += '<span class="prod att_def_boost_attacker">'+CityMap.QIStats.att_def_boost_attacker+'</span> '
-		out += '<span class="prod att_def_boost_defender">'+CityMap.QIStats.att_def_boost_defender+'</span> '
+		out += '<span class="prod att_def_boost_defender">'+CityMap.QIStats.att_def_boost_defender+'</span> '+'<br>'
+		out += '<span class="prod guild_raids_action_points_collection">'+'+'+CityMap.QIStats.actions+'</span> '+i18n('Boxes.CityMap.QIActionRechargeCycle')
 		
 		out += "<div>"
 		return out
@@ -430,27 +439,32 @@ let CityMap = {
 
 
 	showQIBuildings: () => {
+		let boosts = MainParser.BoostSums
+		let supply_boost = 0, coin_boost = 0
+		coin_boost = boosts.guild_raids_coins_production*0.01
+		supply_boost = boosts.guild_raids_supplies_production*0.01
 		let buildings = Object.values(CityMap.QIData)
 		buildings.sort((a, b) => {
-			const nameA = a.cityentity_id; 
-			const nameB = b.cityentity_id;
-			if (nameA < nameB) {
-			  return -1
-			}
-			if (nameA > nameB) {
-			  return 1
-			}
+			if (a.cityentity_id < b.cityentity_id) return -1
+			if (a.cityentity_id > b.cityentity_id) return 1
 			return 0
 		})
 
 		let out = '<table class="foe-table">'
-		out += '<thead><tr><th>'+i18n('Boxes.CityMap.Building')+'</th><th class="population textright"></th><th class="happiness textright"></th><th>'+i18n('Boxes.CityMap.Boosts')+'</th></tr></thead>'
+		out += '<thead><tr><th colspan="2">'+i18n('Boxes.CityMap.Building')+'</th><th class="population textright"></th><th class="happiness textright"></th><th>'+i18n('Boxes.CityMap.Boosts')+'</th></tr></thead>'
 		out += "<tbody>"
-		for (let b in buildings) {
-			let building = CityMap.setQIBuilding(MainParser.CityEntities[buildings[b]['cityentity_id']])
 
+		let uniques = {}
+		for (let b of buildings) {
+			if (!uniques[b.cityentity_id]) 
+				uniques[b.cityentity_id] = 1
+			else
+				uniques[b.cityentity_id] += 1
+		}
+		for (let [id,count] of Object.entries(uniques)) {
+			let building = CityMap.setQIBuilding(MainParser.CityEntities[id])
 			if (building.type !== "impediment" && building.type !== "street") {
-				out += "<tr><td>" + building.name + "</td>"
+				out += "<tr><td>" + building.name + "</td><td>" + (count>1?"x"+count:"") + "</td>"
 				out += '<td class="textright">' + building.population + "</td>"
 				out += '<td class="textright">' + building.euphoria + "</td>"
 				out += "<td>"
@@ -461,9 +475,14 @@ let CityMap = {
 						out += (building.production.guild_raids_money ? '<span class="prod guild_raids_money">'+HTML.Format(building.production.guild_raids_money*-1.0)+'</span> ' : "")	
 					}
 					else {
-						let eBoost = (building.type === "main_building" ? 1.0 : CityMap.QIStats.euphoriaBoost)
-						out += (building.production.guild_raids_supplies ? '<span class="prod guild_raids_supplies">'+HTML.Format(building.production.guild_raids_supplies*eBoost)+'</span> ' : " ")
-						out += (building.production.guild_raids_money ? '<span class="prod guild_raids_money">'+HTML.Format(building.production.guild_raids_money*eBoost)+'</span> ' : "")
+						let eBoost = CityMap.QIStats.euphoriaBoost
+						if (building.type === "main_building"){
+							out += (building.production.guild_raids_supplies ? '<span class="prod guild_raids_supplies">'+HTML.Format(Math.round(building.production.guild_raids_supplies))+'</span> ' : " ")
+							out += (building.production.guild_raids_money ? '<span class="prod guild_raids_money">'+HTML.Format(Math.round(building.production.guild_raids_money))+'</span> ' : "")
+						} else{
+							out += (building.production.guild_raids_supplies ? '<span class="prod guild_raids_supplies">'+HTML.Format(Math.round(building.production.guild_raids_supplies*(eBoost+supply_boost)))+'</span> ' : " ")
+							out += (building.production.guild_raids_money ? '<span class="prod guild_raids_money">'+HTML.Format(Math.round(building.production.guild_raids_money*(eBoost+coin_boost)))+'</span> ' : "")
+						}
 					}
 				}
 				if (building.boosts !== null) {
@@ -508,17 +527,13 @@ let CityMap = {
 
 	/**
 	 * Container gemäß den Koordianten zusammensetzen
-	 *
 	 * @param Data
 	 */
-	SetBuildings: (Data = null)=> {
-		
+	SetMapBuildings: (Data = null)=> {
 		if (ActiveMap === "cultural_outpost" || ActiveMap === "era_outpost" || ActiveMap === "guild_raids") {
-			CityMap.SetOutpostBuildings()
+			CityMap.SetOutpostBuildings() 
 			return
 		}
-		
-		// https://foede.innogamescdn.com/assets/city/buildings/R_SS_MultiAge_SportBonus18i.png
 
 		let ActiveId = $('#grid-outer').find('.highlighted').data('entityid') || null;
 
@@ -528,6 +543,8 @@ let CityMap = {
 
 		CityMap.OccupiedArea = 0;
 		CityMap.OccupiedArea2 = [];
+		CityMap.buildingsTotal = 0
+		CityMap.streetsTotal = 0
 		let StreetsNeeded = 0;
 
 		if(CityMap.IsExtern === false) {
@@ -540,53 +557,54 @@ let CityMap = {
 			MaxX = 71,
 			MaxY = 71;
 
-		for (let b in CityMap.CityData)
-		{
-			if (!CityMap.CityData.hasOwnProperty(b) || CityMap.CityData[b]['x'] < MinX || CityMap.CityData[b]['x'] > MaxX || CityMap.CityData[b]['y'] < MinY || CityMap.CityData[b]['y'] > MaxY) continue;
+		if (CityMap.IsExtern == true)
+			buildingData = CityMap.createNewCityMapEntities(Object.values(MainParser.OtherPlayerCityMapData))
+		else
+			buildingData = CityMap.createNewCityMapEntities(Object.values(MainParser.CityMapData))
 
-			let CityMapEntity = CityMap.CityData[b],
-				d = MainParser.CityEntities[CityMapEntity['cityentity_id']],
-				BuildingSize = CityMap.GetBuildingSize(CityMapEntity),
+		for (const building of Object.values(buildingData)) {
+			if (building.coords.x < MinX || building.coords.x > MaxX || building.coords.y < MinY || building.coords.y > MaxY) continue
 
-				x = (CityMap.CityData[b]['x'] === undefined ? 0 : ((parseInt(CityMap.CityData[b]['x']) * CityMap.ScaleUnit) / 100)),
-				y = (CityMap.CityData[b]['y'] === undefined ? 0 : ((parseInt(CityMap.CityData[b]['y']) * CityMap.ScaleUnit) / 100)),
-				xsize = ((parseInt(BuildingSize['xsize']) * CityMap.ScaleUnit) / 100),
-				ysize = ((parseInt(BuildingSize['ysize']) * CityMap.ScaleUnit) / 100),
-				noStreet = '', isSpecial = '', chainBuilding = ''
+			let x = (building.coords.x === undefined ? 0 : parseInt((building.coords.x * CityMap.ScaleUnit)) / 100),
+			y = (building.coords.y === undefined ? 0 : parseInt((building.coords.y * CityMap.ScaleUnit)) / 100),
+			xsize = (building.size.width * CityMap.ScaleUnit) / 100,
+			ysize = (building.size.length * CityMap.ScaleUnit) / 100,
+			noStreet = '', isSpecial = '', chainBuilding = ''
 
-				if(CityMap.IsExtern === false) {
-					noStreet = (MainParser.NewCityMapData[CityMap.CityData[b]['id']].needsStreet == 0 ? ' noStreet' : '')
-					isSpecial = (MainParser.NewCityMapData[CityMap.CityData[b]['id']].isSpecial ? ' special' : '')
-					chainBuilding = (MainParser.NewCityMapData[CityMap.CityData[b]['id']].chainBuilding != undefined ? ' chain' : '')
-				}
-				
-				f = $('<span />').addClass('entity ' + d['type'] + noStreet + isSpecial + chainBuilding).css({
-					width: xsize + 'em',
-					height: ysize + 'em',
-					left: x + 'em',
-					top: y + 'em'
-				})
-					.attr('title', d['name'])
-					.attr('data-entityid', CityMap.CityData[b]['id']);
+			noStreet = (building.needsStreet == 0 ? ' noStreet' : '')
+			isSpecial = (building.isSpecial ? ' special' : '')
+			chainBuilding = (building.chainBuilding != undefined ? ' chain' : '')
+			
+			f = $('<span />').addClass('entity ' + building.type + noStreet + isSpecial + chainBuilding).css({
+				width: xsize + 'em',
+				height: ysize + 'em',
+				left: x + 'em',
+				top: y + 'em'
+			})
+				.attr('title', building.name)
+				.attr('data-id', building.id);
 
-			CityMap.OccupiedArea += (BuildingSize['building_area']);
+			CityMap.OccupiedArea += (building.size.width * building.size.length);
+			if (building.type == "street")
+				CityMap.streetsTotal++
+			else
+				CityMap.buildingsTotal++
 
-			if (!CityMap.OccupiedArea2[d.type]) CityMap.OccupiedArea2[d.type] = 0;
-			CityMap.OccupiedArea2[d.type] += (BuildingSize['building_area']);
+			if (!CityMap.OccupiedArea2[building.type]) CityMap.OccupiedArea2[building.type] = 0;
+			CityMap.OccupiedArea2[building.type] += (building.size.width * building.size.length);
 
-			StreetsNeeded += BuildingSize['street_area'];
+			StreetsNeeded += (building.state.connected && building.type != "street" ? parseFloat(Math.min(building.size.width, building.size.length)) * building.needsStreet / 2 : 0)
 
-			let era = CityMap.GetBuildingEra(CityMapEntity);
+			if (building.eraName) {
+				let era = Technologies.Eras[building.eraName]
 
-			if(era){
 				f.attr({
-					title: `${d['name']}, ${BuildingSize['ysize']}x${BuildingSize['xsize']}<br><em>${i18n('Eras.' + era )}</em>`
+					title: `${building.name}, ${building.size.length}x${building.size.width}<br><em>${i18n('Eras.' + (era || 0) )}</em>`
 				})
 
-				if (era < CurrentEraID) {
-                    f.addClass('oldBuildings');
-
-					let eraDiff = CurrentEraID - era;
+				if (era < CurrentEraID && building.type != "greatbuilding" && era != 0) {
+					f.addClass('oldBuildings')
+					let eraDiff = CurrentEraID - era
 					
 					switch(eraDiff){
 						case 1:
@@ -609,8 +627,7 @@ let CityMap = {
 			}
 
 			// die Größe wurde geändert, wieder aktivieren
-			if (ActiveId !== null && ActiveId === CityMap.CityData[b]['id'])
-			{
+			if (ActiveId !== null && ActiveId === building.id) {
 				f.addClass('highlighted');
 			}
 
@@ -636,18 +653,21 @@ let CityMap = {
 	 * Statistiken in die rechte Sidebar
 	 */
 	getAreas: ()=>{
-		let total = ((CityMap.UnlockedAreas.length -1) * 16) + 256, // x + (4*4) und 1x die Startflache 16 * 16
+		let total = ((CityMap.UnlockedAreas.length -1) * 16) + 256, // x + (4*4) + 16*16
 			occupied = CityMap.OccupiedArea,
 			txtTotal = i18n('Boxes.CityMap.WholeArea') + total,
-			txtFree = i18n('Boxes.CityMap.FreeArea') + (total - occupied);
+			txtFree = i18n('Boxes.CityMap.FreeArea') + (total - occupied),
+			txtTotalBuildings = i18n('Boxes.CityMap.BuildingsAmount') + CityMap.buildingsTotal,
+			txtTotalStreets = i18n('Boxes.CityMap.StreetsAmount') + CityMap.streetsTotal;
 
 		if( $('#area-state').length === 0 ){
 			let aW = $('<div />').attr('id', 'area-state');
 
-			aW.append( $('<p />').addClass('total-area') );
-			aW.append( $('<p />').addClass('occupied-area') );
 			aW.append( $('<div />').addClass('building-count-area') );
 			aW.append( $('<p />').addClass('to-old-legends').hide() );
+			aW.append( $('<p />').addClass('total-area') );
+			aW.append( $('<p />').addClass('occupied-area') );
+			aW.append( $('<p />').addClass('total-buildings') );
 
 			$('#sidebar').append(aW);
 		}
@@ -656,6 +676,7 @@ let CityMap = {
 		if (!CityMap.IsExtern) {
 			$('.total-area').html(txtTotal);
 			$('.occupied-area').html(txtFree);
+			$('.total-buildings').html(txtTotalBuildings);
 		}
 
 		let sortable = [];
@@ -665,13 +686,11 @@ let CityMap = {
 
 		let txtCount = [];
 
-		for(let x in sortable )
-		{
-			if(!sortable.hasOwnProperty(x)){
-				break;
-			}
+		for(let x in sortable ) {
+			if(!sortable.hasOwnProperty(x))	break
 
 			let type =  sortable[x][0];
+
 			let TypeName = i18n('Boxes.CityMap.' + type)
 			const count = sortable[x][1];
 			const pct = parseFloat(100*count/CityMap.OccupiedArea).toFixed(1);
@@ -802,8 +821,7 @@ let CityMap = {
 
 		MainParser.send2Server(d, 'CityPlanner', function(resp){
 
-			if(resp.status === 'OK')
-			{
+			if(resp.status === 'OK') {
 				HTML.ShowToastMsg({
 					head: i18n('Boxes.CityMap.SubmitSuccessHeader'),
 					text: [
@@ -938,149 +956,217 @@ let CityMap = {
 	},
 
 	// returns negative numbers for builidings that use population, 0 for buildings that dont provide or use it
-	getPopulation: (ceData, data, era) => {
-		let population = 0;
-		let eraId = Technologies.InnoEras[era];
-
-		if (data.type != "generic_building") { // not a generic building
-			if (ceData.entity_levels.length > 0) {  // special building
-				if (ceData.entity_levels[eraId].required_population)
-					return ceData.entity_levels[eraId].required_population * -1		// needs population, e.g. military
-				else if (ceData.entity_levels[eraId].provided_population)
-					return ceData.entity_levels[eraId].provided_population			// provides population, e.g. residential
+	setPopulation: (metaData, data, era) => {
+		let population = 0
+		let eraId = Technologies.InnoEras[era]
+		
+		if (metaData.__class__ != "GenericCityEntity") { // not a generic building
+			if (metaData.entity_levels.length > 0) {  // special building
+				if (metaData.entity_levels[eraId].required_population)
+					return metaData.entity_levels[eraId].required_population * -1		// needs population, e.g. military
+				else if (metaData.entity_levels[eraId].provided_population)
+					return metaData.entity_levels[eraId].provided_population			// provides population, e.g. residential
 			}
-			else if (ceData.requirements) {
-				if (ceData.requirements.cost) {
-					if (data.type === "decoration")
+			else if (metaData.requirements) {
+				if (metaData.requirements.cost) {
+					if (metaData.type === "decoration")
 						return 0
-					else if (data.type === "greatbuilding") 
+					else if (metaData.type === "greatbuilding") 
 						if (data.bonus)
 							if (data.bonus.type === "population")
 								return data.bonus.value
 					
-					return ceData.requirements.cost.resources.population * -1
+					return metaData.requirements.cost.resources.population * -1
 				}
 			}
 		}
 		else { // generic building
-			if (ceData.components[era]) { // (time) limited buildings lose their era data after expiring
-				let staticResources = ceData.components[era].staticResources;
+			if (metaData.components[era]) { // (time) limited buildings lose their era data after expiring
+				let staticResources = metaData.components[era].staticResources;
 				if (staticResources) {
 					population = staticResources.resources.resources.population;
 					return population;
 				}
 			}
 		}
-		return population;
+		return population
 	},
 	
 	// returns 0 if building does not provide or substract happiness
-	getHappiness(ceData, data, era) {
+	setHappiness(metaData, data, era) {
 		let happiness = 0
 		let eraId = Technologies.InnoEras[era]
+		let isPolivated = CityMap.setPolivation(data, metaData)
 
 		let bgHappiness = data.bonus
-		if (data.type != "generic_building") {
-			if (ceData.entity_levels.length > 0) { // special building
-				if (ceData.entity_levels[eraId].provided_happiness)
-					return ceData.entity_levels[eraId].provided_happiness
+		if (metaData.__class__ != "GenericCityEntity") {
+			if (metaData.entity_levels.length > 0) { // special building
+				if (metaData.entity_levels[eraId].provided_happiness) 
+					return (data?.state?.__class__ == "PolishedState" ? metaData.entity_levels[eraId].provided_happiness*2 : metaData.entity_levels[eraId].provided_happiness)
 				return happiness
 			}
 			else if (bgHappiness) { // great building, e.g. Alcatraz
-				if (bgHappiness.type == "happiness")
+				if (bgHappiness.type == "happiness") 
 					return bgHappiness.value
 				return 0
 			} 
-			else if (ceData.provided_happiness)  // decorations etc.
-				return ceData.provided_happiness
+			else if (metaData.provided_happiness) { // decorations etc.
+				return (isPolivated ? metaData.provided_happiness*2 : metaData.provided_happiness)
+			}
 			else 
 				return happiness
 		}
-		else { //generic building
-			if (ceData.components[era]) {
-				let bHappiness = ceData.components[era].happiness
-				if (bHappiness)
+		else { // generic building
+			if (metaData.components[era]) {
+				let bHappiness = metaData.components[era].happiness
+				if (bHappiness) {
 					return (bHappiness.provided ? bHappiness.provided : happiness)
+				}
+				return happiness
+			}
+			else if (metaData.components.AllAge) {
+				let bHappiness = metaData.components.AllAge.happiness
+				if (bHappiness) {
+					if (isPolivated) 
+						return (bHappiness.provided ? bHappiness.provided*2 : happiness)
+					else
+						return (bHappiness.provided ? bHappiness.provided : happiness)
+				}
 				return happiness
 			}
 		}
 	},
 	
 	// returns undefined if building cannot be motivated or polished
-	getPolivation(data, ceData) { 
+	setPolivation(data, metaData) { 
 		let isPolivationable = false;
 		let isPolishable = false;
-		ceData.abilities.forEach(ability => {
+		metaData.abilities.forEach(ability => {
 			if (ability.__class__ == "MotivatableAbility")
 				isPolivationable = true
 			else if (ability.__class__ == "PolishableAbility") {
 				isPolivationable = true
 				isPolishable = true
 			}
-		});
-		if (data.type == "generic_building")
-			isPolivationable = (ceData.components.AllAge.socialInteraction != undefined);
+		})
+		if (metaData.__class__ == "GenericCityEntity")
+			isPolivationable = (metaData.components.AllAge.socialInteraction != undefined)
 		
 		if (isPolivationable) {
-			if (data.type != "generic_building") {
-					if (data.state.boosted)
-						return data.state.boosted;
-					else if (data.state.is_motivated) 
-						return true;
-					else if (isPolishable) { // decorations etc.
-						if (data.state.next_state_transition_in) 
-							return true;
-					}
-					return false;
+			if (metaData.__class__ != "GenericCityEntity") {
+				if (data?.state?.boosted)
+					return data?.state?.boosted;
+				else if (data?.state?.is_motivated) 
+					return true;
+				else if (isPolishable) { // decorations etc.
+					if (data?.state?.next_state_transition_in) 
+						return true
+				}
+				return false
 			}
 			else { // generic buildings
-				if (data.state.socialInteractionStartedAt > 0) 
-					return true;
+				if (data?.state?.socialInteractionStartedAt > 0 && data?.state?.socialInteractionId == "polish") {
+					if (data?.state?.socialInteractionStartedAt + 43200 - parseInt(Date.now()/1000) < 0)
+						return false
+					return true
+				}
+				else if (data?.state?.socialInteractionStartedAt > 0 && data?.state?.socialInteractionId == "motivate") 
+					return true
 				else
-					return false;
+					return false
 			}
 		}
-		return undefined;
+		return undefined
+	},
+	
+	// returns undefined if building cannot be motivated or polished
+	setPolivationable(metaData) {
+		let isPolivationable = false
+		metaData.abilities.forEach(ability => {
+			if (ability.__class__ == "MotivatableAbility")
+				isPolivationable = true
+			else if (ability.__class__ == "PolishableAbility") {
+				isPolivationable = true
+			}
+		})
+		if (metaData.__class__ == "GenericCityEntity")
+			isPolivationable = (metaData.components.AllAge.socialInteraction != undefined)
+		return isPolivationable
 	},
 	
 	// returns chainId (string), returns undefined if not a chain building
-	getChainBuilding(ceData) {
-		let chainId = undefined;
-		ceData.abilities.forEach(ability => {
-			if (ability.chainId)
-				chainId = ability.chainId;
+	setChainBuilding(metaData) {
+		let chainId = undefined
+		let type = null, x = 0, y = 0
+		metaData.abilities.forEach(ability => {
+			if (ability.chainId) {
+				chainId = ability.chainId
+				type = (ability.__class__ == "ChainStartAbility" ? "start" : "link")
+				// currently all chains only have ONE side where you can attach builidings (except mughals main building and hippodrome tracks)
+				x = ability.linkPositions[0].topLeftPoint.x || 0 
+				y = ability.linkPositions[0].topLeftPoint.y || 0 
+			}
 		});
-		return chainId;
+		if (chainId !== undefined)
+			return { name: chainId, type: type, chainPosX: x, chainPosY: y }
 	},
 
-	// returns setId (string), returns undefined if not a chain building
-	getSetBuilding(ceData) {
-		let setId = undefined;
-		ceData.abilities.forEach(ability => {
+	// this creates a pseudo building for effiency ratings etc
+	createChainedBuilding(allLinkedBuildings = []) {
+		let chainedBuilding = allLinkedBuildings[0] // first building is the start building
+
+		for (link of allLinkedBuildings) {
+			if (link.chainBuilding.type != "start") {
+				chainedBuilding.size.width = chainedBuilding.size.width + (link.coords.x != chainedBuilding.coords.x ? link.size.width : 0)
+				chainedBuilding.size.length = chainedBuilding.size.length + (link.coords.y != chainedBuilding.coords.y ? link.size.length : 0)
+				chainedBuilding.happiness += link.happiness
+
+				if (link.boosts !== undefined) 
+					chainedBuilding.boosts = [...chainedBuilding.boosts || [], ...link.boosts]
+				if (link.production !== undefined && link.production !== false) {
+					// console.log(link.production)
+					chainedBuilding.production = [...chainedBuilding.production, ...link.production]
+				}
+				link.chainBuilding.type = "linked"
+			}
+		}
+		if (allLinkedBuildings.length > 1) {
+			chainedBuilding.name = chainedBuilding.name + " +" + (allLinkedBuildings.length-1)
+		}
+		return chainedBuilding
+	},
+
+	// returns setId (string), returns undefined if not a set building
+	setSetBuilding(metaData) {
+		let setId = undefined
+		metaData.abilities.forEach(ability => {
 			if (ability.setId)
-				setId = ability.setId;
+				setId = ability.setId
 		});
-		return setId;
+		if (setId !== undefined)
+			return { name: setId }
 	},
 
 	// returns an object with the buildings size
-	getSize(ceData) {
+	setSize(metaData) {
 		let size = { width: 0, length: 0 }
-		if (ceData.length)
-			size = { width: ceData.width, length: ceData.length }
+		if (metaData.length)
+			size = { width: metaData.width, length: metaData.length }
 		else {
-			size.width = ceData.components.AllAge.placement.size.x
-			size.length = ceData.components.AllAge.placement.size.y
+			size.width = metaData.components.AllAge.placement.size.x
+			size.length = metaData.components.AllAge.placement.size.y
 		}
 		return size
 	},
 	
 	// returns an array with all boosts, returns undefined when there are none
-	getBuildingBoosts(ceData, data, era) {
+	setBuildingBoosts(metaData, data, era) {
 		let eraName = (era == 'AllAge' ? 'BronzeAge' : era) // for some reason Watchtower Level 2 (example) has an era list even though the boost is the same everywhere. thx inno
 		let boosts = []
-		if (data.type != "generic_building") {
-			ceData.abilities.forEach(ability => {
+		let isSet = this.setSetBuilding(metaData)
+		let isChain = this.setChainBuilding(metaData)
+		if (metaData.__class__ != "GenericCityEntity") {
+			metaData.abilities.forEach(ability => {
 				if (ability.boostHints) {
 					ability.boostHints.forEach(abilityBoost => {
 						if (abilityBoost.boostHintEraMap[eraName] != undefined) { // has different boosts for different eras
@@ -1102,8 +1188,33 @@ let CityMap = {
 						}
 					})
 				}
-			});
-			if (data.type === "greatbuilding") { 
+				if ((isSet !== undefined && ability.__class__ === "BonusOnSetAdjacencyAbility") || (isChain !== undefined && ability.__class__ === "ChainLinkAbility")) {
+					for (const bonus of ability.bonuses) {
+						if (bonus.boost.length == 0) return
+						else {
+							if (bonus.boost[eraName]) {
+								let boost = {
+									feature: bonus.boost[eraName].targetedFeature,
+									type: MainParser.BoostMapper[bonus.boost[eraName].type] || [bonus.boost[eraName].type],
+									value: bonus.boost[eraName].value,
+									needsLink: true
+								}
+								boosts.push(boost)
+							}
+							else if (bonus.boost.AllAge) {
+								let boost = {
+									feature: bonus.boost.AllAge.targetedFeature,
+									type: MainParser.BoostMapper[bonus.boost.AllAge.type] || [bonus.boost.AllAge.type],
+									value: bonus.boost.AllAge.value,
+									needsLink: true
+								}
+								boosts.push(boost)
+							}
+						}
+					}
+				}
+			})
+			if (metaData.type === "greatbuilding") { 
 				if (data.bonus?.type) {
 					let boost = {
 						feature: "all",
@@ -1114,66 +1225,101 @@ let CityMap = {
 						boosts.push(boost)
 				}
 			}
+			else if (metaData.id.includes("CastleSystem")) {
+				if (MainParser.Boosts[data.id] != undefined)
+					MainParser.Boosts[data.id].forEach(castleBoost => {
+						let boost = {
+							feature: "all",
+							type: MainParser.BoostMapper[castleBoost.type] || undefined, // do not include weird boosts
+							value: castleBoost.value
+						}
+						if (boost.type !== undefined)
+							boosts.push(boost)
+					})
+			}
 		}
 		else {
-			if (ceData.components[era]) 
-				if (ceData.components[era].boosts) {
-					ceData.components[era].boosts.boosts.forEach(abilityBoost => {
-						let boost = {
-							feature: abilityBoost.targetedFeature,
-							type: MainParser.BoostMapper[abilityBoost.type] || [abilityBoost.type],
-							value: abilityBoost.value,
-						};
-						boosts.push(boost)
-					})
-				}
+			if (metaData.components[era]?.boosts) {
+				metaData.components[era].boosts.boosts.forEach(abilityBoost => {
+					let boost = {
+						feature: abilityBoost.targetedFeature,
+						type: MainParser.BoostMapper[abilityBoost.type] || [abilityBoost.type],
+						value: abilityBoost.value,
+					};
+					boosts.push(boost)
+				})
+			}
+			if (metaData.components.AllAge?.boosts) {
+				metaData.components.AllAge.boosts.boosts.forEach(abilityBoost => {
+					let boost = {
+						feature: abilityBoost.targetedFeature,
+						type: MainParser.BoostMapper[abilityBoost.type] || [abilityBoost.type],
+						value: abilityBoost.value,
+					};
+					boosts.push(boost)
+				})
+			}
 		}
+		let allyStats = MainParser.Allies.getProd(data.id||0)
+		if (allyStats?.boosts) {
+			allyStats?.boosts.forEach(abilityBoost => {
+				let boost = {
+					feature: abilityBoost.targetedFeature,
+					type: MainParser.BoostMapper[abilityBoost.type] || [abilityBoost.type],
+					value: abilityBoost.value,
+				};
+				boosts.push(boost)
+			})
+		}
+		
 		if (boosts.length > 0)
 			return boosts
 		return undefined
 	},
 
 	
-
-	getState(data) { 
-		if (data.state.__class__ == "IdleState")
-			return "idle";
+	setState(data) { 
+		if ((data?.state?.__class__ == "IdleState" && !data?.cityentity_id?.includes("CastleSystem")) || data?.state?.__class__ == undefined)
+			return "idle"
 		else if (data.state.__class__ == "ProductionFinishedState")
-			return "collectable";
-		else if (data.state.__class__ == "PlunderedState")
-			return "pludered";
-		return "producing";
+			return "collectable"
+		else if (data.state.__class__ == "PlunderedState" )
+			return "plundered"
+		else if (data.cityentity_id.includes("CastleSystem"))
+			return "producing"
+		return "producing"
 	},
 
 	// building is not in construction menu
-	isSpecialBuilding(ceData) { 
-		if (ceData.__class__ == "GenericCityEntity")
-			return true; // generic buildings are always special
-		return ceData.is_special;
+	isSpecialBuilding(metaData) { 
+		if (metaData.__class__ == "GenericCityEntity")
+			return true // generic buildings are always special
+		return metaData.is_special
 	},
 
 	// returns street level (1 or 2) or 0
-	needsStreet(ceData, data) {
-		let needsStreet = 0;
-		if (data.type != "generic_building") {
-			if (ceData.requirements?.street_connection_level) 
-				needsStreet = ceData.requirements.street_connection_level
-		}
-		else {
-			ceData.abilities.forEach(ability => {
+	needsStreet(metaData) {
+		let needsStreet = metaData.requirements?.street_connection_level
+		if (needsStreet == undefined) {
+			metaData.abilities.forEach(ability => {
 				if (ability.__class__ == "StreetConnectionRequirementComponent")
 					needsStreet = 1
 			});
-			if (ceData.components.AllAge.streetConnectionRequirement)
-				needsStreet = ceData.components.AllAge.streetConnectionRequirement.requiredLevel
+			if (metaData.components?.AllAge?.streetConnectionRequirement != undefined)
+				needsStreet = metaData.components.AllAge.streetConnectionRequirement.requiredLevel
 		}
-		return needsStreet
+		return (needsStreet == undefined ? 0 : needsStreet)
 	},
 	
-	getStateTimes(data) {
-		let state = this.getState(data);
-		if (state == "producing")
-			return { at: data.state.next_state_transition_at, in: data.state.next_state_transition_in }
+	setStateTimes(data) {
+		let state = this.setState(data)
+		
+		if (state == "producing") {
+			if (data.cityentity_id.includes("CastleSystem")) {
+				return { at: MainParser.CastleSystemChest.dailyRewardCollectionAvailableAt, in: MainParser.CastleSystemChest.dailyRewardCollectionAvailableAt - parseInt(Date.now()/1000) }
+			}
+			return { at: data?.state?.next_state_transition_at, in: data?.state?.next_state_transition_in }
+		}
 		else if (state == "collectable")
 			return { at: moment().unix(), in: 0 }
 		return { at: undefined, in: undefined };
@@ -1186,40 +1332,334 @@ let CityMap = {
 		return false;
 	},
 
-	// returns false or time or total collections, todo: needs more data returned
-	isLimitedBuilding(data, ceData) {
-		if (data.type == "generic_building")
-			if (ceData.components.AllAge.limited != undefined) {
-				if (ceData.components.AllAge.limited.config.expireTime != undefined)
-					return ceData.components.AllAge.limited.config.expireTime;
-				if (ceData.components.AllAge.limited.config.collectionAmount != undefined)
-					return ceData.components.AllAge.limited.config.collectionAmount;
-			}
-		return false;
+	// returns false, time or total collections
+	isLimitedBuilding(metaData) {
+		if (metaData.components?.AllAge?.limited != undefined) {
+			if (metaData.components?.AllAge?.limited.config.expireTime != undefined)
+				return metaData.components.AllAge.limited.config.expireTime
+			if (metaData.components?.AllAge?.limited.config.collectionAmount != undefined)
+				return metaData.components.AllAge.limited.config.collectionAmount
+		}
+		return false
 	},
 
 	// returns undefined or time the building was built
-	getBuildTime(data) {
+	setBuildTime(data) {
 		if (data.type == "generic_building")
-			if (data.state.constructionFinishedAt != undefined) 
-				return data.state.constructionFinishedAt;
+			if (data?.state?.constructionFinishedAt != undefined) 
+				return data?.state?.constructionFinishedAt;
 		return undefined;
 	},
 
 	// returns true or false
-	getConnection(ceData, data) {
-		return (this.needsStreet(ceData, data) == 0);
+	setConnection(metaData, data) {
+		let connected = (this.needsStreet(metaData, data) == 0)
+		if (!connected) 
+			connected = (data?.connected == 1)
+		return connected
+	},
+
+	// find out if a chain start building has links, return all buildings in an array
+	hasLinks(building, connectedBuildings = [], dirX = 0, dirY = 0) {
+		connectedBuildings.push(building)
+		
+		if (building.chainBuilding?.type == "start") {
+			dirX = building?.chainBuilding?.chainPosX != 0 ? parseInt(building?.chainBuilding?.chainPosX / Math.abs(building?.chainBuilding?.chainPosX)) : 0 // e.g. (-3/3) || 0
+			dirY = building?.chainBuilding?.chainPosY != 0 ? parseInt(building?.chainBuilding?.chainPosY / Math.abs(building?.chainBuilding?.chainPosY)) : 0
+		}
+		let x = building.coords.x + dirX
+		let y = building.coords.y + dirY
+
+		let nextBuilding = CityMap.getBuildingByCoords(x, y)
+		let x1 = x + dirX
+		let y1 = y + dirY
+		while (nextBuilding == undefined) {
+			nextBuilding = CityMap.getBuildingByCoords(x1, y1)
+			x1 += dirX
+			y1 += dirY
+			if (x1 < 0 || y1 < 0 || x1 > 72 || y1 > 72) break // min and max of current map
+		}
+
+		if (x < 0 || x < 0 || y > 72 || y > 72) return connectedBuildings // min and max of current map
+		else {
+			if (nextBuilding == undefined || nextBuilding.chainBuilding == undefined || nextBuilding.chainBuilding?.name !== building.chainBuilding.name || nextBuilding.chainBuilding?.type == "start")
+				return connectedBuildings
+
+			return this.hasLinks(nextBuilding, connectedBuildings, dirX, dirY)
+		}
+	},
+
+	// find out if a chain link building is connected to the chain start building (through other links)
+	isLinked(building, x = 0, y = 0) {
+		if (typeof building?.chainBuilding?.chainPosX === 'number') {
+			let posX = building?.chainBuilding?.chainPosX
+			let posY = building?.chainBuilding?.chainPosY
+			let xNeg = posX > 0 ? -1 : 1
+			let yNeg = posY > 0 ? -1 : 1
+			let x1 = (posX != 0 ? posX / Math.abs(posX) : 0) - x*xNeg
+			let y1 = (posY != 0 ? posY / Math.abs(posY) : 0) - y*yNeg
+
+			let prevBuilding = CityMap.getBuildingByCoords(building?.coords?.x - x1, building?.coords?.y - y1)
+
+			if (y1 < 0 || x1 < 0 || x1 > 72 || y1 > 72) return false // min and max of current map
+			else {
+				if (prevBuilding !== undefined) {
+					if (prevBuilding.chainBuilding === undefined || prevBuilding.chainBuilding?.name !== building.chainBuilding.name) return false
+					if (prevBuilding.chainBuilding?.name === building.chainBuilding.name && prevBuilding.chainBuilding?.type == ("linked" || "start")) {
+						return true
+					}
+				}
+				return this.isLinked(building, x1, y1)
+			}
+		}
+	},
+
+	// todo: need it for sets
+	findAdjacentSetBuildingByCoords(x,y, linkName = "") {
+		for (let i = x; i >= (x-10); i--) {
+			for (let j = y; j >= (y-10); j--) {
+				let building = this.getBuildingByCoords(i,j)
+				//if (building != undefined && building?.setBuilding?.name == linkName) {
+				//	return console.log(building)
+				//}
+			}
+		}
+	},
+	
+	// returns false if building does not produce anything
+	// production types: resources (coins, supplies, goods, medals etc), unit, genericReward (consumables like fragments), random, guildResources (power and goods)
+	setAllProductions(metaData, data, era) {
+		let productions = []
+		if (metaData.__class__ != "GenericCityEntity" && metaData.type != "greatbuilding") {
+			if (metaData.is_special) { // special building
+				if (metaData.available_products !== undefined) { 
+					// to do: to think about: should all goods production options be gathered here?
+					if (Array.isArray(metaData.available_products))
+						metaData.available_products.forEach(product => {
+							if (product.name!="Daily Bonus") return
+							resource = {
+								type: "resources", 
+								needsMotivation: false,
+								resources: product.product.resources
+							}
+							productions.push(resource)
+						});
+				}
+				if (metaData.entity_levels[Technologies.InnoEras[era]] !== undefined) { // base money is here
+					let money = metaData.entity_levels[Technologies.InnoEras[era]].produced_money
+					if (money)
+						productions.push({ type: 'resources', needsMotivation: false, resources: { money: money }, doubleWhenMotivated: this.setPolivationable(metaData)})
+					let power = metaData.entity_levels[Technologies.InnoEras[era]].clan_power // hall of fame lvl 1
+					if (power)
+						productions.push({ type: 'guildResources', needsMotivation: false, resources: { clan_power: power }, doubleWhenMotivated: true})
+				}
+				metaData.abilities.forEach(ability => {
+					let resource = this.setOldProductionResourceFromAbility(ability, era)
+					
+					if (Object.keys(resource.resources).length > 0) 
+						productions.push(resource)
+				})
+				if (metaData.__class__ == "CityEntityRandomProductProductionBuilding") { // if weird old building, use current production
+					let currentProduction = this.setCurrentProductions(data, metaData, era)
+					productions = currentProduction
+				}
+			}
+			if (metaData.type == "main_building") { // add emissary production to town hall
+				MainParser.EmissaryService?.forEach(emissary => {
+					let resource = {
+						type: (emissary.bonus.type != "unit" ? "resources" : emissary.bonus.type),
+						needsMotivation: false,
+						resources: (emissary.bonus.type == "unit" ? this.setUnitReward(emissary.bonus, true) : {[emissary.bonus.subType]: emissary.bonus.amount} )
+					}
+					productions.push(resource)
+				})
+				MainParser.BonusService?.forEach(bonus => { // guild FP
+					if (bonus.type == "daily_strategypoint") {
+						let resource = {
+							type: "resources",
+							needsMotivation: false,
+							resources: { strategy_points: bonus.value} 
+						}
+						productions.push(resource)
+					}
+				})
+			}
+			if (metaData.id.includes("CastleSystem")) { // add castle system stuff
+				let currentLevel = Castle.curLevel
+				era = CurrentEra 
+				if (MainParser.CastleSystemLevels[(currentLevel-1)] != undefined)
+					MainParser.CastleSystemLevels[(currentLevel-1)].dailyReward[era].rewards.forEach(reward => {
+						let resources = {[reward.subType]: reward.amount} 
+						if (reward.id.search("#") != -1) { // "goods#random#CurrentEra#30" "goods#random#PreviousEra#15"
+							amount = reward.id.match(/\d+$/)[0]
+							if (reward.id.search("goods") != -1 && reward.id.search("CurrentEra") != -1)
+								resources = { random_good_of_age: amount }
+							else if (reward.id.search("goods") != -1 && reward.id.search("PreviousEra") != -1)
+								resources = { random_good_of_previous_age: amount }
+						}
+						let resource = {
+							type: "resources",
+							needsMotivation: false,
+							resources: resources
+						}
+						productions.push(resource)
+					})
+			}
+			let isChain = this.setChainBuilding(metaData)
+			if (isChain !== undefined) {
+				for (const ability of metaData.abilities) {
+					if (ability.__class__ == "ChainLinkAbility")
+						for (const bonus of ability.bonuses) {
+							if (bonus.revenue.length == 0) return
+							else {
+								if (bonus.revenue[Technologies.InnoEras[era]]) {
+									let resource = {
+										type: "resources", // currently there are no chains that give anything else
+										needsMotivation: false,
+										resources: bonus.revenue[Technologies.InnoEras[era]].resources
+									}
+									productions.push(resource)
+								}
+								else if (bonus.revenue.AllAge) {
+									let resource = {
+										type: "resources", // currently there are no chains that give anything else
+										needsMotivation: false,
+										resources: bonus.revenue.AllAge.resources
+									}
+									productions.push(resource)
+								}
+							}
+						}
+				}
+			}
+
+			if (productions?.length > 0) 
+				return productions
+			
+			return false
+		}
+		else if (metaData.__class__ === "GenericCityEntity") {
+			// fyi: generic_building supplies and coins are doubled when motivated if they do not need motivation
+			let production = metaData.components[era]?.production || metaData.components.AllAge.production // currently it is either allage or era, never both
+			if (production) {
+				if (metaData.type == "production") { // production buildings do not have a default production
+					for (product of production.options) {
+						let resource = {
+							type: product.products[0].type,
+							needsMotivation: false,
+							doubleWhenMotivated: true,
+							resources: product.products[0].playerResources?.resources, // breaks if buildings with guildresources or multiple productions would be added
+							time: product.time
+						}
+						productions.push(resource)
+					}
+					return productions 
+				} 
+				production.options[0].products.forEach(product => {
+					let resource = {
+						type: product.type,
+						needsMotivation: (product.onlyWhenMotivated == true),
+						doubleWhenMotivated: false,
+						resources: {}
+					}
+					if (product.type == "resources") {
+						resource.resources = product.playerResources.resources
+						if (product.onlyWhenMotivated !== true)
+							resource.doubleWhenMotivated = true
+					}
+					else if (product.type == "guildResources") {
+						resource.resources = product.guildResources.resources
+					}
+					else if (product.type == "genericReward" || product.type == "blueprint") {
+						resource.resources = this.setGenericReward(product, metaData, era) 
+						if (resource.resources.type === undefined)  // genericReward can also return a unit reward, change type
+							resource.type = "unit"
+					}
+					else if (product.type == "unit") {
+						resource.resources = this.setUnitReward(product)
+					}
+					else if (product.type == "random") {
+						let rewards = [];
+						if (product.products.length > 1) {
+							product.products.forEach(reward => {
+								if (reward.product.type === "genericReward") { // currently: everything but forge points
+									let lookupData = metaData.components[era]?.lookup.rewards[reward.product.reward.id] || metaData.components.AllAge.lookup.rewards[reward.product.reward.id]
+									let name = this.setRewardNameFromLookupData(lookupData, metaData)
+									let newReward = {
+										id: reward.product.reward.id,
+										name: name,
+										type: (lookupData.type == "set" ? "consumable" : lookupData.type),
+										subType: lookupData.subType,
+										amount: (lookupData.totalAmount || lookupData.amount),
+										dropChance: reward.dropChance,
+									}
+									rewards.push(newReward)
+								}
+								else if (reward.product.type === "resources") {
+									if (reward.product.playerResources.resources.strategy_points != undefined) { // FP
+										let newReward = {
+											id: null,
+											type: "resources",
+											name: i18n('Boxes.OwnpartCalculator.OptionsFP'), // ugly
+											subType: Object.keys(reward.product.playerResources.resources)[0],
+											amount: reward.product.playerResources.resources.strategy_points,
+											dropChance: reward.dropChance,
+										}
+										rewards.push(newReward)
+									}
+									else { // goods - for now - hacky
+										let newReward = {
+											id: null,
+											type: "goods",
+											name: i18n('Boxes.BlueGalaxy.Goods'),
+											subType: Object.keys(reward.product.playerResources.resources)[0],
+											amount: Object.values(reward.product.playerResources.resources)[0],
+											dropChance: reward.dropChance,
+										}
+										rewards.push(newReward)
+									}
+								}
+							});
+							resource.resources = rewards
+							resource.type = "random"
+						}
+					}
+					else {
+						console.log("CityMap.setAllProductions() is missing an option for ",metaData.name)
+					}
+					productions.push(resource)
+				});
+			}
+			if (productions.length > 0)
+				return productions
+			return false
+		}
+		else if (metaData.type === 'greatbuilding') {
+			productions = this.setCurrentProductions(data, metaData, era)
+			
+			if (productions?.length > 0)
+				return productions
+			return false
+		}
 	},
 
 	// returns undefined if building is idle or there are no productions (yet)
-	getCurrentProductions(data, ceData, era) {
+	setCurrentProductions(data, metaData, era) {
 		let productions = []
-		if (data.state.__class__ != "IdleState") {
-			if (data.type !== "generic_building") {
+		let state = CityMap.setState(data)
+		if (state != "idle") {
+			if (metaData.__class__ !== "GenericCityEntity") {
 				if (data.state.current_product) {
 					if (data.state.current_product.guildProduct) {
 						let production = {
-							resources: data.state.current_product.guildProduct,
+							resources: data.state.current_product.guildProduct.resources,
+							type: "guildResources",
+						}
+						productions.push(production)
+					}
+					if (data.state.current_product.clan_power) { // HoF
+						let production = {
+							resources: { clan_power: data.state.current_product.clan_power },
 							type: "guildResources",
 						}
 						productions.push(production)
@@ -1238,7 +1678,7 @@ let CityMap = {
 							if (data.state.current_product.name == "clan_goods") {
 								let resources = {}
 								data.state.current_product.goods.forEach(good => {
-									resources[good.good_id] = good.value;
+									resources[good.good_id] = good.value
 								})
 								let production = {
 									resources: resources,
@@ -1248,18 +1688,28 @@ let CityMap = {
 							}
 						}
 					}
+					if (data.state.current_product.name === 'penal_unit') { // alcatraz
+						let production = {
+							resources: {'random': parseFloat(data.state.current_product.amount)},
+							type: "unit",
+						}
+						productions.push(production)
+					}
 					if (data.state.is_motivated) { 
-						ceData.abilities.forEach(ability => { // random units are not in the data, they are in the ceData for some reason
+						metaData.abilities.forEach(ability => { // random units are not in the data, they are in the metaData for some reason
 							if (ability.__class__ === "RandomUnitOfAgeWhenMotivatedAbility") {
 								let production = {
 									resources: { "random": ability.amount },
 									type: "unit",
 								}
-								// console.log(ceData.name, production.resources)
 								productions.push(production)
 							}
 						})
 					}
+				}
+				if (data.type == "main_building") {
+					let prod = CityMap.setAllProductions(metaData, data, era)
+					return prod
 				}
 			}
 			else { // generic building
@@ -1273,112 +1723,154 @@ let CityMap = {
 							resource.resources = production.playerResources.resources
 						else if (production.type == "guildResources")
 							resource.resources = production.guildResources.resources
-						else if (production.type == "unit") {
-							resource.resources = this.getUnitReward(production)
-							//console.log(ceData.name, resource.resources)
-						}
+						else if (production.type == "unit") 
+							resource.resources = this.setUnitReward(production)
 						else if (production.type == "genericReward") {
-							let reward = this.getGenericReward(production, ceData, data, era)
+							let reward = this.setGenericReward(production, metaData, era)
 							resource.resources = reward
 							if (reward.type == undefined) { // genericReward can also return a unit reward, change type
 								resource.type = 'unit'
-								// console.log(ceData.name, reward)
 							}
 						}
 						else
-							console.log(ceData.name, "CityMap.getCurrentProductions() production is missing")
+							console.log(metaData.name, "CityMap.setCurrentProductions() production is missing")
 						
 						productions.push(resource)
 					});
 				}
 			}
-			if (productions.length > 0)
+			if (productions.length > 0) {
 				return productions
+			}
+		}
+		if (data?.cityentity_id?.includes("CastleSystem")) {
+			return this.setAllProductions(metaData, data, era)
 		}
 		return undefined
 	},
+
+	// todo: set buildings
 	
 	// returns a generic reward or a unit reward
-	getGenericReward(product, ceData, data, era) {
+	setGenericReward(product, metaData, era) {
 		let amount = 0
+		let lookupData = false
 
 		if (product.reward.amount != undefined) 
 			amount = product.reward.amount
 
-		let lookupData = false
-		if (ceData.components[era]) {
+		if (metaData.components[era]) {
 			if (product.reward.id.search("blueprint") != -1) {
-				if (ceData.components[era].lookup.rewards[product.reward.id])
-					lookupData = ceData.components[era].lookup.rewards[product.reward.id]
-				else {
-					for (const [key, reward] of Object.entries(ceData.components[era].lookup.rewards)) {
+				if (metaData.components[era].lookup.rewards[product.reward.id]) {
+					lookupData = metaData.components[era].lookup.rewards[product.reward.id]
+				}
+				else { // blueprint chest, e.g. vineyard
+					for (const [key, reward] of Object.entries(metaData.components[era].lookup.rewards)) {
 						if (reward.id.search("blueprint") != -1)
-							lookupData = reward;
+							lookupData = reward
 					}
+					// amount = lookupData.possible_rewards[0].reward.amount // hacky, because every chest item could have a different amount of blueprints
+					// console.log(metaData.name, amount)
 				}
 			}
-			else if (product.reward.id.search("unit") != -1) {
-				if (ceData.components[era].lookup.rewards[product.reward.id])
-					lookupData = ceData.components[era].lookup.rewards[product.reward.id]
+			else if (product.reward.type == "good") { // this can break if there is more than one generic goods reward for a building
+				for (const [key, reward] of Object.entries(metaData.components[era].lookup.rewards)) {
+					if (reward.id.includes("good"))
+						lookupData = reward
+				}
+			}
+			else if (product.reward.id.includes('goods') && !/(fragment|rush)/.test(product.reward.id)) { // for nextage goods, because they are in a chest
+				lookupData = metaData.components[era].lookup.rewards[product.reward.id] // take first chest reward and work with that
+				return {
+					id: product.reward.id,
+					name: lookupData.name.replace(/^\d+\s*/,""),
+					type: "resources",
+					subType: "good",
+					amount: parseInt(product.reward.id.match(/\d+$/)[0]),
+					icon: lookupData.iconAssetName
+				}
+			}
+			else {
+				lookupData = metaData.components[era].lookup.rewards[product.reward.id]
+				if (lookupData == undefined) {
+					let chest = Object.keys(metaData.components[era].lookup.rewards).find(x => x.includes("chest")) // currently only applies to wish fountain
+					for (possibleReward of metaData.components[era].lookup.rewards[chest].possible_rewards) {
+						if (possibleReward.reward.id == product.reward.id)
+							lookupData = possibleReward.reward
+					}
+				}
 				else {
-					for (const [key, reward] of Object.entries(ceData.components[era].lookup.rewards)) {
-						if (reward.id.search("unit") != -1)
-							lookupData = reward;
-					}
+					amount = lookupData.amount
 				}
 			}
-			else
-				lookupData = ceData.components[era].lookup.rewards[product.reward.id];
 		}
-		if (amount == 0) 
-			amount = lookupData.amount
+		if (amount == 0) {
+			amount = Number(lookupData?.name.replace(/^([+-]*[0-9]+?) .*/,"$1"));
+			if (isNaN(amount)) amount = lookupData.amount
+		}
 
 		let name = ""
 		if (lookupData) 
-			name = this.getRewardNameFromLookupData(lookupData, ceData)
+			name = this.setRewardNameFromLookupData(lookupData, metaData)
 		else {
-			console.log("CityMap.getGenericReward() data missing", ceData.name, ceData, data);
+			console.log("CityMap.setGenericReward() data missing for", metaData.name, metaData, product);
 			name = "DEFINE NAME"
 		}
 		
 		// units
-		if (lookupData?.type == "chest" && lookupData.id.search("genb_random_unit_chest") != -1 || lookupData?.type == "unit") {
-			let units = this.getUnitReward(product)
-			//console.log(ceData.name, units)
+		if (lookupData?.type == "chest" && lookupData.id.search("genb_random_") != -1 && lookupData.id.search("fragment") == -1 || lookupData?.type == "unit") {
+			let units = this.setUnitReward(product)
 			return units
 		}
-		// trees of patience
+		// wish fountain (AllProductions)
+		else if (lookupData?.type == "chest" && lookupData.id.search("fragment") != -1) {
+			lookupData.type = "consumable"
+		}
+		// self aid kits have type set
 		if (lookupData?.type == "set") {
 			lookupData.type = "consumable"
 			lookupData.subType = lookupData.rewards[0].subType
 			amount = lookupData.totalAmount
 		}
+		if (lookupData?.type=="good" && lookupData?.subType.includes("all_")) amount = amount*5
 
 		let reward = {
 			id: product.reward.id,
 			name: name,
 			type: lookupData?.type || "consumable",
 			subType: lookupData?.subType,
-			amount: amount, // amount can be undefined for blueprints or units if buiilding is not motivated
+			amount: amount, // amount can be undefined for blueprints or units if building is not motivated
 			icon: lookupData?.iconAssetName
 		}
-		return reward;
+		return reward
 	},
 
 	// returns { unit_type: amount } 
 	// unit_type can be: random, rogue, light_melee, heavy_melee, short_ranged, long_ranged, fast, next#light_melee -> next# for next era units
-	getUnitReward(product) {
+	setUnitReward(product, isEmissary = false) {
 		let amount, type
-		if (product.type == 'genericReward') {
+		if (isEmissary) {
+			amount = product.amount
+			if (product.id.search("#") != -1) { // era_unit#light_melee#NextEra#1
+				let prefix = ""
+				if (product.id.search("NextEra") != -1) 
+					prefix = "next#"
+				
+				type = prefix + product.id.split("#")[1]
+			}
+			else 
+				type = "random"
+		}
+		else if (product.type == 'genericReward') {
 			let amountFromString = product.reward.id.match(/\d+$/)
 			amount = parseInt(amountFromString ? amountFromString[0] : 1) 	// if its only one unit, there is no number in the string
 			type = product.reward.id.replace("unit_","").replace(/\d+/,"") 	// grabs e.g. "heavy_melee" from unit_heavy_melee3 or rogue from unit_rogue3 
 			if (type.search("random") != -1) type = "random"
 			if (product.reward.id.search("#") != -1) { // era_unit#light_melee#NextEra#1
 				let prefix = ""
-				if (product.reward.id.search("NextEra") != -1) {
+				if (product.reward.id.search("NextEra") != -1) 
 					prefix = "next#"
-				}
+				
 				type = prefix + product.reward.id.split("#")[1]
 			}
 		}
@@ -1389,35 +1881,44 @@ let CityMap = {
 		return { [type]: amount }
 	},
 
-	getRewardNameFromLookupData(lookupData, ceData) {
+	setRewardNameFromLookupData(lookupData, metaData) {
 		let name = ""
 		if (lookupData.subType == "fragment") 
 			name = lookupData.assembledReward.name
 		else if (lookupData.__class__ == "GenericRewardSet") // this is a dirty workaround for trees of patience, because i lack patience
 			name = lookupData.rewards[0].name 
-		else if (lookupData.subType == "speedup_item" || lookupData.subType == "reward_item" || lookupData.type == "chest" || lookupData.subType == "boost_item" || lookupData.type == "forgepoint_package" || lookupData.type == "resource" || lookupData.type == "blueprint") 
+		else if (lookupData.subType == "speedup_item" || lookupData.subType == "reward_item" || lookupData.subType == "boost_item" || lookupData.type == "forgepoint_package" || lookupData.type == "resource") 
 			name = lookupData.name
-		else if (lookupData.type == "unit") {
+		else if (lookupData.type == "unit") { // -> (next_)light_melee
 			if (lookupData.id.search("#") != -1) { // era_unit#light_melee#NextEra#1
 				let prefix = ""
-				if (lookupData.id.search("NextEra") != -1) {
+				if (lookupData.id.search("NextEra") != -1) 
 					prefix = "next_"
-				}
+				
 				name = prefix + lookupData.id.split("#")[1]
 			}
-			else {
+			else 
 				name = lookupData.id.replace("unit_","").replace(/\d+/,"")
-			}
 		}
-		else if (lookupData.subType == "self_aid_kit")
+		else if (lookupData.type == "blueprint")  // id: "blueprint#random#3"
+			name = lookupData.name.replace(/^\+?\d+\s*/,"")
+		else if (lookupData.type == "chest" && lookupData.id.includes("blueprint")) { // remove +20 from the name becuase the amount is in the amount
+			name = lookupData.name.replace(/^\+?\d+\s*/,"")
+		}
+		else if (lookupData.type == "chest") { // chest can be: BP - see above, units, goods (next age)
 			name = lookupData.name
-		else {
-			console.log("CityMap.getRewardNameFromLookupData(): undefined name from type", ceData.name, lookupData, lookupData.type, lookupData.subType)
+		}
+		else if (lookupData.type == "consumable")
+			name = lookupData.name
+		else if (lookupData.type == "good"){
+			name = lookupData.name.replace(/^\+?\d+\s]*/,"")
+		} else {
+			console.log("CityMap.setRewardNameFromLookupData(): undefined name from type", metaData.name, lookupData, lookupData.type, lookupData.subType)
 		}
 		return name
 	},
 
-	getOldProductionResourceFromAbility(ability, era) {
+	setOldProductionResourceFromAbility(ability, era) {
 		let resource = {
 			type: 'resources',
 			needsMotivation: (ability.__class__ == "AddResourcesAbility" || ability.__class__ == "AddResourcesWhenMotivatedAbility"),
@@ -1439,7 +1940,7 @@ let CityMap = {
 				if (reward.reward.type == "chest") {
 					if (reward.reward.possible_rewards[0].reward.amount) 
 						amount = reward.reward.possible_rewards[0].reward.amount
-					type = "random_good_of_age"
+					type = "random_good_of_age" // duplicates, e.g. sunflower oil press
 				}
 				else if (reward.reward.type === "good") {
 					amount = reward.reward.totalAmount
@@ -1452,7 +1953,7 @@ let CityMap = {
 
 				let newReward = {
 					id: reward.reward.id,
-					name: reward.reward.name,
+					name: (type.includes("good") ? reward.reward.name.replace(/^\d+\s*/,"") : reward.reward.name),
 					type: type,
 					amount: amount,
 					dropChance: reward.drop_chance / 100, // the generic buildings data is 0.05 while this is 5
@@ -1461,7 +1962,6 @@ let CityMap = {
 			})
 			resource.resources = rewards
 		}
-		// wunschbrunnen
 
 		let multiAgeProduct = {}
 		let allAgeProduct = {}
@@ -1483,149 +1983,164 @@ let CityMap = {
 		return resource
 	},
 
-	// returns false if building does not produce anything
-	getAllProductions(ceData, data, era) {
-		let productions = []
-		if (data.type != "generic_building" && data.type != "greatbuilding") {
-			if (ceData.is_special) { // special building
-				if (ceData.available_products !== undefined) { 
-					// to do: to think about: should all goods production options be gathered here?
-					if (Array.isArray(ceData.available_products))
-						ceData.available_products.forEach(product => {
-							let resource = {
-								type: "unknown", 
-								needsMotivation: false,
-								resources: {}
-							}
-						});
-				}
-				if (ceData.entity_levels[Technologies.InnoEras[era]] !== undefined) { // base money is here
-					let money = ceData.entity_levels[Technologies.InnoEras[era]].produced_money
-					if (money)
-						productions.push({type: 'resources', needsMotivation: false, resources: { money: money}, doubleWhenMotivated: true})
-				}
-				ceData.abilities.forEach(ability => {
-					let resource = this.getOldProductionResourceFromAbility(ability, era)
-					
-					if (Object.keys(resource.resources).length > 0) 
-						productions.push(resource)
-				})
-			}
-			if (productions.length > 0) 
-				return productions
-			return false
+	getBuildingById(id) {
+		return Object.values(MainParser.NewCityMapData).find(x => x.id === id)
+	},
+
+	getBuildingByCoords(x,y) {
+		return Object.values(MainParser.NewCityMapData).find(b => b.coords.x === x && b.coords.y === y)
+	},
+
+	getBuildingGoodsByEra(current, building) {
+		let productions = (current ? building.state.production : building.production)
+		let goods = {
+			hasRandomProduction: false,
+			eras: {}
 		}
-		else if (data.type === "generic_building") {
-			let production = ceData.components[era]?.production || ceData.components.AllAge.production // currently it is either allage or era, never both
-			if (production) {
-				production.options[0].products.forEach(product => {
-					let resource = {
-						type: product.type,
-						needsMotivation: (product.onlyWhenMotivated == true),
-						resources: {}
-					};
-					if (product.type == "resources") {
-						resource.resources = product.playerResources.resources;
-					}
-					else if (product.type == "guildResources") {
-						resource.resources = product.guildResources.resources;
-					}
-					else if (product.type == "genericReward") {
-						resource.resources = this.getGenericReward(product, ceData, data, era) 
-						if (resource.resources.type === undefined)  // genericReward can also return a unit reward, change type
-							resource.type = "unit"
-					}
-					else if (product.type == "unit") {
-						resource.resources = this.getUnitReward(product)
-						//console.log(ceData.name, resource.resources)
-					}
-					else if (product.type == "random") {
-						let rewards = [];
-						if (product.products.length > 1) {
-							product.products.forEach(reward => {
-								if (reward.product.type === "genericReward") { // currently: everything but forge points
-									let lookupData = ceData.components[era]?.lookup.rewards[reward.product.reward.id] || ceData.components.AllAge.lookup.rewards[reward.product.reward.id]
-									let name = this.getRewardNameFromLookupData(lookupData, ceData)
-									let newReward = {
-										id: reward.product.reward.id,
-										name: name,
-										type: lookupData.type,
-										subType: lookupData.subType,
-										amount: lookupData.amount,
-										dropChance: reward.dropChance,
-									}
-									rewards.push(newReward)
-								}
-								else if (reward.product.type === "resources") { // currently: playerResources.resources.strategy_points
-									let newReward = {
-										id: null,
-										type: "resources",
-										name: i18n('Boxes.OwnpartCalculator.OptionsFP'), // ugly
-										subType: Object.keys(reward.product.playerResources.resources)[0], // hacky
-										amount: reward.product.playerResources.resources.strategy_points, // hacky
-										dropChance: reward.dropChance,
-									}
-									rewards.push(newReward)
-								}
-							});
-							resource.resources = rewards
+		if (productions) {
+			productions.forEach(production => {
+				if (production.type == 'resources') {
+					Object.keys(production.resources).forEach(name => {
+						let good = GoodsList.find(x => x.id == name)
+						let goodEra = Technologies.InnoEras[building.eraName]
+						let isGood = false
+						if (good != undefined) {
+							goodEra = Technologies.InnoEras[good.era]
+							name = good.id
+							isGood = true
+						}
+						else if (name.includes('previous')) {
+							goodEra = Technologies.getPreviousEraIdByCurrentEraName(building.eraName)
+							isGood = true
+						}
+						else if (name.includes('next')) {
+							goodEra = Technologies.getNextEraIdByCurrentEraName(building.eraName)
+							isGood = true
+						}
+						else if (name.includes('current') || name == 'random_good_of_age' || name == 'all_goods_of_age') {
+							isGood = true
+						}
+
+						if (isGood) {
+							if (goods.eras[goodEra] == undefined) 
+								goods.eras[goodEra] = parseInt(production.resources[name])
+							else
+								goods.eras[goodEra] += parseInt(production.resources[name])
+						}
+					})
+				}
+				if (production.type == 'random') { // e.g. gentania windmill, eerie terror coaster
+					let goodEra = Technologies.InnoEras[building.eraName]
+					for (const resource of production.resources) {
+						if (resource.type?.includes("good") && !resource.type?.includes("guild")) {
+							goods.hasRandomProduction = true // this is not a perfect solution, because it is general & not per good
+
+							if (resource.type.includes('previous') || resource.subType?.toLowerCase().includes('previous') || resource.id?.toLowerCase().includes('previous'))
+								goodEra = Technologies.getPreviousEraIdByCurrentEraName(building.eraName)
+							else if (resource.type.includes('next') || resource.subType?.toLowerCase().includes('next') || resource.id?.toLowerCase().includes('next'))
+								goodEra = Technologies.getNextEraIdByCurrentEraName(building.eraName)
+
+							if (goods.eras[goodEra] == undefined)
+								goods.eras[goodEra] = parseFloat(resource.amount * resource.dropChance)
+							else
+								goods.eras[goodEra] += parseFloat(resource.amount * resource.dropChance)
 						}
 					}
-					else {
-						console.log("CityMap.getAllProductions() is missing an option for ",ceData.name)
-					}
-					productions.push(resource)
-				});
-			}
-			if (productions.length > 0)
-				return productions
-			return false
+				}
+				if (production.type === 'genericReward' && /good/.test(production.resources?.icon)) { // e.g. eco hub
+					let goodEra = Technologies.InnoEras[building.eraName]
+					if (production.resources.id.includes('previous'))
+						goodEra = Technologies.getPreviousEraIdByCurrentEraName(building.eraName)
+					else if (production.resources.icon == "next_age_goods" || production.resources.id.includes('next'))
+						goodEra = Technologies.getNextEraIdByCurrentEraName(building.eraName)
+
+					if (goods.eras[goodEra] == undefined)
+						goods.eras[goodEra] = parseInt(production.resources.amount)
+					else 
+						goods.eras[goodEra] += parseInt(production.resources.amount)
+				}
+			})
 		}
-		// to do: GB handling
+		if (Object.keys(goods).length > 0) {
+			return goods
+		}
+	},
+
+	setType(metaData) {
+		return metaData.type
+	},
+
+	createNewCityMapEntities(data) {
+		if (data === undefined && !CityMap.IsExtern) {
+			data = Object.values(MainParser.CityMapData)
+		}
+		else if (CityMap.IsExtern) {
+			data = Object.values(MainParser.OtherPlayerCityMapData)
+		}
+
+		for (building of data) {
+			if (CityMap.IsExtern === true && building.eraName !== undefined) continue
+			let metaData = Object.values(MainParser.CityEntities).find(x => x.id == building.cityentity_id)
+			let era = Technologies.getEraName(building.cityentity_id, building.level)
+			let newCityEntity = CityMap.createNewCityMapEntity(metaData, era, building)
+
+			if (CityMap.IsExtern === true) 
+				MainParser.OtherPlayerCityMapData[building.id] = newCityEntity
+			else
+				MainParser.NewCityMapData[building.id] = newCityEntity
+		}
+
+		return (CityMap.IsExtern === true ? MainParser.OtherPlayerCityMapData : MainParser.NewCityMapData) 
+	},
+
+	// todo: fix it, use it
+	setEra(data) {
+		let era = (data.type != "greatbuilding" ? data.level : 1)
+		return (data.cityentity_id.includes("CastleSystem") ? CurrentEra : Technologies.InnoEraNames[era])
 	},
 	
-	createNewCityMapEntity(ceData, data, era) {
-		let x = data.x || 0
-		let y = data.y || 0
+	createNewCityMapEntity(metaData, era=CurrentEra, data={}) {
+		if (typeof(metaData)=="string") {
+			metaData=MainParser.CityEntities[metaData];
+		};
 		let entity = {
-			player_id: data.player_id,
-			id: data.id,
+			player_id: data.player_id||0,
+			id: data.id||0,
 
-			entityId: data.cityentity_id,
-			name: ceData.name,
-			type: data.type,
-			eraName: era,
-			isSpecial: this.isSpecialBuilding(ceData),
-			isLimited: this.isLimitedBuilding(data, ceData),
-			chainBuilding: this.getChainBuilding(ceData),
-			setBuilding: this.getSetBuilding(ceData),
-			size: this.getSize(ceData),
+			entityId: data.cityentity_id||metaData.id,
+			name: metaData.name,
+			type: this.setType(metaData),
+			eraName: ((data.cityentity_id||metaData.id).includes("CastleSystem") ? CurrentEra : era),
+			isSpecial: this.isSpecialBuilding(metaData),
+			isLimited: this.isLimitedBuilding(metaData),
+			chainBuilding: this.setChainBuilding(metaData),
+			setBuilding: this.setSetBuilding(metaData),
+			size: this.setSize(metaData),
 
-			population: this.getPopulation(ceData, data, era), 
-			happiness: this.getHappiness(ceData, data, era),
-			needsStreet: this.needsStreet(ceData, data),
+			population: this.setPopulation(metaData, data, era), 
+			happiness: this.setHappiness(metaData, data, era),
+			needsStreet: this.needsStreet(metaData),
 			
-			boosts: this.getBuildingBoosts(ceData, data, era),
-			production: this.getAllProductions(ceData, data, era),
+			boosts: this.setBuildingBoosts(metaData, data, era),
+			production: this.setAllProductions(metaData, data, era),
 
-			coords: { x: x, y: y },
-			buildTime: this.getBuildTime(data),
+			coords: { x: data.x || 0, y: data.y || 0 },
 			
 			state: {
-				name: this.getState(data),
-				times: this.getStateTimes(data),
-				isPolivated: this.getPolivation(data, ceData),
-				connected: this.getConnection(ceData, data), // fyi: decorations are always connected
-				production: this.getCurrentProductions(data, ceData, era),
+				name: this.setState(data),
+				times: this.setStateTimes(data),
+				isPolivated: this.setPolivation(data, metaData),
+				connected: this.setConnection(metaData, data), // fyi: decorations are always connected
+				production: this.setCurrentProductions(data, metaData, era),
 				isExpired: this.isExpiredBuilding(data),
-			},
-
-			// todo GBs probably need more stuff
-			level: (data.type == "greatbuilding" ? data.level : undefined), // level also includes eraId in raw data, we do not like that
-			max_level: (data.type == "greatbuilding" ? data.max_level : undefined)
+				buildTime: this.setBuildTime(data),
+				level: (data.type == "greatbuilding" ? data.level : null), // level also includes eraId in raw data, we do not like that
+				max_level: (data.type == "greatbuilding" ? data.max_level : null)
+			}
 		}
-		//if (entity.type == 'random_production')
-		//	console.log('entity ',entity.name, entity, ceData, data)
+		
+		//if (entity.entityId != "street")
+		//	console.log('entity ', entity.name, entity, metaData, data)
 		return entity
 	},
 };

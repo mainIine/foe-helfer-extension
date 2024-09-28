@@ -66,14 +66,13 @@
     background-color: var(--black-50);
     }
 
-#MarketOffers #MarketOffersBody .goods-sprite-50.sm {
+#MarketOffers #MarketOffersBody .sprite-35 {
     width: 25px;
     height: 25px;
     text-align: center;
 }
 
-#MarketOffers #MarketOffersBody .goods-sprite-50.sm::before {
-    zoom: 0.7;
+#MarketOffers #MarketOffersBody .sprite-35::before {
     overflow: hidden;
     position: static;
     display: inline-block;
@@ -128,14 +127,13 @@
     background-color: var(--black-50);
 }
 
-#MarketOffersEvents #MarketOffersEventsBody .goods-sprite-50.sm {
+#MarketOffersEvents #MarketOffersEventsBody .sprite-35 {
     width: 25px;
     height: 25px;
     text-align: center;
 }
 
-#MarketOffersEvents #MarketOffersEventsBody .goods-sprite-50.sm::before {
-    zoom: 0.7;
+#MarketOffersEvents #MarketOffersEventsBody .sprite-35::before {
     overflow: hidden;
     position: static;
     display: inline-block;

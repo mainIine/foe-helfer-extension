@@ -82,7 +82,7 @@
 	padding-right: 10px;
 }
 
-.hidden {
+#stats .hidden {
 	visibility: hidden;
 }
 
@@ -127,7 +127,7 @@
 	background-color: rgba(0,0,0, 0.5);
 }
 
-#stats .goods-sprite-50 {
+#stats .sprite-50 {
 	width: 30px;
 }
 

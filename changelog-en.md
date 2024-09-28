@@ -1,5 +1,52 @@
 ## Changelog - Extension
 
+##### 3.8.0.0
+
+**New**
+- Production Overview Update:
+	- Bugfixes, added missing buildings
+	- Removed some information to improve readability
+	- Overhauled goods view
+	- Added all fragments and items incl. sum accross all building
+	- Added filter
+	- Categorized army boosts
+	- Added sum table for unit production according to unit types
+
+- Buildings Efficiency Rating Update:
+	- New Categories
+	- New overview with more details
+	- New: Search and filter for easier comparison
+	- New: Show values per tile
+	- New: Add any building to the list for comparison
+
+- Boost-Inventory
+	- Lists all Buildings in your Inventory that provide boosts (e.g. for battle)
+	- Fragmented buildings are not considered!!
+
+- Active Members of other Guilds
+	- When within 5 minutes, the same guild (HQ in GBG) is inspected twice and at least one member of that guild was active, a list of the active guild members is displayed
+
+**Update**
+- Battle-Assist:
+	- There will be no warning message anymore, if higher age units die in battle as they can now be revived in the hospital
+
+- Kits:
+	- Added Efficiency Score of the respective buildings
+
+- Technologies:
+	- Added Space Age Space Hub assets
+
+- Settings:
+	- Reorganized the menu
+	- Bigger and moveable window
+
+- QI City Map:
+	- Buildings are now grouped by type
+	- Coin, supply and quantum action boosts from your main city are now included - thx Juber!
+
+**BugFix**
+- Boxes:
+	- can not be draged anymore when the mouse is on of the buttons of the box
 
 ##### 3.7.0.0
 

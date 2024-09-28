@@ -1,171 +1,161 @@
 [
 	{
-		"name": "GlobalSend",
-		"status": true,
-		"group": "Sending",
-		"sort": 0
-	},
-	{
-		"name": "ApiToken",
-		"callback": "ApiTokenInput",
-		"group": "Sending",
-		"sort": 1
-	},
-	{
 		"name": "AutomaticNegotiation",
 		"status": true,
-		"group": "Boxes",
+		"group": "Auto",
 		"sort": 0
-	},
-	{
-		"name": "ShowInvestments",
-		"status": true,
-		"group": "Boxes",
-		"sort": 2
-	},
-	{
-		"name": "ShowGuildTreasuryLogExport",
-		"status": true,
-		"group": "Boxes",
-		"sort": 3
-	},
-	{
-		"name": "ShowMarketFilter",
-		"status": false,
-		"group": "Boxes",
-		"sort": 4
-	},
-	{
-		"name": "ShowOwnPartOnAllGBs",
-		"status": true,
-		"group": "Boxes",
-		"sort": 5
 	},
 	{
 		"name": "ShowEventChest",
 		"status": true,
-		"group": "Boxes",
-		"sort": 6
-	},
-	{
-		"name": "ShowBuildingsExpired",
-		"status": true,
-		"group": "Boxes",
-		"sort": 6
+		"group": "Auto",
+		"sort": 1
 	},
 	{
 		"name": "ShowRougeUnitWarning",
 		"status": true,
-		"group": "Boxes",
-		"sort": 7
+		"group": "Auto",
+		"sort": 2
 	},
 	{
-		"name": "ShowArmyAdvice",
-		"status": false,
-		"group": "Boxes",
+		"name": "ShowBlueGalaxyHelper",
+		"status": true,
+		"group": "Auto",
+		"sort": 3
+	},
+	{
+		"name": "ShowInvestments",
+		"status": true,
+		"group": "Auto",
+		"sort": 5
+	},
+	{
+		"name": "ShowGuildTreasuryLogExport",
+		"status": true,
+		"group": "Auto",
 		"sort": 7
 	},
 	{
 		"name": "ShowGBGBuildings",
 		"status": false,
-		"group": "Boxes",
-		"sort": 7
-	},
-	{
-		"name": "ShowBlueGalaxyHelper",
-		"status": true,
-		"group": "Boxes",
-		"sort": 8
-	},
-	{
-		"name": "ShowPlayersMotivation",
-		"status": true,
-		"group": "Boxes",
+		"group": "Auto",
 		"sort": 9
 	},
 	{
-		"name": "ShowPotions",
+		"name": "ShowOtherGuildActivity",
 		"status": true,
-		"group": "Boxes",
+		"group": "Auto",
 		"sort": 9
 	},
 	{
 		"name": "AutoOpenInfoBox",
 		"status": false,
-		"group": "Boxes",
+		"group": "Auto",
 		"sort": 10
 	},
 	{
 		"name": "AutoOpenCloseBox",
 		"status": false,
-		"group": "Boxes",
+		"group": "Auto",
 		"sort": 11
+	},
+	{
+		"name": "ShowScoutingTimes",
+		"status": true,
+		"group": "Auto",
+		"sort": 12
+	},
+	{
+		"name": "ShowMapTradeWarning",
+		"status": true,
+		"group": "Auto",
+		"sort": 13
+	},
+	{
+		"name": "ShowAztecHelper",
+		"status": true,
+		"group": "Auto",
+		"sort": 14
+	},
+	{
+		"name": "ShowPvPArena",
+		"status": true,
+		"group": "Auto",
+		"sort": 15
+	},
+	{
+		"name": "ShowArmyAdvice",
+		"status": false,
+		"group": "Auto",
+		"button":"BattleAssist.ShowArmyAdviceConfig()",
+		"sort": 17
+	},
+	{
+		"name": "ShowMarketFilter",
+		"status": false,
+		"group": "Auto",
+		"sort": 19
+	},
+	{
+		"name": "ResetBoxPositions",
+		"button": "Settings.ResetBoxCoords()",
+		"group": "Boxes",
+		"sort": 0
+	},
+	{
+		"name": "ShowOwnPartOnAllGBs",
+		"status": true,
+		"group": "Boxes",
+		"sort": 1
+	},
+	{
+		"name": "ShowPlayersMotivation",
+		"status": true,
+		"group": "Boxes",
+		"sort": 3
+	},
+	{
+		"name": "ShowPotions",
+		"status": true,
+		"group": "Boxes",
+		"sort": 5
 	},
 	{
 		"name": "doubleFPtimeout",
 		"callback": "doubleFPtimeout",
 		"group": "Boxes",
-		"sort": 13
-	},
-	{
-		"name": "ShowMapTradeWarning",
-		"status": true,
-		"group": "Boxes",
-		"sort": 13
+		"sort": 7
 	},
 	{
 		"name": "Auctions",
 		"status": false,
 		"group": "Boxes",
-		"sort": 13
-	},
-	{
-		"name": "ShowScoutingTimes",
-		"status": true,
-		"group": "Boxes",
-		"sort": 14
+		"button":"Auction.BuildBody()",
+		"sort": 9
 	},
 	{
 		"name": "Show2kQuestMark",
 		"status": false,
 		"group": "Boxes",
-		"sort": 15
+		"sort": 11
 	},
 	{
 		"name": "ShowLinks",
 		"status": true,
 		"group": "Boxes",
-		"sort": 16
+		"sort": 13
 	},
 	{
 		"name": "HideHelperDuringBattle",
 		"status": false,
 		"group": "Boxes",
-		"sort": 17
+		"sort": 15
 	},
 	{
-		"name": "ShowAztecHelper",
-		"status": true,
-		"group": "Boxes",
-		"sort": 18
-	},
-	{
-		"name": "ShowPvPArena",
-		"status": true,
+		"name": "ExportSettings",
+		"callback": "ExportView",
 		"group": "Boxes",
 		"sort": 19
-	},
-	{
-		"name": "RivalSound",
-		"status": true,
-		"group": "Boxes",
-		"sort": 20
-	},
-	{
-		"name": "ChangeLanguage",
-		"callback": "LanguageDropdown",
-		"group": "Extension",
-		"sort": 0
 	},
 	{
 		"name": "SelectedMenu",
@@ -186,63 +176,82 @@
 		"sort": 4
 	},
 	{
-		"name": "ResetBoxPositions",
-		"button": "ResetBoxCoords",
-		"group": "Extension",
-		"sort": 5
-	},
-	{
-		"name": "ExportSettings",
-		"callback": "ExportView",
-		"group": "Extension",
-		"sort": 6
-	},
-	{
 		"name": "EnableSound",
 		"status": true,
 		"group": "Extension",
 		"sort": 7
 	},
 	{
-		"name": "ShowNotifications",
+		"name": "RivalSound",
 		"status": true,
 		"group": "Extension",
 		"sort": 8
+	},
+	{
+		"name": "ShowBuildingsExpired",
+		"status": true,
+		"group": "Extension",
+		"button":"MainParser.Inactives.showSettings()",
+		"sort": 9
+	},
+	{
+		"name": "ShowNotifications",
+		"status": true,
+		"group": "Extension",
+		"sort": 10
 	},
 	{
 		"name": "NotificationsPosition",
 		"callback": "NotificationView",
 		"group": "Extension",
 		"status": "bottom-right",
-		"sort": 9
+		"sort": 11
 	},
 	{
 		"name": "NotificationsStack",
 		"callback": "NotificationStack",
 		"group": "Extension",
-		"sort": 10
+		"sort": 13
 	},
 	{
-		"name": "LoadBeta",
-		"group": "Extension",
-		"sort": 11
-	},
-	{
-		"name": "About",
-		"callback": "About",
+		"name": "ChangeLanguage",
+		"callback": "LanguageDropdown",
 		"group": "About",
 		"sort": 0
 	},
 	{
-		"name": "Version",
-		"callback": "VersionInfo",
+		"name": "GlobalSend",
+		"status": true,
 		"group": "About",
-		"sort": 1
+		"sort": 5
+	},
+	{
+		"name": "ApiToken",
+		"callback": "ApiTokenInput",
+		"group": "About",
+		"sort": 7
 	},
 	{
 		"name": "Help",
 		"callback": "Help",
 		"group": "About",
-		"sort": 2
+		"sort": 9
+	},
+	{
+		"name": "About",
+		"callback": "About",
+		"group": "About",
+		"sort": 10
+	},
+	{
+		"name": "Version",
+		"callback": "VersionInfo",
+		"group": "About",
+		"sort": 13
+	},
+	{
+		"name": "LoadBeta",
+		"group": "About",
+		"sort": 19
 	}
 ]

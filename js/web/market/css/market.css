@@ -59,14 +59,13 @@
 	background-color: var(--black-50);
 }
 
-#Market #MarketBody .goods-sprite-50.sm {
+#Market #MarketBody .sprite-35 {
 	width: 25px;
 	height: 25px;
 	text-align: center;
 }
 
-#Market #MarketBody .goods-sprite-50.sm::before { 
-	zoom: 0.7; 
+#Market #MarketBody .sprite-35::before { 
 	overflow: hidden;
 	/*position: static;*/
 	display: inline-block;

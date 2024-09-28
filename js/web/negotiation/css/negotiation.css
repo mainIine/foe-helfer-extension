@@ -53,11 +53,7 @@
 }
 
 #negotiationBox #negotiationBoxBody #good-sort .good .goods-sprite::before {
-	bottom: auto;
-}
-
-#negotiationBox #negotiationBoxBody #good-sort .good .goods-sprite::before {
-
+	bottom: 1.5em;
 }
 
 #negotiationBox #negotiationBoxBody .goods-dragable .good:hover {
