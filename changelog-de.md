@@ -1,8 +1,54 @@
 ## Changelog - Extension
 
+##### 3.8.0.0
+
+**Neu**
+- Produktionsübersicht Update:
+	- Fehlerkorrekturen und fehlende Gebäude hinzugefügt
+	- Güter-Übersicht überarbeitet
+	- Übersicht aller Fragmente und Items hinzugefügt inkl. Summe über alle Gebäude
+	- Filter hinzugefügt
+	- Kampf-Boosts kategorisiert
+	- Einheitenproduktion nach Typ und Zeitalter summiert
+
+- Effizienzbewertung Update:
+	- Neue Kategorien hinzugefügt
+	- Neue Übersicht inklusive Anzeige der produzierten Fragmente/Items
+	- Neu: Möglichkeit zu suchen und zu filtern
+	- Neu: Anzeige der Werte pro Feld hinzugefügt
+	- Neu: Gebäude, die man nicht hat, zum Vergleichen hinzufügen
+
+- Boost-Inventar
+	- listet alle Gebäude aus dem Inventar, die Boosts (zum Beispiel für den Kampf) bereitstellen
+
+- Aktive Mitglieder anderer Gilden
+	- wenn innerhalb von 5 Minuten, zweimal nacheinander die Details der selben fremden Gilde aufgerufen werden (Hauptquartier in den GG) und zumindest ein Mitglied dieser Gilde aktiv war, wird ein Fenster geöffnet, in dem die aktiven Mitglieder gelistet werden
+
+**Update**
+- Kampf-Assistent:
+	- es wird keine Warnung mehr ausgegeben, wenn eine Einheit eines höheren Zeitalters gefallen ist, da diese Einheiten jetzt im Krankenhaus wiederbelebt werden können
+
+- Kits:
+	- Effizienz-Werte der Gebäude hinzugefügt
+
+- Technologien:
+	- Raumfahrt: Weltraumbasis Daten und Güter hinzugefügt
+
+- Einstellungen:
+	- Kategorien umstrukturiert
+	- Fenster vergrößert und verschiebbar gemacht
+
+- Stadtübersicht QI:
+	- Gebäude werden nun nach Typ kategorisiert
+	- Münz- Vorrats- und Quantenaktionsboosts aus der Hauptstadt werden mitberechnet - danke Juber!
+
+**BugFix**
+- Fenster:
+	- können nun nicht mehr verschoben werden, wenn die Maus auf einen der Buttons des Fensters zeigt
+
 ##### 3.7.0.0
 
-**New**
+**Neu**
 - Tränke Übersicht hinzugefügt in der oberen rechten Ecke um
 	- die Laufzeit des Tranks mit kürzesten verbliebenen Laufzeit anzuzeigen (Tränke die für das aktuell gewählte Feature nicht relevant sind, werden ignoriert)
 	- alle aktuell aktiven Tränke in einem Mouse-Over Pop-Up anzuzeigen 

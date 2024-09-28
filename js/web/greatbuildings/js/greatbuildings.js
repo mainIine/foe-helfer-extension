@@ -665,6 +665,7 @@ let GreatBuildings =
                 GreatBuildings.GalaxyBuildings.push({ ID: ID, FP: GreatBuildings.BlueGalaxyStaticProductions[EntityID]['FP'], Goods: GreatBuildings.BlueGalaxyStaticProductions[EntityID]['Goods'] });
             }
             else {
+                // todo: check what this does
                 let Production = Productions.readType(CityMap[i]);
                 let FP = 0,
                     GoodsSum = 0;
@@ -672,7 +673,7 @@ let GreatBuildings =
                 if (Production['motivatedproducts']) {
                     FP = Production['motivatedproducts']['strategy_points'];
                     if (!FP) FP = 0;
-                                        
+
                     for (j = 0; j < GoodsList.length; j++) {
                         let GoodID = GoodsList[j]['id'];
                         if (Production['motivatedproducts'][GoodID]) {

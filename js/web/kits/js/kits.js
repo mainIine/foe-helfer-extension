@@ -439,24 +439,42 @@ let Kits = {
 			}
 			//let upgradeOrder=["upgrade","silver","golden","platinum","ascended"];
 			let upgrades = "";
+			let eff=""
 			if (kits[set].buildings?.[0]?.first && MainParser.CityEntities[kits[set].buildings[0].first]) {
-				let upgradeCount = Kits.upgradeKits?.[kits[set].buildings[0].first]?.upgradeCount;
+				let f=Kits.upgradeKits?.[kits[set].buildings[0].first]
+				let upgradeCount = f?.upgradeCount;
 				if (upgradeCount) {
 					upgrades = '<span class="upgrades" data-original-title="'+i18n('Boxes.Kits.Upgrades')+'" data-toggle="tooltip">'
 					let first = true
 					//for (let i of upgradeOrder) {
 					for (let i in upgradeCount) {
 						if (!upgradeCount[i]) continue
-						upgrades += (first ? '<span class="base" title="'+i18n('Boxes.Kits.Base')+'">1</span>' : "") + `<span class="${i}">${upgradeCount[i]}</span>`
+						upgrades += (first ? '<span class="base">1</span>' : "") + `<span class="${i}">${upgradeCount[i]}</span>` //title="'+i18n('Boxes.Kits.Base')+'"
 						first = false;
 					}
 					upgrades+= '</span>'
+				}
+				if (f?.buildingList) {
+					let rating=Productions.rateBuildings([kits[set].buildings[0].first,...f?.buildingList]?.slice(-3),true)
+					let title=""
+					if (!rating) break
+					for (r of rating) {
+						if (title=="") {
+							title = `${r.building.name}: ${Math.round(100 * r.score)}`
+						}else {
+							title =`${r.building.name}: ${Math.round(100 * r.score)}<br>`+title
+						}
+					}
+					let top=rating.pop()
+					eff = `<span class="kitsEff" data-original-title="${title}">${i18n('Boxes.Kits.Efficiency')}: `
+					eff += Math.round(100 * top?.score||0);
+					eff+= '</span>'
 				}
 			}
 			
 			if (!GroupName) {
 				t += '<div class="item-row'+ (!show ? " all-missing" : "") + favClass + '">'
-				t += `<h2 class="head">` + favourite + ChainSetIco +' '+ KitText + upgrades + '</h2>'
+				t += `<h2 class="head">` + favourite + ChainSetIco +' '+ KitText + (ChainSetIco!="" ? "": eff) + upgrades + '</h2>'
 			}
 			if(buildings.length) {
 				buildings.forEach((building) => {
@@ -497,7 +515,7 @@ let Kits = {
 		t += '</div>';
 
 		$('#kitsBodyInner').html(t);
-		$('.upgrades').tooltip({
+		$('#kitsBodyInner [data-original-title]').tooltip({
 			html: true,
 			container: '#kits'
 		});
@@ -540,7 +558,7 @@ let Kits = {
 
 		return 	`<div class="item${((el.missing) ? ' is-missing' : '')}">
 					<div class="image"><img loading="lazy" src="${url}" alt="${title}" /></div>
-					<strong class="in-stock" title="${i18n('Boxes.Kits.InStock')}">${(item.inStock ? item.inStock : '-')}</strong>
+					<strong class="in-stock" data-original-title="${i18n('Boxes.Kits.InStock')}">${(item.inStock ? item.inStock : '-')}</strong>
 					<span>${title}</span>
 					<span class="fragments">${(el.fragments ? `<img class="ItemFragment" src="${Kits.fragmentURL}"> ` + el.fragments + '/' + el.reqFragments : '')}</span>
 				</div>`;

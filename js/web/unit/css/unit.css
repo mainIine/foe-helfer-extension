@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2024 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -127,69 +127,8 @@
 	content: '✔️';
 }
 
-/*fallback for all tools that do not specify their own scale*/
-:root {
-	--unit_scale: 3/5;
-}
 
-.unit_skill::after {
-	content: "";
-	background-image: url('../images/unit_skill.png');
-	background-repeat: no-repeat;
-	background-size: calc(168px*var(--unit_scale)) calc(168px*var(--unit_scale));
-	display: block;
-	width: calc(24px*var(--unit_scale));
-	height: calc(24px*var(--unit_scale));
-	position: relative;
+#UnitOverview #UnitOverviewBody .unit_skill::after {
 	top: calc(28px*var(--unit_scale));
 	left: calc(28px*var(--unit_scale));
 }
-
-.unit_skill.rogue::after {background-position: calc(-144px*var(--unit_scale)) calc(-48px*var(--unit_scale))}
-.unit_skill.attack::after {background-position: 0 0}
-.unit_skill.blast::after {background-position: calc(-24px*var(--unit_scale)) 0}
-.unit_skill.bushes::after {background-position: calc(-48px*var(--unit_scale)) 0}
-.unit_skill.call_of_duty::after {background-position: calc(-72px*var(--unit_scale)) 0}
-.unit_skill.chivalry::after {background-position: calc(-96px*var(--unit_scale)) 0}
-.unit_skill.close_quarters::after {background-position: calc(-120px*var(--unit_scale)) 0}
-.unit_skill.contact::after {background-position: 0 calc(-24px*var(--unit_scale))}
-.unit_skill.crater::after {background-position: calc(-24px*var(--unit_scale)) calc(-24px*var(--unit_scale))}
-.unit_skill.defense::after {background-position: calc(-48px*var(--unit_scale)) calc(-24px*var(--unit_scale))}
-.unit_skill.double_damage::after {background-position: calc(-72px*var(--unit_scale)) calc(-24px*var(--unit_scale))}
-.unit_skill.dragon_breath::after {background-position: calc(-96px*var(--unit_scale)) calc(-24px*var(--unit_scale))}
-.unit_skill.era::after {background-position: calc(-120px*var(--unit_scale)) calc(-24px*var(--unit_scale))}
-.unit_skill.fast::after {background-position: 0 calc(-48px*var(--unit_scale))}
-.unit_skill.flying::after {background-position: calc(-24px*var(--unit_scale)) calc(-48px*var(--unit_scale))}
-.unit_skill.force_field::after {background-position: calc(-48px*var(--unit_scale)) calc(-48px*var(--unit_scale))}
-.unit_skill.forest::after {background-position: calc(-72px*var(--unit_scale)) calc(-48px*var(--unit_scale))}
-.unit_skill.frenzy::after {background-position: calc(-96px*var(--unit_scale)) calc(-48px*var(--unit_scale))}
-.unit_skill.heat::after {background-position: calc(-120px*var(--unit_scale)) calc(-48px*var(--unit_scale))}
-.unit_skill.heavy_melee::after {background-position: 0 calc(-72px*var(--unit_scale))}
-.unit_skill.hills::after {background-position: calc(-24px*var(--unit_scale)) calc(-72px*var(--unit_scale))}
-.unit_skill.house::after {background-position: calc(-48px*var(--unit_scale)) calc(-72px*var(--unit_scale))}
-.unit_skill.last_stand::after {background-position: calc(-72px*var(--unit_scale)) calc(-72px*var(--unit_scale))}
-.unit_skill.light_melee::after {background-position: calc(-96px*var(--unit_scale)) calc(-72px*var(--unit_scale))}
-.unit_skill.long_ranged::after {background-position: calc(-120px*var(--unit_scale)) calc(-72px*var(--unit_scale))}
-.unit_skill.mirv::after {background-position: 0 calc(-96px*var(--unit_scale))}
-.unit_skill.morale::after {background-position: calc(-24px*var(--unit_scale)) calc(-96px*var(--unit_scale))}
-.unit_skill.mortar::after {background-position: calc(-48px*var(--unit_scale)) calc(-96px*var(--unit_scale))}
-.unit_skill.movement::after {background-position: calc(-72px*var(--unit_scale)) calc(-96px*var(--unit_scale))}
-.unit_skill.one_shot::after {background-position: calc(-96px*var(--unit_scale)) calc(-96px*var(--unit_scale))}
-.unit_skill.plain::after {background-position: calc(-120px*var(--unit_scale)) calc(-96px*var(--unit_scale))}
-.unit_skill.poison::after {background-position: 0 calc(-120px*var(--unit_scale))}
-.unit_skill.power_shot::after {background-position: calc(-24px*var(--unit_scale)) calc(-120px*var(--unit_scale))}
-.unit_skill.rally::after {background-position: calc(-48px*var(--unit_scale)) calc(-120px*var(--unit_scale))}
-.unit_skill.range::after {background-position: calc(-72px*var(--unit_scale)) calc(-120px*var(--unit_scale))}
-.unit_skill.rapid_deployment::after {background-position: calc(-96px*var(--unit_scale)) calc(-120px*var(--unit_scale))}
-.unit_skill.reactive_armor::after {background-position: calc(-120px*var(--unit_scale)) calc(-120px*var(--unit_scale))}
-.unit_skill.recharge::after {background-position: calc(-144px*var(--unit_scale)) 0}
-.unit_skill.rocks::after {background-position: calc(-144px*var(--unit_scale)) calc(-24px*var(--unit_scale))}
-.unit_skill.rubble::after {background-position: calc(-144px*var(--unit_scale)) calc(-72px*var(--unit_scale))}
-.unit_skill.sandbagcircle::after {background-position: calc(-144px*var(--unit_scale)) calc(-96px*var(--unit_scale))}
-.unit_skill.short_ranged::after {background-position: calc(-144px*var(--unit_scale)) calc(-120px*var(--unit_scale))}
-.unit_skill.stealth::after {background-position: 0 calc(-144px*var(--unit_scale))}
-.unit_skill.swamp::after {background-position: calc(-24px*var(--unit_scale)) calc(-144px*var(--unit_scale))}
-.unit_skill.swarm::after {background-position: calc(-48px*var(--unit_scale)) calc(-144px*var(--unit_scale))}
-.unit_skill.trench::after {background-position: calc(-72px*var(--unit_scale)) calc(-144px*var(--unit_scale))}
-.unit_skill.unit::after {background-position: calc(-96px*var(--unit_scale)) calc(-144px*var(--unit_scale))}
-.unit_skill.unit_ability_dug_in::after {background-position: calc(-120px*var(--unit_scale)) calc(-144px*var(--unit_scale))}

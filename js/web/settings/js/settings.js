@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2024 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -27,9 +27,9 @@ let Settings = {
 	 */
 	BoxGroups: [
 		'About',
-		'Sending',
-		'Boxes',
-		'Extension'
+		'Extension',
+		'Auto',
+		'Boxes'
 	],
 
 	/**
@@ -67,13 +67,13 @@ let Settings = {
 	BuildBox: () => {
 		if ($('#SettingsBox').length < 1) {
 
-			// CSS in den DOM prügeln
 			HTML.AddCssFile('settings');
 
 			HTML.Box({
 				id: 'SettingsBox',
 				title: i18n('Boxes.Settings.Title'),
-				auto_close: true
+				auto_close: true,
+				dragdrop: true
 			});
 
 		} else {
@@ -116,13 +116,7 @@ let Settings = {
 					cr = $('<div />').addClass('item-row'),
 					ct = $('<h2 />'),
 					cd = $('<div />').addClass('desc'),
-					cs = $('<div />').addClass('setting').append(
-						$('<span />').addClass('check').append(
-							$('<span />').addClass('toogle-word')
-						).append(
-							$('<input class="setting-check game-cursor" type="checkbox" />')
-						)
-					);
+					cs = $('<div />').addClass('setting');
 
 				if ("SelectedMenu" !== d['name'] && 'NotificationsPosition' !== d['name'] && 'ApiToken' !== d['name']) {
 
@@ -141,12 +135,21 @@ let Settings = {
 					cs.html(Settings[d['callback']]());
 
 				}
-				else if (status === undefined) {
-					let b = $('<span />').addClass('button-wrapper').append(
-						$(`<button class="btn-default" id="${button}" onclick="Settings.${button}()">${i18n('Settings.' + d['name'] + '.Button')}</button>`)
+				if (button) {
+					let b = $('<div />').addClass('button-wrapper').append(
+						$(`<button class="btn-default" id="${x}Button" onclick="${button}">${i18n('Settings.' + d['name'] + '.Button')}</button>`)
 					);
 
-					cs.html(b);
+					cs.append(b);
+				} 
+				if (status !== undefined) {
+					cs.append(
+						$('<span />').addClass('check').append(
+							$('<span />').addClass('toogle-word')
+						).append(
+							$('<input class="setting-check game-cursor" type="checkbox" />')
+						)
+					)
 				}
 
 				cd.html(i18n(`Settings.${d['name']}.Desc`));

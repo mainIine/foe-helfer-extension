@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2024 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -23,21 +23,19 @@
 	overflow-y: auto;
 }
 
-#Productions #ProductionsBody strong.success {
+#Productions strong.success,
+#Productions span.success {
 	color: var(--text-success);
 }
 
-#Productions #ProductionsBody span.success {
-	color: var(--text-success);
-}
-
-#Productions #ProductionsBody .show-entity {
+#Productions .show-entity {
 	display: inline-block;
 	width: 20px;
 	height: 20px;
 }
 
-#Productions #ProductionsBody .show-entity img {
+#Productions .show-entity img,
+#ProductionsRating .show-all img {
 	width: 20px;
 	height: 20px;
 }
@@ -52,6 +50,20 @@
 
 #Productions #ProductionsBody table td {
 	font-size: 85%;
+}
+
+#Productions #ProductionsBody .empty-list {
+	text-align: center;
+	padding: 2em;
+	font-size: 120%;
+}
+
+#Productions #ProductionsBody table {
+	display: none;
+}
+
+#Productions #ProductionsBody table.active {
+	display: table;
 }
 
 #Productions #ProductionsBody table tbody.parent th {
@@ -75,17 +87,17 @@
 	line-height: 18px;
 }
 
-#Productions #ProductionsBody table tr.sorter-header th {
+#Productions #ProductionsBody table thead {
 	position: sticky;
 	top: 0;
-	background-color: rgba(0,0,0, 0.35);
+	background-color: rgba(0, 0, 0, 0.35);
 }
 
 #Productions #ProductionsBody table td.all-products span {
 	display: inline-block;
 	padding: 2px 4px;
 	border-radius: 2px;
-	background-color: rgba(0,0,0, 0.4);
+	background-color: rgba(0, 0, 0, 0.4);
 	margin: 3px 8px 2px 0;
 	white-space: nowrap;
 }
@@ -99,73 +111,426 @@
 
 #Productions #ProductionsBody .tabs ul li {
 	margin: 0 1px 0 0;
+
+	&.premium,
+	&.happiness,
+	&.def_boost_defender {
+		margin: 0 7px 0 0;
+	}
+}
+
+#Productions .chain-set-ico {
+	padding-right: 3px;
+	height: 18px;
 }
 
 #Productions #ProductionsBody .tabs ul li a {
 	padding: 0 3px;
 }
 
-#Productions #ProductionsBody .tabs ul li a span {
+#Productions #ProductionsBody .tabs ul li a span,
+#Productions th.boost span {
 	width: 27px;
 }
 
-#Productions #ProductionsBody .tabs ul li a span {
+#Productions #ProductionsBody table .unit {
+	background: transparent url('../../unit/images/unit_skill.png') -233px 2px no-repeat;
+}
+
+
+#Productions #ProductionsBody .ratingtable {
+	position: relative;
+}
+
+#Productions #ProductionsBody .tabs ul li a span,
+#Productions th.boost span {
 	background: transparent url('../images/productions.png') -233px 2px no-repeat;
 }
+
+#Productions th.boost span {
+	height: 25px;
+	display: block;
+	margin: 0 auto;
+}
+
+#Productions th.boost.battleground span {
+	background: transparent url('../../x_img/gbg-green.png') no-repeat;
+	background-size: contain;
+}
+
+#Productions th.boost.guild_expedition span {
+	background: transparent url('../../x_img/ge.png') no-repeat;
+	background-size: contain;
+}
+
+#Productions th.boost.guild_raids span {
+	background: transparent url('../../x_img/guild_raids.png') no-repeat;
+	background-size: contain;
+}
+#Productions td.ally::after{
+	content: ' 🙋'
+}
+
+
+
+#ProductionsRating #ProductionsRatingBody span.resicon.att_boost_attacker-guild_expedition,
+#ProductionsRating #ProductionsRatingBody span.resicon.def_boost_attacker-guild_expedition,
+#ProductionsRating #ProductionsRatingBody span.resicon.att_boost_defender-guild_expedition,
+#ProductionsRating #ProductionsRatingBody span.resicon.def_boost_defender-guild_expedition {
+	background-image: url('../../x_img/ge.png'), url('../images/productions.png');
+	background-size: 75%, auto;
+	background-repeat: no-repeat;
+	background-position: center center, -312px 0px;
+}
+
+#ProductionsRating #ProductionsRatingBody span.resicon.def_boost_attacker-guild_expedition {
+	background-position: center center, -366px 0px;
+}
+
+#ProductionsRating #ProductionsRatingBody span.resicon.att_boost_defender-guild_expedition {
+	background-position: center center, -340px 0px;
+}
+
+#ProductionsRating #ProductionsRatingBody span.resicon.def_boost_defender-guild_expedition {
+	background-position: center center, -391px 0px;
+}
+
+#ProductionsRating #ProductionsRatingBody th i {
+	display: block;
+}
+
+#ProductionsRating #ProductionsRatingBody #efficiencyBuidlingFilter {
+	width: 120px;
+}
+
+#ProductionsRating #ProductionsRatingBody #addMetaBuilding {
+	padding: 0.15em 0.4em;
+	margin-left: 0.5em;
+}
+
+#ProductionsRating #ProductionsRatingBody .settings label {
+	margin-right: 0.75em;
+}
+
+#ProductionsRating #ProductionsRatingBody .overlay {
+	width: 100%;
+	height: calc(100% - 36px);
+	position: absolute;
+	top: 36px;
+	left: 0;
+	z-index: 2100;
+	background: var(--black-65);
+	display: none;
+
+	& input {
+		width: 100%;
+		box-sizing: border-box;
+		padding: 0.5em;
+		font-size: 120%;
+	}
+
+	& .window-close {
+		position: absolute;
+		top: 10px;
+		right: calc(20% - 50px);
+	}
+
+	& .content {
+		width: 60%;
+		min-width: 300px;
+		height: inherit;
+		margin: auto;
+		padding: 1em;
+		background: #301c0a;
+		color: var(--text-normal);
+
+		& ul {
+			height: calc(100% - 90px);
+			overflow: auto;
+			margin: 10px 0;
+			box-sizing: border-box;
+		}
+
+		& li {
+			&:hover {
+				color: var(--text-bright);
+			}
+
+			&.selected {
+				color: var(--text-info);
+			}
+
+			&.selected::after {
+				content: '✔';
+			}
+		}
+	}
+}
+
+#ProductionsRating #ProductionsRatingBody tr.sorter-header th {
+	padding: 5px 6px 7px;
+}
+
+#ProductionsRating #ProductionsRatingBody tr.sorter-header th:not(.no-sort):hover,
+#ProductionsRating #ProductionsRatingBody tr.sorter-header th.ascending,
+#ProductionsRating #ProductionsRatingBody tr.sorter-header th.descending {
+	color: var(--text-bright);
+}
+
+#ProductionsRating #ProductionsRatingBody tr.sorter-header th:before,
+#ProductionsRating #ProductionsRatingBody tr.sorter-header th:after {
+	display: none;
+	width: 100%;
+	text-align: center;
+	bottom: -5px;
+	right: 0;
+	font-size: 1em;
+	transform: scale(1.1, 1);
+}
+
+#ProductionsRating #ProductionsRatingBody tr.sorter-header th.ascending:before,
+#ProductionsRating #ProductionsRatingBody tr.sorter-header th.descending:after {
+	display: block;
+}
+
+
+#ProductionsRating #RatingSettings {
+	position: absolute;
+	top: 41px;
+	right: 10px;
+	z-index: 1500;
+}
+
+#ProductionsRating #ProductionsRatingSettings .foe-table li input.hidden {
+	display: none;
+}
+
+#ProductionsRating .show-all img {
+	width: 18px;
+	height: 18px;
+}
+
+#ProductionsRating #ProductionsRatingBody tr {
+	&.highlighted2 td:nth-child(2) {
+		color: var(--text-light);
+
+		&::after {
+			content: ' 🔎';
+		}
+	}
+	& td.ally:nth-child(2) {
+
+		&::after {
+			content: ' 🙋'
+		}
+	}
+	&.highlighted2 td.ally:nth-child(2) {
+		color: var(--text-light);
+
+		&::after {
+			content: ' 🙋 🔎';
+		}
+	}
+
+
+	&.additional td {
+		background: var(--background-table-info);
+
+		&:nth-child(1) {
+			color: var(--text-info) !important;
+		}
+
+		&:nth-child(2) {
+			font-style: italic;
+		}
+	}
+
+	&.highlighted td:nth-child(2) {
+		color: var(--text-bright);
+		font-weight: 600;
+	}
+}
+
+#ProductionsRating #ProductionsRatingBody tr.highlighted-explained,
+#ProductionsRating #ProductionsRatingBody .only-highlighted tr {
+	display: none;
+
+	&.highlighted-explained,
+	&.highlighted,
+	&.highlighted2,
+	&.additional {
+		display: table-row;
+	}
+}
+
+#ProductionsRating #ProductionsRatingBody tr.highlighted-explained td {
+	font-weight: normal !important;
+	padding: 1em;
+	text-align: center;
+	font-size: 120%;
+}
+
+#ProductionsRating #ProductionsRatingBody span.resicon.att_boost_attacker-guild_raids,
+#ProductionsRating #ProductionsRatingBody span.resicon.def_boost_attacker-guild_raids,
+#ProductionsRating #ProductionsRatingBody span.resicon.att_boost_defender-guild_raids,
+#ProductionsRating #ProductionsRatingBody span.resicon.def_boost_defender-guild_raids {
+	background-image: url('../../x_img/guild_raids.png'), url('../images/productions.png');
+	background-size: 75%, auto;
+	background-repeat: no-repeat;
+	background-position: center center, -312px 0px;
+}
+
+#ProductionsRating #ProductionsRatingBody span.resicon.def_boost_attacker-guild_raids {
+	background-position: center center, -366px 0px;
+}
+
+#ProductionsRating #ProductionsRatingBody span.resicon.att_boost_defender-guild_raids {
+	background-position: center center, -340px 0px;
+}
+
+#ProductionsRating #ProductionsRatingBody span.resicon.def_boost_defender-guild_raids {
+	background-position: center center, -391px 0px;
+}
+
+#ProductionsRating #ProductionsRatingBody span.resicon.att_boost_attacker-battleground,
+#ProductionsRating #ProductionsRatingBody span.resicon.def_boost_attacker-battleground,
+#ProductionsRating #ProductionsRatingBody span.resicon.att_boost_defender-battleground,
+#ProductionsRating #ProductionsRatingBody span.resicon.def_boost_defender-battleground {
+	background-image: url('../../x_img/gbg-green.png'), url('../images/productions.png');
+	background-size: contain, auto;
+	background-repeat: no-repeat;
+	background-position: center center, -312px 0px;
+}
+
+#ProductionsRating #ProductionsRatingBody span.resicon.def_boost_attacker-battleground {
+	background-position: center center, -366px 0px;
+}
+
+#ProductionsRating #ProductionsRatingBody span.resicon.att_boost_defender-battleground {
+	background-position: center center, -340px 0px;
+}
+
+#ProductionsRating #ProductionsRatingBody span.resicon.def_boost_defender-battleground {
+	background-position: center center, -391px 0px;
+}
+
+#Productions th.boost.att_boost_attacker span,
+#ProductionsRating #ProductionsRatingBody span.resicon.att_boost_attacker-all {
+	background-position: -311px 0px;
+}
+
+#Productions th.boost.att_boost_defender span,
+#ProductionsRating #ProductionsRatingBody span.resicon.att_boost_defender-all {
+	background-position: -340px 0px;
+}
+
+#Productions th.boost.def_boost_attacker span,
+#ProductionsRating #ProductionsRatingBody span.resicon.def_boost_attacker-all {
+	background-position: -366px 0px;
+}
+
+#Productions th.boost.def_boost_defender span,
+#ProductionsRating #ProductionsRatingBody span.resicon.def_boost_defender-all {
+	background-position: -390px 0px;
+}
+
 #Productions #ProductionsBody .tabs ul li.strategy_points a span {
 	background-position: 0 2px;
 }
+
 #Productions #ProductionsBody .tabs ul li.money a span {
 	background-position: -26px 3px;
 }
+
 #Productions #ProductionsBody .tabs ul li.supplies a span {
 	background-position: -51px 3px;
 }
+
 #Productions #ProductionsBody .tabs ul li.medals a span {
 	background-position: -78px 2px;
 }
+
 #Productions #ProductionsBody .tabs ul li.population a span {
 	background-position: -183px 3px;
 }
+
 #Productions #ProductionsBody .tabs ul li.happiness a span {
 	background-position: -156px 3px;
 }
-#Productions #ProductionsBody .tabs ul li.goods a span {
+
+#Productions #ProductionsBody .tabs ul li.goods a span,
+#ProductionsRating #ProductionsRatingBody span.resicon[class*="goods-"] {
 	background-position: -104px 3px;
 }
+
 #Productions #ProductionsBody .tabs ul li.premium a span {
 	background-position: -209px 3px;
 }
+
 #Productions #ProductionsBody .tabs ul li.all a span {
 	background-position: -130px 3px;
 }
+
 #Productions #ProductionsBody .tabs ul li.clan_power a span {
 	background-position: -262px 3px;
 }
+
 #Productions #ProductionsBody .tabs ul li.units a span {
 	background-position: -287px 3px;
 	width: 25px;
 }
+
 #Productions #ProductionsBody .tabs ul li.att_boost_attacker a span {
 	background-position: -311px 3px;
 }
+
 #Productions #ProductionsBody .tabs ul li.att_boost_defender a span {
 	background-position: -338px 3px;
 }
+
 #Productions #ProductionsBody .tabs ul li.def_boost_attacker a span {
 	background-position: -365px 3px;
 }
+
 #Productions #ProductionsBody .tabs ul li.def_boost_defender a span {
 	background-position: -390px 3px;
 }
-#Productions #ProductionsBody .tabs ul li.fragments a span {
+
+#Productions #ProductionsBody .tabs ul li.items a span {
 	background-position: -415px 3px;
 }
 
+#Productions .units-sum {
+	& td:nth-child(1),
+	& thead tr:nth-child(2) th:nth-child(1) {
+			text-align: right;
+	}
+	& td:nth-child(2) {
+		width: 80%;
+	};
+}
 
+#Productions span[class*="skill"] {
+	display: inline-flex;
+	position: relative;
+	top: 4px;
+	margin-top: -8px;
+	
+	&::after {
+		zoom: 1.5;
+		top: 1px;
+	}
+}
 
-
-
+#Productions .items-sum {
+	& td:nth-child(1) {
+		width: 80px;
+		text-align:right;
+	};
+	& td:nth-child(2) {
+		width: 15px;		
+	};
+}
 
 
 #ProductionsRating {
@@ -180,7 +545,46 @@
 	overflow-y: auto;
 }
 
-#ProductionsRating #ProductionsRatingBody table th {
+#ProductionsRating #ProductionsRatingBody ul.foe-table {
+	max-width: 500px;
+	margin: 3px auto 1em;
+	box-shadow: 0 0 500px #0007;
+}
+
+#ProductionsRating #ProductionsRatingBody div p {
+	max-width: 600px;
+	margin: 1em auto;
+}
+
+#ProductionsRating #ProductionsRatingBody .settings th {
+	border-bottom: 1px dotted var(--text-darker);
+}
+
+#ProductionsRatingSettings {
+	position: relative;
+}
+
+#RatingsResults {
+	position: sticky;
+	top: 5px;
+	float: right;
+	margin-right: 5px;
+}
+
+#ProductionsRating #ProductionsRatingBody .tilevalue {
+	display: none;
+}
+
+input[id*="ProdPerTile"] {
+	width: 100px;
+}
+
+#ProductionsRating ul.foe-table li>a {
+	flex: none;
+	width: 40%;
+}
+
+#ProductionsRating #ProductionsRatingBody table thead {
 	font-size: 85%;
 	position: sticky;
 	top: 0;
@@ -192,6 +596,38 @@
 	font-size: 85%;
 }
 
+#ProductionsRating #ProductionsRatingBody table td:first-child {
+	font-size: 95%;
+	width: 50px;
+	font-weight: bold;
+}
+
+#ProductionsRating #ProductionsRatingBody table td:nth-child(3){
+	white-space: nowrap;
+}
+
+#ProductionsRating #ProductionsRatingBody table td:first-child[data-number^="-"] {
+	color: var(--text-danger)
+}
+
+#ProductionsRating #ProductionsRatingBody table td:first-child[data-number^="1"],
+#ProductionsRating #ProductionsRatingBody table td:first-child[data-number^="2"],
+#ProductionsRating #ProductionsRatingBody table td:first-child[data-number^="3"],
+#ProductionsRating #ProductionsRatingBody table td:first-child[data-number^="4"],
+#ProductionsRating #ProductionsRatingBody table td:first-child[data-number^="5"],
+#ProductionsRating #ProductionsRatingBody table td:first-child[data-number^="6"],
+#ProductionsRating #ProductionsRatingBody table td:first-child[data-number^="7"],
+#ProductionsRating #ProductionsRatingBody table td:first-child[data-number^="8"],
+#ProductionsRating #ProductionsRatingBody table td:first-child[data-number^="9"] {
+	color: var(--text-success)
+}
+
+#ProductionsRating #ProductionsRatingBody li[class$="guild_expedition"],
+#ProductionsRating #ProductionsRatingBody li[class$="battleground"],
+#ProductionsRating #ProductionsRatingBody li[class$="guild_raids"] {
+	padding-left: 2em;
+}
+
 #ProductionsRating #ProductionsRatingBody strong.success {
 	color: var(--text-success);
 }
@@ -200,57 +636,81 @@
 	color: #ec4d4d;
 }
 
-#ProductionsRating #ProductionsRatingBody table span.resicon {
+#ProductionsRating #ProductionsRatingBody span.resicon {
 	display: inline-block;
 	width: 24px;
 	height: 26px;
 	background: transparent url('../images/productions.png') -236px 2px no-repeat;
 }
-#ProductionsRating #ProductionsRatingBody table span.resicon.empty{
-	background-position: 1000px, 1000px;
+
+#ProductionsRating #ProductionsRatingBody span.resicon.empty {
+	background-position: 1000px 1000px;
 }
-#ProductionsRating #ProductionsRatingBody table span.resicon.strategy_points {
+
+#ProductionsRating #ProductionsRatingBody span.resicon.strategy_points {
 	background-position: 0 0;
 }
-#ProductionsRating #ProductionsRatingBody table span.resicon.money {
+
+#ProductionsRating #ProductionsRatingBody span.resicon.money {
 	background-position: -26px 2px;
 }
-#ProductionsRating #ProductionsRatingBody table span.resicon.supplies {
+
+#ProductionsRating #ProductionsRatingBody span.resicon.supplies {
 	background-position: -51px 2px;
 }
-#ProductionsRating #ProductionsRatingBody table span.resicon.medals {
+
+#ProductionsRating #ProductionsRatingBody span.resicon.medals {
 	background-position: -78px 2px;
 }
-#ProductionsRating #ProductionsRatingBody table span.resicon.population {
+
+#ProductionsRating #ProductionsRatingBody span.resicon.population {
 	background-position: -183px 2px;
 }
-#ProductionsRating #ProductionsRatingBody table span.resicon.happiness {
+
+#ProductionsRating #ProductionsRatingBody span.resicon.happiness {
 	background-position: -158px 2px;
 }
-#ProductionsRating #ProductionsRatingBody table span.resicon.goods {
+
+#ProductionsRating #ProductionsRatingBody span.resicon.goods-current {
 	background-position: -104px 2px;
 }
-#ProductionsRating #ProductionsRatingBody table span.resicon.premium {
+
+#ProductionsRating #ProductionsRatingBody span.resicon.premium {
 	background-position: -209px 2px;
 }
-#ProductionsRating #ProductionsRatingBody table span.resicon.all {
+
+#ProductionsRating #ProductionsRatingBody span.resicon.all {
 	background-position: -130px 2px;
 }
-#ProductionsRating #ProductionsRatingBody table span.resicon.clan_power {
+
+#ProductionsRating #ProductionsRatingBody span.resicon.clan_power {
 	background-position: -262px 2px;
 }
-#ProductionsRating #ProductionsRatingBody table span.resicon.units {
+
+#ProductionsRating #ProductionsRatingBody span.resicon.units {
 	background-position: -287px 2px;
 }
-#ProductionsRating #ProductionsRatingBody table span.resicon.att_boost_attacker {
+
+#ProductionsRating #ProductionsRatingBody span.resicon.att_boost_attacker {
 	background-position: -311px 2px;
 }
-#ProductionsRating #ProductionsRatingBody table span.resicon.att_boost_defender {
+
+#ProductionsRating #ProductionsRatingBody span.resicon.att_boost_defender {
 	background-position: -338px 2px;
 }
-#ProductionsRating #ProductionsRatingBody table span.resicon.def_boost_attacker {
+
+#ProductionsRating #ProductionsRatingBody span.resicon.def_boost_attacker {
 	background-position: -365px 2px;
 }
-#ProductionsRating #ProductionsRatingBody table span.resicon.def_boost_defender {
+
+#ProductionsRating #ProductionsRatingBody span.resicon.def_boost_defender {
 	background-position: -390px 2px;
+}
+
+#ProductionsRating #ProductionsRatingBody span.resicon.goods-next {
+	background-position: -550px 2px;
+}
+
+#ProductionsRating #ProductionsRatingBody span.resicon.goods-previous {
+	background-position: -524px 2px;
 }
