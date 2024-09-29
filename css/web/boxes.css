@@ -698,6 +698,10 @@ Tabs */
 	overflow-y: auto;
 }
 
+.window-body .tabs ul.vertical li:last-child {
+    margin-bottom: 19px;
+}
+
 .window-body .tabs ul.vertical li {
 	display: block;
 	margin: 0;
