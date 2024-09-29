@@ -1062,6 +1062,7 @@ FP-Bar */
 	border-bottom: 2px solid #895022;
 	border-radius: 3px 3px 0 0;
 	box-sizing: border-box;
+	cursor: url(../images/cursor_drag.cur), move !important;
 }
 
 .closed .window-head {
