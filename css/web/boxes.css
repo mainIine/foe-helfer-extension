@@ -806,7 +806,7 @@ Potions */
 	color: var(--text-normal);
 	position: fixed;
 	top: 40px;
-	right: 8px;
+	right: 10px;
 }
 
 #BoostPotions .shortest {
