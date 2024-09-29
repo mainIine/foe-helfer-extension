@@ -694,6 +694,8 @@ Tabs */
 	top: 0;
 	bottom: 0;
 	border-right: 2px solid var(--border-tab);
+	overflow-x: hidden;
+	overflow-y: auto;
 }
 
 .window-body .tabs ul.vertical li {
