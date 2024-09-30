@@ -1595,16 +1595,29 @@ let CityMap = {
 									}
 									rewards.push(newReward)
 								}
-								else if (reward.product.type === "resources") { // currently: playerResources.resources.strategy_points
-									let newReward = {
-										id: null,
-										type: "resources",
-										name: i18n('Boxes.OwnpartCalculator.OptionsFP'), // ugly
-										subType: Object.keys(reward.product.playerResources.resources)[0], // warning: hacky
-										amount: reward.product.playerResources.resources.strategy_points, // warning: hacky
-										dropChance: reward.dropChance,
+								else if (reward.product.type === "resources") {
+									if (reward.product.playerResources.resources.strategy_points != undefined) { // FP
+										let newReward = {
+											id: null,
+											type: "resources",
+											name: i18n('Boxes.OwnpartCalculator.OptionsFP'), // ugly
+											subType: Object.keys(reward.product.playerResources.resources)[0],
+											amount: reward.product.playerResources.resources.strategy_points,
+											dropChance: reward.dropChance,
+										}
+										rewards.push(newReward)
 									}
-									rewards.push(newReward)
+									else { // goods - for now - hacky
+										let newReward = {
+											id: null,
+											type: "goods",
+											name: i18n('Boxes.BlueGalaxy.Goods'),
+											subType: Object.keys(reward.product.playerResources.resources)[0],
+											amount: Object.values(reward.product.playerResources.resources)[0],
+											dropChance: reward.dropChance,
+										}
+										rewards.push(newReward)
+									}
 								}
 							});
 							resource.resources = rewards
@@ -2016,15 +2029,15 @@ let CityMap = {
 						}
 					})
 				}
-				if (production.type == 'random') { // e.g. gentania windmill
+				if (production.type == 'random') { // e.g. gentania windmill, eerie terror coaster
 					let goodEra = Technologies.InnoEras[building.eraName]
 					for (const resource of production.resources) {
 						if (resource.type?.includes("good") && !resource.type?.includes("guild")) {
 							goods.hasRandomProduction = true // this is not a perfect solution, because it is general & not per good
 
-							if (resource.type.includes('previous'))
+							if (resource.type.includes('previous') || resource.subType?.toLowerCase().includes('previous') || resource.id?.toLowerCase().includes('previous'))
 								goodEra = Technologies.getPreviousEraIdByCurrentEraName(building.eraName)
-							else if (resource.type.includes('next'))
+							else if (resource.type.includes('next') || resource.subType?.toLowerCase().includes('next') || resource.id?.toLowerCase().includes('next'))
 								goodEra = Technologies.getNextEraIdByCurrentEraName(building.eraName)
 
 							if (goods.eras[goodEra] == undefined)
@@ -2038,14 +2051,13 @@ let CityMap = {
 					let goodEra = Technologies.InnoEras[building.eraName]
 					if (production.resources.id.includes('previous'))
 						goodEra = Technologies.getPreviousEraIdByCurrentEraName(building.eraName)
-					else if (production.resources.icon == "next_age_goods")
+					else if (production.resources.icon == "next_age_goods" || production.resources.id.includes('next'))
 						goodEra = Technologies.getNextEraIdByCurrentEraName(building.eraName)
-					
+
 					if (goods.eras[goodEra] == undefined)
 						goods.eras[goodEra] = parseInt(production.resources.amount)
 					else 
 						goods.eras[goodEra] += parseInt(production.resources.amount)
-					
 				}
 			})
 		}
