@@ -693,6 +693,7 @@ let Productions = {
 			rowA = [],
 			groupedBuildings = [],
 			eras = [],
+			erasCurrent = {},
 			erasTotal = {}
 
 		// gather all different eras
@@ -718,6 +719,7 @@ let Productions = {
 		
 		// prepare array with total number of goods for each era
 		for (const era of eras) {
+			erasCurrent[era] = 0
 			erasTotal[era] = 0
 		}
 
@@ -757,7 +759,8 @@ let Productions = {
 				let currentGoodAmount = 0
 				let goodAmount = 0
 				if (allGoods != undefined) {
-					erasTotal[era] +=  currentGoodAmount = currentGoods?.eras?.[era] || 0
+					erasCurrent[era] += currentGoodAmount = currentGoods?.eras?.[era] || 0
+					erasTotal[era] += goodAmount = allGoods?.eras?.[era] || 0
 					updateGroup[era] += goodAmount = allGoods?.eras?.[era] || 0
 				}
 				rowA.push('<td data-number="'+currentGoodAmount+'" class="text-center">')
@@ -791,7 +794,7 @@ let Productions = {
 		table.push('<th class="no-sort" data-type="prodlist'+type+'"> </th>')
 		table.push('<th class="ascending" data-type="prodlist'+type+'">' + i18n('Boxes.BlueGalaxy.Building') + '</th>')
 		eras.forEach(era => {
-			table.push('<th data-type="prodlist'+type+'" class="is-number text-center"><span data-original-title="'+i18n('Eras.'+(parseInt(era)+1))+'">' + i18n('Eras.'+(parseInt(era)+1)+'.short') + '<br>'+HTML.Format(erasTotal[era])+'</span></th>')
+			table.push('<th data-type="prodlist'+type+'" class="is-number text-center"><span data-original-title="'+i18n('Eras.'+(parseInt(era)+1))+'">' + i18n('Eras.'+(parseInt(era)+1)+'.short') + '<br><small>'+HTML.Format(erasCurrent[era])+'/'+HTML.Format(erasTotal[era])+'</small></span></th>')
 		})
 		table.push('<th data-type="prodlist'+type+'" class="is-number">' + i18n('Boxes.Productions.Headings.era') + '</th>')
 		table.push('<th data-type="prodlist'+type+'" class="is-date">'+i18n('Boxes.Productions.Headings.earning')+'</th>')
@@ -814,7 +817,7 @@ let Productions = {
 		table.push('<th data-type="prodgroup'+type+'" class="is-number">' + i18n('Boxes.Productions.Headings.number') + '</th>')
 		table.push('<th data-type="prodgroup'+type+'">' + i18n('Boxes.BlueGalaxy.Building') + '</th>')
 		eras.forEach(era => {
-			table.push('<th data-type="prodgroup'+type+'" class="is-number text-center">' + i18n('Eras.'+(parseInt(era)+1)+'.short') + '</span><br>'+HTML.Format(erasTotal[era])+'</th>')
+			table.push('<th data-type="prodgroup'+type+'" class="is-number text-center">' + i18n('Eras.'+(parseInt(era)+1)+'.short') + '</span><br>'+HTML.Format(erasCurrent[era])+'</th>')
 		})
 		table.push('<th data-type="prodgroup'+type+'" class="is-number">' + i18n('Boxes.Productions.Headings.size') + '</th>')
 		table.push('</tr>')
