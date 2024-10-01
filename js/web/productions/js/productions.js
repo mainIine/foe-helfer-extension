@@ -599,9 +599,9 @@ let Productions = {
 					rowA.push('<td '+((type.includes('att') || type.includes('def')) ? 'colspan="3"' : '')+' data-number="'+Technologies.Eras[building.eraName]+'">' + i18n("Eras."+Technologies.Eras[building.eraName]+".short") + '</td>')
 					if (!type.includes('att') && !type.includes('def')) {
 						let time = !building.state.times?.at ? "-" : (building.state.times?.at <= inADay) ? moment.unix(building.state.times?.at).format('HH:mm') : moment.unix(building.state.times?.at).format('dddd, HH:mm')
-						rowA.push('<td style="white-space:nowrap" data-number="' + (building.state.times?.at||9999999999) + '">' + time + '</td>')
+						rowA.push('<td style="white-space:nowrap" data-date="' + (building.state.times?.at||9999999999) + '">' + time + '</td>')
 						let done = (building.state.times?.at * 1000 <= MainParser.getCurrentDateTime() ? i18n('Boxes.Productions.Done') : '')
-						rowA.push('<td style="white-space:nowrap" data-number="0">' + done + '</strong></td>')
+						rowA.push(`<td style="white-space:nowrap" data-number="${done==""? 0:1}">${done}</strong></td>`)
 					}
 					rowA.push('<td class="text-right">')
 					rowA.push('<span class="show-entity" data-id="' + building.id + '"><img class="game-cursor" src="' + extUrl + 'css/images/hud/open-eye.png"></span>')
@@ -635,7 +635,7 @@ let Productions = {
 				}
 				table.push('<th data-type="prodlist'+type+'" class="is-number">' + i18n('Boxes.Productions.Headings.era') + '</th>')
 				if (!type.includes('att') && !type.includes('def')) {
-					table.push('<th class="is-number" data-type="prodlist'+type+'">' + i18n('Boxes.Productions.Headings.earning') + '</th>')
+					table.push('<th class="is-date" data-type="prodlist'+type+'">' + i18n('Boxes.Productions.Headings.earning') + '</th>')
 					table.push('<th class="is-number" data-type="prodlist'+type+'">' + i18n('Boxes.Productions.Headings.Done') + '</th>')
 				}
 				table.push('<th data-type="prodlist'+type+'" class="no-sort" '+((type.includes('att') || type.includes('def')) ? 'colspan="3"' : '')+'> </th>')
@@ -772,7 +772,7 @@ let Productions = {
 			
 			rowA.push('<td data-number="'+Technologies.Eras[building.eraName]+'">' + i18n("Eras."+Technologies.Eras[building.eraName]+".short") + '</td>')
 			let time = moment.unix(building.state.times?.at).format('HH:mm')
-			rowA.push('<td style="white-space:nowrap" data-number="'+(building.state.times?.at||9999999999)+'">' + time + '</td>')
+			rowA.push('<td style="white-space:nowrap" data-date="'+(building.state.times?.at||9999999999)+'">' + time + '</td>')
 			rowA.push('<td class="text-right">')
 			rowA.push('<span class="show-entity" data-id="' + building.id + '"><img class="game-cursor" src="' + extUrl + 'css/images/hud/open-eye.png"></span>')
 			rowA.push('</td>')
@@ -794,7 +794,7 @@ let Productions = {
 			table.push('<th data-type="prodlist'+type+'" class="is-number text-center"><span data-original-title="'+i18n('Eras.'+(parseInt(era)+1))+'">' + i18n('Eras.'+(parseInt(era)+1)+'.short') + '<br>'+HTML.Format(erasTotal[era])+'</span></th>')
 		})
 		table.push('<th data-type="prodlist'+type+'" class="is-number">' + i18n('Boxes.Productions.Headings.era') + '</th>')
-		table.push('<th data-type="prodlist'+type+'" class="is-number">'+i18n('Boxes.Productions.Headings.earning')+'</th>')
+		table.push('<th data-type="prodlist'+type+'" class="is-date">'+i18n('Boxes.Productions.Headings.earning')+'</th>')
 		table.push('<th data-type="prodlist'+type+'" class="no-sort"> </th>')
 		table.push('</tr>')
 		table.push('</thead>')
