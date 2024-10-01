@@ -1414,7 +1414,7 @@ let Productions = {
 			h.push('</tr>');
 			h.push('<tr class="sorter-header">');
 			h.push('<th data-type="ratinglist" class="is-number ascending">' + i18n('Boxes.ProductionsRating.Score') + '</th>');
-			h.push('<th data-type="ratinglist" colspan=2>' + i18n('Boxes.ProductionsRating.BuildingName') + '</th>');
+			h.push('<th data-type="ratinglist">' + i18n('Boxes.ProductionsRating.BuildingName') + '</th><th class="no-sort"></th>');
 			let tileRatings = JSON.parse(localStorage.getItem('ProductionRatingProdPerTiles'))
 			for (const type of Productions.RatingTypes) {
 				if (!Productions.Rating[type] || Productions.RatingProdPerTiles[type] == null) continue
