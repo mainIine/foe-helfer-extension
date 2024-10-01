@@ -99,8 +99,8 @@ let BoostInventory = {
 
 		c.push('<th class="no-sort"></th>')
 		c.push(`<th data-type="BoostInventoryTable">${i18n('Boxes.CombatCalculator.Name')}</th>`)
-		c.push(`<th class="is-number">${i18n('Boxes.CombatCalculator.Size')}</th>`)
-		c.push(`<th class="no-sort" data-type="BoostInventoryTable">${i18n('Boxes.CombatCalculator.Values')}</th>`)
+		c.push(`<th class="is-number" data-type="BoostInventoryTable">${i18n('Boxes.CombatCalculator.Size')}</th>`)
+		c.push(`<th class="no-sort">${i18n('Boxes.CombatCalculator.Values')}</th>`)
 		c.push(`<th class="is-number descending" data-type="BoostInventoryTable">${i18n('Boxes.CombatCalculator.Efficiency')}</th>`)
 
 		c.push('</tr>')
@@ -133,7 +133,7 @@ let BoostInventory = {
 			}
 
 			c.push(`</td>`)
-			c.push(`<td title="${i18n('Boxes.CombatCalculator.EfficiencyTT')}" data-number="${Math.round(b.score*100)}">${Math.round(b.score*100)}</td>`)
+			c.push(`<td data-original-title="${i18n('Boxes.CombatCalculator.EfficiencyTT')}" data-number="${Math.round(b.score*100)}">${Math.round(b.score*100)}</td>`)
 
 			c.push(`</tr>`)
 		}
@@ -143,6 +143,7 @@ let BoostInventory = {
 		c.push(`</table>`)
 
 		$('#BoostInventoryBody').html(c.join(''))
-		$('#BoostInventoryBody img').tooltip()
+		$('#BoostInventoryBody [data-original-title]').tooltip()
+		$('#BoostInventoryBody table').tableSorter()
 	},
 }
