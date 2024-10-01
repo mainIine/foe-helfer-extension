@@ -1417,7 +1417,7 @@
     "Settings.NotificationsStack.Desc": "Hoeveel informatiemeldingen wil je tegelijkertijd zien? Standaard is een maximum van 4.",
     "Settings.NotificationsStack.Title": "Meldingen stapeling",
     "Settings.ResetBoxPositions.Button": "Verwijderen!",
-    "Settings.ResetBoxPositions.Desc": "Moeten de coördinaten van alle vensters verwijderd worden?",
+    "Settings.ResetBoxPositions.Desc": "Moeten de coördinaten van alle vensters verwijderd worden? Dit kan vensters weer zichtbaar te maken die je buiten beeld hebt gesleept.",
     "Settings.ResetBoxPositions.Title": "Coördinaten vensters",
     "Settings.RivalSound.Desc": "Moet er een geluid worden afgespeeld bij het voltooien van een rivaal taak?",
     "Settings.RivalSound.Title": "Geluid voor Rivaal Taak",
