@@ -92,21 +92,21 @@ let BoostInventory = {
 
 		let c = []
 
-		c.push(`<table class="foe-table sortable-table">`)
+		c.push(`<table class="foe-table">`)
 
 		c.push('<thead>')
 		c.push('<tr class="sorter-header">')
 
-		c.push('<th></th>')
-		c.push(`<th>${i18n('Boxes.CombatCalculator.Name')}</th>`)
-		c.push(`<th>${i18n('Boxes.CombatCalculator.Size')}</th>`)
-		c.push(`<th>${i18n('Boxes.CombatCalculator.Values')}</th>`)
-		c.push(`<th>${i18n('Boxes.CombatCalculator.Efficiency')}</th>`)
+		c.push('<th class="no-sort"></th>')
+		c.push(`<th data-type="BoostInventoryTable">${i18n('Boxes.CombatCalculator.Name')}</th>`)
+		c.push(`<th class="is-number">${i18n('Boxes.CombatCalculator.Size')}</th>`)
+		c.push(`<th class="no-sort" data-type="BoostInventoryTable">${i18n('Boxes.CombatCalculator.Values')}</th>`)
+		c.push(`<th class="is-number descending" data-type="BoostInventoryTable">${i18n('Boxes.CombatCalculator.Efficiency')}</th>`)
 
 		c.push('</tr>')
 		c.push('</thead>')
 
-		c.push('<tbody>')
+		c.push('<tbody class="BoostInventoryTable">')
 
 		let streetImg = {
 			0:"",
@@ -122,8 +122,8 @@ let BoostInventory = {
 			url = srcLinks.get(url,true)
 			
 			c.push(`<td><div class="image"><img src="${url}" alt=""><strong class="in-stock">${b.stock}</strong></div></td>`)
-			c.push(`<td>${b.name}<br></td>`) //<small>${b.id}</small> removed
-			c.push(`<td>${b.width}x${b.length}<br>${streetImg[b.street]}</td>`)
+			c.push(`<td data-text="${helper.str.cleanup(b.name)}">${b.name}<br></td>`)
+			c.push(`<td data-number="${b.width*b.length}">${b.width}x${b.length}<br>${streetImg[b.street]}</td>`)
 			c.push(`<td>`)
 	
 			for(let y of Object.values(b.boosts)){
@@ -133,7 +133,7 @@ let BoostInventory = {
 			}
 
 			c.push(`</td>`)
-			c.push(`<td title="${i18n('Boxes.CombatCalculator.EfficiencyTT')}">${Math.round(b.score*100)}</td>`)
+			c.push(`<td title="${i18n('Boxes.CombatCalculator.EfficiencyTT')}" data-number="${Math.round(b.score*100)}">${Math.round(b.score*100)}</td>`)
 
 			c.push(`</tr>`)
 		}
