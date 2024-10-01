@@ -140,10 +140,9 @@ let BlueGalaxy = {
             FPBoost = (FP) => { return Math.round(FP * FPB) },
             showBGFragments = JSON.parse(localStorage.getItem('showBGFragments')||"true");
         
-        for (let i = 0; i < Object.values(MainParser.NewCityMapData).length; i++) {
-            let CityEntity = Object.values(MainParser.NewCityMapData)[i];
-
-            if (CityEntity.type === 'main_building' || CityEntity.type === 'greatbuilding') {
+        for (let CityEntity of Object.values(MainParser.NewCityMapData)) {
+            
+            if (['main_building', 'greatbuilding', 'off_grid'].includes(CityEntity.type)) {
                 continue;
             }
             
@@ -189,7 +188,6 @@ let BlueGalaxy = {
 
                 if (GoodsSum > 0 || FP > 0 || FragmentAmount > 0 || OlderGoodsSum > 0) {  
                     
-                    let FragmentText= Fragments.map(fragment=>fragment.amount+ "x " +fragment.name+"<br>").join()
                     Buildings.push({
                         building: CityEntity,
                         ID: CityEntity.id, 
