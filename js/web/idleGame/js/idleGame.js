@@ -522,7 +522,7 @@ let idleGame = {
 		const text_currentrun = `${i18n('Boxes.idleGame.CurrentRun')}: ${idleGame.Stage} / ${i18n('Boxes.idleGame.Variant')}: ${idleGame.Variant}`;
 		const text_nexttown = (idleGame.Stage === 1) ? `${i18n('Boxes.idleGame.NextTown')} 1 M: ${idleGame.time(1,2,sum,degree,idleGame.Progress,idleGame.ProgressDegree)}` :
 		  `${i18n('Boxes.idleGame.NextTown')} 8.4 Q: ${idleGame.time(8.4,5,sum,degree,idleGame.Progress,idleGame.ProgressDegree)}<br/>` +
-		  `6.3 Q: ${idleGame.time(6.3,5,sum,degree,idleGame.Progress,idleGame.ProgressDegree)}`;
+		  `4.2 Q: ${idleGame.time(4.2,5,sum,degree,idleGame.Progress,idleGame.ProgressDegree)}`;
 		$('#idleGame_Town').html(`${text_currentrun}<br/>${text_nexttown}`);
 
 	},
