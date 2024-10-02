@@ -599,9 +599,9 @@ let Productions = {
 					rowA.push('<td '+((type.includes('att') || type.includes('def')) ? 'colspan="3"' : '')+' data-number="'+Technologies.Eras[building.eraName]+'">' + i18n("Eras."+Technologies.Eras[building.eraName]+".short") + '</td>')
 					if (!type.includes('att') && !type.includes('def')) {
 						let time = !building.state.times?.at ? "-" : (building.state.times?.at <= inADay) ? moment.unix(building.state.times?.at).format('HH:mm') : moment.unix(building.state.times?.at).format('dddd, HH:mm')
-						rowA.push('<td style="white-space:nowrap" data-number="' + (building.state.times?.at||9999999999) + '">' + time + '</td>')
+						rowA.push('<td style="white-space:nowrap" data-date="' + (building.state.times?.at||9999999999) + '">' + time + '</td>')
 						let done = (building.state.times?.at * 1000 <= MainParser.getCurrentDateTime() ? i18n('Boxes.Productions.Done') : '')
-						rowA.push('<td style="white-space:nowrap" data-number="0">' + done + '</strong></td>')
+						rowA.push(`<td style="white-space:nowrap" data-number="${done==""? 0:1}">${done}</strong></td>`)
 					}
 					rowA.push('<td class="text-right">')
 					rowA.push('<span class="show-entity" data-id="' + building.id + '"><img class="game-cursor" src="' + extUrl + 'css/images/hud/open-eye.png"></span>')
@@ -635,7 +635,7 @@ let Productions = {
 				}
 				table.push('<th data-type="prodlist'+type+'" class="is-number">' + i18n('Boxes.Productions.Headings.era') + '</th>')
 				if (!type.includes('att') && !type.includes('def')) {
-					table.push('<th class="is-number" data-type="prodlist'+type+'">' + i18n('Boxes.Productions.Headings.earning') + '</th>')
+					table.push('<th class="is-date" data-type="prodlist'+type+'">' + i18n('Boxes.Productions.Headings.earning') + '</th>')
 					table.push('<th class="is-number" data-type="prodlist'+type+'">' + i18n('Boxes.Productions.Headings.Done') + '</th>')
 				}
 				table.push('<th data-type="prodlist'+type+'" class="no-sort" '+((type.includes('att') || type.includes('def')) ? 'colspan="3"' : '')+'> </th>')
@@ -693,6 +693,7 @@ let Productions = {
 			rowA = [],
 			groupedBuildings = [],
 			eras = [],
+			erasCurrent = {},
 			erasTotal = {}
 
 		// gather all different eras
@@ -718,6 +719,7 @@ let Productions = {
 		
 		// prepare array with total number of goods for each era
 		for (const era of eras) {
+			erasCurrent[era] = 0
 			erasTotal[era] = 0
 		}
 
@@ -757,7 +759,8 @@ let Productions = {
 				let currentGoodAmount = 0
 				let goodAmount = 0
 				if (allGoods != undefined) {
-					erasTotal[era] +=  currentGoodAmount = currentGoods?.eras?.[era] || 0
+					erasCurrent[era] += currentGoodAmount = currentGoods?.eras?.[era] || 0
+					erasTotal[era] += goodAmount = allGoods?.eras?.[era] || 0
 					updateGroup[era] += goodAmount = allGoods?.eras?.[era] || 0
 				}
 				rowA.push('<td data-number="'+currentGoodAmount+'" class="text-center">')
@@ -772,7 +775,7 @@ let Productions = {
 			
 			rowA.push('<td data-number="'+Technologies.Eras[building.eraName]+'">' + i18n("Eras."+Technologies.Eras[building.eraName]+".short") + '</td>')
 			let time = moment.unix(building.state.times?.at).format('HH:mm')
-			rowA.push('<td style="white-space:nowrap" data-number="'+(building.state.times?.at||9999999999)+'">' + time + '</td>')
+			rowA.push('<td style="white-space:nowrap" data-date="'+(building.state.times?.at||9999999999)+'">' + time + '</td>')
 			rowA.push('<td class="text-right">')
 			rowA.push('<span class="show-entity" data-id="' + building.id + '"><img class="game-cursor" src="' + extUrl + 'css/images/hud/open-eye.png"></span>')
 			rowA.push('</td>')
@@ -791,10 +794,10 @@ let Productions = {
 		table.push('<th class="no-sort" data-type="prodlist'+type+'"> </th>')
 		table.push('<th class="ascending" data-type="prodlist'+type+'">' + i18n('Boxes.BlueGalaxy.Building') + '</th>')
 		eras.forEach(era => {
-			table.push('<th data-type="prodlist'+type+'" class="is-number text-center"><span data-original-title="'+i18n('Eras.'+(parseInt(era)+1))+'">' + i18n('Eras.'+(parseInt(era)+1)+'.short') + '<br>'+HTML.Format(erasTotal[era])+'</span></th>')
+			table.push('<th data-type="prodlist'+type+'" class="is-number text-center"><span data-original-title="'+i18n('Eras.'+(parseInt(era)+1))+'">' + i18n('Eras.'+(parseInt(era)+1)+'.short') + '<br><small>'+HTML.Format(erasCurrent[era])+'/'+HTML.Format(erasTotal[era])+'</small></span></th>')
 		})
 		table.push('<th data-type="prodlist'+type+'" class="is-number">' + i18n('Boxes.Productions.Headings.era') + '</th>')
-		table.push('<th data-type="prodlist'+type+'" class="is-number">'+i18n('Boxes.Productions.Headings.earning')+'</th>')
+		table.push('<th data-type="prodlist'+type+'" class="is-date">'+i18n('Boxes.Productions.Headings.earning')+'</th>')
 		table.push('<th data-type="prodlist'+type+'" class="no-sort"> </th>')
 		table.push('</tr>')
 		table.push('</thead>')
@@ -814,7 +817,7 @@ let Productions = {
 		table.push('<th data-type="prodgroup'+type+'" class="is-number">' + i18n('Boxes.Productions.Headings.number') + '</th>')
 		table.push('<th data-type="prodgroup'+type+'">' + i18n('Boxes.BlueGalaxy.Building') + '</th>')
 		eras.forEach(era => {
-			table.push('<th data-type="prodgroup'+type+'" class="is-number text-center">' + i18n('Eras.'+(parseInt(era)+1)+'.short') + '</span><br>'+HTML.Format(erasTotal[era])+'</th>')
+			table.push('<th data-type="prodgroup'+type+'" class="is-number text-center">' + i18n('Eras.'+(parseInt(era)+1)+'.short') + '</span><br>'+HTML.Format(erasCurrent[era])+'</th>')
 		})
 		table.push('<th data-type="prodgroup'+type+'" class="is-number">' + i18n('Boxes.Productions.Headings.size') + '</th>')
 		table.push('</tr>')
@@ -1414,7 +1417,7 @@ let Productions = {
 			h.push('</tr>');
 			h.push('<tr class="sorter-header">');
 			h.push('<th data-type="ratinglist" class="is-number ascending">' + i18n('Boxes.ProductionsRating.Score') + '</th>');
-			h.push('<th data-type="ratinglist" colspan=2>' + i18n('Boxes.ProductionsRating.BuildingName') + '</th>');
+			h.push('<th data-type="ratinglist">' + i18n('Boxes.ProductionsRating.BuildingName') + '</th><th class="no-sort"></th>');
 			let tileRatings = JSON.parse(localStorage.getItem('ProductionRatingProdPerTiles'))
 			for (const type of Productions.RatingTypes) {
 				if (!Productions.Rating[type] || Productions.RatingProdPerTiles[type] == null) continue
