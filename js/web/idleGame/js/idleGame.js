@@ -135,6 +135,10 @@ FoEproxy.addMetaHandler('idle_game', (data, postData) => {
 
 let idleGame = {
 
+	finishTown: 8.4,
+	finishTownDegree: 5,
+	finishTownDiscount: 0,
+
 	data : {
 		workshop_1 : {level:0, manager:0, baseData: null, production:0, degree:0, next:0, need:0, ndegree:0, type: 'work'},
 		workshop_2 : {level:0, manager:0, baseData: null, production:0, degree:0, next:0, need:0, ndegree:0, type: 'work'},
@@ -232,6 +236,11 @@ let idleGame = {
 			}
 			idleGame.Tasks[task['id']] = task;
 		}
+		
+		idleGame.finishTown = data.stageCostValue
+		idleGame.finishTownDegree = data.stageCostDegree
+		idleGame.finishTownDiscount = 1 - data.nextStageCostReductionPercentage/100
+
 	},
 
     /**
@@ -521,8 +530,8 @@ let idleGame = {
 		
 		const text_currentrun = `${i18n('Boxes.idleGame.CurrentRun')}: ${idleGame.Stage} / ${i18n('Boxes.idleGame.Variant')}: ${idleGame.Variant}`;
 		const text_nexttown = (idleGame.Stage === 1) ? `${i18n('Boxes.idleGame.NextTown')} 1 M: ${idleGame.time(1,2,sum,degree,idleGame.Progress,idleGame.ProgressDegree)}` :
-		  `${i18n('Boxes.idleGame.NextTown')} 8.4 Q: ${idleGame.time(8.4,5,sum,degree,idleGame.Progress,idleGame.ProgressDegree)}<br/>` +
-		  `4.2 Q: ${idleGame.time(4.2,5,sum,degree,idleGame.Progress,idleGame.ProgressDegree)}`;
+		  `${i18n('Boxes.idleGame.NextTown')} ${idleGame.finishTown} ${idleGame.iGNums[idleGame.finishTownDegree]}: ${idleGame.time(idleGame.finishTown,idleGame.finishTownDegree,sum,degree,idleGame.Progress,idleGame.ProgressDegree)}<br/>` +
+		  `${idleGame.finishTownDiscount*idleGame.finishTown} ${idleGame.iGNums[idleGame.finishTownDegree]}: ${idleGame.time(idleGame.finishTownDiscount*idleGame.finishTown,idleGame.finishTownDegree,sum,degree,idleGame.Progress,idleGame.ProgressDegree)}`;
 		$('#idleGame_Town').html(`${text_currentrun}<br/>${text_nexttown}`);
 
 	},
