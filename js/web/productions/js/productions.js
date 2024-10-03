@@ -1598,7 +1598,7 @@ let Productions = {
 		for (const building of buildingType) {
 			if (building.entityId.includes("AllAge_EasterBonus1") || building.entityId.includes("L_AllAge_Expedition16") || building.entityId.includes("L_AllAge_ShahBonus17") || (building.isSpecial == undefined && building.type != "greatbuilding")) continue // do not include wishingwell type buildings
 			let size = building.size.width * building.size.length
-			size += ((size<=2) ? building.needsStreet * 0.5 : building.needsStreet)
+			size += ((building.size.width == 1 || building.size.length == 1) ? building.needsStreet * 0.5 : building.needsStreet)
 			let score = 0
 			let ratedBuilding = {
 				building: building
