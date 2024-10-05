@@ -200,7 +200,7 @@ let BlueGalaxy = {
                         OlderGoods: OlderGoodsSum,
                         GuildGoods: GuildGoodsSum, 
                         In: CityEntity.state.times.in, 
-                        At: CityEntity.state.times.at,
+                        At: CityEntity.state.times.at, 
                         CombinedValue: FP + BlueGalaxy.GoodsValue*GoodsSum + BlueGalaxy.OlderGoodsValue*OlderGoodsSum,
                     });
                 }
@@ -227,19 +227,19 @@ let BlueGalaxy = {
         if (BlueGalaxy.DoubleCollections > 0)
             h.push(i18n('Boxes.BlueGalaxy.AvailableCollections')+ " " + BlueGalaxy.DoubleCollections+"<br>");
 
-            h.push('<br>');
-            h.push(i18n('Boxes.BlueGalaxy.GoodsValue') + ' ');
-            h.push('<input type="number" id="goodsValue" step="0.01" min="0" max="1000" value="' + BlueGalaxy.GoodsValue + '" title="' + HTML.i18nTooltip(i18n('Boxes.BlueGalaxy.TTGoodsValue')) + '">');   
-            if (BlueGalaxy.GoodsValue > 0) {
-                h.push('<small> (' + HTML.i18nReplacer(i18n('Boxes.BlueGalaxy.GoodsPerFP'), {goods: Math.round(1/BlueGalaxy.GoodsValue*100)/100}) + ')</small>')
-            }
+        h.push('<br>');
+        h.push(i18n('Boxes.BlueGalaxy.GoodsValue') + ' ');
+        h.push('<input type="number" id="goodsValue" step="0.01" min="0" max="1000" value="' + BlueGalaxy.GoodsValue + '" title="' + HTML.i18nTooltip(i18n('Boxes.BlueGalaxy.TTGoodsValue')) + '">');   
+        if (BlueGalaxy.GoodsValue > 0) {
+            h.push('<small> (' + HTML.i18nReplacer(i18n('Boxes.BlueGalaxy.GoodsPerFP'), {goods: Math.round(1/BlueGalaxy.GoodsValue*100)/100}) + ')</small>')
+        }
 
-            h.push('<br>');
-            h.push(i18n('Boxes.BlueGalaxy.OlderGoodsValue') + ' ');
-            h.push('<input type="number" id="OlderGoodsValue" step="0.01" min="0" max="1000" value="' + BlueGalaxy.OlderGoodsValue + '" title="' + HTML.i18nTooltip(i18n('Boxes.BlueGalaxy.TTGoodsValue')) + '">');   
-            if (BlueGalaxy.OlderGoodsValue > 0) {
-                h.push('<small> (' + HTML.i18nReplacer(i18n('Boxes.BlueGalaxy.GoodsPerFP'), {goods: Math.round(1/BlueGalaxy.OlderGoodsValue*100)/100}) + ')</small>')
-            }
+        h.push('<br>');
+        h.push(i18n('Boxes.BlueGalaxy.OlderGoodsValue') + ' ');
+        h.push('<input type="number" id="OlderGoodsValue" step="0.01" min="0" max="1000" value="' + BlueGalaxy.OlderGoodsValue + '" title="' + HTML.i18nTooltip(i18n('Boxes.BlueGalaxy.TTGoodsValue')) + '">');   
+        if (BlueGalaxy.OlderGoodsValue > 0) {
+            h.push('<small> (' + HTML.i18nReplacer(i18n('Boxes.BlueGalaxy.GoodsPerFP'), {goods: Math.round(1/BlueGalaxy.OlderGoodsValue*100)/100}) + ')</small>')
+        }
 
         h.push('</div>');       
 
@@ -278,11 +278,11 @@ let BlueGalaxy = {
             table.push('<td class="text-center" data-number="'+Buildings[i].GuildGoods+'">' + HTML.Format(Buildings[i]['GuildGoods']) + '</td>');
             //table.push('<td class="text-center" data-number="'+Buildings[i].CombinedValue+'">' + HTML.Format(Buildings[i]['CombinedValue']) + '</td>');
 
-            if (Buildings[i]['At'] * 1000 <= MainParser.getCurrentDateTime()) {
+            if (Buildings[i].In == 0 || Buildings[i].At * 1000 <= MainParser.getCurrentDateTime()) {
                 table.push('<td style="white-space:nowrap"><strong class="success">' + i18n('Boxes.BlueGalaxy.Done') + '</strong></td>');
             }
             else {
-                table.push('<td style="white-space:nowrap"><strong class="error">' + moment.unix(Buildings[i]['At']).fromNow() + '</strong></td>');
+                table.push('<td style="white-space:nowrap"><strong class="error">' + moment.unix(Buildings[i].At).fromNow() + '</strong></td>');
             }
 
             table.push('<td class="text-right"><span class="show-entity" data-id="' + Buildings[i]['ID'] + '"><img class="game-cursor" src="' + extUrl + 'css/images/hud/open-eye.png"></span></td>');
