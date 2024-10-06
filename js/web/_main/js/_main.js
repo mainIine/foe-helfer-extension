@@ -1513,7 +1513,7 @@ let MainParser = {
 			if (Boost.origin==="inventory_item") {
 				BoostPotions.activate(Boost.type,{expire:Boost.expireTime,target:Boost.targetedFeature||"all",value:Boost.value});
 			};
-			if (MainParser.BoostSums[d[i]['type']] !== undefined) {
+			if (MainParser.BoostSums[d[i]['type']] !== undefined && (d[i]['type']!='guild_raids_action_points_collection' || MainParser.CityMapData[d[i].entityId])) {
 				MainParser.BoostSums[d[i]['type']] += d[i]['value']
 			}
 			if (MainParser.BoostMapper[d[i]['type']]) {
