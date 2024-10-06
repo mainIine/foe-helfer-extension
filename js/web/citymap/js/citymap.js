@@ -363,7 +363,7 @@ let CityMap = {
 		let coin_boost = boosts.guild_raids_coins_production*0.01
 		let buildings = Object.values(CityMap.QIData)
 		let population = 0, totalPopulation = 0, euphoria = 0, euphoriaBoost = 0, supplies = 0, money = 0, att_def_boost_attacker = 0, att_def_boost_defender = 0
-		let actions = 0
+		let actions = boosts.guild_raids_action_points_collection
 		for (let b in buildings) {
 			let building = CityMap.setQIBuilding(MainParser.CityEntities[buildings[b]['cityentity_id']])
 			if (building.type !== "impediment" && building.type !== "street") {
