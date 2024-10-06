@@ -363,7 +363,7 @@ let CityMap = {
 		let coin_boost = boosts.guild_raids_coins_production*0.01
 		let buildings = Object.values(CityMap.QIData)
 		let population = 0, totalPopulation = 0, euphoria = 0, euphoriaBoost = 0, supplies = 0, money = 0, att_def_boost_attacker = 0, att_def_boost_defender = 0
-		let actions = boosts.guild_raids_action_points_collection
+		let actions = 0
 		for (let b in buildings) {
 			let building = CityMap.setQIBuilding(MainParser.CityEntities[buildings[b]['cityentity_id']])
 			if (building.type !== "impediment" && building.type !== "street") {
@@ -387,8 +387,10 @@ let CityMap = {
 			euphoriaBoost = 1.2
 		else 
 			euphoriaBoost = 1.5
-		for (let b in buildings) {
-			let building = CityMap.setQIBuilding(MainParser.CityEntities[buildings[b]['cityentity_id']])
+
+		let now = MainParser.getCurrentDateTime()/1000
+		for (let b of buildings) {
+			let building = CityMap.setQIBuilding(MainParser.CityEntities[b.cityentity_id])
 			if (building.type !== "impediment" && building.type !== "street") {
 				
 				if (building.boosts !== null) {
@@ -397,7 +399,9 @@ let CityMap = {
 						if (boost.type === "att_def_boost_attacker")
 							att_def_boost_attacker += boost.value 
 						if (boost.type === "att_def_boost_defender")
-							att_def_boost_defender += boost.value 
+							att_def_boost_defender += boost.value
+						if (boost.type === "guild_raids_action_points_collection" && b.state.constructionFinishedAt < now)
+							actions += boost.value 
 					}
 				}
 				if (building.production !== null) {
