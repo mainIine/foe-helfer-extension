@@ -664,11 +664,11 @@ let idleGame = {
 		let t = (amount, da, hourly, dh, stock, ds) => {
 			stock = stock * Math.pow(1000, ds - da);
 			let diff = amount - stock;
-			if (diff <= 0) return "0h:0m";
-			let minutes = Math.ceil(diff / hourly * Math.pow(1000,da-dh) * 60)
-			let hours = Math.floor(minutes / 60)
-			minutes -= hours*60;
-			return {h:hours,m:minutes}
+			if (diff <= 0) return {h:0,m:0};
+			let total = Math.ceil(diff / hourly * Math.pow(1000,da-dh) * 60)
+			let hours = Math.floor(total / 60)
+			let minutes = total-hours*60;
+			return {h:hours,m:minutes,t:total}
 		}
 		let tf = (time)=> {
 			return time.h >= 1000 ? `>999h` : `${time.h}h` + (time.h < 24 ? `:${time.m}m` : ``)
@@ -677,7 +677,7 @@ let idleGame = {
 		let t0 = t(amount, da, hourly, dh, stock, ds)
 		let tNB = t(amount, da, fest, df, stock, ds)
 		
-		let time = `<span ${(dh<df || (df==dh && hourly < fest)) ? 'data-original-title="' + tf(tNB)+'<br>' + i18n("Boxes.idleGame.noBottleneck")+'"':''}>${tf(t0)}</span>`		
+		let time = `<span ${(t0.t > tNB.t) ? 'data-original-title="' + tf(tNB)+'<br>' + i18n("Boxes.idleGame.noBottleneck")+'"':''}>${tf(t0)}</span>`		
 		time += (t0.h < 24) ? ` <img data-original-title="${i18n("Boxes.idleGame.SetTimer")}" src="${srcLinks.get("/shared/gui/plus_offer/plus_offer_time.png", true)}" alt="" onclick="idleGame.addAlert(${t0.h},${t0.m})">` : ``
 		return time;
 	},
