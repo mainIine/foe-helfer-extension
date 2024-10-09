@@ -372,14 +372,16 @@ let Productions = {
 				if ($("#Productions #"+type).html().length === 0) {
 					let content = Productions.buildTableByType(type)
 					$("#Productions #"+type).html(content)
-					$('.sortable-table').tableSorter()
+					$('.TSinactive').tableSorter()					
+					$('.TSinactive').removeClass('TSinactive')					
 					Productions.filterTable('#Productions .filterCurrentList')
 				}
 			});
 
 			// extra functionality
 			$('.production-tabs').tabslet({ active: Productions.ActiveTab })
-			$('.sortable-table').tableSorter()
+			$('.TSinactive').tableSorter()					
+			$('.TSinactive').removeClass('TSinactive')					
 			Productions.filterTable('#Productions .filterCurrentList')
 
 			// show a building on the map
@@ -611,7 +613,7 @@ let Productions = {
 			}
 
 			if (rowA.length > 0) {
-				table.push('<table class="foe-table sortable-table '+type+'-list active">')
+				table.push('<table class="foe-table sortable-table TSinactive '+type+'-list active">')
 				table.push('<thead style="z-index:100">')
 				table.push('<tr>')
 				table.push('<th colspan="2"><span class="btn-default change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeGroups') + '</span> <input type="text" placeholder="' + i18n('Boxes.Productions.FilterTable') + '" class="filterCurrentList"></th>')
@@ -783,7 +785,7 @@ let Productions = {
 		})
 
 		// single view table
-		table.push('<table class="foe-table sortable-table '+type+'-list active">')
+		table.push('<table class="foe-table sortable-table TSinactive '+type+'-list active">')
 		table.push('<thead>')
 		table.push('<tr>')
 		table.push('<th colspan="6"><span class="btn-default change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeGroups') + '</span> <input type="text" placeholder="' + i18n('Boxes.Productions.FilterTable') + '" class="filterCurrentList"></th>')
@@ -807,7 +809,7 @@ let Productions = {
 
 
 		// grouped view
-		table.push('<table class="foe-table sortable-table '+type+'-group">')
+		table.push('<table class="foe-table sortable-table TSinactive '+type+'-group">')
 		table.push('<thead>')
 		table.push('<tr>')
 		table.push('<th colspan="'+(3+eras.length)+'"><span class="btn-default change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeSingle') + '</span></th>')
@@ -844,7 +846,7 @@ let Productions = {
 
 	buildGroupedTable: (type, groupedBuildings, boostCounter) => {
 		let tableGr = [], rowB = []
-		tableGr.push('<table class="foe-table sortable-table '+type+'-group">')
+		tableGr.push('<table class="foe-table sortable-table TSinactive '+type+'-group">')
 		tableGr.push('<thead>')
 		tableGr.push('<tr>')
 		tableGr.push('<th colspan="7"><span class="btn-default change-view game-cursor" data-type="' + type + '">' + (type=="items" || type=="units" ?i18n('Boxes.Productions.ModeSum') : i18n('Boxes.Productions.ModeSingle')) + '</span></th>')
@@ -1402,7 +1404,7 @@ let Productions = {
 			
 			h.push('<div class="ratingtable">');
 			h.push('<a id="RatingSettings" class="toggle-tab btn-default btn-tight" data-value="Settings">' + i18n('Boxes.ProductionsRating.Settings') + '</a>')
-			h.push('<table class="foe-table sortable-table">');
+			h.push('<table class="foe-table sortable-table TSinactive">');
 			h.push('<thead>');
 			
 			h.push('<tr class="settings">')
@@ -1468,8 +1470,9 @@ let Productions = {
         }
 		
 		$('#ProductionsRatingBody').html(h.join('')).promise().done(function () {
-			$('.sortable-table').tableSorter();
-
+			$('.TSinactive').tableSorter()					
+			$('.TSinactive').removeClass('TSinactive')					
+					
 			$('#tilevalues, label[tilevalues]').on('click', function () {
 				$("#ProductionsRatingBody .buildingvalue").toggle();
 				$("#ProductionsRatingBody .tilevalue").toggle();
