@@ -330,8 +330,6 @@ let idleGame = {
         
         $('#idleGameDialogBody').html(htmltext);
 
-		$('#idleGameDialogBody img, #idleGameDialogBody span').tooltip();
-
 		for (let t of idleGame.settings.hiddenTables) {
 			$(t).toggleClass("hide");
 		}
@@ -454,12 +452,7 @@ let idleGame = {
 			if (!Object.hasOwnProperty.call(idleGame.data, x)) continue;
 			$('#idleGame_'+x+'Level').text(`${idleGame.data[x].level} → ${idleGame.data[x].next}`);
 			$('#idleGame_'+x).text(`${idleGame.bigNum(idleGame.data[x].need)} ${idleGame.iGNums[idleGame.data[x].ndegree]}`);
-			$('#idleGame_'+x+'Time').html(`${idleGame.time(idleGame.data[x].need,idleGame.data[x].ndegree,sum,degree,0,0)}`);
-			if (degree<festd || (festd==degree && sum < fest) ) {
-				$('#idleGame_'+x+'Time').attr("data-original-title", `${idleGame.time(idleGame.data[x].need,idleGame.data[x].ndegree,fest,festd,0,0,true)}`);
-			} else {
-				$('#idleGame_'+x+'Time').attr("data-original-title", ``);
-			}
+			$('#idleGame_'+x+'Time').html(`${idleGame.time(idleGame.data[x].need,idleGame.data[x].ndegree,sum,degree,0,0,fest,festd)}`);
 			$('#idleGame_'+x).attr('data-original-title', `${idleGame.bigNum(idleGame.data[x].need)} ${idleGame.iGNumTitles[idleGame.data[x].ndegree]}`);
 		
 		}
@@ -506,7 +499,8 @@ let idleGame = {
 												targetProduction,
 												targetDegree,
 												idleGame.Taskprogress[idleGame.Tasklist[t]]?.value || 0,
-												idleGame.Taskprogress[idleGame.Tasklist[t]]?.degree || 0)}`);
+												idleGame.Taskprogress[idleGame.Tasklist[t]]?.degree || 0,
+												0,0)}`);
 			$('#time'+ t).removeClass('hide');
 			
 			
@@ -529,10 +523,23 @@ let idleGame = {
 		idleGame.DisplayStrat(idleGame.checkStrat());
 		
 		const text_currentrun = `${i18n('Boxes.idleGame.CurrentRun')}: ${idleGame.Stage} / ${i18n('Boxes.idleGame.Variant')}: ${idleGame.Variant}`;
-		const text_nexttown = (idleGame.Stage === 1) ? `${i18n('Boxes.idleGame.NextTown')} 1 M: ${idleGame.time(1,2,sum,degree,idleGame.Progress,idleGame.ProgressDegree)}` :
-		  `${i18n('Boxes.idleGame.NextTown')} ${idleGame.finishTown} ${idleGame.iGNums[idleGame.finishTownDegree]}: ${idleGame.time(idleGame.finishTown,idleGame.finishTownDegree,sum,degree,idleGame.Progress,idleGame.ProgressDegree)}<br/>` +
-		  `${idleGame.finishTownDiscount*idleGame.finishTown} ${idleGame.iGNums[idleGame.finishTownDegree]}: ${idleGame.time(idleGame.finishTownDiscount*idleGame.finishTown,idleGame.finishTownDegree,sum,degree,idleGame.Progress,idleGame.ProgressDegree)}`;
+		let Tt = idleGame.finishTown
+		let Td = idleGame.finishTownDegree
+		
+		if (idleGame.Stage === 1) {
+			Tt = 1
+			Td = 2
+		}
+
+		let text_nexttown = `${i18n('Boxes.idleGame.NextTown')} ${Tt} ${idleGame.iGNums[Td]}: `
+		text_nexttown += `${idleGame.time(Tt,Td,sum,degree,idleGame.Progress,idleGame.ProgressDegree,fest,festd)}<br/>` 
+		text_nexttown += `${idleGame.finishTownDiscount*Tt} ${idleGame.iGNums[Td]}: `
+		text_nexttown += `${idleGame.time(idleGame.finishTownDiscount*Tt,Td,sum,degree,idleGame.Progress,idleGame.ProgressDegree,fest,festd)}`;
+		
+		
 		$('#idleGame_Town').html(`${text_currentrun}<br/>${text_nexttown}`);
+
+		$('#idleGameDialogBody [data-original-title]').tooltip();
 
 	},
 
@@ -652,18 +659,26 @@ let idleGame = {
 	},
 
 	
-	time: (amount, da, hourly, dh, stock, ds,title=false) => {
+	time: (amount, da, hourly, dh, stock, ds, fest, df) => {
 		
-		stock = stock * Math.pow(1000, ds - da);
-		let diff = amount - stock;
-		if (diff <= 0) return "0h:0m";
-		let minutes = Math.ceil(diff / hourly * Math.pow(1000,da-dh) * 60)
-		let hours = Math.floor(minutes / 60)
-		minutes -= hours*60;
-		time = hours >= 1000 ? `>999h` : `${hours}h`
-		time += hours < 24 ? `:${minutes}m` : ``
-		time += (hours < 24 && !title) ? ` <img data-original-title="${i18n("Boxes.idleGame.SetTimer")}" src="${srcLinks.get("/shared/gui/plus_offer/plus_offer_time.png", true)}" alt="" onclick="idleGame.addAlert(${hours},${minutes})">` : ``
-		time += title ? i18n("Boxes.idleGame.noBottleneck"):'';
+		let t = (amount, da, hourly, dh, stock, ds) => {
+			stock = stock * Math.pow(1000, ds - da);
+			let diff = amount - stock;
+			if (diff <= 0) return {h:0,m:0};
+			let total = Math.ceil(diff / hourly * Math.pow(1000,da-dh) * 60)
+			let hours = Math.floor(total / 60)
+			let minutes = total-hours*60;
+			return {h:hours,m:minutes,t:total}
+		}
+		let tf = (time)=> {
+			return time.h >= 1000 ? `>999h` : `${time.h}h` + (time.h < 24 ? `:${time.m}m` : ``)
+		}
+		
+		let t0 = t(amount, da, hourly, dh, stock, ds)
+		let tNB = t(amount, da, fest, df, stock, ds)
+		
+		let time = `<span ${(t0.t > tNB.t) ? 'data-original-title="' + tf(tNB)+'<br>' + i18n("Boxes.idleGame.noBottleneck")+'"':''}>${tf(t0)}</span>`		
+		time += (t0.h < 24) ? ` <img data-original-title="${i18n("Boxes.idleGame.SetTimer")}" src="${srcLinks.get("/shared/gui/plus_offer/plus_offer_time.png", true)}" alt="" onclick="idleGame.addAlert(${t0.h},${t0.m})">` : ``
 		return time;
 	},
 

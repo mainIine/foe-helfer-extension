@@ -1802,7 +1802,7 @@ let GuildMemberStat = {
 				return res;
 			}
 
-			let buildingID = helper.str.cleanup(obj.member) + '' + obj.gbid;
+			let buildingID = obj.player_id + '' + obj.gbid;
 
 			if (!(buildingID in res))
 			{
