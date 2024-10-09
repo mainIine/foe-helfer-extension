@@ -286,8 +286,12 @@ GetFights = () =>{
 		$('script').each((i,s)=>{    
 			if (!s?.innerHTML?.includes("unlockedFeatures")) return
 			let raw=s?.innerHTML
-			let ulf= JSON.parse([...raw.matchAll(/(unlockedFeatures:\ ')(.*?)(',\n)/gm)][0][2])
-			MainParser.UnlockedFeatures = ulf.map(x=>x.feature);
+			try {
+				let ulf= JSON.parse([...raw.matchAll(/(unlockedFeatures:\ ')(.*?)(',\n)/gm)][0][2])
+				if (Array.isArray(ulf)) MainParser.UnlockedFeatures = ulf.map(x=>x.feature);
+			} catch (e) {
+
+			}
 		})
 
 		//A/B Tests
