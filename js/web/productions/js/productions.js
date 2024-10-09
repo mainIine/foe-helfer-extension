@@ -763,7 +763,7 @@ let Productions = {
 					erasTotal[era] += goodAmount = allGoods?.eras?.[era] || 0
 					updateGroup[era] += goodAmount = allGoods?.eras?.[era] || 0
 				}
-				rowA.push('<td data-number="'+currentGoodAmount+'" class="text-center">')
+				rowA.push('<td data-number="'+goodAmount+'" class="text-center">')
 					if (currentGoodAmount != goodAmount) {
 						let isAverage = (allGoods.hasRandomProduction ? "Ø" : "")
 						rowA.push(HTML.Format(currentGoodAmount)+'/'+isAverage+HTML.Format(goodAmount))
