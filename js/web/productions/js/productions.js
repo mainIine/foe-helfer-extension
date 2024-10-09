@@ -599,9 +599,8 @@ let Productions = {
 					rowA.push('<td '+((type.includes('att') || type.includes('def')) ? 'colspan="3"' : '')+' data-number="'+Technologies.Eras[building.eraName]+'">' + i18n("Eras."+Technologies.Eras[building.eraName]+".short") + '</td>')
 					if (!type.includes('att') && !type.includes('def')) {
 						let time = !building.state.times?.at ? "-" : (building.state.times?.at <= inADay) ? moment.unix(building.state.times?.at).format('HH:mm:ss') : moment.unix(building.state.times?.at).format('dddd, HH:mm') // add e.g. "Sun," when the production takes over 24hrs
-						rowA.push('<td style="white-space:nowrap" data-date="' + (building.state.times?.at||9999999999) + '">' + time + '</td>')
-						let done = (building.state.times?.at * 1000 <= MainParser.getCurrentDateTime() ? i18n('Boxes.Productions.Done') : '')
-						rowA.push(`<td style="white-space:nowrap" data-number="${done==""? 0:1}">${done}</strong></td>`)
+						let done = (building.state.name == 'collectable' ? i18n('Boxes.Productions.Done') : '')
+						rowA.push('<td style="white-space:nowrap" data-date="' + (building.state.times?.at||9999999999) + '">' + (done==""? time : '<b class="text-success">'+done+'</b>') + '</td>')
 					}
 					rowA.push('<td class="text-right">')
 					rowA.push('<span class="show-entity" data-id="' + building.id + '"><img class="game-cursor" src="' + extUrl + 'css/images/hud/open-eye.png"></span>')
@@ -615,11 +614,11 @@ let Productions = {
 				table.push('<table class="foe-table sortable-table '+type+'-list active">')
 				table.push('<thead style="z-index:100">')
 				table.push('<tr>')
-				table.push('<th colspan="3"><span class="btn-default change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeGroups') + '</span> <input type="text" placeholder="' + i18n('Boxes.Productions.FilterTable') + '" class="filterCurrentList"></th>')
+				table.push('<th colspan="2"><span class="btn-default change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeGroups') + '</span> <input type="text" placeholder="' + i18n('Boxes.Productions.FilterTable') + '" class="filterCurrentList"></th>')
 				if (!type.includes('att') && !type.includes('def') && type!='items') 
-					table.push('<th colspan="9" class="textright">'+(typeCurrentSum >= 10000 ? HTML.FormatNumberShort(typeCurrentSum) : HTML.Format(typeCurrentSum))+ "/" + (typeSum >= 10000 ? HTML.FormatNumberShort(typeSum) : HTML.Format(typeSum))+'</th>')
+					table.push('<th colspan="8" class="textright">'+(typeCurrentSum >= 10000 ? HTML.FormatNumberShort(typeCurrentSum) : HTML.Format(typeCurrentSum))+ "/" + (typeSum >= 10000 ? HTML.FormatNumberShort(typeSum) : HTML.Format(typeSum))+'</th>')
 				else {
-					table.push('<th colspan="9" class="textright"></th>')
+					table.push('<th colspan="8" class="textright"></th>')
 				}
 				table.push('</tr>')
 				table.push('<tr class="sorter-header">')
@@ -636,9 +635,8 @@ let Productions = {
 				table.push('<th data-type="prodlist'+type+'" class="is-number">' + i18n('Boxes.Productions.Headings.era') + '</th>')
 				if (!type.includes('att') && !type.includes('def')) {
 					table.push('<th class="is-date" data-type="prodlist'+type+'">' + i18n('Boxes.Productions.Headings.earning') + '</th>')
-					table.push('<th class="is-number" data-type="prodlist'+type+'">' + i18n('Boxes.Productions.Headings.Done') + '</th>')
 				}
-				table.push('<th data-type="prodlist'+type+'" class="no-sort" '+((type.includes('att') || type.includes('def')) ? 'colspan="3"' : '')+'> </th>')
+				table.push('<th data-type="prodlist'+type+'" class="no-sort" '+((type.includes('att') || type.includes('def')) ? 'colspan="2"' : '')+'> </th>')
 				table.push('</tr>')
 				table.push('</thead>')
 				table.push('<tbody class="prodlist'+type+'">')
@@ -775,7 +773,8 @@ let Productions = {
 			
 			rowA.push('<td data-number="'+Technologies.Eras[building.eraName]+'">' + i18n("Eras."+Technologies.Eras[building.eraName]+".short") + '</td>')
 			let time = moment.unix(building.state.times?.at).format('HH:mm:ss')
-			rowA.push('<td style="white-space:nowrap" data-number="'+(building.state.times?.at||9999999999)+'">' + time + '</td>')
+			let done = (building.state.name == 'collectable' ? i18n('Boxes.Productions.Done') : '')
+			rowA.push('<td style="white-space:nowrap" data-date="' + (building.state.times?.at||9999999999) + '">' + (done==""? time : '<b class="text-success">'+done+'</b>') + '</td>')
 			rowA.push('<td class="text-right">')
 			rowA.push('<span class="show-entity" data-id="' + building.id + '"><img class="game-cursor" src="' + extUrl + 'css/images/hud/open-eye.png"></span>')
 			rowA.push('</td>')
