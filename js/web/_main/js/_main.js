@@ -238,7 +238,7 @@ GetFights = () =>{
 		// check if DB exists
 		StrategyPoints.checkForDB(ExtPlayerID);
 		EventHandler.checkForDB(ExtPlayerID);
-		UnitGex.checkForDB(ExtPlayerID);
+		//UnitGex.checkForDB(ExtPlayerID);
 		GuildMemberStat.checkForDB(ExtPlayerID);
 		GexStat.checkForDB(ExtPlayerID);
 		GuildFights.checkForDB(ExtPlayerID);
