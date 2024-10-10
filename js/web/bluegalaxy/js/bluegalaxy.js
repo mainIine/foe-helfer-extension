@@ -159,6 +159,8 @@ let BlueGalaxy = {
                         FP += FPBoost(product.resources.strategy_points)
                     else if (product.type == "genericReward" && product.resources?.subType == "strategy_points")
                         FP += FPBoost(product.resources.amount);
+                    else if (product.type == "genericReward" && product.resources?.type == "good")
+                        GoodsSum += product.resources.amount;
                     else if (product.type == "genericReward" && product.resources?.type == "forgepoint_package")
                         FP += parseInt(product.resources.subType)
 
