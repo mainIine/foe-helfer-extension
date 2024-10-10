@@ -282,17 +282,19 @@ GetFights = () =>{
 		EventCountdown = eventCountDownFeature?.length > 0 ? eventCountDownFeature[0]["time_string"] : false;
 
 		// Unlocked features
-		//MainParser.UnlockedFeatures = data.responseData.unlocked_features?.map(function(obj) { return obj.feature; });
-		$('script').each((i,s)=>{    
-			if (!s?.innerHTML?.includes("unlockedFeatures")) return
-			let raw=s?.innerHTML
-			try {
-				let ulf= JSON.parse([...raw.matchAll(/(unlockedFeatures:\ ')(.*?)(',\n)/gm)][0][2])
-				if (Array.isArray(ulf)) MainParser.UnlockedFeatures = ulf.map(x=>x.feature);
-			} catch (e) {
+		if (data.responseData.unlocked_features) {
+			MainParser.UnlockedFeatures = data.responseData.unlocked_features?.map(function(obj) { return obj.feature; });
+		} else {
+			$('script').each((i,s)=>{    
+				if (!s?.innerHTML?.includes("unlockedFeatures")) return
+				try {
+					let ulf = JSON.parse([...s?.innerHTML.matchAll(/(unlockedFeatures:\ ')(.*?)(',\n)/gm)][0][2])
+					if (Array.isArray(ulf)) MainParser.UnlockedFeatures = ulf.map(x=>x.feature);
+				} catch (e) {
 
-			}
-		})
+				}
+			})
+		}
 
 		//A/B Tests
 		MainParser.ABTests=Object.assign({}, ...data.responseData.active_ab_tests.map((x) => ({ [x.test_name]: x })));
