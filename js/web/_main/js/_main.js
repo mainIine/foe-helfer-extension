@@ -849,7 +849,7 @@ GetFights = () =>{
 	// --------------------------------------------------------------------------------------------------
 	// Quests
 	FoEproxy.addHandler('QuestService', 'getUpdates', (data, PostData) => {
-		if (PostData[0].requestClass === 'QuestService' && PostData[0].requestMethod === 'advanceQuest') {
+		if (PostData[0]?.requestClass === 'QuestService' && PostData[0]?.requestMethod === 'advanceQuest') {
 			FPCollector.HandleAdvanceQuest(PostData[0]);
 		}
 
