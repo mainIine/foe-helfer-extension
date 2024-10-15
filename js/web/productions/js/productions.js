@@ -706,7 +706,8 @@ let Productions = {
 			groupedBuildings = [],
 			eras = [],
 			erasCurrent = {},
-			erasTotal = {}
+			erasTotal = {},
+			inADay = Math.floor(Date.now() / 1000) + 86400
 
 		// gather all different eras
 		buildingIds.forEach(b => {
