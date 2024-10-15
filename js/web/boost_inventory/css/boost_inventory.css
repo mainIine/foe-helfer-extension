@@ -1,52 +1,42 @@
-/*
- * *************************************************************************************
- *
- * Copyright (C) 2024 FoE-Helper team - All Rights Reserved
- * You may use, distribute and modify this code under the
- * terms of the AGPL license.
- *
- * See file LICENSE.md or go to
- * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
- * for full license details.
- *
- * *************************************************************************************
- */
-
+/* 
+* ************************************************************************************* * 
+* Copyright (C) 2024 FoE-Helper team - All Rights Reserved 
+* You may use, distribute and modify this code under the 
+* terms of the AGPL license. 
+* 
+* See file LICENSE.md or go to 
+* https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md 
+* for full license details. 
+* 
+* ************************************************************************************* 
+*/
 #BoostInventory {
-    width: 800px;
-    height: 500px;
+	width: 800px;
+	height: 500px;
 }
-
 #BoostInventory #BoostInventoryBody {
-    overflow-x: hidden;
-    overflow-y: auto;
+	overflow-x: hidden;
+	overflow-y: auto;
 }
-
 #BoostInventory .boost-amount {
-    display: inline-block;
-    margin-left: 9px;
+	display: inline-block;
+	margin-left: 9px;
 }
-
 #BoostInventory thead {
-    position: sticky;
-    top: 0px;
-    font-weight: 600;
+	position: sticky;
+	top: 0px;
+	font-weight: 600;
 	z-index: 100;
 }
-
-#BoostInventory td,
-#BoostInventory th{
-    &:nth-child(3) {
-        text-align: center;
-    }
-    &:nth-child(4) {
-        text-align: right;
-    }
-    &:nth-child(5) {
-        text-align: center;
-    }
+#BoostInventory td:nth-child(3), #BoostInventory th:nth-child(3) {
+	text-align: center;
 }
-
+#BoostInventory td:nth-child(4), #BoostInventory th:nth-child(4) {
+	text-align: right;
+}
+#BoostInventory td:nth-child(5), #BoostInventory th:nth-child(5) {
+	text-align: center;
+}
 #BoostInventory .image {
 	width: 100px;
 	height: 80px;
@@ -54,9 +44,8 @@
 	align-items: center;
 	justify-content: center;
 	margin: 0 auto 3px;
-    position: relative;
+	position: relative;
 }
-
 #BoostInventory .image img {
 	display: inline-block;
 	margin: auto;
@@ -65,7 +54,6 @@
 	max-height: 70px;
 	image-rendering: -webkit-optimize-contrast;
 }
-
 #BoostInventory .in-stock {
 	position: absolute;
 	top: 55px;
