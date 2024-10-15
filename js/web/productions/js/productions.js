@@ -603,9 +603,12 @@ let Productions = {
 					if (!type.includes('att') && !type.includes('def')) {
 						let time = "-"
 						let showRelativeProductionTime = JSON.parse(localStorage.getItem('productionsShowRelativeTime')||"false")
+						let showAMPMTime = JSON.parse(localStorage.getItem('productionsShowAMPMTime')||"false")
 						if (building.state.times?.at) {
 							if (showRelativeProductionTime)
 								time = moment.unix(building.state.times?.at).fromNow()
+							else if (showAMPMTime)
+								time = moment.unix(building.state.times?.at).format('LTS')
 							else {
 								if (building.state.times?.at <= inADay)
 									time = moment.unix(building.state.times?.at).format('HH:mm:ss') 
@@ -789,9 +792,12 @@ let Productions = {
 			rowA.push('<td data-number="'+Technologies.Eras[building.eraName]+'">' + i18n("Eras."+Technologies.Eras[building.eraName]+".short") + '</td>')
 			let time = "-"
 			let showRelativeProductionTime = JSON.parse(localStorage.getItem('productionsShowRelativeTime')||"false")
+			let showAMPMTime = JSON.parse(localStorage.getItem('productionsShowAMPMTime')||"false")
 			if (building.state.times?.at) {
 				if (showRelativeProductionTime)
 					time = moment.unix(building.state.times?.at).fromNow()
+				else if (showAMPMTime)
+					time = moment.unix(building.state.times?.at).format('LTS')
 				else {
 					if (building.state.times?.at <= inADay)
 						time = moment.unix(building.state.times?.at).format('HH:mm:ss') 
@@ -1752,10 +1758,14 @@ let Productions = {
     */
 	ShowSettings: () => {
         let showRelativeProductionTime = JSON.parse(localStorage.getItem('productionsShowRelativeTime')||"false")
+        let showAMPMTime = JSON.parse(localStorage.getItem('productionsShowAMPMTime')||"false")
+        let show24Time = (showAMPMTime == false && showRelativeProductionTime == false) ? true : false
 
         let h = []
-        h.push(`<p><input id="productionsShowRelativeTime" name="productionsShowRelativeTime" value="1" type="checkbox" ${(showRelativeProductionTime === true) ? ' checked="checked"' : ''} /> <label for="productionsShowRelativeTime">${i18n('Boxes.Productions.RelativeTime')}</label></p>`)
-        h.push(`<p><button onclick="Productions.SaveSettings()" id="save-productions-settings" class="btn btn-default" style="width:100%">${i18n('Boxes.Settings.Save')}</button></p>`)
+        h.push(`<p><input id="productionsShowRelativeTime" name="productionTime" value="1" type="radio" ${(showRelativeProductionTime === true) ? ' checked="checked"' : ''} /> <label for="productionsShowRelativeTime">${i18n('Boxes.Productions.RelativeTime')}</label><br>`)
+        h.push(`<input id="productionsShowAMPMTime" name="productionTime" value="1" type="radio" ${(showAMPMTime === true) ? ' checked="checked"' : ''} /> <label for="productionsShowAMPMTime">${i18n('Boxes.Productions.AMPMTime')}</label><br>`)
+        h.push(`<input id="productionsShow24Time" name="productionTime" value="1" type="radio" ${(show24Time === true) ? ' checked="checked"' : ''} /> <label for="productionsShow24Time">${i18n('Boxes.Productions.Time24')}</label></p>`)
+		h.push(`<p><button onclick="Productions.SaveSettings()" id="save-productions-settings" class="btn btn-default" style="width:100%">${i18n('Boxes.Settings.Save')}</button></p>`)
 
         $('#ProductionsSettingsBox').html(h.join(''))
     },
@@ -1768,6 +1778,15 @@ let Productions = {
         let showRelativeProductionTime = false
 		if ($("#productionsShowRelativeTime").is(':checked')) showRelativeProductionTime = true
 		localStorage.setItem('productionsShowRelativeTime', showRelativeProductionTime)
+
+        let showAMPMTime = false
+		if ($("#productionsShowAMPMTime").is(':checked')) showAMPMTime = true
+		localStorage.setItem('productionsShowAMPMTime', showAMPMTime)
+
+		if ($("#productionsShow24Time").is(':checked')) {
+			localStorage.setItem('productionsShowAMPMTime', false)
+			localStorage.setItem('productionsShowRelativeTime', false)
+		}
 
 		Productions.CalcBody()
 		
