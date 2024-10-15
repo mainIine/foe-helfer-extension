@@ -174,7 +174,8 @@ let Productions = {
 			auto_close: true,
 			dragdrop: true,
 			minimize: true,
-			resize: true
+			resize: true,
+        	settings: 'Productions.ShowSettings()'
 		});
 
 		Productions.ActiveTab = 1;
@@ -600,7 +601,18 @@ let Productions = {
 
 					rowA.push('<td '+((type.includes('att') || type.includes('def')) ? 'colspan="3"' : '')+' data-number="'+Technologies.Eras[building.eraName]+'">' + i18n("Eras."+Technologies.Eras[building.eraName]+".short") + '</td>')
 					if (!type.includes('att') && !type.includes('def')) {
-						let time = !building.state.times?.at ? "-" : (building.state.times?.at <= inADay) ? moment.unix(building.state.times?.at).format('HH:mm:ss') : moment.unix(building.state.times?.at).format('dddd, HH:mm') // add e.g. "Sun," when the production takes over 24hrs
+						let time = "-"
+						let showRelativeProductionTime = JSON.parse(localStorage.getItem('productionsShowRelativeTime')||"false")
+						if (building.state.times?.at) {
+							if (showRelativeProductionTime)
+								time = moment.unix(building.state.times?.at).fromNow()
+							else {
+								if (building.state.times?.at <= inADay)
+									time = moment.unix(building.state.times?.at).format('HH:mm:ss') 
+								else
+									time = moment.unix(building.state.times?.at).format('dddd, HH:mm')
+							}
+						}
 						let done = (building.state.name == 'collectable' ? i18n('Boxes.Productions.Done') : '')
 						rowA.push('<td style="white-space:nowrap" data-date="' + (building.state.times?.at||9999999999) + '">' + (done==""? time : '<b class="text-success">'+done+'</b>') + '</td>')
 					}
@@ -774,7 +786,18 @@ let Productions = {
 			})
 			
 			rowA.push('<td data-number="'+Technologies.Eras[building.eraName]+'">' + i18n("Eras."+Technologies.Eras[building.eraName]+".short") + '</td>')
-			let time = moment.unix(building.state.times?.at).format('HH:mm:ss')
+			let time = "-"
+			let showRelativeProductionTime = JSON.parse(localStorage.getItem('productionsShowRelativeTime')||"false")
+			if (building.state.times?.at) {
+				if (showRelativeProductionTime)
+					time = moment.unix(building.state.times?.at).fromNow()
+				else {
+					if (building.state.times?.at <= inADay)
+						time = moment.unix(building.state.times?.at).format('HH:mm:ss') 
+					else
+						time = moment.unix(building.state.times?.at).format('dddd, HH:mm')
+				}
+			}
 			let done = (building.state.name == 'collectable' ? i18n('Boxes.Productions.Done') : '')
 			rowA.push('<td style="white-space:nowrap" data-date="' + (building.state.times?.at||9999999999) + '">' + (done==""? time : '<b class="text-success">'+done+'</b>') + '</td>')
 			rowA.push('<td class="text-right">')
@@ -1720,4 +1743,33 @@ let Productions = {
 		if (Type === 'goods-next') return null
 		else return 0
 	},
+
+	
+
+    /**
+    *
+    */
+	ShowSettings: () => {
+        let showRelativeProductionTime = JSON.parse(localStorage.getItem('productionsShowRelativeTime')||"false")
+
+        let h = []
+        h.push(`<p><input id="productionsShowRelativeTime" name="productionsShowRelativeTime" value="1" type="checkbox" ${(showRelativeProductionTime === true) ? ' checked="checked"' : ''} /> <label for="productionsShowRelativeTime">${i18n('Boxes.Productions.RelativeTime')}</label></p>`)
+        h.push(`<p><button onclick="Productions.SaveSettings()" id="save-productions-settings" class="btn btn-default" style="width:100%">${i18n('Boxes.Settings.Save')}</button></p>`)
+
+        $('#ProductionsSettingsBox').html(h.join(''))
+    },
+
+
+    /**
+    *
+    */
+    SaveSettings: () => {
+        let showRelativeProductionTime = false
+		if ($("#productionsShowRelativeTime").is(':checked')) showRelativeProductionTime = true
+		localStorage.setItem('productionsShowRelativeTime', showRelativeProductionTime)
+
+		Productions.CalcBody()
+		
+		$(`#ProductionsSettingsBox`).remove()
+    },
 };
