@@ -1,62 +1,54 @@
-/* * ************************************************************************************* * * Copyright (C) 2024 FoE-Helper team - All Rights Reserved * You may use, distribute and modify this code under the * terms of the AGPL license. * * See file LICENSE.md or go to * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md * for full license details. * * ************************************************************************************* Code for creation from img json (run e.g. as snippet or in console) **************************************************************************************** x=//insert image JSON here out=[] out.push(`.goods-sprite {
-	`) out.push(`\tdisplay:inline-block;
-	`) out.push(`\theight:3em;
-	`) out.push(`\tposition: relative;
-	`) out.push(`\t&::before {
-		`) out.push(`\t\tcontent:"";
-		`) out.push(`\t\tdisplay:block;
-		`) out.push(`\t\tbackground:url('../images/goods/fine_goods_large_0.png') top left no-repeat;
-		`) out.push(`\t\tbackground-size:${
-			x.size.w
-		}
-		px ${
-			x.size.h
-		}
-		px;
-		`) out.push(`\t\tposition:absolute;
-		`) out.push(`\t\ttop:0;
-		right:0;
-		bottom:0;
-		left:0;
-		`) out.push(`\t\tmargin:auto;
-		`) out.push(`\t\tzoom:0.8;
-		`) out.push(`\t
-	}
-	`) out.push(`\t&.sprite-50::before{
-		zoom:0.5;
-	}
-	`) out.push(`\t&.sprite-35::before{
-		zoom:0.35;
-	}
-	`) for (let f of x.frames) {
-		 out.push(`\t&.${
-			f[0]
-		}
-		::before{
-			background-position:${
-				1-f[1]
-			}
-			px ${
-				1-f[2]
-			}
-			px;
-			width:${
-				f[3]
-			}
-			px;
-			height:${
-				f[4]
-			}
-			px${
-				f[f.length-1]===true ? ";
-				transform:rotate(-90deg)":""
-			}
-		}
-		`) 
-	}
-	 out.push('
+/*
+ * *************************************************************************************
+ *
+ * Copyright (C) 2024 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
+ *
+ * See file LICENSE.md or go to
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
+ *
+ * *************************************************************************************
+ 
+Code for creation from img json (run e.g. as snippet or in console)
+****************************************************************************************
+
+x=//insert image JSON here
+out=[]
+out.push(`.goods-sprite {`)
+out.push(`\tdisplay: inline-block;`)
+out.push(`\theight: 3em;`)
+out.push(`\tposition: relative;`)
+out.push(`}`)
+
+out.push(`.goods-sprite::before {`)
+out.push(`\tcontent: "";`)
+out.push(`\tdisplay: block;`)
+out.push(`\tbackground: url('../images/goods/fine_goods_large_0.png') top left no-repeat;`)
+out.push(`\tbackground-size: ${x.size.w}px ${x.size.h}px;`)
+out.push(`\tposition: absolute;`)
+out.push(`\ttop: 0;\n\tright: 0;\n\tbottom: 0;\n\tleft: 0;`)
+out.push(`\tmargin: auto;`)
+out.push(`\tzoom: 0.8;`)
+out.push(`}`)
+
+out.push(`.goods-sprite.sprite-50::before {\n\tzoom:0.5;\n}`)
+out.push(`.goods-sprite.sprite-35::before {\n\tzoom:0.35;\n}`)
+
+for (let f of x.frames) {
+    out.push(`.goods-sprite.${f[0]}::before {\n\tbackground-position: ${1-f[1]}px ${1-f[2]}px;\n\twidth: ${f[3]}px;\n\theight: ${f[4]}px;${f[f.length-1]===true ? "\n\ttransform: rotate(-90deg);":""}\n}`)
 }
-') console.log(out.join('\n')) **************************************************************************************** */
+
+console.log(out.join('\n'))
+
+****************************************************************************************
+*/
+
+/*
+styles for fine_goods_large_0.png use the code above for this section - do not override the code for the extra-goods in the next section!!!!
+*/
+
 .goods-sprite {
 	display: inline-block;
 	height: 3em;
@@ -1738,7 +1730,27 @@
 	height: 34px;
 	transform: rotate(-90deg);
 }
-.goods-sprite.supplies::before, .goods-sprite.money::before, .goods-sprite.medals::before, .goods-sprite.empty::before, .goods-sprite.premium::before, .goods-sprite.tavern_silver::before, .goods-sprite.strategy_points::before, .goods-sprite.copper_coins::before, .goods-sprite.koban_coins::before, .goods-sprite.deben::before, .goods-sprite.diplomacy::before, .goods-sprite.egyptians_loot::before, .goods-sprite.cocoa_beans::before, .goods-sprite.rupees::before, .goods-sprite.shells::before {
+
+/*
+************************************************************************************
+styles for extra-goods.png - manually created!!!!
+*/
+
+.goods-sprite.supplies::before, 
+.goods-sprite.money::before, 
+.goods-sprite.medals::before, 
+.goods-sprite.empty::before, 
+.goods-sprite.premium::before, 
+.goods-sprite.tavern_silver::before, 
+.goods-sprite.strategy_points::before, 
+.goods-sprite.copper_coins::before, 
+.goods-sprite.koban_coins::before, 
+.goods-sprite.deben::before, 
+.goods-sprite.diplomacy::before, 
+.goods-sprite.egyptians_loot::before, 
+.goods-sprite.cocoa_beans::before, 
+.goods-sprite.rupees::before, 
+.goods-sprite.shells::before {
 	background: url('../images/goods/goods-extra.png') top left no-repeat;
 	background-size: 512px 128px;
 	width: 64px;
