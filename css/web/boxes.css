@@ -1641,6 +1641,7 @@ SettingsBox */
 	box-shadow: 0 0 4px 4px rgba(0,0,0,0.4);
 	min-width: 120px;
 	max-width: 280px;
+	z-index: 1000;
 }
 
 .settingsbox-wrapper::after {
