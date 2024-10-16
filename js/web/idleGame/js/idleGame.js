@@ -369,12 +369,14 @@ let idleGame = {
     },
 
 	updateTarget: (event) => {
+		if (event.key != 'Enter' && event.key != 'Escape') return;
+
+		
 		if (event.key === 'Enter') {
-			idleGame.settings.targets[event.srcElement.dataset.station] = Number(event.srcElement.value);
+			idleGame.settings.targets[event.srcElement.dataset.station] = Math.max(Math.floor(Math.min(Number(event.srcElement.value),999)||0,0));
 			idleGame.saveSettings();
 		}
 
-		if (event.key != 'Enter' && event.key != 'Escape') return;
 		$('#'+event.srcElement.dataset.replace)[0].style.display = "block";
 		event.srcElement.setAttribute("onfocusout", "");
 		event.srcElement.remove();
@@ -384,7 +386,7 @@ let idleGame = {
 
 	removeInput: (event) => {
 		
-		idleGame.settings.targets[event.srcElement.dataset.station] = Number(event.srcElement.value);
+		idleGame.settings.targets[event.srcElement.dataset.station] = Math.max(Math.floor(Math.min(Number(event.srcElement.value),999)||0,0));
 		idleGame.saveSettings();
 		
 		$('#'+event.srcElement.dataset.replace)[0].style.display = "block";
