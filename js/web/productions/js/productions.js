@@ -256,6 +256,10 @@ let Productions = {
 							}
 						})
 					}
+					if (production.type == 'special_goods') { // space carrier
+						if (Productions.BuildingsProducts.goods.find(x => x.id == building.id) == undefined)
+							Productions.BuildingsProducts["goods"].push(saveBuilding)
+					}
 					if (production.type == "resources") {
 						if (production.resources.money) { 
 							if (Productions.BuildingsProducts.money.find(x => x.id == building.id) == undefined)
