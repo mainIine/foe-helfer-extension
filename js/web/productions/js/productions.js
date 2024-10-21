@@ -41,6 +41,7 @@ let Productions = {
 		'def_boost_defender',
 		'clan_power',
 		'clan_goods',
+		//'guild_raids'
 	],
 
 	HappinessBoost: 0,
@@ -207,6 +208,10 @@ let Productions = {
 							if (Productions.BuildingsProducts[boost].find(x => x.id == building.id) == undefined)
 								Productions.BuildingsProducts[boost].push(saveBuilding)
 						}
+						if (boost.includes('guild_raids')) {
+							if (Productions.BuildingsProducts.guild_raids.find(x => x.id == building.id) == undefined)
+								Productions.BuildingsProducts.guild_raids.push(saveBuilding)
+						}
 					}
 				})
 			})
@@ -223,10 +228,6 @@ let Productions = {
 					if (production.type == "unit") { 
 						if (Productions.BuildingsProducts.units.find(x => x.id == building.id) == undefined)
 							Productions.BuildingsProducts["units"].push(saveBuilding)
-					}
-					if (production.type == "genericReward") { 
-						if (Productions.BuildingsProducts.items.find(x => x.id == building.id) == undefined)
-							Productions.BuildingsProducts["items"].push(saveBuilding)
 					}
 					if (production.type == "random") {
 						production.resources.forEach(resource => {
@@ -684,33 +685,6 @@ let Productions = {
 	},
 
 
-	setChainsAndSets(buildings) {
-		if (buildings === undefined) buildings = Object.values(MainParser.NewCityMapData)
-		
-		for (const building of buildings) {
-			if (building?.setBuilding !== undefined) {
-				// todo
-				// CityMap.findAdjacentSetBuildingByCoords(building.coords.x, building.coords.y, building.setBuilding.name)
-			} 
-			else if (building?.chainBuilding !== undefined && building?.chainBuilding?.type == "start") {
-				
-				let linkedBuildings = CityMap.hasLinks(building)
-				if (linkedBuildings.length > 1) {
-					CityMap.createChainedBuilding(linkedBuildings)
-					
-					for (const link of linkedBuildings) {
-						if (link.chainBuilding.type == 'linked') {
-							// todo: kann irgendwie kaputt gehen
-							// let index = Productions.BuildingsAll.findIndex(x => x.id == link.id)
-							// delete Productions.BuildingsAll[index]
-						}
-					}
-				}
-			}
-		}
-	},
-
-
 	buildGoodsTable: (buildingIds, type = "goods") => {
 		let table = [],
 			rowB = [],
@@ -747,7 +721,6 @@ let Productions = {
 			erasCurrent[era] = 0
 			erasTotal[era] = 0
 		}
-
 
 		// single view table content
 		buildingIds.forEach(b => {

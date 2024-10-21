@@ -373,6 +373,9 @@
 #Productions #ProductionsBody .tabs ul li.items a span {
 	background-position: -415px 3px;
 }
+#Productions #ProductionsBody .tabs ul li.guild_raids a span {
+	background-position: -576px 2px;
+}
 #Productions .units-sum td:nth-child(1), #Productions .units-sum thead tr:nth-child(2) th:nth-child(1) {
 	text-align: right;
 }
