@@ -25,22 +25,22 @@ let Productions = {
 	TabsContent: [],
 
 	Types: [
-		'strategy_points',	// Forge Punkte
-		'goods',			// Güter Gruppe (5 verschieden z.B.)
-		'items',			// fragments, blueprints, boosts etc
-		'money',			// Münzen
-		'supplies',			// Werkzeuge
-		'medals',			// Medaillien
-		'premium',			// Diamanten
-		'population',		// Bevölkerung
-		'happiness',		// Zufriedenheit
-		'units',			// Einheiten
-		'att_boost_attacker', //Angriffsbonus angreifende Armee
-		'def_boost_attacker', //Verteidigungsbonus angreifende Armee
-		'att_boost_defender', //Angriffsbonus verteidigenden Armee
-		'def_boost_defender', //Verteidigungsbonus verteidigenden Armee
-		'clan_power',		// Macht der Gilde
-		'clan_goods',		// Gildengüter (Arche, Ehrenstatue etc.)
+		'strategy_points',	// Forge Points
+		'goods',			// Goods and special goods
+		'items',			// Fragments, blueprints, boosts etc
+		'money',			// Coins
+		'supplies',
+		'medals',
+		'premium',			// Diamonds
+		'population',
+		'happiness',
+		'units',
+		'att_boost_attacker',
+		'def_boost_attacker',
+		'att_boost_defender',
+		'def_boost_defender',
+		'clan_power',
+		'clan_goods',
 	],
 
 	HappinessBoost: 0,
@@ -636,8 +636,13 @@ let Productions = {
 				table.push('<thead style="z-index:100">')
 				table.push('<tr>')
 				table.push('<th colspan="2"><span class="btn-default change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeGroups') + '</span> <input type="text" placeholder="' + i18n('Boxes.Productions.FilterTable') + '" class="filterCurrentList"></th>')
-				if (!type.includes('att') && !type.includes('def') && type!='items') 
-					table.push('<th colspan="8" class="textright">'+(typeCurrentSum >= 10000 ? HTML.FormatNumberShort(typeCurrentSum) : HTML.Format(typeCurrentSum))+ "/" + (typeSum >= 10000 ? HTML.FormatNumberShort(typeSum) : HTML.Format(typeSum))+'</th>')
+				if (!type.includes('att') && !type.includes('def') && type!='items') {
+					table.push('<th colspan="8" class="textright">')
+					table.push((typeCurrentSum >= 10000 ? HTML.FormatNumberShort(typeCurrentSum) : HTML.Format(typeCurrentSum))+ "/" + (typeSum >= 10000 ? HTML.FormatNumberShort(typeSum) : HTML.Format(typeSum)))
+					if (type == 'strategy_points')
+						table.push(' · '+i18n('General.Boost')+': '+MainParser.BoostSums.forge_points_production+'%')
+					table.push('</th>')
+				}
 				else {
 					table.push('<th colspan="8" class="textright"></th>')
 				}
