@@ -46,6 +46,7 @@ let ApiURL = 'https://api.foe-rechner.de/',
 	CurrentEraID = null,
 	GoodsData = [],
 	GoodsList = [],
+	FHResourcesList = [],
 	PlayerDict = {},
 	PlayerDictNeighborsUpdated = false,
 	PlayerDictGuildUpdated = false,
@@ -271,7 +272,7 @@ GetFights = () =>{
 		MainParser.SaveBuildings(MainParser.CityMapData);
 		MainParser.SetArkBonus2();
 		// Güterliste
-		GoodsList = data.responseData.goodsList;
+		GoodsList = data.responseData.goodsList
 
 		// freigeschaltete Erweiterungen sichern
 		CityMap.UnlockedAreas = data.responseData.city_map.unlocked_areas;
@@ -302,6 +303,11 @@ GetFights = () =>{
 		Stats.Init();
 		Alerts.init();
 
+	});
+
+	// ResourcesList
+	FoEproxy.addHandler('ResourceService', 'getResourceDefinitions', (data, postData) => {
+		FHResourcesList = data.responseData
 	});
 
 	// --------------------------------------------------------------------------------------------------
