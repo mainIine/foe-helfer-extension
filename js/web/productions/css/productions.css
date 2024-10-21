@@ -138,6 +138,9 @@
 #Productions td.ally::after {
 	content: ' 🙋';
 }
+#Productions li.guild_raids {
+	display: none;
+}
 #ProductionsRating #ProductionsRatingBody span.resicon.att_boost_attacker-guild_expedition, #ProductionsRating #ProductionsRatingBody span.resicon.def_boost_attacker-guild_expedition, #ProductionsRating #ProductionsRatingBody span.resicon.att_boost_defender-guild_expedition, #ProductionsRating #ProductionsRatingBody span.resicon.def_boost_defender-guild_expedition {
 	background-image: url('../../x_img/ge.png'), url('../images/productions.png');
 	background-size: 75%, auto;
