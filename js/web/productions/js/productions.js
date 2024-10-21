@@ -41,7 +41,7 @@ let Productions = {
 		'def_boost_defender',
 		'clan_power',
 		'clan_goods',
-		//'guild_raids'
+		'guild_raids'
 	],
 
 	HappinessBoost: 0,
@@ -395,6 +395,32 @@ let Productions = {
 				Productions.ShowOnMap($(this).data('id'));
 			});
 		});			
+	},
+
+	setChainsAndSets(buildings) {
+		if (buildings === undefined) buildings = Object.values(MainParser.NewCityMapData)
+		
+		for (const building of buildings) {
+			if (building?.setBuilding !== undefined) {
+				// todo
+				// CityMap.findAdjacentSetBuildingByCoords(building.coords.x, building.coords.y, building.setBuilding.name)
+			} 
+			else if (building?.chainBuilding !== undefined && building?.chainBuilding?.type == "start") {
+				
+				let linkedBuildings = CityMap.hasLinks(building)
+				if (linkedBuildings.length > 1) {
+					CityMap.createChainedBuilding(linkedBuildings)
+					
+					for (const link of linkedBuildings) {
+						if (link.chainBuilding.type == 'linked') {
+							// todo: kann irgendwie kaputt gehen
+							// let index = Productions.BuildingsAll.findIndex(x => x.id == link.id)
+							// delete Productions.BuildingsAll[index]
+						}
+					}
+				}
+			}
+		}
 	},
 
 	filterTable: (selector) => {
