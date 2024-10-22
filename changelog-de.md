@@ -1,5 +1,11 @@
 ## Changelog - Extension
 
+##### 3.8.1.0
+
+**Neu**
+- Produktionsübersicht:
+	- QI Übersicht hinzugefügt
+
 ##### 3.8.0.0
 
 **Neu**
