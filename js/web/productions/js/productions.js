@@ -221,7 +221,7 @@ let Productions = {
 					if (production.type == "guildResources") {
 						if (Productions.BuildingsProducts.clan_goods.find(x => x.id == building.id) == undefined)
 							Productions.BuildingsProducts["clan_goods"].push(saveBuilding)
-						if (production.resources.clan_power > 0)
+						if (production.resources?.clan_power > 0)
 							if (Productions.BuildingsProducts.clan_power.find(x => x.id == building.id) == undefined)
 								Productions.BuildingsProducts["clan_power"].push(saveBuilding)
 					}
