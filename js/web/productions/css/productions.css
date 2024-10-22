@@ -138,9 +138,6 @@
 #Productions td.ally::after {
 	content: ' 🙋';
 }
-#Productions li.guild_raids {
-	display: none;
-}
 #ProductionsRating #ProductionsRatingBody span.resicon.att_boost_attacker-guild_expedition, #ProductionsRating #ProductionsRatingBody span.resicon.def_boost_attacker-guild_expedition, #ProductionsRating #ProductionsRatingBody span.resicon.att_boost_defender-guild_expedition, #ProductionsRating #ProductionsRatingBody span.resicon.def_boost_defender-guild_expedition {
 	background-image: url('../../x_img/ge.png'), url('../images/productions.png');
 	background-size: 75%, auto;
@@ -326,6 +323,27 @@
 }
 #Productions th.boost.def_boost_defender span, #ProductionsRating #ProductionsRatingBody span.resicon.def_boost_defender-all {
 	background-position: -390px 0px;
+}
+#Productions th.boost.qiactions span {
+	background-position: -498px 2px;
+}
+#Productions th.boost.qicoins span {
+	background-position: -603px 2px;
+}
+#Productions th.boost.qicoins_start span {
+	background-position: -630px 2px;
+}
+#Productions th.boost.qisupplies span {
+	background-position: -655px 2px;
+}
+#Productions th.boost.qisupplies_start span {
+	background-position: -680px 2px;
+}
+#Productions th.boost.qigoods_start span {
+	background-position: -708px 2px;
+}
+#Productions th.boost.qiunits_start span {
+	background-position: -733px 0;
 }
 #Productions #ProductionsBody .tabs ul li.strategy_points a span {
 	background-position: 0 2px;
