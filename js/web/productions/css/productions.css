@@ -324,6 +324,27 @@
 #Productions th.boost.def_boost_defender span, #ProductionsRating #ProductionsRatingBody span.resicon.def_boost_defender-all {
 	background-position: -390px 0px;
 }
+#Productions th.boost.qiactions span {
+	background-position: -498px 2px;
+}
+#Productions th.boost.qicoins span {
+	background-position: -603px 2px;
+}
+#Productions th.boost.qicoins_start span {
+	background-position: -630px 2px;
+}
+#Productions th.boost.qisupplies span {
+	background-position: -655px 2px;
+}
+#Productions th.boost.qisupplies_start span {
+	background-position: -680px 2px;
+}
+#Productions th.boost.qigoods_start span {
+	background-position: -708px 2px;
+}
+#Productions th.boost.qiunits_start span {
+	background-position: -733px 0;
+}
 #Productions #ProductionsBody .tabs ul li.strategy_points a span {
 	background-position: 0 2px;
 }
@@ -372,6 +393,9 @@
 }
 #Productions #ProductionsBody .tabs ul li.items a span {
 	background-position: -415px 3px;
+}
+#Productions #ProductionsBody .tabs ul li.guild_raids a span {
+	background-position: -576px 2px;
 }
 #Productions .units-sum td:nth-child(1), #Productions .units-sum thead tr:nth-child(2) th:nth-child(1) {
 	text-align: right;

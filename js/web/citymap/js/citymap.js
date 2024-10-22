@@ -1674,6 +1674,9 @@ let CityMap = {
 								resources: data.state.current_product.product.resources,
 								type: "resources",
 							}
+							if (data.state.current_product.name === 'special_goods') { // space carrier
+								production.type = "special_goods"
+							}
 							productions.push(production)
 						}
 					}
@@ -1778,6 +1781,7 @@ let CityMap = {
 				}
 			}
 			else if (product.reward.type == "good") { // this can break if there is more than one generic goods reward for a building
+				//console.log(1, metaData.name, product.reward)
 				for (const [key, reward] of Object.entries(metaData.components[era].lookup.rewards)) {
 					if (reward.id.includes("good"))
 						lookupData = reward
@@ -1785,6 +1789,7 @@ let CityMap = {
 			}
 			else if (product.reward.id.includes('goods') && !/(fragment|rush)/.test(product.reward.id)) { // for nextage goods, because they are in a chest (random ones)
 				// todo: this not only covers chests now, so implementation needs to be looked at more carefully
+				//console.log(2, metaData.name, product.reward)
 				lookupData = metaData.components[era].lookup.rewards[product.reward.id] // take first chest reward and work with that
 				return {
 					id: product.reward.id,
@@ -2004,14 +2009,20 @@ let CityMap = {
 		}
 		if (productions) {
 			productions.forEach(production => {
-				if (production.type == 'resources') {
+				if (production.type == 'resources' || production.type == 'special_goods') {
 					Object.keys(production.resources).forEach(name => {
 						let good = GoodsList.find(x => x.id == name)
+						let specialGood = FHResourcesList.find(x => x.id == name && x.abilities.specialResource?.type == "specialResource")
 						let goodEra = Technologies.InnoEras[building.eraName]
 						let isGood = false
 						if (good != undefined) {
 							goodEra = Technologies.InnoEras[good.era]
 							name = good.id
+							isGood = true
+						}
+						else if (specialGood != undefined) {
+							goodEra = Technologies.InnoEras[specialGood.era]
+							name = specialGood.id
 							isGood = true
 						}
 						else if (name.includes('previous')) {
@@ -2020,6 +2031,9 @@ let CityMap = {
 						}
 						else if (name.includes('next')) {
 							goodEra = Technologies.getNextEraIdByCurrentEraName(building.eraName)
+							isGood = true
+						}
+						else if (name.includes('current') || name == 'random_good_of_age' || name == 'all_goods_of_age') {
 							isGood = true
 						}
 						else if (name.includes('current') || name == 'random_good_of_age' || name == 'all_goods_of_age') {

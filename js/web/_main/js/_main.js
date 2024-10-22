@@ -46,6 +46,7 @@ let ApiURL = 'https://api.foe-rechner.de/',
 	CurrentEraID = null,
 	GoodsData = [],
 	GoodsList = [],
+	FHResourcesList = [],
 	PlayerDict = {},
 	PlayerDictNeighborsUpdated = false,
 	PlayerDictGuildUpdated = false,
@@ -271,7 +272,7 @@ GetFights = () =>{
 		MainParser.SaveBuildings(MainParser.CityMapData);
 		MainParser.SetArkBonus2();
 		// Güterliste
-		GoodsList = data.responseData.goodsList;
+		GoodsList = data.responseData.goodsList
 
 		// freigeschaltete Erweiterungen sichern
 		CityMap.UnlockedAreas = data.responseData.city_map.unlocked_areas;
@@ -302,6 +303,11 @@ GetFights = () =>{
 		Stats.Init();
 		Alerts.init();
 
+	});
+
+	// ResourcesList
+	FoEproxy.addHandler('ResourceService', 'getResourceDefinitions', (data, postData) => {
+		FHResourcesList = data.responseData
 	});
 
 	// --------------------------------------------------------------------------------------------------
@@ -998,9 +1004,13 @@ let MainParser = {
 		'coin_production': 0,
 		'supply_production': 0,
 		'forge_points_production':0,
+		'guild_raids_action_points_collection': 0,
 		'guild_raids_coins_production': 0,
+		'guild_raids_coins_start': 0,
 		'guild_raids_supplies_production': 0,
-		'guild_raids_action_points_collection': 0
+		'guild_raids_supplies_start': 0,
+		'guild_raids_goods_start': 0,
+		'guild_raids_units_start': 0,
 	},
 
 
@@ -1516,15 +1526,15 @@ let MainParser = {
 
 			let Boost = d[i];
 
-			let EntityID = Boost['entityId'];
+			let EntityID = Boost['entityId']
 			if (Boost.origin == "castle_system")
-				EntityID = 2000000023; // castle system has entityid 2000000023
+				EntityID = 2000000023 // castle system has entityid 2000000023
 			if (!EntityID) EntityID = 0;
-			if (!MainParser.Boosts[EntityID]) MainParser.Boosts[EntityID] = [];
-			MainParser.Boosts[EntityID].push(Boost);
+			if (!MainParser.Boosts[EntityID]) MainParser.Boosts[EntityID] = []
+			MainParser.Boosts[EntityID].push(Boost)
 			if (Boost.origin==="inventory_item") {
-				BoostPotions.activate(Boost.type,{expire:Boost.expireTime,target:Boost.targetedFeature||"all",value:Boost.value});
-			};
+				BoostPotions.activate(Boost.type,{expire:Boost.expireTime,target:Boost.targetedFeature||"all",value:Boost.value})
+			}
 			if (MainParser.BoostSums[d[i]['type']] !== undefined && (d[i]['type']!='guild_raids_action_points_collection' || MainParser.CityMapData[d[i].entityId])) {
 				MainParser.BoostSums[d[i]['type']] += d[i]['value']
 			}

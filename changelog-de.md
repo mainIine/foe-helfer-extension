@@ -1,5 +1,25 @@
 ## Changelog - Extension
 
+##### 3.8.1.0
+
+**Neu**
+- Produktionsübersicht:
+	- QI Übersicht hinzugefügt
+	- Einstellungen hinzugefügt: Man kann jetzt einstellen, ob man eine Art Countdown oder die Uhrzeit sehen möchte
+	- "Fertig" und "Ernte" Spalte kombiniert: wenn eine Produktion fertig ist, wird es in dieser Spalte angezeigt
+
+**Update**
+- Idle Game Events:
+	- Die Kosten zum günstigeren Abschluss einer Runde werden nun aus den Spieldaten generiert und sollten sich von alleine aktualisieren
+- Legendäre Bauwerke Rechner - Powerlevel-Werte für Stufen 1-68 für Weltraumbasis hinzugefügt
+
+**BugFix**
+- Produktionsübersicht: ist wegen eines Spiel-Updates kaputt gegangen
+- Der Weltraumfrachter hat in der Produktionsübersicht gefehlt
+- Verhandlungs-Assistent: Die Güter wurden nicht angezeigt, wenn man alte Betriebssysteme nutzt
+- LG Investitionen: Fenster repariert, die Blaue Galaxie fehlt noch, aber man sollte die sowieso bis Stufe 91 leveln
+- Burgsystem: Das Fenster war nach einem Spiel-Update kaputt
+
 ##### 3.8.0.0
 
 **Neu**
