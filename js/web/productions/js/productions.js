@@ -287,7 +287,7 @@ let Productions = {
 
 						}
 					}
-					if (production.resources.icon == "next_age_goods") {
+					if (production.resources?.icon == "next_age_goods") {
 						if (Productions.BuildingsProducts.goods.find(x => x.id == building.id) == undefined)
 							Productions.BuildingsProducts["goods"].push(saveBuilding)
 					}
@@ -340,7 +340,7 @@ let Productions = {
 							}
 						})
 					}
-					if (production.resources.icon == "next_age_goods") {
+					if (production.resources?.icon == "next_age_goods") {
 						if (Productions.BuildingsProducts.goods.find(x => x.id == building.id) == undefined)
 							Productions.BuildingsProducts["goods"].push(saveBuilding)
 					}
@@ -1152,16 +1152,18 @@ let Productions = {
 						prod.type = null
 				}
 				if (category == "clan_goods" && production.type == "guildResources") {
-					if (production.resources.all_goods_of_age)
-						prod.amount = production.resources.all_goods_of_age
+					if (production.resources?.all_goods_of_age)
+						prod.amount = production.resources?.all_goods_of_age
 					else {
-						let good = GoodsList.find(x => x.id == Object.keys(production.resources)[0])
-						if (good != undefined)
-							prod.amount = production.resources[good.id]*5 // multiply found good by 5
+						if (production.resources != undefined) {
+							let good = GoodsList.find(x => x.id == Object.keys(production.resources)[0])
+							if (good != undefined)
+								prod.amount = production.resources[good.id]*5 // multiply found good by 5
+						}
 					}
 				}
 				if (category == "clan_power" && production.type == "guildResources") {
-					if (production.resources.clan_power)
+					if (production.resources?.clan_power)
 						prod.amount = production.resources.clan_power
 				}
 			})
