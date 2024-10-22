@@ -1,5 +1,11 @@
 ## Changelog - Extension
 
+##### 3.8.1.0
+
+**New**
+- Production Overview:
+	- Added QI productions and boosts view
+
 ##### 3.8.0.0
 
 **New**
