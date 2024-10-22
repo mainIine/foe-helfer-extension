@@ -11,7 +11,7 @@
 **Update**
 - Idle Game Mechanic:
 	- The cost reduction to finish a round is now pulled from the game data and should auto-update with changes
-- Great Biuldings Calculator - powerlevel values added for SASH levels 1-42
+- Great Biuldings Calculator - powerlevel values added for SASH levels 1-68
 
 **BugFix**
 - Production Overview was broken after a game update
