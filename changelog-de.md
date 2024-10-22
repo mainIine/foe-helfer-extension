@@ -6,6 +6,9 @@
 - Produktionsübersicht:
 	- QI Übersicht hinzugefügt
 
+**BugFix**
+- Die Produktionsübersicht ist wegen eines Spiel-Updates kaputt gegangen
+
 ##### 3.8.0.0
 
 **Neu**

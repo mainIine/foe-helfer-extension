@@ -6,6 +6,9 @@
 - Production Overview:
 	- Added QI productions and boosts view
 
+**BugFix**
+- Production Overview was broken after a game update
+
 ##### 3.8.0.0
 
 **New**
