@@ -11,7 +11,7 @@
 **Update**
 - Idle Game Events:
 	- Die Kosten zum günstigeren Abschluss einer Runde werden nun aus den Spieldaten generiert und sollten sich von alleine aktualisieren
-- Legendäre Bauwerke Rechner - Powerlevel-Werte für Stufen 1-42 für Weltraumbasis hinzugefügt
+- Legendäre Bauwerke Rechner - Powerlevel-Werte für Stufen 1-68 für Weltraumbasis hinzugefügt
 
 **BugFix**
 - Produktionsübersicht: ist wegen eines Spiel-Updates kaputt gegangen
