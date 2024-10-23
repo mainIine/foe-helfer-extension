@@ -1,5 +1,25 @@
 ## Changelog - Extension
 
+##### 3.8.1.0
+
+**New**
+- Production Overview:
+	- Added QI productions and boosts view
+	- Added setting for times: relative time, AM/PM, 24 hour clock
+	- Merged Collection and Done column: when a production is ready, done will be shown, otherwise the selected time will be visible
+
+**Update**
+- Idle Game Mechanic:
+	- The cost reduction to finish a round is now pulled from the game data and should auto-update with changes
+- Great Biuldings Calculator - powerlevel values added for SASH levels 1-68
+
+**BugFix**
+- Production Overview was broken after a game update
+- Production Overview did not show the Space Carrier
+- Negotiations: Goods were not shown if you had an old operation system
+- GB Investments: Fixed the window. BG is still missing, but you should level it to 91 anyways
+- Castle System: Window was broken after a game update
+
 ##### 3.8.0.0
 
 **New**
