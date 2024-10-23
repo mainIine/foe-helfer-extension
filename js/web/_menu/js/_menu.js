@@ -833,7 +833,7 @@ let _menu = {
 	 *
 	 * @returns {*|jQuery}
 	 */
-	unitsGex_Btn: () => {
+	/*unitsGex_Btn: () => { //deactivated
 		let btn = _menu.MakeButton('unitsGex', i18n('Menu.unitsGex.Title'), i18n('Menu.unitsGex.Desc'));
 
 		let btn_sp = $('<span />').on('click', function () {
@@ -841,7 +841,7 @@ let _menu = {
 		});
 
 		return btn.append(btn_sp);
-	},
+	},*/
 
 	/**
 	 * Guildfight Overview

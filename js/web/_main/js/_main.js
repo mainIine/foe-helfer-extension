@@ -46,6 +46,7 @@ let ApiURL = 'https://api.foe-rechner.de/',
 	CurrentEraID = null,
 	GoodsData = [],
 	GoodsList = [],
+	FHResourcesList = [],
 	PlayerDict = {},
 	PlayerDictNeighborsUpdated = false,
 	PlayerDictGuildUpdated = false,
@@ -238,7 +239,7 @@ GetFights = () =>{
 		// check if DB exists
 		StrategyPoints.checkForDB(ExtPlayerID);
 		EventHandler.checkForDB(ExtPlayerID);
-		UnitGex.checkForDB(ExtPlayerID);
+		//UnitGex.checkForDB(ExtPlayerID);
 		GuildMemberStat.checkForDB(ExtPlayerID);
 		GexStat.checkForDB(ExtPlayerID);
 		GuildFights.checkForDB(ExtPlayerID);
@@ -271,7 +272,7 @@ GetFights = () =>{
 		MainParser.SaveBuildings(MainParser.CityMapData);
 		MainParser.SetArkBonus2();
 		// Güterliste
-		GoodsList = data.responseData.goodsList;
+		GoodsList = data.responseData.goodsList
 
 		// freigeschaltete Erweiterungen sichern
 		CityMap.UnlockedAreas = data.responseData.city_map.unlocked_areas;
@@ -282,7 +283,19 @@ GetFights = () =>{
 		EventCountdown = eventCountDownFeature?.length > 0 ? eventCountDownFeature[0]["time_string"] : false;
 
 		// Unlocked features
-		MainParser.UnlockedFeatures = data.responseData.unlocked_features?.map(function(obj) { return obj.feature; });
+		if (data.responseData.unlocked_features) {
+			MainParser.UnlockedFeatures = data.responseData.unlocked_features?.map(function(obj) { return obj.feature; });
+		} else {
+			$('script').each((i,s)=>{    
+				if (!s?.innerHTML?.includes("unlockedFeatures")) return
+				try {
+					let ulf = JSON.parse([...s?.innerHTML.matchAll(/(unlockedFeatures:\ ')(.*?)(',\n)/gm)][0][2])
+					if (Array.isArray(ulf)) MainParser.UnlockedFeatures = ulf.map(x=>x.feature);
+				} catch (e) {
+
+				}
+			})
+		}
 
 		//A/B Tests
 		MainParser.ABTests=Object.assign({}, ...data.responseData.active_ab_tests.map((x) => ({ [x.test_name]: x })));
@@ -290,6 +303,11 @@ GetFights = () =>{
 		Stats.Init();
 		Alerts.init();
 
+	});
+
+	// ResourcesList
+	FoEproxy.addHandler('ResourceService', 'getResourceDefinitions', (data, postData) => {
+		FHResourcesList = data.responseData
 	});
 
 	// --------------------------------------------------------------------------------------------------
@@ -837,7 +855,7 @@ GetFights = () =>{
 	// --------------------------------------------------------------------------------------------------
 	// Quests
 	FoEproxy.addHandler('QuestService', 'getUpdates', (data, PostData) => {
-		if (PostData[0].requestClass === 'QuestService' && PostData[0].requestMethod === 'advanceQuest') {
+		if (PostData[0]?.requestClass === 'QuestService' && PostData[0]?.requestMethod === 'advanceQuest') {
 			FPCollector.HandleAdvanceQuest(PostData[0]);
 		}
 
@@ -986,9 +1004,13 @@ let MainParser = {
 		'coin_production': 0,
 		'supply_production': 0,
 		'forge_points_production':0,
+		'guild_raids_action_points_collection': 0,
 		'guild_raids_coins_production': 0,
+		'guild_raids_coins_start': 0,
 		'guild_raids_supplies_production': 0,
-		'guild_raids_action_points_collection': 0
+		'guild_raids_supplies_start': 0,
+		'guild_raids_goods_start': 0,
+		'guild_raids_units_start': 0,
 	},
 
 
@@ -1504,16 +1526,16 @@ let MainParser = {
 
 			let Boost = d[i];
 
-			let EntityID = Boost['entityId'];
+			let EntityID = Boost['entityId']
 			if (Boost.origin == "castle_system")
-				EntityID = 2000000023; // castle system has entityid 2000000023
+				EntityID = 2000000023 // castle system has entityid 2000000023
 			if (!EntityID) EntityID = 0;
-			if (!MainParser.Boosts[EntityID]) MainParser.Boosts[EntityID] = [];
-			MainParser.Boosts[EntityID].push(Boost);
+			if (!MainParser.Boosts[EntityID]) MainParser.Boosts[EntityID] = []
+			MainParser.Boosts[EntityID].push(Boost)
 			if (Boost.origin==="inventory_item") {
-				BoostPotions.activate(Boost.type,{expire:Boost.expireTime,target:Boost.targetedFeature||"all",value:Boost.value});
-			};
-			if (MainParser.BoostSums[d[i]['type']] !== undefined) {
+				BoostPotions.activate(Boost.type,{expire:Boost.expireTime,target:Boost.targetedFeature||"all",value:Boost.value})
+			}
+			if (MainParser.BoostSums[d[i]['type']] !== undefined && (d[i]['type']!='guild_raids_action_points_collection' || MainParser.CityMapData[d[i].entityId])) {
 				MainParser.BoostSums[d[i]['type']] += d[i]['value']
 			}
 			if (MainParser.BoostMapper[d[i]['type']]) {

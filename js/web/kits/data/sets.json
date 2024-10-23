@@ -1,6 +1,6 @@
 [	
 	{
-		"udate": "Halloween Event 2024 (09 Spetember 2024)"
+		"udate": "Winter Event 2024 (14 October 2024)"
 	},
 	{
 		"groupname": "Events"
@@ -114,6 +114,42 @@
 		"name": "Mountain_Reserve",
 		"buildings": [
 			{"first": "R_MultiAge_WildBonus21a"}
+		]
+	},
+	{
+		"name": "Yukitomo_Tower",
+		"buildings": [
+			{"first": "W_MultiAge_WIN24A1"}
+		]
+	},
+	{
+		"name": "Didukh",
+		"buildings": [
+			{"first": "W_MultiAge_WIN24F1"}
+		]
+	},
+	{
+		"name": "Sleigh_Builder",
+		"buildings": [
+			{"first": "W_MultiAge_WIN18B1"}
+		]
+	},
+	{
+		"name": "Holly_Hauler",
+		"buildings": [
+			{"first": "W_MultiAge_WIN24B1"}
+		]
+	},
+	{
+		"name": "Sled_Pup_Monument",
+		"buildings": [
+			{"first": "W_MultiAge_WIN24C1"}
+		]
+	},
+	{
+		"name": "Eternal_Market",
+		"buildings": [
+			{"first": "W_MultiAge_LTE24A1"}
 		]
 	},
 	{
@@ -887,6 +923,18 @@
 		"name": "Glimmdrake_Riders",
 		"buildings": [
 			{"first": "W_MultiAge_GBG24F1"}
+		]
+	},
+	{
+		"name": "Lindworm_Keep",
+		"buildings": [
+			{"first": "W_MultiAge_GBG24G1"}
+		]
+	},
+	{
+		"name": "Lindworm_Archery_Range",
+		"buildings": [
+			{"first": "W_MultiAge_GBG24H1"}
 		]
 	},
 	{
