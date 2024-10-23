@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2024 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -100,7 +100,7 @@ FoEproxy.addHandler('BattlefieldService', 'startByBattleType', (data, postData) 
     }
     if (data.responseData.state.winnerBit!=2 && unitsLost < BattleAssist.AASettings.lostUnits && HPstart - HPcurrent < BattleAssist.AASettings.lostHP) return;
     if (data.responseData.state.winnerBit==2 && !BattleAssist.AASettings.battleLost) return;
-    if (BattleAssist.armyAdvice[BattleAssist.armyRecent[0].id] && BattleAssist.armyAdvice[BattleAssist.armyRecent[0].id].bonus < BattleAssist.armyRecent[0].bonus) return
+    if (BattleAssist.armyAdvice[BattleAssist.armyRecent[0]?.id] && BattleAssist.armyAdvice[BattleAssist.armyRecent[0]?.id].bonus < BattleAssist.armyRecent[0]?.bonus) return
     BattleAssist.ShowAddAdvice();
     
 });
@@ -108,13 +108,13 @@ FoEproxy.addHandler('BattlefieldService', 'startByBattleType', (data, postData) 
 FoEproxy.addHandler('BattlefieldService', 'surrender', (data, postData) => {
     if (!Settings.GetSetting('ShowArmyAdvice'))	return;
     if (!BattleAssist.AASettings.battleSurrendered) return
-    if (BattleAssist.armyRecent[0] && BattleAssist.armyAdvice[BattleAssist.armyRecent[0].id] && BattleAssist.armyAdvice[BattleAssist.armyRecent[0].id].bonus < BattleAssist.armyRecent[0].bonus) return
+    if (BattleAssist.armyRecent[0] && BattleAssist.armyAdvice[BattleAssist.armyRecent[0]?.id] && BattleAssist.armyAdvice[BattleAssist.armyRecent[0]?.id].bonus < BattleAssist.armyRecent[0]?.bonus) return
     BattleAssist.ShowAddAdvice();
 });
 FoEproxy.addHandler('BattlefieldService', 'surrenderWave', (data, postData) => {
     if (!Settings.GetSetting('ShowArmyAdvice'))	return;
     if (!BattleAssist.AASettings.battleSurrendered) return
-    if (BattleAssist.armyRecent[0] && BattleAssist.armyAdvice[BattleAssist.armyRecent[0].id] && BattleAssist.armyAdvice[BattleAssist.armyRecent[0].id].bonus < BattleAssist.armyRecent[0].bonus) return
+    if (BattleAssist.armyRecent[0] && BattleAssist.armyAdvice[BattleAssist.armyRecent[0]?.id] && BattleAssist.armyAdvice[BattleAssist.armyRecent[0]?.id].bonus < BattleAssist.armyRecent[0]?.bonus) return
     BattleAssist.ShowAddAdvice();
 });
 FoEproxy.addHandler('GuildExpeditionService', 'getEncounter', (data, postData) => {

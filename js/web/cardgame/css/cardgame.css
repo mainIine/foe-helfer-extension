@@ -11,92 +11,103 @@
  * **************************************************************************************
  */
 
- #cardGameDialog {
-	top: 50px;
-	left: 350px;
-	width: 200px;
+#cardGameDialog {
+    top: 50px;
+    left: 350px;
+    width: 200px;
     height: 200px;
-
 }
 #cardGameDialogBody {
     overflow-y: auto;
 }
-
 #cardGameDialog .cardtop {
-	background-position: 233px -34px;
+    background-position: 233px -34px;
     height: 29px;
     width: 207px;
     z-index: -1;
     position: relative;
     border-radius: 4px;
 }
-
 #cardGameDialog .attack, #cardGameDialog .bonus {
-	width: 15%;
+    width: 15%;
     text-align: center;
 }
-
-#cardGameDialog table.foe-table tbody tr:nth-child(odd) { background-color: transparent; }
-
+#cardGameDialog table.foe-table tbody tr:nth-child(odd) {
+    background-color: transparent;
+}
 #cardGameDialog .name {
     color: var(--text-darker);
     text-shadow: none;
     font-weight: bold;
     display: flex;
     margin: -2px -5px;
-    text-shadow: 0 0 3px #0008, 0 1px 1px #0009;
-
-    &.commander { color: #f5bc72; }
-    &.manipulator { color: #8680e7; }
-    &.genius { color: #89c7f0; }
-    &.champion { color: #d64d4d; }
-    &.none { color: #3ec9c9; 
-        & .faction { background-image: url(../../x_img/hero_ability.png) }
-    }
-
-    & .faction {
-        width: 23px;
-        height: 23px;
-        display: inline-block;
-        background-size: contain;
-        flex-shrink: 0;
-    }
-
-    &.highlightWeak .cardName::before {
-        display: inline-block;
-        background-color: var(--hud-border-error);
-        content: '!';
-        border-radius: 50px;
-        color: var(--text-light);
-        text-align: center;
-        text-shadow: none;
-        width: 19px;
-        height: 19px;
-        font-weight: bold;
-        margin-right: 2px;
-        margin-top: 2px;
-    }
+    text-shadow: 0 0 3px #000 8, 0 1px 1px #000 9;
 }
-
+#cardGameDialog .name.commander {
+    color: #f5bc72;
+}
+#cardGameDialog .name.manipulator {
+    color: #8680e7;
+}
+#cardGameDialog .name.genius {
+    color: #89c7f0;
+}
+#cardGameDialog .name.champion {
+    color: #d64d4d;
+}
+#cardGameDialog .name.none {
+    color: #3ec9c9;
+}
+#cardGameDialog .name.none .faction {
+    background-image: url(../../x_img/hero_ability.png);
+}
+#cardGameDialog .name .faction {
+    width: 23px;
+    height: 23px;
+    display: inline-block;
+    background-size: contain;
+    flex-shrink: 0;
+}
+#cardGameDialog .name.highlightWeak .cardName::before {
+    display: inline-block;
+    background-color: var(--hud-border-error);
+    content: '!';
+    border-radius: 50px;
+    color: var(--text-light);
+    text-align: center;
+    text-shadow: none;
+    width: 19px;
+    height: 19px;
+    font-weight: bold;
+    margin-right: 2px;
+    margin-top: 2px;
+}
 #cardGameDialog .highlight, #cardGameDialog .highlightOptions {
     color: var(--text-light);
-    box-shadow: inset 0 0 20px #000c;
+    box-shadow: inset 0 0 20px #000 c;
     text-transform: uppercase;
     font-style: italic;
-
-    & .name {
-        font-weight: bolder;
-        filter: saturate(1.2) brightness(1.2);
-        text-shadow: 0 0 3px #000a, 0 1px 1px #000a;
-
-        &.commander { background: linear-gradient(to right, #ea9f3944 10%, #ea9f3900 40%); }
-        &.manipulator { background: linear-gradient(to right, #655fbc44 10%, #655fbc00 40%); }
-        &.genius { background: linear-gradient(to right, #5faee344 10%, #5faee300 40%); }
-        &.champion { background: linear-gradient(to right, #b72b2b44 10%, #b72b2b00 40%); }
-        &.none { background: linear-gradient(to right, #11b4b544 10%, #11b4b500 40%); }
-    }
 }
-
+#cardGameDialog .highlight .name, #cardGameDialog .highlightOptions .name {
+    font-weight: bolder;
+    filter: saturate(1.2) brightness(1.2);
+    text-shadow: 0 0 3px #000 a, 0 1px 1px #000 a;
+}
+#cardGameDialog .highlight .name.commander, #cardGameDialog .highlightOptions .name.commander {
+    background: linear-gradient(to right, #ea9f39 44 10%, #ea9f39 0 40%);
+}
+#cardGameDialog .highlight .name.manipulator, #cardGameDialog .highlightOptions .name.manipulator {
+    background: linear-gradient(to right, #655fbc 44 10%, #655fbc 0 40%);
+}
+#cardGameDialog .highlight .name.genius, #cardGameDialog .highlightOptions .name.genius {
+    background: linear-gradient(to right, #5faee3 44 10%, #5faee3 0 40%);
+}
+#cardGameDialog .highlight .name.champion, #cardGameDialog .highlightOptions .name.champion {
+    background: linear-gradient(to right, #b72b2b 44 10%, #b72b2b 0 40%);
+}
+#cardGameDialog .highlight .name.none, #cardGameDialog .highlightOptions .name.none {
+    background: linear-gradient(to right, #11b4b5 44 10%, #11b4b5 0 40%);
+}
 #cardGameDialog .cardbonus, #cardGameDialog .cardattack {
     background-position: 122px 68px;
     height: 25px;
@@ -109,7 +120,6 @@
 #cardGameDialog .cardattack {
     background-position: 477px 68px;
 }
-
 #cardGameDialog .cardbonus.highlightStrong div::before, #cardGameDialog .cardbonus.highlightWeak div::before {
     display: block;
     height: 28px;
@@ -117,13 +127,11 @@
     margin-left: -41px;
     margin-bottom: -28px;
     background-color: var(--background-table-success);
-    content:'';
+    content: '';
 }
-
 #cardGameDialog .cardbonus.highlightWeak::before {
     background-color: var(--background-table-error);
 }
-
 #cardGameDialog .highlightStrong div {
     background-color: var(--text-success);
     display: inline-block;
@@ -133,17 +141,15 @@
     padding: 0 6px;
     font-weight: bold;
 }
-
-#cardGameDialog th{
-    width:95px;
+#cardGameDialog th {
+    width: 95px;
 }
-#cardGameDialog th:first-child{
+#cardGameDialog th:first-child {
     width: 220px;
 }
-#cardGameDialog td{
-    font-weight:600;
+#cardGameDialog td {
+    font-weight: 600;
 }
-
 #cardGameFightBlocker {
     width: 110px;
     height: 110px;
@@ -154,14 +160,11 @@
     border: 3px solid var(--hud-border-error);
     top: calc(50vh + 188px);
     left: calc(50vw - 62px);
-    &.halloween_event {
-        top: calc(50vh - 39px);
-        left: calc(50vw - 58px);
-    }
-
 }
-
+#cardGameFightBlocker.halloween_event {
+    top: calc(50vh - 39px);
+    left: calc(50vw - 58px);
+}
 #cardGameFightBlocker:hover {
     background: var(--background-btn-red);
 }
-
