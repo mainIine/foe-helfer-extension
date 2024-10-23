@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2022 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2024 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -12,33 +12,30 @@
  */
 
  #Popgame {
-	width: 520px;
+    width: 520px;
     height: 494px;
     top: calc(50% - 281px);
     left: calc(50% - 261px);
     pointer-events: none;
 }
-
-
 #Popgame #PopgameHeader {
     pointer-events: auto;
 }
-
 #Popgame #PopgameBody {
-	overflow: none;
+    overflow: none;
 }
 #PGwrapper {
     height: 404px;
-    &.fall{
-        position: relative;
-        top: calc(50% - 226px);
-        left: calc(50% - 258px);
-    }
-    &.wildlife{
-        position: relative;
-        top: calc(50% - 226px);
-        left: calc(50% - 260px);
-    }
+}
+#PGwrapper.fall {
+    position: relative;
+    top: calc(50% - 226px);
+    left: calc(50% - 258px);
+}
+#PGwrapper.wildlife {
+    position: relative;
+    top: calc(50% - 226px);
+    left: calc(50% - 260px);
 }
 #PGwarning {
     width: 400px;
@@ -51,27 +48,22 @@
     height: 50px;
     width: 50px;
     background-size: 50px;
-    display:inline-flex;
+    display: inline-flex;
     border: transparent solid 2px;
     pointer-events: auto;
 }
-
 .PGselected {
     border: white solid 2px;
 }
-
 .PGcolumn {
-	display: table-cell;
-	vertical-align: bottom;
-    width:47px;
-    
+    display: table-cell;
+    vertical-align: bottom;
+    width: 47px;
 }
-
 .PGwrapper {
-	display: table-row;
+    display: table-row;
     height: 400px;
 }
-
 .PGcell {
     background: url('../img/Popgame.png');
     width: 47px;
@@ -79,149 +71,149 @@
     margin-top: -6px;
     position: relative;
 }
-.PGcell:nth-child(1){
+.PGcell:nth-child(1) {
     z-index: -1;
 }
-.PGcell:nth-child(2){
+.PGcell:nth-child(2) {
     z-index: -2;
 }
-.PGcell:nth-child(3){
+.PGcell:nth-child(3) {
     z-index: -3;
 }
-.PGcell:nth-child(4){
+.PGcell:nth-child(4) {
     z-index: -4;
 }
-.PGcell:nth-child(5){
+.PGcell:nth-child(5) {
     z-index: -5;
 }
-.PGcell:nth-child(6){
+.PGcell:nth-child(6) {
     z-index: -6;
 }
-.PGcell:nth-child(7){
+.PGcell:nth-child(7) {
     z-index: -7;
 }
-.PGcell:nth-child(8){
+.PGcell:nth-child(8) {
     z-index: -8;
 }
-.PGcell:nth-child(9){
+.PGcell:nth-child(9) {
     z-index: -9;
 }
-.PGcell:nth-child(10){
+.PGcell:nth-child(10) {
     z-index: -10;
 }
-.PGcell:nth-child(11){
+.PGcell:nth-child(11) {
     z-index: -11;
 }
-.PGcell:nth-child(12){
+.PGcell:nth-child(12) {
     z-index: -12;
 }
-.PGcell:nth-child(13){
+.PGcell:nth-child(13) {
     z-index: -13;
 }
-.PGcell:nth-child(14){
+.PGcell:nth-child(14) {
     z-index: -14;
 }
-.PGcell:nth-child(15){
+.PGcell:nth-child(15) {
     z-index: -15;
 }
-.PGcell:nth-child(16){
+.PGcell:nth-child(16) {
     z-index: -16;
 }
-.PGcell:nth-child(17){
+.PGcell:nth-child(17) {
     z-index: -17;
 }
-.PGcell:nth-child(18){
+.PGcell:nth-child(18) {
     z-index: -18;
 }
-.PGcell:nth-child(19){
+.PGcell:nth-child(19) {
     z-index: -19;
 }
 /*Wildlife*/
-#PGdestroyer { 
-    background-image: url("../img/destroyer.png") ;
+#PGdestroyer {
+    background-image: url("../img/destroyer.png");
 }
 #PGhammer {
-    background-image: url("../img/hammer.png") ;
+    background-image: url("../img/hammer.png");
 }
-.PG_wildlife_red{
-    background-position:98px 182px; 
+.PG_wildlife_red {
+    background-position: 98px 182px;
 }
-.PG_wildlife_blue{
-    background-position:192px 182px;
+.PG_wildlife_blue {
+    background-position: 192px 182px;
 }
-.PG_wildlife_purple{
-    background-position:333px 182px;
+.PG_wildlife_purple {
+    background-position: 333px 182px;
 }
-.PG_wildlife_green{
-    background-position:239px 182px;
+.PG_wildlife_green {
+    background-position: 239px 182px;
 }
-.PG_wildlife_yellow{
-    background-position:145px 182px;
+.PG_wildlife_yellow {
+    background-position: 145px 182px;
 }
-.PG_wildlife_orange{
-    background-position:286px 182px;
+.PG_wildlife_orange {
+    background-position: 286px 182px;
 }
-.PG_wildlife_red_reward{
-    background-position:98px -0px; 
+.PG_wildlife_red_reward {
+    background-position: 98px 0px;
 }
-.PG_wildlife_blue_reward{
-    background-position:192px -0px;
+.PG_wildlife_blue_reward {
+    background-position: 192px 0px;
 }
-.PG_wildlife_purple_reward{
-    background-position:333px -0px;
+.PG_wildlife_purple_reward {
+    background-position: 333px 0px;
 }
-.PG_wildlife_green_reward{
-    background-position:239px -0px;
+.PG_wildlife_green_reward {
+    background-position: 239px 0px;
 }
-.PG_wildlife_yellow_reward{
-    background-position:145px -0px;
+.PG_wildlife_yellow_reward {
+    background-position: 145px 0px;
 }
-.PG_wildlife_orange_reward{
-    background-position:286px -0px;
+.PG_wildlife_orange_reward {
+    background-position: 286px 0px;
 }
-.PG_wildlife_grandPrize{
-    background-position:51px -0px;
+.PG_wildlife_grandPrize {
+    background-position: 51px 0px;
 }
 /*Fall*/
 #PGfork {
-    background-image: url("../img/fork.png") ;
+    background-image: url("../img/fork.png");
 }
-.PG_fall_red{ 
-    background-position:98px 64px; 
+.PG_fall_red {
+    background-position: 98px 64px;
 }
-.PG_fall_blue{
-    background-position:192px 64px;
+.PG_fall_blue {
+    background-position: 192px 64px;
 }
-.PG_fall_purple{
-    background-position:333px 64px;
+.PG_fall_purple {
+    background-position: 333px 64px;
 }
-.PG_fall_green{
-    background-position:239px 64px;
+.PG_fall_green {
+    background-position: 239px 64px;
 }
-.PG_fall_yellow{
-    background-position:145px 64px;
+.PG_fall_yellow {
+    background-position: 145px 64px;
 }
-.PG_fall_orange{
-    background-position:286px 64px;
+.PG_fall_orange {
+    background-position: 286px 64px;
 }
-.PG_fall_red_reward{
-    background-position:98px 120px; 
+.PG_fall_red_reward {
+    background-position: 98px 120px;
 }
-.PG_fall_blue_reward{
-    background-position:192px 120px;
+.PG_fall_blue_reward {
+    background-position: 192px 120px;
 }
-.PG_fall_purple_reward{
-    background-position:333px 120px;
+.PG_fall_purple_reward {
+    background-position: 333px 120px;
 }
-.PG_fall_green_reward{
-    background-position:239px 120px;
+.PG_fall_green_reward {
+    background-position: 239px 120px;
 }
-.PG_fall_yellow_reward{
-    background-position:145px 120px;
+.PG_fall_yellow_reward {
+    background-position: 145px 120px;
 }
-.PG_fall_orange_reward{
-    background-position:286px 120px;
+.PG_fall_orange_reward {
+    background-position: 286px 120px;
 }
-.PG_fall_grandPrize{
-    background-position:51px 120px;
+.PG_fall_grandPrize {
+    background-position: 51px 120px;
 }
