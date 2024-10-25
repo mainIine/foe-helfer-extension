@@ -1190,7 +1190,7 @@ let Productions = {
 		if ((building.state?.isPolivated == true || building.state?.isPolivated == undefined) && current === true) {
 			building.state.production?.forEach(production => {
 				if (production.type == "genericReward") {
-					if (production.resources.icon.includes("good")) return false
+					if (production.resources?.icon.includes("good")) return false
 					let frag = production.resources.subType == "fragment"
 					allItems += production.resources.amount + "x " + (frag ? "🧩 " : "" ) + production.resources.name + "<br>"
 					itemArray.push({fragment:frag,name:production.resources.name,amount:production.resources.amount,random:0})
@@ -1201,7 +1201,7 @@ let Productions = {
 			if (building.production) {
 				building.production.forEach(production => {
 					if (production.type == "random") {
-						production.resources.forEach(resource => {
+						production.resources?.forEach(resource => {
 							if (!resource.type.includes("good") && resource.type !== "resources") {
 								let frag = resource.subType == "fragment"
 								let amount = parseFloat(Math.round(resource.amount*resource.dropChance * 100) / 100)
@@ -1219,7 +1219,7 @@ let Productions = {
 							allUnits += production.resources[u] + "x " + `<img src='${srcLinks.get("/shared/icons/"+u.replace(/next./,"").replace("random","random_production")+".png",true)}'>` + "<br>"
 						}
 					} 
-					if (production.resources.type == "consumable") {
+					if (production.resources?.type == "consumable") {
 						let frag = production.resources.subType == "fragment"
 						allItems += production.resources.amount + "x " + (frag ? "🧩 " : "" ) + production.resources.name + "<br>"
 						itemArray.push({fragment:frag,name:production.resources.name,amount:production.resources.amount,random:0})
