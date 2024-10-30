@@ -20,7 +20,7 @@
 	border-radius: 4px 0 0 4px;
 	transition: height 0.2s linear;
 	border-width: 0;
-	background-color: #301e0f;
+	background-color: #301e0fcc;
 }
 
 .hud-right::before {
