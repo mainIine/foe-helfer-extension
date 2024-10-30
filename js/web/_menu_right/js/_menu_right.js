@@ -113,7 +113,7 @@ let _menu_right = {
 			_menu.HudCount = _menu.HudLength = parseInt(MenuLength);
 		}
 
-		_menu.HudHeight = (_menu.HudCount * 55);
+		_menu.HudHeight = (_menu.HudCount * 49);
 		_menu.SlideParts = Math.ceil(MenuItemCount / _menu.HudCount);
 
 		$('#foe-helper-hud').height(_menu.HudHeight + 2);
@@ -147,9 +147,6 @@ let _menu_right = {
 				_menu_right.ClickButtonUp();
 			});
 		};
-
-
-
 
 		// Tooltipp top ermitteln und einblenden
 		$('.hud-btn').stop().hover(function () {
