@@ -1811,7 +1811,7 @@ input[type="range"]::-webkit-slider-thumb {
 	box-sizing: border-box;
 	border: 2px solid transparent;
 	border-radius: 4px;
-	box-shadow: inset 0 0 3px 2px #301e0f, 0 0 2px #00000087;
+	box-shadow: inset 0 0 1px 2px #1f1309cc, 0 0 2px #00000087;
 	background: linear-gradient(#553419, #553419) padding-box, linear-gradient(to bottom, #82ae4c, #4f7421) border-box;
 	text-align: center;
 }
