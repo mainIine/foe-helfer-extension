@@ -1520,7 +1520,7 @@ let Productions = {
 				if (MainParser.Allies.buildingList?.[building.id]) {
 					compare += "+" + Object.keys(MainParser.Allies.buildingList?.[building.id]).join("+")
 				}
-				let foundBuildingIndex = uniqueBuildings.findIndex(x => x.name == compare)
+				let foundBuildingIndex = uniqueBuildings.findIndex(x => x.name == compare && !MainParser.Allies.buildingList?.[x.id])
 				if (foundBuildingIndex == -1) {
 					uniqueBuildings.push(building)
 					delete Productions.AdditionalSpecialBuildings[building.entityId]
