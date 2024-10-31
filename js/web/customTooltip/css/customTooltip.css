@@ -5,6 +5,7 @@
     & td {
         width:300px;
         display:flex;
+        white-space-collapse:preserve;
         text-wrap-mode: nowrap;
     }
     
@@ -73,8 +74,14 @@
         animation-duration: 7s;
         animation-iteration-count: infinite;
     }
-      
-    
+    & span.positive {
+        color: var(--text-success);
+        font-weight: bold;
+    }
+    & span.negative {
+        color: var(--text-danger);
+        font-weight: bold;
+    }
 }
       
 @keyframes bounce {
