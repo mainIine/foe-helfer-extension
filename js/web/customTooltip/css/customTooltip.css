@@ -1,0 +1,84 @@
+.HXBuilding {
+    & th {
+        border-bottom: unset;
+    }
+    & td {
+        width:300px;
+        display:flex;
+        text-wrap-mode: nowrap;
+    }
+    
+    & img {
+        padding-right: 3px;
+        max-width: 24px;
+    }
+    
+    & .multiCol {
+        flex-wrap:wrap;
+        width:300px;
+        &>div {
+            flex:1 1 150px
+        }
+    }
+
+    & .inhabitant {
+        max-width: unset;
+        position: absolute;
+        left: -100px;
+        bottom: 10px;
+        background: #a4a45d;
+        td:has(&) {
+            position: relative;
+        }
+    }
+    & .ifMot {
+        margin-left:auto;
+        padding-left:5px;
+        & img {
+            padding-right: 0px;
+        }
+    }
+    & .randomProductions {
+        border: 2px #350000e8 solid;
+        margin-left: -6px;
+        margin-top: -4px;
+        margin-bottom: -4px;
+        & td {
+            width: 270px;
+        }
+        .dropChance {
+            flex-basis: 33px;
+            flex-shrink: 0;
+            margin-left: auto;
+            padding-left: 5px;
+            text-align: right;
+        }
+    }
+    & .isGeneric {
+        display:flex;
+    }
+  
+    & .overflowBox {
+        width:300px;
+        overflow: hidden;
+        left:5px;
+        position:relative;
+    }
+    & .handleOverflow {
+        position: relative;
+        top: 0;
+        left: 0;
+        display:inline-block; 
+        animation-name: bounce;
+        animation-duration: 7s;
+        animation-iteration-count: infinite;
+    }
+      
+    
+}
+      
+@keyframes bounce {
+    0% {  transform: translateX(0%)    }
+    30% {  transform: translateX(0%)    }
+    95% {  transform: translateX(-110%)    }
+}
