@@ -12,6 +12,17 @@
  * *************************************************************************************
  */
 
+
+/*
+How-to set tooltip for Element x:
+- give Element x class "helperTT"
+- set data-attribute "data-callback_tt" to set the tooltip content
+    - if the data-attribute evaluates to be a function, the event paramenter of the triggering "pointerenter" event will be passed through
+
+e.g.:
+ `<td class="helperTT" data-callback_tt="Tooltips.buildingTT">Ipsum Lorem</td>`;
+*/
+
 let Tooltips = {
 
     Container:null,
@@ -28,9 +39,15 @@ let Tooltips = {
         Tooltips.Container = container;
 
         window.addEventListener("pointermove", Tooltips.followMouse);
-        $('body').on("pointerenter",".helperTT",(e)=>{
+        
+        $('body').on("pointerenter",".helperTT", async (e)=>{
             if (e.target.dataset.callback_tt) {
-                eval(e.target.dataset.callback_tt)(e)
+                let f=eval(e.target.dataset.callback_tt)
+                if (typeof(f) == "function") {
+                    let content = await(f(e));
+                    Tooltips.set(content)
+                } else
+                    Tooltips.set(f);
             }
         })
         $('body').on("pointerleave",".helperTT",(e)=>{
@@ -39,6 +56,7 @@ let Tooltips = {
     },
 
     set: (content) => {
+        if (!content) return
         Tooltips.Container.innerHTML=content;
         if (!Tooltips.containerActive) {
             Tooltips.containerActive = true;
@@ -70,14 +88,16 @@ let Tooltips = {
                 `<img src="${srcLinks.get("/city/buildings/"+meta.asset_id.replace(/^(\D_)(.*?)/,"$1SS_$2")+".png",true)}" style="max-width:200px"></td><td style="width:100%; vertical-align:top"">`;
         h += Tooltips.BuildingData(meta,era);
         h += "</td></tr></table></div>"
-        Tooltips.set(h);
-        $(".handleOverflow").each((index,e)=>{
-            let w= ((e.scrollWidth - e.parentNode.clientWidth) || 0)
-            if (w<0)
-                e.style["animation-name"]="unset"
-            else 
-                e.style.width = w + "px";
-        })
+        setTimeout(()=>{
+            $(".handleOverflow").each((index,e)=>{
+                let w= ((e.scrollWidth - e.parentNode.clientWidth) || 0)
+                if (w<0)
+                    e.style["animation-name"]="unset"
+                else 
+                    e.style.width = w + "px";
+            })
+        },100)
+        return h
     },
     BuildingData:(meta,onlyEra=null)=>{
         let numberWithCommas = (x) => {
