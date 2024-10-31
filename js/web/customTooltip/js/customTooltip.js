@@ -40,8 +40,10 @@ let Tooltips = {
 
         window.addEventListener("pointermove", Tooltips.followMouse);
         
+        
         $('body').on("pointerenter",".helperTT", async (e)=>{
             if (e.target.dataset.callback_tt) {
+                Tooltips.activate()
                 let f=eval(e.target.dataset.callback_tt)
                 if (typeof(f) == "function") {
                     let content = await(f(e));
@@ -50,6 +52,7 @@ let Tooltips = {
                     Tooltips.set(f);
             }
         })
+
         $('body').on("pointerleave",".helperTT",(e)=>{
             Tooltips.deactivate()
         })        
@@ -58,24 +61,31 @@ let Tooltips = {
     set: (content) => {
         if (!content) return
         Tooltips.Container.innerHTML=content;
-        if (!Tooltips.containerActive) {
-            Tooltips.containerActive = true;
-            Tooltips.Container.style.display = "block";
-        }
-        if (Tooltips.Container.firstChild.clientHeight+Number(Tooltips.Container.style.top.replace("px","")) > Tooltips.Container.parentElement.clientHeight) Tooltips.Container.style.top=(Tooltips.Container.parentElement.clientHeight-Tooltips.Container.firstChild.clientHeight)+"px"
-        if (Tooltips.Container.firstChild.clientWidth+Number(Tooltips.Container.style.left.replace("px","")) > Tooltips.Container.parentElement.clientWidth) Tooltips.Container.style.left=(Tooltips.Container.parentElement.clientWidth-Tooltips.Container.firstChild.clientWidth)+"px"
+        Tooltips.checkposition()
     },
+    checkposition: () => {
+        try {
+            if(Tooltips.containerActive) {
+                if (Tooltips.Container.firstChild.clientHeight+7+Number(Tooltips.Container.style.top.replace("px","")) > Tooltips.Container.parentElement.clientHeight) Tooltips.Container.style.top=(Tooltips.Container.parentElement.clientHeight-Tooltips.Container.firstChild.clientHeight-7)+"px"
+                if (Tooltips.Container.firstChild.clientWidth+7+Number(Tooltips.Container.style.left.replace("px","")) > Tooltips.Container.parentElement.clientWidth) Tooltips.Container.style.left=(Tooltips.Container.parentElement.clientWidth-Tooltips.Container.firstChild.clientWidth-7)+"px"
+            }
+        } catch (e) {
+
+        }
+    },
+    activate:() => {
+        Tooltips.containerActive = true;
+        Tooltips.Container.style.display = "block";
+    },
+                
     deactivate:() => {
         Tooltips.containerActive = false;
         Tooltips.Container.style.display = "none";
     },
     followMouse:(event)=>{
-        Tooltips.Container.style.left = event.x + "px";
-        Tooltips.Container.style.top = event.y + "px";
-        if(Tooltips.containerActive) {
-            if (Tooltips.Container.firstChild.clientHeight+Number(Tooltips.Container.style.top.replace("px","")) > Tooltips.Container.parentElement.clientHeight) Tooltips.Container.style.top=(Tooltips.Container.parentElement.clientHeight-Tooltips.Container.firstChild.clientHeight)+"px"
-            if (Tooltips.Container.firstChild.clientWidth+Number(Tooltips.Container.style.left.replace("px","")) > Tooltips.Container.parentElement.clientWidth) Tooltips.Container.style.left=(Tooltips.Container.parentElement.clientWidth-Tooltips.Container.firstChild.clientWidth)+"px"
-        }
+        Tooltips.Container.style.left = (event.x+10) + "px";
+        Tooltips.Container.style.top = (event.y+10) + "px";
+        Tooltips.checkposition()
     },
     buildingTT: (e)=>{
         let id=e?.target?.dataset?.meta_id||MainParser?.CityMapData[e?.target?.dataset?.id]?.cityentity_id
@@ -84,8 +94,10 @@ let Tooltips = {
         
         let meta=MainParser.CityEntities[id]
 
-        let h = `<div><table class="foe-table"><tr><td style="width:200px; text-align:right; vertical-align:top">`+
-                `<img src="${srcLinks.get("/city/buildings/"+meta.asset_id.replace(/^(\D_)(.*?)/,"$1SS_$2")+".png",true)}" style="max-width:200px"></td><td style="width:100%; vertical-align:top"">`;
+        let h = `<div><table class="foe-table"><tr><td style="min-width:200px; max-width:200px; vertical-align:top">`+
+                `<div style="color:var(--text-bright);font-weight:600;text-decoration: underline;">${meta.name}</div>`+
+                `<img src="${srcLinks.get("/city/buildings/"+meta.asset_id.replace(/^(\D_)(.*?)/,"$1SS_$2")+".png",true)}" style="max-width:200px"></td>`+
+                `<td style="width:100%; vertical-align:top"">`;
         h += Tooltips.BuildingData(meta,era);
         h += "</td></tr></table></div>"
         setTimeout(()=>{
@@ -444,7 +456,7 @@ let Tooltips = {
                     }
                 }
                 if (a.__class__=="ChainStartAbility") {
-                    set =icons(a.chainId) + MainParser.BuildingChains[a.chainId].name + "</td></tr><tr><td>" + a.description
+                    set =icons(a.chainId) + MainParser.BuildingChains[a.chainId].name + '</td></tr><tr><td style="text-wrap-mode:wrap;">' + a.description
                 }
                 if (a.__class__=="ChainLinkAbility") {
                     set =icons(a.chainId) + MainParser.BuildingChains[a.chainId].name
@@ -494,7 +506,7 @@ let Tooltips = {
             
             if (era != "") out += "<tr><td>" + era + "</td></tr>"
             if (set != "") out += "<tr><td>" + set + "</td></tr>"
-            if (info != "") out += "<tr><td>" + info + "</td></tr>"            
+            if (info != "") out += '<tr><td style="text-wrap-mode:wrap;">' + info + "</td></tr>"
             
             let provides=""
             if (meta.provided_population || meta.required_population) {
@@ -626,7 +638,7 @@ let Tooltips = {
                 for (let b of a.bonuses) {
                     if (Object.values(b.boost).length>0) {
                         if (first) {
-                            boosts+="<tr><td>" + a.description+"</td></tr>"
+                            boosts+='<tr><td style="text-wrap-mode:wrap;">' + a.description+"</td></tr>"
                             first=false
                         }
                         boosts+=`<tr><td>${b.level + "x" + icons(a.chainId)} ► `
@@ -640,7 +652,7 @@ let Tooltips = {
 
                     } else {
                         if (first) {
-                            prods+="<tr><td>" + a.description+"</td></tr>"
+                            prods+='<tr><td style="text-wrap-mode:wrap;">' + a.description+"</td></tr>"
                             first=false
                         }
                         prods+=`<tr><td>${b.level + "x" + icons(a.chainId)} ► `
