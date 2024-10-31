@@ -1802,6 +1802,14 @@ input[type="range"]::-webkit-slider-thumb {
 	border-left: 6px solid #48291b;
 }
 
+#foe-helper-hud.is--sorting .hud-btn {
+	filter: brightness(0.6) saturate(0.9);
+}
+
+#foe-helper-hud.is--sorting .hud-btn.ui-sortable-helper {
+	filter: brightness(1.2);
+}
+
 .hud-btn {
 	width: 43px;
 	height: 43px;
