@@ -1599,9 +1599,9 @@ let Productions = {
 						h.push('</td>')
 
 						let roundingFactor = building[type+'-tile'] > 100 || building[type+'-tile'] < -100 ? 1 : 100
-						let tileValue = HTML.Format(Math.round(building[type+'-tile'] * roundingFactor) / roundingFactor)
+						let tileValue = Math.round(building[type+'-tile'] * roundingFactor) / roundingFactor
 						h.push(`<td class="text-right${type=="units" ? " units":""} tilevalue" data-number="${tileValue}" ${type=="units" ? `data-original-title="${randomUnits}"`:""}>`)
-						h.push(tileValue)
+						h.push(HTML.Format(tileValue))
 						h.push('</td>')
 					}
 				}
