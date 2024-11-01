@@ -25,7 +25,7 @@
     & .inhabitant {
         max-width: unset;
         position: absolute;
-        left: -100px;
+        right: 320px;
         bottom: 10px;
         background: #a4a45d;
         td:has(&) {
