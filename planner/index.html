@@ -1,0 +1,40 @@
+<!--
+  ~ **************************************************************************************
+  ~
+  ~ Copyright (C) 2024 FoE-Helper team - All Rights Reserved
+  ~ You may use, distribute and modify this code under the
+  ~ terms of the AGPL license.
+  ~
+  ~ See file LICENSE.md or go to
+  ~ https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
+  ~ for full license details.
+  ~
+  ~ **************************************************************************************
+  -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>FoE Helper - City Planner</title>
+    <link href="/vendor/bootstrap-4.2.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="planner.css" rel="stylesheet">
+</head>
+
+<body>
+    <section class="overlay">
+        <h1>Paste your City Data</h1>
+        <p>The button submits the latest text from your clipboard and tries to parse it. Please use the "Copy to Clipboard" function in the City Overview of your City before clicking it.</p>
+        <button>Submit</button>
+        <span class="error"></span>
+    </section>
+    <section id="buildings">
+        <ul>
+
+        </ul>
+    </section>
+    <canvas width="3000" height="3000"></canvas>
+    <script src="planner.js"></script>
+</body>
+
+</html>
