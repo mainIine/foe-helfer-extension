@@ -1687,16 +1687,16 @@ let Productions = {
 				$('#ProductionsRatingBody .overlay .results').html("")
 				let foundBuildings = Object.values(Productions.AdditionalSpecialBuildings).filter(x => regEx.test(x.name) && x.selected).sort((a,b)=>(a.name>b.name?1:-1))
 				for (building of foundBuildings) {
-					$('#ProductionsRatingBody .overlay .results').append(`<li data-id="${building.id}" class="selected">${building.name}</li>`)
+					$('#ProductionsRatingBody .overlay .results').append(`<li data-meta_id="${building.id}" class="selected helperTT" data-callback_tt="Tooltips.buildingTT">${building.name}</li>`)
 				}
 				foundBuildings = Object.values(Productions.AdditionalSpecialBuildings).filter(x => regEx.test(x.name) && !x.selected).sort((a,b)=>(a.name>b.name?1:-1))
 				for (building of foundBuildings) {
-					$('#ProductionsRatingBody .overlay .results').append(`<li data-id="${building.id}">${building.name}</li>`)
+					$('#ProductionsRatingBody .overlay .results').append(`<li data-meta_id="${building.id}" class="helperTT" data-callback_tt="Tooltips.buildingTT">${building.name}</li>`)
 				}
 			}
 			filterMeta(/./)
 			$('#ProductionsRatingBody .overlay .results').on("click","li",(e)=>{
-				let id = e.target.dataset.id
+				let id = e.target.dataset.meta_id
 				Productions.AdditionalSpecialBuildings[id].selected =!Productions.AdditionalSpecialBuildings[id].selected
 				e.target.classList.toggle("selected")
 			})
