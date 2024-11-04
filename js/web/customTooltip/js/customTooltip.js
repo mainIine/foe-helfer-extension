@@ -232,7 +232,7 @@ let Tooltips = {
             }
 
             for (r of levels.AllAge?.ally?.rooms || []) {
-                ally += '<tr><td>'+icons("historical_allies_slot_tooltip_icon_empty") + capFirsts(r.allyType) +" ("+capFirsts(r.rarity.value)+")"+`</td></tr>`
+                ally += '<tr><td>'+icons("historical_allies_slot_tooltip_icon_empty") + capFirsts(r.allyType) +" ("+capFirsts(r.rarity?.value||"common")+")"+`</td></tr>`
             }
 
             if (levels.AllAge.eraRequirement?.era && era =="") {
