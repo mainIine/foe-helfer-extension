@@ -69,6 +69,7 @@
         position: relative;
         top: 0;
         left: 0;
+        margin-right:5px;
         display:inline-block; 
         animation-name: bounce;
         animation-duration: 7s;
@@ -87,5 +88,6 @@
 @keyframes bounce {
     0% {  transform: translateX(0%)    }
     30% {  transform: translateX(0%)    }
-    95% {  transform: translateX(-110%)    }
+    85% {  transform: translateX(-100%)    }
+    95% {  transform: translateX(-100%)    }
 }
