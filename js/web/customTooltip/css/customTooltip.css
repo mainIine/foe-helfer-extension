@@ -64,12 +64,12 @@
         overflow: hidden;
         left:5px;
         position:relative;
+        margin-right:5px;
     }
     & .handleOverflow {
         position: relative;
         top: 0;
         left: 0;
-        margin-right:5px;
         display:inline-block; 
         animation-name: bounce;
         animation-duration: 7s;
