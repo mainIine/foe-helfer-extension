@@ -1031,13 +1031,14 @@ FoEproxy.addHandler('ResourceService', 'getPlayerAutoRefills', (data, postData) 
 let GExAttempts = {
 	count:0,
 	next:null,
+	clock:null,
 
 	refreshGUI:()=>{
 		current = localStorage.getItem('HiddenRewards.GEprogress')
-		if (current == 79) {//hidenumber
+		if (current == 79) {//hidenumber when GE finished
 			$('#gex-attempt-count').hide();
 		}
-		else {//setnumber
+		else {//setnumber when GE running
 			$('#gex-attempt-count').text(GExAttempts.count).show();
 			if (GExAttempts.count === 0) $('#gex-attempt-count').hide();
 		}
@@ -1050,16 +1051,18 @@ let GExAttempts = {
 	},
 
 	setNext:(time)=>{
-		let timer=3600000
-		
 		if (time) 
-			timer = (time-GameTime+3600)*1000
+			GExAttempts.next = moment().add(time-GameTime+3595,"seconds") 
 		else 
-			 GExAttempts.setCount(Math.min(GExAttempts.count++,8))
+			GExAttempts.next = moment().add(3595,"seconds")
 			
-		if (GExAttempts.next) clearTimeout(GExAttempts.next)
-		
-		GExAttempts.next = setTimeout(GExAttempts.setNext,timer)
+		if (!GExAttempts.clock) GExAttempts.clock = setInterval(GExAttempts.checkNext,10000)
+	},
+
+	checkNext:()=>{
+		if (moment()<GExAttempts.next) return
+		GExAttempts.setNext()
+		GExAttempts.setCount(Math.min(GExAttempts.count+1,8))
 	}
 }
 
