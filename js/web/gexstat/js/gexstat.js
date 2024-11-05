@@ -1019,3 +1019,47 @@ let GexStat = {
 	},
 
 }
+
+FoEproxy.addFoeHelperHandler('ResourcesUpdated', () => {
+	GExAttempts.setCount(ResourceStock.guild_expedition_attempt || 0)
+});
+
+FoEproxy.addHandler('ResourceService', 'getPlayerAutoRefills', (data, postData) => {
+	GExAttempts.setNext(data.responseData.resources.guild_expedition_attempt)
+});
+
+let GExAttempts = {
+	count:0,
+	next:null,
+
+	refreshGUI:()=>{
+		current = localStorage.getItem('HiddenRewards.GEprogress')
+		if (current == 79) {//hidenumber
+			$('#gex-attempt-count').hide();
+		}
+		else {//setnumber
+			$('#gex-attempt-count').text(GExAttempts.count).show();
+			if (GExAttempts.count === 0) $('#gex-attempt-count').hide();
+		}
+
+	},
+
+	setCount:(n)=>{
+		GExAttempts.count = n
+		GExAttempts.refreshGUI()	
+	},
+
+	setNext:(time)=>{
+		let timer=3600000
+		
+		if (time) 
+			timer = (time-GameTime+3600)*1000
+		else 
+			 GExAttempts.setCount(Math.min(GExAttempts.count++,8))
+			
+		if (GExAttempts.next) clearTimeout(GExAttempts.next)
+		
+		GExAttempts.next = setTimeout(GExAttempts.setNext,timer)
+	}
+}
+
