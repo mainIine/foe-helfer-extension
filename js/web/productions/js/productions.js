@@ -770,9 +770,9 @@ let Productions = {
 				table.push('<table class="foe-table sortable-table TSinactive '+type+'-list active">')
 				table.push('<thead style="z-index:100">')
 				table.push('<tr>')
-				table.push('<th colspan="2"><span class="btn-default change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeGroups') + '</span> <input type="text" placeholder="' + i18n('Boxes.Productions.FilterTable') + '" class="filterCurrentList"></th>')
+				table.push('<th colspan="3"><span class="btn-default change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeGroups') + '</span> <input type="text" placeholder="' + i18n('Boxes.Productions.FilterTable') + '" class="filterCurrentList"></th>')
 				if (!type.includes('att') && !type.includes('def') && type!='items') {
-					table.push('<th colspan="8" class="textright">')
+					table.push('<th colspan="7" class="textright">')
 					table.push((typeCurrentSum >= 10000 ? HTML.FormatNumberShort(typeCurrentSum) : HTML.Format(typeCurrentSum))+ "/" + (typeSum >= 10000 ? HTML.FormatNumberShort(typeSum) : HTML.Format(typeSum)))
 					if (type == 'strategy_points')
 						table.push(' · '+i18n('General.Boost')+': '+MainParser.BoostSums.forge_points_production+'%')
