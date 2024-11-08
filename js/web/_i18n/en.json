@@ -1068,6 +1068,7 @@
     "Boxes.Technologies.NoTechs": "You have reached the end of this era",
     "Boxes.Technologies.Resource": "Resource",
     "Boxes.Technologies.Title": "Tech Tree Research Costs",
+    "Boxes.Tooltip.Building.after":"after",
     "Boxes.Tooltip.Building.when":"when",
     "Boxes.Tooltip.Building.canPolish":"can be polished",
     "Boxes.Tooltip.Building.canMotivate":"can be motivated",

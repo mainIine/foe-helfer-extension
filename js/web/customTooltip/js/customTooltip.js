@@ -125,16 +125,15 @@ let Tooltips = {
         let range = (x,y,withHighlight=false) => span(x,withHighlight) + (x!=y ?` - `+ span(y,withHighlight):``);
         let formatTime = (x) => {
             let min=Math.floor(x/60)
-            let hour=Math.floor(min/60)
             let sec = x-min*60
-            min = min-hour*60
-            let time= sec + "s"
-            if (min>0) {
-                time= min+(sec>0?":"+(sec>9?sec:"0"+sec):"")+"m"
-                }
-            if (hour>0) {
-                time = hour+(sec+min>0 ? ":"+(min>9?min:"0"+min)+(sec>0?":"+(sec>9?sec:"0"+sec):""):"")+"h"
-            }
+            let hour=Math.floor(min/60)
+            min -= hour*60
+            let day=Math.floor(hour/24)
+            hour -= day*24
+            let time = sec + "s"
+            if (min>0) time= min+(sec>0?":"+(sec>9?sec:"0"+sec):"")+"m"
+            if (hour>0) time = hour+(sec+min>0 ? ":"+(min>9?min:"0"+min)+(sec>0?":"+(sec>9?sec:"0"+sec):""):"")+"h"
+            if (day>0) time = day + (hour+sec+min>0 ? (hour>9?hour:"0"+hour) + (sec+min>0 ? ":"+(min>9?min:"0"+min)+(sec>0?":"+(sec>9?sec:"0"+sec):""):""):"")+"d"
             return time
         }
         let src=(x)=>{
@@ -236,10 +235,14 @@ let Tooltips = {
             }
 
             if (levels.AllAge.eraRequirement?.era && era =="") {
-                era = `${icons("era") + " " + i18n("Eras."+(Technologies.Eras[levels.AllAge.eraRequirement?.era]))}`
+                era = icons("era") + " " + i18n("Eras."+(Technologies.Eras[levels.AllAge.eraRequirement?.era]))
             }
-            
+
             if (era != "") out += "<tr><td>" + era + "</td></tr>"
+
+            if (levels?.AllAge?.limited?.config?.expireTime) {
+                out += `<tr><td class="limited">${icons("limited_building_downgrade") + MainParser.CityEntities[levels.AllAge.limited.config.targetCityEntityId].name} (${i18n("Boxes.Tooltip.Building.after")} ${formatTime(levels.AllAge.limited.config.expireTime)})</td></tr>`
+            }
 
             let provides=""
 
