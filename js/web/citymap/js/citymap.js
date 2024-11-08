@@ -1763,8 +1763,12 @@ let CityMap = {
 		let amount = 0
 		let lookupData = false
 
-		if (product.reward.amount != undefined) 
+		if (product.reward.amount) {
 			amount = product.reward.amount
+		}
+		if (product.reward.totalAmount) {
+			amount = product.reward.totalAmount
+		}
 
 		if (metaData.components[era]) {
 			if (product.reward.id.search("blueprint") != -1) {
@@ -1781,7 +1785,6 @@ let CityMap = {
 				}
 			}
 			else if (product.reward.type == "good") { // this can break if there is more than one generic goods reward for a building
-				//console.log(1, metaData.name, product.reward)
 				for (const [key, reward] of Object.entries(metaData.components[era].lookup.rewards)) {
 					if (reward.id.includes("good"))
 						lookupData = reward
@@ -1789,7 +1792,6 @@ let CityMap = {
 			}
 			else if (product.reward.id.includes('goods') && !/(fragment|rush)/.test(product.reward.id)) { // for nextage goods, because they are in a chest (random ones)
 				// todo: this not only covers chests now, so implementation needs to be looked at more carefully
-				//console.log(2, metaData.name, product.reward)
 				lookupData = metaData.components[era].lookup.rewards[product.reward.id] // take first chest reward and work with that
 				return {
 					id: product.reward.id,
@@ -1810,7 +1812,7 @@ let CityMap = {
 					}
 				}
 				else {
-					amount = lookupData.amount
+					amount = lookupData.totalAmount || lookupData.amount
 				}
 			}
 		}
@@ -1840,9 +1842,7 @@ let CityMap = {
 		if (lookupData?.type == "set") {
 			lookupData.type = "consumable"
 			lookupData.subType = lookupData.rewards[0].subType
-			amount = lookupData.totalAmount
 		}
-		if (lookupData?.type=="good" && lookupData?.subType.includes("all_")) amount = amount*5
 
 		let reward = {
 			id: product.reward.id,
@@ -1852,6 +1852,7 @@ let CityMap = {
 			amount: amount, // amount can be undefined for blueprints or units if building is not motivated
 			icon: lookupData?.iconAssetName
 		}
+
 		return reward
 	},
 
