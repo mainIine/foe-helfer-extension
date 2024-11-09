@@ -912,7 +912,7 @@ let _menu = {
 				GexStat.BuildBox(false);
 			}
 		});
-		return btn.append(btn_sp, $(`<span id="gex-attempt-count" class="hud-counter" ${localStorage.getItem('HiddenRewards.GEprogress') < 159 ? '' : 'style="display:none"'}>${GExAttempts.count||0}</span>`));
+		return btn.append(btn_sp, $(`<span id="gex-attempt-count" class="hud-counter">${GExAttempts.count||0}</span>`)).ready(GExAttempts.refreshGUI);
 	},
 
 	/**
