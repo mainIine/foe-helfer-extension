@@ -1027,20 +1027,43 @@ FoEproxy.addFoeHelperHandler('ResourcesUpdated', () => {
 FoEproxy.addHandler('ResourceService', 'getPlayerAutoRefills', (data, postData) => {
 	GExAttempts.setNext(data.responseData.resources.guild_expedition_attempt)
 });
+FoEproxy.addHandler('GuildExpeditionService', 'getOverview', (data, postData) => {
+    GExAttempts.state.GEprogress = data?.responseData?.progress?.currentEntityId || 0
+    GExAttempts.state.active = data?.responseData?.state=="active"
+	if (GExAttempts.state.active) GExAttempts.state.deactivationTime = data?.responseData?.nextStateTime || null
+
+	localStorage.setItem('GEx.state',JSON.stringify(GExAttempts.state))
+
+    GExAttempts.refreshGUI()
+});
 
 let GExAttempts = {
 	count:0,
 	next:null,
-	clock:null,
+	//clock:null,
+	state: JSON.parse(localStorage.getItem('GEx.state'))||{
+		GEprogress:0,
+		active:true,
+		deactivationTime:null
+	},
+	deactivationTimer:null,
+	activationTimer:null,
 
 	refreshGUI:()=>{
-		current = localStorage.getItem('HiddenRewards.GEprogress')
-		if (current == 79) {//hidenumber when GE finished
+		if (GExAttempts.state.GEprogress == 159 || !GExAttempts.state.active) {//hidenumber when GE completed
 			$('#gex-attempt-count').hide();
 		}
 		else {//setnumber when GE running
 			$('#gex-attempt-count').text(GExAttempts.count).show();
 			if (GExAttempts.count === 0) $('#gex-attempt-count').hide();
+		}
+		if (!GExAttempts.deactivationTimer && GExAttempts.state.deactivationTime) {
+			GExAttempts.deactivationTimer = setTimeout(() => {
+				GExAttempts.state.active = false
+				GExAttempts.state.deactivationTime = null
+				GExAttempts.deactivationTimer = null
+				localStorage.setItem('GEx.state',JSON.stringify(GExAttempts.state))
+			}, (GExAttempts.state.deactivationTime-GameTime) * 1000);
 		}
 
 	},
@@ -1051,12 +1074,25 @@ let GExAttempts = {
 	},
 
 	setNext:(time)=>{
-		if (time) 
+		/*if (time) 
 			GExAttempts.next = moment().add(time-GameTime+3595,"seconds") 
 		else 
 			GExAttempts.next = moment().add(3595,"seconds")
 			
 		if (!GExAttempts.clock) GExAttempts.clock = setInterval(GExAttempts.checkNext,10000)
+		*/
+	
+		let timer=3600000
+	
+		if (time) 
+			timer = (time-GameTime+3600)*1000
+		else 
+			GExAttempts.setCount(Math.min(GExAttempts.count + 1,8))
+
+		if (GExAttempts.next) clearTimeout(GExAttempts.next)
+		
+		GExAttempts.next = setTimeout(GExAttempts.setNext,timer)
+
 	},
 
 	checkNext:()=>{
@@ -1065,4 +1101,3 @@ let GExAttempts = {
 		GExAttempts.setCount(Math.min(GExAttempts.count+1,8))
 	}
 }
-
