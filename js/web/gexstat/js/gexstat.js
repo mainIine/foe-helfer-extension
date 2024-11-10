@@ -1050,19 +1050,22 @@ let GExAttempts = {
 	activationTimer:null,
 
 	refreshGUI:()=>{
-		if (GExAttempts.state.GEprogress == 159 || !GExAttempts.state.active) {//hidenumber when GE completed
+		//hidenumber when GE completed, not running or out of attempts
+		if (GExAttempts.state.GEprogress == 159 || GExAttempts.count === 0 || !GExAttempts.state.active) {
 			$('#gex-attempt-count').hide();
 		}
-		else {//setnumber when GE running
+		//setnumber when GE running
+		else {
 			$('#gex-attempt-count').text(GExAttempts.count).show();
-			if (GExAttempts.count === 0) $('#gex-attempt-count').hide();
 		}
+		//set timer for GE deactivation if deactivation time known
 		if (!GExAttempts.deactivationTimer && GExAttempts.state.deactivationTime) {
 			GExAttempts.deactivationTimer = setTimeout(() => {
 				GExAttempts.state.active = false
 				GExAttempts.state.deactivationTime = null
 				GExAttempts.deactivationTimer = null
 				localStorage.setItem('GEx.state',JSON.stringify(GExAttempts.state))
+				GExAttempts.refreshGUI()
 			}, (GExAttempts.state.deactivationTime-GameTime) * 1000);
 		}
 
