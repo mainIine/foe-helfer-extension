@@ -1620,7 +1620,7 @@ let MainParser = {
 			}
 		}
 
-		else if (Source === 'LGOverview') {
+		else if (Source === 'LGOverview' && d[0]) {
 			MainParser.UpdatePlayerDictCore(d[0].player);
 		}
 
