@@ -373,7 +373,7 @@ let CityMap = {
 			}
 		}
 		let euphoriaFactor = euphoria/totalPopulation
-		if (euphoriaFactor < 0.2)
+		if (euphoriaFactor <= 0.2)
 			euphoriaBoost = 0.2
 		else if (euphoriaFactor > 0.20 && euphoriaFactor <= 0.60)
 			euphoriaBoost = 0.6
