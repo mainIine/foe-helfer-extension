@@ -1,5 +1,23 @@
 ## Changelog - Extension
 
+##### 3.8.2.0
+
+**New**
+- GE-Results: Menu icon now shows the current number of attempts
+- Tooltips: some modules now show the building information as a tooltip:
+	- Effiziency module - in the "add building" dialogue
+	- Boost Inventory
+	- let us know on discord where else you would like to see that info
+
+**Update**
+- Statistics: Dark Matter added to Special Goods
+- Changed settings entry "Load current beta"
+
+**BugFix**
+- Building efficiency: 
+	- broke for some players due to a game update
+	- same buildings with/without allies were not counted correctly
+
 ##### 3.8.1.0
 
 **New**

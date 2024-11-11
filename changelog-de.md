@@ -1,5 +1,23 @@
 ## Changelog - Extension
 
+##### 3.8.2.0
+
+**Neu**
+- Gex-Ergebnisse: Menu-Icon zeigt nun die aktuelle Anzahl an GE-Versuchen an
+- Tooltips: in bestimmten Modulen werden nun die Gebäude-informationen als Tooltip angezeigt:
+	- im Effizienz-Modul, im "Gebäude hinzufügen" dialog
+	- im Boost-Inventar
+	- lasst uns auf Discord wissen, wo ihr diese Info noch gerne sehen würdet
+
+**Update**
+- Statistik: Dunkle Materie zu Spezial-Gütern hinzugefügt
+- Einstellung "Lade aktuelle Beta" angepasst
+
+**BugFix**
+- Gebäude-Effizienz: 
+	- ist wegen eines Spiel-Updates kaputt gegangen
+	- gleiche Gebäude mit und ohne Verbündete wurden nicht korrekt gezählt 
+
 ##### 3.8.1.0
 
 **Neu**
