@@ -250,8 +250,9 @@
 		"sort": 13
 	},
 	{
-		"name": "LoadBeta",
+		"name": "LoadBeta2",
 		"group": "About",
+		"button":"window.open('https://github.com/mainIine/foe-helfer-extension/archive/refs/heads/beta.zip', '_blank').focus();",
 		"sort": 19
 	}
 ]
