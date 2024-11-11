@@ -11,6 +11,7 @@
 
 **Update**
 - Statistik: Dunkle Materie zu Spezial-Gütern hinzugefügt
+- Einstellung "Lade aktuelle Beta" angepasst
 
 **BugFix**
 - Gebäude-Effizienz: 

@@ -11,6 +11,7 @@
 
 **Update**
 - Statistics: Dark Matter added to Special Goods
+- Changed settings entry "Load current beta"
 
 **BugFix**
 - Building efficiency: 
