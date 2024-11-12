@@ -11,12 +11,14 @@
 
 **Update**
 - Statistik: Dunkle Materie zu Spezial-Gütern hinzugefügt
+- Gebäude-Effizienz: nun auch sortierbar nach Wert/Feld
 - Einstellung "Lade aktuelle Beta" angepasst
 
 **BugFix**
 - Gebäude-Effizienz: 
-	- ist wegen eines Spiel-Updates kaputt gegangen
-	- gleiche Gebäude mit und ohne Verbündete wurden nicht korrekt gezählt 
+	- Ist wegen eines Spiel-Updates bei manchen Spielern kaputt gegangen
+	- Gleiche Gebäude mit und ohne Verbündete wurden nicht korrekt gezählt
+- Produktionsübersicht: Unmotivierte Gebäude, die Items produzieren, fehlten in der Liste
 
 ##### 3.8.1.0
 
