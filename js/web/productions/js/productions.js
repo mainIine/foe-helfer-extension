@@ -284,8 +284,11 @@ let Productions = {
 						if (production.resources.all_goods_of_age || production.resources.random_goods_of_age || production.resources.random_good_of_age || production.resources.all_goods_of_previous_age) {
 							if (Productions.BuildingsProducts.goods.find(x => x.id == building.id) == undefined)
 								Productions.BuildingsProducts["goods"].push(saveBuilding)
-
 						}
+					}
+					if (production.resources?.type == "consumable") {
+						if (Productions.BuildingsProducts.items.find(x => x.id == building.id) == undefined)
+							Productions.BuildingsProducts["items"].push(saveBuilding)
 					}
 					if (production.resources?.icon == "next_age_goods") {
 						if (Productions.BuildingsProducts.goods.find(x => x.id == building.id) == undefined)
