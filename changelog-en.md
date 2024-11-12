@@ -15,11 +15,11 @@
 
 **BugFix**
 - Building efficiency: 
-	- broke for some players due to a game update
-	- same buildings with/without allies were not counted correctly
+	- Broke for some players due to a game update
+	- Same buildings with/without allies were not counted correctly
 - Porduction Overview:
-	- fragment amount was not korrekt for some buildings
-	- not all buildings were listed in fragments overview
+	- Fragment amount was not korrekt for some buildings
+	- Not all buildings were listed in fragments overview
 
 ##### 3.8.1.0
 

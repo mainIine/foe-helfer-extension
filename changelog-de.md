@@ -15,11 +15,11 @@
 
 **BugFix**
 - Gebäude-Effizienz: 
-	- ist wegen eines Spiel-Updates kaputt gegangen
-	- gleiche Gebäude mit und ohne Verbündete wurden nicht korrekt gezählt
+	- Ist wegen eines Spiel-Updates kaputt gegangen
+	- Gleiche Gebäude mit und ohne Verbündete wurden nicht korrekt gezählt
 - Produktionsübersicht:
-	- in der Fragmente-Übersicht war die Anzahl an Fragmenten teilweise nicht korrekt
-	- in der Fragmente-Übersicht wurden nicht alle Gebäude gelistet
+	- In der Fragmente-Übersicht war die Anzahl an Fragmenten teilweise nicht korrekt
+	- In der Fragmente-Übersicht wurden nicht alle Gebäude gelistet
 
 ##### 3.8.1.0
 
