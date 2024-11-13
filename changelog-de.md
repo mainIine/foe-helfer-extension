@@ -1,12 +1,14 @@
 ## Changelog - Extension
 
-##### 3.8.2.0
+##### 3.9.0.0
 
 **Neu**
+- Im Umbaumodus wird nun eine nach Größe sortierbare Gebäudeliste angezeigt
 - Gex-Ergebnisse: Menu-Icon zeigt nun die aktuelle Anzahl an GE-Versuchen an
 - Tooltips: in bestimmten Modulen werden nun die Gebäude-informationen als Tooltip angezeigt:
 	- im Effizienz-Modul, im "Gebäude hinzufügen" dialog
 	- im Boost-Inventar
+	- in der Umbau-Größenliste
 	- lasst uns auf Discord wissen, wo ihr diese Info noch gerne sehen würdet
 
 **Update**

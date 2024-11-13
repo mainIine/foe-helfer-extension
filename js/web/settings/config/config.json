@@ -97,6 +97,12 @@
 		"sort": 19
 	},
 	{
+		"name": "ShowReconstructionList",
+		"status": true,
+		"group": "Auto",
+		"sort": 20
+	},
+	{
 		"name": "ResetBoxPositions",
 		"button": "Settings.ResetBoxCoords()",
 		"group": "Boxes",
