@@ -517,10 +517,10 @@ let Tooltips = {
             } else if ((levels?.[minEra]?.provided_population && levels?.[maxEra]?.provided_population)||(levels?.[minEra]?.required_population && levels?.[maxEra]?.required_population)) {
                 provides+=`<tr><td>${icons("population") + " " + range((levels?.[minEra].provided_population||0)-(levels?.[minEra].required_population||0),(levels?.[maxEra].provided_population||0)-(levels?.[maxEra].required_population||0),true)}</td></tr>`
             }
-            if (meta.provided_happiness || meta.demand_for_happiness) {
-                provides+=`<tr><td>${icons("happiness")+" "+ span((meta.provided_happiness||0)-(meta.demand_for_happiness||0),true)}</td></tr>`
-            } else if ((levels?.[minEra]?.provided_happiness && levels?.[maxEra]?.provided_happiness)||(levels?.[minEra]?.demand_for_happiness && levels?.[maxEra]?.demand_for_happiness)) {
-                provides+=`<tr><td>${icons("happiness") + " " + range((levels?.[minEra].provided_happiness||0)-(levels?.[minEra].demand_for_happiness||0),(levels?.[maxEra].provided_happiness||0)-(levels?.[maxEra].demand_for_happiness||0),true) + polMod}</td></tr>`
+            if (meta.provided_happiness) {
+                provides+=`<tr><td>${icons("happiness")+" "+ span((meta.provided_happiness||0),true)}</td></tr>`
+            } else if ((levels?.[minEra]?.provided_happiness && levels?.[maxEra]?.provided_happiness)) {
+                provides+=`<tr><td>${icons("happiness") + " " + range(levels?.[minEra].provided_happiness||0,levels?.[maxEra].provided_happiness||0,true) + polMod}</td></tr>`
             }
 
             if (levels?.[minEra]?.ranking_points && levels?.[maxEra]?.ranking_points) {
