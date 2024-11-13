@@ -467,7 +467,7 @@ let GreatBuildings =
                                 AttackProductions[j] = GBData.AttackProductions[j];
                             }
                             else {
-                                AttackProductions[j] = Math.floor(GBData.AttackProductions[9] + Math.ceil((j - 9) * GBData.AttackIncrease));
+                                AttackProductions[j] = GBData.AttackProductions[9] + (j - 9) * GBData.AttackIncrease;
                             }
                         }
                     }
