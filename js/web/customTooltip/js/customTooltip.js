@@ -42,9 +42,9 @@ let Tooltips = {
         
         
         $('body').on("pointerenter",".helperTT", async (e)=>{
-            if (e.target.dataset.callback_tt) {
+            if (e.currentTarget.dataset.callback_tt) {
                 Tooltips.activate()
-                let f=eval(e.target.dataset.callback_tt)
+                let f=eval(e.currentTarget.dataset.callback_tt)
                 if (typeof(f) == "function") {
                     let content = await(f(e));
                     Tooltips.set(content)
@@ -88,8 +88,8 @@ let Tooltips = {
         Tooltips.checkposition()
     },
     buildingTT: (e)=>{
-        let id=e?.target?.dataset?.meta_id||MainParser?.CityMapData[e?.target?.dataset?.id]?.cityentity_id
-        let era = Technologies.InnoEraNames[MainParser?.CityMapData[e?.target?.dataset?.id]?.level]
+        let id=e?.currentTarget?.dataset?.meta_id||MainParser?.CityMapData[e?.currentTarget?.dataset?.id]?.cityentity_id
+        let era = Technologies.InnoEraNames[MainParser?.CityMapData[e?.currentTarget?.dataset?.id]?.level]
         if (!id) return
         
         let meta=MainParser.CityEntities[id]
