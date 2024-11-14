@@ -1,5 +1,28 @@
 ## Changelog - Extension
 
+##### 3.9.0.0
+
+**Neu**
+- Im Umbaumodus wird nun eine nach Größe sortierbare Gebäudeliste angezeigt
+- Gex-Ergebnisse: Menu-Icon zeigt nun die aktuelle Anzahl an GE-Versuchen an
+- Tooltips: in bestimmten Modulen werden nun die Gebäude-informationen als Tooltip angezeigt:
+	- im Effizienz-Modul, im "Gebäude hinzufügen" dialog
+	- im Boost-Inventar
+	- in der Umbau-Größenliste
+	- lasst uns auf Discord wissen, wo ihr diese Info noch gerne sehen würdet
+
+**Update**
+- Statistik: Dunkle Materie zu Spezial-Gütern hinzugefügt
+- Einstellung "Lade aktuelle Beta" angepasst
+
+**BugFix**
+- Gebäude-Effizienz: 
+	- Ist wegen eines Spiel-Updates kaputt gegangen
+	- Gleiche Gebäude mit und ohne Verbündete wurden nicht korrekt gezählt
+- Produktionsübersicht:
+	- In der Fragmente-Übersicht war die Anzahl an Fragmenten teilweise nicht korrekt
+	- In der Fragmente-Übersicht wurden nicht alle Gebäude gelistet
+
 ##### 3.8.1.0
 
 **Neu**

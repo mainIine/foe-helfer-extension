@@ -1,0 +1,95 @@
+.HXBuilding th {
+    border-bottom: unset;
+}
+.HXBuilding td {
+    width: 300px;
+    display: flex;
+    white-space-collapse: preserve;
+    text-wrap-mode: nowrap;
+}
+.HXBuilding img {
+    padding-right: 3px;
+    max-width: 24px;
+}
+.HXBuilding .multiCol {
+    flex-wrap: wrap;
+    width: 300px;
+}
+.HXBuilding .multiCol > div {
+    flex: 1 1 150px;
+}
+.HXBuilding .inhabitant {
+    max-width: unset;
+    position: absolute;
+    right: 320px;
+    bottom: 10px;
+    background: #a4a45d;
+}
+.HXBuilding td:has(.inhabitant) {
+    position: relative;
+}
+.HXBuilding .ifMot {
+    margin-left: auto;
+    padding-left: 5px;
+}
+.HXBuilding .ifMot img {
+    padding-right: 0px;
+}
+.HXBuilding .randomProductions {
+    border: 2px #350000e8 solid;
+    margin-left: -6px;
+    margin-top: -4px;
+    margin-bottom: -4px;
+}
+.HXBuilding .randomProductions td {
+    width: 270px;
+}
+.HXBuilding .randomProductions .dropChance {
+    flex-basis: 33px;
+    flex-shrink: 0;
+    margin-left: auto;
+    padding-left: 5px;
+    text-align: right;
+}
+.HXBuilding .isGeneric {
+    display: flex;
+}
+.HXBuilding .overflowBox {
+    width: 300px;
+    overflow: hidden;
+    left: 5px;
+    position: relative;
+    margin-right: 5px;
+}
+.HXBuilding .handleOverflow {
+    position: relative;
+    top: 0;
+    left: 0;
+    display: inline-block;
+    animation-name: bounce;
+    animation-duration: 7s;
+    animation-iteration-count: infinite;
+}
+.HXBuilding span.positive {
+    color: var(--text-success);
+    font-weight: bold;
+}
+.HXBuilding span.negative {
+    color: var(--text-danger);
+    font-weight: bold;
+}
+.HXBuilding .limited {
+    text-wrap: auto;
+}
+.HXBuilding .limited img{
+    align-self: flex-start;
+}
+
+
+      
+@keyframes bounce {
+    0% {  transform: translateX(0%)    }
+    30% {  transform: translateX(0%)    }
+    85% {  transform: translateX(-100%)    }
+    95% {  transform: translateX(-100%)    }
+}

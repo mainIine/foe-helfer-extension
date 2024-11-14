@@ -1,0 +1,67 @@
+<!--
+  ~ **************************************************************************************
+  ~
+  ~ Copyright (C) 2024 FoE-Helper team - All Rights Reserved
+  ~ You may use, distribute and modify this code under the
+  ~ terms of the AGPL license.
+  ~
+  ~ See file LICENSE.md or go to
+  ~ https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
+  ~ for full license details.
+  ~
+  ~ **************************************************************************************
+  -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>FoE Helper - City Planner</title>
+    <link href="/vendor/bootstrap-4.2.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="planner.css" rel="stylesheet">
+</head>
+
+<body>
+    <section class="overlay">
+        <div class="inner">
+            <h1>FoE Helper - City Planner</h1>
+            <h2>Paste your City Data</h2>
+            <p>The button submits the latest text from your clipboard and tries to parse it. Please use the "Copy to Clipboard" function in the City Overview of your City before clicking it.</p>
+            <button>Submit</button>
+            <span class="error"></span>
+        </div>
+    </section>
+    <div class="wrapper">
+        <section id="buildings" class="sidebar">
+            <!--<button>Add Building</button>-->
+            <ul></ul>
+        </section>
+        <div class="content">
+            <header>
+                <h1>FoE Helper - City Planner v0.1</h1>
+                <div class="stats">
+                    <div class="old">
+                        Streets: <span class="streets"></span>
+                    </div>
+                    <div class="new">
+                        Streets: <span class="streets"></span>
+                    </div>
+                </div>
+            </header>
+            <section id="map">
+                <div class="buttons">
+                    <button id="storeSelection">Store Selection <span></span></button>
+                    <button id="storeAll">Store Everything</button>
+                    <button id="removeStreets">Remove Streets</button>
+                    <button id="reset">Reset</button>
+                    <!--<button id="zoom">Zoom</button>-->
+                </div>
+                <div class="info">Drag map by holding ALT key, select multiple buildings with CTRL key, clear selection with right click</div>
+                <div id="canvasWrapper"><canvas id="planner" width="2500" height="2500"></canvas></div>
+            </section>
+        </div>
+    </div>
+    <script src="planner.js"></script>
+</body>
+
+</html>

@@ -122,7 +122,7 @@ let BoostInventory = {
 			url = srcLinks.get(url,true)
 			
 			c.push(`<td><div class="image"><img src="${url}" alt=""><strong class="in-stock">${b.stock}</strong></div></td>`)
-			c.push(`<td data-text="${helper.str.cleanup(b.name)}">${b.name}<br></td>`)
+			c.push(`<td class="helperTT" data-callback_tt="Tooltips.buildingTT" data-meta_id="${b.id}" data-text="${helper.str.cleanup(b.name)}">${b.name}<br></td>`)
 			c.push(`<td data-number="${b.width*b.length}">${b.width}x${b.length}<br>${streetImg[b.street]}</td>`)
 			c.push(`<td>`)
 	
