@@ -46,11 +46,11 @@ function init (data) {
 function updateStats () {
     // initial amount of streets 
     let oldStreetsEl = document.querySelector('.old .streets')
-    let oldStreetAmount = Object.values(cityData).filter(x => x.type == 'street').length
+    let oldStreetAmount = Object.values(cityData).filter(x => x.type === 'street').length
     oldStreetsEl.innerHTML = oldStreetAmount
     
     let newStreetsEl = document.querySelector('.new .streets')
-    let streetAmount = Object.values(mapBuildings).filter(x => x.data.type == 'street').length
+    let streetAmount = Object.values(mapBuildings).filter(x => x.data.type === 'street').length
     newStreetsEl.innerHTML = streetAmount
 }
 
@@ -308,7 +308,7 @@ canvas.addEventListener('click', (e) => {
     // find building
     for (let building of mapBuildings) {
         // exclude streets, we do not store them
-        if (building.meta.type == 'street') continue
+        if (building.meta.type === 'street') continue
 
         if (building.x <= e.offsetX && (building.x + building.width) >= e.offsetX) {
             if (building.y <= e.offsetY && (building.y + building.height) >= e.offsetY) {
@@ -328,7 +328,7 @@ canvas.addEventListener('click', (e) => {
                 }
                 
                 document.querySelector('#storeSelection span').innerHTML = selectedBuildings.length
-                building.isSelected  = (building.isSelected) ? false : true
+                building.isSelected  = !building.isSelected
                 building.draw() // draw again
             }
         }
@@ -336,7 +336,7 @@ canvas.addEventListener('click', (e) => {
 })
 
 document.getElementById('removeStreets').addEventListener('click', () => { 
-    mapBuildings = mapBuildings.filter(x => x.data.type != 'street')
+    mapBuildings = mapBuildings.filter(x => x.data.type !== 'street')
     redrawMap()
     updateStats()
 })
@@ -409,7 +409,7 @@ function mapDrag () {
 
             // select buildings in that range
             for (let building of mapBuildings) {
-                if (building.meta.type == 'street') continue
+                if (building.meta.type === 'street') continue
 
                 if (building.x <= max.x && building.y <= max.y && (building.x + building.width) >= min.x && (building.y + building.height) >= min.y)
                     if (!building.isSelected) {
@@ -417,7 +417,7 @@ function mapDrag () {
                         selectedBuildings.push(building)
                         
                         document.querySelector('#storeSelection span').innerHTML = selectedBuildings.length
-                        building.isSelected  = (building.isSelected) ? false : true
+                        building.isSelected = !building.isSelected // is always true, because 5 rows below > if (!building.isSelected) {
                         building.draw() // draw again
                     }
             }
