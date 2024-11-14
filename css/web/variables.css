@@ -80,4 +80,33 @@
 	--text-success: #5fc745;
 	--text-info: #42a1ee;
 	--text-danger: #f34f4f;
+
+	--background-color-military: #fff;
+	--border-color-military: #bbb;
+	--background-color-residential: #7abaff;
+	--border-color-residential: #219eff;
+	--background-color-special: #51e5ff;
+	--border-color-special: #08b6d4;
+	--background-color-noStreet: #793bc9;
+	--border-color-noStreet: #3d2783;
+	--background-color-chain: #bb23ae;
+	--border-color-chain: #86127d;
+	--background-color-decoration: #497445;
+	--border-color-decoration: #1c7430;
+	--background-color-street: #666666;
+	--border-color-street: #636363;
+	--background-color-goods: #7d2a4d;
+	--border-color-goods: #6a2a3a;
+	--background-color-culture: #7d4900;
+	--border-color-culture: #582c00;
+	--background-color-main_building: #ffb300;
+	--border-color-main_building: #ffb300;
+	--background-color-production: #416dff;
+	--border-color-production: #2732ff;
+	--background-color-greatbuilding: #e6542f;
+	--border-color-greatbuilding: #af3d2b;
+	--background-color-random_production: #a8ff18;
+	--border-color-random_production: #4cff11;
+	--background-color-tower: #cdcdcd;
+	--border-color-tower: #787a7a;
 }

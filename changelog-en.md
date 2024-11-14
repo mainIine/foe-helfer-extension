@@ -1,5 +1,28 @@
 ## Changelog - Extension
 
+##### 3.9.0.0
+
+**New**
+- In reconstruction mode a building list, sortable by building size is offered
+- GE-Results: Menu icon now shows the current number of attempts
+- Tooltips: some modules now show the building information as a tooltip:
+	- Effiziency module - in the "add building" dialogue
+	- Boost Inventory
+	- Reconstruction size-list
+	- let us know on discord where else you would like to see that info
+
+**Update**
+- Statistics: Dark Matter added to Special Goods
+- Changed settings entry "Load current beta"
+
+**BugFix**
+- Building efficiency: 
+	- Broke for some players due to a game update
+	- Same buildings with/without allies were not counted correctly
+- Porduction Overview:
+	- Fragment amount was not korrekt for some buildings
+	- Not all buildings were listed in fragments overview
+
 ##### 3.8.1.0
 
 **New**
