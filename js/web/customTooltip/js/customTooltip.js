@@ -684,13 +684,11 @@ let Tooltips = {
             
             out+=`<tr><th>${i18n("Boxes.Tooltip.Building.size+time")}</th></tr>`
             out+=`<tr><td class="multiCol"><div>${icons("size")} ${meta.width+"x"+meta.length}</div><div>${icons("icon_time")}${formatTime(meta.construction_time)}</div>`
-            if (meta?.requirements.street_connection_level) {
-                if (meta.street_connection_level == 2)
-                    out+=`<div>${icons("street_required")} ${i18n("Boxes.Tooltip.Building.road2")}</div>`
-                else 
-                    out+=`<div>${icons("road_required")} ${i18n("Boxes.Tooltip.Building.road")}</div>`
-                    
-            }
+            if (meta.requirements?.street_connection_level == 2)
+                out+=`<div>${icons("street_required")} ${i18n("Boxes.Tooltip.Building.road2")}</div>`
+            else if (meta.requirements?.street_connection_level == 1)
+                out+=`<div>${icons("road_required")} ${i18n("Boxes.Tooltip.Building.road")}</div>`
+        
             out+=`</td></tr>`
             
             if (traits != "") out+=`<tr><th>${i18n("Boxes.Tooltip.Building.traits")}</th></tr>`+traits
