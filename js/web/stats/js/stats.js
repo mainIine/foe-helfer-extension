@@ -244,7 +244,7 @@ let Stats = {
 	goodsSubTypes:[],
 	ResMap: {
 		NoAge: ['money', 'supplies', 'tavern_silver', 'medals', 'premium'],
-		special: ['promethium', 'orichalcum', 'mars_ore', 'asteroid_ice', 'venus_carbon', 'unknown_dna','crystallized_hydrocarbons'],
+		special: ['promethium', 'orichalcum', 'mars_ore', 'asteroid_ice', 'venus_carbon', 'unknown_dna','crystallized_hydrocarbons','dark_matter'],
 	},
 
 	QI:{

@@ -97,6 +97,12 @@
 		"sort": 19
 	},
 	{
+		"name": "ShowReconstructionList",
+		"status": true,
+		"group": "Auto",
+		"sort": 20
+	},
+	{
 		"name": "ResetBoxPositions",
 		"button": "Settings.ResetBoxCoords()",
 		"group": "Boxes",
@@ -250,8 +256,9 @@
 		"sort": 13
 	},
 	{
-		"name": "LoadBeta",
+		"name": "LoadBeta2",
 		"group": "About",
+		"button":"window.open('https://github.com/mainIine/foe-helfer-extension/archive/refs/heads/beta.zip', '_blank').focus();",
 		"sort": 19
 	}
 ]
