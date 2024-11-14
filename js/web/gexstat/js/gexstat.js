@@ -1019,3 +1019,110 @@ let GexStat = {
 	},
 
 }
+
+FoEproxy.addFoeHelperHandler('ResourcesUpdated', () => {
+	GExAttempts.setCount(ResourceStock.guild_expedition_attempt || 0)
+});
+
+FoEproxy.addHandler('ResourceService', 'getPlayerAutoRefills', (data, postData) => {
+	GExAttempts.setNext(data.responseData.resources.guild_expedition_attempt)
+});
+FoEproxy.addHandler('GuildExpeditionService', 'getOverview', (data, postData) => {
+    if (data.responseData) GExAttempts.updateState(data.responseData)
+});
+
+FoEproxy.addHandler('GuildExpeditionNotificationService', 'GuildExpeditionStateNotification', (data, postData) => {
+    if (data.responseData) GExAttempts.updateState(data.responseData)
+});
+
+let GExAttempts = {
+	count:0,
+	next:null,
+	state: JSON.parse(localStorage.getItem('GEx.state'))||{
+		GEprogress:0,
+		active:true,
+		deactivationTime:null,
+		activationTime:null
+	},
+	deactivationTimer:null,
+	activationTimer:null,
+
+	refreshGUI:()=>{
+		//hidenumber when GE completed, not running or out of attempts
+		if (GExAttempts.state.GEprogress == 159 || GExAttempts.count === 0 || !GExAttempts.state.active) {
+			$('#gex-attempt-count').hide();
+		}
+		//setnumber when GE running
+		else {
+			$('#gex-attempt-count').text(GExAttempts.count).show();
+		}
+		//set timer for GE deactivation if deactivation time known
+		if (!GExAttempts.deactivationTimer && GExAttempts.state.deactivationTime && GExAttempts.state.active) {
+			GExAttempts.deactivationTimer = setTimeout(() => {
+				GExAttempts.state.active = false
+				GExAttempts.state.activationTime = GExAttempts.state.deactivationTime + 86400
+				GExAttempts.state.deactivationTime = null
+				GExAttempts.deactivationTimer = null
+				GExAttempts.state.GEprogress = 0
+				localStorage.setItem('GEx.state',JSON.stringify(GExAttempts.state))
+				GExAttempts.refreshGUI()
+			}, (GExAttempts.state.deactivationTime-GameTime) * 1000);
+		}
+		//set timer for GE activation if activation time known
+		if (!GExAttempts.activationTimer && GExAttempts.state.activationTime && !GExAttempts.state.active) {
+			GExAttempts.activationTimer = setTimeout(() => {
+				GExAttempts.state.active = true
+				GExAttempts.state.deactivationTime = GExAttempts.state.activationTime + 604800
+				GExAttempts.state.activationTime = null
+				GExAttempts.activationTimer = null
+				localStorage.setItem('GEx.state',JSON.stringify(GExAttempts.state))
+				GExAttempts.refreshGUI()
+			}, (GExAttempts.state.activationTime-GameTime) * 1000);
+		}
+
+	},
+
+	setCount:(n)=>{
+		GExAttempts.count = n
+		GExAttempts.refreshGUI()	
+	},
+
+	setNext:(time)=>{
+		let timer=3600000
+	
+		if (time) 
+			timer = (time-GameTime+3600)*1000
+		else 
+			GExAttempts.setCount(Math.min(GExAttempts.count + 1,8))
+
+		if (GExAttempts.next) clearTimeout(GExAttempts.next)
+		
+		GExAttempts.next = setTimeout(GExAttempts.setNext,timer)
+
+	},
+
+	checkNext:()=>{
+		if (moment()<GExAttempts.next) return
+		GExAttempts.setNext()
+		GExAttempts.setCount(Math.min(GExAttempts.count+1,8))
+	},
+
+	updateState:(data) =>{
+		GExAttempts.state.active = data.state=="active"
+
+		if (GExAttempts.state.active) {
+			GExAttempts.state.deactivationTime = data.nextStateTime || null
+			GExAttempts.state.activationTime = null
+			GExAttempts.state.GEprogress = data.progress?.currentEntityId || 0
+		} else {
+			GExAttempts.state.activationTime = data.nextStateTime || null
+			GExAttempts.state.deactivationTime = null
+			GExAttempts.state.GEprogress = 0	
+		}		
+
+		localStorage.setItem('GEx.state',JSON.stringify(GExAttempts.state))
+		GExAttempts.refreshGUI()
+
+	}
+
+}

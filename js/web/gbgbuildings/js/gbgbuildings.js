@@ -19,6 +19,7 @@ FoEproxy.addHandler('GuildBattlegroundBuildingService', 'getBuildings', (data, p
 
 	GBGBuildings.costs={};
 	data.responseData.availableBuildings.forEach(x => GBGBuildings.costs[x.buildingId] = x.costs.resources);
+	if (GBGBuildings.oldGBG && /basic_field_outpost|advanced_guild_fortress/.test(JSON.stringify(data.responseData.availableBuildings))) GBGBuildings.oldGBG=false
 	GBGBuildings.buildings = data.responseData.placedBuildings.map(x=>x.id).sort((a,b)=> (GBGBuildings.block[b]||0) - (GBGBuildings.block[a]||0));
 	let free=data.responseData.freeSlots||0;
 	
@@ -53,19 +54,50 @@ FoEproxy.addHandler('ClanService', 'getTreasury', (data, postData) => {
 });
 
 let GBGBuildings = {
+	oldGBG:true,
 	treasury:{},
-	block:{
+	block:{ // get from GBG building meta-data: Object.assign({},...x.map(b=>({id:b.id,value:Number(b.description.replace(/.*? (\d+)% chance to not increase.*/gm,"$1"))})).filter(b=>b.value).sort((a,b)=>a.value-b.value).map(b=>({[b.id]:b.value})))
 		"free":0,
-		"watchtower":8,
-		"barracks_improvised":20,
-		"guild_command_post_improvised":20,
+		"watchtower": 8,
+		"guild_command_post_improvised": 20,
+		"barracks_improvised": 20,
+		"basic_field_outpost_diamond": 20,
+		"basic_field_outpost_platinum": 20,
+		"basic_field_outpost_gold": 20,
+		"basic_field_outpost_silver": 20,
+		"basic_field_outpost_copper": 20,
 		"guild_fieldcamp_small": 26,
-		"barracks":40,
-		"guild_command_post_forward":40,
+		"basic_guild_fortress_diamond": 26,
+		"basic_guild_fortress_platinum": 26,
+		"basic_guild_fortress_gold": 26,
+		"basic_guild_fortress_silver": 26,
+		"basic_guild_fortress_copper": 26,
+		"guild_command_post_forward": 40,
+		"barracks": 40,
+		"regular_field_outpost_diamond": 40,
+		"regular_field_outpost_platinum": 40,
+		"regular_field_outpost_gold": 40,
+		"regular_field_outpost_silver": 40,
+		"regular_field_outpost_copper": 40,
 		"guild_fieldcamp": 52,
-		"barracks_reinforced":60,
-		"guild_command_post_fortified":60,
-		"guild_fieldcamp_fortified": 80
+		"regular_guild_fortress_diamond": 52,
+		"regular_guild_fortress_platinum": 52,
+		"regular_guild_fortress_gold": 52,
+		"regular_guild_fortress_silver": 52,
+		"regular_guild_fortress_copper": 52,
+		"guild_command_post_fortified": 60,
+		"barracks_reinforced": 60,
+		"advanced_field_outpost_diamond": 60,
+		"advanced_field_outpost_platinum": 60,
+		"advanced_field_outpost_gold": 60,
+		"advanced_field_outpost_silver": 60,
+		"advanced_field_outpost_copper": 60,
+		"guild_fieldcamp_fortified": 80,
+		"advanced_guild_fortress_diamond": 80,
+		"advanced_guild_fortress_platinum": 80,
+		"advanced_guild_fortress_gold": 80,
+		"advanced_guild_fortress_silver": 80,
+		"advanced_guild_fortress_copper": 80
 	},
 	Timeout:{"B":null,"T":null},
 	free:0,
@@ -184,6 +216,12 @@ let GBGBuildings = {
 		h += `<tr><th>${i18n('Boxes.GBGBuildings.toBuild')}</th><th>${i18n('Boxes.GBGBuildings.totalChance')}</th><th colspan="2">${i18n('Boxes.GBGBuildings.Costs')}</th></tr>`
 		let lastBlock = 1000;
 		let lastCost = 10000;
+		let src = (b) => {
+			let link=""
+			if (GBGBuildings.oldGBG) link = srcLinks.get("/guild_battlegrounds/hud/guild_battlegrounds_sector_buildings_"+b+".png",true,true)
+			if (!GBGBuildings.oldGBG || link.includes("antiquedealer_flag")) link = srcLinks.get("/guild_battlegrounds/hud/guild_battlegrounds_sector_buildings_"+b+"_gbg2024.png",true)
+			return link
+		}
 		for (let s of sets) {
 			if (s.ignore) continue;
 			let highlight=null;
@@ -199,11 +237,11 @@ let GBGBuildings = {
 			h+=`<tr ${highlight=="chance"?'class="breakline"':''}><td >`
 			for (let b of s.needed) {
 				if (b=="free") continue;
-				h+=`<img class="building" src="${srcLinks.get("/guild_battlegrounds/hud/guild_battlegrounds_sector_buildings_"+b+".png",true)}" title="${GBGBuildings.BuildingData[b].name}">`
+				h+=`<img class="building" src="${src(b)}" title="${GBGBuildings.BuildingData[b].name}">`
 			}
 			for (let b of s.keep) {
 				if (b=="free") continue;
-				h+=`<img class="building keep" src="${srcLinks.get("/guild_battlegrounds/hud/guild_battlegrounds_sector_buildings_"+b+".png",true)}" title="${GBGBuildings.BuildingData[b].name}">`
+				h+=`<img class="building keep" src="${src(b)}" title="${GBGBuildings.BuildingData[b].name}">`
 			}
 			h+=`</td><td ${highlight == "chance"? 'class="highlight"':''}>${s.block}%</td><td title="${s.title}">${(s[sortby]*100).toPrecision(2)}%</td><td title="${i18n('Boxes.GBGBuildings.absoluteCosts')}" ${highlight == "cost"? 'class="highlight"':''}>${s.absCosts}</td></tr>`;
 		}
