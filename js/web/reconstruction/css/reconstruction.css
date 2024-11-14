@@ -17,7 +17,7 @@
   overflow-y: auto;
 }
 
-#ReconstructionListBody td:nth-child(3){
+#ReconstructionListBody td:nth-last-child(2){
     padding-right: 0;
     text-align: right;
 }

@@ -80,11 +80,14 @@ let reconstruction = {
 			});
         }           
         
+        let icons = (x) => `<img src=${srcLinks.get(`/shared/icons/${x}.png`,true,true)}>`;
+        
         h =`<table class="sortable-table foe-table">
                 <thead>
                     <tr class="sorter-header">
                         <th data-type="reconstructionSizes">${i18n('Boxes.CityMap.Building')}</th>
                         <th class="no-sort">#</th>
+                        <th class="no-sort">${icons("road_required")}?</th>
                         <th class="is-number" data-type="reconstructionSizes"></th>
                         <th class="is-number" data-type="reconstructionSizes"></th>
                     </tr>
@@ -93,9 +96,16 @@ let reconstruction = {
             let meta=MainParser.CityEntities[id]
             let width = meta.width||meta.components.AllAge.placement.size.x
             let length = meta.length||meta.components.AllAge.placement.size.y
+            let road=""
+            if ((meta?.components?.AllAge?.streetConnectionRequirement?.requiredLevel || meta?.requirements?.street_connection_level) == 2)
+                road = icons("street_required")
+            else if ((meta?.components?.AllAge.streetConnectionRequirement?.requiredLevel || meta?.requirements?.street_connection_level) == 1)
+                road = icons("road_required")
+
             h+=`<tr class="reconstructionLine helperTT" data-callback_tt="Tooltips.buildingTT" data-meta_id="${id}" ${b.stored==0 ? ' style="display:none"' : ""}>
                     <td data-text="${helper.str.cleanup(meta.name)}">${meta.name}</td>
                     <td>x${b.stored}</td>
+                    <td>${road}</td>
                     <td data-number="${length*100+width}">${length} x</td>
                     <td data-number="${width*100+length}">${width}</td>
                 </tr>`
