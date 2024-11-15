@@ -122,7 +122,7 @@ let Tooltips = {
     
         let span = (x,withHighlight=false) => `<span ${withHighlight ? `class="${x>0 ? "positive" : "negative"}"`:''}>${numberWithCommas(x)}</span>`;
         let longSpan = (x) => `<div class="overflowBox"><span class="handleOverflow">${x}</span></div>`
-        let range = (x,y,withHighlight=false) => span(x,withHighlight) + (x!=y ?` - `+ span(y,withHighlight):``);
+        let range = (x,y,withHighlight=false) => span(x,withHighlight) + (x!=y ?`&nbsp;-&nbsp;`+ span(y,withHighlight):``);
         let formatTime = (x) => {
             let min=Math.floor(x/60)
             let sec = x-min*60
