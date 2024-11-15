@@ -1,12 +1,14 @@
 ## Changelog - Extension
 
-##### 3.8.2.0
+##### 3.9.0.0
 
 **New**
+- In reconstruction mode a building list, sortable by building size is offered
 - GE-Results: Menu icon now shows the current number of attempts
 - Tooltips: some modules now show the building information as a tooltip:
 	- Effiziency module - in the "add building" dialogue
 	- Boost Inventory
+	- Reconstruction size-list
 	- let us know on discord where else you would like to see that info
 
 **Update**

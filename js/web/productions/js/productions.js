@@ -487,9 +487,9 @@ let Productions = {
 				for (let type of Object.keys(MainParser.BoostSums)) {
 					if (type.includes('guild_raids')) {
 						if (boosts[type] != undefined)
-							rowA.push('<td data-number="'+type+'" class="text-center">'+ HTML.Format(boosts[type]) +'</td>')
+							rowA.push('<td data-number="'+boosts[type]+'" class="text-center">'+ HTML.Format(boosts[type]) +'</td>')
 						else
-							rowA.push('<td data-number="'+type+'" class="text-center">-</td>')
+							rowA.push('<td data-number="'+0+'" class="text-center">-</td>')
 					}
 				}
 			}
