@@ -56,7 +56,7 @@ FoEproxy.addHandler('ClanService', 'getTreasury', (data, postData) => {
 let GBGBuildings = {
 	oldGBG:true,
 	treasury:{},
-	block:{ // get from GBG building meta-data: Object.assign({},...x.map(b=>({id:b.id,value:Number(b.description.replace(/.*? (\d+)% chance to not increase.*/gm,"$1"))})).filter(b=>b.value).sort((a,b)=>a.value-b.value).map(b=>({[b.id]:b.value})))
+	block:{ // get from GBG building meta-data: Object.assign({"free":0},...x.map(b=>({id:b.id,value:Number(b.description.replace(/.*? (\d+)% chance to not increase.*/gm,"$1"))})).filter(b=>b.value).sort((a,b)=>a.value-b.value).map(b=>({[b.id]:b.value})))
 		"free":0,
 		"watchtower": 8,
 		"guild_command_post_improvised": 20,
