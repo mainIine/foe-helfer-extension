@@ -1,12 +1,14 @@
 ## Changelog - Extension
 
-##### 3.8.2.0
+##### 3.9.0.0
 
 **Neu**
+- Im Umbaumodus wird nun eine nach Größe sortierbare Gebäudeliste angezeigt
 - Gex-Ergebnisse: Menu-Icon zeigt nun die aktuelle Anzahl an GE-Versuchen an
 - Tooltips: in bestimmten Modulen werden nun die Gebäude-informationen als Tooltip angezeigt:
 	- im Effizienz-Modul, im "Gebäude hinzufügen" dialog
 	- im Boost-Inventar
+	- in der Umbau-Größenliste
 	- lasst uns auf Discord wissen, wo ihr diese Info noch gerne sehen würdet
 
 **Update**
@@ -50,7 +52,7 @@
 	- Übersicht aller Fragmente und Items hinzugefügt inkl. Summe über alle Gebäude
 	- Filter hinzugefügt
 	- Kampf-Boosts kategorisiert
-	- Einheitenproduktion nach Typ und Zeitalter summiert
+	- Einheiten produktion nach Typ und Zeitalter summiert
 
 - Effizienzbewertung Update:
 	- Neue Kategorien hinzugefügt
@@ -63,7 +65,7 @@
 	- listet alle Gebäude aus dem Inventar, die Boosts (zum Beispiel für den Kampf) bereitstellen
 
 - Aktive Mitglieder anderer Gilden
-	- wenn innerhalb von 5 Minuten, zweimal nacheinander die Details der selben fremden Gilde aufgerufen werden (Hauptquartier in den GG) und zumindest ein Mitglied dieser Gilde aktiv war, wird ein Fenster geöffnet, in dem die aktiven Mitglieder gelistet werden
+	- wenn innerhalb von 5 Minuten, zweimal nacheinander die Details derselben fremden Gilde aufgerufen werden (Hauptquartier in den GG) und zumindest ein Mitglied dieser Gilde aktiv war, wird ein Fenster geöffnet, in dem die aktiven Mitglieder gelistet werden
 
 **Update**
 - Kampf-Assistent:
@@ -81,11 +83,13 @@
 
 - Stadtübersicht QI:
 	- Gebäude werden nun nach Typ kategorisiert
-	- Münz- Vorrats- und Quantenaktionsboosts aus der Hauptstadt werden mitberechnet - danke Juber!
+	- Münz-, Vorrats- und Quantenaktionsboosts aus der Hauptstadt werden mitberechnet - danke Juber!
 
 **BugFix**
 - Fenster:
 	- können nun nicht mehr verschoben werden, wenn die Maus auf einen der Buttons des Fensters zeigt
+
+---
 
 ##### 3.7.0.0
 

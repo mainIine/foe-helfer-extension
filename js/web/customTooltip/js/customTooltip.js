@@ -42,9 +42,9 @@ let Tooltips = {
         
         
         $('body').on("pointerenter",".helperTT", async (e)=>{
-            if (e.target.dataset.callback_tt) {
+            if (e.currentTarget.dataset.callback_tt) {
                 Tooltips.activate()
-                let f=eval(e.target.dataset.callback_tt)
+                let f=eval(e.currentTarget.dataset.callback_tt)
                 if (typeof(f) == "function") {
                     let content = await(f(e));
                     Tooltips.set(content)
@@ -88,8 +88,8 @@ let Tooltips = {
         Tooltips.checkposition()
     },
     buildingTT: (e)=>{
-        let id=e?.target?.dataset?.meta_id||MainParser?.CityMapData[e?.target?.dataset?.id]?.cityentity_id
-        let era = Technologies.InnoEraNames[MainParser?.CityMapData[e?.target?.dataset?.id]?.level]
+        let id=e?.currentTarget?.dataset?.meta_id||MainParser?.CityMapData[e?.currentTarget?.dataset?.id]?.cityentity_id
+        let era = Technologies.InnoEraNames[MainParser?.CityMapData[e?.currentTarget?.dataset?.id]?.level]
         if (!id) return
         
         let meta=MainParser.CityEntities[id]
@@ -140,7 +140,7 @@ let Tooltips = {
             if (!x) return ""
             x=x.replace(/(.*?)_[0-9]+/gm,"$1");
             let link = srcLinks.get(`/shared/icons/${x}.png`,true,true);
-            if (link.includes("antiquedealer_flag")) link = srcLinks.get(`/shared/icons/reward_icons/reward_icon_${x}.png`,true);
+            if (link.includes("antiquedealer_flag")) link = srcLinks.get(`/shared/icons/reward_icons/reward_icon_${x}.png`,true,true);
             if (link.includes("antiquedealer_flag")) link = srcLinks.get(`/city/buildings/${x.replace(/(\D*?)_(.*)/,"$1_SS_$2")}.png`,true);
             return link
         }
@@ -517,10 +517,10 @@ let Tooltips = {
             } else if ((levels?.[minEra]?.provided_population && levels?.[maxEra]?.provided_population)||(levels?.[minEra]?.required_population && levels?.[maxEra]?.required_population)) {
                 provides+=`<tr><td>${icons("population") + " " + range((levels?.[minEra].provided_population||0)-(levels?.[minEra].required_population||0),(levels?.[maxEra].provided_population||0)-(levels?.[maxEra].required_population||0),true)}</td></tr>`
             }
-            if (meta.provided_happiness || meta.demand_for_happiness) {
-                provides+=`<tr><td>${icons("happiness")+" "+ span((meta.provided_happiness||0)-(meta.demand_for_happiness||0),true)}</td></tr>`
-            } else if ((levels?.[minEra]?.provided_happiness && levels?.[maxEra]?.provided_happiness)||(levels?.[minEra]?.demand_for_happiness && levels?.[maxEra]?.demand_for_happiness)) {
-                provides+=`<tr><td>${icons("happiness") + " " + range((levels?.[minEra].provided_happiness||0)-(levels?.[minEra].demand_for_happiness||0),(levels?.[maxEra].provided_happiness||0)-(levels?.[maxEra].demand_for_happiness||0),true) + polMod}</td></tr>`
+            if (meta.provided_happiness) {
+                provides+=`<tr><td>${icons("happiness")+" "+ span((meta.provided_happiness||0),true)}</td></tr>`
+            } else if ((levels?.[minEra]?.provided_happiness && levels?.[maxEra]?.provided_happiness)) {
+                provides+=`<tr><td>${icons("happiness") + " " + range(levels?.[minEra].provided_happiness||0,levels?.[maxEra].provided_happiness||0,true) + polMod}</td></tr>`
             }
 
             if (levels?.[minEra]?.ranking_points && levels?.[maxEra]?.ranking_points) {
@@ -684,13 +684,11 @@ let Tooltips = {
             
             out+=`<tr><th>${i18n("Boxes.Tooltip.Building.size+time")}</th></tr>`
             out+=`<tr><td class="multiCol"><div>${icons("size")} ${meta.width+"x"+meta.length}</div><div>${icons("icon_time")}${formatTime(meta.construction_time)}</div>`
-            if (meta?.requirements.street_connection_level) {
-                if (meta.street_connection_level == 2)
-                    out+=`<div>${icons("street_required")} ${i18n("Boxes.Tooltip.Building.road2")}</div>`
-                else 
-                    out+=`<div>${icons("road_required")} ${i18n("Boxes.Tooltip.Building.road")}</div>`
-                    
-            }
+            if (meta.requirements?.street_connection_level == 2)
+                out+=`<div>${icons("street_required")} ${i18n("Boxes.Tooltip.Building.road2")}</div>`
+            else if (meta.requirements?.street_connection_level == 1)
+                out+=`<div>${icons("road_required")} ${i18n("Boxes.Tooltip.Building.road")}</div>`
+        
             out+=`</td></tr>`
             
             if (traits != "") out+=`<tr><th>${i18n("Boxes.Tooltip.Building.traits")}</th></tr>`+traits
