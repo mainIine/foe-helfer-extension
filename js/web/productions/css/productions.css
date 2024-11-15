@@ -554,3 +554,22 @@ input[id*="ProdPerTile"] {
 #ProductionsRating #ProductionsRatingBody span.resicon.goods-previous {
 	background-position: -524px 2px;
 }
+#ItemSourcesBody div {
+	overflow-y: auto;
+	height: 100%;
+	width: 50%;
+}
+#ItemSourcesBody > div {
+	display: flex;
+	width: 100%;
+}
+#ItemSourcesBody img {
+	width: 25px;
+}
+#ItemSourcesBody h2 img {
+	width:unset;
+	max-width: 50px;
+}
+#ItemSourcesBody table {
+	width: 100%;
+}

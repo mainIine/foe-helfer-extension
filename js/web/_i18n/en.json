@@ -641,6 +641,7 @@
     "Boxes.Investment.TotalFP": "Stock + Invested + Profit = ",
     "Boxes.Investment.UpToDate": "The investment list was updated less than 30 minutes ago.",
     "Boxes.Investment.UpdateRequired": "The investment list is older than 30 minutes. Please update your investment list in the Town Hall.",
+    "Boxes.ItemSources.Title": "Item Sources",
     "Boxes.Kits.Antiques_Dealer": "Antiques Dealer",
     "Boxes.Kits.Base": "Level 1 building or selection kit",
     "Boxes.Kits.new_not_categorized": "New / not yet categorized",
