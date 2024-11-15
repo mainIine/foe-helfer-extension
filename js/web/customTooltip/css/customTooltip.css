@@ -4,8 +4,7 @@
 .HXBuilding td {
     width: 300px;
     display: flex;
-    white-space-collapse: preserve;
-    text-wrap-mode: nowrap;
+    white-space: nowrap;
 }
 .HXBuilding img {
     padding-right: 3px;
