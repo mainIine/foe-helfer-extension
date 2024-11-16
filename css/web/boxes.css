@@ -1275,9 +1275,9 @@ FP-Bar */
 	max-width: 250px;
 	padding: 8px;
 	color: var(--text-tab-active);
+	background-color: var(--text-darkest);
 	text-align: center;
 	text-decoration: none;
-	background-color: var(--text-darkest);
 	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;
 	border-radius: 4px;
@@ -1352,14 +1352,14 @@ FP-Bar */
 	width: 180px;
 	border: 2px solid #373c32;
 	background-color: var(--bg-tooltip);
-	z-index: 999;
+	box-shadow: 0 0 2px 1px var(--black-65);
 	color: #f2ede1;
+	z-index: 999;
 	padding: 5px;
 	pointer-events: none;
 	user-select: none;
 	margin: 0;
 	opacity: 1;
-	box-shadow: 0 0 2px 1px var(--black-65);
 	box-sizing: border-box;
 }
 
