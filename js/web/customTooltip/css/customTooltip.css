@@ -1,7 +1,7 @@
 #TooltipContainer.window-box {
-	border: 2px solid #353831;
-	background: #3b3f39;
-	color: #f2ede1;
+	border: 2px solid #2a2c27;
+	background: #343832;
+	color: #f7f4ed;
 }
 
 #TooltipContainer.window-box .foe-table tr td {
@@ -14,8 +14,9 @@
     box-shadow: inset 0 0 0 2000px var(--black-50), 0 1px 0 0 #fff3, 0 2px 0 0 #0004;
 }
 
-table.foe-table tbody tr:nth-child(odd), ul.foe-table li:nth-child(odd) {
+.buildingTT table.foe-table tbody tr:nth-child(odd), .buildingTT .foe-table li:nth-child(odd) {
     background-color: #fff1;
+    backdrop-filter: none;
 }
 
 .buildingTT {

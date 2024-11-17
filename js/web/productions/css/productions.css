@@ -557,19 +557,29 @@ input[id*="ProdPerTile"] {
 #ItemSourcesBody div {
 	overflow-y: auto;
 	height: 100%;
-	width: 50%;
-}
-#ItemSourcesBody > div {
-	display: flex;
-	width: 100%;
 }
 #ItemSourcesBody img {
 	width: 25px;
 }
-#ItemSourcesBody h2 img {
-	width:unset;
-	max-width: 50px;
-}
 #ItemSourcesBody table {
 	width: 100%;
+}
+#ItemSourcesBody td {
+	background-image: url('../../../../css/images/hud/chevron-down.svg');
+    background-size: 20px 20px;
+    background-position: center right;
+    background-repeat: no-repeat;
+}
+#ItemSourcesBody td:hover {
+	cursor: url('../../../../css/images/cursor_hover.cur'), auto;
+}
+#ItemSourcesBody .filterTable {
+	float: right;
+}
+#ItemSourcesBody .innerTable {
+	background: var(--text-darker);
+	margin: 0 -5px;
+}
+#ItemSourcesBody .innerTable:not(:empty) {
+	margin-top: 5px;
 }

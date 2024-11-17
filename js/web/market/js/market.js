@@ -514,8 +514,8 @@ let Market = {
 		let autoOpen = Settings.GetSetting('ShowMarketFilter');
 
         let h = [];
-        h.push(`<p class="text-center"><button class="btn btn-default" onclick="HTML.ExportTable($('#MarketBody').find('.foe-table.exportable'), 'csv', 'Market')">${i18n('Boxes.General.ExportCSV')}</button><br>`);
-        h.push(`<button class="btn btn-default" onclick="HTML.ExportTable($('#MarketBody').find('.foe-table.exportable'), 'json', 'Market')">${i18n('Boxes.General.ExportJSON')}</button></p>`);
+        h.push(`${i18n('Boxes.General.Export')}: <span class="btn-group"><button class="btn btn-default" onclick="HTML.ExportTable($('#MarketBody').find('.foe-table.exportable'), 'csv', 'Market')">CSV</button>`);
+        h.push(`<button class="btn btn-default" onclick="HTML.ExportTable($('#MarketBody').find('.foe-table.exportable'), 'json', 'Market')">JSON</button></span>`);
         h.push(`<p><input id="autoStartMarket" name="autoStartMarket" value="1" type="checkbox" ${(autoOpen === true) ? ' checked="checked"' : ''} /> <label for="autoStartMarket">${i18n('Boxes.Market.Settings.Autostart')}</label></p>`);
 
         h.push(`<p><button onclick="Market.SaveSettings()" id="save-market-settings" class="btn btn-default" style="width:100%">${i18n('Boxes.Settings.Save')}</button></p>`);

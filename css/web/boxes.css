@@ -376,7 +376,8 @@ table.foe-table thead th {
 }
 
 table.foe-table tbody tr:nth-child(odd), ul.foe-table li:nth-child(odd) {
-	background-color: var(--background-table-odd);
+	-webkit-backdrop-filter: brightness(1.1) saturate(1.1);
+	backdrop-filter: brightness(1.1) saturate(1.1);
 }
 
 table.foe-table:not(.no-hover) tbody tr:hover {
