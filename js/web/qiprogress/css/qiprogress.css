@@ -1,0 +1,31 @@
+#QiProgressList {
+	width: 570px;
+	height: 500px;
+}
+
+#QiProgressListBody {
+    overflow: auto;
+}
+
+#qi_roundswitch {
+    padding: 2px;
+}
+
+#QiProgressTable img {
+    max-height: 25px;
+    border-radius: 2px;
+}
+
+#QiProgressTable thead {
+    position: sticky;
+    top: 0;
+}
+
+#QiProgressTable .tdmin {
+    width: 1%;
+    white-space: nowrap;
+}
+
+#QiProgressPlayerDetails {
+    width: 400px;
+}

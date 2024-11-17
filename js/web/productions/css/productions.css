@@ -554,3 +554,32 @@ input[id*="ProdPerTile"] {
 #ProductionsRating #ProductionsRatingBody span.resicon.goods-previous {
 	background-position: -524px 2px;
 }
+#ItemSourcesBody div {
+	overflow-y: auto;
+	height: 100%;
+}
+#ItemSourcesBody img {
+	width: 25px;
+}
+#ItemSourcesBody table {
+	width: 100%;
+}
+#ItemSourcesBody td {
+	background-image: url('../../../../css/images/hud/chevron-down.svg');
+    background-size: 20px 20px;
+    background-position: center right;
+    background-repeat: no-repeat;
+}
+#ItemSourcesBody td:hover {
+	cursor: url('../../../../css/images/cursor_hover.cur'), auto;
+}
+#ItemSourcesBody .filterTable {
+	float: right;
+}
+#ItemSourcesBody .innerTable {
+	background: var(--text-darker);
+	margin: 0 -5px;
+}
+#ItemSourcesBody .innerTable:not(:empty) {
+	margin-top: 5px;
+}

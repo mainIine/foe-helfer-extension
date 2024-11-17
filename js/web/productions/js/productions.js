@@ -382,8 +382,8 @@ let Productions = {
 					let content = Productions.buildTableByType(type)
 					$("#Productions #"+type).html(content)
 					$('.TSinactive').tableSorter()					
-					$('.TSinactive').removeClass('TSinactive')					
-					Productions.filterTable('#Productions .filterCurrentList')
+					$('.TSinactive').removeClass('TSinactive')
+					HTML.FilterTable('#Productions .filterCurrentList')
 				}
 			});
 
@@ -391,7 +391,7 @@ let Productions = {
 			$('.production-tabs').tabslet({ active: Productions.ActiveTab })
 			$('.TSinactive').tableSorter()					
 			$('.TSinactive').removeClass('TSinactive')					
-			Productions.filterTable('#Productions .filterCurrentList')
+			HTML.FilterTable('#Productions .filterCurrentList')
 
 			// show a building on the map
 			$('#Productions').on('click', '.foe-table .show-entity', function () {
@@ -424,24 +424,6 @@ let Productions = {
 				}
 			}
 		}
-	},
-
-	filterTable: (selector) => {
-		$(selector).on('keyup', function (e) {
-			let filter = $(this).val().toLowerCase()
-			let table = $(this).parents("table")
-			if (filter.length >= 2) {
-				$("tbody tr", table).hide()
-				$("tbody tr", table).filter(function() {
-					let foundText = ($(this).text().toLowerCase().indexOf(filter) > -1)
-					if (foundText)
-						$(this).show()
-				});
-			}
-			else {
-				$("tbody tr", table).show()
-			}
-		});
 	},
 
 	buildQITable(type) {
@@ -782,7 +764,7 @@ let Productions = {
 					table.push('</th>')
 				}
 				else {
-					table.push('<th colspan="8" class="textright"></th>')
+					table.push('<th colspan="8" class="textright">'+(type=="items" ? '<span class="btn-default" onclick="Productions.showItemSources(event)" style="float:right;">'+i18n('Boxes.ItemSources.Title')+'</span>' : '')+'</th>')
 				}
 				table.push('</tr>')
 				table.push('<tr class="sorter-header">')
@@ -1690,11 +1672,11 @@ let Productions = {
 				$('#ProductionsRatingBody .overlay .results').html("")
 				let foundBuildings = Object.values(Productions.AdditionalSpecialBuildings).filter(x => regEx.test(x.name) && x.selected).sort((a,b)=>(a.name>b.name?1:-1))
 				for (building of foundBuildings) {
-					$('#ProductionsRatingBody .overlay .results').append(`<li data-meta_id="${building.id}" class="selected helperTT" data-callback_tt="Tooltips.buildingTT">${building.name}</li>`)
+					$('#ProductionsRatingBody .overlay .results').append(`<li data-meta_id="${building.id}" data-era="${CurrentEra}" class="selected helperTT" data-callback_tt="Tooltips.buildingTT">${building.name}</li>`)
 				}
 				foundBuildings = Object.values(Productions.AdditionalSpecialBuildings).filter(x => regEx.test(x.name) && !x.selected).sort((a,b)=>(a.name>b.name?1:-1))
 				for (building of foundBuildings) {
-					$('#ProductionsRatingBody .overlay .results').append(`<li data-meta_id="${building.id}" class="helperTT" data-callback_tt="Tooltips.buildingTT">${building.name}</li>`)
+					$('#ProductionsRatingBody .overlay .results').append(`<li data-meta_id="${building.id}" data-era="${CurrentEra}" class="helperTT" data-callback_tt="Tooltips.buildingTT">${building.name}</li>`)
 				}
 			}
 			filterMeta(/./)
@@ -1749,11 +1731,11 @@ let Productions = {
     },
 
 
-	rateBuildings: (buildingType,additional=false) => {
+	rateBuildings: (buildingType,additional=false, era=null) => {
 		let ratedBuildings = []
 		let tileRatings = JSON.parse(localStorage.getItem('ProductionRatingProdPerTiles'))
 		if (additional) {
-			buildingType = buildingType.map(x=>CityMap.createNewCityMapEntity(x))
+			buildingType = buildingType.map(x=>CityMap.createNewCityMapEntity(x,era||CurrentEra))
 		}
 		for (const building of buildingType) {
 			if (building.entityId.includes("L_AllAge_EasterBonus1") || building.entityId.includes("L_AllAge_Expedition16") || building.entityId.includes("L_AllAge_ShahBonus17") || (building.isSpecial == undefined && building.type != "greatbuilding")) continue // do not include wishingwell type buildings
@@ -1919,5 +1901,58 @@ let Productions = {
 		Productions.CalcBody()
 		
 		$(`#ProductionsSettingsBox`).remove()
-    },
+	},
+
+	showItemSources:()=>{
+		if ( $('#ItemSources').length === 0 ) {
+			HTML.Box({
+				id: 'ItemSources',
+				title: i18n('Boxes.ItemSources.Title'),
+				auto_close: true,
+				dragdrop: true,
+				minimize: true,
+				resize: true
+			});
+		}
+		
+		let temp = Object.assign({},...Object.values(MainParser.CityEntities).filter(b=>b.id[0]=="W").map(x=>({[x.id]:[...JSON.stringify(x).matchAll(/"name":"([^"]*?)"[^()[\]{}]*?"iconAssetName":"([^"]*?)"[^{}]*?"__class__":"GenericReward"/gm)].map(a=>({id:a[2],name:a[1]}))})))
+		let gl = Object.values(GoodsList).map(g=>g.id)
+		let items = {}
+		for (let [building,list] of Object.entries(temp)) {
+			for (let item of list) {
+				if (gl.includes(item.id)) continue
+				if (["","icon_fragment"].includes(item.id)) continue
+				if (items[item.id]) {
+					if (!items[item.id].buildings.includes(building)) items[item.id].buildings.push(building)
+				} else {
+					items[item.id] = {name:item.name,buildings:[building],id:item.id}
+				}
+			}
+		}
+
+        h =`<div>
+					<table class="foe-table sortable-table">
+						<thead>
+							<tr class="sorter-header"><th data-type="itemSourcesList"><input type="text" class="filterTable" placeholder="${i18n('Boxes.Kits.FilterItems')}" /> Items</th></tr>
+						</thead>
+						<tbody class="itemSourcesList">`
+							for (let item of Object.values(items)) {
+								h+=`<tr><td onclick="Productions.updateItemSources(${JSON.stringify(item).replaceAll('"',"'")})" data-text="${helper.str.cleanup(item.name)}">${srcLinks.icons(item.id)} ${item.name}<div class="innerTable" id="item-${helper.str.cleanup(item.name)}"></div></td></tr>`
+							}
+        			h +=`</tbody>
+					</table>
+				</div>`
+        $('#ItemSourcesBody').html(h)
+        $('#ItemSourcesBody .sortable-table').tableSorter()
+				HTML.FilterTable('#ItemSourcesBody .filterTable')
+	},
+
+	updateItemSources:(item)=>{
+		h=`<ul class="foe-table">`
+		for (b of item.buildings) {
+			h+=`<li class="helperTT" data-callback_tt="Tooltips.buildingTT" data-meta_id="${b}">${MainParser.CityEntities[b].name}</li>`
+		}
+		h+=`</ul>`
+		$('#item-'+helper.str.cleanup(item.name)).html(h)
+	},
 };

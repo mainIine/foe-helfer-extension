@@ -133,7 +133,17 @@ let srcLinks = {
         }
 
         return url1;
+    },
+
+    icons: (x) => {
+        if (!x) return ""
+        x=x.replace(/(.*?)_[0-9]+/gm,"$1");
+        let link = srcLinks.get(`/shared/icons/${x}.png`,true,true);
+        if (link.includes("antiquedealer_flag")) link = srcLinks.get(`/shared/icons/reward_icons/reward_icon_${x}.png`,true,true);
+        if (link.includes("antiquedealer_flag")) link = srcLinks.get(`/city/buildings/${x.replace(/(\D*?)_(.*)/,"$1_SS_$2")}.png`,true);
+        return `<img src=${link}>`;
     }
+
 }
 
 srcLinks.init()
