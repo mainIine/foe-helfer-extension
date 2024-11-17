@@ -281,6 +281,7 @@ let HTML = {
 
 					$('#' + args['id']).fadeToggle('fast', function () {
 						$(this).remove();
+						Tooltips.deactivate()
 					});
 				});
 			}
