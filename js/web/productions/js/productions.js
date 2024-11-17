@@ -382,8 +382,8 @@ let Productions = {
 					let content = Productions.buildTableByType(type)
 					$("#Productions #"+type).html(content)
 					$('.TSinactive').tableSorter()					
-					$('.TSinactive').removeClass('TSinactive')					
-					Productions.filterTable('#Productions .filterCurrentList')
+					$('.TSinactive').removeClass('TSinactive')
+					HTML.FilterTable('#Productions .filterCurrentList')
 				}
 			});
 
@@ -391,7 +391,7 @@ let Productions = {
 			$('.production-tabs').tabslet({ active: Productions.ActiveTab })
 			$('.TSinactive').tableSorter()					
 			$('.TSinactive').removeClass('TSinactive')					
-			Productions.filterTable('#Productions .filterCurrentList')
+			HTML.FilterTable('#Productions .filterCurrentList')
 
 			// show a building on the map
 			$('#Productions').on('click', '.foe-table .show-entity', function () {
@@ -424,24 +424,6 @@ let Productions = {
 				}
 			}
 		}
-	},
-
-	filterTable: (selector) => {
-		$(selector).on('keyup', function (e) {
-			let filter = $(this).val().toLowerCase()
-			let table = $(this).parents("table")
-			if (filter.length >= 2) {
-				$("tbody tr", table).hide()
-				$("tbody tr", table).filter(function() {
-					let foundText = ($(this).text().toLowerCase().indexOf(filter) > -1)
-					if (foundText)
-						$(this).show()
-				});
-			}
-			else {
-				$("tbody tr", table).show()
-			}
-		});
 	},
 
 	buildQITable(type) {
@@ -773,7 +755,7 @@ let Productions = {
 				table.push('<table class="foe-table sortable-table TSinactive '+type+'-list active">')
 				table.push('<thead style="z-index:100">')
 				table.push('<tr>')
-				table.push('<th colspan="3"><span class="btn-default change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeGroups') + '</span> <input type="text" placeholder="' + i18n('Boxes.Productions.FilterTable') + '" class="filterCurrentList">' + (type=="items" ? '<span class="btn-default" onclick="Productions.showItemSources(event)" style="margin-left:4px">'+i18n('Boxes.ItemSources.Title')+'</span>' : '') + '</th>')
+				table.push('<th colspan="3"><span class="btn-default change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeGroups') + '</span> <input type="text" placeholder="' + i18n('Boxes.Productions.FilterTable') + '" class="filterCurrentList"></th>')
 				if (!type.includes('att') && !type.includes('def') && type!='items') {
 					table.push('<th colspan="7" class="textright">')
 					table.push((typeCurrentSum >= 10000 ? HTML.FormatNumberShort(typeCurrentSum) : HTML.Format(typeCurrentSum))+ "/" + (typeSum >= 10000 ? HTML.FormatNumberShort(typeSum) : HTML.Format(typeSum)))
@@ -782,7 +764,7 @@ let Productions = {
 					table.push('</th>')
 				}
 				else {
-					table.push('<th colspan="8" class="textright"></th>')
+					table.push('<th colspan="8" class="textright">'+(type=="items" ? '<span class="btn-default" onclick="Productions.showItemSources(event)" style="float:right;">'+i18n('Boxes.ItemSources.Title')+'</span>' : '')+'</th>')
 				}
 				table.push('</tr>')
 				table.push('<tr class="sorter-header">')
@@ -1919,10 +1901,10 @@ let Productions = {
 		Productions.CalcBody()
 		
 		$(`#ProductionsSettingsBox`).remove()
-    },
+	},
+
 	showItemSources:()=>{
 		if ( $('#ItemSources').length === 0 ) {
-
 			HTML.Box({
 				id: 'ItemSources',
 				title: i18n('Boxes.ItemSources.Title'),
@@ -1931,11 +1913,11 @@ let Productions = {
 				minimize: true,
 				resize: true
 			});
-        }         
+		}
 		
 		let temp = Object.assign({},...Object.values(MainParser.CityEntities).filter(b=>b.id[0]=="W").map(x=>({[x.id]:[...JSON.stringify(x).matchAll(/"name":"([^"]*?)"[^()[\]{}]*?"iconAssetName":"([^"]*?)"[^{}]*?"__class__":"GenericReward"/gm)].map(a=>({id:a[2],name:a[1]}))})))
 		let gl = Object.values(GoodsList).map(g=>g.id)
-		let items={}
+		let items = {}
 		for (let [building,list] of Object.entries(temp)) {
 			for (let item of list) {
 				if (gl.includes(item.id)) continue
@@ -1946,33 +1928,31 @@ let Productions = {
 					items[item.id] = {name:item.name,buildings:[building],id:item.id}
 				}
 			}
-		}  
-        
+		}
+
         h =`<div>
-				<div>
 					<table class="foe-table sortable-table">
 						<thead>
-							<tr class="sorter-header"><th data-type="itemSourcesList">Items</th></tr>
+							<tr class="sorter-header"><th data-type="itemSourcesList"><input type="text" class="filterTable" placeholder="${i18n('Boxes.Kits.FilterItems')}" /> Items</th></tr>
 						</thead>
 						<tbody class="itemSourcesList">`
-        for (let item of Object.values(items)) {
-            			h+=`<tr><td onclick="Productions.updateItemSources(${JSON.stringify(item).replaceAll('"',"'")})" data-text="${helper.str.cleanup(item.name)}">${srcLinks.icons(item.id)} ${item.name}</td></tr>`
-        }
+							for (let item of Object.values(items)) {
+								h+=`<tr><td onclick="Productions.updateItemSources(${JSON.stringify(item).replaceAll('"',"'")})" data-text="${helper.str.cleanup(item.name)}">${srcLinks.icons(item.id)} ${item.name}<div class="innerTable" id="item-${helper.str.cleanup(item.name)}"></div></td></tr>`
+							}
         			h +=`</tbody>
 					</table>
-				</div>
-				<div id="ItemSourceBuildings">
-				</div>
-			</div>`
+				</div>`
         $('#ItemSourcesBody').html(h)
-        $('#ItemSourcesBody .sortable-table').tableSorter()		
+        $('#ItemSourcesBody .sortable-table').tableSorter()
+				HTML.FilterTable('#ItemSourcesBody .filterTable')
 	},
+
 	updateItemSources:(item)=>{
-		h=`<h2>${srcLinks.icons(item.id)} ${item.name}:</h2><table class="foe-table">`
+		h=`<ul class="foe-table">`
 		for (b of item.buildings) {
-			h+=`<tr><td class="helperTT" data-callback_tt="Tooltips.buildingTT" data-meta_id="${b}">${MainParser.CityEntities[b].name}</td></tr>`
+			h+=`<li class="helperTT" data-callback_tt="Tooltips.buildingTT" data-meta_id="${b}">${MainParser.CityEntities[b].name}</li>`
 		}
-		h+=`</table>`
-		$('#ItemSourceBuildings').html(h)
+		h+=`</ul>`
+		$('#item-'+helper.str.cleanup(item.name)).html(h)
 	},
 };

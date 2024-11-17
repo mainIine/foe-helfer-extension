@@ -108,7 +108,8 @@ table.info-table tr td {
 }
 
 #BackgroundInfoTable .welcome {
-	background-color: var(--background-table-odd);
+	-webkit-backdrop-filter: brightness(1.1) saturate(1.1);
+	backdrop-filter: brightness(1.1) saturate(1.1);
 }
 
 #BackgroundInfoTable .welcome td:first-child {
