@@ -4,13 +4,16 @@
 
 **New**
 - QI Progress Overview added (opens automatically when opening the QI player ranking)
+- Item Sources: Production Overview for Items/Fragments now offers an option to display a list of buildings that produce a certain item (even if not currently build)
 
 **Update**
-- Item Sources: Production Overview for Items/Fragments now offers an option to display a list of buildings that produce a certain item (even if not currently build)
-- Tooltip: changed design
+- Tooltip: made design similar to original FoE tooltips
 
 **BugFix**
-- Tooltip: some browsers did not use the correct design
+- Tooltip: 
+	- some browsers did not use the correct design
+	- did sometimes not vanish when a box was closed
+- Reconstruction List: set a default height
 
 ##### 3.9.0.0
 
