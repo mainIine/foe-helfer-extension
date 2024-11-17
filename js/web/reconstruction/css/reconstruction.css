@@ -13,8 +13,11 @@
 
 
 
-#ReconstructionListBody {
+ #ReconstructionListBody {
   overflow-y: auto;
+}
+#ReconstructionList {
+  height: 400px;
 }
 
 #ReconstructionListBody td:nth-last-child(2){
