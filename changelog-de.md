@@ -13,7 +13,9 @@
 - Tooltip: 
 	- manche Browser haben nicht das korrekte Design verwendet
 	- konnte offen bleiben, obwohl zugehöriges Fenster geschlossen wurde
-- Umbau-Liste: Standardhöhe gesetzt
+- Umbau-Liste: 
+	- Standardhöhe gesetzt
+	- Umplatzieren von Gebäuden verringerte den Zähler
 
 ##### 3.9.0.0
 
