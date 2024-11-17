@@ -1690,11 +1690,11 @@ let Productions = {
 				$('#ProductionsRatingBody .overlay .results').html("")
 				let foundBuildings = Object.values(Productions.AdditionalSpecialBuildings).filter(x => regEx.test(x.name) && x.selected).sort((a,b)=>(a.name>b.name?1:-1))
 				for (building of foundBuildings) {
-					$('#ProductionsRatingBody .overlay .results').append(`<li data-meta_id="${building.id}" class="selected helperTT" data-callback_tt="Tooltips.buildingTT">${building.name}</li>`)
+					$('#ProductionsRatingBody .overlay .results').append(`<li data-meta_id="${building.id}" data-era="${CurrentEra}" class="selected helperTT" data-callback_tt="Tooltips.buildingTT">${building.name}</li>`)
 				}
 				foundBuildings = Object.values(Productions.AdditionalSpecialBuildings).filter(x => regEx.test(x.name) && !x.selected).sort((a,b)=>(a.name>b.name?1:-1))
 				for (building of foundBuildings) {
-					$('#ProductionsRatingBody .overlay .results').append(`<li data-meta_id="${building.id}" class="helperTT" data-callback_tt="Tooltips.buildingTT">${building.name}</li>`)
+					$('#ProductionsRatingBody .overlay .results').append(`<li data-meta_id="${building.id}" data-era="${CurrentEra}" class="helperTT" data-callback_tt="Tooltips.buildingTT">${building.name}</li>`)
 				}
 			}
 			filterMeta(/./)

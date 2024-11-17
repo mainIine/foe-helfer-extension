@@ -88,14 +88,15 @@ let Tooltips = {
         Tooltips.checkposition()
     },
     buildingTT: (e)=>{
-        let id=e?.currentTarget?.dataset?.meta_id||MainParser?.CityMapData[e?.currentTarget?.dataset?.id]?.cityentity_id
-        let era = Technologies.InnoEraNames[MainParser?.CityMapData[e?.currentTarget?.dataset?.id]?.level]
+        let id = e?.currentTarget?.dataset?.meta_id||MainParser?.CityMapData[e?.currentTarget?.dataset?.id]?.cityentity_id
         if (!id) return
-        
-        let meta=MainParser.CityEntities[id]
+
+        let era =  e?.currentTarget?.dataset?.era||Technologies.InnoEraNames[MainParser?.CityMapData[e?.currentTarget?.dataset?.id]?.level]
+        let eff = Math.round(100 * Productions.rateBuildings([id],true)[0].score||0)
+        let meta = MainParser.CityEntities[id]
 
         let h = `<div class="buildingTT">
-                <h2>${meta.name}</h2>
+                <h2>${meta.name}  ${eff ? `(${i18n("Boxes.Kits.Efficiency")}: ${eff})`:''}</h2>
                 <table class="foe-table">
                 <tr><td class="imgContainer"><img src="${srcLinks.get("/city/buildings/"+meta.asset_id.replace(/^(\D_)(.*?)/,"$1SS_$2")+".png",true)}"></td>`+
                 `<td style="width:100%; vertical-align:top"">`;
