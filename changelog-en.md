@@ -13,7 +13,9 @@
 - Tooltip: 
 	- some browsers did not use the correct design
 	- did sometimes not vanish when a box was closed
-- Reconstruction List: set a default height
+- Reconstruction List: 
+	- set a default height
+	- moving buildings reduced counter
 
 ##### 3.9.0.0
 

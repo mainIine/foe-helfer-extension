@@ -25,14 +25,15 @@ FoEproxy.addHandler('CityReconstructionService', 'getDraft', (data, postData) =>
             "__class__": "ReconstructionDraftEntity"
         }))
     }
-    reconstruction.draft = {}
+    reconstruction.draft = Object.assign({},...data.responseData.map(b=>({[b.entityId]:b})))
+    reconstruction.count = {}
     for (let b of data.responseData) {
         let id = MainParser.CityMapData[b.entityId].cityentity_id
-        if (!reconstruction.draft[id]) reconstruction.draft[id] = {placed:0,stored:0}
+        if (!reconstruction.count[id]) reconstruction.count[id] = {placed:0,stored:0}
         if (b.position) 
-            reconstruction.draft[id].placed++
+            reconstruction.count[id].placed++
         else 
-            reconstruction.draft[id].stored++   
+            reconstruction.count[id].stored++   
     }
 
     reconstruction.showTable()
@@ -46,15 +47,16 @@ FoEproxy.addHandler('AutoAidService', 'getStates', (data, postData) => {
 FoEproxy.addRequestHandler('CityReconstructionService', 'saveDraft', (data) => {
     for (let x of data.requestData[0]) {
         let id = MainParser.CityMapData[x.entityId].cityentity_id
-        if (x.position) {
-            reconstruction.draft[id].placed++
-            reconstruction.draft[id].stored--
-        } else {
-            reconstruction.draft[id].placed--
-            reconstruction.draft[id].stored++    
+        if (x.position && !reconstruction.draft[x.entityId].position) {
+            reconstruction.count[id].placed++
+            reconstruction.count[id].stored--
+        } else if (!x.position) {
+            reconstruction.count[id].placed--
+            reconstruction.count[id].stored++    
         }
-        $('.reconstructionLine[data-meta_id="'+id+'"] td:nth-child(2)').html("x"+reconstruction.draft[id].stored)
-        if (reconstruction.draft[id].stored > 0) 
+        reconstruction.draft[x.entityId] = x
+        $('.reconstructionLine[data-meta_id="'+id+'"] td:nth-child(2)').html("x"+reconstruction.count[id].stored)
+        if (reconstruction.count[id].stored > 0) 
             $('.reconstructionLine[data-meta_id="'+id+'"]').show()
         else
             $('.reconstructionLine[data-meta_id="'+id+'"]').hide()
@@ -64,6 +66,7 @@ FoEproxy.addRequestHandler('CityReconstructionService', 'saveDraft', (data) => {
 
 let reconstruction = {
     draft:null,
+    count:null,
 
     showTable:()=>{
         if ( $('#ReconstructionList').length === 0 ) {
@@ -92,7 +95,7 @@ let reconstruction = {
                         <th class="is-number" data-type="reconstructionSizes"></th>
                     </tr>
                 </thead><tbody class="reconstructionSizes">`
-        for (let [id,b] of Object.entries(reconstruction.draft)) {
+        for (let [id,b] of Object.entries(reconstruction.count)) {
             let meta=MainParser.CityEntities[id]
             let width = meta.width||meta.components.AllAge.placement.size.x
             let length = meta.length||meta.components.AllAge.placement.size.y

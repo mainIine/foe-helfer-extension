@@ -92,11 +92,10 @@ let Tooltips = {
         if (!id) return
 
         let era =  e?.currentTarget?.dataset?.era||Technologies.InnoEraNames[MainParser?.CityMapData[e?.currentTarget?.dataset?.id]?.level]
-        let eff = Math.round(100 * Productions.rateBuildings([id],true,era)[0].score||0)
         let meta = MainParser.CityEntities[id]
 
         let h = `<div class="buildingTT">
-                <h2>${meta.name}  ${era ? `(${i18n("Boxes.Kits.Efficiency")}: ${eff})`:''}</h2>
+                <h2>${meta.name}  ${era ? `(${i18n("Boxes.Kits.Efficiency")}: ${Math.round(100 * Productions.rateBuildings([id],true,era)[0].score||0)})`:''}</h2>
                 <table class="foe-table">
                 <tr><td class="imgContainer"><img src="${srcLinks.get("/city/buildings/"+meta.asset_id.replace(/^(\D_)(.*?)/,"$1SS_$2")+".png",true)}"></td>`+
                 `<td style="width:100%; vertical-align:top"">`;
