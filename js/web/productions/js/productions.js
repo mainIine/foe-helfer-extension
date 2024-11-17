@@ -1749,11 +1749,11 @@ let Productions = {
     },
 
 
-	rateBuildings: (buildingType,additional=false) => {
+	rateBuildings: (buildingType,additional=false, era=null) => {
 		let ratedBuildings = []
 		let tileRatings = JSON.parse(localStorage.getItem('ProductionRatingProdPerTiles'))
 		if (additional) {
-			buildingType = buildingType.map(x=>CityMap.createNewCityMapEntity(x))
+			buildingType = buildingType.map(x=>CityMap.createNewCityMapEntity(x,era||CurrentEra))
 		}
 		for (const building of buildingType) {
 			if (building.entityId.includes("L_AllAge_EasterBonus1") || building.entityId.includes("L_AllAge_Expedition16") || building.entityId.includes("L_AllAge_ShahBonus17") || (building.isSpecial == undefined && building.type != "greatbuilding")) continue // do not include wishingwell type buildings
