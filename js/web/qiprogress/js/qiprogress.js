@@ -117,6 +117,7 @@ let QiProgress = {
 		let t = [],
 			b = [],
 			tA = 0,
+			tP = 0,
 			histView = false;
 
 		QiProgress.ProgressContent = [];
@@ -186,14 +187,15 @@ let QiProgress = {
 
 			newProgressClass = change && !newRound ? 'new ' : '';
 
-			tA += playerNew.actions
+			tA += playerNew.actions;
+			tP += playerNew.progress;
 
 			b.push('<tr data-player="' + playerNew['player_id'] + '" data-qiround="' + qiRound + '" class="' + newProgressClass + (!histView ? 'showdetailview ' : '') + (playerNew['player_id'] === ExtPlayerID ? 'mark-player ' : '') + (change === true ? 'bg-green' : '') + '">');
 			b.push('<td class="tdmin">' + (parseInt(i) + 1) + '.</td>');
 			b.push('<td class="tdmin"><img src="' + srcLinks.GetPortrait(playerNew.avatar) + '"></td>');
 			b.push('<td>' + playerNew.name + '</td>');
-			b.push('<td class="text-center" data-number="'+playerNew.actions+'">' + HTML.Format(playerNew.actions)+ newActions + '</td>');
-			b.push('<td class="text-center" data-number="'+playerNew.progress+'">' + HTML.Format(playerNew.progress) + newProgress + '</td>');
+			b.push('<td class="text-center" data-number="' + playerNew.actions + '">' + HTML.Format(playerNew.actions) + newActions + '</td>');
+			b.push('<td class="text-center" data-number="' + playerNew.progress + '">' + HTML.Format(playerNew.progress) + newProgress + '</td>');
 			b.push('</tr>');
 
 			QiProgress.ProgressContent.push({
@@ -209,7 +211,7 @@ let QiProgress = {
 		t.push('<tr>');
 		t.push('<th colspan="3" data-export3="Player">' + i18n('General.Player') + '</th>');
 		t.push('<th class="text-center" data-export="Actions">' + i18n('Boxes.QiProgress.Actions') + '<br> <strong class="text-warning">(' + HTML.Format(tA) + ')</strong></th>');
-		t.push('<th class="text-center" data-export="Progress">' + i18n('Boxes.QiProgress.Progress') + '<br> <strong class="text-warning">(' + HTML.Format(tA) + ')</strong></th>');
+		t.push('<th class="text-center" data-export="Progress">' + i18n('Boxes.QiProgress.Progress') + '<br> <strong class="text-warning">(' + HTML.Format(tP) + ')</strong></th>');
 		t.push('</tr>');
 		t.push('</thead>');
 
