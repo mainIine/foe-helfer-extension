@@ -93,13 +93,16 @@ let Tooltips = {
 
         let era =  e?.currentTarget?.dataset?.era||Technologies.InnoEraNames[MainParser?.CityMapData[e?.currentTarget?.dataset?.id]?.level]
         let meta = MainParser.CityEntities[id]
+        let allies =  JSON.parse(e?.currentTarget?.dataset?.allies||"null")
+        let eff = Math.round(e?.currentTarget?.previousElementSibling?.dataset?.number)
+        if  (!eff && era) eff=Math.round(100 * Productions.rateBuildings([id],true,era)?.[0]?.score||0)
 
         let h = `<div class="buildingTT">
-                <h2>${meta.name}  ${era ? `(${i18n("Boxes.Kits.Efficiency")}: ${Math.round(100 * Productions.rateBuildings([id],true,era)[0].score||0)})`:''}</h2>
+                <h2>${meta.name}  ${eff ? `(${i18n("Boxes.Kits.Efficiency")}: ${eff})`:''}</h2>
                 <table class="foe-table">
                 <tr><td class="imgContainer"><img src="${srcLinks.get("/city/buildings/"+meta.asset_id.replace(/^(\D_)(.*?)/,"$1SS_$2")+".png",true)}"></td>`+
                 `<td style="width:100%; vertical-align:top"">`;
-        h += Tooltips.BuildingData(meta,era);
+        h += Tooltips.BuildingData(meta,era,allies);
         h += "</td></tr></table></div>"
         setTimeout(()=>{
             $(".handleOverflow").each((index,e)=>{
@@ -112,7 +115,11 @@ let Tooltips = {
         },100)
         return h
     },
-    BuildingData:(meta,onlyEra=null)=>{
+    BuildingData:(meta,onlyEra=null,allies=null)=>{
+        if (onlyEra && Array.isArray(onlyEra)) {
+            allies = [].concat(onlyEra)
+            onlyEra = null
+        }
         let numberWithCommas = (x) => {
 			if (!x) return ""
 			return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -221,8 +228,23 @@ let Tooltips = {
                     traits += `<tr><td><img class="inhabitant" src="${srcLinks.get(`/city/inhabitants/${a.action.animationId}/${a.action.animationId}_south_00.png`,true)}">◄ ${i18n("Boxes.Tooltip.Building.addInhabitant")} (${capFirsts(a.action.animationId)})</td></tr>`
             }
 
-            for (r of levels.AllAge?.ally?.rooms || []) {
-                ally += '<tr><td>'+srcLinks.icons("historical_allies_slot_tooltip_icon_empty") + capFirsts(r.allyType) + (r.rarity?.value ? (" ("+capFirsts(r.rarity?.value)+")"):"")+`</td></tr>`
+            for (let r of levels.AllAge?.ally?.rooms || []) {
+                let allydata = null
+                for (a of allies||[]) {
+                    allydata = MainParser.Allies.getAllieData(a)
+                    if (r.allyType == allydata.type && (!r.rarity?.value || r.rarity?.value == allydata.rarity)) break
+                    allydata = null
+                }
+                ally += `<tr><td>${srcLinks.icons("historical_allies_slot_tooltip_icon_" + (allydata ? "full" :"empty"))}<div>${capFirsts(r.allyType) + (r.rarity?.value ? (" ("+i18n("Boxes.Productions.AllyRarity."+r.rarity?.value)+")"):"")}`
+                if (allydata) {
+                    ally+=`</br><span style="color:${MainParser.Allies.rarities[allydata.rarity].textColor}">${MainParser.Allies.names[allydata.allyId]} (${i18n("Boxes.Productions.AllyRarity."+allydata.rarity)} - ${i18n("General.Level")} ${allydata.level})</span>`
+                    //productions:
+                    for (b of allydata.prod.boosts||[]) {
+                        ally+=`</br>${srcLinks.icons(b.type+feature[b.targetedFeature])} ${b.value + percent(b.type)}`
+                    }
+
+                }
+                ally+=`</div></td></tr>`
             }
 
             if (levels.AllAge.eraRequirement?.era && era =="") {

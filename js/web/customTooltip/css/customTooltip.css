@@ -52,6 +52,7 @@
 .HXBuilding img {
     padding-right: 3px;
     max-width: 24px;
+    max-height: 24px;
 }
 .HXBuilding .multiCol {
     flex-wrap: wrap;
