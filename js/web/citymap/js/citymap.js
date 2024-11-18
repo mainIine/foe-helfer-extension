@@ -122,7 +122,6 @@ let CityMap = {
 
 	/**
 	 * Stadtkarte vorbereiten => Menü rein
-	 *
 	 * @param Title
 	 */
 	PrepareBox: (Title)=> {
@@ -235,7 +234,8 @@ let CityMap = {
 			$("#sidebar").append(CityMap.showQIBuildings())
 		}
 		if (CityMap.IsExtern === true) {
-			$("#sidebar").append($('<a id="openEfficiencyRating" class="btn-default" onclick="Productions.ShowRating(true)">'+ i18n('Menu.ProductionsRating.Title') +'</a>'));
+			let era = CityMap.CityData.find(x => x.type == 'main_building').cityentity_id.split('_')[1]
+			$("#sidebar").append($('<a id="openEfficiencyRating" class="btn-default" onclick="Productions.ShowRating(true,\''+era+'\')">'+ i18n('Menu.ProductionsRating.Title') +'</a>'));
 		}
 	},
 
@@ -601,7 +601,6 @@ let CityMap = {
 
 			if (building.eraName) {
 				let era = Technologies.Eras[building.eraName]
-
 				f.attr({
 					title: `${building.name}, ${building.size.length}x${building.size.width}<br><em>${i18n('Eras.' + (era || 0) )}</em>`
 				})
@@ -648,7 +647,6 @@ let CityMap = {
 		});
 
 		$('#grid-outer').draggable();
-
 		CityMap.getAreas();
 	},
 
@@ -1345,6 +1343,20 @@ let CityMap = {
 				return metaData.components.AllAge.limited.config.collectionAmount
 		}
 		return false
+	},
+
+	isBoostableBuilding(metaData) {
+		if (metaData.type == 'greatbuilding' || metaData.type == 'main_building') {
+			return false
+		}
+		else if (metaData.id.includes('CastleSystem')) {
+			return false
+		}
+		// wishingwell types
+		else if (metaData.id.includes("L_AllAge_EasterBonus1") || metaData.id.includes("L_AllAge_Expedition16") || metaData.id.includes("L_AllAge_ShahBonus17")) {
+			return false
+		}
+		return true
 	},
 
 	// returns undefined or time the building was built
@@ -2133,6 +2145,7 @@ let CityMap = {
 			eraName: ((data.cityentity_id||metaData.id).includes("CastleSystem") ? CurrentEra : era),
 			isSpecial: this.isSpecialBuilding(metaData),
 			isLimited: this.isLimitedBuilding(metaData),
+			isBoostable: this.isBoostableBuilding(metaData),
 			chainBuilding: this.setChainBuilding(metaData),
 			setBuilding: this.setSetBuilding(metaData),
 			size: this.setSize(metaData),
@@ -2159,8 +2172,8 @@ let CityMap = {
 			}
 		}
 		
-		//if (entity.entityId != "street")
-		//	console.log('entity ', entity.name, entity, metaData, data)
+		if (entity.entityId != "street")
+			console.log('entity ', entity.name, entity, metaData, data)
 		return entity
 	},
 };

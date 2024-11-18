@@ -20,6 +20,8 @@
 - Umbau-Liste: 
 	- Standardhöhe gesetzt
 	- Umplatzieren von Gebäuden verringerte den Zähler
+- Gebäude-Effizienz:
+	- Die Bewertungen bei anderen Spielern haben dein aktuelles Zeitalter genutzt, statt ihr eigenes
 
 ##### 3.9.0.0
 
