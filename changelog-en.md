@@ -1,12 +1,29 @@
 ## Changelog - Extension
 
+##### 3.10.0.0
+
+**New**
+- QI Progress Overview added (opens automatically when opening the QI player ranking)
+- Item Sources: Production Overview for Items/Fragments now offers an option to display a list of buildings that produce a certain item (even if not currently build)
+
+**Update**
+- Tooltip: made design similar to original FoE tooltips
+
+**BugFix**
+- Tooltip: 
+	- some browsers did not use the correct design
+	- did sometimes not vanish when a box was closed
+- Reconstruction List: 
+	- set a default height
+	- moving buildings reduced counter
+
 ##### 3.9.0.0
 
 **New**
 - In reconstruction mode a building list, sortable by building size is offered
 - GE-Results: Menu icon now shows the current number of attempts
 - Tooltips: some modules now show the building information as a tooltip:
-	- Effiziency module - in the "add building" dialogue
+	- Efficiency module - in the "add building" dialogue
 	- Boost Inventory
 	- Reconstruction size-list
 	- let us know on discord where else you would like to see that info
@@ -20,7 +37,7 @@
 	- Broke for some players due to a game update
 	- Same buildings with/without allies were not counted correctly
 - Porduction Overview:
-	- Fragment amount was not korrekt for some buildings
+	- Fragment amount was not correct for some buildings
 	- Not all buildings were listed in fragments overview
 
 ##### 3.8.1.0

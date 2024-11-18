@@ -767,17 +767,15 @@ let GuildFights = {
 
 		let tNF = (tN * 2) + tF;
 
-		t.push('<table id="GildPlayersTable" class="foe-table' + (histView === false ? ' chevron-right' : '') + '">');
+		t.push('<table id="GildPlayersTable" class="exportable foe-table' + (histView === false ? ' chevron-right' : '') + '">');
 
 		t.push('<thead>');
 		t.push('<tr>');
 
-		t.push('<th class="tdmin">&nbsp;</th>');
-		t.push('<th class="tdmin">&nbsp;</th>');
-		t.push('<th>' + i18n('Boxes.GuildFights.Player') + '</th>');
-		t.push('<th class="text-center"><span class="negotiation" title="' + HTML.i18nTooltip(i18n('Boxes.GuildFights.Negotiations')) + '"></span> <strong class="text-warning">(' + HTML.Format(tN) + ')</strong></th>');
-		t.push('<th class="text-center"><span class="fight" title="' + HTML.i18nTooltip(i18n('Boxes.GuildFights.Fights')) + '"></span> <strong class="text-warning">(' + HTML.Format(tF) + ')</strong></th>');
-		t.push('<th class="text-center">' + i18n('Boxes.GuildFights.Total') + ' <strong class="text-warning">(' + HTML.Format(tNF) + ')</strong></th>');
+		t.push('<th colspan="3" data-export3="Player">' + i18n('Boxes.GuildFights.Player') + '</th>');
+		t.push('<th class="text-center" data-export="Negotiations"><span class="negotiation" title="' + HTML.i18nTooltip(i18n('Boxes.GuildFights.Negotiations')) + '"></span> <strong class="text-warning">(' + HTML.Format(tN) + ')</strong></th>');
+		t.push('<th class="text-center" data-export="Fights"><span class="fight" title="' + HTML.i18nTooltip(i18n('Boxes.GuildFights.Fights')) + '"></span> <strong class="text-warning">(' + HTML.Format(tF) + ')</strong></th>');
+		t.push('<th class="text-center" data-export="Total">' + i18n('Boxes.GuildFights.Total') + ' <strong class="text-warning">(' + HTML.Format(tNF) + ')</strong></th>');
 		t.push('<th class="text-center">' + i18n('Boxes.GuildFights.Attrition') + ' <strong class="text-warning">(' + HTML.Format(tA) + ')</strong></th>');
 
 		t.push('<th></th>');
@@ -796,13 +794,10 @@ let GuildFights = {
 
 				GuildFights.curDetailViewFilter = { content: 'player', player_id: player_id, gbground: gbground };
 
-				if ($('#GildPlayersDetailView').length === 0)
-				{
+				if ($('#GildPlayersDetailView').length === 0) {
 					GuildFights.ShowDetailViewBox(GuildFights.curDetailViewFilter);
 				}
-				else
-				{
-
+				else {
 					GuildFights.BuildDetailViewContent(GuildFights.curDetailViewFilter);
 				}
 			});
@@ -1578,15 +1573,14 @@ let GuildFights = {
 		c.push(`<p class="text-left"><input id="gf_showProgressFilter" name="showprogressfilter" value="1" type="checkbox" ${(Settings.showProgressFilter === 1) ? ' checked="checked"' : ''} /> <label for="gf_showProgressFilter">${i18n('Boxes.GuildFights.ShowProgressFilter')}</label></p>`);
 		c.push(`<p class="text-left"><input id="gf_showLogButton" name="showlogbutton" value="1" type="checkbox" ${(Settings.showLogButton === 1) ? ' checked="checked"' : ''} /> <label for="gf_showLogButton">${i18n('Boxes.GuildFights.ShowLogButton')}</label></p>`);
 		c.push(`<p><button id="save-GuildFightsPlayerBox-settings" class="btn btn-default" style="width:100%" onclick="GuildFights.PlayerBoxSettingsSaveValues()">${i18n('Boxes.General.Save')}</button></p>`);
-		c.push(`<hr><p>${i18n('Boxes.General.Export')}: <button class="btn btn-default" onclick="GuildFights.SettingsExport('csv')" title="${HTML.i18nTooltip(i18n('Boxes.General.ExportCSV'))}">CSV</button>`);
-		c.push(`<button class="btn btn-default" onclick="GuildFights.SettingsExport('json')" title="${HTML.i18nTooltip(i18n('Boxes.General.ExportJSON'))}">JSON</button></p>`);
+		c.push(`<hr><p>${i18n('Boxes.General.Export')}: <span class="btn-group"><button class="btn btn-default" onclick="HTML.ExportTable($('#GildPlayersTable'),'csv','GBG-PlayerList')" title="${HTML.i18nTooltip(i18n('Boxes.General.ExportCSV'))}">CSV</button>`);
+		c.push(`<button class="btn btn-default" onclick="HTML.ExportTable($('#GildPlayersTable'),'json','GBG-PlayerList')" title="${HTML.i18nTooltip(i18n('Boxes.General.ExportJSON'))}">JSON</button></span></p>`);
 
 		$('#GildPlayersSettingsBox').html(c.join(''));
 	},
 
 
 	PlayerBoxSettingsSaveValues: () => {
-
 		GuildFights.PlayerBoxSettings.showRoundSelector = $("#gf_showRoundSelector").is(':checked') ? 1 : 0;
 		GuildFights.PlayerBoxSettings.showProgressFilter = $("#gf_showProgressFilter").is(':checked') ? 1 : 0;
 		GuildFights.PlayerBoxSettings.showLogButton = $("#gf_showLogButton").is(':checked') ? 1 : 0;
@@ -1595,51 +1589,7 @@ let GuildFights = {
 
 		$(`#GildPlayersSettingsBox`).fadeToggle('fast', function () {
 			$(this).remove();
-
 			GuildFights.BuildPlayerContent(GuildFights.CurrentGBGRound);
-
-		});
-
-	},
-
-
-	SettingsExport: (type) => {
-
-		let blob, file;
-		let BOM = "\uFEFF";
-
-		if (type === 'json') {
-			let json = JSON.stringify(GuildFights.PlayerBoxContent);
-
-			blob = new Blob([BOM + json], {
-				type: 'application/json;charset=utf-8'
-			});
-			file = `ggfights-${ExtWorld}.json`;
-		}
-
-		else if (type === 'csv') {
-			let csv = [];
-
-			for (let i in GuildFights.PlayerBoxContent) {
-				if (!GuildFights.PlayerBoxContent.hasOwnProperty(i)) {
-					break;
-				}
-
-				let r = GuildFights.PlayerBoxContent[i];
-				console.log(r);
-				csv.push(`${r['player_id']};${r['player']};${r['negotiationsWon']};${r['battlesWon']};${r['attrition']};${r['total']}`);
-			}
-
-			blob = new Blob([BOM + csv.join('\r\n')], {
-				type: 'text/csv;charset=utf-8'
-			});
-			file = `ggfights-${ExtWorld}.csv`;
-		}
-
-		MainParser.ExportFile(blob, file);
-
-		$(`#GildPlayersSettingsBox`).fadeToggle('fast', function () {
-			$(this).remove();
 		});
 	},
 
