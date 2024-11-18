@@ -29,3 +29,9 @@
 #QiProgressPlayerDetails {
     width: 400px;
 }
+
+#QiProgressPlayerDetails .pname {
+	padding: 10px 5px;
+	color: var(--text-bright);
+	font-size: 1.0rem;
+}
