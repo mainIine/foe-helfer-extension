@@ -1955,11 +1955,17 @@ let Productions = {
 	},
 
 	updateItemSources:(item)=>{
+		let itemId = '#item-'+helper.str.cleanup(item.name)
+		$(itemId).parent('td').toggleClass('open')
+		if ($(itemId).html() != '') {
+			$(itemId).html('')
+			return
+		}
 		h=`<ul class="foe-table">`
 		for (b of item.buildings) {
 			h+=`<li class="helperTT" data-callback_tt="Tooltips.buildingTT" data-meta_id="${b}">${MainParser.CityEntities[b].name}</li>`
 		}
 		h+=`</ul>`
-		$('#item-'+helper.str.cleanup(item.name)).html(h)
+		$(itemId).html(h)
 	},
 };
