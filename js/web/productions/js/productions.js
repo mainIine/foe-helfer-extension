@@ -64,7 +64,7 @@ let Productions = {
 		'generic_building'
 	],
 
-	RatingCurrentTab: 'Settings',
+	RatingCurrentTab: 'Results',
 	Rating: JSON.parse(localStorage.getItem('ProductionRatingEnableds2')||"{}"),
 	RatingProdPerTiles: {},
 
@@ -449,7 +449,7 @@ let Productions = {
 				if (building.chainBuilding !== undefined)
 				rowA.push('<img src="' + srcLinks.get('/shared/icons/' + building.chainBuilding.name + '.png', true) + '" class="chain-set-ico">')
 			rowA.push('</td>')
-			rowA.push('<td data-text="'+helper.str.cleanup(building.name)+'"  class="' + (MainParser.Allies.buildingList?.[building.id]?"ally" : "") +'">' + building.name + '</td>')
+			rowA.push('<td data-text="'+helper.str.cleanup(building.name)+'" class="' + (MainParser.Allies.buildingList?.[building.id]?"ally" : "") +'">' + building.name + '</td>')
 			
 			if (building.boosts !== undefined) {
 				boosts = {}
@@ -1177,7 +1177,7 @@ let Productions = {
 				if (production.type == "genericReward") {
 					if (production.resources?.icon.includes("good")) return false
 					let frag = production.resources.subType == "fragment"
-					allItems += production.resources.amount + "x " + (frag ? "🧩 " : "" ) + production.resources.name + "<br>"
+					allItems += '<span>'+production.resources.amount + "x " + (frag ? "🧩 " : "" ) + production.resources.name + "</span><br>"
 					itemArray.push({fragment:frag,name:production.resources.name,amount:production.resources.amount,random:0})
 				}
 			})
@@ -1193,7 +1193,7 @@ let Productions = {
 								if (resource.type == "unit") {
 									allUnits += "Ø " + amount + "x " + (frag ? "🧩 " : "" ) + `<img src='${srcLinks.get("/shared/icons/"+resource.name.replace(/next./,"").replace("random","random_production")+".png",true)}'>` + "<br>"
 								} else {
-									allItems += "Ø " + amount + "x " + (frag ? "🧩 " : "" ) + resource.name + "<br>"
+									allItems += "<span>Ø " + amount + "x " + (frag ? "🧩 " : "" ) + resource.name + "</span><br>"
 									itemArray.push({fragment:frag,name:resource.name,amount:0,random:amount})
 								}
 							}
@@ -1205,8 +1205,10 @@ let Productions = {
 						}
 					} 
 					if (production.resources?.type == "consumable") {
+						let itemId = production.resources.id.split('#')[1]
+						itemId = (itemId == undefined) ? '' : itemId
 						let frag = production.resources.subType == "fragment"
-						allItems += production.resources.amount + "x " + (frag ? "🧩 " : "" ) + production.resources.name + "<br>"
+						allItems += `<span class="'${itemId}'">`+production.resources.amount + "x " + (frag ? "🧩 " : "" ) + production.resources.name + "</span><br>"
 						itemArray.push({fragment:frag,name:production.resources.name,amount:production.resources.amount,random:0})
 					}
 				})
@@ -1545,7 +1547,7 @@ let Productions = {
 			h.push('<tr class="settings">')
 				h.push('<th colspan="'+(colNumber+4)+'">')
 				h.push('<input type="checkbox" id="tilevalues"><label for="tilevalues">' + i18n('Boxes.ProductionsRating.ShowValuesPerTile') + '</label>')
-				h.push('<input type="checkbox" id="showitems"><label for="showitems">' + i18n('Boxes.ProductionsRating.ShowItems') + '</label>')
+				h.push('<input type="checkbox" id="showitems" checked><label for="showitems">' + i18n('Boxes.ProductionsRating.ShowItems') + '</label>')
 				h.push('<input type="checkbox" id="showhighlighted"><label for="showhighlighted">' + i18n('Boxes.ProductionsRating.ShowHighlighted') + '</label>')
 				h.push('<label for="efficiencyBuildingFilter">' + i18n('Boxes.ProductionsRating.Filter') + ": " + '<input type="text" id="efficiencyBuildingFilter" size=20 placeholder="neo|eden"></label>')
 				h.push('<a class="btn-default" id="addMetaBuilding">' + i18n('Boxes.ProductionsRating.AddBuilding') + '</a>')
@@ -1560,7 +1562,7 @@ let Productions = {
 				h.push('<th data-type="ratinglist" style="width:1%" class="is-number text-center buildingvalue"><span class="resicon ' + type + '"></span><i>'+(tileRatings?.[type] !== undefined ? parseFloat(tileRatings[type]) : Productions.GetDefaultProdPerTile(type))+'</i></th>');
 				h.push('<th data-type="ratinglist" style="width:1%" class="is-number text-center tilevalue"><span class="resicon ' + type + '"></span><i>'+(tileRatings?.[type] !== undefined ? parseFloat(tileRatings[type]) : Productions.GetDefaultProdPerTile(type))+'</i></th>');
 			}
-			h.push('<th data-type="ratinglist" class="no-sort items">Items</th>');
+			h.push('<th data-type="ratinglist" class="no-sort items" style="display:none">Items</th>');
 			h.push('</tr>');
 			h.push('<thead>');
 
@@ -1569,7 +1571,7 @@ let Productions = {
 				[randomItems,randomUnits]=Productions.showBuildingItems(false, building.building)
 				h.push(`<tr ${building.highlight?'class="additional"':""}>`)
 				h.push('<td class="text-right" data-number="'+building.score * 100 +'">'+Math.round(building.score * 100)+'</td>')
-				h.push('<td data-text="'+helper.str.cleanup(building.building.name)+'" '+ MainParser.Allies.tooltip(building.building.id) + ' class="' + (MainParser.Allies.buildingList?.[building.building.id]?"ally" : "") +'">'+building.building.name)
+				h.push('<td data-text="'+helper.str.cleanup(building.building.name)+'" data-meta_id="'+building.building.entityId+'" data-era="'+building.building.eraName+'" data-callback_tt="Tooltips.buildingTT" class="helperTT ' + (MainParser.Allies.buildingList?.[building.building.id]?"ally" : "") +'" '+ MainParser.Allies.tooltip(building.building.id) + '>'+building.building.name)
 				let eraShortName = i18n("Eras."+Technologies.Eras[building.building.eraName]+".short")
 				if (eraShortName != "-")
 					h.push(" ("+i18n("Eras."+Technologies.Eras[building.building.eraName]+".short") +')')
@@ -1590,7 +1592,7 @@ let Productions = {
 						h.push('</td>')
 					}
 				}
-				h.push('<td class="no-sort items">'+randomItems+'</td>')
+				h.push('<td class="no-sort items" style="display:none">'+randomItems+'</td>')
 				h.push('</tr>')
 			}
 			h.push('</tbody>');
@@ -1672,7 +1674,7 @@ let Productions = {
 				$('#ProductionsRatingBody .overlay .results').html("")
 				let foundBuildings = Object.values(Productions.AdditionalSpecialBuildings).filter(x => regEx.test(x.name) && x.selected).sort((a,b)=>(a.name>b.name?1:-1))
 				for (building of foundBuildings) {
-					$('#ProductionsRatingBody .overlay .results').append(`<li data-meta_id="${building.id}" data-era="${CurrentEra}" class="selected helperTT" data-callback_tt="Tooltips.buildingTT">${building.name}</li>`)
+					$('#ProductionsRatingBody .overlay .results').append(`<li data-meta_id="${building.id}" data-era="${CurrentEra}" data-callback_tt="Tooltips.buildingTT" class="selected helperTT">${building.name}</li>`)
 				}
 				foundBuildings = Object.values(Productions.AdditionalSpecialBuildings).filter(x => regEx.test(x.name) && !x.selected).sort((a,b)=>(a.name>b.name?1:-1))
 				for (building of foundBuildings) {
@@ -1914,7 +1916,27 @@ let Productions = {
 				resize: true
 			});
 		}
-		
+
+		let items = Productions.buildingItemList()
+
+        h = `<div>
+					<table class="foe-table sortable-table">
+						<thead>
+							<tr class="sorter-header"><th data-type="itemSourcesList"><input type="text" class="filterTable" placeholder="${i18n('Boxes.Kits.FilterItems')}" /> Items</th></tr>
+						</thead>
+						<tbody class="itemSourcesList">`
+							for (let item of Object.values(items)) {
+								h += `<tr><td onclick="Productions.updateItemSources(${JSON.stringify(item).replaceAll('"',"'")})" data-text="${helper.str.cleanup(item.name)}">${srcLinks.icons(item.id)} ${item.name}<div class="innerTable" id="item-${helper.str.cleanup(item.name)}"></div></td></tr>`
+							}
+        			h +=`</tbody>
+					</table>
+				</div>`
+        $('#ItemSourcesBody').html(h)
+        $('#ItemSourcesBody .sortable-table').tableSorter()
+				HTML.FilterTable('#ItemSourcesBody .filterTable')
+	},
+
+	buildingItemList: () => {
 		let temp = Object.assign({},...Object.values(MainParser.CityEntities).filter(b=>b.id[0]=="W").map(x=>({[x.id]:[...JSON.stringify(x).matchAll(/"name":"([^"]*?)"[^()[\]{}]*?"iconAssetName":"([^"]*?)"[^{}]*?"__class__":"GenericReward"/gm)].map(a=>({id:a[2],name:a[1]}))})))
 		let gl = Object.values(GoodsList).map(g=>g.id)
 		let items = {}
@@ -1929,22 +1951,7 @@ let Productions = {
 				}
 			}
 		}
-
-        h =`<div>
-					<table class="foe-table sortable-table">
-						<thead>
-							<tr class="sorter-header"><th data-type="itemSourcesList"><input type="text" class="filterTable" placeholder="${i18n('Boxes.Kits.FilterItems')}" /> Items</th></tr>
-						</thead>
-						<tbody class="itemSourcesList">`
-							for (let item of Object.values(items)) {
-								h+=`<tr><td onclick="Productions.updateItemSources(${JSON.stringify(item).replaceAll('"',"'")})" data-text="${helper.str.cleanup(item.name)}">${srcLinks.icons(item.id)} ${item.name}<div class="innerTable" id="item-${helper.str.cleanup(item.name)}"></div></td></tr>`
-							}
-        			h +=`</tbody>
-					</table>
-				</div>`
-        $('#ItemSourcesBody').html(h)
-        $('#ItemSourcesBody .sortable-table').tableSorter()
-				HTML.FilterTable('#ItemSourcesBody .filterTable')
+		return items
 	},
 
 	updateItemSources:(item)=>{
