@@ -1408,8 +1408,9 @@ let Productions = {
 	},
 
 
-	ShowRating: (external = false) => {
+	ShowRating: (external = false, eraName = null) => {
 		if (CityMap.IsExtern && !external) return
+		let era = (eraName == null) ? CurrentEra : eraName
 		
 		if ($('#ProductionsRating').length === 0) {
 			
@@ -1447,13 +1448,13 @@ let Productions = {
 			HTML.CloseOpenBox('ProductionsRating');
 		}
 
-		Productions.CalcRatingBody();
+		Productions.CalcRatingBody(era);
 	},
 
 	//AdditionalBuildings:[],
 	AdditionalSpecialBuildings:null,
 
-	CalcRatingBody: () => {
+	CalcRatingBody: (era = '') => {
 		if (!Productions.AdditionalSpecialBuildings) {
 			let spB = Object.values(MainParser.CityEntities).filter(x=> (x.is_special && !["O_","U_","V_","H_","Y_"].includes(x.id.substring(0,2))) || x.id.substring(0,11)=="W_MultiAge_")
 			Productions.AdditionalSpecialBuildings = {}
@@ -1524,7 +1525,7 @@ let Productions = {
 
 			let selectedAdditionals = Object.values(Productions.AdditionalSpecialBuildings).filter(x=>x.selected).map(x=>x.id);
 			
-			ratedBuildings = Productions.rateBuildings(uniqueBuildings).concat(Productions.rateBuildings(selectedAdditionals,true)) 
+			ratedBuildings = Productions.rateBuildings(uniqueBuildings,false,era).concat(Productions.rateBuildings(selectedAdditionals,true,era)) 
 			
 			ratedBuildings.sort((a, b) => {
 				if (a.score < b.score) return -1
@@ -1674,11 +1675,11 @@ let Productions = {
 				$('#ProductionsRatingBody .overlay .results').html("")
 				let foundBuildings = Object.values(Productions.AdditionalSpecialBuildings).filter(x => regEx.test(x.name) && x.selected).sort((a,b)=>(a.name>b.name?1:-1))
 				for (building of foundBuildings) {
-					$('#ProductionsRatingBody .overlay .results').append(`<li data-meta_id="${building.id}" data-era="${CurrentEra}" data-callback_tt="Tooltips.buildingTT" class="selected helperTT">${building.name}</li>`)
+					$('#ProductionsRatingBody .overlay .results').append(`<li data-meta_id="${building.id}" data-era="${era}" data-callback_tt="Tooltips.buildingTT" class="selected helperTT">${building.name}</li>`)
 				}
 				foundBuildings = Object.values(Productions.AdditionalSpecialBuildings).filter(x => regEx.test(x.name) && !x.selected).sort((a,b)=>(a.name>b.name?1:-1))
 				for (building of foundBuildings) {
-					$('#ProductionsRatingBody .overlay .results').append(`<li data-meta_id="${building.id}" data-era="${CurrentEra}" class="helperTT" data-callback_tt="Tooltips.buildingTT">${building.name}</li>`)
+					$('#ProductionsRatingBody .overlay .results').append(`<li data-meta_id="${building.id}" data-era="${era}" class="helperTT" data-callback_tt="Tooltips.buildingTT">${building.name}</li>`)
 				}
 			}
 			filterMeta(/./)
