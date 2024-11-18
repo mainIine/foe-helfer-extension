@@ -996,6 +996,26 @@ let HTML = {
 	},
 
 
+	FilterTable: (selector) => {
+		$(selector).on('click', (e) => {e.stopPropagation()})
+		$(selector).on('keyup', function (e) {
+			let filter = $(this).val().toLowerCase()
+			let table = $(this).parents("table")
+			if (filter.length >= 2) {
+				$("tbody tr", table).hide()
+				$("tbody tr", table).filter(function() {
+					let foundText = ($(this).text().toLowerCase().indexOf(filter) > -1)
+					if (foundText)
+						$(this).show()
+				});
+			}
+			else {
+				$("tbody tr", table).show()
+			}
+		});
+	},
+
+
 	ParseFloatLocalIfPossible: (NumberString) => {
 		if (HTML.IsReversedFloatFormat === undefined) { //FloatFormat bestimmen, wenn noch unbekannt
 			let ExampleNumberString = Number(1.2).toLocaleString(i18n('Local'))

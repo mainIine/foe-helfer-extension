@@ -8,6 +8,10 @@
 
 **Update**
 - Tooltip: made design similar to original FoE tooltips
+- Building Efficiency: 
+	- Added building tooltips
+	- Results will now be shown first
+	- Item list hidden to make the table less crowded
 
 **BugFix**
 - Tooltip: 

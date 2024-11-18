@@ -8,6 +8,10 @@
 
 **Update**
 - Tooltip: Design der Gebäude-Tooltips angepasst
+- Gebäude-Effizienz: 
+	- Gebäude-Tooltips hinzugefügt
+	- Ergebnisseite wird nun zuerst angezeigt
+	- Itemliste versteckt
 
 **BugFix**
 - Tooltip: 
