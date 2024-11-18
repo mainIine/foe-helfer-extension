@@ -580,15 +580,15 @@ let Productions = {
 							hasRandomProductions = productionByCategoryFalse.hasRandomProductions
 							let doubled = productionByCategoryFalse.doubleWhenMotivated
 
-							if (type == 'money' && building.type != "greatbuilding" && building.type != "main_building") {
+							if (type == 'money' && building.isBoostable) {
 								amount = Math.round(amount + (amount * ((MainParser.BoostSums.coin_production + (Productions.HappinessBoost * 100)) / 100))) * (doubled ? 2 : 1)
 								currentAmount = Math.round(currentAmount + (currentAmount * ((MainParser.BoostSums.coin_production + (Productions.HappinessBoost * 100)) / 100)))
 							}
-							else if (type == 'supplies' && building.type != "greatbuilding") {
+							else if (type == 'supplies' && building.isBoostable) {
 								amount = Math.round(amount + (amount * ((MainParser.BoostSums.supply_production + (Productions.HappinessBoost * 100)) / 100))) * (doubled ? 2 : 1)
 								currentAmount = Math.round(currentAmount + (currentAmount *((MainParser.BoostSums.supply_production + (Productions.HappinessBoost * 100)) / 100)))
 							}
-							else if (type == 'strategy_points' && building.type != "greatbuilding" && building.type != "main_building" && !building.entityId.includes("CastleSystem")) {
+							else if (type == 'strategy_points' && building.isBoostable) {
 								amount = Math.round(amount + (amount *((MainParser.BoostSums.forge_points_production) / 100)))
 								currentAmount = Math.round(currentAmount + (currentAmount *((MainParser.BoostSums.forge_points_production) / 100)))
 							}
