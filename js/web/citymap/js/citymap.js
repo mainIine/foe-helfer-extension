@@ -1345,6 +1345,20 @@ let CityMap = {
 		return false
 	},
 
+	isBoostableBuilding(metaData) {
+		if (metaData.type == 'greatbuilding' || metaData.type == 'main_building') {
+			return false
+		}
+		else if (metaData.id.includes('CastleSystem')) {
+			return false
+		}
+		// wishingwell types
+		else if (metaData.id.includes("L_AllAge_EasterBonus1") || metaData.id.includes("L_AllAge_Expedition16") || metaData.id.includes("L_AllAge_ShahBonus17")) {
+			return false
+		}
+		return true
+	},
+
 	// returns undefined or time the building was built
 	setBuildTime(data) {
 		if (data.type == "generic_building")
@@ -2131,6 +2145,7 @@ let CityMap = {
 			eraName: ((data.cityentity_id||metaData.id).includes("CastleSystem") ? CurrentEra : era),
 			isSpecial: this.isSpecialBuilding(metaData),
 			isLimited: this.isLimitedBuilding(metaData),
+			isBoostable: this.isBoostableBuilding(metaData),
 			chainBuilding: this.setChainBuilding(metaData),
 			setBuilding: this.setSetBuilding(metaData),
 			size: this.setSize(metaData),
@@ -2157,8 +2172,8 @@ let CityMap = {
 			}
 		}
 		
-		//if (entity.entityId != "street")
-		//	console.log('entity ', entity.name, entity, metaData, data)
+		if (entity.entityId != "street")
+			console.log('entity ', entity.name, entity, metaData, data)
 		return entity
 	},
 };
