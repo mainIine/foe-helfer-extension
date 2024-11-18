@@ -15,11 +15,13 @@
 
 **BugFix**
 - Tooltip: 
-	- some browsers did not use the correct design
-	- did sometimes not vanish when a box was closed
+	- Some browsers did not use the correct design
+	- Did sometimes not vanish when a box was closed
 - Reconstruction List: 
-	- set a default height
-	- moving buildings reduced counter
+	- Set a default height
+	- Moving buildings reduced counter
+- Building Efficiency:
+	- Other players ratings were based on your age instead of theirs
 
 ##### 3.9.0.0
 

@@ -554,6 +554,9 @@ input[id*="ProdPerTile"] {
 #ProductionsRating #ProductionsRatingBody span.resicon.goods-previous {
 	background-position: -524px 2px;
 }
+#ItemSources {
+	height: 500px;
+}
 #ItemSourcesBody div {
 	overflow-y: auto;
 	height: 100%;
