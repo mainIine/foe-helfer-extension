@@ -122,7 +122,6 @@ let CityMap = {
 
 	/**
 	 * Stadtkarte vorbereiten => Menü rein
-	 *
 	 * @param Title
 	 */
 	PrepareBox: (Title)=> {
@@ -235,7 +234,8 @@ let CityMap = {
 			$("#sidebar").append(CityMap.showQIBuildings())
 		}
 		if (CityMap.IsExtern === true) {
-			$("#sidebar").append($('<a id="openEfficiencyRating" class="btn-default" onclick="Productions.ShowRating(true)">'+ i18n('Menu.ProductionsRating.Title') +'</a>'));
+			let era = CityMap.CityData.find(x => x.type == 'main_building').cityentity_id.split('_')[1]
+			$("#sidebar").append($('<a id="openEfficiencyRating" class="btn-default" onclick="Productions.ShowRating(true,\''+era+'\')">'+ i18n('Menu.ProductionsRating.Title') +'</a>'));
 		}
 	},
 
@@ -601,7 +601,6 @@ let CityMap = {
 
 			if (building.eraName) {
 				let era = Technologies.Eras[building.eraName]
-
 				f.attr({
 					title: `${building.name}, ${building.size.length}x${building.size.width}<br><em>${i18n('Eras.' + (era || 0) )}</em>`
 				})
@@ -648,7 +647,6 @@ let CityMap = {
 		});
 
 		$('#grid-outer').draggable();
-
 		CityMap.getAreas();
 	},
 
