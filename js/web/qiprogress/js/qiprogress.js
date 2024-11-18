@@ -28,6 +28,15 @@ FoEproxy.addHandler('GuildRaidsService', 'getState', (data, postData) => {
 				QiProgress.curDateEndFilter = moment.unix(QiProgress.CurrentQIRound).format('YYYYMMDD')
 			}
 		}
+		if (data.responseData.__class__ == 'GuildRaidsPendingState') {
+			// 259200 = 3 days
+			QiProgress.CurrentQIRound = data.responseData.startsAt - 259200
+
+			if (QiProgress.curDateFilter === null || QiProgress.curDateEndFilter === null) {
+				QiProgress.curDateFilter = moment.unix(QiProgress.CurrentQIRound).subtract(11, 'd').format('YYYYMMDD')
+				QiProgress.curDateEndFilter = moment.unix(QiProgress.CurrentQIRound).format('YYYYMMDD')
+			}
+		}
 	},500)
 });
 
@@ -609,6 +618,7 @@ let QiProgress = {
 				progress: d[i].progressContribution || 0
 			});
 		}
+		console.log('history', { participation: players, actions: sumActions, progress: sumProgress })
 
 		await QiProgress.UpdateDB('history', { participation: players, actions: sumActions, progress: sumProgress });
 
