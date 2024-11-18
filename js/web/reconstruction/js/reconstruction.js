@@ -51,6 +51,9 @@ FoEproxy.addHandler('CityReconstructionService', 'getDraft', (data, postData) =>
 FoEproxy.addHandler('AutoAidService', 'getStates', (data, postData) => {
     $('#ReconstructionList').remove()
 });
+FoEproxy.addHandler('InventoryService', 'getGreatBuildings', (data, postData) => {
+    $('#ReconstructionList').remove()
+});
 
 FoEproxy.addRequestHandler('CityReconstructionService', 'saveDraft', (data) => {
     for (let x of data.requestData[0]) {
