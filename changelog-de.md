@@ -1,5 +1,22 @@
 ## Changelog - Extension
 
+##### 3.10.0.0
+
+**Neu**
+- QI Fortschritts Übersicht hinzugefügt (öffnet sich automatisch, wenn die QI-Spieler Rangliste geöffnet wird)
+- Quellen für Gegenstände: In der Produktionsübersicht für Gegenstände und Fragmente gibt es nun die Möglichkeit, sich eine Liste von Gebäude ausgeben zu lassen, die einen bestimmten Gegenstand produzieren (auch, wenn diese nicht gebaut sind)
+
+**Update**
+- Tooltip: Design der Gebäude-Tooltips angepasst
+
+**BugFix**
+- Tooltip: 
+	- manche Browser haben nicht das korrekte Design verwendet
+	- konnte offen bleiben, obwohl zugehöriges Fenster geschlossen wurde
+- Umbau-Liste: 
+	- Standardhöhe gesetzt
+	- Umplatzieren von Gebäuden verringerte den Zähler
+
 ##### 3.9.0.0
 
 **Neu**
