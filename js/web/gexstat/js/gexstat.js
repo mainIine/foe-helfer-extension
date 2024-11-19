@@ -1046,6 +1046,7 @@ let GExAttempts = {
 	},
 	deactivationTimer:null,
 	activationTimer:null,
+	last:null,
 
 	refreshGUI:()=>{
 		//hidenumber when GE completed, not running or out of attempts
@@ -1090,10 +1091,14 @@ let GExAttempts = {
 	setNext:(time)=>{
 		let timer=3600000
 	
-		if (time) 
+		if (time) { 
 			timer = (time-GameTime+3600)*1000
-		else 
-			GExAttempts.setCount(Math.min(GExAttempts.count + 1,8))
+			GExAttempts.last = time
+		} else {
+			let amount = Math.floor((moment().unix() - GExAttempts.last + 100)/3600)
+			GExAttempts.setCount(Math.min(GExAttempts.count + amount,8))
+			GExAttempts.last = moment().unix()
+		} 
 
 		if (GExAttempts.next) clearTimeout(GExAttempts.next)
 		
