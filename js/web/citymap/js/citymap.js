@@ -399,7 +399,7 @@ let CityMap = {
 							att_def_boost_attacker += boost.value 
 						if (boost.type === "att_def_boost_defender")
 							att_def_boost_defender += boost.value
-						if (boost.type === "guild_raids_action_points_collection" && !b.state.pausedAt)
+						if (boost.type === "guild_raids_action_points_collection" && !b.state.pausedAt && b.__class__ != "ConstructionState")
 							actions += boost.value 
 					}
 				}
