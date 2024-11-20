@@ -1097,7 +1097,8 @@ let GExAttempts = {
 		} else {
 			let amount = Math.floor((moment().unix() - GExAttempts.last + 100)/3600)
 			GExAttempts.setCount(Math.min(GExAttempts.count + amount,8))
-			GExAttempts.last = moment().unix()
+			GExAttempts.last += 3600*amount
+			timer = (GExAttempts.last - moment().unix() + 3600)*1000
 		} 
 
 		if (GExAttempts.next) clearTimeout(GExAttempts.next)
