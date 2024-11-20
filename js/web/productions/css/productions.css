@@ -144,6 +144,17 @@
 	background-repeat: no-repeat;
 	background-position: center center, -312px 0px;
 }
+#ProductionsRatingBody.tilevalues .buildingvalue {
+		display: none;
+}
+#ProductionsRatingBody:not(.tilevalues) .tilevalue {
+		display: none;
+}
+
+#ProductionsRatingBody.showitems .items {
+		display: none;
+}
+
 #ProductionsRating #ProductionsRatingBody span.resicon.def_boost_attacker-guild_expedition {
 	background-position: center center, -366px 0px;
 }
@@ -270,10 +281,18 @@
 	color: var(--text-bright);
 	font-weight: 600;
 }
-#ProductionsRating #ProductionsRatingBody tr.highlighted-explained, #ProductionsRating #ProductionsRatingBody .only-highlighted tr {
+#ProductionsRating #ProductionsRatingBody tr.highlighted-explained, 
+#ProductionsRating .showhighlighted tbody tr {
 	display: none;
 }
-#ProductionsRating #ProductionsRatingBody tr.highlighted-explained.highlighted-explained, #ProductionsRating #ProductionsRatingBody .only-highlighted tr.highlighted-explained, #ProductionsRating #ProductionsRatingBody tr.highlighted-explained.highlighted, #ProductionsRating #ProductionsRatingBody .only-highlighted tr.highlighted, #ProductionsRating #ProductionsRatingBody tr.highlighted-explained.highlighted2, #ProductionsRating #ProductionsRatingBody .only-highlighted tr.highlighted2, #ProductionsRating #ProductionsRatingBody tr.highlighted-explained.additional, #ProductionsRating #ProductionsRatingBody .only-highlighted tr.additional {
+#ProductionsRating #ProductionsRatingBody tr.highlighted-explained.highlighted-explained, 
+#ProductionsRating #ProductionsRatingBody tr.highlighted-explained.highlighted, 
+#ProductionsRating #ProductionsRatingBody tr.highlighted-explained.highlighted2, 
+#ProductionsRating #ProductionsRatingBody tr.highlighted-explained.additional, 
+#ProductionsRating .showhighlighted tbody tr.highlighted-explained, 
+#ProductionsRating .showhighlighted tbody tr.highlighted, 
+#ProductionsRating .showhighlighted tbody tr.highlighted2, 
+#ProductionsRating .showhighlighted tbody tr.additional {
 	display: table-row;
 }
 #ProductionsRating #ProductionsRatingBody tr.highlighted-explained td {
@@ -451,9 +470,7 @@
 	float: right;
 	margin-right: 5px;
 }
-#ProductionsRating #ProductionsRatingBody .tilevalue {
-	display: none;
-}
+
 input[id*="ProdPerTile"] {
 	width: 100px;
 }
