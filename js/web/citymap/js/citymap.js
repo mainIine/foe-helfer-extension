@@ -388,7 +388,6 @@ let CityMap = {
 		else 
 			euphoriaBoost = 1.5
 
-		let now = MainParser.getCurrentDateTime()/1000
 		for (let b of buildings) {
 			let building = CityMap.setQIBuilding(MainParser.CityEntities[b.cityentity_id])
 			if (building.type !== "impediment" && building.type !== "street") {
