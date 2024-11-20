@@ -99,7 +99,7 @@ let Productions = {
 		'goods-next',
 	],
 	fragmentsSet: new Set(),
-
+	efficiencySettings:Object.assign(JSON.parse(localStorage.getItem("Productions.efficiencySettings")||`{"tilevalues":false,"showitems":true,"showhighlighted":false}`),{showhighlighted:false}),
 
 	init: () => {
 		if (CityMap.IsExtern) return
@@ -1548,7 +1548,7 @@ let Productions = {
 			h.push('<tr class="settings">')
 				h.push('<th colspan="'+(colNumber+4)+'">')
 				h.push('<input type="checkbox" id="tilevalues"><label for="tilevalues">' + i18n('Boxes.ProductionsRating.ShowValuesPerTile') + '</label>')
-				h.push('<input type="checkbox" id="showitems" checked><label for="showitems">' + i18n('Boxes.ProductionsRating.ShowItems') + '</label>')
+				h.push('<input type="checkbox" id="showitems"><label for="showitems">' + i18n('Boxes.ProductionsRating.ShowItems') + '</label>')
 				h.push('<input type="checkbox" id="showhighlighted"><label for="showhighlighted">' + i18n('Boxes.ProductionsRating.ShowHighlighted') + '</label>')
 				h.push('<label for="efficiencyBuildingFilter">' + i18n('Boxes.ProductionsRating.Filter') + ": " + '<input type="text" id="efficiencyBuildingFilter" size=20 placeholder="neo|eden"></label>')
 				h.push('<a class="btn-default" id="addMetaBuilding">' + i18n('Boxes.ProductionsRating.AddBuilding') + '</a>')
@@ -1563,7 +1563,7 @@ let Productions = {
 				h.push('<th data-type="ratinglist" style="width:1%" class="is-number text-center buildingvalue"><span class="resicon ' + type + '"></span><i>'+(tileRatings?.[type] !== undefined ? parseFloat(tileRatings[type]) : Productions.GetDefaultProdPerTile(type))+'</i></th>');
 				h.push('<th data-type="ratinglist" style="width:1%" class="is-number text-center tilevalue"><span class="resicon ' + type + '"></span><i>'+(tileRatings?.[type] !== undefined ? parseFloat(tileRatings[type]) : Productions.GetDefaultProdPerTile(type))+'</i></th>');
 			}
-			h.push('<th data-type="ratinglist" class="no-sort items" style="display:none">Items</th>');
+			h.push('<th data-type="ratinglist" class="no-sort items">Items</th>');
 			h.push('</tr>');
 			h.push('<thead>');
 
@@ -1593,7 +1593,7 @@ let Productions = {
 						h.push('</td>')
 					}
 				}
-				h.push('<td class="no-sort items" style="display:none">'+randomItems+'</td>')
+				h.push('<td class="no-sort items">'+randomItems+'</td>')
 				h.push('</tr>')
 			}
 			h.push('</tbody>');
@@ -1611,22 +1611,29 @@ let Productions = {
 		else {
 			h.push('Something went wrong');
         }
-		
+		SaveSettings=(x)=>{
+			Productions.efficiencySettings[x]=$('#'+x).is(':checked')
+			localStorage.setItem("Productions.efficiencySettings",JSON.stringify(Productions.efficiencySettings))
+			if ($('#'+x).is(':checked')) {
+				$("#ProductionsRatingBody").addClass(x);
+			} else {
+				$("#ProductionsRatingBody").removeClass(x);
+			}
+		}
 		$('#ProductionsRatingBody').html(h.join('')).promise().done(function () {
 			$('.TSinactive').tableSorter()					
 			$('.TSinactive').removeClass('TSinactive')					
 					
 			$('#tilevalues, label[tilevalues]').on('click', function () {
-				$("#ProductionsRatingBody .buildingvalue").toggle();
-				$("#ProductionsRatingBody .tilevalue").toggle();
+				SaveSettings("tilevalues")
 			});
 
 			$('#showitems, label[showitems]').on('click', function () {
-				$("#ProductionsRatingBody table .items").toggle();
+				SaveSettings("showitems")
 			});
 
 			$('#showhighlighted, label[showhighlighted]').on('click', function () {
-				$("#ProductionsRatingBody tbody").toggleClass('only-highlighted');
+				SaveSettings("showhighlighted")
 			});
 
 			$('.show-all').on('click', function () {
@@ -1648,9 +1655,6 @@ let Productions = {
 				$(".ratingtable .highlighted td:nth-child(2)").each((x,el)=>{
 					marked.push(el.dataset.text)
 				})
-				tilevalues=$('#tilevalues').is(':checked')
-				showitems=$('#showitems').is(':checked')
-				showhighlighted=$('#showhighlighted').is(':checked')
 				search=new RegExp($('#efficiencyBuildingFilter').val(),"i")
 				Productions.CalcRatingBody()
 				setTimeout(()=>{
@@ -1660,12 +1664,13 @@ let Productions = {
 						}
 					})
 					$('#efficiencyBuildingFilter').val(search.source=="(?:)"?"":search.source)
-					$('#efficiencyBuildingFilter').trigger("input")
-					if (tilevalues) $('#tilevalues').trigger("click")					
-					if (showitems) $('#showitems').trigger("click")					
-					if (showhighlighted) $('#showhighlighted').trigger("click")										
+					$('#efficiencyBuildingFilter').trigger("input")								
 				},500)
 			})
+
+			if (Productions.efficiencySettings.tilevalues != $('#tilevalues').is(':checked')) $('#tilevalues').trigger("click")					
+			if (Productions.efficiencySettings.showitems != $('#showitems').is(':checked')) $('#showitems').trigger("click")					
+			if (Productions.efficiencySettings.showhighlighted != $('#showhighlighted').is(':checked')) $('#showhighlighted').trigger("click")		
 
 			$('#findMetaBuilding').on('input', function () {
 				let regEx=new RegExp($(this).val(),"i");
