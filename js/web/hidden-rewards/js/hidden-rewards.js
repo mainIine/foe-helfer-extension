@@ -184,7 +184,7 @@ let HiddenRewards = {
         let twolane = 0 < [...new Set(Object.values(MainParser.CityMapData).filter(x=>x.type=="street").map(x=>x.cityentity_id))].filter(x=>MainParser.CityEntities[x].requirements.street_connection_level == 2).length
         let warning = HiddenRewards.FilteredCache.filter(x=>x.twolane).length > 0 && !twolane
         if (warning) {
-            h.push(`<div class="warning">${i18n("Boxes.HiddenRewards.twolaneWarning")}</div>`)
+            h.push(`<div class="dark-bg"><div class="warning">${i18n("Boxes.HiddenRewards.twolaneWarning")}</div></div>`)
         }
         h.push('<table class="foe-table">');
 
