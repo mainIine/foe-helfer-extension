@@ -580,6 +580,7 @@
     "Boxes.HiddenRewards.Title": "Ereignisse",
     "Boxes.HiddenRewards.none": "keine",
     "Boxes.HiddenRewards.onlyVis": "nur aufgedeckte",
+    "Boxes.HiddenRewards.twolaneWarning": "Wenn ein Ereignis auf einer zweispurigen Straße angezeigt wird, muss eine zweispurige Straße gebaut werden, um es einsammeln zu könnnen!",
     "Boxes.InactivesSettings.Title":"Abgelaufen Alarme umschalten",
     "Boxes.InactivesSettings.Toggle":"Klick zum Umschalten",
     "Boxes.InactivesSettings.NoAlert":"kein Alarm",

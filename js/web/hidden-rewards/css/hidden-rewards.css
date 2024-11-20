@@ -65,3 +65,10 @@ td[title="incident_rhino"], td[title="incident_castaway"], td[title="incident_fi
     opacity: 0.5;
     font-style: italic;
 }
+
+#HiddenRewardBox .warning {
+    color: var(--text-bright);
+    max-width: 380px;
+    padding: 5px;
+    text-align: center;
+}
