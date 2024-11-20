@@ -72,3 +72,6 @@ td[title="incident_rhino"], td[title="incident_castaway"], td[title="incident_fi
     padding: 5px;
     text-align: center;
 }
+#HiddenRewardBox .dark-bg {
+    border: 2px solid var(--text-bright);
+}
