@@ -68,6 +68,7 @@ let HiddenRewards = {
                 'auto_close': true,
                 'dragdrop': true,
                 'minimize': true,
+                'resize': true,
                 'settings': 'HiddenRewards.ShowSettingsButton()'
             });
 
