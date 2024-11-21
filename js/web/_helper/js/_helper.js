@@ -971,7 +971,7 @@ let HTML = {
 						let CurrentCell = DataRow[ValidColumnNames[j]];
 						if (CurrentCell !== undefined) {
 							if ($.isNumeric(CurrentCell)) {
-								CurrentCells.push(Number(CurrentCell).toLocaleString(i18n('Local')));
+								CurrentCells.push(Number(CurrentCell).toLocaleString(i18n('Local'),{useGrouping:false}));
 							}
 							else {
 								CurrentCells.push(CurrentCell);
