@@ -1231,11 +1231,10 @@ let CityMap = {
 					MainParser.Boosts[data.id].forEach(castleBoost => {
 						let boost = {
 							feature: "all",
-							type: MainParser.BoostMapper[castleBoost.type] || undefined, // do not include weird boosts
+							type: MainParser.BoostMapper[castleBoost.type] || [castleBoost.type],
 							value: castleBoost.value
 						}
-						if (boost.type !== undefined)
-							boosts.push(boost)
+						boosts.push(boost)
 					})
 			}
 		}
