@@ -30,7 +30,9 @@ let Productions = {
 		'goods',			// Goods and special goods
 		'items',			// Fragments, blueprints, boosts etc
 		'money',			// Coins
+		'coin_production', // Coin Boost
 		'supplies',
+		'supply_production', // Supply Boost
 		'medals',
 		'premium',			// Diamonds
 		'population',
@@ -381,7 +383,24 @@ let Productions = {
 
 				if ($("#Productions #"+type).html().length === 0) {
 					let content = Productions.buildTableByType(type)
-					$("#Productions #"+type).html(content)
+					$("#Productions #"+type).html(content).promise().done(() => {
+
+						$('#Productions .typeBoost').click(function(e) {
+							e.preventDefault()
+							let type = $("a", this).attr("href").replace("#","")
+
+							if ($("#Productions #"+type).html().length === 0) {
+								let content = Productions.buildTableByType(type)
+								$("#Productions #"+type).html(content)
+								$('.TSinactive').tableSorter()
+								$('.TSinactive').removeClass('TSinactive')
+								HTML.FilterTable('#Productions .filterCurrentList')
+							}
+							$("#Productions .content").css('display','none')
+							$("#Productions #"+type).css('display','block')
+						});
+
+					})
 					$('.TSinactive').tableSorter()
 					$('.TSinactive').removeClass('TSinactive')
 					HTML.FilterTable('#Productions .filterCurrentList')
@@ -400,7 +419,7 @@ let Productions = {
 			$('#Productions').on('click', '.foe-table .show-entity', function () {
 				Productions.ShowOnMap($(this).data('id'));
 			});
-		});			
+		});
 	},
 
 	setChainsAndSets(buildings) {
@@ -745,7 +764,13 @@ let Productions = {
 					table.push('<th colspan="7" class="textright">')
 					table.push((typeCurrentSum >= 10000 ? HTML.FormatNumberShort(typeCurrentSum) : HTML.Format(typeCurrentSum))+ "/" + (typeSum >= 10000 ? HTML.FormatNumberShort(typeSum) : HTML.Format(typeSum)))
 					if (type == 'strategy_points') {
-						table.push(' <button class="typeBoost btn-default"><a href="#forge_points_production" class="game-cursor">'+i18n('General.Boost')+': '+MainParser.BoostSums.forge_points_production+'%</a></button>')
+						table.push(' <button class="typeBoost btn-default btn-tight"><a href="#forge_points_production" class="game-cursor">'+i18n('General.Boost')+': '+MainParser.BoostSums.forge_points_production+'%</a></button>')
+					}
+					else if (type == 'money') {
+						table.push(' <button class="typeBoost btn-default btn-tight"><a href="#coin_production" class="game-cursor">'+i18n('General.Boost')+': '+MainParser.BoostSums.coin_production+'%</a></button>')
+					}
+					else if (type == 'supplies') {
+						table.push(' <button class="typeBoost btn-default btn-tight"><a href="#supply_production" class="game-cursor">'+i18n('General.Boost')+': '+MainParser.BoostSums.supply_production+'%</a></button>')
 					}
 					table.push('</th>')
 				}
@@ -1150,7 +1175,7 @@ let Productions = {
 		if (category == "goods") {
 			return CityMap.getBuildingGoodsByEra(current, building)
 		}
-		if (category == "forge_points_production") {
+		if (category == "forge_points_production" || category == "coin_production" || category == "supply_production") {
 			prod.amount = building.boosts.filter(x => x.type[0] == category)[0].value // not really rock solid like this
 		}
 		return prod
