@@ -48,7 +48,7 @@ FoEproxy.addHandler('CampaignService', 'start', (data, postData) => {
     }
     maxShip = Math.floor(Object.values(data.responseData.provinces).map(x=>x.id||0).pop()/100)
     for (let province of data.responseData.provinces) {
-        if (province.provinceType=="ship" && province.id>100) province.parentIds.concat([...Array(maxShip - province.id/100).keys()].map(x=>(x+province.id/100+1)*100))
+        if (province.provinceType=="ship") province.parentIds=province.parentIds.concat([...Array(maxShip - province.id/100).keys()].map(x=>(x+province.id/100+1)*100))
         scoutingTimes.Provinces[province.id||0] = province;
     }
     
