@@ -237,10 +237,10 @@ let Tooltips = {
                 }
                 ally += `<tr><td>${srcLinks.icons("historical_allies_slot_tooltip_icon_" + (allydata ? "full" :"empty"))}<div>${capFirsts(r.allyType) + (r.rarity?.value ? (" ("+i18n("Boxes.Productions.AllyRarity."+r.rarity?.value)+")"):"")}`
                 if (allydata) {
-                    ally+=`</br><span style="color:${MainParser.Allies.rarities[allydata.rarity].textColor}">${MainParser.Allies.names[allydata.allyId]} (${i18n("Boxes.Productions.AllyRarity."+allydata.rarity)} - ${i18n("General.Level")} ${allydata.level})</span>`
+                    ally+=`<div class="allyName" style="color:${MainParser.Allies.rarities[allydata.rarity].textColor}"><span>${MainParser.Allies.names[allydata.allyId]}</span><span>(${i18n("Boxes.Productions.AllyRarity."+allydata.rarity)} - ${i18n("General.Level")} ${allydata.level})</span></div>`
                     //productions:
                     for (b of allydata.prod.boosts||[]) {
-                        ally+=`</br>${srcLinks.icons(b.type+feature[b.targetedFeature])} ${b.value + percent(b.type)}`
+                        ally+=`${srcLinks.icons(b.type+feature[b.targetedFeature])} ${b.value + percent(b.type)}`
                     }
 
                 }
