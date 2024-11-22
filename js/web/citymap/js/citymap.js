@@ -2171,8 +2171,8 @@ let CityMap = {
 			}
 		}
 		
-		if (entity.entityId != "street")
-			console.log('entity ', entity.name, entity, metaData, data)
+		//if (entity.entityId != "street")
+		//	console.log('entity ', entity.name, entity, metaData, data)
 		return entity
 	},
 };

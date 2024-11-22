@@ -26,6 +26,7 @@ let Productions = {
 
 	Types: [
 		'strategy_points',	// Forge Points
+		'forge_points_production', // FP Boost
 		'goods',			// Goods and special goods
 		'items',			// Fragments, blueprints, boosts etc
 		'money',			// Coins
@@ -375,16 +376,18 @@ let Productions = {
 			$("#Productions #"+type).html(firstTabContent)
 
 			// fill other tables on demand
-			$('.production-tabs li').click(function() {
+			$('.production-tabs li, #Productions .typeBoost').click(function() {
 				let type = $("a", this).attr("href").replace("#","")
 
 				if ($("#Productions #"+type).html().length === 0) {
 					let content = Productions.buildTableByType(type)
 					$("#Productions #"+type).html(content)
-					$('.TSinactive').tableSorter()					
+					$('.TSinactive').tableSorter()
 					$('.TSinactive').removeClass('TSinactive')
 					HTML.FilterTable('#Productions .filterCurrentList')
 				}
+				$("#Productions .content").css('display','none')
+				$("#Productions #"+type).css('display','block')
 			});
 
 			// extra functionality
@@ -430,13 +433,9 @@ let Productions = {
 		let table = [],
 		tableGr = [],
 		rowA = [],
-		groupedBuildings = [],
 		boostCounter = {},
-		typeSum = 0,
-		amount = 0,
 		boosts = {},
-		buildingIds = Productions.BuildingsProducts[type],
-		Sum = {}
+		buildingIds = Productions.BuildingsProducts[type]
 
 		buildingIds.forEach(b => {
 			let building = CityMap.getBuildingById(b.id)
@@ -475,20 +474,6 @@ let Productions = {
 					}
 				}
 			}
-			/*
-			let updateGroup = groupedBuildings.find(x => x.building.name == building.name)
-			if (updateGroup == undefined) {
-				groupedBuildings.push({
-					building: building,
-					amount: 1,
-					values: amount,
-					boosts: boosts,
-				})
-			}
-			else {
-				updateGroup.amount++
-				updateGroup.values += amount
-			}*/
 
 			rowA.push('<td data-number="'+Technologies.Eras[building.eraName]+'">' + i18n("Eras."+Technologies.Eras[building.eraName]+".short") + '</td>')
 			rowA.push('<td class="text-right">')
@@ -573,12 +558,12 @@ let Productions = {
 					
 					if (!type.includes('att') && !type.includes('def')) {
 						if (type != 'items') {
-							let productionByCategoryTrue=Productions.getBuildingProductionByCategory(true, building, type)
-							let productionByCategoryFalse=Productions.getBuildingProductionByCategory(false, building, type)
-							currentAmount = parseFloat(productionByCategoryTrue.amount)
-							amount = parseFloat(productionByCategoryFalse.amount)
-							hasRandomProductions = productionByCategoryFalse.hasRandomProductions
-							let doubled = productionByCategoryFalse.doubleWhenMotivated
+							let currentProductionByCategory = Productions.getBuildingProductionByCategory(true, building, type)
+							let generalProductionByCategory = Productions.getBuildingProductionByCategory(false, building, type)
+							currentAmount = parseFloat(currentProductionByCategory.amount)
+							amount = parseFloat(generalProductionByCategory.amount)
+							hasRandomProductions = generalProductionByCategory.hasRandomProductions
+							let doubled = generalProductionByCategory.doubleWhenMotivated
 
 							if (type == 'money' && building.isBoostable) {
 								amount = Math.round(amount + (amount * ((MainParser.BoostSums.coin_production + (Productions.HappinessBoost * 100)) / 100))) * (doubled ? 2 : 1)
@@ -597,15 +582,15 @@ let Productions = {
 							let parsedCurrentAmount = (currentAmount >= 10000 ? HTML.FormatNumberShort(currentAmount) : HTML.Format(currentAmount)) 
 							let parsedAmount = (currentAmount >= 10000 ? HTML.FormatNumberShort(amount) : HTML.Format(amount)) 
 
-							if (productionByCategoryFalse.units.length>0 || productionByCategoryTrue.units.length>0) {
-								if (productionByCategoryTrue.units.length > 0) 
-									rowA.push(productionByCategoryTrue.units.map(x=>`${x.amount}<span class="unit_skill ${x.type} ${x.era>CurrentEraID?"next_era":""}" title="${i18n("Boxes.Units." + x.type)}"></span> `).join(" "))
+							if (generalProductionByCategory.units.length>0 || currentProductionByCategory.units.length>0) {
+								if (currentProductionByCategory.units.length > 0) 
+									rowA.push(currentProductionByCategory.units.map(x=>`${x.amount}<span class="unit_skill ${x.type} ${x.era>CurrentEraID?"next_era":""}" title="${i18n("Boxes.Units." + x.type)}"></span> `).join(" "))
 								else 
 									rowA.push(" - ")
 									rowA.push(" / ")
 
-								if (productionByCategoryFalse.units.length > 0) 
-									rowA.push(productionByCategoryFalse.units.map(x=>`${x.amount?x.amount:""}${x.amount && x. random ? "+":""}${x.random ? "Ø"+x.random:""}<span class="unit_skill ${x.type} ${x.era>CurrentEraID?"next_era":""}" title="${i18n("Boxes.Units." + x.type)}"></span> `).join(" "))
+								if (generalProductionByCategory.units.length > 0) 
+									rowA.push(generalProductionByCategory.units.map(x=>`${x.amount?x.amount:""}${x.amount && x. random ? "+":""}${x.random ? "Ø"+x.random:""}<span class="unit_skill ${x.type} ${x.era>CurrentEraID?"next_era":""}" title="${i18n("Boxes.Units." + x.type)}"></span> `).join(" "))
 								else 
 									rowA.push(" - ")
 							} else {
@@ -613,7 +598,7 @@ let Productions = {
 								if (currentAmount < amount && building.type != 'production')
 									rowA.push(parsedCurrentAmount + ' / ' + (hasRandomProductions ? 'Ø' : '') + parsedAmount)
 								else {
-									unitType = productionByCategoryTrue.type
+									unitType = currentProductionByCategory.type
 									if (unitType != null){
 										rowA.push('<span class="unit_skill ' + unitType.replace(/next./,"") + '" title="'+ i18n("Boxes.Units." + unitType.replace(/next./,"") ) + '"></span> ')
 									}
@@ -625,7 +610,7 @@ let Productions = {
 							typeSum += amount
 							typeCurrentSum += currentAmount
 
-							for (let u of productionByCategoryFalse.units) {
+							for (let u of generalProductionByCategory.units) {
 								if (u.type.includes("next")) {
 									a=a+1
 								}
@@ -641,7 +626,7 @@ let Productions = {
 									Sum[n] = {current:null,theory:u}
 								}
 							}
-							for (let u of productionByCategoryTrue.units) {
+							for (let u of currentProductionByCategory.units) {
 								if (u.type.includes("next")) {
 									a=a+1
 								}
@@ -759,8 +744,9 @@ let Productions = {
 				if (!type.includes('att') && !type.includes('def') && type!='items') {
 					table.push('<th colspan="7" class="textright">')
 					table.push((typeCurrentSum >= 10000 ? HTML.FormatNumberShort(typeCurrentSum) : HTML.Format(typeCurrentSum))+ "/" + (typeSum >= 10000 ? HTML.FormatNumberShort(typeSum) : HTML.Format(typeSum)))
-					if (type == 'strategy_points')
-						table.push(' · '+i18n('General.Boost')+': '+MainParser.BoostSums.forge_points_production+'%')
+					if (type == 'strategy_points') {
+						table.push(' <button class="typeBoost btn-default"><a href="#forge_points_production" class="game-cursor">'+i18n('General.Boost')+': '+MainParser.BoostSums.forge_points_production+'%</a></button>')
+					}
 					table.push('</th>')
 				}
 				else {
@@ -1078,7 +1064,7 @@ let Productions = {
 		let prod = {
 			amount: 0,
 			type: null, // units
-			units:[],
+			units: [],
 			hasRandomProductions: false,
 			doubleWhenMotivated: false
 		}
@@ -1163,6 +1149,9 @@ let Productions = {
 		
 		if (category == "goods") {
 			return CityMap.getBuildingGoodsByEra(current, building)
+		}
+		if (category == "forge_points_production") {
+			prod.amount = building.boosts.filter(x => x.type[0] == category)[0].value // not really rock solid like this
 		}
 		return prod
 	},
@@ -1261,7 +1250,7 @@ let Productions = {
 		// ab dem zweiten Eintrag verstecken
 		let style = Productions.TabsContent.length > 0 ? ' style="display:none"' : '';
 
-		Productions.TabsContent.push('<div id="' + id + '"' + style + '>' + content + '</div>');
+		Productions.TabsContent.push('<div class="content" id="' + id + '"' + style + '>' + content + '</div>');
 	},
 
 	/**
