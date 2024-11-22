@@ -1034,7 +1034,14 @@ FoEproxy.addHandler('GuildExpeditionService', 'getOverview', (data, postData) =>
 FoEproxy.addHandler('GuildExpeditionNotificationService', 'GuildExpeditionStateNotification', (data, postData) => {
     if (data.responseData) GExAttempts.updateState(data.responseData)
 });
-
+FoEproxy.addHandler('GuildExpeditionService', 'getState', (data, postData) => {
+    for (let x of data.responseData) {
+        if (!x.currentEntityId) continue;
+        GExAttempts.state.GEprogress = x.currentEntityId;
+		localStorage.setItem('GEx.state',JSON.stringify(GExAttempts.state))
+		GExAttempts.refreshGUI()
+    }
+});
 let GExAttempts = {
 	count:0,
 	next:null,
