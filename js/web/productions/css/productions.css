@@ -118,6 +118,9 @@
 #Productions #ProductionsBody .tabs ul li a span, #Productions th.boost span {
 	background: transparent url('../images/productions.png') -233px 2px no-repeat;
 }
+#Productions #ProductionsBody .tabs ul li.forge_points_production {
+	display: none;
+}
 #Productions th.boost span {
 	height: 25px;
 	display: block;
