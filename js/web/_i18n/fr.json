@@ -575,6 +575,7 @@
     "Boxes.HiddenRewards.Title": "Récompenses cachées",
     "Boxes.HiddenRewards.none": "aucun",
     "Boxes.HiddenRewards.onlyVis": "seulement découvert",
+    "Boxes.HiddenRewards.twolaneWarning": "Si un incident s'avère sur une route à deux voies, une telle route doit être construite afin de pouvoir récupérer la récompense !",
     "Boxes.InactivesSettings.AlertActive": "Alerte active",
     "Boxes.InactivesSettings.NoAlert": "Pas d'alerte",
     "Boxes.InactivesSettings.Title": "Activer/désactiver l'alerte d'expiration",
