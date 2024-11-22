@@ -118,8 +118,11 @@
 #Productions #ProductionsBody .tabs ul li a span, #Productions th.boost span {
 	background: transparent url('../images/productions.png') -233px 2px no-repeat;
 }
-#Productions #ProductionsBody .tabs ul li.forge_points_production {
+#Productions #ProductionsBody .tabs ul li.forge_points_production, #Productions #ProductionsBody .tabs ul li.coin_production, #Productions #ProductionsBody .tabs ul li.supply_production {
 	display: none;
+}
+#Productions #ProductionsBody .btn-tight.typeBoost {
+	border-radius: 3px;
 }
 #Productions th.boost span {
 	height: 25px;
