@@ -187,6 +187,11 @@ a[target="_blank"] svg {
 	outline: none !important;
 }
 
+.btn-default a {
+	color: inherit;
+	text-decoration: inherit;
+}
+
 .btn-default[disabled], .btn-default[disabled]:hover {
 	filter: saturate(10%) brightness(80%);
 }
