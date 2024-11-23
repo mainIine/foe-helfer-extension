@@ -100,6 +100,7 @@ let Productions = {
 		'goods-previous',
 		'goods-current',
 		'goods-next',
+		'fsp',
 	],
 	fragmentsSet: new Set(),
 	efficiencySettings:Object.assign(JSON.parse(localStorage.getItem("Productions.efficiencySettings")||`{"tilevalues":false,"showitems":true,"showhighlighted":false}`),{showhighlighted:false}),
@@ -1411,6 +1412,9 @@ let Productions = {
         }
 		else if (GoodType === 'items') {
 			return i18n('Boxes.Productions.fragments');
+        }
+		else if (GoodType === 'fsp') {
+			return i18n('Boxes.Productions.FSP');
         }		
 		else {
 			if(GoodType && GoodsData[GoodType]){
@@ -1832,6 +1836,31 @@ let Productions = {
 				}
 			}
 		}
+		else if (type == "fsp") {
+			let fsp = 0
+			if (building.production) {
+				let possibleProductions = building.production.filter(x => x.type == "genericReward").concat(building.production.filter(x => x.type == "random"))
+				let multiplier = 1
+				for (let production of possibleProductions) {
+					if (production.type == "genericReward") {
+						if (!production.resources.id.includes('rush_event_buildings_instant')) return fsp
+
+						if (production.resources.subType != 'fragment')
+							multiplier = 30 // 30, because 30 fragments are needed for one item
+						fsp = production.resources.amount * multiplier
+					}
+					else if (production.type == "random") {
+						let hasFsp = production.resources.filter(x => x.id?.includes('rush_event_buildings_instant'))
+						if (hasFsp.length === 0) return fsp
+
+						if (production.resources.subType != 'fragment')
+							multiplier = 30 // 30, because 30 fragments are needed for one item
+						fsp = hasFsp[0].amount * hasFsp[0].dropChance * multiplier
+					}
+				}
+			}
+			return fsp
+		}
 		else
 			return 0
 	},
@@ -1879,6 +1908,7 @@ let Productions = {
 		if (Type === 'def_boost_defender-guild_raids') return null
 		if (Type === 'goods-previous') return 4
 		if (Type === 'goods-current') return 5
+		if (Type === 'fsp') return 1
 		if (Type === 'goods-next') return null
 		else return 0
 	},

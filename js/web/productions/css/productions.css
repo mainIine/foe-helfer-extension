@@ -170,6 +170,9 @@
 #ProductionsRating #ProductionsRatingBody span.resicon.def_boost_defender-guild_expedition {
 	background-position: center center, -391px 0px;
 }
+#ProductionsRating #ProductionsRatingBody span.resicon.fsp {
+	background-position: -762px 0px;
+}
 #ProductionsRating #ProductionsRatingBody th i {
 	display: block;
 }
