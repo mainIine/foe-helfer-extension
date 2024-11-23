@@ -5,6 +5,8 @@
 **New**
 - QI Progress Overview added (opens automatically when opening the QI player ranking)
 - Item Sources: Production Overview for Items/Fragments now offers an option to display a list of buildings that produce a certain item (even if not currently build)
+- Production Overview: Added Tables for resources boosts (FP, coins, supplies)
+- Efficiency rating: Added FSP Fragments to the evaluation
 
 **Update**
 - Tooltip: made design similar to original FoE tooltips
