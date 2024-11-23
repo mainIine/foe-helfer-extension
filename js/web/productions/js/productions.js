@@ -1845,7 +1845,7 @@ let Productions = {
 					if (production.type == "genericReward") {
 						if (!production.resources.id.includes('rush_event_buildings_instant')) return fsp
 
-						if (production.resources.subType != 'fragment')
+						if (production.resources.subType == 'rush_event_buildings_instant')
 							multiplier = 30 // 30, because 30 fragments are needed for one item
 						fsp = production.resources.amount * multiplier
 					}
@@ -1853,7 +1853,9 @@ let Productions = {
 						let hasFsp = production.resources.filter(x => x.id?.includes('rush_event_buildings_instant'))
 						if (hasFsp.length === 0) return fsp
 
-						if (production.resources.subType != 'fragment')
+						console.log(building.name, production.resources.subType)
+
+						if (production.resources.subType == 'rush_event_buildings_instant')
 							multiplier = 30 // 30, because 30 fragments are needed for one item
 						fsp = hasFsp[0].amount * hasFsp[0].dropChance * multiplier
 					}
