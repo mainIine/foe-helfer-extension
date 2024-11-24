@@ -1842,8 +1842,9 @@ let Productions = {
 				let possibleProductions = building.production.filter(x => x.type == "genericReward").concat(building.production.filter(x => x.type == "random"))
 				let multiplier = 1
 				for (let production of possibleProductions) {
+					console.log(building.name, production)
 					if (production.type == "genericReward") {
-						if (!production.resources.id.includes('rush_event_buildings_instant')) return fsp
+						if (!production.resources.id.includes('rush_event_buildings_instant')) continue
 
 						if (production.resources.subType == 'rush_event_buildings_instant')
 							multiplier = 30 // 30, because 30 fragments are needed for one item
@@ -1851,7 +1852,7 @@ let Productions = {
 					}
 					else if (production.type == "random") {
 						let hasFsp = production.resources.filter(x => x.id?.includes('rush_event_buildings_instant'))
-						if (hasFsp.length === 0) return fsp
+						if (hasFsp.length === 0) continue
 
 						if (hasFsp[0].subType == "instant_finish_building")
 							multiplier = 30 // 30, because 30 fragments are needed for one item
