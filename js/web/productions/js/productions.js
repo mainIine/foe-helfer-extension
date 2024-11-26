@@ -266,6 +266,7 @@ let Productions = {
 							Productions.BuildingsProducts["goods"].push(saveBuilding)
 					}
 					if (production.type == "resources") {
+						let types = Object.keys(production.resources)
 						if (production.resources.money) { 
 							if (Productions.BuildingsProducts.money.find(x => x.id == building.id) == undefined)
 								Productions.BuildingsProducts["money"].push(saveBuilding)
@@ -285,7 +286,7 @@ let Productions = {
 							if (Productions.BuildingsProducts.strategy_points.find(x => x.id == building.id) == undefined)
 								Productions.BuildingsProducts["strategy_points"].push(saveBuilding)
 						}
-						if (production.resources.all_goods_of_age || production.resources.random_goods_of_age || production.resources.random_good_of_age || production.resources.all_goods_of_previous_age) {
+						if (types.find(x => x.includes('random_good_of_') || x.includes('all_goods_of_'))) {
 							if (Productions.BuildingsProducts.goods.find(x => x.id == building.id) == undefined)
 								Productions.BuildingsProducts["goods"].push(saveBuilding)
 						}
@@ -293,10 +294,6 @@ let Productions = {
 					if (production.resources?.type == "consumable") {
 						if (Productions.BuildingsProducts.items.find(x => x.id == building.id) == undefined)
 							Productions.BuildingsProducts["items"].push(saveBuilding)
-					}
-					if (production.resources?.icon == "next_age_goods") {
-						if (Productions.BuildingsProducts.goods.find(x => x.id == building.id) == undefined)
-							Productions.BuildingsProducts["goods"].push(saveBuilding)
 					}
 				})
 			}
