@@ -7,6 +7,7 @@
 - Quellen für Gegenstände: In der Produktionsübersicht für Gegenstände und Fragmente gibt es nun die Möglichkeit, sich eine Liste von Gebäude ausgeben zu lassen, die einen bestimmten Gegenstand produzieren (auch, wenn diese nicht gebaut sind)
 - Produktionsübersicht: Tabellen für Münz-, Vorrats- und FP-Boots hinzugefügt
 - Effizienzbewertung: Feld für Spezialproduktion abschließen Fragmente hinzugefügt
+- Stadtübersicht: Anzeigeoption für Gebäude, die eine erhabene Stufe haben und "abgelaufene" Gebäude
 
 **Update**
 - Tooltip: Design der Gebäude-Tooltips angepasst
