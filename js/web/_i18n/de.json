@@ -231,6 +231,8 @@
     "Boxes.CityMap.QIActionRechargeCycle": "pro Stunde",
     "Boxes.CityMap.QICycle": "alle 10 Stunden",
     "Boxes.CityMap.QIHint": "Alle Werte, außer Aktionen pro Stunde, nehmen an, dass die Gebäude fertiggestellt sind.",
+    "Boxes.CityMap.ShowAscendableBuildings": "Markiere Gebäude, die erhaben sein können",
+    "Boxes.CityMap.ShowDecayedBuildings": "Markiere Gebäude, die abgelaufen sind",
     "Boxes.CityMap.ShowNoStreetBuildings": "Markiere Gebäude, die keine Straße brauchen",
     "Boxes.CityMap.ShowSubmitBox": "Stadtplaner",
     "Boxes.CityMap.StreetsAmount": "Anzahl Straßen: ",

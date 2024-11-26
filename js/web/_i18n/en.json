@@ -231,6 +231,8 @@
     "Boxes.CityMap.QIActionRechargeCycle": "every hour",
     "Boxes.CityMap.QICycle": "every 10 hours",
     "Boxes.CityMap.QIHint": "All displayed values, except Actions per Hour, assume your buildings have finished construction.",
+    "Boxes.CityMap.ShowAscendableBuildings": "Highlight ascendable buildings",
+    "Boxes.CityMap.ShowDecayedBuildings": "Highlight decayed buildings",
     "Boxes.CityMap.ShowNoStreetBuildings": "Highlight buildings that do not need streets",
     "Boxes.CityMap.ShowSubmitBox": "City planner",
     "Boxes.CityMap.StreetsAmount": "Number of Streets: ",
