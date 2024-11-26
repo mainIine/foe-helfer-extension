@@ -34,6 +34,7 @@ let CityMap = {
 	QIData: null,
 	QIStats: null,
 	QIAreas: [],
+	AscendingBuildings:null,
 
 
 	/**
@@ -186,6 +187,8 @@ let CityMap = {
 			if(ActiveMap === 'main'){
 				$('#highlight-old-buildings')[0].checked=false;
 				$('#show-nostreet-buildings')[0].checked=false;
+				$('#show-ascendable-buildings')[0].checked=false;
+				$('#show-decayed-buildings')[0].checked=false;
 			}
 
 			$('#grid-outer').attr('data-unit', unit);
@@ -219,12 +222,22 @@ let CityMap = {
 		mapfilters.append(
 			$('<label />').attr({ for: 'highlight-old-buildings' }).text(i18n('Boxes.CityMap.HighlightOldBuildings'))
 				.prepend($('<input />').attr({ type: 'checkbox', id: 'highlight-old-buildings', onclick: 'CityMap.highlightOldBuildings()' }))
-			);
+		);
 
 		mapfilters.append(
 			$('<label />').attr({ for: 'show-nostreet-buildings' }).text(i18n('Boxes.CityMap.ShowNoStreetBuildings'))
 				.prepend($('<input />').attr({ type: 'checkbox', id: 'show-nostreet-buildings', onclick: 'CityMap.showNoStreetBuildings()' }))
-			);
+		);
+
+		mapfilters.append(
+			$('<label />').attr({ for: 'show-ascendable-buildings' }).text(i18n('Boxes.CityMap.ShowAscendableBuildings'))
+				.prepend($('<input />').attr({ type: 'checkbox', id: 'show-ascendable-buildings', onclick: 'CityMap.showAscendableBuildings()' }))
+		);
+
+		mapfilters.append(
+			$('<label />').attr({ for: 'show-decayed-buildings' }).text(i18n('Boxes.CityMap.ShowDecayedBuildings'))
+				.prepend($('<input />').attr({ type: 'checkbox', id: 'show-decayed-buildings', onclick: 'CityMap.ShowDecayedBuildings()' }))
+		);
 
 		oB.append(wrapper)
 		$('#citymap-wrapper').append(menu)
@@ -571,14 +584,15 @@ let CityMap = {
 			let x = (building.coords.x === undefined ? 0 : parseInt((building.coords.x * CityMap.ScaleUnit)) / 100),
 			y = (building.coords.y === undefined ? 0 : parseInt((building.coords.y * CityMap.ScaleUnit)) / 100),
 			xsize = (building.size.width * CityMap.ScaleUnit) / 100,
-			ysize = (building.size.length * CityMap.ScaleUnit) / 100,
-			noStreet = '', isSpecial = '', chainBuilding = ''
+			ysize = (building.size.length * CityMap.ScaleUnit) / 100
 
-			noStreet = (building.needsStreet == 0 ? ' noStreet' : '')
-			isSpecial = (building.isSpecial ? ' special' : '')
-			chainBuilding = (building.chainBuilding != undefined ? ' chain' : '')
+			let noStreet = (building.needsStreet == 0 ? ' noStreet' : '')
+			let canAscend = (CityMap.canAscend(building.entityId) ? ' ascendable' : '')
+			let isDecayed = (building.state.isDecayed ? ' decayed' : '')
+			let isSpecial = (building.isSpecial ? ' special' : '')
+			let chainBuilding = (building.chainBuilding != undefined ? ' chain' : '')
 			
-			f = $('<span />').addClass('entity ' + building.type + noStreet + isSpecial + chainBuilding).css({
+			f = $('<span />').addClass('entity ' + building.type + noStreet + isSpecial + canAscend + isDecayed + chainBuilding).css({
 				width: xsize + 'em',
 				height: ysize + 'em',
 				left: x + 'em',
@@ -773,6 +787,22 @@ let CityMap = {
 	 */
 	showNoStreetBuildings: ()=> {
 		$('.noStreet').toggleClass('highlight');
+	},
+
+
+	/**
+	 * Show Buildings that can be ascended
+	 */
+	showAscendableBuildings: ()=> {
+		$('.ascendable').toggleClass('highlight2');
+	},
+
+
+	/**
+	 * Show Buildings that can be ascended
+	 */
+	ShowDecayedBuildings: ()=> {
+		$('.decayed').toggleClass('highlight3');
 	},
 
 
@@ -2100,6 +2130,12 @@ let CityMap = {
 		return metaData.type
 	},
 
+	canAscend(buildingEntityId) {
+		if (!CityMap.AscendingBuildings) 
+			CityMap.AscendingBuildings = Object.values(MainParser.BuildingUpgrades).filter(x => x.upgradeItem.id.includes("ascended")).map(x=>x.upgradeSteps[0].buildingIds).flat()
+		return (CityMap.AscendingBuildings.includes(MainParser.CityEntities[buildingEntityId].id))
+	},
+
 	createNewCityMapEntities(data) {
 		if (data === undefined && !CityMap.IsExtern) {
 			data = Object.values(MainParser.CityMapData)
@@ -2123,10 +2159,14 @@ let CityMap = {
 		return (CityMap.IsExtern === true ? MainParser.OtherPlayerCityMapData : MainParser.NewCityMapData) 
 	},
 
+	setDecayed(data) {
+		return (data.decayedFromCityEntityId != undefined)
+	},
+
 	// todo: fix it, use it
 	setEra(data) {
 		let era = (data.type != "greatbuilding" ? data.level : 1)
-		return (data.cityentity_id.includes("CastleSystem") ? CurrentEra : Technologies.InnoEraNames[era])
+		return (data.decayedFromCityEntityId.includes("CastleSystem") ? CurrentEra : Technologies.InnoEraNames[era])
 	},
 	
 	createNewCityMapEntity(metaData, era=CurrentEra, data={}) {
@@ -2166,17 +2206,13 @@ let CityMap = {
 				isExpired: this.isExpiredBuilding(data),
 				buildTime: this.setBuildTime(data),
 				level: (data.type == "greatbuilding" ? data.level : null), // level also includes eraId in raw data, we do not like that
-				max_level: (data.type == "greatbuilding" ? data.max_level : null)
+				max_level: (data.type == "greatbuilding" ? data.max_level : null),
+				isDecayed: this.setDecayed(data)
 			}
 		}
 		
-		//if (entity.entityId != "street")
-		//	console.log('entity ', entity.name, entity, metaData, data)
+		if (entity.type != "street")
+			console.log('entity ', entity.name, entity, metaData, data)
 		return entity
-	},
-	ascendingBuildings:null,
-	canAscend:(buildingId)=>{
-		if (!CityMap.ascendingBuildings) CityMap.ascendingBuildings = Object.values(MainParser.BuildingUpgrades).filter(x=>x.upgradeItem.id.includes("ascended")).map(x=>x.upgradeSteps[0].buildingIds).flat()
-		return (CityMap.ascendingBuildings.includes(MainParser.CityEntities[buildingId].cityentity_id))
-	},
+	}
 };
