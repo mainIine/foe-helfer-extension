@@ -2174,4 +2174,9 @@ let CityMap = {
 		//	console.log('entity ', entity.name, entity, metaData, data)
 		return entity
 	},
+	ascendingBuildings:null,
+	canAscend:(buildingId)=>{
+		if (!CityMap.ascendingBuildings) CityMap.ascendingBuildings = Object.values(MainParser.BuildingUpgrades).filter(x=>x.upgradeItem.id.includes("ascended")).map(x=>x.upgradeSteps[0].buildingIds).flat()
+		return (CityMap.ascendingBuildings.includes(MainParser.CityEntities[buildingId].cityentity_id))
+	},
 };
