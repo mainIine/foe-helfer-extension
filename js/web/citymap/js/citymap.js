@@ -1546,9 +1546,9 @@ let CityMap = {
 						if (reward.id.search("#") != -1) { // "goods#random#CurrentEra#30" "goods#random#PreviousEra#15"
 							amount = reward.id.match(/\d+$/)[0]
 							if (reward.id.search("goods") != -1 && reward.id.search("CurrentEra") != -1)
-								resources = { random_good_of_age: amount }
+								resources = { 'random_good_of_age': amount }
 							else if (reward.id.search("goods") != -1 && reward.id.search("PreviousEra") != -1)
-								resources = { random_good_of_previous_age: amount }
+								resources = { 'random_good_of_previous_age': amount }
 						}
 						let resource = {
 							type: "resources",
@@ -1624,9 +1624,16 @@ let CityMap = {
 						resource.resources = product.guildResources.resources
 					}
 					else if (product.type == "genericReward" || product.type == "blueprint") {
-						resource.resources = this.setGenericReward(product, metaData, era) 
-						if (resource.resources.type === undefined)  // genericReward can also return a unit reward, change type
+						resource.resources = this.setGenericReward(product, metaData, era)
+
+						// genericReward can also return unit rewards or goods, change type
+						let objectKey = (Object.keys(resource.resources).length == 1 ? Object.keys(resource.resources)[0] : null)
+						if (objectKey?.includes('good')) {
+							resource.type = "resources"
+						}
+						else if (objectKey != null) {
 							resource.type = "unit"
+						}
 					}
 					else if (product.type == "unit") {
 						resource.resources = this.setUnitReward(product)
@@ -1784,8 +1791,12 @@ let CityMap = {
 						else if (production.type == "genericReward") {
 							let reward = this.setGenericReward(production, metaData, era)
 							resource.resources = reward
-							if (reward.type == undefined) { // genericReward can also return a unit reward, change type
-								resource.type = 'unit'
+							let objectKey = (Object.keys(resource.resources).length == 1 ? Object.keys(resource.resources)[0] : null)
+							if (objectKey?.includes('good')) {
+								resource.type = "resources"
+							}
+							else if (objectKey != null) {
+								resource.type = "unit"
 							}
 						}
 						else
@@ -1811,6 +1822,15 @@ let CityMap = {
 	setGenericReward(product, metaData, era) {
 		let amount = 0
 		let lookupData = false
+
+		let reward = {
+			id: product.reward.id,
+			name: '',
+			type: '',
+			subType: '',
+			amount: amount, // amount can be undefined for blueprints or units if building is not motivated
+			icon: ''
+		}
 
 		if (product.reward.amount) {
 			amount = product.reward.amount
@@ -1842,7 +1862,7 @@ let CityMap = {
 			else if (product.reward.id.includes('goods') && !/(fragment|rush)/.test(product.reward.id)) { // for nextage goods, because they are in a chest (random ones)
 				// todo: this not only covers chests now, so implementation needs to be looked at more carefully
 				lookupData = metaData.components[era].lookup.rewards[product.reward.id] // take first chest reward and work with that
-				return {
+				reward = {
 					id: product.reward.id,
 					name: lookupData.name.replace(/^\d+\s*/,""),
 					type: "resources",
@@ -1850,6 +1870,7 @@ let CityMap = {
 					amount: lookupData.totalAmount || parseInt(product.reward.id.match(/\d+$/)[0]),
 					icon: lookupData.iconAssetName
 				}
+				return this.setGoodsRewardFromGeneric(reward)
 			}
 			else {
 				lookupData = metaData.components[era].lookup.rewards[product.reward.id]
@@ -1893,7 +1914,7 @@ let CityMap = {
 			lookupData.subType = lookupData.rewards[0].subType
 		}
 
-		let reward = {
+		reward = {
 			id: product.reward.id,
 			name: name,
 			type: lookupData?.type || "consumable",
@@ -1902,7 +1923,28 @@ let CityMap = {
 			icon: lookupData?.iconAssetName
 		}
 
+		if (reward.type == "good")
+			return this.setGoodsRewardFromGeneric(reward)
+
 		return reward
+	},
+
+	// random_good_of_previous_age   random_good_of_age   random_good_of_next_age
+	// all_goods_of_previous_age   all_goods_of_age   all_goods_of_next_age
+	setGoodsRewardFromGeneric(reward) {
+		let eraString = '' // current era needs nothing
+		let typeString = 'random_good_' // random = one random good of the era
+
+		if (reward.id.includes("NextEra")) {
+			eraString = 'next_'
+		}
+		else if (reward.id.includes("PreviousEra")) { // currently unused
+			eraString = 'previous_'
+		}
+		if (reward.id.includes("each")) {
+			typeString = 'all_goods_'
+		}
+		return {[typeString + 'of_' + eraString + 'age']: reward.amount}
 	},
 
 	// returns { unit_type: amount } 
@@ -2060,41 +2102,39 @@ let CityMap = {
 		if (productions) {
 			productions.forEach(production => {
 				if (production.type == 'resources' || production.type == 'special_goods') {
-					Object.keys(production.resources).forEach(name => {
-						let good = GoodsList.find(x => x.id == name)
-						let specialGood = FHResourcesList.find(x => x.id == name && x.abilities.specialResource?.type == "specialResource")
+					Object.keys(production.resources).forEach(resourceName => {
+						let good = GoodsList.find(x => x.id == resourceName)
+						let specialGood = FHResourcesList.find(x => x.id == resourceName && x.abilities.specialResource?.type == "specialResource")
 						let goodEra = Technologies.InnoEras[building.eraName]
 						let isGood = false
+
 						if (good != undefined) {
 							goodEra = Technologies.InnoEras[good.era]
-							name = good.id
+							resourceName = good.id
 							isGood = true
 						}
 						else if (specialGood != undefined) {
 							goodEra = Technologies.InnoEras[specialGood.era]
-							name = specialGood.id
+							resourceName = specialGood.id
 							isGood = true
 						}
-						else if (name.includes('previous')) {
+						else if (resourceName.includes('previous_age')) {
 							goodEra = Technologies.getPreviousEraIdByCurrentEraName(building.eraName)
 							isGood = true
 						}
-						else if (name.includes('next')) {
+						else if (resourceName.includes('next_age')) {
 							goodEra = Technologies.getNextEraIdByCurrentEraName(building.eraName)
 							isGood = true
 						}
-						else if (name.includes('current') || name == 'random_good_of_age' || name == 'all_goods_of_age') {
-							isGood = true
-						}
-						else if (name.includes('current') || name == 'random_good_of_age' || name == 'all_goods_of_age') {
+						else if (resourceName.includes('random_good_of_') || resourceName.includes('all_goods_of_')) {
 							isGood = true
 						}
 
 						if (isGood) {
 							if (goods.eras[goodEra] == undefined) 
-								goods.eras[goodEra] = parseInt(production.resources[name])
+								goods.eras[goodEra] = parseInt(production.resources[resourceName])
 							else
-								goods.eras[goodEra] += parseInt(production.resources[name])
+								goods.eras[goodEra] += parseInt(production.resources[resourceName])
 						}
 					})
 				}
