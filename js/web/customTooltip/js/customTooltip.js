@@ -87,7 +87,7 @@ let Tooltips = {
         Tooltips.Container.style.top = (event.y+10) + "px";
         Tooltips.checkposition()
     },
-    buildingTT: (e)=>{
+    buildingTT: async (e)=>{
         let id = e?.currentTarget?.dataset?.meta_id||MainParser?.CityMapData[e?.currentTarget?.dataset?.id]?.cityentity_id
         if (!id) return
 
@@ -102,7 +102,7 @@ let Tooltips = {
                 <table class="foe-table">
                 <tr><td class="imgContainer"><img src="${srcLinks.get("/city/buildings/"+meta.asset_id.replace(/^(\D_)(.*?)/,"$1SS_$2")+".png",true)}"></td>`+
                 `<td style="width:100%; vertical-align:top"">`;
-        h += Tooltips.BuildingData(meta,era,allies);
+        h += await Tooltips.BuildingData(meta,era,allies);
         h += "</td></tr></table></div>"
         setTimeout(()=>{
             $(".handleOverflow").each((index,e)=>{
@@ -115,7 +115,7 @@ let Tooltips = {
         },100)
         return h
     },
-    BuildingData:(meta,onlyEra=null,allies=null)=>{
+    BuildingData:async (meta,onlyEra=null,allies=null)=>{
         if (onlyEra && Array.isArray(onlyEra)) {
             allies = [].concat(onlyEra)
             onlyEra = null
@@ -255,6 +255,10 @@ let Tooltips = {
 
             if (levels?.AllAge?.limited?.config?.expireTime) {
                 out += `<tr><td class="limited">${srcLinks.icons("limited_building_downgrade") + MainParser.CityEntities[levels.AllAge.limited.config.targetCityEntityId].name} (${i18n("Boxes.Tooltip.Building.after")} ${formatTime(levels.AllAge.limited.config.expireTime)})</td></tr>`
+            }
+
+            if (await CityMap.canAscend(meta.id)) {
+                out += `<tr><td class="limited">${srcLinks.icons("limited_building_upgrade") + MainParser.CityEntities[(await CityMap.AscendingBuildings)[meta.id]].name}</td></tr>`
             }
 
             let provides=""

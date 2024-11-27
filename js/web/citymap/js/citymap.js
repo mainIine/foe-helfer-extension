@@ -34,8 +34,17 @@ let CityMap = {
 	QIData: null,
 	QIStats: null,
 	QIAreas: [],
-	AscendingBuildings:null,
 
+	AscendingBuildings: new Promise((resolve) => {
+		let timer = () => {
+			if (!MainParser.BuildingUpgrades) {
+				setTimeout(timer,500)
+			} else {
+				resolve (Object.assign({},...Object.values(MainParser.BuildingUpgrades).filter(x => x.upgradeItem.id.includes("ascended")).map(x=>x.upgradeSteps[0].buildingIds.map((Id,i)=>({[Id]:x.upgradeSteps[1].buildingIds[i]}))).flat())) 
+			}
+		}
+		timer()
+	  }),
 
 	/**
 	 * @param event
@@ -545,7 +554,7 @@ let CityMap = {
 	 * Container gemäß den Koordianten zusammensetzen
 	 * @param Data
 	 */
-	SetMapBuildings: (Data = null)=> {
+	SetMapBuildings: async (Data = null)=> {
 		if (ActiveMap === "cultural_outpost" || ActiveMap === "era_outpost" || ActiveMap === "guild_raids") {
 			CityMap.SetOutpostBuildings() 
 			return
@@ -587,7 +596,7 @@ let CityMap = {
 			ysize = (building.size.length * CityMap.ScaleUnit) / 100
 
 			let noStreet = (building.needsStreet == 0 ? ' noStreet' : '')
-			let canAscend = (CityMap.canAscend(building.entityId) ? ' ascendable' : '')
+			let canAscend = (await CityMap.canAscend(building.entityId) ? ' ascendable' : '')
 			let isDecayed = (building.state.isDecayed ? ' decayed' : '')
 			let isSpecial = (building.isSpecial ? ' special' : '')
 			let chainBuilding = (building.chainBuilding != undefined ? ' chain' : '')
@@ -2130,10 +2139,8 @@ let CityMap = {
 		return metaData.type
 	},
 
-	canAscend(buildingEntityId) {
-		if (!CityMap.AscendingBuildings) 
-			CityMap.AscendingBuildings = Object.values(MainParser.BuildingUpgrades).filter(x => x.upgradeItem.id.includes("ascended")).map(x=>x.upgradeSteps[0].buildingIds).flat()
-		return (CityMap.AscendingBuildings.includes(MainParser.CityEntities[buildingEntityId].id))
+	async canAscend(buildingEntityId) {
+		return (await CityMap.AscendingBuildings).hasOwnProperty(buildingEntityId)
 	},
 
 	createNewCityMapEntities(data) {
