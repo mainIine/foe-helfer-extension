@@ -27,11 +27,17 @@
 
 #ReconstructionListBody td:nth-child(3){
   text-align: center;
+  min-width: 50px;
+}
+#ReconstructionListBody td:nth-child(4){
+  text-align: center;
+  min-width: 35px;
 }
 
 #ReconstructionListBody .sorter-header {
     position: sticky;
     top: 0px;
+    z-index: 1;
 }
 
 #ReconstructionListBody tr.sorter-header th:last-child:before, 
