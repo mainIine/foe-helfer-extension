@@ -115,7 +115,6 @@ let reconstruction = {
             "impediment",
             "hub_part",
             "off_grid",
-            "greatbuilding",
             "outpost_ship",
             "hub_main"].includes(meta.type)) return
         let page = reconstruction.pageMapper[meta.type]||meta.type
