@@ -18,9 +18,12 @@ FoEproxy.addHandler('HiddenRewardService', 'getOverview', (data, postData) => {
     HiddenRewards.GEprogress = JSON.parse(localStorage.getItem('HiddenRewards.GEprogress')||'0');
    
     HiddenRewards.RefreshGui(fromHandler);
-    if (HiddenRewards.FirstCycle) { //Alle 60 Sekunden aktualisieren (Startbeginn des Ereignisses könnte erreicht worden sein)
+    if (HiddenRewards.FirstCycle) { //Timer setzen 
         HiddenRewards.FirstCycle = false;
-        setInterval(HiddenRewards.RefreshGui, 60000);
+        data.responseData.hiddenRewards.forEach(x=>{
+            if (x.startTime && x.startTime>GameTime) 
+                setTimeout(HiddenRewards.RefreshGui, (GameTime-x.startTime+5)*1000)
+        })
     }
 });
 
