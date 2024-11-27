@@ -102,12 +102,8 @@ let reconstruction = {
         "clan_power_production":"prod"
     },
     pages: null,
-    rcIcons:{
-        happ:srcLinks.get("/shared/gui/reconstructionmenu/rc_icon_happynessbuildings.png",true),
-        prod:srcLinks.get("/shared/gui/reconstructionmenu/rc_icon_productionbuildings.png",true),
-        greatbuilding:srcLinks.get("/shared/gui/constructionmenu/icon_greatbuilding.png",true),
-        street:srcLinks.get("/shared/gui/constructionmenu/icon_street.png",true),
-    },
+    rcIcons:null,
+    roadIcons:null,        
     pageUpdate:(id)=>{
         let meta = MainParser.CityEntities[id]
         if (["friends_tavern",
@@ -130,8 +126,22 @@ let reconstruction = {
                 $('.reconstructionLine[data-meta_id="'+list[i]+'"] td:nth-child(3)').html(`<img src="${reconstruction.rcIcons[page]}">`+(Math.floor(i/4)+1))
             }
         }
-    },    
+    },
     showTable:()=>{
+        if (!reconstruction.rcIcons) {
+            reconstruction.rcIcons = {
+                happ:srcLinks.get("/shared/gui/reconstructionmenu/rc_icon_happynessbuildings.png",true),
+                prod:srcLinks.get("/shared/gui/reconstructionmenu/rc_icon_productionbuildings.png",true),
+                greatbuilding:srcLinks.get("/shared/gui/constructionmenu/icon_greatbuilding.png",true),
+                street:srcLinks.get("/shared/gui/constructionmenu/icon_street.png",true),
+            }
+            reconstruction.roadIcons = {
+                0:"",
+                1:srcLinks.icons("road_required"),
+                2:srcLinks.icons("street_required")
+            }
+        }             
+        
         if ( $('#ReconstructionList').length === 0 ) {
 
 			HTML.AddCssFile('reconstruction');
@@ -152,7 +162,7 @@ let reconstruction = {
                         <th data-type="reconstructionSizes">${i18n('Boxes.CityMap.Building')}</th>
                         <th class="no-sort">#</th>
                         <th class="no-sort text-center">${srcLinks.icons("icon_copy")}</th>
-                        <th class="no-sort">${srcLinks.icons("road_required")}?</th>
+                        <th class="is-number" data-type="reconstructionSizes">${srcLinks.icons("road_required")}</th>
                         <th class="is-number" data-type="reconstructionSizes"></th>
                         <th class="is-number" data-type="reconstructionSizes"></th>
                     </tr>
@@ -161,17 +171,12 @@ let reconstruction = {
             let meta=MainParser.CityEntities[id]
             let width = meta.width||meta.components.AllAge.placement.size.x
             let length = meta.length||meta.components.AllAge.placement.size.y
-            let road=""
-            if ((meta?.components?.AllAge?.streetConnectionRequirement?.requiredLevel || meta?.requirements?.street_connection_level) == 2)
-                road = srcLinks.icons("street_required")
-            else if ((meta?.components?.AllAge.streetConnectionRequirement?.requiredLevel || meta?.requirements?.street_connection_level) == 1)
-                road = srcLinks.icons("road_required")
-
+            let road = meta?.components?.AllAge.streetConnectionRequirement?.requiredLevel || meta?.requirements?.street_connection_level || 0
             h+=`<tr class="reconstructionLine helperTT" data-callback_tt="Tooltips.buildingTT" data-meta_id="${id}" ${b.stored==0 ? ' style="display:none"' : ""}>
                     <td data-text="${helper.str.cleanup(meta.name)}">${meta.name}</td>
                     <td>x${b.stored}</td>
                     <td></td>
-                    <td>${road}</td>
+                    <td data-number="${road}">${reconstruction.roadIcons[road]}</td>
                     <td data-number="${length*100+width}">${length} x</td>
                     <td data-number="${width*100+length}">${width}</td>
                 </tr>`
