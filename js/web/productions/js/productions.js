@@ -69,7 +69,37 @@ let Productions = {
 
 	RatingCurrentTab: 'Results',
 	Rating: JSON.parse(localStorage.getItem('ProductionRatingEnableds2')||"{}"),
-	RatingProdPerTiles: {},
+	RatingProdPerTiles: Object.assign({
+		'strategy_points': 5,
+		'money': null,
+		'supplies': null,
+		'medals': null,
+		'clan_power': null,
+		'clan_goods': 10,
+		'population': null,
+		'happiness': null,
+		'units': 1,
+		'att_boost_attacker-all': 3 ,
+		'att_boost_attacker-guild_expedition': null,
+		'att_boost_attacker-battleground': 3 ,
+		'att_boost_attacker-guild_raids': null,
+		'def_boost_attacker-all': 3,
+		'def_boost_attacker-guild_expedition': null,
+		'def_boost_attacker-battleground': 3 ,
+		'def_boost_attacker-guild_raids': null,
+		'att_boost_defender-all': 2,
+		'att_boost_defender-guild_expedition': null,
+		'att_boost_defender-battleground': null,
+		'att_boost_defender-guild_raids': null,
+		'def_boost_defender-all': 2,
+		'def_boost_defender-guild_expedition': null,
+		'def_boost_defender-battleground': null,
+		'def_boost_defender-guild_raids': null,
+		'goods-previous': 4,
+		'goods-current': 5,
+		'fsp': 1,
+		'goods-next': null,
+	},JSON.parse(localStorage.getItem('ProductionRatingProdPerTiles')||"{}")),
 
 	RatingTypes: [
 		'strategy_points',	// Forge Punkte
@@ -1432,15 +1462,9 @@ let Productions = {
 			Productions.BuildingsAll = Object.values(CityMap.createNewCityMapEntities())
 			Productions.setChainsAndSets(Productions.BuildingsAll)
 
-			let Rating = localStorage.getItem('ProductionRatingEnableds2');
-			if (Rating !== null) Productions.Rating = JSON.parse(Rating)
-
-			let RatingProdPerTiles = localStorage.getItem('ProductionRatingProdPerTiles');
-			if (RatingProdPerTiles !== null) Productions.RatingProdPerTiles = JSON.parse(RatingProdPerTiles);
-
 			for (let type of Productions.RatingTypes) {
-				if (Productions.Rating[type] === undefined) Productions.Rating[type] = true
-				if (Productions.RatingProdPerTiles[type] === undefined) Productions.RatingProdPerTiles[type] = Productions.GetDefaultProdPerTile(type)
+				if (Productions.Rating[type] === undefined) Productions.Rating[type] = (Productions.RatingProdPerTiles[type] ?? true)
+				if (Productions.RatingProdPerTiles[type] === undefined) Productions.RatingProdPerTiles[type] = 0
             }
 
 			HTML.Box({
@@ -1548,12 +1572,7 @@ let Productions = {
 				return 0
 			})
 
-			let colNumber = 0
-			for (let i = 0; i < Productions.RatingTypes.length; i++) {
-				let type = Productions.RatingTypes[i];
-				if (!Productions.Rating[type]) continue;
-				colNumber++
-			}
+			let colNumber = Object.values(Productions.Rating).filter(x=>!!x).length
 			
 			h.push('<div class="ratingtable">');
 			h.push('<a id="RatingSettings" class="toggle-tab btn-default btn-tight" data-value="Settings">' + i18n('Boxes.ProductionsRating.Settings') + '</a>')
@@ -1572,11 +1591,10 @@ let Productions = {
 			h.push('<tr class="sorter-header">');
 			h.push('<th data-type="ratinglist" class="is-number ascending">' + i18n('Boxes.ProductionsRating.Score') + '</th>');
 			h.push('<th data-type="ratinglist">' + i18n('Boxes.ProductionsRating.BuildingName') + '</th><th class="no-sort"></th>');
-			let tileRatings = JSON.parse(localStorage.getItem('ProductionRatingProdPerTiles'))
 			for (const type of Productions.RatingTypes) {
 				if (!Productions.Rating[type] || Productions.RatingProdPerTiles[type] == null) continue
-				h.push('<th data-type="ratinglist" style="width:1%" class="is-number text-center buildingvalue"><span class="resicon ' + type + '"></span><i>'+(tileRatings?.[type] !== undefined ? parseFloat(tileRatings[type]) : Productions.GetDefaultProdPerTile(type))+'</i></th>');
-				h.push('<th data-type="ratinglist" style="width:1%" class="is-number text-center tilevalue"><span class="resicon ' + type + '"></span><i>'+(tileRatings?.[type] !== undefined ? parseFloat(tileRatings[type]) : Productions.GetDefaultProdPerTile(type))+'</i></th>');
+				h.push('<th data-type="ratinglist" style="width:1%" class="is-number text-center buildingvalue"><span class="resicon ' + type + '"></span><i>'+(Productions.RatingProdPerTiles?.[type] || 0)+'</i></th>');
+				h.push('<th data-type="ratinglist" style="width:1%" class="is-number text-center tilevalue"><span class="resicon ' + type + '"></span><i>'+(Productions.RatingProdPerTiles?.[type] || 0)+'</i></th>');
 			}
 			h.push('<th data-type="ratinglist" class="no-sort items">Items</th>');
 			h.push('</tr>');
@@ -1596,6 +1614,7 @@ let Productions = {
 					if (!building.highlight) h.push(' <span class="show-all" data-name="'+building.building.name+'"><img class="game-cursor" src="' + extUrl + 'css/images/hud/open-eye.png"></span>')
 				h.push('</td>')
 				for (const type of Productions.RatingTypes) {
+					if (!Productions.Rating[type] || Productions.RatingProdPerTiles[type] == null) continue
 					if (building[type] != undefined) {
 						h.push(`<td class="text-right${type=="units" ? " units":""} buildingvalue" data-number="${Math.round(building[type])}" ${type=="units" ? `data-original-title="${randomUnits}"`:""}>`)
 						h.push(HTML.Format(building[type]))
@@ -1756,7 +1775,6 @@ let Productions = {
 
 	rateBuildings: (buildingType,additional=false, era=null) => {
 		let ratedBuildings = []
-		let tileRatings = JSON.parse(localStorage.getItem('ProductionRatingProdPerTiles'))
 		if (additional) {
 			buildingType = buildingType.map(x=>CityMap.createNewCityMapEntity(x,era||CurrentEra))
 		}
@@ -1770,7 +1788,7 @@ let Productions = {
 			}
 			for (const type of Object.keys(Productions.Rating)) {
 				if (Productions.Rating[type] != false) {
-					let desiredValuePerTile = ((tileRatings != null && tileRatings != undefined) ? parseFloat(tileRatings[type]) : Productions.GetDefaultProdPerTile(type))
+					let desiredValuePerTile = parseFloat(Productions.RatingProdPerTiles[type]) || 0
 					if (desiredValuePerTile !== null && !isNaN(desiredValuePerTile)) {
 						let typeValue = Productions.getRatingValueForType(building, type) || 0 // production amount
 						let valuePerTile = typeValue / size
@@ -1875,42 +1893,6 @@ let Productions = {
 			callback(undefined)
 		})
 	},
-
-
-	GetDefaultProdPerTile: (Type) => {
-		if (Type === 'strategy_points') return 5
-		if (Type === 'money') return null
-		if (Type === 'supplies') return null
-		if (Type === 'medals') return null
-		if (Type === 'clan_power') return null
-		if (Type === 'clan_goods') return 10
-		if (Type === 'population') return null
-		if (Type === 'happiness') return null
-		if (Type === 'units') return 1
-		if (Type === 'att_boost_attacker-all') return 3 
-		if (Type === 'att_boost_attacker-guild_expedition') return null
-		if (Type === 'att_boost_attacker-battleground') return 3 
-		if (Type === 'att_boost_attacker-guild_raids') return null
-		if (Type === 'def_boost_attacker-all') return 3
-		if (Type === 'def_boost_attacker-guild_expedition') return null
-		if (Type === 'def_boost_attacker-battleground') return 3 
-		if (Type === 'def_boost_attacker-guild_raids') return null
-		if (Type === 'att_boost_defender-all') return 2
-		if (Type === 'att_boost_defender-guild_expedition') return null
-		if (Type === 'att_boost_defender-battleground') return null
-		if (Type === 'att_boost_defender-guild_raids') return null
-		if (Type === 'def_boost_defender-all') return 2
-		if (Type === 'def_boost_defender-guild_expedition') return null
-		if (Type === 'def_boost_defender-battleground') return null
-		if (Type === 'def_boost_defender-guild_raids') return null
-		if (Type === 'goods-previous') return 4
-		if (Type === 'goods-current') return 5
-		if (Type === 'fsp') return 1
-		if (Type === 'goods-next') return null
-		else return 0
-	},
-
-	
 
     /**
     *
