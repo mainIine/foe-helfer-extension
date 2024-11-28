@@ -27,13 +27,21 @@ FoEproxy.addHandler('CityReconstructionService', 'getDraft', (data, postData) =>
     }
     reconstruction.draft = Object.assign({},...data.responseData.map(b=>({[b.entityId]:b})))
     reconstruction.count = {}
+    reconstruction.pages = {
+                            prod: [],
+                            happ: [],
+                            street: [],
+                            greatbuilding: [],
+                        }
     for (let b of data.responseData) {
         let id = MainParser.CityMapData[b.entityId].cityentity_id
         if (!reconstruction.count[id]) reconstruction.count[id] = {placed:0,stored:0}
         if (b.position) 
             reconstruction.count[id].placed++
-        else 
+        else {
             reconstruction.count[id].stored++   
+            if (reconstruction.count[id].stored == 1) reconstruction.pageUpdate(id)   
+        }
     }
 
     reconstruction.showTable()
@@ -43,16 +51,28 @@ FoEproxy.addHandler('CityReconstructionService', 'getDraft', (data, postData) =>
 FoEproxy.addHandler('AutoAidService', 'getStates', (data, postData) => {
     $('#ReconstructionList').remove()
 });
+FoEproxy.addHandler('InventoryService', 'getGreatBuildings', (data, postData) => {
+    $('#ReconstructionList').remove()
+});
 
 FoEproxy.addRequestHandler('CityReconstructionService', 'saveDraft', (data) => {
     for (let x of data.requestData[0]) {
         let id = MainParser.CityMapData[x.entityId].cityentity_id
+        let pagesUpdated=false
         if (x.position && !reconstruction.draft[x.entityId].position) {
             reconstruction.count[id].placed++
             reconstruction.count[id].stored--
+            if (reconstruction.count[id].stored==0) {
+                reconstruction.pageUpdate(id)
+                pagesUpdated=true
+            }
         } else if (!x.position) {
             reconstruction.count[id].placed--
             reconstruction.count[id].stored++    
+            if (reconstruction.count[id].stored==1) {
+                reconstruction.pageUpdate(id)
+                pagesUpdated=true
+            }
         }
         reconstruction.draft[x.entityId] = x
         $('.reconstructionLine[data-meta_id="'+id+'"] td:nth-child(2)').html("x"+reconstruction.count[id].stored)
@@ -60,15 +80,68 @@ FoEproxy.addRequestHandler('CityReconstructionService', 'saveDraft', (data) => {
             $('.reconstructionLine[data-meta_id="'+id+'"]').show()
         else
             $('.reconstructionLine[data-meta_id="'+id+'"]').hide()
-
+        if (pagesUpdated) reconstruction.updateTable()
     }
 });
 
 let reconstruction = {
     draft:null,
     count:null,
-
+    pageMapper:{
+        "culture":"happ",
+        "cultural_goods_production":"prod",
+        "decoration":"happ",
+        "diplomacy":"happ",
+        "static_provider":"happ",
+        "random_production":"prod",
+        "military":"prod",
+        "goods":"prod",
+        "production":"prod",
+        "residential":"prod",
+        "tower":"prod",
+        "clan_power_production":"prod"
+    },
+    pages: null,
+    rcIcons:null,
+    roadIcons:null,        
+    pageUpdate:(id)=>{
+        let meta = MainParser.CityEntities[id]
+        if (["friends_tavern",
+            "main_building",
+            "impediment",
+            "hub_part",
+            "off_grid",
+            "outpost_ship",
+            "hub_main"].includes(meta.type)) return
+        let page = reconstruction.pageMapper[meta.type]||meta.type
+        if (reconstruction.count[id]==0) { //remove from pages
+            reconstruction.pages[page].splice(reconstruction.pages[page].findIndex(id),1)
+        } else { //add to pages
+            reconstruction.pages[page].unshift(id)
+        }
+    },
+    updateTable:()=>{
+        for (let [page,list] of Object.entries(reconstruction.pages)) {
+            for (let i = 0;i<list.length;i++) {
+                $('.reconstructionLine[data-meta_id="'+list[i]+'"] td:nth-child(3)').html(`<img src="${reconstruction.rcIcons[page]}">`+(Math.floor(i/4)+1))
+            }
+        }
+    },
     showTable:()=>{
+        if (!reconstruction.rcIcons) {
+            reconstruction.rcIcons = {
+                happ:srcLinks.get("/shared/gui/reconstructionmenu/rc_icon_happynessbuildings.png",true),
+                prod:srcLinks.get("/shared/gui/reconstructionmenu/rc_icon_productionbuildings.png",true),
+                greatbuilding:srcLinks.get("/shared/gui/constructionmenu/icon_greatbuilding.png",true),
+                street:srcLinks.get("/shared/gui/constructionmenu/icon_street.png",true),
+            }
+            reconstruction.roadIcons = {
+                0:"",
+                1:srcLinks.icons("road_required"),
+                2:srcLinks.icons("street_required")
+            }
+        }             
+        
         if ( $('#ReconstructionList').length === 0 ) {
 
 			HTML.AddCssFile('reconstruction');
@@ -83,14 +156,13 @@ let reconstruction = {
 			});
         }           
         
-        let icons = (x) => `<img src=${srcLinks.get(`/shared/icons/${x}.png`,true,true)}>`;
-        
         h =`<table class="sortable-table foe-table">
                 <thead>
                     <tr class="sorter-header">
                         <th data-type="reconstructionSizes">${i18n('Boxes.CityMap.Building')}</th>
                         <th class="no-sort">#</th>
-                        <th class="no-sort">${icons("road_required")}?</th>
+                        <th class="no-sort text-center">${srcLinks.icons("icon_copy")}</th>
+                        <th class="is-number" data-type="reconstructionSizes">${srcLinks.icons("road_required")}</th>
                         <th class="is-number" data-type="reconstructionSizes"></th>
                         <th class="is-number" data-type="reconstructionSizes"></th>
                     </tr>
@@ -99,16 +171,12 @@ let reconstruction = {
             let meta=MainParser.CityEntities[id]
             let width = meta.width||meta.components.AllAge.placement.size.x
             let length = meta.length||meta.components.AllAge.placement.size.y
-            let road=""
-            if ((meta?.components?.AllAge?.streetConnectionRequirement?.requiredLevel || meta?.requirements?.street_connection_level) == 2)
-                road = icons("street_required")
-            else if ((meta?.components?.AllAge.streetConnectionRequirement?.requiredLevel || meta?.requirements?.street_connection_level) == 1)
-                road = icons("road_required")
-
+            let road = meta?.components?.AllAge.streetConnectionRequirement?.requiredLevel || meta?.requirements?.street_connection_level || 0
             h+=`<tr class="reconstructionLine helperTT" data-callback_tt="Tooltips.buildingTT" data-meta_id="${id}" ${b.stored==0 ? ' style="display:none"' : ""}>
                     <td data-text="${helper.str.cleanup(meta.name)}">${meta.name}</td>
                     <td>x${b.stored}</td>
-                    <td>${road}</td>
+                    <td></td>
+                    <td data-number="${road}">${reconstruction.roadIcons[road]}</td>
                     <td data-number="${length*100+width}">${length} x</td>
                     <td data-number="${width*100+length}">${width}</td>
                 </tr>`
@@ -117,7 +185,8 @@ let reconstruction = {
 
 
         $('#ReconstructionListBody').html(h)
-        $('#ReconstructionListBody .sortable-table').tableSorter()		
+        $('#ReconstructionListBody .sortable-table').tableSorter()
+        setTimeout(reconstruction.updateTable,200)
 
     },
 }

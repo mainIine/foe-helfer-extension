@@ -11,9 +11,11 @@
  * **************************************************************************************
  */
 
- #HiddenRewardBox {
+#HiddenRewardBox {
     top: 30%;
     left: 30px;
+    height: 400px;
+    width: 350px;
 }
 
 #HiddenRewardBox img {
@@ -22,16 +24,15 @@
     max-width: 3.5em;
     max-height: 2.5em;
 }
+
 #HiddenRewardBox #HiddenRewardBoxBody {
-	max-height: 400px;
-	min-width: 350px;
-	overflow: hidden;
-	overflow-y: auto;
+    overflow: hidden;
+    overflow-y: auto;
 }
 
 #HiddenRewardBox table td.incident {
     vertical-align: middle;
-	text-align: center;	
+    text-align: center;
     min-height: 30px;
 }
 
@@ -40,28 +41,72 @@
     color: var(--text-bright);
 }
 
-td[title="incident_sos"], td[title="incident_beach_gear"], td[title="incident_shipwreck"], td[title="incident_flotsam"] {
-	background: linear-gradient(to top right, #20423f, 15%, #20423f, 35%, #d4ab70, 65%, #d4ab70);
+td[title="incident_sos"],
+td[title="incident_beach_gear"],
+td[title="incident_shipwreck"],
+td[title="incident_flotsam"] {
+    background: linear-gradient(to top right, #20423f, 15%, #20423f, 35%, #d4ab70, 65%, #d4ab70);
 }
 
 td[title="incident_sos"] img {
     filter: drop-shadow(1px 1px 3px white);
 }
 
-td[title="incident_fallen_tree_1x1"], td[title="incident_blocked_road_1x1"], td[title="incident_blocked_road_2x2"], td[title="incident_fallen_tree_2x2"], td[title="incident_pothole_1x1"], td[title="incident_pothole_2x2"] {
-	background-color: #818272;
+td[title="incident_fallen_tree_1x1"],
+td[title="incident_blocked_road_1x1"],
+td[title="incident_blocked_road_2x2"],
+td[title="incident_fallen_tree_2x2"],
+td[title="incident_pothole_1x1"],
+td[title="incident_pothole_2x2"] {
+    background-color: #818272;
 }
 
 
-td[title="incident_sculptor"],td[title="incident_chest"],td[title="incident_hero"], td[title="incident_beehive"], td[title="incident_crates"], td[title="incident_broken_cart"], td[title="incident_car_accident"], td[title="incident_clothesline"], td[title="incident_dinosaur_bones"], td[title="incident_empty_clothesline"], td[title="incident_fruit_vendor"], td[title="incident_kite"], td[title="incident_mammoth_bones"], td[title="incident_musician"], td[title="incident_overgrowth"], td[title="incident_quicksand"], td[title="incident_statue"], td[title="incident_stick_hut"], td[title="incident_treasure_chest"], td[title="incident_wine_cask"], td[title="spring_cherry_tree"], td[title="ages_birthday_gift_1"], td[title="ages_birthday_gift_2"], td[title="ages_birthday_gift_3"] {
-	background-color: #5d6324;
+td[title="incident_sculptor"],
+td[title="incident_chest"],
+td[title="incident_hero"],
+td[title="incident_beehive"],
+td[title="incident_crates"],
+td[title="incident_broken_cart"],
+td[title="incident_car_accident"],
+td[title="incident_clothesline"],
+td[title="incident_dinosaur_bones"],
+td[title="incident_empty_clothesline"],
+td[title="incident_fruit_vendor"],
+td[title="incident_kite"],
+td[title="incident_mammoth_bones"],
+td[title="incident_musician"],
+td[title="incident_overgrowth"],
+td[title="incident_quicksand"],
+td[title="incident_statue"],
+td[title="incident_stick_hut"],
+td[title="incident_treasure_chest"],
+td[title="incident_wine_cask"],
+td[title="spring_cherry_tree"],
+td[title="ages_birthday_gift_1"],
+td[title="ages_birthday_gift_2"],
+td[title="ages_birthday_gift_3"] {
+    background-color: #5d6324;
 }
 
-td[title="incident_rhino"], td[title="incident_castaway"], td[title="incident_fisherman"], td[title="incident_floating_chest"] {
-	background-color: #20423f;
+td[title="incident_rhino"],
+td[title="incident_castaway"],
+td[title="incident_fisherman"],
+td[title="incident_floating_chest"] {
+    background-color: #20423f;
 }
 
 #HiddenRewardBox tr.unavailable {
     opacity: 0.5;
     font-style: italic;
+}
+
+#HiddenRewardBox .warning {
+    color: var(--text-bright);
+    padding: 5px;
+    text-align: center;
+}
+
+#HiddenRewardBox .dark-bg {
+    border-bottom: 1px solid var(--text-bright);
 }

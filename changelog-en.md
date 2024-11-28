@@ -5,17 +5,26 @@
 **New**
 - QI Progress Overview added (opens automatically when opening the QI player ranking)
 - Item Sources: Production Overview for Items/Fragments now offers an option to display a list of buildings that produce a certain item (even if not currently build)
+- Production Overview: Added Tables for resources boosts (FP, coins, supplies)
+- Efficiency rating: Added FSP Fragments to the evaluation
+- City Overview: Highlight option for ascendable and decayed buildings
 
 **Update**
 - Tooltip: made design similar to original FoE tooltips
+- Building Efficiency: 
+	- Added building tooltips
+	- Results will now be shown first
+	- Item list hidden to make the table less crowded
 
 **BugFix**
 - Tooltip: 
-	- some browsers did not use the correct design
-	- did sometimes not vanish when a box was closed
+	- Some browsers did not use the correct design
+	- Did sometimes not vanish when a box was closed
 - Reconstruction List: 
-	- set a default height
-	- moving buildings reduced counter
+	- Set a default height
+	- Moving buildings reduced counter
+- Building Efficiency:
+	- Other players ratings were based on your age instead of theirs
 
 ##### 3.9.0.0
 

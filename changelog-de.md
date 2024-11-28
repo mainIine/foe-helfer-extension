@@ -5,9 +5,16 @@
 **Neu**
 - QI Fortschritts Übersicht hinzugefügt (öffnet sich automatisch, wenn die QI-Spieler Rangliste geöffnet wird)
 - Quellen für Gegenstände: In der Produktionsübersicht für Gegenstände und Fragmente gibt es nun die Möglichkeit, sich eine Liste von Gebäude ausgeben zu lassen, die einen bestimmten Gegenstand produzieren (auch, wenn diese nicht gebaut sind)
+- Produktionsübersicht: Tabellen für Münz-, Vorrats- und FP-Boots hinzugefügt
+- Effizienzbewertung: Feld für Spezialproduktion abschließen Fragmente hinzugefügt
+- Stadtübersicht: Anzeigeoption für Gebäude, die eine erhabene Stufe haben und "abgelaufene" Gebäude
 
 **Update**
 - Tooltip: Design der Gebäude-Tooltips angepasst
+- Gebäude-Effizienz: 
+	- Gebäude-Tooltips hinzugefügt
+	- Ergebnisseite wird nun zuerst angezeigt
+	- Itemliste versteckt
 
 **BugFix**
 - Tooltip: 
@@ -16,6 +23,8 @@
 - Umbau-Liste: 
 	- Standardhöhe gesetzt
 	- Umplatzieren von Gebäuden verringerte den Zähler
+- Gebäude-Effizienz:
+	- Die Bewertungen bei anderen Spielern haben dein aktuelles Zeitalter genutzt, statt ihr eigenes
 
 ##### 3.9.0.0
 

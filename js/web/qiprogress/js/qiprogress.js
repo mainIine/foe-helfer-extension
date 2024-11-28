@@ -21,12 +21,19 @@ FoEproxy.addHandler('GuildRaidsService', 'getMemberActivityOverview', (data, pos
 FoEproxy.addHandler('GuildRaidsService', 'getState', (data, postData) => {
 	QiProgress.GlobalRankingTimeout = setTimeout(()=>{
 		if (data.responseData.__class__ == 'GuildRaidsRunningState') {
-			QiProgress.CurrentQIRound = data.responseData.endsAt
+			QiProgress.CurrentQISeason = data.responseData.endsAt
+		}
+		else if (data.responseData.__class__ == 'GuildRaidsPendingState') {
+			// 259200 = 3 days
+			QiProgress.CurrentQISeason = data.responseData.startsAt - 259200
+		}
+		else if (data.responseData.__class__ == 'GuildRaidsFinishedState') {
+			QiProgress.CurrentQISeason = data.responseData.nextStartsAt - 259200
+		}
 
-			if (QiProgress.curDateFilter === null || QiProgress.curDateEndFilter === null) {
-				QiProgress.curDateFilter = moment.unix(QiProgress.CurrentQIRound).subtract(11, 'd').format('YYYYMMDD')
-				QiProgress.curDateEndFilter = moment.unix(QiProgress.CurrentQIRound).format('YYYYMMDD')
-			}
+		if (QiProgress.curDateFilter === null || QiProgress.curDateEndFilter === null) {
+			QiProgress.curDateFilter = moment.unix(QiProgress.CurrentQISeason).subtract(11, 'd').format('YYYYMMDD')
+			QiProgress.curDateEndFilter = moment.unix(QiProgress.CurrentQISeason).format('YYYYMMDD')
 		}
 	},500)
 });
@@ -37,7 +44,7 @@ let QiProgress = {
 	PrevActionTimestamp: null,
 	NewAction: null,
 	NewActionTimestamp: null,
-	CurrentQIRound: null,
+	CurrentQISeason: null, // timestamp of round end
 	AllRounds: null,
 	ProgressContent: [],
 	curDateFilter: null,
@@ -87,7 +94,7 @@ let QiProgress = {
 			HTML.AddCssFile('qiprogress');
 		}
 
-		QiProgress.BuildProgressList(QiProgress.CurrentQIRound);
+		QiProgress.BuildProgressList(QiProgress.CurrentQISeason);
 	},
 
 	/**
@@ -104,14 +111,14 @@ let QiProgress = {
 
 		let CurrentSnapshot = await QiProgress.db.snapshots
 			.where({
-				qiround: QiProgress.CurrentQIRound
+				qiround: QiProgress.CurrentQISeason
 			})
 			.first();
 
 		if (CurrentSnapshot === undefined) {
 			newRound = true;
 			// if there is a new round delete previous snapshots
-			QiProgress.DeleteOldSnapshots(QiProgress.CurrentQIRound);
+			QiProgress.DeleteOldSnapshots(QiProgress.CurrentQISeason);
 		}
 
 		let t = [],
@@ -129,7 +136,7 @@ let QiProgress = {
 			progress: 'progress',
 		});
 
-		if (qiRound && qiRound !== null && qiRound !== QiProgress.CurrentQIRound) {
+		if (qiRound && qiRound !== null && qiRound !== QiProgress.CurrentQISeason) {
 			let d = await QiProgress.db.history.where({ qiround: qiRound }).toArray();
 			QiProgress.qiRound = d[0].participation.sort(function (a, b) {
 				return a.rank - b.rank;
@@ -173,7 +180,7 @@ let QiProgress = {
 
 			if ((change === true || newRound === true) && QiProgress.HistoryView === false) {
 				await QiProgress.UpdateDB('player', { 
-						qiRound: QiProgress.CurrentQIRound, 
+						qiRound: QiProgress.CurrentQISeason, 
 						player_id: playerNew.player_id, 
 						name: playerNew.name, 
 						actions: playerNew.actions, 
@@ -191,6 +198,7 @@ let QiProgress = {
 			tP += playerNew.progress;
 
 			b.push('<tr data-player="' + playerNew['player_id'] + '" data-qiround="' + qiRound + '" class="' + newProgressClass + (!histView ? 'showdetailview ' : '') + (playerNew['player_id'] === ExtPlayerID ? 'mark-player ' : '') + (change === true ? 'bg-green' : '') + '">');
+			b.push('<td style="display:none">' + playerNew.player_id + '</td>');
 			b.push('<td class="tdmin">' + (parseInt(i) + 1) + '.</td>');
 			b.push('<td class="tdmin"><img src="' + srcLinks.GetPortrait(playerNew.avatar) + '"></td>');
 			b.push('<td>' + playerNew.name + '</td>');
@@ -209,6 +217,7 @@ let QiProgress = {
 		t.push('<table id="QiProgressTable" class="foe-table' + (histView === false ? ' chevron-right exportable' : '') + '">');
 		t.push('<thead>');
 		t.push('<tr>');
+		t.push('<th style="display:none" data-export="Player_ID"></th>');
 		t.push('<th colspan="3" data-export3="Player">' + i18n('General.Player') + '</th>');
 		t.push('<th class="text-center" data-export="Actions">' + i18n('Boxes.QiProgress.Actions') + '<br> <strong class="text-warning">(' + HTML.Format(tA) + ')</strong></th>');
 		t.push('<th class="text-center" data-export="Progress">' + i18n('Boxes.QiProgress.Progress') + '<br> <strong class="text-warning">(' + HTML.Format(tP) + ')</strong></th>');
@@ -279,7 +288,7 @@ let QiProgress = {
 
 		$(`#QiProgressListSettingsBox`).fadeToggle('fast', function () {
 			$(this).remove();
-			QiProgress.BuildProgressList(QiProgress.CurrentQIRound);
+			QiProgress.BuildProgressList(QiProgress.CurrentQISeason);
 		});
 	},
 
@@ -339,7 +348,7 @@ let QiProgress = {
     BuildPlayerDetailContent: async (d) => {
 		let player_id = d.player_id ? d.player_id : null,
 			content = d.content ? d.content : 'player',
-			qiround = d.qiround ? d.qiround : QiProgress.CurrentQIRound,
+			qiround = d.qiround ? d.qiround : QiProgress.CurrentQISeason,
 			playerName = null,
 			dailyProgress = [],
 			detaildata = [],
@@ -519,7 +528,7 @@ let QiProgress = {
 				h.push(`<button class="btn btn-default btn-set-week last" data-week="${nextweek}"${nextweek === null ? ' disabled' : ''}>&gt;</button>`);
 			}
 
-			if (qiRound === QiProgress.CurrentQIRound) {
+			if (qiRound === QiProgress.CurrentQISeason) {
 				h.push(`<div id="qiLogFilter" style="float:right">`);
 				if (QiProgress.ProgressSettings.showProgressFilter === 1) {
 					h.push(`<button id="qi_filterProgressList" title="${HTML.i18nTooltip(i18n('Boxes.QiProgress.ProgressFilterDesc'))}" class="btn btn-default" disabled>&#8593;</button>`);
@@ -546,13 +555,13 @@ let QiProgress = {
 				QiProgress.HistoryView = true;
 				let week = parseInt($(this).val());
 
-				if (!QiProgress.AllRounds.includes(week) || week === QiProgress.CurrentqiRound) { return}
+				if (!QiProgress.AllRounds.includes(week) || week === QiProgress.CurrentQISeason) { return}
 
 				QiProgress.BuildPlayerContent(week);
 			});
 
 			$('button#qi_showLog').off('click').on('click', function () {
-				QiProgress.curDetailViewFilter = { content: 'filter', qiRound: QiProgress.CurrentqiRound };
+				QiProgress.curDetailViewFilter = { content: 'filter', qiRound: QiProgress.CurrentQISeason };
 				QiProgress.ShowPlayerDetailsBox(QiProgress.curDetailViewFilter)
 			});
 
@@ -600,7 +609,7 @@ let QiProgress = {
 			sumProgress += d[i].progressContribution || 0;
 
 			players.push({
-				qiround: QiProgress.CurrentQIRound,
+				qiround: QiProgress.CurrentQISeason,
 				rank: i * 1 + 1,
 				player_id: d[i].player.player_id,
 				name: d[i].player.name,
@@ -609,6 +618,7 @@ let QiProgress = {
 				progress: d[i].progressContribution || 0
 			});
 		}
+		console.log('history', { participation: players, actions: sumActions, progress: sumProgress })
 
 		await QiProgress.UpdateDB('history', { participation: players, actions: sumActions, progress: sumProgress });
 
@@ -620,7 +630,7 @@ let QiProgress = {
 		localStorage.setItem('QiProgress.NewActionTimestamp', QiProgress.NewActionTimestamp);
 
 		if ($('#QiProgress').length > 0) {
-			QiProgress.BuildProgressList(QiProgress.CurrentQIRound);
+			QiProgress.BuildProgressList(QiProgress.CurrentQISeason);
             console.log(1)
 		}
 		else {
@@ -637,7 +647,7 @@ let QiProgress = {
 	UpdateDB: async (content, data) => {
 		if (content === 'history') {
 			await QiProgress.db.history.put({ 
-                qiround: QiProgress.CurrentQIRound, 
+                qiround: QiProgress.CurrentQISeason, 
                 actions: data.actions, 
                 progress: data.progress 
             });
@@ -648,7 +658,7 @@ let QiProgress = {
 
 			let CurrentSnapshot = await QiProgress.db.snapshots
 				.where({
-					qiround: QiProgress.CurrentQIRound,
+					qiround: QiProgress.CurrentQISeason,
 					player_id: data.player_id
 				})
 				.first();
@@ -663,7 +673,7 @@ let QiProgress = {
 			}
 
 			await QiProgress.db.snapshots.add({
-				qiround: QiProgress.CurrentQIRound,
+				qiround: QiProgress.CurrentQISeason,
 				player_id: data.player_id,
 				name: data.name,
 				date: parseInt(moment.unix(data.time).format("YYYYMMDD")),
