@@ -22,7 +22,7 @@ FoEproxy.addHandler('HiddenRewardService', 'getOverview', (data, postData) => {
         HiddenRewards.FirstCycle = false;
         data.responseData.hiddenRewards.forEach(x=>{
             if (x.startTime && x.startTime>GameTime) 
-                setTimeout(HiddenRewards.RefreshGui, (GameTime-x.startTime+5)*1000)
+                setTimeout(HiddenRewards.RefreshGui, (x.startTime+5-GameTime)*1000)
         })
     }
 });
