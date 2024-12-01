@@ -687,6 +687,7 @@ let EventHandler = {
 				friday    : /Friday at (?<h>[012]?\d):(?<m>[0-5]?\d) (?<half>(a|p)m)/g,
 				saturday  : /Saturday at (?<h>[012]?\d):(?<m>[0-5]?\d) (?<half>(a|p)m)/g,
 				sunday    : /Sunday at (?<h>[012]?\d):(?<m>[0-5]?\d) (?<half>(a|p)m)/g,
+				date      : /on (?<d>.*?) at (?<h>[012]?\d):(?<m>[0-5]?\d) (?<half>(a|p)m)/g,
 			},
 			pt: {
 				today     : /hoje às (?<h>[012]?\d):(?<m>[0-5]?\d)( horas)?/g,
