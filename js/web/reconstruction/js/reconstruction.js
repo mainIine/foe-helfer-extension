@@ -113,7 +113,7 @@ let reconstruction = {
             "off_grid",
             "outpost_ship",
             "hub_main"].includes(meta.type)) return
-        let page = reconstruction.pageMapper[meta.type]||meta.type
+        let page = id[1]=="W"? "prod" : reconstruction.pageMapper[meta.type]||meta.type
         if (reconstruction.count[id]==0) { //remove from pages
             reconstruction.pages[page].splice(reconstruction.pages[page].findIndex(id),1)
         } else { //add to pages
