@@ -49,11 +49,13 @@ let Treasury = {
             });
         }
 
-        let LogArray = Logs['responseData']['logs'];
-        for (let i = 0; i < LogArray.length; i++) {
-            Treasury.Logs[Treasury.Logs.length] = LogArray[i];           
-        }
-        
+        let LogArray = Logs['responseData']['logs'].map(x=>{
+            let date = EventHandler.ParseDate(x.createdAt)
+            x.createdAt = date||x.createdAt
+            return x
+        });
+        Treasury.Logs = Treasury.Logs.concat(LogArray);           
+                
         Treasury.CalcBody();
     },
 
@@ -97,7 +99,7 @@ let Treasury = {
             CurrentLine.push(GoodsData[GoodID]['name'].replace(/;/g, ''));
             CurrentLine.push(CurrentLog['amount']);
             CurrentLine.push(CurrentLog['action'].replace(/;/g, ''));
-            CurrentLine.push(CurrentLog['createdAt'].replace(/;/g, ''));
+            CurrentLine.push(typeof CurrentLog['createdAt'] == "object" ? CurrentLog['createdAt'].toLocaleString().replace(/,/g,"") : CurrentLog['createdAt'].replace(/;/g, ''));
 
             h.push(CurrentLine.join(';'));
         }

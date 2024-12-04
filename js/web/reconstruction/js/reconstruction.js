@@ -34,7 +34,7 @@ FoEproxy.addHandler('CityReconstructionService', 'getDraft', (data, postData) =>
                             greatbuilding: [],
                         }
     for (let b of data.responseData) {
-        let id = MainParser.CityMapData[b.entityId].cityentity_id
+        let id = MainParser.CityMapData[b.entityId].cityentity_id + "#" + (MainParser.CityMapData[b.entityId].level||0)
         if (!reconstruction.count[id]) reconstruction.count[id] = {placed:0,stored:0}
         if (b.position) 
             reconstruction.count[id].placed++
@@ -57,7 +57,7 @@ FoEproxy.addHandler('InventoryService', 'getGreatBuildings', (data, postData) =>
 
 FoEproxy.addRequestHandler('CityReconstructionService', 'saveDraft', (data) => {
     for (let x of data.requestData[0]) {
-        let id = MainParser.CityMapData[x.entityId].cityentity_id
+        let id = MainParser.CityMapData[x.entityId].cityentity_id + "#" + (MainParser.CityMapData[x.entityId].level||0)
         let pagesUpdated=false
         if (x.position && !reconstruction.draft[x.entityId].position) {
             reconstruction.count[id].placed++
@@ -75,11 +75,11 @@ FoEproxy.addRequestHandler('CityReconstructionService', 'saveDraft', (data) => {
             }
         }
         reconstruction.draft[x.entityId] = x
-        $('.reconstructionLine[data-meta_id="'+id+'"] td:nth-child(2)').html("x"+reconstruction.count[id].stored)
+        $('.reconstructionLine[data-page_id="'+id+'"] td:nth-child(2)').html("x"+reconstruction.count[id].stored)
         if (reconstruction.count[id].stored > 0) 
-            $('.reconstructionLine[data-meta_id="'+id+'"]').show()
+            $('.reconstructionLine[data-page_id="'+id+'"]').show()
         else
-            $('.reconstructionLine[data-meta_id="'+id+'"]').hide()
+            $('.reconstructionLine[data-page_id="'+id+'"]').hide()
         if (pagesUpdated) reconstruction.updateTable()
     }
 });
@@ -105,7 +105,7 @@ let reconstruction = {
     rcIcons:null,
     roadIcons:null,        
     pageUpdate:(id)=>{
-        let meta = MainParser.CityEntities[id]
+        let meta = MainParser.CityEntities[id.split("#")[0]]
         if (["friends_tavern",
             "main_building",
             "impediment",
@@ -113,9 +113,9 @@ let reconstruction = {
             "off_grid",
             "outpost_ship",
             "hub_main"].includes(meta.type)) return
-        let page = reconstruction.pageMapper[meta.type]||meta.type
-        if (reconstruction.count[id]==0) { //remove from pages
-            reconstruction.pages[page].splice(reconstruction.pages[page].findIndex(id),1)
+        let page = id[0]=="W"? "prod" : reconstruction.pageMapper[meta.type]||meta.type
+        if (reconstruction.count[id].stored==0) { //remove from pages
+            reconstruction.pages[page].splice(reconstruction.pages[page].indexOf(id),1)
         } else { //add to pages
             reconstruction.pages[page].unshift(id)
         }
@@ -123,7 +123,7 @@ let reconstruction = {
     updateTable:()=>{
         for (let [page,list] of Object.entries(reconstruction.pages)) {
             for (let i = 0;i<list.length;i++) {
-                $('.reconstructionLine[data-meta_id="'+list[i]+'"] td:nth-child(3)').html(`<img src="${reconstruction.rcIcons[page]}">`+(Math.floor(i/4)+1))
+                $('.reconstructionLine[data-page_id="'+list[i]+'"] td:nth-child(3)').html(`<img src="${reconstruction.rcIcons[page]}">`+(Math.floor(i/4)+1))
             }
         }
     },
@@ -168,11 +168,11 @@ let reconstruction = {
                     </tr>
                 </thead><tbody class="reconstructionSizes">`
         for (let [id,b] of Object.entries(reconstruction.count)) {
-            let meta=MainParser.CityEntities[id]
+            let meta=MainParser.CityEntities[id.split("#")[0]]
             let width = meta.width||meta.components.AllAge.placement.size.x
             let length = meta.length||meta.components.AllAge.placement.size.y
             let road = meta?.components?.AllAge.streetConnectionRequirement?.requiredLevel || meta?.requirements?.street_connection_level || 0
-            h+=`<tr class="reconstructionLine helperTT" data-callback_tt="Tooltips.buildingTT" data-meta_id="${id}" ${b.stored==0 ? ' style="display:none"' : ""}>
+            h+=`<tr class="reconstructionLine helperTT" data-callback_tt="Tooltips.buildingTT" data-page_id="${id}" data-meta_id="${id.split("#")[0]}" ${b.stored==0 ? ' style="display:none"' : ""}>
                     <td data-text="${helper.str.cleanup(meta.name)}">${meta.name}</td>
                     <td>x${b.stored}</td>
                     <td></td>
