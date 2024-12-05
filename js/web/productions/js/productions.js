@@ -1792,8 +1792,9 @@ let Productions = {
 					if (desiredValuePerTile !== null && !isNaN(desiredValuePerTile)) {
 						let typeValue = Productions.getRatingValueForType(building, type) || 0 // production amount
 						let valuePerTile = typeValue / size
-
-						if (valuePerTile != 0 && desiredValuePerTile != 0) 
+						if (valuePerTile <0)
+							score += (valuePerTile * desiredValuePerTile)/1000000
+						else if (valuePerTile != 0 && desiredValuePerTile != 0) 
 							score += (valuePerTile / desiredValuePerTile)
 
 						ratedBuilding[type] = ( Math.round( typeValue * 100 ) / 100 ) || 0
