@@ -117,7 +117,7 @@ let srcLinks = {
         if (url.indexOf("antiquedealer_flag") > -1) 
             url = srcLinks.get(`/shared/icons/reward_icons/reward_icon_${icon}.png`,true, true)
         if (url.indexOf("antiquedealer_flag") > -1) 
-            url = srcLinks.get(`/city/buildings/${icon.replace(/(\D*?)_(.*)/,"$1_SS_$2")}.png`,true);
+            url = srcLinks.get(`/city/buildings/${icon?.replace(/(\D*?)_(.*)/,"$1_SS_$2")}.png`,true);
 
         return url;
     },
