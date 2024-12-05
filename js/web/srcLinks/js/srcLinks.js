@@ -110,14 +110,14 @@ let srcLinks = {
 
 
     getReward:(icon) => {
-        let url = srcLinks.get(`/shared/unit_portraits/armyuniticons_90x90/armyuniticons_90x90_${icon}.png`,true, true) // does not work :(
+        let url = srcLinks.get(`/shared/unit_portraits/armyuniticons_90x90/armyuniticons_90x90_${icon}.jpg`,true, true) // does not work :(
 
         if (url.indexOf("antiquedealer_flag") > -1) 
             url = srcLinks.get(`/shared/icons/goods_large/${icon}.png`,true, true)
         if (url.indexOf("antiquedealer_flag") > -1) 
             url = srcLinks.get(`/shared/icons/reward_icons/reward_icon_${icon}.png`,true, true)
         if (url.indexOf("antiquedealer_flag") > -1) 
-            url = srcLinks.get(`/city/buildings/${icon.replace(/(\D*?)_(.*)/,"$1_SS_$2")}.png`,true);
+            url = srcLinks.get(`/city/buildings/${icon?.replace(/(\D*?)_(.*)/,"$1_SS_$2")}.png`,true);
 
         return url;
     },
