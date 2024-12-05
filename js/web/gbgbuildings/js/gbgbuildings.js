@@ -218,8 +218,8 @@ let GBGBuildings = {
 		let lastCost = 10000;
 		let src = (b) => {
 			let link=""
-			if (GBGBuildings.oldGBG) link = srcLinks.get("/guild_battlegrounds/hud/guild_battlegrounds_sector_buildings_"+b+".png",true,true)
-			if (!GBGBuildings.oldGBG || link.includes("antiquedealer_flag")) link = srcLinks.get("/guild_battlegrounds/hud/guild_battlegrounds_sector_buildings_"+b+"_gbg2024.png",true)
+			if (!GBGBuildings.oldGBG) link = srcLinks.get("/guild_battlegrounds/hud/guild_battlegrounds_sector_buildings_"+b+"_gbg2024.png",true,true)
+			if (GBGBuildings.oldGBG || link.includes("antiquedealer_flag")) link = srcLinks.get("/guild_battlegrounds/hud/guild_battlegrounds_sector_buildings_"+b+".png",true)
 			return link
 		}
 		for (let s of sets) {
