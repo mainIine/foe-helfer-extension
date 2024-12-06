@@ -79,8 +79,6 @@ let _menu = {
 	 */
 	CallSelectedMenu: (selMenu = 'RightBar') => {
 
-		console.log(selMenu)
-		
 		window.onresize = (function(event){
 			if (event.target == window) _menu.OverflowCheck()
 		})
