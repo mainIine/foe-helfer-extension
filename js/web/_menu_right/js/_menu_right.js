@@ -96,7 +96,6 @@ let _menu_right = {
 
 		_menu.HudCount = Math.floor((($(window).outerHeight() - 25) - $('#foe-helper-hud').offset().top) / 48);
 		_menu.HudCount = Math.min(_menu.HudCount, MenuItemCount);
-		console.log(($(window).outerHeight() - 23))
 
 		if (_menu.HudCount <= 0) {
 			$('#foe-helper-hud').remove();
@@ -112,7 +111,6 @@ let _menu_right = {
 
 		_menu.HudHeight = (_menu.HudCount * 47);
 		_menu.SlideParts = Math.ceil(MenuItemCount / _menu.HudCount);
-		console.log(_menu.HudCount, MenuItemCount, _menu.HudHeight, _menu.SlideParts);
 
 		$('#foe-helper-hud').height(_menu.HudHeight + 2);
 		$('#foe-helper-hud-wrapper').height(_menu.HudHeight);
