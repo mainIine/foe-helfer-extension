@@ -1974,11 +1974,11 @@ let ProvinceMap = {
 				mapStuff.y = mapStuff.y - 20;
 				
 				if (sector.lockedUntil === undefined && sector.conquestProgress.length === 0) 
-					sector.drawTitleAndSlots(true, mapStuff.x, mapStuff.y);
+					sector.drawTitleAndSlots(mapType, true, mapStuff.x, mapStuff.y);
 				else {
 					if (mapType === 'waterfall_archipelago') 
 						mapStuff.y = mapStuff.y - 10;
-					sector.drawTitleAndSlots(false, mapStuff.x, mapStuff.y);
+					sector.drawTitleAndSlots(mapType, false, mapStuff.x, mapStuff.y);
 				}
 
 				mapStuff.y = mapStuff.y+23;
@@ -2001,17 +2001,30 @@ let ProvinceMap = {
 			ProvinceMap.MapCTX.fillText(provinceUnlockTime,mapStuff.x,mapStuff.y+5);
 		}
 
-		Province.prototype.drawTitleAndSlots = function(drawCentered = true, x, y) {
+		Province.prototype.drawTitleAndSlots = function(mapType, drawCentered = true, x, y) {
 			let titleY = y;
 			let slotsY = y - 20;
 			if (drawCentered) {
 				titleY = y + 10;
 				slotsY = y - 10;
 			}
-
-			ProvinceMap.MapCTX.font = 'bold 30px Arial';
 			ProvinceMap.MapCTX.strokeStyle = '#fff5';
+
+			ProvinceMap.MapCTX.beginPath();
+			if (mapType === 'waterfall_archipelago') 
+				ProvinceMap.MapCTX.arc(x-36, y+12, 5, 0, 2*Math.PI);
+			else
+				ProvinceMap.MapCTX.arc(x-36, y+25, 5, 0, 2*Math.PI);
+
+			ProvinceMap.MapCTX.fillStyle = '#f00';
+			if (this.battleType == 'blue')
+				ProvinceMap.MapCTX.fillStyle = '#00f';
+			ProvinceMap.MapCTX.fill();
+			ProvinceMap.MapCTX.stroke();
+
+			ProvinceMap.MapCTX.font = 'bold 28px Arial';
 			ProvinceMap.MapCTX.strokeText(this.short, x, titleY);
+
 			ProvinceMap.MapCTX.fillStyle = '#000';
 			ProvinceMap.MapCTX.fillText(this.short, x, titleY);
 			
@@ -2122,12 +2135,12 @@ let ProvinceMap = {
 				};
 
 				let prov = GuildFights.MapData['map']['provinces'][i.id];
+				data.battleType = prov.isAttackBattleType ? 'red' : 'blue';
 
 				if (prov['ownerId']) {
 					data.ownerID = prov['ownerId'];
 					data.ownerName = prov.owner;
 					data.isSpawnSpot = false;
-					data.battleType = prov.isAttackBattleType ? '🔴' : '🔵';
 					if (prov.isSpawnSpot) {
 						let clan = GuildFights.MapData['battlegroundParticipants'].find(c => c['participantId'] === prov['ownerId']);
 						data['flagImg'] = clan['clan']['flag'].toLowerCase();
