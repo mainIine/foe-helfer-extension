@@ -138,7 +138,7 @@ let QiProgress = {
 
 		if (qiRound && qiRound !== null && qiRound !== QiProgress.CurrentQISeason) {
 			let d = await QiProgress.db.history.where({ qiround: qiRound }).toArray();
-			QiProgress.qiRound = d[0].participation.sort(function (a, b) {
+			QiProgress.qiRound = d[0].participation?.sort(function (a, b) {
 				return a.rank - b.rank;
 			});
 			histView = true;
@@ -618,7 +618,6 @@ let QiProgress = {
 				progress: d[i].progressContribution || 0
 			});
 		}
-		console.log('history', { participation: players, actions: sumActions, progress: sumProgress })
 
 		await QiProgress.UpdateDB('history', { participation: players, actions: sumActions, progress: sumProgress });
 
@@ -649,7 +648,8 @@ let QiProgress = {
 			await QiProgress.db.history.put({ 
                 qiround: QiProgress.CurrentQISeason, 
                 actions: data.actions, 
-                progress: data.progress 
+                progress: data.progress,
+				participation: data.participation
             });
 		}
 
