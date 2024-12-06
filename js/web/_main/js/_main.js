@@ -417,7 +417,7 @@ GetFights = () =>{
 		MainParser.UpdateActiveMap('gex');
 	});
 
-	// gg is entered
+	// GBG is entered
 	FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postData) => {
 		MainParser.UpdateActiveMap('gg');
 	});

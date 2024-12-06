@@ -1177,7 +1177,7 @@ let GuildFights = {
 			// If sectors doesnt belong to anyone
 			if (mapdata[i]['ownerId'] === undefined && mapdata[i]['conquestProgress'].length > 0) {
 				progress.push(`<tr id="province-${id}" data-id="${id}" data-tab="progress">`);
-				progress.push(`<td><b><span class="province-color" style="background-color:#555"></span> ${mapdata[i]['title']}</b></td>`);
+				progress.push(`<td><b><span class="province-color" style="background-color:#555"></span> ${GuildFights.MapData['title']}</b></td>`);
 
 				if (GuildFights.showGuildColumn)
 					progress.push(`<td><em>${i18n('Boxes.GuildFights.NoOwner')}</em></td>`);
@@ -1257,12 +1257,17 @@ let GuildFights = {
 			if (showCountdowns) {
 				let countDownDate = moment.unix(prov[x]['lockedUntil'] - 2),
 					color = GuildFights.SortedColors.find(e => e['id'] === prov[x]['ownerId']),
+					battleType = prov[x].isAttackBattleType ? '🔴' : '🔵',
 					intervalID = setInterval(() => {
 						GuildFights.UpdateCounter(countDownDate, intervalID, prov[x]['id']);
 					}, 1000);
 
 				nextup.push(`<tr id="timer-${prov[x]['id']}" class="timer" data-tab="nextup" data-id=${prov[x]['id']}>`);
-				nextup.push(`<td class="prov-name" title="${i18n('Boxes.GuildFights.Owner')}: ${prov[x]['owner']}"><span class="province-color" ${color['main'] ? 'style="background-color:' + color['main'] + '"' : ''}"></span> <b>${prov[x]['title']}</b></td>`);
+				nextup.push(`<td class="prov-name" title="${i18n('Boxes.GuildFights.Owner')}: ${prov[x]['owner']} ${battleType}">`)
+				nextup.push(`<span class="province-color" ${color['main'] ? 'style="background-color:' + color['main'] + '"' : ''}"></span> `)
+				nextup.push(battleType)
+				nextup.push(` <b>${prov[x]['title']}</b> `)
+				nextup.push(`</td>`);
 
 				GuildFights.UpdateCounter(countDownDate, intervalID, prov[x]['id']);
 
@@ -1367,7 +1372,8 @@ let GuildFights = {
 
 		copycache.sort(function (a, b) { return a.lockedUntil - b.lockedUntil });
 		copycache.forEach((mapElem) => {
-			copy += `${moment.unix(mapElem.lockedUntil - 2).format('HH:mm')} ${mapElem.title}\n`;
+			let battleType = mapElem.isAttackBattleType ? '🔴' : '🔵';
+			copy += `${moment.unix(mapElem.lockedUntil - 2).format('HH:mm')} ${mapElem.title} ${battleType}\n`;
 		});
 
 		if (copy !== '')
@@ -1903,6 +1909,7 @@ let ProvinceMap = {
 			this.short = data.short;
 			this.links = data.links;
 			this.flag = data.flag;
+			this.battleType = data.battleType;
 			this.isSpawnSpot = data.isSpawnSpot;
 			this.owner = {
 				id: data.ownerID,
@@ -2120,6 +2127,7 @@ let ProvinceMap = {
 					data.ownerID = prov['ownerId'];
 					data.ownerName = prov.owner;
 					data.isSpawnSpot = false;
+					data.battleType = prov.isAttackBattleType ? '🔴' : '🔵';
 					if (prov.isSpawnSpot) {
 						let clan = GuildFights.MapData['battlegroundParticipants'].find(c => c['participantId'] === prov['ownerId']);
 						data['flagImg'] = clan['clan']['flag'].toLowerCase();
