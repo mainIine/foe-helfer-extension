@@ -814,13 +814,13 @@ GetFights = () =>{
 		GameTimeOffset = data.responseData.time * 1000 - new Date().getTime();
 		GameTime = data.responseData.time;
 		if (MainMenuLoaded) return;
+
 	
 		MainMenuLoaded = true;
 		await StartUpDone;	
 		let MenuSetting = localStorage.getItem('SelectedMenu');
-		MenuSetting = MenuSetting || 'BottomBar';
-		MainParser.SelectedMenu = MenuSetting;
-		_menu.CallSelectedMenu(MenuSetting);
+		MainParser.SelectedMenu = MenuSetting || 'RightBar';
+		_menu.CallSelectedMenu(MainParser.SelectedMenu);
 		
 		MainParser.setLanguage();
 
@@ -916,7 +916,7 @@ let MainParser = {
 	savedFight: null,
 	DebugMode: false,
 	Language: 'en',
-	SelectedMenu: 'BottomBar',
+	SelectedMenu: 'RightBar',
 	i18n: null,
 	BonusService: null,
 	Boosts: {},

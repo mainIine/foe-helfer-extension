@@ -855,7 +855,7 @@ let HTML = {
 			icon: d['type'],
 			hideAfter: d['hideAfter'],
 			position: Settings.GetSetting('NotificationsPosition', true),
-			extraClass: localStorage.getItem('SelectedMenu') || 'bottombar',
+			extraClass: localStorage.getItem('SelectedMenu') || 'RightBar',
 			stack: localStorage.getItem('NotificationStack') || 4
 		});
 	},
