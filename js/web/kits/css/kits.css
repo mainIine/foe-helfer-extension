@@ -86,10 +86,7 @@
 #kits h2 {
 	background: linear-gradient(to bottom, var(--text-darker), #281207cc);
 	padding: 5px;
-	position: sticky;
-	top: 0;
 	width: 100%;
-	z-index: 500;
 	box-sizing: border-box;
 }
 

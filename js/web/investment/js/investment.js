@@ -166,7 +166,7 @@ let Investment = {
 		// Table for history
 
 		h.push('<table id="InvestmentTable" class="foe-table">');
-		h.push('<thead>' +
+		h.push('<thead class="sticky">' +
 			'<tr class="sorter-header">' +
 			'<th class="case-sensitive" data-type="invest-group">' + i18n('Boxes.Investment.Overview.Player') + '</th>' +
 			'<th class="case-sensitive" data-type="invest-group">' + i18n('Boxes.Investment.Overview.Building') + '</th>' +

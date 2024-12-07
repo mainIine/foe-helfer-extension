@@ -327,12 +327,12 @@ let betterMusic = {
         htmltext += `</div>`;
         htmltext += `</div>`;
 
-        htmltext += `<table id="musicSettingsScenesX" class="foe-table"><caption style="font-weight: bold; font-size: initial; padding-top: 10px;">${i18n('Boxes.BetterMusic.Scenes')}</caption><tr><th>${i18n('Boxes.BetterMusic.TitleName')}</th>`;
+        htmltext += `<table id="musicSettingsScenesX" class="foe-table"><caption style="font-weight: bold; font-size: initial; padding-top: 10px;">${i18n('Boxes.BetterMusic.Scenes')}</caption><thead class="sticky">><tr><th>${i18n('Boxes.BetterMusic.TitleName')}</th>`;
         
         for (let scene in betterMusic.Scenes) {
             htmltext += `<th><span>${betterMusic.Scenes[scene].Name}</span></th>`;
         }
-        htmltext += `</tr>`;
+        htmltext += `</tr></thead>`;
         
         for (let title in betterMusic.PossibleTracks) {
             htmltext += `<tr><td class="betterMusicTitle" onclick="betterMusic.switchTrack('${title}', 0)" onmouseout="betterMusic.pause(event)">${betterMusic.PossibleTracks[title].Name}</td>`;

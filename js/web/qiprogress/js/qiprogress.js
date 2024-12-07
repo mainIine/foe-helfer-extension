@@ -215,7 +215,7 @@ let QiProgress = {
 		}
 
 		t.push('<table id="QiProgressTable" class="foe-table' + (histView === false ? ' chevron-right exportable' : '') + '">');
-		t.push('<thead>');
+		t.push('<thead class="sticky">');
 		t.push('<tr>');
 		t.push('<th style="display:none" data-export="Player_ID"></th>');
 		t.push('<th colspan="3" data-export3="Player">' + i18n('General.Player') + '</th>');

@@ -249,7 +249,7 @@ let BlueGalaxy = {
 
         table.push('<table id="BGTable" class="foe-table">');
 
-        table.push('<thead>' +
+        table.push('<thead class="sticky">' +
             '<tr class="sorter-header">' +
             '<th class="no-sort"></th>'+
             '<th class="no-sort" data-type="bg-group">' + i18n('Boxes.BlueGalaxy.Building') + '</th>' +

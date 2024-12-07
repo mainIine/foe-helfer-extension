@@ -157,7 +157,7 @@ let reconstruction = {
         }           
         
         h =`<table class="sortable-table foe-table">
-                <thead>
+                <thead class="sticky">
                     <tr class="sorter-header">
                         <th data-type="reconstructionSizes">${i18n('Boxes.CityMap.Building')}</th>
                         <th class="no-sort">#</th>

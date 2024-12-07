@@ -187,7 +187,7 @@ let Market = {
         // Filters
         h.push('<div class="dark-bg" style="margin-bottom: 3px;">');
         h.push('<table class="filters">');
-        h.push('<thead>');
+        h.push('<thead class="sticky">');
         h.push('<tr>');
         h.push('<th colspan="2"></td>');
         h.push('<th class="text-left">' + i18n('Boxes.Market.TradePartner') + '</th>');
@@ -312,7 +312,7 @@ let Market = {
         // Table
         h.push('<table class="foe-table exportable">');
 
-        h.push('<thead>');
+        h.push('<thead class="sticky">');
         h.push('<tr>');
         h.push('<th data-export2="Offered goods" data-export3="Offered amount" colspan="3">' + i18n('Boxes.Market.OfferColumn') + '</th>');
         h.push('<th data-export2="Requested goods" data-export3="Requested amount" colspan="3">' + i18n('Boxes.Market.NeedColumn') + '</th>');

@@ -26,10 +26,6 @@
     text-align: justify;
 }
 
-#RecurringQuestsBoxBody thead {
-    position: sticky;
-    top:0;
-}
 #RecurringQuestsBoxBody th:last-child,
 #RecurringQuestsBoxBody td:last-child {
         text-align: center;

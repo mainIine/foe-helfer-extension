@@ -16,11 +16,6 @@
     border-radius: 2px;
 }
 
-#QiProgressTable thead {
-    position: sticky;
-    top: 0;
-}
-
 #QiProgressTable .tdmin {
     width: 1%;
     white-space: nowrap;

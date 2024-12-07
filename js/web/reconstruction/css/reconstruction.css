@@ -30,12 +30,6 @@
   min-width: 50px;
 }
 
-#ReconstructionListBody .sorter-header {
-    position: sticky;
-    top: 0px;
-    z-index: 1;
-}
-
 #ReconstructionListBody tr.sorter-header th:last-child:before, 
 #ReconstructionListBody tr.sorter-header th:last-child:after {
   left: 5px;

@@ -166,7 +166,7 @@ let CompareFriendsThreads = {
 
 		t.push('<table id="friendsCompareTable" class="foe-table sortable-table">');
 
-		t.push('<tbody>');
+		t.push('<thead class="sticky">');
 		t.push('<tr>');
 
 		t.push('<th>&nbsp;</th>');
@@ -182,6 +182,8 @@ let CompareFriendsThreads = {
 		}
 
 		t.push('</tr>');
+		t.push('</thead>');
+		t.push('<tbody>');
 
 		let PlayerList = Object.values(PlayerDict).filter(obj => (obj['IsFriend'] === true));
 

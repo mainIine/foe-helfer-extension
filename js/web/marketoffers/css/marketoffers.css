@@ -25,10 +25,7 @@
 }
 
 #MarketOffers #MarketOffersBody table th {
-    position: sticky;
-    top: 0;
     cursor: pointer;
-    z-index: 1;
     font-size: 85%;
 }
 
@@ -92,10 +89,7 @@
 }
 
 #MarketOffersEvents #MarketOffersEventsBody table th {
-    position: sticky;
-    top: 0;
     cursor: pointer;
-    z-index: 1;
     font-size: 85%;
 }
 

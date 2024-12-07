@@ -358,11 +358,6 @@
 	color: var(--text-success);
 }
 
-#PowerLevelingBox table.foe-table th {
-	position: sticky;
-	top: 0;
-}
-
 #PowerLevelingBox .hidden-text {
 	opacity: 0;
 	display: inline-block;
