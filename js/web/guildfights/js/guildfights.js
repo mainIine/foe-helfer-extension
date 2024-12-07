@@ -1874,6 +1874,7 @@ let ProvinceMap = {
 
 		ProvinceMap.Map = document.createElement("canvas");
 		ProvinceMap.MapCTX = ProvinceMap.Map.getContext('2d');
+		ProvinceMap.view = "battleType";
 
 		$(ProvinceMap.Map).attr({
 			id: 'province-map',
@@ -1886,12 +1887,16 @@ let ProvinceMap = {
 			id: 'province-map-wrap',
 		});
 		$(wrapper).html(ProvinceMap.Map);
-		$('#ProvinceMapBody').html(wrapper).append('<span id="zoomGBGMap" class="btn-default">'+i18n('Boxes.GvGMap.Action.Zoom')+'</span>');
+		$('#ProvinceMapBody').html(wrapper).append('<span id="zoomGBGMap" class="btn-default">'+i18n('Boxes.GvGMap.Action.Zoom')+'</span><span id="switchGBGMap" class="btn-default">'+i18n('Boxes.GuildFights.Switch')+'</span>');
 		
 		ProvinceMap.mapDrag();
 
 		$('#zoomGBGMap').click(function (e) {
 			$('#province-map').toggleClass('zoomed');
+		});
+		$('#switchGBGMap').click(function (e) {
+			ProvinceMap.view = ProvinceMap.view == "battleType" ? "guildType" : "battleType";
+			ProvinceMap.BuildMap();
 		});
 
 		ProvinceMap.MapCTX.strokeStyle = ProvinceMap.StrokeColor;
@@ -1966,6 +1971,11 @@ let ProvinceMap = {
 			else {
 				ProvinceMap.MapCTX.fillStyle = sector.owner.colors.highlight;
 
+				if (ProvinceMap.view == "battleType" && sector.battleType == "red")
+					ProvinceMap.MapCTX.fillStyle = "#cf401e";
+				else if (ProvinceMap.view == "battleType" && sector.battleType == "blue")
+					ProvinceMap.MapCTX.fillStyle = "#4a98dd";
+
 				if (mapType === 'volcano_archipelago') 
 					sector.drawSectorShape();
 				else
@@ -2008,7 +2018,7 @@ let ProvinceMap = {
 				titleY = y + 10;
 				slotsY = y - 10;
 			}
-			ProvinceMap.MapCTX.strokeStyle = '#fff5';
+			ProvinceMap.MapCTX.strokeStyle = '#000';
 
 			ProvinceMap.MapCTX.beginPath();
 			if (mapType === 'waterfall_archipelago') 
@@ -2019,8 +2029,13 @@ let ProvinceMap = {
 			ProvinceMap.MapCTX.fillStyle = '#f00';
 			if (this.battleType == 'blue')
 				ProvinceMap.MapCTX.fillStyle = '#00f';
-			ProvinceMap.MapCTX.fill();
+
+			if (ProvinceMap.view == "battleType")
+				ProvinceMap.MapCTX.fillStyle = this.owner.colors.highlight;
 			ProvinceMap.MapCTX.stroke();
+			ProvinceMap.MapCTX.fill();
+
+			ProvinceMap.MapCTX.strokeStyle = '#fff5';
 
 			ProvinceMap.MapCTX.font = 'bold 28px Arial';
 			ProvinceMap.MapCTX.strokeText(this.short, x, titleY);
@@ -2036,6 +2051,7 @@ let ProvinceMap = {
 					slots = '··';
 				else if (this.totalBuildingSlots == 3)
 					slots = '···';
+	
 				ProvinceMap.MapCTX.strokeText(slots, x, slotsY);
 				ProvinceMap.MapCTX.fillText(slots, x, slotsY);
 			}
