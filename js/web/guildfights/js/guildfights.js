@@ -769,7 +769,7 @@ let GuildFights = {
 
 		t.push('<table id="GildPlayersTable" class="exportable foe-table' + (histView === false ? ' chevron-right' : '') + '">');
 
-		t.push('<thead>');
+		t.push('<thead class="sticky">');
 		t.push('<tr>');
 
 		t.push('<th style="display:none;" data-export="Player_ID"></th>');
@@ -890,7 +890,7 @@ let GuildFights = {
 
 			h.push('<div class="pname dark-bg text-center">' + playerName + ': ' + moment.unix(gbground).subtract(11, 'd').format(i18n('DateShort')) + ` - ` + moment.unix(gbground).format(i18n('Date')) + '</div>');
 			h.push('<p class="dark-bg" style="padding:5px;margin:0;">' + i18n('Boxes.GuildFights.SnapShotLogDisclaimer') + '</p>')
-			h.push('<table id="gbgPlayerLogTable" class="foe-table gbglog"><thead>');
+			h.push('<table id="gbgPlayerLogTable" class="foe-table gbglog"><thead class="sticky">');
 			h.push('<tr class="sorter-header">');
 			h.push('<th class="is-number" data-type="gbg-playerlog-group">' + i18n('Boxes.GuildFights.Date') + '</th>');
 			h.push('<th class="is-number text-center" data-type="gbg-playerlog-group"><span class="negotiation" title="' + HTML.i18nTooltip(i18n('Boxes.GuildFights.Negotiations')) + '"></span></th>');
@@ -921,7 +921,7 @@ let GuildFights = {
 
 			detaildata.sort(function (a, b) { return b.time - a.time });
 
-			h.push('<div class="datetimepicker"><button id="gbgLogDatepicker" class="btn btn-default">' + GuildFights.formatRange() + '</button></div>');
+			h.push('<div class="datetimepicker sticky"><button id="gbgLogDatepicker" class="btn btn-default">' + GuildFights.formatRange() + '</button></div>');
 			h.push('<table id="GuildFightsLogTable" class="foe-table gbglog"><thead>');
 			h.push('<tr class="sorter-header">');
 			h.push('<th class="is-number" data-type="gbg-log-group">' + i18n('Boxes.GuildFights.Date') + '</th>');

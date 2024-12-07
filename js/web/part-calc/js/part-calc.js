@@ -1532,7 +1532,7 @@ let Parts = {
 
 		h.push('<table class="foe-table">');
 
-		h.push('<thead>');
+		h.push('<thead class="sticky">');
 		h.push('<tr>');
 		h.push('<th>' + i18n('Boxes.PowerLeveling.Level') + '</th>');
 		h.push('<th>' + i18n('Boxes.PowerLeveling.P1') + '</th>');

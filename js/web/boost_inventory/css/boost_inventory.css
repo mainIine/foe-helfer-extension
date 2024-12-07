@@ -23,10 +23,7 @@
 	margin-left: 9px;
 }
 #BoostInventory thead {
-	position: sticky;
-	top: 0px;
 	font-weight: 600;
-	z-index: 100;
 }
 #BoostInventory td:nth-child(3), #BoostInventory th:nth-child(3) {
 	text-align: center;

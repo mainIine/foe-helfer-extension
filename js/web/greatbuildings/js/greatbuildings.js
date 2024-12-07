@@ -357,7 +357,7 @@ let GreatBuildings =
 
         h.push('<table class="foe-table">');
 
-        h.push('<thead>');
+        h.push('<thead class="sticky">');
         h.push('<tr>');
         h.push('<th>' + i18n('Boxes.GreatBuildings.GreatBulding') + '</th>');
         h.push('<th>' + i18n('Boxes.GreatBuildings.Level') + '</th>');

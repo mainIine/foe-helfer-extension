@@ -2103,6 +2103,16 @@ tr.sorter-header th:not(.no-sort).descending:after {
 	opacity: 1;
 }
 
+.sticky {
+	top: 0;
+	position: sticky;
+	z-index: 200;
+}
+
+.w-full {
+	width: 100%
+}
+
 .scrollup {
 	border-radius: 50%;
 	width: 30px;

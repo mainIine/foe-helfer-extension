@@ -968,7 +968,7 @@ let GuildMemberStat = {
 		h.push(`</ul></div>`);
 		h.push(`<div id="gmsContentWrapper">`);
 		h.push('<table id="GuildMemberTable" class="foe-table">');
-		h.push('<thead>' +
+		h.push('<thead class="sticky">' +
 			'<tr class="sorter-header">' +
 			`<th class="is-number" data-type="gms-group"></th>` +
 			`<th class="case-sensitive" data-type="gms-group">${i18n('Boxes.GuildMemberStat.Member')}</th>` +
@@ -1273,7 +1273,7 @@ let GuildMemberStat = {
 			// Create Inactivity Overview
 			if (Member['activity'] !== undefined)
 			{
-				d.push(`<div class="detail-item warnings"><div class="scrollable"><table><thead><tr><th>${i18n('Boxes.GuildMemberStat.Inactivity')}</th><th>${i18n('Boxes.GuildMemberStat.Date')}</th><th class="text-right"><span class="edit"></span></th></tr></thead><tbody class="copyable">`);
+				d.push(`<div class="detail-item warnings"><div class="scrollable"><table><thead class="sticky"><tr><th>${i18n('Boxes.GuildMemberStat.Inactivity')}</th><th>${i18n('Boxes.GuildMemberStat.Date')}</th><th class="text-right"><span class="edit"></span></th></tr></thead><tbody class="copyable">`);
 
 				let warnings = Member['activity'];
 
@@ -1305,7 +1305,7 @@ let GuildMemberStat = {
 			// Create GEX Overview
 			if (Member['gex'] !== undefined)
 			{
-				d.push(`<div class="detail-item gex"><div class="scrollable"><table><thead><tr><th><span class="gex"></span> ${i18n('Boxes.GuildMemberStat.GEXWeek')}</th><th>${i18n('Boxes.GuildMemberStat.Rank')}</th><th>${i18n('Boxes.GuildMemberStat.Points')}</th><th>${i18n('Boxes.GuildMemberStat.Level')}</th><th class="text-right"><span class="edit"></span></th></tr></thead><tbody>`);
+				d.push(`<div class="detail-item gex"><div class="scrollable"><table><thead class="sticky"><tr><th><span class="gex"></span> ${i18n('Boxes.GuildMemberStat.GEXWeek')}</th><th>${i18n('Boxes.GuildMemberStat.Rank')}</th><th>${i18n('Boxes.GuildMemberStat.Points')}</th><th>${i18n('Boxes.GuildMemberStat.Level')}</th><th class="text-right"><span class="edit"></span></th></tr></thead><tbody>`);
 				let gex = Member['gex'];
 				for (let i in gex)
 				{
@@ -1335,7 +1335,7 @@ let GuildMemberStat = {
 			// Create GBG Overview
 			if (Member['gbg'] !== undefined)
 			{
-				d.push(`<div class="detail-item gbg"><div class="scrollable"><table><thead><tr><th><span class="gbg"></span> ${i18n('Boxes.GuildMemberStat.GBFRound')}</th><th>${i18n('Boxes.GuildMemberStat.Rank')}</th><th>${i18n('Boxes.GuildMemberStat.Battles')}</th><th>${i18n('Boxes.GuildMemberStat.Negotiations')}</th><th class="text-right"><span class="edit"></span></th></tr></thead><tbody>`);
+				d.push(`<div class="detail-item gbg"><div class="scrollable"><table><thead class="sticky"><tr><th><span class="gbg"></span> ${i18n('Boxes.GuildMemberStat.GBFRound')}</th><th>${i18n('Boxes.GuildMemberStat.Rank')}</th><th>${i18n('Boxes.GuildMemberStat.Battles')}</th><th>${i18n('Boxes.GuildMemberStat.Negotiations')}</th><th class="text-right"><span class="edit"></span></th></tr></thead><tbody>`);
 
 				let gbg = Member['gbg'];
 
@@ -1376,7 +1376,7 @@ let GuildMemberStat = {
 				let totalGoods = 0;
 				let totalPower = 0;
 
-				d.push(`<div class="detail-item buildings"><table><thead class="${expand === true ? 'open ' : ''}hasdetail"><tr><th><span class="guildbuild"></span> ${i18n('Boxes.GuildMemberStat.GuildSupportBuildings')} (${i18n('Boxes.GuildMemberStat.LastUpdate') + ' ' + moment(guildbuildings.date).fromNow()})</th><th></th></tr></thead><tbody class="${expand !== true ? 'closed ' : ''}copyable">`);
+				d.push(`<div class="detail-item buildings"><table><thead class="sticky ${expand === true ? 'open ' : ''}hasdetail"><tr><th><span class="guildbuild"></span> ${i18n('Boxes.GuildMemberStat.GuildSupportBuildings')} (${i18n('Boxes.GuildMemberStat.LastUpdate') + ' ' + moment(guildbuildings.date).fromNow()})</th><th></th></tr></thead><tbody class="${expand !== true ? 'closed ' : ''}copyable">`);
 
 				// Group GuildGoods buildings by name and their era
 				let guildGoodsBuildings = guildbuildings['buildings'].filter(function (data) { return data.resources !== undefined }).reduce(function (res, obj) {
@@ -1413,7 +1413,7 @@ let GuildMemberStat = {
 
 				if (guildGoodsBuildings.length)
 				{
-					d.push(`<div class="detail-item guildgoods"><table class="copyable"><thead><tr><th colspan="3"><i>${i18n('Boxes.GuildMemberStat.GuildGoods')}</i></th></tr></thead><tbody>`);
+					d.push(`<div class="detail-item guildgoods"><table class="copyable"><thead class="sticky"><tr><th colspan="3"><i>${i18n('Boxes.GuildMemberStat.GuildGoods')}</i></th></tr></thead><tbody>`);
 
 					guildGoodsBuildings.forEach(plbuilding => {
 						let goodslist = '';
@@ -1452,7 +1452,7 @@ let GuildMemberStat = {
 
 				if (guildPowerBuildings.length)
 				{
-					d.push(`<div class="detail-item guildgoods"><table class="copyable"><thead><tr><th colspan="2"><i>${i18n('Boxes.GuildMemberStat.GuildPower')}</i></th></tr></thead><tbody>`);
+					d.push(`<div class="detail-item guildgoods"><table class="copyable"><thead class="sticky"><tr><th colspan="2"><i>${i18n('Boxes.GuildMemberStat.GuildPower')}</i></th></tr></thead><tbody>`);
 
 					guildPowerBuildings.forEach(plbuilding => {
 						let countBuilding = typeof plbuilding.count != 'undefined' ? plbuilding.count : 1;
@@ -1604,7 +1604,7 @@ let GuildMemberStat = {
 		if (EraGroup)
 		{
 			d.push(`<table id="GuildErasTable" class="foe-table">` +
-				`<thead><tr class="sorter-header">` +
+				`<thead class="sticky"><tr class="sorter-header">` +
 				`<th class="is-number" data-type="gms-era">#</th>` +
 				`<th class="case-sensitive" data-type="gms-era">${i18n('Boxes.GuildMemberStat.Eras')}</th>` +
 				`<th class="is-number text-center" data-type="gms-era">${i18n('Boxes.GuildMemberStat.GuildMembers')}</th>`);
@@ -1728,7 +1728,7 @@ let GuildMemberStat = {
 				let h = [];
 
 				h.push(`<tr class="detailview dark-bg"><td colspan="${e.find("td").length}"><div class="detail-wrapper"><div class="detail-item">` +
-					`<table><thead><tr><th>${i18n('Boxes.GuildMemberStat.Rank')}</th><th>${i18n('Boxes.GuildMemberStat.Member')}</th><th>${i18n('Boxes.GuildMemberStat.Eras')}</th><th class="text-right">${i18n('Boxes.GuildMemberStat.Points')}</th></tr></thead><tbody>`);
+					`<table><thead class="sticky"><tr><th>${i18n('Boxes.GuildMemberStat.Rank')}</th><th>${i18n('Boxes.GuildMemberStat.Member')}</th><th>${i18n('Boxes.GuildMemberStat.Eras')}</th><th class="text-right">${i18n('Boxes.GuildMemberStat.Points')}</th></tr></thead><tbody>`);
 
 				if (EraGroup[eraId].members !== undefined)
 				{
@@ -1747,7 +1747,7 @@ let GuildMemberStat = {
 				{
 					let EraTreasuryGoods = TreasuryGoodsData[EraGroup[eraId].era];
 
-					h.push(`<div class="detail-item"><table><thead><tr><th colspan="3">${i18n('Boxes.GuildMemberStat.EraTreasuryGoods')}</th></tr></thead><tbody>`);
+					h.push(`<div class="detail-item"><table><thead class="sticky"><tr><th colspan="3">${i18n('Boxes.GuildMemberStat.EraTreasuryGoods')}</th></tr></thead><tbody>`);
 					EraTreasuryGoods.forEach(good => {
 						h.push(`<tr><td class="goods-image"><span class="goods-sprite sprite-35 ${good.good}"></span></td><td>${good.name}</td><td class="text-right">${HTML.Format(good.value)}</td></tr>`);
 					});
@@ -1867,7 +1867,7 @@ let GuildMemberStat = {
 
 		if (guildGoodsBuildings.length)
 		{
-			d.push(`<div class="detail-item guildgoods"><table class="foe-table copyable"><thead><tr><th colspan="3"><i>${i18n('Boxes.GuildMemberStat.GuildGoods')}</i></th></tr></thead><tbody>`);
+			d.push(`<div class="detail-item guildgoods"><table class="foe-table copyable sticky"><thead><tr><th colspan="3"><i>${i18n('Boxes.GuildMemberStat.GuildGoods')}</i></th></tr></thead><tbody>`);
 
 			guildGoodsBuildings.forEach(plbuilding => {
 				let countBuilding = typeof plbuilding.count != 'undefined' ? plbuilding.count : 1;
@@ -1882,7 +1882,7 @@ let GuildMemberStat = {
 
 		if (guildPowerBuildings.length)
 		{
-			d.push(`<div class="detail-item guildgoods"><table class="foe-table copyable"><thead><tr><th colspan="3"><i>${i18n('Boxes.GuildMemberStat.GuildPower')}</i></th></tr></thead><tbody>`);
+			d.push(`<div class="detail-item guildgoods"><table class="foe-table copyable sticky"><thead><tr><th colspan="3"><i>${i18n('Boxes.GuildMemberStat.GuildPower')}</i></th></tr></thead><tbody>`);
 
 			guildPowerBuildings.forEach(plbuilding => {
 				let countBuilding = typeof plbuilding.count != 'undefined' ? plbuilding.count : 1;
@@ -1898,7 +1898,7 @@ let GuildMemberStat = {
 		d.push(`</div>`);
 
 		d.push(`<div class="detail-wrapper buildinglist detail hide">`);
-		d.push(`<div class="detail-item guildbuildings"><table id="guildbuildingslist" class="foe-table"><thead><tr class="sorter-header">` +
+		d.push(`<div class="detail-item guildbuildings"><table id="guildbuildingslist" class="foe-table"><thead class="sticky"><tr class="sorter-header">` +
 			`<th class="is-number" data-type="gms-gbl">#</th>` +
 			`<th class="case-sensitive" data-type="gms-gbl">${i18n('Boxes.GuildMemberStat.GuildBuildings')}</th>` +
 			`<th class="is-number text-center" data-type="gms-gbl">${i18n('Boxes.GuildMemberStat.Level')}</th>` +
@@ -2003,7 +2003,7 @@ let GuildMemberStat = {
 			return;
 		}
 
-		d.push(`<table id="TreasuryGoodsTable" class="foe-table"><thead><tr><th>${i18n('Boxes.GuildMemberStat.Eras')}</th><th> ${i18n('Boxes.GuildMemberStat.ProducedTreasuryGoods')}</th><th> ${i18n('Boxes.GuildMemberStat.TreasuryGoods')}</th></thead><tbody>`);
+		d.push(`<table id="TreasuryGoodsTable" class="foe-table"><thead class="sticky"><tr><th>${i18n('Boxes.GuildMemberStat.Eras')}</th><th> ${i18n('Boxes.GuildMemberStat.ProducedTreasuryGoods')}</th><th> ${i18n('Boxes.GuildMemberStat.TreasuryGoods')}</th></thead><tbody>`);
 
 		ExportContent.push(['eraID', 'era', 'good', 'produceable', 'instock']);
 
@@ -2201,7 +2201,7 @@ let GuildMemberStat = {
 		});
 
 		d.push(`<div class="detail-wrapper greatbuildinglist grouped show">`);
-		d.push(`<table id="gblist" class="foe-table"><thead><tr class="sorter-header">` +
+		d.push(`<table id="gblist" class="foe-table"><thead class="sticky"><tr class="sorter-header">` +
 			`<th class="case-sensitive" data-type="gms-greatbl">${i18n('Boxes.GuildMemberStat.GreatBuildings')}</th>` +
 			`<th class="is-number text-center" data-type="gms-greatbl">${i18n('Boxes.GuildMemberStat.Available')}</th>` +
 			`<th class="is-number text-center" data-type="gms-greatbl">${i18n('Boxes.GuildMemberStat.MinLevel')}</th>` +
@@ -2223,7 +2223,7 @@ let GuildMemberStat = {
 		d.push(`</div>`);
 
 		d.push(`<div class="detail-wrapper greatbuildinglist detail hide">`);
-		d.push(`<table id="gblist_detail" class="foe-table"><thead><tr class="sorter-header">` +
+		d.push(`<table id="gblist_detail" class="foe-table"><thead class="sticky"><tr class="sorter-header">` +
 			`<th class="case-sensitive" data-type="gms-greatbl-detail">${i18n('Boxes.GuildMemberStat.GreatBuildings')}</th>` +
 			`<th class="case-sensitive" data-type="gms-greatbl-detail">${i18n('Boxes.GuildMemberStat.Member')}</th>` +
 			`<th class="is-number text-center" data-type="gms-greatbl-detail">${i18n('Boxes.GuildMemberStat.Level')}</th>` +
@@ -2314,7 +2314,7 @@ let GuildMemberStat = {
 					let NoGbMember = GBOverview[id]['NoGbMember'];
 
 					d.push(`<div class="detail-item gb_player"><div>` +
-						`<table id="gb_detail_${id}" class="foe-table sortable-table"><thead><tr class="sorter-header subsort">` +
+						`<table id="gb_detail_${id}" class="foe-table sortable-table"><thead class="sticky"><tr class="sorter-header subsort">` +
 						`<th class="case-sensitive" data-type="gms-dgb${id}">${i18n('Boxes.GuildMemberStat.Member')}</th>` +
 						`<th class="is-number text-center" data-type="gms-dgb${id}">${i18n('Boxes.GuildMemberStat.Level')}</th>` +
 						`<th class="is-number text-center" data-type="gms-dgb${id}">${i18n('Boxes.GuildMemberStat.UnlockedLevel')}</th>` +

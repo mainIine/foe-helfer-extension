@@ -44,10 +44,7 @@
 }
 
 #InvestmentBody table th {
-	position: sticky;
-	top: 0;
 	cursor: pointer;
-	z-index: 1;
 }
 
 #InvestmentBody table tr.new td {
