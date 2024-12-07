@@ -45,8 +45,6 @@
 
 #GildPlayersBody tr th,
 #GildPlayersDetailViewBody tr th {
-	position: sticky;
-	top: 0;
 	background-color: rgba(0, 0, 0, 0.45);
 	line-height: 25px;
 
@@ -167,17 +165,10 @@
 	padding: 0;
 }
 
-
 #GildPlayersDetailViewBody .datetimepicker {
 	padding: 2px 0 0 2px;
 	background-color: rgba(0, 0, 0, 0.45);
 	height: 28px;
-	position: sticky;
-	top: 0;
-}
-
-#GildPlayersDetailViewBody .gbglog th {
-	top: 30px;
 }
 
 #GildPlayersDetailViewBody .sorter-header th {
@@ -391,7 +382,7 @@
 
 #LiveGildFightingBody #progress tr td:first-child,
 #LiveGildFightingBody #nextup tr td:first-child {
-	width: 60px;
+	width: 69px;
 }
 
 #LiveGildFightingBody table.foe-table tr.highlight-row {
@@ -503,4 +494,10 @@
 	position: absolute;
 	top: 40px;
 	left: 3px;
+}
+
+#ProvinceMap #switchGBGMap {
+	position: absolute;
+	top: 40px;
+	right: 3px;
 }

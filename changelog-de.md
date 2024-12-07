@@ -15,6 +15,8 @@
 	- Gebäude-Tooltips hinzugefügt
 	- Ergebnisseite wird nun zuerst angezeigt
 	- Itemliste versteckt
+- Menü: Von unten nach rechts verschoben, weil die möglichen Einstellungen gerne übersehen werden
+- Gefechte: Symbole für blauen/roten Angriff in die Liste hinzugefügt
 
 **BugFix**
 - Tooltip: 

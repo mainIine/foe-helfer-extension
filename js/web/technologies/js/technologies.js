@@ -366,7 +366,7 @@ let Technologies = {
 
         h.push('<table class="foe-table exportable">');
 
-        h.push('<thead>' +
+        h.push('<thead class="sticky">' +
             '<tr>' +
             '<th colspan="2" data-export2="resource">' + i18n('Boxes.Technologies.Resource') + '</th>' +
             '<th data-export="required">' + i18n('Boxes.Technologies.DescRequired') + '</th>' +

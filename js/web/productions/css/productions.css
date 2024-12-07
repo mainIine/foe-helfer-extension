@@ -57,8 +57,6 @@
 	background-color: #3f2a1b;
 	color: var(--text-bright);
 	padding-top: 15px;
-	position: sticky;
-	top: 0;
 }
 #Productions #ProductionsBody table tr.highlight-row {
 	background-color: rgba(40, 18, 7, 0.8);
@@ -72,8 +70,6 @@
 	line-height: 18px;
 }
 #Productions #ProductionsBody table thead {
-	position: sticky;
-	top: 0;
 	background-color: rgba(0, 0, 0, 0.35);
 }
 #Productions #ProductionsBody table thead th small {
@@ -489,10 +485,7 @@ input[id*="ProdPerTile"] {
 }
 #ProductionsRating #ProductionsRatingBody table thead {
 	font-size: 85%;
-	position: sticky;
-	top: 0;
 	cursor: pointer;
-	z-index: 1;
 }
 #ProductionsRating #ProductionsRatingBody table td {
 	font-size: 85%;

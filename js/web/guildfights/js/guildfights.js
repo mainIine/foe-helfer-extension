@@ -769,7 +769,7 @@ let GuildFights = {
 
 		t.push('<table id="GildPlayersTable" class="exportable foe-table' + (histView === false ? ' chevron-right' : '') + '">');
 
-		t.push('<thead>');
+		t.push('<thead class="sticky">');
 		t.push('<tr>');
 
 		t.push('<th style="display:none;" data-export="Player_ID"></th>');
@@ -890,7 +890,7 @@ let GuildFights = {
 
 			h.push('<div class="pname dark-bg text-center">' + playerName + ': ' + moment.unix(gbground).subtract(11, 'd').format(i18n('DateShort')) + ` - ` + moment.unix(gbground).format(i18n('Date')) + '</div>');
 			h.push('<p class="dark-bg" style="padding:5px;margin:0;">' + i18n('Boxes.GuildFights.SnapShotLogDisclaimer') + '</p>')
-			h.push('<table id="gbgPlayerLogTable" class="foe-table gbglog"><thead>');
+			h.push('<table id="gbgPlayerLogTable" class="foe-table gbglog"><thead class="sticky">');
 			h.push('<tr class="sorter-header">');
 			h.push('<th class="is-number" data-type="gbg-playerlog-group">' + i18n('Boxes.GuildFights.Date') + '</th>');
 			h.push('<th class="is-number text-center" data-type="gbg-playerlog-group"><span class="negotiation" title="' + HTML.i18nTooltip(i18n('Boxes.GuildFights.Negotiations')) + '"></span></th>');
@@ -921,7 +921,7 @@ let GuildFights = {
 
 			detaildata.sort(function (a, b) { return b.time - a.time });
 
-			h.push('<div class="datetimepicker"><button id="gbgLogDatepicker" class="btn btn-default">' + GuildFights.formatRange() + '</button></div>');
+			h.push('<div class="datetimepicker sticky"><button id="gbgLogDatepicker" class="btn btn-default">' + GuildFights.formatRange() + '</button></div>');
 			h.push('<table id="GuildFightsLogTable" class="foe-table gbglog"><thead>');
 			h.push('<tr class="sorter-header">');
 			h.push('<th class="is-number" data-type="gbg-log-group">' + i18n('Boxes.GuildFights.Date') + '</th>');
@@ -1177,7 +1177,7 @@ let GuildFights = {
 			// If sectors doesnt belong to anyone
 			if (mapdata[i]['ownerId'] === undefined && mapdata[i]['conquestProgress'].length > 0) {
 				progress.push(`<tr id="province-${id}" data-id="${id}" data-tab="progress">`);
-				progress.push(`<td><b><span class="province-color" style="background-color:#555"></span> ${mapdata[i]['title']}</b></td>`);
+				progress.push(`<td><b><span class="province-color" style="background-color:#555"></span> ${GuildFights.MapData['title']}</b></td>`);
 
 				if (GuildFights.showGuildColumn)
 					progress.push(`<td><em>${i18n('Boxes.GuildFights.NoOwner')}</em></td>`);
@@ -1257,12 +1257,17 @@ let GuildFights = {
 			if (showCountdowns) {
 				let countDownDate = moment.unix(prov[x]['lockedUntil'] - 2),
 					color = GuildFights.SortedColors.find(e => e['id'] === prov[x]['ownerId']),
+					battleType = prov[x].isAttackBattleType ? '🔴' : '🔵',
 					intervalID = setInterval(() => {
 						GuildFights.UpdateCounter(countDownDate, intervalID, prov[x]['id']);
 					}, 1000);
 
 				nextup.push(`<tr id="timer-${prov[x]['id']}" class="timer" data-tab="nextup" data-id=${prov[x]['id']}>`);
-				nextup.push(`<td class="prov-name" title="${i18n('Boxes.GuildFights.Owner')}: ${prov[x]['owner']}"><span class="province-color" ${color['main'] ? 'style="background-color:' + color['main'] + '"' : ''}"></span> <b>${prov[x]['title']}</b></td>`);
+				nextup.push(`<td class="prov-name" title="${i18n('Boxes.GuildFights.Owner')}: ${prov[x]['owner']} ${battleType}">`)
+				nextup.push(`<span class="province-color" ${color['main'] ? 'style="background-color:' + color['main'] + '"' : ''}"></span> `)
+				nextup.push(battleType)
+				nextup.push(` <b>${prov[x]['title']}</b> `)
+				nextup.push(`</td>`);
 
 				GuildFights.UpdateCounter(countDownDate, intervalID, prov[x]['id']);
 
@@ -1367,7 +1372,8 @@ let GuildFights = {
 
 		copycache.sort(function (a, b) { return a.lockedUntil - b.lockedUntil });
 		copycache.forEach((mapElem) => {
-			copy += `${moment.unix(mapElem.lockedUntil - 2).format('HH:mm')} ${mapElem.title}\n`;
+			let battleType = mapElem.isAttackBattleType ? '🔴' : '🔵';
+			copy += `${moment.unix(mapElem.lockedUntil - 2).format('HH:mm')} ${mapElem.title} ${battleType}\n`;
 		});
 
 		if (copy !== '')
@@ -1868,6 +1874,7 @@ let ProvinceMap = {
 
 		ProvinceMap.Map = document.createElement("canvas");
 		ProvinceMap.MapCTX = ProvinceMap.Map.getContext('2d');
+		ProvinceMap.view = "battleType";
 
 		$(ProvinceMap.Map).attr({
 			id: 'province-map',
@@ -1880,12 +1887,16 @@ let ProvinceMap = {
 			id: 'province-map-wrap',
 		});
 		$(wrapper).html(ProvinceMap.Map);
-		$('#ProvinceMapBody').html(wrapper).append('<span id="zoomGBGMap" class="btn-default">'+i18n('Boxes.GvGMap.Action.Zoom')+'</span>');
+		$('#ProvinceMapBody').html(wrapper).append('<span id="zoomGBGMap" class="btn-default">'+i18n('Boxes.GvGMap.Action.Zoom')+'</span><span id="switchGBGMap" class="btn-default">'+i18n('Boxes.GuildFights.Switch')+'</span>');
 		
 		ProvinceMap.mapDrag();
 
 		$('#zoomGBGMap').click(function (e) {
 			$('#province-map').toggleClass('zoomed');
+		});
+		$('#switchGBGMap').click(function (e) {
+			ProvinceMap.view = ProvinceMap.view == "battleType" ? "guildType" : "battleType";
+			ProvinceMap.BuildMap();
 		});
 
 		ProvinceMap.MapCTX.strokeStyle = ProvinceMap.StrokeColor;
@@ -1903,6 +1914,7 @@ let ProvinceMap = {
 			this.short = data.short;
 			this.links = data.links;
 			this.flag = data.flag;
+			this.battleType = data.battleType;
 			this.isSpawnSpot = data.isSpawnSpot;
 			this.owner = {
 				id: data.ownerID,
@@ -1959,6 +1971,11 @@ let ProvinceMap = {
 			else {
 				ProvinceMap.MapCTX.fillStyle = sector.owner.colors.highlight;
 
+				if (ProvinceMap.view == "battleType" && sector.battleType == "red")
+					ProvinceMap.MapCTX.fillStyle = "#cf401e";
+				else if (ProvinceMap.view == "battleType" && sector.battleType == "blue")
+					ProvinceMap.MapCTX.fillStyle = "#4a98dd";
+
 				if (mapType === 'volcano_archipelago') 
 					sector.drawSectorShape();
 				else
@@ -1967,11 +1984,11 @@ let ProvinceMap = {
 				mapStuff.y = mapStuff.y - 20;
 				
 				if (sector.lockedUntil === undefined && sector.conquestProgress.length === 0) 
-					sector.drawTitleAndSlots(true, mapStuff.x, mapStuff.y);
+					sector.drawTitleAndSlots(mapType, true, mapStuff.x, mapStuff.y);
 				else {
 					if (mapType === 'waterfall_archipelago') 
 						mapStuff.y = mapStuff.y - 10;
-					sector.drawTitleAndSlots(false, mapStuff.x, mapStuff.y);
+					sector.drawTitleAndSlots(mapType, false, mapStuff.x, mapStuff.y);
 				}
 
 				mapStuff.y = mapStuff.y+23;
@@ -1994,17 +2011,35 @@ let ProvinceMap = {
 			ProvinceMap.MapCTX.fillText(provinceUnlockTime,mapStuff.x,mapStuff.y+5);
 		}
 
-		Province.prototype.drawTitleAndSlots = function(drawCentered = true, x, y) {
+		Province.prototype.drawTitleAndSlots = function(mapType, drawCentered = true, x, y) {
 			let titleY = y;
 			let slotsY = y - 20;
 			if (drawCentered) {
 				titleY = y + 10;
 				slotsY = y - 10;
 			}
+			ProvinceMap.MapCTX.strokeStyle = '#000';
 
-			ProvinceMap.MapCTX.font = 'bold 30px Arial';
+			ProvinceMap.MapCTX.beginPath();
+			if (mapType === 'waterfall_archipelago') 
+				ProvinceMap.MapCTX.arc(x-36, y+12, 5, 0, 2*Math.PI);
+			else
+				ProvinceMap.MapCTX.arc(x-36, y+25, 5, 0, 2*Math.PI);
+
+			ProvinceMap.MapCTX.fillStyle = '#f00';
+			if (this.battleType == 'blue')
+				ProvinceMap.MapCTX.fillStyle = '#00f';
+
+			if (ProvinceMap.view == "battleType")
+				ProvinceMap.MapCTX.fillStyle = this.owner.colors.highlight;
+			ProvinceMap.MapCTX.stroke();
+			ProvinceMap.MapCTX.fill();
+
 			ProvinceMap.MapCTX.strokeStyle = '#fff5';
+
+			ProvinceMap.MapCTX.font = 'bold 28px Arial';
 			ProvinceMap.MapCTX.strokeText(this.short, x, titleY);
+
 			ProvinceMap.MapCTX.fillStyle = '#000';
 			ProvinceMap.MapCTX.fillText(this.short, x, titleY);
 			
@@ -2016,6 +2051,7 @@ let ProvinceMap = {
 					slots = '··';
 				else if (this.totalBuildingSlots == 3)
 					slots = '···';
+	
 				ProvinceMap.MapCTX.strokeText(slots, x, slotsY);
 				ProvinceMap.MapCTX.fillText(slots, x, slotsY);
 			}
@@ -2115,6 +2151,7 @@ let ProvinceMap = {
 				};
 
 				let prov = GuildFights.MapData['map']['provinces'][i.id];
+				data.battleType = prov.isAttackBattleType ? 'red' : 'blue';
 
 				if (prov['ownerId']) {
 					data.ownerID = prov['ownerId'];

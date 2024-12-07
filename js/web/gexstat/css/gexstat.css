@@ -174,12 +174,6 @@
 	width: 50px;
 }
 
-#GexStatBody table thead.sticky th {
-    position: sticky;
-    top: 0;
-    z-index: 1;
-}
-
 #GexStat table tbody td.progress {
 	border-left: 1px solid var(--border-table-top);
 	border-right: 1px solid var(--border-table-top);

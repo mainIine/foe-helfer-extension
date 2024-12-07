@@ -532,7 +532,7 @@ let Productions = {
 
 		if (rowA.length > 0) {
 			table.push('<table class="foe-table sortable-table TSinactive '+type+'-list active">')
-			table.push('<thead style="z-index:100">')
+			table.push('<thead class="sticky">')
 			table.push('<tr>')
 			table.push('<th colspan="12"><!--<span class="btn-default change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeGroups') + '</span>--> <input type="text" placeholder="' + i18n('Boxes.Productions.FilterTable') + '" class="filterCurrentList"></th>')
 			table.push('</tr>')
@@ -785,7 +785,7 @@ let Productions = {
 
 			if (rowA.length > 0) {
 				table.push('<table class="foe-table sortable-table TSinactive '+type+'-list active">')
-				table.push('<thead style="z-index:100">')
+				table.push('<thead class="sticky">')
 				table.push('<tr>')
 				table.push('<th colspan="3"><span class="btn-default change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeGroups') + '</span> <input type="text" placeholder="' + i18n('Boxes.Productions.FilterTable') + '" class="filterCurrentList"></th>')
 				if (!type.includes('att') && !type.includes('def') && type!='items') {
@@ -958,7 +958,7 @@ let Productions = {
 
 		// single view table
 		table.push('<table class="foe-table sortable-table TSinactive '+type+'-list active">')
-		table.push('<thead>')
+		table.push('<thead class="sticky">')
 		table.push('<tr>')
 		table.push('<th colspan="6"><span class="btn-default change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeGroups') + '</span> <input type="text" placeholder="' + i18n('Boxes.Productions.FilterTable') + '" class="filterCurrentList"></th>')
 		table.push('<th colspan="'+(eras.length)+'" class="textright"></th>')
@@ -982,7 +982,7 @@ let Productions = {
 
 		// grouped view
 		table.push('<table class="foe-table sortable-table TSinactive '+type+'-group">')
-		table.push('<thead>')
+		table.push('<thead class="sticky">')
 		table.push('<tr>')
 		table.push('<th colspan="'+(3+eras.length)+'"><span class="btn-default change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeSingle') + '</span></th>')
 		table.push('</tr>')
@@ -1019,7 +1019,7 @@ let Productions = {
 	buildGroupedTable: (type, groupedBuildings, boostCounter) => {
 		let tableGr = [], rowB = []
 		tableGr.push('<table class="foe-table sortable-table TSinactive '+type+'-group">')
-		tableGr.push('<thead>')
+		tableGr.push('<thead class="sticky">')
 		tableGr.push('<tr>')
 		tableGr.push('<th colspan="7"><span class="btn-default change-view game-cursor" data-type="' + type + '">' + (type=="items" || type=="units" ?i18n('Boxes.Productions.ModeSum') : i18n('Boxes.Productions.ModeSingle')) + '</span></th>')
 		tableGr.push('</tr>')
@@ -1080,7 +1080,7 @@ let Productions = {
 		}
 
 		table.push('<table class="foe-table '+type+'-sum">')
-		table.push('<thead>')
+		table.push('<thead class="sticky">')
 		table.push('<tr>')
 		table.push('<th colspan="8"><span class="btn-default change-view game-cursor">' + i18n('Boxes.Productions.ModeSingle') + '</span></th>')
 		table.push('</tr>')
@@ -1577,7 +1577,7 @@ let Productions = {
 			h.push('<div class="ratingtable">');
 			h.push('<a id="RatingSettings" class="toggle-tab btn-default btn-tight" data-value="Settings">' + i18n('Boxes.ProductionsRating.Settings') + '</a>')
 			h.push('<table class="foe-table sortable-table TSinactive">');
-			h.push('<thead>');
+			h.push('<thead class="sticky">');
 			
 			h.push('<tr class="settings">')
 				h.push('<th colspan="'+(colNumber+4)+'">')
@@ -1951,7 +1951,7 @@ let Productions = {
 
         h = `<div>
 					<table class="foe-table sortable-table">
-						<thead>
+						<thead class="sticky">
 							<tr class="sorter-header"><th data-type="itemSourcesList"><input type="text" class="filterTable" placeholder="${i18n('Boxes.Kits.FilterItems')}" /> Items</th></tr>
 						</thead>
 						<tbody class="itemSourcesList">`

@@ -41,8 +41,6 @@
 #Castle .castle_wrapper .foe-table tr th {
 	border-top: 1px solid var(--border-table-top);
 	border-bottom: 1px solid var(--border-table-bottom);
-	position: sticky;
-	top: 0;
 }
 
 #Castle .castle_wrapper .icon {

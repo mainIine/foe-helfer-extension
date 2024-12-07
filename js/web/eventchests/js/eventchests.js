@@ -152,13 +152,12 @@ let EventPresents = {
                         asset = MainParser.CityEntities[present.reward.assembledReward.subType].asset_id
                     else 
                         asset = present.reward.assembledReward.iconAssetName
-                    frag = srcLinks.icons("icon_tooltip_fragment")
+                    frag = '<span class="fragment">'+srcLinks.icons("icon_tooltip_fragment")+'</span>';
                 }  
                 icon = `<img src="${srcLinks.getReward(asset)}" alt="">`;
-            
 
-                h.push('<td>'+ (icon.search("antiquedealer_flag") === -1 ? icon : '') + '</td>');
-                h.push('<td>' + frag + present.reward.name + (present.status.value === "visible" ? '<img class="visible" src="' + extUrl + 'css/images/hud/open-eye.png" alt="">' : '') +'</td>');
+                h.push('<td class="icon">'+ (icon.search("antiquedealer_flag") === -1 ? icon : '') + frag + '</td>');
+                h.push('<td>' + present.reward.name + (present.status.value === "visible" ? '<img class="visible" src="' + extUrl + 'css/images/hud/open-eye.png" alt="">' : '') +'</td>');
                 h.push('</tr>');
             }
         }

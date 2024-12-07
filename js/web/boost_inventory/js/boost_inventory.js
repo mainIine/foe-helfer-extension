@@ -94,7 +94,7 @@ let BoostInventory = {
 
 		c.push(`<table class="foe-table">`)
 
-		c.push('<thead>')
+		c.push('<thead class="sticky">')
 		c.push('<tr class="sorter-header">')
 
 		c.push('<th class="no-sort"></th>')

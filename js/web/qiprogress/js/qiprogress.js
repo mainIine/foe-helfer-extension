@@ -138,7 +138,7 @@ let QiProgress = {
 
 		if (qiRound && qiRound !== null && qiRound !== QiProgress.CurrentQISeason) {
 			let d = await QiProgress.db.history.where({ qiround: qiRound }).toArray();
-			QiProgress.qiRound = d[0].participation.sort(function (a, b) {
+			QiProgress.qiRound = d[0].participation?.sort(function (a, b) {
 				return a.rank - b.rank;
 			});
 			histView = true;
@@ -215,7 +215,7 @@ let QiProgress = {
 		}
 
 		t.push('<table id="QiProgressTable" class="foe-table' + (histView === false ? ' chevron-right exportable' : '') + '">');
-		t.push('<thead>');
+		t.push('<thead class="sticky">');
 		t.push('<tr>');
 		t.push('<th style="display:none" data-export="Player_ID"></th>');
 		t.push('<th colspan="3" data-export3="Player">' + i18n('General.Player') + '</th>');
@@ -618,7 +618,6 @@ let QiProgress = {
 				progress: d[i].progressContribution || 0
 			});
 		}
-		console.log('history', { participation: players, actions: sumActions, progress: sumProgress })
 
 		await QiProgress.UpdateDB('history', { participation: players, actions: sumActions, progress: sumProgress });
 
@@ -649,7 +648,8 @@ let QiProgress = {
 			await QiProgress.db.history.put({ 
                 qiround: QiProgress.CurrentQISeason, 
                 actions: data.actions, 
-                progress: data.progress 
+                progress: data.progress,
+				participation: data.participation
             });
 		}
 
