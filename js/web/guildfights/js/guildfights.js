@@ -1874,7 +1874,7 @@ let ProvinceMap = {
 
 		ProvinceMap.Map = document.createElement("canvas");
 		ProvinceMap.MapCTX = ProvinceMap.Map.getContext('2d');
-		ProvinceMap.view = "battleType";
+		ProvinceMap.view = "guildType";
 
 		$(ProvinceMap.Map).attr({
 			id: 'province-map',
@@ -1932,7 +1932,7 @@ let ProvinceMap = {
 		}
 
 		Province.prototype.updateMapSector = function () {
-			this.drawMapSector(GuildFights.MapData.map['id']);
+			this.drawMapSector(GuildFights.MapData.map['id']); 
 		}
 
 		Province.prototype.drawMapSector = function (mapType = 'waterfall_archipelago') {
@@ -1971,9 +1971,9 @@ let ProvinceMap = {
 			else {
 				ProvinceMap.MapCTX.fillStyle = sector.owner.colors.highlight;
 
-				if (ProvinceMap.view == "battleType" && sector.battleType == "red")
+				if (ProvinceMap.view == "battleType" && sector.battleType == "red" && sector.owner.colors.cid !== "own_guild_colour")
 					ProvinceMap.MapCTX.fillStyle = "#cf401e";
-				else if (ProvinceMap.view == "battleType" && sector.battleType == "blue")
+				else if (ProvinceMap.view == "battleType" && sector.battleType == "blue" && sector.owner.colors.cid !== "own_guild_colour")
 					ProvinceMap.MapCTX.fillStyle = "#4a98dd";
 
 				if (mapType === 'volcano_archipelago') 
@@ -2018,22 +2018,26 @@ let ProvinceMap = {
 				titleY = y + 10;
 				slotsY = y - 10;
 			}
-			ProvinceMap.MapCTX.strokeStyle = '#000';
 
-			ProvinceMap.MapCTX.beginPath();
-			if (mapType === 'waterfall_archipelago') 
-				ProvinceMap.MapCTX.arc(x-36, y+12, 5, 0, 2*Math.PI);
-			else
-				ProvinceMap.MapCTX.arc(x-36, y+25, 5, 0, 2*Math.PI);
+			// do not draw dots for own sectors
+			if (this.owner.colors.cid != "own_guild_colour") {
+				ProvinceMap.MapCTX.strokeStyle = '#000';
 
-			ProvinceMap.MapCTX.fillStyle = '#f00';
-			if (this.battleType == 'blue')
-				ProvinceMap.MapCTX.fillStyle = '#00f';
+				ProvinceMap.MapCTX.beginPath();
+				if (mapType === 'waterfall_archipelago') 
+					ProvinceMap.MapCTX.arc(x-36, titleY+12, 5, 0, 2*Math.PI);
+				else
+					ProvinceMap.MapCTX.arc(x-36, titleY+25, 5, 0, 2*Math.PI);
 
-			if (ProvinceMap.view == "battleType")
-				ProvinceMap.MapCTX.fillStyle = this.owner.colors.highlight;
-			ProvinceMap.MapCTX.stroke();
-			ProvinceMap.MapCTX.fill();
+				ProvinceMap.MapCTX.fillStyle = '#f00';
+				if (this.battleType == 'blue')
+					ProvinceMap.MapCTX.fillStyle = '#00f';
+	
+				if (ProvinceMap.view == "battleType")
+					ProvinceMap.MapCTX.fillStyle = this.owner.colors.highlight;
+				ProvinceMap.MapCTX.stroke();
+				ProvinceMap.MapCTX.fill();
+			}
 
 			ProvinceMap.MapCTX.strokeStyle = '#fff5';
 
@@ -2208,7 +2212,6 @@ let ProvinceMap = {
 	 * @constructor
 	 */
 	RefreshSector: (socketData = []) => {
-		// TO DO: check sector unlock times and refresh
 		let updatedProvince = ProvinceMap.Provinces.find(p => p.id === 0); // first sector does not have an ID, make it the default one
 
 		if (socketData['id'] !== undefined) 
@@ -2224,8 +2227,6 @@ let ProvinceMap = {
 			updatedProvince.owner.id = socketData.ownerId;
 			updatedProvince.owner.colors = ProvinceMap.getSectorColors(socketData.ownerId);
 		}
-
-		//GuildFights.MapData.map.provinces[socketData['id'] || 0] = updatedProvince;
 
 		updatedProvince.updateMapSector();
 	},
