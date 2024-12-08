@@ -16,7 +16,10 @@
 	- Ergebnisseite wird nun zuerst angezeigt
 	- Itemliste versteckt
 - Menü: Von unten nach rechts verschoben, weil die möglichen Einstellungen gerne übersehen werden
-- Gefechte: Symbole für blauen/roten Angriff in die Liste hinzugefügt
+- Gefechte: 
+	- Symbole für blauen/roten Angriff in die Countdown-Liste hinzugefügt
+	- Angriffsfarben zur Karte hinzugefügt
+	- Neue Kartenansicht, die die Angriffsfarben besser sichtbar macht
 
 **BugFix**
 - Tooltip: 

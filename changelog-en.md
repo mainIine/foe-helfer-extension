@@ -16,7 +16,10 @@
 	- Results will now be shown first
 	- Item list hidden to make the table less crowded
 - Menu: Moved it back to the right (default was bottom), because of a game update and y'all do not look at settings
-- GBG: Added symbols for the battle type (red/blue) to the countdown list
+- GBG: 
+	- Added symbols for the battle type (red/blue) to the countdown list
+	- Added attack colors to the map
+	- Added map view to highlight attack colors better
 
 **BugFix**
 - Tooltip: 
