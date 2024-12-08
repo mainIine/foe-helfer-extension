@@ -2024,10 +2024,7 @@ let ProvinceMap = {
 				ProvinceMap.MapCTX.strokeStyle = '#000';
 
 				ProvinceMap.MapCTX.beginPath();
-				if (mapType === 'waterfall_archipelago') 
-					ProvinceMap.MapCTX.arc(x-36, titleY+12, 5, 0, 2*Math.PI);
-				else
-					ProvinceMap.MapCTX.arc(x-36, titleY+25, 5, 0, 2*Math.PI);
+				ProvinceMap.MapCTX.arc(x-36, titleY+12, 5, 0, 2*Math.PI);
 
 				ProvinceMap.MapCTX.fillStyle = '#f00';
 				if (this.battleType == 'blue')
