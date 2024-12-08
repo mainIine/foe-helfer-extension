@@ -68,72 +68,72 @@ let Productions = {
 	],
 
 	RatingCurrentTab: 'Results',
-	Rating: JSON.parse(localStorage.getItem('ProductionRatingEnableds2')||"{}"),
-	RatingProdPerTiles: Object.assign({
-		'strategy_points': 5,
-		'money': null,
-		'supplies': null,
-		'medals': null,
-		'clan_power': null,
-		'clan_goods': 10,
-		'population': null,
-		'happiness': null,
-		'units': 1,
-		'att_boost_attacker-all': 3 ,
-		'att_boost_attacker-guild_expedition': null,
-		'att_boost_attacker-battleground': 3 ,
-		'att_boost_attacker-guild_raids': null,
-		'def_boost_attacker-all': 3,
-		'def_boost_attacker-guild_expedition': null,
-		'def_boost_attacker-battleground': 3 ,
-		'def_boost_attacker-guild_raids': null,
-		'att_boost_defender-all': 2,
-		'att_boost_defender-guild_expedition': null,
-		'att_boost_defender-battleground': null,
-		'att_boost_defender-guild_raids': null,
-		'def_boost_defender-all': 2,
-		'def_boost_defender-guild_expedition': null,
-		'def_boost_defender-battleground': null,
-		'def_boost_defender-guild_raids': null,
-		'goods-previous': 4,
-		'goods-current': 5,
-		'fsp': 1,
-		'goods-next': null,
-	},JSON.parse(localStorage.getItem('ProductionRatingProdPerTiles')||"{}")),
-
-	RatingTypes: [
-		'strategy_points',	// Forge Punkte
-		'money',			// Münzen
-		'supplies',			// Werkzeuge
-		'medals',			// Medaillien
-		'clan_power',		// Macht der Gilde
-		'clan_goods',		// Gildengüter (Arche, Ehrenstatue etc.)
-		'population',		// Bevölkerung
-		'happiness',		// Zufriedenheit
-		'units',			// Einheiten
-		'att_boost_attacker-all', //Angriffsbonus angreifende Armee
-		'att_boost_attacker-guild_expedition',
-		'att_boost_attacker-battleground',
-		'att_boost_attacker-guild_raids',
-		'def_boost_attacker-all', //Verteidigungsbonus angreifende Armee
-		'def_boost_attacker-guild_expedition',
-		'def_boost_attacker-battleground',
-		'def_boost_attacker-guild_raids',
-		'att_boost_defender-all', //Angriffsbonus verteidigenden Armee
-		'att_boost_defender-guild_expedition',
-		'att_boost_defender-battleground',
-		'att_boost_defender-guild_raids',
-		'def_boost_defender-all', //Verteidigungsbonus verteidigenden Armee
-		'def_boost_defender-guild_expedition',
-		'def_boost_defender-battleground',
-		'def_boost_defender-guild_raids',
-		'goods-previous',
-		'goods-current',
-		'goods-next',
-		'fsp',
-	],
+	
 	fragmentsSet: new Set(),
 	efficiencySettings:Object.assign(JSON.parse(localStorage.getItem("Productions.efficiencySettings")||`{"tilevalues":false,"showitems":true,"showhighlighted":false}`),{showhighlighted:false}),
+
+	Rating: {
+		Data:null,
+		Types:null,
+		load: (overwrite=null) => {
+			Productions.Rating.Data = Object.assign({
+				'strategy_points': {order:1,perTile:5,active:true},
+				'money': {order:2,perTile:null,active:false},
+				'supplies': {order:3,perTile:null,active:false},
+				'medals': {order:4,perTile:null,active:false},
+				'clan_power': {order:5,perTile:null,active:false},
+				'clan_goods': {order:6,perTile:10,active:true},
+				'population': {order:7,perTile:null,active:false},
+				'happiness': {order:8,perTile:null,active:false},
+				'units': {order:9,perTile:1,active:true},
+				'att_boost_attacker-all': {order:10,perTile:3,active:true} ,
+				'att_boost_attacker-guild_expedition': {order:11,perTile:null,active:false},
+				'att_boost_attacker-battleground': {order:12,perTile:3,active:true} ,
+				'att_boost_attacker-guild_raids': {order:13,perTile:null,active:false},
+				'def_boost_attacker-all': {order:14,perTile:3,active:true},
+				'def_boost_attacker-guild_expedition': {order:15,perTile:null,active:false},
+				'def_boost_attacker-battleground': {order:16,perTile:3,active:true} ,
+				'def_boost_attacker-guild_raids': {order:17,perTile:null,active:false},
+				'att_boost_defender-all': {order:18,perTile:2,active:true},
+				'att_boost_defender-guild_expedition': {order:19,perTile:null,active:false},
+				'att_boost_defender-battleground': {order:20,perTile:null,active:false},
+				'att_boost_defender-guild_raids': {order:21,perTile:null,active:false},
+				'def_boost_defender-all': {order:22,perTile:2,active:true},
+				'def_boost_defender-guild_expedition': {order:23,perTile:null,active:false},
+				'def_boost_defender-battleground': {order:24,perTile:null,active:false},
+				'def_boost_defender-guild_raids': {order:25,perTile:null,active:false},
+				'goods-previous': {order:26,perTile:4,active:true},
+				'goods-current': {order:27,perTile:5,active:true},
+				'goods-next': {order:28,perTile:null,active:false},
+				'fsp': {order:29,perTile:1,active:true},
+			}, overwrite || JSON.parse(localStorage.getItem('Productions.Rating.Data')||"{}"))
+			Productions.Rating.Types = Object.keys(Productions.Rating.Data).sort((a,b)=>Productions.Rating.Data[a].order-Productions.Rating.Data[b].order)
+			
+			
+			//conversion of old data - remove at some point------------------------------------
+			if (localStorage.getItem('ProductionRatingEnableds2')) {
+				let Rating = JSON.parse(localStorage.getItem('ProductionRatingEnableds2')||"{}")
+				for (let [type,active] of Object.entries(Rating)) {
+					if (Productions.Rating.Data[type]) Productions.Rating.Data[type].active = active
+				}
+				localStorage.removeItem('ProductionRatingEnableds2')
+				Productions.Rating.save()
+			}
+			if (localStorage.getItem('ProductionRatingProdPerTiles')) {
+				let RatingProdPerTiles = Object.assign({},JSON.parse(localStorage.getItem('ProductionRatingProdPerTiles')||"{}"))
+				for (let [type,perTile] of Object.entries(RatingProdPerTiles)) {
+					if (Productions.Rating.Data[type]) Productions.Rating.Data[type].perTile = perTile
+				}
+				localStorage.removeItem('ProductionRatingProdPerTiles')
+				Productions.Rating.save()
+			}
+			//------------------------------------------------------------------------------
+		},
+		save:() => {
+			localStorage.setItem('Productions.Rating.Data', JSON.stringify(Productions.Rating.Data))
+		}		
+		
+	},
 
 	init: () => {
 		if (CityMap.IsExtern) return
@@ -1454,6 +1454,7 @@ let Productions = {
 
 
 	ShowRating: (external = false, eraName = null) => {
+		if (!Productions.Rating.Data) Productions.Rating.load()
 		if (CityMap.IsExtern && !external) return
 		let era = (eraName == null) ? CurrentEra : eraName
 		
@@ -1461,11 +1462,6 @@ let Productions = {
 			
 			Productions.BuildingsAll = Object.values(CityMap.createNewCityMapEntities())
 			Productions.setChainsAndSets(Productions.BuildingsAll)
-
-			for (let type of Productions.RatingTypes) {
-				if (Productions.Rating[type] === undefined) Productions.Rating[type] = (Productions.RatingProdPerTiles[type] ?? true)
-				if (Productions.RatingProdPerTiles[type] === undefined) Productions.RatingProdPerTiles[type] = 0
-            }
 
 			HTML.Box({
 				id: 'ProductionsRating',
@@ -1481,6 +1477,13 @@ let Productions = {
 				Productions.RatingCurrentTab = $(this).data('value');
 
 				Productions.CalcRatingBody();
+			});
+			$('#ProductionsRating').on('click', '.reset-button', function () {
+				if (window.confirm(i18n('Boxes.ProductionsRating.ConfirmReset'))) {
+					Productions.Rating.load("{}")
+				    Productions.Rating.save()
+				    Productions.CalcRatingBody();
+				}
 			});
 
 		} else {
@@ -1514,21 +1517,21 @@ let Productions = {
 			h.push('<span class="text-right">' + i18n('Boxes.ProductionsRating.ProdPerTile') + '</span>')
 			h.push('</li>')
 
-			for (let type of Productions.RatingTypes) {
+			for (let type of Productions.Rating.Types) {
 				h.push('<li class="'+type+'">')
-				let activeSetting = (Productions.RatingProdPerTiles[type] != null && Productions.Rating[type] != false)
+				let activeSetting = (Productions.Rating.Data[type].perTile != null && Productions.Rating.Data[type].active != false)
 				h.push('<input id="Enabled-' + type + '" class="no-grow enabled game-cursor" ' + (activeSetting ? 'checked' : '') + ' type="checkbox">')
 				h.push('<span class="no-grow resicon ' + type + '"></span>')
 				h.push('<label for="Enabled-'+type+'">' + Productions.GetTypeName(type) + '</label>')
-				if (Productions.RatingProdPerTiles[type] != null) {
-					h.push('<input type="number" id="ProdPerTile-' + type + '" step="0.01" min="0" max="1000000" class="no-grow '+(Productions.Rating[type] ? '': 'hidden')+'" value="' + Productions.RatingProdPerTiles[type] + '">')
+				if (Productions.Rating.Data[type].perTile != null) {
+					h.push('<input type="number" id="ProdPerTile-' + type + '" step="0.01" min="0" max="1000000" class="no-grow '+(Productions.Rating.Data[type].active ? '': 'hidden')+'" value="' + Productions.Rating.Data[type].perTile + '">')
 				}
 				else {
 					h.push('<input type="number" class="hidden no-grow" id="ProdPerTile-' + type + '" step="0.01" min="0" max="1000000" value="0">')
 				}
 				h.push('</li>')
 			}
-			h.push('<li><a class="toggle-tab btn-default" data-value="Results"><span>' + i18n('Boxes.ProductionsRating.Results') + '</span></a></li>')
+			h.push('<li><a class="toggle-tab btn-default" data-value="Results"><span>' + i18n('Boxes.ProductionsRating.Results') + '</span></a><a class="reset-button btn-default" data-value="Results"><span>' + i18n('Boxes.ProductionsRating.Reset') + '</span></a></li>')
 			h.push('</ul>')
 			h.push('<p>'+i18n('Boxes.ProductionsRating.Explainer')+'</p>')
 			h.push('<p>'+i18n('Boxes.ProductionsRating.Disclaimer')+'</p>')
@@ -1572,7 +1575,7 @@ let Productions = {
 				return 0
 			})
 
-			let colNumber = Object.values(Productions.Rating).filter(x=>!!x).length
+			let colNumber = Object.values(Productions.Rating.Data).filter(x=>x.active && x.perTile!=null).length
 			
 			h.push('<div class="ratingtable">');
 			h.push('<a id="RatingSettings" class="toggle-tab btn-default btn-tight" data-value="Settings">' + i18n('Boxes.ProductionsRating.Settings') + '</a>')
@@ -1591,10 +1594,10 @@ let Productions = {
 			h.push('<tr class="sorter-header">');
 			h.push('<th data-type="ratinglist" class="is-number ascending">' + i18n('Boxes.ProductionsRating.Score') + '</th>');
 			h.push('<th data-type="ratinglist">' + i18n('Boxes.ProductionsRating.BuildingName') + '</th><th class="no-sort"></th>');
-			for (const type of Productions.RatingTypes) {
-				if (!Productions.Rating[type] || Productions.RatingProdPerTiles[type] == null) continue
-				h.push('<th data-type="ratinglist" style="width:1%" class="is-number text-center buildingvalue"><span class="resicon ' + type + '"></span><i>'+(Productions.RatingProdPerTiles?.[type] || 0)+'</i></th>');
-				h.push('<th data-type="ratinglist" style="width:1%" class="is-number text-center tilevalue"><span class="resicon ' + type + '"></span><i>'+(Productions.RatingProdPerTiles?.[type] || 0)+'</i></th>');
+			for (const type of Productions.Rating.Types) {
+				if (!Productions.Rating.Data[type].active || Productions.Rating.Data[type].perTile == null) continue
+				h.push('<th data-type="ratinglist" style="width:1%" class="is-number text-center buildingvalue"><span class="resicon ' + type + '"></span><i>'+(Productions.Rating.Data[type].perTile || 0)+'</i></th>');
+				h.push('<th data-type="ratinglist" style="width:1%" class="is-number text-center tilevalue"><span class="resicon ' + type + '"></span><i>'+(Productions.Rating.Data[type].perTile || 0)+'</i></th>');
 			}
 			h.push('<th data-type="ratinglist" class="no-sort items">Items</th>');
 			h.push('</tr>');
@@ -1613,8 +1616,8 @@ let Productions = {
 				if (buildingCount[building.building.entityId]) h.push('<span data-original-title="'+i18n('Boxes.ProductionsRating.CountTooltip')+'">' + buildingCount[building.building.entityId]+'x</span>')
 					if (!building.highlight) h.push(' <span class="show-all" data-name="'+building.building.name+'"><img class="game-cursor" src="' + extUrl + 'css/images/hud/open-eye.png"></span>')
 				h.push('</td>')
-				for (const type of Productions.RatingTypes) {
-					if (!Productions.Rating[type] || Productions.RatingProdPerTiles[type] == null) continue
+				for (const type of Productions.Rating.Types) {
+					if (!Productions.Rating.Data[type].active || Productions.Rating.Data[type].perTile == null) continue
 					if (building[type] != undefined) {
 						h.push(`<td class="text-right${type=="units" ? " units":""} buildingvalue" data-number="${Math.round(building[type])}" ${type=="units" ? `data-original-title="${randomUnits}"`:""}>`)
 						h.push(HTML.Format(building[type]))
@@ -1734,24 +1737,21 @@ let Productions = {
 
 				elem.parent().children('input[type=number]').toggleClass('hidden')
 
-				Productions.Rating[type] = isChecked
-				localStorage.setItem('ProductionRatingEnableds2', JSON.stringify(Productions.Rating))
+				Productions.Rating.Data[type].active = isChecked
+				
 				if (isChecked) {
-					Productions.RatingProdPerTiles[type] = parseFloat(elem.parent().children('input[type=number]').val())
-					if (isNaN(Productions.RatingProdPerTiles[type])) Productions.RatingProdPerTiles[type] = 0
-	
-					localStorage.setItem('ProductionRatingProdPerTiles', JSON.stringify(Productions.RatingProdPerTiles))
+					Productions.Rating.Data[type].perTile = parseFloat(elem.parent().children('input[type=number]').val()) || 0
 				}
+				Productions.Rating.save()
 			})
 
 			$('#ProductionsRating input[type=number]').on('blur', function () {
 				let elem = $(this)
 				let type = elem.attr('id').replace('ProdPerTile-','')
 
-				Productions.RatingProdPerTiles[type] = parseFloat(elem.val())
-				if (isNaN(Productions.RatingProdPerTiles[type])) Productions.RatingProdPerTiles[type] = 0
+				Productions.Rating.Data[type].perTile = parseFloat(elem.val()) || 0
 
-				localStorage.setItem('ProductionRatingProdPerTiles', JSON.stringify(Productions.RatingProdPerTiles))
+				Productions.Rating.save()
 
 				Productions.CalcRatingBody()
 			});
@@ -1786,9 +1786,9 @@ let Productions = {
 			let ratedBuilding = {
 				building: building
 			}
-			for (const type of Object.keys(Productions.Rating)) {
-				if (Productions.Rating[type] != false) {
-					let desiredValuePerTile = parseFloat(Productions.RatingProdPerTiles[type]) || 0
+			for (const type of Object.keys(Productions.Rating.Data)) {
+				if (Productions.Rating.Data[type].active) {
+					let desiredValuePerTile = parseFloat(Productions.Rating.Data[type].perTile) || 0
 					if (desiredValuePerTile !== null && !isNaN(desiredValuePerTile)) {
 						let typeValue = Productions.getRatingValueForType(building, type) || 0 // production amount
 						let valuePerTile = typeValue / size
