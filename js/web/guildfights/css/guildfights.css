@@ -364,6 +364,29 @@
 	position: relative;
 }
 
+#LiveGildFightingBody .tabs th.attrition-chance span,
+#LiveGildFightingBody .tabs tr td.battle-type-attack span,
+#LiveGildFightingBody .tabs tr td.battle-type-defend span {
+  display: inline-block;
+  margin: 0 0 0 5px;
+  width: 18px;
+  height: 18px;
+}
+
+#LiveGildFightingBody .tabs th.attrition-chance span {
+	background: transparent url('../../x_img/attrition.png') no-repeat;
+  margin: 0 0 0 5px;
+  background-size: 20px 20px;
+}
+#LiveGildFightingBody .tabs tr td.battle-type-attack span {
+	background: transparent url('../../x_img/battle-type-attack.png') no-repeat;
+  background-size: 20px 20px;
+}
+#LiveGildFightingBody .tabs tr td.battle-type-defend span {
+	background: transparent url('../../x_img/battle-type-defend.png') no-repeat;
+  background-size: 20px 20px;
+}
+
 #LiveGildFightingBody .tabs>button.mapbutton {
 	position: absolute;
 	top: 40px;

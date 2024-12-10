@@ -116,6 +116,8 @@ let GuildFights = {
 	showGuildColumn: 0,
 	showAdjacentSectors: 0,
 	showOwnSectors: 0,
+	showAttritionChance: 0,
+	showBattleType: 0,
 
 	Tabs: [],
 	TabsContent: [],
@@ -1056,6 +1058,8 @@ let GuildFights = {
 		GuildFights.showGuildColumn = (LiveFightSettings && LiveFightSettings.showGuildColumn !== undefined) ? LiveFightSettings.showGuildColumn : 0;
 
 		let mapdata = GuildFights.MapData['map']['provinces'];
+    console.log(GuildFights.MapData);
+    
 		for (let i in mapdata) {
 			if (!mapdata.hasOwnProperty(i)) 
 				break;
@@ -1219,6 +1223,8 @@ let GuildFights = {
 
 		GuildFights.showAdjacentSectors = (LiveFightSettings && LiveFightSettings.showAdjacentSectors !== undefined) ? LiveFightSettings.showAdjacentSectors : 1;
 		GuildFights.showOwnSectors = (LiveFightSettings && LiveFightSettings.showOwnSectors !== undefined) ? LiveFightSettings.showOwnSectors : 0;
+		GuildFights.showAttritionChance = (LiveFightSettings && LiveFightSettings.showAttritionChance !== undefined) ? LiveFightSettings.showAttritionChance : 1;
+		GuildFights.showBattleType = (LiveFightSettings && LiveFightSettings.showBattleType !== undefined) ? LiveFightSettings.showBattleType : 1;
 
 		nextup.push('<div id="nextup"><table class="foe-table">');
 		nextup.push('<thead><tr>');
@@ -1229,6 +1235,14 @@ let GuildFights = {
 		
 		nextup.push('<th class="time-static">' + i18n('Boxes.GuildFights.Time') + '</th>');
 		nextup.push('<th class="time-dynamic">' + i18n('Boxes.GuildFights.Count') + '</th>');
+
+		if (GuildFights.showAttritionChance) {
+			nextup.push('<th class="attrition-chance"><span></span></th>');
+    }
+
+		if (GuildFights.showBattleType) {
+			nextup.push('<th>' + i18n('Boxes.GuildFights.BattleType') + '</th>');
+    }
 
 		nextup.push('<th></th></tr></thead>');
 
@@ -1276,6 +1290,15 @@ let GuildFights = {
 
 				nextup.push(`<td class="time-static" style="user-select:text">${countDownDate.format('HH:mm')}</td>`);
 				nextup.push(`<td class="time-dynamic" id="counter-${prov[x]['id']}">${countDownDate.format('HH:mm:ss')}</td>`);
+
+        if (GuildFights.showAttritionChance) {
+          nextup.push(`<td class="attrition-chance" >${prov[x]['gainAttritionChance']} %</td>`);
+        }
+        if (GuildFights.showBattleType) {
+          const battleType = prov[x]['isAttackBattleType'] === true ? "attack" : "defend";
+          nextup.push(`<td class="battle-type-${battleType}"><span></span></td>`);
+        }
+    
 				nextup.push(`<td class="text-right" id="alert-${prov[x]['id']}">${GuildFights.GetAlertButton(prov[x]['id'])}</td>`);
 				nextup.push('</tr>');
 			}
@@ -1743,10 +1766,14 @@ let GuildFights = {
 		let showGuildColumn = (LiveFightSettings && LiveFightSettings.showGuildColumn !== undefined) ? LiveFightSettings.showGuildColumn : 0;
 		let showAdjacentSectors = (LiveFightSettings && LiveFightSettings.showAdjacentSectors !== undefined) ? LiveFightSettings.showAdjacentSectors : 1;
 		let showOwnSectors = (LiveFightSettings && LiveFightSettings.showOwnSectors !== undefined) ? LiveFightSettings.showOwnSectors : 0;
+    let showAttritionChance = (LiveFightSettings && LiveFightSettings.showAttritionChance !== undefined) ? LiveFightSettings.showAttritionChance : 1;
+    let showBattleType = (LiveFightSettings && LiveFightSettings.showBattleType !== undefined) ? LiveFightSettings.showBattleType : 1;
 
 		c.push(`<p><input id="showguildcolumn" name="showguildcolumn" value="1" type="checkbox" ${(showGuildColumn === 1) ? ' checked="checked"' : ''} /> <label for="showguildcolumn">${i18n('Boxes.GuildFights.ShowOwner')}</label></p>`);
 		c.push(`<p><input id="showAdjacentSectors" name="showAdjacentSectors" value="0" type="checkbox" ${(showAdjacentSectors === 1) ? ' checked="checked"' : ''} /> <label for="showAdjacentSectors">${i18n('Boxes.GuildFights.ShowAdjacentSectors')}</label><br>`);
 		c.push(`<input id="showownsectors" name="showownsectors" value="0" type="checkbox" ${(showOwnSectors === 1) ? ' checked="checked"' : ''} /> <label for="showownsectors">${i18n('Boxes.GuildFights.ShowOwnSectors')}</label></p>`);
+    c.push(`<p><input id="showAttritionChance" name="showAttritionChance" value="0" type="checkbox" ${(showAttritionChance === 1) ? ' checked="checked"' : ''} /> <label for="showAttritionChance">${i18n('Boxes.GuildFights.ShowAttritionChance')}</label><br>`);
+		c.push(`<input id="showBattleType" name="showBattleType" value="0" type="checkbox" ${(showBattleType === 1) ? ' checked="checked"' : ''} /> <label for="showBattleType">${i18n('Boxes.GuildFights.ShowBattleType')}</label></p>`);    
 		c.push(`<p><button onclick="GuildFights.SaveLiveFightSettings()" id="save-livefight-settings" class="btn btn-default" style="width:100%">${i18n('Boxes.GuildFights.SaveSettings')}</button></p>`);
 
 		// insert into DOM
@@ -1760,6 +1787,8 @@ let GuildFights = {
 		value.showGuildColumn = 0;
 		value.showAdjacentSectors = 0;
 		value.showOwnSectors = 0;
+		value.showAttritionChance = 0;
+		value.showBattleType = 0;
 
 		if ($("#showguildcolumn").is(':checked')) 
 			value.showGuildColumn = 1;
@@ -1770,9 +1799,17 @@ let GuildFights = {
 		if ($("#showownsectors").is(':checked')) 
 			value.showOwnSectors = 1;
 
+		if ($("#showAttritionChance").is(':checked')) 
+			value.showAttritionChance = 1;
+
+		if ($("#showBattleType").is(':checked')) 
+			value.showBattleType = 1;
+
 		GuildFights.showGuildColumn = value.showGuildColumn;
 		GuildFights.showAdjacentSectors = value.showAdjacentSectors;
 		GuildFights.showOwnSectors = value.showOwnSectors;
+		GuildFights.showAttritionChance = value.showAttritionChance;
+		GuildFights.showBattleType = value.shoshowBattleTypewOwnSectors;
 
 		localStorage.setItem('LiveFightSettings', JSON.stringify(value));
 
