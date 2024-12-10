@@ -1058,7 +1058,6 @@ let GuildFights = {
 		GuildFights.showGuildColumn = (LiveFightSettings && LiveFightSettings.showGuildColumn !== undefined) ? LiveFightSettings.showGuildColumn : 0;
 
 		let mapdata = GuildFights.MapData['map']['provinces'];
-    console.log(GuildFights.MapData);
     
 		for (let i in mapdata) {
 			if (!mapdata.hasOwnProperty(i)) 
