@@ -453,6 +453,7 @@
     "Boxes.GuildFights.LastSnapshot": " - Last snapshot: __time__ ago",
     "Boxes.GuildFights.Negotiations": "Negotiations",
     "Boxes.GuildFights.NoOwner": "No owner yet",
+    "Boxes.GuildFights.Open": "open",
     "Boxes.GuildFights.OpenMap": "Map",
     "Boxes.GuildFights.Owner": "Owner",
     "Boxes.GuildFights.Player": "Guild Member",

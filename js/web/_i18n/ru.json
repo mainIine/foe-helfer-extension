@@ -396,6 +396,7 @@
     "Boxes.GuildFights.LastSnapshot": " - последняя фиксация была __time__ назад",
     "Boxes.GuildFights.Negotiations": "Переговоры",
     "Boxes.GuildFights.NoOwner": "Пока бесхозный",
+    "Boxes.GuildFights.Open": "Open",
     "Boxes.GuildFights.OpenMap": "Карта",
     "Boxes.GuildFights.Owner": "Владелец",
     "Boxes.GuildFights.Player": "Игрок",

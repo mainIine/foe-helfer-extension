@@ -1433,7 +1433,7 @@ let GuildFights = {
 			clearInterval(intervalID);
 
 			idSpan.text('');
-			$(`#timer-${id}`).find('.time-static').html(`<strong class="text-success">offen</strong>`); // @ToDo: translate
+			$(`#timer-${id}`).find('.time-static').html(`<strong class="text-success">${i18n('Boxes.GuildFights.Open')}</strong>`);
 
 			// remove timer after 10s
 			setTimeout(() => {
