@@ -1774,6 +1774,7 @@ let Productions = {
 
 
 	rateBuildings: (buildingType,additional=false, era=null) => {
+		if (!Productions.Rating.Data) Productions.Rating.load()
 		let ratedBuildings = []
 		if (additional) {
 			buildingType = buildingType.map(x=>CityMap.createNewCityMapEntity(x,era||CurrentEra))
