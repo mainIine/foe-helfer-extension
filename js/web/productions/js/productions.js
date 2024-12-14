@@ -1716,11 +1716,11 @@ let Productions = {
 			});
 			let filterMeta = (regEx) => {
 				$('#ProductionsRatingBody .overlay .results').html("")
-				let foundBuildings = Object.values(Productions.AdditionalSpecialBuildings).filter(x => regEx.test(x.name) && x.selected).sort((a,b)=>(a.name>b.name?1:-1))
+				let foundBuildings = Object.values(Productions.AdditionalSpecialBuildings).filter(x => x.selected && regEx.test(JSON.stringify(x))).sort((a,b)=>(a.name>b.name?1:-1))
 				for (building of foundBuildings) {
 					$('#ProductionsRatingBody .overlay .results').append(`<li data-meta_id="${building.id}" data-era="${era}" data-callback_tt="Tooltips.buildingTT" class="selected helperTT">${building.name}</li>`)
 				}
-				foundBuildings = Object.values(Productions.AdditionalSpecialBuildings).filter(x => regEx.test(x.name) && !x.selected).sort((a,b)=>(a.name>b.name?1:-1))
+				foundBuildings = Object.values(Productions.AdditionalSpecialBuildings).filter(x =>!x.selected && regEx.test(JSON.stringify(x))).sort((a,b)=>(a.name>b.name?1:-1))
 				for (building of foundBuildings) {
 					$('#ProductionsRatingBody .overlay .results').append(`<li data-meta_id="${building.id}" data-era="${era}" class="helperTT" data-callback_tt="Tooltips.buildingTT">${building.name}</li>`)
 				}
@@ -1994,7 +1994,7 @@ let Productions = {
 		}
 		h=`<ul class="foe-table">`
 		for (b of item.buildings) {
-			h+=`<li class="helperTT" data-callback_tt="Tooltips.buildingTT" data-meta_id="${b}">${MainParser.CityEntities[b].name}</li>`
+			h+=`<li class="helperTT" data-era=${CurrentEra} data-callback_tt="Tooltips.buildingTT" data-meta_id="${b}">${MainParser.CityEntities[b].name}</li>`
 		}
 		h+=`</ul>`
 		$(itemId).html(h)
