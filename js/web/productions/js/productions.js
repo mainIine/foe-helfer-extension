@@ -1502,7 +1502,7 @@ let Productions = {
 			let spB = Object.values(MainParser.CityEntities).filter(x=> (x.is_special && !["O_","U_","V_","H_","Y_"].includes(x.id.substring(0,2))) || x.id.substring(0,11)=="W_MultiAge_")
 			Productions.AdditionalSpecialBuildings = {}
 			for (x of spB) {
-				Productions.AdditionalSpecialBuildings[x.id] = {id:x.id,name:x.name,selected:false}
+				Productions.AdditionalSpecialBuildings[x.id] = {id:x.id,name:x.name,selected:false,filter:x.id+";"+x.name}
 			}
 		}
 		let h = [];
@@ -1716,13 +1716,10 @@ let Productions = {
 			});
 			let filterMeta = (regEx) => {
 				$('#ProductionsRatingBody .overlay .results').html("")
-				let foundBuildings = Object.values(Productions.AdditionalSpecialBuildings).filter(x => x.selected && regEx.test(JSON.stringify(x))).sort((a,b)=>(a.name>b.name?1:-1))
+				let foundBuildings = Object.values(Productions.AdditionalSpecialBuildings).filter(x => regEx.test(x.filter))
+					.sort((a,b)=>(((a.selected != b.selected) ? (a.selected ? -2 : 2) : 0)+(a.name>b.name?1:-1)))
 				for (building of foundBuildings) {
-					$('#ProductionsRatingBody .overlay .results').append(`<li data-meta_id="${building.id}" data-era="${era}" data-callback_tt="Tooltips.buildingTT" class="selected helperTT">${building.name}</li>`)
-				}
-				foundBuildings = Object.values(Productions.AdditionalSpecialBuildings).filter(x =>!x.selected && regEx.test(JSON.stringify(x))).sort((a,b)=>(a.name>b.name?1:-1))
-				for (building of foundBuildings) {
-					$('#ProductionsRatingBody .overlay .results').append(`<li data-meta_id="${building.id}" data-era="${era}" class="helperTT" data-callback_tt="Tooltips.buildingTT">${building.name}</li>`)
+					$('#ProductionsRatingBody .overlay .results').append(`<li data-meta_id="${building.id}" data-era="${era}" data-callback_tt="Tooltips.buildingTT" class="helperTT${building.selected ? " selected":""}">${building.name}</li>`)
 				}
 			}
 			filterMeta(/./)
