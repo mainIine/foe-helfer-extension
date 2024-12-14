@@ -883,6 +883,7 @@ let Productions = {
 		}
 
 		// single view table content
+		let totalGoods = {current:0,all:0}
 		buildingIds.forEach(b => {
 			let building = CityMap.getBuildingById(b.id)
 			if (building.player_id == ExtPlayerID) {
@@ -900,7 +901,7 @@ let Productions = {
 					building: building,
 					amount: 1,
 				}
-				for (era of eras) {
+				for (let era of eras) {
 					gBuilding[era] = 0
 				}
 				updateGroup = gBuilding
@@ -912,14 +913,16 @@ let Productions = {
 			
 			let currentGoods = Productions.getBuildingProductionByCategory(true, building, type)
 			let allGoods = Productions.getBuildingProductionByCategory(false, building, type)
-
+			
 			eras.forEach(era => {
 				let currentGoodAmount = 0
 				let goodAmount = 0
 				if (allGoods != undefined) {
 					erasCurrent[era] += currentGoodAmount = currentGoods?.eras?.[era] || 0
 					erasTotal[era] += goodAmount = allGoods?.eras?.[era] || 0
-					updateGroup[era] += goodAmount = allGoods?.eras?.[era] || 0
+					updateGroup[era] += goodAmount
+					totalGoods.all += goodAmount
+					totalGoods.current +=  currentGoodAmount
 				}
 				rowA.push('<td data-number="'+goodAmount+'" class="text-center">')
 					if (currentGoodAmount != goodAmount) {
@@ -961,7 +964,7 @@ let Productions = {
 		table.push('<thead class="sticky">')
 		table.push('<tr>')
 		table.push('<th colspan="6"><span class="btn-default change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeGroups') + '</span> <input type="text" placeholder="' + i18n('Boxes.Productions.FilterTable') + '" class="filterCurrentList"></th>')
-		table.push('<th colspan="'+(eras.length)+'" class="textright"></th>')
+		table.push(`<th colspan=${eras.length} class="textright">${HTML.Format(totalGoods.current)}/${HTML.Format(totalGoods.all)}</th>`)
 		table.push('</tr>')
 		table.push('<tr class="sorter-header">')
 		table.push('<th class="no-sort" data-type="prodlist'+type+'"> </th>')
@@ -984,7 +987,8 @@ let Productions = {
 		table.push('<table class="foe-table sortable-table TSinactive '+type+'-group">')
 		table.push('<thead class="sticky">')
 		table.push('<tr>')
-		table.push('<th colspan="'+(3+eras.length)+'"><span class="btn-default change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeSingle') + '</span></th>')
+		table.push('<th><span class="btn-default change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeSingle') + '</span></th>')
+		table.push(`<th colspan=${2+eras.length} class="textright">${HTML.Format(totalGoods.current)}/${HTML.Format(totalGoods.all)}</th>`)
 		table.push('</tr>')
 		table.push('<tr class="sorter-header">')
 		table.push('<th data-type="prodgroup'+type+'" class="is-number">' + i18n('Boxes.Productions.Headings.number') + '</th>')
