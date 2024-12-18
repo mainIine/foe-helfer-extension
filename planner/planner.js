@@ -86,6 +86,7 @@ function drawEmptyMap () {
 function drawExpansion (expansion) {
     ctx.fillStyle = '#fffead'
     ctx.strokeStyle = '#cbca4a'
+    ctx.lineWidth = 0.5
 
     // ctx.fillRect((expansion.x || 0) * size, (expansion.y || 0) * size, expansion.width * size, expansion.length * size)
     // ctx.strokeRect((expansion.x || 0) * size, (expansion.y || 0) * size, expansion.width * size, expansion.length * size)
@@ -101,6 +102,9 @@ function drawExpansion (expansion) {
             });
         }
     }
+
+    ctx.strokeStyle = '#8c8a19'
+    ctx.strokeRect((expansion.x || 0) * size, (expansion.y || 0) * size, expansion.width * size, expansion.length * size)
 }
 
 function createMapGridPart(data) {
