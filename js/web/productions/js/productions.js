@@ -1954,7 +1954,7 @@ let Productions = {
 						</thead>
 						<tbody class="itemSourcesList">`
 							for (let item of Object.values(items)) {
-								h += `<tr><td onclick="Productions.updateItemSources(${JSON.stringify(item).replaceAll('"',"'")})" data-text="${helper.str.cleanup(item.name)}">${srcLinks.icons(item.id)} ${item.name}<div class="innerTable" id="item-${helper.str.cleanup(item.name)}"></div></td></tr>`
+								h += `<tr><td onclick="Productions.updateItemSources(${JSON.stringify(item).replaceAll('"',"'")})" data-text="${helper.str.cleanup(item.name)}">${srcLinks.icons(item.icon)} ${item.name}<div class="innerTable" id="item-${helper.str.cleanup(item.name)}"></div></td></tr>`
 							}
         			h +=`</tbody>
 					</table>
@@ -1965,17 +1965,21 @@ let Productions = {
 	},
 
 	buildingItemList: () => {
-		let temp = Object.assign({},...Object.values(MainParser.CityEntities).filter(b=>b.id[0]=="W").map(x=>({[x.id]:[...JSON.stringify(x).matchAll(/"name":"([^"]*?)"[^()[\]{}]*?"iconAssetName":"([^"]*?)"[^{}]*?"__class__":"GenericReward"/gm)].map(a=>({id:a[2],name:a[1]}))})))
+		let temp = Object.assign({},...Object.values(MainParser.CityEntities).filter(b=>b.id[0]=="W").map(x=>({[x.id]:[...JSON.stringify(x).matchAll(/"id":"([^"]*?)"[^()[\]{}]*?"name":"([^"]*?)"[^()[\]{}]*?"iconAssetName":"([^"]*?)"[^{}]*?"__class__":"GenericReward"/gm)].map(a=>({id:a[1],name:a[2],icon:a[3]}))})))
 		let gl = Object.values(GoodsList).map(g=>g.id)
 		let items = {}
 		for (let [building,list] of Object.entries(temp)) {
 			for (let item of list) {
-				if (gl.includes(item.id)) continue
-				if (["","icon_fragment"].includes(item.id)) continue
+				if (gl.includes(item.icon)) continue
+				if (["","icon_fragment"].includes(item.icon)) continue
+				if (/#\d+/.test(item.id)) {
+					item.id=item.id.replaceAll(/#\d+/g,'')
+					item.name=item.name.replaceAll(/\s?\d+\s?/g,'')
+				}
 				if (items[item.id]) {
 					if (!items[item.id].buildings.includes(building)) items[item.id].buildings.push(building)
 				} else {
-					items[item.id] = {name:item.name,buildings:[building],id:item.id}
+					items[item.id] = {name:item.name,buildings:[building],id:item.id,icon:item.icon}
 				}
 			}
 		}
