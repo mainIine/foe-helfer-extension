@@ -1506,7 +1506,7 @@
     "Settings.ShowGBGBuildings.Desc": "Zeigt beim Öffnen des Baumenüs einer GG Provinz eine Tabelle an mit den möglichen Gebäudekombinationen die besser sind als die aktuell vorhandene, sortiert nach relativer Beanspruchung der Gildenkasse.",
     "Settings.Entry.RepeatSelectBuilding": "Wiederholtes Bauen",
     "Settings.RepeatSelectBuilding.Title": "Wiederholtes Bauen",
-    "Settings.RepeatSelectBuilding.Desc": "Achtung - Obwohl von Inno erlaubt, kann Nutzung dieser Option trotzdem die automatischen Bot-Erkennung auslösen!!!<br><br>Nachdem ein Gebäude aus dem Baumenu oder der Umbauleiste platziert wurde, wird das gleiche Gebäude automatisch nochmal ausgewählt (Straßen ausgenommen).",
+    "Settings.RepeatSelectBuilding.Desc": " !!! Achtung - Auch wenn unwahrscheinlich, kann es bei Nutzung dieser Option dazu kommen, das Innos Bot-Erkennung ausgelöst wird mit einer damit verbundenen kurzen Sperre !!! Bitte gebt uns Bescheid, sollte es dazu kommen.<br><br>Nachdem ein Gebäude aus dem Baumenu oder der Umbauleiste platziert wurde, wird das gleiche Gebäude automatisch nochmal ausgewählt (Straßen ausgenommen).",
     "Settings.ShowPvPArena.Title": "PvP-Arena-Protokoll",
     "Settings.ShowPvPArena.Desc": "Soll das PvP-Arena-Protokoll angezeigt werden, wenn die PvP-Arena geöffnet wird?",
     "Settings.Tab.About": "Info + Website",
