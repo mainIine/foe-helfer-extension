@@ -24,6 +24,8 @@
 	- Symbole für blauen/roten Angriff in die Countdown-Liste hinzugefügt
 	- Angriffsfarben zur Karte hinzugefügt
 	- Neue Kartenansicht, die die Angriffsfarben besser sichtbar macht
+- GG Aktive Spieler:
+	- Modul entfernt auf Anfrage durch Inno 
 
 **BugFix**
 - Tooltip: 
