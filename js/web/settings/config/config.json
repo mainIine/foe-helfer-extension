@@ -158,6 +158,12 @@
 		"sort": 19
 	},
 	{
+		"name": "RepeatSelectBuilding",
+		"status": false,
+		"group": "Boxes",
+		"sort": 20
+	},
+	{
 		"name": "SelectedMenu",
 		"callback": "MenuSelected",
 		"group": "Extension",
