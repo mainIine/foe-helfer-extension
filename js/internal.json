@@ -1,5 +1,6 @@
 [
 	"srcLinks",
+	"mouseActions",
 	"_languages",
 	"_helper",
 	"_menu",
@@ -64,6 +65,5 @@
 	"worldchallenge",
 	"boost-potions",
 	"customTooltip",
-	"reconstruction",
-	"mouseActions"
+	"reconstruction"
 ]
