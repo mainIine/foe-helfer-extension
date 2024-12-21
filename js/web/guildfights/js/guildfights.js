@@ -1258,9 +1258,9 @@ let GuildFights = {
 					}, 1000);
 
 				nextup.push(`<tr id="timer-${prov[x]['id']}" class="timer" data-tab="nextup" data-id=${prov[x]['id']}>`);
-				nextup.push(`<td class="prov-name" title="${i18n('Boxes.GuildFights.Owner')}: ${prov[x]['owner']} ${battleType}">`)
+				nextup.push(`<td class="prov-name" title="${i18n('Boxes.GuildFights.Owner')}: ${prov[x]['owner']}">`)
 				nextup.push(`<span class="province-color" ${color['main'] ? 'style="background-color:' + color['main'] + '"' : ''}"></span> `)
-				nextup.push(battleType)
+				nextup.push(`<span class="smaller">${battleType}</span>`)
 				nextup.push(` <b>${prov[x]['title']}</b> `)
 				nextup.push(`</td>`);
 
