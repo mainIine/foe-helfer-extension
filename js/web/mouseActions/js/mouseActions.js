@@ -25,8 +25,8 @@ let mouseActions = {
             for (action of mouseActions.actions) {
                 let coords1=mouseActions.calcCoords(action.area[0]),
                     coords2=mouseActions.calcCoords(action.area[1]),
-                    [X1,X2]=[coords1[0]<coords2[0]?coords1[0]:coords2[0],coords1[0]<coords2[0]?coords2[0]:coords1[0]],
-                    [Y1,Y2]=[coords1[1]<coords2[1]?coords1[1]:coords2[1],coords1[1]<coords2[1]?coords2[1]:coords1[1]],
+                    [X1,X2]=coords1[0]<coords2[0]?[coords1[0],coords2[0]]:[coords2[0],coords1[0]],
+                    [Y1,Y2]=coords1[1]<coords2[1]?[coords1[1],coords2[1]]:[coords2[1],coords1[1]],
                     inside = action.area[2] ?? true
 
                 if ((X1<=X && X2>=X && Y1<=Y && Y2>=Y) ^ !inside){
