@@ -24,6 +24,8 @@
 	- Added symbols for the battle type (red/blue) to the countdown list
 	- Added attack colors to the map
 	- Added map view to highlight attack colors better
+- GBG active players:
+	- removed the module on Innos request
 
 **BugFix**
 - Tooltip: 
