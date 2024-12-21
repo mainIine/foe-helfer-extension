@@ -59,7 +59,7 @@ FoEproxy.addHandler('RewardService', 'collectReward', (data, postData) => {
 mouseActions.addAction([[-57, 151, 'Center'],[72, 173, 'Center']],()=>{
     Popgame.clearReward()
 })  
-mouseActions.addAction([[285, 298, 'Center'],[-313, -338, 'Center'],false],()=>{
+mouseActions.addAction([[284, 297, 'Center'],[-312, -337, 'Center'],false],()=>{
     Popgame.clearReward()
 })
 
