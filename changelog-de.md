@@ -9,7 +9,7 @@
 - Effizienzbewertung: Feld für Spezialproduktion abschließen Fragmente hinzugefügt
 - Stadtübersicht: Anzeigeoption für Gebäude, die eine erhabene Stufe haben und "abgelaufene" Gebäude
 - Wiederholtes Bauen:
-	- !!! ACHTUNG !!! Obwohl das Feature an sich grünes Licht von Inno bekommen hat, könnte es trotzdem vorkommen, dass die Bot-Erkennung ausgelöst wird. Benutzung auf eigene Gefahr
+	- !!! ACHTUNG !!! Obwohl das Feature an sich grünes Licht von Inno bekommen hat, könnte es trotzdem vorkommen, dass die Bot-Erkennung ausgelöst wird. Benutzung auf eigene Gefahr!!!
 	- Kann in den Einstellungen aktiviert werden
 	- Wenn ein Gebäude aus dem Baumenü oder dem Umbaulager gebaut wird, wird das gleiche Gebäude automatisch erneut ausgewählt
 

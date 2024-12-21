@@ -1503,7 +1503,7 @@
     "Settings.ShowGBGBuildings.Desc": "When opening the building menu in a GBG Province, a table is displayed, showing the possible building combinations that would be better than the current one, sorted by their relative impact on the Guild Treasury.",
     "Settings.Entry.RepeatSelectBuilding": "Repeat Building Selection",
     "Settings.RepeatSelectBuilding.Title": "Repeat last Building Selection",
-    "Settings.RepeatSelectBuilding.Desc": "Attention - Although permitted by Inno, using this option may lead to INNOs bot detection triggering!!!<br><br>After placing a building from the build menu or the reconstruction side bar will cause the same building to be selected automatically (streets excluded).",
+    "Settings.RepeatSelectBuilding.Desc": "!!! Attention - Although unlikely, using this option might trigger INNOs bot detection and may cause a short ban period !!! Please let us know should that happen.<br><br>After placing a building from the build menu or the reconstruction side bar will cause the same building to be selected automatically (streets excluded).",
     "Settings.ShowPvPArena.Title": "PvP-Arena-Protocol",
     "Settings.ShowPvPArena.Desc": "Show PvP-Arena-Protocol, when opening the PvP-Arena?",
     "Settings.Tab.About": "Info + Website",

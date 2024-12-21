@@ -9,7 +9,7 @@
 - Efficiency rating: Added FSP Fragments to the evaluation
 - City Overview: Highlight option for ascendable and decayed buildings
 - Repeat Building Selection:
-	- !!! ATTENTION !!! Although the feature was green-lit by Inno, it might happen that the bot detection triggers. Use at your own risk!
+	- !!! ATTENTION !!! Although the feature was green-lit by Inno, it might happen that the bot detection triggers. Use at your own risk!!!
 	- Can be activated in the settings
 	- When a building is built from the build menu or placed from the reconstruction storage, the same building is selected again automatically.
 
