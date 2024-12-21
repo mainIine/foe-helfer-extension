@@ -66,7 +66,7 @@ FoEproxy.addRequestHandler('CityReconstructionService', 'saveDraft', (data) => {
                 reconstruction.pageUpdate(id)
                 pagesUpdated=true
             }
-            FoEproxy.triggerFoeHelperHandler('ReconstructionBuildingPlaced',x.entityId)
+            FoEproxy.triggerFoeHelperHandler('ReconstructionBuildingPlaced',{id:x.entityId,last:(reconstruction.count[id].stored==0)})
         } else if (!x.position) {
             reconstruction.count[id].placed--
             reconstruction.count[id].stored++    
