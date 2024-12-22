@@ -20,7 +20,7 @@ let mouseActions = {
     init: async () => {
         x = new Promise((resolve) => {
             let timer = () => {
-                if ($("#openfl-content").length==0) {
+                if ($("#openfl-content canvas").length==0) {
                     setTimeout(timer,50)
                 } else {
                     resolve() 
@@ -29,10 +29,10 @@ let mouseActions = {
             timer()
         }),
         await x
-        mouseActions.targetEl= $("canvas")[0]
+        mouseActions.targetEl = $("#openfl-content canvas")[0]
         $("#openfl-content").on("click",(e) => {
-            X=e.clientX
-            Y=e.clientY
+            let X=e.clientX,
+                Y=e.clientY
             for (action of mouseActions.actions) {
                 let coords1=mouseActions.calcCoords(action.area[0]),
                     coords2=mouseActions.calcCoords(action.area[1]),
@@ -52,39 +52,12 @@ let mouseActions = {
         mouseActions.actions.push({area:area,callback:callback})
     },
 
-    simulate: (element, eventName, vars={}) => {
+    simulate: (element, eventName, options={}) => {
     
-        let options = Object.assign({
-                pointerX: 0,
-                pointerY: 0,
-                button: 0,
-                ctrlKey: false,
-                altKey: false,
-                shiftKey: false,
-                metaKey: false,
-                bubbles: true,
-                cancelable: true
-            }, vars || {}),
-            oEvent, eventType = null;
-        if (!/^(?:click|dblclick|mouse(?:down|up|over|move|out))$/.test(eventName)) return
+        if (!/^(?:click|dblclick|mouse(?:down|enter|leave|up|over|move|out))$/.test(eventName)) return
     
-        if (document.createEvent)
-        {
-            oEvent = document.createEvent('MouseEvents');
-            oEvent.initMouseEvent(eventName, options.bubbles, options.cancelable, document.defaultView,
-                options.button, options.pointerX, options.pointerY, options.pointerX, options.pointerY,
-                options.ctrlKey, options.altKey, options.shiftKey, options.metaKey, options.button, element);
-            element.dispatchEvent(oEvent);
-        }
-        else
-        {
-            options.clientX = options.pointerX;
-            options.clientY = options.pointerY;
-            var evt = document.createEventObject();
-            for (var property in options)
-                evt[property] = options[property];
-            element.fireEvent('on' + eventName, evt);
-        }
+        let oEvent = new MouseEvent(eventName,options)
+        element.dispatchEvent(oEvent)
         return ;
     },
     
@@ -126,9 +99,9 @@ let mouseActions = {
         X=Math.max(TLCoords[0] + Math.floor(Math.random()*(2*mouseActions.randomClickRadius +1)) - mouseActions.randomClickRadius,0)
         Y=Math.max(TLCoords[1] + Math.floor(Math.random()*(2*mouseActions.randomClickRadius +1)) - mouseActions.randomClickRadius,0)
     
-        mouseActions.simulate(mouseActions.targetEl, "mousemove", {pointerX:X,pointerY:Y})
+        mouseActions.simulate(mouseActions.targetEl, "mousemove", {clientX:X,clientY:Y})
         for (let i=0;i<n;i++) {
-            mouseActions.click({pointerX:X,pointerY:Y})
+            mouseActions.click({clientX:X,clientY:Y})
         }
     }
 }
