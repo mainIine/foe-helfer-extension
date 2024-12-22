@@ -18,8 +18,8 @@ FoEproxy.addHandler('BattlefieldService', 'all', (data, postData) => {
 		return;
 	}
 
-	HTML.CloseOpenBox('battleAssistNextEraDialog');
-    HTML.CloseOpenBox('battleAssistRogueDialog');
+	$('#battleAssistNextEraDialog').remove();
+    $('#battleAssistRogueDialog').remove();
 
     const state = data.responseData.__class__ === 'BattleRealm' ? data.responseData.state : data.responseData;
 
