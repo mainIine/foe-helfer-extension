@@ -17,7 +17,18 @@ let mouseActions = {
     randomClickRadius:3,
     targetEl:null,
 
-    init: () => {
+    init: async () => {
+        x = new Promise((resolve) => {
+            let timer = () => {
+                if ($("#openfl-content").length==0) {
+                    setTimeout(timer,50)
+                } else {
+                    resolve() 
+                }
+            }
+            timer()
+        }),
+        await x
         mouseActions.targetEl= $("canvas")[0]
         $("#openfl-content").on("click",(e) => {
             X=e.clientX
