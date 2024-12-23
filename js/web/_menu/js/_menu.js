@@ -15,7 +15,7 @@
 let _menu = {
 
 	isBottom: false,
-	selectedMenu: 'BottomBar',
+	selectedMenu: 'RightBar',
 	MenuScrollTop: 0,
 	MenuScrollLeft: 0,
 	SlideParts: 0,
@@ -77,19 +77,19 @@ let _menu = {
 	 * @param selMenu
 	 * @constructor
 	 */
-	CallSelectedMenu: (selMenu = 'BottomBar') => {
+	CallSelectedMenu: (selMenu = 'RightBar') => {
 
 		window.onresize = (function(event){
 			if (event.target == window) _menu.OverflowCheck()
 		})
 		
-		if (selMenu === 'BottomBar') {
-			_menu.selectedMenu = 'BottomBar';
-			_menu_bottom.BuildOverlayMenu();
-		}
-		else if (selMenu === 'RightBar') {
+		if (selMenu === 'RightBar') {
 			_menu.selectedMenu = 'RightBar';
 			_menu_right.BuildOverlayMenu();
+		}
+		else if (selMenu === 'BottomBar') {
+			_menu.selectedMenu = 'BottomBar';
+			_menu_bottom.BuildOverlayMenu();
 		}
 		else if (selMenu === 'Box') {
 			_menu.selectedMenu = 'Box';

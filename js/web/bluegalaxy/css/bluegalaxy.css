@@ -78,12 +78,6 @@
 	display: block;
 }
 
-#bluegalaxy table th {
-    position: sticky;
-    top: 0px;
-    z-index: 1;
-}
-
 #bluegalaxy table th[data-type] {
     cursor: pointer
 }

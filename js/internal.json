@@ -1,5 +1,6 @@
 [
 	"srcLinks",
+	"mouseActions",
 	"_languages",
 	"_helper",
 	"_menu",
@@ -39,6 +40,7 @@
 	"fp-collector",
 	"maptradewarning",
 	"guildmemberstat",
+	"qiprogress",
 	"quests",
 	"gexstat",
 	"dbexport",

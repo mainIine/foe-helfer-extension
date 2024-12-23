@@ -75,11 +75,6 @@ FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postDa
 	}
 });
 
-FoEproxy.addHandler("ClanService","getClanData",(data)=>{
-	if (ActiveMap != 'gg') return
-	GuildFights.otherGuilds.check(data)
-})
-
 /**
  * @type {{SettingsExport: GuildFights.SettingsExport, curDetailViewFilter: null, UpdateDB: ((function(*, *): Promise<void>)|*), GBGRound: null, PrevActionTimestamp: null, NewActionTimestamp: null, InjectionLoaded: boolean, MapData: null, BuildPlayerContent: ((function(*=): Promise<void>)|*), intiateDatePicker: ((function(): Promise<void>)|*), GBGHistoryView: boolean, LogDatePicker: null, NewAction: null, PrevAction: null, init: GuildFights.init, PrepareColors: GuildFights.PrepareColors, SetBoxNavigation: ((function(*=): Promise<void>)|*), PlayerBoxContent: *[], DeleteAlert: GuildFights.DeleteAlert, PlayerBoxSettingsSaveValues: GuildFights.PlayerBoxSettingsSaveValues, ToggleProgressList: GuildFights.ToggleProgressList, Colors: null, RefreshTable: GuildFights.RefreshTable, SetAlert: GuildFights.SetAlert, formatRange: (function(): string), GetAlertButton: (function(integer): string), Tabs: *[], ToggleCopyButton: GuildFights.ToggleCopyButton, Alerts: *[], PlayersPortraits: null, GetTabContent: (function(): string), ShowPlayerBox: GuildFights.ShowPlayerBox, CurrentGBGRound: null, showGuildColumn: number, curDateFilter: null, SortedColors: null, ShowGuildBox: GuildFights.ShowGuildBox, BuildFightContent: GuildFights.BuildFightContent, BuildDetailViewContent: ((function(*): Promise<void>)|*), SetTabContent: GuildFights.SetTabContent, BuildDetailViewLog: ((function(*): Promise<void>)|*), TabsContent: *[], GetAlerts: (function(): Promise<unknown>), UpdateCounter: GuildFights.UpdateCounter, GBGAllRounds: null, ProvinceNames: null, checkForDB: ((function(*): Promise<void>)|*), HandlePlayerLeaderboard: ((function(*): Promise<void>)|*), SetTabs: GuildFights.SetTabs, CopyToClipBoard: GuildFights.CopyToClipBoard, GetTabs: (function(): string), DeleteOldSnapshots: ((function(*=): Promise<void>)|*), PlayerBoxSettings: {showProgressFilter: number, showOnlyActivePlayers: number, showLogButton: number, showRoundSelector: number}, Neighbours: *[], curDateEndFilter: null, ShowPlayerBoxSettings: GuildFights.ShowPlayerBoxSettings, SaveLiveFightSettings: GuildFights.SaveLiveFightSettings, ShowLiveFightSettings: GuildFights.ShowLiveFightSettings, ShowDetailViewBox: GuildFights.ShowDetailViewBox}}
  */
@@ -724,10 +719,10 @@ let GuildFights = {
 			tA += playerNew['attrition']
 
 			b.push('<tr data-player="' + playerNew['player_id'] + '" data-gbground="' + gbground + '" class="' + newProgressClass + (!histView ? 'showdetailview ' : '') + (playerNew['player_id'] === ExtPlayerID ? 'mark-player ' : '') + (change === true ? 'bg-green' : '') + '">');
+			b.push('<td style="display:none;">' + playerNew.player_id + '.</td>');
+
 			b.push('<td class="tdmin">' + (parseInt(i) + 1) + '.</td>');
-
 			b.push('<td class="tdmin"><img src="' + srcLinks.GetPortrait(playerNew['avatar']) + '" alt=""></td>');
-
 			b.push('<td>' + playerNew['name'] + '</td>');
 			b.push('<td class="text-center">');
 			b.push(playerNew['negotiationsWon'] + negotaionAddOn);
@@ -767,17 +762,16 @@ let GuildFights = {
 
 		let tNF = (tN * 2) + tF;
 
-		t.push('<table id="GildPlayersTable" class="foe-table' + (histView === false ? ' chevron-right' : '') + '">');
+		t.push('<table id="GildPlayersTable" class="exportable foe-table' + (histView === false ? ' chevron-right' : '') + '">');
 
-		t.push('<thead>');
+		t.push('<thead class="sticky">');
 		t.push('<tr>');
 
-		t.push('<th class="tdmin">&nbsp;</th>');
-		t.push('<th class="tdmin">&nbsp;</th>');
-		t.push('<th>' + i18n('Boxes.GuildFights.Player') + '</th>');
-		t.push('<th class="text-center"><span class="negotiation" title="' + HTML.i18nTooltip(i18n('Boxes.GuildFights.Negotiations')) + '"></span> <strong class="text-warning">(' + HTML.Format(tN) + ')</strong></th>');
-		t.push('<th class="text-center"><span class="fight" title="' + HTML.i18nTooltip(i18n('Boxes.GuildFights.Fights')) + '"></span> <strong class="text-warning">(' + HTML.Format(tF) + ')</strong></th>');
-		t.push('<th class="text-center">' + i18n('Boxes.GuildFights.Total') + ' <strong class="text-warning">(' + HTML.Format(tNF) + ')</strong></th>');
+		t.push('<th style="display:none;" data-export="Player_ID"></th>');
+		t.push('<th colspan="3" data-export3="Player">' + i18n('Boxes.GuildFights.Player') + '</th>');
+		t.push('<th class="text-center" data-export="Negotiations"><span class="negotiation" title="' + HTML.i18nTooltip(i18n('Boxes.GuildFights.Negotiations')) + '"></span> <strong class="text-warning">(' + HTML.Format(tN) + ')</strong></th>');
+		t.push('<th class="text-center" data-export="Fights"><span class="fight" title="' + HTML.i18nTooltip(i18n('Boxes.GuildFights.Fights')) + '"></span> <strong class="text-warning">(' + HTML.Format(tF) + ')</strong></th>');
+		t.push('<th class="text-center" data-export="Total">' + i18n('Boxes.GuildFights.Total') + ' <strong class="text-warning">(' + HTML.Format(tNF) + ')</strong></th>');
 		t.push('<th class="text-center">' + i18n('Boxes.GuildFights.Attrition') + ' <strong class="text-warning">(' + HTML.Format(tA) + ')</strong></th>');
 
 		t.push('<th></th>');
@@ -796,13 +790,10 @@ let GuildFights = {
 
 				GuildFights.curDetailViewFilter = { content: 'player', player_id: player_id, gbground: gbground };
 
-				if ($('#GildPlayersDetailView').length === 0)
-				{
+				if ($('#GildPlayersDetailView').length === 0) {
 					GuildFights.ShowDetailViewBox(GuildFights.curDetailViewFilter);
 				}
-				else
-				{
-
+				else {
 					GuildFights.BuildDetailViewContent(GuildFights.curDetailViewFilter);
 				}
 			});
@@ -894,7 +885,7 @@ let GuildFights = {
 
 			h.push('<div class="pname dark-bg text-center">' + playerName + ': ' + moment.unix(gbground).subtract(11, 'd').format(i18n('DateShort')) + ` - ` + moment.unix(gbground).format(i18n('Date')) + '</div>');
 			h.push('<p class="dark-bg" style="padding:5px;margin:0;">' + i18n('Boxes.GuildFights.SnapShotLogDisclaimer') + '</p>')
-			h.push('<table id="gbgPlayerLogTable" class="foe-table gbglog"><thead>');
+			h.push('<table id="gbgPlayerLogTable" class="foe-table gbglog"><thead class="sticky">');
 			h.push('<tr class="sorter-header">');
 			h.push('<th class="is-number" data-type="gbg-playerlog-group">' + i18n('Boxes.GuildFights.Date') + '</th>');
 			h.push('<th class="is-number text-center" data-type="gbg-playerlog-group"><span class="negotiation" title="' + HTML.i18nTooltip(i18n('Boxes.GuildFights.Negotiations')) + '"></span></th>');
@@ -925,7 +916,7 @@ let GuildFights = {
 
 			detaildata.sort(function (a, b) { return b.time - a.time });
 
-			h.push('<div class="datetimepicker"><button id="gbgLogDatepicker" class="btn btn-default">' + GuildFights.formatRange() + '</button></div>');
+			h.push('<div class="datetimepicker sticky"><button id="gbgLogDatepicker" class="btn btn-default">' + GuildFights.formatRange() + '</button></div>');
 			h.push('<table id="GuildFightsLogTable" class="foe-table gbglog"><thead>');
 			h.push('<tr class="sorter-header">');
 			h.push('<th class="is-number" data-type="gbg-log-group">' + i18n('Boxes.GuildFights.Date') + '</th>');
@@ -1181,7 +1172,7 @@ let GuildFights = {
 			// If sectors doesnt belong to anyone
 			if (mapdata[i]['ownerId'] === undefined && mapdata[i]['conquestProgress'].length > 0) {
 				progress.push(`<tr id="province-${id}" data-id="${id}" data-tab="progress">`);
-				progress.push(`<td><b><span class="province-color" style="background-color:#555"></span> ${mapdata[i]['title']}</b></td>`);
+				progress.push(`<td><b><span class="province-color" style="background-color:#555"></span> ${GuildFights.MapData['title']}</b></td>`);
 
 				if (GuildFights.showGuildColumn)
 					progress.push(`<td><em>${i18n('Boxes.GuildFights.NoOwner')}</em></td>`);
@@ -1261,12 +1252,17 @@ let GuildFights = {
 			if (showCountdowns) {
 				let countDownDate = moment.unix(prov[x]['lockedUntil'] - 2),
 					color = GuildFights.SortedColors.find(e => e['id'] === prov[x]['ownerId']),
+					battleType = prov[x].isAttackBattleType ? '🔴' : '🔵',
 					intervalID = setInterval(() => {
 						GuildFights.UpdateCounter(countDownDate, intervalID, prov[x]['id']);
 					}, 1000);
 
 				nextup.push(`<tr id="timer-${prov[x]['id']}" class="timer" data-tab="nextup" data-id=${prov[x]['id']}>`);
-				nextup.push(`<td class="prov-name" title="${i18n('Boxes.GuildFights.Owner')}: ${prov[x]['owner']}"><span class="province-color" ${color['main'] ? 'style="background-color:' + color['main'] + '"' : ''}"></span> <b>${prov[x]['title']}</b></td>`);
+				nextup.push(`<td class="prov-name" title="${i18n('Boxes.GuildFights.Owner')}: ${prov[x]['owner']}">`)
+				nextup.push(`<span class="province-color" ${color['main'] ? 'style="background-color:' + color['main'] + '"' : ''}"></span> `)
+				nextup.push(`<span class="smaller">${battleType}</span>`)
+				nextup.push(` <b>${prov[x]['title']}</b> `)
+				nextup.push(`</td>`);
 
 				GuildFights.UpdateCounter(countDownDate, intervalID, prov[x]['id']);
 
@@ -1371,7 +1367,8 @@ let GuildFights = {
 
 		copycache.sort(function (a, b) { return a.lockedUntil - b.lockedUntil });
 		copycache.forEach((mapElem) => {
-			copy += `${moment.unix(mapElem.lockedUntil - 2).format('HH:mm')} ${mapElem.title}\n`;
+			let battleType = mapElem.isAttackBattleType ? '🔴' : '🔵';
+			copy += `${moment.unix(mapElem.lockedUntil - 2).format('HH:mm')} ${mapElem.title} ${battleType}\n`;
 		});
 
 		if (copy !== '')
@@ -1578,15 +1575,14 @@ let GuildFights = {
 		c.push(`<p class="text-left"><input id="gf_showProgressFilter" name="showprogressfilter" value="1" type="checkbox" ${(Settings.showProgressFilter === 1) ? ' checked="checked"' : ''} /> <label for="gf_showProgressFilter">${i18n('Boxes.GuildFights.ShowProgressFilter')}</label></p>`);
 		c.push(`<p class="text-left"><input id="gf_showLogButton" name="showlogbutton" value="1" type="checkbox" ${(Settings.showLogButton === 1) ? ' checked="checked"' : ''} /> <label for="gf_showLogButton">${i18n('Boxes.GuildFights.ShowLogButton')}</label></p>`);
 		c.push(`<p><button id="save-GuildFightsPlayerBox-settings" class="btn btn-default" style="width:100%" onclick="GuildFights.PlayerBoxSettingsSaveValues()">${i18n('Boxes.General.Save')}</button></p>`);
-		c.push(`<hr><p>${i18n('Boxes.General.Export')}: <button class="btn btn-default" onclick="GuildFights.SettingsExport('csv')" title="${HTML.i18nTooltip(i18n('Boxes.General.ExportCSV'))}">CSV</button>`);
-		c.push(`<button class="btn btn-default" onclick="GuildFights.SettingsExport('json')" title="${HTML.i18nTooltip(i18n('Boxes.General.ExportJSON'))}">JSON</button></p>`);
+		c.push(`<hr><p>${i18n('Boxes.General.Export')}: <span class="btn-group"><button class="btn btn-default" onclick="HTML.ExportTable($('#GildPlayersTable'),'csv','GBG-PlayerList')" title="${HTML.i18nTooltip(i18n('Boxes.General.ExportCSV'))}">CSV</button>`);
+		c.push(`<button class="btn btn-default" onclick="HTML.ExportTable($('#GildPlayersTable'),'json','GBG-PlayerList')" title="${HTML.i18nTooltip(i18n('Boxes.General.ExportJSON'))}">JSON</button></span></p>`);
 
 		$('#GildPlayersSettingsBox').html(c.join(''));
 	},
 
 
 	PlayerBoxSettingsSaveValues: () => {
-
 		GuildFights.PlayerBoxSettings.showRoundSelector = $("#gf_showRoundSelector").is(':checked') ? 1 : 0;
 		GuildFights.PlayerBoxSettings.showProgressFilter = $("#gf_showProgressFilter").is(':checked') ? 1 : 0;
 		GuildFights.PlayerBoxSettings.showLogButton = $("#gf_showLogButton").is(':checked') ? 1 : 0;
@@ -1595,51 +1591,7 @@ let GuildFights = {
 
 		$(`#GildPlayersSettingsBox`).fadeToggle('fast', function () {
 			$(this).remove();
-
 			GuildFights.BuildPlayerContent(GuildFights.CurrentGBGRound);
-
-		});
-
-	},
-
-
-	SettingsExport: (type) => {
-
-		let blob, file;
-		let BOM = "\uFEFF";
-
-		if (type === 'json') {
-			let json = JSON.stringify(GuildFights.PlayerBoxContent);
-
-			blob = new Blob([BOM + json], {
-				type: 'application/json;charset=utf-8'
-			});
-			file = `ggfights-${ExtWorld}.json`;
-		}
-
-		else if (type === 'csv') {
-			let csv = [];
-
-			for (let i in GuildFights.PlayerBoxContent) {
-				if (!GuildFights.PlayerBoxContent.hasOwnProperty(i)) {
-					break;
-				}
-
-				let r = GuildFights.PlayerBoxContent[i];
-				console.log(r);
-				csv.push(`${r['player_id']};${r['player']};${r['negotiationsWon']};${r['battlesWon']};${r['attrition']};${r['total']}`);
-			}
-
-			blob = new Blob([BOM + csv.join('\r\n')], {
-				type: 'text/csv;charset=utf-8'
-			});
-			file = `ggfights-${ExtWorld}.csv`;
-		}
-
-		MainParser.ExportFile(blob, file);
-
-		$(`#GildPlayersSettingsBox`).fadeToggle('fast', function () {
-			$(this).remove();
 		});
 	},
 
@@ -1781,50 +1733,7 @@ let GuildFights = {
 				GuildFights.ShowGuildBox(true)
 			);
 		});
-	},
-
-	otherGuilds: {
-		members:{},
-		currentClan:null,
-		last:null,
-		check: (data) => {
-			id = data.responseData.id
-			if (id==ExtGuildID) return
-			let m=data.responseData.members
-			time = moment()
-			if (id!=GuildFights.otherGuilds.currentClan || GuildFights.otherGuilds.last.diff(time)>300000) {
-				GuildFights.otherGuilds.currentClan = id 
-				GuildFights.otherGuilds.members = {}
-				for (x of m) GuildFights.otherGuilds.members[x.name] = x.won_battles;
-			} else {
-				let actives=[]
-				for (x of m) if (GuildFights.otherGuilds.members[x.name] < x.won_battles) {
-					actives.push(x.name)
-					GuildFights.otherGuilds.members[x.name] = x.won_battles
-				}
-				if (Object.values(actives).length>0) GuildFights.otherGuilds.show(data.responseData.name,actives)
-			}
-			GuildFights.otherGuilds.last=time
-		},
-		show: (guildName,list)=> {
-			if(!Settings.GetSetting('ShowOtherGuildActivity')) return;
-			if ($('#OtherGuildActivity').length === 0) {
-				//HTML.AddCssFile('');
-				HTML.Box({
-					'id': 'OtherGuildActivity',
-					'title': i18n('Boxes.OtherGuildActivity.Title'),
-					'auto_close': true,
-					'minimize': true,
-					'dragdrop': true
-				});
-			}
-			let body=`<h2 style="text-align:center">${guildName}</h2><ul>`;
-			for (let x of list) body += `<li>${x}</li>`
-			body +=`<ul>`;
-			$('#OtherGuildActivityBody').html(body);
-		}
-	}
-	
+	},	
 };
 
 /**
@@ -1917,6 +1826,7 @@ let ProvinceMap = {
 
 		ProvinceMap.Map = document.createElement("canvas");
 		ProvinceMap.MapCTX = ProvinceMap.Map.getContext('2d');
+		ProvinceMap.view = "guildType";
 
 		$(ProvinceMap.Map).attr({
 			id: 'province-map',
@@ -1929,12 +1839,16 @@ let ProvinceMap = {
 			id: 'province-map-wrap',
 		});
 		$(wrapper).html(ProvinceMap.Map);
-		$('#ProvinceMapBody').html(wrapper).append('<span id="zoomGBGMap" class="btn-default">'+i18n('Boxes.GvGMap.Action.Zoom')+'</span>');
+		$('#ProvinceMapBody').html(wrapper).append('<span id="zoomGBGMap" class="btn-default">'+i18n('Boxes.GvGMap.Action.Zoom')+'</span><span id="switchGBGMap" class="btn-default">'+i18n('Boxes.GuildFights.Switch')+'</span>');
 		
 		ProvinceMap.mapDrag();
 
 		$('#zoomGBGMap').click(function (e) {
 			$('#province-map').toggleClass('zoomed');
+		});
+		$('#switchGBGMap').click(function (e) {
+			ProvinceMap.view = ProvinceMap.view == "battleType" ? "guildType" : "battleType";
+			ProvinceMap.BuildMap();
 		});
 
 		ProvinceMap.MapCTX.strokeStyle = ProvinceMap.StrokeColor;
@@ -1952,6 +1866,7 @@ let ProvinceMap = {
 			this.short = data.short;
 			this.links = data.links;
 			this.flag = data.flag;
+			this.battleType = data.battleType;
 			this.isSpawnSpot = data.isSpawnSpot;
 			this.owner = {
 				id: data.ownerID,
@@ -1969,7 +1884,7 @@ let ProvinceMap = {
 		}
 
 		Province.prototype.updateMapSector = function () {
-			this.drawMapSector(GuildFights.MapData.map['id']);
+			this.drawMapSector(GuildFights.MapData.map['id']); 
 		}
 
 		Province.prototype.drawMapSector = function (mapType = 'waterfall_archipelago') {
@@ -2008,6 +1923,11 @@ let ProvinceMap = {
 			else {
 				ProvinceMap.MapCTX.fillStyle = sector.owner.colors.highlight;
 
+				if (ProvinceMap.view == "battleType" && sector.battleType == "red" && sector.owner.colors.cid !== "own_guild_colour")
+					ProvinceMap.MapCTX.fillStyle = "#cf401e";
+				else if (ProvinceMap.view == "battleType" && sector.battleType == "blue" && sector.owner.colors.cid !== "own_guild_colour")
+					ProvinceMap.MapCTX.fillStyle = "#4a98dd";
+
 				if (mapType === 'volcano_archipelago') 
 					sector.drawSectorShape();
 				else
@@ -2016,11 +1936,11 @@ let ProvinceMap = {
 				mapStuff.y = mapStuff.y - 20;
 				
 				if (sector.lockedUntil === undefined && sector.conquestProgress.length === 0) 
-					sector.drawTitleAndSlots(true, mapStuff.x, mapStuff.y);
+					sector.drawTitleAndSlots(mapType, true, mapStuff.x, mapStuff.y);
 				else {
 					if (mapType === 'waterfall_archipelago') 
 						mapStuff.y = mapStuff.y - 10;
-					sector.drawTitleAndSlots(false, mapStuff.x, mapStuff.y);
+					sector.drawTitleAndSlots(mapType, false, mapStuff.x, mapStuff.y);
 				}
 
 				mapStuff.y = mapStuff.y+23;
@@ -2043,7 +1963,7 @@ let ProvinceMap = {
 			ProvinceMap.MapCTX.fillText(provinceUnlockTime,mapStuff.x,mapStuff.y+5);
 		}
 
-		Province.prototype.drawTitleAndSlots = function(drawCentered = true, x, y) {
+		Province.prototype.drawTitleAndSlots = function(mapType, drawCentered = true, x, y) {
 			let titleY = y;
 			let slotsY = y - 20;
 			if (drawCentered) {
@@ -2051,9 +1971,28 @@ let ProvinceMap = {
 				slotsY = y - 10;
 			}
 
-			ProvinceMap.MapCTX.font = 'bold 30px Arial';
+			// do not draw dots for own sectors
+			if (this.owner.colors.cid != "own_guild_colour") {
+				ProvinceMap.MapCTX.strokeStyle = '#000';
+
+				ProvinceMap.MapCTX.beginPath();
+				ProvinceMap.MapCTX.arc(x-36, titleY+12, 5, 0, 2*Math.PI);
+
+				ProvinceMap.MapCTX.fillStyle = '#f00';
+				if (this.battleType == 'blue')
+					ProvinceMap.MapCTX.fillStyle = '#00f';
+	
+				if (ProvinceMap.view == "battleType")
+					ProvinceMap.MapCTX.fillStyle = this.owner.colors.highlight;
+				ProvinceMap.MapCTX.stroke();
+				ProvinceMap.MapCTX.fill();
+			}
+
 			ProvinceMap.MapCTX.strokeStyle = '#fff5';
+
+			ProvinceMap.MapCTX.font = 'bold 28px Arial';
 			ProvinceMap.MapCTX.strokeText(this.short, x, titleY);
+
 			ProvinceMap.MapCTX.fillStyle = '#000';
 			ProvinceMap.MapCTX.fillText(this.short, x, titleY);
 			
@@ -2065,6 +2004,7 @@ let ProvinceMap = {
 					slots = '··';
 				else if (this.totalBuildingSlots == 3)
 					slots = '···';
+	
 				ProvinceMap.MapCTX.strokeText(slots, x, slotsY);
 				ProvinceMap.MapCTX.fillText(slots, x, slotsY);
 			}
@@ -2164,6 +2104,7 @@ let ProvinceMap = {
 				};
 
 				let prov = GuildFights.MapData['map']['provinces'][i.id];
+				data.battleType = prov.isAttackBattleType ? 'red' : 'blue';
 
 				if (prov['ownerId']) {
 					data.ownerID = prov['ownerId'];
@@ -2220,7 +2161,6 @@ let ProvinceMap = {
 	 * @constructor
 	 */
 	RefreshSector: (socketData = []) => {
-		// TO DO: check sector unlock times and refresh
 		let updatedProvince = ProvinceMap.Provinces.find(p => p.id === 0); // first sector does not have an ID, make it the default one
 
 		if (socketData['id'] !== undefined) 
@@ -2236,8 +2176,6 @@ let ProvinceMap = {
 			updatedProvince.owner.id = socketData.ownerId;
 			updatedProvince.owner.colors = ProvinceMap.getSectorColors(socketData.ownerId);
 		}
-
-		//GuildFights.MapData.map.provinces[socketData['id'] || 0] = updatedProvince;
 
 		updatedProvince.updateMapSector();
 	},

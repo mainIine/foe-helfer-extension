@@ -135,20 +135,28 @@ let EventPresents = {
 
         for (let present of EventPresents.Presents) {
             let icon;
+            let frag = ""
 
             if (present.status.value !== "used") {
                 h.push('<tr class="'+present.status.value+'">');
 
                 if(present.reward.type === "unit") {
-                    if(Unit.CoordsRaw) {
-                        icon = `<span class="unit_icon ${present.reward.subType}"></span>`;
-                    }
-
+                    asset = present.reward.subType
+                } else if (present.reward.type=="building") {
+                    asset =  MainParser.CityEntities[present.reward.subType].asset_id
                 } else {
-                    icon = `<img src="${srcLinks.getReward(present.reward.iconAssetName)}" alt="">`;
+                    asset =  present.reward.iconAssetName
                 }
+                if (asset == "icon_fragment") {
+                    if (present.reward.assembledReward.type=="building") 
+                        asset = MainParser.CityEntities[present.reward.assembledReward.subType].asset_id
+                    else 
+                        asset = present.reward.assembledReward.iconAssetName
+                    frag = '<span class="fragment">'+srcLinks.icons("icon_tooltip_fragment")+'</span>';
+                }  
+                icon = `<img src="${srcLinks.getReward(asset)}" alt="">`;
 
-                h.push('<td>'+ (icon.search("antiquedealer_flag") === -1 ? icon : '') + '</td>');
+                h.push('<td class="icon">'+ (icon.search("antiquedealer_flag") === -1 ? icon : '') + frag + '</td>');
                 h.push('<td>' + present.reward.name + (present.status.value === "visible" ? '<img class="visible" src="' + extUrl + 'css/images/hud/open-eye.png" alt="">' : '') +'</td>');
                 h.push('</tr>');
             }

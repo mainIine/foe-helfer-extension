@@ -1034,7 +1034,14 @@ FoEproxy.addHandler('GuildExpeditionService', 'getOverview', (data, postData) =>
 FoEproxy.addHandler('GuildExpeditionNotificationService', 'GuildExpeditionStateNotification', (data, postData) => {
     if (data.responseData) GExAttempts.updateState(data.responseData)
 });
-
+FoEproxy.addHandler('GuildExpeditionService', 'getState', (data, postData) => {
+    for (let x of data.responseData) {
+        if (!x.currentEntityId) continue;
+        GExAttempts.state.GEprogress = x.currentEntityId;
+		localStorage.setItem('GEx.state',JSON.stringify(GExAttempts.state))
+		GExAttempts.refreshGUI()
+    }
+});
 let GExAttempts = {
 	count:0,
 	next:null,
@@ -1046,6 +1053,7 @@ let GExAttempts = {
 	},
 	deactivationTimer:null,
 	activationTimer:null,
+	last:null,
 
 	refreshGUI:()=>{
 		//hidenumber when GE completed, not running or out of attempts
@@ -1090,10 +1098,15 @@ let GExAttempts = {
 	setNext:(time)=>{
 		let timer=3600000
 	
-		if (time) 
+		if (time) { 
 			timer = (time-GameTime+3600)*1000
-		else 
-			GExAttempts.setCount(Math.min(GExAttempts.count + 1,8))
+			GExAttempts.last = time
+		} else {
+			let amount = Math.floor((moment().unix() - GExAttempts.last + 100)/3600)
+			GExAttempts.setCount(Math.min(GExAttempts.count + amount,8))
+			GExAttempts.last += 3600*amount
+			timer = (GExAttempts.last - moment().unix() + 3600)*1000
+		} 
 
 		if (GExAttempts.next) clearTimeout(GExAttempts.next)
 		

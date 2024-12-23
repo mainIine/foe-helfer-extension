@@ -1,15 +1,58 @@
+#TooltipContainer.window-box {
+	border: 2px solid #2a2c27;
+	background: #343832;
+	color: #f7f4ed;
+}
+
+#TooltipContainer.window-box .foe-table tr td {
+	border-top: 1px solid #fff3;
+    border-bottom: 1px solid #0004;
+}
+
+#TooltipContainer.window-box .foe-table th {
+    background: #0004;
+    box-shadow: inset 0 0 0 2000px var(--black-50), 0 1px 0 0 #fff3, 0 2px 0 0 #0004;
+}
+
+.buildingTT table.foe-table tbody tr:nth-child(odd), .buildingTT .foe-table li:nth-child(odd) {
+    background-color: #fff1;
+    backdrop-filter: none;
+}
+
+.buildingTT {
+    width: min-content;
+}
+
+.buildingTT h2 {
+    padding: 0.2em 0.5em;
+    color: #f2ede1;
+    background-color: #0002;
+}
+
+.buildingTT .imgContainer {
+    min-width:150px; 
+    max-width:150px; 
+    vertical-align:top
+}
+
+.buildingTT .imgContainer img {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+}
+
 .HXBuilding th {
     border-bottom: unset;
 }
 .HXBuilding td {
     width: 300px;
     display: flex;
-    white-space-collapse: preserve;
-    text-wrap-mode: nowrap;
+    white-space: nowrap;
 }
 .HXBuilding img {
     padding-right: 3px;
     max-width: 24px;
+    max-height: 25px;
 }
 .HXBuilding .multiCol {
     flex-wrap: wrap;
@@ -84,9 +127,12 @@
 .HXBuilding .limited img{
     align-self: flex-start;
 }
+.HXBuilding .allyName {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 0.5em;
+}
 
-
-      
 @keyframes bounce {
     0% {  transform: translateX(0%)    }
     30% {  transform: translateX(0%)    }

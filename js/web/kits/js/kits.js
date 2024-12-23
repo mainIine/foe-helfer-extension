@@ -474,7 +474,7 @@ let Kits = {
 			
 			if (!GroupName) {
 				t += '<div class="item-row'+ (!show ? " all-missing" : "") + favClass + '">'
-				t += `<h2 class="head">` + favourite + ChainSetIco +' '+ KitText + (ChainSetIco!="" ? "": eff) + upgrades + '</h2>'
+				t += `<h2 class="head sticky">` + favourite + ChainSetIco +' '+ KitText + (ChainSetIco!="" ? "": eff) + upgrades + '</h2>'
 			}
 			if(buildings.length) {
 				buildings.forEach((building) => {

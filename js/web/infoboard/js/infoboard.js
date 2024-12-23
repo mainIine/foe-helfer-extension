@@ -121,7 +121,7 @@ let Infoboard = {
             h = [];
 
         // Filter
-        h.push('<div class="filter-row">');
+        h.push('<div class="filter-row sticky">');
 
         h.push('<div class="dropdown">');
         h.push('<input type="checkbox" class="dropdown-checkbox" id="infobox-checkbox-toggle"><label class="dropdown-label game-cursor" for="infobox-checkbox-toggle">' + i18n('Boxes.Infobox.Filter') + '</label><span class="arrow"></span>');
@@ -191,7 +191,7 @@ let Infoboard = {
      * @param dir
      * @param data
      */
-    HandleMessage: (dir, data) => {
+    HandleMessage: async (dir, data) => {
 
         let Msg = data[0];
 
@@ -213,7 +213,7 @@ let Infoboard = {
             return;
         }
 
-        let bd = Info[s](Msg['responseData']);
+        let bd = await Info[s](Msg['responseData']);
 
         if (!bd) {
             return;
@@ -521,9 +521,19 @@ let Info = {
      * @param d
      * @returns {{msg: string, type: string, class: string}}
      */
-    GuildBattlegroundService_getProvinces: (d) => {
+    GuildBattlegroundService_getProvinces: async (d) => {
 
-        GuildFights.PrepareColors();
+        x = new Promise((resolve) => {
+            let timer = () => {
+                if (!GuildFights.SortedColors) {
+                    setTimeout(timer,50)
+                } else {
+                    resolve() 
+                }
+            }
+            timer()
+        }),
+        await x
 
         let data = d[0];
 

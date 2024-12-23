@@ -21,11 +21,6 @@
   overflow: auto;
 }
 
-#foundGB th {
-  position:sticky;
-  top:0px;
-}
-
 #foundGB .progress {
   background: linear-gradient(90deg, var(--background-table-success) 0, var(--background-table-success) var(--p), transparent var(--p), transparent)
 }

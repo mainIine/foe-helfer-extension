@@ -292,15 +292,6 @@
 	background-color: var(--background-color-special);
 	border-color: var(--border-color-special);
 }*/
-#grid-outer span.noStreet.highlight {
-	background-color: var(--background-color-noStreet);
-	border-color: var(--border-color-noStreet);
-	animation-name: color;
-    animation-duration: 1s;
-	animation-iteration-count: infinite;
-	animation-direction: alternate;
-	animation-timing-function: ease-in-out;
-}
 /*#grid-outer span.chain {
 	background-color: var(--background-color-chain);
 	border-color: var(--border-color-chain);
@@ -349,17 +340,35 @@
 }
 
 /* mark old buildings*/
-span.older-1.diagonal {
+#grid-outer span.older-1.diagonal {
 	background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, rgb(128, 152, 93) 2px, rgb(128, 152, 93) 7px)
 }
-span.older-2.diagonal {
+#grid-outer span.older-2.diagonal {
 	background-image: repeating-linear-gradient(317deg, transparent, transparent 5px, rgb(133, 95, 14) 2px, rgb(133, 95, 14) 7px)
 }
-span.older-3.diagonal {
+#grid-outer span.older-3.diagonal {
 	background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, rgb(165, 74, 62) 2px, rgb(165, 74, 62) 7px);
 }
-span.to-old.diagonal {
+#grid-outer span.to-old.diagonal {
 	background-image: repeating-linear-gradient(202deg, transparent, transparent 5px, rgb(171, 26, 13) 2px, rgb(171, 26, 13) 7px)
+}
+#grid-outer span.noStreet.highlight {
+	background-color: var(--background-color-noStreet);
+	border-color: var(--border-color-noStreet);
+	animation-name: color;
+    animation-duration: 1s;
+	animation-iteration-count: infinite;
+	animation-direction: alternate;
+	animation-timing-function: ease-in-out;
+}
+#grid-outer span.ascendable.highlight2 {
+	background-color: var(--background-color-ascendable);
+	border-color: var(--border-color-ascendable);
+}
+#grid-outer span.decayed.highlight3 {
+	background-image: linear-gradient(45deg, transparent 50%, var(--background-color-ascendable) 50%);
+	background-color: var(--background-color-decayed);
+	border-color: var(--border-color-decayed);
 }
 
 [data-view="skew"] .older-1.diagonal {

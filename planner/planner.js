@@ -58,16 +58,16 @@ function drawMap () {
     let city = Object.values(cityData)
     mapBuildings = []
 
-    if (mapData != undefined) {
+    if (mapData !== undefined) {
         for (let expansion of mapData) {
             drawExpansion(expansion)
         }
     }
 
     for (let building of city) {
-        let buildingData = Object.values(metaData).find(x => x.id == building.cityentity_id)
+        let buildingData = Object.values(metaData).find(x => x.id === building.cityentity_id)
 
-        if (buildingData.type != "off_grid" && buildingData.type != "outpost_ship" && buildingData.type != "friends_tavern" && !buildingData.type.includes("hub")) {
+        if (buildingData.type !== "off_grid" && buildingData.type !== "outpost_ship" && buildingData.type !== "friends_tavern" && !buildingData.type.includes("hub")) {
             let newBuilding = new MapBuilding(building, buildingData)
             mapBuildings.push(newBuilding)
             newBuilding.draw()
@@ -86,9 +86,33 @@ function drawEmptyMap () {
 function drawExpansion (expansion) {
     ctx.fillStyle = '#fffead'
     ctx.strokeStyle = '#cbca4a'
+    ctx.lineWidth = 0.5
 
-    ctx.fillRect((expansion.x || 0) * size, (expansion.y || 0) * size, expansion.width * size, expansion.length * size)
+    // ctx.fillRect((expansion.x || 0) * size, (expansion.y || 0) * size, expansion.width * size, expansion.length * size)
+    // ctx.strokeRect((expansion.x || 0) * size, (expansion.y || 0) * size, expansion.width * size, expansion.length * size)
+
+    // draw the 1x1 squares for each expansion
+    for (let a = 0; a < expansion.length; a++)
+    {
+        for (let b = 0; b < expansion.width; b++)
+        {
+            createMapGridPart({
+                x: ((expansion.x === undefined || isNaN(expansion.x)) ? 0 : expansion.x) + a,
+                y: (expansion.y === undefined ? 0 : expansion.y) + b
+            });
+        }
+    }
+
+    ctx.strokeStyle = '#8c8a19'
     ctx.strokeRect((expansion.x || 0) * size, (expansion.y || 0) * size, expansion.width * size, expansion.length * size)
+}
+
+function createMapGridPart(data) {
+    let top = data.y * size,
+        left = data.x * size;
+
+    ctx.fillRect(left, top, size, size);
+    ctx.strokeRect(left, top, size, size);
 }
 
 class MapBuilding {
@@ -106,31 +130,31 @@ class MapBuilding {
 
     needsStreet = function() {
         let needsStreet = this.meta.requirements?.street_connection_level
-        if (needsStreet == undefined) {
+        if (needsStreet === undefined) {
             this.meta.abilities.forEach(ability => {
-                if (ability.__class__ == "StreetConnectionRequirementComponent")
+                if (ability.__class__ === "StreetConnectionRequirementComponent")
                     needsStreet = 1
             });
-            if (this.meta.components?.AllAge?.streetConnectionRequirement != undefined)
+            if (this.meta.components?.AllAge?.streetConnectionRequirement !== undefined)
                 needsStreet = this.meta.components.AllAge.streetConnectionRequirement.requiredLevel
         }
-        return (needsStreet == undefined ? 0 : needsStreet)
+        return (needsStreet === undefined ? 0 : needsStreet)
     }
 
     setColorByType = function() {
         let color = '#888'
     
-        if (this.meta.type == 'main_building')
+        if (this.meta.type === 'main_building')
             color = '#ffb300'
-        else if (this.meta.type == 'military')
+        else if (this.meta.type === 'military')
             color = '#fff'
-        else if (this.meta.type == 'greatbuilding')
+        else if (this.meta.type === 'greatbuilding')
             color = '#e6542f'
-        else if (this.meta.type == 'residential')
+        else if (this.meta.type === 'residential')
             color = '#7abaff'
-        else if (this.meta.type == 'production')
+        else if (this.meta.type === 'production')
             color = '#416dff'
-        if (this.needsStreet() == 0)
+        if (this.needsStreet() === 0)
             color = '#793bc9'
     
         return color
@@ -206,7 +230,7 @@ class MapBuilding {
 function redrawMap () {
     ctx.clearRect(0,0,canvas.width,canvas.height)
 
-    if (mapData != undefined) {
+    if (mapData !== undefined) {
         for (let expansion of mapData) {
             drawExpansion(expansion)
         }
@@ -233,18 +257,18 @@ function showStoredBuildings () {
 
     // generate amount
     for (let building of storedBuildings) {
-        if (building.meta.type == 'street') continue
+        if (building.meta.type === 'street') continue
         let amount = buildingsAmount.get(building.meta.id)
         
-        if (amount == undefined) 
+        if (amount === undefined)
             buildingsAmount.set(building.meta.id, 1)
         else 
             buildingsAmount.set(building.meta.id, ++amount)
     }
 
     buildingsAmount.forEach((amount, buildingId) => {
-        let building = storedBuildings.find(x => x.meta.id == buildingId)
-        let noStreet = (building.needsStreet() == 0) ? ' nostreet' : ''
+        let building = storedBuildings.find(x => x.meta.id === buildingId)
+        let noStreet = (building.needsStreet() === 0) ? ' nostreet' : ''
         html.push('<li id="'+building.meta.id+'" class="'+building.meta.type + noStreet+'">'+
             '<span class="name">'+building.meta.name + ' (' + (building.meta.length || building.meta.components.AllAge.placement.size.y)+'x'+(building.meta.width || building.meta.components.AllAge.placement.size.x) +')</span>' +
             '<span class="amount">'+(amount > 1 ? amount : '')+'</span></li>'

@@ -57,8 +57,6 @@
 	background-color: #3f2a1b;
 	color: var(--text-bright);
 	padding-top: 15px;
-	position: sticky;
-	top: 0;
 }
 #Productions #ProductionsBody table tr.highlight-row {
 	background-color: rgba(40, 18, 7, 0.8);
@@ -72,8 +70,6 @@
 	line-height: 18px;
 }
 #Productions #ProductionsBody table thead {
-	position: sticky;
-	top: 0;
 	background-color: rgba(0, 0, 0, 0.35);
 }
 #Productions #ProductionsBody table thead th small {
@@ -118,6 +114,12 @@
 #Productions #ProductionsBody .tabs ul li a span, #Productions th.boost span {
 	background: transparent url('../images/productions.png') -233px 2px no-repeat;
 }
+#Productions #ProductionsBody .tabs ul li.forge_points_production, #Productions #ProductionsBody .tabs ul li.coin_production, #Productions #ProductionsBody .tabs ul li.supply_production {
+	display: none;
+}
+#Productions #ProductionsBody .btn-tight.typeBoost {
+	border-radius: 3px;
+}
 #Productions th.boost span {
 	height: 25px;
 	display: block;
@@ -144,6 +146,17 @@
 	background-repeat: no-repeat;
 	background-position: center center, -312px 0px;
 }
+#ProductionsRatingBody.tilevalues .buildingvalue {
+		display: none;
+}
+#ProductionsRatingBody:not(.tilevalues) .tilevalue {
+		display: none;
+}
+
+#ProductionsRatingBody.showitems .items {
+		display: none;
+}
+
 #ProductionsRating #ProductionsRatingBody span.resicon.def_boost_attacker-guild_expedition {
 	background-position: center center, -366px 0px;
 }
@@ -152,6 +165,9 @@
 }
 #ProductionsRating #ProductionsRatingBody span.resicon.def_boost_defender-guild_expedition {
 	background-position: center center, -391px 0px;
+}
+#ProductionsRating #ProductionsRatingBody span.resicon.fsp {
+	background-position: -762px 0px;
 }
 #ProductionsRating #ProductionsRatingBody th i {
 	display: block;
@@ -270,10 +286,18 @@
 	color: var(--text-bright);
 	font-weight: 600;
 }
-#ProductionsRating #ProductionsRatingBody tr.highlighted-explained, #ProductionsRating #ProductionsRatingBody .only-highlighted tr {
+#ProductionsRating #ProductionsRatingBody tr.highlighted-explained, 
+#ProductionsRating .showhighlighted tbody tr {
 	display: none;
 }
-#ProductionsRating #ProductionsRatingBody tr.highlighted-explained.highlighted-explained, #ProductionsRating #ProductionsRatingBody .only-highlighted tr.highlighted-explained, #ProductionsRating #ProductionsRatingBody tr.highlighted-explained.highlighted, #ProductionsRating #ProductionsRatingBody .only-highlighted tr.highlighted, #ProductionsRating #ProductionsRatingBody tr.highlighted-explained.highlighted2, #ProductionsRating #ProductionsRatingBody .only-highlighted tr.highlighted2, #ProductionsRating #ProductionsRatingBody tr.highlighted-explained.additional, #ProductionsRating #ProductionsRatingBody .only-highlighted tr.additional {
+#ProductionsRating #ProductionsRatingBody tr.highlighted-explained.highlighted-explained, 
+#ProductionsRating #ProductionsRatingBody tr.highlighted-explained.highlighted, 
+#ProductionsRating #ProductionsRatingBody tr.highlighted-explained.highlighted2, 
+#ProductionsRating #ProductionsRatingBody tr.highlighted-explained.additional, 
+#ProductionsRating .showhighlighted tbody tr.highlighted-explained, 
+#ProductionsRating .showhighlighted tbody tr.highlighted, 
+#ProductionsRating .showhighlighted tbody tr.highlighted2, 
+#ProductionsRating .showhighlighted tbody tr.additional {
 	display: table-row;
 }
 #ProductionsRating #ProductionsRatingBody tr.highlighted-explained td {
@@ -451,9 +475,7 @@
 	float: right;
 	margin-right: 5px;
 }
-#ProductionsRating #ProductionsRatingBody .tilevalue {
-	display: none;
-}
+
 input[id*="ProdPerTile"] {
 	width: 100px;
 }
@@ -463,10 +485,7 @@ input[id*="ProdPerTile"] {
 }
 #ProductionsRating #ProductionsRatingBody table thead {
 	font-size: 85%;
-	position: sticky;
-	top: 0;
 	cursor: pointer;
-	z-index: 1;
 }
 #ProductionsRating #ProductionsRatingBody table td {
 	font-size: 85%;
@@ -553,4 +572,39 @@ input[id*="ProdPerTile"] {
 }
 #ProductionsRating #ProductionsRatingBody span.resicon.goods-previous {
 	background-position: -524px 2px;
+}
+#ItemSources {
+	height: 500px;
+}
+#ItemSourcesBody div {
+	overflow-y: auto;
+	height: 100%;
+}
+#ItemSourcesBody img {
+	width: 25px;
+}
+#ItemSourcesBody table {
+	width: 100%;
+}
+#ItemSourcesBody td {
+	background-image: url('../../../../css/images/hud/chevron-down.svg');
+    background-size: 20px 20px;
+    background-position: right 5px;
+    background-repeat: no-repeat;
+}
+#ItemSourcesBody td.open {
+	background-image: url('../../../../css/images/hud/chevron-left.svg');
+}
+#ItemSourcesBody td:hover {
+	cursor: url('../../../../css/images/cursor_hover.cur'), auto;
+}
+#ItemSourcesBody .filterTable {
+	float: right;
+}
+#ItemSourcesBody .innerTable {
+	background: var(--text-darker);
+	margin: 0 -5px;
+}
+#ItemSourcesBody .innerTable:not(:empty) {
+	margin-top: 5px;
 }

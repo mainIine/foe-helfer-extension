@@ -18,9 +18,12 @@ FoEproxy.addHandler('HiddenRewardService', 'getOverview', (data, postData) => {
     HiddenRewards.GEprogress = JSON.parse(localStorage.getItem('HiddenRewards.GEprogress')||'0');
    
     HiddenRewards.RefreshGui(fromHandler);
-    if (HiddenRewards.FirstCycle) { //Alle 60 Sekunden aktualisieren (Startbeginn des Ereignisses könnte erreicht worden sein)
+    if (HiddenRewards.FirstCycle) { //Timer setzen 
         HiddenRewards.FirstCycle = false;
-        setInterval(HiddenRewards.RefreshGui, 60000);
+        data.responseData.hiddenRewards.forEach(x=>{
+            if (x.startTime && x.startTime>GameTime) 
+                setTimeout(HiddenRewards.RefreshGui, (x.startTime+5-GameTime)*1000)
+        })
     }
 });
 
@@ -68,6 +71,7 @@ let HiddenRewards = {
                 'auto_close': true,
                 'dragdrop': true,
                 'minimize': true,
+                'resize': true,
                 'settings': 'HiddenRewards.ShowSettingsButton()'
             });
 
@@ -94,11 +98,12 @@ let HiddenRewards = {
             let positionX = Rewards[idx].position.position || 0;
             let isGE = false;
             let SkipEvent = true;
+            let twolane = false
 
             // prüfen ob der Spieler in seiner Stadt eine zweispurige Straße hat
             if (position === 'cityRoadBig') {
-                if (CurrentEraID >= Technologies.Eras.ProgressiveEra)
-                    SkipEvent = false;
+                if (CurrentEraID >= Technologies.Eras.ProgressiveEra) SkipEvent = false
+                twolane = true
             }
             else {
                 SkipEvent = false;
@@ -126,7 +131,8 @@ let HiddenRewards = {
                 starts: Rewards[idx].startTime,
                 expires: Rewards[idx].expireTime,
                 isGE: isGE,
-                positionGE: positionX
+                positionGE: positionX,
+                twolane: twolane
             });
         }
 
@@ -179,6 +185,11 @@ let HiddenRewards = {
     BuildBox: () => {
         let h = [];
 
+        let twolane = 0 < [...new Set(Object.values(MainParser.CityMapData).filter(x=>x.type=="street").map(x=>x.cityentity_id))].filter(x=>MainParser.CityEntities[x].requirements.street_connection_level == 2).length
+        let warning = HiddenRewards.FilteredCache.filter(x=>x.twolane).length > 0 && !twolane
+        if (warning) {
+            h.push(`<div class="dark-bg"><div class="warning">${i18n("Boxes.HiddenRewards.twolaneWarning")}</div></div>`)
+        }
         h.push('<table class="foe-table">');
 
         h.push('<thead>');

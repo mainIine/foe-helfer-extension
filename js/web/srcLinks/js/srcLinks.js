@@ -110,15 +110,14 @@ let srcLinks = {
 
 
     getReward:(icon) => {
-        let url3 = srcLinks.get(`/shared/unit_portraits/armyuniticons_90x90/armyuniticons_90x90_${icon}.png`,true, true) // does not work :(
-        let url2 = srcLinks.get(`/shared/icons/goods_large/${icon}.png`,true, true)
-        let url1 = srcLinks.get(`/shared/icons/reward_icons/reward_icon_${icon}.png`,true, true)
-        let url = url3
+        let url = srcLinks.get(`/shared/unit_portraits/armyuniticons_90x90/armyuniticons_90x90_${icon}.jpg`,true, true) // does not work :(
 
-        if (url3.indexOf("antiquedealer_flag") > -1) 
-            url = url2
-        if (url2.indexOf("antiquedealer_flag") > -1) 
-            url = url1
+        if (url.indexOf("antiquedealer_flag") > -1) 
+            url = srcLinks.get(`/shared/icons/goods_large/${icon}.png`,true, true)
+        if (url.indexOf("antiquedealer_flag") > -1) 
+            url = srcLinks.get(`/shared/icons/reward_icons/reward_icon_${icon}.png`,true, true)
+        if (url.indexOf("antiquedealer_flag") > -1) 
+            url = srcLinks.get(`/city/buildings/${icon?.replace(/(\D*?)_(.*)/,"$1_SS_$2")}.png`,true);
 
         return url;
     },
@@ -133,7 +132,17 @@ let srcLinks = {
         }
 
         return url1;
+    },
+
+    icons: (x) => {
+        if (!x) return ""
+        x=x.replace(/(.*?)_[0-9]+/gm,"$1");
+        let link = srcLinks.get(`/shared/icons/${x}.png`,true,true);
+        if (link.includes("antiquedealer_flag")) link = srcLinks.get(`/shared/icons/reward_icons/reward_icon_${x}.png`,true,true);
+        if (link.includes("antiquedealer_flag")) link = srcLinks.get(`/city/buildings/${x.replace(/(\D*?)_(.*)/,"$1_SS_$2")}.png`,true);
+        return `<img src=${link} alt="">`;
     }
+
 }
 
 srcLinks.init()

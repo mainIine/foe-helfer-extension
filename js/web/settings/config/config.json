@@ -42,12 +42,6 @@
 		"sort": 9
 	},
 	{
-		"name": "ShowOtherGuildActivity",
-		"status": true,
-		"group": "Auto",
-		"sort": 9
-	},
-	{
 		"name": "AutoOpenInfoBox",
 		"status": false,
 		"group": "Auto",
@@ -162,6 +156,12 @@
 		"callback": "ExportView",
 		"group": "Boxes",
 		"sort": 19
+	},
+	{
+		"name": "RepeatSelectBuilding",
+		"status": false,
+		"group": "Boxes",
+		"sort": 20
 	},
 	{
 		"name": "SelectedMenu",

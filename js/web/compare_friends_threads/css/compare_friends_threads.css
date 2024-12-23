@@ -23,11 +23,9 @@
 }
 
 #friendsCompareTable th {
-	position: sticky;
-	top: 0px;
-	text-align: center;	
-	z-index: 1;
+	text-align: center;
 }
+
 #friendsCompareTable th:not(:first-child) span {
 	writing-mode: vertical-lr;
 	transform: rotate(180deg);
@@ -35,5 +33,8 @@
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	
+}
+
+#friendsCompareTable td svg {
+	max-width: 25px;
 }

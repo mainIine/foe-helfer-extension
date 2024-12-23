@@ -166,7 +166,7 @@ let CompareFriendsThreads = {
 
 		t.push('<table id="friendsCompareTable" class="foe-table sortable-table">');
 
-		t.push('<tbody>');
+		t.push('<thead class="sticky">');
 		t.push('<tr>');
 
 		t.push('<th>&nbsp;</th>');
@@ -182,6 +182,8 @@ let CompareFriendsThreads = {
 		}
 
 		t.push('</tr>');
+		t.push('</thead>');
+		t.push('<tbody>');
 
 		let PlayerList = Object.values(PlayerDict).filter(obj => (obj['IsFriend'] === true));
 
@@ -205,9 +207,10 @@ let CompareFriendsThreads = {
 				}
 
 				if(CompareFriendsThreads.Threads[x]['participants'].findIndex(p => p.playerId === Player.PlayerID) === -1){
-					t.push(`<td class="text-center text-danger">❌</td>`);
-				} else {
-					t.push(`<td class="text-center">✔</td>`);
+					t.push(`<td class="text-center text-danger"><svg viewBox="0 0 48 48"><use href="#cross-sign" xlink:href="#cross-sign" /></svg></td>`);
+				}
+				else {
+					t.push(`<td class="text-center"><svg viewBox="0 0 48 48"><use href="#tick-sign" xlink:href="#tick-sign" /></svg></td>`);
 				}
 			}
 
@@ -217,6 +220,7 @@ let CompareFriendsThreads = {
 		t.push('</tbody>');
 
 		t.push('</table>');
+		t.push('<svg xmlns="http://www.w3.org/2000/svg" style="display:none" viewBox="0 0 48 48" width="48px" height="48px"><symbol id="tick-sign" viewBox="0 0 48 48"><path fill="#43A047" d="M40.6 12.1L17 35.7 7.4 26.1 4.6 29 17 41.3 43.4 14.9z"></path></symbol><symbol id="cross-sign" viewBox="0 0 48 48"><path fill="#F44336" d="M21.5 4.5H26.501V43.5H21.5z" transform="rotate(45.001 24 24)"></path><path fill="#F44336" d="M21.5 4.5H26.5V43.501H21.5z" transform="rotate(135.008 24 24)"></path></symbol></svg>');
 
 		$('#friendsCompareBoxBody').html(t.join(''));
 	}
