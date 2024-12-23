@@ -45,6 +45,18 @@
     float: right;
 }
 
+#eventpresentsBody td.icon {
+    position: relative;
+}
+
+#eventpresentsBody .fragment img {
+    position: absolute;
+    bottom: 3px;
+    right: 0;
+    height: 18px;
+    width: auto;
+}
+
 #eventpresentsBody tr.destroyed td {
     text-decoration: line-through;
     background-color: var(--black-65);

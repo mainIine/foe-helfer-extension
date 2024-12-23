@@ -46,10 +46,12 @@ FoEproxy.addHandler('CampaignService', 'start', (data, postData) => {
     if (!Settings.GetSetting('ShowScoutingTimes')) {
         return;
     }
-    
+    maxShip = Math.floor(Object.values(data.responseData.provinces).map(x=>x.id||0).pop()/100)
     for (let province of data.responseData.provinces) {
-        scoutingTimes.Provinces[province.id] = province;
+        if (province.provinceType=="ship") province.parentIds=province.parentIds.concat([...Array(maxShip - province.id/100).keys()].map(x=>(x+province.id/100+1)*100))
+        scoutingTimes.Provinces[province.id||0] = province;
     }
+    
     scoutingTimes.scoutPosition = data.responseData.scout?.current_province|0;
     scoutingTimes.scoutTarget = data.responseData.scout?.path[data.responseData.scout?.path?.length-1]|0;
     scoutingTimes.scoutTraveltime = data.responseData.scout.time_to_target;

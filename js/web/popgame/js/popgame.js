@@ -56,25 +56,12 @@ FoEproxy.addHandler('RewardService', 'collectReward', (data, postData) => {
     
 });
 
-$('#container').on("click", function (e) {
-    if ($('#Popgame').length === 0) return;
-    if (Popgame.rewardactive==0) return;
-    
-    let X=e.clientX,
-        Y=e.clientY,
-        Xc = window.innerWidth/2,
-        Yc = window.innerHeight/2;
-    
-    if (X>Xc-313 && X<Xc+290 && Y<Yc+297 && Y>Yc-324 && (X<Xc-56 || X>Xc+73 || Y<Yc+151 ||Y>Yc+172)) return;
-    
-    if (Popgame.rewardactive > 0) Popgame.rewardactive -= 1;
-    if ($('#Popgame.closed').length === 0) return;
-    if (Popgame.rewardactive!==0) return;
-    if (Popgame.minimized) return;
-    $('#Popgame').addClass("open");
-    $('#Popgame').removeClass("closed");
-});
-
+mouseActions.addAction([[-57, 151, 'Center'],[72, 173, 'Center']],()=>{
+    Popgame.clearReward()
+})  
+mouseActions.addAction([[284, 297, 'Center'],[-312, -337, 'Center'],false],()=>{
+    Popgame.clearReward()
+})
 
 FoEproxy.addHandler('PopGameService', 'popTile', (data, postData) => {
     if ($('#Popgame').length === 0) return;
@@ -315,6 +302,18 @@ let Popgame = {
             Popgame.grid[x][y] = tile.type + ((tile.popType === "default" || tile.type === "grandPrize") ? "" : "_reward");
         }
     },
+    clearReward:()=>{
+        if ($('#Popgame').length === 0) return;
+        if (Popgame.rewardactive==0) return;
+        
+        if (Popgame.rewardactive > 0) Popgame.rewardactive -= 1;
+        if ($('#Popgame.closed').length === 0) return;
+        if (Popgame.rewardactive!==0) return;
+        if (Popgame.minimized) return;
+        $('#Popgame').addClass("open");
+        $('#Popgame').removeClass("closed");
+    },
+
     tracking: null,
     trackingReset:()=>{
         Popgame.tracking = {start:{total:0,grandPrize:0},afterPop:{total:0,grandPrize:0},leftOnBoard:{grandPrize:0}};

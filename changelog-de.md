@@ -1,5 +1,42 @@
 ## Changelog - Extension
 
+##### 3.10.0.0
+
+**Neu**
+- QI Fortschritts Übersicht hinzugefügt (öffnet sich automatisch, wenn die QI-Spieler Rangliste geöffnet wird)
+- Quellen für Gegenstände: In der Produktionsübersicht für Gegenstände und Fragmente gibt es nun die Möglichkeit, sich eine Liste von Gebäude ausgeben zu lassen, die einen bestimmten Gegenstand produzieren (auch, wenn diese nicht gebaut sind)
+- Produktionsübersicht: Tabellen für Münz-, Vorrats- und FP-Boots hinzugefügt
+- Effizienzbewertung: Feld für Spezialproduktion abschließen Fragmente hinzugefügt
+- Stadtübersicht: Anzeigeoption für Gebäude, die eine erhabene Stufe haben und "abgelaufene" Gebäude
+- Wiederholtes Bauen:
+	- !!! ACHTUNG !!! Obwohl das Feature an sich grünes Licht von Inno bekommen hat, könnte es trotzdem vorkommen, dass die Bot-Erkennung ausgelöst wird. Benutzung auf eigene Gefahr!!!
+	- Kann in den Einstellungen aktiviert werden
+	- Wenn ein Gebäude aus dem Baumenü oder dem Umbaulager gebaut wird, wird das gleiche Gebäude automatisch erneut ausgewählt
+
+**Update**
+- Tooltip: Design der Gebäude-Tooltips angepasst
+- Gebäude-Effizienz: 
+	- Gebäude-Tooltips hinzugefügt
+	- Ergebnisseite wird nun zuerst angezeigt
+	- Itemliste versteckt
+- Menü: Von unten nach rechts verschoben, weil die möglichen Einstellungen gerne übersehen werden
+- Gefechte: 
+	- Symbole für blauen/roten Angriff in die Countdown-Liste hinzugefügt
+	- Angriffsfarben zur Karte hinzugefügt
+	- Neue Kartenansicht, die die Angriffsfarben besser sichtbar macht
+- GG Aktive Spieler:
+	- Modul entfernt auf Anfrage durch Inno 
+
+**BugFix**
+- Tooltip: 
+	- manche Browser haben nicht das korrekte Design verwendet
+	- konnte offen bleiben, obwohl zugehöriges Fenster geschlossen wurde
+- Umbau-Liste: 
+	- Standardhöhe gesetzt
+	- Umplatzieren von Gebäuden verringerte den Zähler
+- Gebäude-Effizienz:
+	- Die Bewertungen bei anderen Spielern haben dein aktuelles Zeitalter genutzt, statt ihr eigenes
+
 ##### 3.9.0.0
 
 **Neu**

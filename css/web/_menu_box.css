@@ -11,3 +11,9 @@
  * **************************************************************************************
  */
 
+#menu_box .hud-btn span:first-child {
+	display: inline-flex;
+	width: 80%;
+	height: 80%;
+	margin-top: 10%;
+}

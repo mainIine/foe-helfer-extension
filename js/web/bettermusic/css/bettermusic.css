@@ -41,11 +41,6 @@
   width:auto;
 }
 
-#musicSettingsScenesX tr th {
-  position: sticky;
-  top: 0px;
-}
-
 #betterMusicDialog .flex > div {
   min-width: 40%;
   padding: 0.5em;

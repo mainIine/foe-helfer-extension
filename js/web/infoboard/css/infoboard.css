@@ -61,10 +61,7 @@ table.info-table tr td {
 	display: flex;
 	align-items: center;
 	background-color: rgba(0,0,0, 0.5);
-	position: sticky;
-	top: 0;
 	padding: 5px;
-	z-index: 100;
 }
 
 #BackgroundInfo #BackgroundInfoBody .filter-row span {
@@ -108,7 +105,8 @@ table.info-table tr td {
 }
 
 #BackgroundInfoTable .welcome {
-	background-color: var(--background-table-odd);
+	-webkit-backdrop-filter: brightness(1.1) saturate(1.1);
+	backdrop-filter: brightness(1.1) saturate(1.1);
 }
 
 #BackgroundInfoTable .welcome td:first-child {

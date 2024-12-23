@@ -1,12 +1,49 @@
 ## Changelog - Extension
 
+##### 3.10.0.0
+
+**New**
+- QI Progress Overview added (opens automatically when opening the QI player ranking)
+- Item Sources: Production Overview for Items/Fragments now offers an option to display a list of buildings that produce a certain item (even if not currently build)
+- Production Overview: Added Tables for resources boosts (FP, coins, supplies)
+- Efficiency rating: Added FSP Fragments to the evaluation
+- City Overview: Highlight option for ascendable and decayed buildings
+- Repeat Building Selection:
+	- !!! ATTENTION !!! Although the feature was green-lit by Inno, it might happen that the bot detection triggers. Use at your own risk!!!
+	- Can be activated in the settings
+	- When a building is built from the build menu or placed from the reconstruction storage, the same building is selected again automatically.
+
+**Update**
+- Tooltip: made design similar to original FoE tooltips
+- Building Efficiency: 
+	- Added building tooltips
+	- Results will now be shown first
+	- Item list hidden to make the table less crowded
+- Menu: Moved it back to the right (default was bottom), because of a game update and y'all do not look at settings
+- GBG: 
+	- Added symbols for the battle type (red/blue) to the countdown list
+	- Added attack colors to the map
+	- Added map view to highlight attack colors better
+- GBG active players:
+	- removed the module on Innos request
+
+**BugFix**
+- Tooltip: 
+	- Some browsers did not use the correct design
+	- Did sometimes not vanish when a box was closed
+- Reconstruction List: 
+	- Set a default height
+	- Moving buildings reduced counter
+- Building Efficiency:
+	- Other players ratings were based on your age instead of theirs
+
 ##### 3.9.0.0
 
 **New**
 - In reconstruction mode a building list, sortable by building size is offered
 - GE-Results: Menu icon now shows the current number of attempts
 - Tooltips: some modules now show the building information as a tooltip:
-	- Effiziency module - in the "add building" dialogue
+	- Efficiency module - in the "add building" dialogue
 	- Boost Inventory
 	- Reconstruction size-list
 	- let us know on discord where else you would like to see that info
@@ -20,7 +57,7 @@
 	- Broke for some players due to a game update
 	- Same buildings with/without allies were not counted correctly
 - Porduction Overview:
-	- Fragment amount was not korrekt for some buildings
+	- Fragment amount was not correct for some buildings
 	- Not all buildings were listed in fragments overview
 
 ##### 3.8.1.0

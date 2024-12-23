@@ -1,6 +1,6 @@
 [	
 	{
-		"udate": "Winter Event 2024 (14 October 2024)"
+		"udate": "Wildlife Event 2024 (22 December 2024)"
 	},
 	{
 		"groupname": "Events"
@@ -64,6 +64,24 @@
 		]
 	},
 	{
+		"name": "Shika_Shrine",
+		"buildings": [
+			{"first": "W_MultiAge_WILD25A1"}
+		]
+	},
+	{
+		"name": "Koi_Pond",
+		"buildings": [
+			{"first": "W_MultiAge_WILD25B1"}
+		]
+	},
+	{
+		"name": "Usagi_Bonbori_Gate",
+		"buildings": [
+			{"first": "W_MultiAge_WILD25C1"}
+		]
+	},
+	{
 		"name": "Flamingo_Habitat",
 		"buildings": [
 			{"first": "W_MultiAge_WILD24A1"}
@@ -111,9 +129,16 @@
 		]
 	},
 	{
+		"comment":"OLD VERSION!!! remove at some point!!!",
 		"name": "Mountain_Reserve",
 		"buildings": [
 			{"first": "R_MultiAge_WildBonus21a"}
+		]
+	},
+	{
+		"name": "Mountain_Reserve",
+		"buildings": [
+			{"first": "W_MultiAge_WILD21A1"}
 		]
 	},
 	{
@@ -988,15 +1013,35 @@
 		"buildings": [
 			{"first": "W_MultiAge_GR24D1"}
 		]
-	},{
+	},
+	{
+		"name": "Neo_Checkmate_Square",
+		"buildings": [
+			{"first": "W_MultiAge_GR25A1"}
+		]
+	},
+	{
+		"name": "Neo_Aviary",
+		"buildings": [
+			{"first": "W_MultiAge_GR25B1"}
+		]
+	},
+	{
 		"groupname": "Guild_Expeditions"
 	},
 	{
+		"comment":"OLD VERSION!!! remove at some point!!!",
 		"name": "Terrace_Farm",
 		"buildings": [
 			{"first": "P_MultiAge_Expedition16"}
 		]
 	},
+	{
+		"name": "Terrace_Farm",
+		"buildings": [
+			{"first": "W_MultiAge_Expedition16aBase"}
+		]
+	},	
 	{
 		"name": "Fountain_of_Youth",
 		"buildings": [
@@ -1154,6 +1199,5 @@
 		"buildings": [
 			{"first": "L_AllAge_CupBonus1"}
 		]
-	}
-	
+	}	
 ]

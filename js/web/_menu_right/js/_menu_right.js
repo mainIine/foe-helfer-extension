@@ -23,7 +23,6 @@ let _menu_right = {
 
 		hudWrapper.append(hudInner);
 
-
 		let btnUp = $('<span />').addClass('hud-btn-up'),
 			btnDown = $('<span />').addClass('hud-btn-down hud-btn-down-active');
 
@@ -31,18 +30,15 @@ let _menu_right = {
 		hud.append(hudWrapper)
 		hud.append(btnDown);
 
-		// Wenn sie die Fenstergröße verändert, neu berechnen
 		window.onresize = function (event) {
 			if (event.target == window) _menu_right.SetMenuHeight(true);
 		};
 
 		$('body').append(hud).ready(function () {
 
-			// Buttons einfügen
 			_menu.ListLinks(_menu_right.InsertMenuItem);
 			_menu_right.CheckButtons();
 
-			// korrekten Platz für das Menu ermitteln
 			_menu_right.SetMenuHeight();
 
 			window.dispatchEvent(new CustomEvent('foe-helper#menu_loaded'));
@@ -106,14 +102,14 @@ let _menu_right = {
 			_menu.CallSelectedMenu('Box')
 		}
 			
-		// hat der Spieler eine Länge vorgebeben?
+		// has a length been set manually?
 		let MenuLength = localStorage.getItem('MenuLength');
 
 		if (MenuLength !== null && MenuLength < _menu.HudCount) {
 			_menu.HudCount = _menu.HudLength = parseInt(MenuLength);
 		}
 
-		_menu.HudHeight = (_menu.HudCount * 49);
+		_menu.HudHeight = (_menu.HudCount * 47);
 		_menu.SlideParts = Math.ceil(MenuItemCount / _menu.HudCount);
 
 		$('#foe-helper-hud').height(_menu.HudHeight + 2);
@@ -127,7 +123,6 @@ let _menu_right = {
 	CheckButtons: () => {
 
 		let activeIdx = 0;
-
 
 		$('.hud-btn').click(function () {
 			activeIdx = $(this).index('.hud-btn');

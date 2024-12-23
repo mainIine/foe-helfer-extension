@@ -187,7 +187,7 @@ let Market = {
         // Filters
         h.push('<div class="dark-bg" style="margin-bottom: 3px;">');
         h.push('<table class="filters">');
-        h.push('<thead>');
+        h.push('<thead class="sticky">');
         h.push('<tr>');
         h.push('<th colspan="2"></td>');
         h.push('<th class="text-left">' + i18n('Boxes.Market.TradePartner') + '</th>');
@@ -312,7 +312,7 @@ let Market = {
         // Table
         h.push('<table class="foe-table exportable">');
 
-        h.push('<thead>');
+        h.push('<thead class="sticky">');
         h.push('<tr>');
         h.push('<th data-export2="Offered goods" data-export3="Offered amount" colspan="3">' + i18n('Boxes.Market.OfferColumn') + '</th>');
         h.push('<th data-export2="Requested goods" data-export3="Requested amount" colspan="3">' + i18n('Boxes.Market.NeedColumn') + '</th>');
@@ -514,8 +514,8 @@ let Market = {
 		let autoOpen = Settings.GetSetting('ShowMarketFilter');
 
         let h = [];
-        h.push(`<p class="text-center"><button class="btn btn-default" onclick="HTML.ExportTable($('#MarketBody').find('.foe-table.exportable'), 'csv', 'Market')">${i18n('Boxes.General.ExportCSV')}</button><br>`);
-        h.push(`<button class="btn btn-default" onclick="HTML.ExportTable($('#MarketBody').find('.foe-table.exportable'), 'json', 'Market')">${i18n('Boxes.General.ExportJSON')}</button></p>`);
+        h.push(`${i18n('Boxes.General.Export')}: <span class="btn-group"><button class="btn btn-default" onclick="HTML.ExportTable($('#MarketBody').find('.foe-table.exportable'), 'csv', 'Market')">CSV</button>`);
+        h.push(`<button class="btn btn-default" onclick="HTML.ExportTable($('#MarketBody').find('.foe-table.exportable'), 'json', 'Market')">JSON</button></span>`);
         h.push(`<p><input id="autoStartMarket" name="autoStartMarket" value="1" type="checkbox" ${(autoOpen === true) ? ' checked="checked"' : ''} /> <label for="autoStartMarket">${i18n('Boxes.Market.Settings.Autostart')}</label></p>`);
 
         h.push(`<p><button onclick="Market.SaveSettings()" id="save-market-settings" class="btn btn-default" style="width:100%">${i18n('Boxes.Settings.Save')}</button></p>`);

@@ -119,6 +119,10 @@
     margin-left: 5px;
 }
 
+#battleAssistAAConfig {
+    height: 60vh;
+}
+
 #battleAssistAAConfig .BattleWave {
     display: flex;
     flex-direction: column;

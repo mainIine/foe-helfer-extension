@@ -134,6 +134,7 @@ let MarketOffers = {
 
         h.push('<table id="MarketOffersTable" class="foe-table sortable-table exportable">');
         h.push('<tbody class="MarketOffers">');
+        h.push('<thead class="sticky">');
         h.push('<tr class="sorter-header" data-type="MarketOffers">');
         h.push('<th data-export="Era" class="is-number ascending" data-type="MarketOffers">' + i18n('Boxes.MarketOffers.Era') + '</th>')
         h.push('<th></th>');
@@ -144,6 +145,7 @@ let MarketOffers = {
         h.push('<th data-export="InventoryOfferSum" class="is-number" data-type="MarketOffers">' + i18n('Boxes.MarketOffers.InventoryOfferSum') + '</th>');
         h.push('<th data-export="InventoryNeedSum" class="is-number" data-type="MarketOffers">' + i18n('Boxes.MarketOffers.InventoryNeedSum') + '</th>');
         h.push('</tr>');
+        h.push('</thead>');
 
         for (let i = 0; i < GoodsList.length; i++) {
             let CurrentGood = GoodsList[i],
@@ -214,8 +216,8 @@ let MarketOffers = {
     */
     ShowSettingsButton: () => {
         let h = [];
-        h.push(`<p class="text-center"><button class="btn btn-default" onclick="HTML.ExportTable($('#MarketOffersBody').find('.foe-table.exportable'), 'csv', 'MarketOffers')">${i18n('Boxes.General.ExportCSV')}</button></p>`);
-        h.push(`<p class="text-center"><button class="btn btn-default" onclick="HTML.ExportTable($('#MarketOffersBody').find('.foe-table.exportable'), 'json', 'MarketOffers')">${i18n('Boxes.General.ExportJSON')}</button></p>`);
+        h.push(`${i18n('Boxes.General.Export')}: <span class="btn-group"><button class="btn btn-default" onclick="HTML.ExportTable($('#MarketOffersBody').find('.foe-table.exportable'), 'csv', 'MarketOffers')">CSV</button>`);
+        h.push(`<button class="btn btn-default" onclick="HTML.ExportTable($('#MarketOffersBody').find('.foe-table.exportable'), 'json', 'MarketOffers')">JSON</button></span>`);
 
         $('#MarketOffersSettingsBox').html(h.join(''));
     },
@@ -298,6 +300,7 @@ let MarketOffers = {
         });
 
         h.push('<tbody class="MarketOffersEvents">');
+        h.push('<thead class="sticky">');
         h.push('<tr class="sorter-header" data-type="MarketOffersEvents">');
         h.push('<th data-export="Date" class="is-number descending" data-type="MarketOffersEvents">' + i18n('Boxes.MarketOffersEvents.Date') + '</th>');
 
@@ -312,6 +315,7 @@ let MarketOffers = {
         h.push('<th data-export="Rate" class="is-number" data-type="MarketOffersEvents">' + i18n('Boxes.Market.RateColumn') + '</th>');
         if (MarketOffers.CurrentEventsTab === 'accepted') h.push('<th data-export="Player" data-type="MarketOffersEvents">' + i18n('Boxes.Market.PlayerColumn') + '</th>');
         h.push('</tr>');
+        h.push('</thead>');
 
         for (let i = 0; i < EventList.length; i++) {
             let Event = EventList[i];

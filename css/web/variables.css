@@ -53,7 +53,7 @@
 	--background-tabs: linear-gradient(#494241, #2b2c33);
 	--background-tabs-active: linear-gradient(#4a5c7a, #3b4863);
 
-	--background-table-hover: rgba(243, 214, 160, 0.2);
+	--background-table-hover: #ffb45733;
 	--background-table-odd: rgba(255, 158, 69, 0.07);
 	--background-table-darker: #40190080;
 	--background-table-info: #003c6d4d;
@@ -81,6 +81,10 @@
 	--text-info: #42a1ee;
 	--text-danger: #f34f4f;
 
+	--background-color-ascendable: #f37317;
+	--border-color-ascendable: #ce5900;
+	--background-color-decayed: #2b2b2b;
+	--border-color-decayed: #161616;
 	--background-color-military: #fff;
 	--border-color-military: #bbb;
 	--background-color-residential: #7abaff;

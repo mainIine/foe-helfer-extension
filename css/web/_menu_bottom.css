@@ -15,11 +15,11 @@
 	left: 1035px;
 	bottom: 0;
 	width: 270px;
-	height: 48px;
+	height: 43px;
 	border-radius: 2px 2px 0 0;
 	transition: all 0.1s ease;
 	border-bottom-width: 0;
-	background-color: #553419;
+	background-color: #301e0fcc;
 }
 
 .hud-bottom #foe-helper-hud-wrapper {
@@ -32,7 +32,7 @@
 .hud-bottom #foe-helper-hud-slider {
 	position: absolute;
 	left: 0;
-	top: 2px;
+	top: 0;
 	transition: left 0.7s ease-in-out;
 	height: inherit;
 }
@@ -43,9 +43,9 @@
 
 .hud-bottom .hud-btn span:first-child {
 	display: inline-flex;
-	width: 76%;
-	height: 76%;
-	margin-top: 12%;
+	width: 80%;
+	height: 80%;
+	margin-top: 10%;
 }
 
 .hud-bottom .hud-btn span.hud-counter {

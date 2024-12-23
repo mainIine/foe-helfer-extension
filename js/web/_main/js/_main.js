@@ -243,6 +243,7 @@ GetFights = () =>{
 		GuildMemberStat.checkForDB(ExtPlayerID);
 		GexStat.checkForDB(ExtPlayerID);
 		GuildFights.checkForDB(ExtPlayerID);
+		QiProgress.checkForDB(ExtPlayerID);
 
 		// which tab is active in StartUp Object?
 		let vals = {
@@ -416,7 +417,7 @@ GetFights = () =>{
 		MainParser.UpdateActiveMap('gex');
 	});
 
-	// gg is entered
+	// GBG is entered
 	FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postData) => {
 		MainParser.UpdateActiveMap('gg');
 	});
@@ -813,13 +814,13 @@ GetFights = () =>{
 		GameTimeOffset = data.responseData.time * 1000 - new Date().getTime();
 		GameTime = data.responseData.time;
 		if (MainMenuLoaded) return;
+
 	
 		MainMenuLoaded = true;
 		await StartUpDone;	
 		let MenuSetting = localStorage.getItem('SelectedMenu');
-		MenuSetting = MenuSetting || 'BottomBar';
-		MainParser.SelectedMenu = MenuSetting;
-		_menu.CallSelectedMenu(MenuSetting);
+		MainParser.SelectedMenu = MenuSetting || 'RightBar';
+		_menu.CallSelectedMenu(MainParser.SelectedMenu);
 		
 		MainParser.setLanguage();
 
@@ -915,7 +916,7 @@ let MainParser = {
 	savedFight: null,
 	DebugMode: false,
 	Language: 'en',
-	SelectedMenu: 'BottomBar',
+	SelectedMenu: 'RightBar',
 	i18n: null,
 	BonusService: null,
 	Boosts: {},
@@ -1483,7 +1484,7 @@ let MainParser = {
 			MainParser.Allies.names = Object.assign({}, ...rawStats.map(a=>({[a.id]:a.name})))
 		},
 		getProd:(CityMapId) => {
-			let M= MainParser.Allies
+			let M = MainParser.Allies
 			if (!M.buildingList?.[CityMapId]) return null
 			let prod={}
 			Object.values(M.buildingList[CityMapId]).forEach(id=> {
@@ -1501,13 +1502,32 @@ let MainParser = {
 		},
 		tooltip:(id)=>{
 			if (!MainParser.Allies.buildingList?.[id]) return ""
-			return `data-original-title ="` + Object.keys(MainParser.Allies.buildingList[id]).map(a=> {
-				ally=MainParser.Allies.allyList[a]
-				return `<span style='color:`+MainParser.Allies.rarities[ally.rarity.value].textColor+`'>` + MainParser.Allies.names[ally.allyId] + " (" + i18n("Boxes.Productions.AllyRarity."+ally.rarity.value) + " - " + i18n("General.Level") + " " + ally.level + ")</span>"
-			}).join("<br/>") + `"`
+			return `data-allies ="${JSON.stringify(Object.values(MainParser.Allies.buildingList[id]))}"`
 		},
 		setRarities:(raw)=>{
 			MainParser.Allies.rarities=Object.assign({}, ...raw.map(r=>({[r.id.value]:r})))
+		},
+		getAllieData:(id)=>{
+			ally={
+				id:id,
+				allyId:MainParser.Allies.allyList[id].allyId,
+				rarity:MainParser.Allies.allyList[id].rarity.value,
+				level:MainParser.Allies.allyList[id].level,
+				name:MainParser.Allies.names[MainParser.Allies.allyList[id].allyId],
+			}
+			let prod = {}
+			let stat = MainParser.Allies.stats[ally.allyId][ally.rarity][ally.level]
+			let type = "military"
+			for (let s of Object.keys(stat)) { // ToDo: check stats to change type whenever implemented
+				if (s=="level") continue
+				if (prod[s]) 
+					prod[s].concat(stat[s])
+				else
+					prod[s]=stat[s]
+			}
+			ally.prod = prod
+			ally.type = type
+			return ally
 		}
 	},
 

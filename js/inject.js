@@ -132,7 +132,7 @@ function inject (loadBeta = false, extUrl = chrome.runtime.getURL(''), betaDate=
 		// Document loaded
 		if(document.head !== null){
 			let MenuSetting = localStorage.getItem('SelectedMenu');
-			MenuSetting = MenuSetting ? MenuSetting : 'BottomBar';
+			MenuSetting = MenuSetting ? MenuSetting : 'RightBar';
 			let cssname = "_menu_" + MenuSetting.toLowerCase().replace("bar","");
 
 			let cssFiles = [
@@ -143,8 +143,7 @@ function inject (loadBeta = false, extUrl = chrome.runtime.getURL(''), betaDate=
 			];
 
 			// insert stylesheet
-			for(let i in cssFiles)
-			{
+			for(let i in cssFiles) {
 				if(!cssFiles.hasOwnProperty(i)) {
 					break;
 				}
