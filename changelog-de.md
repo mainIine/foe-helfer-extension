@@ -1,5 +1,10 @@
 ## Changelog - Extension
 
+##### 3.10.0.1
+
+**BugFix**
+- Alarme gingen nicht
+
 ##### 3.10.0.0
 
 **Neu**
