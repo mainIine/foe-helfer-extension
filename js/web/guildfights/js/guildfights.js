@@ -1252,7 +1252,7 @@ let GuildFights = {
 			if (showCountdowns) {
 				let countDownDate = moment.unix(prov[x]['lockedUntil'] - 2),
 					color = GuildFights.SortedColors.find(e => e['id'] === prov[x]['ownerId']),
-					battleType = prov[x].isAttackBattleType ? '🔴' : '🔵',
+					battleType = prov[x].isAttackBattleType ? 'BTattack' : 'BTdefence',
 					intervalID = setInterval(() => {
 						GuildFights.UpdateCounter(countDownDate, intervalID, prov[x]['id']);
 					}, 1000);
@@ -1260,7 +1260,7 @@ let GuildFights = {
 				nextup.push(`<tr id="timer-${prov[x]['id']}" class="timer" data-tab="nextup" data-id=${prov[x]['id']}>`);
 				nextup.push(`<td class="prov-name" title="${i18n('Boxes.GuildFights.Owner')}: ${prov[x]['owner']}">`)
 				nextup.push(`<span class="province-color" ${color['main'] ? 'style="background-color:' + color['main'] + '"' : ''}"></span> `)
-				nextup.push(`<span class="smaller">${battleType}</span>`)
+				nextup.push(`<span class="battletype ${battleType}"></span>`)
 				nextup.push(` <b>${prov[x]['title']}</b> `)
 				nextup.push(`</td>`);
 
