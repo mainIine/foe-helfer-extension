@@ -3,7 +3,7 @@
 ##### 3.10.0.1
 
 **BugFix**
-- Chrome: Alerts did not work
+- Alerts did not work
 
 ##### 3.10.0.0
 
