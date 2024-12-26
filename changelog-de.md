@@ -3,7 +3,7 @@
 ##### 3.10.0.1
 
 **BugFix**
-- Alarme gingen nicht
+- Chrome: Alarme gingen nicht
 
 ##### 3.10.0.0
 
