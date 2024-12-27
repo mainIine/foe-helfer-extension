@@ -50,9 +50,9 @@
 }
 
 #eventpresentsBody .fragment img {
-    position: absolute;
-    bottom: 3px;
-    right: 0;
+    position: relative;
+    bottom: -7px;
+    left: -14px;
     height: 18px;
     width: auto;
 }
