@@ -249,7 +249,7 @@ alertsDB.version(1).stores({
 		function triggerAlert(alert) {
 			return browser.notifications.create(
 				alert.id != null ? (prefix + alert.id) : previevId,
-				Object.assign(window.navigator.userAgent.indexOf("Firefox") > -1 ? {}: 
+				Object.assign(navigator.userAgent.indexOf("Firefox") > -1 ? {}: 
 					{
 						requireInteraction: alert.data.persistent||false,
 						buttons: alert.data.actions
