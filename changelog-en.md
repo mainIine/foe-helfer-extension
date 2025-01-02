@@ -4,6 +4,12 @@
 
 **BugFix**
 - Alerts still did not work
+- Efficiency 
+	- fix count for buildings with allies
+- Market Overview
+	- filter overlapped by tabble header
+- Treasury
+	- export did not parse date correctly
 
 ##### 3.10.0.1
 

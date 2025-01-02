@@ -4,6 +4,12 @@
 
 **BugFix**
 - Alarme gingen immer noch nicht
+- Effizienz 
+	- Gebäude mit Verbündeten zeigten falsche Anzahl
+- Markt Übersicht
+	- Filterliste überlagerte Tabellenkopf
+- Gildenkassenbeiträge
+	- Beim Export wurde das Datum nicht korrekt gelesen
 
 ##### 3.10.0.1
 
