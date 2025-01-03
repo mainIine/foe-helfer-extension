@@ -208,11 +208,11 @@ let Tooltips = {
             if (levels?.AllAge?.socialInteraction?.interactionType) {
                 if (levels?.AllAge?.socialInteraction?.interactionType == "motivate") {
                     motMod = `<span class="ifMot">${srcLinks.icons("reward_x2")+i18n("Boxes.Tooltip.Building.when")+srcLinks.icons("when_motivated")}</span>`
-                    traits+=`<tr><td><span>${srcLinks.icons("when_motivated")}</span>${i18n("Boxes.Tooltip.Building.canPolish")}</td></tr>`
+                    traits+=`<tr><td><span style="width:24px; margin-right:3px; text-align:center">${srcLinks.icons("when_motivated")}</span>${i18n("Boxes.Tooltip.Building.canMotivate")}</td></tr>`
                 }
                 else if (levels?.AllAge?.socialInteraction?.interactionType == "polish") {
                     polMod = `<span class="ifMot">${srcLinks.icons("reward_x2")+"when"+srcLinks.icons("when_motivated")}</span>`
-                    traits+=`<tr><td><span>${srcLinks.icons("when_motivated")}</span>${i18n("Boxes.Tooltip.Building.canMotivate")}</td></tr>`
+                    traits+=`<tr><td><span style="width:24px; margin-right:3px; text-align:center">${srcLinks.icons("when_motivated")}</span>${i18n("Boxes.Tooltip.Building.canPolish")}</td></tr>`
                 }
             }
             for (let a of meta.abilities||[]) {
@@ -228,7 +228,7 @@ let Tooltips = {
                     traits += `<tr><td><img class="inhabitant" src="${srcLinks.get(`/city/inhabitants/${a.action.animationId}/${a.action.animationId}_south_00.png`,true)}">◄ ${i18n("Boxes.Tooltip.Building.addInhabitant")} (${capFirsts(a.action.animationId)})</td></tr>`
             }
             if (levels?.AllAge?.cityLimit) {
-                traits+=`<tr><td><span>${srcLinks.icons("icon_unique_building")}</span>${i18n("Boxes.Tooltip.Building.isUnique")}</td></tr>`
+                traits+=`<tr><td>${srcLinks.icons("icon_unique_building")}${i18n("Boxes.Tooltip.Building.isUnique")}</td></tr>`
             }
             
             for (let r of levels.AllAge?.ally?.rooms || []) {
@@ -489,11 +489,11 @@ let Tooltips = {
                     set =srcLinks.icons(a.setId) + MainParser.BuildingSets[a.setId].name
                 }
                 if (a.__class__=="PolishableAbility") {
-                    traits+=`<tr><td><span>${srcLinks.icons("when_motivated")}</span>can be polished</td></tr>`
+                    traits+=`<tr><td><span style="width:24px; margin-right:3px; text-align:center">${srcLinks.icons("when_motivated")}</span>can be polished</td></tr>`
                     polMod = `<span class="ifMot">${srcLinks.icons("reward_x2")+i18n("Boxes.Tooltip.Building.when")+srcLinks.icons("when_motivated")}</span>`
                 }
                 if (a.__class__ == "MotivatableAbility") {
-                    traits+=`<tr><td><span>${srcLinks.icons("when_motivated")}</span>can be motivated</td></tr>`
+                    traits+=`<tr><td><span style="width:24px; margin-right:3px; text-align:center">${srcLinks.icons("when_motivated")}</span>can be motivated</td></tr>`
                     motMod = `<span class="ifMot">${srcLinks.icons("reward_x2")+i18n("Boxes.Tooltip.Building.when")+srcLinks.icons("when_motivated")}</span>`
                 }
                 if (a.__class__ == "AddCoinsToSupplyProductionWhenMotivatedAbility") {
