@@ -1100,6 +1100,7 @@
     "Boxes.Tooltip.Building.noPlunder":"kann nicht geplündert werden",
     "Boxes.Tooltip.Building.lifeSupport":"beeinflusst durch Lebenserhaltung",
     "Boxes.Tooltip.Building.size+time":"Größe und Bauzeit",
+    "Boxes.Tooltip.Building.isUnique":"Einmaliges Gebäude",
     "Boxes.Treasury.Action": "Nachricht",
     "Boxes.Treasury.Amount": "Menge",
     "Boxes.Treasury.DateTime": "Datum/Uhrzeit",

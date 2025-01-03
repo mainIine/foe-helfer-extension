@@ -1100,6 +1100,7 @@
     "Boxes.Tooltip.Building.noPlunder":"can not be plundered",
     "Boxes.Tooltip.Building.lifeSupport":"is affected by life support",
     "Boxes.Tooltip.Building.size+time":"Size and Building Time",
+    "Boxes.Tooltip.Building.isUnique":"Unique Building",
     "Boxes.Treasury.Action": "Message",
     "Boxes.Treasury.Amount": "Amount",
     "Boxes.Treasury.DateTime": "Date/Time",
