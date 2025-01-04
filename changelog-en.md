@@ -2,6 +2,10 @@
 
 ##### 3.10.0.2
 
+**Update**
+- Tooltip
+	- added 'Unique Building' trait
+
 **BugFix**
 - Alerts still did not work
 - Efficiency 
@@ -12,6 +16,8 @@
 	- export did not parse date correctly
 - Blue Galaxy and Building Efficiency
 	- sometimes Boxes did not open or were empty (still under Observation if the fix worked)
+- Tooltip
+	- "motivate"/"polish" traits were mixed up for buildings of the new generation
 
 ##### 3.10.0.1
 
