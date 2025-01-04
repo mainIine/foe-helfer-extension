@@ -357,8 +357,7 @@ GetFights = () =>{
 	// --------------------------------------------------------------------------------------------------
 	// Karte wird gewechselt zum Außenposten
 	FoEproxy.addHandler('CityMapService', 'getCityMap', (data, postData) => {
-		ActiveMap = data.responseData.gridId;
-		FoEproxy.triggerFoeHelperHandler("ActiveMapUpdated");
+		MainParser.UpdateActiveMap(data.responseData.gridId);
 
 		if (ActiveMap === 'era_outpost') {
 			CityMap.EraOutpostData = Object.assign({}, ...data.responseData['entities'].map((x) => ({ [x.id]: x })));
@@ -377,32 +376,17 @@ GetFights = () =>{
 
 	// Stadt wird wieder aufgerufen
 	FoEproxy.addHandler('CityMapService', 'getEntities', (data, postData) => {
-		CityMap.IsExtern = false
 
-		if (ActiveMap === 'gg') return; // getEntities wurde in den GG ausgelöst => Map nicht ändern
-
-		let MainGrid = false
-		for (let i = 0; i < postData.length; i++) {
-			let postDataItem = postData[i];
-
-			if (postDataItem['requestClass'] === 'CityMapService' && postDataItem['requestMethod'] === 'getEntities') {
-				if (postDataItem['requestData'][0] === 'main') {
-					MainGrid = true;
-				}
-				break;
-			}
-		}
-
-		if (!MainGrid) { 
-			CityMap.IsExtern = true
+		if (!postData.map(x=>x.requestData?.[0]).includes('main')) { 
 			return
-		} // getEntities wurde in einer fremden Stadt ausgelöst => ActiveMap nicht ändern
+		}
 
 		LastMapPlayerID = ExtPlayerID
 
 		MainParser.CityMapData = Object.assign({}, ...data.responseData.map((x) => ({ [x.id]: x })))
 		MainParser.SetArkBonus2()
 
+		if (ActiveMap === 'gg') return; // getEntities wurde in den GG ausgelöst => Map nicht ändern
 		MainParser.UpdateActiveMap('main')
 	});
 
@@ -434,7 +418,7 @@ GetFights = () =>{
 
 	// visiting another player
 	FoEproxy.addHandler('OtherPlayerService', 'visitPlayer', (data, postData) => {
-		CityMap.IsExtern = true
+		MainParser.UpdateActiveMap('OtherPlayer')
 		LastMapPlayerID = data.responseData['other_player']['player_id']
 		MainParser.OtherPlayerCityMapData = Object.assign({}, ...data.responseData['city_map']['entities'].map((x) => ({ [x.id]: x })))
 	});

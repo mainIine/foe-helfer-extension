@@ -117,7 +117,7 @@ FoEproxy.addHandler('RewardService', 'collectReward', (data, postData) => {
 	else if (event === 'default') {	// default is hiddenreward or leaguereward or flying island incidents
 		event = 'hiddenReward';
 
-		if (isCurrentlyInOutpost === 1) {
+		if (ActiveMap == 'cultural_outpost') {
 			event = 'shards';
 		}
 		if (postData[0].requestMethod === 'useItem') {
