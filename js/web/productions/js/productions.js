@@ -136,7 +136,7 @@ let Productions = {
 	},
 
 	init: () => {
-		if (CityMap.IsExtern) return
+		if (ActiveMap == 'OtherPlayer') return
 
 		MainParser.NewCityMapData = CityMap.createNewCityMapEntities()
 		Productions.CombinedCityMapData = MainParser.NewCityMapData
@@ -1456,7 +1456,7 @@ let Productions = {
 
 	ShowRating: (external = false, eraName = null) => {
 		if (!Productions.Rating.Data) Productions.Rating.load()
-		if (CityMap.IsExtern && !external) return
+		if (ActiveMap == 'OtherPlayer' && !external) return
 		let era = (eraName == null) ? CurrentEra : eraName
 		
 		if ($('#ProductionsRating').length === 0) {
