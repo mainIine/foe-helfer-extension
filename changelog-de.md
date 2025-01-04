@@ -10,6 +10,8 @@
 	- Filterliste überlagerte Tabellenkopf
 - Gildenkassenbeiträge
 	- Beim Export wurde das Datum nicht korrekt gelesen
+- Blaue Galaxie und Gebäudeeffizienz
+	- Fenster gingen manchmal nicht auf oder waren leer (ist noch in Untersuchung ob die Reparatur geklappt hat)
 
 ##### 3.10.0.1
 

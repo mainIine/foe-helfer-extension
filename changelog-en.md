@@ -10,6 +10,8 @@
 	- filter overlapped by tabble header
 - Treasury
 	- export did not parse date correctly
+- Blue Galaxy and Building Efficiency
+	- sometimes Boxes did not open or were empty (still under Observation if the fix worked)
 
 ##### 3.10.0.1
 
