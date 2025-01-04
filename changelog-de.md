@@ -2,6 +2,10 @@
 
 ##### 3.10.0.2
 
+**Update**
+- Tooltip
+	- 'Einmalige Gebäude' Eigenschaft hinzugefügt
+
 **BugFix**
 - Alarme gingen immer noch nicht
 - Effizienz 
@@ -12,6 +16,8 @@
 	- Beim Export wurde das Datum nicht korrekt gelesen
 - Blaue Galaxie und Gebäudeeffizienz
 	- Fenster gingen manchmal nicht auf oder waren leer (ist noch in Untersuchung ob die Reparatur geklappt hat)
+- Tooltip
+	- "motivieren"/"polieren" Eigenschaft war falsch herum für Gebäude der neuen Generation
 
 ##### 3.10.0.1
 
