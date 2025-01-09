@@ -713,7 +713,7 @@ let CityMap = {
 			const count = sortable[x][1];
 			const pct = parseFloat(100*count/CityMap.OccupiedArea).toFixed(1);
 
-			let str = `${TypeName}:<br> ${count} (${pct}%)`;
+			let str = `${TypeName}: ${count} (${pct}%)`;
 
 			if (type === 'street') {
 				str = str + '<br>' + HTML.Format(Math.round(CityMap.EfficiencyFactor * 10000) / 100) + '% ' + i18n('Boxes.Citymap.Efficiency');
