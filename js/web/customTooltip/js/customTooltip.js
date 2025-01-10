@@ -126,7 +126,11 @@ let Tooltips = {
 		};
         let minEra = onlyEra||"BronzeAge"
         let maxEra = onlyEra||Technologies.EraNames[Technologies.getMaxEra()]
-        let goodsList = ["era_goods","random_good_of_age","all_goods_of_age", "random_good_of_age","random_good_of_age_1","random_good_of_age_2","random_good_of_age_3"]
+        let resMapper = (res,replace) => {
+            if (["era_goods","random_good_of_age","all_goods_of_age", "random_good_of_age","random_good_of_age_1","random_good_of_age_2","random_good_of_age_3"].includes(res)) return replace
+            if (res=="random_special_good_up_to_age") return "special_goods"
+            return res
+        }
     
         let span = (x,withHighlight=false) => `<span ${withHighlight ? `class="${x>0 ? "positive" : "negative"}"`:''}>${numberWithCommas(x)}</span>`;
         let longSpan = (x) => `<div class="overflowBox"><span class="handleOverflow">${x}</span></div>`
@@ -295,13 +299,13 @@ let Tooltips = {
                     if (product.type == "resources") {
                         for (let [res,amount] of Object.entries(product.playerResources?.resources||{})) {
                             if (amount !=0) 
-                                prods+=`<tr><td>${srcLinks.icons(goodsList.includes(res)?"goods":res) + span(amount)+t  + ((["supplies","coins","money"].includes(res) && !product.onlyWhenMotivated) ? motMod : "") + (product.onlyWhenMotivated?ifMot:"")}</td></tr>`
+                                prods+=`<tr><td>${srcLinks.icons(resMapper(res,"goods")) + span(amount)+t  + ((["supplies","coins","money"].includes(res) && !product.onlyWhenMotivated) ? motMod : "") + (product.onlyWhenMotivated?ifMot:"")}</td></tr>`
                         }
                     }
                     if (product.type == "guildResources") {
                         for (let [res,amount] of Object.entries(product.guildResources?.resources||{})) {
                             if (amount !=0) 
-                                prods+=`<tr><td>${srcLinks.icons(goodsList.includes(res)?"treasury_goods":res) + span(amount)+t + (product.onlyWhenMotivated?ifMot:"")}</td></tr>`
+                                prods+=`<tr><td>${srcLinks.icons(resMapper(res,"treasury_goods")) + span(amount)+t + (product.onlyWhenMotivated?ifMot:"")}</td></tr>`
                         }
                     }
                     if (product.type == "unit") {
@@ -324,13 +328,13 @@ let Tooltips = {
                             if (random.product.type == "resources") {
                                 for (let [res,amount] of Object.entries(random.product.playerResources?.resources||{})) {
                                     if (amount !=0) 
-                                        prods+=srcLinks.icons(goodsList.includes(res)?"goods":res) + span(amount)
+                                        prods+=srcLinks.icons(resMapper(res,"goods")) + span(amount)
                                 }
                             }
                             if (random.product.type == "guildResources") {
                                 for (let [res,amount] of Object.entries(random.product.guildResources?.resources||{})) {
                                     if (amount !=0) 
-                                        prods+=srcLinks.icons(goodsList.includes(res)?"treasury_goods":res) + span(amount)
+                                        prods+=srcLinks.icons(resMapper(res,"treasury_goods")) + span(amount)
                                 }
                             }
                             if (random.product.type == "unit") {
@@ -358,13 +362,13 @@ let Tooltips = {
                     if (product.type == "resources") {
                         for (let [res,amount] of Object.entries(product.playerResources?.resources||{})) {
                             if (amount !=0) 
-                                prods+=`<tr><td>${srcLinks.icons(goodsList.includes(res)?"goods":res) + range(amount,levels?.[maxEra]?.production?.options?.[oIndex]?.products?.[pIndex]?.playerResources?.resources?.[res])+t  + ((["supplies","coins","money"].includes(res) && !product.onlyWhenMotivated) ? motMod : "") + (product.onlyWhenMotivated?ifMot:"")}</td></tr>`
+                                prods+=`<tr><td>${srcLinks.icons(resMapper(res,"goods")) + range(amount,levels?.[maxEra]?.production?.options?.[oIndex]?.products?.[pIndex]?.playerResources?.resources?.[res])+t  + ((["supplies","coins","money"].includes(res) && !product.onlyWhenMotivated) ? motMod : "") + (product.onlyWhenMotivated?ifMot:"")}</td></tr>`
                         }
                     }
                     if (product.type == "guildResources") {
                         for (let [res,amount] of Object.entries(product.guildResources?.resources||{})) {
                             if (amount !=0) 
-                                prods+=`<tr><td>${srcLinks.icons(goodsList.includes(res)?"treasury_goods":res) + range(amount,levels?.[maxEra]?.production?.options?.[oIndex]?.products?.[pIndex]?.guildResources?.resources?.[res])+t + (product.onlyWhenMotivated?ifMot:"")}</td></tr>`
+                                prods+=`<tr><td>${srcLinks.icons(resMapper(res,"treasury_goods")) + range(amount,levels?.[maxEra]?.production?.options?.[oIndex]?.products?.[pIndex]?.guildResources?.resources?.[res])+t + (product.onlyWhenMotivated?ifMot:"")}</td></tr>`
                         }
                     }
                     if (product.type == "unit") {
@@ -393,13 +397,13 @@ let Tooltips = {
                             if (random.product.type == "resources") {
                                 for (let [res,amount] of Object.entries(random.product.playerResources?.resources||{})) {
                                     if (amount !=0) 
-                                        prods+=srcLinks.icons(goodsList.includes(res)?"goods":res) + range(amount,levels?.[maxEra]?.production?.options?.[oIndex]?.products?.[pIndex]?.products?.[rIndex]?.product?.playerResources?.resources?.[res])
+                                        prods+=srcLinks.icons(resMapper(res,"goods")) + range(amount,levels?.[maxEra]?.production?.options?.[oIndex]?.products?.[pIndex]?.products?.[rIndex]?.product?.playerResources?.resources?.[res])
                                 }
                             }
                             if (random.product.type == "guildResources") {
                                 for (let [res,amount] of Object.entries(random.product.guildResources?.resources||{})) {
                                     if (amount !=0) 
-                                        prods+=srcLinks.icons(goodsList.includes(res)?"treasury_goods":res) + range(amount,levels?.[maxEra]?.production?.options?.[oIndex]?.products?.[pIndex]?.products?.[rIndex]?.product?.guildResources?.resources?.[res])
+                                        prods+=srcLinks.icons(resMapper(res,"treasury_goods")) + range(amount,levels?.[maxEra]?.production?.options?.[oIndex]?.products?.[pIndex]?.products?.[rIndex]?.product?.guildResources?.resources?.[res])
                                 }
                             }
                             if (random.product.type == "unit") {
@@ -566,7 +570,7 @@ let Tooltips = {
                         if (res=="money" && levels?.[minEra]?.produced_money) continue
                         let t=(meta?.available_products?.length!=1) ? " in "+formatTime(p.production_time): ""
                         
-                        if (goodsList.includes(res)) res="goods"
+                        if (resMapper.includes(res)) res="goods"
                         if (amount !=0) 
                             prods+=`<tr><td>${srcLinks.icons(res) + span(amount)+t + motMod}</td></tr>`
                         else
@@ -579,31 +583,31 @@ let Tooltips = {
                 for (let a of abilityList.AddResourcesAbility||[]) {
                     for (let [res,amount] of Object.entries(a.additionalResources?.[minEra]?.resources||{})) {
                         if (amount !=0) 
-                            prods+=`<tr><td>${srcLinks.icons(goodsList.includes(res)?"goods":res) + range(a.additionalResources?.[minEra].resources[res],a.additionalResources[maxEra].resources[res])}</td></tr>`
+                            prods+=`<tr><td>${srcLinks.icons(resMapper(res,"goods")) + range(a.additionalResources?.[minEra].resources[res],a.additionalResources[maxEra].resources[res])}</td></tr>`
                     }
                     for (let [res,amount] of Object.entries(a.additionalResources?.AllAge?.resources||{})) {
                         if (amount !=0) 
-                            prods+=`<tr><td>${srcLinks.icons(goodsList.includes(res)?"goods":res) + span(amount)}</td></tr>`
+                            prods+=`<tr><td>${srcLinks.icons(resMapper(res,"goods")) + span(amount)}</td></tr>`
                         }
                 }
                 for (let a of abilityList.AddResourcesToGuildTreasuryAbility||[]) {
                     for (let [res,amount] of Object.entries(a.additionalResources?.[minEra]?.resources||{})) {
                         if (amount !=0) 
-                            prods+=`<tr><td>${srcLinks.icons(goodsList.includes(res)?"treasury_goods":res) + range(a.additionalResources?.[minEra].resources[res],a.additionalResources[maxEra].resources[res])}</td></tr>`
+                            prods+=`<tr><td>${srcLinks.icons(resMapper(res,"treasury_goods")) + range(a.additionalResources?.[minEra].resources[res],a.additionalResources[maxEra].resources[res])}</td></tr>`
                     }
                     for (let [res,amount] of Object.entries(a.additionalResources?.AllAge?.resources||{})) {
                         if (amount !=0) 
-                            prods+=`<tr><td>${srcLinks.icons(goodsList.includes(res)?"treasury_goods":res) + span(amount)}</td></tr>`
+                            prods+=`<tr><td>${srcLinks.icons(resMapper(res,"treasury_goods")) + span(amount)}</td></tr>`
                         }
                 }
                 for (let a of abilityList.AddResourcesWhenMotivatedAbility||[]) {
                     for (let [res,amount] of Object.entries(a.additionalResources?.[minEra]?.resources||{})) {
                         if (amount !=0) 
-                            prods+=`<tr><td>${srcLinks.icons(goodsList.includes(res)?"goods":res) + range(a.additionalResources?.[minEra].resources[res],a.additionalResources[maxEra].resources[res])+ifMot}</td></tr>`
+                            prods+=`<tr><td>${srcLinks.icons(resMapper(res,"goods")) + range(a.additionalResources?.[minEra].resources[res],a.additionalResources[maxEra].resources[res])+ifMot}</td></tr>`
                     }
                     for (let [res,amount] of Object.entries(a.additionalResources?.AllAge?.resources||{})) {
                         if (amount !=0) 
-                            prods+=`<tr><td>${srcLinks.icons(goodsList.includes(res)?"goods":res) + span(amount)+ifMot}</td></tr>`
+                            prods+=`<tr><td>${srcLinks.icons(resMapper(res,"goods")) + span(amount)+ifMot}</td></tr>`
                         }
                 }
                 for (let a of abilityList.RandomUnitOfAgeWhenMotivatedAbility||[]) {
@@ -647,11 +651,11 @@ let Tooltips = {
                         prods+=`<tr><td>${b.level + "x" + srcLinks.icons(a.setId)} ► `
                         if (b.revenue?.AllAge) {
                             let [res,amount] = Object.entries(b.revenue?.AllAge?.resources)[0]
-                            prods+=srcLinks.icons(goodsList.includes(res)?"goods":res) + span(amount)
+                            prods+=srcLinks.icons(resMapper(res,"goods")) + span(amount)
                         }
                         if (b.revenue?.[minEra] && b.revenue?.[maxEra]) {
                             let [res,amount] = Object.entries(b.revenue?.[minEra]?.resources)[0]
-                            prods+=srcLinks.icons(goodsList.includes(res)?"goods":res) + range(amount,b.revenue?.[maxEra].resources[res])
+                            prods+=srcLinks.icons(resMapper(res,"goods")) + range(amount,b.revenue?.[maxEra].resources[res])
                         }
                         prods+=`</td></tr>`
                     }
@@ -682,11 +686,11 @@ let Tooltips = {
                         prods+=`<tr><td>${b.level + "x" + srcLinks.icons(a.chainId)} ► `
                         if (b.revenue?.AllAge) {
                             let [res,amount] = Object.entries(b.revenue?.AllAge?.resources)[0]
-                            prods+=srcLinks.icons(goodsList.includes(res)?"goods":res) + span(amount)
+                            prods+=srcLinks.icons(resMapper(res,"goods")) + span(amount)
                         }
                         if (b.revenue?.[minEra] && b.revenue?.[maxEra]) {
                             let [res,amount] = Object.entries(b.revenue?.[minEra]?.resources)[0]
-                            prods+=srcLinks.icons(goodsList.includes(res)?"goods":res) + range(amount,b.revenue?.[maxEra].resources[res])
+                            prods+=srcLinks.icons(resMapper(res,"goods")) + range(amount,b.revenue?.[maxEra].resources[res])
                         }
                         prods+=`</td></tr>`
                     }
