@@ -294,7 +294,7 @@ let Tooltips = {
             let pCount = levels.AllAge?.production?.options?.length || levels?.[minEra]?.production?.options?.length || 0
             
             for (let [oIndex,option] of Object.entries(levels.AllAge.production?.options||[])) {
-                let t = pCount>1 ? " in " + formatTime(option.time): ""
+                let t = pCount>1 ? "&nbsp;in " + formatTime(option.time): ""
                 for (let [pIndex,product] of Object.entries(option.products)) {
                     if (product.type == "resources") {
                         for (let [res,amount] of Object.entries(product.playerResources?.resources||{})) {
@@ -357,7 +357,7 @@ let Tooltips = {
                 }
             }
             for (let [oIndex,option] of Object.entries(levels?.[minEra]?.production?.options||[])) {
-                let t = pCount>1 ? " in " + formatTime(option.time): ""
+                let t = pCount>1 ? "&nbsp;in " + formatTime(option.time): ""
                 for (let [pIndex,product] of Object.entries(option.products)) {
                     if (product.type == "resources") {
                         for (let [res,amount] of Object.entries(product.playerResources?.resources||{})) {
@@ -568,7 +568,7 @@ let Tooltips = {
                 for (let p of meta.available_products) {
                     for (let [res,amount] of Object.entries(p.product?.resources||{})) {
                         if (res=="money" && levels?.[minEra]?.produced_money) continue
-                        let t=(meta?.available_products?.length!=1) ? " in "+formatTime(p.production_time): ""
+                        let t=(meta?.available_products?.length!=1) ? "&nbsp;in "+formatTime(p.production_time): ""
                         
                         if (resMapper.includes(res)) res="goods"
                         if (amount !=0) 
