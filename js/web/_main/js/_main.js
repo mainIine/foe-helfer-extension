@@ -973,6 +973,7 @@ let MainParser = {
 		'att_def_boost_attacker': ['att_boost_attacker', 'def_boost_attacker'],
 		'fierce_resistance': ['att_boost_defender', 'def_boost_defender'],
 		'att_def_boost_defender': ['att_boost_defender', 'def_boost_defender'],
+		'att_def_boost_attacker_defender': ['att_boost_attacker', 'def_boost_attacker', 'att_boost_defender', 'def_boost_defender'],
 		'advanced_tactics': ['att_boost_attacker', 'def_boost_attacker', 'att_boost_defender', 'def_boost_defender'],
 		'money_boost': ['coin_production'],
 	},
