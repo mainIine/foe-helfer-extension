@@ -172,7 +172,7 @@ function inject (loadBeta = false, extUrl = chrome.runtime.getURL(''), betaDate=
 			
 			// Firefox does not support direct communication with background.js but API injections
 			// So the the messages have to be forwarded and this exports an API-Function to do so
-			if (!chrome.extension && exportFunction && window.wrappedJSObject) {
+			if (window.navigator.userAgent.indexOf("Firefox") > -1 && exportFunction && window.wrappedJSObject) {
 				function callBgApi(data) {
 					return new window.Promise(
 						exportFunction(

@@ -136,7 +136,7 @@ let Productions = {
 	},
 
 	init: () => {
-		if (CityMap.IsExtern) return
+		if (ActiveMap == 'OtherPlayer') return
 
 		MainParser.NewCityMapData = CityMap.createNewCityMapEntities()
 		Productions.CombinedCityMapData = MainParser.NewCityMapData
@@ -1456,7 +1456,7 @@ let Productions = {
 
 	ShowRating: (external = false, eraName = null) => {
 		if (!Productions.Rating.Data) Productions.Rating.load()
-		if (CityMap.IsExtern && !external) return
+		if (ActiveMap == 'OtherPlayer' && !external) return
 		let era = (eraName == null) ? CurrentEra : eraName
 		
 		if ($('#ProductionsRating').length === 0) {
@@ -1556,7 +1556,7 @@ let Productions = {
 					uniqueBuildings.push(building)
 					delete Productions.AdditionalSpecialBuildings[building.entityId]
 				} else {
-					let foundBuilding = uniqueBuildings.find(x => x.name == building.name)
+					let foundBuilding = uniqueBuildings[foundBuildingIndex]
 					if (buildingCount[building.entityId]) 
 						buildingCount[building.entityId] += 1
 					else
@@ -1614,8 +1614,8 @@ let Productions = {
 				if (eraShortName != "-")
 					h.push(" ("+i18n("Eras."+Technologies.Eras[building.building.eraName]+".short") +')')
 				h.push('</td><td class="text-right">')
-				if (buildingCount[building.building.entityId]) h.push('<span data-original-title="'+i18n('Boxes.ProductionsRating.CountTooltip')+'">' + buildingCount[building.building.entityId]+'x</span>')
-					if (!building.highlight) h.push(' <span class="show-all" data-name="'+building.building.name+'"><img class="game-cursor" src="' + extUrl + 'css/images/hud/open-eye.png"></span>')
+				if (buildingCount[building.building.entityId] && !MainParser.Allies.buildingList?.[building.building.id]) h.push('<span data-original-title="'+i18n('Boxes.ProductionsRating.CountTooltip')+'">' + buildingCount[building.building.entityId]+'x</span>')
+				if (!building.highlight) h.push(' <span class="show-all" data-name="'+building.building.name+'"><img class="game-cursor" src="' + extUrl + 'css/images/hud/open-eye.png"></span>')
 				h.push('</td>')
 				for (const type of Productions.Rating.Types) {
 					if (!Productions.Rating.Data[type].active || Productions.Rating.Data[type].perTile == null) continue

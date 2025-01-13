@@ -23,16 +23,6 @@ FoEproxy.addHandler('GuildBattlegroundStateService', 'getState', async (data, po
 		Stats.HandlePlayerLeaderboard(data.responseData['playerLeaderboardEntries']);
 	}
 });
-//Currently in Outpost
-var isCurrentlyInOutpost = 0;
-FoEproxy.addHandler('CityMapService', 'getCityMap', async (data, postData) => {
-	if (data.responseData['gridId'] === 'cultural_outpost') {
-		isCurrentlyInOutpost=1;
-	}
-});
-FoEproxy.addHandler('CityMapService', 'getEntities', async (data, postData) => {
-		isCurrentlyInOutpost=0;
-});
 
 // Reward log
 FoEproxy.addHandler('RewardService', 'collectReward', async (data, postData) => {
@@ -51,7 +41,7 @@ FoEproxy.addHandler('RewardService', 'collectReward', async (data, postData) => 
 
 		if (rewardIncidentSource === 'hidden_reward') {
 			//split flying island incidents from Ad-chests
-			if (isCurrentlyInOutpost === 1){
+			if (ActiveMap == 'cultural_outpost'){
 				rewardIncidentSource = 'shards';
 			}
 		}

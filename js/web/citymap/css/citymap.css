@@ -33,7 +33,7 @@
 	display: flex;
 	flex-direction: row;
 	top: 0;
-	right: 220px;
+	right: 240px;
 	left: 0;
 	border-bottom: 2px solid #281207;
 	z-index: 5000;
@@ -46,7 +46,7 @@
 	overflow: hidden;
 	position: absolute;
 	top: 0;
-	right: 220px;
+	right: 240px;
 	bottom: 0;
 	left: 0;
 	border-right: 2px solid #281207;
@@ -66,7 +66,7 @@
 
 #sidebar {
 	position: absolute;
-	width: 220px;
+	width: 240px;
 	padding: 15px;
 	right: 0;
 	top: 0;
