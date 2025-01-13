@@ -659,10 +659,10 @@ GetFights = () =>{
 		if (Rankings) {
 			if (!lgUpdateData || !lgUpdateData.CityMapEntity) {
 				lgUpdateData = { Rankings: Rankings, CityMapEntity: null, Bonus: null };
-				// reset lgUpdateData sobald wie möglich (nachdem alle einzelnen Handler ausgeführt wurden)
+				// reset lgUpdateData so bald wie möglich (nachdem alle einzelnen Handler ausgeführt wurden)
 				Promise.resolve().then(() => lgUpdateData = null);
-
-			} else {
+			}
+			else {
 				lgUpdateData.Rankings = Rankings;
 				lgUpdateData.Bonus = Bonus;
 				lgUpdateData.Era = Era;
@@ -888,7 +888,7 @@ let HelperBeta = {
 		'unitsGex',
 		'marketOffers'
 	],
-	active: JSON.parse(localStorage.getItem('HelperBetaActive')) || devMode == 'true' || loadBeta
+	active: JSON.parse(localStorage.getItem('HelperBetaActive')) || devMode === 'true' || loadBeta
 };
 
 
@@ -1039,7 +1039,7 @@ let MainParser = {
 			return response.data;
 		}
 		else {
-			if (response.error.indexOf('"type":"alerts"')== -1 && response.error.indexOf('"action":"getAll"') == -1)
+			if (response.error.indexOf('"type":"alerts"')=== -1 && response.error.indexOf('"action":"getAll"') === -1)
 				throw new Error('EXT-API error: ' + response.error);
 		}
 	},
@@ -1364,7 +1364,7 @@ let MainParser = {
 
 
 	/**
-	 * Collect some stats
+	 * Collect some stats for the website api
 	 *
 	 * @param d
 	 * @returns {boolean}
