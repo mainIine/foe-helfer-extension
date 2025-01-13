@@ -11,7 +11,7 @@
 - Efficiency 
 	- fix count for buildings with allies
 - Market Overview
-	- filter overlapped by tabble header
+	- filter overlapped by table header
 - Treasury
 	- export did not parse date correctly
 - Blue Galaxy and Building Efficiency
