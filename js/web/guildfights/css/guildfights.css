@@ -203,6 +203,20 @@
 	top: 2px;
 	position: relative;
 }
+#LiveGildFightingBody .battletype {
+	width: 9px;
+	height: 9px;
+	box-shadow: 0 1px 1px var(--black-65);
+	border-radius: 5px;
+	display: inline-block;
+	position: relative;
+}
+#LiveGildFightingBody .battletype.BTattack {
+	background-color: rgb(209, 38, 38);
+}
+#LiveGildFightingBody .battletype.BTdefence {
+	background-color: rgb(45, 77, 255);
+}
 
 #LiveGildFightingBody .tabs ul li a span {
 	width: 21px;

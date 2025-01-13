@@ -40,6 +40,16 @@
 
 #negotiationBox #negotiationBoxBody .goods-sprite {
 	position: static;
+	width: 3em;
+	height: 3em;
+	padding: 0.25em;
+	background-color: var(--black-65);
+	border-radius: 50%;
+	zoom: 0.75;
+}
+
+#negotiationBox #negotiationBoxBody .suggestion .goods-sprite, #negotiationBox #negotiationBoxBody .good-sort .goods-sprite {
+	zoom: 1;
 }
 
 #negotiationBox #negotiationBoxBody .goods-sprite.multiple {
@@ -53,7 +63,7 @@
 }
 
 #negotiationBox #negotiationBoxBody #good-sort .good .goods-sprite::before {
-	bottom: 1.5em;
+	bottom: 2em;
 }
 
 #negotiationBox #negotiationBoxBody .goods-dragable .good:hover {
@@ -160,15 +170,23 @@
 #negotiationBox .hasToOccur,
 #negotiationBox .guess_wrong_person {
 	background-color: rgba(255,165,0,.2);
-	border: 2px solid rgba(255,165,0,.5);
+}
+
+#negotiationBox .hasToOccur .goods-sprite,
+#negotiationBox .guess_wrong_person .goods-sprite {
+	border: 2px solid rgba(255,165,0,.7);
 }
 #negotiationBox .guess_fail {
 	background-color: rgba(255,0,0,.2);
-	border: 2px solid rgba(255,0,0,.5);
+}
+#negotiationBox .guess_fail .goods-sprite {
+	border: 2px solid rgba(255,0,0,.7);
 }
 #negotiationBox .guess_match {
 	background-color: rgba(0,150,0,.2);
-	border: 2px solid rgba(0,150,0,.5);
+}
+#negotiationBox .guess_match .goods-sprite {
+	border: 2px solid rgba(0,150,0,.7);
 }
 
 #negotiationBox .suggestion {
@@ -176,17 +194,17 @@
 }
 #negotiationBox .numberIcon {
 	position: absolute;
-	top: 50%;
+	bottom: 0.3em;
 	left: calc(50% + 0.5em);
-	height: 1.5em;
-	border: 1px solid rgba(10,10,10,.8);
-	background-color: rgba(255,255,255,.65);
+	background-color: #281207;
+	border: 1px solid var(--text-medium2);
 	display: inline-block;
-	padding: 0.2em;
+	padding: 0 0.4em;
+	box-sizing: border-box;
 	margin: 0;
 	transform: translate(10px, 0px);
-	border-radius: 50%;
-	color: black;
+	border-radius: 10px;
+	color: var(--text-normal);
 }
 
 #negotiationBox .missmatch {

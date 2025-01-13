@@ -1494,7 +1494,7 @@ FP-Bar */
 	opacity: 0;
 	visibility: hidden;
 	pointer-events: none;
-	z-index: 2;
+	z-index: 201;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;

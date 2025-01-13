@@ -1,5 +1,29 @@
 ## Changelog - Extension
 
+##### 3.10.1.0
+
+**Update**
+- Tooltip
+	- 'Einmalige Gebäude' Eigenschaft hinzugefügt
+
+**BugFix**
+- Alarme gingen immer noch nicht
+- Effizienz 
+	- Gebäude mit Verbündeten zeigten falsche Anzahl
+- Markt Übersicht
+	- Filterliste überlagerte Tabellenkopf
+- Gildenkassenbeiträge
+	- Beim Export wurde das Datum nicht korrekt gelesen
+- Blaue Galaxie und Gebäudeeffizienz
+	- Fenster gingen manchmal nicht auf oder waren leer (ist noch in Untersuchung ob die Reparatur geklappt hat)
+- Tooltip
+	- "motivieren"/"polieren" Eigenschaft war falsch herum für Gebäude der neuen Generation
+
+##### 3.10.0.1
+
+**BugFix**
+- Alarme gingen nicht
+
 ##### 3.10.0.0
 
 **Neu**

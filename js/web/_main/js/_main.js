@@ -290,7 +290,7 @@ GetFights = () =>{
 			$('script').each((i,s)=>{    
 				if (!s?.innerHTML?.includes("unlockedFeatures")) return
 				try {
-					let ulf = JSON.parse([...s?.innerHTML.matchAll(/(unlockedFeatures:\ ')(.*?)(',\n)/gm)][0][2])
+					let ulf = JSON.parse([...s.innerHTML.matchAll(/(unlockedFeatures:\ )(.*?)(,\n)/gm)][0][2])
 					if (Array.isArray(ulf)) MainParser.UnlockedFeatures = ulf.map(x=>x.feature);
 				} catch (e) {
 
@@ -357,8 +357,7 @@ GetFights = () =>{
 	// --------------------------------------------------------------------------------------------------
 	// Karte wird gewechselt zum Außenposten
 	FoEproxy.addHandler('CityMapService', 'getCityMap', (data, postData) => {
-		ActiveMap = data.responseData.gridId;
-		FoEproxy.triggerFoeHelperHandler("ActiveMapUpdated");
+		MainParser.UpdateActiveMap(data.responseData.gridId);
 
 		if (ActiveMap === 'era_outpost') {
 			CityMap.EraOutpostData = Object.assign({}, ...data.responseData['entities'].map((x) => ({ [x.id]: x })));
@@ -377,32 +376,17 @@ GetFights = () =>{
 
 	// Stadt wird wieder aufgerufen
 	FoEproxy.addHandler('CityMapService', 'getEntities', (data, postData) => {
-		CityMap.IsExtern = false
 
-		if (ActiveMap === 'gg') return; // getEntities wurde in den GG ausgelöst => Map nicht ändern
-
-		let MainGrid = false
-		for (let i = 0; i < postData.length; i++) {
-			let postDataItem = postData[i];
-
-			if (postDataItem['requestClass'] === 'CityMapService' && postDataItem['requestMethod'] === 'getEntities') {
-				if (postDataItem['requestData'][0] === 'main') {
-					MainGrid = true;
-				}
-				break;
-			}
-		}
-
-		if (!MainGrid) { 
-			CityMap.IsExtern = true
+		if (!postData.map(x=>x.requestData?.[0]).includes('main')) { 
 			return
-		} // getEntities wurde in einer fremden Stadt ausgelöst => ActiveMap nicht ändern
+		}
 
 		LastMapPlayerID = ExtPlayerID
 
 		MainParser.CityMapData = Object.assign({}, ...data.responseData.map((x) => ({ [x.id]: x })))
 		MainParser.SetArkBonus2()
 
+		if (ActiveMap === 'gg') return; // getEntities wurde in den GG ausgelöst => Map nicht ändern
 		MainParser.UpdateActiveMap('main')
 	});
 
@@ -434,7 +418,7 @@ GetFights = () =>{
 
 	// visiting another player
 	FoEproxy.addHandler('OtherPlayerService', 'visitPlayer', (data, postData) => {
-		CityMap.IsExtern = true
+		MainParser.UpdateActiveMap('OtherPlayer')
 		LastMapPlayerID = data.responseData['other_player']['player_id']
 		MainParser.OtherPlayerCityMapData = Object.assign({}, ...data.responseData['city_map']['entities'].map((x) => ({ [x.id]: x })))
 	});
@@ -675,10 +659,10 @@ GetFights = () =>{
 		if (Rankings) {
 			if (!lgUpdateData || !lgUpdateData.CityMapEntity) {
 				lgUpdateData = { Rankings: Rankings, CityMapEntity: null, Bonus: null };
-				// reset lgUpdateData sobald wie möglich (nachdem alle einzelnen Handler ausgeführt wurden)
+				// reset lgUpdateData so bald wie möglich (nachdem alle einzelnen Handler ausgeführt wurden)
 				Promise.resolve().then(() => lgUpdateData = null);
-
-			} else {
+			}
+			else {
 				lgUpdateData.Rankings = Rankings;
 				lgUpdateData.Bonus = Bonus;
 				lgUpdateData.Era = Era;
@@ -904,7 +888,7 @@ let HelperBeta = {
 		'unitsGex',
 		'marketOffers'
 	],
-	active: JSON.parse(localStorage.getItem('HelperBetaActive')) || devMode == 'true' || loadBeta
+	active: JSON.parse(localStorage.getItem('HelperBetaActive')) || devMode === 'true' || loadBeta
 };
 
 
@@ -989,6 +973,7 @@ let MainParser = {
 		'att_def_boost_attacker': ['att_boost_attacker', 'def_boost_attacker'],
 		'fierce_resistance': ['att_boost_defender', 'def_boost_defender'],
 		'att_def_boost_defender': ['att_boost_defender', 'def_boost_defender'],
+		'att_def_boost_attacker_defender': ['att_boost_attacker', 'def_boost_attacker', 'att_boost_defender', 'def_boost_defender'],
 		'advanced_tactics': ['att_boost_attacker', 'def_boost_attacker', 'att_boost_defender', 'def_boost_defender'],
 		'money_boost': ['coin_production'],
 	},
@@ -1054,7 +1039,7 @@ let MainParser = {
 			return response.data;
 		}
 		else {
-			if (response.error.indexOf('"type":"alerts"')== -1 && response.error.indexOf('"action":"getAll"') == -1)
+			if (response.error.indexOf('"type":"alerts"')=== -1 && response.error.indexOf('"action":"getAll"') === -1)
 				throw new Error('EXT-API error: ' + response.error);
 		}
 	},
@@ -1379,7 +1364,7 @@ let MainParser = {
 
 
 	/**
-	 * Collect some stats
+	 * Collect some stats for the website api
 	 *
 	 * @param d
 	 * @returns {boolean}

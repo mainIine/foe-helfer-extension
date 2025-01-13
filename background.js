@@ -14,9 +14,11 @@
 
 'use strict';
 
-importScripts(
-	'vendor/browser-polyfill/browser-polyfill.min.js','vendor/dexie/dexie.min.js'
-)
+try {
+	importScripts('vendor/browser-polyfill/browser-polyfill.min.js','vendor/dexie/dexie.min.js')
+}
+catch {	
+}
 
 // @ts-ignore
 let alertsDB = new Dexie("Alerts");
@@ -247,17 +249,20 @@ alertsDB.version(1).stores({
 		function triggerAlert(alert) {
 			return browser.notifications.create(
 				alert.id != null ? (prefix + alert.id) : previevId,
-				{
-					type: 'basic',
-					title: alert.data.title,
-					message: alert.data.body,
-					buttons: alert.data.actions,
-					requireInteraction: alert.data.persistent||false,
-					// @ts-ignore
-					contextMessage: 'FoE-Helper − '+trimPrefix(alert.server, "https://"),
-					iconUrl: '/images/app128.png',
-					eventTime: alert.data.expires
-				}
+				Object.assign(navigator.userAgent.indexOf("Firefox") > -1 ? {}: 
+					{
+						requireInteraction: alert.data.persistent||false,
+						buttons: alert.data.actions
+					}, {
+						type: 'basic',
+						title: alert.data.title,
+						message: alert.data.body,
+						iconUrl: '/images/app128.png',
+						eventTime: alert.data.expires,
+						contextMessage: 'FoE-Helper − '+trimPrefix(alert.server, "https://")
+						
+					}
+				)
 			);
 		}
 

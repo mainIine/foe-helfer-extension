@@ -25,7 +25,6 @@ let CityMap = {
 	BlockedAreas: null,
 	OccupiedArea: 0,
 	EfficiencyFactor: 0,
-	IsExtern: false,
 	OutpostScaleUnit: 100,
 	CulturalOutpostData: {},
 	CulturalOutpostAreas: [],
@@ -52,12 +51,7 @@ let CityMap = {
 	 * @param Data The City data
 	 * @param Title Name of the city
 	 */
-	init: (event, Data = null, Title = i18n('Boxes.CityMap.YourCity'), isOtherPlayer = false)=> {
-		CityMap.IsExtern = false
-		if (isOtherPlayer) {
-			CityMap.IsExtern = true
-		}
-
+	init: (event, Data = null, Title = i18n('Boxes.CityMap.YourCity'))=> {
 		if (Data === null) { // No data => own city
 			Data = MainParser.CityMapData
 			CityMap.OwnCityData = MainParser.NewCityMapData
@@ -219,7 +213,7 @@ let CityMap = {
 		});
 
 		// Button for submit Box
-		if (CityMap.IsExtern === false && ActiveMap === 'main') {
+		if (ActiveMap === 'main') {
 			menu.append($('<input type="text" id="BuildingsFilter" placeholder="'+ i18n('Boxes.CityMap.FilterBuildings') +'" oninput="CityMap.filterBuildings(this.value)">'));
 			menu.append(
 				$('<div />').addClass('btn-group')
@@ -255,7 +249,7 @@ let CityMap = {
 			$("#sidebar").append(CityMap.showQIStats())
 			$("#sidebar").append(CityMap.showQIBuildings())
 		}
-		if (CityMap.IsExtern === true) {
+		if (ActiveMap == 'OtherPlayer') {
 			let era = CityMap.CityData.find(x => x.type == 'main_building').cityentity_id.split('_')[1]
 			$("#sidebar").append($('<a id="openEfficiencyRating" class="btn-default" onclick="Productions.ShowRating(true,\''+era+'\')">'+ i18n('Menu.ProductionsRating.Title') +'</a>'));
 		}
@@ -572,7 +566,7 @@ let CityMap = {
 		CityMap.streetsTotal = 0
 		let StreetsNeeded = 0;
 
-		if(CityMap.IsExtern === false) {
+		if(ActiveMap != 'OtherPlayer') {
 			// Unlocked Areas rendern
 			CityMap.BuildGrid();
 		}
@@ -582,7 +576,7 @@ let CityMap = {
 			MaxX = 71,
 			MaxY = 71;
 
-		if (CityMap.IsExtern == true)
+		if (ActiveMap == 'OtherPlayer')
 			buildingData = CityMap.createNewCityMapEntities(Object.values(MainParser.OtherPlayerCityMapData))
 		else
 			buildingData = CityMap.createNewCityMapEntities(Object.values(MainParser.CityMapData))
@@ -697,7 +691,7 @@ let CityMap = {
 		}
 
 		// Non player city => Unlocked areas cant be detected => dont show free space
-		if (!CityMap.IsExtern) {
+		if (ActiveMap != 'OtherPlayer') {
 			$('.total-area').html(txtTotal);
 			$('.occupied-area').html(txtFree);
 			$('.total-buildings').html(txtTotalBuildings);
@@ -719,7 +713,7 @@ let CityMap = {
 			const count = sortable[x][1];
 			const pct = parseFloat(100*count/CityMap.OccupiedArea).toFixed(1);
 
-			let str = `${TypeName}:<br> ${count} (${pct}%)`;
+			let str = `${TypeName}: ${count} (${pct}%)`;
 
 			if (type === 'street') {
 				str = str + '<br>' + HTML.Format(Math.round(CityMap.EfficiencyFactor * 10000) / 100) + '% ' + i18n('Boxes.Citymap.Efficiency');
@@ -2184,26 +2178,26 @@ let CityMap = {
 	},
 
 	createNewCityMapEntities(data) {
-		if (data === undefined && !CityMap.IsExtern) {
+		if (data === undefined && ActiveMap != 'OtherPlayer') {
 			data = Object.values(MainParser.CityMapData)
 		}
-		else if (CityMap.IsExtern) {
+		else if (ActiveMap == 'OtherPlayer') {
 			data = Object.values(MainParser.OtherPlayerCityMapData)
 		}
 
 		for (building of data) {
-			if (CityMap.IsExtern === true && building.eraName !== undefined) continue
+			if (ActiveMap == 'OtherPlayer' && building.eraName !== undefined) continue
 			let metaData = Object.values(MainParser.CityEntities).find(x => x.id == building.cityentity_id)
 			let era = Technologies.getEraName(building.cityentity_id, building.level)
 			let newCityEntity = CityMap.createNewCityMapEntity(metaData, era, building)
 
-			if (CityMap.IsExtern === true) 
+			if (ActiveMap == 'OtherPlayer') 
 				MainParser.OtherPlayerCityMapData[building.id] = newCityEntity
 			else
 				MainParser.NewCityMapData[building.id] = newCityEntity
 		}
 
-		return (CityMap.IsExtern === true ? MainParser.OtherPlayerCityMapData : MainParser.NewCityMapData) 
+		return (ActiveMap == 'OtherPlayer' ? MainParser.OtherPlayerCityMapData : MainParser.NewCityMapData) 
 	},
 
 	setDecayed(data) {

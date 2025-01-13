@@ -47,12 +47,17 @@
 
 #eventpresentsBody td.icon {
     position: relative;
+    width: 30px;
+    vertical-align: top;
+}
+
+#eventpresentsBody .fragment {
+    position: absolute;
+    top: 18px;
+    left: 20px;
 }
 
 #eventpresentsBody .fragment img {
-    position: absolute;
-    bottom: 3px;
-    right: 0;
     height: 18px;
     width: auto;
 }
