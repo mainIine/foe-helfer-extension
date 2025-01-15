@@ -93,12 +93,13 @@
     content: '';
     position: relative;
     top: 3px;
-    width: 23px;
+    width: 24px;
     height: 20px;
     display: inline-block;
     background: url(../../x_img/forgepoints.png) center top no-repeat;
     background-size: contain;
-    margin: 0 3px;
+    padding: 0 3px;
+    box-sizing: border-box;
 }
 
 #PlayerProfile .goods {
@@ -127,10 +128,15 @@
     height: 26px;
 }
 
-#PlayerProfile .battleBoosts div {
+#PlayerProfile .battleBoosts > div {
     display: flex;
     align-items: center;
     justify-content: center;
+    height: 31px;
+}
+
+#PlayerProfile .battleBoosts > div > div {
+    width: 45%;
 }
 
 #PlayerProfile div.battleBoosts {
@@ -162,7 +168,7 @@
     background-size: contain;
     height: 28px;
     width: 28px;
-    margin: 3px 8px 0;
+    margin: 0 8px;
 }
 
 #PlayerProfile .important {
@@ -170,8 +176,8 @@
     font-weight: bold;
 }
 
-#PlayerProfile .battleBoosts .general span:nth-child(2) {
-    margin-right: 20px;
+#PlayerProfile .battleBoosts .gbg {
+    margin-right: 11px;
 }
 
 #PlayerProfile .battleBoosts .ge {
