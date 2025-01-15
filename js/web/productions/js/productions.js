@@ -731,6 +731,7 @@ let Productions = {
 									}
 								}
 							})
+
 							rowA.push('<td data-number="'+boosts.all+'" class="text-center">'+ (boosts.all != 0 ? HTML.Format(boosts.all) : '-') +'</td>')
 							rowA.push('<td data-number="'+boosts.battleground+'" class="text-center">'+ (boosts.battleground != 0 ? HTML.Format(boosts.battleground) : '-') +'</td>')
 							rowA.push('<td data-number="'+boosts.guild_expedition+'" class="text-center">'+ (boosts.guild_expedition != 0 ? HTML.Format(boosts.guild_expedition) : '-') +'</td>')
@@ -793,12 +794,16 @@ let Productions = {
 					table.push((typeCurrentSum >= 10000 ? HTML.FormatNumberShort(typeCurrentSum) : HTML.Format(typeCurrentSum))+ "/" + (typeSum >= 10000 ? HTML.FormatNumberShort(typeSum) : HTML.Format(typeSum)))
 					if (type == 'strategy_points') {
 						table.push(' <button class="typeBoost btn-default btn-tight"><a href="#forge_points_production" class="game-cursor">'+i18n('General.Boost')+': '+MainParser.BoostSums.forge_points_production+'%</a></button>')
+						Profile.fpProduction = typeSum;
 					}
 					else if (type == 'money') {
 						table.push(' <button class="typeBoost btn-default btn-tight"><a href="#coin_production" class="game-cursor">'+i18n('General.Boost')+': '+MainParser.BoostSums.coin_production+'%</a></button>')
 					}
 					else if (type == 'supplies') {
 						table.push(' <button class="typeBoost btn-default btn-tight"><a href="#supply_production" class="game-cursor">'+i18n('General.Boost')+': '+MainParser.BoostSums.supply_production+'%</a></button>')
+					}
+					if (type == 'clan_goods') {
+						Profile.guildGoods = typeSum;
 					}
 					table.push('</th>')
 				}
@@ -930,6 +935,8 @@ let Productions = {
 						rowA.push(HTML.Format(goodAmount))
 				rowA.push('</td>')
 			})
+
+			Profile.goods = erasTotal;
 			
 			rowA.push('<td data-number="'+Technologies.Eras[building.eraName]+'">' + i18n("Eras."+Technologies.Eras[building.eraName]+".short") + '</td>')
 			let time = "-"

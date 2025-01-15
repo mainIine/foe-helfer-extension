@@ -987,6 +987,18 @@ let MainParser = {
 		'def_boost_attacker': 0,
 		'att_boost_defender': 0,
 		'def_boost_defender': 0,
+		'guild_raids-att_boost_attacker': 0,
+		'guild_raids-def_boost_attacker': 0,
+		'guild_raids-att_boost_defender': 0,
+		'guild_raids-def_boost_defender': 0,
+		'guild_expedition-att_boost_attacker': 0,
+		'guild_expedition-def_boost_attacker': 0,
+		'guild_expedition-att_boost_defender': 0,
+		'guild_expedition-def_boost_defender': 0,
+		'battleground-att_boost_attacker': 0,
+		'battleground-def_boost_attacker': 0,
+		'battleground-att_boost_defender': 0,
+		'battleground-def_boost_defender': 0,
 		'coin_production': 0,
 		'supply_production': 0,
 		'forge_points_production':0,
@@ -1537,18 +1549,29 @@ let MainParser = {
 			if (!EntityID) EntityID = 0;
 			if (!MainParser.Boosts[EntityID]) MainParser.Boosts[EntityID] = []
 			MainParser.Boosts[EntityID].push(Boost)
-			if (Boost.origin==="inventory_item") {
+			if (Boost.origin === "inventory_item") {
 				BoostPotions.activate(Boost.type,{expire:Boost.expireTime,target:Boost.targetedFeature||"all",value:Boost.value})
 			}
-			if (MainParser.BoostSums[d[i]['type']] !== undefined && (d[i]['type']!='guild_raids_action_points_collection' || MainParser.CityMapData[d[i].entityId])) {
-				MainParser.BoostSums[d[i]['type']] += d[i]['value']
+			if (Boost.targetedFeature != "all") {
+				let mergedBoostType = Boost.targetedFeature+"-"+Boost.type
+				if (MainParser.BoostSums[mergedBoostType] !== undefined) {
+					MainParser.BoostSums[mergedBoostType] += Boost.value
+				}
 			}
-			if (MainParser.BoostMapper[d[i]['type']]) {
-				if (d[i]['type'] !== 'happiness') { // => Wird in Productions extra geprüft und ausgewiesen
-					let Boosts = MainParser.BoostMapper[d[i]['type']];
-					for (let j = 0; j < Boosts.length;j++) {
-						MainParser.BoostSums[Boosts[j]] += d[i]['value'];
-					}
+			else {
+				if (MainParser.BoostSums[Boost.type] !== undefined && (Boost.type !='guild_raids_action_points_collection' || MainParser.CityMapData[Boost.entityId])) {
+					MainParser.BoostSums[Boost.type] += Boost.value
+				}
+			}
+
+			// break up combined boosts
+			if (MainParser.BoostMapper[Boost.type]) {
+				if (Boost.type == 'happiness') continue // => handled in productions.js
+					
+				let boosts = MainParser.BoostMapper[Boost.type];
+				for (let boost of boosts) {
+					let boostType = (Boost.targetedFeature !== "all" ? Boost.targetedFeature+"-"+boost : boost);
+					MainParser.BoostSums[boostType] += Boost.value;
 				}
 			}
 		}
@@ -1689,6 +1712,7 @@ let MainParser = {
 			if (Player['is_friend'] !== undefined) PlayerDict[PlayerID]['IsFriend'] = Player['is_friend'];
 			if (Player['is_self'] !== undefined) PlayerDict[PlayerID]['IsSelf'] = Player['is_self'];
 			if (Player['score'] !== undefined) PlayerDict[PlayerID]['Score'] = Player['score'];
+			if (Player['won_battles'] !== undefined) PlayerDict[PlayerID]['WonBattles'] = Player['won_battles'];
 			if (Player['activity'] !== undefined) PlayerDict[PlayerID]['Activity'] = Player['activity'];
 			if (Player['era'] !== undefined) PlayerDict[PlayerID]['Era'] = Player['era'];
 		}
