@@ -491,9 +491,9 @@ let Productions = {
 			rowA.push('<td>')
 				rowA.push((building.state.isPolivated !== undefined ? (building.state.isPolivated ? '<span class="text-bright">★</span>' : '☆') : ''))
 				if (building.setBuilding !== undefined)
-				rowA.push('<img src="' + srcLinks.get('/shared/icons/' + building.setBuilding.name + '.png', true) + '" class="chain-set-ico">')
+					rowA.push('<img src="' + srcLinks.get('/shared/icons/' + building.setBuilding.name + '.png', true) + '" class="chain-set-ico">')
 				if (building.chainBuilding !== undefined)
-				rowA.push('<img src="' + srcLinks.get('/shared/icons/' + building.chainBuilding.name + '.png', true) + '" class="chain-set-ico">')
+					rowA.push('<img src="' + srcLinks.get('/shared/icons/' + building.chainBuilding.name + '.png', true) + '" class="chain-set-ico">')
 			rowA.push('</td>')
 			rowA.push('<td data-text="'+helper.str.cleanup(building.name)+'" class="' + (MainParser.Allies.buildingList?.[building.id]?"ally" : "") +'">' + building.name + '</td>')
 			
@@ -513,7 +513,7 @@ let Productions = {
 					}
 				})
 				for (let type of Object.keys(MainParser.BoostSums)) {
-					if (type.includes('guild_raids')) {
+					if (type.includes('guild_raids_')) {
 						if (boosts[type] != undefined)
 							rowA.push('<td data-number="'+boosts[type]+'" class="text-center">'+ HTML.Format(boosts[type]) +'</td>')
 						else
