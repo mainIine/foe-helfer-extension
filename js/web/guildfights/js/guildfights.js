@@ -1172,7 +1172,7 @@ let GuildFights = {
 			// If sectors doesnt belong to anyone
 			if (mapdata[i]['ownerId'] === undefined && mapdata[i]['conquestProgress'].length > 0) {
 				progress.push(`<tr id="province-${id}" data-id="${id}" data-tab="progress">`);
-				progress.push(`<td><b><span class="province-color" style="background-color:#555"></span> ${GuildFights.MapData['title']}</b></td>`);
+				progress.push(`<td><b><span class="province-color" style="background-color:#555"></span> ${mapdata[i]['title']}</b></td>`);
 
 				if (GuildFights.showGuildColumn)
 					progress.push(`<td><em>${i18n('Boxes.GuildFights.NoOwner')}</em></td>`);
