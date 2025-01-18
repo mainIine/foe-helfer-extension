@@ -1552,6 +1552,9 @@ let MainParser = {
 			if (Boost.origin === "inventory_item") {
 				BoostPotions.activate(Boost.type,{expire:Boost.expireTime,target:Boost.targetedFeature||"all",value:Boost.value})
 			}
+
+			// collect boost sums
+			if (MainParser.CityMapData[Boost.entityId] === undefined) continue; // only collect city boosts
 			if (Boost.targetedFeature != "all") {
 				let mergedBoostType = Boost.targetedFeature+"-"+Boost.type
 				if (MainParser.BoostSums[mergedBoostType] !== undefined) {
