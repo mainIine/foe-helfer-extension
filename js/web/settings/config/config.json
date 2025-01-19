@@ -78,23 +78,35 @@
 		"sort": 15
 	},
 	{
+		"name": "ShowGBGPlayerInfo",
+		"status": true,
+		"group": "Auto",
+		"sort": 18
+	},
+	{
+		"name": "ShowQIPlayerInfo",
+		"status": true,
+		"group": "Auto",
+		"sort": 21
+	},
+	{
 		"name": "ShowArmyAdvice",
 		"status": false,
 		"group": "Auto",
 		"button":"BattleAssist.ShowArmyAdviceConfig()",
-		"sort": 17
+		"sort": 24
 	},
 	{
 		"name": "ShowMarketFilter",
 		"status": false,
 		"group": "Auto",
-		"sort": 19
+		"sort": 27
 	},
 	{
 		"name": "ShowReconstructionList",
 		"status": true,
 		"group": "Auto",
-		"sort": 20
+		"sort": 30
 	},
 	{
 		"name": "ResetBoxPositions",
