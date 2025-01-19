@@ -98,8 +98,9 @@
     display: inline-block;
     background: url(../../x_img/forgepoints.png) center top no-repeat;
     background-size: contain;
-    padding: 0 3px;
+    margin: 0 3px;
     box-sizing: border-box;
+    zoom: 0.8;
 }
 
 #PlayerProfile .goods {
@@ -135,10 +136,6 @@
     height: 31px;
 }
 
-#PlayerProfile .battleBoosts > div > div {
-    width: 45%;
-}
-
 #PlayerProfile div.battleBoosts {
     padding-top: 0;
 }
@@ -163,21 +160,22 @@
     text-align: center;
 }
 
+#PlayerProfile .battleBoosts table {
+    margin: 0 auto;
+}
+
 #PlayerProfile .battleBoosts .gbg, #PlayerProfile .battleBoosts .ge, #PlayerProfile .battleBoosts .qi {
     background: url(../../x_img/gbg-green.png) left top no-repeat;
     background-size: contain;
     height: 28px;
     width: 28px;
-    margin: 0 8px;
+    margin: 0 4px;
+    display: block;
 }
 
 #PlayerProfile .important {
     color: var(--text-danger);
     font-weight: bold;
-}
-
-#PlayerProfile .battleBoosts .gbg {
-    margin-right: 11px;
 }
 
 #PlayerProfile .battleBoosts .ge {
@@ -188,12 +186,7 @@
     background-image: url(../../x_img/guild_raids.png);
 }
 
-#PlayerProfile .battleBoosts div span {
-    margin: 0 3px;
-}
-
-#PlayerProfile .battleBoosts div span::before {
+#PlayerProfile .battleBoosts span::before {
     margin-right: 5px;
     height: 26px;
-    zoom: 0.75;
 }

@@ -79,7 +79,7 @@ const Profile = {
 
         content.push('<div class="dailyProd pad">');
         content.push('<h2>'+i18n('Boxes.PlayerProfile.DailyProduction')+'</h2>');
-        if (Profile.fpProduction == 0)
+        if (Profile.fpProduction == 0 || Profile.guildGoods == 0)
             content.push('<span class="important">'+i18n('Boxes.PlayerProfile.OpenProduction')+'</span><br>');
         content.push('<span class="fp">' + HTML.Format(Profile.fpProduction) + ", " + i18n('General.Boost')+ ' ' +MainParser.BoostSums.forge_points_production + '%</span><br>');
         content.push('<div class="goods">')
@@ -96,23 +96,23 @@ const Profile = {
 
         content.push('<div class="battleBoosts pad">');
         content.push('<h2>'+i18n('Boxes.PlayerProfile.BattleBoosts')+'</h2>');
-        content.push('<div class="general">'
-            +'<div><span class="aAtt">'+HTML.Format(MainParser.BoostSums.att_boost_attacker)+'</span>'
-            +'<span class="aDef">'+HTML.Format(MainParser.BoostSums.def_boost_attacker)+'</span></div>'
-            +'<div><span class="dAtt">'+HTML.Format(MainParser.BoostSums.att_boost_defender)+'</span>'
-            +'<span class="dDef">'+HTML.Format(MainParser.BoostSums.def_boost_defender)+'</span></div></div>');
-        content.push('<div>'
-            +'<div><span class="aAtt">'+HTML.Format(MainParser.BoostSums['battleground-att_boost_attacker']+MainParser.BoostSums.att_boost_attacker)+'</span>'
-            +'<span class="aDef">'+HTML.Format(MainParser.BoostSums['battleground-def_boost_attacker']+MainParser.BoostSums.def_boost_attacker)+'</span></div>'
-            +'<span class="gbg"></span><div><span class="dAtt">'+HTML.Format(MainParser.BoostSums['battleground-att_boost_defender']+MainParser.BoostSums.att_boost_defender)+'</span>'
-            +'<span class="dDef">'+HTML.Format(MainParser.BoostSums['battleground-def_boost_defender']+MainParser.BoostSums.def_boost_defender)+'</span></div></div>');
-        content.push('<div>'
-            +'<div><span class="aAtt">'+HTML.Format(MainParser.BoostSums['guild_expedition-att_boost_attacker']+MainParser.BoostSums.att_boost_attacker)+'</span>'
-            +'<span class="aDef">'+HTML.Format(MainParser.BoostSums['guild_expedition-def_boost_attacker']+MainParser.BoostSums.def_boost_attacker)+'</span></div>'
-            +'<span class="ge"></span><div><span class="dAtt">'+HTML.Format(MainParser.BoostSums['guild_expedition-att_boost_defender']+MainParser.BoostSums.att_boost_defender)+'</span>'
-            +'<span class="dDef">'+HTML.Format(MainParser.BoostSums['guild_expedition-def_boost_defender']+MainParser.BoostSums.def_boost_defender)+'</span></div></div>');
-        content.push('<div><div><span class="aAtt">'+HTML.Format(MainParser.BoostSums['guild_raids-att_boost_attacker'])+'</span><span class="aDef">'+HTML.Format(MainParser.BoostSums['guild_raids-def_boost_attacker'])+'</span></div><span class="qi"></span><div><span class="dAtt">'+HTML.Format(MainParser.BoostSums['guild_raids-att_boost_defender'])+'</span><span class="dDef">'+HTML.Format(MainParser.BoostSums['guild_raids-def_boost_defender'])+'</span></div></div>');
-        content.push('</div>');
+        content.push('<table><tr class="general">'
+            +'<td><span class="aAtt">'+HTML.Format(MainParser.BoostSums.att_boost_attacker)+'</span>'
+            +'<span class="aDef">'+HTML.Format(MainParser.BoostSums.def_boost_attacker)+'</span></td>'
+            +'<td></td><td><span class="dAtt">'+HTML.Format(MainParser.BoostSums.att_boost_defender)+'</span>'
+            +'<span class="dDef">'+HTML.Format(MainParser.BoostSums.def_boost_defender)+'</span></td></tr>');
+        content.push('<tr>'
+            +'<td><span class="aAtt">'+HTML.Format(MainParser.BoostSums['battleground-att_boost_attacker']+MainParser.BoostSums.att_boost_attacker)+'</span>'
+            +'<span class="aDef">'+HTML.Format(MainParser.BoostSums['battleground-def_boost_attacker']+MainParser.BoostSums.def_boost_attacker)+'</span></td>'
+            +'<td><span class="gbg"></span></td><td><span class="dAtt">'+HTML.Format(MainParser.BoostSums['battleground-att_boost_defender']+MainParser.BoostSums.att_boost_defender)+'</span>'
+            +'<span class="dDef">'+HTML.Format(MainParser.BoostSums['battleground-def_boost_defender']+MainParser.BoostSums.def_boost_defender)+'</span></td></tr>');
+        content.push('<tr>'
+            +'<td><span class="aAtt">'+HTML.Format(MainParser.BoostSums['guild_expedition-att_boost_attacker']+MainParser.BoostSums.att_boost_attacker)+'</span>'
+            +'<span class="aDef">'+HTML.Format(MainParser.BoostSums['guild_expedition-def_boost_attacker']+MainParser.BoostSums.def_boost_attacker)+'</span></td>'
+            +'<td><span class="ge"></span></td><td><span class="dAtt">'+HTML.Format(MainParser.BoostSums['guild_expedition-att_boost_defender']+MainParser.BoostSums.att_boost_defender)+'</span>'
+            +'<span class="dDef">'+HTML.Format(MainParser.BoostSums['guild_expedition-def_boost_defender']+MainParser.BoostSums.def_boost_defender)+'</span></td></tr>');
+        content.push('<tr><td><span class="aAtt">'+HTML.Format(MainParser.BoostSums['guild_raids-att_boost_attacker'])+'</span><span class="aDef">'+HTML.Format(MainParser.BoostSums['guild_raids-def_boost_attacker'])+'</span></td><td><span class="qi"></span></td><td><span class="dAtt">'+HTML.Format(MainParser.BoostSums['guild_raids-att_boost_defender'])+'</span><span class="dDef">'+HTML.Format(MainParser.BoostSums['guild_raids-def_boost_defender'])+'</span></td></tr>');
+        content.push('</tr></table>');
         $('#PlayerProfileBody').html(content.join(''));
     }
 }
