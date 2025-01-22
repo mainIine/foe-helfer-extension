@@ -202,7 +202,3 @@ input.textfilter{
     width: -webkit-fill-available;  /* Mozilla-based browsers will ignore this. */
     width: fill-available;
 }
-
-#BackgroundInfoSettingsBox {
-	z-index: 150;
-}
