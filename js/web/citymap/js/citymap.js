@@ -1638,13 +1638,23 @@ let CityMap = {
 							product.products.forEach(reward => {
 								if (reward.product.type === "genericReward") { // currently: everything but forge points
 									let lookupData = metaData.components[era]?.lookup.rewards[reward.product.reward.id] || metaData.components.AllAge.lookup.rewards[reward.product.reward.id]
+									let subType = lookupData.subType
+									let amount = (lookupData.totalAmount || lookupData.amount)
+									let type = (lookupData.type == "set" ? "consumable" : lookupData.type)
+
+									if (reward.product.reward.id.search('good') != -1) {
+										subType = Object.keys(this.setGoodsRewardFromGeneric(lookupData))[0]
+										amount = Object.values(this.setGoodsRewardFromGeneric(lookupData))[0]
+										type = "goods"
+									}
+
 									let name = this.setRewardNameFromLookupData(lookupData, metaData)
 									let newReward = {
 										id: reward.product.reward.id,
 										name: name,
-										type: (lookupData.type == "set" ? "consumable" : lookupData.type),
-										subType: lookupData.subType,
-										amount: (lookupData.totalAmount || lookupData.amount),
+										type: type,
+										subType: subType,
+										amount: amount,
 										dropChance: reward.dropChance,
 									}
 									rewards.push(newReward)
@@ -1661,7 +1671,7 @@ let CityMap = {
 										}
 										rewards.push(newReward)
 									}
-									else { // goods - for now - hacky
+									else { // some goods, nextage are genericReward
 										let newReward = {
 											id: null,
 											type: "goods",
@@ -1926,6 +1936,11 @@ let CityMap = {
 	// random_good_of_previous_age   random_good_of_age   random_good_of_next_age
 	// all_goods_of_previous_age   all_goods_of_age   all_goods_of_next_age
 	setGoodsRewardFromGeneric(reward) {
+		let amount = reward.amount
+
+		if (reward.possible_rewards != undefined) // random productions
+			amount = parseInt(reward.id.split('#').reverse()[0]) // grab the amount from the id "goods#random#NextEra#508"
+
 		let eraString = '' // current era needs nothing
 		let typeString = 'random_good_' // random = one random good of the era
 
@@ -1938,7 +1953,7 @@ let CityMap = {
 		if (reward.id.includes("each")) {
 			typeString = 'all_goods_'
 		}
-		return {[typeString + 'of_' + eraString + 'age']: reward.amount}
+		return {[typeString + 'of_' + eraString + 'age']: amount}
 	},
 
 	// returns { unit_type: amount } 

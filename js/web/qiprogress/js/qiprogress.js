@@ -93,6 +93,10 @@ let QiProgress = {
 			});
 			HTML.AddCssFile('qiprogress');
 		}
+			
+		if (Settings.GetSetting('ShowQIPlayerInfo') == false) {
+			$('#QiProgressList').css({'display': 'none'})
+		}
 
 		QiProgress.BuildProgressList(QiProgress.CurrentQISeason);
 	},
