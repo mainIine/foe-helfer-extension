@@ -1960,7 +1960,6 @@ let CityMap = {
 		if (reward.id.includes("each")) {
 			typeString = 'all_goods_'
 		}
-		console.log(reward, {[typeString + 'of_' + eraString + 'age']: amount})
 		return {[typeString + 'of_' + eraString + 'age']: amount}
 	},
 
