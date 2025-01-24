@@ -1935,8 +1935,10 @@ let CityMap = {
 
 	// random_good_of_previous_age   random_good_of_age   random_good_of_next_age
 	// all_goods_of_previous_age   all_goods_of_age   all_goods_of_next_age
+	// special_goods_of_any_age
 	setGoodsRewardFromGeneric(reward) {
 		let amount = reward.amount
+
 
 		if (reward.possible_rewards != undefined) // random productions
 			amount = parseInt(reward.id.split('#').reverse()[0]) // grab the amount from the id "goods#random#NextEra#508"
@@ -1944,15 +1946,21 @@ let CityMap = {
 		let eraString = '' // current era needs nothing
 		let typeString = 'random_good_' // random = one random good of the era
 
-		if (reward.id.includes("NextEra")) {
+		if (reward.id.includes("NextEra") && !reward.id.includes("special_goods")) {
 			eraString = 'next_'
 		}
 		else if (reward.id.includes("PreviousEra")) { // currently unused
 			eraString = 'previous_'
 		}
+		else if (reward.id.includes("special_goods")) {
+			eraString = 'any_'
+			typeString = 'special_goods_'
+		}
+
 		if (reward.id.includes("each")) {
 			typeString = 'all_goods_'
 		}
+		console.log(reward, {[typeString + 'of_' + eraString + 'age']: amount})
 		return {[typeString + 'of_' + eraString + 'age']: amount}
 	},
 
@@ -2267,7 +2275,7 @@ let CityMap = {
 			}
 		}
 		
-		//if (entity.type != "street")
+		//if (entity.entityId == "W_MultiAge_WIN24E1")
 		//	console.log('entity ', entity.name, entity, metaData, data)
 		return entity
 	}
