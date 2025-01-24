@@ -84,13 +84,13 @@ const Profile = {
         content.push('<span class="fp">' + HTML.Format(Profile.fpProduction) + ", " + i18n('General.Boost')+ ' ' +MainParser.BoostSums.forge_points_production + '%</span><br>');
         content.push('<div class="goods">')
         if (Profile.goods[CurrentEraID-2])
-            content.push('<span class="prev">' + HTML.Format(Profile.goods[CurrentEraID-2] || 0) + '</span>');
+            content.push('<span class="prev">' + HTML.Format(parseInt(Profile.goods[CurrentEraID-2]) || 0) + '</span>');
         if (Profile.goods[CurrentEraID-1])
-            content.push('<span class="current">' + HTML.Format(Profile.goods[CurrentEraID-1] || 0) + '</span>');
+            content.push('<span class="current">' + HTML.Format(parseInt(Profile.goods[CurrentEraID-1]) || 0) + '</span>');
         if (Profile.goods[CurrentEraID])
-            content.push('<span class="next">' + HTML.Format(Profile.goods[CurrentEraID] || 0) + '</span>');
+            content.push('<span class="next">' + HTML.Format(parseInt(Profile.goods[CurrentEraID]) || 0) + '</span>');
         if (Profile.guildGoods)
-            content.push('<span class="guild">' + HTML.Format(Profile.guildGoods || 0) + '</span>')
+            content.push('<span class="guild">' + HTML.Format(parseInt(Profile.guildGoods) || 0) + '</span>')
         content.push('</div>');
         content.push('</div>');
 
