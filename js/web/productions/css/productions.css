@@ -271,11 +271,16 @@
 #ProductionsRatingBody #inventorybuildingscore {
 	width: 60px;
 }
-#ProductionsRatingBody .inventory-building, #ProductionsRatingBody label[for="inventorybuildingscore"] {
+#ProductionsRatingBody .inventory-building, #ProductionsRatingBody label[for="inventorybuildingscore"], #ProductionsRatingBody .ratingtable tr.hidden {
 	display: none;
 }
 #ProductionsRatingBody.inventorybuildings .inventory-building {
 	display: table-row;
+}
+#ProductionsRatingBody .sorter-header .flex-between {
+	display: flex;
+	justify-content: space-between;
+	align-items: end;
 }
 #ProductionsRatingBody.inventorybuildings .inventory-building td:nth-child(2) {
 	font-style: italic;
