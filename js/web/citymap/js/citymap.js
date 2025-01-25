@@ -1891,7 +1891,7 @@ let CityMap = {
 			}
 		}
 		if (amount == 0) {
-			amount = Number(lookupData?.name.replace(/^([+-]*[0-9]+?) .*/,"$1"));
+			amount = Number(lookupData?.name?.replace(/^([+-]*[0-9]+?) .*/,"$1"));
 			if (isNaN(amount)) amount = lookupData.amount
 		}
 
@@ -2246,6 +2246,7 @@ let CityMap = {
 			eraName: ((data.cityentity_id||metaData.id).includes("CastleSystem") ? CurrentEra : era),
 			isSpecial: this.isSpecialBuilding(metaData),
 			isLimited: this.isLimitedBuilding(metaData),
+			isInInventory: false,
 			isBoostable: this.isBoostableBuilding(metaData),
 			chainBuilding: this.setChainBuilding(metaData),
 			setBuilding: this.setSetBuilding(metaData),
