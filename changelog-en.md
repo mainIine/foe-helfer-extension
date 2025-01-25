@@ -1,5 +1,22 @@
 ## Changelog - Extension
 
+##### 3.11.0.0
+
+**New**
+- Player Profile
+	- Pops up in the top left corner when you open your profile
+- Settings
+	- Disable QI and GBG pop ups
+
+**Update**
+- Efficiency
+	- Added buildings from your inventory (not all of them just yet)
+	- Added a building size filter
+
+**BugFix**
+- Fixed overlaps in some places
+- Fixed date parsing for the treasury export
+
 ##### 3.10.1.0
 
 **Update**
