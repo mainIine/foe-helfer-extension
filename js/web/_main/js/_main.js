@@ -1083,7 +1083,6 @@ let MainParser = {
 	 * @returns {number}
 	 */
 	getAddedDateTime: (hrs, min = 0) => {
-
 		let time = MainParser.getCurrentDateTime(),
 			h = hrs || 0,
 			m = min || 0,
@@ -1552,6 +1551,7 @@ let MainParser = {
 
 			let Boost = d[i];
 
+
 			let EntityID = Boost['entityId']
 			if (Boost.origin == "castle_system")
 				EntityID = 2000000023 // castle system has entityid 2000000023
@@ -1563,7 +1563,10 @@ let MainParser = {
 			}
 
 			// collect boost sums
-			if (MainParser.CityMapData[Boost.entityId] === undefined) continue; // only collect city boosts
+			if (MainParser.CityMapData[EntityID] === undefined) {  // only collect city boosts
+				continue;
+			}
+			
 			if (Boost.targetedFeature != "all") {
 				let mergedBoostType = Boost.targetedFeature+"-"+Boost.type
 				if (MainParser.BoostSums[mergedBoostType] !== undefined) {
@@ -1578,7 +1581,7 @@ let MainParser = {
 
 			// break up combined boosts
 			if (MainParser.BoostMapper[Boost.type]) {
-				if (Boost.type == 'happiness') continue // => handled in productions.js
+				if (Boost.type == 'happiness') continue; // => handled in productions.js
 					
 				let boosts = MainParser.BoostMapper[Boost.type];
 				for (let boost of boosts) {

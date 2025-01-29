@@ -2275,7 +2275,7 @@ let CityMap = {
 			}
 		}
 		
-		//if (entity.entityId == "W_MultiAge_WIN24E1")
+		//if (entity.type != "street")
 		//	console.log('entity ', entity.name, entity, metaData, data)
 		return entity
 	}
