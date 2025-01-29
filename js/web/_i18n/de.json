@@ -1324,6 +1324,8 @@
     "Menu.Negotiation.Desc": "Macht dir präzise Vorschläge für Verhandlungen.",
     "Menu.Negotiation.Title": "Verhandlungassistent",
     "Menu.Negotiation.Warning": "Deaktiviert: Starte zuerst eine neue Verhandlung!",
+    "Menu.NewVersion.Title": "Neue FoE Helper Version installiert",
+    "Menu.NewVersion.Desc": "Klicke hier, um die Änderungen zu lesen:",
     "Menu.Notice.Desc": "Mach dir Notizen für alles, was du nicht vergessen willst.",
     "Menu.Notice.Title": "Notizen",
     "Menu.Notification.Position.bottom-center": "unten mitte",

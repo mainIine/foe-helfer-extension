@@ -950,6 +950,14 @@ let MainParser = {
 		else if (LastStartedVersion !== extVersion) {
 			MainParser.StartUpType = 'UpdatedVersion';
 			if (!(!isRelease)) {localStorage.removeItem("LoadBeta")}
+
+			HTML.ShowToastMsg({
+				show: true,
+				head: i18n('Menu.NewVersion.Title'),
+				text: i18n('Menu.NewVersion.Desc') + ' <a href="https://foe-helper.com/extension/update?lang=en" target="_blank">ChangeLog</a>',
+				type: 'success',
+				hideAfter: 10000,
+			});
 			/* We have a new version installed and started the first time */
 		}
 		else if (LastAgreedVersion !== extVersion) {

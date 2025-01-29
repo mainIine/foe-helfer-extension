@@ -1600,7 +1600,6 @@ let Productions = {
                 if (a > b) return 1
                 return 0
             })
-			console.log(buildingSizes)
 
 			let selectedAdditionals = Object.values(Productions.AdditionalSpecialBuildings).filter(x=>x.selected).map(x=>x.id);
 			
@@ -1841,7 +1840,6 @@ let Productions = {
 			$('#buildingsize').on('click', e => {
 				e.stopPropagation();
 				let filter = $('#buildingsize').val();
-				console.log(filter);
 
 				if (isNaN(parseInt(filter))) {
 					$('.ratinglist tr').removeClass('hidden');

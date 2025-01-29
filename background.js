@@ -373,9 +373,9 @@ alertsDB.version(1).stores({
 		// @ts-ignore
 		//const askText = ask[lng];
 		
-		if(!isDevMode() ) browser.tabs.create({
+		/*if(!isDevMode() ) browser.tabs.create({
 			url: `https://foe-helper.com/extension/update?lang=${lng}`
-		});
+		});*/
 	});
 
 
@@ -384,8 +384,7 @@ alertsDB.version(1).stores({
 	 *
 	 * @returns {boolean}
 	 */
-	function isDevMode()
-	{
+	function isDevMode() {
 		return !('update_url' in browser.runtime.getManifest());
 	}
 
