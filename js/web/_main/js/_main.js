@@ -956,7 +956,8 @@ let MainParser = {
 				head: i18n('Menu.NewVersion.Title'),
 				text: i18n('Menu.NewVersion.Desc') + ' <a href="https://foe-helper.com/extension/update?lang=en" target="_blank">ChangeLog</a>',
 				type: 'success',
-				hideAfter: 10000,
+				allowToastClose: true,
+				hideAfter: 30000,
 			});
 			/* We have a new version installed and started the first time */
 		}

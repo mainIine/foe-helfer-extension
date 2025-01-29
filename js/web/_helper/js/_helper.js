@@ -854,6 +854,7 @@ let HTML = {
 			text: d['text'],
 			icon: d['type'],
 			hideAfter: d['hideAfter'],
+			allowToastClose:  d['allowToastClose'],
 			position: Settings.GetSetting('NotificationsPosition', true),
 			extraClass: localStorage.getItem('SelectedMenu') || 'RightBar',
 			stack: localStorage.getItem('NotificationStack') || 4
