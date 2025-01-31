@@ -94,20 +94,20 @@ let Productions = {
 				'att_boost_attacker-battleground': {order:12,perTile:3,active:true} ,
 				'att_boost_attacker-guild_raids': {order:13,perTile:null,active:false},
 				'def_boost_attacker-all': {order:14,perTile:3,active:true},
-				'def_boost_attacker-guild_expedition': {order:15,perTile:null,active:false},
+				'def_boost_attacker-guild_expedition': {order:15,perTile:3,active:false},
 				'def_boost_attacker-battleground': {order:16,perTile:3,active:true} ,
 				'def_boost_attacker-guild_raids': {order:17,perTile:null,active:false},
-				'att_boost_defender-all': {order:18,perTile:2,active:true},
-				'att_boost_defender-guild_expedition': {order:19,perTile:null,active:false},
-				'att_boost_defender-battleground': {order:20,perTile:null,active:false},
+				'att_boost_defender-all': {order:18,perTile:3,active:true},
+				'att_boost_defender-guild_expedition': {order:19,perTile:3,active:false},
+				'att_boost_defender-battleground': {order:20,perTile:3,active:false},
 				'att_boost_defender-guild_raids': {order:21,perTile:null,active:false},
-				'def_boost_defender-all': {order:22,perTile:2,active:true},
-				'def_boost_defender-guild_expedition': {order:23,perTile:null,active:false},
-				'def_boost_defender-battleground': {order:24,perTile:null,active:false},
+				'def_boost_defender-all': {order:22,perTile:3,active:true},
+				'def_boost_defender-guild_expedition': {order:23,perTile:3,active:false},
+				'def_boost_defender-battleground': {order:24,perTile:3,active:false},
 				'def_boost_defender-guild_raids': {order:25,perTile:null,active:false},
 				'goods-previous': {order:26,perTile:4,active:true},
 				'goods-current': {order:27,perTile:5,active:true},
-				'goods-next': {order:28,perTile:null,active:false},
+				'goods-next': {order:28,perTile:3,active:false},
 				'fsp': {order:29,perTile:1,active:true},
 			}, overwrite || JSON.parse(localStorage.getItem('Productions.Rating.Data')||"{}"))
 			Productions.Rating.Types = Object.keys(Productions.Rating.Data).sort((a,b)=>Productions.Rating.Data[a].order-Productions.Rating.Data[b].order)
@@ -1491,8 +1491,8 @@ let Productions = {
 			});
 			$('#ProductionsRating').on('click', '.reset-button', function () {
 				if (window.confirm(i18n('Boxes.ProductionsRating.ConfirmReset'))) {
-					Productions.Rating.load("{}")
-				    Productions.Rating.save()
+					Productions.Rating.load();
+				    Productions.Rating.save();
 				    Productions.CalcRatingBody();
 				}
 			});
@@ -1604,8 +1604,6 @@ let Productions = {
 			});
 
 			let selectedAdditionals = Object.values(Productions.AdditionalSpecialBuildings).filter(x=>x.selected).map(x=>x.id);
-
-			console.log(buildingCount)
 			
 			ratedBuildings = Productions.rateBuildings(uniqueBuildings,false,era).concat(Productions.rateBuildings(selectedAdditionals,true,era)) 
 			
