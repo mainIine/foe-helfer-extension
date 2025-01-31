@@ -309,6 +309,9 @@
 #ProductionsRatingBody tr.additional td:nth-child(1) {
 	color: var(--text-info) !important;
 }
+#ProductionsRatingBody tr.inventory-building td:nth-child(1) {
+	color: var(--text-bright) !important;
+}
 #ProductionsRatingBody tr.additional td:nth-child(2) {
 	font-style: italic;
 }

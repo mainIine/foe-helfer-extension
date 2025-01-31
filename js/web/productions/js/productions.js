@@ -1557,18 +1557,18 @@ let Productions = {
 
 			// get buildings from inventory
 			for(let InventoryItem of Object.values(MainParser.Inventory)){
-				let id = InventoryItem?.item?.cityEntityId
+				let id = InventoryItem?.item?.cityEntityId;
 				
-				if(!id || id.slice(0, 2) !== 'W_') continue // if starts not with "W_", continue
+				if(!id || id.slice(0, 2) !== 'W_') continue; // if starts not with "W_", continue
 
-				let metaData = MainParser.CityEntities[InventoryItem.item.cityEntityId]
-				let building = CityMap.createNewCityMapEntity(metaData, Technologies.InnoEraNames[InventoryItem.item.level]||CurrentEra)
-				building.isInIventory = true
-				Productions.BuildingsAll.push(building)
+				let metaData = MainParser.CityEntities[InventoryItem.item.cityEntityId];
+				let building = CityMap.createNewCityMapEntity(metaData, Technologies.InnoEraNames[InventoryItem.item.level]||CurrentEra);
+				building.isInInventory = true;
+				Productions.BuildingsAll.push(building);
+				buildingCount[InventoryItem.item.cityEntityId+"I"] = InventoryItem.inStock;
 			}
 
 			// get one of each building, only highest available era
-			// gather building sizes
 			for (const building of Productions.BuildingsAll) {
 				if (building == undefined || building.type == 'street' || building.type == 'military' || building.id >= 2000000000 || building.type.includes('hub')) continue
 
@@ -1576,40 +1576,44 @@ let Productions = {
 				if (MainParser.Allies.buildingList?.[building.id]) {
 					compare += "+" + Object.keys(MainParser.Allies.buildingList?.[building.id]).join("+")
 				}
-				let foundBuildingIndex = uniqueBuildings.findIndex(x => x.name == compare && !MainParser.Allies.buildingList?.[x.id])
+				let foundBuildingIndex = uniqueBuildings.findIndex(x => x.name == compare && x.isInInventory === building.isInInventory && !MainParser.Allies.buildingList?.[x.id])
+				let inventoryIdentifier = (building.isInInventory ? "I" : "C");
 				if (foundBuildingIndex == -1) {
 					uniqueBuildings.push(building)
+					if (buildingCount[building.entityId+inventoryIdentifier] === undefined)
+						buildingCount[building.entityId+inventoryIdentifier] = 1
 					delete Productions.AdditionalSpecialBuildings[building.entityId]
-
-					let buildingSize = building.size.length * building.size.width;
-					if (buildingSizes.find(x => x == buildingSize) == undefined)
-						buildingSizes.push(buildingSize)
 				} else {
 					let foundBuilding = uniqueBuildings[foundBuildingIndex]
-					if (buildingCount[building.entityId]) 
-						buildingCount[building.entityId] += 1
-					else
-						buildingCount[building.entityId] = 2
+					buildingCount[building.entityId+inventoryIdentifier] += 1
+
 					if (Technologies.InnoEras[foundBuilding.eraName] < Technologies.InnoEras[building.eraName]) 
 						uniqueBuildings[foundBuildingIndex] = building
 				}
+
+				// gather building sizes
+				let buildingSize = building.size.length * building.size.width;
+				if (buildingSizes.find(x => x == buildingSize) == undefined)
+					buildingSizes.push(buildingSize)
 			}
 
 			buildingSizes.sort((a,b)=>{
-                if (a < b) return -1
-                if (a > b) return 1
-                return 0
-            })
+				if (a < b) return -1
+				if (a > b) return 1
+				return 0
+			});
 
 			let selectedAdditionals = Object.values(Productions.AdditionalSpecialBuildings).filter(x=>x.selected).map(x=>x.id);
+
+			console.log(buildingCount)
 			
 			ratedBuildings = Productions.rateBuildings(uniqueBuildings,false,era).concat(Productions.rateBuildings(selectedAdditionals,true,era)) 
 			
-			ratedBuildings.sort((a, b) => {
+			ratedBuildings.sort((b,a) => {
 				if (a.score < b.score) return -1
 				if (a.score > b.score) return 1
 				return 0
-			})
+			});
 
 			let colNumber = Object.values(Productions.Rating.Data).filter(x=>x.active && x.perTile!=null).length
 			
@@ -1651,13 +1655,16 @@ let Productions = {
 
 			h.push('<tbody class="ratinglist">');
 			for (const building of ratedBuildings) {
-				// only show inventory buildings with a score greater than the threshold
-				if (building.building.isInIventory && building.score <= Productions.efficiencySettings.inventorybuildingscore) continue
+				// skip inventory buildings with a score lower than the threshold
+				if (building.building.isInInventory && building.score < Productions.efficiencySettings.inventorybuildingscore) continue;
+
+				// skip inventory buildings that are already in the city
+				if (building.building.isInInventory && (buildingCount[building.building.entityId+"C"] !== undefined || buildingCount[building.building.entityId+"C"] >= 1)) continue;
 
 				let buildingSize = building.building.size.length * building.building.size.width;
 
 				[randomItems,randomUnits] = Productions.showBuildingItems(false, building.building)
-				h.push(`<tr class="${building.highlight?'additional ':''}${building.building.isInIventory?'inventory-building ':''}size${buildingSize}">`)
+				h.push(`<tr class="${building.highlight?'additional ':''}${building.building.isInInventory?'inventory-building ':''}size${buildingSize}">`)
 				h.push('<td class="text-right" data-number="'+building.score * 100 +'">'+Math.round(building.score * 100)+'</td>')
 				h.push('<td data-text="'+helper.str.cleanup(building.building.name)+'" data-meta_id="'+building.building.entityId+'" data-era="'+building.building.eraName+'" data-callback_tt="Tooltips.buildingTT" class="helperTT ' + (MainParser.Allies.buildingList?.[building.building.id]?"ally" : "") +'" '+ MainParser.Allies.tooltip(building.building.id) + '>'+building.building.name)
 				
@@ -1665,12 +1672,20 @@ let Productions = {
 				if (eraShortName != "-")
 					h.push(" ("+i18n("Eras."+Technologies.Eras[building.building.eraName]+".short") +')')
 				h.push('</td><td class="text-right">')
-				if (buildingCount[building.building.entityId] && !MainParser.Allies.buildingList?.[building.building.id]) 
-					h.push('<span data-original-title="'+i18n('Boxes.ProductionsRating.CountTooltip')+'">' + buildingCount[building.building.entityId]+'x</span> ')
-				if (!building.highlight && !building.building.isInIventory) 
+				// show amount in inventory if there are buildings
+				if (buildingCount[building.building.entityId+"I"] !== undefined && !building.building.isInInventory)
+					h.push('<span data-original-title="'+i18n('Boxes.ProductionsRating.InventoryTooltip')+', '+buildingCount[building.building.entityId+"I"]+'x">📦</span> ')
+				
+				// show amount in city if > 1
+				if (buildingCount[building.building.entityId+"C"] && buildingCount[building.building.entityId+"C"] > 1 && !MainParser.Allies.buildingList?.[building.building.id]) 
+					h.push('<span data-original-title="'+i18n('Boxes.ProductionsRating.CountTooltip')+'">' + buildingCount[building.building.entityId+"C"]+'x</span> ')
+				
+
+				if (!building.highlight && !building.building.isInInventory) 
 					h.push('<span class="show-all" data-name="'+building.building.name+'"><img class="game-cursor" src="' + extUrl + 'css/images/hud/open-eye.png"></span>')
-				else if (building.building.isInIventory)
-					h.push('<span data-original-title="'+i18n('Boxes.ProductionsRating.InventoryTooltip')+'">📦</span>')
+				else if (building.building.isInInventory) {
+					h.push('<span data-original-title="'+i18n('Boxes.ProductionsRating.InventoryTooltip')+'">'+buildingCount[building.building.entityId+"I"]+'x 📦</span>')
+				}
 				h.push('</td>')
 
 				for (const type of Productions.Rating.Types) {
