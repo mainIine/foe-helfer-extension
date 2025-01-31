@@ -320,7 +320,8 @@
 	font-weight: 600;
 }
 #ProductionsRatingBody tr.highlighted-explained, 
-#ProductionsRating .showhighlighted tbody tr {
+#ProductionsRating .showhighlighted tbody tr, 
+#ProductionsRating .showhighlighted tbody tr.inventory-building {
 	display: none;
 }
 #ProductionsRatingBody tr.highlighted-explained.highlighted-explained, 
