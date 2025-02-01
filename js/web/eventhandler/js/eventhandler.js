@@ -259,9 +259,10 @@ let EventHandler = {
 				// get the correct 24h time
 				if(match['groups']['half'])
 				{
-					if(match['groups']['half'] === 'am' && h < 12)
-					{
+					if(match['groups']['half'] === 'pm' && h !== 12) {
 						h += 12;
+					} else if (match['groups']['half'] === 'am' && h === 12) {
+						h = 0;
 					}
 				}
 
