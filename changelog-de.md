@@ -1,5 +1,22 @@
 ## Changelog - Extension
 
+##### 3.11.0.0
+
+**New**
+- Spieler Profil
+	- Kann man oben links öffnen sobald man sein Profilgeöffnet hat
+- Einstellungen
+	- Popups für QI und GG sind nun entfernbar
+
+**Update**
+- Effizienz
+	- Gebäude aus dem Inventar hinzugefügt (noch nicht alle)
+	- Filter für Gebäudegröße hinzugefügt
+
+**BugFix**
+- Überlappungen an manchen Stellen behoben
+- Beim Export der Gildenkasse war das Datum manchmal falsch
+
 ##### 3.10.1.0
 
 **Update**
