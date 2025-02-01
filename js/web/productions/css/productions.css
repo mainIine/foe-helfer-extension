@@ -232,6 +232,12 @@
 #ProductionsRatingBody tr.sorter-header th:not(.no-sort):hover, #ProductionsRatingBody tr.sorter-header th.ascending, #ProductionsRatingBody tr.sorter-header th.descending {
 	color: var(--text-bright);
 }
+#ProductionsRatingBody tr.sorter-header th:not(.no-sort):hover, #ProductionsRatingBody tr.sorter-header th.ascending .resicon, #ProductionsRatingBody tr.sorter-header th.descending .resicon {
+	filter: brightness(1.2);
+}
+#ProductionsRatingBody #efficiencyBuildingFilter {
+	width: 130px;
+}
 #ProductionsRatingBody tr.sorter-header th:before, #ProductionsRatingBody tr.sorter-header th:after {
 	display: none;
 	width: 100%;

@@ -1607,7 +1607,7 @@ let Productions = {
 			
 			ratedBuildings = Productions.rateBuildings(uniqueBuildings,false,era).concat(Productions.rateBuildings(selectedAdditionals,true,era)) 
 			
-			ratedBuildings.sort((b,a) => {
+			ratedBuildings.sort((a,b) => {
 				if (a.score < b.score) return -1
 				if (a.score > b.score) return 1
 				return 0
