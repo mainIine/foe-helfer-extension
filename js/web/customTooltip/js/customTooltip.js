@@ -88,7 +88,8 @@ let Tooltips = {
         Tooltips.checkposition()
     },
     buildingTT: async (e)=>{
-        let id = e?.currentTarget?.dataset?.meta_id||MainParser?.CityMapData[e?.currentTarget?.dataset?.id]?.cityentity_id
+        let buildingId=e?.currentTarget?.dataset?.id
+        let id = e?.currentTarget?.dataset?.meta_id||MainParser?.CityMapData[buildingId]?.cityentity_id
         if (!id) return
 
         let era =  e?.currentTarget?.dataset?.era||Technologies.InnoEraNames[MainParser?.CityMapData[e?.currentTarget?.dataset?.id]?.level]

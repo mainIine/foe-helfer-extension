@@ -1670,13 +1670,14 @@ let MainParser = {
 					return ret
 				}
 
+				//${MainParser.Allies.tooltip(buildingId)}
 				html+=`<tr class="allyRoomRow ${rarities.join(" ")}">
 							<td>${rarityStars(r.roomRarity)}</td>
-					   	   	<td ${buildingId!=0?`class="helperTT ally" 
-								data-meta_id="${r.buildingMeta}" 
+					   	   	<td ${buildingId!=0?`class="helperTT" 
+								data-id="${buildingId}" 
 								data-era="${Technologies.InnoEraNames[MainParser.CityMapData[buildingId].level]}"
 								data-callback_tt="Tooltips.buildingTT" 
-								${MainParser.Allies.tooltip(buildingId)}`:``}
+								`:``}
 							>${r.buildingName || ""}</td>
 							<td>${buildingId!=0?`<span class="show-entity" data-id="${buildingId}"><img class="game-cursor" src="${ extUrl + 'css/images/hud/open-eye.png'}"></span>`:""}</td>
 						   	<td>${rarityStars(r.allyRarity)}</td>
