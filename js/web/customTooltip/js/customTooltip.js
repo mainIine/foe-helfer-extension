@@ -797,7 +797,9 @@ let QIActions = {
 		let next = QIActions.last + 3600
 		while (next < moment().unix()) next += 3600
 
-		tooltip=`<div style="text-align:center"><h2>${i18n("Boxes.QIActions.Rate")}</h2>`
+		tooltip=`<div style="text-align:center">`
+        tooltip+=`<h1>${i18n("Global.BoxTitle")}</h1>`
+        tooltip+=`<h2>${i18n("Boxes.QIActions.Rate")}</h2>`
 		tooltip+=`<p>${hourly} ${moment.unix(next).fromNow()}</p>`
 		if (warning) tooltip+=`<p>${i18n("Boxes.QIActions.Warning")}</p>`
 		tooltip+=`<h2>${i18n("Boxes.QIActions.FullAt")}</h2>`
