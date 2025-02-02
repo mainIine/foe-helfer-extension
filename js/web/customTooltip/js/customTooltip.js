@@ -55,7 +55,7 @@ let Tooltips = {
 
         $('body').on("pointerleave",".helperTT",(e)=>{
             Tooltips.deactivate()
-        })        
+        })    
     },
 
     set: (content) => {
@@ -725,5 +725,88 @@ let Tooltips = {
         return out;
     },
 }
+
+
+//QI Actions
+
+FoEproxy.addFoeHelperHandler('ResourcesUpdated', () => {
+	QIActions.count = ResourceStock.guild_raids_action_points || 0
+});
+
+FoEproxy.addHandler('ResourceService', 'getPlayerAutoRefills', (data, postData) => {
+	QIActions.setNext(data.responseData.resources.guild_raids_action_points)
+});
+
+FoEproxy.addFoeHelperHandler('ActiveMapUpdated',()=>{
+	if (ActiveMap=="guild_raids") {
+		$('#QIActions').show();
+	} else {
+		$('#QIActions').hide();
+	}
+})
+
+
+let QIActions = {
+	count:0,
+	next:null,
+	last:null,
+
+	getHourly:()=>{
+		hourly = 5000
+		hourly += MainParser.BoostSums.guild_raids_action_points_collection
+		if (!CityMap.QIData) return hourly
+		for (let b of Object.values(CityMap.QIData)) {
+			let building = CityMap.setQIBuilding(MainParser.CityEntities[b.cityentity_id])
+			if (building.type == "impediment" || building.type == "street")  continue
+			if (building.boosts) {
+				for (let i in building.boosts) {
+					let boost = building.boosts[i]
+					if (boost.type === "guild_raids_action_points_collection" && !b.state.pausedAt && b.__class__ != "ConstructionState")
+						hourly += boost.value 
+				}
+			}
+		}
+		return hourly
+	},
+
+	setNext:(time)=>{
+		let timer=3600000
+		
+		hourly = QIActions.getHourly()
+
+		if (time) { 
+			timer = (time-GameTime+3600)*1000
+			QIActions.last = time
+		} else {
+			let amount = Math.floor((moment().unix() - QIActions.last + 10)/3600)
+			QIActions.count = Math.min(QIActions.count + amount*hourly,100000)
+			QIActions.last += 3600*amount
+			timer = (QIActions.last - moment().unix() + 3600)*1000
+		} 
+
+		if (QIActions.next) clearTimeout(QIActions.next)
+		
+		QIActions.next = setTimeout(QIActions.setNext,timer)
+
+	},
+
+	TT:()=>{
+		let hourly = QIActions.getHourly()
+		let warning = !CityMap.QIData
+		let fullAt = Math.ceil((100000-QIActions.count)/hourly)*3600 + QIActions.last
+		let next = QIActions.last + 3600
+		while (next < moment().unix()) next += 3600
+
+		tooltip=`<div style="text-align:center"><h2>${i18n("Boxes.QIActions.Rate")}</h2>`
+		tooltip+=`<p>${hourly} ${moment.unix(next).fromNow()}</p>`
+		if (warning) tooltip+=`<p>${i18n("Boxes.QIActions.Warning")}</p>`
+		tooltip+=`<h2>${i18n("Boxes.QIActions.FullAt")}</h2>`
+		tooltip+=`<p>${moment.unix(fullAt).format('lll')}</p></div>`
+
+		return tooltip
+	}
+}
+
+$('<div id="QIActions" class="helperTT" data-callback_tt="QIActions.TT"></div>').appendTo('body').hide();    
 
 Tooltips.init()
