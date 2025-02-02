@@ -199,6 +199,23 @@ GetFights = () =>{
 		MainParser.Allies.setRarities(JSON.parse(xhr.responseText));
 	});
 
+	FoEproxy.addRequestHandler('AllyService', 'getAllies', (postData) => {
+		MainParser.Allies.showAllyList()
+	})
+
+	FoEproxy.addHandler('AllyService', 'getAllies', (data, postData) => {
+		MainParser.Allies.getAllies(data.responseData);
+	});
+	FoEproxy.addHandler('AllyService', 'updateAlly', (data, postData) => {
+		MainParser.Allies.updateAlly(data.responseData);
+	});
+	FoEproxy.addHandler('AllyService', 'addAlly', (data, postData) => {
+		MainParser.Allies.addAlly(data.responseData);
+	});
+	FoEproxy.addFoeHelperHandler('InventoryUpdated', () => {
+		MainParser.Allies.updateAllyList()
+	});
+
 	// Portrait-Mapping für Spieler Avatare
 	FoEproxy.addRawHandler((xhr, requestData) => {
 		const idx = requestData.url.indexOf("/assets/shared/avatars/Portraits");
@@ -332,16 +349,6 @@ GetFights = () =>{
 	// Boosts zusammen tragen
 	FoEproxy.addHandler('BoostService', 'getAllBoosts', (data, postData) => {
 		MainParser.CollectBoosts(data.responseData);
-	});
-
-	FoEproxy.addHandler('AllyService', 'getAllies', (data, postData) => {
-		MainParser.Allies.getAllies(data.responseData);
-	});
-	FoEproxy.addHandler('AllyService', 'updateAlly', (data, postData) => {
-		MainParser.Allies.updateAlly(data.responseData);
-	});
-	FoEproxy.addHandler('AllyService', 'addAlly', (data, postData) => {
-		MainParser.Allies.addAlly(data.responseData);
 	});
 
 	// QI map
@@ -1459,6 +1466,7 @@ let MainParser = {
 				else 
 				 	list[ally.mapEntityId] = {[ally.id]:ally.id}
 			}
+			MainParser.Allies.updateAllyList()
 		},
 		updateAlly:(ally)=>{
 			if (ally.mapEntityId) {
@@ -1474,9 +1482,11 @@ let MainParser = {
 				if (Object.keys(MainParser.Allies.buildingList[mapID]).length==0) delete MainParser.Allies.buildingList[mapID]
 				MainParser.Allies.allyList[ally.id] = ally
 			}
+			MainParser.Allies.updateAllyList()
 		},
 		addAlly:(ally)=>{
 			MainParser.Allies.allyList[ally.id]=ally
+			MainParser.Allies.updateAllyList()
 		},
 		setStats:(rawStats)=>{
 			let stats = MainParser.Allies.stats = {}
@@ -1533,7 +1543,163 @@ let MainParser = {
 			ally.prod = prod
 			ally.type = type
 			return ally
-		}
+		},
+		showAllyList:()=>{
+			if (!Settings.GetSetting('ShowAllyList')) return
+			if ($('#AllyList').length === 0) {
+				HTML.Box({
+					id: 'AllyList',
+					title: i18n('Boxes.AllyList.Title'),
+					auto_close: true,
+					dragdrop: true,
+					minimize: true,
+					resize: true,
+				});
+			}
+			//MainParser.Allies.updateAllyList()
+		},
+		updateAllyList:()=>{	
+			if ($('#AllyList').length === 0) return
+			let buildings = Object.assign({},...Object.values(MainParser.CityMapData).map(x=>({id:x.id,metaID:x.cityentity_id,rooms:structuredClone(MainParser.CityEntities[x.cityentity_id]?.components?.AllAge?.ally?.rooms)})).filter(x=>x.rooms!==undefined).map(x=>({[x.id]:x})))
+			let rooms = {}
+			let unassigned = 0
+			Object.values(MainParser.Allies.allyList).forEach(x=>{
+				if (x.mapEntityId) {
+					let rs=buildings[x.mapEntityId].rooms
+					for (let r of rs) {
+						if (!r.ally && r.rarity?.value == x.rarity.value) {
+							r.ally = x
+							return
+						}
+					}
+					for (let r of rs) {
+						if (!r.ally && !r.rarity) {
+							r.ally = x
+						}
+					}
+				} else {
+					rooms[0+"#" + unassigned] = {
+						allyRarity: x.rarity?.value || "",
+						allyLevel: x.level || null,												
+						allyBoosts: x.boosts || null,
+						allyName: MainParser.Allies.names[x.allyId] || "",
+					}
+					unassigned++
+				}
+			})
+			Object.values(buildings).forEach(b=>{
+				for (let [i,r] of Object.entries(b.rooms)) {
+					rooms[b.id+"#" + i] = {
+						buildingName: MainParser.CityEntities[b.metaID].name,
+						buildingMeta:b.metaID,
+						roomRarity: r.rarity?.value || Object.keys(MainParser.Allies.rarities).join("#"),
+						allyRarity: r.ally?.rarity?.value || "",
+						allyLevel: r.ally?.level || null,												
+						allyBoosts: r.ally?.boosts || null,
+						allyName: MainParser.Allies.names[r.ally?.allyId] || "",
+					}
+				}
+			})
+			Object.values(MainParser.Inventory).filter(x=>x?.item?.reward?.assembledReward?.type=="ally").forEach(x=>{
+				rooms[0+"#" + unassigned] = {
+					fragmentsAmount: x.inStock,
+					fragmentsNeeded: x.item.reward.requiredAmount,
+					allyRarity: x.item.reward.assembledReward.rarity?.value || "",
+					allyLevel: x.item.reward.assembledReward.level || null,												
+					allyBoosts: x.item.reward.assembledReward.boosts || null,
+					allyName: x.item.reward.assembledReward.name,
+				}
+				unassigned++
+			})
+
+			html=`<select id="AllyFilter"><option value="">${i18n('Boxes.AllyList.All')}</option>`
+			for (let r of Object.values(MainParser.Allies.rarities)) {
+				html+=`<option value="${r.id.value}">${r.name}</option>`
+			}
+			html+=`</select>`
+			html+=`<table id="AllyListTable" class="foe-table">`
+			html+=`<thead><tr>
+							<th colspan=3>${i18n('Boxes.AllyList.Building')}</th>
+							<th colspan=2>${i18n('Boxes.AllyList.Ally')}</th>
+							<th>${i18n('Boxes.AllyList.Level')}</th>
+							<th>${i18n('Boxes.AllyList.Boosts')}</th>
+					</tr></thead>`
+			for (let [roomId,r] of Object.entries(rooms).sort((a,b)=>{
+				f=(r)=>{return Object.keys(MainParser.Allies.rarities).indexOf(r.allyRarity) + (r.buildingName?10:0) + (r.fragmentsAmount?100:0)}
+				return f(a[1])-f(b[1])
+			})) {
+				let buildingId=roomId.split("#")[0]
+				let rarities=r.roomRarity?.split("#")||[]
+				rarities.push(r.allyRarity)
+				rarities=rarities.map(x=>"Rarity-"+x)
+
+				rarityStars = (r) => {
+					if (!r || r=="") return ""
+					let i = Object.keys(MainParser.Allies.rarities).indexOf(r)
+					if (i==-1) return `<span>${srcLinks.icons("when_motivated")}</span>`
+					let ret=""
+					let star = `<img style="margin-left:-3px"  src="${srcLinks.get(`/historical_allies/portraits/historical_allies_portrait_rarity_icon.png`, true)}">`
+					for (let j = 0; j < i; j++) {
+						ret += star
+						star = `<img style="margin-left:-15px" src="${srcLinks.get(`/historical_allies/portraits/historical_allies_portrait_rarity_icon.png`, true)}">`
+					}
+					return ret
+				}
+				
+				boosts = (boosts) => {
+					let feature = {
+						"all":"",
+						"battleground":"_gbg",
+						"guild_expedition":"_gex",
+						"guild_raids":"_gr"
+					}
+					let percent = (x) => {
+						return [
+							"diplomacy",
+							"guild_raids_action_points_collection",
+							"guild_raids_goods_start",
+							"guild_raids_units_start",
+							"guild_raids_supplies_start",
+							"guild_raids_coins_start",
+						].includes(x) ? "" : "%"
+					}
+					let ret=""
+					for (b of boosts||[]) {
+						ret+=`${srcLinks.icons(b.type+feature[b.targetedFeature])} ${b.value + percent(b.type)}`
+					}
+					return ret
+				}
+
+				html+=`<tr class="allyRoomRow ${rarities.join(" ")}">
+							<td>${rarityStars(r.roomRarity)}</td>
+					   	   	<td ${buildingId!=0?`class="helperTT ally" 
+								data-meta_id="${r.buildingMeta}" 
+								data-era="${Technologies.InnoEraNames[MainParser.CityMapData[buildingId].level]}"
+								data-callback_tt="Tooltips.buildingTT" 
+								${MainParser.Allies.tooltip(buildingId)}`:``}
+							>${r.buildingName || ""}</td>
+							<td>${buildingId!=0?`<span class="show-entity" data-id="${buildingId}"><img class="game-cursor" src="${ extUrl + 'css/images/hud/open-eye.png'}"></span>`:""}</td>
+						   	<td>${rarityStars(r.allyRarity)}</td>
+						   	<td>${r.allyName || ""}${r.fragmentsAmount?srcLinks.icons("icon_tooltip_fragment") + r.fragmentsAmount+"/"+r.fragmentsNeeded:""}</td>
+						   	<td>${r.allyLevel || ""}</td>
+						   	<td>${boosts(r.allyBoosts)}</td>
+						</tr>`
+			}
+			
+			$('#AllyListBody').html(html)
+
+			$('#AllyFilter').on("change",()=>{
+				let rarity=$('#AllyFilter option:selected').val()
+				$('.allyRoomRow').each((i,e)=>{
+					if (rarity=="" || $(e).hasClass("Rarity-"+rarity)) $(e).show()
+					else $(e).hide()
+				})
+			})
+			$('#AllyListBody .foe-table .show-entity').on('click', function () {
+				Productions.ShowOnMap($(this).data('id'));
+			});
+			return rooms
+		},
 	},
 
 

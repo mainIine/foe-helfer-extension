@@ -24,6 +24,12 @@
 		"sort": 3
 	},
 	{
+		"name": "ShowAllyList",
+		"status": true,
+		"group": "Auto",
+		"sort": 4 
+	},
+	{
 		"name": "ShowInvestments",
 		"status": true,
 		"group": "Auto",
