@@ -2090,6 +2090,30 @@ let Productions = {
 		return items
 	},
 
+	buildingBoostList: (boostArray = []) => {
+		let buildings = Object.values(MainParser.CityEntities).filter(b=>b.id[0]=="W")
+		let boostList = {};
+		boostArray.forEach(boost => boostList[boost] = [])
+		for (let building of buildings) {
+			let buildingAABoost = building.components?.AllAge?.boosts?.boosts;
+			let buildingCABoost = building.components?.[CurrentEra]?.boosts?.boosts;
+			if (buildingAABoost == undefined && buildingCABoost == undefined) continue;
+
+			for (let boost of boostArray) {
+				let foundAllABoost = buildingAABoost?.find(x => x.type == boost);
+				let foundCurrentABoost = buildingCABoost?.find(x => x.type == boost);
+
+				if (foundAllABoost == undefined && foundCurrentABoost == undefined) continue;
+
+				boostList[boost].push({
+					name: building.name,
+					entityId: building.id
+				});
+			}
+		}
+		return boostList;
+	},
+
 	updateItemSources:(item)=>{
 		let itemId = '#item-'+helper.str.cleanup(item.name)
 		$(itemId).parent('td').toggleClass('open')
