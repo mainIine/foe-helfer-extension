@@ -174,7 +174,7 @@ let CloseBox = {
 
         $.each(openBoxes, function () {
             let box = $(this);
-            if (box.attr('id') !== 'CloseBox' && !CloseBox.Settings.Excludes.includes(box.attr('id')))
+            if (box.attr('id') !== 'CloseBox' && box.attr('id') !== 'TooltipContainer' && !CloseBox.Settings.Excludes.includes(box.attr('id')))
             {
                 box.remove();
             }
