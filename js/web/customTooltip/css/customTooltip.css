@@ -135,11 +135,11 @@
 
 #QIActions {
 	position: absolute;
-    top: 35px;
+    top: 37px;
     left: 158px;
     z-index: 100;
     height: 40px;
-    width: 140px;
+    width: 120px;
 }
 
 @keyframes bounce {
