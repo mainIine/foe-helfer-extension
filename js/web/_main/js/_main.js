@@ -1612,11 +1612,11 @@ let MainParser = {
 				unassigned++
 			})
 
-			html=`<select id="AllyFilter"><option value="">${i18n('Boxes.AllyList.All')}</option>`
+			html=`<div class="dark-bg"><select id="AllyFilter"><option value="">${i18n('Boxes.AllyList.All')}</option>`
 			for (let r of Object.values(MainParser.Allies.rarities)) {
 				html+=`<option value="${r.id.value}">${r.name}</option>`
 			}
-			html+=`</select>`
+			html+=`</select></div>`
 			html+=`<table id="AllyListTable" class="foe-table">`
 			html+=`<thead><tr>
 							<th colspan=3>${i18n('Boxes.AllyList.Building')}</th>
