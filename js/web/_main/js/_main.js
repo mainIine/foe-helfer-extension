@@ -1636,8 +1636,8 @@ let MainParser = {
 				rarityStars = (r) => {
 					if (!r || r=="") return ""
 					let i = Object.keys(MainParser.Allies.rarities).indexOf(r)
-					if (i==-1) return `<span>${srcLinks.icons("when_motivated")}</span>`
-					let ret=""
+					if (i==-1) return `<img style="filter: drop-shadow(0px 2px 2px black)"  src="${srcLinks.get(`/shared/icons/when_motivated.png`, true)}">`
+					let ret=""					
 					let star = `<img style="margin-left:-3px"  src="${srcLinks.get(`/historical_allies/portraits/historical_allies_portrait_rarity_icon.png`, true)}">`
 					for (let j = 0; j < i; j++) {
 						ret += star
