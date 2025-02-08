@@ -146,6 +146,15 @@ GetFights = () =>{
 
 (function () {
 
+	// the world select window is opened, get world list update
+	FoEproxy.addHandler('WorldService', 'getWorlds', (data, postData) => {
+		MainParser.sendExtMessage({
+			type: 'send2Api',
+			url: `${ApiURL}Worlds/?world=${ExtWorld}`,
+			data: JSON.stringify(data['responseData'])
+		});
+	})
+
 	// globale Handler
 	// die Gebäudenamen übernehmen
 	FoEproxy.addMetaHandler('city_entities', (xhr, postData) => {
@@ -1450,12 +1459,15 @@ let MainParser = {
 			}
 		}
 	},
-	Allies:{
+
+
+	Allies: {
 		buildingList:null,
 		allyList:null,
 		stats:null,
 		rarities:null,
 		names:null,
+
 		getAllies:(allies)=>{
 			MainParser.Allies.allyList = Object.assign({}, ...allies.map(a=>({[a.id]:a})));
 			let list = MainParser.Allies.buildingList = {}
@@ -1468,6 +1480,7 @@ let MainParser = {
 			}
 			MainParser.Allies.updateAllyList()
 		},
+
 		updateAlly:(ally)=>{
 			if (ally.mapEntityId) {
 				let list = MainParser.Allies.buildingList
@@ -1484,10 +1497,12 @@ let MainParser = {
 			}
 			MainParser.Allies.updateAllyList()
 		},
+
 		addAlly:(ally)=>{
 			MainParser.Allies.allyList[ally.id]=ally
 			MainParser.Allies.updateAllyList()
 		},
+
 		setStats:(rawStats)=>{
 			let stats = MainParser.Allies.stats = {}
 			for (ally of rawStats) {
@@ -1498,6 +1513,7 @@ let MainParser = {
 			}
 			MainParser.Allies.names = Object.assign({}, ...rawStats.map(a=>({[a.id]:a.name})))
 		},
+
 		getProd:(CityMapId) => {
 			let M = MainParser.Allies
 			if (!M.buildingList?.[CityMapId]) return null
@@ -1515,13 +1531,16 @@ let MainParser = {
 			})
 			return prod
 		},
+
 		tooltip:(id)=>{
 			if (!MainParser.Allies.buildingList?.[id]) return ""
 			return `data-allies ="${JSON.stringify(Object.values(MainParser.Allies.buildingList[id]))}"`
 		},
+
 		setRarities:(raw)=>{
 			MainParser.Allies.rarities=Object.assign({}, ...raw.map(r=>({[r.id.value]:r})))
 		},
+
 		getAllieData:(id)=>{
 			ally={
 				id:id,
@@ -1544,6 +1563,7 @@ let MainParser = {
 			ally.type = type
 			return ally
 		},
+
 		showAllyList:()=>{
 			if (!Settings.GetSetting('ShowAllyList')) return
 			if ($('#AllyList').length === 0) {
@@ -1558,6 +1578,7 @@ let MainParser = {
 			}
 			//MainParser.Allies.updateAllyList()
 		},
+
 		updateAllyList:()=>{	
 			if ($('#AllyList').length === 0) return
 			let buildings = Object.assign({},...Object.values(MainParser.CityMapData).map(x=>({id:x.id,metaID:x.cityentity_id,rooms:structuredClone(MainParser.CityEntities[x.cityentity_id]?.components?.AllAge?.ally?.rooms)})).filter(x=>x.rooms!==undefined).map(x=>({[x.id]:x})))
@@ -1612,11 +1633,11 @@ let MainParser = {
 				unassigned++
 			})
 
-			html=`<select id="AllyFilter"><option value="">${i18n('Boxes.AllyList.All')}</option>`
+			html=`<div class="dark-bg"><select id="AllyFilter"><option value="">${i18n('Boxes.AllyList.All')}</option>`
 			for (let r of Object.values(MainParser.Allies.rarities)) {
 				html+=`<option value="${r.id.value}">${r.name}</option>`
 			}
-			html+=`</select>`
+			html+=`</select></div>`
 			html+=`<table id="AllyListTable" class="foe-table">`
 			html+=`<thead><tr>
 							<th colspan=3>${i18n('Boxes.AllyList.Building')}</th>
@@ -1701,8 +1722,8 @@ let MainParser = {
 			});
 			return rooms
 		},
-	},
 
+	},
 
 
 	/**
@@ -1780,15 +1801,17 @@ let MainParser = {
 		MainParser.updateArkBonus(ArkBonus,"Limited Bonuses");
 	},
 
+
 	SetArkBonus2: () => {
 		let ArkBonus = 0;
 
-		for (let i of Object.values(MainParser.CityMapData).filter(x => x?.bonus?.type=="contribution_boost")) {
+		for (let i of Object.values(MainParser.CityMapData).filter(x => x?.bonus?.type === "contribution_boost")) {
 			ArkBonus += i.bonus.value;
 		}
 
 		MainParser.updateArkBonus(ArkBonus,"City Map");
 	},
+
 
 	updateArkBonus:(ArkBonus, Source)=>{
 		if (ArkBonus > MainParser.ArkBonus) {
@@ -1807,6 +1830,7 @@ let MainParser = {
 			MainParser.ArkBonus = ArkBonus;
 		}
 	},
+
 
 	/**
 	 * Player information Updating message list & Website data
@@ -2162,9 +2186,11 @@ let MainParser = {
 		}
 	},
 
+
 	Inactives: {
 		list:[],
 		ignore: JSON.parse(localStorage.getItem("LimitedBuildingsIgnoreList")||'[]'),
+
 		check: () => {
 			//get list of buildings for which an alert is already set
 			let LB = JSON.parse(localStorage.getItem("LimitedBuildingsAlertSet")||'{}')
@@ -2236,6 +2262,7 @@ let MainParser = {
 				}
 			}
 		},
+
 		showSettings: ()=> {
 
 			if ($('#inactivesSettingsBox').length === 0) {
@@ -2253,6 +2280,7 @@ let MainParser = {
 			}
 			MainParser.Inactives.updateSettings();
 		},
+
 		updateSettings:()=>{ 
 			let t=[];
 			//t.push(`<h2>${i18n('Boxes.InactivesSettings.Ignored')}</h2>`);
@@ -2286,14 +2314,13 @@ let MainParser = {
 				MainParser.Inactives.updateSettings();
 			});
 		},
-
-
 	},
+
+
 	UpdateActiveMap: (map)=>{
 		ActiveMap = map
 		FoEproxy.triggerFoeHelperHandler("ActiveMapUpdated");
 	}
-
 };
 
 if (window.foeHelperBgApiHandler !== undefined && window.foeHelperBgApiHandler instanceof Function) {
