@@ -300,14 +300,24 @@
 #ProductionsRatingBody tr.highlighted2 td:nth-child(2)::after {
 	content: ' 🔎';
 }
-#ProductionsRatingBody tr td.ally:nth-child(2)::after {
-	content: ' 🙋';
+#ProductionsRatingBody tr td.ally:nth-child(2) span::after {
+	content: ' ';
+	background: url('../../x_img/ally.png') no-repeat center;
+	background-size: contain;
+	display: inline-block;
+	width: 20px;
+	height: 18px;
+}
+#ProductionsRatingBody tr span.inventory::after {
+	content: ' ';
+	background: url('../../x_img/inventory.png') no-repeat center;
+	background-size: contain;
+	display: inline-block;
+	width: 20px;
+	height: 18px;
 }
 #ProductionsRatingBody tr.highlighted2 td.ally:nth-child(2) {
 	color: var(--text-light);
-}
-#ProductionsRatingBody tr.highlighted2 td.ally:nth-child(2)::after {
-	content: ' 🙋 🔎';
 }
 #ProductionsRatingBody tr.additional td {
 	background: var(--background-table-info);
@@ -324,6 +334,9 @@
 #ProductionsRatingBody tr.highlighted td:nth-child(2) {
 	color: var(--text-bright);
 	font-weight: 600;
+}
+#ProductionsRatingBody tr td:nth-child(3) img {
+	max-height: 18px;
 }
 #ProductionsRatingBody tr.highlighted-explained, 
 #ProductionsRating .showhighlighted tbody tr, 
