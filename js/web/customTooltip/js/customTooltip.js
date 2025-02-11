@@ -809,6 +809,6 @@ let QIActions = {
 	}
 }
 
-$(`<div id="QIActions" class="helperTT" data-callback_tt="QIActions.TT">${srcLinks.icons("time")}</div>`).appendTo('body').hide();    
+//$(`<div id="QIActions" class="helperTT" data-callback_tt="QIActions.TT">${srcLinks.icons("time")}</div>`).appendTo('body').hide();    
 
 Tooltips.init()
