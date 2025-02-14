@@ -394,7 +394,7 @@
     "Boxes.GreatBuildings.Title": "Обзор вложений в ВС",
     "Boxes.GuildFights.Attrition": "Истощение",
     "Boxes.GuildFights.Count": "через",
-    "Boxes.GuildFights.DeleteAlert": "Ужалить напоминание",
+    "Boxes.GuildFights.DeleteAlert": "Удалить напоминание",
     "Boxes.GuildFights.DeleteMessage.Title": "Удалено!",
     "Boxes.GuildFights.Fights": "Бои",
     "Boxes.GuildFights.LastSnapshot": " - последняя фиксация была __time__ назад",
