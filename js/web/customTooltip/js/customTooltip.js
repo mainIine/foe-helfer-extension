@@ -776,7 +776,7 @@ let QIActions = {
 		hourly = QIActions.getHourly()
 
 		if (time) { 
-			timer = (time-GameTime+3600)*1000
+			timer = (time-GameTime.get()+3600)*1000
 			QIActions.last = time
 		} else {
 			let amount = Math.floor((moment().unix() - QIActions.last + 10)/3600)
