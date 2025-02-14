@@ -21,13 +21,13 @@
 }
 
 #PlayerProfile.window-box {
-    background: linear-gradient(196deg, rgba(0,14,28,1) 0%, rgba(3,18,51,1) 100%);
-    border-color: #08213b;
+    background: linear-gradient(196deg, #00041c 0%, rgba(3,18,51,1) 100%);
+    border-color: #081c3b;
     color: var(--text-light);
 }
 
 #PlayerProfile .window-head {
-    background: rgba(0,14,28,1);
+    background: #00041c;
     box-shadow: none;
     border-bottom-width: 0;
     margin-bottom: -0.5rem;
