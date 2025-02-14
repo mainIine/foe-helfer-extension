@@ -1672,9 +1672,11 @@ let CityMap = {
 										rewards.push(newReward)
 									}
 									else { // some goods, nextage are genericReward
+										let type = Object.keys(reward.product.playerResources.resources)[0];
+										type = type.includes("good") ? "goods" : "resources";
 										let newReward = {
-											id: null,
-											type: "goods",
+											id: Object.keys(reward.product.playerResources.resources)[0],
+											type: type,
 											name: i18n('Boxes.BlueGalaxy.Goods'),
 											subType: Object.keys(reward.product.playerResources.resources)[0],
 											amount: Object.values(reward.product.playerResources.resources)[0],
@@ -1684,7 +1686,7 @@ let CityMap = {
 									}
 								}
 							});
-							resource.resources = rewards
+							resource.resources = rewards;
 							resource.type = "random"
 						}
 					}
