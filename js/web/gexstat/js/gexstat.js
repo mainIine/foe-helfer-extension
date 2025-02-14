@@ -1074,7 +1074,7 @@ let GExAttempts = {
 				GExAttempts.state.GEprogress = 0
 				localStorage.setItem('GEx.state',JSON.stringify(GExAttempts.state))
 				GExAttempts.refreshGUI()
-			}, (GExAttempts.state.deactivationTime-GameTime) * 1000);
+			}, (GExAttempts.state.deactivationTime-GameTime.get()) * 1000);
 		}
 		//set timer for GE activation if activation time known
 		if (!GExAttempts.activationTimer && GExAttempts.state.activationTime && !GExAttempts.state.active) {
@@ -1085,7 +1085,7 @@ let GExAttempts = {
 				GExAttempts.activationTimer = null
 				localStorage.setItem('GEx.state',JSON.stringify(GExAttempts.state))
 				GExAttempts.refreshGUI()
-			}, (GExAttempts.state.activationTime-GameTime) * 1000);
+			}, (GExAttempts.state.activationTime-GameTime.get()) * 1000);
 		}
 
 	},
@@ -1099,7 +1099,7 @@ let GExAttempts = {
 		let timer=3600000
 	
 		if (time) { 
-			timer = (time-GameTime+3600)*1000
+			timer = (time-GameTime.get()+3600)*1000
 			GExAttempts.last = time
 		} else {
 			let amount = Math.floor((moment().unix() - GExAttempts.last + 100)/3600)

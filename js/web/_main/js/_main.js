@@ -56,8 +56,6 @@ let ApiURL = 'https://api.foe-rechner.de/',
 	LGCurrentLevelMedals = undefined,
 	IsLevelScroll = false,
 	EventCountdown = false,
-	GameTimeOffset = 0,
-	GameTime = 0,
 	StartUpDone = new Promise(resolve => 
 			window.addEventListener('foe-helper#StartUpDone', resolve, {once: true, passive: true})),
 	Fights = [],
@@ -69,6 +67,16 @@ let ApiURL = 'https://api.foe-rechner.de/',
 	GuildLinkFormat = 'https://foe.scoredb.io/__world__/Guild/__guildid__',
 	BuildingsLinkFormat = 'https://forgeofempires.fandom.com/wiki/__buildingid__',
 	LinkIcon = '<svg xmlns="http://www.w3.org/2000/svg" width="22pt" height="22pt" viewBox="0 0 22 22"><g><path id="foehelper-external-link-icon" d="M 13 0 L 13 2 L 18.5625 2 L 6.28125 14.28125 L 7.722656 15.722656 L 20 3.4375 L 20 9 L 22 9 L 22 0 Z M 0 4 L 0 22 L 18 22 L 18 9 L 16 11 L 16 20 L 2 20 L 2 6 L 11 6 L 13 4 Z M 0 4 "/></g></svg>';
+
+let GameTime = {
+	Offset: 0,
+	set:(time)=>{
+		GameTime.Offset = time-moment().unix();
+	},	
+	get:()=>{
+		return moment().unix()+GameTime.Offset;
+	}
+}
 
 // Übersetzungen laden
 let i18n_loaded = false;
@@ -811,8 +819,7 @@ GetFights = () =>{
 
 
 	FoEproxy.addHandler('TimeService', 'updateTime', async (data, postData) => {
-		GameTimeOffset = data.responseData.time * 1000 - new Date().getTime();
-		GameTime = data.responseData.time;
+		GameTime.set(data.responseData.time);
 		if (MainMenuLoaded) return;
 
 	
@@ -1129,7 +1136,7 @@ let MainParser = {
 	 * @returns {Date}
 	 */
 	getCurrentDate: () => {
-		return new Date(Date.now() + GameTimeOffset);
+		return new Date(Date.now() + GameTime.Offset*1000);
 	},
 
 
@@ -2207,7 +2214,7 @@ let MainParser = {
 			//remove tracked buildings if time ran out
 			for (let x in LB) {
 				if (!LB[x]) continue;
-				if (LB[x]<GameTime*1000-GameTimeOffset) delete LB[x];
+				if (LB[x]<(GameTime-GameTime.Offset)*1000) delete LB[x];
 				localStorage.setItem("LimitedBuildingsAlertSet",JSON.stringify(LB));
 			}
 			if(!Settings.GetSetting('ShowBuildingsExpired')){
@@ -2241,7 +2248,7 @@ let MainParser = {
 					const data = {
 						title: i18n("InactiveBuildingsAlert.title"),
 						body: MainParser.CityEntities[MainParser.CityEntities[building.cityentity_id]?.components?.AllAge?.limited?.config?.targetCityEntityId].name,
-						expires: (MainParser.CityEntities[building.cityentity_id]?.components?.AllAge?.limited?.config?.expireTime + building.state.constructionFinishedAt)*1000 - GameTimeOffset,
+						expires: (MainParser.CityEntities[building.cityentity_id]?.components?.AllAge?.limited?.config?.expireTime + building.state.constructionFinishedAt - GameTime.Offset)*1000,
 						repeat: -1,
 						persistent: true,
 						tag: '',
@@ -2256,7 +2263,7 @@ let MainParser = {
 						action: 'create',
 						data: data,
 					}).then((aId) => {
-						LB[building.id]=(MainParser.CityEntities[building.cityentity_id]?.components?.AllAge?.limited?.config?.expireTime + building.state.constructionFinishedAt)*1000 - GameTimeOffset;
+						LB[building.id]=(MainParser.CityEntities[building.cityentity_id]?.components?.AllAge?.limited?.config?.expireTime + building.state.constructionFinishedAt - GameTime.Offset)*1000;
 						localStorage.setItem("LimitedBuildingsAlertSet",JSON.stringify(LB));
 					})
 				}
