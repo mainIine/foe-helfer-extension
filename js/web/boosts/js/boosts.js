@@ -36,6 +36,11 @@ FoEproxy.addHandler('CityMapService', 'moveEntities', (data, postData) => {
 FoEproxy.addHandler('CityMapService', 'removeBuilding', (data, postData) => {
     Boosts.Remove(postData[0].requestData.map(b=>({entityId:b})));
 });
+FoEproxy.addHandler('CityMapService', 'reset', (data, postData) => {
+    Boosts.Remove(data.responseData.map(b=>({entityId:b.id})));
+    Boosts.InitLB(data.responseData.filter(x=>x.type=="greatbuilding"));
+    Boosts.TimeIn.add(data.responseData.filter(x=>x.type!="greatbuilding"));
+});
 FoEproxy.addHandler('CityMapService', 'getCityMap', (data, postData) => {
     if (data.responseData.gridId!=="guild_raids") return
     Boosts.Remove(data.responseData.entities.map(b=>({entityId:b.id})));
@@ -111,7 +116,7 @@ let Boosts = {
         
         let boosts=LBs.filter(x=>x.bonus?.type).map(x=>
             ({
-                entityId: x.entityId,
+                entityId: x.entityId||x.id,
                 origin: "greatBuilding",
                 type: x.bonus.type,
                 value: x.bonus.value
