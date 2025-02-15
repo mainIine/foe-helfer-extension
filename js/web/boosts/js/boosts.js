@@ -109,7 +109,7 @@ let Boosts = {
 
     InitLB: async (LBs) => {
         
-        let boosts=LBs.map(x=>
+        let boosts=LBs.filter(x=>x.bonus?.type).map(x=>
             ({
                 entityId: x.entityId,
                 origin: "greatBuilding",
