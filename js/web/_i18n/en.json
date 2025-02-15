@@ -805,6 +805,7 @@
     "Boxes.Negotiation.TryEnd": "No more attempts",
     "Boxes.Negotiation.WrongGoods": "Wrong goods selected, please finish manually",
     "Boxes.Negotiation.confirmGoodsMissmatch": "Ok",
+    "Boxes.Notice.ConfirmDelete": "Are you sure you want to delete this?",
     "Boxes.Notice.ContentHeadIsFriend": "Friend",
     "Boxes.Notice.ContentHeadIsGuild": "Guild member",
     "Boxes.Notice.ContentHeadIsNeighbor": "Neighbour",
