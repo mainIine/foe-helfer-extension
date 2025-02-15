@@ -374,7 +374,7 @@ let CityMap = {
 
 	showQIStats: () => {
 		if (!CityMap.QIData) return
-		let boosts = MainParser.BoostSums
+		let boosts = Boosts.Sums
 		let supply_boost = boosts.guild_raids_supplies_production*0.01
 		let coin_boost = boosts.guild_raids_coins_production*0.01
 		let buildings = Object.values(CityMap.QIData)
@@ -458,7 +458,7 @@ let CityMap = {
 
 
 	showQIBuildings: () => {
-		let boosts = MainParser.BoostSums
+		let boosts = Boosts.Sums
 		let supply_boost = 0, coin_boost = 0
 		coin_boost = boosts.guild_raids_coins_production*0.01
 		supply_boost = boosts.guild_raids_supplies_production*0.01
@@ -1207,7 +1207,7 @@ let CityMap = {
 							// example data: targetedFeature: "all", type: [], value: 11
 							let boost = {
 								feature: abilityBoost.boostHintEraMap[eraName].targetedFeature,
-								type: MainParser.BoostMapper[abilityBoost.boostHintEraMap[eraName].type] || [abilityBoost.boostHintEraMap[eraName].type],
+								type: Boosts.Mapper[abilityBoost.boostHintEraMap[eraName].type] || [abilityBoost.boostHintEraMap[eraName].type],
 								value: abilityBoost.boostHintEraMap[eraName].value
 							}
 							boosts.push(boost)
@@ -1215,7 +1215,7 @@ let CityMap = {
 						else { // if only AllAge boost
 							let boost = {
 								feature: abilityBoost.boostHintEraMap.AllAge.targetedFeature,
-								type: MainParser.BoostMapper[abilityBoost.boostHintEraMap.AllAge.type] || [abilityBoost.boostHintEraMap.AllAge.type],
+								type: Boosts.Mapper[abilityBoost.boostHintEraMap.AllAge.type] || [abilityBoost.boostHintEraMap.AllAge.type],
 								value: abilityBoost.boostHintEraMap.AllAge.value
 							}
 							boosts.push(boost)
@@ -1229,7 +1229,7 @@ let CityMap = {
 							if (bonus.boost[eraName]) {
 								let boost = {
 									feature: bonus.boost[eraName].targetedFeature,
-									type: MainParser.BoostMapper[bonus.boost[eraName].type] || [bonus.boost[eraName].type],
+									type: Boosts.Mapper[bonus.boost[eraName].type] || [bonus.boost[eraName].type],
 									value: bonus.boost[eraName].value,
 									needsLink: true
 								}
@@ -1238,7 +1238,7 @@ let CityMap = {
 							else if (bonus.boost.AllAge) {
 								let boost = {
 									feature: bonus.boost.AllAge.targetedFeature,
-									type: MainParser.BoostMapper[bonus.boost.AllAge.type] || [bonus.boost.AllAge.type],
+									type: Boosts.Mapper[bonus.boost.AllAge.type] || [bonus.boost.AllAge.type],
 									value: bonus.boost.AllAge.value,
 									needsLink: true
 								}
@@ -1252,7 +1252,7 @@ let CityMap = {
 				if (data.bonus?.type) {
 					let boost = {
 						feature: "all",
-						type: MainParser.BoostMapper[data.bonus.type] || [data.bonus.type],
+						type: Boosts.Mapper[data.bonus.type] || [data.bonus.type],
 						value: data.bonus.value
 					}
 					if (data.bonus.type !== "happiness_amount" && data.bonus.type !== "population")
@@ -1260,15 +1260,14 @@ let CityMap = {
 				}
 			}
 			else if (metaData.id.includes("CastleSystem")) {
-				if (MainParser.Boosts[data.id] != undefined)
-					MainParser.Boosts[data.id].forEach(castleBoost => {
-						let boost = {
-							feature: "all",
-							type: MainParser.BoostMapper[castleBoost.type] || [castleBoost.type],
-							value: castleBoost.value
-						}
-						boosts.push(boost)
-					})
+				for (castleBoost of (Boosts?.CastleSystem || [])) {
+					let boost = {
+						feature: "all",
+						type: Boosts.Mapper[castleBoost.type] || [castleBoost.type],
+						value: castleBoost.value
+					}
+					boosts.push(boost)
+				}
 			}
 		}
 		else {
@@ -1276,7 +1275,7 @@ let CityMap = {
 				metaData.components[era].boosts.boosts.forEach(abilityBoost => {
 					let boost = {
 						feature: abilityBoost.targetedFeature,
-						type: MainParser.BoostMapper[abilityBoost.type] || [abilityBoost.type],
+						type: Boosts.Mapper[abilityBoost.type] || [abilityBoost.type],
 						value: abilityBoost.value,
 					};
 					boosts.push(boost)
@@ -1286,7 +1285,7 @@ let CityMap = {
 				metaData.components.AllAge.boosts.boosts.forEach(abilityBoost => {
 					let boost = {
 						feature: abilityBoost.targetedFeature,
-						type: MainParser.BoostMapper[abilityBoost.type] || [abilityBoost.type],
+						type: Boosts.Mapper[abilityBoost.type] || [abilityBoost.type],
 						value: abilityBoost.value,
 					};
 					boosts.push(boost)
@@ -1298,7 +1297,7 @@ let CityMap = {
 			allyStats?.boosts.forEach(abilityBoost => {
 				let boost = {
 					feature: abilityBoost.targetedFeature,
-					type: MainParser.BoostMapper[abilityBoost.type] || [abilityBoost.type],
+					type: Boosts.Mapper[abilityBoost.type] || [abilityBoost.type],
 					value: abilityBoost.value,
 				};
 				boosts.push(boost)

@@ -89,7 +89,7 @@
     text-align: center;
 }
 
-#PlayerProfile .fp::before, #PlayerProfile .goods .prev::before, #PlayerProfile .goods .current::before, #PlayerProfile .goods .next::before, #PlayerProfile .goods .guild::before, #PlayerProfile .aAtt::before, #PlayerProfile .aDef::before, #PlayerProfile .dAtt::before, #PlayerProfile .dDef::before {
+#PlayerProfile .fp::before, #PlayerProfile .goods .prev::before, #PlayerProfile .goods .current::before, #PlayerProfile .goods .next::before, #PlayerProfile .goods .guild::before, #PlayerProfile .aAtt::before, #PlayerProfile .aDef::before, #PlayerProfile .dAtt::before, #PlayerProfile .dDef::before, #PlayerProfile .qiactions::before {
     content: '';
     position: relative;
     top: 3px;
@@ -127,6 +127,11 @@
 #PlayerProfile .goods .current::before {
     background: url(../../productions/images/productions.png) -104px 2px no-repeat;
     height: 26px;
+}
+
+#PlayerProfile .qiactions::before {
+    background: url(../../productions/images/productions.png) -498px 5px no-repeat;
+    height: 28px;
 }
 
 #PlayerProfile .battleBoosts > div {

@@ -136,7 +136,7 @@ let BlueGalaxy = {
         CityMap.createNewCityMapEntities(data)
 
         let Buildings = [],
-            FPB = Productions.Boosts['fp'] === undefined ? (MainParser.BoostSums['forge_points_production'] + 100) / 100 : Productions.Boosts['fp']
+            FPB = Productions.Boosts['fp'] === undefined ? (Boosts.Sums['forge_points_production'] + 100) / 100 : Productions.Boosts['fp']
             FPBoost = (FP) => { return Math.round(FP * FPB) },
             showBGFragments = JSON.parse(localStorage.getItem('showBGFragments')||"true");
         

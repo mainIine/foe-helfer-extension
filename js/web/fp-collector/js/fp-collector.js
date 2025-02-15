@@ -282,7 +282,7 @@ FoEproxy.addHandler('CityMapService', 'showAppliedBonus', (data, postData) => {
 
 		let building = CityMap.createNewCityMapEntity(metaData, era, buildingData)
 		let FPproduction = parseFloat(Productions.getBuildingProductionByCategory(true, building, 'strategy_points').amount) 
-		let FP = FPproduction + Math.round(FPproduction * ((MainParser.BoostSums.forge_points_production) / 100))
+		let FP = FPproduction + Math.round(FPproduction * ((Boosts.Sums.forge_points_production) / 100))
 
 		if (!FP) continue;
 
