@@ -274,11 +274,9 @@ let Boosts = {
             for (let type of Object.keys(Boosts.ListByType)) {
                 if (b.boostId) {
                     Boosts.ListByType[type] = Boosts.ListByType[type].filter(x=>x.id!=b.boostId);
-                    continue
                 }
                 if (b.entityId) {
                     Boosts.ListByType[type] = Boosts.ListByType[type].filter(x=>x.entityId!=b.entityId);
-                    continue
                 }
             }
             if (b.entityId) {
