@@ -5,6 +5,14 @@
     z-index: 300;
 }
 
+#PlayerProfileButton span {
+    display: none;
+}
+
+#PlayerProfileButton .main {
+    display: inline-block;
+}
+
 #PlayerProfileButton img {
     width: 24px;
     height: 24px;

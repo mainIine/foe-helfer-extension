@@ -3,6 +3,12 @@ FoEproxy.addHandler('AchievementsService','getOverview', (data, postData) => {
     Profile.init(data.responseData)
 });
 
+FoEproxy.addFoeHelperHandler('ActiveMapUpdated', () => {
+	if ($('#PlayerProfileButton').length !== 0) {
+        $('#PlayerProfileButton span').attr('class',ActiveMap);
+    }
+});
+
 const Profile = {
     daysPlayed: 0,
     fpProduction: 0,
@@ -23,11 +29,11 @@ const Profile = {
 
 			div.attr({
 				id: 'PlayerProfileButton',
-				class: 'game-cursor'
+				class: 'game-cursor helper-blocker'
 			});
 
 			$('body').append(div).promise().done(function() {
-				div.append('<span onclick="Profile.show()"><img src="'+srcLinks.GetPortrait(ExtPlayerAvatar)+'" /></span>')
+				div.append('<span onclick="Profile.show()" class="'+ActiveMap+'"><img src="'+srcLinks.GetPortrait(ExtPlayerAvatar)+'" /></span>')
 					.attr('title', i18n('Boxes.PlayerProfile.Tooltip'))
 					.tooltip(
 						{
@@ -92,8 +98,10 @@ const Profile = {
         if (Profile.guildGoods)
             content.push('<span class="guild">' + HTML.Format(parseInt(parseInt(Profile.guildGoods)) || 0) + '</span>')
         content.push('</div>');
+        /** for later use
         content.push('<span class="qiactions">' + HTML.Format(parseInt(Boosts.Sums.guild_raids_action_points_collection_no_settlement)) + '</span><br>');
         content.push('</div>');
+        */
 
         content.push('<div class="battleBoosts pad">');
         content.push('<h2>'+i18n('Boxes.PlayerProfile.BattleBoosts')+'</h2>');
