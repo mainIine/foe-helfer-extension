@@ -122,8 +122,8 @@ let Boosts = {
     getFeatureType: (bonus) => {
         let Type = bonus.type;
         if (Type.includes("attacker")||Type.includes("defender")) {
-            feature = bonus.feature || bonus.targetedFeature || "";
-            return feature + "-" + Type;
+            feature = bonus.feature || bonus.targetedFeature || "all";
+            return (feature != "all" ? feature + "-" : "") + Type;
         }
         return Type;
     },
