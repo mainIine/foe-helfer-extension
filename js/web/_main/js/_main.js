@@ -1539,14 +1539,7 @@ let MainParser = {
 			let prod={}
 			Object.values(M.buildingList[CityMapId]).forEach(id=> {
 				let a=M.allyList[id]
-				let stat=M.stats[a.allyId][a.rarity.value][a.level]
-				for (let s of Object.keys(stat)) {
-					if (s=="level") continue
-					if (prod[s]) 
-						prod[s].concat(stat[s])
-					else
-						prod[s]=stat[s]
-				}
+				if (a.boosts) prod.boosts = (prod.boosts||[]).concat(a.boosts)
 			})
 			return prod
 		},
