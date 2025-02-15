@@ -37,7 +37,7 @@ FoEproxy.addHandler('CityMapService', 'removeBuilding', (data, postData) => {
     Boosts.Remove(postData[0].requestData.map(b=>({entityId:b})));
 });
 FoEproxy.addHandler('CityMapService', 'getCityMap', (data, postData) => {
-    if (postData[0].requestData[0]=="guild_raids")
+    if (data.responseData.gridId!=="guild_raids") return
     Boosts.Remove(data.responseData.entities.map(b=>({entityId:b.id})));
     Boosts.TimeIn.add(data.responseData.entities);
 });
@@ -119,7 +119,14 @@ let Boosts = {
         )
         Boosts.Add(boosts)
     },
-
+    getFeatureType: (bonus) => {
+        let Type = bonus.type;
+        if (Type.includes("attacker")||Type.includes("defender")) {
+            feature = bonus.feature || bonus.targetedFeature || "";
+            return feature + "-" + Type;
+        }
+        return Type;
+    },
 
     /**
          * Collects active boosts from the city
@@ -144,14 +151,13 @@ let Boosts = {
                 }
             }
 
-
             let mapped = Boosts.Mapper[b.type]?.map(x=>{
                     let a = structuredClone(b)
                     a.type = x
                     return a
                 }) || [structuredClone(b)]
             for (let m of mapped) {        
-                m.type = ((m.targetedFeature||"all") !== "all" ? m.targetedFeature+"-" : "") + m.type;
+                m.type = Boosts.getFeatureType(m);
                 Boosts.ListByType[m.type]?.push(m);
             }
         }
@@ -173,6 +179,7 @@ let Boosts = {
         add: async (buildings)=>{
             await StartUpDone
             let addToList = (boost)=>{
+                if (!Array.isArray(boost.type)) boost.type=[boost.type]
                 for (type of boost.type||[boost.type]) {
                     b=structuredClone(boost)
                     b.type = type
@@ -198,18 +205,23 @@ let Boosts = {
                     boost.startTime = building.state.next_state_transition_at
                     boost.entityId = building.id
                     boost.origin = "building"
-                    if (metaData.components.AllAge.limited) {   
+                    if (metaData?.components?.AllAge?.limited) {   
                         boost.expireTime = building.state.next_state_transition_at + metaData.components.AllAge.limited.config.expireTime
                         Boosts.TimeOut.add(boost)
                     }
                     if (building.state.__class__=="ConstructionState") {
                         addToList(boost)
                     } else if (!building.state.pausedAt && !building.state.decaysAt) {
-                        boostsToAddDirectly.push(boost)
+                        if (!Array.isArray(boost.type)) boost.type=[boost.type]
+                        for (type of boost.type) {
+                            let b=structuredClone(boost)
+                            b.type = type
+                            boostsToAddDirectly.push(b)
+                        }
                     }
                 }
                  
-                if (metaData.components.AllAge.limited) {
+                if (metaData?.components?.AllAge?.limited) {
                     let target = metaData.components.AllAge.limited.config.targetCityEntityId
                     let metaTarget = structuredClone(MainParser.CityEntities[target])
                     let era = Technologies.getEraName(building.cityentity_id, building.level)
