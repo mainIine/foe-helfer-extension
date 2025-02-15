@@ -284,6 +284,18 @@ let Productions = {
 								if (Productions.BuildingsProducts.strategy_points.find(x => x.id == building.id) == undefined)
 									Productions.BuildingsProducts["strategy_points"].push(saveBuilding)
 							}
+							if (resource.type == "resources" && resource.subType == "money") {
+								if (Productions.BuildingsProducts.money.find(x => x.id == building.id) == undefined)
+									Productions.BuildingsProducts["money"].push(saveBuilding)
+							}
+							if (resource.type == "resources" && resource.subType == "supplies") {
+								if (Productions.BuildingsProducts.supplies.find(x => x.id == building.id) == undefined)
+									Productions.BuildingsProducts["supplies"].push(saveBuilding)
+							}
+							if (resource.type == "resources" && resource.subType == "medals") { 
+								if (Productions.BuildingsProducts.medals.find(x => x.id == building.id) == undefined)
+									Productions.BuildingsProducts["medals"].push(saveBuilding)
+							}
 							if (resource.type.includes("good") && !resource.type.includes("guild")) {
 								if (Productions.BuildingsProducts.goods.find(x => x.id == building.id) == undefined)
 									Productions.BuildingsProducts["goods"].push(saveBuilding)
@@ -1151,6 +1163,18 @@ let Productions = {
 							prod.hasRandomProductions = true
 						}
 						if (resource.subType == "strategy_points" && category == "strategy_points") {
+							prod.amount += resource.amount * resource.dropChance
+							prod.hasRandomProductions = true
+						}
+						if (resource.subType == "money" && category == "money") {
+							prod.amount += resource.amount * resource.dropChance
+							prod.hasRandomProductions = true
+						}
+						if (resource.subType == "supplies" && category == "supplies") {
+							prod.amount += resource.amount * resource.dropChance
+							prod.hasRandomProductions = true
+						}
+						if (resource.subType == "medals" && category == "medals") {
 							prod.amount += resource.amount * resource.dropChance
 							prod.hasRandomProductions = true
 						}
