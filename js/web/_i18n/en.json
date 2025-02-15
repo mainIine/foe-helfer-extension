@@ -895,6 +895,8 @@
     "Boxes.PlayerProfile.DailyProduction": "Daily Production",
     "Boxes.PlayerProfile.DaysPlayed": "started playing __number__ days ago",
     "Boxes.PlayerProfile.OpenProduction": "To gather this data, please open the goods and guild goods tab in the Production overview. Then close and reopen this window.",
+    "Boxes.PlayerProfile.QIBoosts": "QI Boosts",
+    "Boxes.PlayerProfile.Settlements": "Settlement Playthroughs",
     "Boxes.PlayerProfile.Tooltip": "Open Profile Summary",
     "Boxes.Popgame.Warning": "When no tool is selected, the area below is click-through - clicking interacts with the game!",
     "Boxes.PowerLeveling.CopyValues": "Copy values",
