@@ -186,16 +186,6 @@ let Tooltips = {
             "guild_expedition":"_gex",
             "guild_raids":"_gr"
         }
-        let percent = (x) => {
-            return [
-                "diplomacy",
-                "guild_raids_action_points_collection",
-                "guild_raids_goods_start",
-                "guild_raids_units_start",
-                "guild_raids_supplies_start",
-                "guild_raids_coins_start",
-            ].includes(x) ? "" : "%"
-        }
         let out='<table class="HXBuilding">';        
 
         if (meta.components) {
@@ -249,7 +239,7 @@ let Tooltips = {
                     ally+=`<div class="allyName"><span>${MainParser.Allies.meta[allydata.allyId]?.name}</span><span>(${i18n("Boxes.Productions.AllyRarity."+allydata.rarity)} - ${i18n("General.Level")} ${allydata.level})</span></div>`
                     //productions:
                     for (b of allydata.boosts||[]) {
-                        ally+=`${srcLinks.icons(b.type+feature[b.targetedFeature])} ${b.value + percent(b.type)}`
+                        ally+=`${srcLinks.icons(b.type+feature[b.targetedFeature])} ${b.value + Boosts.percent(b.type)}`
                     }
 
                 }
@@ -285,11 +275,11 @@ let Tooltips = {
                 provides+=`<tr><td>${srcLinks.icons("happiness") + " " + range(levels?.[minEra]?.happiness?.provided,levels[maxEra]?.happiness?.provided,true) + polMod}</td></tr>`
             }
             for (let [i,b] of Object.entries(levels.AllAge?.boosts?.boosts||[])){
-                provides+=`<tr><td>${srcLinks.icons(b.type+feature[b.targetedFeature]) + " " + span(b.value) + percent(b.type)}</td></tr>`
+                provides+=`<tr><td>${srcLinks.icons(b.type+feature[b.targetedFeature]) + " " + span(b.value) + Boosts.percent(b.type)}</td></tr>`
             }
             
             for (let [i,b] of Object.entries(levels?.[minEra]?.boosts?.boosts||[])){
-                provides+=`<tr><td>${srcLinks.icons(b.type+feature[b.targetedFeature]) + " " + range(b.value,levels[maxEra]?.boosts?.boosts[i].value) + percent(b.type)}</td></tr>`
+                provides+=`<tr><td>${srcLinks.icons(b.type+feature[b.targetedFeature]) + " " + range(b.value,levels[maxEra]?.boosts?.boosts[i].value) + Boosts.percent(b.type)}</td></tr>`
             }
             
             let prods=""
@@ -519,10 +509,10 @@ let Tooltips = {
                 if (a.boostHints){
                     for (let b of a.boostHints||[]){
                         if (b.boostHintEraMap?.AllAge) {
-                            boosts+=`<tr><td>${srcLinks.icons(b.boostHintEraMap.AllAge.type+feature[b.boostHintEraMap.AllAge.targetedFeature]) + " " + span(b.boostHintEraMap.AllAge.value) + percent(b.boostHintEraMap.AllAge.type)}</td></tr>`
+                            boosts+=`<tr><td>${srcLinks.icons(b.boostHintEraMap.AllAge.type+feature[b.boostHintEraMap.AllAge.targetedFeature]) + " " + span(b.boostHintEraMap.AllAge.value) + Boosts.percent(b.boostHintEraMap.AllAge.type)}</td></tr>`
                         }
                         if (b.boostHintEraMap?.[minEra] && b.boostHintEraMap?.[maxEra]) {
-                            boosts+=`<tr><td>${srcLinks.icons(b.boostHintEraMap?.[minEra].type+feature[b.boostHintEraMap?.[minEra].targetedFeature]) + " " + range(b.boostHintEraMap?.[minEra].value,b.boostHintEraMap[maxEra].value) + percent(b.boostHintEraMap?.[minEra].type)}</td></tr>`
+                            boosts+=`<tr><td>${srcLinks.icons(b.boostHintEraMap?.[minEra].type+feature[b.boostHintEraMap?.[minEra].targetedFeature]) + " " + range(b.boostHintEraMap?.[minEra].value,b.boostHintEraMap[maxEra].value) + Boosts.percent(b.boostHintEraMap?.[minEra].type)}</td></tr>`
                         }
                     }
                 }
@@ -643,10 +633,10 @@ let Tooltips = {
                     if (Object.values(b.boost).length>0) {
                         boosts+=`<tr><td>${b.level + "x" + srcLinks.icons(a.setId)} ► `
                         if (b.boost.AllAge) {
-                            boosts+=srcLinks.icons(b.boost.AllAge.type+feature[b.boost.AllAge.targetedFeature]) + " " + span(b.boost.AllAge.value) + percent(b.boost.AllAge.type)
+                            boosts+=srcLinks.icons(b.boost.AllAge.type+feature[b.boost.AllAge.targetedFeature]) + " " + span(b.boost.AllAge.value) + Boosts.percent(b.boost.AllAge.type)
                         }
                         if (b.boost?.[minEra] && b.boost[maxEra]) {
-                            boosts+=srcLinks.icons(b.boost?.[minEra].type+feature[b.boost?.[minEra].targetedFeature]) + " " + range(b.boost?.[minEra].value,b.boost[maxEra].value) + percent(b.boost?.[minEra].type)
+                            boosts+=srcLinks.icons(b.boost?.[minEra].type+feature[b.boost?.[minEra].targetedFeature]) + " " + range(b.boost?.[minEra].value,b.boost[maxEra].value) + Boosts.percent(b.boost?.[minEra].type)
                         }
                         boosts+=`</td></tr>`
                     } else {
@@ -673,10 +663,10 @@ let Tooltips = {
                         }
                         boosts+=`<tr><td>${b.level + "x" + srcLinks.icons(a.chainId)} ► `
                         if (b.boost.AllAge) {
-                            boosts+=srcLinks.icons(b.boost.AllAge.type+feature[b.boost.AllAge.targetedFeature]) + " " + span(b.boost.AllAge.value) + percent(b.boost.AllAge.type)
+                            boosts+=srcLinks.icons(b.boost.AllAge.type+feature[b.boost.AllAge.targetedFeature]) + " " + span(b.boost.AllAge.value) + Boosts.percent(b.boost.AllAge.type)
                         }
                         if (b.boost?.[minEra] && b.boost[maxEra]) {
-                            boosts+=srcLinks.icons(b.boost?.[minEra].type+feature[b.boost?.[minEra].targetedFeature]) + " " + range(b.boost?.[minEra].value,b.boost[maxEra].value) + percent(b.boost?.[minEra].type)
+                            boosts+=srcLinks.icons(b.boost?.[minEra].type+feature[b.boost?.[minEra].targetedFeature]) + " " + range(b.boost?.[minEra].value,b.boost[maxEra].value) + Boosts.percent(b.boost?.[minEra].type)
                         }
                         boosts+=`</td></tr>`
 
@@ -752,28 +742,10 @@ let QIActions = {
 	next:null,
 	last:null,
 
-	getHourly:()=>{
-		hourly = 5000
-		hourly += MainParser.BoostSums.guild_raids_action_points_collection
-		if (!CityMap.QIData) return hourly
-		for (let b of Object.values(CityMap.QIData)) {
-			let building = CityMap.setQIBuilding(MainParser.CityEntities[b.cityentity_id])
-			if (building.type == "impediment" || building.type == "street")  continue
-			if (building.boosts) {
-				for (let i in building.boosts) {
-					let boost = building.boosts[i]
-					if (boost.type === "guild_raids_action_points_collection" && !b.state.pausedAt && b.__class__ != "ConstructionState")
-						hourly += boost.value 
-				}
-			}
-		}
-		return hourly
-	},
-
 	setNext:(time)=>{
 		let timer=3600000
 		
-		hourly = QIActions.getHourly()
+		let hourly = 5000 + Boosts.Sums["guild_raids_action_points_collection"] 
 
 		if (time) { 
 			timer = (time-GameTime.get()+3600)*1000
@@ -792,17 +764,14 @@ let QIActions = {
 	},
 
 	TT:()=>{
-		let hourly = QIActions.getHourly()
-		let warning = !CityMap.QIData
+		let hourly = 5000 + Boosts.Sums["guild_raids_action_points_collection"] 
 		let fullAt = Math.ceil((100000-QIActions.count)/hourly)*3600 + QIActions.last
 		let next = QIActions.last + 3600
 		while (next < moment().unix()) next += 3600
 
 		tooltip=`<div style="text-align:center">`
         tooltip+=`<h1>${i18n("Global.BoxTitle")}</h1>`
-        tooltip+=`<h2>${i18n("Boxes.QIActions.Rate")}</h2>`
-		tooltip+=`<p>${hourly} ${moment.unix(next).fromNow()}</p>`
-		if (warning) tooltip+=`<p>${i18n("Boxes.QIActions.Warning")}</p>`
+		tooltip+=`<p style="margin: 3px">${srcLinks.icons("guild_raids_action_points")}&nbsp;${hourly} ${moment.unix(next).fromNow()}</p>`
 		tooltip+=`<h2>${i18n("Boxes.QIActions.FullAt")}</h2>`
 		tooltip+=`<p>${moment.unix(fullAt).format('lll')}</p></div>`
 
@@ -810,6 +779,6 @@ let QIActions = {
 	}
 }
 
-//$(`<div id="QIActions" class="helperTT" data-callback_tt="QIActions.TT">${srcLinks.icons("time")}</div>`).appendTo('body').hide();    
+$(`<div id="QIActions" class="helperTT" data-callback_tt="QIActions.TT">${srcLinks.icons("time")}</div>`).appendTo('body').hide();    
 
 Tooltips.init()

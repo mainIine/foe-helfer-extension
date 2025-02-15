@@ -308,7 +308,6 @@ GetFights = () =>{
 		// Alle Gebäude sichern
 		LastMapPlayerID = ExtPlayerID;
 		MainParser.CityMapData = Object.assign({}, ...data.responseData.city_map.entities.map((x) => ({ [x.id]: x })));
-		MainParser.SaveBuildings(MainParser.CityMapData);
 		MainParser.SetArkBonus2();
 		// Güterliste
 		GoodsList = data.responseData.goodsList
@@ -364,12 +363,6 @@ GetFights = () =>{
 	// Botschafter notieren, enthält Bonus FPs oder Münzen
 	FoEproxy.addHandler('EmissaryService', 'getAssigned', (data, postData) => {
 		MainParser.EmissaryService = data.responseData;
-	});
-
-	// --------------------------------------------------------------------------------------------------
-	// Boosts zusammen tragen
-	FoEproxy.addHandler('BoostService', 'getAllBoosts', (data, postData) => {
-		MainParser.CollectBoosts(data.responseData);
 	});
 
 	// QI map
@@ -930,7 +923,6 @@ let MainParser = {
 	SelectedMenu: 'RightBar',
 	i18n: null,
 	BonusService: null,
-	Boosts: {},
 	EmissaryService: null,
 	PlayerPortraits: [],
 	Conversations: [],
@@ -1000,53 +992,6 @@ let MainParser = {
 		localStorage.setItem('LastStartedVersion', extVersion);
 		localStorage.setItem('LastAgreedVersion', extVersion); //Comment out this line if you have something the player must agree on
 	},
-
-
-	BoostMapper: {
-		'supplies_boost': ['supply_production'],
-		'happiness': ['happiness_amount'],
-		'military_boost': ['att_boost_attacker', 'def_boost_attacker'],
-		'att_def_boost_attacker': ['att_boost_attacker', 'def_boost_attacker'],
-		'fierce_resistance': ['att_boost_defender', 'def_boost_defender'],
-		'att_def_boost_defender': ['att_boost_defender', 'def_boost_defender'],
-		'att_def_boost_attacker_defender': ['att_boost_attacker', 'def_boost_attacker', 'att_boost_defender', 'def_boost_defender'],
-		'advanced_tactics': ['att_boost_attacker', 'def_boost_attacker', 'att_boost_defender', 'def_boost_defender'],
-		'money_boost': ['coin_production'],
-	},
-
-
-	/**
-	 * Speichert alle aktiven Boosts
-	 */
-	BoostSums: {
-		'att_boost_attacker': 0,
-		'def_boost_attacker': 0,
-		'att_boost_defender': 0,
-		'def_boost_defender': 0,
-		'guild_raids-att_boost_attacker': 0,
-		'guild_raids-def_boost_attacker': 0,
-		'guild_raids-att_boost_defender': 0,
-		'guild_raids-def_boost_defender': 0,
-		'guild_expedition-att_boost_attacker': 0,
-		'guild_expedition-def_boost_attacker': 0,
-		'guild_expedition-att_boost_defender': 0,
-		'guild_expedition-def_boost_defender': 0,
-		'battleground-att_boost_attacker': 0,
-		'battleground-def_boost_attacker': 0,
-		'battleground-att_boost_defender': 0,
-		'battleground-def_boost_defender': 0,
-		'coin_production': 0,
-		'supply_production': 0,
-		'forge_points_production':0,
-		'guild_raids_action_points_collection': 0,
-		'guild_raids_coins_production': 0,
-		'guild_raids_coins_start': 0,
-		'guild_raids_supplies_production': 0,
-		'guild_raids_supplies_start': 0,
-		'guild_raids_goods_start': 0,
-		'guild_raids_units_start': 0,
-	},
-
 
 	/**
 	 * Etwas zur background.js schicken
@@ -1447,43 +1392,6 @@ let MainParser = {
 		});
 	},
 
-
-	/**
-	 * Alle Gebäude sichern,
-	 * Update your own LGs
-	 *
-	 * @param d
-	 */
-	SaveBuildings: (d) => {
-		let lgs = [];
-
-		for (let i in d) {
-			if (!d.hasOwnProperty(i)) continue;
-
-			if (d[i]['type'] === 'greatbuilding') {
-				let b = {
-					cityentity_id: d[i]['cityentity_id'],
-					level: d[i]['level'],
-					max_level: d[i]['max_level'],
-					invested_forge_points: d[i]['state']['invested_forge_points'] || 0,
-					forge_points_for_level_up: d[i]['state']['forge_points_for_level_up']
-				};
-
-				lgs.push(b);
-
-				if (d[i]['bonus'] !== undefined && MainParser.BoostMapper[d[i]['bonus']['type']]) {
-					if (d[i]['bonus']['type'] !== 'happiness') { //Nicht als Boost zählen => Wird Productions extra geprüft und ausgewiesen
-						let Boosts = MainParser.BoostMapper[d[i]['bonus']['type']];
-						for (let j = 0; j < Boosts.length;j++) {
-							MainParser.BoostSums[Boosts[j]] += d[i]['bonus']['value'];
-                        }
-					}
-				}
-			}
-		}
-	},
-
-
 	Allies: {
 		buildingList:null,
 		allyList:null,
@@ -1674,19 +1582,9 @@ let MainParser = {
 						"guild_expedition":"_gex",
 						"guild_raids":"_gr"
 					}
-					let percent = (x) => {
-						return [
-							"diplomacy",
-							"guild_raids_action_points_collection",
-							"guild_raids_goods_start",
-							"guild_raids_units_start",
-							"guild_raids_supplies_start",
-							"guild_raids_coins_start",
-						].includes(x) ? "" : "%"
-					}
 					let ret=""
 					for (b of boosts||[]) {
-						ret+=`${srcLinks.icons(b.type+feature[b.targetedFeature])} ${b.value + percent(b.type)}`
+						ret+=`${srcLinks.icons(b.type+feature[b.targetedFeature])} ${b.value + Boosts.percent(b.type)}`
 					}
 					return ret
 				}
@@ -1723,61 +1621,6 @@ let MainParser = {
 			return rooms
 		},
 
-	},
-
-
-	/**
-	 * Collects active boosts from the city
-	 *
-	 * @param d
-	 */
-	CollectBoosts: (d) => {
-		MainParser.Boosts = {};
-
-		for (let i in d) {
-			if (!d.hasOwnProperty(i)) continue;
-
-			let Boost = d[i];
-
-
-			let EntityID = Boost['entityId']
-			if (Boost.origin == "castle_system")
-				EntityID = 2000000023 // castle system has entityid 2000000023
-			if (!EntityID) EntityID = 0;
-			if (!MainParser.Boosts[EntityID]) MainParser.Boosts[EntityID] = []
-			MainParser.Boosts[EntityID].push(Boost)
-			if (Boost.origin === "inventory_item") {
-				BoostPotions.activate(Boost.type,{expire:Boost.expireTime,target:Boost.targetedFeature||"all",value:Boost.value})
-			}
-
-			// collect boost sums
-			if (MainParser.CityMapData[EntityID] === undefined) {  // only collect city boosts
-				continue;
-			}
-			
-			if (Boost.targetedFeature != "all") {
-				let mergedBoostType = Boost.targetedFeature+"-"+Boost.type
-				if (MainParser.BoostSums[mergedBoostType] !== undefined) {
-					MainParser.BoostSums[mergedBoostType] += Boost.value
-				}
-			}
-			else {
-				if (MainParser.BoostSums[Boost.type] !== undefined && (Boost.type !='guild_raids_action_points_collection' || MainParser.CityMapData[Boost.entityId])) {
-					MainParser.BoostSums[Boost.type] += Boost.value
-				}
-			}
-
-			// break up combined boosts
-			if (MainParser.BoostMapper[Boost.type]) {
-				if (Boost.type == 'happiness') continue; // => handled in productions.js
-					
-				let boosts = MainParser.BoostMapper[Boost.type];
-				for (let boost of boosts) {
-					let boostType = (Boost.targetedFeature !== "all" ? Boost.targetedFeature+"-"+boost : boost);
-					MainParser.BoostSums[boostType] += Boost.value;
-				}
-			}
-		}
 	},
 
 

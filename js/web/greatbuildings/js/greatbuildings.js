@@ -460,7 +460,7 @@ let GreatBuildings =
 
                     if (GBData.AttackProductions) {
                         if (GBData.ID === 'X_ArcticFuture_Landmark2') {
-                            AttackProductions[j] = GBData.AttackProductions[j] * (100 + MainParser.BoostSums['att_boost_attacker']) / 100 / 2; //Assume critical hit of +50% damage equals +100% attack, No defense boost => /2
+                            AttackProductions[j] = GBData.AttackProductions[j] * (100 + Boosts.Sums['att_boost_attacker']) / 100 / 2; //Assume critical hit of +50% damage equals +100% attack, No defense boost => /2
                         }
                         else {
                             if (j < 10) {
