@@ -209,18 +209,22 @@ GetFights = () =>{
 
 	// Allies
 	FoEproxy.addMetaHandler('allies', (xhr, postData) => {
-		MainParser.Allies.setStats(JSON.parse(xhr.responseText));
+		MainParser.Allies.setMeta(JSON.parse(xhr.responseText));
 	});
 
 	FoEproxy.addMetaHandler('ally_rarities', (xhr, postData) => {
 		MainParser.Allies.setRarities(JSON.parse(xhr.responseText));
 	});
 
-	FoEproxy.addRequestHandler('AllyService', 'getAllies', (postData) => {
-		MainParser.Allies.showAllyList()
-	})
+	FoEproxy.addMetaHandler('ally_types', (xhr, postData) => {
+		MainParser.Allies.setTypes(JSON.parse(xhr.responseText));
+	});
 
 	FoEproxy.addHandler('AllyService', 'getAllies', (data, postData) => {
+		MainParser.Allies.getAllies(data.responseData);
+		if (postData[0].requestMethod == 'getAllies') MainParser.Allies.showAllyList()
+	});
+	FoEproxy.addHandler('AllyService', 'getAssignedAllies', (data, postData) => {
 		MainParser.Allies.getAllies(data.responseData);
 	});
 	FoEproxy.addHandler('AllyService', 'updateAlly', (data, postData) => {
@@ -1084,7 +1088,7 @@ let MainParser = {
 		}
 		else {
 			if (response.error.indexOf('"type":"alerts"')=== -1 && response.error.indexOf('"action":"getAll"') === -1)
-				throw new Error('EXT-API error: ' + response.error);
+				console.warn('EXT-API error: ' + response.error);
 		}
 	},
 
@@ -1330,11 +1334,10 @@ let MainParser = {
 	 *
 	 * @param d
 	 */
-	StartUp: (d) => {
+	StartUp: async (d) => {
 		Settings.Init(false);
 
 		MainParser.VersionSpecificStartupCode();
-		window.dispatchEvent(new CustomEvent('foe-helper#StartUpDone'))
 		ExtGuildID = d['clan_id'];
 		ExtGuildPermission = d['clan_permissions'];
 		//ExtWorld = window.location.hostname.split('.')[0];
@@ -1377,6 +1380,19 @@ let MainParser = {
 
 		Infoboard.Init();
 		EventHandler.Init();
+		x = new Promise((resolve) => {
+			let timer = () => {
+				if (MainParser.CityEntities == null) {
+					setTimeout(timer,50)
+				} else {
+					resolve() 
+				}
+			}
+			timer()
+		}),
+		await x
+		window.dispatchEvent(new CustomEvent('foe-helper#StartUpDone'))
+
 	},
 
 
@@ -1471,7 +1487,7 @@ let MainParser = {
 	Allies: {
 		buildingList:null,
 		allyList:null,
-		stats:null,
+		meta:null,
 		rarities:null,
 		names:null,
 
@@ -1497,7 +1513,7 @@ let MainParser = {
 				 	list[ally.mapEntityId] = {[ally.id]:ally.id}
 				MainParser.Allies.allyList[ally.id] = ally
 			} else {
-				mapID=MainParser.Allies.allyList[ally.id].mapEntityId
+				mapID=MainParser.Allies.allyList[ally.id]?.mapEntityId
 				delete MainParser.Allies.buildingList[mapID][ally.id]
 				if (Object.keys(MainParser.Allies.buildingList[mapID]).length==0) delete MainParser.Allies.buildingList[mapID]
 				MainParser.Allies.allyList[ally.id] = ally
@@ -1510,15 +1526,11 @@ let MainParser = {
 			MainParser.Allies.updateAllyList()
 		},
 
-		setStats:(rawStats)=>{
-			let stats = MainParser.Allies.stats = {}
-			for (ally of rawStats) {
-				stats[ally.id]={}
-				ally.rarityStats.forEach((r)=>{
-					stats[ally.id][r.rarity.value]=Object.assign({}, ...r.levels.map(l=>({[l.level]:l})))
-				})
+		setMeta:(raw)=>{
+			let meta = MainParser.Allies.meta = {} 
+			for (ally of raw) {
+				meta[ally.id]=ally
 			}
-			MainParser.Allies.names = Object.assign({}, ...rawStats.map(a=>({[a.id]:a.name})))
 		},
 
 		getProd:(CityMapId) => {
@@ -1547,27 +1559,15 @@ let MainParser = {
 		setRarities:(raw)=>{
 			MainParser.Allies.rarities=Object.assign({}, ...raw.map(r=>({[r.id.value]:r})))
 		},
+		setTypes:(raw)=>{
+			MainParser.Allies.types=Object.assign({}, ...raw.map(t=>({[t.id]:t})))
+		},
 
 		getAllieData:(id)=>{
-			ally={
-				id:id,
-				allyId:MainParser.Allies.allyList[id].allyId,
-				rarity:MainParser.Allies.allyList[id].rarity.value,
-				level:MainParser.Allies.allyList[id].level,
-				name:MainParser.Allies.names[MainParser.Allies.allyList[id].allyId],
-			}
-			let prod = {}
-			let stat = MainParser.Allies.stats[ally.allyId][ally.rarity][ally.level]
-			let type = "military"
-			for (let s of Object.keys(stat)) { // ToDo: check stats to change type whenever implemented
-				if (s=="level") continue
-				if (prod[s]) 
-					prod[s].concat(stat[s])
-				else
-					prod[s]=stat[s]
-			}
-			ally.prod = prod
-			ally.type = type
+			let ally = structuredClone(MainParser.Allies.allyList[id])
+			ally.rarity=ally.rarity.value
+			ally.name=MainParser.Allies.meta[ally.allyId]?.name
+			ally.typeName=MainParser.Allies.types[ally.type]?.name
 			return ally
 		},
 
@@ -1583,7 +1583,7 @@ let MainParser = {
 					resize: true,
 				});
 			}
-			//MainParser.Allies.updateAllyList()
+			MainParser.Allies.updateAllyList()
 		},
 
 		updateAllyList:()=>{	
@@ -1610,7 +1610,7 @@ let MainParser = {
 						allyRarity: x.rarity?.value || "",
 						allyLevel: x.level || null,												
 						allyBoosts: x.boosts || null,
-						allyName: MainParser.Allies.names[x.allyId] || "",
+						allyName: MainParser.Allies.meta[x.allyId]?.name || "",
 					}
 					unassigned++
 				}
@@ -1624,7 +1624,7 @@ let MainParser = {
 						allyRarity: r.ally?.rarity?.value || "",
 						allyLevel: r.ally?.level || null,												
 						allyBoosts: r.ally?.boosts || null,
-						allyName: MainParser.Allies.names[r.ally?.allyId] || "",
+						allyName: MainParser.Allies.meta[r.ally?.allyId]?.name || "",
 					}
 				}
 			})
