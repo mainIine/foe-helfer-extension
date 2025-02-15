@@ -98,10 +98,7 @@ const Profile = {
         if (Profile.guildGoods)
             content.push('<span class="guild">' + HTML.Format(parseInt(parseInt(Profile.guildGoods)) || 0) + '</span>')
         content.push('</div>');
-        /** for later use
-        content.push('<span class="qiactions">' + HTML.Format(parseInt(Boosts.Sums.guild_raids_action_points_collection_no_settlement)) + '</span><br>');
         content.push('</div>');
-        */
 
         content.push('<div class="battleBoosts pad">');
         content.push('<h2>'+i18n('Boxes.PlayerProfile.BattleBoosts')+'</h2>');
@@ -122,6 +119,12 @@ const Profile = {
             +'<span class="dDef">'+HTML.Format(parseInt(Boosts.Sums['guild_expedition-def_boost_defender']+Boosts.Sums.def_boost_defender))+'</span></td></tr>');
         content.push('<tr><td><span class="aAtt">'+HTML.Format(parseInt(Boosts.Sums['guild_raids-att_boost_attacker_no_settlement']))+'</span><span class="aDef">'+HTML.Format(parseInt(Boosts.Sums['guild_raids-def_boost_attacker_no_settlement']))+'</span></td><td><span class="qi"></span></td><td><span class="dAtt">'+HTML.Format(parseInt(Boosts.Sums['guild_raids-att_boost_defender_no_settlement']))+'</span><span class="dDef">'+HTML.Format(parseInt(Boosts.Sums['guild_raids-def_boost_defender_no_settlement']))+'</span></td></tr>');
         content.push('</tr></table>');
+        content.push('</div>');
+        /** for later use
+        content.push('<div class="qiBoosts pad">');
+        content.push('<span class="qiactions">' + HTML.Format(parseInt(Boosts.Sums.guild_raids_action_points_collection_no_settlement)) + '</span><br>');
+        content.push('</div>');
+        */
         $('#PlayerProfileBody').html(content.join(''));
     }
 }
