@@ -32,25 +32,21 @@ FoEproxy.addHandler('CityMapService', 'placeBuilding', (data, postData) => {
     Boosts.TimeIn.add(data.responseData);
 });
 FoEproxy.addHandler('CityMapService', 'moveEntities', (data, postData) => {
-    Boosts.Remove(data.responseData.map(b=>({entityId:b.id})));
     Boosts.TimeIn.add(data.responseData);
 });
 FoEproxy.addHandler('CityMapService', 'updateEntity', (data, postData) => {
     let buildings=data.responseData.filter(x=>x.type!="greatbuilding")
-    Boosts.Remove(buildings.map(b=>({entityId:b.id})));
     Boosts.TimeIn.add(buildings);
 });
 FoEproxy.addHandler('CityMapService', 'removeBuilding', (data, postData) => {
     Boosts.Remove(postData[0].requestData.map(b=>({entityId:b})));
 });
 FoEproxy.addHandler('CityMapService', 'reset', (data, postData) => {
-    Boosts.Remove(data.responseData.map(b=>({entityId:b.id})));
     Boosts.InitLB(data.responseData.filter(x=>x.type=="greatbuilding"));
     Boosts.TimeIn.add(data.responseData.filter(x=>x.type!="greatbuilding"));
 });
 FoEproxy.addHandler('CityMapService', 'getCityMap', (data, postData) => {
     if (data.responseData.gridId!=="guild_raids") return
-    Boosts.Remove(data.responseData.entities.map(b=>({entityId:b.id})));
     Boosts.TimeIn.add(data.responseData.entities);
 });
 
@@ -129,6 +125,7 @@ let Boosts = {
                 value: x.bonus.value
             })
         )
+        Boosts.Remove(boosts)
         Boosts.Add(boosts)
     },
     getFeatureType: (bonus) => {
@@ -207,9 +204,7 @@ let Boosts = {
             }
             let boostsToAddDirectly=[]
             for (let building of buildings||[]) {
-                if (building.state.__class__=="ConstructionState") {
-                    Boosts.Remove([{entityId:building.id}])
-                } 
+                Boosts.Remove([{entityId:building.id}])
                 let metaData = structuredClone(MainParser.CityEntities[building.cityentity_id])
                 let era = Technologies.getEraName(building.cityentity_id, building.level)
                 let NCE=CityMap.createNewCityMapEntity(metaData, era, building)
@@ -224,7 +219,7 @@ let Boosts = {
                     }
                     if (building.state.__class__=="ConstructionState") {
                         addToList(boost)
-                    } else if (!building.state.pausedAt && !building.state.decaysAt) {
+                    } else if (!building.state.pausedAt) {
                         if (!Array.isArray(boost.type)) boost.type=[boost.type]
                         for (type of boost.type) {
                             let b=structuredClone(boost)
