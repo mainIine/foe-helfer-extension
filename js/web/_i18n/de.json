@@ -1442,6 +1442,7 @@
     "Settings.ShowOwnPartBP.Desc": "Zeige Blaupausen",
     "Settings.ShowOwnPartMedals.Desc": "Zeige Medaillen",
     "Settings.ShowOwnPartMinView.Desc": "Verstecke das meiste",
+    "Settings.ShowOwnPartAutoOpen.Desc": "Automatisch öffnen",
 	"Settings.ShowQIPlayerInfo.Desc": "Soll der Spieler-Aktivitätsvergleich automatisch geöffnet werden, wenn du die Gilden-QI-Rangliste öffnest?",
     "Settings.ShowQIPlayerInfo.Title": "QI-Spielerliste",
     "Settings.Entry.ShowGuildTreasuryLogExport": "Gilden Kassen Export",
