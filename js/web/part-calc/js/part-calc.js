@@ -34,6 +34,11 @@ FoEproxy.addWsHandler('OtherPlayerService', 'newEvent', data => {
 	}
 });
 
+FoEproxy.addHandler("GreatBuildingsService","getConstruction", (data,postData) => {
+	let open = postData[0].requestData[1] == ExtPlayerID || localStorage.getItem('ShowOwnPartOnAllGBs') == 'true'
+	if ($('#OwnPartBox').length === 0 && localStorage.getItem('OwnPartAutoOpen') == 'true' && open) Parts.Show()
+})
+
 FoEproxy.addFoeHelperHandler('QuestsUpdated', data => {
 	if ($('#OwnPartBox').length > 0) {
 		Parts.CalcBody();
@@ -384,7 +389,8 @@ let Parts = {
 	 * Visible part
 	 *
 	 */
-	CalcBody: (NextLevel) => {
+	CalcBody: async (NextLevel) => {
+		await StartUpDone
 		if (Parts.CityMapEntity['level'] === NextLevel) NextLevel = 0;
 
 		let PlayerID = Parts.CityMapEntity['player_id'],
@@ -1566,6 +1572,7 @@ let Parts = {
 			showMedals = localStorage.getItem('OwnPartShowMedals') || 'true',
 			showPrints = localStorage.getItem('OwnPartShowBP') || 'true',
 			minView = localStorage.getItem('OwnPartMinView') || 'false',
+			autoOpen = localStorage.getItem('OwnPartAutoOpen') || 'false',
 			nV = `<p class="new-row">${i18n('Boxes.Calculator.Settings.newValue')}: <input type="number" class="settings-values" style="width:30px"> <span class="btn btn-default btn-green" onclick="Parts.SettingsInsertNewRow()">+</span></p>`;
 		
 			if(sB) {
@@ -1596,6 +1603,7 @@ let Parts = {
 		c.push('<br><input type="checkbox" id="showmedals" class="showmedals game-cursor" ' + ((showMedals == 'true') ? 'checked' : '') + '> <label for="showmedals">' + i18n('Settings.ShowOwnPartMedals.Desc') + '</label>');
 		c.push('<br><input type="checkbox" id="showprints" class="showprints game-cursor" ' + ((showPrints == 'true') ? 'checked' : '') + '> <label for="showprints">' + i18n('Settings.ShowOwnPartBP.Desc') + '</label>');
 		c.push('<br><input type="checkbox" id="minview" class="minview game-cursor" ' + ((minView == 'true') ? 'checked' : '') + '> <label for="minview">' + i18n('Settings.ShowOwnPartMinView.Desc') + '</label></p>');
+		c.push('<br><input type="checkbox" id="autoOpen" class="autoOpen game-cursor" ' + ((autoOpen == 'true') ? 'checked' : '') + '> <label for="autoOpen">' + i18n('Settings.ShowOwnPartAutoOpen.Desc') + '</label></p>');
 
 		// save button
 		c.push(`<p><button id="save-calculator-settings" class="btn btn-default" style="width:100%" onclick="Parts.SettingsSaveValues()">${i18n('Boxes.Calculator.Settings.Save')}</button></p>`);
@@ -1662,6 +1670,11 @@ let Parts = {
 		if ($("#minview").is(':not(:checked)'))
 			minView = false;
 		localStorage.setItem('OwnPartMinView',minView);
+		
+		let autoOpen = true;
+		if ($("#autoOpen").is(':not(:checked)'))
+			autoOpen = false;
+		localStorage.setItem('OwnPartAutoOpen',autoOpen);
 
 		$(`#OwnPartBoxSettingsBox`).fadeToggle('fast', function(){
 			$(this).remove();

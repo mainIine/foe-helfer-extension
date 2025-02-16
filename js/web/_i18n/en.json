@@ -1443,6 +1443,7 @@
     "Settings.ShowOwnPartBP.Desc": "Show Blueprints",
     "Settings.ShowOwnPartMedals.Desc": "Show Medals",
     "Settings.ShowOwnPartMinView.Desc": "Hide most details",
+    "Settings.ShowOwnPartAutoOpen.Desc": "Open automatically",
 	"Settings.ShowQIPlayerInfo.Desc": "Do you want the QI Player list to automatically open when clicking on the QI ranking?",
     "Settings.ShowQIPlayerInfo.Title": "QI Player Pop Up",
     "Settings.Entry.ShowGuildTreasuryLogExport": "Guild Treasury Export Log",
