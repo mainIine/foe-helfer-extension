@@ -143,20 +143,26 @@ const Profile = {
         if (hasQIBoosts) {
             content.push('<div class="qiBoosts pad text-center">');
             content.push('<h2>'+i18n('Boxes.PlayerProfile.QIBoosts')+'</h2>');
-            if (Boosts.Sums.guild_raids_coins_production !== 0)
-                content.push('<span class="qicoins">' + HTML.Format(parseInt(Boosts.Sums.guild_raids_coins_production)) + '%</span> ');
-            if (Boosts.Sums.guild_raids_coins_production !== 0)
-                content.push('<span class="qicoins_start">+' + HTML.Format(parseInt(Boosts.Sums.guild_raids_coins_start)) + '</span> ');
-            if (Boosts.Sums.guild_raids_supplies_start !== 0)
-                content.push('<span class="qisupplies_start">+' + HTML.Format(parseInt(Boosts.Sums.guild_raids_supplies_start)) + '</span> ');
-            if (Boosts.Sums.guild_raids_supplies_production !== 0)
-                content.push('<span class="qisupplies">' + HTML.Format(parseInt(Boosts.Sums.guild_raids_supplies_production)) + '%</span> ');
-            if (Boosts.Sums.guild_raids_supplies_production+Boosts.Sums.guild_raids_coins_production+Boosts.Sums.guild_raids_coins_production+Boosts.Sums.guild_raids_supplies_start !== 0)
-                content.push('<br>');
-            if (Boosts.Sums.guild_raids_goods_start !== 0)
-                content.push('<span class="qigoods_start">+' + HTML.Format(parseInt(Boosts.Sums.guild_raids_goods_start)) + '</span> ');
+            if (Boosts.Sums.guild_raids_coins_production + Boosts.Sums.guild_raids_coins_start !== 0) {
+                content.push('<span class="qicoins">')
+                if (Boosts.Sums.guild_raids_coins_production !== 0)
+                    content.push(HTML.Format(parseInt(Boosts.Sums.guild_raids_coins_production)) + '% ');
+                if (Boosts.Sums.guild_raids_coins_start !== 0)
+                    content.push('+' + HTML.Format(parseInt(Boosts.Sums.guild_raids_coins_start)))
+                content.push('</span> ');
+            }
+            if (Boosts.Sums.guild_raids_supplies_production + Boosts.Sums.guild_raids_supplies_start !== 0) {
+                content.push('<span class="qisupplies">');
+                if (Boosts.Sums.guild_raids_supplies_production !== 0)
+                    content.push(HTML.Format(parseInt(Boosts.Sums.guild_raids_supplies_production)) + '% ');
+                if (Boosts.Sums.guild_raids_supplies_start !== 0)
+                    content.push('+' + HTML.Format(parseInt(Boosts.Sums.guild_raids_supplies_start)));
+                content.push('</span> ');
+            }
             if (Boosts.Sums.guild_raids_action_points_collection_no_settlement !== 0)
                 content.push('<span class="qiactions">' + HTML.Format(parseInt(Boosts.Sums.guild_raids_action_points_collection_no_settlement)) + '</span> ');
+            if (Boosts.Sums.guild_raids_goods_start !== 0)
+                content.push('<span class="qigoods_start">+' + HTML.Format(parseInt(Boosts.Sums.guild_raids_goods_start)) + '</span> ');
             if (Boosts.Sums.guild_raids_units_start !== 0)
                 content.push('<span class="qiunits_start">+' + HTML.Format(parseInt(Boosts.Sums.guild_raids_units_start)) + '</span> ');
             content.push('</div>');
