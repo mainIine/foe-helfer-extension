@@ -562,11 +562,10 @@ let Tooltips = {
                         if (res=="money" && levels?.[minEra]?.produced_money) continue
                         let t=(meta?.available_products?.length!=1) ? "&nbsp;in "+formatTime(p.production_time): ""
                         
-                        if (resMapper.includes(res)) res="goods"
                         if (amount !=0) 
-                            prods+=`<tr><td>${srcLinks.icons(res) + span(amount)+t + motMod}</td></tr>`
+                            prods+=`<tr><td>${srcLinks.icons(resMapper(res,"goods")) + span(amount)+t + motMod}</td></tr>`
                         else
-                            prods+=`<tr><td>${srcLinks.icons(res) + range(levels?.[minEra].production_values[p.production_option-1].value,levels?.[maxEra].production_values[p.production_option-1].value)+t + motMod}</td></tr>`
+                            prods+=`<tr><td>${srcLinks.icons(resMapper(res,"goods")) + range(levels?.[minEra].production_values[p.production_option-1].value,levels?.[maxEra].production_values[p.production_option-1].value)+t + motMod}</td></tr>`
                     }
                     if (p.unit_class) {
                         prods+=`<tr><td>${srcLinks.icons(p.unit_class) + p.name}</td></tr>`
