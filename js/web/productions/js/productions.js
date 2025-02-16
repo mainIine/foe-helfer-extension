@@ -810,6 +810,7 @@ let Productions = {
 					if (type == 'strategy_points') {
 						table.push(' <button class="typeBoost btn-default btn-tight"><a href="#forge_points_production" class="game-cursor">'+i18n('General.Boost')+': '+Boosts.Sums.forge_points_production+'%</a></button>')
 						Profile.fpProduction = typeSum;
+						Profile.update()
 					}
 					else if (type == 'money') {
 						table.push(' <button class="typeBoost btn-default btn-tight"><a href="#coin_production" class="game-cursor">'+i18n('General.Boost')+': '+Boosts.Sums.coin_production+'%</a></button>')
@@ -819,6 +820,7 @@ let Productions = {
 					}
 					if (type == 'clan_goods') {
 						Profile.guildGoods = typeSum;
+						Profile.update()
 					}
 					table.push('</th>')
 				}
@@ -952,6 +954,7 @@ let Productions = {
 			})
 
 			Profile.goods = erasTotal;
+			Profile.update()
 			
 			rowA.push('<td data-number="'+Technologies.Eras[building.eraName]+'">' + i18n("Eras."+Technologies.Eras[building.eraName]+".short") + '</td>')
 			let time = "-"

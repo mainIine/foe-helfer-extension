@@ -8,6 +8,9 @@ FoEproxy.addFoeHelperHandler('ActiveMapUpdated', () => {
         $('#PlayerProfileButton span').attr('class',ActiveMap);
     }
 });
+FoEproxy.addFoeHelperHandler('BoostsUpdated', () => {
+    Profile.update()
+});
 
 const Profile = {
     daysPlayed: 0,
@@ -64,8 +67,10 @@ const Profile = {
 
 		Profile.buildBody()
 	},
-
-    buildBody: () => {
+    update: () => {
+        if ($('#PlayerProfile').length > 0) Profile.buildBody(true);
+    },
+    buildBody: (isRebuild=false) => {
         let content = []
         let player = PlayerDict[ExtPlayerID];
         content.push('<div class="basicInfo pad">');
@@ -156,15 +161,19 @@ const Profile = {
                 content.push('<span class="qiunits_start">+' + HTML.Format(parseInt(Boosts.Sums.guild_raids_units_start)) + '</span> ');
             content.push('</div>');
         }
-
-        content.push('<span class="toggleMore">&nbsp;</span>');
+        let moreActive = $('#PlayerProfileBody .toggleMore.active').length > 0;
+        content.push(`<span class="toggleMore${moreActive?" active":""}">&nbsp;</span>`);
 
         $('#PlayerProfileBody').html(content.join('')).promise().done(function(){
-			$('#PlayerProfileBody').on('click', '.toggleMore', function () {
-				$(this).toggleClass('active');
-				$('#PlayerProfileBody .qiBoosts, #PlayerProfileBody .settlements').slideToggle();
-			});
             $('#PlayerProfileBody [data-original-title]').tooltip();
+            if (isRebuild) {
+                if (moreActive) $('#PlayerProfileBody .qiBoosts, #PlayerProfileBody .settlements').show();
+                return
+            }
+            $('#PlayerProfileBody').on('click', '.toggleMore', function () {
+                $(this).toggleClass('active');
+                $('#PlayerProfileBody .qiBoosts, #PlayerProfileBody .settlements').slideToggle();
+            });
         });
     }
 }
