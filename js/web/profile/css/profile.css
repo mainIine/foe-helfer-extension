@@ -35,7 +35,7 @@
 }
 
 #PlayerProfile .window-head {
-    background: #00041c;
+    background: transparent;
     box-shadow: none;
     border-bottom-width: 0;
     margin-bottom: -0.5rem;
@@ -50,8 +50,8 @@
 }
 
 #PlayerProfileBody {
-    max-height: 90vh;
-    overflow: auto;
+    overflow: visible;
+    position: relative;
 }
 
 #PlayerProfile .window-head .title {
@@ -68,6 +68,17 @@
 
 #PlayerProfile .pad + .pad {
     padding: 0 1.1rem 1.35rem;
+}
+
+#PlayerProfile .leftInfo {
+    position: absolute;
+    background: linear-gradient(196deg, #00041c 0%, rgba(3,18,51,1) 100%);
+    width: 100px;
+    top: 100px;
+    left: -103px;
+    box-sizing: border-box;
+    border-radius: 7px 0 0 7px;
+    padding: 15px;
 }
 
 #PlayerProfile .basicInfo {
@@ -264,7 +275,7 @@
 }
 
 #PlayerProfile .settlements img {
-    max-height: 31px;
+    max-height: 41px;
     display: inline-block;
     margin: -5px 2px -5px -7px;
 }
@@ -275,7 +286,7 @@
 
 #PlayerProfile .settlements .cop_japanese img {
     margin: -9px -5px -6px -11px;
-    max-height: 37px;
+    max-height: 47px;
 }
 
 #PlayerProfile .settlements .a_new_world img {
@@ -286,7 +297,7 @@
 }
 
 #PlayerProfile .settlements .tropical_islands img, #PlayerProfile .settlements .splendid_empire img {
-    max-height: 29px;
+    max-height: 39px;
     margin: -4px 2px -4px -7px;
 }
 
