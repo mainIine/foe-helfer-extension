@@ -4,14 +4,22 @@
 
 **New**
 - Player Profile
-	- Pops up in the top left corner when you open your profile
+	- after opening the profile, an icon to show the player profil will appear left of the city name 
 - Settings
 	- Disable QI and GBG pop ups
+- Ally Overview
+	- opens when entering the "Historical Allies" building
+	- displays a list of your Allies and your buildings with rooms - empty rooms and unassigned allies will show up in the top
+- QI-Action Points Calculator
+	- in QI, at the right end of the action points bar, am hour glass is displayed
+	- the tooltip of the hourglass displays the time, when the bar is expected to be full
 
 **Update**
 - Efficiency
 	- Added buildings from your inventory (not all of them just yet)
 	- Added a building size filter
+- Own Part Calculator
+	- added a setting to open automatically
 
 **BugFix**
 - Fixed overlaps in some places

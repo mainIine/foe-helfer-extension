@@ -4,14 +4,22 @@
 
 **New**
 - Spieler Profil
-	- Kann man oben links öffnen sobald man sein Profilgeöffnet hat
+	- nachdem das Profil geöffnet wurde, erscheint links neben dem Stadtnamen ein Icon, zum Öffnen der Profilansicht
 - Einstellungen
 	- Popups für QI und GG sind nun entfernbar
+- Verbündetenübersicht
+	- öffnet bei Klick auf das "Historische Verbündete" Gebäude
+	- zeigt eine Liste der Verbündeten und Gebäuden mit Räumen an - leere Räume und unzugewiesene Verbündete stehen am Anfang der Liste
+- QI-Aktionspunkte-Rechner
+	- in den QI wird am rechten Ende der Aktionspunkte-Leiste eine Sanduhr angezeigt
+	- im Tooltip der Sanduhr wird angezeigt, wann die Leiste voll sein wird
 
 **Update**
 - Effizienz
 	- Gebäude aus dem Inventar hinzugefügt (noch nicht alle)
 	- Filter für Gebäudegröße hinzugefügt
+- Eigenanteilsrechner
+	- Einstellung zum automatischen Öffnen hinzugefügt
 
 **BugFix**
 - Überlappungen an manchen Stellen behoben
