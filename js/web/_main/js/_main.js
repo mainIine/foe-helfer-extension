@@ -1606,7 +1606,7 @@ let MainParser = {
 						</tr>`
 			}
 			
-			$('#AllyListBody').html(html)
+			$('#AllyListBody').html(html).css("overflow","auto")
 
 			$('#AllyFilter').on("change",()=>{
 				let rarity=$('#AllyFilter option:selected').val()
