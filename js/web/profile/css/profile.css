@@ -59,11 +59,11 @@
 }
 
 #PlayerProfile .pad {
-    padding: 1.35rem;
+    padding: 1.35rem 1.1rem;
 }
 
 #PlayerProfile .pad + .pad {
-    padding: 0 1.35rem 1.35rem;
+    padding: 0 1.1rem 1.35rem;
 }
 
 #PlayerProfile .basicInfo {
@@ -159,32 +159,32 @@
 }
 
 #PlayerProfile .qicoins::before {
-    background: url(../../productions/images/productions.png) -603px 2px no-repeat;
+    background: url(../../productions/images/productions.png) -603px 4px no-repeat;
     height: 28px;
 }
 
 #PlayerProfile .qicoins_start::before {
-    background: url(../../productions/images/productions.png) -630px 2px no-repeat;
+    background: url(../../productions/images/productions.png) -630px 4px no-repeat;
     height: 28px;
 }
 
 #PlayerProfile .qisupplies::before {
-    background: url(../../productions/images/productions.png) -655px 2px no-repeat;
+    background: url(../../productions/images/productions.png) -655px 4px no-repeat;
     height: 28px;
 }
 
 #PlayerProfile .qisupplies_start::before {
-    background: url(../../productions/images/productions.png) -680px 2px no-repeat;
+    background: url(../../productions/images/productions.png) -680px 4px no-repeat;
     height: 28px;
 }
 
 #PlayerProfile .qigoods_start::before {
-    background: url(../../productions/images/productions.png) -708px 2px no-repeat;
+    background: url(../../productions/images/productions.png) -708px 4px no-repeat;
     height: 28px;
 }
 
 #PlayerProfile .qiunits_start::before {
-    background: url(../../productions/images/productions.png) -733px 2px no-repeat;
+    background: url(../../productions/images/productions.png) -733px 4px no-repeat;
     height: 28px;
 }
 
@@ -235,6 +235,10 @@
 #PlayerProfile .important {
     color: var(--text-danger);
     font-weight: bold;
+}
+
+#PlayerProfile h2 {
+    opacity: 0.8;
 }
 
 #PlayerProfile .battleBoosts .ge {
@@ -288,7 +292,15 @@
 
 #PlayerProfile .qiBoosts span {
     display: inline-block;
-    margin: 3px 3px 0 0;
+    margin: 3px 3px 3px 0;
+    background-image: linear-gradient(298deg, rgba(0, 0, 0, 0) 0%, rgb(18 131 122 / 31%) 100%), linear-gradient(0deg, #01001f91 0%, #01001f00 100%);
+    border-radius: 9px;
+    padding: 0 6px 2px 3px;
+    box-shadow: inset -1px -1px 4px #12837a33;
+}
+
+#PlayerProfile .qiBoosts span::before {
+    margin: -5px 4px 1px 0;
 }
 
 #PlayerProfile .toggleMore {
