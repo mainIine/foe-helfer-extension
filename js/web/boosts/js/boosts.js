@@ -17,6 +17,8 @@ FoEproxy.addHandler('BoostService', 'getAllBoosts', (data, postData) => {
 });
 FoEproxy.addHandler('BoostService', 'addBoost', (data,postData)=> {
     if (postData[0].requestClass == "CityMapService") return;
+    if (postData[0].requestData[0]?.additionalPayload?.cityMapEntity) return;
+    if (postData[0].requestData[0]?.additionalPayload?.mapEntityId) return;
 	Boosts.Add([data.responseData]);
 });
 FoEproxy.addHandler('BoostService', 'removeBoost', (data)=> {
@@ -32,6 +34,11 @@ FoEproxy.addHandler('CityMapService', 'placeBuilding', (data, postData) => {
 FoEproxy.addHandler('CityMapService', 'moveEntities', (data, postData) => {
     Boosts.Remove(data.responseData.map(b=>({entityId:b.id})));
     Boosts.TimeIn.add(data.responseData);
+});
+FoEproxy.addHandler('CityMapService', 'updateEntity', (data, postData) => {
+    let buildings=data.responseData.filter(x=>x.type!="greatbuilding")
+    Boosts.Remove(buildings.map(b=>({entityId:b.id})));
+    Boosts.TimeIn.add(buildings);
 });
 FoEproxy.addHandler('CityMapService', 'removeBuilding', (data, postData) => {
     Boosts.Remove(postData[0].requestData.map(b=>({entityId:b})));
