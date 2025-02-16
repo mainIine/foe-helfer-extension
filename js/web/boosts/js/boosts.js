@@ -197,7 +197,7 @@ let Boosts = {
                     b.type = type
                     Boosts.TimeIn.list.push(b)
                 }
-                if (!Boosts.Timer.id || boost.startTime < Boosts.Timer.next) {
+                if (!Boosts.Timer.id || !Boosts.Timer.next || boost.startTime < Boosts.Timer.next) {
                     clearTimeout(Boosts.Timer.id)
                     Boosts.Timer.id = setTimeout(Boosts.Timer.execute, (boost.startTime - GameTime.get() + 2)*1000)
                     Boosts.Timer.next = boost.startTime
@@ -218,7 +218,7 @@ let Boosts = {
                     boost.entityId = building.id
                     boost.origin = "building"
                     if (metaData?.components?.AllAge?.limited) {   
-                        boost.expireTime = building.state.next_state_transition_at + metaData.components.AllAge.limited.config.expireTime
+                        boost.expireTime = building.state.decaysAt || building.state.next_state_transition_at + metaData.components.AllAge.limited.config.expireTime
                         Boosts.TimeOut.add(boost)
                     }
                     if (building.state.__class__=="ConstructionState") {
@@ -252,7 +252,7 @@ let Boosts = {
     TimeOut:{
         list:[],
         add:(boost)=>{
-            if (!Boosts.TimeOut.id || boost.expireTime < Boosts.TimeOut.next) {
+            if (!Boosts.TimeOut.id || !Boosts.Timer.next || boost.expireTime < Boosts.TimeOut.next) {
                 clearTimeout(Boosts.Timer.id)
                 Boosts.Timer.id = setTimeout(Boosts.Timer.execute, (boost.expireTime - GameTime.get() + 2)*1000)
                 Boosts.Timer.next = boost.expireTime
