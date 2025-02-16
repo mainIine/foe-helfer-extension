@@ -89,6 +89,18 @@ const Profile = {
             }));
         content.push('</div>');
         content.push('</div>');
+        content.push('<div class="leftInfo">');
+
+        if (Profile.settlements.length > 0) {
+            content.push('<div class="settlements showMore text-center">');
+            for (let settlement of Profile.settlements) {
+                content.push('<span class="'+settlement.id+'" data-original-title="'+settlement.name+'">');
+                content.push('<img src="'+srcLinks.get(`/shared/icons/achievements/achievement_icons_${settlement.id}.png`,true)+'" />')
+                content.push(HTML.Format(parseInt(settlement.currentLevel.progress)) + '</span>');
+            }
+            content.push('</div>');
+        }
+        content.push('</div>');
 
         content.push('<div class="dailyProd pad">');
         content.push('<h2>'+i18n('Boxes.PlayerProfile.DailyProduction')+'</h2>');
@@ -128,20 +140,9 @@ const Profile = {
         content.push('</tr></table>');
         content.push('</div>');
 
-        if (Profile.settlements.length > 0) {
-            content.push('<div class="settlements pad text-center">');
-            content.push('<h2>'+i18n('Boxes.PlayerProfile.Settlements')+'</h2>');
-            for (let settlement of Profile.settlements) {
-                content.push('<span class="'+settlement.id+'" data-original-title="'+settlement.name+'">');
-                content.push('<img src="'+srcLinks.get(`/shared/icons/achievements/achievement_icons_${settlement.id}.png`,true)+'" />')
-                content.push(HTML.Format(parseInt(settlement.currentLevel.progress)) + '</span>');
-            }
-            content.push('</div>');
-        }
-
         let hasQIBoosts = (Boosts.Sums.guild_raids_action_points_collection_no_settlement+Boosts.Sums.guild_raids_coins_production+Boosts.Sums.guild_raids_coins_start+Boosts.Sums.guild_raids_supplies_production+Boosts.Sums.guild_raids_supplies_start+Boosts.Sums.guild_raids_goods_start+Boosts.Sums.guild_raids_units_start !== 0)
         if (hasQIBoosts) {
-            content.push('<div class="qiBoosts pad text-center">');
+            content.push('<div class="qiBoosts showMore pad text-center">');
             content.push('<h2>'+i18n('Boxes.PlayerProfile.QIBoosts')+'</h2>');
             if (Boosts.Sums.guild_raids_coins_production + Boosts.Sums.guild_raids_coins_start !== 0) {
                 content.push('<span class="qicoins">')
