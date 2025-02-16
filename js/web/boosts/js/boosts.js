@@ -183,6 +183,7 @@ let Boosts = {
                 if (MainParser.CityMapData[b.entityId] || !nS) Boosts.Sums[boost] += b.value;
             }
         }
+        FoEproxy.triggerFoeHelperHandler("BoostsUpdated");
     },
     TimeIn: {
         list:[],
