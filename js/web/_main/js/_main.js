@@ -1419,13 +1419,14 @@ let MainParser = {
 					list[ally.mapEntityId][ally.id]=ally.id
 				else 
 				 	list[ally.mapEntityId] = {[ally.id]:ally.id}
-				MainParser.Allies.allyList[ally.id] = ally
 			} else {
 				mapID=MainParser.Allies.allyList[ally.id]?.mapEntityId
-				delete MainParser.Allies.buildingList[mapID][ally.id]
-				if (Object.keys(MainParser.Allies.buildingList[mapID]).length==0) delete MainParser.Allies.buildingList[mapID]
-				MainParser.Allies.allyList[ally.id] = ally
+				if (mapID) {
+					delete MainParser.Allies.buildingList[mapID][ally.id]
+					if (Object.keys(MainParser.Allies.buildingList[mapID]).length==0) delete MainParser.Allies.buildingList[mapID]
+				}
 			}
+			MainParser.Allies.allyList[ally.id] = ally
 			MainParser.Allies.updateAllyList()
 		},
 
@@ -1591,7 +1592,7 @@ let MainParser = {
 
 				//${MainParser.Allies.tooltip(buildingId)}
 				html+=`<tr class="allyRoomRow ${rarities.join(" ")}">
-							<td>${rarityStars(r.roomRarity)}</td>
+							<td style="white-space:nowrap">${rarityStars(r.roomRarity)}</td>
 					   	   	<td ${buildingId!=0?`class="helperTT" 
 								data-id="${buildingId}" 
 								data-era="${Technologies.InnoEraNames[MainParser.CityMapData[buildingId].level]}"
@@ -1599,7 +1600,7 @@ let MainParser = {
 								`:``}
 							>${r.buildingName || ""}</td>
 							<td>${buildingId!=0?`<span class="show-entity" data-id="${buildingId}"><img class="game-cursor" src="${ extUrl + 'css/images/hud/open-eye.png'}"></span>`:""}</td>
-						   	<td>${rarityStars(r.allyRarity)}</td>
+						   	<td style="white-space:nowrap">${rarityStars(r.allyRarity)}</td>
 						   	<td>${r.allyName || ""}${r.fragmentsAmount?srcLinks.icons("icon_tooltip_fragment") + r.fragmentsAmount+"/"+r.fragmentsNeeded:""}</td>
 						   	<td>${r.allyLevel || ""}</td>
 						   	<td>${boosts(r.allyBoosts)}</td>
