@@ -20,7 +20,7 @@
 	- Filter für Gebäudegröße hinzugefügt
 - Eigenanteilsrechner
 	- Einstellung zum automatischen Öffnen hinzugefügt
-	- EInstellung zum entfernen der meisten kaum genutzten Features
+	- Einstellung zum Entfernen der meisten kaum genutzten Features
 - FoE Helper Updates öffnen nun nicht mehr automatisch einen neuen Browsertab zum Changelog
 
 **BugFix**
