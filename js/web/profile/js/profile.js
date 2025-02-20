@@ -124,7 +124,7 @@ const Profile = {
             +'<span class="aDef">'+HTML.Format(parseInt(Boosts.Sums['guild_expedition-def_boost_attacker']+Boosts.Sums.def_boost_attacker))+'</span></td>'
             +'<td><span class="ge"></span></td><td><span class="dAtt">'+HTML.Format(parseInt(Boosts.Sums['guild_expedition-att_boost_defender']+Boosts.Sums.att_boost_defender))+'</span>'
             +'<span class="dDef">'+HTML.Format(parseInt(Boosts.Sums['guild_expedition-def_boost_defender']+Boosts.Sums.def_boost_defender))+'</span></td></tr>');
-        content.push('<tr><td><span class="aAtt">'+HTML.Format(parseInt(Boosts.Sums['guild_raids-att_boost_attacker_no_settlement']))+'</span><span class="aDef">'+HTML.Format(parseInt(Boosts.Sums['guild_raids-def_boost_attacker_no_settlement']))+'</span></td><td><span class="qi"></span></td><td><span class="dAtt">'+HTML.Format(parseInt(Boosts.Sums['guild_raids-att_boost_defender_no_settlement']))+'</span><span class="dDef">'+HTML.Format(parseInt(Boosts.Sums['guild_raids-def_boost_defender_no_settlement']))+'</span></td></tr>');
+        content.push('<tr><td><span class="aAtt">'+HTML.Format(parseInt(Boosts.noSettlement['guild_raids-att_boost_attacker']))+'</span><span class="aDef">'+HTML.Format(parseInt(Boosts.noSettlement['guild_raids-def_boost_attacker']))+'</span></td><td><span class="qi"></span></td><td><span class="dAtt">'+HTML.Format(parseInt(Boosts.noSettlement['guild_raids-att_boost_defender']))+'</span><span class="dDef">'+HTML.Format(parseInt(Boosts.noSettlement['guild_raids-def_boost_defender']))+'</span></td></tr>');
         content.push('</tr></table>');
         content.push('</div>');
 
@@ -139,7 +139,7 @@ const Profile = {
             content.push('</div>');
         }
 
-        let hasQIBoosts = (Boosts.Sums.guild_raids_action_points_collection_no_settlement+Boosts.Sums.guild_raids_coins_production+Boosts.Sums.guild_raids_coins_start+Boosts.Sums.guild_raids_supplies_production+Boosts.Sums.guild_raids_supplies_start+Boosts.Sums.guild_raids_goods_start+Boosts.Sums.guild_raids_units_start !== 0)
+        let hasQIBoosts = (Boosts.noSettlement.guild_raids_action_points_collection+Boosts.Sums.guild_raids_coins_production+Boosts.Sums.guild_raids_coins_start+Boosts.Sums.guild_raids_supplies_production+Boosts.Sums.guild_raids_supplies_start+Boosts.Sums.guild_raids_goods_start+Boosts.Sums.guild_raids_units_start !== 0)
         if (hasQIBoosts) {
             content.push('<div class="qiBoosts pad text-center">');
             content.push('<h2>'+i18n('Boxes.PlayerProfile.QIBoosts')+'</h2>');
@@ -159,8 +159,8 @@ const Profile = {
                     content.push('+' + HTML.Format(parseInt(Boosts.Sums.guild_raids_supplies_start)));
                 content.push('</span> ');
             }
-            if (Boosts.Sums.guild_raids_action_points_collection_no_settlement !== 0)
-                content.push('<span class="qiactions">' + HTML.Format(parseInt(Boosts.Sums.guild_raids_action_points_collection_no_settlement)) + '</span> ');
+            if (Boosts.noSettlement.guild_raids_action_points_collection !== 0)
+                content.push('<span class="qiactions">' + HTML.Format(parseInt(Boosts.noSettlement.guild_raids_action_points_collection)) + '</span> ');
             if (Boosts.Sums.guild_raids_goods_start !== 0)
                 content.push('<span class="qigoods_start">+' + HTML.Format(parseInt(Boosts.Sums.guild_raids_goods_start)) + '</span> ');
             if (Boosts.Sums.guild_raids_units_start !== 0)
