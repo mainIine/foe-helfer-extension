@@ -151,7 +151,7 @@
     "Boxes.Calculator.FP": "FP",
     "Boxes.Calculator.ForderBonusPerConversation": "会話ごとに寄付要素を節約",
     "Boxes.Calculator.FriendlyInvestment": "投資先:",
-    "Boxes.Calculator.HelpLink": "",
+    "Boxes.Calculator.HelpLink": "https://foe-helper.com/docs/en/cost-calculator/",
     "Boxes.Calculator.LGNotConnected": "この GB は道路に接続されていません。",
     "Boxes.Calculator.LGNotOpen": "このGBの次のレベルは現在ロックされている。",
     "Boxes.Calculator.LevelWarning": "警告！このGBをレベリングしてください！",
