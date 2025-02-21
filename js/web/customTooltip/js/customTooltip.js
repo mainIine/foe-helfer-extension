@@ -29,7 +29,9 @@ let Tooltips = {
     containerActive:false,
     targetElement:null,
     
-    init: () => {
+    init: async () => {
+        await StartUpDone
+
 		HTML.AddCssFile('customTooltip');
         let container = document.createElement("div");
         container.id = "TooltipContainer"
@@ -56,6 +58,7 @@ let Tooltips = {
         $('body').on("pointerleave",".helperTT",(e)=>{
             Tooltips.deactivate()
         })    
+        $(`<div id="QIActions" class="helperTT" data-callback_tt="QIActions.TT">${srcLinks.icons("time")}</div>`).appendTo('body').hide();    
     },
 
     set: (content) => {
@@ -777,7 +780,5 @@ let QIActions = {
 		return tooltip
 	}
 }
-
-$(`<div id="QIActions" class="helperTT" data-callback_tt="QIActions.TT">${srcLinks.icons("time")}</div>`).appendTo('body').hide();    
 
 Tooltips.init()

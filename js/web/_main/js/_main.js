@@ -1327,7 +1327,7 @@ let MainParser = {
 		EventHandler.Init();
 		x = new Promise((resolve) => {
 			let timer = () => {
-				if (MainParser.CityEntities == null) {
+				if (MainParser.CityEntities == null || srcLinks.FileList == null) {
 					setTimeout(timer,50)
 				} else {
 					resolve() 
@@ -1336,6 +1336,7 @@ let MainParser = {
 			timer()
 		}),
 		await x
+
 		window.dispatchEvent(new CustomEvent('foe-helper#StartUpDone'))
 
 	},
