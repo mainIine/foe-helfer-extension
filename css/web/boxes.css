@@ -700,6 +700,12 @@ Tabs */
 	top: 0;
 	bottom: 0;
 	border-right: 2px solid var(--border-tab);
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+
+.window-body .tabs ul.vertical li:last-child {
+    margin-bottom: 19px;
 }
 
 .window-body .tabs ul.vertical li {
@@ -806,7 +812,7 @@ Potions */
 	color: var(--text-normal);
 	position: fixed;
 	top: 40px;
-	right: 8px;
+	right: 10px;
 }
 
 #BoostPotions .shortest {
@@ -1062,6 +1068,7 @@ FP-Bar */
 	border-bottom: 2px solid #895022;
 	border-radius: 3px 3px 0 0;
 	box-sizing: border-box;
+	cursor: url(../images/cursor_drag.cur), move !important;
 }
 
 .closed .window-head {
