@@ -247,10 +247,15 @@ let HTML = {
 
 		// es gibt gespeicherte Koordinaten
 		if (cords) {
-			let c = cords.split('|');
-
+			c = null
+			if (cords.includes('|')) {
+				cords = cords.split('|') 
+				cords = mouseActions.calcCoords([cords[1], cords[0]], "Center")
+			} else {
+				cords = JSON.parse(cords)
+			}
 			// Verhindere, dass Fenster außerhalb plaziert werden
-			div.offset({ top: Math.min(parseInt(c[0]), window.innerHeight - 50), left: Math.min(parseInt(c[1]), window.innerWidth - 100) });
+			div.css({"--x": cords[0]+"px","--y": cords[1]+"px","left":"calc(min(max(50vw + var(--x),0px),100vw - 60px))","top":"calc(min(max(50vh + var(--y),0px), 100vh - 60px))"});
 		}
 
 		// Ein Link zu einer Seite
@@ -450,7 +455,7 @@ let HTML = {
 
 		document.getElementById(el.id + "Header").removeEventListener("pointerdown", dragMouseDown);
 
-		let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0, top = 0, left = 0, id;			
+		let xStartM=0, yStartM=0, xStartEl=0, yStartEl=0;			
 
 		id = el.id;
 
@@ -464,8 +469,10 @@ let HTML = {
 			e = e || window.event;
 			e.preventDefault();
 
-			pos3 = e.clientX;
-			pos4 = e.clientY;
+			xStartM = e.clientX;
+			yStartM = e.clientY;
+			xStartEl = el.offsetLeft;
+			yStartEl = el.offsetTop;
 
 			document.onpointerup = closeDragElement;
 			document.onpointermove = elementDrag;
@@ -475,40 +482,13 @@ let HTML = {
 			e = e || window.event;
 			e.preventDefault();
 
-			pos1 = pos3 - e.clientX;
-			pos2 = pos4 - e.clientY;
-			pos3 = e.clientX;
-			pos4 = e.clientY;
+			let cords = mouseActions.calcCoords([(xStartEl - xStartM + e.clientX), yStartEl - yStartM + e.clientY], "Center");
+			//let cords = mouseActions.calcCoords([e.clientX, e.clientY], "Center");
 
-			top = (el.offsetTop - pos2);
-			left = (el.offsetLeft - pos1);
-
-			let noOverflow = $('.overflowHidden').length > 0;
-
-			// Schutz gegen "zu Hoch geschoben"
-			if (top < 0) {
-				top = 0;
-			}
-			// Schutz gegen "zu weit links geschoben"
-			if (left < Math.min(0,  120 - el.offsetWidth)) {
-				left = Math.min(0,  120 - el.offsetWidth);
-			}
-			// Schutz gegen "zu weit rechts geschoben"
-			if (left > Math.max(window.innerWidth - 80, window.innerWidth-el.offsetWidth) && noOverflow) {
-				left = Math.max(window.innerWidth - 80, window.innerWidth-el.offsetWidth);
-			}
-			// Schutz gegen "zu weit runter geschoben"
-			if (top > Math.max(window.innerHeight - 80, window.innerHeight-el.offsetHeight-20) && noOverflow) {
-				top = Math.max(window.innerHeight - 80, window.innerHeight-el.offsetHeight-20);
-			}
-
-			el.style.top = top + "px";
-			el.style.left = left + "px";
+			$(el).css({"--x":cords[0]+"px","--y":cords[1]+"px"})
 
 			if (save === true) {
-				let cords = top + '|' + left;
-
-				localStorage.setItem(id + 'Cords', cords);
+				localStorage.setItem(id + 'Cords', JSON.stringify(cords));
 			}
 		}
 
