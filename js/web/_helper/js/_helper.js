@@ -457,7 +457,7 @@ let HTML = {
 
 		let xStartM=0, yStartM=0, xStartEl=0, yStartEl=0;			
 
-		id = el.id;
+		let id = el.id;
 
 		if (document.getElementById(el.id + "Header")) {
 			document.getElementById(el.id + "Header").onpointerdown = dragMouseDown;
