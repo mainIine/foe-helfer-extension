@@ -210,6 +210,7 @@ let Boosts = {
             }
             let boostsToAddDirectly=[]
             for (let building of buildings||[]) {
+                if (!building.id) continue
                 Boosts.Remove([{entityId:building.id}])
                 let metaData = structuredClone(MainParser.CityEntities[building.cityentity_id])
                 let era = Technologies.getEraName(building.cityentity_id, building.level)
