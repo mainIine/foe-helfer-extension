@@ -35,11 +35,6 @@ h3 {
 	font-size: 100%;
 }
 
-.overflowHidden {
-	overflow: hidden;
-}
-
-
 /* Chrome, Opera */
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
