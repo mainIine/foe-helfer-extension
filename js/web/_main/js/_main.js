@@ -21,6 +21,26 @@ const extID = ExtbaseData.extID,
 	devMode = ExtbaseData.devMode,
 	loadBeta = ExtbaseData.loadBeta;
 
+let ExistenceConfirmed = async (varlist)=>{
+	varlist=varlist.split('||')
+	return new Promise((resolve, reject) => {
+		let timer = () => {
+			for (let x of varlist ) {
+				if (x.includes('$') && eval(x).length === 0) {
+					setTimeout(timer, 50);
+					return;
+				}
+				if (eval('typeof '+x) === 'undefined' || eval(x) === null || eval(x) === undefined) {
+					setTimeout(timer, 50);
+					return;
+				}
+				resolve();
+			}
+		};
+		timer();
+	});
+};
+
 {
 	// jQuery detection
 	let intval = -1;
@@ -1325,17 +1345,8 @@ let MainParser = {
 
 		Infoboard.Init();
 		EventHandler.Init();
-		x = new Promise((resolve) => {
-			let timer = () => {
-				if (MainParser.CityEntities == null || srcLinks.FileList == null) {
-					setTimeout(timer,50)
-				} else {
-					resolve() 
-				}
-			}
-			timer()
-		}),
-		await x
+
+		await ExistenceConfirmed('MainParser.CityEntities||srcLinks.FileList')
 
 		window.dispatchEvent(new CustomEvent('foe-helper#StartUpDone'))
 
