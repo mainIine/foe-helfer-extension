@@ -24,6 +24,7 @@
 - FoE Helper Version updates no longer open a new browser tab with the changelog
 - Production overview (units)
 	- added icon to indicate next era units
+- Box positions are now saved in relation to the center of the page instead of the top left corner
 
 **BugFix**
 - Fixed overlaps in some places
