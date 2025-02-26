@@ -22,6 +22,8 @@
 	- Added a setting to open automatically
 	- Added setting to disable most features that are hardly used
 - FoE Helper Version updates no longer open a new browser tab with the changelog
+- Production overview (units)
+	- added icon to indicate next era units
 
 **BugFix**
 - Fixed overlaps in some places

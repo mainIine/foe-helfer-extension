@@ -22,6 +22,8 @@
 	- Einstellung zum automatischen Öffnen hinzugefügt
 	- Einstellung zum Entfernen der meisten kaum genutzten Features
 - FoE Helper Updates öffnen nun nicht mehr automatisch einen neuen Browsertab zum Changelog
+- Produktionsübersicht (Einheiten)
+	- Grafik hinzugefügt für Einheiten des nächsten Zeitalters
 
 **BugFix**
 - Überlappungen an manchen Stellen behoben
