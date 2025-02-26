@@ -486,7 +486,11 @@
 	top: 4px;
 	margin-top: -8px;
 }
-#Productions span[class*="skill"]::after {
+#Productions span[class*="skill"]::before {
+	zoom: 1.5;
+	top: 1px;
+}
+#Productions span.next_era::after {
 	zoom: 1.5;
 	top: 1px;
 }

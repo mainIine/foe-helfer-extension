@@ -208,6 +208,7 @@ GetFights = () =>{
 	FoEproxy.addMetaHandler('building_sets', (xhr, postData) => {
 		let BuildingSetsArray = JSON.parse(xhr.responseText);
 		MainParser.BuildingSets = Object.assign({}, ...BuildingSetsArray.map((x) => ({ [x.id]: x })));
+		if (MainParser.SelectionKits != null) Kits.CreateUpgradeSchemes();
 	});
 
 	// Building-Chains
@@ -220,6 +221,7 @@ GetFights = () =>{
 	FoEproxy.addMetaHandler('selection_kits', (xhr, postData) => {
 		let SelectKitsArray = JSON.parse(xhr.responseText);
 		MainParser.SelectionKits = Object.assign({}, ...SelectKitsArray.map((x) => ({ [x.selectionKitId]: x })));
+		if (MainParser.BuildingUpgrades != null) Kits.CreateUpgradeSchemes();
 	});
 
 	// Castle-System-Levels
@@ -255,6 +257,8 @@ GetFights = () =>{
 	});
 	FoEproxy.addFoeHelperHandler('InventoryUpdated', () => {
 		MainParser.Allies.updateAllyList()
+		Kits.PopulateUpgradeSchemes();
+
 	});
 
 	// Portrait-Mapping für Spieler Avatare
