@@ -24,6 +24,7 @@
 - FoE Helper Updates öffnen nun nicht mehr automatisch einen neuen Browsertab zum Changelog
 - Produktionsübersicht (Einheiten)
 	- Grafik hinzugefügt für Einheiten des nächsten Zeitalters
+- Box-Positionen werden nun in Bezug zur Bildschirmmitte ausgerichtet statt relativ zur linken oberen Ecke
 
 **BugFix**
 - Überlappungen an manchen Stellen behoben
