@@ -374,12 +374,15 @@ let CityMap = {
 
 	showQIStats: () => {
 		if (!CityMap.QIData) return
-		let boosts = MainParser.BoostSums
+		let boosts = Boosts.Sums
+		let noSettlement = Boosts.noSettlement
 		let supply_boost = boosts.guild_raids_supplies_production*0.01
 		let coin_boost = boosts.guild_raids_coins_production*0.01
 		let buildings = Object.values(CityMap.QIData)
-		let population = 0, totalPopulation = 0, euphoria = 0, euphoriaBoost = 0, supplies = 0, money = 0, att_def_boost_attacker = 0, att_def_boost_defender = 0
+		let population = 0, totalPopulation = 0, euphoria = 0, euphoriaBoost = 0, supplies = 0, money = 0
 		let actions = boosts.guild_raids_action_points_collection
+		let att_def_boost_attacker = boosts["guild_raids-att_boost_attacker"] - noSettlement["guild_raids-att_boost_attacker"]
+		let att_def_boost_defender = boosts["guild_raids-att_boost_defender"] - noSettlement["guild_raids-att_boost_defender"]
 		for (let b in buildings) {
 			let building = CityMap.setQIBuilding(MainParser.CityEntities[buildings[b]['cityentity_id']])
 			if (building.type !== "impediment" && building.type !== "street") {
@@ -407,18 +410,6 @@ let CityMap = {
 		for (let b of buildings) {
 			let building = CityMap.setQIBuilding(MainParser.CityEntities[b.cityentity_id])
 			if (building.type !== "impediment" && building.type !== "street") {
-				
-				if (building.boosts !== null) {
-					for (let i in building.boosts) {
-						let boost = building.boosts[i]
-						if (boost.type === "att_def_boost_attacker")
-							att_def_boost_attacker += boost.value 
-						if (boost.type === "att_def_boost_defender")
-							att_def_boost_defender += boost.value
-						if (boost.type === "guild_raids_action_points_collection" && !b.state.pausedAt && b.__class__ != "ConstructionState")
-							actions += boost.value 
-					}
-				}
 				if (building.production !== null) {
 					if (building.type !== "military" && building.type !== "goods" && building.type !== "main_building") {
 						if (building.production.guild_raids_supplies)
@@ -458,7 +449,7 @@ let CityMap = {
 
 
 	showQIBuildings: () => {
-		let boosts = MainParser.BoostSums
+		let boosts = Boosts.Sums
 		let supply_boost = 0, coin_boost = 0
 		coin_boost = boosts.guild_raids_coins_production*0.01
 		supply_boost = boosts.guild_raids_supplies_production*0.01
@@ -1207,7 +1198,7 @@ let CityMap = {
 							// example data: targetedFeature: "all", type: [], value: 11
 							let boost = {
 								feature: abilityBoost.boostHintEraMap[eraName].targetedFeature,
-								type: MainParser.BoostMapper[abilityBoost.boostHintEraMap[eraName].type] || [abilityBoost.boostHintEraMap[eraName].type],
+								type: Boosts.Mapper[abilityBoost.boostHintEraMap[eraName].type] || [abilityBoost.boostHintEraMap[eraName].type],
 								value: abilityBoost.boostHintEraMap[eraName].value
 							}
 							boosts.push(boost)
@@ -1215,7 +1206,7 @@ let CityMap = {
 						else { // if only AllAge boost
 							let boost = {
 								feature: abilityBoost.boostHintEraMap.AllAge.targetedFeature,
-								type: MainParser.BoostMapper[abilityBoost.boostHintEraMap.AllAge.type] || [abilityBoost.boostHintEraMap.AllAge.type],
+								type: Boosts.Mapper[abilityBoost.boostHintEraMap.AllAge.type] || [abilityBoost.boostHintEraMap.AllAge.type],
 								value: abilityBoost.boostHintEraMap.AllAge.value
 							}
 							boosts.push(boost)
@@ -1229,7 +1220,7 @@ let CityMap = {
 							if (bonus.boost[eraName]) {
 								let boost = {
 									feature: bonus.boost[eraName].targetedFeature,
-									type: MainParser.BoostMapper[bonus.boost[eraName].type] || [bonus.boost[eraName].type],
+									type: Boosts.Mapper[bonus.boost[eraName].type] || [bonus.boost[eraName].type],
 									value: bonus.boost[eraName].value,
 									needsLink: true
 								}
@@ -1238,7 +1229,7 @@ let CityMap = {
 							else if (bonus.boost.AllAge) {
 								let boost = {
 									feature: bonus.boost.AllAge.targetedFeature,
-									type: MainParser.BoostMapper[bonus.boost.AllAge.type] || [bonus.boost.AllAge.type],
+									type: Boosts.Mapper[bonus.boost.AllAge.type] || [bonus.boost.AllAge.type],
 									value: bonus.boost.AllAge.value,
 									needsLink: true
 								}
@@ -1252,7 +1243,7 @@ let CityMap = {
 				if (data.bonus?.type) {
 					let boost = {
 						feature: "all",
-						type: MainParser.BoostMapper[data.bonus.type] || [data.bonus.type],
+						type: Boosts.Mapper[data.bonus.type] || [data.bonus.type],
 						value: data.bonus.value
 					}
 					if (data.bonus.type !== "happiness_amount" && data.bonus.type !== "population")
@@ -1260,15 +1251,14 @@ let CityMap = {
 				}
 			}
 			else if (metaData.id.includes("CastleSystem")) {
-				if (MainParser.Boosts[data.id] != undefined)
-					MainParser.Boosts[data.id].forEach(castleBoost => {
-						let boost = {
-							feature: "all",
-							type: MainParser.BoostMapper[castleBoost.type] || [castleBoost.type],
-							value: castleBoost.value
-						}
-						boosts.push(boost)
-					})
+				for (castleBoost of (Boosts?.CastleSystem || [])) {
+					let boost = {
+						feature: "all",
+						type: Boosts.Mapper[castleBoost.type] || [castleBoost.type],
+						value: castleBoost.value
+					}
+					boosts.push(boost)
+				}
 			}
 		}
 		else {
@@ -1276,7 +1266,7 @@ let CityMap = {
 				metaData.components[era].boosts.boosts.forEach(abilityBoost => {
 					let boost = {
 						feature: abilityBoost.targetedFeature,
-						type: MainParser.BoostMapper[abilityBoost.type] || [abilityBoost.type],
+						type: Boosts.Mapper[abilityBoost.type] || [abilityBoost.type],
 						value: abilityBoost.value,
 					};
 					boosts.push(boost)
@@ -1286,7 +1276,7 @@ let CityMap = {
 				metaData.components.AllAge.boosts.boosts.forEach(abilityBoost => {
 					let boost = {
 						feature: abilityBoost.targetedFeature,
-						type: MainParser.BoostMapper[abilityBoost.type] || [abilityBoost.type],
+						type: Boosts.Mapper[abilityBoost.type] || [abilityBoost.type],
 						value: abilityBoost.value,
 					};
 					boosts.push(boost)
@@ -1298,7 +1288,7 @@ let CityMap = {
 			allyStats?.boosts.forEach(abilityBoost => {
 				let boost = {
 					feature: abilityBoost.targetedFeature,
-					type: MainParser.BoostMapper[abilityBoost.type] || [abilityBoost.type],
+					type: Boosts.Mapper[abilityBoost.type] || [abilityBoost.type],
 					value: abilityBoost.value,
 				};
 				boosts.push(boost)
@@ -1638,13 +1628,23 @@ let CityMap = {
 							product.products.forEach(reward => {
 								if (reward.product.type === "genericReward") { // currently: everything but forge points
 									let lookupData = metaData.components[era]?.lookup.rewards[reward.product.reward.id] || metaData.components.AllAge.lookup.rewards[reward.product.reward.id]
+									let subType = lookupData.subType
+									let amount = (lookupData.totalAmount || lookupData.amount)
+									let type = (lookupData.type == "set" ? "consumable" : lookupData.type)
+
+									if (reward.product.reward.id.search('good') != -1) {
+										subType = Object.keys(this.setGoodsRewardFromGeneric(lookupData))[0]
+										amount = Object.values(this.setGoodsRewardFromGeneric(lookupData))[0]
+										type = "goods"
+									}
+
 									let name = this.setRewardNameFromLookupData(lookupData, metaData)
 									let newReward = {
 										id: reward.product.reward.id,
 										name: name,
-										type: (lookupData.type == "set" ? "consumable" : lookupData.type),
-										subType: lookupData.subType,
-										amount: (lookupData.totalAmount || lookupData.amount),
+										type: type,
+										subType: subType,
+										amount: amount,
 										dropChance: reward.dropChance,
 									}
 									rewards.push(newReward)
@@ -1661,10 +1661,12 @@ let CityMap = {
 										}
 										rewards.push(newReward)
 									}
-									else { // goods - for now - hacky
+									else { // some goods, nextage are genericReward
+										let type = Object.keys(reward.product.playerResources.resources)[0];
+										type = type.includes("good") ? "goods" : "resources";
 										let newReward = {
-											id: null,
-											type: "goods",
+											id: Object.keys(reward.product.playerResources.resources)[0],
+											type: type,
 											name: i18n('Boxes.BlueGalaxy.Goods'),
 											subType: Object.keys(reward.product.playerResources.resources)[0],
 											amount: Object.values(reward.product.playerResources.resources)[0],
@@ -1674,7 +1676,7 @@ let CityMap = {
 									}
 								}
 							});
-							resource.resources = rewards
+							resource.resources = rewards;
 							resource.type = "random"
 						}
 					}
@@ -1881,7 +1883,7 @@ let CityMap = {
 			}
 		}
 		if (amount == 0) {
-			amount = Number(lookupData?.name.replace(/^([+-]*[0-9]+?) .*/,"$1"));
+			amount = Number(lookupData?.name?.replace(/^([+-]*[0-9]+?) .*/,"$1"));
 			if (isNaN(amount)) amount = lookupData.amount
 		}
 
@@ -1925,20 +1927,32 @@ let CityMap = {
 
 	// random_good_of_previous_age   random_good_of_age   random_good_of_next_age
 	// all_goods_of_previous_age   all_goods_of_age   all_goods_of_next_age
+	// special_goods_of_any_age
 	setGoodsRewardFromGeneric(reward) {
+		let amount = reward.amount
+
+
+		if (reward.possible_rewards != undefined) // random productions
+			amount = parseInt(reward.id.split('#').reverse()[0]) // grab the amount from the id "goods#random#NextEra#508"
+
 		let eraString = '' // current era needs nothing
 		let typeString = 'random_good_' // random = one random good of the era
 
-		if (reward.id.includes("NextEra")) {
+		if (reward.id.includes("NextEra") && !reward.id.includes("special_goods")) {
 			eraString = 'next_'
 		}
 		else if (reward.id.includes("PreviousEra")) { // currently unused
 			eraString = 'previous_'
 		}
+		else if (reward.id.includes("special_goods")) {
+			eraString = 'any_'
+			typeString = 'special_goods_'
+		}
+
 		if (reward.id.includes("each")) {
 			typeString = 'all_goods_'
 		}
-		return {[typeString + 'of_' + eraString + 'age']: reward.amount}
+		return {[typeString + 'of_' + eraString + 'age']: amount}
 	},
 
 	// returns { unit_type: amount } 
@@ -2224,6 +2238,7 @@ let CityMap = {
 			eraName: ((data.cityentity_id||metaData.id).includes("CastleSystem") ? CurrentEra : era),
 			isSpecial: this.isSpecialBuilding(metaData),
 			isLimited: this.isLimitedBuilding(metaData),
+			isInInventory: false,
 			isBoostable: this.isBoostableBuilding(metaData),
 			chainBuilding: this.setChainBuilding(metaData),
 			setBuilding: this.setSetBuilding(metaData),

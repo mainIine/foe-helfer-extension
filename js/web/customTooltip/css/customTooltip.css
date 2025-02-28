@@ -23,10 +23,18 @@
     width: min-content;
 }
 
-.buildingTT h2 {
+#TooltipContainer h2 {
     padding: 0.2em 0.5em;
     color: #f2ede1;
     background-color: #0002;
+}
+#TooltipContainer h1 {
+    padding: 0.2em 0.5em;
+    color: #f2ede1;
+    background-color: #16356b8f;
+    font-size: small;
+    text-align: left;
+    font-weight: 400;
 }
 
 .buildingTT .imgContainer {
@@ -131,6 +139,13 @@
     display: flex;
     flex-wrap: wrap;
     column-gap: 0.5em;
+}
+
+#QIActions {
+    position: absolute;
+    top: 46px;
+    left: 258px;
+    z-index: 100;
 }
 
 @keyframes bounce {

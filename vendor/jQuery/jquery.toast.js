@@ -374,7 +374,7 @@ if ( typeof Object.create !== 'function' ) {
 		allowToastClose: false,
 		hideAfter: 3000,
 		loader: true,
-		loaderBg: '#F3D6A0',
+		loaderBg: '#af5922',
 		stack: 4,
 		position: 'bottom-right',
 		bgColor: '#4C2F1E',

@@ -34,6 +34,11 @@ FoEproxy.addWsHandler('OtherPlayerService', 'newEvent', data => {
 	}
 });
 
+FoEproxy.addHandler("GreatBuildingsService","getConstruction", (data,postData) => {
+	let open = postData[0].requestData[1] == ExtPlayerID || localStorage.getItem('ShowOwnPartOnAllGBs') == 'true'
+	if ($('#OwnPartBox').length === 0 && localStorage.getItem('OwnPartAutoOpen') == 'true' && open) Parts.Show()
+})
+
 FoEproxy.addFoeHelperHandler('QuestsUpdated', data => {
 	if ($('#OwnPartBox').length > 0) {
 		Parts.CalcBody();
@@ -384,7 +389,8 @@ let Parts = {
 	 * Visible part
 	 *
 	 */
-	CalcBody: (NextLevel) => {
+	CalcBody: async (NextLevel) => {
+		await StartUpDone
 		if (Parts.CityMapEntity['level'] === NextLevel) NextLevel = 0;
 
 		let PlayerID = Parts.CityMapEntity['player_id'],
@@ -511,18 +517,16 @@ let Parts = {
 		}
 
 		// Wenn in Rankings nichts mehr steht, dann abbrechen
-		if (! Parts.IsNextLevel)
-		{
-			for (let i = 0; i < Parts.Rankings.length; i++)
-			{
-				//Eigentümer
+		if (! Parts.IsNextLevel) {
+			for (let i = 0; i < Parts.Rankings.length; i++) {
+				// Owner
 				let CurrentMaezen = Parts.Rankings[i]['forge_points'];
 				if (Parts.Rankings[i]['player'] && Parts.Rankings[i]['player']['player_id'] === Parts.CityMapEntity['player_id']) {
 					EigenStart = CurrentMaezen;
 					Rest -= EigenStart;
 					continue;
 				}
-				//Gelöschter Spieler
+				// Deleted player
 				else if (Parts.Rankings[i]['rank'] === undefined || Parts.Rankings[i]['rank'] < 0) { //undefined => Eigentümer oder gelöscher Spieler P1-5, -1 => gelöschter Spieler ab P6 abwärts
 					Rest -= CurrentMaezen;
 					MaezenTotal += CurrentMaezen;
@@ -546,12 +550,12 @@ let Parts = {
 						}
 						if (FPRewards[Place] === undefined) FPRewards[Place] = 0;
 
-						// Medallien berechnen
+						// Medals
 						MedalCount = (Parts.Rankings[i]['reward']['resources'] !== undefined ? parseInt(Parts.Rankings[i]['reward']['resources']['medals']) : 0);
 						MedalRewards[Place] = MainParser.round(MedalCount * arcs[Place]);
 						if (MedalRewards[Place] === undefined) MedalRewards[Place] = 0;
 
-						// Blaupausen berechnen
+						// Blueprints
 						let BlueprintCount = (Parts.Rankings[i]['reward']['blueprints'] !== undefined ? parseInt(Parts.Rankings[i]['reward']['blueprints']) : 0);
 						BPRewards[Place] = MainParser.round(BlueprintCount * arcs[Place]);
 						if (BPRewards[Place] === undefined) BPRewards[Place] = 0;
@@ -564,7 +568,7 @@ let Parts = {
 				}
 			}
 
-			//Vorheriges Level und Platz nicht belegt => Wird nicht mitgesendet daher mit 0 füllen
+			// Previous level and spot not taken? => Fill with zero
 			for (let i = Parts.Maezens.length; i < 5; i++) {
 				Parts.Maezens[i] = 0;
 				FPRewards[i] = 0;
@@ -738,6 +742,8 @@ let Parts = {
 		if (localStorage.getItem('OwnPartShowMedals') == null) medalsEnabled = true
 		let printsEnabled = (localStorage.getItem('OwnPartShowBP') == "true")
 		if (localStorage.getItem('OwnPartShowBP') == null) printsEnabled = true
+		let minView = (localStorage.getItem('OwnPartMinView') == "true")
+		if (localStorage.getItem('OwnPartMinView') == null) minView = false
 
 		h.push('<table id="OwnPartTable" class="foe-table" style="margin-top:3px">');
 		h.push('<thead>');
@@ -748,17 +754,15 @@ let Parts = {
 		h.push('<th class="text-center">' + i18n('Boxes.OwnpartCalculator.Done') + '</th>');
 		if (printsEnabled) h.push('<th class="text-center"><span class="blueprint" title="' + HTML.i18nTooltip(i18n('Boxes.OwnpartCalculator.BPs')) + '"></span></th>');
 		if (medalsEnabled) h.push('<th class="text-center"><span class="medal" title="' + HTML.i18nTooltip(i18n('Boxes.OwnpartCalculator.Meds')) + '"></span></th>');
-		h.push('<th class="text-center">' + i18n('Boxes.OwnpartCalculator.Ext') + '</th>');
-		h.push('<th class="text-center">' + i18n('Boxes.OwnpartCalculator.Arc') + '</th>');
+		if (!minView) h.push('<th class="text-center">' + i18n('Boxes.OwnpartCalculator.Ext') + '</th>');
+		if (!minView) h.push('<th class="text-center">' + i18n('Boxes.OwnpartCalculator.Arc') + '</th>');
 		h.push('</tr>');
 		h.push('</thead>');
 		h.push('<tbody>');
 
-		for (let i = 0; i < 5; i++)
-		{
+		for (let i = 0; i < 5; i++) {
 			EigenCounter += Eigens[i];
-			if (i === 0 && EigenStart > 0)
-			{
+			if (i === 0 && EigenStart > 0) {
 				EigenCounter += EigenStart;
 
 				h.push('<tr>');
@@ -767,7 +771,7 @@ let Parts = {
 				h.push('<td class="text-center"><strong class="info">' + HTML.Format(EigenStart) + '</strong></td>');
 				if (printsEnabled && medalsEnabled) h.push('<td colspan="4"></td>');
 				else if (printsEnabled || medalsEnabled) h.push('<td colspan="3"></td>');
-				else h.push('<td colspan="2"></td>');
+				else if (!minView) h.push('<td colspan="2"></td>');
 				h.push('</tr>');
 			}
 			else {
@@ -777,7 +781,8 @@ let Parts = {
 					h.push('<td class="text-center"><strong class="' + (PlayerID === ExtPlayerID ? 'success' : '') + '">' + HTML.Format(Eigens[i]) + (EigenCounter > Eigens[i] ? ' <small>(=' + HTML.Format(EigenCounter) + ')</small>' : '') + '</strong></td>');
 					if (printsEnabled && medalsEnabled) h.push('<td colspan="5"></td>');
 					else if (printsEnabled || medalsEnabled) h.push('<td colspan="4"></td>');
-					else h.push('<td colspan="3"></td>');
+					else if (!minView) h.push('<td colspan="3"></td>');
+					if (minView) h.push('<td></td>');
 					h.push('</tr>');
 				}
 			}
@@ -785,8 +790,7 @@ let Parts = {
 			h.push('<tr>');
 			h.push('<td>' + i18n('Boxes.OwnpartCalculator.Place') + ' ' + (i+1) + '</td>');
 
-			if (Parts.PlaceAvailables[i])
-			{
+			if (Parts.PlaceAvailables[i]) {
 				h.push('<td class="text-center"><strong class="' + (PlayerID === ExtPlayerID ? '' : 'success') + '">' + (Parts.Maezens[i] > 0 ? HTML.Format(Parts.Maezens[i]) : '-') + '</strong >' + '</td>');
 				if (Parts.LeveltLG[i]) {
 					h.push(`<td class="text-center"><strong class="error">${i18n("Boxes.OwnpartCalculator.levelt")}</strong></td>`);
@@ -817,8 +821,8 @@ let Parts = {
 
 			if (printsEnabled) h.push('<td class="text-center">' + HTML.Format(BPRewards[i]) + '</td>');
 			if (medalsEnabled) h.push('<td class="text-center">' + HTML.Format(MedalRewards[i]) + '</td>');
-			h.push('<td class="text-center"><input min="0" step="1" type="number" class="ext-part-input' + i + '" value="' + Parts.Exts[i] + '"></td>');
-			h.push('<td class="text-center"><input type="number" class="arc-percent-input" step="0.1" min="12" max="200" value="' + Parts.ArcPercents[i] + '"></td>');
+			if (!minView) h.push('<td class="text-center"><input min="0" step="1" type="number" class="ext-part-input' + i + '" value="' + Parts.Exts[i] + '"></td>');
+			if (!minView) h.push('<td class="text-center"><input type="number" class="arc-percent-input" step="0.1" min="12" max="200" value="' + Parts.ArcPercents[i] + '"></td>');
 
 			h.push('</tr>');
 		}
@@ -829,20 +833,18 @@ let Parts = {
 			MaezenRest += Parts.Maezens[i];
 		}
 
-		//Bestehende Einzahlungen, die aus den P5 raus geschoben wurden
-		if (MaezenRest > 0)
-		{
+		// Bestehende Einzahlungen, die aus den P5 raus geschoben wurden
+		if (MaezenRest > 0) {
 			h.push('<tr>');
 			h.push('<td>' + i18n('Boxes.OwnpartCalculator.Place') + ' 6' + (Parts.Maezens.length > 6 ? ('-' + Parts.Maezens.length) : '') + '</td>');
 			h.push('<td class="text-center">-</td>');
 			h.push('<td class="text-center"><strong class="info">' + HTML.Format(MaezenRest) + '</strong></td>');
-			h.push('<td colspan="4"></td>');
+			if (!minView) h.push('<td colspan="4"></td>');
 			h.push('</tr>');
 		}
 
-		//Restzahlung
-		if (Eigens[5] > 0)
-		{
+		// Restzahlung
+		if (Eigens[5] > 0) {
 			EigenCounter += Eigens[5];
 
 			h.push('<tr>');
@@ -861,22 +863,23 @@ let Parts = {
 		h.push('<div class="text-center">' + i18n('Boxes.OwnpartCalculator.ExistingPayments'));
 		h.push(': <input id="lockexistingpayments" class="lockexistingpayments game-cursor" ' + (Parts.LockExistingPlaces ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.OwnpartCalculator.Lock'));
 		h.push('<input id="trustexistingpayments" class="trustexistingpayments game-cursor" ' + (Parts.TrustExistingPlaces ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.OwnpartCalculator.Trust') + '</div>');
-
-		h.push('<table style="width: 100%">');
-		h.push('<tr>');
-		h.push('<td>' + i18n('Boxes.OwnpartCalculator.PatronPart') + ': <strong class="' + (PlayerID === ExtPlayerID ? '' : 'success') + '">' + HTML.Format(MaezenTotal + ExtTotal) + '</strong></td>');
-		h.push('<td class="text-right">' + i18n('Boxes.OwnpartCalculator.OwnPart') + ': <strong class="' + (PlayerID === ExtPlayerID ? 'success' : '') + '">' + HTML.Format(EigenTotal) + '</strong></td>');
-		h.push('</tr>');
-		h.push('<tr>');
-		h.push('<td>' + i18n('Boxes.OwnpartCalculator.LGTotalFP') + ': <strong>' + HTML.Format(Total) + '</strong></td>');
-		if (EigenStart > 0) {
-			h.push('<td class="text-right">' + i18n('Boxes.OwnpartCalculator.OwnPartRemaining') + ': <strong class="' + (PlayerID === ExtPlayerID ? 'success' : '') + '">' + HTML.Format(EigenTotal - EigenStart) + '</strong></td>');
+		if (!minView) {
+			h.push('<table style="width: 100%">');
+			h.push('<tr>');
+			h.push('<td>' + i18n('Boxes.OwnpartCalculator.PatronPart') + ': <strong class="' + (PlayerID === ExtPlayerID ? '' : 'success') + '">' + HTML.Format(MaezenTotal + ExtTotal) + '</strong></td>');
+			h.push('<td class="text-right">' + i18n('Boxes.OwnpartCalculator.OwnPart') + ': <strong class="' + (PlayerID === ExtPlayerID ? 'success' : '') + '">' + HTML.Format(EigenTotal) + '</strong></td>');
+			h.push('</tr>');
+			h.push('<tr>');
+			h.push('<td>' + i18n('Boxes.OwnpartCalculator.LGTotalFP') + ': <strong>' + HTML.Format(Total) + '</strong></td>');
+			if (EigenStart > 0) {
+				h.push('<td class="text-right">' + i18n('Boxes.OwnpartCalculator.OwnPartRemaining') + ': <strong class="' + (PlayerID === ExtPlayerID ? 'success' : '') + '">' + HTML.Format(EigenTotal - EigenStart) + '</strong></td>');
+			}
+			else {
+				h.push('<td></td>');
+			}
+			h.push('</tr>');
+			h.push('</table>');
 		}
-		else {
-			h.push('<td></td>');
-		}
-		h.push('</tr>');
-		h.push('</table>');
 
 		Parts.CalcBackgroundBody();
 
@@ -891,11 +894,11 @@ let Parts = {
 			else {
 				rest = Parts.CityMapEntity['state']['invested_forge_points'] === undefined ? Parts.CityMapEntity['state']['forge_points_for_level_up'] : Parts.CityMapEntity['state']['forge_points_for_level_up'] - Parts.CityMapEntity['state']['invested_forge_points'];
 			}
-
-			h.push('<div class="text-center d-flex" style="padding:3px 0;">');
-			h.push('<em>' + i18n('Boxes.Calculator.Up2LevelUp') + ': <span id="up-to-level-up">' + HTML.Format(rest) + '</span> ' + i18n('Boxes.Calculator.FP') + '</em>');
-			h.push('</div>');
-
+			if (!minView) {
+				h.push('<div class="text-center d-flex" style="padding:3px 0;">');
+				h.push('<em>' + i18n('Boxes.Calculator.Up2LevelUp') + ': <span id="up-to-level-up">' + HTML.Format(rest) + '</span> ' + i18n('Boxes.Calculator.FP') + '</em>');
+				h.push('</div>');
+			}
 			h.push('<div class="bottom-buttons text-center">');
 			h.push('<div class="btn-group">');
 			if (Parts.SafePlaces.length > 0 || Parts.CopyModeAll) { //Copy bzw. Note Button nur einblenden wenn zumindest ein Platz safe ist
@@ -1568,6 +1571,8 @@ let Parts = {
 			allGB = localStorage.getItem('ShowOwnPartOnAllGBs') || 'true',
 			showMedals = localStorage.getItem('OwnPartShowMedals') || 'true',
 			showPrints = localStorage.getItem('OwnPartShowBP') || 'true',
+			minView = localStorage.getItem('OwnPartMinView') || 'false',
+			autoOpen = localStorage.getItem('OwnPartAutoOpen') || 'false',
 			nV = `<p class="new-row">${i18n('Boxes.Calculator.Settings.newValue')}: <input type="number" class="settings-values" style="width:30px"> <span class="btn btn-default btn-green" onclick="Parts.SettingsInsertNewRow()">+</span></p>`;
 		
 			if(sB) {
@@ -1596,7 +1601,9 @@ let Parts = {
 		c.push('<p><input id="copyformatpergb" class="copyformatpergb game-cursor" ' + (Parts.CopyFormatPerGB ? 'checked' : '') + ' type="checkbox"> <label for="copyformatpergb">' + i18n('Boxes.OwnpartCalculator.CopyFormatPerGB') +'</label>');
 		c.push('<br><input type="checkbox" id="openonaliengb" class="openonaliengb game-cursor" ' + ((allGB == 'true') ? 'checked' : '') + '> <label for="openonaliengb">' + i18n('Settings.ShowOwnPartOnAllGBs.Desc') + '</label>');
 		c.push('<br><input type="checkbox" id="showmedals" class="showmedals game-cursor" ' + ((showMedals == 'true') ? 'checked' : '') + '> <label for="showmedals">' + i18n('Settings.ShowOwnPartMedals.Desc') + '</label>');
-		c.push('<br><input type="checkbox" id="showprints" class="showprints game-cursor" ' + ((showPrints == 'true') ? 'checked' : '') + '> <label for="showprints">' + i18n('Settings.ShowOwnPartBP.Desc') + '</label></p>');
+		c.push('<br><input type="checkbox" id="showprints" class="showprints game-cursor" ' + ((showPrints == 'true') ? 'checked' : '') + '> <label for="showprints">' + i18n('Settings.ShowOwnPartBP.Desc') + '</label>');
+		c.push('<br><input type="checkbox" id="minview" class="minview game-cursor" ' + ((minView == 'true') ? 'checked' : '') + '> <label for="minview">' + i18n('Settings.ShowOwnPartMinView.Desc') + '</label></p>');
+		c.push('<br><input type="checkbox" id="autoOpen" class="autoOpen game-cursor" ' + ((autoOpen == 'true') ? 'checked' : '') + '> <label for="autoOpen">' + i18n('Settings.ShowOwnPartAutoOpen.Desc') + '</label></p>');
 
 		// save button
 		c.push(`<p><button id="save-calculator-settings" class="btn btn-default" style="width:100%" onclick="Parts.SettingsSaveValues()">${i18n('Boxes.Calculator.Settings.Save')}</button></p>`);
@@ -1658,6 +1665,16 @@ let Parts = {
 		if ($("#showprints").is(':not(:checked)'))
 			showPrints = false;
 		localStorage.setItem('OwnPartShowBP',showPrints);
+
+		let minView = true;
+		if ($("#minview").is(':not(:checked)'))
+			minView = false;
+		localStorage.setItem('OwnPartMinView',minView);
+		
+		let autoOpen = true;
+		if ($("#autoOpen").is(':not(:checked)'))
+			autoOpen = false;
+		localStorage.setItem('OwnPartAutoOpen',autoOpen);
 
 		$(`#OwnPartBoxSettingsBox`).fadeToggle('fast', function(){
 			$(this).remove();

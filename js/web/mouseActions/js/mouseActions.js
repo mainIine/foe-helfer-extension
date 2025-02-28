@@ -16,19 +16,11 @@ let mouseActions = {
     actions:[],
     randomClickRadius:3,
     targetEl:null,
+    lastMouseCoords:{},
 
     init: async () => {
-        x = new Promise((resolve) => {
-            let timer = () => {
-                if ($("#openfl-content canvas").length==0) {
-                    setTimeout(timer,50)
-                } else {
-                    resolve() 
-                }
-            }
-            timer()
-        }),
-        await x
+        await ExistenceConfirmed('$("#openfl-content canvas")')
+
         mouseActions.targetEl = $("#openfl-content canvas")[0]
         $("#openfl-content").on("click",(e) => {
             let X=e.clientX,
@@ -45,6 +37,9 @@ let mouseActions = {
                 }
 
             }
+        })
+        $("#openfl-content").on("mousemove",(e) => {
+            mouseActions.lastMouseCoords = {clientX:e.clientX,clientY:e.clientY}
         })
     },
     
@@ -66,7 +61,7 @@ let mouseActions = {
         mouseActions.simulate(mouseActions.targetEl, "mouseup", vars)
     },
     
-    calcCoords: (coords,anchor="TopLeft")=> {
+    calcCoords: (coords,anchorNew="TopLeft")=> {
         let H = window.innerHeight,
             W = window.innerWidth,
             xOld = coords[0],
@@ -83,26 +78,29 @@ let mouseActions = {
         if (anchorOld.includes("Left")) x = xOld
         if (anchorOld.includes("Right")) x = xOld + W
         
-        if (anchor.includes("Center")){
+        if (anchorNew.includes("Center")){
             xNew = x - Math.floor(W/2)
             yNew = y - Math.floor(H/2)
         }
-        if (anchor.includes("Top")) yNew = y
-        if (anchor.includes("Bottom")) yNew = y - H
-        if (anchor.includes("Left")) xNew = x
-        if (anchor.includes("Right")) xNew = x - W
-        return [xNew,yNew,anchor]
+        if (anchorNew.includes("Top")) yNew = y
+        if (anchorNew.includes("Bottom")) yNew = y - H
+        if (anchorNew.includes("Left")) xNew = x
+        if (anchorNew.includes("Right")) xNew = x - W
+        return [xNew,yNew,anchorNew]
     },
     
     randomClick: (coords,n=1)=> {
-        let TLCoords=mouseActions.calcCoords(coords,"TopLeft")
-        X=Math.max(TLCoords[0] + Math.floor(Math.random()*(2*mouseActions.randomClickRadius +1)) - mouseActions.randomClickRadius,0)
-        Y=Math.max(TLCoords[1] + Math.floor(Math.random()*(2*mouseActions.randomClickRadius +1)) - mouseActions.randomClickRadius,0)
+        let previousCoords = Object.assign({},mouseActions.lastMouseCoords),      
+            r = () => Math.floor(Math.random()*(2*mouseActions.randomClickRadius +1)) - mouseActions.randomClickRadius,
+            limits = (min,value,max) => Math.min(Math.max(value+r(),min),max),
+            TLCoords=mouseActions.calcCoords(coords,"TopLeft"),
+            randomCoords = {clientX:limits(0,TLCoords[0],window.innerWidth-1),clientY:limits(0,TLCoords[1],window.innerHeight-1)}
     
-        mouseActions.simulate(mouseActions.targetEl, "mousemove", {clientX:X,clientY:Y})
+        mouseActions.simulate(mouseActions.targetEl, "mousemove", randomCoords)
         for (let i=0;i<n;i++) {
-            mouseActions.click({clientX:X,clientY:Y})
+            mouseActions.click(randomCoords)
         }
+        mouseActions.simulate(mouseActions.targetEl, "mousemove", previousCoords)
     }
 }
 

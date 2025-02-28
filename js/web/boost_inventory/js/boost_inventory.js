@@ -129,7 +129,7 @@ let BoostInventory = {
 			for(let y of Object.values(b.boosts)){
 				let icon = srcLinks.get(`/shared/icons/${y.type}${BoostInventory.Mapping[y.targetedFeature]}.png`,true)
 
-				c.push(`<span class="boost-amount">${y.value}${/guild_raids_.*?_start/.test(y.type)?"":"%"} <img loading="lazy" src="${icon}" alt=""></span>`)
+				c.push(`<span class="boost-amount">${y.value}${/guild_raids_.*?(_start|_points)/.test(y.type)?"":"%"} <img loading="lazy" src="${icon}" alt=""></span>`)
 			}
 
 			c.push(`</td>`)

@@ -164,6 +164,7 @@ let CloseBox = {
 
         $("#cb-hide-all-windows").removeClass("invisible btn-delete").addClass("btn-green");
         $(".window-box, #foe-helper-hud, .helper-blocker").show();
+        $("#TooltipContainer").hide();
     },
 
 
@@ -173,7 +174,7 @@ let CloseBox = {
 
         $.each(openBoxes, function () {
             let box = $(this);
-            if (box.attr('id') !== 'CloseBox' && !CloseBox.Settings.Excludes.includes(box.attr('id')))
+            if (box.attr('id') !== 'CloseBox' && box.attr('id') !== 'TooltipContainer' && !CloseBox.Settings.Excludes.includes(box.attr('id')))
             {
                 box.remove();
             }

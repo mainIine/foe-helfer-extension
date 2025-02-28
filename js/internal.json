@@ -10,6 +10,7 @@
 	"indexdb",
 	"kits",
 	"outposts",
+	"profile",
 	"calculator",
 	"infoboard",
 	"productions",
@@ -65,5 +66,6 @@
 	"worldchallenge",
 	"boost-potions",
 	"customTooltip",
-	"reconstruction"
+	"reconstruction",
+	"boosts"
 ]
