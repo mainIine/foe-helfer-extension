@@ -548,6 +548,10 @@ let GuildFights = {
 			});
 			HTML.AddCssFile('guildfights');
 		}
+			
+		if (Settings.GetSetting('ShowGBGPlayerInfo') == false) {
+			$('#GildPlayers').css({'display': 'none'})
+		}
 
 		GuildFights.BuildPlayerContent(GuildFights.CurrentGBGRound);
 	},
@@ -559,8 +563,7 @@ let GuildFights = {
 	 */
 	ShowDetailViewBox: (d) => {
 		// Wenn die Box noch nicht da ist, neu erzeugen und in den DOM packen
-		if ($('#GildPlayersDetailView').length === 0)
-		{
+		if ($('#GildPlayersDetailView').length === 0) {
 			let ptop = null,
 				pright = null;
 
@@ -573,13 +576,11 @@ let GuildFights = {
 				resize: true
 			});
 
-			if (localStorage.getItem('GildPlayersDetailViewCords') === null)
-			{
+			if (localStorage.getItem('GildPlayersDetailViewCords') === null) {
 				ptop = $('#GildPlayers').length !== 0 ? $('#GildPlayers').position().top : 0;
 				pright = $('#GildPlayers').length !== 0 ? ($('#GildPlayers').position().left + $('#GildPlayers').width() + 10) : 0;
 				$('#GildPlayersDetailView').css('top', ptop + 'px').css('left', (pright * 1) + 'px');
 			}
-
 		}
 
 		GuildFights.BuildDetailViewContent(d);
@@ -587,7 +588,7 @@ let GuildFights = {
 
 
 	/**
-	 * Built the player content content
+	 * Build the player content content
 	 * @param gbground
 	 * @returns {Promise<void>}
 	 */
@@ -604,8 +605,7 @@ let GuildFights = {
 			})
 			.first();
 
-		if (CurrentSnapshot === undefined)
-		{
+		if (CurrentSnapshot === undefined) {
 			newRound = true;
 			// if there is a new GBG round delete previous snapshots
 			GuildFights.DeleteOldSnapshots(GuildFights.CurrentGBGRound);
@@ -629,8 +629,7 @@ let GuildFights = {
 			total: 'total'
 		});
 
-		if (gbground && gbground !== null && gbground !== GuildFights.CurrentGBGRound)
-		{
+		if (gbground && gbground !== null && gbground !== GuildFights.CurrentGBGRound) {
 
 			let d = await GuildFights.db.history.where({ gbground: gbground }).toArray();
 			GuildFights.GBGRound = d[0].participation.sort(function (a, b) {
@@ -639,17 +638,12 @@ let GuildFights = {
 			histView = true;
 
 		}
-		else
-		{
+		else {
 			GuildFights.GBGRound = GuildFights.NewAction;
 		}
 
-		for (let i in GuildFights.GBGRound)
-		{
-			if (!GuildFights.GBGRound.hasOwnProperty(i))
-			{
-				break;
-			}
+		for (let i in GuildFights.GBGRound) {
+			if (!GuildFights.GBGRound.hasOwnProperty(i)) break;
 
 			let playerNew = GuildFights.GBGRound[i];
 
@@ -663,14 +657,12 @@ let GuildFights = {
 				change = false;
 
 			// is there an older snapshot available?
-			if (GuildFights.PrevAction !== null && histView === false)
-			{
+			if (GuildFights.PrevAction !== null && histView === false) {
 
 				let playerOld = GuildFights.PrevAction.find(p => (p['player_id'] === playerNew['player_id']));
 
 				// Is there any data on this player?
-				if (playerOld !== undefined)
-				{
+				if (playerOld !== undefined) {
 
 					if (playerOld['negotiationsWon'] < playerNew['negotiationsWon'])
 					{
@@ -1172,7 +1164,7 @@ let GuildFights = {
 			// If sectors doesnt belong to anyone
 			if (mapdata[i]['ownerId'] === undefined && mapdata[i]['conquestProgress'].length > 0) {
 				progress.push(`<tr id="province-${id}" data-id="${id}" data-tab="progress">`);
-				progress.push(`<td><b><span class="province-color" style="background-color:#555"></span> ${GuildFights.MapData['title']}</b></td>`);
+				progress.push(`<td><b><span class="province-color" style="background-color:#555"></span> ${mapdata[i]['title']}</b></td>`);
 
 				if (GuildFights.showGuildColumn)
 					progress.push(`<td><em>${i18n('Boxes.GuildFights.NoOwner')}</em></td>`);

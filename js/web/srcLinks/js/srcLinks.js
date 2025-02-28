@@ -17,9 +17,6 @@ let srcLinks = {
     raw:null,
 
     init: async () => {
-        //clear storage - can be removed down the line
-        localStorage.removeItem('PortraitsFileList')
-
         // wait for ForgeHX is loaded, then read the full script url
         const isElementLoaded = async name => {
             while ( document.querySelector('script[src*="' + name + '"]') === null) {

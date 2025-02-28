@@ -1,5 +1,35 @@
 ## Changelog - Extension
 
+##### 3.11.0.0
+
+**New**
+- Player Profile
+	- After opening the profile, an icon to show the player profile will appear next to your city name 
+- Settings
+	- Disable QI and GBG pop ups
+- Ally Overview
+	- Opens when entering the "Historical Allies" building
+	- Displays a list of your Allies and your buildings with rooms - empty rooms and unassigned allies will show up in the top
+- QI-Action Points Calculator
+	- In QI, at the right end of the action points bar, am hour glass is displayed
+	- The tooltip of the hourglass displays the time, when the bar is expected to be full
+
+**Update**
+- Efficiency
+	- Added buildings from your inventory (not all of them just yet)
+	- Added a building size filter
+- Own Part Calculator
+	- Added a setting to open automatically
+	- Added setting to disable most features that are hardly used
+- FoE Helper Version updates no longer open a new browser tab with the changelog
+- Production overview (units)
+	- added icon to indicate next era units
+- Box positions are now saved in relation to the center of the page instead of the top left corner
+
+**BugFix**
+- Fixed overlaps in some places
+- Fixed date parsing for the treasury export
+
 ##### 3.10.1.0
 
 **Update**

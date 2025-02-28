@@ -310,8 +310,9 @@ let Notice = {
 			}
 		});
 		if (Notice.initDone) return;
-		$('body').on('click', '.btn-delete', function(){
-			Notice.DeleteElement($(this).data('type'), $(this).data('id'));
+		$('body').on('click', '.btn-delete', function() {
+			if (confirm(i18n('Boxes.Notice.ConfirmDelete')))
+				Notice.DeleteElement($(this).data('type'), $(this).data('id'));
 		});
 
 		$('body').on('click', '#notices-modalclose, #notices-modal-playersclose', function(){

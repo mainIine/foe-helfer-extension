@@ -1,5 +1,37 @@
 ## Changelog - Extension
 
+##### 3.11.0.0
+
+**Neu**
+- Spieler Profil
+	- Nachdem das Profil geöffnet wurde, erscheint links neben dem Stadtnamen ein Icon, zum Öffnen der Profilansicht
+- Einstellungen
+	- Popups für QI und GG sind nun deaktivierbar
+- Verbündetenübersicht
+	- Öffnet bei Klick auf das "Historische Verbündete" Gebäude
+	- Zeigt eine Liste der Verbündeten und Gebäuden mit Räumen an - leere Räume und unzugewiesene Verbündete stehen am Anfang der Liste
+- QI-Aktionspunkte-Rechner
+	- In den QI wird am rechten Ende der Aktionspunkte-Leiste eine Sanduhr angezeigt
+	- Im Tooltip der Sanduhr wird angezeigt, wann die Leiste voll sein wird
+
+**Update**
+- Effizienz
+	- Gebäude aus dem Inventar hinzugefügt (noch nicht alle)
+	- Filter für Gebäudegröße hinzugefügt
+- Eigenanteilsrechner
+	- Einstellung zum automatischen Öffnen hinzugefügt
+	- Einstellung zum Entfernen der meisten kaum genutzten Features
+- FoE Helper Updates öffnen nun nicht mehr automatisch einen neuen Browsertab zum Changelog
+- Produktionsübersicht (Einheiten)
+	- Grafik hinzugefügt für Einheiten des nächsten Zeitalters
+- Box-Positionen werden nun in Bezug zur Bildschirmmitte ausgerichtet statt relativ zur linken oberen Ecke
+
+**BugFix**
+- Überlappungen an manchen Stellen behoben
+- Beim Export der Gildenkasse war das Datum manchmal falsch
+
+---
+
 ##### 3.10.1.0
 
 **Update**
@@ -15,14 +47,18 @@
 - Gildenkassenbeiträge
 	- Beim Export wurde das Datum nicht korrekt gelesen
 - Blaue Galaxie und Gebäudeeffizienz
-	- Fenster gingen manchmal nicht auf oder waren leer (ist noch in Untersuchung ob die Reparatur geklappt hat)
+	- Fenster gingen manchmal nicht auf oder waren leer (ist noch in Untersuchung, ob die Reparatur geklappt hat)
 - Tooltip
 	- "motivieren"/"polieren" Eigenschaft war falsch herum für Gebäude der neuen Generation
+
+---
 
 ##### 3.10.0.1
 
 **BugFix**
 - Alarme gingen nicht
+
+---
 
 ##### 3.10.0.0
 
@@ -61,6 +97,8 @@
 - Gebäude-Effizienz:
 	- Die Bewertungen bei anderen Spielern haben dein aktuelles Zeitalter genutzt, statt ihr eigenes
 
+---
+
 ##### 3.9.0.0
 
 **Neu**
@@ -84,6 +122,8 @@
 	- In der Fragmente-Übersicht war die Anzahl an Fragmenten teilweise nicht korrekt
 	- In der Fragmente-Übersicht wurden nicht alle Gebäude gelistet
 
+---
+
 ##### 3.8.1.0
 
 **Neu**
@@ -98,11 +138,13 @@
 - Legendäre Bauwerke Rechner - Powerlevel-Werte für Stufen 1-68 für Weltraumbasis hinzugefügt
 
 **BugFix**
-- Produktionsübersicht: ist wegen eines Spiel-Updates kaputt gegangen
+- Produktionsübersicht: ist wegen eines Spiel-Updates kaputtgegangen
 - Der Weltraumfrachter hat in der Produktionsübersicht gefehlt
 - Verhandlungs-Assistent: Die Güter wurden nicht angezeigt, wenn man alte Betriebssysteme nutzt
-- LG Investitionen: Fenster repariert, die Blaue Galaxie fehlt noch, aber man sollte die sowieso bis Stufe 91 leveln
+- LG Investitionen: Fenster repariert, die blaue Galaxie fehlt noch, aber man sollte die sowieso bis Stufe 91 leveln
 - Burgsystem: Das Fenster war nach einem Spiel-Update kaputt
+
+---
 
 ##### 3.8.0.0
 

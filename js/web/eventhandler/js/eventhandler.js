@@ -259,9 +259,10 @@ let EventHandler = {
 				// get the correct 24h time
 				if(match['groups']['half'])
 				{
-					if(match['groups']['half'] === 'am' && h < 12)
-					{
+					if(match['groups']['half'] === 'pm' && h !== 12) {
 						h += 12;
+					} else if (match['groups']['half'] === 'am' && h === 12) {
+						h = 0;
 					}
 				}
 
@@ -278,7 +279,7 @@ let EventHandler = {
 						break;
 					case 'date':
 						moment.locale(OldLocale);
-						refDate = moment().year(Number(match['groups']['year'])+2000).month(Number(match['groups']['year'])-1).day(Number(match['groups']['day'])).
+						refDate = moment([Number(match['groups']['year'])+2000,Number(match['groups']['month'])-1,Number(match['groups']['day'])])
 						break;
 					default:
 						refDate = moment().day(capitalize(day));

@@ -43,6 +43,7 @@ let Negotiation = {
 	Tables: /** @type {Record<String, Negotiation_GuessTable>} */({}),
 	CurrentTry: 0,
 	TryCount: /** @type {undefined|number} */ undefined,
+	TryCountIsGreaterThan4: /** @type {boolean} */ false,
 	GoodCount: /** @type {undefined|number} */ undefined,
 	CurrentTable: /** @type {undefined|Negotiation_GuessTable} */ undefined,
 	// Mapt die zuweisung von der Tabellen-Spalte zu den Verhandlungspartnern
@@ -147,7 +148,11 @@ let Negotiation = {
 			h.push('<tbody>');
 
 			h.push('<tr>');
-			h.push('<td colspan="' + (CurrentTry === 1 ? '1' : '4') + '" class="text-warning"><strong>' + i18n('Boxes.Negotiation.Chance') + ': ' + HTML.Format(MainParser.round(Negotiation.CurrentTable['c'])) + '%</strong></td>');
+			h.push('<td colspan="' + (CurrentTry === 1 ? '1' : '4') + '" class="text-warning"' +
+				(Negotiation.TryCountIsGreaterThan4 ? 'title="Given percentages are for only 4 rounds of negotiation"' : '')+ '><strong>' + 
+				i18n('Boxes.Negotiation.Chance') + ': ' + HTML.Format(MainParser.round(Negotiation.CurrentTable['c'])) + 
+				(Negotiation.TryCountIsGreaterThan4 ? '% ⚠️' : '%') +
+				'</strong></td>');
 			if (CurrentTry === 1) {
 				h.push('<td colspan="2"><label class="game-cursor" for="NegotiationSaveCurrentEraGoods">' + i18n('Boxes.Negotiation.SaveCurrentEraGoods') + '<input id="NegotiationSaveCurrentEraGoods" class="negotation-setting game-cursor" type="checkbox" data-id="NegotiationSaveCurrentEraGoods"' + ((sceg === null || sceg === 'true') ? ' checked' : '') + '></label></td>');
 				h.push('<td colspan="1"><label class="game-cursor" for="NegotiationSaveMedals">' + i18n('Boxes.Negotiation.SaveMedals') + '<input id="NegotiationSaveMedals" class="negotation-setting game-cursor" type="checkbox" data-id="NegotiationSaveMedals"' + ((sm === null || sm === 'true') ? ' checked' : '') + '></label></td>');
@@ -253,7 +258,6 @@ let Negotiation = {
 
 
 		h.push('</tbody>');
-
 		h.push('</table>');
 
 		if (Negotiation.Message != null) {
@@ -527,6 +531,11 @@ let Negotiation = {
 		else {
 			Negotiation.TryCount = ResourceStock['negotiation_game_turn'];
 		}
+		if (Negotiation.TryCount === 5) {
+			Negotiation.TryCountIsGreaterThan4 = true;
+			Negotiation.TryCount = 4;
+		}
+		console.log(Negotiation.TryCount);
 
 		Negotiation.Guesses = [];
 		Negotiation.GuessesSuggestions = [];

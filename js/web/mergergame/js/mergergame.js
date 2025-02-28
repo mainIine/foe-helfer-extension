@@ -19,17 +19,17 @@ FoEproxy.addHandler('MergerGameService', 'all', (data, postData) => {
 		return;
 	}
 	let board = data.responseData.board || data.responseData;
-	if (!mergerGame.state.day) mergerGame.state.day = moment.unix(GameTime).dayOfYear()
+	if (!mergerGame.state.day) mergerGame.state.day = moment.unix(GameTime.get()).dayOfYear()
 
 	if (data.requestMethod == "resetBoard") {
-		if (mergerGame.state.day == moment.unix(GameTime).dayOfYear())  {//gleicher Tag wie zuvor
+		if (mergerGame.state.day == moment.unix(GameTime.get()).dayOfYear())  {//gleicher Tag wie zuvor
 			mergerGame.state.daily.progress += mergerGame.state.progress;
 			mergerGame.state.daily.energyUsed += mergerGame.state.energyUsed;
 			mergerGame.state.daily.keys += mergerGame.state.keys;		
 		} else {
 			mergerGame.state.daily={progress:0,keys:0,energyUsed:0}
 		}
-		mergerGame.state.day = moment.unix(GameTime).dayOfYear()
+		mergerGame.state.day = moment.unix(GameTime.get()).dayOfYear()
 	}
 	mergerGame.event = board.context.replace("_event","")
 	mergerGame.cells = board.cells;
@@ -40,6 +40,7 @@ FoEproxy.addHandler('MergerGameService', 'all', (data, postData) => {
 			mergerGame.keyValues[x.level] = x.amount;
 		}
 	}
+	mergerGame.lookup = board?.lookup
 	mergerGame.spawnCost = board?.cells[1]?.spawnCost?.resources[mergerGame.eventData[mergerGame.event].currency] || 10;
 	mergerGame.state["maxProgress"]= 0;
 	mergerGame.state["energyUsed"]= 0;
@@ -174,7 +175,6 @@ let mergerGame = {
 		anniversary: {
 			progress:"/shared/seasonalevents/league/league_anniversary_icon_progress.png",
 			energy:"/shared/seasonalevents/anniversary/event/anniversary_energy.png",
-			keyfile:"/shared/seasonalevents/anniversary/event/anniversay_icon_key_",
 			colors: ["white","yellow","blue","colorless"],
 			types: ["top","bottom","full"],
 			tile:"_gem",
@@ -183,7 +183,6 @@ let mergerGame = {
 		soccer:{
 			progress:"/shared/icons/reward_icons/reward_icon_soccer_trophy.png",
 			energy:"/shared/seasonalevents/soccer/event/soccer_football.png",
-			keyfile:"/shared/seasonalevents/soccer/event/soccer_icon_badge_",
 			colors: ["attacker","midfielder","defender"],
 			types: ["left","right","full"],
 			tile:"_player",
@@ -192,7 +191,6 @@ let mergerGame = {
 		care:{
 			progress:"/shared/icons/reward_icons/reward_icon_care_globe.png",
 			energy:"/shared/icons/reward_icons/reward_icon_care_worker.png",
-			keyfile:"/shared/seasonalevents/care/event/care_icon_key_",
 			colors: ["red","green","blue","colorless"],
 			types: ["top","bottom","full"],
 			tile:"",
@@ -354,6 +352,9 @@ let mergerGame = {
 			totalPieces[i]["min"] = Math.min(totalPieces[i][type1],totalPieces[i][type2]);
 			maxKeys+=totalPieces[i]["min"]*mergerGame.keyValues[4];
 		}
+		let keyimg = (color,type) => {
+			return srcLinks.get(`/shared/seasonalevents/${mergerGame.event}/event/${mergerGame.lookup.keyIconAssetIds[color][type]}.png`,true)
+		}
 
 		html = `<table class="foe-table ${mergerGame.hideDaily ? 'hideDaily':''}" id="MGstatus"><tr><th title="${i18n("Boxes.MergerGame.Status.Title")}">${i18n("Boxes.MergerGame.Status")}</th>`
 		html += `<th onclick="$('#MGstatus').toggleClass('hideDaily'); mergerGame.hideDaily=!mergerGame.hideDaily" title="${i18n("Boxes.MergerGame.Round.Title")}">${i18n("Boxes.MergerGame.Round")}</th>`
@@ -377,9 +378,9 @@ let mergerGame = {
 		html += `<td title="min - max (avg)" style="text-align:left">(${mergerGame.simResult.progress.average})</td></tr>`
 		//Keys/badges
 		html += `<tr><td title="${i18n("Boxes.MergerGame.Keys."+mergerGame.event)}">`
-		html += `<img src="${srcLinks.get(`/shared/icons/${mergerGame.event}_${mergerGame.colors[2]}_key.png`,true)}">`
-		html += `<img style="margin-left: -15px" src="${srcLinks.get(`/shared/icons/${mergerGame.event}_${mergerGame.colors[1]}_key.png`,true)}">`
-		html += `<img style="margin-left: -15px" src="${srcLinks.get(`/shared/icons/${mergerGame.event}_${mergerGame.colors[0]}_key.png`,true)}"></td>`
+		html += `<img src="${keyimg(mergerGame.colors[2],"full")}">`
+		html += `<img style="margin-left: -15px" src="${keyimg(mergerGame.colors[1],"full")}">`
+		html += `<img style="margin-left: -15px" src="${keyimg(mergerGame.colors[0],"full")}"></td>`
 		html += `<td>${keys} / ${maxKeys}</td>`
 		html += `<td>${keys + mergerGame.state.daily.keys}</td>`
 		html += `<td style="border-left: 1px solid var(--border-tab)">${mergerGame.state.keys + mergerGame.solved.keys}</td>`
@@ -405,7 +406,7 @@ let mergerGame = {
 				let m = totalPieces[i].min;
 				let t = totalPieces[i][o];
 				html += `</tr><tr><td ${((t==m && o != "full") || (0==m && o == "full") ) ? 'style="font-weight:bold"' : ''}>${t}${(o == "full") ? '/'+ (t+m) : ''}`;
-				html += `<img class="${"care" == mergerGame.event && o!="full" ? 'bottomrightcorner':''}" src="${srcLinks.get(o!="full" ? `${mergerGame.eventData[mergerGame.event].keyfile}${o}_${i}.png`:`/shared/icons/${mergerGame.event}_${i}_key.png`,true)}"></td>`
+				html += `<img class="${"care" == mergerGame.event && o!="full" ? 'bottomrightcorner':''}" src="${keyimg(i,o)}"></td>`
 				for (let lev = 4; lev>0; lev--) {
 					val = table[i][lev][o];
 					if (val==0) val = "-";

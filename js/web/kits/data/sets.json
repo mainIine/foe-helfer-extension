@@ -1,9 +1,33 @@
 [	
 	{
-		"udate": "Wildlife Event 2024 (22 December 2024)"
+		"udate": "ANniversary 2025 (16 February 2025)"
 	},
 	{
 		"groupname": "Events"
+	},
+	{
+		"name": "Celtic_Goldsmith",
+		"buildings": [
+			{"first": "W_MultiAge_PAT25A1"}
+		]
+	},
+	{
+		"name": "Clover_Keep_Ruin",
+		"buildings": [
+			{"first": "W_MultiAge_PAT25E1"}
+		]
+	},
+	{
+		"name": "Blueberry_Field",
+		"buildings": [
+			{"first": "W_MultiAge_PAT25B1"}
+		]
+	},
+	{
+		"name": "Whispering_Well",
+		"buildings": [
+			{"first": "W_MultiAge_PAT25C1"}
+		]
 	},
 	{
 		"name": "Celtic_Tavern",
@@ -44,7 +68,7 @@
 	{
 		"name": "Celtic_Farmstead",
 		"buildings": [
-			{"first": "R_MultiAge_PatrickBonus22a"}
+			{"first": "W_MultiAge_PAT22A1"}
 		]
 	},
 	{
@@ -595,6 +619,24 @@
 		]
 	},
 	{
+		"name": "Viaticum_Lighthouse",
+		"buildings": [
+			{"first": "W_MultiAge_ANNI25A1"}
+		]
+	},
+	{
+		"name": "Helianthus_Arboretum",
+		"buildings": [
+			{"first": "W_MultiAge_ANNI25B1"}
+		]
+	},
+	{
+		"name": "Octo_Orb",
+		"buildings": [
+			{"first": "W_MultiAge_ANNI25C1"}
+		]
+	},
+	{
 		"name": "Metro_Station",
 		"buildings": [
 			{"first": "W_MultiAge_ANNI24A1"}
@@ -753,7 +795,7 @@
 	{
 		"name": "Airship",
 		"buildings": [
-			{"first": "R_MultiAge_ArcheologyBonus20a"}
+			{"first": "W_MultiAge_ARCH20A1"}
 		]
 	},
 	{
@@ -963,6 +1005,34 @@
 		]
 	},
 	{
+		"name": "Frontier_Citadel",
+		"buildings": [
+			{"first": "W_MultiAge_GBG25A1"}
+		]
+	},
+
+	{
+		"name": "Frontier_Watch",
+		"buildings": [
+			{"first": "W_MultiAge_GBG25B1"}
+		]
+	},
+
+	{
+		"name": "Fort_Imperial",
+		"buildings": [
+			{"first": "W_MultiAge_GBG25C1"}
+		]
+	},
+
+	{
+		"name": "Imperial_Foundry",
+		"buildings": [
+			{"first": "W_MultiAge_GBG25D1"}
+		]
+	},
+
+	{
 		"groupname": "Quantum_Incursion"
 	},
 	{
@@ -1045,7 +1115,7 @@
 	{
 		"name": "Fountain_of_Youth",
 		"buildings": [
-			{"first": "L_AllAge_Expedition16"}
+			{"first": "W_AllAge_Expedition16"}
 		]
 	},
 	{
@@ -1087,6 +1157,24 @@
 			"D_MultiAge_Expedition22Feathers",
 			"D_MultiAge_Expedition22Spikes",
 			"D_MultiAge_Expedition22Scales"
+		]
+	},
+	{
+		"name": "Serpent_Fins",
+		"buildings": [
+			{"first": "D_MultiAge_Expedition22Scales"}
+		]
+	},
+	{
+		"name": "Serpent_Spikes",
+		"buildings": [
+			{"first": "D_MultiAge_Expedition22Spikes"}
+		]
+	},
+	{
+		"name": "Serpent_Feathers",
+		"buildings": [
+			{"first": "D_MultiAge_Expedition22Feathers"}
 		]
 	},
 	{
@@ -1158,7 +1246,7 @@
 	{
 		"name": "Wishing_Well",
 		"buildings": [
-			{"first": "L_AllAge_EasterBonus1"}
+			{"first": "W_AllAge_EasterBonus1"}
 		]
 	},
 	{
@@ -1197,7 +1285,7 @@
 	{
 		"name": "Victory_Tower",
 		"buildings": [
-			{"first": "L_AllAge_CupBonus1"}
+			{"first": "W_AllAge_CupBonus1"}
 		]
-	}	
+	}
 ]

@@ -29,7 +29,9 @@ let Tooltips = {
     containerActive:false,
     targetElement:null,
     
-    init: () => {
+    init: async () => {
+        await StartUpDone
+
 		HTML.AddCssFile('customTooltip');
         let container = document.createElement("div");
         container.id = "TooltipContainer"
@@ -55,7 +57,8 @@ let Tooltips = {
 
         $('body').on("pointerleave",".helperTT",(e)=>{
             Tooltips.deactivate()
-        })        
+        })    
+        $(`<div id="QIActions" class="helperTT" data-callback_tt="QIActions.TT">${srcLinks.icons("time")}</div>`).appendTo('body').hide();    
     },
 
     set: (content) => {
@@ -88,7 +91,8 @@ let Tooltips = {
         Tooltips.checkposition()
     },
     buildingTT: async (e)=>{
-        let id = e?.currentTarget?.dataset?.meta_id||MainParser?.CityMapData[e?.currentTarget?.dataset?.id]?.cityentity_id
+        let buildingId=e?.currentTarget?.dataset?.id
+        let id = e?.currentTarget?.dataset?.meta_id||MainParser?.CityMapData[buildingId]?.cityentity_id
         if (!id) return
 
         let era =  e?.currentTarget?.dataset?.era||Technologies.InnoEraNames[MainParser?.CityMapData[e?.currentTarget?.dataset?.id]?.level]
@@ -128,6 +132,7 @@ let Tooltips = {
         let maxEra = onlyEra||Technologies.EraNames[Technologies.getMaxEra()]
         let resMapper = (res,replace) => {
             if (["era_goods","random_good_of_age","all_goods_of_age", "random_good_of_age","random_good_of_age_1","random_good_of_age_2","random_good_of_age_3"].includes(res)) return replace
+            if (res=="random_good_of_next_age") return "next_age_goods"
             if (res=="random_special_good_up_to_age") return "special_goods"
             return res
         }
@@ -184,16 +189,6 @@ let Tooltips = {
             "guild_expedition":"_gex",
             "guild_raids":"_gr"
         }
-        let percent = (x) => {
-            return [
-                "diplomacy",
-                "guild_raids_action_points_collection",
-                "guild_raids_goods_start",
-                "guild_raids_units_start",
-                "guild_raids_supplies_start",
-                "guild_raids_coins_start",
-            ].includes(x) ? "" : "%"
-        }
         let out='<table class="HXBuilding">';        
 
         if (meta.components) {
@@ -242,12 +237,12 @@ let Tooltips = {
                     if (r.allyType == allydata.type && (!r.rarity?.value || r.rarity?.value == allydata.rarity)) break
                     allydata = null
                 }
-                ally += `<tr><td>${srcLinks.icons("historical_allies_slot_tooltip_icon_" + (allydata ? "full" :"empty"))}<div>${capFirsts(r.allyType) + (r.rarity?.value ? (" ("+i18n("Boxes.Productions.AllyRarity."+r.rarity?.value)+")"):"")}`
+                ally += `<tr><td>${srcLinks.icons("historical_allies_slot_tooltip_icon_" + (allydata ? "full" :"empty"))}<div>${MainParser.Allies.types[r.allyType]?.name + (r.rarity?.value ? (" ("+i18n("Boxes.Productions.AllyRarity."+r.rarity?.value)+")"):"")}`
                 if (allydata) {
-                    ally+=`<div class="allyName" style="color:${MainParser.Allies.rarities[allydata.rarity].textColor}"><span>${MainParser.Allies.names[allydata.allyId]}</span><span>(${i18n("Boxes.Productions.AllyRarity."+allydata.rarity)} - ${i18n("General.Level")} ${allydata.level})</span></div>`
+                    ally+=`<div class="allyName"><span>${MainParser.Allies.meta[allydata.allyId]?.name}</span><span>(${i18n("Boxes.Productions.AllyRarity."+allydata.rarity)} - ${i18n("General.Level")} ${allydata.level})</span></div>`
                     //productions:
-                    for (b of allydata.prod.boosts||[]) {
-                        ally+=`${srcLinks.icons(b.type+feature[b.targetedFeature])} ${b.value + percent(b.type)}`
+                    for (b of allydata.boosts||[]) {
+                        ally+=`${srcLinks.icons(b.type+feature[b.targetedFeature])} ${b.value + Boosts.percent(b.type)}`
                     }
 
                 }
@@ -283,11 +278,11 @@ let Tooltips = {
                 provides+=`<tr><td>${srcLinks.icons("happiness") + " " + range(levels?.[minEra]?.happiness?.provided,levels[maxEra]?.happiness?.provided,true) + polMod}</td></tr>`
             }
             for (let [i,b] of Object.entries(levels.AllAge?.boosts?.boosts||[])){
-                provides+=`<tr><td>${srcLinks.icons(b.type+feature[b.targetedFeature]) + " " + span(b.value) + percent(b.type)}</td></tr>`
+                provides+=`<tr><td>${srcLinks.icons(b.type+feature[b.targetedFeature]) + " " + span(b.value) + Boosts.percent(b.type)}</td></tr>`
             }
             
             for (let [i,b] of Object.entries(levels?.[minEra]?.boosts?.boosts||[])){
-                provides+=`<tr><td>${srcLinks.icons(b.type+feature[b.targetedFeature]) + " " + range(b.value,levels[maxEra]?.boosts?.boosts[i].value) + percent(b.type)}</td></tr>`
+                provides+=`<tr><td>${srcLinks.icons(b.type+feature[b.targetedFeature]) + " " + range(b.value,levels[maxEra]?.boosts?.boosts[i].value) + Boosts.percent(b.type)}</td></tr>`
             }
             
             let prods=""
@@ -517,10 +512,10 @@ let Tooltips = {
                 if (a.boostHints){
                     for (let b of a.boostHints||[]){
                         if (b.boostHintEraMap?.AllAge) {
-                            boosts+=`<tr><td>${srcLinks.icons(b.boostHintEraMap.AllAge.type+feature[b.boostHintEraMap.AllAge.targetedFeature]) + " " + span(b.boostHintEraMap.AllAge.value) + percent(b.boostHintEraMap.AllAge.type)}</td></tr>`
+                            boosts+=`<tr><td>${srcLinks.icons(b.boostHintEraMap.AllAge.type+feature[b.boostHintEraMap.AllAge.targetedFeature]) + " " + span(b.boostHintEraMap.AllAge.value) + Boosts.percent(b.boostHintEraMap.AllAge.type)}</td></tr>`
                         }
                         if (b.boostHintEraMap?.[minEra] && b.boostHintEraMap?.[maxEra]) {
-                            boosts+=`<tr><td>${srcLinks.icons(b.boostHintEraMap?.[minEra].type+feature[b.boostHintEraMap?.[minEra].targetedFeature]) + " " + range(b.boostHintEraMap?.[minEra].value,b.boostHintEraMap[maxEra].value) + percent(b.boostHintEraMap?.[minEra].type)}</td></tr>`
+                            boosts+=`<tr><td>${srcLinks.icons(b.boostHintEraMap?.[minEra].type+feature[b.boostHintEraMap?.[minEra].targetedFeature]) + " " + range(b.boostHintEraMap?.[minEra].value,b.boostHintEraMap[maxEra].value) + Boosts.percent(b.boostHintEraMap?.[minEra].type)}</td></tr>`
                         }
                     }
                 }
@@ -570,11 +565,10 @@ let Tooltips = {
                         if (res=="money" && levels?.[minEra]?.produced_money) continue
                         let t=(meta?.available_products?.length!=1) ? "&nbsp;in "+formatTime(p.production_time): ""
                         
-                        if (resMapper.includes(res)) res="goods"
                         if (amount !=0) 
-                            prods+=`<tr><td>${srcLinks.icons(res) + span(amount)+t + motMod}</td></tr>`
+                            prods+=`<tr><td>${srcLinks.icons(resMapper(res,"goods")) + span(amount)+t + motMod}</td></tr>`
                         else
-                            prods+=`<tr><td>${srcLinks.icons(res) + range(levels?.[minEra].production_values[p.production_option-1].value,levels?.[maxEra].production_values[p.production_option-1].value)+t + motMod}</td></tr>`
+                            prods+=`<tr><td>${srcLinks.icons(resMapper(res,"goods")) + range(levels?.[minEra].production_values[p.production_option-1].value,levels?.[maxEra].production_values[p.production_option-1].value)+t + motMod}</td></tr>`
                     }
                     if (p.unit_class) {
                         prods+=`<tr><td>${srcLinks.icons(p.unit_class) + p.name}</td></tr>`
@@ -641,10 +635,10 @@ let Tooltips = {
                     if (Object.values(b.boost).length>0) {
                         boosts+=`<tr><td>${b.level + "x" + srcLinks.icons(a.setId)} ► `
                         if (b.boost.AllAge) {
-                            boosts+=srcLinks.icons(b.boost.AllAge.type+feature[b.boost.AllAge.targetedFeature]) + " " + span(b.boost.AllAge.value) + percent(b.boost.AllAge.type)
+                            boosts+=srcLinks.icons(b.boost.AllAge.type+feature[b.boost.AllAge.targetedFeature]) + " " + span(b.boost.AllAge.value) + Boosts.percent(b.boost.AllAge.type)
                         }
                         if (b.boost?.[minEra] && b.boost[maxEra]) {
-                            boosts+=srcLinks.icons(b.boost?.[minEra].type+feature[b.boost?.[minEra].targetedFeature]) + " " + range(b.boost?.[minEra].value,b.boost[maxEra].value) + percent(b.boost?.[minEra].type)
+                            boosts+=srcLinks.icons(b.boost?.[minEra].type+feature[b.boost?.[minEra].targetedFeature]) + " " + range(b.boost?.[minEra].value,b.boost[maxEra].value) + Boosts.percent(b.boost?.[minEra].type)
                         }
                         boosts+=`</td></tr>`
                     } else {
@@ -671,10 +665,10 @@ let Tooltips = {
                         }
                         boosts+=`<tr><td>${b.level + "x" + srcLinks.icons(a.chainId)} ► `
                         if (b.boost.AllAge) {
-                            boosts+=srcLinks.icons(b.boost.AllAge.type+feature[b.boost.AllAge.targetedFeature]) + " " + span(b.boost.AllAge.value) + percent(b.boost.AllAge.type)
+                            boosts+=srcLinks.icons(b.boost.AllAge.type+feature[b.boost.AllAge.targetedFeature]) + " " + span(b.boost.AllAge.value) + Boosts.percent(b.boost.AllAge.type)
                         }
                         if (b.boost?.[minEra] && b.boost[maxEra]) {
-                            boosts+=srcLinks.icons(b.boost?.[minEra].type+feature[b.boost?.[minEra].targetedFeature]) + " " + range(b.boost?.[minEra].value,b.boost[maxEra].value) + percent(b.boost?.[minEra].type)
+                            boosts+=srcLinks.icons(b.boost?.[minEra].type+feature[b.boost?.[minEra].targetedFeature]) + " " + range(b.boost?.[minEra].value,b.boost[maxEra].value) + Boosts.percent(b.boost?.[minEra].type)
                         }
                         boosts+=`</td></tr>`
 
@@ -723,6 +717,68 @@ let Tooltips = {
         out+=`</table>`
         return out;
     },
+}
+
+
+//QI Actions
+
+FoEproxy.addFoeHelperHandler('ResourcesUpdated', () => {
+	QIActions.count = ResourceStock.guild_raids_action_points || 0
+});
+
+FoEproxy.addHandler('ResourceService', 'getPlayerAutoRefills', (data, postData) => {
+	QIActions.setNext(data.responseData.resources.guild_raids_action_points)
+});
+
+FoEproxy.addFoeHelperHandler('ActiveMapUpdated',()=>{
+	if (ActiveMap=="guild_raids") {
+		$('#QIActions').show();
+	} else {
+		$('#QIActions').hide();
+	}
+})
+
+
+let QIActions = {
+	count:0,
+	next:null,
+	last:null,
+
+	setNext:(time)=>{
+		let timer=3600000
+		
+		let hourly = 5000 + Boosts.Sums["guild_raids_action_points_collection"] 
+
+		if (time) { 
+			timer = (time-GameTime.get()+3600)*1000
+			QIActions.last = time
+		} else {
+			let amount = Math.floor((moment().unix() - QIActions.last + 10)/3600)
+			QIActions.count = Math.min(QIActions.count + amount*hourly,100000)
+			QIActions.last += 3600*amount
+			timer = (QIActions.last - moment().unix() + 3600)*1000
+		} 
+
+		if (QIActions.next) clearTimeout(QIActions.next)
+		
+		QIActions.next = setTimeout(QIActions.setNext,timer)
+
+	},
+
+	TT:()=>{
+		let hourly = 5000 + Boosts.Sums["guild_raids_action_points_collection"] 
+		let fullAt = Math.ceil((100000-QIActions.count)/hourly)*3600 + QIActions.last
+		let next = QIActions.last + 3600
+		while (next < moment().unix()) next += 3600
+
+		tooltip=`<div style="text-align:center">`
+        tooltip+=`<h1>${i18n("Global.BoxTitle")}</h1>`
+		tooltip+=`<p style="margin: 3px">${srcLinks.icons("guild_raids_action_points")}&nbsp;${hourly} ${moment.unix(next).fromNow()}</p>`
+		tooltip+=`<h2>${i18n("Boxes.QIActions.FullAt")}</h2>`
+		tooltip+=`<p>${moment.unix(fullAt).format('lll')}</p></div>`
+
+		return tooltip
+	}
 }
 
 Tooltips.init()
