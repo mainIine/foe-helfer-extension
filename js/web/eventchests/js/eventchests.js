@@ -112,7 +112,8 @@ let EventPresents = {
                 'auto_close': true,
                 'dragdrop': true,
                 'minimize': true,
-                'resize': true
+                'resize': true,
+			    active_maps:"main"
             });
 
             HTML.AddCssFile('eventchests');
@@ -186,7 +187,8 @@ let EventChests = {
                 'title': i18n('Boxes.EventChests.Title'),
                 'auto_close': true,
                 'dragdrop': true,
-                'minimize': true
+                'minimize': true,
+			    active_maps:"main"
             });
 
             HTML.AddCssFile('eventchests');

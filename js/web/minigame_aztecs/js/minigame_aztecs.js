@@ -171,7 +171,8 @@ let AztecsHelper = {
                 'title': i18n('Boxes.AztecMiniGame.Title'),
                 'auto_close': true,
                 'minimize': true,
-                'dragdrop': false
+                'dragdrop': false,
+			    active_maps:"cultural_outpost"
             });
 
             // CSS in den DOM prügeln

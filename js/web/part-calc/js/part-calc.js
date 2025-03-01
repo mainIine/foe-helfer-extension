@@ -138,7 +138,8 @@ let Parts = {
 				dragdrop: true,
 				minimize: true,
 				speaker: 'PartsTone',
-				settings: 'Parts.ShowCalculatorSettings()'
+				settings: 'Parts.ShowCalculatorSettings()',
+			    active_maps:"main"
 			});
 
 			// CSS in den DOM prügeln
@@ -1294,6 +1295,7 @@ let Parts = {
 				'auto_close': true,
 				'dragdrop': true,
 				'minimize': true,
+			    active_maps:"main",
 			});
 
 			const box = $('#PowerLevelingBox');

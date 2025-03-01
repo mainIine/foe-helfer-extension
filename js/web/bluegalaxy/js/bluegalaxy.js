@@ -83,7 +83,8 @@ let BlueGalaxy = {
                 dragdrop: true,
                 minimize: true,
                 resize: true,
-                settings: 'BlueGalaxy.ShowSettings()'
+                settings: 'BlueGalaxy.ShowSettings()',
+                active_maps:"main",
             });
 
             HTML.AddCssFile('bluegalaxy');
