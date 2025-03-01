@@ -1495,7 +1495,7 @@ let MainParser = {
 					dragdrop: true,
 					minimize: true,
 					resize: true,
-				});
+					active_maps:"main",				});
 			}
 			MainParser.Allies.updateAllyList()
 		},
