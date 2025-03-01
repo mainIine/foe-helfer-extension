@@ -201,7 +201,10 @@ let HTML = {
 		if (args['auto_close'] !== false) {
 			buttons.append(close);
 		}
-
+		if (args["active_maps"] && args["active_maps"].length > 0) {
+			let maps = args["active_maps"].replace(" ","").split(",").map(x => "ActiveOn"+x);
+			div.addClass("MapActivityCheck "+maps.join(" "));
+		}
 		// Minimierenbutton
 		if (args['minimize']) {
 			let min = $('<span />').addClass('window-minimize');
@@ -1037,3 +1040,7 @@ let HTML = {
         }
 	},
 };
+
+FoEproxy.addFoeHelperHandler('ActiveMapUpdated', () => {
+	$('.MapActivityCheck:not(.ActiveOn'+ActiveMap+")").remove()
+});

@@ -85,7 +85,8 @@ let BoostInventory = {
 				auto_close: true,
 				dragdrop: true,
 				minimize: true,
-				resize: true
+				resize: true,
+				active_maps:"main",
 			})
 			HTML.AddCssFile('boost_inventory')
 		}

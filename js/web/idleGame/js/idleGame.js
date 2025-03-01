@@ -257,7 +257,8 @@ let idleGame = {
             auto_close: true,
             dragdrop: true,
             minimize: true,
-			resize : true
+			resize : true,
+			active_maps:"main",
         });
 
         let htmltext = `<table id="idleGame_Table" style="width:100%"><tr><th colspan="2">`;
