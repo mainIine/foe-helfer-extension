@@ -36,7 +36,6 @@ FoEproxy.addHandler('RewardService', 'collectReward', async (data, postData) => 
 	if (rewardIncidentSource == "event_pass") {
 		if (postData[0].requestData[0].indexOf('guild_raids') >=0) rewardIncidentSource = 'guild_raids'
 	}
-
 	for (let reward of rewards) {
 
 		if (rewardIncidentSource === 'hidden_reward') {
@@ -68,7 +67,10 @@ FoEproxy.addHandler('RewardService', 'collectReward', async (data, postData) => 
 			delete reward.__class__;
 			await IndexDB.db.statsRewardTypes.put(reward);
 		}
-
+		if (rewardIncidentSource=="battlegrounds_conquest") {
+			let rew = Tooltips.genericEval(reward);
+			$(`<span>${reward.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ${rew.fragment}${rew.icon}</span>`).appendTo("#RewardsList").fadeOut(10000, function(){ $(this).remove();})
+		}
 		// Add reward incident record
 
 		await Stats.addReward(rewardIncidentSource, reward.amount ||0, reward.id);

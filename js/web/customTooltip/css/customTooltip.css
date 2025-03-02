@@ -148,6 +148,35 @@
     z-index: 100;
 }
 
+#RewardsList {
+    position: absolute;
+    top: calc(50vh);
+    left: calc(100vw - 200px);
+    width: 150px;
+    height: calc(50vh - 80px);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-end;
+    pointer-events: none;
+    overflow: hidden;
+}
+#RewardsList > span {
+    white-space: nowrap;
+    font-size: 1.5em;
+    display: flex;
+    align-items: center;
+    border: solid var(--border-tab);
+    border-radius: 10px;
+    color: var(--text-normal);
+    background: var(--background-table-darker);
+}
+
+#RewardsList img {
+    height: 30px;
+}
+
 @keyframes bounce {
     0% {  transform: translateX(0%)    }
     30% {  transform: translateX(0%)    }
