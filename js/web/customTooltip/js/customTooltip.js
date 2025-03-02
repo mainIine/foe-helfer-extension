@@ -779,4 +779,19 @@ let QIActions = {
 	}
 }
 
+//GBG Rewards Stream
+FoEproxy.addHandler('RewardService', 'collectReward', async (data, postData) => {
+	if (!Settings.GetSetting("ShowGBGRewards")) return
+    if (!Array.isArray(data.responseData)) return
+	var [rewards, rewardIncidentSource] = data.responseData; 
+    if (rewardIncidentSource!="battlegrounds_conquest") return
+    
+    for (let reward of rewards) {
+        let rew = Tooltips.genericEval(reward);
+        $(`<span>${reward.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ${rew.fragment}${rew.icon}</span>`).appendTo("#RewardsList").fadeOut(10000, function(){ $(this).remove();})
+    }
+
+});
+
+
 Tooltips.init()
