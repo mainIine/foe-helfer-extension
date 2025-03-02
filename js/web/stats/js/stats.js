@@ -67,11 +67,6 @@ FoEproxy.addHandler('RewardService', 'collectReward', async (data, postData) => 
 			delete reward.__class__;
 			await IndexDB.db.statsRewardTypes.put(reward);
 		}
-		if (rewardIncidentSource=="battlegrounds_conquest") {
-			let rew = Tooltips.genericEval(reward);
-			if (Settings.GetSetting("ShowGBGRewards"))
-				$(`<span>${reward.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ${rew.fragment}${rew.icon}</span>`).appendTo("#RewardsList").fadeOut(10000, function(){ $(this).remove();})
-		}
 		// Add reward incident record
 
 		await Stats.addReward(rewardIncidentSource, reward.amount ||0, reward.id);
