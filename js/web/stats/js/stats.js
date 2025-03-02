@@ -69,7 +69,8 @@ FoEproxy.addHandler('RewardService', 'collectReward', async (data, postData) => 
 		}
 		if (rewardIncidentSource=="battlegrounds_conquest") {
 			let rew = Tooltips.genericEval(reward);
-			$(`<span>${reward.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ${rew.fragment}${rew.icon}</span>`).appendTo("#RewardsList").fadeOut(10000, function(){ $(this).remove();})
+			if (Settings.GetSetting("ShowGBGRewards"))
+				$(`<span>${reward.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ${rew.fragment}${rew.icon}</span>`).appendTo("#RewardsList").fadeOut(10000, function(){ $(this).remove();})
 		}
 		// Add reward incident record
 
