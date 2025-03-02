@@ -59,6 +59,7 @@ let Tooltips = {
             Tooltips.deactivate()
         })    
         $(`<div id="QIActions" class="helperTT" data-callback_tt="QIActions.TT">${srcLinks.icons("time")}</div>`).appendTo('body').hide();    
+        $(`<div id="RewardsList"></div>`).appendTo('body');    
     },
 
     set: (content) => {
@@ -119,6 +120,28 @@ let Tooltips = {
         },100)
         return h
     },
+    genericEval: (rew) => {
+        let [x1,amount,name] = rew.name.match(/^([+\-]?\d*)x? (.*)$/)||["",1,rew.name]
+        amount = Number(amount)
+        let icon = ""
+        let fragment = ""
+        if (rew.iconAssetName=="icon_fragment") {
+            icon = srcLinks.icons(rew.assembledReward?.iconAssetName||rew.assembledReward?.subType)
+            name = name.replace(/Fragments? of/,"").replace(/.*?'(.*?)'.*/,"$1")
+            fragment = srcLinks.icons("icon_tooltip_fragment")
+        } else if (rew.type=="unit") {
+
+            name = /nextera/i.test(rew.id)? "of next era" : ""
+            
+            icon = srcLinks.icons(rew.subType=="rogue"?"rogue":(
+                rew.subType.includes("champion")?"chivalry":
+                Unit.Types.filter(x=>x.unitTypeId==rew.subType)[0].unitClass
+                ))
+        } else
+            icon = srcLinks.icons(rew.iconAssetName)
+        
+        return {icon:icon,amount:amount,name:name,fragment:fragment}
+    },  
     BuildingData:async (meta,onlyEra=null,allies=null)=>{
         if (onlyEra && Array.isArray(onlyEra)) {
             allies = [].concat(onlyEra)
@@ -153,31 +176,6 @@ let Tooltips = {
             if (day>0) time = day + (hour+sec+min>0 ? (hour>9?hour:"0"+hour) + (sec+min>0 ? ":"+(min>9?min:"0"+min)+(sec>0?":"+(sec>9?sec:"0"+sec):""):""):"")+"d"
             return time
         }
-        
-        let genericEval = (rew) => {
-            let [x1,amount,name] = rew.name.match(/^([+\-]?\d*)x? (.*)$/)||["",1,rew.name]
-            amount = Number(amount)
-            let icon = ""
-            let fragment = ""
-            if (rew.iconAssetName=="icon_fragment") {
-                icon = srcLinks.icons(rew.assembledReward?.iconAssetName||rew.assembledReward?.subType)
-                name = name.replace(/Fragments? of/,"").replace(/.*?'(.*?)'.*/,"$1")
-                fragment = srcLinks.icons("icon_tooltip_fragment")
-            } else if (rew.type=="unit") {
-
-                name = /nextera/i.test(rew.id)? "of next era" : ""
-                
-                icon = srcLinks.icons(rew.subType=="rogue"?"rogue":(
-                    rew.subType.includes("champion")?"chivalry":
-                    Unit.Types.filter(x=>x.unitTypeId==rew.subType)[0].unitClass
-                    ))
-            } else
-                icon = srcLinks.icons(rew.iconAssetName)
-            
-            return {icon:icon,amount:amount,name:name,fragment:fragment}
-        }    
-        
-
         
         let capFirsts = (s) => {
             return s.replace("_"," ").replace(/(\b[a-z](?!\s))/g, function(x){return x.toUpperCase();});
@@ -313,7 +311,7 @@ let Tooltips = {
                         }
                     }
                     if (product.type == "genericReward") {
-                        let rew = genericEval(levels.AllAge.lookup.rewards[product.reward.id])
+                        let rew = Tooltips.genericEval(levels.AllAge.lookup.rewards[product.reward.id])
                         prods+=`<tr><td class="isGeneric">${rew.icon + span(rew.amount) + rew.fragment + longSpan(rew.name) + t + (product.onlyWhenMotivated ? ifMot : "")}</td></tr>`
                     }
                     if (product.type=="random") {
@@ -342,7 +340,7 @@ let Tooltips = {
                                 }
                             }
                             if (random.product.type == "genericReward") {
-                                let rew=genericEval(levels.AllAge.lookup.rewards[random.product.reward.id])
+                                let rew=Tooltips.genericEval(levels.AllAge.lookup.rewards[random.product.reward.id])
                                 prods += rew.icon + span(rew.amount) + rew.fragment + longSpan(rew.name)
                             }
                             prods+=`<span class="dropChance">${Math.floor(random.dropChance*100)}%</span></td></tr>`
@@ -376,8 +374,8 @@ let Tooltips = {
                         }
                     }
                     if (product.type == "genericReward") {
-                        let rewBA=genericEval(levels?.[minEra].lookup.rewards[product.reward.id])
-                        let rewMax=genericEval(levels[maxEra].lookup.rewards[levels[maxEra]?.production?.options?.[oIndex]?.products?.[pIndex]?.reward?.id])
+                        let rewBA=Tooltips.genericEval(levels?.[minEra].lookup.rewards[product.reward.id])
+                        let rewMax=Tooltips.genericEval(levels[maxEra].lookup.rewards[levels[maxEra]?.production?.options?.[oIndex]?.products?.[pIndex]?.reward?.id])
                         
                         if (rewBA.icon+rewBA.name==rewMax.icon+rewMax.name) {
                             prods+=`<tr><td class="isGeneric">${rewBA.icon + range(rewBA.amount,rewMax.amount) + rewBA.fragment + longSpan(rewBA.name) + t + (product.onlyWhenMotivated ? ifMot : "")}</td></tr>`
@@ -411,8 +409,8 @@ let Tooltips = {
                                 }
                             }
                             if (random.product.type == "genericReward") {
-                                let rewBA=genericEval(levels?.[minEra].lookup.rewards[random.product.reward.id])
-                                let rewMax=genericEval(levels[maxEra].lookup.rewards[levels[maxEra]?.production?.options?.[oIndex]?.products?.[pIndex]?.products?.[rIndex]?.product?.reward?.id])
+                                let rewBA=Tooltips.genericEval(levels?.[minEra].lookup.rewards[random.product.reward.id])
+                                let rewMax=Tooltips.genericEval(levels[maxEra].lookup.rewards[levels[maxEra]?.production?.options?.[oIndex]?.products?.[pIndex]?.products?.[rIndex]?.product?.reward?.id])
                                 
                                 if (rewBA.icon+rewBA.name==rewMax.icon+rewBA.name) {
                                     prods+=rewBA.icon + range(rewBA.amount,rewMax.amount) + rewBA.fragment + longSpan(rewBA.name)
