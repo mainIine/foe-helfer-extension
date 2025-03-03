@@ -2152,7 +2152,7 @@ tr.sorter-header th:not(.no-sort).descending:after {
 	left: calc(-24px*var(--unit_scale));
 	margin-right: calc(-24px*var(--unit_scale));;
 }
-@media (min-width: 950px) and (min-height: 600px) {
+@media (min-width: 1024px) and (min-height: 630px) {
 	#game_body {
 		overflow: hidden
 	}
