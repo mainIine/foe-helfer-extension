@@ -1,5 +1,20 @@
 ## Changelog - Extension
 
+##### 3.11.1.0
+
+**New**
+- GBG Rewardsstream
+	- above the rewards bar the actually received reward is displayed
+
+**Update**
+- Boxes now close automatically when entering a game feature the box is not intended for
+
+**BugFix**
+- Scroll bars appeard, when a Box crossed window borders
+- boxes could not be moved when opened for the first time
+
+---
+
 ##### 3.11.0.0
 
 **New**
