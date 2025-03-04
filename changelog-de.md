@@ -1,5 +1,20 @@
 ## Changelog - Extension
 
+##### 3.11.1.0
+
+**Neu**
+- GG Belohnungsliste 
+	- über dem Belohnungsbalken wird ausgegeben, welche Belohnung erhalten wurde
+
+**Update**
+- Boxen werden automatisch geschlossen, wenn Spielbereiche geöffnet werden, für die die Box nicht vorgesehen ist
+
+**BugFix**
+- Scrollbalken wurden eingeblendet, wenn eine Box über den Fensterrand herausragte
+- Fenster konnten nicht bewegt werden nach dem ersten Öffnen
+
+---
+
 ##### 3.11.0.0
 
 **Neu**
