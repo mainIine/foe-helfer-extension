@@ -208,6 +208,7 @@ let GBGBuildings = {
 				dragdrop: true,
 				minimize: true,
 				resize : true,
+			    active_maps:"gg",
 			});
 			HTML.AddCssFile('gbgbuildings');
 		}

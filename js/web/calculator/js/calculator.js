@@ -72,7 +72,8 @@ let Calculator = {
 				dragdrop: true,
 				minimize: true,
 				speaker: 'CalculatorTone',
-				settings: 'Calculator.ShowCalculatorSettings()'
+				settings: 'Calculator.ShowCalculatorSettings()',
+				active_maps:"main",
 			});
 
 			// CSS in den DOM prügeln

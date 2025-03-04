@@ -78,6 +78,10 @@ let _menu = {
 	 * @constructor
 	 */
 	CallSelectedMenu: (selMenu = 'RightBar') => {
+	
+		window.onresize = (function(event){
+			if (event.target == window) _menu.OverflowCheck()
+		})
 
 		if (selMenu === 'RightBar') {
 			_menu.selectedMenu = 'RightBar';
@@ -98,6 +102,16 @@ let _menu = {
 
 		if (Settings.GetSetting('AutoOpenCloseBox')) {
 			CloseBox.BuildBox();
+		}
+		
+		_menu.OverflowCheck(_menu.selectedMenu, true);
+	},
+
+	OverflowCheck: (selMenu='Box', flag) => {
+		if (window.innerHeight >= 600 && window.innerWidth >= 950 && (!flag && selMenu != MainParser.SelectedMenu)) {			
+			$('#menu_box').remove();
+			$('.tooltip').remove();
+			_menu.CallSelectedMenu(MainParser.SelectedMenu);
 		}
 	},
 

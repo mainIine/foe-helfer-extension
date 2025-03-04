@@ -72,7 +72,8 @@ let HiddenRewards = {
                 'dragdrop': true,
                 'minimize': true,
                 'resize': true,
-                'settings': 'HiddenRewards.ShowSettingsButton()'
+                'settings': 'HiddenRewards.ShowSettingsButton()',
+			    active_maps:"main"
             });
 
             //moment.locale(18n('Local'));

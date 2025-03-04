@@ -201,7 +201,10 @@ let HTML = {
 		if (args['auto_close'] !== false) {
 			buttons.append(close);
 		}
-
+		if (args["active_maps"] && args["active_maps"].length > 0) {
+			let maps = args["active_maps"].replace(" ","").split(",").map(x => "ActiveOn"+x);
+			div.addClass("MapActivityCheck "+maps.join(" "));
+		}
 		// Minimierenbutton
 		if (args['minimize']) {
 			let min = $('<span />').addClass('window-minimize');
@@ -244,18 +247,21 @@ let HTML = {
 
 			$('#' + args['speaker']).addClass(localStorage.getItem(args['speaker']));
 		}
+		
+		// Position von beweglichen Fenstern initialisieren und Verhindern, dass Fenster außerhalb plaziert werden
+		if (args.dragdrop) div.css({"--x": "0px","--y": "0px","left":"calc(min(max(50vw + var(--x),0px),100vw - 60px))","top":"calc(min(max(50vh + var(--y),0px), 100vh - 60px))"});
 
 		// es gibt gespeicherte Koordinaten
 		if (cords) {
 			c = null
 			if (cords.includes('|')) {
 				cords = cords.split('|') 
-				cords = mouseActions.calcCoords([cords[1], cords[0]], "Center")
+				cords = mouseActions.calcCoords([Number(cords[1]), Number(cords[0])], "Center")
 			} else {
 				cords = JSON.parse(cords)
 			}
 			// Verhindere, dass Fenster außerhalb plaziert werden
-			div.css({"--x": cords[0]+"px","--y": cords[1]+"px","left":"calc(min(max(50vw + var(--x),0px),100vw - 60px))","top":"calc(min(max(50vh + var(--y),0px), 100vh - 60px))"});
+			div.css({"--x": cords[0]+"px","--y": cords[1]+"px"});
 		}
 
 		// Ein Link zu einer Seite
@@ -1037,3 +1043,7 @@ let HTML = {
         }
 	},
 };
+
+FoEproxy.addFoeHelperHandler('ActiveMapUpdated', () => {
+	$('.MapActivityCheck:not(.ActiveOn'+ActiveMap+")").remove()
+});

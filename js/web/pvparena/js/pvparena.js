@@ -21,7 +21,8 @@ const PvPArena = {
                 minimize: true,
                 dragdrop: true,
                 resize: true,
-                settings: 'PvPArena.ShowSettings()'
+                settings: 'PvPArena.ShowSettings()',
+			    active_maps:"main"
             });
 
             // CSS in den DOM
@@ -41,7 +42,7 @@ const PvPArena = {
     },
 
     /**
-    * Body der Box aktualisieren falls bereits geöffnet
+    * Body der Box aktualisieren falls bereits geï¿½ffnet
     */
     RefreshBox: () => {
         if ($('#PvPArena').length > 0) {
