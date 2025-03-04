@@ -23,7 +23,7 @@
 	- Nachdem das Profil geöffnet wurde, erscheint links neben dem Stadtnamen ein Icon, zum Öffnen der Profilansicht
 - Einstellungen
 	- Popups für QI und GG sind nun deaktivierbar
-- Verbündetenübersicht
+- Verbündeten übersicht
 	- Öffnet bei Klick auf das "Historische Verbündete" Gebäude
 	- Zeigt eine Liste der Verbündeten und Gebäuden mit Räumen an - leere Räume und unzugewiesene Verbündete stehen am Anfang der Liste
 - QI-Aktionspunkte-Rechner

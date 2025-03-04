@@ -3,14 +3,14 @@
 ##### 3.11.1.0
 
 **New**
-- GBG Rewardsstream
+- GBG Rewards stream
 	- above the rewards bar the actually received reward is displayed
 
 **Update**
 - Boxes now close automatically when entering a game feature the box is not intended for
 
 **BugFix**
-- Scroll bars appeard, when a Box crossed window borders
+- Scroll bars appeared, when a Box crossed window borders
 - boxes could not be moved when opened for the first time
 - Menu stays in boxed mode after window resize
 
