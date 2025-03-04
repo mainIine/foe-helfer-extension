@@ -1,5 +1,21 @@
 ## Changelog - Extension
 
+##### 3.11.1.0
+
+**Neu**
+- GG Belohnungsliste 
+	- über dem Belohnungsbalken wird ausgegeben, welche Belohnung erhalten wurde
+
+**Update**
+- Boxen werden automatisch geschlossen, wenn Spielbereiche geöffnet werden, für die die Box nicht vorgesehen ist
+
+**BugFix**
+- Scrollbalken wurden eingeblendet, wenn eine Box über den Fensterrand herausragte
+- Fenster konnten nicht bewegt werden nach dem ersten Öffnen
+- Menu bleibt nach Fenstergrößenveränderung im Box Modus
+
+---
+
 ##### 3.11.0.0
 
 **Neu**
@@ -7,7 +23,7 @@
 	- Nachdem das Profil geöffnet wurde, erscheint links neben dem Stadtnamen ein Icon, zum Öffnen der Profilansicht
 - Einstellungen
 	- Popups für QI und GG sind nun deaktivierbar
-- Verbündetenübersicht
+- Verbündeten übersicht
 	- Öffnet bei Klick auf das "Historische Verbündete" Gebäude
 	- Zeigt eine Liste der Verbündeten und Gebäuden mit Räumen an - leere Räume und unzugewiesene Verbündete stehen am Anfang der Liste
 - QI-Aktionspunkte-Rechner
