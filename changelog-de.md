@@ -12,6 +12,7 @@
 **BugFix**
 - Scrollbalken wurden eingeblendet, wenn eine Box über den Fensterrand herausragte
 - Fenster konnten nicht bewegt werden nach dem ersten Öffnen
+- Menu bleibt nach Fenstergrößenveränderung im Box Modus
 
 ---
 

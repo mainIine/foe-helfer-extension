@@ -12,6 +12,7 @@
 **BugFix**
 - Scroll bars appeard, when a Box crossed window borders
 - boxes could not be moved when opened for the first time
+- Menu stays in boxed mode after window resize
 
 ---
 
