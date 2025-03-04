@@ -784,7 +784,7 @@ FoEproxy.addHandler('RewardService', 'collectReward', async (data, postData) => 
 	if (!Settings.GetSetting("ShowGBGRewards")) return
     if (!Array.isArray(data.responseData)) return
 	var [rewards, rewardIncidentSource] = data.responseData; 
-    if (rewardIncidentSource!="battlegrounds_conquest") return
+    if (rewardIncidentSource!="battlegrounds_conquest" && rewardIncidentSource!="guild_expedition_reward_notification") return
     
     for (let reward of rewards) {
         let rew = Tooltips.genericEval(reward);
