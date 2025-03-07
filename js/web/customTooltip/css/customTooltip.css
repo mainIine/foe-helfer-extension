@@ -164,17 +164,20 @@
 }
 #RewardsList > span {
     white-space: nowrap;
-    font-size: 1.5em;
+    font-size: 1.3em;
     display: flex;
     align-items: center;
-    border: solid var(--border-tab);
     border-radius: 10px;
+    padding: 2px;
+    margin-top: 2px;
     color: var(--text-normal);
-    background: var(--background-table-darker);
+    background: var(--text-darker);
+    border: 2px solid var(--text-dark);
 }
 
 #RewardsList img {
-    height: 30px;
+    max-height: 30px;
+    margin: auto 1px;
 }
 
 @keyframes bounce {
