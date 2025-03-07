@@ -155,7 +155,7 @@ let Tooltips = {
         let maxEra = onlyEra||Technologies.EraNames[Technologies.getMaxEra()]
         let resMapper = (res,replace) => {
             if (["era_goods","random_good_of_age","all_goods_of_age", "random_good_of_age","random_good_of_age_1","random_good_of_age_2","random_good_of_age_3"].includes(res)) return replace
-            if (res=="random_good_of_next_age") return "next_age_goods"
+            if (["random_good_of_next_age","all_goods_of_next_age"]) return "next_age_goods"
             if (res=="random_special_good_up_to_age") return "special_goods"
             return res
         }
