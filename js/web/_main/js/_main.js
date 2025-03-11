@@ -21,6 +21,26 @@ const extID = ExtbaseData.extID,
 	devMode = ExtbaseData.devMode,
 	loadBeta = ExtbaseData.loadBeta;
 
+let ExistenceConfirmed = async (varlist)=>{
+	varlist=varlist.split('||')
+	return new Promise((resolve, reject) => {
+		let timer = () => {
+			for (let x of varlist ) {
+				if (x.includes('$') && eval(x).length === 0) {
+					setTimeout(timer, 50);
+					return;
+				}
+				if (eval('typeof '+x) === 'undefined' || eval(x) === null || eval(x) === undefined) {
+					setTimeout(timer, 50);
+					return;
+				}
+				resolve();
+			}
+		};
+		timer();
+	});
+};
+
 {
 	// jQuery detection
 	let intval = -1;
@@ -1325,17 +1345,9 @@ let MainParser = {
 
 		Infoboard.Init();
 		EventHandler.Init();
-		x = new Promise((resolve) => {
-			let timer = () => {
-				if (MainParser.CityEntities == null) {
-					setTimeout(timer,50)
-				} else {
-					resolve() 
-				}
-			}
-			timer()
-		}),
-		await x
+
+		await ExistenceConfirmed('MainParser.CityEntities||srcLinks.FileList')
+
 		window.dispatchEvent(new CustomEvent('foe-helper#StartUpDone'))
 
 	},
@@ -1419,13 +1431,14 @@ let MainParser = {
 					list[ally.mapEntityId][ally.id]=ally.id
 				else 
 				 	list[ally.mapEntityId] = {[ally.id]:ally.id}
-				MainParser.Allies.allyList[ally.id] = ally
 			} else {
 				mapID=MainParser.Allies.allyList[ally.id]?.mapEntityId
-				delete MainParser.Allies.buildingList[mapID][ally.id]
-				if (Object.keys(MainParser.Allies.buildingList[mapID]).length==0) delete MainParser.Allies.buildingList[mapID]
-				MainParser.Allies.allyList[ally.id] = ally
+				if (mapID) {
+					delete MainParser.Allies.buildingList[mapID][ally.id]
+					if (Object.keys(MainParser.Allies.buildingList[mapID]).length==0) delete MainParser.Allies.buildingList[mapID]
+				}
 			}
+			MainParser.Allies.allyList[ally.id] = ally
 			MainParser.Allies.updateAllyList()
 		},
 
@@ -1482,7 +1495,7 @@ let MainParser = {
 					dragdrop: true,
 					minimize: true,
 					resize: true,
-				});
+					active_maps:"main",				});
 			}
 			MainParser.Allies.updateAllyList()
 		},
@@ -1591,7 +1604,7 @@ let MainParser = {
 
 				//${MainParser.Allies.tooltip(buildingId)}
 				html+=`<tr class="allyRoomRow ${rarities.join(" ")}">
-							<td>${rarityStars(r.roomRarity)}</td>
+							<td style="white-space:nowrap">${rarityStars(r.roomRarity)}</td>
 					   	   	<td ${buildingId!=0?`class="helperTT" 
 								data-id="${buildingId}" 
 								data-era="${Technologies.InnoEraNames[MainParser.CityMapData[buildingId].level]}"
@@ -1599,7 +1612,7 @@ let MainParser = {
 								`:``}
 							>${r.buildingName || ""}</td>
 							<td>${buildingId!=0?`<span class="show-entity" data-id="${buildingId}"><img class="game-cursor" src="${ extUrl + 'css/images/hud/open-eye.png'}"></span>`:""}</td>
-						   	<td>${rarityStars(r.allyRarity)}</td>
+						   	<td style="white-space:nowrap">${rarityStars(r.allyRarity)}</td>
 						   	<td>${r.allyName || ""}${r.fragmentsAmount?srcLinks.icons("icon_tooltip_fragment") + r.fragmentsAmount+"/"+r.fragmentsNeeded:""}</td>
 						   	<td>${r.allyLevel || ""}</td>
 						   	<td>${boosts(r.allyBoosts)}</td>

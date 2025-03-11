@@ -148,6 +148,38 @@
     z-index: 100;
 }
 
+#RewardsList {
+    position: absolute;
+    top: calc(50vh);
+    left: calc(100vw - 200px);
+    width: 150px;
+    height: calc(50vh - 80px);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-end;
+    pointer-events: none;
+    overflow: hidden;
+}
+#RewardsList > span {
+    white-space: nowrap;
+    font-size: 1.3em;
+    display: flex;
+    align-items: center;
+    border-radius: 10px;
+    padding: 2px;
+    margin-top: 2px;
+    color: var(--text-normal);
+    background: var(--text-darker);
+    border: 2px solid var(--text-dark);
+}
+
+#RewardsList img {
+    max-height: 30px;
+    margin: auto 1px;
+}
+
 @keyframes bounce {
     0% {  transform: translateX(0%)    }
     30% {  transform: translateX(0%)    }

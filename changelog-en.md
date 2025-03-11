@@ -1,5 +1,21 @@
 ## Changelog - Extension
 
+##### 3.11.1.0
+
+**New**
+- GBG Rewards stream
+	- above the rewards bar the actually received reward is displayed
+
+**Update**
+- Boxes now close automatically when entering a game feature the box is not intended for
+
+**BugFix**
+- Scroll bars appeared, when a Box crossed window borders
+- boxes could not be moved when opened for the first time
+- Menu stays in boxed mode after window resize
+
+---
+
 ##### 3.11.0.0
 
 **New**
@@ -22,6 +38,9 @@
 	- Added a setting to open automatically
 	- Added setting to disable most features that are hardly used
 - FoE Helper Version updates no longer open a new browser tab with the changelog
+- Production overview (units)
+	- added icon to indicate next era units
+- Box positions are now saved in relation to the center of the page instead of the top left corner
 
 **BugFix**
 - Fixed overlaps in some places

@@ -36,7 +36,6 @@ FoEproxy.addHandler('RewardService', 'collectReward', async (data, postData) => 
 	if (rewardIncidentSource == "event_pass") {
 		if (postData[0].requestData[0].indexOf('guild_raids') >=0) rewardIncidentSource = 'guild_raids'
 	}
-
 	for (let reward of rewards) {
 
 		if (rewardIncidentSource === 'hidden_reward') {
@@ -68,7 +67,6 @@ FoEproxy.addHandler('RewardService', 'collectReward', async (data, postData) => 
 			delete reward.__class__;
 			await IndexDB.db.statsRewardTypes.put(reward);
 		}
-
 		// Add reward incident record
 
 		await Stats.addReward(rewardIncidentSource, reward.amount ||0, reward.id);

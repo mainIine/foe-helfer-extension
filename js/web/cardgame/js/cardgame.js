@@ -292,6 +292,7 @@ let cardGame = {
 				dragdrop: true,
 				minimize: true,
 				resize : true,
+				active_maps:"main",
 
 			});
 			$('#cardGameDialogclose').on("click",()=>{$('#cardGameFightBlocker').remove()});

@@ -78,11 +78,11 @@ let _menu = {
 	 * @constructor
 	 */
 	CallSelectedMenu: (selMenu = 'RightBar') => {
-
+	
 		window.onresize = (function(event){
 			if (event.target == window) _menu.OverflowCheck()
 		})
-		
+
 		if (selMenu === 'RightBar') {
 			_menu.selectedMenu = 'RightBar';
 			_menu_right.BuildOverlayMenu();
@@ -108,15 +108,10 @@ let _menu = {
 	},
 
 	OverflowCheck: (selMenu='Box', flag) => {
-		$('#game_body').addClass('overflowHidden');
-		if (window.innerHeight < 600 ||window.innerWidth < 950) {
-			$('#game_body').removeClass('overflowHidden');
-		} else {
-			if (!flag && selMenu != MainParser.SelectedMenu) {			
+		if (window.innerHeight >= 600 && window.innerWidth >= 950 && (!flag && selMenu != MainParser.SelectedMenu)) {			
 			$('#menu_box').remove();
 			$('.tooltip').remove();
 			_menu.CallSelectedMenu(MainParser.SelectedMenu);
-			}
 		}
 	},
 

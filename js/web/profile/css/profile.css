@@ -42,11 +42,13 @@
 }
 
 #PlayerProfile .window-close {
-    filter: saturate(1.3) brightness(0.5) contrast(1.3);
+    filter: saturate(0) contrast(1.6) brightness(0.3);
+    mix-blend-mode: luminosity;
 }
 
 #PlayerProfile .window-close:hover {
-    filter: saturate(1.5) brightness(0.75) contrast(1.3);
+    filter: saturate(0) contrast(1.8) brightness(0.5);
+    mix-blend-mode: luminosity;
 }
 
 #PlayerProfileBody {
@@ -313,7 +315,7 @@
 #PlayerProfile .qiBoosts span {
     display: inline-block;
     margin: 3px 1px 3px 0;
-    background-image: linear-gradient(298deg, rgba(0, 0, 0, 0) 0%, rgb(18 131 122 / 31%) 100%), linear-gradient(0deg, #01001f91 0%, #01001f00 100%);
+    background-image: linear-gradient(298deg, rgba(0, 0, 0, 0) 0%, rgb(18 131 122 / 31%) 100%);
     border-radius: 14px 5px 14px 5px;
     padding: 0 6px 2px 3px;
     box-shadow: inset -1px -1px 2px #12837a33;

@@ -17,9 +17,6 @@ let srcLinks = {
     raw:null,
 
     init: async () => {
-        //clear storage - can be removed down the line
-        localStorage.removeItem('PortraitsFileList')
-
         // wait for ForgeHX is loaded, then read the full script url
         const isElementLoaded = async name => {
             while ( document.querySelector('script[src*="' + name + '"]') === null) {
@@ -136,10 +133,13 @@ let srcLinks = {
 
     icons: (x) => {
         if (!x) return ""
-        x=x.replace(/(.*?)_[0-9]+/gm,"$1");
         let link = srcLinks.get(`/shared/icons/${x}.png`,true,true);
+        if (link.includes("antiquedealer_flag")) link = srcLinks.get(`/shared/icons/${x.replace(/(.*?)_[0-9]+/gm,"$1")}.png`,true,true);
         if (link.includes("antiquedealer_flag")) link = srcLinks.get(`/shared/icons/reward_icons/reward_icon_${x}.png`,true,true);
-        if (link.includes("antiquedealer_flag")) link = srcLinks.get(`/city/buildings/${x.replace(/(\D*?)_(.*)/,"$1_SS_$2")}.png`,true);
+        if (link.includes("antiquedealer_flag")) link = srcLinks.get(`/shared/icons/reward_icons/reward_icon_${x.replace(/(.*?)_[0-9]+/gm,"$1")}.png`,true,true);
+        if (link.includes("antiquedealer_flag")) link = srcLinks.get(`/city/buildings/${x.replace(/(\D*?)_(.*)/,"$1_SS_$2")}.png`,true,true);
+        if (link.includes("antiquedealer_flag")) link = srcLinks.get(`/city/buildings/${x.replace(/(.*?)_[0-9]+/gm,"$1").replace(/(\D*?)_(.*)/,"$1_SS_$2")}.png`,true,true);
+        if (link.includes("antiquedealer_flag")) link = srcLinks.get(`/city/buildings/${MainParser.CityEntities?.[x]?.asset_id?.replace(/(\D*?)_(.*)/,"$1_SS_$2")}.png`,true);
         return `<img src=${link} alt="">`;
     }
 
