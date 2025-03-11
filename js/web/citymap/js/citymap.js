@@ -375,13 +375,14 @@ let CityMap = {
 	showQIStats: () => {
 		if (!CityMap.QIData) return
 		let boosts = Boosts.Sums
+		let noSettlement = Boosts.noSettlement
 		let supply_boost = boosts.guild_raids_supplies_production*0.01
 		let coin_boost = boosts.guild_raids_coins_production*0.01
 		let buildings = Object.values(CityMap.QIData)
 		let population = 0, totalPopulation = 0, euphoria = 0, euphoriaBoost = 0, supplies = 0, money = 0
 		let actions = boosts.guild_raids_action_points_collection
-		let att_def_boost_attacker = boosts["guild_raids-att_boost_attacker"] - boosts["guild_raids-att_boost_attacker_no_settlement"]
-		let att_def_boost_defender = boosts["guild_raids-att_boost_defender"] - boosts["guild_raids-att_boost_defender_no_settlement"]
+		let att_def_boost_attacker = boosts["guild_raids-att_boost_attacker"] - noSettlement["guild_raids-att_boost_attacker"]
+		let att_def_boost_defender = boosts["guild_raids-att_boost_defender"] - noSettlement["guild_raids-att_boost_defender"]
 		for (let b in buildings) {
 			let building = CityMap.setQIBuilding(MainParser.CityEntities[buildings[b]['cityentity_id']])
 			if (building.type !== "impediment" && building.type !== "street") {

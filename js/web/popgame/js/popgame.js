@@ -148,7 +148,8 @@ let Popgame = {
                 'title': 'Popgame preview',//i18n('Boxes.Popgame.Title'),
                 'auto_close': true,
                 'minimize': true,
-                'dragdrop': false
+                'dragdrop': false,
+			    active_maps:"main"
             });
             let body='<div style="background:#553815">';
             body+=`<div id="PGwarning">${i18n("Boxes.Popgame.Warning")}</div>`;

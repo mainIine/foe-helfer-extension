@@ -511,7 +511,8 @@ let GuildFights = {
 				dragdrop: true,
 				resize: true,
 				minimize: true,
-				settings: 'GuildFights.ShowLiveFightSettings()'
+				settings: 'GuildFights.ShowLiveFightSettings()',
+			    //active_maps:"gg"
 			});
 
 			// add css to the dom
@@ -544,7 +545,8 @@ let GuildFights = {
 				dragdrop: true,
 				minimize: true,
 				resize: true,
-				settings: 'GuildFights.ShowPlayerBoxSettings()'
+				settings: 'GuildFights.ShowPlayerBoxSettings()',
+			    active_maps:"gg"
 			});
 			HTML.AddCssFile('guildfights');
 		}
@@ -573,7 +575,8 @@ let GuildFights = {
 				auto_close: true,
 				dragdrop: true,
 				minimize: true,
-				resize: true
+				resize: true,
+			    active_maps:"gg"
 			});
 
 			if (localStorage.getItem('GildPlayersDetailViewCords') === null) {
@@ -1800,7 +1803,8 @@ let ProvinceMap = {
 				auto_close: true,
 				dragdrop: true,
 				minimize: true,
-				resize: true
+				resize: true,
+			    active_maps:"gg"
 			});
 
 			// add css to the dom

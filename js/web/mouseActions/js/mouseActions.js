@@ -19,17 +19,8 @@ let mouseActions = {
     lastMouseCoords:{},
 
     init: async () => {
-        x = new Promise((resolve) => {
-            let timer = () => {
-                if ($("#openfl-content canvas").length==0) {
-                    setTimeout(timer,50)
-                } else {
-                    resolve() 
-                }
-            }
-            timer()
-        }),
-        await x
+        await ExistenceConfirmed('$("#openfl-content canvas")')
+
         mouseActions.targetEl = $("#openfl-content canvas")[0]
         $("#openfl-content").on("click",(e) => {
             let X=e.clientX,

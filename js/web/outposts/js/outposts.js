@@ -46,7 +46,8 @@ let Outposts = {
 				auto_close: true,
 				dragdrop: true,
 				minimize: true,
-				resize: true
+				resize: true,
+			    active_maps:"cultural_outpost"
 				// popout: 'Outposts.PopOutBox()'
 			};
 

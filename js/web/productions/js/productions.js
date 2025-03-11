@@ -549,7 +549,8 @@ let Productions = {
 			table.push('<table class="foe-table sortable-table TSinactive '+type+'-list active">')
 			table.push('<thead class="sticky">')
 			table.push('<tr>')
-			table.push('<th colspan="12"><!--<span class="btn-default change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeGroups') + '</span>--> <input type="text" placeholder="' + i18n('Boxes.Productions.FilterTable') + '" class="filterCurrentList"></th>')
+			table.push('<th colspan="12"><input type="text" placeholder="' + i18n('Boxes.Productions.FilterTable') + '" class="filterCurrentList">' +
+				'<span class="btn-default" onclick="Productions.createBuildingBoostList([\'guild_raids_action_points_collection\',\'guild_raids_coins_production\',\'guild_raids_coins_start\',\'guild_raids_supplies_production\',\'guild_raids_supplies_start\',\'guild_raids_goods_start\',\'guild_raids_units_start\'])">'+i18n("Boxes.BoostList.open")+'</span></th>')
 			table.push('</tr>')
 			table.push('<tr class="sorter-header">')
 			table.push('<th class="no-sort" data-type="prodlist'+type+'"> </th>')
@@ -2117,7 +2118,7 @@ let Productions = {
 		return items
 	},
 
-	buildingBoostList: (boostArray = []) => {
+	getBuildingsByBoosts: (boostArray = []) => {
 		let buildings = Object.values(MainParser.CityEntities).filter(b=>b.id[0]=="W")
 		let boostList = {};
 		boostArray.forEach(boost => boostList[boost] = [])
@@ -2132,6 +2133,8 @@ let Productions = {
 
 				if (foundAllABoost == undefined && foundCurrentABoost == undefined) continue;
 
+				if (boost.includes('guild_raids') && building.id.includes('GuildRaids')) continue;
+
 				boostList[boost].push({
 					name: building.name,
 					entityId: building.id
@@ -2139,6 +2142,42 @@ let Productions = {
 			}
 		}
 		return boostList;
+	},
+
+	createBuildingBoostList: (boostArray = []) => {
+		if ( $('#BoostList').length === 0 ) {
+			HTML.Box({
+				id: 'BoostList',
+				title: i18n('Boxes.BoostList.Title'),
+				auto_close: true,
+				dragdrop: true,
+				minimize: true,
+				resize: true
+			});
+		}
+
+		let groupedBuildings = Productions.getBuildingsByBoosts(boostArray);
+
+        h = `<div>
+					<table class="foe-table sortable-table">
+						<thead class="sticky">
+							<tr class="sorter-header"><th data-type="boostList"><input type="text" class="filterTable" placeholder="${i18n('Boxes.Kits.FilterItems')}" /> Boosts</th></tr>
+						</thead>
+						<tbody>`
+							for (let [group, buildings] of Object.entries(groupedBuildings)) {
+								h += '<tr><td><h2><span class="boost '+group+'"></span> '+i18n('Boxes.BoostList.'+group)+'</h2><ul>'
+								for (let building of buildings) {
+									h += '<li class="helperTT" data-era="'+CurrentEra+'" data-callback_tt="Tooltips.buildingTT" data-meta_id="'+building.entityId+'">'+building.name+'</li>'
+								}
+								h += '</ul></td></tr>';
+								console.log(buildings);
+							}
+        			h +=`</tbody>
+					</table>
+				</div>`
+        $('#BoostListBody').html(h)
+        $('#BoostListBody .sortable-table').tableSorter()
+		HTML.FilterTable('#BoostListBody .filterTable')
 	},
 
 	updateItemSources:(item)=>{

@@ -85,10 +85,6 @@ let Boosts = {
         'guild_raids-def_boost_attacker': 0,
         'guild_raids-att_boost_defender': 0,
         'guild_raids-def_boost_defender': 0,
-        'guild_raids-att_boost_attacker_no_settlement': 0,
-        'guild_raids-def_boost_attacker_no_settlement': 0,
-        'guild_raids-att_boost_defender_no_settlement': 0,
-        'guild_raids-def_boost_defender_no_settlement': 0,
         'guild_expedition-att_boost_attacker': 0,
         'guild_expedition-def_boost_attacker': 0,
         'guild_expedition-att_boost_defender': 0,
@@ -101,13 +97,21 @@ let Boosts = {
         'supply_production': 0,
         'forge_points_production':0,
         'guild_raids_action_points_collection': 0,
-        'guild_raids_action_points_collection_no_settlement': 0,
         'guild_raids_coins_production': 0,
         'guild_raids_coins_start': 0,
         'guild_raids_supplies_production': 0,
         'guild_raids_supplies_start': 0,
         'guild_raids_goods_start': 0,
         'guild_raids_units_start': 0,
+    },
+    noSettlement:{
+        'guild_raids_action_points_collection': 0,
+        'guild_raids-att_boost_attacker': 0,
+        'guild_raids-def_boost_attacker': 0,
+        'guild_raids-att_boost_defender': 0,
+        'guild_raids-def_boost_defender': 0,
+        
+
     },
     Init:()=>{
         for (let boost of Object.keys(Boosts.Sums)) {
@@ -174,10 +178,12 @@ let Boosts = {
     },
     updateSums: () => {
         for (let boost of Object.keys(Boosts.Sums)) {
-            let nS = boost.includes("_no_settlement")
+            let nS = Boosts.noSettlement[boost]
             Boosts.Sums[boost] = 0;
-            for (let b of Boosts.ListByType[boost.replace("_no_settlement","")]) {
-                if (MainParser.CityMapData[b.entityId] || !nS) Boosts.Sums[boost] += b.value;
+            if (nS) Boosts.noSettlement[boost] = 0;
+            for (let b of Boosts.ListByType[boost]) {
+                Boosts.Sums[boost] += b.value
+                if (!b.entityId || MainParser.CityMapData[b.entityId]) Boosts.noSettlement[boost] += b.value;
             }
         }
         FoEproxy.triggerFoeHelperHandler("BoostsUpdated");
@@ -204,6 +210,7 @@ let Boosts = {
             }
             let boostsToAddDirectly=[]
             for (let building of buildings||[]) {
+                if (!building.id) continue
                 Boosts.Remove([{entityId:building.id}])
                 let metaData = structuredClone(MainParser.CityEntities[building.cityentity_id])
                 let era = Technologies.getEraName(building.cityentity_id, building.level)

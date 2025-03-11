@@ -523,17 +523,7 @@ let Info = {
      */
     GuildBattlegroundService_getProvinces: async (d) => {
 
-        x = new Promise((resolve) => {
-            let timer = () => {
-                if (!GuildFights.SortedColors) {
-                    setTimeout(timer,50)
-                } else {
-                    resolve() 
-                }
-            }
-            timer()
-        }),
-        await x
+        await ExistenceConfirmed('GuildFights.SortedColors')
 
         let data = d[0];
 
