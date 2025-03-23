@@ -429,6 +429,14 @@ p {
 	justify-content: center;
 }
 
+.flex.between {
+	justify-content: space-between;
+}
+
+.p2 {
+	padding: 2px;
+}
+
 .wsnw {
 	white-space: nowrap;
 }
