@@ -105,6 +105,14 @@ const Profile = {
             if (gbLevel)
                 content.push('<span><img src="'+srcLinks.get(`/city/buildings/${gb.replace('X_','X_SS_')}.png`,true)+'" />' + gbLevel +'</span>')
         }
+        let highestGB = null;
+        for (let building of Object.values(MainParser.CityMapData)) {
+            if (building.type !== "greatbuilding") continue; 
+            if (highestGB === null || building.level > highestGB.level)
+                highestGB = building;
+        }
+        if (!Profile.gbList.find(x => x == highestGB.cityentity_id))
+            content.push('<span><img src="'+srcLinks.get(`/city/buildings/${highestGB.cityentity_id.replace('X_','X_SS_')}.png`,true)+'" />' + highestGB.level +'</span>')
         content.push('</div>');
 
         content.push('<div class="dailyProd pad">');
