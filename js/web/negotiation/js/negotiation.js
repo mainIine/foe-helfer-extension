@@ -43,7 +43,7 @@ let Negotiation = {
 	Tables: /** @type {Record<String, Negotiation_GuessTable>} */({}),
 	CurrentTry: 0,
 	TryCount: /** @type {undefined|number} */ undefined,
-	TryCountIsGreaterThan4: /** @type {boolean} */ false,
+	TryCountIsGreaterThan5: /** @type {boolean} */ false,
 	GoodCount: /** @type {undefined|number} */ undefined,
 	CurrentTable: /** @type {undefined|Negotiation_GuessTable} */ undefined,
 	// Mapt die zuweisung von der Tabellen-Spalte zu den Verhandlungspartnern
@@ -153,8 +153,8 @@ let Negotiation = {
 				h.push('<th><label class="game-cursor" for="NegotiationSaveMedals">' + i18n('Boxes.Negotiation.SaveMedals') + '<input id="NegotiationSaveMedals" class="negotation-setting game-cursor" type="checkbox" data-id="NegotiationSaveMedals"' + ((sm === null || sm === 'true') ? ' checked' : '') + '></label></th>');
 			}
 			h.push('<th class="text-right" colspan="' + (CurrentTry === 1 ? '2' : '5') + '"' + '>' + 
-			'<strong class="text-warning"' + (Negotiation.TryCountIsGreaterThan4 ? 'data-title="'+i18n('Boxes.Negotiation.ChanceGreaterThan4') : '')+'">' + 
-				i18n('Boxes.Negotiation.Chance') + ': ' + HTML.Format(MainParser.round(Negotiation.CurrentTable['c'])) + (Negotiation.TryCountIsGreaterThan4 ? '% ⚠️ - ' : '% - '));
+			'<strong class="text-warning"' + (Negotiation.TryCountIsGreaterThan5 ? 'data-title="'+i18n('Boxes.Negotiation.ChanceGreaterThan5') : '')+'">' + 
+				i18n('Boxes.Negotiation.Chance') + ': ' + HTML.Format(MainParser.round(Negotiation.CurrentTable['c'])) + (Negotiation.TryCountIsGreaterThan5 ? '% ⚠️ - ' : '% - '));
 			h.push('<b style="padding-right: 15px"> ');
 			h.push(i18n('Boxes.Negotiation.Round') + ' ' + (Guesses.length + 1) + '/' + (Negotiation.TryCount));
 			h.push('</b></strong></th>');
@@ -529,9 +529,9 @@ let Negotiation = {
 		else {
 			Negotiation.TryCount = ResourceStock['negotiation_game_turn'];
 		}
-		if (Negotiation.TryCount > 4) {
-			Negotiation.TryCountIsGreaterThan4 = true;
-			Negotiation.TryCount = 4;
+		if (Negotiation.TryCount > 5) {
+			Negotiation.TryCountIsGreaterThan5 = true;
+			Negotiation.TryCount = 5;
 		}
 		console.log(Negotiation.TryCount);
 
@@ -670,7 +670,7 @@ let Negotiation = {
 			// Versuche aufgebraucht
 			Negotiation.CurrentTable = null;
 			Negotiation.Message = i18n('Boxes.Negotiation.TryEnd');
-			if (Negotiation.TryCountIsGreaterThan4)
+			if (Negotiation.TryCountIsGreaterThan5)
 			Negotiation.Message = i18n('Boxes.Negotiation.TryContinue');
 			Negotiation.MessageClass = 'warning';
 
