@@ -5,6 +5,7 @@
     "Boxes.Alerts.Form.Antiques.Exchange": "Daily Deals",
     "Boxes.Alerts.Form.Battleground": "GBG Provinces",
     "Boxes.Alerts.Form.Body": "Body",
+    "Boxes.Alerts.Form.ConfirmSectorAlerts": "Do you really want to create alerts for all sectors?",
     "Boxes.Alerts.Form.Create": "Create",
     "Boxes.Alerts.Form.CreateAlert": "Create Alert",
     "Boxes.Alerts.Form.CreateAllSectors": "Create for all sectors",
