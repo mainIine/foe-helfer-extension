@@ -61,19 +61,19 @@
 }
 
 #PlayerProfile .pad {
-    padding: 1.1rem;
+    padding: 1rem;
 }
 
 #PlayerProfile .leftInfo .pad, #PlayerProfile .rightInfo .pad {
-    padding: 1.1rem 0.5rem;
+    padding: 1rem 0.5rem;
 }
 
 #PlayerProfile h2 + .pad {
-    padding: 0 1.1rem 1.1rem;
+    padding: 0 1rem 1rem;
 }
 
 #PlayerProfile .pad + .pad {
-    padding: 0.55rem 1.1rem;
+    padding: 0.55rem 1rem;
 }
 
 #PlayerProfile div.header {
@@ -83,8 +83,15 @@
     margin: 0 auto -60px;
     filter: saturate(1.2);
     display: block;
-    background: linear-gradient(#00031333, #00031311);
-    border-radius: 10px;
+    background: linear-gradient(#00031373 50%, #00031311);
+}
+
+#PlayerProfile .rightInfo div.header {
+    border-radius: 0 10px 10px 0;
+}
+
+#PlayerProfile .leftInfo div.header {
+    border-radius: 10px 0 0 10px;
 }
 
 #PlayerProfile div.header img:not(:only-child) {
@@ -161,13 +168,25 @@
     box-shadow: 0 2px 2px var(--black-50);
 }
 
+#PlayerProfile .expansions {
+    position: absolute;
+    top: 38px;
+    left: 0;
+    padding: 0 0.5rem;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    box-sizing: border-box;
+}
+
 #PlayerProfile .greatbuildings span, #PlayerProfile .stock span {
     display: inline-block;
     margin: 6px 4px 3px;
-    padding: 0 5px 0 0;
+    padding: 0 3px 0 0;
     border-bottom: 1px solid #fff2;
     height: 26px;
     line-height: 26px;
+    position: relative;
 }
 
 #PlayerProfile .greatbuildings img, #PlayerProfile .stock img {
@@ -175,6 +194,15 @@
     max-width: 50px;
     margin: -5px 2px -5px -6px;
     filter: saturate(1.2);
+}
+
+#PlayerProfile .secondary {
+    font-size: 0.9em;
+}
+
+#PlayerProfile .secondary img {
+    max-height: 25px !important;
+    max-width: 30px !important;
 }
 
 #PlayerProfile .ranking::before, #PlayerProfile .ranking::after {
@@ -205,7 +233,7 @@
 }
 
 #PlayerProfile .fp::before, #PlayerProfile .goods .prev::before, #PlayerProfile .goods .current::before, #PlayerProfile .goods .next::before, #PlayerProfile .goods .guild::before, 
-#PlayerProfile .aAtt::before, #PlayerProfile .aDef::before, #PlayerProfile .dAtt::before, #PlayerProfile .dDef::before, 
+#PlayerProfile .aAtt::after, #PlayerProfile .aDef::before, #PlayerProfile .dAtt::after, #PlayerProfile .dDef::before, 
 #PlayerProfile .qiactions::before, #PlayerProfile .qicoins::before, #PlayerProfile .qicoins_start::before, #PlayerProfile .qisupplies::before, #PlayerProfile .qisupplies_start::before, #PlayerProfile .qigoods_start::before, #PlayerProfile .qiunits_start::before {
     content: '';
     position: relative;
@@ -293,16 +321,20 @@
     height: 31px;
 }
 
-#PlayerProfile .aAtt::before {
-    background: url(../../productions/images/productions.png) -311px 3px no-repeat;
+#PlayerProfile .aAtt::after {
+    background: url(../../productions/images/productions.png) -311px -3px no-repeat;
+    margin-right: -15px;
+    z-index: 1;
 }
 
 #PlayerProfile .aDef::before {
     background: url(../../productions/images/productions.png) -365px 3px no-repeat;
 }
 
-#PlayerProfile .dAtt::before {
-    background: url(../../productions/images/productions.png) -338px 3px no-repeat;
+#PlayerProfile .dAtt::after {
+    background: url(../../productions/images/productions.png) -338px -3px no-repeat;
+    margin-right: -15px;
+    z-index: 1;
 }
 
 #PlayerProfile .dDef::before {
@@ -352,28 +384,28 @@
 #PlayerProfile .settlements img {
     max-height: 41px;
     display: inline-block;
-    margin: -5px 2px -5px -7px;
+    margin: -8px 2px -8px -7px;
 }
 
 #PlayerProfile .settlements .friend_of_the_vikings img {
-    margin: -5px -1px -5px -11px;
+    margin: -8px -1px -8px -11px;
 }
 
 #PlayerProfile .settlements .cop_japanese img {
-    margin: -9px -5px -6px -11px;
+    margin: -12px -5px -9px -11px;
     max-height: 47px;
 }
 
 #PlayerProfile .settlements .a_new_world img {
-    margin: -5px -3px -5px -9px;
+    margin: -8px -3px -8px -9px;
 }
 #PlayerProfile .settlements .friend_of_the_pharaoh img {
-    margin: -5px -4px -5px -9px;
+    margin: -8px -4px -8px -9px;
 }
 
 #PlayerProfile .settlements .tropical_islands img, #PlayerProfile .settlements .splendid_empire img {
-    max-height: 39px;
-    margin: -4px 2px -4px -7px;
+    max-height: 37px;
+    margin: -6px 2px -6px -7px;
 }
 
 #PlayerProfile .settlements span {
@@ -385,15 +417,28 @@
     border: 1px solid #0008;
 }
 
-#PlayerProfile .achievements span {
+#PlayerProfile .achievements span, #PlayerProfile .inventory span {
     display: inline-block;
-    padding: 0 3px;
-    margin: -2px 0;
+    padding: 0 5px 0 0;
+    margin: 4px 3px;
+    box-shadow: inset -1px -1px 20px #0005;
+    border-radius: 10px;
 }
 
-#PlayerProfile .achievements img {
-    height: 40px;
-    background: radial-gradient(circle, #000021 0%, transparent 70%);
+#PlayerProfile .achievements img, #PlayerProfile .inventory img {
+    max-height: 40px;
+    margin: -5px 0 -5px -5px;
+    background: radial-gradient(circle, #00000066 53%, transparent 55%);
+}
+
+#PlayerProfile .inventory img {
+    max-height: 30px;
+    margin: -2px 0 -2px -5px;
+    background: radial-gradient(circle, #00000066 33%, transparent 55%);
+}
+
+#PlayerProfile .inventory .favorites {
+    margin-top: 10px;
 }
 
 #PlayerProfile .qiBoosts span {
