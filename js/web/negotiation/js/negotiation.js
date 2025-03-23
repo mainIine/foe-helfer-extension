@@ -145,23 +145,23 @@ let Negotiation = {
 			let sceg = localStorage.getItem('NegotiationSaveCurrentEraGoods'),
 				sm = localStorage.getItem('NegotiationSaveMedals');
 
-			h.push('<tbody>');
+			h.push('<thead class="dark-bg">');
 
 			h.push('<tr>');
-			h.push('<td colspan="' + (CurrentTry === 1 ? '1' : '4') + '" class="text-warning"' +
-				(Negotiation.TryCountIsGreaterThan4 ? 'title="Given percentages are for only 4 rounds of negotiation"' : '')+ '><strong>' + 
-				i18n('Boxes.Negotiation.Chance') + ': ' + HTML.Format(MainParser.round(Negotiation.CurrentTable['c'])) + 
-				(Negotiation.TryCountIsGreaterThan4 ? '% ⚠️' : '%') +
-				'</strong></td>');
 			if (CurrentTry === 1) {
-				h.push('<td colspan="2"><label class="game-cursor" for="NegotiationSaveCurrentEraGoods">' + i18n('Boxes.Negotiation.SaveCurrentEraGoods') + '<input id="NegotiationSaveCurrentEraGoods" class="negotation-setting game-cursor" type="checkbox" data-id="NegotiationSaveCurrentEraGoods"' + ((sceg === null || sceg === 'true') ? ' checked' : '') + '></label></td>');
-				h.push('<td colspan="1"><label class="game-cursor" for="NegotiationSaveMedals">' + i18n('Boxes.Negotiation.SaveMedals') + '<input id="NegotiationSaveMedals" class="negotation-setting game-cursor" type="checkbox" data-id="NegotiationSaveMedals"' + ((sm === null || sm === 'true') ? ' checked' : '') + '></label></td>');
+				h.push('<th colspan="2"><label class="game-cursor" for="NegotiationSaveCurrentEraGoods">' + i18n('Boxes.Negotiation.SaveCurrentEraGoods') + '<input id="NegotiationSaveCurrentEraGoods" class="negotation-setting game-cursor" type="checkbox" data-id="NegotiationSaveCurrentEraGoods"' + ((sceg === null || sceg === 'true') ? ' checked' : '') + '></label></th>');
+				h.push('<th><label class="game-cursor" for="NegotiationSaveMedals">' + i18n('Boxes.Negotiation.SaveMedals') + '<input id="NegotiationSaveMedals" class="negotation-setting game-cursor" type="checkbox" data-id="NegotiationSaveMedals"' + ((sm === null || sm === 'true') ? ' checked' : '') + '></label></th>');
 			}
-			h.push('<td colspan="1" class="text-right" id="round-count" style="padding-right: 15px"><strong>');
+			h.push('<th class="text-right" colspan="' + (CurrentTry === 1 ? '2' : '5') + '"' + '>' + 
+			'<strong class="text-warning"' + (Negotiation.TryCountIsGreaterThan4 ? 'data-title="'+i18n('Boxes.Negotiation.ChanceGreaterThan4') : '')+'">' + 
+				i18n('Boxes.Negotiation.Chance') + ': ' + HTML.Format(MainParser.round(Negotiation.CurrentTable['c'])) + (Negotiation.TryCountIsGreaterThan4 ? '% ⚠️ - ' : '% - '));
+			h.push('<b style="padding-right: 15px"> ');
 			h.push(i18n('Boxes.Negotiation.Round') + ' ' + (Guesses.length + 1) + '/' + (Negotiation.TryCount));
-			h.push('</strong></td>');
+			h.push('</b></strong></th>');
 			h.push('</tr>');
+			h.push('</thead>');
 
+			h.push('<tbody>');
 			h.push('<tr>');
 
 			h.push('<td class="text-warning">' + i18n('Boxes.Negotiation.Average') + '</td>');
@@ -218,8 +218,6 @@ let Negotiation = {
 				h.push('<td colspan="5" class="text-center"><small>' + i18n('Boxes.Negotiation.DragDrop') + '</small></td>');
 				h.push('</tr>');
 			}
-
-			h.push('</tbody>');
 		}
 		else if (Negotiation.CurrentTable == null && Negotiation.CurrentTry === 1){
 			Negotiation.MessageClass = 'danger';
@@ -227,16 +225,13 @@ let Negotiation = {
 		}
 
 		// Verhandlungspartner überschrifteh
-		h.push('<tbody>');
 		h.push('<tr class="thead">');
 
 		for (let i = 0; i < Negotiation.PlaceCount; i++) {
 			h.push('<th class="text-center">' + i18n('Boxes.Negotiation.Person') + ' ' + (i + 1) + '</th>');
 		}
 
-		h.push('</tr>');
-		h.push('</tbody>');
-
+		h.push('</tr></tbody>');
 
 		if (Negotiation.WrongGoodsSelected) {
 			h.push('<tbody class="wrong-goods">');
@@ -275,6 +270,9 @@ let Negotiation = {
 			// Lagerbestand via Tooltip
 			// @ts-ignore
 			$('.good').tooltip({
+				container: '#negotiationBox'
+			});
+			$('thead strong.text-warning').tooltip({
 				container: '#negotiationBox'
 			});
 
@@ -531,7 +529,7 @@ let Negotiation = {
 		else {
 			Negotiation.TryCount = ResourceStock['negotiation_game_turn'];
 		}
-		if (Negotiation.TryCount === 5) {
+		if (Negotiation.TryCount > 4) {
 			Negotiation.TryCountIsGreaterThan4 = true;
 			Negotiation.TryCount = 4;
 		}
@@ -672,6 +670,8 @@ let Negotiation = {
 			// Versuche aufgebraucht
 			Negotiation.CurrentTable = null;
 			Negotiation.Message = i18n('Boxes.Negotiation.TryEnd');
+			if (Negotiation.TryCountIsGreaterThan4)
+			Negotiation.Message = i18n('Boxes.Negotiation.TryContinue');
 			Negotiation.MessageClass = 'warning';
 
 		} else if (Negotiation.CurrentTable) {
