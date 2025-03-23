@@ -799,7 +799,7 @@
     "Boxes.Negotiation.Average": "Bevorzugte Reihenfolge",
     "Boxes.Negotiation.Canceled": "Verhandlung wurde abgebrochen",
     "Boxes.Negotiation.Chance": "Chance",
-    "Boxes.Negotiation.ChanceGreaterThan4": "Wir rechnen mit 4 Versuchen, weil wir keine Daten zum Lösen mit mehr Versuchen zur Verfügung haben.",
+    "Boxes.Negotiation.ChanceGreaterThan5": "Wir rechnen mit 5 Versuchen, weil wir keine Daten zum Lösen mit mehr Versuchen zur Verfügung haben.",
     "Boxes.Negotiation.DragDrop": "Du kannst die Icons der Durchschnittsanzeige selber via Drag&Drop neu anordnen um die Reihenfolge vor dem 1. Versuch festzulegen.",
     "Boxes.Negotiation.GoodsCritical": "ACHTUNG: Der Gütervorrat ist auf kritischem Niveau!",
     "Boxes.Negotiation.GoodsLow": "ACHTUNG: Dein Gütervorrat ist knapp!",
