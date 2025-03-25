@@ -798,7 +798,7 @@
     "Boxes.Negotiation.Average": "Preference Order",
     "Boxes.Negotiation.Canceled": "Negotiation has been cancelled",
     "Boxes.Negotiation.Chance": "Chance",
-    "Boxes.Negotiation.ChanceGreaterThan4": "We still calculate with 4 tries, because we do not have the data to support negotiations with more tries.",
+    "Boxes.Negotiation.ChanceGreaterThan5": "We still calculate with 5 tries, because we do not have the data to support negotiations with more tries.",
     "Boxes.Negotiation.DragDrop": "Drag & Drop the resource icons above to rearrange the average display yourself to determine a new sequence from the first attempt.",
     "Boxes.Negotiation.GoodsCritical": "WARNING!: Goods stock at CRITICAL level!",
     "Boxes.Negotiation.GoodsLow": "ATTENTION: Goods stock is LOW!",
