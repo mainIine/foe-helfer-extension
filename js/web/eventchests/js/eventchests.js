@@ -180,7 +180,7 @@ let EventChests = {
      *
      */
     Show: () => {
-
+        return;
         if ($('#eventchests').length === 0) {
             HTML.Box({
                 'id': 'eventchests',
