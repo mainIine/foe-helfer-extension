@@ -93,6 +93,8 @@ let Boosts = {
         'battleground-def_boost_attacker': 0,
         'battleground-att_boost_defender': 0,
         'battleground-def_boost_defender': 0,
+        'battleground-def_boost_defender': 0,
+        'critical_hit_chance': 0,
         'coin_production': 0,
         'supply_production': 0,
         'forge_points_production':0,
