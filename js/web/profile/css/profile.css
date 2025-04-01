@@ -197,6 +197,15 @@
     filter: saturate(1.2);
 }
 
+#PlayerProfile .greatbuildings .total {
+    font-weight: bold;
+    border-bottom-style: dotted;
+}
+
+#PlayerProfile .greatbuildings .total img {
+    margin: -5px -4px -5px -8px;
+}
+
 #PlayerProfile .secondary {
     font-size: 0.9em;
 }
@@ -451,10 +460,17 @@
 }
 
 #PlayerProfile .inventory .favorites {
-    margin-top: 10px;
+    margin-top: 2px;
+}
+#PlayerProfile .inventory .favorites::before {
+    content: '★';
+    text-align: center;
+    display: block;
+    margin-bottom: 3px;
+    font-size: 11px;
 }
 
-#PlayerProfile .inventory .favorites span {
+#PlayerProfile .inventory .favorites::before, #PlayerProfile .inventory .favorites span {
     color: #edc492;
 }
 
