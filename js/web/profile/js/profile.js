@@ -100,19 +100,29 @@ const Profile = {
         content.push('</div>');
 
         content.push('<div class="greatbuildings pad text-center">')
+        // selected GBs
         for (let gb of Profile.gbList) {
             let gbLevel = Object.values(MainParser.CityMapData).find(x => x.cityentity_id == gb)?.level;
             if (gbLevel)
                 content.push('<span><img src="'+srcLinks.get(`/city/buildings/${gb.replace('X_','X_SS_')}.png`,true)+'" />' + gbLevel +'</span>')
         }
-        let highestGB = null;
-        for (let building of Object.values(MainParser.CityMapData)) {
+
+        let highestGBs = [];
+        for (let building of Object.values(MainParser.CityMapData)) { // get all GBs
             if (building.type !== "greatbuilding") continue; 
-            if (highestGB === null || building.level > highestGB.level)
-                highestGB = building;
+            highestGBs.push(building);
         }
-        if (!Profile.gbList.find(x => x == highestGB.cityentity_id))
-            content.push('<span><img src="'+srcLinks.get(`/city/buildings/${highestGB.cityentity_id.replace('X_','X_SS_')}.png`,true)+'" />' + highestGB.level +'</span>')
+        highestGBs.sort((a,b) => { // sort GBs by level
+            if (a.level > b.level) return -1;
+            if (a.level < b.level) return 1;
+            return 0;
+        });
+        for (let i = 0; i < 7; i++) { // only show highest 6 GBs
+            let gb = highestGBs[i];
+            if (!Profile.gbList.find(x => x == gb.cityentity_id)) // if the GB is not already part of the default list
+                content.push('<span><img src="'+srcLinks.get(`/city/buildings/${gb.cityentity_id.replace('X_','X_SS_')}.png`,true)+'" />' + gb.level +'</span>');
+        }
+
         content.push('</div>');
 
         content.push('<div class="dailyProd pad">');
@@ -202,9 +212,12 @@ const Profile = {
             content.push('<div class="inventory pad text-center">');
             content.push('<h2>'+i18n('Boxes.MarketOffers.Inventory')+'</h2>');
             for (let item of Profile.inventoryList) {
-            let itemInStock = Object.values(MainParser.Inventory).find(x => x.itemAssetName == item);
-            if (itemInStock)
-                content.push('<span><img src="'+srcLinks.get(`/shared/icons/reward_icons/reward_icon_${item}.png`,true)+'" /> '+HTML.Format(itemInStock.inStock)+'</span>');
+                let itemInStock = Object.values(MainParser.Inventory).find(x => x.itemAssetName == item);
+                if (item == 'rush_mass_supply_large') { // same asset as 6h rush, filter by speedup
+                    itemInStock = Object.values(MainParser.Inventory).filter(x => x.itemAssetName == item).find(x => x.item.duration == 86400);
+                }
+                if (itemInStock)
+                    content.push('<span data-original-title="'+itemInStock.name+'"><img src="'+srcLinks.get(`/shared/icons/reward_icons/reward_icon_${item}.png`,true)+'" /> '+HTML.Format(itemInStock.inStock)+'</span>');
             }
 
             // get additional favorites
