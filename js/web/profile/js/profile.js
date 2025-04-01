@@ -154,7 +154,7 @@ const Profile = {
                 if (Boosts.Sums.guild_raids_coins_production !== 0)
                     content.push(HTML.Format(parseInt(Boosts.Sums.guild_raids_coins_production)) + '% ');
                 if (Boosts.Sums.guild_raids_coins_start !== 0)
-                    content.push('+' + HTML.FormatNumberShort(parseInt(Boosts.Sums.guild_raids_coins_start)))
+                    content.push('+' + HTML.FormatNumberShort(parseInt(Boosts.Sums.guild_raids_coins_start),true,'en-EN'))
                 content.push('</span> ');
             }
             if (Boosts.Sums.guild_raids_supplies_production + Boosts.Sums.guild_raids_supplies_start !== 0) {
@@ -162,7 +162,7 @@ const Profile = {
                 if (Boosts.Sums.guild_raids_supplies_production !== 0)
                     content.push(HTML.Format(parseInt(Boosts.Sums.guild_raids_supplies_production)) + '% ');
                 if (Boosts.Sums.guild_raids_supplies_start !== 0)
-                    content.push('+' + HTML.FormatNumberShort(parseInt(Boosts.Sums.guild_raids_supplies_start)));
+                    content.push('+' + HTML.FormatNumberShort(parseInt(Boosts.Sums.guild_raids_supplies_start),true,'en-EN'));
                 content.push('</span> ');
             }
             if (Boosts.noSettlement.guild_raids_action_points_collection !== 0)
@@ -185,7 +185,7 @@ const Profile = {
         content.push('</div>');
             content.push('<div class="stock pad text-center">');
             content.push('<span><img src="'+srcLinks.get(`/shared/icons/quest_reward/icon_forgepoints.png`,true)+'" /> '+HTML.Format(StrategyPoints.InventoryFP || 0)+'</span>');
-            content.push('<span><img src="'+srcLinks.get(`/city/gui/great_building_bonus_icons/great_building_bonus_medals.png`,true)+'" /> '+HTML.FormatNumberShort(ResourceStock.medals || 0)+'</span>');
+            content.push('<span><img src="'+srcLinks.get(`/city/gui/great_building_bonus_icons/great_building_bonus_medals.png`,true)+'" /> '+HTML.FormatNumberShort(ResourceStock.medals || 0,true,'en-EN')+'</span>');
             
             
             let currentGoods = 0, previousGoods = 0, nextGoods = 0;
@@ -199,16 +199,16 @@ const Profile = {
             }
             content.push('<div class="goods">');
             if (previousGoods > 0)
-                content.push('<span class="prev">' + HTML.FormatNumberShort(previousGoods) + '</span> ');
+                content.push('<span class="prev">' + HTML.FormatNumberShort(previousGoods,true,'en-EN') + '</span> ');
             if (currentGoods > 0)
-                content.push('<span class="current">' + HTML.FormatNumberShort(currentGoods) + '</span> ');
+                content.push('<span class="current">' + HTML.FormatNumberShort(currentGoods,true,'en-EN') + '</span> ');
             if (nextGoods > 0)
-                content.push('<span class="next">' + HTML.FormatNumberShort(nextGoods) + '</span> ');
+                content.push('<span class="next">' + HTML.FormatNumberShort(nextGoods,true,'en-EN') + '</span> ');
             content.push('</div>');
 
-            content.push('<span class="secondary"><img src="'+srcLinks.get(`/shared/icons/eventwindow_tavern.png`,true)+'" /> '+HTML.FormatNumberShort(ResourceStock.tavern_silver || 0)+'</span>');
+            content.push('<span class="secondary"><img src="'+srcLinks.get(`/shared/icons/eventwindow_tavern.png`,true)+'" /> '+HTML.FormatNumberShort(ResourceStock.tavern_silver || 0,true,'en-EN')+'</span>');
             content.push('<span class="secondary"><img src="'+srcLinks.get(`/shared/icons/gemstones.png`,true)+'" /> '+HTML.Format(ResourceStock.gemstones || 0)+'</span>');
-            content.push('<span class="secondary"><img src="'+srcLinks.get(`/shared/gui/antiquedealer/antiquedealer_currency_trade_coins.png`,true)+'" /> '+HTML.FormatNumberShort(ResourceStock.trade_coins || 0)+'</span>');
+            content.push('<span class="secondary"><img src="'+srcLinks.get(`/shared/gui/antiquedealer/antiquedealer_currency_trade_coins.png`,true)+'" /> '+HTML.FormatNumberShort(ResourceStock.trade_coins || 0,true,'en-EN')+'</span>');
             
             content.push('</div>');
 
@@ -322,7 +322,7 @@ const Profile = {
                 if (isNaN(parseInt(achFromList?.currentLevel?.progress))) continue; 
 
                 content.push('<span data-original-title="'+achFromList.descriptionTemplate.replace('%s/%s',HTML.Format(parseInt(achFromList.currentLevel.progress))).replace('%s-/%s-',HTML.Format(parseInt(achFromList.currentLevel.progress)))+'"><img src="'+srcLinks.get(`/shared/icons/achievements/achievement_icons_${ach[1]}.png`,true)+'" />'+
-                HTML.FormatNumberShort(parseInt(achFromList.currentLevel.progress)) + '</span>');
+                HTML.FormatNumberShort(parseInt(achFromList.currentLevel.progress),true,'en-EN') + '</span>');
             }
             content.push('</div>');
         content.push('</div>');

@@ -686,11 +686,11 @@ let HTML = {
 	 * @param number
 	 * @returns {*}
 	 */
-	FormatNumberShort: (number,replaceZero=true) => {
+	FormatNumberShort: (number,replaceZero=true,language='Local') => {
 		if (number === 0 && replaceZero) {
 			return '-';
 		} else {
-			return Intl.NumberFormat(i18n('Local'), {
+			return Intl.NumberFormat(i18n(language), {
 				notation: "compact",
 				maximumFractionDigits: 1
 			  }).format(Number(number));
