@@ -22,13 +22,13 @@ const Profile = {
     achievements: null,
     achievementList: ['battle#great_commander','battle#billy_the_kid','battle#great_wall_of_china','guild_expedition#impressive_defender','resource#hey_big_spender','social#a_little_help_for_your_friends','friends_tavern#one_of_many_faces'],
     favAchievements: [],
-    gbList: ['X_FutureEra_Landmark1','X_OceanicFuture_Landmark3','X_ProgressiveEra_Landmark2','X_ArcticFuture_Landmark2'],
+    gbList: ['X_FutureEra_Landmark1','X_OceanicFuture_Landmark3','X_ProgressiveEra_Landmark2'],
     inventoryList: ['rush_single_event_building_instant','motivate_one','motivate_all','rush_mass_supply_large','rush_single_goods_instant','one_up_kit','renovation_kit','store_building'],
 
     init: (responseData) => {
         Profile.daysPlayed = responseData.achievementGroups.find(x => x.id == "special").achievements.find(x => x.id == 'foe_fanclub').currentLevel.progress || null
         Profile.showButton();
-        Profile.settlements = responseData.achievementGroups.find(x => x.id == "cultural_settlements").achievements;
+        Profile.settlements = responseData.achievementGroups?.find(x => x.id == "cultural_settlements").achievements;
         Profile.achievements = responseData.achievementGroups;
         Profile.favAchievements = responseData.topAchievements;
     },
@@ -200,6 +200,7 @@ const Profile = {
             content.push('</div>');
 
             content.push('<div class="inventory pad text-center">');
+            content.push('<h2>'+i18n('Boxes.MarketOffers.Inventory')+'</h2>');
             for (let item of Profile.inventoryList) {
             let itemInStock = Object.values(MainParser.Inventory).find(x => x.itemAssetName == item);
             if (itemInStock)
@@ -258,6 +259,7 @@ const Profile = {
                     content.push('<span class="guild">' + HTML.Format(parseInt(parseInt(Profile.guildGoods)) || 0) + '</span>')
                 content.push('</div>');
             content.push('</div>');
+
             content.push('<div class="battleBoosts pad text-center">');
             content.push('<h2>'+i18n('Boxes.PlayerProfile.BattleBoosts')+'</h2>');
             content.push('<table><tr class="general">'
@@ -277,6 +279,8 @@ const Profile = {
                 +'<span class="dDef">'+HTML.Format(parseInt(Boosts.Sums['guild_expedition-def_boost_defender']+Boosts.Sums.def_boost_defender))+'</span></td></tr>');
             content.push('<tr><td><span class="aAtt">'+HTML.Format(parseInt(Boosts.noSettlement['guild_raids-att_boost_attacker']))+'</span><span class="aDef">'+HTML.Format(parseInt(Boosts.noSettlement['guild_raids-def_boost_attacker']))+'</span></td><td><span class="qi"></span></td><td><span class="dAtt">'+HTML.Format(parseInt(Boosts.noSettlement['guild_raids-att_boost_defender']))+'</span><span class="dDef">'+HTML.Format(parseInt(Boosts.noSettlement['guild_raids-def_boost_defender']))+'</span></td></tr>');
             content.push('</tr></table>');
+            
+            content.push('<span class="crit showMore"><img src="'+srcLinks.get(`/city/gui/great_building_bonus_icons/great_building_bonus_critical_hit_chance.png`,true)+'" /> '+Math.round(Boosts.Sums.critical_hit_chance*100)/100+'%</span>')
             content.push('</div>');
 
             // settlements

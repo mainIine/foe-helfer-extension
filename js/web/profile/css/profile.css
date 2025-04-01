@@ -248,6 +248,18 @@
     zoom: 0.8;
 }
 
+#PlayerProfile .crit {
+    background: linear-gradient(132deg, #752f09, #61270755);
+    padding: 1px 5px 2px 0;
+    border-radius: 19px 7px 7px 7px;
+    color: #f3f3f3;
+}
+
+#PlayerProfile .crit img {
+    max-height: 30px;
+    margin: -3px 0 0 -8px;
+}
+
 #PlayerProfile .goods {
     margin-top: -3px;
 }
@@ -342,7 +354,7 @@
 }
 
 #PlayerProfile .battleBoosts table {
-    margin: 0 auto;
+    margin: 0 auto 5px;
 }
 
 #PlayerProfile .battleBoosts .gbg, #PlayerProfile .battleBoosts .ge, #PlayerProfile .battleBoosts .qi {
