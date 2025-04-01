@@ -96,7 +96,7 @@
 
 #PlayerProfile div.header img:not(:only-child) {
     position: absolute;
-    left: calc(50% - 50px);
+    left: calc(50% - 40px);
     max-height: 100px;
 }
 
@@ -110,22 +110,23 @@
     min-width: 110px;
     max-width: 150px;
     max-height: 110px;
+    filter: brightness(1.1);
 }
 
 #PlayerProfile div.header img.alabaster {
     height: 50px;
-    left: 50px;
+    left: 60px;
     top: 20px;
 }
 
 #PlayerProfile div.header img.goods {
     height: 50px;
-    left: 30px;
+    left: 40px;
     top: 40px;
 }
 
 #PlayerProfile div.header img.fp {
-    left: 150px;
+    left: 160px;
     top: 30px;
 }
 
