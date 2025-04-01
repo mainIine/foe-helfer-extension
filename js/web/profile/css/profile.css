@@ -83,7 +83,7 @@
     margin: 0 auto -60px;
     filter: saturate(1.2);
     display: block;
-    background: linear-gradient(#00031373 50%, #00031311);
+    background: linear-gradient(#061327 50%, #00031311 50%, #0000);
 }
 
 #PlayerProfile .rightInfo div.header {
@@ -133,9 +133,9 @@
     position: absolute;
     box-sizing: border-box;
     background:  linear-gradient(196deg, #000313 0%, rgb(3, 13, 36) 100%);
-    width: 250px;
+    width: 260px;
     top: 50px;
-    left: -253px;
+    left: -263px;
     border-radius: 7px 0 0 7px;
     padding: 15px 0;
     box-shadow: 0 -10px 10px #0006;
@@ -146,7 +146,7 @@
 
 #PlayerProfile .rightInfo {
     background: linear-gradient(196deg, #000313 0%, rgb(3, 13, 36) 100%);
-    right: -253px;
+    right: -263px;
     left: auto;
     border-radius: 0 7px 7px 0;
 }
@@ -190,7 +190,7 @@
 }
 
 #PlayerProfile .greatbuildings img, #PlayerProfile .stock img {
-    max-height: 35px;
+    max-height: 33px;
     max-width: 50px;
     margin: -5px 2px -5px -6px;
     filter: saturate(1.2);
@@ -396,28 +396,28 @@
 #PlayerProfile .settlements img {
     max-height: 41px;
     display: inline-block;
-    margin: -8px 2px -8px -7px;
+    margin: -10px 2px -8px -7px;
 }
 
 #PlayerProfile .settlements .friend_of_the_vikings img {
-    margin: -8px -1px -8px -11px;
+    margin: -10px -3px -8px -11px;
 }
 
 #PlayerProfile .settlements .cop_japanese img {
-    margin: -12px -5px -9px -11px;
+    margin: -14px -7px -9px -11px;
     max-height: 47px;
 }
 
 #PlayerProfile .settlements .a_new_world img {
-    margin: -8px -3px -8px -9px;
+    margin: -10px -3px -8px -9px;
 }
 #PlayerProfile .settlements .friend_of_the_pharaoh img {
-    margin: -8px -4px -8px -9px;
+    margin: -10px -6px -8px -9px;
 }
 
 #PlayerProfile .settlements .tropical_islands img, #PlayerProfile .settlements .splendid_empire img {
     max-height: 37px;
-    margin: -6px 2px -6px -7px;
+    margin: -8px 2px -6px -7px;
 }
 
 #PlayerProfile .settlements span {
@@ -425,7 +425,7 @@
     margin: 6px 3px 3px;
     background: var(--black-50);
     border-radius: 9px;
-    padding: 0 5px 0 2px;
+    padding: 2px 5px 0 2px;
     border: 1px solid #0008;
 }
 
@@ -451,6 +451,10 @@
 
 #PlayerProfile .inventory .favorites {
     margin-top: 10px;
+}
+
+#PlayerProfile .inventory .favorites span {
+    color: #edc492;
 }
 
 #PlayerProfile .qiBoosts span {
