@@ -107,22 +107,24 @@ const Profile = {
                 content.push('<span><img src="'+srcLinks.get(`/city/buildings/${gb.replace('X_','X_SS_')}.png`,true)+'" />' + gbLevel +'</span>')
         }
 
-        let highestGBs = [];
+        let allGBs = [];
         for (let building of Object.values(MainParser.CityMapData)) { // get all GBs
             if (building.type !== "greatbuilding") continue; 
-            highestGBs.push(building);
+            allGBs.push(building);
         }
-        highestGBs.sort((a,b) => { // sort GBs by level
+        allGBs.sort((a,b) => { // sort GBs by level
             if (a.level > b.level) return -1;
             if (a.level < b.level) return 1;
             return 0;
         });
         for (let i = 0; i < 7; i++) { // only show highest 6 GBs
-            let gb = highestGBs[i];
+            let gb = allGBs[i];
             if (gb == undefined) continue;
             if (!Profile.gbList.find(x => x == gb.cityentity_id)) // if the GB is not already part of the default list
                 content.push('<span><img src="'+srcLinks.get(`/city/buildings/${gb.cityentity_id.replace('X_','X_SS_')}.png`,true)+'" />' + gb.level +'</span>');
         }
+        if (allGBs.length > 6)
+            content.push('<span class="total" data-original-title="'+i18n('Boxes.GuildFights.Total')+': '+allGBs.length+'"><img src="'+srcLinks.get(`/shared/celebrate/rules_great_building_contribution.png`,true)+'" />' + allGBs.length +'</span>');
 
         content.push('</div>');
 
