@@ -120,8 +120,8 @@ let Recurring = {
             if (!Recurring.data.Questlist[q]) continue;
             let quest=Recurring.data.Questlist[q]
             h.push(`<tr>`);
-            h.push(`<td title="${Recurring.getTasks(quest.groups,quest.conditions)}">${quest.title}</td>`);
-            h.push(`<td title="${Recurring.getTasks(quest.groups,quest.conditions)}">${Recurring.getTasks(quest.groups,quest.conditions,false)}</td>`);
+            h.push(`<td title="${Recurring.getTasksTitle(quest.groups,quest.conditions)}"><span>${quest.title}</span></td>`);
+            h.push(`<td title="${Recurring.getTasksTitle(quest.groups,quest.conditions)}">${Recurring.getTasks(quest.groups,quest.conditions)}</td>`);
             h.push(quest.diamonds ? '<td class="check">✓</td>' : '<td>?</td>');
             h.push('</tr>');
         }
@@ -129,8 +129,8 @@ let Recurring = {
             if (!Recurring.data.Questlist[q]) continue;
             let quest=Recurring.data.Questlist[q]
             h.push(`<tr>`);
-            h.push(`<td title="${Recurring.getTasks(quest.groups,quest.conditions)}">${quest.title}</td>`);
-            h.push(`<td title="${Recurring.getTasks(quest.groups,quest.conditions)}">${Recurring.getTasks(quest.groups,quest.conditions,false)}</td>`);
+            h.push(`<td title="${Recurring.getTasksTitle(quest.groups,quest.conditions)}"><span>${quest.title}</span></td>`);
+            h.push(`<td title="${Recurring.getTasksTitle(quest.groups,quest.conditions)}">${Recurring.getTasks(quest.groups,quest.conditions)}</td>`);
             h.push(quest.diamonds ? '<td class="check">✓</td>' : '<td>?</td>');
             h.push('</tr>');
         }
@@ -159,20 +159,31 @@ let Recurring = {
         localStorage.setItem('Recurring', JSON.stringify(Recurring.data));
         Recurring.SetCounter();
     },
-    getTasks: (groups,conditions,title=true) =>{
+    getTasks: (groups,conditions) =>{
         let t = '';
-        let tAnd = '';
+        let tAdd = '';
         for (let x in groups) {
             if (!groups[x]) continue;
-            t += tAnd;
-            tAnd = (title ? `\n-------\n` : `<br>`) + `${i18n('Boxes.RecurringQuests.AND')} `;
-            let tOr= '';
             for (let c of groups[x].conditionIds) {
                 let d= conditions.find(item => item.id==c).description;
                 let img= srcLinks.getQuest(conditions.find(item => item.id==c).iconType);
-                t += tOr + (title ? d: (`<img src="${img}">` + d.substring(0,20) + (d.length>20 ?'...':'')));
-                tOr = (title ? `\n`:`<br><pre style="display:inline">&emsp;</pre>`) +`${i18n('Boxes.RecurringQuests.OR')} `;
+                t += `<span>${tAdd} <img src="${img}"> ${d}</span>`;
+                tAdd = `<pre style="display:inline">&emsp;&emsp;</pre>${i18n('Boxes.RecurringQuests.OR')} `;
             }
+            tAdd = `${i18n('Boxes.RecurringQuests.AND')}`;
+        }
+        return t;
+    },
+    getTasksTitle: (groups,conditions) =>{
+        let t = '';
+        let tAdd = '';
+        for (let x in groups) {
+            if (!groups[x]) continue;
+            for (let c of groups[x].conditionIds) {
+                t += tAdd + conditions.find(item => item.id==c).description;
+                tAdd = `\n${i18n('Boxes.RecurringQuests.OR')} `;
+            }
+            tAdd = `\n-------\n${i18n('Boxes.RecurringQuests.AND')} `;
         }
         return t;
     },
