@@ -31,6 +31,7 @@
         text-align: center;
         font-weight: bold;
         font-size: large;
+        width: 27px;
 }
 
 #RecurringQuestsBoxBody td.check:last-child {
@@ -42,16 +43,26 @@
 #recurringTable.hideTasks th:nth-child(1),
 #recurringTable.hideTasks td:nth-child(1){
         display:none;
+        width: 90%;
 }
 #recurringTable:not(.hideTasks) th:nth-child(2),
 #recurringTable:not(.hideTasks) td:nth-child(2){
         display:none;
+        width: 90%;
 }
 #recurringTable th:nth-child(1),
 #recurringTable th:nth-child(2){
         color:var(--text-bright);
 }
-
+#recurringTable {
+    table-layout: fixed;
+}
+#recurringTable span {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    display: block;
+}
 #recurringTable img{
         height: 25px;
 }
