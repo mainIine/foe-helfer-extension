@@ -34,22 +34,7 @@ FoEproxy.addHandler('QuestService', 'getUpdates', (data, postData) => {
         }
     }
     Recurring.data.count=0;
-    Recurring.data.filter = [];
-    Recurring.data.filter2 = [];
-    for (let q in Recurring.data.Questlist) {
-        if (!Recurring.data.Questlist[q]) continue;
-        if (Recurring.data.Questlist[q].era == CurrentEraID) {
-            if (!Recurring.data.Questlist[q].diamonds){
-                Recurring.data.filter.push(q);
-                Recurring.data.count++;
-            } else {
-                Recurring.data.filter2.push(q);
-            }
-        } else if (CurrentEraID - Recurring.data.Questlist[q].era > 1) {
-            delete Recurring.data.Questlist[q];
-        }
-    }
-    
+    Recurring.filter()
     Recurring.SaveSettings();
     Recurring.RefreshGui();
 });
@@ -95,7 +80,24 @@ let Recurring = {
         else 
             Recurring.BuildBox();  
     },
-
+    filter: () => {
+        Recurring.data.filter = [];
+        Recurring.data.filter2 = [];
+        Recurring.data.count = 0;
+        for (let q in Recurring.data.Questlist) {
+            if (!Recurring.data.Questlist[q]) continue;
+            if (Recurring.data.Questlist[q].era == CurrentEraID) {
+                if (!Recurring.data.Questlist[q].diamonds){
+                    Recurring.data.filter.push(q);
+                    Recurring.data.count++;
+                } else {
+                    Recurring.data.filter2.push(q);
+                }
+            } else if (CurrentEraID - Recurring.data.Questlist[q].era > 1) {
+                delete Recurring.data.Questlist[q];
+            }
+        }
+    },
 
 	/**
 	 * Inhalt der Box in den BoxBody legen
@@ -122,7 +124,7 @@ let Recurring = {
             h.push(`<tr>`);
             h.push(`<td title="${Recurring.getTasksTitle(quest.groups,quest.conditions)}"><span>${quest.title}</span></td>`);
             h.push(`<td title="${Recurring.getTasksTitle(quest.groups,quest.conditions)}">${Recurring.getTasks(quest.groups,quest.conditions)}</td>`);
-            h.push(quest.diamonds ? '<td class="check">✓</td>' : '<td>?</td>');
+            h.push(`<td><span class="switchState" data-id="${q}">${quest.diamonds ? "✓" : "?"}</span></td>`);
             h.push('</tr>');
         }
         for (let q of Recurring.data.filter2) {
@@ -131,15 +133,34 @@ let Recurring = {
             h.push(`<tr>`);
             h.push(`<td title="${Recurring.getTasksTitle(quest.groups,quest.conditions)}"><span>${quest.title}</span></td>`);
             h.push(`<td title="${Recurring.getTasksTitle(quest.groups,quest.conditions)}">${Recurring.getTasks(quest.groups,quest.conditions)}</td>`);
-            h.push(quest.diamonds ? '<td class="check">✓</td>' : '<td>?</td>');
+            h.push(`<td class="check"><span class="switchState" data-id="${q}">${quest.diamonds ? "✓" : "?"}</span></td>`);
             h.push('</tr>');
         }
         h.push('</tbody>');
         h.push('</table>');
 
         $('#RecurringQuestsBoxBody').html(h.join(''));
-    },
+        $('#RecurringQuestsBoxBody .switchState').on('mousedown', function() {
+            $(this).addClass('loading');
+            Recurring.loadingTimer = setTimeout(() => {
+                $(this).removeClass('loading');
+                id=$(this).data('id');
+                Recurring.data.Questlist[id].diamonds = !Recurring.data.Questlist[id].diamonds;
+                Recurring.SaveSettings();
+                Recurring.BuildBox();
+                Recurring.loadingTimer = null;
+            }, 5000)
+        })
+        $('#RecurringQuestsBoxBody .switchState').on('mouseup', function() {
+            if (Recurring.loadingTimer) {
+                clearTimeout(Recurring.loadingTimer);
+                Recurring.loadingTimer = null;
+                $(this).removeClass('loading');
+            }
+        });
 
+    },
+    loadingTimer: null,
 
 	SetCounter: ()=> {
         $buttonNumber=$('#recurring-count')
@@ -155,6 +176,7 @@ let Recurring = {
     },
 
     SaveSettings: (show=Recurring.data.showCounter) => {
+        Recurring.filter()
         Recurring.data.showCounter = show;
         localStorage.setItem('Recurring', JSON.stringify(Recurring.data));
         Recurring.SetCounter();
