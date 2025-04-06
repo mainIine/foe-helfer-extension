@@ -61,19 +61,19 @@
 }
 
 #PlayerProfile .pad {
-    padding: 1rem;
+    padding: 0.8rem;
 }
 
 #PlayerProfile .leftInfo .pad, #PlayerProfile .rightInfo .pad {
-    padding: 1rem 0.5rem;
+    padding: 0.8rem 0.5rem;
 }
 
 #PlayerProfile h2 + .pad {
-    padding: 0 1rem 1rem;
+    padding: 0 0.8rem 0.8rem;
 }
 
 #PlayerProfile .pad + .pad {
-    padding: 0.55rem 1rem;
+    padding: 0.5rem 0.8rem;
 }
 
 #PlayerProfile div.header {
@@ -242,7 +242,16 @@
     text-align: center;
 }
 
-#PlayerProfile .fp::before, #PlayerProfile .goods .prev::before, #PlayerProfile .goods .current::before, #PlayerProfile .goods .next::before, #PlayerProfile .goods .guild::before, 
+#PlayerProfile .dailyProd span {
+    padding: 3px 4px 0;
+    display: inline-block;
+    margin-bottom: -6px;
+}
+
+#PlayerProfile .dailyProd span img {
+    max-height: 26px;
+}
+
 #PlayerProfile .aAtt::after, #PlayerProfile .aDef::before, #PlayerProfile .dAtt::after, #PlayerProfile .dDef::before, 
 #PlayerProfile .qiactions::before, #PlayerProfile .qicoins::before, #PlayerProfile .qicoins_start::before, #PlayerProfile .qisupplies::before, #PlayerProfile .qisupplies_start::before, #PlayerProfile .qigoods_start::before, #PlayerProfile .qiunits_start::before {
     content: '';
@@ -268,37 +277,6 @@
 #PlayerProfile .crit img {
     max-height: 30px;
     margin: -3px 0 0 -8px;
-}
-
-#PlayerProfile .goods {
-    margin-top: -3px;
-}
-
-#PlayerProfile .goods span {
-    display: inline-block;
-    margin: 0 2px 2px 0;
-}
-
-#PlayerProfile .goods .guild::before {
-    background: url(../../productions/images/productions.png) -233px 2px no-repeat;
-    height: 26px;
-    width: 26px;
-    margin-left: 7px;
-}
-
-#PlayerProfile .goods .prev::before {
-    background: url(../../productions/images/productions.png) -524px 2px no-repeat;
-    height: 26px;
-}
-
-#PlayerProfile .goods .next::before {
-    background: url(../../productions/images/productions.png) -550px 2px no-repeat;
-    height: 26px;
-}
-
-#PlayerProfile .goods .current::before {
-    background: url(../../productions/images/productions.png) -104px 2px no-repeat;
-    height: 26px;
 }
 
 #PlayerProfile .qiactions::before {
@@ -386,6 +364,15 @@
     font-size: 0.9rem;
 }
 
+#PlayerProfile span.units::before {
+	background: transparent url('../../productions/images/productions.png') -287px 2px no-repeat;
+	width: 25px;
+    content: '';
+    height: 25px;
+    display: inline-block;
+    margin-bottom: -4px;
+}
+
 #PlayerProfile .battleBoosts .ge {
     background-image: url(../../x_img/ge.png);
 }
@@ -447,7 +434,7 @@
     border-radius: 10px;
 }
 
-#PlayerProfile .achievements img, #PlayerProfile .inventory img {
+#PlayerProfile .achievements img {
     max-height: 40px;
     margin: -5px 0 -5px -5px;
     background: radial-gradient(circle, #00000066 53%, transparent 55%);
@@ -462,15 +449,16 @@
 #PlayerProfile .inventory .favorites {
     margin-top: 2px;
 }
-#PlayerProfile .inventory .favorites::before {
+#PlayerProfile .inventory .favorites:not(:empty):before {
     content: '★';
     text-align: center;
     display: block;
     margin-bottom: 3px;
     font-size: 11px;
+    color: #f5c978;
 }
 
-#PlayerProfile .inventory .favorites::before, #PlayerProfile .inventory .favorites span {
+#PlayerProfile .inventory .favorites span {
     color: #edc492;
 }
 
