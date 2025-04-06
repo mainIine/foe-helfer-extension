@@ -1,5 +1,36 @@
 ## Changelog - Extension
 
+##### 3.11.2.0
+
+**Neu**
+
+
+**Update**
+- Verhandlungsassistent
+	- unterstützt nun auch Verhandlungen mit 5 Versuchen
+
+- Spielerprofil
+	- enthält nun noch mehr Daten
+
+- Belohnungsliste 
+	- wird nun auch in der GE angeizeigt
+
+- Boxen
+	- GBG Provinzliste wird nicht mehr automatisch geschlossen
+	- Einstellung hinzugefügt, um automatisches Schließen abzuschalten
+
+- Wiederkehrende Quests (Diamantencheckliste)
+	- Zustand (?/✓) kann nun durch geklickt halten (5 Sekunden) umgeschaltet werden
+	- Abkürzung der Aufabentexte erfolgt nun in Abhängigkeit vom vorhandenen Platz
+
+**BugFix**
+- Wiederkehrende Quests (Diamantencheckliste)
+	- unabhängig von den Einstellungen bzw. vom Stand wurde nach Start der Zähler im Menu angezeigt
+- Gildenkasse
+	- Jahr wurde in manchen Sprachen falsch ausgelesen (z.B. 4025 statt 2025)
+
+---
+
 ##### 3.11.1.0
 
 **Neu**
