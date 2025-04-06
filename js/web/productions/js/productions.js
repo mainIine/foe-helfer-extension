@@ -823,6 +823,10 @@ let Productions = {
 						Profile.guildGoods = typeSum;
 						Profile.update()
 					}
+					if (type == 'units') {
+						Profile.units = typeSum;
+						Profile.update()
+					}
 					table.push('</th>')
 				}
 				else {

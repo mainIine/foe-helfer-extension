@@ -17,6 +17,7 @@ const Profile = {
     fpBoost: 0,
     goods: {},
     guildGoods: 0,
+    units: 0,
     battleBoosts: {},
     settlements: [],
     achievements: null,
@@ -28,7 +29,7 @@ const Profile = {
     init: (responseData) => {
         Profile.daysPlayed = responseData.achievementGroups.find(x => x.id == "special").achievements.find(x => x.id == 'foe_fanclub').currentLevel.progress || null
         Profile.showButton();
-        Profile.settlements = responseData.achievementGroups?.find(x => x.id == "cultural_settlements").achievements;
+        Profile.settlements = responseData.achievementGroups?.find(x => x.id == "cultural_settlements").achievements || [];
         Profile.achievements = responseData.achievementGroups;
         Profile.favAchievements = responseData.topAchievements;
     },
@@ -131,18 +132,18 @@ const Profile = {
         content.push('<div class="dailyProd pad">');
         content.push('<h2>'+i18n('Boxes.PlayerProfile.DailyProduction')+'</h2>');
         if (Profile.fpProduction == 0 || Profile.guildGoods == 0)
-            content.push('<span class="important" onclick="Productions.init();">'+i18n('Boxes.PlayerProfile.OpenProduction')+'</span><br>');
-        content.push('<span class="fp">' + HTML.Format(parseInt(Profile.fpProduction)) + ", " + i18n('General.Boost')+ ' ' +Boosts.Sums.forge_points_production + '%</span><br>');
-            content.push('<div class="goods">')
+            content.push('<p class="important" onclick="Productions.init();">'+i18n('Boxes.PlayerProfile.OpenProduction')+'</p>');
+        content.push('<span><img src="' + srcLinks.get(`/shared/icons/strategy_points.png`,true)+'" />' + HTML.Format(parseInt(Profile.fpProduction)) + '</span><span><img src="' + srcLinks.get(`/shared/gui/boost/boost_icon_fp.png`,true)+'" />' +Boosts.Sums.forge_points_production + '%</span>');
+        if (Profile.guildGoods)
+            content.push('<span><img src="' + srcLinks.get(`/shared/icons/icon_great_building_bonus_guild_goods.png`,true)+'" />'  + HTML.Format(parseInt(parseInt(Profile.guildGoods)) || 0) + '</span>')
             if (Profile.goods[CurrentEraID-2])
-                content.push('<span class="prev">' + HTML.Format(parseInt(parseInt(Profile.goods[CurrentEraID-2])) || 0) + '</span> ');
+                content.push('<span><img src="' + srcLinks.get(`/shared/icons/all_goods_of_previous_age.png`,true)+'" />' + HTML.Format(parseInt(parseInt(Profile.goods[CurrentEraID-2])) || 0) + '</span> ');
             if (Profile.goods[CurrentEraID-1])
-                content.push('<span class="current">' + HTML.Format(parseInt(parseInt(Profile.goods[CurrentEraID-1])) || 0) + '</span> ');
+                content.push('<span><img src="' + srcLinks.get(`/shared/icons/all_goods_of_age.png`,true)+'" />'  + HTML.Format(parseInt(parseInt(Profile.goods[CurrentEraID-1])) || 0) + '</span> ');
             if (Profile.goods[CurrentEraID])
-                content.push('<span class="next">' + HTML.Format(parseInt(parseInt(Profile.goods[CurrentEraID])) || 0) + '</span> ');
-            if (Profile.guildGoods)
-                content.push('<span class="guild">' + HTML.Format(parseInt(parseInt(Profile.guildGoods)) || 0) + '</span>')
-            content.push('</div>');
+                content.push('<span><img src="' + srcLinks.get(`/shared/icons/next_age_goods.png`,true)+'" />' + HTML.Format(parseInt(parseInt(Profile.goods[CurrentEraID])) || 0) + '</span> ');
+            if (Profile.units > 0)
+                content.push('<span class="units">'+HTML.Format(parseInt(Profile.units))+'</span>');
         content.push('</div>');
         
         let hasQIBoosts = (Boosts.noSettlement.guild_raids_action_points_collection+Boosts.Sums.guild_raids_coins_production+Boosts.Sums.guild_raids_coins_start+Boosts.Sums.guild_raids_supplies_production+Boosts.Sums.guild_raids_supplies_start+Boosts.Sums.guild_raids_goods_start+Boosts.Sums.guild_raids_units_start !== 0)
@@ -199,11 +200,11 @@ const Profile = {
             }
             content.push('<div class="goods">');
             if (previousGoods > 0)
-                content.push('<span class="prev">' + HTML.FormatNumberShort(previousGoods,true,'en-EN') + '</span> ');
+                content.push('<span><img src="' + srcLinks.get(`/shared/icons/all_goods_of_previous_age.png`,true)+'" />' + HTML.FormatNumberShort(previousGoods,true,'en-EN') + '</span> ');
             if (currentGoods > 0)
-                content.push('<span class="current">' + HTML.FormatNumberShort(currentGoods,true,'en-EN') + '</span> ');
+                content.push('<span><img src="' + srcLinks.get(`/shared/icons/all_goods_of_age.png`,true)+'" />' + HTML.FormatNumberShort(currentGoods,true,'en-EN') + '</span> ');
             if (nextGoods > 0)
-                content.push('<span class="next">' + HTML.FormatNumberShort(nextGoods,true,'en-EN') + '</span> ');
+                content.push('<span><img src="' + srcLinks.get(`/shared/icons/next_age_goods.png`,true)+'" />' + HTML.FormatNumberShort(nextGoods,true,'en-EN') + '</span> ');
             content.push('</div>');
 
             content.push('<span class="secondary"><img src="'+srcLinks.get(`/shared/icons/eventwindow_tavern.png`,true)+'" /> '+HTML.FormatNumberShort(ResourceStock.tavern_silver || 0,true,'en-EN')+'</span>');
@@ -263,16 +264,16 @@ const Profile = {
             content.push('<h2 class="text-center">'+i18n('Boxes.PlayerProfile.DailyProduction')+'</h2>');
             if (Profile.fpProduction == 0 || Profile.guildGoods == 0)
                 content.push('<span class="important">'+i18n('Boxes.PlayerProfile.OpenProduction')+'</span><br>');
-            content.push('<span class="fp">' + HTML.Format(parseInt(Profile.fpProduction)) + ", " + i18n('General.Boost')+ ' ' +Boosts.Sums.forge_points_production + '%</span><br>');
+            content.push('<span><img src="' + srcLinks.get(`/shared/icons/strategy_points.png`,true)+'" />' + HTML.Format(parseInt(Profile.fpProduction)) + '</span><span><img src="' + srcLinks.get(`/shared/gui/boost/boost_icon_fp.png`,true)+'" />' +Boosts.Sums.forge_points_production + '%</span><br>');
                 content.push('<div class="goods">')
                 if (Profile.goods[CurrentEraID-2])
-                    content.push('<span class="prev">' + HTML.Format(parseInt(parseInt(Profile.goods[CurrentEraID-2])) || 0) + '</span> ');
+                    content.push('<span><img src="' + srcLinks.get(`/shared/icons/all_goods_of_previous_age.png`,true)+'" />' + HTML.Format(parseInt(parseInt(Profile.goods[CurrentEraID-2])) || 0) + '</span> ');
                 if (Profile.goods[CurrentEraID-1])
-                    content.push('<span class="current">' + HTML.Format(parseInt(parseInt(Profile.goods[CurrentEraID-1])) || 0) + '</span> ');
+                    content.push('<span><img src="' + srcLinks.get(`/shared/icons/all_goods_of_age.png`,true)+'" />' + HTML.Format(parseInt(parseInt(Profile.goods[CurrentEraID-1])) || 0) + '</span> ');
                 if (Profile.goods[CurrentEraID])
-                    content.push('<span class="next">' + HTML.Format(parseInt(parseInt(Profile.goods[CurrentEraID])) || 0) + '</span> ');
+                    content.push('<span><img src="' + srcLinks.get(`/shared/icons/next_age_goods.png`,true)+'" />' + HTML.Format(parseInt(parseInt(Profile.goods[CurrentEraID])) || 0) + '</span> ');
                 if (Profile.guildGoods)
-                    content.push('<span class="guild">' + HTML.Format(parseInt(parseInt(Profile.guildGoods)) || 0) + '</span>')
+                    content.push('<span><img src="' + srcLinks.get(`/shared/icons/icon_great_building_bonus_guild_goods.png`,true)+'" />' + HTML.Format(parseInt(parseInt(Profile.guildGoods)) || 0) + '</span>')
                 content.push('</div>');
             content.push('</div>');
 
@@ -302,16 +303,19 @@ const Profile = {
             content.push('</div>');
 
             // settlements
+            content.push('<div class="settlements pad showMore text-center">');
+            content.push('<h2>'+i18n('Boxes.PlayerProfile.Settlements')+'</h2>');
             if (Profile.settlements.length > 0) {
-                content.push('<div class="settlements pad showMore text-center">');
-                content.push('<h2>'+i18n('Boxes.PlayerProfile.Settlements')+'</h2>');
                 for (let settlement of Profile.settlements) {
                     content.push('<span class="'+settlement.id+'" data-original-title="'+settlement.name+'">');
                     content.push('<img src="'+srcLinks.get(`/shared/icons/achievements/achievement_icons_${settlement.id}.png`,true)+'" />')
                     content.push(HTML.Format(parseInt(settlement.currentLevel.progress)) + '</span>');
                 }
-                content.push('</div>');
             }
+            else {
+                content.push(i18n('Boxes.PlayerProfile.NoSettlementsFinished'));
+            }
+            content.push('</div>');
 
             // achievements
             content.push('<div class="achievements pad showMore text-center">');
