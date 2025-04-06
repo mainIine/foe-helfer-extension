@@ -26,7 +26,8 @@
 **BugFix**
 - Wiederkehrende Quests (Diamantencheckliste)
 	- unabhängig von den Einstellungen bzw. vom Stand wurde nach Start der Zähler im Menu angezeigt
-- Gildenkasse
+
+- Gildenkassenexport
 	- Jahr wurde in manchen Sprachen falsch ausgelesen (z.B. 4025 statt 2025)
 
 ---
