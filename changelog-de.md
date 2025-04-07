@@ -2,8 +2,8 @@
 
 ##### 3.11.2.0
 
-**Neu**
-
+**Entfernt**
+- Kistenauswahlassistent (Es gibt keine Events mehr, für der dieser Relevant ist)
 
 **Update**
 - Verhandlungsassistent

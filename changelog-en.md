@@ -2,7 +2,8 @@
 
 ##### 3.11.2.0
 
-**New**
+**Removed**
+- Chest selection assistant (No Event really needs it anymore)
 
 **Update**
 - Negotiation assistant
