@@ -1,6 +1,6 @@
 [	
 	{
-		"udate": "ANniversary 2025 (16 February 2025)"
+		"udate": "Vikings 2025 (10 April 2025)"
 	},
 	{
 		"groupname": "Events"
@@ -721,6 +721,36 @@
 		]
 	},
 	{
+		"name": "Fjordstorm_Wharf",
+		"buildings": [
+			{"first": "W_MultiAge_HIS25A1"}
+		]
+	},
+	{
+		"name": "Emberfang_Totem",
+		"buildings": [
+			{"first": "W_MultiAge_HIS25B1"}
+		]
+	},
+	{
+		"name": "Skuddeholm_Stead",
+		"buildings": [
+			{"first": "W_MultiAge_HIS25C1"}
+		]
+	},
+	{
+		"name": "Berserkers_Aim",
+		"buildings": [
+			{"first": "W_MultiAge_HIS25F1"}
+		]
+	},
+	{
+		"name": "Oarcrest_Mill",
+		"buildings": [
+			{"first": "W_MultiAge_HIS25G1"}
+		]
+	},
+	{
 		"name": "Heroes_Tavern",
 		"buildings": [
 			{"first": "W_MultiAge_FELL22A1"}
@@ -1094,6 +1124,30 @@
 		"name": "Neo_Aviary",
 		"buildings": [
 			{"first": "W_MultiAge_GR25B1"}
+		]
+	},
+	{
+		"name": "Neo_Kiosk",
+		"buildings": [
+			{"first": "W_MultiAge_GR25E1"}
+		]
+	},
+ 		{
+		"name": "Neo_Magnum_Opus",
+		"buildings": [
+			{"first": "W_MultiAge_GR25F1"}
+		]
+	},
+	{
+		"name": "Neo_Shrine_of_Knowledge",
+		"buildings": [
+			{"first": "W_MultiAge_GR25G1"}
+		]
+	},
+	{
+		"name": "Neo_Obelisk",
+		"buildings": [
+			{"first": "W_MultiAge_GR25H1"}
 		]
 	},
 	{
