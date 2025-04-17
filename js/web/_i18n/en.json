@@ -1079,6 +1079,7 @@
     "Boxes.Stats.BtnToggleAnnotationsTitle": "Show a decrease of goods on GvG map.",
     "Boxes.Stats.BtnToggleGroupBy": "Group by Ages",
     "Boxes.Stats.BtnToggleGroupByTitle": "Group by Name",
+    "Boxes.Stats.BtnToggleRenormalize": "Normalize Values",
     "Boxes.Stats.DatePicker": "Pick Dates",
     "Boxes.Stats.Era": "Era",
     "Boxes.Stats.FilterRewards": "Filter Rewards",
