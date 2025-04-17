@@ -712,7 +712,22 @@ let Kits = {
 				if (visibleSetItemsCount < 1)  lastSetHead.hide();
 			}
 		}
-	}
+	},
+
+	UpgradeSchemes:null,
+
+	CreateUpgradeSchemes:()=> {
+		
+	},
+	PopulateUpgradeSchemes: async ()=> {
+		//await ExistenceConfirmed('Kits.UpgradeSchemes')
+		
+	},
+	//
+	//
+	
+		
+
 };
 
 /**
