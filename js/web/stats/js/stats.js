@@ -249,6 +249,7 @@ let Stats = {
 		eras: {}, // Selected era for filtering data,
 		eraSelectOpen: false, // Dropdown
 		isGroupByEra: false,
+		isRenormalize: false,
 		rewardSource: 'battlegrounds_conquest', // filter by type of reward
 		currentType: null,
 		filter:"",
@@ -364,6 +365,10 @@ let Stats = {
 
 				case 'groupByToggle':
 					Stats.state.isGroupByEra = !Stats.state.isGroupByEra;
+					break;
+
+				case 'renormalizeToggle':
+					Stats.state.isRenormalize = !Stats.state.isRenormalize;
 					break;
 
 				case 'selectSource':
@@ -563,6 +568,14 @@ let Stats = {
 			dataType: 'groupByToggle',
 		});
 
+		const btnGroupRenormalize = Stats.RenderBox({
+			name: i18n('Boxes.Stats.BtnToggleRenormalize'),
+			title: i18n('Boxes.Stats.BtnToggleRenormalizeTitle'),
+			disabled: !Stats.isSelectedPlayerSources() && !Stats.isSelectedTreasureSources(),
+			isActive: Stats.state.isRenormalize,
+			dataType: 'renormalizeToggle',
+		});
+
 		const sourceBtns = [
 			'statsTreasurePlayerD',
 			'statsTreasureClanD',
@@ -630,7 +643,7 @@ let Stats = {
 					</span>
 				</div>
 				<div class="option-chart-type-wrap text-center">
-					<br>
+					${btnGroupRenormalize}<br>
 					<span class="btn-group">
 					${chartTypes.join('')}
 					</span>
@@ -1160,6 +1173,15 @@ let Stats = {
 				return s;
 			});
 			series = series.filter(s => (s.data?.length | 0) > 0);
+		} else if (Stats.state.isRenormalize) {
+			series = series.map(s => {
+				let vals = s.data.map(x=>x[1])
+				let min = Math.min(...vals);
+				let max = Math.max(...vals);
+				let range = max - min;
+				s.data = s.data.map(it => [it[0], max==0 ? 1 : (it[1]) / max]);
+				return s;
+			});
 		}
 
 		return {

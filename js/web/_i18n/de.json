@@ -1078,6 +1078,7 @@
     "Boxes.Stats.BtnToggleAnnotations": "GvG Aktionen",
     "Boxes.Stats.BtnToggleAnnotationsTitle": "Zeigt eine Abnahme der Güter auf der GvG-Karte.",
     "Boxes.Stats.BtnToggleGroupBy": "Gruppieren",
+    "Boxes.Stats.BtnToggleRenormalize": "Werte normalisieren",
     "Boxes.Stats.BtnToggleGroupByTitle": "nach Namen gruppieren",
     "Boxes.Stats.DatePicker": "???",
     "Boxes.Stats.Era": "Zeitalter",
