@@ -1640,8 +1640,8 @@ let Productions = {
 			ratedBuildings = Productions.rateBuildings(uniqueBuildings,false,era).concat(Productions.rateBuildings(selectedAdditionals,true,era)) 
 			
 			ratedBuildings.sort((a,b) => {
-				if (a.score < b.score) return -1
-				if (a.score > b.score) return 1
+				if (a.rating.totalScore < b.rating.totalScore) return -1
+				if (a.rating.totalScore > b.rating.totalScore) return 1
 				return 0
 			});
 
@@ -1686,47 +1686,47 @@ let Productions = {
 			h.push('<tbody class="ratinglist">');
 			for (const building of ratedBuildings) {
 				// skip inventory buildings with a score lower than the threshold
-				if (building.building.isInInventory && building.score < Productions.efficiencySettings.inventorybuildingscore) continue;
+				if (building.isInInventory && building.rating.totalScore < Productions.efficiencySettings.inventorybuildingscore) continue;
 
 				// skip inventory buildings that are already in the city
-				if (building.building.isInInventory && (buildingCount[building.building.entityId+"C"] !== undefined || buildingCount[building.building.entityId+"C"] >= 1)) continue;
+				if (building.isInInventory && (buildingCount[building.entityId+"C"] !== undefined || buildingCount[building.entityId+"C"] >= 1)) continue;
 
-				let buildingSize = building.building.size.length * building.building.size.width;
+				let buildingSize = building.length * building.size.width;
 
-				[randomItems,randomUnits] = Productions.showBuildingItems(false, building.building)
-				h.push(`<tr class="${building.highlight?'additional ':''}${building.building.isInInventory?'inventory-building ':''}size${buildingSize}">`)
-				h.push('<td class="text-right" data-number="'+building.score * 100 +'">'+Math.round(building.score * 100)+'</td>')
-				h.push('<td data-text="'+helper.str.cleanup(building.building.name)+'" data-meta_id="'+building.building.entityId+'" data-era="'+building.building.eraName+'" data-callback_tt="Tooltips.buildingTT" class="helperTT ' + (MainParser.Allies.buildingList?.[building.building.id]?"ally" : "") +'" '+ MainParser.Allies.tooltip(building.building.id) + '><span>'+building.building.name+'</span>')
+				[randomItems,randomUnits] = Productions.showBuildingItems(false, building)
+				h.push(`<tr class="${building.highlight?'additional ':''}${building.isInInventory?'inventory-building ':''}size${buildingSize}">`)
+				h.push('<td class="text-right" data-number="'+building.rating.totalScore * 100 +'">'+Math.round(building.rating.totalScore * 100)+'</td>')
+				h.push('<td data-text="'+helper.str.cleanup(building.name)+'" data-meta_id="'+building.entityId+'" data-era="'+building.eraName+'" data-callback_tt="Tooltips.buildingTT" class="helperTT ' + (MainParser.Allies.buildingList?.[building.id]?"ally" : "") +'" '+ MainParser.Allies.tooltip(building.id) + '><span>'+building.name+'</span>')
 				
-				let eraShortName = i18n("Eras."+Technologies.Eras[building.building.eraName]+".short")
+				let eraShortName = i18n("Eras."+Technologies.Eras[building.eraName]+".short")
 				if (eraShortName != "-")
-					h.push(" ("+i18n("Eras."+Technologies.Eras[building.building.eraName]+".short") +')')
+					h.push(" ("+i18n("Eras."+Technologies.Eras[building.eraName]+".short") +')')
 				h.push('</td><td class="text-right">')
 				// show amount in inventory if there are buildings
-				if (buildingCount[building.building.entityId+"I"] !== undefined && !building.building.isInInventory)
-					h.push('<span data-original-title="'+i18n('Boxes.ProductionsRating.InventoryTooltip')+', '+buildingCount[building.building.entityId+"I"]+'x"><img class="game-cursor" src="' + extUrl + 'js/web/x_img/inventory.png" /></span> ')
+				if (buildingCount[building.entityId+"I"] !== undefined && !building.isInInventory)
+					h.push('<span data-original-title="'+i18n('Boxes.ProductionsRating.InventoryTooltip')+', '+buildingCount[building.entityId+"I"]+'x"><img class="game-cursor" src="' + extUrl + 'js/web/x_img/inventory.png" /></span> ')
 				
 				// show amount in city if > 1
-				if (buildingCount[building.building.entityId+"C"] && buildingCount[building.building.entityId+"C"] > 1 && !MainParser.Allies.buildingList?.[building.building.id]) 
-					h.push('<span data-original-title="'+i18n('Boxes.ProductionsRating.CountTooltip')+'">' + buildingCount[building.building.entityId+"C"]+'x</span> ')
+				if (buildingCount[building.entityId+"C"] && buildingCount[building.entityId+"C"] > 1 && !MainParser.Allies.buildingList?.[building.id]) 
+					h.push('<span data-original-title="'+i18n('Boxes.ProductionsRating.CountTooltip')+'">' + buildingCount[building.entityId+"C"]+'x</span> ')
 				
 
-				if (!building.highlight && !building.building.isInInventory) 
-					h.push('<span class="show-all" data-name="'+building.building.name+'"><img class="game-cursor" src="' + extUrl + 'css/images/hud/open-eye.png"></span>')
-				else if (building.building.isInInventory) {
-					h.push('<span data-original-title="'+i18n('Boxes.ProductionsRating.InventoryTooltip')+'">'+buildingCount[building.building.entityId+"I"]+'x <img class="game-cursor" src="' + extUrl + 'js/web/x_img/inventory.png" /></span>')
+				if (!building.highlight && !building.isInInventory) 
+					h.push('<span class="show-all" data-name="'+building.name+'"><img class="game-cursor" src="' + extUrl + 'css/images/hud/open-eye.png"></span>')
+				else if (building.isInInventory) {
+					h.push('<span data-original-title="'+i18n('Boxes.ProductionsRating.InventoryTooltip')+'">'+buildingCount[building.entityId+"I"]+'x <img class="game-cursor" src="' + extUrl + 'js/web/x_img/inventory.png" /></span>')
 				}
 				h.push('</td>')
 
 				for (const type of Productions.Rating.Types) {
 					if (!Productions.Rating.Data[type].active || Productions.Rating.Data[type].perTile == null) continue
-					if (building[type] != undefined) {
-						h.push(`<td class="text-right${type=="units" ? " units":""} buildingvalue" data-number="${Math.round(building[type])}" ${type=="units" ? `data-original-title="${randomUnits}"`:""}>`)
-						h.push(HTML.Format(building[type]))
+					if (building.rating[type] != undefined) {
+						h.push(`<td class="text-right${type=="units" ? " units":""} buildingvalue" data-number="${Math.round(building.rating[type])}" ${type=="units" ? `data-original-title="${randomUnits}"`:""}>`)
+						h.push(HTML.Format(building.rating[type]))
 						h.push('</td>')
 
-						let roundingFactor = building[type+'-tile'] > 100 || building[type+'-tile'] < -100 ? 1 : 100
-						let tileValue = Math.round(building[type+'-tile'] * roundingFactor) / roundingFactor
+						let roundingFactor = building.rating[type+'-tile'] > 100 || building.rating[type+'-tile'] < -100 ? 1 : 100
+						let tileValue = Math.round(building.rating[type+'-tile'] * roundingFactor) / roundingFactor
 						h.push(`<td class="text-right${type=="units" ? " units":""} tilevalue" data-number="${tileValue}" ${type=="units" ? `data-original-title="${randomUnits}"`:""}>`)
 						h.push(HTML.Format(tileValue))
 						h.push('</td>')
@@ -1907,40 +1907,46 @@ let Productions = {
     },
 
 
-	rateBuildings: (buildingType,additional=false, era=null) => {
-		if (!Productions.Rating.Data) Productions.Rating.load()
-		let ratedBuildings = []
+	rateBuildings: (uniqueBuildings,additional=false, era=null) => {
+		let ratedBuildings = [];
 		if (additional) {
-			buildingType = buildingType.map(x=>CityMap.createNewCityMapEntity(x,era||CurrentEra))
+			uniqueBuildings = uniqueBuildings.map(x=>CityMap.createNewCityMapEntity(x,era||CurrentEra));
 		}
-		for (const building of buildingType) {
-			if (building.entityId.includes("L_AllAge_EasterBonus1") || building.entityId.includes("L_AllAge_Expedition16") || building.entityId.includes("L_AllAge_ShahBonus17") || (building.isSpecial == undefined && building.type != "greatbuilding")) continue // do not include wishingwell type buildings
-			let size = building.size.width * building.size.length
-			size += ((building.size.width == 1 || building.size.length == 1) ? building.needsStreet * 0.5 : building.needsStreet)
-			let score = 0
-			let ratedBuilding = {
-				building: building
-			}
-			for (const type of Object.keys(Productions.Rating.Data)) {
-				if (Productions.Rating.Data[type].active) {
-					let desiredValuePerTile = parseFloat(Productions.Rating.Data[type].perTile) || 0
-					if (desiredValuePerTile !== null && !isNaN(desiredValuePerTile)) {
-						let typeValue = Productions.getRatingValueForType(building, type) || 0 // production amount
-						let valuePerTile = typeValue / size
+		for (const building of uniqueBuildings) {
+			// do not include wishingwell type buildings
+			if (building.entityId.includes("L_AllAge_EasterBonus1") || building.entityId.includes("L_AllAge_Expedition16") || building.entityId.includes("L_AllAge_ShahBonus17") || (building.isSpecial == undefined && building.type != "greatbuilding")) 
+				continue;
+			let ratedBuilding = building;
+			if (additional) ratedBuilding.highlight = true;
+			ratedBuildings.push(ratedBuilding);
+		}
+		return ratedBuildings;
+	},
 
-						if (valuePerTile != 0 && desiredValuePerTile != 0) 
-							score += (valuePerTile / desiredValuePerTile)
 
-						ratedBuilding[type] = ( Math.round( typeValue * 100 ) / 100 ) || 0
-						ratedBuilding[type+'-tile'] = valuePerTile || 0
-					}
+	rateBuilding: (building) => {
+		if (!Productions.Rating.Data) Productions.Rating.load();
+		let size = building.size.width * building.size.length;
+		size += ((building.size.width == 1 || building.size.length == 1) ? building.needsStreet * 0.5 : building.needsStreet);
+		
+		let score = {totalScore:0};
+
+		for (const type of Object.keys(Productions.Rating.Data)) {
+			if (Productions.Rating.Data[type].active) {
+				let desiredValuePerTile = parseFloat(Productions.Rating.Data[type].perTile) || 0
+				if (desiredValuePerTile !== null && !isNaN(desiredValuePerTile)) {
+					let typeValue = Productions.getRatingValueForType(building, type) || 0 // production amount
+					let valuePerTile = typeValue / size
+
+					if (valuePerTile != 0 && desiredValuePerTile != 0) 
+						score.totalScore += (valuePerTile / desiredValuePerTile)
+
+					score[type] = ( Math.round( typeValue * 100 ) / 100 ) || 0
+					score[type+'-tile'] = valuePerTile || 0
 				}
 			}
-			ratedBuilding.score = score
-			if (additional) ratedBuilding.highlight = true
-			ratedBuildings.push(ratedBuilding)
 		}
-		return ratedBuildings
+		return score;
 	},
 
 
