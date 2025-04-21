@@ -279,7 +279,7 @@ let EventHandler = {
 						break;
 					case 'date':
 						moment.locale(OldLocale);
-						refDate = moment([Number(match['groups']['year'])+2000,Number(match['groups']['month'])-1,Number(match['groups']['day'])])
+						refDate = moment([Number(match['groups']['year'])+(match['groups']['year'].length<=2 ? 2000:0),Number(match['groups']['month'])-1,Number(match['groups']['day'])])
 						break;
 					default:
 						refDate = moment().day(capitalize(day));
