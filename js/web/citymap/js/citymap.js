@@ -586,14 +586,14 @@ let CityMap = {
 			let isSpecial = (building.isSpecial ? ' special' : '')
 			let chainBuilding = (building.chainBuilding != undefined ? ' chain' : '')
 			
-			f = $('<span />').addClass('entity ' + building.type + noStreet + isSpecial + canAscend + isDecayed + chainBuilding).css({
+			f = $('<span />').addClass('entity helperTT ' + building.type + noStreet + isSpecial + canAscend + isDecayed + chainBuilding).css({
 				width: xsize + 'em',
 				height: ysize + 'em',
 				left: x + 'em',
 				top: y + 'em'
 			})
-				.attr('title', building.name)
-				.attr('data-id', building.id);
+				.attr('data-callback_tt','Tooltips.buildingTT')
+				.attr('data-meta_id',building.entityId);
 
 			CityMap.OccupiedArea += (building.size.width * building.size.length);
 			if (building.type == "street")
@@ -608,9 +608,6 @@ let CityMap = {
 
 			if (building.eraName) {
 				let era = Technologies.Eras[building.eraName]
-				f.attr({
-					title: `${building.name}, ${building.size.length}x${building.size.width}<br><em>${i18n('Eras.' + (era || 0) )}</em>`
-				})
 
 				if (era < CurrentEraID && building.type != "greatbuilding" && era != 0) {
 					f.addClass('oldBuildings')
@@ -646,12 +643,6 @@ let CityMap = {
 
 		let StreetsUsed = CityMap.OccupiedArea2['street'] | 0;
 		CityMap.EfficiencyFactor = StreetsNeeded / StreetsUsed;
-
-		// Gebäudenamen via Tooltip
-		$('.entity').tooltip({
-			container: '#city-map-overlayBody',
-			html: true
-		});
 
 		$('#grid-outer').draggable();
 		CityMap.getAreas();
@@ -2250,6 +2241,7 @@ let CityMap = {
 			
 			boosts: this.setBuildingBoosts(metaData, data, era),
 			production: this.setAllProductions(metaData, data, era),
+			rating: null,
 
 			coords: { x: data.x || 0, y: data.y || 0 },
 			
@@ -2266,6 +2258,8 @@ let CityMap = {
 				isDecayed: this.setDecayed(data)
 			}
 		}
+
+		entity.rating = Productions.rateBuilding(entity);
 		
 		//if (entity.type != "street")
 		//	console.log('entity ', entity.name, entity, metaData, data)
