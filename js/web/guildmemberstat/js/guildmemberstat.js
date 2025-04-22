@@ -203,6 +203,15 @@ let GuildMemberStat = {
 			forum: 'player_id'
 		});
 
+		GuildMemberStat.db.version(2).stores({
+			player: '++id, player_id, score, deleted',
+			gex: '++id, player_id, gexweek, &[player_id+gexweek], solvedEncounters, trial',
+			gbg: '++id, player_id, gbgid, &[player_id+gbgid], battlesWon, negotiationsWon, rank',
+			activity: 'player_id',
+			warning: 'player_id',
+			forum: 'player_id'
+		});
+
 		GuildMemberStat.db.open();
 	},
 
@@ -463,7 +472,7 @@ let GuildMemberStat = {
 				let ActiveMembers = [];
 				let localClanId = JSON.parse(localStorage.getItem('GuildMemberStatClanId'));
 
-				if (!localClanId) 
+				if (!localClanId)
 				{
 					localClanId = currentClanId;
 				}
@@ -816,7 +825,8 @@ let GuildMemberStat = {
 				gexweek: gexweek,
 				solvedEncounters: solvedEncounters,
 				expeditionPoints: expeditionPoints,
-				rank: rank
+				rank: rank,
+				trial: GexPlayer.currentTrial
 			});
 		}
 		else
@@ -824,7 +834,8 @@ let GuildMemberStat = {
 			await GuildMemberStat.db.gex.update(CurrentGexData.id, {
 				solvedEncounters: solvedEncounters,
 				expeditionPoints: expeditionPoints,
-				rank: rank
+				rank: rank,
+				trial: GexPlayer.currentTrial
 			});
 		}
 	},
@@ -1305,7 +1316,7 @@ let GuildMemberStat = {
 			// Create GEX Overview
 			if (Member['gex'] !== undefined)
 			{
-				d.push(`<div class="detail-item gex"><div class="scrollable"><table><thead class="sticky"><tr><th><span class="gex"></span> ${i18n('Boxes.GuildMemberStat.GEXWeek')}</th><th>${i18n('Boxes.GuildMemberStat.Rank')}</th><th>${i18n('Boxes.GuildMemberStat.Points')}</th><th>${i18n('Boxes.GuildMemberStat.Level')}</th><th class="text-right"><span class="edit"></span></th></tr></thead><tbody>`);
+				d.push(`<div class="detail-item gex"><div class="scrollable"><table><thead class="sticky"><tr><th><span class="gex"></span> ${i18n('Boxes.GuildMemberStat.GEXWeek')}</th><th>${i18n('Boxes.GuildMemberStat.Rank')}</th><th>${i18n('Boxes.GuildMemberStat.Points')}</th><th>${i18n('Boxes.GuildMemberStat.Level')}</th><th>${i18n('Boxes.GuildMemberStat.GexTrial')}</th><th class="text-right"><span class="edit"></span></th></tr></thead><tbody>`);
 				let gex = Member['gex'];
 				for (let i in gex)
 				{
@@ -1325,6 +1336,7 @@ let GuildMemberStat = {
 					d.push(`<tr><td><span class="gms-tooltip" title="${HTML.i18nTooltip(tooltip)}">${strDate}</span><span class="${activeGexClass}"></span></td>` +
 						`<td>${gex[i].rank}</td><td>${HTML.Format(gex[i].expeditionPoints)}</td>` +
 						`<td>${HTML.Format(gex[i].solvedEncounters)}</td>` +
+						`<td>${HTML.Format(gex[i].trial||0)}</td>` +
 						`<td><button data-id="${gex[i].player_id}" data-gexweek="${gex[i].gexweek}" class="deleteGexWeek deleteButton">x</button></td>` +
 						`</tr>`);
 
@@ -1621,7 +1633,7 @@ let GuildMemberStat = {
 				{
 					break;
 				}
-		
+
 				let countEra = typeof EraGroup[era].members.length != 'undefined' ? EraGroup[era].members.length : 1;
 				let eraTotals = 0;
 
@@ -2008,7 +2020,7 @@ let GuildMemberStat = {
 		ExportContent.push(['eraID', 'era', 'good', 'produceable', 'instock']);
 
 		let GuildMembers = await GuildMemberStat.db.player.where({ deleted: 0 }).reverse().sortBy('score');
-		
+
 		let EraGroup = GuildMemberStat.EraGroup = GuildMembers.reduce((res, obj) => {
 			let eraId = Technologies.Eras[obj['era']];
 			if (!(eraId in res))
@@ -2032,10 +2044,10 @@ let GuildMemberStat = {
 
 			let currentEra = i18n('Eras.' + eraId);
 			let exportGood = {};
-			
+
 			let countEra = typeof EraGroup[eraId]?.members?.length != 'undefined' ? EraGroup[eraId]?.members?.length : 0;
-			
-			
+
+
 			d.push(`<tr><td>${i18n('Eras.' + eraId)}<br>(${countEra} ${i18n('Boxes.GuildMemberStat.GuildMembers')})</td>`);
 
 			// Goods from Guild Building productions

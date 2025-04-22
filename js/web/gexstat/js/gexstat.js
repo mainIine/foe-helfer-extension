@@ -216,6 +216,7 @@ let GexStat = {
 						partdata[k].avatar = player.avatar;
 						partdata[k].expeditionPoints = data[k].expeditionPoints ? data[k].expeditionPoints : 0;
 						partdata[k].solvedEncounters = data[k].solvedEncounters || 0;
+						partdata[k].trial = data[k].currentTrial || 0;
 
 						sumExpeditionPoints += data[k].expeditionPoints ? data[k].expeditionPoints : 0;
 						sumEncounters += data[k].solvedEncounters || 0;
@@ -376,6 +377,7 @@ let GexStat = {
 			`<th class="is-number" data-type="gexs-group">${i18n('Boxes.GexStat.Points')}</th>` +
 			`<th class="is-number" data-type="gexs-group">${i18n('Boxes.GexStat.Level')}</th>` +
 			`<th class="is-number" data-type="gexs-group">${i18n('Boxes.GexStat.Encounters')}</th>` +
+			`<th class="is-number" data-type="gexs-group">${i18n('Boxes.GexStat.GexTrial')}</th>` +
 			`</tr></thead>` +
 			`<tbody class="gexs-group">`);
 
@@ -393,6 +395,7 @@ let GexStat = {
 			h.push(`<td class="is-number" data-number="${member.expeditionPoints}">${HTML.Format(member.expeditionPoints)}</td>`);
 			h.push(`<td class="is-number" data-number="${level}">${level}</td>`);
 			h.push(`<td class="is-number" data-number="${member.solvedEncounters||0}">${member.solvedEncounters||0}/${base}</td>`);
+			h.push(`<td class="is-number" data-number="${member.trial||0}">${member.trial||0}</td>`);
 
 			h.push(`</tr>`);
 
@@ -487,103 +490,103 @@ let GexStat = {
 		}
 		//console.log(CourseData);
 
-		// to prevent double include of Highcharts get it from Stats module 
+		// to prevent double include of Highcharts get it from Stats module
 		await Stats.loadHighcharts();
 
 		const series = await GexStat.GetChartSeries(CourseData);
 
 		GexStat.Chart = new Highcharts.chart('gexsContentWrapper', {
 
-			title: {
-				text: i18n('Boxes.GexStat.Gex') + ' ' + i18n('Boxes.GexStat.Rounds')
-			},
-			subtitle: {
-				text: CourseData.weeks[0] + ' - ' + CourseData.weeks[CourseData.weeks.length - 1] +
-					' (' + CourseData.weeks.length + ' ' + i18n('Boxes.GexStat.Rounds') + ')'
-			},
-			yAxis: [{
-				allowDecimals: false,
-				labels: {
-					enabled: (GexStat.Settings.showAxisLabel && series.yaxis.includes(0)),
-				},
 				title: {
-					enabled: (GexStat.Settings.showAxisLabel && series.yaxis.includes(0)),
-					text: i18n('Boxes.GexStat.Points'),
-				}
-			}, {
-				allowDecimals: false,
-				title: {
-					enabled: (GexStat.Settings.showAxisLabel && series.yaxis.includes(1)),
-					text: i18n('Boxes.GexStat.Member') + ' / ' + i18n('Boxes.GexStat.Participant'),
+					text: i18n('Boxes.GexStat.Gex') + ' ' + i18n('Boxes.GexStat.Rounds')
 				},
-				labels: {
-					enabled: (GexStat.Settings.showAxisLabel && series.yaxis.includes(1)),
+				subtitle: {
+					text: CourseData.weeks[0] + ' - ' + CourseData.weeks[CourseData.weeks.length - 1] +
+						' (' + CourseData.weeks.length + ' ' + i18n('Boxes.GexStat.Rounds') + ')'
 				},
-				opposite: true
-			},
-			{
-				allowDecimals: false,
-				labels: {
-					enabled: (GexStat.Settings.showAxisLabel && series.yaxis.includes(2)),
+				yAxis: [{
+					allowDecimals: false,
+					labels: {
+						enabled: (GexStat.Settings.showAxisLabel && series.yaxis.includes(0)),
+					},
+					title: {
+						enabled: (GexStat.Settings.showAxisLabel && series.yaxis.includes(0)),
+						text: i18n('Boxes.GexStat.Points'),
+					}
+				}, {
+					allowDecimals: false,
+					title: {
+						enabled: (GexStat.Settings.showAxisLabel && series.yaxis.includes(1)),
+						text: i18n('Boxes.GexStat.Member') + ' / ' + i18n('Boxes.GexStat.Participant'),
+					},
+					labels: {
+						enabled: (GexStat.Settings.showAxisLabel && series.yaxis.includes(1)),
+					},
+					opposite: true
 				},
-				title: {
-					enabled: (GexStat.Settings.showAxisLabel && series.yaxis.includes(2)),
-					text: i18n('Boxes.GexStat.Encounters'),
+					{
+						allowDecimals: false,
+						labels: {
+							enabled: (GexStat.Settings.showAxisLabel && series.yaxis.includes(2)),
+						},
+						title: {
+							enabled: (GexStat.Settings.showAxisLabel && series.yaxis.includes(2)),
+							text: i18n('Boxes.GexStat.Encounters'),
+						},
+					},
+					{
+						allowDecimals: false,
+						labels: {
+							enabled: false,
+						},
+						title: {
+							enabled: false
+						},
+						reversed: true
+					}],
+				xAxis: {
+					categories: CourseData.weeks,
+					crosshair: true,
 				},
-			},
-			{
-				allowDecimals: false,
-				labels: {
-					enabled: false,
+				legend: {
+					layout: 'vertical',
+					align: 'right',
+					verticalAlign: 'middle'
 				},
-				title: {
+				plotOptions: {
+					column: {
+						grouping: false,
+						shadow: false,
+						borderWidth: 0
+					},
+					series: {
+						label: {
+							connectorAllowed: false
+						}
+					}
+				},
+				series: series.data,
+				tooltip: {
+					shared: true
+				},
+				exporting: {
 					enabled: false
 				},
-				reversed: true
-			}],
-			xAxis: {
-				categories: CourseData.weeks,
-				crosshair: true,
-			},
-			legend: {
-				layout: 'vertical',
-				align: 'right',
-				verticalAlign: 'middle'
-			},
-			plotOptions: {
-				column: {
-					grouping: false,
-					shadow: false,
-					borderWidth: 0
-				},
-				series: {
-					label: {
-						connectorAllowed: false
-					}
+				responsive: {
+					rules: [{
+						condition: {
+							maxWidth: 800
+						},
+						chartOptions: {
+							legend: {
+								align: 'center',
+								verticalAlign: 'bottom',
+								layout: 'horizontal'
+							},
+						}
+					}]
 				}
 			},
-			series: series.data,
-			tooltip: {
-				shared: true
-			},
-			exporting: {
-				enabled: false
-			},
-			responsive: {
-				rules: [{
-					condition: {
-						maxWidth: 800
-					},
-					chartOptions: {
-						legend: {
-							align: 'center',
-							verticalAlign: 'bottom',
-							layout: 'horizontal'
-						},
-					}
-				}]
-			}
-		},
 			function (chart) {
 
 				GexStat.hidePreloader();
@@ -924,12 +927,12 @@ let GexStat = {
 			case 'Participation':
 				let Participation = await GexStat.db.participation.reverse().limit(exportLimit).toArray();
 				if (!Participation) { return; }
-				exportData.push(['gexWeek', 'player ID', 'player', 'expeditionPoints', 'solvedEncounters', 'rank']);
+				exportData.push(['gexWeek', 'player ID', 'player', 'expeditionPoints', 'solvedEncounters', 'rank', 'trial']);
 				Participation.sort((a, b) => a.gexweek - b.gexweek).forEach(gexweek => {
 					let participation = gexweek.participation;
 					let weekdate = moment(gexweek.gexweek * 1000).format(i18n('Date'));
 					participation.sort((a, b) => a.rank - b.rank).forEach(participant => {
-						exportData.push([weekdate, participant.player_id, participant.name, participant.expeditionPoints, participant.solvedEncounters, participant.rank]);
+						exportData.push([weekdate, participant.player_id, participant.name, participant.expeditionPoints, participant.solvedEncounters, participant.rank, participant.trial||0]);
 					});
 				});
 				break;
@@ -1028,19 +1031,19 @@ FoEproxy.addHandler('ResourceService', 'getPlayerAutoRefills', (data, postData) 
 	GExAttempts.setNext(data.responseData.resources.guild_expedition_attempt)
 });
 FoEproxy.addHandler('GuildExpeditionService', 'getOverview', (data, postData) => {
-    if (data.responseData) GExAttempts.updateState(data.responseData)
+	if (data.responseData) GExAttempts.updateState(data.responseData)
 });
 
 FoEproxy.addHandler('GuildExpeditionNotificationService', 'GuildExpeditionStateNotification', (data, postData) => {
-    if (data.responseData) GExAttempts.updateState(data.responseData)
+	if (data.responseData) GExAttempts.updateState(data.responseData)
 });
 FoEproxy.addHandler('GuildExpeditionService', 'getState', (data, postData) => {
-    for (let x of data.responseData) {
-        if (!x.currentEntityId) continue;
-        GExAttempts.state.GEprogress = x.currentEntityId;
+	for (let x of data.responseData) {
+		if (!x.currentEntityId) continue;
+		GExAttempts.state.GEprogress = x.currentEntityId;
 		localStorage.setItem('GEx.state',JSON.stringify(GExAttempts.state))
 		GExAttempts.refreshGUI()
-    }
+	}
 });
 let GExAttempts = {
 	count:0,
@@ -1092,13 +1095,13 @@ let GExAttempts = {
 
 	setCount:(n)=>{
 		GExAttempts.count = n
-		GExAttempts.refreshGUI()	
+		GExAttempts.refreshGUI()
 	},
 
 	setNext:(time)=>{
 		let timer=3600000
-	
-		if (time) { 
+
+		if (time) {
 			timer = (time-GameTime.get()+3600)*1000
 			GExAttempts.last = time
 		} else {
@@ -1106,10 +1109,10 @@ let GExAttempts = {
 			GExAttempts.setCount(Math.min(GExAttempts.count + amount,8))
 			GExAttempts.last += 3600*amount
 			timer = (GExAttempts.last - moment().unix() + 3600)*1000
-		} 
+		}
 
 		if (GExAttempts.next) clearTimeout(GExAttempts.next)
-		
+
 		GExAttempts.next = setTimeout(GExAttempts.setNext,timer)
 
 	},
@@ -1130,8 +1133,8 @@ let GExAttempts = {
 		} else {
 			GExAttempts.state.activationTime = data.nextStateTime || null
 			GExAttempts.state.deactivationTime = null
-			GExAttempts.state.GEprogress = 0	
-		}		
+			GExAttempts.state.GEprogress = 0
+		}
 
 		localStorage.setItem('GEx.state',JSON.stringify(GExAttempts.state))
 		GExAttempts.refreshGUI()
