@@ -978,18 +978,18 @@ let Negotiation = {
 // --------------------------------------------------------------------------------------------------
 // Negotiation
 
-FoEproxy.addHandler('all', 'startNegotiation', (data, postData) => {
-	Negotiation.StartNegotiation(/** @type {FoE_Class_NegotiationGame} */ (data.responseData));
+FoEproxy.addHandler('all','all', (data, postData) => {
+	if (data.requestMethod === "startNegotiation") {
+		Negotiation.StartNegotiation(/** @type {FoE_Class_NegotiationGame} **/ (data.responseData) );
+		return
+	}
+	if ($('#negotiationBox').length == 0) return
+	if (data.requestClass === 'NegotiationGameService' && data.requestMethod === 'submitTurn') {
+		Negotiation.SubmitTurn(/** @type {FoE_Class_NegotiationGameResult} **/ (data.responseData) );
+		return
+	}
+	if (!["RankingService","QuestService","ResourceService","TimeService", "MessageService", "WorldChallengeService", "AutoAidService", "TrackingService", "AnnouncementService","InventoryService"].includes(data.requestClass)) Negotiation.ExitNegotiation()
 });
-
-FoEproxy.addHandler('NegotiationGameService', 'submitTurn', (data, postData) => {
-	Negotiation.SubmitTurn(/** @type {FoE_Class_NegotiationGameResult} */ (data.responseData) );
-});
-
-FoEproxy.addHandler('NegotiationGameService', 'giveUp', (data, postData) => {
-	Negotiation.ExitNegotiation();
-});
-
 
 // --------------------------------------------------------------------------------------------------
 // Negotiation DEBUGGER
