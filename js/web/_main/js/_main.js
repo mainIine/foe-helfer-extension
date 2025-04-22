@@ -1483,6 +1483,7 @@ let MainParser = {
 			ally.rarity=ally.rarity.value
 			ally.name=MainParser.Allies.meta[ally.allyId]?.name
 			ally.typeName=MainParser.Allies.types[ally.type]?.name
+			ally.type=MainParser.Allies.meta[ally.allyId]?.allyType
 			return ally
 		},
 
