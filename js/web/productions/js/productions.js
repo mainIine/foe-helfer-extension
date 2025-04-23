@@ -948,6 +948,11 @@ let Productions = {
 					erasTotal[era] += goodAmount = allGoods?.eras?.[era] || 0
 					updateGroup[era] += goodAmount
 				}
+				if (building.isBoostable) {
+					goodAmount = Math.round(goodAmount + (goodAmount *((Boosts.Sums.goods_production) / 100)))
+					currentGoodAmount = Math.round(currentGoodAmount + (currentGoodAmount *((Boosts.Sums.goods_production) / 100)))
+				}
+				console.log('manno',building);
 				rowA.push('<td data-number="'+goodAmount+'" class="text-center">')
 					if (currentGoodAmount != goodAmount) {
 						let isAverage = (allGoods.hasRandomProduction ? "Ø" : "")

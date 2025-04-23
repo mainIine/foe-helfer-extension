@@ -81,6 +81,7 @@ let Boosts = {
         'def_boost_attacker': 0,
         'att_boost_defender': 0,
         'def_boost_defender': 0,
+        'goods_production': 0,
         'guild_raids-att_boost_attacker': 0,
         'guild_raids-def_boost_attacker': 0,
         'guild_raids-att_boost_defender': 0,
