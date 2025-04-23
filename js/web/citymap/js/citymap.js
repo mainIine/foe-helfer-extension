@@ -594,7 +594,7 @@ let CityMap = {
 			})
 				.attr('data-callback_tt','Tooltips.buildingTT')
 				.attr('data-id', building.id)
-				.attr('title', building.name)
+				.attr('data-title', building.name)
 				.attr('data-meta_id',building.entityId);
 
 			CityMap.OccupiedArea += (building.size.width * building.size.length);
@@ -920,7 +920,7 @@ let CityMap = {
 	filterBuildings: (string) => {
 		spans = $('span.entity');
 		for (sp of spans) {
-			let title = $(sp).attr('title');
+			let title = $(sp).attr('data-title');
 			if ((string != "") && (title.substr(0,title.toLowerCase().indexOf(string.toLowerCase()) > -1))) {
 				$(sp).addClass('highlighted');
 			} else {
