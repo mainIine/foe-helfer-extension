@@ -136,11 +136,6 @@ let StrategyPoints = {
 		// necessary to wait for gift in gg + diplomatic gift
 		setTimeout(()=>{
 			const availableFPs = (ResourceStock['strategy_points'] !== undefined ? ResourceStock['strategy_points'] : 0);
-			if(availableFPs > 999){
-				$('#fp-bar').addClass("over1k");
-			} else {
-				$('#fp-bar').removeClass("over1k");
-			}
 			const $main = $('.fp-bar-main')
 			$main.find('.number').text(availableFPs);
 			$main.removeClass('full');
