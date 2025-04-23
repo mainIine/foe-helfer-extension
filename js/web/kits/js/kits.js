@@ -460,14 +460,14 @@ let Kits = {
 					if (!rating) break
 					for (r of rating) {
 						if (title=="") {
-							title = `${r.building.name}: ${Math.round(100 * r.score)}`
+							title = `${r.building?.name||r.name}: ${Math.round(100 * r.rating.totalScore)}`
 						}else {
-							title =`${r.building.name}: ${Math.round(100 * r.score)}<br>`+title
+							title =`${r.building?.name||r.name}: ${Math.round(100 * r.rating.totalScore)}<br>`+title
 						}
 					}
 					let top=rating.pop()
 					eff = `<span class="kitsEff" data-original-title="${title}">${i18n('Boxes.Kits.Efficiency')}: `
-					eff += Math.round(100 * top?.score||0);
+					eff += Math.round(100 * top?.rating.totalScore||0);
 					eff+= '</span>'
 				}
 			}
@@ -715,9 +715,64 @@ let Kits = {
 	},
 
 	UpgradeSchemes:null,
+	//UpgradeTiers:["ascended|refined","platinum","gold","silver","upgrade"],
 
 	CreateUpgradeSchemes:()=> {
-		
+/*		if (Kits.UpgradeSchemes) {
+			Kits.UpgradeSchemes = null;
+		}
+		Kits.UpgradeSchemes = {};
+		let sOptions={}
+		for (let s in Object.values(MainParser.selectionKits)) {
+			for (let c of s.eraOptions[CurrentEra]) {
+				if (!sOptions[c.item.cityEntityId||c.item.upgradeItemId]) {
+					sOptions[c.item.cityEntityId||c.item.upgradeItemId] = [s.selectionKitId]
+				} else {
+					sOptions[c.item.cityEntityId||c.item.upgradeItemId].push(s.selectionKitId)
+				}
+			}			
+		}
+
+		let upgradeKits = {}
+
+		for (let u of Object.values(MainParser.BuildingUpgrades)) {
+			let upgradeList = [u.upgradeItem.id];
+			let buildingList=[];
+			let sK=[]
+			let upgradeCount=JSON.parse(`{"${u.upgradeItem.id.includes("ascended")?"ascended" : u.upgradeItem.id.split("_")[0]}":${u.upgradeSteps.length-1}}`)
+			for (let i = 1;i<u.upgradeSteps.length;i++) {
+				for (b of u.upgradeSteps[i].buildingIds) {
+					buildingList.push(b)
+					if (upgradeKits[b]) {
+						buildingList = [...buildingList,...upgradeKits[b].buildingList];
+						upgradeList = [...upgradeList,...upgradeKits[b].upgradeList];
+						upgradeCount = {...upgradeCount,...upgradeKits[b].upgradeCount};
+						delete upgradeKits[b]						
+					}
+					if (selectionKits[b]) sK.push(...selectionKits[b])
+				}
+			}
+			for (let b of u.upgradeSteps[0].buildingIds) {
+				if (sK.length>0) selectionKits[b] = Array.from(new Set([...sK,...(selectionKits[b]||[])]))
+				let i = Object.keys(upgradeKits)[Object.values(upgradeKits).findIndex(x=>x.buildingList.includes(b))]
+				if (i) {
+					upgradeKits[i].buildingList = [...upgradeKits[i].buildingList,...buildingList];
+					upgradeKits[i].upgradeList = [...upgradeKits[i].upgradeList,...upgradeList];
+					upgradeKits[i].upgradeCount = {...upgradeKits[i].upgradeCount,...upgradeCount};
+				} else {				
+					upgradeKits[b] = {upgradeList:upgradeList,buildingList:buildingList,upgradeCount:upgradeCount};
+				}
+			}
+		}
+
+
+
+
+
+
+		for (let [uId, u] of Object.entities(MainParser.BuildingUpgrades)) {
+			
+		}*/
 	},
 	PopulateUpgradeSchemes: async ()=> {
 		//await ExistenceConfirmed('Kits.UpgradeSchemes')
@@ -725,7 +780,6 @@ let Kits = {
 	},
 	//
 	//
-	
 		
 
 };
