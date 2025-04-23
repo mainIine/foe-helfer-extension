@@ -1,6 +1,6 @@
 [	
 	{
-		"udate": "Vikings 2025 (10 April 2025)"
+		"udate": "Summer 2025 (23 April 2025)"
 	},
 	{
 		"groupname": "Events"
@@ -511,13 +511,6 @@
 		]
 	},
 	{
-		"name": "Governors_Villa",
-		"link": "Governor%27s_Villa",
-		"buildings": [
-			{"first": "R_MultiAge_SummerBonus20a"}
-		]
-	},
-	{
 		"name": "Guard_Post",
 		"link": "Selection_Kit#Guard_Post_Selection_Kit",
 		"buildings": [
@@ -537,6 +530,36 @@
 		"name": "The_Ship",
 		"buildings": [
 			{"first": "R_MultiAge_SummerBonus18a"}
+		]
+	},
+	{
+		"name": "Governor%27s_Villa",
+		"buildings": [
+			{"first": "W_MultiAge_SUM20A1"}
+		]
+	},
+	{
+		"name": "Lagoon_Hideout",
+		"buildings": [
+			{"first": "W_MultiAge_SUM25A1"}
+		]
+	},
+	{
+		"name": "Captain%27s_Coconut_Paradise",
+		"buildings": [
+			{"first": "W_MultiAge_SUM25B1"}
+		]
+	},
+	{
+		"name": "Pirate%27s_Parrot_Perch",
+		"buildings": [
+			{"first": "W_MultiAge_SUM25C1"}
+		]
+	},
+	{
+		"name": "Siren%27s_Rock",
+		"buildings": [
+			{"first": "W_MultiAge_SUM25F1"}
 		]
 	},
 	{
