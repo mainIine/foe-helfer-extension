@@ -935,9 +935,6 @@ FP-Bar */
 #fp-bar.main .fp-bar-main{
 	display:none;
 }
-#fp-bar.main.over1k .fp-bar-main{
-	display: flex;
-}
 
 #fp-bar .fp-bar-main {
 	height: 16px;
