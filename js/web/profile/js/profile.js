@@ -29,7 +29,7 @@ const Profile = {
     init: (responseData) => {
         Profile.daysPlayed = responseData.achievementGroups.find(x => x.id == "special").achievements.find(x => x.id == 'foe_fanclub').currentLevel.progress || null
         Profile.showButton();
-        Profile.settlements = responseData.achievementGroups?.find(x => x.id == "cultural_settlements").achievements || [];
+        Profile.settlements = responseData.achievementGroups?.find(x => x.id == "cultural_settlements")?.achievements || [];
         Profile.achievements = responseData.achievementGroups;
         Profile.favAchievements = responseData.topAchievements;
     },
@@ -250,13 +250,13 @@ const Profile = {
                 content.push('<h1>'+player.PlayerName+'</h1>');
                 content.push('<span>'+i18n('Eras.'+CurrentEraID)+'</span><br>');
                 content.push('<span class="ranking">'+HTML.Format(parseInt(player.Score))+'</span>');
-                content.push('<span>⚔'+HTML.Format(parseInt(player.WonBattles))+'</span>');
+                content.push('<span>⚔'+HTML.Format(parseInt(player.WonBattles || 0))+'</span>');
                 content.push('</div>');
             content.push('</div>');
             content.push('<div class="daysPlayed">');
             content.push(
                 HTML.i18nReplacer(i18n('Boxes.PlayerProfile.DaysPlayed'), {
-                    number: HTML.Format(parseInt(Profile.daysPlayed)),
+                    number: HTML.Format(parseInt(Profile.daysPlayed || 0)),
                 }));
             content.push('</div>');
 
