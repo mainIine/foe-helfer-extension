@@ -59,8 +59,8 @@ let BoostInventory = {
 					stock: InventoryItem.inStock,
 					boosts: boosts,
 					name: entity.name,
-					street: rating.building.needsStreet || 0,
-					score: rating.score
+					street: rating.needsStreet || 0,
+					score: rating.rating.totalScore
 				}
 			} else {
 				BoostInventory.Buildings[id].stock += InventoryItem.inStock

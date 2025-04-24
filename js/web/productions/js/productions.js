@@ -1696,7 +1696,7 @@ let Productions = {
 				// skip inventory buildings that are already in the city
 				if (building.isInInventory && (buildingCount[building.entityId+"C"] !== undefined || buildingCount[building.entityId+"C"] >= 1)) continue;
 
-				let buildingSize = building.length * building.size.width;
+				let buildingSize = building.size.length * building.size.width;
 
 				[randomItems,randomUnits] = Productions.showBuildingItems(false, building)
 				h.push(`<tr class="${building.highlight?'additional ':''}${building.isInInventory?'inventory-building ':''}size${buildingSize}">`)
