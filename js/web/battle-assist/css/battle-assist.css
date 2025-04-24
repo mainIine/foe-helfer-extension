@@ -189,3 +189,9 @@
 #battleAssistAAConfigBody [data-id^="GE5"] {
     background: var(--background-table-info);
 }
+#battleAssistAAConfigBody [data-id^="attack"] {
+    background: var(--background-table-error);
+}
+#battleAssistAAConfigBody [data-id^="defense"] {
+    background: var(--background-table-info);
+}
