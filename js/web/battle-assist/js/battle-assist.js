@@ -125,6 +125,11 @@ FoEproxy.addHandler('GuildExpeditionService', 'getOverview', (data, postData) =>
         BattleAssist.GEArmies[e.id] = e;
     }
 });
+FoEproxy.addHandler('GuildExpeditionService', 'getSection', (data, postData) => {
+    for (e of data.responseData?.encounters||[]) {
+        BattleAssist.GEArmies[e.id] = e;
+    }
+});
 
 FoEproxy.addRequestHandler('ArmyUnitManagementService', 'getArmyInfo', (postData) => {
     if (postData.requestData?.[0]?.battleType!="guild_expedition") return;
@@ -279,7 +284,7 @@ let BattleAssist = {
         html += `<h1>${i18n('Boxes.BattleAssistAAConfig.AllConfigs')}</h1>`;
         
         if (Object.keys(BattleAssist.armyAdvice).length>0) {
-            html += `<table class="foe-table"><tr><th>Wave 1</th><th>Wave 2</th><th>Set Threshold</th><th>Advice</th></tr>`;
+            html += `<table class="foe-table"><tr><th>${i18n('Boxes.BattleAssistAAConfig.Wave1')}</th><th>${i18n('Boxes.BattleAssistAAConfig.Wave2')}</th><th>${i18n('Boxes.BattleAssistAAConfig.Threshold')}</th><th>${i18n('Boxes.BattleAssistAAConfig.Advice')}</th></tr>`;
             for (let id of Object.keys(BattleAssist.armyAdvice)) {
                 let x=BattleAssist.armyAdvice[id];
                 if (!x) break;
