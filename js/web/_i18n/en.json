@@ -248,6 +248,7 @@
     "Boxes.CityMap.ShowDecayedBuildings": "Highlight decayed buildings",
     "Boxes.CityMap.ShowNoStreetBuildings": "Highlight buildings that do not need streets",
     "Boxes.CityMap.ShowSubmitBox": "City planner",
+    "Boxes.CityMap.ShowWorstBuildings": "Hightlight worst rated buildings",
     "Boxes.CityMap.StreetsAmount": "Number of Streets: ",
     "Boxes.CityMap.Submit": "Submit",
     "Boxes.CityMap.SubmitError": "Your city data could not be sent to the server. Please report this error directly to ",

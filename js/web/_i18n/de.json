@@ -250,6 +250,7 @@
     "Boxes.CityMap.ShowDecayedBuildings": "Markiere Gebäude, die abgelaufen sind",
     "Boxes.CityMap.ShowNoStreetBuildings": "Markiere Gebäude, die keine Straße brauchen",
     "Boxes.CityMap.ShowSubmitBox": "Stadtplaner",
+    "Boxes.CityMap.ShowWorstBuildings": "Markiere Gebäude, die am ineffizientesten bewertet sind",
     "Boxes.CityMap.StreetsAmount": "Anzahl Straßen: ",
     "Boxes.CityMap.Submit": "Abschicken",
     "Boxes.CityMap.MissingApiKeySubmitError": "Ohne einen API-Token für diese Welt, den Du kostenlos auf der Website erhalten kannst, werden keine Städte oder Notizen übertragen.<br>Für eine Anleitung, klicke hier:",
