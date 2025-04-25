@@ -235,7 +235,15 @@ let BattleAssist = {
 	 * @constructor
 	 */
     ShowArmyAdviceConfig: () => {
-        
+        //clean up old entries - remove at some point
+        for ([key, value] of Object.entries(BattleAssist.armyAdvice)) {
+            if (/^GE5/.test(key)) {
+                BattleAssist.armyAdvice[key.replace(/^GE5/,"defense%")]=structuredClone(value);
+                delete BattleAssist.armyAdvice[key];
+                localStorage.setItem("BattleAssistArmyAdvice",JSON.stringify(BattleAssist.armyAdvice));
+            }
+        }
+
         //remove Settings dialog of Box if opened via there
         $('#battleAssistArmyAdviceSettingsBox').remove();
         
@@ -271,9 +279,9 @@ let BattleAssist = {
                 html += `</div></td><td>${x.bonus}%`
                 let advice = BattleAssist.armyAdvice[x.id]?.advice
                 let aBonus = BattleAssist.armyAdvice[x.id]?.bonus;
-                if (!advice) {//process old advice data
-                    advice = BattleAssist.armyAdvice[x.id.replace(/^(attack|defense)+/,"")]?.advice 
-                    aBonus = BattleAssist.armyAdvice[x.id.replace(/^(attack|defense)+/,"")]?.bonus;
+                if (!advice) {//process neutral/old advice data
+                    advice = BattleAssist.armyAdvice[x.id.replace(/^(attack|defense)+%/,"")]?.advice 
+                    aBonus = BattleAssist.armyAdvice[x.id.replace(/^(attack|defense)+%/,"")]?.bonus;
                 }
                 html += `</td><td class="AASetBonus" data-id="${x.id}">${aBonus ? aBonus +"%" : ""}`
                 html += `</td><td class="AASetAdvice" data-id="${x.id}">${advice || ""}`
@@ -300,6 +308,12 @@ let BattleAssist = {
                 }            
                 html += `</td><td class="AASetBonus" data-id="${id}">${x.bonus ? x.bonus + "%" : ""}`
                 html += `</td><td class="AASetAdvice" data-id="${id}">${x.advice || ""}`
+                html += `<div class="battleAssistOverrideTypeGroup">`
+                let type = (/^(attack|defense)+%/.exec(id)||[""])[0].replace("%","");
+                html += `<span class="battleAssistOverrideType${type=="attack"?" active":""}" data-type="attack"><img src="${srcLinks.get("/shared/gui/boost/boost_icon_bonus_attacking_all.png",true)}"></span>`
+                html += `<span class="battleAssistOverrideType${type!="attack"&&type!="defense"?" active":""}" data-type=""><img src="${srcLinks.get("/shared/gui/boost/boost_icon_bonus_attacking_defending_all.png",true)}"></span>`
+                html += `<span class="battleAssistOverrideType${type=="defense"?" active":""}" data-type="defense"><img src="${srcLinks.get("/shared/gui/boost/boost_icon_bonus_defending_all.png",true)}"></span>`
+                html += `</div>`
                 html += `</td></tr>`
             }
             html += `</table>`
@@ -311,16 +325,33 @@ let BattleAssist = {
             let id = elm.dataset.id
             if (!id) return;
             elm.innerHTML = `<input type="Number" value="${BattleAssist.armyAdvice[id]?.bonus ? BattleAssist.armyAdvice[id]?.bonus:""}" onkeydown="BattleAssist.SetBonus(event)" onfocusout="BattleAssist.ShowArmyAdviceConfig()">`;
-            $ (`.AASetBonus[data-id=${id}] input`)[0].select();
+            $ (`.AASetBonus[data-id="${id}"] input`)[0].select();
         });
         
         $('.AASetAdvice').on("click",(event)=>{
             let elm=event.target;
             let id = elm.dataset.id
             if (!id) return;
-            elm.innerHTML = `<textarea maxlength="180" onfocusout="BattleAssist.ShowArmyAdviceConfig()" onkeydown="BattleAssist.SetAdvice(event)">${BattleAssist.armyAdvice[id]?.advice || ""}</textarea>`;
-            $ (`.AASetAdvice[data-id=${id}] textarea`)[0].select();
+            BattleAssist.overrideId=null
+            
+            elm.innerHTML = `
+                <textarea maxlength="180" onfocusout="BattleAssist.ShowArmyAdviceConfig()" onkeydown="BattleAssist.SetAdvice(event)">${BattleAssist.armyAdvice[id]?.advice || ""}</textarea>`;
+            $ (`.AASetAdvice[data-id="${id}"] textarea`)[0].select();
         });
+        $(`.battleAssistOverrideType`).on("click",(event)=>{
+            let id = $(event.target).parent().parent().parent().attr("data-id")
+            let tr = $(event.target).parent().parent().parent().parent();
+            $(`.AASetAdvice[data-id="${id}"] .battleAssistOverrideType`).removeClass("active");
+            $(event.target).parent().addClass("active");
+            let type = $(event.target).parent().data("type")
+            let overrideId = type + (type!=""?"%":"") + id.replace(/^(attack|defense)+%/,"");
+            let oldAdvice = structuredClone(BattleAssist.armyAdvice[id])
+            delete BattleAssist.armyAdvice[id]; 
+            BattleAssist.armyAdvice[overrideId]=oldAdvice;
+            tr.find(`.AASetAdvice[data-id="${id}"]`).attr("data-id",overrideId);
+            tr.find(`.AASetBonus[data-id="${id}"]`).attr("data-id",overrideId);
+            localStorage.setItem("BattleAssistArmyAdvice",JSON.stringify(BattleAssist.armyAdvice));
+        })
         
     },
     
@@ -406,7 +437,7 @@ let BattleAssist = {
 		localStorage.setItem('BattleAssistAASettings', JSON.stringify(BattleAssist.AASettings));
     },
     processArmies: (wave1, wave2, bonus, type) => {
-        let id= type;
+        let id= type+"%";
         if (!BattleAssist.UnitOrder) {
             BattleAssist.UnitOrder={};
             let temp = Unit.Types.map(x=> ({id:x.unitTypeId,era:x.minEra}));
@@ -438,8 +469,8 @@ let BattleAssist = {
         let advice = BattleAssist.armyAdvice[id]?.advice
         let aBonus = BattleAssist.armyAdvice[id]?.bonus;
         if (!advice) {//process old advice data
-            advice = BattleAssist.armyAdvice[id.replace(/^(attack|defense)+/,"")]?.advice 
-            aBonus = BattleAssist.armyAdvice[id.replace(/^(attack|defense)+/,"")]?.bonus;
+            advice = BattleAssist.armyAdvice[id.replace(/^(attack|defense)+%/,"")]?.advice 
+            aBonus = BattleAssist.armyAdvice[id.replace(/^(attack|defense)+%/,"")]?.bonus;
         }
         if (advice && aBonus <= bonus) {
             BattleAssist.ShowArmyAdvice(advice);
