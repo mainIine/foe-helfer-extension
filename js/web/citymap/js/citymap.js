@@ -192,6 +192,7 @@ let CityMap = {
 				$('#show-nostreet-buildings')[0].checked=false;
 				$('#show-ascendable-buildings')[0].checked=false;
 				$('#show-decayed-buildings')[0].checked=false;
+				$('#show-worst-buildings')[0].checked=false;
 			}
 
 			$('#grid-outer').attr('data-unit', unit);
@@ -240,6 +241,11 @@ let CityMap = {
 		mapfilters.append(
 			$('<label />').attr({ for: 'show-decayed-buildings' }).text(i18n('Boxes.CityMap.ShowDecayedBuildings'))
 				.prepend($('<input />').attr({ type: 'checkbox', id: 'show-decayed-buildings', onclick: 'CityMap.ShowDecayedBuildings()' }))
+		);
+
+		mapfilters.append(
+			$('<label />').attr({ for: 'show-worst-buildings' }).text(i18n('Boxes.CityMap.ShowWorstBuildings'))
+				.prepend($('<input />').attr({ type: 'checkbox', id: 'show-worst-buildings', onclick: 'CityMap.ShowWorstBuildings()' }))
 		);
 
 		oB.append(wrapper)
@@ -572,6 +578,17 @@ let CityMap = {
 		else
 			buildingData = CityMap.createNewCityMapEntities(Object.values(MainParser.CityMapData))
 
+		// find highest rating in all buildings, do not include roads
+		let buildingsWithoutStreets = Object.values(buildingData).filter((x) => x.type != "street");
+		let buildingRatings = Object.values(buildingsWithoutStreets).map((x) => parseInt(x.rating.totalScore *100));
+		buildingRatings.sort((a, b) => {
+			if (a < b) return -1
+			if (a > b) return 1
+			return 0
+		});
+		ratingThreshold = buildingRatings[parseInt(buildingRatings.length/10)];
+
+		// create building elements
 		for (const building of Object.values(buildingData)) {
 			if (building.coords.x < MinX || building.coords.x > MaxX || building.coords.y < MinY || building.coords.y > MaxY) continue
 
@@ -585,8 +602,9 @@ let CityMap = {
 			let isDecayed = (building.state.isDecayed ? ' decayed' : '')
 			let isSpecial = (building.isSpecial ? ' special' : '')
 			let chainBuilding = (building.chainBuilding != undefined ? ' chain' : '')
+			let rating = (building.rating?.totalScore*100 <= (ratingThreshold) ? ' ratedWorst' : '')
 			
-			f = $('<span />').addClass('entity helperTT ' + building.type + noStreet + isSpecial + canAscend + isDecayed + chainBuilding).css({
+			f = $('<span />').addClass('entity helperTT ' + building.type + noStreet + isSpecial + canAscend + isDecayed + chainBuilding + rating).css({
 				width: xsize + 'em',
 				height: ysize + 'em',
 				left: x + 'em',
@@ -790,6 +808,14 @@ let CityMap = {
 	 */
 	ShowDecayedBuildings: ()=> {
 		$('.decayed').toggleClass('highlight3');
+	},
+
+
+	/**
+	 * Show Buildings that can be ascended
+	 */
+	ShowWorstBuildings: ()=> {
+		$('.ratedWorst').toggleClass('highlight4');
 	},
 
 
