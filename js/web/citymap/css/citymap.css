@@ -361,9 +361,29 @@
 	animation-direction: alternate;
 	animation-timing-function: ease-in-out;
 }
-#grid-outer span:not(.street).ratedWorst.highlight4 {
+#grid-outer span:not(.street).rating10.highlight4 {
 	background-color: #f00;
 	border-color: #c00;
+	animation-name: color;
+    animation-duration: 1s;
+	animation-iteration-count: infinite;
+	animation-direction: alternate;
+	animation-timing-function: ease-in-out;
+}
+#grid-outer span:not(.street).rating20.highlight4 {
+	background-color: rgb(255, 102, 0);
+	border-color: #c00;
+	background-image: repeating-linear-gradient(-45deg, transparent, transparent 5px, #c00 2px, #c00 7px);
+	animation-name: color;
+    animation-duration: 1s;
+	animation-iteration-count: infinite;
+	animation-direction: alternate;
+	animation-timing-function: ease-in-out;
+}
+#grid-outer span:not(.street).rating30.highlight4 {
+	background-color: rgb(255, 208, 0);
+	border-color: #c00;
+	background-image: repeating-linear-gradient(-45deg, transparent, transparent 5px, #c00 2px, #c00 7px);
 	animation-name: color;
     animation-duration: 1s;
 	animation-iteration-count: infinite;

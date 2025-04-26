@@ -586,7 +586,9 @@ let CityMap = {
 			if (a > b) return 1
 			return 0
 		});
-		ratingThreshold = buildingRatings[parseInt(buildingRatings.length/10)];
+		rating10 = buildingRatings[parseInt(buildingRatings.length/10)];
+		rating20 = buildingRatings[parseInt(buildingRatings.length/5)];
+		rating30 = buildingRatings[parseInt(buildingRatings.length/3)];
 
 		// create building elements
 		for (const building of Object.values(buildingData)) {
@@ -602,7 +604,9 @@ let CityMap = {
 			let isDecayed = (building.state.isDecayed ? ' decayed' : '')
 			let isSpecial = (building.isSpecial ? ' special' : '')
 			let chainBuilding = (building.chainBuilding != undefined ? ' chain' : '')
-			let rating = (building.rating?.totalScore*100 <= (ratingThreshold) ? ' ratedWorst' : '')
+			let rating = (building.rating?.totalScore*100 <= (rating10) ? ' rating10' : 
+						(building.rating?.totalScore*100 <= (rating20) ? ' rating20' :	
+						(building.rating?.totalScore*100 <= (rating30) ? ' rating30' : '')))
 			
 			f = $('<span />').addClass('entity helperTT ' + building.type + noStreet + isSpecial + canAscend + isDecayed + chainBuilding + rating).css({
 				width: xsize + 'em',
@@ -815,7 +819,9 @@ let CityMap = {
 	 * Show Buildings that can be ascended
 	 */
 	ShowWorstBuildings: ()=> {
-		$('.ratedWorst').toggleClass('highlight4');
+		$('.rating10').toggleClass('highlight4');
+		$('.rating20').toggleClass('highlight4');
+		$('.rating30').toggleClass('highlight4');
 	},
 
 
