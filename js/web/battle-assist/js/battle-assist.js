@@ -130,6 +130,11 @@ FoEproxy.addHandler('GuildExpeditionService', 'getSection', (data, postData) => 
         BattleAssist.GEArmies[e.id] = e;
     }
 });
+FoEproxy.addHandler('GuildExpeditionService', 'changeDifficulty', (data, postData) => {
+    for (e of data.responseData?.section?.encounters||[]) {
+        BattleAssist.GEArmies[e.id] = e;
+    }
+});
 
 FoEproxy.addRequestHandler('ArmyUnitManagementService', 'getArmyInfo', (postData) => {
     if (postData.requestData?.[0]?.battleType!="guild_expedition") return;
