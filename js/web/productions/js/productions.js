@@ -1665,7 +1665,6 @@ let Productions = {
 					combinedRatingTypes.push(type);
 				}
 			}
-			console.log(combinedRatingTypes);
 			
 			h.push('<div class="ratingtable">');
 			h.push('<a id="RatingSettings" class="toggle-tab btn-default btn-tight" data-value="Settings">' + i18n('Boxes.ProductionsRating.Settings') + '</a>')
@@ -1697,17 +1696,23 @@ let Productions = {
 			for (const type of combinedRatingTypes) {
 				let firstType = type;
 				let secondType = null;
+				let divider = 1;
 				if (type.includes('att_def_')) {
 					firstType = type.replace('def_','');
 					secondType = type.replace('att_','');
+					divider = 2;
 				}
-				h.push('<th data-type="ratinglist" style="width:1%" class="is-number text-center buildingvalue"><span class="resicon ' + firstType + '"></span>'+
+				h.push('<th data-type="ratinglist" style="width:1%" class="is-number text-center buildingvalue"'+
+					(secondType != null ? ` data-original-title="${Productions.Rating.Data[firstType].perTile} + ${Productions.Rating.Data[secondType]?.perTile} / 2"` : '')+
+					'><span class="resicon ' + firstType + '"></span>'+
 					(secondType != null ? '<span class="resicon ' + secondType + '"></span><i>': '')+
-					(Productions.Rating.Data[firstType].perTile + (Productions.Rating.Data[secondType]?.perTile || 0) || 0)+
+					((Productions.Rating.Data[firstType].perTile + (Productions.Rating.Data[secondType]?.perTile || 0) || 0) /divider)+
 					'</i></th>');
-				h.push('<th data-type="ratinglist" style="width:1%" class="is-number text-center tilevalue"><span class="resicon ' + firstType + '"></span>'+
+				h.push('<th data-type="ratinglist" style="width:1%" class="is-number text-center tilevalue"'+
+					(secondType != null ? ` data-original-title="${Productions.Rating.Data[firstType].perTile} + ${Productions.Rating.Data[secondType]?.perTile} / 2"` : '')+
+					'><span class="resicon ' + firstType + '"></span>'+
 					(secondType != null ? '<span class="resicon ' + secondType + '"></span><i>': '')+
-					(Productions.Rating.Data[firstType].perTile + (Productions.Rating.Data[secondType]?.perTile || 0) || 0)+
+					((Productions.Rating.Data[firstType].perTile + (Productions.Rating.Data[secondType]?.perTile || 0) || 0)/divider)+
 					'</i></th>');
 			}
 			h.push('<th data-type="ratinglist" class="no-sort items">Items</th>');
@@ -1777,7 +1782,7 @@ let Productions = {
 
 						let roundingFactor = building.rating[firstType+'-tile'] > 100 || building.rating[firstType+'-tile'] < -100 ? 1 : 100
 						let roundingFactor2 = building.rating[secondType+'-tile'] > 100 || building.rating[secondType+'-tile'] < -100 ? 1 : 100
-						let tileValue = Math.round(building.rating[firstType+'-tile'] * roundingFactor) / roundingFactor + Math.round(building.rating[secondType+'-tile'] * roundingFactor2) / roundingFactor2
+						let tileValue = Math.round(((building.rating[firstType+'-tile'] * roundingFactor) / roundingFactor + (Math.round(building.rating[secondType+'-tile'] * roundingFactor2) / roundingFactor2)) / 2)
 						h.push(`<td class="text-right tilevalue" data-number="${tileValue}">`)
 						h.push(HTML.Format(tileValue))
 						h.push('</td>')
