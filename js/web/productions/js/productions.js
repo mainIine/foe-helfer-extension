@@ -1651,6 +1651,21 @@ let Productions = {
 			});
 
 			let colNumber = Object.values(Productions.Rating.Data).filter(x=>x.active && x.perTile!=null).length
+
+			// combine attack and defend boosts if both are active
+			let combinedRatingTypes = []
+			for (const type of Productions.Rating.Types) {
+				if (!Productions.Rating.Data[type].active || Productions.Rating.Data[type].perTile == null) continue;
+				let secondType = type.replace('att_','def_');
+				if (combinedRatingTypes.find(x => x == type.replace('def_','att_def_'))) continue;
+				if (Productions.Rating.Data[secondType].active) {
+					combinedRatingTypes.push(type.replace('att_','att_def_'));
+				}
+				else {
+					combinedRatingTypes.push(type);
+				}
+			}
+			console.log(combinedRatingTypes);
 			
 			h.push('<div class="ratingtable">');
 			h.push('<a id="RatingSettings" class="toggle-tab btn-default btn-tight" data-value="Settings">' + i18n('Boxes.ProductionsRating.Settings') + '</a>')
@@ -1679,10 +1694,21 @@ let Productions = {
 				h.push('<option>'+size+'</option>')
 			}
 			h.push('</select></div></th><th class="no-sort"></th>');
-			for (const type of Productions.Rating.Types) {
-				if (!Productions.Rating.Data[type].active || Productions.Rating.Data[type].perTile == null) continue
-				h.push('<th data-type="ratinglist" style="width:1%" class="is-number text-center buildingvalue"><span class="resicon ' + type + '"></span><i>'+(Productions.Rating.Data[type].perTile || 0)+'</i></th>');
-				h.push('<th data-type="ratinglist" style="width:1%" class="is-number text-center tilevalue"><span class="resicon ' + type + '"></span><i>'+(Productions.Rating.Data[type].perTile || 0)+'</i></th>');
+			for (const type of combinedRatingTypes) {
+				let firstType = type;
+				let secondType = null;
+				if (type.includes('att_def_')) {
+					firstType = type.replace('def_','');
+					secondType = type.replace('att_','');
+				}
+				h.push('<th data-type="ratinglist" style="width:1%" class="is-number text-center buildingvalue"><span class="resicon ' + firstType + '"></span>'+
+					(secondType != null ? '<span class="resicon ' + secondType + '"></span><i>': '')+
+					(Productions.Rating.Data[firstType].perTile + (Productions.Rating.Data[secondType]?.perTile || 0) || 0)+
+					'</i></th>');
+				h.push('<th data-type="ratinglist" style="width:1%" class="is-number text-center tilevalue"><span class="resicon ' + firstType + '"></span>'+
+					(secondType != null ? '<span class="resicon ' + secondType + '"></span><i>': '')+
+					(Productions.Rating.Data[firstType].perTile + (Productions.Rating.Data[secondType]?.perTile || 0) || 0)+
+					'</i></th>');
 			}
 			h.push('<th data-type="ratinglist" class="no-sort items">Items</th>');
 			h.push('</tr>');
@@ -1723,16 +1749,36 @@ let Productions = {
 				}
 				h.push('</td>')
 
-				for (const type of Productions.Rating.Types) {
-					if (!Productions.Rating.Data[type].active || Productions.Rating.Data[type].perTile == null) continue
-					if (building.rating[type] != undefined) {
-						h.push(`<td class="text-right${type=="units" ? " units":""} buildingvalue" data-number="${Math.round(building.rating[type])}" ${type=="units" ? `data-original-title="${randomUnits}"`:""}>`)
-						h.push(HTML.Format(building.rating[type]))
+				for (const type of combinedRatingTypes) {
+					let firstType = type;
+					let secondType = null;
+					if (type.includes('att_def_')) {
+						firstType = type.replace('def_','');
+						secondType = type.replace('att_','');
+					}
+					
+					// normal boosts
+					if (secondType == null) {
+						h.push(`<td class="text-right${firstType=="units" ? " units":""} buildingvalue" data-number="${Math.round(building.rating[firstType])}" ${firstType=="units" ? `data-original-title="${randomUnits}"`:""}>`)
+						h.push(HTML.Format(building.rating[firstType]))
 						h.push('</td>')
 
-						let roundingFactor = building.rating[type+'-tile'] > 100 || building.rating[type+'-tile'] < -100 ? 1 : 100
-						let tileValue = Math.round(building.rating[type+'-tile'] * roundingFactor) / roundingFactor
-						h.push(`<td class="text-right${type=="units" ? " units":""} tilevalue" data-number="${tileValue}" ${type=="units" ? `data-original-title="${randomUnits}"`:""}>`)
+						let roundingFactor = building.rating[firstType+'-tile'] > 100 || building.rating[firstType+'-tile'] < -100 ? 1 : 100
+						let tileValue = Math.round(building.rating[firstType+'-tile'] * roundingFactor) / roundingFactor
+						h.push(`<td class="text-right${firstType=="units" ? " units":""} tilevalue" data-number="${tileValue}" ${firstType=="units" ? `data-original-title="${randomUnits}"`:""}>`)
+						h.push(HTML.Format(tileValue))
+						h.push('</td>')
+					}
+					// combined attack boosts
+					else {
+						h.push(`<td class="text-right buildingvalue" data-number="${Math.round(building.rating[firstType])+Math.round(building.rating[secondType])}">`)
+						h.push(HTML.Format(building.rating[firstType]+building.rating[secondType]))
+						h.push('</td>')
+
+						let roundingFactor = building.rating[firstType+'-tile'] > 100 || building.rating[firstType+'-tile'] < -100 ? 1 : 100
+						let roundingFactor2 = building.rating[secondType+'-tile'] > 100 || building.rating[secondType+'-tile'] < -100 ? 1 : 100
+						let tileValue = Math.round(building.rating[firstType+'-tile'] * roundingFactor) / roundingFactor + Math.round(building.rating[secondType+'-tile'] * roundingFactor2) / roundingFactor2
+						h.push(`<td class="text-right tilevalue" data-number="${tileValue}">`)
 						h.push(HTML.Format(tileValue))
 						h.push('</td>')
 					}

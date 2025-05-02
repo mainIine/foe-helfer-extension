@@ -147,29 +147,29 @@
 }
 #ProductionsRatingBody span.resicon.att_boost_attacker-guild_expedition, #ProductionsRatingBody span.resicon.def_boost_attacker-guild_expedition, #ProductionsRatingBody span.resicon.att_boost_defender-guild_expedition, #ProductionsRatingBody span.resicon.def_boost_defender-guild_expedition {
 	background-image: url('../../x_img/ge.png'), url('../images/productions.png');
-	background-size: 75%, auto;
+	background-size: 50%, auto;
 	background-repeat: no-repeat;
-	background-position: center center, -312px 0px;
+	background-position: 13px 13px, -312px 0px;
 }
 #ProductionsRatingBody.tilevalues .buildingvalue {
-		display: none;
+	display: none;
 }
 #ProductionsRatingBody:not(.tilevalues) .tilevalue {
-		display: none;
+	display: none;
 }
 
 #ProductionsRatingBody.showitems .items {
-		display: none;
+	display: none;
 }
 
 #ProductionsRatingBody span.resicon.def_boost_attacker-guild_expedition {
-	background-position: center center, -366px 0px;
+	background-position: 13px 13px, -366px 0px;
 }
 #ProductionsRatingBody span.resicon.att_boost_defender-guild_expedition {
-	background-position: center center, -340px 0px;
+	background-position: 13px 13px, -340px 0px;
 }
 #ProductionsRatingBody span.resicon.def_boost_defender-guild_expedition {
-	background-position: center center, -391px 0px;
+	background-position: 13px 13px, -391px 0px;
 }
 #ProductionsRatingBody span.resicon.fsp {
 	background-position: -762px 0px;
@@ -368,31 +368,31 @@
 	background-image: url('../../x_img/guild_raids.png'), url('../images/productions.png');
 	background-size: 75%, auto;
 	background-repeat: no-repeat;
-	background-position: center center, -312px 0px;
+	background-position: 8px 8px, -312px 0px;
 }
 #ProductionsRatingBody span.resicon.def_boost_attacker-guild_raids {
-	background-position: center center, -366px 0px;
+	background-position: 8px 8px, -366px 0px;
 }
 #ProductionsRatingBody span.resicon.att_boost_defender-guild_raids {
-	background-position: center center, -340px 0px;
+	background-position: 8px 8px, -340px 0px;
 }
 #ProductionsRatingBody span.resicon.def_boost_defender-guild_raids {
-	background-position: center center, -391px 0px;
+	background-position: 8px 8px, -391px 0px;
 }
 #ProductionsRatingBody span.resicon.att_boost_attacker-battleground, #ProductionsRatingBody span.resicon.def_boost_attacker-battleground, #ProductionsRatingBody span.resicon.att_boost_defender-battleground, #ProductionsRatingBody span.resicon.def_boost_defender-battleground {
 	background-image: url('../../x_img/gbg-green.png'), url('../images/productions.png');
-	background-size: contain, auto;
+	background-size: 80%, auto;
 	background-repeat: no-repeat;
-	background-position: center center, -312px 0px;
+	background-position: 10px 8px, -312px 0px;
 }
 #ProductionsRatingBody span.resicon.def_boost_attacker-battleground {
-	background-position: center center, -366px 0px;
+	background-position: 10px 8px, -366px 0px;
 }
 #ProductionsRatingBody span.resicon.att_boost_defender-battleground {
-	background-position: center center, -340px 0px;
+	background-position: 10px 8px, -340px 0px;
 }
 #ProductionsRatingBody span.resicon.def_boost_defender-battleground {
-	background-position: center center, -391px 0px;
+	background-position: 10px 8px, -391px 0px;
 }
 #Productions th.boost.att_boost_attacker span, #ProductionsRatingBody span.resicon.att_boost_attacker-all {
 	background-position: -311px 0px;
@@ -580,6 +580,11 @@ input[id*="ProdPerTile"] {
 	width: 24px;
 	height: 26px;
 	background: transparent url('../images/productions.png') -236px 2px no-repeat;
+}
+#ProductionsRatingBody span.resicon:first-child:not(:only-child) {
+	position: relative;
+	z-index: 2;
+	margin-bottom: -26px;
 }
 #ProductionsRatingBody span.resicon.empty {
 	background-position: 1000px 1000px;
