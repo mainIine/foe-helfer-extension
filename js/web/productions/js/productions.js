@@ -1732,7 +1732,7 @@ let Productions = {
 				[randomItems,randomUnits] = Productions.showBuildingItems(false, building)
 				h.push(`<tr class="${building.highlight?'additional ':''}${building.isInInventory?'inventory-building ':''}size${buildingSize}">`)
 				h.push('<td class="text-right" data-number="'+building.rating.totalScore * 100 +'">'+Math.round(building.rating.totalScore * 100)+'</td>')
-				h.push('<td data-text="'+helper.str.cleanup(building.name)+'" data-meta_id="'+building.entityId+'" data-era="'+building.eraName+'" data-callback_tt="Tooltips.buildingTT" class="helperTT ' + (MainParser.Allies.buildingList?.[building.id]?"ally" : "") +'" '+ MainParser.Allies.tooltip(building.id) + '><span>'+building.name+'</span>')
+				h.push('<td data-text="'+helper.str.cleanup(building.name)+'" data-meta_id="'+building.entityId+'" data-era="'+(building.eraName=="AllAge"?"":building.eraName)+'" data-callback_tt="Tooltips.buildingTT" class="helperTT ' + (MainParser.Allies.buildingList?.[building.id]?"ally" : "") +'" '+ MainParser.Allies.tooltip(building.id) + '><span>'+building.name+'</span>')
 				
 				let eraShortName = i18n("Eras."+Technologies.Eras[building.eraName]+".short")
 				if (eraShortName != "-")
@@ -1890,7 +1890,7 @@ let Productions = {
 				let foundBuildings = Object.values(Productions.AdditionalSpecialBuildings).filter(x => regEx.test(x.filter))
 					.sort((a,b)=>(((a.selected != b.selected) ? (a.selected ? -2 : 2) : 0)+(a.name>b.name?1:-1)))
 				for (building of foundBuildings) {
-					$('#ProductionsRatingBody .overlay .results').append(`<li data-meta_id="${building.id}" data-era="${era}" data-callback_tt="Tooltips.buildingTT" class="helperTT${building.selected ? " selected":""}">${building.name}</li>`)
+					$('#ProductionsRatingBody .overlay .results').append(`<li data-meta_id="${building.id}" data-era="${(era=="AllAge"?"":era)}" data-callback_tt="Tooltips.buildingTT" class="helperTT${building.selected ? " selected":""}">${building.name}</li>`)
 				}
 			}
 			filterMeta(/./)
