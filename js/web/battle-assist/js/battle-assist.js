@@ -122,17 +122,22 @@ FoEproxy.addHandler('BattlefieldService', 'surrenderWave', (data, postData) => {
 
 FoEproxy.addHandler('GuildExpeditionService', 'getOverview', (data, postData) => {
     for (e of data.responseData?.section?.encounters||[]) {
-        BattleAssist.GEArmies[e.id] = e;
+        BattleAssist.GEArmies[e.id||0] = e;
     }
 });
 FoEproxy.addHandler('GuildExpeditionService', 'getSection', (data, postData) => {
     for (e of data.responseData?.encounters||[]) {
-        BattleAssist.GEArmies[e.id] = e;
+        BattleAssist.GEArmies[e.id||0] = e;
+    }
+});
+FoEproxy.addHandler('GuildExpeditionService', 'selectTrial', (data, postData) => {
+    for (e of data.responseData?.section?.encounters||[]) {
+        BattleAssist.GEArmies[e.id||0] = e;
     }
 });
 FoEproxy.addHandler('GuildExpeditionService', 'changeDifficulty', (data, postData) => {
     for (e of data.responseData?.section?.encounters||[]) {
-        BattleAssist.GEArmies[e.id] = e;
+        BattleAssist.GEArmies[e.id||0] = e;
     }
 });
 
@@ -147,7 +152,7 @@ FoEproxy.addRequestHandler('ArmyUnitManagementService', 'getArmyInfo', (postData
     let bonus = encounter.armyWaves[0].units[0]?.bonuses[0]?.value || 0;
     let wave1 = encounter.armyWaves[0].units.map((x) => x.unitTypeId);
     let wave2 = null;
-    if (e.armyWaves[1]) {
+    if (encounter.armyWaves[1]) {
         wave2 = encounter.armyWaves[1].units.map((x) => x.unitTypeId);
     }
     BattleAssist.processArmies(wave1,wave2,bonus,encounter.battleType);

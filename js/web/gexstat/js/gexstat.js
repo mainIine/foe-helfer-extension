@@ -1045,6 +1045,9 @@ FoEproxy.addHandler('GuildExpeditionService', 'getState', (data, postData) => {
 		GExAttempts.refreshGUI()
 	}
 });
+FoEproxy.addHandler('GuildExpeditionService', 'changeDifficulty', (data, postData) => {
+	if (data.responseData) GExAttempts.updateState(data.responseData)
+});
 let GExAttempts = {
 	count:0,
 	next:null,
