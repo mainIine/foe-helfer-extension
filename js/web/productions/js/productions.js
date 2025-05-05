@@ -953,7 +953,6 @@ let Productions = {
 					goodAmount = Math.round(goodAmount + (goodAmount *((Boosts.Sums.goods_production) / 100)))
 					currentGoodAmount = Math.round(currentGoodAmount + (currentGoodAmount *((Boosts.Sums.goods_production) / 100)))
 				}
-				console.log('manno',building);
 				rowA.push('<td data-number="'+goodAmount+'" class="text-center">')
 					if (currentGoodAmount != goodAmount) {
 						let isAverage = (allGoods.hasRandomProduction ? "Ø" : "")
@@ -2252,7 +2251,6 @@ let Productions = {
 									h += '<li class="helperTT" data-era="'+CurrentEra+'" data-callback_tt="Tooltips.buildingTT" data-meta_id="'+building.entityId+'">'+building.name+'</li>'
 								}
 								h += '</ul></td></tr>';
-								console.log(buildings);
 							}
         			h +=`</tbody>
 					</table>
