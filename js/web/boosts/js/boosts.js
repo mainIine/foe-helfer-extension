@@ -124,7 +124,7 @@ let Boosts = {
 
     InitLB: async (LBs) => {
         
-        let boosts=LBs.filter(x=>x.bonus?.type).map(x=>
+        let boosts=LBs.filter(x=>x.bonus?.type && x.player_id == ExtPlayerID).map(x=>
             ({
                 entityId: x.entityId||x.id,
                 origin: "greatBuilding",
