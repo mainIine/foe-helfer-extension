@@ -14,11 +14,9 @@ FoEproxy.addFoeHelperHandler('BoostsUpdated', () => {
 const Profile = {
     daysPlayed: 0,
     fpProduction: 0,
-    fpBoost: 0,
     goods: {},
     guildGoods: 0,
     units: 0,
-    battleBoosts: {},
     settlements: [],
     achievements: null,
     achievementList: ['battle#great_commander','battle#billy_the_kid','battle#great_wall_of_china','guild_expedition#impressive_defender','resource#hey_big_spender','social#a_little_help_for_your_friends','friends_tavern#one_of_many_faces'],
@@ -84,11 +82,11 @@ const Profile = {
         // left content, city
         content.push('<div class="leftInfo showMore">');
         content.push('<div class="header flex">');
-        content.push('<img src="'+srcLinks.get(`/city/buildings/H_SS_${CurrentEra}_Townhall.png`,true)+'" />')
+        content.push('<img src="'+srcLinks.get(`/city/buildings/H_SS_${CurrentEra}_Townhall.png`,true)+'" />');
         content.push('</div>');
         
         content.push('<div class="expansions secondary">');
-        content.push('<span><img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_street.png`,true)+'" />')
+        content.push('<span><img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_street.png`,true)+'" />');
         let roadAmount = 0;
         for (let building of Object.values(MainParser.CityMapData)) { 
             if (building.type !== "street") continue; 
@@ -96,7 +94,7 @@ const Profile = {
         }
         content.push(HTML.Format(roadAmount)+'</span>');
 
-        content.push('<span><img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_expansion.png`,true)+'" />')
+        content.push('<span><img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_expansion.png`,true)+'" />');
         content.push(HTML.Format(CityMap.UnlockedAreas.length*16+256-16)+'</span>'); // unlocked areas + start area (- 16 somehow?)
         content.push('</div>');
 
@@ -105,7 +103,7 @@ const Profile = {
         for (let gb of Profile.gbList) {
             let gbLevel = Object.values(MainParser.CityMapData).find(x => x.cityentity_id == gb)?.level;
             if (gbLevel)
-                content.push('<span><img src="'+srcLinks.get(`/city/buildings/${gb.replace('X_','X_SS_')}.png`,true)+'" />' + gbLevel +'</span>')
+                content.push('<span><img src="'+srcLinks.get(`/city/buildings/${gb.replace('X_','X_SS_')}.png`,true)+'" />' + gbLevel +'</span>');
         }
 
         let allGBs = [];
@@ -134,16 +132,18 @@ const Profile = {
         if (Profile.fpProduction == 0 || Profile.guildGoods == 0)
             content.push('<p class="important" onclick="Productions.init();">'+i18n('Boxes.PlayerProfile.OpenProduction')+'</p>');
         content.push('<span><img src="' + srcLinks.get(`/shared/icons/strategy_points.png`,true)+'" />' + HTML.Format(parseInt(Profile.fpProduction)) + '</span><span><img src="' + srcLinks.get(`/shared/gui/boost/boost_icon_fp.png`,true)+'" />' +Boosts.Sums.forge_points_production + '%</span>');
+		if (Profile.goods[CurrentEraID-2])
+			content.push('<span><img src="' + srcLinks.get(`/shared/icons/all_goods_of_previous_age.png`,true)+'" />' + HTML.Format(parseInt(parseInt(Profile.goods[CurrentEraID-2])) || 0) + '</span> ');
+		if (Profile.goods[CurrentEraID-1])
+			content.push('<span><img src="' + srcLinks.get(`/shared/icons/all_goods_of_age.png`,true)+'" />'  + HTML.Format(parseInt(parseInt(Profile.goods[CurrentEraID-1])) || 0) + '</span> ');
+		if (Profile.goods[CurrentEraID])
+			content.push('<span><img src="' + srcLinks.get(`/shared/icons/next_age_goods.png`,true)+'" />' + HTML.Format(parseInt(parseInt(Profile.goods[CurrentEraID])) || 0) + '</span> ');
         if (Profile.guildGoods)
-            content.push('<span><img src="' + srcLinks.get(`/shared/icons/icon_great_building_bonus_guild_goods.png`,true)+'" />'  + HTML.Format(parseInt(parseInt(Profile.guildGoods)) || 0) + '</span>')
-            if (Profile.goods[CurrentEraID-2])
-                content.push('<span><img src="' + srcLinks.get(`/shared/icons/all_goods_of_previous_age.png`,true)+'" />' + HTML.Format(parseInt(parseInt(Profile.goods[CurrentEraID-2])) || 0) + '</span> ');
-            if (Profile.goods[CurrentEraID-1])
-                content.push('<span><img src="' + srcLinks.get(`/shared/icons/all_goods_of_age.png`,true)+'" />'  + HTML.Format(parseInt(parseInt(Profile.goods[CurrentEraID-1])) || 0) + '</span> ');
-            if (Profile.goods[CurrentEraID])
-                content.push('<span><img src="' + srcLinks.get(`/shared/icons/next_age_goods.png`,true)+'" />' + HTML.Format(parseInt(parseInt(Profile.goods[CurrentEraID])) || 0) + '</span> ');
-            if (Profile.units > 0)
-                content.push('<span class="units">'+HTML.Format(parseInt(Profile.units))+'</span>');
+            content.push('<span><img src="' + srcLinks.get(`/shared/icons/icon_great_building_bonus_guild_goods.png`,true)+'" />'  + HTML.Format(parseInt(parseInt(Profile.guildGoods)) || 0) + '</span>');
+		if (Profile.guildGoods || Profile.goods[CurrentEraID-2] || Profile.goods[CurrentEraID-1] || Profile.goods[CurrentEraID])
+			content.push('<span><img src="' + srcLinks.get(`/shared/gui/boost/boost_icon_goods_production.png`,true)+'" />' +Boosts.Sums.goods_production + '%</span>');
+		if (Profile.units > 0)
+			content.push('<span class="units">'+HTML.Format(parseInt(Profile.units))+'</span>');
         content.push('</div>');
         
         let hasQIBoosts = (Boosts.noSettlement.guild_raids_action_points_collection+Boosts.Sums.guild_raids_coins_production+Boosts.Sums.guild_raids_coins_start+Boosts.Sums.guild_raids_supplies_production+Boosts.Sums.guild_raids_supplies_start+Boosts.Sums.guild_raids_goods_start+Boosts.Sums.guild_raids_units_start !== 0)
@@ -151,11 +151,11 @@ const Profile = {
             content.push('<div class="qiBoosts pad text-center">');
             content.push('<h2>'+i18n('Boxes.PlayerProfile.QIBoosts')+'</h2>');
             if (Boosts.Sums.guild_raids_coins_production + Boosts.Sums.guild_raids_coins_start !== 0) {
-                content.push('<span class="qicoins">')
+                content.push('<span class="qicoins">');
                 if (Boosts.Sums.guild_raids_coins_production !== 0)
                     content.push(HTML.Format(parseInt(Boosts.Sums.guild_raids_coins_production)) + '% ');
                 if (Boosts.Sums.guild_raids_coins_start !== 0)
-                    content.push('+' + HTML.FormatNumberShort(parseInt(Boosts.Sums.guild_raids_coins_start),true,'en-EN'))
+                    content.push('+' + HTML.FormatNumberShort(parseInt(Boosts.Sums.guild_raids_coins_start),true,'en-EN'));
                 content.push('</span> ');
             }
             if (Boosts.Sums.guild_raids_supplies_production + Boosts.Sums.guild_raids_supplies_start !== 0) {
@@ -179,10 +179,10 @@ const Profile = {
         // right content, stock
         content.push('<div class="rightInfo showMore">');
         content.push('<div class="header">');
-        content.push('<img class="fp" src="'+srcLinks.get(`/shared/icons/quest_reward/icon_forgepoints.png`,true)+'" />')
-        content.push('<img class="alabaster" src="'+srcLinks.get(`/shared/icons/goods_large/icon_fine_marble.png`,true)+'" />')
-        content.push('<img src="'+srcLinks.get(`/shared/icons/reward_icons/reward_icon_boost_crate.png`,true)+'" />')
-        content.push('<img class="goods" src="'+srcLinks.get(`/shared/icons/reward_icons/reward_icon_random_goods.png`,true)+'" />')
+        content.push('<img class="fp" src="'+srcLinks.get(`/shared/icons/quest_reward/icon_forgepoints.png`,true)+'" />');
+        content.push('<img class="alabaster" src="'+srcLinks.get(`/shared/icons/goods_large/icon_fine_marble.png`,true)+'" />');
+        content.push('<img src="'+srcLinks.get(`/shared/icons/reward_icons/reward_icon_boost_crate.png`,true)+'" />');
+        content.push('<img class="goods" src="'+srcLinks.get(`/shared/icons/reward_icons/reward_icon_random_goods.png`,true)+'" />');
         content.push('</div>');
             content.push('<div class="stock pad text-center">');
             content.push('<span><img src="'+srcLinks.get(`/shared/icons/quest_reward/icon_forgepoints.png`,true)+'" /> '+HTML.Format(StrategyPoints.InventoryFP || 0)+'</span>');
@@ -265,16 +265,18 @@ const Profile = {
             if (Profile.fpProduction == 0 || Profile.guildGoods == 0)
                 content.push('<span class="important">'+i18n('Boxes.PlayerProfile.OpenProduction')+'</span><br>');
             content.push('<span><img src="' + srcLinks.get(`/shared/icons/strategy_points.png`,true)+'" />' + HTML.Format(parseInt(Profile.fpProduction)) + '</span><span><img src="' + srcLinks.get(`/shared/gui/boost/boost_icon_fp.png`,true)+'" />' +Boosts.Sums.forge_points_production + '%</span><br>');
-                content.push('<div class="goods">')
-                if (Profile.goods[CurrentEraID-2])
-                    content.push('<span><img src="' + srcLinks.get(`/shared/icons/all_goods_of_previous_age.png`,true)+'" />' + HTML.Format(parseInt(parseInt(Profile.goods[CurrentEraID-2])) || 0) + '</span> ');
-                if (Profile.goods[CurrentEraID-1])
-                    content.push('<span><img src="' + srcLinks.get(`/shared/icons/all_goods_of_age.png`,true)+'" />' + HTML.Format(parseInt(parseInt(Profile.goods[CurrentEraID-1])) || 0) + '</span> ');
-                if (Profile.goods[CurrentEraID])
-                    content.push('<span><img src="' + srcLinks.get(`/shared/icons/next_age_goods.png`,true)+'" />' + HTML.Format(parseInt(parseInt(Profile.goods[CurrentEraID])) || 0) + '</span> ');
-                if (Profile.guildGoods)
-                    content.push('<span><img src="' + srcLinks.get(`/shared/icons/icon_great_building_bonus_guild_goods.png`,true)+'" />' + HTML.Format(parseInt(parseInt(Profile.guildGoods)) || 0) + '</span>')
-                content.push('</div>');
+			content.push('<div class="goods">');
+			if (Profile.goods[CurrentEraID-2])
+				content.push('<span><img src="' + srcLinks.get(`/shared/icons/all_goods_of_previous_age.png`,true)+'" />' + HTML.Format(parseInt(parseInt(Profile.goods[CurrentEraID-2])) || 0) + '</span> ');
+			if (Profile.goods[CurrentEraID-1])
+				content.push('<span><img src="' + srcLinks.get(`/shared/icons/all_goods_of_age.png`,true)+'" />' + HTML.Format(parseInt(parseInt(Profile.goods[CurrentEraID-1])) || 0) + '</span> ');
+			if (Profile.goods[CurrentEraID])
+				content.push('<span><img src="' + srcLinks.get(`/shared/icons/next_age_goods.png`,true)+'" />' + HTML.Format(parseInt(parseInt(Profile.goods[CurrentEraID])) || 0) + '</span> ');
+			if (Profile.guildGoods)
+				content.push('<span><img src="' + srcLinks.get(`/shared/icons/icon_great_building_bonus_guild_goods.png`,true)+'" />' + HTML.Format(parseInt(parseInt(Profile.guildGoods)) || 0) + '</span>');
+			if (Profile.guildGoods || Profile.goods[CurrentEraID-2] || Profile.goods[CurrentEraID-1] || Profile.goods[CurrentEraID])
+				content.push('<span><img src="' + srcLinks.get(`/shared/gui/boost/boost_icon_goods_production.png`,true)+'" />' +Boosts.Sums.goods_production + '%</span>');
+			content.push('</div>');
             content.push('</div>');
 
             content.push('<div class="battleBoosts pad text-center">');
@@ -299,7 +301,7 @@ const Profile = {
             content.push('</tr></table>');
             
             if (Boosts.Sums.critical_hit_chance > 0)
-                content.push('<span class="crit showMore"><img src="'+srcLinks.get(`/city/gui/great_building_bonus_icons/great_building_bonus_critical_hit_chance.png`,true)+'" /> '+Math.round(Boosts.Sums.critical_hit_chance*100)/100+'%</span>')
+                content.push('<span class="crit showMore"><img src="'+srcLinks.get(`/city/gui/great_building_bonus_icons/great_building_bonus_critical_hit_chance.png`,true)+'" /> '+Math.round(Boosts.Sums.critical_hit_chance*100)/100+'%</span>');
             content.push('</div>');
 
             // settlements
@@ -308,7 +310,7 @@ const Profile = {
             if (Profile.settlements.length > 0) {
                 for (let settlement of Profile.settlements) {
                     content.push('<span class="'+settlement.id+'" data-original-title="'+settlement.name+'">');
-                    content.push('<img src="'+srcLinks.get(`/shared/icons/achievements/achievement_icons_${settlement.id}.png`,true)+'" />')
+                    content.push('<img src="'+srcLinks.get(`/shared/icons/achievements/achievement_icons_${settlement.id}.png`,true)+'" />');
                     content.push(HTML.Format(parseInt(settlement.currentLevel.progress)) + '</span>');
                 }
             }
