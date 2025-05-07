@@ -950,8 +950,8 @@ let Productions = {
 					updateGroup[era] += goodAmount
 				}
 				if (building.isBoostable) {
-					goodAmount = Math.round(goodAmount + (goodAmount *((Boosts.Sums.goods_production) / 100)))
-					currentGoodAmount = Math.round(currentGoodAmount + (currentGoodAmount *((Boosts.Sums.goods_production) / 100)))
+					goodAmount = Math.round(goodAmount)
+					currentGoodAmount = Math.round(currentGoodAmount)
 				}
 				rowA.push('<td data-number="'+goodAmount+'" class="text-center">')
 					if (currentGoodAmount != goodAmount) {
