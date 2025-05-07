@@ -441,11 +441,11 @@ let Tooltips = {
                     set =srcLinks.icons(a.setId) + MainParser.BuildingSets[a.setId].name
                 }
                 if (a.__class__=="PolishableAbility") {
-                    traits+=`<tr><td><span style="width:24px; margin-right:3px; text-align:center">${srcLinks.icons("when_motivated")}</span>can be polished</td></tr>`
+                    traits+=`<tr><td><span style="width:24px; margin-right:3px; text-align:center">${srcLinks.icons("when_motivated")}</span>${i18n("Boxes.Tooltip.Building.canPolish")}</td></tr>`
                     polMod = `<span class="ifMot">${srcLinks.icons("reward_x2")+i18n("Boxes.Tooltip.Building.when")+srcLinks.icons("when_motivated")}</span>`
                 }
                 if (a.__class__ == "MotivatableAbility") {
-                    traits+=`<tr><td><span style="width:24px; margin-right:3px; text-align:center">${srcLinks.icons("when_motivated")}</span>can be motivated</td></tr>`
+                    traits+=`<tr><td><span style="width:24px; margin-right:3px; text-align:center">${srcLinks.icons("when_motivated")}</span>${i18n("Boxes.Tooltip.Building.canMotivate")}</td></tr>`
                     motMod = `<span class="ifMot">${srcLinks.icons("reward_x2")+i18n("Boxes.Tooltip.Building.when")+srcLinks.icons("when_motivated")}</span>`
                 }
                 if (a.__class__ == "AddCoinsToSupplyProductionWhenMotivatedAbility") {
