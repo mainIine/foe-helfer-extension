@@ -448,6 +448,8 @@ let Productions = {
 					$('.TSinactive').tableSorter()
 					$('.TSinactive').removeClass('TSinactive')
 					HTML.FilterTable('#Productions .filterCurrentList')
+				
+					//$('#Productions [data-original-title]').tooltip({container: "#Productions", html:true});
 				}
 				$("#Productions .content").css('display','none')
 				$("#Productions #"+type).css('display','block')

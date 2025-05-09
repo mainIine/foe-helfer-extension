@@ -1866,7 +1866,7 @@ input[type="range"]::-webkit-slider-thumb {
 
 #foe-helper-hud.hud-right {
 	right: 0;
-	top: 400px;
+	top: 420px;
 	width: 49px;
 	height: 270px;
 	border-radius: 4px 0 0 4px;
@@ -2160,6 +2160,11 @@ tr.sorter-header th:not(.no-sort).descending:after {
 		overflow: hidden
 	}
 	
+}
+@media (max-width: 1420px) {
+	#fp-bar {
+		left: 416px;
+	}
 }
 
 .unit_skill.rogue::before {background-position: calc(-144px*var(--unit_scale)) calc(-48px*var(--unit_scale))}
