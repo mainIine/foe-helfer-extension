@@ -128,18 +128,18 @@ const Profile = {
         content.push('</div>');
 
         content.push('<div class="dailyProd pad">');
-        content.push('<h2>'+i18n('Boxes.PlayerProfile.DailyProduction')+'</h2>');
+        content.push('<h2 class="border"><span>'+i18n('Boxes.PlayerProfile.DailyProduction')+'</span></h2>');
         if (Profile.fpProduction == 0 || Profile.guildGoods == 0)
             content.push('<p class="important" onclick="Productions.init();">'+i18n('Boxes.PlayerProfile.OpenProduction')+'</p>');
         content.push('<span><img src="' + srcLinks.get(`/shared/icons/strategy_points.png`,true)+'" />' + HTML.Format(parseInt(Profile.fpProduction)) + '</span><span><img src="' + srcLinks.get(`/shared/gui/boost/boost_icon_fp.png`,true)+'" />' +Boosts.Sums.forge_points_production + '%</span>');
-		if (Profile.goods[CurrentEraID-2])
+        if (Profile.guildGoods)
+            content.push('<span><img src="' + srcLinks.get(`/shared/icons/icon_great_building_bonus_guild_goods.png`,true)+'" />'  + HTML.Format(parseInt(parseInt(Profile.guildGoods)) || 0) + '</span>');
+        if (Profile.goods[CurrentEraID-2])
 			content.push('<span><img src="' + srcLinks.get(`/shared/icons/all_goods_of_previous_age.png`,true)+'" />' + HTML.Format(parseInt(parseInt(Profile.goods[CurrentEraID-2])) || 0) + '</span> ');
 		if (Profile.goods[CurrentEraID-1])
 			content.push('<span><img src="' + srcLinks.get(`/shared/icons/all_goods_of_age.png`,true)+'" />'  + HTML.Format(parseInt(parseInt(Profile.goods[CurrentEraID-1])) || 0) + '</span> ');
 		if (Profile.goods[CurrentEraID])
 			content.push('<span><img src="' + srcLinks.get(`/shared/icons/next_age_goods.png`,true)+'" />' + HTML.Format(parseInt(parseInt(Profile.goods[CurrentEraID])) || 0) + '</span> ');
-        if (Profile.guildGoods)
-            content.push('<span><img src="' + srcLinks.get(`/shared/icons/icon_great_building_bonus_guild_goods.png`,true)+'" />'  + HTML.Format(parseInt(parseInt(Profile.guildGoods)) || 0) + '</span>');
 		if (Profile.guildGoods || Profile.goods[CurrentEraID-2] || Profile.goods[CurrentEraID-1] || Profile.goods[CurrentEraID])
 			content.push('<span><img src="' + srcLinks.get(`/shared/gui/boost/boost_icon_goods_production.png`,true)+'" />' +Boosts.Sums.goods_production + '%</span>');
 		if (Profile.units > 0)
@@ -214,7 +214,7 @@ const Profile = {
             content.push('</div>');
 
             content.push('<div class="inventory pad text-center">');
-            content.push('<h2>'+i18n('Boxes.MarketOffers.Inventory')+'</h2>');
+            content.push('<h2 class="border"><span>'+i18n('Boxes.MarketOffers.Inventory')+'</span></h2>');
             for (let item of Profile.inventoryList) {
                 let itemInStock = Object.values(MainParser.Inventory).find(x => x.itemAssetName == item);
                 if (item == 'rush_mass_supply_large') { // same asset as 6h rush, filter by speedup
