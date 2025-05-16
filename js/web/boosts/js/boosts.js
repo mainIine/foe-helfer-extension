@@ -129,7 +129,7 @@ let Boosts = {
                 entityId: x.entityId||x.id,
                 origin: "greatBuilding",
                 type: x.bonus.type,
-                value: x.bonus.value
+                value: x.bonus.value || 0
             })
         )
         Boosts.Remove(boosts)
