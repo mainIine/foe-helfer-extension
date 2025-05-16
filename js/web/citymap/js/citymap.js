@@ -615,6 +615,7 @@ let CityMap = {
 				top: y + 'em'
 			})
 				.attr('data-callback_tt','Tooltips.buildingTT')
+				.attr('data-era', building.eraName)
 				.attr('data-id', building.id)
 				.attr('data-title', building.name)
 				.attr('data-meta_id',building.entityId);

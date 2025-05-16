@@ -114,7 +114,7 @@ let BoostInventory = {
 			1:`</span><img src="${srcLinks.get('/shared/icons/road_required.png',true)}" data-original-title="${i18n('Boxes.CombatCalculator.RoadRequired')}">`,
 			2:`</span><img src="${srcLinks.get('/shared/icons/street_required.png',true)}" data-original-title="${i18n('Boxes.CombatCalculator.StreetRequired')}">`,
 		}
-		let buildings = Object.values(BoostInventory.Buildings).sort((a,b)=>b.score-a.score)
+		let buildings = Object.values(BoostInventory.Buildings).sort((a,b)=>b.rating.totalScore-a.rating.totalScore)
 		for(let b of buildings){
 			
 			c.push(`<tr>`)
@@ -134,7 +134,7 @@ let BoostInventory = {
 			}
 
 			c.push(`</td>`)
-			c.push(`<td data-original-title="${i18n('Boxes.CombatCalculator.EfficiencyTT')}" data-number="${Math.round(b.score*100)}">${Math.round(b.score*100)}</td>`)
+			c.push(`<td data-original-title="${i18n('Boxes.CombatCalculator.EfficiencyTT')}" data-number="${Math.round(b.rating.totalScore*100)}">${Math.round(b.rating.totalScore*100)}</td>`)
 
 			c.push(`</tr>`)
 		}
