@@ -100,7 +100,7 @@ let Tooltips = {
         let meta = MainParser.CityEntities[id]
         let allies =  JSON.parse(e?.currentTarget?.dataset?.allies||"null")
         let eff = Math.round(e?.currentTarget?.previousElementSibling?.dataset?.number)
-        if  (!eff && era) eff=Math.round(100 * Productions.rateBuildings([id],true,era)?.[0]?.score||0)
+        if  (!eff && era) eff=Math.round(100 * Productions.rateBuildings([id],true,era)?.[0]?.rating.totalScore||0)
 
         let h = `<div class="buildingTT">
                 <h2>${meta.name}  ${eff ? `(${i18n("Boxes.Kits.Efficiency")}: ${eff})`:''}</h2>
