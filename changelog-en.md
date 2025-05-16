@@ -23,6 +23,14 @@
 	- State (?/✓) can now be toggled by long click (5 sec)
 	- shortening of the quest texts will now happen dynamically depending on available space
 
+- Efficiency Rating:
+	- Some boosts are now shown as one value. They are still calculated seperately, the score did not change. We just need more space to add more stats to evaluate.
+	- Added QI Actions to the evaluation
+
+- City Overview:
+	- You can now highlight less efficient buildings
+	- The tooltip was exchanged for the one showing all building information
+
 **BugFix**
 - Recurring Quests (diamond checklist)
 	- counter in menu was shown when starting the game even if it was 0 or the setting was disabled

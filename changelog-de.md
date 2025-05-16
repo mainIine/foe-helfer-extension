@@ -23,6 +23,14 @@
 	- Zustand (?/✓) kann nun durch geklickt halten (5 Sekunden) umgeschaltet werden
 	- Abkürzung der Aufabentexte erfolgt nun in Abhängigkeit vom vorhandenen Platz
 
+- Effizienzbewertung:
+	- Einige Boosts wurden zusammengefasst. Dies hat aber keinen Einfluss auf den Score, er wird wie gehabt berechnet
+	- Quanten Aktionen zur Effizienzbewertung hinzugefügt
+
+- Stadtübersicht:
+	- Man kann nun weniger effiziente Gebäude markieren lassen
+	- Wir haben den bisherigen Tooltip durch den vollständigen Gebäudetooltip ersetzt
+
 **BugFix**
 - Wiederkehrende Quests (Diamantencheckliste)
 	- unabhängig von den Einstellungen bzw. vom Stand wurde nach Start der Zähler im Menu angezeigt

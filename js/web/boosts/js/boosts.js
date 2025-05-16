@@ -124,12 +124,12 @@ let Boosts = {
 
     InitLB: async (LBs) => {
         
-        let boosts=LBs.filter(x=>x.bonus?.type).map(x=>
+        let boosts=LBs.filter(x=>x.bonus?.type && x.player_id == ExtPlayerID).map(x=>
             ({
                 entityId: x.entityId||x.id,
                 origin: "greatBuilding",
                 type: x.bonus.type,
-                value: x.bonus.value
+                value: x.bonus.value || 0
             })
         )
         Boosts.Remove(boosts)
