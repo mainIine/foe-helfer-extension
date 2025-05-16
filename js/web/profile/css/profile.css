@@ -165,7 +165,7 @@
 #PlayerProfile .basicInfo {
     display: flex;
     align-items: center;
-    padding-top: 0;
+    padding: 0 1.25rem 1.25rem;
 }
 
 #PlayerProfile .basicInfo img {
@@ -205,7 +205,7 @@
 
 #PlayerProfile .greatbuildings .total {
     font-weight: bold;
-    border-bottom-style: dotted;
+    border-bottom-width: 2px;
 }
 
 #PlayerProfile .greatbuildings .total img {
@@ -249,13 +249,27 @@
 }
 
 #PlayerProfile .dailyProd span {
-    padding: 3px 4px 0;
+    padding: 2px 2px 0;
     display: inline-block;
     margin: 0 1px;
 }
 
 #PlayerProfile .dailyProd span img {
-    max-height: 26px;
+    max-height: 22px;
+    padding-right: 1px;
+}
+
+#PlayerProfile .dailyProd .boosts span {
+    color: #83b940;
+}
+
+#PlayerProfile span.units::before {
+	background: transparent url('../../productions/images/productions.png') -287px -2px no-repeat;
+	width: 22px;
+    content: '';
+    height: 22px;
+    display: inline-block;
+    margin-bottom: -4px;
 }
 
 #PlayerProfile .aAtt::after, #PlayerProfile .aDef::before, #PlayerProfile .dAtt::after, #PlayerProfile .dDef::before, 
@@ -363,20 +377,27 @@
 #PlayerProfile .important {
     color: var(--text-danger);
     font-weight: bold;
+    cursor: url('../../../../css/images/cursor_hover.cur');
+}
+
+#PlayerProfile .important::after {
+    content: "➔";
+    display: inline-block;
+    background: var(--background-hud-btn);
+    padding: 0 2px;
+    border-radius: 3px;
+    color: var(--text-btn);
+    margin-left: 2px;
+    font-weight: normal;
+}
+
+#PlayerProfile .important:hover::after {
+    filter: brightness(1.2) contrast(1.2);
 }
 
 #PlayerProfile h2 {
     opacity: 0.8;
     font-size: 0.9rem;
-}
-
-#PlayerProfile span.units::before {
-	background: transparent url('../../productions/images/productions.png') -287px 2px no-repeat;
-	width: 25px;
-    content: '';
-    height: 25px;
-    display: inline-block;
-    margin-bottom: -4px;
 }
 
 #PlayerProfile .battleBoosts .ge {
@@ -397,7 +418,7 @@
 }
 
 #PlayerProfile .settlements img {
-    max-height: 41px;
+    max-height: 37px;
     display: inline-block;
     margin: -10px 2px -8px -7px;
 }
@@ -407,20 +428,21 @@
 }
 
 #PlayerProfile .settlements .cop_japanese img {
-    margin: -14px -7px -9px -11px;
-    max-height: 47px;
+    margin: -14px -6px -9px -13px;
+    max-height: 45px;
 }
 
 #PlayerProfile .settlements .a_new_world img {
-    margin: -10px -3px -8px -9px;
+    margin: -10px -4px -7px -11px;
+    max-height: 39px;
 }
 #PlayerProfile .settlements .friend_of_the_pharaoh img {
-    margin: -10px -6px -8px -9px;
+    margin: -9px -7px -7px -13px;
 }
 
 #PlayerProfile .settlements .tropical_islands img, #PlayerProfile .settlements .splendid_empire img {
-    max-height: 37px;
-    margin: -8px 2px -6px -7px;
+    max-height: 31px;
+    margin: -5px 2px -3px -7px;
 }
 
 #PlayerProfile .settlements span {
@@ -447,7 +469,7 @@
 }
 
 #PlayerProfile h2.border {
-    background: linear-gradient(to bottom, #0062ff26, transparent 75%);
+    background: linear-gradient(to bottom, #0062ff1a, transparent 75%);
     border-radius: 10px 10px 0 0;
     margin: 10px -3px -5px;
 }
