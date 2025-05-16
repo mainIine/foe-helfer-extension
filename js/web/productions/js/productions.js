@@ -109,6 +109,7 @@ let Productions = {
 				'goods-current': {order:27,perTile:5,active:true},
 				'goods-next': {order:28,perTile:3,active:false},
 				'fsp': {order:29,perTile:1,active:true},
+				'guild_raids_action_points_collection': {order:29,perTile:4,active:true},
 			}, overwrite || JSON.parse(localStorage.getItem('Productions.Rating.Data')||"{}"))
 			Productions.Rating.Types = Object.keys(Productions.Rating.Data).sort((a,b)=>Productions.Rating.Data[a].order-Productions.Rating.Data[b].order)
 			
@@ -447,6 +448,8 @@ let Productions = {
 					$('.TSinactive').tableSorter()
 					$('.TSinactive').removeClass('TSinactive')
 					HTML.FilterTable('#Productions .filterCurrentList')
+				
+					//$('#Productions [data-original-title]').tooltip({container: "#Productions", html:true});
 				}
 				$("#Productions .content").css('display','none')
 				$("#Productions #"+type).css('display','block')
@@ -949,10 +952,9 @@ let Productions = {
 					updateGroup[era] += goodAmount
 				}
 				if (building.isBoostable) {
-					goodAmount = Math.round(goodAmount + (goodAmount *((Boosts.Sums.goods_production) / 100)))
-					currentGoodAmount = Math.round(currentGoodAmount + (currentGoodAmount *((Boosts.Sums.goods_production) / 100)))
+					goodAmount = Math.round(goodAmount)
+					currentGoodAmount = Math.round(currentGoodAmount)
 				}
-				console.log('manno',building);
 				rowA.push('<td data-number="'+goodAmount+'" class="text-center">')
 					if (currentGoodAmount != goodAmount) {
 						let isAverage = (allGoods.hasRandomProduction ? "Ø" : "")
@@ -1490,7 +1492,10 @@ let Productions = {
         }
 		else if (GoodType === 'fsp') {
 			return i18n('Boxes.Productions.FSP');
-        }		
+        }
+		else if (GoodType === 'guild_raids_action_points_collection') {
+			return i18n('Boxes.BoostList.guild_raids_action_points_collection');
+        }
 		else {
 			if(GoodType && GoodsData[GoodType]){
 				return GoodsData[GoodType]['name'];
@@ -2073,6 +2078,18 @@ let Productions = {
 			}
 			return fsp
 		}
+		else if (type == "guild_raids_action_points_collection") {
+			if (building.boosts != undefined) {
+				let qi_actions = 0
+				for (const boost of building.boosts) {
+					let bType = boost.type.find(x => x == type)
+					if (bType !== undefined) {
+						qi_actions += boost.value		
+					}
+				}
+				return qi_actions
+			}
+		}
 		else
 			return 0
 	},
@@ -2236,7 +2253,6 @@ let Productions = {
 									h += '<li class="helperTT" data-era="'+CurrentEra+'" data-callback_tt="Tooltips.buildingTT" data-meta_id="'+building.entityId+'">'+building.name+'</li>'
 								}
 								h += '</ul></td></tr>';
-								console.log(buildings);
 							}
         			h +=`</tbody>
 					</table>

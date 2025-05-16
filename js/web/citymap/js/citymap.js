@@ -2133,6 +2133,7 @@ let CityMap = {
 			eras: {}
 		}
 		if (productions) {
+			let goodsBoost = Boosts.Sums.goods_production || 1;
 			productions.forEach(production => {
 				if (production.type == 'resources' || production.type == 'special_goods') {
 					Object.keys(production.resources).forEach(resourceName => {
@@ -2164,10 +2165,14 @@ let CityMap = {
 						}
 
 						if (isGood) {
+							let boostedExtra = Math.round(production.resources[resourceName]*goodsBoost/100)
+							if (resourceName.includes('all_goods_of_')) 
+								boostedExtra = Math.round(production.resources[resourceName]/5*goodsBoost/100)*5;
+							
 							if (goods.eras[goodEra] == undefined) 
-								goods.eras[goodEra] = parseInt(production.resources[resourceName])
+								goods.eras[goodEra] = parseInt(production.resources[resourceName])+boostedExtra
 							else
-								goods.eras[goodEra] += parseInt(production.resources[resourceName])
+								goods.eras[goodEra] += parseInt(production.resources[resourceName])+boostedExtra
 						}
 					})
 				}

@@ -68,6 +68,11 @@
     padding: 0.8rem 0.5rem;
 }
 
+#PlayerProfile .leftInfo h2, #PlayerProfile .rightInfo h2 {
+    opacity: 1;
+    color: #bcdcff;
+}
+
 #PlayerProfile h2 + .pad {
     padding: 0 0.8rem 0.8rem;
 }
@@ -121,8 +126,8 @@
 
 #PlayerProfile div.header img.goods {
     height: 50px;
-    left: 40px;
-    top: 40px;
+    left: 65px;
+    top: 45px;
 }
 
 #PlayerProfile div.header img.fp {
@@ -143,6 +148,7 @@
     min-height: 300px;
     height: inherit;
     margin-top: -20px;
+    color: #acc4e3;
 }
 
 #PlayerProfile .rightInfo {
@@ -184,15 +190,15 @@
     display: inline-block;
     margin: 6px 4px 3px;
     padding: 0 3px 0 0;
-    border-bottom: 1px solid #fff2;
-    height: 26px;
-    line-height: 26px;
+    border-bottom: 1px solid #0072ff30;
+    height: 24px;
+    line-height: 24px;
     position: relative;
 }
 
 #PlayerProfile .greatbuildings img, #PlayerProfile .stock img {
-    max-height: 33px;
-    max-width: 50px;
+    max-height: 31px;
+    max-width: 48px;
     margin: -5px 2px -5px -6px;
     filter: saturate(1.2);
 }
@@ -245,7 +251,7 @@
 #PlayerProfile .dailyProd span {
     padding: 3px 4px 0;
     display: inline-block;
-    margin-bottom: -6px;
+    margin: 0 1px;
 }
 
 #PlayerProfile .dailyProd span img {
@@ -440,6 +446,21 @@
     background: radial-gradient(circle, #00000066 53%, transparent 55%);
 }
 
+#PlayerProfile h2.border {
+    background: linear-gradient(to bottom, #0062ff26, transparent 75%);
+    border-radius: 10px 10px 0 0;
+    margin: 10px -3px -5px;
+}
+
+#PlayerProfile h2.border span {
+    position: relative;
+    bottom: 10px;
+    box-shadow: none;
+    margin: 0;
+    padding: 0;
+    display: inline-block;
+}
+
 #PlayerProfile .inventory img {
     max-height: 30px;
     margin: -2px 0 -2px -5px;
@@ -462,6 +483,15 @@
     color: #edc492;
 }
 
+#PlayerProfile .qiBoosts h2::before, #PlayerProfile .qiBoosts h2::after {
+    content: '⌾';
+    color: #062333;
+    display: inline-block;
+    padding: 0 2px;
+    font-weight: normal;
+    text-shadow: none;
+}
+
 #PlayerProfile .qiBoosts span {
     display: inline-block;
     margin: 3px 1px 3px 0;
@@ -470,6 +500,7 @@
     padding: 0 6px 2px 3px;
     box-shadow: inset -1px -1px 2px #12837a33;
     text-shadow: 0 1px 2px #000000cc, 0 1px 1px #000000aa;
+    color: #c4e5e1;
 }
 
 #PlayerProfile .qiBoosts span::before {
