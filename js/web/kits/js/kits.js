@@ -269,7 +269,7 @@ let Kits = {
 			s=[]
 			if (kits[k].assets) {
 				for (let b of kits[k].assets) {
-					for (i of selectionKits[b]) {
+					for (i of selectionKits[b]|| []) {	
 						s.push(i);
 					}
 				}
@@ -718,7 +718,7 @@ let Kits = {
 	//UpgradeTiers:["ascended|refined","platinum","gold","silver","upgrade"],
 
 	CreateUpgradeSchemes:()=> {
-		Kits.UpgradeSchemes = {
+	/*	Kits.UpgradeSchemes = {
 			buildingFamilies:null,
 			buildings:null,
 			selectionOptions:null,
@@ -769,7 +769,7 @@ let Kits = {
 		}
 		for (let [uId, u] of Object.entities(MainParser.BuildingUpgrades)) {
 			
-		}
+		}*/
 	},
 	PopulateUpgradeSchemes: async ()=> {
 		//await ExistenceConfirmed('Kits.UpgradeSchemes')
