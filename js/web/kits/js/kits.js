@@ -718,22 +718,25 @@ let Kits = {
 	//UpgradeTiers:["ascended|refined","platinum","gold","silver","upgrade"],
 
 	CreateUpgradeSchemes:()=> {
-/*		if (Kits.UpgradeSchemes) {
-			Kits.UpgradeSchemes = null;
-		}
-		Kits.UpgradeSchemes = {};
-		let sOptions={}
+		Kits.UpgradeSchemes = {
+			buildingFamilies:null,
+			buildings:null,
+			selectionOptions:null,
+		};
+		let sO = Kits.UpgradeSchemes.sOptions={}
 		for (let s in Object.values(MainParser.selectionKits)) {
 			for (let c of s.eraOptions[CurrentEra]) {
-				if (!sOptions[c.item.cityEntityId||c.item.upgradeItemId]) {
-					sOptions[c.item.cityEntityId||c.item.upgradeItemId] = [s.selectionKitId]
+				if (!sO[c.item.cityEntityId||c.item.upgradeItemId]) {
+					sO[c.item.cityEntityId||c.item.upgradeItemId] = [s.selectionKitId]
 				} else {
-					sOptions[c.item.cityEntityId||c.item.upgradeItemId].push(s.selectionKitId)
+					sO[c.item.cityEntityId||c.item.upgradeItemId].push(s.selectionKitId)
 				}
 			}			
 		}
-
-		let upgradeKits = {}
+		let buildingFamilies = Kits.UpgradeSchemes.buildingFamilies={}
+		let buildings = Kits.UpgradeSchemes.buildings={}	
+		
+		Kits.upgradeKits = {}
 
 		for (let u of Object.values(MainParser.BuildingUpgrades)) {
 			let upgradeList = [u.upgradeItem.id];
@@ -743,36 +746,30 @@ let Kits = {
 			for (let i = 1;i<u.upgradeSteps.length;i++) {
 				for (b of u.upgradeSteps[i].buildingIds) {
 					buildingList.push(b)
-					if (upgradeKits[b]) {
-						buildingList = [...buildingList,...upgradeKits[b].buildingList];
-						upgradeList = [...upgradeList,...upgradeKits[b].upgradeList];
-						upgradeCount = {...upgradeCount,...upgradeKits[b].upgradeCount};
-						delete upgradeKits[b]						
+					if (Kits.upgradeKits[b]) {
+						buildingList = [...buildingList,...Kits.upgradeKits[b].buildingList];
+						upgradeList = [...upgradeList,...Kits.upgradeKits[b].upgradeList];
+						upgradeCount = {...upgradeCount,...Kits.upgradeKits[b].upgradeCount};
+						delete Kits.upgradeKits[b]						
 					}
 					if (selectionKits[b]) sK.push(...selectionKits[b])
 				}
 			}
 			for (let b of u.upgradeSteps[0].buildingIds) {
 				if (sK.length>0) selectionKits[b] = Array.from(new Set([...sK,...(selectionKits[b]||[])]))
-				let i = Object.keys(upgradeKits)[Object.values(upgradeKits).findIndex(x=>x.buildingList.includes(b))]
+				let i = Object.keys(Kits.upgradeKits)[Object.values(Kits.upgradeKits).findIndex(x=>x.buildingList.includes(b))]
 				if (i) {
-					upgradeKits[i].buildingList = [...upgradeKits[i].buildingList,...buildingList];
-					upgradeKits[i].upgradeList = [...upgradeKits[i].upgradeList,...upgradeList];
-					upgradeKits[i].upgradeCount = {...upgradeKits[i].upgradeCount,...upgradeCount};
+					Kits.upgradeKits[i].buildingList = [...Kits.upgradeKits[i].buildingList,...buildingList];
+					Kits.upgradeKits[i].upgradeList = [...Kits.upgradeKits[i].upgradeList,...upgradeList];
+					Kits.upgradeKits[i].upgradeCount = {...Kits.upgradeKits[i].upgradeCount,...upgradeCount};
 				} else {				
-					upgradeKits[b] = {upgradeList:upgradeList,buildingList:buildingList,upgradeCount:upgradeCount};
+					Kits.upgradeKits[b] = {upgradeList:upgradeList,buildingList:buildingList,upgradeCount:upgradeCount};
 				}
 			}
 		}
-
-
-
-
-
-
 		for (let [uId, u] of Object.entities(MainParser.BuildingUpgrades)) {
 			
-		}*/
+		}
 	},
 	PopulateUpgradeSchemes: async ()=> {
 		//await ExistenceConfirmed('Kits.UpgradeSchemes')
