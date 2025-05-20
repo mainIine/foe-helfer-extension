@@ -3,7 +3,7 @@
 ##### 3.11.2.0
 
 **Entfernt**
-- Kistenauswahlassistent (Es gibt keine Events mehr, für der dieser Relevant ist)
+- Kistenauswahlassistent (Es gibt keine Events mehr, für den dieser Relevant ist)
 
 **Update**
 - Verhandlungsassistent
@@ -13,15 +13,15 @@
 	- enthält nun noch mehr Daten
 
 - Belohnungsliste 
-	- wird nun auch in der GE angeizeigt
+	- wird nun auch in der GE angezeigt
 
 - Boxen
 	- GBG Provinzliste wird nicht mehr automatisch geschlossen
 	- Einstellung hinzugefügt, um automatisches Schließen abzuschalten
 
-- Wiederkehrende Quests (Diamantencheckliste)
-	- Zustand (?/✓) kann nun durch geklickt halten (5 Sekunden) umgeschaltet werden
-	- Abkürzung der Aufabentexte erfolgt nun in Abhängigkeit vom vorhandenen Platz
+- Wiederkehrende Quests (Diamanten Checkliste)
+	- Zustand (?/✓) kann nun durch geklickt Halten (5 Sekunden) umgeschaltet werden
+	- Abkürzung der Aufgabentexte erfolgt nun in Abhängigkeit vom vorhandenen Platz
 
 - Effizienzbewertung:
 	- Einige Boosts wurden zusammengefasst. Dies hat aber keinen Einfluss auf den Score, er wird wie gehabt berechnet
@@ -29,10 +29,10 @@
 
 - Stadtübersicht:
 	- Man kann nun weniger effiziente Gebäude markieren lassen
-	- Wir haben den bisherigen Tooltip durch den vollständigen Gebäudetooltip ersetzt
+	- Wir haben den bisherigen Tooltip durch den vollständigen Gebäude-Tooltip ersetzt
 
 **BugFix**
-- Wiederkehrende Quests (Diamantencheckliste)
+- Wiederkehrende Quests (Diamanten Checkliste)
 	- unabhängig von den Einstellungen bzw. vom Stand wurde nach Start der Zähler im Menu angezeigt
 
 - Gildenkassenexport
