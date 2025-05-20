@@ -109,6 +109,7 @@ let Productions = {
 				'goods-current': {order:27,perTile:5,active:true},
 				'goods-next': {order:28,perTile:3,active:false},
 				'fsp': {order:29,perTile:1,active:true},
+				'guild_raids_action_points_collection': {order:29,perTile:4,active:true},
 			}, overwrite || JSON.parse(localStorage.getItem('Productions.Rating.Data')||"{}"))
 			Productions.Rating.Types = Object.keys(Productions.Rating.Data).sort((a,b)=>Productions.Rating.Data[a].order-Productions.Rating.Data[b].order)
 			
@@ -447,6 +448,8 @@ let Productions = {
 					$('.TSinactive').tableSorter()
 					$('.TSinactive').removeClass('TSinactive')
 					HTML.FilterTable('#Productions .filterCurrentList')
+				
+					//$('#Productions [data-original-title]').tooltip({container: "#Productions", html:true});
 				}
 				$("#Productions .content").css('display','none')
 				$("#Productions #"+type).css('display','block')
@@ -549,7 +552,8 @@ let Productions = {
 			table.push('<table class="foe-table sortable-table TSinactive '+type+'-list active">')
 			table.push('<thead class="sticky">')
 			table.push('<tr>')
-			table.push('<th colspan="12"><!--<span class="btn-default change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeGroups') + '</span>--> <input type="text" placeholder="' + i18n('Boxes.Productions.FilterTable') + '" class="filterCurrentList"></th>')
+			table.push('<th colspan="12"><input type="text" placeholder="' + i18n('Boxes.Productions.FilterTable') + '" class="filterCurrentList">' +
+				'<span class="btn-default" onclick="Productions.createBuildingBoostList([\'guild_raids_action_points_collection\',\'guild_raids_coins_production\',\'guild_raids_coins_start\',\'guild_raids_supplies_production\',\'guild_raids_supplies_start\',\'guild_raids_goods_start\',\'guild_raids_units_start\'])">'+i18n("Boxes.BoostList.open")+'</span></th>')
 			table.push('</tr>')
 			table.push('<tr class="sorter-header">')
 			table.push('<th class="no-sort" data-type="prodlist'+type+'"> </th>')
@@ -822,6 +826,10 @@ let Productions = {
 						Profile.guildGoods = typeSum;
 						Profile.update()
 					}
+					if (type == 'units') {
+						Profile.units = typeSum;
+						Profile.update()
+					}
 					table.push('</th>')
 				}
 				else {
@@ -942,6 +950,10 @@ let Productions = {
 					erasCurrent[era] += currentGoodAmount = currentGoods?.eras?.[era] || 0
 					erasTotal[era] += goodAmount = allGoods?.eras?.[era] || 0
 					updateGroup[era] += goodAmount
+				}
+				if (building.isBoostable) {
+					goodAmount = Math.round(goodAmount)
+					currentGoodAmount = Math.round(currentGoodAmount)
 				}
 				rowA.push('<td data-number="'+goodAmount+'" class="text-center">')
 					if (currentGoodAmount != goodAmount) {
@@ -1480,7 +1492,10 @@ let Productions = {
         }
 		else if (GoodType === 'fsp') {
 			return i18n('Boxes.Productions.FSP');
-        }		
+        }
+		else if (GoodType === 'guild_raids_action_points_collection') {
+			return i18n('Boxes.BoostList.guild_raids_action_points_collection');
+        }
 		else {
 			if(GoodType && GoodsData[GoodType]){
 				return GoodsData[GoodType]['name'];
@@ -1635,12 +1650,26 @@ let Productions = {
 			ratedBuildings = Productions.rateBuildings(uniqueBuildings,false,era).concat(Productions.rateBuildings(selectedAdditionals,true,era)) 
 			
 			ratedBuildings.sort((a,b) => {
-				if (a.score < b.score) return -1
-				if (a.score > b.score) return 1
+				if (a.rating.totalScore < b.rating.totalScore) return -1
+				if (a.rating.totalScore > b.rating.totalScore) return 1
 				return 0
 			});
 
 			let colNumber = Object.values(Productions.Rating.Data).filter(x=>x.active && x.perTile!=null).length
+
+			// combine attack and defend boosts if both are active
+			let combinedRatingTypes = []
+			for (const type of Productions.Rating.Types) {
+				if (!Productions.Rating.Data[type].active || Productions.Rating.Data[type].perTile == null) continue;
+				let secondType = type.replace('att_','def_');
+				if (combinedRatingTypes.find(x => x == type.replace('def_','att_def_'))) continue;
+				if (Productions.Rating.Data[secondType].active) {
+					combinedRatingTypes.push(type.replace('att_','att_def_'));
+				}
+				else {
+					combinedRatingTypes.push(type);
+				}
+			}
 			
 			h.push('<div class="ratingtable">');
 			h.push('<a id="RatingSettings" class="toggle-tab btn-default btn-tight" data-value="Settings">' + i18n('Boxes.ProductionsRating.Settings') + '</a>')
@@ -1669,10 +1698,27 @@ let Productions = {
 				h.push('<option>'+size+'</option>')
 			}
 			h.push('</select></div></th><th class="no-sort"></th>');
-			for (const type of Productions.Rating.Types) {
-				if (!Productions.Rating.Data[type].active || Productions.Rating.Data[type].perTile == null) continue
-				h.push('<th data-type="ratinglist" style="width:1%" class="is-number text-center buildingvalue"><span class="resicon ' + type + '"></span><i>'+(Productions.Rating.Data[type].perTile || 0)+'</i></th>');
-				h.push('<th data-type="ratinglist" style="width:1%" class="is-number text-center tilevalue"><span class="resicon ' + type + '"></span><i>'+(Productions.Rating.Data[type].perTile || 0)+'</i></th>');
+			for (const type of combinedRatingTypes) {
+				let firstType = type;
+				let secondType = null;
+				let divider = 1;
+				if (type.includes('att_def_')) {
+					firstType = type.replace('def_','');
+					secondType = type.replace('att_','');
+					divider = 2;
+				}
+				h.push('<th data-type="ratinglist" style="width:1%" class="is-number text-center buildingvalue"'+
+					(secondType != null ? ` data-original-title="${Productions.Rating.Data[firstType].perTile} + ${Productions.Rating.Data[secondType]?.perTile} / 2"` : '')+
+					'><span class="resicon ' + firstType + '"></span>'+
+					(secondType != null ? '<span class="resicon ' + secondType + '"></span><i>': '')+
+					((Productions.Rating.Data[firstType].perTile + (Productions.Rating.Data[secondType]?.perTile || 0) || 0) /divider)+
+					'</i></th>');
+				h.push('<th data-type="ratinglist" style="width:1%" class="is-number text-center tilevalue"'+
+					(secondType != null ? ` data-original-title="${Productions.Rating.Data[firstType].perTile} + ${Productions.Rating.Data[secondType]?.perTile} / 2"` : '')+
+					'><span class="resicon ' + firstType + '"></span>'+
+					(secondType != null ? '<span class="resicon ' + secondType + '"></span><i>': '')+
+					((Productions.Rating.Data[firstType].perTile + (Productions.Rating.Data[secondType]?.perTile || 0) || 0)/divider)+
+					'</i></th>');
 			}
 			h.push('<th data-type="ratinglist" class="no-sort items">Items</th>');
 			h.push('</tr>');
@@ -1681,48 +1727,68 @@ let Productions = {
 			h.push('<tbody class="ratinglist">');
 			for (const building of ratedBuildings) {
 				// skip inventory buildings with a score lower than the threshold
-				if (building.building.isInInventory && building.score < Productions.efficiencySettings.inventorybuildingscore) continue;
+				if (building.isInInventory && building.rating.totalScore < Productions.efficiencySettings.inventorybuildingscore) continue;
 
 				// skip inventory buildings that are already in the city
-				if (building.building.isInInventory && (buildingCount[building.building.entityId+"C"] !== undefined || buildingCount[building.building.entityId+"C"] >= 1)) continue;
+				if (building.isInInventory && (buildingCount[building.entityId+"C"] !== undefined || buildingCount[building.entityId+"C"] >= 1)) continue;
 
-				let buildingSize = building.building.size.length * building.building.size.width;
+				let buildingSize = building.size.length * building.size.width;
 
-				[randomItems,randomUnits] = Productions.showBuildingItems(false, building.building)
-				h.push(`<tr class="${building.highlight?'additional ':''}${building.building.isInInventory?'inventory-building ':''}size${buildingSize}">`)
-				h.push('<td class="text-right" data-number="'+building.score * 100 +'">'+Math.round(building.score * 100)+'</td>')
-				h.push('<td data-text="'+helper.str.cleanup(building.building.name)+'" data-meta_id="'+building.building.entityId+'" data-era="'+building.building.eraName+'" data-callback_tt="Tooltips.buildingTT" class="helperTT ' + (MainParser.Allies.buildingList?.[building.building.id]?"ally" : "") +'" '+ MainParser.Allies.tooltip(building.building.id) + '><span>'+building.building.name+'</span>')
+				[randomItems,randomUnits] = Productions.showBuildingItems(false, building)
+				h.push(`<tr class="${building.highlight?'additional ':''}${building.isInInventory?'inventory-building ':''}size${buildingSize}">`)
+				h.push('<td class="text-right" data-number="'+building.rating.totalScore * 100 +'">'+Math.round(building.rating.totalScore * 100)+'</td>')
+				h.push('<td data-text="'+helper.str.cleanup(building.name)+'" data-meta_id="'+building.entityId+'" data-era="'+(building.eraName=="AllAge"?"":building.eraName)+'" data-callback_tt="Tooltips.buildingTT" class="helperTT ' + (MainParser.Allies.buildingList?.[building.id]?"ally" : "") +'" '+ MainParser.Allies.tooltip(building.id) + '><span>'+building.name+'</span>')
 				
-				let eraShortName = i18n("Eras."+Technologies.Eras[building.building.eraName]+".short")
+				let eraShortName = i18n("Eras."+Technologies.Eras[building.eraName]+".short")
 				if (eraShortName != "-")
-					h.push(" ("+i18n("Eras."+Technologies.Eras[building.building.eraName]+".short") +')')
+					h.push(" ("+i18n("Eras."+Technologies.Eras[building.eraName]+".short") +')')
 				h.push('</td><td class="text-right">')
 				// show amount in inventory if there are buildings
-				if (buildingCount[building.building.entityId+"I"] !== undefined && !building.building.isInInventory)
-					h.push('<span data-original-title="'+i18n('Boxes.ProductionsRating.InventoryTooltip')+', '+buildingCount[building.building.entityId+"I"]+'x"><img class="game-cursor" src="' + extUrl + 'js/web/x_img/inventory.png" /></span> ')
+				if (buildingCount[building.entityId+"I"] !== undefined && !building.isInInventory)
+					h.push('<span data-original-title="'+i18n('Boxes.ProductionsRating.InventoryTooltip')+', '+buildingCount[building.entityId+"I"]+'x"><img class="game-cursor" src="' + extUrl + 'js/web/x_img/inventory.png" /></span> ')
 				
 				// show amount in city if > 1
-				if (buildingCount[building.building.entityId+"C"] && buildingCount[building.building.entityId+"C"] > 1 && !MainParser.Allies.buildingList?.[building.building.id]) 
-					h.push('<span data-original-title="'+i18n('Boxes.ProductionsRating.CountTooltip')+'">' + buildingCount[building.building.entityId+"C"]+'x</span> ')
+				if (buildingCount[building.entityId+"C"] && buildingCount[building.entityId+"C"] > 1 && !MainParser.Allies.buildingList?.[building.id]) 
+					h.push('<span data-original-title="'+i18n('Boxes.ProductionsRating.CountTooltip')+'">' + buildingCount[building.entityId+"C"]+'x</span> ')
 				
 
-				if (!building.highlight && !building.building.isInInventory) 
-					h.push('<span class="show-all" data-name="'+building.building.name+'"><img class="game-cursor" src="' + extUrl + 'css/images/hud/open-eye.png"></span>')
-				else if (building.building.isInInventory) {
-					h.push('<span data-original-title="'+i18n('Boxes.ProductionsRating.InventoryTooltip')+'">'+buildingCount[building.building.entityId+"I"]+'x <img class="game-cursor" src="' + extUrl + 'js/web/x_img/inventory.png" /></span>')
+				if (!building.highlight && !building.isInInventory) 
+					h.push('<span class="show-all" data-name="'+building.name+'"><img class="game-cursor" src="' + extUrl + 'css/images/hud/open-eye.png"></span>')
+				else if (building.isInInventory) {
+					h.push('<span data-original-title="'+i18n('Boxes.ProductionsRating.InventoryTooltip')+'">'+buildingCount[building.entityId+"I"]+'x <img class="game-cursor" src="' + extUrl + 'js/web/x_img/inventory.png" /></span>')
 				}
 				h.push('</td>')
 
-				for (const type of Productions.Rating.Types) {
-					if (!Productions.Rating.Data[type].active || Productions.Rating.Data[type].perTile == null) continue
-					if (building[type] != undefined) {
-						h.push(`<td class="text-right${type=="units" ? " units":""} buildingvalue" data-number="${Math.round(building[type])}" ${type=="units" ? `data-original-title="${randomUnits}"`:""}>`)
-						h.push(HTML.Format(building[type]))
+				for (const type of combinedRatingTypes) {
+					let firstType = type;
+					let secondType = null;
+					if (type.includes('att_def_')) {
+						firstType = type.replace('def_','');
+						secondType = type.replace('att_','');
+					}
+					
+					// normal boosts
+					if (secondType == null) {
+						h.push(`<td class="text-right${firstType=="units" ? " units":""} buildingvalue" data-number="${Math.round(building.rating[firstType])}" ${firstType=="units" ? `data-original-title="${randomUnits}"`:""}>`)
+						h.push(HTML.Format(building.rating[firstType]))
 						h.push('</td>')
 
-						let roundingFactor = building[type+'-tile'] > 100 || building[type+'-tile'] < -100 ? 1 : 100
-						let tileValue = Math.round(building[type+'-tile'] * roundingFactor) / roundingFactor
-						h.push(`<td class="text-right${type=="units" ? " units":""} tilevalue" data-number="${tileValue}" ${type=="units" ? `data-original-title="${randomUnits}"`:""}>`)
+						let roundingFactor = building.rating[firstType+'-tile'] > 100 || building.rating[firstType+'-tile'] < -100 ? 1 : 100
+						let tileValue = Math.round(building.rating[firstType+'-tile'] * roundingFactor) / roundingFactor
+						h.push(`<td class="text-right${firstType=="units" ? " units":""} tilevalue" data-number="${tileValue}" ${firstType=="units" ? `data-original-title="${randomUnits}"`:""}>`)
+						h.push(HTML.Format(tileValue))
+						h.push('</td>')
+					}
+					// combined attack boosts
+					else {
+						h.push(`<td class="text-right buildingvalue" data-number="${Math.round(building.rating[firstType])+Math.round(building.rating[secondType])}">`)
+						h.push(HTML.Format(building.rating[firstType]+building.rating[secondType]))
+						h.push('</td>')
+
+						let roundingFactor = building.rating[firstType+'-tile'] > 100 || building.rating[firstType+'-tile'] < -100 ? 1 : 100
+						let roundingFactor2 = building.rating[secondType+'-tile'] > 100 || building.rating[secondType+'-tile'] < -100 ? 1 : 100
+						let tileValue = Math.round(((building.rating[firstType+'-tile'] * roundingFactor) / roundingFactor + (Math.round(building.rating[secondType+'-tile'] * roundingFactor2) / roundingFactor2)) / 2)
+						h.push(`<td class="text-right tilevalue" data-number="${tileValue}">`)
 						h.push(HTML.Format(tileValue))
 						h.push('</td>')
 					}
@@ -1829,7 +1895,7 @@ let Productions = {
 				let foundBuildings = Object.values(Productions.AdditionalSpecialBuildings).filter(x => regEx.test(x.filter))
 					.sort((a,b)=>(((a.selected != b.selected) ? (a.selected ? -2 : 2) : 0)+(a.name>b.name?1:-1)))
 				for (building of foundBuildings) {
-					$('#ProductionsRatingBody .overlay .results').append(`<li data-meta_id="${building.id}" data-era="${era}" data-callback_tt="Tooltips.buildingTT" class="helperTT${building.selected ? " selected":""}">${building.name}</li>`)
+					$('#ProductionsRatingBody .overlay .results').append(`<li data-meta_id="${building.id}" data-era="${(era=="AllAge"?"":era)}" data-callback_tt="Tooltips.buildingTT" class="helperTT${building.selected ? " selected":""}">${building.name}</li>`)
 				}
 			}
 			filterMeta(/./)
@@ -1902,40 +1968,46 @@ let Productions = {
     },
 
 
-	rateBuildings: (buildingType,additional=false, era=null) => {
-		if (!Productions.Rating.Data) Productions.Rating.load()
-		let ratedBuildings = []
+	rateBuildings: (uniqueBuildings,additional=false, era=null) => {
+		let ratedBuildings = [];
 		if (additional) {
-			buildingType = buildingType.map(x=>CityMap.createNewCityMapEntity(x,era||CurrentEra))
+			uniqueBuildings = uniqueBuildings.map(x=>CityMap.createNewCityMapEntity(x,era||CurrentEra));
 		}
-		for (const building of buildingType) {
-			if (building.entityId.includes("L_AllAge_EasterBonus1") || building.entityId.includes("L_AllAge_Expedition16") || building.entityId.includes("L_AllAge_ShahBonus17") || (building.isSpecial == undefined && building.type != "greatbuilding")) continue // do not include wishingwell type buildings
-			let size = building.size.width * building.size.length
-			size += ((building.size.width == 1 || building.size.length == 1) ? building.needsStreet * 0.5 : building.needsStreet)
-			let score = 0
-			let ratedBuilding = {
-				building: building
-			}
-			for (const type of Object.keys(Productions.Rating.Data)) {
-				if (Productions.Rating.Data[type].active) {
-					let desiredValuePerTile = parseFloat(Productions.Rating.Data[type].perTile) || 0
-					if (desiredValuePerTile !== null && !isNaN(desiredValuePerTile)) {
-						let typeValue = Productions.getRatingValueForType(building, type) || 0 // production amount
-						let valuePerTile = typeValue / size
+		for (const building of uniqueBuildings) {
+			// do not include wishingwell type buildings
+			if (building.entityId.includes("L_AllAge_EasterBonus1") || building.entityId.includes("L_AllAge_Expedition16") || building.entityId.includes("L_AllAge_ShahBonus17") || (building.isSpecial == undefined && building.type != "greatbuilding")) 
+				continue;
+			let ratedBuilding = building;
+			if (additional) ratedBuilding.highlight = true;
+			ratedBuildings.push(ratedBuilding);
+		}
+		return ratedBuildings;
+	},
 
-						if (valuePerTile != 0 && desiredValuePerTile != 0) 
-							score += (valuePerTile / desiredValuePerTile)
 
-						ratedBuilding[type] = ( Math.round( typeValue * 100 ) / 100 ) || 0
-						ratedBuilding[type+'-tile'] = valuePerTile || 0
-					}
+	rateBuilding: (building) => {
+		if (!Productions.Rating.Data) Productions.Rating.load();
+		let size = building.size.width * building.size.length;
+		size += ((building.size.width == 1 || building.size.length == 1) ? building.needsStreet * 0.5 : building.needsStreet);
+		
+		let score = {totalScore:0};
+
+		for (const type of Object.keys(Productions.Rating.Data)) {
+			if (Productions.Rating.Data[type].active) {
+				let desiredValuePerTile = parseFloat(Productions.Rating.Data[type].perTile) || 0
+				if (desiredValuePerTile !== null && !isNaN(desiredValuePerTile)) {
+					let typeValue = Productions.getRatingValueForType(building, type) || 0 // production amount
+					let valuePerTile = typeValue / size
+
+					if (valuePerTile != 0 && desiredValuePerTile != 0) 
+						score.totalScore += (valuePerTile / desiredValuePerTile)
+
+					score[type] = ( Math.round( typeValue * 100 ) / 100 ) || 0
+					score[type+'-tile'] = valuePerTile || 0
 				}
 			}
-			ratedBuilding.score = score
-			if (additional) ratedBuilding.highlight = true
-			ratedBuildings.push(ratedBuilding)
 		}
-		return ratedBuildings
+		return score;
 	},
 
 
@@ -2005,6 +2077,18 @@ let Productions = {
 				}
 			}
 			return fsp
+		}
+		else if (type == "guild_raids_action_points_collection") {
+			if (building.boosts != undefined) {
+				let qi_actions = 0
+				for (const boost of building.boosts) {
+					let bType = boost.type.find(x => x == type)
+					if (bType !== undefined) {
+						qi_actions += boost.value		
+					}
+				}
+				return qi_actions
+			}
 		}
 		else
 			return 0
@@ -2096,7 +2180,7 @@ let Productions = {
 	},
 
 	buildingItemList: () => {
-		let temp = Object.assign({},...Object.values(MainParser.CityEntities).filter(b=>b.id[0]=="W").map(x=>({[x.id]:[...JSON.stringify(x).matchAll(/"id":"([^"]*?)"[^()[\]{}]*?"name":"([^"]*?)"[^()[\]{}]*?"iconAssetName":"([^"]*?)"[^{}]*?"__class__":"GenericReward"/gm)].map(a=>({id:a[1],name:a[2],icon:a[3]}))})))
+		let temp = Object.assign({},...Object.values(MainParser.CityEntities).filter(b=>b.id[0]=="W").map(x=>({[x.id]:[...JSON.stringify(x).matchAll(/"id":"([^"]*?)"[^()[\]{}]*?"name":"([^"]*?)"[^()[\]{}]*?"iconAssetName":"([^"]*?)"[^{}]*?"__class__":"(GenericReward|TimedReward)"/gm)].map(a=>({id:a[1],name:a[2],icon:a[3]}))})))
 		let gl = Object.values(GoodsList).map(g=>g.id)
 		let items = {}
 		for (let [building,list] of Object.entries(temp)) {
@@ -2117,7 +2201,7 @@ let Productions = {
 		return items
 	},
 
-	buildingBoostList: (boostArray = []) => {
+	getBuildingsByBoosts: (boostArray = []) => {
 		let buildings = Object.values(MainParser.CityEntities).filter(b=>b.id[0]=="W")
 		let boostList = {};
 		boostArray.forEach(boost => boostList[boost] = [])
@@ -2132,6 +2216,8 @@ let Productions = {
 
 				if (foundAllABoost == undefined && foundCurrentABoost == undefined) continue;
 
+				if (boost.includes('guild_raids') && building.id.includes('GuildRaids')) continue;
+
 				boostList[boost].push({
 					name: building.name,
 					entityId: building.id
@@ -2139,6 +2225,41 @@ let Productions = {
 			}
 		}
 		return boostList;
+	},
+
+	createBuildingBoostList: (boostArray = []) => {
+		if ( $('#BoostList').length === 0 ) {
+			HTML.Box({
+				id: 'BoostList',
+				title: i18n('Boxes.BoostList.Title'),
+				auto_close: true,
+				dragdrop: true,
+				minimize: true,
+				resize: true
+			});
+		}
+
+		let groupedBuildings = Productions.getBuildingsByBoosts(boostArray);
+
+        h = `<div>
+					<table class="foe-table sortable-table">
+						<thead class="sticky">
+							<tr class="sorter-header"><th data-type="boostList"><input type="text" class="filterTable" placeholder="${i18n('Boxes.Kits.FilterItems')}" /> Boosts</th></tr>
+						</thead>
+						<tbody>`
+							for (let [group, buildings] of Object.entries(groupedBuildings)) {
+								h += '<tr><td><h2><span class="boost '+group+'"></span> '+i18n('Boxes.BoostList.'+group)+'</h2><ul>'
+								for (let building of buildings) {
+									h += '<li class="helperTT" data-era="'+CurrentEra+'" data-callback_tt="Tooltips.buildingTT" data-meta_id="'+building.entityId+'">'+building.name+'</li>'
+								}
+								h += '</ul></td></tr>';
+							}
+        			h +=`</tbody>
+					</table>
+				</div>`
+        $('#BoostListBody').html(h)
+        $('#BoostListBody .sortable-table').tableSorter()
+		HTML.FilterTable('#BoostListBody .filterTable')
 	},
 
 	updateItemSources:(item)=>{

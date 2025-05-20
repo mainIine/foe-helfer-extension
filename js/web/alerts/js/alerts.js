@@ -668,8 +668,9 @@ let Alerts = function(){
 						});
 
 						$('#AlertsBody').find('span.button-alert-create-all-sectors').on('click', function(){
-							tmp.web.forms.actions.createSectors().then(function(){
-							});
+							let reset = confirm(i18n('Boxes.Alerts.Form.ConfirmSectorAlerts'))
+							if (reset) 
+								tmp.web.forms.actions.createSectors().then(function(){});
 						});
 
 						$('#alerts-preferences').find('input').on('change', function(){
@@ -759,19 +760,19 @@ let Alerts = function(){
 					<table id="alerts-table" class="foe-table">
 						<thead>
 							<tr>
-								<th class="column-160">${labels.title}</th>
+								<th colspan="2">${labels.persistent}</th>
 								<th>${labels.expiration}</th>
-								<th><span title="${labels.repeat}" class="icon-repeat"></span></th><th>${labels.persistent}</th>
+								<th><span title="${labels.repeat}" class="icon-repeat"></span></th>
 								<th>&nbsp;</th>
 							 </tr>
 						</thead>
 						<tbody></tbody>
 					</table>
 				</div>
-				<p class="text-center">
-					<span class="btn-default button-alert-popup-new">${labels.create}</span>
+				<div class="flex dark-bg p2">
 					${allSectorsHtml}
-				</p>`;
+					<span class="btn-default button-alert-popup-new btn-green">${labels.create}</span>
+				</div>`;
 
 						return html;
 					},
@@ -865,10 +866,10 @@ let Alerts = function(){
 							for (let alert of alerts) {
 								let persist = ( alert.persistent ) ? ' checked="checked"' : '';
 								html += `<tr id="alert-id-${alert.id}">
-							<td class="column-160">${alert.title}</td>
+							<td><input type="checkbox"${persist}></td>
+							<td>${alert.title}</td>
 							<td>${moment(alert.expires).from(dt)}</td>
 							<td>${labels.repeats[alert.repeat+""]}</td>
-							<td><input type="checkbox"${persist}></td>
 							<td class="text-right">
 								<div class="btn-group">
 								<span class="btn-default btn-tight alert-button" data-id="${alert.id}" data-action="preview">${labels.preview}</span>

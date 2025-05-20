@@ -34,22 +34,7 @@ FoEproxy.addHandler('QuestService', 'getUpdates', (data, postData) => {
         }
     }
     Recurring.data.count=0;
-    Recurring.data.filter = [];
-    Recurring.data.filter2 = [];
-    for (let q in Recurring.data.Questlist) {
-        if (!Recurring.data.Questlist[q]) continue;
-        if (Recurring.data.Questlist[q].era == CurrentEraID) {
-            if (!Recurring.data.Questlist[q].diamonds){
-                Recurring.data.filter.push(q);
-                Recurring.data.count++;
-            } else {
-                Recurring.data.filter2.push(q);
-            }
-        } else if (CurrentEraID - Recurring.data.Questlist[q].era > 1) {
-            delete Recurring.data.Questlist[q];
-        }
-    }
-    
+    Recurring.filter()
     Recurring.SaveSettings();
     Recurring.RefreshGui();
 });
@@ -95,7 +80,24 @@ let Recurring = {
         else 
             Recurring.BuildBox();  
     },
-
+    filter: () => {
+        Recurring.data.filter = [];
+        Recurring.data.filter2 = [];
+        Recurring.data.count = 0;
+        for (let q in Recurring.data.Questlist) {
+            if (!Recurring.data.Questlist[q]) continue;
+            if (Recurring.data.Questlist[q].era == CurrentEraID) {
+                if (!Recurring.data.Questlist[q].diamonds){
+                    Recurring.data.filter.push(q);
+                    Recurring.data.count++;
+                } else {
+                    Recurring.data.filter2.push(q);
+                }
+            } else if (CurrentEraID - Recurring.data.Questlist[q].era > 1) {
+                delete Recurring.data.Questlist[q];
+            }
+        }
+    },
 
 	/**
 	 * Inhalt der Box in den BoxBody legen
@@ -120,26 +122,45 @@ let Recurring = {
             if (!Recurring.data.Questlist[q]) continue;
             let quest=Recurring.data.Questlist[q]
             h.push(`<tr>`);
-            h.push(`<td title="${Recurring.getTasks(quest.groups,quest.conditions)}">${quest.title}</td>`);
-            h.push(`<td title="${Recurring.getTasks(quest.groups,quest.conditions)}">${Recurring.getTasks(quest.groups,quest.conditions,false)}</td>`);
-            h.push(quest.diamonds ? '<td class="check">✓</td>' : '<td>?</td>');
+            h.push(`<td title="${Recurring.getTasksTitle(quest.groups,quest.conditions)}"><span>${quest.title}</span></td>`);
+            h.push(`<td title="${Recurring.getTasksTitle(quest.groups,quest.conditions)}">${Recurring.getTasks(quest.groups,quest.conditions)}</td>`);
+            h.push(`<td><span class="switchState" data-id="${q}">${quest.diamonds ? "✓" : "?"}</span></td>`);
             h.push('</tr>');
         }
         for (let q of Recurring.data.filter2) {
             if (!Recurring.data.Questlist[q]) continue;
             let quest=Recurring.data.Questlist[q]
             h.push(`<tr>`);
-            h.push(`<td title="${Recurring.getTasks(quest.groups,quest.conditions)}">${quest.title}</td>`);
-            h.push(`<td title="${Recurring.getTasks(quest.groups,quest.conditions)}">${Recurring.getTasks(quest.groups,quest.conditions,false)}</td>`);
-            h.push(quest.diamonds ? '<td class="check">✓</td>' : '<td>?</td>');
+            h.push(`<td title="${Recurring.getTasksTitle(quest.groups,quest.conditions)}"><span>${quest.title}</span></td>`);
+            h.push(`<td title="${Recurring.getTasksTitle(quest.groups,quest.conditions)}">${Recurring.getTasks(quest.groups,quest.conditions)}</td>`);
+            h.push(`<td class="check"><span class="switchState" data-id="${q}">${quest.diamonds ? "✓" : "?"}</span></td>`);
             h.push('</tr>');
         }
         h.push('</tbody>');
         h.push('</table>');
 
         $('#RecurringQuestsBoxBody').html(h.join(''));
-    },
+        $('#RecurringQuestsBoxBody .switchState').on('mousedown', function() {
+            $(this).addClass('loading');
+            Recurring.loadingTimer = setTimeout(() => {
+                $(this).removeClass('loading');
+                id=$(this).data('id');
+                Recurring.data.Questlist[id].diamonds = !Recurring.data.Questlist[id].diamonds;
+                Recurring.SaveSettings();
+                Recurring.BuildBox();
+                Recurring.loadingTimer = null;
+            }, 5000)
+        })
+        $('#RecurringQuestsBoxBody .switchState').on('mouseup', function() {
+            if (Recurring.loadingTimer) {
+                clearTimeout(Recurring.loadingTimer);
+                Recurring.loadingTimer = null;
+                $(this).removeClass('loading');
+            }
+        });
 
+    },
+    loadingTimer: null,
 
 	SetCounter: ()=> {
         $buttonNumber=$('#recurring-count')
@@ -155,24 +176,36 @@ let Recurring = {
     },
 
     SaveSettings: (show=Recurring.data.showCounter) => {
+        Recurring.filter()
         Recurring.data.showCounter = show;
         localStorage.setItem('Recurring', JSON.stringify(Recurring.data));
         Recurring.SetCounter();
     },
-    getTasks: (groups,conditions,title=true) =>{
+    getTasks: (groups,conditions) =>{
         let t = '';
-        let tAnd = '';
+        let tAdd = '';
         for (let x in groups) {
             if (!groups[x]) continue;
-            t += tAnd;
-            tAnd = (title ? `\n-------\n` : `<br>`) + `${i18n('Boxes.RecurringQuests.AND')} `;
-            let tOr= '';
             for (let c of groups[x].conditionIds) {
                 let d= conditions.find(item => item.id==c).description;
                 let img= srcLinks.getQuest(conditions.find(item => item.id==c).iconType);
-                t += tOr + (title ? d: (`<img src="${img}">` + d.substring(0,20) + (d.length>20 ?'...':'')));
-                tOr = (title ? `\n`:`<br><pre style="display:inline">&emsp;</pre>`) +`${i18n('Boxes.RecurringQuests.OR')} `;
+                t += `<span>${tAdd} <img src="${img}"> ${d}</span>`;
+                tAdd = `<pre style="display:inline">&emsp;&emsp;</pre>${i18n('Boxes.RecurringQuests.OR')} `;
             }
+            tAdd = `${i18n('Boxes.RecurringQuests.AND')}`;
+        }
+        return t;
+    },
+    getTasksTitle: (groups,conditions) =>{
+        let t = '';
+        let tAdd = '';
+        for (let x in groups) {
+            if (!groups[x]) continue;
+            for (let c of groups[x].conditionIds) {
+                t += tAdd + conditions.find(item => item.id==c).description;
+                tAdd = `\n${i18n('Boxes.RecurringQuests.OR')} `;
+            }
+            tAdd = `\n-------\n${i18n('Boxes.RecurringQuests.AND')} `;
         }
         return t;
     },

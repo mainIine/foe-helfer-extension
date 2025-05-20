@@ -81,6 +81,7 @@ let Boosts = {
         'def_boost_attacker': 0,
         'att_boost_defender': 0,
         'def_boost_defender': 0,
+        'goods_production': 0,
         'guild_raids-att_boost_attacker': 0,
         'guild_raids-def_boost_attacker': 0,
         'guild_raids-att_boost_defender': 0,
@@ -93,6 +94,8 @@ let Boosts = {
         'battleground-def_boost_attacker': 0,
         'battleground-att_boost_defender': 0,
         'battleground-def_boost_defender': 0,
+        'battleground-def_boost_defender': 0,
+        'critical_hit_chance': 0,
         'coin_production': 0,
         'supply_production': 0,
         'forge_points_production':0,
@@ -121,12 +124,12 @@ let Boosts = {
 
     InitLB: async (LBs) => {
         
-        let boosts=LBs.filter(x=>x.bonus?.type).map(x=>
+        let boosts=LBs.filter(x=>x.bonus?.type && x.player_id == ExtPlayerID).map(x=>
             ({
                 entityId: x.entityId||x.id,
                 origin: "greatBuilding",
                 type: x.bonus.type,
-                value: x.bonus.value
+                value: x.bonus.value || 0
             })
         )
         Boosts.Remove(boosts)

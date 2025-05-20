@@ -170,6 +170,26 @@
 
 .AASetAdvice {
     width:300px;
+    position: relative;
+}
+.battleAssistOverrideTypeGroup {
+    display: none;
+    position: absolute;
+    top: 0px;
+    width: 25px;
+    right: 0px;
+}
+.battleAssistOverrideTypeGroup img{
+    width: 100%;
+}
+.battleAssistOverrideType img{
+    opacity: 50%;
+}
+.battleAssistOverrideType.active img{
+    opacity: 100%;
+}
+#battleAssistAAConfigBody table td:hover .battleAssistOverrideTypeGroup {
+    display:block;
 }
 
 .AASetBonus {
@@ -186,6 +206,9 @@
     min-width:300px;
 }
 
-#battleAssistAAConfigBody [data-id^="GE5"] {
+#battleAssistAAConfigBody [data-id^="attack%"] {
+    background: var(--background-table-error);
+}
+#battleAssistAAConfigBody [data-id^="defense%"] {
     background: var(--background-table-info);
 }
