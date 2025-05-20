@@ -52,8 +52,8 @@
 }
 
 #PlayerProfileBody {
-    max-height: 90vh;
-    overflow: auto;
+    overflow: visible;
+    position: relative;
 }
 
 #PlayerProfile .window-head .title {
@@ -61,21 +61,111 @@
 }
 
 #PlayerProfile .pad {
-    padding: 1.35rem 1.1rem;
+    padding: 0.8rem;
 }
 
-#PlayerProfile .pad:nth-child(1) {
-    padding: 0 1.35rem 1.35rem;
+#PlayerProfile .leftInfo .pad, #PlayerProfile .rightInfo .pad {
+    padding: 0.8rem 0.5rem;
+}
+
+#PlayerProfile .leftInfo h2, #PlayerProfile .rightInfo h2 {
+    opacity: 1;
+    color: #bcdcff;
+}
+
+#PlayerProfile h2 + .pad {
+    padding: 0 0.8rem 0.8rem;
 }
 
 #PlayerProfile .pad + .pad {
-    padding: 0 1.1rem 1.35rem;
+    padding: 0.5rem 0.8rem;
+}
+
+#PlayerProfile div.header {
+    height: 100px;
+    position: relative;
+    top: -60px;
+    margin: 0 auto -60px;
+    filter: saturate(1.2);
+    display: block;
+    background: linear-gradient(#061327 50%, #00031311 50%, #0000);
+}
+
+#PlayerProfile .rightInfo div.header {
+    border-radius: 0 10px 10px 0;
+}
+
+#PlayerProfile .leftInfo div.header {
+    border-radius: 10px 0 0 10px;
+}
+
+#PlayerProfile div.header img:not(:only-child) {
+    position: absolute;
+    left: calc(50% - 40px);
+    max-height: 100px;
+}
+
+#PlayerProfile div.header.flex {
+    display: flex;
+    align-items: flex-end;
+    flex-direction: row;
+}
+
+#PlayerProfile div.header.flex img:only-child {
+    min-width: 110px;
+    max-width: 150px;
+    max-height: 110px;
+    filter: brightness(1.1);
+}
+
+#PlayerProfile div.header img.alabaster {
+    height: 50px;
+    left: 60px;
+    top: 20px;
+}
+
+#PlayerProfile div.header img.goods {
+    height: 50px;
+    left: 65px;
+    top: 45px;
+}
+
+#PlayerProfile div.header img.fp {
+    left: 160px;
+    top: 30px;
+}
+
+#PlayerProfile .leftInfo, #PlayerProfile .rightInfo {
+    position: absolute;
+    box-sizing: border-box;
+    background:  linear-gradient(196deg, #000313 0%, rgb(3, 13, 36) 100%);
+    width: 260px;
+    top: 50px;
+    left: -263px;
+    border-radius: 7px 0 0 7px;
+    padding: 15px 0;
+    box-shadow: 0 -10px 10px #0006;
+    min-height: 300px;
+    height: inherit;
+    margin-top: -20px;
+    color: #acc4e3;
+}
+
+#PlayerProfile .rightInfo {
+    background: linear-gradient(196deg, #000313 0%, rgb(3, 13, 36) 100%);
+    right: -263px;
+    left: auto;
+    border-radius: 0 7px 7px 0;
+}
+
+#PlayerProfile .leftInfo h2:first, #PlayerProfile .rightInfo h2:first {
+    font-size: 1rem;
 }
 
 #PlayerProfile .basicInfo {
     display: flex;
     align-items: center;
-    padding-top: 0;
+    padding: 0 1.25rem 1.25rem;
 }
 
 #PlayerProfile .basicInfo img {
@@ -83,6 +173,52 @@
     width: 90px;
     margin-right: 1.25rem;
     box-shadow: 0 2px 2px var(--black-50);
+}
+
+#PlayerProfile .expansions {
+    position: absolute;
+    top: 38px;
+    left: 0;
+    padding: 0 0.5rem;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    box-sizing: border-box;
+}
+
+#PlayerProfile .greatbuildings span, #PlayerProfile .stock span {
+    display: inline-block;
+    margin: 6px 4px 3px;
+    padding: 0 3px 0 0;
+    border-bottom: 1px solid #0072ff30;
+    height: 24px;
+    line-height: 24px;
+    position: relative;
+}
+
+#PlayerProfile .greatbuildings img, #PlayerProfile .stock img {
+    max-height: 31px;
+    max-width: 48px;
+    margin: -5px 2px -5px -6px;
+    filter: saturate(1.2);
+}
+
+#PlayerProfile .greatbuildings .total {
+    font-weight: bold;
+    border-bottom-width: 2px;
+}
+
+#PlayerProfile .greatbuildings .total img {
+    margin: -5px -4px -5px -8px;
+}
+
+#PlayerProfile .secondary {
+    font-size: 0.9em;
+}
+
+#PlayerProfile .secondary img {
+    max-height: 25px !important;
+    max-width: 30px !important;
 }
 
 #PlayerProfile .ranking::before, #PlayerProfile .ranking::after {
@@ -112,8 +248,31 @@
     text-align: center;
 }
 
-#PlayerProfile .fp::before, #PlayerProfile .goods .prev::before, #PlayerProfile .goods .current::before, #PlayerProfile .goods .next::before, #PlayerProfile .goods .guild::before, 
-#PlayerProfile .aAtt::before, #PlayerProfile .aDef::before, #PlayerProfile .dAtt::before, #PlayerProfile .dDef::before, 
+#PlayerProfile .dailyProd span {
+    padding: 2px 2px 0;
+    display: inline-block;
+    margin: 0 1px;
+}
+
+#PlayerProfile .dailyProd span img {
+    max-height: 22px;
+    padding-right: 1px;
+}
+
+#PlayerProfile .dailyProd .boosts span {
+    color: #83b940;
+}
+
+#PlayerProfile span.units::before {
+	background: transparent url('../../productions/images/productions.png') -287px -2px no-repeat;
+	width: 22px;
+    content: '';
+    height: 22px;
+    display: inline-block;
+    margin-bottom: -4px;
+}
+
+#PlayerProfile .aAtt::after, #PlayerProfile .aDef::before, #PlayerProfile .dAtt::after, #PlayerProfile .dDef::before, 
 #PlayerProfile .qiactions::before, #PlayerProfile .qicoins::before, #PlayerProfile .qicoins_start::before, #PlayerProfile .qisupplies::before, #PlayerProfile .qisupplies_start::before, #PlayerProfile .qigoods_start::before, #PlayerProfile .qiunits_start::before {
     content: '';
     position: relative;
@@ -128,35 +287,16 @@
     zoom: 0.8;
 }
 
-#PlayerProfile .goods {
-    margin-top: -3px;
+#PlayerProfile .crit {
+    background: linear-gradient(132deg, #752f09, #61270755);
+    padding: 1px 5px 2px 0;
+    border-radius: 19px 7px 7px 7px;
+    color: #f3f3f3;
 }
 
-#PlayerProfile .goods span {
-    display: inline-block;
-    margin: 0 2px 2px 0;
-}
-
-#PlayerProfile .goods .guild::before {
-    background: url(../../productions/images/productions.png) -233px 2px no-repeat;
-    height: 26px;
-    width: 26px;
-    margin-left: 7px;
-}
-
-#PlayerProfile .goods .prev::before {
-    background: url(../../productions/images/productions.png) -524px 2px no-repeat;
-    height: 26px;
-}
-
-#PlayerProfile .goods .next::before {
-    background: url(../../productions/images/productions.png) -550px 2px no-repeat;
-    height: 26px;
-}
-
-#PlayerProfile .goods .current::before {
-    background: url(../../productions/images/productions.png) -104px 2px no-repeat;
-    height: 26px;
+#PlayerProfile .crit img {
+    max-height: 30px;
+    margin: -3px 0 0 -8px;
 }
 
 #PlayerProfile .qiactions::before {
@@ -201,32 +341,28 @@
     height: 31px;
 }
 
-#PlayerProfile div.battleBoosts {
-    padding-top: 0;
-}
-
-#PlayerProfile .aAtt::before {
-    background: url(../../productions/images/productions.png) -311px 3px no-repeat;
+#PlayerProfile .aAtt::after {
+    background: url(../../productions/images/productions.png) -311px -3px no-repeat;
+    margin-right: -15px;
+    z-index: 1;
 }
 
 #PlayerProfile .aDef::before {
     background: url(../../productions/images/productions.png) -365px 3px no-repeat;
 }
 
-#PlayerProfile .dAtt::before {
-    background: url(../../productions/images/productions.png) -338px 3px no-repeat;
+#PlayerProfile .dAtt::after {
+    background: url(../../productions/images/productions.png) -338px -3px no-repeat;
+    margin-right: -15px;
+    z-index: 1;
 }
 
 #PlayerProfile .dDef::before {
     background: url(../../productions/images/productions.png) -390px 3px no-repeat;
 }
 
-#PlayerProfile .battleBoosts {
-    text-align: center;
-}
-
 #PlayerProfile .battleBoosts table {
-    margin: 0 auto;
+    margin: 0 auto 5px;
 }
 
 #PlayerProfile .battleBoosts .gbg, #PlayerProfile .battleBoosts .ge, #PlayerProfile .battleBoosts .qi {
@@ -241,6 +377,22 @@
 #PlayerProfile .important {
     color: var(--text-danger);
     font-weight: bold;
+    cursor: url('../../../../css/images/cursor_hover.cur');
+}
+
+#PlayerProfile .important::after {
+    content: "➔";
+    display: inline-block;
+    background: var(--background-hud-btn);
+    padding: 0 2px;
+    border-radius: 3px;
+    color: var(--text-btn);
+    margin-left: 2px;
+    font-weight: normal;
+}
+
+#PlayerProfile .important:hover::after {
+    filter: brightness(1.2) contrast(1.2);
 }
 
 #PlayerProfile h2 {
@@ -261,35 +413,36 @@
     height: 26px;
 }
 
-#PlayerProfile .qiBoosts, #PlayerProfile .settlements {
+#PlayerProfile .showMore {
     display: none;
 }
 
 #PlayerProfile .settlements img {
-    max-height: 31px;
+    max-height: 37px;
     display: inline-block;
-    margin: -5px 2px -5px -7px;
+    margin: -10px 2px -8px -7px;
 }
 
 #PlayerProfile .settlements .friend_of_the_vikings img {
-    margin: -5px -1px -5px -11px;
+    margin: -10px -3px -8px -11px;
 }
 
 #PlayerProfile .settlements .cop_japanese img {
-    margin: -9px -5px -6px -11px;
-    max-height: 37px;
+    margin: -14px -6px -9px -13px;
+    max-height: 45px;
 }
 
 #PlayerProfile .settlements .a_new_world img {
-    margin: -5px -3px -5px -9px;
+    margin: -10px -4px -7px -11px;
+    max-height: 39px;
 }
 #PlayerProfile .settlements .friend_of_the_pharaoh img {
-    margin: -5px -4px -5px -9px;
+    margin: -9px -7px -7px -13px;
 }
 
 #PlayerProfile .settlements .tropical_islands img, #PlayerProfile .settlements .splendid_empire img {
-    max-height: 29px;
-    margin: -4px 2px -4px -7px;
+    max-height: 31px;
+    margin: -5px 2px -3px -7px;
 }
 
 #PlayerProfile .settlements span {
@@ -297,8 +450,68 @@
     margin: 6px 3px 3px;
     background: var(--black-50);
     border-radius: 9px;
-    padding: 0 5px 0 2px;
+    padding: 2px 5px 0 2px;
     border: 1px solid #0008;
+}
+
+#PlayerProfile .achievements span, #PlayerProfile .inventory span {
+    display: inline-block;
+    padding: 0 5px 0 0;
+    margin: 4px 3px;
+    box-shadow: inset -1px -1px 20px #0005;
+    border-radius: 10px;
+}
+
+#PlayerProfile .achievements img {
+    max-height: 40px;
+    margin: -5px 0 -5px -5px;
+    background: radial-gradient(circle, #00000066 53%, transparent 55%);
+}
+
+#PlayerProfile h2.border {
+    background: linear-gradient(to bottom, #0062ff1a, transparent 75%);
+    border-radius: 10px 10px 0 0;
+    margin: 10px -3px -5px;
+}
+
+#PlayerProfile h2.border span {
+    position: relative;
+    bottom: 10px;
+    box-shadow: none;
+    margin: 0;
+    padding: 0;
+    display: inline-block;
+}
+
+#PlayerProfile .inventory img {
+    max-height: 30px;
+    margin: -2px 0 -2px -5px;
+    background: radial-gradient(circle, #00000066 33%, transparent 55%);
+}
+
+#PlayerProfile .inventory .favorites {
+    margin-top: 2px;
+}
+#PlayerProfile .inventory .favorites:not(:empty):before {
+    content: '★';
+    text-align: center;
+    display: block;
+    margin-bottom: 3px;
+    font-size: 11px;
+    color: #f5c978;
+}
+
+#PlayerProfile .inventory .favorites span {
+    color: #edc492;
+}
+
+#PlayerProfile .qiBoosts h2::before, #PlayerProfile .qiBoosts h2::after {
+    content: '⌾';
+    color: #062333;
+    display: inline-block;
+    padding: 0 2px;
+    font-weight: normal;
+    text-shadow: none;
 }
 
 #PlayerProfile .qiBoosts span {
@@ -309,6 +522,7 @@
     padding: 0 6px 2px 3px;
     box-shadow: inset -1px -1px 2px #12837a33;
     text-shadow: 0 1px 2px #000000cc, 0 1px 1px #000000aa;
+    color: #c4e5e1;
 }
 
 #PlayerProfile .qiBoosts span::before {

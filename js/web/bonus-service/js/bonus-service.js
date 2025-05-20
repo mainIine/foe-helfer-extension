@@ -278,6 +278,7 @@ let BonusService = {
 		for (let i = 0; i < MainParser.Quests.length; i++) {
 			let Quest = MainParser.Quests[i];
 			if (Quest['category'] === 'outpost') continue;
+			if (Quest['type'] === 'ReplayableSeason_Allies_Milestone') continue;
 			if (Quest['state'] === 'collectReward') Ret += 1;
 		}
 		return Ret;

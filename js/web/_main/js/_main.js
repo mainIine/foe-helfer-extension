@@ -202,6 +202,7 @@ GetFights = () =>{
 	FoEproxy.addMetaHandler('building_upgrades', (xhr, postData) => {
 		let BuildingUpgradesArray = JSON.parse(xhr.responseText);
 		MainParser.BuildingUpgrades = Object.assign({}, ...BuildingUpgradesArray.map((x) => ({ [x.upgradeItem.id]: x })));
+		if (MainParser.SelectionKits != null) Kits.CreateUpgradeSchemes();
 	});
 
 	// Building-Sets
@@ -220,6 +221,7 @@ GetFights = () =>{
 	FoEproxy.addMetaHandler('selection_kits', (xhr, postData) => {
 		let SelectKitsArray = JSON.parse(xhr.responseText);
 		MainParser.SelectionKits = Object.assign({}, ...SelectKitsArray.map((x) => ({ [x.selectionKitId]: x })));
+		if (MainParser.BuildingUpgrades != null) Kits.CreateUpgradeSchemes();
 	});
 
 	// Castle-System-Levels
@@ -255,6 +257,7 @@ GetFights = () =>{
 	});
 	FoEproxy.addFoeHelperHandler('InventoryUpdated', () => {
 		MainParser.Allies.updateAllyList()
+		Kits.PopulateUpgradeSchemes();
 	});
 
 	// Portrait-Mapping für Spieler Avatare
@@ -291,13 +294,12 @@ GetFights = () =>{
 			e.preventDefault();
 		});
 
-		// Player-ID, Gilden-ID und Name setzten
+		// Player-ID, Gilden-ID und Name setzen
 		MainParser.StartUp(data.responseData.user_data);
 
 		// check if DB exists
 		StrategyPoints.checkForDB(ExtPlayerID);
 		EventHandler.checkForDB(ExtPlayerID);
-		//UnitGex.checkForDB(ExtPlayerID);
 		GuildMemberStat.checkForDB(ExtPlayerID);
 		GexStat.checkForDB(ExtPlayerID);
 		GuildFights.checkForDB(ExtPlayerID);
@@ -360,7 +362,6 @@ GetFights = () =>{
 	
 		Stats.Init();
 		Alerts.init();
-
 	});
 
 	// ResourcesList
@@ -1482,6 +1483,7 @@ let MainParser = {
 			ally.rarity=ally.rarity.value
 			ally.name=MainParser.Allies.meta[ally.allyId]?.name
 			ally.typeName=MainParser.Allies.types[ally.type]?.name
+			ally.type=MainParser.Allies.meta[ally.allyId]?.allyType
 			return ally
 		},
 
@@ -1495,7 +1497,8 @@ let MainParser = {
 					dragdrop: true,
 					minimize: true,
 					resize: true,
-					active_maps:"main",				});
+					active_maps:"main",				
+				});
 			}
 			MainParser.Allies.updateAllyList()
 		},
@@ -1579,6 +1582,7 @@ let MainParser = {
 					if (!r || r=="") return ""
 					let i = Object.keys(MainParser.Allies.rarities).indexOf(r)
 					if (i==-1) return `<img style="filter: drop-shadow(0px 2px 2px black)"  src="${srcLinks.get(`/shared/icons/when_motivated.png`, true)}">`
+					if (i==0) return `<span style="font-size: large; color: transparent; text-shadow: 0px 0px 4px black;" >☆</span>`
 					let ret=""					
 					let star = `<img style="margin-left:-3px"  src="${srcLinks.get(`/historical_allies/portraits/historical_allies_portrait_rarity_icon.png`, true)}">`
 					for (let j = 0; j < i; j++) {

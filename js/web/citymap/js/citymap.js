@@ -192,6 +192,7 @@ let CityMap = {
 				$('#show-nostreet-buildings')[0].checked=false;
 				$('#show-ascendable-buildings')[0].checked=false;
 				$('#show-decayed-buildings')[0].checked=false;
+				$('#show-worst-buildings')[0].checked=false;
 			}
 
 			$('#grid-outer').attr('data-unit', unit);
@@ -240,6 +241,11 @@ let CityMap = {
 		mapfilters.append(
 			$('<label />').attr({ for: 'show-decayed-buildings' }).text(i18n('Boxes.CityMap.ShowDecayedBuildings'))
 				.prepend($('<input />').attr({ type: 'checkbox', id: 'show-decayed-buildings', onclick: 'CityMap.ShowDecayedBuildings()' }))
+		);
+
+		mapfilters.append(
+			$('<label />').attr({ for: 'show-worst-buildings' }).text(i18n('Boxes.CityMap.ShowWorstBuildings'))
+				.prepend($('<input />').attr({ type: 'checkbox', id: 'show-worst-buildings', onclick: 'CityMap.ShowWorstBuildings()' }))
 		);
 
 		oB.append(wrapper)
@@ -572,6 +578,19 @@ let CityMap = {
 		else
 			buildingData = CityMap.createNewCityMapEntities(Object.values(MainParser.CityMapData))
 
+		// find highest rating in all buildings, do not include roads
+		let buildingsWithoutStreets = Object.values(buildingData).filter((x) => x.type != "street");
+		let buildingRatings = Object.values(buildingsWithoutStreets).map((x) => parseInt(x.rating.totalScore *100));
+		buildingRatings.sort((a, b) => {
+			if (a < b) return -1
+			if (a > b) return 1
+			return 0
+		});
+		rating10 = buildingRatings[parseInt(buildingRatings.length/10)];
+		rating20 = buildingRatings[parseInt(buildingRatings.length/5)];
+		rating30 = buildingRatings[parseInt(buildingRatings.length/3)];
+
+		// create building elements
 		for (const building of Object.values(buildingData)) {
 			if (building.coords.x < MinX || building.coords.x > MaxX || building.coords.y < MinY || building.coords.y > MaxY) continue
 
@@ -585,15 +604,21 @@ let CityMap = {
 			let isDecayed = (building.state.isDecayed ? ' decayed' : '')
 			let isSpecial = (building.isSpecial ? ' special' : '')
 			let chainBuilding = (building.chainBuilding != undefined ? ' chain' : '')
+			let rating = (building.rating?.totalScore*100 <= (rating10) ? ' rating10' : 
+						(building.rating?.totalScore*100 <= (rating20) ? ' rating20' :	
+						(building.rating?.totalScore*100 <= (rating30) ? ' rating30' : '')))
 			
-			f = $('<span />').addClass('entity ' + building.type + noStreet + isSpecial + canAscend + isDecayed + chainBuilding).css({
+			f = $('<span />').addClass('entity helperTT ' + building.type + noStreet + isSpecial + canAscend + isDecayed + chainBuilding + rating).css({
 				width: xsize + 'em',
 				height: ysize + 'em',
 				left: x + 'em',
 				top: y + 'em'
 			})
-				.attr('title', building.name)
-				.attr('data-id', building.id);
+				.attr('data-callback_tt','Tooltips.buildingTT')
+				.attr('data-era', building.eraName)
+				.attr('data-id', building.id)
+				.attr('data-title', building.name)
+				.attr('data-meta_id',building.entityId);
 
 			CityMap.OccupiedArea += (building.size.width * building.size.length);
 			if (building.type == "street")
@@ -608,9 +633,6 @@ let CityMap = {
 
 			if (building.eraName) {
 				let era = Technologies.Eras[building.eraName]
-				f.attr({
-					title: `${building.name}, ${building.size.length}x${building.size.width}<br><em>${i18n('Eras.' + (era || 0) )}</em>`
-				})
 
 				if (era < CurrentEraID && building.type != "greatbuilding" && era != 0) {
 					f.addClass('oldBuildings')
@@ -646,12 +668,6 @@ let CityMap = {
 
 		let StreetsUsed = CityMap.OccupiedArea2['street'] | 0;
 		CityMap.EfficiencyFactor = StreetsNeeded / StreetsUsed;
-
-		// Gebäudenamen via Tooltip
-		$('.entity').tooltip({
-			container: '#city-map-overlayBody',
-			html: true
-		});
 
 		$('#grid-outer').draggable();
 		CityMap.getAreas();
@@ -801,6 +817,16 @@ let CityMap = {
 
 
 	/**
+	 * Show Buildings that can be ascended
+	 */
+	ShowWorstBuildings: ()=> {
+		$('.rating10').toggleClass('highlight4');
+		$('.rating20').toggleClass('highlight4');
+		$('.rating30').toggleClass('highlight4');
+	},
+
+
+	/**
 	 * Send citydata to the server
 	 *
 	 */
@@ -927,8 +953,8 @@ let CityMap = {
 	filterBuildings: (string) => {
 		spans = $('span.entity');
 		for (sp of spans) {
-			let title = $(sp).attr('data-original-title');
-			if ((string != "") && (title.substr(0,title.indexOf("<em>")).toLowerCase().indexOf(string.toLowerCase()) > -1)) {
+			let title = $(sp).attr('data-title');
+			if ((string != "") && (title.substr(0,title.toLowerCase().indexOf(string.toLowerCase()) > -1))) {
 				$(sp).addClass('highlighted');
 			} else {
 				$(sp).removeClass('highlighted');
@@ -2108,6 +2134,7 @@ let CityMap = {
 			eras: {}
 		}
 		if (productions) {
+			let goodsBoost = Boosts.Sums.goods_production || 1;
 			productions.forEach(production => {
 				if (production.type == 'resources' || production.type == 'special_goods') {
 					Object.keys(production.resources).forEach(resourceName => {
@@ -2139,10 +2166,14 @@ let CityMap = {
 						}
 
 						if (isGood) {
+							let boostedExtra = Math.round(production.resources[resourceName]*goodsBoost/100)
+							if (resourceName.includes('all_goods_of_')) 
+								boostedExtra = Math.round(production.resources[resourceName]/5*goodsBoost/100)*5;
+							
 							if (goods.eras[goodEra] == undefined) 
-								goods.eras[goodEra] = parseInt(production.resources[resourceName])
+								goods.eras[goodEra] = parseInt(production.resources[resourceName])+boostedExtra
 							else
-								goods.eras[goodEra] += parseInt(production.resources[resourceName])
+								goods.eras[goodEra] += parseInt(production.resources[resourceName])+boostedExtra
 						}
 					})
 				}
@@ -2250,6 +2281,7 @@ let CityMap = {
 			
 			boosts: this.setBuildingBoosts(metaData, data, era),
 			production: this.setAllProductions(metaData, data, era),
+			rating: null,
 
 			coords: { x: data.x || 0, y: data.y || 0 },
 			
@@ -2266,6 +2298,8 @@ let CityMap = {
 				isDecayed: this.setDecayed(data)
 			}
 		}
+
+		entity.rating = Productions.rateBuilding(entity);
 		
 		//if (entity.type != "street")
 		//	console.log('entity ', entity.name, entity, metaData, data)

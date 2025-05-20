@@ -2,25 +2,22 @@
 	"name": "__MSG_appName__",
 	"description": "__MSG_appDesc__",
 	"default_locale": "en",
-	"version": "3.11.1.0",
+	"version": "3.11.2.0",
 
-	"manifest_version": 3,
+	"manifest_version": 2,
 	"permissions": [
 		"alarms",
 		"storage",
 		"tabs",
 		"notifications",
-		"clipboardWrite"
-	],
-
-	"host_permissions": [
+		"clipboardWrite",
 		"https://*.forgeofempires.com/*",
 		"https://foe-helper.com/*",
 		"https://*.foe-helper.com/*",
 		"https://*.foe-rechner.de/*"
 	],
 
-	"action": {
+	"browser_action": {
 		"default_icon": "images/app16.png",
 		"default_popup": "content/popup.html",
 		"default_title": "__MSG_appName__"
@@ -33,15 +30,16 @@
 	},
 
 	"web_accessible_resources": [
-		{
-			"resources": [
-				"js/*",
-				"vendor/*",
-				"css/*",
-				"content/*"
-			],
-			"matches": [ "https://*/*" ]
-		}
+		"css/web/*.css",
+		"vendor/*.js",
+		"vendor/sounds/*.mp3",
+		"js/web/*.*",
+		"images/*.*",
+		"css/images/*.*",
+		"content/*.html",
+		"js/vendor.json",
+		"js/internal.json",
+		"js/foeproxy.js"
 	],
 
 	"content_scripts": [
@@ -57,12 +55,12 @@
 		}
 	],
 
-	"externally_connectable" : {
-		"matches": ["https://*.forgeofempires.com/*"],
-		"ids": ["*"]
-	},
-
 	"background": {
-		"service_worker": "background.js"
+		"scripts": [
+			"vendor/browser-polyfill/browser-polyfill.min.js",
+			"vendor/dexie/dexie.min.js",
+			"background.js"
+		],
+		"persistent": true
 	}
 }

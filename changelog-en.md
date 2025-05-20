@@ -1,5 +1,43 @@
 ## Changelog - Extension
 
+##### 3.11.2.0
+
+**Removed**
+- Chest selection assistant (No Event really needs it anymore)
+
+**Update**
+- Negotiation assistant
+	- now supports 5 turns
+
+- Player Profile
+	- more data was added
+
+- Rewards stream
+	- now also in GE
+
+- Boxes
+	- GBG province list is not closed automatically anymore
+	- added setting to disable automatic box closing
+
+- Recurring Quests (diamond checklist)
+	- State (?/✓) can now be toggled by long click (5 sec)
+	- shortening of the quest texts will now happen dynamically depending on available space
+
+- Efficiency Rating:
+	- Some boosts are now shown as one value. They are still calculated seperately, the score did not change. We just need more space to add more stats to evaluate.
+	- Added QI Actions to the evaluation
+
+- City Overview:
+	- You can now highlight less efficient buildings
+	- The tooltip was exchanged for the one showing all building information
+
+**BugFix**
+- Recurring Quests (diamond checklist)
+	- counter in menu was shown when starting the game even if it was 0 or the setting was disabled
+- Treasury Export
+	- year was parsed incorrectly in some languages (4025 instead of 2025)
+---
+
 ##### 3.11.1.0
 
 **New**

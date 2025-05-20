@@ -376,8 +376,7 @@ table.foe-table thead th {
 }
 
 table.foe-table tbody tr:nth-child(odd), ul.foe-table li:nth-child(odd) {
-	-webkit-backdrop-filter: brightness(1.1) saturate(1.1);
-	backdrop-filter: brightness(1.1) saturate(1.1);
+	background-color: var(--background-table-odd);
 }
 
 table.foe-table:not(.no-hover) tbody tr:hover {
@@ -428,6 +427,14 @@ p {
 .flex {
 	display: flex;
 	justify-content: center;
+}
+
+.flex.between {
+	justify-content: space-between;
+}
+
+.p2 {
+	padding: 2px;
 }
 
 .wsnw {
@@ -928,9 +935,6 @@ FP-Bar */
 #fp-bar.main .fp-bar-main{
 	display:none;
 }
-#fp-bar.main.over1k .fp-bar-main{
-	display: flex;
-}
 
 #fp-bar .fp-bar-main {
 	height: 16px;
@@ -1238,6 +1242,7 @@ FP-Bar */
 	opacity: 0;
 	filter: alpha(opacity=0);
 	visibility: visible;
+	z-index: 2000;
 }
 
 .tooltip .tooltip-error {
@@ -1279,9 +1284,8 @@ FP-Bar */
 	background-color: var(--text-darkest);
 	text-align: center;
 	text-decoration: none;
-	-webkit-border-radius: 4px;
-	-moz-border-radius: 4px;
 	border-radius: 4px;
+	z-index: 2000;
 }
 
 .tooltip-arrow {
@@ -1614,7 +1618,6 @@ FP-Bar */
 
 .litepicker .container__months {
 	background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.3)), url('../../css/images/hud/box-bg.png') 0 0 repeat;
-	-webkit-box-shadow: 0 0 5px rgba(0,0,0,0.4) !important;
 	box-shadow: 0 0 5px rgba(0,0,0,0.4) !important;
 	border: 1px solid #000;
 }
@@ -1863,7 +1866,7 @@ input[type="range"]::-webkit-slider-thumb {
 
 #foe-helper-hud.hud-right {
 	right: 0;
-	top: 400px;
+	top: 420px;
 	width: 49px;
 	height: 270px;
 	border-radius: 4px 0 0 4px;
@@ -2157,6 +2160,11 @@ tr.sorter-header th:not(.no-sort).descending:after {
 		overflow: hidden
 	}
 	
+}
+@media (max-width: 1420px) {
+	#fp-bar {
+		left: 416px;
+	}
 }
 
 .unit_skill.rogue::before {background-position: calc(-144px*var(--unit_scale)) calc(-48px*var(--unit_scale))}

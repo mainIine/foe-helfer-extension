@@ -1,6 +1,6 @@
 [	
 	{
-		"udate": "ANniversary 2025 (16 February 2025)"
+		"udate": "Summer 2025 (23 April 2025)"
 	},
 	{
 		"groupname": "Events"
@@ -273,14 +273,14 @@
 	{
 		"name": "Winter_Train",
 		"buildings": [
-			{"first": "R_MultiAge_WinterBonus19a"}
+			{"first": "W_MultiAge_WIN19A1"}
 		],
 		"assets": [
-			"D_MultiAge_WinterBonus19Dining",
-			"D_MultiAge_WinterBonus19Freight",
-			"D_MultiAge_WinterBonus19Sleeping",
-			"D_MultiAge_WinterBonus21Parlor"
-		]
+			"W_MultiAge_WIN19B1",
+			"W_MultiAge_WIN19C1",
+			"W_MultiAge_WIN19D1",
+			"W_MultiAge_WIN21B1"
+			]
 	},
 	{
 		"name": "Confectionary",
@@ -511,13 +511,6 @@
 		]
 	},
 	{
-		"name": "Governors_Villa",
-		"link": "Governor%27s_Villa",
-		"buildings": [
-			{"first": "R_MultiAge_SummerBonus20a"}
-		]
-	},
-	{
 		"name": "Guard_Post",
 		"link": "Selection_Kit#Guard_Post_Selection_Kit",
 		"buildings": [
@@ -537,6 +530,36 @@
 		"name": "The_Ship",
 		"buildings": [
 			{"first": "R_MultiAge_SummerBonus18a"}
+		]
+	},
+	{
+		"name": "Governor%27s_Villa",
+		"buildings": [
+			{"first": "W_MultiAge_SUM20A1"}
+		]
+	},
+	{
+		"name": "Lagoon_Hideout",
+		"buildings": [
+			{"first": "W_MultiAge_SUM25A1"}
+		]
+	},
+	{
+		"name": "Captain%27s_Coconut_Paradise",
+		"buildings": [
+			{"first": "W_MultiAge_SUM25B1"}
+		]
+	},
+	{
+		"name": "Pirate%27s_Parrot_Perch",
+		"buildings": [
+			{"first": "W_MultiAge_SUM25C1"}
+		]
+	},
+	{
+		"name": "Siren%27s_Rock",
+		"buildings": [
+			{"first": "W_MultiAge_SUM25F1"}
 		]
 	},
 	{
@@ -718,6 +741,36 @@
 		"name": "Mortar_Garrison",
 		"buildings": [
 			{"first": "W_MultiAge_HERO24H1"}
+		]
+	},
+	{
+		"name": "Fjordstorm_Wharf",
+		"buildings": [
+			{"first": "W_MultiAge_HIS25A1"}
+		]
+	},
+	{
+		"name": "Emberfang_Totem",
+		"buildings": [
+			{"first": "W_MultiAge_HIS25B1"}
+		]
+	},
+	{
+		"name": "Skuddeholm_Stead",
+		"buildings": [
+			{"first": "W_MultiAge_HIS25C1"}
+		]
+	},
+	{
+		"name": "Berserkers_Aim",
+		"buildings": [
+			{"first": "W_MultiAge_HIS25F1"}
+		]
+	},
+	{
+		"name": "Oarcrest_Mill",
+		"buildings": [
+			{"first": "W_MultiAge_HIS25G1"}
 		]
 	},
 	{
@@ -1094,6 +1147,30 @@
 		"name": "Neo_Aviary",
 		"buildings": [
 			{"first": "W_MultiAge_GR25B1"}
+		]
+	},
+	{
+		"name": "Neo_Kiosk",
+		"buildings": [
+			{"first": "W_MultiAge_GR25E1"}
+		]
+	},
+ 		{
+		"name": "Neo_Magnum_Opus",
+		"buildings": [
+			{"first": "W_MultiAge_GR25F1"}
+		]
+	},
+	{
+		"name": "Neo_Shrine_of_Knowledge",
+		"buildings": [
+			{"first": "W_MultiAge_GR25G1"}
+		]
+	},
+	{
+		"name": "Neo_Obelisk",
+		"buildings": [
+			{"first": "W_MultiAge_GR25H1"}
 		]
 	},
 	{

@@ -512,7 +512,7 @@ let GuildFights = {
 				resize: true,
 				minimize: true,
 				settings: 'GuildFights.ShowLiveFightSettings()',
-			    active_maps:"gg"
+			    //active_maps:"gg"
 			});
 
 			// add css to the dom
