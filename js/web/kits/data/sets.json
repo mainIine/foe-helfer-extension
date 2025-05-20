@@ -273,14 +273,14 @@
 	{
 		"name": "Winter_Train",
 		"buildings": [
-			{"first": "R_MultiAge_WinterBonus19a"}
+			{"first": "W_MultiAge_WIN19A1"}
 		],
 		"assets": [
-			"D_MultiAge_WinterBonus19Dining",
-			"D_MultiAge_WinterBonus19Freight",
-			"D_MultiAge_WinterBonus19Sleeping",
-			"D_MultiAge_WinterBonus21Parlor"
-		]
+			"W_MultiAge_WIN19B1",
+			"W_MultiAge_WIN19C1",
+			"W_MultiAge_WIN19D1",
+			"W_MultiAge_WIN21B1"
+			]
 	},
 	{
 		"name": "Confectionary",
