@@ -986,6 +986,7 @@ FoEproxy.addHandler('all','all', (data, postData) => {
 		Negotiation.tempStore = data.responseData;
 		Negotiation.timeout = setTimeout(() => {
 			clearTimeout(Negotiation.timeout);
+			Negotiation.timeout=null;
 			Negotiation.StartNegotiation(/** @type {FoE_Class_NegotiationGame} **/ (Negotiation.tempStore) );
 			Negotiation.tempStore=null
 		}, 200);	
@@ -1001,6 +1002,7 @@ FoEproxy.addHandler('all','all', (data, postData) => {
 FoEproxy.addFoeHelperHandler('ResourcesUpdated', () => {
 	if (Negotiation.timeout) {
 		clearTimeout(Negotiation.timeout);
+		Negotiation.timeout=null;
 		Negotiation.StartNegotiation(/** @type {FoE_Class_NegotiationGame} **/ (Negotiation.tempStore) );
 		Negotiation.tempStore=null
 		return
