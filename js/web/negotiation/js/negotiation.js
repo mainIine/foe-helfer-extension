@@ -997,7 +997,12 @@ FoEproxy.addHandler('all','all', (data, postData) => {
 		Negotiation.SubmitTurn(/** @type {FoE_Class_NegotiationGameResult} **/ (data.responseData) );
 		return
 	}
-	if (!["RankingService","QuestService","ResourceService","TimeService", "MessageService", "WorldChallengeService", "AutoAidService", "TrackingService", "AnnouncementService","InventoryService"].includes(data.requestClass)) Negotiation.ExitNegotiation()
+	if (!(
+		["RankingService","QuestService","ResourceService","TimeService", "MessageService", "WorldChallengeService", "AutoAidService", "TrackingService", "AnnouncementService","InventoryService"].includes(data.requestClass) ||
+		data.requestMethod === 'markContributionNotificationsRead'
+	)) {
+		Negotiation.ExitNegotiation()
+	}
 });
 FoEproxy.addFoeHelperHandler('ResourcesUpdated', () => {
 	if (Negotiation.timeout) {
