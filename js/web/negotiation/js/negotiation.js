@@ -533,7 +533,6 @@ let Negotiation = {
 			Negotiation.TryCountIsGreaterThan5 = true;
 			Negotiation.TryCount = 5;
 		}
-		console.log(Negotiation.TryCount);
 
 		Negotiation.Guesses = [];
 		Negotiation.GuessesSuggestions = [];
