@@ -972,7 +972,9 @@ let Negotiation = {
 			// bereits geladen
 			return Promise.resolve(Negotiation.Tables[tableName]);
 		}
-	}
+	},
+	timeout:null,
+	tempStore:null,
 };
 
 // --------------------------------------------------------------------------------------------------
@@ -980,7 +982,13 @@ let Negotiation = {
 
 FoEproxy.addHandler('all','all', (data, postData) => {
 	if (data.requestMethod === "startNegotiation") {
-		Negotiation.StartNegotiation(/** @type {FoE_Class_NegotiationGame} **/ (data.responseData) );
+	
+		Negotiation.tempStore = data.responseData;
+		Negotiation.timeout = setTimeout(() => {
+			clearTimeout(Negotiation.timeout);
+			Negotiation.StartNegotiation(/** @type {FoE_Class_NegotiationGame} **/ (Negotiation.tempStore) );
+			Negotiation.tempStore=null
+		}, 200);	
 		return
 	}
 	if ($('#negotiationBox').length == 0) return
@@ -990,7 +998,14 @@ FoEproxy.addHandler('all','all', (data, postData) => {
 	}
 	if (!["RankingService","QuestService","ResourceService","TimeService", "MessageService", "WorldChallengeService", "AutoAidService", "TrackingService", "AnnouncementService","InventoryService"].includes(data.requestClass)) Negotiation.ExitNegotiation()
 });
-
+FoEproxy.addFoeHelperHandler('ResourcesUpdated', () => {
+	if (Negotiation.timeout) {
+		clearTimeout(Negotiation.timeout);
+		Negotiation.StartNegotiation(/** @type {FoE_Class_NegotiationGame} **/ (Negotiation.tempStore) );
+		Negotiation.tempStore=null
+		return
+	}	
+});
 // --------------------------------------------------------------------------------------------------
 // Negotiation DEBUGGER
 
