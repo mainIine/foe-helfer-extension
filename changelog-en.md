@@ -1,5 +1,11 @@
 ## Changelog - Extension
 
+##### 3.11.3.0
+
+**Update**
+- Negotiation assistant
+	- adatapted to changed server transmission schedule
+
 ##### 3.11.2.0
 
 **Removed**

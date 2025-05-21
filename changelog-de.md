@@ -1,5 +1,11 @@
 ## Changelog - Extension
 
+##### 3.11.3.0
+
+**Update**
+- Verhandlungsassistent
+	- angepasst an veränderte Datenübertragung
+
 ##### 3.11.2.0
 
 **Entfernt**
