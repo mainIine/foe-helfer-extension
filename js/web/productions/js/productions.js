@@ -109,7 +109,7 @@ let Productions = {
 				'goods-current': {order:27,perTile:5,active:true},
 				'goods-next': {order:28,perTile:3,active:false},
 				'fsp': {order:29,perTile:1,active:true},
-				'guild_raids_action_points_collection': {order:29,perTile:4,active:true},
+				'guild_raids_action_points_collection': {order:29,perTile:6,active:true},
 			}, overwrite || JSON.parse(localStorage.getItem('Productions.Rating.Data')||"{}"))
 			Productions.Rating.Types = Object.keys(Productions.Rating.Data).sort((a,b)=>Productions.Rating.Data[a].order-Productions.Rating.Data[b].order)
 			
@@ -1787,7 +1787,7 @@ let Productions = {
 
 						let roundingFactor = building.rating[firstType+'-tile'] > 100 || building.rating[firstType+'-tile'] < -100 ? 1 : 100
 						let roundingFactor2 = building.rating[secondType+'-tile'] > 100 || building.rating[secondType+'-tile'] < -100 ? 1 : 100
-						let tileValue = Math.round(((building.rating[firstType+'-tile'] * roundingFactor) / roundingFactor + (Math.round(building.rating[secondType+'-tile'] * roundingFactor2) / roundingFactor2)) / 2)
+						let tileValue = Math.round(((building.rating[firstType+'-tile'] * roundingFactor) / roundingFactor + (Math.round(building.rating[secondType+'-tile'] * roundingFactor2) / roundingFactor2)) / 2 * 10) / 10
 						h.push(`<td class="text-right tilevalue" data-number="${tileValue}">`)
 						h.push(HTML.Format(tileValue))
 						h.push('</td>')
@@ -2023,7 +2023,7 @@ let Productions = {
 					let feature = type.split('-')[1]
 					let bType = boost.type.find(x => x == type.split('-')[0])
 					if (bType !== undefined && feature == boost.feature) {
-						bsum+=boost.value		
+						bsum+=boost.value
 					}
 				}
 				return bsum
