@@ -713,7 +713,7 @@ let Tooltips = {
             if (costs !="") out+=`<tr><th>${i18n("Boxes.Tooltip.Building.costs")}</th></tr><tr><td class="multiCol">`+costs+`</td></tr>`
             
             out+=`<tr><th>${i18n("Boxes.Tooltip.Building.size+time")}</th></tr>`
-            out+=`<tr><td class="multiCol"><div>${srcLinks.icons("size")} ${meta.width+"x"+meta.length}</div>`
+            out+=`<tr><td class="multiCol"><div>${srcLinks.icons("size")} ${meta.length+"x"+meta.width}</div>`
             out+=meta.construction_time?`<div>${srcLinks.icons("icon_time")}${formatTime(meta.construction_time)}</div>`:``
             if (meta.requirements?.street_connection_level == 2)
                 out+=`<div>${srcLinks.icons("street_required")} ${i18n("Boxes.Tooltip.Building.road2")}</div>`
