@@ -340,16 +340,16 @@
 }
 
 /* mark old buildings*/
-#grid-outer span.older-1.diagonal {
+#grid-outer span.older-1.diagonal, span.older-1.diagonal {
 	background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, rgb(128, 152, 93) 2px, rgb(128, 152, 93) 7px)
 }
-#grid-outer span.older-2.diagonal {
+#grid-outer span.older-2.diagonal, span.older-2.diagonal {
 	background-image: repeating-linear-gradient(317deg, transparent, transparent 5px, rgb(133, 95, 14) 2px, rgb(133, 95, 14) 7px)
 }
-#grid-outer span.older-3.diagonal {
+#grid-outer span.older-3.diagonal, span.older-3.diagonal {
 	background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, rgb(165, 74, 62) 2px, rgb(165, 74, 62) 7px);
 }
-#grid-outer span.to-old.diagonal {
+#grid-outer span.to-old.diagonal, span.to-old.diagonal {
 	background-image: repeating-linear-gradient(202deg, transparent, transparent 5px, rgb(171, 26, 13) 2px, rgb(171, 26, 13) 7px)
 }
 #grid-outer span.noStreet.highlight {
