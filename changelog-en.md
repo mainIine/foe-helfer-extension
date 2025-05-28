@@ -4,7 +4,7 @@
 
 **Update**
 - Negotiation assistant
-	- adatapted to changed server transmission schedule
+	- adapted to the changed server transmission schedule
 
 ##### 3.11.2.0
 
