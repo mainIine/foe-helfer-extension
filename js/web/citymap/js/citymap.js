@@ -953,8 +953,9 @@ let CityMap = {
 
 	filterBuildings: (string) => {
 		spans = $('span.entity');
+		if (/[0-9]+x[0-9]*/.test(string)) string = ","+string
 		for (sp of spans) {
-			let title = $(sp).attr('data-title') +", "+ $(sp).attr('data-size');
+			let title = $(sp).attr('data-title') +","+ $(sp).attr('data-size');
 			if ((string != "") && (title.substr(0,title.toLowerCase().indexOf(string.toLowerCase()) > -1))) {
 				$(sp).addClass('highlighted');
 			} else {
