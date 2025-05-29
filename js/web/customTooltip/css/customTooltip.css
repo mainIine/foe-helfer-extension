@@ -71,10 +71,22 @@
 }
 .HXBuilding .inhabitant {
     max-width: unset;
+    max-height: unset;
     position: absolute;
     right: 320px;
     bottom: 10px;
     background: #a4a45d;
+}
+.HXBuilding .inhabitant {
+    max-width: unset;
+    max-height: unset;
+    position: absolute;
+    right: 320px;
+    bottom: 10px;
+    background: #a4a45d;
+}
+td:nth-child(3) .HXBuilding .inhabitant {
+    display: none;
 }
 .HXBuilding td:has(.inhabitant) {
     position: relative;
