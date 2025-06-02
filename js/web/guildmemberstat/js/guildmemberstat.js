@@ -46,6 +46,20 @@ FoEproxy.addHandler('ClanService', 'getTreasury', (data, postData) => {
 		}
 	}
 });
+FoEproxy.addHandler('ClanService', 'getTreasuryBag', (data, postData) => {
+	if (data.responseData?.type?.value && data.responseData?.type?.value != 'ClanMain') return; // for now ignore all other source types
+	let requestMethod = postData[0]['requestMethod'];
+	if (requestMethod === 'getTreasury')
+	{
+		let Goods = data.responseData.resources;
+
+		if (Goods !== undefined)
+		{
+			GuildMemberStat.setEraGoods(Goods);
+		}
+	}
+});
+
 
 // Forum Activity 
 FoEproxy.addHandler('ConversationService', 'getConversation', (data, postData) => {
