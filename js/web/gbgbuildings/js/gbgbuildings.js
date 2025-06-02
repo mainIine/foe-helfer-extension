@@ -52,6 +52,18 @@ FoEproxy.addHandler('ClanService', 'getTreasury', (data, postData) => {
 		GBGBuildings.clearTO("T")
 	}, 350);
 });
+FoEproxy.addHandler('ClanService', 'getTreasuryBag', (data, postData) => {
+	if (data.responseData?.type?.value && data.responseData?.type?.value != 'ClanMain') return; // for now ignore all other source types
+	if (data.responseData.resources) GBGBuildings.treasury = data.responseData.resources
+	if (GBGBuildings.Timeout.B) {
+		GBGBuildings.calc()
+		return
+	}
+	
+	GBGBuildings.Timeout.T = setTimeout(() => {
+		GBGBuildings.clearTO("T")
+	}, 350);
+});
 
 let GBGBuildings = {
 	oldGBG:true,
