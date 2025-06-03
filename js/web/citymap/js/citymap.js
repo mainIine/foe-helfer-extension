@@ -616,6 +616,7 @@ let CityMap = {
 			})
 				.attr('data-callback_tt','Tooltips.buildingTT')
 				.attr('data-era', building.eraName)
+				.attr('data-size', building.size.length + 'x' + building.size.width)
 				.attr('data-id', building.id)
 				.attr('data-title', building.name)
 				.attr('data-meta_id',building.entityId);
@@ -952,8 +953,9 @@ let CityMap = {
 
 	filterBuildings: (string) => {
 		spans = $('span.entity');
+		if (/[0-9]+x[0-9]*/.test(string)) string = ","+string
 		for (sp of spans) {
-			let title = $(sp).attr('data-title');
+			let title = $(sp).attr('data-title') +","+ $(sp).attr('data-size');
 			if ((string != "") && (title.substr(0,title.toLowerCase().indexOf(string.toLowerCase()) > -1))) {
 				$(sp).addClass('highlighted');
 			} else {
