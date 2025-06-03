@@ -51,7 +51,7 @@ FoEproxy.addHandler('ClanService', 'getTreasuryBag', (data, postData) => {
 	let requestMethod = postData[0]['requestMethod'];
 	if (requestMethod === 'getTreasury')
 	{
-		let Goods = data.responseData.resources;
+		let Goods = data.responseData.resources.resources;
 
 		if (Goods !== undefined)
 		{

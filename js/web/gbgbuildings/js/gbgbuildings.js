@@ -54,7 +54,7 @@ FoEproxy.addHandler('ClanService', 'getTreasury', (data, postData) => {
 });
 FoEproxy.addHandler('ClanService', 'getTreasuryBag', (data, postData) => {
 	if (data.responseData?.type?.value && data.responseData?.type?.value != 'ClanMain') return; // for now ignore all other source types
-	if (data.responseData.resources) GBGBuildings.treasury = data.responseData.resources
+	if (data.responseData.resources) GBGBuildings.treasury = data.responseData.resources.resources
 	if (GBGBuildings.Timeout.B) {
 		GBGBuildings.calc()
 		return

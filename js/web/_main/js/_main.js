@@ -817,10 +817,17 @@ GetFights = () =>{
 
 	// player goods
 	FoEproxy.addHandler('ResourceService', 'getPlayerResources', (data, postData) => {
-		MainParser.readPlayerResources(data);
+		ResourceStock = data.responseData.resources; // Lagerbestand immer aktualisieren. Betrifft auch andere Module wie Technologies oder Negotiation
+		Outposts.CollectResources();
+		FoEproxy.triggerFoeHelperHandler('ResourcesUpdated')
+		Castle.UpdateCastlePoints(data['requestId']);
 	});
 	FoEproxy.addHandler('ResourceService', 'getPlayerResourceBag', (data, postData) => {
-		MainParser.readPlayerResources(data);
+		if (data.responseData?.type?.value && data.responseData?.type?.value != 'PlayerMain') return; // for now ignore all other source types
+		ResourceStock = data.responseData.resources.resources; // Lagerbestand immer aktualisieren. Betrifft auch andere Module wie Technologies oder Negotiation
+		Outposts.CollectResources();
+		FoEproxy.triggerFoeHelperHandler('ResourcesUpdated')
+		Castle.UpdateCastlePoints(data['requestId']);
 	});
 
 
@@ -1012,14 +1019,6 @@ let MainParser = {
 
 		localStorage.setItem('LastStartedVersion', extVersion);
 		localStorage.setItem('LastAgreedVersion', extVersion); //Comment out this line if you have something the player must agree on
-	},
-
-	readPlayerResources: (data) => {
-		if (data.responseData?.type?.value && data.responseData?.type?.value != 'PlayerMain') return; // for now ignore all other source types
-		ResourceStock = data.responseData.resources; // Lagerbestand immer aktualisieren. Betrifft auch andere Module wie Technologies oder Negotiation
-		Outposts.CollectResources();
-		FoEproxy.triggerFoeHelperHandler('ResourcesUpdated')
-		Castle.UpdateCastlePoints(data['requestId']);
 	},
 
 	/**
