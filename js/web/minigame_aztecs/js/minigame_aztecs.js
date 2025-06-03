@@ -546,11 +546,10 @@ let AztecsHelper = {
             AztecsHelper.boughtSomething = false;
         }
 
-        const r = data.responseData;
-        if (!r.resources) {
-            return;
-        }
-        AztecsHelper.MovesLeft = r.resources.aztecs_collecting_minigame_turns || 0;
+        const r = data?.responseData?.resources?.resources || data?.responseData?.resources
+        if (!r) return
+        
+        AztecsHelper.MovesLeft = r.aztecs_collecting_minigame_turns || 0;
 
         if(AztecsHelper.boughtSomething && AztecsHelper.MovesLeft > 0){
             AztecsHelper.boughtSomething = false;
