@@ -1,5 +1,10 @@
 ## Changelog - Extension
 
+##### 3.11.4.0
+
+**Update**
+- Resource Management adapted to changed server transmission
+
 ##### 3.11.3.0
 
 **Update**
