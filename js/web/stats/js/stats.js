@@ -169,6 +169,25 @@ FoEproxy.addHandler('ResourceService', 'getPlayerResources', async (data, postDa
 
 	StockAlarm.checkResources();
 });
+FoEproxy.addHandler('ResourceService', 'getPlayerResourceBag', async (data, postData) => {
+	if (data.responseData?.type?.value && data.responseData?.type?.value != 'PlayerMain') return; // for now ignore all other source types
+	const r = data.responseData?.resources?.resources || data.responseData?.resources;
+	if (!r) return;
+	
+	await IndexDB.getDB();
+
+    await IndexDB.db.statsTreasurePlayerD.put({
+		date: moment().startOf('day').toDate(),
+		resources: r
+	});
+
+	await IndexDB.db.statsTreasurePlayerH.put({
+		date: moment().startOf('hour').toDate(),
+		resources: r
+	});
+
+	StockAlarm.checkResources();
+});
 
 // Clan Treasure log
 FoEproxy.addHandler('ClanService', 'getTreasury', async (data, postData) => {
@@ -189,6 +208,28 @@ FoEproxy.addHandler('ClanService', 'getTreasury', async (data, postData) => {
 		date: moment().startOf('hour').toDate(),
 		clanId: ExtGuildID,
 		resources: r.resources
+	});
+	
+	StockAlarm.checkTreasury();
+});
+
+FoEproxy.addHandler('ClanService', 'getTreasuryBag', async (data, postData) => {
+	if (data.responseData?.type?.value && data.responseData?.type?.value != 'ClanMain') return; // for now ignore all other source types
+	const r = data.responseData?.resources?.resources || data.responseData?.resources;
+	if (!r) return;
+	
+    await IndexDB.getDB();
+
+	await IndexDB.db.statsTreasureClanD.put({
+		date: moment().startOf('day').toDate(),
+		clanId: ExtGuildID,
+		resources: r
+	});
+
+	await IndexDB.db.statsTreasureClanH.put({
+		date: moment().startOf('hour').toDate(),
+		clanId: ExtGuildID,
+		resources: r
 	});
 	
 	StockAlarm.checkTreasury();

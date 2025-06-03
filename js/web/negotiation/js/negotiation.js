@@ -997,7 +997,7 @@ FoEproxy.addHandler('all','all', (data, postData) => {
 		return
 	}
 	if (!(
-		["RankingService","QuestService","ResourceService","TimeService", "MessageService", "WorldChallengeService", "AutoAidService", "TrackingService", "AnnouncementService","InventoryService"].includes(data.requestClass) ||
+		["RankingService","QuestService","ResourceService","ResourceShopService","TimeService", "MessageService", "WorldChallengeService", "AutoAidService", "TrackingService", "AnnouncementService","InventoryService"].includes(data.requestClass) ||
 		data.requestMethod === 'markContributionNotificationsRead'
 	)) {
 		Negotiation.ExitNegotiation()
