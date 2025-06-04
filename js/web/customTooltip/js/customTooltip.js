@@ -246,6 +246,12 @@ let Tooltips = {
                 if (a.__class__=="AffectsEnvironmentAbility" && a.action?.type=="add_unique_inhabitant") 
                     traits += `<tr><td><img class="inhabitant" src="${srcLinks.get(`/city/inhabitants/${a.action.animationId}/${a.action.animationId}_south_00.png`,true)}">◄ ${i18n("Boxes.Tooltip.Building.addInhabitant")} (${capFirsts(a.action.animationId)})</td></tr>`
             }
+            if (levels?.AllAge?.environmentEffect?.effects) {
+                for (let e of levels?.AllAge?.environmentEffect?.effects||[]) {
+                    if (e.type == "add_unique_inhabitant") 
+                        traits += `<tr><td><img class="inhabitant" src="${srcLinks.get(`/city/inhabitants/${e.name}/${e.name}_south_00.png`,true)}">◄ ${i18n("Boxes.Tooltip.Building.addInhabitant")} (${capFirsts(e.name)})</td></tr>`
+                }
+            }
             if (levels?.AllAge?.cityLimit) {
                 traits+=`<tr><td>${srcLinks.icons("icon_unique_building")}${i18n("Boxes.Tooltip.Building.isUnique")}</td></tr>`
             }
