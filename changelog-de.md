@@ -1,5 +1,15 @@
 ## Changelog - Extension
 
+##### 3.11.5.0
+
+**Update**
+- Manifest Datei korrigiert
+
+- Gildenkasse
+  - Schreibfehler behoben
+
+---
+
 ##### 3.11.4.0
 
 **Update**
