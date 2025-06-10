@@ -47,9 +47,9 @@ FoEproxy.addHandler('ClanService', 'getTreasury', (data, postData) => {
 	}
 });
 FoEproxy.addHandler('ClanService', 'getTreasuryBag', (data, postData) => {
-	if (data.responseData?.type?.value && data.responseData?.type?.value != 'ClanMain') return; // for now ignore all other source types
+	if (data.responseData?.type?.value && data.responseData?.type?.value !== 'ClanMain') return; // for now ignore all other source types
 	let requestMethod = postData[0]['requestMethod'];
-	if (requestMethod === 'getTreasury')
+	if (requestMethod === 'getTreasuryBag')
 	{
 		let Goods = data.responseData.resources.resources;
 
