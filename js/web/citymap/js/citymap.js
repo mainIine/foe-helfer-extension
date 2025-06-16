@@ -864,6 +864,7 @@ let CityMap = {
 				entities: MainParser.CityMapData,
 				areas: CityMap.UnlockedAreas,
 				blockedAreas: CityMap.BlockedAreas,
+				goods: GoodsData,
 				metaIDs: {
 					entity: MainParser.MetaIds['city_entities'],
 					set: MainParser.MetaIds['building_sets'],
