@@ -1210,7 +1210,7 @@ let Parts = {
 
 		if (Parts.CopyIncludeLevelString) Ret.push(i18n('Boxes.OwnpartCalculator.OptionsLevelUp'));
 
-		if (Parts.CopyIncludeLevel) Ret.push(Level + '->' + (Level + 1));
+		if (Parts.CopyIncludeLevel) Ret.push(Level + '→' + (Level + 1));
 
 		let NoPlacesSelected = true;
 		for (let i = 0; i < 5; i++) {
