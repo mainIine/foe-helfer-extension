@@ -218,11 +218,11 @@ let Tooltips = {
                 ifMot = `<span class="ifMot">${srcLinks.icons("when_motivated")}</span>`
 
             if (levels?.AllAge?.socialInteraction?.interactionType) {
-                if (levels?.AllAge?.socialInteraction?.interactionType == "motivate") {
+                if (levels?.AllAge?.socialInteraction?.interactionType === "motivate") {
                     motMod = `<span class="ifMot">${srcLinks.icons("reward_x2")+i18n("Boxes.Tooltip.Building.when")+srcLinks.icons("when_motivated")}</span>`
                     traits+=`<tr><td><span style="width:24px; margin-right:3px; text-align:center">${srcLinks.icons("when_motivated")}</span>${i18n("Boxes.Tooltip.Building.canMotivate")}</td></tr>`
                 }
-                else if (levels?.AllAge?.socialInteraction?.interactionType == "polish") {
+                else if (levels?.AllAge?.socialInteraction?.interactionType === "polish") {
                     polMod = `<span class="ifMot">${srcLinks.icons("reward_x2")+"when"+srcLinks.icons("when_motivated")}</span>`
                     traits+=`<tr><td><span style="width:24px; margin-right:3px; text-align:center">${srcLinks.icons("when_motivated")}</span>${i18n("Boxes.Tooltip.Building.canPolish")}</td></tr>`
                 }
@@ -235,20 +235,20 @@ let Tooltips = {
             }
             //Traits
             for (let a of meta.abilities||[]) {
-                if (a.__class__=="BuildingPlacementAbility") {
-                    if (a.gridId == "cultural_outpost") {
+                if (a.__class__==="BuildingPlacementAbility") {
+                    if (a.gridId === "cultural_outpost") {
                         era=`<img src=${srcLinks.get(`/outpost/gui/${a.content}/shared/reward_chest_badge_${a.content}.png`,true)}> ${capFirsts(a.content)}`
                     }
-                    if (a.gridId == "era_outpost") {
+                    if (a.gridId === "era_outpost") {
                         era=`<img src=${srcLinks.get(`/shared/icons/achievements/achievement_icons_space_age_${a.content}.png`,true)}> ${capFirsts(a.content)}`
                     }
                 }
-                if (a.__class__=="AffectsEnvironmentAbility" && a.action?.type=="add_unique_inhabitant") 
+                if (a.__class__==="AffectsEnvironmentAbility" && a.action?.type==="add_unique_inhabitant")
                     traits += `<tr><td><img class="inhabitant" src="${srcLinks.get(`/city/inhabitants/${a.action.animationId}/${a.action.animationId}_south_00.png`,true)}">◄ ${i18n("Boxes.Tooltip.Building.addInhabitant")} (${capFirsts(a.action.animationId)})</td></tr>`
             }
             if (levels?.AllAge?.environmentEffect?.effects) {
                 for (let e of levels?.AllAge?.environmentEffect?.effects||[]) {
-                    if (e.type == "add_unique_inhabitant") 
+                    if (e.type === "add_unique_inhabitant")
                         traits += `<tr><td><img class="inhabitant" src="${srcLinks.get(`/city/inhabitants/${e.name}/${e.name}_south_00.png`,true)}">◄ ${i18n("Boxes.Tooltip.Building.addInhabitant")} (${capFirsts(e.name)})</td></tr>`
                 }
             }
@@ -260,7 +260,7 @@ let Tooltips = {
                 let allydata = null
                 for (a of allies||[]) {
                     allydata = MainParser.Allies.getAllieData(a)
-                    if (r.allyType == allydata.type && (!r.rarity?.value || r.rarity?.value == allydata.rarity)) break
+                    if (r.allyType === allydata.type && (!r.rarity?.value || r.rarity?.value === allydata.rarity)) break
                     allydata = null
                 }
                 ally += `<tr><td>${srcLinks.icons("historical_allies_slot_tooltip_icon_" + (allydata ? "full" :"empty"))}<div>${MainParser.Allies.types[r.allyType]?.name + (r.rarity?.value ? (" ("+i18n("Boxes.Productions.AllyRarity."+r.rarity?.value)+")"):"")}`
@@ -748,7 +748,7 @@ FoEproxy.addHandler('ResourceService', 'getPlayerAutoRefills', (data, postData) 
 });
 
 FoEproxy.addFoeHelperHandler('ActiveMapUpdated',()=>{
-	if (ActiveMap=="guild_raids") {
+	if (ActiveMap==="guild_raids") {
 		$('#QIActions').show();
 	} else {
 		$('#QIActions').hide();
@@ -803,7 +803,7 @@ FoEproxy.addHandler('RewardService', 'collectReward', async (data, postData) => 
 	if (!Settings.GetSetting("ShowGBGRewards")) return
     if (!Array.isArray(data.responseData)) return
 	var [rewards, rewardIncidentSource] = data.responseData; 
-    if (rewardIncidentSource!="battlegrounds_conquest" && rewardIncidentSource!="guild_expedition_reward_notification") return
+    if (rewardIncidentSource!=="battlegrounds_conquest" && rewardIncidentSource!=="guild_expedition_reward_notification") return
     
     for (let reward of rewards) {
         let rew = Tooltips.genericEval(reward);

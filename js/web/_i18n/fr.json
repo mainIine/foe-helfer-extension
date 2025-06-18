@@ -1406,7 +1406,7 @@
     "Settings.About.Title": "À propos de FoE Helper",
     "Settings.About.TranslateDesc": "Aider à traduire l'extension en vous inscrivant à notre outil de traduction : ",
     "Settings.About.TranslateTitle": "Traduction",
-    "Settings.ApiToken.Desc": "Pour pouvoir transférer des données pour un monde comme une ville ou des notes, vous avez besoin d'un jeton pour chaque monde.<br>Cliquez ici pour obtenir des instructions : <a target='_blank' href='https://docs.foe-helper. com/francais/api-token'>Jeton API</a>",
+    "Settings.ApiToken.Desc": "Pour pouvoir transférer des données pour un monde comme une ville ou des notes, vous avez besoin d'un jeton pour chaque monde.<br>Cliquez ici pour obtenir des instructions : <a target='_blank' href='https://docs.foe-helper.com/francais/api-token'>Jeton API</a>",
     "Settings.ApiToken.Title": "Site Web Jeton API",
     "Settings.ApiTokenUrl": "https://docs.foe-helper. com/francais/api-token",
     "Settings.Auctions.Button": "Paramètres des enchères",

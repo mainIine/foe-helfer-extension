@@ -46,7 +46,7 @@ let Negotiation = {
 	TryCountIsGreaterThan5: /** @type {boolean} */ false,
 	GoodCount: /** @type {undefined|number} */ undefined,
 	CurrentTable: /** @type {undefined|Negotiation_GuessTable} */ undefined,
-	// Mapt die zuweisung von der Tabellen-Spalte zu den Verhandlungspartnern
+	// Mapt die Zuweisung von der Tabellen-Spalte zu den Verhandlungspartnern
 	PlaceMutation: /** @type {number[]} */ ([]),
 	// Reihenfolgen-Liste der Güter für die Verhandlung
 	GoodsOrdered: /** @type {Negotiation_GoodData[]} */ ([]),
