@@ -17,28 +17,10 @@ FoEproxy.addHandler('CollectingMinigameService', 'start', (data, postData) => {
     if (r.context !== "merchant") {
         return;
     }
-
-    if ($('#minigame_aztecs-Btn').hasClass('hud-btn-red')) {
-        $('#minigame_aztecs-Btn').removeClass('hud-btn-red');
-        $('#minigame_aztecs-Btn-closed').remove();
-    }
-    AztecsHelper.mapHeight = r.height;
-    AztecsHelper.mapWidth = r.width;
-    AztecsHelper.boughtSomething = false;
-    let arr = new Array(AztecsHelper.mapHeight);
-    for (var i = 0; i < AztecsHelper.mapHeight; i++) {
-        arr[i] = new Array(AztecsHelper.mapWidth);
-        for (let j = 0; j < arr[i].length; j++) {
-            arr[i][j] = {content: AztecsHelper.unknownCell, prob: 0};
-        }
-    }
-    AztecsHelper.grid = arr;
-    if (r.reward.resources === undefined || Object.values(r.reward.resources) <= 0) return;
-    AztecsHelper.ResourcesLeft = Object.values(r.reward.resources)[0];
-    if (Settings.GetSetting('ShowAztecHelper')){
-        AztecsHelper.Show();
-        AztecsHelper.CalcBody();
-    }
+    AztecsHelper.startData = r;
+    AztecsHelper.timeout = setTimeout(() => {
+        AztecsHelper.start()
+    }, 200);
 });
 
 FoEproxy.addHandler('CollectingMinigameService', 'submitMove', (data, postData) => {
@@ -112,9 +94,15 @@ FoEproxy.addHandler('ResourceShopService', 'buyResources', (data, postData) => {
 
 FoEproxy.addHandler('ResourceService', 'getPlayerResources', (data, postData) => {
     AztecsHelper.processResources(data,postData);
+    if (AztecsHelper.timeout !== null) {
+        AztecsHelper.start()
+    }
 });
 FoEproxy.addHandler('ResourceService', 'getPlayerResourceBag', (data, postData) => {
     AztecsHelper.processResources(data,postData);
+    if (AztecsHelper.timeout !== null) {
+        AztecsHelper.start()
+    }
 });
 
 
@@ -135,6 +123,37 @@ let AztecsHelper = {
     mapWidth: 0,
 
     grid: [],
+    timeout: null,
+    startData: null,
+    start: () => {
+        let r = AztecsHelper.startData;
+        if (AztecsHelper.timeout !== null) {
+            clearTimeout(AztecsHelper.timeout);
+            AztecsHelper.timeout = null;
+        }
+        if ($('#minigame_aztecs-Btn').hasClass('hud-btn-red')) {
+            $('#minigame_aztecs-Btn').removeClass('hud-btn-red');
+            $('#minigame_aztecs-Btn-closed').remove();
+        }
+        AztecsHelper.mapHeight = r.height;
+        AztecsHelper.mapWidth = r.width;
+        AztecsHelper.boughtSomething = false;
+        let arr = new Array(AztecsHelper.mapHeight);
+        for (var i = 0; i < AztecsHelper.mapHeight; i++) {
+            arr[i] = new Array(AztecsHelper.mapWidth);
+            for (let j = 0; j < arr[i].length; j++) {
+                arr[i][j] = {content: AztecsHelper.unknownCell, prob: 0};
+            }
+        }
+        AztecsHelper.grid = arr;
+        if (r.reward.resources === undefined || Object.values(r.reward.resources) <= 0) return;
+        AztecsHelper.ResourcesLeft = Object.values(r.reward.resources)[0];
+        if (Settings.GetSetting('ShowAztecHelper')){
+            AztecsHelper.Show();
+            AztecsHelper.CalcBody();
+        }
+    },
+
 
     Show: () => {
         if ($('#aztecsHelper').length === 0) {
@@ -566,6 +585,5 @@ let AztecsHelper = {
             HTML.CloseOpenBox('aztecsHelper');
         }
     }
-
 
 };
