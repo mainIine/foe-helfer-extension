@@ -161,7 +161,7 @@ let Kits = {
 		
 		for (let k in MainParser.SelectionKits) {
 			if (!MainParser.SelectionKits.hasOwnProperty(k)) continue;
-			for (o of MainParser.SelectionKits[k].eraOptions.BronzeAge.options) {
+			for (o of MainParser.SelectionKits[k].options || MainParser.SelectionKits[k].eraOptions.BronzeAge.options) {
 				if (!["BuildingItemPayload","UpgradeKitPayload"].includes(o.item.__class__)) continue;
 				let id = o.item.upgradeItemId||o.item.selectionKitId||o.item.cityEntityId;
 				if (!selectionKits[id]) selectionKits[id] = [];
@@ -174,7 +174,7 @@ let Kits = {
 				if (r.type=="set") {
 					addItems (r.rewards,idx)
 				} else if (r.subType == "selection_kit") {
-					for (o of MainParser.SelectionKits[r.id].eraOptions.BronzeAge.options) {
+					for (o of MainParser.SelectionKits[r.id].options||MainParser.SelectionKits[r.id].eraOptions.BronzeAge.options) {
 						if (!["BuildingItemPayload","UpgradeKitPayload"].includes(o.item.__class__)) continue;
 						let id = o.item.upgradeItemId||o.item.selectionKitId||o.item.cityEntityId;
 						if (!selectionKits[id]) selectionKits[id] = [];
@@ -718,14 +718,14 @@ let Kits = {
 	//UpgradeTiers:["ascended|refined","platinum","gold","silver","upgrade"],
 
 	CreateUpgradeSchemes:()=> {
-	/*	Kits.UpgradeSchemes = {
+		/*Kits.UpgradeSchemes = {
 			buildingFamilies:null,
 			buildings:null,
 			selectionOptions:null,
 		};
-		let sO = Kits.UpgradeSchemes.sOptions={}
-		for (let s in Object.values(MainParser.selectionKits)) {
-			for (let c of s.eraOptions[CurrentEra]) {
+		let sO = Kits.UpgradeSchemes.selectionOptions={}
+		for (let s of Object.values(MainParser.SelectionKits)) {
+			for (let c of s.options || s.eraOptions[CurrentEra].options) {
 				if (!sO[c.item.cityEntityId||c.item.upgradeItemId]) {
 					sO[c.item.cityEntityId||c.item.upgradeItemId] = [s.selectionKitId]
 				} else {
