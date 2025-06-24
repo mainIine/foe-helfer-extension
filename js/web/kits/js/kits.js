@@ -204,7 +204,9 @@ let Kits = {
 			let upgradeList = [u.upgradeItem.id];
 			let buildingList=[];
 			let sK=[]
-			let upgradeCount=JSON.parse(`{"${u.upgradeItem.id.includes("ascended")?"ascended" : u.upgradeItem.id.split("_")[0]}":${u.upgradeSteps.length-1}}`)
+			us=u.upgradeItem.id.split("_")
+			upgradeType = us.includes("gold") ? "golden" : us.includes("silver") ? "silver" : us.includes("ascended") ? "ascended" : us[0];	
+			let upgradeCount=JSON.parse(`{"${upgradeType}":${u.upgradeSteps.length-1}}`)
 			for (let i = 1;i<u.upgradeSteps.length;i++) {
 				for (b of u.upgradeSteps[i].buildingIds) {
 					buildingList.push(b)
