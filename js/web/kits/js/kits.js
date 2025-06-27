@@ -717,10 +717,230 @@ let Kits = {
 	},
 
 	UpgradeSchemes:null,
+	selectionOptions:null,
 
-	CreateUpgradeSchemes:()=> {
+	CreateUpgradeSchemes: ()=> {
+		let sO = {}
+		for (let s of Object.values(MainParser.SelectionKits)) {
+			for (let c of s.options || s.eraOptions[CurrentEra].options) {
+				id = (c.item.cityEntityId||c.item.upgradeItemId)
+				if (!id)
+					continue
+				if (!sO[id]) {
+					sO[id] = [s.selectionKitId]
+				} else {
+					sO[id].push(s.selectionKitId)
+				}
+			}			
+		}
+
+		let endBuildings = {}
+		let startBuildings = {}
 		
+		for (let upgrade of Object.values(MainParser.BuildingUpgrades)) {
+			let upgradeId= upgrade.upgradeItem.id;
+			let buildingList = upgrade.upgradeSteps.map(x => x.buildingIds)
+			let finalBuildings = buildingList.pop()
+			buildingList = buildingList.flat().map(x => ({buildingId: x, upgradeId: upgradeId}));
+			
+			if (endBuildings[buildingList[0].buildingId]) {
+				let buffer=buildingList[0].buildingId
+				buildingList.unshift(...endBuildings[buffer]);
+				delete endBuildings[buffer];
+				delete startBuildings[buildingList[0].buildingId];
+			}
+			for (let endBuilding of finalBuildings) {
+				if (startBuildings[endBuilding]) {
+					endBuildings[startBuildings[endBuilding]].unshift(...buildingList)
+					startBuildings[buildingList[0].buildingId] = startBuildings[endBuilding];
+					delete startBuildings[endBuilding];
+				}
+				else {
+					startBuildings[buildingList[0].buildingId] = endBuilding;
+					endBuildings[endBuilding] = buildingList;
+				} 
+			}
+		}
+		let schemes={}
+		for (let [endBuilding,buildingList] of Object.entries(endBuildings)) {
+			let upgrades={}
+			for (b of buildingList) {
+				if (!upgrades[b.upgradeId]) {
+					upgrades[b.upgradeId] = 1
+				} else {
+					upgrades[b.upgradeId]++
+				}
+			}
+			schemes[endBuilding] = {
+				upgrades: upgrades,
+				upgradeSteps: buildingList
+			}	
+		}
+		Kits.UpgradeSchemes = schemes
+		Kits.selectionOptions = sO
 	},
+	BuildingsFromInventory: () =>{
+		let output = {}
+
+
+		let upgradeBuildings = Object.keys(Kits.UpgradeSchemes);
+		upgradeBuildings.push(...(Object.values(Kits.UpgradeSchemes)).map(x => x.upgradeSteps.map(y => y.buildingId)).flat());
+		//Flatten Inventory
+		let Inventory = {}
+		let InventoryAdd = (id,amount,isBuilding=false) => {
+			if (amount == 0) return
+			Inventory[id] = (Inventory[id] || 0) + amount;
+			if (id.substring(1,2)=="_" && !upgradeBuildings.includes(id)) {
+				output[id] = {building:"inInventory", amount:amount};
+			}
+		}
+		let InventoryAddSet = (rewards, amount) => {
+			for (let r of rewards) {
+				if (r.type == "building") {
+					InventoryAdd(r.subType, amount * r.amount)
+				} else if (r.subType == "upgrade_kit") {
+					InventoryAdd(r.id, amount * r.amount)
+				} else if (r.subType == "selection_kit") {
+					InventoryAdd(r.id, amount * r.amount)
+				} else if (r.type == "set") {
+					InventoryAddSet(r.rewards, amount * r.amount)
+				}
+			}
+		}
+		for (let i of Object.values(MainParser.Inventory)) {
+			if (i.iconAssetName == "icon_fragment") {
+				if (i.item.reward.assembledReward.subType=="selection_kit") {
+					InventoryAdd(i.item.reward.assembledReward.id, Math.floor(i.inStock/i.item.reward.requiredAmount))
+				}
+				if (i.item.reward.assembledReward.subType=="upgrade_kit") {
+					InventoryAdd(i.item.reward.assembledReward.id, Math.floor(i.inStock/i.item.reward.requiredAmount))
+				}
+				if (i.item.reward.assembledReward.type=="building") {
+					InventoryAdd(i.item.reward.assembledReward.subType, Math.floor(i.inStock/i.item.reward.requiredAmount))
+				}
+			} else if (i.item.selectionKitId) {
+				InventoryAdd(i.item.selectionKitId, i.inStock)
+			} else if (i.item.cityEntityId) {
+				InventoryAdd(i.item.cityEntityId, i.inStock)
+			} else if (i.item.UpgradeItemId) {
+				InventoryAdd(i.item.UpgradeItemId, i.inStock)
+			} else if (i.item?.reward?.type == "set") { //check if this works when there is a league reward with nested sets
+				InventoryAddSet(i.item.reward.rewards,i.inStock)
+			}
+		}
+		//flatten CityBuildings
+		cityBuildings = Array.from(new Set(Object.values(MainParser.CityMapData).map(x=>x.cityentity_id)))
+		//check non-upgrade scheme selection kit items
+		for (let id of Object.keys(Kits.selectionOptions)) {
+			if (id.substring(1,2)=="_" && !upgradeBuildings.includes(id)) {
+				output[id] = {building:"inInventory"};
+			}
+		}
+		//check each scheme
+		for (let [buildingId, scheme] of Object.entries(Kits.UpgradeSchemes)) {
+			let upgradeSteps = scheme.upgradeSteps;
+			let upgrades = scheme.upgrades;
+			
+			//initialize output
+			//max Building already assembled in Inventory
+			if (Inventory[buildingId]) {
+				output[buildingId]={building:"inInventory"}
+				continue
+			}
+			if (Kits.selectionOptions[buildingId]) {
+				for (let k of Kits.selectionOptions[buildingId] || []) {
+					if (Inventory[k]) {
+						output[buildingId]={building:"inInventory"}
+						continue
+					}
+				}
+			}
+			
+			// determine item order in selectionOptions
+			let items = Object.keys(upgrades)
+			items.push(...upgradeSteps.map(x => x.buildingId),buildingId)
+			let SKs = Array.from(new Set(items.map(x => Kits.selectionOptions[x] || []).flat()))
+			let sKvalues = Object.assign({},...SKs.map(x=>({[x]:0})));
+			//prepare for cycling though buildingSteps
+			//duplicate and sort selectionOptions
+			//duplicate Inventory 
+			let Inv = {}
+			let SO = {}
+			for (let [i,u] of Object.entries(Object.keys(upgrades))) {
+				for (let o of Kits.selectionOptions[u] || []) {
+					sKvalues[o] += Math.pow(2,i)
+				}
+			}
+			for (let i of items)
+				if  (Kits.selectionOptions[i])
+					SO[i] = Kits.selectionOptions[i].sort((a,b) => sKvalues[a] - sKvalues[b]) 	
+						
+			items.push(...SKs)
+			for (let item of items) {
+				if (Inventory[item]) {
+					Inv[item] = Inventory[item]
+				}
+			}		
+			let level = upgradeSteps.length - 1
+			let buildingSource = ""
+			let kitCount = 0;
+			let ascended = false;
+			for (level; level>=0; level--) {
+				let b = upgradeSteps[level].buildingId;
+				if (cityBuildings.includes(b)) {
+					buildingSource = "inCity"
+					break
+				}
+				if (Inventory[b]) {
+					buildingSource = "inInventory"
+					break
+				}
+				if (SO[b]) {
+					let check = false
+					for (let k of SO[b]) {
+						if (Inv[k]) {
+							buildingSource = "inInventory"
+							Inv[k]--
+							kitCount++;
+							check = true
+							break
+						}
+					}
+					if (check) break
+				}
+			}
+			if (level>=0) {
+				for (level;level<upgradeSteps.length; level++) {
+					let upgrade = upgradeSteps[level].upgradeId;
+					if (Inventory[upgrade]) {
+						Inv[upgrade]--;
+						kitCount++;
+						if (upgrade.includes("ascended")) ascended = true
+						continue
+					}
+					let check = false
+					for (let k of SO[upgrade]||[]) {
+						if (Inv[k]) {
+							Inv[k]--
+							kitCount++
+							check = true
+							if (upgrade.includes("ascended")) ascended = true
+							break
+						}
+					}
+					if (check) continue
+					break
+				}
+				if (level<upgradeSteps.length) {
+					buildingId = upgradeSteps[level].buildingId
+				}
+				if (kitCount > 0 || buildingSource == "inInventory") 
+					output[buildingId] = {kitsUsed:kitCount,building: buildingSource}
+					if (ascended) output[buildingId].includesAscended = ascended
+			}
+		}
+		return output;
+	}
 };
 
 /**
