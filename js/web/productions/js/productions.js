@@ -1598,7 +1598,7 @@ let Productions = {
 			let buildingSizes = []
 
 			// get buildings from inventory
-			for(let InventoryItem of Object.values(MainParser.Inventory)){
+			/*for(let InventoryItem of Object.values(MainParser.Inventory)){
 				let id = InventoryItem?.item?.cityEntityId;
 				
 				if(!id || id.slice(0, 2) !== 'W_') continue; // if starts not with "W_", continue
@@ -1608,6 +1608,18 @@ let Productions = {
 				building.isInInventory = true;
 				Productions.BuildingsAll.push(building);
 				buildingCount[InventoryItem.item.cityEntityId+"I"] = InventoryItem.inStock;
+			}*/
+			let InventoryBuildings = Kits.BuildingsFromInventory()
+
+			for (let [id,data] of Object.entries(InventoryBuildings)){
+				
+				//if(!id || id.slice(0, 2) !== 'W_') continue; // if starts not with "W_", continue
+
+				let metaData = MainParser.CityEntities[id];
+				let building = CityMap.createNewCityMapEntity(metaData, CurrentEra);
+				building.isInInventory = true;
+				Productions.BuildingsAll.push(building);
+				buildingCount[id+"I"] = data.amount||1;
 			}
 
 			// get one of each building, only highest available era
