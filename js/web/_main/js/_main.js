@@ -257,7 +257,6 @@ GetFights = () =>{
 	});
 	FoEproxy.addFoeHelperHandler('InventoryUpdated', () => {
 		MainParser.Allies.updateAllyList()
-		Kits.PopulateUpgradeSchemes();
 	});
 
 	// Portrait-Mapping für Spieler Avatare
