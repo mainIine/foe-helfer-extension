@@ -841,8 +841,6 @@ let Kits = {
 		}
 		//check each scheme
 		for (let [buildingId, scheme] of Object.entries(Kits.UpgradeSchemes)) {
-			if (buildingId.includes("WIN24A"))
-				console.log("test")
 			let upgradeSteps = scheme.upgradeSteps;
 			let upgrades = scheme.upgrades;
 			let maxLevel = 0;
