@@ -813,19 +813,27 @@ let Kits = {
 			if (i.iconAssetName == "icon_fragment") {
 				if (i.item.reward.assembledReward.subType=="selection_kit") {
 					InventoryAdd(i.item.reward.assembledReward.id, Math.floor(i.inStock/i.item.reward.requiredAmount))
+					if (i.item.reward.assembledReward.iconAssetName != i.item.reward.assembledReward.id)
+						 Kits.specialCases[i.item.reward.assembledReward.id]=i.item.reward.assembledReward.iconAssetName
 				}
 				if (i.item.reward.assembledReward.subType=="upgrade_kit") {
 					InventoryAdd(i.item.reward.assembledReward.id, Math.floor(i.inStock/i.item.reward.requiredAmount))
+					if (i.item.reward.assembledReward.iconAssetName != i.item.reward.assembledReward.id) 
+						 Kits.specialCases[i.item.reward.assembledReward.id]=i.item.reward.assembledReward.iconAssetName
 				}
 				if (i.item.reward.assembledReward.type=="building") {
 					InventoryAdd(i.item.reward.assembledReward.subType, Math.floor(i.inStock/i.item.reward.requiredAmount))
 				}
 			} else if (i.item.selectionKitId) {
 				InventoryAdd(i.item.selectionKitId, i.inStock)
+				if (i.itemAssetName != i.item.selectionKitId)
+					Kits.specialCases[i.item.selectionKitId]=i.itemAssetName
 			} else if (i.item.cityEntityId) {
 				InventoryAdd(i.item.cityEntityId, i.inStock)
 			} else if (i.item.upgradeItemId) {
 				InventoryAdd(i.item.upgradeItemId, i.inStock)
+				if (i.itemAssetName != i.item.upgradeItemId)
+					Kits.specialCases[i.item.upgradeItemId]=i.itemAssetName
 			} else if (i.item?.reward?.type == "set") { //check if this works when there is a league reward with nested sets
 				InventoryAddSet(i.item.reward.rewards,i.inStock)
 			}
