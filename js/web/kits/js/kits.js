@@ -719,11 +719,12 @@ let Kits = {
 	UpgradeSchemes:null,
 	selectionOptions:null,
 	Names:{},
+	Assets:{},
 
 	CreateUpgradeSchemes: ()=> {
 		let sO = {}
 		for (let s of Object.values(MainParser.SelectionKits)) {
-			Kits.Names[s.selectionKitId] = s.name;
+			Kits.Names[s.selectionKitId] = s.name
 			for (let c of s.options || s.eraOptions[CurrentEra].options) {
 				id = (c.item.cityEntityId||c.item.upgradeItemId)
 				if (!id)
@@ -1025,7 +1026,7 @@ let Kits = {
 			tooltip+=`<span class="inventoryChainCount">${chain.count}x</span>`		
 			for (let c of chain.chain) {
 				tooltip += `<div class="inventoryChainItem ${c.type} ${c.from}">`
-				tooltip += `<img src="${srcLinks.getReward(c.id)}">`
+				tooltip += `<img src="${srcLinks.getReward(Kits.specialCases[c.id]||c.id)}">`
 				tooltip += `<span>${c.count > 1 ? c.count+"x ":""} ${Kits.Names[c.id] || MainParser.CityEntities[c.id]?.name}</span>`
 				tooltip += `</div>`
 			}
