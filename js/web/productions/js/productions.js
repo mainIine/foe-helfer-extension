@@ -1529,12 +1529,12 @@ let Productions = {
 				    Productions.CalcRatingBody();
 				}
 			});
+			Productions.CalcRatingBody(era);
 
 		} else {
 			HTML.CloseOpenBox('ProductionsRating');
 		}
 
-		Productions.CalcRatingBody(era);
 	},
 
 	AdditionalSpecialBuildings:null,
