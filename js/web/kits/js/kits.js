@@ -902,7 +902,7 @@ let Kits = {
 				amount += Inv[buildingId]
 				buildingsFromInventory += Inv[buildingId]
 				chains.push([{type:"building",from:"inventory",id:buildingId}])
-				//maxLevel = upgradeSteps.length
+				maxLevel = upgradeSteps.length
 			}
 			if (Kits.selectionOptions[buildingId]) {
 				for (let k of Kits.selectionOptions[buildingId] || []) {
@@ -910,7 +910,7 @@ let Kits = {
 						amount += Inv[k]
 						kitCount += Inv[k]
 						chains.push([{type:"building",from:"selectionKit",id:k}])
-						//maxLevel = upgradeSteps.length
+						maxLevel = upgradeSteps.length
 					}
 				}
 			}
