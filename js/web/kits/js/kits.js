@@ -793,7 +793,11 @@ let Kits = {
 			if (amount == 0) return
 			Inventory[id] = (Inventory[id] || 0) + amount;
 			if (id.substring(1,2)=="_" && !upgradeBuildings.includes(id)) {
-				output[id] = {building:"inInventory", amount:amount, chains:[{chain:[{type:"building",id:id,from:"inventory",count:1}],count:amount}]};
+				if (output[id]) {
+					output[id].chains[0].count += amount
+					output[id].amount += amount
+				} else
+					output[id] = {building:"inInventory", amount:amount, chains:[{chain:[{type:"building",id:id,from:"inventory",count:1}],count:amount}]};
 			}
 		}
 		let InventoryAddSet = (rewards, amount) => {
