@@ -830,13 +830,15 @@ let Kits = {
 		cityBuildings = {}
 		Object.values(MainParser.CityMapData).forEach(x=>cityBuildings[x.cityentity_id]=(cityBuildings[x.cityentity_id] || 0)+1);
 		//check non-upgrade scheme selection kit items
-		for (let id of Object.keys(Kits.selectionOptions)) {
+		for (let [id,kits] of Object.entries(Kits.selectionOptions)) {
 			if (id.substring(1,2)=="_" && !upgradeBuildings.includes(id)) {
-				if (output[id]) {
-					output[id].kitsUsed += Inventory[id];
-					output[id].amount += Inventory[id];
-				} else 
-					output[id] = {kitsUsed:Inventory[id],amount:Inventory[id]};
+				for (let kit of kits) {
+					if (output[id]) {
+						output[id].kitsUsed += Inventory[kit];
+						output[id].amount += Inventory[kit];
+					} else 
+						output[id] = {kitsUsed:Inventory[kit],amount:Inventory[kit]};
+				}
 			}
 		}
 		//check each scheme
