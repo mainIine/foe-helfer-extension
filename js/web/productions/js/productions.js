@@ -1597,18 +1597,6 @@ let Productions = {
 			let uniqueBuildings = []
 			let buildingSizes = []
 
-			// get buildings from inventory
-			/*for(let InventoryItem of Object.values(MainParser.Inventory)){
-				let id = InventoryItem?.item?.cityEntityId;
-				
-				if(!id || id.slice(0, 2) !== 'W_') continue; // if starts not with "W_", continue
-
-				let metaData = MainParser.CityEntities[InventoryItem.item.cityEntityId];
-				let building = CityMap.createNewCityMapEntity(metaData, Technologies.InnoEraNames[InventoryItem.item.level]||CurrentEra);
-				building.isInInventory = true;
-				Productions.BuildingsAll.push(building);
-				buildingCount[InventoryItem.item.cityEntityId+"I"] = InventoryItem.inStock;
-			}*/
 			let InventoryBuildings = Kits.BuildingsFromInventory()
 
 			for (let [id,data] of Object.entries(InventoryBuildings)){
@@ -1650,7 +1638,7 @@ let Productions = {
 				if (buildingSizes.find(x => x == buildingSize) == undefined)
 					buildingSizes.push(buildingSize)
 			}
-
+			
 			buildingSizes.sort((a,b)=>{
 				if (a < b) return -1
 				if (a > b) return 1
