@@ -78,7 +78,8 @@ let Productions = {
 	Rating: {
 		Data:null,
 		Types:null,
-		load: (overwrite=null) => {
+
+		load: (overwrite = null) => {
 			Productions.Rating.Data = Object.assign({
 				'strategy_points': {order:1,perTile:5,active:true},
 				'money': {order:2,perTile:null,active:false},
@@ -113,16 +114,6 @@ let Productions = {
 			}, overwrite || JSON.parse(localStorage.getItem('Productions.Rating.Data')||"{}"))
 			Productions.Rating.Types = Object.keys(Productions.Rating.Data).sort((a,b)=>Productions.Rating.Data[a].order-Productions.Rating.Data[b].order)
 			
-			
-			//conversion of old data - remove at some point------------------------------------
-			if (localStorage.getItem('ProductionRatingEnableds2')) {
-				let Rating = JSON.parse(localStorage.getItem('ProductionRatingEnableds2')||"{}")
-				for (let [type,active] of Object.entries(Rating)) {
-					if (Productions.Rating.Data[type]) Productions.Rating.Data[type].active = active
-				}
-				localStorage.removeItem('ProductionRatingEnableds2')
-				Productions.Rating.save()
-			}
 			if (localStorage.getItem('ProductionRatingProdPerTiles')) {
 				let RatingProdPerTiles = Object.assign({},JSON.parse(localStorage.getItem('ProductionRatingProdPerTiles')||"{}"))
 				for (let [type,perTile] of Object.entries(RatingProdPerTiles)) {
@@ -133,9 +124,11 @@ let Productions = {
 			}
 			//------------------------------------------------------------------------------
 		},
+
 		save:() => {
 			localStorage.setItem('Productions.Rating.Data', JSON.stringify(Productions.Rating.Data))
-		}		
+			// hier
+		}
 		
 	},
 
@@ -1507,9 +1500,9 @@ let Productions = {
 
 
 	ShowRating: (external = false, eraName = null) => {
-		if (!Productions.Rating.Data) Productions.Rating.load()
-		if (ActiveMap == 'OtherPlayer' && !external) return
-		let era = (eraName == null) ? CurrentEra : eraName
+		if (!Productions.Rating.Data) Productions.Rating.load();
+		if (ActiveMap == 'OtherPlayer' && !external) return;
+		let era = (eraName == null) ? CurrentEra : eraName;
 		
 		if ($('#ProductionsRating').length === 0) {
 			
@@ -1533,6 +1526,7 @@ let Productions = {
 			});
 			$('#ProductionsRating').on('click', '.reset-button', function () {
 				if (window.confirm(i18n('Boxes.ProductionsRating.ConfirmReset'))) {
+					localStorage.removeItem('Productions.Rating.Data');
 					Productions.Rating.load();
 				    Productions.Rating.save();
 				    Productions.CalcRatingBody();
