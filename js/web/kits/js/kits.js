@@ -833,9 +833,10 @@ let Kits = {
 		for (let [id,kits] of Object.entries(Kits.selectionOptions)) {
 			if (id.substring(1,2)=="_" && !upgradeBuildings.includes(id)) {
 				for (let kit of kits) {
+					if (!Inventory[kit]) continue
 					if (output[id]) {
-						output[id].kitsUsed += Inventory[kit];
-						output[id].amount += Inventory[kit];
+						output[id].kitsUsed = (output[id].kitsUsed||0) + Inventory[kit];
+						output[id].amount = (output[id].amount||0) + Inventory[kit];
 					} else 
 						output[id] = {kitsUsed:Inventory[kit],amount:Inventory[kit]};
 				}
@@ -851,6 +852,7 @@ let Kits = {
 			let buildingsFromInventory = 0;
 			let kitCount = 0;
 			let ascended = false;
+			let chains = []
 			let level
 
 			// determine item order in selectionOptions
@@ -886,6 +888,7 @@ let Kits = {
 			if (Inv[buildingId]) {
 				amount += Inv[buildingId]
 				buildingsFromInventory += Inv[buildingId]
+				chains.push([{type:"building",from:"inventory",id:buildingId}])
 				//maxLevel = upgradeSteps.length
 			}
 			if (Kits.selectionOptions[buildingId]) {
@@ -893,23 +896,27 @@ let Kits = {
 					if (Inv[k]) {
 						amount += Inv[k]
 						kitCount += Inv[k]
+						chains.push([{type:"building",from:"selectionKit",id:k}])
 						//maxLevel = upgradeSteps.length
 					}
 				}
 			}
 			//assemble buildings from kits
 			while (true) {
+				let chain=[]
 				level = upgradeSteps.length - 1
 				for (level; level>=0; level--) {
 					let b = upgradeSteps[level].buildingId;
 					if (city[b]) {
 						buildingsFromCity++
 						city[b]--
+						chain.push({type:"building",from:"city",id:b})
 						break
 					}
 					if (Inv[b]) {
 						buildingsFromInventory++
 						Inv[b]--
+						chain.push({type:"building",from:"inventory",id:b})
 						break
 					}
 					if (SO[b]) {
@@ -919,6 +926,7 @@ let Kits = {
 								Inv[k]--
 								kitCount++;
 								check = true
+								chain.push({type:"building",from:"selectionKit",id:k})
 								break
 							}
 						}
@@ -931,6 +939,7 @@ let Kits = {
 						if (Inv[upgrade]) {
 							Inv[upgrade]--;
 							kitCount++;
+							chain.push({type:"upgrade",from:"inventory",id:upgrade})
 							if (upgrade.includes("ascended")) ascended = true
 							continue
 						}
@@ -939,6 +948,7 @@ let Kits = {
 							if (Inv[k]) {
 								Inv[k]--
 								kitCount++
+								chain.push({type:"upgrade",from:"selectionKit",id:k})
 								check = true
 								if (upgrade.includes("ascended")) ascended = true
 								break
@@ -954,16 +964,29 @@ let Kits = {
 				}
 				if (level<maxLevel) 
 					break
-				if (level==maxLevel) 
+				if (level==maxLevel) {
 					amount++
+					chains.push(chain)
+				}				
 			} 
 			if (amount > 0 && (buildingsFromInventory > 0 || kitCount > 0)) {
+				//flatten chains
+				let flatChains = {}
+				for (let c of chains) {
+					let chainId = c.map(x => x.id).join("_")
+					if (!flatChains[chainId]) {
+						flatChains[chainId] = {chain:c,count:1};
+					} else {
+						flatChains[chainId].count++;
+					}
+				}
 				output[buildingId] = {
 					kitsUsed:kitCount,
 					includesAscended: ascended,
 					buildingsFromCity: buildingsFromCity,
 					buildingsFromInventory:buildingsFromInventory,
 					amount: amount,
+					chains: flatChains
 				}
 				if (ascended) {
 					let ascendedKit = Object.keys(upgrades).find(x => x.includes("ascended"));
