@@ -810,7 +810,7 @@ let Kits = {
 			}
 		}
 		for (let i of Object.values(MainParser.Inventory)) {
-			if (i.iconAssetName == "icon_fragment") {
+			if (i.itemAssetName == "icon_fragment") {
 				if (i.item.reward.assembledReward.subType=="selection_kit") {
 					InventoryAdd(i.item.reward.assembledReward.id, Math.floor(i.inStock/i.item.reward.requiredAmount))
 					if (i.item.reward.assembledReward.iconAssetName != i.item.reward.assembledReward.id)
