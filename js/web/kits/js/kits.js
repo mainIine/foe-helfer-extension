@@ -718,10 +718,12 @@ let Kits = {
 
 	UpgradeSchemes:null,
 	selectionOptions:null,
+	Names:{},
 
 	CreateUpgradeSchemes: ()=> {
 		let sO = {}
 		for (let s of Object.values(MainParser.SelectionKits)) {
+			Kits.Names[s.selectionKitId] = s.name;
 			for (let c of s.options || s.eraOptions[CurrentEra].options) {
 				id = (c.item.cityEntityId||c.item.upgradeItemId)
 				if (!id)
@@ -738,6 +740,7 @@ let Kits = {
 		let startBuildings = {}
 		
 		for (let upgrade of Object.values(MainParser.BuildingUpgrades)) {
+			Kits.Names[upgrade.upgradeItem.id] = upgrade.upgradeItem.name;
 			let upgradeId= upgrade.upgradeItem.id;
 			let buildingList = upgrade.upgradeSteps.map(x => x.buildingIds)
 			let finalBuildings = buildingList.pop()
@@ -785,11 +788,11 @@ let Kits = {
 		upgradeBuildings.push(...(Object.values(Kits.UpgradeSchemes)).map(x => x.upgradeSteps.map(y => y.buildingId)).flat());
 		//Flatten Inventory
 		let Inventory = {}
-		let InventoryAdd = (id,amount,isBuilding=false) => {
+		let InventoryAdd = (id,amount) => {
 			if (amount == 0) return
 			Inventory[id] = (Inventory[id] || 0) + amount;
 			if (id.substring(1,2)=="_" && !upgradeBuildings.includes(id)) {
-				output[id] = {building:"inInventory", amount:amount};
+				output[id] = {building:"inInventory", amount:amount, chains:[{chain:[{type:"building",id:id,from:"inventory",count:1}],count:amount}]};
 			}
 		}
 		let InventoryAddSet = (rewards, amount) => {
@@ -837,8 +840,9 @@ let Kits = {
 					if (output[id]) {
 						output[id].kitsUsed = (output[id].kitsUsed||0) + Inventory[kit];
 						output[id].amount = (output[id].amount||0) + Inventory[kit];
+						output[id].chains.push({chain:[{type:"selectionKit",id:kit,from:"inventory",count:1}],count:Inventory[kit]});
 					} else 
-						output[id] = {kitsUsed:Inventory[kit],amount:Inventory[kit]};
+						output[id] = {kitsUsed:Inventory[kit],amount:Inventory[kit],chains:[{chain:[{type:"selectionKit",id:kit,from:"inventory",count:1}],count:Inventory[kit]}]};
 				}
 			}
 		}
@@ -972,14 +976,23 @@ let Kits = {
 			if (amount > 0 && (buildingsFromInventory > 0 || kitCount > 0)) {
 				//flatten chains
 				let flatChains = {}
-				for (let c of chains) {
-					let chainId = c.map(x => x.id).join("_")
+				for (let chain of chains) {
+					let compressed=[]
+					for (let element of chain) {
+						if (element.id==compressed[compressed.length-1]?.id||"") {
+							compressed[compressed.length-1].count++;
+						} else {
+							compressed.push({id:element.id,type:element.type,from:element.from,count:1})
+						}
+					}
+					let chainId = JSON.stringify(compressed)
 					if (!flatChains[chainId]) {
-						flatChains[chainId] = {chain:c,count:1};
+						flatChains[chainId] = {chain:compressed,count:1};
 					} else {
 						flatChains[chainId].count++;
 					}
 				}
+				flatChains = Object.values(flatChains)
 				output[buildingId] = {
 					kitsUsed:kitCount,
 					includesAscended: ascended,
@@ -1001,6 +1014,26 @@ let Kits = {
 			}
 		}
 		return output;
+	},
+
+	InventoryTooltip:(e)=>{
+        let id=e?.currentTarget?.dataset?.id||e?.currentTarget?.parentElement?.dataset?.id
+		
+		tooltip=`<div class="inventoryTooltip">`
+        for (let chain of Object.values(Productions.InventoryBuildings[id]?.chains||{})) {
+			tooltip+=`<div class="inventoryChain">`
+			tooltip+=`<span class="inventoryChainCount">${chain.count}x</span>`		
+			for (let c of chain.chain) {
+				tooltip += `<div class="inventoryChainItem ${c.type} ${c.from}">`
+				tooltip += `<img src="${srcLinks.getReward(c.id)}">`
+				tooltip += `<span>${c.count > 1 ? c.count+"x ":""} ${Kits.Names[c.id] || MainParser.CityEntities[c.id]?.name}</span>`
+				tooltip += `</div>`
+			}
+			tooltip+=`</div>`
+		}
+		tooltip+=`</div>`
+
+		return tooltip
 	}
 };
 

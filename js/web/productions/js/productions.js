@@ -1513,9 +1513,6 @@ let Productions = {
 		
 		if ($('#ProductionsRating').length === 0) {
 			
-			Productions.BuildingsAll = Object.values(CityMap.createNewCityMapEntities())
-			Productions.setChainsAndSets(Productions.BuildingsAll)
-
 			HTML.Box({
 				id: 'ProductionsRating',
 				title: i18n('Boxes.ProductionsRating.Title'),
@@ -1546,10 +1543,13 @@ let Productions = {
 		Productions.CalcRatingBody(era);
 	},
 
-	//AdditionalBuildings:[],
 	AdditionalSpecialBuildings:null,
 
 	CalcRatingBody: (era = '') => {
+		Productions.BuildingsAll = Object.values(CityMap.createNewCityMapEntities())
+		Productions.setChainsAndSets(Productions.BuildingsAll)
+		
+
 		// grab special buildings
 		if (!Productions.AdditionalSpecialBuildings) {
 			let spB = Object.values(MainParser.CityEntities).filter(x=> (x.is_special && !["O_","U_","V_","H_","Y_"].includes(x.id.substring(0,2))) || x.id.substring(0,11)=="W_MultiAge_")
@@ -1597,7 +1597,7 @@ let Productions = {
 			let uniqueBuildings = []
 			let buildingSizes = []
 
-			let InventoryBuildings = Kits.BuildingsFromInventory()
+			let InventoryBuildings = Productions.InventoryBuildings = Kits.BuildingsFromInventory()
 
 			for (let [id,data] of Object.entries(InventoryBuildings)){
 				
@@ -1745,7 +1745,7 @@ let Productions = {
 				h.push('</td><td class="text-right">')
 				// show amount in inventory if there are buildings
 				if (buildingCount[building.entityId+"I"] !== undefined && !building.isInInventory)
-					h.push('<span data-original-title="'+i18n('Boxes.ProductionsRating.InventoryTooltip')+', '+buildingCount[building.entityId+"I"]+'x"><img class="game-cursor" src="' + extUrl + 'js/web/x_img/inventory.png" /></span> ')
+					h.push('<span  data-callback_tt="Kits.InventoryTooltip" data-id="'+building.entityId+'" class="helperTT"><img class="game-cursor" src="' + extUrl + 'js/web/x_img/inventory.png" /></span> ')
 				
 				// show amount in city if > 1
 				if (buildingCount[building.entityId+"C"] && buildingCount[building.entityId+"C"] > 1 && !MainParser.Allies.buildingList?.[building.id]) 
@@ -1755,7 +1755,7 @@ let Productions = {
 				if (!building.highlight && !building.isInInventory) 
 					h.push('<span class="show-all" data-name="'+building.name+'"><img class="game-cursor" src="' + extUrl + 'css/images/hud/open-eye.png"></span>')
 				else if (building.isInInventory) {
-					h.push('<span data-original-title="'+i18n('Boxes.ProductionsRating.InventoryTooltip')+'">'+buildingCount[building.entityId+"I"]+'x <img class="game-cursor" src="' + extUrl + 'js/web/x_img/inventory.png" /></span>')
+					h.push('<span data-callback_tt="Kits.InventoryTooltip" data-id="'+building.entityId+'" class="helperTT">'+buildingCount[building.entityId+"I"]+'x <img class="game-cursor" src="' + extUrl + 'js/web/x_img/inventory.png" /></span>')
 				}
 				h.push('</td>')
 

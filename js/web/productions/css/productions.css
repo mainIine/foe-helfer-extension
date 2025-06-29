@@ -686,3 +686,36 @@ input[id*="ProdPerTile"] {
 #BoostListBody {
 	overflow: auto;
 }
+
+.inventoryTooltip{
+    display: flex;
+    flex-direction: column;
+}
+.inventoryChain{
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+	margin-top:15px;
+}
+.inventoryChainCount{
+    align-items: center;
+	font-size: larger;
+	font-weight: bolder;
+    margin-left: 10px;
+	margin-right: 10px;
+}
+.inventoryChainItem{
+    width: 130px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+	margin-right: 10px;
+}
+.inventoryChainItem img{
+	max-width: 80px;
+	max-height: 80px;
+}
+.inventoryChainItem span{
+	font-style: italic;
+}

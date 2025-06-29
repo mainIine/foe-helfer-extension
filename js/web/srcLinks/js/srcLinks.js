@@ -107,7 +107,11 @@ let srcLinks = {
 
 
     getReward:(icon) => {
-        let url = srcLinks.get(`/shared/unit_portraits/armyuniticons_90x90/armyuniticons_90x90_${icon}.jpg`,true, true) // does not work :(
+        let url=""
+        if (icon.substring(1, 2) === "_") {
+            url = srcLinks.get(`/city/buildings/${MainParser.CityEntities?.[x]?.asset_id?.replace(/(\D*?)_(.*)/,"$1_SS_$2")}.png`,true);
+        } else 
+            url = srcLinks.get(`/shared/unit_portraits/armyuniticons_90x90/armyuniticons_90x90_${icon}.jpg`,true, true) // does not work :(
 
         if (url.indexOf("antiquedealer_flag") > -1) 
             url = srcLinks.get(`/shared/icons/goods_large/${icon}.png`,true, true)
