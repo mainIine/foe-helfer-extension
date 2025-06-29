@@ -70,8 +70,16 @@ let Tooltips = {
     checkposition: () => {
         try {
             if(Tooltips.containerActive) {
-                if (Tooltips.Container.firstChild.clientHeight+7+Number(Tooltips.Container.style.top.replace("px","")) > Tooltips.Container.parentElement.clientHeight) Tooltips.Container.style.top=(Tooltips.Container.parentElement.clientHeight-Tooltips.Container.firstChild.clientHeight-7)+"px"
-                if (Tooltips.Container.firstChild.clientWidth+7+Number(Tooltips.Container.style.left.replace("px","")) > Tooltips.Container.parentElement.clientWidth) Tooltips.Container.style.left=(Tooltips.Container.parentElement.clientWidth-Tooltips.Container.firstChild.clientWidth-7)+"px"
+                if (Tooltips.Container.firstChild.clientHeight+7+Number(Tooltips.Container.style.top.replace("px","")) > Tooltips.Container.parentElement.clientHeight) {
+                    newTop = Tooltips.Container.parentElement.clientHeight-Tooltips.Container.firstChild.clientHeight-7
+                    if (newTop<0) newTop=0
+                    Tooltips.Container.style.top=newTop+"px"
+                }
+                if (Tooltips.Container.firstChild.clientWidth+7+Number(Tooltips.Container.style.left.replace("px","")) > Tooltips.Container.parentElement.clientWidth) {
+                    let newLeft = Tooltips.Container.parentElement.clientWidth-Tooltips.Container.firstChild.clientWidth-7
+                    if (newLeft<0) newLeft=0
+                    Tooltips.Container.style.left=newLeft+"px"
+                }
             }
         } catch (e) {
 
