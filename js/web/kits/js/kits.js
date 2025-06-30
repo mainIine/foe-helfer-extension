@@ -872,14 +872,19 @@ let Kits = {
 			let chains = []
 			let level
 
-			// determine item order in selectionOptions
+			// determine selectionKit values
 			let items = Object.keys(upgrades)
 			items.push(...upgradeSteps.map(x => x.buildingId),buildingId)
 			let SKs = Array.from(new Set(items.map(x => Kits.selectionOptions[x] || []).flat()))
 			let sKvalues = Object.assign({},...SKs.map(x=>({[x]:0})));
-			for (let [i,u] of Object.entries(Object.keys(upgrades))) {
-				for (let o of Kits.selectionOptions[u] || []) {
-					sKvalues[o] += Math.pow(2,i)
+			let upgradesIndexed = Object.keys(upgrades)
+			for (let sk of SKs) {
+				for (let o of MainParser.SelectionKits[sk].options) {
+					let i = upgradesIndexed.indexOf(o.item.cityEntityId||o.item.upgradeItemId||"test")
+					if (i > -1)
+						sKvalues[sk] += Math.pow(2,i)
+					else	
+						sKvalues[sk] += 0.01
 				}
 			}
 			//duplicate and sort selectionOptions & duplicate cityBuildings
