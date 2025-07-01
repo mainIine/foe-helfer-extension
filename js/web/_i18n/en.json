@@ -1134,6 +1134,7 @@
     "Boxes.Tooltip.Building.size+time": "Size and Building Time",
     "Boxes.Tooltip.Building.traits": "Traits",
     "Boxes.Tooltip.Building.when": "when",
+    "Boxes.Tooltip.Efficiency.description":"The following combinations of inventory items may be used for this.",
     "Boxes.Treasury.Action": "Message",
     "Boxes.Treasury.Amount": "Amount",
     "Boxes.Treasury.DateTime": "Date/Time",

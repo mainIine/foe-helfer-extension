@@ -910,7 +910,7 @@ let Kits = {
 			if (Inv[buildingId]) {
 				amount += Inv[buildingId]
 				buildingsFromInventory += Inv[buildingId]
-				chains.push([{type:"building",from:"inventory",id:buildingId}])
+				for (i=0;i<Inv[buildingId];i++) chains.push([{type:"building",from:"inventory",id:buildingId}])
 				maxLevel = upgradeSteps.length
 			}
 			if (Kits.selectionOptions[buildingId]) {
@@ -918,7 +918,7 @@ let Kits = {
 					if (Inv[k]) {
 						amount += Inv[k]
 						kitCount += Inv[k]
-						chains.push([{type:"building",from:"selectionKit",id:k}])
+						for (i=0;i<Inv[k];i++) chains.push([{type:"building",from:"selectionKit",id:k}])
 						maxLevel = upgradeSteps.length
 					}
 				}
@@ -1037,14 +1037,17 @@ let Kits = {
 	InventoryTooltip:(e)=>{
         let id=e?.currentTarget?.dataset?.id||e?.currentTarget?.parentElement?.dataset?.id
 		
-		tooltip=`<div class="inventoryTooltip">`
-        for (let chain of Object.values(Productions.InventoryBuildings[id]?.chains||{})) {
+		tooltip = `<div class="inventoryTooltip">`
+        tooltip += `<h2>${Productions.InventoryBuildings[id].amount}x ${MainParser.CityEntities[id]?.name}</h2>`
+		tooltip += `<span style="margin-left:8px">${i18n("Boxes.Tooltip.Efficiency.description")}:</span>`
+		tooltip += Productions.InventoryBuildings[id]?.includesAscended ? `<span class="inventoryChainAscendedStock">${Productions.InventoryBuildings[id]?.ascendedStock}x</span>` : ``		
+		for (let chain of Object.values(Productions.InventoryBuildings[id]?.chains||{})) {
 			tooltip+=`<div class="inventoryChain">`
 			tooltip+=`<span class="inventoryChainCount">${chain.count}x</span>`		
 			for (let c of chain.chain) {
 				tooltip += `<div class="inventoryChainItem ${c.type} ${c.from}">`
-				tooltip += `<img src="${srcLinks.getReward(Kits.specialCases[c.id]||c.id)}">`
-				tooltip += `<span>${c.count > 1 ? c.count+"x ":""} ${Kits.Names[c.id] || MainParser.CityEntities[c.id]?.name}</span>`
+				tooltip += `<div class="inventoryChainItemImg"><img src="${srcLinks.getReward(Kits.specialCases[c.id]||c.id)}"></div>`
+				tooltip += `<div class="inventoryChainItemDesc">${c.count > 1 ? `<span class="inventoryChainItemCount">${c.count}x</span>`:""}<span>${Kits.Names[c.id] || MainParser.CityEntities[c.id]?.name}</span></div>`
 				tooltip += `</div>`
 			}
 			tooltip+=`</div>`
