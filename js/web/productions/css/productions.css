@@ -772,7 +772,7 @@ input[id*="ProdPerTile"] {
 }
 
 .inventoryChainItem.building.city::before {
-	background-image: url('../../x_img/cityname.png'); 
+	background-image: url('../../x_img/city.png'); 
 }
 .inventoryChainItem.building.inventory::before {
     background-image: url('../../x_img/inventory.png');
