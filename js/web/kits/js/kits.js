@@ -1036,8 +1036,17 @@ let Kits = {
 
 	InventoryTooltip:(e)=>{
         let id=e?.currentTarget?.dataset?.id||e?.currentTarget?.parentElement?.dataset?.id
-		
-		tooltip = `<div class="inventoryTooltip">`
+		let lng = ExtWorld.substring(0, 2);
+		let mapper = {
+			'us' : 'en',
+			'xs' : 'en',
+			'zz' : 'en',
+			'ar' : 'es',
+			'mx' : 'es',
+			'no' : 'en'
+		}
+		lng = mapper[lng] || lng;
+		tooltip = `<div class="inventoryTooltip" lang="${lng}"}>`
         tooltip += `<h2>${Productions.InventoryBuildings[id].amount}x ${MainParser.CityEntities[id]?.name}</h2>`
 		tooltip += `<span style="margin-left:8px">${i18n("Boxes.Tooltip.Efficiency.description")}:</span>`
 		tooltip += Productions.InventoryBuildings[id]?.includesAscended ? `<span class="inventoryChainAscendedStock">${Productions.InventoryBuildings[id]?.ascendedStock}x</span>` : ``		
