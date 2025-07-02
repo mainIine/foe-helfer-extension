@@ -754,6 +754,7 @@ input[id*="ProdPerTile"] {
     border-bottom-right-radius: 15px;
     width: 120px;
     padding: 5px;
+	word-wrap: break-word;
 }
 .inventoryChainItem span{
 	font-style: italic;
