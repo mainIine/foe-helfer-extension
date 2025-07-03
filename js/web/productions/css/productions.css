@@ -720,6 +720,7 @@ input[id*="ProdPerTile"] {
     align-items: center;
 	margin-right: 5px;
 	padding: 5px;
+	margin-top:5px;
 	position: relative;
 	border-left: 1px dotted #0003;
 }
