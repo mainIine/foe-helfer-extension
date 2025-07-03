@@ -1010,14 +1010,22 @@ let Kits = {
 						flatChains[chainId].count++;
 					}
 				}
-				flatChains = Object.values(flatChains)
+				let upgradeCount={}
+				for (let [u,a] of Object.entries(upgrades)) {
+					let us=u.split("_")
+					upgradeType = us.includes("gold") ? "golden" : us.includes("silver") ? "silver" : us.includes("ascended") ? "ascended" : us[0];	
+					upgradeCount[upgradeType] = (upgradeCount[upgradeType]||0) + Math.min(a, maxLevel)
+					maxLevel -= a
+					if (maxLevel<=0) break
+				}				
 				output[buildingId] = {
 					kitsUsed:kitCount,
 					includesAscended: ascended,
 					buildingsFromCity: buildingsFromCity,
 					buildingsFromInventory:buildingsFromInventory,
 					amount: amount,
-					chains: flatChains
+					chains: Object.values(flatChains),
+					upgradeCount: upgradeCount
 				}
 				if (ascended) {
 					let ascendedKit = Object.keys(upgrades).find(x => x.includes("ascended"));
@@ -1046,8 +1054,18 @@ let Kits = {
 			'no' : 'en'
 		}
 		lng = mapper[lng] || lng;
+		let upgradeCount = Productions.InventoryBuildings[id].upgradeCount;
+		let upgrades = "";
+		if (upgradeCount) {
+			upgrades = '<span class="upgrades" data-original-title="'+i18n('Boxes.Kits.Upgrades')+'" data-toggle="tooltip"><span class="base">1</span>'
+			for (let i in upgradeCount) {
+				if (!upgradeCount[i]) continue
+				upgrades += `<span class="${i}">${upgradeCount[i]}</span>`
+			}
+			upgrades+= '</span>'
+		}
 		tooltip = `<div class="inventoryTooltip" lang="${lng}"}>`
-        tooltip += `<h2>${Productions.InventoryBuildings[id].amount}x ${MainParser.CityEntities[id]?.name}</h2>`
+        tooltip += `<h2>${Productions.InventoryBuildings[id].amount}x ${MainParser.CityEntities[id]?.name}${upgrades}</h2>`
 		tooltip += `<span style="margin-left:8px">${i18n("Boxes.Tooltip.Efficiency.description")}:</span>`
 		tooltip += Productions.InventoryBuildings[id]?.includesAscended ? `<span class="inventoryChainAscendedStock">${Productions.InventoryBuildings[id]?.ascendedStock}x</span>` : ``		
 		for (let chain of Object.values(Productions.InventoryBuildings[id]?.chains||{})) {
