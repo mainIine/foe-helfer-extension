@@ -232,24 +232,6 @@ let Kits = {
 			}
 		}
 
-		// check if all upgrade kits' first buildings reference known buildings
-		let newCat=true;
-
-		for (let id in Kits.upgradeKits) {
-			const upg = Kits.upgradeKits[id];
-			const kits_for_upg = kits.filter(o => (o?.buildings instanceof Array) && o.buildings.filter(
-				b => Object.entries(b).filter(bu => bu[0] === 'first' && bu[1] === id).length > 0).length > 0
-			);
-			if (kits_for_upg.length === 0) {
-				if (devMode==="true") console.log(`\t\t{\n\t\t\t"name": "${MainParser.CityEntities[id]?.name}",\n\t\t\t"buildings": [\n\t\t\t\t{"first": "${id}"}\n\t\t\t]\n\t\t},\n`) //`First building ${id} (${MainParser.CityEntities[id]?.name}) of upgrade(s) ${upg.upgradeList.join(',')} not found in Kits' json.`, upg);
-				if (newCat) {
-					newCat = false;
-					kits.push({"groupname": "new_not_categorized"})	
-				}
-				kits.push({"name": MainParser.CityEntities[id]?.name,"buildings": [{"first": id}]})				
-			}
-		}
-
 		for (let k in kits) {
 			if (kits[k].kit) {
 				if (!Array.isArray(kits[k].kit)) kits[k].kit = [kits[k].kit]
