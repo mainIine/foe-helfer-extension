@@ -693,14 +693,14 @@ input[id*="ProdPerTile"] {
 }
 .inventoryChain{
     display: flex;
-    align-items: flex-start;
-    margin-bottom: 5px;
-	margin-top: 5px;
-	border-bottom: 1px solid #0003;
+    align-items: stretch;
+	border-top: 2px solid #0003;
+}
+.inventoryChain:first-child{
+    margin-top: 5px;
 }
 .inventoryChain:last-child{
     margin-bottom: 0;
-	border-bottom: none;
 }
 .inventoryChainCount{
     align-self: center;
@@ -718,8 +718,10 @@ input[id*="ProdPerTile"] {
 	justify-content: flex-start;
     text-align: center;
     align-items: center;
-	margin-right: 10px;
+	margin-right: 5px;
+	padding: 5px;
 	position: relative;
+	border-left: 1px dotted #0003;
 }
 .inventoryChainItem:not(:last-child)::after{
 	content: "";
@@ -729,19 +731,19 @@ input[id*="ProdPerTile"] {
     background-size: contain;
     background-repeat: no-repeat;
 	position:absolute;
-	left: 120px;
-    top: calc(3.5vh - 5px);
+	left: 130px;
+    top: 50px;
     z-index: 1;
+}
+.inventoryChainItem:last-child{
+	margin-right: 0;
 }
 .inventoryChainItemImg{
     width: 130px;
     display: flex;
     justify-content: center;
     align-items: flex-end;
-    background: var(--background-table-darker);
-	border: 2px solid var(--text-darker);
     padding: 5px 0;
-	border-radius: 10px;
 }
 .inventoryChainItemImg img {
 	max-width: 100px;
@@ -763,9 +765,9 @@ input[id*="ProdPerTile"] {
     background-size: contain;
     content: "";
     background-repeat: no-repeat;
-    left: -3px;
+    left: 3px;
     position: absolute;
-    top: -3px;
+    top: 3px;
 	filter: drop-shadow(2px 4px 6px var(--black-65));
 }
 
