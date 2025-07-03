@@ -740,6 +740,7 @@ input[id*="ProdPerTile"] {
 }
 .inventoryChainItemImg{
     width: 130px;
+	height: 80px;
     display: flex;
     justify-content: center;
     align-items: flex-end;

@@ -1065,7 +1065,7 @@ let Kits = {
 			upgrades+= '</span>'
 		}
 		tooltip = `<div class="inventoryTooltip" lang="${lng}"}>`
-        tooltip += `<h2>${Productions.InventoryBuildings[id].amount}x ${MainParser.CityEntities[id]?.name}</h2>`
+        tooltip += `<h2>${Productions.InventoryBuildings[id].amount}x ${MainParser.CityEntities[id]?.name}${upgrades}</h2>`
 		tooltip += `<span style="padding:3px 8px;">${i18n("Boxes.Tooltip.Efficiency.description")}:</span>`
 		tooltip += Productions.InventoryBuildings[id]?.includesAscended ? `<span class="inventoryChainAscendedStock">${Productions.InventoryBuildings[id]?.ascendedStock}x</span>` : ``		
 		for (let chain of Object.values(Productions.InventoryBuildings[id]?.chains||{})) {
