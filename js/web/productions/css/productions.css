@@ -804,8 +804,79 @@ input[id*="ProdPerTile"] {
 }
 .inventoryChainAscendedStock {
     position: absolute;
-    right: 5px;
-    top: 13px;
+    right: 10px;
+    top: 20px;
     font-size: large;
     font-weight: bolder;
+}
+
+.inventoryTooltip h2 {
+	display: flex;
+    justify-content: space-between;
+}
+
+.inventoryTooltip .upgrades {
+	margin-left: 15px;
+}
+
+.inventoryTooltip .upgrades span {
+    display: inline-flex;
+    height: 22px;
+    align-items: center;
+    color: #74c409;
+    margin-left: 4px;
+    padding: 0 4px;
+    background-color: var(--black-50);
+    border-radius: 20px;
+}
+
+.inventoryTooltip .upgrades span::after {
+	content: '';
+	display: inline-block;
+	width: 17px;
+	height: 22px;
+	margin-left: 2px;
+	background: url('../../x_img/upgrades.png') no-repeat left top;
+	background-size: auto 100%;
+}
+
+.inventoryTooltip .upgrades .base {
+	color: var(--text-normal);
+}
+
+.inventoryTooltip .upgrades .base::after {
+	background-position: -72px 0;
+	width: 20px;
+}
+
+.inventoryTooltip .upgrades .silver {
+	color: #b8b9b9;
+}
+
+.inventoryTooltip .upgrades .silver::after {
+	background-position: -18px 0;
+}
+
+.inventoryTooltip .upgrades .golden {
+	color: #fedc00;
+}
+
+.inventoryTooltip .upgrades .golden::after {
+	background-position: -36px 0;
+}
+
+.inventoryTooltip .upgrades .platinum {
+	color: #e9ceef;
+}
+
+.inventoryTooltip .upgrades .platinum::after {
+	background-position: -52px 0;
+}
+
+.inventoryTooltip .upgrades .ascended {
+	color: #ffae33e0;
+}
+
+.inventoryTooltip .upgrades .ascended::after {
+	background-position: -92px 0;
 }
