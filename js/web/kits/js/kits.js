@@ -844,6 +844,7 @@ let Kits = {
 		//check each scheme
 		for (let [buildingId, scheme] of Object.entries(Kits.UpgradeSchemes)) {
 			let ignoreAscended = false
+			let limit = 2
 			do { //repeat for non-ascended version if ascended version is found
 				let upgradeSteps = scheme.upgradeSteps;
 				let upgrades = scheme.upgrades;
@@ -1037,7 +1038,8 @@ let Kits = {
 						ignoreAscended = false
 					}
 				}
-			} while (ignoreAscended)
+				limit--
+			} while (ignoreAscended && limit>0)
 		}
 		return output;
 	},
