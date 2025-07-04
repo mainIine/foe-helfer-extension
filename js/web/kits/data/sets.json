@@ -61,24 +61,24 @@
 		"name": "Pirates_Hideout",
 		"link": "Pirate%27s_Hideout",
 		"buildings": [
-			{"first": "R_MultiAge_SummerBonus21a"}
+			{"first": "W_MultiAge_SUM21A1"}
 		],
 		"assets": [
-			"D_MultiAge_SummerBonus21Boat",
-			"D_MultiAge_SummerBonus21Pier",
-			"D_MultiAge_SummerBonus21Sharks"
+			"W_MultiAge_SUM21B1",
+			"W_MultiAge_SUM21C1",
+			"W_MultiAge_SUM21D1"
 		]
 	},
 	{
 		"name": "Terracotta_Vineyard",
 		"buildings": [
-			{"first": "R_MultiAge_SportBonus21a"}
+			{"first": "W_MultiAge_BOWL21A1"}
 		],
 		"assets": [
-			"D_MultiAge_SportBonus21Grapevines",
-			"D_MultiAge_SportBonus21Lavender",
-			"D_MultiAge_SportBonus21Cypress",
-			"D_MultiAge_SportBonus21Olive"
+			"W_MultiAge_BOWL21B1",
+			"W_MultiAge_BOWL21C1",
+			"W_MultiAge_BOWL21D1",
+			"W_MultiAge_BOWL21E1"
 		]
 	},
 	{
