@@ -265,7 +265,7 @@ td:nth-child(3) .HXBuilding .inhabitant {
 }
 .inventoryChainItemImg{
     width: 130px;
-	height: 80px;
+	height: 7vh;
     display: flex;
     justify-content: center;
     align-items: flex-end;
