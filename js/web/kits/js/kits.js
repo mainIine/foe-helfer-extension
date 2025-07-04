@@ -996,9 +996,12 @@ let Kits = {
 				for (let [u,a] of Object.entries(upgrades)) {
 					let us=u.split("_")
 					upgradeType = us.includes("gold") ? "golden" : us.includes("silver") ? "silver" : us.includes("ascended") ? "ascended" : us[0];	
-					upgradeCount[upgradeType] = (upgradeCount[upgradeType]||0) + Math.min(a, maxLevel)
+					if (!upgradeCount[upgradeType])
+						upgradeCount[upgradeType] = {}
+					upgradeCount[upgradeType].is = (upgradeCount[upgradeType].is||0) + Math.min(a, maxLevel)
+					upgradeCount[upgradeType].max = (upgradeCount[upgradeType].max||0) + a
 					maxLevel -= a
-					if (maxLevel<=0) break
+					//if (maxLevel<=0) break
 				}				
 				output[buildingId] = {
 					kitsUsed:kitCount,
@@ -1042,7 +1045,7 @@ let Kits = {
 			upgrades = '<span class="upgrades" data-original-title="'+i18n('Boxes.Kits.Upgrades')+'" data-toggle="tooltip"><span class="base">1</span>'
 			for (let i in upgradeCount) {
 				if (!upgradeCount[i]) continue
-				upgrades += `<span class="${i}">${upgradeCount[i]}</span>`
+				upgrades += `<span class="${i}">${upgradeCount[i].is + (upgradeCount[i].is < upgradeCount[i].max ? "/"+upgradeCount[i].max : "")}</span>`
 			}
 			upgrades+= '</span>'
 		}
