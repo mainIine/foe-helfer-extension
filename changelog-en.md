@@ -1,5 +1,31 @@
 ## Changelog - Extension
 
+
+##### 3.11.6.0
+
+**Update**
+- Efficiency Overview:
+	- If the option "Inventory" is active, now also assembleable Buildings will be highlighted. The respective tooltip for the inventory icon will show:
+	- how many of this building could be placed and which Upgrades are necessary therefore. Therein the following will be considered:
+		- complete buildings in inventory
+		- buildings in the city that may be improved by using items (kits) from inventory
+		- Inventory items that can be assembled to a complete building
+	- how many ascended kits are in store
+	- if there is a highe level building, what it is and what is required to get there
+
+- Kits
+	- reduced to sets and chains
+
+**Removed**
+- Boost-Inventory
+	- was replaced by above mentioned change to the efficiency overview
+
+**BugFix**
+
+- Efficiency Overview:
+	- Changes in the settings values were not applied immediately
+---
+
 ##### 3.11.5.0
 
 **Update**
