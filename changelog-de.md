@@ -1,5 +1,31 @@
 ## Changelog - Extension
 
+##### 3.11.6.0
+
+**Update**
+- Effizienzübersicht:
+	- In der Effizienzübersicht werden nun, wenn die Option "Inventar" aktiviert ist, auch das zusammensetzbare Gebäude vorgeschlagen. Im Tooltip des entsprechenden Inventar-Icon werden nun angezeigt:
+	- wieviele Gebäude dieses Typs insgesamt errichtet werden können und welche Upgrades dafür nötig sind. Dabei werden betrachtet:
+		- komplette Gebäude im Inventar
+		- Gebäude in der Stadt, die durch Inventargegenstände (Kits) verbessert werden können
+		- Inventargegenstände, die zu kompletten Gebäuden zusammengesetzt werden können
+	- wieviele erhabene Kits im Inventar vorrätig sind
+	- wenn es ein höheres Gebäude gibt, was dafür nötig ist
+
+- Kits
+	- wurde reduziert auf Sets und Ketten
+
+**Entfernt**
+- Boost-Inventar
+	- wurde ersetzt durch oben beschriebene Änderung in der Effizienzübersicht
+
+**BugFix**
+
+- Effizienzübersicht:
+  - Veränderungen der Werte in den Einstellungen wurden nicht sofort angewendet
+
+---
+
 ##### 3.11.5.0
 
 **Update**
