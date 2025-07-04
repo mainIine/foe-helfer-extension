@@ -1056,19 +1056,19 @@ let Kits = {
 		lng = mapper[lng] || lng;
 		let upgradeCount = Productions.InventoryBuildings[id].upgradeCount;
 		let upgrades = "";
-		let upgradesMax = "";
+		let upgradesMax = '<span class="upgrades">';
 		if (upgradeCount) {
-			upgrades = '<span class="upgrades" data-original-title="'+i18n('Boxes.Kits.Upgrades')+'" data-toggle="tooltip"><span class="base">1</span>'
-			upgradesMax = '<span class="upgrades" data-original-title="'+i18n('Boxes.Kits.Upgrades')+'" data-toggle="tooltip"><span class="base">1</span>'
+			upgrades = '<span class="upgrades"><span class="base">1</span>'
 			for (let i in upgradeCount) {
 				if (!upgradeCount[i]) continue
 				if (upgradeCount[i].is)
 					upgrades += `<span class="${i}">${upgradeCount[i].is}</span>`
-				upgradesMax += `<span class="${i}">${upgradeCount[i].max}</span>`
+				if (upgradeCount[i].max-upgradeCount[i].is)
+					upgradesMax += `<span class="${i}">+${upgradeCount[i].max-upgradeCount[i].is}</span>`
 			}
 			upgrades+= '</span>'
-			upgradesMax+= '</span>'
 		}
+		upgradesMax+= '</span>'
 		tooltip = `<div class="inventoryTooltip" lang="${lng}"}>`
         tooltip += `<h2>${Productions.InventoryBuildings[id].amount}x ${MainParser.CityEntities[id]?.name}${upgrades}</h2>`
 		tooltip += `<span style="padding:3px 8px;">${i18n("Boxes.Tooltip.Efficiency.description")}:</span>`
@@ -1086,7 +1086,7 @@ let Kits = {
 			tooltip+=`</div>`
 		}
 		tooltip+=`</div>`
-		if (upgrades != upgradesMax) {
+		if (upgradesMax !='<span class="upgrades"></span>') {
 			tooltip+=`<div class="maxBuilding">`
 			tooltip+=`<h2>${i18n("Boxes.Kits.maxBuilding")}:</h2>`
 			tooltip+=`<span class="maxBuildingDetails">${MainParser.CityEntities[Productions.InventoryBuildings[id].maxBuilding]?.name}${upgradesMax}</span>`
