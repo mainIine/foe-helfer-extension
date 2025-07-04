@@ -660,6 +660,7 @@
     "Boxes.Investment.UpToDate": "The investment list was updated less than 30 minutes ago.",
     "Boxes.Investment.UpdateRequired": "The investment list is older than 30 minutes. Please update your investment list in the Town Hall.",
     "Boxes.ItemSources.Title": "Item Sources",
+    "Boxes.Kits.maxBuilding" : "Highest level of this building",
     "Boxes.Kits.Chains": "Chains",
     "Boxes.Kits.Sets": "Sets",
     "Boxes.Kits.Base": "Level 1 building or selection kit",

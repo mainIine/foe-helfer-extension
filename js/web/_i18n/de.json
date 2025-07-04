@@ -665,6 +665,7 @@
     "Boxes.Investment.UpToDate": "Die Investitionen wurden vor weniger als 30 Minuten aktualisiert.",
     "Boxes.Investment.UpdateRequired": "Deine Investitionen sind älter als 30 Minuten. Bitte aktualisiere sie über das Rathaus.",
     "Boxes.ItemSources.Title": "Quellen für Gegenstände",
+    "Boxes.Kits.maxBuilding" : "Höchste Stufe dieses Gebäudes",
     "Boxes.Kits.Chains": "Ketten",
     "Boxes.Kits.Sets": "Sets",
     "Boxes.Kits.Base": "Stufe 1 Gebäude oder Auswahlkit",

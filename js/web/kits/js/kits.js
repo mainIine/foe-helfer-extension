@@ -853,6 +853,7 @@ let Kits = {
 			let ascended = false;
 			let chains = []
 			let level
+			let maxBuilding = buildingId
 
 			// determine selectionKit values
 			let items = Object.keys(upgrades)
@@ -1000,7 +1001,7 @@ let Kits = {
 						upgradeCount[upgradeType] = {}
 					upgradeCount[upgradeType].is = (upgradeCount[upgradeType].is||0) + Math.min(a, maxLevel)
 					upgradeCount[upgradeType].max = (upgradeCount[upgradeType].max||0) + a
-					maxLevel -= a
+					maxLevel -= Math.min(a, maxLevel)
 					//if (maxLevel<=0) break
 				}				
 				output[buildingId] = {
@@ -1010,7 +1011,8 @@ let Kits = {
 					buildingsFromInventory:buildingsFromInventory,
 					amount: amount,
 					chains: Object.values(flatChains),
-					upgradeCount: upgradeCount
+					upgradeCount: upgradeCount,
+					maxBuilding: maxBuilding
 				}
 				if (ascended) {
 					let ascendedKit = Object.keys(upgrades).find(x => x.includes("ascended"));
@@ -1041,20 +1043,27 @@ let Kits = {
 		lng = mapper[lng] || lng;
 		let upgradeCount = Productions.InventoryBuildings[id].upgradeCount;
 		let upgrades = "";
+		let upgradesMax = "";
 		if (upgradeCount) {
 			upgrades = '<span class="upgrades" data-original-title="'+i18n('Boxes.Kits.Upgrades')+'" data-toggle="tooltip"><span class="base">1</span>'
+			upgradesMax = '<span class="upgrades" data-original-title="'+i18n('Boxes.Kits.Upgrades')+'" data-toggle="tooltip"><span class="base">1</span>'
 			for (let i in upgradeCount) {
 				if (!upgradeCount[i]) continue
-				upgrades += `<span class="${i}">${upgradeCount[i].is + (upgradeCount[i].is < upgradeCount[i].max ? "/"+upgradeCount[i].max : "")}</span>`
+				if (upgradeCount[i].is)
+					upgrades += `<span class="${i}">${upgradeCount[i].is}</span>`
+				upgradesMax += `<span class="${i}">${upgradeCount[i].max}</span>`
 			}
 			upgrades+= '</span>'
+			upgradesMax+= '</span>'
 		}
 		tooltip = `<div class="inventoryTooltip" lang="${lng}"}>`
         tooltip += `<h2>${Productions.InventoryBuildings[id].amount}x ${MainParser.CityEntities[id]?.name}${upgrades}</h2>`
 		tooltip += `<span style="padding:3px 8px;">${i18n("Boxes.Tooltip.Efficiency.description")}:</span>`
 		tooltip += Productions.InventoryBuildings[id]?.includesAscended ? `<span class="inventoryChainAscendedStock">${Productions.InventoryBuildings[id]?.ascendedStock}x</span>` : ``		
-		for (let chain of Object.values(Productions.InventoryBuildings[id]?.chains||{})) {
-			tooltip+=`<div class="inventoryChain">`
+		let chains = Productions.InventoryBuildings[id]?.chains||{};
+		for (let i in chains) {
+			let chain = chains[i];
+			tooltip+=`<div class="inventoryChain" ${i == chains.length - 1 && upgrades != upgradesMax ? 'style="margin-bottom: 40px;"' : ""}>`
 			tooltip+=`<span class="inventoryChainCount">${chain.count}x</span>`		
 			for (let c of chain.chain) {
 				tooltip += `<div class="inventoryChainItem ${c.type} ${c.from}">`
@@ -1063,6 +1072,13 @@ let Kits = {
 				tooltip += `</div>`
 			}
 			tooltip+=`</div>`
+		}
+		if (upgrades != upgradesMax) {
+			tooltip+=`<div class="maxBuilding">`
+			tooltip+=`<h2>${i18n("Boxes.Kits.maxBuilding")}:</h2>`
+			tooltip+=`<span class="maxBuildingDetails">${MainParser.CityEntities[Productions.InventoryBuildings[id].maxBuilding]?.name}${upgradesMax}</span>`
+			tooltip+=`</div>`
+
 		}
 		tooltip+=`</div>`
 

@@ -690,7 +690,22 @@ input[id*="ProdPerTile"] {
 .inventoryTooltip{
     display: flex;
     flex-direction: column;
+	max-height: 95vh;
+	overflow: hidden;
 }
+.inventoryTooltip .maxBuilding {
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    background: #343832;
+}
+.inventoryTooltip .maxBuildingDetails{
+    margin-left: 7px;
+    display: flex;
+    place-content: space-between;
+    flex-wrap: wrap;
+}
+
 .inventoryChain{
     display: flex;
     align-items: stretch;
