@@ -5,14 +5,14 @@
 
 **Update**
 - Efficiency Overview:
-	- If the option "Inventory" is active, now also assembleable Buildings will be highlighted. The respective tooltip for the inventory icon will show:
-	- how many of this building could be placed and which Upgrades are necessary therefore. Therein the following will be considered:
+	- If the option "Inventory" is active, now also assembleable Buildings will be listed. The tooltip for the inventory icon of the respective building will show:
+	- how many buildings of this type could be placed, which upgrades are necessary for that and which upgrade paths are available. Therein the following will be considered:
 		- complete buildings in inventory
 		- buildings in the city that may be improved by using items (kits) from inventory
-		- Inventory items that can be assembled to a complete building
-	- buildings that have an ascended upgrade will in addition be evaluated in their non-ascended form
-	- how many ascended kits are in store
-	- if there is a highe level building, what it is and what is required to get there
+		- inventory items that can be assembled to a complete building
+	- ascended buildings will additionally be listed in their non-ascended form
+	- how many ascended kits are in store for that building
+	- if there is a higher level building, it is shown what is required to get there
 
 - Kits
 	- reduced to sets and chains

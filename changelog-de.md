@@ -4,14 +4,14 @@
 
 **Update**
 - Effizienzübersicht:
-	- In der Effizienzübersicht werden nun, wenn die Option "Inventar" aktiviert ist, auch das zusammensetzbare Gebäude vorgeschlagen. Im Tooltip des entsprechenden Inventar-Icon werden nun angezeigt:
-	- wieviele Gebäude dieses Typs insgesamt errichtet werden können und welche Upgrades dafür nötig sind. Dabei werden betrachtet:
+	- wenn die Option "Inventar" aktiviert ist, werden nun auch zusammensetzbare Gebäude gelistet. Im Tooltip des Inventar-Icon des jeweiligen Gebäudes werden nun angezeigt:
+	- wieviele Gebäude dieses Typs insgesamt errichtet werden können, welche Upgrades dafür nötig sind und welche Upgrade-Pfade man zur verfügung hat. Dabei werden betrachtet:
 		- komplette Gebäude im Inventar
 		- Gebäude in der Stadt, die durch Inventargegenstände (Kits) verbessert werden können
 		- Inventargegenstände, die zu kompletten Gebäuden zusammengesetzt werden können
-	- Gebäude für die es ein erhabenes Upgrade gibt werden zusätzlich auch in ihrer nicht erhabenen Form erfasst
+	- Erhabene Gebäude werden zusätzlich auch in ihrer nicht erhabenen Form erfasst
 	- wieviele erhabene Kits im Inventar vorrätig sind
-	- wenn es ein höheres Gebäude gibt, was dafür nötig ist
+	- wenn es ein Gebäude einer höheren Stufe gibt, was dafür nötig ist
 
 - Kits
 	- wurde reduziert auf Sets und Ketten
