@@ -10,6 +10,7 @@
 		- complete buildings in inventory
 		- buildings in the city that may be improved by using items (kits) from inventory
 		- Inventory items that can be assembled to a complete building
+	- buildings that have an ascended upgrade will in addition be evaluated in their non-ascended form
 	- how many ascended kits are in store
 	- if there is a highe level building, what it is and what is required to get there
 
