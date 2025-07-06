@@ -702,3 +702,68 @@ input[id*="ProdPerTile"] {
 #BoostListBody {
 	overflow: auto;
 }
+
+#buildingsize {
+	width: 45px;
+	background-color: var(--text-normal);
+	color: var(--text-darker);
+	text-shadow: none;
+	overflow: visible;
+	position: relative;
+	border-radius: 2px;
+}
+
+#buildingsize ul:hover {
+	filter: brightness(0.9) contrast(0.9);
+}
+
+#buildingsize span {
+	padding: 0 2px;
+	display: inline-flex;
+	justify-content: space-between;
+	align-items: center;
+	height: 22px;
+	line-height: 22px;
+	width: calc(100% - 5px);
+}
+
+#buildingsize.active span::after {
+	content: "×";
+	font-weight: normal;
+	color: var(--text-medium);
+}
+
+#buildingsize ul {
+	position: absolute;
+	top: 22px;
+	left: 0;
+	display: none;
+	list-style: none;
+	padding: 2px;
+	margin: 0;
+	width: calc(100% - 4px);
+	background-color: var(--text-normal);
+	text-align: right;
+	border-radius: 0 0 2px 2px;
+}
+
+#buildingsize.active ul {
+	display: block;
+}
+
+#buildingsize li:hover {
+	background-color: var(--text-light);
+}
+
+#buildingsize li::after {
+	content: "✓";
+	display: inline-block;
+	padding-left: 0.5em;
+	text-align: center;
+	opacity: 0;
+}
+
+#buildingsize li.selected::after {
+	opacity: 1;
+	color: var(--text-success);
+}

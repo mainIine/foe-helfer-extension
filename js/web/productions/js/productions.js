@@ -1687,12 +1687,11 @@ let Productions = {
 			h.push('<tr class="sorter-header">');
 			h.push('<th data-type="ratinglist" class="is-number ascending">' + i18n('Boxes.ProductionsRating.Score') + '</th>');
 			h.push('<th data-type="ratinglist" colspan="2"><div class="flex-between"><span>'+ i18n('Boxes.ProductionsRating.BuildingName') +'</span>' +
-			' <select name="buildingsize" id="buildingsize">');
-				h.push('<option value="'+i18n('Boxes.Productions.Headings.size')+'">'+i18n('Boxes.Productions.Headings.size')+'</option>')
-			for (let size of buildingSizes) {
-				h.push('<option>'+size+'</option>')
-			}
-			h.push('</select></div></th><th class="no-sort inventory-buildings"><img data-original-title="'+i18n('Boxes.ProductionsRating.InventoryTooltip')+'" class="game-cursor" src="' + extUrl + 'js/web/x_img/inventory.png" /></th>');
+			' <div name="buildingsize" id="buildingsize"><span>'+i18n('Boxes.Productions.Headings.size')+'</span><ul>');
+				for (let size of buildingSizes) {
+					h.push('<li data-value="'+size+'">'+size+'</li>')
+				}
+			h.push('</ul></div></div></th><th class="no-sort inventory-buildings"><img data-original-title="'+i18n('Boxes.ProductionsRating.InventoryTooltip')+'" class="game-cursor" src="' + extUrl + 'js/web/x_img/inventory.png" /></th>');
 			for (const type of combinedRatingTypes) {
 				let firstType = type;
 				let secondType = null;
@@ -1934,19 +1933,45 @@ let Productions = {
 					}
 				});
 			});
+
 			
-			// result: building size filter
 			$('#buildingsize').on('click', e => {
 				e.stopPropagation();
-				let filter = $('#buildingsize').val();
+				$('#buildingsize').toggleClass('active');
+			});
+			
+			// result: building size filter
+			let filteredSizes = [];
+			$('#buildingsize li').on('click', e => {
+				e.stopPropagation();
+				let filter = parseInt(e.target.getAttribute('data-value'));
+				e.target.classList.toggle('selected');
+				
+				if (filteredSizes.includes(filter)) {
+					let index = filteredSizes.indexOf(filter);
+					filteredSizes.splice(index, 1);
+				}
+				else {
+					filteredSizes.push(filter);
+				}
 
-				if (isNaN(parseInt(filter))) {
+				console.log(filteredSizes);
+
+				$('.ratinglist tr').addClass('hidden');
+				if (isNaN(parseInt(filter)) || filteredSizes.length === 0) {
 					$('.ratinglist tr').removeClass('hidden');
 					return;
 				}
-				$('.ratinglist tr').addClass('hidden');
-				$('.ratinglist tr.size'+filter).each((x,y) => {
-					y.classList.remove('hidden')
+				$('.ratinglist tr').each((i,elem) => {
+					let size = elem.classList.values().find(x => x.includes('size'));
+					if (size) {
+						for (let filteredSize of filteredSizes) {
+							if ("size"+filteredSize === size) {
+								elem.classList.remove('hidden');
+								return;
+							}
+						}
+					}
 				});
 			});
 			
