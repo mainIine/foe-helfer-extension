@@ -1955,8 +1955,6 @@ let Productions = {
 					filteredSizes.push(filter);
 				}
 
-				console.log(filteredSizes);
-
 				$('.ratinglist tr').addClass('hidden');
 				if (isNaN(parseInt(filter)) || filteredSizes.length === 0) {
 					$('.ratinglist tr').removeClass('hidden');
