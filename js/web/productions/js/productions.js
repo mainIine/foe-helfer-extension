@@ -1671,27 +1671,28 @@ let Productions = {
 			h.push('<thead class="sticky">');
 			
 			h.push('<tr class="settings">')
-				h.push('<th colspan="'+(colNumber+4)+'"><div class="options">')
+				h.push('<th colspan="'+(colNumber+5)+'"><div class="options">')
 				h.push('<a class="btn-default" id="addMetaBuilding">' + i18n('Boxes.ProductionsRating.AddBuilding') + '</a>')
 				h.push('<label for="tilevalues"><input type="checkbox" id="tilevalues" />' + i18n('Boxes.ProductionsRating.ShowValuesPerTile') + '</label>')
 				h.push('<label for="showitems"><input type="checkbox" id="showitems" />' + i18n('Boxes.ProductionsRating.ShowItems') + '</label>')
-				h.push('<label for="showhighlighted"><input type="checkbox" id="showhighlighted" />' + i18n('Boxes.ProductionsRating.ShowHighlighted') + '</label>')
-				h.push('<div class="inventory">'+
-					'<label for="inventorybuildings"><input type="checkbox" id="inventorybuildings" />' + i18n('Boxes.ProductionsRating.ShowInventoryBuildings') + '</label>'+
-					'<label for="inventorybuildingscore">' + i18n('Boxes.ProductionsRating.InventoryBuildingScore') + ': <input type="number" size="6" value="'+(Productions.efficiencySettings.inventorybuildingscore*100)+'" id="inventorybuildingscore" /></label>'+
-					'</div>');
 				h.push('<input type="text" id="efficiencyBuildingFilter" size=20 placeholder="' + i18n('Boxes.ProductionsRating.Filter') + ': neo|eden" />')
+				h.push('<label for="showhighlighted" data-original-title="'+i18n('Boxes.ProductionsRating.ShowHighlightedExplanation')+'"><input type="checkbox" id="showhighlighted" />' + i18n('Boxes.ProductionsRating.ShowHighlighted') + '</label>')
+
+				h.push('<div class="inventory">'+
+					'<label for="inventorybuildings" data-original-title="'+i18n('Boxes.ProductionsRating.ShowInventoryBuildingsExplanation')+'"><input type="checkbox" id="inventorybuildings" />' + i18n('Boxes.ProductionsRating.ShowInventoryBuildings') + '</label>'+
+					'<label for="inventorybuildingscore" data-original-title="'+i18n('Boxes.ProductionsRating.InventoryBuildingScoreExplanation')+'">' + i18n('Boxes.ProductionsRating.InventoryBuildingScore') + ': <input type="number" size="6" value="'+(Productions.efficiencySettings.inventorybuildingscore*100)+'" id="inventorybuildingscore" /></label>'+
+					'</div>');
 				h.push('</div></th>');
 			h.push('</tr>');
 			h.push('<tr class="sorter-header">');
 			h.push('<th data-type="ratinglist" class="is-number ascending">' + i18n('Boxes.ProductionsRating.Score') + '</th>');
-			h.push('<th data-type="ratinglist"><div class="flex-between"><span>'+ i18n('Boxes.ProductionsRating.BuildingName') +'</span>' +
+			h.push('<th data-type="ratinglist" colspan="2"><div class="flex-between"><span>'+ i18n('Boxes.ProductionsRating.BuildingName') +'</span>' +
 			' <select name="buildingsize" id="buildingsize">');
 				h.push('<option value="'+i18n('Boxes.Productions.Headings.size')+'">'+i18n('Boxes.Productions.Headings.size')+'</option>')
 			for (let size of buildingSizes) {
 				h.push('<option>'+size+'</option>')
 			}
-			h.push('</select></div></th><th class="no-sort"></th>');
+			h.push('</select></div></th><th class="no-sort inventory-buildings"><img data-original-title="'+i18n('Boxes.ProductionsRating.InventoryTooltip')+'" class="game-cursor" src="' + extUrl + 'js/web/x_img/inventory.png" /></th>');
 			for (const type of combinedRatingTypes) {
 				let firstType = type;
 				let secondType = null;
@@ -1716,7 +1717,7 @@ let Productions = {
 			}
 			h.push('<th data-type="ratinglist" class="no-sort items">Items</th>');
 			h.push('</tr>');
-			h.push('<thead>');
+			h.push('</thead>');
 
 			h.push('<tbody class="ratinglist">');
 			for (const building of ratedBuildings) {
@@ -1731,26 +1732,24 @@ let Productions = {
 				[randomItems,randomUnits] = Productions.showBuildingItems(false, building)
 				h.push(`<tr class="${building.highlight?'additional ':''}${building.isInInventory?'inventory-building ':''}size${buildingSize}">`)
 				h.push('<td class="text-right" data-number="'+building.rating.totalScore * 100 +'">'+Math.round(building.rating.totalScore * 100)+'</td>')
-				h.push('<td data-text="'+helper.str.cleanup(building.name)+'" data-meta_id="'+building.entityId+'" data-era="'+(building.eraName=="AllAge"?"":building.eraName)+'" data-callback_tt="Tooltips.buildingTT" class="helperTT ' + (MainParser.Allies.buildingList?.[building.id]?"ally" : "") +'" '+ MainParser.Allies.tooltip(building.id) + '><span>'+building.name+'</span>')
+				
+				h.push('<td data-text="'+helper.str.cleanup(building.name)+'" class="'+(MainParser.Allies.buildingList?.[building.id]?"ally" : "") +'" '+ MainParser.Allies.tooltip(building.id) + '>');
+				if (!building.highlight && !building.isInInventory) 
+					h.push('<span class="show-all" data-original-title="'+i18n('Boxes.General.ShowOnMap')+'" data-name="'+building.name+'"><img class="game-cursor" src="' + extUrl + 'css/images/hud/open-eye.png"></span>');
+				h.push('<span data-meta_id="'+building.entityId+'" data-era="'+(building.eraName=="AllAge"?"":building.eraName)+'" data-callback_tt="Tooltips.buildingTT" class="helperTT">'+building.name+'</span>')
 				
 				let eraShortName = i18n("Eras."+Technologies.Eras[building.eraName]+".short")
 				if (eraShortName != "-")
 					h.push(" ("+i18n("Eras."+Technologies.Eras[building.eraName]+".short") +')')
 				h.push('</td><td class="text-right">')
-				// show amount in inventory if there are buildings
-				if (buildingCount[building.entityId+"I"] !== undefined && !building.isInInventory)
-					h.push('<span  data-callback_tt="Kits.InventoryTooltip" data-id="'+building.entityId+'" class="helperTT"><img class="game-cursor" src="' + extUrl + 'js/web/x_img/inventory.png" /></span> ')
-				
 				// show amount in city if > 1
-				if (buildingCount[building.entityId+"C"] && buildingCount[building.entityId+"C"] > 1 && !MainParser.Allies.buildingList?.[building.id]) 
+				if (buildingCount[building.entityId+"C"] && buildingCount[building.entityId+"C"] > 1 && !MainParser.Allies.buildingList?.[building.id]) {
 					h.push('<span data-original-title="'+i18n('Boxes.ProductionsRating.CountTooltip')+'">' + buildingCount[building.entityId+"C"]+'x</span> ')
-				
-
-				if (!building.highlight && !building.isInInventory) 
-					h.push('<span class="show-all" data-name="'+building.name+'"><img class="game-cursor" src="' + extUrl + 'css/images/hud/open-eye.png"></span>')
-				else if (building.isInInventory) {
-					h.push('<span data-callback_tt="Kits.InventoryTooltip" data-id="'+building.entityId+'" class="helperTT">'+buildingCount[building.entityId+"I"]+'x <img class="game-cursor" src="' + extUrl + 'js/web/x_img/inventory.png" /></span>')
 				}
+				h.push('</td><td class="text-right">')
+				// show additional buildings from inventory
+				if ((buildingCount[building.entityId+"I"] !== undefined && !building.isInInventory) || building.isInInventory)
+					h.push('<span data-callback_tt="Kits.InventoryTooltip" data-id="'+building.entityId+'" class="helperTT"><img class="game-cursor" src="' + srcLinks.get(`/shared/gui/event_hub/event_meta_icon_checkmark.png`,true) + '" /></span> ')
 				h.push('</td>')
 
 				for (const type of combinedRatingTypes) {
@@ -1871,7 +1870,7 @@ let Productions = {
 						}
 					})
 					$('#efficiencyBuildingFilter').val(search.source=="(?:)"?"":search.source)
-					$('#efficiencyBuildingFilter').trigger("input")								
+					$('#efficiencyBuildingFilter').trigger("input")
 				},500)
 			})
 

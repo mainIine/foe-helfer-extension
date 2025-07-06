@@ -308,7 +308,7 @@
 #ProductionsRatingBody tr.highlighted2 td:nth-child(2)::after {
 	content: ' 🔎';
 }
-#ProductionsRatingBody tr td.ally:nth-child(2) span::after {
+#ProductionsRatingBody tr td.ally:nth-child(2) span:nth-child(2)::after {
 	content: ' ';
 	background: url('../../x_img/ally.png') no-repeat center;
 	background-size: contain;
@@ -343,8 +343,21 @@
 	color: var(--text-bright);
 	font-weight: 600;
 }
-#ProductionsRatingBody tr td:nth-child(3) img {
-	max-height: 18px;
+#ProductionsRatingBody tr .show-all {
+	width: 18px;
+	display: inline-block;
+	padding-right: 0.5em;
+}
+#ProductionsRatingBody tr .show-all img, #ProductionsRatingBody td:nth-child(4) img {
+	max-width: 18px;
+	opacity: 0.6;
+}
+#ProductionsRatingBody td:nth-child(4) img {
+	filter: sepia(1);
+}
+#ProductionsRatingBody tr .show-all img:hover, #ProductionsRatingBody td:nth-child(4) img:hover {
+	opacity: 1;
+	filter: none;
 }
 #ProductionsRatingBody tr.highlighted-explained, 
 #ProductionsRating .showhighlighted tbody tr, 
@@ -366,6 +379,9 @@
 	padding: 1em;
 	text-align: center;
 	font-size: 120%;
+}
+#ProductionsRatingBody th.inventory-buildings img {
+	height: 26px;
 }
 #ProductionsRatingBody span.resicon.att_boost_attacker-guild_raids, #ProductionsRatingBody span.resicon.def_boost_attacker-guild_raids, #ProductionsRatingBody span.resicon.att_boost_defender-guild_raids, #ProductionsRatingBody span.resicon.def_boost_defender-guild_raids {
 	background-image: url('../../x_img/guild_raids.png'), url('../images/productions.png');
