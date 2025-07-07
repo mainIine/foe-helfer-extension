@@ -909,6 +909,8 @@ let Kits = {
 						chains.push([{type:"building", from:"inventory", id:buildingId}]);
 					}
 					maxLevel = upgradeSteps.length - (ignoreAscended ? 1 : 0);
+					if (Object.keys(upgrades).join("").includes("ascended") && !ignoreAscended)
+						ascended = true
 				}
 				if (Kits.selectionOptions[buildingId]) {
 					for (let k of Kits.selectionOptions[buildingId] || []) {
@@ -919,6 +921,8 @@ let Kits = {
 								chains.push([{type:"building", from:"selectionKit", id:k}]);
 							}
 							maxLevel = upgradeSteps.length - (ignoreAscended ? 1 : 0);
+							if (Object.keys(upgrades).join("").includes("ascended") && !ignoreAscended)
+								ascended = true
 						}
 					}
 				}
