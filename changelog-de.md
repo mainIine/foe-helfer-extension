@@ -11,8 +11,9 @@
 		- Inventargegenstände, die zu kompletten Gebäuden zusammengesetzt werden können
 		- Fragmente die zusammengesetzt werden können
 	- Erhabene Gebäude werden zusätzlich auch in ihrer nicht erhabenen Form erfasst
-	- wieviele erhabene Kits im Inventar vorrätig sind
+	- wie viele erhabene Kits im Inventar vorrätig sind
 	- wenn es ein Gebäude einer höheren Stufe gibt, was dafür nötig ist
+	- Größenfilter: Mehrfachauswahl möglich
 
 - Kits
 	- wurde reduziert auf Sets und Ketten
