@@ -78,7 +78,8 @@ let Productions = {
 	Rating: {
 		Data:null,
 		Types:null,
-		load: (overwrite=null) => {
+
+		load: (overwrite = null) => {
 			Productions.Rating.Data = Object.assign({
 				'strategy_points': {order:1,perTile:5,active:true},
 				'money': {order:2,perTile:null,active:false},
@@ -113,16 +114,6 @@ let Productions = {
 			}, overwrite || JSON.parse(localStorage.getItem('Productions.Rating.Data')||"{}"))
 			Productions.Rating.Types = Object.keys(Productions.Rating.Data).sort((a,b)=>Productions.Rating.Data[a].order-Productions.Rating.Data[b].order)
 			
-			
-			//conversion of old data - remove at some point------------------------------------
-			if (localStorage.getItem('ProductionRatingEnableds2')) {
-				let Rating = JSON.parse(localStorage.getItem('ProductionRatingEnableds2')||"{}")
-				for (let [type,active] of Object.entries(Rating)) {
-					if (Productions.Rating.Data[type]) Productions.Rating.Data[type].active = active
-				}
-				localStorage.removeItem('ProductionRatingEnableds2')
-				Productions.Rating.save()
-			}
 			if (localStorage.getItem('ProductionRatingProdPerTiles')) {
 				let RatingProdPerTiles = Object.assign({},JSON.parse(localStorage.getItem('ProductionRatingProdPerTiles')||"{}"))
 				for (let [type,perTile] of Object.entries(RatingProdPerTiles)) {
@@ -133,9 +124,11 @@ let Productions = {
 			}
 			//------------------------------------------------------------------------------
 		},
+
 		save:() => {
 			localStorage.setItem('Productions.Rating.Data', JSON.stringify(Productions.Rating.Data))
-		}		
+			// hier
+		}
 		
 	},
 
@@ -1507,15 +1500,12 @@ let Productions = {
 
 
 	ShowRating: (external = false, eraName = null) => {
-		if (!Productions.Rating.Data) Productions.Rating.load()
-		if (ActiveMap == 'OtherPlayer' && !external) return
-		let era = (eraName == null) ? CurrentEra : eraName
+		if (!Productions.Rating.Data) Productions.Rating.load();
+		if (ActiveMap == 'OtherPlayer' && !external) return;
+		let era = (eraName == null) ? CurrentEra : eraName;
 		
 		if ($('#ProductionsRating').length === 0) {
 			
-			Productions.BuildingsAll = Object.values(CityMap.createNewCityMapEntities())
-			Productions.setChainsAndSets(Productions.BuildingsAll)
-
 			HTML.Box({
 				id: 'ProductionsRating',
 				title: i18n('Boxes.ProductionsRating.Title'),
@@ -1533,23 +1523,27 @@ let Productions = {
 			});
 			$('#ProductionsRating').on('click', '.reset-button', function () {
 				if (window.confirm(i18n('Boxes.ProductionsRating.ConfirmReset'))) {
+					localStorage.removeItem('Productions.Rating.Data');
 					Productions.Rating.load();
 				    Productions.Rating.save();
 				    Productions.CalcRatingBody();
 				}
 			});
+			Productions.CalcRatingBody(era);
 
 		} else {
 			HTML.CloseOpenBox('ProductionsRating');
 		}
 
-		Productions.CalcRatingBody(era);
 	},
 
-	//AdditionalBuildings:[],
 	AdditionalSpecialBuildings:null,
 
 	CalcRatingBody: (era = '') => {
+		Productions.BuildingsAll = Object.values(CityMap.createNewCityMapEntities())
+		Productions.setChainsAndSets(Productions.BuildingsAll)
+		
+
 		// grab special buildings
 		if (!Productions.AdditionalSpecialBuildings) {
 			let spB = Object.values(MainParser.CityEntities).filter(x=> (x.is_special && !["O_","U_","V_","H_","Y_"].includes(x.id.substring(0,2))) || x.id.substring(0,11)=="W_MultiAge_")
@@ -1597,17 +1591,17 @@ let Productions = {
 			let uniqueBuildings = []
 			let buildingSizes = []
 
-			// get buildings from inventory
-			for(let InventoryItem of Object.values(MainParser.Inventory)){
-				let id = InventoryItem?.item?.cityEntityId;
-				
-				if(!id || id.slice(0, 2) !== 'W_') continue; // if starts not with "W_", continue
+			let InventoryBuildings = Productions.InventoryBuildings = Kits.BuildingsFromInventory()
 
-				let metaData = MainParser.CityEntities[InventoryItem.item.cityEntityId];
-				let building = CityMap.createNewCityMapEntity(metaData, Technologies.InnoEraNames[InventoryItem.item.level]||CurrentEra);
+			for (let [id,data] of Object.entries(InventoryBuildings)){
+				
+				//if(!id || id.slice(0, 2) !== 'W_') continue; // if starts not with "W_", continue
+
+				let metaData = MainParser.CityEntities[id];
+				let building = CityMap.createNewCityMapEntity(metaData, CurrentEra);
 				building.isInInventory = true;
 				Productions.BuildingsAll.push(building);
-				buildingCount[InventoryItem.item.cityEntityId+"I"] = InventoryItem.inStock;
+				buildingCount[id+"I"] = data.amount||1;
 			}
 
 			// get one of each building, only highest available era
@@ -1638,7 +1632,7 @@ let Productions = {
 				if (buildingSizes.find(x => x == buildingSize) == undefined)
 					buildingSizes.push(buildingSize)
 			}
-
+			
 			buildingSizes.sort((a,b)=>{
 				if (a < b) return -1
 				if (a > b) return 1
@@ -1677,27 +1671,27 @@ let Productions = {
 			h.push('<thead class="sticky">');
 			
 			h.push('<tr class="settings">')
-				h.push('<th colspan="'+(colNumber+4)+'"><div class="options">')
+				h.push('<th colspan="'+(colNumber+5)+'"><div class="options">')
 				h.push('<a class="btn-default" id="addMetaBuilding">' + i18n('Boxes.ProductionsRating.AddBuilding') + '</a>')
 				h.push('<label for="tilevalues"><input type="checkbox" id="tilevalues" />' + i18n('Boxes.ProductionsRating.ShowValuesPerTile') + '</label>')
 				h.push('<label for="showitems"><input type="checkbox" id="showitems" />' + i18n('Boxes.ProductionsRating.ShowItems') + '</label>')
-				h.push('<label for="showhighlighted"><input type="checkbox" id="showhighlighted" />' + i18n('Boxes.ProductionsRating.ShowHighlighted') + '</label>')
-				h.push('<div class="inventory">'+
-					'<label for="inventorybuildings"><input type="checkbox" id="inventorybuildings" />' + i18n('Boxes.ProductionsRating.ShowInventoryBuildings') + '</label>'+
-					'<label for="inventorybuildingscore">' + i18n('Boxes.ProductionsRating.InventoryBuildingScore') + ': <input type="number" size="6" value="'+(Productions.efficiencySettings.inventorybuildingscore*100)+'" id="inventorybuildingscore" /></label>'+
-					'</div>');
 				h.push('<input type="text" id="efficiencyBuildingFilter" size=20 placeholder="' + i18n('Boxes.ProductionsRating.Filter') + ': neo|eden" />')
+				h.push('<label for="showhighlighted" data-original-title="'+i18n('Boxes.ProductionsRating.ShowHighlightedExplanation')+'"><input type="checkbox" id="showhighlighted" />' + i18n('Boxes.ProductionsRating.ShowHighlighted') + '</label>')
+
+				h.push('<div class="inventory">'+
+					'<label for="inventorybuildings" data-original-title="'+i18n('Boxes.ProductionsRating.ShowInventoryBuildingsExplanation')+'"><input type="checkbox" id="inventorybuildings" />' + i18n('Boxes.ProductionsRating.ShowInventoryBuildings') + '</label>'+
+					'<label for="inventorybuildingscore" data-original-title="'+i18n('Boxes.ProductionsRating.InventoryBuildingScoreExplanation')+'">' + i18n('Boxes.ProductionsRating.InventoryBuildingScore') + ': <input type="number" size="6" value="'+(Productions.efficiencySettings.inventorybuildingscore*100)+'" id="inventorybuildingscore" /></label>'+
+					'</div>');
 				h.push('</div></th>');
 			h.push('</tr>');
 			h.push('<tr class="sorter-header">');
 			h.push('<th data-type="ratinglist" class="is-number ascending">' + i18n('Boxes.ProductionsRating.Score') + '</th>');
-			h.push('<th data-type="ratinglist"><div class="flex-between"><span>'+ i18n('Boxes.ProductionsRating.BuildingName') +'</span>' +
-			' <select name="buildingsize" id="buildingsize">');
-				h.push('<option value="'+i18n('Boxes.Productions.Headings.size')+'">'+i18n('Boxes.Productions.Headings.size')+'</option>')
-			for (let size of buildingSizes) {
-				h.push('<option>'+size+'</option>')
-			}
-			h.push('</select></div></th><th class="no-sort"></th>');
+			h.push('<th data-type="ratinglist" colspan="2"><div class="flex-between"><span>'+ i18n('Boxes.ProductionsRating.BuildingName') +'</span>' +
+			' <div name="buildingsize" id="buildingsize"><span>'+i18n('Boxes.Productions.Headings.size')+'</span><ul>');
+				for (let size of buildingSizes) {
+					h.push('<li data-value="'+size+'">'+size+'</li>')
+				}
+			h.push('</ul></div></div></th><th class="no-sort inventory-buildings"><img data-original-title="'+i18n('Boxes.ProductionsRating.InventoryTooltip')+'" class="game-cursor" src="' + extUrl + 'js/web/x_img/inventory.png" /></th>');
 			for (const type of combinedRatingTypes) {
 				let firstType = type;
 				let secondType = null;
@@ -1722,7 +1716,7 @@ let Productions = {
 			}
 			h.push('<th data-type="ratinglist" class="no-sort items">Items</th>');
 			h.push('</tr>');
-			h.push('<thead>');
+			h.push('</thead>');
 
 			h.push('<tbody class="ratinglist">');
 			for (const building of ratedBuildings) {
@@ -1737,26 +1731,24 @@ let Productions = {
 				[randomItems,randomUnits] = Productions.showBuildingItems(false, building)
 				h.push(`<tr class="${building.highlight?'additional ':''}${building.isInInventory?'inventory-building ':''}size${buildingSize}">`)
 				h.push('<td class="text-right" data-number="'+building.rating.totalScore * 100 +'">'+Math.round(building.rating.totalScore * 100)+'</td>')
-				h.push('<td data-text="'+helper.str.cleanup(building.name)+'" data-meta_id="'+building.entityId+'" data-era="'+(building.eraName=="AllAge"?"":building.eraName)+'" data-callback_tt="Tooltips.buildingTT" class="helperTT ' + (MainParser.Allies.buildingList?.[building.id]?"ally" : "") +'" '+ MainParser.Allies.tooltip(building.id) + '><span>'+building.name+'</span>')
+				
+				h.push('<td data-text="'+helper.str.cleanup(building.name)+'" class="'+(MainParser.Allies.buildingList?.[building.id]?"ally" : "") +'" '+ MainParser.Allies.tooltip(building.id) + '>');
+				if (!building.highlight && !building.isInInventory) 
+					h.push('<span class="show-all" data-original-title="'+i18n('Boxes.General.ShowOnMap')+'" data-name="'+building.name+'"><img class="game-cursor" src="' + extUrl + 'css/images/hud/open-eye.png"></span>');
+				h.push('<span data-meta_id="'+building.entityId+'" data-era="'+(building.eraName=="AllAge"?"":building.eraName)+'" data-callback_tt="Tooltips.buildingTT" class="helperTT">'+building.name+'</span>')
 				
 				let eraShortName = i18n("Eras."+Technologies.Eras[building.eraName]+".short")
 				if (eraShortName != "-")
 					h.push(" ("+i18n("Eras."+Technologies.Eras[building.eraName]+".short") +')')
 				h.push('</td><td class="text-right">')
-				// show amount in inventory if there are buildings
-				if (buildingCount[building.entityId+"I"] !== undefined && !building.isInInventory)
-					h.push('<span data-original-title="'+i18n('Boxes.ProductionsRating.InventoryTooltip')+', '+buildingCount[building.entityId+"I"]+'x"><img class="game-cursor" src="' + extUrl + 'js/web/x_img/inventory.png" /></span> ')
-				
 				// show amount in city if > 1
-				if (buildingCount[building.entityId+"C"] && buildingCount[building.entityId+"C"] > 1 && !MainParser.Allies.buildingList?.[building.id]) 
+				if (buildingCount[building.entityId+"C"] && buildingCount[building.entityId+"C"] > 1 && !MainParser.Allies.buildingList?.[building.id]) {
 					h.push('<span data-original-title="'+i18n('Boxes.ProductionsRating.CountTooltip')+'">' + buildingCount[building.entityId+"C"]+'x</span> ')
-				
-
-				if (!building.highlight && !building.isInInventory) 
-					h.push('<span class="show-all" data-name="'+building.name+'"><img class="game-cursor" src="' + extUrl + 'css/images/hud/open-eye.png"></span>')
-				else if (building.isInInventory) {
-					h.push('<span data-original-title="'+i18n('Boxes.ProductionsRating.InventoryTooltip')+'">'+buildingCount[building.entityId+"I"]+'x <img class="game-cursor" src="' + extUrl + 'js/web/x_img/inventory.png" /></span>')
 				}
+				h.push('</td><td class="text-right">')
+				// show additional buildings from inventory
+				if ((buildingCount[building.entityId+"I"] !== undefined && !building.isInInventory) || building.isInInventory)
+					h.push('<span data-callback_tt="Kits.InventoryTooltip" data-id="'+building.entityId+'" class="helperTT"><img class="game-cursor" src="' + srcLinks.get(`/shared/gui/event_hub/event_meta_icon_checkmark.png`,true) + '" /></span> ')
 				h.push('</td>')
 
 				for (const type of combinedRatingTypes) {
@@ -1877,7 +1869,7 @@ let Productions = {
 						}
 					})
 					$('#efficiencyBuildingFilter').val(search.source=="(?:)"?"":search.source)
-					$('#efficiencyBuildingFilter').trigger("input")								
+					$('#efficiencyBuildingFilter').trigger("input")
 				},500)
 			})
 
@@ -1941,19 +1933,43 @@ let Productions = {
 					}
 				});
 			});
+
 			
-			// result: building size filter
 			$('#buildingsize').on('click', e => {
 				e.stopPropagation();
-				let filter = $('#buildingsize').val();
+				$('#buildingsize').toggleClass('active');
+			});
+			
+			// result: building size filter
+			let filteredSizes = [];
+			$('#buildingsize li').on('click', e => {
+				e.stopPropagation();
+				let filter = parseInt(e.target.getAttribute('data-value'));
+				e.target.classList.toggle('selected');
+				
+				if (filteredSizes.includes(filter)) {
+					let index = filteredSizes.indexOf(filter);
+					filteredSizes.splice(index, 1);
+				}
+				else {
+					filteredSizes.push(filter);
+				}
 
-				if (isNaN(parseInt(filter))) {
+				$('.ratinglist tr').addClass('hidden');
+				if (isNaN(parseInt(filter)) || filteredSizes.length === 0) {
 					$('.ratinglist tr').removeClass('hidden');
 					return;
 				}
-				$('.ratinglist tr').addClass('hidden');
-				$('.ratinglist tr.size'+filter).each((x,y) => {
-					y.classList.remove('hidden')
+				$('.ratinglist tr').each((i,elem) => {
+					let size = elem.classList.values().find(x => x.includes('size'));
+					if (size) {
+						for (let filteredSize of filteredSizes) {
+							if ("size"+filteredSize === size) {
+								elem.classList.remove('hidden');
+								return;
+							}
+						}
+					}
 				});
 			});
 			
