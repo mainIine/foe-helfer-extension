@@ -5,7 +5,7 @@
 
 **Update**
 - Efficiency Overview:
-	- If the option "Inventory" is active, now also assembleable Buildings will be listed. The tooltip for the inventory icon of the respective building will show:
+	- If the option "Inventory" is active, now also assemble Buildings will be listed. The tooltip for the inventory icon of the respective building will show:
 	- how many buildings of this type could be placed, which upgrades are necessary for that and which upgrade paths are available. Therein the following will be considered:
 		- complete buildings in inventory
 		- buildings in the city that may be improved by using items (kits) from inventory
@@ -21,7 +21,7 @@
 
 **Removed**
 - Boost-Inventory
-	- was replaced by above mentioned change to the efficiency overview
+	- was replaced by above-mentioned change to the efficiency overview
 
 **BugFix**
 

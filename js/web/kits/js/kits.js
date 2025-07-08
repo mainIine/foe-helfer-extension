@@ -1006,7 +1006,7 @@ let Kits = {
 					for (let chain of chains) {
 						let compressed=[]
 						for (let element of chain) {
-							if (element.id==compressed[compressed.length-1]?.id||"") {
+							if (element.id === compressed[compressed.length-1]?.id||"") {
 								compressed[compressed.length-1].count++;
 							} else {
 								compressed.push({id:element.id,type:element.type,from:element.from,count:1})
@@ -1113,7 +1113,7 @@ let Kits = {
 
 			for (let c of chain.chain) {
 				tooltip += `<div class="inventoryChainItem ${c.type} ${c.from}">`;
-				tooltip += `<div class="inventoryChainItemImg"><img src="${srcLinks.getReward(Kits.specialCases[c.id] || c.id)}"></div>`;
+				tooltip += `<div class="inventoryChainItemImg"><img src="${srcLinks.getReward(Kits.specialCases[c.id] || c.id)}" alt=""></div>`;
 				tooltip += `<div class="inventoryChainItemDesc">`;
 
 				if (c.count > 1) {
