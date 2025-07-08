@@ -64,7 +64,7 @@ let ApiURL = 'https://api.foe-rechner.de/',
 	ExtWorld = window.location.hostname.split('.')[0],
 	CurrentEra = null,
 	CurrentEraID = null,
-	GoodsData = [],
+	GoodsData = {},
 	GoodsList = [],
 	FHResourcesList = [],
 	PlayerDict = {},
@@ -257,7 +257,6 @@ GetFights = () =>{
 	});
 	FoEproxy.addFoeHelperHandler('InventoryUpdated', () => {
 		MainParser.Allies.updateAllyList()
-		Kits.PopulateUpgradeSchemes();
 	});
 
 	// Portrait-Mapping für Spieler Avatare

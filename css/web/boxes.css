@@ -527,10 +527,6 @@ p {
 	background-image: url('../images/menu/chat.png');
 }
 
-[id$=boost_inventory-Btn] span {
-	background-image: url('../images/menu/boost_inventory.png');
-}
-
 [id$=settings-Btn] span {
 	background-image: url('../images/menu/settings.png');
 }

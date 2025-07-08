@@ -63,7 +63,6 @@ let _menu = {
 		'compare_friends_threads',
 		'discord',
 		'findGB',
-		'boost_inventory'
 		//'qiMap'
 		// 'marketOffers',
 	],
@@ -920,19 +919,6 @@ let _menu = {
 			if ($('#castle-Btn').hasClass('hud-btn-red') === false) {
 				Castle.BuildBox();
 			}
-		});
-
-		return btn.append(btn_sp);
-	},
-
-	/**
-	 * Castle System
-	 */
-	boost_inventory_Btn: () => {
-		let btn = _menu.MakeButton('boost_inventory', i18n('Menu.BoostInventory.Title'), i18n('Menu.BoostInventory.Desc'));
-
-		let btn_sp = $('<span />').bind('click', function () {
-			BoostInventory.Init();
 		});
 
 		return btn.append(btn_sp);

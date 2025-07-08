@@ -2,8 +2,8 @@
 	"name": "__MSG_appName__",
 	"description": "__MSG_appDesc__",
 	"default_locale": "en",
-	"version": "3.11.5.0",
- 	
+	"version": "3.11.6.0",
+
 	"manifest_version": 3,
 	"permissions": [
 		"alarms",
@@ -43,7 +43,7 @@
 			"matches": [ "https://*/*" ]
 		}
 	],
-	
+
 	"content_scripts": [
 		{
 			"matches": ["https://*.forgeofempires.com/*"],
