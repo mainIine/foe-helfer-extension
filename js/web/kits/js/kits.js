@@ -102,7 +102,7 @@ let Kits = {
 					}).on('change', Kits._filter)
 				)
 			).append(
-				$('<label />').attr({class: 'game-cursor'}).text(i18n('Boxes.Kits.FilterItems') + ':\xA0').append(
+				$('<label />').attr({class: 'game-cursor'}).text(i18n('Boxes.General.FilterItems') + ':\xA0').append(
 					$('<input />').attr({
 						class: 'game-cursor',
 						type: 'text',

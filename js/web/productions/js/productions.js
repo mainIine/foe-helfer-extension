@@ -1463,13 +1463,13 @@ let Productions = {
 			return i18n('Boxes.Productions.def_boost_defender');
 		}
 		else if (GoodType.includes('battleground')) {
-			return i18n('Boxes.Kits.Guild_Battlegrounds');
+			return i18n('Boxes.General.Guild_Battlegrounds');
 		}
 		else if (GoodType.includes('guild_expedition')) {
 			return i18n('Gilden-Expeditionen');
 		}
 		else if (GoodType.includes('guild_raids')) {
-			return i18n('Boxes.Kits.Quantum_Incursion');
+			return i18n('Boxes.General.Quantum_Incursion');
 		}
 		else if (GoodType === 'goods-next') {
 			return i18n('Boxes.Productions.goods_next');
@@ -2181,7 +2181,7 @@ let Productions = {
         h = `<div>
 					<table class="foe-table sortable-table">
 						<thead class="sticky">
-							<tr class="sorter-header"><th data-type="itemSourcesList"><input type="text" class="filterTable" placeholder="${i18n('Boxes.Kits.FilterItems')}" /> Items</th></tr>
+							<tr class="sorter-header"><th data-type="itemSourcesList"><input type="text" class="filterTable" placeholder="${i18n('Boxes.General.FilterItems')}" /> Items</th></tr>
 						</thead>
 						<tbody class="itemSourcesList">`
 							for (let item of Object.values(items)) {
@@ -2260,7 +2260,7 @@ let Productions = {
         h = `<div>
 					<table class="foe-table sortable-table">
 						<thead class="sticky">
-							<tr class="sorter-header"><th data-type="boostList"><input type="text" class="filterTable" placeholder="${i18n('Boxes.Kits.FilterItems')}" /> Boosts</th></tr>
+							<tr class="sorter-header"><th data-type="boostList"><input type="text" class="filterTable" placeholder="${i18n('Boxes.General.FilterItems')}" /> Boosts</th></tr>
 						</thead>
 						<tbody>`
 							for (let [group, buildings] of Object.entries(groupedBuildings)) {
