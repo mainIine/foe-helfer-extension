@@ -1720,7 +1720,7 @@ let Productions = {
 				}
 				h.push('<th data-type="ratinglist" style="width:1%" class="is-number text-center buildingvalue"'+
 					(secondType !== null ? ` data-original-title="${Productions.Rating.Data[firstType].perTile} + ${Productions.Rating.Data[secondType]?.perTile} / 2"` : '')+
-					'><span class="resicon ' + firstType + '"></span>'+
+					'><span class="resicon ' + firstType + '"' + (secondType === null ? ' style="margin-bottom:0"' : '') + '></span>'+ (secondType === null ? '<br>' : '') +
 					(secondType !== null ? '<span class="resicon ' + secondType + '"></span><i>': '')+
 					((Productions.Rating.Data[firstType].perTile + (Productions.Rating.Data[secondType]?.perTile || 0) || 0) /divider)+
 					'</i></th>');
