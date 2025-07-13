@@ -885,11 +885,11 @@ let Productions = {
 		// gather all different eras
 		buildingIds.forEach(b => {
 			let building = CityMap.getBuildingById(b.id)
-			if (building.player_id === ExtPlayerID) {
+			if (building.player_id == ExtPlayerID) {
 				let allGoods = CityMap.getBuildingGoodsByEra(false, building)
-				if (allGoods !== undefined) {
+				if (allGoods != undefined) {
 					for (const [era, value] of Object.entries(allGoods.eras)) {
-						if (eras.find(x => x === era) === undefined) 
+						if (eras.find(x => x == era) == undefined) 
 							eras.push(parseInt(era))
 					}
 				}
@@ -902,6 +902,8 @@ let Productions = {
 			if (a > b) return 1
 			return 0
 		}).reverse()
+
+		console.log(eras);
 
 		// prepare array with total number of goods for each era
 		for (const era of eras) {
