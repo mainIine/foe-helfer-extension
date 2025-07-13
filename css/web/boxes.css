@@ -2122,8 +2122,9 @@ tr.sorter-header th:not(.no-sort).descending:after {
 .d-none {
 	display: none;
 }
-.d-none {
-	display: none;
+.flex-between {
+	display: flex;
+	justify-content: space-between;
 }
 /*fallback for all tools that do not specify their own scale*/
 :root {
