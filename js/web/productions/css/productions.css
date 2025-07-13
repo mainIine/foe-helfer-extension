@@ -355,7 +355,7 @@
 #ProductionsRatingBody td:nth-child(3) img {
 	filter: sepia(1);
 }
-#ProductionsRatingBody tr .show-all img:hover, #ProductionsRatingBody td:nth-child(4) img:hover {
+#ProductionsRatingBody tr .show-all img:hover, #ProductionsRatingBody td:nth-child(3) img:hover {
 	opacity: 1;
 	filter: none;
 }
