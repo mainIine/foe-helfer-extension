@@ -1,5 +1,11 @@
 ## Changelog - Extension
 
+##### 3.11.6.1
+
+**BugFix**
+- Produktionsübersicht: In der Gütertabelle wurden die Daten munter vervielfacht, was auch zu Problemen an anderen Stellen geführt hat
+- Effizienzübersicht: Sortieren nach Wert/Feld war nicht mehr möglich und ein kleiner Anzeigefehler wurde behoben
+
 ##### 3.11.6.0
 
 **Update**

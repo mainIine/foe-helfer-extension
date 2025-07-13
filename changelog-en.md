@@ -1,5 +1,10 @@
 ## Changelog - Extension
 
+##### 3.11.6.1
+
+**BugFix**
+- Production Overview: Columns in the goods table were multiplying by A LOT, which lead also to other issues
+- Efficiency Overview: Sorting by value/tile was broken and we fixed a small display issue in the table head
 
 ##### 3.11.6.0
 
