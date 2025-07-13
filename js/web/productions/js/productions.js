@@ -901,9 +901,7 @@ let Productions = {
 			if (a < b) return -1
 			if (a > b) return 1
 			return 0
-		}).reverse()
-
-		console.log(eras);
+		}).reverse();
 
 		// prepare array with total number of goods for each era
 		for (const era of eras) {
