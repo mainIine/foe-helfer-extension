@@ -773,12 +773,14 @@ input[id*="ProdPerTile"] {
 }
 
 #ShowFSPCalculator {
-	position: relative;
-    right: -75px;
-    margin-left: -75px;
+	text-align: right;
 }
 #ProductionsRatingBody #FSPCalculator span.resicon {
     position: relative;
     z-index: 2;
     margin-bottom: -8px;
+}
+
+#FSPCalculator {
+	text-align: center;
 }
