@@ -1762,11 +1762,11 @@ let Productions = {
 				h.push(`<tr class="${building.highlight?'additional ':''}${building.isInInventory?'inventory-building ':''}size${buildingSize}">`)
 				h.push('<td class="text-right" data-number="'+ (building.rating.totalScore * 100) +'">'+Math.round(building.rating.totalScore * 100)+'</td>')
 
-				h.push('<td data-text="'+helper.str.cleanup(building.name)+'" class="'+(MainParser.Allies.buildingList?.[building.id]?"ally" : "") +'" '+ MainParser.Allies.tooltip(building.id) + '><div class="flex-between"><div>');
+				h.push('<td data-text="'+helper.str.cleanup(building.name)+'" class="'+(MainParser.Allies.buildingList?.[building.id]?"ally" : "") +'"><div class="flex-between"><div>');
 				if (!building.highlight && !building.isInInventory)
 					h.push('<span class="show-all" data-original-title="'+i18n('Boxes.General.ShowOnMap')+'" data-name="'+building.name+'"><img class="game-cursor" alt="" src="' + extUrl + 'css/images/hud/open-eye.png"></span>');
 
-				h.push('<span data-meta_id="'+building.entityId+'" data-era="'+(building.eraName==="AllAge"?"":building.eraName)+'" data-callback_tt="Tooltips.buildingTT" class="helperTT">'+building.name+'</span>')
+				h.push('<span data-meta_id="'+building.entityId+'" data-eff="'+building.rating.totalScore * 100+'" data-era="'+(building.eraName==="AllAge"?"":building.eraName)+'" data-callback_tt="Tooltips.buildingTT" class="helperTT" '+ MainParser.Allies.tooltip(building.id) + '>'+building.name+'</span>')
 
 				let eraShortName = i18n("Eras."+Technologies.Eras[building.eraName]+".short")
 
