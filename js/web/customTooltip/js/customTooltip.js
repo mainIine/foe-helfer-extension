@@ -107,7 +107,8 @@ let Tooltips = {
         let era =  e?.currentTarget?.dataset?.era||Technologies.InnoEraNames[MainParser?.CityMapData[e?.currentTarget?.dataset?.id]?.level]
         let meta = MainParser.CityEntities[id]
         let allies =  JSON.parse(e?.currentTarget?.dataset?.allies||"null")
-        let eff = Math.round(e?.currentTarget?.previousElementSibling?.dataset?.number)
+        let eff =  Math.round(JSON.parse(e?.currentTarget?.dataset?.eff||"null"))
+        //let eff = Math.round(e?.currentTarget?.previousElementSibling?.dataset?.number)
         if  (!eff && era) eff=Math.round(100 * Productions.rateBuildings([id],true,era)?.[0]?.rating.totalScore||0)
 
         let h = `<div class="buildingTT">
