@@ -771,3 +771,14 @@ input[id*="ProdPerTile"] {
 	opacity: 1;
 	color: var(--text-success);
 }
+
+#ShowFSPCalculator {
+	position: relative;
+    right: -75px;
+    margin-left: -75px;
+}
+#ProductionsRatingBody #FSPCalculator span.resicon {
+    position: relative;
+    z-index: 2;
+    margin-bottom: -8px;
+}

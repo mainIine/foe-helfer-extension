@@ -18,7 +18,7 @@ let Productions = {
 	BuildingsProducts: [],
 	BuildingsProductsGroups: [],
 	ShowDaily: false,
-
+	ratedBuildings:null,
 	ActiveTab: 1,
 
 	Tabs: [],
@@ -1554,6 +1554,16 @@ let Productions = {
 
 	AdditionalSpecialBuildings:null,
 
+	efficiencyTT: (e) => {
+		let type=e?.currentTarget?.dataset?.type
+		let y = Productions.ratedBuildings.filter(x=>(x?.rating?.[type]>0)).map(x=>(x.rating[type])).sort((a,b) => a - b);
+		let tooltip = `<h2>${i18n("Boxes.Efficiency.TooltipTitle")}</h2>`
+		tooltip +=`<table class="foe-table"><tr><td>${i18n("Boxes.Efficiency.Best")}:</td><td>${y[y.length-1].toFixed(2)}</td></tr>`
+		tooltip += `<tr><td>${i18n("Boxes.Efficiency.Fifth")}:</td><td>${y[Math.max(y.length-5,0)].toFixed(2)}</td></tr>`
+		tooltip += `<tr><td>${i18n("Boxes.Efficiency.top10percent")}:</td><td>${y[Math.round(y.length*0.9)].toFixed(2)}</td></tr></table>`
+		return tooltip
+	},
+
 	CalcRatingBody: (era = '') => {
 		Productions.BuildingsAll = Object.values(CityMap.createNewCityMapEntities())
 		Productions.setChainsAndSets(Productions.BuildingsAll)
@@ -1587,11 +1597,12 @@ let Productions = {
 				h.push('<span class="no-grow resicon ' + type + '"></span>')
 				h.push('<label for="Enabled-'+type+'">' + Productions.GetTypeName(type) + '</label>')
 				if (Productions.Rating.Data[type].perTile !== null) {
-					h.push('<input type="number" id="ProdPerTile-' + type + '" step="0.01" min="0" max="1000000" class="no-grow '+(Productions.Rating.Data[type].active ? '': 'hidden')+'" value="' + Productions.Rating.Data[type].perTile + '">')
+					h.push('<input type="number" id="ProdPerTile-' + type + '" step="0.01" min="0" max="1000000" class="no-grow helperTT '+(Productions.Rating.Data[type].active ? '': 'hidden')+'" value="' + Productions.Rating.Data[type].perTile + '", data-callback_tt="Productions.efficiencyTT", data-type="'+type+'-tile">')
 				}
 				else {
 					h.push('<input type="number" class="hidden no-grow" id="ProdPerTile-' + type + '" step="0.01" min="0" max="1000000" value="0">')
 				}
+				if (type=="fsp") h.push(`<span id="ShowFSPCalculator">🧮</span>`)
 				h.push('</li>')
 			}
 			h.push('<li><a class="toggle-tab btn-default" data-value="Results"><span>' + i18n('Boxes.ProductionsRating.Results') + '</span></a><a class="reset-button btn-default" data-value="Results"><span>' + i18n('Boxes.ProductionsRating.Reset') + '</span></a></li>')
@@ -1656,8 +1667,8 @@ let Productions = {
 
 			let selectedAdditionals = Object.values(Productions.AdditionalSpecialBuildings).filter(x=>x.selected).map(x=>x.id);
 
-			ratedBuildings = Productions.rateBuildings(uniqueBuildings,false,era).concat(Productions.rateBuildings(selectedAdditionals,true,era))
-
+			Productions.ratedBuildings = ratedBuildings = Productions.rateBuildings(uniqueBuildings,false,era).concat(Productions.rateBuildings(selectedAdditionals,true,era))
+			
 			ratedBuildings.sort((a,b) => {
 				if (a.rating.totalScore < b.rating.totalScore) return -1
 				if (a.rating.totalScore > b.rating.totalScore) return 1
@@ -1975,7 +1986,36 @@ let Productions = {
 					}
 				});
 			});
-
+			// settings: show FSP calculator
+			$("#ShowFSPCalculator").on('click', e => {
+				if ($("#FSPCalculator").length === 1) {
+					$("#FSPCalculator").remove()
+					return
+				} 
+				h=`<div id="FSPCalculator"><div><h2>${i18n("Boxes.Efficiency.TitleFSPCalculator")}</h2>`
+				for (let x of ["strategy_points","clan_goods","goods-previous","goods-current","goods-next"]) {
+					h+=`<div><span class="resicon ${x}"></span> <input type="number" step="0.01" min="0" max="1000000" class="no-grow ${x}"></div>`				
+				}
+				h+="</div>"
+				$(h).insertAfter($("li.fsp")).promise().done(()=>{
+					$("#FSPCalculator input").on('input', e => {
+						let sum = 0
+						for (let x of ["strategy_points","clan_goods","goods-previous","goods-current","goods-next"]) {
+							if ($("#ProdPerTile-"+x).length == 1 && $("#FSPCalculator input."+x).length==1) {
+								val = Number($("#ProdPerTile-"+x).val())
+								amount = Number($("#FSPCalculator input."+x).val())
+								if (val > 0) sum += (amount / val)
+							}
+						}
+						if (sum > 0) {
+							let FSPeff = Math.round(30 / sum*100)/100
+							//$("#ProdPerTile-fsp").val(FSPeff)
+							//$("#ProdPerTile-fsp").trigger("blur")
+							console.log(FSPeff)
+						}
+					})
+				})
+			})
 
 			$('#buildingsize').on('click', e => {
 				e.stopPropagation();
