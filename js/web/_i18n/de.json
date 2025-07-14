@@ -334,6 +334,8 @@
     "Boxes.Efficiency.Fifth": "Top 5",
     "Boxes.Efficiency.top10percent": "Top 10%",
     "Boxes.Efficiency.TooltipTitle": "Vergleichswerte aus deiner Stadt",
+    "Boxes.Efficiency.TitleFSPCalculator":"Wieviel wird je SPA Kit erwartet?",
+    "Boxes.Efficiency.ShowFSPCalculator":"SPA Rechner anzeigen",
     "Boxes.EventChests.Chance": "Chance",
     "Boxes.EventChests.Cost": "Kosten",
     "Boxes.EventChests.CostPerPrize": "Kosten/Preis",

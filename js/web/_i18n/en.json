@@ -330,6 +330,8 @@
     "Boxes.Efficiency.Fifth": "Top 5",
     "Boxes.Efficiency.top10percent": "Top 10%",
     "Boxes.Efficiency.TooltipTitle": "Comparisons from your city",
+    "Boxes.Efficiency.TitleFSPCalculator":"How much is expected per FSP-kit?",
+    "Boxes.Efficiency.ShowFSPCalculator":"Show FSP Calculator",
     "Boxes.EventChests.Chance": "Chance",
     "Boxes.EventChests.Cost": "Costs",
     "Boxes.EventChests.CostPerPrize": "Cost/Prize",

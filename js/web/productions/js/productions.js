@@ -1596,13 +1596,13 @@ let Productions = {
 				h.push('<input id="Enabled-' + type + '" class="no-grow enabled game-cursor" ' + (activeSetting ? 'checked' : '') + ' type="checkbox">')
 				h.push('<span class="no-grow resicon ' + type + '"></span>')
 				h.push('<label for="Enabled-'+type+'">' + Productions.GetTypeName(type) + '</label>')
+				if (type=="fsp") h.push(`<span id="ShowFSPCalculator" title="${i18n("Boxes.Efficiency.ShowFSPCalculator")}">🧮</span>`)
 				if (Productions.Rating.Data[type].perTile !== null) {
 					h.push('<input type="number" id="ProdPerTile-' + type + '" step="0.01" min="0" max="1000000" class="no-grow helperTT '+(Productions.Rating.Data[type].active ? '': 'hidden')+'" value="' + Productions.Rating.Data[type].perTile + '", data-callback_tt="Productions.efficiencyTT", data-type="'+type+'-tile">')
 				}
 				else {
 					h.push('<input type="number" class="hidden no-grow" id="ProdPerTile-' + type + '" step="0.01" min="0" max="1000000" value="0">')
 				}
-				if (type=="fsp") h.push(`<span id="ShowFSPCalculator">🧮</span>`)
 				h.push('</li>')
 			}
 			h.push('<li><a class="toggle-tab btn-default" data-value="Results"><span>' + i18n('Boxes.ProductionsRating.Results') + '</span></a><a class="reset-button btn-default" data-value="Results"><span>' + i18n('Boxes.ProductionsRating.Reset') + '</span></a></li>')
@@ -1970,7 +1970,7 @@ let Productions = {
 				let type = elem.attr('id').replace('ProdPerTile-','');
 				Productions.Rating.Data[type].perTile = parseFloat(elem.val()) || 0;
 				Productions.Rating.save();
-				Productions.CalcRatingBody();
+				//Productions.CalcRatingBody();
 			});
 
 			// result: search function
@@ -2009,8 +2009,8 @@ let Productions = {
 						}
 						if (sum > 0) {
 							let FSPeff = Math.round(30 / sum*100)/100
-							//$("#ProdPerTile-fsp").val(FSPeff)
-							//$("#ProdPerTile-fsp").trigger("blur")
+							$("#ProdPerTile-fsp").val(FSPeff)
+							$("#ProdPerTile-fsp").trigger("blur")
 							console.log(FSPeff)
 						}
 					})
