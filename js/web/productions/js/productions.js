@@ -1558,10 +1558,11 @@ let Productions = {
 	efficiencyTT: (e) => {
 		let type=e?.currentTarget?.dataset?.type
 		let y = Productions.ratedBuildings.filter(x=>(x?.rating?.[type]>0)).map(x=>(x.rating[type])).sort((a,b) => a - b);
+		if (!y || y.length == 0) return
 		let tooltip = `<h2>${i18n("Boxes.Efficiency.TooltipTitle")}</h2>`
 		tooltip +=`<table class="foe-table"><tr><td>${i18n("Boxes.Efficiency.Best")}:</td><td>${y[y.length-1].toFixed(2)}</td></tr>`
 		tooltip += `<tr><td>${i18n("Boxes.Efficiency.Fifth")}:</td><td>${y[Math.max(y.length-5,0)].toFixed(2)}</td></tr>`
-		tooltip += `<tr><td>${i18n("Boxes.Efficiency.top10percent")}:</td><td>${y[Math.round(y.length*0.9)].toFixed(2)}</td></tr></table>`
+		tooltip += `<tr><td>${i18n("Boxes.Efficiency.top10percent")}:</td><td>${y[Math.round((y.length-1)*0.9)].toFixed(2)}</td></tr></table>`
 		return tooltip
 	},
 
@@ -1600,6 +1601,63 @@ let Productions = {
 		}
 		let h = [];
 
+		let buildingCount = {}
+		let uniqueBuildings = []
+		let buildingSizes = []
+		let ratedBuildings = []
+
+		let InventoryBuildings = Productions.InventoryBuildings = Kits.BuildingsFromInventory()
+
+		for (let [id,data] of Object.entries(InventoryBuildings)){
+
+			//if(!id || id.slice(0, 2) !== 'W_') continue; // if starts not with "W_", continue
+
+			let metaData = MainParser.CityEntities[id];
+			let building = CityMap.createNewCityMapEntity(metaData, CurrentEra);
+			building.isInInventory = true;
+			Productions.BuildingsAll.push(building);
+			buildingCount[id+"I"] = data.amount||1;
+		}
+
+		// get one of each building, only highest available era
+		for (const building of Productions.BuildingsAll) {
+			if (building === undefined || building.type === 'street' || building.type === 'military' || building.id >= 2000000000 || building.type.includes('hub')) continue
+
+			let compare = building.name
+			if (MainParser.Allies.buildingList?.[building.id]) {
+				compare += "+" + Object.keys(MainParser.Allies.buildingList?.[building.id]).join("+")
+			}
+			let foundBuildingIndex = uniqueBuildings.findIndex(x => x.name === compare && x.isInInventory === building.isInInventory && !MainParser.Allies.buildingList?.[x.id])
+			let inventoryIdentifier = (building.isInInventory ? "I" : "C");
+			if (foundBuildingIndex === -1) {
+				uniqueBuildings.push(building)
+				if (buildingCount[building.entityId+inventoryIdentifier] === undefined)
+					buildingCount[building.entityId+inventoryIdentifier] = 1
+				delete Productions.AdditionalSpecialBuildings[building.entityId]
+			} else {
+				let foundBuilding = uniqueBuildings[foundBuildingIndex]
+				buildingCount[building.entityId+inventoryIdentifier] += 1
+
+				if (Technologies.InnoEras[foundBuilding.eraName] < Technologies.InnoEras[building.eraName])
+					uniqueBuildings[foundBuildingIndex] = building
+			}
+
+			// gather building sizes
+			let buildingSize = building.size.length * building.size.width;
+			if (buildingSizes.find(x => x === buildingSize) === undefined)
+				buildingSizes.push(buildingSize)
+		}
+
+		buildingSizes.sort((a,b)=>{
+			if (a < b) return -1
+			if (a > b) return 1
+			return 0
+		});
+
+		let selectedAdditionals = Object.values(Productions.AdditionalSpecialBuildings).filter(x=>x.selected).map(x=>x.id);
+
+		Productions.ratedBuildings = ratedBuildings = Productions.rateBuildings(uniqueBuildings,false,era).concat(Productions.rateBuildings(selectedAdditionals,true,era))
+
 		if (Productions.RatingCurrentTab === 'Settings') {
 			h.push('<div id="ProductionsRatingSettings">')
 			h.push('<a id="RatingsResults" class="toggle-tab btn-default btn-tight" data-value="Results"><span>' + i18n('Boxes.ProductionsRating.Results') + '</span></a>')
@@ -1618,12 +1676,12 @@ let Productions = {
 				h.push('<span class="no-grow resicon ' + type + '"></span>')
 				h.push('<label for="Enabled-'+type+'">' + Productions.GetTypeName(type) + '</label>')
 				if (type=="fsp") h.push(`<span id="ShowFSPCalculator" class="clickable" data-original-title="${i18n("Boxes.Efficiency.ShowFSPCalculator")}">🧮</span>`)
-				if (Productions.Rating.Data[type].perTile !== null) {
-					h.push('<input type="number" id="ProdPerTile-' + type + '" step="0.01" min="0" max="1000000" class="no-grow helperTT '+(Productions.Rating.Data[type].active ? '': 'hidden')+'" value="' + Productions.Rating.Data[type].perTile + '", data-callback_tt="Productions.efficiencyTT", data-type="'+type+'-tile">')
-				}
-				else {
-					h.push('<input type="number" class="hidden no-grow" id="ProdPerTile-' + type + '" step="0.01" min="0" max="1000000" value="0">')
-				}
+				//if (Productions.Rating.Data[type].perTile !== null) {
+				h.push('<input type="number" id="ProdPerTile-' + type + '" step="0.01" min="0" max="1000000" class="no-grow helperTT '+(Productions.Rating.Data[type].active ? '': 'hidden')+'" value="' + (Productions.Rating.Data[type].perTile||0) + '", data-callback_tt="Productions.efficiencyTT", data-type="'+type+'-tile">')
+				//}
+				//else {
+				//	h.push('<input type="number" class="hidden no-grow" id="ProdPerTile-' + type + '" step="0.01" min="0" max="1000000" value="0">')
+				//}
 				h.push('</li>')
 			}
 			h.push('<li><a class="toggle-tab btn-default" data-value="Results"><span>' + i18n('Boxes.ProductionsRating.Results') + '</span></a><a class="reset-button btn-default" data-value="Results"><span>' + i18n('Boxes.ProductionsRating.Reset') + '</span></a></li>')
@@ -1634,61 +1692,6 @@ let Productions = {
 		}
 
 		else if (Productions.RatingCurrentTab === 'Results') {
-			let buildingCount = {}
-			let uniqueBuildings = []
-			let buildingSizes = []
-
-			let InventoryBuildings = Productions.InventoryBuildings = Kits.BuildingsFromInventory()
-
-			for (let [id,data] of Object.entries(InventoryBuildings)){
-
-				//if(!id || id.slice(0, 2) !== 'W_') continue; // if starts not with "W_", continue
-
-				let metaData = MainParser.CityEntities[id];
-				let building = CityMap.createNewCityMapEntity(metaData, CurrentEra);
-				building.isInInventory = true;
-				Productions.BuildingsAll.push(building);
-				buildingCount[id+"I"] = data.amount||1;
-			}
-
-			// get one of each building, only highest available era
-			for (const building of Productions.BuildingsAll) {
-				if (building === undefined || building.type === 'street' || building.type === 'military' || building.id >= 2000000000 || building.type.includes('hub')) continue
-
-				let compare = building.name
-				if (MainParser.Allies.buildingList?.[building.id]) {
-					compare += "+" + Object.keys(MainParser.Allies.buildingList?.[building.id]).join("+")
-				}
-				let foundBuildingIndex = uniqueBuildings.findIndex(x => x.name === compare && x.isInInventory === building.isInInventory && !MainParser.Allies.buildingList?.[x.id])
-				let inventoryIdentifier = (building.isInInventory ? "I" : "C");
-				if (foundBuildingIndex === -1) {
-					uniqueBuildings.push(building)
-					if (buildingCount[building.entityId+inventoryIdentifier] === undefined)
-						buildingCount[building.entityId+inventoryIdentifier] = 1
-					delete Productions.AdditionalSpecialBuildings[building.entityId]
-				} else {
-					let foundBuilding = uniqueBuildings[foundBuildingIndex]
-					buildingCount[building.entityId+inventoryIdentifier] += 1
-
-					if (Technologies.InnoEras[foundBuilding.eraName] < Technologies.InnoEras[building.eraName])
-						uniqueBuildings[foundBuildingIndex] = building
-				}
-
-				// gather building sizes
-				let buildingSize = building.size.length * building.size.width;
-				if (buildingSizes.find(x => x === buildingSize) === undefined)
-					buildingSizes.push(buildingSize)
-			}
-
-			buildingSizes.sort((a,b)=>{
-				if (a < b) return -1
-				if (a > b) return 1
-				return 0
-			});
-
-			let selectedAdditionals = Object.values(Productions.AdditionalSpecialBuildings).filter(x=>x.selected).map(x=>x.id);
-
-			Productions.ratedBuildings = ratedBuildings = Productions.rateBuildings(uniqueBuildings,false,era).concat(Productions.rateBuildings(selectedAdditionals,true,era))
 			
 			ratedBuildings.sort((a,b) => {
 				if (a.rating.totalScore < b.rating.totalScore) return -1
@@ -1981,6 +1984,7 @@ let Productions = {
 
 				if (isChecked) {
 					Productions.Rating.Data[type].perTile = parseFloat(elem.parent().children('input[type=number]').val()) || 0
+					Productions.CalcRatingBody();
 				}
 				Productions.Rating.save()
 			})
@@ -1992,7 +1996,6 @@ let Productions = {
 				Productions.Rating.Data[type].perTile = parseFloat(elem.val()) || 0;
 				Productions.calculateFSP(type,Productions.Rating.Data[type].perTile)
 				Productions.Rating.save();
-				//Productions.CalcRatingBody();
 			});
 
 			// result: search function

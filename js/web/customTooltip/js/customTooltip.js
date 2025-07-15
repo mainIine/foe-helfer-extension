@@ -49,7 +49,11 @@ let Tooltips = {
                 let f=eval(e.currentTarget.dataset.callback_tt)
                 if (typeof(f) == "function") {
                     let content = await(f(e));
-                    Tooltips.set(content)
+                    if (content) {
+                        Tooltips.set(content)
+                    } else {
+                        Tooltips.deactivate()
+                    }
                 } else
                     Tooltips.set(f);
             }
