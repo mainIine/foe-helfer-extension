@@ -782,5 +782,13 @@ input[id*="ProdPerTile"] {
 }
 
 #FSPCalculator {
-	text-align: center;
+	padding-left: 2em;
+}
+
+#FSPCalculator .cats {
+	gap: 1em;
+}
+
+#FSPCalculator .cats input {
+	width: 50px;
 }
