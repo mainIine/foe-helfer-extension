@@ -336,6 +336,7 @@
     "Boxes.Efficiency.TooltipTitle": "Vergleichswerte aus deiner Stadt",
     "Boxes.Efficiency.TitleFSPCalculator":"Wieviel wird je SPA Kit erwartet?",
     "Boxes.Efficiency.ShowFSPCalculator":"SPA Rechner anzeigen",
+    "Boxes.Efficiency.FSPWarning":"Achtung! Berechnung ist abhängig von den 'Erwartete Produktion/Feld'-Werten der gewählten Ressourcen - Der Wert für SPA wird nicht automatisch neu bestimmt, wenn diese Werte gändert werden.",
     "Boxes.EventChests.Chance": "Chance",
     "Boxes.EventChests.Cost": "Kosten",
     "Boxes.EventChests.CostPerPrize": "Kosten/Preis",

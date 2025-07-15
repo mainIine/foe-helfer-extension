@@ -1996,6 +1996,7 @@ let Productions = {
 				for (let x of ["strategy_points","clan_goods","goods-previous","goods-current","goods-next"]) {
 					h+=`<div><span class="resicon ${x}"></span> <input type="number" step="0.01" min="0" max="1000000" class="no-grow ${x}"></div>`				
 				}
+				h+=`<span>${i18n("Boxes.Efficiency.FSPWarning")}<span>`
 				h+="</div>"
 				$(h).insertAfter($("li.fsp")).promise().done(()=>{
 					$("#FSPCalculator input").on('input', e => {
