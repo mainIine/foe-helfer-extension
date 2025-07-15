@@ -290,6 +290,14 @@ a[target="_blank"] svg {
 	margin-left: auto;
 	margin-right: auto;
 }
+.my-5 {
+	margin-top: 5px;
+	margin-left: 5px;
+}
+
+.clickable {
+	cursor: url('../images/cursor_hover.cur'), auto;
+}
 
 .window-box ::-webkit-scrollbar,
 .window-body::-webkit-scrollbar,
@@ -435,6 +443,10 @@ p {
 
 .p2 {
 	padding: 2px;
+}
+
+.p5 {
+	padding: 5px;
 }
 
 .wsnw {

@@ -1596,7 +1596,7 @@ let Productions = {
 				h.push('<input id="Enabled-' + type + '" class="no-grow enabled game-cursor" ' + (activeSetting ? 'checked' : '') + ' type="checkbox">')
 				h.push('<span class="no-grow resicon ' + type + '"></span>')
 				h.push('<label for="Enabled-'+type+'">' + Productions.GetTypeName(type) + '</label>')
-				if (type=="fsp") h.push(`<span id="ShowFSPCalculator" title="${i18n("Boxes.Efficiency.ShowFSPCalculator")}">🧮</span>`)
+				if (type=="fsp") h.push(`<span id="ShowFSPCalculator" class="clickable" data-original-title="${i18n("Boxes.Efficiency.ShowFSPCalculator")}">🧮</span>`)
 				if (Productions.Rating.Data[type].perTile !== null) {
 					h.push('<input type="number" id="ProdPerTile-' + type + '" step="0.01" min="0" max="1000000" class="no-grow helperTT '+(Productions.Rating.Data[type].active ? '': 'hidden')+'" value="' + Productions.Rating.Data[type].perTile + '", data-callback_tt="Productions.efficiencyTT", data-type="'+type+'-tile">')
 				}
@@ -1992,12 +1992,11 @@ let Productions = {
 					$("#FSPCalculator").remove()
 					return
 				} 
-				h=`<div id="FSPCalculator"><div><h2>${i18n("Boxes.Efficiency.TitleFSPCalculator")}</h2>`
+				h=`<div id="FSPCalculator" class="dark-bg p5"><h2>${i18n("Boxes.Efficiency.TitleFSPCalculator")}</h2><div class="cats flex-between my-5 p5">`
 				for (let x of ["strategy_points","clan_goods","goods-previous","goods-current","goods-next"]) {
 					h+=`<div><span class="resicon ${x}"></span> <input type="number" step="0.01" min="0" max="1000000" class="no-grow ${x}"></div>`				
 				}
-				h+=`<span>${i18n("Boxes.Efficiency.FSPWarning")}<span>`
-				h+="</div>"
+				h+=`</div><span>${i18n("Boxes.Efficiency.FSPWarning")}</span>`
 				$(h).insertAfter($("li.fsp")).promise().done(()=>{
 					$("#FSPCalculator input").on('input', e => {
 						let sum = 0
