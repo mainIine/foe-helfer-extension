@@ -1559,10 +1559,10 @@ let Productions = {
 		let type=e?.currentTarget?.dataset?.type
 		let y = Productions.ratedBuildings.filter(x=>(x?.rating?.[type]>0)).map(x=>(x.rating[type])).sort((a,b) => a - b);
 		if (!y || y.length == 0) return
-		let tooltip = `<h2>${i18n("Boxes.Efficiency.TooltipTitle")}</h2>`
-		tooltip +=`<table class="foe-table"><tr><td>${i18n("Boxes.Efficiency.Best")}:</td><td>${y[y.length-1].toFixed(2)}</td></tr>`
-		tooltip += `<tr><td>${i18n("Boxes.Efficiency.Fifth")}:</td><td>${y[Math.max(y.length-5,0)].toFixed(2)}</td></tr>`
-		tooltip += `<tr><td>${i18n("Boxes.Efficiency.top10percent")}:</td><td>${y[Math.round((y.length-1)*0.9)].toFixed(2)}</td></tr></table>`
+		let tooltip = `<h2>${i18n("Boxes.ProductionsRating.TooltipTitle")}</h2>`
+		tooltip +=`<table class="foe-table"><tr><td>${i18n("Boxes.ProductionsRating.Best")}:</td><td>${y[y.length-1].toFixed(2)}</td></tr>`
+		tooltip += `<tr><td>${i18n("Boxes.ProductionsRating.Fifth")}:</td><td>${y[Math.max(y.length-5,0)].toFixed(2)}</td></tr>`
+		tooltip += `<tr><td>${i18n("Boxes.ProductionsRating.top10percent")}:</td><td>${y[Math.round((y.length-1)*0.9)].toFixed(2)}</td></tr></table>`
 		return tooltip
 	},
 
@@ -1675,7 +1675,7 @@ let Productions = {
 				h.push('<input id="Enabled-' + type + '" class="no-grow enabled game-cursor" ' + (activeSetting ? 'checked' : '') + ' type="checkbox">')
 				h.push('<span class="no-grow resicon ' + type + '"></span>')
 				h.push('<label for="Enabled-'+type+'">' + Productions.GetTypeName(type) + '</label>')
-				if (type=="fsp") h.push(`<span id="ShowFSPCalculator" class="clickable" data-original-title="${i18n("Boxes.Efficiency.ShowFSPCalculator")}">🧮</span>`)
+				if (type=="fsp") h.push(`<span id="ShowFSPCalculator" class="clickable" data-original-title="${i18n("Boxes.ProductionsRating.ShowFSPCalculator")}">🧮</span>`)
 				//if (Productions.Rating.Data[type].perTile !== null) {
 				h.push('<input type="number" id="ProdPerTile-' + type + '" step="0.01" min="0" max="1000000" class="no-grow helperTT '+(Productions.Rating.Data[type].active ? '': 'hidden')+'" value="' + (Productions.Rating.Data[type].perTile||0) + '", data-callback_tt="Productions.efficiencyTT", data-type="'+type+'-tile">')
 				//}
@@ -2017,7 +2017,7 @@ let Productions = {
 					$("#FSPCalculator").remove()
 					return
 				}
-				h=`<div id="FSPCalculator" class="dark-bg p5"><h2>${i18n("Boxes.Efficiency.TitleFSPCalculator")}</h2><div class="cats flex-between my-5 p5">`
+				h=`<div id="FSPCalculator" class="dark-bg p5"><h2>${i18n("Boxes.ProductionsRating.TitleFSPCalculator")}</h2><div class="cats flex-between my-5 p5">`
 				for (let x of Productions.FSPqualifiedResources) {
 					h+=`<div><span class="resicon ${x}"></span> <input type="number" step="1" min="0" max="1000000" class="${x} no-grow" value="${Productions.Rating.Data.fsp[x]||""}"></div>`				
 				}
