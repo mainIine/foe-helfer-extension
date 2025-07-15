@@ -332,7 +332,6 @@
     "Boxes.Efficiency.TooltipTitle": "Comparisons from your city",
     "Boxes.Efficiency.TitleFSPCalculator":"How much is expected per FSP-kit?",
     "Boxes.Efficiency.ShowFSPCalculator":"Show FSP Calculator",
-    "Boxes.Efficiency.FSPWarning":"Attention! The  Calculation is dependent on the 'expected production/tile'-values of the selected resources - The value for FSP is not automatically renewed when those values are changed.",
     "Boxes.EventChests.Chance": "Chance",
     "Boxes.EventChests.Cost": "Costs",
     "Boxes.EventChests.CostPerPrize": "Cost/Prize",

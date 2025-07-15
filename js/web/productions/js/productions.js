@@ -46,6 +46,7 @@ let Productions = {
 		'clan_goods',
 		'guild_raids'
 	],
+	FSPqualifiedResources: ["strategy_points","clan_goods","goods-previous","goods-current","goods-next"],
 
 	HappinessBoost: 0,
 	PopulationSum: 0,
@@ -1564,6 +1565,26 @@ let Productions = {
 		return tooltip
 	},
 
+	calculateFSP: (type,value) =>{
+		let sum = 0
+		for (let x of Productions.FSPqualifiedResources) {
+			if (Productions.Rating.Data.fsp[x] && Productions.Rating.Data[x].active && Productions.Rating.Data[x].perTile > 0) {
+				sum += (Productions.Rating.Data.fsp[x] / Productions.Rating.Data[x].perTile)
+			}
+		}
+		if (type=="fsp") {
+			if (Math.round(30 / sum*100)/100 == value) return
+			$("#FSPCalculator").remove()
+			for (let x of Productions.FSPqualifiedResources) {
+				delete Productions.Rating.Data.fsp[x]
+			}
+		} else if (sum > 0) {
+			let FSPeff = Math.round(30 / sum*100)/100
+			$("#ProdPerTile-fsp").val(FSPeff)
+			$("#ProdPerTile-fsp").trigger("blur")
+		}
+	},
+	
 	CalcRatingBody: (era = '') => {
 		Productions.BuildingsAll = Object.values(CityMap.createNewCityMapEntities())
 		Productions.setChainsAndSets(Productions.BuildingsAll)
@@ -1969,6 +1990,7 @@ let Productions = {
 				let elem = $(this);
 				let type = elem.attr('id').replace('ProdPerTile-','');
 				Productions.Rating.Data[type].perTile = parseFloat(elem.val()) || 0;
+				Productions.calculateFSP(type,Productions.Rating.Data[type].perTile)
 				Productions.Rating.save();
 				//Productions.CalcRatingBody();
 			});
@@ -1991,28 +2013,17 @@ let Productions = {
 				if ($("#FSPCalculator").length === 1) {
 					$("#FSPCalculator").remove()
 					return
-				} 
-				h=`<div id="FSPCalculator" class="dark-bg p5"><h2>${i18n("Boxes.Efficiency.TitleFSPCalculator")}</h2><div class="cats flex-between my-5 p5">`
-				for (let x of ["strategy_points","clan_goods","goods-previous","goods-current","goods-next"]) {
-					h+=`<div><span class="resicon ${x}"></span> <input type="number" step="0.01" min="0" max="1000000" class="no-grow ${x}"></div>`				
 				}
-				h+=`</div><span>${i18n("Boxes.Efficiency.FSPWarning")}</span>`
+				h=`<div id="FSPCalculator" class="dark-bg p5"><h2>${i18n("Boxes.Efficiency.TitleFSPCalculator")}</h2><div class="cats flex-between my-5 p5">`
+				for (let x of Productions.FSPqualifiedResources) {
+					h+=`<div><span class="resicon ${x}"></span> <input type="number" step="1" min="0" max="1000000" class="${x} no-grow" value="${Productions.Rating.Data.fsp[x]||""}"></div>`				
+				}
+				h+="</div>"
 				$(h).insertAfter($("li.fsp")).promise().done(()=>{
 					$("#FSPCalculator input").on('input', e => {
-						let sum = 0
-						for (let x of ["strategy_points","clan_goods","goods-previous","goods-current","goods-next"]) {
-							if ($("#ProdPerTile-"+x).length == 1 && $("#FSPCalculator input."+x).length==1) {
-								val = Number($("#ProdPerTile-"+x).val())
-								amount = Number($("#FSPCalculator input."+x).val())
-								if (val > 0) sum += (amount / val)
-							}
-						}
-						if (sum > 0) {
-							let FSPeff = Math.round(30 / sum*100)/100
-							$("#ProdPerTile-fsp").val(FSPeff)
-							$("#ProdPerTile-fsp").trigger("blur")
-							console.log(FSPeff)
-						}
+						type=e.target.classList[0]
+						Productions.Rating.Data.fsp[type] = Number(e.target.value||0)||0
+						Productions.calculateFSP()
 					})
 				})
 			})
