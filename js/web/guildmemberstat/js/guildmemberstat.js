@@ -2629,7 +2629,6 @@ let GuildMemberStat = {
 
 		let content = GuildMemberStat.ExportData;
 		let FileContent = '';
-		let TimeStamp = moment().format('YYMMDD-HHmm');
 
 		for (let i = 0; i < content.length; i++)
 		{
@@ -2656,7 +2655,7 @@ let GuildMemberStat = {
 		}
 
 		let Blob1 = new Blob([BOM + FileContent], { type: "application/octet-binary;charset=ANSI" });
-		MainParser.ExportFile(Blob1, filename + '_' + TimeStamp + '.' + type);
+		MainParser.ExportFile(Blob1, filename + '-' + moment().format('YYYY-MM-DD') + '.' + type);
 
 		$(`#GuildMemberStatSettingsBox`).fadeToggle('fast', function () {
 			$(this).remove();
