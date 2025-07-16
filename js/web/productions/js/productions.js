@@ -1446,8 +1446,8 @@ let Productions = {
 	},
 
 
-	GetTypeName: (GoodType)=> {
-		if (GoodType === 'happiness') {
+	GetTypeName: (GoodType) => {
+		if (GoodType.includes('happiness')) {
 			return i18n('Boxes.Productions.Happiness');
 		}
 		else if (GoodType === 'clan_power') {
@@ -1456,31 +1456,31 @@ let Productions = {
 		else if (GoodType === 'clan_goods') {
 			return i18n('Boxes.Productions.GuildGoods');
         }
-		else if (GoodType === 'units'){
+		else if (GoodType.includes('units')) {
 			return i18n('Boxes.Productions.Units');
-		}
-		else if (GoodType === 'att_boost_attacker' || GoodType === 'att_boost_attacker-all') {
-			return i18n('Boxes.Productions.att_boost_attacker');
-		}
-		else if (GoodType === 'att_boost_defender' || GoodType === 'att_boost_defender-all') {
-			return i18n('Boxes.Productions.att_boost_defender');
-		}
-		else if (GoodType === 'def_boost_attacker' || GoodType === 'def_boost_attacker-all') {
-			return i18n('Boxes.Productions.def_boost_attacker');
-		}
-		else if (GoodType === 'def_boost_defender' || GoodType === 'def_boost_defender-all') {
-			return i18n('Boxes.Productions.def_boost_defender');
 		}
 		else if (GoodType.includes('battleground')) {
 			return i18n('Boxes.General.Guild_Battlegrounds');
 		}
 		else if (GoodType.includes('guild_expedition')) {
-			return i18n('Gilden-Expeditionen');
+			return i18n('Boxes.General.Guild_Expedition');
 		}
 		else if (GoodType.includes('guild_raids')) {
 			return i18n('Boxes.General.Quantum_Incursion');
 		}
-		else if (GoodType === 'goods-next') {
+		else if (GoodType.includes('att_boost_attacker') || GoodType.includes('att_boost_attacker-all')) {
+			return i18n('Boxes.Productions.att_boost_attacker');
+		}
+		else if (GoodType.includes('att_boost_defender') || GoodType.includes('att_boost_defender-all')) {
+			return i18n('Boxes.Productions.att_boost_defender');
+		}
+		else if (GoodType.includes('def_boost_attacker') || GoodType.includes('def_boost_attacker-all')) {
+			return i18n('Boxes.Productions.def_boost_attacker');
+		}
+		else if (GoodType.includes('def_boost_defender') || GoodType.includes('def_boost_defender-all')) {
+			return i18n('Boxes.Productions.def_boost_defender');
+		}
+		else if (GoodType.includes('goods-next')) {
 			return i18n('Boxes.Productions.goods_next');
         }
 		else if (GoodType === 'goods-current') {
@@ -1525,7 +1525,8 @@ let Productions = {
 				auto_close: true,
 				dragdrop: true,
 				minimize: true,
-				resize: true
+				resize: true,
+				settings: 'Productions.RSettings()'
 			});
 			
 			helper.preloader.show('#ProductionsRating');
@@ -1720,7 +1721,7 @@ let Productions = {
 
 			h.push('<div class="ratingtable">');
 			h.push('<a id="RatingsResults" class="toggle-tab btn-default btn-tight" data-value="Settings">' + i18n('Boxes.ProductionsRating.Settings') + '</a>')
-			h.push('<table class="foe-table sortable-table TSinactive">');
+			h.push('<table class="foe-table sortable-table TSinactive exportable">');
 			h.push('<thead class="sticky">');
 
 			h.push('<tr class="settings">')
@@ -1738,9 +1739,9 @@ let Productions = {
 				h.push('</div></th>');
 			h.push('</tr>');
 
-			h.push('<tr class="sorter-header">');
-			h.push('<th data-type="ratinglist" class="is-number">' + i18n('Boxes.ProductionsRating.Score') + '</th>');
-			h.push('<th data-type="ratinglist"><div class="flex-between"><span>'+ i18n('Boxes.ProductionsRating.BuildingName') +'</span>' +
+			h.push('<tr class="sorter-header exportheader">');
+			h.push('<th data-type="ratinglist" class="is-number" data-export="' + i18n('Boxes.ProductionsRating.Score') + '">' + i18n('Boxes.ProductionsRating.Score') + '</th>');
+			h.push('<th data-type="ratinglist" data-export="'+ i18n('Boxes.ProductionsRating.BuildingName') +'"><div class="flex-between"><span>'+ i18n('Boxes.ProductionsRating.BuildingName') +'</span>' +
 			' <div id="buildingsize"><span>'+i18n('Boxes.Productions.Headings.size')+'</span><ul>');
 				for (let size of buildingSizes) {
 					h.push('<li data-value="'+size+'">'+size+'</li>')
@@ -1756,21 +1757,21 @@ let Productions = {
 					secondType = type.replace('att_','');
 					divider = 2;
 				}
-				h.push('<th data-type="ratinglist" style="width:1%" class="is-number text-center buildingvalue"'+
+				h.push('<th data-type="ratinglist" style="width:1%" data-export="'+ Productions.GetTypeName(firstType) +'" class="is-number text-center buildingvalue"'+
 					(secondType !== null ? ` data-original-title="${Productions.Rating.Data[firstType].perTile} + ${Productions.Rating.Data[secondType]?.perTile} / 2"` : '')+
 					'><span class="resicon ' + firstType + '"' + (secondType === null ? ' style="margin-bottom:0"' : '') + '></span>'+ (secondType === null ? '<br>' : '') +
 					(secondType !== null ? '<span class="resicon ' + secondType + '"></span><i>': '')+
 					((Productions.Rating.Data[firstType].perTile + (Productions.Rating.Data[secondType]?.perTile || 0) || 0) /divider)+
 					'</i></th>');
 
-				h.push('<th data-type="ratinglist" style="width:1%" class="is-number text-center tilevalue"'+
+				h.push('<th data-type="ratinglist" style="width:1%" data-export="' + Productions.GetTypeName(firstType) + '" class="is-number text-center tilevalue"'+
 					(secondType !== null ? ` data-original-title="${Productions.Rating.Data[firstType].perTile} + ${Productions.Rating.Data[secondType]?.perTile} / 2"` : '')+
 					'><span class="resicon ' + firstType + '"></span>'+
 					(secondType !== null ? '<span class="resicon ' + secondType + '"></span><i>': '')+
 					((Productions.Rating.Data[firstType].perTile + (Productions.Rating.Data[secondType]?.perTile || 0) || 0) /divider)+
 					'</i></th>');
 			}
-			h.push('<th data-type="ratinglist" class="no-sort items">Items</th>');
+			h.push('<th data-type="ratinglist" data-export="Items" class="no-sort items">Items</th>');
 			h.push('</tr>');
 			h.push('</thead>');
 
@@ -1787,9 +1788,9 @@ let Productions = {
 
 				[randomItems,randomUnits] = Productions.showBuildingItems(false, building)
 				h.push(`<tr class="${building.highlight?'additional ':''}${building.isInInventory?'inventory-building ':''}size${buildingSize}">`)
-				h.push('<td class="text-right" data-number="'+ (building.rating.totalScore * 100) +'">'+Math.round(building.rating.totalScore * 100)+'</td>')
+				h.push('<td data-number="'+ (building.rating.totalScore * 100) +'" class="text-right">'+Math.round(building.rating.totalScore * 100)+'</td>')
 
-				h.push('<td data-text="'+helper.str.cleanup(building.name)+'" class="'+(MainParser.Allies.buildingList?.[building.id]?"ally" : "") +'"><div class="flex-between"><div>');
+				h.push('<td exportvalue="'+building.name+'" data-text="'+helper.str.cleanup(building.name)+'" class="'+(MainParser.Allies.buildingList?.[building.id]?"ally" : "") +'"><div class="flex-between"><div>');
 				if (!building.highlight && !building.isInInventory)
 					h.push('<span class="show-all" data-original-title="'+i18n('Boxes.General.ShowOnMap')+'" data-name="'+building.name+'"><img class="game-cursor" alt="" src="' + extUrl + 'css/images/hud/open-eye.png"></span>');
 
@@ -2245,6 +2246,15 @@ let Productions = {
 
         $('#ProductionsSettingsBox').html(h.join(''))
     },
+
+	// settings for the efficiency rating table
+	RSettings: () => {
+		let c = [];
+		c.push(`<p class="text-left">${i18n('Boxes.General.Export')}: <button class="btn btn-default" onclick="HTML.ExportTable($('.ratingtable table'),'csv','EfficiencyRating')">CSV</button>`);
+		c.push(`<button class="btn btn-default" onclick="HTML.ExportTable($('.ratingtable table'),'json','EfficiencyRating')">JSON</button></p>`);
+
+		$('#ProductionsRatingSettingsBox').html(c.join(''));
+	},
 
 
     /**
