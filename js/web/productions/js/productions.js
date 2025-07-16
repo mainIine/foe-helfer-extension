@@ -1981,9 +1981,9 @@ let Productions = {
 				elem.parent().children('input[type=number]').toggleClass('hidden')
 
 				Productions.Rating.Data[type].active = isChecked
+				Productions.calculateFSP(type,0)
 
 				if (isChecked) {
-					Productions.Rating.Data[type].perTile = parseFloat(elem.parent().children('input[type=number]').val()) || 0
 					Productions.CalcRatingBody();
 				}
 				Productions.Rating.save()
