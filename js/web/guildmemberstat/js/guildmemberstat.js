@@ -1248,7 +1248,7 @@ let GuildMemberStat = {
 			});
 
 			// Fade out loading screen
-			helper.preloader.hide();
+			helper.preloader.hide("#GuildMemberStat");
 		});
 	},
 
@@ -1593,7 +1593,7 @@ let GuildMemberStat = {
 			container: '#GuildMemberStatBody'
 		});
 
-		helper.preloader.hide();
+		helper.preloader.hide("#GuildMemberStat");
 
 	},
 
@@ -1713,7 +1713,7 @@ let GuildMemberStat = {
 
 			});
 
-			helper.preloader.hide();
+			helper.preloader.hide('#GuildMemberStat');
 		});
 
 	},
@@ -1789,7 +1789,7 @@ let GuildMemberStat = {
 
 		});
 
-		helper.preloader.hide();
+		helper.preloader.hide('#GuildMemberStat');
 
 	},
 
@@ -1814,7 +1814,7 @@ let GuildMemberStat = {
 		if (gmsBuildingDict === undefined || gmsBuildingDict.length <= 0)
 		{
 			$("#gmsContentWrapper").html(d.join(''));
-			helper.preloader.hide();
+			helper.preloader.hide("#GuildMemberStat");
 			return;
 		}
 
@@ -1975,7 +1975,7 @@ let GuildMemberStat = {
 				container: '#GuildMemberStatBody'
 			});
 
-			helper.preloader.hide();
+			helper.preloader.hide("#GuildMemberStat");
 
 			$('#gmsContentWrapper #toggleBuildingView').on('click', function () {
 				$('#gmsContentWrapper .buildinglist').toggleClass('hide show');
@@ -2025,7 +2025,7 @@ let GuildMemberStat = {
 		if (ErasGuildGoods === null)
 		{
 			$("#gmsContentWrapper").html(d.join(''));
-			helper.preloader.hide();
+			helper.preloader.hide("#GuildMemberStat");
 			return;
 		}
 
@@ -2143,7 +2143,7 @@ let GuildMemberStat = {
 				container: '#GuildMemberStatBody'
 			});
 
-			helper.preloader.hide();
+			helper.preloader.hide("#GuildMemberStat");
 		});
 	},
 
@@ -2164,7 +2164,7 @@ let GuildMemberStat = {
 		if (GreatBuildings === null)
 		{
 			$("#gmsContentWrapper").html(d.join(''));
-			helper.preloader.hide();
+			helper.preloader.hide("#GuildMemberStat");
 			return;
 		}
 
@@ -2315,7 +2315,7 @@ let GuildMemberStat = {
 				});
 			});
 
-			helper.preloader.hide();
+			helper.preloader.hide("#GuildMemberStat");
 
 			$('#gblist > tbody tr.hasdetail').off().on('click', function () {
 

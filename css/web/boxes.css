@@ -363,11 +363,14 @@ ul.foe-table li > .no-grow {
 
 table.foe-table thead tr th,
 table.foe-table th,
-.dark-bg,
 .thead th {
 	background: url('../images/hud/box-bg.png') center center repeat;
 	box-shadow: inset 0 0 0 2000px var(--black-50), 0 1px 0 0 var(--border-table-top), 0 2px 0 0 var(--border-table-bottom);
 	vertical-align: bottom;
+}
+.dark-bg {
+	box-shadow: inset 0 0 0 2000px var(--black-50);
+	background: url('../images/hud/box-bg.png') center center repeat;
 }
 
 table.foe-table thead th {
@@ -2141,6 +2144,91 @@ tr.sorter-header th:not(.no-sort).descending:after {
 /*fallback for all tools that do not specify their own scale*/
 :root {
 	--unit_scale: 3/5;
+}
+
+
+
+
+.loading-data {
+    position: absolute;
+    top: 36px;
+    left: 0;
+    width: 100%;
+    height: calc(100% - 36px);
+    background: var(--text-darkest);
+    z-index: 300;
+    opacity: 1;
+}
+
+.loading-data .loadericon {
+    display: block;
+    position: relative;
+    left: 50%;
+    top: 50%;
+    width: 150px;
+    height: 150px;
+    margin: -75px 0 0 -75px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    border-top-color: #543118;
+    -webkit-animation: spin 2s linear infinite;
+    animation: spin 2s linear infinite;
+}
+
+.loading-data .loadericon:before {
+    content: "";
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    right: 5px;
+    bottom: 5px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    border-top-color: #f8af36;
+    -webkit-animation: spin 3s linear infinite;
+    animation: spin 3s linear infinite;
+}
+
+.loading-data .loadericon:after {
+    content: "";
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    right: 15px;
+    bottom: 15px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    border-top-color: #f3d6a0;
+    -webkit-animation: spin 1.5s linear infinite;
+    animation: spin 1.5s linear infinite;
+}
+
+@-webkit-keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+        -ms-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+        -ms-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
 }
 
 .unit_skill::before {
