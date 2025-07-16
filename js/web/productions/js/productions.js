@@ -1519,7 +1519,6 @@ let Productions = {
 		let $ProductionsRating = $('#ProductionsRating');
 
 		if ($ProductionsRating.length === 0) {
-
 			HTML.Box({
 				id: 'ProductionsRating',
 				title: i18n('Boxes.ProductionsRating.Title'),
@@ -1528,6 +1527,9 @@ let Productions = {
 				minimize: true,
 				resize: true
 			});
+			
+			helper.preloader.show('#ProductionsRating');
+			
 			HTML.AddCssFile('productions');
 
 			$('body').on('click', '.toggle-tab', async function () {
@@ -1609,9 +1611,7 @@ let Productions = {
 		let InventoryBuildings = Productions.InventoryBuildings = Kits.BuildingsFromInventory()
 
 		for (let [id,data] of Object.entries(InventoryBuildings)){
-
 			//if(!id || id.slice(0, 2) !== 'W_') continue; // if starts not with "W_", continue
-
 			let metaData = MainParser.CityEntities[id];
 			let building = CityMap.createNewCityMapEntity(metaData, CurrentEra);
 			building.isInInventory = true;
@@ -1692,7 +1692,8 @@ let Productions = {
 		}
 
 		else if (Productions.RatingCurrentTab === 'Results') {
-			
+			helper.preloader.show('#ProductionsRating');
+
 			ratedBuildings.sort((a,b) => {
 				if (a.rating.totalScore < b.rating.totalScore) return -1
 				if (a.rating.totalScore > b.rating.totalScore) return 1
@@ -1875,7 +1876,7 @@ let Productions = {
 						h.push('<a class="btn-default closeMetaBuilding btn-green">'+i18n('Boxes.ProductionsRating.AddBuildings')+'</a>')
 					h.push('</div>')
 				h.push('</div>')
-			h.push('</div>')
+			h.push('</div>');
 		}
 		else {
 			h.push('Something went wrong');
@@ -2078,8 +2079,10 @@ let Productions = {
 			$('#ProductionsRatingBody [data-original-title]').tooltip({container: "#game_body", html:true});
 
 			$('.sortable-table').tableSorter();
-		});	
 
+			helper.preloader.hide('#ProductionsRating');
+			//$('#ProductionsRatingBody').fadeIn(501);
+		});
     },
 
 
