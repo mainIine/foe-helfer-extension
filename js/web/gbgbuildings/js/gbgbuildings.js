@@ -19,7 +19,6 @@ FoEproxy.addHandler('GuildBattlegroundBuildingService', 'getBuildings', (data, p
 
 	GBGBuildings.costs={};
 	data.responseData.availableBuildings.forEach(x => GBGBuildings.costs[x.buildingId] = x.costs.resources);
-	if (GBGBuildings.oldGBG && /basic_field_outpost|advanced_guild_fortress/.test(JSON.stringify(data.responseData.availableBuildings))) GBGBuildings.oldGBG=false
 	GBGBuildings.buildings = data.responseData.placedBuildings.map(x=>x.id).sort((a,b)=> (GBGBuildings.block[b]||0) - (GBGBuildings.block[a]||0));
 	let free=data.responseData.freeSlots||0;
 	
@@ -66,7 +65,6 @@ FoEproxy.addHandler('ClanService', 'getTreasuryBag', (data, postData) => {
 });
 
 let GBGBuildings = {
-	oldGBG:true,
 	treasury:{},
 	block:{ // get from GBG building meta-data: Object.assign({"free":0},...x.map(b=>({id:b.id,value:Number(b.description.replace(/.*? (\d+)% chance to not increase.*/gm,"$1"))})).filter(b=>b.value).sort((a,b)=>a.value-b.value).map(b=>({[b.id]:b.value})))
 		"free":0,
@@ -231,8 +229,8 @@ let GBGBuildings = {
 		let lastCost = 10000;
 		let src = (b) => {
 			let link=""
-			if (!GBGBuildings.oldGBG) link = srcLinks.get("/guild_battlegrounds/hud/guild_battlegrounds_sector_buildings_"+b+"_gbg2024.png",true,true)
-			if (GBGBuildings.oldGBG || link.includes("antiquedealer_flag")) link = srcLinks.get("/guild_battlegrounds/hud/guild_battlegrounds_sector_buildings_"+b+".png",true)
+			link = srcLinks.get("/guild_battlegrounds/hud/guild_battlegrounds_sector_buildings_"+b+"_gbg2024.png",true,true)
+			if (link.includes("antiquedealer_flag")) link = srcLinks.get("/guild_battlegrounds/hud/guild_battlegrounds_sector_buildings_"+b+".png",true)
 			return link
 		}
 		for (let s of sets) {
