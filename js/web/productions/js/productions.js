@@ -1534,6 +1534,8 @@ let Productions = {
 
 			$('body').on('click', '.toggle-tab', async function () {
 				console.log('$ProductionsRating: click');
+				
+				helper.preloader.show('#ProductionsRating');
 				Productions.RatingCurrentTab = $(this).data('value');
 
 				Productions.CalcRatingBody();
