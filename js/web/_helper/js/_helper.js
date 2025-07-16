@@ -883,8 +883,11 @@ let HTML = {
 
 		$(Table).each(function () {
 			let ColumnNames = [];
-
-			$(Table).find('th').each(function () {
+			let findBy = "th"
+			if ($(Table).find('.exportheader th'))
+				findBy = '.exportheader th';
+			
+			$(Table).find(findBy).each(function () {
 				let ColumnCount = $(this).attr('colspan');
 				if (ColumnCount) {
 					ColumnCount = ColumnCount - 0;
