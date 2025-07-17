@@ -41,7 +41,6 @@ let _menu = {
 		'technologies',
 		'campagneMap',
 		'cityMap',
-		'unit',
 		'settings',
 		'stats',
 		'kits',
@@ -63,8 +62,6 @@ let _menu = {
 		'compare_friends_threads',
 		'discord',
 		'findGB',
-		//'qiMap'
-		// 'marketOffers',
 	],
 
 	HiddenItems: [],
@@ -732,26 +729,6 @@ let _menu = {
 		});
 
 		return btn.append(btn_Market);
-	},
-
-	/**
-	* Marktangebote
-	*/
-	marketOffers_Btn: () => {
-		let btn = _menu.MakeButton(
-			'marketOffers',
-			i18n('Menu.MarketOffers.Title'),
-			'<em id="marketOffers-Btn-closed" class="tooltip-error">' + i18n('Menu.MarketOffers.Warning') + '<br></em>' + i18n('Menu.MarketOffers.Desc'),
-			true
-		);
-
-		let btn_MarketOffers = $('<span />').bind('click', function () {
-			if ($('#marketOffers-Btn').hasClass('hud-btn-red') === false) {
-				MarketOffers.Show(false);
-			}
-		});
-
-		return btn.append(btn_MarketOffers);
 	},
 
 	/**
