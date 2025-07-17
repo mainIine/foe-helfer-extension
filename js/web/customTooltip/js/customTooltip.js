@@ -242,9 +242,12 @@ let Tooltips = {
             }
             //Chains
             let chain = levels?.AllAge?.chain
+            let chainMin = levels?.[minEra]?.chain
+            let chainMax = levels?.[maxEra]?.chain
             if (chain?.chainId) {
-                set = srcLinks.icons(chain?.chainId) + MainParser.BuildingChains[chain?.chainId].name
-                if (!MainParser.BuildingChains[chain?.chainId].cityEntityIds.includes(meta.id)) set+= '</td></tr><tr><td style="text-wrap-mode:wrap;">' + chain.description
+                let ChainMeta=(MainParser.BuildingChains?.[chain?.chainId]||MainParser.BuildingChains?.[chain?.chainId.toLowerCase()])
+                set = srcLinks.icons(chain?.chainId) + ChainMeta.name
+                if (!ChainMeta.cityEntityIds.includes(meta.id)) set+= '</td></tr><tr><td style="text-wrap-mode:wrap;">' + chain.description
             }
             //Traits
             for (let a of meta.abilities||[]) {
@@ -457,6 +460,51 @@ let Tooltips = {
                             
                             prods+=`<tr><td class="isGeneric">${b.level + "x" + srcLinks.icons(chain.chainId)} ► ${rewBA.icon + span(rewBA.amount) + rewBA.fragment + longSpan(rewBA.name)}</td></tr>`
                         }
+                    }
+                }
+            }
+            for (let [i,b] of Object.entries(chainMin?.config?.bonuses||[])) {
+                for (j in Object.keys(b.boosts)) {
+                    if (first) {
+                        provides+='<tr><td style="text-wrap-mode:wrap;">' + chain.description+"</td></tr>"
+                        first=false
+                    }
+                    provides+=`<tr><td>${b.level + "x" + srcLinks.icons(chain.chainId)} ► `
+                    provides+=srcLinks.icons(b.boosts[j].type+feature[b.boosts[j].targetedFeature]) + " " + range(b.boosts[j].value,chainMax?.config?.bonuses[i].boosts[j].value) + Boosts.percent(b.boosts[0].type)
+                    provides+=`</td></tr>`
+
+                } 
+                for (let [pIndex,product] of Object.entries(b.productions||[])) {
+                    if (first) {
+                        prods+='<tr><td style="text-wrap-mode:wrap;">' + chain.description+"</td></tr>"
+                        first=false
+                    }
+                    if (product.type == "resources") {
+                        for (let [res,amount] of Object.entries(product.playerResources?.resources||{})) {
+                            if (amount !=0) 
+                                prods+=`<tr><td>${b.level + "x" + srcLinks.icons(chain.chainId)} ► ${srcLinks.icons(resMapper(res,"goods")) + range(amount,chainMax?.config?.bonuses[i].productions[pIndex].playerResources?.resources?.[res])}</td></tr>`
+                        }
+                    }
+                    if (product.type == "guildResources") {
+                        for (let [res,amount] of Object.entries(product.guildResources?.resources||{})) {
+                            if (amount !=0) 
+                                prods+=`<tr><td>${b.level + "x" + srcLinks.icons(chain.chainId)} ► ${srcLinks.icons(resMapper(res,"treasury_goods")) + range(amount,chainMax?.config?.bonuses[i].productions[pIndex].guildResources?.resources?.[res])}</td></tr>`
+                        }
+                    }
+                    if (product.type == "unit") {
+                        if (product.amount !=0) {
+                            let iconId= (product.unitTypeId=="rogue"?"rogue":(
+                                        product.unitTypeId.includes("champion")?"chivalry":
+                                        Unit.Types.filter(x=>x.unitTypeId==product.unitTypeId)[0].unitClass
+                                        ))
+                            prods+=`<tr><td>${b.level + "x" + srcLinks.icons(chain.chainId)} ► ${srcLinks.icons(iconId) + range(product.amount,chainMax?.config?.bonuses[i].productions[pIndex].amount)}</td></tr>`
+                        }
+                    }
+                    if (product.type == "genericReward") {
+                        let rewBA=Tooltips.genericEval(minLookup[product.reward.id])
+                        let rewMax=Tooltips.genericEval(maxLookup[maxProductions?.[oIndex]?.products?.[pIndex]?.reward?.id])
+                        
+                        prods+=`<tr><td class="isGeneric">${b.level + "x" + srcLinks.icons(chain.chainId)} ► ${rewBA.icon + range(rewBA.amount,rewMax.amount) + rewBA.fragment + longSpan(rewBA.name)}</td></tr>`
                     }
                 }
             }
