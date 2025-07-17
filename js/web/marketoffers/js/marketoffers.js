@@ -62,10 +62,6 @@ let MarketOffers = {
             return;
         }
 
-        $('#MarketOffers').on('click', '.button-events', function () {
-            MarketOffers.ShowEvents(false);
-        });
-
         $('#MarketOffers').on('click', '.btn-filter-offer', function () {
             let GoodIndex = parseFloat($(this).data('value'));
 
@@ -129,8 +125,6 @@ let MarketOffers = {
         MarketOffers.CalcTradeSums();
 
         let h = [];
-
-        h.push('<span class="btn-default button-events">' + i18n('Boxes.MarketOffers.Events') + '</span>');
 
         h.push('<table id="MarketOffersTable" class="foe-table sortable-table exportable">');
         h.push('<tbody class="MarketOffers">');
