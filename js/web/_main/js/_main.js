@@ -275,15 +275,6 @@ GetFights = () =>{
 		}
 	});
 
-	// Track Unit Icon-Images
-	FoEproxy.addRawHandler((xhr, requestData) => {
-		const idx = requestData.url.indexOf("armyuniticons_");
-
-		if (idx !== -1) {
-			Unit.CoordsRaw = JSON.parse(xhr.responseText);
-		}
-	});
-
 	// --------------------------------------------------------------------------------------------------
 	// Player- und Gilden-ID setzen
 	FoEproxy.addHandler('StartupService', 'getData', (data, postData) => {

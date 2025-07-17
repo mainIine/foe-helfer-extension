@@ -41,7 +41,6 @@ let _menu = {
 		'technologies',
 		'campagneMap',
 		'cityMap',
-		'unit',
 		'settings',
 		'stats',
 		'kits',
@@ -63,8 +62,6 @@ let _menu = {
 		'compare_friends_threads',
 		'discord',
 		'findGB',
-		//'qiMap'
-		// 'marketOffers',
 	],
 
 	HiddenItems: [],
@@ -618,29 +615,6 @@ let _menu = {
 	},
 
 	/**
-	 * Armies
-	 * @returns {*|jQuery}
-	 */
-	unit_Btn: () => {
-		let btn_UnitBG = _menu.MakeButton(
-			'unit',
-			i18n('Menu.Unit.Title'),
-			'<em id="unit-Btn-closed" class="tooltip-error">' + i18n('Menu.Unit.Warning') + '<br></em>' + i18n('Menu.Unit.Desc'),
-			true
-		);
-
-		let btn_Unit = $('<span />');
-
-		btn_Unit.on('click', function () {
-			if (Unit.Cache !== null) {
-				Unit.Show();
-			}
-		});
-
-		return btn_UnitBG.append(btn_Unit);
-	},
-
-	/**
 	 * Notice function
 	 *
 	 * @returns {null|undefined|jQuery|HTMLElement|void}
@@ -735,26 +709,6 @@ let _menu = {
 	},
 
 	/**
-	* Marktangebote
-	*/
-	marketOffers_Btn: () => {
-		let btn = _menu.MakeButton(
-			'marketOffers',
-			i18n('Menu.MarketOffers.Title'),
-			'<em id="marketOffers-Btn-closed" class="tooltip-error">' + i18n('Menu.MarketOffers.Warning') + '<br></em>' + i18n('Menu.MarketOffers.Desc'),
-			true
-		);
-
-		let btn_MarketOffers = $('<span />').bind('click', function () {
-			if ($('#marketOffers-Btn').hasClass('hud-btn-red') === false) {
-				MarketOffers.Show(false);
-			}
-		});
-
-		return btn.append(btn_MarketOffers);
-	},
-
-	/**
 	 * Helper Blue Galaxy
 	 */
 	blueGalaxy_Btn: () => {
@@ -821,21 +775,6 @@ let _menu = {
 
 		return btn.append(btn_sp);
 	},
-
-	/**
-	 * Shows the box for gex units stats
-	 *
-	 * @returns {*|jQuery}
-	 */
-	/*unitsGex_Btn: () => { //deactivated
-		let btn = _menu.MakeButton('unitsGex', i18n('Menu.unitsGex.Title'), i18n('Menu.unitsGex.Desc'));
-
-		let btn_sp = $('<span />').on('click', function () {
-			UnitGex.showBox();
-		});
-
-		return btn.append(btn_sp);
-	},*/
 
 	/**
 	 * Guildfight Overview
