@@ -845,7 +845,7 @@ let QIActions = {
 
 	TT:()=>{
 		let hourly = 5000 + Boosts.Sums["guild_raids_action_points_collection"] 
-		let fullAt = Math.ceil((100000-QIActions.count)/hourly)*3600 + QIActions.last
+		let fullAt = Math.ceil((100000 + (Boosts.Sums["guild_raids_action_points_capacity"]||0) - QIActions.count)/hourly)*3600 + QIActions.last
 		let next = QIActions.last + 3600
 		while (next < moment().unix()) next += 3600
 
