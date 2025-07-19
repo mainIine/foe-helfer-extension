@@ -754,20 +754,36 @@ let Kits = {
 			}
 		}
 		let schemes={}
+		let allBuildingsUpgradeCounts = {}
+
 		for (let [endBuilding,buildingList] of Object.entries(endBuildings)) {
 			let upgrades={}
+			let upgradeCount = {}
+
 			for (b of buildingList) {
+
 				if (!upgrades[b.upgradeId]) {
 					upgrades[b.upgradeId] = 1
 				} else {
 					upgrades[b.upgradeId]++
 				}
+
+				allBuildingsUpgradeCounts[b.buildingId] = structuredClone(upgradeCount)
+
+				let us=b.upgradeId.split("_")
+				let upgradeType = us.includes("gold") ? "golden" : us.includes("silver") ? "silver" : us.includes("ascended") ? "ascended" : us[0];	
+
+				if (!upgradeCount[upgradeType])
+					upgradeCount[upgradeType] = 0
+				upgradeCount[upgradeType] ++
 			}
+			allBuildingsUpgradeCounts[endBuilding] = structuredClone(upgradeCount)
 			schemes[endBuilding] = {
 				upgrades: upgrades,
 				upgradeSteps: buildingList
 			}	
 		}
+		Kits.allBuildingsUpgradeCounts = allBuildingsUpgradeCounts
 		Kits.UpgradeSchemes = schemes
 		Kits.selectionOptions = sO
 	},
@@ -1029,7 +1045,6 @@ let Kits = {
 						upgradeCount[upgradeType].max = (upgradeCount[upgradeType].max||0) + a
 
 						maxLevel -= Math.min(a, maxLevel)
-						//if (maxLevel<=0) break
 					}
 					output[buildingId] = {
 						kitsUsed:kitCount,
@@ -1061,7 +1076,6 @@ let Kits = {
 		}
 		return output;
 	},
-
 
 	InventoryTooltip: (e) => {
         const id = e?.currentTarget?.dataset?.id || e?.currentTarget?.parentElement?.dataset?.id;

@@ -115,8 +115,22 @@ let Tooltips = {
         //let eff = Math.round(e?.currentTarget?.previousElementSibling?.dataset?.number)
         if  (!eff && era) eff=Math.round(100 * Productions.rateBuildings([id],true,era)?.[0]?.rating.totalScore||0)
 
+        let upgrades = ""
+        let upgradeCount = Kits.allBuildingsUpgradeCounts[id]||{}
+        if (Object.keys(upgradeCount).length>0) {
+			upgrades = '<span class="upgrades"><span class="base">1</span>';
+			for (let i in upgradeCount) {
+				if (!upgradeCount[i]) continue;
+				if (upgradeCount[i]) {
+					upgrades += `<span class="${i}">${upgradeCount[i]}</span>`;
+				}
+			}
+			upgrades += '</span>';
+		}
+
+
         let h = `<div class="buildingTT">
-                <h2>${meta.name}  ${eff ? `(${i18n("Boxes.Kits.Efficiency")}: ${eff})`:''}</h2>
+                <h2><span>${meta.name}  ${eff ? `(${i18n("Boxes.Kits.Efficiency")}: ${eff})`:''}</span>${upgrades}</h2>
                 <table class="foe-table">
                 <tr><td class="imgContainer"><img src="${srcLinks.get("/city/buildings/"+meta.asset_id.replace(/^(\D_)(.*?)/,"$1SS_$2")+".png",true)}"></td>`+
                 `<td style="width:100%; vertical-align:top"">`;
