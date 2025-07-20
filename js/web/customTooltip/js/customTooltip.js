@@ -134,7 +134,7 @@ let Tooltips = {
                 <table class="foe-table">
                 <tr><td class="imgContainer"><img src="${srcLinks.get("/city/buildings/"+meta.asset_id.replace(/^(\D_)(.*?)/,"$1SS_$2")+".png",true)}"></td>`+
                 `<td style="width:100%; vertical-align:top"">`;
-        h += await Tooltips.BuildingData(meta,era,allies);
+        h += await Tooltips.BuildingData(meta,era,allies, eff);
         h += "</td></tr></table></div>"
         setTimeout(()=>{
             $(".handleOverflow").each((index,e)=>{
@@ -169,7 +169,7 @@ let Tooltips = {
         
         return {icon:icon,amount:amount,name:name,fragment:fragment}
     },  
-    BuildingData:async (meta,onlyEra=null,allies=null)=>{
+    BuildingData:async (meta,onlyEra=null,allies=null, efficiency=null)=>{
         if (onlyEra && Array.isArray(onlyEra)) {
             allies = [].concat(onlyEra)
             onlyEra = null
@@ -311,12 +311,25 @@ let Tooltips = {
 
             if (era != "") out += "<tr><td>" + era + "</td></tr>"
 
+            let efficiencyDifference = null
+
             if (levels?.AllAge?.limited?.config?.expireTime) {
-                out += `<tr><td class="limited">${srcLinks.icons("limited_building_downgrade") + MainParser.CityEntities[levels.AllAge.limited.config.targetCityEntityId].name} (${i18n("Boxes.Tooltip.Building.after")} ${formatTime(levels.AllAge.limited.config.expireTime)})</td></tr>`
-            }
+                if (efficiency) {
+                    let ratings = Productions.rateBuildings([meta.id,levels.AllAge.limited.config.targetCityEntityId],true,era)?.map(x=>Math.round(100 * x?.rating?.totalScore)||0)
+                    efficiencyDifference = ratings[0]-ratings[1] //Eff1-Eff2 = efficiencyDifference = efficiency - efficiencyAfter --> effAfter = efficiency - efficiencyDifference
+                }
+                out += `<tr><td class="limited">${srcLinks.icons("limited_building_downgrade") + MainParser.CityEntities[levels.AllAge.limited.config.targetCityEntityId].name} (${i18n("Boxes.Tooltip.Building.after")} ${formatTime(levels.AllAge.limited.config.expireTime)})${efficiencyDifference ? "<span> -> "+i18n("Boxes.Kits.Efficiency")+": " + (efficiency - efficiencyDifference) +"</span>": ""}</td></tr>`
+            }   
 
             if (await CityMap.canAscend(meta.id)) {
-                out += `<tr><td class="limited">${srcLinks.icons("limited_building_upgrade") + MainParser.CityEntities[(await CityMap.AscendingBuildings)[meta.id]].name}</td></tr>`
+                let ascendedId=(await CityMap.AscendingBuildings)[meta.id]
+                if (efficiency) {
+                    let ratings = Productions.rateBuildings([meta.id,ascendedId],true,era)?.map(x=>Math.round(100 * x?.rating?.totalScore)||0)
+                    console.log(JSON.stringify(ratings) )
+                    efficiencyDifference = ratings[0]-ratings[1]
+                }
+                out += `<tr><td class="limited">${srcLinks.icons("limited_building_upgrade") + MainParser.CityEntities[ascendedId].name}${efficiencyDifference ? "<span> -> "+i18n("Boxes.Kits.Efficiency")+": " + (efficiency - efficiencyDifference) +"</span>" :""}</td></tr>`
+
             }
 
             let provides=""
