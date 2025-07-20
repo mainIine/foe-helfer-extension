@@ -143,6 +143,10 @@ td:nth-child(3) .HXBuilding .inhabitant {
 }
 .HXBuilding .limited {
     text-wrap: auto;
+    flex-wrap: wrap;
+}
+.HXBuilding .limited span {
+    margin-left: 10px;
 }
 .HXBuilding .limited img{
     align-self: flex-start;
