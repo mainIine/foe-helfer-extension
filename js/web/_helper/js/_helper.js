@@ -884,8 +884,9 @@ let HTML = {
 		$(Table).each(function () {
 			let ColumnNames = [];
 			let findBy = "th"
-			if ($(Table).find('.exportheader th'))
+			if ($(Table).find('.exportheader th').length > 0){
 				findBy = '.exportheader th';
+			}
 			
 			$(Table).find(findBy).each(function () {
 				let ColumnCount = $(this).attr('colspan');
