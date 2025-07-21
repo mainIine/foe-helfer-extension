@@ -14,8 +14,8 @@
  #Popgame {
     width: 520px;
     height: 494px;
-    top: calc(50% - 281px);
-    left: calc(50% - 261px);
+    top: calc(50% - 278px);
+    left: calc(50% - 260px);
     pointer-events: none;
 }
 #Popgame #PopgameHeader {
@@ -27,7 +27,7 @@
 #PGwrapper {
     height: 404px;
 }
-#PGwrapper.fall {
+/*#PGwrapper.fall {
     position: relative;
     top: calc(50% - 226px);
     left: calc(50% - 258px);
@@ -36,7 +36,7 @@
     position: relative;
     top: calc(50% - 225px);
     left: calc(50% - 260px);
-}
+}*/
 #PGwarning {
     width: 400px;
     display: inline-block;
