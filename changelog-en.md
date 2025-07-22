@@ -1,6 +1,36 @@
 ## Changelog - Extension
 
-##### 3.11.6.1
+##### 3.11.7.0
+
+**Update**
+- Efficiency Overview:
+	- in the prouction/tile settings, hovering on the input field will now provide a tooltip with comparison value from your city
+		- highest Value
+		- fifth-highest Value
+		- top 10%
+		- Note: is a Produktion mor important than other, the entered value should correspond to the lowest of the values or an even lower one. Is a prouktion not as mportant to you, the entered value should correspon to the highest value or an even higher one.
+	- added Calculator for determining the produktion/tile value for "finish special production" fragments
+		- click the Abakus/Calculator-Icon in the FSP row opens the calculator
+		- here you can enter the expected production, that is collected per use of an FSP (production of the building, the FSP is used on, don't forget the BG-factor if applicable)
+		- The calculator determines the production/tile value for the FSP depending on the corresponding production/tile values of the respective resources
+
+- Building tooltips:
+	- now shows for limited buildings, what the efficiency of the decayed building will be
+	- now shows for building that can be upgraded to limited/ascended buildings what the efficincy of the limited building will be
+	- now shows, what kits are needed for the building
+	- Chain buildings with Era-dependent values are now properly evaluated
+
+- QI Actio points calculator:
+	- capacity increase should now be handled correctly 
+
+- Guild member overview:
+	- added guild goods production to export
+
+**Removed**
+- Units-Modul
+
+- Marketplace-Offers
+	- functionality was transferred to the Market-Overview
 
 **BugFix**
 - Efficiency Overview: Sorting by value/tile was broken and we fixed a small display issue in the table head
