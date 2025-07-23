@@ -4,15 +4,15 @@
 
 **Update**
 - Efficiency Overview:
-	- in the prouction/tile settings, hovering on the input field will now provide a tooltip with comparison value from your city
-		- highest Value
-		- fifth-highest Value
+	- in the prouction/tile settings, hovering on the input field will now provide a tooltip with comparison values from your city
+		- highest value
+		- fifth-highest value
 		- top 10%
-		- Note: is a Produktion mor important than other, the entered value should correspond to the lowest of the values or an even lower one. Is a prouktion not as mportant to you, the entered value should correspon to the highest value or an even higher one.
-	- added Calculator for determining the produktion/tile value for "finish special production" fragments
-		- click the Abakus/Calculator-Icon in the FSP row opens the calculator
+		- Note: is a production more important than others, the entered value should correspond to the lowest of the given values or an even lower one. Is a production not as important to you, the entered value should correspond to the highest value or an even higher one.
+	- added calculator for determining the production/tile value for "finish special production" fragments
+		- click on the Abakus/Calculator-Icon in the FSP row opens the calculator
 		- here you can enter the expected production, that is collected per use of an FSP (production of the building, the FSP is used on, don't forget the BG-factor if applicable)
-		- The calculator determines the production/tile value for the FSP depending on the corresponding production/tile values of the respective resources
+		- the calculator determines the production/tile value for the FSP depending on the corresponding production/tile values of the respective resources
 
 - Building tooltips:
 	- now shows for limited buildings, what the efficiency of the decayed building will be
@@ -20,8 +20,8 @@
 	- now shows, what kits are needed for the building
 	- Chain buildings with Era-dependent values are now properly evaluated
 
-- QI Actio points calculator:
-	- capacity increase should now be handled correctly 
+- QI action points calculator:
+	- capacity increase should now be handled 
 
 - Guild member overview:
 	- added guild goods production to export
