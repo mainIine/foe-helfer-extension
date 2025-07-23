@@ -149,6 +149,7 @@
     "Boxes.BonusService.first_strike": "Nombre d'essais restant pour la Première Frappe.",
     "Boxes.BonusService.missile_launch": "Nombre d'essais restants pour le lancement de missile.",
     "Boxes.BonusService.spoils_of_war": "Nombre d'essais restants pour les butins de guerre.",
+    "Boxes.BoostList.Title": "liste des boost",
     "Boxes.BoostList.guild_raids_action_points_collection": "Points d'action",
     "Boxes.BoostList.guild_raids_coins_production": "Boost Pièce",
     "Boxes.BoostList.guild_raids_coins_start": "Démarrer Pièces",
