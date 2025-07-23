@@ -2250,8 +2250,8 @@ let Productions = {
 	// settings for the efficiency rating table
 	RSettings: () => {
 		let c = [];
-		c.push(`<p class="text-left">${i18n('Boxes.General.Export')}: <button class="btn btn-default" onclick="HTML.ExportTable($('.ratingtable table'),'csv','EfficiencyRating')">CSV</button>`);
-		c.push(`<button class="btn btn-default" onclick="HTML.ExportTable($('.ratingtable table'),'json','EfficiencyRating')">JSON</button></p>`);
+		c.push(`<p class="text-left">${i18n('Boxes.General.Export')}: <span class="btn-group"><button class="btn btn-default" onclick="HTML.ExportTable($('.ratingtable table'),'csv','EfficiencyRating')">CSV</button>`);
+		c.push(`<button class="btn btn-default" onclick="HTML.ExportTable($('.ratingtable table'),'json','EfficiencyRating')">JSON</button></span></p>`);
 
 		$('#ProductionsRatingSettingsBox').html(c.join(''));
 	},
