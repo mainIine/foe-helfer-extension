@@ -886,18 +886,18 @@ let Productions = {
 		// gather all different eras
 		buildingIds.forEach(b => {
 			let building = CityMap.getBuildingById(b.id)
-			if (building.player_id == ExtPlayerID) {
+			if (building.player_id === ExtPlayerID) {
 				let allGoods = CityMap.getBuildingGoodsByEra(false, building)
-				if (allGoods != undefined) {
+				if (allGoods !== undefined) {
 					for (const [era, value] of Object.entries(allGoods.eras)) {
-						if (eras.find(x => x == era) == undefined) 
+						if (eras.find(x => x == era) == undefined)
 							eras.push(parseInt(era))
 					}
 				}
 			}
 		})
 
-		// sort by most advanced era first
+		// sort by the most advanced era first
 		eras.sort((a, b) => {
 			if (a < b) return -1
 			if (a > b) return 1
