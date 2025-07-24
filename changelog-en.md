@@ -4,20 +4,20 @@
 
 **Update**
 - Efficiency Overview:
-	- in the prouction/tile settings, hovering on the input field will now provide a tooltip with comparison values from your city
+	- in the production /tile settings, hovering on the input field will now provide a tooltip with comparison values from your city
 		- highest value
 		- fifth-highest value
 		- top 10%
 		- Note: is a production more important than others, the entered value should correspond to the lowest of the given values or an even lower one. Is a production not as important to you, the entered value should correspond to the highest value or an even higher one.
 	- added calculator for determining the production/tile value for "finish special production" fragments
 		- click on the Abakus/Calculator-Icon in the FSP row opens the calculator
-		- here you can enter the expected production, that is collected per use of an FSP (production of the building, the FSP is used on, don't forget the BG-factor if applicable)
+		- here you can enter the expected production collected per use of an FSP (production of the building, the FSP is used on doesn't forget the BG-factor if applicable)
 		- the calculator determines the production/tile value for the FSP depending on the corresponding production/tile values of the respective resources
 
 - Building tooltips:
-	- now shows for limited buildings, what the efficiency of the decayed building will be
-	- now shows for building that can be upgraded to limited/ascended buildings what the efficincy of the limited building will be
-	- now shows, what kits are needed for the building
+	- it now shows for limited buildings, what the efficiency of the decayed building will be
+	- it now shows for building that can be upgraded to limited/ascended buildings what the efficiency of the limited building will be
+	- it now shows what kits are needed for the building
 	- Chain buildings with Era-dependent values are now properly evaluated
 
 - QI action points calculator:
@@ -33,14 +33,16 @@
 	- functionality was transferred to the Market-Overview
 
 **BugFix**
-- Efficiency Overview: Sorting by value/tile was broken and we fixed a small display issue in the table head
+- Efficiency Overview: Sorting by value/tile was broken, and we fixed a small display issue in the table head
+
+---
 
 ##### 3.11.6.0
 
 **Update**
 - Efficiency Overview:
 	- If the option "Inventory" is active, now also assemble Buildings will be listed. The tooltip for the inventory icon of the respective building will show:
-	- how many buildings of this type could be placed, which upgrades are necessary for that and which upgrade paths are available. Therein the following will be considered:
+	- how many buildings of this type could be placed, which upgrades are necessary for that and which upgrade paths are available? Therein the following will be considered:
 		- complete buildings in inventory
 		- buildings in the city that may be improved by using items (kits) from inventory
 		- inventory items that can be assembled to a complete building
@@ -55,7 +57,7 @@
 
 **Removed**
 - Boost-Inventory
-	- was replaced by above-mentioned change to the efficiency overview
+	- was replaced by the above-mentioned change to the efficiency overview
 
 **BugFix**
 
