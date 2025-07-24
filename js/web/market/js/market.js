@@ -186,6 +186,8 @@ let Market = {
 
         // Filters
         h.push('<div class="dark-bg" style="margin-bottom: 3px;">');
+        h.push('<div style="float:right" class="text-right p5"><span class="btn-default" onclick="MarketOffers.Show(false)">'+i18n('Boxes.MarketOffers.Title')+'</span><br>');
+        h.push('<span class="btn-default my-5" onclick="MarketOffers.ShowEvents(false)">'+i18n('Boxes.MarketOffers.Events') +'</span></div>');
         h.push('<table class="filters">');
         h.push('<thead class="sticky">');
         h.push('<tr>');

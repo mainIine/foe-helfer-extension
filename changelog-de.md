@@ -1,5 +1,40 @@
 ## Changelog - Extension
 
+##### 3.11.7.0
+
+**Update**
+- Effizienzübersicht:
+	- in den Einstellungen für die Produktion/Feld Werte werden beim Zeigen auf das Eingabefeld nun Werte aus der Stadt zum Vergleich angegeben
+		- bester Wert
+		- füntbester Wert
+		- beste 10%
+		- Hinweis: ist euch eine Produktion im Vergleich zu den anderen Produktionen wichtig, sollte sich der Wert den ihr eingebt am niedrigsten dieser Werte oder einem noch niedrigeren Wert orientieren. Ist euch eine Produktion nicht so wichtig, sollte sich der eingegebene Wert am besten Wert oder einem noch größeren Wert orientieren
+	- Rechner zur Ermittlung des Produktion/Feld Werts für "Spezialproduktion abschließen"-Fragmente hinzugefügt
+		- Klick auf das Abakus/Taschenrechner-Zeichen öffnet den Rechner
+		- hier können die zu erwartenden Produktionen, die der Einsatz des SPA bringen wird, eingegegeben werden (Produktion des Gebäudes, das geerntet wird, evtl. mit BG Faktor)
+		- Der Rechner ermittelt den Produktion/Feld Wert für das SPA anhand der eingegebenen Produktion/Feld Werte für die entsprechenden Produktionen
+
+- Gebäudetooltips:
+	- zeigt nun für eingeschränkte/erhabene Gebäude die Effizienz des verfallenen Gebäudes an
+	- zeigt nun für Gebäude, die zu eingeschränkten/erhabenen Gebäuden aufgewertet werden können die Effizienz des eingeschränkten Gebäudes mit an
+	- zeigt nun an, welche Kits nötig sind, für das Gebäude
+	- Kettengebäude mit zeitalterabhängigen Werten werden nun korrekt ausgewertet
+
+- QI Aktionspunkterechner:
+	- Kapazitätserhöhung sollte nun mit beachtet werden 
+
+- Gildenmitgliederübersicht:
+	- Gildengüterproduktion zu Export hinzugefügt
+
+**Entfernt**
+- Einheiten-Modul
+
+- Marktplatz-Angebote
+	- Funktionalität wurde in die Marktübersicht transferiert
+
+**BugFix**
+- Effizienzübersicht: Sortieren nach Wert/Feld war nicht mehr möglich und ein kleiner Anzeigefehler wurde behoben
+
 ##### 3.11.6.0
 
 **Update**

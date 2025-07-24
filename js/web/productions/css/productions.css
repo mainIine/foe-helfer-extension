@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2024 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2025 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -17,6 +17,10 @@
 	width: 820px;
 	height: 500px;
 }
+
+#ProductionsRatingBody {
+	opacity: 1;
+}
 #Productions #ProductionsBody {
 	overflow-x: hidden;
 	overflow-y: auto;
@@ -26,10 +30,8 @@
 }
 #Productions .show-entity {
 	display: inline-block;
-	width: 20px;
-	height: 20px;
 }
-#Productions .show-entity img, #ProductionsRating .show-all img {
+#Productions .show-entity, #Productions .show-entity img, #ProductionsRating .show-all img {
 	width: 20px;
 	height: 20px;
 }
@@ -46,9 +48,6 @@
 	text-align: center;
 	padding: 2em;
 	font-size: 120%;
-}
-#Productions #ProductionsBody table {
-	display: none;
 }
 #Productions #ProductionsBody table.active {
 	display: table;
@@ -114,7 +113,7 @@
 #Productions #ProductionsBody .tabs ul li a span, #Productions th.boost span, #BoostList table .boost {
 	background: transparent url('../images/productions.png') -233px 2px no-repeat;
 }
-#Productions #ProductionsBody .tabs ul li.forge_points_production, #Productions #ProductionsBody .tabs ul li.coin_production, #Productions #ProductionsBody .tabs ul li.supply_production {
+#Productions #ProductionsBody table, #Productions #ProductionsBody .tabs ul li.forge_points_production, #Productions #ProductionsBody .tabs ul li.coin_production, #Productions #ProductionsBody .tabs ul li.supply_production {
 	display: none;
 }
 #Productions #ProductionsBody .btn-tight.typeBoost {
@@ -122,7 +121,6 @@
 }
 #Productions th.boost span {
 	height: 25px;
-	display: block;
 	margin: 0 auto;
 }
 #BoostList table .boost {
@@ -151,14 +149,7 @@
 	background-repeat: no-repeat;
 	background-position: 13px 13px, -312px 0px;
 }
-#ProductionsRatingBody.tilevalues .buildingvalue {
-	display: none;
-}
-#ProductionsRatingBody:not(.tilevalues) .tilevalue {
-	display: none;
-}
-
-#ProductionsRatingBody.showitems .items {
+#ProductionsRatingBody .inventory-building, #ProductionsRatingBody label[for="inventorybuildingscore"], #ProductionsRatingBody .ratingtable tr.hidden, #ProductionsRatingBody.tilevalues .buildingvalue, #ProductionsRatingBody:not(.tilevalues) .tilevalue, #ProductionsRatingBody.showitems .items, #ProductionsRating #ProductionsRatingSettings .foe-table li input.hidden {
 	display: none;
 }
 
@@ -176,9 +167,6 @@
 }
 #ProductionsRatingBody span.resicon.guild_raids_action_points_collection {
 	background-position: -498px 2px;
-}
-#ProductionsRatingBody th i {
-	display: block;
 }
 #ProductionsRatingBody #efficiencyBuidlingFilter {
 	width: 120px;
@@ -255,7 +243,7 @@
 	font-size: 1em;
 	transform: scale(1.1, 1);
 }
-#ProductionsRatingBody tr.sorter-header th.ascending:before, #ProductionsRatingBody tr.sorter-header th.descending:after {
+#Productions th.boost span, #ProductionsRatingBody tr.sorter-header th.ascending:before, #ProductionsRatingBody tr.sorter-header th.descending:after, #ProductionsRatingBody.inventorybuildings label[for="inventorybuildingscore"], #buildingsize.active ul, #ProductionsRatingBody th i {
 	display: block;
 }
 #ProductionsRating #RatingSettings {
@@ -263,9 +251,6 @@
 	top: 41px;
 	right: 10px;
 	z-index: 1500;
-}
-#ProductionsRating #ProductionsRatingSettings .foe-table li input.hidden {
-	display: none;
 }
 #ProductionsRating .show-all img {
 	width: 18px;
@@ -285,9 +270,6 @@
 #ProductionsRatingBody #inventorybuildingscore {
 	width: 60px;
 }
-#ProductionsRatingBody .inventory-building, #ProductionsRatingBody label[for="inventorybuildingscore"], #ProductionsRatingBody .ratingtable tr.hidden {
-	display: none;
-}
 #ProductionsRatingBody.inventorybuildings .inventory-building {
 	display: table-row;
 }
@@ -299,16 +281,13 @@
 #ProductionsRatingBody.inventorybuildings .inventory-building td:nth-child(2) {
 	font-style: italic;
 }
-#ProductionsRatingBody.inventorybuildings label[for="inventorybuildingscore"] {
-	display: block;
-}
 #ProductionsRatingBody tr.highlighted2 td:nth-child(2) {
 	color: var(--text-light);
 }
 #ProductionsRatingBody tr.highlighted2 td:nth-child(2)::after {
 	content: ' 🔎';
 }
-#ProductionsRatingBody tr td.ally:nth-child(2) span:nth-child(2)::after {
+#ProductionsRatingBody tr td.ally:nth-child(2) span:nth-child(2)::after, #ProductionsRatingBody tr span.inventory::after {
 	content: ' ';
 	background: url('../../x_img/ally.png') no-repeat center;
 	background-size: contain;
@@ -317,12 +296,7 @@
 	height: 18px;
 }
 #ProductionsRatingBody tr span.inventory::after {
-	content: ' ';
 	background: url('../../x_img/inventory.png') no-repeat center;
-	background-size: contain;
-	display: inline-block;
-	width: 20px;
-	height: 18px;
 }
 #ProductionsRatingBody tr.highlighted2 td.ally:nth-child(2) {
 	color: var(--text-light);
@@ -348,14 +322,14 @@
 	display: inline-block;
 	padding-right: 0.5em;
 }
-#ProductionsRatingBody tr .show-all img, #ProductionsRatingBody td:nth-child(4) img {
+#ProductionsRatingBody tr .show-all img, #ProductionsRatingBody td:nth-child(3) img {
 	max-width: 18px;
 	opacity: 0.6;
 }
-#ProductionsRatingBody td:nth-child(4) img {
+#ProductionsRatingBody td:nth-child(3) img {
 	filter: sepia(1);
 }
-#ProductionsRatingBody tr .show-all img:hover, #ProductionsRatingBody td:nth-child(4) img:hover {
+#ProductionsRatingBody tr .show-all img:hover, #ProductionsRatingBody td:nth-child(3) img:hover {
 	opacity: 1;
 	filter: none;
 }
@@ -552,9 +526,13 @@
 }
 #RatingsResults {
 	position: sticky;
-	top: 5px;
+	top: 4px;
 	float: right;
-	margin-right: 5px;
+	margin-right: 2px;
+	height: 20px;
+	line-height: 20px;
+	margin-bottom: -23px;
+	z-index: 201;
 }
 
 input[id*="ProdPerTile"] {
@@ -747,10 +725,6 @@ input[id*="ProdPerTile"] {
 	border-radius: 0 0 2px 2px;
 }
 
-#buildingsize.active ul {
-	display: block;
-}
-
 #buildingsize li:hover {
 	background-color: var(--text-light);
 }
@@ -766,4 +740,25 @@ input[id*="ProdPerTile"] {
 #buildingsize li.selected::after {
 	opacity: 1;
 	color: var(--text-success);
+}
+
+#ShowFSPCalculator {
+	text-align: right;
+}
+#ProductionsRatingBody #FSPCalculator span.resicon {
+    position: relative;
+    z-index: 2;
+    margin-bottom: -8px;
+}
+
+#FSPCalculator {
+	padding-left: 2em;
+}
+
+#FSPCalculator .cats {
+	gap: 1em;
+}
+
+#FSPCalculator .cats input {
+	width: 50px;
 }
