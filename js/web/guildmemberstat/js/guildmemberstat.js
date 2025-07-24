@@ -1,7 +1,7 @@
 /*
  * *************************************************************************************
  *
- * Copyright (C) 2024 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2025 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -1014,13 +1014,14 @@ let GuildMemberStat = {
 		h.push(`<th class="is-number text-center gms-tooltip" data-type="gms-group"  title="${HTML.i18nTooltip(i18n('Boxes.GuildMemberStat.GuildMessages'))}"><span class="messages"></span></th>` +
 			`<th class="is-number text-center gms-tooltip" data-type="gms-group" title="${HTML.i18nTooltip(i18n('Boxes.GuildMemberStat.GexParticipation'))}"><span class="gex"></span></th>` +
 			`<th class="is-number text-center gms-tooltip" data-type="gms-group" title="${HTML.i18nTooltip(i18n('Boxes.GuildMemberStat.GbgParticipation'))}"><span class="gbg"></span></th>` +
-			'<th class="expand-all closed"></th></tr>' +
+			`<th style="display:none"></th>` +
+			'</tr>' +
 			'</thead><tbody class="gms-group">');
 
 		let CurrentMember = await GuildMemberStat.db.player.orderBy('score').reverse().toArray();
 		let exportData = GuildMemberStat.ExportData = [];
 
-		exportData.push(['rank', 'member_id', 'member', 'points', 'eraID', 'eraName', 'activity_warnings', 'messages', 'gex_participation', 'gbg_participation', 'won_battles', 'guildmember']);
+		exportData.push(['rank', 'member_id', 'member', 'points', 'eraID', 'eraName', 'activity_warnings', 'messages', 'gex_participation', 'gbg_participation', 'guildgoods', 'won_battles', 'guildmember']);
 
 		if (CurrentMember === undefined)
 		{
@@ -1127,9 +1128,13 @@ let GuildMemberStat = {
 			}
 
 			// Get Guild supporting Buildings
+			member['guildgoods'] = 0;
 			if (member['guildbuildings'] !== undefined && member['guildbuildings']['buildings'] !== undefined)
 			{
 				guildBuildingsCount = member['guildbuildings']['buildings'].length;
+				for (let building of member['guildbuildings']['buildings']) {
+					member['guildgoods'] += building?.resources?.totalgoods || 0;
+				}
 				hasDetail = (guildBuildingsCount > 0) ? true : hasDetail;
 			}
 
@@ -1156,6 +1161,7 @@ let GuildMemberStat = {
 			if (gexActivityCount > 0) GuildMemberStat.MemberDict[MemberID]['gex'] = gexActivity;
 			if (gbgActivityCount > 0) GuildMemberStat.MemberDict[MemberID]['gbg'] = gbgActivity;
 			if (guildBuildingsCount > 0) GuildMemberStat.MemberDict[MemberID]['guildbuildings'] = member['guildbuildings'];
+			if (guildBuildingsCount > 0) GuildMemberStat.MemberDict[MemberID]['guildgoods'] = member['guildgoods'];
 			GuildMemberStat.MemberDict[MemberID]['name'] = member['name'];
 			GuildMemberStat.MemberDict[MemberID]['deleted'] = deletedMember;
 
@@ -1182,9 +1188,11 @@ let GuildMemberStat = {
 			h.push(`<td class="is-number text-center" data-number="${forumActivityCount}">${forumActivityCount}</td>`);
 			h.push(`<td class="is-number text-center" data-number="${gexActivityCount}">${gexActivityCount}</td>`);
 			h.push(`<td class="is-number text-center" data-number="${gbgActivityCount}">${gbgActivityCount}</td>`);
-			h.push(`<td></td></tr>`);
+			h.push(`<td style="display:none" class="is-number" data-number="${member['guildgoods']}">${member['guildgoods']}</td>`);
 
-			exportData.push([(rank - deletedCount), member['player_id'], member['name'], member['score'], Technologies.Eras[member['era']], i18n('Eras.' + Technologies.Eras[member['era']]), ActWarnCount, forumActivityCount, gexActivityCount, gbgActivityCount, member['won_battles'], deletedMember ? 0 : 1]);
+			h.push(`</tr>`);
+
+			exportData.push([(rank - deletedCount), member['player_id'], member['name'], member['score'], Technologies.Eras[member['era']], i18n('Eras.' + Technologies.Eras[member['era']]), ActWarnCount, forumActivityCount, gexActivityCount, gbgActivityCount, member['guildgoods'], member['won_battles'], deletedMember ? 0 : 1]);
 
 		}
 
@@ -1248,7 +1256,7 @@ let GuildMemberStat = {
 			});
 
 			// Fade out loading screen
-			helper.preloader.hide();
+			helper.preloader.hide("#GuildMemberStat");
 		});
 	},
 
@@ -1593,7 +1601,7 @@ let GuildMemberStat = {
 			container: '#GuildMemberStatBody'
 		});
 
-		helper.preloader.hide();
+		helper.preloader.hide("#GuildMemberStat");
 
 	},
 
@@ -1713,7 +1721,7 @@ let GuildMemberStat = {
 
 			});
 
-			helper.preloader.hide();
+			helper.preloader.hide('#GuildMemberStat');
 		});
 
 	},
@@ -1789,7 +1797,7 @@ let GuildMemberStat = {
 
 		});
 
-		helper.preloader.hide();
+		helper.preloader.hide('#GuildMemberStat');
 
 	},
 
@@ -1814,7 +1822,7 @@ let GuildMemberStat = {
 		if (gmsBuildingDict === undefined || gmsBuildingDict.length <= 0)
 		{
 			$("#gmsContentWrapper").html(d.join(''));
-			helper.preloader.hide();
+			helper.preloader.hide("#GuildMemberStat");
 			return;
 		}
 
@@ -1975,7 +1983,7 @@ let GuildMemberStat = {
 				container: '#GuildMemberStatBody'
 			});
 
-			helper.preloader.hide();
+			helper.preloader.hide("#GuildMemberStat");
 
 			$('#gmsContentWrapper #toggleBuildingView').on('click', function () {
 				$('#gmsContentWrapper .buildinglist').toggleClass('hide show');
@@ -2025,7 +2033,7 @@ let GuildMemberStat = {
 		if (ErasGuildGoods === null)
 		{
 			$("#gmsContentWrapper").html(d.join(''));
-			helper.preloader.hide();
+			helper.preloader.hide("#GuildMemberStat");
 			return;
 		}
 
@@ -2143,7 +2151,7 @@ let GuildMemberStat = {
 				container: '#GuildMemberStatBody'
 			});
 
-			helper.preloader.hide();
+			helper.preloader.hide("#GuildMemberStat");
 		});
 	},
 
@@ -2164,7 +2172,7 @@ let GuildMemberStat = {
 		if (GreatBuildings === null)
 		{
 			$("#gmsContentWrapper").html(d.join(''));
-			helper.preloader.hide();
+			helper.preloader.hide("#GuildMemberStat");
 			return;
 		}
 
@@ -2315,7 +2323,7 @@ let GuildMemberStat = {
 				});
 			});
 
-			helper.preloader.hide();
+			helper.preloader.hide("#GuildMemberStat");
 
 			$('#gblist > tbody tr.hasdetail').off().on('click', function () {
 
@@ -2629,7 +2637,6 @@ let GuildMemberStat = {
 
 		let content = GuildMemberStat.ExportData;
 		let FileContent = '';
-		let TimeStamp = moment().format('YYMMDD-HHmm');
 
 		for (let i = 0; i < content.length; i++)
 		{
@@ -2656,7 +2663,7 @@ let GuildMemberStat = {
 		}
 
 		let Blob1 = new Blob([BOM + FileContent], { type: "application/octet-binary;charset=ANSI" });
-		MainParser.ExportFile(Blob1, filename + '_' + TimeStamp + '.' + type);
+		MainParser.ExportFile(Blob1, filename + '-' + moment().format('YYYY-MM-DD') + '.' + type);
 
 		$(`#GuildMemberStatSettingsBox`).fadeToggle('fast', function () {
 			$(this).remove();

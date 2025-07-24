@@ -149,12 +149,12 @@ helper.sounds = {
 
 helper.preloader = { 
 	show: function(id) {
-		$('#gms-loading-data').remove();
-		$(id).append('<div id="gms-loading-data"><div class="loadericon"></div></div>');
+		$(id+' .loading-data').remove();
+		$(id).append('<div class="loading-data"><div class="loadericon"></div></div>');
 	},
 
-	hide: function() {
-		$('#gms-loading-data').fadeOut(500, function () {
+	hide: function(id) {
+		$(id+' .loading-data').fadeOut(600, 'easeInCubic', function () {
 			$(this).remove();
 		})
 	}
@@ -883,8 +883,12 @@ let HTML = {
 
 		$(Table).each(function () {
 			let ColumnNames = [];
-
-			$(Table).find('th').each(function () {
+			let findBy = "th"
+			if ($(Table).find('.exportheader th').length > 0){
+				findBy = '.exportheader th';
+			}
+			
+			$(Table).find(findBy).each(function () {
 				let ColumnCount = $(this).attr('colspan');
 				if (ColumnCount) {
 					ColumnCount = ColumnCount - 0;

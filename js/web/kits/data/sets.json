@@ -1,9 +1,20 @@
 [	
 	{
-		"udate": "03 July 2025"
+		"udate": "07 July 2025"
 	},
 	{
 		"groupname":"Chains"
+	},
+	{
+		"name": "FALL25A_chain",
+		"buildings": [
+			{"first": "W_MultiAge_FALL25A1"}
+		],
+		"assets": [
+			"W_MultiAge_FALL25B1",	
+			"W_MultiAge_FALL25C1",
+			"W_MultiAge_FALL25D1"
+		]
 	},
 	{
 		"name": "serpent_statue",
@@ -17,7 +28,7 @@
 		]
 	},
 	{
-		"name": "Statue_of_Honor",
+		"name": "guild_battlegrounds_road_to_victory",
 		"buildings": [
 			{"first": "R_MultiAge_Battlegrounds1a"}
 		],
@@ -26,7 +37,7 @@
 		]
 	},
 	{
-		"name": "The_Great_Elephant",
+		"name": "guild_battlegrounds_iridescent_garden",
 		"buildings": [
 			{"first": "R_MultiAge_Battlegrounds3a"}
 		],
@@ -35,7 +46,7 @@
 		]
 	},
 	{
-		"name": "Panda_Reserve",
+		"name": "panda_reserve",
 		"buildings": [
 			{"first": "R_MultiAge_WILD23A1"}
 		],
@@ -46,7 +57,7 @@
 		]
 	},
 	{
-		"name": "Winter_Train",
+		"name": "winter_train",
 		"buildings": [
 			{"first": "W_MultiAge_WIN19A1"}
 		],
@@ -58,7 +69,7 @@
 			]
 	},
 	{
-		"name": "Pirates_Hideout",
+		"name": "pirates_hideout",
 		"link": "Pirate%27s_Hideout",
 		"buildings": [
 			{"first": "W_MultiAge_SUM21A1"}
@@ -70,7 +81,7 @@
 		]
 	},
 	{
-		"name": "Terracotta_Vineyard",
+		"name": "terracotta_vineyard",
 		"buildings": [
 			{"first": "W_MultiAge_BOWL21A1"}
 		],
@@ -82,7 +93,7 @@
 		]
 	},
 	{
-		"name": "Hippodrome",
+		"name": "hippodrome",
 		"link": "Selection_Kit#Hippodrome_Selection_Kit",
 		"buildings": [
 			{"first": "R_MultiAge_SoccerBonus20a"},

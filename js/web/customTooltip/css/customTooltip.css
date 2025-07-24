@@ -144,6 +144,7 @@ td:nth-child(3) .HXBuilding .inhabitant {
 .HXBuilding .limited {
     text-wrap: auto;
 }
+
 .HXBuilding .limited img{
     align-self: flex-start;
 }
@@ -338,16 +339,25 @@ td:nth-child(3) .HXBuilding .inhabitant {
     font-weight: bolder;
 }
 
-.inventoryTooltip h2 {
+.inventoryTooltip h2{
 	display: flex;
     justify-content: space-between;
 }
-
-.inventoryTooltip .upgrades {
-	margin-left: 15px;
+.buildingTT h2 {
+	display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
 }
 
-.inventoryTooltip .upgrades span {
+.inventoryTooltip .upgrades{
+	margin-left: 15px;
+}
+.buildingTT .upgrades {
+	margin-left: auto;
+}
+
+.inventoryTooltip .upgrades span,
+.buildingTT .upgrades span {
     display: inline-flex;
     height: 22px;
     align-items: center;
@@ -358,7 +368,8 @@ td:nth-child(3) .HXBuilding .inhabitant {
     border-radius: 20px;
 }
 
-.inventoryTooltip .upgrades span::after {
+.inventoryTooltip .upgrades span::after,
+.buildingTT .upgrades span::after {
 	content: '';
 	display: inline-block;
 	width: 17px;
@@ -368,43 +379,53 @@ td:nth-child(3) .HXBuilding .inhabitant {
 	background-size: auto 100%;
 }
 
-.inventoryTooltip .upgrades .base {
+.inventoryTooltip .upgrades .base,
+.buildingTT .upgrades .base {
 	color: var(--text-normal);
 }
 
-.inventoryTooltip .upgrades .base::after {
+.inventoryTooltip .upgrades .base::after,
+.buildingTT .upgrades .base::after {
 	background-position: -72px 0;
 	width: 20px;
 }
 
-.inventoryTooltip .upgrades .silver {
+.inventoryTooltip .upgrades .silver,
+.buildingTT .upgrades .silver {
 	color: #b8b9b9;
 }
 
-.inventoryTooltip .upgrades .silver::after {
+.inventoryTooltip .upgrades .silver::after,
+.buildingTT .upgrades .silver::after {
 	background-position: -18px 0;
 }
 
-.inventoryTooltip .upgrades .golden {
+.inventoryTooltip .upgrades .golden,
+.buildingTT .upgrades .golden {
 	color: #fedc00;
 }
 
-.inventoryTooltip .upgrades .golden::after {
+.inventoryTooltip .upgrades .golden::after,
+.buildingTT .upgrades .golden::after {
 	background-position: -36px 0;
 }
 
-.inventoryTooltip .upgrades .platinum {
+.inventoryTooltip .upgrades .platinum,
+.buildingTT .upgrades .platinum {
 	color: #e9ceef;
 }
 
-.inventoryTooltip .upgrades .platinum::after {
+.inventoryTooltip .upgrades .platinum::after,
+.buildingTT .upgrades .platinum::after {
 	background-position: -52px 0;
 }
 
-.inventoryTooltip .upgrades .ascended {
+.inventoryTooltip .upgrades .ascended,
+.buildingTT .upgrades .ascended {
 	color: #ffae33e0;
 }
 
-.inventoryTooltip .upgrades .ascended::after {
+.inventoryTooltip .upgrades .ascended::after,
+.buildingTT .upgrades .ascended::after {
 	background-position: -92px 0;
 }

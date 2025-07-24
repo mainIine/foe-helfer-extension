@@ -49,7 +49,11 @@ let Tooltips = {
                 let f=eval(e.currentTarget.dataset.callback_tt)
                 if (typeof(f) == "function") {
                     let content = await(f(e));
-                    Tooltips.set(content)
+                    if (content) {
+                        Tooltips.set(content)
+                    } else {
+                        Tooltips.deactivate()
+                    }
                 } else
                     Tooltips.set(f);
             }
@@ -107,15 +111,30 @@ let Tooltips = {
         let era =  e?.currentTarget?.dataset?.era||Technologies.InnoEraNames[MainParser?.CityMapData[e?.currentTarget?.dataset?.id]?.level]
         let meta = MainParser.CityEntities[id]
         let allies =  JSON.parse(e?.currentTarget?.dataset?.allies||"null")
-        let eff = Math.round(e?.currentTarget?.previousElementSibling?.dataset?.number)
+        let eff =  Math.round(JSON.parse(e?.currentTarget?.dataset?.eff||"null"))
+        //let eff = Math.round(e?.currentTarget?.previousElementSibling?.dataset?.number)
         if  (!eff && era) eff=Math.round(100 * Productions.rateBuildings([id],true,era)?.[0]?.rating.totalScore||0)
 
+        let upgrades = ""
+        let upgradeCount = Kits.allBuildingsUpgradeCounts[id]||{}
+        if (Object.keys(upgradeCount).length>0) {
+			upgrades = '<span class="upgrades"><span class="base">1</span>';
+			for (let i in upgradeCount) {
+				if (!upgradeCount[i]) continue;
+				if (upgradeCount[i]) {
+					upgrades += `<span class="${i}">${upgradeCount[i]}</span>`;
+				}
+			}
+			upgrades += '</span>';
+		}
+
+
         let h = `<div class="buildingTT">
-                <h2>${meta.name}  ${eff ? `(${i18n("Boxes.Kits.Efficiency")}: ${eff})`:''}</h2>
+                <h2><span>${meta.name}  ${eff ? `(${i18n("Boxes.Kits.Efficiency")}: ${eff})`:''}</span>${upgrades}</h2>
                 <table class="foe-table">
                 <tr><td class="imgContainer"><img src="${srcLinks.get("/city/buildings/"+meta.asset_id.replace(/^(\D_)(.*?)/,"$1SS_$2")+".png",true)}"></td>`+
                 `<td style="width:100%; vertical-align:top"">`;
-        h += await Tooltips.BuildingData(meta,era,allies);
+        h += await Tooltips.BuildingData(meta,era,allies, eff);
         h += "</td></tr></table></div>"
         setTimeout(()=>{
             $(".handleOverflow").each((index,e)=>{
@@ -150,7 +169,7 @@ let Tooltips = {
         
         return {icon:icon,amount:amount,name:name,fragment:fragment}
     },  
-    BuildingData:async (meta,onlyEra=null,allies=null)=>{
+    BuildingData:async (meta,onlyEra=null,allies=null, efficiency=null)=>{
         if (onlyEra && Array.isArray(onlyEra)) {
             allies = [].concat(onlyEra)
             onlyEra = null
@@ -237,9 +256,12 @@ let Tooltips = {
             }
             //Chains
             let chain = levels?.AllAge?.chain
+            let chainMin = levels?.[minEra]?.chain
+            let chainMax = levels?.[maxEra]?.chain
             if (chain?.chainId) {
-                set = srcLinks.icons(chain?.chainId) + MainParser.BuildingChains[chain?.chainId].name
-                if (!MainParser.BuildingChains[chain?.chainId].cityEntityIds.includes(meta.id)) set+= '</td></tr><tr><td style="text-wrap-mode:wrap;">' + chain.description
+                let ChainMeta=(MainParser.BuildingChains?.[chain?.chainId]||MainParser.BuildingChains?.[chain?.chainId.toLowerCase()])
+                set = srcLinks.icons(chain?.chainId) + ChainMeta.name
+                if (!ChainMeta.cityEntityIds.includes(meta.id)) set+= '</td></tr><tr><td style="text-wrap-mode:wrap;">' + chain.description
             }
             //Traits
             for (let a of meta.abilities||[]) {
@@ -289,12 +311,25 @@ let Tooltips = {
 
             if (era != "") out += "<tr><td>" + era + "</td></tr>"
 
+            let efficiencyDifference = null
+
             if (levels?.AllAge?.limited?.config?.expireTime) {
-                out += `<tr><td class="limited">${srcLinks.icons("limited_building_downgrade") + MainParser.CityEntities[levels.AllAge.limited.config.targetCityEntityId].name} (${i18n("Boxes.Tooltip.Building.after")} ${formatTime(levels.AllAge.limited.config.expireTime)})</td></tr>`
-            }
+                if (efficiency) {
+                    let ratings = Productions.rateBuildings([meta.id,levels.AllAge.limited.config.targetCityEntityId],true,era)?.map(x=>Math.round(100 * x?.rating?.totalScore)||0)
+                    efficiencyDifference = ratings[0]-ratings[1] //Eff1-Eff2 = efficiencyDifference = efficiency - efficiencyAfter --> effAfter = efficiency - efficiencyDifference
+                }
+                out += `<tr><td class="limited">${srcLinks.icons("limited_building_downgrade") + MainParser.CityEntities[levels.AllAge.limited.config.targetCityEntityId].name} (${i18n("Boxes.Tooltip.Building.after")} ${formatTime(levels.AllAge.limited.config.expireTime)})${efficiencyDifference ? " → "+i18n("Boxes.Kits.Efficiency")+": " + (efficiency - efficiencyDifference): ""}</td></tr>`
+            }   
 
             if (await CityMap.canAscend(meta.id)) {
-                out += `<tr><td class="limited">${srcLinks.icons("limited_building_upgrade") + MainParser.CityEntities[(await CityMap.AscendingBuildings)[meta.id]].name}</td></tr>`
+                let ascendedId=(await CityMap.AscendingBuildings)[meta.id]
+                if (efficiency) {
+                    let ratings = Productions.rateBuildings([meta.id,ascendedId],true,era)?.map(x=>Math.round(100 * x?.rating?.totalScore)||0)
+                    console.log(JSON.stringify(ratings) )
+                    efficiencyDifference = ratings[0]-ratings[1]
+                }
+                out += `<tr><td class="limited">${srcLinks.icons("limited_building_upgrade") + MainParser.CityEntities[ascendedId].name}${efficiencyDifference ? " -> "+i18n("Boxes.Kits.Efficiency")+": " + (efficiency - efficiencyDifference) :""}</td></tr>`
+
             }
 
             let provides=""
@@ -452,6 +487,51 @@ let Tooltips = {
                             
                             prods+=`<tr><td class="isGeneric">${b.level + "x" + srcLinks.icons(chain.chainId)} ► ${rewBA.icon + span(rewBA.amount) + rewBA.fragment + longSpan(rewBA.name)}</td></tr>`
                         }
+                    }
+                }
+            }
+            for (let [i,b] of Object.entries(chainMin?.config?.bonuses||[])) {
+                for (j in Object.keys(b.boosts)) {
+                    if (first) {
+                        provides+='<tr><td style="text-wrap-mode:wrap;">' + chain.description+"</td></tr>"
+                        first=false
+                    }
+                    provides+=`<tr><td>${b.level + "x" + srcLinks.icons(chain.chainId)} ► `
+                    provides+=srcLinks.icons(b.boosts[j].type+feature[b.boosts[j].targetedFeature]) + " " + range(b.boosts[j].value,chainMax?.config?.bonuses[i].boosts[j].value) + Boosts.percent(b.boosts[0].type)
+                    provides+=`</td></tr>`
+
+                } 
+                for (let [pIndex,product] of Object.entries(b.productions||[])) {
+                    if (first) {
+                        prods+='<tr><td style="text-wrap-mode:wrap;">' + chain.description+"</td></tr>"
+                        first=false
+                    }
+                    if (product.type == "resources") {
+                        for (let [res,amount] of Object.entries(product.playerResources?.resources||{})) {
+                            if (amount !=0) 
+                                prods+=`<tr><td>${b.level + "x" + srcLinks.icons(chain.chainId)} ► ${srcLinks.icons(resMapper(res,"goods")) + range(amount,chainMax?.config?.bonuses[i].productions[pIndex].playerResources?.resources?.[res])}</td></tr>`
+                        }
+                    }
+                    if (product.type == "guildResources") {
+                        for (let [res,amount] of Object.entries(product.guildResources?.resources||{})) {
+                            if (amount !=0) 
+                                prods+=`<tr><td>${b.level + "x" + srcLinks.icons(chain.chainId)} ► ${srcLinks.icons(resMapper(res,"treasury_goods")) + range(amount,chainMax?.config?.bonuses[i].productions[pIndex].guildResources?.resources?.[res])}</td></tr>`
+                        }
+                    }
+                    if (product.type == "unit") {
+                        if (product.amount !=0) {
+                            let iconId= (product.unitTypeId=="rogue"?"rogue":(
+                                        product.unitTypeId.includes("champion")?"chivalry":
+                                        Unit.Types.filter(x=>x.unitTypeId==product.unitTypeId)[0].unitClass
+                                        ))
+                            prods+=`<tr><td>${b.level + "x" + srcLinks.icons(chain.chainId)} ► ${srcLinks.icons(iconId) + range(product.amount,chainMax?.config?.bonuses[i].productions[pIndex].amount)}</td></tr>`
+                        }
+                    }
+                    if (product.type == "genericReward") {
+                        let rewBA=Tooltips.genericEval(minLookup[product.reward.id])
+                        let rewMax=Tooltips.genericEval(maxLookup[maxProductions?.[oIndex]?.products?.[pIndex]?.reward?.id])
+                        
+                        prods+=`<tr><td class="isGeneric">${b.level + "x" + srcLinks.icons(chain.chainId)} ► ${rewBA.icon + range(rewBA.amount,rewMax.amount) + rewBA.fragment + longSpan(rewBA.name)}</td></tr>`
                     }
                 }
             }
@@ -792,7 +872,7 @@ let QIActions = {
 
 	TT:()=>{
 		let hourly = 5000 + Boosts.Sums["guild_raids_action_points_collection"] 
-		let fullAt = Math.ceil((100000-QIActions.count)/hourly)*3600 + QIActions.last
+		let fullAt = Math.ceil((100000 + (Boosts.Sums["guild_raids_action_points_capacity"]||0) - QIActions.count)/hourly)*3600 + QIActions.last
 		let next = QIActions.last + 3600
 		while (next < moment().unix()) next += 3600
 

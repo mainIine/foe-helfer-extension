@@ -63,6 +63,7 @@ let Boosts = {
             "guild_raids_units_start",
             "guild_raids_supplies_start",
             "guild_raids_coins_start",
+            "guild_raids_action_points_capacity"
         ].includes(x) ? "" : "%"
     },
     Mapper: {
@@ -163,7 +164,7 @@ let Boosts = {
             if (b.origin === "inventory_item") {
                 BoostPotions.activate(b.type,{expire:b.expireTime,target:b.targetedFeature||"all",value:b.value})    
                 if (b.expireTime) {
-                    BoostPotions.TimeOut.add(b)
+                    BoostPotions.TimeOut?.add(b)
                 }
             }
 
@@ -227,7 +228,7 @@ let Boosts = {
                         boost.expireTime = building.state.decaysAt || building.state.next_state_transition_at + metaData.components.AllAge.limited.config.expireTime
                         Boosts.TimeOut.add(boost)
                     }
-                    if (building.state.__class__=="ConstructionState") {
+                    if (building.state.__class__=="ConstructionState" && (building.state.pausedAt||boost.type=="")) {
                         addToList(boost)
                     } else if (!building.state.pausedAt) {
                         if (!Array.isArray(boost.type)) boost.type=[boost.type]
