@@ -318,7 +318,7 @@ let Tooltips = {
                     let ratings = Productions.rateBuildings([meta.id,levels.AllAge.limited.config.targetCityEntityId],true,era)?.map(x=>Math.round(100 * x?.rating?.totalScore)||0)
                     efficiencyDifference = ratings[0]-ratings[1] //Eff1-Eff2 = efficiencyDifference = efficiency - efficiencyAfter --> effAfter = efficiency - efficiencyDifference
                 }
-                out += `<tr><td class="limited">${srcLinks.icons("limited_building_downgrade") + MainParser.CityEntities[levels.AllAge.limited.config.targetCityEntityId].name} (${i18n("Boxes.Tooltip.Building.after")} ${formatTime(levels.AllAge.limited.config.expireTime)})${efficiencyDifference ? " -> "+i18n("Boxes.Kits.Efficiency")+": " + (efficiency - efficiencyDifference): ""}</td></tr>`
+                out += `<tr><td class="limited">${srcLinks.icons("limited_building_downgrade") + MainParser.CityEntities[levels.AllAge.limited.config.targetCityEntityId].name} (${i18n("Boxes.Tooltip.Building.after")} ${formatTime(levels.AllAge.limited.config.expireTime)})${efficiencyDifference ? " → "+i18n("Boxes.Kits.Efficiency")+": " + (efficiency - efficiencyDifference): ""}</td></tr>`
             }   
 
             if (await CityMap.canAscend(meta.id)) {

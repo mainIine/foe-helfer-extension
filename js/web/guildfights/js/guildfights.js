@@ -75,8 +75,9 @@ FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postDa
 	}
 });
 
+
 /**
- * @type {{SettingsExport: GuildFights.SettingsExport, curDetailViewFilter: null, UpdateDB: ((function(*, *): Promise<void>)|*), GBGRound: null, PrevActionTimestamp: null, NewActionTimestamp: null, InjectionLoaded: boolean, MapData: null, BuildPlayerContent: ((function(*=): Promise<void>)|*), intiateDatePicker: ((function(): Promise<void>)|*), GBGHistoryView: boolean, LogDatePicker: null, NewAction: null, PrevAction: null, init: GuildFights.init, PrepareColors: GuildFights.PrepareColors, SetBoxNavigation: ((function(*=): Promise<void>)|*), PlayerBoxContent: *[], DeleteAlert: GuildFights.DeleteAlert, PlayerBoxSettingsSaveValues: GuildFights.PlayerBoxSettingsSaveValues, ToggleProgressList: GuildFights.ToggleProgressList, Colors: null, RefreshTable: GuildFights.RefreshTable, SetAlert: GuildFights.SetAlert, formatRange: (function(): string), GetAlertButton: (function(integer): string), Tabs: *[], ToggleCopyButton: GuildFights.ToggleCopyButton, Alerts: *[], PlayersPortraits: null, GetTabContent: (function(): string), ShowPlayerBox: GuildFights.ShowPlayerBox, CurrentGBGRound: null, showGuildColumn: number, curDateFilter: null, SortedColors: null, ShowGuildBox: GuildFights.ShowGuildBox, BuildFightContent: GuildFights.BuildFightContent, BuildDetailViewContent: ((function(*): Promise<void>)|*), SetTabContent: GuildFights.SetTabContent, BuildDetailViewLog: ((function(*): Promise<void>)|*), TabsContent: *[], GetAlerts: (function(): Promise<unknown>), UpdateCounter: GuildFights.UpdateCounter, GBGAllRounds: null, ProvinceNames: null, checkForDB: ((function(*): Promise<void>)|*), HandlePlayerLeaderboard: ((function(*): Promise<void>)|*), SetTabs: GuildFights.SetTabs, CopyToClipBoard: GuildFights.CopyToClipBoard, GetTabs: (function(): string), DeleteOldSnapshots: ((function(*=): Promise<void>)|*), PlayerBoxSettings: {showProgressFilter: number, showOnlyActivePlayers: number, showLogButton: number, showRoundSelector: number}, Neighbours: *[], curDateEndFilter: null, ShowPlayerBoxSettings: GuildFights.ShowPlayerBoxSettings, SaveLiveFightSettings: GuildFights.SaveLiveFightSettings, ShowLiveFightSettings: GuildFights.ShowLiveFightSettings, ShowDetailViewBox: GuildFights.ShowDetailViewBox}}
+ * @type {{Alerts: *[], GlobalRankingTimeout: null, PrevAction: null, PrevActionTimestamp: null, NewAction: null, NewActionTimestamp: null, MapData: null, Neighbours: *[], PlayersPortraits: null, Colors: null, SortedColors: null, ProvinceNames: null, InjectionLoaded: boolean, PlayerBoxContent: *[], CurrentGBGRound: null, GBGRound: null, GBGAllRounds: null, GBGHistoryView: boolean, LogDatePicker: null, curDateFilter: null, curDateEndFilter: null, curDetailViewFilter: null, PlayerBoxSettings: {showRoundSelector: number, showLogButton: number, showProgressFilter: number, showOnlyActivePlayers: number}, showGuildColumn: number, showAdjacentSectors: number, showOwnSectors: number, Tabs: *[], TabsContent: *[], checkForDB: ((function(*): Promise<void>)|*), init: GuildFights.init, HandlePlayerLeaderboard: ((function(*): Promise<void>)|*), UpdateDB: ((function(*, *): Promise<void>)|*), SetBoxNavigation: ((function(*): Promise<void>)|*), ToggleProgressList: GuildFights.ToggleProgressList, SetTabs: GuildFights.SetTabs, GetTabs: (function(): string), SetTabContent: GuildFights.SetTabContent, GetTabContent: (function(): string), GetAlertButton: (function(Intl.NumberFormatPartTypeRegistry.integer): string), ShowGuildBox: GuildFights.ShowGuildBox, ShowPlayerBox: GuildFights.ShowPlayerBox, ShowDetailViewBox: GuildFights.ShowDetailViewBox, BuildPlayerContent: ((function(*): Promise<void>)|*), BuildDetailViewContent: ((function(*): Promise<void>)|*), DeleteOldSnapshots: ((function(*): Promise<void>)|*), BuildDetailViewLog: ((function(*): Promise<void>)|*), BuildFightContent: GuildFights.BuildFightContent, BuildProgressTab: (function(): *[]), BuildNextUpTab: (function(): *[]), intiateDatePicker: ((function(): Promise<void>)|*), formatRange: (function(): string), ToggleCopyButton: GuildFights.ToggleCopyButton, CopyToClipBoard: GuildFights.CopyToClipBoard, UpdateCounter: GuildFights.UpdateCounter, PrepareColors: GuildFights.PrepareColors, RefreshTable: GuildFights.RefreshTable, ShowPlayerBoxSettings: GuildFights.ShowPlayerBoxSettings, PlayerBoxSettingsSaveValues: GuildFights.PlayerBoxSettingsSaveValues, GetAlerts: (function(): Promise<unknown>), SetAlert: GuildFights.SetAlert, DeleteAlert: GuildFights.DeleteAlert, ShowLiveFightSettings: GuildFights.ShowLiveFightSettings, SaveLiveFightSettings: GuildFights.SaveLiveFightSettings}}
  */
 let GuildFights = {
 
@@ -1098,15 +1099,15 @@ let GuildFights = {
 				if ($(this).hasClass('highlight-row'))
 				{
 					$(this).removeClass('highlight-row');
-					GuildFights.ToggleCopyButton();
-				} else
-				{
-					$(this).addClass('highlight-row');
-					GuildFights.ToggleCopyButton();
 				}
+				else {
+					$(this).addClass('highlight-row');
+				}
+				GuildFights.ToggleCopyButton();
 			});
 		});
 	},
+
 
 	BuildProgressTab: function() {
 		let progress = [],
@@ -1195,6 +1196,7 @@ let GuildFights = {
 
 		return progress;
 	},
+
 
 	BuildNextUpTab: function() {
 		let nextup = [],
