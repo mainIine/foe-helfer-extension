@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2024 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2025 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -887,7 +887,7 @@ let Productions = {
 		buildingIds.forEach(b => {
 			let building = CityMap.getBuildingById(b.id)
 			if (building.player_id === ExtPlayerID) {
-				let allGoods = CityMap.getBuildingGoodsByEra(false, building)
+				let allGoods = CityMap.getBuildingGoodsByEra(false, building, true);
 				if (allGoods !== undefined) {
 					for (const [era, value] of Object.entries(allGoods.eras)) {
 						if (eras.find(x => x == era) == undefined)
@@ -1250,7 +1250,7 @@ let Productions = {
 		}
 
 		if (category === "goods") {
-			return CityMap.getBuildingGoodsByEra(current, building)
+			return CityMap.getBuildingGoodsByEra(current, building);
 		}
 		if (category === "forge_points_production" || category === "coin_production" || category === "supply_production") {
 			prod.amount = building.boosts.filter(x => x.type[0] === category)[0].value // not really rock solid like this
@@ -2154,23 +2154,24 @@ let Productions = {
 			return Productions.getBuildingProductionByCategory(false, building, type).amount
 
 		else if (type.includes("goods")) {
-			let allGoods = CityMap.getBuildingGoodsByEra(false, building)
-			let eraId = Technologies.InnoEras[building.eraName]
-			if (building.type === "greatbuilding")
-				eraId = Technologies.InnoEras[CurrentEra]
+			let allGoods = CityMap.getBuildingGoodsByEra(false, building);
+
 			if (allGoods !== undefined) {
+				let prevEra = Technologies.InnoEras[CurrentEra]-1;
+				let currEra = Technologies.InnoEras[CurrentEra];
+				let nextEra = Technologies.InnoEras[CurrentEra]+1;
+
+				if (type === "goods-previous") {
+					if (allGoods.eras[prevEra])
+						return allGoods.eras[prevEra];
+				}
 				if (type === "goods-current") {
-					if (allGoods.eras[eraId] !== undefined)
-						return allGoods.eras[eraId]
+					if (allGoods.eras[currEra])
+						return allGoods.eras[currEra];
 				}
 				if (type === "goods-next") {
-					if (allGoods.eras[eraId+1] !== undefined)
-						return allGoods.eras[eraId+1]
-				}
-				if (type === "goods-previous") {
-					// todo: bronzezeit checken
-					if (allGoods.eras[eraId-1] !== undefined)
-						return allGoods.eras[eraId-1]
+					if (allGoods.eras[nextEra])
+						return allGoods.eras[nextEra];
 				}
 			}
 		}
