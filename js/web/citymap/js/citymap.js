@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2024 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2025 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -2159,14 +2159,16 @@ let CityMap = {
 	},
 
 
-	getBuildingGoodsByEra(current, building) {
+	getBuildingGoodsByEra(current, building, boosted = false) {
 		let productions = (current ? building.state.production : building.production)
 		let goods = {
 			hasRandomProduction: false,
 			eras: {}
 		}
 		if (productions) {
-			let goodsBoost = Boosts.Sums.goods_production || 1;
+			let goodsBoost = 1;
+			if (boosted)
+				goodsBoost = Boosts.Sums.goods_production || 1;
 			productions.forEach(production => {
 				if (production.type === 'resources' || production.type === 'special_goods') {
 					Object.keys(production.resources).forEach(resourceName => {
@@ -2242,7 +2244,7 @@ let CityMap = {
 			})
 		}
 		if (Object.keys(goods).length > 0) {
-			return goods
+			return goods;
 		}
 	},
 
