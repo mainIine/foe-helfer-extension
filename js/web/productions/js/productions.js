@@ -1562,7 +1562,7 @@ let Productions = {
 
 	efficiencyTT: (e) => {
 		let type=e?.currentTarget?.dataset?.type
-		let y = Productions.ratedBuildings.filter(x=>(x?.rating?.[type]>0)).map(x=>(x.rating[type])).sort((a,b) => a - b);
+		let y = Productions.ratedBuildings.filter(x=>(!x.isInInventory && x?.rating?.[type]>0)).map(x=>(x.rating[type])).sort((a,b) => a - b);
 		if (!y || y.length == 0) return
 		let tooltip = `<h2>${i18n("Boxes.ProductionsRating.TooltipTitle")}</h2>`
 		tooltip +=`<table class="foe-table"><tr><td>${i18n("Boxes.ProductionsRating.Best")}:</td><td>${y[y.length-1].toFixed(2)}</td></tr>`
