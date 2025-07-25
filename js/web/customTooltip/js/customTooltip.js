@@ -233,9 +233,6 @@ let Tooltips = {
         if (meta.components) {
             
             let levels=meta.components
-            if (levels?.[minEra]) {
-                maxEra = Technologies.EraNames[Math.max(...Object.keys(levels).map(x=>Technologies.Eras[x]))]
-            }
             let era="",
                 set="",
                 ally="",
