@@ -604,7 +604,7 @@ let Productions = {
 			Sum = {},
 			content = ''
 
-			if (type !== 'goods' && type !== 'guild_raids') {
+			if (type !== 'goods' && type !== 'clan_goods' && type !== 'guild_raids') {
 				buildingIds.forEach(b => {
 					let building = CityMap.getBuildingById(b.id)
 					if (building?.player_id === ExtPlayerID) {
@@ -820,10 +820,6 @@ let Productions = {
 					else if (type === 'supplies') {
 						table.push(' <button class="typeBoost btn-default btn-tight"><a href="#supply_production" class="game-cursor">'+i18n('General.Boost')+': '+Boosts.Sums.supply_production+'%</a></button>')
 					}
-					if (type === 'clan_goods') {
-						Profile.guildGoods = typeSum;
-						Profile.update()
-					}
 					if (type === 'units') {
 						Profile.units = typeSum;
 						Profile.update()
@@ -866,6 +862,8 @@ let Productions = {
 			content = table.join('') + tableGr.join('') + tableSum.join('')
 			if (type === 'goods')
 				content = Productions.buildGoodsTable(buildingIds, type) // goods have their own table
+			if (type === 'clan_goods')
+				content = Productions.buildGuildGoodsTable(buildingIds, type)
 			if (type === 'guild_raids')
 				content = Productions.buildQITable(type) 
 
@@ -1014,6 +1012,184 @@ let Productions = {
 		table.push('</tbody>')
 		table.push('</table>')
 
+
+		// grouped view
+		table.push('<table class="foe-table sortable-table TSinactive '+type+'-group">')
+		table.push('<thead class="sticky">')
+		table.push('<tr>')
+		table.push('<th><span class="btn-default change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeSingle') + '</span></th>')
+		table.push(`<th colspan=${2+eras.length} class="textright">${HTML.Format(Object.values(erasCurrent).reduce((a,b)=>a+b))}/${HTML.Format(Object.values(erasTotal).reduce((a,b)=>a+b))}</th>`)
+		table.push('</tr>')
+		table.push('<tr class="sorter-header">')
+		table.push('<th data-type="prodgroup'+type+'" class="is-number">' + i18n('Boxes.Productions.Headings.number') + '</th>')
+		table.push('<th data-type="prodgroup'+type+'">' + i18n('Boxes.BlueGalaxy.Building') + '</th>')
+		eras.forEach(era => {
+			table.push('<th data-type="prodgroup'+type+'" class="is-number text-center">' + i18n('Eras.'+(parseInt(era)+1)+'.short') + '</span><br><small>'+HTML.Format(erasTotal[era])+'</small></th>')
+		})
+		table.push('<th data-type="prodgroup'+type+'" class="is-number">' + i18n('Boxes.Productions.Headings.size') + '</th>')
+		table.push('</tr>')
+		table.push('</thead>')
+		table.push('<tbody class="prodgroup'+type+'">')
+			groupedBuildings.forEach(building => {
+				rowB.push('<tr>')
+				rowB.push('<td data-number="'+building.amount+'">'+building.amount+'x </td>')
+				rowB.push('<td data-text="'+building.building.name.replace(/[. -]/g,"")+'"  class="' + (MainParser.Allies.buildingList?.[building.building.id]?"ally" : "") +'">'+ building.building.name +'</td>')
+				eras.forEach(era => {
+					rowB.push('<td data-number="'+building[era]+'" class="text-center">')
+					rowB.push(HTML.Format(building[era]))
+					rowB.push('</td>')
+				})
+				rowB.push('<td data-number="'+(building.building.size.length*building.building.size.width)+'">'+building.building.size.length+'x'+building.building.size.width+'</td>')
+				rowB.push('</tr>')
+			})
+		table.push( rowB.join('') )
+		table.push('</tbody>')
+		table.push('</table>')
+
+		return table.join('')
+	},
+
+
+	buildGuildGoodsTable: (buildingIds, type = "clan_goods") => {
+		let table = [],
+			rowB = [],
+			rowA = [],
+			groupedBuildings = [],
+			eras = [],
+			erasCurrent = {},
+			erasTotal = {},
+			inADay = Math.floor(Date.now() / 1000) + 86400
+
+		// gather all different eras
+		buildingIds.forEach(b => {
+			let building = CityMap.getBuildingById(b.id)
+			if (building.player_id === ExtPlayerID) {
+				let allGoods = CityMap.getBuildingGuildGoodsByEra(false, building, true);
+				if (allGoods !== undefined) {
+					for (const [era, value] of Object.entries(allGoods.eras)) {
+						if (eras.find(x => x == era) == undefined)
+							eras.push(parseInt(era));
+					}
+				}
+			}
+		})
+
+		// sort by the most advanced era first
+		eras.sort((a, b) => {
+			if (a < b) return -1
+			if (a > b) return 1
+			return 0
+		}).reverse();
+
+		// prepare array with total number of goods for each era
+		for (const era of eras) {
+			erasCurrent[era] = 0
+			erasTotal[era] = 0
+		}
+
+		// single view table content
+		buildingIds.forEach(b => {
+			let building = CityMap.getBuildingById(b.id)
+			if (building.player_id === ExtPlayerID) {
+
+			rowA.push('<tr>')
+			rowA.push('<td>')
+			rowA.push((building.state.isPolivated !== undefined ? (building.state.isPolivated ? '<span class="text-bright">★</span>' : '☆') : ''))
+			rowA.push('</td>')
+			rowA.push('<td data-text="'+helper.str.cleanup(building.name)+'"  class="' + (MainParser.Allies.buildingList?.[building.id]?"ally" : "") +'">' + building.name + '</td>')
+
+			// prepare grouped buildings
+			let updateGroup = groupedBuildings.find(x => x.building.name === building.name)
+			if (updateGroup === undefined) {
+				let gBuilding = {
+					building: building,
+					amount: 1,
+				}
+				for (let era of eras) {
+					gBuilding[era] = 0
+				}
+				updateGroup = gBuilding
+				groupedBuildings.push(gBuilding)
+			}
+			else {
+				updateGroup.amount++
+			}
+
+			let currentGoods = CityMap.getBuildingGuildGoodsByEra(true, building, true)
+			let allGoods = CityMap.getBuildingGuildGoodsByEra(false, building, true)
+
+			eras.forEach(era => {
+				let currentGoodAmount = 0
+				let goodAmount = 0
+				if (allGoods !== undefined) {
+					erasCurrent[era] += currentGoodAmount = currentGoods?.eras?.[era] || 0
+					erasTotal[era] += goodAmount = allGoods?.eras?.[era] || 0
+					updateGroup[era] += goodAmount
+				}
+				if (building.isBoostable) {
+					goodAmount = Math.round(goodAmount)
+					currentGoodAmount = Math.round(currentGoodAmount)
+				}
+				rowA.push('<td data-number="'+goodAmount+'" class="text-center">')
+					if (currentGoodAmount !== goodAmount) {
+						let isAverage = (allGoods.hasRandomProduction ? "Ø" : "")
+						rowA.push(HTML.Format(currentGoodAmount)+'/'+isAverage+HTML.Format(goodAmount))
+					}
+					else
+						rowA.push(HTML.Format(goodAmount))
+				rowA.push('</td>')
+			})
+
+			rowA.push('<td data-number="'+Technologies.Eras[building.eraName]+'">' + i18n("Eras."+Technologies.Eras[building.eraName]+".short") + '</td>')
+			let time = "-"
+			let showRelativeProductionTime = JSON.parse(localStorage.getItem('productionsShowRelativeTime')||"false")
+			let showAMPMTime = JSON.parse(localStorage.getItem('productionsShowAMPMTime')||"false")
+			if (building.state.times?.at) {
+				if (showRelativeProductionTime)
+					time = moment.unix(building.state.times?.at).fromNow()
+				else if (showAMPMTime)
+					time = moment.unix(building.state.times?.at).format('LTS')
+				else {
+					if (building.state.times?.at <= inADay)
+						time = moment.unix(building.state.times?.at).format('HH:mm:ss') 
+					else
+						time = moment.unix(building.state.times?.at).format('dddd, HH:mm')
+				}
+			}
+			let done = (building.state.name === 'collectable' ? i18n('Boxes.Productions.Done') : '')
+			rowA.push('<td style="white-space:nowrap" data-date="' + (building.state.times?.at||9999999999) + '">' + (done==""? time : '<b class="text-success">'+done+'</b>') + '</td>')
+			rowA.push('<td class="text-right">')
+			rowA.push('<span class="show-entity" data-id="' + building.id + '"><img class="game-cursor" src="' + extUrl + 'css/images/hud/open-eye.png"></span>')
+			rowA.push('</td>')
+			rowA.push('</tr>')
+			}
+		});
+
+		Profile.guildGoods = Object.values(erasTotal).reduce((a,b)=>a+b);
+		Profile.update();
+
+		// single view table
+		table.push('<table class="foe-table sortable-table TSinactive '+type+'-list active">')
+		table.push('<thead class="sticky">')
+		table.push('<tr>')
+		table.push('<th colspan="6"><span class="btn-default change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeGroups') + '</span> <input type="text" placeholder="' + i18n('Boxes.Productions.FilterTable') + '" class="filterCurrentList"></th>')
+		table.push(`<th colspan=${eras.length} class="textright">${HTML.Format(Object.values(erasCurrent).reduce((a,b)=>a+b))}/${HTML.Format(Object.values(erasTotal).reduce((a,b)=>a+b))}</th>`)
+		table.push('</tr>')
+		table.push('<tr class="sorter-header">')
+		table.push('<th class="no-sort" data-type="prodlist'+type+'"> </th>')
+		table.push('<th class="ascending" data-type="prodlist'+type+'">' + i18n('Boxes.BlueGalaxy.Building') + '</th>')
+		eras.forEach(era => {
+			table.push('<th data-type="prodlist'+type+'" class="is-number text-center"><span data-original-title="'+i18n('Eras.'+(parseInt(era)+1))+'">' + i18n('Eras.'+(parseInt(era)+1)+'.short') + '<br><small>'+HTML.Format(erasCurrent[era])+'/'+HTML.Format(erasTotal[era])+'</small></span></th>')
+		})
+		table.push('<th data-type="prodlist'+type+'" class="is-number">' + i18n('Boxes.Productions.Headings.era') + '</th>')
+		table.push('<th data-type="prodlist'+type+'" class="is-date">'+i18n('Boxes.Productions.Headings.earning')+'</th>')
+		table.push('<th data-type="prodlist'+type+'" class="no-sort"> </th>')
+		table.push('</tr>')
+		table.push('</thead>')
+		table.push('<tbody class="prodlist'+type+'">')
+		table.push( rowA.join('') )
+		table.push('</tbody>');
+		table.push('</table>');
 
 		// grouped view
 		table.push('<table class="foe-table sortable-table TSinactive '+type+'-group">')

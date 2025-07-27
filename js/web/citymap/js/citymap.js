@@ -2248,6 +2248,51 @@ let CityMap = {
 	},
 
 
+	getBuildingGuildGoodsByEra(current, building, boosted = false) {
+		let productions = (current ? building.state.production : building.production)
+		let goods = {
+			eras: {}
+		}
+		if (productions) {
+			let goodsBoost = 0;
+			if (boosted)
+				goodsBoost = Boosts.Sums.clan_goods_production || 1;
+			for (let production of productions) {
+				if (production.type !== 'guildResources') continue;
+
+				for (let resourceName of Object.keys(production.resources)) {
+					let good = GoodsList.find(x => x.id === resourceName);
+					let goodEra = Technologies.InnoEras[building.eraName];
+					let isGood = false;
+
+					if (good !== undefined) {
+						goodEra = Technologies.InnoEras[good.era]
+						resourceName = good.id
+						isGood = true
+					}
+					else if (resourceName.includes('random_good_of_') || resourceName.includes('all_goods_of_')) {
+						isGood = true
+					}
+
+					if (isGood) {
+						let boostedExtra = Math.round(production.resources[resourceName]*goodsBoost/100)
+						if (resourceName.includes('all_goods_of_')) 
+							boostedExtra = Math.round(production.resources[resourceName]/5*goodsBoost/100)*5;
+						
+						if (goods.eras[goodEra] === undefined) 
+							goods.eras[goodEra] = parseInt(production.resources[resourceName])+boostedExtra;
+						else
+							goods.eras[goodEra] += parseInt(production.resources[resourceName])+boostedExtra;
+					}
+				}
+			}
+		}
+		if (Object.keys(goods.eras).length > 0) {
+			return goods;
+		}
+	},
+
+
 	setType(metaData) {
 		return metaData.type
 	},
@@ -2339,9 +2384,11 @@ let CityMap = {
 		}
 
 		entity.rating = Productions.rateBuilding(entity);
+
+		CityMap.getBuildingGuildGoodsByEra(false, entity, false);
 		
-		if (entity.type !== "street")
-			console.log('entity ', entity.name, entity, metaData, data);
+		//if (entity.type !== "street")
+		//	console.log('entity ', entity.name, entity, metaData, data);
 		return entity;
 	},
 
