@@ -2258,9 +2258,9 @@ let CityMap = {
 			if (boosted)
 				goodsBoost = Boosts.Sums.clan_goods_production || 1;
 			for (let production of productions) {
-				if (production.type !== 'guildResources') continue;
+				if (production.type !== 'guildResources' || production.resources === undefined) continue;
 
-				for (let resourceName of Object.keys(production.resources)) {
+				for (let resourceName of Object.keys(production?.resources)) {
 					let good = GoodsList.find(x => x.id === resourceName);
 					let goodEra = Technologies.InnoEras[building.eraName];
 					let isGood = false;
