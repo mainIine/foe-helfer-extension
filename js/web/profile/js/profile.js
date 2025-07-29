@@ -264,8 +264,6 @@ const Profile = {
 			    let d = new Date();
 			    d.setDate(d.getDate() - Math.abs(n));
 
-				console.log('d: ',d);
-
 			    return moment(d).format(i18n('Date'));
 			};
 
