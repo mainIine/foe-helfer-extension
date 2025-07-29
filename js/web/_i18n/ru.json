@@ -900,6 +900,7 @@
     "Boxes.Tooltip.Building.allyRooms": "Комнаты исторических союзников",
     "Boxes.Tooltip.Building.canMotivate": "может быть мотивирован",
     "Boxes.Tooltip.Building.canPolish": "может быть мотивирован",
+    "Boxes.Tooltip.Building.costs": "",
     "Boxes.Tooltip.Building.isUnique": "Уникальное здание",
     "Boxes.Tooltip.Building.produces": "Производит",
     "Boxes.Tooltip.Building.provides": "Обеспечивает",
