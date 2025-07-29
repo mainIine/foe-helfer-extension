@@ -1,5 +1,12 @@
 ## Changelog - Extension
 
+##### 3.11.8.0
+
+- GE Statistik:
+  - Berechnung für die erwarteten Güterkosten integriert
+
+---
+
 ##### 3.11.7.0
 
 **Update**
