@@ -1260,6 +1260,7 @@ let GuildMemberStat = {
 		});
 	},
 
+
 	ShowMemberDetail: (arr, expand) => {
 
 		let currentTime = MainParser.round(+MainParser.getCurrentDate() / 1000);

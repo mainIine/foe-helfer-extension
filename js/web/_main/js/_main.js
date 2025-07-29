@@ -1471,6 +1471,7 @@ let MainParser = {
 		setRarities:(raw)=>{
 			MainParser.Allies.rarities=Object.assign({}, ...raw.map(r=>({[r.id.value]:r})))
 		},
+
 		setTypes:(raw)=>{
 			MainParser.Allies.types=Object.assign({}, ...raw.map(t=>({[t.id]:t})))
 		},
