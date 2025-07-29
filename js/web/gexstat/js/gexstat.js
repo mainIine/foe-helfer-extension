@@ -25,6 +25,7 @@ FoEproxy.addHandler('GuildExpeditionService', 'getContributionList', (data, post
 	if (data && data.responseData && (+MainParser.getCurrentDate() - GexStat.ResponseBlockTime) > 2000)
 	{
 		GexStat.ResponseBlockTime = +MainParser.getCurrentDate();
+		GexStat.GexData = data.responseData; // Store GEX data for cost calculations
 		GexStat.UpdateData('participation', data.responseData);
 	}
 });
@@ -52,6 +53,8 @@ let GexStat = {
 	CurrentStatGroup: 'Ranking',
 	ResponseBlockTime: 0,
 	Chart: undefined,
+	TrailCosts: null,
+	GexData: null,
 	Settings: {
 		deleteOlderThan: 20,
 		showAxisLabel: true,
@@ -299,7 +302,7 @@ let GexStat = {
 			h.push(`<tr>`);
 			h.push(`<td class="td-rank"><span class="winner-rank rank-${rankClass}"><span>${participant.rank}</span></span></td>`);
 			h.push(`<td>` +
-				`<div class="clanflag"><img src="${srcLinks.get('/shared/clanflags/' + participant.flag + '.jpg', true)}" /></div>` +
+				`<div class="clanflag"><img alt="" src="${srcLinks.get('/shared/clanflags/' + participant.flag + '.jpg', true)}" /></div>` +
 				`<div class="claninfo"><span class="clanname">${MainParser.GetGuildLink(participant['guildId'], participant['name'], participant['worldId'])}</span><br /> ` +
 				`<span class="clanworld">${participant.worldName}</span></div></td>`);
 			h.push(`<td class="progress"><div class="progbar rank-${rankClass}${stripedClass}" style="width: ${progressWidth}%"></div> ${participant.points}%</td>`);
@@ -645,11 +648,13 @@ let GexStat = {
 		}
 
 
-		h.push('<div class="tabs dark-bg"><ul id="gexsTabs" class="horizontal">');
+		h.push('<div class="tabs dark-bg" style="position:relative"><ul id="gexsTabs" class="horizontal">');
 		h.push(`<li${GexStat.CurrentStatGroup === 'Ranking' ? ' class="active"' : ''}><a class="toggle-statistic" data-value="Ranking"><span>${i18n('Boxes.GexStat.Ranking')}</span></a></li>`);
 		h.push(`<li${GexStat.CurrentStatGroup === 'Participation' ? ' class="active"' : ''}><a class="toggle-statistic" data-value="Participation"><span>${i18n('Boxes.GexStat.MemberParticipation')}</span></a></li>`);
 		h.push(`<li${GexStat.CurrentStatGroup === 'Course' ? ' class="active"' : ''}><a class="toggle-statistic" data-value="Course"><span>${i18n('Boxes.GexStat.Course')}</span></a></li>`);
-		h.push(`</ul></div>`);
+		h.push(`</ul>`);
+		h.push(`<span id="expected-unlocking-costs" style="position:absolute;right:10px;top:11px"></span>`);
+		h.push(`</div>`);
 
 		if (gexweek && GexStat.GexWeeks && GexStat.GexWeeks.length)
 		{
@@ -700,6 +705,9 @@ let GexStat = {
 
 				GexStat.ShowTabContent(GexStat.CurrentStatGroup, week);
 			});
+			
+			// Calculate and display the expected unlocking costs
+			GexStat.calculateUnlockingCosts();
 		});
 
 	},
@@ -894,6 +902,8 @@ let GexStat = {
 
 		return series;
 	},
+
+
 	// yvi
 	ExportContent: async (content, type) => {
 
@@ -1021,6 +1031,96 @@ let GexStat = {
 		return JSON.stringify(result);
 	},
 
+
+	/**
+	 * Loads the trail costs data from the JSON file
+	 * @returns {Promise<void>}
+	 */
+	loadTrailCosts: async () => {
+		if (GexStat.TrailCosts !== null) {
+			return; // Already loaded
+		}
+
+		try {
+			// Use the correct URL format based on whether extUrl is defined
+			const url = extUrl + 'js/web/gexstat/data/trail-costs.json';
+
+			const response = await fetch(url);
+			
+			if (!response.ok) {
+				throw new Error(`Failed to load trail costs: ${response.status} ${response.statusText}`);
+			}
+			
+			GexStat.TrailCosts = await response.json();
+		}
+		catch (error) {
+			console.error('Error loading trail costs:', error);
+		}
+	},
+
+
+	/**
+	 * Calculates the expected unlocking costs for guild expeditions
+	 * @returns {Promise<void>}
+	 */
+	calculateUnlockingCosts: async () => {
+		await GexStat.loadTrailCosts();
+		
+		if (!GexStat.TrailCosts || !GuildMemberStat.MemberDict) {
+			console.warn('Missing trail costs or member dictionary for cost calculation');
+			return;
+		}
+
+		let previous_week = GexStat.GexWeeks[0] || null;
+
+		let GexParticipation = await GexStat.db.participation.where('gexweek').equals(previous_week).first();
+
+		// No data avaiable
+		if(!GexParticipation) {
+			return;
+		}
+
+		let totalCosts = 0;
+		let membersProcessed = 0;
+		let membersWithTrialData = 0;
+
+		// Get all members
+		for (const Players of GexParticipation.participation) {
+
+			membersProcessed++;
+			const era = PlayerDict[Players['player_id']]?.Era;
+
+			if (!era) {
+				continue; // Skip if era is not available
+			}
+
+			// Find the cost data for current and previous trials
+			const currentCostData = GexStat.TrailCosts.find(data => 
+				data.era === era && data['highest_trial_completed'] === "current");
+			
+			const previousCostData = GexStat.TrailCosts.find(data => 
+				data.era === era && data['highest_trial_completed'] === "previous");
+
+
+			if (!currentCostData || !previousCostData) {
+				console.warn(`No cost data found for era: ${era}`);
+				continue; // Skip if cost data not found
+			}
+
+			// Get the costs for the highest trial
+			const currentCost = parseInt(currentCostData[Players['trial']] || 0);
+			const previousCost = parseInt(previousCostData[Players['trial']] || 0);
+			
+			// Calculate the total cost for this player (sum * 5)
+			const playerCost = (currentCost + previousCost) * 5;
+			totalCosts += playerCost;
+		}
+
+		// Update the element with the calculated costs
+		// Use a hardcoded string if translation is not available
+		const unlockingCostsText = i18n('Boxes.GexStat.UnlockingCosts') || 'Activation costs';
+		$('#expected-unlocking-costs').html(`<small style="color:var(--text-bright);">${unlockingCostsText}: ${HTML.Format(totalCosts)}</small>`);
+	},
 }
 
 FoEproxy.addFoeHelperHandler('ResourcesUpdated', () => {
@@ -1030,6 +1130,7 @@ FoEproxy.addFoeHelperHandler('ResourcesUpdated', () => {
 FoEproxy.addHandler('ResourceService', 'getPlayerAutoRefills', (data, postData) => {
 	GExAttempts.setNext(data.responseData.resources.guild_expedition_attempt)
 });
+
 FoEproxy.addHandler('GuildExpeditionService', 'getOverview', (data, postData) => {
 	if (data.responseData) GExAttempts.updateState(data.responseData)
 });
@@ -1037,6 +1138,7 @@ FoEproxy.addHandler('GuildExpeditionService', 'getOverview', (data, postData) =>
 FoEproxy.addHandler('GuildExpeditionNotificationService', 'GuildExpeditionStateNotification', (data, postData) => {
 	if (data.responseData) GExAttempts.updateState(data.responseData)
 });
+
 FoEproxy.addHandler('GuildExpeditionService', 'getState', (data, postData) => {
 	for (let x of data.responseData) {
 		if (!x.currentEntityId) continue;
@@ -1045,9 +1147,11 @@ FoEproxy.addHandler('GuildExpeditionService', 'getState', (data, postData) => {
 		GExAttempts.refreshGUI()
 	}
 });
+
 FoEproxy.addHandler('GuildExpeditionService', 'changeDifficulty', (data, postData) => {
 	if (data.responseData) GExAttempts.updateState(data.responseData)
 });
+
 let GExAttempts = {
 	count:0,
 	next:null,
@@ -1063,13 +1167,14 @@ let GExAttempts = {
 
 	refreshGUI:()=>{
 		//hidenumber when GE completed, not running or out of attempts
-		if (GExAttempts.state.GEprogress == 159 || GExAttempts.count === 0 || !GExAttempts.state.active) {
+		if (GExAttempts.state.GEprogress === 159 || GExAttempts.count === 0 || !GExAttempts.state.active) {
 			$('#gex-attempt-count').hide();
 		}
 		//setnumber when GE running
 		else {
 			$('#gex-attempt-count').text(GExAttempts.count).show();
 		}
+
 		//set timer for GE deactivation if deactivation time known
 		if (!GExAttempts.deactivationTimer && GExAttempts.state.deactivationTime && GExAttempts.state.active) {
 			GExAttempts.deactivationTimer = setTimeout(() => {
@@ -1082,6 +1187,7 @@ let GExAttempts = {
 				GExAttempts.refreshGUI()
 			}, (GExAttempts.state.deactivationTime-GameTime.get()) * 1000);
 		}
+
 		//set timer for GE activation if activation time known
 		if (!GExAttempts.activationTimer && GExAttempts.state.activationTime && !GExAttempts.state.active) {
 			GExAttempts.activationTimer = setTimeout(() => {
@@ -1127,7 +1233,7 @@ let GExAttempts = {
 	},
 
 	updateState:(data) =>{
-		GExAttempts.state.active = data.state=="active"
+		GExAttempts.state.active = data.state === "active"
 
 		if (GExAttempts.state.active) {
 			GExAttempts.state.deactivationTime = data.nextStateTime || null
@@ -1139,9 +1245,8 @@ let GExAttempts = {
 			GExAttempts.state.GEprogress = 0
 		}
 
-		localStorage.setItem('GEx.state',JSON.stringify(GExAttempts.state))
+		localStorage.setItem('GEx.state', JSON.stringify(GExAttempts.state))
 		GExAttempts.refreshGUI()
 
 	}
-
 }
