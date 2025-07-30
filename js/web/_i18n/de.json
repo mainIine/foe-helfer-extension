@@ -908,6 +908,7 @@
     "Boxes.OwnpartCalculator.Trust": "Vertrauen",
     "Boxes.PlayerProfile.BattleBoosts": "Kampfboosts",
     "Boxes.PlayerProfile.DailyProduction": "Tägliche Produktion",
+    "Boxes.PlayerProfile.DateStarted": "am __date__ gestartet",
     "Boxes.PlayerProfile.DaysPlayed": "vor __number__ Tagen gestartet",
     "Boxes.PlayerProfile.GamePlay": "Spielweise",
     "Boxes.PlayerProfile.NoSettlementsFinished": "Noch keine Siedlungen abgeschlossen",

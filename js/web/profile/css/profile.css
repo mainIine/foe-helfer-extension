@@ -244,6 +244,17 @@
     color: #b8d7ff;
 }
 
+#PlayerProfile .daysPlayed:hover {
+    filter: brightness(1.2);
+}
+
+#PlayerProfile .daysPlayed:hover span:after, #PlayerProfile .daysPlayed:hover span:before {
+    content: ' ⇅ ';
+    padding: 0 3px;
+    display: inline-block;
+    color: #83b940;
+}
+
 #PlayerProfile .dailyProd {
     text-align: center;
 }
@@ -389,6 +400,11 @@
     color: var(--text-btn);
     margin-left: 2px;
     font-weight: normal;
+}
+
+#PlayerProfile .important:hover {
+    text-decoration: underline;
+    text-decoration-color: #f005;
 }
 
 #PlayerProfile .important:hover::after {
@@ -577,4 +593,29 @@
 		scrollbar-color: var(--black-65) transparent;
 		scrollbar-width: thin;
 	}
+}
+
+
+
+#PlayerProfile.window-box.colorful {
+    background: linear-gradient(196deg, #dcd8f5 0%, rgb(213, 205, 228) 100%);
+    border-color: #ada4cf;
+    color: var(--text-darker);
+    text-shadow: none !important;
+}
+
+#PlayerProfile.colorful .daysPlayed {
+    background: radial-gradient(circle, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.65) 100%);
+    color: #1c56a3;
+}
+
+#PlayerProfile.colorful .window-close {
+    filter: saturate(0) contrast(1.6);
+    mix-blend-mode: screen;
+}
+
+#PlayerProfile.colorful .leftInfo, #PlayerProfile .rightInfo {
+    background:  linear-gradient(196deg, #000313 0%, rgb(3, 13, 36) 100%);
+    box-shadow: 0 -10px 10px #0006;
+    color: #acc4e3;
 }
