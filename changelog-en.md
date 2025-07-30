@@ -2,8 +2,7 @@
 
 ##### 3.11.8.0
 
-- GE Statistics:
-	- Calculation for the expected cost of goods integrated
+
 
 ---
 
