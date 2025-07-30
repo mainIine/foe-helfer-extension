@@ -2,8 +2,7 @@
 
 ##### 3.11.8.0
 
-- GE Statistik:
-  - Berechnung für die erwarteten Güterkosten integriert
+
 
 ---
 

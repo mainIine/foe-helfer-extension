@@ -648,12 +648,11 @@ let GexStat = {
 		}
 
 
-		h.push('<div class="tabs dark-bg" style="position:relative"><ul id="gexsTabs" class="horizontal">');
+		h.push('<div class="tabs dark-bg"><ul id="gexsTabs" class="horizontal">');
 		h.push(`<li${GexStat.CurrentStatGroup === 'Ranking' ? ' class="active"' : ''}><a class="toggle-statistic" data-value="Ranking"><span>${i18n('Boxes.GexStat.Ranking')}</span></a></li>`);
 		h.push(`<li${GexStat.CurrentStatGroup === 'Participation' ? ' class="active"' : ''}><a class="toggle-statistic" data-value="Participation"><span>${i18n('Boxes.GexStat.MemberParticipation')}</span></a></li>`);
 		h.push(`<li${GexStat.CurrentStatGroup === 'Course' ? ' class="active"' : ''}><a class="toggle-statistic" data-value="Course"><span>${i18n('Boxes.GexStat.Course')}</span></a></li>`);
 		h.push(`</ul>`);
-		h.push(`<span id="expected-unlocking-costs" style="position:absolute;right:10px;top:11px"></span>`);
 		h.push(`</div>`);
 
 		if (gexweek && GexStat.GexWeeks && GexStat.GexWeeks.length)
@@ -705,9 +704,6 @@ let GexStat = {
 
 				GexStat.ShowTabContent(GexStat.CurrentStatGroup, week);
 			});
-			
-			// Calculate and display the expected unlocking costs
-			GexStat.calculateUnlockingCosts();
 		});
 
 	},
@@ -1029,97 +1025,6 @@ let GexStat = {
 		}
 
 		return JSON.stringify(result);
-	},
-
-
-	/**
-	 * Loads the trail costs data from the JSON file
-	 * @returns {Promise<void>}
-	 */
-	loadTrailCosts: async () => {
-		if (GexStat.TrailCosts !== null) {
-			return; // Already loaded
-		}
-
-		try {
-			// Use the correct URL format based on whether extUrl is defined
-			const url = extUrl + 'js/web/gexstat/data/trail-costs.json';
-
-			const response = await fetch(url);
-			
-			if (!response.ok) {
-				throw new Error(`Failed to load trail costs: ${response.status} ${response.statusText}`);
-			}
-			
-			GexStat.TrailCosts = await response.json();
-		}
-		catch (error) {
-			console.error('Error loading trail costs:', error);
-		}
-	},
-
-
-	/**
-	 * Calculates the expected unlocking costs for guild expeditions
-	 * @returns {Promise<void>}
-	 */
-	calculateUnlockingCosts: async () => {
-		await GexStat.loadTrailCosts();
-		
-		if (!GexStat.TrailCosts || !GuildMemberStat.MemberDict) {
-			console.warn('Missing trail costs or member dictionary for cost calculation');
-			return;
-		}
-
-		let previous_week = GexStat.GexWeeks[0] || null;
-
-		let GexParticipation = await GexStat.db.participation.where('gexweek').equals(previous_week).first();
-
-		// No data avaiable
-		if(!GexParticipation) {
-			return;
-		}
-
-		let totalCosts = 0;
-		let membersProcessed = 0;
-		let membersWithTrialData = 0;
-
-		// Get all members
-		for (const Players of GexParticipation.participation) {
-
-			membersProcessed++;
-			const era = PlayerDict[Players['player_id']]?.Era;
-
-			if (!era) {
-				continue; // Skip if era is not available
-			}
-
-			// Find the cost data for current and previous trials
-			const currentCostData = GexStat.TrailCosts.find(data => 
-				data.era === era && data['highest_trial_completed'] === "current");
-			
-			const previousCostData = GexStat.TrailCosts.find(data => 
-				data.era === era && data['highest_trial_completed'] === "previous");
-
-
-			if (!currentCostData || !previousCostData) {
-				console.warn(`No cost data found for era: ${era}`);
-				continue; // Skip if cost data not found
-			}
-
-			// Get the costs for the highest trial
-			const currentCost = parseInt(currentCostData[Players['trial']] || 0);
-			const previousCost = parseInt(previousCostData[Players['trial']] || 0);
-			
-			// Calculate the total cost for this player (sum * 5)
-			const playerCost = (currentCost + previousCost) * 5;
-			totalCosts += playerCost;
-		}
-
-		// Update the element with the calculated costs
-		// Use a hardcoded string if translation is not available
-		const unlockingCostsText = i18n('Boxes.GexStat.UnlockingCosts') || 'Activation costs';
-		$('#expected-unlocking-costs').html(`<small style="color:var(--text-bright);">${unlockingCostsText}: ${HTML.Format(totalCosts)}</small>`);
 	},
 }
 
