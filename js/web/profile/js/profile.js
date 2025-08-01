@@ -23,7 +23,7 @@ const Profile = {
     favAchievements: [],
     gbList: ['X_FutureEra_Landmark1','X_OceanicFuture_Landmark3','X_ProgressiveEra_Landmark2'],
     inventoryList: ['rush_single_event_building_instant','motivate_one','motivate_all','rush_mass_supply_large','rush_single_goods_instant','one_up_kit','renovation_kit','store_building'],
-    themes: ['default','black','black-glass','sunrise','sunset','green','red','foe','light','sepia'],
+    themes: ['default','black','black-glass','sunrise','sunset','green','red','light','foe','sepia'],
     currentThemeNr: 0,
 
     init: (responseData) => {
@@ -45,7 +45,7 @@ const Profile = {
 			});
 
 			$('body').append(div).promise().done(function() {
-				div.append('<span onclick="Profile.show()" class="'+ActiveMap+'"><img  alt="" src="'+srcLinks.GetPortrait(ExtPlayerAvatar)+'" /></span>')
+				div.append('<span onclick="Profile.show()" class="'+ActiveMap+'"><img class="clickable" src="'+srcLinks.GetPortrait(ExtPlayerAvatar)+'" /></span>')
 					.attr('title', i18n('Boxes.PlayerProfile.Tooltip'))
 					.tooltip(
 						{
@@ -134,11 +134,11 @@ const Profile = {
         let cl = [];
         cl.push('<div class="leftInfo showMore">');
         cl.push('<div class="header flex">');
-        cl.push('<img  alt="" src="'+srcLinks.get(`/city/buildings/H_SS_${CurrentEra}_Townhall.png`,true)+'" />');
+        cl.push('<img src="'+srcLinks.get(`/city/buildings/H_SS_${CurrentEra}_Townhall.png`,true)+'" />');
         cl.push('</div>');
         
         cl.push('<div class="expansions secondary">');
-        cl.push('<span><img  alt="" src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_street.png`,true)+'" />');
+        cl.push('<span><img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_street.png`,true)+'" />');
         let roadAmount = 0;
         for (let building of Object.values(MainParser.CityMapData)) { 
             if (building.type !== "street") continue; 
@@ -146,7 +146,7 @@ const Profile = {
         }
         cl.push(HTML.Format(roadAmount)+'</span>');
 
-        cl.push('<span><img  alt="" src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_expansion.png`,true)+'" />');
+        cl.push('<span><img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_expansion.png`,true)+'" />');
         cl.push(HTML.Format(CityMap.UnlockedAreas.length*16+256-16)+'</span>'); // unlocked areas + start area (- 16 somehow?)
         cl.push('</div>');
 
@@ -155,7 +155,7 @@ const Profile = {
         for (let gb of Profile.gbList) {
             let gbLevel = Object.values(MainParser.CityMapData).find(x => x.cityentity_id == gb)?.level;
             if (gbLevel)
-                cl.push('<span><img  alt="" src="'+srcLinks.get(`/city/buildings/${gb.replace('X_','X_SS_')}.png`,true)+'" />' + gbLevel +'</span>');
+                cl.push('<span><img src="'+srcLinks.get(`/city/buildings/${gb.replace('X_','X_SS_')}.png`,true)+'" />' + gbLevel +'</span>');
         }
 
         let allGBs = [];
@@ -172,10 +172,10 @@ const Profile = {
             let gb = allGBs[i];
             if (gb == undefined) continue;
             if (!Profile.gbList.find(x => x == gb.cityentity_id)) // if the GB is not already part of the default list
-                cl.push('<span><img  alt="" src="'+srcLinks.get(`/city/buildings/${gb.cityentity_id.replace('X_','X_SS_')}.png`,true)+'" />' + gb.level +'</span>');
+                cl.push('<span><img src="'+srcLinks.get(`/city/buildings/${gb.cityentity_id.replace('X_','X_SS_')}.png`,true)+'" />' + gb.level +'</span>');
         }
         if (allGBs.length > 6)
-            cl.push('<span class="total" data-original-title="'+i18n('Boxes.GuildFights.Total')+': '+allGBs.length+'"><img  alt="" src="'+srcLinks.get(`/shared/celebrate/rules_great_building_contribution.png`,true)+'" />' + allGBs.length +'</span>');
+            cl.push('<span class="total" data-original-title="'+i18n('Boxes.GuildFights.Total')+': '+allGBs.length+'"><img src="'+srcLinks.get(`/shared/celebrate/rules_great_building_contribution.png`,true)+'" />' + allGBs.length +'</span>');
 
         cl.push('</div>');
 
@@ -183,23 +183,23 @@ const Profile = {
         cl.push('<h2 class="border"><span>'+i18n('Boxes.PlayerProfile.DailyProduction')+'</span></h2>');
         if (Profile.fpProduction === 0 || Profile.guildGoods === 0)
             cl.push('<p class="important" onclick="Productions.init();">'+i18n('Boxes.PlayerProfile.OpenProduction')+'</p>');
-        cl.push('<span><img  alt="" src="' + srcLinks.get(`/shared/icons/strategy_points.png`,true)+'" />' + HTML.Format(parseInt(Profile.fpProduction)) + '</span>');		
+        cl.push('<span><img src="' + srcLinks.get(`/shared/icons/strategy_points.png`,true)+'" />' + HTML.Format(parseInt(Profile.fpProduction)) + '</span>');		
         if (Profile.units > 0)
 			cl.push('<span class="units">'+HTML.Format(parseInt(Profile.units))+'</span>');        
 
         if (Profile.guildGoods)
-            cl.push('<span><img  alt="" src="' + srcLinks.get(`/shared/icons/icon_great_building_bonus_guild_goods.png`,true)+'" />'  + HTML.Format(parseInt(parseInt(Profile.guildGoods)) || 0) + '</span>');
+            cl.push('<span><img src="' + srcLinks.get(`/shared/icons/icon_great_building_bonus_guild_goods.png`,true)+'" />'  + HTML.Format(parseInt(parseInt(Profile.guildGoods)) || 0) + '</span>');
         if (Profile.goods[CurrentEraID-2])
-			cl.push('<span><img  alt="" src="' + srcLinks.get(`/shared/icons/all_goods_of_previous_age.png`,true)+'" />' + HTML.Format(parseInt(parseInt(Profile.goods[CurrentEraID-2])) || 0) + '</span> ');
+			cl.push('<span><img src="' + srcLinks.get(`/shared/icons/all_goods_of_previous_age.png`,true)+'" />' + HTML.Format(parseInt(parseInt(Profile.goods[CurrentEraID-2])) || 0) + '</span> ');
 		if (Profile.goods[CurrentEraID-1])
-			cl.push('<span><img  alt="" src="' + srcLinks.get(`/shared/icons/all_goods_of_age.png`,true)+'" />'  + HTML.Format(parseInt(parseInt(Profile.goods[CurrentEraID-1])) || 0) + '</span> ');
+			cl.push('<span><img src="' + srcLinks.get(`/shared/icons/all_goods_of_age.png`,true)+'" />'  + HTML.Format(parseInt(parseInt(Profile.goods[CurrentEraID-1])) || 0) + '</span> ');
 		if (Profile.goods[CurrentEraID])
-			cl.push('<span><img  alt="" src="' + srcLinks.get(`/shared/icons/next_age_goods.png`,true)+'" />' + HTML.Format(parseInt(parseInt(Profile.goods[CurrentEraID])) || 0) + '</span> ');
+			cl.push('<span><img src="' + srcLinks.get(`/shared/icons/next_age_goods.png`,true)+'" />' + HTML.Format(parseInt(parseInt(Profile.goods[CurrentEraID])) || 0) + '</span> ');
         
             cl.push('<div class="boosts">');
-            cl.push('<span><img  alt="" src="' + srcLinks.get(`/shared/gui/boost/boost_icon_fp.png`,true)+'" />' +Boosts.Sums.forge_points_production + '%</span>');
+            cl.push('<span><img src="' + srcLinks.get(`/shared/gui/boost/boost_icon_fp.png`,true)+'" />' +Boosts.Sums.forge_points_production + '%</span>');
             if (Profile.guildGoods || Profile.goods[CurrentEraID-2] || Profile.goods[CurrentEraID-1] || Profile.goods[CurrentEraID])
-                cl.push('<span><img alt="" src="' + srcLinks.get(`/shared/gui/boost/boost_icon_goods_production.png`,true)+'" />' +Boosts.Sums.goods_production + '%</span>');
+                cl.push('<span><img src="' + srcLinks.get(`/shared/gui/boost/boost_icon_goods_production.png`,true)+'" />' +Boosts.Sums.goods_production + '%</span>');
 
             cl.push('</div>');
         cl.push('</div>');
@@ -243,7 +243,7 @@ const Profile = {
         let cc = [];
             cc.push('<div class="centerInfo">');
             cc.push('<div class="basicInfo pad">');
-            cc.push('<img class="colorToggle" alt="" src="'+srcLinks.GetPortrait(player.Avatar)+'" />');
+            cc.push('<img class="colorToggle clickable" src="'+srcLinks.GetPortrait(player.Avatar)+'" />');
                 cc.push('<div>');
                 cc.push('<h1>'+player.PlayerName+'</h1>');
                 cc.push('<span>'+i18n('Eras.'+CurrentEraID)+'</span><br>');
