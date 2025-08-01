@@ -53,20 +53,10 @@
     min-height: 200px;
     box-shadow: 0 0 5px #0008;
 }
-#PlayerProfile::before {
-    content: '';
-    width: 260px;
-    display: block;
-    float: left;
-}
 
 #PlayerProfile.expanded {
     width: 920px;
     margin-left: -260px;
-}
-
-#PlayerProfile.expanded::before {
-    width: 0;
 }
 
 #PlayerProfile.window-box {
@@ -228,6 +218,11 @@
     width: 90px;
     margin-right: 1.25rem;
     box-shadow: 0 2px 2px var(--black-50);
+    transition: all 0.3s ease-in-out;
+}
+
+#PlayerProfile .basicInfo img:hover {
+    transform: rotate(-4deg);
 }
 
 #PlayerProfile .expansions {
@@ -805,18 +800,18 @@
 
 
 #PlayerProfile.window-box.sepia {
-    --main-background: linear-gradient(196deg, #cfc7b4 0%, rgb(201, 184, 147) 100%);
-    --main-border: 3px solid #7a5c3a;
+    --main-background: linear-gradient(196deg, #ddcca1 0%, #c6aa7a 100%);
+    --main-border: 3px solid #b99563;
     --main-color: var(--text-darker);
-    --daysPlayed-background: radial-gradient(circle, #fff0 0%, #7a5c3aab 100%);
+    --daysPlayed-background: radial-gradient(circle, #fff0 0%, #b99563cc 100%);
     --daysPlayed-color: #251900;
     --important-color: rgb(146, 11, 11);
     --important-underline: rgba(255, 0, 0, 0.233);
     --crit-background: linear-gradient(132deg, #8a3000, #641c0088);
-    --header-background: linear-gradient(#97ff0000 50%, #8b591938 50%, #ffffff00);
+    --header-background: linear-gradient(#e4d5aa 50%, #d5bd92 50%, #ffffff00);
     --secondary-background: linear-gradient(196deg, #cfcab457 0%, #c9bc935e 100%);
     --secondary-color: var(--text-darker);
-    --h2-background: linear-gradient(to bottom, #ffd0001a, transparent 75%);
+    --h2-background: none;
     --item-border-color: #bb6e3130;
     --item-background: inset -1px -1px 20px rgba(255, 255, 255, 0.333);
     --item-img-background: radial-gradient(circle, #9d5a1266 53%, transparent 55%);
@@ -830,7 +825,23 @@
 }
 #PlayerProfile.window-box.sepia {
     text-shadow: none !important;
-    font-family: 'Lucida Sans Typewriter', 'Courier New', Courier, monospace;
+    font-family: Courier, monospace;
+}
+#PlayerProfile.window-box.sepia img, #PlayerProfile.window-box.sepia table, #PlayerProfile.window-box.sepia .qiBoosts {
+    filter: sepia(0.4) !important;
+}
+#PlayerProfile.window-box.sepia .basicInfo h1 + span {
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 75%;
+}
+#PlayerProfile.window-box.sepia h2 {
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+#PlayerProfile.sepia .window-close {
+    filter: saturate(0.7) contrast(1.7) sepia(0.7);
 }
 
 
