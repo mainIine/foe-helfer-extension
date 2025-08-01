@@ -1449,7 +1449,7 @@
     "Settings.Entry.EnableSound": "Omoguci zvuk  ",
     "Settings.Entry.ExportSettings": "Uvezi / Izvezi  ",
     "Settings.Entry.GlobalSend": "Vebsajt Upload  ",
-    "Settings.Entry.Help": "Pomoc  ",
+    "Settings.Entry.Help": "Pomoć",
     "Settings.Entry.HideHelperDuringBattle": "Vidljivost borbe pomocnika  ",
     "Settings.Entry.LoadBeta": "Ucitaj trenutnu Betu  ",
     "Settings.Entry.LoadBeta2": "Učitaj trenutnu beta verziju",
@@ -1590,12 +1590,12 @@
     "Settings.Version.Desc": "Podaci u nastavku mogu biti označeni da bi se kopirali.",
     "Settings.Version.GuildId": "ID Gilda:",
     "Settings.Version.Link": "<a target='_blank' href='https://foe-helper.com/extension/update?v=__version__&lang=en'  class='game-cursor'>Poslednja promena</a>  ",
-    "Settings.Version.PlayerId": "ID igrača",
+    "Settings.Version.PlayerId": "ID igrača:",
     "Settings.Version.Title": "Verzija  ",
     "Settings.Version.World": "Svet:",
     "Settings.doubleFPtimeout.Desc": "Prikazuje kutiju koja privremeno pokriva polje za unos FP-a u GB nakon donacije. Vrednost odreduje trajanje tokom kojeg se kutija prikazuje u sekundama - kada je 0, kutija se ne prikazuje  ",
     "Settings.doubleFPtimeout.Title": "Blokator dvostruke donacije  ",
     "StrategyPoints.BuyableFP": "FoE-Helper: Broj FP-a koji se mogu kupiti sa novčićima.",
     "StrategyPoints.FPInBar": "FoE-Helper: Broj FP u vašem baru.",
-    "_Language": "Engleski  "
+    "_Language": "Srpski"
 }
