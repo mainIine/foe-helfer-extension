@@ -23,6 +23,8 @@ const Profile = {
     favAchievements: [],
     gbList: ['X_FutureEra_Landmark1','X_OceanicFuture_Landmark3','X_ProgressiveEra_Landmark2'],
     inventoryList: ['rush_single_event_building_instant','motivate_one','motivate_all','rush_mass_supply_large','rush_single_goods_instant','one_up_kit','renovation_kit','store_building'],
+    themes: ['default','black','black-glass','sunrise','sunset','green','red','foe','light','sepia'],
+    currentThemeNr: 0,
 
     init: (responseData) => {
         Profile.daysPlayed = responseData.achievementGroups.find(x => x.id == "special").achievements.find(x => x.id == 'foe_fanclub').currentLevel.progress || null
@@ -81,17 +83,18 @@ const Profile = {
         // left content, city
         content.push(Profile.buildCityContent(isRebuilt));
 
-        // right content, stock
-        content.push(Profile.buildStockContent(isRebuilt));
-
         // center content
         content.push(Profile.buildMainContent(isRebuilt));
+
+        // right content, stock
+        content.push(Profile.buildStockContent(isRebuilt));
 
         let moreActive = $('#PlayerProfileBody .toggleMore.active').length > 0;
         content.push(`<span class="toggleMore${moreActive?" active":""}">&nbsp;</span>`);
 
         // actions
         $('#PlayerProfileBody').html(content.join('')).promise().done(function(){
+            $('#PlayerProfile').addClass('default');
             $('#PlayerProfileBody [data-original-title]').tooltip();
             if (isRebuilt) {
                 if (moreActive) { 
@@ -108,13 +111,20 @@ const Profile = {
                 $(this).attr('data-original-title', text);
             });
             $('#PlayerProfileBody').on('click', '.colorToggle',function () {
-                $('#PlayerProfile').toggleClass('colorful');
+                $('#PlayerProfile').removeClass(Profile.themes[Profile.currentThemeNr]);
+                if (Profile.themes[Profile.currentThemeNr+1] !== undefined)
+                    Profile.currentThemeNr++;
+                else
+                    Profile.currentThemeNr = 0;
+
+                $('#PlayerProfile').addClass(Profile.themes[Profile.currentThemeNr]);
             });
-            $('#PlayerProfileBody').on('click', '.toggleMore', function () {
+            $('#PlayerProfile').on('click', '.toggleMore', function () {
                 $(this).toggleClass('active');
-                $('#PlayerProfileBody .centerInfo .showMore, #PlayerProfileBody .centerInfo .hideOnMore').slideToggle();
-                $('#PlayerProfileBody .leftInfo.showMore, #PlayerProfileBody .rightInfo.showMore').fadeToggle();
-                $('#PlayerProfileBody .leftInfo.hideOnMore, #PlayerProfileBody .rightInfo.hideOnMore').fadeToggle();
+                $('#PlayerProfile').toggleClass('expanded');
+                $('#PlayerProfile .centerInfo .showMore, #PlayerProfile .centerInfo .hideOnMore').slideToggle();
+                $('#PlayerProfile .leftInfo.showMore, #PlayerProfile .rightInfo.showMore').toggle();
+                $('#PlayerProfile .leftInfo.hideOnMore, #PlayerProfile .rightInfo.hideOnMore').toggle();
             });
         });
     },
@@ -231,10 +241,9 @@ const Profile = {
     buildMainContent(isRebuilt) {
         let player = PlayerDict[ExtPlayerID];
         let cc = [];
-            //cc.push('<div class="colorToggle">bla</div>');
             cc.push('<div class="centerInfo">');
             cc.push('<div class="basicInfo pad">');
-            cc.push('<img  alt="" src="'+srcLinks.GetPortrait(player.Avatar)+'" />');
+            cc.push('<img class="colorToggle" alt="" src="'+srcLinks.GetPortrait(player.Avatar)+'" />');
                 cc.push('<div>');
                 cc.push('<h1>'+player.PlayerName+'</h1>');
                 cc.push('<span>'+i18n('Eras.'+CurrentEraID)+'</span><br>');
@@ -343,8 +352,8 @@ const Profile = {
         cr.push('<img alt="" class="goods" src="'+srcLinks.get(`/shared/icons/reward_icons/reward_icon_random_goods.png`,true)+'" />');
         cr.push('</div>');
 		cr.push('<div class="stock pad text-center">');
-		cr.push('<span><img alt="" src="'+srcLinks.get(`/shared/icons/quest_reward/icon_forgepoints.png`,true)+'" /> '+HTML.Format(StrategyPoints.InventoryFP || 0)+'</span>');
-		cr.push('<span data-original-title="'+HTML.Format(ResourceStock.medals)+'"><img alt="" src="'+srcLinks.get(`/city/gui/great_building_bonus_icons/great_building_bonus_medals.png`,true)+'" /> '+HTML.FormatNumberShort(ResourceStock.medals || 0,true,'en-EN')+'</span>');
+		cr.push('<span><img alt="" src="'+srcLinks.get(`/shared/icons/quest_reward/icon_forgepoints.png`,true)+'" />'+HTML.Format(StrategyPoints.InventoryFP || 0)+'</span>');
+		cr.push('<span data-original-title="'+HTML.Format(ResourceStock.medals)+'"><img alt="" src="'+srcLinks.get(`/city/gui/great_building_bonus_icons/great_building_bonus_medals.png`,true)+'" />'+HTML.FormatNumberShort(ResourceStock.medals || 0,true,'en-EN')+'</span>');
 		
 		
 		let currentGoods = 0, previousGoods = 0, nextGoods = 0;
@@ -365,9 +374,9 @@ const Profile = {
 			cr.push('<span data-original-title="'+HTML.Format(nextGoods)+'"><img  alt="" src="' + srcLinks.get(`/shared/icons/next_age_goods.png`,true)+'" />' + HTML.FormatNumberShort(nextGoods,true,'en-EN') + '</span> ');
 		cr.push('</div>');
 
-		cr.push('<span class="secondary" data-original-title="'+HTML.Format(ResourceStock.tavern_silver)+'"><img  alt="" src="'+srcLinks.get(`/shared/icons/eventwindow_tavern.png`,true)+'" /> '+HTML.FormatNumberShort(ResourceStock.tavern_silver || 0,true,'en-EN')+'</span>');
-		cr.push('<span class="secondary" data-original-title="'+HTML.Format(ResourceStock.gemstones)+'"><img  alt="" src="'+srcLinks.get(`/shared/icons/gemstones.png`,true)+'" /> '+HTML.Format(ResourceStock.gemstones || 0)+'</span>');
-		cr.push('<span class="secondary" data-original-title="'+HTML.Format(ResourceStock.trade_coins)+'"><img  alt="" src="'+srcLinks.get(`/shared/gui/antiquedealer/antiquedealer_currency_trade_coins.png`,true)+'" /> '+HTML.FormatNumberShort(ResourceStock.trade_coins || 0,true,'en-EN')+'</span>');
+		cr.push('<span class="secondary" data-original-title="'+HTML.Format(ResourceStock.tavern_silver)+'"><img alt="" src="'+srcLinks.get(`/shared/icons/eventwindow_tavern.png`,true)+'" />'+HTML.FormatNumberShort(ResourceStock.tavern_silver || 0,true,'en-EN')+'</span>');
+		cr.push('<span class="secondary" data-original-title="'+HTML.Format(ResourceStock.gemstones)+'"><img alt="" src="'+srcLinks.get(`/shared/icons/gemstones.png`,true)+'" />'+HTML.Format(ResourceStock.gemstones || 0)+'</span>');
+		cr.push('<span class="secondary" data-original-title="'+HTML.Format(ResourceStock.trade_coins)+'"><img alt="" src="'+srcLinks.get(`/shared/gui/antiquedealer/antiquedealer_currency_trade_coins.png`,true)+'" />'+HTML.FormatNumberShort(ResourceStock.trade_coins || 0,true,'en-EN')+'</span>');
 		
 		cr.push('</div>');
 
@@ -379,7 +388,7 @@ const Profile = {
 				itemInStock = Object.values(MainParser.Inventory).filter(x => x.itemAssetName === item).find(x => x.item.duration === 86400);
 			}
 			if (itemInStock)
-				cr.push('<span data-original-title="'+itemInStock.name+'"><img  alt="" src="'+srcLinks.get(`/shared/icons/reward_icons/reward_icon_${item}.png`,true)+'" /> '+HTML.Format(itemInStock.inStock)+'</span>');
+				cr.push('<span data-original-title="'+itemInStock.name+'"><img  alt="" src="'+srcLinks.get(`/shared/icons/reward_icons/reward_icon_${item}.png`,true)+'" />'+HTML.Format(itemInStock.inStock)+'</span>');
 		}
 
 		// get additional favorites
