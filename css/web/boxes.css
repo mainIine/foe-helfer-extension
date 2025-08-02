@@ -299,6 +299,36 @@ a[target="_blank"] svg {
 	cursor: url('../images/cursor_hover.cur'), auto;
 }
 
+.removable {
+	position: relative;
+}
+
+.removable::before {
+	transition: opacity 0.3s ease-in-out;
+	transition-delay: 0.3s;
+	content: '🗙';
+	opacity: 0;
+	width: 0;
+	height: 0;
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	padding: 0;
+	margin: 0;
+	border-radius: 2px;
+	background-color: #a00c;
+	color: #fcc;
+}
+
+.removable:hover::before {
+	width: 100%;
+	height: 100%;
+	opacity: 1;
+	padding: 3px;
+	margin: -3px;
+}
+
 .window-box ::-webkit-scrollbar,
 .window-body::-webkit-scrollbar,
 .window-body * ::-webkit-scrollbar
@@ -903,11 +933,8 @@ FP-Bar */
 #fp-bar .buyable-fp {
 	margin: 1px 1px 0 0;
 	height: 26px;
-}
-
-#fp-bar .fp-storage div,
-#fp-bar .buyable-fp div {
-	padding: 0 6px;
+	line-height: 26px;
+	padding: 0 6px 0 36px;
 }
 
 #fp-bar .fp-storage, #fp-bar .buyable-fp {
