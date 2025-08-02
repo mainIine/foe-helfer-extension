@@ -2518,11 +2518,8 @@ let GuildMemberStat = {
 		c.push(`</select>`);
 		c.push(`<p class="text-left">${i18n('Boxes.GuildMemberStat.ResetMessageCounter')} ` +
 			`<select id="gmsResetMessageCounter" name="resetmessagecounter">`);
-		for (let i = 0; i <= 6; i++)
-		{
-			if (i === 4) { c.push(`<option value="reset">${i18n('Boxes.GuildMemberStat.ConfirmYes')}</option>`); }
-			else { c.push(`<option value="0">${i18n('Boxes.GuildMemberStat.ConfirmNo')}</option>`); }
-		}
+			c.push(`<option value="0">${i18n('Boxes.GuildMemberStat.ConfirmNo')}</option>`);
+			c.push(`<option value="reset">${i18n('Boxes.GuildMemberStat.ConfirmYes')}</option>`);
 		c.push(`</select></p>`);
 		c.push(`<hr><p><button id="save-GuildMemberStat-settings" class="btn btn-default" style="width:100%" onclick="GuildMemberStat.SettingsSaveValues()">${i18n('Boxes.Investment.Overview.SettingsSave')}</button></p>`);
 		c.push(`<hr><p class="text-left">${i18n('Boxes.General.Export')}: <button class="btn btn-default" onclick="GuildMemberStat.ExportContent('${GuildMemberStat.CurrentStatGroup}','csv')" title="${HTML.i18nTooltip(i18n('Boxes.General.ExportCSV'))}">CSV</button>`);
