@@ -37,6 +37,12 @@ let findGB = {
     list:[],
     found:[],
     ShowDialog: () => {
+        
+		if ($('#findGBDialog').length > 0){
+			HTML.CloseOpenBox('findGBDialog');
+
+			return;
+		}
 
         if ($('#findGBDialog').length === 0) {
             HTML.AddCssFile('findGB');
