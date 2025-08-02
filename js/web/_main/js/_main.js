@@ -1,7 +1,7 @@
 /*
  * *************************************************************************************
  *
- * Copyright (C) 2024 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2025 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -459,7 +459,8 @@ GetFights = () =>{
 	FoEproxy.addHandler('CityMapService', (data, postData) => {
 		if (data.requestMethod === 'moveEntity' || data.requestMethod === 'moveEntities' || data.requestMethod === 'updateEntity') {
 			let Buildings = data.responseData;
-			if (Buildings[0]?.player_id != ExtPlayerID) return // opened another players GB
+
+			if (Buildings[0]?.player_id != ExtPlayerID) return; // opened another players GB
 			MainParser.UpdateCityMap(data.responseData);
 		}
 		else if (data.requestMethod === 'placeBuilding') {
@@ -720,6 +721,14 @@ GetFights = () =>{
 		} else {
 			lgUpdateData.CityMapEntity = data;
 			lgUpdate();
+		}
+		
+		if (data.responseData[0]?.player_id === ExtPlayerID) {
+			
+			if ($('#OwnPartBox').length > 0) {
+				Parts.CityMapEntity.max_level = data.responseData[0]?.max_level;
+				Parts.CalcBody();
+			}
 		}
 	});
 
