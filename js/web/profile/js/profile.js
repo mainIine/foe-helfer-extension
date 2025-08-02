@@ -23,7 +23,7 @@ const Profile = {
     favAchievements: [],
     gbList: ['X_FutureEra_Landmark1','X_OceanicFuture_Landmark3','X_ProgressiveEra_Landmark2'],
     inventoryList: ['rush_single_event_building_instant','motivate_one','motivate_all','rush_mass_supply_large','rush_single_goods_instant','one_up_kit','renovation_kit','store_building'],
-    themes: ['default','green','red','black','sunrise','sunset','light','black-glass','foe','sepia'],
+    themes: ['default','green','red','black','sunset','sunrise','sunrise-light','light','teal','foe','sepia'],
     currentThemeNr: 0,
 
     init: (responseData) => {
