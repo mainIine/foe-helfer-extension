@@ -685,22 +685,22 @@
 
 
 #PlayerProfile.window-box.sunrise-light {
-    --main-background: linear-gradient(196deg, #dfad21 0%, #b41137 100%);
-    --main-border: 3px solid #dd5800d4;
+    --main-background: linear-gradient(196deg, #efc653 0%, #c52f52 100%);
+    --main-border: 3px solid #d96a21;
     --main-color: #111;
     --daysPlayed-background: radial-gradient(circle, #ffffff00 0%, #eb660ea6 100%);
-    --daysPlayed-color: #a80032;
-    --important-color: #740000;
+    --daysPlayed-color: #830a2e;
+    --important-color: #7b0000;
     --important-underline: #ff00003b;
     --crit-background: linear-gradient(132deg, #d34f09, #a5090988);
     --header-background: linear-gradient(#ff99002a 50%, #ff5e0059 50%, #ffffff00);
-    --secondary-background: linear-gradient(196deg, #dba91bc4 0%, #af0d38a1 100%);
+    --secondary-background: linear-gradient(196deg, #d9a74b 0%, #c13655 100%);
     --secondary-color: var(--text-darker);
     --h2-background: linear-gradient(to bottom, #ff73001a, transparent 75%);
     --item-border-color: #ff004c30;
     --item-background: inset -1px -1px 20px #da143e66;
     --item-img-background: radial-gradient(circle, #da143e66 53%, transparent 55%);
-    --qi-background: linear-gradient(298deg, #00000000 0%, #0e997b82 100%);
+    --qi-background: linear-gradient(298deg, #00000000 0%, #379ebd82 100%);
     --qi-color: #06332e;
     --qi-shadow: inset -1px -1px 2px #12837a33;
     --qi-text-shadow: none;
@@ -711,7 +711,7 @@
 
 
 #PlayerProfile.window-box.teal {
-    --main-background: radial-gradient(#3dc59f, #25969b);
+    --main-background: radial-gradient(#72ddbf, #25969b);
     --main-border: 3px solid #00ddd2d4;
     --main-color: #111;
     --daysPlayed-background: radial-gradient(circle, #ffffff00 0%, #0eebd9a6 100%);
@@ -719,14 +719,14 @@
     --important-color: #740000;
     --important-underline: #ff00003b;
     --crit-background: linear-gradient(132deg, #d34f09, #a5090988);
-    --header-background: linear-gradient(#ffd9002a 50%, #00ff6a59 50%, #ffffff00);
-    --secondary-background: linear-gradient(196deg, #1bdb7bc4 0%, #0d46afa1 100%);
+    --header-background: linear-gradient(#9bff002a 50%, #00ff6a59 50%, #ffffff00);
+    --secondary-background: linear-gradient(196deg, #33dd88c4 0%, #3464bda1 100%);
     --secondary-color: #202137;
     --h2-background: linear-gradient(to bottom, #ffffff1a, transparent 75%);
     --item-border-color: #001aff30;
     --item-background: inset -1px -1px 20px #1436da66;
     --item-img-background: radial-gradient(circle, #12274d66 53%, transparent 55%);
-    --qi-background: linear-gradient(298deg, #00000000 0%, #0e997b82 100%);
+    --qi-background: linear-gradient(298deg, #00000000 0%, #41d9b882 100%);
     --qi-color: #06332e;
     --qi-shadow: inset -1px -1px 2px #12837a33;
     --qi-text-shadow: none;
