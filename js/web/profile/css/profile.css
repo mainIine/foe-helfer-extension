@@ -868,7 +868,7 @@
     --fav-background: inset -1px -1px 20px rgba(255, 255, 255, 0.333);
     --boost-color: #3c6906;
 }
-#PlayerProfile.sepia, #PlayerProfile.sunrise-light, #PlayerProfile.horrible {
+#PlayerProfile.sepia, #PlayerProfile.sunrise-light, #PlayerProfile.teal {
     text-shadow: none !important;
 }
 #PlayerProfile.sepia img, #PlayerProfile.sepia table, #PlayerProfile.sepia .qiBoosts {
