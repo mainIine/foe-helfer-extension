@@ -1596,6 +1596,6 @@
     "Settings.doubleFPtimeout.Desc": "Prikazuje kutiju koja privremeno pokriva polje za unos FP-a u GB nakon donacije. Vrednost odreduje trajanje tokom kojeg se kutija prikazuje u sekundama - kada je 0, kutija se ne prikazuje  ",
     "Settings.doubleFPtimeout.Title": "Blokator dvostruke donacije  ",
     "StrategyPoints.BuyableFP": "FoE-Helper: Broj FP-a koji se mogu kupiti sa novčićima.",
-    "StrategyPoints.FPInBar": "FoE-Helper: Broj FP u vašem baru.",
+    "StrategyPoints.FPInBar": "FoE-Helper: Broj FP u vaÅ¡em FP baru.",
     "_Language": "Srpski"
 }
