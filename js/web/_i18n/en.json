@@ -1490,6 +1490,7 @@
     "Settings.GlobalSend.Title": "Upload/Send data to foe-helper.com",
     "Settings.Help.Desc": "There are several ways to get support:",
     "Settings.Help.Discord": "Discord: join our server for general discussions about the extension, chats and support.",
+    "Settings.Help.Documentation": "Wiki / Documentation: Feature documentation.",
     "Settings.Help.Forums": "Forums: go here for support and submitting ideas, as well as bug reports.",
     "Settings.Help.Github": "GitHub: for more technical bug reports, concrete ideas and helping with development.",
     "Settings.Help.Title": "Help and Community",
