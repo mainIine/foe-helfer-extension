@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2024 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2025 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -35,9 +35,9 @@ FoEproxy.addWsHandler('OtherPlayerService', 'newEvent', data => {
 });
 
 FoEproxy.addHandler("GreatBuildingsService","getConstruction", (data,postData) => {
-	let open = postData[0].requestData[1] == ExtPlayerID || localStorage.getItem('ShowOwnPartOnAllGBs') == 'true'
-	if ($('#OwnPartBox').length === 0 && localStorage.getItem('OwnPartAutoOpen') == 'true' && open) Parts.Show()
-})
+	let open = postData[0].requestData[1] == ExtPlayerID || localStorage.getItem('ShowOwnPartOnAllGBs') == 'true';
+	if ($('#OwnPartBox').length === 0 && localStorage.getItem('OwnPartAutoOpen') == 'true' && open) Parts.Show();
+});
 
 FoEproxy.addFoeHelperHandler('QuestsUpdated', data => {
 	if ($('#OwnPartBox').length > 0) {
@@ -391,7 +391,7 @@ let Parts = {
 	 *
 	 */
 	CalcBody: async (NextLevel) => {
-		await StartUpDone
+		await StartUpDone;
 		if (Parts.CityMapEntity['level'] === NextLevel) NextLevel = 0;
 
 		let PlayerID = Parts.CityMapEntity['player_id'],
@@ -682,7 +682,11 @@ let Parts = {
 				Parts.SafePlaces.push(i);
 			}
 		}
-				
+		
+        // Level is locked
+		if (MainParser.CityMapData[Parts.CityMapEntity.id].level === MainParser.CityMapData[Parts.CityMapEntity.id].max_level) {
+			h.push('<div class="lg-not-possible" data-text="'+i18n('Boxes.Calculator.LGNotOpen')+'"></div>');
+		}
 		// Info-Block
 		h.push('<div class="dark-bg text-center" style="padding:5px">');
 		

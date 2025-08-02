@@ -1,7 +1,7 @@
 /*
  * *************************************************************************************
  *
- * Copyright (C) 2024 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2025 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -913,6 +913,30 @@ Potions */
 #BoostPotions:hover .list {
 	display: block;
 }
+
+
+
+
+.lg-not-possible {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 200;
+	background-color: rgba(0,0,0, 0.8);
+}
+
+.lg-not-possible::after {
+	content: attr(data-text);
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	text-align: center;
+	width: 240px;
+}
+
 
 /*----------------------------------------------------------------------------------------------------------------------
 FP-Bar */
