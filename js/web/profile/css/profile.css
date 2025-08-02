@@ -641,7 +641,7 @@
 	}
 }
 
-#PlayerProfile.window-box.black, #PlayerProfile.window-box.black-glass {
+#PlayerProfile.window-box.black {
     --main-background: #0c0c0c;
     --main-border: 3px solid #000;
     --daysPlayed-background: radial-gradient(circle, #3f3f3f00 0%, #000000 100%);
@@ -663,17 +663,6 @@
     --boost-color: #83b940;
 }
 
-#PlayerProfile.window-box.black-glass {
-    --main-background: #000000cf;
-    --daysPlayed-background: radial-gradient(circle, #3f3f3f00 0%, #000000 100%);
-    --header-background: linear-gradient(#0000 50%, #000 50%, #0000);
-    --secondary-background: #00000049;
-}
-
-#PlayerProfile.window-box.black-glass {
-    backdrop-filter: blur(6px) brightness(0.7) contrast(1.2);
-}
-
 
 #PlayerProfile.window-box.sunrise {
     --main-background: linear-gradient(196deg, #3a2604 0%, rgb(51 0 23) 100%);
@@ -692,6 +681,58 @@
     --item-img-background: radial-gradient(circle, #35000d66 53%, transparent 55%);
     --item-background: inset -1px -1px 15px #35000dd4;
     --fav-color: #e98a25;
+}
+
+
+#PlayerProfile.window-box.sunrise-light {
+    --main-background: linear-gradient(196deg, #dfad21 0%, #b41137 100%);
+    --main-border: 3px solid #dd5800d4;
+    --main-color: #111;
+    --daysPlayed-background: radial-gradient(circle, #ffffff00 0%, #eb660ea6 100%);
+    --daysPlayed-color: #a80032;
+    --important-color: #740000;
+    --important-underline: #ff00003b;
+    --crit-background: linear-gradient(132deg, #d34f09, #a5090988);
+    --header-background: linear-gradient(#ff99002a 50%, #ff5e0059 50%, #ffffff00);
+    --secondary-background: linear-gradient(196deg, #dba91bc4 0%, #af0d38a1 100%);
+    --secondary-color: var(--text-darker);
+    --h2-background: linear-gradient(to bottom, #ff73001a, transparent 75%);
+    --item-border-color: #ff004c30;
+    --item-background: inset -1px -1px 20px #da143e66;
+    --item-img-background: radial-gradient(circle, #da143e66 53%, transparent 55%);
+    --qi-background: linear-gradient(298deg, #00000000 0%, #0e997b82 100%);
+    --qi-color: #06332e;
+    --qi-shadow: inset -1px -1px 2px #12837a33;
+    --qi-text-shadow: none;
+    --fav-color: #ff9d34;
+    --fav-background: inset -1px -1px 20px #86003e8f;
+    --boost-color: #074604;
+}
+
+
+#PlayerProfile.window-box.teal {
+    --main-background: radial-gradient(#3dc59f, #25969b);
+    --main-border: 3px solid #00ddd2d4;
+    --main-color: #111;
+    --daysPlayed-background: radial-gradient(circle, #ffffff00 0%, #0eebd9a6 100%);
+    --daysPlayed-color: #0a487a;
+    --important-color: #740000;
+    --important-underline: #ff00003b;
+    --crit-background: linear-gradient(132deg, #d34f09, #a5090988);
+    --header-background: linear-gradient(#ffd9002a 50%, #00ff6a59 50%, #ffffff00);
+    --secondary-background: linear-gradient(196deg, #1bdb7bc4 0%, #0d46afa1 100%);
+    --secondary-color: #202137;
+    --h2-background: linear-gradient(to bottom, #ffffff1a, transparent 75%);
+    --item-border-color: #001aff30;
+    --item-background: inset -1px -1px 20px #1436da66;
+    --item-img-background: radial-gradient(circle, #12274d66 53%, transparent 55%);
+    --qi-background: linear-gradient(298deg, #00000000 0%, #0e997b82 100%);
+    --qi-color: #06332e;
+    --qi-shadow: inset -1px -1px 2px #12837a33;
+    --qi-text-shadow: none;
+    --fav-color: #ff9d34;
+    --fav-background: inset -1px -1px 30px #08064b7a;
+    --boost-color: #074604;
 }
 
 
@@ -827,7 +868,7 @@
     --fav-background: inset -1px -1px 20px rgba(255, 255, 255, 0.333);
     --boost-color: #3c6906;
 }
-#PlayerProfile.sepia {
+#PlayerProfile.sepia, #PlayerProfile.sunrise-light, #PlayerProfile.horrible {
     text-shadow: none !important;
 }
 #PlayerProfile.sepia img, #PlayerProfile.sepia table, #PlayerProfile.sepia .qiBoosts {
