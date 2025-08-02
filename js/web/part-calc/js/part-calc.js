@@ -684,7 +684,7 @@ let Parts = {
 		}
 		
         // Level is locked
-		if (MainParser.CityMapData[Parts.CityMapEntity.id].level === MainParser.CityMapData[Parts.CityMapEntity.id].max_level) {
+		if (PlayerID === ExtPlayerID && MainParser.CityMapData[Parts.CityMapEntity.id]?.level === MainParser.CityMapData[Parts.CityMapEntity.id]?.max_level) {
 			h.push('<div class="lg-not-possible" data-text="'+i18n('Boxes.Calculator.LGNotOpen')+'"></div>');
 		}
 		// Info-Block
