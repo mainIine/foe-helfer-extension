@@ -1929,7 +1929,7 @@ input[type="range"]::-webkit-slider-thumb {
 #foe-helper-hud.hud-right {
 	right: 0;
 	top: 420px;
-	width: 49px;
+	width: calc(var(--menu-btn-size) + 4px);
 	height: 270px;
 	border-radius: 4px 0 0 4px;
 	transition: height 0.2s linear;
@@ -1960,32 +1960,33 @@ input[type="range"]::-webkit-slider-thumb {
 	top: 0;
 	right: 0;
 	transition: top 0.7s ease-in-out;
+	width: 100%;
 }
 
 .hud-right .hud-btn {
-	height: 45px;
-    width: 46px;
+	height: var(--menu-btn-size);
+    width: calc(var(--menu-btn-size) + 1px);
 	margin-bottom: 2px;
 }
 
 .hud-right .menu-placeholder {
-	width: 49px;
-	height: 49px;
+	width: calc(var(--menu-btn-size) + 4px);
+	height: calc(var(--menu-btn-size) + 4px);
 }
 
 .hud-right .hud-btn span.hud-counter {
 	padding: 2px;
-	width: 16px;
-	height: 16px;
+	width: var(--hud-counter-size);
+	height: var(--hud-counter-size);
 	bottom: 2px;
 	left: 2px;
-	line-height: 16px;
+	line-height: var(--hud-counter-size);
 }
 
 .hud-right .hud-btn-up,
 .hud-right .hud-btn-down {
 	position: absolute;
-	width: 49px;
+	width: calc(var(--menu-btn-size) + 4px);
 	height: 14px;
 	right: 0;
 	z-index: 1;
@@ -2043,8 +2044,8 @@ input[type="range"]::-webkit-slider-thumb {
 .menu-placeholder {
 	background: var(--black-50);
 	border-radius: 4px;
-	width: 43px;
-	height: 43px;
+	width: calc(var(--menu-btn-size) - 2px);
+	height: calc(var(--menu-btn-size) - 2px);
 }
 
 #menu_box.window-box {
