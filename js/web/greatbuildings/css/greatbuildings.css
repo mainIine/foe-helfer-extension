@@ -30,7 +30,7 @@
 }
 
 .text-bright {
-	color: var(--text-bright);
+	color: var(--bright-color);
 }
 
 #greatbuildings .title {
@@ -55,7 +55,7 @@
 #greatbuildings #greatbuildingsBody strong.player-name {
 	display: block;
 	white-space: nowrap;
-	color: var(--text-bright);
+	color: var(--bright-color);
 	margin: 0 10px;
 }
 

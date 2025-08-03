@@ -20,7 +20,7 @@
 }
 
 #RecurringQuestsBoxBody div {
-    color: var(--text-bright);
+    color: var(--bright-color);
     padding: 5px;
     font-size: smaller;
     text-align: justify;
@@ -52,7 +52,7 @@
 }
 #recurringTable th:nth-child(1),
 #recurringTable th:nth-child(2){
-        color:var(--text-bright);
+        color:var(--bright-color);
 }
 #recurringTable {
     table-layout: fixed;

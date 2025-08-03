@@ -53,7 +53,7 @@ table.info-table tr td {
 }
 
 #BackgroundInfo #BackgroundInfoBody strong {
-	color: var(--text-bright);
+	color: var(--bright-color);
 }
 
 #BackgroundInfo #BackgroundInfoBody .filter-row {

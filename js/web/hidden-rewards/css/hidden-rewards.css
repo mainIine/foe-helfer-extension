@@ -38,7 +38,7 @@
 
 #HiddenRewardBox td.warning,
 #HiddenRewardBox td .warning {
-    color: var(--text-bright);
+    color: var(--bright-color);
 }
 
 td[title="incident_sos"],
@@ -102,11 +102,11 @@ td[title="incident_floating_chest"] {
 }
 
 #HiddenRewardBox .warning {
-    color: var(--text-bright);
+    color: var(--bright-color);
     padding: 5px;
     text-align: center;
 }
 
 #HiddenRewardBox .dark-bg {
-    border-bottom: 1px solid var(--text-bright);
+    border-bottom: 1px solid var(--bright-color);
 }

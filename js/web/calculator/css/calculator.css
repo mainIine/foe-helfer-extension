@@ -36,7 +36,7 @@
 }
 
 #costCalculator #costCalculatorBody strong {
-	color: var(--text-bright);
+	color: var(--bright-color);
 }
 
 #costCalculator #costCalculatorBody .header {
@@ -57,7 +57,7 @@
 #costCalculator #costCalculatorBody .header .player-name {
 	display: block;
 	white-space: nowrap;
-	color: var(--text-bright);
+	color: var(--bright-color);
 	margin: 0 10px;
 }
 

@@ -49,7 +49,7 @@ input[type=number] {
 }
 
 a[target="_blank"] {
-	color: var(--text-bright);
+	color: var(--bright-color);
 	text-decoration: none;
 }
 
@@ -226,6 +226,7 @@ a[target="_blank"] svg {
 	background: var(--background-btn-green-moz);
 	background: var(--background-btn-green-webkit);
 	background: var(--background-btn-green);
+	color: var(--btn-green-color);
 }
 
 .btn-delete:not([disabled]) {
@@ -236,7 +237,6 @@ a[target="_blank"] svg {
 }
 
 .btn-delete:not([disabled]):hover {
-	color: var(--text-light);
 	background: var(--background-btn-red-active-fallback);
 	background: var(--background-btn-red-active-moz);
 	background: var(--background-btn-red-active-webkit);
@@ -487,7 +487,7 @@ p {
 }
 
 .text-warning, .text-bright {
-	color: var(--text-bright);
+	color: var(--bright-color);
 }
 
 .text-danger, .danger {
@@ -781,7 +781,7 @@ Tabs */
 .window-body .tabs ul.vertical li.active a,
 .window-body .tabs ul.vertical li:hover a {
 	background-color: rgba(40, 18, 7, 0.8);
-	color: var(--text-bright);
+	color: var(--bright-color);
 }
 
 .window-body .tabs .sub-tab {
@@ -1581,7 +1581,7 @@ FP-Bar */
 	background-color: var(--text-normal);
 }
 .custom-option.selected {
-	color: var(--text-bright);
+	color: var(--bright-color);
 	background-color: var(--text-dark);
 }
 
@@ -1654,26 +1654,26 @@ FP-Bar */
 	--litepickerBgColor: var(--text-dark) !important;
 	--litepickerMonthHeaderTextColor: var(--text-normal) !important;
 	--litepickerMonthButton: var(--text-medium) !important;
-	--litepickerMonthButtonHover: var(--text-bright) !important;
+	--litepickerMonthButtonHover: var(--bright-color) !important;
 	--litepickerMonthWidth: calc(var(--litepickerDayWidth) * 7) !important;
 	--litepickerMonthWeekdayColor: var(--text-medium) !important;
 	--litepickerDayColor: var(--text-normal) !important;
-	--litepickerDayColorHover: var(--text-bright) !important;
-	--litepickerDayIsTodayColor: var(--text-bright) !important;
+	--litepickerDayColorHover: var(--bright-color) !important;
+	--litepickerDayIsTodayColor: var(--bright-color) !important;
 	--litepickerDayIsInRange: var(--black-50) !important;
 	--litepickerDayIsLockedColor: var(--text-medium) !important;
 	--litepickerDayIsBookedColor: var(--text-medium) !important;
 	--litepickerDayIsStartColor: var(--text-dark) !important;
-	--litepickerDayIsStartBg: var(--text-bright) !important;
+	--litepickerDayIsStartBg: var(--bright-color) !important;
 	--litepickerDayIsEndColor: var(--text-dark) !important;
-	--litepickerDayIsEndBg: var(--text-bright) !important;
+	--litepickerDayIsEndBg: var(--bright-color) !important;
 	--litepickerDayWidth: 33px !important;
 	--litepickerButtonCancelColor: var(--text-dark) !important;
 	--litepickerButtonCancelBg: var(--text-medium) !important;
 	--litepickerButtonApplyColor: var(--text-dark) !important;
-	--litepickerButtonApplyBg: var(--text-bright) !important;
+	--litepickerButtonApplyBg: var(--bright-color) !important;
 	--litepickerButtonResetBtn: #909090 !important;
-	--litepickerButtonResetBtnHover: var(--text-bright) !important;
+	--litepickerButtonResetBtnHover: var(--bright-color) !important;
 	--litepickerHighlightedDayColor: #333 !important;
 	--litepickerHighlightedDayBg: #ffeb3b !important
 }
@@ -1788,7 +1788,8 @@ input[type="range"]::-webkit-slider-thumb {
 	font-size: 0.75rem;
 	font-weight: 400;
 	box-sizing: border-box;
-	box-shadow: 0 0 1px 1px var(--black-50);
+	box-shadow: var(--menu-shadow);
+	background: var(--menu-bg);
 }
 
 #foe-helper-hud-wrapper {
@@ -1812,17 +1813,16 @@ input[type="range"]::-webkit-slider-thumb {
 
 .hud-btn-left, .hud-btn-right {
 	border-bottom-width: 0;
+	box-shadow: var(--menu-shadow);
 }
 
 .hud-btn-left {
 	left: 0;
 	border-radius: 5px 0 0 0;
-	box-shadow: 0 -1px 0 var(--black-50), -1px 0 0 var(--black-50);
 }
 
 .hud-btn-right {
 	border-radius: 0 5px 0 0;
-	box-shadow: 0 -1px 0 var(--black-50), 1px 0 0 var(--black-50);
 }
 
 .hud-btn-left, .hud-btn-right, .hud-btn-left::before, .hud-btn-right::before, .hud-btn-up, .hud-btn-up::before, .hud-btn-down, .hud-btn-down::before {
@@ -1831,7 +1831,7 @@ input[type="range"]::-webkit-slider-thumb {
 
 .hud-btn-left-active, .hud-btn-right-active, .hud-btn-left-active::before, .hud-btn-right-active::before, .hud-btn-up-active, .hud-btn-up-active::before, .hud-btn-down-active, .hud-btn-down-active::before {
 	display: block;
-	background: linear-gradient(to bottom, #c38236, #894422);
+	background: var(--menu-arrow-bg);
 }
 
 .hud-btn-right-active {
@@ -1859,11 +1859,11 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 .hud-btn-left-active::before {
-	border-right: 6px solid #48291b;
+	border-right: 6px solid var(--menu-arrow-color);
 }
 
 .hud-btn-right-active::before {
-	border-left: 6px solid #48291b;
+	border-left: 6px solid var(--menu-arrow-color);
 }
 
 #foe-helper-hud.is--sorting .hud-btn {
@@ -1883,8 +1883,8 @@ input[type="range"]::-webkit-slider-thumb {
 	box-sizing: border-box;
 	border: 2px solid transparent;
 	border-radius: 4px;
-	box-shadow: inset 0 0 1px 1px #1f1309cc, 0 0 2px #000000c9;
-	background: linear-gradient(#4d2e16, #492d16) padding-box, linear-gradient(to bottom, #82ae4c, #4f7421) border-box;
+	box-shadow: var(--menu-btn-shadow);
+	background: var(--menu-btn-bg);
 	text-align: center;
 }
 
@@ -1893,7 +1893,7 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 .hud-btn-red {
-	background: linear-gradient(to bottom, #4f291b, #553419) padding-box, linear-gradient(to bottom, #a84a35, #88301e) border-box;
+	background: var(--menu-btn-disabled-bg);
 }
 
 .hud-btn span:first-child {
@@ -1915,11 +1915,11 @@ input[type="range"]::-webkit-slider-thumb {
 	top: unset;
 	left: 4px;
 	background-image: none;
-	background-color: var(--hud-counter);
+	background-color: var(--hud-counter-color);
 	border-radius: 50%;
 	line-height: 13px;
 	text-align: center;
-    box-shadow: 1px 0 0 1px rgba(0,0,0,0.245);
+    box-shadow: var(--hud-counter-bg);
 	pointer-events: none;
 	font-weight: bold;
 	font-size: 0.8rem;
@@ -1934,16 +1934,16 @@ input[type="range"]::-webkit-slider-thumb {
 	border-radius: 4px 0 0 4px;
 	transition: height 0.2s linear;
 	border-width: 0;
-	background-color: #301e0fcc;
+	background-color: var(--menu-bg);
 }
 
 .hud-right::before {
 	top: 0;
-	border-bottom: 2px solid #755b43;
+	border-bottom: 2px solid var(--menu-arrow-color);
 }
 
 .hud-right::after {
-	border-top: 2px solid #755b43;
+	border-top: 2px solid var(--menu-arrow-color);
 	left: 0;
 	bottom: 0;
 }
@@ -1989,6 +1989,7 @@ input[type="range"]::-webkit-slider-thumb {
 	height: 14px;
 	right: 0;
 	z-index: 1;
+	box-shadow: var(--menu-shadow);
 }
 
 .hud-right .hud-btn-up {
@@ -2000,7 +2001,7 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 .hud-btn-up-active, .hud-btn-down-active {
-	background: var(--background-hud-btn);
+	background: var(--menu-arrow-bg);
 }
 
 .hud-btn-up-active:hover, .hud-btn-down-active:hover {
@@ -2031,12 +2032,12 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 .hud-btn-up::before {
-	border-bottom: 9px solid #48291b;
+	border-bottom: 9px solid var(--menu-arrow-color);
 }
 
 .hud-btn-down::before {
 	bottom: 1px;
-	border-top: 9px solid #48291b;
+	border-top: 9px solid var(--menu-arrow-color);
 }
 
 .menu-placeholder {
@@ -2055,8 +2056,8 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 #menu_boxHeader {
-	background: var(--background-window-boxmenu-head);
-    box-shadow: inset 0 1px 1px #384354, inset 0 2px 0 #575d69;
+	background: var(--menu-boxed-head-bg);
+    box-shadow: var(--menu-boxed-head-shadow);
 	padding: 0.2rem;
 }
 
@@ -2074,7 +2075,7 @@ input[type="range"]::-webkit-slider-thumb {
 
 #menu_box .window-head span.title {
 	font-size: 95%;
-	color: #eee;
+	color: var(--menu-boxed-head-color);
 	padding-top: 1px;
 }
 
@@ -2136,7 +2137,7 @@ tr.sorter-header th:not(.no-sort) {
 
 tr.sorter-header th:not(.no-sort):before,
 tr.sorter-header th:not(.no-sort):after {
-	color: var(--text-bright);
+	color: var(--bright-color);
 	position: absolute;
 	display: block;
 	opacity: .2;
@@ -2235,7 +2236,7 @@ tr.sorter-header th:not(.no-sort).descending:after {
     bottom: 5px;
     border-radius: 50%;
     border: 3px solid transparent;
-    border-top-color: #f8af36;
+    border-top-color: var(--bright-color);
     -webkit-animation: spin 3s linear infinite;
     animation: spin 3s linear infinite;
 }

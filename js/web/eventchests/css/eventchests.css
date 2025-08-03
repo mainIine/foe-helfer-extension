@@ -75,7 +75,7 @@
 #eventpresentsBody tr.visible td {
     opacity: 1;
     font-weight: bold;
-    color: var(--text-bright);
+    color: var(--bright-color);
 }
 
 #eventpresentsBody tr.used td {

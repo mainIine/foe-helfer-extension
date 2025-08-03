@@ -444,7 +444,7 @@
 #PlayerProfile .important::after {
     content: "➔";
     display: inline-block;
-    background: var(--background-hud-btn);
+    background: var(--menu-arrow-bg);
     padding: 0 2px;
     border-radius: 3px;
     color: var(--text-btn);
@@ -808,7 +808,7 @@
     box-shadow: 0 0 5px #000;
 }
 #PlayerProfile.window-box.foe h1 {
-    color: var(--text-bright);
+    color: var(--bright-color);
 }
 #PlayerProfile.foe table tr:nth-child(2n) {
     background: linear-gradient(to right, transparent, #0002, transparent);

@@ -75,7 +75,7 @@
     position: relative;
 }
 #idleGame_Next.hide i, #idleGame_Tasks.hide i, #idleGame_TasksActive.hide i, #idleGame_Strategy.hide i {
-    border: solid var(--text-bright);
+    border: solid var(--bright-color);
     border-width: 0 2px 2px 0;
     display: inline-block;
     padding: 3px;
@@ -86,7 +86,7 @@
     margin-top: 4px;
 }
 #idleGame_Next:not(.hide) i, #idleGame_Tasks:not(.hide) i, #idleGame_TasksActive:not(.hide) i, #idleGame_Strategy:not(.hide) i  {
-    border: solid var(--text-bright);
+    border: solid var(--bright-color);
     border-width: 0 2px 2px 0;
     display: inline-block;
     padding: 3px;
@@ -103,7 +103,7 @@
 }
 #idleGame_StratCheck {
     font-family: arial;
-    color: var(--text-bright);
+    color: var(--bright-color);
 }
 #idleGame_StratPrev {
     color: var(--text-btn-disabled);
@@ -112,7 +112,7 @@
     color: var(--text-btn-disabled);
 }
 #idleGame_Strat {
-    color: var(--text-bright);
+    color: var(--bright-color);
 }
 #idleGameStratText {
     width: 100%;
