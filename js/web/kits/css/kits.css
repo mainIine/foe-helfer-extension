@@ -67,7 +67,7 @@
 }
 
 #kits h1, #kits h2, #kits h3 {
-	color: var(--text-bright);
+	color: var(--bright-color);
 	margin: 0;
 	padding: 5px;
 }
@@ -224,7 +224,7 @@
 	position: absolute;
 	top: 55px;
 	left: calc(50% + 20px);
-	background: var(--hud-counter);
+	background: var(--hud-counter-color);
 	color: var(--text-light);
 	border-radius: 10px;
 	min-width: 14px;

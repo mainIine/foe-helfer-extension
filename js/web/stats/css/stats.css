@@ -67,7 +67,7 @@
 }
 
 #stats .option-chart-type-wrap span.active {
-	color: var(--text-bright);
+	color: var(--bright-color);
 }
 
 #stats .option-source-wrap {

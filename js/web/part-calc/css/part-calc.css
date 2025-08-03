@@ -73,11 +73,11 @@
 }
 
 #OwnPartBox #OwnPartBoxBody strong {
-	color: var(--text-bright);
+	color: var(--bright-color);
 }
 
 #OwnPartBox #OwnPartBoxBody strong.normal {
-	color: var(--text-bright);
+	color: var(--bright-color);
 }
 
 #OwnPartBox #OwnPartBoxBody .success {
@@ -121,7 +121,7 @@
 }
 
 #OwnPartBox #up-to-level-up {
-	color: var(--text-bright);
+	color: var(--bright-color);
 }
 
 #OwnPartBox .bottom-buttons {
@@ -350,7 +350,7 @@
 }
 
 #PowerLevelingBox #PowerLevelingBoxBody .foe-table td.bright, strong.bright {
-	color: var(--text-bright);
+	color: var(--bright-color);
 	font-weight: bold;
 }
 

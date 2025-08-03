@@ -39,7 +39,7 @@
 	padding-top: 15px;
 }
 #Productions #ProductionsBody strong {
-	color: var(--text-bright);
+	color: var(--bright-color);
 }
 #Productions #ProductionsBody table td {
 	font-size: 85%;
@@ -54,12 +54,12 @@
 }
 #Productions #ProductionsBody table tbody.parent th {
 	background-color: #3f2a1b;
-	color: var(--text-bright);
+	color: var(--bright-color);
 	padding-top: 15px;
 }
 #Productions #ProductionsBody table tr.highlight-row {
 	background-color: rgba(40, 18, 7, 0.8);
-	color: var(--text-bright);
+	color: var(--bright-color);
 }
 #Productions #ProductionsBody table #all-search {
 	background-color: var(--background-light);
@@ -85,7 +85,7 @@
 #Productions #ProductionsBody table td.total-products span {
 	display: inline-block;
 	padding: 2px 4px;
-	color: var(--text-bright);
+	color: var(--bright-color);
 	white-space: nowrap;
 }
 #Productions #ProductionsBody .tabs ul li {
@@ -192,41 +192,61 @@
 	box-sizing: border-box;
 	padding: 0.5em;
 	font-size: 120%;
+	background-color: var(--background-light);
+	border: none;
+	border-radius: 3px;
 }
 #ProductionsRatingBody .overlay .window-close {
 	position: absolute;
-	top: 10px;
+	top: 1rem;
 	right: calc(20% - 50px);
 }
 #ProductionsRatingBody .overlay .content {
 	width: 60%;
 	min-width: 300px;
-	height: inherit;
-	margin: auto;
+	height: calc(100% - 2rem);
+	margin: 1rem auto;
 	padding: 1em;
-	background: #301c0a;
+	box-sizing: border-box;
+	background: linear-gradient(to bottom, #1e06006e, #270f005e), url(../../../../css/images/hud/box-bg.png) center center repeat;
 	color: var(--text-normal);
+	border-radius: 5px;
 }
 #ProductionsRatingBody .overlay .content ul {
 	height: calc(100% - 90px);
 	overflow: auto;
 	margin: 10px 0;
+	padding: 0;
 	box-sizing: border-box;
+	list-style: none;
+}
+#ProductionsRatingBody .overlay .content li {
+	padding: 0.1rem 0.2rem;
+	border-top: 1px solid var(--border-table-top);
+	border-bottom: 1px solid var(--border-table-bottom);
 }
 #ProductionsRatingBody .overlay .content li:hover {
-	color: var(--text-bright);
+	color: var(--bright-color);
+	background: var(--background-table-hover);
 }
 #ProductionsRatingBody .overlay .content li.selected {
-	color: var(--text-info);
+	color: var(--bright-color);
+	background: var(--black-50);
 }
 #ProductionsRatingBody .overlay .content li.selected::after {
 	content: '✔';
+}
+#ProductionsRatingBody .overlay .closeMetaBuilding {
+	margin: 0 auto;
+    display: block;
+    width: max-content;
+	font-weight: bold;
 }
 #ProductionsRatingBody tr.sorter-header th {
 	padding: 5px 6px 7px;
 }
 #ProductionsRatingBody tr.sorter-header th:not(.no-sort):hover, #ProductionsRatingBody tr.sorter-header th.ascending, #ProductionsRatingBody tr.sorter-header th.descending {
-	color: var(--text-bright);
+	color: var(--bright-color);
 }
 #ProductionsRatingBody tr.sorter-header th:not(.no-sort):hover, #ProductionsRatingBody tr.sorter-header th.ascending .resicon, #ProductionsRatingBody tr.sorter-header th.descending .resicon {
 	filter: brightness(1.2);
@@ -308,13 +328,13 @@
 	color: var(--text-info) !important;
 }
 #ProductionsRatingBody tr.inventory-building td:nth-child(1) {
-	color: var(--text-bright) !important;
+	color: var(--bright-color) !important;
 }
 #ProductionsRatingBody tr.additional td:nth-child(2) {
 	font-style: italic;
 }
 #ProductionsRatingBody tr.highlighted td:nth-child(2) {
-	color: var(--text-bright);
+	color: var(--bright-color);
 	font-weight: 600;
 }
 #ProductionsRatingBody tr .show-all {

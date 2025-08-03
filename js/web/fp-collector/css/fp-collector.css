@@ -59,7 +59,7 @@
 
 #fp-collectorBody .foehelper-accordion-body div .fps {
 	width: 105px;
-	color: var(--text-bright);
+	color: var(--bright-color);
 	text-align: right;
 	margin: 0 8px 0 0;
 }

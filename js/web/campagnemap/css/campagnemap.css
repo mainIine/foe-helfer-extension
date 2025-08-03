@@ -36,7 +36,7 @@
 }
 
 #campagne #campagneBody .campagne-head strong {
-	color: var(--text-bright);
+	color: var(--bright-color);
 }
 
 #campagne #campagneBody tr.total-row td {
@@ -45,7 +45,7 @@
 }
 
 #campagne #campagneBody tr.resource-row td {
-	color: var(--text-bright);
+	color: var(--bright-color);
 	font-weight: 700;
 }
 

@@ -30,12 +30,12 @@
 }
 
 #Investment #InvestmentBody strong {
-	color: var(--text-bright);
+	color: var(--bright-color);
 }
 
 
 #InvestmentBody #history-wrapper {
-	border-top: 2px solid var(--text-bright);
+	border-top: 2px solid var(--bright-color);
 	margin-bottom: 18px;
 }
 
@@ -108,7 +108,7 @@
 	top: 1px;
 	font-size: 0.85em;
 	padding: 1px 2px;
-	color: var(--text-bright);
+	color: var(--bright-color);
 	font-weight: bold;
 	text-shadow: 0 2px 2px black, 0 1px 0 black;
 }
@@ -135,7 +135,7 @@
 	color: #f11616;
 }
 #InvestmentBody table tbody td .warning{
-	color: var(--text-bright);
+	color: var(--bright-color);
 }
 
 #InvestmentBody table tbody td img.rank {
@@ -177,7 +177,7 @@
 }
 
 #InvestmentBody .last-update-message .updaterequired {
-    color: var(--text-bright);
+    color: var(--bright-color);
 }
 
 #InvestmentBody .last-update-message span.icon {
@@ -212,7 +212,7 @@
 }
 
 #InvestmentBody .last-update-message .updaterequired {
-    color: var(--text-bright);
+    color: var(--bright-color);
 }
 
 #InvestmentBody .last-update-message span.icon {

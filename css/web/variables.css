@@ -14,7 +14,7 @@
 :root {
 	--text-light: #fff;
 	--text-normal: #ffe7ba;
-	--text-bright: #ffB539;
+	--bright-color: #ffB539;
 	--text-medium: #93795D;
 	--text-medium2: #7b5730;
 	--text-dark: #4c2f1e;
@@ -31,13 +31,9 @@
 	--background-light: #F9EBC6;
 	--background-medium: #b3a582;
 
-	--background-hud-btn: linear-gradient(to bottom, #c38236, #894422);
-	--background-hud-btn-hover: linear-gradient(to bottom, #d8cf56, #d58f4a);
-
 	--bg-tooltip: #5e5a4e;
 
 	--background-window-head: linear-gradient(0deg, #44150a, #48170c, #4c190e, #501b10, #541d12, #581f13, #5d2115, #612316);
-	--background-window-boxmenu-head: linear-gradient(#384354, #293344);
 
 	--background-btn: linear-gradient(to bottom, rgb(183,112,55) 0%,rgb(176,96,38) 1%,rgb(145,72,30) 30%,rgb(130,62,24) 99%,rgb(176,104,50) 100%);
 	--background-btn-disabled: linear-gradient(to bottom, rgb(39, 23, 10) 0%,rgb(68, 68, 68) 1%,rgb(44, 44, 44) 30%,rgb(45, 45, 45) 99%, rgb(55, 55, 55) 100%);
@@ -45,6 +41,7 @@
 	--background-btn-onclick: linear-gradient(to bottom, rgb(245, 205, 72) 0%,rgb(223, 154, 52) 1%,rgb(186, 99, 32) 20%,rgb(103 50 19) 80%,rgb(135 80 38) 100%);
 
 	--background-btn-green: linear-gradient(to bottom, #469e2b 0%,#1f6517 100%);
+	--btn-green-color: #dde9ca;
 
 	--background-btn-red: linear-gradient(to bottom, #871313 0%,#440909 100%);
 	--background-btn-red-active: linear-gradient(to bottom, #a71f1f 0%,#590d0d 100%);
@@ -69,17 +66,32 @@
 	--border-table-bottom: #3D250F;
 	--border-table-bottom-darker: #170602;
 
-	--hud-counter: #468fca;
+	--hud-counter-color: #468fca;
 	--hud-counter-success: #5c8d20;
+	--hud-counter-bg: 1px 0 0 1px rgba(0,0,0,0.245);
 
 	--grey: #444;
 	--black: #000;
-	--black-50: rgba(0, 0, 0, 0.5);
-	--black-65: rgba(0,0,0, 0.65);
+	--black-50: #00000080;
+	--black-65: #000000a6;
 
 	--text-success: #5fc745;
 	--text-info: #42a1ee;
 	--text-danger: #f34f4f;
+
+	--menu-bg: #301e0fcc;
+	--menu-shadow: 0 0 1px 1px #00000080;
+	--menu-arrow-bg: linear-gradient(to bottom, #c38236, #894422);
+	--menu-arrow-color: #48291b;
+	--menu-btn-bg: linear-gradient(#4d2e16, #492d16) padding-box, linear-gradient(to bottom, #82ae4c, #4f7421) border-box;
+	--menu-btn-shadow: inset 0 0 1px 1px #1f1309cc, 0 0 2px #000000c9;
+	--menu-btn-disabled-bg: linear-gradient(to bottom, #4f291b, #553419) padding-box, linear-gradient(to bottom, #a84a35, #88301e) border-box;
+	--menu-boxed-head-bg: linear-gradient(#384354, #293344);
+	--menu-boxed-head-shadow: inset 0 1px 1px #384354, inset 0 2px 0 #575d69;
+	--menu-boxed-head-color: #eee;
+
+
+	/* city map buildings*/
 
 	--background-color-ascendable: #f37317;
 	--border-color-ascendable: #ce5900;
