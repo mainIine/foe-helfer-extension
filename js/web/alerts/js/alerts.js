@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2024 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2025 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -43,10 +43,10 @@ Dexie.delete('foe_helper_alerts_database');
 
 const BattlegroundSectorNames = {
 	volcano_archipelago: {
-		0: {title: "A1M", name: "Mati Tudokk"},
-		1: {title: "B1O", name: "Ofrus Remyr"},
-		2: {title: "C1N", name: "Niali Diath"},
-		3: {title: "D1B", name: "Brurat Andgiry"},
+		0: {title: "A1", name: "Mati Tudokk"},
+		1: {title: "B1", name: "Ofrus Remyr"},
+		2: {title: "C1", name: "Niali Diath"},
+		3: {title: "D1", name: "Brurat Andgiry"},
 		4: {title: "A2S", name: "Sladisk Icro"},
 		5: {title: "A2T", name: "Tevomospa"},
 		6: {title: "B2S", name: "Subeblic"},
@@ -105,13 +105,13 @@ const BattlegroundSectorNames = {
 		59: {title: "D4H", name: "Honbo"}
 	},
 	waterfall_archipelago: {
-		0: {title: "X1X", name: "Elleorus"},
-		1: {title: "A2A", name: "Flunnipia"},
-		2: {title: "B2A", name: "Achinata"},
-		3: {title: "C2A", name: "Enudran"},
-		4: {title: "D2A", name: "Zebbeasos"},
-		5: {title: "E2A", name: "Appatinaka"},
-		6: {title: "F2A", name: "Kracciarhia"},
+		0: {title: "X1", name: "Elleorus"},
+		1: {title: "A2", name: "Flunnipia"},
+		2: {title: "B2", name: "Achinata"},
+		3: {title: "C2", name: "Enudran"},
+		4: {title: "D2", name: "Zebbeasos"},
+		5: {title: "E2", name: "Appatinaka"},
+		6: {title: "F2", name: "Kracciarhia"},
 		7: {title: "A3A", name: "Micianary"},
 		8: {title: "A3B", name: "Sheaggasia"},
 		9: {title: "B3A", name: "Birrathan"},
@@ -170,29 +170,6 @@ const BattlegroundSectorNames = {
 };
 
 let Alerts = function(){
-	/**
-	 * @typedef FoEAlertData
-	 * @type {object}
-	 * @property {string} title
-	 * @property {string} body
-	 * @property {number} expires
-	 * @property {number} repeat
-	 * @property {any[]|null} actions
-	 * @property {string} category
-	 * @property {boolean} persistent
-	 * @property {string} tag
-	 * @property {boolean} vibrate
-	 */
-	/**
-	 * @typedef FoEAlert
-	 * @type {object}
-	 * @property {number} [id]
-	 * @property {FoEAlertData} data
-	 * @property {boolean} triggered
-	 * @property {boolean} handled
-	 * @property {boolean} hasNotification
-	 */
-
 	let tmp = {};
 
 	tmp.debug = true;
@@ -1564,6 +1541,7 @@ let Alerts = function(){
 					HTML.Box( {
 						id: 'Alerts',
 						title: i18n( 'Boxes.Alerts.Title', 'Alerts' ),
+                		ask: i18n('Boxes.Alerts.HelpLink'),
 						auto_close: true,
 						dragdrop: true,
 						minimize: true,

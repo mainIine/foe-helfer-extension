@@ -79,6 +79,7 @@ let BlueGalaxy = {
             HTML.Box({
                 id: 'bluegalaxy',
                 title: i18n('Boxes.BlueGalaxy.Title'),
+                ask: i18n('Boxes.BlueGalaxy.HelpLink'),
                 auto_close: true,
                 dragdrop: true,
                 minimize: true,
