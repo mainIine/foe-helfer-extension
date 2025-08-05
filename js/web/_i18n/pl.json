@@ -913,7 +913,7 @@
     "Boxes.OwnpartCalculator.levelt": "zamyka poziom",
     "Boxes.PlayerProfile.BattleBoosts": "Wzmocnienia bitewne",
     "Boxes.PlayerProfile.DailyProduction": "Codzienna produkcja",
-    "Boxes.PlayerProfile.DateStarted": "zaczął/eła grać",
+    "Boxes.PlayerProfile.DateStarted": "zaczął/eła grać __date__",
     "Boxes.PlayerProfile.DaysPlayed": "zaczął/ęła grać __number__ dni temu",
     "Boxes.PlayerProfile.GamePlay": "Rozgrywka",
     "Boxes.PlayerProfile.NoSettlementsFinished": "Żadna Osada nie została jeszcze ukończona.",
