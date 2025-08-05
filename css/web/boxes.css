@@ -925,6 +925,7 @@ Potions */
 	bottom: 0;
 	z-index: 200;
 	background-color: rgba(0,0,0, 0.8);
+	pointer-events: none;
 }
 
 .lg-not-possible::after {
