@@ -526,6 +526,13 @@ p {
 	width: 100%;
 }
 
+#setting-playerProfile-Btn span {
+	background-image: url('../images/menu/profile.jpg');
+	border-radius: 3px 3px 10px 3px;
+    box-shadow: 0 2px 2px var(--black-65);
+    border: 1px solid var(--text-darker);
+}
+
 [id$=fpCollector-Btn] span {
 	background-image: url('../images/menu/forgepoints.png');
 }
