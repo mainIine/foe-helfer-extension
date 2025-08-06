@@ -1,5 +1,10 @@
 FoEproxy.addHandler('AchievementsService','getOverview', (data, postData) => {
-    Profile.init(data.responseData)
+    Profile.init(data.responseData);
+    
+    if ($('#playerProfile-Btn').hasClass('hud-btn-red')) {
+        $('#playerProfile-Btn').removeClass('hud-btn-red');
+        $('#playerProfile-Btn-closed').remove();
+    }
 });
 
 FoEproxy.addFoeHelperHandler('ActiveMapUpdated', () => {
