@@ -519,6 +519,13 @@ p {
 	background-image: url('../images/menu/polivation.png');
 }
 
+#playerProfile-Btn span img {
+	border-radius: 3px 3px 10px 3px;
+    box-shadow: 0 2px 2px var(--black-65);
+    border: 1px solid var(--text-darker);
+	width: 100%;
+}
+
 [id$=fpCollector-Btn] span {
 	background-image: url('../images/menu/forgepoints.png');
 }
