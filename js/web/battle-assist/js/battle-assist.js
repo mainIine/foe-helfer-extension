@@ -358,11 +358,16 @@ let BattleAssist = {
                     for (let unit of x.wave2) {
                         html += `<img src="${srcLinks.get('/shared/unit_portraits/armyuniticons_50x50/armyuniticons_50x50_'+unit.replace("guild_raids_","")+'.jpg',true)}">`
                     }
-                }            
-                html += `</td><td class="AASetBonus" data-id="${id}">${x.bonus ? x.bonus + "%" : ""}`
+                }
+                PlayerName = (/^pvp_arena%(.*?)#/.exec(id)||[""])[1];
+
+                if (PlayerName) {
+                    html += `<span>` + srcLinks.icons('feature_pvp_arena') +  `</span>` + PlayerName
+                }
+                html += `</div></td><td class="AASetBonus" data-id="${id}">${x.bonus ? x.bonus + "%" : ""}`
                 html += `</td><td class="AASetAdvice" data-id="${id}">${x.advice || ""}`
                 html += `<div class="battleAssistOverrideTypeGroup">`
-                let type = (/^(attack|defense)+%/.exec(id)||[""])[0].replace("%","");
+                let type = (/^(attack|defense)+%/.exec(id)||[""])[1];
                 html += `<span class="battleAssistOverrideType${type=="attack"?" active":""}" data-type="attack"><img src="${srcLinks.get("/shared/gui/boost/boost_icon_bonus_attacking_all.png",true)}"></span>`
                 html += `<span class="battleAssistOverrideType${type!="attack"&&type!="defense"?" active":""}" data-type=""><img src="${srcLinks.get("/shared/gui/boost/boost_icon_bonus_attacking_defending_all.png",true)}"></span>`
                 html += `<span class="battleAssistOverrideType${type=="defense"?" active":""}" data-type="defense"><img src="${srcLinks.get("/shared/gui/boost/boost_icon_bonus_defending_all.png",true)}"></span>`
