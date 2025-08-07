@@ -80,7 +80,16 @@ FoEproxy.addHandler('BattlefieldService', 'startByBattleType', (data, postData) 
     
     if(!Settings.GetSetting('ShowArmyAdvice'))	return;
     let bt=data.responseData?.battleType?.type;
-    if (!bt || bt=="pvp_arena" || bt=="pvp" || bt=="campaign") return;
+    if (!bt || bt=="pvp" || bt=="campaign") return;
+    let opId = id = BattleAssist.armyRecent[0]?.id
+    if (bt=="pvp_arena") {
+        opponent = BattleAssist.ArenaOpponents[data.responseData?.battleType?.difficulty]
+        if (!opponent) return;
+        let wave1 = data.responseData.state.unitsOrder.filter(x=>x.ownerId!=ExtPlayerID).map(x=>x.unitTypeId)
+        BattleAssist.processArmies(wave1,null,opponent.bonus,bt);
+        opId = "pvp_arena%"+opponent.id;
+    }
+    
 
     $('#battleAssistArmyAdvice').remove();
     if (!data.responseData.state.winnerBit) return;
@@ -102,7 +111,7 @@ FoEproxy.addHandler('BattlefieldService', 'startByBattleType', (data, postData) 
     }
     if (data.responseData.state.winnerBit!=2 && unitsLost < BattleAssist.AASettings.lostUnits && HPstart - HPcurrent < BattleAssist.AASettings.lostHP) return;
     if (data.responseData.state.winnerBit==2 && !BattleAssist.AASettings.battleLost) return;
-    if (BattleAssist.armyAdvice[BattleAssist.armyRecent[0]?.id] && BattleAssist.armyAdvice[BattleAssist.armyRecent[0]?.id].bonus < BattleAssist.armyRecent[0]?.bonus) return
+    if (bt!="pvp_arena" && BattleAssist.armyAdvice[opId] && BattleAssist.armyAdvice[opId].bonus < BattleAssist.armyRecent[0]?.bonus) return;
     BattleAssist.ShowAddAdvice();
     
 });
@@ -141,9 +150,30 @@ FoEproxy.addHandler('GuildExpeditionService', 'changeDifficulty', (data, postDat
     }
 });
 
+FoEproxy.addHandler('PVPArenaService', 'getOverview', (data, postData) => {
+   BattleAssist.ArenaOpponents = Object.assign({},...data.responseData?.opponents.map(x=>({[x.difficulty]:{id:x?.opposingPlayer?.player?.name+"#"+x?.opposingPlayer?.player?.player_id,bonus:x.defenseArmyBoosts?.defenseBoost||0}})))
+   BattleAssist.SelectedOpponent = null;
+});
+FoEproxy.addHandler('PVPArenaService', 'updateOpponents', (data, postData) => {
+   setTimeout(()=>{
+        BattleAssist.ArenaOpponents = Object.assign({},...data.responseData?.map(x=>({[x.difficulty]:{id:x?.opposingPlayer?.player?.name+"#"+x?.opposingPlayer?.player?.player_id,bonus:x.defenseArmyBoosts?.defenseBoost||0}})))
+        BattleAssist.SelectedOpponent = null;
+    },100);
+});
+
 FoEproxy.addRequestHandler('ArmyUnitManagementService', 'getArmyInfo', (postData) => {
-    if (postData.requestData?.[0]?.battleType!="guild_expedition") return;
+    
     if(!Settings.GetSetting('ShowArmyAdvice'))	return;
+    
+    if (postData.requestData?.[0]?.battleType=="pvp_arena") {
+        setTimeout(()=>{
+            if (!BattleAssist.SelectedOpponent) return;
+            if (!BattleAssist.armyAdvice["pvp_arena%"+BattleAssist.SelectedOpponent?.id]) return;
+            BattleAssist.ShowArmyAdvice(BattleAssist.armyAdvice["pvp_arena%"+BattleAssist.SelectedOpponent.id].advice);
+        },50);
+    }   
+    
+    if (postData.requestData?.[0]?.battleType!="guild_expedition") return;
     
     $('#battleAssistArmyAdvice').remove();
     $('#battleAssistAddAdvice').remove();
@@ -158,6 +188,17 @@ FoEproxy.addRequestHandler('ArmyUnitManagementService', 'getArmyInfo', (postData
     BattleAssist.processArmies(wave1,wave2,bonus,encounter.battleType);
 });
 
+mouseActions.addAction([[97, 69, 'Center'],[152, 116, 'Center']],()=>{
+    BattleAssist.SelectedOpponent = BattleAssist.ArenaOpponents["hard"];
+});  
+mouseActions.addAction([[97, 144, 'Center'],[152, 191, 'Center']],()=>{
+    BattleAssist.SelectedOpponent = BattleAssist.ArenaOpponents["medium"];
+});  
+mouseActions.addAction([[97, 219, 'Center'],[152, 266, 'Center']],()=>{
+    BattleAssist.SelectedOpponent = BattleAssist.ArenaOpponents["easy"];
+});  
+
+
 /**
  * @type {{ShowRogueDialog: BattleAssist.ShowRogueDialog}}
  */
@@ -168,6 +209,8 @@ let BattleAssist = {
     UnitOrder:null,
     AASettings: JSON.parse(localStorage.getItem("BattleAssistAASettings") || '{"lostUnits":2,"lostHP":40,"battleLost":true,"battleSurrendered":true}'),
     GEArmies:{},
+    ArenaOpponents:{},
+    SelectedOpponent: null,
 	/**
 	 * Shows a User Box when an army unit of the next age has died
 	 *
@@ -465,12 +508,16 @@ let BattleAssist = {
         }
         
         wave1.sort((a,b) => BattleAssist.UnitOrder[b] - BattleAssist.UnitOrder[a]);
-        wave1.forEach(x => id+=x);
+        if (type!="pvp_arena") wave1.forEach(x => id+=x);
         if (wave2) {
             wave2.sort((a,b) => BattleAssist.UnitOrder[b] - BattleAssist.UnitOrder[a]);
-            wave2.forEach(x => id+=x);
+            if (type!="pvp_arena") wave2.forEach(x => id+=x);
         }
-        
+        if (type=="pvp_arena") {
+            if (!BattleAssist.SelectedOpponent?.id) return;
+            id += BattleAssist.SelectedOpponent.id;
+        }
+
         let army= {id:id,wave1:wave1, wave2:wave2, bonus:bonus};
         let i= BattleAssist.armyRecent.findIndex(x => x.id==id);
         if (i>-1) BattleAssist.armyRecent.splice(i,1);
@@ -482,9 +529,9 @@ let BattleAssist = {
             advice = BattleAssist.armyAdvice[id.replace(/^(attack|defense)+%/,"")]?.advice 
             aBonus = BattleAssist.armyAdvice[id.replace(/^(attack|defense)+%/,"")]?.bonus;
         }
-        if (advice && aBonus <= bonus) {
+        if (advice && aBonus <= bonus && type != "pvp_arena") 
             BattleAssist.ShowArmyAdvice(advice);
-        }
+        
         if ($('#battleAssistAAConfig').length > 0) BattleAssist.ShowArmyAdviceConfig();
     }
 };
