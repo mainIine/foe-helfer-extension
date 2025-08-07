@@ -524,6 +524,9 @@ let BattleAssist = {
         }
 
         let army= {id:id,wave1:wave1, wave2:wave2, bonus:bonus};
+        if (type == "pvp_arena" && BattleAssist.armyAdvice[id]) {
+            BattleAssist.armyAdvice[id].wave1 = wave1;
+        }
         let i= BattleAssist.armyRecent.findIndex(x => x.id==id);
         if (i>-1) BattleAssist.armyRecent.splice(i,1);
         BattleAssist.armyRecent.unshift(army);
