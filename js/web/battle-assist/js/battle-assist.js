@@ -328,7 +328,11 @@ let BattleAssist = {
                     for (let unit of x.wave2) {
                         html += `<img src="${srcLinks.get('/shared/unit_portraits/armyuniticons_50x50/armyuniticons_50x50_'+unit.replace("guild_raids_","")+'.jpg',true)}">`
                     }
-                }            
+                }
+                
+                let PlayerName = (/^pvp_arena%(.*?)#/.exec(x.id)||[""])[1];
+                if (PlayerName) html += `<span>` + srcLinks.icons('feature_pvp_arena') +  `</span>` + PlayerName
+            
                 html += `</div></td><td>${x.bonus}%`
                 let advice = BattleAssist.armyAdvice[x.id]?.advice
                 let aBonus = BattleAssist.armyAdvice[x.id]?.bonus;
@@ -359,11 +363,10 @@ let BattleAssist = {
                         html += `<img src="${srcLinks.get('/shared/unit_portraits/armyuniticons_50x50/armyuniticons_50x50_'+unit.replace("guild_raids_","")+'.jpg',true)}">`
                     }
                 }
-                PlayerName = (/^pvp_arena%(.*?)#/.exec(id)||[""])[1];
 
-                if (PlayerName) {
-                    html += `<span>` + srcLinks.icons('feature_pvp_arena') +  `</span>` + PlayerName
-                }
+                PlayerName = (/^pvp_arena%(.*?)#/.exec(id)||[""])[1];
+                if (PlayerName) html += `<span>` + srcLinks.icons('feature_pvp_arena') +  `</span>` + PlayerName
+
                 html += `</div></td><td class="AASetBonus" data-id="${id}">${x.bonus ? x.bonus + "%" : ""}`
                 html += `</td><td class="AASetAdvice" data-id="${id}">${x.advice || ""}`
                 html += `<div class="battleAssistOverrideTypeGroup">`
