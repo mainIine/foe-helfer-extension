@@ -92,11 +92,12 @@
     }
 
     #statsBody {
-	    max-height: 700px;
+		width: 1400px;
+	    max-height: 850px;
     }
 
     #stats #highcharts {
-	    height: 570px;
+	    height: 700px;
     }
 }
 
