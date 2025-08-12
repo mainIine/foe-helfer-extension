@@ -1122,6 +1122,7 @@ FP-Bar */
 	box-shadow: 0 0 1px 1px #000000aa;
 	border: 3px solid #895022;
 	border-radius: 5px;
+	max-height: calc(100vh - 6px);
 }
 
 .closed.window-box {
