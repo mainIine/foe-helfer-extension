@@ -17,13 +17,7 @@
 }
 
 #statsBody {
-	width: 1100px;
-	max-height: 800px;
 	overflow: auto;
-}
-
-#stats #highcharts {
-	height: 670px;
 }
 
 #stats .options {
@@ -84,21 +78,6 @@
 
 #stats .hidden {
 	visibility: hidden;
-}
-
-@media (max-height: 1080px) {
-    #stats {
-	    top: 0;
-    }
-
-    #statsBody {
-		width: 1400px;
-	    max-height: 850px;
-    }
-
-    #stats #highcharts {
-	    height: 700px;
-    }
 }
 
 /* Highcharts table wrapper */

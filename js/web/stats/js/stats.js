@@ -354,7 +354,8 @@ let Stats = {
 				'ask': i18n('Boxes.Stats.HelpLink'),
 				'auto_close': true,
 				'dragdrop': true,
-				'minimize': true
+				'minimize': true,
+				'settings': 'Stats.ShowSettings()'
 			};
 
 			HTML.Box(args);
@@ -469,6 +470,104 @@ let Stats = {
 		});
 	},
 
+	/**
+	 * Resize Menu
+	 */
+	ShowSettings: () => {
+		let currentWidth = $('#stats').width();
+		let currentHeight = $('#stats').height();
+
+		if (!currentWidth) currentWidth = parseInt(localStorage.getItem('StatsBoxWidth'), 10) || 600;
+		if (!currentHeight) currentHeight = parseInt(localStorage.getItem('StatsBoxHeight'), 10) || 400;
+
+		const maxWidth = window.innerWidth;
+		const maxHeight = window.innerHeight;
+
+		let h = [];
+		h.push(`
+		<p style="margin-bottom: 1.5em;">
+			<label for="statsBoxWidth">${i18n('Boxes.Stats.Size.Width')}:</label><br />
+			<input id="statsBoxWidth" type="number" value="${currentWidth}" min="400" max="${maxWidth}" step="10" style="display:block; margin-bottom:0.25em;" />
+			<small style="color:#ffffff; display:block;">Min width is 400 Max is ${maxWidth}px</small>
+		</p>
+		`);
+
+		h.push(`
+		<p style="margin-bottom: 1.5em;">
+			<label for="statsBoxHeight">${i18n('Boxes.Stats.Size.Height')}:</label><br />
+			<input id="statsBoxHeight" type="number" value="${currentHeight}" min="300" max="${maxHeight}" step="10" style="display:block; margin-bottom:0.25em;" />
+			<small style="color:#ffffff; display:block;">Min height is 300 Max is ${maxHeight}px</small>
+		</p>
+		`);
+
+		h.push(`<p><button onclick="Stats.SaveSettings()" class="btn btn-default" style="width:100%">
+			${i18n('Boxes.Stats.Size.Save')}</button></p>`);
+
+		$('#statsSettingsBox').html(h.join(''));
+	},
+
+	/**
+	 * Apply size to chart
+	 */
+	ApplyStatsSize: (width, height) => {
+		if (typeof width === 'undefined' || typeof height === 'undefined') {
+			width = parseInt(localStorage.getItem('StatsBoxWidth'), 10) || 1000;
+			height = parseInt(localStorage.getItem('StatsBoxHeight'), 10) || 500;
+		}
+
+		// push CSS
+		$('#stats').css({
+			width: width + 'px',
+			height: height + 'px'
+		});
+
+		$('#statsBody').css({
+			width: width + 'px',
+			height: height - 36.78 + 'px'
+		});
+
+		$('#highcharts').css({
+			height: height - 88.78 + 'px'
+		});
+
+		// Redraw Highcharts
+		if (typeof Highcharts !== 'undefined' && Highcharts.charts) {
+			Highcharts.charts.forEach(c => {
+				if (c) c.reflow();
+			});
+		}
+	},
+
+	/**
+	 * Save size to local storage
+	 */
+	SaveSettings: () => {
+		let newWidth = parseInt($('#statsBoxWidth').val(), 10);
+		let newHeight = parseInt($('#statsBoxHeight').val(), 10);
+
+		const minWidth = 400;
+		const minHeight = 300;
+		const maxWidth = window.innerWidth;
+		const maxHeight = window.innerHeight;
+
+		if (!isNaN(newWidth)) {
+			newWidth = Math.max(minWidth, Math.min(newWidth, maxWidth));
+			$('#statsBoxWidth').val(newWidth);
+			localStorage.setItem('StatsBoxWidth', newWidth);
+		}
+
+		if (!isNaN(newHeight)) {
+			newHeight = Math.max(minHeight, Math.min(newHeight, maxHeight));
+			$('#statsBoxHeight').val(newHeight);
+			localStorage.setItem('StatsBoxHeight', newHeight);
+		}
+
+		if ($('#stats').length) {
+			Stats.ApplyStatsSize(newWidth, newHeight);
+		}
+
+		$('#statsSettingsBox').remove();
+	},
 
 	/**
 	 * Remove previous data-table
@@ -1267,7 +1366,7 @@ let Stats = {
 		colors = colors || Highcharts.getOptions().colors;
 		pointFormat = pointFormat || '<tr><td><span style="color:{point.color}">●</span> {series.name}:</td><td class="text-right"><b>{point.y}</b></td></tr>';
 		footerFormat = footerFormat || '</table>';
-
+		Stats.ApplyStatsSize();
 		const title = i18n('Boxes.Stats.SourceTitle.' + Stats.state.source);
 
 		Highcharts.chart('highcharts', {
