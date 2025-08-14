@@ -22,12 +22,18 @@
 	overflow: auto;
 }
 
-#shopAssistTable td:nth-child(2) {
+#shopAssistTable div.flexbetween {
 	display:flex;
 	justify-content: space-between;
+	width:100%;
 }
 
-#shopAssistTable td:nth-child(4) {
-	text-align: right;
+#shopAssistTable td:nth-child(3) {
+	text-align: center;
+}
+
+#shopAssistTable tr:first-child {
+	position: sticky;
+	top: 0;
 }
 

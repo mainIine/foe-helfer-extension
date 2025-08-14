@@ -12,9 +12,9 @@
  */
 
 FoEproxy.addHandler('ItemStoreService', 'getStore', (data, postData) => {
-	/*if(!Settings.GetSetting('ShowShopAssist')) {
+	if(!Settings.GetSetting('ShowShopAssist')) {
 		return;
-	}*/
+	}
 	shopAssist.slots = data.responseData.slots;
 	shopAssist.Show();
 });
@@ -51,26 +51,50 @@ let shopAssist = {
 	updateDialog: (options) => {
         if ($('#shopAssist').length === 0) return
 
-		let h = `<table id="shopAssistTable" style="width:100%">`
+		let h = `<table id="shopAssistTable" class="foe-table" style="width:100%">`
         
 		h += `<tr>
 			<th>Name</th>
 			<th>Costs</th>
-			<th>Available</th>
-			<th colspan=2>Inventory amount</th>
-			<th>needed</th>
-			<th></th>
+			<th>Inventory</th>
+			<th>complete</th>
+			<th>buyable</th>
 			</tr>`
 		for (slot of shopAssist.slots) {
 			stock = shopAssist.getStock(slot.reward);
+			if (slot.purchaseLimit?.maxPurchases && !slot.purchaseLimit.remainingPurchases) continue;
+			let neededFragments = null;
+			let neededBuys = null;
+			let limitedFragments = null;
+			let limitedBuys = null
+			if (slot.reward.subType == "fragment") {
+				neededFragments = Math.max(slot.reward.requiredAmount-(stock.fragments||0),0);
+				neededBuys = Math.ceil(neededFragments/slot.reward.amount);
+				neededFragments = neededBuys * slot.reward.amount;
+				limitedFragments = (slot.purchaseLimit?.remainingPurchases * slot.reward.amount) || slot.reward.requiredAmount;
+				limitedBuys = Math.ceil(limitedFragments/slot.reward.amount);
+			}
 			h += `<tr>
 			<td>${slot.reward.name}</td>
-			<td>${Object.entries(slot.baseCost.resources).map(([res, amount])=>(srcLinks.icons(res) + HTML.Format(amount))).join("")}</td>
-			<td>x${slot.purchaseLimit.remainingPurchases}</td>
-			<td>${stock.stock ? HTML.Format(stock.stock) : ""}</td>
-			<td>${stock.fragments ? srcLinks.icons("icon_tooltip_fragment") + HTML.Format(stock.fragments) + "/" + HTML.Format(slot.reward.requiredAmount) : ""}</td>
-			<td></td>
-			</tr>`
+			<td>
+				${Object.entries(slot.baseCost?.resources||{}).map(([res, amount])=>('<div class="flexbetween">' + srcLinks.icons(res) + HTML.Format(Math.round(amount*(1-(slot.discount||0)))) + "</div>")).join("")}
+				<div class="flexbetween"><span>x</span><span>${slot.purchaseLimit?.remainingPurchases||"∞"}</span></div></td>
+			<td>
+				<div>${stock.stock ? HTML.Format(stock.stock) : ""}</div>
+				<div>${slot.reward.subType == "fragment" ? srcLinks.icons("icon_tooltip_fragment") + HTML.Format(stock.fragments||0)+"/"+slot.reward.requiredAmount : ""}</div>
+			</td>
+			<td> 
+				${slot.reward.subType == "fragment" ? 
+					`<div class="flexbetween">` + srcLinks.icons("icon_tooltip_fragment") + HTML.Format(neededFragments) + '</div>' 
+					+ Object.entries(slot.baseCost?.resources||{}).map(([res, amount])=>('<div class="flexbetween">' + srcLinks.icons(res) + HTML.Format(Math.round(neededBuys * amount*(1-(slot.discount||0)))) + "</div>")).join("") 
+					: ""}
+			</td>
+			<td> 
+				${slot.reward.subType == "fragment" ? 
+					`<div class="flexbetween">` + srcLinks.icons("icon_tooltip_fragment") + HTML.Format(limitedFragments) + '</div>' 
+					+ Object.entries(slot.baseCost?.resources||{}).map(([res, amount])=>('<div class="flexbetween">' + srcLinks.icons(res) + HTML.Format(Math.round(limitedBuys * amount*(1-(slot.discount||0)))) + "</div>")).join("") 
+					: ""}
+			</td></tr>`
 			
 		}
 		
@@ -102,7 +126,7 @@ let shopAssist = {
 			stock = ResourceStock[id]
 		}
 		if (stock === null)
-			stock = Object.values(MainParser.Inventory).find(x=>x.item.id === reward.id || x.item.reward?.id===/(^.+?#[^#]*)/.exec(reward.id)?.[1])?.inStock || 0;
+			stock = Object.values(MainParser.Inventory).find(x=>x.item.id === reward.id || x.item.reward?.id && x.item.reward?.id===/(^.*?#(\(.*?\)|[^#])*)/.exec(reward.id)?.[1])?.inStock || 0;
 		return {
 			stock: AssembledStock !== null ? AssembledStock : stock,
 			fragments: AssembledStock !== null ? stock : null

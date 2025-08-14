@@ -84,6 +84,12 @@
 		"sort": 15
 	},
 	{
+		"name": "ShowShopAssist",
+		"status": false,
+		"group": "Auto",
+		"sort": 1
+	},
+	{
 		"name": "ShowGBGPlayerInfo",
 		"status": true,
 		"group": "Auto",
