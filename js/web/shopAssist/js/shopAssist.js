@@ -36,7 +36,7 @@ let shopAssist = {
         
 			HTML.Box({
 				id: 'shopAssist',
-				title: i18n('Boxes.idleGame.ShopAssist'),
+				title: i18n('Boxes.ShopAssist.Title'),
 				auto_close: true,
 				dragdrop: true,
 				minimize: true,
