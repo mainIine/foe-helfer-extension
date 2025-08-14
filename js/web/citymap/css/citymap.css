@@ -76,7 +76,7 @@
 	box-sizing: border-box;
 }
 
-.outpost #sidebar, .outpost #BuildingsFilter, .outpost #city-map-menu .btn-group, .outpost #map-filters {
+.outpost #sidebar, .outpost #map-filters {
 	display: none;
 }
 

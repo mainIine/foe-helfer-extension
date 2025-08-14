@@ -394,14 +394,17 @@ GetFights = () =>{
 		if (ActiveMap === 'era_outpost') {
 			CityMap.EraOutpostData = Object.assign({}, ...data.responseData['entities'].map((x) => ({ [x.id]: x })));
 			CityMap.EraOutpostAreas = data.responseData['unlocked_areas'];
+			CityMap.EraOutpostBlockedAreas = data.responseData['blocked_areas'];
 		}
 		else if (ActiveMap === 'guild_raids') {
 			CityMap.QIData = Object.assign({}, ...data.responseData['entities'].map((x) => ({ [x.id]: x })));
 			CityMap.QIAreas = data.responseData['unlocked_areas'];
+			CityMap.QIBlockedAreas = data.responseData['blocked_areas'];
 		}
 		else if (ActiveMap === 'cultural_outpost') {
 			CityMap.CulturalOutpostData = Object.assign({}, ...data.responseData['entities'].map((x) => ({ [x.id]: x })));
 			CityMap.CulturalOutpostAreas = data.responseData['unlocked_areas'];
+			CityMap.CulturalOutpostBlockedAreas = data.responseData['blocked_areas'];
 		}
 	});
 
@@ -448,12 +451,26 @@ GetFights = () =>{
 
 	});
 
-	// visiting another player
+
+// Visiting another player handler
 	FoEproxy.addHandler('OtherPlayerService', 'visitPlayer', (data, postData) => {
-		MainParser.UpdateActiveMap('OtherPlayer')
-		LastMapPlayerID = data.responseData['other_player']['player_id']
-		MainParser.OtherPlayerCityMapData = Object.assign({}, ...data.responseData['city_map']['entities'].map((x) => ({ [x.id]: x })))
+		MainParser.UpdateActiveMap('OtherPlayer');
+		LastMapPlayerID = data.responseData['other_player']['player_id'];
+		CityMap.OtherPlayerUnlockedAreas = data.responseData.city_map.unlocked_areas;
+
+		// Store the entities keyed by id
+		MainParser.OtherPlayerCityMapData = Object.assign(
+			{}, 
+			...data.responseData['city_map']['entities'].map(x => ({ [x.id]: x }))
+		);
+
+		// Store the entities keyed by id (Raw for copy and send2server)
+		MainParser.RawOtherPlayerCityMapData = Object.assign(
+			{}, 
+			...data.responseData['city_map']['entities'].map(x => ({ [x.id]: x }))
+		);
 	});
+
 
 	// move buildings, use self aid kits
 	FoEproxy.addHandler('CityMapService', (data, postData) => {
@@ -1274,6 +1291,7 @@ let MainParser = {
 	 * @param ep
 	 * @param successCallback
 	 */
+	
 	send2Server: (data, ep, successCallback) => {
 
 		let req = fetch(

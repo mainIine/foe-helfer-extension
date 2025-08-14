@@ -214,14 +214,13 @@ let CityMap = {
 		});
 
 		// Button for submit Box
-		if (ActiveMap === 'main') {
+
 			menu.append($('<input type="text" id="BuildingsFilter" placeholder="'+ i18n('Boxes.CityMap.FilterBuildings') +'" oninput="CityMap.filterBuildings(this.value)">'));
 			menu.append(
 				$('<div />').addClass('btn-group')
 					.append($('<button />').addClass('btn-default ml-auto').attr({ id: 'copy-meta-infos', onclick: 'CityMap.copyMetaInfos()' }).text(i18n('Boxes.CityMap.CopyMetaInfos')))
 					.append($('<button />').addClass('btn-default ml-auto').attr({ id: 'show-submit-box', onclick: 'CityMap.showSubmitBox()' }).text(i18n('Boxes.CityMap.ShowSubmitBox')))
 			);
-		}
 
 		mapfilters.append(
 			$('<label />').attr({ for: 'highlight-old-buildings' }).text(i18n('Boxes.CityMap.HighlightOldBuildings'))
@@ -831,7 +830,7 @@ let CityMap = {
 	 * Send citydata to the server
 	 *
 	 */
-	SubmitData: ()=> {
+	SubmitData: () => {
 
 		let apiToken = localStorage.getItem('ApiToken');
 
@@ -849,8 +848,9 @@ let CityMap = {
 			return;
 		}
 
-		let currentDate = new Date(),
-			d = {
+		let currentDate = new Date();
+
+			let d = {
 				time: currentDate.toISOString().split('T')[0] + ' ' + currentDate.getHours() + ':' + currentDate.getMinutes() + ':' + currentDate.getSeconds(),
 				player: {
 					name: ExtPlayerName,
@@ -861,9 +861,6 @@ let CityMap = {
 				},
 				apiToken: apiToken,
 				eras: Technologies.Eras,
-				entities: CityMap.removeDoubleUnderscoreKeys(MainParser.CityMapData),
-				areas: CityMap.removeDoubleUnderscoreKeys(CityMap.UnlockedAreas),
-				blockedAreas: CityMap.removeDoubleUnderscoreKeys(CityMap.BlockedAreas),
 				goods: GoodsData,
 				metaIDs: {
 					entity: MainParser.MetaIds['city_entities'],
@@ -872,9 +869,81 @@ let CityMap = {
 				}
 			};
 
-		MainParser.send2Server(d, 'CityPlanner', function(resp){
+	// --- Switch data source and assign type based on ActiveMap
+	switch (ActiveMap) {
+		case 'main':
+			d.type = 'main';
+			d.entities = CityMap.removeDoubleUnderscoreKeys(MainParser.CityMapData);
+			d.areas = CityMap.removeDoubleUnderscoreKeys(CityMap.UnlockedAreas);
+			d.blockedAreas = CityMap.removeDoubleUnderscoreKeys(CityMap.BlockedAreas);
+			break;
+		case 'OtherPlayer':
+			d.type = 'OtherPlayer';
+			d.entities = CityMap.removeDoubleUnderscoreKeys(MainParser.RawOtherPlayerCityMapData);
+			d.areas = CityMap.removeDoubleUnderscoreKeys(CityMap.OtherPlayerUnlockedAreas);
+			d.blockedAreas = CityMap.removeDoubleUnderscoreKeys(CityMap.BlockedAreas);
+			break;
+		case 'cultural_outpost':
+			d.type = localStorage.getItem('OutpostType');
+			d.entities = CityMap.removeDoubleUnderscoreKeys(CityMap.CulturalOutpostData);
+			d.areas = CityMap.removeDoubleUnderscoreKeys(CityMap.CulturalOutpostAreas);
+			d.blockedAreas = CityMap.removeDoubleUnderscoreKeys(CityMap.CulturalOutpostBlockedAreas);
+			break;
+		case 'era_outpost':
+			d.type = 'SpaceSettlement';
+			d.entities = CityMap.removeDoubleUnderscoreKeys(CityMap.EraOutpostData);
+			d.areas = CityMap.removeDoubleUnderscoreKeys(CityMap.EraOutpostAreas);
+			d.blockedAreas = CityMap.removeDoubleUnderscoreKeys(CityMap.EraOutpostBlockedAreas);
+			break;
+		case 'guild_raids':
+			d.type = 'QISettlement';
+			d.entities = CityMap.removeDoubleUnderscoreKeys(CityMap.QIData);
+			d.areas = CityMap.removeDoubleUnderscoreKeys(CityMap.QIAreas);
+			d.blockedAreas = CityMap.removeDoubleUnderscoreKeys(CityMap.QIBlockedAreas);
+			break;
+		default:
+			HTML.ShowToastMsg({
+			head: i18n('Boxes.CityMap.SubmitErrorHeader'),
+			text: `<b>Unsupported map type:</b> ${ActiveMap}`,
+			type: 'error',
+			hideAfter: 5000,
+		});
+	return;
+	}
+		
+	
+	// --- Coordinate adjustment rules per map type
+	const mapAdjustments = {
+		OtherPlayer: { x: 500, y: 0 },
+		era_outpost: { x: 500, y: -496 },
+		guild_raids: { x: 0,   y: -496 }
+	};
 
-			if(resp.status === 'OK') {
+	// --- Apply adjustments if defined
+	const adjust = mapAdjustments[ActiveMap];
+	if (adjust) {
+		// Entities (object of objects)
+		if (d.entities && typeof d.entities === 'object') {
+			Object.values(d.entities).forEach(entity => {
+				if (typeof entity.x === 'number') entity.x += adjust.x;
+				if (typeof entity.y === 'number') entity.y += adjust.y;
+			});
+		}
+
+		// Areas and blockedAreas (arrays)
+		[d.areas, d.blockedAreas].forEach(list => {
+			if (Array.isArray(list)) {
+				list.forEach(item => {
+					item.x = (item.x ?? 0) + adjust.x;
+					item.y = (item.y ?? 0) + adjust.y;
+				});
+			}
+		});
+	}
+
+	// --- Send data to server
+	MainParser.send2Server(d, 'CityPlanner', resp => {
+		if (resp.status === 'OK') {
 				HTML.ShowToastMsg({
 					head: i18n('Boxes.CityMap.SubmitSuccessHeader'),
 					text: [
@@ -888,13 +957,13 @@ let CityMap = {
 			else {
 				HTML.ShowToastMsg({
 					head: i18n('Boxes.CityMap.SubmitErrorHeader'),
-					text: resp['msg'],
+					text: resp.msg,
 					type: 'error',
 					hideAfter: 10000,
 				});
 			}
 
-			$('#CityMapSubmit').fadeToggle(function(){
+			$('#CityMapSubmit').fadeToggle(function () {
 				$(this).remove();
 			});
 		});
@@ -905,19 +974,49 @@ let CityMap = {
 	 * Copy citydata to the clipboard
 	 */
 	copyMetaInfos: () => {
-		helper.str.copyToClipboard(
-			JSON.stringify({
-				CityMapData: CityMap.removeDoubleUnderscoreKeys(MainParser.CityMapData),
-				CityEntities: CityMap.removeDoubleUnderscoreKeys(MainParser.CityEntities),
-				UnlockedAreas: CityMap.removeDoubleUnderscoreKeys(CityMap.UnlockedAreas)
-			})
-		).then(() => {
+		let data = {};
+
+		switch (ActiveMap) {
+			case 'main':
+				data.CityMapData = CityMap.removeDoubleUnderscoreKeys(MainParser.CityMapData);
+				data.UnlockedAreas = CityMap.removeDoubleUnderscoreKeys(CityMap.UnlockedAreas);
+				break;
+			case 'OtherPlayer':
+				data.CityMapData = CityMap.removeDoubleUnderscoreKeys(MainParser.RawOtherPlayerCityMapData);
+				data.UnlockedAreas = CityMap.removeDoubleUnderscoreKeys(CityMap.OtherPlayerUnlockedAreas);
+				break;
+			case 'cultural_outpost':
+				data.CityMapData = CityMap.removeDoubleUnderscoreKeys(CityMap.CulturalOutpostData);
+				data.UnlockedAreas = CityMap.removeDoubleUnderscoreKeys(CityMap.CulturalOutpostAreas);
+				break;
+			case 'era_outpost':
+				data.CityMapData = CityMap.removeDoubleUnderscoreKeys(CityMap.EraOutpostData);
+				data.UnlockedAreas = CityMap.removeDoubleUnderscoreKeys(CityMap.EraOutpostAreas);
+				break;
+			case 'guild_raids':
+				data.CityMapData = CityMap.removeDoubleUnderscoreKeys(CityMap.QIData);
+				data.UnlockedAreas = CityMap.removeDoubleUnderscoreKeys(CityMap.QIAreas);
+				break;
+			default:
+            HTML.ShowToastMsg({
+                head: i18n('Boxes.CityMap.SubmitErrorHeader'),
+                text: `<b>Unsupported map type:</b> ${ActiveMap}`,
+                type: 'error',
+                hideAfter: 5000,
+            });
+			return;
+		}
+
+		// CityEntities is shared across all maps
+		data.CityEntities = CityMap.removeDoubleUnderscoreKeys(MainParser.CityEntities);
+		
+		helper.str.copyToClipboard(JSON.stringify(data)).then(() => {
 			HTML.ShowToastMsg({
 				head: i18n('Boxes.CityMap.ToastHeadCopyData'),
 				text: i18n('Boxes.CityMap.ToastBodyCopyData'),
 				type: 'info',
 				hideAfter: 4000,
-			})
+			});
 		});
 	},
 
@@ -960,7 +1059,7 @@ let CityMap = {
 		let spans = $('span.entity');
 		if (/[0-9]+x[0-9]*/.test(string)) string = ","+string
 		for (sp of spans) {
-			let title = $(sp).attr('data-title') +","+ $(sp).attr('data-size');
+			let title = $(sp).attr('data-title') + $(sp).attr('data-original-title') +","+ $(sp).attr('data-size');
 			if ((string !== "") && (title.substr(0,title.toLowerCase().indexOf(string.toLowerCase()) > -1))) {
 				$(sp).addClass('highlighted');
 			} else {
