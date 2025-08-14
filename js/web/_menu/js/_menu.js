@@ -62,6 +62,7 @@ let _menu = {
 		'compare_friends_threads',
 		'discord',
 		'findGB',
+		'playerProfile',
 	],
 
 	HiddenItems: [],
@@ -472,6 +473,30 @@ let _menu = {
 		});
 
 		return btn_NegotiationBG.append(btn_Negotiation);
+	},
+
+	/**
+	 * Profile
+	 *
+	 * @returns {*|jQuery}
+	 */
+	playerProfile_Btn: () => {
+		let btn_playerProfileBG = _menu.MakeButton(
+			'playerProfile',
+			i18n('Menu.PlayerProfile.Title'),
+			'<em id="PlayerProfile-Btn-closed" class="tooltip-error">' + i18n('Menu.PlayerProfile.Warning') + '<br></em>' + i18n('Menu.PlayerProfile.Desc'),
+			true
+		);
+
+		let btn_playerProfile = $('<span />').bind('click', function () {
+			if ($('#playerProfile-Btn').hasClass('hud-btn-red') === false) {
+				Profile.show();
+			}
+		});
+
+		btn_playerProfile.append('<img src="'+srcLinks.GetPortrait(ExtPlayerAvatar)+'" />');
+
+		return btn_playerProfileBG.append(btn_playerProfile);
 	},
 
 	/**

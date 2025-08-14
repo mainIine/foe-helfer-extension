@@ -685,7 +685,7 @@
 
 
 #PlayerProfile.window-box.sunrise-light {
-    --main-background: linear-gradient(196deg, #efc653 0%, #c52f52 100%);
+    --main-background: linear-gradient(196deg, #e7c463 0%, #c73d5d 100%);
     --main-border: 3px solid #d96a21;
     --main-color: #111;
     --daysPlayed-background: radial-gradient(circle, #ffffff00 0%, #eb660ea6 100%);
@@ -693,8 +693,8 @@
     --important-color: #7b0000;
     --important-underline: #ff00003b;
     --crit-background: linear-gradient(132deg, #d34f09, #a5090988);
-    --header-background: linear-gradient(#ff99002a 50%, #ff5e0059 50%, #ffffff00);
-    --secondary-background: linear-gradient(196deg, #d9a74b 0%, #c13655 100%);
+    --header-background: linear-gradient(#ff99002a 50%, #ff5e0045 50%, #ffffff00);
+    --secondary-background: linear-gradient(196deg, #dfaf57 0%, #c93e5d 100%);
     --secondary-color: var(--text-darker);
     --h2-background: linear-gradient(to bottom, #ff73001a, transparent 75%);
     --item-border-color: #ff004c30;

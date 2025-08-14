@@ -305,8 +305,8 @@ a[target="_blank"] svg {
 
 .removable::before {
 	transition: opacity 0.3s ease-in-out;
-	transition-delay: 0.3s;
-	content: '🗙';
+	transition-delay: 0.5s;
+	content: '+';
 	opacity: 0;
 	width: 0;
 	height: 0;
@@ -316,14 +316,17 @@ a[target="_blank"] svg {
 	left: 0;
 	padding: 0;
 	margin: 0;
-	border-radius: 2px;
+	border-radius: 50px;
 	background-color: #a00c;
 	color: #fcc;
+	transform: rotate(45deg);
+	z-index: 100;
 }
 
 .removable:hover::before {
-	width: 100%;
-	height: 100%;
+	width: 24px;
+	height: 24px;
+	line-height: 21px;
 	opacity: 1;
 	padding: 3px;
 	margin: -3px;
@@ -514,6 +517,20 @@ p {
 
 [id$=moppelHelper-Btn] span {
 	background-image: url('../images/menu/polivation.png');
+}
+
+#playerProfile-Btn span img {
+	border-radius: 3px 3px 10px 3px;
+    box-shadow: 0 2px 2px var(--black-65);
+    border: 1px solid var(--text-darker);
+	width: 100%;
+}
+
+#setting-playerProfile-Btn span {
+	background-image: url('../images/menu/profile.jpg');
+	border-radius: 3px 3px 10px 3px;
+    box-shadow: 0 2px 2px var(--black-65);
+    border: 1px solid var(--text-darker);
 }
 
 [id$=fpCollector-Btn] span {
@@ -1105,6 +1122,7 @@ FP-Bar */
 	box-shadow: 0 0 1px 1px #000000aa;
 	border: 3px solid #895022;
 	border-radius: 5px;
+	max-height: calc(100vh - 6px);
 }
 
 .closed.window-box {

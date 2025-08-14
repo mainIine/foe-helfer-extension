@@ -1769,9 +1769,8 @@ let Productions = {
 	},
 	
 	CalcRatingBody: (era = '') => {
-		Productions.BuildingsAll = Object.values(CityMap.createNewCityMapEntities())
-		Productions.setChainsAndSets(Productions.BuildingsAll)
-
+		Productions.BuildingsAll = Object.values(CityMap.createNewCityMapEntities());
+		Productions.setChainsAndSets(Productions.BuildingsAll);
 
 		// grab special buildings
 		if (!Productions.AdditionalSpecialBuildings) {
@@ -1789,6 +1788,8 @@ let Productions = {
 		let ratedBuildings = []
 
 		let InventoryBuildings = Productions.InventoryBuildings = Kits.BuildingsFromInventory()
+		if (ActiveMap === 'OtherPlayer')
+			InventoryBuildings = [];
 
 		for (let [id,data] of Object.entries(InventoryBuildings)){
 			//if(!id || id.slice(0, 2) !== 'W_') continue; // if starts not with "W_", continue
@@ -1908,11 +1909,12 @@ let Productions = {
 				h.push('<label for="showitems"><input type="checkbox" id="showitems" />' + i18n('Boxes.ProductionsRating.ShowItems') + '</label>')
 				h.push('<input type="text" id="efficiencyBuildingFilter" size=20 placeholder="' + i18n('Boxes.ProductionsRating.Filter') + ': neo|eden" />')
 				h.push('<label for="showhighlighted" data-original-title="'+i18n('Boxes.ProductionsRating.ShowHighlightedExplanation')+'"><input type="checkbox" id="showhighlighted" />' + i18n('Boxes.ProductionsRating.ShowHighlighted') + '</label>')
-
-				h.push('<div class="inventory">'+
-					'<label for="inventorybuildings" data-original-title="'+i18n('Boxes.ProductionsRating.ShowInventoryBuildingsExplanation')+'"><input type="checkbox" id="inventorybuildings" />' + i18n('Boxes.ProductionsRating.ShowInventoryBuildings') + '</label>'+
-					'<label for="inventorybuildingscore" data-original-title="'+i18n('Boxes.ProductionsRating.InventoryBuildingScoreExplanation')+'">' + i18n('Boxes.ProductionsRating.InventoryBuildingScore') + ': <input type="number" size="6" value="'+(Productions.efficiencySettings.inventorybuildingscore*100)+'" id="inventorybuildingscore" /></label>'+
-					'</div>');
+				if (ActiveMap !== 'OtherPlayer') {
+					h.push('<div class="inventory">'+
+						'<label for="inventorybuildings" data-original-title="'+i18n('Boxes.ProductionsRating.ShowInventoryBuildingsExplanation')+'"><input type="checkbox" id="inventorybuildings" />' + i18n('Boxes.ProductionsRating.ShowInventoryBuildings') + '</label>'+
+						'<label for="inventorybuildingscore" data-original-title="'+i18n('Boxes.ProductionsRating.InventoryBuildingScoreExplanation')+'">' + i18n('Boxes.ProductionsRating.InventoryBuildingScore') + ': <input type="number" size="6" value="'+(Productions.efficiencySettings.inventorybuildingscore*100)+'" id="inventorybuildingscore" /></label>'+
+						'</div>');
+				}
 				h.push('</div></th>');
 			h.push('</tr>');
 
