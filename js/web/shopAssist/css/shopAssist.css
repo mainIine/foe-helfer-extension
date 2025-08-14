@@ -17,3 +17,17 @@
 	width: 280px;
     height: 300px;
 }
+
+#shopAssistBody {
+	overflow: auto;
+}
+
+#shopAssistTable td:nth-child(2) {
+	display:flex;
+	justify-content: space-between;
+}
+
+#shopAssistTable td:nth-child(4) {
+	text-align: right;
+}
+
