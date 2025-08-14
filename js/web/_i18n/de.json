@@ -1391,7 +1391,7 @@
     "Menu.Productions.Desc": "Zeigt die derzeitige Anzahl aller Produktionen an.",
     "Menu.Productions.Title": "Produktions Übersicht",
     "Menu.ProductionsRating.Desc": "Suche nach Gebäuden, die weniger Ertrag pro Feld haben als erwünscht",
-    "Menu.ProductionsRating.Title": "Gebäude Effizienzbewertung",
+    "Menu.ProductionsRating.Title": "Gebäude Effizienz",
     "Menu.QIMap.Desc": "Zeigt alle verfügbaren Infos der QI Karte an.",
     "Menu.QIMap.Title": "QI Karte",
     "Menu.RightBar": "Rechts",
