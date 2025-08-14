@@ -1,5 +1,10 @@
 FoEproxy.addHandler('AchievementsService','getOverview', (data, postData) => {
-    Profile.init(data.responseData)
+    Profile.init(data.responseData);
+    
+    if ($('#playerProfile-Btn').hasClass('hud-btn-red')) {
+        $('#playerProfile-Btn').removeClass('hud-btn-red');
+        $('#playerProfile-Btn-closed').remove();
+    }
 });
 
 FoEproxy.addFoeHelperHandler('ActiveMapUpdated', () => {
@@ -93,8 +98,9 @@ const Profile = {
         content.push(`<span class="toggleMore${moreActive?" active":""}">&nbsp;</span>`);
 
         // actions
-        $('#PlayerProfileBody').html(content.join('')).promise().done(function(){
-            $('#PlayerProfile').addClass('default');
+        $('#PlayerProfileBody').html(content.join('')).promise().done(function() {
+            let theme = localStorage.getItem("PlayerProfileTheme") || "default";
+            $('#PlayerProfile').addClass(theme);
             $('#PlayerProfileBody [data-original-title]').tooltip();
             if (isRebuilt) {
                 if (moreActive) { 
@@ -118,6 +124,7 @@ const Profile = {
                     Profile.currentThemeNr = 0;
 
                 $('#PlayerProfile').addClass(Profile.themes[Profile.currentThemeNr]);
+				localStorage.setItem("PlayerProfileTheme", Profile.themes[Profile.currentThemeNr]);
             });
             $('#PlayerProfile').on('click', '.toggleMore', function () {
                 $(this).toggleClass('active');
