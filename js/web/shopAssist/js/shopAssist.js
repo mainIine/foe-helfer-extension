@@ -19,21 +19,7 @@ FoEproxy.addHandler('ItemStoreService', 'getStore', (data, postData) => {
 });
 
 FoEproxy.addFoeHelperHandler('InventoryUpdated', () => {
-	if ($('#shopAssist').length === 0) {
-			HTML.AddCssFile('shopAssist');
-        
-			HTML.Box({
-				id: 'shopAssist',
-				title: i18n('Boxes.idleGame.Title'),
-				auto_close: true,
-				dragdrop: true,
-				minimize: true,
-				resize : true,
-				//active_maps:"main",
-			});
-		}
-		
-		shopAssist.updateDialog();
+	shopAssist.updateDialog();
 });
 
 let shopAssist = {
@@ -62,8 +48,9 @@ let shopAssist = {
     },
 	
 	updateDialog: () => {
+        if ($('#shopAssist').length === 0) return
 
-        let htmltext = `<table id="shopAssistTable" style="width:100%">`
+		let htmltext = `<table id="shopAssistTable" style="width:100%">`
         htmltext += `</table>;`
         
         
