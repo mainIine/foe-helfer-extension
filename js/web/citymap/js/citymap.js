@@ -906,7 +906,11 @@ let CityMap = {
 	 */
 	copyMetaInfos: () => {
 		helper.str.copyToClipboard(
-			JSON.stringify({CityMapData:MainParser.CityMapData,CityEntities:MainParser.CityEntities,UnlockedAreas:CityMap.UnlockedAreas})
+			JSON.stringify({
+				CityMapData: CityMap.removeDoubleUnderscoreKeys(MainParser.CityMapData),
+				CityEntities: CityMap.removeDoubleUnderscoreKeys(MainParser.CityEntities),
+				UnlockedAreas: CityMap.removeDoubleUnderscoreKeys(CityMap.UnlockedAreas)
+			})
 		).then(() => {
 			HTML.ShowToastMsg({
 				head: i18n('Boxes.CityMap.ToastHeadCopyData'),
@@ -1209,7 +1213,7 @@ let CityMap = {
 	},
 
 
-	// returns an object with the buildings size
+	// returns an object with the building size
 	setSize(metaData) {
 		let size = { width: 0, length: 0 }
 		if (metaData.length)
@@ -2394,14 +2398,20 @@ let CityMap = {
 
 
 	/**
-	 * Removes keys starting with double underscores ('__') from the provided object or its nested structures.
+	 * Removes any keys that start with "__class__" or "__enum__" from the provided object or its nested structures.
+	 *
+	 * The function will remove a key-value pair if and only if the key name begins with "__class__" or "__enum__"
+	 * (e.g., "__class__", "__class__Foo", "__enum__", etc.). All other keys remain untouched, including keys
+	 * that start with other double-underscore prefixes.
+	 *
+	 * The function traverses objects and arrays recursively to apply the rule at any depth.
 	 *
 	 * @param {Object|Array} obj The object or array to process. If the input is not an object or array, it will be returned as is.
-	 * @return {Object|Array} A new object or array with all keys starting with '__' removed from the original input and its nested structures.
+	 * @return {Object|Array} A new object or array with all keys starting with "__class__" or "__enum__" removed.
 	 */
 	removeDoubleUnderscoreKeys (obj) {
 		if (typeof obj !== 'object' || obj === null) {
-			return obj; // Only process objects
+			return obj; // Only process objects/arrays
 		}
 
 		if (Array.isArray(obj)) {
@@ -2411,11 +2421,17 @@ let CityMap = {
 		const newObj = {};
 
 		for (const key in obj) {
-			if (Object.prototype.hasOwnProperty.call(obj, key)) {
-				if (!key.startsWith('__')) {
-					newObj[key] = CityMap.removeDoubleUnderscoreKeys(obj[key]); // Key not with '__' -> accept and process recursively
-				}
+			if (!Object.prototype.hasOwnProperty.call(obj, key)) continue;
+
+			const value = obj[key];
+
+			// Remove any keys that start with "__class__" or "__enum__"
+			if (key.startsWith('__class__') || key.startsWith('__enum__')) {
+				continue;
 			}
+
+			// Keep everything else, but apply the rule recursively to nested structures
+			newObj[key] = CityMap.removeDoubleUnderscoreKeys(value);
 		}
 
 		return newObj;
