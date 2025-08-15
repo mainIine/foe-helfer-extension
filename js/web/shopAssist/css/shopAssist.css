@@ -28,6 +28,7 @@
 	width:100%;
 }
 
+#shopAssistTable td:nth-child(2),
 #shopAssistTable td:nth-child(3) {
 	text-align: center;
 }
@@ -35,5 +36,12 @@
 #shopAssistTable tr:first-child {
 	position: sticky;
 	top: 0;
+}
+
+#shopAssistTable td.canBuy {
+	background-color: var(--background-table-success);
+}
+#shopAssistTable td.canNotBuy {
+	background-color: var(--background-table-error);
 }
 
