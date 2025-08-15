@@ -1009,6 +1009,9 @@ FP-Bar */
 #fp-bar.guild_raids {
 	left: 237px;
 }
+#fp-bar.gg {
+	left: 324px;
+}
 #fp-bar.main .fp-bar-main{
 	display:none;
 }
