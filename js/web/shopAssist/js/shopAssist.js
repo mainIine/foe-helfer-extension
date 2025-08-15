@@ -58,20 +58,27 @@ let shopAssist = {
 
 		let h = `<table id="shopAssistTable" class="foe-table" style="width:100%">`
         
-		h += `<tr>
-			<th>Name</th>
-			<th>Costs</th>
-			<th>Inventory</th>
-			<th>complete</th>
-			<th>buyable</th>
-			</tr>`
+		h += `<thead>
+				<tr>
+					<th></th>
+					<th></th>
+					<th colspan=3>Costs</th>
+				</tr>
+				<tr>
+					<th>Name</th>
+					<th>Inventory</th>
+					<th>Single</th>
+					<th>Complete</th>
+					<th>All</th>
+				</tr>
+			</thead>`
 		for (slot of shopAssist.slots) {
 			stock = shopAssist.getStock(slot.reward);
 			if (slot.purchaseLimit?.maxPurchases && !slot.purchaseLimit.remainingPurchases) continue;
 			let neededFragments = null;
 			let neededBuys = null;
 			let limitedFragments = null;
-			let limitedBuys = null
+			let limitedBuys = slot.purchaseLimit?.remainingPurchases || 0
 			if (slot.reward.subType == "fragment") {
 				neededFragments = Math.max(slot.reward.requiredAmount-(stock.fragments||0),0);
 				neededBuys = Math.ceil(neededFragments/slot.reward.amount);
@@ -79,8 +86,15 @@ let shopAssist = {
 				limitedFragments = (slot.purchaseLimit?.remainingPurchases * slot.reward.amount) || slot.reward.requiredAmount;
 				limitedBuys = Math.ceil(limitedFragments/slot.reward.amount);
 			}
+			//name
 			h += `<tr>
 			<td>${slot.reward.name}</td>`
+			//Inventory
+			h += `<td>
+				<div>${stock.stock ? HTML.Format(stock.stock) : ""}</div>
+				<div>${slot.reward.subType == "fragment" ? srcLinks.icons("icon_tooltip_fragment") + HTML.Format(stock.fragments||0)+"/"+slot.reward.requiredAmount : ""}</div>
+			</td>`
+			//Costs single
 			let costs = "",
 				canBuy = true;
 			Object.entries(slot.baseCost?.resources||{}).forEach(([res, amount])=>{
@@ -89,14 +103,10 @@ let shopAssist = {
 				costs += `<div class="flexbetween ${ResourceStock[res]>=cost?"text-success":"text-danger"}">` + srcLinks.icons(res) + HTML.Format(cost) + "</div>"
 			})
 			h += `<td class="${canBuy ? "canBuy" : "canNotBuy"}">
-				<div">${slot.purchaseLimit?.remainingPurchases||"∞"} x</div>
 				${costs}
 			</td>`
-			h += `<td>
-				<div>${stock.stock ? HTML.Format(stock.stock) : ""}</div>
-				<div>${slot.reward.subType == "fragment" ? srcLinks.icons("icon_tooltip_fragment") + HTML.Format(stock.fragments||0)+"/"+slot.reward.requiredAmount : ""}</div>
-			</td>`
 			if (slot.reward.subType == "fragment") {
+				//costs complete
 				costs = "";
 				canBuy = true;
 				Object.entries(slot.baseCost?.resources||{}).forEach(([res, amount])=>{
@@ -108,6 +118,7 @@ let shopAssist = {
 					<div class="flexbetween"><span>${srcLinks.icons("icon_tooltip_fragment") + HTML.Format(neededFragments)}</span><span>(${neededBuys}x)</span></div>
 					${costs}
 				</td>`
+				//costs all
 				costs = "";
 				canBuy = true;
 				Object.entries(slot.baseCost?.resources||{}).forEach(([res, amount])=>{
@@ -116,13 +127,24 @@ let shopAssist = {
 					costs += `<div class="flexbetween ${ResourceStock[res]>=cost?"text-success":"text-danger"}">` + srcLinks.icons(res) + HTML.Format(cost) + "</div>"
 				})
 				h += `<td class="${canBuy ? "canBuy" : "canNotBuy"}">
-						<div class="flexbetween">${srcLinks.icons("icon_tooltip_fragment") + HTML.Format(limitedFragments)}</div> 
+						<div class="flexbetween"><span>${srcLinks.icons("icon_tooltip_fragment") + HTML.Format(limitedFragments)}</span><span>(${limitedBuys}x)</span></div> 
 						${costs}
 					</td>`
 			} else {
 				h += `<td></td>`
-				h += `<td></td>`
-			}
+				//costs all
+				costs = "";
+				canBuy = true;
+				Object.entries(slot.baseCost?.resources||{}).forEach(([res, amount])=>{
+					let cost = Math.round(limitedBuys * amount*(1-(slot.discount||0)))
+					if (ResourceStock[res]<cost) canBuy = false;
+					costs += limitedBuys ? `<div class="flexbetween ${ResourceStock[res]>=cost?"text-success":"text-danger"}"> ${srcLinks.icons(res) + HTML.Format(cost)}</div>` : `<div>&nbsp;</div>`
+				})
+				h += `<td class="${limitedBuys ? (canBuy ? "canBuy" : "canNotBuy"):""}">
+					<div">(${slot.purchaseLimit?.remainingPurchases||"∞"}x)</div>
+					${costs}
+					</td>`
+				}
 			h+=`</tr>`
 			
 		}
