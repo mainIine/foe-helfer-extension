@@ -211,6 +211,7 @@ let shopAssist = {
 		Ids = Array.from(new Set(Ids));
 		return Ids
 	},
+
 	TT: async (e) => {
 		let buildingIds=e?.currentTarget?.dataset?.ids.split(",")
         if (!buildingIds) return
@@ -239,17 +240,20 @@ let shopAssist = {
 		let head = ``
 		let body = ``
 		
+		let vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
+		let limit = Math.floor(vw/330)
+
 		for (let b of buildingIds) {		
-			if (buildingIds.length<6) {
+			if (buildingIds.length<=limit) {
 				head +=`<td style="width:100%; vertical-align:top"><h2><span>${meta[b].name}  ${eff[b] ? `(${i18n("Boxes.Kits.Efficiency")}: ${eff[b]})`:''}</span>${upgrades[b]}</h2></td>`
 				body += `<td style="width:100%; vertical-align:top">`;
 				body += await Tooltips.BuildingData(meta[b],CurrentEra,null, eff);
 				body += `</td>`
 			} else {
-				head +=`<tr><td style="text-wrap-mode:nowrap; vertical-align:top"><h2><span>${meta[b].name}  ${eff[b] ? `(${i18n("Boxes.Kits.Efficiency")}: ${eff[b]})`:''}</span>${upgrades[b]}</h2></td></tr>`
+				head +=`<tr style="text-wrap-mode:nowrap"><td><span style="font-weight:600">${meta[b].name}</td><td>  ${eff[b] ? `(${i18n("Boxes.Kits.Efficiency")}: ${eff[b]})`:''}</td><td>${upgrades[b]}</td></tr>`
 			}
 		}
-		if (buildingIds.length<6) {
+		if (buildingIds.length<=limit) {
 			h+=`<tr>`+head+`</tr>`
 			h+=`<tr>`+body+`</tr>`
 		} else {
