@@ -87,8 +87,9 @@ let shopAssist = {
 				limitedBuys = Math.ceil(limitedFragments/slot.reward.amount);
 			}
 			//name
+			let buildingList = shopAssist.getBuildingIds(slot.reward)
 			h += `<tr>
-			<td>${slot.reward.name}</td>`
+			<td data-ids="${buildingList}" class="${buildingList.length>0?"helperTT":""}" data-callback_tt="shopAssist.TT">${slot.reward.name}</td>`
 			//Inventory
 			h += `<td>
 				<div>${stock.stock ? HTML.Format(stock.stock) : ""}</div>
@@ -184,6 +185,89 @@ let shopAssist = {
 		}
 			
 	},
+
+	getBuildingIds: (reward) => {
+		let Ids = [];
+		getFromUpgrade = (id)=>{
+			let steps = MainParser.BuildingUpgrades[id].upgradeSteps
+			return steps[steps.length-1].buildingIds
+		}
+		if (reward.type == "building") {
+			Ids.push(reward.subType);
+		} else if (reward.subType == "fragment") {
+			Ids = Array(...Ids,...shopAssist.getBuildingIds(reward.assembledReward));
+		} else if (reward.subType == "selection_kit") {
+			for (let option of MainParser.SelectionKits[reward.id].options) {
+				if (option.item.__class__ == "BuildingItemPayload") Ids.push(option.item.cityEntityId)
+				if (option.item.__class__ == "UpgradeKitPayload") Ids.push(getFromUpgrade(option.item.upgradeItemId))
+			}
+		} else if (reward.subType == "upgrade_kit") {
+			Ids = Array(...Ids,...getFromUpgrade(reward.id));
+		} else if (reward.type == "chest") {
+			for (let rew of reward.possible_rewards) {
+				Ids = Array(...Ids,...shopAssist.getBuildingIds(rew.reward));
+			}
+		}
+		Ids = Array.from(new Set(Ids));
+		return Ids
+	},
+	TT: async (e) => {
+		let buildingIds=e?.currentTarget?.dataset?.ids.split(",")
+        if (!buildingIds) return
+
+        let eff = Object.assign({},...Productions.rateBuildings(buildingIds,true,CurrentEra)?.map(x=>({[x.entityId]:Math.round(100 * x.rating?.totalScore||0)})))
+		let meta = Object.assign({},...buildingIds.map(x=>({[x]:MainParser.CityEntities[x]})))
+
+		let upgrades = Object.assign({},...buildingIds.map(x=>{
+			let u = ""
+			let upgradeCount = Kits.allBuildingsUpgradeCounts[x]||{}
+			if (Object.keys(upgradeCount).length>0) {
+				u = '<span class="upgrades"><span class="base">1</span>';
+				for (let i in upgradeCount) {
+					if (!upgradeCount[i]) continue;
+					if (upgradeCount[i]) {
+						u += `<span class="${i}">${upgradeCount[i]}</span>`;
+					}
+				}
+				u += '</span>';
+			}
+			return{[x]:u}
+		}))
+        
+        let h = `<div class="buildingTT">
+				<table class="foe-table">`
+		let head = ``
+		let body = ``
+		
+		for (let b of buildingIds) {		
+			if (buildingIds.length<6) {
+				head +=`<td style="width:100%; vertical-align:top"><h2><span>${meta[b].name}  ${eff[b] ? `(${i18n("Boxes.Kits.Efficiency")}: ${eff[b]})`:''}</span>${upgrades[b]}</h2></td>`
+				body += `<td style="width:100%; vertical-align:top">`;
+				body += await Tooltips.BuildingData(meta[b],CurrentEra,null, eff);
+				body += `</td>`
+			} else {
+				head +=`<tr><td style="text-wrap-mode:nowrap; vertical-align:top"><h2><span>${meta[b].name}  ${eff[b] ? `(${i18n("Boxes.Kits.Efficiency")}: ${eff[b]})`:''}</span>${upgrades[b]}</h2></td></tr>`
+			}
+		}
+		if (buildingIds.length<6) {
+			h+=`<tr>`+head+`</tr>`
+			h+=`<tr>`+body+`</tr>`
+		} else {
+			h+=head
+		}
+		h+=`</table></div>`
+
+        setTimeout(()=>{
+            $(".handleOverflow").each((index,e)=>{
+                let w= ((e.scrollWidth - e.parentNode.clientWidth) || 0)
+                if (w<0)
+                    e.style["animation-name"]="unset"
+                else 
+                    e.style.width = w + "px";
+            })
+        },100)
+        return h
+	}
 
 	
 };
