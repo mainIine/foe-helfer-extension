@@ -1426,7 +1426,7 @@ let Productions = {
 		}
 
 		if (category === "goods") {
-			return CityMap.getBuildingGoodsByEra(current, building);
+			return CityMap.getBuildingGoodsByEra(current, building, true);
 		}
 		if (category === "forge_points_production" || category === "coin_production" || category === "supply_production") {
 			prod.amount = building.boosts.filter(x => x.type[0] === category)[0].value // not really rock solid like this
