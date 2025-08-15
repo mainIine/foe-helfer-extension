@@ -28,20 +28,28 @@
 	width:100%;
 }
 
-#shopAssistTable td:nth-child(2),
-#shopAssistTable td:nth-child(3) {
+#shopAssistTable td {
 	text-align: center;
 }
+#shopAssistTable td:nth-child(1) {
+	text-align: left;
+}
 
-#shopAssistTable tr:first-child {
+#shopAssistTable thead {
 	position: sticky;
 	top: 0;
 }
+#shopAssistTable thead tr:first-child {
+	text-align: center;
+}
+
 
 #shopAssistTable td.canBuy {
 	background-color: var(--background-table-success);
+	vertical-align: bottom;
 }
 #shopAssistTable td.canNotBuy {
 	background-color: var(--background-table-error);
+	vertical-align: bottom;
 }
 
