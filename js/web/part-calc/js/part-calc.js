@@ -684,7 +684,7 @@ let Parts = {
 		}
 		
         // Level is locked
-		if (PlayerID === ExtPlayerID && MainParser.CityMapData[Parts.CityMapEntity.id]?.level === MainParser.CityMapData[Parts.CityMapEntity.id]?.max_level) {
+		if (Parts.CityMapEntity['player_id'] !== ExtPlayerID && MainParser.CityMapData[Parts.CityMapEntity.id]?.level === MainParser.CityMapData[Parts.CityMapEntity.id]?.max_level) {
 			h.push('<div class="lg-not-possible" data-text="'+i18n('Boxes.Calculator.LGNotOpen')+'"></div>');
 		}
 		// Info-Block
@@ -906,7 +906,15 @@ let Parts = {
 			}
 			h.push('<div class="bottom-buttons text-center">');
 			h.push('<div class="btn-group">');
-			if (Parts.SafePlaces.length > 0 || Parts.CopyModeAll) { //Copy bzw. Note Button nur einblenden wenn zumindest ein Platz safe ist
+			
+			// Check if GB belongs to the user and is locked
+			if (
+				Parts.CityMapEntity.player_id === ExtPlayerID &&
+				MainParser.CityMapData[Parts.CityMapEntity.id]?.level === MainParser.CityMapData[Parts.CityMapEntity.id]?.max_level
+			) {
+				h.push(i18n('Boxes.Calculator.LGNotOpen'));
+			}
+			else if (Parts.SafePlaces.length > 0 || Parts.CopyModeAll) { //Copy bzw. Note Button nur einblenden wenn zumindest ein Platz safe ist
 				h.push('<span class="btn-default button-own">' + i18n('Boxes.OwnpartCalculator.CopyValues') + '</span>');
 				if (Parts.CityMapEntity['player_id'] === ExtPlayerID) h.push('<span class="btn-default button-save-own">' + i18n('Boxes.OwnpartCalculator.Note') + '</span>');
 			}
@@ -1691,3 +1699,4 @@ let Parts = {
 		});
 	}
 };
+
