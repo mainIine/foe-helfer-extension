@@ -133,7 +133,6 @@ let Settings = {
 				}
 				else if (d['callback'] !== undefined) {
 					cs.html(Settings[d['callback']]());
-
 				}
 				if (button) {
 					let b = $('<div />').addClass('button-wrapper').append(
@@ -144,10 +143,10 @@ let Settings = {
 				} 
 				if (status !== undefined) {
 					cs.append(
-						$('<span />').addClass('check').append(
+						$('<span />').addClass('check '+(status ? '' : 'unchecked')).append(
 							$('<span />').addClass('toogle-word')
 						).append(
-							$('<input class="setting-check game-cursor" type="checkbox" />')
+							$('<input class="setting-check game-cursor" type="checkbox" data-id="'+d['name']+'" '+(status ? 'checked' : '')+'/>')
 						)
 					)
 				}
@@ -155,13 +154,6 @@ let Settings = {
 				cd.html(i18n(`Settings.${d['name']}.Desc`));
 				ct.text(i18n(`Settings.${d['name']}.Title`));
 
-				cs.find('input.setting-check').attr('data-id', d['name']);
-
-				if (status) {
-					cs.find('input.setting-check').attr('checked', '');
-				}
-
-				cs.find('.check').addClass(status ? '' : 'unchecked');
 				cs.find('.toogle-word').text(status ? i18n('Boxes.Settings.Active') : i18n('Boxes.Settings.Inactive'));
 
 				childLis.push(`<li><a href="#subtab-${cnt}" title="${i18n('Settings.Entry.' + d['name'])}">${i18n('Settings.Entry.' + d['name'])}</a></li>`);
@@ -400,6 +392,30 @@ let Settings = {
 			'<li><a href="https://discord.gg/uQY7rqDJ7z" target="_blank"><span class="discord">&nbsp;</span>' + i18n('Settings.Help.Discord') + '</a></li>' +
 			'<li><a href="https://github.com/mainIine/foe-helfer-extension/issues" target="_blank"><span class="github">&nbsp;</span>' + i18n('Settings.Help.Github') + '</a></li>' +
 			'</ul>';
+	},
+
+
+	ShowEventHelpers: () => {
+		let eventHelperSettings = {'EventHelperMerge': true, 'EventHelperPresent': true, 'EventHelperIdle': true, 'EventHelperPop': true};
+		let dp = [];
+		
+		dp.push('<div class="p5">');
+		dp.push('<b>'+i18n('Settings.EventHelper.Advanced')+'</b>')
+		for (let [setting, value] of Object.entries(eventHelperSettings)) {
+			let savedSetting = localStorage.getItem(setting);
+			if (savedSetting !== null) {
+				value = JSON.parse(savedSetting);
+				console.log(savedSetting, value, (value ? 'checked' : 'not checked'));
+			}
+			dp.push('<div>');
+			dp.push('<span class="check"><span class="toogle-word"></span><input name="'+setting+'" data-id="'+setting+'" class="setting-check game-cursor" type="checkbox" '+(value ? 'checked' : 'checked="false"')+' /></span> ')
+			dp.push(i18n('Settings.'+setting)+'</div>');
+		}
+		dp.push('</div>');
+		dp.push('<br/><b>'+i18n('Settings.EventHelper.All')+'</b><br/>');
+
+		console.log(dp);
+		return dp.join('');
 	},
 
 

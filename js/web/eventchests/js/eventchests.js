@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2024 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2025 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -63,7 +63,7 @@ FoEproxy.addHandler('ChestEventService', 'getOverview', (data, postData) => {
 
 FoEproxy.addHandler('PresentGameService', 'getOverview', (data, postData) => {
 
-	if(!Settings.GetSetting('ShowEventChest')) return
+	if(!Settings.GetSetting('ShowEventChest') || !Settings.GetSetting('EventHelperPresent')) return;
     let presents = data.responseData.presentList
 
     let presentData = []

@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2024 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2025 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -13,7 +13,7 @@
 
 FoEproxy.addHandler('IdleGameService', 'getState', (data, postData) => {
 	//Do not show window if deactivated in settings
-	if(!Settings.GetSetting('ShowEventChest')){
+	if(!Settings.GetSetting('ShowEventChest') || !Settings.GetSetting('EventHelperIdle')){
 		return;
 	}
 	idleGame.event = data.responseData.context;

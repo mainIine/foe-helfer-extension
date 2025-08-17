@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2024 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2025 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -13,7 +13,7 @@
 
 FoEproxy.addHandler('PopGameService', 'getOverview', (data, postData) => {
     //Start Minigame
-    if(!Settings.GetSetting('ShowEventChest')) return;
+    if(!Settings.GetSetting('ShowEventChest') || !Settings.GetSetting('EventHelperPop')) return;
     if (!data?.responseData?.currentGame?.config?.height) return;
     if (!data?.responseData?.currentGame?.config?.width) return;
     if (!data?.responseData?.currentGame?.tiles) return;
