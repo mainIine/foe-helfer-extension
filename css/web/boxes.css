@@ -956,7 +956,7 @@ Potions */
 }
 
 #OwnPartBox .lg-not-possible {
-	background: radial-gradient(circle at center, #000c, #0003);
+	background: radial-gradient(circle at center, #000c, #0003 75%, #0000);
 }
 
 
