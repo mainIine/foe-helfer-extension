@@ -26,13 +26,17 @@
 	display:flex;
 	justify-content: space-between;
 	width:100%;
+	gap:5px;	
 }
 
 #shopAssistTable td {
 	text-align: center;
+	white-space: nowrap;
 }
 #shopAssistTable td:nth-child(1) {
 	text-align: left;
+	width:70%;
+	white-space: wrap;
 }
 
 #shopAssistTable thead {

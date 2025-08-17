@@ -139,9 +139,9 @@ let shopAssist = {
 				Object.entries(slot.baseCost?.resources||{}).forEach(([res, amount])=>{
 					let cost = Math.round(limitedBuys * amount*(1-(slot.discount||0)))
 					if (ResourceStock[res]<cost) canBuy = false;
-					costs += limitedBuys ? `<div class="flexbetween ${ResourceStock[res]>=cost?"text-success":"text-danger"}"> ${srcLinks.icons(res) + HTML.Format(cost)}</div>` : `<div>&nbsp;</div>`
+					if (cost>0 && slot.flag?.value!="increasingCosts") costs += limitedBuys ? `<div class="flexbetween ${ResourceStock[res]>=cost?"text-success":"text-danger"}"> ${srcLinks.icons(res) + HTML.Format(cost)}</div>` : `<div>&nbsp;</div>`
 				})
-				h += `<td class="${limitedBuys ? (canBuy ? "canBuy" : "canNotBuy"):""}">
+				h += `<td class="${limitedBuys && costs != "" ? (canBuy ? "canBuy" : "canNotBuy"):""}">
 					<div">(${slot.purchaseLimit?.remainingPurchases||"∞"}x)</div>
 					${costs}
 					</td>`
