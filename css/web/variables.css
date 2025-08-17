@@ -35,10 +35,9 @@
 	--background-light: #F9EBC6;
 	--background-medium: #b3a582;
 
-	--bg-tooltip: #5e5a4e;
-
 	--window-border: 2px solid #895022;
 	--window-shadow: 0 0 9px 2px #000000aa, 0 0 0px 1px #000000aa;
+	--window-bg: url('../images/hud/box-bg.png') center center repeat;
 
 	--window-head-bg: linear-gradient(0deg, #44150a, #48170c, #4c190e, #501b10, #541d12, #581f13, #5d2115, #612316);
 	--window-head-shadow: inset 0 1px 0 #652518, inset 0 2px 0 #853427;
@@ -81,6 +80,12 @@
 	--border-table-top: #7F5A34;
 	--border-table-bottom: #3D250F;
 	--border-table-bottom-darker: #170602;
+
+	--tooltip-border: 2px solid #2a2c27;
+	--tooltip-bg: #3e423f;
+	--tooltip-disabled: #f79090;
+	--tooltip: #f2ede1;
+	--tooltip-head-bg: #0000002a;
 
 	--hud-counter-color: #468fca;
 	--hud-counter-success: #5c8d20;
