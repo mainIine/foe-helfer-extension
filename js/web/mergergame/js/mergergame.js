@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2024 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2025 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -15,7 +15,7 @@ FoEproxy.addHandler('MergerGameService', 'all', (data, postData) => {
 	
 	if (data.requestMethod != "getOverview" && data.requestMethod != "resetBoard") return;
 	//Do not show window if deactivated in settings
-	if(!Settings.GetSetting('ShowEventChest')){
+	if(!Settings.GetSetting('ShowEventChest') || !(Settings.GetSetting('EventHelperMerge') === undefined ? true : Settings.GetSetting('EventHelperMerge'))) {
 		return;
 	}
 	let board = data.responseData.board || data.responseData;
