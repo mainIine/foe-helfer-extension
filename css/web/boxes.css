@@ -1418,29 +1418,29 @@ FP-Bar */
 }
 
 .tooltip.top.foe-skin > .tooltip-arrow {
-	border-top-color: var(--bg-tooltip) !important;
+	border-top-color: var(--tooltip-bg) !important;
 	border-top-width: 11px;
 }
 
 .tooltip.bottom.foe-skin > .tooltip-arrow {
-	border-bottom-color: var(--bg-tooltip) !important;
+	border-bottom-color: var(--tooltip-bg) !important;
 }
 
 .tooltip.right.foe-skin > .tooltip-arrow {
-	border-right-color: var(--bg-tooltip) !important;
+	border-right-color: var(--tooltip-bg) !important;
 }
 
 .tooltip.left.foe-skin > .tooltip-arrow {
-	border-left-color: var(--bg-tooltip) !important;
+	border-left-color: var(--tooltip-bg) !important;
 }
 
 .tooltip.foe-skin > .tooltip-inner {
 	text-align: left;
 	width: 180px;
-	border: 2px solid #373c32;
-	background-color: var(--bg-tooltip);
+	border: var(--tooltip-border);
+	background-color: var(--tooltip-bg);
 	box-shadow: 0 0 2px 1px var(--black-65);
-	color: #f2ede1;
+	color: var(--tooltip);
 	z-index: 999;
 	padding: 5px;
 	pointer-events: none;
@@ -1455,13 +1455,13 @@ FP-Bar */
 }
 
 .tooltip.foe-skin .tooltip-inner em {
-	color: #f79090;
+	color: var(--tooltip-disabled);
 }
 
 .tooltip.foe-skin h3 {
-	color: #bdc5cb;
-	background: #313d45 !important;
-	border-top: 2px solid var(--bg-tooltip);
+	color: var(--tooltip);
+	background: var(--tooltip-head-bg) !important;
+	border-top: 2px solid var(--tooltip-bg);
 	border-radius: 3px 3px 0 0;
 	margin: 1px 4px -28px;
 	position: relative;
@@ -1498,12 +1498,10 @@ FP-Bar */
 
 .jq-toast-loader { display: block; position: absolute; top: 0; height: 2px; width: 0; left: 0; border-radius: 5px; background: red; }
 .jq-toast-loaded { width: 100%; }
-.jq-has-icon { padding: 10px 10px 10px 50px; background-repeat: no-repeat; background-position: 10px; box-shadow: 0 1px 3px black; }
+.jq-has-icon { padding: 10px; box-shadow: var(--window-shadow); }
 
 .jq-icon-info {
-	background-image: url('../images/hud/info-icon.png'), linear-gradient(#31190bbf, #0000006b), url('../images/hud/box-bg.png');
-	background-position: 12px 20px, top left;
-	background-repeat: no-repeat, repeat, repeat;
+	background: #5e5a4e;
 	color: #d9edf7;
 }
 
@@ -1512,24 +1510,18 @@ FP-Bar */
 }
 
 .jq-icon-warning {
-	background-image: url('../images/hud/warning-icon.png'), linear-gradient(#31190bbf, #0000006b), url('../images/hud/box-bg.png');
-	background-position: 12px 20px, top left;
-	background-repeat: no-repeat, repeat, repeat;
-	color: #fcf8e3;
+	background: #5e5a4e;
+	color: #f7f4d9;
 }
 
 .jq-icon-error {
-	background-image: url('../images/hud/error-icon.png'), linear-gradient(#31190bbf, #0000006b), url('../images/hud/box-bg.png');
-	background-position: 12px 20px, top left;
-	background-repeat: no-repeat, repeat, repeat;
+	background: #5e5a4e;
 	color: #f2dede;
 }
 
 .jq-icon-success {
-	background-image: url('../images/hud/success-icon.png'), linear-gradient(#31190bbf, #0000006b), url('../images/hud/box-bg.png');
-	background-position: 12px 20px, top left;
-	background-repeat: no-repeat, repeat, repeat;
-	color: #dff0d8;
+	background: #5e5a4e;
+	color: #d9edf7;
 }
 
 .jq-icon-success .jq-toast-heading {
