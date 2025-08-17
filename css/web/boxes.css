@@ -1019,6 +1019,9 @@ FP-Bar */
 #fp-bar.gg {
 	left: 324px;
 }
+#fp-bar.gg .fp-bar-main {
+	display: none;
+}
 #fp-bar.gex {
 	left: 311px;
 }
