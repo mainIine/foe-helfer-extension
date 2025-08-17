@@ -170,10 +170,10 @@ a[target="_blank"] svg {
 	padding: 0.2rem 0.8rem;
 	font-size: 0.8rem;
 	line-height: 1.5;
-	background: var(--background-btn-fallback);
-	background: var(--background-btn-moz);
-	background: var(--background-btn-webkit);
-	background: var(--background-btn);
+	background: var(--btn-bg-fallback);
+	background: var(--btn-bg-moz);
+	background: var(--btn-bg-webkit);
+	background: var(--btn-bg);
 	border: #2a0f00 1px solid;
 	border-radius: 4px;
 	color: var(--text-btn);
@@ -222,33 +222,33 @@ a[target="_blank"] svg {
 .btn-green:not([disabled]),
 .btn-green:not([disabled]):hover,
 .btn-green:not([disabled]):active {
-	background: var(--background-btn-green-fallback);
-	background: var(--background-btn-green-moz);
-	background: var(--background-btn-green-webkit);
-	background: var(--background-btn-green);
+	background: var(--btn-bg-green-fallback);
+	background: var(--btn-bg-green-moz);
+	background: var(--btn-bg-green-webkit);
+	background: var(--btn-bg-green);
 	color: var(--btn-green-color);
 }
 
 .btn-delete:not([disabled]) {
-	background: var(--background-btn-red-fallback);
-	background: var(--background-btn-red-moz);
-	background: var(--background-btn-red-webkit);
-	background: var(--background-btn-red);
+	background: var(--btn-bg-red-fallback);
+	background: var(--btn-bg-red-moz);
+	background: var(--btn-bg-red-webkit);
+	background: var(--btn-bg-red);
 }
 
 .btn-delete:not([disabled]):hover {
-	background: var(--background-btn-red-active-fallback);
-	background: var(--background-btn-red-active-moz);
-	background: var(--background-btn-red-active-webkit);
-	background: var(--background-btn-red-active);
+	background: var(--btn-bg-red-active-fallback);
+	background: var(--btn-bg-red-active-moz);
+	background: var(--btn-bg-red-active-webkit);
+	background: var(--btn-bg-red-active);
 }
 
 .btn-delete:not([disabled]):active {
 	color: var(--text-light);
-	background: var(--background-btn-red-onclick-fallback);
-	background: var(--background-btn-red-onclick-moz);
-	background: var(--background-btn-red-onclick-webkit);
-	background: var(--background-btn-red-onclick);
+	background: var(--btn-bg-red-onclick-fallback);
+	background: var(--btn-bg-red-onclick-moz);
+	background: var(--btn-bg-red-onclick-webkit);
+	background: var(--btn-bg-red-onclick);
 }
 
 .btn-group {
@@ -337,14 +337,14 @@ a[target="_blank"] svg {
 .window-body * ::-webkit-scrollbar
 {
 	width: 7px;
-	background: #57250c;
+	background: var(--window-body-scroll-bg);
 	border-left: 1px solid var(--border-table-top);
 	border-right: 1px solid var(--border-table-top);
 }
 .window-box ::-webkit-scrollbar-thumb,
 .window-body::-webkit-scrollbar-thumb,
 .window-body * ::-webkit-scrollbar-thumb {
-	background: #281207;
+	background: var(--window-body-scroll-bar);
 	border-radius: 4px;
 	border-top: 1px solid var(--border-table-top);
 	border-right: 1px solid var(--border-table-bottom);
@@ -356,7 +356,7 @@ a[target="_blank"] svg {
 @supports(-moz-appearance:none) {
 	.window-box,
 	.window-body {
-		scrollbar-color: #281207 #57250c;
+		scrollbar-color: var(--window-body-scroll-bar) var(--window-body-scroll-bg);
 		scrollbar-width: thin;
 	}
 }
@@ -383,7 +383,7 @@ ul.foe-table li {
 }
 
 ul.foe-table li:hover {
-	background-color: var(--background-table-hover) !important;
+	background-color: var(--table-bg-hover) !important;
 }
 
 ul.foe-table li > * {
@@ -397,13 +397,13 @@ ul.foe-table li > .no-grow {
 table.foe-table thead tr th,
 table.foe-table th,
 .thead th {
-	background: url('../images/hud/box-bg.png') center center repeat;
+	background: var(--window-bg);
 	box-shadow: inset 0 0 0 2000px var(--black-50), 0 1px 0 0 var(--border-table-top), 0 2px 0 0 var(--border-table-bottom);
 	vertical-align: bottom;
 }
 .dark-bg {
 	box-shadow: inset 0 0 0 2000px var(--black-50);
-	background: url('../images/hud/box-bg.png') center center repeat;
+	background: var(--window-bg);
 }
 
 table.foe-table thead th {
@@ -420,11 +420,11 @@ table.foe-table thead th {
 }
 
 table.foe-table tbody tr:nth-child(odd), ul.foe-table li:nth-child(odd) {
-	background-color: var(--background-table-odd);
+	background-color: var(--table-bg-odd);
 }
 
 table.foe-table:not(.no-hover) tbody tr:hover {
-	background-color: var(--background-table-hover);
+	background-color: var(--table-bg-hover);
 }
 
 table.foe-table tbody tr.no-hover, table.foe-table tbody tr.no-hover:hover {
@@ -451,7 +451,7 @@ table.foe-table tr.success td,
 }
 
 table.foe-table tr.bg-green td {
-	background-color: var(--background-table-success);
+	background-color: var(--table-bg-success);
 }
 
 p {
@@ -703,10 +703,10 @@ Tabs */
 	line-height: 30px;
 	position: relative;
 	border-radius: 4px 4px 0 0;
-	border: 2px solid #522c0f;
+	border: var(--tabs-border);
 	border-bottom: none;
-	background: var(--background-tabs);
-	box-shadow: inset 0 1px 1px #2a1f31, inset 0 2px 0 #5a5155, 0 -1px 3px #000;
+	background: var(--tabs-bg);
+	box-shadow: var(--tabs-bg-shadow);
 }
 
 .window-body .tabs ul.horizontal li:hover {
@@ -714,10 +714,10 @@ Tabs */
 }
 
 .window-body .tabs ul.horizontal li.active {
-	border: 2px solid rgb(137, 80, 34);
+	border: var(--tabs-border-active);
 	border-bottom: none;
-	background: var(--background-tabs-active);
-	box-shadow: inset 0 1px 1px #242235, inset 0 2px 0 #737793, 0 -1px 3px #000;
+	background: var(--tabs-bg-active);
+	box-shadow: var(--tabs-bg-shadow-active);
 }
 
 .window-body .tabs ul.horizontal li a {
@@ -869,8 +869,8 @@ Potions */
 #BoostPotions .shortest {
 	width: 50px;
     height: 40px;
-    border: 2px solid #895022;
-    background: url('../images/hud/box-bg.png') center center repeat;
+    border: var(--window-border);
+    background: var(--window-bg);
 	border-radius: 5px;
 	box-shadow: inset 0 0 3px 2px #301e0f, inset 0 0 0 1px #000, 0 0 3px #000;
 	text-align: center;
@@ -884,7 +884,7 @@ Potions */
 }
 
 #BoostPotions .active span {
-	border: 2px solid #895022;
+	border: var(--window-border);
 	margin-right: 5px;
 	padding: 3px;
 }
@@ -915,12 +915,12 @@ Potions */
 
 #BoostPotions .list {
     display: none;
-    background: url('../images/hud/box-bg.png') center center repeat;
+    background: var(--window-bg);
     position: absolute;
     top: 20px;
     right: 100%;
-    box-shadow: 0 0 1px 1px #000000aa;
-    border: 3px solid #895022;
+    box-shadow: var(--window-shadow);
+    border: var(--window-border);
     border-radius: 5px;
 }
 
@@ -1123,7 +1123,7 @@ FP-Bar */
 /* ---------------------------------------------------------------------------------------- */
 
 .window-box {
-	background: url('../images/hud/box-bg.png') center center repeat;
+	background: var(--window-bg);
 	z-index: 100;
 	font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
 	font-size: 0.9rem;
@@ -1136,7 +1136,7 @@ FP-Bar */
 	left: 40%;
 	user-select: none;
 	box-shadow: 0 0 1px 1px #000000aa;
-	border: 3px solid #895022;
+	border: var(--window-border);
 	border-radius: 5px;
 	max-height: calc(100vh - 6px);
 }
@@ -1149,16 +1149,30 @@ FP-Bar */
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	background: var(--background-window-head);
-	box-shadow: inset 0 1px 0 #652518, inset 0 2px 0 #853427;
+	background: var(--window-head-bg);
+	box-shadow: var(--window-head-shadow);
 	padding: 0.4rem;
-	border-bottom: 2px solid #895022;
+	border-bottom: var(--window-border);
 	border-radius: 3px 3px 0 0;
 	box-sizing: border-box;
 }
 
 .closed .window-head {
 	border-bottom-width: 0;
+}
+
+
+.window-head .box-buttons {
+	gap: 2px;
+}
+
+.window-head .box-buttons span {
+	width: 22px;
+	height: 22px;
+	border-radius: 2px;
+	position: relative;
+	background-image: var(--window-head-btn-bg);
+	box-shadow: var(--window-head-btn-shadow);
 }
 
 .window-head span.title {
@@ -1179,73 +1193,47 @@ FP-Bar */
 }
 
 .window-ask {
-	display: inline-block;
-	background-position: -28px -1px, -2px -26px;
-	margin-right: 2px;
-	width: 22px;
-	height: 22px;
-	position: relative;
+	background-position: -28px -1px, 0 0;
 }
 
 .window-speaker {
-	height: 22px;
-	display: inline-block;
-	position: relative;
-	background-position: -105px -2px, -2px -26px;
-	width: 22px;
-	margin-right: 2px;
+	background-position: -105px -2px, 0 0;
 }
 .window-speaker:hover {
-	background-position: -146px -2px, -28px -26px;
+	background-position: -146px -2px, 0 0;
 	filter: brightness(120%);
 }
 
 .window-speaker.deactivated {
-	background-position: -146px -2px, -2px -26px;
+	background-position: -146px -2px, 0 0;
 }
 .window-speaker.deactivated:hover {
-	background-position: -105px -2px, -28px -26px;
+	background-position: -105px -2px, 0 0;
 }
 
-
 .window-minimize {
-	background-position: -53px -2px, -2px -26px;
-	margin-right: 2px;
-	width: 22px;
-	height: 22px;
-	display: inline-block;
+	background-position: -53px -2px, 0 0;
 	position: relative;
 }
 .closed .window-minimize {
-	background-position: -77px -1px, -2px -26px;
+	background-position: -77px -1px, 0 0;
 }
 
 .window-settings {
-	background-position: -192px -2px, -2px -26px;
-	display: inline-block;
-	width: 22px;
-	height: 22px;
-	position: relative;
-	margin-right: 2px;
+	background-position: -192px -2px, 0 0;
 }
 
 .window-map {
     background-image: url('../images/hud/map.png'), url('../images/hud/box-sprite.png');
-    display: inline-block;
-    width: 22px;
-    height: 22px;
     position: relative;
     margin-right: 2px;
     background-repeat: no-repeat;
-    background-size: 11px , 240px;
-	background-position: 6px, -2px -26px;
+    background-size: 11px, 240px;
+	background-position: 6px -2px, 0 0;
 }
 
 .window-close {
-	background-position: -2px -2px, -2px -26px;
-	display: inline-block;
-	width: 22px;
-	height: 22px;
+	background-position: -2px -2px, 0 0;
 	position: relative;
 }
 
@@ -1718,7 +1706,7 @@ FP-Bar */
 
 .litepicker .container__months .month-item-header {
 	margin: -5px -5px 0;
-	background-color: var(--background-table-odd);
+	background-color: var(--table-bg-odd);
 	border-radius: 3px;
 }
 
@@ -1777,7 +1765,7 @@ SettingsBox */
 
 
 .popup-body {
-	background: url('../images/hud/box-bg.png') center center repeat;
+	background: var(--window-bg);
 	z-index: 100;
 	font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
 	font-size: 0.9rem;
@@ -2156,9 +2144,9 @@ span.activity {
     top: 3px;
 }
 
-span.activity.activity_2 { background: var(--background-tabs-active); }
-span.activity.activity_1 { background: var(--background-btn-active); }
-span.activity.activity_0 { background: var(--background-btn-red); }
+span.activity.activity_2 { background: var(--tabs-bg-active); }
+span.activity.activity_1 { background: var(--btn-bg-active); }
+span.activity.activity_0 { background: var(--btn-bg-red); }
 span.activity.activity_undefined {display:none}
 
 
@@ -2211,7 +2199,7 @@ tr.sorter-header th:not(.no-sort).descending:after {
 	border-radius: 50%;
 	width: 30px;
 	height: 30px;
-	background: var(--background-btn);
+	background: var(--btn-bg);
 	position: absolute;
 	bottom: 1em;
 	right: 1em;

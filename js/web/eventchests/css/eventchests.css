@@ -79,7 +79,7 @@
 }
 
 #eventpresentsBody tr.used td {
-    background-color: var(--background-table-success);
+    background-color: var(--table-bg-success);
     color: var(--text-success);
     font-weight: bold;
     opacity: 0.8

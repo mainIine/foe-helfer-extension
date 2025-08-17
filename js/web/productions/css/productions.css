@@ -227,7 +227,7 @@
 }
 #ProductionsRatingBody .overlay .content li:hover {
 	color: var(--bright-color);
-	background: var(--background-table-hover);
+	background: var(--table-bg-hover);
 }
 #ProductionsRatingBody .overlay .content li.selected {
 	color: var(--bright-color);
@@ -322,7 +322,7 @@
 	color: var(--text-light);
 }
 #ProductionsRatingBody tr.additional td {
-	background: var(--background-table-info);
+	background: var(--table-bg-info);
 }
 #ProductionsRatingBody tr.additional td:nth-child(1) {
 	color: var(--text-info) !important;

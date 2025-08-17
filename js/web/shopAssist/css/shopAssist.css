@@ -49,11 +49,11 @@
 
 
 #shopAssistTable td.canBuy {
-	background-color: var(--background-table-success);
+	background-color: var(--table-bg-success);
 	vertical-align: bottom;
 }
 #shopAssistTable td.canNotBuy {
-	background-color: var(--background-table-error);
+	background-color: var(--table-bg-error);
 	vertical-align: bottom;
 }
 

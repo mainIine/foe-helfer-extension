@@ -48,7 +48,7 @@
 }
 
 #unitsGexBody .foehelper-accordion:hover .foehelper-accordion-head {
-	box-shadow: inset 0px 0px 0px 2000px var(--background-table-hover);
+	box-shadow: inset 0px 0px 0px 2000px var(--table-bg-hover);
 }
 
 #unitsGexBody {
@@ -128,41 +128,41 @@
 }
 
 #unitsGexBody .ge_difficulty_1 {
-	background-image: url('../images/ge_difficulty_1.png'), var(--background-btn);
+	background-image: url('../images/ge_difficulty_1.png'), var(--btn-bg);
 }
 #unitsGexBody .ge_difficulty_1:hover {
-	background-image: url('../images/ge_difficulty_1.png'), var(--background-btn-active);
+	background-image: url('../images/ge_difficulty_1.png'), var(--btn-bg-active);
 }
 #unitsGexBody .ge_difficulty_1:active {
-	background-image: url('../images/ge_difficulty_1.png'), var(--background-btn-onclick);
+	background-image: url('../images/ge_difficulty_1.png'), var(--btn-bg-onclick);
 }
 
 #unitsGexBody .ge_difficulty_2 {
-	background-image: url('../images/ge_difficulty_2.png'), var(--background-btn);
+	background-image: url('../images/ge_difficulty_2.png'), var(--btn-bg);
 }
 #unitsGexBody .ge_difficulty_2:hover {
-	background-image: url('../images/ge_difficulty_2.png'), var(--background-btn-active);
+	background-image: url('../images/ge_difficulty_2.png'), var(--btn-bg-active);
 }
 #unitsGexBody .ge_difficulty_2:active {
-	background-image: url('../images/ge_difficulty_2.png'), var(--background-btn-onclick);
+	background-image: url('../images/ge_difficulty_2.png'), var(--btn-bg-onclick);
 }
 
 #unitsGexBody .ge_difficulty_3 {
-	background-image: url('../images/ge_difficulty_3.png'), var(--background-btn);
+	background-image: url('../images/ge_difficulty_3.png'), var(--btn-bg);
 }
 #unitsGexBody .ge_difficulty_3:hover {
-	background-image: url('../images/ge_difficulty_3.png'), var(--background-btn-active);
+	background-image: url('../images/ge_difficulty_3.png'), var(--btn-bg-active);
 }
 #unitsGexBody .ge_difficulty_3:active {
-	background-image: url('../images/ge_difficulty_3.png'), var(--background-btn-onclick);
+	background-image: url('../images/ge_difficulty_3.png'), var(--btn-bg-onclick);
 }
 
 #unitsGexBody .ge_difficulty_4 {
-	background-image: url('../images/ge_difficulty_4.png'), var(--background-btn);
+	background-image: url('../images/ge_difficulty_4.png'), var(--btn-bg);
 }
 #unitsGexBody .ge_difficulty_4:hover {
-	background-image: url('../images/ge_difficulty_4.png'), var(--background-btn-active);
+	background-image: url('../images/ge_difficulty_4.png'), var(--btn-bg-active);
 }
 #unitsGexBody .ge_difficulty_4:active {
-	background-image: url('../images/ge_difficulty_4.png'), var(--background-btn-onclick);
+	background-image: url('../images/ge_difficulty_4.png'), var(--btn-bg-onclick);
 }

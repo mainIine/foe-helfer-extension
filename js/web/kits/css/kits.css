@@ -241,7 +241,7 @@
 }
 
 #kits .is-missing, #kits .item.is-missing{
-	background-color: var(--background-table-error);
+	background-color: var(--table-bg-error);
 	opacity: 0.7;
 }
 

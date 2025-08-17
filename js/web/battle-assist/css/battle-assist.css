@@ -88,7 +88,7 @@
     z-index: 1001;
 }
 #battleAssistAddAdviceBody {
-    background: var(--background-btn);
+    background: var(--btn-bg);
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -100,7 +100,7 @@
     border-radius: 3px;
 }
 #battleAssistAddAdviceBody:hover {
-    background: var(--background-btn-active);
+    background: var(--btn-bg-active);
 }
 
 #battleAssistArmyAdvice {
@@ -207,8 +207,8 @@
 }
 
 #battleAssistAAConfigBody [data-id^="attack%"] {
-    background: var(--background-table-error);
+    background: var(--table-bg-error);
 }
 #battleAssistAAConfigBody [data-id^="defense%"] {
-    background: var(--background-table-info);
+    background: var(--table-bg-info);
 }

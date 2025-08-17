@@ -34,7 +34,7 @@
 }
 
 #fp-collectorBody .foehelper-accordion:hover .foehelper-accordion-head {
-	box-shadow: inset 0px 0px 0px 2000px var(--background-table-hover);
+	box-shadow: inset 0px 0px 0px 2000px var(--table-bg-hover);
 }
 
 #fp-collectorBody .open .foehelper-accordion-head {
