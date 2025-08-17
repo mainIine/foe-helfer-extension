@@ -13,7 +13,7 @@
 
 FoEproxy.addHandler('PopGameService', 'getOverview', (data, postData) => {
     //Start Minigame
-    if(!Settings.GetSetting('ShowEventChest') || !Settings.GetSetting('EventHelperPop')) return;
+    if(!Settings.GetSetting('ShowEventChest') || !(Settings.GetSetting('EventHelperPop') === undefined ? true : Settings.GetSetting('EventHelperPop'))) return;
     if (!data?.responseData?.currentGame?.config?.height) return;
     if (!data?.responseData?.currentGame?.config?.width) return;
     if (!data?.responseData?.currentGame?.tiles) return;

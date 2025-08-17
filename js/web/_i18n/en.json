@@ -1495,7 +1495,7 @@
     "Settings.EventHelperIdle": "Merge Game (e.g. St. Patricks)",
     "Settings.EventHelperPop": "Pop Game (e.g. Fall Event)",
     "Settings.EventHelper.Advanced": "Advanced Settings",
-    "Settings.EventHelper.All": "Disable/Enable all",
+    "Settings.EventHelper.All": "Enable Event helpers",
     "Settings.ExportImport.Error": "This is not a valid settings file!",
     "Settings.ExportImport.Reload": "The game will now reload with the imported settings.",
     "Settings.ExportSettings.Desc": "Saving and restoring the settings",
