@@ -144,7 +144,7 @@ let Settings = {
 				if (status !== undefined) {
 					cs.append(
 						$('<span />').addClass('check '+(status ? '' : 'unchecked')).append(
-							$('<span />').addClass('toogle-word')
+							$('<span />').addClass('toogle-word').text(status ? i18n('Boxes.Settings.Active') : i18n('Boxes.Settings.Inactive'))
 						).append(
 							$('<input class="setting-check game-cursor" type="checkbox" data-id="'+d['name']+'" '+(status ? 'checked' : '')+'/>')
 						)
@@ -153,8 +153,6 @@ let Settings = {
 
 				cd.html(i18n(`Settings.${d['name']}.Desc`));
 				ct.text(i18n(`Settings.${d['name']}.Title`));
-
-				cs.find('.toogle-word').text(status ? i18n('Boxes.Settings.Active') : i18n('Boxes.Settings.Inactive'));
 
 				childLis.push(`<li><a href="#subtab-${cnt}" title="${i18n('Settings.Entry.' + d['name'])}">${i18n('Settings.Entry.' + d['name'])}</a></li>`);
 
@@ -237,7 +235,7 @@ let Settings = {
 				return null;
 
 			} else {
-				return Settings.Preferences.find(itm => itm['name'] === name)['status'];
+				return Settings.Preferences.find(itm => itm['name'] === name)?.status;
 			}
 		}
 	},
@@ -405,16 +403,16 @@ let Settings = {
 			let savedSetting = localStorage.getItem(setting);
 			if (savedSetting !== null) {
 				value = JSON.parse(savedSetting);
-				console.log(savedSetting, value, (value ? 'checked' : 'not checked'));
 			}
 			dp.push('<div>');
-			dp.push('<span class="check"><span class="toogle-word"></span><input name="'+setting+'" data-id="'+setting+'" class="setting-check game-cursor" type="checkbox" '+(value ? 'checked' : 'checked="false"')+' /></span> ')
+			dp.push( '<span class="check ' + (value ? '' : 'unchecked') + '">' +
+				'<span class="toogle-word">' + (value ? i18n('Boxes.Settings.Active') : i18n('Boxes.Settings.Inactive')) + '</span>' +
+				'<input name="'+setting+'" data-id="'+setting+'" class="setting-check game-cursor" type="checkbox" ' + (value ? 'checked' : '') + ' />' +
+			'</span>');
 			dp.push(i18n('Settings.'+setting)+'</div>');
 		}
 		dp.push('</div>');
 		dp.push('<br/><b>'+i18n('Settings.EventHelper.All')+'</b><br/>');
-
-		console.log(dp);
 		return dp.join('');
 	},
 

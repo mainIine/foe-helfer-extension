@@ -13,7 +13,7 @@
 
 FoEproxy.addHandler('IdleGameService', 'getState', (data, postData) => {
 	//Do not show window if deactivated in settings
-	if(!Settings.GetSetting('ShowEventChest') || !Settings.GetSetting('EventHelperIdle')){
+	if(!Settings.GetSetting('ShowEventChest') || !(Settings.GetSetting('EventHelperIdle') === undefined ? true : Settings.GetSetting('EventHelperIdle'))) {
 		return;
 	}
 	idleGame.event = data.responseData.context;

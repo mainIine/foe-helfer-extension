@@ -15,7 +15,7 @@ FoEproxy.addHandler('MergerGameService', 'all', (data, postData) => {
 	
 	if (data.requestMethod != "getOverview" && data.requestMethod != "resetBoard") return;
 	//Do not show window if deactivated in settings
-	if(!Settings.GetSetting('ShowEventChest') || !Settings.GetSetting('EventHelperMerge')){
+	if(!Settings.GetSetting('ShowEventChest') || !(Settings.GetSetting('EventHelperMerge') === undefined ? true : Settings.GetSetting('EventHelperMerge'))) {
 		return;
 	}
 	let board = data.responseData.board || data.responseData;
