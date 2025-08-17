@@ -176,7 +176,7 @@
 }
 
 #SettingsBoxBody .helplist a:hover {
-	background-color: var(--background-table-hover);
+	background-color: var(--table-bg-hover);
 }
 
 #SettingsBoxBody .helplist li span {

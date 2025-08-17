@@ -346,10 +346,10 @@
     border-radius: 50%;
     display: inline-block;
     margin-left: 6px;
-    background: var(--background-btn-green-fallback);
-    background: var(--background-btn-green-moz);
-    background: var(--background-btn-green-webkit);
-    background: var(--background-btn-green);
+    background: var(--btn-bg-green-fallback);
+    background: var(--btn-bg-green-moz);
+    background: var(--btn-bg-green-webkit);
+    background: var(--btn-bg-green);
 }
 
 #GuildMemberStat .warningoverlay {
@@ -372,7 +372,7 @@
 }
 
 #GuildMemberStat tr.nohover:hover {
-    background-color: var(--background-table-odd);
+    background-color: var(--table-bg-odd);
 }
 
 #GuildMemberStat .sprite-35 {

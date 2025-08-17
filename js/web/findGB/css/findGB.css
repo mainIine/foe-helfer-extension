@@ -22,5 +22,5 @@
 }
 
 #foundGB .progress {
-  background: linear-gradient(90deg, var(--background-table-success) 0, var(--background-table-success) var(--p), transparent var(--p), transparent)
+  background: linear-gradient(90deg, var(--table-bg-success) 0, var(--table-bg-success) var(--p), transparent var(--p), transparent)
 }
