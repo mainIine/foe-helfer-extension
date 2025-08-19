@@ -81,7 +81,9 @@
 #PlayerProfile .window-close {
     filter: saturate(0.7) contrast(1.7);
     opacity: 0.5;
-    background-position: -2px -2px, -200px -200px;
+    background-image: url('../../../../css/images/hud/box-sprite.png'), none;
+    background-position: -2px -2px, 0 0;
+    box-shadow: none;
 }
 
 #PlayerProfile .window-close:hover {
@@ -309,18 +311,24 @@
     text-align: center;
 }
 
-#PlayerProfile .dailyProd span {
-    padding: 2px 2px 0;
+#PlayerProfile .leftInfo .dailyProd > span {
     display: inline-block;
-    margin: 0 1px;
+    padding: 0 4px 0 0;
+    margin: 4px 2px 2px;
+    box-shadow: var(--item-background);
+    border-radius: 10px;
 }
 
 #PlayerProfile .dailyProd span img {
-    max-height: 22px;
-    padding-right: 1px;
+    height: 25px;
+    padding: 0 2px;
 }
 
-#PlayerProfile .dailyProd .boosts span {
+#PlayerProfile .leftInfo .dailyProd span img:first-child {
+    padding: 0 2px 0 0;
+}
+
+#PlayerProfile .dailyProd .boost {
     color: var(--boost-color);
 }
 
