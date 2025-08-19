@@ -2260,7 +2260,7 @@ let CityMap = {
 		if (productions) {
 			let goodsBoost = 0;
 			if (boosted)
-				goodsBoost = Boosts.Sums.clan_goods_production || 1;
+				goodsBoost = Boosts.Sums.guild_goods_production || 1;
 			for (let production of productions) {
 				if (production.type !== 'guildResources' || production.resources === undefined) continue;
 
