@@ -191,31 +191,56 @@ const Profile = {
 
         cl.push('</div>');
 
+        // daily production
         cl.push('<div class="dailyProd pad">');
         cl.push('<h2 class="border"><span>'+i18n('Boxes.PlayerProfile.DailyProduction')+'</span></h2>');
-        if (Profile.fpProduction === 0 || Profile.guildGoods === 0)
+        // no data
+        if (Profile.fpProduction === 0 || Profile.guildGoods === 0) {
             cl.push('<p class="important" onclick="Productions.init();">'+i18n('Boxes.PlayerProfile.OpenProduction')+'</p>');
-        cl.push('<span class="removable"><img src="' + srcLinks.get(`/shared/icons/strategy_points.png`,true)+'" />' + HTML.Format(parseInt(Profile.fpProduction)) + '</span>');		
-        if (Profile.units > 0)
-			cl.push('<span class="units">'+HTML.Format(parseInt(Profile.units))+'</span>');        
+        }
 
-        if (Profile.guildGoods)
-            cl.push('<span class="removable"><img src="' + srcLinks.get(`/shared/icons/icon_great_building_bonus_guild_goods.png`,true)+'" />'  + HTML.Format(parseInt(parseInt(Profile.guildGoods)) || 0) + '</span>');
-        if (Profile.goods[CurrentEraID-2])
-			cl.push('<span class="removable"><img src="' + srcLinks.get(`/shared/icons/all_goods_of_previous_age.png`,true)+'" />' + HTML.Format(parseInt(parseInt(Profile.goods[CurrentEraID-2])) || 0) + '</span> ');
-		if (Profile.goods[CurrentEraID-1])
-			cl.push('<span class="removable"><img src="' + srcLinks.get(`/shared/icons/all_goods_of_age.png`,true)+'" />'  + HTML.Format(parseInt(parseInt(Profile.goods[CurrentEraID-1])) || 0) + '</span> ');
-		if (Profile.goods[CurrentEraID])
-			cl.push('<span class="removable"><img src="' + srcLinks.get(`/shared/icons/next_age_goods.png`,true)+'" />' + HTML.Format(parseInt(parseInt(Profile.goods[CurrentEraID])) || 0) + '</span> ');
-        
-            cl.push('<div class="boosts">');
-            cl.push('<span class="removable"><img src="' + srcLinks.get(`/shared/gui/boost/boost_icon_fp.png`,true)+'" />' +Boosts.Sums.forge_points_production + '%</span>');
-            if (Profile.guildGoods || Profile.goods[CurrentEraID-2] || Profile.goods[CurrentEraID-1] || Profile.goods[CurrentEraID])
-                cl.push('<span class="removable"><img src="' + srcLinks.get(`/shared/gui/boost/boost_icon_goods_production.png`,true)+'" />' +Boosts.Sums.goods_production + '%</span>');
+        if (Profile.fpProduction > 0) {
+            cl.push('<span class="removable">' +
+                '<img src="' + srcLinks.get(`/city/gui/great_building_bonus_icons/great_building_bonus_forgepoints.png`,true)+'" />' + 
+                HTML.Format(parseInt(Profile.fpProduction)));
+                if (Boosts.Sums.forge_points_production > 0)
+                    cl.push('<span class="boost"> '+Boosts.Sums.forge_points_production + '% </span>');
+            cl.push('</span>');
+        }
+        if (Profile.guildGoods) {
+            cl.push('<span class="removable">'+
+                '<img src="' + srcLinks.get(`/city/gui/great_building_bonus_icons/great_building_bonus_guild_goods.png`,true)+'" />' + 
+                HTML.Format(parseInt(parseInt(Profile.guildGoods)) || 0));
+                if (Boosts.Sums.guild_goods_production > 0)
+                    cl.push('<span class="boost"> '+ Boosts.Sums.guild_goods_production + '% </span>');
+            cl.push('</span>');
+        }
+        // goods
+        if (Profile.goods[CurrentEraID-2] || Profile.goods[CurrentEraID-1] || Profile.goods[CurrentEraID]) {
+            cl.push('<span class="removable">');
+                if (Profile.goods[CurrentEraID-2]) {
+                    cl.push(' <img src="' + srcLinks.get(`/city/gui/great_building_bonus_icons/great_building_bonus_previous_era_good_production.png`,true)+'" />' + 
+                    HTML.Format(parseInt(parseInt(Profile.goods[CurrentEraID-2])) || 0));
+                }
+                if (Profile.goods[CurrentEraID-1]) {
+                    cl.push('<img src="' + srcLinks.get(`/city/gui/great_building_bonus_icons/great_building_bonus_goods.png`,true)+'" />');
+                    cl.push(HTML.Format(parseInt(parseInt(Profile.goods[CurrentEraID-1])) || 0));
+                }
+                if (Profile.goods[CurrentEraID]) {
+                    cl.push(' <img src="' + srcLinks.get(`/shared/icons/next_age_goods.png`,true)+'" />' + 
+                    HTML.Format(parseInt(parseInt(Profile.goods[CurrentEraID])) || 0));
+                }
+                if (Boosts.Sums.goods_production > 0)
+                    cl.push('<span class="boost"> '+Boosts.Sums.goods_production + '% </span>');
+            cl.push('</span>');
+        }
 
-            cl.push('</div>');
+        if (Profile.units > 0) {
+			cl.push('<span class="removable"><img src="' + srcLinks.get(`/shared/gui/pvp_arena/hud/pvp_arena_icon_army.png`,true)+'" />'+HTML.Format(parseInt(Profile.units))+'</span>');
+        }
         cl.push('</div>');
         
+        // qi extra production
         let hasQIBoosts = (Boosts.noSettlement.guild_raids_action_points_collection+Boosts.Sums.guild_raids_coins_production+Boosts.Sums.guild_raids_coins_start+Boosts.Sums.guild_raids_supplies_production+Boosts.Sums.guild_raids_supplies_start+Boosts.Sums.guild_raids_goods_start+Boosts.Sums.guild_raids_units_start !== 0)
         if (hasQIBoosts) {
             cl.push('<div class="qiBoosts pad text-center">');
@@ -284,9 +309,9 @@ const Profile = {
             cc.push('<span><img src="' + srcLinks.get(`/shared/icons/strategy_points.png`,true)+'" />' + HTML.Format(parseInt(Profile.fpProduction)) + '</span><span><img src="' + srcLinks.get(`/shared/gui/boost/boost_icon_fp.png`,true)+'" />' +Boosts.Sums.forge_points_production + '%</span><br>');
 			cc.push('<div class="goods">');
 			if (Profile.goods[CurrentEraID-2])
-				cc.push('<span class="removable"><img src="' + srcLinks.get(`/shared/icons/all_goods_of_previous_age.png`,true)+'" />' + HTML.Format(parseInt(parseInt(Profile.goods[CurrentEraID-2])) || 0) + '</span> ');
+				cc.push('<span class="removable"><img src="' + srcLinks.get(`/city/gui/great_building_bonus_icons/great_building_bonus_previous_era_good_production.png`,true)+'" />' + HTML.Format(parseInt(parseInt(Profile.goods[CurrentEraID-2])) || 0) + '</span> ');
 			if (Profile.goods[CurrentEraID-1])
-				cc.push('<span class="removable"><img src="' + srcLinks.get(`/shared/icons/all_goods_of_age.png`,true)+'" />' + HTML.Format(parseInt(parseInt(Profile.goods[CurrentEraID-1])) || 0) + '</span> ');
+				cc.push('<span class="removable"><img src="' + srcLinks.get(`/city/gui/great_building_bonus_icons/great_building_bonus_goods.png`,true)+'" />' + HTML.Format(parseInt(parseInt(Profile.goods[CurrentEraID-1])) || 0) + '</span> ');
 			if (Profile.goods[CurrentEraID])
 				cc.push('<span class="removable"><img src="' + srcLinks.get(`/shared/icons/next_age_goods.png`,true)+'" />' + HTML.Format(parseInt(parseInt(Profile.goods[CurrentEraID])) || 0) + '</span> ');
 			if (Profile.guildGoods)
@@ -361,10 +386,10 @@ const Profile = {
         cr.push('<img class="fp" src="'+srcLinks.get(`/shared/icons/quest_reward/icon_forgepoints.png`,true)+'" />');
         cr.push('<img class="alabaster" src="'+srcLinks.get(`/shared/icons/goods_large/icon_fine_marble.png`,true)+'" />');
         cr.push('<img src="'+srcLinks.get(`/shared/icons/reward_icons/reward_icon_boost_crate.png`,true)+'" />');
-        cr.push('<img class="goods" src="'+srcLinks.get(`/shared/icons/reward_icons/reward_icon_random_goods.png`,true)+'" />');
+        cr.push('<img class="goods" src="'+srcLinks.get(`/city/gui/great_building_bonus_icons/great_building_bonus_goods.png`,true)+'" />');
         cr.push('</div>');
 		cr.push('<div class="stock pad text-center">');
-		cr.push('<span class="removable"><img src="'+srcLinks.get(`/shared/icons/quest_reward/icon_forgepoints.png`,true)+'" />'+HTML.Format(StrategyPoints.InventoryFP || 0)+'</span>');
+		cr.push('<span class="removable"><img src="'+srcLinks.get(`/city/gui/great_building_bonus_icons/great_building_bonus_forgepoints.png`,true)+'" />'+HTML.Format(StrategyPoints.InventoryFP || 0)+'</span>');
 		cr.push('<span class="removable" data-original-title="'+HTML.Format(ResourceStock.medals)+'"><img src="'+srcLinks.get(`/city/gui/great_building_bonus_icons/great_building_bonus_medals.png`,true)+'" />'+HTML.FormatNumberShort(ResourceStock.medals || 0,true,'en-EN')+'</span>');
 		
 		
