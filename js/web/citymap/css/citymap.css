@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2024 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2025 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -35,7 +35,6 @@
 	top: 0;
 	right: 240px;
 	left: 0;
-	border-bottom: 2px solid #281207;
 	z-index: 5000;
 	padding: 2px;
 	box-sizing: border-box;
