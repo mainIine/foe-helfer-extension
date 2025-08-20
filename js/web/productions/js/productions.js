@@ -1641,6 +1641,9 @@ let Productions = {
 		else if (GoodType.includes('guild_expedition')) {
 			return i18n('Boxes.General.Guild_Expedition');
 		}
+		else if (GoodType === 'guild_raids_action_points_collection') {
+			return i18n('Boxes.BoostList.guild_raids_action_points_collection');
+        }
 		else if (GoodType.includes('guild_raids')) {
 			return i18n('Boxes.General.Quantum_Incursion');
 		}
@@ -1670,9 +1673,6 @@ let Productions = {
         }
 		else if (GoodType === 'fsp') {
 			return i18n('Boxes.Productions.FSP');
-        }
-		else if (GoodType === 'guild_raids_action_points_collection') {
-			return i18n('Boxes.BoostList.guild_raids_action_points_collection');
         }
 		else {
 			if(GoodType && GoodsData[GoodType]){
@@ -2599,3 +2599,4 @@ let Productions = {
 		$(itemId).html(h)
 	},
 };
+
