@@ -1936,14 +1936,14 @@ let Productions = {
 					secondType = type.replace('att_','');
 					divider = 2;
 				}
-				h.push('<th data-type="ratinglist" style="width:1%" data-export="'+ Productions.GetTypeName(firstType) +'" class="is-number text-center buildingvalue"'+
+				h.push('<th data-type="ratinglist" style="width:1%" data-export="'+ Productions.GetTypeName(firstType) + ' Total'  +'" class="is-number text-center buildingvalue"'+
 					(secondType !== null ? ` data-original-title="${Productions.Rating.Data[firstType].perTile} + ${Productions.Rating.Data[secondType]?.perTile} / 2"` : '')+
 					'><span class="resicon ' + firstType + '"' + (secondType === null ? ' style="margin-bottom:0"' : '') + '></span>'+ (secondType === null ? '<br>' : '') +
 					(secondType !== null ? '<span class="resicon ' + secondType + '"></span><i>': '')+
 					((Productions.Rating.Data[firstType].perTile + (Productions.Rating.Data[secondType]?.perTile || 0) || 0) /divider)+
 					'</i></th>');
 
-				h.push('<th data-type="ratinglist" style="width:1%" data-export="' + Productions.GetTypeName(firstType) + '" class="is-number text-center tilevalue"'+
+				h.push('<th data-type="ratinglist" style="width:1%" data-export="' + Productions.GetTypeName(firstType) + ' Per tile' + '" class="is-number text-center tilevalue"'+
 					(secondType !== null ? ` data-original-title="${Productions.Rating.Data[firstType].perTile} + ${Productions.Rating.Data[secondType]?.perTile} / 2"` : '')+
 					'><span class="resicon ' + firstType + '"></span>'+
 					(secondType !== null ? '<span class="resicon ' + secondType + '"></span><i>': '')+
@@ -2599,4 +2599,5 @@ let Productions = {
 		$(itemId).html(h)
 	},
 };
+
 
