@@ -213,6 +213,7 @@
     display: flex;
     align-items: center;
     padding: 0 1.25rem 1.25rem;
+    gap: 1.25em;
 }
 
 #PlayerProfile .basicInfo img {
@@ -294,6 +295,8 @@
     text-align: center;
     padding: 0.25rem 0;
     color: var(--daysPlayed-color);
+    position: relative;
+    z-index: 10;
 }
 
 #PlayerProfile .daysPlayed:hover {
@@ -624,6 +627,17 @@
 
 
 
+#PlayerProfile .decoration, #PlayerProfile .decorationBanner {
+    display: none;
+}
+
+#PlayerProfile .imgContainer {
+    position: relative;
+    width: 90px;
+    height: 90px;
+}
+
+
 #PlayerProfile .window-body::-webkit-scrollbar,
 #PlayerProfile .window-body * ::-webkit-scrollbar {
 	width: 7px;
@@ -794,14 +808,14 @@
 
 #PlayerProfile.window-box.foe {
     --main-background: linear-gradient(to bottom, #1e06006e, #270f005e), url(../../../../css/images/hud/box-bg.png) center center repeat;
-    --main-border: 3px solid #7d5229;
+    --main-border: 3px solid #9f652a;
     --main-color: var(--text-normal);
-    --daysPlayed-background: radial-gradient(circle, #0000 0%, #21100769 100%);
-    --daysPlayed-color: #b59164;
+    --daysPlayed-background: none;
+    --daysPlayed-color: #c7a882;
     --important-color: var(--text-danger);
     --important-underline: #f005;
     --crit-background: linear-gradient(132deg, #ff8a0085, #61270755);
-    --header-background: linear-gradient(#662619, #44150a 50%, #7d5229 50%, #7d5229 52%, #0001 52%, #0000);
+    --header-background: linear-gradient(#661919, #3d0b0b 50%, #7d5229 50%, #7d5229 52%, #0001 52%, #0000);
     --secondary-background: linear-gradient(to bottom, #00000000, #0000003d);
     --secondary-color: var(--text-normal);
     --h2-background: linear-gradient(to bottom, #493f42de, #252730ad 75%);
@@ -849,6 +863,60 @@
 #PlayerProfile.foe h2.border span {
     position: relative;
     bottom: 0;
+}
+
+#PlayerProfile.foe .decoration {
+    display: block;
+    position: absolute;
+    top: -9px;
+    left: -27px;
+    z-index: 10;
+}
+
+#PlayerProfile.foe .rightInfo .decoration {
+    left: unset;
+    right: -27px;
+    transform: scale(-1,1);
+}
+
+#PlayerProfile.foe .centerInfo > .decoration:first-child {
+    left: unset;
+    right: calc(calc(50% - 64px));
+    top: -15px;
+    transform: scale(1,-1);
+}
+
+#PlayerProfile.foe .centerInfo .decoration {
+    left: unset;
+    top: unset;
+    right: calc(calc(50% - 64px));
+    bottom: -15px;
+}
+
+#PlayerProfile.foe .decorationBanner {
+    display: block;
+    position: relative;
+    width: calc(100% + 20px);
+    margin: -26px -10px 6px;
+}
+
+#PlayerProfile.foe .imgContainer img.decoration {
+    top: 2px;
+    left: 2px;
+    width: auto;
+    box-shadow: none;
+}
+
+#PlayerProfile.foe .imgContainer img.decoration:nth-child(2) {
+    top: unset;
+    left: unset;
+    bottom: 2px;
+    right: -19px;
+    transform: scale(-1,-1);
+}
+
+#PlayerProfile.foe img.colorToggle {
+    border-radius: 2px;
 }
 
 
