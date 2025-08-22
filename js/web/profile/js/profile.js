@@ -145,6 +145,7 @@ const Profile = {
     buildCityContent(isRebuilt) {
         let cl = [];
         cl.push('<div class="leftInfo showMore">');
+        cl.push('<img class="decoration" src="'+srcLinks.get(`/shared/gui/window/window_decoration_side.png`,true)+'" />');
         cl.push('<div class="header flex">');
         cl.push('<img src="'+srcLinks.get(`/city/buildings/H_SS_${CurrentEra}_Townhall.png`,true)+'" />');
         cl.push('</div>');
@@ -187,7 +188,7 @@ const Profile = {
                 cl.push('<span class="removable"><img src="'+srcLinks.get(`/city/buildings/${gb.cityentity_id.replace('X_','X_SS_')}.png`,true)+'" />' + gb.level +'</span>');
         }
         if (allGBs.length > 6)
-            cl.push('<span class="total" data-original-title="'+i18n('Boxes.GuildFights.Total')+': '+allGBs.length+'"><img src="'+srcLinks.get(`/shared/celebrate/rules_great_building_contribution.png`,true)+'" />' + allGBs.length +'</span>');
+            cl.push('<span class="total" data-original-title="'+i18n('Boxes.GuildFights.Total')+': '+allGBs.length+'"><img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_greatbuilding.png`,true)+'" />' + allGBs.length +'</span>');
 
         cl.push('</div>');
 
@@ -279,8 +280,13 @@ const Profile = {
         let player = PlayerDict[ExtPlayerID];
         let cc = [];
             cc.push('<div class="centerInfo">');
+            cc.push('<img class="decoration" src="'+srcLinks.get(`/shared/gui/teaser/ui/teaser_decoration_bottom.png`,true)+'" />');
             cc.push('<div class="basicInfo pad">');
+            cc.push('<div class="imgContainer">');
+            cc.push('<img class="decoration" src="'+srcLinks.get(`/shared/gui/castle_system/castle_system_icon_new.png`,true)+'" />');
+            cc.push('<img class="decoration" src="'+srcLinks.get(`/shared/gui/castle_system/castle_system_icon_new.png`,true)+'" />');
             cc.push('<img class="colorToggle clickable" src="'+srcLinks.GetPortrait(player.Avatar)+'" />');
+            cc.push('</div>');
                 cc.push('<div>');
                 cc.push('<h1>'+player.PlayerName+'</h1>');
                 cc.push('<span>'+i18n('Eras.'+CurrentEraID)+'</span><br>');
@@ -301,6 +307,7 @@ const Profile = {
 	        cc.push('<div class="daysPlayed clickable" data-original-title="'+daysPlayed+'">');
 	            cc.push('<span>' + HTML.i18nReplacer(i18n('Boxes.PlayerProfile.DateStarted'), { date: daysFromToday(Profile.daysPlayed) }) + '</span>');
             cc.push('</div>');
+            cc.push('<img class="decorationBanner" src="'+srcLinks.get(`/shared/gui/reward_notification/reward_notification_banner.png`,true)+'" />');
 
             cc.push('<div class="dailyProd hideOnMore pad">');
             cc.push('<h2 class="text-center">'+i18n('Boxes.PlayerProfile.DailyProduction')+'</h2>');
@@ -373,6 +380,7 @@ const Profile = {
                 HTML.FormatNumberShort(parseInt(achFromList.currentLevel.progress),true,'en-EN') + '</span>');
             }
             cc.push('</div>');
+        cc.push('<img class="decoration" src="'+srcLinks.get(`/shared/gui/teaser/ui/teaser_decoration_bottom.png`,true)+'" />');
         cc.push('</div>');
 
         return cc.join('');
@@ -382,6 +390,7 @@ const Profile = {
     buildStockContent(isRebuilt) {
         let cr = [];
         cr.push('<div class="rightInfo showMore">');
+        cr.push('<img class="decoration" src="'+srcLinks.get(`/shared/gui/window/window_decoration_side.png`,true)+'" />');
         cr.push('<div class="header">');
         cr.push('<img class="fp" src="'+srcLinks.get(`/shared/icons/quest_reward/icon_forgepoints.png`,true)+'" />');
         cr.push('<img class="alabaster" src="'+srcLinks.get(`/shared/icons/goods_large/icon_fine_marble.png`,true)+'" />');
