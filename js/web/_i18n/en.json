@@ -1492,7 +1492,7 @@
     "Settings.Entry.doubleFPtimeout": "Double donation blocker",
     "Settings.EventHelperMerge": "Merge Game (e.g. Care For Tomorrow Event)",
     "Settings.EventHelperPresent": "Present Game (e.g. Winter Event)",
-    "Settings.EventHelperIdle": "Merge Game (e.g. St. Patricks)",
+    "Settings.EventHelperIdle": "Idle Game (e.g. St. Patricks)",
     "Settings.EventHelperPop": "Pop Game (e.g. Fall Event)",
     "Settings.EventHelper.Advanced": "Advanced Settings",
     "Settings.EventHelper.All": "Enable Event helpers",
