@@ -16,6 +16,10 @@
 	left: calc(100vw - 350px);
 	width: 280px;
     height: 300px;
+	opacity: 0.5;
+}
+#shopAssist:hover {
+	opacity: 1;
 }
 
 #shopAssistBody {
@@ -33,7 +37,7 @@
 	text-align: center;
 	white-space: nowrap;
 }
-#shopAssistTable td:nth-child(1) {
+#shopAssistTable td:nth-child(2) {
 	text-align: left;
 	width:70%;
 	white-space: wrap;
@@ -57,3 +61,14 @@
 	vertical-align: bottom;
 }
 
+#shopAssistTable.favouritesOnly tbody tr:not(.isShopFavourite) {
+	display: none;
+}
+#shopAssistTable .shopFavourite:after {
+	content: '☆';
+	color: goldenrod;
+}
+#shopAssistTable .isShopFavourite .shopFavourite:after {
+	content: '★';
+	color: goldenrod;
+}
