@@ -76,16 +76,16 @@ let shopAssist = {
         
 		h += `<thead>
 				<tr>
-					<th colspan=3 class="left"><input type="checkbox" id="shopAssistFav"><label for="shopAssistFav">only Favourites</label></th>
-					<th colspan=3>Costs</th>
+					<th colspan=3><input type="checkbox" id="shopAssistFav"><label for="shopAssistFav">&nbsp;${i18n("Boxes.ShopAssist.onlyFavourites")}</label></th>
+					<th colspan=3>${i18n("Boxes.ShopAssist.Costs")}</th>
 				</tr>
 				<tr>
 					<th>★</th>
-					<th>Name</th>
-					<th>Inventory</th>
-					<th>Single</th>
-					<th>Complete</th>
-					<th>All</th>
+					<th>${i18n("Boxes.ShopAssist.Item")}</th>
+					<th>${i18n("Boxes.ShopAssist.Inventory")}</th>
+					<th>${i18n("Boxes.ShopAssist.Single")}</th>
+					<th>${i18n("Boxes.ShopAssist.Missing")}</th>
+					<th>${i18n("Boxes.ShopAssist.All")}</th>
 				</tr>
 			</thead>`
 		

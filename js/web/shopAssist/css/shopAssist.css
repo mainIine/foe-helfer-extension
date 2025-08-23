@@ -50,10 +50,13 @@
 	position: sticky;
 	top: 0;
 }
-#shopAssistTable thead tr:first-child {
+#shopAssistTable thead {
 	text-align: center;
 }
-
+#shopAssistTable thead tr:nth-child(1) th:nth-child(1),
+#shopAssistTable thead tr:nth-child(2) th:nth-child(2)	{
+	text-align: left;
+}
 
 #shopAssistTable td.canBuy {
 	background-color: var(--table-bg-success);
