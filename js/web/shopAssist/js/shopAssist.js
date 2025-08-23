@@ -13,6 +13,7 @@
 
 FoEproxy.addHandler('ItemStoreService', 'getStore', (data, postData) => {
 	shopAssist.slots = data.responseData.slots;
+	storeId = data.responseData.id;
 	shopAssist.Show();
 });
 
@@ -28,6 +29,9 @@ FoEproxy.addFoeHelperHandler('InventoryUpdated', () => {
 
 let shopAssist = {
 	slots: null,
+	storeId:null,
+	favourites: JSON.parse(localStorage.getItem("shopAssist.favourites")||"{}"),
+	favouritesOnly: JSON.parse(localStorage.getItem("shopAssist.favouritesOnly")||"false"),
     /**
      * Shows a User Box with the current production stats
      *
@@ -53,18 +57,18 @@ let shopAssist = {
 		shopAssist.updateDialog();
     },
 	
-	updateDialog: (options) => {
+	updateDialog: () => {
         if ($('#shopAssist').length === 0) return
 
 		let h = `<table id="shopAssistTable" class="foe-table" style="width:100%">`
         
 		h += `<thead>
 				<tr>
-					<th></th>
-					<th></th>
+					<th colspan=3 class="left"><input type="checkbox" id="shopAssistFav"><label for="shopAssistFav">only Favourites</label></th>
 					<th colspan=3>Costs</th>
 				</tr>
 				<tr>
+					<th>★</th>
 					<th>Name</th>
 					<th>Inventory</th>
 					<th>Single</th>
@@ -86,10 +90,12 @@ let shopAssist = {
 				limitedFragments = (slot.purchaseLimit?.remainingPurchases * slot.reward.amount) || slot.reward.requiredAmount;
 				limitedBuys = Math.ceil(limitedFragments/slot.reward.amount);
 			}
-			//name
 			let buildingList = shopAssist.getBuildingIds(slot.reward)
-			h += `<tr>
-			<td data-ids="${buildingList}" class="${buildingList.length>0?"helperTT":""}" data-callback_tt="shopAssist.TT">${slot.reward.name}</td>`
+			//Favourites
+			h += `<tr class="${shopAssist.favourites?.[shopAssist.storeId]?.[slot.slotId] ? "isShopFavourite" : ""}">
+			<td><div class="shopFavourite" data-id=${slot.slotId}></div></td>`
+			//name
+			h+=`<td data-ids="${buildingList}" class="${buildingList.length>0?"helperTT":""}" data-callback_tt="shopAssist.TT">${(slot.reward.target?srcLinks.icons("booster_target_"+slot.reward.target):"")+slot.reward.name}</td>`
 			//Inventory
 			h += `<td>
 				<div>${stock.stock ? HTML.Format(stock.stock) : ""}</div>
@@ -154,7 +160,27 @@ let shopAssist = {
         
         
         $('#shopAssistBody').html(h);
-
+		$('#shopAssistFav').prop("checked",shopAssist.favouritesOnly);
+		if (shopAssist.favouritesOnly) {
+			$("#shopAssistTable").addClass("favouritesOnly");
+		};
+		$(".shopFavourite").on("click",function(e){
+			let id = e.currentTarget.dataset.id;
+			if (!shopAssist.favourites?.[shopAssist.storeId]) shopAssist.favourites[shopAssist.storeId] = {}
+			shopAssist.favourites[shopAssist.storeId][id] = !shopAssist.favourites[shopAssist.storeId][id];
+			if (!shopAssist.favourites[shopAssist.storeId][id]) delete shopAssist.favourites[shopAssist.storeId][id];
+			localStorage.setItem("shopAssist.favourites",JSON.stringify(shopAssist.favourites));
+			e.currentTarget.parentNode.parentNode.classList.toggle("isShopFavourite");
+		});
+		$("#shopAssistFav").on("change",function(e){
+			shopAssist.favouritesOnly = e.currentTarget.checked;
+			localStorage.setItem("shopAssist.favouritesOnly",JSON.stringify(shopAssist.favouritesOnly));
+			if (shopAssist.favouritesOnly) {
+				$("#shopAssistTable").addClass("favouritesOnly");
+			} else {
+				$("#shopAssistTable").removeClass("favouritesOnly");
+			}
+		});
     },
 
 	getStock: (reward) => {
