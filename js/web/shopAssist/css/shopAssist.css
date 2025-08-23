@@ -75,3 +75,7 @@
 	content: '★';
 	color: goldenrod;
 }
+
+#shopAssistTable tr.soldOut {
+	opacity: 0.5;
+}
