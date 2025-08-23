@@ -16,10 +16,13 @@
 	left: calc(100vw - 350px);
 	width: 280px;
     height: 300px;
-	opacity: 0.5;
 }
-#shopAssist:hover {
-	opacity: 1;
+
+#shopAssist:not(:hover){
+	height:100px !important;
+}
+#shopAssist:not(:hover) #shopAssistBody {
+	overflow: hidden;
 }
 
 #shopAssistBody {
