@@ -76,9 +76,10 @@ let shopAssist = {
 					<th>All</th>
 				</tr>
 			</thead>`
-		for (slot of shopAssist.slots) {
-			stock = shopAssist.getStock(slot.reward);
-			if (slot.purchaseLimit?.maxPurchases && !slot.purchaseLimit.remainingPurchases) continue;
+		
+		let addRow = (slot) =>{
+			let h = ``;
+			let stock = shopAssist.getStock(slot.reward);
 			let neededFragments = null;
 			let neededBuys = null;
 			let limitedFragments = null;
@@ -91,8 +92,9 @@ let shopAssist = {
 				limitedBuys = Math.ceil(limitedFragments/slot.reward.amount);
 			}
 			let buildingList = shopAssist.getBuildingIds(slot.reward)
+			let limitReached = slot.purchaseLimit?.maxPurchases && !slot.purchaseLimit.remainingPurchases;
 			//Favourites
-			h += `<tr class="${shopAssist.favourites?.[shopAssist.storeId]?.[slot.slotId] ? "isShopFavourite" : ""}">
+			h += `<tr class="${(shopAssist.favourites?.[shopAssist.storeId]?.[slot.slotId] ? "isShopFavourite " : "")+((slot.purchaseLimit?.maxPurchases && !slot.purchaseLimit.remainingPurchases) ? "soldOut" : "")}">
 			<td><div class="shopFavourite" data-id=${slot.slotId}></div></td>`
 			//name
 			h+=`<td data-ids="${buildingList}" class="${buildingList.length>0?"helperTT":""}" data-callback_tt="shopAssist.TT">${(slot.reward.target?srcLinks.icons("booster_target_"+slot.reward.target):"")+slot.reward.name}</td>`
@@ -109,7 +111,7 @@ let shopAssist = {
 				if (ResourceStock[res]<cost) canBuy = false;
 				costs += `<div class="flexbetween ${ResourceStock[res]>=cost?"text-success":"text-danger"}">` + srcLinks.icons(res) + HTML.Format(cost) + "</div>"
 			})
-			h += `<td class="${canBuy ? "canBuy" : "canNotBuy"}">
+			h += `<td class="${(canBuy && !limitReached) ? "canBuy" : "canNotBuy"}">
 				${costs}
 			</td>`
 			if (slot.reward.subType == "fragment") {
@@ -121,7 +123,7 @@ let shopAssist = {
 					if (ResourceStock[res]<cost) canBuy = false;
 					costs += `<div class="flexbetween ${ResourceStock[res]>=cost?"text-success":"text-danger"}">${srcLinks.icons(res) + HTML.Format(cost)}</div>`
 				})
-				h += `<td class="${canBuy ? "canBuy" : "canNotBuy"}">
+				h += `<td class="${(canBuy && !limitReached) ? "canBuy" : "canNotBuy"}">
 					<div class="flexbetween"><span>${srcLinks.icons("icon_tooltip_fragment") + HTML.Format(neededFragments)}</span><span>(${neededBuys}x)</span></div>
 					${costs}
 				</td>`
@@ -133,7 +135,7 @@ let shopAssist = {
 					if (ResourceStock[res]<cost) canBuy = false;
 					costs += `<div class="flexbetween ${ResourceStock[res]>=cost?"text-success":"text-danger"}">` + srcLinks.icons(res) + HTML.Format(cost) + "</div>"
 				})
-				h += `<td class="${canBuy ? "canBuy" : "canNotBuy"}">
+				h += `<td class="${(canBuy && !limitReached) ? "canBuy" : "canNotBuy"}">
 						<div class="flexbetween"><span>${srcLinks.icons("icon_tooltip_fragment") + HTML.Format(limitedFragments)}</span><span>(${limitedBuys}x)</span></div> 
 						${costs}
 					</td>`
@@ -147,14 +149,27 @@ let shopAssist = {
 					if (ResourceStock[res]<cost) canBuy = false;
 					if (cost>0 && slot.flag?.value!="increasingCosts") costs += limitedBuys ? `<div class="flexbetween ${ResourceStock[res]>=cost?"text-success":"text-danger"}"> ${srcLinks.icons(res) + HTML.Format(cost)}</div>` : `<div>&nbsp;</div>`
 				})
-				h += `<td class="${limitedBuys && costs != "" ? (canBuy ? "canBuy" : "canNotBuy"):""}">
-					<div">(${slot.purchaseLimit?.remainingPurchases||"∞"}x)</div>
+				h += `<td class="${limitReached ? "canNotBuy" : (limitedBuys && costs != "" ? (canBuy ? "canBuy" : "canNotBuy"):"")}">
+					<div">(${limitReached ? 0 : slot.purchaseLimit?.remainingPurchases||"∞"}x)</div>
 					${costs}
 					</td>`
 				}
 			h+=`</tr>`
-			
+			return h;
 		}
+
+		let later = []
+		
+		for (let slot of shopAssist.slots) {
+			if (slot.purchaseLimit?.maxPurchases && !slot.purchaseLimit.remainingPurchases) {
+				later.push(slot);
+				continue;
+			}
+			h += addRow(slot);			
+		}
+		for (let slot of later)
+			h += addRow(slot);
+
 		
 		h += `</table>`
         
