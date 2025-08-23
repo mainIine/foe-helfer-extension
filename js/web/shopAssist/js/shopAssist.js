@@ -13,7 +13,8 @@
 
 FoEproxy.addHandler('ItemStoreService', 'getStore', (data, postData) => {
 	shopAssist.slots = data.responseData.slots;
-	storeId = data.responseData.id;
+	shopAssist.storeId = data.responseData.id;
+	shopAssist.alertsTriggered = {};
 	shopAssist.Show();
 });
 
@@ -22,16 +23,27 @@ FoEproxy.addHandler('ItemStoreService', 'purchaseSlot', (data, postData) => {
 	shopAssist.slots[i] = data.responseData.slot;
 	shopAssist.Show();
 });
+FoEproxy.addHandler('ItemStoreService', 'getConfigs', (data, postData) => {
+	shopAssist.shopMeta = Object.assign({},...data.responseData.map(x=>({[x.id]:x})));
+	localStorage.setItem("shopAssist.shopMeta",JSON.stringify(shopAssist.shopMeta));
+});
 
 FoEproxy.addFoeHelperHandler('InventoryUpdated', () => {
 	shopAssist.updateDialog();
 });
 
+FoEproxy.addFoeHelperHandler('ResourcesUpdated', () => {
+	shopAssist.checkAlerts();
+});
+
 let shopAssist = {
 	slots: null,
 	storeId:null,
+	alertsTriggered: {},
+	shopMeta:JSON.parse(localStorage.getItem("shopAssist.shopMeta")||"{}"),
 	favourites: JSON.parse(localStorage.getItem("shopAssist.favourites")||"{}"),
 	favouritesOnly: JSON.parse(localStorage.getItem("shopAssist.favouritesOnly")||"false"),
+	alerts: JSON.parse(localStorage.getItem("shopAssist.alerts")||"{}"),
     /**
      * Shows a User Box with the current production stats
      *
@@ -93,9 +105,12 @@ let shopAssist = {
 			}
 			let buildingList = shopAssist.getBuildingIds(slot.reward)
 			let limitReached = slot.purchaseLimit?.maxPurchases && !slot.purchaseLimit.remainingPurchases;
-			//Favourites
+			//Favourites + Alerts
 			h += `<tr class="${(shopAssist.favourites?.[shopAssist.storeId]?.[slot.slotId] ? "isShopFavourite " : "")+((slot.purchaseLimit?.maxPurchases && !slot.purchaseLimit.remainingPurchases) ? "soldOut" : "")}">
-			<td><div class="shopFavourite" data-id=${slot.slotId}></div></td>`
+			<td>
+				<div class="shopFavourite" data-id="${slot.slotId}"></div>
+				<div class="shopAlert ${(shopAssist.alerts[shopAssist.storeId + "#" + slot.slotId]) ? "alertActive" : ""}" data-id="${shopAssist.storeId + "#" + slot.slotId}"></div>
+			</td>`
 			//name
 			h+=`<td data-ids="${buildingList}" class="${buildingList.length>0?"helperTT":""}" data-callback_tt="shopAssist.TT">${(slot.reward.target?srcLinks.icons("booster_target_"+slot.reward.target):"")+slot.reward.name}</td>`
 			//Inventory
@@ -161,6 +176,7 @@ let shopAssist = {
 		let later = []
 		
 		for (let slot of shopAssist.slots) {
+			if (shopAssist.alerts[shopAssist.storeId + "#" + slot.slotId]) shopAssist.alerts[shopAssist.storeId + "#" + slot.slotId] = structuredClone(slot); //update alert data
 			if (slot.purchaseLimit?.maxPurchases && !slot.purchaseLimit.remainingPurchases) {
 				later.push(slot);
 				continue;
@@ -187,6 +203,17 @@ let shopAssist = {
 			localStorage.setItem("shopAssist.favourites",JSON.stringify(shopAssist.favourites));
 			e.currentTarget.parentNode.parentNode.classList.toggle("isShopFavourite");
 		});
+		$(".shopAlert").on("click",function(e){
+			let id = e.currentTarget.dataset.id;
+			if (!shopAssist.alerts?.[id]) {
+				slotId = id.split("#")[1];
+				shopAssist.alerts[id] = structuredClone(shopAssist.slots.find(x=>x.slotId === slotId));
+			} else {
+				delete shopAssist.alerts[id];
+			}
+			localStorage.setItem("shopAssist.alerts",JSON.stringify(shopAssist.alerts));
+			e.currentTarget.classList.toggle("alertActive");
+		});
 		$("#shopAssistFav").on("change",function(e){
 			shopAssist.favouritesOnly = e.currentTarget.checked;
 			localStorage.setItem("shopAssist.favouritesOnly",JSON.stringify(shopAssist.favouritesOnly));
@@ -196,6 +223,7 @@ let shopAssist = {
 				$("#shopAssistTable").removeClass("favouritesOnly");
 			}
 		});
+		localStorage.setItem("shopAssist.alerts",JSON.stringify(shopAssist.alerts));
     },
 
 	getStock: (reward) => {
@@ -312,6 +340,30 @@ let shopAssist = {
             })
         },100)
         return h
+	},
+	checkAlerts: () => {
+		for (let [key,slot] of Object.entries(shopAssist.alerts)) {
+			if (shopAssist.alertsTriggered[key]) continue;
+			if (slot.purchaseLimit?.maxPurchases && !slot.purchaseLimit.remainingPurchases) continue;
+			let canBuy = true;
+			for (let [res, amount] of Object.entries(slot.baseCost?.resources||{})) {
+				let cost = Math.round(amount*(1-(slot.discount||0)))
+				if (ResourceStock[res] > cost) continue
+				canBuy = false;
+				break;
+			}
+			if (canBuy) {
+				shopAssist.alertsTriggered[key] = true;
+				[shopId,slotId] = key.split("#");
+				HTML.ShowToastMsg({
+					show: 'force',
+					head: i18n('Boxes.ShopAssist.Shop') + ' - ' + (shopAssist.shopMeta?.[shopId]?.name||""),
+					text: i18n('Boxes.ShopAssist.canBeBought')+": " + slot.reward.name,
+					type: 'success',
+					hideAfter: 60000
+				});
+			}
+		}
 	}
 
 	

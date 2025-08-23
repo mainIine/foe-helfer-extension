@@ -1212,6 +1212,8 @@
     "Boxes.scoutingTimes.ScoutingCost": "Erkundungskosten",
     "Boxes.scoutingTimes.ScoutingTime": "Erkundungsdauer",
     "Boxes.ShopAssist.Title": "Shop Assistent",
+    "Boxes.ShopAssist.Shop": "Markt",
+    "Boxes.ShopAssist.canBeBought": "Kaufbar",
     "Boxes.scoutingTimes.Title": "Späherstatus",
     "Boxes.idleGame.ActiveTasks": "Aktive Sammelaufgaben",
     "Boxes.idleGame.B": "Milliarden",
