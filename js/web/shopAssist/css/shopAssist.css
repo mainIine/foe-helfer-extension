@@ -70,10 +70,18 @@
 #shopAssistTable .shopFavourite:after {
 	content: '☆';
 	color: goldenrod;
+	font-size: large;
 }
 #shopAssistTable .isShopFavourite .shopFavourite:after {
 	content: '★';
 	color: goldenrod;
+}
+#shopAssistTable .shopAlert:after {
+	content: '🔕';
+	font-size: smaller;
+}
+#shopAssistTable .shopAlert.alertActive:after {
+	content: '🔔';	
 }
 
 #shopAssistTable tr.soldOut {

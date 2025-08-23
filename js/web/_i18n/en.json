@@ -1235,6 +1235,8 @@
     "Boxes.scoutingTimes.ScoutingTime": "Scouting Time",
     "Boxes.scoutingTimes.Title": "Scouting Info",
     "Boxes.ShopAssist.Title": "Shop Assistant",
+    "Boxes.ShopAssist.Shop": "Item Shop",
+    "Boxes.ShopAssist.canBeBought": "Can be bought",
     "Date": "DD/MMM/YYYY",
     "DateShort": "DD/MMM",
     "DateTime": "DD/MMM/YY @ HH:mm:ss a",
