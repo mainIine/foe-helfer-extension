@@ -126,7 +126,7 @@ let shopAssist = {
 				if (ResourceStock[res]<cost) canBuy = false;
 				costs += `<div class="text-right">` + HTML.Format(cost) + srcLinks.icons(res) + "</div>"
 			})
-			h += `<td class="${(canBuy && !limitReached) ? "canBuy" : "canNotBuy"}">
+			h += `<td class="costs ${(canBuy && !limitReached) ? "canBuy" : "canNotBuy"}">
 				${costs}
 			</td>`
 			if (slot.reward.subType == "fragment") {
@@ -138,7 +138,7 @@ let shopAssist = {
 					if (ResourceStock[res]<cost) canBuy = false;
 					costs += `<div class="text-right">${HTML.Format(cost) + srcLinks.icons(res)}</div>`
 				})
-				h += `<td class="${(canBuy && !limitReached) ? "canBuy" : "canNotBuy"}">
+				h += `<td class="costs ${(canBuy && !limitReached) ? "canBuy" : "canNotBuy"}">
 					<div><span>${srcLinks.icons("icon_tooltip_fragment") + HTML.Format(neededFragments)}</span> <span>(${neededBuys}x)</span></div>
 					${costs}
 				</td>`
@@ -152,7 +152,7 @@ let shopAssist = {
 					if (ResourceStock[res]<cost) canBuy = false;
 					costs += `<div class="text-right">` + HTML.Format(cost) + srcLinks.icons(res)+ "</div>"
 				})
-				h += `<td class="${(canBuy && !limitReached) ? "canBuy" : "canNotBuy"}">
+				h += `<td class="costs ${(canBuy && !limitReached) ? "canBuy" : "canNotBuy"}">
 						<div><span>${srcLinks.icons("icon_tooltip_fragment") + HTML.Format(limitedFragments)}</span> <span>(${limitedBuys}x)</span></div> 
 						${costs}
 					</td>`
@@ -166,7 +166,7 @@ let shopAssist = {
 					if (ResourceStock[res]<cost) canBuy = false;
 					if (cost>0 && slot.flag?.value!="increasingCosts") costs += limitedBuys ? `<div class="text-right"> ${HTML.Format(cost) + srcLinks.icons(res)}</div>` : `<div>&nbsp;</div>`
 				})
-				h += `<td class="${limitReached ? "canNotBuy" : (limitedBuys && costs != "" ? (canBuy ? "canBuy" : "canNotBuy"):"")}">
+				h += `<td class="costs ${limitReached ? "canNotBuy" : (limitedBuys && costs != "" ? (canBuy ? "canBuy" : "canNotBuy"):"")}">
 					<div">(${limitReached ? 0 : slot.purchaseLimit?.remainingPurchases||"∞"}x)</div>
 					${costs}
 					</td>`
