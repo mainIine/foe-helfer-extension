@@ -156,6 +156,7 @@
     position: absolute;
     left: calc(50% - 40px);
     max-height: 100px;
+    filter: drop-shadow(2px 4px 6px #0005);
 }
 
 #PlayerProfile div.header.flex {
@@ -221,10 +222,13 @@
     width: 90px;
     margin-right: 1.25rem;
     box-shadow: 0 2px 2px var(--black-50);
+}
+
+#PlayerProfile .basicInfo .imgContainer {
     transition: all 0.3s ease-in-out;
 }
 
-#PlayerProfile .basicInfo img:hover {
+#PlayerProfile .basicInfo .imgContainer:hover {
     transform: rotate(-4deg);
 }
 
@@ -901,8 +905,8 @@
 }
 
 #PlayerProfile.foe .imgContainer img.decoration {
-    top: 2px;
-    left: 2px;
+    top: -5px;
+    left: -5px;
     width: auto;
     box-shadow: none;
 }
@@ -910,8 +914,8 @@
 #PlayerProfile.foe .imgContainer img.decoration:nth-child(2) {
     top: unset;
     left: unset;
-    bottom: 2px;
-    right: -19px;
+    bottom: -5px;
+    right: -25px;
     transform: scale(-1,-1);
 }
 
