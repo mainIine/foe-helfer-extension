@@ -39,7 +39,7 @@
 	white-space: wrap;
 }
 
-#shopAssistTable thead {
+#shopAssistTable thead tr:last-child {
 	position: sticky;
 	top: 0;
 }
