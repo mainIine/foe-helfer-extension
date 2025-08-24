@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2024 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2025 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -16,13 +16,6 @@
 	left: calc(100vw - 350px);
 	width: 280px;
     height: 300px;
-}
-
-#shopAssist:not(:hover){
-	height:100px !important;
-}
-#shopAssist:not(:hover) #shopAssistBody {
-	overflow: hidden;
 }
 
 #shopAssistBody {
@@ -60,11 +53,18 @@
 
 #shopAssistTable td.canBuy {
 	background-color: var(--table-bg-success);
-	vertical-align: bottom;
+	color: var(--text-success);
 }
-#shopAssistTable td.canNotBuy {
-	background-color: var(--table-bg-error);
+#shopAssistTable td.canNotBuy, #shopAssistTable td.canBuy {
 	vertical-align: bottom;
+	text-align: right;
+	padding: 2px 7px;
+}
+#shopAssistTable td:nth-last-child(3) {
+	border-left: 1px solid var(--border-table-top);
+}
+#shopAssistTable td:nth-last-child(4) {
+	border-right: 1px solid var(--border-table-bottom);
 }
 
 #shopAssistTable.favouritesOnly tbody tr:not(.isShopFavourite) {
@@ -75,7 +75,7 @@
 	color: goldenrod;
 	font-size: large;
 }
-#shopAssistTable .isShopFavourite .shopFavourite:after {
+#shopAssistTable .isShopFavourite .shopFavourite:after, #shopAssistTable .shopFavourite:hover:after {
 	content: '★';
 	color: goldenrod;
 }
@@ -83,10 +83,21 @@
 	content: '🔕';
 	font-size: smaller;
 }
-#shopAssistTable .shopAlert.alertActive:after {
+#shopAssistTable .shopAlert.alertActive:after, #shopAssistTable .shopAlert:hover:after {
 	content: '🔔';	
 }
 
 #shopAssistTable tr.soldOut {
 	opacity: 0.5;
+}
+
+#shopAssistTable img {
+	height: 21px;
+	padding-left: 2px;
+}
+
+#shopAssistTable img[src*="tooltip_fragment"] {
+	height: 19px;
+	padding-right: 3px;
+	padding-left: 0;
 }

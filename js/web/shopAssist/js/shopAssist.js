@@ -108,8 +108,8 @@ let shopAssist = {
 			//Favourites + Alerts
 			h += `<tr class="${(shopAssist.favourites?.[shopAssist.storeId]?.[slot.slotId] ? "isShopFavourite " : "")+((slot.purchaseLimit?.maxPurchases && !slot.purchaseLimit.remainingPurchases) ? "soldOut" : "")}">
 			<td>
-				<div class="shopFavourite" data-id="${slot.slotId}"></div>
-				<div class="shopAlert ${(shopAssist.alerts[shopAssist.storeId + "#" + slot.slotId]) ? "alertActive" : ""}" data-id="${shopAssist.storeId + "#" + slot.slotId}"></div>
+				<div class="shopFavourite clickable" data-id="${slot.slotId}"></div>
+				<div class="shopAlert clickable ${(shopAssist.alerts[shopAssist.storeId + "#" + slot.slotId]) ? "alertActive" : ""}" data-id="${shopAssist.storeId + "#" + slot.slotId}"></div>
 			</td>`
 			//name
 			h+=`<td data-ids="${buildingList}" class="${buildingList.length>0?"helperTT":""}" data-callback_tt="shopAssist.TT">${(slot.reward.target?srcLinks.icons("booster_target_"+slot.reward.target):"")+slot.reward.name}</td>`
@@ -124,7 +124,7 @@ let shopAssist = {
 			Object.entries(slot.baseCost?.resources||{}).forEach(([res, amount])=>{
 				let cost = Math.round(amount*(1-(slot.discount||0)))
 				if (ResourceStock[res]<cost) canBuy = false;
-				costs += `<div class="flexbetween ${ResourceStock[res]>=cost?"text-success":"text-danger"}">` + srcLinks.icons(res) + HTML.Format(cost) + "</div>"
+				costs += `<div class="text-right">` + HTML.Format(cost) + srcLinks.icons(res) + "</div>"
 			})
 			h += `<td class="${(canBuy && !limitReached) ? "canBuy" : "canNotBuy"}">
 				${costs}
@@ -136,22 +136,24 @@ let shopAssist = {
 				Object.entries(slot.baseCost?.resources||{}).forEach(([res, amount])=>{
 					let cost = Math.round(neededBuys * amount*(1-(slot.discount||0)))
 					if (ResourceStock[res]<cost) canBuy = false;
-					costs += `<div class="flexbetween ${ResourceStock[res]>=cost?"text-success":"text-danger"}">${srcLinks.icons(res) + HTML.Format(cost)}</div>`
+					costs += `<div class="text-right">${HTML.Format(cost) + srcLinks.icons(res)}</div>`
 				})
 				h += `<td class="${(canBuy && !limitReached) ? "canBuy" : "canNotBuy"}">
-					<div class="flexbetween"><span>${srcLinks.icons("icon_tooltip_fragment") + HTML.Format(neededFragments)}</span><span>(${neededBuys}x)</span></div>
+					<div><span>${srcLinks.icons("icon_tooltip_fragment") + HTML.Format(neededFragments)}</span> <span>(${neededBuys}x)</span></div>
 					${costs}
 				</td>`
+			}
+			if (slot.reward.subType == "fragment") {
 				//costs all
 				costs = "";
 				canBuy = true;
 				Object.entries(slot.baseCost?.resources||{}).forEach(([res, amount])=>{
 					let cost = Math.round(limitedBuys * amount*(1-(slot.discount||0)))
 					if (ResourceStock[res]<cost) canBuy = false;
-					costs += `<div class="flexbetween ${ResourceStock[res]>=cost?"text-success":"text-danger"}">` + srcLinks.icons(res) + HTML.Format(cost) + "</div>"
+					costs += `<div class="text-right">` + HTML.Format(cost) + srcLinks.icons(res)+ "</div>"
 				})
 				h += `<td class="${(canBuy && !limitReached) ? "canBuy" : "canNotBuy"}">
-						<div class="flexbetween"><span>${srcLinks.icons("icon_tooltip_fragment") + HTML.Format(limitedFragments)}</span><span>(${limitedBuys}x)</span></div> 
+						<div><span>${srcLinks.icons("icon_tooltip_fragment") + HTML.Format(limitedFragments)}</span> <span>(${limitedBuys}x)</span></div> 
 						${costs}
 					</td>`
 			} else {
@@ -162,7 +164,7 @@ let shopAssist = {
 				Object.entries(slot.baseCost?.resources||{}).forEach(([res, amount])=>{
 					let cost = Math.round(limitedBuys * amount*(1-(slot.discount||0)))
 					if (ResourceStock[res]<cost) canBuy = false;
-					if (cost>0 && slot.flag?.value!="increasingCosts") costs += limitedBuys ? `<div class="flexbetween ${ResourceStock[res]>=cost?"text-success":"text-danger"}"> ${srcLinks.icons(res) + HTML.Format(cost)}</div>` : `<div>&nbsp;</div>`
+					if (cost>0 && slot.flag?.value!="increasingCosts") costs += limitedBuys ? `<div class="text-right"> ${HTML.Format(cost) + srcLinks.icons(res)}</div>` : `<div>&nbsp;</div>`
 				})
 				h += `<td class="${limitReached ? "canNotBuy" : (limitedBuys && costs != "" ? (canBuy ? "canBuy" : "canNotBuy"):"")}">
 					<div">(${limitReached ? 0 : slot.purchaseLimit?.remainingPurchases||"∞"}x)</div>
