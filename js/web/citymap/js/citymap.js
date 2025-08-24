@@ -258,6 +258,7 @@ let CityMap = {
 		if (ActiveMap === 'OtherPlayer') {
 			let era = CityMap.CityData.find(x => x.type === 'main_building').cityentity_id.split('_')[1]
 			$("#sidebar").append($('<a id="openEfficiencyRating" class="btn-default" onclick="Productions.ShowRating(true,\''+era+'\')">'+ i18n('Menu.ProductionsRating.Title') +'</a>'));
+			//$("#sidebar").append($('<a id="openProfile" class="btn-default" onclick="Profile.showOtherPlayer()">'+ i18n('Global.BoxTitle') +'</a>'));
 		}
 	},
 

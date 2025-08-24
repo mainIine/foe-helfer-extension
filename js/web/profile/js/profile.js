@@ -5,6 +5,8 @@ FoEproxy.addHandler('AchievementsService','getOverview', (data, postData) => {
         $('#playerProfile-Btn').removeClass('hud-btn-red');
         $('#playerProfile-Btn-closed').remove();
     }
+});FoEproxy.addHandler('OtherPlayerService','visitPlayer', (data, postData) => {
+    Profile.otherPlayer = data.responseData;
 });
 
 FoEproxy.addFoeHelperHandler('ActiveMapUpdated', () => {
@@ -62,6 +64,35 @@ const Profile = {
 					);
 			});
 		}
+	},
+
+	showOtherPlayer: () => {
+		if ($('#PlayerProfile').length > 0) {
+			HTML.CloseOpenBox('PlayerProfile')
+			return
+		}
+
+		HTML.Box({
+			id: 'PlayerProfile',
+			title: ExtPlayerName,
+			auto_close: true,
+			dragdrop: true,
+		})
+        HTML.AddCssFile('profile');
+
+        let content = [];
+
+        content.push('<div class="centerInfo">');
+        content.push('<div class="basicInfo pad">');
+        content.push('<img class="clickable" src="'+srcLinks.GetPortrait(Profile.otherPlayer.other_player.avatar)+'" />');
+        content.push('<divY');
+        content.push('<h1>'+Profile.otherPlayer.other_player.name+'</h1>');
+        content.push('<span>'+i18n('Eras.'+Technologies.Eras[Profile.otherPlayer.other_player.era])+'</span><br>');
+        content.push('<span class="ranking">'+HTML.Format(parseInt(Profile.otherPlayer.other_player.score))+'</span>');
+        content.push('</div>');
+        content.push('</div>');
+        content.push('</div>');
+        $('#PlayerProfileBody').html(content.join(''));
 	},
 
 	show: () => {
