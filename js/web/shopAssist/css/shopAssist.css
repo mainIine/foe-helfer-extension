@@ -69,21 +69,27 @@
 #shopAssistTable.favouritesOnly tbody tr:not(.isShopFavourite) {
 	display: none;
 }
-#shopAssistTable .shopFavourite:after, #shopAssistTable .isShopFavourite .shopFavourite:hover:after {
+#shopAssistTable .shopFavourite:after{
 	content: '☆';
 	color: goldenrod;
 	font-size: large;
 }
-#shopAssistTable .isShopFavourite .shopFavourite:after, #shopAssistTable .shopFavourite:hover:after {
+#shopAssistTable .isShopFavourite .shopFavourite:after{
 	content: '★';
 	color: goldenrod;
 }
-#shopAssistTable .shopAlert:after, #shopAssistTable .shopAlert.alertActive:hover:after {
+#shopAssistTable .shopAlert:after {
 	content: '🔕';
 	font-size: smaller;
 }
-#shopAssistTable .shopAlert.alertActive:after, #shopAssistTable .shopAlert:hover:after {
+#shopAssistTable .shopAlert.alertActive:after {
 	content: '🔔';	
+}
+
+#shopAssistTable .shopAlert:hover,
+#shopAssistTable .shopFavourite:hover{
+	text-shadow: 0 0 3px goldenrod;
+	opacity: 1;
 }
 
 #shopAssistTable tr.soldOut {
