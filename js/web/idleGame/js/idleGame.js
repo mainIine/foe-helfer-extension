@@ -107,11 +107,11 @@ FoEproxy.addRequestHandler('IdleGameService', 'performActions', (postData) => {
 		}
 
         if (data2.type === 'upgrade_level') {
-			idleGame.data[data2['characterId']].level += data2.amount;
+			idleGame.data[data2['characterId']].level += data2.amount || 1;
 		}
 
         if (data2.type === 'upgrade_manager') {
-			idleGame.data[data2['characterId']].manager += data2.amount;
+			idleGame.data[data2['characterId']].manager += data2.amount || 1;
 		}
 
 		if (data2.type === 'collect_task') {
