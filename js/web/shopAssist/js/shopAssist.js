@@ -14,7 +14,7 @@
 FoEproxy.addHandler('ItemStoreService', 'getStore', (data, postData) => {
 	shopAssist.slots = data.responseData.slots;
 	shopAssist.storeId = data.responseData.id;
-	shopAssist.unlockProgress = Object.assign({},...data.responseData.unlockConditionsProgress.map(x=>({[x.subType]:x.amount})));
+	shopAssist.unlockProgress = Object.assign({},...data.responseData.unlockConditionsProgress.map(x=>({[x.subtype]:x.amount})));
 	shopAssist.alertsTriggered = {};
 	shopAssist.Show();
 });
@@ -27,6 +27,16 @@ FoEproxy.addHandler('ItemStoreService', 'purchaseSlot', (data, postData) => {
 FoEproxy.addHandler('ItemStoreService', 'getConfigs', (data, postData) => {
 	shopAssist.shopMeta = Object.assign({},...data.responseData.map(x=>({[x.id]:x})));
 	localStorage.setItem("shopAssist.shopMeta",JSON.stringify(shopAssist.shopMeta));
+});
+
+FoEproxy.addHandler("ItemStoreService","updateUnlockConditions", (data, postData) => {
+	for (let shop of data.responseData) {
+		if (shop.id != shopAssist.storeId) continue;
+		for (let cond of shop.unlockConditionsProgress) {
+			shopAssist.unlockProgress[cond.subtype] += cond.amount;
+		}
+	}
+	shopAssist.timeout = setTimeout(shopAssist.Show,100);
 });
 
 FoEproxy.addFoeHelperHandler('InventoryUpdated', () => {
@@ -45,12 +55,15 @@ let shopAssist = {
 	favourites: JSON.parse(localStorage.getItem("shopAssist.favourites")||"{}"),
 	favouritesOnly: JSON.parse(localStorage.getItem("shopAssist.favouritesOnly")||"false"),
 	alerts: JSON.parse(localStorage.getItem("shopAssist.alerts")||"{}"),
+	timeout: null,
     /**
      * Shows a User Box with the current production stats
      *
      * @constructor
      */
     Show: () => {
+		clearTimeout(shopAssist.timeout);
+		shopAssist.timeout = null;
 		if (!Settings.GetSetting('ShowShopAssist')) return;
 
         if ($('#shopAssist').length === 0) {
