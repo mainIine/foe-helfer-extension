@@ -772,7 +772,7 @@ let Parts = {
 
 				h.push('<tr>');
 				h.push('<td>' + i18n('Boxes.OwnpartCalculator.OwnPart') + '</td>');
-				h.push('<td class="text-center"><strong class="' + (PlayerID === ExtPlayerID ? 'success' : '') + '">' + (Eigens[i] > 0 ? HTML.Format(Eigens[i]) + ' <small>(=' + HTML.Format(Eigens[i] + EigenStart) + ')</small>' : '-') + '</strong></td>');
+				h.push('<td class="text-center"><strong class="' + (PlayerID === ExtPlayerID ? 'success' : '') + '">' + (Eigens[i] > 0 ? HTML.Format(Eigens[i]) + ' <small>(=' + HTML.Format(Eigens[i]) + ')</small>' : '-') + '</strong></td>');
 				h.push('<td class="text-center"><strong class="info">' + HTML.Format(EigenStart) + '</strong></td>');
 				if (printsEnabled && medalsEnabled) h.push('<td colspan="4"></td>');
 				else if (printsEnabled || medalsEnabled) h.push('<td colspan="3"></td>');
@@ -783,7 +783,7 @@ let Parts = {
 				if (Eigens[i] > 0) {
 					h.push('<tr>');
 					h.push('<td>' + i18n('Boxes.OwnpartCalculator.OwnPart') + '</td>');
-					h.push('<td class="text-center"><strong class="' + (PlayerID === ExtPlayerID ? 'success' : '') + '">' + HTML.Format(Eigens[i]) + (EigenCounter > Eigens[i] ? ' <small>(=' + HTML.Format(EigenCounter) + ')</small>' : '') + '</strong></td>');
+					h.push('<td class="text-center"><strong class="' + (PlayerID === ExtPlayerID ? 'success' : '') + '">' + HTML.Format(Eigens[i]) + (EigenCounter > Eigens[i] ? ' <small>(=' + HTML.Format(EigenCounter - EigenStart) + ')</small>' : '') + '</strong></td>');
 					if (printsEnabled && medalsEnabled) h.push('<td colspan="5"></td>');
 					else if (printsEnabled || medalsEnabled) h.push('<td colspan="4"></td>');
 					else if (!minView) h.push('<td colspan="3"></td>');
@@ -854,7 +854,7 @@ let Parts = {
 
 			h.push('<tr>');
 			h.push('<td>' + i18n('Boxes.OwnpartCalculator.OwnPart') + '</td>');
-			h.push('<td class="text-center"><strong class="' + (PlayerID === ExtPlayerID ? 'success' : '') + '">' + Eigens[5] + (EigenCounter > HTML.Format(Eigens[5]) ? ' <small>(=' + HTML.Format(EigenCounter) + ')</small>' : '') + '</strong></td>');
+			h.push('<td class="text-center"><strong class="' + (PlayerID === ExtPlayerID ? 'success' : '') + '">' + Eigens[5] + (EigenCounter > HTML.Format(Eigens[5]) ? ' <small>(=' + HTML.Format(EigenCounter - EigenStart) + ')</small>' : '') + '</strong></td>');
 			h.push('<td colspan="5"></td>');
 			h.push('</tr>');
 		}
@@ -1691,3 +1691,4 @@ let Parts = {
 		});
 	}
 };
+
