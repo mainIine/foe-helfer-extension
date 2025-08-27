@@ -54,6 +54,10 @@
 	background-color: var(--table-bg-success);
 	color: var(--text-success);
 }
+#shopAssistTable td.locked {
+	background-color: var(--table-bg-error);
+	color: var(--text-red);
+}
 #shopAssistTable td.costs {
 	vertical-align: bottom;
 	text-align: right;
@@ -67,6 +71,9 @@
 }
 
 #shopAssistTable.favouritesOnly tbody tr:not(.isShopFavourite) {
+	display: none;
+}
+#shopAssistTable.unlockedOnly tbody tr:not(.isUnlocked) {
 	display: none;
 }
 #shopAssistTable .shopFavourite:after{
@@ -105,4 +112,8 @@
 	height: 19px;
 	padding-right: 3px;
 	padding-left: 0;
+}
+
+#shopAssistUnlock {
+	margin-left: 10px;
 }

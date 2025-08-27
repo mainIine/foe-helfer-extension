@@ -14,6 +14,7 @@
 FoEproxy.addHandler('ItemStoreService', 'getStore', (data, postData) => {
 	shopAssist.slots = data.responseData.slots;
 	shopAssist.storeId = data.responseData.id;
+	shopAssist.unlockProgress = Object.assign({},...data.responseData.unlockConditionsProgress.map(x=>({[x.subType]:x.amount})));
 	shopAssist.alertsTriggered = {};
 	shopAssist.Show();
 });
@@ -76,12 +77,13 @@ let shopAssist = {
         
 		h += `<thead>
 				<tr>
-					<th colspan=3><input type="checkbox" id="shopAssistFav"><label for="shopAssistFav">&nbsp;${i18n("Boxes.ShopAssist.onlyFavourites")}</label></th>
+					<th colspan=4><input type="checkbox" id="shopAssistFav"><label for="shopAssistFav">&nbsp;${i18n("Boxes.ShopAssist.onlyFavourites")}</label><input type="checkbox" id="shopAssistUnlock"><label for="shopAssistUnlock">&nbsp;${i18n("Boxes.ShopAssist.onlyUnlocked")}</label></th>
 					<th colspan=3>${i18n("Boxes.ShopAssist.Costs")}</th>
 				</tr>
 				<tr>
 					<th>★</th>
 					<th>${i18n("Boxes.ShopAssist.Item")}</th>
+					<th>🔒</th>
 					<th>${i18n("Boxes.ShopAssist.Inventory")}</th>
 					<th>${i18n("Boxes.ShopAssist.Single")}</th>
 					<th>${i18n("Boxes.ShopAssist.Missing")}</th>
@@ -105,29 +107,57 @@ let shopAssist = {
 			}
 			let buildingList = shopAssist.getBuildingIds(slot.reward)
 			let limitReached = slot.purchaseLimit?.maxPurchases && !slot.purchaseLimit.remainingPurchases;
+			let hasLock = ('unlockConditions' in slot) && (slot.unlockConditions.length > 0);
+			let unlocked = true;
+			for (let u of slot.unlockConditions||[]) {
+				for (let [r,amount] of Object.entries(u?.resourcesVO?.resources||{})) {
+					if ((shopAssist.unlockProgress?.[r]||0) < amount) {
+						unlocked = false;
+						break;
+					}
+				}
+			}
+
 			//Favourites + Alerts
-			h += `<tr class="${(shopAssist.favourites?.[shopAssist.storeId]?.[slot.slotId] ? "isShopFavourite " : "")+((slot.purchaseLimit?.maxPurchases && !slot.purchaseLimit.remainingPurchases) ? "soldOut" : "")}">
+			h += `<tr class="${(shopAssist.favourites?.[shopAssist.storeId]?.[slot.slotId] ? "isShopFavourite " : "") + (unlocked ? "isUnlocked " : "") + (hasLock ? "hasLock " : "") +((slot.purchaseLimit?.maxPurchases && !slot.purchaseLimit.remainingPurchases) ? "soldOut" : "")}">
 			<td>
 				<div class="shopFavourite clickable" data-id="${slot.slotId}"></div>
 				<div class="shopAlert clickable ${(shopAssist.alerts[shopAssist.storeId + "#" + slot.slotId]) ? "alertActive" : ""}" data-id="${shopAssist.storeId + "#" + slot.slotId}"></div>
 			</td>`
 			//name
 			h+=`<td data-ids="${buildingList}" class="${buildingList.length>0?"helperTT":""}" data-callback_tt="shopAssist.TT">${(slot.reward.target?srcLinks.icons("booster_target_"+slot.reward.target):"")+slot.reward.name}</td>`
+			// Lock conditions
+			let costs = "";
+			if (hasLock) {
+				if (unlocked) {
+					costs += "🔓"
+				} else {
+					costs += "🔒";
+					for (let u of slot.unlockConditions||[]) {
+						for (let [r,amount] of Object.entries(u?.resourcesVO?.resources||{})) {
+							costs += `<div class="text-right">` + HTML.Format((shopAssist.unlockProgress?.[r])||0) + "/" + amount + srcLinks.icons(r) + "</div>"
+						}
+					}
+				}
+			}
+			h += `<td class="${unlocked ? "" : "locked"}"}">
+				${costs}
+			</td>`
 			//Inventory
 			h += `<td>
 				<div>${stock.stock ? HTML.Format(stock.stock) : ""}</div>
 				<div>${slot.reward.subType == "fragment" ? srcLinks.icons("icon_tooltip_fragment") + HTML.Format(stock.fragments||0)+"/"+slot.reward.requiredAmount : ""}</div>
 			</td>`
 			//Costs single
-			let costs = "",
-				canBuy = true;
+			costs = "";
+			let canBuy = true;
 			Object.entries(slot.baseCost?.resources||{}).forEach(([res, amount])=>{
-				let cost = Math.round(amount*(1-(slot.discount||0)));
+				let cost = Math.ceil(amount*(1-(slot.discount||0)));
 				if (ResourceStock[res] == undefined || ResourceStock[res]<cost) 
 					canBuy = false;
 				costs += `<div class="text-right">` + HTML.Format(cost) + srcLinks.icons(res) + "</div>"
 			})
-			h += `<td class="costs ${(canBuy && !limitReached) ? "canBuy" : "canNotBuy"}">
+			h += `<td class="costs ${(canBuy && !limitReached && unlocked) ? "canBuy" : "canNotBuy"}">
 				${costs}
 			</td>`
 			if (slot.reward.subType == "fragment") {
@@ -135,12 +165,12 @@ let shopAssist = {
 				costs = "";
 				canBuy = true;
 				Object.entries(slot.baseCost?.resources||{}).forEach(([res, amount])=>{
-					let cost = Math.round(neededBuys * amount*(1-(slot.discount||0)));
-					if (ResourceStock[res] == undefined || ResourceStock[res]<cost) 
+					let cost = Math.ceil(neededBuys * amount*(1-(slot.discount||0)));
+					if ((ResourceStock[res] || 0) < cost) 
 						canBuy = false;
 					costs += `<div class="text-right">${HTML.Format(cost) + srcLinks.icons(res)}</div>`
 				})
-				h += `<td class="costs ${(canBuy && !limitReached) ? "canBuy" : "canNotBuy"}">
+				h += `<td class="costs ${(canBuy && !limitReached && unlocked) ? "canBuy" : "canNotBuy"}">
 					<div><span>${srcLinks.icons("icon_tooltip_fragment") + HTML.Format(neededFragments)}</span> <span>(${neededBuys}x)</span></div>
 					${costs}
 				</td>`
@@ -150,11 +180,11 @@ let shopAssist = {
 				costs = "";
 				canBuy = true;
 				Object.entries(slot.baseCost?.resources||{}).forEach(([res, amount])=>{
-					let cost = Math.round(limitedBuys * amount*(1-(slot.discount||0)));
-					if (ResourceStock[res] == undefined || ResourceStock[res]<cost) canBuy = false;
+					let cost = Math.ceil(limitedBuys * amount*(1-(slot.discount||0)));
+					if ((ResourceStock[res] || 0) < cost) canBuy = false;
 					costs += `<div class="text-right">` + HTML.Format(cost) + srcLinks.icons(res)+ "</div>"
 				})
-				h += `<td class="costs ${(canBuy && !limitReached) ? "canBuy" : "canNotBuy"}">
+				h += `<td class="costs ${(canBuy && !limitReached && unlocked) ? "canBuy" : "canNotBuy"}">
 						<div><span>${srcLinks.icons("icon_tooltip_fragment") + HTML.Format(limitedFragments)}</span> <span>(${limitedBuys}x)</span></div> 
 						${costs}
 					</td>`
@@ -164,12 +194,12 @@ let shopAssist = {
 				costs = "";
 				canBuy = true;
 				Object.entries(slot.baseCost?.resources||{}).forEach(([res, amount])=>{
-					let cost = Math.round(limitedBuys * amount*(1-(slot.discount||0)));
-					if (ResourceStock[res] == undefined || ResourceStock[res]<cost) canBuy = false;
+					let cost = Math.ceil(limitedBuys * amount*(1-(slot.discount||0)));
+					if ((ResourceStock[res] || 0) < cost) canBuy = false;
 					if (slot.purchaseLimit?.remainingPurchases != 1 && slot.flag?.value=="increasingCosts") canBuy = false;
-					if (cost>0) costs += (limitedBuys && slot.flag?.value!="increasingCosts" ? `<div class="text-right"> ${HTML.Format(cost) + srcLinks.icons(res)}</div>` : `<div>&nbsp;</div>`)
+					if (cost>0) costs += (limitedBuys && slot.flag?.value!="increasingCosts"  && unlocked? `<div class="text-right"> ${HTML.Format(cost) + srcLinks.icons(res)}</div>` : `<div>&nbsp;</div>`)
 				})
-				h += `<td class="costs ${limitReached ? "canNotBuy" : (limitedBuys && canBuy ? "canBuy" : "canNotBuy")}">
+				h += `<td class="costs ${limitReached  ? "canNotBuy" : (limitedBuys && canBuy && unlocked ? "canBuy" : "canNotBuy")}">
 					<div">(${limitReached ? 0 : HTML.Format(slot.purchaseLimit?.remainingPurchases||Infinity)}x)</div>
 					${costs}
 					</td>`
@@ -200,6 +230,28 @@ let shopAssist = {
 		if (shopAssist.favouritesOnly) {
 			$("#shopAssistTable").addClass("favouritesOnly");
 		};
+		$("#shopAssistFav").on("change",function(e){
+			shopAssist.favouritesOnly = e.currentTarget.checked;
+			localStorage.setItem("shopAssist.favouritesOnly",JSON.stringify(shopAssist.favouritesOnly));
+			if (shopAssist.favouritesOnly) {
+				$("#shopAssistTable").addClass("favouritesOnly");
+			} else {
+				$("#shopAssistTable").removeClass("favouritesOnly");
+			}
+		});
+		$('#shopAssistUnlock').prop("checked",shopAssist.unlockedOnly);
+		if (shopAssist.unlockedOnly) {
+			$("#shopAssistTable").addClass("unlockedOnly");
+		};
+		$("#shopAssistUnlock").on("change",function(e){
+			shopAssist.unlockedOnly = e.currentTarget.checked;
+			localStorage.setItem("shopAssist.unlockedOnly",JSON.stringify(shopAssist.unlockedOnly));
+			if (shopAssist.unlockedOnly) {
+				$("#shopAssistTable").addClass("unlockedOnly");
+			} else {
+				$("#shopAssistTable").removeClass("unlockedOnly");
+			}
+		});
 		$(".shopFavourite").on("click",function(e){
 			let id = e.currentTarget.dataset.id;
 			if (!shopAssist.favourites?.[shopAssist.storeId]) shopAssist.favourites[shopAssist.storeId] = {}
@@ -218,15 +270,6 @@ let shopAssist = {
 			}
 			localStorage.setItem("shopAssist.alerts",JSON.stringify(shopAssist.alerts));
 			e.currentTarget.classList.toggle("alertActive");
-		});
-		$("#shopAssistFav").on("change",function(e){
-			shopAssist.favouritesOnly = e.currentTarget.checked;
-			localStorage.setItem("shopAssist.favouritesOnly",JSON.stringify(shopAssist.favouritesOnly));
-			if (shopAssist.favouritesOnly) {
-				$("#shopAssistTable").addClass("favouritesOnly");
-			} else {
-				$("#shopAssistTable").removeClass("favouritesOnly");
-			}
 		});
 		localStorage.setItem("shopAssist.alerts",JSON.stringify(shopAssist.alerts));
     },
