@@ -122,8 +122,9 @@ let shopAssist = {
 			let costs = "",
 				canBuy = true;
 			Object.entries(slot.baseCost?.resources||{}).forEach(([res, amount])=>{
-				let cost = Math.round(amount*(1-(slot.discount||0)))
-				if (ResourceStock[res]<cost) canBuy = false;
+				let cost = Math.round(amount*(1-(slot.discount||0)));
+				if (ResourceStock[res] == undefined || ResourceStock[res]<cost) 
+					canBuy = false;
 				costs += `<div class="text-right">` + HTML.Format(cost) + srcLinks.icons(res) + "</div>"
 			})
 			h += `<td class="costs ${(canBuy && !limitReached) ? "canBuy" : "canNotBuy"}">
@@ -134,8 +135,9 @@ let shopAssist = {
 				costs = "";
 				canBuy = true;
 				Object.entries(slot.baseCost?.resources||{}).forEach(([res, amount])=>{
-					let cost = Math.round(neededBuys * amount*(1-(slot.discount||0)))
-					if (ResourceStock[res]<cost) canBuy = false;
+					let cost = Math.round(neededBuys * amount*(1-(slot.discount||0)));
+					if (ResourceStock[res] == undefined || ResourceStock[res]<cost) 
+						canBuy = false;
 					costs += `<div class="text-right">${HTML.Format(cost) + srcLinks.icons(res)}</div>`
 				})
 				h += `<td class="costs ${(canBuy && !limitReached) ? "canBuy" : "canNotBuy"}">
@@ -148,8 +150,8 @@ let shopAssist = {
 				costs = "";
 				canBuy = true;
 				Object.entries(slot.baseCost?.resources||{}).forEach(([res, amount])=>{
-					let cost = Math.round(limitedBuys * amount*(1-(slot.discount||0)))
-					if (ResourceStock[res]<cost) canBuy = false;
+					let cost = Math.round(limitedBuys * amount*(1-(slot.discount||0)));
+					if (ResourceStock[res] == undefined || ResourceStock[res]<cost) canBuy = false;
 					costs += `<div class="text-right">` + HTML.Format(cost) + srcLinks.icons(res)+ "</div>"
 				})
 				h += `<td class="costs ${(canBuy && !limitReached) ? "canBuy" : "canNotBuy"}">
@@ -162,8 +164,8 @@ let shopAssist = {
 				costs = "";
 				canBuy = true;
 				Object.entries(slot.baseCost?.resources||{}).forEach(([res, amount])=>{
-					let cost = Math.round(limitedBuys * amount*(1-(slot.discount||0)))
-					if (ResourceStock[res]<cost) canBuy = false;
+					let cost = Math.round(limitedBuys * amount*(1-(slot.discount||0)));
+					if (ResourceStock[res] == undefined || ResourceStock[res]<cost) canBuy = false;
 					if (slot.purchaseLimit?.remainingPurchases != 1 && slot.flag?.value=="increasingCosts") canBuy = false;
 					if (cost>0) costs += (limitedBuys && slot.flag?.value!="increasingCosts" ? `<div class="text-right"> ${HTML.Format(cost) + srcLinks.icons(res)}</div>` : `<div>&nbsp;</div>`)
 				})
