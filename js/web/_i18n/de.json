@@ -1221,6 +1221,7 @@
     "Boxes.ShopAssist.Missing": "Fehlend",
     "Boxes.ShopAssist.All": "Alle",
     "Boxes.ShopAssist.onlyFavourites": "Nur Favoriten",
+    "Boxes.ShopAssist.onlyUnlocked": "Nur Entsperrte",
     "Boxes.scoutingTimes.Title": "Späherstatus",
     "Boxes.idleGame.ActiveTasks": "Aktive Sammelaufgaben",
     "Boxes.idleGame.B": "Milliarden",

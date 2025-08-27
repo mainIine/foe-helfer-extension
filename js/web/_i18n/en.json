@@ -1244,6 +1244,7 @@
     "Boxes.ShopAssist.Missing": "Missing",
     "Boxes.ShopAssist.All": "All",
     "Boxes.ShopAssist.onlyFavourites": "Only Favorites",
+    "Boxes.ShopAssist.onlyUnlocked": "Only Unlocked",
     "Date": "DD/MMM/YYYY",
     "DateShort": "DD/MMM",
     "DateTime": "DD/MMM/YY @ HH:mm:ss a",
