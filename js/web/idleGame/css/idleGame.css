@@ -19,7 +19,7 @@
 }
 
 #idleGameDialog img {
-    width: 22px;
+    width: auto;
     height: 22px;
 }
 
@@ -54,6 +54,9 @@
 #idleGame_Table .town_info span:first-child {
     font-weight: bold;
     color: var(--bright-color);
+}
+#idleGame_Table .town_info img {
+    height: 16px;
 }
 
 #idleGame_Table .flex {
@@ -152,6 +155,5 @@
 
 #idleGameDialog #idleGame_Next td:first-child img {
     height: 29px;
-    width: auto;
     margin: -3px 0;
 }
