@@ -252,14 +252,16 @@ let BattleAssist = {
 	 * @constructor
 	 */
     ShowArmyAdvice: (advice) => {
-        HTML.Box({
-            'id': 'battleAssistArmyAdvice',
-            'title': i18n('Boxes.BattleAssistArmyAdvice.Title'),
-            'auto_close': true,
-            'dragdrop': false,
-            'minimize': false,
-            'settings': 'BattleAssist.ShowArmyAdviceConfig()',
-        });
+        if ($('#battleAssistArmyAdvice').length == 0) {
+            HTML.Box({
+                'id': 'battleAssistArmyAdvice',
+                'title': i18n('Boxes.BattleAssistArmyAdvice.Title'),
+                'auto_close': true,
+                'dragdrop': false,
+                'minimize': false,
+                'settings': 'BattleAssist.ShowArmyAdviceConfig()',
+            });
+        }
         $('#battleAssistArmyAdviceBody').html(`<span>${advice}</span>`);
     },
 
