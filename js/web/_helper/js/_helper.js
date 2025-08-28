@@ -676,7 +676,7 @@ let HTML = {
 		if (number === 0) {
 			return '-';
 		} else {
-			if (typeof number !== 'number' || isNaN(Number(number))) return "" + number;
+			if (typeof number !== 'number' && isNaN(Number(number))) return "" + number;
 			return Number(number).toLocaleString(i18n('Local'));
 		}
 	},
