@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2024 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2025 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -160,7 +160,7 @@ let shopAssist = {
 			//Inventory
 			h += `<td>
 				<div>${stock.stock ? HTML.Format(stock.stock) : ""}</div>
-				<div>${slot.reward.subType == "fragment" ? srcLinks.icons("icon_tooltip_fragment") + HTML.Format(stock.fragments||0)+"/"+slot.reward.requiredAmount : ""}</div>
+				<div>${slot.reward.subType == "fragment" ? srcLinks.icons("icon_tooltip_fragment") + HTML.Format(stock.fragments||0)+"/"+HTML.Format(slot.reward.requiredAmount) : ""}</div>
 			</td>`
 			//Costs single
 			costs = "";
