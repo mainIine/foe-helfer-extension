@@ -425,22 +425,22 @@
 #Productions th.boost.qiactions span, #BoostList table .boost.guild_raids_action_points_collection {
 	background-position: -498px 2px;
 }
-#Productions th.boost.qicoins span, #BoostList .boost.guild_raids_coins_production {
+#Productions th.boost.qicoins span, #BoostList .boost.guild_raids_coins_production, #ProductionsRatingBody span.resicon.guild_raids_coins_production {
 	background-position: -603px 2px;
 }
-#Productions th.boost.qicoins_start span, #BoostList .boost.guild_raids_coins_start {
+#Productions th.boost.qicoins_start span, #BoostList .boost.guild_raids_coins_start, #ProductionsRatingBody span.resicon.guild_raids_coins_start {
 	background-position: -630px 2px;
 }
-#Productions th.boost.qisupplies span, #BoostList .boost.guild_raids_supplies_production {
+#Productions th.boost.qisupplies span, #BoostList .boost.guild_raids_supplies_production, #ProductionsRatingBody span.resicon.guild_raids_supplies_production {
 	background-position: -655px 2px;
 }
-#Productions th.boost.qisupplies_start span, #BoostList .boost.guild_raids_supplies_start {
+#Productions th.boost.qisupplies_start span, #BoostList .boost.guild_raids_supplies_start, #ProductionsRatingBody span.resicon.guild_raids_supplies_start {
 	background-position: -680px 2px;
 }
-#Productions th.boost.qigoods_start span, #BoostList .boost.guild_raids_goods_start {
+#Productions th.boost.qigoods_start span, #BoostList .boost.guild_raids_goods_start, #ProductionsRatingBody span.resicon.guild_raids_goods_start {
 	background-position: -708px 2px;
 }
-#Productions th.boost.qiunits_start span, #BoostList .boost.guild_raids_units_start {
+#Productions th.boost.qiunits_start span, #BoostList .boost.guild_raids_units_start, #ProductionsRatingBody span.resicon.guild_raids_units_start {
 	background-position: -733px 0;
 }
 #Productions #ProductionsBody .tabs ul li.strategy_points a span {
@@ -492,7 +492,7 @@
 #Productions #ProductionsBody .tabs ul li.items a span {
 	background-position: -415px 3px;
 }
-#Productions #ProductionsBody .tabs ul li.guild_raids a span {
+#Productions #ProductionsBody .tabs ul li.guild_raids a span, #ProductionsRatingBody span.resicon.guild_raids {
 	background-position: -576px 2px;
 }
 #Productions .units-sum td:nth-child(1), #Productions .units-sum thead tr:nth-child(2) th:nth-child(1) {

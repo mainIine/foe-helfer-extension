@@ -112,6 +112,12 @@ let Productions = {
 				'goods-next': {order:28,perTile:3,active:false},
 				'fsp': {order:29,perTile:1,active:true},
 				'guild_raids_action_points_collection': {order:29,perTile:6,active:true},
+				'guild_raids_goods_start': {order:30,perTile:6,active:true},
+				'guild_raids_units_start': {order:31,perTile:6,active:true},
+				'guild_raids_coins_start': {order:32,perTile:6,active:true},
+				'guild_raids_coins_production': {order:33,perTile:6,active:true},
+				'guild_raids_supplies_start': {order:34,perTile:6,active:true},
+				'guild_raids_supplies_production': {order:35,perTile:6,active:true},
 			}, overwrite || JSON.parse(localStorage.getItem('Productions.Rating.Data')||"{}"))
 			Productions.Rating.Types = Object.keys(Productions.Rating.Data).sort((a,b)=>Productions.Rating.Data[a].order-Productions.Rating.Data[b].order)
 
@@ -1626,6 +1632,27 @@ let Productions = {
 		if (GoodType.includes('happiness')) {
 			return i18n('Boxes.Productions.Happiness');
 		}
+		else if (GoodType === 'guild_raids_action_points_collection') {
+			return i18n('Boxes.BoostList.guild_raids_action_points_collection');
+        }
+		else if (GoodType === 'guild_raids_units_start') {
+			return i18n('Boxes.BoostList.guild_raids_units_start');
+        }
+		else if (GoodType === 'guild_raids_goods_start') {
+			return i18n('Boxes.BoostList.guild_raids_units_start');
+        }
+		else if (GoodType === 'guild_raids_coins_start') {
+			return i18n('Boxes.BoostList.guild_raids_coins_start');
+        }
+		else if (GoodType === 'guild_raids_coins_production') {
+			return i18n('Boxes.BoostList.guild_raids_coins_production');
+        }
+		else if (GoodType === 'guild_raids_supplies_start') {
+			return i18n('Boxes.BoostList.guild_raids_supplies_start');
+        }
+		else if (GoodType === 'guild_raids_supplies_production') {
+			return i18n('Boxes.BoostList.guild_raids_supplies_production');
+        }
 		else if (GoodType === 'clan_power') {
 			return i18n('Boxes.Productions.GuildPower');
 		}
@@ -1670,9 +1697,6 @@ let Productions = {
         }
 		else if (GoodType === 'fsp') {
 			return i18n('Boxes.Productions.FSP');
-        }
-		else if (GoodType === 'guild_raids_action_points_collection') {
-			return i18n('Boxes.BoostList.guild_raids_action_points_collection');
         }
 		else {
 			if(GoodType && GoodsData[GoodType]){
@@ -1884,16 +1908,21 @@ let Productions = {
 			let colNumber = Object.values(Productions.Rating.Data).filter(x=>x.active && x.perTile!=null).length
 
 			// combine attack and defend boosts if both are active
-			let combinedRatingTypes = []
+			let combinedRatingTypes = [];
+			// combine all non-attack qi boosts
+			let combinedQIRatingTypes = [];
 			for (const type of Productions.Rating.Types) {
+				// skip inactive ones
 				if (!Productions.Rating.Data[type].active || Productions.Rating.Data[type].perTile === null) continue;
+				// filter QI stuff
+				if (type.startsWith('guild_raids_')) {
+					combinedQIRatingTypes.push(type);
+				}
+
 				let secondType = type.replace('att_','def_');
 				if (combinedRatingTypes.find(x => x === type.replace('def_','att_def_'))) continue;
-				if (Productions.Rating.Data[secondType].active) {
+				if (Productions.Rating.Data[secondType].active && !type.startsWith('guild_raids_')) {
 					combinedRatingTypes.push(type.replace('att_','att_def_'));
-				}
-				else {
-					combinedRatingTypes.push(type);
 				}
 			}
 
@@ -1950,6 +1979,18 @@ let Productions = {
 					((Productions.Rating.Data[firstType].perTile + (Productions.Rating.Data[secondType]?.perTile || 0) || 0) /divider)+
 					'</i></th>');
 			}
+			// combined QI stuff
+			let combinedQITileValue = 0;
+			for (const type of combinedQIRatingTypes) {
+				combinedQITileValue += Productions.Rating.Data[type].perTile;
+			}
+			combinedQITileValue = Math.round(combinedQITileValue / combinedQIRatingTypes.length * 100) / 100;
+
+			h.push('<th data-type="ratinglist" style="width:1%" data-export="'+ Productions.GetTypeName('') +'" class="is-number text-center buildingvalue">'+
+			'<span class="resicon guild_raids"></span>'+combinedQITileValue+'</th>');
+			h.push('<th data-type="ratinglist" style="width:1%" data-export="'+ Productions.GetTypeName('') +'" class="is-number text-center tilevalue">'+
+			'<span class="resicon guild_raids"></span>'+combinedQITileValue+'</th>');
+
 			h.push('<th data-type="ratinglist" data-export="Items" class="no-sort items">Items</th>');
 			h.push('</tr>');
 			h.push('</thead>');
@@ -2043,6 +2084,25 @@ let Productions = {
 						h.push('</td>')
 					}
 				}
+
+				// Calc "QI Factor"
+				let combinedQIBuildingValue = 0;
+				let combinedQIBuildingTileValue = 0;
+				for (const type of combinedQIRatingTypes) {
+					combinedQIBuildingValue += building.rating[type];
+					combinedQIBuildingTileValue += building.rating[type+'-tile'];
+				}
+				let roundingFactor = 100;
+				combinedQIBuildingValue = Math.round(combinedQIBuildingValue / combinedQIRatingTypes.length * roundingFactor) / roundingFactor;
+				combinedQIBuildingTileValue = Math.round(combinedQIBuildingTileValue / combinedQIRatingTypes.length * roundingFactor) / roundingFactor;
+
+				h.push(`<td class="text-right buildingvalue" data-number="${combinedQIBuildingValue}">`)
+				h.push(HTML.Format(combinedQIBuildingValue))
+				h.push('</td>')
+
+				h.push(`<td class="text-right tilevalue" data-number="${combinedQIBuildingTileValue}">`)
+				h.push(HTML.Format(combinedQIBuildingTileValue))
+				h.push('</td>')
 
 				h.push('<td class="no-sort items">'+randomItems+'</td>')
 				h.push('</tr>')
@@ -2379,16 +2439,16 @@ let Productions = {
 			}
 			return fsp
 		}
-		else if (type === "guild_raids_action_points_collection") {
+		else if (type.includes("guild_raids_") && !type.includes("att") && !type.includes("def")) {
 			if (building.boosts !== undefined) {
-				let qi_actions = 0
+				let qi_resources = 0
 				for (const boost of building.boosts) {
 					let bType = boost.type.find(x => x === type)
 					if (bType !== undefined) {
-						qi_actions += boost.value		
+						qi_resources += boost.value		
 					}
 				}
-				return qi_actions
+				return qi_resources
 			}
 		}
 		else
