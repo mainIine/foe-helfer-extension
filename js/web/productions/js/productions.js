@@ -112,12 +112,12 @@ let Productions = {
 				'goods-next': {order:28,perTile:3,active:false},
 				'fsp': {order:29,perTile:1,active:true},
 				'guild_raids_action_points_collection': {order:29,perTile:6,active:true},
-				'guild_raids_goods_start': {order:30,perTile:6,active:true},
-				'guild_raids_units_start': {order:31,perTile:6,active:true},
-				'guild_raids_coins_start': {order:32,perTile:6,active:true},
-				'guild_raids_coins_production': {order:33,perTile:6,active:true},
-				'guild_raids_supplies_start': {order:34,perTile:6,active:true},
-				'guild_raids_supplies_production': {order:35,perTile:6,active:true},
+				'guild_raids_goods_start': {order:30,perTile:1,active:true},
+				'guild_raids_units_start': {order:31,perTile:1,active:true},
+				'guild_raids_coins_start': {order:32,perTile:4000,active:true},
+				'guild_raids_coins_production': {order:33,perTile:1,active:true},
+				'guild_raids_supplies_start': {order:34,perTile:4000,active:true},
+				'guild_raids_supplies_production': {order:35,perTile:1,active:true},
 			}, overwrite || JSON.parse(localStorage.getItem('Productions.Rating.Data')||"{}"))
 			Productions.Rating.Types = Object.keys(Productions.Rating.Data).sort((a,b)=>Productions.Rating.Data[a].order-Productions.Rating.Data[b].order)
 
@@ -1639,7 +1639,7 @@ let Productions = {
 			return i18n('Boxes.BoostList.guild_raids_units_start');
         }
 		else if (GoodType === 'guild_raids_goods_start') {
-			return i18n('Boxes.BoostList.guild_raids_units_start');
+			return i18n('Boxes.BoostList.guild_raids_goods_start');
         }
 		else if (GoodType === 'guild_raids_coins_start') {
 			return i18n('Boxes.BoostList.guild_raids_coins_start');
