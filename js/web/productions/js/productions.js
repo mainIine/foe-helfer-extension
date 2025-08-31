@@ -481,9 +481,9 @@ let Productions = {
 			} 
 			else if (building?.chainBuilding !== undefined && building?.chainBuilding?.type === "start") {
 
-				let linkedBuildings = CityMap.hasLinks(building)
+				let linkedBuildings = CityMap.hasLinks(building);
 				if (linkedBuildings.length > 1) {
-					CityMap.createChainedBuilding(linkedBuildings)
+					CityMap.createChainedBuilding(linkedBuildings);
 
 					for (const link of linkedBuildings) {
 						if (link.chainBuilding.type === 'linked') {

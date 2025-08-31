@@ -1187,27 +1187,28 @@ let CityMap = {
 
 	// this creates a pseudo building for effiency ratings etc
 	createChainedBuilding(allLinkedBuildings = []) {
-		let chainedBuilding = allLinkedBuildings[0] // first building is the start building
+		let chainedBuilding = allLinkedBuildings[0]; // first building is the start building
 
 		for (link of allLinkedBuildings) {
-			if (link.chainBuilding.type !== "start") {
-				chainedBuilding.size.width = chainedBuilding.size.width + (link.coords.x !== chainedBuilding.coords.x ? link.size.width : 0)
-				chainedBuilding.size.length = chainedBuilding.size.length + (link.coords.y !== chainedBuilding.coords.y ? link.size.length : 0)
-				chainedBuilding.happiness += link.happiness
+			if (link.chainBuilding.type === "start") continue;
+			chainedBuilding.size.width = chainedBuilding.size.width + (link.coords.x !== chainedBuilding.coords.x ? link.size.width : 0);
+			chainedBuilding.size.length = chainedBuilding.size.length + (link.coords.y !== chainedBuilding.coords.y ? link.size.length : 0);
+			chainedBuilding.happiness += link.happiness;
 
-				if (link.boosts !== undefined) 
-					chainedBuilding.boosts = [...chainedBuilding.boosts || [], ...link.boosts]
-				if (link.production !== undefined && link.production !== false) {
-					// console.log(link.production)
-					chainedBuilding.production = [...chainedBuilding.production, ...link.production]
-				}
-				link.chainBuilding.type = "linked"
+			if (link.boosts !== undefined) 
+				chainedBuilding.boosts = [...chainedBuilding.boosts || [], ...link.boosts];
+			if (link.production !== undefined && link.production !== false) {
+				//console.log(link.production);
+				chainedBuilding.production = [...chainedBuilding.production, ...link.production];
 			}
+			link.chainBuilding.type = "linked";
 		}
 		if (allLinkedBuildings.length > 1) {
-			chainedBuilding.name = chainedBuilding.name + " +" + (allLinkedBuildings.length-1)
+			chainedBuilding.name = chainedBuilding.name + " +" + (allLinkedBuildings.length-1);
 		}
-		return chainedBuilding
+		console.log(3, chainedBuilding);
+		Productions.rateBuilding(chainedBuilding);
+		return chainedBuilding;
 	},
 
 
@@ -1321,17 +1322,20 @@ let CityMap = {
 						type: Boosts.Mapper[abilityBoost.type] || [abilityBoost.type],
 						value: abilityBoost.value,
 					};
-					boosts.push(boost)
+					boosts.push(boost);
 				})
 			}
-			if (metaData.components.AllAge?.boosts) {
-				metaData.components.AllAge.boosts.boosts.forEach(abilityBoost => {
+			let allAgeBoosts = metaData.components.AllAge?.boosts;
+			if (metaData.components.AllAge?.chain?.config?.__class__ !== "ChainStartConfig")
+				allAgeBoosts = metaData.components.AllAge.chain?.config?.bonuses[0];
+			if (allAgeBoosts) {
+				allAgeBoosts.boosts.forEach(abilityBoost => {
 					let boost = {
 						feature: abilityBoost.targetedFeature,
 						type: Boosts.Mapper[abilityBoost.type] || [abilityBoost.type],
 						value: abilityBoost.value,
 					};
-					boosts.push(boost)
+					boosts.push(boost);
 				})
 			}
 		}
@@ -1459,31 +1463,31 @@ let CityMap = {
 
 	// find out if a chain start building has links, return all buildings in an array
 	hasLinks(building, connectedBuildings = [], dirX = 0, dirY = 0) {
-		connectedBuildings.push(building)
+		connectedBuildings.push(building);
 		
 		if (building.chainBuilding?.type === "start") {
 			dirX = building?.chainBuilding?.chainPosX !== 0 ? parseInt(building?.chainBuilding?.chainPosX / Math.abs(building?.chainBuilding?.chainPosX)) : 0 // e.g. (-3/3) || 0
 			dirY = building?.chainBuilding?.chainPosY !== 0 ? parseInt(building?.chainBuilding?.chainPosY / Math.abs(building?.chainBuilding?.chainPosY)) : 0
 		}
-		let x = building.coords.x + dirX
-		let y = building.coords.y + dirY
+		let x = building.coords.x + dirX;
+		let y = building.coords.y + dirY;
 
-		let nextBuilding = CityMap.getBuildingByCoords(x, y)
-		let x1 = x + dirX
-		let y1 = y + dirY
+		let nextBuilding = CityMap.getBuildingByCoords(x, y);
+		let x1 = x + dirX;
+		let y1 = y + dirY;
 		while (nextBuilding === undefined) {
-			nextBuilding = CityMap.getBuildingByCoords(x1, y1)
-			x1 += dirX
-			y1 += dirY
-			if (x1 < 0 || y1 < 0 || x1 > 72 || y1 > 72) break // min and max of current map
+			nextBuilding = CityMap.getBuildingByCoords(x1, y1);
+			x1 += dirX;
+			y1 += dirY;
+			if (x1 < 0 || y1 < 0 || x1 > 72 || y1 > 72) break; // min and max of current map
 		}
 
-		if (x < 0 || x < 0 || y > 72 || y > 72) return connectedBuildings // min and max of current map
+		if (x < 0 || x < 0 || y > 72 || y > 72) return connectedBuildings; // min and max of current map
 		else {
 			if (nextBuilding === undefined || nextBuilding.chainBuilding === undefined || nextBuilding.chainBuilding?.name !== building.chainBuilding.name || nextBuilding.chainBuilding?.type === "start")
-				return connectedBuildings
+				return connectedBuildings;
 
-			return this.hasLinks(nextBuilding, connectedBuildings, dirX, dirY)
+			return this.hasLinks(nextBuilding, connectedBuildings, dirX, dirY);
 		}
 	},
 
@@ -1640,7 +1644,19 @@ let CityMap = {
 		}
 		else if (metaData.__class__ === "GenericCityEntity") {
 			// fyi: generic_building supplies and coins are doubled when motivated if they do not need motivation
-			let production = metaData.components[era]?.production || metaData.components.AllAge.production // currently it is either allage or era, never both
+			let production = metaData.components[era]?.production || metaData.components.AllAge.production; // currently it is either allage or era, never both
+			if (metaData.components.AllAge?.chain !== undefined && metaData.components.AllAge?.chain?.config?.__class__ !== "ChainStartConfig") {
+				let chainProduction = metaData.components.AllAge?.chain?.config?.bonuses[0]?.productions[0]?.playerResources?.resources;
+				let resource = {
+					type: "resources",
+					needsMotivation: false,
+					doubleWhenMotivated: false,
+					resources: chainProduction,
+				}
+				if (chainProduction !== undefined)
+					productions.push(resource);
+				return productions || false;
+			}
 			if (production) {
 				if (metaData.type === "production") { // production buildings do not have a default production
 					for (product of production.options) {
@@ -1746,7 +1762,7 @@ let CityMap = {
 					else {
 						console.log("CityMap.setAllProductions() is missing an option for ",metaData.name)
 					}
-					productions.push(resource)
+					productions.push(resource);
 				});
 			}
 			if (productions.length > 0)
