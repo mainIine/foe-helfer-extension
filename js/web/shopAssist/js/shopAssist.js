@@ -44,6 +44,10 @@ FoEproxy.addFoeHelperHandler('InventoryUpdated', () => {
 	shopAssist.updateDialog();
 });
 
+FoEproxy.addFoeHelperHandler('ActiveMapUpdated', () => {
+	$('#shopAssist').remove();
+});
+
 FoEproxy.addFoeHelperHandler('ResourcesUpdated', () => {
 	shopAssist.checkAlerts();
 });
@@ -409,7 +413,7 @@ let shopAssist = {
 			if (slot.purchaseLimit?.maxPurchases && !slot.purchaseLimit.remainingPurchases) continue;
 			let canBuy = true;
 			for (let [res, amount] of Object.entries(slot.baseCost?.resources||{})) {
-				let cost = Math.round(amount*(1-(slot.discount||0)))
+				let cost = Math.ceil(amount*(1-(slot.discount||0)))
 				if (ResourceStock[res] > cost) continue
 				canBuy = false;
 				break;
