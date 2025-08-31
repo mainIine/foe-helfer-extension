@@ -1915,13 +1915,13 @@ let Productions = {
 				// skip inactive ones
 				if (!Productions.Rating.Data[type].active || Productions.Rating.Data[type].perTile === null) continue;
 				// filter QI stuff
-				if (type.startsWith('guild_raids_')) {
-					combinedQIRatingTypes.push(type);
-				}
+				//if (type.startsWith('guild_raids_')) {
+				//	combinedQIRatingTypes.push(type);
+				//}
 
 				let secondType = type.replace('att_','def_');
 				if (combinedRatingTypes.find(x => x === type.replace('def_','att_def_'))) continue;
-				if (Productions.Rating.Data[secondType].active && !type.startsWith('guild_raids_')) {
+				if (Productions.Rating.Data[secondType].active) { //} && !type.startsWith('guild_raids_')) {
 					combinedRatingTypes.push(type.replace('att_','att_def_'));
 				}
 			}
@@ -1980,16 +1980,16 @@ let Productions = {
 					'</i></th>');
 			}
 			// combined QI stuff
-			let combinedQITileValue = 0;
-			for (const type of combinedQIRatingTypes) {
-				combinedQITileValue += Productions.Rating.Data[type].perTile;
-			}
-			combinedQITileValue = Math.round(combinedQITileValue / combinedQIRatingTypes.length * 100) / 100;
+			//let combinedQITileValue = 0;
+			//for (const type of combinedQIRatingTypes) {
+			//	combinedQITileValue += Productions.Rating.Data[type].perTile;
+			//}
+			//combinedQITileValue = Math.round(combinedQITileValue / combinedQIRatingTypes.length * 100) / 100;
 
-			h.push('<th data-type="ratinglist" style="width:1%" data-export="'+ Productions.GetTypeName('') +'" class="is-number text-center buildingvalue">'+
-			'<span class="resicon guild_raids"></span>'+combinedQITileValue+'</th>');
-			h.push('<th data-type="ratinglist" style="width:1%" data-export="'+ Productions.GetTypeName('') +'" class="is-number text-center tilevalue">'+
-			'<span class="resicon guild_raids"></span>'+combinedQITileValue+'</th>');
+			//h.push('<th data-type="ratinglist" style="width:1%" data-export="'+ Productions.GetTypeName('') +'" class="is-number text-center buildingvalue">'+
+			//'<span class="resicon guild_raids"></span>'+combinedQITileValue+'</th>');
+			//h.push('<th data-type="ratinglist" style="width:1%" data-export="'+ Productions.GetTypeName('') +'" class="is-number text-center tilevalue">'+
+			//'<span class="resicon guild_raids"></span>'+combinedQITileValue+'</th>');
 
 			h.push('<th data-type="ratinglist" data-export="Items" class="no-sort items">Items</th>');
 			h.push('</tr>');
@@ -2086,7 +2086,7 @@ let Productions = {
 				}
 
 				// Calc "QI Factor"
-				let combinedQIBuildingValue = 0;
+				/*let combinedQIBuildingValue = 0;
 				let combinedQIBuildingTileValue = 0;
 				for (const type of combinedQIRatingTypes) {
 					combinedQIBuildingValue += building.rating[type];
@@ -2102,7 +2102,7 @@ let Productions = {
 
 				h.push(`<td class="text-right tilevalue" data-number="${combinedQIBuildingTileValue}">`)
 				h.push(HTML.Format(combinedQIBuildingTileValue))
-				h.push('</td>')
+				h.push('</td>')*/
 
 				h.push('<td class="no-sort items">'+randomItems+'</td>')
 				h.push('</tr>')
