@@ -1160,17 +1160,26 @@ let CityMap = {
 
 	// returns chainId (string), returns undefined if not a chain building
 	setChainBuilding(metaData) {
-		let chainId = undefined
-		let type = null, x = 0, y = 0
-		metaData.abilities.forEach(ability => {
-			if (ability.chainId) {
-				chainId = ability.chainId
-				type = (ability.__class__ === "ChainStartAbility" ? "start" : "link")
-				// currently all chains only have ONE side where you can attach builidings (except mughals main building and hippodrome tracks)
-				x = ability.linkPositions[0].topLeftPoint.x || 0 
-				y = ability.linkPositions[0].topLeftPoint.y || 0 
-			}
-		});
+		let chainId = undefined;
+		let type = null, x = 0, y = 0;
+		if (metaData.__class__ === "GenericCityEntity") {
+			chainId = metaData.components?.AllAge?.chain?.chainId;
+			type = (metaData.components?.AllAge?.chain?.config?.__class__ === "ChainStartConfig" ? "start" : "link");
+			// currently all chains only have ONE side where you can attach builidings (except mughals main building and hippodrome tracks)
+			x = metaData.components?.AllAge?.chain?.linkPositions[0].topLeftPoint.x || 0;
+			y = metaData.components?.AllAge?.chain?.linkPositions[0].topLeftPoint.y || 0;
+		}
+		else {
+			metaData.abilities.forEach(ability => {
+				if (ability.chainId) {
+					chainId = ability.chainId
+					type = (ability.__class__ === "ChainStartAbility" ? "start" : "link");
+					// currently all chains only have ONE side where you can attach builidings (except mughals main building and hippodrome tracks)
+					x = ability.linkPositions[0].topLeftPoint.x || 0;
+					y = ability.linkPositions[0].topLeftPoint.y || 0;
+				}
+			});
+		}
 		if (chainId !== undefined)
 			return { name: chainId, type: type, chainPosX: x, chainPosY: y }
 	},
