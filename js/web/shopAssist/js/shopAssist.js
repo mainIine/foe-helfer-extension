@@ -14,7 +14,7 @@
 FoEproxy.addHandler('ItemStoreService', 'getStore', (data, postData) => {
 	shopAssist.slots = data.responseData.slots;
 	shopAssist.storeId = data.responseData.id;
-	shopAssist.unlockProgress = Object.assign({},...data.responseData.unlockConditionsProgress.map(x=>({[x.subtype]:x.amount})));
+	shopAssist.unlockProgress = Object.assign({},...data.responseData.unlockConditionsProgress.map(x=>({[x.type+"#"+(x.subtype||x.context)]:x.amount})));
 	shopAssist.alertsTriggered = {};
 	shopAssist.checkAlerts();
 	shopAssist.Show();
@@ -34,7 +34,7 @@ FoEproxy.addHandler("ItemStoreService","updateUnlockConditions", (data, postData
 	for (let shop of data.responseData) {
 		if (shop.id != shopAssist.storeId) continue;
 		for (let cond of shop.unlockConditionsProgress) {
-			shopAssist.unlockProgress[cond.subtype] += cond.amount;
+			shopAssist.unlockProgress[cond.type + "#" + (cond.subtype||cond.context)] += cond.amount;
 		}
 	}
 	shopAssist.timeout = setTimeout(shopAssist.Show,100);
@@ -128,11 +128,18 @@ let shopAssist = {
 			let hasLock = ('unlockConditions' in slot) && (slot.unlockConditions.length > 0);
 			let unlocked = true;
 			for (let u of slot.unlockConditions||[]) {
-				for (let [r,amount] of Object.entries(u?.resourcesVO?.resources||{})) {
-					if ((shopAssist.unlockProgress?.[r]||0) < amount) {
-						unlocked = false;
-						break;
+				if (u.type == "resource_spend") 
+					for (let [r,amount] of Object.entries(u?.resourcesVO?.resources||{})) {
+						if ((shopAssist.unlockProgress?.[u.type+"#"+r]||0) < amount) {
+							unlocked = false;
+							break;
+						}
 					}
+				else if (u.type == "grand_prize_progress") {
+					if ((shopAssist.unlockProgress?.[u.type+"#"+u.context]||0) < u.amount) {
+							unlocked = false;
+							break;
+						}
 				}
 			}
 
@@ -152,8 +159,12 @@ let shopAssist = {
 				} else {
 					costs += "🔒";
 					for (let u of slot.unlockConditions||[]) {
-						for (let [r,amount] of Object.entries(u?.resourcesVO?.resources||{})) {
-							costs += `<div class="text-right">` + HTML.Format((shopAssist.unlockProgress?.[r])||0) + "/" + amount + srcLinks.icons(r) + "</div>"
+						if (u.type == "resource_spend") 
+							for (let [r,amount] of Object.entries(u?.resourcesVO?.resources||{})) {
+								costs += `<div class="text-right">` + HTML.Format((shopAssist.unlockProgress?.[u.type + "#"+r])||0) + "/" + amount + srcLinks.icons(r) + "</div>"
+							}
+						else if (u.type == "grand_prize_progress") {
+								costs += `<div class="text-right">` + HTML.Format((shopAssist.unlockProgress?.[u.type + "#" + u.context])||0) + "/" + u.amount + srcLinks.regEx(RegExp(`store.*?${u.context.replace("_event","")}.*?grand_prize`)) + "</div>"
 						}
 					}
 				}
