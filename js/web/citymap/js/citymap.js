@@ -492,20 +492,25 @@ let CityMap = {
 						out += (building.production.guild_raids_money ? '<span class="prod guild_raids_money">'+HTML.Format(building.production.guild_raids_money*-1.0)+'</span> ' : "")	
 					}
 					else {
-						let eBoost = CityMap.QIStats.euphoriaBoost
-						if (building.type === "main_building"){
-							out += (building.production.guild_raids_supplies ? '<span class="prod guild_raids_supplies">'+HTML.Format(Math.round(building.production.guild_raids_supplies))+'</span> ' : " ")
-							out += (building.production.guild_raids_money ? '<span class="prod guild_raids_money">'+HTML.Format(Math.round(building.production.guild_raids_money))+'</span> ' : "")
-						} else{
-							out += (building.production.guild_raids_supplies ? '<span class="prod guild_raids_supplies">'+HTML.Format(Math.round(building.production.guild_raids_supplies*(eBoost+supply_boost)))+'</span> ' : " ")
-							out += (building.production.guild_raids_money ? '<span class="prod guild_raids_money">'+HTML.Format(Math.round(building.production.guild_raids_money*(eBoost+coin_boost)))+'</span> ' : "")
+						let eBoost = CityMap.QIStats.euphoriaBoost;
+						if (building.type === "main_building") 
+							eBoost = 1;
+						console.log(building.name, building.production);
+						for (let [prod, value] of Object.entries(building.production)) {
+							let boost = 0;
+							if (prod.includes('suppl'))
+								boost = supply_boost;
+							else if (prod.includes('coin'))
+								boost = coin_boost;
+
+							out += srcLinks.icons(prod)+HTML.Format(Math.round(value*(eBoost+boost)))+" ";
 						}
 					}
 				}
 				if (building.boosts !== null) {
-					for (let i in building.boosts) {
-						let boost = building.boosts[i]
-						out += '<span class="prod '+boost.type+'">' + boost.value + '</span> '
+					for (let boost of building.boosts) {
+						let percentChar = (boost.type.includes("action_points") ? "" : "%")
+						out += srcLinks.icons(boost.type)+boost.value+percentChar;
 					}
 				}
 				out += "</td></tr>"
