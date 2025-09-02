@@ -269,20 +269,14 @@ let Popgame = {
 
     hideDrops: () => {
         if ($('#Popgame').length === 0) return
-        let c=0;
-        let drops = $('.PGdroppable');
-        h=$('#Popgame')[0].clientHeight;
-        if (drops.length >0) {
-            for (let drop of drops) {
-                if((h - drop.offsetTop) < 65 && (h - drop.offsetTop) > 50) {
-                    c+=1;
-                    $(`#${drop.id}`).fadeOut('fast');
-                };
-            }
-        }
-
-        if (c>0) setTimeout(Popgame.hideDrops,250);
-    },
+        let drops = $(".PGcolumn").map(function() {
+            var last = $(this).find(".PGcell:visible").last();
+            return last.hasClass("PGdroppable") ? last[0] : null;
+        });
+        drops.fadeOut('fast');
+        if (drops.length > 0) 
+            setTimeout(Popgame.hideDrops,250);
+        },
 
     resetTempChest: () => {
         if (Popgame.tempC !== null) {
