@@ -2354,16 +2354,16 @@ let Productions = {
 
 		for (const type of Object.keys(Productions.Rating.Data)) {
 			if (Productions.Rating.Data[type].active) {
-				let desiredValuePerTile = parseFloat(Productions.Rating.Data[type].perTile) || 0
+				let desiredValuePerTile = parseFloat(Productions.Rating.Data[type].perTile) || 0;
 				if (desiredValuePerTile !== null && !isNaN(desiredValuePerTile)) {
-					let typeValue = Productions.getRatingValueForType(building, type) || 0 // production amount
-					let valuePerTile = typeValue / size
+					let typeValue = Productions.getRatingValueForType(building, type) || 0; // production amount
+					let valuePerTile = typeValue / size;
 
 					if (valuePerTile !== 0 && desiredValuePerTile !== 0) 
-						score.totalScore += (valuePerTile / desiredValuePerTile)
+						score.totalScore += (valuePerTile / desiredValuePerTile);
 
-					score[type] = ( Math.round( typeValue * 100 ) / 100 ) || 0
-					score[type+'-tile'] = valuePerTile || 0
+					score[type] = ( Math.round( typeValue * 100 ) / 100 ) || 0;
+					score[type+'-tile'] = valuePerTile || 0;
 				}
 			}
 		}
@@ -2377,17 +2377,20 @@ let Productions = {
 		else if (type === "population")
 			return building.population
 		else if (type.includes('att') || type.includes('def')) {
-			if (building.boosts !== undefined) {
-				let bsum=0
-				for (const boost of building.boosts) {
-					let feature = type.split('-')[1]
-					let bType = boost.type.find(x => x === type.split('-')[0])
-					if (bType !== undefined && feature === boost.feature) {
-						bsum+=boost.value
-					}
-				}
-				return bsum
+			if (building.boosts === undefined) return 0;
+
+			let bsum = 0
+			for (const boost of building.boosts) {
+
+				let feature = type.split('-')[1];
+				if (feature !== boost.feature) continue;
+
+				let bType = boost.type.find(x => x === type.split('-')[0]);
+				if (bType === undefined) continue;
+
+				bsum += boost.value;
 			}
+			return bsum;
 		}
 		else if (type === "strategy_points" || type === "medals" || type === "premium" || type === "money" || type === "supplies" || type === "units" || type === "clan_goods" || type === "clan_power")
 			return Productions.getBuildingProductionByCategory(false, building, type).amount
