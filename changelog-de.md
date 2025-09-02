@@ -1,8 +1,47 @@
 ## Changelog - Extension
 
-##### 3.11.8.0
+##### 3.12.0.0
+**Neu**
+- Shop Assistent
+	- kann in den Einstellungen aktiviert werden
+	- listet, wieviel von den Angeboten bereits im Inventar verfügbar ist
+	- listet wieviele Fragmente für eine Vervollständigung fehlen und wieviel das kosten würde
+	- Es können Favoriten angegegeben werden und die Ansicht kann auf die Favoriten beschränkt werden
+	- Gesperrte Gegenstände können ausgeblendet werden
+	- Es kann für die Angebote ein Alarm gesetzt werden - sobald genug Währung für den Gegenstand verfügbar ist, erscheint eine Meldung
 
+**Update** 
+- Design des Helpers wurde an einigen Stellen überarbeitet 
+	- Boxen können nicht mehr größer sein, als das Browserfenster
 
+- Effizienzübersicht
+	- Verarbeitung der Kettengebäude wurde an neue Datenstruktur angepasst
+	- QI Bonis wurden ergänzt
+	- beim Besuch einer fremden Stadt werden nun Inventarinhalte nicht mehr dargestellt
+
+- Profil
+	- Gildengüter-Boost hinzugefügt
+	- Design des Profils kann durch Klick auf das Avatarbild verändert werden
+	- Menu-Eintrag zum Aufruf des Profils hinzugefügt
+
+- Idle Game
+	- Verarbeitung der Daten wurde angepasst an veränderte Datenstruktur
+
+- Einstellungen
+	- Event Assistenten können nun einzeln de-/aktiviert werden
+
+- Einheiten Modul
+	- wurde reaktiviert
+
+- Armee Empfehlungen
+	- kann nun auch in der PvP Arena genutzt werden 
+
+**Bugfix**
+- Popgame
+	- Anpassung an verändertes Event-Fenster
+
+- Effizienzübersicht
+	- Güterauswertung korrigiert
 
 ---
 
