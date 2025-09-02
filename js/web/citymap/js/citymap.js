@@ -1206,8 +1206,7 @@ let CityMap = {
 		if (allLinkedBuildings.length > 1) {
 			chainedBuilding.name = chainedBuilding.name + " +" + (allLinkedBuildings.length-1);
 		}
-		console.log(3, chainedBuilding);
-		Productions.rateBuilding(chainedBuilding);
+		chainedBuilding.rating = Productions.rateBuilding(chainedBuilding);
 		return chainedBuilding;
 	},
 
