@@ -153,19 +153,15 @@ let shopAssist = {
 			h+=`<td data-ids="${buildingList}" class="${buildingList.length>0?"helperTT":""}" data-callback_tt="shopAssist.TT">${(slot.reward.target?srcLinks.icons("booster_target_"+slot.reward.target):"")+slot.reward.name}</td>`
 			// Lock conditions
 			let costs = "";
-			if (hasLock) {
-				if (unlocked) {
-					costs += "🔓"
-				} else {
-					costs += "🔒";
-					for (let u of slot.unlockConditions||[]) {
-						if (u.type == "resource_spend") 
-							for (let [r,amount] of Object.entries(u?.resourcesVO?.resources||{})) {
-								costs += `<div class="text-right">` + HTML.Format((shopAssist.unlockProgress?.[u.type + "#"+r])||0) + "/" + amount + srcLinks.icons(r) + "</div>"
-							}
-						else if (u.type == "grand_prize_progress") {
-								costs += `<div class="text-right">` + HTML.Format((shopAssist.unlockProgress?.[u.type + "#" + u.context])||0) + "/" + u.amount + srcLinks.regEx(RegExp(`store.*?${u.context.replace("_event","")}.*?grand_prize`)) + "</div>"
+			if (hasLock && !unlocked) {
+				costs += "🔒";
+				for (let u of slot.unlockConditions||[]) {
+					if (u.type == "resource_spend") 
+						for (let [r,amount] of Object.entries(u?.resourcesVO?.resources||{})) {
+							costs += `<div class="text-right">` + HTML.Format((shopAssist.unlockProgress?.[u.type + "#"+r])||0) + "/" + amount + srcLinks.icons(r) + "</div>"
 						}
+					else if (u.type == "grand_prize_progress") {
+							costs += `<div class="text-right">` + HTML.Format((shopAssist.unlockProgress?.[u.type + "#" + u.context])||0) + "/" + u.amount + srcLinks.regEx(RegExp(`store.*?${u.context.replace("_event","")}.*?grand_prize`)) + "</div>"
 					}
 				}
 			}
