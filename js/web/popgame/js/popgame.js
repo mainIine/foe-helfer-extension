@@ -274,7 +274,7 @@ let Popgame = {
         h=$('#Popgame')[0].clientHeight;
         if (drops.length >0) {
             for (let drop of drops) {
-                if((h - drop.offsetTop) < 150 && (h - drop.offsetTop) > 130) {
+                if((h - drop.offsetTop) < 65 && (h - drop.offsetTop) > 50) {
                     c+=1;
                     $(`#${drop.id}`).fadeOut('fast');
                 };
