@@ -17,6 +17,7 @@ FoEproxy.addHandler('ItemStoreService', 'getStore', (data, postData) => {
 	shopAssist.unlockProgress = Object.assign({},...data.responseData.unlockConditionsProgress.map(x=>({[x.type+"#"+(x.subtype||x.context)]:x.amount})));
 	shopAssist.alertsTriggered = {};
 	shopAssist.checkAlerts();
+	shopAssist.alertsTriggered = {};
 	shopAssist.Show();
 });
 
