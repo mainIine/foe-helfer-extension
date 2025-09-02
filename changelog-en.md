@@ -1,8 +1,47 @@
 ## Changelog - Extension
 
-##### 3.11.8.0
+##### 3.12.0.0
+**New**
+- Shop Assist
+	- can be activated in settings
+	- lists, how much of the offer already is in inventory
+	- lists, how many fragments are needed to complete an item and how much that would cost
+	- items can be set as favourites and the view can be limited to the favourites
+	- locked offers can be hidden from the list
+	- an alert can be set for offers - it will go off when enough currency is available to buy the offer
 
+**Update** 
+- Helper design was reworked in some places 
+	- boxes are now limited in size to browser window size
 
+- Efficiency overview
+	- processing of chain buildings adapted to updated data structure
+	- added QI bonuses
+	- inventory items will not be displayed when opening the efficiency overview for another player's city
+
+- Profile
+	- added guild goods boost
+	- profil theme can be changed by clicking the avatar
+	- added menu entry to display the profile
+
+- Idle Game
+	- updated processing to changed data structure
+
+- Settings
+	- Event Assistants can now be de-/activated separately
+
+- Units module
+	- reactivated
+
+- Army Advice
+	- can now be used as well in PvP Arena 
+
+**Bugfix**
+- Popgame
+	- Adapted to changed Event Window
+
+- Efficiency Overview
+	- corrected goods assessment
 
 ---
 
