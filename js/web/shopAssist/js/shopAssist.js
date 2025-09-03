@@ -142,6 +142,12 @@ let shopAssist = {
 							break;
 						}
 				}
+				else if (u.type == "rarity") {
+					if ((shopAssist.unlockProgress?.[u.type+"#"+u.rarityPurchase.rarity.value]||0) < u.rarityPurchase.amount) {
+							unlocked = false;
+							break;
+						}
+				}
 			}
 
 			//Favourites + Alerts
@@ -163,6 +169,9 @@ let shopAssist = {
 						}
 					else if (u.type == "grand_prize_progress") {
 							costs += `<div class="text-right">` + HTML.Format((shopAssist.unlockProgress?.[u.type + "#" + u.context])||0) + "/" + u.amount + srcLinks.regEx(RegExp(`store.*?${u.context.replace("_event","")}.*?grand_prize`)) + "</div>"
+					}
+					else if (u.type == "rarity") {
+							costs += `<div class="text-right">` + HTML.Format((shopAssist.unlockProgress?.[u.type + "#" + u.rarityPurchase.rarity.value])||0) + "/" + u.rarityPurchase.amount + '<img src="' + srcLinks.get("/item_store/store_shared/item_store_rarity_icon_common.png",true) + '"></div>'
 					}
 				}
 			}
