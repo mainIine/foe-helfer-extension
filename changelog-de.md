@@ -2,8 +2,14 @@
 
 ##### 3.12.0.1
 
+**Update**
+- Shop Assistent
+	- Freischaltbedingung "Getätigte Käufe der Seltenheit X" hinzugefügt
+
+**Bugfix**
 - Effizienzübersicht
 	- Boosts funktionieren wieder richtig
+
 
 ---
 
