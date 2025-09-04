@@ -2,6 +2,10 @@
 
 ##### 3.12.0.1
 
+**Update**
+- Shop Assist
+	- added unlock condition "Offers of rarity X accepted."
+
 **Bugfix**
 - Efficiency Overview
 	- Fixed boosts
