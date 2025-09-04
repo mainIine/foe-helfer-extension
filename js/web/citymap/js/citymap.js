@@ -1325,7 +1325,7 @@ let CityMap = {
 				})
 			}
 			let allAgeBoosts = metaData.components.AllAge?.boosts;
-			if (metaData.components.AllAge?.chain?.config?.__class__ !== "ChainStartConfig")
+			if (metaData.components.AllAge?.chain?.config?.__class__ !== "ChainStartConfig" && isChain)
 				allAgeBoosts = metaData.components.AllAge.chain?.config?.bonuses[0];
 			if (allAgeBoosts) {
 				allAgeBoosts.boosts.forEach(abilityBoost => {
