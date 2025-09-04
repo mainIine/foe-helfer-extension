@@ -1,5 +1,12 @@
 ## Changelog - Extension
 
+##### 3.12.0.1
+
+- Effizienzübersicht
+	- Boosts funktionieren wieder richtig
+
+---
+
 ##### 3.12.0.0
 **Neu**
 - Shop Assistent
