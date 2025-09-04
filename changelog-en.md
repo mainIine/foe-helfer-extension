@@ -1,5 +1,13 @@
 ## Changelog - Extension
 
+##### 3.12.0.1
+
+**Bugfix**
+- Efficiency Overview
+	- Fixed boosts
+
+---
+
 ##### 3.12.0.0
 **New**
 - Shop Assist
