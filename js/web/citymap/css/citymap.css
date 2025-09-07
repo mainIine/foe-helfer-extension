@@ -81,12 +81,34 @@
 
 .outpost.guild_raids #sidebar {
 	display: block;
-	width: 400px;
+	width: 420px;
 	padding: 3px;
 }
 
+.outpost.guild_raids .qiSums {
+	backdrop-filter: blur(1px) brightness(0.8);
+	padding: 7px;
+}
+.outpost.guild_raids .qiSums span {
+	padding: 2px;
+}
+
+.outpost.guild_raids .qiSums .productions, .outpost.guild_raids .qiSums .boosts {
+	display: flex;
+	justify-content: center;
+	gap: 2px;
+}
+
+.outpost.guild_raids #sidebar .qiBuildings {
+	font-size: 90%;
+}
+
+.outpost.guild_raids #sidebar .qiBuildings img, .outpost.guild_raids .qiSums .boosts img {
+	height: 20px;
+}
+
 .outpost.guild_raids #map-container, .outpost.guild_raids #city-map-menu {
-	right: 400px;
+	right: 420px;
 }
 
 #city-map-overlayBody .prod::before {
