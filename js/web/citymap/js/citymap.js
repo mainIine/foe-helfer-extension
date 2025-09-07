@@ -380,108 +380,111 @@ let CityMap = {
 
 
 	showQIStats: () => {
-		if (!CityMap.QIData) return
-		let boosts = Boosts.Sums
-		let noSettlement = Boosts.noSettlement
-		let supply_boost = boosts.guild_raids_supplies_production*0.01
-		let coin_boost = boosts.guild_raids_coins_production*0.01
-		let buildings = Object.values(CityMap.QIData)
-		let population = 0, totalPopulation = 0, euphoria = 0, euphoriaBoost = 0, supplies = 0, money = 0
-		let actions = boosts.guild_raids_action_points_collection
-		let att_def_boost_attacker = boosts["guild_raids-att_boost_attacker"] - noSettlement["guild_raids-att_boost_attacker"]
-		let att_def_boost_defender = boosts["guild_raids-att_boost_defender"] - noSettlement["guild_raids-att_boost_defender"]
+		if (!CityMap.QIData) return;
+		let buildings = Object.values(CityMap.QIData);
+		CityMap.QIStats = { 
+			resources: {},
+			boosts: {},
+			euphoria: 0,
+			euphoriaBoost: 1.5,
+			totalPopulation: 0,
+			availablePopulation: 0
+		};
+
+		// gather QIStats
 		for (let b in buildings) {
 			let building = CityMap.setQIBuilding(MainParser.CityEntities[buildings[b]['cityentity_id']])
-			if (building.type !== "impediment" && building.type !== "street") {
-				population += building.population
-				totalPopulation += (building.population > 0 ? building.population : 0)
-				euphoria += building.euphoria
-			}
-		}
-		let euphoriaFactor = euphoria/totalPopulation
-		if (euphoriaFactor <= 0.2)
-			euphoriaBoost = 0.2
-		else if (euphoriaFactor > 0.20 && euphoriaFactor <= 0.60)
-			euphoriaBoost = 0.6
-		else if (euphoriaFactor > 0.60 && euphoriaFactor <= 0.80)
-			euphoriaBoost = 0.8
-		else if (euphoriaFactor > 0.80 && euphoriaFactor <= 1.20)
-			euphoriaBoost = 1
-		else if (euphoriaFactor > 1.20 && euphoriaFactor <= 1.40)
-			euphoriaBoost = 1.1
-		else if (euphoriaFactor > 1.40 && euphoriaFactor < 2.0)
-			euphoriaBoost = 1.2
-		else 
-			euphoriaBoost = 1.5
-
-		for (let b of buildings) {
-			let building = CityMap.setQIBuilding(MainParser.CityEntities[b.cityentity_id])
-			if (building.type !== "impediment" && building.type !== "street") {
-				if (building.production !== null) {
-					if (building.type !== "military" && building.type !== "goods" && building.type !== "main_building") {
-						if (building.production.guild_raids_supplies)
-							supplies += Math.round(building.production.guild_raids_supplies*(euphoriaBoost+supply_boost))
-						if (building.production.guild_raids_money)
-							money += Math.round(building.production.guild_raids_money*(euphoriaBoost+coin_boost))
-					}
+			if (building.boosts) {
+				for (let boost of building.boosts) {
+					if (CityMap.QIStats.boosts[boost.type] === undefined)
+						CityMap.QIStats.boosts[boost.type] = boost.value;
+					else 
+						CityMap.QIStats.boosts[boost.type] += boost.value;
 				}
 			}
+			if (building.production) {
+				for (let [type, value] of Object.entries(building.production)) {
+					// dont include townhall, because boosts dont apply
+					if (building.type === "main_building") continue;
+					if (CityMap.QIStats.resources[type] === undefined)
+						CityMap.QIStats.resources[type] = value;
+					else 
+						CityMap.QIStats.resources[type] += value;
+				}
+			}
+			CityMap.QIStats.euphoria += building.euphoria || 0;
+			CityMap.QIStats.totalPopulation += (building.population >= 0 ? building.population : 0);
+			CityMap.QIStats.availablePopulation += building.population;
 		}
 
-		CityMap.QIStats = {
-			population: population,
-			totalPopulation: totalPopulation,
-			euphoria: euphoria,
-			euphoriaBoost: euphoriaBoost,
-			money: money,
-			supplies: supplies,
-			att_def_boost_attacker: att_def_boost_attacker,
-			att_def_boost_defender: att_def_boost_defender,
-			actions: actions,
-		}
+		let euphoriaFactor = CityMap.QIStats.euphoria/CityMap.QIStats.totalPopulation;
+		CityMap.QIStats.euphoriaBoost = 1.5;
+		if (euphoriaFactor <= 0.2) CityMap.QIStats.euphoriaBoost = 0.2;
+		else if (euphoriaFactor > 0.20 && euphoriaFactor <= 0.60) CityMap.QIStats.euphoriaBoost = 0.6;
+		else if (euphoriaFactor > 0.60 && euphoriaFactor <= 0.80) CityMap.QIStats.euphoriaBoost = 0.8;
+		else if (euphoriaFactor > 0.80 && euphoriaFactor <= 1.20) CityMap.QIStats.euphoriaBoost = 1;
+		else if (euphoriaFactor > 1.20 && euphoriaFactor <= 1.40) CityMap.QIStats.euphoriaBoost = 1.1;
+		else if (euphoriaFactor > 1.40 && euphoriaFactor < 2.0) CityMap.QIStats.euphoriaBoost = 1.2;
 
-		out = '<div class="text-center" style="padding-bottom: 10px">'
-		out += '<p><i>'+i18n('Boxes.CityMap.QIHint')+'</i></p>'
-		out += '<span class="prod population">'+CityMap.QIStats.population+'/'+CityMap.QIStats.totalPopulation+'</span> '
-		out += '<span class="prod happiness">'+Math.round(CityMap.QIStats.euphoriaBoost*100)+'%</span> <br>'
-		out += '<span class="prod guild_raids_money">'+HTML.Format(CityMap.QIStats.money)+'</span> + '
-		out += '<span class="prod guild_raids_supplies">'+HTML.Format(CityMap.QIStats.supplies)+'</span> '+i18n('Boxes.CityMap.QICycle')+'<br>'
-		out += '<span class="prod att_def_boost_attacker">'+CityMap.QIStats.att_def_boost_attacker+'</span> '
-		out += '<span class="prod att_def_boost_defender">'+CityMap.QIStats.att_def_boost_defender+'</span> '+'<br>'
-		out += '<span class="prod guild_raids_action_points_collection">'+'+'+CityMap.QIStats.actions+'</span> '+i18n('Boxes.CityMap.QIActionRechargeCycle')
+		out = '<div class="qiSums">';
+		out += '<p class="text-center"><i>'+i18n('Boxes.CityMap.QIHint')+'</i></p>';
+		out += '<div class="text-right" style="margin-bottom: 10px"><span class="prod population">'+CityMap.QIStats.availablePopulation+'/'+CityMap.QIStats.totalPopulation+'</span> ';
+		out += '<span class="prod happiness">'+Math.round(CityMap.QIStats.euphoriaBoost*100)+'%</span></div>';
+		out += '<div class="productions">'
+		for (let [prod, value] of Object.entries(CityMap.QIStats.resources)) {
+			out += '<span class="'+prod+'">'+srcLinks.icons(prod);
+			if (prod.includes("supp")) {
+				let qiCityBoosts = CityMap.QIStats.boosts.guild_raids_supplies_production || 0;
+				let mainCityBoosts = Boosts.Sums.guild_raids_supplies_production || 0;
+				out += HTML.Format(value*(CityMap.QIStats.euphoriaBoost+(qiCityBoosts+mainCityBoosts)/100));
+			}
+			else if (prod.includes("money")) {
+				let qiCityBoosts = CityMap.QIStats.boosts.guild_raids_coin_production || 0;
+				let mainCityBoosts = Boosts.Sums.guild_raids_coin_production || 0;
+				out += HTML.Format(value*(CityMap.QIStats.euphoriaBoost+(qiCityBoosts+mainCityBoosts)/100));
+			}
+			else
+				out += HTML.Format(value);
+			out += "</span> ";
+		}
+		out += '</div><div class="boosts">';
+		for (let [boost, value] of Object.entries(CityMap.QIStats.boosts)) {
+			if (boost == "guild_raids_action_points_collection")
+				out += '<span class="'+boost+'">'+srcLinks.icons(boost)+value+"</span> ";
+			else 
+				out += '<span class="'+boost+'">'+srcLinks.icons(boost)+value+"%</span> ";
+		}
 		
-		out += "<div>"
-		return out
+		out += "</div></div>";
+		return out;
 	},
 
 
 	showQIBuildings: () => {
-		let boosts = Boosts.Sums
-		let supply_boost = 0, coin_boost = 0
-		coin_boost = boosts.guild_raids_coins_production*0.01
-		supply_boost = boosts.guild_raids_supplies_production*0.01
-		let buildings = Object.values(CityMap.QIData)
+		let boosts = Boosts.Sums;
+		let buildings = Object.values(CityMap.QIData);
 		buildings.sort((a, b) => {
 			if (a.cityentity_id < b.cityentity_id) return -1
 			if (a.cityentity_id > b.cityentity_id) return 1
 			return 0
 		})
 
-		let out = '<table class="foe-table">'
+		let out = '<table class="foe-table qiBuildings">'
 		out += '<thead><tr><th colspan="2">'+i18n('Boxes.CityMap.Building')+'</th><th class="population textright"></th><th class="happiness textright"></th><th>'+i18n('Boxes.CityMap.Boosts')+'</th></tr></thead>'
 		out += "<tbody>"
 
-		let uniques = {}
+		let uniques = {};
 		for (let b of buildings) {
 			if (!uniques[b.cityentity_id]) 
 				uniques[b.cityentity_id] = 1
 			else
 				uniques[b.cityentity_id] += 1
 		}
+
 		for (let [id,count] of Object.entries(uniques)) {
-			let building = CityMap.setQIBuilding(MainParser.CityEntities[id])
+			let building = CityMap.setQIBuilding(MainParser.CityEntities[id]);
 			if (building.type !== "impediment" && building.type !== "street") {
-				out += "<tr><td>" + building.name + "</td><td>" + (count>1?"x"+count:"") + "</td>"
+				out += "<tr class='"+building.type+"'><td>" + building.name + "</td><td>" + (count>1?"x"+count:"") + "</td>"
 				out += '<td class="textright">' + building.population + "</td>"
 				out += '<td class="textright">' + building.euphoria + "</td>"
 				out += "<td>"
@@ -492,27 +495,37 @@ let CityMap = {
 						out += (building.production.guild_raids_money ? '<span class="prod guild_raids_money">'+HTML.Format(building.production.guild_raids_money*-1.0)+'</span> ' : "")	
 					}
 					else {
-						let eBoost = CityMap.QIStats.euphoriaBoost
-						if (building.type === "main_building"){
-							out += (building.production.guild_raids_supplies ? '<span class="prod guild_raids_supplies">'+HTML.Format(Math.round(building.production.guild_raids_supplies))+'</span> ' : " ")
-							out += (building.production.guild_raids_money ? '<span class="prod guild_raids_money">'+HTML.Format(Math.round(building.production.guild_raids_money))+'</span> ' : "")
-						} else{
-							out += (building.production.guild_raids_supplies ? '<span class="prod guild_raids_supplies">'+HTML.Format(Math.round(building.production.guild_raids_supplies*(eBoost+supply_boost)))+'</span> ' : " ")
-							out += (building.production.guild_raids_money ? '<span class="prod guild_raids_money">'+HTML.Format(Math.round(building.production.guild_raids_money*(eBoost+coin_boost)))+'</span> ' : "")
+						let eBoost = CityMap.QIStats.euphoriaBoost;
+						for (let [prod, value] of Object.entries(building.production)) {
+							let boost = 0;
+							if (prod.includes('suppl')) {
+								boost = CityMap.QIStats.boosts.guild_raids_supplies_production || 0;
+								boost += boosts.guild_raids_supplies_production || 0;
+							}
+							else if (prod.includes('coin')) {
+								boost = CityMap.QIStats.boosts.guild_raids_coin_production || 0;
+								boost += boosts.guild_raids_coin_production || 0;
+							}
+
+							if (building.type === "main_building") {
+								out += srcLinks.icons(prod)+HTML.Format(value)+" ";
+							}
+							else
+								out += srcLinks.icons(prod)+HTML.Format(Math.round(value*(eBoost+(boost/100))))+" ";
 						}
 					}
 				}
 				if (building.boosts !== null) {
-					for (let i in building.boosts) {
-						let boost = building.boosts[i]
-						out += '<span class="prod '+boost.type+'">' + boost.value + '</span> '
+					for (let boost of building.boosts) {
+						let percentChar = (boost.type.includes("action_points") ? "" : "%")
+						out += srcLinks.icons(boost.type)+boost.value+percentChar;
 					}
 				}
-				out += "</td></tr>"
+				out += "</td></tr>";
 			}
 		}
-		out += "</tbody></table>"
-		return out
+		out += "</tbody></table>";
+		return out;
 	},
 
 

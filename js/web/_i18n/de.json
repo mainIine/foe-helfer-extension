@@ -249,7 +249,7 @@
     "Boxes.CityMap.OutpostSubmit": "Zum Stadtplaner schicken",
     "Boxes.CityMap.QIActionRechargeCycle": "pro Stunde",
     "Boxes.CityMap.QICycle": "alle 10 Stunden",
-    "Boxes.CityMap.QIHint": "Produktions-, Einwohner- und Euphoriewerte nehmen an, dass die Gebäude fertiggestellt sind.",
+    "Boxes.CityMap.QIHint": "Alle Werte gehen davon aus, dass die Gebäude fertiggestellt sind. Rathaus Produktionen werden nicht einberechnet.",
     "Boxes.CityMap.ShowAscendableBuildings": "Markiere Gebäude, die erhaben sein können",
     "Boxes.CityMap.ShowDecayedBuildings": "Markiere Gebäude, die abgelaufen sind",
     "Boxes.CityMap.ShowNoStreetBuildings": "Markiere Gebäude, die keine Straße brauchen",
