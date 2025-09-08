@@ -502,9 +502,9 @@ let CityMap = {
 								boost = CityMap.QIStats.boosts.guild_raids_supplies_production || 0;
 								boost += boosts.guild_raids_supplies_production || 0;
 							}
-							else if (prod.includes('coin')) {
-								boost = CityMap.QIStats.boosts.guild_raids_coin_production || 0;
-								boost += boosts.guild_raids_coin_production || 0;
+							else if (prod.includes('money')) {
+								boost = CityMap.QIStats.boosts.guild_raids_coins_production || 0;
+								boost += boosts.guild_raids_coins_production || 0;
 							}
 
 							if (building.type === "main_building") {
