@@ -1448,7 +1448,7 @@ let Productions = {
 		if ((building.state?.isPolivated === true || building.state?.isPolivated === undefined) && current === true) {
 			building.state.production?.forEach(production => {
 				if (production.type === "genericReward") {
-					if (production.resources?.icon.includes("good")) return false
+					if (production.resources?.icon?.includes("good")) return false
 					let frag = production.resources.subType === "fragment"
 					allItems += '<span>'+production.resources.amount + "x " + (frag ? "🧩 " : "" ) + production.resources.name + "</span><br>"
 					itemArray.push({fragment:frag,name:production.resources.name,amount:production.resources.amount,random:0})
