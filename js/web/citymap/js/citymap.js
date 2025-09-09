@@ -2477,8 +2477,8 @@ let CityMap = {
 
 		CityMap.getBuildingGuildGoodsByEra(false, entity, false);
 		
-		if (entity.type !== "street")
-			console.log('entity ', entity.name, entity, metaData, data);
+		//if (entity.type !== "street")
+		//	console.log('entity ', entity.name, entity, metaData, data);
 		return entity;
 	},
 };
