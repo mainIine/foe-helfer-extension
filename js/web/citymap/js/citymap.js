@@ -1964,11 +1964,12 @@ let CityMap = {
 			else {
 				lookupData = metaData.components[era].lookup.rewards[product.reward.id]
 				if (lookupData === undefined) {
-					let chest = Object.keys(metaData.components[era].lookup.rewards).find(x => x.includes("chest")) // currently only applies to wish fountain
-					for (possibleReward of metaData.components[era].lookup.rewards[chest].possible_rewards) {
-						if (possibleReward.reward.id === product.reward.id)
-							lookupData = possibleReward.reward
-					}
+					let chest = Object.keys(metaData.components[era].lookup.rewards).find(x => x.includes("chest" || "random_unit")) // currently only applies to wish fountain or things with "random unit chest"
+					if (metaData.components[era].lookup.rewards[chest]?.possible_rewards)
+						for (possibleReward of metaData.components[era].lookup.rewards[chest]?.possible_rewards) {
+							if (possibleReward.reward.id === product.reward.id)
+								lookupData = possibleReward.reward
+						}
 				}
 				else {
 					amount = lookupData.totalAmount || lookupData.amount
@@ -1989,7 +1990,7 @@ let CityMap = {
 		}
 		
 		// units
-		if (lookupData?.type === "chest" && lookupData.id.search("genb_random_") !== -1 && lookupData.id.search("fragment") === -1 || lookupData?.type === "unit") {
+		if (lookupData?.type === "chest" && lookupData.id.search("genb_random_") !== -1 && lookupData.id.search("fragment") === -1 || lookupData?.type === "unit"|| lookupData?.icon === "military") {
 			let units = this.setUnitReward(product)
 			return units
 		}
@@ -2381,6 +2382,47 @@ let CityMap = {
 	},
 
 
+	/**
+	 * Removes any keys that start with "__class__" or "__enum__" from the provided object or its nested structures.
+	 *
+	 * The function will remove a key-value pair if and only if the key name begins with "__class__" or "__enum__"
+	 * (e.g., "__class__", "__class__Foo", "__enum__", etc.). All other keys remain untouched, including keys
+	 * that start with other double-underscore prefixes.
+	 *
+	 * The function traverses objects and arrays recursively to apply the rule at any depth.
+	 *
+	 * @param {Object|Array} obj The object or array to process. If the input is not an object or array, it will be returned as is.
+	 * @return {Object|Array} A new object or array with all keys starting with "__class__" or "__enum__" removed.
+	 */
+	removeDoubleUnderscoreKeys (obj) {
+		if (typeof obj !== 'object' || obj === null) {
+			return obj; // Only process objects/arrays
+		}
+
+		if (Array.isArray(obj)) {
+			return obj.map(item => CityMap.removeDoubleUnderscoreKeys(item)); // Process arrays recursively
+		}
+
+		const newObj = {};
+
+		for (const key in obj) {
+			if (!Object.prototype.hasOwnProperty.call(obj, key)) continue;
+
+			const value = obj[key];
+
+			// Remove any keys that start with "__class__" or "__enum__"
+			if (key.startsWith('__class__') || key.startsWith('__enum__')) {
+				continue;
+			}
+
+			// Keep everything else, but apply the rule recursively to nested structures
+			newObj[key] = CityMap.removeDoubleUnderscoreKeys(value);
+		}
+
+		return newObj;
+	},
+
+
 	createNewCityMapEntity(metaData, era=CurrentEra, data={}) {
 		if (typeof(metaData)=="string") {
 			metaData=MainParser.CityEntities[metaData];
@@ -2429,49 +2471,8 @@ let CityMap = {
 
 		CityMap.getBuildingGuildGoodsByEra(false, entity, false);
 		
-		//if (entity.type !== "street")
-		//	console.log('entity ', entity.name, entity, metaData, data);
+		if (entity.type !== "street")
+			console.log('entity ', entity.name, entity, metaData, data);
 		return entity;
 	},
-
-
-	/**
-	 * Removes any keys that start with "__class__" or "__enum__" from the provided object or its nested structures.
-	 *
-	 * The function will remove a key-value pair if and only if the key name begins with "__class__" or "__enum__"
-	 * (e.g., "__class__", "__class__Foo", "__enum__", etc.). All other keys remain untouched, including keys
-	 * that start with other double-underscore prefixes.
-	 *
-	 * The function traverses objects and arrays recursively to apply the rule at any depth.
-	 *
-	 * @param {Object|Array} obj The object or array to process. If the input is not an object or array, it will be returned as is.
-	 * @return {Object|Array} A new object or array with all keys starting with "__class__" or "__enum__" removed.
-	 */
-	removeDoubleUnderscoreKeys (obj) {
-		if (typeof obj !== 'object' || obj === null) {
-			return obj; // Only process objects/arrays
-		}
-
-		if (Array.isArray(obj)) {
-			return obj.map(item => CityMap.removeDoubleUnderscoreKeys(item)); // Process arrays recursively
-		}
-
-		const newObj = {};
-
-		for (const key in obj) {
-			if (!Object.prototype.hasOwnProperty.call(obj, key)) continue;
-
-			const value = obj[key];
-
-			// Remove any keys that start with "__class__" or "__enum__"
-			if (key.startsWith('__class__') || key.startsWith('__enum__')) {
-				continue;
-			}
-
-			// Keep everything else, but apply the rule recursively to nested structures
-			newObj[key] = CityMap.removeDoubleUnderscoreKeys(value);
-		}
-
-		return newObj;
-	}
 };
