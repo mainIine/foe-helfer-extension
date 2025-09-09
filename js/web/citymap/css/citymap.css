@@ -66,7 +66,7 @@
 #sidebar {
 	position: absolute;
 	width: 240px;
-	padding: 15px;
+	padding: 12px;
 	right: 0;
 	top: 0;
 	bottom: 0;
@@ -149,10 +149,37 @@
 	padding-bottom: 5px;
 }
 
+#map-filters b {
+	position: relative;
+	margin: -3px 0 3px;
+	color: var(--bright-color);
+	display: block;
+}
+
 #map-filters label {
 	display: block;
 	font-size: 90%;
 	margin-bottom: 5px;
+}
+
+#map-filters .ratings {
+	display: flex;
+	justify-content: space-between;
+}
+
+#map-filters span::after {
+    content: "➔";
+    display: inline-block;
+    background: var(--menu-arrow-bg);
+    padding: 0 2px;
+    border-radius: 3px;
+    color: var(--text-btn);
+    margin-left: 2px;
+    font-weight: normal;
+}
+
+#map-filters span:hover::after {
+    filter: contrast(1.2);
 }
 
 #grid-outer {

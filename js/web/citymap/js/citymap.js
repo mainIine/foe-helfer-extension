@@ -224,6 +224,10 @@ let CityMap = {
 		}
 
 		mapfilters.append(
+			$('<b />').text(i18n('Boxes.CityMap.Highlight'))
+		);
+
+		mapfilters.append(
 			$('<label />').attr({ for: 'highlight-old-buildings' }).text(i18n('Boxes.CityMap.HighlightOldBuildings'))
 				.prepend($('<input />').attr({ type: 'checkbox', id: 'highlight-old-buildings', onclick: 'CityMap.highlightOldBuildings()' }))
 		);
@@ -244,8 +248,10 @@ let CityMap = {
 		);
 
 		mapfilters.append(
-			$('<label />').attr({ for: 'show-worst-buildings' }).text(i18n('Boxes.CityMap.ShowWorstBuildings'))
-				.prepend($('<input />').attr({ type: 'checkbox', id: 'show-worst-buildings', onclick: 'CityMap.ShowWorstBuildings()' }))
+			$('<div />').attr({ class: 'ratings' })
+				.append($('<label />').attr({ for: 'show-worst-buildings' }).text(i18n('Boxes.CityMap.ShowWorstBuildings'))
+					.prepend($('<input />').attr({ type: 'checkbox', id: 'show-worst-buildings', onclick: 'CityMap.ShowWorstBuildings()' })))
+				.append($('<span />').attr({ onClick: 'Productions.ShowRating()', class: 'clickable' }))
 		);
 
 		oB.append(wrapper)
