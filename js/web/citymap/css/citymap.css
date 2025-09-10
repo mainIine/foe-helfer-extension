@@ -75,11 +75,11 @@
 	box-sizing: border-box;
 }
 
-.outpost #sidebar, .outpost #BuildingsFilter, .outpost #city-map-menu .btn-group, .outpost #map-filters {
+.outpost #BuildingsFilter, .outpost #city-map-menu .btn-group, .outpost #map-filters {
 	display: none;
 }
 
-.outpost.guild_raids #sidebar {
+.outpost #sidebar {
 	display: block;
 	width: 420px;
 	padding: 3px;
@@ -107,7 +107,7 @@
 	height: 20px;
 }
 
-.outpost.guild_raids #map-container, .outpost.guild_raids #city-map-menu {
+.outpost #map-container, .outpost #city-map-menu {
 	right: 420px;
 }
 
@@ -505,6 +505,11 @@
 	margin-right: 5px;
 }
 
+#area-state .building-count-area span.square.military, tr.military td:first-child::before, tr.production td:first-child::before, tr.static_provider td:first-child::before, tr.production td:first-child::before {
+	background-color: var(--background-color-military);
+	border-color:  var(--border-color-military);
+}
+
 #area-state .building-count-area span.square.residential {
 	background-color: var(--background-color-residential);
 	border-color: var(--border-color-residential);
@@ -517,7 +522,7 @@
 	background-color: var(--background-color-street);
 	border-color: var(--border-color-street);
 }
-#area-state .building-count-area span.square.goods {
+#area-state .building-count-area span.square.goods, tr.goods td:first-child::before, tr.production td:first-child::before {
 	background-color: var(--background-color-goods);
 	border-color: var(--border-color-goods);
 }

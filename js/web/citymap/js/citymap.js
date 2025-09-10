@@ -261,6 +261,10 @@ let CityMap = {
 			$("#sidebar").append(CityMap.showQIStats())
 			$("#sidebar").append(CityMap.showQIBuildings())
 		}
+
+		if (ActiveMap === "cultural_outpost" || ActiveMap === "era_outpost") {
+			$("#sidebar").append(CityMap.showOutpostBuildings())
+		}
 		if (ActiveMap === 'OtherPlayer') {
 			let era = CityMap.CityData.find(x => x.type === 'main_building').cityentity_id.split('_')[1]
 			$("#sidebar").append($('<a id="openEfficiencyRating" class="btn-default" onclick="Productions.ShowRating(true,\''+era+'\')">'+ i18n('Menu.ProductionsRating.Title') +'</a>'));
@@ -335,21 +339,21 @@ let CityMap = {
 		$('#grid-outer').find('.map-bg').remove();
 		$('#grid-outer').find('.entity').remove();
 
-		CityMap.BuildGrid()
+		CityMap.BuildGrid();
 
-		let buildings = CityMap.CulturalOutpostData
-		let xOffset = 0, yOffset = 0
+		let buildings = CityMap.CulturalOutpostData;
+		let xOffset = 0, yOffset = 0;
 		if (ActiveMap === "era_outpost") {
-			buildings = CityMap.EraOutpostData
-			yOffset = 500
+			buildings = CityMap.EraOutpostData;
+			yOffset = 500;
 		}
 		else if (ActiveMap === "cultural_outpost") {
-			xOffset = 500
+			xOffset = 500;
 		}
 		else if (ActiveMap === "guild_raids") {
-			buildings = CityMap.QIData
-			xOffset = 500
-			yOffset = 500
+			buildings = CityMap.QIData;
+			xOffset = 500;
+			yOffset = 500;
 		}
 
 		for (let b in buildings) {
@@ -561,14 +565,106 @@ let CityMap = {
 	},
 
 
+	setOutpostBuilding: (data) => {
+		console.log(data);
+		let production = data.components?.AllAge?.production?.options;
+		if (production !== undefined && production.length === 1) // goods and units have multiple production options, rest has one
+			production = data.components?.AllAge?.production?.options[0]?.products[0]?.playerResources?.resources;
+		else if (production !== undefined && production.length > 1) 
+			production = data.components?.AllAge?.production?.options[3]?.products[0]?.requirements?.resources;
+		if (data.type === "main_building" || data.type === "residential")
+			production = data.available_products[0]?.product?.resources;
+
+		// grab the name of the population from the building id
+		/// cultural settlements
+		let populationName = data.id.split("_")[1].toLowerCase(); // id parts: vikings, japanese, egyptians, aztecs, muhglas, polynesia
+		/// era settlements
+		if (ActiveMap === "era_outpost") populationName = "colonists";
+
+		// for buildings adding pop
+		let population = Object.keys(data.staticResources?.resources).find(x => x.includes(populationName))
+		population = data.staticResources?.resources[population];
+		// for buildings requiring pop
+		if (population === undefined) {
+			population = Object.keys(data.requirements?.cost?.resources).find(x => x.includes(populationName))
+			population = data.requirements.cost?.resources[populationName]*-1;
+		}
+
+		let building = {};
+		if (ActiveMap === "cultural_outpost")
+			building = {
+				name: data.name,
+				population: population || 0,
+				production: production || null,
+				diplomacy: null,
+				type: data.type
+			};
+		else if (ActiveMap === "era_outpost")
+			building = {
+				name: data.name,
+				population: population || 0,
+				production: production || null,
+				diplomacy: null,
+				type: data.type
+			};
+
+		return building;
+	},
+
+
+	showOutpostBuildings: () => {
+		let buildings = Object.values(CityMap.CulturalOutpostData);
+		if (ActiveMap === "era_outpost")
+			buildings = Object.values(CityMap.EraOutpostData);
+
+		buildings.sort((a, b) => {
+			if (a.cityentity_id < b.cityentity_id) return -1
+			if (a.cityentity_id > b.cityentity_id) return 1
+			return 0
+		})
+
+		let out = '<table class="foe-table qiBuildings">'
+		out += '<thead><tr><th colspan="2">'+i18n('Boxes.CityMap.Building')+'</th><th class="population textright"></th>'+
+		//'<th class="happiness textright"></th>
+		'<th>'+i18n('Boxes.CityMap.Boosts')+'</th></tr></thead>'
+		out += "<tbody>"
+
+		let uniques = {};
+		for (let b of buildings) {
+			if (!uniques[b.cityentity_id]) 
+				uniques[b.cityentity_id] = 1
+			else
+				uniques[b.cityentity_id] += 1
+		}
+
+		for (let [id,count] of Object.entries(uniques)) {
+			let building = CityMap.setOutpostBuilding(MainParser.CityEntities[id]);
+			if (building.type !== "impediment" && building.type !== "street" && building.type !== "off_grid") {
+				out += "<tr class='"+building.type+"'><td>" + building.name + "</td><td>" + (count>1?"x"+count:"") + "</td>"
+				out += '<td class="textright">' + building.population + "</td>"
+				//out += '<td class="textright">' + building.euphoria + "</td>"
+				out += "<td>"
+				if (building.production !== null) {
+					for (let [prod, value] of Object.entries(building.production)) {
+						out += srcLinks.icons(prod)+HTML.Format(Math.round(value))+" ";
+					}
+				}
+				out += "</td></tr>";
+			}
+		}
+		out += "</tbody></table>";
+		return out;
+	},
+
+
 	/**
 	 * Container gemäß den Koordianten zusammensetzen
 	 * @param Data
 	 */
 	SetMapBuildings: async (Data = null)=> {
 		if (ActiveMap === "cultural_outpost" || ActiveMap === "era_outpost" || ActiveMap === "guild_raids") {
-			CityMap.SetOutpostBuildings() 
-			return
+			CityMap.SetOutpostBuildings();
+			return;
 		}
 
 		let ActiveId = $('#grid-outer').find('.highlighted').data('entityid') || null;
