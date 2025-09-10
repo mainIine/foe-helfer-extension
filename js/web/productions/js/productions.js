@@ -72,7 +72,7 @@ let Productions = {
 
 	fragmentsSet: new Set(),
 	efficiencySettings: Object.assign(
-		JSON.parse(localStorage.getItem("Productions.efficiencySettings") || `{"tilevalues":false,"showitems":true,"showhighlighted":false,"inventorybuildings":false,"inventorybuildingscore":0}`),
+		JSON.parse(localStorage.getItem("Productions.efficiencySettings") || `{"tilevalues":false,"showitems":true,"showhighlighted":false,"inventorybuildings":false,"inventorybuildingscore":0,"noGBs":false,"noLimited":false,}`),
 		{showhighlighted: false}
 	),
 
@@ -1931,12 +1931,11 @@ let Productions = {
 			h.push('<table class="foe-table sortable-table TSinactive exportable">');
 			h.push('<thead class="sticky">');
 
-			h.push('<tr class="settings">')
-				h.push('<th colspan="'+(colNumber+5)+'"><div class="options">')
-				h.push('<a class="btn-default" id="addMetaBuilding">' + i18n('Boxes.ProductionsRating.AddBuilding') + '</a>')
-				h.push('<label for="tilevalues"><input type="checkbox" id="tilevalues" />' + i18n('Boxes.ProductionsRating.ShowValuesPerTile') + '</label>')
-				h.push('<label for="showitems"><input type="checkbox" id="showitems" />' + i18n('Boxes.ProductionsRating.ShowItems') + '</label>')
-				h.push('<input type="text" id="efficiencyBuildingFilter" size=20 placeholder="' + i18n('Boxes.ProductionsRating.Filter') + ': neo|eden" />')
+			h.push('<tr class="settings">');
+				h.push('<th colspan="'+(colNumber+5)+'"><div class="options">');
+				h.push('<a class="btn-default" id="addMetaBuilding">' + i18n('Boxes.ProductionsRating.AddBuilding') + '</a>');
+				h.push('<label for="tilevalues"><input type="checkbox" id="tilevalues" />' + i18n('Boxes.ProductionsRating.ShowValuesPerTile') + '</label>');
+				h.push('<input type="text" id="efficiencyBuildingFilter" size=20 placeholder="' + i18n('Boxes.ProductionsRating.Filter') + ': neo|eden" />');
 				h.push('<label for="showhighlighted" data-original-title="'+i18n('Boxes.ProductionsRating.ShowHighlightedExplanation')+'"><input type="checkbox" id="showhighlighted" />' + i18n('Boxes.ProductionsRating.ShowHighlighted') + '</label>')
 				if (ActiveMap !== 'OtherPlayer') {
 					h.push('<div class="inventory">'+
@@ -1944,6 +1943,10 @@ let Productions = {
 						'<label for="inventorybuildingscore" data-original-title="'+i18n('Boxes.ProductionsRating.InventoryBuildingScoreExplanation')+'">' + i18n('Boxes.ProductionsRating.InventoryBuildingScore') + ': <input type="number" size="6" value="'+(Productions.efficiencySettings.inventorybuildingscore*100)+'" id="inventorybuildingscore" /></label>'+
 						'</div>');
 				}
+				h.push(i18n('Boxes.ProductionsRating.Hide')+":");
+				h.push('<label for="showitems"><input type="checkbox" id="showitems" />' + i18n('Boxes.ProductionsRating.ShowItems') + '</label>');
+				h.push('<label for="noGBs" data-original-title="'+i18n('Boxes.ProductionsRating.NoGBsExplanation')+'"><input type="checkbox" id="noGBs" /><img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_greatbuilding.png`,true)+'" /></label>');
+				h.push('<label for="noLimited" data-original-title="'+i18n('Boxes.ProductionsRating.NoLimitedExplanation')+'"><input type="checkbox" id="noLimited" /><img src="'+srcLinks.get(`/shared/gui/upgrade/upgrade_icon_limited_building.png`,true)+'" /></label>');
 				h.push('</div></th>');
 			h.push('</tr>');
 
@@ -2007,7 +2010,7 @@ let Productions = {
 				let buildingSize = building.size.length * building.size.width;
 
 				[randomItems,randomUnits] = Productions.showBuildingItems(false, building)
-				h.push(`<tr class="${building.highlight?'additional ':''}${building.isInInventory?'inventory-building ':''}size${buildingSize}">`)
+				h.push(`<tr class="${building.type==='greatbuilding'?'gb ':''}${building.isLimited?'limited ':''}${building.highlight?'additional ':''}${building.isInInventory?'inventory-building ':''}size${buildingSize}">`)
 				h.push('<td data-number="'+ (building.rating.totalScore * 100) +'" class="text-right">'+Math.round(building.rating.totalScore * 100)+'</td>')
 
 				h.push('<td exportvalue="'+building.name+'" data-text="'+helper.str.cleanup(building.name)+'" class="'+(MainParser.Allies.buildingList?.[building.id]?"ally" : "") +'"><div class="flex-between"><div>');
@@ -2153,6 +2156,14 @@ let Productions = {
 				SaveSettings("showhighlighted")
 			});
 
+			$('#noGBs, label[noGBs]').on('click', function () {
+				SaveSettings("noGBs")
+			});
+
+			$('#noLimited, label[noLimited]').on('click', function () {
+				SaveSettings("noLimited")
+			});
+
 			$('#inventorybuildings, label[inventorybuildings]').on('click', function () {
 				SaveSettings("inventorybuildings")
 				//Productions.CalcRatingBody();
@@ -2195,6 +2206,8 @@ let Productions = {
 			if (Productions.efficiencySettings.showitems !== $('#showitems').is(':checked')) $('#showitems').trigger("click")
 			if (Productions.efficiencySettings.showhighlighted !== $('#showhighlighted').is(':checked')) $('#showhighlighted').trigger("click")
 			if (Productions.efficiencySettings.inventorybuildings !== $('#inventorybuildings').is(':checked')) $('#inventorybuildings').trigger("click")
+			if (Productions.efficiencySettings.noGBs !== $('#noGBs').is(':checked')) $('#noGBs').trigger("click")
+			if (Productions.efficiencySettings.noLimited !== $('#noLimited').is(':checked')) $('#noLimited').trigger("click")
 
 			$('#findMetaBuilding').on('input', function () {
 				let regEx=new RegExp($(this).val(),"i");

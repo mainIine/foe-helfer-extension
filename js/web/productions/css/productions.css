@@ -175,7 +175,10 @@
 	padding: 0.15em 0.4em;
 }
 #ProductionsRatingBody .settings label {
-	margin-right: 0.25em;
+	margin-right: 0.3em;
+}
+#ProductionsRatingBody .settings img {
+	height: 24px;
 }
 #ProductionsRatingBody .overlay {
 	width: 100%;
@@ -358,7 +361,9 @@
 }
 #ProductionsRatingBody tr.highlighted-explained, 
 #ProductionsRating .showhighlighted tbody tr, 
-#ProductionsRating .showhighlighted tbody tr.inventory-building {
+#ProductionsRating .showhighlighted tbody tr.inventory-building,
+#ProductionsRating .noGBs tbody tr.gb, 
+#ProductionsRating .noLimited tbody tr.limited {
 	display: none;
 }
 #ProductionsRatingBody tr.highlighted-explained.highlighted-explained, 

@@ -566,7 +566,6 @@ let CityMap = {
 
 
 	setOutpostBuilding: (data) => {
-		console.log(data);
 		let production = data.components?.AllAge?.production?.options;
 		if (production !== undefined && production.length === 1) // goods and units have multiple production options, rest has one
 			production = data.components?.AllAge?.production?.options[0]?.products[0]?.playerResources?.resources;
@@ -577,7 +576,7 @@ let CityMap = {
 
 		// grab the name of the population from the building id
 		/// cultural settlements
-		let populationName = data.id.split("_")[1].toLowerCase(); // id parts: vikings, japanese, egyptians, aztecs, muhglas, polynesia
+		let populationName = data.id.split("_")[1].toLowerCase(); // id parts: vikings, japanese, egyptians, aztecs, muhgals, polynesia
 		/// era settlements
 		if (ActiveMap === "era_outpost") populationName = "colonists";
 
