@@ -1,5 +1,19 @@
 ## Changelog - Extension
 
+##### 3.12.1.0
+
+**Update**
+- Effizienz:
+	- Neue Filter für LG und engeschränkte Gebäude
+- Stadtübersicht:
+	- Gebäudeliste für Siedlungen und Kolonien hinzugefügt
+
+**Bugfix**
+- Eigenanteilsrechner
+	- Rechenfehler behoben
+
+---
+
 ##### 3.12.0.1
 
 **Update**

@@ -1,5 +1,19 @@
 ## Changelog - Extension
 
+##### 3.12.1.0
+
+**Update**
+- Efficiency:
+	- Added filters for GBs and limited buildings
+- Citymap:
+	- Added building list to outposts and settlements
+
+**Bugfix**
+- OwnPart Calculator
+	- Reverted a calculation change
+
+---
+
 ##### 3.12.0.1
 
 **Update**
