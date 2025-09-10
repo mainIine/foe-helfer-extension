@@ -1015,7 +1015,7 @@
     "Boxes.ProductionsRating.InventoryBuildingScoreExplanation": "Zeige nur Gebäude aus dem Inventar mit einer Bewertung von mindestens x",
     "Boxes.ProductionsRating.InventoryTooltip": "Dieses Gebäude ist in deinem Inventar",
     "Boxes.ProductionsRating.NoGBsExplanation": "Verstecke alle Legendären Bauwerke",
-    "Boxes.ProductionsRating.NoLimitedExplanation": "Verstecke alle erhabenen Gebäude",
+    "Boxes.ProductionsRating.NoLimitedExplanation": "Verstecke alle erhabenen/eingeschränkten Gebäude",
     "Boxes.ProductionsRating.ProdPerTile": "Erwartete Tagesproduktion/Feld",
     "Boxes.ProductionsRating.Results": "Ergebnis",
     "Boxes.ProductionsRating.Score": "Bewertung",
