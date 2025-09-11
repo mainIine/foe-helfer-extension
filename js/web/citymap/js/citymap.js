@@ -443,7 +443,7 @@ let CityMap = {
 		out += '<div class="productions">'
 		for (let [prod, value] of Object.entries(CityMap.QIStats.resources)) {
 			out += '<span class="'+prod+'">'+srcLinks.icons(prod);
-			if (prod.includes("supp")) {
+			if (prod.includes("suppl")) {
 				let qiCityBoosts = CityMap.QIStats.boosts.guild_raids_supplies_production || 0;
 				let mainCityBoosts = Boosts.Sums.guild_raids_supplies_production || 0;
 				out += HTML.Format(value*(CityMap.QIStats.euphoriaBoost+(qiCityBoosts+mainCityBoosts)/100));
@@ -454,7 +454,7 @@ let CityMap = {
 				out += HTML.Format(value*(CityMap.QIStats.euphoriaBoost+(qiCityBoosts+mainCityBoosts)/100));
 			}
 			else
-				out += HTML.Format(value);
+				out += HTML.Format(value*CityMap.QIStats.euphoriaBoost);
 			out += "</span> ";
 		}
 		out += '</div><div class="boosts">';
