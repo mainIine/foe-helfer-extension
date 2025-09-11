@@ -72,7 +72,17 @@ let Productions = {
 
 	fragmentsSet: new Set(),
 	efficiencySettings: Object.assign(
-		JSON.parse(localStorage.getItem("Productions.efficiencySettings") || `{"tilevalues":false,"showitems":true,"showhighlighted":false,"inventorybuildings":false,"inventorybuildingscore":0,"noGBs":false,"noLimited":false,}`),
+		JSON.parse(localStorage.getItem("Productions.efficiencySettings") || 
+			`{
+			"tilevalues":false,
+			"showitems":true,
+			"showhighlighted":false,
+			"inventorybuildings":false,
+			"inventorybuildingscore":0,
+			"noGBs":false,
+			"noLimited":false
+			}`
+		),
 		{showhighlighted: false}
 	),
 

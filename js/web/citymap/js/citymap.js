@@ -452,7 +452,6 @@ let CityMap = {
 				let qiCityBoosts = CityMap.QIStats.boosts.guild_raids_coins_production || 0;
 				let mainCityBoosts = Boosts.noSettlement.guild_raids_coins_production || 0;
 				out += HTML.Format(value*(CityMap.QIStats.euphoriaBoost+(qiCityBoosts+mainCityBoosts)/100));
-				console.log(qiCityBoosts, mainCityBoosts, value);
 			}
 			else
 				out += HTML.Format(value*CityMap.QIStats.euphoriaBoost);
