@@ -115,8 +115,8 @@ let Boosts = {
         'guild_raids-def_boost_attacker': 0,
         'guild_raids-att_boost_defender': 0,
         'guild_raids-def_boost_defender': 0,
-        
-
+        'guild_raids_coins_production': 0,
+        'guild_raids_supplies_production': 0
     },
     Init:()=>{
         for (let boost of Object.keys(Boosts.Sums)) {
