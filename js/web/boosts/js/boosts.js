@@ -183,11 +183,11 @@ let Boosts = {
     },
     updateSums: () => {
         for (let boost of Object.keys(Boosts.Sums)) {
-            if (Boosts.noSettlement.hasOwnProperty(boost)) Boosts.noSettlement[boost] = 0;
             Boosts.Sums[boost] = 0;
+            Boosts.noSettlement[boost] = 0;
             for (let b of Boosts.ListByType[boost]) {
                 Boosts.Sums[boost] += b.value;
-                if (!b.entityId || MainParser.CityMapData[b.entityId]) {
+                if ((!b.entityId || MainParser.CityMapData[b.entityId])) {
                     Boosts.noSettlement[boost] += b.value;
                 }
             }
