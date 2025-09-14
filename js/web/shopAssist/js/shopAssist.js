@@ -18,7 +18,9 @@ FoEproxy.addHandler('ItemStoreService', 'getStore', (data, postData) => {
 	shopAssist.alertsTriggered = {};
 	shopAssist.checkAlerts();
 	shopAssist.alertsTriggered = {};
+	shopAssist.showDiscount = data.responseData.refresh?.refreshAt - GameTime.get() < 24*3600; //only show discount if less than 24h to next refresh
 	shopAssist.Show();
+	
 });
 
 FoEproxy.addHandler('ItemStoreService', 'purchaseSlot', (data, postData) => {
@@ -149,6 +151,7 @@ let shopAssist = {
 						}
 				}
 			}
+			let isdiscounted = slot.discount && slot.discount>0 && shopAssist.showDiscount;
 
 			//Favourites + Alerts
 			h += `<tr class="${(shopAssist.favourites?.[shopAssist.storeId]?.[slot.slotId] ? "isShopFavourite " : "") + (unlocked ? "isUnlocked " : "") + (hasLock ? "hasLock " : "") +((slot.purchaseLimit?.maxPurchases && !slot.purchaseLimit.remainingPurchases) ? "soldOut" : "")}">
@@ -190,7 +193,7 @@ let shopAssist = {
 				let cost = Math.ceil(amount*(1-(slot.discount||0)));
 				if (ResourceStock[res] == undefined || ResourceStock[res]<cost) 
 					canBuy = false;
-				costs += `<div class="text-right">` + HTML.Format(cost) + srcLinks.icons(res) + "</div>"
+				costs += `<div class="text-right${isdiscounted ? " shopDiscount":""}">` + HTML.Format(cost) + srcLinks.icons(res) + "</div>"
 			})
 			h += `<td class="costs ${(canBuy && !limitReached && unlocked) ? "canBuy" : "canNotBuy"}">
 				${costs}

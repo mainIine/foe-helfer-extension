@@ -117,3 +117,8 @@
 #shopAssistUnlock {
 	margin-left: 10px;
 }
+
+#shopAssist .shopDiscount::before {
+	content: '▼';
+	margin-right: 2px;
+}
