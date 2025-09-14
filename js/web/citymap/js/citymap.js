@@ -515,6 +515,7 @@ let CityMap = {
 							else if (prod.includes('money')) {
 								boost = CityMap.QIStats.boosts.guild_raids_coins_production || 0;
 								boost += boosts.guild_raids_coins_production || 0;
+								console.log("x", CityMap.QIStats, Boosts);
 							}
 
 							if (building.type === "main_building") {
