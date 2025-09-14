@@ -109,7 +109,7 @@ let shopAssist = {
 					<th>${i18n("Boxes.ShopAssist.All")}</th>
 				</tr>
 			</thead>`
-		
+		let hasFavourites =  Object.keys(shopAssist.favourites?.[shopAssist.storeId]||{}).length>0;
 		let addRow = (slot) =>{
 			let h = ``;
 			let stock = shopAssist.getStock(slot.reward);
@@ -261,8 +261,8 @@ let shopAssist = {
         
         
         $('#shopAssistBody').html(h);
-		$('#shopAssistFav').prop("checked",shopAssist.favouritesOnly);
-		if (shopAssist.favouritesOnly) {
+		$('#shopAssistFav').prop("checked",shopAssist.favouritesOnly && hasFavourites);
+		if (shopAssist.favouritesOnly && hasFavourites) {
 			$("#shopAssistTable").addClass("favouritesOnly");
 		};
 		$("#shopAssistFav").on("change",function(e){
