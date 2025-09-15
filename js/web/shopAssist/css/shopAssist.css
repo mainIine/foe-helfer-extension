@@ -29,14 +29,6 @@
 	gap:5px;	
 }
 
-#shopAssistTable td {
-	text-align: center;
-	white-space: nowrap;
-}
-#shopAssistTable td:nth-child(2) {
-	width:70%;
-	white-space: wrap;
-}
 
 #shopAssistTable thead tr:last-child {
 	position: sticky;
@@ -46,10 +38,25 @@
 	text-align: center;
 }
 #shopAssistTable thead tr:nth-child(1) th:nth-child(1),
-#shopAssistTable thead tr:nth-child(2) th:nth-child(2), #shopAssistTable td:nth-child(2){
+#shopAssistTable thead tr:nth-child(2) th:nth-child(2), 
+#shopAssistTable td:nth-child(3){
 	text-align: left;
 }
+#shopAssistTable thead tr:nth-child(1) th:nth-child(2){ 
+	text-align: right;
+}
+#shopAssistTable .shopResource {
+	margin-right: 10px;
+}
 
+#shopAssistTable td {
+	text-align: center;
+	white-space: nowrap;
+}
+#shopAssistTable td:nth-child(3) {
+	width:70%;
+	white-space: wrap;
+}
 #shopAssistTable td.canBuy {
 	background-color: var(--table-bg-success);
 	color: var(--text-success);

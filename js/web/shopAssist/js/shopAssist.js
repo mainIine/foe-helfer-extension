@@ -95,14 +95,22 @@ let shopAssist = {
         if ($('#shopAssist').length === 0) return
 
 		let h = `<table id="shopAssistTable" class="foe-table" style="width:100%">`
-        
+		let resources = "";
+		for (let res of shopAssist.shopMeta[shopAssist.storeId].resources)
+			resources += `<span class="shopResource">${HTML.Format(ResourceStock[res]||0)}${srcLinks.icons(res)}</span>`
 		h += `<thead>
 				<tr>
-					<th colspan=4><input type="checkbox" id="shopAssistFav"><label for="shopAssistFav">&nbsp;${i18n("Boxes.ShopAssist.onlyFavourites")}</label><input type="checkbox" id="shopAssistUnlock"><label for="shopAssistUnlock">&nbsp;${i18n("Boxes.ShopAssist.onlyUnlocked")}</label></th>
-					<th colspan=3>${i18n("Boxes.ShopAssist.Costs")}</th>
+					<th colspan=5>
+						<input type="checkbox" id="shopAssistFav"><label for="shopAssistFav">&nbsp;${i18n("Boxes.ShopAssist.onlyFavourites")}</label>
+						<input type="checkbox" id="shopAssistUnlock"><label for="shopAssistUnlock">&nbsp;${i18n("Boxes.ShopAssist.onlyUnlocked")}</label>
+					</th>
+					<th colspan=3>
+						${resources}
+					</th>
 				</tr>
 				<tr>
 					<th>★</th>
+					<th></th>
 					<th>${i18n("Boxes.ShopAssist.Item")}</th>
 					<th>🔒</th>
 					<th>${i18n("Boxes.ShopAssist.Inventory")}</th>
@@ -158,6 +166,10 @@ let shopAssist = {
 			<td>
 				<div class="shopFavourite clickable" data-id="${slot.slotId}"></div>
 				<div class="shopAlert clickable ${(shopAssist.alerts[shopAssist.storeId + "#" + slot.slotId]) ? "alertActive" : ""}" data-id="${shopAssist.storeId + "#" + slot.slotId}"></div>
+			</td>`
+			//Favourites + Alerts
+			h += `<td>
+				<img src="${(slot.rarity?.value || "none") != "none" ? srcLinks.get("/item_store/store_shared/item_store_rarity_icon_"+slot.rarity.value+".png",true,true):""}" alt="">
 			</td>`
 			//name
 			h+=`<td data-ids="${buildingList}" class="${buildingList.length>0?"helperTT":""}" data-callback_tt="shopAssist.TT">${(slot.reward.target?srcLinks.icons("booster_target_"+slot.reward.target):"")+slot.reward.name}</td>`
