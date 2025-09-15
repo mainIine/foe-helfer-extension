@@ -254,17 +254,20 @@ let CityMap = {
 				.append($('<span />').attr({ onClick: 'Productions.ShowRating()', class: 'clickable' }))
 		);
 
-		oB.append(wrapper)
-		$('#citymap-wrapper').append(menu)
+		oB.append(wrapper);
+		$('#citymap-wrapper').append(menu);
 
 		if (ActiveMap === "guild_raids") {
-			$("#sidebar").append(CityMap.showQIStats())
-			$("#sidebar").append(CityMap.showQIBuildings())
+			$("#sidebar").append(CityMap.showQIStats());
+			$("#sidebar").append(CityMap.showQIBuildings());
 		}
 
 		if (ActiveMap === "cultural_outpost" || ActiveMap === "era_outpost") {
-			$("#sidebar").append(CityMap.showOutpostBuildings())
+			$("#sidebar").append(CityMap.showOutpostBuildings());
 		}
+		if (ActiveMap === "cultural_outpost")
+			$('#citymap-wrapper').append('<img class="clickable openOverview" data-original-title="'+i18n('Menu.OutP.Title')+'" onClick="Outposts.BuildInfoBox()" src="' + extUrl + 'css/images/menu/vikings_ship.png">');
+
 		if (ActiveMap === 'OtherPlayer') {
 			let era = CityMap.CityData.find(x => x.type === 'main_building').cityentity_id.split('_')[1]
 			$("#sidebar").append($('<a id="openEfficiencyRating" class="btn-default" onclick="Productions.ShowRating(true,\''+era+'\')">'+ i18n('Menu.ProductionsRating.Title') +'</a>'));

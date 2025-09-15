@@ -111,6 +111,18 @@
 	right: 420px;
 }
 
+.outpost.cultural_outpost .openOverview {
+	position: absolute;
+	top: 1px;
+	right: 423px;
+	height: 25px;
+	z-index: 5001;
+}
+
+.outpost.cultural_outpost .openOverview:hover {
+	filter: brightness(1.2);
+}
+
 #city-map-overlayBody .prod::before {
 	background: transparent url('../../productions/images/productions.png') -233px 2px no-repeat;
 	background-size: auto 100%;
