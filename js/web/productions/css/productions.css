@@ -149,8 +149,12 @@
 	background-repeat: no-repeat;
 	background-position: 13px 13px, -312px 0px;
 }
-#ProductionsRatingBody .inventory-building, #ProductionsRatingBody label[for="inventorybuildingscore"], #ProductionsRatingBody .ratingtable tr.hidden, #ProductionsRatingBody.tilevalues .buildingvalue, #ProductionsRatingBody:not(.tilevalues) .tilevalue, #ProductionsRatingBody.showitems .items, #ProductionsRating #ProductionsRatingSettings .foe-table li input.hidden {
+#ProductionsRatingBody .inventory-building, #ProductionsRatingBody .settings label[for="inventorybuildingscore"], #ProductionsRatingBody .ratingtable tr.hidden, #ProductionsRatingBody.tilevalues .buildingvalue, #ProductionsRatingBody:not(.tilevalues) .tilevalue, #ProductionsRatingBody .items, #ProductionsRating #ProductionsRatingSettings .foe-table li input.hidden {
 	display: none;
+}
+
+#ProductionsRatingBody.showitems .items {
+	display: table-cell;
 }
 
 #ProductionsRatingBody span.resicon.def_boost_attacker-guild_expedition {
@@ -176,6 +180,8 @@
 }
 #ProductionsRatingBody .settings label {
 	margin-right: 0.3em;
+	display: inline-flex;
+	align-items: center;
 }
 #ProductionsRatingBody .settings img {
 	height: 24px;
@@ -269,8 +275,11 @@
 	font-size: 1em;
 	transform: scale(1.1, 1);
 }
-#Productions th.boost span, #ProductionsRatingBody tr.sorter-header th.ascending:before, #ProductionsRatingBody tr.sorter-header th.descending:after, #ProductionsRatingBody.inventorybuildings label[for="inventorybuildingscore"], #buildingsize.active ul, #ProductionsRatingBody th i {
+#Productions th.boost span, #ProductionsRatingBody tr.sorter-header th.ascending:before, #ProductionsRatingBody tr.sorter-header th.descending:after, #buildingsize.active ul, #ProductionsRatingBody th i {
 	display: block;
+}
+#ProductionsRatingBody.inventorybuildings .settings label[for="inventorybuildingscore"] {
+	display: inline-flex;
 }
 #ProductionsRating #RatingSettings {
 	position: absolute;
@@ -294,7 +303,7 @@
 	padding: 0.1rem 0.25rem;
 }
 #ProductionsRatingBody #inventorybuildingscore {
-	width: 60px;
+	width: 55px;
 }
 #ProductionsRatingBody.inventorybuildings .inventory-building {
 	display: table-row;
@@ -362,8 +371,10 @@
 #ProductionsRatingBody tr.highlighted-explained, 
 #ProductionsRating .showhighlighted tbody tr, 
 #ProductionsRating .showhighlighted tbody tr.inventory-building,
-#ProductionsRating .noGBs tbody tr.gb, 
-#ProductionsRating .noLimited tbody tr.limited {
+#ProductionsRating tbody tr.gb,
+#ProductionsRating .inventorybuildings:not(.limited) tbody tr.inventory-building.limited,
+#ProductionsRating .limited:not(.inventorybuildings) tbody tr.inventory-building.limited,
+#ProductionsRating tbody tr.limited {
 	display: none;
 }
 #ProductionsRatingBody tr.highlighted-explained.highlighted-explained, 
@@ -373,7 +384,11 @@
 #ProductionsRating .showhighlighted tbody tr.highlighted-explained, 
 #ProductionsRating .showhighlighted tbody tr.highlighted, 
 #ProductionsRating .showhighlighted tbody tr.highlighted2, 
-#ProductionsRating .showhighlighted tbody tr.additional {
+#ProductionsRating .showhighlighted tbody tr.additional,
+#ProductionsRating .inventorybuildings tbody tr.inventory-building,
+#ProductionsRating .inventorybuildings.limited tbody tr.inventory-building,
+#ProductionsRating .gBs tbody tr.gb, 
+#ProductionsRating .limited tbody tr.limited {
 	display: table-row;
 }
 #ProductionsRatingBody tr.highlighted-explained td {
@@ -400,7 +415,7 @@
 #ProductionsRatingBody span.resicon.def_boost_defender-guild_raids {
 	background-position: 8px 8px, -391px 0px;
 }
-#ProductionsRatingBody span.resicon.att_boost_attacker-battleground, #ProductionsRatingBody span.resicon.def_boost_attacker-battleground, #ProductionsRatingBody span.resicon.att_boost_defender-battleground, #ProductionsRatingBody span.resicon.def_boost_defender-battleground {
+#ProductionsRatingBody span.resicon.att_boost_attacker-battleground, #ProductionsRatingBody span.resicon.def_boost_attacker-battleground, #ProductionsRatingBody span.resicon.att_boost_defender-battleground, #ProductionsRatingBody span.resicon.def_boost_defender-battleground, #ProductionsRatingBody span.filter.showitems {
 	background-image: url('../../x_img/gbg-green.png'), url('../images/productions.png');
 	background-size: 80%, auto;
 	background-repeat: no-repeat;
@@ -561,6 +576,13 @@
 	line-height: 20px;
 	margin-bottom: -23px;
 	z-index: 201;
+}
+#ProductionsRatingBody span.filter.showitems {
+	background-position: -415px 0;
+	width: 26px;
+	height: 24px;
+	display: inline-block;
+	margin: -3px 0;
 }
 
 input[id*="ProdPerTile"] {

@@ -79,8 +79,8 @@ let Productions = {
 			"showhighlighted":false,
 			"inventorybuildings":false,
 			"inventorybuildingscore":0,
-			"noGBs":false,
-			"noLimited":false
+			"gBs":true,
+			"limited":true
 			}`
 		),
 		{showhighlighted: false}
@@ -1947,17 +1947,17 @@ let Productions = {
 				h.push('<label for="tilevalues"><input type="checkbox" id="tilevalues" />' + i18n('Boxes.ProductionsRating.ShowValuesPerTile') + '</label>');
 				h.push('<input type="text" id="efficiencyBuildingFilter" size=20 placeholder="' + i18n('Boxes.ProductionsRating.Filter') + ': neo|eden" />');
 				h.push('<label for="showhighlighted" data-original-title="'+i18n('Boxes.ProductionsRating.ShowHighlightedExplanation')+'"><input type="checkbox" id="showhighlighted" />' + i18n('Boxes.ProductionsRating.ShowHighlighted') + '</label>')
+				h.push('<div>');
+				h.push('<label for="gBs" data-original-title="'+i18n('Boxes.ProductionsRating.NoGBsExplanation')+'"><input type="checkbox" id="gBs" /><img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_greatbuilding.png`,true)+'" /></label>');
+				h.push('<label for="limited" data-original-title="'+i18n('Boxes.ProductionsRating.NoLimitedExplanation')+'"><input type="checkbox" id="limited" /><img src="'+srcLinks.get(`/shared/gui/upgrade/upgrade_icon_limited_building.png`,true)+'" /></label>');
 				if (ActiveMap !== 'OtherPlayer') {
 					h.push('<div class="inventory">'+
-						'<label for="inventorybuildings" data-original-title="'+i18n('Boxes.ProductionsRating.ShowInventoryBuildingsExplanation')+'"><input type="checkbox" id="inventorybuildings" />' + i18n('Boxes.ProductionsRating.ShowInventoryBuildings') + '</label>'+
+						'<label for="inventorybuildings" data-original-title="'+i18n('Boxes.ProductionsRating.ShowInventoryBuildingsExplanation')+'"><input type="checkbox" id="inventorybuildings" /><img class="game-cursor" src="' + extUrl + 'js/web/x_img/inventory.png"></label>'+
 						'<label for="inventorybuildingscore" data-original-title="'+i18n('Boxes.ProductionsRating.InventoryBuildingScoreExplanation')+'">' + i18n('Boxes.ProductionsRating.InventoryBuildingScore') + ': <input type="number" size="6" value="'+(Productions.efficiencySettings.inventorybuildingscore*100)+'" id="inventorybuildingscore" /></label>'+
 						'</div>');
 				}
-				h.push(i18n('Boxes.ProductionsRating.Hide')+":");
-				h.push('<label for="showitems"><input type="checkbox" id="showitems" />' + i18n('Boxes.ProductionsRating.ShowItems') + '</label>');
-				h.push('<label for="noGBs" data-original-title="'+i18n('Boxes.ProductionsRating.NoGBsExplanation')+'"><input type="checkbox" id="noGBs" /><img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_greatbuilding.png`,true)+'" /></label>');
-				h.push('<label for="noLimited" data-original-title="'+i18n('Boxes.ProductionsRating.NoLimitedExplanation')+'"><input type="checkbox" id="noLimited" /><img src="'+srcLinks.get(`/shared/gui/upgrade/upgrade_icon_limited_building.png`,true)+'" /></label>');
-				h.push('</div></th>');
+				h.push('<label for="showitems" data-original-title="'+i18n('Boxes.ProductionsRating.ShowItems')+'"><input type="checkbox" id="showitems" /><span class="filter showitems"></span></label>');
+				h.push('</div></div></th>');
 			h.push('</tr>');
 
 			h.push('<tr class="sorter-header exportheader">');
@@ -2166,12 +2166,12 @@ let Productions = {
 				SaveSettings("showhighlighted")
 			});
 
-			$('#noGBs, label[noGBs]').on('click', function () {
-				SaveSettings("noGBs")
+			$('#gBs, label[gBs]').on('click', function () {
+				SaveSettings("gBs")
 			});
 
-			$('#noLimited, label[noLimited]').on('click', function () {
-				SaveSettings("noLimited")
+			$('#limited, label[limited]').on('click', function () {
+				SaveSettings("limited")
 			});
 
 			$('#inventorybuildings, label[inventorybuildings]').on('click', function () {
@@ -2216,8 +2216,8 @@ let Productions = {
 			if (Productions.efficiencySettings.showitems !== $('#showitems').is(':checked')) $('#showitems').trigger("click")
 			if (Productions.efficiencySettings.showhighlighted !== $('#showhighlighted').is(':checked')) $('#showhighlighted').trigger("click")
 			if (Productions.efficiencySettings.inventorybuildings !== $('#inventorybuildings').is(':checked')) $('#inventorybuildings').trigger("click")
-			if (Productions.efficiencySettings.noGBs !== $('#noGBs').is(':checked')) $('#noGBs').trigger("click")
-			if (Productions.efficiencySettings.noLimited !== $('#noLimited').is(':checked')) $('#noLimited').trigger("click")
+			if (Productions.efficiencySettings.gBs !== $('#gBs').is(':checked')) $('#gBs').trigger("click")
+			if (Productions.efficiencySettings.limited !== $('#limited').is(':checked')) $('#limited').trigger("click")
 
 			$('#findMetaBuilding').on('input', function () {
 				let regEx=new RegExp($(this).val(),"i");
