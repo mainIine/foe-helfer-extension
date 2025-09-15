@@ -444,14 +444,12 @@ let CityMap = {
 		for (let [prod, value] of Object.entries(CityMap.QIStats.resources)) {
 			out += '<span class="'+prod+'">'+srcLinks.icons(prod);
 			if (prod.includes("suppl")) {
-				let qiCityBoosts = CityMap.QIStats.boosts.guild_raids_supplies_production || 0;
-				let mainCityBoosts = Boosts.noSettlement.guild_raids_supplies_production || 0;
-				out += HTML.Format(value*(CityMap.QIStats.euphoriaBoost+(qiCityBoosts+mainCityBoosts)/100));
+				let boosts = Boosts.Sums.guild_raids_supplies_production || 0;
+				out += HTML.Format(value*(CityMap.QIStats.euphoriaBoost+boosts/100));
 			}
 			else if (prod.includes("money")) {
-				let qiCityBoosts = CityMap.QIStats.boosts.guild_raids_coins_production || 0;
-				let mainCityBoosts = Boosts.noSettlement.guild_raids_coins_production || 0;
-				out += HTML.Format(value*(CityMap.QIStats.euphoriaBoost+(qiCityBoosts+mainCityBoosts)/100));
+				let boosts = Boosts.Sums.guild_raids_coins_production || 0;
+				out += HTML.Format(value*(CityMap.QIStats.euphoriaBoost+boosts/100));
 			}
 			else
 				out += HTML.Format(value*CityMap.QIStats.euphoriaBoost);
@@ -471,7 +469,7 @@ let CityMap = {
 
 
 	showQIBuildings: () => {
-		let boosts = Boosts.noSettlement;
+		let boosts = Boosts.Sums;
 		let buildings = Object.values(CityMap.QIData);
 		buildings.sort((a, b) => {
 			if (a.cityentity_id < b.cityentity_id) return -1
@@ -509,13 +507,10 @@ let CityMap = {
 						for (let [prod, value] of Object.entries(building.production)) {
 							let boost = 0;
 							if (prod.includes('suppl')) {
-								boost = CityMap.QIStats.boosts.guild_raids_supplies_production || 0;
 								boost += boosts.guild_raids_supplies_production || 0;
 							}
 							else if (prod.includes('money')) {
-								boost = CityMap.QIStats.boosts.guild_raids_coins_production || 0;
 								boost += boosts.guild_raids_coins_production || 0;
-								console.log("x", CityMap.QIStats, Boosts);
 							}
 
 							if (building.type === "main_building") {
