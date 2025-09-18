@@ -149,8 +149,23 @@
 	background-repeat: no-repeat;
 	background-position: 13px 13px, -312px 0px;
 }
-#ProductionsRatingBody .settings label[for="inventorybuildingscore"], #ProductionsRatingBody .ratingtable tr.hidden, #ProductionsRatingBody.tilevalues .buildingvalue, #ProductionsRatingBody:not(.tilevalues) .tilevalue, #ProductionsRatingBody .items, #ProductionsRating #ProductionsRatingSettings .foe-table li input.hidden {
+#ProductionsRatingBody .settings label[for="inventorybuildingscore"], 
+#ProductionsRatingBody .settings label[for="showLimited"], 
+#ProductionsRatingBody .ratingtable tr.hidden, 
+#ProductionsRatingBody.tilevalues .buildingvalue, 
+#ProductionsRatingBody:not(.tilevalues) .tilevalue, 
+#ProductionsRatingBody .items, 
+#ProductionsRating #ProductionsRatingSettings .foe-table li input.hidden {
 	display: none;
+}
+#ProductionsRatingBody.inventorybuildings .settings label[for="inventorybuildingscore"],
+#ProductionsRatingBody.inventorybuildings .settings label[for="showLimited"] 
+ {
+	display: inline-flex;
+}
+#ProductionsRatingBody.inventorybuildings .inventory {
+	background: rgba(0, 0, 0, 0.5);
+	border: 1px solid black;
 }
 
 #ProductionsRatingBody.showitems .items {
@@ -277,9 +292,6 @@
 }
 #Productions th.boost span, #ProductionsRatingBody tr.sorter-header th.ascending:before, #ProductionsRatingBody tr.sorter-header th.descending:after, #buildingsize.active ul, #ProductionsRatingBody th i {
 	display: block;
-}
-#ProductionsRatingBody.inventorybuildings .settings label[for="inventorybuildingscore"] {
-	display: inline-flex;
 }
 #ProductionsRating #RatingSettings {
 	position: absolute;
