@@ -80,7 +80,7 @@ let Productions = {
 			"inventorybuildings":false,
 			"inventorybuildingscore":0,
 			"gBs":true,
-			"limited":true
+			"showLimited":true
 			}`
 		),
 		{showhighlighted: false}
@@ -1949,7 +1949,7 @@ let Productions = {
 				h.push('<label for="showhighlighted" data-original-title="'+i18n('Boxes.ProductionsRating.ShowHighlightedExplanation')+'"><input type="checkbox" id="showhighlighted" />' + i18n('Boxes.ProductionsRating.ShowHighlighted') + '</label>')
 				h.push('<div>');
 				h.push('<label for="gBs" data-original-title="'+i18n('Boxes.ProductionsRating.NoGBsExplanation')+'"><input type="checkbox" id="gBs" /><img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_greatbuilding.png`,true)+'" /></label>');
-				h.push('<label for="limited" data-original-title="'+i18n('Boxes.ProductionsRating.NoLimitedExplanation')+'"><input type="checkbox" id="limited" /><img src="'+srcLinks.get(`/shared/gui/upgrade/upgrade_icon_limited_building.png`,true)+'" /></label>');
+				h.push('<label for="showLimited" data-original-title="'+i18n('Boxes.ProductionsRating.NoLimitedExplanation')+'"><input type="checkbox" id="showLimited" /><img src="'+srcLinks.get(`/shared/gui/upgrade/upgrade_icon_limited_building.png`,true)+'" /></label>');
 				if (ActiveMap !== 'OtherPlayer') {
 					h.push('<div class="inventory">'+
 						'<label for="inventorybuildings" data-original-title="'+i18n('Boxes.ProductionsRating.ShowInventoryBuildingsExplanation')+'"><input type="checkbox" id="inventorybuildings" /><img class="game-cursor" src="' + extUrl + 'js/web/x_img/inventory.png"></label>'+
@@ -2170,8 +2170,8 @@ let Productions = {
 				SaveSettings("gBs")
 			});
 
-			$('#limited, label[limited]').on('click', function () {
-				SaveSettings("limited")
+			$('#showLimited, label[limited]').on('click', function () {
+				SaveSettings("showLimited")
 			});
 
 			$('#inventorybuildings, label[inventorybuildings]').on('click', function () {
@@ -2217,7 +2217,7 @@ let Productions = {
 			if (Productions.efficiencySettings.showhighlighted !== $('#showhighlighted').is(':checked')) $('#showhighlighted').trigger("click")
 			if (Productions.efficiencySettings.inventorybuildings !== $('#inventorybuildings').is(':checked')) $('#inventorybuildings').trigger("click")
 			if (Productions.efficiencySettings.gBs !== $('#gBs').is(':checked')) $('#gBs').trigger("click")
-			if (Productions.efficiencySettings.limited !== $('#limited').is(':checked')) $('#limited').trigger("click")
+			if (Productions.efficiencySettings.showLimited !== $('#showLimited').is(':checked')) $('#showLimited').trigger("click")
 
 			$('#findMetaBuilding').on('input', function () {
 				let regEx=new RegExp($(this).val(),"i");

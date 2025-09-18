@@ -149,7 +149,7 @@
 	background-repeat: no-repeat;
 	background-position: 13px 13px, -312px 0px;
 }
-#ProductionsRatingBody .inventory-building, #ProductionsRatingBody .settings label[for="inventorybuildingscore"], #ProductionsRatingBody .ratingtable tr.hidden, #ProductionsRatingBody.tilevalues .buildingvalue, #ProductionsRatingBody:not(.tilevalues) .tilevalue, #ProductionsRatingBody .items, #ProductionsRating #ProductionsRatingSettings .foe-table li input.hidden {
+#ProductionsRatingBody .settings label[for="inventorybuildingscore"], #ProductionsRatingBody .ratingtable tr.hidden, #ProductionsRatingBody.tilevalues .buildingvalue, #ProductionsRatingBody:not(.tilevalues) .tilevalue, #ProductionsRatingBody .items, #ProductionsRating #ProductionsRatingSettings .foe-table li input.hidden {
 	display: none;
 }
 
@@ -305,9 +305,6 @@
 #ProductionsRatingBody #inventorybuildingscore {
 	width: 55px;
 }
-#ProductionsRatingBody.inventorybuildings .inventory-building {
-	display: table-row;
-}
 #ProductionsRatingBody .sorter-header .flex-between {
 	display: flex;
 	justify-content: space-between;
@@ -368,27 +365,22 @@
 	opacity: 1;
 	filter: none;
 }
-#ProductionsRatingBody tr.highlighted-explained, 
-#ProductionsRating .showhighlighted tbody tr, 
-#ProductionsRating .showhighlighted tbody tr.inventory-building,
-#ProductionsRating tbody tr.gb,
-#ProductionsRating .inventorybuildings:not(.limited) tbody tr.inventory-building.limited,
-#ProductionsRating .limited:not(.inventorybuildings) tbody tr.inventory-building.limited,
-#ProductionsRating tbody tr.limited {
+
+#ProductionsRatingBody:not(.inventorybuildings) tbody tr.inventory-building,
+#ProductionsRatingBody:not(.gBs) tbody tr.gb,
+#ProductionsRatingBody:not(.showLimited) tbody tr.inventory-building.limited,
+#ProductionsRatingBody.showhighlighted tbody tr {
 	display: none;
 }
-#ProductionsRatingBody tr.highlighted-explained.highlighted-explained, 
-#ProductionsRatingBody tr.highlighted-explained.highlighted, 
-#ProductionsRatingBody tr.highlighted-explained.highlighted2, 
-#ProductionsRatingBody tr.highlighted-explained.additional, 
-#ProductionsRating .showhighlighted tbody tr.highlighted-explained, 
-#ProductionsRating .showhighlighted tbody tr.highlighted, 
-#ProductionsRating .showhighlighted tbody tr.highlighted2, 
-#ProductionsRating .showhighlighted tbody tr.additional,
-#ProductionsRating .inventorybuildings tbody tr.inventory-building,
-#ProductionsRating .inventorybuildings.limited tbody tr.inventory-building,
-#ProductionsRating .gBs tbody tr.gb, 
-#ProductionsRating .limited tbody tr.limited {
+
+#ProductionsRatingBody tfoot tr, 
+#ProductionsRatingBody.showhighlighted tbody tr.highlighted-explained, 
+#ProductionsRatingBody.showhighlighted tbody tr.highlighted, 
+#ProductionsRatingBody.showhighlighted tbody tr.highlighted2, 
+#ProductionsRatingBody.showhighlighted tbody tr.additional, 
+#ProductionsRatingBody:not(.showhighlighted).inventorybuildings.showLimited tbody tr.limited, 
+#ProductionsRatingBody:not(.showhighlighted).inventorybuildings tbody tr.inventory-building 
+#ProductionsRatingBody:not(.showhighlighted).gBs tbody tr.gb {
 	display: table-row;
 }
 #ProductionsRatingBody tr.highlighted-explained td {
