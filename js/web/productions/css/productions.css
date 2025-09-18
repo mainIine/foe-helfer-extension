@@ -366,13 +366,6 @@
 	filter: none;
 }
 
-#ProductionsRatingBody:not(.inventorybuildings) tbody tr.inventory-building,
-#ProductionsRatingBody:not(.gBs) tbody tr.gb,
-#ProductionsRatingBody:not(.showLimited) tbody tr.inventory-building.limited,
-#ProductionsRatingBody.showhighlighted tbody tr {
-	display: none;
-}
-
 #ProductionsRatingBody tfoot tr, 
 #ProductionsRatingBody.showhighlighted tbody tr.highlighted-explained, 
 #ProductionsRatingBody.showhighlighted tbody tr.highlighted, 
@@ -380,6 +373,13 @@
 #ProductionsRatingBody.showhighlighted tbody tr.additional{
 	display: table-row;
 }
+#ProductionsRatingBody:not(.inventorybuildings) tbody tr.inventory-building,
+#ProductionsRatingBody:not(.gBs) tbody tr.gb,
+#ProductionsRatingBody:not(.showLimited) tbody tr.inventory-building.limited,
+#ProductionsRatingBody.showhighlighted tbody tr {
+	display: none;
+}
+
 #ProductionsRatingBody tr.highlighted-explained td {
 	font-weight: normal !important;
 	padding: 1em;
