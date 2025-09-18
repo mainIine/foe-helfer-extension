@@ -377,10 +377,7 @@
 #ProductionsRatingBody.showhighlighted tbody tr.highlighted-explained, 
 #ProductionsRatingBody.showhighlighted tbody tr.highlighted, 
 #ProductionsRatingBody.showhighlighted tbody tr.highlighted2, 
-#ProductionsRatingBody.showhighlighted tbody tr.additional, 
-#ProductionsRatingBody:not(.showhighlighted).inventorybuildings.showLimited tbody tr.limited, 
-#ProductionsRatingBody:not(.showhighlighted).inventorybuildings tbody tr.inventory-building 
-#ProductionsRatingBody:not(.showhighlighted).gBs tbody tr.gb {
+#ProductionsRatingBody.showhighlighted tbody tr.additional{
 	display: table-row;
 }
 #ProductionsRatingBody tr.highlighted-explained td {
