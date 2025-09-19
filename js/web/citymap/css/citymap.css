@@ -343,6 +343,7 @@
 	display: inline-block;
 	border-radius: 7px;
 	margin: -1px 3px 0 0;
+	box-shadow: 0 1px 1px var(--black-65), 0 1px 3px var(--black-50);
 } 
 
 #grid-outer span.residential, tr.residential td:first-child::before {
@@ -353,7 +354,7 @@
 	background-color: var(--background-color-tower);
 	border-color: var(--border-color-tower);
 }
-#grid-outer span.decoration, tr.decoration td:first-child::before {
+#grid-outer span.decoration, tr.decoration td:first-child::before, #grid-outer span.diplomacy, tr.diplomacy td:first-child::before {
 	background-color: var(--background-color-decoration);
 	border-color: var(--border-color-decoration);
 }
@@ -381,7 +382,7 @@
 	background-color: var(--background-color-main_building);
 	border-color: var(--border-color-main_building);
 }
-#grid-outer span.production, #grid-outer span.diplomacy, tr.diplomacy td:first-child::before, tr.production td:first-child::before {
+#grid-outer span.production, tr.production td:first-child::before {
 	background-color: var(--background-color-production);
 	border-color: var(--border-color-production);
 }
@@ -517,7 +518,7 @@
 	margin-right: 5px;
 }
 
-#area-state .building-count-area span.square.military, tr.military td:first-child::before, tr.production td:first-child::before, tr.static_provider td:first-child::before, tr.production td:first-child::before {
+#area-state .building-count-area span.square.military, tr.military td:first-child::before, tr.static_provider td:first-child::before {
 	background-color: var(--background-color-military);
 	border-color:  var(--border-color-military);
 }
@@ -534,7 +535,7 @@
 	background-color: var(--background-color-street);
 	border-color: var(--border-color-street);
 }
-#area-state .building-count-area span.square.goods, tr.goods td:first-child::before, tr.production td:first-child::before {
+#area-state .building-count-area span.square.goods, tr.goods td:first-child::before {
 	background-color: var(--background-color-goods);
 	border-color: var(--border-color-goods);
 }
