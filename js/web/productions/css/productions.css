@@ -164,10 +164,12 @@
 	display: inline-flex;
 }
 #ProductionsRatingBody.inventorybuildings .inventory {
-	box-shadow: inset 0 0 5px #00000078;
-	border: 1px solid #0000008f;
-	border-radius: 3px;
-	margin: -1px;
+	box-shadow: inset 1px 2px 8px #000000b8;
+	border: 1px solid #000000c4;
+	border-left: 1px dotted var(--text-dark);
+	border-right: 1px dotted var(--text-dark);
+	margin: -2px;
+	padding: 1px;
 }
 
 #ProductionsRatingBody.showitems .items {
@@ -560,7 +562,7 @@
 #ProductionsRatingBody ul.foe-table {
 	max-width: 500px;
 	margin: 3px auto 1em;
-	box-shadow: 0 0 500px #000 7;
+	box-shadow: 0 0 500px #000;
 }
 #ProductionsRatingBody div p {
 	max-width: 600px;
@@ -574,7 +576,7 @@
 }
 #RatingsResults {
 	position: sticky;
-	top: 4px;
+	top: 3px;
 	float: right;
 	margin-right: 2px;
 	height: 20px;
