@@ -25,17 +25,23 @@ let ExistenceConfirmed = async (varlist)=>{
 	varlist=varlist.split('||')
 	return new Promise((resolve, reject) => {
 		let timer = () => {
+			let doResolve = true;
 			for (let x of varlist ) {
-				if (x.includes('$') && eval(x).length === 0) {
-					setTimeout(timer, 50);
-					return;
+				if (x.includes('$') && eval(x).length === 0) { // jQuery object
+					doResolve = false
+					console.log(x+' not yet defined');
+					break;
 				}
-				if (eval('typeof '+x) === 'undefined' || eval(x) === null || eval(x) === undefined) {
-					setTimeout(timer, 50);
-					return;
+				if (eval('typeof '+x) === 'undefined' || eval(x) === null || eval(x) === undefined) { // normal var
+					doResolve = false
+					console.log(x+' not yet defined');
+					break;
 				}
-				resolve();
 			}
+			if (doResolve) 
+				resolve();
+			else 
+				setTimeout(timer, 150);
 		};
 		timer();
 	});
@@ -1354,7 +1360,7 @@ let MainParser = {
 		EventHandler.Init();
 
 		await ExistenceConfirmed('MainParser.CityEntities||srcLinks.FileList')
-
+	
 		window.dispatchEvent(new CustomEvent('foe-helper#StartUpDone'))
 
 	},
