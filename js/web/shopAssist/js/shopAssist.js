@@ -126,13 +126,13 @@ let shopAssist = {
 			let neededFragments = null;
 			let neededBuys = null;
 			let limitedFragments = null;
-			let limitedBuys = slot.purchaseLimit?.remainingPurchases || 0
+			let limitedBuys = slot.purchaseLimit ? slot.purchaseLimit.remainingPurchases || 0 : Infinity;
 			if (slot.reward.subType == "fragment") {
 				neededFragments = Math.max(slot.reward.requiredAmount-(stock.fragments||0),0);
 				neededBuys = Math.ceil(neededFragments/slot.reward.amount);
 				neededFragments = neededBuys * slot.reward.amount;
-				limitedFragments = (slot.purchaseLimit?.remainingPurchases * slot.reward.amount) || slot.reward.requiredAmount;
-				limitedBuys = Math.ceil(limitedFragments/slot.reward.amount);
+				limitedBuys = Math.min(limitedFragments,Math.ceil(slot.reward.requiredAmount / slot.reward.amount));
+				limitedFragments = limitedBuys * slot.reward.amount;
 			}
 			let buildingList = shopAssist.getBuildingIds(slot.reward)
 			let limitReached = slot.purchaseLimit?.maxPurchases && !slot.purchaseLimit.remainingPurchases;
@@ -226,24 +226,34 @@ let shopAssist = {
 				</td>`
 			}
 			if (slot.reward.subType == "fragment") {
-				//costs all
+				//costs all - fragments
 				costs = "";
 				canBuy = true;
 				Object.entries(slot.baseCost?.resources||{}).forEach(([res, amount])=>{
+					if (limitedBuys == Infinity) {
+						canBuy = false;
+						return;
+					} 
+					if (limitedBuys == 0) return;
 					let cost = Math.ceil(limitedBuys * amount*(1-(slot.discount||0)));
 					if ((ResourceStock[res] || 0) < cost) canBuy = false;
 					costs += `<div class="text-right">` + HTML.Format(cost) + srcLinks.icons(res)+ "</div>"
 				})
 				h += `<td class="costs ${(canBuy && !limitReached && unlocked) ? "canBuy" : "canNotBuy"}">
-						<div><span>${srcLinks.icons("icon_tooltip_fragment") + HTML.Format(limitedFragments)}</span> <span>(${limitedBuys}x)</span></div> 
+						<div>${limitedBuys != Infinity && limitedBuys != 0 ? `<span>${srcLinks.icons("icon_tooltip_fragment") + HTML.Format(limitedFragments)}</span>`:``} <span>(${limitedBuys}x)</span></div> 
 						${costs}
 					</td>`
 			} else {
 				h += `<td></td>`
-				//costs all
+				//costs all - not fragments
 				costs = "";
 				canBuy = true;
 				Object.entries(slot.baseCost?.resources||{}).forEach(([res, amount])=>{
+					if (limitedBuys == Infinity) {
+						canBuy = false;
+						return;
+					} 
+					if (limitedBuys == 0) return;
 					let cost = Math.ceil(limitedBuys * amount*(1-(slot.discount||0)));
 					if ((ResourceStock[res] || 0) < cost) canBuy = false;
 					if (slot.purchaseLimit?.remainingPurchases != 1 && slot.flag?.value=="increasingCosts") canBuy = false;
