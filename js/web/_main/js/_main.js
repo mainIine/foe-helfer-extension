@@ -1362,7 +1362,7 @@ let MainParser = {
 		await ExistenceConfirmed('MainParser.CityEntities||srcLinks.FileList')
 	
 		window.dispatchEvent(new CustomEvent('foe-helper#StartUpDone'))
-
+		console.log('StartUp done')
 	},
 
 
