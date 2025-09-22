@@ -22,12 +22,12 @@ const extID = ExtbaseData.extID,
 	loadBeta = ExtbaseData.loadBeta;
 
 let ExistenceConfirmed = async (varlist)=>{
-	varlist=varlist.split('||')
+	varlist = varlist.split('||')
 	return new Promise((resolve, reject) => {
 		let timer = () => {
 			let doResolve = true;
 			for (let x of varlist ) {
-				if (x.includes('$') && eval(x).length === 0) { // jQuery object
+				if (x.substr(0,2) == '$(' && eval(x).length === 0) { // jQuery object
 					doResolve = false
 					console.log(x+' not yet defined');
 					break;
@@ -41,7 +41,7 @@ let ExistenceConfirmed = async (varlist)=>{
 			if (doResolve) 
 				resolve();
 			else 
-				setTimeout(timer, 150);
+				setTimeout(timer, 100);
 		};
 		timer();
 	});
