@@ -3,10 +3,16 @@
 ##### 3.12.1.0
 
 **Update**
-- Effizienz:
-	- Neue Filter für LG und engeschränkte Gebäude
-- Stadtübersicht:
+- Effizienz
+	- Neue Filter für LG und eingeschränkte Gebäude
+- Stadtübersicht
 	- Gebäudeliste für Siedlungen und Kolonien hinzugefügt
+- Shop Assistent
+	- Seltenheitsgrad des Angebots hinzugefügt
+	- Bestand an Kaufwährung hinzugefügt
+	- sind noch keine Favoriten ausgewählt, wird der Filter automatisch deaktiviert
+- Blaue Galaxy
+	- Berücksichtigt nun auch große FP-Pakete
 
 **Bugfix**
 - Eigenanteilsrechner

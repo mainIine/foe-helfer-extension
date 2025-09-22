@@ -3,10 +3,16 @@
 ##### 3.12.1.0
 
 **Update**
-- Efficiency:
+- Efficiency
 	- Added filters for GBs and limited buildings
-- Citymap:
+- Citymap
 	- Added building list to outposts and settlements
+- Shop Assist
+	- Added rarity of offer
+	- Added current stock of shop ressources
+	- When no favourites are selected yet, the favourites filter is deactivated
+- Blue Galaxy
+	- Now accounts for large FP Packages
 
 **Bugfix**
 - OwnPart Calculator
