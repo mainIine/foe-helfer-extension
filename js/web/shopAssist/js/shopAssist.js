@@ -131,7 +131,7 @@ let shopAssist = {
 				neededFragments = Math.max(slot.reward.requiredAmount-(stock.fragments||0),0);
 				neededBuys = Math.ceil(neededFragments/slot.reward.amount);
 				neededFragments = neededBuys * slot.reward.amount;
-				limitedBuys = Math.min(limitedFragments,Math.ceil(slot.reward.requiredAmount / slot.reward.amount));
+				limitedBuys = Math.min(limitedBuys,Math.ceil(slot.reward.requiredAmount / slot.reward.amount));
 				limitedFragments = limitedBuys * slot.reward.amount;
 			}
 			let buildingList = shopAssist.getBuildingIds(slot.reward)
