@@ -1,6 +1,11 @@
 ## Changelog - Extension
 
-##### 3.12.1.0
+##### 3.13.0.0
+**New**
+- GE Goods Use
+	- A threshold can be given
+	- If upon opening the GE unlock dialogue the precentual goods use is higher than the threshold, a box is generated listing the percentual goods use in relation to the treasury stock.
+	- Activate in settings!
 
 **Update**
 - Efficiency
