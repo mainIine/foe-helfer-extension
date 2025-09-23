@@ -13,6 +13,8 @@
 	- sind noch keine Favoriten ausgewählt, wird der Filter automatisch deaktiviert
 - Blaue Galaxy
 	- Berücksichtigt nun auch große FP-Pakete
+- Gebäude Tooltip
+	- wenn Fragmente produziert werden, werden nun auch die Anzahl an benötigter Fragmente angezeigt
 
 **Bugfix**
 - Eigenanteilsrechner
