@@ -1155,3 +1155,50 @@ let GExAttempts = {
 
 	}
 }
+
+let GexStockWarning = {
+	check: (stock,costs) => {
+		let min = JSON.parse(localStorage.getItem('GexStockWarningMin')||"100");
+		if (min == 100) return
+		let parts = []
+		for (let [res,amount] of Object.entries(costs)) {
+			parts.push({
+				resource:res, 
+				part: Math.round(amount/(stock[res]||0.1)*10000)/100
+			})
+		}
+		parts = parts.sort((a,b)=>
+			b.part-a.part
+		)
+		parts = parts.slice(0,10)
+		
+		if (parts[0].part <= min) return
+		
+		if ($('#GexStockWarning').length === 0)	{
+			HTML.Box({
+				id: 'GexStockWarning',
+				title: i18n('Settings.GexStockWarning.Title'),
+				auto_close: true,
+				dragdrop: true,
+				resize: true,
+				minimize: true,
+			});
+			HTML.AddCssFile('gexstat');
+		}
+		let h = `<table class="foe-table">`
+		for (let part of parts) {
+			h+=`<tr>
+			<td>${srcLinks.icons(part.resource)}</td>
+			<td>${GoodsData[part.resource].name} (${i18n("Eras."+Technologies.Eras[GoodsData[part.resource].era]+".short")})</td>
+			<td>${part.part}%</td>
+			</tr>`
+		}
+		h+=`</table>`
+		
+		$('#GexStockWarningBody').html(h);
+
+	}
+}
+FoEproxy.addHandler("GuildExpeditionService","getUnlockCosts",(data,postData)=>{
+	GexStockWarning.check (data.responseData.treasuryResources.resources,data.responseData.unlockCosts.resources)
+})
