@@ -154,7 +154,7 @@ let Tooltips = {
         let fragment = ""
         if (rew.iconAssetName=="icon_fragment") {
             icon = srcLinks.icons(rew.assembledReward?.iconAssetName||rew.assembledReward?.subType)
-            name = name.replace(/Fragments? of/,"").replace(/.*?'(.*?)'.*/,"$1")
+            name = name.replace(/Fragments? of/,"").replace(/.*?'(.*?)'.*/,"$1") + ' (' + rew.requiredAmount + ')' 
             fragment = srcLinks.icons("icon_tooltip_fragment")
         } else if (rew.type=="unit") {
 
