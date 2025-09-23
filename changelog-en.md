@@ -13,6 +13,8 @@
 	- When no favourites are selected yet, the favourites filter is deactivated
 - Blue Galaxy
 	- Now accounts for large FP Packages
+- Building Tooltip
+	- if fragments are produced the amount of needed fragments is now displayed as well
 
 **Bugfix**
 - OwnPart Calculator
