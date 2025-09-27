@@ -291,5 +291,12 @@
 		"group": "About",
 		"button":"window.open('https://github.com/mainIine/foe-helfer-extension/archive/refs/heads/beta.zip', '_blank').focus();",
 		"sort": 19
+	},
+	{
+		"name": "GexStockWarning",
+		"callback": "GexStockWarning",
+		"group": "Auto",
+		"sort": 19
 	}
+	
 ]
