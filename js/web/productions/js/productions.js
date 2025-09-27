@@ -2080,8 +2080,7 @@ let Productions = {
 						let roundSecondTile = secondTileValue > 100 || secondTileValue < -100 ?
 							Math.round(secondTileValue) : Math.round(secondTileValue * 100) / 100;
 
-						// Average the two values
-						let tileValue = Math.round((roundFirstTile + roundSecondTile) / 2 * 10) / 10;
+						let tileValue = Math.round((roundFirstTile + roundSecondTile) * 10) / 10;
 
 						h.push(`<td class="text-right tilevalue" data-number="${tileValue}">`)
 						h.push(HTML.Format(tileValue))
