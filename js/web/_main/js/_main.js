@@ -136,8 +136,10 @@ const i18n_loadPromise = (async () => {
 		);
 
 		// warte dass i18n geladen ist
+		console.log("await vendors loaded")
 		await vendorsLoadedPromise;
-
+		console.log("vendors loaded");	
+		
 		for (let languageData of languageDatas) {
 			i18n.translator.add({ 'values': JSON.parse(languageData) });
 		}
@@ -1313,6 +1315,7 @@ let MainParser = {
 	 * @param d
 	 */
 	StartUp: async (d) => {
+		console.log("StartUp called");
 		Settings.Init(false);
 
 		MainParser.VersionSpecificStartupCode();
