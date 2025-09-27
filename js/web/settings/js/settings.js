@@ -482,6 +482,7 @@ let Settings = {
 			min: 2
 		}),
 		value = localStorage.getItem('MenuLength');
+		
 		ip[0].defaultValue = ip[0].value = value;
 
 		if (null !== value) {
@@ -498,6 +499,34 @@ let Settings = {
 			}
 
 			_menu.SetMenuHeight(true);
+		});
+
+		return ip;
+	},
+
+
+	GexStockWarning: () => {
+		let ip = $('<input />').addClass('setting-input').attr({
+			type: 'number',
+			id: 'GexStockWarningInput',
+			step: 1,
+			min: 0,
+			max: 100
+		}),
+		value = JSON.parse(localStorage.getItem('GexStockWarningMin')||"100");
+		
+		ip[0].defaultValue = ip[0].value = value;
+		ip.val(value);
+	
+		$('#SettingsBox').on('keyup', '#GexStockWarningInput', function () {
+			let value = $(this).val();
+
+			if (value >= 0 && value <= 100) {
+				localStorage.setItem('GexStockWarningMin', value);
+			} else {
+				localStorage.setItem('GexStockWarningMin', 100);
+				$(this).val(100)
+			}
 		});
 
 		return ip;

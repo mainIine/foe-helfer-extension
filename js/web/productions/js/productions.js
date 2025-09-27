@@ -42,7 +42,6 @@ let Productions = {
 		'def_boost_attacker',
 		'att_boost_defender',
 		'def_boost_defender',
-		'clan_power',
 		'clan_goods',
 		'guild_raids'
 	],
@@ -63,7 +62,6 @@ let Productions = {
 		'goods',
 		'culture',
 		'main_building',
-		'clan_power_production',
 		'off_grid',
 		'generic_building'
 	],
@@ -96,7 +94,6 @@ let Productions = {
 				'money': {order:2,perTile:null,active:false},
 				'supplies': {order:3,perTile:null,active:false},
 				'medals': {order:4,perTile:null,active:false},
-				'clan_power': {order:5,perTile:null,active:false},
 				'clan_goods': {order:6,perTile:10,active:true},
 				'population': {order:7,perTile:null,active:false},
 				'happiness': {order:8,perTile:null,active:false},
@@ -138,6 +135,10 @@ let Productions = {
 				}
 				localStorage.removeItem('ProductionRatingProdPerTiles')
 				Productions.Rating.save()
+			}
+
+			if (Productions.Rating.Data.clan_power) {
+				delete Productions.Rating.Data.clan_power;
 			}
 			//------------------------------------------------------------------------------
 		},
@@ -271,9 +272,6 @@ let Productions = {
 					if (production.type === "guildResources") {
 						if (Productions.BuildingsProducts.clan_goods.find(x => x.id === building.id) === undefined)
 							Productions.BuildingsProducts["clan_goods"].push(saveBuilding)
-						if (production.resources?.clan_power > 0)
-							if (Productions.BuildingsProducts.clan_power.find(x => x.id === building.id) === undefined)
-								Productions.BuildingsProducts["clan_power"].push(saveBuilding)
 					}
 					if (production.type === "unit") { 
 						if (Productions.BuildingsProducts.units.find(x => x.id === building.id) === undefined)
@@ -360,9 +358,6 @@ let Productions = {
 					if (production.type === "guildResources") {
 						if (Productions.BuildingsProducts.clan_goods.find(x => x.id === building.id) === undefined)
 							Productions.BuildingsProducts.clan_goods.push(saveBuilding)
-						if (production.resources.clan_power > 0)
-							if (Productions.BuildingsProducts.clan_power.find(x => x.id === building.id) === undefined)
-								Productions.BuildingsProducts.clan_power.push(saveBuilding)
 					}
 					if (production.type === "unit") { 
 						if (Productions.BuildingsProducts.units.find(x => x.id === building.id) === undefined)
@@ -1427,10 +1422,6 @@ let Productions = {
 						}
 					}
 				}
-				if (category === "clan_power" && production.type === "guildResources") {
-					if (production.resources?.clan_power)
-						prod.amount = production.resources.clan_power
-				}
 			})
 		}
 
@@ -1886,13 +1877,13 @@ let Productions = {
 
 			for (let type of Productions.Rating.Types) {
 				h.push('<li class="'+type+'">')
-				let activeSetting = (Productions.Rating.Data[type].perTile !== null && Productions.Rating.Data[type].active !== false)
+				let activeSetting = (Productions.Rating.Data[type]?.perTile !== null && Productions.Rating.Data[type]?.active !== false)
 				h.push('<input id="Enabled-' + type + '" class="no-grow enabled game-cursor" ' + (activeSetting ? 'checked' : '') + ' type="checkbox">')
 				h.push('<span class="no-grow resicon ' + type + '"></span>')
 				h.push('<label for="Enabled-'+type+'">' + Productions.GetTypeName(type) + '</label>')
 				if (type=="fsp") h.push(`<span id="ShowFSPCalculator" class="clickable" data-original-title="${i18n("Boxes.ProductionsRating.ShowFSPCalculator")}">🧮</span>`)
 				//if (Productions.Rating.Data[type].perTile !== null) {
-				h.push('<input type="number" id="ProdPerTile-' + type + '" step="0.01" min="0" max="1000000" class="no-grow helperTT '+(Productions.Rating.Data[type].active ? '': 'hidden')+'" value="' + (Productions.Rating.Data[type].perTile||0) + '", data-callback_tt="Productions.efficiencyTT", data-type="'+type+'-tile">')
+				h.push('<input type="number" id="ProdPerTile-' + type + '" step="0.01" min="0" max="1000000" class="no-grow helperTT '+(Productions.Rating.Data[type]?.active ? '': 'hidden')+'" value="' + (Productions.Rating.Data[type]?.perTile||0) + '", data-callback_tt="Productions.efficiencyTT", data-type="'+type+'-tile">')
 				//}
 				//else {
 				//	h.push('<input type="number" class="hidden no-grow" id="ProdPerTile-' + type + '" step="0.01" min="0" max="1000000" value="0">')
@@ -1923,7 +1914,7 @@ let Productions = {
 			let combinedQIRatingTypes = [];
 			for (const type of Productions.Rating.Types) {
 				// skip inactive ones
-				if (!Productions.Rating.Data[type].active || Productions.Rating.Data[type].perTile === null) continue;
+				if (!Productions.Rating.Data[type]?.active || Productions.Rating.Data[type]?.perTile === null) continue;
 				// filter QI stuff
 				//if (type.startsWith('guild_raids_')) {
 				//	combinedQIRatingTypes.push(type);
@@ -2415,7 +2406,7 @@ let Productions = {
 			}
 			return bsum;
 		}
-		else if (type === "strategy_points" || type === "medals" || type === "premium" || type === "money" || type === "supplies" || type === "units" || type === "clan_goods" || type === "clan_power")
+		else if (type === "strategy_points" || type === "medals" || type === "premium" || type === "money" || type === "supplies" || type === "units" || type === "clan_goods")
 			return Productions.getBuildingProductionByCategory(false, building, type).amount
 
 		else if (type.includes("goods")) {
