@@ -23,6 +23,7 @@ const FoEproxy = (function () {
 	}
 
 	let proxyEnabled = true;
+	let JSONhistory = [];
 
 	// XHR-handler
 	/** @type {Record<string, undefined|Record<string, undefined|((data: FoE_NETWORK_TYPE, postData: any) => void)[]>>} */
@@ -50,6 +51,9 @@ const FoEproxy = (function () {
 		 * TODO: Genaueren Typ für den Callback definieren
 		 * @param {(data: FoE_NETWORK_TYPE, postData: any) => void} callback Der Handler, welcher mit der Antwort aufgerufen werden soll.
 		 */
+		getHistory: function () {
+			return JSONhistory;
+		},
 		addHandler: function (service, method, callback) {
 			// default service and method to 'all'
 			if (method === undefined) {
@@ -514,7 +518,6 @@ const FoEproxy = (function () {
 
 		// nur die jSON mit den Daten abfangen
 		if (url.indexOf("game/json?h=") > -1) {
-
 			let d = /** @type {FoE_NETWORK_TYPE[]} */(JSON.parse(this.responseText));
 
 			let requestData = postData;
@@ -524,12 +527,14 @@ const FoEproxy = (function () {
 				// StartUp Service zuerst behandeln
 				for (let entry of d) {
 					if (entry['requestClass'] === 'StartupService' && entry['requestMethod'] === 'getData') {
+						JSONhistory.push(entry.requestClass + '.' + entry.requestMethod);
 						proxyAction(entry.requestClass, entry.requestMethod, entry, requestData);
 					}
 				}
 
 				for (let entry of d) {
 					if (!(entry['requestClass'] === 'StartupService' && entry['requestMethod'] === 'getData')) {
+						JSONhistory.push(entry.requestClass + '.' + entry.requestMethod);
 						proxyAction(entry.requestClass, entry.requestMethod, entry, requestData);
 					}
 				}
