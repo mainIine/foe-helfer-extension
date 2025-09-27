@@ -64,6 +64,13 @@ FoEproxy.addHandler('ClanService', 'getTreasuryBag', (data, postData) => {
 	}, 350);
 });
 
+FoEproxy.addHandler("BattlefieldService","getArmyPreview",(data)=>{
+	$('#GBGBuildings').remove();
+})
+FoEproxy.addHandler("GuildBattlegroundService","startNegotiation",(data)=>{
+	$('#GBGBuildings').remove();
+})
+
 let GBGBuildings = {
 	treasury:{},
 	block:{ // get from GBG building meta-data: Object.assign({"free":0},...x.map(b=>({id:b.id,value:Number(b.description.replace(/.*? (\d+)% chance to not increase.*/gm,"$1"))})).filter(b=>b.value).sort((a,b)=>a.value-b.value).map(b=>({[b.id]:b.value})))
