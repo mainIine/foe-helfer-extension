@@ -79,6 +79,7 @@ let BlueGalaxy = {
             HTML.Box({
                 id: 'bluegalaxy',
                 title: i18n('Boxes.BlueGalaxy.Title'),
+                ask: i18n('Boxes.BlueGalaxy.HelpLink'),
                 auto_close: true,
                 dragdrop: true,
                 minimize: true,
@@ -164,6 +165,8 @@ let BlueGalaxy = {
                         GoodsSum += product.resources.amount;
                     else if (product.type == "genericReward" && product.resources?.type == "forgepoint_package")
                         FP += parseInt(product.resources.subType)
+                    else if (product.type == "genericReward" && product.resources?.id == "large_forgepoint_package_40")
+                        FP += 10 * parseInt(product.resources.amount)
 
                     if (product.type == "resources" || product.type == "guildResources")
                         for (let j = 0; j < GoodsList.length; j++) {

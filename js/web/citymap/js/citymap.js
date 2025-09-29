@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2024 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2025 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -224,6 +224,10 @@ let CityMap = {
 		}
 
 		mapfilters.append(
+			$('<b />').text(i18n('Boxes.CityMap.Highlight'))
+		);
+
+		mapfilters.append(
 			$('<label />').attr({ for: 'highlight-old-buildings' }).text(i18n('Boxes.CityMap.HighlightOldBuildings'))
 				.prepend($('<input />').attr({ type: 'checkbox', id: 'highlight-old-buildings', onclick: 'CityMap.highlightOldBuildings()' }))
 		);
@@ -244,20 +248,30 @@ let CityMap = {
 		);
 
 		mapfilters.append(
-			$('<label />').attr({ for: 'show-worst-buildings' }).text(i18n('Boxes.CityMap.ShowWorstBuildings'))
-				.prepend($('<input />').attr({ type: 'checkbox', id: 'show-worst-buildings', onclick: 'CityMap.ShowWorstBuildings()' }))
+			$('<div />').attr({ class: 'ratings' })
+				.append($('<label />').attr({ for: 'show-worst-buildings' }).text(i18n('Boxes.CityMap.ShowWorstBuildings'))
+					.prepend($('<input />').attr({ type: 'checkbox', id: 'show-worst-buildings', onclick: 'CityMap.ShowWorstBuildings()' })))
+				.append($('<span />').attr({ onClick: 'Productions.ShowRating()', class: 'clickable' }))
 		);
 
-		oB.append(wrapper)
-		$('#citymap-wrapper').append(menu)
+		oB.append(wrapper);
+		$('#citymap-wrapper').append(menu);
 
 		if (ActiveMap === "guild_raids") {
-			$("#sidebar").append(CityMap.showQIStats())
-			$("#sidebar").append(CityMap.showQIBuildings())
+			$("#sidebar").append(CityMap.showQIStats());
+			$("#sidebar").append(CityMap.showQIBuildings());
 		}
+
+		if (ActiveMap === "cultural_outpost" || ActiveMap === "era_outpost") {
+			$("#sidebar").append(CityMap.showOutpostBuildings());
+		}
+		if (ActiveMap === "cultural_outpost")
+			$('#citymap-wrapper').append('<img class="clickable openOverview" data-original-title="'+i18n('Menu.OutP.Title')+'" onClick="Outposts.BuildInfoBox()" src="' + extUrl + 'css/images/menu/vikings_ship.png">');
+
 		if (ActiveMap === 'OtherPlayer') {
 			let era = CityMap.CityData.find(x => x.type === 'main_building').cityentity_id.split('_')[1]
 			$("#sidebar").append($('<a id="openEfficiencyRating" class="btn-default" onclick="Productions.ShowRating(true,\''+era+'\')">'+ i18n('Menu.ProductionsRating.Title') +'</a>'));
+			//$("#sidebar").append($('<a id="openProfile" class="btn-default" onclick="Profile.showOtherPlayer()">'+ i18n('Global.BoxTitle') +'</a>'));
 		}
 	},
 
@@ -328,21 +342,21 @@ let CityMap = {
 		$('#grid-outer').find('.map-bg').remove();
 		$('#grid-outer').find('.entity').remove();
 
-		CityMap.BuildGrid()
+		CityMap.BuildGrid();
 
-		let buildings = CityMap.CulturalOutpostData
-		let xOffset = 0, yOffset = 0
+		let buildings = CityMap.CulturalOutpostData;
+		let xOffset = 0, yOffset = 0;
 		if (ActiveMap === "era_outpost") {
-			buildings = CityMap.EraOutpostData
-			yOffset = 500
+			buildings = CityMap.EraOutpostData;
+			yOffset = 500;
 		}
 		else if (ActiveMap === "cultural_outpost") {
-			xOffset = 500
+			xOffset = 500;
 		}
 		else if (ActiveMap === "guild_raids") {
-			buildings = CityMap.QIData
-			xOffset = 500
-			yOffset = 500
+			buildings = CityMap.QIData;
+			xOffset = 500;
+			yOffset = 500;
 		}
 
 		for (let b in buildings) {
@@ -379,108 +393,109 @@ let CityMap = {
 
 
 	showQIStats: () => {
-		if (!CityMap.QIData) return
-		let boosts = Boosts.Sums
-		let noSettlement = Boosts.noSettlement
-		let supply_boost = boosts.guild_raids_supplies_production*0.01
-		let coin_boost = boosts.guild_raids_coins_production*0.01
-		let buildings = Object.values(CityMap.QIData)
-		let population = 0, totalPopulation = 0, euphoria = 0, euphoriaBoost = 0, supplies = 0, money = 0
-		let actions = boosts.guild_raids_action_points_collection
-		let att_def_boost_attacker = boosts["guild_raids-att_boost_attacker"] - noSettlement["guild_raids-att_boost_attacker"]
-		let att_def_boost_defender = boosts["guild_raids-att_boost_defender"] - noSettlement["guild_raids-att_boost_defender"]
+		if (!CityMap.QIData) return;
+		let buildings = Object.values(CityMap.QIData);
+		CityMap.QIStats = { 
+			resources: {},
+			boosts: {},
+			euphoria: 0,
+			euphoriaBoost: 1.5,
+			totalPopulation: 0,
+			availablePopulation: 0
+		};
+
+		// gather QIStats
 		for (let b in buildings) {
 			let building = CityMap.setQIBuilding(MainParser.CityEntities[buildings[b]['cityentity_id']])
-			if (building.type !== "impediment" && building.type !== "street") {
-				population += building.population
-				totalPopulation += (building.population > 0 ? building.population : 0)
-				euphoria += building.euphoria
-			}
-		}
-		let euphoriaFactor = euphoria/totalPopulation
-		if (euphoriaFactor <= 0.2)
-			euphoriaBoost = 0.2
-		else if (euphoriaFactor > 0.20 && euphoriaFactor <= 0.60)
-			euphoriaBoost = 0.6
-		else if (euphoriaFactor > 0.60 && euphoriaFactor <= 0.80)
-			euphoriaBoost = 0.8
-		else if (euphoriaFactor > 0.80 && euphoriaFactor <= 1.20)
-			euphoriaBoost = 1
-		else if (euphoriaFactor > 1.20 && euphoriaFactor <= 1.40)
-			euphoriaBoost = 1.1
-		else if (euphoriaFactor > 1.40 && euphoriaFactor < 2.0)
-			euphoriaBoost = 1.2
-		else 
-			euphoriaBoost = 1.5
-
-		for (let b of buildings) {
-			let building = CityMap.setQIBuilding(MainParser.CityEntities[b.cityentity_id])
-			if (building.type !== "impediment" && building.type !== "street") {
-				if (building.production !== null) {
-					if (building.type !== "military" && building.type !== "goods" && building.type !== "main_building") {
-						if (building.production.guild_raids_supplies)
-							supplies += Math.round(building.production.guild_raids_supplies*(euphoriaBoost+supply_boost))
-						if (building.production.guild_raids_money)
-							money += Math.round(building.production.guild_raids_money*(euphoriaBoost+coin_boost))
-					}
+			if (building.boosts) {
+				for (let boost of building.boosts) {
+					if (CityMap.QIStats.boosts[boost.type] === undefined)
+						CityMap.QIStats.boosts[boost.type] = boost.value;
+					else 
+						CityMap.QIStats.boosts[boost.type] += boost.value;
 				}
 			}
+			if (building.production) {
+				for (let [type, value] of Object.entries(building.production)) {
+					// dont include townhall, because boosts dont apply
+					if (building.type === "main_building") continue;
+					if (CityMap.QIStats.resources[type] === undefined)
+						CityMap.QIStats.resources[type] = value;
+					else 
+						CityMap.QIStats.resources[type] += value;
+				}
+			}
+			CityMap.QIStats.euphoria += building.euphoria || 0;
+			CityMap.QIStats.totalPopulation += (building.population >= 0 ? building.population : 0);
+			CityMap.QIStats.availablePopulation += building.population;
 		}
 
-		CityMap.QIStats = {
-			population: population,
-			totalPopulation: totalPopulation,
-			euphoria: euphoria,
-			euphoriaBoost: euphoriaBoost,
-			money: money,
-			supplies: supplies,
-			att_def_boost_attacker: att_def_boost_attacker,
-			att_def_boost_defender: att_def_boost_defender,
-			actions: actions,
-		}
+		let euphoriaFactor = CityMap.QIStats.euphoria/CityMap.QIStats.totalPopulation;
+		CityMap.QIStats.euphoriaBoost = 1.5;
+		if (euphoriaFactor <= 0.2) CityMap.QIStats.euphoriaBoost = 0.2;
+		else if (euphoriaFactor > 0.20 && euphoriaFactor <= 0.60) CityMap.QIStats.euphoriaBoost = 0.6;
+		else if (euphoriaFactor > 0.60 && euphoriaFactor <= 0.80) CityMap.QIStats.euphoriaBoost = 0.8;
+		else if (euphoriaFactor > 0.80 && euphoriaFactor <= 1.20) CityMap.QIStats.euphoriaBoost = 1;
+		else if (euphoriaFactor > 1.20 && euphoriaFactor <= 1.40) CityMap.QIStats.euphoriaBoost = 1.1;
+		else if (euphoriaFactor > 1.40 && euphoriaFactor < 2.0) CityMap.QIStats.euphoriaBoost = 1.2;
 
-		out = '<div class="text-center" style="padding-bottom: 10px">'
-		out += '<p><i>'+i18n('Boxes.CityMap.QIHint')+'</i></p>'
-		out += '<span class="prod population">'+CityMap.QIStats.population+'/'+CityMap.QIStats.totalPopulation+'</span> '
-		out += '<span class="prod happiness">'+Math.round(CityMap.QIStats.euphoriaBoost*100)+'%</span> <br>'
-		out += '<span class="prod guild_raids_money">'+HTML.Format(CityMap.QIStats.money)+'</span> + '
-		out += '<span class="prod guild_raids_supplies">'+HTML.Format(CityMap.QIStats.supplies)+'</span> '+i18n('Boxes.CityMap.QICycle')+'<br>'
-		out += '<span class="prod att_def_boost_attacker">'+CityMap.QIStats.att_def_boost_attacker+'</span> '
-		out += '<span class="prod att_def_boost_defender">'+CityMap.QIStats.att_def_boost_defender+'</span> '+'<br>'
-		out += '<span class="prod guild_raids_action_points_collection">'+'+'+CityMap.QIStats.actions+'</span> '+i18n('Boxes.CityMap.QIActionRechargeCycle')
+		out = '<div class="qiSums">';
+		out += '<p class="text-center"><i>'+i18n('Boxes.CityMap.QIHint')+'</i></p>';
+		out += '<div class="text-right" style="margin-bottom: 10px"><span class="prod population">'+CityMap.QIStats.availablePopulation+'/'+CityMap.QIStats.totalPopulation+'</span> ';
+		out += '<span class="prod happiness">'+Math.round(CityMap.QIStats.euphoriaBoost*100)+'%</span></div>';
+		out += '<div class="productions">'
+		for (let [prod, value] of Object.entries(CityMap.QIStats.resources)) {
+			out += '<span class="'+prod+'">'+srcLinks.icons(prod);
+			if (prod.includes("suppl")) {
+				let boosts = Boosts.Sums.guild_raids_supplies_production || 0;
+				out += HTML.Format(value*(CityMap.QIStats.euphoriaBoost+boosts/100));
+			}
+			else if (prod.includes("money")) {
+				let boosts = Boosts.Sums.guild_raids_coins_production || 0;
+				out += HTML.Format(value*(CityMap.QIStats.euphoriaBoost+boosts/100));
+			}
+			else
+				out += HTML.Format(value*CityMap.QIStats.euphoriaBoost);
+			out += "</span> ";
+		}
+		out += '</div><div class="boosts">';
+		for (let [boost, value] of Object.entries(CityMap.QIStats.boosts)) {
+			if (boost == "guild_raids_action_points_collection")
+				out += '<span class="'+boost+'">'+srcLinks.icons(boost)+value+"</span> ";
+			else 
+				out += '<span class="'+boost+'">'+srcLinks.icons(boost)+value+"%</span> ";
+		}
 		
-		out += "<div>"
-		return out
+		out += "</div></div>";
+		return out;
 	},
 
 
 	showQIBuildings: () => {
-		let boosts = Boosts.Sums
-		let supply_boost = 0, coin_boost = 0
-		coin_boost = boosts.guild_raids_coins_production*0.01
-		supply_boost = boosts.guild_raids_supplies_production*0.01
-		let buildings = Object.values(CityMap.QIData)
+		let boosts = Boosts.Sums;
+		let buildings = Object.values(CityMap.QIData);
 		buildings.sort((a, b) => {
 			if (a.cityentity_id < b.cityentity_id) return -1
 			if (a.cityentity_id > b.cityentity_id) return 1
 			return 0
 		})
 
-		let out = '<table class="foe-table">'
+		let out = '<table class="foe-table qiBuildings">'
 		out += '<thead><tr><th colspan="2">'+i18n('Boxes.CityMap.Building')+'</th><th class="population textright"></th><th class="happiness textright"></th><th>'+i18n('Boxes.CityMap.Boosts')+'</th></tr></thead>'
 		out += "<tbody>"
 
-		let uniques = {}
+		let uniques = {};
 		for (let b of buildings) {
 			if (!uniques[b.cityentity_id]) 
 				uniques[b.cityentity_id] = 1
 			else
 				uniques[b.cityentity_id] += 1
 		}
+
 		for (let [id,count] of Object.entries(uniques)) {
-			let building = CityMap.setQIBuilding(MainParser.CityEntities[id])
+			let building = CityMap.setQIBuilding(MainParser.CityEntities[id]);
 			if (building.type !== "impediment" && building.type !== "street") {
-				out += "<tr><td>" + building.name + "</td><td>" + (count>1?"x"+count:"") + "</td>"
+				out += "<tr class='"+building.type+"'><td>" + building.name + "</td><td>" + (count>1?"x"+count:"") + "</td>"
 				out += '<td class="textright">' + building.population + "</td>"
 				out += '<td class="textright">' + building.euphoria + "</td>"
 				out += "<td>"
@@ -491,27 +506,35 @@ let CityMap = {
 						out += (building.production.guild_raids_money ? '<span class="prod guild_raids_money">'+HTML.Format(building.production.guild_raids_money*-1.0)+'</span> ' : "")	
 					}
 					else {
-						let eBoost = CityMap.QIStats.euphoriaBoost
-						if (building.type === "main_building"){
-							out += (building.production.guild_raids_supplies ? '<span class="prod guild_raids_supplies">'+HTML.Format(Math.round(building.production.guild_raids_supplies))+'</span> ' : " ")
-							out += (building.production.guild_raids_money ? '<span class="prod guild_raids_money">'+HTML.Format(Math.round(building.production.guild_raids_money))+'</span> ' : "")
-						} else{
-							out += (building.production.guild_raids_supplies ? '<span class="prod guild_raids_supplies">'+HTML.Format(Math.round(building.production.guild_raids_supplies*(eBoost+supply_boost)))+'</span> ' : " ")
-							out += (building.production.guild_raids_money ? '<span class="prod guild_raids_money">'+HTML.Format(Math.round(building.production.guild_raids_money*(eBoost+coin_boost)))+'</span> ' : "")
+						let eBoost = CityMap.QIStats.euphoriaBoost;
+						for (let [prod, value] of Object.entries(building.production)) {
+							let boost = 0;
+							if (prod.includes('suppl')) {
+								boost += boosts.guild_raids_supplies_production || 0;
+							}
+							else if (prod.includes('money')) {
+								boost += boosts.guild_raids_coins_production || 0;
+							}
+
+							if (building.type === "main_building") {
+								out += srcLinks.icons(prod)+HTML.Format(value)+" ";
+							}
+							else
+								out += srcLinks.icons(prod)+HTML.Format(Math.round(value*(eBoost+(boost/100))))+" ";
 						}
 					}
 				}
 				if (building.boosts !== null) {
-					for (let i in building.boosts) {
-						let boost = building.boosts[i]
-						out += '<span class="prod '+boost.type+'">' + boost.value + '</span> '
+					for (let boost of building.boosts) {
+						let percentChar = (boost.type.includes("action_points") ? "" : "%")
+						out += srcLinks.icons(boost.type)+boost.value+percentChar;
 					}
 				}
-				out += "</td></tr>"
+				out += "</td></tr>";
 			}
 		}
-		out += "</tbody></table>"
-		return out
+		out += "</tbody></table>";
+		return out;
 	},
 
 
@@ -541,14 +564,105 @@ let CityMap = {
 	},
 
 
+	setOutpostBuilding: (data) => {
+		let production = data.components?.AllAge?.production?.options;
+		if (production !== undefined && production.length === 1) // goods and units have multiple production options, rest has one
+			production = data.components?.AllAge?.production?.options[0]?.products[0]?.playerResources?.resources;
+		else if (production !== undefined && production.length > 1) 
+			production = data.components?.AllAge?.production?.options[3]?.products[0]?.requirements?.resources;
+		if (data.type === "main_building" || data.type === "residential")
+			production = data.available_products[0]?.product?.resources;
+
+		// grab the name of the population from the building id
+		/// cultural settlements
+		let populationName = data.id.split("_")[1].toLowerCase(); // id parts: vikings, japanese, egyptians, aztecs, muhgals, polynesia
+		/// era settlements
+		if (ActiveMap === "era_outpost") populationName = "colonists";
+
+		// for buildings adding pop
+		let population = Object.keys(data.staticResources?.resources).find(x => x.includes(populationName))
+		population = data.staticResources?.resources[population];
+		// for buildings requiring pop
+		if (population === undefined) {
+			population = Object.keys(data.requirements?.cost?.resources).find(x => x.includes(populationName))
+			population = data.requirements.cost?.resources[populationName]*-1;
+		}
+
+		let building = {};
+		if (ActiveMap === "cultural_outpost")
+			building = {
+				name: data.name,
+				population: population || 0,
+				production: production || null,
+				diplomacy: null,
+				type: data.type
+			};
+		else if (ActiveMap === "era_outpost")
+			building = {
+				name: data.name,
+				population: population || 0,
+				production: production || null,
+				diplomacy: null,
+				type: data.type
+			};
+
+		return building;
+	},
+
+
+	showOutpostBuildings: () => {
+		let buildings = Object.values(CityMap.CulturalOutpostData);
+		if (ActiveMap === "era_outpost")
+			buildings = Object.values(CityMap.EraOutpostData);
+
+		buildings.sort((a, b) => {
+			if (a.cityentity_id < b.cityentity_id) return -1
+			if (a.cityentity_id > b.cityentity_id) return 1
+			return 0
+		})
+
+		let out = '<table class="foe-table qiBuildings">'
+		out += '<thead><tr><th colspan="2">'+i18n('Boxes.CityMap.Building')+'</th><th class="population textright"></th>'+
+		//'<th class="happiness textright"></th>
+		'<th>'+i18n('Boxes.CityMap.Boosts')+'</th></tr></thead>'
+		out += "<tbody>"
+
+		let uniques = {};
+		for (let b of buildings) {
+			if (!uniques[b.cityentity_id]) 
+				uniques[b.cityentity_id] = 1
+			else
+				uniques[b.cityentity_id] += 1
+		}
+
+		for (let [id,count] of Object.entries(uniques)) {
+			let building = CityMap.setOutpostBuilding(MainParser.CityEntities[id]);
+			if (building.type !== "impediment" && building.type !== "street" && building.type !== "off_grid") {
+				out += "<tr class='"+building.type+"'><td>" + building.name + "</td><td>" + (count>1?"x"+count:"") + "</td>"
+				out += '<td class="textright">' + building.population + "</td>"
+				//out += '<td class="textright">' + building.euphoria + "</td>"
+				out += "<td>"
+				if (building.production !== null) {
+					for (let [prod, value] of Object.entries(building.production)) {
+						out += srcLinks.icons(prod)+HTML.Format(Math.round(value))+" ";
+					}
+				}
+				out += "</td></tr>";
+			}
+		}
+		out += "</tbody></table>";
+		return out;
+	},
+
+
 	/**
 	 * Container gemäß den Koordianten zusammensetzen
 	 * @param Data
 	 */
 	SetMapBuildings: async (Data = null)=> {
 		if (ActiveMap === "cultural_outpost" || ActiveMap === "era_outpost" || ActiveMap === "guild_raids") {
-			CityMap.SetOutpostBuildings() 
-			return
+			CityMap.SetOutpostBuildings();
+			return;
 		}
 
 		let ActiveId = $('#grid-outer').find('.highlighted').data('entityid') || null;
@@ -608,7 +722,7 @@ let CityMap = {
 						(building.rating?.totalScore*100 <= (rating20) ? ' rating20' :	
 						(building.rating?.totalScore*100 <= (rating30) ? ' rating30' : '')))
 			
-			f = $('<span />').addClass('entity helperTT ' + building.type + noStreet + isSpecial + canAscend + isDecayed + chainBuilding + rating).css({
+			f = $('<span '+ MainParser.Allies.tooltip(building.id) + '/>').addClass('entity helperTT ' + building.type + noStreet + isSpecial + canAscend + isDecayed + chainBuilding + rating).css({
 				width: xsize + 'em',
 				height: ysize + 'em',
 				left: x + 'em',
@@ -906,7 +1020,11 @@ let CityMap = {
 	 */
 	copyMetaInfos: () => {
 		helper.str.copyToClipboard(
-			JSON.stringify({CityMapData:MainParser.CityMapData,CityEntities:MainParser.CityEntities,UnlockedAreas:CityMap.UnlockedAreas})
+			JSON.stringify({
+				CityMapData: CityMap.removeDoubleUnderscoreKeys(MainParser.CityMapData),
+				CityEntities: CityMap.removeDoubleUnderscoreKeys(MainParser.CityEntities),
+				UnlockedAreas: CityMap.removeDoubleUnderscoreKeys(CityMap.UnlockedAreas)
+			})
 		).then(() => {
 			HTML.ShowToastMsg({
 				head: i18n('Boxes.CityMap.ToastHeadCopyData'),
@@ -1155,17 +1273,26 @@ let CityMap = {
 
 	// returns chainId (string), returns undefined if not a chain building
 	setChainBuilding(metaData) {
-		let chainId = undefined
-		let type = null, x = 0, y = 0
-		metaData.abilities.forEach(ability => {
-			if (ability.chainId) {
-				chainId = ability.chainId
-				type = (ability.__class__ === "ChainStartAbility" ? "start" : "link")
-				// currently all chains only have ONE side where you can attach builidings (except mughals main building and hippodrome tracks)
-				x = ability.linkPositions[0].topLeftPoint.x || 0 
-				y = ability.linkPositions[0].topLeftPoint.y || 0 
-			}
-		});
+		let chainId = undefined;
+		let type = null, x = 0, y = 0;
+		if (metaData.__class__ === "GenericCityEntity") {
+			chainId = metaData.components?.AllAge?.chain?.chainId;
+			type = (metaData.components?.AllAge?.chain?.config?.__class__ === "ChainStartConfig" ? "start" : "link");
+			// currently all chains only have ONE side where you can attach builidings (except mughals main building and hippodrome tracks)
+			x = metaData.components?.AllAge?.chain?.linkPositions[0].topLeftPoint.x || 0;
+			y = metaData.components?.AllAge?.chain?.linkPositions[0].topLeftPoint.y || 0;
+		}
+		else {
+			metaData.abilities.forEach(ability => {
+				if (ability.chainId) {
+					chainId = ability.chainId
+					type = (ability.__class__ === "ChainStartAbility" ? "start" : "link");
+					// currently all chains only have ONE side where you can attach builidings (except mughals main building and hippodrome tracks)
+					x = ability.linkPositions[0].topLeftPoint.x || 0;
+					y = ability.linkPositions[0].topLeftPoint.y || 0;
+				}
+			});
+		}
 		if (chainId !== undefined)
 			return { name: chainId, type: type, chainPosX: x, chainPosY: y }
 	},
@@ -1173,27 +1300,27 @@ let CityMap = {
 
 	// this creates a pseudo building for effiency ratings etc
 	createChainedBuilding(allLinkedBuildings = []) {
-		let chainedBuilding = allLinkedBuildings[0] // first building is the start building
+		let chainedBuilding = allLinkedBuildings[0]; // first building is the start building
 
 		for (link of allLinkedBuildings) {
-			if (link.chainBuilding.type !== "start") {
-				chainedBuilding.size.width = chainedBuilding.size.width + (link.coords.x !== chainedBuilding.coords.x ? link.size.width : 0)
-				chainedBuilding.size.length = chainedBuilding.size.length + (link.coords.y !== chainedBuilding.coords.y ? link.size.length : 0)
-				chainedBuilding.happiness += link.happiness
+			if (link.chainBuilding.type === "start") continue;
+			chainedBuilding.size.width = chainedBuilding.size.width + (link.coords.x !== chainedBuilding.coords.x ? link.size.width : 0);
+			chainedBuilding.size.length = chainedBuilding.size.length + (link.coords.y !== chainedBuilding.coords.y ? link.size.length : 0);
+			chainedBuilding.happiness += link.happiness;
 
-				if (link.boosts !== undefined) 
-					chainedBuilding.boosts = [...chainedBuilding.boosts || [], ...link.boosts]
-				if (link.production !== undefined && link.production !== false) {
-					// console.log(link.production)
-					chainedBuilding.production = [...chainedBuilding.production, ...link.production]
-				}
-				link.chainBuilding.type = "linked"
+			if (link.boosts !== undefined) 
+				chainedBuilding.boosts = [...chainedBuilding.boosts || [], ...link.boosts];
+			if (link.production !== undefined && link.production !== false) {
+				//console.log(link.production);
+				chainedBuilding.production = [...chainedBuilding.production, ...link.production];
 			}
+			link.chainBuilding.type = "linked";
 		}
 		if (allLinkedBuildings.length > 1) {
-			chainedBuilding.name = chainedBuilding.name + " +" + (allLinkedBuildings.length-1)
+			chainedBuilding.name = chainedBuilding.name + " +" + (allLinkedBuildings.length-1);
 		}
-		return chainedBuilding
+		chainedBuilding.rating = Productions.rateBuilding(chainedBuilding);
+		return chainedBuilding;
 	},
 
 
@@ -1209,7 +1336,7 @@ let CityMap = {
 	},
 
 
-	// returns an object with the buildings size
+	// returns an object with the building size
 	setSize(metaData) {
 		let size = { width: 0, length: 0 }
 		if (metaData.length)
@@ -1307,17 +1434,20 @@ let CityMap = {
 						type: Boosts.Mapper[abilityBoost.type] || [abilityBoost.type],
 						value: abilityBoost.value,
 					};
-					boosts.push(boost)
+					boosts.push(boost);
 				})
 			}
-			if (metaData.components.AllAge?.boosts) {
-				metaData.components.AllAge.boosts.boosts.forEach(abilityBoost => {
+			let allAgeBoosts = metaData.components.AllAge?.boosts;
+			if (metaData.components.AllAge?.chain?.config?.__class__ !== "ChainStartConfig" && isChain)
+				allAgeBoosts = metaData.components.AllAge.chain?.config?.bonuses[0];
+			if (allAgeBoosts) {
+				allAgeBoosts.boosts.forEach(abilityBoost => {
 					let boost = {
 						feature: abilityBoost.targetedFeature,
 						type: Boosts.Mapper[abilityBoost.type] || [abilityBoost.type],
 						value: abilityBoost.value,
 					};
-					boosts.push(boost)
+					boosts.push(boost);
 				})
 			}
 		}
@@ -1445,31 +1575,31 @@ let CityMap = {
 
 	// find out if a chain start building has links, return all buildings in an array
 	hasLinks(building, connectedBuildings = [], dirX = 0, dirY = 0) {
-		connectedBuildings.push(building)
+		connectedBuildings.push(building);
 		
 		if (building.chainBuilding?.type === "start") {
 			dirX = building?.chainBuilding?.chainPosX !== 0 ? parseInt(building?.chainBuilding?.chainPosX / Math.abs(building?.chainBuilding?.chainPosX)) : 0 // e.g. (-3/3) || 0
 			dirY = building?.chainBuilding?.chainPosY !== 0 ? parseInt(building?.chainBuilding?.chainPosY / Math.abs(building?.chainBuilding?.chainPosY)) : 0
 		}
-		let x = building.coords.x + dirX
-		let y = building.coords.y + dirY
+		let x = building.coords.x + dirX;
+		let y = building.coords.y + dirY;
 
-		let nextBuilding = CityMap.getBuildingByCoords(x, y)
-		let x1 = x + dirX
-		let y1 = y + dirY
+		let nextBuilding = CityMap.getBuildingByCoords(x, y);
+		let x1 = x + dirX;
+		let y1 = y + dirY;
 		while (nextBuilding === undefined) {
-			nextBuilding = CityMap.getBuildingByCoords(x1, y1)
-			x1 += dirX
-			y1 += dirY
-			if (x1 < 0 || y1 < 0 || x1 > 72 || y1 > 72) break // min and max of current map
+			nextBuilding = CityMap.getBuildingByCoords(x1, y1);
+			x1 += dirX;
+			y1 += dirY;
+			if (x1 < 0 || y1 < 0 || x1 > 72 || y1 > 72) break; // min and max of current map
 		}
 
-		if (x < 0 || x < 0 || y > 72 || y > 72) return connectedBuildings // min and max of current map
+		if (x < 0 || x < 0 || y > 72 || y > 72) return connectedBuildings; // min and max of current map
 		else {
 			if (nextBuilding === undefined || nextBuilding.chainBuilding === undefined || nextBuilding.chainBuilding?.name !== building.chainBuilding.name || nextBuilding.chainBuilding?.type === "start")
-				return connectedBuildings
+				return connectedBuildings;
 
-			return this.hasLinks(nextBuilding, connectedBuildings, dirX, dirY)
+			return this.hasLinks(nextBuilding, connectedBuildings, dirX, dirY);
 		}
 	},
 
@@ -1626,7 +1756,19 @@ let CityMap = {
 		}
 		else if (metaData.__class__ === "GenericCityEntity") {
 			// fyi: generic_building supplies and coins are doubled when motivated if they do not need motivation
-			let production = metaData.components[era]?.production || metaData.components.AllAge.production // currently it is either allage or era, never both
+			let production = metaData.components[era]?.production || metaData.components.AllAge.production; // currently it is either allage or era, never both
+			if (metaData.components.AllAge?.chain !== undefined && metaData.components.AllAge?.chain?.config?.__class__ !== "ChainStartConfig") {
+				let chainProduction = metaData.components.AllAge?.chain?.config?.bonuses[0]?.productions[0]?.playerResources?.resources;
+				let resource = {
+					type: "resources",
+					needsMotivation: false,
+					doubleWhenMotivated: false,
+					resources: chainProduction,
+				}
+				if (chainProduction !== undefined)
+					productions.push(resource);
+				return productions || false;
+			}
 			if (production) {
 				if (metaData.type === "production") { // production buildings do not have a default production
 					for (product of production.options) {
@@ -1732,7 +1874,7 @@ let CityMap = {
 					else {
 						console.log("CityMap.setAllProductions() is missing an option for ",metaData.name)
 					}
-					productions.push(resource)
+					productions.push(resource);
 				});
 			}
 			if (productions.length > 0)
@@ -1922,11 +2064,12 @@ let CityMap = {
 			else {
 				lookupData = metaData.components[era].lookup.rewards[product.reward.id]
 				if (lookupData === undefined) {
-					let chest = Object.keys(metaData.components[era].lookup.rewards).find(x => x.includes("chest")) // currently only applies to wish fountain
-					for (possibleReward of metaData.components[era].lookup.rewards[chest].possible_rewards) {
-						if (possibleReward.reward.id === product.reward.id)
-							lookupData = possibleReward.reward
-					}
+					let chest = Object.keys(metaData.components[era].lookup.rewards).find(x => x.includes("chest" || "random_unit")) // currently only applies to wish fountain or things with "random unit chest"
+					if (metaData.components[era].lookup.rewards[chest]?.possible_rewards)
+						for (possibleReward of metaData.components[era].lookup.rewards[chest]?.possible_rewards) {
+							if (possibleReward.reward.id === product.reward.id)
+								lookupData = possibleReward.reward
+						}
 				}
 				else {
 					amount = lookupData.totalAmount || lookupData.amount
@@ -1947,7 +2090,7 @@ let CityMap = {
 		}
 		
 		// units
-		if (lookupData?.type === "chest" && lookupData.id.search("genb_random_") !== -1 && lookupData.id.search("fragment") === -1 || lookupData?.type === "unit") {
+		if (lookupData?.type === "chest" && lookupData.id.search("genb_random_") !== -1 && lookupData.id.search("fragment") === -1 || lookupData?.type === "unit"|| lookupData?.icon === "military") {
 			let units = this.setUnitReward(product)
 			return units
 		}
@@ -2159,14 +2302,16 @@ let CityMap = {
 	},
 
 
-	getBuildingGoodsByEra(current, building) {
+	getBuildingGoodsByEra(current, building, boosted = false) {
 		let productions = (current ? building.state.production : building.production)
 		let goods = {
 			hasRandomProduction: false,
 			eras: {}
 		}
 		if (productions) {
-			let goodsBoost = Boosts.Sums.goods_production || 1;
+			let goodsBoost = 0;
+			if (boosted)
+				goodsBoost = Boosts.Sums.goods_production || 1;
 			productions.forEach(production => {
 				if (production.type === 'resources' || production.type === 'special_goods') {
 					Object.keys(production.resources).forEach(resourceName => {
@@ -2203,9 +2348,9 @@ let CityMap = {
 								boostedExtra = Math.round(production.resources[resourceName]/5*goodsBoost/100)*5;
 							
 							if (goods.eras[goodEra] === undefined) 
-								goods.eras[goodEra] = parseInt(production.resources[resourceName])+boostedExtra
+								goods.eras[goodEra] = parseInt(production.resources[resourceName])+boostedExtra;
 							else
-								goods.eras[goodEra] += parseInt(production.resources[resourceName])+boostedExtra
+								goods.eras[goodEra] += parseInt(production.resources[resourceName])+boostedExtra;
 						}
 					})
 				}
@@ -2216,33 +2361,77 @@ let CityMap = {
 							goods.hasRandomProduction = true // this is not a perfect solution, because it is general & not per good
 
 							if (resource.type.includes('previous') || resource.subType?.toLowerCase().includes('previous') || resource.id?.toLowerCase().includes('previous'))
-								goodEra = Technologies.getPreviousEraIdByCurrentEraName(building.eraName)
+								goodEra = Technologies.getPreviousEraIdByCurrentEraName(building.eraName);
 							else if (resource.type.includes('next') || resource.subType?.toLowerCase().includes('next') || resource.id?.toLowerCase().includes('next'))
-								goodEra = Technologies.getNextEraIdByCurrentEraName(building.eraName)
+								goodEra = Technologies.getNextEraIdByCurrentEraName(building.eraName);
 
 							if (goods.eras[goodEra] === undefined)
-								goods.eras[goodEra] = parseFloat(resource.amount * resource.dropChance)
+								goods.eras[goodEra] = parseFloat(resource.amount * resource.dropChance);
 							else
-								goods.eras[goodEra] += parseFloat(resource.amount * resource.dropChance)
+								goods.eras[goodEra] += parseFloat(resource.amount * resource.dropChance);
 						}
 					}
 				}
 				if (production.type === 'genericReward' && /good/.test(production.resources?.icon)) { // e.g. eco hub
-					let goodEra = Technologies.InnoEras[building.eraName]
+					let goodEra = Technologies.InnoEras[building.eraName];
 					if (production.resources.id.includes('previous'))
-						goodEra = Technologies.getPreviousEraIdByCurrentEraName(building.eraName)
+						goodEra = Technologies.getPreviousEraIdByCurrentEraName(building.eraName);
 					else if (production.resources.icon === "next_age_goods" || production.resources.id.includes('next'))
-						goodEra = Technologies.getNextEraIdByCurrentEraName(building.eraName)
-
+						goodEra = Technologies.getNextEraIdByCurrentEraName(building.eraName);
 					if (goods.eras[goodEra] === undefined)
-						goods.eras[goodEra] = parseInt(production.resources.amount)
+						goods.eras[goodEra] = parseInt(production.resources.amount);
 					else 
-						goods.eras[goodEra] += parseInt(production.resources.amount)
+						goods.eras[goodEra] += parseInt(production.resources.amount);
 				}
 			})
 		}
 		if (Object.keys(goods).length > 0) {
-			return goods
+			return goods;
+		}
+	},
+
+
+	getBuildingGuildGoodsByEra(current, building, boosted = false) {
+		let productions = (current ? building.state.production : building.production)
+		let goods = {
+			eras: {}
+		}
+		if (productions) {
+			let goodsBoost = 0;
+			if (boosted)
+				goodsBoost = Boosts.Sums.guild_goods_production || 1;
+			for (let production of productions) {
+				if (production.type !== 'guildResources' || production.resources === undefined) continue;
+
+				for (let resourceName of Object.keys(production?.resources)) {
+					let good = GoodsList.find(x => x.id === resourceName);
+					let goodEra = Technologies.InnoEras[building.eraName];
+					let isGood = false;
+
+					if (good !== undefined) {
+						goodEra = Technologies.InnoEras[good.era]
+						resourceName = good.id
+						isGood = true
+					}
+					else if (resourceName.includes('random_good_of_') || resourceName.includes('all_goods_of_')) {
+						isGood = true
+					}
+
+					if (isGood) {
+						let boostedExtra = Math.round(production.resources[resourceName]*goodsBoost/100)
+						if (resourceName.includes('all_goods_of_')) 
+							boostedExtra = Math.round(production.resources[resourceName]/5*goodsBoost/100)*5;
+						
+						if (goods.eras[goodEra] === undefined) 
+							goods.eras[goodEra] = parseInt(production.resources[resourceName])+boostedExtra;
+						else
+							goods.eras[goodEra] += parseInt(production.resources[resourceName])+boostedExtra;
+					}
+				}
+			}
+		}
+		if (Object.keys(goods.eras).length > 0) {
+			return goods;
 		}
 	},
 
@@ -2293,6 +2482,47 @@ let CityMap = {
 	},
 
 
+	/**
+	 * Removes any keys that start with "__class__" or "__enum__" from the provided object or its nested structures.
+	 *
+	 * The function will remove a key-value pair if and only if the key name begins with "__class__" or "__enum__"
+	 * (e.g., "__class__", "__class__Foo", "__enum__", etc.). All other keys remain untouched, including keys
+	 * that start with other double-underscore prefixes.
+	 *
+	 * The function traverses objects and arrays recursively to apply the rule at any depth.
+	 *
+	 * @param {Object|Array} obj The object or array to process. If the input is not an object or array, it will be returned as is.
+	 * @return {Object|Array} A new object or array with all keys starting with "__class__" or "__enum__" removed.
+	 */
+	removeDoubleUnderscoreKeys (obj) {
+		if (typeof obj !== 'object' || obj === null) {
+			return obj; // Only process objects/arrays
+		}
+
+		if (Array.isArray(obj)) {
+			return obj.map(item => CityMap.removeDoubleUnderscoreKeys(item)); // Process arrays recursively
+		}
+
+		const newObj = {};
+
+		for (const key in obj) {
+			if (!Object.prototype.hasOwnProperty.call(obj, key)) continue;
+
+			const value = obj[key];
+
+			// Remove any keys that start with "__class__" or "__enum__"
+			if (key.startsWith('__class__') || key.startsWith('__enum__')) {
+				continue;
+			}
+
+			// Keep everything else, but apply the rule recursively to nested structures
+			newObj[key] = CityMap.removeDoubleUnderscoreKeys(value);
+		}
+
+		return newObj;
+	},
+
+
 	createNewCityMapEntity(metaData, era=CurrentEra, data={}) {
 		if (typeof(metaData)=="string") {
 			metaData=MainParser.CityEntities[metaData];
@@ -2338,38 +2568,11 @@ let CityMap = {
 		}
 
 		entity.rating = Productions.rateBuilding(entity);
+
+		CityMap.getBuildingGuildGoodsByEra(false, entity, false);
 		
 		//if (entity.type !== "street")
-		//	console.log('entity ', entity.name, entity, metaData, data)
-		return entity
+		//	console.log('entity ', entity.name, entity, metaData, data);
+		return entity;
 	},
-
-
-	/**
-	 * Removes keys starting with double underscores ('__') from the provided object or its nested structures.
-	 *
-	 * @param {Object|Array} obj The object or array to process. If the input is not an object or array, it will be returned as is.
-	 * @return {Object|Array} A new object or array with all keys starting with '__' removed from the original input and its nested structures.
-	 */
-	removeDoubleUnderscoreKeys (obj) {
-		if (typeof obj !== 'object' || obj === null) {
-			return obj; // Only process objects
-		}
-
-		if (Array.isArray(obj)) {
-			return obj.map(item => CityMap.removeDoubleUnderscoreKeys(item)); // Process arrays recursively
-		}
-
-		const newObj = {};
-
-		for (const key in obj) {
-			if (Object.prototype.hasOwnProperty.call(obj, key)) {
-				if (!key.startsWith('__')) {
-					newObj[key] = CityMap.removeDoubleUnderscoreKeys(obj[key]); // Key not with '__' -> accept and process recursively
-				}
-			}
-		}
-
-		return newObj;
-	}
 };

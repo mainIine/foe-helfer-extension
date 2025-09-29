@@ -180,10 +180,10 @@ let StrategyPoints = {
 		}
 
 		if($('div.buyable-fp').length === 0) {
-			$('#fp-bar').append(`<div class="buyable-fp" title="${HTML.i18nTooltip(i18n('StrategyPoints.BuyableFP'))}"><div>${ HTML.Format(amount)}</div></div>`);
+			$('#fp-bar').append(`<div class="buyable-fp" title="${HTML.i18nTooltip(i18n('StrategyPoints.BuyableFP'))}">${ HTML.Format(amount)}</div>`);
 
 		} else {
-			$('div.buyable-fp div').text(HTML.Format(amount));
+			$('div.buyable-fp').text(HTML.Format(amount));
 		}
 	},
 
@@ -200,7 +200,7 @@ let StrategyPoints = {
 			let div = $('<div />').attr({
 				id: 'fp-bar',
 				class: `game-cursor ${ActiveMap}`
-			}).append( `<div class="fp-storage"><div>0</div></div>` );
+			}).append( `<div class="fp-storage">0</div>` );
 
 			$('body').append(div);
 			StrategyPoints.HandleWindowResize();
@@ -211,7 +211,7 @@ let StrategyPoints = {
 		let delimiter = Number(1000).toLocaleString().substring(1,2);
 
 		// the animation function checks if start_value != end_value
-		$('#fp-bar div.fp-storage div').easy_number_animate({
+		$('#fp-bar div.fp-storage').easy_number_animate({
 			start_value: old,
 			end_value: StrategyPoints.InventoryFP,
 			delimiter: delimiter,

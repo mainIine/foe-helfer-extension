@@ -140,11 +140,17 @@ let srcLinks = {
         let link = srcLinks.get(`/shared/icons/${x}.png`,true,true);
         if (link.includes("antiquedealer_flag")) link = srcLinks.get(`/shared/gui/upgrade/upgrade_icon_${x}.png`,true,true);
         if (link.includes("antiquedealer_flag")) link = srcLinks.get(`/shared/icons/${x.replace(/(.*?)_[0-9]+/gm,"$1")}.png`,true,true);
+        if (link.includes("antiquedealer_flag")) link = srcLinks.get(`/shared/icons/goods/icon_fine_${x}.png`,true,true);
         if (link.includes("antiquedealer_flag")) link = srcLinks.get(`/shared/icons/reward_icons/reward_icon_${x}.png`,true,true);
         if (link.includes("antiquedealer_flag")) link = srcLinks.get(`/shared/icons/reward_icons/reward_icon_${x.replace(/(.*?)_[0-9]+/gm,"$1")}.png`,true,true);
         if (link.includes("antiquedealer_flag")) link = srcLinks.get(`/city/buildings/${x.replace(/(\D*?)_(.*)/,"$1_SS_$2")}.png`,true,true);
         if (link.includes("antiquedealer_flag")) link = srcLinks.get(`/city/buildings/${x.replace(/(.*?)_[0-9]+/gm,"$1").replace(/(\D*?)_(.*)/,"$1_SS_$2")}.png`,true,true);
         if (link.includes("antiquedealer_flag")) link = srcLinks.get(`/city/buildings/${MainParser.CityEntities?.[x]?.asset_id?.replace(/(\D*?)_(.*)/,"$1_SS_$2")}.png`,true);
+        return `<img src=${link} alt="">`;
+    },
+    regEx: (regEx)=>{
+        file = Object.keys(srcLinks.FileList).find(x=>regEx.test(x))
+        let link = srcLinks.get(file,true,true);
         return `<img src=${link} alt="">`;
     }
 

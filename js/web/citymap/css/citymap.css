@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2024 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2025 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -35,7 +35,6 @@
 	top: 0;
 	right: 240px;
 	left: 0;
-	border-bottom: 2px solid #281207;
 	z-index: 5000;
 	padding: 2px;
 	box-sizing: border-box;
@@ -67,7 +66,7 @@
 #sidebar {
 	position: absolute;
 	width: 240px;
-	padding: 15px;
+	padding: 12px;
 	right: 0;
 	top: 0;
 	bottom: 0;
@@ -76,18 +75,52 @@
 	box-sizing: border-box;
 }
 
-.outpost #sidebar, .outpost #BuildingsFilter, .outpost #city-map-menu .btn-group, .outpost #map-filters {
+.outpost #BuildingsFilter, .outpost #city-map-menu .btn-group, .outpost #map-filters {
 	display: none;
 }
 
-.outpost.guild_raids #sidebar {
+.outpost #sidebar {
 	display: block;
-	width: 400px;
+	width: 420px;
 	padding: 3px;
 }
 
-.outpost.guild_raids #map-container, .outpost.guild_raids #city-map-menu {
-	right: 400px;
+.outpost.guild_raids .qiSums {
+	backdrop-filter: blur(1px) brightness(0.8);
+	padding: 7px;
+}
+.outpost.guild_raids .qiSums span {
+	padding: 2px;
+}
+
+.outpost.guild_raids .qiSums .productions, .outpost.guild_raids .qiSums .boosts {
+	display: flex;
+	justify-content: center;
+	gap: 2px;
+}
+
+.outpost.guild_raids #sidebar .qiBuildings {
+	font-size: 90%;
+}
+
+.outpost.guild_raids #sidebar .qiBuildings img, .outpost.guild_raids .qiSums .boosts img {
+	height: 20px;
+}
+
+.outpost #map-container, .outpost #city-map-menu {
+	right: 420px;
+}
+
+.outpost.cultural_outpost .openOverview {
+	position: absolute;
+	top: 1px;
+	right: 423px;
+	height: 25px;
+	z-index: 5001;
+}
+
+.outpost.cultural_outpost .openOverview:hover {
+	filter: brightness(1.2);
 }
 
 #city-map-overlayBody .prod::before {
@@ -128,10 +161,37 @@
 	padding-bottom: 5px;
 }
 
+#map-filters b {
+	position: relative;
+	margin: -3px 0 3px;
+	color: var(--bright-color);
+	display: block;
+}
+
 #map-filters label {
 	display: block;
 	font-size: 90%;
 	margin-bottom: 5px;
+}
+
+#map-filters .ratings {
+	display: flex;
+	justify-content: space-between;
+}
+
+#map-filters span::after {
+    content: "➔";
+    display: inline-block;
+    background: var(--menu-arrow-bg);
+    padding: 0 2px;
+    border-radius: 3px;
+    color: var(--text-btn);
+    margin-left: 2px;
+    font-weight: normal;
+}
+
+#map-filters span:hover::after {
+    filter: contrast(1.2);
 }
 
 #grid-outer {
@@ -276,7 +336,17 @@
 	z-index: 1;
 }
 
-#grid-outer span.residential {
+.qiBuildings tr td:first-child::before {
+	content: '';
+	width: 7px;
+	height: 7px;
+	display: inline-block;
+	border-radius: 7px;
+	margin: -1px 3px 0 0;
+	box-shadow: 0 1px 1px var(--black-65), 0 1px 3px var(--black-50);
+} 
+
+#grid-outer span.residential, tr.residential td:first-child::before {
 	background-color: var(--background-color-residential);
 	border-color: var(--border-color-residential);
 }
@@ -284,7 +354,7 @@
 	background-color: var(--background-color-tower);
 	border-color: var(--border-color-tower);
 }
-#grid-outer span.decoration {
+#grid-outer span.decoration, tr.decoration td:first-child::before, #grid-outer span.diplomacy, tr.diplomacy td:first-child::before {
 	background-color: var(--background-color-decoration);
 	border-color: var(--border-color-decoration);
 }
@@ -300,19 +370,19 @@
 	background-color: var(--background-color-street);
 	border-color: var(--border-color-street);
 }
-#grid-outer span.goods, #grid-outer span.cultural_goods_production {
+#grid-outer span.goods, #grid-outer span.cultural_goods_production, tr.cultural_goods_production td:first-child::before {
 	background-color: var(--background-color-goods);
 	border-color: var(--border-color-goods);
 }
-#grid-outer span.culture {
+#grid-outer span.culture, tr.culture td:first-child::before {
 	background-color: var(--background-color-culture);
 	border-color: var(--border-color-culture);
 }
-#grid-outer span.main_building {
+#grid-outer span.main_building, tr.main_building td:first-child::before {
 	background-color: var(--background-color-main_building);
 	border-color: var(--border-color-main_building);
 }
-#grid-outer span.production, #grid-outer span.diplomacy {
+#grid-outer span.production, tr.production td:first-child::before {
 	background-color: var(--background-color-production);
 	border-color: var(--border-color-production);
 }
@@ -448,6 +518,11 @@
 	margin-right: 5px;
 }
 
+#area-state .building-count-area span.square.military, tr.military td:first-child::before, tr.static_provider td:first-child::before {
+	background-color: var(--background-color-military);
+	border-color:  var(--border-color-military);
+}
+
 #area-state .building-count-area span.square.residential {
 	background-color: var(--background-color-residential);
 	border-color: var(--border-color-residential);
@@ -460,7 +535,7 @@
 	background-color: var(--background-color-street);
 	border-color: var(--border-color-street);
 }
-#area-state .building-count-area span.square.goods {
+#area-state .building-count-area span.square.goods, tr.goods td:first-child::before {
 	background-color: var(--background-color-goods);
 	border-color: var(--border-color-goods);
 }

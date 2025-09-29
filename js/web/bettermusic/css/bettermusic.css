@@ -29,10 +29,10 @@
 }
 
 .betterMusicSelected {
-  background-color: var(--background-table-success);
+  background-color: var(--table-bg-success);
 }
 .betterMusicNotSelected {
-  background-color: var(--background-table-error);
+  background-color: var(--table-bg-error);
 }
 
 #musicSettingsScenesX tr th:first-child {

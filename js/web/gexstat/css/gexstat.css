@@ -188,10 +188,10 @@
 	left: 0;
 	top: 0;
 	bottom: 0;
-	background: var(--background-btn-green-fallback);
-	background: var(--background-btn-green-moz);
-	background: var(--background-btn-green-webkit);
-	background: var(--background-btn-green);
+	background: var(--btn-bg-green-fallback);
+	background: var(--btn-bg-green-moz);
+	background: var(--btn-bg-green-webkit);
+	background: var(--btn-bg-green);
 	z-index: -1;
 	color: var(--text-light);
 }
@@ -302,7 +302,7 @@
 }
 
 #GexStat .participation_overview>div {
-	color: var(--text-bright);
+	color: var(--bright-color);
 }
 
 #GexStat #gexsParticipationTable {

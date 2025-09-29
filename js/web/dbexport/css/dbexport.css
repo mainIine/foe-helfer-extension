@@ -71,7 +71,7 @@ table {
 
 #DBExport #dbex-loading-data .progressbar .state {
 	width: 80px;
-	background-color: var(--text-bright);
+	background-color: var(--bright-color);
 	height: 9px;
 	margin-top: 5px;
 }
@@ -82,11 +82,11 @@ table {
 }
 
 #DBExport #debex_import_wrapper p.error {
-	color: var(--text-bright);
+	color: var(--bright-color);
 }
 
 #DBExport #debex_import_wrapper p.success {
-	color: var(--text-bright);
+	color: var(--bright-color);
 }
 
 #DBExport #debex_import_wrapper .icon {

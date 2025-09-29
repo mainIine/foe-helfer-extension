@@ -1,5 +1,93 @@
 ## Changelog - Extension
 
+##### 3.13.0.0
+**Neu**
+- GEX Güter Verbrauch
+	- Es kann ein Schwellwert angegeben werden.
+	- Wenn bei Freischaltung der GEX Stufe der prozentuale Güterverbrauch größer ist als die Schwelle, wird eine Box geöffnet in der die 10 größten prozentualen Verbrauche vom Gildenvorrat angegeben werden
+	- Aktivierung in den Einstellungen!
+
+**Update**
+- Effizienz
+	- Neue Filter für LG und eingeschränkte Gebäude
+- Stadtübersicht
+	- Gebäudeliste für Siedlungen und Kolonien hinzugefügt
+	- an kommende Veränderungen der QI angepasst
+- Shop Assistent
+	- Seltenheitsgrad des Angebots hinzugefügt
+	- Bestand an Kaufwährung hinzugefügt
+	- sind noch keine Favoriten ausgewählt, wird der Filter automatisch deaktiviert
+- Blaue Galaxy
+	- Berücksichtigt nun auch große FP-Pakete
+- Gebäude Tooltip
+	- wenn Fragmente produziert werden, werden nun auch die Anzahl an benötigter Fragmente angezeigt
+- Gefechte Gebäudeempfehlung
+	- Box schließt sich nun automatisch wenn Kampf/Verhandlung gestartet wird
+
+**Bugfix**
+- Eigenanteilsrechner
+	- Rechenfehler behoben
+
+---
+
+##### 3.12.0.1
+
+**Update**
+- Shop Assistent
+	- Freischaltbedingung "Getätigte Käufe der Seltenheit X" hinzugefügt
+
+**Bugfix**
+- Effizienzübersicht
+	- Boosts funktionieren wieder richtig
+
+
+---
+
+##### 3.12.0.0
+**Neu**
+- Shop Assistent
+	- kann in den Einstellungen aktiviert werden
+	- listet, wieviel von den Angeboten bereits im Inventar verfügbar ist
+	- listet wieviele Fragmente für eine Vervollständigung fehlen und wieviel das kosten würde
+	- Es können Favoriten angegegeben werden und die Ansicht kann auf die Favoriten beschränkt werden
+	- Gesperrte Gegenstände können ausgeblendet werden
+	- Es kann für die Angebote ein Alarm gesetzt werden - sobald genug Währung für den Gegenstand verfügbar ist, erscheint eine Meldung
+
+**Update** 
+- Design des Helpers wurde an einigen Stellen überarbeitet 
+	- Boxen können nicht mehr größer sein, als das Browserfenster
+
+- Effizienzübersicht
+	- Verarbeitung der Kettengebäude wurde an neue Datenstruktur angepasst
+	- QI Bonis wurden ergänzt
+	- beim Besuch einer fremden Stadt werden nun Inventarinhalte nicht mehr dargestellt
+
+- Profil
+	- Gildengüter-Boost hinzugefügt
+	- Design des Profils kann durch Klick auf das Avatarbild verändert werden
+	- Menu-Eintrag zum Aufruf des Profils hinzugefügt
+
+- Idle Game
+	- Verarbeitung der Daten wurde angepasst an veränderte Datenstruktur
+
+- Einstellungen
+	- Event Assistenten können nun einzeln de-/aktiviert werden
+
+- Einheiten Modul
+	- wurde reaktiviert
+
+- Armee Empfehlungen
+	- kann nun auch in der PvP Arena genutzt werden 
+
+**Bugfix**
+- Popgame
+	- Anpassung an verändertes Event-Fenster
+
+- Effizienzübersicht
+	- Güterauswertung korrigiert
+
+---
+
 ##### 3.11.7.0
 
 **Update**

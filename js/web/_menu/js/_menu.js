@@ -62,6 +62,8 @@ let _menu = {
 		'compare_friends_threads',
 		'discord',
 		'findGB',
+		'playerProfile',
+		'unit',
 	],
 
 	HiddenItems: [],
@@ -324,6 +326,29 @@ let _menu = {
 	/*----------------------------------------------------------------------------------------------------------------*/
 
 	/**
+	 * Armies
+	 * @returns {*|jQuery}
+	 */
+	unit_Btn: () => {
+		let btn_UnitBG = _menu.MakeButton(
+			'unit',
+			i18n('Menu.Unit.Title'),
+			'<em id="unit-Btn-closed" class="tooltip-error">' + i18n('Menu.Unit.Warning') + '<br></em>' + i18n('Menu.Unit.Desc'),
+			true
+		);
+
+		let btn_Unit = $('<span />');
+
+		btn_Unit.on('click', function () {
+			if (Unit.Cache !== null) {
+				Unit.Show();
+			}
+		});
+
+		return btn_UnitBG.append(btn_Unit);
+	},
+
+	/**
 	 * Cost calculator button
 	 *
 	 * @returns {*|jQuery}
@@ -472,6 +497,30 @@ let _menu = {
 		});
 
 		return btn_NegotiationBG.append(btn_Negotiation);
+	},
+
+	/**
+	 * Profile
+	 *
+	 * @returns {*|jQuery}
+	 */
+	playerProfile_Btn: () => {
+		let btn_playerProfileBG = _menu.MakeButton(
+			'playerProfile',
+			i18n('Menu.PlayerProfile.Title'),
+			'<em id="PlayerProfile-Btn-closed" class="tooltip-error">' + i18n('Menu.PlayerProfile.Warning') + '<br></em>' + i18n('Menu.PlayerProfile.Desc'),
+			true
+		);
+
+		let btn_playerProfile = $('<span />').bind('click', function () {
+			if ($('#playerProfile-Btn').hasClass('hud-btn-red') === false) {
+				Profile.show();
+			}
+		});
+
+		btn_playerProfile.append('<img src="'+srcLinks.GetPortrait(ExtPlayerAvatar)+'" />');
+
+		return btn_playerProfileBG.append(btn_playerProfile);
 	},
 
 	/**

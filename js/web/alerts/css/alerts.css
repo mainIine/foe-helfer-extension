@@ -241,7 +241,7 @@ input.hidden {
 }
 
 #Alerts .btn-edit {
-    background-image: url('../../../../css/images/hud/edit.png'), var(--background-btn);
+    background-image: url('../../../../css/images/hud/edit.png'), var(--btn-bg);
     background-size: 13px 13px, cover;
     background-repeat: no-repeat, repeat;
     background-position: center;
@@ -249,11 +249,11 @@ input.hidden {
 }
 
 #Alerts .btn-edit:hover {
-    background-image: url('../../../../css/images/hud/edit.png'), var(--background-btn-active);
+    background-image: url('../../../../css/images/hud/edit.png'), var(--btn-bg-active);
 }
 
 #Alerts .btn-delete {
-    background-image: url('../../x_img/trash.svg'), var(--background-btn-red);
+    background-image: url('../../x_img/trash.svg'), var(--btn-bg-red);
     background-size: 13px 13px, cover;
     background-repeat: no-repeat, repeat;
     background-position: center;
@@ -261,7 +261,7 @@ input.hidden {
 }
 
 #Alerts .btn-delete:hover {
-    background-image: url('../../x_img/trash.svg'), var(--background-btn-red-active);
+    background-image: url('../../x_img/trash.svg'), var(--btn-bg-red-active);
 }
 
 /* Preferences */

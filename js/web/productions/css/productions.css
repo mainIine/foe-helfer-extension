@@ -39,7 +39,7 @@
 	padding-top: 15px;
 }
 #Productions #ProductionsBody strong {
-	color: var(--text-bright);
+	color: var(--bright-color);
 }
 #Productions #ProductionsBody table td {
 	font-size: 85%;
@@ -54,12 +54,12 @@
 }
 #Productions #ProductionsBody table tbody.parent th {
 	background-color: #3f2a1b;
-	color: var(--text-bright);
+	color: var(--bright-color);
 	padding-top: 15px;
 }
 #Productions #ProductionsBody table tr.highlight-row {
 	background-color: rgba(40, 18, 7, 0.8);
-	color: var(--text-bright);
+	color: var(--bright-color);
 }
 #Productions #ProductionsBody table #all-search {
 	background-color: var(--background-light);
@@ -85,7 +85,7 @@
 #Productions #ProductionsBody table td.total-products span {
 	display: inline-block;
 	padding: 2px 4px;
-	color: var(--text-bright);
+	color: var(--bright-color);
 	white-space: nowrap;
 }
 #Productions #ProductionsBody .tabs ul li {
@@ -149,8 +149,31 @@
 	background-repeat: no-repeat;
 	background-position: 13px 13px, -312px 0px;
 }
-#ProductionsRatingBody .inventory-building, #ProductionsRatingBody label[for="inventorybuildingscore"], #ProductionsRatingBody .ratingtable tr.hidden, #ProductionsRatingBody.tilevalues .buildingvalue, #ProductionsRatingBody:not(.tilevalues) .tilevalue, #ProductionsRatingBody.showitems .items, #ProductionsRating #ProductionsRatingSettings .foe-table li input.hidden {
+#ProductionsRatingBody .settings label[for="inventorybuildingscore"], 
+#ProductionsRatingBody .settings label[for="showLimited"], 
+#ProductionsRatingBody .ratingtable tr.hidden, 
+#ProductionsRatingBody.tilevalues .buildingvalue, 
+#ProductionsRatingBody:not(.tilevalues) .tilevalue, 
+#ProductionsRatingBody .items, 
+#ProductionsRating #ProductionsRatingSettings .foe-table li input.hidden {
 	display: none;
+}
+#ProductionsRatingBody.inventorybuildings .settings label[for="inventorybuildingscore"],
+#ProductionsRatingBody.inventorybuildings .settings label[for="showLimited"] 
+ {
+	display: inline-flex;
+}
+#ProductionsRatingBody.inventorybuildings .inventory {
+	box-shadow: inset 1px 2px 8px #000000b8;
+	border: 1px solid #000000c4;
+	border-left: 1px dotted var(--text-dark);
+	border-right: 1px dotted var(--text-dark);
+	margin: -2px;
+	padding: 1px;
+}
+
+#ProductionsRatingBody.showitems .items {
+	display: table-cell;
 }
 
 #ProductionsRatingBody span.resicon.def_boost_attacker-guild_expedition {
@@ -175,7 +198,12 @@
 	padding: 0.15em 0.4em;
 }
 #ProductionsRatingBody .settings label {
-	margin-right: 0.25em;
+	margin-right: 0.3em;
+	display: inline-flex;
+	align-items: center;
+}
+#ProductionsRatingBody .settings img {
+	height: 24px;
 }
 #ProductionsRatingBody .overlay {
 	width: 100%;
@@ -192,41 +220,64 @@
 	box-sizing: border-box;
 	padding: 0.5em;
 	font-size: 120%;
+	background-color: var(--background-light);
+	border: none;
+	border-radius: 3px;
 }
 #ProductionsRatingBody .overlay .window-close {
 	position: absolute;
-	top: 10px;
+	top: 1rem;
 	right: calc(20% - 50px);
+	width: 20px;
+	height: 20px;
+	background-position: -2px -2px, -2px -2px;
 }
 #ProductionsRatingBody .overlay .content {
 	width: 60%;
 	min-width: 300px;
-	height: inherit;
-	margin: auto;
+	height: calc(100% - 2rem);
+	margin: 1rem auto;
 	padding: 1em;
-	background: #301c0a;
+	box-sizing: border-box;
+	background: linear-gradient(to bottom, #1e06006e, #270f005e), url(../../../../css/images/hud/box-bg.png) center center repeat;
 	color: var(--text-normal);
+	border-radius: 5px;
 }
 #ProductionsRatingBody .overlay .content ul {
 	height: calc(100% - 90px);
 	overflow: auto;
 	margin: 10px 0;
+	padding: 0;
 	box-sizing: border-box;
+	list-style: none;
+}
+#ProductionsRatingBody .overlay .content li {
+	padding: 0.1rem 0.2rem;
+	border-top: 1px solid var(--border-table-top);
+	border-bottom: 1px solid var(--border-table-bottom);
 }
 #ProductionsRatingBody .overlay .content li:hover {
-	color: var(--text-bright);
+	color: var(--bright-color);
+	background: var(--table-bg-hover);
 }
 #ProductionsRatingBody .overlay .content li.selected {
-	color: var(--text-info);
+	color: var(--bright-color);
+	background: var(--black-50);
 }
 #ProductionsRatingBody .overlay .content li.selected::after {
 	content: '✔';
+}
+#ProductionsRatingBody .overlay .btn-default.closeMetaBuilding {
+	margin: 0 auto;
+    display: block;
+    width: max-content;
+	font-weight: bold;
 }
 #ProductionsRatingBody tr.sorter-header th {
 	padding: 5px 6px 7px;
 }
 #ProductionsRatingBody tr.sorter-header th:not(.no-sort):hover, #ProductionsRatingBody tr.sorter-header th.ascending, #ProductionsRatingBody tr.sorter-header th.descending {
-	color: var(--text-bright);
+	color: var(--bright-color);
 }
 #ProductionsRatingBody tr.sorter-header th:not(.no-sort):hover, #ProductionsRatingBody tr.sorter-header th.ascending .resicon, #ProductionsRatingBody tr.sorter-header th.descending .resicon {
 	filter: brightness(1.2);
@@ -243,7 +294,7 @@
 	font-size: 1em;
 	transform: scale(1.1, 1);
 }
-#Productions th.boost span, #ProductionsRatingBody tr.sorter-header th.ascending:before, #ProductionsRatingBody tr.sorter-header th.descending:after, #ProductionsRatingBody.inventorybuildings label[for="inventorybuildingscore"], #buildingsize.active ul, #ProductionsRatingBody th i {
+#Productions th.boost span, #ProductionsRatingBody tr.sorter-header th.ascending:before, #ProductionsRatingBody tr.sorter-header th.descending:after, #buildingsize.active ul, #ProductionsRatingBody th i {
 	display: block;
 }
 #ProductionsRating #RatingSettings {
@@ -261,17 +312,16 @@
 }
 #ProductionsRatingBody .ratingtable tr.settings div {
 	display: flex;
-	align-items: baseline;
-	gap: 5px;
+	align-items: center;
+	gap: 4px;
 }
 #ProductionsRatingBody .ratingtable tr.settings .options {
 	padding: 0.1rem 0.25rem;
 }
 #ProductionsRatingBody #inventorybuildingscore {
-	width: 60px;
-}
-#ProductionsRatingBody.inventorybuildings .inventory-building {
-	display: table-row;
+	width: 52px;
+	margin-left: 3px;
+	line-height: 14px;
 }
 #ProductionsRatingBody .sorter-header .flex-between {
 	display: flex;
@@ -302,19 +352,19 @@
 	color: var(--text-light);
 }
 #ProductionsRatingBody tr.additional td {
-	background: var(--background-table-info);
+	background: var(--table-bg-info);
 }
 #ProductionsRatingBody tr.additional td:nth-child(1) {
 	color: var(--text-info) !important;
 }
 #ProductionsRatingBody tr.inventory-building td:nth-child(1) {
-	color: var(--text-bright) !important;
+	color: var(--bright-color) !important;
 }
 #ProductionsRatingBody tr.additional td:nth-child(2) {
 	font-style: italic;
 }
 #ProductionsRatingBody tr.highlighted td:nth-child(2) {
-	color: var(--text-bright);
+	color: var(--bright-color);
 	font-weight: 600;
 }
 #ProductionsRatingBody tr .show-all {
@@ -333,21 +383,21 @@
 	opacity: 1;
 	filter: none;
 }
-#ProductionsRatingBody tr.highlighted-explained, 
-#ProductionsRating .showhighlighted tbody tr, 
-#ProductionsRating .showhighlighted tbody tr.inventory-building {
-	display: none;
-}
-#ProductionsRatingBody tr.highlighted-explained.highlighted-explained, 
-#ProductionsRatingBody tr.highlighted-explained.highlighted, 
-#ProductionsRatingBody tr.highlighted-explained.highlighted2, 
-#ProductionsRatingBody tr.highlighted-explained.additional, 
-#ProductionsRating .showhighlighted tbody tr.highlighted-explained, 
-#ProductionsRating .showhighlighted tbody tr.highlighted, 
-#ProductionsRating .showhighlighted tbody tr.highlighted2, 
-#ProductionsRating .showhighlighted tbody tr.additional {
+
+#ProductionsRatingBody tfoot tr, 
+#ProductionsRatingBody.showhighlighted tbody tr.highlighted-explained, 
+#ProductionsRatingBody.showhighlighted tbody tr.highlighted, 
+#ProductionsRatingBody.showhighlighted tbody tr.highlighted2, 
+#ProductionsRatingBody.showhighlighted tbody tr.additional{
 	display: table-row;
 }
+#ProductionsRatingBody:not(.inventorybuildings) tbody tr.inventory-building,
+#ProductionsRatingBody:not(.gBs) tbody tr.gb,
+#ProductionsRatingBody:not(.showLimited) tbody tr.inventory-building.limited,
+#ProductionsRatingBody.showhighlighted tbody tr {
+	display: none;
+}
+
 #ProductionsRatingBody tr.highlighted-explained td {
 	font-weight: normal !important;
 	padding: 1em;
@@ -372,7 +422,7 @@
 #ProductionsRatingBody span.resicon.def_boost_defender-guild_raids {
 	background-position: 8px 8px, -391px 0px;
 }
-#ProductionsRatingBody span.resicon.att_boost_attacker-battleground, #ProductionsRatingBody span.resicon.def_boost_attacker-battleground, #ProductionsRatingBody span.resicon.att_boost_defender-battleground, #ProductionsRatingBody span.resicon.def_boost_defender-battleground {
+#ProductionsRatingBody span.resicon.att_boost_attacker-battleground, #ProductionsRatingBody span.resicon.def_boost_attacker-battleground, #ProductionsRatingBody span.resicon.att_boost_defender-battleground, #ProductionsRatingBody span.resicon.def_boost_defender-battleground, #ProductionsRatingBody span.filter.showitems {
 	background-image: url('../../x_img/gbg-green.png'), url('../images/productions.png');
 	background-size: 80%, auto;
 	background-repeat: no-repeat;
@@ -402,22 +452,22 @@
 #Productions th.boost.qiactions span, #BoostList table .boost.guild_raids_action_points_collection {
 	background-position: -498px 2px;
 }
-#Productions th.boost.qicoins span, #BoostList .boost.guild_raids_coins_production {
+#Productions th.boost.qicoins span, #BoostList .boost.guild_raids_coins_production, #ProductionsRatingBody span.resicon.guild_raids_coins_production {
 	background-position: -603px 2px;
 }
-#Productions th.boost.qicoins_start span, #BoostList .boost.guild_raids_coins_start {
+#Productions th.boost.qicoins_start span, #BoostList .boost.guild_raids_coins_start, #ProductionsRatingBody span.resicon.guild_raids_coins_start {
 	background-position: -630px 2px;
 }
-#Productions th.boost.qisupplies span, #BoostList .boost.guild_raids_supplies_production {
+#Productions th.boost.qisupplies span, #BoostList .boost.guild_raids_supplies_production, #ProductionsRatingBody span.resicon.guild_raids_supplies_production {
 	background-position: -655px 2px;
 }
-#Productions th.boost.qisupplies_start span, #BoostList .boost.guild_raids_supplies_start {
+#Productions th.boost.qisupplies_start span, #BoostList .boost.guild_raids_supplies_start, #ProductionsRatingBody span.resicon.guild_raids_supplies_start {
 	background-position: -680px 2px;
 }
-#Productions th.boost.qigoods_start span, #BoostList .boost.guild_raids_goods_start {
+#Productions th.boost.qigoods_start span, #BoostList .boost.guild_raids_goods_start, #ProductionsRatingBody span.resicon.guild_raids_goods_start {
 	background-position: -708px 2px;
 }
-#Productions th.boost.qiunits_start span, #BoostList .boost.guild_raids_units_start {
+#Productions th.boost.qiunits_start span, #BoostList .boost.guild_raids_units_start, #ProductionsRatingBody span.resicon.guild_raids_units_start {
 	background-position: -733px 0;
 }
 #Productions #ProductionsBody .tabs ul li.strategy_points a span {
@@ -469,7 +519,7 @@
 #Productions #ProductionsBody .tabs ul li.items a span {
 	background-position: -415px 3px;
 }
-#Productions #ProductionsBody .tabs ul li.guild_raids a span {
+#Productions #ProductionsBody .tabs ul li.guild_raids a span, #ProductionsRatingBody span.resicon.guild_raids {
 	background-position: -576px 2px;
 }
 #Productions .units-sum td:nth-child(1), #Productions .units-sum thead tr:nth-child(2) th:nth-child(1) {
@@ -512,7 +562,7 @@
 #ProductionsRatingBody ul.foe-table {
 	max-width: 500px;
 	margin: 3px auto 1em;
-	box-shadow: 0 0 500px #000 7;
+	box-shadow: 0 0 500px #000;
 }
 #ProductionsRatingBody div p {
 	max-width: 600px;
@@ -526,13 +576,20 @@
 }
 #RatingsResults {
 	position: sticky;
-	top: 4px;
+	top: 3px;
 	float: right;
 	margin-right: 2px;
 	height: 20px;
 	line-height: 20px;
-	margin-bottom: -23px;
+	margin-bottom: -24px;
 	z-index: 201;
+}
+#ProductionsRatingBody span.filter.showitems {
+	background-position: -415px 0;
+	width: 26px;
+	height: 24px;
+	display: inline-block;
+	margin: -3px 0;
 }
 
 input[id*="ProdPerTile"] {

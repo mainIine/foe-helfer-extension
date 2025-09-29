@@ -34,7 +34,7 @@
 }
 
 #fp-collectorBody .foehelper-accordion:hover .foehelper-accordion-head {
-	box-shadow: inset 0px 0px 0px 2000px var(--background-table-hover);
+	box-shadow: inset 0px 0px 0px 2000px var(--table-bg-hover);
 }
 
 #fp-collectorBody .open .foehelper-accordion-head {
@@ -59,7 +59,7 @@
 
 #fp-collectorBody .foehelper-accordion-body div .fps {
 	width: 105px;
-	color: var(--text-bright);
+	color: var(--bright-color);
 	text-align: right;
 	margin: 0 8px 0 0;
 }

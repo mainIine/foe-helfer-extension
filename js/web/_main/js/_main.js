@@ -1,7 +1,7 @@
 /*
  * *************************************************************************************
  *
- * Copyright (C) 2024 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2025 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -22,20 +22,26 @@ const extID = ExtbaseData.extID,
 	loadBeta = ExtbaseData.loadBeta;
 
 let ExistenceConfirmed = async (varlist)=>{
-	varlist=varlist.split('||')
+	varlist = varlist.split('||')
 	return new Promise((resolve, reject) => {
 		let timer = () => {
+			let doResolve = true;
 			for (let x of varlist ) {
-				if (x.includes('$') && eval(x).length === 0) {
-					setTimeout(timer, 50);
-					return;
+				if (x.substr(0,2) == '$(' && eval(x).length === 0) { // jQuery object
+					doResolve = false
+					console.log(x+' not yet defined');
+					break;
 				}
-				if (eval('typeof '+x) === 'undefined' || eval(x) === null || eval(x) === undefined) {
-					setTimeout(timer, 50);
-					return;
+				if (eval('typeof '+x) === 'undefined' || eval(x) === null || eval(x) === undefined) { // normal var
+					doResolve = false
+					console.log(x+' not yet defined');
+					break;
 				}
-				resolve();
 			}
+			if (doResolve) 
+				resolve();
+			else 
+				setTimeout(timer, 100);
 		};
 		timer();
 	});
@@ -130,8 +136,10 @@ const i18n_loadPromise = (async () => {
 		);
 
 		// warte dass i18n geladen ist
+		console.log("await vendors loaded")
 		await vendorsLoadedPromise;
-
+		console.log("vendors loaded");	
+		
 		for (let languageData of languageDatas) {
 			i18n.translator.add({ 'values': JSON.parse(languageData) });
 		}
@@ -459,7 +467,8 @@ GetFights = () =>{
 	FoEproxy.addHandler('CityMapService', (data, postData) => {
 		if (data.requestMethod === 'moveEntity' || data.requestMethod === 'moveEntities' || data.requestMethod === 'updateEntity') {
 			let Buildings = data.responseData;
-			if (Buildings[0]?.player_id != ExtPlayerID) return // opened another players GB
+
+			if (Buildings[0]?.player_id != ExtPlayerID) return; // opened another players GB
 			MainParser.UpdateCityMap(data.responseData);
 		}
 		else if (data.requestMethod === 'placeBuilding') {
@@ -720,6 +729,14 @@ GetFights = () =>{
 		} else {
 			lgUpdateData.CityMapEntity = data;
 			lgUpdate();
+		}
+		
+		if (data.responseData[0]?.player_id === ExtPlayerID) {
+			
+			if ($('#OwnPartBox').length > 0) {
+				Parts.CityMapEntity.max_level = data.responseData[0]?.max_level;
+				Parts.CalcBody();
+			}
 		}
 	});
 
@@ -1298,6 +1315,7 @@ let MainParser = {
 	 * @param d
 	 */
 	StartUp: async (d) => {
+		console.log("StartUp called");
 		Settings.Init(false);
 
 		MainParser.VersionSpecificStartupCode();
@@ -1345,9 +1363,9 @@ let MainParser = {
 		EventHandler.Init();
 
 		await ExistenceConfirmed('MainParser.CityEntities||srcLinks.FileList')
-
+	
 		window.dispatchEvent(new CustomEvent('foe-helper#StartUpDone'))
-
+		console.log('StartUp done')
 	},
 
 
@@ -1471,6 +1489,7 @@ let MainParser = {
 		setRarities:(raw)=>{
 			MainParser.Allies.rarities=Object.assign({}, ...raw.map(r=>({[r.id.value]:r})))
 		},
+
 		setTypes:(raw)=>{
 			MainParser.Allies.types=Object.assign({}, ...raw.map(t=>({[t.id]:t})))
 		},
@@ -1490,6 +1509,7 @@ let MainParser = {
 				HTML.Box({
 					id: 'AllyList',
 					title: i18n('Boxes.AllyList.Title'),
+					ask: i18n('Boxes.AllyList.HelpLink'),
 					auto_close: true,
 					dragdrop: true,
 					minimize: true,
