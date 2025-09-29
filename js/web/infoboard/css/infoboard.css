@@ -35,7 +35,7 @@
 }
 
 table.info-table:not(.no-hover) tbody tr:hover {
-	background-color: var(--background-table-hover) !important;
+	background-color: var(--table-bg-hover) !important;
 }
 
 table.info-table tr th,
@@ -53,7 +53,7 @@ table.info-table tr td {
 }
 
 #BackgroundInfo #BackgroundInfoBody strong {
-	color: var(--text-bright);
+	color: var(--bright-color);
 }
 
 #BackgroundInfo #BackgroundInfoBody .filter-row {

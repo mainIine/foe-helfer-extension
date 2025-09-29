@@ -62,7 +62,7 @@
 }
 #MGstatus th:nth-child(2),
 #MGstatus th:nth-child(3){
-        color:var(--text-bright);
+        color:var(--bright-color);
 }
 
 #mergerGameDialogSettingsBox input{
@@ -92,9 +92,9 @@
 
 #mergerGameSolutionBody div{
     margin:5px;
-    color:var(--text-bright);
+    color:var(--bright-color);
 }
 #mergerGameDialogBody svg{
     height:15px;
-    fill:var(--text-bright);
+    fill:var(--bright-color);
 }

@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2024 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2025 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -14,13 +14,17 @@
 :root {
 	--text-light: #fff;
 	--text-normal: #ffe7ba;
-	--text-bright: #ffB539;
+	--bright-color: #ffB539;
 	--text-medium: #93795D;
 	--text-medium2: #7b5730;
 	--text-dark: #4c2f1e;
 	--text-darker: #271911;
 	--text-darkest: #180d07;
 	--text-muted: #8a8a8a;
+
+	--text-success: #5fc745;
+	--text-info: #42a1ee;
+	--text-danger: #f34f4f;
 
 	--text-tab-active: #e2e2e2;
 	--text-tab: #9c9c9c;
@@ -31,35 +35,43 @@
 	--background-light: #F9EBC6;
 	--background-medium: #b3a582;
 
-	--background-hud-btn: linear-gradient(to bottom, #c38236, #894422);
-	--background-hud-btn-hover: linear-gradient(to bottom, #d8cf56, #d58f4a);
+	--window-border: 2px solid #895022;
+	--window-shadow: 0 0 9px 2px #000000aa, 0 0 0px 1px #000000aa;
+	--window-bg: url('../images/hud/box-bg.png') center center repeat;
 
-	--bg-tooltip: #5e5a4e;
+	--window-head-bg: linear-gradient(0deg, #44150a, #48170c, #4c190e, #501b10, #541d12, #581f13, #5d2115, #612316);
+	--window-head-shadow: inset 0 1px 0 #652518, inset 0 2px 0 #853427;
+	--window-head-btn-bg: url('../images/hud/box-sprite.png'), linear-gradient(to bottom, #4f6079, #374761);
+	--window-head-btn-shadow: inset 0 0 1px 2px #ffffff14, inset 0 0 0px 1px #000000ed;
 
-	--background-window-head: linear-gradient(0deg, #44150a, #48170c, #4c190e, #501b10, #541d12, #581f13, #5d2115, #612316);
-	--background-window-boxmenu-head: linear-gradient(#384354, #293344);
+	--window-body-scroll-bg: #57250c;
+	--window-body-scroll-bar: #281207;
 
-	--background-btn: linear-gradient(to bottom, rgb(183,112,55) 0%,rgb(176,96,38) 1%,rgb(145,72,30) 30%,rgb(130,62,24) 99%,rgb(176,104,50) 100%);
-	--background-btn-disabled: linear-gradient(to bottom, rgb(39, 23, 10) 0%,rgb(68, 68, 68) 1%,rgb(44, 44, 44) 30%,rgb(45, 45, 45) 99%, rgb(55, 55, 55) 100%);
-	--background-btn-active: linear-gradient(to bottom, rgb(245, 205, 72) 0%,rgb(223, 154, 52) 1%,rgb(186, 99, 32) 30%,rgb(146, 71, 21) 99%,rgb(163, 93, 40) 100%);
-	--background-btn-onclick: linear-gradient(to bottom, rgb(245, 205, 72) 0%,rgb(223, 154, 52) 1%,rgb(186, 99, 32) 20%,rgb(103 50 19) 80%,rgb(135 80 38) 100%);
+	--btn-bg: linear-gradient(to bottom, #b77037 0%,#b06026 1%,#91481e 30%,#823e18 99%,#b06832 100%);
+	--btn-bg-disabled: linear-gradient(to bottom, #27170a 0%,#444444 1%,#2c2c2c 30%,#2d2d2d 99%, #373737 100%);
+	--btn-bg-active: linear-gradient(to bottom, #f5cd48 0%,#df9a34 1%,#ba6320 30%,#924715 99%,#a35d28 100%);
+	--btn-bg-onclick: linear-gradient(to bottom, #f5cd48 0%,#df9a34 1%,#ba6320 20%,#673213 80%,#875026 100%);
+	--btn-bg-green: linear-gradient(to bottom, #469e2b 0%,#1f6517 100%);
+	--btn-green-color: #dde9ca;
 
-	--background-btn-green: linear-gradient(to bottom, #469e2b 0%,#1f6517 100%);
+	--btn-bg-red: linear-gradient(to bottom, #871313 0%,#440909 100%);
+	--btn-bg-red-active: linear-gradient(to bottom, #a71f1f 0%,#590d0d 100%);
+	--btn-bg-red-onclick: linear-gradient(to bottom, #610a0a 0%,#2e0505 100%);
 
-	--background-btn-red: linear-gradient(to bottom, #871313 0%,#440909 100%);
-	--background-btn-red-active: linear-gradient(to bottom, #a71f1f 0%,#590d0d 100%);
-	--background-btn-red-onclick: linear-gradient(to bottom, #610a0a 0%,#2e0505 100%);
+	--tabs-bg: linear-gradient(#494241, #2b2c33);
+	--tabs-bg-active: linear-gradient(#4a5c7a, #3b4863);
+	--tabs-bg-shadow: inset 0 1px 1px #2a1f31, inset 0 2px 0 #5a5155, 0 -1px 3px #000;
+	--tabs-bg-shadow-active: inset 0 1px 1px #242235, inset 0 2px 0 #737793, 0 -1px 3px #000;
+	--tabs-border: 2px solid #522c0f;
+	--tabs-border-active: 2px solid #895022;
 
-	--background-tabs: linear-gradient(#494241, #2b2c33);
-	--background-tabs-active: linear-gradient(#4a5c7a, #3b4863);
-
-	--background-table-hover: #ffb45733;
-	--background-table-odd: rgba(255, 158, 69, 0.07);
-	--background-table-darker: #40190080;
-	--background-table-info: #003c6d4d;
-	--background-table-success: rgba(18, 125, 9, 0.3);
-	--background-table-error: rgba(121, 8, 8, 0.3);
-	--background-table-bright: rgba(208, 126, 3, 0.4);
+	--table-bg-hover: #ffb45733;
+	--table-bg-odd: #ff9e4512;
+	--table-bg-darker: #40190080;
+	--table-bg-info: #003c6d4d;
+	--table-bg-success: #127d094d;
+	--table-bg-error: #7908084d;
+	--table-bg-bright: #d07e0366;
 
 	--hud-border-error: #9c2d18;
 	--hud-border-success: #93c554;
@@ -69,17 +81,36 @@
 	--border-table-bottom: #3D250F;
 	--border-table-bottom-darker: #170602;
 
-	--hud-counter: #468fca;
+	--tooltip-border: 2px solid #2a2c27;
+	--tooltip-bg: #3e423f;
+	--tooltip-disabled: #f79090;
+	--tooltip: #f2ede1;
+	--tooltip-head-bg: #0000002a;
+
+	--hud-counter-color: #468fca;
 	--hud-counter-success: #5c8d20;
+	--hud-counter-bg: 1px 0 0 1px #0000003e;
+	--hud-counter-size: 16px;
 
 	--grey: #444;
 	--black: #000;
-	--black-50: rgba(0, 0, 0, 0.5);
-	--black-65: rgba(0,0,0, 0.65);
+	--black-50: #00000080;
+	--black-65: #000000a6;
 
-	--text-success: #5fc745;
-	--text-info: #42a1ee;
-	--text-danger: #f34f4f;
+	--menu-bg: #301e0fcc;
+	--menu-shadow: 0 0 1px 1px #00000080;
+	--menu-arrow-bg: linear-gradient(to bottom, #c38236, #894422);
+	--menu-arrow-color: #48291b;
+	--menu-btn-size: 45px;
+	--menu-btn-bg: linear-gradient(#4d2e16, #492d16) padding-box, linear-gradient(to bottom, #82ae4c, #4f7421) border-box;
+	--menu-btn-shadow: inset 0 0 1px 1px #1f1309cc, 0 0 2px #000000c9;
+	--menu-btn-disabled-bg: linear-gradient(to bottom, #4f291b, #553419) padding-box, linear-gradient(to bottom, #a84a35, #88301e) border-box;
+	--menu-boxed-head-bg: linear-gradient(#384354, #293344);
+	--menu-boxed-head-shadow: inset 0 1px 1px #384354, inset 0 2px 0 #575d69;
+	--menu-boxed-head-color: #eee;
+
+
+	/* city map buildings*/
 
 	--background-color-ascendable: #f37317;
 	--border-color-ascendable: #ce5900;

@@ -1,5 +1,92 @@
 ## Changelog - Extension
 
+##### 3.13.0.0
+**New**
+- GE Goods Use
+	- A threshold can be given
+	- If upon opening the GE unlock dialogue the percentual goods use is higher than the threshold, a box is generated listing the percentual goods use in relation to the treasury stock.
+	- Activate in settings!
+
+**Update**
+- Efficiency
+	- Added filters for GBs and limited buildings
+- Citymap
+	- Added building list to outposts and settlements
+	- adapted to upcoming changes to QI
+- Shop Assist
+	- Added rarity of offer
+	- Added current stock of shop ressources
+	- When no favourites are selected yet, the favourites filter is deactivated
+- Blue Galaxy
+	- Now accounts for large FP Packages
+- Building Tooltip
+	- if fragments are produced the amount of needed fragments is now displayed as well
+- GBG Building Recommendation
+	- now closes automatically when battle/negotiation is started
+
+**Bugfix**
+- OwnPart Calculator
+	- Reverted a calculation change
+
+---
+
+##### 3.12.0.1
+
+**Update**
+- Shop Assist
+	- added unlock condition "Offers of rarity X accepted."
+
+**Bugfix**
+- Efficiency Overview
+	- Fixed boosts
+
+---
+
+##### 3.12.0.0
+**New**
+- Shop Assist
+	- can be activated in settings
+	- lists, how much of the offer already is in inventory
+	- lists, how many fragments are needed to complete an item and how much that would cost
+	- items can be set as favourites and the view can be limited to the favourites
+	- locked offers can be hidden from the list
+	- an alert can be set for offers - it will go off when enough currency is available to buy the offer
+
+**Update** 
+- Helper design was reworked in some places 
+	- boxes are now limited in size to browser window size
+
+- Efficiency overview
+	- processing of chain buildings adapted to updated data structure
+	- added QI bonuses
+	- inventory items will not be displayed when opening the efficiency overview for another player's city
+
+- Profile
+	- added guild goods boost
+	- profil theme can be changed by clicking the avatar
+	- added menu entry to display the profile
+
+- Idle Game
+	- updated processing to changed data structure
+
+- Settings
+	- Event Assistants can now be de-/activated separately
+
+- Units module
+	- reactivated
+
+- Army Advice
+	- can now be used as well in PvP Arena 
+
+**Bugfix**
+- Popgame
+	- Adapted to changed Event Window
+
+- Efficiency Overview
+	- corrected goods assessment
+
+---
+
 ##### 3.11.7.0
 
 **Update**

@@ -60,8 +60,8 @@
 
 #nodeMap .target .img {
     border-radius: 0;
-    outline-color: var(--text-bright);
-    box-shadow: 0 0 9px 3px var(--text-bright);
+    outline-color: var(--bright-color);
+    box-shadow: 0 0 9px 3px var(--bright-color);
 }
 
 #nodeMap .img {

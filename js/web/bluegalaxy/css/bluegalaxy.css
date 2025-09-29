@@ -35,7 +35,7 @@
 }
 
 .text-bright {
-    color: var(--text-bright);
+    color: var(--bright-color);
 }
 
 #bluegalaxy .title {

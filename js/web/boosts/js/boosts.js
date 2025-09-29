@@ -1,7 +1,7 @@
 /*
  * *************************************************************************************
  *
- * Copyright (C) 2024 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2025 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -100,6 +100,7 @@ let Boosts = {
         'coin_production': 0,
         'supply_production': 0,
         'forge_points_production':0,
+        'guild_goods_production':0,
         'guild_raids_action_points_collection': 0,
         'guild_raids_coins_production': 0,
         'guild_raids_coins_start': 0,
@@ -108,14 +109,14 @@ let Boosts = {
         'guild_raids_goods_start': 0,
         'guild_raids_units_start': 0,
     },
-    noSettlement:{
+    noSettlement: {
         'guild_raids_action_points_collection': 0,
         'guild_raids-att_boost_attacker': 0,
         'guild_raids-def_boost_attacker': 0,
         'guild_raids-att_boost_defender': 0,
         'guild_raids-def_boost_defender': 0,
-        
-
+        'guild_raids_coins_production': 0,
+        'guild_raids_supplies_production': 0
     },
     Init:()=>{
         for (let boost of Object.keys(Boosts.Sums)) {
@@ -182,12 +183,13 @@ let Boosts = {
     },
     updateSums: () => {
         for (let boost of Object.keys(Boosts.Sums)) {
-            let nS = Boosts.noSettlement[boost]
             Boosts.Sums[boost] = 0;
-            if (nS) Boosts.noSettlement[boost] = 0;
+            Boosts.noSettlement[boost] = 0;
             for (let b of Boosts.ListByType[boost]) {
-                Boosts.Sums[boost] += b.value
-                if (!b.entityId || MainParser.CityMapData[b.entityId]) Boosts.noSettlement[boost] += b.value;
+                Boosts.Sums[boost] += b.value;
+                if ((!b.entityId || MainParser.CityMapData[b.entityId])) {
+                    Boosts.noSettlement[boost] += b.value;
+                }
             }
         }
         FoEproxy.triggerFoeHelperHandler("BoostsUpdated");

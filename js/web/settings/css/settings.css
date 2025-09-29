@@ -27,7 +27,7 @@
 #SettingsBoxBody h2 {
 	font-size: 110%;
 	font-weight: 700;
-	color: var(--text-bright);
+	color: var(--bright-color);
 	margin: 10px 0 5px;
 }
 
@@ -176,7 +176,7 @@
 }
 
 #SettingsBoxBody .helplist a:hover {
-	background-color: var(--background-table-hover);
+	background-color: var(--table-bg-hover);
 }
 
 #SettingsBoxBody .helplist li span {
@@ -211,7 +211,7 @@
 }
 
 #SettingsBoxBody .info-box dt {
-	color: var(--text-bright);
+	color: var(--bright-color);
 	font-weight: bold;
 }
 

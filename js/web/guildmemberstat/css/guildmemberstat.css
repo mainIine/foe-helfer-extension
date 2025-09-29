@@ -19,7 +19,7 @@
 }
 
 .text-bright {
-    color: var(--text-bright);
+    color: var(--bright-color);
 }
 
 #GuildMemberStat #GuildMemberStatBody {
@@ -183,7 +183,7 @@
 }
 
 #GuildMemberStatBody .warn {
-    color: var(--text-bright);
+    color: var(--bright-color);
 }
 
 #GuildMemberStatBody table tr.warning {
@@ -260,7 +260,7 @@
 }
 
 #GuildMemberStatBody .last-update-message .updaterequired {
-    color: var(--text-bright);
+    color: var(--bright-color);
 }
 
 #GuildMemberStatBody .last-update-message span.icon {
@@ -287,7 +287,7 @@
     top: -4px;
     font-size: 0.85em;
     padding: 0 0 0 3px;
-    color: var(--text-bright);
+    color: var(--bright-color);
     font-weight: bold;
     text-shadow: 0 2px 2px black, 0 1px 0 black;
 }
@@ -335,8 +335,8 @@
 }
 
 #GuildMemberStat #gms-filter-input.highlight {
-    border-color: var(--text-bright);
-    background-color: var(--text-bright);
+    border-color: var(--bright-color);
+    background-color: var(--bright-color);
     color: var(--black);
 }
 
@@ -346,15 +346,15 @@
     border-radius: 50%;
     display: inline-block;
     margin-left: 6px;
-    background: var(--background-btn-green-fallback);
-    background: var(--background-btn-green-moz);
-    background: var(--background-btn-green-webkit);
-    background: var(--background-btn-green);
+    background: var(--btn-bg-green-fallback);
+    background: var(--btn-bg-green-moz);
+    background: var(--btn-bg-green-webkit);
+    background: var(--btn-bg-green);
 }
 
 #GuildMemberStat .warningoverlay {
     position: absolute;
-    z-index: 1;
+    z-index: 1000;
     left: 0;
     top: 0;
     width: 100%;
@@ -372,7 +372,7 @@
 }
 
 #GuildMemberStat tr.nohover:hover {
-    background-color: var(--background-table-odd);
+    background-color: var(--table-bg-odd);
 }
 
 #GuildMemberStat .sprite-35 {

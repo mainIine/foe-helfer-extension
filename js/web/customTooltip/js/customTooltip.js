@@ -154,7 +154,7 @@ let Tooltips = {
         let fragment = ""
         if (rew.iconAssetName=="icon_fragment") {
             icon = srcLinks.icons(rew.assembledReward?.iconAssetName||rew.assembledReward?.subType)
-            name = name.replace(/Fragments? of/,"").replace(/.*?'(.*?)'.*/,"$1")
+            name = name.replace(/Fragments? of/,"").replace(/.*?'(.*?)'.*/,"$1") + ' (' + rew.requiredAmount + ')' 
             fragment = srcLinks.icons("icon_tooltip_fragment")
         } else if (rew.type=="unit") {
 
@@ -233,9 +233,6 @@ let Tooltips = {
         if (meta.components) {
             
             let levels=meta.components
-            if (levels?.[minEra]) {
-                maxEra = Technologies.EraNames[Math.max(...Object.keys(levels).map(x=>Technologies.Eras[x]))]
-            }
             let era="",
                 set="",
                 ally="",
@@ -328,7 +325,7 @@ let Tooltips = {
                     console.log(JSON.stringify(ratings) )
                     efficiencyDifference = ratings[0]-ratings[1]
                 }
-                out += `<tr><td class="limited">${srcLinks.icons("limited_building_upgrade") + MainParser.CityEntities[ascendedId].name}${efficiencyDifference ? " -> "+i18n("Boxes.Kits.Efficiency")+": " + (efficiency - efficiencyDifference) :""}</td></tr>`
+                out += `<tr><td class="limited">${srcLinks.icons("limited_building_upgrade") + MainParser.CityEntities[ascendedId].name}${efficiencyDifference ? " → "+i18n("Boxes.Kits.Efficiency")+": " + (efficiency - efficiencyDifference) :""}</td></tr>`
 
             }
 
@@ -842,17 +839,20 @@ FoEproxy.addFoeHelperHandler('ActiveMapUpdated',()=>{
 		$('#QIActions').hide();
 	}
 })
+FoEproxy.addHandler('ResourceService', 'getResourceDefinitions', (data, postData) => {
+    QIActions.hourlyBase = FHResourcesList.find(x=>x.id=="guild_raids_action_points").abilities.autoRefill.refillAmount
+});
 
 
 let QIActions = {
 	count:0,
 	next:null,
 	last:null,
+    hourlyBase:5000,
 
 	setNext:(time)=>{
 		let timer=3600000
-		
-		let hourly = 5000 + Boosts.Sums["guild_raids_action_points_collection"] 
+		let hourly = QIActions.hourlyBase + Boosts.Sums["guild_raids_action_points_collection"] 
 
 		if (time) { 
 			timer = (time-GameTime.get()+3600)*1000
@@ -871,7 +871,7 @@ let QIActions = {
 	},
 
 	TT:()=>{
-		let hourly = 5000 + Boosts.Sums["guild_raids_action_points_collection"] 
+		let hourly = QIActions.hourlyBase + Boosts.Sums["guild_raids_action_points_collection"] 
 		let fullAt = Math.ceil((100000 + (Boosts.Sums["guild_raids_action_points_capacity"]||0) - QIActions.count)/hourly)*3600 + QIActions.last
 		let next = QIActions.last + 3600
 		while (next < moment().unix()) next += 3600

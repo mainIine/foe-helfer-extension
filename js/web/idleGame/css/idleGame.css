@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2024 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2025 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -19,7 +19,7 @@
 }
 
 #idleGameDialog img {
-    width: 22px;
+    width: auto;
     height: 22px;
 }
 
@@ -35,18 +35,41 @@
 
 #idleGame_Table th {
     font-weight: bold;
+    box-shadow: inset 0 0 0 2000px var(--black-50), 0 1px 0 0 var(--border-table-top), 0 2px 0 0 var(--border-table-bottom);
 }
 
 #idleGame_Table td {
-    padding-right: 10px;
-    padding-left: 10px;
-    padding-bottom: 5px;
+    padding: 3px;
 }
 
-#idleGame_Table .highlight {
-    color: rgb(255, 82, 0);
+#idleGame_Table .town_info td {
+    font-size: smaller;
+    border-top: 1px dotted var(--border-table-top);
+    text-align: right;
+}
+#idleGame_Table .town_info td:first-child {
+    text-align: left;
+}
+#idleGame_Table .town_info span:first-child {
     font-weight: bold;
+    color: var(--bright-color);
+}
+#idleGame_Table .town_info img {
+    height: 16px;
+}
 
+#idleGame_Table .flex {
+    align-items: center;
+    justify-content: space-evenly;
+    padding: 3px 0;
+ }
+
+#idleGame_Table .highlight {
+    color: var(--text-danger);
+    font-weight: bold;
+    background: var(--black-50);
+    padding: 0 3px;
+    border-radius: 3px;
 }
 #idleGame_Next td {
     padding-right: 5px;
@@ -75,7 +98,7 @@
     position: relative;
 }
 #idleGame_Next.hide i, #idleGame_Tasks.hide i, #idleGame_TasksActive.hide i, #idleGame_Strategy.hide i {
-    border: solid var(--text-bright);
+    border: solid var(--bright-color);
     border-width: 0 2px 2px 0;
     display: inline-block;
     padding: 3px;
@@ -86,7 +109,7 @@
     margin-top: 4px;
 }
 #idleGame_Next:not(.hide) i, #idleGame_Tasks:not(.hide) i, #idleGame_TasksActive:not(.hide) i, #idleGame_Strategy:not(.hide) i  {
-    border: solid var(--text-bright);
+    border: solid var(--bright-color);
     border-width: 0 2px 2px 0;
     display: inline-block;
     padding: 3px;
@@ -103,7 +126,7 @@
 }
 #idleGame_StratCheck {
     font-family: arial;
-    color: var(--text-bright);
+    color: var(--bright-color);
 }
 #idleGame_StratPrev {
     color: var(--text-btn-disabled);
@@ -112,7 +135,7 @@
     color: var(--text-btn-disabled);
 }
 #idleGame_Strat {
-    color: var(--text-bright);
+    color: var(--bright-color);
 }
 #idleGameStratText {
     width: 100%;
@@ -124,4 +147,12 @@
     position: absolute;
     right: 5px;
     bottom: 5px;
+}
+#idleGame_Tasks td, #idleGame_TasksActive td:first-child, #idleGame_Strategy td:first-child {
+    text-align: left;
+}
+
+#idleGameDialog #idleGame_Next td:first-child img {
+    height: 29px;
+    margin: -3px 0;
 }

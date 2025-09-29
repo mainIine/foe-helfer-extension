@@ -25,6 +25,7 @@ FoEproxy.addHandler('GuildExpeditionService', 'getContributionList', (data, post
 	if (data && data.responseData && (+MainParser.getCurrentDate() - GexStat.ResponseBlockTime) > 2000)
 	{
 		GexStat.ResponseBlockTime = +MainParser.getCurrentDate();
+		GexStat.GexData = data.responseData; // Store GEX data for cost calculations
 		GexStat.UpdateData('participation', data.responseData);
 	}
 });
@@ -52,6 +53,8 @@ let GexStat = {
 	CurrentStatGroup: 'Ranking',
 	ResponseBlockTime: 0,
 	Chart: undefined,
+	TrailCosts: null,
+	GexData: null,
 	Settings: {
 		deleteOlderThan: 20,
 		showAxisLabel: true,
@@ -299,7 +302,7 @@ let GexStat = {
 			h.push(`<tr>`);
 			h.push(`<td class="td-rank"><span class="winner-rank rank-${rankClass}"><span>${participant.rank}</span></span></td>`);
 			h.push(`<td>` +
-				`<div class="clanflag"><img src="${srcLinks.get('/shared/clanflags/' + participant.flag + '.jpg', true)}" /></div>` +
+				`<div class="clanflag"><img alt="" src="${srcLinks.get('/shared/clanflags/' + participant.flag + '.jpg', true)}" /></div>` +
 				`<div class="claninfo"><span class="clanname">${MainParser.GetGuildLink(participant['guildId'], participant['name'], participant['worldId'])}</span><br /> ` +
 				`<span class="clanworld">${participant.worldName}</span></div></td>`);
 			h.push(`<td class="progress"><div class="progbar rank-${rankClass}${stripedClass}" style="width: ${progressWidth}%"></div> ${participant.points}%</td>`);
@@ -649,7 +652,8 @@ let GexStat = {
 		h.push(`<li${GexStat.CurrentStatGroup === 'Ranking' ? ' class="active"' : ''}><a class="toggle-statistic" data-value="Ranking"><span>${i18n('Boxes.GexStat.Ranking')}</span></a></li>`);
 		h.push(`<li${GexStat.CurrentStatGroup === 'Participation' ? ' class="active"' : ''}><a class="toggle-statistic" data-value="Participation"><span>${i18n('Boxes.GexStat.MemberParticipation')}</span></a></li>`);
 		h.push(`<li${GexStat.CurrentStatGroup === 'Course' ? ' class="active"' : ''}><a class="toggle-statistic" data-value="Course"><span>${i18n('Boxes.GexStat.Course')}</span></a></li>`);
-		h.push(`</ul></div>`);
+		h.push(`</ul>`);
+		h.push(`</div>`);
 
 		if (gexweek && GexStat.GexWeeks && GexStat.GexWeeks.length)
 		{
@@ -894,6 +898,8 @@ let GexStat = {
 
 		return series;
 	},
+
+
 	// yvi
 	ExportContent: async (content, type) => {
 
@@ -1020,7 +1026,6 @@ let GexStat = {
 
 		return JSON.stringify(result);
 	},
-
 }
 
 FoEproxy.addFoeHelperHandler('ResourcesUpdated', () => {
@@ -1030,6 +1035,7 @@ FoEproxy.addFoeHelperHandler('ResourcesUpdated', () => {
 FoEproxy.addHandler('ResourceService', 'getPlayerAutoRefills', (data, postData) => {
 	GExAttempts.setNext(data.responseData.resources.guild_expedition_attempt)
 });
+
 FoEproxy.addHandler('GuildExpeditionService', 'getOverview', (data, postData) => {
 	if (data.responseData) GExAttempts.updateState(data.responseData)
 });
@@ -1037,6 +1043,7 @@ FoEproxy.addHandler('GuildExpeditionService', 'getOverview', (data, postData) =>
 FoEproxy.addHandler('GuildExpeditionNotificationService', 'GuildExpeditionStateNotification', (data, postData) => {
 	if (data.responseData) GExAttempts.updateState(data.responseData)
 });
+
 FoEproxy.addHandler('GuildExpeditionService', 'getState', (data, postData) => {
 	for (let x of data.responseData) {
 		if (!x.currentEntityId) continue;
@@ -1045,9 +1052,11 @@ FoEproxy.addHandler('GuildExpeditionService', 'getState', (data, postData) => {
 		GExAttempts.refreshGUI()
 	}
 });
+
 FoEproxy.addHandler('GuildExpeditionService', 'changeDifficulty', (data, postData) => {
 	if (data.responseData) GExAttempts.updateState(data.responseData)
 });
+
 let GExAttempts = {
 	count:0,
 	next:null,
@@ -1063,13 +1072,14 @@ let GExAttempts = {
 
 	refreshGUI:()=>{
 		//hidenumber when GE completed, not running or out of attempts
-		if (GExAttempts.state.GEprogress == 159 || GExAttempts.count === 0 || !GExAttempts.state.active) {
+		if (GExAttempts.state.GEprogress === 159 || GExAttempts.count === 0 || !GExAttempts.state.active) {
 			$('#gex-attempt-count').hide();
 		}
 		//setnumber when GE running
 		else {
 			$('#gex-attempt-count').text(GExAttempts.count).show();
 		}
+
 		//set timer for GE deactivation if deactivation time known
 		if (!GExAttempts.deactivationTimer && GExAttempts.state.deactivationTime && GExAttempts.state.active) {
 			GExAttempts.deactivationTimer = setTimeout(() => {
@@ -1082,6 +1092,7 @@ let GExAttempts = {
 				GExAttempts.refreshGUI()
 			}, (GExAttempts.state.deactivationTime-GameTime.get()) * 1000);
 		}
+
 		//set timer for GE activation if activation time known
 		if (!GExAttempts.activationTimer && GExAttempts.state.activationTime && !GExAttempts.state.active) {
 			GExAttempts.activationTimer = setTimeout(() => {
@@ -1127,7 +1138,7 @@ let GExAttempts = {
 	},
 
 	updateState:(data) =>{
-		GExAttempts.state.active = data.state=="active"
+		GExAttempts.state.active = data.state === "active"
 
 		if (GExAttempts.state.active) {
 			GExAttempts.state.deactivationTime = data.nextStateTime || null
@@ -1139,9 +1150,55 @@ let GExAttempts = {
 			GExAttempts.state.GEprogress = 0
 		}
 
-		localStorage.setItem('GEx.state',JSON.stringify(GExAttempts.state))
+		localStorage.setItem('GEx.state', JSON.stringify(GExAttempts.state))
 		GExAttempts.refreshGUI()
 
 	}
-
 }
+
+let GexStockWarning = {
+	check: (stock,costs) => {
+		let min = JSON.parse(localStorage.getItem('GexStockWarningMin')||"100");
+		if (min == 100) return
+		let parts = []
+		for (let [res,amount] of Object.entries(costs)) {
+			parts.push({
+				resource:res, 
+				part: Math.round(amount/(stock[res]||0.1)*10000)/100
+			})
+		}
+		parts = parts.sort((a,b)=>
+			b.part-a.part
+		)
+		parts = parts.slice(0,10)
+		
+		if (parts[0].part <= min) return
+		
+		if ($('#GexStockWarning').length === 0)	{
+			HTML.Box({
+				id: 'GexStockWarning',
+				title: i18n('Settings.GexStockWarning.Title'),
+				auto_close: true,
+				dragdrop: true,
+				resize: true,
+				minimize: true,
+			});
+			HTML.AddCssFile('gexstat');
+		}
+		let h = `<table class="foe-table">`
+		for (let part of parts) {
+			h+=`<tr>
+			<td>${srcLinks.icons(part.resource)}</td>
+			<td>${GoodsData[part.resource].name} (${i18n("Eras."+Technologies.Eras[GoodsData[part.resource].era]+".short")})</td>
+			<td>${part.part}%</td>
+			</tr>`
+		}
+		h+=`</table>`
+		
+		$('#GexStockWarningBody').html(h);
+
+	}
+}
+FoEproxy.addHandler("GuildExpeditionService","getUnlockCosts",(data,postData)=>{
+	GexStockWarning.check (data.responseData.treasuryResources.resources,data.responseData.unlockCosts.resources)
+})

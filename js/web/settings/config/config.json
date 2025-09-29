@@ -7,6 +7,7 @@
 	},
 	{
 		"name": "ShowEventChest",
+		"callback": "ShowEventHelpers",
 		"status": true,
 		"group": "Auto",
 		"sort": 1
@@ -82,6 +83,12 @@
 		"status": true,
 		"group": "Auto",
 		"sort": 15
+	},
+	{
+		"name": "ShowShopAssist",
+		"status": false,
+		"group": "Auto",
+		"sort": 1
 	},
 	{
 		"name": "ShowGBGPlayerInfo",
@@ -284,5 +291,12 @@
 		"group": "About",
 		"button":"window.open('https://github.com/mainIine/foe-helfer-extension/archive/refs/heads/beta.zip', '_blank').focus();",
 		"sort": 19
+	},
+	{
+		"name": "GexStockWarning",
+		"callback": "GexStockWarning",
+		"group": "Auto",
+		"sort": 19
 	}
+	
 ]

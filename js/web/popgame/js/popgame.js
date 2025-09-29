@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2024 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2025 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -13,7 +13,7 @@
 
 FoEproxy.addHandler('PopGameService', 'getOverview', (data, postData) => {
     //Start Minigame
-    if(!Settings.GetSetting('ShowEventChest')) return;
+    if(!Settings.GetSetting('ShowEventChest') || !(Settings.GetSetting('EventHelperPop') === undefined ? true : Settings.GetSetting('EventHelperPop'))) return;
     if (!data?.responseData?.currentGame?.config?.height) return;
     if (!data?.responseData?.currentGame?.config?.width) return;
     if (!data?.responseData?.currentGame?.tiles) return;
@@ -269,20 +269,14 @@ let Popgame = {
 
     hideDrops: () => {
         if ($('#Popgame').length === 0) return
-        let c=0;
-        let drops = $('.PGdroppable');
-        h=$('#Popgame')[0].clientHeight;
-        if (drops.length >0) {
-            for (let drop of drops) {
-                if((h - drop.offsetTop) < 155 && (h - drop.offsetTop) > 145) {
-                    c+=1;
-                    $(`#${drop.id}`).fadeOut('fast');
-                };
-            }
-        }
-
-        if (c>0) setTimeout(Popgame.hideDrops,250);
-    },
+        let drops = $(".PGcolumn").map(function() {
+            var last = $(this).find(".PGcell:visible").last();
+            return last.hasClass("PGdroppable") ? last[0] : null;
+        });
+        drops.fadeOut('fast');
+        if (drops.length > 0) 
+            setTimeout(Popgame.hideDrops,250);
+        },
 
     resetTempChest: () => {
         if (Popgame.tempC !== null) {

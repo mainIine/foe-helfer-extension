@@ -27,7 +27,7 @@
 }
 
 #outpostConsumables #outpostConsumablesBody tr.resource-row td {
-	color: var(--text-bright);
+	color: var(--bright-color);
 	font-weight: 700;
 }
 

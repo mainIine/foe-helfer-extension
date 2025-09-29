@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2024 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2025 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -22,25 +22,6 @@
 	min-width: 320px;
 }
 
-#costCalculator #costCalculatorBody .lg-not-possible {
-	position: absolute;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	background-color: rgba(0,0,0, 0.7);
-}
-
-#costCalculator #costCalculatorBody .lg-not-possible::after {
-	content: attr(data-text);
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	text-align: center;
-	width: 240px;
-}
-
 #costCalculator #costCalculatorBody input {
 	display: inline-block;
 	width: 25px;
@@ -55,7 +36,7 @@
 }
 
 #costCalculator #costCalculatorBody strong {
-	color: var(--text-bright);
+	color: var(--bright-color);
 }
 
 #costCalculator #costCalculatorBody .header {
@@ -76,7 +57,7 @@
 #costCalculator #costCalculatorBody .header .player-name {
 	display: block;
 	white-space: nowrap;
-	color: var(--text-bright);
+	color: var(--bright-color);
 	margin: 0 10px;
 }
 
@@ -134,19 +115,19 @@
 }
 
 #costCalculator #costCalculatorBody tr.info-row {
-	background-color: var(--background-table-info);
+	background-color: var(--table-bg-info);
 }
 
 #costCalculator #costCalculatorBody tr.bg-green {
-	background-color: var(--background-table-success);
+	background-color: var(--table-bg-success);
 }
 
 #costCalculator #costCalculatorBody tr.bg-red {
-	background-color: var(--background-table-error);
+	background-color: var(--table-bg-error);
 }
 
 #costCalculator #costCalculatorBody tr.bg-yellow {
-	background-color: var(--background-table-bright);
+	background-color: var(--table-bg-bright);
 }
 
 #costCalculatorBody .costFactorWrapper {
