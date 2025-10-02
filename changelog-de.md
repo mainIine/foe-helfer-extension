@@ -1,5 +1,18 @@
 ## Changelog - Extension
 
+
+##### 3.13.1.0
+
+**Update**
+- Power Leveln: Viele neue Stufen fürs Atomium hinzugefügt
+
+**Bugfix**
+- FP Collector: Übersetzungen hinzugefügt
+- Efficienzübersicht: Styling in der Suche angepasst
+
+---
+
+
 ##### 3.13.0.0
 **Neu**
 - GEX Güter Verbrauch
