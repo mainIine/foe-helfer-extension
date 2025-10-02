@@ -1,5 +1,17 @@
 ## Changelog - Extension
 
+
+##### 3.13.1.0
+
+**Update**
+- Power leveling: Added a bunch of levels for Atomium
+
+**Bugfix**
+- FP Collector: Added some translations
+- Efficiency: Styling for search was a bitt off
+
+---
+
 ##### 3.13.0.0
 **New**
 - GE Goods Use
