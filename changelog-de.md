@@ -8,7 +8,7 @@
 
 **Bugfix**
 - FP Collector: Übersetzungen hinzugefügt
-- Efficienzübersicht: Styling in der Suche angepasst
+- Efficienzübersicht: Styling in der Suche angepasst, QI Güter Bewertung hat nicht funktioniert
 
 ---
 

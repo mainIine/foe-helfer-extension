@@ -8,7 +8,7 @@
 
 **Bugfix**
 - FP Collector: Added some translations
-- Efficiency: Styling for search was a bit off
+- Efficiency: Styling for search was a bit off, QI goods evaluation did not work
 
 ---
 
