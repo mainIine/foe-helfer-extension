@@ -148,6 +148,7 @@ const Profile = {
                 $(this).attr('data-original-title', text);
             });
             $('#PlayerProfileBody').on('click', '.colorToggle',function () {
+                Profile.currentThemeNr = Profile.themes.indexOf(localStorage.getItem("PlayerProfileTheme")) || 0;
                 $('#PlayerProfile').removeClass(Profile.themes[Profile.currentThemeNr]);
                 if (Profile.themes[Profile.currentThemeNr+1] !== undefined)
                     Profile.currentThemeNr++;
@@ -389,9 +390,10 @@ const Profile = {
             cc.push('<h2>'+i18n('Boxes.PlayerProfile.Settlements')+'</h2>');
             if (Profile.settlements.length > 0) {
                 for (let settlement of Profile.settlements) {
-                    cc.push('<span class="'+settlement.id+' removable" data-original-title="'+settlement.name+'">');
+                    cc.push('<span class="'+settlement.id+' removable" data-original-title="'+settlement.descriptionCityTooltip.replace('%s',HTML.Format(parseInt(settlement.currentLevel.progress)))+'">');
                     cc.push('<img src="'+srcLinks.get(`/shared/icons/achievements/achievement_icons_${settlement.id}.png`,true)+'" />');
                     cc.push(HTML.Format(parseInt(settlement.currentLevel.progress)) + '</span>');
+                    console.log(settlement);
                 }
             }
             else {
