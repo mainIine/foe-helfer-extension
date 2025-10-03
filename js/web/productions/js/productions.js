@@ -2408,7 +2408,7 @@ let Productions = {
 		else if (type === "strategy_points" || type === "medals" || type === "premium" || type === "money" || type === "supplies" || type === "units" || type === "clan_goods")
 			return Productions.getBuildingProductionByCategory(false, building, type).amount
 
-		else if (type.includes("goods")) {
+		else if (type.includes("goods") && !type.includes("guild_raids_")) {
 			let allGoods = CityMap.getBuildingGoodsByEra(false, building);
 
 			if (allGoods !== undefined) {
@@ -2457,14 +2457,14 @@ let Productions = {
 		}
 		else if (type.includes("guild_raids_") && !type.includes("att") && !type.includes("def")) {
 			if (building.boosts !== undefined) {
-				let qi_resources = 0
+				let qi_resources = 0;
 				for (const boost of building.boosts) {
-					let bType = boost.type.find(x => x === type)
+					let bType = boost.type.find(x => x === type);
 					if (bType !== undefined) {
-						qi_resources += boost.value		
+						qi_resources += boost.value;
 					}
 				}
-				return qi_resources
+				return qi_resources;
 			}
 		}
 		else
