@@ -593,6 +593,10 @@ p {
 	background: linear-gradient(#423428, #463526) padding-box, linear-gradient(to bottom, #7f916a, #455630) border-box !important;
 }
 
+[id$=discord-Btn] {
+	background: radial-gradient(#5865f2 25%, #463526 75%) padding-box, linear-gradient(to bottom, #7f916a, #455630) border-box !important;
+}
+
 [id$=marketOffers-Btn] span {
 	background-image: url('../images/menu/marketOffers.png');
 }

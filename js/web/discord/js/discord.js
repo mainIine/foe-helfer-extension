@@ -110,12 +110,12 @@ let Discord = {
 				h.push(`<td>${d.name}</td>`);
 				h.push(`<td>${d.event}</td>`);
 				h.push(`<td>${d.message}</td>`);
-				h.push(`<td style="white-space:nowrap;"><button class="btn-default btn-delete" role="button" type="button" onclick="Discord.Delete(${i})">${i18n('Boxes.Discord.DeleteEntry')}</button>&nbsp;<button class="btn-default" role="button" type="button" onclick="Discord.CopyEntry(${i})"><img src="${extUrl}js/web/discord/images/copy-paste.svg" style="width: 19px;" alt="" /></button>&nbsp;<button class="btn-default" role="button" type="button" onclick="Discord.EntryForm(${i})">${i18n('Boxes.Discord.EditEntry')}</button></td>`);
+				h.push(`<td style="white-space:nowrap;"><span class="btn-group"><button class="btn-default" role="button" type="button" data-original-title="${i18n('Boxes.Discord.CopyTitle')}" onclick="Discord.CopyEntry(${i})"><img src="${extUrl}js/web/discord/images/copy-paste.svg" style="width: 19px;" alt="" /></button><button class="btn-default" role="button" type="button" onclick="Discord.EntryForm(${i})">${i18n('Boxes.Discord.EditEntry')}</button><button class="btn-default btn-delete" role="button" type="button" onclick="Discord.Delete(${i})">${i18n('Boxes.Discord.DeleteEntry')}</button></span></td>`);
 			h.push(`</tr>`);
 		}
 
 		h.push(`<tr>`);
-			h.push(`<td colspan="5" class="text-right"><small><em class="text-warning">${i18n('Boxes.Discord.VisitGGMapBefore')}</em></small>&nbsp;&nbsp;<button class="btn-default" role="button" type="button" onclick="Discord.EntryForm()">${i18n('Boxes.Discord.TitleNewEntry')}</button></td>`);
+			h.push(`<td colspan="5" class="text-right"><small><em class="text-warning">${i18n('Boxes.Discord.VisitGGMapBefore')}</em></small>&nbsp;&nbsp;<button class="btn-default btn-green" role="button" type="button" onclick="Discord.EntryForm()">${i18n('Boxes.Discord.TitleNewEntry')}</button></td>`);
 		h.push(`</tr>`);
 
 		h.push(`</tbody>`);
@@ -126,6 +126,7 @@ let Discord = {
 		$body.on('click', '#DiscordNewEntryclose', function (){
 			Discord.CloseOverlay('DiscordNewEntry');
 		});
+		$('[data-original-title]').tooltip();
 
 		$body.on('click', '#DiscordWebhookUrlsclose', function (){
 			Discord.CloseOverlay('DiscordWebhookUrls');
@@ -140,8 +141,6 @@ let Discord = {
 		if(i !== ''){
 			data = Discord.WebHooks[parseInt(i)];
 		}
-
-		//$('body').prepend( $('<div class="foe-helper-overlay" />') );
 
 		HTML.Box({
 			id: 'DiscordNewEntry',
@@ -182,7 +181,7 @@ let Discord = {
 			h.push(`<th>Event</th>`);
 			h.push(`<td>
 				<select id="event">
-					<option value="gbg"${data && data['event'] === 'gbg' ? ' selected' : ''}>Gildfights</option>
+					<option value="gbg"${data && data['event'] === 'gbg' ? ' selected' : ''}>${i18n('Boxes.Infobox.FilterGuildFights')}</option>
 				</select> `);
 
 			if(GuildFights?.MapData?.map['id']){
@@ -202,14 +201,14 @@ let Discord = {
 
 			h.push(`<tr>`);
 			h.push(`<th>${i18n('Boxes.Discord.Message')}</th>`);
-			h.push(`<td><textarea id="message" name="message" spellcheck="false">${data?data['message']:':flame: Aware!!\n' +
-				'The province "#gg_province_name#" should be attacked from other gild!!'}</textarea><small><em class="text-warning">#gg_province_name# for province name replace</em></small></td>`);
+			h.push(`<td><textarea id="message" name="message" spellcheck="false">${data?data['message']:':flame: **Fighters!**\n' +
+				'Attack #province_name# now'}</textarea><small><em class="text-warning">#province_name# for province name replace</em></small></td>`);
 			h.push(`</tr>`);
 
 			h.push(`<tr>`);
 			h.push(`<td colspan="2" class="text-right">
 				<button class="btn-default" role="button" type="button" onclick="Discord.TestEntry()">${i18n('Boxes.Discord.TestEntry')}</button>&nbsp;
-				<button class="btn-default" role="button" type="button" onclick="Discord.Save(${i})">${i18n('Boxes.Discord.Save')}</button>
+				<button class="btn-default btn-green" role="button" type="button" onclick="Discord.Save(${i})">${i18n('Boxes.Discord.Save')}</button>
 			</td>`);
 			h.push(`</tr>`);
 			h.push(`</thead>`);
@@ -276,18 +275,11 @@ let Discord = {
 		h.push(`</thead>`);
 		h.push(`<tbody>`);
 
-		for(let i in Discord.WebHooksUrls)
-		{
-			if(!Discord.WebHooksUrls.hasOwnProperty(i)) {
-				continue;
-			}
-
-			let d = Discord.WebHooksUrls[i];
-
+		for(let url of Discord.WebHooksUrls) {
 			h.push(`<tr>`);
-			h.push(`<td style="width: 1%;">${d.name}</td>`);
-			h.push(`<td>${d.url.substring(0, 30)}...</td>`);
-			h.push(`<td style="white-space:nowrap;"><button class="btn-default btn-delete" role="button" type="button" onclick="Discord.DeleteWebhookUrl(${i})">${i18n('Boxes.Discord.DeleteEntry')}</button></td>`);
+			h.push(`<td style="width: 1%;">${url.name}</td>`);
+			h.push(`<td>${url.url?.substring(0, 30)}...</td>`);
+			h.push(`<td style="white-space:nowrap;"><button class="btn-default btn-delete" role="button" type="button" onclick="Discord.DeleteWebhookUrl(${Discord.WebHooksUrls.indexOf(url)})">${i18n('Boxes.Discord.DeleteEntry')}</button></td>`);
 			h.push(`</tr>`);
 		}
 
@@ -326,7 +318,7 @@ let Discord = {
 			HTML.ShowToastMsg({
 				show: 'force',
 				head: 'Error',
-				text: 'Please visit the Gildfight maps first!',
+				text: 'Please visit the GBG map first!',
 				type: 'error',
 				hideAfter: 6000,
 			});
@@ -336,7 +328,7 @@ let Discord = {
 
 		let e = {
 				url: $('#url').val(),
-				message: '**This is only a test to test the webhook!**' + "\n\n" + $('#message').val()
+				message: '**This is only a test!**' + "\n\n" + $('#message').val()
 			},
 			d = {
 				name: ProvinceMap.ProvinceData()[parseInt($('#province').val())].name
@@ -347,7 +339,7 @@ let Discord = {
 		HTML.ShowToastMsg({
 			show: 'force',
 			head: 'Is send',
-			text: 'The message was send to the webhook. Check it!',
+			text: 'The message was sent to the webhook.',
 			type: 'success',
 			hideAfter: 2500,
 		});
@@ -462,9 +454,9 @@ let Discord = {
 		Discord.SendMessage(
 			e.url,
 			{
-				username: 'FoE Helper - Extension Webhook',
+				username: 'FoE Helper',
 				avatar_url: 'https://foe-helper.com/theme/img/favicon/apple-touch-icon.png',
-				content: e.message.replace('#gg_province_name#', d.name)
+				content: e.message.replace('#province_name#', d.name)
 			}
 		)
 			.then();
