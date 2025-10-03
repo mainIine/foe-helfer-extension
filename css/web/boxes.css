@@ -1438,7 +1438,7 @@ FP-Bar */
 
 .tooltip.foe-skin > .tooltip-inner {
 	text-align: left;
-	width: 180px;
+	width: max-content;
 	border: var(--tooltip-border);
 	background-color: var(--tooltip-bg);
 	box-shadow: 0 0 2px 1px var(--black-65);
