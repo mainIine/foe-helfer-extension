@@ -377,7 +377,7 @@ let CityMap = {
 					left: xx + 'em',
 					top: yy + 'em'
 				})
-				.attr('title', d['name'] + ', ' + BuildingSize['xsize']+ 'x' +BuildingSize['ysize'])
+				.attr('title', d['name'] + ', ' + BuildingSize['ysize']+ 'x' +BuildingSize['xsize'])
 				.attr('data-entityid', CityMapEntity['id']);
 
 			$('#grid-outer').append( f );
