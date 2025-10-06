@@ -417,8 +417,8 @@ let CityMap = {
 			}
 			if (building.production) {
 				for (let [type, value] of Object.entries(building.production)) {
-					// dont include townhall, because boosts dont apply & dont include goods buildings
-					if (building.type === "main_building" || building.type === "goods") continue;
+					// dont include townhall, because boosts dont apply & dont include goods or military buildings
+					if (building.type === "main_building" || building.type === "goods" || building.type === "military") continue;
 					if (CityMap.QIStats.resources[type] === undefined)
 						CityMap.QIStats.resources[type] = value;
 					else 
