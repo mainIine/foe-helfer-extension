@@ -236,7 +236,7 @@ let shopAssist = {
 					costs += `<div class="text-right">` + HTML.Format(cost) + srcLinks.icons(res)+ "</div>"
 				})
 				allTT += `<td class="costs ${(canBuy && !limitReached && unlocked) ? "canBuy" : "canNotBuy"}">
-						<div>${slot.reward.subType == "fragment" && fullBuys < Infinity && fullBuys > 0 ? `<span>${srcLinks.icons("icon_tooltip_fragment") + HTML.Format(fullBuys * slot.reward.amount)}</span>`:``} <span>(${fullBuys})</span></div> 
+						<div>${slot.reward.subType == "fragment" && fullBuys < Infinity && fullBuys > 0 ? `<span>${srcLinks.icons("icon_tooltip_fragment") + HTML.Format(fullBuys * slot.reward.amount)}</span>`:``} <span>(${fullBuys}x)</span></div> 
 						${costs}
 						</td></tr></table>`
 				shopAssist.allTTContent[slot.slotId+"F"] = allTT;
@@ -263,7 +263,7 @@ let shopAssist = {
 					<div>
 						${slot.reward.subType == "fragment" && maxBuys != Infinity && maxBuys != 0 ? 
 							`<span>${srcLinks.icons("icon_tooltip_fragment") + HTML.Format(maxBuys*slot.reward.amount)}</span>`:``} 
-						<span>(${maxBuys}${slot.flag?.value!="increasingCosts" && limitedBuys > 0 && limitedBuys < Infinity ? "/" + limitedBuys :""}${slot.flag?.value=="increasingCosts" && limitedBuys > 0 ? "/?" :""})
+						<span>(${maxBuys}${slot.flag?.value!="increasingCosts" && limitedBuys > 0 && limitedBuys < Infinity ? "/" + limitedBuys : (slot.flag?.value=="increasingCosts" && limitedBuys > 0 ? "/?" :"x")})
 						</span>
 					</div> 
 					${costs}
@@ -280,7 +280,7 @@ let shopAssist = {
 					costs += `<div class="text-right">` + HTML.Format(cost) + srcLinks.icons(res)+ "</div>"
 				})
 				allTT += `<td class="costs ${(canBuy && !limitReached && unlocked) ? "canBuy" : "canNotBuy"}">
-						<div>${slot.reward.subType == "fragment" && limitedBuys < Infinity && limitedBuys > 0 ? `<span>${srcLinks.icons("icon_tooltip_fragment") + HTML.Format(limitedBuys * slot.reward.amount)}</span>`:``} <span>(${limitedBuys})</span></div> 
+						<div>${slot.reward.subType == "fragment" && limitedBuys < Infinity && limitedBuys > 0 ? `<span>${srcLinks.icons("icon_tooltip_fragment") + HTML.Format(limitedBuys * slot.reward.amount)}</span>`:``} <span>(${limitedBuys}x)</span></div> 
 						${costs}
 						</td></tr></table>`
 				shopAssist.allTTContent[slot.slotId] = allTT;
