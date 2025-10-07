@@ -546,10 +546,13 @@ let idleGame = {
 		$('#idleGame_Town').html(`${text_currentrun}<br/>${text_nexttown}`);
 
 		text_nexttown = `${Tt}${idleGame.iGNums[Td]}: `
-		text_nexttown += `${idleGame.time(Tt,Td,sum,degree,idleGame.Progress,idleGame.ProgressDegree,fest,festd)}, `
-		discounted = Math.round(idleGame.finishTownDiscount * Tt * 100) / 100
-		text_nexttown += `${discounted}${idleGame.iGNums[Td]}: `
-		text_nexttown += `${idleGame.time(discounted,Td,sum,degree,idleGame.Progress,idleGame.ProgressDegree,fest,festd)}`;
+		text_nexttown += `${idleGame.time(Tt,Td,sum,degree,idleGame.Progress,idleGame.ProgressDegree,fest,festd)}`
+		discounted = Math.round(idleGame.finishTownDiscount * Tt * 100) / 100;
+		let discounted_time = idleGame.time(discounted,Td,sum,degree,idleGame.Progress,idleGame.ProgressDegree,fest,festd);
+		if (!discounted_time.includes("999")) {
+			text_nexttown += `, ${discounted}${idleGame.iGNums[Td]}: `
+			text_nexttown += `${discounted_time}`;
+		}
 		
 		$('.idleGame_Town').html(`<span data-original-title="${text_currentrun}">${text_currentrun_short}</span> &middot; ${text_nexttown}`);
 
