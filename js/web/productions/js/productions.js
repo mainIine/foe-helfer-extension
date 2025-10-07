@@ -1345,10 +1345,16 @@ let Productions = {
 			hasRandomProductions: false,
 			doubleWhenMotivated: false
 		}
-		let productions = (current ? building.state.production : building.production)
+		let productions = (current ? building.state.production : building.production);
+
+		if (building.type === "production") {
+			productions = [productions[productions.length-1]];
+		}
 
 		if (productions) {
-			productions.forEach(production => {
+			for (let production of productions) {
+				if (production === undefined) continue;
+
 				if (production.type === 'random') {
 					production.resources.forEach(resource => {
 						if (resource.type+"s" === category) { // units 
@@ -1422,7 +1428,7 @@ let Productions = {
 						}
 					}
 				}
-			})
+			}
 		}
 
 		if (building.population && category === "population") {
