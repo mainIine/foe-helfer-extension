@@ -1251,6 +1251,8 @@
     "Boxes.ShopAssist.Single": "Single",
     "Boxes.ShopAssist.Missing": "Missing",
     "Boxes.ShopAssist.All": "All",
+    "Boxes.ShopAssist.Max": "Max",
+    "Boxes.ShopAssist.Full": "Full",
     "Boxes.ShopAssist.onlyFavourites": "Only Favorites",
     "Boxes.ShopAssist.onlyUnlocked": "Only Unlocked",
     "Date": "DD/MMM/YYYY",

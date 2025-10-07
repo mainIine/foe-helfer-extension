@@ -22,7 +22,7 @@
 	overflow: auto;
 }
 
-#shopAssistTable div.flexbetween {
+.shopAssistTable div.flexbetween {
 	display:flex;
 	justify-content: space-between;
 	width:100%;
@@ -30,92 +30,92 @@
 }
 
 
-#shopAssistTable thead tr:last-child {
+.shopAssistTable thead tr:last-child {
 	position: sticky;
 	top: 0;
 }
-#shopAssistTable thead {
+.shopAssistTable thead {
 	text-align: center;
 }
-#shopAssistTable thead tr:nth-child(1) th:nth-child(1),
-#shopAssistTable thead tr:nth-child(2) th:nth-child(2), 
-#shopAssistTable td:nth-child(3){
+.shopAssistTable thead tr:nth-child(1) th:nth-child(1),
+.shopAssistTable thead tr:nth-child(2) th:nth-child(2), 
+.shopAssistTable td:nth-child(3){
 	text-align: left;
 }
-#shopAssistTable thead tr:nth-child(1) th:nth-child(2){ 
+.shopAssistTable thead tr:nth-child(1) th:nth-child(2){ 
 	text-align: right;
 }
-#shopAssistTable .shopResource {
+.shopAssistTable .shopResource {
 	margin-right: 10px;
 }
 
-#shopAssistTable td {
+.shopAssistTable td {
 	text-align: center;
 	white-space: nowrap;
 }
-#shopAssistTable td:nth-child(3) {
+.shopAssistTable td:nth-child(3) {
 	width:70%;
 	white-space: wrap;
 }
-#shopAssistTable td.canBuy {
+.shopAssistTable td.canBuy {
 	background-color: var(--table-bg-success);
 	color: var(--text-success);
 }
-#shopAssistTable td.locked {
+.shopAssistTable td.locked {
 	background-color: var(--table-bg-error);
 	color: var(--text-red);
 }
-#shopAssistTable td.costs {
+.shopAssistTable td.costs {
 	vertical-align: bottom;
 	text-align: right;
 	padding: 2px 7px;
 }
-#shopAssistTable td:nth-last-child(3) {
+.shopAssistTable td:nth-last-child(3) {
 	border-left: 1px solid var(--border-table-top);
 }
-#shopAssistTable td:nth-last-child(4) {
+.shopAssistTable td:nth-last-child(4) {
 	border-right: 1px solid var(--border-table-bottom);
 }
 
-#shopAssistTable.favouritesOnly tbody tr:not(.isShopFavourite) {
+.shopAssistTable.favouritesOnly tbody tr:not(.isShopFavourite) {
 	display: none;
 }
-#shopAssistTable.unlockedOnly tbody tr:not(.isUnlocked) {
+.shopAssistTable.unlockedOnly tbody tr:not(.isUnlocked) {
 	display: none;
 }
-#shopAssistTable .shopFavourite:after{
+.shopAssistTable .shopFavourite:after{
 	content: '☆';
 	color: goldenrod;
 	font-size: large;
 }
-#shopAssistTable .isShopFavourite .shopFavourite:after{
+.shopAssistTable .isShopFavourite .shopFavourite:after{
 	content: '★';
 	color: goldenrod;
 }
-#shopAssistTable .shopAlert:after {
+.shopAssistTable .shopAlert:after {
 	content: '🔕';
 	font-size: smaller;
 }
-#shopAssistTable .shopAlert.alertActive:after {
+.shopAssistTable .shopAlert.alertActive:after {
 	content: '🔔';	
 }
 
-#shopAssistTable .shopAlert:hover,
-#shopAssistTable .shopFavourite:hover{
+.shopAssistTable .shopAlert:hover,
+.shopAssistTable .shopFavourite:hover{
 	text-shadow: 0 0 3px goldenrod;
 	opacity: 1;
 }
 
-#shopAssistTable tr.soldOut {
+.shopAssistTable tr.soldOut {
 	opacity: 0.5;
 }
 
-#shopAssistTable img {
+.shopAssistTable img {
 	height: 21px;
 	padding-left: 2px;
 }
 
-#shopAssistTable img[src*="tooltip_fragment"] {
+.shopAssistTable img[src*="tooltip_fragment"] {
 	height: 19px;
 	padding-right: 3px;
 	padding-left: 0;

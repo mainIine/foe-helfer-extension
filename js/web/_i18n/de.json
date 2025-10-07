@@ -1228,6 +1228,8 @@
     "Boxes.ShopAssist.Single": "Einzel",
     "Boxes.ShopAssist.Missing": "Fehlend",
     "Boxes.ShopAssist.All": "Alle",
+    "Boxes.ShopAssist.Max": "Max",
+    "Boxes.ShopAssist.Full": "Ganz",
     "Boxes.ShopAssist.onlyFavourites": "Nur Favoriten",
     "Boxes.ShopAssist.onlyUnlocked": "Nur Entsperrte",
     "Boxes.scoutingTimes.Title": "Späherstatus",
