@@ -1311,7 +1311,6 @@ let CityMap = {
 			if (link.boosts !== undefined) 
 				chainedBuilding.boosts = [...chainedBuilding.boosts || [], ...link.boosts];
 			if (link.production !== undefined && link.production !== false) {
-				//console.log(link.production);
 				chainedBuilding.production = [...chainedBuilding.production, ...link.production];
 			}
 			link.chainBuilding.type = "linked";
@@ -2038,8 +2037,6 @@ let CityMap = {
 						if (reward.id.search("blueprint") !== -1)
 							lookupData = reward
 					}
-					// amount = lookupData.possible_rewards[0].reward.amount // hacky, because every chest item could have a different amount of blueprints
-					// console.log(metaData.name, amount)
 				}
 			}
 			else if (product.reward.type === "good") { // this can break if there is more than one generic goods reward for a building
@@ -2308,11 +2305,25 @@ let CityMap = {
 			hasRandomProduction: false,
 			eras: {}
 		}
+		
+
+		if (building.type === "production") {
+			productions = [productions[productions.length-1]];
+		}
+
 		if (productions) {
 			let goodsBoost = 0;
 			if (boosted)
 				goodsBoost = Boosts.Sums.goods_production || 1;
-			productions.forEach(production => {
+			
+			// only evaluate 1 day production for production buildings
+			if (building.type === "production") {
+				productions = [productions[productions.length-1]];
+			}
+
+			for (let production of productions) {
+				if (production === undefined) continue;
+
 				if (production.type === 'resources' || production.type === 'special_goods') {
 					Object.keys(production.resources).forEach(resourceName => {
 						let good = GoodsList.find(x => x.id === resourceName)
@@ -2383,7 +2394,7 @@ let CityMap = {
 					else 
 						goods.eras[goodEra] += parseInt(production.resources.amount);
 				}
-			})
+			}
 		}
 		if (Object.keys(goods).length > 0) {
 			return goods;
