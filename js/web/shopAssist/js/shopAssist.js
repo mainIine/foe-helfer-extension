@@ -20,7 +20,11 @@ FoEproxy.addHandler('ItemStoreService', 'getStore', (data, postData) => {
 	shopAssist.alertsTriggered = {};
 	shopAssist.showDiscount = data.responseData.refresh?.refreshAt - GameTime.get() < 24*3600; //only show discount if less than 24h to next refresh
 	shopAssist.Show();
-	
+
+    if ($('#shopAssist-Btn').hasClass('hud-btn-red')) {
+        $('#shopAssist-Btn').removeClass('hud-btn-red');
+        $('#shopAssist-Btn-closed').remove();
+    }
 });
 
 FoEproxy.addHandler('ItemStoreService', 'purchaseSlot', (data, postData) => {
