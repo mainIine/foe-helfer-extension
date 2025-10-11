@@ -97,12 +97,6 @@
 		"sort": 18
 	},
 	{
-		"name": "ShowGBGRewards",
-		"status": true,
-		"group": "Auto",
-		"sort": 19
-	},
-	{
 		"name": "ShowQIPlayerInfo",
 		"status": true,
 		"group": "Auto",
@@ -193,6 +187,12 @@
 		"status": false,
 		"group": "Boxes",
 		"sort": 20
+	},
+	{
+		"name": "ShowGBGRewards",
+		"status": true,
+		"group": "Boxes",
+		"sort": 19
 	},
 	{
 		"name": "SelectedMenu",

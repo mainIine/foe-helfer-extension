@@ -252,7 +252,9 @@ GetFights = () =>{
 
 	FoEproxy.addHandler('AllyService', 'getAllies', (data, postData) => {
 		MainParser.Allies.getAllies(data.responseData);
-		if (postData[0].requestMethod == 'getAllies') MainParser.Allies.showAllyList()
+		
+		if (!Settings.GetSetting('ShowAllyList')) return;
+		if (postData[0].requestMethod == 'getAllies') MainParser.Allies.showAllyList();
 	});
 	FoEproxy.addHandler('AllyService', 'getAssignedAllies', (data, postData) => {
 		MainParser.Allies.getAllies(data.responseData);
@@ -1504,7 +1506,9 @@ let MainParser = {
 		},
 
 		showAllyList:()=>{
-			if (!Settings.GetSetting('ShowAllyList')) return
+			
+			console.log(0, MainParser.Allies);
+
 			if ($('#AllyList').length === 0) {
 				HTML.Box({
 					id: 'AllyList',

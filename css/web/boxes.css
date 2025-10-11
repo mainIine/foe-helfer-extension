@@ -511,14 +511,6 @@ p {
 
 /* MENU ICONS */
 
-[id$=market-Btn] span {
-	background-image: url('../images/menu/market.png');
-}
-
-[id$=moppelHelper-Btn] span {
-	background-image: url('../images/menu/polivation.png');
-}
-
 #playerProfile-Btn span img {
 	border-radius: 3px 3px 10px 3px;
     box-shadow: 0 2px 2px var(--black-65);
@@ -531,6 +523,14 @@ p {
 	border-radius: 3px 3px 10px 3px;
     box-shadow: 0 2px 2px var(--black-65);
     border: 1px solid var(--text-darker);
+}
+
+[id$=market-Btn] span {
+	background-image: url('../images/menu/market.png');
+}
+
+[id$=moppelHelper-Btn] span {
+	background-image: url('../images/menu/polivation.png');
 }
 
 [id$=fpCollector-Btn] span {
@@ -587,6 +587,14 @@ p {
 
 [id$=settings-Btn] span {
 	background-image: url('../images/menu/settings.png');
+}
+
+[id$=shopAssist-Btn] span {
+	background-image: url('../images/menu/store.png');
+}
+
+[id$=allies-Btn] span {
+	background-image: url('../images/menu/allies.png');
 }
 
 [id$=settings-Btn] {
@@ -1919,9 +1927,9 @@ input[type="range"]::-webkit-slider-thumb {
 	background-repeat: no-repeat;
 	background-size: contain;
 	display: inline-flex;
-	width: 76%;
-	height: 76%;
-	margin-top: 12%;
+	width: 80%;
+	height: 80%;
+	margin-top: 10%;
 }
 
 .hud-btn span.hud-counter {
