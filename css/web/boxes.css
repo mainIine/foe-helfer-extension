@@ -602,7 +602,11 @@ p {
 }
 
 [id$=discord-Btn] {
-	background: radial-gradient(#5865f2 25%, #463526 75%) padding-box, linear-gradient(to bottom, #7f916a, #455630) border-box !important;
+	background: radial-gradient(#5865f2 25%, #463526 75%) padding-box, var(--menu-btn-bg-green) !important;
+}
+
+[id$=discord-Btn].hud-btn-red {
+	background: radial-gradient(#5865f2 25%, #463526 75%) padding-box, var(--menu-btn-bg-red) !important;
 }
 
 [id$=marketOffers-Btn] span {

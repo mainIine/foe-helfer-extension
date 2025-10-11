@@ -103,6 +103,8 @@
 	--menu-arrow-color: #48291b;
 	--menu-btn-size: 45px;
 	--menu-btn-bg: linear-gradient(#4d2e16, #492d16) padding-box, linear-gradient(to bottom, #82ae4c, #4f7421) border-box;
+	--menu-btn-bg-green: linear-gradient(to bottom, #82ae4c, #4f7421) border-box;
+	--menu-btn-bg-red: linear-gradient(to bottom, #a84a35, #88301e) border-box;
 	--menu-btn-shadow: inset 0 0 1px 1px #1f1309cc, 0 0 2px #000000c9;
 	--menu-btn-disabled-bg: linear-gradient(to bottom, #4f291b, #553419) padding-box, linear-gradient(to bottom, #a84a35, #88301e) border-box;
 	--menu-boxed-head-bg: linear-gradient(#384354, #293344);
