@@ -88,6 +88,7 @@ let shopAssist = {
 				dragdrop: true,
 				minimize: true,
 				resize : true,
+				settings : true,
 				//active_maps:"main",
 			});
 		}

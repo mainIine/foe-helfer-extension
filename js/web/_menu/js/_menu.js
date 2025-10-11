@@ -466,7 +466,7 @@ let _menu = {
 	 */
 	allies_Btn: () => {
 
-		let desc = i18n('Menu.Allies.Desc');
+		let desc = i18n('Menu.Allies.Desc'), red = false;
 
 		let btn = _menu.MakeButton('allies', i18n('Menu.Allies.Title'), desc, red);
 
