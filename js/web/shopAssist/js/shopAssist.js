@@ -19,12 +19,14 @@ FoEproxy.addHandler('ItemStoreService', 'getStore', (data, postData) => {
 	shopAssist.checkAlerts();
 	shopAssist.alertsTriggered = {};
 	shopAssist.showDiscount = data.responseData.refresh?.refreshAt - GameTime.get() < 24*3600; //only show discount if less than 24h to next refresh
-	shopAssist.Show();
-
+	
     if ($('#shopAssist-Btn').hasClass('hud-btn-red')) {
         $('#shopAssist-Btn').removeClass('hud-btn-red');
         $('#shopAssist-Btn-closed').remove();
     }
+
+	if (!Settings.GetSetting('ShowShopAssist')) return;
+	shopAssist.Show();
 });
 
 FoEproxy.addHandler('ItemStoreService', 'purchaseSlot', (data, postData) => {
@@ -76,7 +78,6 @@ let shopAssist = {
     Show: () => {
 		clearTimeout(shopAssist.timeout);
 		shopAssist.timeout = null;
-		if (!Settings.GetSetting('ShowShopAssist')) return;
 
         if ($('#shopAssist').length === 0) {
 			HTML.AddCssFile('shopAssist');
@@ -88,8 +89,7 @@ let shopAssist = {
 				dragdrop: true,
 				minimize: true,
 				resize : true,
-				settings : true,
-				//active_maps:"main",
+				settings: 'shopAssist.ShowSettings()',
 			});
 		}
 		
@@ -504,7 +504,25 @@ let shopAssist = {
 				});
 			}
 		}
-	}
+	},
 
-	
+	// todo
+    ShowSettings: () => {
+		let autoOpen = Settings.GetSetting('ShowShopAssist');
+
+        let h = [];
+        h.push(`<p><label><input id="shopAssistAutoOpen" type="checkbox" ${(autoOpen === true) ? ' checked="checked"' : ''} />${i18n('Boxes.Settings.Autostart')}</label></p>`);
+        h.push(`<p><button onclick="shopAssist.SaveSettings()" id="save-bghelper-settings" class="btn btn-default" style="width:100%">${i18n('Boxes.Settings.Save')}</button></p>`);
+
+        $('#shopAssistSettingsBox').html(h.join(''));
+    },
+
+    SaveSettings: () => {
+        let value = false;
+		if ($("#shopAssistAutoOpen").is(':checked'))
+			value = true;
+		localStorage.setItem('ShowShopAssist', value);
+		
+		$(`#shopAssistSettingsBox`).remove();
+    },
 };
