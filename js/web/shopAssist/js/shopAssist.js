@@ -32,6 +32,8 @@ FoEproxy.addHandler('ItemStoreService', 'getStore', (data, postData) => {
 FoEproxy.addHandler('ItemStoreService', 'purchaseSlot', (data, postData) => {
 	let i = shopAssist.slots.findIndex(x=>x.slotId === data.responseData.slot.slotId);
 	shopAssist.slots[i] = data.responseData.slot;
+
+	if (!Settings.GetSetting('ShowShopAssist')) return;
 	shopAssist.Show();
 });
 FoEproxy.addHandler('ItemStoreService', 'getConfigs', (data, postData) => {
