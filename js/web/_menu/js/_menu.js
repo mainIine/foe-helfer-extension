@@ -405,7 +405,6 @@ let _menu = {
 	 * @returns {*|jQuery}
 	 */
 	outpost_Btn: () => {
-
 		let desc = i18n('Menu.OutP.Desc'),
 			red = false;
 
@@ -438,13 +437,10 @@ let _menu = {
 	 * @returns {*|jQuery}
 	 */
 	shopAssist_Btn: () => {
-
-		console.log(0);
-		let desc = i18n('Menu.ShopAssist.DescWarning'),
+		let desc = '<i id="shopAssist-Btn-closed" class="tooltip-error">' + i18n('Menu.ShopAssist.DescWarning') + '</i> ' + i18n('Menu.ShopAssist.Desc'),
 			red = true;
 
 		if (shopAssist.storeId !== null) {
-			desc = i18n('Menu.ShopAssist.Desc');
 			red = false;
 		}
 
