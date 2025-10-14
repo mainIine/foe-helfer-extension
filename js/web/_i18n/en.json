@@ -1158,6 +1158,7 @@
     "Boxes.Tooltip.Building.size+time": "Size and Building Time",
     "Boxes.Tooltip.Building.traits": "Traits",
     "Boxes.Tooltip.Building.when": "when",
+    "Boxes.Tooltip.Building.perEra":"per Era",
     "Boxes.Tooltip.Efficiency.description": "Following combinations are possible",
     "Boxes.Treasury.Action": "Message",
     "Boxes.Treasury.Amount": "Amount",

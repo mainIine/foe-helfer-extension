@@ -231,7 +231,9 @@ GetFights = () =>{
 		MainParser.SelectionKits = Object.assign({}, ...SelectKitsArray.map((x) => ({ [x.selectionKitId]: x })));
 		if (MainParser.BuildingUpgrades != null) Kits.CreateUpgradeSchemes();
 	});
-
+	FoEproxy.addMetaHandler("building_families", (xhr,postData) => {
+		MainParser.BuildingFamilyLimits = JSON.parse(xhr.responseText)?.families;
+	})	
 	// Castle-System-Levels
 	FoEproxy.addMetaHandler('castle_system_levels', (xhr, postData) => {
 		MainParser.CastleSystemLevels = JSON.parse(xhr.responseText);
@@ -986,7 +988,9 @@ let MainParser = {
 	BuildingSets: null,
 	BuildingChains: null,
 	SelectionKits: null,
-
+	
+	BuildingFamilyLimits: null,
+	
 	InnoCDN: 'https://foede.innogamescdn.com/',
 
 	/**
