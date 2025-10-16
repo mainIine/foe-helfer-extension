@@ -880,6 +880,7 @@ Potions */
 	position: fixed;
 	top: 40px;
 	right: 8px;
+	user-select: none;
 }
 
 #BoostPotions .shortest {
