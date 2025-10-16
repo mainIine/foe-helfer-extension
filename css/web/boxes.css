@@ -990,6 +990,7 @@ FP-Bar */
 	left: calc(50vw  + 130px);
 	display: flex;
 	justify-content: flex-end;
+	user-select: none;
 }
 
 #fp-bar .fp-storage,
@@ -1344,6 +1345,7 @@ FP-Bar */
 	filter: alpha(opacity=0);
 	visibility: visible;
 	z-index: 2000;
+	user-select: none;
 }
 
 .tooltip .tooltip-error {
@@ -1821,6 +1823,7 @@ input[type="range"]::-webkit-slider-thumb {
 	box-sizing: border-box;
 	box-shadow: var(--menu-shadow);
 	background: var(--menu-bg);
+	user-select: none;
 }
 
 #foe-helper-hud-wrapper {
