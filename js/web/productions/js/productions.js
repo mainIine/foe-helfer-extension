@@ -2032,9 +2032,10 @@ let Productions = {
 					h.push(" ("+i18n("Eras."+Technologies.Eras[building.eraName]+".short") +')')
 				}
 
-				h.push('</div></td><td exportvalue="'+(buildingCount[building.entityId+"C"]||0)+'" data-number="'+(buildingCount[building.entityId+"C"]||0)+'"><div class="text-right">')
+				let buildingAmount = (MainParser.Allies.buildingList?.[building.id] ? 1 : (buildingCount[building.entityId+"C"] || 1));
+				h.push('</div></td><td exportvalue="'+buildingAmount+'" data-number="'+buildingAmount+'"><div class="text-right">')
 				// show amount in city if > 1
-				if (buildingCount[building.entityId+"C"] && buildingCount[building.entityId+"C"] > 1 && !MainParser.Allies.buildingList?.[building.id]) {
+				if (buildingAmount > 1) {
 					h.push('<span data-original-title="'+i18n('Boxes.ProductionsRating.CountTooltip')+'">' + buildingCount[building.entityId+"C"]+'x</span> ')
 				}
 
