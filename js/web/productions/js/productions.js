@@ -1964,7 +1964,7 @@ let Productions = {
 				for (let size of buildingSizes) {
 					h.push('<li data-value="'+size+'">'+size+'</li>')
 				}
-			h.push('</ul></div></div></th><th class="no-sort inventory-buildings text-center"><img alt="" data-original-title="'+i18n('Boxes.ProductionsRating.InventoryTooltip')+'" class="game-cursor" src="' + extUrl + 'js/web/x_img/inventory.png" /></th>');
+			h.push('</ul></div></div></th><th data-type="ratinglist" class="is-number" data-export="#"></th><th class="no-sort inventory-buildings text-center"><img alt="" data-original-title="'+i18n('Boxes.ProductionsRating.InventoryTooltip')+'" class="game-cursor" src="' + extUrl + 'js/web/x_img/inventory.png" /></th>');
 
 			for (const type of combinedRatingTypes) {
 				let firstType = type;
@@ -2032,7 +2032,7 @@ let Productions = {
 					h.push(" ("+i18n("Eras."+Technologies.Eras[building.eraName]+".short") +')')
 				}
 
-				h.push('</div><div class="text-right">')
+				h.push('</div></td><td exportvalue="'+(buildingCount[building.entityId+"C"]||0)+'" data-number="'+(buildingCount[building.entityId+"C"]||0)+'"><div class="text-right">')
 				// show amount in city if > 1
 				if (buildingCount[building.entityId+"C"] && buildingCount[building.entityId+"C"] > 1 && !MainParser.Allies.buildingList?.[building.id]) {
 					h.push('<span data-original-title="'+i18n('Boxes.ProductionsRating.CountTooltip')+'">' + buildingCount[building.entityId+"C"]+'x</span> ')
