@@ -154,7 +154,7 @@ let Productions = {
 	init: () => {
 		if (ActiveMap === 'OtherPlayer') return
 
-		MainParser.NewCityMapData = CityMap.createNewCityMapEntities()
+		MainParser.NewCityMapData = CityMap.createNewCityMapEntities(Object.values(MainParser.CityMapData))
 		Productions.CombinedCityMapData = MainParser.NewCityMapData
 
 		if (CityMap.EraOutpostData) {
@@ -1347,8 +1347,8 @@ let Productions = {
 		}
 		let productions = (current ? building.state.production : building.production);
 
-		if (building.type === "production") {
-			productions = [productions[productions.length-1]];
+		if (building.type === "production" && !current) {
+			productions = [productions[productions?.length-1]];
 		}
 
 		if (productions) {
