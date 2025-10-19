@@ -131,7 +131,7 @@
 }
 
 #shopAssist .buyable {
-	color: #0bf2ff;
+	color: var(--text-success);
     font-weight: 600;
     text-shadow: 0px 0px 3px #000000;
 }
