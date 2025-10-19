@@ -271,7 +271,7 @@ let shopAssist = {
 					<div>
 						${slot.reward.subType == "fragment" && maxBuys != Infinity && maxBuys != 0 ? 
 							`<span>${srcLinks.icons("icon_tooltip_fragment") + HTML.Format(maxBuys*slot.reward.amount)}</span>`:``} 
-						<span>(${maxBuys}${slot.flag?.value!="increasingCosts" && limitedBuys > 0 && limitedBuys < Infinity ? "/" + limitedBuys : (slot.flag?.value=="increasingCosts" && limitedBuys > 0 ? "/?" :"x")})
+						<span>(<span class="buyable">${maxBuys}</span>${slot.flag?.value!="increasingCosts" && limitedBuys > 0 && limitedBuys < Infinity ? "/" + limitedBuys : (slot.flag?.value=="increasingCosts" && limitedBuys > 0 ? "/?" :"x")})
 						</span>
 					</div> 
 					${costs}
