@@ -913,7 +913,6 @@ let HTML = {
 				let CurrentRow = {};
 				let ColumnID = 0;
 				$(this).find('td').each(function () {
-					console.log(ColumnNames[ColumnID]);
 					if (ColumnNames[ColumnID]) { //skip if no columnname set
 						let Key = ColumnNames[ColumnID];
 						let Value;

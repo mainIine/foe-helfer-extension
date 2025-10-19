@@ -654,7 +654,7 @@ let Productions = {
 								currentAmount = Math.round(currentAmount + (currentAmount *((Boosts.Sums.forge_points_production) / 100)))
 							}
 
-							rowA.push('<td data-number="'+amount+'" exportvalue="'+amount+'" class="textright" colspan="4">')
+							rowA.push('<td data-number="'+amount+'" exportvalue="'+amount+'" class="textright">')
 							let parsedCurrentAmount = (currentAmount >= 10000 ? HTML.FormatNumberShort(currentAmount) : HTML.Format(currentAmount)) 
 							let parsedAmount = (currentAmount >= 10000 ? HTML.FormatNumberShort(amount) : HTML.Format(amount)) 
 
@@ -729,7 +729,7 @@ let Productions = {
 								}
 							}
 
-							rowA.push('<td colspan="4" data-number="1" exportvalue="'+jQuery(items[0]).text()+'">' + items[0] + '</td>')
+							rowA.push('<td data-number="1" exportvalue="'+jQuery(items[0]).text()+'">' + items[0] + '</td>')
 						}
 					}
 					else {
@@ -819,7 +819,7 @@ let Productions = {
 				table.push('<tr>')
 				table.push('<th colspan="3"><span class="btn-default change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeGroups') + '</span> <input type="text" placeholder="' + i18n('Boxes.Productions.FilterTable') + '" class="filterCurrentList"></th>')
 				if (!type.includes('att') && !type.includes('def') && type!='items') {
-					table.push('<th colspan="7" class="textright">')
+					table.push('<th colspan="3" class="textright">')
 					table.push((typeCurrentSum >= 10000 ? HTML.FormatNumberShort(typeCurrentSum) : HTML.Format(typeCurrentSum))+ "/" + (typeSum >= 10000 ? HTML.FormatNumberShort(typeSum) : HTML.Format(typeSum)))
 					if (type === 'strategy_points') {
 						table.push(' <button class="typeBoost btn-default btn-tight"><a href="#forge_points_production" class="game-cursor">'+i18n('General.Boost')+': '+Boosts.Sums.forge_points_production+'%</a></button>')
@@ -849,7 +849,7 @@ let Productions = {
 				table.push('<th class="ascending" data-type="prodlist'+type+'" data-export="' + i18n('Boxes.BlueGalaxy.Building') + '">' + i18n('Boxes.BlueGalaxy.Building') + '</th>')
 
 				if (!type.includes('att') && !type.includes('def')) 
-					table.push('<th colspan="4" data-type="prodlist'+type+'" class="is-number" data-export4="' + i18n('Boxes.Productions.Headings.number') + '">' + i18n('Boxes.Productions.Headings.number') + '</th>')
+					table.push('<th data-type="prodlist'+type+'" class="is-number" data-export="' + i18n('Boxes.Productions.Headings.number') + '">' + i18n('Boxes.Productions.Headings.number') + '</th>')
 				else {
 					table.push('<th class="boost '+type+' is-number text-center" data-type="prodlist'+type+'" data-export="'+boostCounter[type].all+'"><span></span>'+boostCounter[type].all+'</th>')
 					table.push('<th class="boost battleground is-number text-center" data-type="prodlist'+type+'" data-export="'+boostCounter[type].battleground+'"><span></span>'+(boostCounter[type].battleground)+'</th>')
@@ -2516,9 +2516,10 @@ let Productions = {
 		
 		let activeTable = $('#ProductionsBody .horizontal li.active').attr('id').replace('prod-','');
 
+		/* needs more thought put into it: only relevant on an unmotivated city, having to download so many tables is weird, without id you cannot create a large table from it etc
 		h.push(`<hr><p>${i18n('Boxes.General.Export')}: <span class="btn-group"><button class="btn btn-default" onclick="HTML.ExportTable($('#ProductionsBody #${activeTable}-list'),'csv','City-${activeTable}')" title="${HTML.i18nTooltip(i18n('Boxes.General.ExportCSV'))}">CSV</button>`);
 		h.push(`<button class="btn btn-default" onclick="HTML.ExportTable($('#ProductionsBody #${activeTable}-list'),'json','City-${activeTable}')" title="${HTML.i18nTooltip(i18n('Boxes.General.ExportJSON'))}">JSON</button></span></p>`);
-
+		*/
 
         $('#ProductionsSettingsBox').html(h.join(''))
     },
