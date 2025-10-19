@@ -1742,7 +1742,7 @@ let Productions = {
 			HTML.AddCssFile('productions');
 
 			$('body').on('click', '.toggle-tab', async function () {
-				console.log('$ProductionsRating: click');
+				//console.log('$ProductionsRating: click');
 				
 				helper.preloader.show('#ProductionsRating');
 				Productions.RatingCurrentTab = $(this).data('value');
