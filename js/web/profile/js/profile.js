@@ -278,7 +278,7 @@ const Profile = {
         if (hasQIBoosts) {
             cl.push('<div class="qiBoosts pad text-center">');
             cl.push('<h2>'+i18n('Boxes.PlayerProfile.QIBoosts')+'</h2>');
-            if (Boosts.Sums.guild_raids_coins_production + Boosts.Sums.guild_raids_coins_start !== 0) {
+            if (Boosts.noSettlement.guild_raids_coins_production + Boosts.Sums.guild_raids_coins_start !== 0) {
                 cl.push('<span class="qicoins">');
                 if (Boosts.Sums.guild_raids_coins_production !== 0)
                     cl.push(HTML.Format(parseInt(Boosts.Sums.guild_raids_coins_production)) + '% ');
@@ -286,7 +286,7 @@ const Profile = {
                     cl.push('+' + HTML.FormatNumberShort(parseInt(Boosts.Sums.guild_raids_coins_start),true,'en-EN'));
                 cl.push('</span> ');
             }
-            if (Boosts.Sums.guild_raids_supplies_production + Boosts.Sums.guild_raids_supplies_start !== 0) {
+            if (Boosts.noSettlement.guild_raids_supplies_production + Boosts.Sums.guild_raids_supplies_start !== 0) {
                 cl.push('<span class="qisupplies">');
                 if (Boosts.Sums.guild_raids_supplies_production !== 0)
                     cl.push(HTML.Format(parseInt(Boosts.Sums.guild_raids_supplies_production)) + '% ');

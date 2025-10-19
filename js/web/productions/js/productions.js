@@ -1454,33 +1454,36 @@ let Productions = {
 	showBuildingItems(current = false, building) {
 		let allItems = '',
 			allUnits = '',
-			itemArray = []
-		if ((building.state?.isPolivated === true || building.state?.isPolivated === undefined) && current === true) {
-			building.state.production?.forEach(production => {
-				if (production.type === "genericReward") {
-					if (production.resources?.icon?.includes("good")) return false
-					let frag = production.resources.subType === "fragment"
-					allItems += '<span>'+production.resources.amount + "x " + (frag ? "🧩 " : "" ) + production.resources.name + "</span><br>"
-					itemArray.push({fragment:frag,name:production.resources.name,amount:production.resources.amount,random:0})
-				}
-			})
+			itemArray = [];
+
+		// current item production
+		if (current && (building.state?.isPolivated === true || building.state?.isPolivated === undefined)) {
+			for (const production of building.state.production) {
+				if (production.type !== "genericReward") continue;
+				if (production.resources?.icon?.includes("good")) return false;
+
+				let frag = production.resources.subType === "fragment";
+				allItems += '<span>'+production.resources.amount + "x " + (frag ? "🧩 " : "" ) + production.resources.name + "</span><br>";
+				itemArray.push({fragment:frag,name:production.resources.name,amount:production.resources.amount,random:0});
+			}
 		}
+		// general item production
 		else {
 			if (building.production) {
-				building.production.forEach(production => {
+				for (const production of building.production) {
 					if (production.type === "random") {
-						production.resources?.forEach(resource => {
-							if (!resource.type.includes("good") && resource.type !== "resources") {
-								let frag = resource.subType === "fragment"
-								let amount = parseFloat(Math.round(resource.amount*resource.dropChance * 100) / 100)
-								if (resource.type === "unit") {
-									allUnits += "Ø " + amount + "x " + (frag ? "🧩 " : "" ) + `<img src='${srcLinks.get("/shared/icons/"+resource.name.replace(/next./,"").replace("random","random_production")+".png",true)}'>` + "<br>"
-								} else {
-									allItems += "<span>Ø " + amount + "x " + (frag ? "🧩 " : "" ) + resource.name + "</span><br>"
-									itemArray.push({fragment:frag,name:resource.name,amount:0,random:amount})
-								}
+						for (const resource of production.resources) {
+							if (resource.type.includes("good") || resource.type === "resources") continue;
+
+							let frag = resource.subType === "fragment"
+							let amount = parseFloat(Math.round(resource.amount*resource.dropChance * 100) / 100)
+							if (resource.type === "unit") {
+								allUnits += "Ø " + amount + "x " + (frag ? "🧩 " : "" ) + `<img src='${srcLinks.get("/shared/icons/"+resource.name.replace(/next./,"").replace("random","random_production")+".png",true)}'>` + "<br>"
+							} else {
+								allItems += "<span>Ø " + amount + "x " + (frag ? "🧩 " : "" ) + resource.name + "</span><br>"
+								itemArray.push({fragment:frag,name:resource.name,amount:0,random:amount})
 							}
-						})
+						}
 					}
 					if (production.type === "unit") {
 						for (let u of Object.keys(production.resources)) {
@@ -1494,10 +1497,10 @@ let Productions = {
 						allItems += `<span class="'${itemId}'">`+production.resources.amount + "x " + (frag ? "🧩 " : "" ) + production.resources.name + "</span><br>"
 						itemArray.push({fragment:frag,name:production.resources.name,amount:production.resources.amount,random:0})
 					}
-				})
+				}
 			}
 		}
-		return [allItems,allUnits,itemArray]
+		return [allItems,allUnits,itemArray];
 	},
 
 
@@ -1515,37 +1518,41 @@ let Productions = {
    },
 
 
-	/**
-	 * Merkt sich alle Tabs
-	 *
-	 * @param id
-	 */
 	SetTabs: (id)=> {
 		Productions.Tabs.push('<li class="' + id + '" id="prod-' + id + '"><a href="#' + id + '"><span>&nbsp;</span></a></li>');
 	},
 
-
-	/**
-	 * Gibt alle gemerkten Tabs aus
-	 *
-	 * @returns {string}
-	 */
 	GetTabs: ()=> {
 		return '<ul class="horizontal dark-bg clickable">' + Productions.Tabs.join('') + '</ul>';
 	},
 
-
-	/**
-	 * Speichert BoxContent zwischen
-	 *
-	 * @param id
-	 * @param content
-	 */
 	SetTabContent: (id, content)=> {
 		// ab dem zweiten Eintrag verstecken
 		let style = Productions.TabsContent.length > 0 ? ' style="display:none"' : '';
 
 		Productions.TabsContent.push('<div class="content" id="' + id + '"' + style + '>' + content + '</div>');
+	},
+
+	GetTabContent: ()=> {
+		return Productions.TabsContent.join('');
+	},
+
+	/**
+	 * Switch Tabs [List|Group]
+	 */
+	SwitchFunction: ()=>{
+		$('#Productions').on('click', '.change-view', function() {
+			let activeTable = $(this).parents('table'),
+				hiddenTable = activeTable.next('table') 
+
+			if (hiddenTable.length==0) hiddenTable = activeTable.siblings('table').first();
+
+			activeTable.fadeOut(400, function(){
+				hiddenTable.fadeIn(400)
+				activeTable.removeClass('active')
+				hiddenTable.addClass('active')
+			});
+		});
 	},
 
 
@@ -1562,35 +1569,6 @@ let Productions = {
 			return true;
         }
     },
-
-
-	/**
-	 * Setzt alle gespeicherten Tabellen zusammen
-	 *
-	 * @returns {string}
-	 */
-	GetTabContent: ()=> {
-		return Productions.TabsContent.join('');
-	},
-
-
-	/**
-	 * Schalter für die Tabs [List|Group]
-	 */
-	SwitchFunction: ()=>{
-		$('#Productions').on('click', '.change-view', function() {
-			let activeTable = $(this).parents('table'),
-				hiddenTable = activeTable.next('table') 
-
-			if (hiddenTable.length==0) hiddenTable = activeTable.siblings('table').first();
-
-			activeTable.fadeOut(400, function(){
-				hiddenTable.fadeIn(400)
-				activeTable.removeClass('active')
-				hiddenTable.addClass('active')
-			});
-		});
-	},
 
 
 	/**
@@ -1919,19 +1897,13 @@ let Productions = {
 
 			// combine attack and defend boosts if both are active
 			let combinedRatingTypes = [];
-			// combine all non-attack qi boosts
-			let combinedQIRatingTypes = [];
 			for (const type of Productions.Rating.Types) {
 				// skip inactive ones
 				if (!Productions.Rating.Data[type]?.active || Productions.Rating.Data[type]?.perTile === null) continue;
-				// filter QI stuff
-				//if (type.startsWith('guild_raids_')) {
-				//	combinedQIRatingTypes.push(type);
-				//}
 
 				let secondType = type.replace('att_','def_');
 				if (combinedRatingTypes.find(x => x === type.replace('def_','att_def_'))) continue;
-				if (Productions.Rating.Data[secondType].active) { //} && !type.startsWith('guild_raids_')) {
+				if (Productions.Rating.Data[secondType].active) {
 					combinedRatingTypes.push(type.replace('att_','att_def_'));
 				}
 			}
@@ -1992,17 +1964,6 @@ let Productions = {
 					((Productions.Rating.Data[firstType].perTile + (Productions.Rating.Data[secondType]?.perTile || 0) || 0) /divider)+
 					'</i></th>');
 			}
-			// combined QI stuff
-			//let combinedQITileValue = 0;
-			//for (const type of combinedQIRatingTypes) {
-			//	combinedQITileValue += Productions.Rating.Data[type].perTile;
-			//}
-			//combinedQITileValue = Math.round(combinedQITileValue / combinedQIRatingTypes.length * 100) / 100;
-
-			//h.push('<th data-type="ratinglist" style="width:1%" data-export="'+ Productions.GetTypeName('') +'" class="is-number text-center buildingvalue">'+
-			//'<span class="resicon guild_raids"></span>'+combinedQITileValue+'</th>');
-			//h.push('<th data-type="ratinglist" style="width:1%" data-export="'+ Productions.GetTypeName('') +'" class="is-number text-center tilevalue">'+
-			//'<span class="resicon guild_raids"></span>'+combinedQITileValue+'</th>');
 
 			h.push('<th data-type="ratinglist" data-export="Items" class="no-sort items">Items</th>');
 			h.push('</tr>');
@@ -2098,25 +2059,6 @@ let Productions = {
 					}
 				}
 
-				// Calc "QI Factor"
-				/*let combinedQIBuildingValue = 0;
-				let combinedQIBuildingTileValue = 0;
-				for (const type of combinedQIRatingTypes) {
-					combinedQIBuildingValue += building.rating[type];
-					combinedQIBuildingTileValue += building.rating[type+'-tile'];
-				}
-				let roundingFactor = 100;
-				combinedQIBuildingValue = Math.round(combinedQIBuildingValue / combinedQIRatingTypes.length * roundingFactor) / roundingFactor;
-				combinedQIBuildingTileValue = Math.round(combinedQIBuildingTileValue / combinedQIRatingTypes.length * roundingFactor) / roundingFactor;
-
-				h.push(`<td class="text-right buildingvalue" data-number="${combinedQIBuildingValue}">`)
-				h.push(HTML.Format(combinedQIBuildingValue))
-				h.push('</td>')
-
-				h.push(`<td class="text-right tilevalue" data-number="${combinedQIBuildingTileValue}">`)
-				h.push(HTML.Format(combinedQIBuildingTileValue))
-				h.push('</td>')*/
-
 				h.push('<td class="no-sort items">'+randomItems+'</td>')
 				h.push('</tr>')
 			}
@@ -2135,7 +2077,7 @@ let Productions = {
 		}
 		else {
 			h.push('Something went wrong');
-        }
+		}
 
 		SaveSettings=(x)=>{
 			Productions.efficiencySettings[x] = $('#'+x).is(':checked')
