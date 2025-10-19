@@ -48,6 +48,7 @@ FoEproxy.addHandler("ItemStoreService","updateUnlockConditions", (data, postData
 			shopAssist.unlockProgress[cond.type + "#" + (cond.subtype||cond.context)] += cond.amount;
 		}
 	}
+	if (!Settings.GetSetting('ShowShopAssist')) return;
 	shopAssist.timeout = setTimeout(shopAssist.Show,100);
 });
 
