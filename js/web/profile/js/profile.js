@@ -393,7 +393,6 @@ const Profile = {
                     cc.push('<span class="'+settlement.id+' removable" data-original-title="'+settlement.descriptionCityTooltip.replace('%s',HTML.Format(parseInt(settlement.currentLevel.progress)))+'">');
                     cc.push('<img src="'+srcLinks.get(`/shared/icons/achievements/achievement_icons_${settlement.id}.png`,true)+'" />');
                     cc.push(HTML.Format(parseInt(settlement.currentLevel.progress)) + '</span>');
-                    console.log(settlement);
                 }
             }
             else {
