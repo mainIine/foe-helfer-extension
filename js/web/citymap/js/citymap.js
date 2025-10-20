@@ -338,7 +338,6 @@ let CityMap = {
 	 * @param Data
 	 */
 	SetOutpostBuildings: ()=> {
-		// einmal komplett leer machen, wenn gewünscht
 		$('#grid-outer').find('.map-bg').remove();
 		$('#grid-outer').find('.entity').remove();
 
@@ -360,8 +359,8 @@ let CityMap = {
 		}
 
 		for (let b in buildings) {
-			let x = (buildings[b]['x'] || 0) - xOffset
-			let y = (buildings[b]['y'] || 0) - yOffset
+			let x = (buildings[b]['x'] || 0) - xOffset;
+			let y = (buildings[b]['y'] || 0) - yOffset;
 			let CityMapEntity = buildings[b],
 				d = MainParser.CityEntities[CityMapEntity['cityentity_id']],
 				BuildingSize = CityMap.GetBuildingSize(CityMapEntity),
@@ -371,13 +370,17 @@ let CityMap = {
 				xsize = ((parseInt(BuildingSize['xsize']) * CityMap.OutpostScaleUnit) / 100),
 				ysize = ((parseInt(BuildingSize['ysize']) * CityMap.OutpostScaleUnit) / 100)
 				
-				f = $('<span />').addClass('entity ' + d['type']).css({
+				let collectSoon = "";
+				if (ActiveMap === "guild_raids" && CityMapEntity.state.__class__ === "ProducingState" && CityMapEntity.state.next_state_transition_in < 14400) {
+					collectSoon = " collectSoon";
+				}
+				f = $('<span />').addClass('entity ' + d['type'] + collectSoon).css({
 					width: xsize + 'em',
 					height: ysize + 'em',
 					left: xx + 'em',
 					top: yy + 'em'
 				})
-				.attr('title', d['name'] + ', ' + BuildingSize['ysize']+ 'x' +BuildingSize['xsize'])
+				.attr('data-original-title', d['name'] + ', ' + BuildingSize['ysize']+ 'x' +BuildingSize['xsize'] + '<br> collect soon' )
 				.attr('data-entityid', CityMapEntity['id']);
 
 			$('#grid-outer').append( f );
