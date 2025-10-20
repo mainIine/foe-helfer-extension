@@ -54,6 +54,10 @@
     box-shadow: 0 0 5px #0008;
 }
 
+#PlayerProfile .hidden {
+    display: none;
+}
+
 #PlayerProfile.expanded {
     width: 920px;
     margin-left: -260px;
