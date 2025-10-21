@@ -371,16 +371,18 @@ let CityMap = {
 				ysize = ((parseInt(BuildingSize['ysize']) * CityMap.OutpostScaleUnit) / 100)
 				
 				let collectSoon = "";
-				if (ActiveMap === "guild_raids" && CityMapEntity.state.__class__ === "ProducingState" && CityMapEntity.state.next_state_transition_in < 14400) {
+				if (ActiveMap === "guild_raids" && CityMapEntity.state.__class__ === "ProducingState" && CityMapEntity.state.next_state_transition_in < 10800) {
 					collectSoon = " collectSoon";
 				}
+				let collectionString = HTML.i18nReplacer(i18n('Boxes.CityMap.CollectSoon'), {hours: Math.round(CityMapEntity.state.next_state_transition_in/60/60)})
 				f = $('<span />').addClass('entity ' + d['type'] + collectSoon).css({
 					width: xsize + 'em',
 					height: ysize + 'em',
 					left: xx + 'em',
 					top: yy + 'em'
 				})
-				.attr('data-original-title', d['name'] + ', ' + BuildingSize['ysize']+ 'x' +BuildingSize['xsize'] + '<br> collect soon' )
+				.attr('data-original-title', d['name'] + ', ' + BuildingSize['ysize']+ 'x' +BuildingSize['xsize'] + 
+					(collectSoon != "" ? '<br>'+collectionString : '') )
 				.attr('data-entityid', CityMapEntity['id']);
 
 			$('#grid-outer').append( f );
