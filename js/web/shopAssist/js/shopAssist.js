@@ -257,7 +257,7 @@ let shopAssist = {
 			let maxBuys = Math.min(slot.flag?.value=="increasingCosts" ? 1 : Infinity,limitedBuys);
 			if (maxBuys > 0) {
 				Object.entries(slot.baseCost?.resources||{}).forEach(([res, amount])=>{
-					maxBuys = Math.min(maxBuys,Math.floor((ResourceStock[res] || 0) / amount*(1-(slot.discount||0))));
+					maxBuys = Math.min(maxBuys,Math.floor((ResourceStock[res] || 0) / (amount*(1-(slot.discount||0)))));
 				})
 			}
 			if (maxBuys != Infinity && maxBuys > 0) {
@@ -267,7 +267,7 @@ let shopAssist = {
 					costs += `<div class="text-right">` + HTML.Format(cost) + srcLinks.icons(res)+ "</div>"
 				})
 			}
-			h += `<td class="costs ${limitedBuys > 0 && limitedBuys < Infinity ? 'helperTT" data-callback_tt="shopAssist.allTT" data-slotid="' + slot.slotId + '"':'"'}>
+			h += `<td class="costs ${(maxBuys>0 && maxBuys==limitedBuys) || (maxBuys>=0 && limitedBuys == Infinity)?"canBuy":""} ${limitedBuys > 0 && limitedBuys < Infinity ? 'helperTT" data-callback_tt="shopAssist.allTT" data-slotid="' + slot.slotId + '"':'"'}>
 					<div>
 						${slot.reward.subType == "fragment" && maxBuys != Infinity && maxBuys != 0 ? 
 							`<span>${srcLinks.icons("icon_tooltip_fragment") + HTML.Format(maxBuys*slot.reward.amount)}</span>`:``} 
@@ -278,7 +278,7 @@ let shopAssist = {
 				</td>`
 			h += `</tr>`
 			//costs all
-			if (limitedBuys > 0 && limitedBuys < Infinity) {
+			if (limitedBuys > 0 && limitedBuys < Infinity && limitedBuys > maxBuys) {
 				let allTT = '<table class="foe-table shopAssistTable"><tr><th>' + i18n("Boxes.ShopAssist.All") + `</th></tr><tr>`;
 				costs = "";
 				canBuy = true;
