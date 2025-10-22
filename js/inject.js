@@ -66,10 +66,6 @@ function inject (loadBeta = false, extUrl = chrome.runtime.getURL(''), betaDate=
 				this.remove();
 				reject();
 			});
-			while (!document.head && !document.documentElement) await new Promise((resolve) => {
-				// @ts-ignore
-				requestIdleCallback(resolve);
-			});
 			(document.head || document.documentElement).appendChild(sc);
 		});
 	}
@@ -199,6 +195,7 @@ function inject (loadBeta = false, extUrl = chrome.runtime.getURL(''), betaDate=
 				}
 				exportFunction(callBgApi, window, {defineAs: 'foeHelperBgApiHandler'});
 			}
+			while (!document.head && !document.documentElement) {}
 			// load foe-Proxy
 			await promisedLoadCode(chrome.runtime.getURL('')+`js/foeproxy.js`,"proxy");
 			scriptLoaded("primed", "proxy");
