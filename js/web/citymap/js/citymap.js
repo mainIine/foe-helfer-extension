@@ -2074,7 +2074,7 @@ let CityMap = {
 				return this.setGoodsRewardFromGeneric(reward)
 			}
 			else {
-				lookupData = metaData.components[era].lookup.rewards[product.reward.id]
+				lookupData = metaData.components[era]?.lookup?.rewards[product.reward.id]
 				if (lookupData === undefined) {
 					let chest = Object.keys(metaData.components[era].lookup.rewards).find(x => x.includes("chest" || "random_unit")) // currently only applies to wish fountain or things with "random unit chest"
 					if (metaData.components[era].lookup.rewards[chest]?.possible_rewards)
@@ -2205,7 +2205,7 @@ let CityMap = {
 		if (lookupData.subType === "fragment") 
 			name = lookupData.assembledReward.name
 		else if (lookupData.__class__ === "GenericRewardSet") // this is a dirty workaround for trees of patience, because i lack patience
-			name = lookupData.rewards[0].name 
+			name = lookupData.rewards[0]?.name 
 		else if (lookupData.subType === "speedup_item" || lookupData.subType === "reward_item" || lookupData.subType === "boost_item" || lookupData.type === "forgepoint_package" || lookupData.type === "resource") 
 			name = lookupData.name
 		else if (lookupData.type === "unit") { // -> (next_)light_melee
@@ -2322,7 +2322,7 @@ let CityMap = {
 		}
 		
 
-		if (building.type === "production") {
+		if (building.type === "production" && !current) {
 			productions = [productions[productions.length-1]];
 		}
 
