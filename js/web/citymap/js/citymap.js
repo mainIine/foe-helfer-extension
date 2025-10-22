@@ -374,7 +374,7 @@ let CityMap = {
 				if (ActiveMap === "guild_raids" && CityMapEntity.state.__class__ === "ProducingState" && CityMapEntity.state.next_state_transition_in < 10800) {
 					collectSoon = " collectSoon";
 				}
-				let collectionString = HTML.i18nReplacer(i18n('Boxes.CityMap.CollectSoon'), {hours: Math.round(CityMapEntity.state.next_state_transition_in/60/60)})
+				let collectionString = HTML.i18nReplacer(i18n('Boxes.CityMap.CollectSoon'), {hours: Math.round(CityMapEntity.state.next_state_transition_in/60/60*100)/100})
 				f = $('<span />').addClass('entity ' + d['type'] + collectSoon).css({
 					width: xsize + 'em',
 					height: ysize + 'em',
