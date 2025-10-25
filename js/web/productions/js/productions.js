@@ -620,7 +620,7 @@ let Productions = {
 				for (const b of buildingIds) {
 					let building = CityMap.getBuildingById(b.id)
 					if (building?.player_id !== ExtPlayerID) continue;
-					if (type === 'items' && Productions.showBuildingItems(true, building)[0] === "" || building.chainBuilding?.type === "linked") return; // makes random productions with resources and others disappear from the item list
+					if (type === 'items' && Productions.showBuildingItems(true, building)[0] === "" || building.chainBuilding?.type === "linked") continue; // makes random productions with resources and others disappear from the item list
 
 					rowA.push('<tr>')
 					rowA.push('<td>')
