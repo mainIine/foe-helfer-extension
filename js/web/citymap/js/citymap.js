@@ -2322,10 +2322,6 @@ let CityMap = {
 		}
 		
 
-		if (building.type === "production" && !current) {
-			productions = [productions[productions.length-1]];
-		}
-
 		if (productions) {
 			let goodsBoost = 0;
 			if (boosted)
