@@ -2043,26 +2043,32 @@ let CityMap = {
 		}
 
 		if (metaData.components[era]) {
+			let lookupRewards = structuredClone(metaData.components[era].lookup?.rewards||{})
+			if (metaData.components?.AllAge?.chain) {
+				MainParser.BuildingChains[metaData.components.AllAge.chain.chainId]?.cityEntityIds.forEach(chainBuilding => {
+					Object.assign(lookupRewards, MainParser.CityEntities[chainBuilding]?.components?.[era]?.lookup?.rewards||{})
+				})
+			}
 			if (product.reward.id.search("blueprint") !== -1) {
-				if (metaData.components[era].lookup.rewards[product.reward.id]) {
-					lookupData = metaData.components[era].lookup.rewards[product.reward.id]
+				if (lookupRewards[product.reward.id]) {
+					lookupData = lookupRewards[product.reward.id]
 				}
 				else { // blueprint chest, e.g. vineyard
-					for (const [key, reward] of Object.entries(metaData.components[era].lookup.rewards)) {
+					for (const [key, reward] of Object.entries(lookupRewards)) {
 						if (reward.id.search("blueprint") !== -1)
 							lookupData = reward
 					}
 				}
 			}
 			else if (product.reward.type === "good") { // this can break if there is more than one generic goods reward for a building
-				for (const [key, reward] of Object.entries(metaData.components[era].lookup.rewards)) {
+				for (const [key, reward] of Object.entries(lookupRewards)) {
 					if (reward.id.includes("good"))
 						lookupData = reward
 				}
 			}
 			else if (product.reward.id.includes('goods') && !/(fragment|rush)/.test(product.reward.id)) { // for nextage goods, because they are in a chest (random ones)
 				// todo: this not only covers chests now, so implementation needs to be looked at more carefully
-				lookupData = metaData.components[era].lookup.rewards[product.reward.id] // take first chest reward and work with that
+				lookupData = lookupRewards[product.reward.id] // take first chest reward and work with that
 				reward = {
 					id: product.reward.id,
 					name: lookupData.name.replace(/^\d+\s*/,""),
@@ -2074,11 +2080,11 @@ let CityMap = {
 				return this.setGoodsRewardFromGeneric(reward)
 			}
 			else {
-				lookupData = metaData.components[era]?.lookup?.rewards[product.reward.id]
+				lookupData = lookupRewards[product.reward.id]
 				if (lookupData === undefined) {
-					let chest = Object.keys(metaData.components[era].lookup.rewards).find(x => x.includes("chest" || "random_unit")) // currently only applies to wish fountain or things with "random unit chest"
-					if (metaData.components[era].lookup.rewards[chest]?.possible_rewards)
-						for (possibleReward of metaData.components[era].lookup.rewards[chest]?.possible_rewards) {
+					let chest = Object.keys(lookupRewards).find(x => x.includes("chest" || "random_unit")) // currently only applies to wish fountain or things with "random unit chest"
+					if (lookupRewards[chest]?.possible_rewards)
+						for (possibleReward of lookupRewards[chest]?.possible_rewards) {
 							if (possibleReward.reward.id === product.reward.id)
 								lookupData = possibleReward.reward
 						}
