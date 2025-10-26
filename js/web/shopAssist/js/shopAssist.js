@@ -38,6 +38,15 @@ FoEproxy.addHandler('ItemStoreService', 'purchaseSlot', (data, postData) => {
 });
 FoEproxy.addHandler('ItemStoreService', 'getConfigs', (data, postData) => {
 	shopAssist.shopMeta = Object.assign({},...data.responseData.map(x=>({[x.id]:x})));
+	// data cleanup
+	let cleaned = false
+	for (let x of Object.keys(shopAssist.favourites)) {
+		if (!shopAssist.shopMeta[x]) {
+			delete shopAssist.favourites[x];
+			cleaned = true;
+		}
+	}
+	if (cleaned) localStorage.setItem("shopAssist.favourites",JSON.stringify(shopAssist.favourites));
 	localStorage.setItem("shopAssist.shopMeta",JSON.stringify(shopAssist.shopMeta));
 });
 
