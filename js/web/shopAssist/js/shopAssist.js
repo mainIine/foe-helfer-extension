@@ -276,11 +276,11 @@ let shopAssist = {
 					costs += `<div class="text-right">` + HTML.Format(cost) + srcLinks.icons(res)+ "</div>"
 				})
 			}
-			h += `<td class="costs ${(maxBuys>0 && maxBuys==limitedBuys) || (maxBuys>=0 && limitedBuys == Infinity)?"canBuy":""} ${limitedBuys > 0 && limitedBuys < Infinity ? 'helperTT" data-callback_tt="shopAssist.allTT" data-slotid="' + slot.slotId + '"':'"'}>
+			h += `<td class="costs ${(maxBuys>0 && maxBuys==limitedBuys) || (maxBuys>0 && limitedBuys == Infinity)?"canBuy":""} ${limitedBuys > 0 && limitedBuys < Infinity ? 'helperTT" data-callback_tt="shopAssist.allTT" data-slotid="' + slot.slotId + '"':'"'}>
 					<div>
 						${slot.reward.subType == "fragment" && maxBuys != Infinity && maxBuys != 0 ? 
 							`<span>${srcLinks.icons("icon_tooltip_fragment") + HTML.Format(maxBuys*slot.reward.amount)}</span>`:``} 
-						<span>(<span class="buyable">${maxBuys}</span>${slot.flag?.value!="increasingCosts" && limitedBuys > 0 && limitedBuys < Infinity ? "/" + limitedBuys : (slot.flag?.value=="increasingCosts" && limitedBuys > 0 ? "/?" :"x")})
+						<span>(<span class="${maxBuys>0 ? "buyable":""}">${maxBuys}</span>${slot.flag?.value!="increasingCosts" && limitedBuys > 0 && limitedBuys < Infinity ? "/" + limitedBuys : (slot.flag?.value=="increasingCosts" && limitedBuys > 0 ? "/?" :"x")})
 						</span>
 					</div> 
 					${costs}
