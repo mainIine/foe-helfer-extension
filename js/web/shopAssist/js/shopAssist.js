@@ -124,8 +124,8 @@ let shopAssist = {
 		h += `<thead>
 				<tr>
 					<th colspan=5>
-						<input type="checkbox" id="shopAssistFav"><label for="shopAssistFav">&nbsp;${i18n("Boxes.ShopAssist.onlyFavourites")}</label>
-						<input type="checkbox" id="shopAssistUnlock"><label for="shopAssistUnlock">&nbsp;${i18n("Boxes.ShopAssist.onlyUnlocked")}</label>
+						<input type="checkbox" id="shopAssistFav" class = "clickable"><label for="shopAssistFav" class = "clickable">&nbsp;${i18n("Boxes.ShopAssist.onlyFavourites")}</label>
+						<input type="checkbox" id="shopAssistUnlock" class = "clickable"><label for="shopAssistUnlock" class = "clickable">&nbsp;${i18n("Boxes.ShopAssist.onlyUnlocked")}</label>
 					</th>
 					<th colspan=3>
 						${resources}
