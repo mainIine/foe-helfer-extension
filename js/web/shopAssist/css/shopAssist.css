@@ -47,8 +47,14 @@
 }
 .shopAssistTable .shopResource {
 	margin-right: 10px;
+	opacity: 0.5;
 }
-
+.shopAssistTable .shopResource.active {
+	opacity: 1;
+}
+.shopAssistTable .shopResource:hover {
+	filter: drop-shadow(0px 0px 4px goldenrod);
+}
 .shopAssistTable td {
 	text-align: center;
 	white-space: nowrap;
@@ -134,4 +140,8 @@
 	color: var(--text-success);
     font-weight: 600;
     text-shadow: 0px 0px 3px #000000;
+}
+
+#shopAssist .currencyFiltered {
+	display: none;
 }
