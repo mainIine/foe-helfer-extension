@@ -117,7 +117,7 @@ let shopAssist = {
 		let resources = "";
 		let newFilter = {};
 		for (let res of shopAssist.shopMeta[shopAssist.storeId].resources) {
-			newFilter[res] = shopAssist.currencyfilter[res] || true;
+			newFilter[res] = shopAssist.currencyfilter[res] ?? true;
 			resources += `<span class="shopResource ${newFilter[res]?"active":""} clickable" data-currency="${res}">${HTML.Format(ResourceStock[res]||0)}${srcLinks.icons(res)}</span>`
 		}
 		shopAssist.currencyfilter = newFilter;
@@ -375,17 +375,21 @@ let shopAssist = {
 			localStorage.setItem("shopAssist.alerts",JSON.stringify(shopAssist.alerts));
 			e.currentTarget.classList.toggle("alertActive");
 		});
-		$(".shopResource").on("click",function(e){
-			let res = e.currentTarget.dataset.currency;
-			shopAssist.currencyfilter[res] = !shopAssist.currencyfilter[res];
-			e.currentTarget.classList.toggle("active");
+		checkCurrencyFilters = () => {
 			for (let res of $(".shopResource")) {
 				$(".currency-" + res.dataset.currency).addClass("currencyFiltered");
 			}
 			for (let res of $(".shopResource.active")) {
 				$(".currency-" + res.dataset.currency).removeClass("currencyFiltered");
 			}
+		}
+		$(".shopResource").on("click",function(e){
+			let res = e.currentTarget.dataset.currency;
+			shopAssist.currencyfilter[res] = !shopAssist.currencyfilter[res];
+			e.currentTarget.classList.toggle("active");
+			checkCurrencyFilters();
 		});
+		checkCurrencyFilters();
 		localStorage.setItem("shopAssist.alerts",JSON.stringify(shopAssist.alerts));
     },
 
