@@ -80,6 +80,7 @@ let shopAssist = {
 	shopMeta:JSON.parse(localStorage.getItem("shopAssist.shopMeta")||"{}"),
 	favourites: JSON.parse(localStorage.getItem("shopAssist.favourites")||"{}"),
 	favouritesOnly: JSON.parse(localStorage.getItem("shopAssist.favouritesOnly")||"false"),
+	currencyfilter:{},
 	alerts: JSON.parse(localStorage.getItem("shopAssist.alerts")||"{}"),
 	timeout: null,
     /**
@@ -114,8 +115,12 @@ let shopAssist = {
 
 		let h = `<table class="shopAssistTable foe-table" style="width:100%">`
 		let resources = "";
-		for (let res of shopAssist.shopMeta[shopAssist.storeId].resources)
-			resources += `<span class="shopResource">${HTML.Format(ResourceStock[res]||0)}${srcLinks.icons(res)}</span>`
+		let newFilter = {};
+		for (let res of shopAssist.shopMeta[shopAssist.storeId].resources) {
+			newFilter[res] = shopAssist.currencyfilter[res] || true;
+			resources += `<span class="shopResource ${newFilter[res]?"active":""} clickable" data-currency="${res}">${HTML.Format(ResourceStock[res]||0)}${srcLinks.icons(res)}</span>`
+		}
+		shopAssist.currencyfilter = newFilter;
 		h += `<thead>
 				<tr>
 					<th colspan=5>
@@ -143,14 +148,12 @@ let shopAssist = {
 			let stock = shopAssist.getStock(slot.reward);
 			let neededFragments = null;
 			let neededBuys = null;
-			//let limitedFragments = null;
+			
 			let limitedBuys = slot.purchaseLimit ? slot.purchaseLimit.remainingPurchases || 0 : Infinity;
 			if (slot.reward.subType == "fragment") {
 				neededFragments = Math.max(slot.reward.requiredAmount-(stock.fragments||0),0);
 				neededBuys = Math.ceil(neededFragments/slot.reward.amount);
 				neededFragments = neededBuys * slot.reward.amount;
-				//limitedBuys = Math.min(limitedBuys,Math.ceil(slot.reward.requiredAmount / slot.reward.amount));
-				//limitedFragments = limitedBuys * slot.reward.amount;
 			}
 			let buildingList = shopAssist.getBuildingIds(slot.reward)
 			let limitReached = slot.purchaseLimit?.maxPurchases && !slot.purchaseLimit.remainingPurchases;
@@ -178,9 +181,13 @@ let shopAssist = {
 				}
 			}
 			let isdiscounted = slot.discount && slot.discount>0 && shopAssist.showDiscount;
+			currencyClasses = " ";
+			Object.entries(slot.baseCost?.resources||{}).forEach(([res, amount])=>{
+				currencyClasses += "currency-" + res + " ";
+			})
 
 			//Favourites + Alerts
-			h += `<tr class="${(shopAssist.favourites?.[shopAssist.storeId]?.[slot.slotId] ? "isShopFavourite " : "") + (unlocked ? "isUnlocked " : "") + (hasLock ? "hasLock " : "") +((slot.purchaseLimit?.maxPurchases && !slot.purchaseLimit.remainingPurchases) ? "soldOut" : "")}">
+			h += `<tr class="${currencyClasses + (shopAssist.favourites?.[shopAssist.storeId]?.[slot.slotId] ? "isShopFavourite " : "") + (unlocked ? "isUnlocked " : "") + (hasLock ? "hasLock " : "") +((slot.purchaseLimit?.maxPurchases && !slot.purchaseLimit.remainingPurchases) ? "soldOut" : "")}">
 			<td>
 				<div class="shopFavourite clickable" data-id="${slot.slotId}"></div>
 				<div class="shopAlert clickable ${(shopAssist.alerts[shopAssist.storeId + "#" + slot.slotId]) ? "alertActive" : ""}" data-id="${shopAssist.storeId + "#" + slot.slotId}"></div>
@@ -367,6 +374,17 @@ let shopAssist = {
 			}
 			localStorage.setItem("shopAssist.alerts",JSON.stringify(shopAssist.alerts));
 			e.currentTarget.classList.toggle("alertActive");
+		});
+		$(".shopResource").on("click",function(e){
+			let res = e.currentTarget.dataset.currency;
+			shopAssist.currencyfilter[res] = !shopAssist.currencyfilter[res];
+			e.currentTarget.classList.toggle("active");
+			for (let res of $(".shopResource")) {
+				$(".currency-" + res.dataset.currency).addClass("currencyFiltered");
+			}
+			for (let res of $(".shopResource.active")) {
+				$(".currency-" + res.dataset.currency).removeClass("currencyFiltered");
+			}
 		});
 		localStorage.setItem("shopAssist.alerts",JSON.stringify(shopAssist.alerts));
     },
