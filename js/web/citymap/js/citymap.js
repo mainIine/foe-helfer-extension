@@ -503,9 +503,7 @@ let CityMap = {
 			if (a.entityId < b.entityId) return -1
 			if (a.entityId > b.entityId) return 1
 			return 0
-		})
-
-		console.log(uniqueBuildings);
+		});
 
 		for (let building of uniqueBuildings) {
 			if (building.type === "impediment" || building.type === "street") continue;
@@ -1771,18 +1769,39 @@ let CityMap = {
 		else if (metaData.__class__ === "GenericCityEntity") {
 			// fyi: generic_building supplies and coins are doubled when motivated if they do not need motivation
 			let production = metaData.components[era]?.production || metaData.components.AllAge.production; // currently it is either allage or era, never both
+
+			// attached chain buildings
 			if (metaData.components.AllAge?.chain !== undefined && metaData.components.AllAge?.chain?.config?.__class__ !== "ChainStartConfig") {
-				let chainProduction = metaData.components.AllAge?.chain?.config?.bonuses[0]?.productions[0]?.playerResources?.resources;
-				let resource = {
-					type: "resources",
-					needsMotivation: false,
-					doubleWhenMotivated: false,
-					resources: chainProduction,
-				}
-				if (chainProduction !== undefined)
+				// resources are located here
+				let chainProductions = metaData.components.AllAge?.chain?.config?.bonuses[0]?.productions;
+				for (const prod of chainProductions) {
+					let resource = {
+						type: "resources",
+						needsMotivation: false,
+						doubleWhenMotivated: false,
+						resources: undefined,
+					};
+					// regular resources
+					if (prod.playerResources?.resources !== undefined) {
+						resource.resources = prod.playerResources?.resources;
+					}
+					// generic reward
+					else if (prod.reward !== undefined) {
+						let lookUp = metaData.components.AllAge?.lookup?.rewards[prod.reward.id];
+						resource.resources = {
+							id: prod.reward.id,
+							name: lookUp?.name,
+							amount: lookUp?.amount,
+							type: lookUp?.type,
+							subType: lookUp?.subType
+						};
+						resource.type = "genericReward";
+					}
 					productions.push(resource);
+				}
 				return productions || false;
 			}
+
 			if (production) {
 				if (metaData.type === "production") { // production buildings do not have a default production
 					for (product of production.options) {
@@ -1813,7 +1832,7 @@ let CityMap = {
 						resource.resources = product.guildResources.resources
 					}
 					else if (product.type === "genericReward" || product.type === "blueprint") {
-						resource.resources = this.setGenericReward(product, metaData, era)
+						resource.resources = this.setGenericReward(product, metaData, era);
 
 						// genericReward can also return unit rewards or goods, change type
 						let objectKey = (Object.keys(resource.resources).length === 1 ? Object.keys(resource.resources)[0] : null)
@@ -1991,8 +2010,8 @@ let CityMap = {
 						else if (production.type === "unit") 
 							resource.resources = this.setUnitReward(production)
 						else if (production.type === "genericReward") {
-							let reward = this.setGenericReward(production, metaData, era)
-							resource.resources = reward
+							let reward = this.setGenericReward(production, metaData, era);
+							resource.resources = reward;
 							let objectKey = (Object.keys(resource.resources).length === 1 ? Object.keys(resource.resources)[0] : null)
 							if (objectKey?.includes('good')) {
 								resource.type = "resources"
@@ -2023,8 +2042,8 @@ let CityMap = {
 	
 	// returns a generic reward or a unit reward
 	setGenericReward(product, metaData, era) {
-		let amount = 0
-		let lookupData = false
+		let amount = 0;
+		let lookupData = false;
 
 		let reward = {
 			id: product.reward.id,
@@ -2035,12 +2054,10 @@ let CityMap = {
 			icon: ''
 		}
 
-		if (product.reward.amount) {
-			amount = product.reward.amount
-		}
-		if (product.reward.totalAmount) {
-			amount = product.reward.totalAmount
-		}
+		if (product.reward.amount) 
+			amount = product.reward.amount;
+		if (product.reward.totalAmount) 
+			amount = product.reward.totalAmount;
 
 		if (metaData.components[era]) {
 			let lookupRewards = structuredClone(metaData.components[era].lookup?.rewards||{})
@@ -2068,7 +2085,7 @@ let CityMap = {
 			}
 			else if (product.reward.id.includes('goods') && !/(fragment|rush)/.test(product.reward.id)) { // for nextage goods, because they are in a chest (random ones)
 				// todo: this not only covers chests now, so implementation needs to be looked at more carefully
-				lookupData = lookupRewards[product.reward.id] // take first chest reward and work with that
+				lookupData = lookupRewards[product.reward.id]; // take first chest reward and work with that
 				reward = {
 					id: product.reward.id,
 					name: lookupData.name.replace(/^\d+\s*/,""),
@@ -2080,17 +2097,17 @@ let CityMap = {
 				return this.setGoodsRewardFromGeneric(reward)
 			}
 			else {
-				lookupData = lookupRewards[product.reward.id]
+				lookupData = lookupRewards[product.reward.id];
 				if (lookupData === undefined) {
 					let chest = Object.keys(lookupRewards).find(x => x.includes("chest" || "random_unit")) // currently only applies to wish fountain or things with "random unit chest"
 					if (lookupRewards[chest]?.possible_rewards)
 						for (possibleReward of lookupRewards[chest]?.possible_rewards) {
 							if (possibleReward.reward.id === product.reward.id)
-								lookupData = possibleReward.reward
+								lookupData = possibleReward.reward;
 						}
 				}
 				else {
-					amount = lookupData.totalAmount || lookupData.amount
+					amount = lookupData.totalAmount || lookupData.amount;
 				}
 			}
 		}
@@ -2104,7 +2121,7 @@ let CityMap = {
 			name = this.setRewardNameFromLookupData(lookupData, metaData)
 		else {
 			console.log("CityMap.setGenericReward() data missing for", metaData.name, metaData, product);
-			name = "DEFINE NAME"
+			name = "DEFINE NAME";
 		}
 		
 		// units
@@ -2122,13 +2139,25 @@ let CityMap = {
 			lookupData.subType = lookupData.rewards[0].subType
 		}
 
-		reward = {
-			id: product.reward.id,
-			name: name,
-			type: lookupData?.type || "consumable",
-			subType: lookupData?.subType,
-			amount: amount, // amount can be undefined for blueprints or units if building is not motivated
-			icon: lookupData?.iconAssetName
+		if (metaData.components?.AllAge?.chain === undefined || (metaData.components?.AllAge?.chain !== undefined && product.reward.subType !== "fragment"))
+			reward = {
+				id: product.reward.id,
+				name: name,
+				type: lookupData?.type || "consumable",
+				subType: lookupData?.subType,
+				amount: amount, // amount can be undefined for blueprints or units if building is not motivated
+				icon: lookupData?.iconAssetName
+		}
+		// chain attachments with generic production need extra handling
+		else {
+			reward = {
+				id: product.reward.id,
+				name: product.reward.name,
+				type: product.reward.type,
+				subType: product.reward.subType,
+				amount: product.reward.amount,
+				icon: product.reward.iconAssetName
+			}
 		}
 
 		if (reward.type === "good")
@@ -2599,7 +2628,7 @@ let CityMap = {
 
 		CityMap.getBuildingGuildGoodsByEra(false, entity, false);
 		
-		//if (entity.type !== "street")
+		//if (entity.entityId.includes("MultiAge_WIN19"))
 		//	console.log('entity ', entity.name, entity, metaData, data);
 		return entity;
 	},
