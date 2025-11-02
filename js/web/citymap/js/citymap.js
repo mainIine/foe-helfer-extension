@@ -1775,31 +1775,32 @@ let CityMap = {
 			if (metaData.components.AllAge?.chain !== undefined && metaData.components.AllAge?.chain?.config?.__class__ !== "ChainStartConfig") {
 				// resources are located here
 				let chainProductions = metaData.components.AllAge?.chain?.config?.bonuses[0]?.productions;
-				for (const prod of chainProductions) {
-					let resource = {
-						type: "resources",
-						needsMotivation: false,
-						doubleWhenMotivated: false,
-						resources: undefined,
-					};
-					// regular resources
-					if (prod.playerResources?.resources !== undefined) {
-						resource.resources = prod.playerResources?.resources;
-					}
-					// generic reward
-					else if (prod.reward !== undefined) {
-						let lookUp = metaData.components.AllAge?.lookup?.rewards[prod.reward.id];
-						resource.resources = {
-							id: prod.reward.id,
-							name: lookUp?.name,
-							amount: lookUp?.amount,
-							type: lookUp?.type,
-							subType: lookUp?.subType
+				if (chainProductions !== undefined)
+					for (const prod of chainProductions) {
+						let resource = {
+							type: "resources",
+							needsMotivation: false,
+							doubleWhenMotivated: false,
+							resources: undefined,
 						};
-						resource.type = "genericReward";
+						// regular resources
+						if (prod.playerResources?.resources !== undefined) {
+							resource.resources = prod.playerResources?.resources;
+						}
+						// generic reward
+						else if (prod.reward !== undefined) {
+							let lookUp = metaData.components.AllAge?.lookup?.rewards[prod.reward.id];
+							resource.resources = {
+								id: prod.reward.id,
+								name: lookUp?.name,
+								amount: lookUp?.amount,
+								type: lookUp?.type,
+								subType: lookUp?.subType
+							};
+							resource.type = "genericReward";
+						}
+						productions.push(resource);
 					}
-					productions.push(resource);
-				}
 				return productions || false;
 			}
 
