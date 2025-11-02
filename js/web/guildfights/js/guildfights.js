@@ -1365,11 +1365,13 @@ let GuildFights = {
 		copycache.sort(function (a, b) { return a.lockedUntil - b.lockedUntil });
 		copycache.forEach((mapElem) => {
 			let battleType = mapElem.isAttackBattleType ? '🔴' : '🔵';
-			copy += `${moment.unix(mapElem.lockedUntil - 2).format('HH:mm')} ${mapElem.title} ${battleType}\n`;
+			let LiveFightSettings = JSON.parse(localStorage.getItem('LiveFightSettings'));
+			let showTileColors = (LiveFightSettings && LiveFightSettings.showTileColors !== undefined) ? LiveFightSettings.showTileColors : 1;
+			console.log(999, showTileColors);
+			copy += `${moment.unix(mapElem.lockedUntil - 2).format('HH:mm')} ${showTileColors === 1 ? battleType : ''} ${mapElem.title} \n`;
 		});
 
-		if (copy !== '')
-		{
+		if (copy !== '') {
 			helper.str.copyToClipboard(copy).then(() => {
 				HTML.ShowToastMsg({
 					head: i18n('Boxes.GuildFights.CopyToClipBoard.Title'),
@@ -1692,10 +1694,12 @@ let GuildFights = {
 		let showGuildColumn = (LiveFightSettings && LiveFightSettings.showGuildColumn !== undefined) ? LiveFightSettings.showGuildColumn : 0;
 		let showAdjacentSectors = (LiveFightSettings && LiveFightSettings.showAdjacentSectors !== undefined) ? LiveFightSettings.showAdjacentSectors : 1;
 		let showOwnSectors = (LiveFightSettings && LiveFightSettings.showOwnSectors !== undefined) ? LiveFightSettings.showOwnSectors : 0;
+		let showTileColors = (LiveFightSettings && LiveFightSettings.showTileColors !== undefined) ? LiveFightSettings.showTileColors : 1;
 
 		c.push(`<p><input id="showguildcolumn" name="showguildcolumn" value="1" type="checkbox" ${(showGuildColumn === 1) ? ' checked="checked"' : ''} /> <label for="showguildcolumn">${i18n('Boxes.GuildFights.ShowOwner')}</label></p>`);
-		c.push(`<p><input id="showAdjacentSectors" name="showAdjacentSectors" value="0" type="checkbox" ${(showAdjacentSectors === 1) ? ' checked="checked"' : ''} /> <label for="showAdjacentSectors">${i18n('Boxes.GuildFights.ShowAdjacentSectors')}</label><br>`);
-		c.push(`<input id="showownsectors" name="showownsectors" value="0" type="checkbox" ${(showOwnSectors === 1) ? ' checked="checked"' : ''} /> <label for="showownsectors">${i18n('Boxes.GuildFights.ShowOwnSectors')}</label></p>`);
+		c.push(`<p><label for="showAdjacentSectors"><input id="showAdjacentSectors" name="showAdjacentSectors" value="0" type="checkbox" ${(showAdjacentSectors === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.ShowAdjacentSectors')}</label></p>`);
+		c.push(`<p><label for="showownsectors"><input id="showownsectors" name="showownsectors" value="0" type="checkbox" ${(showOwnSectors === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.ShowOwnSectors')}</label></p>`);
+		c.push(`<p><label for="showtilecolors"><input id="showtilecolors" name="showtilecolors" value="0" type="checkbox" ${(showTileColors === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.ShowTileColors')}</label></p>`);
 		c.push(`<p><button onclick="GuildFights.SaveLiveFightSettings()" id="save-livefight-settings" class="btn btn-default" style="width:100%">${i18n('Boxes.GuildFights.SaveSettings')}</button></p>`);
 
 		// insert into DOM
@@ -1709,6 +1713,7 @@ let GuildFights = {
 		value.showGuildColumn = 0;
 		value.showAdjacentSectors = 0;
 		value.showOwnSectors = 0;
+		value.showTileColors = 0;
 
 		if ($("#showguildcolumn").is(':checked')) 
 			value.showGuildColumn = 1;
@@ -1719,9 +1724,13 @@ let GuildFights = {
 		if ($("#showownsectors").is(':checked')) 
 			value.showOwnSectors = 1;
 
+		if ($("#showtilecolors").is(':checked')) 
+			value.showTileColors = 1;
+
 		GuildFights.showGuildColumn = value.showGuildColumn;
 		GuildFights.showAdjacentSectors = value.showAdjacentSectors;
 		GuildFights.showOwnSectors = value.showOwnSectors;
+		GuildFights.showTileColors = value.showTileColors;
 
 		localStorage.setItem('LiveFightSettings', JSON.stringify(value));
 

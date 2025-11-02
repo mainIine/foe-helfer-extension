@@ -502,6 +502,7 @@
     "Boxes.GuildFights.ShowOwner": "Show Guilds",
     "Boxes.GuildFights.ShowProgressFilter": "show progress filter",
     "Boxes.GuildFights.ShowRoundSelector": "show GBG round selector",
+    "Boxes.GuildFights.ShowTileColors": "copy attack colors",
     "Boxes.GuildFights.SnapShotLogDisclaimer": "Disclaimer: This data is based on your collected data. The numbers shown here are probably not 100% accurate. You'd have to open the list at midnight for them to be correct.",
     "Boxes.GuildFights.SnapshotLog": "Snapshot Log",
     "Boxes.GuildFights.Switch": "Switch view",
