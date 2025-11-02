@@ -446,8 +446,9 @@ let CityMap = {
 
 		out = '<div class="qiSums">';
 		out += '<p class="text-center"><i>'+i18n('Boxes.CityMap.QIHint')+'</i></p>';
-		out += '<div class="text-right" style="margin-bottom: 10px"><span class="prod population">'+CityMap.QIStats.availablePopulation+'/'+CityMap.QIStats.totalPopulation+'</span> ';
-		out += '<span class="prod happiness">'+Math.round(CityMap.QIStats.euphoriaBoost*100)+'%</span></div>';
+		out += '<div class="text-right popStats" style="margin-bottom: 10px"><span class="prod population">'+CityMap.QIStats.availablePopulation+'/'+CityMap.QIStats.totalPopulation+'</span> ';
+		let euphoria = Math.round(CityMap.QIStats.euphoriaBoost*100);
+		out += '<span class="prod happiness euphoria'+euphoria+'">'+euphoria+'%</span></div>';
 		out += '<div class="productions">'
 		for (let [prod, value] of Object.entries(CityMap.QIStats.resources)) {
 			out += '<span class="'+prod+'">'+srcLinks.icons(prod);
