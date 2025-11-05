@@ -25,7 +25,7 @@ FoEproxy.addHandler('ItemStoreService', 'getStore', (data, postData) => {
         $('#shopAssist-Btn-closed').remove();
     }
 
-	if (!Settings.GetSetting('ShowShopAssist')) return;
+	if (($('#shopAssist').length === 0) && !Settings.GetSetting('ShowShopAssist')) return;
 	shopAssist.Show();
 });
 
@@ -33,9 +33,19 @@ FoEproxy.addHandler('ItemStoreService', 'purchaseSlot', (data, postData) => {
 	let i = shopAssist.slots.findIndex(x=>x.slotId === data.responseData.slot.slotId);
 	shopAssist.slots[i] = data.responseData.slot;
 
-	if (!Settings.GetSetting('ShowShopAssist')) return;
+	if ($('#shopAssist').length === 0) return;
 	shopAssist.Show();
 });
+
+FoEproxy.addHandler('ItemStoreService', 'refreshStore', (data, postData) => {
+	shopAssist.slots = data.responseData.slots;
+	shopAssist.storeId = data.responseData.id;
+	shopAssist.unlockProgress = Object.assign(shopAssist.unlockProgress,...data.responseData.unlockConditionsProgress.map(x=>({[x.type+"#"+(x.subtype||x.context)]:x.amount})));
+	
+    if ($('#shopAssist').length === 0) return;
+	shopAssist.Show();
+});
+
 FoEproxy.addHandler('ItemStoreService', 'getConfigs', (data, postData) => {
 	shopAssist.shopMeta = Object.assign({},...data.responseData.map(x=>({[x.id]:x})));
 	// data cleanup
@@ -57,7 +67,7 @@ FoEproxy.addHandler("ItemStoreService","updateUnlockConditions", (data, postData
 			shopAssist.unlockProgress[cond.type + "#" + (cond.subtype||cond.context)] += cond.amount;
 		}
 	}
-	if (!Settings.GetSetting('ShowShopAssist')) return;
+	if ($('#shopAssist').length === 0) return;
 	shopAssist.timeout = setTimeout(shopAssist.Show,100);
 });
 
