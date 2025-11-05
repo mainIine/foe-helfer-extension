@@ -33,7 +33,7 @@
 	- Closed when a tavern update occurred
 - City Overview
 	- Corrected the order of dimensions in the tooltip
-
+	- QI: fixed sum calculation
 ---
 
 ##### 3.13.0.0
