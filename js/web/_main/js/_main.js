@@ -1385,12 +1385,6 @@ let MainParser = {
 		console.log('Forcing load of CityEntities');
 		let xhr = new XMLHttpRequest();
         xhr.open("GET", MainParser.MetaUrls['city_entities'], true);
-		xhr.onreadystatechange = function () {
-			if(xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-				srcLinks.raw = xhr.responseText;
-				srcLinks.readHX();
-			}
-        };
         xhr.send();
 	},
 	/**
