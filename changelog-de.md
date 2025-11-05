@@ -30,7 +30,9 @@
 	- QI Güter Bewertung hat nicht funktioniert
 - Verhandlungsfenster 
 	- schloss sich, wenn ein Tavernenupdate stattfand
-- Stadtübersicht - Reihenfolge der Dimensionen im Tooltip korrigiert
+- Stadtübersicht 
+	- Reihenfolge der Dimensionen im Tooltip korrigiert
+	- QI: Summenberechung korrigiert 
 
 ---
 
