@@ -355,6 +355,8 @@
 }
 #ProductionsRatingBody tr.additional td {
 	background: var(--table-bg-info);
+	border-top-color: var(--table-bt-info);
+	border-bottom-color: var(--table-bb-info);
 }
 #ProductionsRatingBody tr.additional td:nth-child(1) {
 	color: var(--text-info) !important;

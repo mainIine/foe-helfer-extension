@@ -452,6 +452,8 @@ table.foe-table tr.success td,
 
 table.foe-table tr.bg-green td {
 	background-color: var(--table-bg-success);
+	border-top-color: var(--table-bt-success);
+    border-bottom-color: var(--table-bb-success);
 }
 
 p {

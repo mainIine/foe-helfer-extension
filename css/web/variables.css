@@ -22,8 +22,8 @@
 	--text-darkest: #180d07;
 	--text-muted: #8a8a8a;
 
-	--text-success: #9ae887;
-	--text-highlight: #62f33e;
+	--text-success: #95c567;
+	--text-highlight: #7ce64c;
 	--text-info: #5cb1f6;
 	--text-danger: #f34f4f;
 
@@ -70,7 +70,11 @@
 	--table-bg-odd: #ff9e4512;
 	--table-bg-darker: #40190080;
 	--table-bg-info: #003c6d4d;
+	--table-bt-info: #455461;
+	--table-bb-info: #252a43;
 	--table-bg-success: #127d094d;
+	--table-bt-success: #667f34;
+	--table-bb-success: #293d0f;
 	--table-bg-error: #7908084d;
 	--table-bg-bright: #d07e0366;
 
