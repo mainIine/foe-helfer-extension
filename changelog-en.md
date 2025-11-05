@@ -4,11 +4,35 @@
 ##### 3.13.1.0
 
 **Update**
-- Power leveling: Added a bunch of levels for Atomium
+
+- General
+	- Adjusted helper to match the game's new loading behavior
+	- made Some HUD elements "non-selectable"
+	- Added handling for chain buildings with special production
+- Power Leveling
+	- Added many new levels for the Atomium
+- FP Collector
+	- Added translations
+- Efficiency Overview
+	- Adjusted styling in the search
+- Shop Assistant
+	- Added filter for shop currencies – to ignore a currency, simply click on it
+	- Removed the "Full" column – this value is now shown when hovering over the "Missing" column
+	- Added "Max" column – shows how much can be purchased with the available currency
+	- When hovering over the "Max" column, the "All" value is displayed – indicating how much currency is needed to buy out the entire stock
+- QI City Overview
+	- Added highlight for euphoria level
+	- Added highlight for buildings that will soon be ready for harvest
+- FP Bar
+	- Adjusted position in GE to match the changed game UI
 
 **Bugfix**
-- FP Collector: Added some translations
-- Efficiency: Styling for search was a bit off, QI goods evaluation did not work
+- Efficiency Overview
+	- QI goods evaluation did not work
+- Negotiation Window
+	- Closed when a tavern update occurred
+- City Overview
+	- Corrected the order of dimensions in the tooltip
 
 ---
 
