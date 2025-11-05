@@ -205,6 +205,11 @@ GetFights = () =>{
         }
 		MainParser.Inactives.check();
 	});
+	FoEproxy.addMetaHandler('building_entity_lookup', (xhr, postData) => {
+		let buildingUrlsRaw = JSON.parse(xhr.responseText || "[]");
+		let buildingUrls = Object.assign({}, ...buildingUrlsRaw.map((x) => ({ [x.identifier.replace("building_entity_","")]: {url: x.url, hash: x.identifier.replace(/.*?([^-]+$)/gm,"$1")} })));
+		setTimeout(()=>{MainParser.CityEntityBuilder(buildingUrls)},3000);
+	});
 
 	// Building-Upgrades
 	FoEproxy.addMetaHandler('building_upgrades', (xhr, postData) => {
@@ -1040,6 +1045,46 @@ let MainParser = {
 		localStorage.setItem('LastAgreedVersion', extVersion); //Comment out this line if you have something the player must agree on
 	},
 
+	CityEntityBuilder: async (buildingUrls) => {
+		await IndexDB.getDB()
+		let buildingsOld = await IndexDB.db.buildingMeta.toArray();
+		buildingsOld = Object.assign({}, ...buildingsOld.map(x=>({[x.id]:x})));
+		let Metadata = {};
+		let updated = []
+		const requests = [];
+		for (let id in buildingUrls) {
+			const meta = buildingUrls[id];
+			// Vergleiche korrekt mit meta.hash
+			if (!buildingsOld[id] || buildingsOld[id].hash != meta.hash) {
+				requests.push(new Promise(resolve => {
+					const xhr = new XMLHttpRequest();
+					xhr.open("GET", meta.url, true);
+					xhr.onreadystatechange = function () {
+						if (xhr.readyState === XMLHttpRequest.DONE) {
+							if (xhr.status === 200) {
+								try { 
+									Metadata[id] = JSON.parse(xhr.responseText); 
+									updated.push({id: id, hash: meta.hash, json: xhr.responseText});
+								} catch (e) { Metadata[id] = null; }
+							} else {
+								console.warn('Failed to load', meta.url, xhr.status);
+							}
+							resolve();
+						}
+					};
+					xhr.onerror = () => resolve();
+					xhr.send();
+				}));
+			} else {
+				try { Metadata[id] = JSON.parse(buildingsOld[id].json); } catch (e) { Metadata[id] = null; }
+			}
+		}
+		// Warte asynchron auf alle Requests
+		await Promise.all(requests);
+		await IndexDB.db.buildingMeta.bulkPut(updated);
+		MainParser.CityEntities = Metadata;
+	},
+
 	/**
 	 * Etwas zur background.js schicken
 	 *
@@ -1373,7 +1418,7 @@ let MainParser = {
 
 		Infoboard.Init();
 		EventHandler.Init();
-		setTimeout(MainParser.forceLoadCityEntities, 3000);
+		setTimeout(MainParser.forceLoadCityEntities, 5000);
 		await ExistenceConfirmed('MainParser.CityEntities||srcLinks.FileList')
 	
 		window.dispatchEvent(new CustomEvent('foe-helper#StartUpDone'))
