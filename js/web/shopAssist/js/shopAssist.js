@@ -260,20 +260,22 @@ let shopAssist = {
 					${costs}
 				</td>`
 				//costs full
-				let allTT = '<table class="foe-table shopAssistTable"><tr><th>' + i18n("Boxes.ShopAssist.Full") + `</th></tr><tr>`;
-				costs = "";
-				canBuy = true;
-				fullBuys = Math.floor(slot.reward.requiredAmount / slot.reward.amount);
-				Object.entries(slot.baseCost?.resources||{}).forEach(([res, amount])=>{
-					let cost = Math.ceil(fullBuys * amount*(1-(slot.discount||0)));
-					if ((ResourceStock[res] || 0) < cost) canBuy = false;
-					costs += `<div class="text-right">` + HTML.Format(cost) + srcLinks.icons(res)+ "</div>"
-				})
-				allTT += `<td class="costs ${(canBuy && !limitReached && unlocked) ? "canBuy" : "canNotBuy"}">
-						<div>${slot.reward.subType == "fragment" && fullBuys < Infinity && fullBuys > 0 ? `<span>${srcLinks.icons("icon_tooltip_fragment") + HTML.Format(fullBuys * slot.reward.amount)}</span>`:``} <span>(${fullBuys}x)</span></div> 
-						${costs}
-						</td></tr></table>`
-				shopAssist.allTTContent[slot.slotId+"F"] = allTT;
+				if (neededFragments < slot.reward.requiredAmount) { 
+					let allTT = '<table class="foe-table shopAssistTable"><tr><th>' + i18n("Boxes.ShopAssist.Full") + `</th></tr><tr>`;
+					costs = "";
+					canBuy = true;
+					fullBuys = Math.floor(slot.reward.requiredAmount / slot.reward.amount);
+					Object.entries(slot.baseCost?.resources||{}).forEach(([res, amount])=>{
+						let cost = Math.ceil(fullBuys * amount*(1-(slot.discount||0)));
+						if ((ResourceStock[res] || 0) < cost) canBuy = false;
+						costs += `<div class="text-right">` + HTML.Format(cost) + srcLinks.icons(res)+ "</div>"
+					})
+					allTT += `<td class="costs ${(canBuy && !limitReached && unlocked) ? "canBuy" : "canNotBuy"}">
+							<div>${slot.reward.subType == "fragment" && fullBuys < Infinity && fullBuys > 0 ? `<span>${srcLinks.icons("icon_tooltip_fragment") + HTML.Format(fullBuys * slot.reward.amount)}</span>`:``} <span>(${fullBuys}x)</span></div> 
+							${costs}
+							</td></tr></table>`
+					shopAssist.allTTContent[slot.slotId+"F"] = allTT;
+				}
 			} else {
 				h += `<td></td>`
 			}
