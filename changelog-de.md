@@ -24,6 +24,8 @@
 	- QI: Hervorherbung von Gebäuden die bald bereit sind für Ernte
 - FP-Leiste
 	- Position in GE angepasst an verändertes Spiel-UI
+- Menü
+	- Einträge für den Shop Helfer und die Verbündeten hinzugefügt
 
 **Bugfix**
 - Effizienzübersicht

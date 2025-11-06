@@ -25,6 +25,8 @@
 	- Added highlight for buildings that will soon be ready for harvest
 - FP Bar
 	- Adjusted position in GE to match the changed game UI
+- Menu
+	- Added entries for the shop assist and the allies overview
 
 **Bugfix**
 - Efficiency Overview
