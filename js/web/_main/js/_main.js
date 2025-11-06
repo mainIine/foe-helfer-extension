@@ -196,13 +196,7 @@ GetFights = () =>{
 	FoEproxy.addMetaHandler('city_entities', (xhr, postData) => {
 		let EntityArray = JSON.parse(xhr.responseText);
 		MainParser.CityEntities = Object.assign({}, ...EntityArray.map((x) => ({ [x.id]: x })));
-
-		for (let i in MainParser.CityEntities) {
-			if (!MainParser.CityEntities.hasOwnProperty(i)) continue;
-
-			let CityEntity = MainParser.CityEntities[i];
-			if (!CityEntity.type) CityEntity.type = CityEntity?.components?.AllAge?.tags?.tags?.find(value => value.hasOwnProperty('buildingType')).buildingType;
-        }
+		MainParser.correctBuildingType()
 		MainParser.Inactives.check();
 	});
 	FoEproxy.addMetaHandler('building_entity_lookup', (xhr, postData) => {
@@ -1120,6 +1114,16 @@ let MainParser = {
 
 		await IndexDB.db.buildingMeta.bulkPut(updated);
 		MainParser.CityEntities = Metadata;
+		MainParser.correctBuildingType();
+
+	},
+	correctBuildingType: () => {
+		for (let i in MainParser.CityEntities) {
+			if (!MainParser.CityEntities.hasOwnProperty(i)) continue;
+
+			let CityEntity = MainParser.CityEntities[i];
+			if (!CityEntity.type) CityEntity.type = CityEntity?.components?.AllAge?.tags?.tags?.find(value => value.hasOwnProperty('buildingType')).buildingType;
+        }
 	},
 
 	/**
