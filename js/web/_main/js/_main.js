@@ -1692,46 +1692,20 @@ let MainParser = {
 							<th>${i18n('Boxes.AllyList.Level')}</th>
 							<th>${i18n('Boxes.AllyList.Boosts')}</th>
 					</tr></thead>`
-			for (let [roomId,r] of Object.entries(rooms).sort((a,b)=>{
+			sortedRooms = Object.entries(rooms).sort((a,b)=>{
 				f=(r)=>{return Object.keys(MainParser.Allies.rarities).indexOf(r.allyRarity) + (r.buildingName?10:0) + (r.fragmentsAmount?100:0)}
 				return f(a[1])-f(b[1])
-			})) {
+			})
+				
+			for (let [roomId,r] of sortedRooms){
 				let buildingId=roomId.split("#")[0]
 				let rarities=r.roomRarity?.split("#")||[]
 				rarities.push(r.allyRarity)
 				rarities=rarities.map(x=>"Rarity-"+x)
 
-				rarityStars = (r) => {
-					if (!r || r=="") return ""
-					let i = Object.keys(MainParser.Allies.rarities).indexOf(r)
-					if (i==-1) return `<img style="filter: drop-shadow(0px 2px 2px black)"  src="${srcLinks.get(`/shared/icons/when_motivated.png`, true)}">`
-					if (i==0) return `<span style="font-size: large; color: transparent; text-shadow: 0px 0px 4px black;" >☆</span>`
-					let ret=""					
-					let star = `<img style="margin-left:-3px"  src="${srcLinks.get(`/historical_allies/portraits/historical_allies_portrait_rarity_icon.png`, true)}">`
-					for (let j = 0; j < i; j++) {
-						ret += star
-						star = `<img style="margin-left:-15px" src="${srcLinks.get(`/historical_allies/portraits/historical_allies_portrait_rarity_icon.png`, true)}">`
-					}
-					return ret
-				}
-				
-				boosts = (boosts) => {
-					let feature = {
-						"all":"",
-						"battleground":"_gbg",
-						"guild_expedition":"_gex",
-						"guild_raids":"_gr"
-					}
-					let ret=""
-					for (b of boosts||[]) {
-						ret+=`${srcLinks.icons(b.type+feature[b.targetedFeature])} ${b.value + Boosts.percent(b.type)}`
-					}
-					return ret
-				}
-
 				//${MainParser.Allies.tooltip(buildingId)}
 				html+=`<tr class="allyRoomRow ${rarities.join(" ")}">
-							<td style="white-space:nowrap">${rarityStars(r.roomRarity)}</td>
+							<td style="white-space:nowrap">${MainParser.Allies.rarityStars(r.roomRarity)}</td>
 					   	   	<td ${buildingId!=0?`class="helperTT" 
 								data-id="${buildingId}" 
 								data-era="${Technologies.InnoEraNames[MainParser.CityMapData[buildingId].level]}"
@@ -1739,10 +1713,10 @@ let MainParser = {
 								`:``}
 							>${r.buildingName || ""}</td>
 							<td>${buildingId!=0?`<span class="show-entity" data-id="${buildingId}"><img class="game-cursor" src="${ extUrl + 'css/images/hud/open-eye.png'}"></span>`:""}</td>
-						   	<td style="white-space:nowrap">${rarityStars(r.allyRarity)}</td>
+						   	<td style="white-space:nowrap">${MainParser.Allies.rarityStars(r.allyRarity)}</td>
 						   	<td>${r.allyName || ""}${r.fragmentsAmount?srcLinks.icons("icon_tooltip_fragment") + r.fragmentsAmount+"/"+r.fragmentsNeeded:""}</td>
 						   	<td>${r.allyLevel || ""}</td>
-						   	<td>${boosts(r.allyBoosts)}</td>
+						   	<td>${MainParser.Allies.boosts(r.allyBoosts)}</td>
 						</tr>`
 			}
 			
@@ -1760,6 +1734,34 @@ let MainParser = {
 			});
 			return rooms
 		},
+		rarityStars: (r) => {
+			if (!r || r=="") return ""
+			let i = Object.keys(MainParser.Allies.rarities).indexOf(r)
+			if (i==-1) return `<img style="filter: drop-shadow(0px 2px 2px black)"  src="${srcLinks.get(`/shared/icons/when_motivated.png`, true)}">`
+			if (i==0) return `<span style="font-size: large; color: transparent; text-shadow: 0px 0px 4px black;" >☆</span>`
+			let ret=""					
+			let star = `<img style="margin-left:-3px"  src="${srcLinks.get(`/historical_allies/portraits/historical_allies_portrait_rarity_icon.png`, true)}">`
+			for (let j = 0; j < i; j++) {
+				ret += star
+				star = `<img style="margin-left:-15px" src="${srcLinks.get(`/historical_allies/portraits/historical_allies_portrait_rarity_icon.png`, true)}">`
+			}
+			return ret
+		},
+				
+		boosts: (boosts) => {
+			let feature = {
+				"all":"",
+				"battleground":"_gbg",
+				"guild_expedition":"_gex",
+				"guild_raids":"_gr"
+			}
+			let ret=""
+			for (b of boosts||[]) {
+				ret+=`${srcLinks.icons(b.type+feature[b.targetedFeature])} ${b.value + Boosts.percent(b.type)}`
+			}
+			return ret
+		}
+
 
 	},
 
