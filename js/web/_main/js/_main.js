@@ -208,7 +208,7 @@ GetFights = () =>{
 	FoEproxy.addMetaHandler('building_entity_lookup', (xhr, postData) => {
 		let buildingUrlsRaw = JSON.parse(xhr.responseText || "[]");
 		let buildingUrls = Object.assign({}, ...buildingUrlsRaw.map((x) => ({ [x.identifier.replace("building_entity_","")]: {url: x.url, hash: x.identifier.replace(/.*?([^-]+$)/gm,"$1")} })));
-		setTimeout(()=>{MainParser.CityEntityBuilder(buildingUrls)},3000);
+		setTimeout(()=>{MainParser.CityEntityBuilder(buildingUrls)},500);
 	});
 
 	// Building-Upgrades
@@ -1046,41 +1046,78 @@ let MainParser = {
 	},
 
 	CityEntityBuilder: async (buildingUrls) => {
-		await IndexDB.getDB()
+		await IndexDB.getDB();
 		let buildingsOld = await IndexDB.db.buildingMeta.toArray();
-		buildingsOld = Object.assign({}, ...buildingsOld.map(x=>({[x.id]:x})));
+		buildingsOld = Object.assign({}, ...buildingsOld.map(x => ({ [x.id]: x })));
 		let Metadata = {};
-		let updated = []
-		const requests = [];
-		for (let id in buildingUrls) {
-			const meta = buildingUrls[id];
-			// Vergleiche korrekt mit meta.hash
-			if (!buildingsOld[id] || buildingsOld[id].hash != meta.hash) {
-				requests.push(new Promise(resolve => {
-					const xhr = new XMLHttpRequest();
-					xhr.open("GET", meta.url, true);
-					xhr.onreadystatechange = function () {
-						if (xhr.readyState === XMLHttpRequest.DONE) {
-							if (xhr.status === 200) {
-								try { 
-									Metadata[id] = JSON.parse(xhr.responseText); 
-									updated.push({id: id, hash: meta.hash, json: xhr.responseText});
-								} catch (e) { Metadata[id] = null; }
-							} else {
-								console.warn('Failed to load', meta.url, xhr.status);
-							}
+		let updated = [];
+		const ids = Object.keys(buildingUrls);
+		const maxConcurrent = 10; // z.B. 10 gleichzeitige Requests
+		let active = 0;
+		let index = 0;
+
+		function fetchMeta(id, meta, retries = 3) {
+			return new Promise(resolve => {
+				const xhr = new XMLHttpRequest();
+				xhr.open("GET", meta.url, true);
+				let timeout = setTimeout(() => {
+					xhr.abort();
+				}, 10000); // 10 Sekunden Timeout
+				xhr.onreadystatechange = function () {
+					if (xhr.readyState === XMLHttpRequest.DONE) {
+						clearTimeout(timeout);
+						if (xhr.status === 200) {
+							try {
+								Metadata[id] = JSON.parse(xhr.responseText);
+								updated.push({ id: id, hash: meta.hash, json: xhr.responseText });
+							} catch (e) { Metadata[id] = null; }
+							resolve();
+						} else if (retries > 0) {
+							// Bei Fehler: Retry mit Delay
+							setTimeout(() => fetchMeta(id, meta, retries - 1).then(resolve), 1000);
+						} else {
+							console.warn('Failed to load', meta.url, xhr.status);
 							resolve();
 						}
-					};
-					xhr.onerror = () => resolve();
-					xhr.send();
-				}));
-			} else {
-				try { Metadata[id] = JSON.parse(buildingsOld[id].json); } catch (e) { Metadata[id] = null; }
+					}
+				};
+				xhr.onerror = () => {
+					clearTimeout(timeout);
+					if (retries > 0) {
+						setTimeout(() => fetchMeta(id, meta, retries - 1).then(resolve), 1000);
+					} else {
+						resolve();
+					}
+				};
+				xhr.send();
+			});
+		}
+
+		async function runNext() {
+			while (active < maxConcurrent && index < ids.length) {
+				const id = ids[index++];
+				const meta = buildingUrls[id];
+				if (!buildingsOld[id] || buildingsOld[id].hash != meta.hash) {
+					active++;
+					fetchMeta(id, meta).then(() => {
+						active--;
+						runNext();
+					});
+				} else {
+					try { Metadata[id] = JSON.parse(buildingsOld[id].json); } catch (e) { Metadata[id] = null; }
+				}
 			}
 		}
-		// Warte asynchron auf alle Requests
-		await Promise.all(requests);
+
+		await new Promise(resolve => {
+			function checkDone() {
+				if (index >= ids.length && active === 0) resolve();
+				else setTimeout(checkDone, 100);
+			}
+			runNext();
+			checkDone();
+		});
+
 		await IndexDB.db.buildingMeta.bulkPut(updated);
 		MainParser.CityEntities = Metadata;
 	},
@@ -1418,7 +1455,7 @@ let MainParser = {
 
 		Infoboard.Init();
 		EventHandler.Init();
-		setTimeout(MainParser.forceLoadCityEntities, 5000);
+		setTimeout(MainParser.forceLoadCityEntities, 15000);
 		await ExistenceConfirmed('MainParser.CityEntities||srcLinks.FileList')
 	
 		window.dispatchEvent(new CustomEvent('foe-helper#StartUpDone'))
