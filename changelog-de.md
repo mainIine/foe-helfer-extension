@@ -19,6 +19,7 @@
 	- Die Spalte "Ganz" wurde entfernt - dieser Wert ist nun sichtbar, wenn man mit der Maus auf die "Fehlend" Spalte zeigt
 	- Spalte "Max" hinzugefügt - zeigt an, wieviel mit der vorhandenen Währung gekauft werden kann
 	- Wenn man auf die "Max" Spalte zeigt, wird der Wert "Alle" angezeigt - also wieviel Währung nötig ist, um den Shop leer zu kaufen  
+	- Tooltip für Verbündete hinzugefügt
 - Stadtübersicht
 	- QI: Hervorhebung für Euphorieniveau hinzugefügt
 	- QI: Hervorherbung von Gebäuden die bald bereit sind für Ernte

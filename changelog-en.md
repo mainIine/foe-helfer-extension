@@ -20,6 +20,7 @@
 	- Removed the "Full" column – this value is now shown when hovering over the "Missing" column
 	- Added "Max" column – shows how much can be purchased with the available currency
 	- When hovering over the "Max" column, the "All" value is displayed – indicating how much currency is needed to buy out the entire stock
+	- Added tooltip for allies
 - QI City Overview
 	- Added highlight for euphoria level
 	- Added highlight for buildings that will soon be ready for harvest
