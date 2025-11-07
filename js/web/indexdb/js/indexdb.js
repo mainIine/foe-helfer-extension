@@ -147,6 +147,9 @@ let IndexDB = {
             statsTreasureClanH: 'date, clanId',
             statsTreasureClanD: 'date, clanId',
         });
+        db.version(3).stores({
+            buildingMeta: 'id, hash, json',
+        });
     },
 
     /**

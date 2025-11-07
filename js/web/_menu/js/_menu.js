@@ -64,6 +64,8 @@ let _menu = {
 		'findGB',
 		'playerProfile',
 		'unit',
+		'shopAssist',
+		'allies',
 	],
 
 	HiddenItems: [],
@@ -403,7 +405,6 @@ let _menu = {
 	 * @returns {*|jQuery}
 	 */
 	outpost_Btn: () => {
-
 		let desc = i18n('Menu.OutP.Desc'),
 			red = false;
 
@@ -425,6 +426,48 @@ let _menu = {
 			if (OutpostBuildings !== null) {
 				Outposts.BuildInfoBox();
 			}
+		});
+
+		return btn.append(btn_outpost);
+	},
+
+	/**
+	 * Shop Assistant Button
+	 *
+	 * @returns {*|jQuery}
+	 */
+	shopAssist_Btn: () => {
+		let desc = '<i id="shopAssist-Btn-closed" class="tooltip-error">' + i18n('Menu.ShopAssist.DescWarning') + '</i> ' + i18n('Menu.ShopAssist.Desc'),
+			red = true;
+
+		if (shopAssist.storeId !== null) {
+			red = false;
+		}
+
+		let btn = _menu.MakeButton('shopAssist', i18n('Menu.ShopAssist.Title'), desc, red);
+
+		let btn_outpost = $('<span />').bind('click', function () {
+			if (shopAssist.storeId !== null) {
+				shopAssist.Show();
+			}
+		});
+
+		return btn.append(btn_outpost);
+	},
+
+	/**
+	 * Ally PopUp Button
+	 *
+	 * @returns {*|jQuery}
+	 */
+	allies_Btn: () => {
+
+		let desc = i18n('Menu.Allies.Desc'), red = false;
+
+		let btn = _menu.MakeButton('allies', i18n('Menu.Allies.Title'), desc, red);
+
+		let btn_outpost = $('<span />').bind('click', function () {
+			MainParser.Allies.showAllyList();
 		});
 
 		return btn.append(btn_outpost);

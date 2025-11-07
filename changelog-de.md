@@ -1,5 +1,45 @@
 ## Changelog - Extension
 
+
+##### 3.13.1.0
+
+**Update**
+- Allgemein
+	- Anpassung des Helfers an neues Ladeverhalten des Spiels 
+	- einige Hud Elemente wurden "nicht auswählbar" gemacht
+	- Handling für Kettengebäude mit Spezialproduktion hinzugefügt
+- Power Leveln
+	- Viele neue Stufen fürs Atomium hinzugefügt
+- FP Collector
+	- Übersetzungen hinzugefügt
+- Effizienzübersicht
+	- Styling in der Suche angepasst
+- Shop Assistent
+	- Filter für Shop Währungen hinzugefügt - wenn eine Währung ignoriert werden soll, einfach drauf klicken
+	- Die Spalte "Ganz" wurde entfernt - dieser Wert ist nun sichtbar, wenn man mit der Maus auf die "Fehlend" Spalte zeigt
+	- Spalte "Max" hinzugefügt - zeigt an, wieviel mit der vorhandenen Währung gekauft werden kann
+	- Wenn man auf die "Max" Spalte zeigt, wird der Wert "Alle" angezeigt - also wieviel Währung nötig ist, um den Shop leer zu kaufen  
+	- Tooltip für Verbündete hinzugefügt
+- Stadtübersicht
+	- QI: Hervorhebung für Euphorieniveau hinzugefügt
+	- QI: Hervorherbung von Gebäuden die bald bereit sind für Ernte
+- FP-Leiste
+	- Position in GE angepasst an verändertes Spiel-UI
+- Menü
+	- Einträge für den Shop Helfer und die Verbündeten hinzugefügt
+
+**Bugfix**
+- Effizienzübersicht
+	- QI Güter Bewertung hat nicht funktioniert
+- Verhandlungsfenster 
+	- schloss sich, wenn ein Tavernenupdate stattfand
+- Stadtübersicht 
+	- Reihenfolge der Dimensionen im Tooltip korrigiert
+	- QI: Summenberechung korrigiert 
+
+---
+
+
 ##### 3.13.0.0
 **Neu**
 - GEX Güter Verbrauch

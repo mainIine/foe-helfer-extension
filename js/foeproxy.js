@@ -524,7 +524,14 @@ const FoEproxy = (function () {
 
 			try {
 				requestData = JSON.parse(new TextDecoder().decode(postData));
-				// StartUp Service zuerst behandeln
+				// StartUp Service als erstes behandeln
+				for (let entry of d) {
+					if (entry['requestClass'] === 'StaticDataService' && entry['requestMethod'] === 'getMetadata') {
+						JSONhistory.push(entry.requestClass + '.' + entry.requestMethod);
+						proxyAction(entry.requestClass, entry.requestMethod, entry, requestData);
+					}
+				}
+				// StartUp Service als zweites behandeln
 				for (let entry of d) {
 					if (entry['requestClass'] === 'StartupService' && entry['requestMethod'] === 'getData') {
 						JSONhistory.push(entry.requestClass + '.' + entry.requestMethod);
@@ -533,7 +540,8 @@ const FoEproxy = (function () {
 				}
 
 				for (let entry of d) {
-					if (!(entry['requestClass'] === 'StartupService' && entry['requestMethod'] === 'getData')) {
+					if (!(entry['requestClass'] === 'StartupService' && entry['requestMethod'] === 'getData') &&
+						!(entry['requestClass'] === 'StaticDataService' && entry['requestMethod'] === 'getMetadata')) {
 						JSONhistory.push(entry.requestClass + '.' + entry.requestMethod);
 						proxyAction(entry.requestClass, entry.requestMethod, entry, requestData);
 					}

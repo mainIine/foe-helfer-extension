@@ -1,5 +1,44 @@
 ## Changelog - Extension
 
+
+##### 3.13.1.0
+
+**Update**
+
+- General
+	- Adjusted helper to match the game's new loading behavior
+	- made Some HUD elements "non-selectable"
+	- Added handling for chain buildings with special production
+- Power Leveling
+	- Added many new levels for the Atomium
+- FP Collector
+	- Added translations
+- Efficiency Overview
+	- Adjusted styling in the search
+- Shop Assistant
+	- Added filter for shop currencies – to ignore a currency, simply click on it
+	- Removed the "Full" column – this value is now shown when hovering over the "Missing" column
+	- Added "Max" column – shows how much can be purchased with the available currency
+	- When hovering over the "Max" column, the "All" value is displayed – indicating how much currency is needed to buy out the entire stock
+	- Added tooltip for allies
+- QI City Overview
+	- Added highlight for euphoria level
+	- Added highlight for buildings that will soon be ready for harvest
+- FP Bar
+	- Adjusted position in GE to match the changed game UI
+- Menu
+	- Added entries for the shop assist and the allies overview
+
+**Bugfix**
+- Efficiency Overview
+	- QI goods evaluation did not work
+- Negotiation Window
+	- Closed when a tavern update occurred
+- City Overview
+	- Corrected the order of dimensions in the tooltip
+	- QI: fixed sum calculation
+---
+
 ##### 3.13.0.0
 **New**
 - GE Goods Use

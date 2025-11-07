@@ -334,8 +334,10 @@
 #ProductionsRatingBody tr.highlighted2 td:nth-child(2) {
 	color: var(--text-light);
 }
-#ProductionsRatingBody tr.highlighted2 td:nth-child(2)::after {
+#ProductionsRatingBody tr.highlighted2 td:nth-child(2) div div:first-child::after {
 	content: ' 🔎';
+	filter: saturate(0.1);
+	opacity: 0.7;
 }
 #ProductionsRatingBody tr td.ally:nth-child(2) span:nth-child(2)::after, #ProductionsRatingBody tr span.inventory::after {
 	content: ' ';
@@ -353,6 +355,8 @@
 }
 #ProductionsRatingBody tr.additional td {
 	background: var(--table-bg-info);
+	border-top-color: var(--table-bt-info);
+	border-bottom-color: var(--table-bb-info);
 }
 #ProductionsRatingBody tr.additional td:nth-child(1) {
 	color: var(--text-info) !important;
@@ -372,14 +376,14 @@
 	display: inline-block;
 	padding-right: 0.5em;
 }
-#ProductionsRatingBody tr .show-all img, #ProductionsRatingBody td:nth-child(3) img {
+#ProductionsRatingBody tr .show-all img, #ProductionsRatingBody td:nth-child(4) img {
 	max-width: 18px;
 	opacity: 0.6;
 }
-#ProductionsRatingBody td:nth-child(3) img {
+#ProductionsRatingBody td:nth-child(4) img {
 	filter: sepia(1);
 }
-#ProductionsRatingBody tr .show-all img:hover, #ProductionsRatingBody td:nth-child(3) img:hover {
+#ProductionsRatingBody tr .show-all img:hover, #ProductionsRatingBody td:nth-child(4) img:hover {
 	opacity: 1;
 	filter: none;
 }
@@ -618,13 +622,13 @@ input[id*="ProdPerTile"] {
 	color: var(--text-danger);
 }
 #ProductionsRatingBody table td:first-child[data-number^="1"], #ProductionsRatingBody table td:first-child[data-number^="2"], #ProductionsRatingBody table td:first-child[data-number^="3"], #ProductionsRatingBody table td:first-child[data-number^="4"], #ProductionsRatingBody table td:first-child[data-number^="5"], #ProductionsRatingBody table td:first-child[data-number^="6"], #ProductionsRatingBody table td:first-child[data-number^="7"], #ProductionsRatingBody table td:first-child[data-number^="8"], #ProductionsRatingBody table td:first-child[data-number^="9"] {
-	color: var(--text-success);
+	color: var(--text-highlight);
 }
 #ProductionsRatingBody li[class$="guild_expedition"], #ProductionsRatingBody li[class$="battleground"], #ProductionsRatingBody li[class$="guild_raids"] {
 	padding-left: 2em;
 }
 #ProductionsRatingBody strong.success {
-	color: var(--text-success);
+	color: var(--text-highlight);
 }
 #ProductionsRatingBody strong.error {
 	color: #ec4d4d;
