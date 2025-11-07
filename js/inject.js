@@ -42,7 +42,6 @@ function scriptLoaded (src, base) {
 
 inject();
 
-
 function inject (loadBeta = false, extUrl = chrome.runtime.getURL(''), betaDate='') {
 	/**
 	 * Loads a JavaScript in the website. The returned promise will be resolved once the code has been loaded.
@@ -66,10 +65,6 @@ function inject (loadBeta = false, extUrl = chrome.runtime.getURL(''), betaDate=
 				console.error('error loading script '+src);
 				this.remove();
 				reject();
-			});
-			while (!document.head && !document.documentElement) await new Promise((resolve) => {
-				// @ts-ignore
-				requestIdleCallback(resolve);
 			});
 			(document.head || document.documentElement).appendChild(sc);
 		});
@@ -128,6 +123,7 @@ function inject (loadBeta = false, extUrl = chrome.runtime.getURL(''), betaDate=
 
 
 	let tid = setInterval(InjectCSS, 0);
+
 	function InjectCSS() {
 		// Document loaded
 		if(document.head !== null){
@@ -199,14 +195,14 @@ function inject (loadBeta = false, extUrl = chrome.runtime.getURL(''), betaDate=
 				}
 				exportFunction(callBgApi, window, {defineAs: 'foeHelperBgApiHandler'});
 			}
-			// start loading both script-lists
-			const vendorListPromise = loadJsonResource(`${extUrl}js/vendor.json`);
-			const scriptListPromise = loadJsonResource(`${extUrl}js/internal.json`);
-			
+			while (!document.head && !document.documentElement) {}
 			// load foe-Proxy
 			await promisedLoadCode(chrome.runtime.getURL('')+`js/foeproxy.js`,"proxy");
 			scriptLoaded("primed", "proxy");
 			await proxyLoaded;
+			// start loading both script-lists
+			const vendorListPromise = loadJsonResource(`${extUrl}js/vendor.json`);
+			const scriptListPromise = loadJsonResource(`${extUrl}js/internal.json`);
 			// load the main
 			await promisedLoadCode(`${extUrl}js/web/_main/js/_main.js`,"main");
 			scriptLoaded("primed", "main");

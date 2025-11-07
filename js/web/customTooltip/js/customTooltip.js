@@ -190,6 +190,7 @@ let Tooltips = {
                     random_good_of_age_1:"random_goods_chest",
                     random_good_of_age_2:"random_goods_chest",
                     random_good_of_age_3:"random_goods_chest",
+                    each_special_goods_up_to_age:"special_goods",
                 },
                 treasury_goods:{
                     era_goods:"treasury_goods",
@@ -280,7 +281,7 @@ let Tooltips = {
                 }
             }
             if (levels?.AllAge?.cityLimit) {
-                traits+=`<tr><td>${srcLinks.icons("icon_unique_building")}${i18n("Boxes.Tooltip.Building.isUnique")}</td></tr>`
+                traits+=`<tr><td>${srcLinks.icons("icon_unique_building")}${i18n("Boxes.Tooltip.Building.isUnique")} (${Object.values(MainParser.CityMapData).filter(x => MainParser.CityEntities?.[x.cityentity_id]?.components?.AllAge?.cityLimit?.buildingFamily == levels?.AllAge?.cityLimit?.buildingFamily).length+"/"+MainParser.BuildingFamilyLimits?.[levels?.AllAge?.cityLimit?.buildingFamily] || 1})</td></tr>`
             }
             
             for (let r of levels.AllAge?.ally?.rooms || []) {
@@ -343,6 +344,14 @@ let Tooltips = {
             if (levels?.[minEra]?.happiness?.provided && levels[maxEra]?.happiness?.provided) {
                 provides+=`<tr><td>${srcLinks.icons("happiness") + " " + range(levels?.[minEra]?.happiness?.provided,levels[maxEra]?.happiness?.provided,true) + polMod}</td></tr>`
             }
+
+
+            if (levels.AllAge?.multiplyCollection) {
+                let mc = levels.AllAge?.multiplyCollection
+                provides+=`<tr><td>${srcLinks.icons("reward_x" + mc.factor) + " " + mc.charges + " (" + mc.chance+"%)"}</td></tr>`
+            }
+
+
             for (let [i,b] of Object.entries(levels.AllAge?.boosts?.boosts||[])){
                 provides+=`<tr><td>${srcLinks.icons(b.type+feature[b.targetedFeature]) + " " + span(b.value) + Boosts.percent(b.type)}</td></tr>`
             }
@@ -363,8 +372,9 @@ let Tooltips = {
                 for (let [pIndex,product] of Object.entries(option.products)) {
                     if (product.type == "resources") {
                         for (let [res,amount] of Object.entries(product.playerResources?.resources||{})) {
-                            if (amount !=0) 
-                                prods+=`<tr><td>${srcLinks.icons(resMapper(res,"goods")) + range(amount,maxProductions?.[oIndex]?.products?.[pIndex]?.playerResources?.resources?.[res])+t  + ((["supplies","coins","money"].includes(res) && !product.onlyWhenMotivated) ? motMod : "") + (product.onlyWhenMotivated?ifMot:"")}</td></tr>`
+                            if (amount !=0) {
+                                prods+=`<tr><td>${srcLinks.icons(resMapper(res,"goods")) + range(amount,maxProductions?.[oIndex]?.products?.[pIndex]?.playerResources?.resources?.[res]) + (res == "each_special_goods_up_to_age" ?"&nbsp;" + i18n("Boxes.Tooltip.Building.perEra"):"") + t + ((["supplies","coins","money"].includes(res) && !product.onlyWhenMotivated) ? motMod : "") + (product.onlyWhenMotivated?ifMot:"")}</td></tr>`
+                            }
                         }
                     }
                     if (product.type == "guildResources") {
@@ -399,7 +409,7 @@ let Tooltips = {
                             if (random.product.type == "resources") {
                                 for (let [res,amount] of Object.entries(random.product.playerResources?.resources||{})) {
                                     if (amount !=0) 
-                                        prods+=srcLinks.icons(resMapper(res,"goods")) + range(amount,maxProductions?.[oIndex]?.products?.[pIndex]?.products?.[rIndex]?.product?.playerResources?.resources?.[res])
+                                        prods+=srcLinks.icons(resMapper(res,"goods")) + range(amount,maxProductions?.[oIndex]?.products?.[pIndex]?.products?.[rIndex]?.product?.playerResources?.resources?.[res]) + (res == "each_special_goods_up_to_age" ?"&nbsp;" + i18n("Boxes.Tooltip.Building.perEra"):"")
                                 }
                             }
                             if (random.product.type == "guildResources") {
@@ -460,7 +470,7 @@ let Tooltips = {
                         if (product.type == "resources") {
                             for (let [res,amount] of Object.entries(product.playerResources?.resources||{})) {
                                 if (amount !=0) 
-                                    prods+=`<tr><td>${b.level + "x" + srcLinks.icons(chain.chainId)} ► ${srcLinks.icons(resMapper(res,"goods")) + span(amount)}</td></tr>`
+                                    prods+=`<tr><td>${b.level + "x" + srcLinks.icons(chain.chainId)} ► ${srcLinks.icons(resMapper(res,"goods")) + span(amount) + (res == "each_special_goods_up_to_age" ?"&nbsp;" + i18n("Boxes.Tooltip.Building.perEra"):"")}</td></tr>`
                             }
                         }
                         if (product.type == "guildResources") {
@@ -506,7 +516,7 @@ let Tooltips = {
                     if (product.type == "resources") {
                         for (let [res,amount] of Object.entries(product.playerResources?.resources||{})) {
                             if (amount !=0) 
-                                prods+=`<tr><td>${b.level + "x" + srcLinks.icons(chain.chainId)} ► ${srcLinks.icons(resMapper(res,"goods")) + range(amount,chainMax?.config?.bonuses[i].productions[pIndex].playerResources?.resources?.[res])}</td></tr>`
+                                prods+=`<tr><td>${b.level + "x" + srcLinks.icons(chain.chainId)} ► ${srcLinks.icons(resMapper(res,"goods")) + range(amount,chainMax?.config?.bonuses[i].productions[pIndex].playerResources?.resources?.[res]) + (res == "each_special_goods_up_to_age" ?"&nbsp;" + i18n("Boxes.Tooltip.Building.perEra"):"")}</td></tr>`
                         }
                     }
                     if (product.type == "guildResources") {
@@ -839,6 +849,7 @@ FoEproxy.addFoeHelperHandler('ActiveMapUpdated',()=>{
 		$('#QIActions').hide();
 	}
 })
+
 FoEproxy.addHandler('ResourceService', 'getResourceDefinitions', (data, postData) => {
     QIActions.hourlyBase = FHResourcesList.find(x=>x.id=="guild_raids_action_points").abilities.autoRefill.refillAmount
 });

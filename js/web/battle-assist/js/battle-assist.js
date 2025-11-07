@@ -320,30 +320,33 @@ let BattleAssist = {
         html += `<h1>${i18n('Boxes.BattleAssistAAConfig.RecentOpponents')}</h1>`;
         if (BattleAssist.armyRecent.length>0) {
             html += `<table class="foe-table"><tr><th>${i18n('Boxes.BattleAssistAAConfig.Wave1')}</th><th>${i18n('Boxes.BattleAssistAAConfig.Wave2')}</th><th>${i18n('Boxes.BattleAssistAAConfig.Bonus')}</th><th>${i18n('Boxes.BattleAssistAAConfig.Threshold')}</th><th>${i18n('Boxes.BattleAssistAAConfig.Advice')}</th></tr>`;
-            for (let x of BattleAssist.armyRecent) {
+            for (let recent of BattleAssist.armyRecent) {
                 html += `<tr><td><div class="BattleWave">`
-                for (let unit of x.wave1) {
+                for (let unit of recent.wave1) {
                     html += `<img src="${srcLinks.get('/shared/unit_portraits/armyuniticons_50x50/armyuniticons_50x50_'+unit.replace("guild_raids_","")+'.jpg',true)}">`
                 }            
                 html += `</div></td><td><div class="BattleWave">`
-                if (x.wave2) {
-                    for (let unit of x.wave2) {
+                if (recent.wave2) {
+                    for (let unit of recent.wave2) {
                         html += `<img src="${srcLinks.get('/shared/unit_portraits/armyuniticons_50x50/armyuniticons_50x50_'+unit.replace("guild_raids_","")+'.jpg',true)}">`
                     }
                 }
                 
-                let PlayerName = (/^pvp_arena%(.*?)#/.exec(x.id)||[""])[1];
+                let PlayerName = (/^pvp_arena%(.*?)#/.exec(recent.id)||[""])[1];
                 if (PlayerName) html += `<span>` + srcLinks.icons('feature_pvp_arena') +  `</span>` + PlayerName
             
-                html += `</div></td><td>${x.bonus}%`
-                let advice = BattleAssist.armyAdvice[x.id]?.advice
-                let aBonus = BattleAssist.armyAdvice[x.id]?.bonus;
+                html += `</div></td><td>${recent.bonus}%`
+                let advice = BattleAssist.armyAdvice[recent.id]?.advice
+                let aBonus = BattleAssist.armyAdvice[recent.id]?.bonus;
+                let id = recent.id;
                 if (!advice) {//process neutral/old advice data
-                    advice = BattleAssist.armyAdvice[x.id.replace(/^(attack|defense)+%/,"")]?.advice 
-                    aBonus = BattleAssist.armyAdvice[x.id.replace(/^(attack|defense)+%/,"")]?.bonus;
+                    let tempId = recent.id.replace(/^(attack|defense)+%/,"");
+                    advice = BattleAssist.armyAdvice[tempId]?.advice 
+                    aBonus = BattleAssist.armyAdvice[tempId]?.bonus;
+                    if (advice) id = tempId;
                 }
-                html += `</td><td class="AASetBonus" data-id="${x.id}">${aBonus ? aBonus +"%" : ""}`
-                html += `</td><td class="AASetAdvice" data-id="${x.id}">${advice || ""}`
+                html += `</td><td class="AASetBonus" data-id="${id}">${aBonus ? aBonus +"%" : ""}`
+                html += `</td><td class="AASetAdvice" data-id="${id}">${advice || ""}`
                 html += `</td></tr>`
             }
             html += `</table>`
@@ -352,16 +355,15 @@ let BattleAssist = {
         
         if (Object.keys(BattleAssist.armyAdvice).length>0) {
             html += `<table class="foe-table"><tr><th>${i18n('Boxes.BattleAssistAAConfig.Wave1')}</th><th>${i18n('Boxes.BattleAssistAAConfig.Wave2')}</th><th>${i18n('Boxes.BattleAssistAAConfig.Threshold')}</th><th>${i18n('Boxes.BattleAssistAAConfig.Advice')}</th></tr>`;
-            for (let id of Object.keys(BattleAssist.armyAdvice)) {
-                let x=BattleAssist.armyAdvice[id];
-                if (!x) break;
+            for (let [id,advice] of Object.entries(BattleAssist.armyAdvice)) {
+                if (!advice) break;
                 html += `<tr><td><div class="BattleWave">`
-                for (let unit of x.wave1) {
+                for (let unit of advice.wave1) {
                     html += `<img src="${srcLinks.get('/shared/unit_portraits/armyuniticons_50x50/armyuniticons_50x50_'+unit.replace("guild_raids_","")+'.jpg',true)}">`
                 }            
                 html += `</div></td><td><div class="BattleWave">`
-                if (x.wave2) {
-                    for (let unit of x.wave2) {
+                if (advice.wave2) {
+                    for (let unit of advice.wave2) {
                         html += `<img src="${srcLinks.get('/shared/unit_portraits/armyuniticons_50x50/armyuniticons_50x50_'+unit.replace("guild_raids_","")+'.jpg',true)}">`
                     }
                 }
@@ -369,8 +371,8 @@ let BattleAssist = {
                 PlayerName = (/^pvp_arena%(.*?)#/.exec(id)||[""])[1];
                 if (PlayerName) html += `<span>` + srcLinks.icons('feature_pvp_arena') +  `</span>` + PlayerName
 
-                html += `</div></td><td class="AASetBonus" data-id="${id}">${x.bonus ? x.bonus + "%" : ""}`
-                html += `</td><td class="AASetAdvice" data-id="${id}">${x.advice || ""}`
+                html += `</div></td><td class="AASetBonus" data-id="${id}">${advice.bonus ? advice.bonus + "%" : ""}`
+                html += `</td><td class="AASetAdvice" data-id="${id}">${advice.advice || ""}`
                 html += `<div class="battleAssistOverrideTypeGroup">`
                 let type = (/^(attack|defense)+%/.exec(id)||[""])[1];
                 html += `<span class="battleAssistOverrideType${type=="attack"?" active":""}" data-type="attack"><img src="${srcLinks.get("/shared/gui/boost/boost_icon_bonus_attacking_all.png",true)}"></span>`

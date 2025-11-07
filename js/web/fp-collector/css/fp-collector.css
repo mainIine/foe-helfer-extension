@@ -37,8 +37,8 @@
 	box-shadow: inset 0px 0px 0px 2000px var(--table-bg-hover);
 }
 
-#fp-collectorBody .open .foehelper-accordion-head {
-	margin-bottom: unset;
+#fp-collectorBody .foehelper-accordion-head {
+	margin-bottom: 0;
 }
 
 #fp-collectorBody .open .foehelper-accordion-body {
@@ -83,7 +83,7 @@
 	image-rendering: -webkit-optimize-contrast;
 }
 
-.foehelper-accordion-head.hiddenReward-head span.image {
+.foehelper-accordion-head.hiddenReward-head span.image, .foehelper-accordion-head.hidden_reward-head span.image {
 	background-image: url('../../x_img/incident.png') !important;
 }
 
@@ -91,12 +91,16 @@
 	background-image: url('../../x_img/expedition.png') !important;
 }
 
-.foehelper-accordion-head.guildExpedition-head span.image {
+.foehelper-accordion-head.guildExpedition-head span.image, .foehelper-accordion-head.guild_expedition_reward_notification-head span.image {
 	background-image: url('../../x_img/relic.png') !important;
 }
 
 .foehelper-accordion-head.shards-head span.image {
 	background-image: url('../../x_img/shards.png') !important;
+}
+
+.foehelper-accordion-head.item_store-head span.image {
+	background-image: url('../../x_img/item_store.png') !important;
 }
 
 .foehelper-accordion-head.battlegrounds_conquest-head span.image {

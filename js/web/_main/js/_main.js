@@ -196,14 +196,13 @@ GetFights = () =>{
 	FoEproxy.addMetaHandler('city_entities', (xhr, postData) => {
 		let EntityArray = JSON.parse(xhr.responseText);
 		MainParser.CityEntities = Object.assign({}, ...EntityArray.map((x) => ({ [x.id]: x })));
-
-		for (let i in MainParser.CityEntities) {
-			if (!MainParser.CityEntities.hasOwnProperty(i)) continue;
-
-			let CityEntity = MainParser.CityEntities[i];
-			if (!CityEntity.type) CityEntity.type = CityEntity?.components?.AllAge?.tags?.tags?.find(value => value.hasOwnProperty('buildingType')).buildingType;
-        }
+		MainParser.correctBuildingType()
 		MainParser.Inactives.check();
+	});
+	FoEproxy.addMetaHandler('building_entity_lookup', (xhr, postData) => {
+		let buildingUrlsRaw = JSON.parse(xhr.responseText || "[]");
+		let buildingUrls = Object.assign({}, ...buildingUrlsRaw.map((x) => ({ [x.identifier.replace("building_entity_","")]: {url: x.url, hash: x.identifier.replace(/.*?([^-]+$)/gm,"$1")} })));
+		setTimeout(()=>{MainParser.CityEntityBuilder(buildingUrls)},500);
 	});
 
 	// Building-Upgrades
@@ -231,7 +230,9 @@ GetFights = () =>{
 		MainParser.SelectionKits = Object.assign({}, ...SelectKitsArray.map((x) => ({ [x.selectionKitId]: x })));
 		if (MainParser.BuildingUpgrades != null) Kits.CreateUpgradeSchemes();
 	});
-
+	FoEproxy.addMetaHandler("building_families", (xhr,postData) => {
+		MainParser.BuildingFamilyLimits = JSON.parse(xhr.responseText)?.families;
+	})	
 	// Castle-System-Levels
 	FoEproxy.addMetaHandler('castle_system_levels', (xhr, postData) => {
 		MainParser.CastleSystemLevels = JSON.parse(xhr.responseText);
@@ -252,7 +253,9 @@ GetFights = () =>{
 
 	FoEproxy.addHandler('AllyService', 'getAllies', (data, postData) => {
 		MainParser.Allies.getAllies(data.responseData);
-		if (postData[0].requestMethod == 'getAllies') MainParser.Allies.showAllyList()
+		
+		if (!Settings.GetSetting('ShowAllyList')) return;
+		if (postData[0].requestMethod == 'getAllies') MainParser.Allies.showAllyList();
 	});
 	FoEproxy.addHandler('AllyService', 'getAssignedAllies', (data, postData) => {
 		MainParser.Allies.getAllies(data.responseData);
@@ -364,7 +367,12 @@ GetFights = () =>{
 
 	// ResourcesList
 	FoEproxy.addHandler('ResourceService', 'getResourceDefinitions', (data, postData) => {
-		FHResourcesList = data.responseData
+		FHResourcesList = data.responseData;
+	});
+
+	//Metadata file links
+	FoEproxy.addHandler('StaticDataService', 'getMetadata', (data, postData) => {
+		MainParser.MetaUrls = Object.assign({},...data.responseData.map(x=>( {[x.identifier]: x.url}) ));
 	});
 
 	// --------------------------------------------------------------------------------------------------
@@ -962,6 +970,7 @@ let MainParser = {
 	PlayerPortraits: [],
 	Conversations: [],
 	MetaIds: {},
+	MetaUrls: {},
 	CityEntities: null,
 	CastleSystemLevels: null,
 	StartUpType: null,
@@ -984,7 +993,9 @@ let MainParser = {
 	BuildingSets: null,
 	BuildingChains: null,
 	SelectionKits: null,
-
+	
+	BuildingFamilyLimits: null,
+	
 	InnoCDN: 'https://foede.innogamescdn.com/',
 
 	/**
@@ -1026,6 +1037,93 @@ let MainParser = {
 
 		localStorage.setItem('LastStartedVersion', extVersion);
 		localStorage.setItem('LastAgreedVersion', extVersion); //Comment out this line if you have something the player must agree on
+	},
+
+	CityEntityBuilder: async (buildingUrls) => {
+		await IndexDB.getDB();
+		let buildingsOld = await IndexDB.db.buildingMeta.toArray();
+		buildingsOld = Object.assign({}, ...buildingsOld.map(x => ({ [x.id]: x })));
+		let Metadata = {};
+		let updated = [];
+		const ids = Object.keys(buildingUrls);
+		const maxConcurrent = 10; // z.B. 10 gleichzeitige Requests
+		let active = 0;
+		let index = 0;
+
+		function fetchMeta(id, meta, retries = 3) {
+			return new Promise(resolve => {
+				const xhr = new XMLHttpRequest();
+				xhr.open("GET", meta.url, true);
+				let timeout = setTimeout(() => {
+					xhr.abort();
+				}, 10000); // 10 Sekunden Timeout
+				xhr.onreadystatechange = function () {
+					if (xhr.readyState === XMLHttpRequest.DONE) {
+						clearTimeout(timeout);
+						if (xhr.status === 200) {
+							try {
+								Metadata[id] = JSON.parse(xhr.responseText);
+								updated.push({ id: id, hash: meta.hash, json: xhr.responseText });
+							} catch (e) { Metadata[id] = null; }
+							resolve();
+						} else if (retries > 0) {
+							// Bei Fehler: Retry mit Delay
+							setTimeout(() => fetchMeta(id, meta, retries - 1).then(resolve), 1000);
+						} else {
+							console.warn('Failed to load', meta.url, xhr.status);
+							resolve();
+						}
+					}
+				};
+				xhr.onerror = () => {
+					clearTimeout(timeout);
+					if (retries > 0) {
+						setTimeout(() => fetchMeta(id, meta, retries - 1).then(resolve), 1000);
+					} else {
+						resolve();
+					}
+				};
+				xhr.send();
+			});
+		}
+
+		async function runNext() {
+			while (active < maxConcurrent && index < ids.length) {
+				const id = ids[index++];
+				const meta = buildingUrls[id];
+				if (!buildingsOld[id] || buildingsOld[id].hash != meta.hash) {
+					active++;
+					fetchMeta(id, meta).then(() => {
+						active--;
+						runNext();
+					});
+				} else {
+					try { Metadata[id] = JSON.parse(buildingsOld[id].json); } catch (e) { Metadata[id] = null; }
+				}
+			}
+		}
+
+		await new Promise(resolve => {
+			function checkDone() {
+				if (index >= ids.length && active === 0) resolve();
+				else setTimeout(checkDone, 100);
+			}
+			runNext();
+			checkDone();
+		});
+
+		await IndexDB.db.buildingMeta.bulkPut(updated);
+		MainParser.CityEntities = Metadata;
+		MainParser.correctBuildingType();
+
+	},
+	correctBuildingType: () => {
+		for (let i in MainParser.CityEntities) {
+			if (!MainParser.CityEntities.hasOwnProperty(i)) continue;
+
+			let CityEntity = MainParser.CityEntities[i];
+			if (!CityEntity.type) CityEntity.type = CityEntity?.components?.AllAge?.tags?.tags?.find(value => value.hasOwnProperty('buildingType')).buildingType;
+        }
 	},
 
 	/**
@@ -1361,14 +1459,20 @@ let MainParser = {
 
 		Infoboard.Init();
 		EventHandler.Init();
-
+		setTimeout(MainParser.forceLoadCityEntities, 15000);
 		await ExistenceConfirmed('MainParser.CityEntities||srcLinks.FileList')
 	
 		window.dispatchEvent(new CustomEvent('foe-helper#StartUpDone'))
 		console.log('StartUp done')
 	},
 
-
+	forceLoadCityEntities: () => {
+		if (MainParser.CityEntities) return;
+		console.log('Forcing load of CityEntities');
+		let xhr = new XMLHttpRequest();
+        xhr.open("GET", MainParser.MetaUrls['city_entities'], true);
+        xhr.send();
+	},
 	/**
 	 * Update own data (guild change etc)
 	 *
@@ -1504,7 +1608,9 @@ let MainParser = {
 		},
 
 		showAllyList:()=>{
-			if (!Settings.GetSetting('ShowAllyList')) return
+			
+			console.log(0, MainParser.Allies);
+
 			if ($('#AllyList').length === 0) {
 				HTML.Box({
 					id: 'AllyList',
@@ -1586,46 +1692,20 @@ let MainParser = {
 							<th>${i18n('Boxes.AllyList.Level')}</th>
 							<th>${i18n('Boxes.AllyList.Boosts')}</th>
 					</tr></thead>`
-			for (let [roomId,r] of Object.entries(rooms).sort((a,b)=>{
+			sortedRooms = Object.entries(rooms).sort((a,b)=>{
 				f=(r)=>{return Object.keys(MainParser.Allies.rarities).indexOf(r.allyRarity) + (r.buildingName?10:0) + (r.fragmentsAmount?100:0)}
 				return f(a[1])-f(b[1])
-			})) {
+			})
+				
+			for (let [roomId,r] of sortedRooms){
 				let buildingId=roomId.split("#")[0]
 				let rarities=r.roomRarity?.split("#")||[]
 				rarities.push(r.allyRarity)
 				rarities=rarities.map(x=>"Rarity-"+x)
 
-				rarityStars = (r) => {
-					if (!r || r=="") return ""
-					let i = Object.keys(MainParser.Allies.rarities).indexOf(r)
-					if (i==-1) return `<img style="filter: drop-shadow(0px 2px 2px black)"  src="${srcLinks.get(`/shared/icons/when_motivated.png`, true)}">`
-					if (i==0) return `<span style="font-size: large; color: transparent; text-shadow: 0px 0px 4px black;" >☆</span>`
-					let ret=""					
-					let star = `<img style="margin-left:-3px"  src="${srcLinks.get(`/historical_allies/portraits/historical_allies_portrait_rarity_icon.png`, true)}">`
-					for (let j = 0; j < i; j++) {
-						ret += star
-						star = `<img style="margin-left:-15px" src="${srcLinks.get(`/historical_allies/portraits/historical_allies_portrait_rarity_icon.png`, true)}">`
-					}
-					return ret
-				}
-				
-				boosts = (boosts) => {
-					let feature = {
-						"all":"",
-						"battleground":"_gbg",
-						"guild_expedition":"_gex",
-						"guild_raids":"_gr"
-					}
-					let ret=""
-					for (b of boosts||[]) {
-						ret+=`${srcLinks.icons(b.type+feature[b.targetedFeature])} ${b.value + Boosts.percent(b.type)}`
-					}
-					return ret
-				}
-
 				//${MainParser.Allies.tooltip(buildingId)}
 				html+=`<tr class="allyRoomRow ${rarities.join(" ")}">
-							<td style="white-space:nowrap">${rarityStars(r.roomRarity)}</td>
+							<td style="white-space:nowrap">${MainParser.Allies.rarityStars(r.roomRarity)}</td>
 					   	   	<td ${buildingId!=0?`class="helperTT" 
 								data-id="${buildingId}" 
 								data-era="${Technologies.InnoEraNames[MainParser.CityMapData[buildingId].level]}"
@@ -1633,10 +1713,10 @@ let MainParser = {
 								`:``}
 							>${r.buildingName || ""}</td>
 							<td>${buildingId!=0?`<span class="show-entity" data-id="${buildingId}"><img class="game-cursor" src="${ extUrl + 'css/images/hud/open-eye.png'}"></span>`:""}</td>
-						   	<td style="white-space:nowrap">${rarityStars(r.allyRarity)}</td>
+						   	<td style="white-space:nowrap">${MainParser.Allies.rarityStars(r.allyRarity)}</td>
 						   	<td>${r.allyName || ""}${r.fragmentsAmount?srcLinks.icons("icon_tooltip_fragment") + r.fragmentsAmount+"/"+r.fragmentsNeeded:""}</td>
 						   	<td>${r.allyLevel || ""}</td>
-						   	<td>${boosts(r.allyBoosts)}</td>
+						   	<td>${MainParser.Allies.boosts(r.allyBoosts)}</td>
 						</tr>`
 			}
 			
@@ -1654,6 +1734,34 @@ let MainParser = {
 			});
 			return rooms
 		},
+		rarityStars: (r) => {
+			if (!r || r=="") return ""
+			let i = Object.keys(MainParser.Allies.rarities).indexOf(r)
+			if (i==-1) return `<img style="filter: drop-shadow(0px 2px 2px black)"  src="${srcLinks.get(`/shared/icons/when_motivated.png`, true)}">`
+			if (i==0) return `<span style="font-size: large; color: transparent; text-shadow: 0px 0px 4px black;" >☆</span>`
+			let ret=""					
+			let star = `<img style="margin-left:-3px"  src="${srcLinks.get(`/historical_allies/portraits/historical_allies_portrait_rarity_icon.png`, true)}">`
+			for (let j = 0; j < i; j++) {
+				ret += star
+				star = `<img style="margin-left:-15px" src="${srcLinks.get(`/historical_allies/portraits/historical_allies_portrait_rarity_icon.png`, true)}">`
+			}
+			return ret
+		},
+				
+		boosts: (boosts) => {
+			let feature = {
+				"all":"",
+				"battleground":"_gbg",
+				"guild_expedition":"_gex",
+				"guild_raids":"_gr"
+			}
+			let ret=""
+			for (b of boosts||[]) {
+				ret+=`${srcLinks.icons(b.type+feature[b.targetedFeature])} ${b.value + Boosts.percent(b.type)}`
+			}
+			return ret
+		}
+
 
 	},
 

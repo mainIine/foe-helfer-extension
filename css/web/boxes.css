@@ -452,6 +452,8 @@ table.foe-table tr.success td,
 
 table.foe-table tr.bg-green td {
 	background-color: var(--table-bg-success);
+	border-top-color: var(--table-bt-success);
+    border-bottom-color: var(--table-bb-success);
 }
 
 p {
@@ -511,14 +513,6 @@ p {
 
 /* MENU ICONS */
 
-[id$=market-Btn] span {
-	background-image: url('../images/menu/market.png');
-}
-
-[id$=moppelHelper-Btn] span {
-	background-image: url('../images/menu/polivation.png');
-}
-
 #playerProfile-Btn span img {
 	border-radius: 3px 3px 10px 3px;
     box-shadow: 0 2px 2px var(--black-65);
@@ -531,6 +525,14 @@ p {
 	border-radius: 3px 3px 10px 3px;
     box-shadow: 0 2px 2px var(--black-65);
     border: 1px solid var(--text-darker);
+}
+
+[id$=market-Btn] span {
+	background-image: url('../images/menu/market.png');
+}
+
+[id$=moppelHelper-Btn] span {
+	background-image: url('../images/menu/polivation.png');
 }
 
 [id$=fpCollector-Btn] span {
@@ -589,8 +591,24 @@ p {
 	background-image: url('../images/menu/settings.png');
 }
 
+[id$=shopAssist-Btn] span {
+	background-image: url('../images/menu/store.png');
+}
+
+[id$=allies-Btn] span {
+	background-image: url('../images/menu/allies.png');
+}
+
 [id$=settings-Btn] {
 	background: linear-gradient(#423428, #463526) padding-box, linear-gradient(to bottom, #7f916a, #455630) border-box !important;
+}
+
+[id$=discord-Btn] {
+	background: radial-gradient(#5865f2 25%, #463526 75%) padding-box, var(--menu-btn-bg-green) !important;
+}
+
+[id$=discord-Btn].hud-btn-red {
+	background: radial-gradient(#5865f2 25%, #463526 75%) padding-box, var(--menu-btn-bg-red) !important;
 }
 
 [id$=marketOffers-Btn] span {
@@ -864,6 +882,7 @@ Potions */
 	position: fixed;
 	top: 40px;
 	right: 8px;
+	user-select: none;
 }
 
 #BoostPotions .shortest {
@@ -973,6 +992,7 @@ FP-Bar */
 	left: calc(50vw  + 130px);
 	display: flex;
 	justify-content: flex-end;
+	user-select: none;
 }
 
 #fp-bar .fp-storage,
@@ -1025,7 +1045,7 @@ FP-Bar */
 	display: none;
 }
 #fp-bar.gex {
-	left: 311px;
+	left: 354px;
 }
 #fp-bar.main .fp-bar-main{
 	display:none;
@@ -1327,6 +1347,7 @@ FP-Bar */
 	filter: alpha(opacity=0);
 	visibility: visible;
 	z-index: 2000;
+	user-select: none;
 }
 
 .tooltip .tooltip-error {
@@ -1438,7 +1459,7 @@ FP-Bar */
 
 .tooltip.foe-skin > .tooltip-inner {
 	text-align: left;
-	width: 180px;
+	width: max-content;
 	border: var(--tooltip-border);
 	background-color: var(--tooltip-bg);
 	box-shadow: 0 0 2px 1px var(--black-65);
@@ -1804,6 +1825,7 @@ input[type="range"]::-webkit-slider-thumb {
 	box-sizing: border-box;
 	box-shadow: var(--menu-shadow);
 	background: var(--menu-bg);
+	user-select: none;
 }
 
 #foe-helper-hud-wrapper {
@@ -1915,9 +1937,9 @@ input[type="range"]::-webkit-slider-thumb {
 	background-repeat: no-repeat;
 	background-size: contain;
 	display: inline-flex;
-	width: 76%;
-	height: 76%;
-	margin-top: 12%;
+	width: 80%;
+	height: 80%;
+	margin-top: 10%;
 }
 
 .hud-btn span.hud-counter {

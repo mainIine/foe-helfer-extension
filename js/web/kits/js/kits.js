@@ -729,6 +729,7 @@ let Kits = {
 		let startBuildings = {}
 
 		for (let upgrade of Object.values(MainParser.BuildingUpgrades)) {
+			if (["silver_upgrade_kit_BOWL22A"].includes(upgrade.upgradeItem.id)) continue; // faulty game data
 			Kits.Names[upgrade.upgradeItem.id] = upgrade.upgradeItem.name;
 			let upgradeId= upgrade.upgradeItem.id;
 			let buildingList = upgrade.upgradeSteps.map(x => x.buildingIds)
