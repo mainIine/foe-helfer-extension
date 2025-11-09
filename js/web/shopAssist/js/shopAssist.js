@@ -161,7 +161,7 @@ let shopAssist = {
 			
 			let limitedBuys = slot.purchaseLimit ? slot.purchaseLimit.remainingPurchases || 0 : Infinity;
 			if (slot.reward.subType == "fragment") {
-				neededFragments = Math.max(slot.reward.requiredAmount-(stock.fragments||0),0);
+				neededFragments = Math.max(slot.reward.requiredAmount-((stock.fragments||0)%slot.reward.requiredAmount),0);
 				neededBuys = Math.ceil(neededFragments/slot.reward.amount);
 				neededFragments = neededBuys * slot.reward.amount;
 			}
