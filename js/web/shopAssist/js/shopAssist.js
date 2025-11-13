@@ -48,15 +48,25 @@ FoEproxy.addHandler('ItemStoreService', 'refreshStore', (data, postData) => {
 
 FoEproxy.addHandler('ItemStoreService', 'getConfigs', (data, postData) => {
 	shopAssist.shopMeta = Object.assign({},...data.responseData.map(x=>({[x.id]:x})));
-	// data cleanup
+	// cleanup old shop favourites data
 	let cleaned = false
 	for (let x of Object.keys(shopAssist.favourites)) {
-		if (!shopAssist.shopMeta[x]) {
+		if (!shopAssist.shopMeta?.[x]) {
 			delete shopAssist.favourites[x];
 			cleaned = true;
 		}
 	}
 	if (cleaned) localStorage.setItem("shopAssist.favourites",JSON.stringify(shopAssist.favourites));
+	// cleanup old shop alerts data
+	cleaned = false;
+	for (let key of Object.keys(shopAssist.alerts)) {
+		let shopId = key.split("#")[0];
+		if (!shopAssist.shopMeta?.[shopId]) {
+			delete shopAssist.alerts[key];
+			cleaned = true;
+		}
+	}
+	if (cleaned) localStorage.setItem("shopAssist.alerts",JSON.stringify(shopAssist.alerts));
 	localStorage.setItem("shopAssist.shopMeta",JSON.stringify(shopAssist.shopMeta));
 });
 
@@ -550,7 +560,7 @@ let shopAssist = {
 			}
 			if (canBuy) {
 				shopAssist.alertsTriggered[key] = true;
-				[shopId,slotId] = key.split("#");
+				let shopId = key.split("#")[0];
 				HTML.ShowToastMsg({
 					show: 'force',
 					head: i18n('Boxes.ShopAssist.Shop') + ' - ' + (shopAssist.shopMeta?.[shopId]?.name||""),
