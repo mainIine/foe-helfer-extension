@@ -831,6 +831,7 @@ let Alerts = function(){
 								'28800': i18n('Boxes.Alerts.Time.8h'),
 								'36000': i18n('Boxes.Alerts.Time.10h'),
 								'86400': i18n('Boxes.Alerts.Time.1d'),
+								'604800': i18n('Boxes.Alerts.Time.7d'),
 							}
 						};
 
@@ -902,7 +903,8 @@ let Alerts = function(){
 							'3600' : '',
 							'14400' : '',
 							'28800' : '',
-							'86400' : ''
+							'86400' : '',
+							'604800' : ''
 						};
 						repeats[ repeat + '' ] = ' checked="checked"';
 						return repeats;
@@ -1199,6 +1201,7 @@ let Alerts = function(){
 							'8h': i18n('Boxes.Alerts.Time.8h'),
 							'10h': i18n('Boxes.Alerts.Time.10h'),
 							'1d': i18n('Boxes.Alerts.Time.1d'),
+							'7d': i18n('Boxes.Alerts.Time.7d'),
 						},
 						tags: {
 							header: i18n('Boxes.Alerts.Form.Tag'),
@@ -1284,6 +1287,7 @@ let Alerts = function(){
 						<span class="btn-default datetime-preset" data-time="28800">${labels.times['8h']}</span>
 						<span class="btn-default datetime-preset" data-time="36000">${labels.times['10h']}</span>
 						<span class="btn-default datetime-preset" data-time="86400">${labels.times['1d']}</span>
+						<span class="btn-default datetime-preset" data-time="604800">${labels.times['7d']}</span>
 					</div>
 				</div>
 				<div class="col">
@@ -1327,6 +1331,8 @@ let Alerts = function(){
 						<label for="alert-repeat-10h" class="btn-default">${labels.times['10h']}</label>
 						<input id="alert-repeat-1d" type="radio" name="alert-repeat" class="hidden" value="86400"${repeats['86400']}>
 						<label for="alert-repeat-1d" class="btn-default">${labels.times['1d']}</label>
+						<input id="alert-repeat-7d" type="radio" name="alert-repeat" class="hidden" value="604800"${repeats['604800']}>
+						<label for="alert-repeat-7d" class="btn-default">${labels.times['7d']}</label>
 					</span>
 				</p>
 				
