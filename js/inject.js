@@ -191,7 +191,6 @@ function inject (loadBeta = false, extUrl = chrome.runtime.getURL(''), betaDate=
 				}
 				exportFunction(callBgApi, window, {defineAs: 'foeHelperBgApiHandler'});
 			}
-			while (!document.head && !document.documentElement) {}
 			// start loading both script-lists
 			const vendorListPromise = loadJsonResource(`${extUrl}js/vendor.json`);
 			const scriptListPromise = loadJsonResource(`${extUrl}js/internal.json`);
