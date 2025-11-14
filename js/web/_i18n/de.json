@@ -1597,7 +1597,7 @@
     "Settings.ShowGuildTreasuryLogExport.Title": "Exportwerkzeug für Gildenkassenprotokolle anzeigen",
     "Settings.ShowInvestments.Desc": "Beim Betreten des 'Rathauses' > 'Neuigkeiten' > 'Legendäre Bauwerke' wird eine Übersicht der FP Investitionen angezeigt",
     "Settings.ShowInvestments.Title": "LG Investitionen Übersicht anzeigen",
-    "Settings.ShowLinks.Desc": "Ersetzt Spielernamen und Gildennamen durch Links zum Profil des Spielers oder der Gilde auf scoredb.io.<br>Ersetzt Gebäude-Setnamen durch Links zu forgeofempires.fandom.com.",
+    "Settings.ShowLinks.Desc": "Ersetzt Spielernamen und Gildennamen durch Links zum Profil des Spielers oder der Gilde auf der ausgewählten Website.<br>Ersetzt Gebäude-Setnamen durch Links zu forgeofempires.fandom.com.",
     "Settings.ShowLinks.Title": "Links anzeigen",
     "Settings.ShowMapTradeWarning.Desc": "Zeigt eine Box über dem 'Verhandeln' Button in Provinzen an, die ein versehentliches Verhandeln vermeiden soll ",
     "Settings.ShowMapTradeWarning.Title": "Handelsblocker",

@@ -1599,7 +1599,7 @@
     "Settings.ShowGuildTreasuryLogExport.Title": "Show guild treasury log export tool",
     "Settings.ShowInvestments.Desc": "Display a GB FP investment window when entering 'Town Hall'> 'News'> 'Great Buildings' tab.",
     "Settings.ShowInvestments.Title": "Display FP Investment sums",
-    "Settings.ShowLinks.Desc": "Replaces player names and guild names with links to player or guild profile on scoredb.io.<br>Replaces Building-Kitnames with links to forgeofempires.fandom.com.",
+    "Settings.ShowLinks.Desc": "Replaces player and guild names with links to player / guild profiles of your chosen website.<br>Replaces Building-Kitnames with links to forgeofempires.fandom.com.",
     "Settings.ShowLinks.Title": "Show links",
     "Settings.ShowMapTradeWarning.Desc": "Displays a window that covers the 'Negotiate' Button in Provinces preventing accidental clicking ",
     "Settings.ShowMapTradeWarning.Title": "Negotiation Blocker",
