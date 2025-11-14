@@ -1256,6 +1256,7 @@
     "Boxes.ShopAssist.All": "All",
     "Boxes.ShopAssist.Max": "Max",
     "Boxes.ShopAssist.Full": "Full",
+    "Boxes.ShopAssist.filterCurrency": "Do not show items with this currency",
     "Boxes.ShopAssist.onlyFavourites": "Only Favorites",
     "Boxes.ShopAssist.onlyUnlocked": "Only Unlocked",
     "Date": "DD/MMM/YYYY",
