@@ -138,7 +138,7 @@ let shopAssist = {
 		let newFilter = {};
 		for (let res of shopAssist.shopMeta[shopAssist.storeId].resources) {
 			newFilter[res] = shopAssist.currencyfilter[res] ?? true;
-			resources += `<span class="shopResource ${newFilter[res]?"active":""} clickable" data-currency="${res}">${HTML.Format(ResourceStock[res]||0)}${srcLinks.icons(res)}</span>`
+			resources += `<span class="shopResource ${newFilter[res]?"active":""} clickable" data-original-title="${i18n('Boxes.ShopAssist.filterCurrency')}" data-currency="${res}">${HTML.Format(ResourceStock[res]||0)}${srcLinks.icons(res)}</span>`
 		}
 		shopAssist.currencyfilter = newFilter;
 		h += `<thead>
@@ -422,6 +422,7 @@ let shopAssist = {
 			checkCurrencyFilters();
 		});
 		checkCurrencyFilters();
+		$('[data-original-title]').tooltip();
 		localStorage.setItem("shopAssist.alerts",JSON.stringify(shopAssist.alerts));
     },
 
