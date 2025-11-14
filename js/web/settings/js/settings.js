@@ -437,6 +437,21 @@ let Settings = {
 	},
 
 
+	SelectWebsite: () => {
+		let dp = [];
+		let currentSite = localStorage.getItem('linkSite') || "siteScoredb";
+		dp.push('<p>Choose your preferred website:<br />');
+		dp.push('<label for="scoredb"><input type="radio" value="siteScoredb" id="scoredb" name="website" '+(currentSite === "siteScoredb" ? 'checked' : "")+' /> foe.scoredb.io</label><br />');
+		dp.push('<label for="forgedb"><input type="radio" value="siteForgedb" id="forgedb" name="website" '+(currentSite === "siteForgedb" ? 'checked' : "")+' /> foestats.com</label></p>');
+
+		$('#SettingsBoxBody').on('change', 'input[name="website"]', function () {
+			let site = $(this).val();
+			localStorage.setItem('linkSite', site);
+		});
+		return dp.join('');
+	},
+
+
 	/**
 	 * Language switcher
 	 *

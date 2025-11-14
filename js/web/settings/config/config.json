@@ -167,6 +167,7 @@
 	{
 		"name": "ShowLinks",
 		"status": true,
+		"callback": "SelectWebsite",
 		"group": "Boxes",
 		"sort": 13
 	},
