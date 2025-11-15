@@ -510,7 +510,25 @@
 	border-color: var(--border-color-decayed);
 }
 #grid-outer span.collectSoon {
-	background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, #fff4 2px, #fff4 7px), repeating-linear-gradient(-45deg, transparent, transparent 5px, #fff4 2px, #fff4 7px);
+	background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, #fff1 2px, #fff1 7px);
+}
+#grid-outer span.collectSoon::after {
+	content: '⬤';
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    width: inherit;
+    color: #fffa;
+    height: inherit;
+	text-shadow: none;
+    font-size: 4px;
+}
+#grid-outer span.collectSoon[class*="collect1"]::after {
+	content: '⬤ ⬤';
+}
+#grid-outer span.collectSoon[class*="collect2"]::after {
+	content: '⬤ ⬤ ⬤';
 }
 
 [data-view="skew"] .older-1.diagonal {
