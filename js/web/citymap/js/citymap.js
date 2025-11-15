@@ -258,8 +258,10 @@ let CityMap = {
 		$('#citymap-wrapper').append(menu);
 
 		if (ActiveMap === "guild_raids") {
-			$("#sidebar").append(CityMap.showQIStats());
-			$("#sidebar").append(CityMap.showQIBuildings());
+			if (CityMap.QIData) {
+				$("#sidebar").append(CityMap.showQIStats());
+				$("#sidebar").append(CityMap.showQIBuildings());
+			}
 		}
 
 		if (ActiveMap === "cultural_outpost" || ActiveMap === "era_outpost") {
@@ -478,6 +480,7 @@ let CityMap = {
 
 
 	showQIBuildings: () => {
+		if (!CityMap.QIData) return;
 		let boosts = Boosts.Sums;
 		let buildings = Object.values(CityMap.QIData);
 
