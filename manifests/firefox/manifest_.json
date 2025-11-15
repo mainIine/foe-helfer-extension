@@ -48,6 +48,7 @@
 			"include_globs": [ "*forgeofempires.com/game*" ],
 			"run_at": "document_start",
 			"js": [
+				"js/injectProxy.js",
 				"vendor/browser-polyfill/browser-polyfill.min.js",
 				"js/web/_languages/js/_languages.js",
 				"js/inject.js"
