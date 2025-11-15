@@ -373,10 +373,12 @@ let CityMap = {
 				ysize = ((parseInt(BuildingSize['ysize']) * CityMap.OutpostScaleUnit) / 100)
 				
 				let collectSoon = "";
-				if (ActiveMap === "guild_raids" && CityMapEntity.state.__class__ === "ProducingState" && CityMapEntity.state.next_state_transition_in < 10800) {
-					collectSoon = " collectSoon";
+				let thresholdTime = 10800;
+				let hours = Math.round(CityMapEntity.state.next_state_transition_in/60/60*100);
+				if (ActiveMap === "guild_raids" && CityMapEntity.state.__class__ === "ProducingState" && CityMapEntity.state.next_state_transition_in < thresholdTime) {
+					collectSoon = " collectSoon collect" + (hours < 100 ? "" : hours);
 				}
-				let collectionString = HTML.i18nReplacer(i18n('Boxes.CityMap.CollectSoon'), {hours: Math.round(CityMapEntity.state.next_state_transition_in/60/60*100)/100})
+				let collectionString = HTML.i18nReplacer(i18n('Boxes.CityMap.CollectSoon'), {hours: hours/100})
 				f = $('<span />').addClass('entity ' + d['type'] + collectSoon).css({
 					width: xsize + 'em',
 					height: ysize + 'em',
