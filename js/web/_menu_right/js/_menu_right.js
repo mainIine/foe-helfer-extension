@@ -34,10 +34,10 @@ let _menu_right = {
 			if (event.target == window) _menu_right.SetMenuHeight(true);
 		};
 
-		$('body').append(hud).ready(function () {
+		$('body').append(hud).ready(async function () {
 
 			_menu.ListLinks(_menu_right.InsertMenuItem);
-			_menu_right.CheckButtons();
+			await _menu_right.CheckButtons();
 
 			_menu_right.SetMenuHeight();
 
@@ -120,14 +120,15 @@ let _menu_right = {
 	/**
 	 * Make panel scrollable
 	 */
-	CheckButtons: () => {
+	CheckButtons: async () => {
 
 		let activeIdx = 0;
+
+		await ExistenceConfirmed("jQuery._data($('body').get(0), 'events' ).click||$('.hud-btn')");
 
 		$('.hud-btn').click(function () {
 			activeIdx = $(this).index('.hud-btn');
 		});
-
 
 		if (jQuery._data($('body').get(0), 'events' ).click.filter((elem) => elem.selector == ".hud-btn-down-active").length == 0) {
 			// Klick auf Pfeil nach unten

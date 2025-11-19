@@ -41,11 +41,11 @@ let _menu_bottom = {
 			if (event.target == window) _menu_bottom.SetMenuWidth(true);
 		};
 		
-		$('body').append(hud).promise().done(function(){
+		$('body').append(hud).promise().done(async function(){
 
 			// Insert buttons
 			_menu.ListLinks(_menu_bottom.InsertMenuItem);
-			_menu_bottom.CheckButtons();
+			await _menu_bottom.CheckButtons();
 
 			// Determine the correct place for the menu
 			_menu_bottom.SetMenuWidth();
@@ -144,8 +144,9 @@ let _menu_bottom = {
 	 * Panel scrollbar machen
 	 *
 	 */
-	CheckButtons: () => {
+	CheckButtons: async () => {
 		let activeIdx = 0;
+		await ExistenceConfirmed("jQuery._data($('body').get(0), 'events' ).click||$('.hud-btn')");
 		$('.hud-btn').click(function () {
 			activeIdx = $(this).index('.hud-btn');
 		});
