@@ -1319,6 +1319,7 @@ FP-Bar */
 	right: -7px;
 	cursor: nwse-resize;
 	background: url('../images/hud/wingrip.png') no-repeat;
+	z-index: 5005;
 }
 
 .window-grippy:active {
@@ -1345,14 +1346,13 @@ FP-Bar */
 
 .tooltip {
 	position: absolute;
-	z-index: 1030;
+	z-index: 5030;
 	display: block;
 	font-size: 11px;
 	line-height: 1.4;
 	opacity: 0;
 	filter: alpha(opacity=0);
 	visibility: visible;
-	z-index: 2000;
 	user-select: none;
 }
 
@@ -1408,7 +1408,7 @@ FP-Bar */
 }
 
 .tooltip.top .tooltip-arrow {
-	bottom: 0;
+	bottom: 3px;
 	left: 50%;
 	margin-left: -5px;
 	border-top-color: var(--text-darkest);
