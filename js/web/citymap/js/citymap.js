@@ -459,7 +459,6 @@ let CityMap = {
 
 		out += '<div class="productions">'
 		let mainBuilding = Object.values(CityMap.QIData).find( x => x.type === 'main_building');
-		console.log(mainBuilding.state.current_product.product.resources);
 		for (let [prod, value] of Object.entries(CityMap.QIStats.resources)) {
 			out += '<span class="'+prod+'">'+srcLinks.icons(prod);
 			if (prod.includes("suppl")) {
