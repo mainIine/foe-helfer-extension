@@ -250,7 +250,7 @@
     "Boxes.CityMap.OutpostSubmit": "Submit to City-Planner",
     "Boxes.CityMap.QIActionRechargeCycle": "every hour",
     "Boxes.CityMap.QICycle": "every 10 hours",
-    "Boxes.CityMap.QIHint": "Displayed values assume your buildings have finished construction. Town Hall productions are not included.",
+    "Boxes.CityMap.QIHint": "Displayed values assume your buildings have finished construction.",
     "Boxes.CityMap.ShowAscendableBuildings": "Ascendable buildings",
     "Boxes.CityMap.ShowDecayedBuildings": "Decayed buildings",
     "Boxes.CityMap.ShowNoStreetBuildings": "Roadless buildings",

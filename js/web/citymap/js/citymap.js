@@ -450,22 +450,27 @@ let CityMap = {
 
 		out = '<div class="qiSums">';
 		out += '<p class="text-center"><i>'+i18n('Boxes.CityMap.QIHint')+'</i></p>';
-		out += '<div class="text-right popStats" style="margin-bottom: 10px"><span class="prod population">'+CityMap.QIStats.availablePopulation+'/'+CityMap.QIStats.totalPopulation+'</span> ';
+		out += '<div class="flex between" style="margin-bottom: 10px;">';
+        out += '<span><img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_expansion.png`,true)+'" />' +  CityMap.QIAreas.length + '</span>';
+		out += '<div class="popStats"><span class="prod population">'+CityMap.QIStats.availablePopulation+'/'+CityMap.QIStats.totalPopulation+'</span> ';
 		let euphoria = Math.round(CityMap.QIStats.euphoriaBoost*100);
 		out += '<span class="prod happiness euphoria'+euphoria+'">'+euphoria+'%</span></div>';
+		out += '</div>';
+
 		out += '<div class="productions">'
+		let mainBuilding = Object.values(CityMap.QIData).find( x => x.type === 'main_building');
 		for (let [prod, value] of Object.entries(CityMap.QIStats.resources)) {
 			out += '<span class="'+prod+'">'+srcLinks.icons(prod);
 			if (prod.includes("suppl")) {
 				let boosts = Boosts.Sums.guild_raids_supplies_production || 0;
-				out += HTML.Format(value*(CityMap.QIStats.euphoriaBoost+boosts/100));
+				out += HTML.Format(value*(CityMap.QIStats.euphoriaBoost+boosts/100) + (mainBuilding?.state?.current_product?.product?.resources?.guild_raids_supplies || 0));
 			}
 			else if (prod.includes("money")) {
 				let boosts = Boosts.Sums.guild_raids_coins_production || 0;
-				out += HTML.Format(value*(CityMap.QIStats.euphoriaBoost+boosts/100));
+				out += HTML.Format(value*(CityMap.QIStats.euphoriaBoost+boosts/100) + (mainBuilding?.state?.current_product?.product?.resources?.guild_raids_money || 0));
 			}
 			else
-				out += HTML.Format(value*CityMap.QIStats.euphoriaBoost);
+				out += HTML.Format(value*CityMap.QIStats.euphoriaBoost + (mainBuilding?.state?.current_product?.product?.resources?.guild_raids_chrono_alloy || 0));
 			out += "</span> ";
 		}
 		out += '</div><div class="boosts">';
