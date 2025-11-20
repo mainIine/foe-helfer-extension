@@ -102,8 +102,13 @@
 	gap: 2px;
 }
 
-.outpost.guild_raids .popStats span {
+.outpost.guild_raids .flex.between span {
 	display: inline-flex;
+	align-items: center;
+}
+
+.outpost.guild_raids .flex.between img {
+	height: 24px;
 }
 
 .outpost.guild_raids .euphoria150 {
