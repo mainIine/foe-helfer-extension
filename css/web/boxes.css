@@ -1319,6 +1319,7 @@ FP-Bar */
 	right: -7px;
 	cursor: nwse-resize;
 	background: url('../images/hud/wingrip.png') no-repeat;
+	z-index: 5005;
 }
 
 .window-grippy:active {
