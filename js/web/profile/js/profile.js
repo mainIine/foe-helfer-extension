@@ -7,6 +7,7 @@ FoEproxy.addHandler('AchievementsService','getOverview', (data, postData) => {
     }
 });FoEproxy.addHandler('OtherPlayerService','visitPlayer', (data, postData) => {
     Profile.otherPlayer = data.responseData;
+    // development shortcut Profile.showOtherPlayer();
 });
 
 FoEproxy.addFoeHelperHandler('ActiveMapUpdated', () => {
@@ -68,8 +69,8 @@ const Profile = {
 
 	showOtherPlayer: () => {
 		if ($('#PlayerProfile').length > 0) {
-			HTML.CloseOpenBox('PlayerProfile')
-			return
+			HTML.CloseOpenBox('PlayerProfile');
+			return;
 		}
 
 		HTML.Box({
@@ -81,17 +82,32 @@ const Profile = {
         HTML.AddCssFile('profile');
 
         let content = [];
+        let buildings = Object.values(CityMap.createNewCityMapEntities(Object.values(MainParser.OtherPlayerCityMapData)));
+        let boosts = {};
 
         content.push('<div class="centerInfo">');
         content.push('<div class="basicInfo pad">');
         content.push('<img class="clickable" src="'+srcLinks.GetPortrait(Profile.otherPlayer.other_player.avatar)+'" />');
-        content.push('<divY');
+        content.push('<div>');
         content.push('<h1>'+Profile.otherPlayer.other_player.name+'</h1>');
         content.push('<span>'+i18n('Eras.'+Technologies.Eras[Profile.otherPlayer.other_player.era])+'</span><br>');
         content.push('<span class="ranking">'+HTML.Format(parseInt(Profile.otherPlayer.other_player.score))+'</span>');
         content.push('</div>');
         content.push('</div>');
         content.push('</div>');
+        console.log(buildings);
+        for (let building of buildings) {
+            if (building.type === "street") continue;
+            console.log(building);
+            for (let [boost, value] of Object.entries(building.rating)) {
+                if (boost.includes('-tile')) continue;
+                if (boosts[boost] === undefined)
+                    boosts[boost] = value;
+                else
+                    boosts[boost] += value;
+            }
+        }
+        console.log(boosts);
         $('#PlayerProfileBody').html(content.join(''));
 	},
 
