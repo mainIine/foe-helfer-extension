@@ -1901,10 +1901,22 @@ let Productions = {
 				// skip inactive ones
 				if (!Productions.Rating.Data[type]?.active || Productions.Rating.Data[type]?.perTile === null) continue;
 
-				let secondType = type.replace('att_','def_');
-				if (combinedRatingTypes.find(x => x === type.replace('def_','att_def_'))) continue;
-				if (Productions.Rating.Data[secondType].active) {
-					combinedRatingTypes.push(type.replace('att_','att_def_'));
+				if (!type.includes('att_') && !type.includes('def_')) {
+					combinedRatingTypes.push(type);
+					continue;
+				}
+				// combine att & def into one - list always starts with att_
+				if (type.includes('att_') || type.includes('def_')) {
+					let coreType = type.replace('att_','').replace('def_','');
+					let combinedType = 'att_def_'+coreType;
+					let twinType = type.includes('att_') ? 'def_'+coreType : 'att_'+coreType;
+
+					if (combinedRatingTypes.find(x => x.includes(combinedType))) continue;
+
+					if (Productions.Rating.Data[twinType]?.active) 
+						combinedRatingTypes.push(combinedType);
+					else 
+						combinedRatingTypes.push(type);
 				}
 			}
 
