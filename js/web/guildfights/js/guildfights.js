@@ -79,9 +79,9 @@ FoEproxy.addHandler('TimerService', 'getTimers', (data, postData) => {
 		serverMidnight = moment.unix(t.time);
 		GuildFights.serverOffset = 24*3600 
 									- (
-										parseInt(serverMidnight.format("HH"))*3600
-										+ parseInt(serverMidnight.format("mm"))*60
-										+ parseInt(serverMidnight.format("ss"))
+										serverMidnight.format("HH")*3600
+										+ serverMidnight.format("mm")*60
+										+ serverMidnight.format("ss")
 									);
 	})
 });
@@ -1379,7 +1379,8 @@ let GuildFights = {
 			let LiveFightSettings = JSON.parse(localStorage.getItem('LiveFightSettings'));
 			let showTileColors = (LiveFightSettings && LiveFightSettings.showTileColors !== undefined) ? LiveFightSettings.showTileColors : 1;
 			//console.log(999, showTileColors);
-			copy += `${moment.unix(mapElem.lockedUntil - 2 - GuildFights.serverOffset).format('HH:mm')} ${showTileColors === 1 ? battleType : ''} ${mapElem.title} \n`;
+			copy += `${moment.unix(mapElem.lockedUntil - 2).format('HH:mm')} ${showTileColors === 1 ? battleType : ''} ${mapElem.title} \n`;
+			//copy += `${moment.unix(mapElem.lockedUntil - 2 - GuildFights.serverOffset).format('HH:mm')} ${showTileColors === 1 ? battleType : ''} ${mapElem.title} \n`;
 		});
 
 		if (copy !== '') {
