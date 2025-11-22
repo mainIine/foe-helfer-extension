@@ -77,12 +77,14 @@ FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postDa
 FoEproxy.addHandler('TimerService', 'getTimers', (data, postData) => {
 	data.responseData.filter(t=>t.type=="battlegroundsAttrition").forEach(t=>{
 		serverMidnight = moment.unix(t.time);
+
 		GuildFights.serverOffset = 24*3600 
 									- (
 										serverMidnight.format("HH")*3600
 										+ serverMidnight.format("mm")*60
-										+ serverMidnight.format("ss")
+										+ serverMidnight.format("ss")*1
 									);
+		console.log("GuildFights.serverOffset", GuildFights.serverOffset);
 	})
 });
 
@@ -1380,7 +1382,8 @@ let GuildFights = {
 			let showTileColors = (LiveFightSettings && LiveFightSettings.showTileColors !== undefined) ? LiveFightSettings.showTileColors : 1;
 			//console.log(999, showTileColors);
 			copy += `${moment.unix(mapElem.lockedUntil - 2).format('HH:mm')} ${showTileColors === 1 ? battleType : ''} ${mapElem.title} \n`;
-			//copy += `${moment.unix(mapElem.lockedUntil - 2 - GuildFights.serverOffset).format('HH:mm')} ${showTileColors === 1 ? battleType : ''} ${mapElem.title} \n`;
+			console.log("copy: ", copy)
+			console.log("copy - with offset: ",`${moment.unix(mapElem.lockedUntil - 2 - GuildFights.serverOffset).format('HH:mm')} ${showTileColors === 1 ? battleType : ''} ${mapElem.title} \n`);
 		});
 
 		if (copy !== '') {
