@@ -77,7 +77,12 @@ FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postDa
 FoEproxy.addHandler('TimerService', 'getTimers', (data, postData) => {
 	data.responseData.filter(t=>t.type=="battlegroundsAttrition").forEach(t=>{
 		serverMidnight = moment.unix(t.time);
-		GuildFights.serverOffset = 24*3600 - (parseInt(serverMidnight.format("HH")*3600) + parseInt(serverMidnight.format("mm")*60) + parseInt(serverMidnight.format("ss")));
+		GuildFights.serverOffset = 24*3600 
+									- (
+										parseInt(serverMidnight.format("HH"))*3600
+										+ parseInt(serverMidnight.format("mm"))*60
+										+ parseInt(serverMidnight.format("ss"))
+									);
 	})
 });
 
