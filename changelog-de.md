@@ -1,6 +1,26 @@
 ## Changelog - Extension
 
 
+##### 4.0.0.0
+
+**Update**
+- Allgemein
+	- verbessertes Ladeverhalten des Helfers
+- GG
+ 	- Öffnungszeiten werden nun beim Kopieren in Serverzeit umgewandelt
+	- Öffnungszeiten können per Einstellung in Serverzeit angegeben werden statt in lokaler Zeit
+- Spieler-Links
+	- es kann nun zwischen foestats.com und scoredb.io gewählt werden in den allgemeinen Einstellungen 
+- Shop Assistent
+	- Spalte "Fehlend" gibt nun immer die Menge bis zum nächsten vollen Satz an
+
+**Bugfix**
+- Shop Assistent
+	- Alarme für alte Shop-Versionen wurden nicht korrekt gelöscht 
+- QI Aktionsberechnung
+	- Kapazitätsbonus wurde nicht korrekt beachtet
+
+
 ##### 3.13.1.0
 
 **Update**

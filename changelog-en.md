@@ -1,5 +1,23 @@
 ## Changelog - Extension
 
+##### 4.0.0.0
+
+**Update**
+- General
+	- Improved loading behaviour of the Helper
+- GBG
+ 	- Unlock times are now converted to servertime when copied
+	- To also display the unlock times in servertime, check the settings
+- Player Links
+	- you can now select between foestats.com and scoredb.io in the main settings 
+- Shop Assistant
+	- Column "Missing" now always gives the amount until the next complete set
+
+**Bugfix**
+- Shop Assistant
+	- Alert for old shop versions were not pruned correctly
+- QI Action Calculation
+	- Capacity Boost was not applied correctly
 
 ##### 3.13.1.0
 
@@ -7,7 +25,7 @@
 
 - General
 	- Adjusted helper to match the game's new loading behavior
-	- made Some HUD elements "non-selectable"
+	- Made Some HUD elements "non-selectable"
 	- Added handling for chain buildings with special production
 - Power Leveling
 	- Added many new levels for the Atomium
