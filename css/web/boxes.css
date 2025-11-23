@@ -1556,6 +1556,9 @@ FP-Bar */
 .jq-icon-success .jq-toast-heading {
 	color: #63990a;
 }
+.jq-icon-error .jq-toast-heading {
+	color: var(--text-danger);
+}
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 
