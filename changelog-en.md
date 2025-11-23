@@ -12,6 +12,8 @@
 	- you can now select between foestats.com and scoredb.io in the main settings 
 - Shop Assistant
 	- Column "Missing" now always gives the amount until the next complete set
+- Settlements
+	- Added goods for pirate settlement 
 
 **Bugfix**
 - Shop Assistant
