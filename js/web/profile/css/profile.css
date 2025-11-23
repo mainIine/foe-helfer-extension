@@ -228,6 +228,11 @@
     box-shadow: 0 2px 2px var(--black-50);
 }
 
+#PlayerProfile .otherPlayer .basicInfo img {
+    width: 60px;
+    margin-right: 0.25rem;
+}
+
 #PlayerProfile .basicInfo .imgContainer {
     transition: all 0.3s ease-in-out;
 }
@@ -280,6 +285,12 @@
 #PlayerProfile .secondary img {
     max-height: 25px !important;
     max-width: 30px !important;
+}
+
+#PlayerProfile .otherPlayer .ranking {
+    position: relative;
+    top: -4px;
+    zoom: 0.9;
 }
 
 #PlayerProfile .ranking::before, #PlayerProfile .ranking::after {
