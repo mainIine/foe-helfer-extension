@@ -5,23 +5,29 @@
 
 **Update**
 - Allgemein
-	- verbessertes Ladeverhalten des Helfers
+	- Verbessertes Ladeverhalten des Helfers
+- QI Stadtübersicht
+	- Anzahl Erweiterungen hinzugefügt
+	- Rathausproduktion hinzugefügt
+	- Geänderte Hervorhebung für bald fertige Produktionen
 - GG
  	- Öffnungszeiten werden nun beim Kopieren in Serverzeit umgewandelt
 	- Öffnungszeiten können per Einstellung in Serverzeit angegeben werden statt in lokaler Zeit
 - Spieler-Links
-	- es kann nun zwischen foestats.com und scoredb.io gewählt werden in den allgemeinen Einstellungen 
+	- Es kann nun zwischen foestats.com und scoredb.io gewählt werden in den allgemeinen Einstellungen 
 - Shop Assistent
 	- Spalte "Fehlend" gibt nun immer die Menge bis zum nächsten vollen Satz an
 - Siedlung
 	- Güter für Piratensiedlung hinzugefügt
+
 
 **Bugfix**
 - Shop Assistent
 	- Alarme für alte Shop-Versionen wurden nicht korrekt gelöscht 
 - QI Aktionsberechnung
 	- Kapazitätsbonus wurde nicht korrekt beachtet
-
+- Effizienzübersicht
+	- Wurde für Kampf-Boosts nicht korrekt angezeigt, wenn nur ein Typ (Angriff oder Vertieidung) ausgewählt wurde
 
 ##### 3.13.1.0
 

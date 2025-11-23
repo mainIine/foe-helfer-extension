@@ -5,6 +5,10 @@
 **Update**
 - General
 	- Improved loading behaviour of the Helper
+- QI Map
+	- Added number of expansions
+	- Added townhall production
+	- Highlight for productions to finish soon changed
 - GBG
  	- Unlock times are now converted to servertime when copied
 	- To also display the unlock times in servertime, check the settings
@@ -20,6 +24,8 @@
 	- Alert for old shop versions were not pruned correctly
 - QI Action Calculation
 	- Capacity Boost was not applied correctly
+- Efficiency
+	- Did not show properly, when only a single type of boost (attack or defense) was selected
 
 ##### 3.13.1.0
 
