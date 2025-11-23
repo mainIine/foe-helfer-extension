@@ -13,6 +13,8 @@
 	- es kann nun zwischen foestats.com und scoredb.io gewählt werden in den allgemeinen Einstellungen 
 - Shop Assistent
 	- Spalte "Fehlend" gibt nun immer die Menge bis zum nächsten vollen Satz an
+- Siedlung
+	- Güter für Piratensiedlung hinzugefügt
 
 **Bugfix**
 - Shop Assistent
