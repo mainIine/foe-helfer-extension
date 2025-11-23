@@ -29,12 +29,12 @@ let ExistenceConfirmed = async (varlist)=>{
 			for (let x of varlist ) {
 				if (x.substr(0,2) == '$(' && eval(x).length === 0) { // jQuery object
 					doResolve = false
-					console.log(x+' not yet defined');
+					//console.log(x+' not yet defined');
 					break;
 				}
 				if (eval('typeof '+x) === 'undefined' || eval(x) === null || eval(x) === undefined) { // normal var
 					doResolve = false
-					console.log(x+' not yet defined');
+					//console.log(x+' not yet defined');
 					break;
 				}
 			}
@@ -140,9 +140,9 @@ const i18n_loadPromise = (async () => {
 		);
 
 		// warte dass i18n geladen ist
-		console.log("await vendors loaded")
+		//console.log("await vendors loaded")
 		await vendorsLoadedPromise;
-		console.log("vendors loaded");	
+		//console.log("vendors loaded");	
 		
 		for (let languageData of languageDatas) {
 			i18n.translator.add({ 'values': JSON.parse(languageData) });
@@ -1419,7 +1419,7 @@ let MainParser = {
 	 * @param d
 	 */
 	StartUp: async (d) => {
-		console.log("StartUp called");
+		//console.log("StartUp called");
 		Settings.Init(false);
 
 		MainParser.VersionSpecificStartupCode();
@@ -1469,12 +1469,12 @@ let MainParser = {
 		await ExistenceConfirmed('MainParser.CityEntities||srcLinks.FileList')
 	
 		window.dispatchEvent(new CustomEvent('foe-helper#StartUpDone'))
-		console.log('StartUp done')
+		//console.log('StartUp done')
 	},
 
 	forceLoadCityEntities: () => {
 		if (MainParser.CityEntities) return;
-		console.log('Forcing load of CityEntities');
+		//console.log('Forcing load of CityEntities');
 		let xhr = new XMLHttpRequest();
         xhr.open("GET", MainParser.MetaUrls['city_entities'], true);
         xhr.send();
@@ -1615,7 +1615,7 @@ let MainParser = {
 
 		showAllyList:()=>{
 			
-			console.log(0, MainParser.Allies);
+			//console.log(0, MainParser.Allies);
 
 			if ($('#AllyList').length === 0) {
 				HTML.Box({
