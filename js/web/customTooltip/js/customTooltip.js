@@ -323,7 +323,7 @@ let Tooltips = {
                 let ascendedId=(await CityMap.AscendingBuildings)[meta.id]
                 if (efficiency) {
                     let ratings = Productions.rateBuildings([meta.id,ascendedId],true,era)?.map(x=>Math.round(100 * x?.rating?.totalScore)||0)
-                    console.log(JSON.stringify(ratings) )
+                    //console.log(JSON.stringify(ratings) )
                     efficiencyDifference = ratings[0]-ratings[1]
                 }
                 out += `<tr><td class="limited">${srcLinks.icons("limited_building_upgrade") + MainParser.CityEntities[ascendedId].name}${efficiencyDifference ? " → "+i18n("Boxes.Kits.Efficiency")+": " + (efficiency - efficiencyDifference) :""}</td></tr>`

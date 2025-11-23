@@ -81,7 +81,7 @@ FoEproxy.addHandler('TimerService', 'getTimers', (data, postData) => {
 		GuildFights.serverOffset = serverMidnight.format("HH")*3600
 									+ serverMidnight.format("mm")*60
 									+ serverMidnight.format("ss")*1;
-		console.log("GuildFights.serverOffset", GuildFights.serverOffset);
+		//console.log("GuildFights.serverOffset", GuildFights.serverOffset);
 	})
 });
 
@@ -1379,8 +1379,8 @@ let GuildFights = {
 			let showTileColors = (LiveFightSettings && LiveFightSettings.showTileColors !== undefined) ? LiveFightSettings.showTileColors : 1;
 			//console.log(999, showTileColors);
 			copy += `${moment.unix(mapElem.lockedUntil - 2).format('HH:mm')} ${showTileColors === 1 ? battleType : ''} ${mapElem.title} \n`;
-			console.log("copy: ", copy)
-			console.log("copy - with offset: ",`${moment.unix(mapElem.lockedUntil - 2 - GuildFights.serverOffset).format('HH:mm')} ${showTileColors === 1 ? battleType : ''} ${mapElem.title} \n`);
+			//console.log("copy: ", copy)
+			//console.log("copy - with offset: ",`${moment.unix(mapElem.lockedUntil - 2 - GuildFights.serverOffset).format('HH:mm')} ${showTileColors === 1 ? battleType : ''} ${mapElem.title} \n`);
 		});
 
 		if (copy !== '') {
