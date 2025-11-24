@@ -1906,7 +1906,8 @@ styles for extra-goods.png - manually created!!!!
 .goods-sprite.egyptians_loot::before, 
 .goods-sprite.cocoa_beans::before, 
 .goods-sprite.rupees::before, 
-.goods-sprite.shells::before {
+.goods-sprite.shells::before,
+.goods-sprite.doubloons::before {
 	background: url('../images/goods/goods-extra.png') top left no-repeat;
 	background-size: 512px 128px;
 	width: 64px;
