@@ -95,17 +95,20 @@ const Profile = {
     buildBody: (isRebuilt=false) => {
         let content = [];
 
+        if (Profile.achievements === null)
+            content.push('<div style="display:inline-flex;width:100%;height:200px;align-items:center;justify-content:center;font-size:120%;text-align:center;">'+i18n('Menu.PlayerProfile.Warning')+'</div>');
+
         // left content, city
-        content.push(Profile.buildCityContent(isRebuilt));
+        if (Profile.achievements !== null) content.push(Profile.buildCityContent(isRebuilt));
 
         // center content
-        content.push(Profile.buildMainContent(isRebuilt));
+        if (Profile.achievements !== null) content.push(Profile.buildMainContent(isRebuilt));
 
         // right content, stock
-        content.push(Profile.buildStockContent(isRebuilt));
+        if (Profile.achievements !== null) content.push(Profile.buildStockContent(isRebuilt));
 
         let moreActive = $('#PlayerProfileBody .toggleMore.active').length > 0;
-        content.push(`<span class="toggleMore${moreActive?" active":""}">&nbsp;</span>`);
+        if (Profile.achievements !== null) content.push(`<span class="toggleMore${moreActive?" active":""}">&nbsp;</span>`);
 
         // actions
         $('#PlayerProfileBody').html(content.join('')).promise().done(function() {
