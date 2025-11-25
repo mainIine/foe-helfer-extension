@@ -926,6 +926,8 @@
     "Boxes.PlayerProfile.GamePlay": "Game Play",
     "Boxes.PlayerProfile.NoSettlementsFinished": "No Settlements finished yet.",
     "Boxes.PlayerProfile.OpenProduction": "To gather this data, please open the goods and guild goods tab in the Production overview.",
+    "Boxes.PlayerProfile.OtherPlayerDisclaimer": "Please note: Boosted productions will actually be lower, because we do not add them per building here. Battle boosts will likely be higher than displayed, because we cannot retrieve information about allies.",
+    "Boxes.PlayerProfile.OtherPlayerTroubleshooting": "Missing or broken values? Please activate all needed information in the efficiency rating.",
     "Boxes.PlayerProfile.QIBoosts": "QI Boosts",
     "Boxes.PlayerProfile.Settlements": "Settlement Playthroughs",
     "Boxes.PlayerProfile.Tooltip": "Open Profile Summary",

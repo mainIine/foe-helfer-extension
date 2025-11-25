@@ -19,6 +19,8 @@
 	- Spalte "Fehlend" gibt nun immer die Menge bis zum nächsten vollen Satz an
 - Siedlung
 	- Güter für Piratensiedlung hinzugefügt
+- Spieler Profile:
+	- Jetzt auch für andere Spieler: einfach besuchen und oben links in die Ecke klicken
 
 
 **Bugfix**
