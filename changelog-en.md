@@ -18,6 +18,8 @@
 	- Column "Missing" now always gives the amount until the next complete set
 - Settlements
 	- Added goods for pirate settlement 
+- Player profiles:
+	- Now available for other players: visit them and click in the top left corner
 
 **Bugfix**
 - Shop Assistant
