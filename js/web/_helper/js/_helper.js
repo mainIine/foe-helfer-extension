@@ -272,7 +272,6 @@ let HTML = {
 
 		if (args['class']) {
 			div.addClass(args['class']);
-			console.log(123)
 		}
 
 		head.append(buttons);
