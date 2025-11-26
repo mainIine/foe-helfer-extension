@@ -4,14 +4,14 @@
 
 **Update**
 - General
-	- Improved loading behaviour of the Helper
+	- Improved loading behavior of the Helper
 - QI Map
 	- Added number of expansions
 	- Added townhall production
 	- Highlight for productions to finish soon changed
 - GBG
- 	- Unlock times are now converted to servertime when copied
-	- To also display the unlock times in servertime, check the settings
+ 	- Unlock times are now converted to server time when copied
+	- To also display the unlock-times in server time, check the settings
 - Player Links
 	- you can now select between foestats.com and scoredb.io in the main settings 
 - Shop Assistant
@@ -23,11 +23,13 @@
 
 **Bugfix**
 - Shop Assistant
-	- Alert for old shop versions were not pruned correctly
+	- Alert for old shop versions was not pruned correctly
 - QI Action Calculation
 	- Capacity Boost was not applied correctly
 - Efficiency
-	- Did not show properly, when only a single type of boost (attack or defense) was selected
+	- Did not show properly when only a single type of boost (attack or defense) was selected
+
+---
 
 ##### 3.13.1.0
 
