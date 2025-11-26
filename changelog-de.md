@@ -8,7 +8,7 @@
 	- Verbessertes Ladeverhalten des Helfers
 - QI Stadtübersicht
 	- Anzahl Erweiterungen hinzugefügt
-	- Rathausproduktion hinzugefügt
+	- Rathaus produktion hinzugefügt
 	- Geänderte Hervorhebung für bald fertige Produktionen
 - GG
  	- Öffnungszeiten werden nun beim Kopieren in Serverzeit umgewandelt
@@ -29,14 +29,16 @@
 - QI Aktionsberechnung
 	- Kapazitätsbonus wurde nicht korrekt beachtet
 - Effizienzübersicht
-	- Wurde für Kampf-Boosts nicht korrekt angezeigt, wenn nur ein Typ (Angriff oder Vertieidung) ausgewählt wurde
+	- Wurde für Kampf-Boosts nicht korrekt angezeigt, wenn nur ein Typ (Angriff oder Verteidigung) ausgewählt wurde
+
+---
 
 ##### 3.13.1.0
 
 **Update**
 - Allgemein
 	- Anpassung des Helfers an neues Ladeverhalten des Spiels 
-	- einige Hud Elemente wurden "nicht auswählbar" gemacht
+	- Einige Hud Elemente wurden "nicht auswählbar" gemacht
 	- Handling für Kettengebäude mit Spezialproduktion hinzugefügt
 - Power Leveln
 	- Viele neue Stufen fürs Atomium hinzugefügt
@@ -45,14 +47,14 @@
 - Effizienzübersicht
 	- Styling in der Suche angepasst
 - Shop Assistent
-	- Filter für Shop Währungen hinzugefügt - wenn eine Währung ignoriert werden soll, einfach drauf klicken
-	- Die Spalte "Ganz" wurde entfernt - dieser Wert ist nun sichtbar, wenn man mit der Maus auf die "Fehlend" Spalte zeigt
-	- Spalte "Max" hinzugefügt - zeigt an, wieviel mit der vorhandenen Währung gekauft werden kann
-	- Wenn man auf die "Max" Spalte zeigt, wird der Wert "Alle" angezeigt - also wieviel Währung nötig ist, um den Shop leer zu kaufen  
+	- Filter für Shop Währungen hinzugefügt – wenn eine Währung ignoriert werden soll, einfach draufklicken
+	- Die Spalte "Ganz" wurde entfernt – dieser Wert ist nun sichtbar, wenn man mit der Maus auf die "Fehlend" Spalte zeigt
+	- Spalte "Max" hinzugefügt – zeigt an, wie viel mit der vorhandenen Währung gekauft werden kann
+	- Wenn man auf die "Max" Spalte zeigt, wird der Wert "Alle" angezeigt – also wie viel Währung nötig ist, um den Shop leer zu kaufen  
 	- Tooltip für Verbündete hinzugefügt
 - Stadtübersicht
-	- QI: Hervorhebung für Euphorieniveau hinzugefügt
-	- QI: Hervorherbung von Gebäuden die bald bereit sind für Ernte
+	- QI: Hervorhebung für Euphorie Niveau hinzugefügt
+	- QI: Hervorhebung von Gebäuden, die bald bereit für die Ernte sind
 - FP-Leiste
 	- Position in GE angepasst an verändertes Spiel-UI
 - Menü
@@ -62,7 +64,7 @@
 - Effizienzübersicht
 	- QI Güter Bewertung hat nicht funktioniert
 - Verhandlungsfenster 
-	- schloss sich, wenn ein Tavernenupdate stattfand
+	- Schloss sich, wenn Tavernen update stattfand
 - Stadtübersicht 
 	- Reihenfolge der Dimensionen im Tooltip korrigiert
 	- QI: Summenberechung korrigiert 
