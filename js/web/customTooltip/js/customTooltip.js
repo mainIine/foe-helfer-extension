@@ -323,7 +323,7 @@ let Tooltips = {
                 let ascendedId=(await CityMap.AscendingBuildings)[meta.id]
                 if (efficiency) {
                     let ratings = Productions.rateBuildings([meta.id,ascendedId],true,era)?.map(x=>Math.round(100 * x?.rating?.totalScore)||0)
-                    console.log(JSON.stringify(ratings) )
+                    //console.log(JSON.stringify(ratings) )
                     efficiencyDifference = ratings[0]-ratings[1]
                 }
                 out += `<tr><td class="limited">${srcLinks.icons("limited_building_upgrade") + MainParser.CityEntities[ascendedId].name}${efficiencyDifference ? " → "+i18n("Boxes.Kits.Efficiency")+": " + (efficiency - efficiencyDifference) :""}</td></tr>`
@@ -889,7 +889,7 @@ let QIActions = {
 
 		tooltip=`<div style="text-align:center">`
         tooltip+=`<h1>${i18n("Global.BoxTitle")}</h1>`
-		tooltip+=`<p style="margin: 3px">${srcLinks.icons("guild_raids_action_points")}&nbsp;${hourly} ${moment.unix(next).fromNow()}</p>`
+		tooltip+=`<p style="margin: 3px">${srcLinks.icons("guild_raids_action_points")}&nbsp;${HTML.Format(hourly)} ${moment.unix(next).fromNow()}</p>`
 		tooltip+=`<h2>${i18n("Boxes.QIActions.FullAt")}</h2>`
 		tooltip+=`<p>${moment.unix(fullAt).format('lll')}</p></div>`
 

@@ -456,6 +456,9 @@
 #Productions th.boost.qiactions span, #BoostList table .boost.guild_raids_action_points_collection {
 	background-position: -498px 2px;
 }
+#Productions th.boost.qicapacity span, #BoostList table .boost.guild_raids_action_points_collection {
+	background-position: -786px 1px;
+}
 #Productions th.boost.qicoins span, #BoostList .boost.guild_raids_coins_production, #ProductionsRatingBody span.resicon.guild_raids_coins_production {
 	background-position: -603px 2px;
 }

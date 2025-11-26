@@ -58,7 +58,7 @@ styles for fine_goods_large_0.png use the code above for this section - do not o
 	content: "";
 	display: block;
 	background: url('../images/goods/fine_goods_large_0.png') top left no-repeat;
-	background-size: 965px 566px;
+	background-size: 479px 1286px;
 	position: absolute;
 	top: 0;
 	right: 0;
@@ -68,1666 +68,1822 @@ styles for fine_goods_large_0.png use the code above for this section - do not o
 	zoom: 0.8;
 }
 .goods-sprite.sprite-50::before {
-	zoom: 0.5;
+	zoom:0.5;
 }
 .goods-sprite.sprite-35::before {
-	zoom: 0.35;
+	zoom:0.35;
 }
 .goods-sprite.guild_raids_supplies::before {
 	background-position: 0px 0px;
 	width: 86px;
 	height: 85px;
 }
-.goods-sprite.guild_raids_money::before {
+.goods-sprite.guild_raids_chrono_alloy::before {
 	background-position: 0px -87px;
+	width: 72px;
+	height: 85px;
+}
+.goods-sprite.guild_raids_money::before {
+	background-position: -88px 0px;
 	width: 78px;
 	height: 64px;
 }
 .goods-sprite.guild_raids_action_points::before {
-	background-position: -88px 0px;
-	width: 75px;
-	height: 66px;
+	background-position: 0px -174px;
+	width: 66px;
+	height: 75px;
+	transform: rotate(-90deg);
 }
 .goods-sprite.goods::before {
-	background-position: 0px -153px;
+	background-position: -168px 0px;
 	width: 70px;
 	height: 58px;
 }
 .goods-sprite.corals::before {
-	background-position: -165px 0px;
+	background-position: 0px -251px;
 	width: 64px;
 	height: 64px;
 }
 .goods-sprite.fine_corals::before {
-	background-position: -165px 0px;
+	background-position: 0px -251px;
 	width: 64px;
 	height: 64px;
 }
 .goods-sprite.fine_guild_raids_ebony::before {
-	background-position: 0px -213px;
+	background-position: 0px -317px;
 	width: 64px;
 	height: 64px;
 }
 .goods-sprite.guild_raids_ebony::before {
-	background-position: 0px -213px;
+	background-position: 0px -317px;
+	width: 64px;
+	height: 64px;
+}
+.goods-sprite.icon_fine_guild_raids_ebony_tree::before {
+	background-position: 0px -383px;
 	width: 64px;
 	height: 64px;
 }
 .goods-sprite.fine_guild_raids_gems::before {
-	background-position: -231px 0px;
+	background-position: 0px -449px;
 	width: 64px;
 	height: 63px;
 }
 .goods-sprite.guild_raids_gems::before {
-	background-position: -231px 0px;
+	background-position: 0px -449px;
 	width: 64px;
 	height: 63px;
 }
 .goods-sprite.fine_orichalcum::before {
-	background-position: 0px -279px;
+	background-position: 0px -514px;
 	width: 64px;
 	height: 63px;
 }
 .goods-sprite.orichalcum::before {
-	background-position: 0px -279px;
+	background-position: 0px -514px;
+	width: 64px;
+	height: 63px;
+}
+.goods-sprite.icon_fine_guild_raids_rough_gems::before {
+	background-position: 0px -579px;
 	width: 64px;
 	height: 63px;
 }
 .goods-sprite.icon_fine_wire::before {
-	background-position: -297px 0px;
+	background-position: 0px -644px;
 	width: 64px;
 	height: 63px;
 }
 .goods-sprite.wire::before {
-	background-position: -297px 0px;
+	background-position: 0px -644px;
 	width: 64px;
 	height: 63px;
 }
 .goods-sprite.biolight::before {
-	background-position: 0px -344px;
+	background-position: 0px -709px;
 	width: 62px;
 	height: 64px;
 }
 .goods-sprite.fine_biolight::before {
-	background-position: 0px -344px;
+	background-position: 0px -709px;
 	width: 62px;
 	height: 64px;
 }
-.goods-sprite.fine_machineparts::before {
-	background-position: -363px 0px;
-	width: 63px;
-	height: 63px;
-}
-.goods-sprite.machineparts::before {
-	background-position: -363px 0px;
-	width: 63px;
-	height: 63px;
-}
-.goods-sprite.fine_wool::before {
-	background-position: -428px 0px;
-	width: 63px;
-	height: 63px;
-}
-.goods-sprite.wool::before {
-	background-position: -428px 0px;
-	width: 63px;
-	height: 63px;
-}
 .goods-sprite.bionics::before {
-	background-position: 0px -410px;
+	background-position: 0px -775px;
 	width: 61px;
 	height: 64px;
 	transform: rotate(-90deg);
 }
 .goods-sprite.fine_bionics_research_lab::before {
-	background-position: 0px -410px;
+	background-position: 0px -775px;
 	width: 61px;
 	height: 64px;
 	transform: rotate(-90deg);
 }
 .goods-sprite.fine_guild_raids_limestone::before {
-	background-position: -493px 0px;
-	width: 64px;
-	height: 61px;
+	background-position: 0px -841px;
+	width: 61px;
+	height: 64px;
+	transform: rotate(-90deg);
 }
 .goods-sprite.guild_raids_limestone::before {
-	background-position: -493px 0px;
-	width: 64px;
-	height: 61px;
+	background-position: 0px -841px;
+	width: 61px;
+	height: 64px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.icon_fine_guild_raids_limestone::before {
+	background-position: 0px -907px;
+	width: 61px;
+	height: 64px;
+	transform: rotate(-90deg);
 }
 .goods-sprite.ebony::before {
-	background-position: 0px -476px;
+	background-position: 0px -973px;
 	width: 62px;
 	height: 63px;
 	transform: rotate(-90deg);
 }
 .goods-sprite.icon_fine_ebony_tree::before {
-	background-position: 0px -476px;
+	background-position: 0px -973px;
 	width: 62px;
 	height: 63px;
 	transform: rotate(-90deg);
 }
-.goods-sprite.fine_tinplate::before {
-	background-position: -559px 0px;
-	width: 62px;
-	height: 61px;
+.goods-sprite.fine_machineparts::before {
+	background-position: 0px -1038px;
+	width: 63px;
+	height: 63px;
 }
-.goods-sprite.tinplate::before {
-	background-position: -559px 0px;
-	width: 62px;
-	height: 61px;
+.goods-sprite.machineparts::before {
+	background-position: 0px -1038px;
+	width: 63px;
+	height: 63px;
 }
-.goods-sprite.fine_mars_microbes::before {
-	background-position: -623px 0px;
-	width: 62px;
-	height: 61px;
-	transform: rotate(-90deg);
+.goods-sprite.fine_wool::before {
+	background-position: 0px -1103px;
+	width: 63px;
+	height: 63px;
 }
-.goods-sprite.mars_microbes::before {
-	background-position: -623px 0px;
-	width: 62px;
-	height: 61px;
-	transform: rotate(-90deg);
+.goods-sprite.wool::before {
+	background-position: 0px -1103px;
+	width: 63px;
+	height: 63px;
 }
 .goods-sprite.asbestos::before {
-	background-position: -687px 0px;
+	background-position: 0px -1168px;
 	width: 62px;
 	height: 62px;
 }
 .goods-sprite.fine_asbestos::before {
-	background-position: -687px 0px;
+	background-position: 0px -1168px;
 	width: 62px;
 	height: 62px;
 }
-.goods-sprite.fine_tea_silk::before {
-	background-position: -751px 0px;
+.goods-sprite.fine_coconuts::before {
+	background-position: 0px -1232px;
 	width: 62px;
-	height: 62px;
-}
-.goods-sprite.tea_silk::before {
-	background-position: -751px 0px;
-	width: 62px;
-	height: 62px;
+	height: 52px;
 }
 .goods-sprite.ferroconcrete::before {
-	background-position: -815px 0px;
+	background-position: -240px 0px;
 	width: 64px;
 	height: 58px;
 }
 .goods-sprite.fine_ferroconcrete::before {
-	background-position: -815px 0px;
+	background-position: -240px 0px;
 	width: 64px;
 	height: 58px;
 }
 .goods-sprite.fine_guild_raids_lead::before {
-	background-position: -881px 0px;
+	background-position: -306px 0px;
 	width: 64px;
 	height: 57px;
 }
 .goods-sprite.guild_raids_lead::before {
-	background-position: -881px 0px;
+	background-position: -306px 0px;
 	width: 64px;
 	height: 57px;
 }
-.goods-sprite.herbs::before {
-	background-position: -88px -68px;
+.goods-sprite.icon_fine_guild_raids_lead_ore::before {
+	background-position: -372px 0px;
 	width: 64px;
-	height: 45px;
-}
-.goods-sprite.icon_fine_herbs::before {
-	background-position: -88px -68px;
-	width: 64px;
-	height: 45px;
-}
-.goods-sprite.fine_herbal_snack::before {
-	background-position: -80px -115px;
-	width: 64px;
-	height: 48px;
-}
-.goods-sprite.herbal_snack::before {
-	background-position: -80px -115px;
-	width: 64px;
-	height: 48px;
-}
-.goods-sprite.fine_unknown_dna::before {
-	background-position: -72px -165px;
-	width: 64px;
-	height: 53px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.unknown_dna::before {
-	background-position: -72px -165px;
-	width: 64px;
-	height: 53px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.fine_superconductors::before {
-	background-position: -66px -220px;
-	width: 63px;
-	height: 59px;
-}
-.goods-sprite.superconductors::before {
-	background-position: -66px -220px;
-	width: 63px;
-	height: 59px;
-}
-.goods-sprite.icon_fine_hemp::before {
-	background-position: -66px -281px;
-	width: 63px;
-	height: 59px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.ropes::before {
-	background-position: -66px -281px;
-	width: 63px;
-	height: 59px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.fine_preservatives::before {
-	background-position: -131px -220px;
-	width: 54px;
-	height: 64px;
-}
-.goods-sprite.preservatives::before {
-	background-position: -131px -220px;
-	width: 54px;
-	height: 64px;
-}
-.goods-sprite.gunpowder::before {
-	background-position: -138px -165px;
-	width: 48px;
-	height: 53px;
-}
-.goods-sprite.icon_fine_gunpowder::before {
-	background-position: -138px -165px;
-	width: 48px;
-	height: 53px;
-}
-.goods-sprite.fine_guild_raids_cloth::before {
-	background-position: -131px -286px;
-	width: 54px;
-	height: 57px;
-}
-.goods-sprite.guild_raids_cloth::before {
-	background-position: -131px -286px;
-	width: 54px;
-	height: 57px;
-}
-.goods-sprite.electromagnets::before {
-	background-position: -146px -115px;
-	width: 45px;
-	height: 48px;
-}
-.goods-sprite.fine_magnet_factory::before {
-	background-position: -146px -115px;
-	width: 45px;
-	height: 48px;
-}
-.goods-sprite.fine_luxury_materials::before {
-	background-position: -154px -68px;
-	width: 60px;
-	height: 45px;
-}
-.goods-sprite.luxury_materials::before {
-	background-position: -154px -68px;
-	width: 60px;
-	height: 45px;
-}
-.goods-sprite.compressed_matter_capsule::before {
-	background-position: -193px -115px;
-	width: 25px;
-	height: 49px;
-}
-.goods-sprite.fine_compressed_matter_capsule::before {
-	background-position: -193px -115px;
-	width: 25px;
-	height: 49px;
-}
-.goods-sprite.fine_plastics_plant::before {
-	background-position: -188px -166px;
-	width: 30px;
-	height: 63px;
-}
-.goods-sprite.plastics::before {
-	background-position: -188px -166px;
-	width: 30px;
-	height: 63px;
-}
-.goods-sprite.basalt::before {
-	background-position: -187px -231px;
-	width: 54px;
-	height: 64px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.icon_fine_basalt::before {
-	background-position: -187px -231px;
-	width: 54px;
-	height: 64px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.fine_microgreen_supplement::before {
-	background-position: -187px -297px;
-	width: 61px;
-	height: 46px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.microgreen_supplement::before {
-	background-position: -187px -297px;
-	width: 61px;
-	height: 46px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.convenience_food::before {
-	background-position: -66px -342px;
-	width: 63px;
-	height: 38px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.fine_convenience_food::before {
-	background-position: -66px -342px;
-	width: 63px;
-	height: 38px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.fine_nanites::before {
-	background-position: -131px -345px;
-	width: 64px;
-	height: 56px;
-}
-.goods-sprite.nanites::before {
-	background-position: -131px -345px;
-	width: 64px;
-	height: 56px;
-}
-.goods-sprite.cypress::before {
-	background-position: -197px -345px;
-	width: 51px;
-	height: 61px;
-}
-.goods-sprite.icon_fine_cypress::before {
-	background-position: -197px -345px;
-	width: 51px;
-	height: 61px;
-}
-.goods-sprite.icon_fine_paper::before {
-	background-position: -64px -382px;
-	width: 64px;
-	height: 57px;
-}
-.goods-sprite.paper::before {
-	background-position: -64px -382px;
-	width: 64px;
-	height: 57px;
-}
-.goods-sprite.fine_pearls::before {
-	background-position: -130px -403px;
-	width: 64px;
-	height: 57px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.pearls::before {
-	background-position: -130px -403px;
-	width: 64px;
-	height: 57px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.fine_coconuts::before {
-	background-position: -196px -408px;
-	width: 62px;
-	height: 52px;
-}
-.goods-sprite.fine_mead::before {
-	background-position: -64px -441px;
-	width: 60px;
-	height: 62px;
-}
-.goods-sprite.mead::before {
-	background-position: -64px -441px;
-	width: 60px;
-	height: 62px;
-}
-.goods-sprite.gems::before {
-	background-position: -64px -505px;
-	width: 62px;
-	height: 59px;
-}
-.goods-sprite.icon_fine_rough_gems::before {
-	background-position: -64px -505px;
-	width: 62px;
-	height: 59px;
-}
-.goods-sprite.icon_fine_porcelain::before {
-	background-position: -126px -462px;
-	width: 62px;
-	height: 41px;
-}
-.goods-sprite.porcelain::before {
-	background-position: -126px -462px;
-	width: 62px;
-	height: 41px;
-}
-.goods-sprite.fine_venus_carbon::before {
-	background-position: -128px -505px;
-	width: 61px;
-	height: 59px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.venus_carbon::before {
-	background-position: -128px -505px;
-	width: 61px;
-	height: 59px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.filters::before {
-	background-position: -190px -462px;
-	width: 57px;
-	height: 41px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.fine_filters::before {
-	background-position: -190px -462px;
-	width: 57px;
-	height: 41px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.axes::before {
-	background-position: -191px -505px;
-	width: 60px;
-	height: 59px;
-}
-.goods-sprite.fine_axes::before {
-	background-position: -191px -505px;
-	width: 60px;
-	height: 59px;
-}
-.goods-sprite.coffee::before {
-	background-position: -815px -60px;
-	width: 63px;
-	height: 47px;
-}
-.goods-sprite.icon_fine_coffee::before {
-	background-position: -815px -60px;
-	width: 63px;
-	height: 47px;
-}
-.goods-sprite.fine_whale::before {
-	background-position: -493px -63px;
-	width: 63px;
-	height: 48px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.whaleoil::before {
-	background-position: -493px -63px;
-	width: 63px;
-	height: 48px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.fine_paintings::before {
-	background-position: -558px -63px;
-	width: 63px;
-	height: 49px;
-}
-.goods-sprite.paintings::before {
-	background-position: -558px -63px;
-	width: 63px;
-	height: 49px;
-}
-.goods-sprite.fine_instruments::before {
-	background-position: -623px -63px;
-	width: 62px;
-	height: 52px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.instruments::before {
-	background-position: -623px -63px;
-	width: 62px;
-	height: 52px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.fine_textiles::before {
-	background-position: -687px -64px;
-	width: 63px;
-	height: 54px;
-}
-.goods-sprite.textiles::before {
-	background-position: -687px -64px;
-	width: 63px;
-	height: 54px;
-}
-.goods-sprite.fine_lotus::before {
-	background-position: -752px -64px;
-	width: 61px;
-	height: 54px;
-}
-.goods-sprite.lotus::before {
-	background-position: -752px -64px;
-	width: 61px;
-	height: 54px;
-}
-.goods-sprite.fine_superalloys::before {
-	background-position: -815px -109px;
-	width: 62px;
-	height: 45px;
-}
-.goods-sprite.superalloys::before {
-	background-position: -815px -109px;
-	width: 62px;
-	height: 45px;
-}
-.goods-sprite.fine_upcycled_hydrocarbons::before {
-	background-position: -216px -66px;
-	width: 43px;
-	height: 47px;
-}
-.goods-sprite.upcycled_hydrocarbons::before {
-	background-position: -216px -66px;
-	width: 43px;
-	height: 47px;
-}
-.goods-sprite.armor::before {
-	background-position: -261px -65px;
-	width: 62px;
-	height: 53px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.fine_armor::before {
-	background-position: -261px -65px;
-	width: 62px;
-	height: 53px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.fine_petroleum::before {
-	background-position: -325px -65px;
-	width: 62px;
-	height: 57px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.petroleum::before {
-	background-position: -325px -65px;
-	width: 62px;
-	height: 57px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.brick::before {
-	background-position: -389px -65px;
-	width: 61px;
-	height: 57px;
-}
-.goods-sprite.icon_fine_brick_clay::before {
-	background-position: -389px -65px;
-	width: 61px;
 	height: 57px;
 }
 .goods-sprite.alabaster::before {
-	background-position: -452px -65px;
+	background-position: -438px 0px;
 	width: 39px;
 	height: 59px;
 }
 .goods-sprite.icon_fine_alabaster::before {
-	background-position: -452px -65px;
+	background-position: -438px 0px;
 	width: 39px;
 	height: 59px;
 }
-.goods-sprite.fine_papercrete::before {
-	background-position: -220px -115px;
-	width: 37px;
-	height: 58px;
-	transform: rotate(-90deg);
+.goods-sprite.herbs::before {
+	background-position: -88px -66px;
+	width: 64px;
+	height: 45px;
 }
-.goods-sprite.papercrete::before {
-	background-position: -220px -115px;
-	width: 37px;
-	height: 58px;
-	transform: rotate(-90deg);
+.goods-sprite.icon_fine_herbs::before {
+	background-position: -88px -66px;
+	width: 64px;
+	height: 45px;
 }
-.goods-sprite.fine_topological_records::before {
-	background-position: -220px -175px;
-	width: 46px;
-	height: 54px;
-}
-.goods-sprite.topological_records::before {
-	background-position: -220px -175px;
-	width: 46px;
-	height: 54px;
-}
-.goods-sprite.fine_mars_ore::before {
-	background-position: -259px -120px;
-	width: 61px;
-	height: 53px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.mars_ore::before {
-	background-position: -259px -120px;
-	width: 61px;
-	height: 53px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.icon_fine_tar::before {
-	background-position: -322px -124px;
-	width: 61px;
-	height: 49px;
-}
-.goods-sprite.tar::before {
-	background-position: -322px -124px;
-	width: 61px;
-	height: 49px;
-}
-.goods-sprite.fine_sugar_crystals::before {
-	background-position: -268px -175px;
-	width: 61px;
-	height: 55px;
-}
-.goods-sprite.sugar_crystals::before {
-	background-position: -268px -175px;
-	width: 61px;
-	height: 55px;
-}
-.goods-sprite.granite::before {
-	background-position: -385px -124px;
-	width: 61px;
-	height: 51px;
-}
-.goods-sprite.icon_fine_granite::before {
-	background-position: -385px -124px;
-	width: 61px;
-	height: 51px;
-}
-.goods-sprite.fine_headdress::before {
-	background-position: -331px -175px;
-	width: 52px;
-	height: 56px;
-}
-.goods-sprite.headdress::before {
-	background-position: -331px -175px;
-	width: 52px;
-	height: 56px;
-}
-.goods-sprite.fine_robotics_factory::before {
-	background-position: -385px -177px;
-	width: 61px;
-	height: 56px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.robots::before {
-	background-position: -385px -177px;
-	width: 61px;
-	height: 56px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.fine_nutrition_food::before {
-	background-position: -448px -126px;
-	width: 46px;
-	height: 61px;
-}
-.goods-sprite.nutrition_research::before {
-	background-position: -448px -126px;
-	width: 46px;
-	height: 61px;
-}
-.goods-sprite.fine_horns::before {
-	background-position: -496px -113px;
-	width: 60px;
-	height: 61px;
-}
-.goods-sprite.horns::before {
-	background-position: -496px -113px;
-	width: 60px;
-	height: 61px;
-}
-.goods-sprite.data_crystals::before {
-	background-position: -558px -114px;
-	width: 61px;
-	height: 60px;
-}
-.goods-sprite.fine_data_crystals::before {
-	background-position: -558px -114px;
-	width: 61px;
-	height: 60px;
-}
-.goods-sprite.fine_plankton::before {
-	background-position: -621px -117px;
-	width: 61px;
-	height: 60px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.plankton::before {
-	background-position: -621px -117px;
-	width: 61px;
-	height: 60px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.fine_golden_rice::before {
-	background-position: -684px -120px;
-	width: 61px;
-	height: 61px;
-}
-.goods-sprite.golden_rice::before {
-	background-position: -684px -120px;
-	width: 61px;
-	height: 61px;
-}
-.goods-sprite.explosives::before {
-	background-position: -747px -120px;
-	width: 60px;
-	height: 60px;
-}
-.goods-sprite.fine_explosives::before {
-	background-position: -747px -120px;
-	width: 60px;
-	height: 60px;
-}
-.goods-sprite.fine_rubber::before {
-	background-position: -243px -232px;
-	width: 60px;
+.goods-sprite.fine_superconductors::before {
+	background-position: -74px -113px;
+	width: 63px;
 	height: 59px;
 }
-.goods-sprite.rubber::before {
-	background-position: -243px -232px;
-	width: 60px;
+.goods-sprite.superconductors::before {
+	background-position: -74px -113px;
+	width: 63px;
 	height: 59px;
 }
-.goods-sprite.icon_fine_lead_ore::before {
-	background-position: -250px -293px;
-	width: 52px;
+.goods-sprite.fine_tea_silk::before {
+	background-position: -68px -174px;
+	width: 62px;
+	height: 62px;
+}
+.goods-sprite.tea_silk::before {
+	background-position: -68px -174px;
+	width: 62px;
+	height: 62px;
+}
+.goods-sprite.fine_plastics_plant::before {
+	background-position: -68px -238px;
+	width: 63px;
+	height: 30px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.plastics::before {
+	background-position: -68px -238px;
+	width: 63px;
+	height: 30px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.fine_tinplate::before {
+	background-position: -66px -270px;
+	width: 62px;
 	height: 61px;
-	transform: rotate(-90deg);
 }
-.goods-sprite.lead::before {
-	background-position: -250px -293px;
-	width: 52px;
+.goods-sprite.tinplate::before {
+	background-position: -66px -270px;
+	width: 62px;
 	height: 61px;
-	transform: rotate(-90deg);
 }
-.goods-sprite.asteroid_ice::before {
-	background-position: -250px -356px;
+.goods-sprite.fine_mars_microbes::before {
+	background-position: -66px -333px;
+	width: 61px;
+	height: 62px;
+}
+.goods-sprite.mars_microbes::before {
+	background-position: -66px -333px;
+	width: 61px;
+	height: 62px;
+}
+.goods-sprite.icon_fine_hemp::before {
+	background-position: -66px -397px;
 	width: 59px;
-	height: 50px;
-	transform: rotate(-90deg);
+	height: 63px;
 }
-.goods-sprite.fine_asteroid_ice::before {
-	background-position: -250px -356px;
+.goods-sprite.ropes::before {
+	background-position: -66px -397px;
 	width: 59px;
-	height: 50px;
-	transform: rotate(-90deg);
+	height: 63px;
 }
-.goods-sprite.dye::before {
-	background-position: -260px -408px;
-	width: 49px;
-	height: 54px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.icon_fine_flowers::before {
-	background-position: -260px -408px;
-	width: 49px;
-	height: 54px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.fine_glowing_seaweed::before {
-	background-position: -305px -233px;
-	width: 60px;
-	height: 58px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.glowing_seaweed::before {
-	background-position: -305px -233px;
-	width: 60px;
-	height: 58px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.basmati::before {
-	background-position: -304px -293px;
-	width: 59px;
-	height: 59px;
-}
-.goods-sprite.fine_basmati::before {
-	background-position: -304px -293px;
-	width: 59px;
-	height: 59px;
-}
-.goods-sprite.icon_fine_silkworm_cocoons::before {
-	background-position: -311px -354px;
-	width: 53px;
-	height: 60px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.silk::before {
-	background-position: -311px -354px;
-	width: 53px;
-	height: 60px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.fine_soy_proteins::before {
-	background-position: -311px -416px;
+.goods-sprite.fine_pearls::before {
+	background-position: -66px -462px;
 	width: 57px;
-	height: 46px;
-	transform: rotate(-90deg);
+	height: 64px;
 }
-.goods-sprite.soy_proteins::before {
-	background-position: -311px -416px;
+.goods-sprite.pearls::before {
+	background-position: -66px -462px;
 	width: 57px;
-	height: 46px;
+	height: 64px;
+}
+.goods-sprite.icon_fine_paper::before {
+	background-position: -66px -528px;
+	width: 57px;
+	height: 64px;
 	transform: rotate(-90deg);
 }
-.goods-sprite.brass::before {
-	background-position: -367px -235px;
-	width: 60px;
-	height: 56px;
+.goods-sprite.paper::before {
+	background-position: -66px -528px;
+	width: 57px;
+	height: 64px;
 	transform: rotate(-90deg);
 }
-.goods-sprite.icon_fine_brass_ore::before {
-	background-position: -367px -235px;
-	width: 60px;
-	height: 56px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.dark_matter::before {
-	background-position: -365px -293px;
-	width: 59px;
-	height: 59px;
-}
-.goods-sprite.fine_dark_matter::before {
-	background-position: -365px -293px;
-	width: 59px;
-	height: 59px;
-}
-.goods-sprite.fine_fresh_fish::before {
-	background-position: -366px -354px;
+.goods-sprite.fine_nanites::before {
+	background-position: -66px -594px;
 	width: 56px;
-	height: 60px;
-}
-.goods-sprite.icon_fine_talc::before {
-	background-position: -370px -416px;
-	width: 52px;
-	height: 46px;
-}
-.goods-sprite.talc::before {
-	background-position: -370px -416px;
-	width: 52px;
-	height: 46px;
-}
-.goods-sprite.bio_creatures::before {
-	background-position: -448px -189px;
-	width: 53px;
-	height: 44px;
+	height: 64px;
 	transform: rotate(-90deg);
 }
-.goods-sprite.fine_bio_creatures::before {
-	background-position: -448px -189px;
-	width: 53px;
-	height: 44px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.fine_soy::before {
-	background-position: -429px -235px;
-	width: 59px;
-	height: 57px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.soy::before {
-	background-position: -429px -235px;
-	width: 59px;
-	height: 57px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.cryptocash::before {
-	background-position: -426px -294px;
-	width: 59px;
-	height: 58px;
-}
-.goods-sprite.fine_cryptocash::before {
-	background-position: -426px -294px;
-	width: 59px;
-	height: 58px;
-}
-.goods-sprite.fine_catamarans::before {
-	background-position: -424px -354px;
-	width: 59px;
-	height: 58px;
-}
-.goods-sprite.fine_random_guild_raids_goods::before {
-	background-position: -424px -414px;
-	width: 60px;
-	height: 49px;
-}
-.goods-sprite.crystallized_hydrocarbons::before {
-	background-position: -503px -176px;
-	width: 59px;
-	height: 58px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.fine_crystallized_hydrocarbons::before {
-	background-position: -503px -176px;
-	width: 59px;
-	height: 58px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.dna_data::before {
-	background-position: -564px -176px;
-	width: 55px;
-	height: 57px;
-}
-.goods-sprite.fine_dna_data::before {
-	background-position: -564px -176px;
-	width: 55px;
-	height: 57px;
-}
-.goods-sprite.fine_lubricants::before {
-	background-position: -621px -179px;
-	width: 59px;
-	height: 54px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.lubricants::before {
-	background-position: -621px -179px;
-	width: 59px;
-	height: 54px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.fertilizer::before {
-	background-position: -682px -183px;
-	width: 60px;
-	height: 51px;
-}
-.goods-sprite.fine_fertilizer::before {
-	background-position: -682px -183px;
-	width: 60px;
-	height: 51px;
-}
-.goods-sprite.fine_platinum_crystals::before {
-	background-position: -490px -236px;
-	width: 59px;
-	height: 58px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.platinum_crystals::before {
-	background-position: -490px -236px;
-	width: 59px;
-	height: 58px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.glass::before {
-	background-position: -487px -296px;
-	width: 59px;
-	height: 58px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.icon_fine_quartz::before {
-	background-position: -487px -296px;
-	width: 59px;
-	height: 58px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.icon_fine_limestone::before {
-	background-position: -485px -356px;
-	width: 58px;
-	height: 56px;
-}
-.goods-sprite.limestone::before {
-	background-position: -485px -356px;
-	width: 58px;
-	height: 56px;
-}
-.goods-sprite.fine_processed_material::before {
-	background-position: -486px -414px;
-	width: 58px;
-	height: 50px;
-}
-.goods-sprite.processed_material::before {
-	background-position: -486px -414px;
-	width: 58px;
-	height: 50px;
-}
-.goods-sprite.bromine::before {
-	background-position: -249px -464px;
-	width: 57px;
-	height: 37px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.fine_bromine::before {
-	background-position: -249px -464px;
-	width: 57px;
-	height: 37px;
+.goods-sprite.nanites::before {
+	background-position: -66px -594px;
+	width: 56px;
+	height: 64px;
 	transform: rotate(-90deg);
 }
 .goods-sprite.biotech_crops::before {
-	background-position: -253px -503px;
-	width: 47px;
-	height: 61px;
+	background-position: -66px -660px;
+	width: 61px;
+	height: 47px;
+	transform: rotate(-90deg);
 }
 .goods-sprite.fine_biotech_crops::before {
-	background-position: -253px -503px;
-	width: 47px;
-	height: 61px;
+	background-position: -66px -660px;
+	width: 61px;
+	height: 47px;
+	transform: rotate(-90deg);
 }
-.goods-sprite.fine_fusion_reactors::before {
-	background-position: -308px -464px;
+.goods-sprite.fine_mead::before {
+	background-position: -64px -709px;
 	width: 60px;
-	height: 47px;
-	transform: rotate(-90deg);
+	height: 62px;
 }
-.goods-sprite.fusion_reactors::before {
-	background-position: -308px -464px;
+.goods-sprite.mead::before {
+	background-position: -64px -709px;
 	width: 60px;
-	height: 47px;
-	transform: rotate(-90deg);
+	height: 62px;
 }
-.goods-sprite.fine_maize::before {
-	background-position: -302px -513px;
-	width: 55px;
-	height: 51px;
+.goods-sprite.convenience_food::before {
+	background-position: -139px -113px;
+	width: 38px;
+	height: 63px;
 }
-.goods-sprite.maize::before {
-	background-position: -302px -513px;
-	width: 55px;
-	height: 51px;
-}
-.goods-sprite.fine_barley::before {
-	background-position: -359px -513px;
-	width: 55px;
-	height: 51px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.icon_fine_marble::before {
-	background-position: -370px -464px;
-	width: 52px;
-	height: 47px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.marble::before {
-	background-position: -370px -464px;
-	width: 52px;
-	height: 47px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.icon_fine_crude_salt::before {
-	background-position: -416px -513px;
-	width: 52px;
-	height: 51px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.salt::before {
-	background-position: -416px -513px;
-	width: 52px;
-	height: 51px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.experimental_data::before {
-	background-position: -424px -465px;
-	width: 49px;
-	height: 46px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.fine_experimental_data::before {
-	background-position: -424px -465px;
-	width: 49px;
-	height: 46px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.deep_space_data::before {
-	background-position: -470px -513px;
-	width: 50px;
-	height: 51px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.fine_deep_space_data::before {
-	background-position: -470px -513px;
-	width: 50px;
-	height: 51px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.fine_semiconductors::before {
-	background-position: -475px -466px;
-	width: 57px;
-	height: 45px;
-}
-.goods-sprite.semiconductors::before {
-	background-position: -475px -466px;
-	width: 57px;
-	height: 45px;
-}
-.goods-sprite.fine_kava::before {
-	background-position: -809px -156px;
-	width: 59px;
-	height: 52px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.honey::before {
-	background-position: -551px -236px;
-	width: 42px;
-	height: 58px;
-}
-.goods-sprite.icon_fine_honeycombs::before {
-	background-position: -551px -236px;
-	width: 42px;
-	height: 58px;
-}
-.goods-sprite.algae::before {
-	background-position: -595px -235px;
-	width: 56px;
-	height: 57px;
-}
-.goods-sprite.fine_algae::before {
-	background-position: -595px -235px;
-	width: 56px;
-	height: 57px;
+.goods-sprite.fine_convenience_food::before {
+	background-position: -139px -113px;
+	width: 38px;
+	height: 63px;
 }
 .goods-sprite.fine_random_goods::before {
-	background-position: -548px -296px;
+	background-position: -132px -178px;
 	width: 47px;
 	height: 58px;
 	transform: rotate(-90deg);
 }
 .goods-sprite.random_goods::before {
-	background-position: -548px -296px;
+	background-position: -132px -178px;
 	width: 47px;
 	height: 58px;
 	transform: rotate(-90deg);
 }
-.goods-sprite.fine_transester_gas::before {
-	background-position: -597px -294px;
-	width: 54px;
-	height: 58px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.transester_gas::before {
-	background-position: -597px -294px;
-	width: 54px;
-	height: 58px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.fine_flowers::before {
-	background-position: -545px -356px;
-	width: 50px;
-	height: 56px;
-}
-.goods-sprite.fine_nickel::before {
-	background-position: -597px -354px;
-	width: 55px;
-	height: 57px;
-}
-.goods-sprite.nickel::before {
-	background-position: -597px -354px;
-	width: 55px;
-	height: 57px;
-}
-.goods-sprite.fine_packaging::before {
-	background-position: -546px -414px;
-	width: 49px;
-	height: 50px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.packaging::before {
-	background-position: -546px -414px;
-	width: 49px;
-	height: 50px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.fine_spices::before {
-	background-position: -597px -413px;
-	width: 55px;
-	height: 52px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.spices::before {
-	background-position: -597px -413px;
-	width: 55px;
-	height: 52px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.icon_fine_gbg_resource::before {
-	background-position: -534px -466px;
-	width: 58px;
-	height: 47px;
-}
-.goods-sprite.fine_smart_materials::before {
-	background-position: -522px -515px;
-	width: 54px;
-	height: 49px;
-}
-.goods-sprite.smart_materials::before {
-	background-position: -522px -515px;
-	width: 54px;
-	height: 49px;
-}
-.goods-sprite.enhanced_porifera::before {
-	background-position: -578px -515px;
+.goods-sprite.electromagnets::before {
+	background-position: -154px -66px;
 	width: 48px;
-	height: 49px;
+	height: 45px;
+	transform: rotate(-90deg);
 }
-.goods-sprite.fine_enhanced_porifera::before {
-	background-position: -578px -515px;
+.goods-sprite.fine_magnet_factory::before {
+	background-position: -154px -66px;
 	width: 48px;
-	height: 49px;
-}
-.goods-sprite.unit_class_guild_raids_short_ranged::before {
-	background-position: -594px -467px;
-	width: 45px;
-	height: 46px;
-}
-.goods-sprite.ai_data::before {
-	background-position: -628px -515px;
-	width: 35px;
-	height: 49px;
+	height: 45px;
 	transform: rotate(-90deg);
 }
-.goods-sprite.fine_ai_data::before {
-	background-position: -628px -515px;
-	width: 35px;
-	height: 49px;
+.goods-sprite.fine_unknown_dna::before {
+	background-position: -204px -60px;
+	width: 64px;
+	height: 53px;
 	transform: rotate(-90deg);
 }
-.goods-sprite.fine_saree::before {
-	background-position: -653px -236px;
-	width: 56px;
-	height: 57px;
+.goods-sprite.unknown_dna::before {
+	background-position: -204px -60px;
+	width: 64px;
+	height: 53px;
+	transform: rotate(-90deg);
 }
-.goods-sprite.saree::before {
-	background-position: -653px -236px;
-	width: 56px;
-	height: 57px;
+.goods-sprite.fine_golden_rice::before {
+	background-position: -179px -115px;
+	width: 61px;
+	height: 61px;
 }
-.goods-sprite.biogeochemical_data::before {
-	background-position: -653px -295px;
-	width: 56px;
-	height: 56px;
+.goods-sprite.golden_rice::before {
+	background-position: -179px -115px;
+	width: 61px;
+	height: 61px;
 }
-.goods-sprite.fine_biogeochemical_data::before {
-	background-position: -653px -295px;
-	width: 56px;
-	height: 56px;
+.goods-sprite.cryptocash::before {
+	background-position: -181px -178px;
+	width: 59px;
+	height: 58px;
 }
-.goods-sprite.fine_flavorants::before {
-	background-position: -654px -353px;
-	width: 55px;
-	height: 56px;
+.goods-sprite.fine_cryptocash::before {
+	background-position: -181px -178px;
+	width: 59px;
+	height: 58px;
 }
-.goods-sprite.flavorants::before {
-	background-position: -654px -353px;
-	width: 55px;
-	height: 56px;
+.goods-sprite.fine_herbal_snack::before {
+	background-position: -133px -238px;
+	width: 64px;
+	height: 48px;
 }
-.goods-sprite.fine_steel::before {
-	background-position: -654px -411px;
-	width: 56px;
+.goods-sprite.herbal_snack::before {
+	background-position: -133px -238px;
+	width: 64px;
+	height: 48px;
+}
+.goods-sprite.basalt::before {
+	background-position: -130px -288px;
+	width: 64px;
 	height: 54px;
 }
-.goods-sprite.steel::before {
-	background-position: -654px -411px;
-	width: 56px;
+.goods-sprite.icon_fine_basalt::before {
+	background-position: -130px -288px;
+	width: 64px;
 	height: 54px;
 }
-.goods-sprite.unit_class_long_ranged::before {
-	background-position: -641px -467px;
+.goods-sprite.fine_preservatives::before {
+	background-position: -129px -344px;
+	width: 64px;
+	height: 54px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.preservatives::before {
+	background-position: -129px -344px;
+	width: 64px;
+	height: 54px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.gems::before {
+	background-position: -127px -400px;
+	width: 62px;
+	height: 59px;
+}
+.goods-sprite.icon_fine_rough_gems::before {
+	background-position: -127px -400px;
+	width: 62px;
+	height: 59px;
+}
+.goods-sprite.advanced_dna_data::before {
+	background-position: -199px -238px;
+	width: 41px;
+	height: 53px;
+}
+.goods-sprite.fine_advanced_dna_data::before {
+	background-position: -199px -238px;
+	width: 41px;
+	height: 53px;
+}
+.goods-sprite.bio_creatures::before {
+	background-position: -196px -293px;
+	width: 44px;
+	height: 53px;
+}
+.goods-sprite.fine_bio_creatures::before {
+	background-position: -196px -293px;
+	width: 44px;
+	height: 53px;
+}
+.goods-sprite.fine_luxury_materials::before {
+	background-position: -195px -348px;
 	width: 45px;
-	height: 46px;
+	height: 60px;
 	transform: rotate(-90deg);
 }
-.goods-sprite.fine_liquid_binder::before {
-	background-position: -665px -515px;
-	width: 28px;
+.goods-sprite.luxury_materials::before {
+	background-position: -195px -348px;
+	width: 45px;
+	height: 60px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.dye::before {
+	background-position: -191px -410px;
+	width: 54px;
 	height: 49px;
 }
-.goods-sprite.liquid_binder::before {
-	background-position: -665px -515px;
-	width: 28px;
+.goods-sprite.icon_fine_flowers::before {
+	background-position: -191px -410px;
+	width: 54px;
 	height: 49px;
 }
-.goods-sprite.icon_fine_sandstone::before {
-	background-position: -711px -236px;
-	width: 42px;
-	height: 58px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.sandstone::before {
-	background-position: -711px -236px;
-	width: 42px;
-	height: 58px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.icon_fine_gex_resource::before {
-	background-position: -711px -296px;
+.goods-sprite.coffee::before {
+	background-position: -242px -115px;
 	width: 47px;
-	height: 58px;
+	height: 63px;
 	transform: rotate(-90deg);
 }
-.goods-sprite.fine_paper_batteries::before {
-	background-position: -711px -356px;
-	width: 57px;
+.goods-sprite.icon_fine_coffee::before {
+	background-position: -242px -115px;
+	width: 47px;
+	height: 63px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.fine_whale::before {
+	background-position: -242px -180px;
+	width: 48px;
+	height: 63px;
+}
+.goods-sprite.whaleoil::before {
+	background-position: -242px -180px;
+	width: 48px;
+	height: 63px;
+}
+.goods-sprite.fine_paintings::before {
+	background-position: -242px -245px;
+	width: 49px;
+	height: 63px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.paintings::before {
+	background-position: -242px -245px;
+	width: 49px;
+	height: 63px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.fine_textiles::before {
+	background-position: -242px -310px;
+	width: 54px;
+	height: 63px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.textiles::before {
+	background-position: -242px -310px;
+	width: 54px;
+	height: 63px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.fine_purified_water::before {
+	background-position: -270px -60px;
+	width: 40px;
 	height: 53px;
 }
-.goods-sprite.paper_batteries::before {
-	background-position: -711px -356px;
-	width: 57px;
+.goods-sprite.purified_water::before {
+	background-position: -270px -60px;
+	width: 40px;
 	height: 53px;
 }
-.goods-sprite.bioplastics::before {
-	background-position: -712px -411px;
-	width: 56px;
-	height: 55px;
-}
-.goods-sprite.fine_bioplastics::before {
-	background-position: -712px -411px;
-	width: 56px;
-	height: 55px;
-}
-.goods-sprite.fine_translucent::before {
-	background-position: -755px -182px;
-	width: 52px;
-	height: 37px;
-}
-.goods-sprite.translucent_concrete::before {
-	background-position: -755px -182px;
-	width: 52px;
-	height: 37px;
-}
-.goods-sprite.artificial_scales::before {
-	background-position: -755px -221px;
-	width: 55px;
-	height: 55px;
-}
-.goods-sprite.fine_artificial_scales::before {
-	background-position: -755px -221px;
-	width: 55px;
-	height: 55px;
-}
-.goods-sprite.bronze::before {
-	background-position: -812px -210px;
-	width: 50px;
-	height: 56px;
+.goods-sprite.fine_petroleum::before {
+	background-position: -312px -59px;
+	width: 62px;
+	height: 57px;
 	transform: rotate(-90deg);
 }
-.goods-sprite.icon_fine_bronze_ore::before {
-	background-position: -812px -210px;
-	width: 50px;
-	height: 56px;
+.goods-sprite.petroleum::before {
+	background-position: -312px -59px;
+	width: 62px;
+	height: 57px;
 	transform: rotate(-90deg);
 }
-.goods-sprite.icon_fine_raid_resource::before {
-	background-position: -760px -278px;
-	width: 47px;
+.goods-sprite.fine_glowing_seaweed::before {
+	background-position: -376px -59px;
+	width: 60px;
 	height: 58px;
 	transform: rotate(-90deg);
 }
-.goods-sprite.fine_renewable_resources::before {
-	background-position: -770px -338px;
-	width: 40px;
-	height: 57px;
-}
-.goods-sprite.renewable_resources::before {
-	background-position: -770px -338px;
-	width: 40px;
-	height: 57px;
-}
-.goods-sprite.compound_fluid::before {
-	background-position: -770px -397px;
-	width: 47px;
-	height: 57px;
-}
-.goods-sprite.fine_compound_fluid::before {
-	background-position: -770px -397px;
-	width: 47px;
-	height: 57px;
-}
-.goods-sprite.fine_lng::before {
-	background-position: -688px -468px;
-	width: 56px;
-	height: 43px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.gas::before {
-	background-position: -688px -468px;
-	width: 56px;
-	height: 43px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.fine_nanowire::before {
-	background-position: -695px -513px;
-	width: 54px;
-	height: 50px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.fine_nanowires::before {
-	background-position: -695px -513px;
-	width: 54px;
-	height: 50px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.nanowire::before {
-	background-position: -695px -513px;
-	width: 54px;
-	height: 50px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.dark_energy_battery::before {
-	background-position: -746px -468px;
-	width: 25px;
-	height: 43px;
-}
-.goods-sprite.fine_dark_energy_battery::before {
-	background-position: -746px -468px;
-	width: 25px;
-	height: 43px;
-}
-.goods-sprite.fine_nanoparticles::before {
-	background-position: -773px -456px;
-	width: 47px;
-	height: 56px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.nanoparticles::before {
-	background-position: -773px -456px;
-	width: 47px;
-	height: 56px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.fine_red_algae::before {
-	background-position: -751px -514px;
-	width: 54px;
-	height: 50px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.red_algae::before {
-	background-position: -751px -514px;
-	width: 54px;
-	height: 50px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.fine_oxygen_pills::before {
-	background-position: -807px -514px;
-	width: 43px;
-	height: 50px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.oxygen_pills::before {
-	background-position: -807px -514px;
-	width: 43px;
-	height: 50px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.fine_sacrificial_offerings::before {
-	background-position: -864px -210px;
-	width: 34px;
-	height: 56px;
-}
-.goods-sprite.fine_hypersleep_modules::before {
-	background-position: -870px -156px;
-	width: 42px;
-	height: 52px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.hypersleep_modules::before {
-	background-position: -870px -156px;
-	width: 42px;
-	height: 52px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.icon_fine_grapes::before {
-	background-position: -900px -210px;
-	width: 43px;
-	height: 56px;
-}
-.goods-sprite.wine::before {
-	background-position: -900px -210px;
-	width: 43px;
-	height: 56px;
-}
-.goods-sprite.fine_promethium::before {
-	background-position: -812px -268px;
-	width: 57px;
-	height: 47px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.promethium::before {
-	background-position: -812px -268px;
-	width: 57px;
-	height: 47px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.coke::before {
-	background-position: -871px -268px;
-	width: 57px;
-	height: 48px;
-}
-.goods-sprite.fine_coke::before {
-	background-position: -871px -268px;
-	width: 57px;
-	height: 48px;
-}
-.goods-sprite.gold::before {
-	background-position: -812px -317px;
-	width: 57px;
-	height: 48px;
-}
-.goods-sprite.icon_fine_gold_ore::before {
-	background-position: -812px -317px;
-	width: 57px;
-	height: 48px;
-}
-.goods-sprite.cloth::before {
-	background-position: -871px -318px;
-	width: 52px;
-	height: 48px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.icon_fine_wool::before {
-	background-position: -871px -318px;
-	width: 52px;
-	height: 48px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.fine_stone_figures::before {
-	background-position: -925px -318px;
-	width: 38px;
-	height: 55px;
-}
-.goods-sprite.stone_figures::before {
-	background-position: -925px -318px;
-	width: 38px;
-	height: 55px;
-}
-.goods-sprite.fine_vegetables::before {
-	background-position: -819px -367px;
-	width: 48px;
-	height: 52px;
-}
-.goods-sprite.vegetables::before {
-	background-position: -819px -367px;
-	width: 48px;
-	height: 52px;
-}
-.goods-sprite.fine_pottery::before {
-	background-position: -869px -368px;
-	width: 53px;
-	height: 44px;
+.goods-sprite.glowing_seaweed::before {
+	background-position: -376px -59px;
+	width: 60px;
+	height: 58px;
 	transform: rotate(-90deg);
 }
 .goods-sprite.fine_silver_crystals::before {
-	background-position: -924px -375px;
+	background-position: -438px -61px;
 	width: 39px;
 	height: 48px;
 	transform: rotate(-90deg);
 }
 .goods-sprite.silver_crystals::before {
-	background-position: -924px -375px;
+	background-position: -438px -61px;
 	width: 39px;
 	height: 48px;
 	transform: rotate(-90deg);
 }
+.goods-sprite.data_crystals::before {
+	background-position: -291px -118px;
+	width: 61px;
+	height: 60px;
+}
+.goods-sprite.fine_data_crystals::before {
+	background-position: -291px -118px;
+	width: 61px;
+	height: 60px;
+}
+.goods-sprite.fine_horns::before {
+	background-position: -292px -180px;
+	width: 60px;
+	height: 61px;
+}
+.goods-sprite.horns::before {
+	background-position: -292px -180px;
+	width: 60px;
+	height: 61px;
+}
+.goods-sprite.fine_venus_carbon::before {
+	background-position: -293px -243px;
+	width: 59px;
+	height: 61px;
+}
+.goods-sprite.venus_carbon::before {
+	background-position: -293px -243px;
+	width: 59px;
+	height: 61px;
+}
+.goods-sprite.armor::before {
+	background-position: -298px -306px;
+	width: 53px;
+	height: 62px;
+}
+.goods-sprite.fine_armor::before {
+	background-position: -298px -306px;
+	width: 53px;
+	height: 62px;
+}
+.goods-sprite.fine_plankton::before {
+	background-position: -354px -119px;
+	width: 60px;
+	height: 61px;
+}
+.goods-sprite.plankton::before {
+	background-position: -354px -119px;
+	width: 60px;
+	height: 61px;
+}
+.goods-sprite.fine_guild_raids_rope::before {
+	background-position: -416px -119px;
+	width: 61px;
+	height: 58px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.guild_raids_rope::before {
+	background-position: -416px -119px;
+	width: 61px;
+	height: 58px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.icon_fine_guild_raids_hemp::before {
+	background-position: -416px -179px;
+	width: 61px;
+	height: 58px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.explosives::before {
+	background-position: -354px -182px;
+	width: 60px;
+	height: 60px;
+}
+.goods-sprite.fine_explosives::before {
+	background-position: -354px -182px;
+	width: 60px;
+	height: 60px;
+}
+.goods-sprite.icon_fine_guild_raids_rope::before {
+	background-position: -416px -239px;
+	width: 61px;
+	height: 58px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.axes::before {
+	background-position: -354px -244px;
+	width: 60px;
+	height: 59px;
+}
+.goods-sprite.fine_axes::before {
+	background-position: -354px -244px;
+	width: 60px;
+	height: 59px;
+}
+.goods-sprite.brick::before {
+	background-position: -416px -299px;
+	width: 61px;
+	height: 57px;
+}
+.goods-sprite.icon_fine_brick_clay::before {
+	background-position: -416px -299px;
+	width: 61px;
+	height: 57px;
+}
+.goods-sprite.fertilizer::before {
+	background-position: -354px -305px;
+	width: 60px;
+	height: 51px;
+}
+.goods-sprite.fine_fertilizer::before {
+	background-position: -354px -305px;
+	width: 60px;
+	height: 51px;
+}
+.goods-sprite.fine_liquid_binder::before {
+	background-position: -242px -375px;
+	width: 49px;
+	height: 28px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.liquid_binder::before {
+	background-position: -242px -375px;
+	width: 49px;
+	height: 28px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.fine_semiconductors::before {
+	background-position: -247px -405px;
+	width: 45px;
+	height: 57px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.semiconductors::before {
+	background-position: -247px -405px;
+	width: 45px;
+	height: 57px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.icon_fine_porcelain::before {
+	background-position: -353px -358px;
+	width: 62px;
+	height: 41px;
+}
+.goods-sprite.porcelain::before {
+	background-position: -353px -358px;
+	width: 62px;
+	height: 41px;
+}
+.goods-sprite.fine_rubber::before {
+	background-position: -417px -358px;
+	width: 60px;
+	height: 59px;
+}
+.goods-sprite.rubber::before {
+	background-position: -417px -358px;
+	width: 60px;
+	height: 59px;
+}
+.goods-sprite.fine_pottery::before {
+	background-position: -298px -370px;
+	width: 53px;
+	height: 44px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.fine_microgreen_supplement::before {
+	background-position: -294px -416px;
+	width: 61px;
+	height: 46px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.microgreen_supplement::before {
+	background-position: -294px -416px;
+	width: 61px;
+	height: 46px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.crystallized_hydrocarbons::before {
+	background-position: -357px -401px;
+	width: 58px;
+	height: 59px;
+}
+.goods-sprite.fine_crystallized_hydrocarbons::before {
+	background-position: -357px -401px;
+	width: 58px;
+	height: 59px;
+}
+.goods-sprite.fine_guild_raids_brick::before {
+	background-position: -417px -419px;
+	width: 60px;
+	height: 56px;
+}
+.goods-sprite.guild_raids_brick::before {
+	background-position: -417px -419px;
+	width: 60px;
+	height: 56px;
+}
+.goods-sprite.fine_papercrete::before {
+	background-position: -357px -462px;
+	width: 58px;
+	height: 37px;
+}
+.goods-sprite.papercrete::before {
+	background-position: -357px -462px;
+	width: 58px;
+	height: 37px;
+}
+.goods-sprite.icon_fine_guild_raids_brick::before {
+	background-position: -417px -477px;
+	width: 60px;
+	height: 56px;
+}
+.goods-sprite.fine_superalloys::before {
+	background-position: -126px -709px;
+	width: 45px;
+	height: 62px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.superalloys::before {
+	background-position: -126px -709px;
+	width: 45px;
+	height: 62px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.fine_instruments::before {
+	background-position: -64px -773px;
+	width: 62px;
+	height: 52px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.instruments::before {
+	background-position: -64px -773px;
+	width: 62px;
+	height: 52px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.basmati::before {
+	background-position: -63px -827px;
+	width: 59px;
+	height: 59px;
+}
+.goods-sprite.fine_basmati::before {
+	background-position: -63px -827px;
+	width: 59px;
+	height: 59px;
+}
+.goods-sprite.dark_matter::before {
+	background-position: -63px -888px;
+	width: 59px;
+	height: 59px;
+}
+.goods-sprite.fine_dark_matter::before {
+	background-position: -63px -888px;
+	width: 59px;
+	height: 59px;
+}
+.goods-sprite.fine_lng::before {
+	background-position: -128px -773px;
+	width: 43px;
+	height: 56px;
+}
+.goods-sprite.gas::before {
+	background-position: -128px -773px;
+	width: 43px;
+	height: 56px;
+}
+.goods-sprite.icon_fine_tar::before {
+	background-position: -124px -831px;
+	width: 49px;
+	height: 61px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.tar::before {
+	background-position: -124px -831px;
+	width: 49px;
+	height: 61px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.fine_pirate_spice::before {
+	background-position: -124px -894px;
+	width: 49px;
+	height: 60px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.pirate_spice::before {
+	background-position: -124px -894px;
+	width: 49px;
+	height: 60px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.fine_platinum_crystals::before {
+	background-position: -64px -949px;
+	width: 58px;
+	height: 59px;
+}
+.goods-sprite.platinum_crystals::before {
+	background-position: -64px -949px;
+	width: 58px;
+	height: 59px;
+}
+.goods-sprite.fine_smart_materials::before {
+	background-position: -124px -956px;
+	width: 49px;
+	height: 54px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.smart_materials::before {
+	background-position: -124px -956px;
+	width: 49px;
+	height: 54px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.fine_soy::before {
+	background-position: -65px -1010px;
+	width: 57px;
+	height: 59px;
+}
+.goods-sprite.soy::before {
+	background-position: -65px -1010px;
+	width: 57px;
+	height: 59px;
+}
+.goods-sprite.fine_robotics_factory::before {
+	background-position: -65px -1071px;
+	width: 56px;
+	height: 61px;
+}
+.goods-sprite.robots::before {
+	background-position: -65px -1071px;
+	width: 56px;
+	height: 61px;
+}
+.goods-sprite.fine_random_guild_raids_goods::before {
+	background-position: -124px -1012px;
+	width: 49px;
+	height: 60px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.asteroid_ice::before {
+	background-position: -123px -1074px;
+	width: 50px;
+	height: 59px;
+}
+.goods-sprite.fine_asteroid_ice::before {
+	background-position: -123px -1074px;
+	width: 50px;
+	height: 59px;
+}
+.goods-sprite.fine_sacrificial_offerings::before {
+	background-position: -65px -1134px;
+	width: 56px;
+	height: 34px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.fine_sugar_crystals::before {
+	background-position: -64px -1170px;
+	width: 55px;
+	height: 61px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.sugar_crystals::before {
+	background-position: -64px -1170px;
+	width: 55px;
+	height: 61px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.granite::before {
+	background-position: -64px -1233px;
+	width: 61px;
+	height: 51px;
+}
+.goods-sprite.icon_fine_granite::before {
+	background-position: -64px -1233px;
+	width: 61px;
+	height: 51px;
+}
+.goods-sprite.bromine::before {
+	background-position: -123px -1135px;
+	width: 57px;
+	height: 37px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.fine_bromine::before {
+	background-position: -123px -1135px;
+	width: 57px;
+	height: 37px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.algae::before {
+	background-position: -121px -1174px;
+	width: 56px;
+	height: 57px;
+}
+.goods-sprite.fine_algae::before {
+	background-position: -121px -1174px;
+	width: 56px;
+	height: 57px;
+}
+.goods-sprite.cypress::before {
+	background-position: -127px -1233px;
+	width: 61px;
+	height: 51px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.icon_fine_cypress::before {
+	background-position: -127px -1233px;
+	width: 61px;
+	height: 51px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.fine_renewable_resources::before {
+	background-position: -179px -1174px;
+	width: 40px;
+	height: 57px;
+}
+.goods-sprite.renewable_resources::before {
+	background-position: -179px -1174px;
+	width: 40px;
+	height: 57px;
+}
+.goods-sprite.fine_guild_raids_bronze::before {
+	background-position: -190px -1233px;
+	width: 56px;
+	height: 51px;
+}
+.goods-sprite.guild_raids_bronze::before {
+	background-position: -190px -1233px;
+	width: 56px;
+	height: 51px;
+}
+.goods-sprite.fine_nutrition_food::before {
+	background-position: -125px -462px;
+	width: 46px;
+	height: 61px;
+}
+.goods-sprite.nutrition_research::before {
+	background-position: -125px -462px;
+	width: 46px;
+	height: 61px;
+}
+.goods-sprite.glass::before {
+	background-position: -173px -461px;
+	width: 58px;
+	height: 59px;
+}
+.goods-sprite.icon_fine_quartz::before {
+	background-position: -173px -461px;
+	width: 58px;
+	height: 59px;
+}
+.goods-sprite.icon_fine_lead_ore::before {
+	background-position: -125px -525px;
+	width: 52px;
+	height: 61px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.lead::before {
+	background-position: -125px -525px;
+	width: 52px;
+	height: 61px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.fine_mars_ore::before {
+	background-position: -179px -522px;
+	width: 53px;
+	height: 61px;
+}
+.goods-sprite.mars_ore::before {
+	background-position: -179px -522px;
+	width: 53px;
+	height: 61px;
+}
+.goods-sprite.brass::before {
+	background-position: -233px -464px;
+	width: 60px;
+	height: 56px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.icon_fine_brass_ore::before {
+	background-position: -233px -464px;
+	width: 60px;
+	height: 56px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.fine_fresh_fish::before {
+	background-position: -295px -464px;
+	width: 60px;
+	height: 56px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.fine_catamarans::before {
+	background-position: -234px -522px;
+	width: 58px;
+	height: 59px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.fine_lotus::before {
+	background-position: -294px -522px;
+	width: 61px;
+	height: 54px;
+}
+.goods-sprite.lotus::before {
+	background-position: -294px -522px;
+	width: 61px;
+	height: 54px;
+}
+.goods-sprite.icon_fine_limestone::before {
+	background-position: -357px -501px;
+	width: 58px;
+	height: 56px;
+}
+.goods-sprite.limestone::before {
+	background-position: -357px -501px;
+	width: 58px;
+	height: 56px;
+}
+.goods-sprite.icon_fine_silkworm_cocoons::before {
+	background-position: -417px -535px;
+	width: 60px;
+	height: 53px;
+}
+.goods-sprite.silk::before {
+	background-position: -417px -535px;
+	width: 60px;
+	height: 53px;
+}
+.goods-sprite.icon_fine_sandstone::before {
+	background-position: -357px -559px;
+	width: 58px;
+	height: 42px;
+}
+.goods-sprite.sandstone::before {
+	background-position: -357px -559px;
+	width: 58px;
+	height: 42px;
+}
+.goods-sprite.fine_pirate_cannons::before {
+	background-position: -417px -590px;
+	width: 60px;
+	height: 47px;
+}
+.goods-sprite.pirate_cannons::before {
+	background-position: -417px -590px;
+	width: 60px;
+	height: 47px;
+}
+.goods-sprite.fine_fusion_reactors::before {
+	background-position: -294px -578px;
+	width: 60px;
+	height: 47px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.fusion_reactors::before {
+	background-position: -294px -578px;
+	width: 60px;
+	height: 47px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.fine_pirate_fish::before {
+	background-position: -356px -603px;
+	width: 59px;
+	height: 46px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.pirate_fish::before {
+	background-position: -356px -603px;
+	width: 59px;
+	height: 46px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.fine_pirate_rum::before {
+	background-position: -234px -583px;
+	width: 58px;
+	height: 42px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.pirate_rum::before {
+	background-position: -234px -583px;
+	width: 58px;
+	height: 42px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.fine_guild_raids_gunpowder::before {
+	background-position: -179px -585px;
+	width: 53px;
+	height: 48px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.guild_raids_gunpowder::before {
+	background-position: -179px -585px;
+	width: 53px;
+	height: 48px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.icon_fine_talc::before {
+	background-position: -125px -588px;
+	width: 52px;
+	height: 46px;
+}
+.goods-sprite.talc::before {
+	background-position: -125px -588px;
+	width: 52px;
+	height: 46px;
+}
+.goods-sprite.icon_fine_grapes::before {
+	background-position: -129px -651px;
+	width: 43px;
+	height: 56px;
+}
+.goods-sprite.wine::before {
+	background-position: -129px -651px;
+	width: 43px;
+	height: 56px;
+}
+.goods-sprite.fine_kava::before {
+	background-position: -417px -639px;
+	width: 59px;
+	height: 52px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.fine_lubricants::before {
+	background-position: -234px -627px;
+	width: 59px;
+	height: 54px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.lubricants::before {
+	background-position: -234px -627px;
+	width: 59px;
+	height: 54px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.fine_transester_gas::before {
+	background-position: -295px -627px;
+	width: 58px;
+	height: 54px;
+}
+.goods-sprite.transester_gas::before {
+	background-position: -295px -627px;
+	width: 58px;
+	height: 54px;
+}
+.goods-sprite.gunpowder::before {
+	background-position: -179px -635px;
+	width: 53px;
+	height: 48px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.icon_fine_gunpowder::before {
+	background-position: -179px -635px;
+	width: 53px;
+	height: 48px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.honey::before {
+	background-position: -355px -651px;
+	width: 58px;
+	height: 42px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.icon_fine_honeycombs::before {
+	background-position: -355px -651px;
+	width: 58px;
+	height: 42px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.icon_fine_gbg_resource::before {
+	background-position: -174px -685px;
+	width: 58px;
+	height: 47px;
+}
+.goods-sprite.fine_saree::before {
+	background-position: -173px -734px;
+	width: 56px;
+	height: 57px;
+}
+.goods-sprite.saree::before {
+	background-position: -173px -734px;
+	width: 56px;
+	height: 57px;
+}
+.goods-sprite.fine_processed_material::before {
+	background-position: -234px -683px;
+	width: 58px;
+	height: 50px;
+}
+.goods-sprite.processed_material::before {
+	background-position: -234px -683px;
+	width: 58px;
+	height: 50px;
+}
+.goods-sprite.dna_data::before {
+	background-position: -231px -735px;
+	width: 57px;
+	height: 55px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.fine_dna_data::before {
+	background-position: -231px -735px;
+	width: 57px;
+	height: 55px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.fine_paper_batteries::before {
+	background-position: -294px -683px;
+	width: 57px;
+	height: 53px;
+}
+.goods-sprite.paper_batteries::before {
+	background-position: -294px -683px;
+	width: 57px;
+	height: 53px;
+}
+.goods-sprite.fine_guild_raids_cloth::before {
+	background-position: -290px -738px;
+	width: 57px;
+	height: 54px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.guild_raids_cloth::before {
+	background-position: -290px -738px;
+	width: 57px;
+	height: 54px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.icon_fine_gex_resource::before {
+	background-position: -353px -695px;
+	width: 58px;
+	height: 47px;
+}
+.goods-sprite.icon_fine_raid_resource::before {
+	background-position: -349px -744px;
+	width: 58px;
+	height: 47px;
+}
+.goods-sprite.ai_data::before {
+	background-position: -173px -793px;
+	width: 49px;
+	height: 35px;
+}
+.goods-sprite.fine_ai_data::before {
+	background-position: -173px -793px;
+	width: 49px;
+	height: 35px;
+}
+.goods-sprite.compound_fluid::before {
+	background-position: -175px -830px;
+	width: 47px;
+	height: 57px;
+}
+.goods-sprite.fine_compound_fluid::before {
+	background-position: -175px -830px;
+	width: 47px;
+	height: 57px;
+}
+.goods-sprite.fine_promethium::before {
+	background-position: -175px -889px;
+	width: 47px;
+	height: 57px;
+}
+.goods-sprite.promethium::before {
+	background-position: -175px -889px;
+	width: 47px;
+	height: 57px;
+}
+.goods-sprite.coke::before {
+	background-position: -175px -948px;
+	width: 48px;
+	height: 57px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.fine_coke::before {
+	background-position: -175px -948px;
+	width: 48px;
+	height: 57px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.gold::before {
+	background-position: -175px -1007px;
+	width: 48px;
+	height: 57px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.icon_fine_gold_ore::before {
+	background-position: -175px -1007px;
+	width: 48px;
+	height: 57px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.icon_fine_guild_raids_wool::before {
+	background-position: -175px -1066px;
+	width: 54px;
+	height: 57px;
+}
+.goods-sprite.icon_fine_marble::before {
+	background-position: -182px -1125px;
+	width: 52px;
+	height: 47px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.marble::before {
+	background-position: -182px -1125px;
+	width: 52px;
+	height: 47px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.filters::before {
+	background-position: -221px -1174px;
+	width: 41px;
+	height: 57px;
+}
+.goods-sprite.fine_filters::before {
+	background-position: -221px -1174px;
+	width: 41px;
+	height: 57px;
+}
+.goods-sprite.icon_fine_guild_raids_bronze::before {
+	background-position: -248px -1233px;
+	width: 56px;
+	height: 51px;
+}
+.goods-sprite.fine_guild_raids_honey::before {
+	background-position: -224px -793px;
+	width: 42px;
+	height: 57px;
+}
+.goods-sprite.guild_raids_honey::before {
+	background-position: -224px -793px;
+	width: 42px;
+	height: 57px;
+}
+.goods-sprite.icon_fine_guild_raids_honey::before {
+	background-position: -224px -852px;
+	width: 42px;
+	height: 57px;
+}
+.goods-sprite.fine_nickel::before {
+	background-position: -268px -794px;
+	width: 55px;
+	height: 57px;
+}
+.goods-sprite.nickel::before {
+	background-position: -268px -794px;
+	width: 55px;
+	height: 57px;
+}
+.goods-sprite.fine_flavorants::before {
+	background-position: -268px -853px;
+	width: 55px;
+	height: 56px;
+}
+.goods-sprite.flavorants::before {
+	background-position: -268px -853px;
+	width: 55px;
+	height: 56px;
+}
+.goods-sprite.fine_soy_proteins::before {
+	background-position: -325px -794px;
+	width: 46px;
+	height: 57px;
+}
+.goods-sprite.soy_proteins::before {
+	background-position: -325px -794px;
+	width: 46px;
+	height: 57px;
+}
+.goods-sprite.fine_nanoparticles::before {
+	background-position: -325px -853px;
+	width: 47px;
+	height: 56px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.nanoparticles::before {
+	background-position: -325px -853px;
+	width: 47px;
+	height: 56px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.fine_flowers::before {
+	background-position: -373px -793px;
+	width: 50px;
+	height: 56px;
+}
+.goods-sprite.fine_headdress::before {
+	background-position: -425px -693px;
+	width: 52px;
+	height: 56px;
+}
+.goods-sprite.headdress::before {
+	background-position: -425px -693px;
+	width: 52px;
+	height: 56px;
+}
+.goods-sprite.fine_spices::before {
+	background-position: -425px -751px;
+	width: 52px;
+	height: 55px;
+}
+.goods-sprite.spices::before {
+	background-position: -425px -751px;
+	width: 52px;
+	height: 55px;
+}
+.goods-sprite.icon_fine_crude_salt::before {
+	background-position: -425px -808px;
+	width: 52px;
+	height: 51px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.salt::before {
+	background-position: -425px -808px;
+	width: 52px;
+	height: 51px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.fine_packaging::before {
+	background-position: -374px -851px;
+	width: 49px;
+	height: 50px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.packaging::before {
+	background-position: -374px -851px;
+	width: 49px;
+	height: 50px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.cloth::before {
+	background-position: -425px -861px;
+	width: 52px;
+	height: 48px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.icon_fine_wool::before {
+	background-position: -425px -861px;
+	width: 52px;
+	height: 48px;
+	transform: rotate(-90deg);
+}
 .goods-sprite.fine_isolated_molecules::before {
-	background-position: -819px -421px;
+	background-position: -224px -911px;
 	width: 44px;
 	height: 32px;
 	transform: rotate(-90deg);
 }
 .goods-sprite.isolated_molecules::before {
-	background-position: -819px -421px;
+	background-position: -224px -911px;
 	width: 44px;
 	height: 32px;
 	transform: rotate(-90deg);
 }
-.goods-sprite.advanced_dna_data::before {
-	background-position: -822px -455px;
-	width: 41px;
-	height: 53px;
-}
-.goods-sprite.fine_advanced_dna_data::before {
-	background-position: -822px -455px;
-	width: 41px;
-	height: 53px;
-}
-.goods-sprite.fine_purified_water::before {
-	background-position: -869px -414px;
-	width: 53px;
-	height: 40px;
+.goods-sprite.bronze::before {
+	background-position: -225px -945px;
+	width: 50px;
+	height: 56px;
 	transform: rotate(-90deg);
 }
-.goods-sprite.purified_water::before {
-	background-position: -869px -414px;
-	width: 53px;
-	height: 40px;
+.goods-sprite.icon_fine_bronze_ore::before {
+	background-position: -225px -945px;
+	width: 50px;
+	height: 56px;
 	transform: rotate(-90deg);
 }
-.goods-sprite.unit_class_guild_raids_heavy_melee::before {
-	background-position: -924px -425px;
+.goods-sprite.fine_steel::before {
+	background-position: -225px -1003px;
+	width: 54px;
+	height: 56px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.steel::before {
+	background-position: -225px -1003px;
+	width: 54px;
+	height: 56px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.bioplastics::before {
+	background-position: -231px -1061px;
+	width: 55px;
+	height: 56px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.fine_bioplastics::before {
+	background-position: -231px -1061px;
+	width: 55px;
+	height: 56px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.icon_fine_guild_raids_gunpowder::before {
+	background-position: -236px -1119px;
+	width: 48px;
+	height: 53px;
+}
+.goods-sprite.biogeochemical_data::before {
+	background-position: -277px -911px;
+	width: 56px;
+	height: 56px;
+}
+.goods-sprite.fine_biogeochemical_data::before {
+	background-position: -277px -911px;
+	width: 56px;
+	height: 56px;
+}
+.goods-sprite.fine_stone_figures::before {
+	background-position: -335px -911px;
+	width: 38px;
+	height: 55px;
+}
+.goods-sprite.stone_figures::before {
+	background-position: -335px -911px;
+	width: 38px;
+	height: 55px;
+}
+.goods-sprite.fine_vegetables::before {
+	background-position: -375px -903px;
+	width: 48px;
+	height: 52px;
+}
+.goods-sprite.vegetables::before {
+	background-position: -375px -903px;
+	width: 48px;
+	height: 52px;
+}
+.goods-sprite.fine_hypersleep_modules::before {
+	background-position: -425px -911px;
+	width: 52px;
+	height: 42px;
+}
+.goods-sprite.hypersleep_modules::before {
+	background-position: -425px -911px;
+	width: 52px;
+	height: 42px;
+}
+.goods-sprite.fine_translucent::before {
+	background-position: -425px -955px;
+	width: 52px;
+	height: 37px;
+}
+.goods-sprite.translucent_concrete::before {
+	background-position: -425px -955px;
+	width: 52px;
+	height: 37px;
+}
+.goods-sprite.enhanced_porifera::before {
+	background-position: -375px -957px;
+	width: 48px;
+	height: 49px;
+}
+.goods-sprite.fine_enhanced_porifera::before {
+	background-position: -375px -957px;
+	width: 48px;
+	height: 49px;
+}
+.goods-sprite.unit_class_light_melee::before {
+	background-position: -335px -968px;
+	width: 38px;
+	height: 40px;
+}
+.goods-sprite.unit_class_guild_raids_short_ranged::before {
+	background-position: -288px -969px;
+	width: 45px;
+	height: 46px;
+}
+.goods-sprite.unit_class_guild_raids_light_melee::before {
+	background-position: -281px -1017px;
+	width: 43px;
+	height: 42px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.fine_barley::before {
+	background-position: -288px -1061px;
+	width: 51px;
+	height: 55px;
+}
+.goods-sprite.fine_maize::before {
+	background-position: -264px -1174px;
+	width: 51px;
+	height: 55px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.maize::before {
+	background-position: -264px -1174px;
+	width: 51px;
+	height: 55px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.fine_nanowire::before {
+	background-position: -288px -1118px;
+	width: 50px;
+	height: 54px;
+}
+.goods-sprite.fine_nanowires::before {
+	background-position: -288px -1118px;
+	width: 50px;
+	height: 54px;
+}
+.goods-sprite.nanowire::before {
+	background-position: -288px -1118px;
+	width: 50px;
+	height: 54px;
+}
+.goods-sprite.artificial_scales::before {
+	background-position: -317px -1174px;
+	width: 55px;
+	height: 55px;
+}
+.goods-sprite.fine_artificial_scales::before {
+	background-position: -317px -1174px;
+	width: 55px;
+	height: 55px;
+}
+.goods-sprite.fine_red_algae::before {
+	background-position: -306px -1231px;
+	width: 54px;
+	height: 50px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.red_algae::before {
+	background-position: -306px -1231px;
+	width: 54px;
+	height: 50px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.fine_topological_records::before {
+	background-position: -340px -1118px;
+	width: 46px;
+	height: 54px;
+}
+.goods-sprite.topological_records::before {
+	background-position: -340px -1118px;
+	width: 46px;
+	height: 54px;
+}
+.goods-sprite.unit_class_heavy_melee::before {
+	background-position: -326px -1017px;
+	width: 36px;
+	height: 42px;
+}
+.goods-sprite.deep_space_data::before {
+	background-position: -341px -1061px;
+	width: 50px;
+	height: 51px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.fine_deep_space_data::before {
+	background-position: -341px -1061px;
+	width: 50px;
+	height: 51px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.experimental_data::before {
+	background-position: -364px -1010px;
+	width: 46px;
+	height: 49px;
+}
+.goods-sprite.fine_experimental_data::before {
+	background-position: -364px -1010px;
+	width: 46px;
+	height: 49px;
+}
+.goods-sprite.fine_oxygen_pills::before {
+	background-position: -393px -1061px;
+	width: 43px;
+	height: 50px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.oxygen_pills::before {
+	background-position: -393px -1061px;
+	width: 43px;
+	height: 50px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.unit_class_guild_raids_heavy_unit::before {
+	background-position: -438px -994px;
 	width: 39px;
 	height: 44px;
 }
+.goods-sprite.compressed_matter_capsule::before {
+	background-position: -374px -1174px;
+	width: 25px;
+	height: 49px;
+}
+.goods-sprite.fine_compressed_matter_capsule::before {
+	background-position: -374px -1174px;
+	width: 25px;
+	height: 49px;
+}
+.goods-sprite.unit_class_guild_raids_fast::before {
+	background-position: -438px -1040px;
+	width: 37px;
+	height: 44px;
+}
+.goods-sprite.unit_class_fast::before {
+	background-position: -438px -1086px;
+	width: 38px;
+	height: 34px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.fine_upcycled_hydrocarbons::before {
+	background-position: -362px -1231px;
+	width: 43px;
+	height: 47px;
+}
+.goods-sprite.upcycled_hydrocarbons::before {
+	background-position: -362px -1231px;
+	width: 43px;
+	height: 47px;
+}
+.goods-sprite.dark_energy_battery::before {
+	background-position: -393px -1113px;
+	width: 43px;
+	height: 25px;
+	transform: rotate(-90deg);
+}
+.goods-sprite.fine_dark_energy_battery::before {
+	background-position: -393px -1113px;
+	width: 43px;
+	height: 25px;
+	transform: rotate(-90deg);
+}
 .goods-sprite.unit_class_short_ranged::before {
-	background-position: -865px -456px;
+	background-position: -401px -1140px;
 	width: 47px;
 	height: 47px;
 }
-.goods-sprite.unit_class_guild_raids_fast::before {
-	background-position: -914px -471px;
-	width: 44px;
-	height: 37px;
+.goods-sprite.unit_class_long_ranged::before {
+	background-position: -407px -1189px;
+	width: 45px;
+	height: 46px;
 	transform: rotate(-90deg);
 }
 .goods-sprite.unit_class_guild_raids_long_ranged::before {
-	background-position: -852px -510px;
-	width: 43px;
-	height: 44px;
-}
-.goods-sprite.unit_class_guild_raids_light_melee::before {
-	background-position: -897px -510px;
-	width: 42px;
+	background-position: -407px -1237px;
+	width: 44px;
 	height: 43px;
-}
-.goods-sprite.unit_class_heavy_melee::before {
-	background-position: -881px -59px;
-	width: 42px;
-	height: 36px;
-	transform: rotate(-90deg);
-}
-.goods-sprite.unit_class_light_melee::before {
-	background-position: -925px -59px;
-	width: 38px;
-	height: 40px;
-}
-.goods-sprite.unit_class_fast::before {
-	background-position: -880px -97px;
-	width: 38px;
-	height: 34px;
 	transform: rotate(-90deg);
 }
 
@@ -1750,7 +1906,8 @@ styles for extra-goods.png - manually created!!!!
 .goods-sprite.egyptians_loot::before, 
 .goods-sprite.cocoa_beans::before, 
 .goods-sprite.rupees::before, 
-.goods-sprite.shells::before {
+.goods-sprite.shells::before,
+.goods-sprite.doubloons::before {
 	background: url('../images/goods/goods-extra.png') top left no-repeat;
 	background-size: 512px 128px;
 	width: 64px;
@@ -1800,4 +1957,7 @@ styles for extra-goods.png - manually created!!!!
 }
 .goods-sprite.shells::before {
 	background-position: -384px -64px;
+}
+.goods-sprite.doubloons::before {
+	background-position: -448px -64px;
 }

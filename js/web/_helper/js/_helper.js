@@ -270,6 +270,10 @@ let HTML = {
 			buttons.prepend(ask);
 		}
 
+		if (args['class']) {
+			div.addClass(args['class']);
+		}
+
 		head.append(buttons);
 
 		// wenn Box im DOM, verfeinern

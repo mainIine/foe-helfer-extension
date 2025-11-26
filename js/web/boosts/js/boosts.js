@@ -102,6 +102,7 @@ let Boosts = {
         'forge_points_production':0,
         'guild_goods_production':0,
         'guild_raids_action_points_collection': 0,
+        'guild_raids_action_points_capacity': 0,
         'guild_raids_coins_production': 0,
         'guild_raids_coins_start': 0,
         'guild_raids_supplies_production': 0,
@@ -111,6 +112,7 @@ let Boosts = {
     },
     noSettlement: {
         'guild_raids_action_points_collection': 0,
+        'guild_raids_action_points_capacity': 0,
         'guild_raids-att_boost_attacker': 0,
         'guild_raids-def_boost_attacker': 0,
         'guild_raids-att_boost_defender': 0,

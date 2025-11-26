@@ -34,8 +34,12 @@
     display: none;
 }
 
-#PlayerProfileButton .main {
+#PlayerProfileButton .main, #PlayerProfileButton .OtherPlayer {
     display: inline-block;
+}
+
+#PlayerProfileButton .OtherPlayer img {
+    opacity: 0;
 }
 
 #PlayerProfileButton img {
@@ -682,6 +686,58 @@
 		scrollbar-color: var(--black-65) transparent;
 		scrollbar-width: thin;
 	}
+}
+
+#PlayerProfile.other {
+    --main-background: #232325;
+    --main-border: 3px solid #1b1b1f;
+    --daysPlayed-background: radial-gradient(circle, #3f3f3f00 0%, #000000 100%);
+    --daysPlayed-color: #ccc;
+    --crit-background: linear-gradient(132deg, #ec5f009c, #a7000055);
+    --header-background: linear-gradient(#13131378 50%, #1b1b1f 50%, #0000);
+    --secondary-background: #1b1b1f;
+    --secondary-color: #e2e2e2;
+    --h2-background: linear-gradient(to bottom, #1b1b1faa, transparent 75%);
+    --item-border-color: #0e0e0e;
+    --item-img-background: radial-gradient(circle, #1b1b1f66 53%, transparent 55%);
+    --item-background: inset -1px -1px 20px #1b1b1f55;
+    --qi-background: linear-gradient(298deg, #172c2975 0%, #12837a15 100%);
+    --qi-color: #c4e5e1;
+    --qi-shadow: inset 0 0 1px #12837aa8;
+    --qi-text-shadow: 0 1px 2px #1b1b1fcc, 0 1px 1px #1b1b1faa;
+    --fav-color: #edc492;
+    --fav-background: inset -1px -1px 20px #1b1b1f55;
+    --boost-color: #4ab940;
+}
+
+#PlayerProfile.other {
+    width: 350px;
+    font-size: 95%;
+}
+
+#PlayerProfile.other .basicInfo img {
+    width: 60px;
+    margin-right: 0.25rem;
+    transform: scaleX(-1);
+    border-radius: 2px;
+    box-shadow: none;
+}
+
+#PlayerProfile.other .ranking {
+    position: relative;
+    top: -4px;
+    zoom: 0.9;
+}
+
+#PlayerProfile.other .disclaimer {
+    font-style: italic;
+    font-size: 90%;
+}
+
+#PlayerProfile.other .disclaimer::before {
+    left: unset;
+    top: unset;
+    right: 3px;
 }
 
 #PlayerProfile.window-box.black {
