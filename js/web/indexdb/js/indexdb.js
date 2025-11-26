@@ -291,7 +291,7 @@ let IndexDB = {
         }
 
         function log(text) {
-            console.log('mergeDatabases: ' + text);
+            //console.log('mergeDatabases: ' + text);
             let logTxt = localStorage.getItem('FH_IndexDBLastMigraion') || '';
             logTxt += text + '\n';
             localStorage.setItem('FH_IndexDBLastMigraion', logTxt);

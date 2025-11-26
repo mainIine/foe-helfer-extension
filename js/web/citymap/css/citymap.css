@@ -51,7 +51,6 @@
 	border-right: 2px solid #281207;
 	background-color: var(--black-50);
 	box-sizing: border-box;
-	padding: 40px 20px;
 }
 
 .outpost #map-container {
@@ -83,10 +82,11 @@
 	display: block;
 	width: 420px;
 	padding: 3px;
+	z-index: 5001;
 }
 
 .outpost.guild_raids .qiSums {
-	backdrop-filter: blur(1px) brightness(0.8);
+	background: linear-gradient(180deg, #452c16 20%, transparent);
 	padding: 7px;
 }
 .outpost.guild_raids .qiSums span {
@@ -102,8 +102,13 @@
 	gap: 2px;
 }
 
-.outpost.guild_raids .popStats span {
+.outpost.guild_raids .flex.between span {
 	display: inline-flex;
+	align-items: center;
+}
+
+.outpost.guild_raids .flex.between img {
+	height: 24px;
 }
 
 .outpost.guild_raids .euphoria150 {
@@ -237,6 +242,7 @@
 #grid-outer {
 	position: relative;
 	transition: transform .35s linear;
+	margin: 40px 20px;
 }
 
 #grid-outer * {
@@ -510,7 +516,25 @@
 	border-color: var(--border-color-decayed);
 }
 #grid-outer span.collectSoon {
-	background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, #fff4 2px, #fff4 7px), repeating-linear-gradient(-45deg, transparent, transparent 5px, #fff4 2px, #fff4 7px);
+	background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, #fff1 2px, #fff1 7px);
+}
+#grid-outer span.collectSoon::after {
+	content: '⬤';
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    width: inherit;
+    color: #fffa;
+    height: inherit;
+	text-shadow: none;
+    font-size: 4px;
+}
+#grid-outer span.collectSoon[class*="collect1"]::after {
+	content: '⬤ ⬤';
+}
+#grid-outer span.collectSoon[class*="collect2"]::after {
+	content: '⬤ ⬤ ⬤';
 }
 
 [data-view="skew"] .older-1.diagonal {

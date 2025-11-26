@@ -514,6 +514,7 @@ let EventHandler = {
 		h.push('<th data-export="Rank" class="is-number ascending" data-type="moppelhelper">' + i18n('Boxes.MoppelHelper.Rank') + '</th>');
 		h.push('<th></th>');
 		h.push('<th data-export="Name" data-type="moppelhelper" class="name-col">' + i18n('Boxes.MoppelHelper.Name') + '</th>');
+        h.push('<th style="display:none" data-export="Player_ID"></th>');
 		if (EventHandler.CurrentPlayerGroup !== 'Guild' && EventHandler.ShowHideColumns.GuildName) {
 			h.push('<th data-export="GuildName" data-type="moppelhelper" class="name-col">' + i18n('General.Guild') + '</th>');
 		}
@@ -584,6 +585,9 @@ let EventHandler = {
 
 			h.push(`<span class="activity activity_${Player['Activity']}"></span> `);
 			h.push(MainParser.GetPlayerLink(Player['PlayerID'], Player['PlayerName']));
+
+            // Player ID
+            h.push('<td style="display:none" data-text="' + Player['PlayerID'] + '">' + Player['PlayerID'] + '</td>');
 
 			// Guild name column
 			if (EventHandler.CurrentPlayerGroup != 'Guild' && EventHandler.ShowHideColumns.GuildName) {

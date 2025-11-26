@@ -29,12 +29,12 @@ let ExistenceConfirmed = async (varlist)=>{
 			for (let x of varlist ) {
 				if (x.substr(0,2) == '$(' && eval(x).length === 0) { // jQuery object
 					doResolve = false
-					console.log(x+' not yet defined');
+					//console.log(x+' not yet defined');
 					break;
 				}
 				if (eval('typeof '+x) === 'undefined' || eval(x) === null || eval(x) === undefined) { // normal var
 					doResolve = false
-					console.log(x+' not yet defined');
+					//console.log(x+' not yet defined');
 					break;
 				}
 			}
@@ -90,7 +90,9 @@ let ApiURL = 'https://api.foe-rechner.de/',
 	UnlockedFeatures = [],
 	possibleMaps = ['main', 'gex', 'gg', 'era_outpost', 'guild_raids', 'cultural_outpost'],
 	PlayerLinkFormat = 'https://foe.scoredb.io/__world__/Player/__playerid__',
+	PlayerLinkFormat2 = 'https://foestats.com/__server__/__world__/players/__playerid__',
 	GuildLinkFormat = 'https://foe.scoredb.io/__world__/Guild/__guildid__',
+	GuildLinkFormat2 = 'https://foestats.com/__server__/__world__/guilds/__guildid__',
 	BuildingsLinkFormat = 'https://forgeofempires.fandom.com/wiki/__buildingid__',
 	LinkIcon = '<svg xmlns="http://www.w3.org/2000/svg" width="22pt" height="22pt" viewBox="0 0 22 22"><g><path id="foehelper-external-link-icon" d="M 13 0 L 13 2 L 18.5625 2 L 6.28125 14.28125 L 7.722656 15.722656 L 20 3.4375 L 20 9 L 22 9 L 22 0 Z M 0 4 L 0 22 L 18 22 L 18 9 L 16 11 L 16 20 L 2 20 L 2 6 L 11 6 L 13 4 Z M 0 4 "/></g></svg>';
 
@@ -102,6 +104,8 @@ let GameTime = {
 	get:()=>{
 		return moment().unix()+GameTime.Offset;
 	}
+	
+
 }
 
 // Übersetzungen laden
@@ -136,9 +140,9 @@ const i18n_loadPromise = (async () => {
 		);
 
 		// warte dass i18n geladen ist
-		console.log("await vendors loaded")
+		//console.log("await vendors loaded")
 		await vendorsLoadedPromise;
-		console.log("vendors loaded");	
+		//console.log("vendors loaded");	
 		
 		for (let languageData of languageDatas) {
 			i18n.translator.add({ 'values': JSON.parse(languageData) });
@@ -201,7 +205,7 @@ GetFights = () =>{
 	});
 	FoEproxy.addMetaHandler('building_entity_lookup', (xhr, postData) => {
 		let buildingUrlsRaw = JSON.parse(xhr.responseText || "[]");
-		let buildingUrls = Object.assign({}, ...buildingUrlsRaw.map((x) => ({ [x.identifier.replace("building_entity_","")]: {url: x.url, hash: x.identifier.replace(/.*?([^-]+$)/gm,"$1")} })));
+		let buildingUrls = Object.assign({}, ...buildingUrlsRaw.map((x) => ({ [x.identifier.replace("building_entity_","")]: {url: x.url, hash: x.url.replace(/.*?([^-]+$)/gm,"$1")} })));
 		setTimeout(()=>{MainParser.CityEntityBuilder(buildingUrls)},500);
 	});
 
@@ -1303,9 +1307,10 @@ let MainParser = {
 	 * @param PlayerName
 	 */
 	GetPlayerLink: (PlayerID, PlayerName) => {
-		if (Settings.GetSetting('ShowLinks'))
-		{
+		if (Settings.GetSetting('ShowLinks')) {
 			let PlayerLink = HTML.i18nReplacer(PlayerLinkFormat, { 'world': ExtWorld.toUpperCase(), 'playerid': PlayerID });
+			if (localStorage.getItem('linkSite') === 'siteForgedb')
+				PlayerLink = HTML.i18nReplacer(PlayerLinkFormat2, { 'server': ExtWorld.toLowerCase().replace(/[0-9]/g, ''), 'world': ExtWorld.toLowerCase(), 'playerid': PlayerID });
 
 			return `<a class="external-link game-cursor" href="${PlayerLink}" target="_blank">${HTML.escapeHtml(PlayerName)} ${LinkIcon}</a>`;
 		}
@@ -1322,9 +1327,10 @@ let MainParser = {
 	GetGuildLink: (GuildID, GuildName, WorldId) => {
 		if(!WorldId) WorldId = ExtWorld;
 
-		if (Settings.GetSetting('ShowLinks'))
-		{
+		if (Settings.GetSetting('ShowLinks')) {
 			let GuildLink = HTML.i18nReplacer(GuildLinkFormat, { 'world': WorldId.toUpperCase(), 'guildid': GuildID });
+			if (localStorage.getItem('linkSite') === 'siteForgedb')
+				GuildLink = HTML.i18nReplacer(GuildLinkFormat2, { 'server': ExtWorld.toLowerCase().replace(/[0-9]/g, ''), 'world': ExtWorld.toLowerCase(), 'guildid': GuildID });
 
 			return `<a class="external-link game-cursor" href="${GuildLink}" target="_blank">${HTML.escapeHtml(GuildName)} ${LinkIcon}</a>`;
 		}
@@ -1413,7 +1419,7 @@ let MainParser = {
 	 * @param d
 	 */
 	StartUp: async (d) => {
-		console.log("StartUp called");
+		//console.log("StartUp called");
 		Settings.Init(false);
 
 		MainParser.VersionSpecificStartupCode();
@@ -1463,12 +1469,12 @@ let MainParser = {
 		await ExistenceConfirmed('MainParser.CityEntities||srcLinks.FileList')
 	
 		window.dispatchEvent(new CustomEvent('foe-helper#StartUpDone'))
-		console.log('StartUp done')
+		//console.log('StartUp done')
 	},
 
 	forceLoadCityEntities: () => {
 		if (MainParser.CityEntities) return;
-		console.log('Forcing load of CityEntities');
+		//console.log('Forcing load of CityEntities');
 		let xhr = new XMLHttpRequest();
         xhr.open("GET", MainParser.MetaUrls['city_entities'], true);
         xhr.send();
@@ -1609,7 +1615,7 @@ let MainParser = {
 
 		showAllyList:()=>{
 			
-			console.log(0, MainParser.Allies);
+			//console.log(0, MainParser.Allies);
 
 			if ($('#AllyList').length === 0) {
 				HTML.Box({

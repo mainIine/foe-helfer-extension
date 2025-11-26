@@ -569,6 +569,7 @@ let Productions = {
 			table.push('<th class="no-sort" data-type="prodlist'+type+'"> </th>')
 			table.push('<th class="ascending" data-type="prodlist'+type+'" data-export="' + i18n('Boxes.BlueGalaxy.Building') + '">' + i18n('Boxes.BlueGalaxy.Building') + '</th>')
 			table.push('<th class="boost qiactions is-number text-center" data-type="prodlist'+type+'"><span></span>'+(boostCounter.guild_raids_action_points_collection || 0)+'</th>')
+			table.push('<th class="boost qicapacity is-number text-center" data-type="prodlist'+type+'"><span></span>'+(boostCounter.guild_raids_action_points_capacity || 0)+'</th>')
 			table.push('<th class="boost qicoins is-number text-center" data-type="prodlist'+type+'"><span></span>'+(boostCounter.guild_raids_coins_production || 0)+'%</th>')
 			table.push('<th class="boost qicoins_start is-number text-center" data-type="prodlist'+type+'"><span></span>'+(boostCounter.guild_raids_coins_start || 0)+'</th>')
 			table.push('<th class="boost qisupplies is-number text-center" data-type="prodlist'+type+'"><span></span>'+(boostCounter.guild_raids_supplies_production || 0)+'%</th>')
@@ -1901,10 +1902,22 @@ let Productions = {
 				// skip inactive ones
 				if (!Productions.Rating.Data[type]?.active || Productions.Rating.Data[type]?.perTile === null) continue;
 
-				let secondType = type.replace('att_','def_');
-				if (combinedRatingTypes.find(x => x === type.replace('def_','att_def_'))) continue;
-				if (Productions.Rating.Data[secondType].active) {
-					combinedRatingTypes.push(type.replace('att_','att_def_'));
+				if (!type.includes('att_') && !type.includes('def_')) {
+					combinedRatingTypes.push(type);
+					continue;
+				}
+				// combine att & def into one - list always starts with att_
+				if (type.includes('att_') || type.includes('def_')) {
+					let coreType = type.replace('att_','').replace('def_','');
+					let combinedType = 'att_def_'+coreType;
+					let twinType = type.includes('att_') ? 'def_'+coreType : 'att_'+coreType;
+
+					if (combinedRatingTypes.find(x => x.includes(combinedType))) continue;
+
+					if (Productions.Rating.Data[twinType]?.active) 
+						combinedRatingTypes.push(combinedType);
+					else 
+						combinedRatingTypes.push(type);
 				}
 			}
 

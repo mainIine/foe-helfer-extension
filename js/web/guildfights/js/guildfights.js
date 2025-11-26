@@ -74,7 +74,16 @@ FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postDa
 		GuildFights.BuildFightContent();
 	}
 });
+FoEproxy.addHandler('TimerService', 'getTimers', (data, postData) => {
+	data.responseData.filter(t=>t.type=="battlegroundsAttrition").forEach(t=>{
+		serverMidnight = moment.unix(t.time||0);
 
+		GuildFights.serverOffset = serverMidnight.format("HH")*3600
+									+ serverMidnight.format("mm")*60
+									+ serverMidnight.format("ss")*1;
+		//console.log("GuildFights.serverOffset", GuildFights.serverOffset);
+	})
+});
 
 /**
  * @type {{Alerts: *[], GlobalRankingTimeout: null, PrevAction: null, PrevActionTimestamp: null, NewAction: null, NewActionTimestamp: null, MapData: null, Neighbours: *[], PlayersPortraits: null, Colors: null, SortedColors: null, ProvinceNames: null, InjectionLoaded: boolean, PlayerBoxContent: *[], CurrentGBGRound: null, GBGRound: null, GBGAllRounds: null, GBGHistoryView: boolean, LogDatePicker: null, curDateFilter: null, curDateEndFilter: null, curDetailViewFilter: null, PlayerBoxSettings: {showRoundSelector: number, showLogButton: number, showProgressFilter: number, showOnlyActivePlayers: number}, showGuildColumn: number, showAdjacentSectors: number, showOwnSectors: number, Tabs: *[], TabsContent: *[], checkForDB: ((function(*): Promise<void>)|*), init: GuildFights.init, HandlePlayerLeaderboard: ((function(*): Promise<void>)|*), UpdateDB: ((function(*, *): Promise<void>)|*), SetBoxNavigation: ((function(*): Promise<void>)|*), ToggleProgressList: GuildFights.ToggleProgressList, SetTabs: GuildFights.SetTabs, GetTabs: (function(): string), SetTabContent: GuildFights.SetTabContent, GetTabContent: (function(): string), GetAlertButton: (function(Intl.NumberFormatPartTypeRegistry.integer): string), ShowGuildBox: GuildFights.ShowGuildBox, ShowPlayerBox: GuildFights.ShowPlayerBox, ShowDetailViewBox: GuildFights.ShowDetailViewBox, BuildPlayerContent: ((function(*): Promise<void>)|*), BuildDetailViewContent: ((function(*): Promise<void>)|*), DeleteOldSnapshots: ((function(*): Promise<void>)|*), BuildDetailViewLog: ((function(*): Promise<void>)|*), BuildFightContent: GuildFights.BuildFightContent, BuildProgressTab: (function(): *[]), BuildNextUpTab: (function(): *[]), intiateDatePicker: ((function(): Promise<void>)|*), formatRange: (function(): string), ToggleCopyButton: GuildFights.ToggleCopyButton, CopyToClipBoard: GuildFights.CopyToClipBoard, UpdateCounter: GuildFights.UpdateCounter, PrepareColors: GuildFights.PrepareColors, RefreshTable: GuildFights.RefreshTable, ShowPlayerBoxSettings: GuildFights.ShowPlayerBoxSettings, PlayerBoxSettingsSaveValues: GuildFights.PlayerBoxSettingsSaveValues, GetAlerts: (function(): Promise<unknown>), SetAlert: GuildFights.SetAlert, DeleteAlert: GuildFights.DeleteAlert, ShowLiveFightSettings: GuildFights.ShowLiveFightSettings, SaveLiveFightSettings: GuildFights.SaveLiveFightSettings}}
@@ -112,6 +121,7 @@ let GuildFights = {
 	showGuildColumn: 0,
 	showAdjacentSectors: 0,
 	showOwnSectors: 0,
+	serverOffset: 0,
 
 	Tabs: [],
 	TabsContent: [],
@@ -1267,7 +1277,7 @@ let GuildFights = {
 					nextup.push(`<td>${prov[x]['owner']}</td>`);
 				}
 
-				nextup.push(`<td class="time-static" style="user-select:text">${countDownDate.format('HH:mm')}</td>`);
+				nextup.push(`<td class="time-static" style="user-select:text">${moment(countDownDate).add(LiveFightSettings?.showServerTime ? - GuildFights.serverOffset : 0 , "seconds").format('HH:mm')}</td>`);
 				nextup.push(`<td class="time-dynamic" id="counter-${prov[x]['id']}">${countDownDate.format('HH:mm:ss')}</td>`);
 				nextup.push(`<td class="text-right" id="alert-${prov[x]['id']}">${GuildFights.GetAlertButton(prov[x]['id'])}</td>`);
 				nextup.push('</tr>');
@@ -1367,11 +1377,20 @@ let GuildFights = {
 			let battleType = mapElem.isAttackBattleType ? '🔴' : '🔵';
 			let LiveFightSettings = JSON.parse(localStorage.getItem('LiveFightSettings'));
 			let showTileColors = (LiveFightSettings && LiveFightSettings.showTileColors !== undefined) ? LiveFightSettings.showTileColors : 1;
-			console.log(999, showTileColors);
-			copy += `${moment.unix(mapElem.lockedUntil - 2).format('HH:mm')} ${showTileColors === 1 ? battleType : ''} ${mapElem.title} \n`;
+			//console.log(999, showTileColors);
+			copy += `${moment.unix(mapElem.lockedUntil - 2 - GuildFights.serverOffset).format('HH:mm')} ${showTileColors === 1 ? battleType : ''} ${mapElem.title} \n`;
 		});
 
 		if (copy !== '') {
+			if (GuildFights.serverOffset > 0 && localStorage.getItem('Guildfights.TimeZoneWarningShown') === null) { // show warning only once
+				HTML.ShowToastMsg({
+					head: i18n('Boxes.GuildFights.TimeZoneWarning.Title'),
+					text: i18n('Boxes.GuildFights.TimeZoneWarning.Desc'),		
+					type: 'error',
+					hideAfter: 60000
+				});
+				localStorage.setItem('Guildfights.TimeZoneWarningShown', 'true');
+			}
 			helper.str.copyToClipboard(copy).then(() => {
 				HTML.ShowToastMsg({
 					head: i18n('Boxes.GuildFights.CopyToClipBoard.Title'),
@@ -1695,11 +1714,14 @@ let GuildFights = {
 		let showAdjacentSectors = (LiveFightSettings && LiveFightSettings.showAdjacentSectors !== undefined) ? LiveFightSettings.showAdjacentSectors : 1;
 		let showOwnSectors = (LiveFightSettings && LiveFightSettings.showOwnSectors !== undefined) ? LiveFightSettings.showOwnSectors : 0;
 		let showTileColors = (LiveFightSettings && LiveFightSettings.showTileColors !== undefined) ? LiveFightSettings.showTileColors : 1;
+		let showServerTime = LiveFightSettings?.showServerTime ?? 0;
 
 		c.push(`<p><input id="showguildcolumn" name="showguildcolumn" value="1" type="checkbox" ${(showGuildColumn === 1) ? ' checked="checked"' : ''} /> <label for="showguildcolumn">${i18n('Boxes.GuildFights.ShowOwner')}</label></p>`);
 		c.push(`<p><label for="showAdjacentSectors"><input id="showAdjacentSectors" name="showAdjacentSectors" value="0" type="checkbox" ${(showAdjacentSectors === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.ShowAdjacentSectors')}</label></p>`);
 		c.push(`<p><label for="showownsectors"><input id="showownsectors" name="showownsectors" value="0" type="checkbox" ${(showOwnSectors === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.ShowOwnSectors')}</label></p>`);
 		c.push(`<p><label for="showtilecolors"><input id="showtilecolors" name="showtilecolors" value="0" type="checkbox" ${(showTileColors === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.ShowTileColors')}</label></p>`);
+		if (GuildFights.serverOffset != 0) 
+			c.push(`<p><label for="showservertime"><input id="showservertime" name="showservertime" value="0" type="checkbox" ${(showServerTime === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.ShowServerTime')}</label></p>`);
 		c.push(`<p><button onclick="GuildFights.SaveLiveFightSettings()" id="save-livefight-settings" class="btn btn-default" style="width:100%">${i18n('Boxes.GuildFights.SaveSettings')}</button></p>`);
 
 		// insert into DOM
@@ -1714,6 +1736,7 @@ let GuildFights = {
 		value.showAdjacentSectors = 0;
 		value.showOwnSectors = 0;
 		value.showTileColors = 0;
+		value.showServerTime = 0;
 
 		if ($("#showguildcolumn").is(':checked')) 
 			value.showGuildColumn = 1;
@@ -1727,10 +1750,14 @@ let GuildFights = {
 		if ($("#showtilecolors").is(':checked')) 
 			value.showTileColors = 1;
 
+		if ($("#showservertime").is(':checked')) 
+			value.showServerTime = 1;
+				
 		GuildFights.showGuildColumn = value.showGuildColumn;
 		GuildFights.showAdjacentSectors = value.showAdjacentSectors;
 		GuildFights.showOwnSectors = value.showOwnSectors;
 		GuildFights.showTileColors = value.showTileColors;
+		GuildFights.showServerTime = value.showServerTime;
 
 		localStorage.setItem('LiveFightSettings', JSON.stringify(value));
 

@@ -957,8 +957,9 @@ Potions */
 	right: 0;
 	bottom: 0;
 	z-index: 200;
-	background: rgba(0,0,0, 0.8);
+	background: radial-gradient(closest-side, #000e, #0003 75%, #0000 95%);
 	pointer-events: none;
+	transition: 0.3s all linear;
 }
 
 .lg-not-possible::after {
@@ -974,8 +975,13 @@ Potions */
 	font-size: 15px;
 }
 
-#OwnPartBox .lg-not-possible {
-	background: radial-gradient(circle at center, #000c, #0003 75%, #0000);
+.window-body:hover .lg-not-possible {
+	opacity: 0.05;
+	scale: 0.75;
+}
+
+.window-body:hover .lg-not-possible::after {
+	width: 300px;
 }
 
 
@@ -1313,6 +1319,7 @@ FP-Bar */
 	right: -7px;
 	cursor: nwse-resize;
 	background: url('../images/hud/wingrip.png') no-repeat;
+	z-index: 5005;
 }
 
 .window-grippy:active {
@@ -1339,14 +1346,13 @@ FP-Bar */
 
 .tooltip {
 	position: absolute;
-	z-index: 1030;
+	z-index: 5030;
 	display: block;
 	font-size: 11px;
 	line-height: 1.4;
 	opacity: 0;
 	filter: alpha(opacity=0);
 	visibility: visible;
-	z-index: 2000;
 	user-select: none;
 }
 
@@ -1402,7 +1408,7 @@ FP-Bar */
 }
 
 .tooltip.top .tooltip-arrow {
-	bottom: 0;
+	bottom: 3px;
 	left: 50%;
 	margin-left: -5px;
 	border-top-color: var(--text-darkest);
@@ -1549,6 +1555,9 @@ FP-Bar */
 
 .jq-icon-success .jq-toast-heading {
 	color: #63990a;
+}
+.jq-icon-error .jq-toast-heading {
+	color: var(--text-danger);
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*/

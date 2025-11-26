@@ -1,5 +1,35 @@
 ## Changelog - Extension
 
+##### 4.0.0.0
+
+**Update**
+- General
+	- Improved loading behavior of the Helper
+- QI Map
+	- Added number of expansions
+	- Added townhall production
+	- Highlight for productions to finish soon changed
+- GBG
+ 	- Unlock times are now converted to server time when copied
+	- To also display the unlock-times in server time, check the settings
+- Player Links
+	- you can now select between foestats.com and scoredb.io in the main settings 
+- Shop Assistant
+	- Column "Missing" now always gives the amount until the next complete set
+- Settlements
+	- Added goods for pirate settlement 
+- Player profiles:
+	- Now available for other players: visit them and click in the top left corner
+
+**Bugfix**
+- Shop Assistant
+	- Alert for old shop versions was not pruned correctly
+- QI Action Calculation
+	- Capacity Boost was not applied correctly
+- Efficiency
+	- Did not show properly when only a single type of boost (attack or defense) was selected
+
+---
 
 ##### 3.13.1.0
 
@@ -7,7 +37,7 @@
 
 - General
 	- Adjusted helper to match the game's new loading behavior
-	- made Some HUD elements "non-selectable"
+	- Made Some HUD elements "non-selectable"
 	- Added handling for chain buildings with special production
 - Power Leveling
 	- Added many new levels for the Atomium
