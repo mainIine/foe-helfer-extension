@@ -510,6 +510,7 @@
     "Boxes.GuildFights.ShowProgressFilter": "zeige Fortschrittsfilter",
     "Boxes.GuildFights.ShowRoundSelector": "zeige GG Rundenauswahl",
     "Boxes.GuildFights.ShowServerTime": "Zeige Zeiten in Serverzeit",
+    "Boxes.GuildFights.serverOffset": "Differenz zur Serverzeit (in Sekunden)",
     "Boxes.GuildFights.ShowTileColors": "Sektor-Angriffsfarben mit kopieren",
     "Boxes.GuildFights.SnapshotLog": "Snapshot Log",
     "Boxes.GuildFights.SnapShotLogDisclaimer": "Achtung: Diese Daten basieren auf den von dir erfassten Daten. Das bedeutet, dass die hier gezeigten Zahlen wahrscheinlich nicht 100%ig stimmen, da für ein exaktes Ergebnis die Rangliste immer um Mitternacht geöffnet werden muss. ",
