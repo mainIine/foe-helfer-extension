@@ -500,7 +500,7 @@
     "Boxes.GuildFights.SaveSettings": "Save",
     "Boxes.GuildFights.SelectAll": "Select all",
     "Boxes.GuildFights.SetAlert": "Set Alert",
-    "Boxes.GuildFights.serverOffset": "Offset to servertime (seconds)",
+    "Boxes.GuildFights.serverOffset": "Offset to servertime (minutes)",
     "Boxes.GuildFights.ShowAdjacentSectors": "Show only adjacent sectors countdowns",
     "Boxes.GuildFights.ShowLogButton": "show snapshot log button",
     "Boxes.GuildFights.ShowOwnSectors": "Show own sector countdowns",
