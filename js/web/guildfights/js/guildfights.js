@@ -81,7 +81,7 @@ FoEproxy.addHandler('TimerService', 'getTimers', (data, postData) => {
 		GuildFights.serverOffset = serverMidnight.format("HH")*3600
 									+ serverMidnight.format("mm")*60
 									+ serverMidnight.format("ss")*1;
-		//console.log("GuildFights.serverOffset", GuildFights.serverOffset);
+		console.log("GuildFights.serverOffset", GuildFights.serverOffset);
 	})
 });
 
@@ -1277,7 +1277,8 @@ let GuildFights = {
 					nextup.push(`<td>${prov[x]['owner']}</td>`);
 				}
 
-				nextup.push(`<td class="time-static" style="user-select:text">${moment(countDownDate).add(LiveFightSettings?.showServerTime ? - GuildFights.serverOffset : 0 , "seconds").format('HH:mm')}</td>`);
+				nextup.push(`<td class="time-static" style="user-select:text">${countDownDate.format('HH:mm')}</td>`);
+				//nextup.push(`<td class="time-static" style="user-select:text">${moment(countDownDate).add(LiveFightSettings?.showServerTime ? - GuildFights.serverOffset : 0 , "seconds").format('HH:mm')}</td>`);
 				nextup.push(`<td class="time-dynamic" id="counter-${prov[x]['id']}">${countDownDate.format('HH:mm:ss')}</td>`);
 				nextup.push(`<td class="text-right" id="alert-${prov[x]['id']}">${GuildFights.GetAlertButton(prov[x]['id'])}</td>`);
 				nextup.push('</tr>');
@@ -1382,7 +1383,7 @@ let GuildFights = {
 		});
 
 		if (copy !== '') {
-			if (GuildFights.serverOffset > 0 && localStorage.getItem('Guildfights.TimeZoneWarningShown') === null) { // show warning only once
+			/*if (GuildFights.serverOffset > 0 && localStorage.getItem('Guildfights.TimeZoneWarningShown') === null) { // show warning only once
 				HTML.ShowToastMsg({
 					head: i18n('Boxes.GuildFights.TimeZoneWarning.Title'),
 					text: i18n('Boxes.GuildFights.TimeZoneWarning.Desc'),		
@@ -1390,7 +1391,8 @@ let GuildFights = {
 					hideAfter: 60000
 				});
 				localStorage.setItem('Guildfights.TimeZoneWarningShown', 'true');
-			}
+			}*/
+			localStorage.removeItem('Guildfights.TimeZoneWarningShown');
 			helper.str.copyToClipboard(copy).then(() => {
 				HTML.ShowToastMsg({
 					head: i18n('Boxes.GuildFights.CopyToClipBoard.Title'),
@@ -1720,8 +1722,8 @@ let GuildFights = {
 		c.push(`<p><label for="showAdjacentSectors"><input id="showAdjacentSectors" name="showAdjacentSectors" value="0" type="checkbox" ${(showAdjacentSectors === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.ShowAdjacentSectors')}</label></p>`);
 		c.push(`<p><label for="showownsectors"><input id="showownsectors" name="showownsectors" value="0" type="checkbox" ${(showOwnSectors === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.ShowOwnSectors')}</label></p>`);
 		c.push(`<p><label for="showtilecolors"><input id="showtilecolors" name="showtilecolors" value="0" type="checkbox" ${(showTileColors === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.ShowTileColors')}</label></p>`);
-		if (GuildFights.serverOffset != 0) 
-			c.push(`<p><label for="showservertime"><input id="showservertime" name="showservertime" value="0" type="checkbox" ${(showServerTime === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.ShowServerTime')}</label></p>`);
+		//if (GuildFights.serverOffset != 0) 
+			//c.push(`<p><label for="showservertime"><input id="showservertime" name="showservertime" value="0" type="checkbox" ${(showServerTime === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.ShowServerTime')}</label></p>`);
 		c.push(`<p><button onclick="GuildFights.SaveLiveFightSettings()" id="save-livefight-settings" class="btn btn-default" style="width:100%">${i18n('Boxes.GuildFights.SaveSettings')}</button></p>`);
 
 		// insert into DOM
