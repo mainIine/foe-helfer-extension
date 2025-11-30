@@ -6,6 +6,8 @@
 **Update**
 - GG
 	- da die Serverzeit nicht konsistent durch das Spiel übertragen wird, kann die Differenz nun manuell gesetzt werden
+- Allgemein
+	- Weitere Verbesserung des Ladeverhaltens
 
 ##### 4.0.0.0
 
