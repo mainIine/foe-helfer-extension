@@ -81,7 +81,7 @@ FoEproxy.addHandler('TimerService', 'getTimers', (data, postData) => {
 		serverMidnight = moment.unix(t.time);
 
 		GuildFights.serverOffset = serverMidnight.format("HH")*60
-									+ serverMidnight.format("mm");
+									+ serverMidnight.format("mm")*1;
 		//console.log("GuildFights.serverOffset", GuildFights.serverOffset);
 	})
 });
