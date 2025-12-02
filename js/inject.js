@@ -85,15 +85,6 @@ function inject (loadBeta = false, extUrl = chrome.runtime.getURL(''), betaDate=
 			resolve();
 		}, {capture: false, once: true, passive: true});
 	});
-	const proxyLoaded = new Promise(resolve => {
-		if (window.___FOE_PROXY_LOADED__ === true) {
-			resolve();
-			return;
-		}
-		window.addEventListener('foe-helper#proxyloaded', evt => {
-			resolve();
-		}, {capture: false, once: true, passive: true});
-	});
 	
 	const v = chrome.runtime.getManifest().version + (loadBeta ? '-beta-'+ betaDate:'');
 
@@ -196,8 +187,7 @@ function inject (loadBeta = false, extUrl = chrome.runtime.getURL(''), betaDate=
 			// start loading both script-lists
 			const vendorListPromise = loadJsonResource(`${extUrl}js/vendor.json`);
 			const scriptListPromise = loadJsonResource(`${extUrl}js/internal.json`);
-			await proxyLoaded;
-			// load the main
+			// load main
 			await promisedLoadCode(`${extUrl}js/web/_main/js/_main.js`,"main");
 			scriptLoaded("primed", "main");
 			await mainLoaded;

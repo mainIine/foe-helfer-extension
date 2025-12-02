@@ -1,5 +1,15 @@
 ## Changelog - Extension
 
+##### 4.0.1.0
+
+**Bugfix**
+- GBG
+	- as the server time is not transmitted consistently, server offset can now be set manually
+- General
+	- further improvements for loading behavior
+	
+---
+
 ##### 4.0.0.0
 
 **Update**
