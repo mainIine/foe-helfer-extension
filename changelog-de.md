@@ -1,6 +1,16 @@
 ## Changelog - Extension
 
 
+##### 4.0.2.0
+
+**Update**
+- Effizienzbewertung: Default-Werte angepasst
+
+**Bugfix**
+- Effizienzbewertung: Der Button zum Zurücksetzen in den Einstellungne hat nicht funktioniert.
+
+---
+
 ##### 4.0.1.0
 
 **Update**
@@ -8,6 +18,8 @@
 	- da die Serverzeit nicht konsistent durch das Spiel übertragen wird, kann die Differenz nun manuell gesetzt werden
 - Allgemein
 	- Weitere Verbesserung des Ladeverhaltens
+
+---
 
 ##### 4.0.0.0
 
