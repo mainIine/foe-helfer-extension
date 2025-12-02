@@ -1,5 +1,15 @@
 ## Changelog - Extension
 
+##### 4.0.2.0
+
+**Update**
+- Efficiency: Changed default values
+
+**Bugfix**
+- Efficiency Settings: Reset to default-button was broken
+
+---
+
 ##### 4.0.1.0
 
 **Bugfix**
