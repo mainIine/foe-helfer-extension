@@ -1586,7 +1586,7 @@ let MainParser = {
 			let prod={}
 			Object.values(M.buildingList[CityMapId]).forEach(id=> {
 				let a=M.allyList[id]
-				if (a.boosts) prod.boosts = (prod.boosts||[]).concat(a.boosts)
+				if (a.currentLevel?.boosts || a.boosts) prod.boosts = (prod.boosts||[]).concat(a.currentLevel?.boosts || a.boosts)
 			})
 			return prod
 		},

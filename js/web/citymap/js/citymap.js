@@ -1475,8 +1475,8 @@ let CityMap = {
 			}
 		}
 		let allyStats = MainParser.Allies.getProd(data.id||0)
-		if (allyStats?.boosts) {
-			allyStats?.boosts.forEach(abilityBoost => {
+		if (allyStats?.currentLevel?.boosts||allyStats?.boosts) {
+			(allyStats?.currentLevel?.boosts||allyStats?.boosts||[]).forEach(abilityBoost => {
 				let boost = {
 					feature: abilityBoost.targetedFeature,
 					type: Boosts.Mapper[abilityBoost.type] || [abilityBoost.type],
