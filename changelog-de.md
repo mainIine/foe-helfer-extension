@@ -1,6 +1,16 @@
 ## Changelog - Extension
 
 
+##### 4.0.2.0
+
+**Update**
+- Effizienzbewertung: Default-Werte angepasst
+
+**Bugfix**
+- Effizienzbewertung: Der Button zum Zurücksetzen in den Einstellungne hat nicht funktioniert.
+
+---
+
 ##### 4.0.1.0
 
 **Update**
