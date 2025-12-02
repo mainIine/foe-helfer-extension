@@ -5,6 +5,7 @@
 
 **Update**
 - Effizienzbewertung: Default-Werte angepasst
+- Verbündetenboosts: an veränderte Datenübertragung angepasst
 
 **Bugfix**
 - Effizienzbewertung: Der Button zum Zurücksetzen in den Einstellungne hat nicht funktioniert.

@@ -4,6 +4,7 @@
 
 **Update**
 - Efficiency: Changed default values
+- Ally Boosts: Adapted to changed data transmission
 
 **Bugfix**
 - Efficiency Settings: Reset to default-button was broken
