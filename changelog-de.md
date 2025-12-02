@@ -9,6 +9,8 @@
 - Allgemein
 	- Weitere Verbesserung des Ladeverhaltens
 
+---
+
 ##### 4.0.0.0
 
 **Update**

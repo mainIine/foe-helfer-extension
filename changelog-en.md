@@ -4,10 +4,12 @@
 
 **Bugfix**
 - GBG
-	- as the servertime is not transmitted consistently, server offset can now be set manually
+	- as the server time is not transmitted consistently, server offset can now be set manually
 - General
 	- further improvements for loading behavior
 	
+---
+
 ##### 4.0.0.0
 
 **Update**
