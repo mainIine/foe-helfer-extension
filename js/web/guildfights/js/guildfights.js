@@ -75,12 +75,13 @@ FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postDa
 	}
 });
 FoEproxy.addHandler('TimerService', 'getTimers', (data, postData) => {
+	if (GuildFights.serverOffset !== null) return;
 	data.responseData.filter(t=>t.type=="battlegroundsAttrition").forEach(t=>{
-		serverMidnight = moment.unix(t.time||0);
+		if (!t.time) return;
+		serverMidnight = moment.unix(t.time);
 
-		GuildFights.serverOffset = serverMidnight.format("HH")*3600
-									+ serverMidnight.format("mm")*60
-									+ serverMidnight.format("ss")*1;
+		GuildFights.serverOffset = serverMidnight.format("HH")*60
+									+ serverMidnight.format("mm")*1;
 		//console.log("GuildFights.serverOffset", GuildFights.serverOffset);
 	})
 });
@@ -121,7 +122,7 @@ let GuildFights = {
 	showGuildColumn: 0,
 	showAdjacentSectors: 0,
 	showOwnSectors: 0,
-	serverOffset: 0,
+	serverOffset: JSON.parse(localStorage.getItem("GuildFights.serverOffset")||"null"),
 
 	Tabs: [],
 	TabsContent: [],
@@ -1277,7 +1278,8 @@ let GuildFights = {
 					nextup.push(`<td>${prov[x]['owner']}</td>`);
 				}
 
-				nextup.push(`<td class="time-static" style="user-select:text">${moment(countDownDate).add(LiveFightSettings?.showServerTime ? - GuildFights.serverOffset : 0 , "seconds").format('HH:mm')}</td>`);
+				//nextup.push(`<td class="time-static" style="user-select:text">${countDownDate.format('HH:mm')}</td>`);
+				nextup.push(`<td class="time-static" style="user-select:text">${moment(countDownDate).add(LiveFightSettings?.showServerTime ? - 60 * (GuildFights.serverOffset ?? 0) : 0 , "seconds").format('HH:mm')}</td>`);
 				nextup.push(`<td class="time-dynamic" id="counter-${prov[x]['id']}">${countDownDate.format('HH:mm:ss')}</td>`);
 				nextup.push(`<td class="text-right" id="alert-${prov[x]['id']}">${GuildFights.GetAlertButton(prov[x]['id'])}</td>`);
 				nextup.push('</tr>');
@@ -1378,11 +1380,11 @@ let GuildFights = {
 			let LiveFightSettings = JSON.parse(localStorage.getItem('LiveFightSettings'));
 			let showTileColors = (LiveFightSettings && LiveFightSettings.showTileColors !== undefined) ? LiveFightSettings.showTileColors : 1;
 			//console.log(999, showTileColors);
-			copy += `${moment.unix(mapElem.lockedUntil - 2 - GuildFights.serverOffset).format('HH:mm')} ${showTileColors === 1 ? battleType : ''} ${mapElem.title} \n`;
+			copy += `${moment.unix(mapElem.lockedUntil - 2 - 60 * (GuildFights.serverOffset || 0)).format('HH:mm')} ${showTileColors === 1 ? battleType : ''} ${mapElem.title} \n`;
 		});
 
 		if (copy !== '') {
-			if (GuildFights.serverOffset > 0 && localStorage.getItem('Guildfights.TimeZoneWarningShown') === null) { // show warning only once
+			if (GuildFights.serverOffset && localStorage.getItem('Guildfights.TimeZoneWarningShown') === null) { // show warning only once
 				HTML.ShowToastMsg({
 					head: i18n('Boxes.GuildFights.TimeZoneWarning.Title'),
 					text: i18n('Boxes.GuildFights.TimeZoneWarning.Desc'),		
@@ -1720,8 +1722,8 @@ let GuildFights = {
 		c.push(`<p><label for="showAdjacentSectors"><input id="showAdjacentSectors" name="showAdjacentSectors" value="0" type="checkbox" ${(showAdjacentSectors === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.ShowAdjacentSectors')}</label></p>`);
 		c.push(`<p><label for="showownsectors"><input id="showownsectors" name="showownsectors" value="0" type="checkbox" ${(showOwnSectors === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.ShowOwnSectors')}</label></p>`);
 		c.push(`<p><label for="showtilecolors"><input id="showtilecolors" name="showtilecolors" value="0" type="checkbox" ${(showTileColors === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.ShowTileColors')}</label></p>`);
-		if (GuildFights.serverOffset != 0) 
-			c.push(`<p><label for="showservertime"><input id="showservertime" name="showservertime" value="0" type="checkbox" ${(showServerTime === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.ShowServerTime')}</label></p>`);
+		c.push(`<p><label for="showservertime"><input id="showservertime" name="showservertime" value="0" type="checkbox" ${(showServerTime === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.ShowServerTime')}</label></p>`);
+		c.push(`<p><label for="serverOffset">${i18n('Boxes.GuildFights.serverOffset')}<input id="serverOffset" name="serverOffset" value="${GuildFights.serverOffset??""}" type="text" maxlength="5" size = "5"/></label></p>`);
 		c.push(`<p><button onclick="GuildFights.SaveLiveFightSettings()" id="save-livefight-settings" class="btn btn-default" style="width:100%">${i18n('Boxes.GuildFights.SaveSettings')}</button></p>`);
 
 		// insert into DOM
@@ -1758,7 +1760,11 @@ let GuildFights = {
 		GuildFights.showOwnSectors = value.showOwnSectors;
 		GuildFights.showTileColors = value.showTileColors;
 		GuildFights.showServerTime = value.showServerTime;
-
+		GuildFights.serverOffset = parseInt($("#serverOffset").val()) || null;
+		if (GuildFights.serverOffset != null)
+			localStorage.setItem('GuildFights.serverOffset', JSON.stringify(GuildFights.serverOffset)) 
+		else
+			localStorage.removeItem('GuildFights.serverOffset');
 		localStorage.setItem('LiveFightSettings', JSON.stringify(value));
 
 		$(`#LiveGildFightingSettingsBox`).fadeToggle('fast', function () {
