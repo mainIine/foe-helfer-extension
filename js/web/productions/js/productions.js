@@ -90,35 +90,35 @@ let Productions = {
 
 		load: (overwrite = null) => {
 			Productions.Rating.Data = Object.assign({
-				'strategy_points': {order:1,perTile:5,active:true},
+				'strategy_points': {order:1,perTile:8,active:true},
 				'money': {order:2,perTile:null,active:false},
 				'supplies': {order:3,perTile:null,active:false},
 				'medals': {order:4,perTile:null,active:false},
 				'clan_goods': {order:6,perTile:10,active:true},
 				'population': {order:7,perTile:null,active:false},
 				'happiness': {order:8,perTile:null,active:false},
-				'units': {order:9,perTile:1,active:true},
-				'att_boost_attacker-all': {order:10,perTile:3,active:true} ,
-				'att_boost_attacker-guild_expedition': {order:11,perTile:null,active:false},
-				'att_boost_attacker-battleground': {order:12,perTile:3,active:true} ,
+				'units': {order:9,perTile:4,active:true},
+				'att_boost_attacker-all': {order:10,perTile:8,active:true} ,
+				'att_boost_attacker-guild_expedition': {order:11,perTile:11,active:true},
+				'att_boost_attacker-battleground': {order:12,perTile:10,active:true} ,
 				'att_boost_attacker-guild_raids': {order:13,perTile:null,active:false},
-				'def_boost_attacker-all': {order:14,perTile:3,active:true},
-				'def_boost_attacker-guild_expedition': {order:15,perTile:3,active:false},
-				'def_boost_attacker-battleground': {order:16,perTile:3,active:true} ,
+				'def_boost_attacker-all': {order:14,perTile:8,active:true},
+				'def_boost_attacker-guild_expedition': {order:15,perTile:11,active:true},
+				'def_boost_attacker-battleground': {order:16,perTile:10,active:true} ,
 				'def_boost_attacker-guild_raids': {order:17,perTile:null,active:false},
-				'att_boost_defender-all': {order:18,perTile:3,active:true},
-				'att_boost_defender-guild_expedition': {order:19,perTile:3,active:false},
-				'att_boost_defender-battleground': {order:20,perTile:3,active:false},
+				'att_boost_defender-all': {order:18,perTile:8,active:true},
+				'att_boost_defender-guild_expedition': {order:19,perTile:11,active:false},
+				'att_boost_defender-battleground': {order:20,perTile:10,active:true},
 				'att_boost_defender-guild_raids': {order:21,perTile:null,active:false},
-				'def_boost_defender-all': {order:22,perTile:3,active:true},
-				'def_boost_defender-guild_expedition': {order:23,perTile:3,active:false},
-				'def_boost_defender-battleground': {order:24,perTile:3,active:false},
+				'def_boost_defender-all': {order:22,perTile:8,active:true},
+				'def_boost_defender-guild_expedition': {order:23,perTile:11,active:true},
+				'def_boost_defender-battleground': {order:24,perTile:10,active:true},
 				'def_boost_defender-guild_raids': {order:25,perTile:null,active:false},
-				'goods-previous': {order:26,perTile:4,active:true},
-				'goods-current': {order:27,perTile:5,active:true},
-				'goods-next': {order:28,perTile:3,active:false},
-				'fsp': {order:29,perTile:1,active:true},
-				'guild_raids_action_points_collection': {order:29,perTile:6,active:true},
+				'goods-previous': {order:26,perTile:7,active:true},
+				'goods-current': {order:27,perTile:6,active:true},
+				'goods-next': {order:28,perTile:5,active:true},
+				'fsp': {order:29,perTile:0.8,active:true},
+				'guild_raids_action_points_collection': {order:29,perTile:8,active:true},
 				'guild_raids_goods_start': {order:30,perTile:1,active:false},
 				'guild_raids_units_start': {order:31,perTile:1,active:false},
 				'guild_raids_coins_start': {order:32,perTile:5000,active:true},
@@ -1731,15 +1731,6 @@ let Productions = {
 
 				Productions.CalcRatingBody();
 			});
-
-			$ProductionsRating.on('click', '.reset-button', function () {
-				if (window.confirm(i18n('Boxes.ProductionsRating.ConfirmReset'))) {
-					localStorage.removeItem('Productions.Rating.Data');
-					Productions.Rating.load();
-				    Productions.Rating.save();
-				    Productions.CalcRatingBody();
-				}
-			});
 			Productions.CalcRatingBody(era);
 
 		} else {
@@ -2299,6 +2290,15 @@ let Productions = {
 			$('#ProductionsRatingBody [data-original-title]').tooltip({container: "#game_body", html:true});
 
 			$('.sortable-table').tableSorter();
+
+			$('.reset-button').on('click', function () {
+				if (window.confirm(i18n('Boxes.ProductionsRating.ConfirmReset'))) {
+					localStorage.removeItem('Productions.Rating.Data');
+					Productions.Rating.load();
+				    Productions.Rating.save();
+				    Productions.CalcRatingBody();
+				}
+			});
 
 			helper.preloader.hide('#ProductionsRating');
 			//$('#ProductionsRatingBody').fadeIn(501);
