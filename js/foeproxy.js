@@ -11,10 +11,6 @@
  * **************************************************************************************
  */
 
-try {
-    document.documentElement.setAttribute('data-foeproxy-injected', '1');
-} catch (e) {}
-
 const FoEproxy = (function () {
     const requestInfoHolder = new WeakMap();
     function getRequestData(xhr) {
@@ -534,3 +530,13 @@ Object.assign(FoEproxy, (function () {
         _addToHistory: (entry) => { JSONhistory.push(entry); }
     };
 })());
+
+try {
+    // Export reference to page window so fallbacks can reliably detect page-context injection.
+    // In a content-script sandbox this writes to the sandbox window only; page script will set it on real page window.
+    window.FoEproxy = FoEproxy;
+    // Page-visible marker (will be present only when this file ran in the page context)
+    window.__foeproxy_injected__ = true;
+} catch (e) {
+    // ignore
+}
