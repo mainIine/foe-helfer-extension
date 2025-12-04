@@ -11,6 +11,10 @@
  * **************************************************************************************
  */
 
+try {
+    document.documentElement.setAttribute('data-foeproxy-injected', '1');
+} catch (e) {}
+
 const FoEproxy = (function () {
     const requestInfoHolder = new WeakMap();
     function getRequestData(xhr) {
