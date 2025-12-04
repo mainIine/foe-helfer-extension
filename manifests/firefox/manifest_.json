@@ -51,12 +51,6 @@
 			"world": "MAIN"
 		},
 		{
-            "matches": ["https://*.forgeofempires.com/*"],
-            "include_globs": [ "*forgeofempires.com/game*" ],
-            "js": ["js/foeproxy-fallback.js"],
-            "run_at": "document_start"
-        },
-		{
 			"matches": ["https://*.forgeofempires.com/*"],
 			"include_globs": [ "*forgeofempires.com/game*" ],
 			"js": [
