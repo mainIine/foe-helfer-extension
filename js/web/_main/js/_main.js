@@ -1119,7 +1119,7 @@ let MainParser = {
 		await IndexDB.db.buildingMeta.bulkPut(updated);
 		MainParser.CityEntities = Metadata;
 		MainParser.correctBuildingType();
-
+		MainParser.Inactives.check();
 	},
 	correctBuildingType: () => {
 		for (let i in MainParser.CityEntities) {
