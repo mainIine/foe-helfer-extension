@@ -9,6 +9,8 @@
 **Bugfix**
 - Efficiency Settings: Reset to default-button was broken
 - Productions: Item tab would not open if you had new train pieces producing mass self-aid kits fragments
+- decayed buildings were not checked on game start (zz1)
+- legacy browsers could not load the helper anymore
 
 ---
 
