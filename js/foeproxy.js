@@ -10,8 +10,7 @@
  *
  * **************************************************************************************
  */
-(function () {
-    if (typeof globalThis.FoEproxy !== 'undefined') return
+if (typeof globalThis.FoEproxy == 'undefined') {
     const FoEproxy = (function () {
         const requestInfoHolder = new WeakMap();
         function getRequestData(xhr) {
@@ -532,4 +531,4 @@
         };
     })());
     globalThis.FoEproxy = FoEproxy;
-})();
+}
