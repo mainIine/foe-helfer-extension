@@ -8,6 +8,7 @@
 
 **Bugfix**
 - Efficiency Settings: Reset to default-button was broken
+- Productions: Item tab would not open if you had new train pieces producing mass self-aid kits fragments
 
 ---
 
