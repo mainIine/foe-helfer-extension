@@ -621,7 +621,8 @@ let Productions = {
 				for (const b of buildingIds) {
 					let building = CityMap.getBuildingById(b.id)
 					if (building?.player_id !== ExtPlayerID) continue;
-					if (type === 'items' && Productions.showBuildingItems(true, building)[0] === "" || building.chainBuilding?.type === "linked") continue; // makes random productions with resources and others disappear from the item list
+					// makes random productions with resources and others disappear from the item list
+					if (type === 'items' && Productions.showBuildingItems(true, building)[0] === "" || building.chainBuilding?.type === "linked") continue;
 
 					rowA.push('<tr>')
 					rowA.push('<td>')
@@ -719,7 +720,7 @@ let Productions = {
 
 						}
 						else {
-							let items=Productions.showBuildingItems(true, building)
+							let items=Productions.showBuildingItems(true, building);
 							for (let i of items[2]) {
 								let n = (i.fragment ? "Fragment" : "") + i.name.replace(/\s/g,"")
 								if (Sum[n]) {
@@ -729,8 +730,9 @@ let Productions = {
 									Sum[n] = i
 								}
 							}
+							let itemsText = jQuery(items[0]).text();
 
-							rowA.push('<td data-number="1" exportvalue="'+jQuery(items[0]).text()+'">' + items[0] + '</td>')
+							rowA.push('<td data-number="1" exportvalue="'+itemsText+'"><span>' + itemsText + '</span></td>')
 						}
 					}
 					else {
@@ -1458,8 +1460,8 @@ let Productions = {
 			itemArray = [];
 
 		// current item production
-		if (current && (building.state?.isPolivated === true || building.state?.isPolivated === undefined)) {
-			for (const production of building.state.production) {
+		if (current && (building.state?.isPolivated === true || building.state?.isPolivated === undefined) && Array.isArray(building.state?.production)) {
+			for (const production of building.state?.production) {
 				if (production.type !== "genericReward") continue;
 				if (production.resources?.icon?.includes("good")) return false;
 
@@ -1495,7 +1497,7 @@ let Productions = {
 						let itemId = production.resources.id.split('#')[1]
 						itemId = (itemId === undefined) ? '' : itemId
 						let frag = production.resources.subType === "fragment"
-						allItems += `<span class="'${itemId}'">`+production.resources.amount + "x " + (frag ? "🧩 " : "" ) + production.resources.name + "</span><br>"
+						allItems += `<span class="'${itemId}'">`+production.resources.amount + "x " + (frag ? "🧩 " : "" ) + production.resources.name.replace(/^\d+/, "") + "</span><br>"
 						itemArray.push({fragment:frag,name:production.resources.name,amount:production.resources.amount,random:0})
 					}
 				}
