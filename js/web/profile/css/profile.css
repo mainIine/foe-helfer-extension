@@ -768,16 +768,16 @@
 
 
 #PlayerProfile.window-box.sunrise {
-    --main-background: radial-gradient(circle, #774200 0%, #611403 25%, #3d000a 55%);
+    --main-background: radial-gradient(circle, #772500 0%, #610c03 25%, #3d0011 55%);
     --main-border: 3px solid #690024;
     --main-color: #ffd9cd;
     --daysPlayed-background: radial-gradient(circle, #ff5e0008 20%, #690024a6 100%);
-    --daysPlayed-color: #ff8800b0;
+    --daysPlayed-color: #f80;
     --important-color: var(--text-danger);
     --important-underline: #f005;
     --crit-background: linear-gradient(132deg, #ff8a0085, #61270755);
-    --header-background: linear-gradient(#d5640078 50%, #ff000011 50%, #0000);
-    --secondary-background: linear-gradient(196deg, #631b00 0%, #3b0016 100%);
+    --header-background: linear-gradient(#d58b0082 50%, #ff000011 50%, #0000);
+    --secondary-background: linear-gradient(196deg, #630000 0%, #3b0016 100%);
     --secondary-color: #f2d0ab;
     --h2-background: linear-gradient(to bottom, #ff00951a, transparent 75%);
     --item-border-color: #ff006f30;
@@ -787,7 +787,7 @@
 }
 
 #PlayerProfile.window-box.sunrise h1 {
-    color: #ff6e16;
+    color: #f80;
 }
 
 #PlayerProfile.window-box.sunrise-light {
@@ -822,28 +822,28 @@
 
 
 #PlayerProfile.window-box.teal {
-    --main-background: radial-gradient(#72ddbf, #25969b);
-    --main-border: 3px solid #00ddd2d4;
+    --main-background: radial-gradient(#82ddc4, #37898d);
+    --main-border: 3px solid #22d5ccd4;
     --main-color: #111;
-    --daysPlayed-background: radial-gradient(circle, #ffffff00 0%, #0eebd9a6 100%);
+    --daysPlayed-background: radial-gradient(circle, #ffffff00 0%, #22d5ccd4 100%);
     --daysPlayed-color: #0a487a;
     --important-color: #740000;
     --important-underline: #ff00003b;
     --crit-background: linear-gradient(132deg, #d34f09, #a5090988);
     --header-background: linear-gradient(#9bff002a 50%, #00ff6a59 50%, #ffffff00);
-    --secondary-background: linear-gradient(196deg, #33dd88c4 0%, #3464bda1 100%);
+    --secondary-background: linear-gradient(196deg, #51df98c4 0%, #4d76c1a1 100%);
     --secondary-color: #202137;
     --h2-background: linear-gradient(to bottom, #ffffff1a, transparent 75%);
     --item-border-color: #001aff30;
-    --item-background: inset -1px -1px 20px #1436da66;
+    --item-background: inset -1px -1px 20px #2744cb66;
     --item-img-background: radial-gradient(circle, #12274d66 53%, transparent 55%);
     --qi-background: linear-gradient(298deg, #00000000 0%, #41d9b882 100%);
     --qi-color: #06332e;
     --qi-shadow: inset -1px -1px 2px #12837a33;
     --qi-text-shadow: none;
-    --fav-color: #ff9d34;
-    --fav-background: inset -1px -1px 30px #08064b7a;
-    --boost-color: #074604;
+    --fav-color: #ffe7c3;
+    --fav-background: inset -1px -1px 30px #e78109f2;
+    --boost-color: #0c6f00;
 }
 
 

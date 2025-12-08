@@ -295,7 +295,7 @@ let Tooltips = {
                 if (allydata) {
                     ally+=`<div class="allyName"><span>${MainParser.Allies.meta[allydata.allyId]?.name}</span><span>(${i18n("Boxes.Productions.AllyRarity."+allydata.rarity)} - ${i18n("General.Level")} ${allydata.level})</span></div>`
                     //productions:
-                    for (b of allydata.boosts||[]) {
+                    for (b of allydata.currentLevel?.boosts||allydata.boosts||[]) {
                         ally+=`${srcLinks.icons(b.type+feature[b.targetedFeature])} ${b.value + Boosts.percent(b.type)}`
                     }
 

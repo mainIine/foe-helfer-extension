@@ -1119,7 +1119,7 @@ let MainParser = {
 		await IndexDB.db.buildingMeta.bulkPut(updated);
 		MainParser.CityEntities = Metadata;
 		MainParser.correctBuildingType();
-
+		MainParser.Inactives.check();
 	},
 	correctBuildingType: () => {
 		for (let i in MainParser.CityEntities) {
@@ -1586,7 +1586,7 @@ let MainParser = {
 			let prod={}
 			Object.values(M.buildingList[CityMapId]).forEach(id=> {
 				let a=M.allyList[id]
-				if (a.boosts) prod.boosts = (prod.boosts||[]).concat(a.boosts)
+				if (a.currentLevel?.boosts || a.boosts) prod.boosts = (prod.boosts||[]).concat(a.currentLevel?.boosts || a.boosts)
 			})
 			return prod
 		},
@@ -1655,7 +1655,7 @@ let MainParser = {
 					rooms[0+"#" + unassigned] = {
 						allyRarity: x.rarity?.value || "",
 						allyLevel: x.level || null,												
-						allyBoosts: x.boosts || null,
+						allyBoosts: x.currentLevel?.boosts || x.boosts || null,
 						allyName: MainParser.Allies.meta[x.allyId]?.name || "",
 					}
 					unassigned++
@@ -1669,7 +1669,7 @@ let MainParser = {
 						roomRarity: r.rarity?.value || Object.keys(MainParser.Allies.rarities).join("#"),
 						allyRarity: r.ally?.rarity?.value || "",
 						allyLevel: r.ally?.level || null,												
-						allyBoosts: r.ally?.boosts || null,
+						allyBoosts: r.ally?.currentLevel?.boosts || r.ally?.boosts || null,
 						allyName: MainParser.Allies.meta[r.ally?.allyId]?.name || "",
 					}
 				}

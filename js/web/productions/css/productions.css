@@ -826,3 +826,7 @@ input[id*="ProdPerTile"] {
 #FSPCalculator .cats input {
 	width: 50px;
 }
+
+#ProductionsRatingBody:not(.showLimited) .limited span[data-callback_tt="Kits.InventoryTooltip"]{
+	display: none;
+}
