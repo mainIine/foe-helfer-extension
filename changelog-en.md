@@ -1,5 +1,21 @@
 ## Changelog - Extension
 
+##### 4.0.2.0
+
+**Update**
+- Efficiency: 
+	- Changed default values
+	- When the option "show ascended/limited buildings" is active, lines with such buildings in your city will not show the inventory checkmark anymore
+- Ally Boosts: Adapted to changed data transmission
+
+**Bugfix**
+- Efficiency Settings: Reset to default-button was broken
+- Productions: Item tab would not open if you had new train pieces producing mass self-aid kits fragments
+- decayed buildings were not checked on game start (zz1)
+- legacy browsers could not load the helper anymore
+
+---
+
 ##### 4.0.1.0
 
 **Bugfix**

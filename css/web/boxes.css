@@ -456,6 +456,11 @@ table.foe-table tr.bg-green td {
     border-bottom-color: var(--table-bb-success);
 }
 
+table.foe-table td .error {
+	text-shadow: 0 0 3px var(--text-darkest), 0 0 1px var(--text-darkest), 0 1px 0 var(--text-darkest), 0 1px 4px var(--text-darkest);
+	display: inline-block;
+}
+
 p {
 	margin: 0 0 10px 0;
 }

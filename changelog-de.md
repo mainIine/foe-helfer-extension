@@ -1,6 +1,22 @@
 ## Changelog - Extension
 
 
+##### 4.0.2.0
+
+**Update**
+- Effizienzbewertung: 
+	- Default-Werte angepasst
+	- Wenn die Option "zeige erhabene/eingeschränkte Gebäude" deaktiviert ist, wird für solche Gebäude, die aktuell in der Stadt sind, kein Inventarhaken angezeigt 
+- Verbündetenboosts: an veränderte Datenübertragung angepasst
+
+**Bugfix**
+- Effizienzbewertung: Der Button zum Zurücksetzen in den Einstellungen hat nicht funktioniert.
+- Produktionsübersicht: Der Item-Tab ging nicht auf, wenn man Zugteile mit Massenselbsthilfekit-Fragmenten hatte
+- Abgelaufene Gebäude wurden nicht mehr überprüft beim Spielstart (zz1)
+- Ältere Browserversionen konnten den Helfer nicht mehr starten
+
+---
+
 ##### 4.0.1.0
 
 **Update**
