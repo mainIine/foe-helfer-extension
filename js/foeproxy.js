@@ -11,7 +11,7 @@
  * **************************************************************************************
  */
 if (typeof globalThis.FoEproxy == 'undefined') {
-    const FoEproxy = (function () {
+    globalThis.FoEproxy = (function () {
         const requestInfoHolder = new WeakMap();
         function getRequestData(xhr) {
             let data = requestInfoHolder.get(xhr);
@@ -196,9 +196,8 @@ if (typeof globalThis.FoEproxy == 'undefined') {
             _xhrOnLoadHandlerExec: xhrOnLoadHandlerExec
         };
     })();
-
     //extend FoEproxy with utility functions
-    Object.assign(FoEproxy, (function () {
+    Object.assign(globalThis.FoEproxy, (function () {
         const proxyMap = {};
         const proxyRequestsMap = {};
         const proxyMetaMap = {};
@@ -530,5 +529,4 @@ if (typeof globalThis.FoEproxy == 'undefined') {
             _addToHistory: (entry) => { JSONhistory.push(entry); }
         };
     })());
-    globalThis.FoEproxy = FoEproxy;
 }
