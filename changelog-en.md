@@ -3,7 +3,9 @@
 ##### 4.0.2.0
 
 **Update**
-- Efficiency: Changed default values
+- Efficiency: 
+	- Changed default values
+	- When the option "show ascended/limited buildings" is active, lines with such buildings in your city will not show the inventory checkmark anymore
 - Ally Boosts: Adapted to changed data transmission
 
 **Bugfix**

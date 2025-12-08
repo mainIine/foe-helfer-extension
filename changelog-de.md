@@ -4,7 +4,9 @@
 ##### 4.0.2.0
 
 **Update**
-- Effizienzbewertung: Default-Werte angepasst
+- Effizienzbewertung: 
+	- Default-Werte angepasst
+	- Wenn die Option "zeige erhabene/eingeschränkte Gebäude" deaktiviert ist, wird für solche Gebäude, die aktuell in der Stadt sind, kein Inventarhaken angezeigt 
 - Verbündetenboosts: an veränderte Datenübertragung angepasst
 
 **Bugfix**
