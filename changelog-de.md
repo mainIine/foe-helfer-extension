@@ -13,7 +13,7 @@
 - Effizienzbewertung: Der Button zum Zurücksetzen in den Einstellungen hat nicht funktioniert.
 - Produktionsübersicht: Der Item-Tab ging nicht auf, wenn man Zugteile mit Massenselbsthilfekit-Fragmenten hatte
 - Abgelaufene Gebäude wurden nicht mehr überprüft beim Spielstart (zz1)
-- alte Browserversionen konnten den Helfer nicht mehr starten
+- Ältere Browserversionen konnten den Helfer nicht mehr starten
 
 ---
 
