@@ -565,7 +565,7 @@
 
 #PlayerProfile .achievements img {
     max-height: 40px;
-    margin: -5px 0 -5px -5px;
+    margin: -5px -2px -5px -5px;
     background: var(--item-img-background);
 }
 
@@ -616,6 +616,12 @@
     box-shadow: var(--qi-shadow);
     text-shadow: var(--qi-text-shadow);
     color: var(--qi-color);
+}
+
+#PlayerProfile .qiBoosts img {
+    height: 22px;
+    display: inline-block;
+    margin-right: 2px;
 }
 
 #PlayerProfile .qiBoosts span::before {

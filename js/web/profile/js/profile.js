@@ -272,7 +272,7 @@ const Profile = {
             cl.push('<div class="qiBoosts pad text-center">');
             cl.push('<h2>'+i18n('Boxes.PlayerProfile.QIBoosts')+'</h2>');
             if (Boosts.noSettlement.guild_raids_coins_production + Boosts.Sums.guild_raids_coins_start !== 0) {
-                cl.push('<span class="qicoins">');
+                cl.push('<span><img src="' + srcLinks.get(`/shared/icons/icon_townhall_guild_raids_coins_start.png`,true) + '" />');
                 if (Boosts.noSettlement.guild_raids_coins_production !== 0)
                     cl.push(HTML.Format(parseInt(Boosts.noSettlement.guild_raids_coins_production)) + '% ');
                 if (Boosts.Sums.guild_raids_coins_start !== 0)
@@ -280,7 +280,7 @@ const Profile = {
                 cl.push('</span> ');
             }
             if (Boosts.noSettlement.guild_raids_supplies_production + Boosts.Sums.guild_raids_supplies_start !== 0) {
-                cl.push('<span class="qisupplies">');
+                cl.push('<span><img src="' + srcLinks.get(`/shared/icons/icon_townhall_guild_raids_supplies_start.png`,true) + '" />');
                 if (Boosts.noSettlement.guild_raids_supplies_production !== 0)
                     cl.push(HTML.Format(parseInt(Boosts.noSettlement.guild_raids_supplies_production)) + '% ');
                 if (Boosts.Sums.guild_raids_supplies_start !== 0)
@@ -288,11 +288,13 @@ const Profile = {
                 cl.push('</span> ');
             }
             if (Boosts.noSettlement.guild_raids_action_points_collection !== 0)
-                cl.push('<span class="qiactions">' + HTML.Format(parseInt(Boosts.noSettlement.guild_raids_action_points_collection)) + '</span> ');
+                cl.push('<span><img src="' + srcLinks.get(`/shared/icons/icon_townhall_guild_raids_action_points_collection.png`,true) + '" />' + HTML.Format(parseInt(Boosts.noSettlement.guild_raids_action_points_collection)) + '</span> ');
             if (Boosts.Sums.guild_raids_goods_start !== 0)
-                cl.push('<span class="qigoods_start">+' + HTML.Format(parseInt(Boosts.Sums.guild_raids_goods_start)) + '</span> ');
+                cl.push('<span><img src="' + srcLinks.get(`/shared/icons/icon_townhall_guild_raids_goods_start.png`,true) + '" />' + HTML.Format(parseInt(Boosts.Sums.guild_raids_goods_start)) + '</span> ');
             if (Boosts.Sums.guild_raids_units_start !== 0)
-                cl.push('<span class="qiunits_start">+' + HTML.Format(parseInt(Boosts.Sums.guild_raids_units_start)) + '</span> ');
+                cl.push('<span><img src="' + srcLinks.get(`/shared/icons/icon_townhall_guild_raids_units_start.png`,true) + '" />' + HTML.Format(parseInt(Boosts.Sums.guild_raids_units_start)) + '</span> ');
+            if (Boosts.noSettlement.guild_raids_action_points_capacity !== 0)
+                cl.push('<span><img src="' + srcLinks.get(`/shared/icons/icon_townhall_guild_raids_action_points_capacity.png`,true)+'" />' + HTML.Format(parseInt(Boosts.noSettlement.guild_raids_action_points_capacity)) + '</span> ');
             cl.push('</div>');
         }
         cl.push('</div>');
