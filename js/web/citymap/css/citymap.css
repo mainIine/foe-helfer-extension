@@ -121,26 +121,26 @@
 	font-weight: bold;
 }
 
-.outpost.guild_raids #sidebar .qiBuildings.foe-table thead tr th {
+.outpost.guild_raids #sidebar .allBuildings.foe-table thead tr th {
 	vertical-align: middle !important;
 }
 
-.outpost.guild_raids #sidebar .qiBuildings {
+.outpost.guild_raids #sidebar .allBuildings {
 	font-size: 90%;
 }
 
-.outpost.guild_raids #sidebar .qiBuildings img, .outpost.guild_raids .qiSums .boosts img {
+.outpost.guild_raids #sidebar .allBuildings img, .outpost.guild_raids .qiSums .boosts img {
 	max-height: 20px;
 }
 
-.outpost.guild_raids #sidebar .qiBuildings td .building img {
+.outpost #sidebar .allBuildings td .building img {
 	max-height: 31px;
 	max-width: 40px;
 	margin: auto;
 	display: inline-block;
 }
 
-.outpost.guild_raids #sidebar .qiBuildings td div.building {
+.outpost #sidebar .allBuildings td div.building {
 	background: #6b7529;
 	width: 50px;
 	margin: -3px 0;
@@ -382,7 +382,7 @@
 	z-index: 1;
 }
 
-.qiBuildings tr td:first-child::before {
+.allBuildings tr td:first-child::before {
 	content: '';
 	width: 9px;
 	height: 9px;
