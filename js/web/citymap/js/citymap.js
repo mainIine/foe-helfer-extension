@@ -491,7 +491,7 @@ let CityMap = {
 		let boosts = Boosts.Sums;
 		let buildings = Object.values(CityMap.QIData);
 
-		let out = '<table class="foe-table qiBuildings">'
+		let out = '<table class="foe-table allBuildings">'
 		out += '<thead><tr><th colspan="2">'+i18n('Boxes.CityMap.Building')+'</th><th class="population textright"></th><th class="happiness textright"></th><th>'+i18n('Boxes.CityMap.Boosts')+'</th></tr></thead>'
 		out += "<tbody>"
 
@@ -518,7 +518,11 @@ let CityMap = {
 
 		for (let building of uniqueBuildings) {
 			if (building.type === "impediment" || building.type === "street") continue;
-			out += "<tr class='"+building.type+"'><td><div class='building' data-original-title='"+building.name+"'><img src='" + srcLinks.get("/city/buildings/"+building.entityId.replace(/^(\D_)(.*?)/,"$1SS_$2")+".png",true) + "'></div></td><td>" + (building.count>1?"x"+building.count:"") + "</td>"
+			out += "<tr class='"+building.type+"'>" + 
+					"<td><div class='building' data-original-title='"+building.name+"'>" + 
+						"<img src='" + srcLinks.get("/city/buildings/"+building.entityId.replace(/^(\D_)(.*?)/,"$1SS_$2")+".png",true) + "'>" +
+					"</div></td>" +
+					"<td>" + (building.count>1?"x"+building.count:"") + "</td>"
 			out += '<td class="textright">' + building.population + "</td>"
 			out += '<td class="textright">' + building.euphoria + "</td>"
 			out += "<td>"
@@ -619,7 +623,8 @@ let CityMap = {
 				population: population || 0,
 				production: production || null,
 				diplomacy: null,
-				type: data.type
+				type: data.type,
+				entityId: data.asset_id,
 			};
 		else if (ActiveMap === "era_outpost")
 			building = {
@@ -627,7 +632,8 @@ let CityMap = {
 				population: population || 0,
 				production: production || null,
 				diplomacy: null,
-				type: data.type
+				type: data.type,
+				entityId: data.asset_id,
 			};
 
 		return building;
@@ -639,32 +645,40 @@ let CityMap = {
 		if (ActiveMap === "era_outpost")
 			buildings = Object.values(CityMap.EraOutpostData);
 
-		buildings.sort((a, b) => {
-			if (a.cityentity_id < b.cityentity_id) return -1
-			if (a.cityentity_id > b.cityentity_id) return 1
-			return 0
-		})
-
-		let out = '<table class="foe-table qiBuildings">'
-		out += '<thead><tr><th colspan="2">'+i18n('Boxes.CityMap.Building')+'</th><th class="population textright"></th>'+
-		//'<th class="happiness textright"></th>
-		'<th>'+i18n('Boxes.CityMap.Boosts')+'</th></tr></thead>'
-		out += "<tbody>"
-
 		let uniques = {};
 		for (let b of buildings) {
 			if (!uniques[b.cityentity_id]) 
 				uniques[b.cityentity_id] = 1
-			else
+			else 
 				uniques[b.cityentity_id] += 1
 		}
 
+		let uniqueBuildings = [];
 		for (let [id,count] of Object.entries(uniques)) {
 			let building = CityMap.setOutpostBuilding(MainParser.CityEntities[id]);
-			if (building.type !== "impediment" && building.type !== "street" && building.type !== "off_grid") {
-				out += "<tr class='"+building.type+"'><td>" + building.name + "</td><td>" + (count>1?"x"+count:"") + "</td>"
+			building.count = count;
+			uniqueBuildings.push(building);
+		}
+
+		uniqueBuildings.sort((a, b) => {
+			if (a.entityId < b.entityId) return -1
+			if (a.entityId > b.entityId) return 1
+			return 0
+		});
+
+		let out = '<table class="foe-table allBuildings">'
+		out += '<thead><tr><th colspan="2">'+i18n('Boxes.CityMap.Building')+'</th><th class="population textright"></th>'+
+		'<th>'+i18n('Boxes.CityMap.Boosts')+'</th></tr></thead>'
+		out += "<tbody>"
+
+		for (let building of uniqueBuildings) {
+			if (building.type !== "impediment" && building.type !== "street" && building.type !== "off_grid") {				
+				out += "<tr class='"+building.type+"'>" + 
+					"<td><div class='building' data-original-title='"+building.name+"'>" + 
+						"<img src='" + srcLinks.get("/city/buildings/"+building.entityId.replace(/^(\D_)(.*?)/,"$1SS_$2")+".png",true) + "'>" +
+					"</div></td>" +
+					"<td>" + (building.count>1?"x"+building.count:"") + "</td>"
 				out += '<td class="textright">' + building.population + "</td>"
-				//out += '<td class="textright">' + building.euphoria + "</td>"
 				out += "<td>"
 				if (building.production !== null) {
 					for (let [prod, value] of Object.entries(building.production)) {
