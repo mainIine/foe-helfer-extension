@@ -730,9 +730,9 @@ let Productions = {
 									Sum[n] = i
 								}
 							}
-							let itemsText = jQuery(items[0]).text();
+							let itemsText = items[0];
 
-							rowA.push('<td data-number="1" exportvalue="'+itemsText+'"><span>' + itemsText + '</span></td>')
+							rowA.push('<td data-number="1" exportvalue="'+jQuery(itemsText).text()+'"><span>' + itemsText + '</span></td>')
 						}
 					}
 					else {
