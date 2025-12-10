@@ -891,7 +891,7 @@ let Productions = {
 
 
 	// can be used for goods and guild goods
-	getRelevatGoodsByEra: (buildingIds, guildGoods = false) => {
+	getRelevantGoodsByEra: (buildingIds, guildGoods = false) => {
 		let eras = [];
 		for (const b of buildingIds) {
 			let building = CityMap.getBuildingById(b.id);
@@ -933,7 +933,7 @@ let Productions = {
 			inADay = Math.floor(Date.now() / 1000) + 86400
 
 		// gather all different eras
-		eras = Productions.getRelevatGoodsByEra(buildingIds);
+		eras = Productions.getRelevantGoodsByEra(buildingIds);
 
 		// prepare array with total number of goods for each era
 		for (const era of eras) {
@@ -1097,7 +1097,7 @@ let Productions = {
 			inADay = Math.floor(Date.now() / 1000) + 86400
 
 		// gather all different eras
-		eras = Productions.getRelevatGoodsByEra(buildingIds, guildGoods = true);
+		eras = Productions.getRelevantGoodsByEra(buildingIds, guildGoods = true);
 
 		// prepare array with total number of goods for each era
 		for (const era of eras) {
