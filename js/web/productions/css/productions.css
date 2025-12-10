@@ -827,6 +827,6 @@ input[id*="ProdPerTile"] {
 	width: 50px;
 }
 
-#ProductionsRatingBody:not(.showLimited) .limited span[data-callback_tt="Kits.InventoryTooltip"]{
+#ProductionsRatingBody:not(.showLimited) .limited span[data-callback_tt="Kits.InventoryTooltip"], #items-list th:nth-child(3)::before, #items-list th:nth-child(3)::after {
 	display: none;
 }
