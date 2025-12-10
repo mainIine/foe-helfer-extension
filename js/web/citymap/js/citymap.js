@@ -2504,6 +2504,9 @@ let CityMap = {
 						let boostedExtra = Math.round(production.resources[resourceName]*goodsBoost/100)
 						if (resourceName.includes('all_goods_of_')) 
 							boostedExtra = Math.round(production.resources[resourceName]/5*goodsBoost/100)*5;
+						// dont apply boost to GBs
+						if (building.type == "greatbuilding")
+							boostedExtra = 0;
 						
 						if (goods.eras[goodEra] === undefined) 
 							goods.eras[goodEra] = parseInt(production.resources[resourceName])+boostedExtra;
