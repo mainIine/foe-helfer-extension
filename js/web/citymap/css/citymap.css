@@ -74,6 +74,32 @@
 	box-sizing: border-box;
 }
 
+#sidebar.main {
+	display: flex;
+	flex-direction: column;
+	justify-content: start;
+}
+
+#sidebar.main #map-stats {
+	justify-self: end;
+	border-top: 1px solid var(--text-darker);
+	padding-top: 5px;
+	margin-top: 9px;
+}
+
+#sidebar.main #map-stats img {
+	width: 22px;
+}
+#sidebar.main #map-stats ul, #sidebar.main #map-stats li {
+	margin: 0;
+	padding: 0;
+}
+#sidebar.main #map-stats li img:first-child {
+	filter: drop-shadow(0 1px 1px var(--black-65));
+	display: inline-block;
+	margin-right: 2px;
+}
+
 .outpost #BuildingsFilter, .outpost #city-map-menu .btn-group, .outpost #map-filters {
 	display: none;
 }
@@ -465,7 +491,7 @@
 #grid-outer span.older-3.diagonal, span.older-3.diagonal {
 	background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, rgb(165, 74, 62) 2px, rgb(165, 74, 62) 7px);
 }
-#grid-outer span.to-old.diagonal, span.to-old.diagonal {
+#grid-outer span.too-old.diagonal, span.too-old.diagonal {
 	background-image: repeating-linear-gradient(202deg, transparent, transparent 5px, rgb(171, 26, 13) 2px, rgb(171, 26, 13) 7px)
 }
 #grid-outer span.noStreet.highlight {
@@ -546,12 +572,12 @@
 [data-view="skew"] .older-3.diagonal {
 	background-image: repeating-linear-gradient(15deg, transparent, transparent 5px, rgb(165, 74, 62) 2px, rgb(165, 74, 62) 7px);
 }
-[data-view="skew"] .to-old.diagonal {
+[data-view="skew"] .too-old.diagonal {
 	background-image: repeating-linear-gradient(172deg, transparent, transparent 5px, rgb(171, 26, 13) 2px, rgb(171, 26, 13) 7px)
 }
 
 
-.to-old-legends span {
+.too-old-legends span {
 	display: inline-block;
 	width: 1em;
 	height: 1em;
@@ -576,9 +602,14 @@
 	width: 130px;
 }
 
+#area-state p {
+	margin: 3px 0;
+}
+
 #area-state .building-count-area span.square {
 	background-color: var(--background-color-military);
 	border-color:  var(--border-color-military);
+	border-radius: 3px;
 	width: 10px;
 	height: 10px;
 	display: inline-block;
