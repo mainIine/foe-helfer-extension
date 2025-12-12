@@ -192,7 +192,15 @@ let GBGBuildings = {
 		}
 		let sortby = "maxCosts"
 		sets.sort((a,b)=> a.absCosts - b.absCosts);
-		sets.sort((a,b)=> b.block-a.block + a[sortby]-b[sortby])
+		sets.sort((a,b)=> a[sortby]-b[sortby])
+		//testing special sorting
+		sets.sort((a,b)=> {
+			let r = a.maxCosts/b.maxCosts * a.absCosts/b.absCosts;
+			if (r>1) return 1;
+			if (r<1) return -1;
+			return 0; 
+		})
+		sets.sort((a,b)=> b.block-a.block)
 
 		for (let i = 0; i<sets.length; i++) {
 			if (sets[i].maxCosts>1) sets[i]["ignore"]=true;
@@ -232,8 +240,9 @@ let GBGBuildings = {
 
 		let h='<table class="foe-table">';
 		h += `<tr><th>${i18n('Boxes.GBGBuildings.toBuild')}</th><th>${i18n('Boxes.GBGBuildings.totalChance')}</th><th colspan="2">${i18n('Boxes.GBGBuildings.Costs')}</th></tr>`
-		let lastBlock = 1000;
-		let lastCost = 10000;
+		let lastBlock = Infinity;
+		let lastCost = Infinity;
+		let lastMax = Infinity;
 		let src = (b) => {
 			let link=""
 			link = srcLinks.get("/guild_battlegrounds/hud/guild_battlegrounds_sector_buildings_"+b+"_gbg2024.png",true,true)
@@ -243,15 +252,23 @@ let GBGBuildings = {
 		for (let s of sets) {
 			if (s.ignore) continue;
 			let highlight=null;
-			if (s.absCosts < lastCost) {
+			if (s.block < lastBlock) {
 				lastCost = s.absCosts;
+				lastMax = s.maxCosts;
+				lastBlock = s.block;
+				highlight = "chance"
+			} else if (s.maxCosts < lastMax) {
+				lastCost = s.absCosts;
+				lastMax = s.maxCosts;
+				lastBlock = s.block;
+				highlight = "max";
+			} else if (s.absCosts < lastCost) {
+				lastCost = s.absCosts;
+				lastMax = s.maxCosts;
+				lastBlock = s.block;
 				highlight = "cost";
 			}
-			if (s.block < lastBlock) {
-				lastBlock = s.block;
-				lastCost = s.absCosts;
-				highlight = "chance"
-			}
+			
 			h+=`<tr ${highlight=="chance"?'class="breakline"':''}><td >`
 			for (let b of s.needed) {
 				if (b=="free") continue;
@@ -261,7 +278,10 @@ let GBGBuildings = {
 				if (b=="free") continue;
 				h+=`<img class="building keep" src="${src(b)}" title="${GBGBuildings.BuildingData[b].name}">`
 			}
-			h+=`</td><td ${highlight == "chance"? 'class="highlight"':''}>${s.block}%</td><td title="${s.title}">${(s[sortby]*100).toPrecision(2)}%</td><td title="${i18n('Boxes.GBGBuildings.absoluteCosts')}" ${highlight == "cost"? 'class="highlight"':''}>${s.absCosts}</td></tr>`;
+			h+=`</td><td ${highlight == "chance"? 'class="highlight"':''}>${s.block}%</td>
+				<td title="${s.title}" ${highlight == "max"? 'class="highlight"':''}>${(s[sortby]*100).toPrecision(2)}%</td>
+				<td title="${i18n('Boxes.GBGBuildings.absoluteCosts')}" ${highlight == "cost"? 'class="highlight"':''}>${s.absCosts}</td>
+				</tr>`;
 		}
 		h+='</table>';
 		$('#GBGBuildingsBody').html(h);
