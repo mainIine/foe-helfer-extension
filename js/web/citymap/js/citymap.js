@@ -33,6 +33,20 @@ let CityMap = {
 	QIData: null,
 	QIStats: null,
 	QIAreas: [],
+	metrics: {
+		buildings: 0,
+		qiBuildings: 0,
+		qiArea: 0,
+		gbgBuildings: 0,
+		gbgArea: 0,
+		roadlessBuildings: 0,
+		roads: 0,
+		greatBuildings: 0,
+		area: 0,
+		areaOccupied: 0,
+		areaAvailable: 0,
+		areaTypes: [],
+	},
 
 	AscendingBuildings: new Promise((resolve) => {
 		let timer = () => {
@@ -209,7 +223,7 @@ let CityMap = {
 			CityMap.SetMapBuildings(false);
 
 			$('#map-container').scrollTo( $('.highlighted') , 800, {offset: {left: -280, top: -280}, easing: 'swing'});
-			$('.to-old-legends').hide();
+			$('.too-old-legends').hide();
 			$('.building-count-area').show();
 		});
 
@@ -339,7 +353,7 @@ let CityMap = {
 	 *
 	 * @param Data
 	 */
-	SetOutpostBuildings: ()=> {
+	SetOutpostBuildings: () => {
 		$('#grid-outer').find('.map-bg').remove();
 		$('#grid-outer').find('.entity').remove();
 
@@ -709,10 +723,20 @@ let CityMap = {
 		$('#grid-outer').find('.map-bg').remove();
 		$('#grid-outer').find('.entity').remove();
 
-		CityMap.OccupiedArea = 0;
-		CityMap.OccupiedArea2 = [];
-		CityMap.buildingsTotal = 0
-		CityMap.streetsTotal = 0
+		CityMap.metrics = {
+			buildings: 0,
+			qiBuildings: 0,
+			qiArea: 0,
+			gbgBuildings: 0,
+			gbgArea: 0,
+			roadlessBuildings: 0,
+			roads: 0,
+			greatBuildings: 0,
+			area: 0,
+			areaOccupied: 0,
+			areaAvailable: 0,
+			areaTypes: []
+		}
 		let StreetsNeeded = 0;
 
 		if(ActiveMap !== 'OtherPlayer') {
@@ -773,15 +797,31 @@ let CityMap = {
 				.attr('data-title', building.name)
 				.attr('data-meta_id',building.entityId);
 
-			CityMap.OccupiedArea += (building.size.width * building.size.length);
-			if (building.type === "street")
-				CityMap.streetsTotal++
-			else
-				CityMap.buildingsTotal++
+			if (building.type === "street") 
+				CityMap.metrics.roads++;
+			else {
+				CityMap.metrics.buildings++;
+				if (building.type === "greatbuilding")
+					CityMap.metrics.greatBuildings++;
+				if (building.needsStreet === 0)
+					CityMap.metrics.roadlessBuildings++;
+			
+				if (building.entityId.includes("_GR")) {
+					CityMap.metrics.qiBuildings++;
+					CityMap.metrics.qiArea += building.size.width * building.size.length;
+				}
+				else if (building.entityId.includes("_GBG")) {
+					CityMap.metrics.gbgBuildings++;
+					CityMap.metrics.gbgArea += building.size.width * building.size.length;
+				}
+			}
 
-			if (!CityMap.OccupiedArea2[building.type]) CityMap.OccupiedArea2[building.type] = 0;
-			CityMap.OccupiedArea2[building.type] += (building.size.width * building.size.length);
-
+			CityMap.metrics.areaOccupied += (building.size.width * building.size.length);
+			if (!CityMap.metrics.areaTypes[building.type]) 
+				CityMap.metrics.areaTypes[building.type] = 0;
+			CityMap.metrics.areaTypes[building.type] += (building.size.width * building.size.length);
+			CityMap.metrics.area = ((CityMap.UnlockedAreas.length -1) * 16) + 256; // x + (4*4) + 16*16
+			CityMap.metrics.areaAvailable = CityMap.metrics.area - CityMap.metrics.areaOccupied;
 			StreetsNeeded += (building.state.connected && building.type !== "street" ? parseFloat(Math.min(building.size.width, building.size.length)) * building.needsStreet / 2 : 0)
 
 			if (building.eraName) {
@@ -805,7 +845,7 @@ let CityMap = {
 							break;
 
 						default: 
-							f.addClass('to-old');
+							f.addClass('too-old');
 							break;
 					}
                 }
@@ -819,11 +859,74 @@ let CityMap = {
 			$('#grid-outer').append( f );
 		}
 
-		let StreetsUsed = CityMap.OccupiedArea2['street'] | 0;
+		let StreetsUsed = CityMap.metrics.areaTypes['street'] | 0;
 		CityMap.EfficiencyFactor = StreetsNeeded / StreetsUsed;
 
 		$('#grid-outer').draggable();
+		CityMap.createGridScore(Object.values(buildingData));
 		CityMap.getAreas();
+		
+		$('[data-original-title]').tooltip({
+			container: '#city-map-overlayBody',
+			html: true,
+			placement: "left",
+		});
+	},
+
+
+	createGridScore: (buildings) => {
+		let score = {
+			buildingsStreet1x1: 0,
+			buildingsStreet2x2: 0,
+			buildingsNoStreet: 0,
+			streets1x1: 0,
+			streets2x2: 0, 
+			wrongConnections: 0,
+			townhallConnections: 0,
+			space: 0,
+			spaceFull: 0,
+			spaceFree: 0,
+		};
+		const MinX = 0,
+			MinY = 0,
+			MaxX = 71,
+			MaxY = 71;
+
+		score.space = ((CityMap.UnlockedAreas.length -1) * 16) + 256;
+
+		for (let building of buildings) {
+			if (building.coords.x < MinX || building.coords.x > MaxX || building.coords.y < MinY || building.coords.y > MaxY) continue;
+
+			if (building.type === "street") {
+				if (building.size.width === 1)
+					score.streets1x1++;
+				else
+					score.streets2x2++;
+			}
+
+			if (building.type !== "street" && building.needsStreet === 0) 
+				score.buildingsNoStreet += (building.size.width * building.size.length);
+			else if (building.type !== "street" && building.needsStreet === 1) 
+				score.buildingsStreet1x1 += (building.size.width * building.size.length);
+			else if (building.type !== "street" && building.needsStreet === 2) 
+				score.buildingsStreet2x2 += (building.size.width * building.size.length);
+		}
+		let townhall = buildings.find(x => x.type === "main_building");
+		let checkForRoads = function(b) {
+			let roadAmount = 0;
+			let left = b.coords.x - 1;
+			let right = b.coords.x + b.size.width;
+			let top = b.coords.y - 1;
+			let bottom = b.coords.y + b.size.length;
+			//console.log(b.coords.x, right);
+			return roadAmount;
+		};
+		checkForRoads(townhall);
+
+		score.spaceFull = CityMap.metrics.areaOccupied;
+		score.spaceFree = score.space - score.spaceFull;
+
+		//console.log(score);
 	},
 
 
@@ -832,33 +935,42 @@ let CityMap = {
 	 */
 	getAreas: ()=>{
 		let total = ((CityMap.UnlockedAreas.length -1) * 16) + 256, // x + (4*4) + 16*16
-			occupied = CityMap.OccupiedArea,
-			txtTotal = i18n('Boxes.CityMap.WholeArea') + total,
-			txtFree = i18n('Boxes.CityMap.FreeArea') + (total - occupied),
-			txtTotalBuildings = i18n('Boxes.CityMap.BuildingsAmount') + CityMap.buildingsTotal,
-			txtTotalStreets = i18n('Boxes.CityMap.StreetsAmount') + CityMap.streetsTotal;
+			occupied = CityMap.metrics.areaOccupied,
+			txtFree = (total - occupied);
 
 		if( $('#area-state').length === 0 ){
 			let aW = $('<div />').attr('id', 'area-state');
+			let aS = $('<div />').attr('id', 'map-stats');
 
 			aW.append( $('<div />').addClass('building-count-area') );
-			aW.append( $('<p />').addClass('to-old-legends').hide() );
-			aW.append( $('<p />').addClass('total-area') );
-			aW.append( $('<p />').addClass('occupied-area') );
-			aW.append( $('<p />').addClass('total-buildings') );
+			aW.append( $('<p />').addClass('too-old-legends').hide() );
+			aS.append( $('<span />').addClass('area-stats') );
+			aS.append( $('<div />').addClass('building-stats') );
 
-			$('#sidebar').append(aW);
+			$('#sidebar').append(aW).append(aS);
+			$('#sidebar').addClass('main');
 		}
 
 		// Non player city => Unlocked areas cant be detected => dont show free space
 		if (ActiveMap !== 'OtherPlayer') {
-			$('.total-area').html(txtTotal);
-			$('.occupied-area').html(txtFree);
-			$('.total-buildings').html(txtTotalBuildings);
+			$('.area-stats').html(
+				'<img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_expansion.png`,true)+'" />'+
+				'<span data-original-title="'+i18n('Boxes.CityMap.FreeArea')+'">' + txtFree + 
+				'</span> / <span data-original-title="'+i18n('Boxes.CityMap.WholeArea')+'">' + total + '</span>'
+			);
+			$('.building-stats').html(
+				'<b>'+i18n('Boxes.CityMap.BuildingsAmount') + CityMap.metrics.buildings + '</b> ' + 
+				'<ul>' +
+				'<li data-original-title="'+i18n('Boxes.CityMap.buildingFromGBG')+'"><img src="'+srcLinks.get(`/cash_shop/gui/cash_shop_icon_navi_gbg_selected.png`,true)+'" />' + CityMap.metrics.gbgBuildings + ', <img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_expansion.png`,true)+'" />' + CityMap.metrics.gbgArea+ '</li>' +
+				'<li data-original-title="'+i18n('Boxes.CityMap.buildingFromQI')+'"><img src="'+srcLinks.get(`/guild_raids/windows/guild_raids_guild_raid_emblem.png`,true)+'" />' + CityMap.metrics.qiBuildings + ', <img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_expansion.png`,true)+'" />' + CityMap.metrics.qiArea+ '</li>' + 
+				'<li data-original-title="'+i18n('Boxes.CityMap.roadless')+'"><img src="'+srcLinks.get(`/shared/gui/buffbar/buffbar_icon_buff_unconnected.png`,true)+'" />' + CityMap.metrics.roadlessBuildings + '</li>' + 
+				'<li data-original-title="'+i18n('Boxes.CityMap.greatbuilding')+'"><img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_greatbuilding.png`,true)+'" />' + CityMap.metrics.greatBuildings + '</li>' + 
+				'</ul>'
+			);
 		}
 
 		let sortable = [];
-		for(let x in CityMap.OccupiedArea2) sortable.push([x, CityMap.OccupiedArea2[x]]);
+		for(let x in CityMap.metrics.areaTypes) sortable.push([x, CityMap.metrics.areaTypes[x]]);
 		sortable.sort((a, b) => a[1] - b[1]);
 		sortable.reverse();
 
@@ -871,7 +983,7 @@ let CityMap = {
 
 			let TypeName = i18n('Boxes.CityMap.' + type)
 			const count = sortable[x][1];
-			const pct = parseFloat(100*count/CityMap.OccupiedArea).toFixed(1);
+			const pct = parseFloat(100*count/CityMap.metrics.areaOccupied).toFixed(1);
 
 			let str = `${TypeName}: ${count} (${pct}%)`;
 
@@ -888,9 +1000,9 @@ let CityMap = {
 		legends.push(`<span class="older-1 diagonal"></span> ${$('#map-container .older-1').length} ${i18n('Boxes.CityMap.OlderThan1Era')}<br>`);
 		legends.push(`<span class="older-2 diagonal"></span> ${$('#map-container .older-2').length} ${i18n('Boxes.CityMap.OlderThan2Era')}<br>`);
 		legends.push(`<span class="older-3 diagonal"></span> ${$('#map-container .older-3').length} ${i18n('Boxes.CityMap.OlderThan3Era')}<br>`);
-		legends.push(`<span class="to-old diagonal"></span> ${$('#map-container .to-old').length} ${i18n('Boxes.CityMap.OlderThan4Era')}<br>`);
+		legends.push(`<span class="too-old diagonal"></span> ${$('#map-container .too-old').length} ${i18n('Boxes.CityMap.OlderThan4Era')}<br>`);
 
-		$('.to-old-legends').html(legends.join(''));
+		$('.too-old-legends').html(legends.join(''));
 	},
 
 
@@ -941,7 +1053,7 @@ let CityMap = {
 	 */
 	highlightOldBuildings: ()=> {
 		$('.oldBuildings').toggleClass('diagonal');
-		$('.building-count-area, .to-old-legends').toggle();
+		$('.building-count-area, .too-old-legends').toggle();
 	},
 
 
