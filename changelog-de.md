@@ -1,6 +1,22 @@
 ## Changelog - Extension
 
 
+##### 4.1.0.0
+
+**Update**
+- Stadt Übersicht: 
+	- Die Statistiken an der Seite wurden überarbeitet: es gibt neue, interessantere Fakten zu den Gebäuden in der Stadt
+	- Wir haben uns einen neuen Effizienzwert für die Bewertung der Effizienz der Stadt ausgedacht - die Berechnung wird im Tooltip (Maus drüber fahren) erklärt
+- Profil:
+	- QI Aktionskapazität hinzugefügt
+- Menü-Icon für Gebäude-Sets und -Ketten-Modul ausgetauscht
+
+**Bugfix**
+- Produktionsübersicht:
+	- Die Güter von Gilden-LB waren manchmal zu hoch, weil Boosts angerechnet wurden
+
+---
+
 ##### 4.0.2.0
 
 **Update**

@@ -1,5 +1,22 @@
 ## Changelog - Extension
 
+
+##### 4.1.0.0
+
+**Update**
+- City Map: 
+	- Sidebar stats have been reworked: more interesting facts about buildings in the city were added
+	- We introduce a new metric to evaluate the city grid - how it is calculated is explained in the tooltip
+- Profile:
+	- QI capacity added
+- Changed menu icon for sets and chains
+
+**Bugfix**
+- Productions:
+	- Guild goods for LB were sometimes too high, because we added guild goods boost to them
+
+---
+
 ##### 4.0.2.0
 
 **Update**
