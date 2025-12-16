@@ -93,7 +93,16 @@
 	margin: 0;
 	padding: 0;
 }
-#sidebar.main #map-stats li img:first-child {
+#sidebar.main #area-state li {
+	display: inline-flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+}
+#sidebar.main #area-state li span:last-child {
+	text-align: right;
+}
+#sidebar.main #map-stats li span:first-child img {
 	filter: drop-shadow(0 1px 1px var(--black-65));
 	display: inline-block;
 	margin-right: 2px;
