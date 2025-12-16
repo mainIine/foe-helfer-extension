@@ -39,13 +39,21 @@ let CityMap = {
 		qiArea: 0,
 		gbgBuildings: 0,
 		gbgArea: 0,
+		geBuildings: 0,
+		geArea: 0,
 		roadlessBuildings: 0,
+		roadlessBuildingsArea: 0,
+		connectedBuildings: 0,
+		connectedBuildingsArea: 0,
+		limitedBuildings: 0,
+		limitedBuildingsArea: 0,
 		roads: 0,
-		greatBuildings: 0,
+		roadsArea: 0,
 		area: 0,
 		areaOccupied: 0,
 		areaAvailable: 0,
-		areaTypes: [],
+		buildingAreas: [],
+		buildingTypes: []
 	},
 
 	AscendingBuildings: new Promise((resolve) => {
@@ -408,7 +416,7 @@ let CityMap = {
 
 		$('[data-original-title]').tooltip({
 			container: '#city-map-overlayBody',
-			html: true
+			html: true,
 		});
 
 		$('#grid-outer').draggable();
@@ -729,13 +737,22 @@ let CityMap = {
 			qiArea: 0,
 			gbgBuildings: 0,
 			gbgArea: 0,
+			geBuildings: 0,
+			geArea: 0,
 			roadlessBuildings: 0,
+			roadlessBuildingsArea: 0,
+			connectedBuildings: 0,
+			connectedBuildingsArea: 0,
+			limitedBuildings: 0,
+			limitedBuildingsArea: 0,
 			roads: 0,
+			roadsArea: 0,
 			greatBuildings: 0,
 			area: 0,
 			areaOccupied: 0,
 			areaAvailable: 0,
-			areaTypes: []
+			buildingAreas: [],
+			buildingTypes: []
 		}
 		let StreetsNeeded = 0;
 
@@ -797,15 +814,26 @@ let CityMap = {
 				.attr('data-title', building.name)
 				.attr('data-meta_id',building.entityId);
 
-			if (building.type === "street") 
+
+			// collect metrics for sidebar
+			if (building.type === "street") {
 				CityMap.metrics.roads++;
+				CityMap.metrics.roadsArea += building.size.width * building.size.length;
+			}
 			else {
 				CityMap.metrics.buildings++;
-				if (building.type === "greatbuilding")
-					CityMap.metrics.greatBuildings++;
-				if (building.needsStreet === 0)
+				if (building.needsStreet === 0) {
 					CityMap.metrics.roadlessBuildings++;
-			
+					CityMap.metrics.roadlessBuildingsArea += building.size.width * building.size.length;
+				}
+				else if (building.needsStreet !== 0 && building.state.connected) {
+					CityMap.metrics.connectedBuildings++;
+					CityMap.metrics.connectedBuildingsArea += building.size.width * building.size.length;
+				}
+				if (building.isLimited) {
+					CityMap.metrics.limitedBuildings++;
+					CityMap.metrics.limitedBuildingsArea += building.size.width * building.size.length;
+				}
 				if (building.entityId.includes("_GR")) {
 					CityMap.metrics.qiBuildings++;
 					CityMap.metrics.qiArea += building.size.width * building.size.length;
@@ -814,16 +842,24 @@ let CityMap = {
 					CityMap.metrics.gbgBuildings++;
 					CityMap.metrics.gbgArea += building.size.width * building.size.length;
 				}
+				else if (building.entityId.includes("_Expedition")) {
+					CityMap.metrics.geBuildings++;
+					CityMap.metrics.geArea += building.size.width * building.size.length;
+				}
 			}
 
 			CityMap.metrics.areaOccupied += (building.size.width * building.size.length);
-			if (!CityMap.metrics.areaTypes[building.type]) 
-				CityMap.metrics.areaTypes[building.type] = 0;
-			CityMap.metrics.areaTypes[building.type] += (building.size.width * building.size.length);
+			if (!CityMap.metrics.buildingAreas[building.type]) 
+				CityMap.metrics.buildingAreas[building.type] = 0;
+			CityMap.metrics.buildingAreas[building.type] += (building.size.width * building.size.length);
+			if (!CityMap.metrics.buildingTypes[building.type]) 
+				CityMap.metrics.buildingTypes[building.type] = 0;
+			CityMap.metrics.buildingTypes[building.type]++;
 			CityMap.metrics.area = ((CityMap.UnlockedAreas.length -1) * 16) + 256; // x + (4*4) + 16*16
 			CityMap.metrics.areaAvailable = CityMap.metrics.area - CityMap.metrics.areaOccupied;
 			StreetsNeeded += (building.state.connected && building.type !== "street" ? parseFloat(Math.min(building.size.width, building.size.length)) * building.needsStreet / 2 : 0)
 
+			// highlights for older buildings
 			if (building.eraName) {
 				let era = Technologies.Eras[building.eraName]
 
@@ -851,7 +887,7 @@ let CityMap = {
                 }
 			}
 
-			// die Größe wurde geändert, wieder aktivieren
+			// size changed, activate again
 			if (ActiveId !== null && ActiveId === building.id) {
 				f.addClass('highlighted');
 			}
@@ -859,74 +895,16 @@ let CityMap = {
 			$('#grid-outer').append( f );
 		}
 
-		let StreetsUsed = CityMap.metrics.areaTypes['street'] | 0;
+		let StreetsUsed = CityMap.metrics.buildingAreas['street'] | 0;
 		CityMap.EfficiencyFactor = StreetsNeeded / StreetsUsed;
 
 		$('#grid-outer').draggable();
-		CityMap.createGridScore(Object.values(buildingData));
 		CityMap.getAreas();
 		
 		$('[data-original-title]').tooltip({
 			container: '#city-map-overlayBody',
 			html: true,
-			placement: "left",
 		});
-	},
-
-
-	createGridScore: (buildings) => {
-		let score = {
-			buildingsStreet1x1: 0,
-			buildingsStreet2x2: 0,
-			buildingsNoStreet: 0,
-			streets1x1: 0,
-			streets2x2: 0, 
-			wrongConnections: 0,
-			townhallConnections: 0,
-			space: 0,
-			spaceFull: 0,
-			spaceFree: 0,
-		};
-		const MinX = 0,
-			MinY = 0,
-			MaxX = 71,
-			MaxY = 71;
-
-		score.space = ((CityMap.UnlockedAreas.length -1) * 16) + 256;
-
-		for (let building of buildings) {
-			if (building.coords.x < MinX || building.coords.x > MaxX || building.coords.y < MinY || building.coords.y > MaxY) continue;
-
-			if (building.type === "street") {
-				if (building.size.width === 1)
-					score.streets1x1++;
-				else
-					score.streets2x2++;
-			}
-
-			if (building.type !== "street" && building.needsStreet === 0) 
-				score.buildingsNoStreet += (building.size.width * building.size.length);
-			else if (building.type !== "street" && building.needsStreet === 1) 
-				score.buildingsStreet1x1 += (building.size.width * building.size.length);
-			else if (building.type !== "street" && building.needsStreet === 2) 
-				score.buildingsStreet2x2 += (building.size.width * building.size.length);
-		}
-		let townhall = buildings.find(x => x.type === "main_building");
-		let checkForRoads = function(b) {
-			let roadAmount = 0;
-			let left = b.coords.x - 1;
-			let right = b.coords.x + b.size.width;
-			let top = b.coords.y - 1;
-			let bottom = b.coords.y + b.size.length;
-			//console.log(b.coords.x, right);
-			return roadAmount;
-		};
-		checkForRoads(townhall);
-
-		score.spaceFull = CityMap.metrics.areaOccupied;
-		score.spaceFree = score.space - score.spaceFull;
-
-		//console.log(score);
 	},
 
 
@@ -944,55 +922,60 @@ let CityMap = {
 
 			aW.append( $('<div />').addClass('building-count-area') );
 			aW.append( $('<p />').addClass('too-old-legends').hide() );
-			aS.append( $('<span />').addClass('area-stats') );
 			aS.append( $('<div />').addClass('building-stats') );
 
-			$('#sidebar').append(aW).append(aS);
+			aW.prepend(aS)
+			$('#sidebar').append(aW);
 			$('#sidebar').addClass('main');
 		}
 
 		// Non player city => Unlocked areas cant be detected => dont show free space
 		if (ActiveMap !== 'OtherPlayer') {
-			$('.area-stats').html(
-				'<img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_expansion.png`,true)+'" />'+
-				'<span data-original-title="'+i18n('Boxes.CityMap.FreeArea')+'">' + txtFree + 
-				'</span> / <span data-original-title="'+i18n('Boxes.CityMap.WholeArea')+'">' + total + '</span>'
-			);
 			$('.building-stats').html(
-				'<b>'+i18n('Boxes.CityMap.BuildingsAmount') + CityMap.metrics.buildings + '</b> ' + 
+				(ActiveMap !== 'OtherPlayer' ? 
+				'<p class="text-right"><img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_expansion.png`,true)+'" />'+
+				'<span data-original-title="'+i18n('Boxes.CityMap.FreeArea')+'">' + txtFree + 
+				'</span> / <span data-original-title="'+i18n('Boxes.CityMap.WholeArea')+'">' + total + '</span></p>' : '') +
+				
+				'<b>'+ CityMap.metrics.buildings +' '+ i18n('Boxes.CityMap.BuildingsAmount') + '</b>' + 
 				'<ul>' +
 				'<li data-original-title="'+i18n('Boxes.CityMap.buildingFromGBG')+'"><img src="'+srcLinks.get(`/cash_shop/gui/cash_shop_icon_navi_gbg_selected.png`,true)+'" />' + CityMap.metrics.gbgBuildings + ', <img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_expansion.png`,true)+'" />' + CityMap.metrics.gbgArea+ '</li>' +
 				'<li data-original-title="'+i18n('Boxes.CityMap.buildingFromQI')+'"><img src="'+srcLinks.get(`/guild_raids/windows/guild_raids_guild_raid_emblem.png`,true)+'" />' + CityMap.metrics.qiBuildings + ', <img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_expansion.png`,true)+'" />' + CityMap.metrics.qiArea+ '</li>' + 
-				'<li data-original-title="'+i18n('Boxes.CityMap.roadless')+'"><img src="'+srcLinks.get(`/shared/gui/buffbar/buffbar_icon_buff_unconnected.png`,true)+'" />' + CityMap.metrics.roadlessBuildings + '</li>' + 
-				'<li data-original-title="'+i18n('Boxes.CityMap.greatbuilding')+'"><img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_greatbuilding.png`,true)+'" />' + CityMap.metrics.greatBuildings + '</li>' + 
+				'<li data-original-title="'+i18n('Boxes.CityMap.roadless')+'"><img src="'+srcLinks.get(`/shared/gui/buffbar/buffbar_icon_buff_unconnected.png`,true)+'" />' + CityMap.metrics.roadlessBuildings + ', <img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_expansion.png`,true)+'" />' + CityMap.metrics.roadlessBuildingsArea + '</li>' +
+				'<li data-original-title="'+i18n('Boxes.CityMap.limited')+'"><img src="'+srcLinks.get(`/shared/gui/upgrade/upgrade_icon_limited_building.png`,true)+'" />' + CityMap.metrics.limitedBuildings + ', <img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_expansion.png`,true)+'" />' + CityMap.metrics.limitedBuildingsArea + '</li>' +
 				'</ul>'
 			);
 		}
 
-		let sortable = [];
-		for(let x in CityMap.metrics.areaTypes) sortable.push([x, CityMap.metrics.areaTypes[x]]);
-		sortable.sort((a, b) => a[1] - b[1]);
-		sortable.reverse();
+		let sortedBldTypes = [];
+		for(let x in CityMap.metrics.buildingTypes) sortedBldTypes.push([x, CityMap.metrics.buildingTypes[x]]);
+		sortedBldTypes.sort((a, b) => a[1] - b[1]);
+		sortedBldTypes.reverse();
 
 		let txtCount = [];
+		txtCount.push('<ul>');
+		for(let x in sortedBldTypes ) {
+			if(!sortedBldTypes.hasOwnProperty(x)) break;
 
-		for(let x in sortable ) {
-			if(!sortable.hasOwnProperty(x))	break
-
-			let type =  sortable[x][0];
+			let type = sortedBldTypes[x][0];
 
 			let TypeName = i18n('Boxes.CityMap.' + type)
-			const count = sortable[x][1];
-			const pct = parseFloat(100*count/CityMap.metrics.areaOccupied).toFixed(1);
+			const count = sortedBldTypes[x][1];
+			const pct = parseFloat(100*count/CityMap.metrics.buildings).toFixed(1);
 
-			let str = `${TypeName}: ${count} (${pct}%)`;
+			let str = `${TypeName}: <span data-original-title="${pct}%">${count}</span>, <img src="${srcLinks.get(`/shared/gui/constructionmenu/icon_expansion.png`,true)}" />${CityMap.metrics.buildingAreas[type]}`;
 
 			if (type === 'street') {
 				str = str + '<br>' + HTML.Format(Math.round(CityMap.EfficiencyFactor * 10000) / 100) + '% ' + i18n('Boxes.Citymap.Efficiency');
 			}
-			str = `<p><span class="square ${type}"></span>${str}</p>`;
+			str = `<li><span class="square ${type}"></span>${str}</li>`;
 			txtCount.push(str);
 		}
+		txtCount.push('</ul>');
+
+		let cityEfficiency = parseFloat(CityMap.metrics.connectedBuildingsArea / CityMap.metrics.roadsArea).toFixed(2);
+		txtCount.push('<p data-original-title="'+i18n('Boxes.CityMap.CityGridScoreText')+'"><b>'+i18n('Boxes.CityMap.CityGridScore')+':</b> '+cityEfficiency+'</p>');
+
 		$('.building-count-area').html(txtCount.join(''));
 		
 		let legends = [];

@@ -81,16 +81,15 @@
 }
 
 #sidebar.main #map-stats {
-	justify-self: end;
-	border-top: 1px solid var(--text-darker);
-	padding-top: 5px;
-	margin-top: 9px;
+	border-bottom: 1px dotted var(--text-darker);
+	padding-bottom: 5px;
+	margin-bottom: 9px;
 }
 
-#sidebar.main #map-stats img {
+#sidebar.main #area-state img {
 	width: 22px;
 }
-#sidebar.main #map-stats ul, #sidebar.main #map-stats li {
+#sidebar.main #area-state ul, #sidebar.main #area-state li {
 	margin: 0;
 	padding: 0;
 }
