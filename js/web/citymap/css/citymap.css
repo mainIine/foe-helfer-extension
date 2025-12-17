@@ -224,7 +224,9 @@
 	height: 23px;
 }
 #city-map-overlayBody th.population::before { background-position: -162px 0; }
-#city-map-overlayBody th.happiness::before { background-position: -140px 0; }a
+#city-map-overlayBody th.happiness::before { background-position: -140px 0; }
+#city-map-overlayBody th .diplomacy::before { zoom: 0.45; }
+#city-map-overlayBody th .diplomacy { height: 24px; }
 
 #sidebar p {
 	margin-bottom: 5px;

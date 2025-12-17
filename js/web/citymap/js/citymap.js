@@ -638,6 +638,7 @@ let CityMap = {
 			population = Object.keys(data.requirements?.cost?.resources).find(x => x.includes(populationName))
 			population = data.requirements.cost?.resources[populationName]*-1;
 		}
+		let diplomacy = data.staticResources?.resources?.diplomacy || 0;
 
 		let building = {};
 		if (ActiveMap === "cultural_outpost")
@@ -645,7 +646,7 @@ let CityMap = {
 				name: data.name,
 				population: population || 0,
 				production: production || null,
-				diplomacy: null,
+				diplomacy: diplomacy,
 				type: data.type,
 				entityId: data.asset_id,
 			};
@@ -690,7 +691,7 @@ let CityMap = {
 		});
 
 		let out = '<table class="foe-table allBuildings">'
-		out += '<thead><tr><th colspan="2">'+i18n('Boxes.CityMap.Building')+'</th><th class="population textright"></th>'+
+		out += '<thead><tr><th colspan="2">'+i18n('Boxes.CityMap.Building')+'</th><th class="population textright"></th><th><span class="goods-sprite diplomacy"></span></th>'+
 		'<th>'+i18n('Boxes.CityMap.Boosts')+'</th></tr></thead>'
 		out += "<tbody>"
 
@@ -700,9 +701,10 @@ let CityMap = {
 					"<td><div class='building' data-original-title='"+building.name+"'>" + 
 						"<img src='" + srcLinks.get("/city/buildings/"+building.entityId.replace(/^(\D_)(.*?)/,"$1SS_$2")+".png",true) + "'>" +
 					"</div></td>" +
-					"<td>" + (building.count>1?"x"+building.count:"") + "</td>"
-				out += '<td class="textright">' + building.population + "</td>"
-				out += "<td>"
+					"<td>" + (building.count>1?"x"+building.count:"") + "</td>";
+				out += '<td class="textright">' + building.population + "</td>";
+				out += '<td class="textright">' + (building.diplomacy>0?building.diplomacy:'') + "</td>";
+				out += "<td>";
 				if (building.production !== null) {
 					for (let [prod, value] of Object.entries(building.production)) {
 						out += srcLinks.icons(prod)+HTML.Format(Math.round(value))+" ";
