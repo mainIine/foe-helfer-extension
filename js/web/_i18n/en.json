@@ -234,7 +234,7 @@
     "Boxes.CityMap.BuildingsAmount": "buildings total",
     "Boxes.CityMap.CavalierPerspecitve": "Side View",
     "Boxes.CityMap.CityGridScore": "City Grid Score",
-    "Boxes.CityMap.CityGridScoreText": "Area of all connected buildings that need roads divided by area of all roads",
+    "Boxes.CityMap.CityGridScoreText": "Area of all connected buildings that need roads divided by area of all roads multiplied by 100",
     "Boxes.CityMap.CollectSoon": "Collectable soon: __hours__ hours",
     "Boxes.CityMap.CopyMetaInfos": "Copy city data",
     "Boxes.CityMap.Desc1": "To plan your city on foe-helper.com, we need to send your data to the website. <br>If you don't have an account there yet, your basic data will be sent along with this transmission. You can then register your account on the website.",
