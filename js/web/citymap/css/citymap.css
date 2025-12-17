@@ -74,18 +74,6 @@
 	box-sizing: border-box;
 }
 
-#sidebar.main {
-	display: flex;
-	flex-direction: column;
-	justify-content: start;
-}
-
-#sidebar.main #map-stats {
-	border-bottom: 1px dotted var(--text-darker);
-	padding-bottom: 5px;
-	margin-bottom: 9px;
-}
-
 #sidebar.main #area-state img {
 	width: 22px;
 }
@@ -93,6 +81,14 @@
 	margin: 0;
 	padding: 0;
 }
+
+#sidebar.main #area-state ul + ul {
+	border-bottom: 1px dotted var(--text-darker);
+	border-top: 1px dotted var(--text-darker);
+	padding: 5px 0;
+	margin: 5px 0;
+}
+
 #sidebar.main #area-state li {
 	display: inline-flex;
 	align-items: center;
