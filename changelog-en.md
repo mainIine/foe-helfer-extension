@@ -10,6 +10,7 @@
 - Profile:
 	- QI capacity added
 - Changed menu icon for sets and chains
+- Increased QI max capacity to 200,000
 
 **Bugfix**
 - Productions:
