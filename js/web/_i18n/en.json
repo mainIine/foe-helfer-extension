@@ -240,6 +240,7 @@
     "Boxes.CityMap.Desc1": "To plan your city on foe-helper.com, we need to send your data to the website. <br>If you don't have an account there yet, your basic data will be sent along with this transmission. You can then register your account on the website.",
     "Boxes.CityMap.FilterBuildings": "Search Building",
     "Boxes.CityMap.FreeArea": "Available Squares: ",
+    "Boxes.CityMap.HelpLink": "https://docs.foe-helper.com/english/module/town",
     "Boxes.CityMap.Highlight": "Highlight",
     "Boxes.CityMap.HighlightOldBuildings": "Lower Era buildings",
     "Boxes.CityMap.MissingApiKeyErrorHeader": "API Token missing",

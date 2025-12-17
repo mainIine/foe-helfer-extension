@@ -118,7 +118,8 @@ let CityMap = {
 				auto_close: true,
 				dragdrop: true,
 				resize: true,
-				minimize : true
+				minimize : true,
+				ask: i18n('Boxes.CityMap.HelpLink'),
 			});
 
 
@@ -293,9 +294,9 @@ let CityMap = {
 			$('#citymap-wrapper').append('<img class="clickable openOverview" data-original-title="'+i18n('Menu.OutP.Title')+'" onClick="Outposts.BuildInfoBox()" src="' + extUrl + 'css/images/menu/vikings_ship.png">');
 
 		if (ActiveMap === 'OtherPlayer') {
-			let era = CityMap.CityData.find(x => x.type === 'main_building').cityentity_id.split('_')[1]
+			let townhall = (Object.values(MainParser.OtherPlayerCityMapData).find(x => x.type === 'main_building'));
+			let era = townhall.cityentity_id?.split('_')[1] || townhall.entityId?.split('_')[1];
 			$("#sidebar").append($('<a id="openEfficiencyRating" class="btn-default" onclick="Productions.ShowRating(true,\''+era+'\')">'+ i18n('Menu.ProductionsRating.Title') +'</a>'));
-			//$("#sidebar").append($('<a id="openProfile" class="btn-default" onclick="Profile.showOtherPlayer()">'+ i18n('Global.BoxTitle') +'</a>'));
 		}
 	},
 
