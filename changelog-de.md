@@ -10,6 +10,7 @@
 - Profil:
 	- QI Aktionskapazität hinzugefügt
 - Menü-Icon für Gebäude-Sets und -Ketten-Modul ausgetauscht
+- QI Kapazität von 100.000 auf 200.000 erhöht
 
 **Bugfix**
 - Produktionsübersicht:
