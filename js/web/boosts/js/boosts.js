@@ -15,7 +15,7 @@
 FoEproxy.addHandler('BoostService', 'getAllBoosts', (data, postData) => {
     Boosts.Add(data.responseData);
     if (Boosts.first) {
-        first = false;
+        Boosts.first = false;
         Boosts.InitQIAP();
     } 
 });
