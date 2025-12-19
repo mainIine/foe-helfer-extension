@@ -59,17 +59,14 @@ const Profile = {
 
 			$('body').append(div).promise().done(function() {
                 let showProfile = ActiveMap === 'OtherPlayer' ? 'Profile.showOtherPlayer()' : 'Profile.show()';
-				div.append('<span class="'+ActiveMap+'"><img class="clickable" src="'+srcLinks.GetPortrait(ExtPlayerAvatar)+'" /></span>')
-					.attr('title', i18n('Boxes.PlayerProfile.Tooltip'))
-					.attr('onclick', showProfile)
-					.tooltip(
-						{
-							useFoEHelperSkin: true,
-							headLine: i18n('Global.BoxTitle'),
-							placement: 'bottom',
-							html: true
-						}
-					);
+				div.append('<span class="'+ActiveMap+'" data-original-title="'+i18n('Boxes.PlayerProfile.Tooltip')+'"><img class="clickable" src="'+srcLinks.GetPortrait(ExtPlayerAvatar)+'" /></span>')
+					.attr('onclick', showProfile);
+                $('#PlayerProfileButton [data-original-title]').tooltip({
+                        useFoEHelperSkin: true,
+                        headLine: i18n('Global.BoxTitle'),
+                        placement: 'bottom',
+                        html: true
+                });
 			});
 		}
 	},
