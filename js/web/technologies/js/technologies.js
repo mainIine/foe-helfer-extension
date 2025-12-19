@@ -14,12 +14,12 @@
 
 FoEproxy.addMetaHandler('research', (xhr, postData) => {
 	Technologies.AllTechnologies = JSON.parse(xhr.responseText);
-	$('#technologies-Btn').removeClass('hud-btn-red');
-	$('#technologies-Btn-closed').remove();
+	//$('#technologies-Btn').removeClass('hud-btn-red');
+	//$('#technologies-Btn-closed').remove();
 
-	if ($('#PlayerProfileButton').length !== 0) {
-        $('#PlayerProfileButton span').attr('class','technologies');
-    }
+	//if ($('#PlayerProfileButton')) {
+    //    $('#PlayerProfileButton span').attr('class','technologies');
+    //}
 });
 
 FoEproxy.addHandler('ResearchService', 'getProgress', (data, postData) => {

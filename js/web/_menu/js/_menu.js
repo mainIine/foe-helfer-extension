@@ -607,8 +607,9 @@ let _menu = {
 		let btn_TechBG = _menu.MakeButton(
 			'technologies',
 			i18n('Menu.Technologies.Title'),
-			'<em id="technologies-Btn-closed" class="tooltip-error">' + i18n('Menu.Technologies.Warning') + '<br></em>' + i18n('Menu.Technologies.Desc'),
-			true
+			//'<em id="technologies-Btn-closed" class="tooltip-error">' + i18n('Menu.Technologies.Warning') + '<br></em>' + 
+			i18n('Menu.Technologies.Desc'),
+			//true
 		);
 
 		let btn_Tech = $('<span />').on('click', function () {
