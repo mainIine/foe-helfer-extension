@@ -143,6 +143,7 @@
     width: 100%;
     max-width: 400px;
     padding-top: 1.1rem;
+    user-select: text;
 }
 
 #PlayerProfile.expanded .centerInfo {
@@ -458,13 +459,14 @@
     margin: 0 auto 5px;
 }
 
-#PlayerProfile .battleBoosts .gbg, #PlayerProfile .battleBoosts .ge, #PlayerProfile .battleBoosts .qi {
+#PlayerProfile .battleBoosts .gbg::before, #PlayerProfile .battleBoosts .ge::before, #PlayerProfile .battleBoosts .qi::before {
     background: url(../../x_img/gbg-green.png) left top no-repeat;
     background-size: contain;
     height: 28px;
     width: 28px;
     margin: 0 4px;
     display: block;
+    content:'';
 }
 
 #PlayerProfile .important {
@@ -502,11 +504,11 @@
     display: none;
 }
 
-#PlayerProfile .battleBoosts .ge {
+#PlayerProfile .battleBoosts .ge::before {
     background-image: url(../../x_img/ge.png);
 }
 
-#PlayerProfile .battleBoosts .qi {
+#PlayerProfile .battleBoosts .qi::before {
     background-image: url(../../x_img/guild_raids.png);
 }
 

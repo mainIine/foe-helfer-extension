@@ -474,6 +474,13 @@ p {
 .text-light {
 	color: var(--text-light);
 }
+.hidden-text {
+	opacity: 0;
+	display: inline-block;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+}
 
 .flex {
 	display: flex;

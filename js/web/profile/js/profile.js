@@ -317,7 +317,7 @@ const Profile = {
                 cc.push('<div>');
                 cc.push('<h1>'+player.PlayerName+'</h1>');
                 cc.push('<span>'+i18n('Eras.'+CurrentEraID)+'</span><br>');
-                cc.push('<span class="ranking">'+HTML.Format(parseInt(player.Score))+'</span>');
+                cc.push('<span class="ranking">'+HTML.Format(parseInt(player.Score))+'</span><span class="hidden-text">&numsp;</span>');
                 cc.push('<span>⚔'+HTML.Format(parseInt(player.WonBattles || 0))+'</span>');
                 cc.push('</div>');
             cc.push('</div>');
@@ -344,41 +344,45 @@ const Profile = {
 
             if (Profile.fpProduction > 0) {
                 cc.push('<span class="removable">' +
-                    '<img src="' + srcLinks.get(`/city/gui/great_building_bonus_icons/great_building_bonus_forgepoints.png`,true)+'" />' + 
-                    HTML.Format(parseInt(Profile.fpProduction)));
+                    '<span class="hidden-text">&numsp;&middot;&nbsp;'+i18n('Boxes.BlueGalaxy.FP')+':&nbsp;</span>'+
+                    '<img src="' + srcLinks.get(`/city/gui/great_building_bonus_icons/great_building_bonus_forgepoints.png`,true)+'" />' +  HTML.Format(parseInt(Profile.fpProduction)));
                     if (Boosts.Sums.forge_points_production > 0)
-                        cc.push('<span class="boost"> '+Boosts.Sums.forge_points_production + '% </span>');
-                cc.push('</span>');
+                        cc.push(' <span class="boost"><span class="hidden-text">&nbsp;</span>'+Boosts.Sums.forge_points_production + '% </span>');
+                cc.push('</span><span class="hidden-text">&numsp;</span>');
             }
             if (Profile.units > 0) {
-                cc.push('<span class="removable"><img src="' + srcLinks.get(`/shared/gui/pvp_arena/hud/pvp_arena_icon_army.png`,true)+'" />'+HTML.Format(parseInt(Profile.units))+'</span>');
+                cc.push('<span class="removable">'+
+                    '<span class="hidden-text"><br>&numsp;&middot;&nbsp;'+i18n('Boxes.Productions.Units')+':&nbsp;</span>'+
+                    '<img src="' + srcLinks.get(`/shared/gui/pvp_arena/hud/pvp_arena_icon_army.png`,true)+'" />'+HTML.Format(parseInt(Profile.units))+'</span>');
                 cc.push('<br>');
             }
             if (Profile.guildGoods) {
                 cc.push('<span class="removable">'+
+                    '<span class="hidden-text">&numsp;&middot;&nbsp;'+i18n('Boxes.GuildMemberStat.GuildGoods')+':&nbsp;</span>'+
                     '<img src="' + srcLinks.get(`/city/gui/great_building_bonus_icons/great_building_bonus_guild_goods.png`,true)+'" />' + 
                     HTML.Format(parseInt(parseInt(Profile.guildGoods)) || 0));
                     if (Boosts.Sums.guild_goods_production > 0)
-                        cc.push('<span class="boost"> '+ Boosts.Sums.guild_goods_production + '% </span>');
-                cc.push('</span>');
+                        cc.push('<span class="hidden-text">&nbsp;</span><span class="boost"> '+ Boosts.Sums.guild_goods_production + '% </span>');
+                cc.push('</span><span class="hidden-text">&numsp;</span>');
             }
             // goods
             if (Profile.goods[CurrentEraID-2] || Profile.goods[CurrentEraID-1] || Profile.goods[CurrentEraID]) {
                 cc.push('<span class="removable">');
+                    cc.push('<span class="hidden-text"><br>&numsp;&middot;&nbsp;'+i18n('Boxes.BlueGalaxy.Goods')+':</span>');
                     if (Profile.goods[CurrentEraID-2]) {
-                        cc.push(' <img src="' + srcLinks.get(`/city/gui/great_building_bonus_icons/great_building_bonus_previous_era_good_production.png`,true)+'" />' + 
+                        cc.push('<span class="hidden-text">⬅️</span> <img src="' + srcLinks.get(`/city/gui/great_building_bonus_icons/great_building_bonus_previous_era_good_production.png`,true)+'" />' + 
                         HTML.Format(parseInt(parseInt(Profile.goods[CurrentEraID-2])) || 0));
                     }
                     if (Profile.goods[CurrentEraID-1]) {
-                        cc.push('<img src="' + srcLinks.get(`/city/gui/great_building_bonus_icons/great_building_bonus_goods.png`,true)+'" />');
+                        cc.push('<span class="hidden-text">⬇️</span><img src="' + srcLinks.get(`/city/gui/great_building_bonus_icons/great_building_bonus_goods.png`,true)+'" />');
                         cc.push(HTML.Format(parseInt(parseInt(Profile.goods[CurrentEraID-1])) || 0));
                     }
                     if (Profile.goods[CurrentEraID]) {
-                        cc.push(' <img src="' + srcLinks.get(`/shared/icons/next_age_goods.png`,true)+'" />' + 
+                        cc.push('<span class="hidden-text">➡️</span> <img src="' + srcLinks.get(`/shared/icons/next_age_goods.png`,true)+'" />' + 
                         HTML.Format(parseInt(parseInt(Profile.goods[CurrentEraID])) || 0));
                     }
                     if (Boosts.Sums.goods_production > 0)
-                        cc.push('<span class="boost"> '+Boosts.Sums.goods_production + '% </span>');
+                        cc.push('<span class="hidden-text">&nbsp;</span><span class="boost"> '+Boosts.Sums.goods_production + '% </span>');
                 cc.push('</span>');
             }
 			cc.push('</div>');
@@ -386,26 +390,41 @@ const Profile = {
             cc.push('<div class="battleBoosts pad text-center">');
             cc.push('<h2>'+i18n('Boxes.PlayerProfile.BattleBoosts')+'</h2>');
             cc.push('<table><tr class="general">'
-                +'<td><span class="aAtt"><span class="hidden">🔴</span>'+HTML.Format(parseInt(Boosts.Sums["att_boost_attacker"]))+'</span><span class="hidden">/</span>'
-                +'<span class="aDef">'+HTML.Format(parseInt(Boosts.Sums.def_boost_attacker))+'</span> <span class="hidden"></span></td>'
-                +'<td></td><td><span class="dAtt"><span class="hidden">🔵</span>'+HTML.Format(parseInt(Boosts.Sums.att_boost_defender))+'</span><span class="hidden">/</span>'
-                +'<span class="dDef">'+HTML.Format(parseInt(Boosts.Sums.def_boost_defender))+'</span> </td></tr>');
+                +'<td>'+
+                    '<span class="hidden-text">&numsp;&middot;&nbsp;</span><span class="aAtt">'+HTML.Format(parseInt(Boosts.Sums["att_boost_attacker"]))+'</span><span class="hidden-text">/</span>'
+                    +'<span class="aDef">'+HTML.Format(parseInt(Boosts.Sums.def_boost_attacker))+'</span><span class="hidden-text">🔴</span>'
+                +'</td><td></td><td>'+
+                    '<span class="dAtt"><span class="hidden-text">🔵</span>'+HTML.Format(parseInt(Boosts.Sums.att_boost_defender))+'</span><span class="hidden-text">/</span>'
+                    +'<span class="dDef">'+HTML.Format(parseInt(Boosts.Sums.def_boost_defender))+'</span>'+
+                '</td></tr>');
             cc.push('<tr>'
-                +'<td><span class="aAtt">'+HTML.Format(parseInt(Boosts.Sums['battleground-att_boost_attacker']+Boosts.Sums.att_boost_attacker))+'</span><span class="hidden">/</span>'
-                +'<span class="aDef">'+HTML.Format(parseInt(Boosts.Sums['battleground-def_boost_attacker']+Boosts.Sums.def_boost_attacker))+'</span> </td>'
-                +'<td><span class="gbg"></span></td><td><span class="dAtt">'+HTML.Format(parseInt(Boosts.Sums['battleground-att_boost_defender']+Boosts.Sums.att_boost_defender))+'</span><span class="hidden">/</span>'
-                +'<span class="dDef">'+HTML.Format(parseInt(Boosts.Sums['battleground-def_boost_defender']+Boosts.Sums.def_boost_defender))+'</span> </td></tr>');
+                +'<td>'+
+                    '<span class="hidden-text">&numsp;&middot;&nbsp;'+i18n('Boxes.General.Guild_Battlegrounds.short')+':&nbsp;</span>'+
+                    '<span class="aAtt">'+HTML.Format(parseInt(Boosts.Sums['battleground-att_boost_attacker']+Boosts.Sums.att_boost_attacker))+'</span><span class="hidden-text">/</span>'
+                    +'<span class="aDef">'+HTML.Format(parseInt(Boosts.Sums['battleground-def_boost_attacker']+Boosts.Sums.def_boost_attacker))+'</span><span class="hidden-text">🔴</span>'+
+                '</td><td class="gbg"></td><td>'
+                    +'<span class="dAtt"><span class="hidden-text">🔵</span>'+HTML.Format(parseInt(Boosts.Sums['battleground-att_boost_defender']+Boosts.Sums.att_boost_defender))+'</span><span class="hidden-text">/</span>'
+                    +'<span class="dDef">'+HTML.Format(parseInt(Boosts.Sums['battleground-def_boost_defender']+Boosts.Sums.def_boost_defender))+'</span>'+
+                '</td></tr>');
             cc.push('<tr>'
-                +'<td><span class="aAtt">'+HTML.Format(parseInt(Boosts.Sums['guild_expedition-att_boost_attacker']+Boosts.Sums.att_boost_attacker))+'</span><span class="hidden">/</span>'
-                +'<span class="aDef">'+HTML.Format(parseInt(Boosts.Sums['guild_expedition-def_boost_attacker']+Boosts.Sums.def_boost_attacker))+'</span> </td>'
-                +'<td><span class="ge"></span> </td><td><span class="dAtt">'+HTML.Format(parseInt(Boosts.Sums['guild_expedition-att_boost_defender']+Boosts.Sums.att_boost_defender))+'</span><span class="hidden">/</span>'
-                +'<span class="dDef">'+HTML.Format(parseInt(Boosts.Sums['guild_expedition-def_boost_defender']+Boosts.Sums.def_boost_defender))+'</span> </td></tr>');
+                +'<td>'
+                    +'<span class="hidden-text">&numsp;&middot;&nbsp;'+i18n('Boxes.General.Guild_Expedition.short')+':&nbsp;</span>'
+                    +'<span class="aAtt">'+HTML.Format(parseInt(Boosts.Sums['guild_expedition-att_boost_attacker']+Boosts.Sums.att_boost_attacker))+'</span><span class="hidden-text">/</span>'
+                    +'<span class="aDef">'+HTML.Format(parseInt(Boosts.Sums['guild_expedition-def_boost_attacker']+Boosts.Sums.def_boost_attacker))+'</span><span class="hidden-text">🔴</span>'
+                +'</td><td class="ge"></td><td>'
+                    +'<span class="dAtt"><span class="hidden-text">🔵</span>'+HTML.Format(parseInt(Boosts.Sums['guild_expedition-att_boost_defender']+Boosts.Sums.att_boost_defender))+'</span><span class="hidden-text">/</span>'
+                    +'<span class="dDef">'+HTML.Format(parseInt(Boosts.Sums['guild_expedition-def_boost_defender']+Boosts.Sums.def_boost_defender))+'</span> </td></tr>');
+
             if (Boosts.noSettlement['guild_raids-att_boost_attacker'] > 0 || Boosts.noSettlement['guild_raids-def_boost_attacker'] > 0 || Boosts.noSettlement['guild_raids-att_boost_defender'] > 0 || Boosts.noSettlement['guild_raids-def_boost_defender'] > 0)
-                cc.push('<tr><td><span class="aAtt">'+HTML.Format(parseInt(Boosts.noSettlement['guild_raids-att_boost_attacker']))+'</span><span class="hidden">/</span><span class="aDef">'+HTML.Format(parseInt(Boosts.noSettlement['guild_raids-def_boost_attacker']))+'</span> </td><td><span class="qi"></span></td><td><span class="dAtt">'+HTML.Format(parseInt(Boosts.noSettlement['guild_raids-att_boost_defender']))+'</span><span class="hidden">/</span><span class="dDef">'+HTML.Format(parseInt(Boosts.noSettlement['guild_raids-def_boost_defender']))+'</span> </td></tr>');
+                cc.push('<tr><td>'
+                    +'<span class="hidden-text">&numsp;&middot;&nbsp;'+i18n('Boxes.General.Quantum_Incursion.short')+':&nbsp;</span>'
+                    +'<span class="aAtt">'+HTML.Format(parseInt(Boosts.noSettlement['guild_raids-att_boost_attacker']))+'</span><span class="hidden-text">/</span><span class="aDef">'+HTML.Format(parseInt(Boosts.noSettlement['guild_raids-def_boost_attacker']))+'</span><span class="hidden-text">🔴</span>'
+                +'</td><td class="qi"></td><td>'
+                    +'<span class="dAtt"><span class="hidden-text">🔵</span>'+HTML.Format(parseInt(Boosts.noSettlement['guild_raids-att_boost_defender']))+'</span><span class="hidden-text">/</span><span class="dDef">'+HTML.Format(parseInt(Boosts.noSettlement['guild_raids-def_boost_defender']))+'</span> </td></tr>');
             cc.push('</tr></table>');
             
             if (Boosts.Sums.critical_hit_chance > 0)
-                cc.push('<span class="crit"><img src="'+srcLinks.get(`/city/gui/great_building_bonus_icons/great_building_bonus_critical_hit_chance.png`,true)+'" /> '+Math.round(Boosts.Sums.critical_hit_chance*100)/100+'%</span>');
+                cc.push('<span class="hidden-text">&numsp;&middot;&nbsp;💥</span><span class="crit"><img src="'+srcLinks.get(`/city/gui/great_building_bonus_icons/great_building_bonus_critical_hit_chance.png`,true)+'" /> '+Math.round(Boosts.Sums.critical_hit_chance*100)/100+'%</span>');
             cc.push('</div>');
             cc.push('</div>');
 
