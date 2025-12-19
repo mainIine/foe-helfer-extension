@@ -23,19 +23,20 @@
     --boost-color: #83b940;
 }
 
-#PlayerProfileButton {
-    position: absolute;
-    top: 5px;
-    left: 2px;
-    z-index: 300;
-}
-
 #PlayerProfileButton span {
     display: none;
+    position: absolute;
+    top: 6px;
+    left: 110px;
+    z-index: 300;
 }
 
 #PlayerProfileButton .main, #PlayerProfileButton .OtherPlayer {
     display: inline-block;
+}
+
+#PlayerProfileButton .OtherPlayer {
+    left: 2px;
 }
 
 #PlayerProfileButton .OtherPlayer img {
@@ -43,9 +44,10 @@
 }
 
 #PlayerProfileButton img {
-    width: 24px;
-    height: 24px;
+    width: 22px;
+    height: 22px;
     border-radius: 3px;
+    box-shadow: 0 0 1px 1px var(--black-65);
 }
 
 #PlayerProfileButton img:hover {
