@@ -357,11 +357,3 @@
 #PowerLevelingBox #PowerLevelingBoxBody .success {
 	color: var(--text-success);
 }
-
-#PowerLevelingBox .hidden-text {
-	opacity: 0;
-	display: inline-block;
-	width: 1px;
-	height: 1px;
-	overflow: hidden;
-}
