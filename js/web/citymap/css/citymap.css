@@ -98,10 +98,9 @@
 #sidebar.main #area-state li span:last-child {
 	text-align: right;
 }
-#sidebar.main #map-stats li span:first-child img {
-	filter: drop-shadow(0 1px 1px var(--black-65));
-	display: inline-block;
-	margin-right: 2px;
+#sidebar #area-state li.clickable:hover span:first-child {
+	font-weight: bold;
+	color: var(--bright-color);
 }
 
 .outpost #BuildingsFilter, .outpost #city-map-menu .btn-group, .outpost #map-filters {
@@ -436,14 +435,6 @@
 	background-color: var(--background-color-decoration);
 	border-color: var(--border-color-decoration);
 }
-/*#grid-outer span.special {
-	background-color: var(--background-color-special);
-	border-color: var(--border-color-special);
-}*/
-/*#grid-outer span.chain {
-	background-color: var(--background-color-chain);
-	border-color: var(--border-color-chain);
-}*/
 #grid-outer span.street {
 	background-color: var(--background-color-street);
 	border-color: var(--border-color-street);
@@ -567,6 +558,18 @@
 }
 #grid-outer span.collectSoon[class*="collect2"]::after {
 	content: '⬤ ⬤ ⬤';
+}
+#grid-outer.showLimited .isLimited {
+	background-image: radial-gradient(circle at 50%, #fff 2px, #0000 7px);
+    box-shadow: inset 0 0 0 1px #fff6;
+}
+#grid-outer.showGBG .fromGBG {
+	background-color: var(--background-color-gbg);
+	border-color: var(--border-color-gbg);
+}
+#grid-outer.showQI .fromQI {
+	background-color: var(--background-color-qi);
+	border-color: var(--border-color-qi);
 }
 
 [data-view="skew"] .older-1.diagonal {

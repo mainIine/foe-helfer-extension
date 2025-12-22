@@ -6,7 +6,7 @@
 **Update**
 - City Map: 
 	- Sidebar stats have been reworked: more interesting facts about buildings in the city were added
-	- We introduce a new metric to evaluate the city grid - how it is calculated is explained in the tooltip
+	- Available area for other players cities has been added
 - Profile:
 	- QI capacity added
 - Changed menu icon for sets and chains
