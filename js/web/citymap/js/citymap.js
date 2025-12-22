@@ -270,7 +270,7 @@ let CityMap = {
 		);
 
 		mapfilters.append(
-			$('<label />').attr({ for: 'show-decayed-buildings' }).text(i18n('Boxes.CityMap.showDecayedBuildings'))
+			$('<label />').attr({ for: 'show-decayed-buildings' }).text(i18n('Boxes.CityMap.ShowDecayedBuildings'))
 				.prepend($('<input />').attr({ type: 'checkbox', id: 'show-decayed-buildings', onclick: 'CityMap.showDecayedBuildings()' }))
 		);
 
