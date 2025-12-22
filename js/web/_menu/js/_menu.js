@@ -658,7 +658,7 @@ let _menu = {
 			else {
 				let Player = PlayerDict[LastMapPlayerID];
 				let PlayerName = (Player ? Player['PlayerName'] : '???');
-				CityMap.init(false, MainParser.OtherPlayerCityMapData, PlayerName);
+				CityMap.init(false, CityMap.OtherPlayer.mapData, PlayerName);
             }
 		});
 

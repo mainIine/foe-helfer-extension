@@ -546,7 +546,7 @@ const Profile = {
         HTML.AddCssFile('profile');
 
         let content = [];
-        let buildings = Object.values(CityMap.createNewCityMapEntities(Object.values(MainParser.OtherPlayerCityMapData)));
+        let buildings = Object.values(CityMap.createNewCityMapEntities(Object.values(CityMap.OtherPlayer.mapData)));
         let boosts = {
             "critical_hit_chance": 0,
             "forge_points_production": 0,

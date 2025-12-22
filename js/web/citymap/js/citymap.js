@@ -55,6 +55,10 @@ let CityMap = {
 		buildingAreas: [],
 		buildingTypes: []
 	},
+	OtherPlayer: {
+		mapData: {},
+		unlockedAreas: null,
+	},
 
 	AscendingBuildings: new Promise((resolve) => {
 		let timer = () => {
@@ -294,7 +298,7 @@ let CityMap = {
 			$('#citymap-wrapper').append('<img class="clickable openOverview" data-original-title="'+i18n('Menu.OutP.Title')+'" onClick="Outposts.BuildInfoBox()" src="' + extUrl + 'css/images/menu/vikings_ship.png">');
 
 		if (ActiveMap === 'OtherPlayer') {
-			let townhall = (Object.values(MainParser.OtherPlayerCityMapData).find(x => x.type === 'main_building'));
+			let townhall = (Object.values(CityMap.OtherPlayer.mapData).find(x => x.type === 'main_building'));
 			let era = townhall.cityentity_id?.split('_')[1] || townhall.entityId?.split('_')[1];
 			$("#sidebar").append($('<a id="openEfficiencyRating" class="btn-default" onclick="Productions.ShowRating(true,\''+era+'\')">'+ i18n('Menu.ProductionsRating.Title') +'</a>'));
 		}
@@ -304,8 +308,10 @@ let CityMap = {
 	/**
 	 * Erzeugt ein Raster für den Hintergrund
 	 */
-	BuildGrid:()=> {
+	BuildGrid: () => {
 		let ua = CityMap.UnlockedAreas;
+		if (ActiveMap === "OtherPlayer")
+			ua = CityMap.OtherPlayer.unlockedAreas;
 		let xOffset = 0;
 		let yOffset = 0;
 		let scaleUnit = CityMap.ScaleUnit;
@@ -759,10 +765,7 @@ let CityMap = {
 		}
 		let StreetsNeeded = 0;
 
-		if(ActiveMap !== 'OtherPlayer') {
-			// Unlocked Areas rendern
-			CityMap.BuildGrid();
-		}
+		CityMap.BuildGrid();
 
 		let MinX = 0,
 			MinY = 0,
@@ -770,7 +773,7 @@ let CityMap = {
 			MaxY = 71;
 
 		if (ActiveMap === 'OtherPlayer')
-			buildingData = CityMap.createNewCityMapEntities(Object.values(MainParser.OtherPlayerCityMapData))
+			buildingData = CityMap.createNewCityMapEntities(Object.values(CityMap.OtherPlayer.mapData))
 		else
 			buildingData = CityMap.createNewCityMapEntities(Object.values(MainParser.CityMapData))
 
@@ -1007,13 +1010,11 @@ let CityMap = {
 	showSubmitBox: () => {
 		let $CityMapSubmit = $('#CityMapSubmit');
 
-		if ($CityMapSubmit.length > 0)
-		{
+		if ($CityMapSubmit.length > 0) {
 			$CityMapSubmit.remove();
 		}
 
-		if ($CityMapSubmit.length < 1)
-		{
+		if ($CityMapSubmit.length < 1) {
 			HTML.Box({
 				'id': 'CityMapSubmit',
 				'title': i18n('Boxes.CityMap.TitleSend'),
@@ -1024,7 +1025,6 @@ let CityMap = {
 			HTML.AddCssFile('citymap');
 
 			let desc = '<p class="text-center">' + i18n('Boxes.CityMap.Desc1') + '</p>';
-
 			desc += '<p class="text-center" id="msg-line"><button class="btn-default" onclick="CityMap.SubmitData()">' + i18n('Boxes.CityMap.Submit') + '</button></p>';
 
 			$('#CityMapSubmitBody').html(desc);
@@ -1080,7 +1080,6 @@ let CityMap = {
 	 *
 	 */
 	SubmitData: ()=> {
-
 		let apiToken = localStorage.getItem('ApiToken');
 
 		if(apiToken === null) {
@@ -2633,7 +2632,7 @@ let CityMap = {
 			data = Object.values(MainParser.CityMapData)
 		}
 		else if (ActiveMap === 'OtherPlayer') {
-			data = Object.values(MainParser.OtherPlayerCityMapData)
+			data = Object.values(CityMap.OtherPlayer.mapData)
 		}
 
 		for (building of data) {
@@ -2643,12 +2642,12 @@ let CityMap = {
 			let newCityEntity = CityMap.createNewCityMapEntity(metaData, era, building)
 
 			if (ActiveMap === 'OtherPlayer') 
-				MainParser.OtherPlayerCityMapData[building.id] = newCityEntity
+				CityMap.OtherPlayer.mapData[building.id] = newCityEntity
 			else
 				MainParser.NewCityMapData[building.id] = newCityEntity
 		}
 
-		return (ActiveMap === 'OtherPlayer' ? MainParser.OtherPlayerCityMapData : MainParser.NewCityMapData) 
+		return (ActiveMap === 'OtherPlayer' ? CityMap.OtherPlayer.mapData : MainParser.NewCityMapData) 
 	},
 
 
