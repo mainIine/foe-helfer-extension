@@ -6,7 +6,7 @@
 **Update**
 - Stadt Übersicht: 
 	- Die Statistiken an der Seite wurden überarbeitet: es gibt neue, interessantere Fakten zu den Gebäuden in der Stadt
-	- Wir haben uns einen neuen Effizienzwert für die Bewertung der Effizienz der Stadt ausgedacht - die Berechnung wird im Tooltip (Maus drüber fahren) erklärt
+	- Die verfügbare Fläche ist jetzt auch bei anderen Spielern zu sehen
 - Profil:
 	- QI Aktionskapazität hinzugefügt
 - Menü-Icon für Gebäude-Sets und -Ketten-Modul ausgetauscht

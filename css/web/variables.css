@@ -127,8 +127,8 @@
 	--border-color-military: #bbb;
 	--background-color-residential: #7abaff;
 	--border-color-residential: #219eff;
-	--background-color-special: #51e5ff;
-	--border-color-special: #08b6d4;
+	--background-color-qi: #51ffd9;
+	--border-color-qi: #13cfcf;
 	--background-color-noStreet: #793bc9;
 	--border-color-noStreet: #3d2783;
 	--background-color-chain: #bb23ae;
@@ -151,4 +151,6 @@
 	--border-color-random_production: #4cff11;
 	--background-color-tower: #cdcdcd;
 	--border-color-tower: #787a7a;
+	--background-color-gbg: #ffeac2;
+	--border-color-gbg: #dac195;
 }
