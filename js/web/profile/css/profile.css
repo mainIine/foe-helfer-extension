@@ -145,6 +145,9 @@
     width: 100%;
     max-width: 400px;
     padding-top: 1.1rem;
+}
+
+#PlayerProfile .centerInfo:not(.otherPlayer) {
     user-select: text;
 }
 

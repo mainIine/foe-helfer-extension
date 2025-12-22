@@ -428,24 +428,25 @@ GetFights = () =>{
 
 	// Stadt wird wieder aufgerufen
 	FoEproxy.addHandler('CityMapService', 'getEntities', (data, postData) => {
-
 		if (!postData.map(x=>x.requestData?.[0]).includes('main')) { 
-			return
+			return;
 		}
 
-		LastMapPlayerID = ExtPlayerID
+		LastMapPlayerID = ExtPlayerID;
 
-		MainParser.CityMapData = Object.assign({}, ...data.responseData.map((x) => ({ [x.id]: x })))
-		MainParser.SetArkBonus2()
+		MainParser.CityMapData = Object.assign({}, ...data.responseData.map((x) => ({ [x.id]: x })));
+		MainParser.SetArkBonus2();
 
 		if (ActiveMap === 'gg') return; // getEntities wurde in den GG ausgelöst => Map nicht ändern
-		MainParser.UpdateActiveMap('main')
+		MainParser.UpdateActiveMap('main');
+		CityMap.OtherPlayer = { mapData: {}, unlockedAreas: null};
 	});
 
 
 	// main is entered
 	FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, postData) => {
 		MainParser.UpdateActiveMap('main');
+		CityMap.OtherPlayer = { mapData: {}, unlockedAreas: null};
 	});
 
 	// gex is entered
@@ -470,9 +471,10 @@ GetFights = () =>{
 
 	// visiting another player
 	FoEproxy.addHandler('OtherPlayerService', 'visitPlayer', (data, postData) => {
-		MainParser.UpdateActiveMap('OtherPlayer')
-		LastMapPlayerID = data.responseData['other_player']['player_id']
-		MainParser.OtherPlayerCityMapData = Object.assign({}, ...data.responseData['city_map']['entities'].map((x) => ({ [x.id]: x })))
+		MainParser.UpdateActiveMap('OtherPlayer');
+		LastMapPlayerID = data.responseData.other_player.player_id;
+		CityMap.OtherPlayer.unlockedAreas = data.responseData.city_map.unlocked_areas;
+		CityMap.OtherPlayer.mapData = Object.assign({}, ...data.responseData.city_map.entities.map(x => ({ [x.id]: x })));
 	});
 
 	// move buildings, use self aid kits
@@ -984,7 +986,6 @@ let MainParser = {
 	// all buildings of the player
 	CityMapData: {},
 	NewCityMapData: {},
-	OtherPlayerCityMapData: {},
 
 	// Unlocked extensions
 	UnlockedAreas: null,
