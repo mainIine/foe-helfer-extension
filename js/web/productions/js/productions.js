@@ -2353,13 +2353,13 @@ let Productions = {
 
 	getRatingValueForType: (building, type) => {
 		if (type === "happiness")
-			return building.happiness
+			return building.happiness;
 		else if (type === "population")
-			return building.population
+			return building.population;
 		else if (type.includes('att') || type.includes('def')) {
 			if (building.boosts === undefined) return 0;
 
-			let bsum = 0
+			let bsum = 0;
 			for (const boost of building.boosts) {
 
 				let feature = type.split('-')[1];
@@ -2377,11 +2377,12 @@ let Productions = {
 
 		else if (type.includes("goods") && !type.includes("guild_raids_")) {
 			let allGoods = CityMap.getBuildingGoodsByEra(false, building);
+			let era = (ActiveMap === "OtherPlayer" ? CityMap.OtherPlayer.eraName : CurrentEra)
 
 			if (allGoods !== undefined) {
-				let prevEra = Technologies.InnoEras[CurrentEra]-1;
-				let currEra = Technologies.InnoEras[CurrentEra];
-				let nextEra = Technologies.InnoEras[CurrentEra]+1;
+				let prevEra = Technologies.InnoEras[era]-1;
+				let currEra = Technologies.InnoEras[era];
+				let nextEra = Technologies.InnoEras[era]+1;
 
 				if (type === "goods-previous") {
 					if (allGoods.eras[prevEra])

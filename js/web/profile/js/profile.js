@@ -546,6 +546,7 @@ const Profile = {
         HTML.AddCssFile('profile');
 
         let content = [];
+        CityMap.OtherPlayer.eraName = Profile.otherPlayer.other_player.era;
         let buildings = Object.values(CityMap.createNewCityMapEntities(Object.values(CityMap.OtherPlayer.mapData)));
         let boosts = {
             "critical_hit_chance": 0,
@@ -559,7 +560,7 @@ const Profile = {
         content.push('<img src="'+srcLinks.GetPortrait(Profile.otherPlayer.other_player.avatar)+'" />');
         content.push('<div>');
         content.push('<b>'+Profile.otherPlayer.other_player.name+'</b><br>');
-        content.push('<span>'+i18n('Eras.'+Technologies.Eras[Profile.otherPlayer.other_player.era])+'</span><br>');
+        content.push('<span>'+i18n('Eras.'+Technologies.Eras[CityMap.OtherPlayer.eraName])+'</span><br>');
         content.push('<span class="ranking">'+HTML.Format(parseInt(Profile.otherPlayer.other_player.score))+'</span>');
         content.push('</div>');
         content.push('</div>');
