@@ -58,6 +58,7 @@ let CityMap = {
 	OtherPlayer: {
 		mapData: {},
 		unlockedAreas: null,
+		eraName: null,
 	},
 
 	AscendingBuildings: new Promise((resolve) => {
@@ -299,8 +300,8 @@ let CityMap = {
 
 		if (ActiveMap === 'OtherPlayer') {
 			let townhall = (Object.values(CityMap.OtherPlayer.mapData).find(x => x.type === 'main_building'));
-			let era = townhall.cityentity_id?.split('_')[1] || townhall.entityId?.split('_')[1];
-			$("#sidebar").append($('<a id="openEfficiencyRating" class="btn-default" onclick="Productions.ShowRating(true,\''+era+'\')">'+ i18n('Menu.ProductionsRating.Title') +'</a>'));
+			CityMap.OtherPlayer.eraName = townhall.cityentity_id?.split('_')[1] || townhall.entityId?.split('_')[1];
+			$("#sidebar").append($('<a id="openEfficiencyRating" class="btn-default" onclick="Productions.ShowRating(true,\''+CityMap.OtherPlayer.eraName+'\')">'+ i18n('Menu.ProductionsRating.Title') +'</a>'));
 		}
 	},
 
@@ -2659,14 +2660,14 @@ let CityMap = {
 			data = Object.values(MainParser.CityMapData)
 		}
 		else if (ActiveMap === 'OtherPlayer') {
-			data = Object.values(CityMap.OtherPlayer.mapData)
+			data = Object.values(CityMap.OtherPlayer.mapData);
 		}
 
 		for (building of data) {
 			if (ActiveMap === 'OtherPlayer' && building.eraName !== undefined) continue
 			let metaData = Object.values(MainParser.CityEntities).find(x => x.id === building.cityentity_id)
-			let era = Technologies.getEraName(building.cityentity_id, building.level)
-			let newCityEntity = CityMap.createNewCityMapEntity(metaData, era, building)
+			let era = Technologies.getEraName(building.cityentity_id, building.level);
+			let newCityEntity = CityMap.createNewCityMapEntity(metaData, era, building);
 
 			if (ActiveMap === 'OtherPlayer') 
 				CityMap.OtherPlayer.mapData[building.id] = newCityEntity
