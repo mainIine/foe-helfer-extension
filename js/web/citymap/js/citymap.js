@@ -484,7 +484,7 @@ let CityMap = {
         out += '<span><img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_expansion.png`,true)+'" />' +  CityMap.QIAreas.length + '</span>';
 		out += '<div class="popStats"><span class="prod population">'+CityMap.QIStats.availablePopulation+'/'+CityMap.QIStats.totalPopulation+'</span> ';
 		let euphoria = Math.round(CityMap.QIStats.euphoriaBoost*100);
-		out += '<span class="prod happiness euphoria'+euphoria+'">'+euphoria+'%</span></div>';
+		out += '<span class="prod happiness euphoria'+euphoria+'" title="'+CityMap.QIStats.euphoria+'">'+euphoria+'%</span></div>';
 		out += '</div>';
 
 		out += '<div class="productions">'
