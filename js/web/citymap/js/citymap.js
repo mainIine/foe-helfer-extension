@@ -288,7 +288,7 @@ let CityMap = {
 		if (ActiveMap === "guild_raids") {
 			if (CityMap.QIData) {
 				$("#sidebar").append(CityMap.showQIStats());
-				$("#sidebar").append(CityMap.showQIBuildings());
+				$("#sidebar").append(CityMap.showQIBuildingList());
 			}
 		}
 
@@ -487,7 +487,7 @@ let CityMap = {
 		out += '<span class="prod happiness euphoria'+euphoria+'" title="'+CityMap.QIStats.euphoria+'">'+euphoria+'%</span></div>';
 		out += '</div>';
 
-		out += '<div class="productions">'
+		out += '<div class="productions">';
 		let mainBuilding = Object.values(CityMap.QIData).find( x => x.type === 'main_building');
 		for (let [prod, value] of Object.entries(CityMap.QIStats.resources)) {
 			out += '<span class="'+prod+'">'+srcLinks.icons(prod);
@@ -516,7 +516,7 @@ let CityMap = {
 	},
 
 
-	showQIBuildings: () => {
+	showQIBuildingList: () => {
 		if (!CityMap.QIData) return;
 		let boosts = Boosts.Sums;
 		let buildings = Object.values(CityMap.QIData);
