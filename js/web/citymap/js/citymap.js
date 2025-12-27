@@ -505,7 +505,7 @@ let CityMap = {
 		}
 		out += '</div><div class="boosts">';
 		for (let [boost, value] of Object.entries(CityMap.QIStats.boosts)) {
-			if (boost == "guild_raids_action_points_collection")
+			if (boost.includes("action_points"))
 				out += '<span class="'+boost+'">'+srcLinks.icons(boost)+value+"</span> ";
 			else 
 				out += '<span class="'+boost+'">'+srcLinks.icons(boost)+value+"%</span> ";
@@ -583,7 +583,7 @@ let CityMap = {
 			}
 			if (building.boosts !== null) {
 				for (let boost of building.boosts) {
-					let percentChar = (boost.type.includes("action_points") ? "" : "%")
+					let percentChar = (boost.type.includes("action_points") ? " " : "% ")
 					out += srcLinks.icons(boost.type)+boost.value+percentChar;
 				}
 			}
