@@ -82,6 +82,7 @@ const Profile = {
 			title: ExtPlayerName,
 			auto_close: true,
 			dragdrop: true,
+            class: 'playerprofile'
 		});
 
 		Profile.buildBody();
@@ -531,17 +532,17 @@ const Profile = {
 
 
     showOtherPlayer: () => {
-		if ($('#PlayerProfile').length > 0) {
-			HTML.CloseOpenBox('PlayerProfile');
+		if ($('#OtherPlayerProfile').length > 0) {
+			HTML.CloseOpenBox('OtherPlayerProfile');
 			return;
 		}
 
 		HTML.Box({
-			id: 'PlayerProfile',
+			id: 'OtherPlayerProfile',
 			title: ExtPlayerName,
 			auto_close: true,
 			dragdrop: true,
-            class: 'other'
+            class: 'playerprofile other'
 		})
         HTML.AddCssFile('profile');
 
@@ -685,8 +686,8 @@ const Profile = {
             content.push('</div>');
         content.push('</div>');
 
-        $('#PlayerProfileBody').html(content.join('')).promise().done(function() {
-            $('#PlayerProfile').on('click', '.removable', function () {
+        $('#OtherPlayerProfileBody').html(content.join('')).promise().done(function() {
+            $('#OtherPlayerProfile').on('click', '.removable', function () {
                 $(this).remove();
                 $('.tooltip').remove();
             });
