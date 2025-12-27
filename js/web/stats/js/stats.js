@@ -698,7 +698,7 @@ let Stats = {
 					</ul>
 				</div>`
 				+ moreOptions +
-				`<div class="datepicker"><button class="btn btn-default" id="StatsDatePicker">${Stats.formatRange()}</button></div>`;
+				`<div class="datepicker"><button class="btn" id="StatsDatePicker">${Stats.formatRange()}</button></div>`;
 	},
 
 	formatRange: ()=> {
@@ -804,7 +804,7 @@ let Stats = {
 	 * @param disabled	Disabled button
 	 * @returns {string}
 	 */
-	RenderButton: ({ name, isActive, dataType, value, title, disabled }) => `<button ${disabled ? 'disabled' : ''} class="btn btn-default btn-tight${!disabled && isActive ? ' btn-active' : ''} ${dataType}" data-type="${dataType}" data-value="${value}" title="${(title || '').replace(/"/g,'&quot;')}"><span>${name}</span></button>`,
+	RenderButton: ({ name, isActive, dataType, value, title, disabled }) => `<button ${disabled ? 'disabled' : ''} class="btn btn-slim${!disabled && isActive ? ' btn-active' : ''} ${dataType}" data-type="${dataType}" data-value="${value}" title="${(title || '').replace(/"/g,'&quot;')}"><span>${name}</span></button>`,
 
 
 	/**
@@ -1792,7 +1792,7 @@ let StockAlarm = {
 		htmltext += `<img class="options" data-repeat="2" src="${extUrl}js/web/stats/images/once.png">`;
 		htmltext += `<img class="options  selected" data-repeat="1" src="${extUrl}js/web/stats/images/once_per_session.png">`;
 		htmltext += `<img class="options" data-repeat="0" src="${extUrl}js/web/stats/images/always.png"></span>`
-		htmltext += `<span id="LowStockAddBtn" class="btn btn-default btn-green" onclick="StockAlarm.addbtn">+</span>`;
+		htmltext += `<span id="LowStockAddBtn" class="btn btn-green" onclick="StockAlarm.addbtn">+</span>`;
 		htmltext += `<table class="foe-table" id="LowStockAlarmsList">`;
 		htmltext += `<tr><th>type</th><th>name</th><th>threshold</th><th>repeat</th><th></th></tr>` //Add i18n!!
 		htmltext += `</table>`;
@@ -1878,7 +1878,7 @@ let StockAlarm = {
 		html += `<td>${name}</td>`;
 		html += `<td>${value}</td>`;
 		html += `<td><img src="${repeatImg}"></td>`;
-		html += `<td><span class="btn btn-default btn-delete LowStockRemBtn" data-id="${id}" data-name="${name}" data-value="${value}" data-repeat="${repeat}" data-type="${type}" onclick="StockAlarm.rembtn(event)">-</span></td>`;
+		html += `<td><span class="btn btn-delete LowStockRemBtn" data-id="${id}" data-name="${name}" data-value="${value}" data-repeat="${repeat}" data-type="${type}" onclick="StockAlarm.rembtn(event)">-</span></td>`;
 		
 		row.innerHTML = html;
 		

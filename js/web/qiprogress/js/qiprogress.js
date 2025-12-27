@@ -409,7 +409,7 @@ let QiProgress = {
 
 			detaildata.sort(function (a, b) { return b.time - a.time });
 
-			h.push('<div class="datetimepicker"><button id="qiLogDatepicker" class="btn btn-default">' + QiProgress.formatRange() + '</button></div>');
+			h.push('<div class="datetimepicker"><button id="qiLogDatepicker" class="btn">' + QiProgress.formatRange() + '</button></div>');
 			h.push('<table id="QiProgressLogTable" class="foe-table qilog"><thead>');
 			h.push('<tr class="sorter-header">');
 			h.push('<th class="is-number" data-type="qi-log-group">' + i18n('Boxes.QiProgress.Date') + '</th>');
@@ -523,7 +523,7 @@ let QiProgress = {
 			h.push(`<div id="qi_roundswitch" class="roundswitch dark-bg">`);
 
 			if (QiProgress.ProgressSettings.showRoundSelector) {
-				h.push(`${i18n('Boxes.QiProgress.QiRound')} <button class="btn btn-default btn-set-week" data-week="${previousweek}"${previousweek === null ? ' disabled' : ''}>&lt;</button> `);
+				h.push(`${i18n('Boxes.QiProgress.QiRound')} <button class="btn btn-set-week" data-week="${previousweek}"${previousweek === null ? ' disabled' : ''}>&lt;</button> `);
 				h.push(`<select id="qi-select-qiRound">`);
 
 				QiProgress.AllRounds.forEach(week => {
@@ -531,13 +531,13 @@ let QiProgress = {
 				});
 
 				h.push(`</select> `);
-				h.push(`<button class="btn btn-default btn-set-week last" data-week="${nextweek}"${nextweek === null ? ' disabled' : ''}>&gt;</button>`);
+				h.push(`<button class="btn btn-set-week last" data-week="${nextweek}"${nextweek === null ? ' disabled' : ''}>&gt;</button>`);
 			}
 
 			if (qiRound === QiProgress.CurrentQISeason) {
 				h.push(`<div id="qiLogFilter" style="float:right">`);
 				if (QiProgress.ProgressSettings.showProgressFilter === 1) {
-					h.push(`<button id="qi_filterProgressList" title="${HTML.i18nTooltip(i18n('Boxes.QiProgress.ProgressFilterDesc'))}" class="btn btn-default" disabled>&#8593;</button>`);
+					h.push(`<button id="qi_filterProgressList" title="${HTML.i18nTooltip(i18n('Boxes.QiProgress.ProgressFilterDesc'))}" class="btn" disabled>&#8593;</button>`);
 				}
 				h.push(`</div>`);
 			}
@@ -583,9 +583,9 @@ let QiProgress = {
 		let Settings = QiProgress.ProgressSettings;
 		c.push(`<input id="gf_showRoundSelector" name="showroundswitcher" value="1" type="checkbox" ${(Settings.showRoundSelector === 1) ? ' checked="checked"' : ''} /> <label for="gf_showRoundSelector">${i18n('Boxes.QiProgress.ShowRoundSelector')}</label></p>`);
 		c.push(`<p class="text-left"><input id="gf_showProgressFilter" name="showprogressfilter" value="1" type="checkbox" ${(Settings.showProgressFilter === 1) ? ' checked="checked"' : ''} /> <label for="gf_showProgressFilter">${i18n('Boxes.QiProgress.ShowProgressFilter')}</label></p>`);
-		c.push(`<p><button id="save-QiProgressPlayerBox-settings" class="btn btn-default" style="width:100%" onclick="QiProgress.ProgressListSettingsSaveValues()">${i18n('Boxes.General.Save')}</button></p>`);
-		c.push(`<hr><p>${i18n('Boxes.General.Export')}: <span class="btn-group"><button class="btn btn-default" onclick="HTML.ExportTable($('#QiProgressTable'),'csv','QI')" title="${HTML.i18nTooltip(i18n('Boxes.General.ExportCSV'))}">CSV</button>`);
-		c.push(`<button class="btn btn-default" onclick="HTML.ExportTable($('#QiProgressTable'),'json','QI')" title="${HTML.i18nTooltip(i18n('Boxes.General.ExportJSON'))}">JSON</button></span></p>`);
+		c.push(`<p><button id="save-QiProgressPlayerBox-settings" class="btn" style="width:100%" onclick="QiProgress.ProgressListSettingsSaveValues()">${i18n('Boxes.General.Save')}</button></p>`);
+		c.push(`<hr><p>${i18n('Boxes.General.Export')}: <span class="btn-group"><button class="btn" onclick="HTML.ExportTable($('#QiProgressTable'),'csv','QI')" title="${HTML.i18nTooltip(i18n('Boxes.General.ExportCSV'))}">CSV</button>`);
+		c.push(`<button class="btn" onclick="HTML.ExportTable($('#QiProgressTable'),'json','QI')" title="${HTML.i18nTooltip(i18n('Boxes.General.ExportJSON'))}">JSON</button></span></p>`);
 
 		$('#QiProgressListSettingsBox').html(c.join(''));
 	},

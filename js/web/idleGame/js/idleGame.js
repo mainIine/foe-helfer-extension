@@ -831,7 +831,7 @@ let idleGame = {
 				resize : true
 			});
 		}
-		let h = `<textarea id="idleGameStratText">${list}</textarea><button id="idleGameStratSave" class="btn-default" onclick="idleGame.saveStrategy()">${i18n('General.Save')}</button>`;
+		let h = `<textarea id="idleGameStratText">${list}</textarea><button id="idleGameStratSave" class="btn" onclick="idleGame.saveStrategy()">${i18n('General.Save')}</button>`;
 		$('#idleGameStrategyDialogBody').html(h)
 	},
 

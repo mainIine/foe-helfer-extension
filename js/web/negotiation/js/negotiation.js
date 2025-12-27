@@ -660,7 +660,7 @@ let Negotiation = {
 			if (Negotiation.CurrentTable) {
 				// keine Tabelle mehr zum abarbeiten da
 				Negotiation.CurrentTable = null;
-				Negotiation.Message = `${i18n('Boxes.Negotiation.WrongGoods')} <button class="btn-default" onclick="Negotiation.confirmGoodsMissmatch()">${i18n('Boxes.Negotiation.confirmGoodsMissmatch')}</button>`;
+				Negotiation.Message = `${i18n('Boxes.Negotiation.WrongGoods')} <button class="btn" onclick="Negotiation.confirmGoodsMissmatch()">${i18n('Boxes.Negotiation.confirmGoodsMissmatch')}</button>`;
 				Negotiation.MessageClass = 'danger';
 				Negotiation.WrongGoodsSelected = true;
 				Negotiation.NeedGoodMissmatchConfirm = true;

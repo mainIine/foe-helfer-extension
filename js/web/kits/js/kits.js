@@ -115,14 +115,14 @@ let Kits = {
 			$('#kitsBodyBottombar').append(
 				$('<span />').attr({
 					id: 'kits-triplestate-button',
-					class: 'btn-default btn-tight',
+					class: 'btn btn-slim',
 					onclick: 'Kits.ToggleView()'
 				}).text(i18n('Boxes.Kits.TripleStateButton'+Kits.ShowMissing))
 			);
 			$('#kitsBodyBottombar').append(
 				$('<span />').attr({
 					id: 'kits-showFavourites',
-					class: 'btn-default btn-tight',
+					class: 'btn btn-slim',
 					onclick: 'Kits.ToggleFavouritesBtn()'
 				}).text(i18n('Boxes.Kits.ShowFavourites'))
 			);

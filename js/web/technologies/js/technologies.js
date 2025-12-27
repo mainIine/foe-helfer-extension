@@ -358,9 +358,9 @@ let Technologies = {
 
         h.push('<div class="dark-bg" style="margin-bottom: 3px">');
 	        h.push('<div class="techno-head">');
-				h.push('<button class="btn btn-default btn-switchage" data-value="' + PreviousEraID + '">' + i18n('Eras.'+PreviousEraID) + '</button>');
+				h.push('<button class="btn btn-switchage" data-value="' + PreviousEraID + '">' + i18n('Eras.'+PreviousEraID) + '</button>');
 				h.push('<div class="text-center"><strong>' + i18n('Eras.'+Technologies.SelectedEraID) + '</strong></div>');
-				h.push('<button class="btn btn-default btn-switchage" data-value="' + NextEraID + '">' + i18n('Eras.'+NextEraID) + '</button>');
+				h.push('<button class="btn btn-switchage" data-value="' + NextEraID + '">' + i18n('Eras.'+NextEraID) + '</button>');
 	        h.push('</div>');
 	        h.push('<div class="text-small">');
             h.push('<input id="IgnorePrevEra" class="ignoreprevera game-cursor" ' + (Technologies.IgnorePrevEra ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Technologies.IgnorePrevEra') + '<br>');
@@ -451,8 +451,8 @@ let Technologies = {
     */
     ShowSettingsButton: () => {
         let h = [];
-        h.push(`<p class="text-center"><button class="btn btn-default" onclick="HTML.ExportTable($('#technologiesBody').find('.foe-table.exportable'), 'csv', 'technologies')">${i18n('Boxes.General.ExportCSV')}</button></p>`);
-        h.push(`<p class="text-center"><button class="btn btn-default" onclick="HTML.ExportTable($('#technologiesBody').find('.foe-table.exportable'), 'json', 'technologies')">${i18n('Boxes.General.ExportJSON')}</button></p>`);
+        h.push(`<p class="text-center"><button class="btn" onclick="HTML.ExportTable($('#technologiesBody').find('.foe-table.exportable'), 'csv', 'technologies')">${i18n('Boxes.General.ExportCSV')}</button></p>`);
+        h.push(`<p class="text-center"><button class="btn" onclick="HTML.ExportTable($('#technologiesBody').find('.foe-table.exportable'), 'json', 'technologies')">${i18n('Boxes.General.ExportJSON')}</button></p>`);
 
         $('#technologiesSettingsBox').html(h.join(''));
     },

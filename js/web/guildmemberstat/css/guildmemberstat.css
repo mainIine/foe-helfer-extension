@@ -25,7 +25,6 @@
 #GuildMemberStat #GuildMemberStatBody {
     font-size: 0.9rem;
     overflow-y: scroll;
-
 }
 
 #GuildMemberStatBody #GuildMemberTable,
@@ -177,6 +176,11 @@
     width: 100%;
 }
 
+#GuildMemberStatBody .detail-item.buildings {
+    max-height: 300px;
+    overflow: auto;
+}
+
 #GuildMemberStatBody img.small {
     width: 18px;
     height: 18px;
@@ -304,25 +308,8 @@
     overflow: hidden;
 }
 
-#GuildMemberStat .deleteButton {
-    background: #ff000036;
-    border: 1px solid #f800005c;
-    border-radius: 2em;
-    color: #fff;
-    font-size: 14px;
-    height: 18px;
-    padding: 0;
-    text-align: center;
-    width: 18px;
-    position: absolute;
-    right: 4px;
-    top: 1px;
-    cursor: pointer;
+#GuildMemberStat .btn-delete {
     display: none;
-}
-
-#GuildMemberStat .deleteButton:hover {
-    background: #00000036;
 }
 
 #GuildMemberStat #gms-filter-input {

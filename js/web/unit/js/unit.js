@@ -825,12 +825,12 @@ let Unit = {
 		let h = [];
 
 		h.push(`<p>${i18n('Boxes.Units.PictogramScalingTitle')}
-					<button class="btn btn-default btn-tight btn-set-value" data-value="-1">&lt;</button>
+					<button class="btn btn-slim btn-set-value" data-value="-1">&lt;</button>
 					<input type="number" id="pictogramScaling" step="1" min="1" max="4" placeholder="1-4" required value="${Unit.Settings.pictogramScaling}" title="${HTML.i18nTooltip(i18n('Boxes.Units.PictogramScalingDesc'))}">
-					<button class="btn btn-default btn-tight btn-set-value" data-value="1">&gt;</button>
+					<button class="btn btn-slim btn-set-value" data-value="1">&gt;</button>
 					<span class="validity"></span>
 				</p>`);
-		h.push(`<p><button onclick="Unit.SaveSettings()" id="unit-save-settings" class="btn btn-default" style="width:100%">${i18n('Boxes.Settings.Save')}</button></p>`);
+		h.push(`<p><button onclick="Unit.SaveSettings()" id="unit-save-settings" class="btn" style="width:100%">${i18n('Boxes.Settings.Save')}</button></p>`);
 
 		$('#UnitOverviewSettingsBox').html(h.join(''));
 		

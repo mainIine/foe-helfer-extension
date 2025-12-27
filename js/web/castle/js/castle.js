@@ -865,7 +865,7 @@ let Castle = {
                 <div><span>${i18n('Boxes.Castle.CastlePoints')}: ${HTML.Format(Castle.curCastlePoints)} / ${HTML.Format(CastleLimit)}</span>
                 <span id="casPointsDiff">${diff ? '+' + diff : ''}</span><br />
                 <span>${i18n('Boxes.Castle.Level')}: ${Castle.curLevel}</span></div>
-                <div><span id="casLogBtn"><button id="casSwitchView" class="btn btn-default"${!Castle.CastlePointLog || Castle.CastlePointLog.length === 0 ? ' disabled' : ''}>${Castle.CurrentView === 'log' ? i18n('Boxes.Castle.Overview') : i18n('Boxes.Castle.Log')}</button></span></div>
+                <div><span id="casLogBtn"><button id="casSwitchView" class="btn"${!Castle.CastlePointLog || Castle.CastlePointLog.length === 0 ? ' disabled' : ''}>${Castle.CurrentView === 'log' ? i18n('Boxes.Castle.Overview') : i18n('Boxes.Castle.Log')}</button></span></div>
             `).promise().done(function () {
 
                 if (diff)
@@ -1048,7 +1048,7 @@ let Castle = {
         });
         c.push(`</select></p>`);
 
-        c.push(`<hr><p><button id="save-Castle-settings" class="btn btn-default" style="width:100%" onclick="Castle.SettingsSaveValues()">${i18n('Boxes.General.Save')}</button></p>`);
+        c.push(`<hr><p><button id="save-Castle-settings" class="btn" style="width:100%" onclick="Castle.SettingsSaveValues()">${i18n('Boxes.General.Save')}</button></p>`);
         $('#CastleSettingsBox').html(c.join(''));
 
     },

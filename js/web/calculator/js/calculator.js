@@ -207,7 +207,7 @@ let Calculator = {
 		investmentSteps = investmentSteps.filter((item, index) => investmentSteps.indexOf(item) === index); //Remove duplicates
 		investmentSteps.sort((a, b) => a - b);
 		investmentSteps.forEach(bonus => {
-			h.push(`<button class="btn btn-default btn-toggle-arc ${(bonus === Calculator.ForderBonus ? 'btn-active' : '')}" data-value="${bonus}">${bonus}%</button>`);
+			h.push(`<button class="btn btn-toggle-arc ${(bonus === Calculator.ForderBonus ? 'btn-active' : '')}" data-value="${bonus}">${bonus}%</button>`);
 		});
         h.push('</div><br>');
 		
@@ -695,7 +695,7 @@ let Calculator = {
 			buttons,
 			defaults = Calculator.DefaultButtons,
 			sB = localStorage.getItem('CustomCalculatorButtons'),
-			nV = `<p class="new-row">${i18n('Boxes.Calculator.Settings.newValue')}: <input type="number" class="settings-values" style="width:30px"> <span class="btn btn-default btn-green" onclick="Calculator.SettingsInsertNewRow()">+</span></p>`;
+			nV = `<p class="new-row">${i18n('Boxes.Calculator.Settings.newValue')}: <input type="number" class="settings-values" style="width:30px"> <span class="btn btn-green" onclick="Calculator.SettingsInsertNewRow()">+</span></p>`;
 
 
 		if(sB)
@@ -714,10 +714,10 @@ let Calculator = {
 		buttons.forEach(bonus => {
 			if(bonus === 'ark')
 			{
-				c.push(`<p class="text-center"><input type="hidden" class="settings-values" value="ark"> <button class="btn btn-default">${MainParser.ArkBonus}%</button></p>`);
+				c.push(`<p class="text-center"><input type="hidden" class="settings-values" value="ark"> <button class="btn">${MainParser.ArkBonus}%</button></p>`);
 			}
 			else {
-				c.push(`<p class="btn-group flex"><button class="btn btn-default">${bonus}%</button> <input type="hidden" class="settings-values" value="${bonus}"> <span class="btn btn-default btn-delete" onclick="Calculator.SettingsRemoveRow(this)">x</span> </p>`);
+				c.push(`<p class="btn-group flex"><button class="btn">${bonus}%</button> <input type="hidden" class="settings-values" value="${bonus}"> <span class="btn btn-delete" onclick="Calculator.SettingsRemoveRow(this)">x</span> </p>`);
 			}
 		});
 
@@ -727,7 +727,7 @@ let Calculator = {
 		c.push('<p><input id="forderbonusperconversation" class="forderbonusperconversation game-cursor" ' + (Calculator.ForderBonusPerConversation ? 'checked' : '') + ' type="checkbox"> ' + i18n('Boxes.Calculator.ForderBonusPerConversation'));
 
 		// save button
-		c.push(`<hr><p><button id="save-calculator-settings" class="btn btn-default" style="width:100%" onclick="Calculator.SettingsSaveValues()">${i18n('Boxes.Calculator.Settings.Save')}</button></p>`);
+		c.push(`<hr><p><button id="save-calculator-settings" class="btn" style="width:100%" onclick="Calculator.SettingsSaveValues()">${i18n('Boxes.Calculator.Settings.Save')}</button></p>`);
 
 		// insert into DOM
 		$('#costCalculatorSettingsBox').html(c.join(''));
@@ -735,7 +735,7 @@ let Calculator = {
 
 
 	SettingsInsertNewRow: ()=> {
-    	let nV = `<p class="new-row">${i18n('Boxes.Calculator.Settings.newValue')}: <input type="number" class="settings-values" style="width:30px"> <span class="btn btn-default btn-green" onclick="Calculator.SettingsInsertNewRow()">+</span></p>`;
+    	let nV = `<p class="new-row">${i18n('Boxes.Calculator.Settings.newValue')}: <input type="number" class="settings-values" style="width:30px"> <span class="btn btn-green" onclick="Calculator.SettingsInsertNewRow()">+</span></p>`;
 
 		$(nV).insertAfter( $('.new-row:eq(-1)') );
 	},

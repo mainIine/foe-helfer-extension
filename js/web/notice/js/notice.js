@@ -194,9 +194,9 @@ let Notice = {
 				subcontent = `<div class='tabs-sub'>`;
 
 				if(n['player_group']){
-					subcontent += 	`<span class="btn-default itm-btn" data-id="${n['player_group']}" data-group="${n['id']}">+ ${i18n('Boxes.Notice.NewPlayer')}</span>`;
+					subcontent += 	`<span class="btn itm-btn" data-id="${n['player_group']}" data-group="${n['id']}">+ ${i18n('Boxes.Notice.NewPlayer')}</span>`;
 				} else {
-					subcontent += 	`<span class="btn-default itm-btn" data-id="new">+ ${i18n('Boxes.Notice.NewSide')}</span>`;
+					subcontent += 	`<span class="btn itm-btn" data-id="new">+ ${i18n('Boxes.Notice.NewSide')}</span>`;
 				}
 
 				if(subtab.length > 0){
@@ -215,7 +215,7 @@ let Notice = {
 				content += `<ul class='horizontal dark-bg'>${tab.join('')}</ul>`;
 			}
 
-			content += 		`<span class="btn-default grp-btn" data-id="new">+ ${i18n('Boxes.Notice.NewGroup')}</span>`;
+			content += 		`<span class="btn grp-btn" data-id="new">+ ${i18n('Boxes.Notice.NewGroup')}</span>`;
 			content += 		div.join('');
 			content += `</div>`;
 
@@ -224,7 +224,7 @@ let Notice = {
 		// all empty
 		else {
 			content = `<div class='notices'>
-							<span class="btn-default grp-btn" data-id="new">+ ${i18n('Boxes.Notice.NewGroup')}</span>
+							<span class="btn grp-btn" data-id="new">+ ${i18n('Boxes.Notice.NewGroup')}</span>
 						</div>
 						<div id='notices_container'>
 							<div class="empty-notice">${i18n('Boxes.Notice.NewGroupDesc')}</div>
@@ -383,7 +383,7 @@ let Notice = {
 
 		btn.attr({
 				role: 'button',
-				class: `btn-default save-${type}-name`,
+				class: `btn save-${type}-name`,
 				'data-id': id,
 				'data-type': type,
 				onclick: (type === 'itm' ? `Notice.SaveItemModal('${(id === 'new' ? "new" : id)}')` : `Notice.SaveModal('${type}', '${(id === 'new' ? "new" : id)}')`)
@@ -401,7 +401,7 @@ let Notice = {
 			delBtn
 				.attr({
 					role: 'button',
-					class: `btn-default btn-delete`,
+					class: `btn btn-delete`,
 					'data-id': id,
 					'data-type': type
 				})

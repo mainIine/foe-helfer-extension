@@ -304,7 +304,7 @@ let scoutingTimes = {
 
         let h = [];
         h.push(`<p><label><input id="autoStartScout" type="checkbox" ${(autoOpen === true) ? ' checked="checked"' : ''} />${i18n('Boxes.Settings.Autostart')}</label></p>`);
-        h.push(`<p><button onclick="scoutingTimes.SaveSettings()" id="save-bghelper-settings" class="btn btn-default" style="width:100%">${i18n('Boxes.Settings.Save')}</button></p>`);
+        h.push(`<p><button onclick="scoutingTimes.SaveSettings()" id="save-bghelper-settings" class="btn" style="width:100%">${i18n('Boxes.Settings.Save')}</button></p>`);
 
         $('#mapScoutingTimesDialogSettingsBox').html(h.join(''));
     },
