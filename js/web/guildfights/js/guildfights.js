@@ -337,7 +337,7 @@ let GuildFights = {
 
 			if (GuildFights.PlayerBoxSettings.showRoundSelector)
 			{
-				h.push(`${i18n('Boxes.GuildMemberStat.GBFRound')} <button class="btn btn-default btn-set-week" data-week="${previousweek}"${previousweek === null ? ' disabled' : ''}>&lt;</button> `);
+				h.push(`${i18n('Boxes.GuildMemberStat.GBFRound')} <button class="btn btn-set-week" data-week="${previousweek}"${previousweek === null ? ' disabled' : ''}>&lt;</button> `);
 				h.push(`<select id="gbg-select-gbground">`);
 
 				GuildFights.GBGAllRounds.forEach(week => {
@@ -345,7 +345,7 @@ let GuildFights = {
 				});
 
 				h.push(`</select>`);
-				h.push(`<button class="btn btn-default btn-set-week last" data-week="${nextweek}"${nextweek === null ? ' disabled' : ''}>&gt;</button>`);
+				h.push(`<button class="btn btn-set-week last" data-week="${nextweek}"${nextweek === null ? ' disabled' : ''}>&gt;</button>`);
 			}
 
 			if (gbground === GuildFights.CurrentGBGRound)
@@ -353,12 +353,12 @@ let GuildFights = {
 				h.push(`<div id="gbgLogFilter">`);
 				if (GuildFights.PlayerBoxSettings.showProgressFilter === 1)
 				{
-					h.push(`<button id="gbg_filterProgressList" title="${HTML.i18nTooltip(i18n('Boxes.GuildFights.ProgressFilterDesc'))}" class="btn btn-default" disabled>&#8593;</button>`);
+					h.push(`<button id="gbg_filterProgressList" title="${HTML.i18nTooltip(i18n('Boxes.GuildFights.ProgressFilterDesc'))}" class="btn" disabled>&#8593;</button>`);
 				}
 
 				if (GuildFights.PlayerBoxSettings.showLogButton === 1)
 				{
-					h.push(`<button id="gbg_showLog" class="btn btn-default">${i18n('Boxes.GuildFights.SnapshotLog')}</button>`);
+					h.push(`<button id="gbg_showLog" class="btn">${i18n('Boxes.GuildFights.SnapshotLog')}</button>`);
 				}
 				h.push(`</div>`);
 			}
@@ -494,13 +494,11 @@ let GuildFights = {
 	 */
 	GetAlertButton: (provId) => {
 		let btn;
-		if (GuildFights.Alerts.find((a) => a.provId == provId) !== undefined)
-		{
-			btn = `<button class="btn-default btn-tight deletealertbutton" data-id="${provId}">${i18n('Boxes.GuildFights.DeleteAlert')}</button>`;
+		if (GuildFights.Alerts.find((a) => a.provId == provId) !== undefined) {
+			btn = `<button class="btn btn-slim btn-delete deletealertbutton" data-id="${provId}">${i18n('Boxes.GuildFights.DeleteAlert')}</button>`;
 		}
-		else
-		{
-			btn = `<button class="btn-default btn-tight setalertbutton" data-id="${provId}">${i18n('Boxes.GuildFights.SetAlert')}</button>`;
+		else {
+			btn = `<button class="btn btn-slim setalertbutton" data-id="${provId}">${i18n('Boxes.GuildFights.SetAlert')}</button>`;
 		}
 		return btn;
 	},
@@ -514,8 +512,7 @@ let GuildFights = {
 	 */
 	ShowGuildBox: (reload) => {
 
-		if ($('#LiveGildFighting').length === 0)
-		{
+		if ($('#LiveGildFighting').length === 0) {
 			HTML.Box({
 				id: 'LiveGildFighting',
 				title: i18n('Menu.Gildfight.Title'),
@@ -923,7 +920,7 @@ let GuildFights = {
 
 			detaildata.sort(function (a, b) { return b.time - a.time });
 
-			h.push('<div class="datetimepicker sticky"><button id="gbgLogDatepicker" class="btn btn-default">' + GuildFights.formatRange() + '</button></div>');
+			h.push('<div class="datetimepicker sticky"><button id="gbgLogDatepicker" class="btn">' + GuildFights.formatRange() + '</button></div>');
 			h.push('<table id="GuildFightsLogTable" class="foe-table gbglog"><thead>');
 			h.push('<tr class="sorter-header">');
 			h.push('<th class="is-number" data-type="gbg-log-group">' + i18n('Boxes.GuildFights.Date') + '</th>');
@@ -1086,8 +1083,8 @@ let GuildFights = {
 		h.push('<div class="gbg-tabs tabs">');
 		h.push(GuildFights.GetTabs());
 		h.push(GuildFights.GetTabContent());
-		h.push('<button class="btn-default copybutton all" onclick="GuildFights.CopyToClipBoard(event)">'+ i18n('Boxes.GuildFights.SelectAll') +'</button>');
-		h.push('<button class="btn-default mapbutton" onclick="ProvinceMap.build()">'+ i18n('Boxes.GuildFights.OpenMap') +'</button>');
+		h.push('<button class="btn copybutton all" onclick="GuildFights.CopyToClipBoard(event)">'+ i18n('Boxes.GuildFights.SelectAll') +'</button>');
+		h.push('<button class="btn mapbutton" onclick="ProvinceMap.build()">'+ i18n('Boxes.GuildFights.OpenMap') +'</button>');
 		h.push('</div>');
 
 		let activeTab = 1;
@@ -1594,9 +1591,9 @@ let GuildFights = {
 			`<input id="gf_showRoundSelector" name="showroundswitcher" value="1" type="checkbox" ${(Settings.showRoundSelector === 1) ? ' checked="checked"' : ''} /> <label for="gf_showRoundSelector">${i18n('Boxes.GuildFights.ShowRoundSelector')}</label></p>`);
 		c.push(`<p class="text-left"><input id="gf_showProgressFilter" name="showprogressfilter" value="1" type="checkbox" ${(Settings.showProgressFilter === 1) ? ' checked="checked"' : ''} /> <label for="gf_showProgressFilter">${i18n('Boxes.GuildFights.ShowProgressFilter')}</label></p>`);
 		c.push(`<p class="text-left"><input id="gf_showLogButton" name="showlogbutton" value="1" type="checkbox" ${(Settings.showLogButton === 1) ? ' checked="checked"' : ''} /> <label for="gf_showLogButton">${i18n('Boxes.GuildFights.ShowLogButton')}</label></p>`);
-		c.push(`<p><button id="save-GuildFightsPlayerBox-settings" class="btn btn-default" style="width:100%" onclick="GuildFights.PlayerBoxSettingsSaveValues()">${i18n('Boxes.General.Save')}</button></p>`);
-		c.push(`<hr><p>${i18n('Boxes.General.Export')}: <span class="btn-group"><button class="btn btn-default" onclick="HTML.ExportTable($('#GildPlayersTable'),'csv','GBG-PlayerList')" title="${HTML.i18nTooltip(i18n('Boxes.General.ExportCSV'))}">CSV</button>`);
-		c.push(`<button class="btn btn-default" onclick="HTML.ExportTable($('#GildPlayersTable'),'json','GBG-PlayerList')" title="${HTML.i18nTooltip(i18n('Boxes.General.ExportJSON'))}">JSON</button></span></p>`);
+		c.push(`<p><button id="save-GuildFightsPlayerBox-settings" class="btn" style="width:100%" onclick="GuildFights.PlayerBoxSettingsSaveValues()">${i18n('Boxes.General.Save')}</button></p>`);
+		c.push(`<hr><p>${i18n('Boxes.General.Export')}: <span class="btn-group"><button class="btn" onclick="HTML.ExportTable($('#GildPlayersTable'),'csv','GBG-PlayerList')" title="${HTML.i18nTooltip(i18n('Boxes.General.ExportCSV'))}">CSV</button>`);
+		c.push(`<button class="btn" onclick="HTML.ExportTable($('#GildPlayersTable'),'json','GBG-PlayerList')" title="${HTML.i18nTooltip(i18n('Boxes.General.ExportJSON'))}">JSON</button></span></p>`);
 
 		$('#GildPlayersSettingsBox').html(c.join(''));
 	},
@@ -1724,7 +1721,7 @@ let GuildFights = {
 		c.push(`<p><label for="showtilecolors"><input id="showtilecolors" name="showtilecolors" value="0" type="checkbox" ${(showTileColors === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.ShowTileColors')}</label></p>`);
 		c.push(`<p><label for="showservertime"><input id="showservertime" name="showservertime" value="0" type="checkbox" ${(showServerTime === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.ShowServerTime')}</label></p>`);
 		c.push(`<p><label for="serverOffset">${i18n('Boxes.GuildFights.serverOffset')}<input id="serverOffset" name="serverOffset" value="${GuildFights.serverOffset??""}" type="text" maxlength="5" size = "5"/></label></p>`);
-		c.push(`<p><button onclick="GuildFights.SaveLiveFightSettings()" id="save-livefight-settings" class="btn btn-default" style="width:100%">${i18n('Boxes.GuildFights.SaveSettings')}</button></p>`);
+		c.push(`<p><button onclick="GuildFights.SaveLiveFightSettings()" id="save-livefight-settings" class="btn" style="width:100%">${i18n('Boxes.GuildFights.SaveSettings')}</button></p>`);
 
 		// insert into DOM
 		$('#LiveGildFightingSettingsBox').html(c.join(''));
@@ -1879,7 +1876,7 @@ let ProvinceMap = {
 			id: 'province-map-wrap',
 		});
 		$(wrapper).html(ProvinceMap.Map);
-		$('#ProvinceMapBody').html(wrapper).append('<span id="zoomGBGMap" class="btn-default">'+i18n('Boxes.GvGMap.Action.Zoom')+'</span><span id="switchGBGMap" class="btn-default">'+i18n('Boxes.GuildFights.Switch')+'</span>');
+		$('#ProvinceMapBody').html(wrapper).append('<span id="zoomGBGMap" class="btn">'+i18n('Boxes.GvGMap.Action.Zoom')+'</span><span id="switchGBGMap" class="btn">'+i18n('Boxes.GuildFights.Switch')+'</span>');
 		
 		ProvinceMap.mapDrag();
 

@@ -160,7 +160,7 @@ a[target="_blank"] svg {
 /**
 	Buttons
 */
-.btn-default {
+.btn {
 	display: inline-block;
 	font-weight: 400;
 	text-align: center;
@@ -182,16 +182,16 @@ a[target="_blank"] svg {
 	outline: none !important;
 }
 
-.btn-default a {
+.btn a {
 	color: inherit;
 	text-decoration: inherit;
 }
 
-.btn-default[disabled], .btn-default[disabled]:hover {
+.btn[disabled], .btn[disabled]:hover {
 	filter: saturate(10%) brightness(80%);
 }
 
-.btn-default:not([disabled]):hover,
+.btn:not([disabled]):hover,
 .btn-active:not([disabled]),
 .btn-active:not([disabled]):hover {
 	filter: brightness(140%);
@@ -199,14 +199,14 @@ a[target="_blank"] svg {
 	text-shadow: 0 1px 1px var(--black);
 }
 
-.btn-default:not([disabled]):active,
+.btn:not([disabled]):active,
 .btn-active:not([disabled]):active {
 	filter: brightness(150%) saturate(120%);
 	cursor: url('../images/cursor_hover.cur'), auto;
 	text-shadow: 0 1px 1px var(--black);
 }
 
-.btn-tight {
+.btn-slim {
 	margin: 1px;
 	padding: 1px 4px;
 	max-width: 100px;
@@ -255,27 +255,27 @@ a[target="_blank"] svg {
 	display: inline-flex;
 }
 
-.btn-group .btn-default.btn-tight {
+.btn-group .btn.btn-slim {
 	margin: 0;
 	padding: 1px 4px;
 }
 
-.btn-group .btn-default {
+.btn-group .btn {
 	border-radius: 0;
 	border-right-width: 0;
 	padding: 0.2rem 0.5rem;
 }
 
-.btn-group .btn-default:first-child {
+.btn-group .btn:first-child {
 	border-radius: 4px 0 0 4px;
 }
 
-.btn-group .btn-default:last-child {
+.btn-group .btn:last-child {
 	border-radius: 0 4px 4px 0;
 	border-right-width: 1px;
 }
 
-.btn-group .btn-default:only-child {
+.btn-group .btn:only-child {
 	border-radius: 4px;
 	border-right-width: 1px;
 }

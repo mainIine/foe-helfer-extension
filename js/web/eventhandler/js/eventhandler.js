@@ -654,8 +654,8 @@ let EventHandler = {
 	*/
 	ShowMoppelHelperSettingsButton: () => {
 		let h = [];
-		h.push(`<p class="text-center"><button class="btn btn-default" onclick="HTML.ExportTable($('#moppelhelperBody').find('.foe-table.exportable'), 'csv', 'MoppelHelper${EventHandler.CurrentPlayerGroup}')">${i18n('Boxes.General.ExportCSV')}</button></p>`);
-		h.push(`<p class="text-center"><button class="btn btn-default" onclick="HTML.ExportTable($('#moppelhelperBody').find('.foe-table.exportable'), 'json', 'MoppelHelper${EventHandler.CurrentPlayerGroup}')">${i18n('Boxes.General.ExportJSON')}</button></p>`);
+		h.push(`<p class="text-center"><button class="btn" onclick="HTML.ExportTable($('#moppelhelperBody').find('.foe-table.exportable'), 'csv', 'MoppelHelper${EventHandler.CurrentPlayerGroup}')">${i18n('Boxes.General.ExportCSV')}</button></p>`);
+		h.push(`<p class="text-center"><button class="btn" onclick="HTML.ExportTable($('#moppelhelperBody').find('.foe-table.exportable'), 'json', 'MoppelHelper${EventHandler.CurrentPlayerGroup}')">${i18n('Boxes.General.ExportJSON')}</button></p>`);
 
 		$('#moppelhelperSettingsBox').html(h.join(''));
 	},

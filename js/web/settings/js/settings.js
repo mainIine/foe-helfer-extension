@@ -136,7 +136,7 @@ let Settings = {
 				}
 				if (button) {
 					let b = $('<div />').addClass('button-wrapper').append(
-						$(`<button class="btn-default" id="${x}Button" onclick="${button}">${i18n('Settings.' + d['name'] + '.Button')}</button>`)
+						$(`<button class="btn" id="${x}Button" onclick="${button}">${i18n('Settings.' + d['name'] + '.Button')}</button>`)
 					);
 
 					cs.append(b);
@@ -266,7 +266,7 @@ let Settings = {
 	 * @constructor
 	 */
 	ExportView: () => {
-		return `<p><button class="btn-default" onclick="DBExport.BuildBox()">${i18n('Settings.ExportSettings.OpenImportExportTool')}</button></p>`;
+		return `<p><button class="btn" onclick="DBExport.BuildBox()">${i18n('Settings.ExportSettings.OpenImportExportTool')}</button></p>`;
 	},
 
 

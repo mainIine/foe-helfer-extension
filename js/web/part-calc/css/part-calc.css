@@ -112,11 +112,11 @@
 	margin: 0 5px;
 }
 
-#OwnPartBox .btn-default {
+#OwnPartBox .btn {
 	padding: 0.2rem 0.4rem;
 }
 
-#OwnPartBox .btn-default.btn-tight {
+#OwnPartBox .btn.btn-slim {
 	padding: 0.2rem;
 }
 
@@ -239,7 +239,7 @@
 	border-radius: 5px;
 }
 
-.OwnPartBoxBackgroundBody > div > span:not(.btn-default) {
+.OwnPartBoxBackgroundBody > div > span:not(.btn) {
 	display: inline-block;
 	width: 70px;
 }

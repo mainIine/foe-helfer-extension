@@ -65,8 +65,8 @@ let Treasury = {
 
         h.push('<strong>' + i18n('Boxes.Treasury.Message') + '</strong><br>');
         h.push(i18n('Boxes.Treasury.RowNumber') + ': ' + HTML.Format(Treasury.Logs.length) + '<br>');
-        h.push('<span class="btn-default button-reset">' + i18n('Boxes.Treasury.Reset') + '</span>');
-        h.push('<span class="btn-default button-export">' + i18n('Boxes.Treasury.Export') + '</span>');
+        h.push('<span class="btn button-reset">' + i18n('Boxes.Treasury.Reset') + '</span>');
+        h.push('<span class="btn button-export">' + i18n('Boxes.Treasury.Export') + '</span>');
 
         $('#treasuryBody').html(h.join(''));
     },
@@ -118,7 +118,7 @@ let Treasury = {
 
         let h = [];
         h.push(`<p><input id="autoStartTreasuryExport" name="autoStartTreasuryExport" value="1" type="checkbox" ${(autoOpen === true) ? ' checked="checked"' : ''} /> <label for="autoStartMarket">${i18n('Boxes.Settings.Autostart')}</label></p>`);
-        h.push(`<p><button onclick="Treasury.SaveSettings()" id="save-treasury-settings" class="btn btn-default" style="width:100%">${i18n('Boxes.Settings.Save')}</button></p>`);
+        h.push(`<p><button onclick="Treasury.SaveSettings()" id="save-treasury-settings" class="btn" style="width:100%">${i18n('Boxes.Settings.Save')}</button></p>`);
 
         $('#treasurySettingsBox').html(h.join(''));
     },

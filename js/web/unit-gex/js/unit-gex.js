@@ -115,10 +115,10 @@ let UnitGex = {
 				</div>`,
 				`<div id="unitsGexBodyInner"></div>`,
 				`<div class="pagination">
-					<button class="btn btn-tight btn-default btn-pagination ge_difficulty_1" onclick="UnitGex.ToggleHeader('0'); $('#unitsGexBody').animate({scrollTop: 0}, 'fast')"></button>
-					<button class="btn btn-tight btn-default btn-pagination ge_difficulty_2" onclick="UnitGex.ToggleHeader('0'); $('#unitsGexBody').animate({scrollTop: 480}, 'fast')"></button>
-					<button class="btn btn-tight btn-default btn-pagination ge_difficulty_3" onclick="UnitGex.ToggleHeader('0'); $('#unitsGexBody').animate({scrollTop: 960}, 'fast')"></button>
-					<button class="btn btn-tight btn-default btn-pagination ge_difficulty_4" onclick="UnitGex.ToggleHeader('0'); $('#unitsGexBody').animate({scrollTop: 1440}, 'fast')"></button>
+					<button class="btn btn-slim btn btn-pagination ge_difficulty_1" onclick="UnitGex.ToggleHeader('0'); $('#unitsGexBody').animate({scrollTop: 0}, 'fast')"></button>
+					<button class="btn btn-slim btn btn-pagination ge_difficulty_2" onclick="UnitGex.ToggleHeader('0'); $('#unitsGexBody').animate({scrollTop: 480}, 'fast')"></button>
+					<button class="btn btn-slim btn btn-pagination ge_difficulty_3" onclick="UnitGex.ToggleHeader('0'); $('#unitsGexBody').animate({scrollTop: 960}, 'fast')"></button>
+					<button class="btn btn-slim btn btn-pagination ge_difficulty_4" onclick="UnitGex.ToggleHeader('0'); $('#unitsGexBody').animate({scrollTop: 1440}, 'fast')"></button>
 				</div>`
 			);
 		}

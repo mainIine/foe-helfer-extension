@@ -706,12 +706,12 @@ let Parts = {
 		}
 		else {
 			if (Parts.IsNextLevel) 
-				h.push('<button class="btn btn-default btn-tight btn-set-level" data-value="' + (Parts.Level - 1) + '">&lt;</button> ');
+				h.push('<button class="btn btn-slim btn-set-level" data-value="' + (Parts.Level - 1) + '">&lt;</button> ');
 
 			h.push(i18n('Boxes.OwnpartCalculator.Step') + ' ' + Parts.Level + ' &rarr; ' + (parseInt(Parts.Level) + 1));
 
 			if (GreatBuildings.Rewards[Era] && GreatBuildings.Rewards[Era][Parts.Level + 1]) 
-				h.push(' <button class="btn btn-default btn-tight btn-set-level" data-value="' + (Parts.Level + 1) + '">&gt;</button>');
+				h.push(' <button class="btn btn-slim btn-set-level" data-value="' + (Parts.Level + 1) + '">&gt;</button>');
 		}
 		h.push('</div>');
 		h.push('</div>');
@@ -737,7 +737,7 @@ let Parts = {
 		investmentSteps = investmentSteps.filter((item, index) => investmentSteps.indexOf(item) === index);
 		investmentSteps.sort((a, b) => a - b);
 		investmentSteps.forEach(bonus => {
-			h.push(`<button class="btn btn-default btn-set-arc${(Parts.ArcPercents[0] === bonus ? ' btn-active' : '')}" data-value="${bonus}">${bonus}%</button>`);
+			h.push(`<button class="btn btn-set-arc${(Parts.ArcPercents[0] === bonus ? ' btn-active' : '')}" data-value="${bonus}">${bonus}%</button>`);
 		});
 
 		h.push('</span>');		
@@ -907,8 +907,8 @@ let Parts = {
 			h.push('<div class="bottom-buttons text-center">');
 			h.push('<div class="btn-group">');
 			if (Parts.SafePlaces.length > 0 || Parts.CopyModeAll) { //Copy bzw. Note Button nur einblenden wenn zumindest ein Platz safe ist
-				h.push('<span class="btn-default button-own">' + i18n('Boxes.OwnpartCalculator.CopyValues') + '</span>');
-				if (Parts.CityMapEntity['player_id'] === ExtPlayerID) h.push('<span class="btn-default button-save-own">' + i18n('Boxes.OwnpartCalculator.Note') + '</span>');
+				h.push('<span class="btn button-own">' + i18n('Boxes.OwnpartCalculator.CopyValues') + '</span>');
+				if (Parts.CityMapEntity['player_id'] === ExtPlayerID) h.push('<span class="btn button-save-own">' + i18n('Boxes.OwnpartCalculator.Note') + '</span>');
 			}
 			else {
 				h.push(i18n('Boxes.OwnpartCalculator.NoPlaceSafe'));
@@ -916,7 +916,7 @@ let Parts = {
 			h.push('</div>');
 
 			h.push('<div class="btn-group">');
-			h.push('<span class="btn-default button-powerleveling">' + i18n('Boxes.OwnpartCalculator.PowerLeveling') + '</span>');
+			h.push('<span class="btn button-powerleveling">' + i18n('Boxes.OwnpartCalculator.PowerLeveling') + '</span>');
 			h.push('</div>');
 			h.push('</div>');
 			h.push('</div>');
@@ -1117,8 +1117,8 @@ let Parts = {
 		h.push('<input type="text" id="copystring" value="' + Parts.CopyString + '">');
 		
 		h.push('<div class="btn-outer text-center" style="margin-top: 10px">');
-		h.push('<span class="btn-default button-own">' + i18n('Boxes.OwnpartCalculator.CopyValues') + '</span> ');
-		if (Parts.CityMapEntity['player_id'] === ExtPlayerID) h.push('<span class="btn-default button-save-own">' + i18n('Boxes.OwnpartCalculator.Note') + '</span>'); //Kein Merken für fremde LGs
+		h.push('<span class="btn button-own">' + i18n('Boxes.OwnpartCalculator.CopyValues') + '</span> ');
+		if (Parts.CityMapEntity['player_id'] === ExtPlayerID) h.push('<span class="btn button-save-own">' + i18n('Boxes.OwnpartCalculator.Note') + '</span>'); //Kein Merken für fremde LGs
 		h.push('</div>');
 
 		// ---------------------------------------------------------------------------------------------
@@ -1478,7 +1478,7 @@ let Parts = {
 				h.push('<td class="no-select">' + HTML.Format(MainParser.round(DoubleCollections[i])) + '</td>');
 			}
 			h.push('<td><strong class="info no-select">' + HTML.Format(MainParser.round(EigenNettos[i])) + '</strong></td>');
-			h.push('<td><span class="hidden-text">' + i + '</span><span class="btn-default button-powerlevel-copy">' + i18n('Boxes.PowerLeveling.CopyValues') + '</span></td>');
+			h.push('<td><span class="hidden-text">' + i + '</span><span class="btn button-powerlevel-copy">' + i18n('Boxes.PowerLeveling.CopyValues') + '</span></td>');
 			h.push('</tr>');
 		}
 	},
@@ -1579,7 +1579,7 @@ let Parts = {
 			showPrints = localStorage.getItem('OwnPartShowBP') || 'true',
 			minView = localStorage.getItem('OwnPartMinView') || 'false',
 			autoOpen = localStorage.getItem('OwnPartAutoOpen') || 'false',
-			nV = `<p class="new-row">${i18n('Boxes.Calculator.Settings.newValue')}: <input type="number" class="settings-values" style="width:30px"> <span class="btn btn-default btn-green" onclick="Parts.SettingsInsertNewRow()">+</span></p>`;
+			nV = `<p class="new-row">${i18n('Boxes.Calculator.Settings.newValue')}: <input type="number" class="settings-values" style="width:30px"> <span class="btn btn-green" onclick="Parts.SettingsInsertNewRow()">+</span></p>`;
 		
 			if(sB) {
 			// buttons = [...new Set([...defaults,...JSON.parse(sB)])];
@@ -1594,10 +1594,10 @@ let Parts = {
 
 		buttons.forEach(bonus => {
 			if(bonus === 'ark') {
-				c.push(`<span><input type="hidden" class="settings-values" value="ark"> <button class="btn btn-default">${MainParser.ArkBonus}%</button></span>`);
+				c.push(`<span><input type="hidden" class="settings-values" value="ark"> <button class="btn">${MainParser.ArkBonus}%</button></span>`);
 			}
 			else {
-				c.push(`<p class="btn-group" style="margin: 3px"><button class="btn btn-default">${bonus}%</button> <input type="hidden" class="settings-values" value="${bonus}"> <span class="btn btn-default btn-delete" onclick="Parts.SettingsRemoveRow(this)">x</span> </p>`);
+				c.push(`<p class="btn-group" style="margin: 3px"><button class="btn">${bonus}%</button> <input type="hidden" class="settings-values" value="${bonus}"> <span class="btn btn-delete" onclick="Parts.SettingsRemoveRow(this)">x</span> </p>`);
 			}
 		});
 
@@ -1612,7 +1612,7 @@ let Parts = {
 		c.push('<br><input type="checkbox" id="autoOpen" class="autoOpen game-cursor" ' + ((autoOpen == 'true') ? 'checked' : '') + '> <label for="autoOpen">' + i18n('Settings.ShowOwnPartAutoOpen.Desc') + '</label></p>');
 
 		// save button
-		c.push(`<p><button id="save-calculator-settings" class="btn btn-default" style="width:100%" onclick="Parts.SettingsSaveValues()">${i18n('Boxes.Calculator.Settings.Save')}</button></p>`);
+		c.push(`<p><button id="save-calculator-settings" class="btn" style="width:100%" onclick="Parts.SettingsSaveValues()">${i18n('Boxes.Calculator.Settings.Save')}</button></p>`);
 
 		// insert into DOM
 		$('#OwnPartBoxSettingsBox').html(c.join(''));
@@ -1620,7 +1620,7 @@ let Parts = {
 
 
 	SettingsInsertNewRow: ()=> {
-		let nV = `<p class="new-row">${i18n('Boxes.Calculator.Settings.newValue')}: <input type="number" class="settings-values" style="width:30px"> <span class="btn btn-default btn-green" onclick="Parts.SettingsInsertNewRow()">+</span></p>`;
+		let nV = `<p class="new-row">${i18n('Boxes.Calculator.Settings.newValue')}: <input type="number" class="settings-values" style="width:30px"> <span class="btn btn-green" onclick="Parts.SettingsInsertNewRow()">+</span></p>`;
 
 		$(nV).insertAfter( $('.new-row:eq(-1)') );
 	},

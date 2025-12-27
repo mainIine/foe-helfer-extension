@@ -116,7 +116,7 @@
 #Productions #ProductionsBody table, #Productions #ProductionsBody .tabs ul li.forge_points_production, #Productions #ProductionsBody .tabs ul li.coin_production, #Productions #ProductionsBody .tabs ul li.supply_production {
 	display: none;
 }
-#Productions #ProductionsBody .btn-tight.typeBoost {
+#Productions #ProductionsBody .btn-slim.typeBoost {
 	border-radius: 3px;
 }
 #Productions th.boost span {
@@ -267,7 +267,7 @@
 #ProductionsRatingBody .overlay .content li.selected::after {
 	content: '✔';
 }
-#ProductionsRatingBody .overlay .btn-default.closeMetaBuilding {
+#ProductionsRatingBody .overlay .btn.closeMetaBuilding {
 	margin: 0 auto;
     display: block;
     width: max-content;

@@ -729,7 +729,7 @@ let Alerts = function(){
 						let allSectorsHtml = ``;
 
 						if ( tmp.model.battlegrounds.provinces ){
-							allSectorsHtml = `<span class="btn-default button-alert-create-all-sectors">${labels.allsectors}</span>`;
+							allSectorsHtml = `<span class="btn button-alert-create-all-sectors">${labels.allsectors}</span>`;
 						}
 
 						// list alerts
@@ -748,7 +748,7 @@ let Alerts = function(){
 				</div>
 				<div class="flex dark-bg p2">
 					${allSectorsHtml}
-					<span class="btn-default button-alert-popup-new btn-green">${labels.create}</span>
+					<span class="btn button-alert-popup-new btn-green">${labels.create}</span>
 				</div>`;
 
 						return html;
@@ -850,9 +850,9 @@ let Alerts = function(){
 							<td>${labels.repeats[alert.repeat+""]}</td>
 							<td class="text-right">
 								<div class="btn-group">
-								<span class="btn-default btn-tight alert-button" data-id="${alert.id}" data-action="preview">${labels.preview}</span>
-								<span class="btn-default btn-tight alert-button btn-edit" data-id="${alert.id}" data-action="edit" title="${labels.edit}"></span>
-								<span class="btn-default btn-tight alert-button btn-delete" data-id="${alert.id}" data-action="delete" title="${labels.delete}"></span>
+								<span class="btn btn-slim alert-button" data-id="${alert.id}" data-action="preview">${labels.preview}</span>
+								<span class="btn btn-slim alert-button btn-edit" data-id="${alert.id}" data-action="edit" title="${labels.edit}"></span>
+								<span class="btn btn-slim alert-button btn-delete" data-id="${alert.id}" data-action="delete" title="${labels.delete}"></span>
 								</div>
 							</td>
 						</tr>`;
@@ -1254,11 +1254,11 @@ let Alerts = function(){
 
 					let buttonsLeft = '';
 					data.buttons.left.forEach( element => {
-						buttonsLeft += `<span class="btn-default button-${element}-alert">${labels.buttons[element]}</span> `;
+						buttonsLeft += `<span class="btn button-${element}-alert">${labels.buttons[element]}</span> `;
 					} );
 					let buttonsRight = '';
 					data.buttons.right.forEach( element => {
-						buttonsRight += `<span class="btn-default button-${element}-alert">${labels.buttons[element]}</span> `;
+						buttonsRight += `<span class="btn button-${element}-alert">${labels.buttons[element]}</span> `;
 					} );
 
 					return `<form id="alert-form">
@@ -1277,17 +1277,17 @@ let Alerts = function(){
 					<span id="alert-expires"></span>
 				
 					<div class="btn-group" role="group" aria-label="Date Group">						
-						<span class="btn-default datetime-preset" data-time="-60">-${labels.times['1m']}</span>
-						<span class="btn-default datetime-preset" data-time="60">${labels.times['1m']}</span>
-						<span class="btn-default datetime-preset" data-time="300">${labels.times['5m']}</span>
-						<span class="btn-default datetime-preset" data-time="900">${labels.times['15m']}</span>
-						<span class="btn-default datetime-preset" data-time="3600">${labels.times['1h']}</span>
-						<span class="btn-default datetime-preset" data-time="14400">${labels.times['4h']}</span>
-						<span class="btn-default datetime-preset" data-time="18000">${labels.times['5h']}</span>
-						<span class="btn-default datetime-preset" data-time="28800">${labels.times['8h']}</span>
-						<span class="btn-default datetime-preset" data-time="36000">${labels.times['10h']}</span>
-						<span class="btn-default datetime-preset" data-time="86400">${labels.times['1d']}</span>
-						<span class="btn-default datetime-preset" data-time="604800">${labels.times['7d']}</span>
+						<span class="btn datetime-preset" data-time="-60">-${labels.times['1m']}</span>
+						<span class="btn datetime-preset" data-time="60">${labels.times['1m']}</span>
+						<span class="btn datetime-preset" data-time="300">${labels.times['5m']}</span>
+						<span class="btn datetime-preset" data-time="900">${labels.times['15m']}</span>
+						<span class="btn datetime-preset" data-time="3600">${labels.times['1h']}</span>
+						<span class="btn datetime-preset" data-time="14400">${labels.times['4h']}</span>
+						<span class="btn datetime-preset" data-time="18000">${labels.times['5h']}</span>
+						<span class="btn datetime-preset" data-time="28800">${labels.times['8h']}</span>
+						<span class="btn datetime-preset" data-time="36000">${labels.times['10h']}</span>
+						<span class="btn datetime-preset" data-time="86400">${labels.times['1d']}</span>
+						<span class="btn datetime-preset" data-time="604800">${labels.times['7d']}</span>
 					</div>
 				</div>
 				<div class="col">
@@ -1312,37 +1312,37 @@ let Alerts = function(){
 				<p class="full-width radio-toolbar extra-vs-8">
 					${labels.repeats.repeat}
 					<input id="alert-repeat-never" type="radio" name="alert-repeat" value="-1"${repeats['-1']}>
-					<label for="alert-repeat-never" class="btn-default">${labels.repeats.never}</label>
+					<label for="alert-repeat-never" class="btn">${labels.repeats.never}</label>
 					${labels.repeats.every}
 					<span class="btn-group" role="group" aria-label="Date Group">	
-						<label for="alert-repeat-5m" class="btn-default">${labels.times['5m']}</label>
+						<label for="alert-repeat-5m" class="btn">${labels.times['5m']}</label>
 						<input id="alert-repeat-5m" type="radio" name="alert-repeat" class="hidden" value="300"${repeats['300']}>
 						<input id="alert-repeat-15m" type="radio" name="alert-repeat" class="hidden" value="900"${repeats['900']}>
-						<label for="alert-repeat-15m" class="btn-default">${labels.times['15m']}</label>
+						<label for="alert-repeat-15m" class="btn">${labels.times['15m']}</label>
 						<input id="alert-repeat-1h" type="radio" name="alert-repeat" class="hidden" value="3600"${repeats['3600']}>
-						<label for="alert-repeat-1h" class="btn-default">${labels.times['1h']}</label>
+						<label for="alert-repeat-1h" class="btn">${labels.times['1h']}</label>
 						<input id="alert-repeat-4h" type="radio" name="alert-repeat" class="hidden" value="14400"${repeats['14400']}>
-						<label for="alert-repeat-4h" class="btn-default">${labels.times['4h']}</label>
+						<label for="alert-repeat-4h" class="btn">${labels.times['4h']}</label>
 						<input id="alert-repeat-5h" type="radio" name="alert-repeat" class="hidden" value="18000"${repeats['18000']}>
-						<label for="alert-repeat-5h" class="btn-default">${labels.times['5h']}</label>
+						<label for="alert-repeat-5h" class="btn">${labels.times['5h']}</label>
 						<input id="alert-repeat-8h" type="radio" name="alert-repeat" class="hidden" value="28800"${repeats['28800']}>
-						<label for="alert-repeat-8h" class="btn-default">${labels.times['8h']}</label>
+						<label for="alert-repeat-8h" class="btn">${labels.times['8h']}</label>
 						<input id="alert-repeat-10h" type="radio" name="alert-repeat" class="hidden" value="36000"${repeats['36000']}>
-						<label for="alert-repeat-10h" class="btn-default">${labels.times['10h']}</label>
+						<label for="alert-repeat-10h" class="btn">${labels.times['10h']}</label>
 						<input id="alert-repeat-1d" type="radio" name="alert-repeat" class="hidden" value="86400"${repeats['86400']}>
-						<label for="alert-repeat-1d" class="btn-default">${labels.times['1d']}</label>
+						<label for="alert-repeat-1d" class="btn">${labels.times['1d']}</label>
 						<input id="alert-repeat-7d" type="radio" name="alert-repeat" class="hidden" value="604800"${repeats['604800']}>
-						<label for="alert-repeat-7d" class="btn-default">${labels.times['7d']}</label>
+						<label for="alert-repeat-7d" class="btn">${labels.times['7d']}</label>
 					</span>
 				</p>
 				
 				<p class="full-width radio-toolbar">
 					${labels.persist.persistence}
 					<span class="btn-group">
-						<label for="alert-persistent-off" class="btn-default">${labels.persist.off}</label>
+						<label for="alert-persistent-off" class="btn">${labels.persist.off}</label>
 						<input id="alert-persistent-off" type="radio" name="alert-persistent"${persistent_off} value="off">
 						<input id="alert-persistent-on" type="radio" name="alert-persistent"${persistent_on} value="on">
-						<label for="alert-persistent-on" class="btn-default">${labels.persist.on}</label>
+						<label for="alert-persistent-on" class="btn">${labels.persist.on}</label>
 					</span>
 					<br><small>${labels.persist.description}</small>
 				</p>

@@ -75,14 +75,14 @@ let Auction = {
 			HTML.AddCssFile('auctions');
 		} 
         let t=[];
-        t.push(`<button id="AuctionHelpBtn" class="btn-default">${i18n('Boxes.AuctionSettings.Help')}</button>`);
+        t.push(`<button id="AuctionHelpBtn" class="btn">${i18n('Boxes.AuctionSettings.Help')}</button>`);
         t.push(`<div id="AuctionHelp" style="display:none"><ul><li>${i18n('Boxes.AuctionSettings.Help1')}</li><li>${i18n('Boxes.AuctionSettings.Help2')}</li><li>${i18n('Boxes.AuctionSettings.Help3')}</li><li>${i18n('Boxes.AuctionSettings.Help4')}</li><li>${i18n('Boxes.AuctionSettings.Help5')}</li></div> `);
         t.push(`<table><tr><th>${i18n('Boxes.AuctionSettings.Bid')}</th><th>${i18n('Boxes.AuctionSettings.Add')}</th><th>${i18n('Boxes.AuctionSettings.Factor')}</th></tr>`)
         for (let i = 0; i<Auction.diff.length;i++) {
             t.push(`<tr><td>${i+1}</td><td><Input class="AuctionInput" data-type="Add" data-id="${i}" type="number" value="${Auction.diff[i]}"></td><td><Input class="AuctionInput" data-type="Mult" data-id="${i}" type="number" value="${Auction.fak[i]}"></td></tr>`)
 
         }
-        t.push(`<tr><td colspan="3"><button id="AuctionAddRow" class="btn-default">+</button><button id="AuctionDelRow" class="btn-default">-</button></td></tr>`)
+        t.push(`<tr><td colspan="3"><button id="AuctionAddRow" class="btn">+</button><button id="AuctionDelRow" class="btn">-</button></td></tr>`)
         t.push(`</table>`)
         
         
