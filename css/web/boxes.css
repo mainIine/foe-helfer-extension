@@ -2374,6 +2374,15 @@ tr.sorter-header th:not(.no-sort).descending:after {
 	}
 }
 
+#AllyListTable tr:last-child .all + .battleground::before, #AllyListTable tr:last-child .battleground + .guild_expedition::before {
+	content: '';
+	display: block;
+}
+
+#AllyListTable tr:last-child span {
+	padding: 0 3px;
+}
+
 .unit_skill.rogue::before {background-position: calc(-144px*var(--unit_scale)) calc(-48px*var(--unit_scale))}
 .unit_skill.attack::before {background-position: 0 0}
 .unit_skill.blast::before {background-position: calc(-24px*var(--unit_scale)) 0}

@@ -1537,6 +1537,7 @@ let MainParser = {
 		meta:null,
 		rarities:null,
 		names:null,
+		buildingBoostSums:[],
 
 		getAllies:(allies)=>{
 			MainParser.Allies.allyList = Object.assign({}, ...allies.map(a=>({[a.id]:a})));
@@ -1724,8 +1725,31 @@ let MainParser = {
 						   	<td>${r.allyName || ""}${r.fragmentsAmount?srcLinks.icons("icon_tooltip_fragment") + r.fragmentsAmount+"/"+r.fragmentsNeeded:""}</td>
 						   	<td>${r.allyLevel || ""}</td>
 						   	<td>${MainParser.Allies.boosts(r.allyBoosts)}</td>
-						</tr>`
+						</tr>`;
+
+				// gather sums of all boosts
+				if (buildingId!==0 && r.allyBoosts !== null) 
+					for (let boost of r.allyBoosts) {
+						let bBoost = MainParser.Allies.buildingBoostSums.find(x => x.type === boost.type && x.targetedFeature === boost.targetedFeature);
+						if (bBoost)
+							bBoost.value += boost.value;
+						else
+							MainParser.Allies.buildingBoostSums.push(boost);
+					}
 			}
+			MainParser.Allies.buildingBoostSums.sort((a, b) => {
+				if (a.type < b.type) return -1
+				if (a.type > b.type) return 1
+				return 0
+			});
+			MainParser.Allies.buildingBoostSums.sort((a, b) => {
+				if (a.targetedFeature < b.targetedFeature) return -1
+				if (a.targetedFeature > b.targetedFeature) return 1
+				return 0
+			});
+			html+=`<tr><td colspan="7" class="text-center dark-bg">
+				${MainParser.Allies.boosts(MainParser.Allies.buildingBoostSums)}
+				</td></tr></table>`
 			
 			$('#AllyListBody').html(html).css("overflow","auto")
 
@@ -1764,7 +1788,7 @@ let MainParser = {
 			}
 			let ret=""
 			for (b of boosts||[]) {
-				ret+=`${srcLinks.icons(b.type+feature[b.targetedFeature])} ${b.value + Boosts.percent(b.type)}`
+				ret+=`<span class="${b.targetedFeature}">${srcLinks.icons(b.type+feature[b.targetedFeature])} ${b.value + Boosts.percent(b.type)}</span>`
 			}
 			return ret
 		}
