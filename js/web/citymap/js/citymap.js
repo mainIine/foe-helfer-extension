@@ -217,9 +217,6 @@ let CityMap = {
 			
 			if(ActiveMap === 'main'){
 				$('#highlight-old-buildings')[0].checked=false;
-				$('#show-nostreet-buildings')[0].checked=false;
-				$('#show-ascendable-buildings')[0].checked=false;
-				$('#show-decayed-buildings')[0].checked=false;
 				$('#show-worst-buildings')[0].checked=false;
 			}
 
