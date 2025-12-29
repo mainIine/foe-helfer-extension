@@ -137,7 +137,7 @@ let Parts = {
 				auto_close: true,
 				dragdrop: true,
 				minimize: true,
-				speaker: 'PartsTone',
+				//speaker: 'PartsTone',
 				settings: 'Parts.ShowCalculatorSettings()',
 			    active_maps:"main"
 			});

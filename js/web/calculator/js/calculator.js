@@ -71,7 +71,7 @@ let Calculator = {
 				auto_close: true,
 				dragdrop: true,
 				minimize: true,
-				speaker: 'CalculatorTone',
+				//speaker: 'CalculatorTone',
 				settings: 'Calculator.ShowCalculatorSettings()',
 				active_maps:"main",
 			});
