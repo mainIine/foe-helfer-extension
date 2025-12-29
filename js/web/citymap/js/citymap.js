@@ -265,12 +265,18 @@ let CityMap = {
 		);
 
 		oB.append(wrapper);
-		$('#citymap-wrapper').append(menu);
 
 		if (ActiveMap === "guild_raids")
-			if (CityMap.QIData)
-				$("#sidebar").append(CityMap.showQIBuildingList());
+			if (CityMap.QIData) {
+				menu.append(
+					$('<button />')
+						.addClass('btn ml-auto')
+						.attr({ id: 'copy-meta-infos', onclick: 'CityMap.copyMetaInfos()' , style: 'margin-left: auto'}).text(i18n('Boxes.CityMap.CopyMetaInfos'))
+				);
+			$("#sidebar").append(CityMap.showQIBuildingList());
+		}
 
+		$('#citymap-wrapper').append(menu);
 
 		if (ActiveMap === "cultural_outpost" || ActiveMap === "era_outpost") {
 			$("#sidebar").append(CityMap.showOutpostBuildings());
@@ -1124,20 +1130,29 @@ let CityMap = {
 	 * Copy citydata to the clipboard
 	 */
 	copyMetaInfos: () => {
-		helper.str.copyToClipboard(
-			JSON.stringify({
-				CityMapData: CityMap.removeDoubleUnderscoreKeys(MainParser.CityMapData),
-				CityEntities: CityMap.removeDoubleUnderscoreKeys(MainParser.CityEntities),
-				UnlockedAreas: CityMap.removeDoubleUnderscoreKeys(CityMap.UnlockedAreas)
-			})
-		).then(() => {
-			HTML.ShowToastMsg({
-				head: i18n('Boxes.CityMap.ToastHeadCopyData'),
-				text: i18n('Boxes.CityMap.ToastBodyCopyData'),
-				type: 'info',
-				hideAfter: 4000,
-			})
-		});
+        let data = {};
+        switch (ActiveMap) {
+            case 'guild_raids':
+                data.CityMapData = CityMap.removeDoubleUnderscoreKeys(CityMap.QIData);
+                data.UnlockedAreas = CityMap.removeDoubleUnderscoreKeys(CityMap.QIAreas);
+                break;
+            default:
+                data.CityMapData = CityMap.removeDoubleUnderscoreKeys(MainParser.CityMapData);
+                data.UnlockedAreas = CityMap.removeDoubleUnderscoreKeys(CityMap.UnlockedAreas);
+				data.CityEntities = CityMap.removeDoubleUnderscoreKeys(MainParser.CityEntities);
+                break;
+        }
+        data.CityEntities = CityMap.removeDoubleUnderscoreKeys(MainParser.CityEntities);
+        helper.str.copyToClipboard(
+            JSON.stringify({data})
+        ).then(() => {
+            HTML.ShowToastMsg({
+                head: i18n('Boxes.CityMap.ToastHeadCopyData'),
+                text: i18n('Boxes.CityMap.ToastBodyCopyData'),
+                type: 'info',
+                hideAfter: 4000,
+            })
+        });
 	},
 
 
