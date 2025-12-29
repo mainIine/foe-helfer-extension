@@ -89,6 +89,10 @@
 	margin: 5px 0;
 }
 
+#sidebar.main #area-state ul + ul li.active span:first-child {
+	font-weight: bold;
+}
+
 #sidebar.main #area-state li {
 	display: inline-flex;
 	align-items: center;
