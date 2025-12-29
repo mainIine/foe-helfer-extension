@@ -737,7 +737,7 @@ let Parts = {
 		investmentSteps = investmentSteps.filter((item, index) => investmentSteps.indexOf(item) === index);
 		investmentSteps.sort((a, b) => a - b);
 		investmentSteps.forEach(bonus => {
-			h.push(`<button class="btn btn-set-arc${(Parts.ArcPercents[0] === bonus ? ' btn-active' : '')}" data-value="${bonus}">${bonus}%</button>`);
+			h.push(`<button class="btn btn-mid btn-set-arc${(Parts.ArcPercents[0] === bonus ? ' btn-active' : '')}" data-value="${bonus}">${bonus}%</button>`);
 		});
 
 		h.push('</span>');		
@@ -1062,18 +1062,17 @@ let Parts = {
 
 		Parts.CopyPlayerName = (PlayerID === ExtPlayerID ? Parts.CopyOwnPlayerName : PlayerDict[PlayerID]['PlayerName']);
 
-		h.push('<p><span class="header"><strong>' + i18n('Boxes.OwnpartCalculator.CopyValues') + '</strong></span></p>');
-
+		h.push('<section class="p2 bbd">');
+		h.push('<strong>' + i18n('Boxes.OwnpartCalculator.CopyValues') + '</strong>');
 		if (PlayerID === ExtPlayerID) {
-			h.push('<div><span>' + i18n('Boxes.OwnpartCalculator.PlayerName') + ':</span><input type="text" id="player-name" value="' + Parts.CopyPlayerName + '"></div>');
+			h.push('<div class="flex between"><span>' + i18n('Boxes.OwnpartCalculator.PlayerName') + ':</span><input type="text" id="player-name" value="' + Parts.CopyPlayerName + '"></div>');
 		}
 		else {
 			h.push('<div><span>' + i18n('Boxes.OwnpartCalculator.PlayerName') + ':</span>' + Parts.CopyPlayerName + '</div>');
 		}
-		h.push('<div><span>' + i18n('Boxes.OwnpartCalculator.BuildingName') + ':</span><input type="text" id="build-name" value="' + (Parts.CopyBuildingName) + '"></div>');
-
-		h.push('<p><span class="header"><strong>' + i18n('Boxes.OwnpartCalculator.IncludeData') + '</strong></span></p>');
-
+		h.push('<div class="flex between"><span>' + i18n('Boxes.OwnpartCalculator.BuildingName') + ':</span><input type="text" id="build-name" value="' + (Parts.CopyBuildingName) + '"></div>');
+		h.push('</section><section class="p2 bbd">');
+		h.push('<strong>' + i18n('Boxes.OwnpartCalculator.IncludeData') + '</strong>');
 		let Options = '<div class="checkboxes">' +
 			'<label class="form-check-label game-cursor" for="options-player"><input type="checkbox" class="form-check-input" id="options-player" data-options="player" ' + (Parts.CopyIncludePlayer ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.OptionsPlayer') + '</span></label>' +
 			'<label class="form-check-label game-cursor" for="options-gb"><input type="checkbox" class="form-check-input" id="options-gb" data-options="gb" ' + (Parts.CopyIncludeGB ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.OptionsGB') + '</span></label>' +
@@ -1089,14 +1088,14 @@ let Parts = {
 		h.push(Options)
 
 		if (Parts.CopyIncludeDanger) {
-			let DangerOptions = '<p><span class="header"><strong>' + i18n('Boxes.OwnpartCalculator.OptionsDanger') + '</strong></span></p>' +
+			let DangerOptions = '<strong>' + i18n('Boxes.OwnpartCalculator.OptionsDanger') + '</strong>' +
 			'<div><span>' + i18n('Boxes.OwnpartCalculator.OptionsDangerPrefix') + ':</span><input type="text" class="form-text-input" id="options-danger-prefix" data-options="danger-prefix" value="' + Parts.CopyDangerPrefix + '"></div>' +
 			'<div><span>' + i18n('Boxes.OwnpartCalculator.OptionsDangerSuffix') + ':</span><input type="text" class="form-text-input" id="options-danger-suffix" data-options="danger-suffix" value="' + Parts.CopyDangerSuffix + '"></div>';
 
 			h.push(DangerOptions);
 		}
-
-		h.push('<p><span class="header"><strong>' + i18n('Boxes.OwnpartCalculator.Places') + '</strong></span></p>');
+		h.push('</section><section class="p2 bbd">');
+		h.push('<strong>' + i18n('Boxes.OwnpartCalculator.Places') + '</strong>');
 
 		let cb = '<div class="checkboxes">' +
 			'<label class="form-check-label game-cursor" for="chain-p1"><input type="checkbox" class="form-check-input" id="chain-p1" data-place="1" ' + (Parts.CopyPlaces[0] ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.Place') + ' 1</span></label>' +
@@ -1111,11 +1110,12 @@ let Parts = {
 
 		h.push(cb);
 
-		h.push('<p><span class="header"><strong>' + i18n('Boxes.OwnpartCalculator.Preview') + '</strong></span></p>');
-
+		h.push('</section><section class="p2 bbd">');
+		h.push('<strong>' + i18n('Boxes.OwnpartCalculator.Preview') + '</strong><br>');
 		Parts.CopyString = Parts.GetCopyString();
 		h.push('<input type="text" id="copystring" value="' + Parts.CopyString + '">');
 		
+		h.push('</section>');
 		h.push('<div class="btn-outer text-center" style="margin-top: 10px">');
 		h.push('<span class="btn button-own">' + i18n('Boxes.OwnpartCalculator.CopyValues') + '</span> ');
 		if (Parts.CityMapEntity['player_id'] === ExtPlayerID) h.push('<span class="btn button-save-own">' + i18n('Boxes.OwnpartCalculator.Note') + '</span>'); //Kein Merken für fremde LGs
@@ -1579,7 +1579,7 @@ let Parts = {
 			showPrints = localStorage.getItem('OwnPartShowBP') || 'true',
 			minView = localStorage.getItem('OwnPartMinView') || 'false',
 			autoOpen = localStorage.getItem('OwnPartAutoOpen') || 'false',
-			nV = `<p class="new-row">${i18n('Boxes.Calculator.Settings.newValue')}: <input type="number" class="settings-values" style="width:30px"> <span class="btn btn-green" onclick="Parts.SettingsInsertNewRow()">+</span></p>`;
+			nV = `<p class="new-row text-center bbd p5 flex gap"><label>${i18n('Boxes.Calculator.Settings.newValue')}:</label> <input type="number" class="settings-values" style="width:30px"> <span class="btn btn-green btn-slim" onclick="Parts.SettingsInsertNewRow()">+</span></p>`;
 		
 			if(sB) {
 			// buttons = [...new Set([...defaults,...JSON.parse(sB)])];
@@ -1592,27 +1592,29 @@ let Parts = {
 			buttons = defaults;
 		}
 
+		c.push('<section class="flex gap p2">');
 		buttons.forEach(bonus => {
 			if(bonus === 'ark') {
-				c.push(`<span><input type="hidden" class="settings-values" value="ark"> <button class="btn">${MainParser.ArkBonus}%</button></span>`);
+				c.push(`<span class="btn-group"><input type="hidden" class="settings-values" value="ark"> <button class="btn btn-slim br">${MainParser.ArkBonus}%</button></span>`);
 			}
 			else {
-				c.push(`<p class="btn-group" style="margin: 3px"><button class="btn">${bonus}%</button> <input type="hidden" class="settings-values" value="${bonus}"> <span class="btn btn-delete" onclick="Parts.SettingsRemoveRow(this)">x</span> </p>`);
+				c.push(`<span class="btn-group"><button class="btn btn-slim">${bonus}%</button> <input type="hidden" class="settings-values" value="${bonus}"> <span class="btn btn-delete btn-slim" onclick="Parts.SettingsRemoveRow(this)">x</span></span>`);
 			}
 		});
+		c.push('</section>');
 
 		// new own button
 		c.push(nV);
 
-		c.push('<p><input id="copyformatpergb" class="copyformatpergb game-cursor" ' + (Parts.CopyFormatPerGB ? 'checked' : '') + ' type="checkbox"> <label for="copyformatpergb">' + i18n('Boxes.OwnpartCalculator.CopyFormatPerGB') +'</label>');
-		c.push('<br><input type="checkbox" id="openonaliengb" class="openonaliengb game-cursor" ' + ((allGB == 'true') ? 'checked' : '') + '> <label for="openonaliengb">' + i18n('Settings.ShowOwnPartOnAllGBs.Desc') + '</label>');
+		c.push('<p class="bbd p5"><input id="copyformatpergb" class="copyformatpergb game-cursor" ' + (Parts.CopyFormatPerGB ? 'checked' : '') + ' type="checkbox"> <label for="copyformatpergb">' + i18n('Boxes.OwnpartCalculator.CopyFormatPerGB') +'</label>');
 		c.push('<br><input type="checkbox" id="showmedals" class="showmedals game-cursor" ' + ((showMedals == 'true') ? 'checked' : '') + '> <label for="showmedals">' + i18n('Settings.ShowOwnPartMedals.Desc') + '</label>');
 		c.push('<br><input type="checkbox" id="showprints" class="showprints game-cursor" ' + ((showPrints == 'true') ? 'checked' : '') + '> <label for="showprints">' + i18n('Settings.ShowOwnPartBP.Desc') + '</label>');
-		c.push('<br><input type="checkbox" id="minview" class="minview game-cursor" ' + ((minView == 'true') ? 'checked' : '') + '> <label for="minview">' + i18n('Settings.ShowOwnPartMinView.Desc') + '</label></p>');
+		c.push('<br><input type="checkbox" id="minview" class="minview game-cursor" ' + ((minView == 'true') ? 'checked' : '') + '> <label for="minview">' + i18n('Settings.ShowOwnPartMinView.Desc') + '</label>');
+		c.push('<br><input type="checkbox" id="openonaliengb" class="openonaliengb game-cursor" ' + ((allGB == 'true') ? 'checked' : '') + '> <label for="openonaliengb">' + i18n('Settings.ShowOwnPartOnAllGBs.Desc') + '</label>');
 		c.push('<br><input type="checkbox" id="autoOpen" class="autoOpen game-cursor" ' + ((autoOpen == 'true') ? 'checked' : '') + '> <label for="autoOpen">' + i18n('Settings.ShowOwnPartAutoOpen.Desc') + '</label></p>');
 
 		// save button
-		c.push(`<p><button id="save-calculator-settings" class="btn" style="width:100%" onclick="Parts.SettingsSaveValues()">${i18n('Boxes.Calculator.Settings.Save')}</button></p>`);
+		c.push(`<p class="text-center p2"><button id="save-calculator-settings" class="btn btn-green" onclick="Parts.SettingsSaveValues()">${i18n('Boxes.Calculator.Settings.Save')}</button></p>`);
 
 		// insert into DOM
 		$('#OwnPartBoxSettingsBox').html(c.join(''));
@@ -1627,7 +1629,7 @@ let Parts = {
 
 
 	SettingsRemoveRow: ($this)=> {
-		$($this).closest('p').fadeToggle('fast', function(){
+		$($this).closest('.btn-group').fadeToggle('fast', function(){
 			$(this).remove();
 		});
 	},
