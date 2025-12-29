@@ -219,6 +219,10 @@ a[target="_blank"] svg {
 	border-radius: 2px;
 }
 
+.btn-mid {
+	padding: 0.15rem 0.3rem !important;
+}
+
 .btn-green:not([disabled]),
 .btn-green:not([disabled]):hover,
 .btn-green:not([disabled]):active {
@@ -275,7 +279,7 @@ a[target="_blank"] svg {
 	border-right-width: 1px;
 }
 
-.btn-group .btn:only-child {
+.btn-group .btn:only-child, .btn-group .btn.br {
 	border-radius: 4px;
 	border-right-width: 1px;
 }
@@ -485,10 +489,15 @@ p {
 .flex {
 	display: flex;
 	justify-content: center;
+	flex-wrap: wrap;
 }
 
 .flex.between {
 	justify-content: space-between;
+}
+
+.flex.gap {
+	gap: 2px;
 }
 
 .p2 {
@@ -497,6 +506,10 @@ p {
 
 .p5 {
 	padding: 5px;
+}
+
+.bbd {
+	border-bottom: 1px dotted var(--black-50);
 }
 
 .wsnw {
@@ -1754,16 +1767,17 @@ SettingsBox */
 	position: absolute;
 	right: 10px;
 	top: 40px;
-	border: 2px solid #977041;
-	background-color: #523018;
+	border: 2px solid var(--text-medium2);
+	background-color: var(--window-settings-bg);
 	color: var(--text-normal);
-	padding: 10px;
+	padding: 5px;
 	z-index: 20;
 	border-radius: 5px;
-	box-shadow: 0 0 4px 4px rgba(0,0,0,0.4);
+	box-shadow: 0 0 4px 4px var(--black-50), inset 0 0 0 1px var(--window-settings-bg), inset 0 0 1px 2px var(--black-30);
 	min-width: 120px;
 	max-width: 280px;
 	z-index: 1000;
+	font-size: 90%;
 }
 
 .settingsbox-wrapper::after {
@@ -1771,7 +1785,7 @@ SettingsBox */
 	position: absolute;
 	top: -18px;
 	right: 35px;
-	border-bottom: 18px solid #523018;
+	border-bottom: 18px solid var(--window-settings-bg);
 	border-left: 18px solid transparent;
 	border-right: 18px solid transparent;
 }
@@ -1786,6 +1800,10 @@ SettingsBox */
 	background-clip: padding-box;
 	border: 1px solid var(--text-dark);
 	transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+.settingsbox-wrapper p {
+	margin: 3px 0;
 }
 
 .settingsbox-wrapper p:last-child {

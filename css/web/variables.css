@@ -48,6 +48,8 @@
 	--window-body-scroll-bg: #57250c;
 	--window-body-scroll-bar: #281207;
 
+	--window-settings-bg: #3a2313;
+
 	--btn-bg: linear-gradient(to bottom, #b77037 0%,#b06026 1%,#91481e 30%,#823e18 99%,#b06832 100%);
 	--btn-bg-disabled: linear-gradient(to bottom, #27170a 0%,#444444 1%,#2c2c2c 30%,#2d2d2d 99%, #373737 100%);
 	--btn-bg-active: linear-gradient(to bottom, #f5cd48 0%,#df9a34 1%,#ba6320 30%,#924715 99%,#a35d28 100%);
@@ -99,6 +101,7 @@
 
 	--grey: #444;
 	--black: #000;
+	--black-30: #00000048;
 	--black-50: #00000080;
 	--black-65: #000000a6;
 
