@@ -7,14 +7,15 @@
 - Stadt Übersicht: 
 	- Die Statistiken an der Seite wurden überarbeitet: es gibt neue, interessantere Fakten zu den Gebäuden in der Stadt
 	- Die verfügbare Fläche ist jetzt auch bei anderen Spielern zu sehen
-- Profil:
-	- QI Aktionskapazität hinzugefügt
+- Profil: QI Aktionskapazität hinzugefügt
 - Menü-Icon für Gebäude-Sets und -Ketten-Modul ausgetauscht
 - QI Kapazität von 100.000 auf 200.000 erhöht
+- Umbaumodus: Es kann nun eine Karte angeschaltet werden, die sich beim bauen aktualisiert
 
 **Bugfix**
-- Produktionsübersicht:
-	- Die Güter von Gilden-LB waren manchmal zu hoch, weil Boosts angerechnet wurden
+- Produktionsübersicht: Die Güter von Gilden-LB waren manchmal zu hoch, weil Boosts angerechnet wurden
+- QI Karte: Die Summen waren nicht ganz korrekt gerundet
+- Profil: die Güter von anderen waren inkorrekt, wenn sie nicht im gleichen Zeitalter wie man selbst waren
 
 ---
 
