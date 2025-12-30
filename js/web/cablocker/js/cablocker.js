@@ -9,7 +9,7 @@ HTML.AddCssFile('cablocker')
 
 CABlocker = {
     timer: null,
-    lastCheck:0,
+    checkBlock:false,
     addBlocker: (type = "FP") => {
         $('body').append(`
             <div id="CollectAllOverlay" class="MapActivityHide ActiveOnmain">
@@ -25,28 +25,32 @@ CABlocker = {
         });
         if (ActiveMap != 'main') $('#CollectAllOverlay').hide();
     },
-    checkBuildings: async () => {
-        let now = GameTime.get();
-        if (now - CABlocker.lastCheck < 2) return;
-        await ExistenceConfirmed('MainParser.CityMapData||MainParser.CityEntities');
-        CABlocker.lastCheck = now;
+    checkBuildings: () => {
         if (!Settings.GetSetting('BlockCollectAll')) return;
-        let finishedProductions = Object.values(MainParser.CityMapData).filter(x => x.state && x.state.productionOption && (!x.state.next_state_transition_at || x.state.next_state_transition_at < now) && !x.state.paused_at)
-        CABlocker.setTimer();
-        $('#CollectAllOverlay').remove();
-        if (finishedProductions.length == 0) return;
-        let FPcheck = await CABlocker.checkFP();
-        if (!FPcheck) {
-            let notMotivated = finishedProductions.filter(x => x?.state?.socialInteractionId != 'motivate');
-            for (let building of notMotivated) {
-                let meta = MainParser.CityEntities[building.cityentity_id];
-                let motivateable = (meta?.components?.AllAge?.socialInteraction?.interactionType == "motivate") || JSON.stringify(meta.abilities).includes("MotivatableAbility");
-                if (motivateable) {
-                    CABlocker.addBlocker("Motivate");
-                    break;
+        if (CABlocker.checkBlock) return;
+        CABlocker.checkBlock = true;
+        
+        setTimeout(async () => {
+            CABlocker.checkBlock = false;
+            await ExistenceConfirmed('MainParser.CityMapData||MainParser.CityEntities');
+            CABlocker.setTimer();
+            let now = GameTime.get();
+            let finishedProductions = Object.values(MainParser.CityMapData).filter(x => x.state && x.state.productionOption && (!x.state.next_state_transition_at || x.state.next_state_transition_at < now) && !x.state.paused_at)
+            $('#CollectAllOverlay').remove();
+            if (finishedProductions.length == 0) return;
+            let FPcheck = await CABlocker.checkFP();
+            if (!FPcheck) {
+                let notMotivated = finishedProductions.filter(x => x?.state?.socialInteractionId != 'motivate');
+                for (let building of notMotivated) {
+                    let meta = MainParser.CityEntities[building.cityentity_id];
+                    let motivateable = (meta?.components?.AllAge?.socialInteraction?.interactionType == "motivate") || JSON.stringify(meta.abilities).includes("MotivatableAbility");
+                    if (motivateable) {
+                        CABlocker.addBlocker("Motivate");
+                        break;
+                    }
                 }
             }
-        }
+        }, 1000);    
     },
     setTimer: () =>{
         clearTimeout(CABlocker.timer);
@@ -66,4 +70,3 @@ CABlocker = {
         return true;
     }
 };
-CABlocker.checkBuildings();
