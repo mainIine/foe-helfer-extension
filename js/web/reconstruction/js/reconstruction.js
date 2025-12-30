@@ -73,7 +73,6 @@ FoEproxy.addRequestHandler('CityReconstructionService', 'saveDraft', (data) => {
         } else if (!x.position) {
             reconstruction.count[id].placed--;
             reconstruction.count[id].stored++;
-            console.log(0,reconstruction.draft[x.entityId],x);
             if (reconstruction.count[id].stored==1) {
                 reconstruction.pageUpdate(id);
                 pagesUpdated=true;
