@@ -9,6 +9,7 @@ HTML.AddCssFile('cablocker')
 
 CABlocker = {
     timer: null,
+    lastCheck:0,
     addBlocker: (type = "FP") => {
         $('body').append(`
             <div id="CollectAllOverlay" class="MapActivityHide ActiveOnmain">
@@ -25,8 +26,10 @@ CABlocker = {
         if (ActiveMap != 'main') $('#CollectAllOverlay').hide();
     },
     checkBuildings: async () => {
-        await ExistenceConfirmed('MainParser.CityMapData||MainParser.CityEntities');
         let now = GameTime.get();
+        if (now - CABlocker.lastCheck < 2) return;
+        await ExistenceConfirmed('MainParser.CityMapData||MainParser.CityEntities');
+        CABlocker.lastCheck = now;
         if (!Settings.GetSetting('BlockCollectAll')) return;
         let finishedProductions = Object.values(MainParser.CityMapData).filter(x => x.state && x.state.productionOption && (!x.state.next_state_transition_at || x.state.next_state_transition_at < now) && !x.state.paused_at)
         CABlocker.setTimer();
@@ -34,7 +37,7 @@ CABlocker = {
         if (finishedProductions.length == 0) return;
         let FPcheck = await CABlocker.checkFP();
         if (!FPcheck) {
-            let notMotivated = finishedProductions.filter(x => x?.state?.socialInteraction != 'motivate');
+            let notMotivated = finishedProductions.filter(x => x?.state?.socialInteractionId != 'motivate');
             for (let building of notMotivated) {
                 let meta = MainParser.CityEntities[building.cityentity_id];
                 let motivateable = (meta?.components?.AllAge?.socialInteraction?.interactionType == "motivate") || JSON.stringify(meta.abilities).includes("MotivatableAbility");
