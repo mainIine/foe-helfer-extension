@@ -11,10 +11,12 @@
 	- QI capacity added
 - Changed menu icon for sets and chains
 - Increased QI max capacity to 200,000
+- Reconstruction Mode: added a mini map that updates as you build
 
 **Bugfix**
-- Productions:
-	- Guild goods for LB were sometimes too high, because we added guild goods boost to them
+- Productions: Guild goods for LB were sometimes too high, because we added guild goods boost to them
+- QI Map: Sums weren't rounded correctly
+- Profile: goods of other players were worng when you weren't in the same age
 
 ---
 
