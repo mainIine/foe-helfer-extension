@@ -435,6 +435,7 @@ GetFights = () =>{
 		LastMapPlayerID = ExtPlayerID;
 
 		MainParser.CityMapData = Object.assign({}, ...data.responseData.map((x) => ({ [x.id]: x })));
+		FoEproxy.triggerFoeHelperHandler('CityMapUpdated');
 		MainParser.SetArkBonus2();
 
 		if (ActiveMap === 'gg') return; // getEntities wurde in den GG ausgelöst => Map nicht ändern
@@ -524,6 +525,7 @@ GetFights = () =>{
 					delete MainParser.NewCityMapData[ID];
 			}
 		}
+		FoEproxy.triggerFoeHelperHandler('CityMapUpdated');
 	});
 
 	// production is started, collected, aborted
@@ -758,6 +760,14 @@ GetFights = () =>{
 		for (let b of data.responseData) {
 			MainParser.CityMapData[b.id]=b;
 		}
+		FoEproxy.triggerFoeHelperHandler('CityMapUpdated');
+	});
+
+	FoEproxy.addWsHandler('CityProductionService', 'pickupProduction', data => {
+		for (let b of data.responseData.updatedEntities||[]) {
+			MainParser.CityMapData[b.id]=b;
+		}
+		FoEproxy.triggerFoeHelperHandler('CityMapUpdated');
 	});
 
 	FoEproxy.addRequestHandler('InventoryService', 'useItem', (postData) => {
@@ -2030,6 +2040,7 @@ let MainParser = {
 		}
 
 		FPCollector.CityMapDataNew = Buildings;
+		FoEproxy.triggerFoeHelperHandler('CityMapUpdated');
 	},
 
 
