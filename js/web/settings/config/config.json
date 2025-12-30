@@ -73,6 +73,12 @@
 		"sort": 13
 	},
 	{
+		"name": "BlockCollectAll",
+		"status": false,
+		"group": "Auto",
+		"sort": 13
+	},
+	{
 		"name": "ShowAztecHelper",
 		"status": true,
 		"group": "Auto",
