@@ -1,7 +1,7 @@
 
 /*
  * **************************************************************************************
- * Copyright (C) 2024 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -44,8 +44,8 @@ FoEproxy.addHandler('CityReconstructionService', 'getDraft', (data, postData) =>
         }
     }
 
-    reconstruction.showTable()
-
+    reconstruction.showTable();
+    console.log(data.responseData);
 });
 
 FoEproxy.addHandler('AutoAidService', 'getStates', (data, postData) => {
@@ -55,7 +55,7 @@ FoEproxy.addHandler('InventoryService', 'getGreatBuildings', (data, postData) =>
     $('#ReconstructionList').remove()
 });
 
-FoEproxy.addRequestHandler('CityReconstructionService', 'saveDraft', (data) => {
+FoEproxy.addRequestHandler('CityReconstructionService', 'saveDraft', (data, postData) => {
     for (let x of data.requestData[0]) {
         let id = MainParser.CityMapData[x.entityId].cityentity_id + "#" + (MainParser.CityMapData[x.entityId].level||0)
         let pagesUpdated=false
@@ -83,6 +83,8 @@ FoEproxy.addRequestHandler('CityReconstructionService', 'saveDraft', (data) => {
             $('.reconstructionLine[data-page_id="'+id+'"]').hide()
         if (pagesUpdated) reconstruction.updateTable()
     }
+    
+    //console.log(postData);
 });
 
 let reconstruction = {
@@ -154,6 +156,7 @@ let reconstruction = {
 				dragdrop: true,
 				minimize: true,
 				resize: true,
+                //map: "reconstruction.showMap();",
 			    active_maps:"main"
 			});
         }           
@@ -191,5 +194,47 @@ let reconstruction = {
         setTimeout(reconstruction.updateTable,200)
 
     },
+
+    showMap:()=>{
+        HTML.Box({
+            id: 'ReconstructionMap',
+            title: '',
+            auto_close: true,
+            dragdrop: true,
+            minimize: true,
+            resize: true,
+            active_maps:"main"
+        });
+
+        let mapScale = 20;
+
+        let c = `<div class="map-grid-wrapper">`;
+        c += `<div class="map-grid">`;
+
+        for(let area of CityMap.UnlockedAreas) {
+            let startArea = area.width === 16 ? ' startarea' : '';
+            c += `<span class="map-bg${startArea}" style="left:${area.x*mapScale||0}px;top:${area.y*mapScale||0}px;"></span>`
+		}
+        
+        for (let item of Object.values(reconstruction.draft)) {
+            let meta = MainParser.CityEntities[MainParser.CityMapData[item.entityId].cityentity_id]
+
+            let width = meta.width||meta.components.AllAge.placement.size.x;
+            let height = meta.length||meta.components.AllAge.placement.size.y;
+            let needsStreet = meta?.components?.AllAge.streetConnectionRequirement?.requiredLevel || meta?.requirements?.street_connection_level || 0;
+            let street = needsStreet === 0 ? ' roadless' : '';
+            
+            if (item.position !== undefined) {
+                c += `<span class="map-building ${meta.type}${street}" 
+                        style="left:${item.position?.x*mapScale||0}px;top:${item.position?.y*mapScale||0}px;
+                            width:${width*mapScale}px;height:${height*mapScale}px;">
+                    </span>`;
+                }
+        }
+
+        c += `</div>`;
+        c += `</div>`;
+        $('#ReconstructionMapBody').html(c);
+    }
 }
 

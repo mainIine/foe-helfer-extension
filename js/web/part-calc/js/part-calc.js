@@ -115,13 +115,10 @@ let Parts = {
 	 * HTML Box in den DOM drücken und ggf. Funktionen binden
 	 */
 	Show: () => {
-		// Gibt es schon? Raus...
-		if ($('#OwnPartBox').length === 0)
-		{
+		if ($('#OwnPartBox').length === 0) {
 			let spk = localStorage.getItem('PartsTone');
 
-			if (spk === null)
-			{
+			if (spk === null) {
 				localStorage.setItem('PartsTone', 'deactivated');
 				Parts.PlayInfoSound = false;
 			}
@@ -142,14 +139,10 @@ let Parts = {
 			    active_maps:"main"
 			});
 
-			// CSS in den DOM prügeln
 			HTML.AddCssFile('part-calc');
-
-			// Body zusammen fummeln
 			Parts.CalcBody();
 
 			$('#OwnPartBox').on('click', '#PartsTone', function () {
-
 				let disabled = $(this).hasClass('deactivated');
 
 				localStorage.setItem('PartsTone', (disabled ? '' : 'deactivated'));

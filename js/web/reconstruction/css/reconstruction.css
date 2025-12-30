@@ -34,3 +34,66 @@
 #ReconstructionListBody tr.sorter-header th:last-child:after {
   left: 5px;
 }
+
+#ReconstructionMap.window-box, #ReconstructionMap .window-head, #ReconstructionMap .window-body {
+  background: none;
+  box-shadow: none;
+  border: none;
+}
+
+#ReconstructionMap.window-box {
+  background: var(--black-30);
+}
+#ReconstructionMap .window-body {
+  opacity: 0.92;
+}
+
+.map-grid-wrapper {
+  position: relative;
+  height: 2000px;
+  width: 2000px;
+  overflow: hidden;
+  transform: rotate(33deg) skew(-30deg,-5deg) translate(-340px, 300px);
+}
+
+.map-grid-wrapper .map-grid {
+  zoom: 0.4;
+}
+.map-grid-wrapper .map-bg {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  background-color: var(--black-65);
+  box-sizing: border-box;
+  border: 1px solid var(--black);
+}
+.map-grid-wrapper .map-bg.startarea {
+  width: 320px;
+  height: 320px;
+}
+.map-grid-wrapper .map-building {
+  position: absolute;
+  box-sizing: border-box;
+	background-color: var(--background-color-residential);
+	border-color: var(--border-color-residential);
+}
+.map-building.production {
+	background-color: var(--background-color-production);
+	border-color: var(--border-color-production);
+}
+.map-building.greatbuilding {
+	background-color: var(--background-color-greatbuilding);
+	border-color: var(--border-color-greatbuilding);
+}
+.map-building.main_building {
+	background-color: var(--background-color-main_building);
+	border-color: var(--border-color-main_building);
+}
+.map-building.roadless {
+	background-color: var(--background-color-noStreet);
+	border-color: var(--border-color-noStreet);
+}
+.map-building.street {
+	background-color: var(--background-color-street);
+	border-color: var(--border-color-street);
+}

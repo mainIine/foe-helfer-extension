@@ -321,9 +321,8 @@ let CityMap = {
 		}
 
 		for(let i in ua) {
-			if(!ua.hasOwnProperty(i)){
+			if(!ua.hasOwnProperty(i))
 				break;
-			}
 
 			let w = ((ua[i]['width'] * scaleUnit) / 100 ),
 				h = ((ua[i]['length'] * scaleUnit) / 100 ),
@@ -340,7 +339,7 @@ let CityMap = {
 					top: y + 'em',
 				});
 
-			// Ist es das Startfeld?
+			// initial grid
 			if(ua[i]['width'] === 16 && ua[i]['length'] === 16) {
 				a.addClass('startmap');
 			}
