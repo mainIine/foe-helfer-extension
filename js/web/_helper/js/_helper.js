@@ -195,7 +195,7 @@ let HTML = {
 			div = $('<div />').attr('id', args['id']).attr('class', 'window-box open').append(head).append(body).hide(),
 			cords = localStorage.getItem(args['id'] + 'Cords');
 		
-		//close button
+		// close button
 		let close = $('<span />').attr('id', args['id'] + 'close').addClass('window-close');
 
 		if (args['auto_close'] !== false) {
@@ -205,14 +205,13 @@ let HTML = {
 			let maps = args["active_maps"].replace(" ","").split(",").map(x => "ActiveOn"+x);
 			div.addClass("MapActivityCheck "+maps.join(" "));
 		}
-		// Minimierenbutton
+		// minimize
 		if (args['minimize']) {
 			let min = $('<span />').addClass('window-minimize');
 			buttons.prepend(min);
 		}
 
-		// insert a wrench icon
-		// set a click event on it
+		// insert a wrench icon, set a click event on it
 		if (args['settings']) {
 			let set = $('<span />').addClass('window-settings').attr('id', `${args['id']}-settings`);
 			buttons.prepend(set);
@@ -240,7 +239,7 @@ let HTML = {
 			}
 		}
 
-		// Lautsprecher für Töne
+		// Sounds (was in the calculators)
 		if (args['speaker']) {
 			let spk = $('<span />').addClass('window-speaker').attr('id', args['speaker']);
 			buttons.prepend(spk);
@@ -251,7 +250,7 @@ let HTML = {
 		// Position von beweglichen Fenstern initialisieren und Verhindern, dass Fenster außerhalb plaziert werden
 		if (args.dragdrop) div.css({"--x": "0px","--y": "0px","left":"calc(min(max(50vw + var(--x),0px),100vw - 60px))","top":"calc(min(max(50vh + var(--y),0px), 100vh - 60px))"});
 
-		// es gibt gespeicherte Koordinaten
+		// load saved coords
 		if (cords) {
 			c = null
 			if (cords.includes('|')) {
@@ -264,7 +263,7 @@ let HTML = {
 			div.css({"--x": cords[0]+"px","--y": cords[1]+"px"});
 		}
 
-		// Ein Link zu einer Seite
+		// link to documentation
 		if (args['ask']) {
 			let ask = $('<span />').addClass('window-ask').attr('data-url', args['ask']);
 			buttons.prepend(ask);
