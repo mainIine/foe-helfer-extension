@@ -35,17 +35,38 @@
   left: 5px;
 }
 
-#ReconstructionMap.window-box, #ReconstructionMap .window-head, #ReconstructionMap .window-body {
+#ReconstructionMap.window-box, #ReconstructionMap .window-body, #ReconstructionMap .window-head {
   background: none;
   box-shadow: none;
   border: none;
 }
 
 #ReconstructionMap.window-box {
-  background: var(--black-30);
+  background: #0001;
+  pointer-events: none;
+  width: 50%;
+  height: 50%;
 }
 #ReconstructionMap .window-body {
-  opacity: 0.92;
+  opacity: 0.9;
+  text-align: right;
+}
+#ReconstructionMap .window-head {
+  padding: 2px;
+  border-bottom: 1px dotted var(--black-65);
+}
+#ReconstructionMap .window-head:hover {
+  background: var(--black-30);
+}
+#ReconstructionMap .window-grippy, #ReconstructionMap .window-head, #ReconstructionMap select {
+  pointer-events: all;
+}
+#ReconstructionMap .window-grippy {
+  background-color: var(--black-65);
+  padding: 0;
+  bottom: 0;
+  right: 0;
+  border-radius: 4px;
 }
 
 .map-grid-wrapper {
@@ -56,8 +77,20 @@
   transform: rotate(33deg) skew(-30deg,-5deg) translate(-340px, 300px);
 }
 
-.map-grid-wrapper .map-grid {
+.map-grid-wrapper[data-unit="100"] {
+  transform: rotate(33deg) skew(-30deg,-5deg) translate(-300px, 70px);
+}
+.map-grid-wrapper[data-unit="100"] .map-grid {
+  zoom: 0.6;
+}
+.map-grid-wrapper[data-unit="80"] .map-grid {
   zoom: 0.4;
+}
+.map-grid-wrapper[data-unit="60"] .map-grid {
+  zoom: 0.25;
+}
+.map-grid-wrapper[data-unit="60"] {
+  transform: rotate(33deg) skew(-30deg,-5deg) translate(-500px, 350px)
 }
 .map-grid-wrapper .map-bg {
   position: absolute;
@@ -75,7 +108,7 @@
   position: absolute;
   box-sizing: border-box;
 	background-color: var(--background-color-residential);
-	border-color: var(--border-color-residential);
+	border: 1px solid var(--border-color-residential);
 }
 .map-building.production {
 	background-color: var(--background-color-production);
