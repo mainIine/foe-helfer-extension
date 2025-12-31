@@ -1311,7 +1311,8 @@ FP-Bar */
 .window-body input[type=text],
 .window-body input[type=number],
 .window-body select,
-.window-body textarea {
+.window-body textarea,
+.settingsbox-wrapper select {
 	background-color: var(--background-light);
 	color: var(--text-dark);
 	background-clip: padding-box;
