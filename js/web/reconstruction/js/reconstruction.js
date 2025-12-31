@@ -78,8 +78,7 @@ FoEproxy.addRequestHandler('CityReconstructionService', 'saveDraft', (data) => {
                 pagesUpdated=true;
             }
             $(`#ReconstructionMapBody [data-id=${x.entityId}]`).remove();
-        }
-        else if (x.position && reconstruction.draft[x.entityId].position) {
+        } else if (x.position && reconstruction.draft[x.entityId].position) {
             $(`#ReconstructionMapBody [data-id=${x.entityId}]`).remove();
             $('#ReconstructionMapBody .map-grid').append(reconstruction.placeBuildingOnMap(x));
         }
@@ -204,23 +203,21 @@ let reconstruction = {
     },
 
     showMap:()=>{
-        HTML.Box({
-            id: 'ReconstructionMap',
-            title: '💭',
-            auto_close: true,
-            dragdrop: true,
-            minimize: true,
-            resize: true,
-            active_maps:"main"
-        });
+        if ( $('#ReconstructionMap').length === 0 ) {
+            HTML.Box({
+                id: 'ReconstructionMap',
+                title: '💭',
+                auto_close: true,
+                dragdrop: true,
+                minimize: true,
+                resize: true,
+                active_maps:"main",
+                settings: 'reconstruction.mapSettings();'
+            });
+        }
         let storedUnit = parseInt(localStorage.getItem('ReconstructionMapScale') || 80);
 
-        let c = `<select class="scale-view" name="reconstructionscale">
-			<option data-scale="60" ${storedUnit === 60 ? 'selected' : ''}>60%</option>
-			<option data-scale="80" ${storedUnit === 80 ? 'selected' : ''}>80%</option>
-			<option data-scale="100" ${storedUnit === 100 ? 'selected' : ''}>100%</option>
-            </select>`;
-            c += `<div class="map-grid-wrapper" data-unit="${storedUnit}">`;
+        let c = `<div class="map-grid-wrapper" data-unit="${storedUnit}">`;
         c += `<div class="map-grid">`;
 
         for(let area of CityMap.UnlockedAreas) {
@@ -234,22 +231,17 @@ let reconstruction = {
 
         c += `</div>`;
         c += `</div>`;
-        $('#ReconstructionMapBody').html(c).promise().done(function(){
-            $('#ReconstructionMapBody .scale-view').on('change', function(){
-                let unit = parseInt($('.scale-view option:selected').data('scale'));
-                localStorage.setItem('ReconstructionMapScale', unit);
-
-                $('#ReconstructionMapBody .map-grid-wrapper').attr('data-unit', unit);
-            });
-        });
+        $('#ReconstructionMapBody').html(c);
     },
     placeBuildingOnMap:(data)=>{
-        let meta = MainParser.CityEntities[MainParser.CityMapData[data.entityId].cityentity_id]
+        let meta = MainParser.CityEntities[MainParser.CityMapData[data.entityId].cityentity_id];
+        if (meta.type.includes("hub") || meta.type === "off_grid" || meta.type === "outpost_ship" || meta.type === "friends_tavern") return;
+
         let width = meta.width||meta.components.AllAge.placement.size.x;
         let height = meta.length||meta.components.AllAge.placement.size.y;
         let needsStreet = meta?.components?.AllAge.streetConnectionRequirement?.requiredLevel || meta?.requirements?.street_connection_level || 0;
         let street = needsStreet === 0 ? ' roadless' : '';
-        let c = ''
+        let c = '';
         if (data.position !== undefined) {
             c += `<span data-id="${data.entityId}" class="map-building ${meta.type}${street}" 
                     style="left:${data.position?.x*reconstruction.mapScale||0}px;top:${data.position?.y*reconstruction.mapScale||0}px;
@@ -257,6 +249,27 @@ let reconstruction = {
                 </span>`;
         }
         return c;
+    },
+    mapSettings:()=>{
+        let storedUnit = parseInt(localStorage.getItem('ReconstructionMapScale') || 80);
+        let c = `<select class="scale-view" name="reconstructionscale">
+			<option data-scale="60" ${storedUnit === 60 ? 'selected' : ''}>S</option>
+			<option data-scale="80" ${storedUnit === 80 ? 'selected' : ''}>M</option>
+			<option data-scale="100" ${storedUnit === 100 ? 'selected' : ''}>L</option>
+			<option data-scale="120" ${storedUnit === 120 ? 'selected' : ''}>XL</option>
+            </select>`;
+            c += `<br><input type="range" class="opacity" name="opacity" min="0.01" max="1" step="0.01" value="0.9" />`
+		$('#ReconstructionMapSettingsBox').html(c).promise().done(function(){
+            $('#ReconstructionMapSettingsBox .scale-view').on('change', function(){
+                let unit = parseInt($('.scale-view option:selected').data('scale'));
+                localStorage.setItem('ReconstructionMapScale', unit);
+                $('#ReconstructionMapBody .map-grid-wrapper').attr('data-unit', unit);
+            });
+            $('#ReconstructionMapSettingsBox .opacity').on('change', function(){
+                let val = parseFloat($('#ReconstructionMapSettingsBox .opacity').val());
+                $('#ReconstructionMapBody .map-grid-wrapper').css('opacity', val);
+            });
+        });
     }
 }
 
