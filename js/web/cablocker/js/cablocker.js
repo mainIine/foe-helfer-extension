@@ -60,7 +60,7 @@ CABlocker = {
         
         setTimeout(() => {
             CABlocker.checkBuildings();            
-        }, (nextFinish - now + 3)*1000);
+        }, (nextFinish - now + 1)*1000);
         console.log('CABlocker: Next check at', moment.unix(nextFinish));
     },
     checkFP: async () => {
