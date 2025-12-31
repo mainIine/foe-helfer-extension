@@ -74,7 +74,18 @@
   right: 0;
   border-radius: 9px 4px 4px 4px;
 }
-
+#ReconstructionList .window-head .window-map {
+  width: 30px;
+}
+#ReconstructionList .window-head .window-map::before {
+  background: url(../../x_img/city.png) no-repeat center;
+  background-size: cover;
+  content: '';
+  display: block;
+  height: 100%;
+  filter: saturate(0);
+  opacity: 0.8;
+}
 .map-grid-wrapper {
   position: relative;
   height: 2000px;
