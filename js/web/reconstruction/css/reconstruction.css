@@ -52,6 +52,9 @@
 #ReconstructionMap .window-body {
   text-align: right;
 }
+#ReconstructionMap {
+    left: calc(min(max(50vw + var(--x)),100vw - 60px)) !important;
+}
 #ReconstructionMap .window-head {
   padding: 2px;
   border-bottom: 1px dotted var(--black-65);
