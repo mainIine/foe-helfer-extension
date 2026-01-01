@@ -61,7 +61,6 @@ CABlocker = {
         setTimeout(() => {
             CABlocker.checkBuildings();            
         }, (nextFinish - now + 1)*1000);
-        console.log('CABlocker: Next check at', moment.unix(nextFinish));
     },
     checkFP: async () => {
         await ExistenceConfirmed('MainParser.Quests');
