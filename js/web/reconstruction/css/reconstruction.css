@@ -91,28 +91,12 @@
   height: 2000px;
   width: 2000px;
   overflow: hidden;
-  transform: rotate(33deg) skew(-30deg,-5deg) translate(-390px, 250px);
-}
-.map-grid-wrapper[data-unit="120"] {
-  transform: rotate(26.5deg) skew(-37deg,0) translate(-250px, -200px) scale(1,0.8);
-}
-.map-grid-wrapper[data-unit="120"] .map-grid {
-  zoom: 0.872;
-}
-.map-grid-wrapper[data-unit="100"] {
-  transform: rotate(33deg) skew(-30deg,-5deg) translate(-250px, 60px);
-}
-.map-grid-wrapper[data-unit="100"] .map-grid {
-  zoom: 0.6;
-}
-.map-grid-wrapper[data-unit="80"] .map-grid {
-  zoom: 0.4;
-}
-.map-grid-wrapper[data-unit="60"] .map-grid {
-  zoom: 0.25;
-}
-.map-grid-wrapper[data-unit="60"] {
-  transform: rotate(33deg) skew(-30deg,-5deg) translate(-480px, 370px);
+  --scale: 100;
+  --scale-x: calc(var(--scale) / 100);
+  --scale-y: calc(0.25 * var(--scale) / 100);
+  --tx: calc((-296289 / var(--scale) + 1471) * 1px);
+  --ty: calc((-104533 / var(--scale) + 212) * 1px);
+  transform: skewX(-63.5deg) skewY(14deg) scale(var(--scale-x), var(--scale-y)) translate(var(--tx), var(--ty));
 }
 .map-grid-wrapper .map-bg {
   position: absolute;

@@ -217,7 +217,7 @@ let reconstruction = {
         }
         let storedUnit = parseInt(localStorage.getItem('ReconstructionMapScale') || 80);
 
-        let c = `<div class="map-grid-wrapper" data-unit="${storedUnit}">`;
+        let c = `<div class="map-grid-wrapper" style="--scale:${storedUnit}">`;
         c += `<div class="map-grid">`;
 
         for(let area of CityMap.UnlockedAreas) {
@@ -235,7 +235,7 @@ let reconstruction = {
     },
     placeBuildingOnMap:(data)=>{
         let meta = MainParser.CityEntities[MainParser.CityMapData[data.entityId].cityentity_id];
-        if (meta.type.includes("hub") || meta.type === "off_grid" || meta.type === "outpost_ship" || meta.type === "friends_tavern") return;
+        if (meta.type.includes("hub") || meta.type === "off_grid" || meta.type === "outpost_ship" || meta.type === "friends_tavern") return '';
 
         let width = meta.width||meta.components.AllAge.placement.size.x;
         let height = meta.length||meta.components.AllAge.placement.size.y;
@@ -263,7 +263,7 @@ let reconstruction = {
             $('#ReconstructionMapSettingsBox .scale-view').on('change', function(){
                 let unit = parseInt($('.scale-view option:selected').data('scale'));
                 localStorage.setItem('ReconstructionMapScale', unit);
-                $('#ReconstructionMapBody .map-grid-wrapper').attr('data-unit', unit);
+                $('#ReconstructionMapBody .map-grid-wrapper').css('--scale', unit);
             });
             $('#ReconstructionMapSettingsBox .opacity').on('change', function(){
                 let val = parseFloat($('#ReconstructionMapSettingsBox .opacity').val());
