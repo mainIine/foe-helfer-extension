@@ -13,20 +13,34 @@
  *
  */
 
-// Provinznamen der GG
+// GBG province names
 FoEproxy.addMetaHandler('guild_battleground_maps', (xhr, postData) => {
 	GuildFights.ProvinceNames = JSON.parse(xhr.responseText);
 });
 
-// Provinzfarben der GG
+// GBG province colors
 FoEproxy.addMetaHandler('battleground_colour', (xhr, postData) => {
 	GuildFights.Colors = JSON.parse(xhr.responseText);
 	GuildFights.PrepareColors();
 });
 
-// Gildengefechte
+// GBG leaderboards
 FoEproxy.addHandler('GuildBattlegroundService', 'getPlayerLeaderboard', (data, postData) => {
 	GuildFights.HandlePlayerLeaderboard(data.responseData);
+});
+
+// GBG Commands (stops and targets)
+FoEproxy.addWsHandler('GuildBattlegroundSignalsService', 'updateSignal', data => {
+	return;
+	if ($('#GBGTargets').length === 0) {
+		$('body').append('<div id="GBGTargets"></div>');
+	}
+	if (data.responseData.signal === "focus") {
+		let provinceId = data.responseData.provinceId||0;
+		let provinceName = GuildFights.MapData.map.provinces.find(x => x.id === provinceId);
+		$(`<div><small>Next Target</small><span><img src="${srcLinks.get(`/guild_battlegrounds/map/shared/guild_battlegrounds_target.png`,true)}"/> <b>${provinceName?.title}</b></span></div>`)
+			.appendTo("#GBGTargets").fadeOut(12000, function(){ $(this).remove();})
+	}
 });
 
 // Gildengefechte
@@ -35,8 +49,7 @@ FoEproxy.addHandler('GuildBattlegroundStateService', 'getState', (data, postData
 		if (data.responseData['stateId'] !== 'participating')	{
 			GuildFights.CurrentGBGRound = parseInt(data.responseData['startsAt']) - 259200;
 
-			if (GuildFights.curDateFilter === null || GuildFights.curDateEndFilter === null)
-			{
+			if (GuildFights.curDateFilter === null || GuildFights.curDateEndFilter === null) {
 				GuildFights.curDateFilter = moment.unix(GuildFights.CurrentGBGRound).subtract(11, 'd').format('YYYYMMDD');
 				GuildFights.curDateEndFilter = moment.unix(GuildFights.CurrentGBGRound).format('YYYYMMDD');
 			}
@@ -1275,8 +1288,7 @@ let GuildFights = {
 					nextup.push(`<td>${prov[x]['owner']}</td>`);
 				}
 
-				//nextup.push(`<td class="time-static" style="user-select:text">${countDownDate.format('HH:mm')}</td>`);
-				nextup.push(`<td class="time-static" style="user-select:text">${moment(countDownDate).add(LiveFightSettings?.showServerTime ? - 60 * (GuildFights.serverOffset ?? 0) : 0 , "seconds").format('HH:mm')}</td>`);
+				nextup.push(`<td class="time-static" style="user-select:text">${moment(countDownDate).add(LiveFightSettings?.showServerTime ? - 60 * (GuildFights.serverOffset ?? 0) : 0 , "seconds").format('HH:mm:ss')}</td>`);
 				nextup.push(`<td class="time-dynamic" id="counter-${prov[x]['id']}">${countDownDate.format('HH:mm:ss')}</td>`);
 				nextup.push(`<td class="text-right" id="alert-${prov[x]['id']}">${GuildFights.GetAlertButton(prov[x]['id'])}</td>`);
 				nextup.push('</tr>');
@@ -1376,7 +1388,6 @@ let GuildFights = {
 			let battleType = mapElem.isAttackBattleType ? '🔴' : '🔵';
 			let LiveFightSettings = JSON.parse(localStorage.getItem('LiveFightSettings'));
 			let showTileColors = (LiveFightSettings && LiveFightSettings.showTileColors !== undefined) ? LiveFightSettings.showTileColors : 1;
-			//console.log(999, showTileColors);
 			copy += `${moment.unix(mapElem.lockedUntil - 2 - 60 * (GuildFights.serverOffset || 0)).format('HH:mm')} ${showTileColors === 1 ? battleType : ''} ${mapElem.title} \n`;
 		});
 
