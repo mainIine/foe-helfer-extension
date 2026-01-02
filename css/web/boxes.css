@@ -2401,6 +2401,52 @@ tr.sorter-header th:not(.no-sort).descending:after {
 	padding: 0 3px;
 }
 
+
+
+#GBGTargets {
+	position: absolute;
+    bottom: 6px;
+    left: 240px;
+    z-index: 2000;
+	width: 160px;
+	color: #fffc;
+	text-shadow: 0 1px 1px var(--black);
+	display: flex;
+	flex-direction: column-reverse;
+	z-index: 200;
+	text-align: left;
+	gap: 12px;
+	padding: 6px;
+	pointer-events: none;
+}
+
+#GBGTargets div {
+	width: inherit;
+}
+
+#GBGTargets small {
+	text-transform: uppercase;
+    font-weight: bold;
+    font-size: 9px;
+    letter-spacing: 1px;
+}
+
+#GBGTargets span {
+	    background-color: var(--black-50);
+    padding: 0 4px;
+    display: inline-block;
+    border-radius: 4px;
+}
+
+#GBGTargets b {
+	font-size: 250%;
+}
+
+#GBGTargets img {
+	height: 30px;
+    vertical-align: text-bottom;
+}
+
 .unit_skill.rogue::before {background-position: calc(-144px*var(--unit_scale)) calc(-48px*var(--unit_scale))}
 .unit_skill.attack::before {background-position: 0 0}
 .unit_skill.blast::before {background-position: calc(-24px*var(--unit_scale)) 0}
