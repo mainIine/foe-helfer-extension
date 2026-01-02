@@ -35,7 +35,7 @@ CABlocker = {
             await ExistenceConfirmed('MainParser.CityMapData||MainParser.CityEntities');
             CABlocker.setTimer();
             let now = GameTime.get();
-            let finishedProductions = Object.values(MainParser.CityMapData).filter(x => x.state && x.state.productionOption && (!x.state.next_state_transition_at || x.state.next_state_transition_at < now) && !x.state.paused_at)
+            let finishedProductions = Object.values(MainParser.CityMapData).filter(x => x.state && x.state.productionOption && (!x.state.next_state_transition_at || x.state.next_state_transition_at < now) && !x.state.pausedAt)
             $('#CollectAllOverlay').remove();
             if (finishedProductions.length == 0) return;
             let FPcheck = await CABlocker.checkFP();
@@ -55,7 +55,7 @@ CABlocker = {
     setTimer: () =>{
         clearTimeout(CABlocker.timer);
         let now = GameTime.get();
-        let ongoingProductions = Object.values(MainParser.CityMapData).filter(x => x.state && x.state.productionOption && x.state.next_state_transition_at > now && !x.state.paused_at)
+        let ongoingProductions = Object.values(MainParser.CityMapData).filter(x => x.state && x.state.productionOption && x.state.next_state_transition_at > now && !x.state.pausedAt)
         let nextFinish = Math.min(...ongoingProductions.map(x => new Date(x.state.next_state_transition_at)));
         
         setTimeout(() => {
