@@ -3,19 +3,28 @@
 
 ##### 4.1.0.0
 
+**Neu**
+- Alles-Einsammeln-Blocker: schonmal 5 Diamanten ausgegeben, obwohl die FP-Leiste zu voll war? Aktivier den Blocker in den Einstellungen bei Pop Ups, damit das nicht nochmal passiert
+- Umbaumodus: es kann nun eine Karte angeschaltet werden, die sich beim Bauen aktualisiert, den Button dafür findet ihr in der Umbaumodusliste
+
 **Update**
 - Stadt Übersicht: 
-	- Die Statistiken an der Seite wurden überarbeitet: es gibt neue, interessantere Fakten zu den Gebäuden in der Stadt
+	- Die Statistiken und Filter an der Seite wurden überarbeitet: es gibt neue, interessantere Fakten zu den Gebäuden in der Stadt
 	- Die verfügbare Fläche ist jetzt auch bei anderen Spielern zu sehen
 - Profil: QI Aktionskapazität hinzugefügt
 - Menü-Icon für Gebäude-Sets und -Ketten-Modul ausgetauscht
-- QI Kapazität von 100.000 auf 200.000 erhöht
-- Umbaumodus: Es kann nun eine Karte angeschaltet werden, die sich beim bauen aktualisiert
+- Verbündete: es gibt nun Summen unten im Fenster
+- Die Einstellungen innerhalb von Fenstern wurden anders angemalt
+- GG Liste: Sekunden in der "in"-Spalte hinzugefügt
+- Wir haben den Sound für FP-Quests aus den Rechnern entfernt. Lasst uns wissen, wenn ihr den zurück haben möchtet
+- Profil: das Mini-Profilbild hat den Spiel-Button im Forschungsbaum verdeckt und wurde deshalb verschoben
 
 **Bugfix**
-- Produktionsübersicht: Die Güter von Gilden-LB waren manchmal zu hoch, weil Boosts angerechnet wurden
-- QI Karte: Die Summen waren nicht ganz korrekt gerundet
-- Profil: die Güter von anderen waren inkorrekt, wenn sie nicht im gleichen Zeitalter wie man selbst waren
+- Produktionsübersicht: die Güter von Gilden-LB waren manchmal zu hoch, weil Boosts angerechnet wurden
+- QI Karte: Die Summen waren nicht korrekt gerundet
+- QI Kapazität von 100.000 auf 200.000 erhöht
+- Profil: die Güter von anderen Spielern waren inkorrekt, wenn sie nicht im gleichen Zeitalter wie man selbst waren
+
 
 ---
 

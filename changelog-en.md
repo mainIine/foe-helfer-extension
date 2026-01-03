@@ -3,20 +3,28 @@
 
 ##### 4.1.0.0
 
+**New**
+- Collect-All-Blocker: used 5 diamonds to collect and the FP bar was already full? Activate the new blocker in the settings and have it never happen again
+- Reconstruction mode: there is now a map that updates live. You can access it via a button in the reconstruction list
+
 **Update**
 - City Map: 
 	- Sidebar stats have been reworked: more interesting facts about buildings in the city were added
 	- Available area for other players cities has been added
-- Profile:
-	- QI capacity added
+- Profile: QI capacity added
+- Profile: the mini icon on the top left corner blocked the ingame research button, so it was moved a bit
 - Changed menu icon for sets and chains
-- Increased QI max capacity to 200,000
-- Reconstruction Mode: added a mini map that updates as you build
+- Allies: added sums at the bottom of the list
+- GBG List: added seconds to the "in" column
+- Reworked the window setting UI a tiny bit
+- Removed the recurring FP quest sound setting from the calculators. Let us know if you want them back on discord, please
 
 **Bugfix**
 - Productions: Guild goods for LB were sometimes too high, because we added guild goods boost to them
 - QI Map: Sums weren't rounded correctly
+- Increased QI max capacity to 200,000
 - Profile: goods of other players were worng when you weren't in the same age
+
 
 ---
 
