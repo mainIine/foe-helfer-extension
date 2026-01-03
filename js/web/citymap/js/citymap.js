@@ -158,19 +158,16 @@ let CityMap = {
 	 */
 	PrepareBox: (Title)=> {
 		let oB = $('#city-map-overlayBody'),
-			wrapper = $('<div />').attr({'id':'citymap-wrapper'}),
-			mapfilters = $('<div />').attr({'id': 'map-filters'});
+			wrapper = $('<div id="citymap-wrapper" />'),
+			mapfilters = $('<div id="map-filters" />'),
+			menu = $('<div id="city-map-menu" />');
 
-		wrapper.append( 
-			$('<div />').attr('id', 'map-container')
-				.append( $('<div />').attr('id', 'grid-outer').attr('data-unit', CityMap.ScaleUnit).attr('data-view', CityMap.CityView)
-					.append( $('<div />').attr('id', 'map-grid') ) 
-				) 
-			)
-			.append( 
-				$('<div />').attr({'id': 'sidebar'}) 
-					.append( mapfilters )
-			);
+		wrapper
+			.append($('<div id="map-container" />')
+				.append($(`<div id="grid-outer" data-unit="${CityMap.ScaleUnit}" data-view="${CityMap.CityView}" />`)
+					.append($('<div id="map-grid" />'))))
+			.append($('<div id="sidebar" />')
+				.append(mapfilters));
 
 		$('#city-map-overlayHeader > .title').attr('id', 'map' + CityMap.hashCode(Title));
 
@@ -178,12 +175,10 @@ let CityMap = {
 			oB.addClass('outpost').addClass(ActiveMap)
 		}
 
-		let menu = $('<div />').attr('id', 'city-map-menu');
-
-		/* Ansicht wechseln */
-		let dropView = $('<select />').attr('id', 'menu-view').addClass('game-cursor')
-			.append($('<option />').prop('selected', CityMap.CityView === 'normal').attr('data-view', 'normal').text(i18n('Boxes.CityMap.NormalPerspecitve')).addClass('game-cursor') )
-			.append($('<option />').prop('selected', CityMap.CityView === 'skew').attr('data-view', 'skew').text(i18n('Boxes.CityMap.CavalierPerspecitve')).addClass('game-cursor') );
+		/* change view */
+		let dropView = $('<select id="menu-view" class="game-cursor" />')
+			.append($('<option class="game-cursor" data-view="normal" />').prop('selected', CityMap.CityView === 'normal').text(i18n('Boxes.CityMap.NormalPerspecitve')) )
+			.append($('<option class="game-cursor" data-view="skew" />').prop('selected', CityMap.CityView === 'skew').text(i18n('Boxes.CityMap.CavalierPerspecitve')) );
 
 		menu.append(dropView);
 
@@ -197,17 +192,17 @@ let CityMap = {
 
 		/* change scale */
 		let scaleUnit = CityMap.ScaleUnit;
-		if (ActiveMap === "cultural_outpost" || ActiveMap === "era_outpost" || ActiveMap === "guild_raids") {
+		if (ActiveMap === "cultural_outpost" || ActiveMap === "era_outpost" || ActiveMap === "guild_raids") 
 			scaleUnit = CityMap.OutpostScaleUnit;
-		}
-		let scaleView = $('<select />').attr('id', 'scale-view').addClass('game-cursor')
-			.append( $('<option />').prop('selected', scaleUnit === 60).attr('data-scale', 60).text('60%').addClass('game-cursor') )
-			.append( $('<option />').prop('selected', scaleUnit === 80).attr('data-scale', 80).text('80%').addClass('game-cursor') )
-			.append( $('<option />').prop('selected', scaleUnit === 100).attr('data-scale', 100).text('100%').addClass('game-cursor') )
-			.append( $('<option />').prop('selected', scaleUnit === 120).attr('data-scale', 120).text('120%').addClass('game-cursor') )
-			.append( $('<option />').prop('selected', scaleUnit === 140).attr('data-scale', 140).text('140%').addClass('game-cursor') )
-			.append( $('<option />').prop('selected', scaleUnit === 160).attr('data-scale', 160).text('160%').addClass('game-cursor') )
-			.append( $('<option />').prop('selected', scaleUnit === 180).attr('data-scale', 180).text('180%').addClass('game-cursor') )
+		
+		let scaleView = $('<select id="scale-view" class="game-cursor" />')
+			.append( $('<option class="game-cursor" data-scale="60" />').prop('selected', scaleUnit === 60).text('60%') )
+			.append( $('<option class="game-cursor" data-scale="80" />').prop('selected', scaleUnit === 80).text('80%') )
+			.append( $('<option class="game-cursor" data-scale="100" />').prop('selected', scaleUnit === 100).text('100%') )
+			.append( $('<option class="game-cursor" data-scale="120" />').prop('selected', scaleUnit === 120).text('120%') )
+			.append( $('<option class="game-cursor" data-scale="140" />').prop('selected', scaleUnit === 140).text('140%') )
+			.append( $('<option class="game-cursor" data-scale="160" />').prop('selected', scaleUnit === 160).text('160%') )
+			.append( $('<option class="game-cursor" data-scale="180" />').prop('selected', scaleUnit === 180).text('180%') )
 		;
 
 		menu.append(scaleView);
@@ -242,45 +237,24 @@ let CityMap = {
 		if (ActiveMap === 'main') {
 			menu.append($('<input type="text" id="BuildingsFilter" placeholder="'+ i18n('Boxes.CityMap.FilterBuildings') +'" oninput="CityMap.filterBuildings(this.value)">'));
 			menu.append(
-				$('<div />').addClass('btn-group')
-					.append($('<button />').addClass('btn ml-auto').attr({ id: 'copy-meta-infos', onclick: 'CityMap.copyMetaInfos()' }).text(i18n('Boxes.CityMap.CopyMetaInfos')))
-					.append($('<button />').addClass('btn ml-auto').attr({ id: 'show-submit-box', onclick: 'CityMap.showSubmitBox()' }).text(i18n('Boxes.CityMap.ShowSubmitBox')))
+				$('<div class="btn-group" />')
+					.append($('<button class="btn ml-auto" />').attr({ id: 'copy-meta-infos', onclick: 'CityMap.copyMetaInfos()' }).text(i18n('Boxes.CityMap.CopyMetaInfos')))
+					.append($('<button class="btn ml-auto" />').attr({ id: 'show-submit-box', onclick: 'CityMap.showSubmitBox()' }).text(i18n('Boxes.CityMap.ShowSubmitBox')))
 			);
 		}
-
-		mapfilters.append(
-			$('<b />').text(i18n('Boxes.CityMap.Highlight'))
-		);
-
-		mapfilters.append(
-			$('<label />').attr({ for: 'highlight-old-buildings' }).text(i18n('Boxes.CityMap.HighlightOldBuildings'))
-				.prepend($('<input />').attr({ type: 'checkbox', id: 'highlight-old-buildings', onclick: 'CityMap.highlightOldBuildings()' }))
-		);
-
-		mapfilters.append(
-			$('<div />').attr({ class: 'ratings' })
-				.append($('<label />').attr({ for: 'show-worst-buildings' }).text(i18n('Boxes.CityMap.ShowWorstBuildings'))
-					.prepend($('<input />').attr({ type: 'checkbox', id: 'show-worst-buildings', onclick: 'CityMap.highlightWorstBuildings()' })))
-				.append($('<span />').attr({ onClick: 'Productions.ShowRating()', class: 'clickable' }))
-		);
-
 		oB.append(wrapper);
 
 		if (ActiveMap === "guild_raids")
 			if (CityMap.QIData) {
-				menu.append(
-					$('<button />')
-						.addClass('btn ml-auto')
-						.attr({ id: 'copy-meta-infos', onclick: 'CityMap.copyMetaInfos()' , style: 'margin-left: auto'}).text(i18n('Boxes.CityMap.CopyMetaInfos'))
-				);
-			$("#sidebar").append(CityMap.showQIBuildingList());
-		}
+				menu.append($(`<button class="btn ml-auto" id="copy-meta-infos" onclick="CityMap.copyMetaInfos()" style="margin-left:auto" />`).text(i18n('Boxes.CityMap.CopyMetaInfos')));
+				$("#sidebar").append(CityMap.showQIBuildingList());
+			}
 
 		$('#citymap-wrapper').append(menu);
 
-		if (ActiveMap === "cultural_outpost" || ActiveMap === "era_outpost") {
+		if (ActiveMap === "cultural_outpost" || ActiveMap === "era_outpost") 
 			$("#sidebar").append(CityMap.showOutpostBuildings());
-		}
+		
 		if (ActiveMap === "cultural_outpost")
 			$('#citymap-wrapper').append('<img class="clickable openOverview" data-original-title="'+i18n('Menu.OutP.Title')+'" onClick="Outposts.BuildInfoBox()" src="' + extUrl + 'css/images/menu/vikings_ship.png">');
 
@@ -890,25 +864,26 @@ let CityMap = {
 
 
 	/**
-	 * Statistiken in die rechte Sidebar
+	 * Main city sidebar stats
 	 */
 	getAreas: ()=>{
 		let total = ((CityMap.UnlockedAreas.length -1) * 16) + 256, // x + (4*4) + 16*16
 			occupied = CityMap.metrics.areaOccupied,
 			txtFree = (total - occupied);
 
-		if( $('#area-state').length === 0 ){
-			let aW = $('<div />').attr('id', 'area-state');
-			let aS = $('<div />').attr('id', 'map-stats');
+		if( $('#area-state').length === 0 ) {
+			let aW = $('<div id="area-state" />');
+			let aS = $('<div id="map-stats" />');
 
-			aW.append( $('<div />').addClass('building-count-area') );
-			aW.append( $('<p />').addClass('too-old-legends').hide() );
-			aS.append( $('<div />').addClass('building-stats') );
+			aW.append( $('<div class="building-count-area" />') );
+			aW.append( $('<p class="too-old-legends" />').hide() );
+			aS.append( $('<div class="building-stats" />') );
 
 			aW.prepend(aS)
 			$('#sidebar').append(aW);
 			$('#sidebar').addClass('main');
 		}
+
 
 		// Non player city => Unlocked areas cant be detected => dont show free space
 		if (ActiveMap !== 'OtherPlayer') {
@@ -945,6 +920,7 @@ let CityMap = {
 		}
 		areaStats.push('</ul>');
 
+		areaStats.push(`<b>${i18n('Boxes.CityMap.Highlight')}</b>`)
 		areaStats.push('<ul>' +
 			'<li onClick="CityMap.highlightGBGBuildings()" class="clickable"><span data-original-title="'+i18n('Boxes.CityMap.buildingFromGBG')+', '+parseFloat(100*CityMap.metrics.gbgBuildings/CityMap.metrics.buildings).toFixed(1)+'%"><img src="'+srcLinks.get(`/cash_shop/gui/cash_shop_icon_navi_gbg_selected.png`,true)+'" />' + CityMap.metrics.gbgBuildings + '</span> <span><img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_expansion.png`,true)+'" />' + CityMap.metrics.gbgArea+ '</span></li>' +
 			'<li onClick="CityMap.highlightQIBuildings()" class="clickable"><span data-original-title="'+i18n('Boxes.CityMap.buildingFromQI')+', '+parseFloat(100*CityMap.metrics.qiBuildings/CityMap.metrics.buildings).toFixed(1)+'%"><img src="'+srcLinks.get(`/guild_raids/windows/guild_raids_guild_raid_emblem.png`,true)+'" />' + CityMap.metrics.qiBuildings + '</span> <span><img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_expansion.png`,true)+'" />' + CityMap.metrics.qiArea+ '</span></li>' + 
@@ -953,6 +929,12 @@ let CityMap = {
 			'<li onClick="CityMap.highlightAscendableBuildings()" class="clickable"><span data-original-title="'+i18n('Boxes.CityMap.ShowAscendableBuildings')+', '+parseFloat(100*CityMap.metrics.ascendableBuildings/CityMap.metrics.buildings).toFixed(1)+'%"><img src="'+srcLinks.get(`/shared/icons/limited_building_upgrade.png`,true)+'" />' + CityMap.metrics.ascendableBuildings + '</span> <span><img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_expansion.png`,true)+'" />' + CityMap.metrics.ascendableBuildingsArea + '</span></li>' +
 			'<li onClick="CityMap.highlightDecayedBuildings()" class="clickable"><span data-original-title="'+i18n('Boxes.CityMap.ShowDecayedBuildings')+', '+parseFloat(100*CityMap.metrics.decayedBuildings/CityMap.metrics.buildings).toFixed(1)+'%"><img style="filter:saturate(0.5)" src="'+srcLinks.get(`/shared/icons/limited_building_downgrade.png`,true)+'" />' + CityMap.metrics.decayedBuildings + '</span> <span><img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_expansion.png`,true)+'" />' + CityMap.metrics.decayedBuildingsArea + '</span></li>' +
 			'</ul>');
+			
+		areaStats.push('<div class="ratings">')
+		areaStats.push(`<label for="show-worst-buildings"><input type="checkbox" id="show-worst-buildings" onclick="CityMap.highlightWorstBuildings()" /> ${i18n('Boxes.CityMap.ShowWorstBuildings')}</label>`)
+		areaStats.push('<span onclick="Productions.ShowRating()" class="clickable"></span></div>')
+
+		areaStats.push(`<label for="highlight-old-buildings"><input type="checkbox" id="highlight-old-buildings" onclick="CityMap.highlightOldBuildings()"> ${i18n('Boxes.CityMap.HighlightOldBuildings')}</label>`)
 
 		// let cityEfficiency = parseFloat(CityMap.metrics.connectedBuildingsArea / CityMap.metrics.roadsArea * 100).toFixed(0);
 		// areaStats.push('<p data-original-title="'+i18n('Boxes.CityMap.CityGridScoreText')+'" class="text-center"><b>'+i18n('Boxes.CityMap.CityGridScore')+':</b> '+cityEfficiency+'</p>');
@@ -1018,7 +1000,7 @@ let CityMap = {
 	 */
 	highlightOldBuildings: ()=> {
 		$('.oldBuildings').toggleClass('diagonal');
-		$('.building-count-area, .too-old-legends').toggle();
+		$('.too-old-legends').slideToggle();
 	},
 
 	highlightNoStreetBuildings: ()=> {
