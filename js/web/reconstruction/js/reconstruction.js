@@ -251,17 +251,17 @@ let reconstruction = {
         return c;
     },
     mapSettings:()=>{
-        let storedUnit = parseInt(localStorage.getItem('ReconstructionMapScale') || 80);
+        let storedUnit = parseFloat(localStorage.getItem('ReconstructionMapScale') || 80);
         let c = `<select class="scale-view" name="reconstructionscale">
-			<option data-scale="60" ${storedUnit === 60 ? 'selected' : ''}>S</option>
+			<option data-scale="50" ${storedUnit === 50 ? 'selected' : ''}>S</option>
 			<option data-scale="80" ${storedUnit === 80 ? 'selected' : ''}>M</option>
-			<option data-scale="100" ${storedUnit === 100 ? 'selected' : ''}>L</option>
-			<option data-scale="120" ${storedUnit === 120 ? 'selected' : ''}>XL</option>
+			<option data-scale="100" ${storedUnit === 110 ? 'selected' : ''}>L</option>
+			<option data-scale="156.1" ${storedUnit === 156.1 ? 'selected' : ''}>XL</option>
             </select>`;
             c += `<br><input type="range" class="opacity" name="opacity" min="0.01" max="1" step="0.01" value="0.9" />`
 		$('#ReconstructionMapSettingsBox').html(c).promise().done(function(){
             $('#ReconstructionMapSettingsBox .scale-view').on('change', function(){
-                let unit = parseInt($('.scale-view option:selected').data('scale'));
+                let unit = parseFloat($('.scale-view option:selected').data('scale'));
                 localStorage.setItem('ReconstructionMapScale', unit);
                 $('#ReconstructionMapBody .map-grid-wrapper').css('--scale', unit);
             });

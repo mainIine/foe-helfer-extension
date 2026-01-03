@@ -60,6 +60,7 @@
   border-bottom: 1px dotted var(--black-65);
   width: 300px;
   align-self: end;
+  background-color: #070b18b5;
 }
 #ReconstructionMap .window-head:hover {
   background: var(--black-30);
