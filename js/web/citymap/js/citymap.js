@@ -921,26 +921,26 @@ let CityMap = {
 		areaStats.push('</ul>');
 
 		areaStats.push(`<b>${i18n('Boxes.CityMap.Highlight')}</b>`)
-		areaStats.push('<ul>' +
+		areaStats.push('<ul class="highlight-map">' +
 			'<li onClick="CityMap.highlightGBGBuildings()" class="clickable"><span data-original-title="'+i18n('Boxes.CityMap.buildingFromGBG')+', '+parseFloat(100*CityMap.metrics.gbgBuildings/CityMap.metrics.buildings).toFixed(1)+'%"><img src="'+srcLinks.get(`/cash_shop/gui/cash_shop_icon_navi_gbg_selected.png`,true)+'" />' + CityMap.metrics.gbgBuildings + '</span> <span><img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_expansion.png`,true)+'" />' + CityMap.metrics.gbgArea+ '</span></li>' +
 			'<li onClick="CityMap.highlightQIBuildings()" class="clickable"><span data-original-title="'+i18n('Boxes.CityMap.buildingFromQI')+', '+parseFloat(100*CityMap.metrics.qiBuildings/CityMap.metrics.buildings).toFixed(1)+'%"><img src="'+srcLinks.get(`/guild_raids/windows/guild_raids_guild_raid_emblem.png`,true)+'" />' + CityMap.metrics.qiBuildings + '</span> <span><img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_expansion.png`,true)+'" />' + CityMap.metrics.qiArea+ '</span></li>' + 
 			'<li onClick="CityMap.highlightNoStreetBuildings()" class="clickable"><span data-original-title="'+i18n('Boxes.CityMap.roadless')+', '+parseFloat(100*CityMap.metrics.roadlessBuildings/CityMap.metrics.buildings).toFixed(1)+'%"><img src="'+srcLinks.get(`/shared/gui/buffbar/buffbar_icon_buff_unconnected.png`,true)+'" />' + CityMap.metrics.roadlessBuildings + '</span> <span><img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_expansion.png`,true)+'" />' + CityMap.metrics.roadlessBuildingsArea + '</span></li>' +
 			'<li onClick="CityMap.highlightLimitedBuildings()" class="clickable"><span data-original-title="'+i18n('Boxes.CityMap.limited')+', '+parseFloat(100*CityMap.metrics.limitedBuildings/CityMap.metrics.buildings).toFixed(1)+'%"><img src="'+srcLinks.get(`/shared/gui/upgrade/upgrade_icon_limited_building.png`,true)+'" />' + CityMap.metrics.limitedBuildings + '</span> <span><img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_expansion.png`,true)+'" />' + CityMap.metrics.limitedBuildingsArea + '</span></li>' +
 			'<li onClick="CityMap.highlightAscendableBuildings()" class="clickable"><span data-original-title="'+i18n('Boxes.CityMap.ShowAscendableBuildings')+', '+parseFloat(100*CityMap.metrics.ascendableBuildings/CityMap.metrics.buildings).toFixed(1)+'%"><img src="'+srcLinks.get(`/shared/icons/limited_building_upgrade.png`,true)+'" />' + CityMap.metrics.ascendableBuildings + '</span> <span><img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_expansion.png`,true)+'" />' + CityMap.metrics.ascendableBuildingsArea + '</span></li>' +
-			'<li onClick="CityMap.highlightDecayedBuildings()" class="clickable"><span data-original-title="'+i18n('Boxes.CityMap.ShowDecayedBuildings')+', '+parseFloat(100*CityMap.metrics.decayedBuildings/CityMap.metrics.buildings).toFixed(1)+'%"><img style="filter:saturate(0.5)" src="'+srcLinks.get(`/shared/icons/limited_building_downgrade.png`,true)+'" />' + CityMap.metrics.decayedBuildings + '</span> <span><img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_expansion.png`,true)+'" />' + CityMap.metrics.decayedBuildingsArea + '</span></li>' +
-			'</ul>');
-			
-		areaStats.push('<div class="ratings">')
-		areaStats.push(`<label for="show-worst-buildings"><input type="checkbox" id="show-worst-buildings" onclick="CityMap.highlightWorstBuildings()" /> ${i18n('Boxes.CityMap.ShowWorstBuildings')}</label>`)
-		areaStats.push('<span onclick="Productions.ShowRating()" class="clickable"></span></div>')
+			'<li onClick="CityMap.highlightDecayedBuildings()" class="clickable"><span data-original-title="'+i18n('Boxes.CityMap.ShowDecayedBuildings')+', '+parseFloat(100*CityMap.metrics.decayedBuildings/CityMap.metrics.buildings).toFixed(1)+'%"><img style="filter:saturate(0.5)" src="'+srcLinks.get(`/shared/icons/limited_building_downgrade.png`,true)+'" />' + CityMap.metrics.decayedBuildings + '</span> <span><img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_expansion.png`,true)+'" />' + CityMap.metrics.decayedBuildingsArea + '</span></li>');
 
-		areaStats.push(`<label for="highlight-old-buildings"><input type="checkbox" id="highlight-old-buildings" onclick="CityMap.highlightOldBuildings()"> ${i18n('Boxes.CityMap.HighlightOldBuildings')}</label>`)
+		areaStats.push('<li class="ratings clickable">')
+		areaStats.push(`<label for="show-worst-buildings"><input type="checkbox" id="show-worst-buildings" onclick="CityMap.highlightWorstBuildings()" /> ${i18n('Boxes.CityMap.ShowWorstBuildings')}</label>`)
+		areaStats.push('<span onclick="Productions.ShowRating()" class="clickable"></span></li>')
+
+		areaStats.push(`<li class="clickable"><label for="highlight-old-buildings"><input type="checkbox" id="highlight-old-buildings" onclick="CityMap.highlightOldBuildings()"> ${i18n('Boxes.CityMap.HighlightOldBuildings')}</label></li>`)
+		areaStats.push('</ul>')
 
 		// let cityEfficiency = parseFloat(CityMap.metrics.connectedBuildingsArea / CityMap.metrics.roadsArea * 100).toFixed(0);
 		// areaStats.push('<p data-original-title="'+i18n('Boxes.CityMap.CityGridScoreText')+'" class="text-center"><b>'+i18n('Boxes.CityMap.CityGridScore')+':</b> '+cityEfficiency+'</p>');
 
 		$('.building-count-area').html(areaStats.join('')).promise().done(function() {
-			$('.building-count-area ul + ul li').click(function(){
+			$('.building-count-area ul.highlight-map li').click(function(){
 				$(this).toggleClass('active');
 			})
 		});

@@ -90,7 +90,13 @@
 	display: block;
 }
 
-#sidebar.main #area-state ul + ul li.active span:first-child {
+#sidebar.main #area-state .highlight-map li:hover {
+	background-color: var(--black-30);
+	margin: 0 -2px;
+	padding: 0 2px;
+}
+
+#sidebar.main .highlight-map li.active span:first-child {
 	font-weight: bold;
 }
 
