@@ -88,7 +88,7 @@
     "Boxes.BattleAssistAAConfig.AllConfigs": "Tous les conseils",
     "Boxes.BattleAssistAAConfig.Bonus": "Bonus",
     "Boxes.BattleAssistAAConfig.Exp": "Explications",
-    "Boxes.BattleAssistAAConfig.Explanation": "1) Lorsqu'une armée adverse a un bonus supérieur au seuil donné, les conseils seront affichés. <br>2) Pour modifier les seuils et les conseils, cliquez dans le tableau - confirmez les modifications avec Entrée. <br>3) Pour supprimer un avis, enregistrez avec un avis vide.",
+    "Boxes.BattleAssistAAConfig.Explanation": "1) Lorsqu'une armée adverse a un bonus supérieur au seuil donné, les conseils seront affichés. <br>2) Pour modifier les seuils et les conseils, cliquez dans le tableau - confirmez les modifications avec Entrée. <br>3) Pour supprimer un conseil, enregistrez avec un conseil vide.",
     "Boxes.BattleAssistAAConfig.RecentOpponents": "Opposants récents",
     "Boxes.BattleAssistAAConfig.Threshold": "Seuil",
     "Boxes.BattleAssistAAConfig.Title": "Conseils",
