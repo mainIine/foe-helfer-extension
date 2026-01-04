@@ -13,7 +13,7 @@
 	- Die verfügbare Fläche ist jetzt auch bei anderen Spielern zu sehen
 - Profil: 
 	- QI Aktionskapazität hinzugefügt
-	- Sas Mini-Profilbild hat den Spiel-Button im Forschungsbaum verdeckt und wurde deshalb verschoben
+	- Das Mini-Profilbild hat den Spiel-Button im Forschungsbaum verdeckt und wurde deshalb verschoben
 	- Man kann den mittleren teil nun markieren und dann kopieren, um seine Werte auch im Spien in Nachrichten teilen zu können
 - Menü-Icon für Gebäude-Sets und -Ketten-Modul ausgetauscht
 - Verbündete: es gibt nun Summen unten im Fenster
