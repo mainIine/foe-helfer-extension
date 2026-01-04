@@ -1113,7 +1113,7 @@
     "Boxes.ShopAssist.Single": "À l'unité",
     "Boxes.ShopAssist.Title": "Assistant Boutique",
     "Boxes.ShopAssist.canBeBought": "Peut être acheté",
-    "Boxes.ShopAssist.filterCurrency": "Ne pas afficher les articles avec cette devise",
+    "Boxes.ShopAssist.filterCurrency": "Ne pas afficher les articles avec cette monnaie",
     "Boxes.ShopAssist.onlyFavourites": "Seulement les favoris",
     "Boxes.ShopAssist.onlyUnlocked": "Seulement débloqués",
     "Boxes.Stats.BtnAll": "Tout",
