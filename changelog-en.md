@@ -11,8 +11,10 @@
 - City Map: 
 	- Sidebar stats have been reworked: more interesting facts about buildings in the city were added
 	- Available area for other players cities has been added
-- Profile: QI capacity added
-- Profile: the mini icon on the top left corner blocked the ingame research button, so it was moved a bit
+- Profile: 
+	- QI capacity added
+	- The mini icon on the top left corner blocked the ingame research button, so it was moved a bit
+	- Main part can now be selected and copied, so you can share your most impartant stats ingame more easily
 - Changed menu icon for sets and chains
 - Allies: added sums at the bottom of the list
 - GBG List: added seconds to the "in" column
