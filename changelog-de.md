@@ -11,13 +11,15 @@
 - Stadt Übersicht: 
 	- Die Statistiken und Filter an der Seite wurden überarbeitet: es gibt neue, interessantere Fakten zu den Gebäuden in der Stadt
 	- Die verfügbare Fläche ist jetzt auch bei anderen Spielern zu sehen
-- Profil: QI Aktionskapazität hinzugefügt
+- Profil: 
+	- QI Aktionskapazität hinzugefügt
+	- Sas Mini-Profilbild hat den Spiel-Button im Forschungsbaum verdeckt und wurde deshalb verschoben
+	- Man kann den mittleren teil nun markieren und dann kopieren, um seine Werte auch im Spien in Nachrichten teilen zu können
 - Menü-Icon für Gebäude-Sets und -Ketten-Modul ausgetauscht
 - Verbündete: es gibt nun Summen unten im Fenster
 - Die Einstellungen innerhalb von Fenstern wurden anders angemalt
 - GG Liste: Sekunden in der "in"-Spalte hinzugefügt
 - Wir haben den Sound für FP-Quests aus den Rechnern entfernt. Lasst uns wissen, wenn ihr den zurück haben möchtet
-- Profil: das Mini-Profilbild hat den Spiel-Button im Forschungsbaum verdeckt und wurde deshalb verschoben
 
 **Bugfix**
 - Produktionsübersicht: die Güter von Gilden-LB waren manchmal zu hoch, weil Boosts angerechnet wurden
