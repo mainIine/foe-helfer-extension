@@ -269,22 +269,45 @@ let reconstruction = {
     ];
 
     // crea select con preset
-    let c = `<select class="scale-view" name="reconstructionscale">`;
+    let c = `
+        <label>${i18n('Boxes.ReconstructionMap.ScalePreset')}</label><br>
+        <select class="scale-view" name="reconstructionscale">
+    `;
+
     presets.forEach(p => {
-        c += `<option data-scale="${p.value}" ${storedScale === p.value ? 'selected' : ''}>${p.label}</option>`;
+        c += `
+            <option data-scale="${p.value}" ${storedScale === p.value ? 'selected' : ''}>
+                ${p.label}
+            </option>
+        `;
     });
     c += `</select>`;
 
     // aggiungi slider zoom e opacità + pulsante reset
     c += `
-        <br>
-        <label>Zoom mappa: <span class="scale-value">${Math.round(storedScale)}%</span></label>
-        <input type="range" class="scale-slider" name="reconstructionscale" min="50" max="400" step="1" value="${storedScale}" />
-        <br>
-        <label>Opacità mappa: <span class="opacity-value">${storedOpacity}</span></label>
-        <input type="range" class="opacity" name="opacity" min="0.01" max="1" step="0.01" value="${storedOpacity}" />
-        <br>
-        <button class="reset-map-settings">Reset Default</button>
+        <br><br>
+
+        <label>
+            ${i18n('Boxes.ReconstructionMap.Zoom')}:
+            <span class="scale-value">${Math.round(storedScale)}%</span>
+        </label>
+        <input type="range" class="scale-slider" name="reconstructionscale"
+               min="50" max="400" step="1" value="${storedScale}" />
+
+        <br><br>
+
+        <label>
+            ${i18n('Boxes.ReconstructionMap.Opacity')}:
+            <span class="opacity-value">${storedOpacity.toFixed(2)}</span>
+        </label>
+        <input type="range" class="opacity" name="opacity"
+               min="0.01" max="1" step="0.01" value="${storedOpacity}" />
+
+        <br><br>
+
+        <button class="reset-map-settings">
+            ${i18n('Boxes.ReconstructionMap.Reset')}
+        </button> 
     `;
 
     // inserisce HTML
