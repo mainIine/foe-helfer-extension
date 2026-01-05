@@ -101,6 +101,7 @@
   --tx: calc((-296289 / var(--scale) + 1471) * 1px);
   --ty: calc((-104533 / var(--scale) + 212) * 1px);
   transform: skewX(-63.5deg) skewY(14deg) scale(var(--scale-x), var(--scale-y)) translate(var(--tx), var(--ty));
+  opacity: 0.9;
 }
 .map-grid-wrapper .map-bg {
   position: absolute;
