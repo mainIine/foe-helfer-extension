@@ -69,7 +69,7 @@ let findGB = {
         html += `<td><input type="number" id="GBminLevel" min="0" max ="998" placeholder="${i18n("Boxes.findGB.minLvl")}"></td>`;
         html += `<td><input type="number" id="GBmaxLevel" min="1" max ="999" placeholder="${i18n("Boxes.findGB.maxLvl")}"></td></tr><tr>`;
         html += `<td><input type="checkbox" id="GBhasProgress"><label for="GBhasProress">${i18n("Boxes.findGB.hasProgress")}</label></td>`;
-        html += `<td colspan="2"><input type="button" id="findGBreset" class="btn-default" value="${i18n("General.Reset")}"></input></td>`;
+        html += `<td colspan="2"><input type="button" id="findGBreset" class="btn" value="${i18n("General.Reset")}"></input></td>`;
         html += `</tr></table>`;
         html += `<table id="foundGB" class="foe-table"><thead class="sticky"><tr><th>${i18n("General.Player")}</th><th>${i18n("General.GB")}</th><th>${i18n("General.Level")}</th></tr></thead>`
         

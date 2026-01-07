@@ -74,6 +74,46 @@
 	box-sizing: border-box;
 }
 
+#sidebar.main #area-state img {
+	width: 22px;
+}
+#sidebar.main #area-state ul, #sidebar.main #area-state li {
+	margin: 0;
+	padding: 0;
+}
+
+#sidebar.main #area-state ul + b {
+	border-top: 1px dotted var(--text-darker);
+	padding: 5px 0;
+	margin: 5px 0 2px;
+	color: var(--bright-color);
+	display: block;
+}
+
+#sidebar.main #area-state .highlight-map li:hover {
+	background-color: var(--black-30);
+	margin: 0 -2px;
+	padding: 0 2px;
+}
+
+#sidebar.main .highlight-map li.active span:first-child {
+	font-weight: bold;
+}
+
+#sidebar.main #area-state li {
+	display: inline-flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+}
+#sidebar.main #area-state li span:last-child {
+	text-align: right;
+}
+#sidebar #area-state li.clickable:hover span:first-child {
+	font-weight: bold;
+	color: var(--bright-color);
+}
+
 .outpost #BuildingsFilter, .outpost #city-map-menu .btn-group, .outpost #map-filters {
 	display: none;
 }
@@ -121,26 +161,26 @@
 	font-weight: bold;
 }
 
-.outpost.guild_raids #sidebar .qiBuildings.foe-table thead tr th {
+.outpost.guild_raids #sidebar .allBuildings.foe-table thead tr th {
 	vertical-align: middle !important;
 }
 
-.outpost.guild_raids #sidebar .qiBuildings {
+.outpost.guild_raids #sidebar .allBuildings {
 	font-size: 90%;
 }
 
-.outpost.guild_raids #sidebar .qiBuildings img, .outpost.guild_raids .qiSums .boosts img {
+.outpost.guild_raids #sidebar .allBuildings img, .outpost.guild_raids .qiSums .boosts img {
 	max-height: 20px;
 }
 
-.outpost.guild_raids #sidebar .qiBuildings td .building img {
+.outpost #sidebar .allBuildings td .building img {
 	max-height: 31px;
 	max-width: 40px;
 	margin: auto;
 	display: inline-block;
 }
 
-.outpost.guild_raids #sidebar .qiBuildings td div.building {
+.outpost #sidebar .allBuildings td div.building {
 	background: #6b7529;
 	width: 50px;
 	margin: -3px 0;
@@ -194,49 +234,12 @@
 	height: 23px;
 }
 #city-map-overlayBody th.population::before { background-position: -162px 0; }
-#city-map-overlayBody th.happiness::before { background-position: -140px 0; }a
+#city-map-overlayBody th.happiness::before { background-position: -140px 0; }
+#city-map-overlayBody th .diplomacy::before { zoom: 0.45; }
+#city-map-overlayBody th .diplomacy { height: 24px; }
 
 #sidebar p {
 	margin-bottom: 5px;
-}
-
-#map-filters {
-	margin-bottom: 10px;
-	border-bottom: 1px solid var(--black-50);
-	padding-bottom: 5px;
-}
-
-#map-filters b {
-	position: relative;
-	margin: -3px 0 3px;
-	color: var(--bright-color);
-	display: block;
-}
-
-#map-filters label {
-	display: block;
-	font-size: 90%;
-	margin-bottom: 5px;
-}
-
-#map-filters .ratings {
-	display: flex;
-	justify-content: space-between;
-}
-
-#map-filters span::after {
-    content: "➔";
-    display: inline-block;
-    background: var(--menu-arrow-bg);
-    padding: 0 2px;
-    border-radius: 3px;
-    color: var(--text-btn);
-    margin-left: 2px;
-    font-weight: normal;
-}
-
-#map-filters span:hover::after {
-    filter: contrast(1.2);
 }
 
 #grid-outer {
@@ -268,10 +271,10 @@
 	border-bottom: 1px solid #ccc;
 }
 
-.map-bg {
+#map-grid .map-bg {
 	background: transparent url('../images/map-bg.png') center / cover no-repeat;
 }
-.map-bg.startmap {
+#map-grid .map-bg.startmap {
 	background: transparent url('../images/start-map-bg.png') center / cover no-repeat;
 }
 
@@ -279,9 +282,6 @@
 [data-unit="180"] #map-grid {
 	width: 108.18em;
 	height: 115.2em;
-}
-[data-unit="180"][data-view="skew"] {
-
 }
 [data-unit="180"] #map-grid span[data-grid] {
 	width: 1.8em;
@@ -293,9 +293,6 @@
 	width: 96.16em;
 	height: 102.4em;
 }
-[data-unit="160"][data-view="skew"] {
-
-}
 [data-unit="160"] #map-grid span[data-grid] {
 	width: 1.6em;
 	height: 1.6em;
@@ -306,9 +303,6 @@
 	width: 84.14em;
 	height: 89.6em;
 }
-[data-unit="140"][data-view="skew"] {
-
-}
 [data-unit="140"] #map-grid span[data-grid] {
 	width: 1.4em;
 	height: 1.4em;
@@ -318,9 +312,6 @@
 [data-unit="120"] #map-grid {
 	width: 72.12em;
 	height: 76.8em;
-}
-[data-unit="120"][data-view="skew"] {
-
 }
 [data-unit="120"] #map-grid span[data-grid] {
 	width: 1.2em;
@@ -382,7 +373,7 @@
 	z-index: 1;
 }
 
-.qiBuildings tr td:first-child::before {
+.allBuildings tr td:first-child::before {
 	content: '';
 	width: 9px;
 	height: 9px;
@@ -404,14 +395,6 @@
 	background-color: var(--background-color-decoration);
 	border-color: var(--border-color-decoration);
 }
-/*#grid-outer span.special {
-	background-color: var(--background-color-special);
-	border-color: var(--border-color-special);
-}*/
-/*#grid-outer span.chain {
-	background-color: var(--background-color-chain);
-	border-color: var(--border-color-chain);
-}*/
 #grid-outer span.street {
 	background-color: var(--background-color-street);
 	border-color: var(--border-color-street);
@@ -465,46 +448,26 @@
 #grid-outer span.older-3.diagonal, span.older-3.diagonal {
 	background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, rgb(165, 74, 62) 2px, rgb(165, 74, 62) 7px);
 }
-#grid-outer span.to-old.diagonal, span.to-old.diagonal {
+#grid-outer span.too-old.diagonal, span.too-old.diagonal {
 	background-image: repeating-linear-gradient(202deg, transparent, transparent 5px, rgb(171, 26, 13) 2px, rgb(171, 26, 13) 7px)
 }
 #grid-outer span.noStreet.highlight {
 	background-color: var(--background-color-noStreet);
 	border-color: var(--border-color-noStreet);
-	animation-name: color;
-    animation-duration: 1s;
-	animation-iteration-count: infinite;
-	animation-direction: alternate;
-	animation-timing-function: ease-in-out;
 }
 #grid-outer span:not(.street).rating10.highlight4 {
 	background-color: #f00;
 	border-color: #c00;
-	animation-name: color;
-    animation-duration: 1s;
-	animation-iteration-count: infinite;
-	animation-direction: alternate;
-	animation-timing-function: ease-in-out;
 }
 #grid-outer span:not(.street).rating20.highlight4 {
 	background-color: rgb(255, 102, 0);
 	border-color: #c00;
 	background-image: repeating-linear-gradient(-45deg, transparent, transparent 5px, #c00 2px, #c00 7px);
-	animation-name: color;
-    animation-duration: 1s;
-	animation-iteration-count: infinite;
-	animation-direction: alternate;
-	animation-timing-function: ease-in-out;
 }
 #grid-outer span:not(.street).rating30.highlight4 {
 	background-color: rgb(255, 208, 0);
 	border-color: #c00;
 	background-image: repeating-linear-gradient(-45deg, transparent, transparent 5px, #c00 2px, #c00 7px);
-	animation-name: color;
-    animation-duration: 1s;
-	animation-iteration-count: infinite;
-	animation-direction: alternate;
-	animation-timing-function: ease-in-out;
 }
 #grid-outer span.ascendable.highlight2 {
 	background-color: var(--background-color-ascendable);
@@ -536,6 +499,18 @@
 #grid-outer span.collectSoon[class*="collect2"]::after {
 	content: '⬤ ⬤ ⬤';
 }
+#grid-outer.showLimited .isLimited {
+	background-image: radial-gradient(circle at 50%, #fff 2px, #0000 7px);
+    box-shadow: inset 0 0 0 1px #fff6;
+}
+#grid-outer.showGBG .fromGBG {
+	background-color: var(--background-color-gbg);
+	border-color: var(--border-color-gbg);
+}
+#grid-outer.showQI .fromQI {
+	background-color: var(--background-color-qi);
+	border-color: var(--border-color-qi);
+}
 
 [data-view="skew"] .older-1.diagonal {
 	background-image: repeating-linear-gradient(15deg, transparent, transparent 5px, rgb(128, 152, 93) 2px, rgb(128, 152, 93) 7px)
@@ -546,12 +521,12 @@
 [data-view="skew"] .older-3.diagonal {
 	background-image: repeating-linear-gradient(15deg, transparent, transparent 5px, rgb(165, 74, 62) 2px, rgb(165, 74, 62) 7px);
 }
-[data-view="skew"] .to-old.diagonal {
+[data-view="skew"] .too-old.diagonal {
 	background-image: repeating-linear-gradient(172deg, transparent, transparent 5px, rgb(171, 26, 13) 2px, rgb(171, 26, 13) 7px)
 }
 
 
-.to-old-legends span {
+.too-old-legends span {
 	display: inline-block;
 	width: 1em;
 	height: 1em;
@@ -576,9 +551,14 @@
 	width: 130px;
 }
 
+#area-state p {
+	margin: 3px 0;
+}
+
 #area-state .building-count-area span.square {
 	background-color: var(--background-color-military);
 	border-color:  var(--border-color-military);
+	border-radius: 3px;
 	width: 10px;
 	height: 10px;
 	display: inline-block;
@@ -631,6 +611,32 @@
 	border-color: var(--border-color-tower);
 }
 
+#area-state .building-count-area label {
+	display: block;
+	font-size: 90%;
+	margin-bottom: 5px;
+}
+
+#area-state .building-count-area .ratings {
+	display: flex;
+	justify-content: space-between;
+}
+
+#area-state .building-count-area .ratings span::after {
+    content: "➔";
+    display: inline-block;
+    background: var(--menu-arrow-bg);
+    padding: 0 2px;
+    border-radius: 3px;
+    color: var(--text-btn);
+    margin-left: 2px;
+    font-weight: normal;
+}
+
+#area-state .building-count-area .ratings span:hover::after {
+    filter: contrast(1.2);
+}
+
 #city-map-overlay #grid-outer span.highlighted {
     border-width: 2px !important;
     filter: saturate(1.3) brightness(1.3) !important;
@@ -647,9 +653,4 @@
 @keyframes sizing {
     0% {transform: scale(1,1);}
     100% {transform: scale(1.2,1.2);}
-}
-
-@keyframes color {
-    0% {filter: saturate(1) brightness(1)}
-    100% {filter: saturate(1.3) brightness(0.8);}
 }

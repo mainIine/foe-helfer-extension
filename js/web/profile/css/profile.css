@@ -1,4 +1,4 @@
-#PlayerProfile {
+.playerprofile {
     --main-background: linear-gradient(196deg, #00041c 0%, rgba(3,18,51,1) 100%);
     --main-border: 3px solid #0a173d;
     --main-color: var(--text-light);
@@ -23,19 +23,20 @@
     --boost-color: #83b940;
 }
 
-#PlayerProfileButton {
-    position: absolute;
-    top: 5px;
-    left: 2px;
-    z-index: 300;
-}
-
 #PlayerProfileButton span {
     display: none;
+    position: absolute;
+    top: 6px;
+    left: 110px;
+    z-index: 300;
 }
 
 #PlayerProfileButton .main, #PlayerProfileButton .OtherPlayer {
     display: inline-block;
+}
+
+#PlayerProfileButton .OtherPlayer {
+    left: 2px;
 }
 
 #PlayerProfileButton .OtherPlayer img {
@@ -43,38 +44,39 @@
 }
 
 #PlayerProfileButton img {
-    width: 24px;
-    height: 24px;
+    width: 22px;
+    height: 22px;
     border-radius: 3px;
+    box-shadow: 0 0 1px 1px var(--black-65);
 }
 
 #PlayerProfileButton img:hover {
     filter: saturate(1.3) brightness(1.2);
 }
 
-#PlayerProfile {
+.playerprofile {
     width: 400px;
     min-height: 200px;
     box-shadow: 0 0 5px #0008;
 }
 
-#PlayerProfile .hidden {
+.playerprofile .hidden {
     display: none;
 }
 
-#PlayerProfile.expanded {
+.playerprofile.expanded {
     width: 920px;
     margin-left: -260px;
     border-radius: 15px;
 }
 
-#PlayerProfile.window-box {
+.playerprofile.window-box {
     background: var(--main-background);
     color: var(--main-color);
     border: none;
 }
 
-#PlayerProfile .window-head {
+.playerprofile .window-head {
     background: transparent;
     box-shadow: none;
     border-bottom-width: 0;
@@ -86,7 +88,7 @@
     position: relative;
 }
 
-#PlayerProfile .window-close {
+.playerprofile .box-buttons .window-close {
     filter: saturate(0.7) contrast(1.7);
     opacity: 0.5;
     background-image: url('../../../../css/images/hud/box-sprite.png'), none;
@@ -94,43 +96,47 @@
     box-shadow: none;
 }
 
-#PlayerProfile .window-close:hover {
+.playerprofile .box-buttons .window-close:hover {
     filter: saturate(0.9) contrast(2);
     opacity: 0.9;
 }
 
-#PlayerProfileBody {
+.playerprofile .window-body {
     overflow: visible;
     position: relative;
     margin-top: -35px;
 }
 
-#PlayerProfile .window-head .title {
+.playerprofile .window-head .title {
     opacity: 0;
 }
 
-#PlayerProfile .pad {
+.playerprofile .pad {
     padding: 0.8rem;
 }
 
-#PlayerProfile .leftInfo .pad, #PlayerProfile .rightInfo .pad {
+.playerprofile .leftInfo .pad, .playerprofile .rightInfo .pad {
     padding: 0.8rem 0.5rem;
 }
 
-#PlayerProfile .leftInfo h2, #PlayerProfile .rightInfo h2 {
+.playerprofile .leftInfo h2, .playerprofile .rightInfo h2 {
     opacity: 1;
     color: var(--secondary-color);
 }
 
-#PlayerProfile h2 + .pad {
+.playerprofile h2 + .pad {
     padding: 0 0.8rem 0.8rem;
 }
 
-#PlayerProfile .pad + .pad {
+.playerprofile .pad + .pad {
     padding: 0.5rem 0.8rem;
 }
 
-#PlayerProfile div.header {
+.playerprofile.other .pad + .pad {
+    border-top: 1px dotted #0003;
+}
+
+.playerprofile div.header {
     height: 100px;
     position: relative;
     margin: 0 auto;
@@ -139,70 +145,74 @@
     background: var(--header-background);
 }
 
-#PlayerProfile .centerInfo {
+.playerprofile .centerInfo {
     width: 100%;
     max-width: 400px;
     padding-top: 1.1rem;
 }
 
-#PlayerProfile.expanded .centerInfo {
+.playerprofile .centerInfo:not(.otherPlayer) {
+    user-select: text;
+}
+
+.playerprofile.expanded .centerInfo {
     border: var(--main-border);
     border-radius: 10px;
     margin: -3px;
     z-index: 100;
 }
 
-#PlayerProfile .rightInfo div.header {
+.playerprofile .rightInfo div.header {
     border-radius: 0 15px 15px 0;
 }
 
-#PlayerProfile .leftInfo div.header {
+.playerprofile .leftInfo div.header {
     border-radius: 15px 0 0 15px;
 }
 
-#PlayerProfile div.header img:not(:only-child) {
+.playerprofile div.header img:not(:only-child) {
     position: absolute;
     left: calc(50% - 40px);
     max-height: 100px;
     filter: drop-shadow(2px 4px 6px #0005);
 }
 
-#PlayerProfile div.header.flex {
+.playerprofile div.header.flex {
     display: flex;
     align-items: flex-end;
     flex-direction: row;
 }
 
-#PlayerProfile div.header.flex img:only-child {
+.playerprofile div.header.flex img:only-child {
     min-width: 110px;
     max-width: 150px;
     max-height: 110px;
     filter: brightness(1.1);
 }
 
-#PlayerProfile div.header img.alabaster {
+.playerprofile div.header img.alabaster {
     height: 50px;
     left: 60px;
     top: 20px;
 }
 
-#PlayerProfile div.header img.goods {
+.playerprofile div.header img.goods {
     height: 50px;
     left: 65px;
     top: 45px;
 }
 
-#PlayerProfile div.header img.fp {
+.playerprofile div.header img.fp {
     left: 160px;
     top: 30px;
 }
 
-#PlayerProfile.expanded #PlayerProfileBody {
+.playerprofile.expanded .window-body {
     display: flex;
     align-items: stretch;
 }
 
-#PlayerProfile .leftInfo, #PlayerProfile .rightInfo {
+.playerprofile .leftInfo, .playerprofile .rightInfo {
     box-sizing: border-box;
     background: var(--secondary-background);
     width: 260px;
@@ -210,37 +220,37 @@
     color: var(--secondary-color);
 }
 
-#PlayerProfile .rightInfo {
+.playerprofile .rightInfo {
     border-radius: 0 15px 15px 0;
 }
 
-#PlayerProfile .leftInfo h2:first, #PlayerProfile .rightInfo h2:first {
+.playerprofile .leftInfo h2:first, .playerprofile .rightInfo h2:first {
     font-size: 1rem;
 }
 
-#PlayerProfile .basicInfo {
+.playerprofile .basicInfo {
     display: flex;
     align-items: center;
     padding: 0 1.25rem 1.25rem;
     gap: 1.25em;
 }
 
-#PlayerProfile .basicInfo img {
+.playerprofile .basicInfo img {
     border-radius: 7px;
     width: 90px;
     margin-right: 1.25rem;
     box-shadow: 0 2px 2px var(--black-50);
 }
 
-#PlayerProfile .basicInfo .imgContainer {
+.playerprofile .basicInfo .imgContainer {
     transition: all 0.3s ease-in-out;
 }
 
-#PlayerProfile .basicInfo .imgContainer:hover {
+.playerprofile .basicInfo .imgContainer:hover {
     transform: rotate(-4deg);
 }
 
-#PlayerProfile .expansions {
+.playerprofile .expansions {
     position: absolute;
     top: 70px;
     left: 0;
@@ -251,7 +261,7 @@
     box-sizing: border-box;
 }
 
-#PlayerProfile .greatbuildings span, #PlayerProfile .stock span {
+.playerprofile .greatbuildings span, .playerprofile .stock span {
     display: inline-block;
     margin: 6px 4px 3px;
     padding: 0 3px 0 0;
@@ -261,32 +271,32 @@
     position: relative;
 }
 
-#PlayerProfile .greatbuildings img, #PlayerProfile .stock img {
+.playerprofile .greatbuildings img, .playerprofile .stock img {
     max-height: 31px;
     max-width: 48px;
     margin: -5px 2px -5px -6px;
     filter: saturate(1.2);
 }
 
-#PlayerProfile .greatbuildings .total {
+.playerprofile .greatbuildings .total {
     font-weight: bold;
     border-bottom-width: 2px;
 }
 
-#PlayerProfile .greatbuildings .total img {
+.playerprofile .greatbuildings .total img {
     margin: -5px -4px -5px -8px;
 }
 
-#PlayerProfile .secondary {
+.playerprofile .secondary {
     font-size: 0.9em;
 }
 
-#PlayerProfile .secondary img {
+.playerprofile .secondary img {
     max-height: 25px !important;
     max-width: 30px !important;
 }
 
-#PlayerProfile .ranking::before, #PlayerProfile .ranking::after {
+.playerprofile .ranking::before, .playerprofile .ranking::after {
     content: '';
     background: url(../../x_img/ranking.png) left top no-repeat;
     width: 13px;
@@ -297,12 +307,12 @@
     margin-right: 3px;
 }
 
-#PlayerProfile .ranking::after {
+.playerprofile .ranking::after {
     background: url(../../x_img/ranking.png) right top no-repeat;
     margin: 0 10px 0 2px;
 }
 
-#PlayerProfile .daysPlayed {
+.playerprofile .daysPlayed {
     background: var(--daysPlayed-background);
     text-align: center;
     padding: 0.25rem 0;
@@ -311,22 +321,22 @@
     z-index: 10;
 }
 
-#PlayerProfile .daysPlayed:hover {
+.playerprofile .daysPlayed:hover {
     filter: brightness(1.2);
 }
 
-#PlayerProfile .daysPlayed:hover span:after, #PlayerProfile .daysPlayed:hover span:before {
+.playerprofile .daysPlayed:hover span:after, .playerprofile .daysPlayed:hover span:before {
     content: ' ⇅ ';
     padding: 0 3px;
     display: inline-block;
     color: var(--boost-color);
 }
 
-#PlayerProfile .dailyProd {
+.playerprofile .dailyProd {
     text-align: center;
 }
 
-#PlayerProfile .leftInfo .dailyProd > span {
+.playerprofile .leftInfo .dailyProd > span {
     display: inline-block;
     padding: 0 4px 0 0;
     margin: 4px 2px 2px;
@@ -334,20 +344,20 @@
     border-radius: 10px;
 }
 
-#PlayerProfile .dailyProd span img {
+.playerprofile .dailyProd span img {
     height: 25px;
     padding: 0 2px;
 }
 
-#PlayerProfile .leftInfo .dailyProd span img:first-child {
+.playerprofile .leftInfo .dailyProd span img:first-child {
     padding: 0 2px 0 0;
 }
 
-#PlayerProfile .dailyProd .boost {
+.playerprofile .dailyProd .boost {
     color: var(--boost-color);
 }
 
-#PlayerProfile span.units::before {
+.playerprofile span.units::before {
 	background: transparent url('../../productions/images/productions.png') -287px -2px no-repeat;
 	width: 22px;
     content: '';
@@ -356,8 +366,8 @@
     margin-bottom: -4px;
 }
 
-#PlayerProfile .aAtt::after, #PlayerProfile .aDef::before, #PlayerProfile .dAtt::after, #PlayerProfile .dDef::before, 
-#PlayerProfile .qiactions::before, #PlayerProfile .qicoins::before, #PlayerProfile .qicoins_start::before, #PlayerProfile .qisupplies::before, #PlayerProfile .qisupplies_start::before, #PlayerProfile .qigoods_start::before, #PlayerProfile .qiunits_start::before {
+.playerprofile .aAtt::after, .playerprofile .aDef::before, .playerprofile .dAtt::after, .playerprofile .dDef::before, 
+.playerprofile .qiactions::before, .playerprofile .qicoins::before, .playerprofile .qicoins_start::before, .playerprofile .qisupplies::before, .playerprofile .qisupplies_start::before, .playerprofile .qigoods_start::before, .playerprofile .qiunits_start::before {
     content: '';
     position: relative;
     top: 5px;
@@ -371,109 +381,110 @@
     zoom: 0.8;
 }
 
-#PlayerProfile .aAtt, #PlayerProfile .aDef, #PlayerProfile .dAtt, #PlayerProfile .dDef {
+.playerprofile .aAtt, .playerprofile .aDef, .playerprofile .dAtt, .playerprofile .dDef {
     position: relative;
     top: -4px;
 }
 
-#PlayerProfile .crit {
+.playerprofile .crit {
     background: var(--crit-background);
     padding: 1px 5px 2px 0;
     border-radius: 19px 7px 7px 7px;
     color: #f3f3f3;
 }
 
-#PlayerProfile .crit img {
+.playerprofile .crit img {
     max-height: 30px;
     margin: -3px 0 0 -8px;
 }
 
-#PlayerProfile .qiactions::before {
+.playerprofile .qiactions::before {
     background: url(../../productions/images/productions.png) -498px 5px no-repeat;
     height: 28px;
 }
 
-#PlayerProfile .qicoins::before {
+.playerprofile .qicoins::before {
     background: url(../../productions/images/productions.png) -603px 4px no-repeat;
     height: 28px;
 }
 
-#PlayerProfile .qicoins_start::before {
+.playerprofile .qicoins_start::before {
     background: url(../../productions/images/productions.png) -630px 4px no-repeat;
     height: 28px;
 }
 
-#PlayerProfile .qisupplies::before {
+.playerprofile .qisupplies::before {
     background: url(../../productions/images/productions.png) -655px 4px no-repeat;
     height: 28px;
 }
 
-#PlayerProfile .qisupplies_start::before {
+.playerprofile .qisupplies_start::before {
     background: url(../../productions/images/productions.png) -680px 4px no-repeat;
     height: 28px;
 }
 
-#PlayerProfile .qigoods_start::before {
+.playerprofile .qigoods_start::before {
     background: url(../../productions/images/productions.png) -708px 4px no-repeat;
     height: 28px;
 }
 
-#PlayerProfile .qiunits_start::before {
+.playerprofile .qiunits_start::before {
     background: url(../../productions/images/productions.png) -733px 4px no-repeat;
     height: 28px;
 }
 
-#PlayerProfile .battleBoosts > div {
+.playerprofile .battleBoosts > div {
     display: flex;
     align-items: center;
     justify-content: center;
     height: 31px;
 }
 
-#PlayerProfile .battleBoosts table td {
+.playerprofile .battleBoosts table td {
     vertical-align: middle;
 }
 
-#PlayerProfile .aAtt::after {
+.playerprofile .aAtt::after {
     background: url(../../productions/images/productions.png) -311px -2px no-repeat;
     margin-right: -15px;
     z-index: 1;
 }
 
-#PlayerProfile .aDef::before {
+.playerprofile .aDef::before {
     background: url(../../productions/images/productions.png) -365px 3px no-repeat;
 }
 
-#PlayerProfile .dAtt::after {
+.playerprofile .dAtt::after {
     background: url(../../productions/images/productions.png) -338px -2px no-repeat;
     margin-right: -15px;
     z-index: 1;
 }
 
-#PlayerProfile .dDef::before {
+.playerprofile .dDef::before {
     background: url(../../productions/images/productions.png) -390px 3px no-repeat;
 }
 
-#PlayerProfile .battleBoosts table {
+.playerprofile .battleBoosts table {
     margin: 0 auto 5px;
 }
 
-#PlayerProfile .battleBoosts .gbg, #PlayerProfile .battleBoosts .ge, #PlayerProfile .battleBoosts .qi {
+.playerprofile .battleBoosts .gbg::before, .playerprofile .battleBoosts .ge::before, .playerprofile .battleBoosts .qi::before {
     background: url(../../x_img/gbg-green.png) left top no-repeat;
     background-size: contain;
     height: 28px;
     width: 28px;
     margin: 0 4px;
     display: block;
+    content:'';
 }
 
-#PlayerProfile .important {
+.playerprofile .important {
     color: var(--important-color);
     font-weight: bold;
     font-size: 90%;
 }
 
-#PlayerProfile .important::after {
+.playerprofile .important::after {
     content: "➔";
     display: inline-block;
     background: var(--menu-arrow-bg);
@@ -484,70 +495,70 @@
     font-weight: normal;
 }
 
-#PlayerProfile .important:hover {
+.playerprofile .important:hover {
     text-decoration: underline;
     text-decoration-color: var(--important-underline);
 }
 
-#PlayerProfile .important:hover::after {
+.playerprofile .important:hover::after {
     filter: brightness(1.2) contrast(1.2);
 }
 
-#PlayerProfile h2 {
+.playerprofile h2 {
     opacity: 0.8;
     font-size: 0.9rem;
 }
 
-#PlayerProfile h2:only-child {
+.playerprofile h2:only-child {
     display: none;
 }
 
-#PlayerProfile .battleBoosts .ge {
+.playerprofile .battleBoosts .ge::before {
     background-image: url(../../x_img/ge.png);
 }
 
-#PlayerProfile .battleBoosts .qi {
+.playerprofile .battleBoosts .qi::before {
     background-image: url(../../x_img/guild_raids.png);
 }
 
-#PlayerProfile .battleBoosts span::before {
+.playerprofile .battleBoosts span::before {
     margin-right: 5px;
     height: 27px;
 }
 
-#PlayerProfile .showMore {
+.playerprofile .showMore {
     display: none;
 }
 
-#PlayerProfile .settlements img {
+.playerprofile .settlements img {
     max-height: 37px;
     display: inline-block;
     margin: -10px 2px -8px -7px;
 }
 
-#PlayerProfile .settlements .friend_of_the_vikings img {
+.playerprofile .settlements .friend_of_the_vikings img {
     margin: -10px -3px -8px -11px;
 }
 
-#PlayerProfile .settlements .cop_japanese img {
+.playerprofile .settlements .cop_japanese img {
     margin: -14px -6px -9px -13px;
     max-height: 45px;
 }
 
-#PlayerProfile .settlements .a_new_world img {
+.playerprofile .settlements .a_new_world img {
     margin: -10px -4px -7px -11px;
     max-height: 39px;
 }
-#PlayerProfile .settlements .friend_of_the_pharaoh img {
+.playerprofile .settlements .friend_of_the_pharaoh img {
     margin: -9px -7px -7px -13px;
 }
 
-#PlayerProfile .settlements .tropical_islands img, #PlayerProfile .settlements .splendid_empire img {
+.playerprofile .settlements .tropical_islands img, .playerprofile .settlements .splendid_empire img {
     max-height: 31px;
     margin: -5px 2px -3px -7px;
 }
 
-#PlayerProfile .settlements span {
+.playerprofile .settlements span {
     display: inline-block;
     margin: 6px 3px 3px;
     box-shadow: var(--item-background);
@@ -555,7 +566,7 @@
     padding: 2px 5px 0 2px;
 }
 
-#PlayerProfile .achievements span, #PlayerProfile .inventory span {
+.playerprofile .achievements span, .playerprofile .inventory span {
     display: inline-block;
     padding: 0 5px 0 0;
     margin: 4px 3px;
@@ -563,19 +574,19 @@
     border-radius: 10px;
 }
 
-#PlayerProfile .achievements img {
+.playerprofile .achievements img {
     max-height: 40px;
-    margin: -5px 0 -5px -5px;
+    margin: -5px -2px -5px -5px;
     background: var(--item-img-background);
 }
 
-#PlayerProfile h2.border {
+.playerprofile h2.border {
     background: var(--h2-background);
     border-radius: 10px 10px 0 0;
     margin: 10px -3px -5px;
 }
 
-#PlayerProfile h2.border span {
+.playerprofile h2.border span {
     position: relative;
     bottom: 10px;
     box-shadow: none;
@@ -584,16 +595,16 @@
     display: inline-block;
 }
 
-#PlayerProfile .inventory img {
+.playerprofile .inventory img {
     height: 30px;
     margin: -2px 0 -2px -5px;
     background: var(--item-img-background);
 }
 
-#PlayerProfile .inventory .favorites {
+.playerprofile .inventory .favorites {
     margin-top: 2px;
 }
-#PlayerProfile .inventory .favorites:not(:empty):before {
+.playerprofile .inventory .favorites:not(:empty):before {
     content: '★';
     text-align: center;
     display: block;
@@ -602,12 +613,12 @@
     color: var(--fav-color);
 }
 
-#PlayerProfile .inventory .favorites span {
+.playerprofile .inventory .favorites span {
     color: var(--fav-color);
     box-shadow: var(--fav-background);
 }
 
-#PlayerProfile .qiBoosts span {
+.playerprofile .qiBoosts span {
     display: inline-block;
     margin: 3px 1px 3px 0;
     background-image: var(--qi-background);
@@ -618,11 +629,17 @@
     color: var(--qi-color);
 }
 
-#PlayerProfile .qiBoosts span::before {
+.playerprofile .qiBoosts img {
+    height: 22px;
+    display: inline-block;
+    margin-right: 2px;
+}
+
+.playerprofile .qiBoosts span::before {
     margin: -5px 4px 0 0;
 }
 
-#PlayerProfile .toggleMore {
+.playerprofile .toggleMore {
     position: absolute;
     bottom: 0.4rem;
     right: 0.4rem;
@@ -637,41 +654,41 @@
     z-index: 200;
 }
 
-#PlayerProfile .toggleMore:hover {
+.playerprofile .toggleMore:hover {
     mix-blend-mode: normal;
     cursor: url('../../../../css/images/cursor_hover.cur'), auto;
 }
 
-#PlayerProfile.expanded .toggleMore {
+.playerprofile.expanded .toggleMore {
     right: calc(0.4rem + 260px);
 }
 
-#PlayerProfile .toggleMore.active {
+.playerprofile .toggleMore.active {
     transform: rotate(180deg);
 }
 
 
 
-#PlayerProfile .decoration, #PlayerProfile .decorationBanner {
+.playerprofile .decoration, .playerprofile .decorationBanner {
     display: none;
 }
 
-#PlayerProfile .imgContainer {
+.playerprofile .imgContainer {
     position: relative;
     width: 90px;
     height: 90px;
 }
 
 
-#PlayerProfile .window-body::-webkit-scrollbar,
-#PlayerProfile .window-body * ::-webkit-scrollbar {
+.playerprofile .window-body::-webkit-scrollbar,
+.playerprofile .window-body * ::-webkit-scrollbar {
 	width: 7px;
 	background: transparent;
 	border-left-width: 0;
 	border-right-width: 0;
 }
-#PlayerProfile .window-body::-webkit-scrollbar-thumb,
-#PlayerProfile .window-body * ::-webkit-scrollbar-thumb {
+.playerprofile .window-body::-webkit-scrollbar-thumb,
+.playerprofile .window-body * ::-webkit-scrollbar-thumb {
 	background: var(--black-65);
 	border-radius: 4px;
 	border-top-width: 0;
@@ -682,13 +699,13 @@
 
 /* Firefox */
 @supports(-moz-appearance:none) {
-	#PlayerProfile .window-body {
+	.playerprofile .window-body {
 		scrollbar-color: var(--black-65) transparent;
 		scrollbar-width: thin;
 	}
 }
 
-#PlayerProfile.other {
+#OtherPlayerProfile {
     --main-background: #232325;
     --main-border: 3px solid #1b1b1f;
     --daysPlayed-background: radial-gradient(circle, #3f3f3f00 0%, #000000 100%);
@@ -710,12 +727,12 @@
     --boost-color: #4ab940;
 }
 
-#PlayerProfile.other {
+#OtherPlayerProfile {
     width: 350px;
     font-size: 95%;
 }
 
-#PlayerProfile.other .basicInfo img {
+#OtherPlayerProfile .basicInfo img {
     width: 60px;
     margin-right: 0.25rem;
     transform: scaleX(-1);
@@ -723,24 +740,24 @@
     box-shadow: none;
 }
 
-#PlayerProfile.other .ranking {
+#OtherPlayerProfile .ranking {
     position: relative;
     top: -4px;
     zoom: 0.9;
 }
 
-#PlayerProfile.other .disclaimer {
+#OtherPlayerProfile .disclaimer {
     font-style: italic;
     font-size: 90%;
 }
 
-#PlayerProfile.other .disclaimer::before {
+#OtherPlayerProfile .disclaimer::before {
     left: unset;
     top: unset;
     right: 3px;
 }
 
-#PlayerProfile.window-box.black {
+.playerprofile.window-box.black {
     --main-background: #0c0c0c;
     --main-border: 3px solid #000;
     --daysPlayed-background: radial-gradient(circle, #3f3f3f00 0%, #000000 100%);
@@ -762,12 +779,12 @@
     --boost-color: #83b940;
 }
 
-#PlayerProfile.window-box.black .centerInfo, #PlayerProfile.window-box.black .basicInfo img, #PlayerProfile.window-box.black .rightInfo , #PlayerProfile.window-box.black .leftInfo, #PlayerProfile.window-box.black .settlements span, #PlayerProfile.window-box.black .achievements span, #PlayerProfile.window-box.black .inventory span {
+.playerprofile.window-box.black .centerInfo, .playerprofile.window-box.black .basicInfo img, .playerprofile.window-box.black .rightInfo , .playerprofile.window-box.black .leftInfo, .playerprofile.window-box.black .settlements span, .playerprofile.window-box.black .achievements span, .playerprofile.window-box.black .inventory span {
     border-radius: 2px;
 }
 
 
-#PlayerProfile.window-box.sunrise {
+.playerprofile.window-box.sunrise {
     --main-background: radial-gradient(circle, #772500 0%, #610c03 25%, #3d0011 55%);
     --main-border: 3px solid #690024;
     --main-color: #ffd9cd;
@@ -786,11 +803,11 @@
     --fav-color: #e98a25;
 }
 
-#PlayerProfile.window-box.sunrise h1 {
+.playerprofile.window-box.sunrise h1 {
     color: #f80;
 }
 
-#PlayerProfile.window-box.sunrise-light {
+.playerprofile.window-box.sunrise-light {
     --main-background: linear-gradient(196deg, #e7c463 0%, #c73d5d 100%);
     --main-border: 3px solid #d96a21;
     --main-color: #111;
@@ -816,12 +833,12 @@
 }
 
 
-#PlayerProfile.window-box.sunrise-light .window-close {
+.playerprofile.window-box.sunrise-light .window-close {
     filter: saturate(0.7) contrast(3) hue-rotate(45deg)
 }
 
 
-#PlayerProfile.window-box.teal {
+.playerprofile.window-box.teal {
     --main-background: radial-gradient(#82ddc4, #37898d);
     --main-border: 3px solid #22d5ccd4;
     --main-color: #111;
@@ -847,7 +864,7 @@
 }
 
 
-#PlayerProfile.window-box.sunset {
+.playerprofile.window-box.sunset {
     --main-background: linear-gradient(196deg, #35002e 0% 0%, #000233 100%);
     --main-border: 3px solid #240057;
     --daysPlayed-background: radial-gradient(circle, #0000 0%, #140041a6 100%);
@@ -861,7 +878,7 @@
 }
 
 
-#PlayerProfile.window-box.green {
+.playerprofile.window-box.green {
     --main-background: linear-gradient(196deg, #1c3a04 0%, rgb(0, 51, 34) 100%);
     --main-border: 3px solid #004b04;
     --main-color: var(--text-light);
@@ -879,7 +896,7 @@
 }
 
 
-#PlayerProfile.window-box.red {
+.playerprofile.window-box.red {
     --main-background: linear-gradient(196deg, #3a0414 0%, #300 100%);
     --main-border: 3px solid #4b0000;
     --main-color: #e9d8d8;
@@ -895,7 +912,7 @@
     --item-border-color: #ff006f30;
 }
 
-#PlayerProfile.window-box.foe {
+.playerprofile.window-box.foe {
     --main-background: linear-gradient(to bottom, #1e06006e, #270f005e), url(../../../../css/images/hud/box-bg.png) center center repeat;
     --main-border: 3px solid #9f652a;
     --main-color: var(--text-normal);
@@ -910,29 +927,29 @@
     --h2-background: linear-gradient(to bottom, #493f42de, #252730ad 75%);
     --item-border-color: #00000040;
 }
-#PlayerProfile.window-box.foe {
+.playerprofile.window-box.foe {
     border: 3px double #7d5229;
     box-shadow: inset 0 0 3px #000;
     margin-top: -3px;
 }
-#PlayerProfile.window-box.foe .centerInfo {
+.playerprofile.window-box.foe .centerInfo {
     box-shadow: 0 0 5px #000;
 }
-#PlayerProfile.window-box.foe h1 {
+.playerprofile.window-box.foe h1 {
     color: var(--bright-color);
 }
-#PlayerProfile.foe table tr:nth-child(2n) {
+.playerprofile.foe table tr:nth-child(2n) {
     background: linear-gradient(to right, transparent, #0002, transparent);
 }
 
-#PlayerProfile.foe h2.border {
+.playerprofile.foe h2.border {
     border-radius: 5px 5px 0 0;
     border: 1px solid #ffffff38;
     border-bottom: none;
     margin: 5px 0 3px;
     color: #ccc;
 }
-#PlayerProfile.foe h2.border::after {
+.playerprofile.foe h2.border::after {
     content: '';
     display: block;
     height: 1px;
@@ -942,19 +959,19 @@
     position: relative;
     top: 1px;
 }
-#PlayerProfile.foe .pad + .pad {
+.playerprofile.foe .pad + .pad {
     border-bottom: 1px solid #7d5229a8;
 }
-#PlayerProfile.foe .pad:last-child {
+.playerprofile.foe .pad:last-child {
     border-bottom: none;
 }
 
-#PlayerProfile.foe h2.border span {
+.playerprofile.foe h2.border span {
     position: relative;
     bottom: 0;
 }
 
-#PlayerProfile.foe .decoration {
+.playerprofile.foe .decoration {
     display: block;
     position: absolute;
     top: -9px;
@@ -962,41 +979,41 @@
     z-index: 10;
 }
 
-#PlayerProfile.foe .rightInfo .decoration {
+.playerprofile.foe .rightInfo .decoration {
     left: unset;
     right: -27px;
     transform: scale(-1,1);
 }
 
-#PlayerProfile.foe .centerInfo > .decoration:first-child {
+.playerprofile.foe .centerInfo > .decoration:first-child {
     left: unset;
     right: calc(calc(50% - 64px));
     top: -15px;
     transform: scale(1,-1);
 }
 
-#PlayerProfile.foe .centerInfo .decoration {
+.playerprofile.foe .centerInfo .decoration {
     left: unset;
     top: unset;
     right: calc(calc(50% - 64px));
     bottom: -15px;
 }
 
-#PlayerProfile.foe .decorationBanner {
+.playerprofile.foe .decorationBanner {
     display: block;
     position: relative;
     width: calc(100% + 20px);
     margin: -26px -10px 6px;
 }
 
-#PlayerProfile.foe .imgContainer img.decoration {
+.playerprofile.foe .imgContainer img.decoration {
     top: -5px;
     left: -5px;
     width: auto;
     box-shadow: none;
 }
 
-#PlayerProfile.foe .imgContainer img.decoration:nth-child(2) {
+.playerprofile.foe .imgContainer img.decoration:nth-child(2) {
     top: unset;
     left: unset;
     bottom: -5px;
@@ -1004,12 +1021,12 @@
     transform: scale(-1,-1);
 }
 
-#PlayerProfile.foe img.colorToggle {
+.playerprofile.foe img.colorToggle {
     border-radius: 2px;
 }
 
 
-#PlayerProfile.window-box.sepia {
+.playerprofile.window-box.sepia {
     --main-background: linear-gradient(196deg, #ddcca1 0%, #c6aa7a 100%);
     --main-border: 3px solid #b99563;
     --main-color: var(--text-darker);
@@ -1033,27 +1050,27 @@
     --fav-background: inset -1px -1px 20px rgba(255, 255, 255, 0.333);
     --boost-color: #3c6906;
 }
-#PlayerProfile.sepia, #PlayerProfile.sunrise-light, #PlayerProfile.teal {
+.playerprofile.sepia, .playerprofile.sunrise-light, .playerprofile.teal {
     text-shadow: none !important;
 }
-#PlayerProfile.sepia img, #PlayerProfile.sepia table, #PlayerProfile.sepia .qiBoosts {
+.playerprofile.sepia img, .playerprofile.sepia table, .playerprofile.sepia .qiBoosts {
     filter: sepia(0.4) !important;
 }
-#PlayerProfile.sepia .basicInfo h1 + span {
+.playerprofile.sepia .basicInfo h1 + span {
     font-size: 75%;
 }
-#PlayerProfile.sepia h2, #PlayerProfile.sepia .basicInfo h1 + span, #PlayerProfile.sepia h1 {
+.playerprofile.sepia h2, .playerprofile.sepia .basicInfo h1 + span, .playerprofile.sepia h1 {
     text-transform: uppercase;
     font-weight: bold;
     font-family: Courier, monospace;
 }
 
-#PlayerProfile.sepia .window-close {
+.playerprofile.sepia .window-close {
     filter: saturate(0.7) contrast(1.7) sepia(0.7);
 }
 
 
-#PlayerProfile.window-box.light {
+.playerprofile.window-box.light {
     --main-background: linear-gradient(196deg, #d1d5d9e3 0%, #a7bcc3b8 100%);
     --main-border: 3px solid #eaeff3d4;
     --main-color: var(--text-darker);
@@ -1078,7 +1095,7 @@
     --boost-color: #3c6906;
 }
 
-#PlayerProfile.light {
+.playerprofile.light {
     text-shadow: none !important;
     backdrop-filter: blur(6px) brightness(1.5);
 }

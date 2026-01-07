@@ -562,7 +562,7 @@ let Productions = {
 			table.push('<thead class="sticky">')
 			table.push('<tr>')
 			table.push('<th colspan="12"><input type="text" placeholder="' + i18n('Boxes.Productions.FilterTable') + '" class="filterCurrentList">' +
-				'<span class="btn-default" onclick="Productions.createBuildingBoostList([\'guild_raids_action_points_collection\',\'guild_raids_coins_production\',\'guild_raids_coins_start\',\'guild_raids_supplies_production\',\'guild_raids_supplies_start\',\'guild_raids_goods_start\',\'guild_raids_units_start\'])">'+i18n("Boxes.BoostList.open")+'</span></th>')
+				'<span class="btn" onclick="Productions.createBuildingBoostList([\'guild_raids_action_points_collection\',\'guild_raids_coins_production\',\'guild_raids_coins_start\',\'guild_raids_supplies_production\',\'guild_raids_supplies_start\',\'guild_raids_goods_start\',\'guild_raids_units_start\'])">'+i18n("Boxes.BoostList.open")+'</span></th>')
 			table.push('</tr>')
 
 			table.push('<tr class="sorter-header exportheader">')
@@ -730,9 +730,9 @@ let Productions = {
 									Sum[n] = i
 								}
 							}
-							let itemsText = jQuery(items[0]).text();
+							let itemsText = items[0];
 
-							rowA.push('<td data-number="1" exportvalue="'+itemsText+'"><span>' + itemsText + '</span></td>')
+							rowA.push('<td data-number="1" exportvalue="'+jQuery(itemsText).text()+'"><span>' + itemsText + '</span></td>')
 						}
 					}
 					else {
@@ -819,20 +819,20 @@ let Productions = {
 				table.push('<table id="'+type+'-list" class="foe-table sortable-table TSinactive '+type+'-list active exportable">')
 				table.push('<thead class="sticky">')
 				table.push('<tr>')
-				table.push('<th colspan="3"><span class="btn-default change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeGroups') + '</span> <input type="text" placeholder="' + i18n('Boxes.Productions.FilterTable') + '" class="filterCurrentList"></th>')
+				table.push('<th colspan="3"><span class="btn change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeGroups') + '</span> <input type="text" placeholder="' + i18n('Boxes.Productions.FilterTable') + '" class="filterCurrentList"></th>')
 				if (!type.includes('att') && !type.includes('def') && type!='items') {
 					table.push('<th colspan="3" class="textright">')
 					table.push((typeCurrentSum >= 10000 ? HTML.FormatNumberShort(typeCurrentSum) : HTML.Format(typeCurrentSum))+ "/" + (typeSum >= 10000 ? HTML.FormatNumberShort(typeSum) : HTML.Format(typeSum)))
 					if (type === 'strategy_points') {
-						table.push(' <button class="typeBoost btn-default btn-tight"><a href="#forge_points_production" class="game-cursor">'+i18n('General.Boost')+': '+Boosts.Sums.forge_points_production+'%</a></button>')
+						table.push(' <button class="typeBoost btn btn-slim"><a href="#forge_points_production" class="game-cursor">'+i18n('General.Boost')+': '+Boosts.Sums.forge_points_production+'%</a></button>')
 						Profile.fpProduction = typeSum;
 						Profile.update();
 					}
 					else if (type === 'money') {
-						table.push(' <button class="typeBoost btn-default btn-tight"><a href="#coin_production" class="game-cursor">'+i18n('General.Boost')+': '+Boosts.Sums.coin_production+'%</a></button>')
+						table.push(' <button class="typeBoost btn btn-slim"><a href="#coin_production" class="game-cursor">'+i18n('General.Boost')+': '+Boosts.Sums.coin_production+'%</a></button>')
 					}
 					else if (type === 'supplies') {
-						table.push(' <button class="typeBoost btn-default btn-tight"><a href="#supply_production" class="game-cursor">'+i18n('General.Boost')+': '+Boosts.Sums.supply_production+'%</a></button>')
+						table.push(' <button class="typeBoost btn btn-slim"><a href="#supply_production" class="game-cursor">'+i18n('General.Boost')+': '+Boosts.Sums.supply_production+'%</a></button>')
 					}
 					if (type === 'units') {
 						Profile.units = typeSum;
@@ -841,7 +841,7 @@ let Productions = {
 					table.push('</th>')
 				}
 				else {
-					table.push('<th colspan="8" class="textright">'+(type=="items" ? '<span class="btn-default" onclick="Productions.showItemSources(event)" style="float:right;">'+i18n('Boxes.ItemSources.Title')+'</span>' : '')+'</th>')
+					table.push('<th colspan="8" class="textright">'+(type=="items" ? '<span class="btn" onclick="Productions.showItemSources(event)" style="float:right;">'+i18n('Boxes.ItemSources.Title')+'</span>' : '')+'</th>')
 				}
 				table.push('</tr>')
 
@@ -891,7 +891,7 @@ let Productions = {
 
 
 	// can be used for goods and guild goods
-	getRelevatGoodsByEra: (buildingIds, guildGoods = false) => {
+	getRelevantGoodsByEra: (buildingIds, guildGoods = false) => {
 		let eras = [];
 		for (const b of buildingIds) {
 			let building = CityMap.getBuildingById(b.id);
@@ -933,7 +933,7 @@ let Productions = {
 			inADay = Math.floor(Date.now() / 1000) + 86400
 
 		// gather all different eras
-		eras = Productions.getRelevatGoodsByEra(buildingIds);
+		eras = Productions.getRelevantGoodsByEra(buildingIds);
 
 		// prepare array with total number of goods for each era
 		for (const era of eras) {
@@ -1025,7 +1025,7 @@ let Productions = {
 		table.push('<table id="'+type+'-list" class="foe-table sortable-table exportable TSinactive '+type+'-list active">')
 		table.push('<thead class="sticky">')
 		table.push('<tr>')
-		table.push('<th colspan="6"><span class="btn-default change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeGroups') + '</span> <input type="text" placeholder="' + i18n('Boxes.Productions.FilterTable') + '" class="filterCurrentList"></th>')
+		table.push('<th colspan="6"><span class="btn change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeGroups') + '</span> <input type="text" placeholder="' + i18n('Boxes.Productions.FilterTable') + '" class="filterCurrentList"></th>')
 		table.push(`<th colspan=${eras.length} class="textright">${HTML.Format(Object.values(erasCurrent).reduce((a,b)=>a+b))}/${HTML.Format(Object.values(erasTotal).reduce((a,b)=>a+b))}</th>`)
 		table.push('</tr>')
 
@@ -1050,7 +1050,7 @@ let Productions = {
 		table.push('<table class="foe-table sortable-table TSinactive '+type+'-group">')
 		table.push('<thead class="sticky">')
 		table.push('<tr>')
-		table.push('<th><span class="btn-default change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeSingle') + '</span></th>')
+		table.push('<th><span class="btn change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeSingle') + '</span></th>')
 		table.push(`<th colspan=${2+eras.length} class="textright">${HTML.Format(Object.values(erasCurrent).reduce((a,b)=>a+b))}/${HTML.Format(Object.values(erasTotal).reduce((a,b)=>a+b))}</th>`)
 		table.push('</tr>')
 		table.push('<tr class="sorter-header">')
@@ -1097,7 +1097,7 @@ let Productions = {
 			inADay = Math.floor(Date.now() / 1000) + 86400
 
 		// gather all different eras
-		eras = Productions.getRelevatGoodsByEra(buildingIds, guildGoods = true);
+		eras = Productions.getRelevantGoodsByEra(buildingIds, guildGoods = true);
 
 		// prepare array with total number of goods for each era
 		for (const era of eras) {
@@ -1189,7 +1189,7 @@ let Productions = {
 		table.push('<table id="'+type+'-list" class="foe-table sortable-table exportable TSinactive '+type+'-list active">')
 		table.push('<thead class="sticky">')
 		table.push('<tr>')
-		table.push('<th colspan="'+(6+eras.length)+'"><span class="btn-default change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeGroups') + '</span> <input type="text" placeholder="' + i18n('Boxes.Productions.FilterTable') + '" class="filterCurrentList">')
+		table.push('<th colspan="'+(6+eras.length)+'"><span class="btn change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeGroups') + '</span> <input type="text" placeholder="' + i18n('Boxes.Productions.FilterTable') + '" class="filterCurrentList">')
 		table.push(`<span style="float:right;">${HTML.Format(Object.values(erasCurrent).reduce((a,b)=>a+b))}/${HTML.Format(Object.values(erasTotal).reduce((a,b)=>a+b))}</span></th>`)
 		table.push('</tr>')
 		table.push('<tr class="sorter-header exportheader">')
@@ -1212,7 +1212,7 @@ let Productions = {
 		table.push('<table class="foe-table sortable-table TSinactive '+type+'-group">')
 		table.push('<thead class="sticky">')
 		table.push('<tr>')
-		table.push('<th><span class="btn-default change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeSingle') + '</span></th>')
+		table.push('<th><span class="btn change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeSingle') + '</span></th>')
 		table.push(`<th colspan=${2+eras.length} class="textright">${HTML.Format(Object.values(erasCurrent).reduce((a,b)=>a+b))}/${HTML.Format(Object.values(erasTotal).reduce((a,b)=>a+b))}</th>`)
 		table.push('</tr>')
 		table.push('<tr class="sorter-header">')
@@ -1250,7 +1250,7 @@ let Productions = {
 		tableGr.push('<table class="foe-table sortable-table TSinactive '+type+'-group">')
 		tableGr.push('<thead class="sticky">')
 		tableGr.push('<tr>')
-		tableGr.push('<th colspan="7"><span class="btn-default change-view game-cursor" data-type="' + type + '">' + (type=="items" || type=="units" ?i18n('Boxes.Productions.ModeSum') : i18n('Boxes.Productions.ModeSingle')) + '</span></th>')
+		tableGr.push('<th colspan="7"><span class="btn change-view game-cursor" data-type="' + type + '">' + (type=="items" || type=="units" ?i18n('Boxes.Productions.ModeSum') : i18n('Boxes.Productions.ModeSingle')) + '</span></th>')
 		tableGr.push('</tr>')
 		tableGr.push('<tr class="sorter-header">')
 		tableGr.push('<th data-type="prodgroup'+type+'" class="is-number">' + i18n('Boxes.Productions.Headings.number') + '</th>')
@@ -1312,7 +1312,7 @@ let Productions = {
 		table.push('<table class="foe-table '+type+'-sum">')
 		table.push('<thead class="sticky">')
 		table.push('<tr>')
-		table.push('<th colspan="8"><span class="btn-default change-view game-cursor">' + i18n('Boxes.Productions.ModeSingle') + '</span></th>')
+		table.push('<th colspan="8"><span class="btn change-view game-cursor">' + i18n('Boxes.Productions.ModeSingle') + '</span></th>')
 		table.push('</tr>')
 		table.push('<tr >')
 		table.push('<th colspan="'+(type=="items"?1:2) +'">' + i18n('Boxes.Productions.Headings.number') + '</th>')
@@ -1847,7 +1847,7 @@ let Productions = {
 
 		if (Productions.RatingCurrentTab === 'Settings') {
 			h.push('<div id="ProductionsRatingSettings">')
-			h.push('<a id="RatingsResults" class="toggle-tab btn-default btn-tight" data-value="Results"><span>' + i18n('Boxes.ProductionsRating.Results') + '</span></a>')
+			h.push('<a id="RatingsResults" class="toggle-tab btn btn-slim" data-value="Results"><span>' + i18n('Boxes.ProductionsRating.Results') + '</span></a>')
 			h.push('<ul class="foe-table">')
 
 			h.push('<li class="dark-bg">')
@@ -1871,7 +1871,7 @@ let Productions = {
 				//}
 				h.push('</li>')
 			}
-			h.push('<li><a class="toggle-tab btn-default" data-value="Results"><span>' + i18n('Boxes.ProductionsRating.Results') + '</span></a><a class="reset-button btn-default" data-value="Results"><span>' + i18n('Boxes.ProductionsRating.Reset') + '</span></a></li>')
+			h.push('<li><a class="toggle-tab btn" data-value="Results"><span>' + i18n('Boxes.ProductionsRating.Results') + '</span></a><a class="reset-button btn" data-value="Results"><span>' + i18n('Boxes.ProductionsRating.Reset') + '</span></a></li>')
 			h.push('</ul>')
 			h.push('<p>'+i18n('Boxes.ProductionsRating.Explainer')+'</p>')
 			h.push('<p>'+i18n('Boxes.ProductionsRating.Disclaimer')+'</p>')
@@ -1915,13 +1915,13 @@ let Productions = {
 			}
 
 			h.push('<div class="ratingtable">');
-			h.push('<a id="RatingsResults" class="toggle-tab btn-default btn-tight" data-value="Settings">' + i18n('Boxes.ProductionsRating.Settings') + '</a>')
+			h.push('<a id="RatingsResults" class="toggle-tab btn btn-slim" data-value="Settings">' + i18n('Boxes.ProductionsRating.Settings') + '</a>')
 			h.push('<table class="foe-table sortable-table TSinactive exportable">');
 			h.push('<thead class="sticky">');
 
 			h.push('<tr class="settings">');
 				h.push('<th colspan="'+(colNumber+5)+'"><div class="options">');
-				h.push('<a class="btn-default" id="addMetaBuilding">' + i18n('Boxes.ProductionsRating.AddBuilding') + '</a>');
+				h.push('<a class="btn" id="addMetaBuilding">' + i18n('Boxes.ProductionsRating.AddBuilding') + '</a>');
 				h.push('<label for="tilevalues"><input type="checkbox" id="tilevalues" />' + i18n('Boxes.ProductionsRating.ShowValuesPerTile') + '</label>');
 				h.push('<input type="text" id="efficiencyBuildingFilter" size=20 placeholder="' + i18n('Boxes.ProductionsRating.Filter') + ': neo|eden" />');
 				h.push('<label for="showhighlighted" data-original-title="'+i18n('Boxes.ProductionsRating.ShowHighlightedExplanation')+'"><input type="checkbox" id="showhighlighted" />' + i18n('Boxes.ProductionsRating.ShowHighlighted') + '</label>')
@@ -2076,7 +2076,7 @@ let Productions = {
 					h.push('<div class="content">')
 						h.push('<input id="findMetaBuilding" placeholder="'+i18n('Boxes.ProductionsRating.FindSpecialBuilding')+'" value="">')
 						h.push('<ul class="results"></ul>')
-						h.push('<a class="btn-default closeMetaBuilding btn-green">'+i18n('Boxes.ProductionsRating.AddBuildings')+'</a>')
+						h.push('<a class="btn closeMetaBuilding btn-green">'+i18n('Boxes.ProductionsRating.AddBuildings')+'</a>')
 					h.push('</div>')
 				h.push('</div>')
 			h.push('</div>');
@@ -2353,13 +2353,13 @@ let Productions = {
 
 	getRatingValueForType: (building, type) => {
 		if (type === "happiness")
-			return building.happiness
+			return building.happiness;
 		else if (type === "population")
-			return building.population
+			return building.population;
 		else if (type.includes('att') || type.includes('def')) {
 			if (building.boosts === undefined) return 0;
 
-			let bsum = 0
+			let bsum = 0;
 			for (const boost of building.boosts) {
 
 				let feature = type.split('-')[1];
@@ -2377,11 +2377,12 @@ let Productions = {
 
 		else if (type.includes("goods") && !type.includes("guild_raids_")) {
 			let allGoods = CityMap.getBuildingGoodsByEra(false, building);
+			let era = (ActiveMap === "OtherPlayer" ? CityMap.OtherPlayer.eraName : CurrentEra)
 
 			if (allGoods !== undefined) {
-				let prevEra = Technologies.InnoEras[CurrentEra]-1;
-				let currEra = Technologies.InnoEras[CurrentEra];
-				let nextEra = Technologies.InnoEras[CurrentEra]+1;
+				let prevEra = Technologies.InnoEras[era]-1;
+				let currEra = Technologies.InnoEras[era];
+				let nextEra = Technologies.InnoEras[era]+1;
 
 				if (type === "goods-previous") {
 					if (allGoods.eras[prevEra])
@@ -2465,13 +2466,13 @@ let Productions = {
         h.push(`<p><input id="productionsShowRelativeTime" name="productionTime" value="1" type="radio" ${(showRelativeProductionTime === true) ? ' checked="checked"' : ''} /> <label for="productionsShowRelativeTime">${i18n('Boxes.Productions.RelativeTime')}</label><br>`)
         h.push(`<input id="productionsShowAMPMTime" name="productionTime" value="1" type="radio" ${(showAMPMTime === true) ? ' checked="checked"' : ''} /> <label for="productionsShowAMPMTime">${i18n('Boxes.Productions.AMPMTime')}</label><br>`)
         h.push(`<input id="productionsShow24Time" name="productionTime" value="1" type="radio" ${(show24Time === true) ? ' checked="checked"' : ''} /> <label for="productionsShow24Time">${i18n('Boxes.Productions.Time24')}</label></p>`)
-		h.push(`<p><button onclick="Productions.SaveSettings()" id="save-productions-settings" class="btn btn-default" style="width:100%">${i18n('Boxes.Settings.Save')}</button></p>`)
+		h.push(`<p><button onclick="Productions.SaveSettings()" id="save-productions-settings" class="btn" style="width:100%">${i18n('Boxes.Settings.Save')}</button></p>`)
 		
 		let activeTable = $('#ProductionsBody .horizontal li.active').attr('id').replace('prod-','');
 
 		/* needs more thought put into it: only relevant on an unmotivated city, having to download so many tables is weird, without id you cannot create a large table from it etc
-		h.push(`<hr><p>${i18n('Boxes.General.Export')}: <span class="btn-group"><button class="btn btn-default" onclick="HTML.ExportTable($('#ProductionsBody #${activeTable}-list'),'csv','City-${activeTable}')" title="${HTML.i18nTooltip(i18n('Boxes.General.ExportCSV'))}">CSV</button>`);
-		h.push(`<button class="btn btn-default" onclick="HTML.ExportTable($('#ProductionsBody #${activeTable}-list'),'json','City-${activeTable}')" title="${HTML.i18nTooltip(i18n('Boxes.General.ExportJSON'))}">JSON</button></span></p>`);
+		h.push(`<hr><p>${i18n('Boxes.General.Export')}: <span class="btn-group"><button class="btn" onclick="HTML.ExportTable($('#ProductionsBody #${activeTable}-list'),'csv','City-${activeTable}')" title="${HTML.i18nTooltip(i18n('Boxes.General.ExportCSV'))}">CSV</button>`);
+		h.push(`<button class="btn" onclick="HTML.ExportTable($('#ProductionsBody #${activeTable}-list'),'json','City-${activeTable}')" title="${HTML.i18nTooltip(i18n('Boxes.General.ExportJSON'))}">JSON</button></span></p>`);
 		*/
 
         $('#ProductionsSettingsBox').html(h.join(''))
@@ -2480,8 +2481,8 @@ let Productions = {
 	// settings for the efficiency rating table
 	RSettings: () => {
 		let c = [];
-		c.push(`<p class="text-left">${i18n('Boxes.General.Export')}: <span class="btn-group"><button class="btn btn-default" onclick="HTML.ExportTable($('.ratingtable table'),'csv','EfficiencyRating')">CSV</button>`);
-		c.push(`<button class="btn btn-default" onclick="HTML.ExportTable($('.ratingtable table'),'json','EfficiencyRating')">JSON</button></span></p>`);
+		c.push(`<p class="text-left">${i18n('Boxes.General.Export')}: <span class="btn-group"><button class="btn" onclick="HTML.ExportTable($('.ratingtable table'),'csv','EfficiencyRating')">CSV</button>`);
+		c.push(`<button class="btn" onclick="HTML.ExportTable($('.ratingtable table'),'json','EfficiencyRating')">JSON</button></span></p>`);
 
 		$('#ProductionsRatingSettingsBox').html(c.join(''));
 	},

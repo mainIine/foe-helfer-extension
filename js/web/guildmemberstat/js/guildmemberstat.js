@@ -14,16 +14,13 @@
 
 FoEproxy.addHandler('ClanService', 'getOwnClanData', (data, postData) => {
 	let requestMethod = postData[0]['requestMethod'];
-	if (requestMethod === 'getOwnClanData')
-	{
+	if (requestMethod === 'getOwnClanData') {
 		GuildMemberStat.Data = data.responseData;
 
-		if (GuildMemberStat.Data !== undefined && !GuildMemberStat.hasUpdateProgress)
-		{
+		if (GuildMemberStat.Data !== undefined && !GuildMemberStat.hasUpdateProgress) {
 			GuildMemberStat.UpdateData('clandata', null).then((e) => {
 
-				if ($('#guildMemberstat-Btn').hasClass('hud-btn-red'))
-				{
+				if ($('#guildMemberstat-Btn').hasClass('hud-btn-red')) {
 					$('#guildMemberstat-Btn').removeClass('hud-btn-red');
 					$('#guildMemberstat-Btn-closed').remove();
 				}
@@ -36,8 +33,7 @@ FoEproxy.addHandler('ClanService', 'getOwnClanData', (data, postData) => {
 // Treasury Goods 
 FoEproxy.addHandler('ClanService', 'getTreasury', (data, postData) => {
 	let requestMethod = postData[0]['requestMethod'];
-	if (requestMethod === 'getTreasury')
-	{
+	if (requestMethod === 'getTreasury') {
 		let Goods = data.responseData.resources;
 
 		if (Goods !== undefined)
@@ -49,14 +45,11 @@ FoEproxy.addHandler('ClanService', 'getTreasury', (data, postData) => {
 FoEproxy.addHandler('ClanService', 'getTreasuryBag', (data, postData) => {
 	if (data.responseData?.type?.value && data.responseData?.type?.value !== 'ClanMain') return; // for now ignore all other source types
 	let requestMethod = postData[0]['requestMethod'];
-	if (requestMethod === 'getTreasuryBag')
-	{
+	if (requestMethod === 'getTreasuryBag') {
 		let Goods = data.responseData.resources.resources;
 
 		if (Goods !== undefined)
-		{
 			GuildMemberStat.setEraGoods(Goods);
-		}
 	}
 });
 
@@ -66,17 +59,13 @@ FoEproxy.addHandler('ConversationService', 'getConversation', (data, postData) =
 
 	let ConversationData = data.responseData;
 
-	if (ConversationData !== undefined)
-	{
+	if (ConversationData !== undefined) {
 		// Check for guild message type (1 is personal message)
-		if (ConversationData.type !== undefined && (ConversationData.type === 3 || ConversationData.type === 7))
-		{
-			if (ConversationData.id !== undefined)
-			{
+		if (ConversationData.type !== undefined && (ConversationData.type === 3 || ConversationData.type === 7)) {
+			if (ConversationData.id !== undefined) {
 				GuildMemberStat.ConversationIds.push(ConversationData.id);
 				GuildMemberStat.UpdateData('forum', ConversationData);
 			}
-
 		}
 	}
 });
@@ -84,8 +73,7 @@ FoEproxy.addHandler('ConversationService', 'getConversation', (data, postData) =
 FoEproxy.addHandler('ConversationService', 'getMessages', (data, postData) => {
 	let ConversationData = data.responseData;
 
-	if (ConversationData !== undefined)
-	{
+	if (ConversationData !== undefined) {
 		GuildMemberStat.UpdateData('forum', {
 			messages: ConversationData
 		});
@@ -96,24 +84,16 @@ FoEproxy.addHandler('ConversationService', 'getMessages', (data, postData) => {
 FoEproxy.addHandler('GuildExpeditionService', 'getContributionList', (data, postData) => {
 	GuildMemberStat.GexData = data.responseData;
 	if (GuildMemberStat.GexData !== undefined)
-	{
 		GuildMemberStat.UpdateData('gex', null);
-	}
-
 });
 
 FoEproxy.addHandler('GuildExpeditionService', 'getOverview', (data, postData) => {
 	let Data = data.responseData;
-	if (Data !== undefined)
-	{
+	if (Data !== undefined) {
 		if (data.responseData['state'] !== 'inactive')
-		{
 			GuildMemberStat.GEXId = Data.nextStateTime;
-		}
 		else
-		{
 			GuildMemberStat.GEXId = (Data.nextStateTime * 1 - 86400);
-		}
 	}
 });
 
@@ -122,8 +102,7 @@ FoEproxy.addHandler('OtherPlayerService', 'visitPlayer', (data, postData) => {
 	let GuildMember = data.responseData.other_player;
 	let IsGuildMember = GuildMember.is_guild_member;
 
-	if (IsGuildMember)
-	{
+	if (IsGuildMember) {
 		let member = {
 			player_id: GuildMember.player_id,
 			era: GuildMember.era
@@ -137,25 +116,19 @@ FoEproxy.addHandler('OtherPlayerService', 'visitPlayer', (data, postData) => {
 FoEproxy.addHandler('GuildBattlegroundService', 'getPlayerLeaderboard', (data, postData) => {
 	GuildMemberStat.GBGData = data.responseData;
 	if (GuildMemberStat.GBGData !== undefined)
-	{
 		GuildMemberStat.UpdateData('gbg', null);
-	}
 });
 
 FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postData) => {
 	let Data = data.responseData;
 	if (Data !== undefined)
-	{
 		GuildMemberStat.GBGId = Data.endsAt;
-	}
 });
 
 FoEproxy.addHandler('GuildBattlegroundStateService', 'getState', (data, postData) => {
-	if (data.responseData['stateId'] !== 'participating')
-	{
+	if (data.responseData['stateId'] !== 'participating') {
 		let Data = data.responseData;
-		if (Data !== undefined)
-		{
+		if (Data !== undefined) {
 			GuildMemberStat.GBGId = parseInt(Data.startsAt) - 259200;
 			GuildMemberStat.UpdateData('gbg', data.responseData['playerLeaderboardEntries']);
 		}
@@ -231,9 +204,7 @@ let GuildMemberStat = {
 
 
 	BuildBox: (event) => {
-
-		if ($('#GuildMemberStat').length === 0)
-		{
+		if ($('#GuildMemberStat').length === 0) {
 			HTML.Box({
 				id: 'GuildMemberStat',
 				title: i18n('Boxes.GuildMemberStat.Title'),
@@ -248,8 +219,7 @@ let GuildMemberStat = {
 
 			HTML.AddCssFile('guildmemberstat');
 		}
-		else if (!event)
-		{
+		else if (!event) {
 			HTML.CloseOpenBox('GuildMemberStat');
 			return;
 		}
@@ -266,8 +236,7 @@ let GuildMemberStat = {
 			$(this).parent().addClass("active");
 			$('#gms-filter-input').val('').removeClass('highlight').hide();
 
-			switch (GuildMemberStat.CurrentStatGroup)
-			{
+			switch (GuildMemberStat.CurrentStatGroup) {
 				case 'Member':
 					GuildMemberStat.Show();
 					break;
@@ -300,19 +269,16 @@ let GuildMemberStat = {
 		let GBTempID = 0;
 		let LgBuildings = [];
 
-		for (let i in entity)
-		{
+		for (let i in entity) {
 			GBTempID++;
 
-			if (entity.hasOwnProperty(i))
-			{
+			if (entity.hasOwnProperty(i)) {
 				let EntityID = entity[i]['cityentity_id'];
 				let CityEntity = MainParser.CityEntities[EntityID];
 				let EntityEraId = entity[i].level !== undefined ? (entity[i].level + 1) : null;
 				let EntityEra = EntityEraId !== null ? Technologies.EraNames[EntityEraId] : null;
 
-				if (entity[i]['type'] === 'greatbuilding')
-				{
+				if (entity[i]['type'] === 'greatbuilding') {
 					let lgd = {
 						cityentity_id: entity[i]['cityentity_id'],
 						name: CityEntity['name'],
@@ -326,8 +292,7 @@ let GuildMemberStat = {
 				}
 
 				// Check for clan power building (Ruhmeshalle etc.)
-				if (CityEntity['type'] && CityEntity['type'] === 'clan_power_production')
-				{
+				if (CityEntity['type'] && CityEntity['type'] === 'clan_power_production') {
 					let EntityLevel = EntityEra ? EntityEra : Member.era;
 					let value = CityEntity['entity_levels'].find(data => data.era === EntityLevel);
 					let clan_power = typeof value.clan_power !== 'undefined' ? value.clan_power : 0;
@@ -335,36 +300,28 @@ let GuildMemberStat = {
 					GuildPowerBuildings.push({ gbid: GBTempID, entity_id: EntityID, name: CityEntity['name'], power: { value: clan_power, motivateable: null }, level: EntityEraId, era: Member.era });
 				}
 
-				if (CityEntity['abilities'])
-				{
-					for (let AbilityIndex in CityEntity['abilities'])
-					{
+				if (CityEntity['abilities']) {
+					for (let AbilityIndex in CityEntity['abilities']) {
 
 						if (!CityEntity['abilities'].hasOwnProperty(AbilityIndex) || CityEntity['abilities'][AbilityIndex]['__class__'] === undefined || CityEntity['abilities'][AbilityIndex]['__class__'] !== 'AddResourcesToGuildTreasuryAbility')
-						{
 							continue;
-						}
 
 						let Ability = CityEntity['abilities'][AbilityIndex];
 						let Resources = 0;
 						let goods = null;
 
 						if (Ability['additionalResources'] && Ability['additionalResources']['AllAge'] && Ability['additionalResources']['AllAge']['resources'])
-						{
 							Resources = Object.values(Ability['additionalResources']['AllAge']['resources'])[0];
-						}
 
 						// Check for clan power building (Ehrenstatue etc.)
-						if (EntityEra !== null && Ability['additionalResources'][EntityEra] !== undefined && Ability['additionalResources'][EntityEra]['resources'] !== undefined && Ability['additionalResources'][EntityEra]['resources']['clan_power'] !== undefined)
-						{
+						if (EntityEra !== null && Ability['additionalResources'][EntityEra] !== undefined && Ability['additionalResources'][EntityEra]['resources'] !== undefined && Ability['additionalResources'][EntityEra]['resources']['clan_power'] !== undefined) {
 							let clan_power = Ability['additionalResources'][EntityEra]['resources']['clan_power'];
 							GuildPowerBuildings.push({ gbid: GBTempID, entity_id: EntityID, name: CityEntity['name'], power: { value: clan_power, motivateable: null }, level: EntityEraId, era: EntityEra });
 						}
 
 						let goodSum = Resources;
 
-						if (EntityEra !== null)
-						{
+						if (EntityEra !== null) {
 							goods = Object.values(GoodsData).filter(function (Good) {
 								return Good.era === EntityEra && Good.abilities.goodsProduceable !== undefined;
 							}).map(function (row) {
@@ -378,21 +335,18 @@ let GuildMemberStat = {
 
 				// get buildings with new JSON format
 				// TODO Must be enhanced when new buildings are in place and its structure is known.
-				if (EntityEra && CityEntity['components'] && CityEntity['components'][EntityEra] && CityEntity['components'][EntityEra]['production'] && CityEntity['components'][EntityEra]['production']['options'])
-				{
+				if (EntityEra && CityEntity['components'] && CityEntity['components'][EntityEra] && CityEntity['components'][EntityEra]['production'] && CityEntity['components'][EntityEra]['production']['options']) {
 
 					let opt = CityEntity['components'][EntityEra]['production']['options'];
 					let goods = null;
 					let goodSum = 0;
 
-					for (let o in opt)
-					{
+					for (let o in opt) {
 						if (!opt.hasOwnProperty(o) || opt[o]['products'] === undefined) { continue; }
 
 						let products = opt[o]['products'];
 
-						for (let p in products)
-						{
+						for (let p in products) {
 							if (!products.hasOwnProperty(p) || products[p]['guildResources'] === undefined || products[p]['guildResources']['resources'] === undefined) { continue; }
 
 							let onlywhenmotivated = products[p].onlyWhenMotivated && products[p].onlyWhenMotivated === true ? true : false;
@@ -416,20 +370,17 @@ let GuildMemberStat = {
 					let goods = null;
 					let goodSum = 0;
 
-					for (let o in opt)
-					{
+					for (let o in opt) {
 						if (!opt.hasOwnProperty(o) || opt[o]['products'] === undefined) { continue; }
 
 						let products = opt[o]['products'];
 
-						for (let p in products)
-						{
+						for (let p in products) {
 							if (!products.hasOwnProperty(p) || products[p]['guildResources'] === undefined || products[p]['guildResources']['resources'] === undefined) { continue; }
 
 							let onlywhenmotivated = products[p].onlyWhenMotivated && products[p].onlyWhenMotivated === true ? true : false;
 
-							if (products[p]['guildResources']['resources']['all_goods_of_age'])
-							{
+							if (products[p]['guildResources']['resources']['all_goods_of_age']) {
 								goodSum += products[p]['guildResources']['resources']['all_goods_of_age'];
 
 								goods = Object.values(GoodsData).filter(function (Good) {
@@ -444,12 +395,9 @@ let GuildMemberStat = {
 					}
 				}
 
-				if (entity[i].state && entity[i]['state']['current_product'])
-				{
+				if (entity[i].state && entity[i]['state']['current_product']) {
 					if (entity[i]['state']['current_product']['name'] !== 'clan_goods')
-					{
 						continue;
-					}
 
 					let totalgoods = entity[i]['state']['current_product']['goods'].map(good => good.value).reduce((sum, good) => good + sum);
 
@@ -658,13 +606,11 @@ let GuildMemberStat = {
 
 			case 'guildbuildings':
 
-				if (data === undefined || data.length <= 0)
-				{
+				if (data === undefined || data.length <= 0) {
 					return;
 				}
 
-				if (data['player_id'] !== undefined && data['guildbuildings'] !== undefined && data['greatbuildings'] !== undefined)
-				{
+				if (data['player_id'] !== undefined && data['guildbuildings'] !== undefined && data['greatbuildings'] !== undefined) {
 					await GuildMemberStat.RefreshPlayerGuildBuildingsDB(data);
 				}
 
@@ -729,8 +675,7 @@ let GuildMemberStat = {
 				greatbuildings: gbs
 			});
 
-			if ($("#GuildMemberStat").length)
-			{
+			if ($("#GuildMemberStat").length) {
 				GuildMemberStat.CurrentStatGroup = 'Member';
 				await GuildMemberStat.Show();
 			}
@@ -1129,8 +1074,7 @@ let GuildMemberStat = {
 
 			// Get Guild supporting Buildings
 			member['guildgoods'] = 0;
-			if (member['guildbuildings'] !== undefined && member['guildbuildings']['buildings'] !== undefined)
-			{
+			if (member['guildbuildings'] !== undefined && member['guildbuildings']['buildings'] !== undefined) {
 				guildBuildingsCount = member['guildbuildings']['buildings'].length;
 				for (let building of member['guildbuildings']['buildings']) {
 					member['guildgoods'] += building?.resources?.totalgoods || 0;
@@ -1142,9 +1086,7 @@ let GuildMemberStat = {
 			deletedCount += deletedMember ? 1 : 0;
 
 			if (deletedMember && !GuildMemberStat.Settings.showDeletedMembers)
-			{
 				continue;
-			}
 
 			let scoreDiff = member['score'] - member['prev_score'];
 			let scoreDiffClass = scoreDiff >= 0 ? 'green' : 'red';
@@ -1174,13 +1116,12 @@ let GuildMemberStat = {
 			h.push(`<td class="case-sensitive copyable" data-text="${helper.str.cleanup(member['name'])}"><img style="max-width: 22px" src="${srcLinks.GetPortrait(member.avatar)}" alt="${member['name']}"> <span>${MainParser.GetPlayerLink(member['player_id'], member['name'])}</span></td>`);
 			h.push(`<td class="is-number" data-number="${member['score']}">${HTML.Format(member['score'])}${scoreDiff > 0 || scoreDiff < 0 ? '<span class="prev_score ' + scoreDiffClass + '">' + (scoreDiff > 0 ? '+' : '') + HTML.Format(scoreDiff) + '</span>' : ''}</td>`);
 
-			if (GuildMemberStat.Settings.showBattlesWon)
-			{
+			if (GuildMemberStat.Settings.showBattlesWon) {
 				let battleDiff = member.won_battles - member.prev_battles;
 				h.push(`<td class="is-number" data-number="${member['won_battles']}">${HTML.Format(member['won_battles'] ? member['won_battles'] : 0)}${battleDiff > 0 ? '<span class="prev_score green">+' + HTML.Format(battleDiff) + '</span>' : ''}</td>`);
 			}
 
-			h.push(`<td class="is-number" data-number="${Technologies.Eras[member['era']]}">${i18n('Eras.' + Technologies.Eras[member['era']])}</td>`);
+			h.push(`<td class="is-number" data-number="${Technologies.Eras[member['era']]}">${i18n('Eras.' + Technologies.Eras[member['era']]+'.short')}</td>`);
 			h.push(`<td style="display:none" class="is-number" data-number="${member['guildgoods']}">${member['guildgoods']}</td>`);
 
 			if (GuildMemberStat.hasGuildMemberRights)
@@ -1192,7 +1133,7 @@ let GuildMemberStat = {
 
 			h.push(`</tr>`);
 
-			exportData.push([(rank - deletedCount), member['player_id'], member['name'], member['score'], Technologies.Eras[member['era']], i18n('Eras.' + Technologies.Eras[member['era']]), member['guildgoods'], ActWarnCount, forumActivityCount, gexActivityCount, gbgActivityCount, member['won_battles'], deletedMember ? 0 : 1]);
+			exportData.push([(rank - deletedCount), member['player_id'], member['name'], member['score'], Technologies.Eras[member['era']], i18n('Eras.' + Technologies.Eras[member['era']]+'.short'), member['guildgoods'], ActWarnCount, forumActivityCount, gexActivityCount, gbgActivityCount, member['won_battles'], deletedMember ? 0 : 1]);
 
 		}
 
@@ -1328,7 +1269,7 @@ let GuildMemberStat = {
 
 								d.push(`<tr><td><img class="small" src="${extUrl}js/web/guildmemberstat/images/act_${warnlist[k].activity}.png" /> #${(warnlist.length - parseInt(k))}<span class="hidden-text">&nbsp;-&nbsp;${activityWarnState[warnlist[k].activity]}</span></td>` +
 									`<td>${moment(warnlist[k].date).format(i18n('Date'))}</td>` +
-									`<td><button data-id="${MemberID}" data-warn="${k}" class="deleteInactivity deleteButton gms-tooltip" title="${HTML.i18nTooltip(i18n('Boxes.GuildMemberStat.DeleteInactivityWarning'))}">x</button></td></tr>`);
+									`<td><button data-id="${MemberID}" data-warn="${k}" class="deleteInactivity btn-delete btn gms-tooltip" title="${HTML.i18nTooltip(i18n('Boxes.GuildMemberStat.DeleteInactivityWarning'))}">x</button></td></tr>`);
 							}
 						}
 					}
@@ -1337,16 +1278,14 @@ let GuildMemberStat = {
 			}
 
 			// Create GEX Overview
-			if (Member['gex'] !== undefined)
-			{
-				d.push(`<div class="detail-item gex"><div class="scrollable"><table><thead class="sticky"><tr><th><span class="gex"></span> ${i18n('Boxes.GuildMemberStat.GEXWeek')}</th><th>${i18n('Boxes.GuildMemberStat.Rank')}</th><th>${i18n('Boxes.GuildMemberStat.Points')}</th><th>${i18n('Boxes.GuildMemberStat.Level')}</th><th>${i18n('Boxes.GuildMemberStat.GexTrial')}</th><th class="text-right"><span class="edit"></span></th></tr></thead><tbody>`);
+			if (Member['gex'] !== undefined) {
+				d.push(`<div class="detail-item gex"><div class="scrollable"><table><thead class="sticky"><tr><th><span class="gex"></span> ${i18n('Boxes.GuildMemberStat.GEXWeek')}</th><th>${i18n('Boxes.GuildMemberStat.Rank')}</th>`+
+				//`<th>${i18n('Boxes.GuildMemberStat.Points')}</th>`+
+				`<th>${i18n('Boxes.GuildMemberStat.Level')}</th><th>${i18n('Boxes.GuildMemberStat.GexTrial')}</th><th class="text-right"><span class="edit"></span></th></tr></thead><tbody>`);
 				let gex = Member['gex'];
-				for (let i in gex)
-				{
+				for (let i in gex) {
 					if (!gex.hasOwnProperty(i))
-					{
 						break;
-					}
 
 					let gexenddate = moment.unix(gex[i].gexweek);
 					let gexstartdate = moment.unix(gex[i].gexweek).subtract(7, 'd');
@@ -1356,11 +1295,11 @@ let GuildMemberStat = {
 					let tooltip = gexstartdate.format(i18n('Date')) + ' - ' + gexenddate.format(i18n('Date'));
 					let strDate = GuildMemberStat.Settings.gexgbgDateFormat === 'date' ? gexdate : (GuildMemberStat.Settings.gexgbgDateFormat === 'enddate' ? gexenddate.format(i18n('Date')) : gexweek);
 
-					d.push(`<tr><td><span class="gms-tooltip" title="${HTML.i18nTooltip(tooltip)}">${strDate}</span><span class="${activeGexClass}"></span></td>` +
-						`<td>${gex[i].rank}</td><td>${HTML.Format(gex[i].expeditionPoints)}</td>` +
+					d.push(`<tr><td><span class="gms-tooltip" title="${HTML.i18nTooltip(tooltip)}">${strDate}</span><span class="${activeGexClass}"></span></td><td>${gex[i].rank}</td>`+
+						//`<td>${HTML.Format(gex[i].expeditionPoints)}</td>` +
 						`<td>${HTML.Format(gex[i].solvedEncounters)}</td>` +
 						`<td>${HTML.Format(gex[i].trial||0)}</td>` +
-						`<td><button data-id="${gex[i].player_id}" data-gexweek="${gex[i].gexweek}" class="deleteGexWeek deleteButton">x</button></td>` +
+						`<td class="text-right"><button data-id="${gex[i].player_id}" data-gexweek="${gex[i].gexweek}" class="deleteGexWeek btn btn-slim btn-delete">x</button></td>` +
 						`</tr>`);
 
 				}
@@ -1368,18 +1307,14 @@ let GuildMemberStat = {
 			}
 
 			// Create GBG Overview
-			if (Member['gbg'] !== undefined)
-			{
+			if (Member['gbg'] !== undefined) {
 				d.push(`<div class="detail-item gbg"><div class="scrollable"><table><thead class="sticky"><tr><th><span class="gbg"></span> ${i18n('Boxes.GuildMemberStat.GBFRound')}</th><th>${i18n('Boxes.GuildMemberStat.Rank')}</th><th>${i18n('Boxes.GuildMemberStat.Battles')}</th><th>${i18n('Boxes.GuildMemberStat.Negotiations')}</th><th class="text-right"><span class="edit"></span></th></tr></thead><tbody>`);
 
 				let gbg = Member['gbg'];
 
-				for (let i in gbg)
-				{
-					if (!gbg.hasOwnProperty(i))
-					{
+				for (let i in gbg) {
+					if (!gbg.hasOwnProperty(i)) 
 						break;
-					}
 
 					let activeGbgClass = gbg[i].gbgid >= currentTime ? ' activeCircle' : '';
 					let gbgenddate = moment.unix(gbg[i].gbgid);
@@ -1397,7 +1332,7 @@ let GuildMemberStat = {
 						`<td>${gbg[i].rank}</td>` +
 						`<td>${HTML.Format(gbg[i].battlesWon)}</td>` +
 						`<td>${HTML.Format(gbg[i].negotiationsWon)}</td>` +
-						`<td><button data-gbgid="${gbg[i].gbgid}" data-id="${gbg[i].player_id}" class="deleteGBG deleteButton" title="${HTML.i18nTooltip(i18n('Boxes.GuildMemberStat.DeleteGBGRound'))}">x</button></td>` +
+						`<td class="text-right"><button data-gbgid="${gbg[i].gbgid}" data-id="${gbg[i].player_id}" class="deleteGBG btn btn-slim btn-delete" title="${HTML.i18nTooltip(i18n('Boxes.GuildMemberStat.DeleteGBGRound'))}">x</button></td>` +
 						`</tr>`);
 				}
 
@@ -1405,8 +1340,7 @@ let GuildMemberStat = {
 			}
 
 			// Create Guild supporting buildings Overview
-			if (Member['guildbuildings'] !== undefined)
-			{
+			if (Member['guildbuildings'] !== undefined) {
 				let guildbuildings = $.extend(true, {}, Member['guildbuildings']);
 				let totalGoods = 0;
 				let totalPower = 0;
@@ -1416,13 +1350,11 @@ let GuildMemberStat = {
 				// Group GuildGoods buildings by name and their era
 				let guildGoodsBuildings = guildbuildings['buildings'].filter(function (data) { return data.resources !== undefined }).reduce(function (res, obj) {
 					let objname = obj.name + '#' + obj.level + '#';
-					if (!(objname in res))
-					{
+					if (!(objname in res)) {
 						res.__array.push(res[objname] = obj);
 						res[objname].count = 1;
 					}
-					else
-					{
+					else {
 						res[objname].resources.totalgoods += +obj.resources.totalgoods;
 						res[objname].count += 1;
 					}
@@ -1431,13 +1363,11 @@ let GuildMemberStat = {
 
 				// Group guildpower buildings only by name. Era isn't relevant here
 				let guildPowerBuildings = guildbuildings['buildings'].filter(function (data) { return data.power !== undefined }).reduce(function (res, obj) {
-					if (!(obj.name in res))
-					{
+					if (!(obj.name in res)) {
 						res.__array.push(res[obj.name] = obj);
 						res[obj.name].count = 1;
 					}
-					else
-					{
+					else {
 						res[obj.name].power.value += +obj.power.value;
 						res[obj.name].count += 1;
 					}
@@ -1446,8 +1376,7 @@ let GuildMemberStat = {
 
 				d.push(`<tr class="nohover"><td colspan="2"><div class="detail-wrapper">`);
 
-				if (guildGoodsBuildings.length)
-				{
+				if (guildGoodsBuildings.length) {
 					d.push(`<div class="detail-item guildgoods"><table class="copyable"><thead class="sticky"><tr><th colspan="3"><i>${i18n('Boxes.GuildMemberStat.GuildGoods')}</i></th></tr></thead><tbody>`);
 
 					guildGoodsBuildings.forEach(plbuilding => {
@@ -1465,17 +1394,14 @@ let GuildMemberStat = {
 
 						let Entity = MainParser.CityEntities[plbuilding.entity_id];
 						let LevelString;
-						if (plbuilding.level === null)
-						{
+						if (plbuilding.level === null) {
 							LevelString = '';
 						}
-						else if (Entity && Entity.type === 'greatbuilding')
-						{
+						else if (Entity && Entity.type === 'greatbuilding') {
 							LevelString = '(' + plbuilding.level + ')';
 						}
-						else
-						{
-							LevelString = '(' + i18n('Eras.' + plbuilding.level) + ')';
+						else {
+							LevelString = '(' + i18n('Eras.' + plbuilding.level +'.short') + ')';
 						}
 
 						d.push(`<tr><td>${countBuilding} x ${plbuilding.name.replace(/\#[0-9]+\#/, '')} ${LevelString}</td><td class="text-right">${goodslist !== '' ? `<span class="goods-count">${goodCount / 5}x</span>${goodslist}` : ''}</td><td class="text-right">${HTML.Format(goodCount)}</td></tr>`);
@@ -1485,8 +1411,7 @@ let GuildMemberStat = {
 					d.push(`</tbody></table></div>`);
 				}
 
-				if (guildPowerBuildings.length)
-				{
+				if (guildPowerBuildings.length) {
 					d.push(`<div class="detail-item guildgoods"><table class="copyable"><thead class="sticky"><tr><th colspan="2"><i>${i18n('Boxes.GuildMemberStat.GuildPower')}</i></th></tr></thead><tbody>`);
 
 					guildPowerBuildings.forEach(plbuilding => {
@@ -1511,14 +1436,12 @@ let GuildMemberStat = {
 
 		// Show Delete Buttons
 		$('#GuildMemberTable th span.edit').off('click').on('click', function (e) {
-
 			//Show modal Warning before delete
-			if (!GuildMemberStat.acceptedDeleteWarning)
-			{
+			if (!GuildMemberStat.acceptedDeleteWarning) {
 				$('<div/>', {
 					id: 'gms-modal-warning',
 					class: 'warningoverlay',
-					html: '<div class="warningoverlay-content">' + i18n('Boxes.GuildMemberStat.DeleteDataWarning') + '<br /><br /><button id="gms-accept-modal" class="btn btn-default">' + i18n('Boxes.GuildMemberStat.GotIt') + '</button><div>'
+					html: '<div class="warningoverlay-content">' + i18n('Boxes.GuildMemberStat.DeleteDataWarning') + '<br /><br /><button id="gms-accept-modal" class="btn">' + i18n('Boxes.GuildMemberStat.GotIt') + '</button><div>'
 				}).appendTo('#GuildMemberStatBody');
 
 				$('#GuildMemberStatBody').on('click', '#gms-accept-modal', function () {
@@ -1526,7 +1449,7 @@ let GuildMemberStat = {
 				});
 			}
 			e.stopPropagation();
-			$(this).closest('table').find('.deleteButton').fadeToggle(50);
+			$(this).closest('table').find('.btn-delete').fadeToggle(50);
 		});
 
 		// Delete an inactivity entry
@@ -1584,16 +1507,16 @@ let GuildMemberStat = {
 
 			let thead = $(this);
 
-			if ($(thead).hasClass('open'))
-			{
+			$(thead).toggleClass('open').toggleClass('closed');
+			$(thead).next().toggleClass('open').toggleClass('closed');
+			/*if ($(thead).hasClass('open')) {
 				$(thead).removeClass('open').addClass('closed');
 				$(thead).next().removeClass('open').addClass('closed');
 			}
-			else
-			{
+			else {
 				$(thead).removeClass("closed").addClass('open');
 				$(thead).next().removeClass("closed").addClass('open');
-			}
+			}*/
 
 		});
 
@@ -1623,8 +1546,7 @@ let GuildMemberStat = {
 		// group members to era
 		let EraGroup = GuildMemberStat.EraGroup = GuildMembers.reduce((res, obj) => {
 			let eraId = Technologies.Eras[obj['era']];
-			if (!(eraId in res))
-			{
+			if (!(eraId in res)) {
 				res[eraId] = { eraId: eraId, era: obj['era'], score: 0 };
 				res[eraId]['members'] = [];
 			}
@@ -1636,8 +1558,7 @@ let GuildMemberStat = {
 			return res;
 		}, []);
 
-		if (EraGroup)
-		{
+		if (EraGroup) {
 			d.push(`<table id="GuildErasTable" class="foe-table">` +
 				`<thead class="sticky"><tr class="sorter-header">` +
 				`<th class="is-number" data-type="gms-era">#</th>` +
@@ -1650,12 +1571,9 @@ let GuildMemberStat = {
 
 			ExportContent.push(['eraId', 'era', 'numberOfMembers', 'treasuryGoods', 'memberPoints']);
 
-			for (let era in EraGroup)
-			{
+			for (let era in EraGroup) {
 				if (!EraGroup.hasOwnProperty(era))
-				{
 					break;
-				}
 
 				let countEra = typeof EraGroup[era].members.length != 'undefined' ? EraGroup[era].members.length : 1;
 				let eraTotals = 0;
@@ -1665,13 +1583,11 @@ let GuildMemberStat = {
 					`<td class="case-sensitive" data-text="${i18n('Eras.' + EraGroup[era].eraId)}">${i18n('Eras.' + EraGroup[era].eraId)}</td>` +
 					`<td class="is-number text-center" data-number="${countEra}">${countEra}</td>`);
 
-				if (hasTreasuryTotals)
-				{
+				if (hasTreasuryTotals) {
 					eraTotals = TreasuryGoodsData['totals'].hasOwnProperty([EraGroup[era].era]) ? TreasuryGoodsData.totals[EraGroup[era].era] : 0;
 					d.push(`<td title="${HTML.i18nTooltip(i18n('Boxes.GuildMemberStat.LastUpdate')) + ' ' + moment(TreasuryGoodsData.updated).fromNow()}" class="is-number text-right gms-tooltip" data-number="${eraTotals}">${HTML.Format(eraTotals)}</td>`);
 				}
-				else
-				{
+				else {
 					d.push(`<td title="${HTML.i18nTooltip(i18n('Boxes.GuildMemberStat.GuildTreasuryNotification'))}" class="gms-tooltip is-number text-center" data-number="${EraGroup[era].eraId}">-</td>`);
 				}
 
@@ -1699,13 +1615,11 @@ let GuildMemberStat = {
 				let expand = $(this).hasClass('closed') ? true : false;
 				$(this).toggleClass("closed open");
 
-				if (expand === true)
-				{
+				if (expand === true) {
 					helper.preloader.show("#GuildMemberStat");
 					setTimeout(() => { GuildMemberStat.ShowGuildEraDetail(tr, expand), 300 });
 				}
-				else
-				{
+				else {
 					GuildMemberStat.ShowGuildEraDetail(tr, expand);
 				}
 			});
@@ -1716,10 +1630,8 @@ let GuildMemberStat = {
 			});
 
 			$('#GuildErasTable > tbody tr').on('click', function () {
-
 				let tr = [$(this)];
 				GuildMemberStat.ShowGuildEraDetail(tr);
-
 			});
 
 			helper.preloader.hide('#GuildMemberStat');
@@ -1735,8 +1647,7 @@ let GuildMemberStat = {
 		let EraGroup = GuildMemberStat.EraGroup;
 		let TreasuryGoodsData = GuildMemberStat.TreasuryGoodsData;
 
-		if (expand === false)
-		{
+		if (expand === false) {
 			$("#GuildErasTable > tbody tr.detailview").remove();
 			$("#GuildErasTable > tbody tr").removeClass('open');
 			return;
@@ -1745,17 +1656,13 @@ let GuildMemberStat = {
 		$.each(arr, function () {
 			let e = $(this);
 
-			if (e.next("tr.detailview").length)
-			{
+			if (e.next("tr.detailview").length) {
 				e.next("tr.detailview").remove();
 				e.removeClass('open');
 			}
-			else
-			{
+			else {
 				if (!e.hasClass("hasdetail"))
-				{
 					return;
-				}
 
 				e.addClass('open');
 
@@ -1765,8 +1672,7 @@ let GuildMemberStat = {
 				h.push(`<tr class="detailview dark-bg"><td colspan="${e.find("td").length}"><div class="detail-wrapper"><div class="detail-item">` +
 					`<table><thead class="sticky"><tr><th>${i18n('Boxes.GuildMemberStat.Rank')}</th><th>${i18n('Boxes.GuildMemberStat.Member')}</th><th>${i18n('Boxes.GuildMemberStat.Eras')}</th><th class="text-right">${i18n('Boxes.GuildMemberStat.Points')}</th></tr></thead><tbody>`);
 
-				if (EraGroup[eraId].members !== undefined)
-				{
+				if (EraGroup[eraId].members !== undefined) {
 
 					let EraMembers = EraGroup[eraId].members.sort(function (a, b) { return a.score > b.score });
 
@@ -1778,8 +1684,7 @@ let GuildMemberStat = {
 				h.push('</tbody></table></div>');
 
 				// Show in stock Treasury Goods for Era
-				if (TreasuryGoodsData !== null && typeof TreasuryGoodsData[EraGroup[eraId].era] !== 'undefined')
-				{
+				if (TreasuryGoodsData !== null && typeof TreasuryGoodsData[EraGroup[eraId].era] !== 'undefined') {
 					let EraTreasuryGoods = TreasuryGoodsData[EraGroup[eraId].era];
 
 					h.push(`<div class="detail-item"><table><thead class="sticky"><tr><th colspan="3">${i18n('Boxes.GuildMemberStat.EraTreasuryGoods')}</th></tr></thead><tbody>`);
@@ -1818,10 +1723,9 @@ let GuildMemberStat = {
 		ExportContent.push(['building', 'level', 'eraId', 'era', 'member', 'guildPower', 'guildGoods']);
 
 		// add notification for how to update guild building statisitc
-		d.push(`<div class="view_notification">${i18n('Boxes.GuildMemberStat.GuildBuildingNotification')} <button style="float:right" id="toggleBuildingView" class="btn btn-default">${i18n('Boxes.GuildMemberStat.ChangeView')}</button></div>`);
+		d.push(`<div class="view_notification">${i18n('Boxes.GuildMemberStat.GuildBuildingNotification')} <button style="float:right" id="toggleBuildingView" class="btn">${i18n('Boxes.GuildMemberStat.ChangeView')}</button></div>`);
 
-		if (gmsBuildingDict === undefined || gmsBuildingDict.length <= 0)
-		{
+		if (gmsBuildingDict === undefined || gmsBuildingDict.length <= 0) {
 			$("#gmsContentWrapper").html(d.join(''));
 			helper.preloader.hide("#GuildMemberStat");
 			return;
@@ -1831,20 +1735,17 @@ let GuildMemberStat = {
 
 		let allGuildBuildings = fullGBList.reduce(function (res, obj) {
 
-			if (obj.gbid === undefined)
-			{
+			if (obj.gbid === undefined) {
 				res.__array.push(res['outdated'] = obj);
 				return res;
 			}
 
 			let buildingID = obj.player_id + '' + obj.gbid;
 
-			if (!(buildingID in res))
-			{
+			if (!(buildingID in res)) {
 				res.__array.push(res[buildingID] = obj);
 			}
-			else
-			{
+			else {
 				res[buildingID] = Object.assign(res[buildingID], obj);
 			}
 
@@ -1855,17 +1756,14 @@ let GuildMemberStat = {
 
 		let guildGoodsBuildings = gmsBuildingDict.reduce(function (res, obj) {
 
-			if (obj.resources !== undefined)
-			{
+			if (obj.resources !== undefined) {
 				let count = typeof obj.count === 'undefined' ? 1 : obj.count;
 
-				if (!(obj.name in res))
-				{
+				if (!(obj.name in res)) {
 					res.__array.push(res[obj.name] = obj);
 					res[obj.name].count = count;
 				}
-				else
-				{
+				else {
 					res[obj.name].resources.totalgoods += obj.resources.totalgoods;
 					res[obj.name].count += count;
 				}
@@ -1878,17 +1776,14 @@ let GuildMemberStat = {
 
 		let guildPowerBuildings = gmsBuildingDict.reduce(function (res, obj) {
 
-			if (obj.power !== undefined)
-			{
+			if (obj.power !== undefined) {
 				let count = typeof obj.count === 'undefined' ? 1 : obj.count;
 
-				if (!(obj.name in res))
-				{
+				if (!(obj.name in res)) {
 					res.__array.push(res[obj.name] = obj);
 					res[obj.name].count = count;
 				}
-				else
-				{
+				else {
 					res[obj.name].power.value += obj.power.value;
 					res[obj.name].count += count;
 				}
@@ -1900,8 +1795,7 @@ let GuildMemberStat = {
 
 		d.push(`<div class="detail-wrapper buildinglist grouped show">`);
 
-		if (guildGoodsBuildings.length)
-		{
+		if (guildGoodsBuildings.length) {
 			d.push(`<div class="detail-item guildgoods"><table class="foe-table copyable sticky"><thead><tr><th colspan="3"><i>${i18n('Boxes.GuildMemberStat.GuildGoods')}</i></th></tr></thead><tbody>`);
 
 			guildGoodsBuildings.forEach(plbuilding => {
@@ -1915,8 +1809,7 @@ let GuildMemberStat = {
 			d.push(`</tbody></table></div>`);
 		}
 
-		if (guildPowerBuildings.length)
-		{
+		if (guildPowerBuildings.length) {
 			d.push(`<div class="detail-item guildgoods"><table class="foe-table copyable sticky"><thead><tr><th colspan="3"><i>${i18n('Boxes.GuildMemberStat.GuildPower')}</i></th></tr></thead><tbody>`);
 
 			guildPowerBuildings.forEach(plbuilding => {
@@ -1953,8 +1846,7 @@ let GuildMemberStat = {
 			let level = Entity && Entity['type'] === 'greatbuilding' && plbuilding.level !== null && plbuilding.level !== undefined ? plbuilding.level : 0;
 			let goodslist = '';
 
-			if (plbuilding.resources && plbuilding.resources.goods && plbuilding.resources.goods !== null)
-			{
+			if (plbuilding.resources && plbuilding.resources.goods && plbuilding.resources.goods !== null) {
 				goodslist = plbuilding.resources.goods.map(good => {
 					return `<span title="${good.value} x ${GoodsData[good.good_id]['name']}" class="goods-sprite sprite-35 ${good.good_id}"></span> `;
 				}).join('');
@@ -2006,19 +1898,16 @@ let GuildMemberStat = {
 
 		ErasGuildGoods = ErasGuildGoods.reduce(function (res, obj) {
 
-			if (obj.era !== undefined && obj.resources !== undefined && obj.resources.goods !== undefined && obj.resources.goods !== null)
-			{
+			if (obj.era !== undefined && obj.resources !== undefined && obj.resources.goods !== undefined && obj.resources.goods !== null) {
 				let eraId = Technologies.Eras[obj['era']];
 
-				if (!(eraId in res))
-				{
+				if (!(eraId in res)) {
 					res[eraId] = {};
 					obj.resources.goods.forEach(good => {
 						res[eraId][good.good_id] = { good: good.good_id, name: GoodsData[good.good_id].name, value: good.value };
 					});
 				}
-				else
-				{
+				else {
 					obj.resources.goods.forEach(good => {
 						res[eraId][good.good_id].value += good.value;
 					});
@@ -2031,8 +1920,7 @@ let GuildMemberStat = {
 		// add notification for how to update guild building statisitc and Treasury Goods List
 		d.push(`<div class="view_notification">1. ${i18n('Boxes.GuildMemberStat.GuildBuildingNotification')}<br />2. ${i18n('Boxes.GuildMemberStat.GuildTreasuryNotification')}</div>`);
 
-		if (ErasGuildGoods === null)
-		{
+		if (ErasGuildGoods === null) {
 			$("#gmsContentWrapper").html(d.join(''));
 			helper.preloader.hide("#GuildMemberStat");
 			return;
@@ -2046,8 +1934,7 @@ let GuildMemberStat = {
 
 		let EraGroup = GuildMemberStat.EraGroup = GuildMembers.reduce((res, obj) => {
 			let eraId = Technologies.Eras[obj['era']];
-			if (!(eraId in res))
-			{
+			if (!(eraId in res)) {
 				res[eraId] = { eraId: eraId, era: obj['era'], score: 0 };
 				res[eraId]['members'] = [];
 			}
@@ -2059,8 +1946,7 @@ let GuildMemberStat = {
 			return res;
 		}, []);
 
-		for (let eraId = Technologies.Eras.IronAge; eraId < Technologies.Eras.NextEra; eraId++)
-		{
+		for (let eraId = Technologies.Eras.IronAge; eraId < Technologies.Eras.NextEra; eraId++) {
 			if (GoodsList.length < 5 * (eraId - 1)) break; // Era does not exist yet
 
 			if (Technologies.EraNames[eraId] === undefined) continue;
@@ -2074,22 +1960,17 @@ let GuildMemberStat = {
 			d.push(`<tr><td>${i18n('Eras.' + eraId)}<br>(${countEra} ${i18n('Boxes.GuildMemberStat.GuildMembers')})</td>`);
 
 			// Goods from Guild Building productions
-			if (ErasGuildGoods[eraId] !== undefined)
-			{
+			if (ErasGuildGoods[eraId] !== undefined) {
 				let DailyGuildGoods = ErasGuildGoods[eraId];
 
 				d.push(`<td class="detail dark">`);
 				d.push(`<div class="detail-item"><table class="foe-table copyable">`);
 				d.push(`<tbody>`);
 
-				for (let i in DailyGuildGoods)
-				{
-					if (DailyGuildGoods.hasOwnProperty(i))
-					{
+				for (let i in DailyGuildGoods) {
+					if (DailyGuildGoods.hasOwnProperty(i)) {
 						if (exportGood[DailyGuildGoods[i].good] === undefined)
-						{
 							exportGood[DailyGuildGoods[i].good] = { eraId: eraId, era: currentEra, good: DailyGuildGoods[i].name, produceable: 0, instock: 0 };
-						}
 
 						d.push(`<tr><td class="goods-image"><span class="goods-sprite sprite-35 ${i}"></span></td><td>${DailyGuildGoods[i].name}</td><td class="text-right">${HTML.Format(DailyGuildGoods[i].value)}</td></tr>`);
 						exportGood[DailyGuildGoods[i].good].produceable = DailyGuildGoods[i].value;
@@ -2098,14 +1979,12 @@ let GuildMemberStat = {
 				d.push(`</tbody></table></div>`);
 				d.push(`</td>`);
 			}
-			else
-			{
+			else {
 				d.push(`<td class="detail text-center dark gms-tooltip" title="${HTML.i18nTooltip(i18n('Boxes.GuildMemberStat.GuildBuildingNotification'))}">-</td>`);
 			}
 
 			// In stock guild good for the era
-			if (TreasuryGoodsData !== undefined && TreasuryGoodsData !== null && typeof TreasuryGoodsData[Technologies.EraNames[eraId]] !== 'undefined')
-			{
+			if (TreasuryGoodsData !== undefined && TreasuryGoodsData !== null && typeof TreasuryGoodsData[Technologies.EraNames[eraId]] !== 'undefined') {
 				let EraTreasuryGoods = TreasuryGoodsData[Technologies.EraNames[eraId]].sort(function (a, b) { return a.good.localeCompare(b.good) });
 				d.push(`<td class="detail">`);
 
@@ -2115,9 +1994,7 @@ let GuildMemberStat = {
 				EraTreasuryGoods.forEach(good => {
 
 					if (exportGood[good.good] === undefined)
-					{
 						exportGood[good.good] = { eraId: eraId, era: currentEra, good: good.name, produceable: 0, instock: 0 };
-					}
 
 					d.push(`<tr><td class="goods-image"><span class="goods-sprite sprite-35 ${good.good}"></span></td><td>${good.name}</td><td class="text-right">${HTML.Format(good.value)}</td></tr>`);
 					exportGood[good.good].instock = good.value;
@@ -2127,8 +2004,7 @@ let GuildMemberStat = {
 				d.push(`</td>`);
 
 			}
-			else
-			{
+			else {
 				d.push(`<td class="detail text-center gms-tooltip" ${TreasuryGoodsData === null ? `title="${HTML.i18nTooltip(i18n('Boxes.GuildMemberStat.GuildTreasuryNotification'))}"` : ''}>-</td>`);
 			}
 
@@ -2168,10 +2044,9 @@ let GuildMemberStat = {
 		let GreatBuildings = await GuildMemberStat.GetGuildMemberBuildings('greatbuildings');
 		let allMemberIds = Object.keys(GuildMemberStat.MemberDict);
 
-		d.push(`<div class="view_notification">${i18n('Boxes.GuildMemberStat.GuildBuildingNotification')} <button style="float:right" id="toggleGreatBuildingView" class="btn btn-default">${i18n('Boxes.GuildMemberStat.ChangeView')}</button></div>`);
+		d.push(`<div class="view_notification">${i18n('Boxes.GuildMemberStat.GuildBuildingNotification')} <button style="float:right" id="toggleGreatBuildingView" class="btn">${i18n('Boxes.GuildMemberStat.ChangeView')}</button></div>`);
 
-		if (GreatBuildings === null)
-		{
+		if (GreatBuildings === null) {
 			$("#gmsContentWrapper").html(d.join(''));
 			helper.preloader.hide("#GuildMemberStat");
 			return;
@@ -2193,8 +2068,7 @@ let GuildMemberStat = {
 				name: obj.name
 			}
 
-			if (!(obj.cityentity_id in res))
-			{
+			if (!(obj.cityentity_id in res)) {
 				res.__array.push(res[obj.cityentity_id] = d);
 				res[obj.cityentity_id].count = 1;
 				res[obj.cityentity_id].max_level = obj.level;
@@ -2211,8 +2085,7 @@ let GuildMemberStat = {
 					return value != obj.player_id;
 				});
 			}
-			else
-			{
+			else {
 				res[obj.cityentity_id] = Object.assign(res[obj.cityentity_id], d);
 				res[obj.cityentity_id].count += 1;
 				res[obj.cityentity_id].max_level = res[obj.cityentity_id].max_level < obj.level ? obj.level : res[obj.cityentity_id].max_level;
@@ -2243,8 +2116,7 @@ let GuildMemberStat = {
 			`<th class="is-number text-center" data-type="gms-greatbl">${i18n('Boxes.GuildMemberStat.MaxLevel')}</th>` +
 			`<th></th></tr></thead><tbody class="gms-greatbl">`);
 
-		for (let x = 0; x < GBOverview.length; x++)
-		{
+		for (let x = 0; x < GBOverview.length; x++) {
 			const building = GBOverview[x];
 			d.push(`<tr class="hasdetail" id="gms_${x}" data-id="${x}">` +
 				`<td class="case-sensitive" data-text="${helper.str.cleanup(building.name)}">${building.name}</td>` +
@@ -2271,8 +2143,7 @@ let GuildMemberStat = {
 			return a.name.localeCompare(b.name) || (a.level - b.level);
 		});
 
-		for (let x = 0; x < GreatBuildingsDetail.length; x++)
-		{
+		for (let x = 0; x < GreatBuildingsDetail.length; x++) {
 			const dbuilding = GreatBuildingsDetail[x];
 			let invested_forge_points = dbuilding.invested_forge_points ? dbuilding.invested_forge_points : 0;
 			let forge_points_for_level_up = dbuilding.max_level > dbuilding.level ? dbuilding.forge_points_for_level_up : 0
@@ -2297,29 +2168,19 @@ let GuildMemberStat = {
 			$('#gms-filter-input').show();
 			$('#gms-filter-input').off().on('keyup', function () {
 				if ($('.greatbuildinglist.grouped').hasClass("show"))
-				{
 					GuildMemberStat.filterTable('gms-filter-input', 'gblist');
-				}
 				else if ($('.greatbuildinglist.detail').hasClass("show"))
-				{
 					GuildMemberStat.filterTable('gms-filter-input', 'gblist_detail');
-				}
-
 			});
 
 			$('#gmsContentWrapper #toggleGreatBuildingView').on('click', function () {
 				$('#gmsContentWrapper .greatbuildinglist').toggleClass('hide show').promise().done(function () {
 
-					if ($('#gms-filter-input').is(":visible") && $('#gms-filter-input').val() !== '')
-					{
+					if ($('#gms-filter-input').is(":visible") && $('#gms-filter-input').val() !== '') {
 						if ($('.greatbuildinglist.grouped').hasClass("show"))
-						{
 							GuildMemberStat.filterTable('gms-filter-input', 'gblist');
-						}
 						else if ($('.greatbuildinglist.detail').hasClass("show"))
-						{
 							GuildMemberStat.filterTable('gms-filter-input', 'gblist_detail');
-						}
 					}
 				});
 			});
@@ -2328,19 +2189,15 @@ let GuildMemberStat = {
 
 			$('#gblist > tbody tr.hasdetail').off().on('click', function () {
 
-				if ($(this).next("tr.detailview").length)
-				{
+				if ($(this).next("tr.detailview").length) {
 					$(this).next("tr.detailview").remove();
 					$(this).removeClass('open');
 				}
-				else
-				{
+				else {
 					let id = $(this).attr("data-id");
 					let d = [];
 					if (!$(this).hasClass("hasdetail") || !GBOverview || !GBOverview[id] || !GBOverview[id]['player'])
-					{
 						return;
-					}
 
 					d.push('<tr class="detailview dark-bg"><td colspan="' + $(this).find("td").length + '"><div class="detail-wrapper">');
 					$(this).addClass('open');
@@ -2357,8 +2214,7 @@ let GuildMemberStat = {
 						`<th class="is-number text-center" data-type="gms-dgb${id}">${i18n('Boxes.GuildMemberStat.FpForLevelUp')}</th>` +
 						`</tr></thead><tbody class="gms-dgb${id}">`);
 
-					for (let i in player)
-					{
+					for (let i in player) {
 						if (!player.hasOwnProperty(i)) continue;
 
 						d.push(`<tr><td data-text="${helper.str.cleanup(player[i].member)}">${MainParser.GetPlayerLink(player[i].player_id, player[i].member)}</td>` +
@@ -2371,8 +2227,7 @@ let GuildMemberStat = {
 					d.push('</tbody></table>');
 
 					// Show guild member without this great building
-					if (NoGbMember !== undefined && NoGbMember.length)
-					{
+					if (NoGbMember !== undefined && NoGbMember.length) {
 						NoGbMember = NoGbMember.filter(member => { return !GuildMemberStat.MemberDict[member].deleted });
 						NoGbMember = NoGbMember.sort(function (a, b) { return GuildMemberStat.MemberDict[a].name.localeCompare(GuildMemberStat.MemberDict[b].name) });
 
@@ -2396,19 +2251,16 @@ let GuildMemberStat = {
 
 
 	GetGuildMemberBuildings: async (type) => {
-
 		let GuildMembers = await GuildMemberStat.db.player.where({ deleted: 0 }).toArray();
 		let gmsBuildingDict = [];
 		type = type ? type : 'guildbuildings';
 
-		for (let x = 0; x < GuildMembers.length; x++)
-		{
+		for (let x = 0; x < GuildMembers.length; x++) {
 			const member = GuildMembers[x];
 			let memberInfo = { member: member.name, player_id: member.player_id }
 			let b = undefined;
 
-			switch (type)
-			{
+			switch (type) {
 				case 'guildbuildings':
 					b = typeof member['guildbuildings'] !== 'undefined' ? member['guildbuildings']['buildings'] : undefined;
 					break;
@@ -2417,10 +2269,8 @@ let GuildMemberStat = {
 					break;
 			}
 
-			if (b)
-			{
-				for (let i = 0; i < b.length; i++)
-				{
+			if (b) {
+				for (let i = 0; i < b.length; i++) {
 					b[i] = Object.assign(b[i], memberInfo);
 				}
 
@@ -2429,22 +2279,19 @@ let GuildMemberStat = {
 		}
 
 		return gmsBuildingDict;
-
 	},
 
 
 	DeletePlayerDetail: async (delObj) => {
 
 		if (delObj === undefined || delObj === null)
-		{
 			return;
-		}
+
 		let player_id = delObj.player_id,
 			content = delObj.content,
 			data = delObj.data;
 
-		switch (content)
-		{
+		switch (content) {
 			case 'activity':
 				await GuildMemberStat.db.activity.where('player_id').equals(player_id).modify(x => {
 					x.warnings = x.warnings.filter(el => {
@@ -2470,9 +2317,7 @@ let GuildMemberStat = {
 		let TreasuryGoods = JSON.parse(localStorage.getItem('GuildMemberStatTreasuryGoods'));
 
 		if (!Settings)
-		{
 			return;
-		}
 
 		GuildMemberStat.Settings.lastupdate = (Settings.lastupdate !== undefined) ? Settings.lastupdate : 0;
 		GuildMemberStat.Settings.showDeletedMembers = (Settings.showDeletedMembers !== undefined) ? Settings.showDeletedMembers : GuildMemberStat.Settings.showDeletedMembers;
@@ -2521,9 +2366,9 @@ let GuildMemberStat = {
 			c.push(`<option value="0">${i18n('Boxes.GuildMemberStat.ConfirmNo')}</option>`);
 			c.push(`<option value="reset">${i18n('Boxes.GuildMemberStat.ConfirmYes')}</option>`);
 		c.push(`</select></p>`);
-		c.push(`<hr><p><button id="save-GuildMemberStat-settings" class="btn btn-default" style="width:100%" onclick="GuildMemberStat.SettingsSaveValues()">${i18n('Boxes.Investment.Overview.SettingsSave')}</button></p>`);
-		c.push(`<hr><p class="text-left">${i18n('Boxes.General.Export')}: <button class="btn btn-default" onclick="GuildMemberStat.ExportContent('${GuildMemberStat.CurrentStatGroup}','csv')" title="${HTML.i18nTooltip(i18n('Boxes.General.ExportCSV'))}">CSV</button>`);
-		c.push(`<button class="btn btn-default" onclick="GuildMemberStat.ExportContent('${GuildMemberStat.CurrentStatGroup}','json')" title="${HTML.i18nTooltip(i18n('Boxes.General.ExportJSON'))}">JSON</button></p>`);
+		c.push(`<hr><p><button id="save-GuildMemberStat-settings" class="btn" style="width:100%" onclick="GuildMemberStat.SettingsSaveValues()">${i18n('Boxes.Investment.Overview.SettingsSave')}</button></p>`);
+		c.push(`<hr><p class="text-left">${i18n('Boxes.General.Export')}: <button class="btn" onclick="GuildMemberStat.ExportContent('${GuildMemberStat.CurrentStatGroup}','csv')" title="${HTML.i18nTooltip(i18n('Boxes.General.ExportCSV'))}">CSV</button>`);
+		c.push(`<button class="btn" onclick="GuildMemberStat.ExportContent('${GuildMemberStat.CurrentStatGroup}','json')" title="${HTML.i18nTooltip(i18n('Boxes.General.ExportJSON'))}">JSON</button></p>`);
 
 		$('#GuildMemberStatSettingsBox').html(c.join(''));
 	},
@@ -2541,8 +2386,7 @@ let GuildMemberStat = {
 		GuildMemberStat.Settings.showZeroValues = $("#gmsShowZeroValues").is(':checked') ? 1 : 0;
 		GuildMemberStat.Settings.gexgbgDateFormat = $('#gmsGexGbgDateFormat').val() || 'week';
 
-		if (GuildMemberStat.Settings.deleteOlderThan !== tmpDeleteOlder && (tmpDeleteOlder > 0 || tmpDeleteOlder === -1))
-		{
+		if (GuildMemberStat.Settings.deleteOlderThan !== tmpDeleteOlder && (tmpDeleteOlder > 0 || tmpDeleteOlder === -1)) {
 			helper.preloader.show('#GuildMemberStat');
 
 			await GuildMemberStat.DeleteExMembersOlderThan(tmpDeleteOlder);
@@ -2552,18 +2396,15 @@ let GuildMemberStat = {
 
 		localStorage.setItem('GuildMemberStatSettings', JSON.stringify(GuildMemberStat.Settings));
 
-		if (resetMessageCounter === 'reset')
-		{
+		if (resetMessageCounter === 'reset') {
 			await GuildMemberStat.ResetMessageCounter();
 		}
 
 		$(`#GuildMemberStatSettingsBox`).fadeToggle('fast', function () {
 			$(this).remove();
 
-			if (GuildMemberStat.CurrentStatGroup === 'Member')
-			{
+			if (GuildMemberStat.CurrentStatGroup === 'Member') 
 				GuildMemberStat.Show();
-			}
 		});
 	},
 
@@ -2573,18 +2414,14 @@ let GuildMemberStat = {
 		GuildMemberStat.TreasuryGoodsData = {};
 		let eraGoodsTotals = {};
 
-		for (let i in d)
-		{
-			if (d.hasOwnProperty(i))
-			{
+		for (let i in d) {
+			if (d.hasOwnProperty(i)) {
 				let era = GoodsData[i]['era'];
 				let name = GoodsData[i]['name'];
 
-				if (!(era in GuildMemberStat.TreasuryGoodsData))
-				{
+				if (!(era in GuildMemberStat.TreasuryGoodsData)) {
 					GuildMemberStat.TreasuryGoodsData[era] = [];
 					eraGoodsTotals[era] = 0;
-
 				}
 
 				GuildMemberStat.TreasuryGoodsData[era].push({ good: i, name: name, value: d[i] });
@@ -2597,10 +2434,8 @@ let GuildMemberStat = {
 
 		localStorage.setItem('GuildMemberStatTreasuryGoods', JSON.stringify(GuildMemberStat.TreasuryGoodsData));
 
-		if ($('#GuildMemberStatBody').length)
-		{
-			switch (GuildMemberStat.CurrentStatGroup)
-			{
+		if ($('#GuildMemberStatBody').length) {
+			switch (GuildMemberStat.CurrentStatGroup) {
 				case 'GuildGoods':
 					GuildMemberStat.ShowGuildGoods();
 					break;
@@ -2636,12 +2471,10 @@ let GuildMemberStat = {
 		let content = GuildMemberStat.ExportData;
 		let FileContent = '';
 
-		for (let i = 0; i < content.length; i++)
-		{
+		for (let i = 0; i < content.length; i++) {
 			let value = content[i];
 
-			for (let j = 0; j < value.length; j++)
-			{
+			for (let j = 0; j < value.length; j++) {
 				let innerValue = value[j] === null || value[j] === undefined ? '' : value[j].toString();
 				let result = innerValue.replace(/"/g, '""');
 				if (result.search(/("|,|\n)/g) >= 0)
@@ -2655,8 +2488,7 @@ let GuildMemberStat = {
 		}
 		let BOM = "\uFEFF";
 
-		if (type === 'json')
-		{
+		if (type === 'json') {
 			FileContent = GuildMemberStat.CsvToJson(FileContent);
 		}
 
@@ -2675,8 +2507,7 @@ let GuildMemberStat = {
 		let result = [];
 		let headers = lines[0].split(";");
 
-		for (let i = 1; i < lines.length - 1; i++)
-		{
+		for (let i = 1; i < lines.length - 1; i++) {
 			let obj = {};
 			let currentline = lines[i].split(";");
 
@@ -2701,26 +2532,18 @@ let GuildMemberStat = {
 		tr = table.getElementsByTagName("tr");
 
 		if (input.value.length > 0)
-		{
 			input.classList.add("highlight");
-		}
 		else
-		{
 			input.classList.remove("highlight");
-		}
 
-		for (i = 1; i < tr.length; i++)
-		{
+		for (i = 1; i < tr.length; i++) {
 			tr[i].style.display = "none";
 
 			td = tr[i].getElementsByTagName("td");
-			for (let j = 0; j < td.length; j++)
-			{
+			for (let j = 0; j < td.length; j++) {
 				cell = tr[i].getElementsByTagName("td")[j];
-				if (cell)
-				{
-					if (cell.innerHTML.toUpperCase().indexOf(filter) > -1)
-					{
+				if (cell) {
+					if (cell.innerHTML.toUpperCase().indexOf(filter) > -1) {
 						tr[i].style.display = "";
 						break;
 					}

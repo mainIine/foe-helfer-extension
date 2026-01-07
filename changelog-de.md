@@ -1,6 +1,34 @@
 ## Changelog - Extension
 
 
+##### 4.1.0.0
+
+**Neu**
+- Alles-Einsammeln-Blocker: schon mal 5 Diamanten ausgegeben, obwohl die FP-Leiste zu voll war? Aktivier den Blocker in den Einstellungen bei Pop-ups, damit das nicht nochmal passiert
+- Umbaumodus: es kann nun eine Karte angeschaltet werden, die sich beim Bauen aktualisiert, den Button dafür findet ihr in der Umbaumodusliste
+
+**Update**
+- Stadt Übersicht: 
+	- Die Statistiken und Filter an der Seite wurden überarbeitet: es gibt neue, interessantere Fakten zu den Gebäuden in der Stadt
+	- Die verfügbare Fläche ist jetzt auch bei anderen Spielern zu sehen
+- Profil: 
+	- QI Aktionskapazität hinzugefügt
+	- Das Mini-Profilbild hat den Spiel-Button im Forschungsbaum verdeckt und wurde deshalb verschoben
+	- Man kann den mittleren teil nun markieren und dann kopieren, um seine Werte auch im Spien in Nachrichten teilen zu können
+- Menü-Icon für Gebäude-Sets und -Ketten-Modul ausgetauscht
+- Verbündete: es gibt nun Summen unten im Fenster
+- Die Einstellungen innerhalb von Fenstern wurden anders angemalt
+- GG Liste: Sekunden in der "in"-Spalte hinzugefügt
+- Wir haben den Sound für FP-Quests aus den Rechnern entfernt. Lasst uns wissen, wenn ihr den zurückhaben möchtet
+
+**Bugfix**
+- Produktionsübersicht: Die Güter von Gilden-LB waren manchmal zu hoch, weil Boosts angerechnet wurden
+- QI Karte: Die Summen waren nicht korrekt gerundet
+- QI Kapazität von 100.000 auf 200.000 erhöht
+- Profil: Die Güter von anderen Spielern waren inkorrekt, wenn sie nicht im gleichen Zeitalter wie man selbst waren
+
+---
+
 ##### 4.0.2.0
 
 **Update**

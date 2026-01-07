@@ -1,7 +1,7 @@
 
 /*
  * **************************************************************************************
- * Copyright (C) 2024 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -44,44 +44,52 @@ FoEproxy.addHandler('CityReconstructionService', 'getDraft', (data, postData) =>
         }
     }
 
-    reconstruction.showTable()
-
+    reconstruction.showTable();
 });
 
 FoEproxy.addHandler('AutoAidService', 'getStates', (data, postData) => {
-    $('#ReconstructionList').remove()
+    $('#ReconstructionList').remove();
+    $('#ReconstructionMap').remove();
 });
 FoEproxy.addHandler('InventoryService', 'getGreatBuildings', (data, postData) => {
-    $('#ReconstructionList').remove()
+    $('#ReconstructionList').remove();
+    $('#ReconstructionMap').remove();
 });
 
 FoEproxy.addRequestHandler('CityReconstructionService', 'saveDraft', (data) => {
     for (let x of data.requestData[0]) {
-        let id = MainParser.CityMapData[x.entityId].cityentity_id + "#" + (MainParser.CityMapData[x.entityId].level||0)
-        let pagesUpdated=false
+        let id = MainParser.CityMapData[x.entityId].cityentity_id + "#" + (MainParser.CityMapData[x.entityId].level||0);
+        let pagesUpdated=false;
         if (x.position && !reconstruction.draft[x.entityId].position) {
-            reconstruction.count[id].placed++
-            reconstruction.count[id].stored--
+            reconstruction.count[id].placed++;
+            reconstruction.count[id].stored--;
             if (reconstruction.count[id].stored==0) {
-                reconstruction.pageUpdate(id)
-                pagesUpdated=true
+                reconstruction.pageUpdate(id);
+                pagesUpdated=true;
             }
             FoEproxy.triggerFoeHelperHandler('ReconstructionBuildingPlaced',{id:x.entityId,last:(reconstruction.count[id].stored==0)})
+
+            $('#ReconstructionMapBody .map-grid').append(reconstruction.placeBuildingOnMap(x));
         } else if (!x.position) {
-            reconstruction.count[id].placed--
-            reconstruction.count[id].stored++    
+            reconstruction.count[id].placed--;
+            reconstruction.count[id].stored++;
             if (reconstruction.count[id].stored==1) {
-                reconstruction.pageUpdate(id)
-                pagesUpdated=true
+                reconstruction.pageUpdate(id);
+                pagesUpdated=true;
             }
+            $(`#ReconstructionMapBody [data-id=${x.entityId}]`).remove();
+        } else if (x.position && reconstruction.draft[x.entityId].position) {
+            $(`#ReconstructionMapBody [data-id=${x.entityId}]`).remove();
+            $('#ReconstructionMapBody .map-grid').append(reconstruction.placeBuildingOnMap(x));
         }
+
         reconstruction.draft[x.entityId] = x
         $('.reconstructionLine[data-page_id="'+id+'"] td:nth-child(2)').html("x"+reconstruction.count[id].stored)
         if (reconstruction.count[id].stored > 0) 
-            $('.reconstructionLine[data-page_id="'+id+'"]').show()
-        else
-            $('.reconstructionLine[data-page_id="'+id+'"]').hide()
-        if (pagesUpdated) reconstruction.updateTable()
+            $('.reconstructionLine[data-page_id="'+id+'"]').show();
+        else 
+            $('.reconstructionLine[data-page_id="'+id+'"]').hide();
+        if (pagesUpdated) reconstruction.updateTable();
     }
 });
 
@@ -104,7 +112,8 @@ let reconstruction = {
     },
     pages: null,
     rcIcons:null,
-    roadIcons:null,        
+    roadIcons:null,
+    mapScale: 20,  
     pageUpdate:(id)=>{
         let meta = MainParser.CityEntities[id.split("#")[0]]
         if (["friends_tavern",
@@ -154,6 +163,7 @@ let reconstruction = {
 				dragdrop: true,
 				minimize: true,
 				resize: true,
+                map: "reconstruction.showMap();",
 			    active_maps:"main"
 			});
         }           
@@ -191,5 +201,75 @@ let reconstruction = {
         setTimeout(reconstruction.updateTable,200)
 
     },
+
+    showMap:()=>{
+        if ( $('#ReconstructionMap').length === 0 ) {
+            HTML.Box({
+                id: 'ReconstructionMap',
+                title: '💭',
+                auto_close: true,
+                dragdrop: true,
+                minimize: true,
+                resize: true,
+                active_maps:"main",
+                settings: 'reconstruction.mapSettings();'
+            });
+        }
+        let storedUnit = parseInt(localStorage.getItem('ReconstructionMapScale') || 80);
+
+        let c = `<div class="map-grid-wrapper" style="--scale:${storedUnit}">`;
+        c += `<div class="map-grid">`;
+
+        for(let area of CityMap.UnlockedAreas) {
+            let startArea = area.width === 16 ? ' startarea' : '';
+            c += `<span class="map-bg${startArea}" style="left:${area.x*reconstruction.mapScale||0}px;top:${area.y*reconstruction.mapScale||0}px;"></span>`
+		}
+        
+        for (let item of Object.values(reconstruction.draft)) {
+            c += reconstruction.placeBuildingOnMap(item);
+        }
+
+        c += `</div>`;
+        c += `</div>`;
+        $('#ReconstructionMapBody').html(c);
+    },
+    placeBuildingOnMap:(data)=>{
+        let meta = MainParser.CityEntities[MainParser.CityMapData[data.entityId].cityentity_id];
+        if (meta.type.includes("hub") || meta.type === "off_grid" || meta.type === "outpost_ship" || meta.type === "friends_tavern") return '';
+
+        let width = meta.width||meta.components.AllAge.placement.size.x;
+        let height = meta.length||meta.components.AllAge.placement.size.y;
+        let needsStreet = meta?.components?.AllAge.streetConnectionRequirement?.requiredLevel || meta?.requirements?.street_connection_level || 0;
+        let street = needsStreet === 0 ? ' roadless' : '';
+        let c = '';
+        if (data.position !== undefined) {
+            c += `<span data-id="${data.entityId}" class="map-building ${meta.type}${street}" 
+                    style="left:${data.position?.x*reconstruction.mapScale||0}px;top:${data.position?.y*reconstruction.mapScale||0}px;
+                        width:${width*reconstruction.mapScale}px;height:${height*reconstruction.mapScale}px;">
+                </span>`;
+        }
+        return c;
+    },
+    mapSettings:()=>{
+        let storedUnit = parseFloat(localStorage.getItem('ReconstructionMapScale') || 80);
+        let c = `<select class="scale-view" name="reconstructionscale">
+			<option data-scale="50" ${storedUnit === 50 ? 'selected' : ''}>S</option>
+			<option data-scale="80" ${storedUnit === 80 ? 'selected' : ''}>M</option>
+			<option data-scale="100" ${storedUnit === 110 ? 'selected' : ''}>L</option>
+			<option data-scale="156.1" ${storedUnit === 156.1 ? 'selected' : ''}>XL</option>
+            </select>`;
+            c += `<br><input type="range" class="opacity" name="opacity" min="0.01" max="1" step="0.01" value="0.9" />`
+		$('#ReconstructionMapSettingsBox').html(c).promise().done(function(){
+            $('#ReconstructionMapSettingsBox .scale-view').on('change', function(){
+                let unit = parseFloat($('.scale-view option:selected').data('scale'));
+                localStorage.setItem('ReconstructionMapScale', unit);
+                $('#ReconstructionMapBody .map-grid-wrapper').css('--scale', unit);
+            });
+            $('#ReconstructionMapSettingsBox .opacity').on('change', function(){
+                let val = parseFloat($('#ReconstructionMapSettingsBox .opacity').val());
+                $('#ReconstructionMapBody .map-grid-wrapper').css('opacity', val);
+            });
+        });
+    }
 }
 

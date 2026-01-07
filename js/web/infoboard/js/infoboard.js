@@ -137,7 +137,7 @@ let Infoboard = {
         h.push('</ul>');
         h.push('</div>');
 
-        h.push('<button class="btn btn-default btn-reset-box">' + i18n('Boxes.Infobox.ResetBox') + '</button>');
+        h.push('<button class="btn btn-reset-box">' + i18n('Boxes.Infobox.ResetBox') + '</button>');
 
         h.push('</div>');
 
@@ -371,7 +371,7 @@ let Infoboard = {
         h.push(`<p><input id="gbgProvShortNameFl" name="gbgProvShortNameFl" value="1" type="checkbox" ${(Infoboard.GbgProvShortNameFl === true) ? ' checked="checked"' : ''} />` 
             + ` <label for="gbgProvShortNameFl">${i18n('Boxes.Infobox.Settings.GbgProvShortName')}</label>`);
         h.push(`<p><label for="infoboxentry-length">${i18n('Settings.InfoboxEntryCount.Desc')}</label><input class="setting-input" type="number" id="infoboxentry-length" step="1" min="1" max="2000" value="${(messagesAmount)}"></p>`);
-        h.push(`<p><button onclick="Infoboard.SaveSettings()" id="saveInfoboardSettings" class="btn btn-default" style="width:100%">${i18n('Boxes.Settings.Save')}</button></p>`);
+        h.push(`<p><button onclick="Infoboard.SaveSettings()" id="saveInfoboardSettings" class="btn" style="width:100%">${i18n('Boxes.Settings.Save')}</button></p>`);
 
         $('#BackgroundInfoSettingsBox').html(h.join(''));
     },

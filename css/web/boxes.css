@@ -160,7 +160,7 @@ a[target="_blank"] svg {
 /**
 	Buttons
 */
-.btn-default {
+.btn {
 	display: inline-block;
 	font-weight: 400;
 	text-align: center;
@@ -182,16 +182,16 @@ a[target="_blank"] svg {
 	outline: none !important;
 }
 
-.btn-default a {
+.btn a {
 	color: inherit;
 	text-decoration: inherit;
 }
 
-.btn-default[disabled], .btn-default[disabled]:hover {
+.btn[disabled], .btn[disabled]:hover {
 	filter: saturate(10%) brightness(80%);
 }
 
-.btn-default:not([disabled]):hover,
+.btn:not([disabled]):hover,
 .btn-active:not([disabled]),
 .btn-active:not([disabled]):hover {
 	filter: brightness(140%);
@@ -199,14 +199,14 @@ a[target="_blank"] svg {
 	text-shadow: 0 1px 1px var(--black);
 }
 
-.btn-default:not([disabled]):active,
+.btn:not([disabled]):active,
 .btn-active:not([disabled]):active {
 	filter: brightness(150%) saturate(120%);
 	cursor: url('../images/cursor_hover.cur'), auto;
 	text-shadow: 0 1px 1px var(--black);
 }
 
-.btn-tight {
+.btn-slim {
 	margin: 1px;
 	padding: 1px 4px;
 	max-width: 100px;
@@ -217,6 +217,10 @@ a[target="_blank"] svg {
 	font-size: 9pt;
 	font-family: sans-serif;
 	border-radius: 2px;
+}
+
+.btn-mid {
+	padding: 0.15rem 0.3rem !important;
 }
 
 .btn-green:not([disabled]),
@@ -255,27 +259,27 @@ a[target="_blank"] svg {
 	display: inline-flex;
 }
 
-.btn-group .btn-default.btn-tight {
+.btn-group .btn.btn-slim {
 	margin: 0;
 	padding: 1px 4px;
 }
 
-.btn-group .btn-default {
+.btn-group .btn {
 	border-radius: 0;
 	border-right-width: 0;
 	padding: 0.2rem 0.5rem;
 }
 
-.btn-group .btn-default:first-child {
+.btn-group .btn:first-child {
 	border-radius: 4px 0 0 4px;
 }
 
-.btn-group .btn-default:last-child {
+.btn-group .btn:last-child {
 	border-radius: 0 4px 4px 0;
 	border-right-width: 1px;
 }
 
-.btn-group .btn-default:only-child {
+.btn-group .btn:only-child, .btn-group .btn.br {
 	border-radius: 4px;
 	border-right-width: 1px;
 }
@@ -474,14 +478,26 @@ p {
 .text-light {
 	color: var(--text-light);
 }
+.hidden-text {
+	opacity: 0;
+	display: inline-block;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+}
 
 .flex {
 	display: flex;
 	justify-content: center;
+	flex-wrap: wrap;
 }
 
 .flex.between {
 	justify-content: space-between;
+}
+
+.flex.gap {
+	gap: 2px;
 }
 
 .p2 {
@@ -490,6 +506,10 @@ p {
 
 .p5 {
 	padding: 5px;
+}
+
+.bbd {
+	border-bottom: 1px dotted var(--black-50);
 }
 
 .wsnw {
@@ -1259,7 +1279,6 @@ FP-Bar */
 .window-map {
     background-image: url('../images/hud/map.png'), url('../images/hud/box-sprite.png');
     position: relative;
-    margin-right: 2px;
     background-repeat: no-repeat;
     background-size: 11px, 240px;
 	background-position: 6px -2px, 0 0;
@@ -1291,7 +1310,8 @@ FP-Bar */
 .window-body input[type=text],
 .window-body input[type=number],
 .window-body select,
-.window-body textarea {
+.window-body textarea,
+.settingsbox-wrapper select {
 	background-color: var(--background-light);
 	color: var(--text-dark);
 	background-clip: padding-box;
@@ -1747,16 +1767,17 @@ SettingsBox */
 	position: absolute;
 	right: 10px;
 	top: 40px;
-	border: 2px solid #977041;
-	background-color: #523018;
+	border: 2px solid var(--text-medium2);
+	background-color: var(--window-settings-bg);
 	color: var(--text-normal);
-	padding: 10px;
+	padding: 5px;
 	z-index: 20;
 	border-radius: 5px;
-	box-shadow: 0 0 4px 4px rgba(0,0,0,0.4);
+	box-shadow: 0 0 4px 4px var(--black-50), inset 0 0 0 1px var(--window-settings-bg), inset 0 0 1px 2px var(--black-30);
 	min-width: 120px;
 	max-width: 280px;
 	z-index: 1000;
+	font-size: 90%;
 }
 
 .settingsbox-wrapper::after {
@@ -1764,7 +1785,7 @@ SettingsBox */
 	position: absolute;
 	top: -18px;
 	right: 35px;
-	border-bottom: 18px solid #523018;
+	border-bottom: 18px solid var(--window-settings-bg);
 	border-left: 18px solid transparent;
 	border-right: 18px solid transparent;
 }
@@ -1779,6 +1800,10 @@ SettingsBox */
 	background-clip: padding-box;
 	border: 1px solid var(--text-dark);
 	transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+.settingsbox-wrapper p {
+	margin: 3px 0;
 }
 
 .settingsbox-wrapper p:last-child {
@@ -2365,6 +2390,61 @@ tr.sorter-header th:not(.no-sort).descending:after {
 	#fp-bar {
 		left: 416px;
 	}
+}
+
+#AllyListTable tr:last-child .all + .battleground::before, #AllyListTable tr:last-child .battleground + .guild_expedition::before {
+	content: '';
+	display: block;
+}
+
+#AllyListTable tr:last-child span {
+	padding: 0 3px;
+}
+
+
+
+#GBGTargets {
+	position: absolute;
+    bottom: 6px;
+    left: 240px;
+    z-index: 2000;
+	width: 160px;
+	color: #fffc;
+	text-shadow: 0 1px 1px var(--black);
+	display: flex;
+	flex-direction: column-reverse;
+	z-index: 200;
+	text-align: left;
+	gap: 12px;
+	padding: 6px;
+	pointer-events: none;
+}
+
+#GBGTargets div {
+	width: inherit;
+}
+
+#GBGTargets small {
+	text-transform: uppercase;
+    font-weight: bold;
+    font-size: 9px;
+    letter-spacing: 1px;
+}
+
+#GBGTargets span {
+	    background-color: var(--black-50);
+    padding: 0 4px;
+    display: inline-block;
+    border-radius: 4px;
+}
+
+#GBGTargets b {
+	font-size: 250%;
+}
+
+#GBGTargets img {
+	height: 30px;
+    vertical-align: text-bottom;
 }
 
 .unit_skill.rogue::before {background-position: calc(-144px*var(--unit_scale)) calc(-48px*var(--unit_scale))}

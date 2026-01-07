@@ -366,7 +366,7 @@ let GreatBuildings =
         h.push('</tr>');
         h.push('</thead>');
 
-        let CurrentCityMapData = (LastMapPlayerID === ExtPlayerID ? MainParser.CityMapData : MainParser.OtherPlayerCityMapData);
+        let CurrentCityMapData = (LastMapPlayerID === ExtPlayerID ? MainParser.CityMapData : CityMap.OtherPlayer.mapData);
 
         let AllROIResults = [],
             IsNewGBs = [];

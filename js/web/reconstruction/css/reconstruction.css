@@ -34,3 +34,110 @@
 #ReconstructionListBody tr.sorter-header th:last-child:after {
   left: 5px;
 }
+
+
+#ReconstructionMap.window-box, #ReconstructionMap .window-body, #ReconstructionMap .window-head {
+  background: none;
+  box-shadow: none;
+  border: none;
+}
+#ReconstructionMap.window-box {
+  background: #0001;
+  pointer-events: none;
+  width: 50%;
+  height: 50%;
+  display: flex;
+  flex-direction: column;
+}
+#ReconstructionMap .window-body {
+  text-align: right;
+}
+#ReconstructionMap {
+    left: calc(min(max(50vw + var(--x)),100vw - 60px)) !important;
+}
+#ReconstructionMap .window-head {
+  padding: 2px;
+  border-bottom: 1px dotted var(--black-65);
+  width: 300px;
+  align-self: end;
+  background-color: #070b18b5;
+}
+#ReconstructionMap .window-head:hover {
+  background: var(--black-30);
+}
+#ReconstructionMap .window-grippy, #ReconstructionMap .window-head, #ReconstructionMap .settingsbox-wrapper {
+  pointer-events: all;
+}
+#ReconstructionMap .settingsbox-wrapper {
+  filter: saturate(0.5)
+}
+#ReconstructionMap .window-grippy {
+  background-color: var(--black-65);
+  padding: 0;
+  bottom: 0;
+  right: 0;
+  border-radius: 9px 4px 4px 4px;
+}
+#ReconstructionList .window-head .window-map {
+  width: 30px;
+}
+#ReconstructionList .window-head .window-map::before {
+  background: url(../../x_img/city.png) no-repeat center;
+  background-size: cover;
+  content: '';
+  display: block;
+  height: 100%;
+  filter: saturate(0);
+  opacity: 0.8;
+}
+.map-grid-wrapper {
+  position: relative;
+  height: 2000px;
+  width: 2000px;
+  overflow: hidden;
+  --scale: 100;
+  --scale-x: calc(var(--scale) / 100);
+  --scale-y: calc(0.25 * var(--scale) / 100);
+  --tx: calc((-296289 / var(--scale) + 1471) * 1px);
+  --ty: calc((-104533 / var(--scale) + 212) * 1px);
+  transform: skewX(-63.5deg) skewY(14deg) scale(var(--scale-x), var(--scale-y)) translate(var(--tx), var(--ty));
+  opacity: 0.9;
+}
+.map-grid-wrapper .map-bg {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  background-color: var(--black-65);
+  box-sizing: border-box;
+  border: 1px solid var(--black);
+}
+.map-grid-wrapper .map-bg.startarea {
+  width: 320px;
+  height: 320px;
+}
+.map-grid-wrapper .map-building {
+  position: absolute;
+  box-sizing: border-box;
+	background-color: var(--background-color-residential);
+	border: 1px solid var(--border-color-residential);
+}
+.map-building.production {
+	background-color: var(--background-color-production);
+	border-color: var(--border-color-production);
+}
+.map-building.greatbuilding {
+	background-color: var(--background-color-greatbuilding);
+	border-color: var(--border-color-greatbuilding);
+}
+.map-building.main_building {
+	background-color: var(--background-color-main_building);
+	border-color: var(--border-color-main_building);
+}
+.map-building.roadless {
+	background-color: var(--background-color-noStreet);
+	border-color: var(--border-color-noStreet);
+}
+.map-building.street {
+	background-color: var(--background-color-street);
+	border-color: var(--border-color-street);
+}

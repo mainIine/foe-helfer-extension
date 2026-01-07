@@ -128,11 +128,6 @@ let EventPresents = {
         let h = [];
 
         h.push('<table class="foe-table">');
-        h.push('<thead>' +
-            '<tr>' +
-            '<th colspan="3" class="text-center">' + i18n('Boxes.Discord.Name') + '</th>' +
-            '</tr>' +
-            '</thead>');
 
         for (let present of EventPresents.Presents) {
             let icon;

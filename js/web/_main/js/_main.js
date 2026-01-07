@@ -428,24 +428,26 @@ GetFights = () =>{
 
 	// Stadt wird wieder aufgerufen
 	FoEproxy.addHandler('CityMapService', 'getEntities', (data, postData) => {
-
 		if (!postData.map(x=>x.requestData?.[0]).includes('main')) { 
-			return
+			return;
 		}
 
-		LastMapPlayerID = ExtPlayerID
+		LastMapPlayerID = ExtPlayerID;
 
-		MainParser.CityMapData = Object.assign({}, ...data.responseData.map((x) => ({ [x.id]: x })))
-		MainParser.SetArkBonus2()
+		MainParser.CityMapData = Object.assign({}, ...data.responseData.map((x) => ({ [x.id]: x })));
+		FoEproxy.triggerFoeHelperHandler('CityMapUpdated');
+		MainParser.SetArkBonus2();
 
 		if (ActiveMap === 'gg') return; // getEntities wurde in den GG ausgelöst => Map nicht ändern
-		MainParser.UpdateActiveMap('main')
+		MainParser.UpdateActiveMap('main');
+		CityMap.OtherPlayer = { mapData: {}, unlockedAreas: null};
 	});
 
 
 	// main is entered
 	FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, postData) => {
 		MainParser.UpdateActiveMap('main');
+		CityMap.OtherPlayer = { mapData: {}, unlockedAreas: null};
 	});
 
 	// gex is entered
@@ -470,9 +472,10 @@ GetFights = () =>{
 
 	// visiting another player
 	FoEproxy.addHandler('OtherPlayerService', 'visitPlayer', (data, postData) => {
-		MainParser.UpdateActiveMap('OtherPlayer')
-		LastMapPlayerID = data.responseData['other_player']['player_id']
-		MainParser.OtherPlayerCityMapData = Object.assign({}, ...data.responseData['city_map']['entities'].map((x) => ({ [x.id]: x })))
+		MainParser.UpdateActiveMap('OtherPlayer');
+		LastMapPlayerID = data.responseData.other_player.player_id;
+		CityMap.OtherPlayer.unlockedAreas = data.responseData.city_map.unlocked_areas;
+		CityMap.OtherPlayer.mapData = Object.assign({}, ...data.responseData.city_map.entities.map(x => ({ [x.id]: x })));
 	});
 
 	// move buildings, use self aid kits
@@ -522,6 +525,7 @@ GetFights = () =>{
 					delete MainParser.NewCityMapData[ID];
 			}
 		}
+		FoEproxy.triggerFoeHelperHandler('CityMapUpdated');
 	});
 
 	// production is started, collected, aborted
@@ -756,6 +760,14 @@ GetFights = () =>{
 		for (let b of data.responseData) {
 			MainParser.CityMapData[b.id]=b;
 		}
+		FoEproxy.triggerFoeHelperHandler('CityMapUpdated');
+	});
+
+	FoEproxy.addWsHandler('CityProductionService', 'pickupProduction', data => {
+		for (let b of data.responseData.updatedEntities||[]) {
+			MainParser.CityMapData[b.id]=b;
+		}
+		FoEproxy.triggerFoeHelperHandler('CityMapUpdated');
 	});
 
 	FoEproxy.addRequestHandler('InventoryService', 'useItem', (postData) => {
@@ -984,7 +996,6 @@ let MainParser = {
 	// all buildings of the player
 	CityMapData: {},
 	NewCityMapData: {},
-	OtherPlayerCityMapData: {},
 
 	// Unlocked extensions
 	UnlockedAreas: null,
@@ -1536,6 +1547,7 @@ let MainParser = {
 		meta:null,
 		rarities:null,
 		names:null,
+		buildingBoostSums:[],
 
 		getAllies:(allies)=>{
 			MainParser.Allies.allyList = Object.assign({}, ...allies.map(a=>({[a.id]:a})));
@@ -1723,8 +1735,31 @@ let MainParser = {
 						   	<td>${r.allyName || ""}${r.fragmentsAmount?srcLinks.icons("icon_tooltip_fragment") + r.fragmentsAmount+"/"+r.fragmentsNeeded:""}</td>
 						   	<td>${r.allyLevel || ""}</td>
 						   	<td>${MainParser.Allies.boosts(r.allyBoosts)}</td>
-						</tr>`
+						</tr>`;
+
+				// gather sums of all boosts
+				if (buildingId!==0 && r.allyBoosts !== null) 
+					for (let boost of r.allyBoosts) {
+						let bBoost = MainParser.Allies.buildingBoostSums.find(x => x.type === boost.type && x.targetedFeature === boost.targetedFeature);
+						if (bBoost)
+							bBoost.value += boost.value;
+						else
+							MainParser.Allies.buildingBoostSums.push(boost);
+					}
 			}
+			MainParser.Allies.buildingBoostSums.sort((a, b) => {
+				if (a.type < b.type) return -1
+				if (a.type > b.type) return 1
+				return 0
+			});
+			MainParser.Allies.buildingBoostSums.sort((a, b) => {
+				if (a.targetedFeature < b.targetedFeature) return -1
+				if (a.targetedFeature > b.targetedFeature) return 1
+				return 0
+			});
+			html+=`<tr><td colspan="7" class="text-center dark-bg">
+				${MainParser.Allies.boosts(MainParser.Allies.buildingBoostSums)}
+				</td></tr></table>`
 			
 			$('#AllyListBody').html(html).css("overflow","auto")
 
@@ -1763,7 +1798,7 @@ let MainParser = {
 			}
 			let ret=""
 			for (b of boosts||[]) {
-				ret+=`${srcLinks.icons(b.type+feature[b.targetedFeature])} ${b.value + Boosts.percent(b.type)}`
+				ret+=`<span class="${b.targetedFeature}">${srcLinks.icons(b.type+feature[b.targetedFeature])} ${b.value + Boosts.percent(b.type)}</span>`
 			}
 			return ret
 		}
@@ -2005,6 +2040,7 @@ let MainParser = {
 		}
 
 		FPCollector.CityMapDataNew = Buildings;
+		FoEproxy.triggerFoeHelperHandler('CityMapUpdated');
 	},
 
 
