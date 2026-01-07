@@ -112,14 +112,6 @@
 	margin: 0 5px;
 }
 
-#OwnPartBox .btn-default {
-	padding: 0.2rem 0.4rem;
-}
-
-#OwnPartBox .btn-default.btn-tight {
-	padding: 0.2rem;
-}
-
 #OwnPartBox #up-to-level-up {
 	color: var(--bright-color);
 }
@@ -239,7 +231,7 @@
 	border-radius: 5px;
 }
 
-.OwnPartBoxBackgroundBody > div > span:not(.btn-default) {
+.OwnPartBoxBackgroundBody > div > span:not(.btn) {
 	display: inline-block;
 	width: 70px;
 }
@@ -256,16 +248,10 @@
 	padding: 2px 5px;
 }
 
-.OwnPartBoxBackground input[id=copystring],
-.OwnPartBoxBackground select {
+.OwnPartBoxBackground input[id=copystring] {
 	font-size: 0.6rem;
 	font-weight: bold;
 	width: 300px;
-}
-
-.OwnPartBoxBackground select {
-	height: 22px;
-	width: 176px;
 }
 
 .OwnPartBoxBackground .checkboxes {
@@ -273,6 +259,7 @@
 	flex-wrap: wrap;
 	justify-content: space-between;
 	flex-direction: row;
+	gap: 2px;
 }
 
 .OwnPartBoxBackground .checkboxes::after {
@@ -282,51 +269,24 @@
 
 .OwnPartBoxBackground input.form-check-input {
 	position: absolute;
-	top: 3px;
-	left: 1px;
+	top: 0;
+	left: 0;
 	width: auto;
 }
 
 .OwnPartBoxBackground label.form-check-label {
-	padding: 1px;
-	line-height: 1.4rem;
-	margin: 0 5px 5px 0;
-	width: calc(50% - 5px);
-	background-color: rgba(255,255,255, 0.07);
+	line-height: 1.2rem;
+	width: calc(50% - 1px);
 	vertical-align: middle;
-	transition: background-color 0.2s linear;
 	position: relative;
+	background: var(--table-bg-odd);
 }
 
-.OwnPartBoxBackground label.form-check-label:nth-child(2n) {
-	margin-right: 0;
-}
-
-.OwnPartBoxBackground label.form-check-label span {
+.OwnPartBoxBackground label.form-check-label span, .OwnPartBoxBackground label.form-check-label-wide span {
 	display: inline-block;
 	margin-left: 22px;
 }
 
-.OwnPartBoxBackground label.form-check-label:hover {
-	background-color: rgba(255,255,255, 0.1);
-}
-
-.OwnPartBoxBackground label.form-check-label-wide:nth-child(-n+3) {
-	margin-top: 0;
-}
-
-.OwnPartBoxBackground label.form-check-label-wide:nth-child(3n) {
-	margin-right: 0;
-}
-
-.OwnPartBoxBackground label.form-check-label-wide span {
-	display: inline-block;
-	margin-left: 22px;
-}
-
-.OwnPartBoxBackground label.form-check-label-wide:hover {
-	background-color: rgba(255,255,255, 0.1);
-}
 
 #PowerLevelingBox {
 	top: 30%;
@@ -356,12 +316,4 @@
 
 #PowerLevelingBox #PowerLevelingBoxBody .success {
 	color: var(--text-success);
-}
-
-#PowerLevelingBox .hidden-text {
-	opacity: 0;
-	display: inline-block;
-	width: 1px;
-	height: 1px;
-	overflow: hidden;
 }

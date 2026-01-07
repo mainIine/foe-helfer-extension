@@ -860,6 +860,7 @@ let QIActions = {
 	next:null,
 	last:null,
     hourlyBase:5000,
+    capacity:200000,
 
 	setNext:(time)=>{
 		let timer=3600000
@@ -870,7 +871,7 @@ let QIActions = {
 			QIActions.last = time
 		} else {
 			let amount = Math.floor((moment().unix() - QIActions.last + 10)/3600)
-			QIActions.count = Math.min(QIActions.count + amount*hourly,100000)
+			QIActions.count = Math.min(QIActions.count + amount*hourly,QIActions.capacity)
 			QIActions.last += 3600*amount
 			timer = (QIActions.last - moment().unix() + 3600)*1000
 		} 
@@ -883,7 +884,7 @@ let QIActions = {
 
 	TT:()=>{
 		let hourly = QIActions.hourlyBase + Boosts.Sums["guild_raids_action_points_collection"] 
-		let fullAt = Math.ceil((100000 + (Boosts.Sums["guild_raids_action_points_capacity"]||0) - QIActions.count)/hourly)*3600 + QIActions.last
+		let fullAt = Math.ceil((QIActions.capacity + (Boosts.Sums["guild_raids_action_points_capacity"]||0) - QIActions.count)/hourly)*3600 + QIActions.last
 		let next = QIActions.last + 3600
 		while (next < moment().unix()) next += 3600
 

@@ -156,8 +156,8 @@ let MarketOffers = {
             h.push('<td class="goods-image"><span class="goods-sprite sprite-35 ' + GoodID + '"></span></td>');
             h.push('<td data-text="' + helper.str.cleanup(CurrentGood['name']) + '"><strong>' + CurrentGood['name'] + '</strong></td>');
             h.push('<td class="is-number" data-number="' + Inventory + '">' + HTML.Format(Inventory) + '</td>');
-            h.push('<td class="is-number" data-number="' + OfferSum + '">' + (OfferCount > 0 ? '<button class="btn btn-default btn-filter-offer" data-value="' + i + '" style="white-space:nowrap">' + HTML.Format(OfferSum) + ' (' + OfferCount + ')' + '</button>' : '-') + '</td>');
-            h.push('<td class="is-number" data-number="' + NeedSum + '">' + (NeedCount > 0 ? '<button class="btn btn-default btn-filter-need" data-value="' + i + '" style="white-space:nowrap">' + HTML.Format(NeedSum) + ' (' + NeedCount + ')' + '</button>' : '-') + '</td>');
+            h.push('<td class="is-number" data-number="' + OfferSum + '">' + (OfferCount > 0 ? '<button class="btn btn-filter-offer" data-value="' + i + '" style="white-space:nowrap">' + HTML.Format(OfferSum) + ' (' + OfferCount + ')' + '</button>' : '-') + '</td>');
+            h.push('<td class="is-number" data-number="' + NeedSum + '">' + (NeedCount > 0 ? '<button class="btn btn-filter-need" data-value="' + i + '" style="white-space:nowrap">' + HTML.Format(NeedSum) + ' (' + NeedCount + ')' + '</button>' : '-') + '</td>');
             h.push('<td class="is-number" data-number="' + (Inventory + OfferSum) + '">' + HTML.Format(Inventory + OfferSum) + '</td>');
             h.push('<td class="is-number" data-number="' + NeedSum + '">' + HTML.Format(Inventory + NeedSum) + '</td>');
             
@@ -210,8 +210,8 @@ let MarketOffers = {
     */
     ShowSettingsButton: () => {
         let h = [];
-        h.push(`${i18n('Boxes.General.Export')}: <span class="btn-group"><button class="btn btn-default" onclick="HTML.ExportTable($('#MarketOffersBody').find('.foe-table.exportable'), 'csv', 'MarketOffers')">CSV</button>`);
-        h.push(`<button class="btn btn-default" onclick="HTML.ExportTable($('#MarketOffersBody').find('.foe-table.exportable'), 'json', 'MarketOffers')">JSON</button></span>`);
+        h.push(`${i18n('Boxes.General.Export')}: <span class="btn-group"><button class="btn" onclick="HTML.ExportTable($('#MarketOffersBody').find('.foe-table.exportable'), 'csv', 'MarketOffers')">CSV</button>`);
+        h.push(`<button class="btn" onclick="HTML.ExportTable($('#MarketOffersBody').find('.foe-table.exportable'), 'json', 'MarketOffers')">JSON</button></span>`);
 
         $('#MarketOffersSettingsBox').html(h.join(''));
     },
@@ -359,8 +359,8 @@ let MarketOffers = {
     */
     ShowEventsSettingsButton: () => {
         let h = [];
-        h.push(`<p class="text-center"><button class="btn btn-default" onclick="HTML.ExportTable($('#MarketOffersEventsBody').find('.foe-table.exportable'), 'csv', 'MarketOffersEvents')">${i18n('Boxes.General.ExportCSV')}</button></p>`);
-        h.push(`<p class="text-center"><button class="btn btn-default" onclick="HTML.ExportTable($('#MarketOffersEventsBody').find('.foe-table.exportable'), 'json', 'MarketOffersEvents')">${i18n('Boxes.General.ExportJSON')}</button></p>`);
+        h.push(`<p class="text-center"><button class="btn" onclick="HTML.ExportTable($('#MarketOffersEventsBody').find('.foe-table.exportable'), 'csv', 'MarketOffersEvents')">${i18n('Boxes.General.ExportCSV')}</button></p>`);
+        h.push(`<p class="text-center"><button class="btn" onclick="HTML.ExportTable($('#MarketOffersEventsBody').find('.foe-table.exportable'), 'json', 'MarketOffersEvents')">${i18n('Boxes.General.ExportJSON')}</button></p>`);
 
         h.push(i18n('Boxes.MarketOffersEvents.OptionalColumns') + ':');       
        

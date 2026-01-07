@@ -14,6 +14,10 @@
 
 FoEproxy.addHandler('BoostService', 'getAllBoosts', (data, postData) => {
     Boosts.Add(data.responseData);
+    if (Boosts.first) {
+        Boosts.first = false;
+        Boosts.InitQIAP();
+    } 
 });
 FoEproxy.addHandler('BoostService', 'addBoost', (data,postData)=> {
     if (postData[0].requestClass == "CityMapService") return;
@@ -52,6 +56,7 @@ FoEproxy.addHandler('CityMapService', 'getCityMap', (data, postData) => {
 
 
 let Boosts = {
+    first:true,
     ListByType:{},
     CastleSystem:[],
     Ark:0,
@@ -138,6 +143,11 @@ let Boosts = {
         )
         Boosts.Remove(boosts)
         Boosts.Add(boosts)
+    },
+    InitQIAP: async () => {
+        await ExistenceConfirmed('GoodsData.guild_raids_action_points');
+        QIActions.capacity  = (GoodsData.guild_raids_action_points?.abilities?.autoRefill?.maxAmount || 200000) - Boosts.Sums['guild_raids_action_points_capacity'];
+
     },
     getFeatureType: (bonus) => {
         let Type = bonus.type;

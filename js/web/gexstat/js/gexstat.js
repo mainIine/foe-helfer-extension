@@ -664,7 +664,7 @@ let GexStat = {
 
 			GexStat.CurrentGexWeek = gexweek;
 
-			h.push(`<div id="gexs_weekswitch" class="weekswitch dark-bg" data-group="${GexStat.CurrentStatGroup}">${i18n('Boxes.GexStat.Gex')} ${i18n('Boxes.GexStat.Week')} <button class="btn btn-default btn-set-week" data-week="${previousweek}"${previousweek === null ? ' disabled' : ''}>&lt;</button> `);
+			h.push(`<div id="gexs_weekswitch" class="weekswitch dark-bg" data-group="${GexStat.CurrentStatGroup}">${i18n('Boxes.GexStat.Gex')} ${i18n('Boxes.GexStat.Week')} <button class="btn btn-set-week" data-week="${previousweek}"${previousweek === null ? ' disabled' : ''}>&lt;</button> `);
 			h.push(`<select id="gexs-select-gexweek">`);
 
 			GexStat.GexWeeks.forEach(week => {
@@ -672,7 +672,7 @@ let GexStat = {
 			});
 
 			h.push(`</select>`);
-			h.push(`<button class="btn btn-default btn-set-week" data-week="${nextweek}"${nextweek === null ? ' disabled' : ''}>&gt;</button>`);
+			h.push(`<button class="btn btn-set-week" data-week="${nextweek}"${nextweek === null ? ' disabled' : ''}>&gt;</button>`);
 			h.push(`</div>`);
 		}
 
@@ -769,9 +769,9 @@ let GexStat = {
 		let disabledExport = '';
 		if (GexStat.CurrentStatGroup === 'Course') { disabledExport = ' disabled'; }
 
-		c.push(`<p class="text-left"><button class="btn btn-default" onclick="GexStat.ExportContent('${GexStat.CurrentStatGroup}','csv')" title="${HTML.i18nTooltip(i18n('Boxes.General.ExportCSV'))}"${disabledExport}>CSV</button>` +
-			`<button class="btn btn-default" onclick="GexStat.ExportContent('${GexStat.CurrentStatGroup}','json')" title="${HTML.i18nTooltip(i18n('Boxes.General.ExportJSON'))}"${disabledExport}>JSON</button></p>`);
-		c.push(`<hr><p><button id="save-GexStat-settings" class="btn btn-default" style="width:100%" onclick="GexStat.SettingsSaveValues()">${i18n('Boxes.GexStat.Save')}</button></p>`);
+		c.push(`<p class="text-left"><button class="btn" onclick="GexStat.ExportContent('${GexStat.CurrentStatGroup}','csv')" title="${HTML.i18nTooltip(i18n('Boxes.General.ExportCSV'))}"${disabledExport}>CSV</button>` +
+			`<button class="btn" onclick="GexStat.ExportContent('${GexStat.CurrentStatGroup}','json')" title="${HTML.i18nTooltip(i18n('Boxes.General.ExportJSON'))}"${disabledExport}>JSON</button></p>`);
+		c.push(`<hr><p><button id="save-GexStat-settings" class="btn" style="width:100%" onclick="GexStat.SettingsSaveValues()">${i18n('Boxes.GexStat.Save')}</button></p>`);
 		$('#GexStatSettingsBox').html(c.join(''));
 
 	},

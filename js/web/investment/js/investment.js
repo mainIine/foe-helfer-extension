@@ -418,7 +418,7 @@ let Investment = {
 		c.push(`<hr /><input id="showhiddengb" name="showhiddengb" value="1" type="checkbox" ${(showHiddenGb === 1) ? ' checked="checked"':''} /> <label for="showhiddengb">${i18n('Boxes.Investment.Overview.SettingsHiddenGB')}</label><br>`);
 		c.push(`<input id="removeunsafecalc" name="removeunsafecalc" value="1" type="checkbox" ${(removeUnsafeCalc === 1) ? ' checked="checked"':''} /> <label for="removeunsafecalc">${i18n('Boxes.Investment.Overview.SettingsUnsafeCalc')}</label>`);
 		c.push(`<hr /><input id="showinvestmentsautomatically" name="showinvestmentsautomatically" value="1" type="checkbox" ${(showinvestmentsautomatically === true) ? ' checked="checked"':''} /> <label for="showinvestmentsautomatically">${i18n('Boxes.Settings.Autostart')}</label>`);
-		c.push(`<p><button id="save-Investment-settings" class="btn btn-default" style="width:100%" onclick="Investment.SettingsSaveValues()">${i18n('Boxes.Investment.Overview.SettingsSave')}</button></p>`);
+		c.push(`<p><button id="save-Investment-settings" class="btn" style="width:100%" onclick="Investment.SettingsSaveValues()">${i18n('Boxes.Investment.Overview.SettingsSave')}</button></p>`);
 
 		$('#InvestmentSettingsBox').html(c.join(''));
 	},

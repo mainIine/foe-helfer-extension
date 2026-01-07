@@ -139,7 +139,7 @@ const PvPArena = {
         let h = [];
         h.push(`<p><input id="autoStartPvPArena" name="autoStartPvPArena" value="1" type="checkbox" ${autoOpen === true ? ' checked="checked"' : ''} />`
             + ` <label for="autoStartPvPArena">${i18n('Boxes.Settings.Autostart')}</label>`);
-        h.push(`<p><button onclick="PvPArena.SaveSettings()" id="savePvPArenaSettings" class="btn btn-default" style="width:100%">${i18n('Boxes.Settings.Save')}</button></p>`);
+        h.push(`<p><button onclick="PvPArena.SaveSettings()" id="savePvPArenaSettings" class="btn" style="width:100%">${i18n('Boxes.Settings.Save')}</button></p>`);
 
         $('#PvPArenaSettingsBox').html(h.join(''));
     },

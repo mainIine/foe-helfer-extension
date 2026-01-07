@@ -1,0 +1,31 @@
+
+#CollectAllOverlay {
+	position: absolute;
+    top: 343px;
+    left: 0px;
+    z-index: 100;
+	pointer-events: none;
+}
+#CollectAllOverlay .imgContainer {
+	pointer-events: all;
+	position: relative;
+    width: 57px;
+    height: 61px;
+    border: 3px solid black;
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+    background: #2d0303;
+}
+#CollectAllOverlay .imgContainer img:first-child {
+	position: absolute;
+    width: 50px;
+    left: 0px;
+    top: 5px;
+}
+#CollectAllOverlay .imgContainer img:last-child {
+	position: absolute;
+	left: 0px;
+}
+#CollectAllOverlay .QuestDummy{
+	height: 90px;
+};

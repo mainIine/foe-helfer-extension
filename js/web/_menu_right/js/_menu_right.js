@@ -94,7 +94,7 @@ let _menu_right = {
 	Prepare: () => {
 		let MenuItemCount = $("#foe-helper-hud-slider").children().length;
 
-		_menu.HudCount = Math.floor((($(window).outerHeight() - 25) - $('#foe-helper-hud').offset().top) / 48);
+		_menu.HudCount = Math.floor((($(window).outerHeight() - 20) - $('#foe-helper-hud').offset().top) / 48);
 		_menu.HudCount = Math.min(_menu.HudCount, MenuItemCount);
 
 		if (_menu.HudCount <= 0) {

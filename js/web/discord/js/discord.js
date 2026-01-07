@@ -89,7 +89,7 @@ let Discord = {
 					h.push(`<th>${i18n('Boxes.Discord.Name')}</th>`);
 					h.push(`<th>${i18n('Boxes.Discord.Event')}</th>`);
 					h.push(`<th>${i18n('Boxes.Discord.Message')}</th>`);
-					h.push(`<th style="width:1%" class="text-right"><button class="btn-default btn-tight" role="button" type="button" onclick="Discord.WebhookUrlsForm()">Webhook URLs</button></th>`);
+					h.push(`<th style="width:1%" class="text-right"><button class="btn btn-slim" role="button" type="button" onclick="Discord.WebhookUrlsForm()">Webhook URLs</button></th>`);
 				h.push(`</tr>`);
 			h.push(`</thead>`);
 		h.push(`<tbody>`);
@@ -110,12 +110,12 @@ let Discord = {
 				h.push(`<td>${d.name}</td>`);
 				h.push(`<td>${d.event}</td>`);
 				h.push(`<td>${d.message}</td>`);
-				h.push(`<td style="white-space:nowrap;"><span class="btn-group"><button class="btn-default" role="button" type="button" data-original-title="${i18n('Boxes.Discord.CopyTitle')}" onclick="Discord.CopyEntry(${i})"><img src="${extUrl}js/web/discord/images/copy-paste.svg" style="width: 19px;" alt="" /></button><button class="btn-default" role="button" type="button" onclick="Discord.EntryForm(${i})">${i18n('Boxes.Discord.EditEntry')}</button><button class="btn-default btn-delete" role="button" type="button" onclick="Discord.Delete(${i})">${i18n('Boxes.Discord.DeleteEntry')}</button></span></td>`);
+				h.push(`<td style="white-space:nowrap;"><span class="btn-group"><button class="btn" role="button" type="button" data-original-title="${i18n('Boxes.Discord.CopyTitle')}" onclick="Discord.CopyEntry(${i})"><img src="${extUrl}js/web/discord/images/copy-paste.svg" style="width: 19px;" alt="" /></button><button class="btn" role="button" type="button" onclick="Discord.EntryForm(${i})">${i18n('Boxes.Discord.EditEntry')}</button><button class="btn btn-delete" role="button" type="button" onclick="Discord.Delete(${i})">${i18n('Boxes.Discord.DeleteEntry')}</button></span></td>`);
 			h.push(`</tr>`);
 		}
 
 		h.push(`<tr>`);
-			h.push(`<td colspan="5" class="text-right"><small><em class="text-warning">${i18n('Boxes.Discord.VisitGGMapBefore')}</em></small>&nbsp;&nbsp;<button class="btn-default btn-green" role="button" type="button" onclick="Discord.EntryForm()">${i18n('Boxes.Discord.TitleNewEntry')}</button></td>`);
+			h.push(`<td colspan="5" class="text-right"><small><em class="text-warning">${i18n('Boxes.Discord.VisitGGMapBefore')}</em></small>&nbsp;&nbsp;<button class="btn btn-green" role="button" type="button" onclick="Discord.EntryForm()">${i18n('Boxes.Discord.TitleNewEntry')}</button></td>`);
 		h.push(`</tr>`);
 
 		h.push(`</tbody>`);
@@ -207,8 +207,8 @@ let Discord = {
 
 			h.push(`<tr>`);
 			h.push(`<td colspan="2" class="text-right">
-				<button class="btn-default" role="button" type="button" onclick="Discord.TestEntry()">${i18n('Boxes.Discord.TestEntry')}</button>&nbsp;
-				<button class="btn-default btn-green" role="button" type="button" onclick="Discord.Save(${i})">${i18n('Boxes.Discord.Save')}</button>
+				<button class="btn" role="button" type="button" onclick="Discord.TestEntry()">${i18n('Boxes.Discord.TestEntry')}</button>&nbsp;
+				<button class="btn btn-green" role="button" type="button" onclick="Discord.Save(${i})">${i18n('Boxes.Discord.Save')}</button>
 			</td>`);
 			h.push(`</tr>`);
 			h.push(`</thead>`);
@@ -279,14 +279,14 @@ let Discord = {
 			h.push(`<tr>`);
 			h.push(`<td style="width: 1%;">${url.name}</td>`);
 			h.push(`<td>${url.url?.substring(0, 30)}...</td>`);
-			h.push(`<td style="white-space:nowrap;"><button class="btn-default btn-delete" role="button" type="button" onclick="Discord.DeleteWebhookUrl(${Discord.WebHooksUrls.indexOf(url)})">${i18n('Boxes.Discord.DeleteEntry')}</button></td>`);
+			h.push(`<td style="white-space:nowrap;"><button class="btn btn-delete" role="button" type="button" onclick="Discord.DeleteWebhookUrl(${Discord.WebHooksUrls.indexOf(url)})">${i18n('Boxes.Discord.DeleteEntry')}</button></td>`);
 			h.push(`</tr>`);
 		}
 
 		h.push(`<tr>`);
 		h.push(`<td style="width: 1%;"><input id="name" name="name" type="text" spellcheck="false"></td>`);
 		h.push(`<td><input id="url" name="url" type="text" spellcheck="false" style="width:100%"></td>`);
-		h.push(`<td style="white-space:nowrap;" class="text-right"><button class="btn-default" role="button" type="button" onclick="Discord.SaveWebhookUrl()">${i18n('Boxes.Discord.Save')}</button></td>`);
+		h.push(`<td style="white-space:nowrap;" class="text-right"><button class="btn" role="button" type="button" onclick="Discord.SaveWebhookUrl()">${i18n('Boxes.Discord.Save')}</button></td>`);
 		h.push(`</tr>`);
 
 		h.push(`</tbody>`);
