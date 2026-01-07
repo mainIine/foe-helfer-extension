@@ -159,7 +159,6 @@ let CityMap = {
 	PrepareBox: (Title)=> {
 		let oB = $('#city-map-overlayBody'),
 			wrapper = $('<div id="citymap-wrapper" />'),
-			mapfilters = $('<div id="map-filters" />'),
 			menu = $('<div id="city-map-menu" />');
 
 		wrapper
@@ -167,7 +166,7 @@ let CityMap = {
 				.append($(`<div id="grid-outer" data-unit="${CityMap.ScaleUnit}" data-view="${CityMap.CityView}" />`)
 					.append($('<div id="map-grid" />'))))
 			.append($('<div id="sidebar" />')
-				.append(mapfilters));
+				.append($('<div id="map-filters" />')));
 
 		$('#city-map-overlayHeader > .title').attr('id', 'map' + CityMap.hashCode(Title));
 
@@ -180,7 +179,6 @@ let CityMap = {
 			.append($('<option class="game-cursor" data-view="normal" />').prop('selected', CityMap.CityView === 'normal').text(i18n('Boxes.CityMap.NormalPerspecitve')) )
 			.append($('<option class="game-cursor" data-view="skew" />').prop('selected', CityMap.CityView === 'skew').text(i18n('Boxes.CityMap.CavalierPerspecitve')) );
 
-		menu.append(dropView);
 
 		$('#city-map-overlay').on('change', '#menu-view', function(){
 			let view = $('#menu-view option:selected').data('view');
@@ -188,7 +186,6 @@ let CityMap = {
 			$('#grid-outer').attr('data-view', view);
 			localStorage.setItem('CityMapView', view);
 		});
-
 
 		/* change scale */
 		let scaleUnit = CityMap.ScaleUnit;
@@ -205,7 +202,7 @@ let CityMap = {
 			.append( $('<option class="game-cursor" data-scale="180" />').prop('selected', scaleUnit === 180).text('180%') )
 		;
 
-		menu.append(scaleView);
+		menu.append(dropView).append(scaleView);
 
 		$('#city-map-overlay').on('change', '#scale-view', function(){
 			let unit = parseInt($('#scale-view option:selected').data('scale'));
@@ -250,7 +247,7 @@ let CityMap = {
 				$("#sidebar").append(CityMap.showQIBuildingList());
 			}
 
-		$('#citymap-wrapper').append(menu);
+		wrapper.append(menu);
 
 		if (ActiveMap === "cultural_outpost" || ActiveMap === "era_outpost") 
 			$("#sidebar").append(CityMap.showOutpostBuildings());

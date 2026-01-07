@@ -265,13 +265,14 @@ GetFights = () =>{
 		MainParser.Allies.getAllies(data.responseData);
 	});
 	FoEproxy.addHandler('AllyService', 'updateAlly', (data, postData) => {
+		MainParser.Allies.buildingBoostSums = [];
 		MainParser.Allies.updateAlly(data.responseData);
 	});
 	FoEproxy.addHandler('AllyService', 'addAlly', (data, postData) => {
 		MainParser.Allies.addAlly(data.responseData);
 	});
 	FoEproxy.addFoeHelperHandler('InventoryUpdated', () => {
-		MainParser.Allies.updateAllyList()
+		MainParser.Allies.updateAllyList();
 	});
 
 	// Portrait-Mapping für Spieler Avatare
@@ -1645,7 +1646,7 @@ let MainParser = {
 		},
 
 		updateAllyList:()=>{	
-			if ($('#AllyList').length === 0) return
+			if ($('#AllyList').length === 0) return;
 			let buildings = Object.assign({},...Object.values(MainParser.CityMapData).map(x=>({id:x.id,metaID:x.cityentity_id,rooms:structuredClone(MainParser.CityEntities[x.cityentity_id]?.components?.AllAge?.ally?.rooms)})).filter(x=>x.rooms!==undefined).map(x=>({[x.id]:x})))
 			let rooms = {}
 			let unassigned = 0
@@ -1738,7 +1739,7 @@ let MainParser = {
 						</tr>`;
 
 				// gather sums of all boosts
-				if (buildingId!==0 && r.allyBoosts !== null) 
+				if (buildingId!=0 && r.allyBoosts !== null) {
 					for (let boost of r.allyBoosts) {
 						let bBoost = MainParser.Allies.buildingBoostSums.find(x => x.type === boost.type && x.targetedFeature === boost.targetedFeature);
 						if (bBoost)
@@ -1746,6 +1747,7 @@ let MainParser = {
 						else
 							MainParser.Allies.buildingBoostSums.push(boost);
 					}
+				}
 			}
 			MainParser.Allies.buildingBoostSums.sort((a, b) => {
 				if (a.type < b.type) return -1
