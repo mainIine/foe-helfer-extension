@@ -1942,10 +1942,10 @@ let CityMap = {
 									let amount = (lookupData.totalAmount || lookupData.amount)
 									let type = (lookupData.type === "set" ? "consumable" : lookupData.type)
 
-									if (reward.product.reward.id.search('good') !== -1) {
-										subType = Object.keys(this.setGoodsRewardFromGeneric(lookupData))[0]
-										amount = Object.values(this.setGoodsRewardFromGeneric(lookupData))[0]
-										type = "goods"
+									if (reward.product.reward.id.search('good') !== -1 && reward.product.reward.id.search('fragment') === -1) {
+										subType = Object.keys(this.setGoodsRewardFromGeneric(lookupData))[0];
+										amount = Object.values(this.setGoodsRewardFromGeneric(lookupData))[0];
+										type = "goods";
 									}
 
 									let name = this.setRewardNameFromLookupData(lookupData, metaData)
@@ -2719,6 +2719,7 @@ let CityMap = {
 		
 		//if (entity.entityId.includes("MultiAge_WIN19"))
 		//	console.log('entity ', entity.name, entity, metaData, data);
+		// burgruine, ewigen markt, klapperknochen
 		return entity;
 	},
 };
