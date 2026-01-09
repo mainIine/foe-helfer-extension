@@ -9,23 +9,25 @@
 #CollectAllOverlay .imgContainer {
 	pointer-events: all;
 	position: relative;
-    width: 57px;
+    width: 60px;
     height: 61px;
-    border: 3px solid black;
-    border-top-right-radius: 12px;
-    border-bottom-right-radius: 12px;
-    background: #2d0303;
+    border: 3px solid var(--border-table-bottom-darker);
+    border-left: none;
+    border-radius: 0 12px 12px 0;
+    background: repeating-linear-gradient(#0000, #0000 3px, #0000 3px, #0004 4px), repeating-linear-gradient(90deg, #0000, #0000 3px, #0000 3px, #0004 4px), var(--btn-bg-red);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 #CollectAllOverlay .imgContainer img:first-child {
-	position: absolute;
-    width: 50px;
-    left: 0px;
-    top: 5px;
+	max-width: 50px;
+    min-width: 30px;
 }
 #CollectAllOverlay .imgContainer img:last-child {
 	position: absolute;
-	left: 0px;
+	right: -5px;
+    width: 56px;
 }
-#CollectAllOverlay .QuestDummy{
+#CollectAllOverlay .QuestDummy {
 	height: 90px;
 };
