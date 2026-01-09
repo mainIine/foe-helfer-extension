@@ -214,6 +214,10 @@ let Technologies = {
         return parseInt(Technologies.InnoEras[eraName]-1||1)
     },
 
+    getEraIdByCurrentEraName: (eraName) => {
+        return parseInt(Technologies.InnoEras[eraName]||1)
+    },
+
     getNextEraIdByCurrentEraName: (eraName) => {
         // if player is in the highest era, return current age number
         let era = (Technologies.InnoEras[eraName] === Technologies.getMaxEra()-1) ? parseInt(Technologies.InnoEras[eraName]) : parseInt(Technologies.InnoEras[eraName]+1)
