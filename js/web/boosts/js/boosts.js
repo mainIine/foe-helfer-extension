@@ -88,6 +88,7 @@ let Boosts = {
         'att_boost_defender': 0,
         'def_boost_defender': 0,
         'goods_production': 0,
+        'special_goods_production': 0,
         'guild_raids-att_boost_attacker': 0,
         'guild_raids-def_boost_attacker': 0,
         'guild_raids-att_boost_defender': 0,
@@ -167,7 +168,6 @@ let Boosts = {
         if (!AllBoosts || AllBoosts.length==0) return
 
         for (let b of AllBoosts||[]) {
-            
             if (b.type == 'happiness') continue; // => handled in productions.js
             if (b.type == 'life_support') continue; // => handled in productions.js
             if (b.origin == "castle_system") {

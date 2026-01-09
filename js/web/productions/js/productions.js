@@ -1392,6 +1392,14 @@ let Productions = {
 						prod.amount += production.resources[category] //* doubleMoney
 					}
 				}
+				if (production.type === "special_goods" && category === "special_goods") {
+					let combinedValues = Object.entries(production.resources).length === 1 ? Math.round(prod.amount * Boosts.Sums.special_goods_production/100) : 0;
+					for (let [type,value] of Object.entries(production.resources)) {
+						let boostedValue = Math.round(value * Boosts.Sums.special_goods_production/100);
+						combinedValues += value+boostedValue;
+					}
+					prod.amount = combinedValues;
+				}
 				if (production.type+"s" === category) { // units
 					let Utype = Object.keys(production.resources)[0]
 					let UAmount = production.resources[Utype]
