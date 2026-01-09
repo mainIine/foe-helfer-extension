@@ -1910,9 +1910,12 @@ let CityMap = {
 						resources: {}
 					}
 					if (product.type === "resources") {
-						resource.resources = product.playerResources.resources
+						resource.resources = product.playerResources.resources;
 						if (product.onlyWhenMotivated !== true)
-							resource.doubleWhenMotivated = true
+							resource.doubleWhenMotivated = true;
+						// make special goods their own type
+						if (Object.keys(resource.resources).find(x => x.includes("special_good")))
+							resource.type = "special_goods";
 					}
 					else if (product.type === "guildResources") {
 						resource.resources = product.guildResources.resources
@@ -2090,8 +2093,14 @@ let CityMap = {
 							type: production.type,
 							resources: {}
 						}
-						if (production.type === "resources")
-							resource.resources = production.playerResources.resources
+						if (production.type === "resources") {
+							resource.resources = production.playerResources.resources;
+							
+							// check if first resource is a special good and change the type accordingly
+							let specialGood = FHResourcesList.find(x => x.id === Object.keys(production.playerResources?.resources)[0] && x.abilities.specialResource?.type === "specialResource")
+							if (specialGood)
+								resource.type = "special_goods";
+						}
 						else if (production.type === "guildResources")
 							resource.resources = production.guildResources.resources
 						else if (production.type === "unit") 
@@ -2470,9 +2479,7 @@ let CityMap = {
 							isGood = true
 						}
 						else if (specialGood !== undefined) {
-							goodEra = Technologies.InnoEras[specialGood.era]
-							resourceName = specialGood.id
-							isGood = true
+							isGood = false
 						}
 						else if (resourceName.includes('previous_age')) {
 							goodEra = Technologies.getPreviousEraIdByCurrentEraName(building.eraName)
@@ -2722,7 +2729,7 @@ let CityMap = {
 
 		CityMap.getBuildingGuildGoodsByEra(false, entity, false);
 		
-		//if (entity.entityId.includes("MultiAge_WIN19"))
+		//if (entity.name.includes("Ewiger Markt"))
 		//	console.log('entity ', entity.name, entity, metaData, data);
 		// ewiger markt spezialgüter
 		return entity;

@@ -25,16 +25,17 @@ let Productions = {
 	TabsContent: [],
 
 	Types: [
-		'strategy_points',	// Forge Points
-		'forge_points_production', // FP Boost
-		'goods',			// Goods and special goods
-		'items',			// Fragments, blueprints, boosts etc
-		'money',			// Coins
-		'coin_production', // Coin Boost
+		'strategy_points',			// Forge Points
+		'forge_points_production', 	// FP Boost
+		'goods',					// Regular goods
+		'special_goods', 			// *special* goods
+		'items',					// Fragments, blueprints, boosts etc
+		'money',					// Coins
+		'coin_production', 			// Coin Boost
 		'supplies',
-		'supply_production', // Supply Boost
+		'supply_production', 		// Supply Boost
 		'medals',
-		'premium',			// Diamonds
+		'premium',					// Diamonds
 		'population',
 		'happiness',
 		'units',
@@ -319,7 +320,7 @@ let Productions = {
 					}
 					if (production.type === 'special_goods') { // space carrier
 						if (Productions.BuildingsProducts.goods.find(x => x.id === building.id) === undefined)
-							Productions.BuildingsProducts["goods"].push(saveBuilding)
+							Productions.BuildingsProducts["special_goods"].push(saveBuilding)
 					}
 					if (production.type === "resources") {
 						let types = Object.keys(production.resources)
@@ -345,6 +346,10 @@ let Productions = {
 						if (types.find(x => x.includes('random_good_of_') || x.includes('all_goods_of_'))) {
 							if (Productions.BuildingsProducts.goods.find(x => x.id === building.id) === undefined)
 								Productions.BuildingsProducts["goods"].push(saveBuilding)
+						}
+						if (types.find(x => x.includes('special_goods'))) {
+							if (Productions.BuildingsProducts.special_goods.find(x => x.id === building.id) === undefined)
+								Productions.BuildingsProducts["special_goods"].push(saveBuilding)
 						}
 					}
 					if (production.resources?.type === "consumable") {
@@ -1025,8 +1030,8 @@ let Productions = {
 		table.push('<table id="'+type+'-list" class="foe-table sortable-table exportable TSinactive '+type+'-list active">')
 		table.push('<thead class="sticky">')
 		table.push('<tr>')
-		table.push('<th colspan="6"><span class="btn change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeGroups') + '</span> <input type="text" placeholder="' + i18n('Boxes.Productions.FilterTable') + '" class="filterCurrentList"></th>')
-		table.push(`<th colspan=${eras.length} class="textright">${HTML.Format(Object.values(erasCurrent).reduce((a,b)=>a+b))}/${HTML.Format(Object.values(erasTotal).reduce((a,b)=>a+b))}</th>`)
+		table.push('<th colspan="5"><span class="btn change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeGroups') + '</span> <input type="text" placeholder="' + i18n('Boxes.Productions.FilterTable') + '" class="filterCurrentList"></th>')
+		table.push(`<th colspan=${eras.length+1} class="textright">${HTML.Format(Object.values(erasCurrent).reduce((a,b)=>a+b))}/${HTML.Format(Object.values(erasTotal).reduce((a,b)=>a+b))} 	<button class="typeBoost btn btn-slim"><a href="#special_goods" class="game-cursor">★</a></button> </th>`)
 		table.push('</tr>')
 
 		table.push('<tr class="sorter-header exportheader">')
