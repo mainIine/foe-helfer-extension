@@ -1982,6 +1982,7 @@ let CityMap = {
 											amount: Object.values(reward.product.playerResources.resources)[0],
 											dropChance: reward.dropChance,
 										}
+										//console.log(metaData.name, reward.product, newReward)
 										rewards.push(newReward)
 									}
 								}
@@ -2507,11 +2508,15 @@ let CityMap = {
 								goodEra = Technologies.getPreviousEraIdByCurrentEraName(building.eraName);
 							else if (resource.type.includes('next') || resource.subType?.toLowerCase().includes('next') || resource.id?.toLowerCase().includes('next'))
 								goodEra = Technologies.getNextEraIdByCurrentEraName(building.eraName);
+							else
+								goodEra = Technologies.getEraIdByCurrentEraName(building.eraName);
+
+							let boostedExtra = Math.round(resource.amount*goodsBoost/100)
 
 							if (goods.eras[goodEra] === undefined)
-								goods.eras[goodEra] = parseFloat(resource.amount * resource.dropChance);
+								goods.eras[goodEra] = parseFloat((resource.amount + boostedExtra) * resource.dropChance);
 							else
-								goods.eras[goodEra] += parseFloat(resource.amount * resource.dropChance);
+								goods.eras[goodEra] += parseFloat((resource.amount + boostedExtra) * resource.dropChance);
 						}
 					}
 				}
@@ -2719,7 +2724,7 @@ let CityMap = {
 		
 		//if (entity.entityId.includes("MultiAge_WIN19"))
 		//	console.log('entity ', entity.name, entity, metaData, data);
-		// burgruine, ewigen markt, klapperknochen
+		// ewiger markt spezialgüter
 		return entity;
 	},
 };

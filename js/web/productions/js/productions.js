@@ -1371,25 +1371,13 @@ let Productions = {
 							let Utype=resource.name
 							prod.units.push({type:Utype.replace(/next./,""),amount:0,random:resource.amount * resource.dropChance,era:Utype=="rogue"?0:Uera})
 						}
-						if (resource.type === "guild_goods" && category === "clan_goods") {
-							prod.amount += resource.amount * resource.dropChance
-							prod.hasRandomProductions = true
-						}
-						if (resource.subType === "strategy_points" && category === "strategy_points") {
-							prod.amount += resource.amount * resource.dropChance
-							prod.hasRandomProductions = true
-						}
-						if (resource.subType === "money" && category === "money") {
-							prod.amount += resource.amount * resource.dropChance
-							prod.hasRandomProductions = true
-						}
-						if (resource.subType === "supplies" && category === "supplies") {
-							prod.amount += resource.amount * resource.dropChance
-							prod.hasRandomProductions = true
-						}
-						if (resource.subType === "medals" && category === "medals") {
-							prod.amount += resource.amount * resource.dropChance
-							prod.hasRandomProductions = true
+						if (resource.type === "guild_goods" && category === "clan_goods" 
+							|| resource.subType === "strategy_points" && category === "strategy_points"
+							|| resource.subType === "money" && category === "money" 
+							|| resource.subType === "supplies" && category === "supplies"
+							|| resource.subType === "medals" && category === "medals") {
+							prod.amount += resource.amount * resource.dropChance;
+							prod.hasRandomProductions = true;
 						}
 					})
 				}
