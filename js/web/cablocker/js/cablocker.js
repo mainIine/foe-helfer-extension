@@ -12,7 +12,7 @@ CABlocker = {
     checkBlock:false,
     addBlocker: (type = "FP") => {
         $('body').append(`
-            <div id="CollectAllOverlay" class="MapActivityHide ActiveOnmain">
+            <div id="CollectAllOverlay" class="MapActivityHide ActiveOnmain clickable">
                 ${[...new Set(MainParser.Quests.map(x=>x.category))].filter(x=>!['story','outpost','allies'].includes(x)).map(x=>`<div class="QuestDummy"></div>`).join('')}
                 <div class="imgContainer">
                     <img src="${srcLinks.get('/shared/icons/' + (type=="FP" ? 'icon_strategy_points' : 'quest_reward/icon_quest_motivate_all')+'.png',true)}">
