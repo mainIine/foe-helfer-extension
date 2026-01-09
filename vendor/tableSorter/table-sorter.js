@@ -217,7 +217,7 @@
         } else if (len < 36) {
             str = str + padding.substr(1, 36 - len);
         }
-        return parseInt(str);
+        return str;
     }
 
 }(jQuery));
