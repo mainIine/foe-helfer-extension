@@ -1639,6 +1639,7 @@ let MainParser = {
 					dragdrop: true,
 					minimize: true,
 					resize: true,
+					settings: 'MainParser.Allies.ShowSettings()',
 					active_maps:"main",				
 				});
 			}
@@ -1803,7 +1804,26 @@ let MainParser = {
 				ret+=`<span class="${b.targetedFeature}">${srcLinks.icons(b.type+feature[b.targetedFeature])} ${b.value + Boosts.percent(b.type)}</span>`
 			}
 			return ret
-		}
+		},
+
+		ShowSettings: () => {
+			let autoOpen = Settings.GetSetting('ShowAllyList');
+
+			let h = [];
+			h.push(`<p><label><input id="allyListAutoOpen" type="checkbox" ${(autoOpen === true) ? ' checked="checked"' : ''} />${i18n('Boxes.Settings.Autostart')}</label></p>`);
+			h.push(`<p><button onclick="MainParser.Allies.SaveSettings()" id="save-bghelper-settings" class="btn" style="width:100%">${i18n('Boxes.Settings.Save')}</button></p>`);
+
+			$('#AllyListSettingsBox').html(h.join(''));
+		},
+
+		SaveSettings: () => {
+			let value = false;
+			if ($("#allyListAutoOpen").is(':checked'))
+				value = true;
+			localStorage.setItem('ShowAllyList', value);
+			
+			$(`#AllyListSettingsBox`).remove();
+		},
 
 
 	},
