@@ -19,24 +19,6 @@
 		"sort": 2
 	},
 	{
-		"name": "ShowBlueGalaxyHelper",
-		"status": true,
-		"group": "Auto",
-		"sort": 3
-	},
-	{
-		"name": "ShowAllyList",
-		"status": true,
-		"group": "Auto",
-		"sort": 4 
-	},
-	{
-		"name": "ShowInvestments",
-		"status": true,
-		"group": "Auto",
-		"sort": 5
-	},
-	{
 		"name": "ShowGuildTreasuryLogExport",
 		"status": true,
 		"group": "Auto",
@@ -47,12 +29,6 @@
 		"status": false,
 		"group": "Auto",
 		"sort": 9
-	},
-	{
-		"name": "AutoOpenInfoBox",
-		"status": false,
-		"group": "Auto",
-		"sort": 10
 	},
 	{
 		"name": "AutoOpenCloseBox",
@@ -91,12 +67,6 @@
 		"sort": 15
 	},
 	{
-		"name": "ShowShopAssist",
-		"status": false,
-		"group": "Auto",
-		"sort": 1
-	},
-	{
 		"name": "ShowGBGPlayerInfo",
 		"status": true,
 		"group": "Auto",
@@ -116,12 +86,6 @@
 		"sort": 24
 	},
 	{
-		"name": "ShowMarketFilter",
-		"status": false,
-		"group": "Auto",
-		"sort": 27
-	},
-	{
 		"name": "ShowReconstructionList",
 		"status": true,
 		"group": "Auto",
@@ -132,12 +96,6 @@
 		"button": "Settings.ResetBoxCoords()",
 		"group": "Boxes",
 		"sort": 0
-	},
-	{
-		"name": "ShowOwnPartOnAllGBs",
-		"status": true,
-		"group": "Boxes",
-		"sort": 1
 	},
 	{
 		"name": "ShowPlayersMotivation",
