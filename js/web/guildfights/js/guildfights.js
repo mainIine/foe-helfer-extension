@@ -1768,7 +1768,7 @@ let GuildFights = {
 		GuildFights.showOwnSectors = value.showOwnSectors;
 		GuildFights.showTileColors = value.showTileColors;
 		GuildFights.showServerTime = value.showServerTime;
-		GuildFights.serverOffset = parseInt($("#serverOffset").val()) || null;
+		GuildFights.serverOffset = parseInt($("#serverOffset").val()) ?? null;
 		if (GuildFights.serverOffset != null)
 			localStorage.setItem('GuildFights.serverOffset', JSON.stringify(GuildFights.serverOffset)) 
 		else
