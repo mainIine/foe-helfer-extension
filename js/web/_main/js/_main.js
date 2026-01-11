@@ -1646,7 +1646,8 @@ let MainParser = {
 			MainParser.Allies.updateAllyList()
 		},
 
-		updateAllyList:()=>{	
+		updateAllyList:()=>{
+			MainParser.Allies.buildingBoostSums=[]	
 			if ($('#AllyList').length === 0) return;
 			let buildings = Object.assign({},...Object.values(MainParser.CityMapData).map(x=>({id:x.id,metaID:x.cityentity_id,rooms:structuredClone(MainParser.CityEntities[x.cityentity_id]?.components?.AllAge?.ally?.rooms)})).filter(x=>x.rooms!==undefined).map(x=>({[x.id]:x})))
 			let rooms = {}
@@ -1746,7 +1747,7 @@ let MainParser = {
 						if (bBoost)
 							bBoost.value += boost.value;
 						else
-							MainParser.Allies.buildingBoostSums.push(boost);
+							MainParser.Allies.buildingBoostSums.push(structuredClone(boost));
 					}
 				}
 			}
