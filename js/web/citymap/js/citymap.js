@@ -374,7 +374,7 @@ let CityMap = {
 		}
 
 		$('[data-original-title]').tooltip({
-			container: '#city-map-overlayBody',
+			container: '#city-map-overlay',
 			html: true,
 		});
 
@@ -854,7 +854,7 @@ let CityMap = {
 		CityMap.getAreas();
 		
 		$('[data-original-title]').tooltip({
-			container: '#city-map-overlayBody',
+			container: '#city-map-overlay',
 			html: true,
 		});
 	},
