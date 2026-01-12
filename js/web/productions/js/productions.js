@@ -1709,6 +1709,7 @@ let Productions = {
 			return;
 
 		let era = (eraName === null) ? CurrentEra : eraName;
+		let withAllies = external ? true : Productions.efficiencySettings.showallies;
 		let $ProductionsRating = $('#ProductionsRating');
 
 		if ($ProductionsRating.length === 0) {
@@ -1733,9 +1734,9 @@ let Productions = {
 				helper.preloader.show('#ProductionsRating');
 				Productions.RatingCurrentTab = $(this).data('value');
 
-				Productions.CalcRatingBody();
+				Productions.CalcRatingBody(era,withAllies);
 			});
-			Productions.CalcRatingBody(era);
+			Productions.CalcRatingBody(era,withAllies);
 
 		} else {
 			HTML.CloseOpenBox('ProductionsRating');
