@@ -1046,6 +1046,7 @@
     "Boxes.ProductionsRating.Results": "Result",
     "Boxes.ProductionsRating.Score": "Score",
     "Boxes.ProductionsRating.Settings": "Settings",
+    "Boxes.ProductionsRating.ShowAllies": "Include Ally boosts in the rating",
     "Boxes.ProductionsRating.ShowFSPCalculator": "Show FSP Calculator",
     "Boxes.ProductionsRating.ShowHighlighted": "Only highlights",
     "Boxes.ProductionsRating.ShowHighlightedExplanation": "Shows only buildings from search results, buildings you added manually and buildings you highlighted yourself",

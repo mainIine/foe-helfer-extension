@@ -1447,7 +1447,7 @@ let CityMap = {
 
 
 	// returns an array with all boosts, returns undefined when there are none
-	setBuildingBoosts(metaData, data, era) {
+	setBuildingBoosts(metaData, data, era, withAlly=true) {
 		let eraName = (era === 'AllAge' ? 'BronzeAge' : era) // for some reason Watchtower Level 2 (example) has an era list even though the boost is the same everywhere. thx inno
 		let boosts = []
 		let isSet = this.setSetBuilding(metaData)
@@ -1548,16 +1548,18 @@ let CityMap = {
 				})
 			}
 		}
-		let allyStats = MainParser.Allies.getProd(data.id||0)
-		if (allyStats?.currentLevel?.boosts||allyStats?.boosts) {
-			(allyStats?.currentLevel?.boosts||allyStats?.boosts||[]).forEach(abilityBoost => {
-				let boost = {
-					feature: abilityBoost.targetedFeature,
-					type: Boosts.Mapper[abilityBoost.type] || [abilityBoost.type],
-					value: abilityBoost.value,
-				};
-				boosts.push(boost)
-			})
+		if (withAlly) {
+			let allyStats = MainParser.Allies.getProd(data.id||0)
+			if (allyStats?.currentLevel?.boosts||allyStats?.boosts) {
+				(allyStats?.currentLevel?.boosts||allyStats?.boosts||[]).forEach(abilityBoost => {
+					let boost = {
+						feature: abilityBoost.targetedFeature,
+						type: Boosts.Mapper[abilityBoost.type] || [abilityBoost.type],
+						value: abilityBoost.value,
+					};
+					boosts.push(boost)
+				})
+			}
 		}
 		
 		if (boosts.length > 0)
@@ -2604,11 +2606,9 @@ let CityMap = {
 	},
 
 
-	createNewCityMapEntities(data) {
-		if (data === undefined && ActiveMap !== 'OtherPlayer') {
-			data = Object.values(MainParser.CityMapData)
-		}
-		else if (ActiveMap === 'OtherPlayer') {
+	createNewCityMapEntities(data=Object.values(MainParser.CityMapData),withAllies=true) {
+		data = Object.values(MainParser.CityMapData);
+		if (ActiveMap === 'OtherPlayer') {
 			data = Object.values(CityMap.OtherPlayer.mapData);
 		}
 
@@ -2616,7 +2616,7 @@ let CityMap = {
 			if (ActiveMap === 'OtherPlayer' && building.eraName !== undefined) continue
 			let metaData = Object.values(MainParser.CityEntities).find(x => x.id === building.cityentity_id)
 			let era = Technologies.getEraName(building.cityentity_id, building.level);
-			let newCityEntity = CityMap.createNewCityMapEntity(metaData, era, building);
+			let newCityEntity = CityMap.createNewCityMapEntity(metaData, era, building,withAllies);
 
 			if (ActiveMap === 'OtherPlayer') 
 				CityMap.OtherPlayer.mapData[building.id] = newCityEntity
@@ -2630,13 +2630,6 @@ let CityMap = {
 
 	setDecayed(data) {
 		return (data.decayedFromCityEntityId !== undefined)
-	},
-
-
-	// todo: fix it, use it
-	setEra(data) {
-		let era = (data.type !== "greatbuilding" ? data.level : 1)
-		return (data.decayedFromCityEntityId.includes("CastleSystem") ? CurrentEra : Technologies.InnoEraNames[era])
 	},
 
 
@@ -2681,7 +2674,7 @@ let CityMap = {
 	},
 
 
-	createNewCityMapEntity(metaData, era=CurrentEra, data={}) {
+	createNewCityMapEntity(metaData, era=CurrentEra, data={}, withAlly=true) {
 		if (typeof(metaData)=="string") {
 			metaData=MainParser.CityEntities[metaData];
 		}
@@ -2705,7 +2698,7 @@ let CityMap = {
 			happiness: this.setHappiness(metaData, data, era),
 			needsStreet: this.needsStreet(metaData),
 			
-			boosts: this.setBuildingBoosts(metaData, data, era),
+			boosts: this.setBuildingBoosts(metaData, data, era, withAlly),
 			production: this.setAllProductions(metaData, data, era),
 			rating: null,
 

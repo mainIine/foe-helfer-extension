@@ -591,12 +591,16 @@
 	margin-bottom: -24px;
 	z-index: 201;
 }
-#ProductionsRatingBody span.filter.showitems {
+#ProductionsRatingBody span.filter.showitems, #ProductionsRatingBody span.filter.showallies {
 	background-position: -415px 0;
 	width: 26px;
 	height: 24px;
 	display: inline-block;
 	margin: -3px 0;
+}
+#ProductionsRatingBody span.filter.showallies {
+	margin: -3px 0;
+	background: url('../../x_img/ally.png') top left no-repeat;
 }
 
 input[id*="ProdPerTile"] {
