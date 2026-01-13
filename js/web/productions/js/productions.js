@@ -1709,7 +1709,6 @@ let Productions = {
 			return;
 
 		let era = (eraName === null) ? CurrentEra : eraName;
-		let withAllies = external ? true : Productions.efficiencySettings.showallies;
 		let $ProductionsRating = $('#ProductionsRating');
 
 		if ($ProductionsRating.length === 0) {
@@ -1734,9 +1733,9 @@ let Productions = {
 				helper.preloader.show('#ProductionsRating');
 				Productions.RatingCurrentTab = $(this).data('value');
 
-				Productions.CalcRatingBody(era,withAllies);
+				Productions.CalcRatingBody(era);
 			});
-			Productions.CalcRatingBody(era,withAllies);
+			Productions.CalcRatingBody(era);
 
 		} else {
 			HTML.CloseOpenBox('ProductionsRating');
@@ -1777,7 +1776,15 @@ let Productions = {
 		}
 	},
 	
-	CalcRatingBody: (era = '',withAllies = true) => {
+	// era is needed for otherplayer ratings
+	CalcRatingBody: (era = '') => {
+		let buildingCount = {};
+		let uniqueBuildings = [];
+		let buildingSizes = [];
+		let ratedBuildings = [];
+		let h = [];
+
+		let withAllies = Productions.efficiencySettings.showallies;
 		Productions.BuildingsAll = Object.values(CityMap.createNewCityMapEntities(Object.values(MainParser.CityMapData),withAllies));
 		Productions.setChainsAndSets(Productions.BuildingsAll);
 
@@ -1789,14 +1796,7 @@ let Productions = {
 				Productions.AdditionalSpecialBuildings[x.id] = {id:x.id,name:x.name,selected:false,filter:x.id+";"+x.name}
 			}
 		}
-		let h = [];
-
-		let buildingCount = {}
-		let uniqueBuildings = []
-		let buildingSizes = []
-		let ratedBuildings = []
-
-		let InventoryBuildings = Productions.InventoryBuildings = Kits.BuildingsFromInventory()
+		let InventoryBuildings = Productions.InventoryBuildings = Kits.BuildingsFromInventory();
 		if (ActiveMap === 'OtherPlayer')
 			InventoryBuildings = [];
 
@@ -1893,8 +1893,6 @@ let Productions = {
 				return 0
 			});
 
-			let colNumber = Object.values(Productions.Rating.Data).filter(x=>x.active && x.perTile!=null).length
-
 			// combine attack and defend boosts if both are active
 			let combinedRatingTypes = [];
 			for (const type of Productions.Rating.Types) {
@@ -1919,6 +1917,8 @@ let Productions = {
 						combinedRatingTypes.push(type);
 				}
 			}
+
+			let colNumber = Object.values(Productions.Rating.Data).filter(x=>x.active && x.perTile!=null).length;
 
 			h.push('<div class="ratingtable">');
 			h.push('<a id="RatingsResults" class="toggle-tab btn btn-slim" data-value="Settings">' + i18n('Boxes.ProductionsRating.Settings') + '</a>')
@@ -2210,9 +2210,8 @@ let Productions = {
 			});
 
 			$('#showallies, label[allies]').on('click', function () {
-				let withAllies = $('#showallies').is(':checked');
 				SaveSettings("showallies");
-				Productions.CalcRatingBody(CurrentEra,withAllies);
+				Productions.CalcRatingBody();
 			});
 
 			// settings: change any number
