@@ -1,6 +1,19 @@
 ## Changelog - Extension
 
 
+##### 4.1.1.0
+
+**Update**
+- Efficiency: You can now evaluate buildings without the ally boosts
+- Productions: Added a list for special productions
+- Settings: Removed some "open automatically" settings if they are already available in the modules windows settings
+
+**Bugfix**
+- Copy city data: data format was slightly off by accident, works like before now
+- Allies: The sums weren't correct and boosts were *slightly* off after leveling allies
+- Productions: Rattlebone Raveyards goods productions weren't calculated correctly
+
+
 ##### 4.1.0.0
 
 **New**

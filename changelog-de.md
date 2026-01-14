@@ -1,6 +1,20 @@
 ## Changelog - Extension
 
 
+##### 4.1.1.0
+
+**Update**
+- Effizienzbewertung: Man kann die Gebäude nun auch ohne Boosts der Verbündeten bewerten lassen
+- Produktionsübersicht: Es gibt nun eine Liste für Spezialgüter-Produktionen
+- Einstellungen: Manche "Automatisch öffnen"-Einstellungen wurden entfernt, weil sie auch im jeweiligen Fenster zu finden sind
+
+**Bugfix**
+- Stadtdaten kopieren: das Datenformat hat nicht mehr zu den bekannten Schnittstellen gepasst - geht jetzt wieder
+- Verbündete: Die Summen waren nicht korrekt und die Boosts sind beim leveln explodiert
+- Produktionen: Die Güter vom Klapperknochen-Technoclub waren falsch berechnet
+
+---
+
 ##### 4.1.0.0
 
 **Neu**
