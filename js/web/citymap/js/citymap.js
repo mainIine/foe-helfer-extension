@@ -1121,8 +1121,9 @@ let CityMap = {
                 break;
         }
         data.CityEntities = CityMap.removeDoubleUnderscoreKeys(MainParser.CityEntities);
+
         helper.str.copyToClipboard(
-            JSON.stringify({data})
+            JSON.stringify(data)
         ).then(() => {
             HTML.ShowToastMsg({
                 head: i18n('Boxes.CityMap.ToastHeadCopyData'),
