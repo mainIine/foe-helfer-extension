@@ -2083,7 +2083,10 @@ let Productions = {
 					h.push('<div class="content">')
 						h.push('<input id="findMetaBuilding" placeholder="'+i18n('Boxes.ProductionsRating.FindSpecialBuilding')+'" value="">')
 						h.push('<ul class="results"></ul>')
+						h.push('<div class="btns">')
+						h.push('<a class="btn selectMetaBuildings">'+i18n('Boxes.ProductionsRating.ToggleBuildingSelection')+'</a>')
 						h.push('<a class="btn closeMetaBuilding btn-green">'+i18n('Boxes.ProductionsRating.AddBuildings')+'</a>')
+						h.push('</div>')
 					h.push('</div>')
 				h.push('</div>')
 			h.push('</div>');
@@ -2191,6 +2194,14 @@ let Productions = {
 				let id = e.target.dataset.meta_id
 				Productions.AdditionalSpecialBuildings[id].selected =!Productions.AdditionalSpecialBuildings[id].selected
 				e.target.classList.toggle("selected")
+			})
+			$('#ProductionsRatingBody .overlay .selectMetaBuildings').on("click",(e)=>{
+				let li = $('#ProductionsRatingBody .overlay .results li');
+				for (let item of li) {
+					item.classList.toggle("selected");
+					let id = item.dataset.meta_id;
+					Productions.AdditionalSpecialBuildings[id].selected =!Productions.AdditionalSpecialBuildings[id].selected
+				}
 			})
 
 			$('#ProductionsRatingSettings input[type=checkbox]').on('click', function () {

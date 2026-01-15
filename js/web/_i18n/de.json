@@ -1051,6 +1051,7 @@
     "Boxes.ProductionsRating.ShowItems": "Zeige Item-Spalte",
     "Boxes.ProductionsRating.ShowValuesPerTile": "Werte pro Feld",
     "Boxes.ProductionsRating.Title": "Gebäude - Effizienzberechnung",
+    "Boxes.ProductionsRating.ToggleBuildingSelection": "Sichtbare Gebäude aus-/abwählen",
     "Boxes.ProductionsRating.Filter":"Suche",
     "Boxes.ProductionsRating.Reset":"Auf Standartwerte zurücksetzen",
     "Boxes.ProductionsRating.ConfirmReset":"Bestätige Rücksetzen?",

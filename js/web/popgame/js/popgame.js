@@ -371,6 +371,8 @@ FoEproxy.addHandler('PopGameService', 'useBooster', (data, postData) => {
 });
 
 FoEproxy.addHandler('PopGameService', 'endGame', (data, postData) => {
+    if(!Settings.GetSetting('ShowEventChest') || !(Settings.GetSetting('EventHelperPop') === undefined ? true : Settings.GetSetting('EventHelperPop'))) return;
+
     let x = Popgame.grid.reduce((a,b) => [...a,...b]);
     for (let c of x) {
         Popgame.tracking.afterPop.total++;
