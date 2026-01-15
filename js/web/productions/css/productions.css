@@ -267,7 +267,7 @@
 #ProductionsRatingBody .overlay .content li.selected::after {
 	content: '✔';
 }
-#ProductionsRatingBody .overlay .btn.closeMetaBuilding {
+#ProductionsRatingBody .overlay .btns {
 	margin: 0 auto;
     display: block;
     width: max-content;
