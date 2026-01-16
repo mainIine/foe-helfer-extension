@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2025 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -19,15 +19,19 @@ let CityMap = {
 	CityData: null,
 	OwnCityData: null,
 	CityEntities: null,
-	ScaleUnit: 100,
-	CityView: 'skew',
+	map: {
+		scale: 100,
+		outpostScale: 100,
+		view: 'skew'
+	},
 	UnlockedAreas: null,
 	BlockedAreas: null,
 	OccupiedArea: 0,
 	EfficiencyFactor: 0,
-	OutpostScaleUnit: 100,
-	CulturalOutpostData: {},
-	CulturalOutpostAreas: [],
+	CulturalOutpost: {
+		data: {},
+		areas: []
+	},
 	EraOutpostData: null,
 	EraOutpostAreas: [],
 	QIData: null,
@@ -79,17 +83,31 @@ let CityMap = {
 	 * @param Title Name of the city
 	 */
 	init: (event, Data = null, Title = i18n('Boxes.CityMap.YourCity'))=> {
-		if (Data === null) { // No data => own city
-			Data = MainParser.CityMapData
-			CityMap.OwnCityData = MainParser.NewCityMapData
+			
+		// grid sizing and view
+		let scale = localStorage.getItem('CityMapScale'),
+			outpostScale = localStorage.getItem('OutpostMapScale'),
+			view = localStorage.getItem('CityMapView');
+
+		if(null !== scale)  // scaling has already been set?
+			CityMap.map.scale = parseInt(scale);
+		if(null !== view)  // view has already been set?
+			CityMap.map.view = view;
+		if(null !== outpostScale)  // scaling has already been set?
+			CityMap.map.outpostScale = parseInt(outpostScale);
+
+		if (Data === null) { // No data = own city
+			Data = MainParser.CityMapData;
+			CityMap.OwnCityData = MainParser.NewCityMapData;
+
 			if (ActiveMap === "cultural_outpost") {
-				Data = CityMap.CulturalOutpostData
+				Data = CityMap.CulturalOutpost.data;
 			}
 			else if (ActiveMap === "era_outpost") {
-				Data = CityMap.EraOutpostData
+				Data = CityMap.EraOutpostData;
 			}
 			else if (ActiveMap === "guild_raids") {
-				Data = CityMap.QIData
+				Data = CityMap.QIData;
 			}
 		}
 
@@ -98,27 +116,11 @@ let CityMap = {
 			if (X1.x > X2.x) return 1;
 		});
 
-		let scale = localStorage.getItem('CityMapScale'),
-			outpostScale = localStorage.getItem('OutpostMapScale'),
-			view = localStorage.getItem('CityMapView');
-
-		if(null !== scale) { // scaling has already been set?
-			CityMap.ScaleUnit = parseInt(scale);
-		}
-
-		if(null !== view) { // view has already been set?
-			CityMap.CityView = view;
-		}
-
-		if(null !== outpostScale) { // scaling has already been set?
-			CityMap.OutpostScaleUnit = parseInt(outpostScale);
-		}
-
-		if( $('#city-map-overlay').length < 1 ) {
+		if( $('#citymap-main').length < 1 ) {
 			HTML.AddCssFile('citymap');
 
 			HTML.Box({
-				id: 'city-map-overlay',
+				id: 'citymap-main',
 				title: Title,
 				auto_close: true,
 				dragdrop: true,
@@ -133,7 +135,7 @@ let CityMap = {
 			}, 100);
 		}
 		else if (!event) {
-			HTML.CloseOpenBox('city-map-overlay');
+			HTML.CloseOpenBox('citymap-main');
 			return;
 		}
 
@@ -157,18 +159,18 @@ let CityMap = {
 	 * @param Title
 	 */
 	PrepareBox: (Title)=> {
-		let oB = $('#city-map-overlayBody'),
+		let oB = $('#citymap-mainBody'),
 			wrapper = $('<div id="citymap-wrapper" />'),
 			menu = $('<div id="city-map-menu" />');
 
 		wrapper
 			.append($('<div id="map-container" />')
-				.append($(`<div id="grid-outer" data-unit="${CityMap.ScaleUnit}" data-view="${CityMap.CityView}" />`)
+				.append($(`<div id="grid-outer" data-unit="${CityMap.map.scale}" data-view="${CityMap.map.view}" />`)
 					.append($('<div id="map-grid" />'))))
 			.append($('<div id="sidebar" />')
 				.append($('<div id="map-filters" />')));
 
-		$('#city-map-overlayHeader > .title').attr('id', 'map' + CityMap.hashCode(Title));
+		$('#citymap-mainHeader > .title').attr('id', 'map' + CityMap.hashCode(Title));
 
 		if (ActiveMap === "cultural_outpost" || ActiveMap === "era_outpost" || ActiveMap === "guild_raids") {
 			oB.addClass('outpost').addClass(ActiveMap)
@@ -176,11 +178,11 @@ let CityMap = {
 
 		/* change view */
 		let dropView = $('<select id="menu-view" class="game-cursor" />')
-			.append($('<option class="game-cursor" data-view="normal" />').prop('selected', CityMap.CityView === 'normal').text(i18n('Boxes.CityMap.NormalPerspecitve')) )
-			.append($('<option class="game-cursor" data-view="skew" />').prop('selected', CityMap.CityView === 'skew').text(i18n('Boxes.CityMap.CavalierPerspecitve')) );
+			.append($('<option class="game-cursor" data-view="normal" />').prop('selected', CityMap.map.view === 'normal').text(i18n('Boxes.CityMap.NormalPerspecitve')) )
+			.append($('<option class="game-cursor" data-view="skew" />').prop('selected', CityMap.map.view === 'skew').text(i18n('Boxes.CityMap.CavalierPerspecitve')) );
 
 
-		$('#city-map-overlay').on('change', '#menu-view', function(){
+		$('#citymap-main').on('change', '#menu-view', function(){
 			let view = $('#menu-view option:selected').data('view');
 
 			$('#grid-outer').attr('data-view', view);
@@ -188,9 +190,9 @@ let CityMap = {
 		});
 
 		/* change scale */
-		let scaleUnit = CityMap.ScaleUnit;
+		let scaleUnit = CityMap.map.scale;
 		if (ActiveMap === "cultural_outpost" || ActiveMap === "era_outpost" || ActiveMap === "guild_raids") 
-			scaleUnit = CityMap.OutpostScaleUnit;
+			scaleUnit = CityMap.map.outpostScale;
 		
 		let scaleView = $('<select id="scale-view" class="game-cursor" />')
 			.append( $('<option class="game-cursor" data-scale="60" />').prop('selected', scaleUnit === 60).text('60%') )
@@ -204,7 +206,7 @@ let CityMap = {
 
 		menu.append(dropView).append(scaleView);
 
-		$('#city-map-overlay').on('change', '#scale-view', function(){
+		$('#citymap-main').on('change', '#scale-view', function(){
 			let unit = parseInt($('#scale-view option:selected').data('scale'));
 			
 			if(ActiveMap === 'main'){
@@ -216,11 +218,11 @@ let CityMap = {
 
 			if (ActiveMap === "cultural_outpost" || ActiveMap === "era_outpost" || ActiveMap === "guild_raids") {
 				localStorage.setItem('OutpostMapScale', unit);
-				CityMap.OutpostScaleUnit = unit;
+				CityMap.map.outpostScale = unit;
 			}
 			else {
 				localStorage.setItem('CityMapScale', unit);
-				CityMap.ScaleUnit = unit;	
+				CityMap.map.scale = unit;	
 			}
 
 			CityMap.SetMapBuildings(false);
@@ -273,22 +275,22 @@ let CityMap = {
 			ua = CityMap.OtherPlayer.unlockedAreas;
 		let xOffset = 0;
 		let yOffset = 0;
-		let scaleUnit = CityMap.ScaleUnit;
+		let scaleUnit = CityMap.map.scale;
 		if (ActiveMap === "cultural_outpost") {
-			ua = CityMap.CulturalOutpostAreas;
+			ua = CityMap.CulturalOutpost.areas;
 			xOffset = 500;
-			scaleUnit = CityMap.OutpostScaleUnit;
+			scaleUnit = CityMap.map.outpostScale;
 		}
 		else if (ActiveMap === "era_outpost") {
 			ua = CityMap.EraOutpostAreas;
 			yOffset = 500;
-			scaleUnit = CityMap.OutpostScaleUnit;
+			scaleUnit = CityMap.map.outpostScale;
 		}
 		else if (ActiveMap === "guild_raids") {
 			ua = CityMap.QIAreas;
 			yOffset = 500;
 			xOffset = 500;
-			scaleUnit = CityMap.OutpostScaleUnit;
+			scaleUnit = CityMap.map.outpostScale;
 		}
 
 		for(let i in ua) {
@@ -326,7 +328,7 @@ let CityMap = {
 
 		CityMap.BuildGrid();
 
-		let buildings = CityMap.CulturalOutpostData;
+		let buildings = CityMap.CulturalOutpost.data;
 		let xOffset = 0, yOffset = 0;
 		if (ActiveMap === "era_outpost") {
 			buildings = CityMap.EraOutpostData;
@@ -348,10 +350,10 @@ let CityMap = {
 				d = MainParser.CityEntities[CityMapEntity['cityentity_id']],
 				BuildingSize = CityMap.GetBuildingSize(CityMapEntity),
 
-				xx = (parseInt(x) * CityMap.OutpostScaleUnit) / 100,
-				yy = (parseInt(y) * CityMap.OutpostScaleUnit) / 100,
-				xsize = ((parseInt(BuildingSize['xsize']) * CityMap.OutpostScaleUnit) / 100),
-				ysize = ((parseInt(BuildingSize['ysize']) * CityMap.OutpostScaleUnit) / 100)
+				xx = (parseInt(x) * CityMap.map.outpostScale) / 100,
+				yy = (parseInt(y) * CityMap.map.outpostScale) / 100,
+				xsize = ((parseInt(BuildingSize['xsize']) * CityMap.map.outpostScale) / 100),
+				ysize = ((parseInt(BuildingSize['ysize']) * CityMap.map.outpostScale) / 100)
 				
 				let collectSoon = "";
 				let thresholdTime = 10800;
@@ -374,7 +376,7 @@ let CityMap = {
 		}
 
 		$('[data-original-title]').tooltip({
-			container: '#city-map-overlay',
+			container: '#citymap-main',
 			html: true,
 		});
 
@@ -600,7 +602,7 @@ let CityMap = {
 
 
 	showOutpostBuildings: () => {
-		let buildings = Object.values(CityMap.CulturalOutpostData);
+		let buildings = Object.values(CityMap.CulturalOutpost.data);
 		if (ActiveMap === "era_outpost")
 			buildings = Object.values(CityMap.EraOutpostData);
 
@@ -726,10 +728,10 @@ let CityMap = {
 		for (const building of Object.values(buildingData)) {
 			if (building.coords.x < MinX || building.coords.x > MaxX || building.coords.y < MinY || building.coords.y > MaxY) continue
 
-			let x = (building.coords.x === undefined ? 0 : parseInt((building.coords.x * CityMap.ScaleUnit)) / 100),
-			y = (building.coords.y === undefined ? 0 : parseInt((building.coords.y * CityMap.ScaleUnit)) / 100),
-			xsize = (building.size.width * CityMap.ScaleUnit) / 100,
-			ysize = (building.size.length * CityMap.ScaleUnit) / 100
+			let x = (building.coords.x === undefined ? 0 : parseInt((building.coords.x * CityMap.map.scale)) / 100),
+			y = (building.coords.y === undefined ? 0 : parseInt((building.coords.y * CityMap.map.scale)) / 100),
+			xsize = (building.size.width * CityMap.map.scale) / 100,
+			ysize = (building.size.length * CityMap.map.scale) / 100
 
 			let noStreet = (building.needsStreet === 0 ? ' noStreet' : '');
 			let isLimited = (building.isLimited ? ' isLimited' : '');
@@ -854,14 +856,14 @@ let CityMap = {
 		CityMap.getAreas();
 		
 		$('[data-original-title]').tooltip({
-			container: '#city-map-overlay',
+			container: '#citymap-main',
 			html: true,
 		});
 	},
 
 
 	/**
-	 * Main city sidebar stats
+	 * Sidebar for own and other player cities
 	 */
 	getAreas: ()=>{
 		let total = ((CityMap.UnlockedAreas.length -1) * 16) + 256, // x + (4*4) + 16*16
@@ -956,10 +958,7 @@ let CityMap = {
 
 
 	/**
-	 * Erzeugt einen Hash vom String
-	 *
-	 * @param str
-	 * @returns {number}
+	 * Create a hash from string
 	 */
 	hashCode: (str)=>{
 		return str.split('').reduce((prevHash, currVal) => (((prevHash << 5) - prevHash) + currVal.charCodeAt(0))|0, 0);
@@ -967,7 +966,7 @@ let CityMap = {
 
 
 	/**
-	 * Show the submit box
+	 * Show the submit box for foe-helper.com
 	 */
 	showSubmitBox: () => {
 		let $CityMapSubmit = $('#CityMapSubmit');
@@ -995,37 +994,30 @@ let CityMap = {
 
 
 	/**
-	 * Highlight old buildings
+	 * Sidebar building highlighting
 	 */
 	highlightOldBuildings: ()=> {
 		$('.oldBuildings').toggleClass('diagonal');
 		$('.too-old-legends').slideToggle();
 	},
-
 	highlightNoStreetBuildings: ()=> {
 		$('.noStreet').toggleClass('highlight');
 	},
-
 	highlightAscendableBuildings: ()=> {
 		$('.ascendable').toggleClass('highlight2');
 	},
-
 	highlightDecayedBuildings: ()=> {
 		$('.decayed').toggleClass('highlight3');
 	},
-
 	highlightLimitedBuildings: ()=> {
 		$('#grid-outer').toggleClass('showLimited');
 	},
-
 	highlightGBGBuildings: ()=> {
 		$('#grid-outer').toggleClass('showGBG');
 	},
-
 	highlightQIBuildings: ()=> {
 		$('#grid-outer').toggleClass('showQI');
 	},
-
 	highlightWorstBuildings: ()=> {
 		$('.rating10').toggleClass('highlight4');
 		$('.rating20').toggleClass('highlight4');
@@ -1034,8 +1026,7 @@ let CityMap = {
 
 
 	/**
-	 * Send citydata to the server
-	 *
+	 * Send citydata to the foe-helper.com
 	 */
 	SubmitData: ()=> {
 		let apiToken = localStorage.getItem('ApiToken');
@@ -1228,6 +1219,10 @@ let CityMap = {
 		}
 	},
 
+
+	// // // // // // // // // // // // //
+	// Data for MainParser.NewCityMapData
+	// // // // // // // // // // // // //
 
 	// returns negative numbers for builidings that use population, 0 for buildings that dont provide or use it
 	setPopulation: (metaData, data, era) => {
