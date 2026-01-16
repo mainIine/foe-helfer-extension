@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2025 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -11,18 +11,18 @@
  * **************************************************************************************
  */
 
-#city-map-overlay {
+#citymap-main {
 	left: 15px;
 	width: 70em;
 	bottom: 15px;
 	top: 15px;
 }
 
-#city-map-overlayBody.window-body {
+#citymap-mainBody.window-body {
 	position: relative;
 }
 
-#city-map-overlayBody #citymap-wrapper {
+#citymap-mainBody #citymap-wrapper {
 	position: relative;
 	width: 100%;
 	height: 100%;
@@ -208,7 +208,7 @@
 	filter: brightness(1.2);
 }
 
-#city-map-overlayBody .prod::before {
+#citymap-mainBody .prod::before {
 	background: transparent url('../../productions/images/productions.png') -233px 2px no-repeat;
 	background-size: auto 100%;
 	display: inline-block;
@@ -217,15 +217,15 @@
 	height: 20px;
 }
 
-#city-map-overlayBody .prod.population::before { background-position: -142px 2px; }
-#city-map-overlayBody .prod.happiness::before { background-position: -122px 2px; }
-#city-map-overlayBody .prod.guild_raids_money::before { background-position: -20px 2px; }
-#city-map-overlayBody .prod.guild_raids_supplies::before { background-position: -40px 2px; }
-#city-map-overlayBody .prod.att_def_boost_attacker::before { background-position: -340px 1px; }
-#city-map-overlayBody .prod.att_def_boost_defender::before { background-position: -362px 1px; }
-#city-map-overlayBody .prod.guild_raids_action_points_collection::before { background-position: -383px 2px; }
+#citymap-mainBody .prod.population::before { background-position: -142px 2px; }
+#citymap-mainBody .prod.happiness::before { background-position: -122px 2px; }
+#citymap-mainBody .prod.guild_raids_money::before { background-position: -20px 2px; }
+#citymap-mainBody .prod.guild_raids_supplies::before { background-position: -40px 2px; }
+#citymap-mainBody .prod.att_def_boost_attacker::before { background-position: -340px 1px; }
+#citymap-mainBody .prod.att_def_boost_defender::before { background-position: -362px 1px; }
+#citymap-mainBody .prod.guild_raids_action_points_collection::before { background-position: -383px 2px; }
 
-#city-map-overlayBody th.population::before, #city-map-overlayBody th.happiness::before {
+#citymap-mainBody th.population::before, #citymap-mainBody th.happiness::before {
 	background: transparent url('../../productions/images/productions.png') -233px 0 no-repeat;
 	background-size: auto 100%;
 	display: inline-block;
@@ -233,10 +233,10 @@
 	width: 23px;
 	height: 23px;
 }
-#city-map-overlayBody th.population::before { background-position: -162px 0; }
-#city-map-overlayBody th.happiness::before { background-position: -140px 0; }
-#city-map-overlayBody th .diplomacy::before { zoom: 0.45; }
-#city-map-overlayBody th .diplomacy { height: 24px; }
+#citymap-mainBody th.population::before { background-position: -162px 0; }
+#citymap-mainBody th.happiness::before { background-position: -140px 0; }
+#citymap-mainBody th .diplomacy::before { zoom: 0.45; }
+#citymap-mainBody th .diplomacy { height: 24px; }
 
 #sidebar p {
 	margin-bottom: 5px;
@@ -637,7 +637,7 @@
     filter: contrast(1.2);
 }
 
-#city-map-overlay #grid-outer span.highlighted {
+#citymap-main #grid-outer span.highlighted {
     border-width: 2px !important;
     filter: saturate(1.3) brightness(1.3) !important;
 	mix-blend-mode: color-dodge;

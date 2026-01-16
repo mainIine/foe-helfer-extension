@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2025 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -1584,7 +1584,7 @@ let Productions = {
 	ShowOnMap: (ids) => {
 		let IDArray = (ids.length !== undefined ? ids : [ids]);
 
-		if( $('#city-map-overlay').length < 1 )
+		if( $('#citymap-main').length < 1 )
 			CityMap.init(null, MainParser.CityMapData);
 
 		$('#grid-outer').removeClass('desaturate');
@@ -1609,7 +1609,7 @@ let Productions = {
 
 
 	ShowSearchOnMap: (name) => {
-		if( $('#city-map-overlay').length < 1 )
+		if( $('#citymap-main').length < 1 )
 			CityMap.init(null, MainParser.CityMapData);
 
 		$('#grid-outer').removeClass('desaturate');

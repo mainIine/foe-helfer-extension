@@ -1,7 +1,7 @@
 /*
  * *************************************************************************************
  *
- * Copyright (C) 2025 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -421,8 +421,8 @@ GetFights = () =>{
 			CityMap.QIAreas = data.responseData['unlocked_areas'];
 		}
 		else if (ActiveMap === 'cultural_outpost') {
-			CityMap.CulturalOutpostData = Object.assign({}, ...data.responseData['entities'].map((x) => ({ [x.id]: x })));
-			CityMap.CulturalOutpostAreas = data.responseData['unlocked_areas'];
+			CityMap.CulturalOutpost.data = Object.assign({}, ...data.responseData['entities'].map((x) => ({ [x.id]: x })));
+			CityMap.CulturalOutpost.areas = data.responseData['unlocked_areas'];
 		}
 	});
 
@@ -491,7 +491,7 @@ GetFights = () =>{
 			let building = data.responseData[0];
 			if (building && building.id) {
 				if (ActiveMap === "cultural_outpost") {
-					CityMap.CulturalOutpostData[building.id] = building
+					CityMap.CulturalOutpost.data[building.id] = building
 					return
 				}
 				else if (ActiveMap === "era_outpost") {
@@ -509,7 +509,7 @@ GetFights = () =>{
 		else if (data.requestMethod === 'removeBuilding') {
 			let ID = postData[0].requestData[0];
 			if (ActiveMap === "cultural_outpost") {
-				delete CityMap.CulturalOutpostData[ID];
+				delete CityMap.CulturalOutpost.data[ID];
 				return
 			}
 			else if (ActiveMap === "era_outpost") {
@@ -2050,7 +2050,7 @@ let MainParser = {
 				CityMap.EraOutpostData[ID] = Buildings[i];
 			}
 			else if (ActiveMap === "cultural_outpost") {
-				CityMap.CulturalOutpostData[ID] = Buildings[i];
+				CityMap.CulturalOutpost.data[ID] = Buildings[i];
 			}
 			else if (ActiveMap === "guild_raids") {
 				CityMap.QIData[ID] = Buildings[i];
