@@ -19,24 +19,34 @@ let CityMap = {
 	CityData: null,
 	OwnCityData: null,
 	CityEntities: null,
-	map: {
-		scale: 100,
-		outpostScale: 100,
-		view: 'skew'
-	},
 	UnlockedAreas: null,
 	BlockedAreas: null,
 	OccupiedArea: 0,
 	EfficiencyFactor: 0,
+	map: {
+		scale: 100,
+		outpostScale: 100,
+		view: 'skew',
+		gridSize: 1,
+	},
+	OtherPlayer: {
+		mapData: {},
+		unlockedAreas: null,
+		eraName: null,
+	},
 	CulturalOutpost: {
 		data: {},
 		areas: []
 	},
-	EraOutpostData: null,
-	EraOutpostAreas: [],
-	QIData: null,
-	QIStats: null,
-	QIAreas: [],
+	EraOutpost: {
+		data: null,
+		areas: [],
+	},
+	QI: {
+		data: null,
+		stats: null,
+		areas: []
+	},
 	metrics: {
 		buildings: 0,
 		qiBuildings: 0,
@@ -59,11 +69,6 @@ let CityMap = {
 		buildingAreas: [],
 		buildingTypes: []
 	},
-	OtherPlayer: {
-		mapData: {},
-		unlockedAreas: null,
-		eraName: null,
-	},
 
 	AscendingBuildings: new Promise((resolve) => {
 		let timer = () => {
@@ -77,7 +82,6 @@ let CityMap = {
 	  }),
 
 	/**
-	 * @param event
 	 * @param event
 	 * @param Data The City data
 	 * @param Title Name of the city
@@ -104,10 +108,10 @@ let CityMap = {
 				Data = CityMap.CulturalOutpost.data;
 			}
 			else if (ActiveMap === "era_outpost") {
-				Data = CityMap.EraOutpostData;
+				Data = CityMap.EraOutpost.data;
 			}
 			else if (ActiveMap === "guild_raids") {
-				Data = CityMap.QIData;
+				Data = CityMap.QI.data;
 			}
 		}
 
@@ -129,9 +133,8 @@ let CityMap = {
 				ask: i18n('Boxes.CityMap.HelpLink'),
 			});
 
-
 			setTimeout(()=>{
-				CityMap.PrepareBox(Title);
+				CityMap.PrepareBox(Title,'citymap-main');
 			}, 100);
 		}
 		else if (!event) {
@@ -158,19 +161,25 @@ let CityMap = {
 	 * Stadtkarte vorbereiten => Menü rein
 	 * @param Title
 	 */
-	PrepareBox: (Title)=> {
-		let oB = $('#citymap-mainBody'),
+	PrepareBox: (Title,elemId="citymap-main")=> {
+		let oB = $('#'+elemId+'Body'),
 			wrapper = $('<div id="citymap-wrapper" />'),
 			menu = $('<div id="city-map-menu" />');
 
+		/* scale */
+		let scaleUnit = CityMap.map.scale;
+		if (ActiveMap === "cultural_outpost" || ActiveMap === "era_outpost" || ActiveMap === "guild_raids") 
+			scaleUnit = CityMap.map.outpostScale;
+
 		wrapper
 			.append($('<div id="map-container" />')
-				.append($(`<div id="grid-outer" data-unit="${CityMap.map.scale}" data-view="${CityMap.map.view}" />`)
-					.append($('<div id="map-grid" />'))))
+				.append($(`<div id="grid-outer" data-unit="${scaleUnit}" data-view="${CityMap.map.view}" />`)
+					.append($('<div id="map-grid" />'))
+					.append($('<div id="map-buildings" />'))))
 			.append($('<div id="sidebar" />')
 				.append($('<div id="map-filters" />')));
 
-		$('#citymap-mainHeader > .title').attr('id', 'map' + CityMap.hashCode(Title));
+		$('#'+elemId+'Header > .title').attr('id', 'map' + CityMap.hashCode(Title));
 
 		if (ActiveMap === "cultural_outpost" || ActiveMap === "era_outpost" || ActiveMap === "guild_raids") {
 			oB.addClass('outpost').addClass(ActiveMap)
@@ -181,18 +190,11 @@ let CityMap = {
 			.append($('<option class="game-cursor" data-view="normal" />').prop('selected', CityMap.map.view === 'normal').text(i18n('Boxes.CityMap.NormalPerspecitve')) )
 			.append($('<option class="game-cursor" data-view="skew" />').prop('selected', CityMap.map.view === 'skew').text(i18n('Boxes.CityMap.CavalierPerspecitve')) );
 
-
-		$('#citymap-main').on('change', '#menu-view', function(){
+		$('#'+elemId).on('change', '#menu-view', function(){
 			let view = $('#menu-view option:selected').data('view');
-
 			$('#grid-outer').attr('data-view', view);
 			localStorage.setItem('CityMapView', view);
 		});
-
-		/* change scale */
-		let scaleUnit = CityMap.map.scale;
-		if (ActiveMap === "cultural_outpost" || ActiveMap === "era_outpost" || ActiveMap === "guild_raids") 
-			scaleUnit = CityMap.map.outpostScale;
 		
 		let scaleView = $('<select id="scale-view" class="game-cursor" />')
 			.append( $('<option class="game-cursor" data-scale="60" />').prop('selected', scaleUnit === 60).text('60%') )
@@ -206,14 +208,8 @@ let CityMap = {
 
 		menu.append(dropView).append(scaleView);
 
-		$('#citymap-main').on('change', '#scale-view', function(){
+		$('#'+elemId).on('change', '#scale-view', function(){
 			let unit = parseInt($('#scale-view option:selected').data('scale'));
-			
-			if(ActiveMap === 'main'){
-				$('#highlight-old-buildings')[0].checked=false;
-				$('#show-worst-buildings')[0].checked=false;
-			}
-
 			$('#grid-outer').attr('data-unit', unit);
 
 			if (ActiveMap === "cultural_outpost" || ActiveMap === "era_outpost" || ActiveMap === "guild_raids") {
@@ -225,11 +221,7 @@ let CityMap = {
 				CityMap.map.scale = unit;	
 			}
 
-			CityMap.SetMapBuildings(false);
-
 			$('#map-container').scrollTo( $('.highlighted') , 800, {offset: {left: -280, top: -280}, easing: 'swing'});
-			$('.too-old-legends').hide();
-			$('.building-count-area').show();
 		});
 
 		// Button for submit Box
@@ -244,7 +236,7 @@ let CityMap = {
 		oB.append(wrapper);
 
 		if (ActiveMap === "guild_raids")
-			if (CityMap.QIData) {
+			if (CityMap.QI.data) {
 				menu.append($(`<button class="btn ml-auto" id="copy-meta-infos" onclick="CityMap.copyMetaInfos()" style="margin-left:auto" />`).text(i18n('Boxes.CityMap.CopyMetaInfos')));
 				$("#sidebar").append(CityMap.showQIBuildingList());
 			}
@@ -275,39 +267,30 @@ let CityMap = {
 			ua = CityMap.OtherPlayer.unlockedAreas;
 		let xOffset = 0;
 		let yOffset = 0;
-		let scaleUnit = CityMap.map.scale;
 		if (ActiveMap === "cultural_outpost") {
 			ua = CityMap.CulturalOutpost.areas;
 			xOffset = 500;
-			scaleUnit = CityMap.map.outpostScale;
 		}
 		else if (ActiveMap === "era_outpost") {
-			ua = CityMap.EraOutpostAreas;
+			ua = CityMap.EraOutpost.areas;
 			yOffset = 500;
-			scaleUnit = CityMap.map.outpostScale;
 		}
 		else if (ActiveMap === "guild_raids") {
-			ua = CityMap.QIAreas;
+			ua = CityMap.QI.areas;
 			yOffset = 500;
 			xOffset = 500;
-			scaleUnit = CityMap.map.outpostScale;
 		}
 
 		for(let i in ua) {
 			if(!ua.hasOwnProperty(i))
 				break;
 
-			let w = ((ua[i]['width'] * scaleUnit) / 100 ),
-				h = ((ua[i]['length'] * scaleUnit) / 100 ),
-				x = (((ua[i]['x']-xOffset) * scaleUnit) / 100 ),
-				y = (((ua[i]['y']-yOffset) * scaleUnit) / 100 ),
-				G = $('#map-grid')
+			let x = (((ua[i]['x']-xOffset) * CityMap.map.gridSize) ),
+				y = (((ua[i]['y']-yOffset) * CityMap.map.gridSize) );
 
 			let a = $('<span />')
 				.addClass('map-bg')
 				.css({
-					width: w + 'em',
-					height: h + 'em',
 					left: x + 'em',
 					top: y + 'em',
 				});
@@ -317,7 +300,7 @@ let CityMap = {
 				a.addClass('startmap');
 			}
 
-			G.append(a);
+			$('#map-grid').append(a);
 		}
 	},
 
@@ -331,14 +314,14 @@ let CityMap = {
 		let buildings = CityMap.CulturalOutpost.data;
 		let xOffset = 0, yOffset = 0;
 		if (ActiveMap === "era_outpost") {
-			buildings = CityMap.EraOutpostData;
+			buildings = CityMap.EraOutpost.data;
 			yOffset = 500;
 		}
 		else if (ActiveMap === "cultural_outpost") {
 			xOffset = 500;
 		}
 		else if (ActiveMap === "guild_raids") {
-			buildings = CityMap.QIData;
+			buildings = CityMap.QI.data;
 			xOffset = 500;
 			yOffset = 500;
 		}
@@ -350,10 +333,10 @@ let CityMap = {
 				d = MainParser.CityEntities[CityMapEntity['cityentity_id']],
 				BuildingSize = CityMap.GetBuildingSize(CityMapEntity),
 
-				xx = (parseInt(x) * CityMap.map.outpostScale) / 100,
-				yy = (parseInt(y) * CityMap.map.outpostScale) / 100,
-				xsize = ((parseInt(BuildingSize['xsize']) * CityMap.map.outpostScale) / 100),
-				ysize = ((parseInt(BuildingSize['ysize']) * CityMap.map.outpostScale) / 100)
+				xx = (parseInt(x) * CityMap.map.gridSize),
+				yy = (parseInt(y) * CityMap.map.gridSize),
+				xsize = ((parseInt(BuildingSize['xsize']) * CityMap.map.gridSize)),
+				ysize = ((parseInt(BuildingSize['ysize']) * CityMap.map.gridSize))
 				
 				let collectSoon = "";
 				let thresholdTime = 10800;
@@ -372,7 +355,7 @@ let CityMap = {
 					(collectSoon != "" ? '<br>'+collectionString : '') )
 				.attr('data-entityid', CityMapEntity['id']);
 
-			$('#grid-outer').append( f );
+			$('#map-buildings').append( f );
 		}
 
 		$('[data-original-title]').tooltip({
@@ -385,25 +368,25 @@ let CityMap = {
 
 
 	showQIStats: () => {
-		if (!CityMap.QIData) return;
+		if (!CityMap.QI.data) return;
 
 		out = '<div class="qiSums">';
 		out += '<p class="text-center"><i>'+i18n('Boxes.CityMap.QIHint')+'</i></p>';
 		out += '<div class="flex between" style="margin-bottom: 10px;">';
-        out += '<span><img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_expansion.png`,true)+'" />' +  CityMap.QIAreas.length + '</span>';
-		out += '<div class="popStats"><span class="prod population">'+CityMap.QIStats.availablePopulation+'/'+CityMap.QIStats.totalPopulation+'</span> ';
-		let euphoria = Math.round(CityMap.QIStats.euphoriaBoost*100);
-		out += '<span class="prod happiness euphoria'+euphoria+'" title="'+CityMap.QIStats.euphoria+'">'+euphoria+'%</span></div>';
+        out += '<span><img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_expansion.png`,true)+'" />' +  CityMap.QI.areas.length + '</span>';
+		out += '<div class="popStats"><span class="prod population">'+CityMap.QI.stats.availablePopulation+'/'+CityMap.QI.stats.totalPopulation+'</span> ';
+		let euphoria = Math.round(CityMap.QI.stats.euphoriaBoost*100);
+		out += '<span class="prod happiness euphoria'+euphoria+'" title="'+CityMap.QI.stats.euphoria+'">'+euphoria+'%</span></div>';
 		out += '</div>';
 
 		out += '<div class="productions">';
-		for (let [prod, value] of Object.entries(CityMap.QIStats.resources)) {
+		for (let [prod, value] of Object.entries(CityMap.QI.stats.resources)) {
 			out += '<span class="'+prod+'">'+srcLinks.icons(prod);
 				out += HTML.Format(value);
 			out += "</span> ";
 		}
 		out += '</div><div class="boosts">';
-		for (let [boost, value] of Object.entries(CityMap.QIStats.boosts)) {
+		for (let [boost, value] of Object.entries(CityMap.QI.stats.boosts)) {
 			if (boost.includes("action_points"))
 				out += '<span class="'+boost+'">'+srcLinks.icons(boost)+value+"</span> ";
 			else 
@@ -416,11 +399,11 @@ let CityMap = {
 
 
 	showQIBuildingList: () => {
-		if (!CityMap.QIData) return;
+		if (!CityMap.QI.data) return;
 		let boosts = Boosts.Sums;
-		let buildings = Object.values(CityMap.QIData);
+		let buildings = Object.values(CityMap.QI.data);
 		
-		CityMap.QIStats = { 
+		CityMap.QI.stats = { 
 			resources: {
 				guild_raids_chrono_alloy: 0,
 				guild_raids_money: 0,
@@ -450,9 +433,9 @@ let CityMap = {
 			building.count = count;
 			uniqueBuildings.push(building);
 			
-			CityMap.QIStats.euphoria += building.euphoria*count || 0;
-			CityMap.QIStats.totalPopulation += (building.population >= 0 ? building.population*count : 0);
-			CityMap.QIStats.availablePopulation += building.population*count;
+			CityMap.QI.stats.euphoria += building.euphoria*count || 0;
+			CityMap.QI.stats.totalPopulation += (building.population >= 0 ? building.population*count : 0);
+			CityMap.QI.stats.availablePopulation += building.population*count;
 		}
 		uniqueBuildings.sort((a, b) => {
 			if (a.entityId < b.entityId) return -1
@@ -461,14 +444,14 @@ let CityMap = {
 		});
 
 
-		let euphoriaFactor = CityMap.QIStats.euphoria/CityMap.QIStats.totalPopulation;
-		CityMap.QIStats.euphoriaBoost = 1.5;
-		if (euphoriaFactor <= 0.2) CityMap.QIStats.euphoriaBoost = 0.2;
-		else if (euphoriaFactor > 0.20 && euphoriaFactor <= 0.60) CityMap.QIStats.euphoriaBoost = 0.6;
-		else if (euphoriaFactor > 0.60 && euphoriaFactor <= 0.80) CityMap.QIStats.euphoriaBoost = 0.8;
-		else if (euphoriaFactor > 0.80 && euphoriaFactor <= 1.20) CityMap.QIStats.euphoriaBoost = 1;
-		else if (euphoriaFactor > 1.20 && euphoriaFactor <= 1.40) CityMap.QIStats.euphoriaBoost = 1.1;
-		else if (euphoriaFactor > 1.40 && euphoriaFactor < 2.0) CityMap.QIStats.euphoriaBoost = 1.2;
+		let euphoriaFactor = CityMap.QI.stats.euphoria/CityMap.QI.stats.totalPopulation;
+		CityMap.QI.stats.euphoriaBoost = 1.5;
+		if (euphoriaFactor <= 0.2) CityMap.QI.stats.euphoriaBoost = 0.2;
+		else if (euphoriaFactor > 0.20 && euphoriaFactor <= 0.60) CityMap.QI.stats.euphoriaBoost = 0.6;
+		else if (euphoriaFactor > 0.60 && euphoriaFactor <= 0.80) CityMap.QI.stats.euphoriaBoost = 0.8;
+		else if (euphoriaFactor > 0.80 && euphoriaFactor <= 1.20) CityMap.QI.stats.euphoriaBoost = 1;
+		else if (euphoriaFactor > 1.20 && euphoriaFactor <= 1.40) CityMap.QI.stats.euphoriaBoost = 1.1;
+		else if (euphoriaFactor > 1.40 && euphoriaFactor < 2.0) CityMap.QI.stats.euphoriaBoost = 1.2;
 
 		for (let building of uniqueBuildings) {
 			if (building.type === "impediment" || building.type === "street") continue;
@@ -487,7 +470,7 @@ let CityMap = {
 					out += (building.production.guild_raids_money ? '<span class="prod guild_raids_money">'+HTML.Format(building.production.guild_raids_money*-1.0)+'</span> ' : "")	
 				}
 				else {
-					let euphoriaBoost = CityMap.QIStats.euphoriaBoost;
+					let euphoriaBoost = CityMap.QI.stats.euphoriaBoost;
 					for (let [prod, value] of Object.entries(building.production)) {
 						// add coin and supply boosts
 						let boost = 0;
@@ -503,7 +486,7 @@ let CityMap = {
 						}
 						let boostedValue = Math.round(value*(euphoriaBoost+(boost/100)))
 						out += srcLinks.icons(prod)+HTML.Format(boostedValue)+" ";
-						CityMap.QIStats.resources[prod] += boostedValue*building.count;
+						CityMap.QI.stats.resources[prod] += boostedValue*building.count;
 					}
 				}
 			}
@@ -511,7 +494,7 @@ let CityMap = {
 				for (let boost of building.boosts) {
 					let percentChar = (boost.type.includes("action_points") ? " " : "% ")
 					out += srcLinks.icons(boost.type)+boost.value+percentChar;
-					CityMap.QIStats.boosts.hasOwnProperty(boost.type) ? CityMap.QIStats.boosts[boost.type] += boost.value*building.count : CityMap.QIStats.boosts[boost.type] = boost.value*building.count;
+					CityMap.QI.stats.boosts.hasOwnProperty(boost.type) ? CityMap.QI.stats.boosts[boost.type] += boost.value*building.count : CityMap.QI.stats.boosts[boost.type] = boost.value*building.count;
 				}
 			}
 			out += "</td></tr>";
@@ -604,7 +587,7 @@ let CityMap = {
 	showOutpostBuildings: () => {
 		let buildings = Object.values(CityMap.CulturalOutpost.data);
 		if (ActiveMap === "era_outpost")
-			buildings = Object.values(CityMap.EraOutpostData);
+			buildings = Object.values(CityMap.EraOutpost.data);
 
 		let uniques = {};
 		for (let b of buildings) {
@@ -728,10 +711,10 @@ let CityMap = {
 		for (const building of Object.values(buildingData)) {
 			if (building.coords.x < MinX || building.coords.x > MaxX || building.coords.y < MinY || building.coords.y > MaxY) continue
 
-			let x = (building.coords.x === undefined ? 0 : parseInt((building.coords.x * CityMap.map.scale)) / 100),
-			y = (building.coords.y === undefined ? 0 : parseInt((building.coords.y * CityMap.map.scale)) / 100),
-			xsize = (building.size.width * CityMap.map.scale) / 100,
-			ysize = (building.size.length * CityMap.map.scale) / 100
+			let x = (building.coords.x === undefined ? 0 : parseInt((building.coords.x * CityMap.map.gridSize))),
+			y = (building.coords.y === undefined ? 0 : parseInt((building.coords.y * CityMap.map.gridSize))),
+			xsize = (building.size.width * CityMap.map.gridSize),
+			ysize = (building.size.length * CityMap.map.gridSize)
 
 			let noStreet = (building.needsStreet === 0 ? ' noStreet' : '');
 			let isLimited = (building.isLimited ? ' isLimited' : '');
@@ -846,7 +829,7 @@ let CityMap = {
 				f.addClass('highlighted');
 			}
 
-			$('#grid-outer').append( f );
+			$('#map-buildings').append( f );
 		}
 
 		let StreetsUsed = CityMap.metrics.buildingAreas['street'] | 0;
@@ -1104,8 +1087,8 @@ let CityMap = {
         let data = {};
         switch (ActiveMap) {
             case 'guild_raids':
-                data.CityMapData = CityMap.removeDoubleUnderscoreKeys(CityMap.QIData);
-                data.UnlockedAreas = CityMap.removeDoubleUnderscoreKeys(CityMap.QIAreas);
+                data.CityMapData = CityMap.removeDoubleUnderscoreKeys(CityMap.QI.data);
+                data.UnlockedAreas = CityMap.removeDoubleUnderscoreKeys(CityMap.QI.areas);
                 break;
             default:
                 data.CityMapData = CityMap.removeDoubleUnderscoreKeys(MainParser.CityMapData);

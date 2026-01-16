@@ -414,11 +414,11 @@ GetFights = () =>{
 
 		if (ActiveMap === 'era_outpost') {
 			CityMap.EraOutpostData = Object.assign({}, ...data.responseData['entities'].map((x) => ({ [x.id]: x })));
-			CityMap.EraOutpostAreas = data.responseData['unlocked_areas'];
+			CityMap.EraOutpost.areas = data.responseData['unlocked_areas'];
 		}
 		else if (ActiveMap === 'guild_raids') {
-			CityMap.QIData = Object.assign({}, ...data.responseData['entities'].map((x) => ({ [x.id]: x })));
-			CityMap.QIAreas = data.responseData['unlocked_areas'];
+			CityMap.QI.data = Object.assign({}, ...data.responseData['entities'].map((x) => ({ [x.id]: x })));
+			CityMap.QI.areas = data.responseData['unlocked_areas'];
 		}
 		else if (ActiveMap === 'cultural_outpost') {
 			CityMap.CulturalOutpost.data = Object.assign({}, ...data.responseData['entities'].map((x) => ({ [x.id]: x })));
@@ -499,7 +499,7 @@ GetFights = () =>{
 					return
 				}
 				else if (ActiveMap === "guild_raids") {
-					CityMap.QIData[building.id] = building
+					CityMap.QI.data[building.id] = building
 					return
 				}
 
@@ -517,7 +517,7 @@ GetFights = () =>{
 				return
 			}
 			else if (ActiveMap === "guild_raids") {
-				delete CityMap.QIData[ID];
+				delete CityMap.QI.data[ID];
 				return
 			}
 			if (ID && MainParser.CityMapData[ID]) {
@@ -2053,7 +2053,7 @@ let MainParser = {
 				CityMap.CulturalOutpost.data[ID] = Buildings[i];
 			}
 			else if (ActiveMap === "guild_raids") {
-				CityMap.QIData[ID] = Buildings[i];
+				CityMap.QI.data[ID] = Buildings[i];
 			}
 		}
 		MainParser.SetArkBonus2();
