@@ -250,26 +250,148 @@ let reconstruction = {
         }
         return c;
     },
-    mapSettings:()=>{
-        let storedUnit = parseFloat(localStorage.getItem('ReconstructionMapScale') || 80);
-        let c = `<select class="scale-view" name="reconstructionscale">
-			<option data-scale="50" ${storedUnit === 50 ? 'selected' : ''}>S</option>
-			<option data-scale="80" ${storedUnit === 80 ? 'selected' : ''}>M</option>
-			<option data-scale="100" ${storedUnit === 110 ? 'selected' : ''}>L</option>
-			<option data-scale="156.1" ${storedUnit === 156.1 ? 'selected' : ''}>XL</option>
-            </select>`;
-            c += `<br><input type="range" class="opacity" name="opacity" min="0.01" max="1" step="0.01" value="0.9" />`
-		$('#ReconstructionMapSettingsBox').html(c).promise().done(function(){
-            $('#ReconstructionMapSettingsBox .scale-view').on('change', function(){
-                let unit = parseFloat($('.scale-view option:selected').data('scale'));
-                localStorage.setItem('ReconstructionMapScale', unit);
-                $('#ReconstructionMapBody .map-grid-wrapper').css('--scale', unit);
-            });
-            $('#ReconstructionMapSettingsBox .opacity').on('change', function(){
-                let val = parseFloat($('#ReconstructionMapSettingsBox .opacity').val());
-                $('#ReconstructionMapBody .map-grid-wrapper').css('opacity', val);
-            });
+    mapSettings: () => {
+    // valori default
+    const defaultScale = 80;
+    const defaultOpacity = 0.9;
+
+    // recupera valori salvati o usa default
+    let storedScale = parseFloat(localStorage.getItem('ReconstructionMapScale') || defaultScale);
+    let storedOpacity = parseFloat(localStorage.getItem('ReconstructionMapOpacity') || defaultOpacity);
+
+    // definisci i preset
+    const presets = [
+        {label: 'S', value: 50},
+        {label: 'M', value: 80},
+        {label: 'L', value: 100},
+        {label: 'XL', value: 156.1},
+        {label: 'XXL', value: 400}
+    ];
+
+    // crea select con preset
+    let c = `
+        <label>${i18n('Boxes.ReconstructionMap.ScalePreset')}</label><br>
+        <select class="scale-view" name="reconstructionscale">
+    `;
+
+    presets.forEach(p => {
+        c += `
+            <option data-scale="${p.value}" ${storedScale === p.value ? 'selected' : ''}>
+                ${p.label}
+            </option>
+        `;
+    });
+    c += `</select>`;
+
+    // aggiungi slider zoom e opacità + pulsante reset
+    c += `
+        <br><br>
+
+        <label>
+            ${i18n('Boxes.ReconstructionMap.Zoom')}:
+            <span class="scale-value">${Math.round(storedScale)}%</span>
+        </label>
+        <input type="range" class="scale-slider" name="reconstructionscale"
+               min="50" max="400" step="1" value="${storedScale}" />
+
+        <br><br>
+
+        <label>
+            ${i18n('Boxes.ReconstructionMap.Opacity')}:
+            <span class="opacity-value">${storedOpacity.toFixed(2)}</span>
+        </label>
+        <input type="range" class="opacity" name="opacity"
+               min="0.01" max="1" step="0.01" value="${storedOpacity}" />
+
+        <br><br>
+
+        <button class="reset-map-settings">
+            ${i18n('Boxes.ReconstructionMap.Reset')}
+        </button> 
+    `;
+
+    // inserisce HTML
+    $('#ReconstructionMapSettingsBox').html(c).promise().done(function(){
+        const $mapWrapper = $('#ReconstructionMapBody .map-grid-wrapper');
+        const $scaleSlider = $('#ReconstructionMapSettingsBox .scale-slider');
+        const $scaleSelect = $('#ReconstructionMapSettingsBox .scale-view');
+        const $scaleValue = $('#ReconstructionMapSettingsBox .scale-value');
+        const $opacitySlider = $('#ReconstructionMapSettingsBox .opacity');
+        const $opacityValue = $('#ReconstructionMapSettingsBox .opacity-value');
+
+        // funzione per colorare lo slider
+        const updateSliderColor = (slider, val, min, max) => {
+            const percent = ((val - min) / (max - min)) * 100;
+            slider.css('background', `linear-gradient(to right, #4caf50 0%, #4caf50 ${percent}%, #ccc ${percent}%, #ccc 100%)`);
+        };
+
+        // applica valori iniziali
+        $mapWrapper.css('--scale', storedScale);
+        $mapWrapper.css('opacity', storedOpacity);
+        updateSliderColor($scaleSlider, storedScale, 50, 400);
+        updateSliderColor($opacitySlider, storedOpacity, 0.01, 1);
+
+        // gestione select preset
+        $scaleSelect.on('change', function(){
+            let unit = parseFloat($(this).find('option:selected').data('scale'));
+            localStorage.setItem('ReconstructionMapScale', unit);
+            $mapWrapper.css('--scale', unit);
+
+            $scaleSlider.val(unit);
+            $scaleValue.text(Math.round(unit));
+            updateSliderColor($scaleSlider, unit, 50, 400);
         });
-    }
+
+        // gestione slider zoom
+        $scaleSlider.on('input', function(){
+            let val = parseFloat($(this).val());
+            localStorage.setItem('ReconstructionMapScale', val);
+            $mapWrapper.css('--scale', val);
+            $scaleValue.text(Math.round(val));
+            updateSliderColor($scaleSlider, val, 50, 400);
+
+            // aggiorna select se corrisponde a un preset
+            const matchedPreset = presets.find(p => p.value === val);
+            if(matchedPreset){
+                $scaleSelect.val(matchedPreset.value);
+            } else {
+                $scaleSelect.val('');
+            }
+        });
+
+        // gestione slider opacità
+        $opacitySlider.on('input', function(){
+            let val = parseFloat($(this).val());
+            localStorage.setItem('ReconstructionMapOpacity', val);
+            $mapWrapper.css('opacity', val);
+            $opacityValue.text(val.toFixed(2));
+            updateSliderColor($opacitySlider, val, 0.01, 1);
+        });
+
+        // gestione pulsante reset
+        $('#ReconstructionMapSettingsBox .reset-map-settings').on('click', function(){
+            localStorage.setItem('ReconstructionMapScale', defaultScale);
+            localStorage.setItem('ReconstructionMapOpacity', defaultOpacity);
+
+            $mapWrapper.css('--scale', defaultScale);
+            $mapWrapper.css('opacity', defaultOpacity);
+
+            $scaleSlider.val(defaultScale);
+            $scaleValue.text(defaultScale);
+            updateSliderColor($scaleSlider, defaultScale, 50, 400);
+
+            $opacitySlider.val(defaultOpacity);
+            $opacityValue.text(defaultOpacity);
+            updateSliderColor($opacitySlider, defaultOpacity, 0.01, 1);
+
+            const matchedPreset = presets.find(p => p.value === defaultScale);
+            if(matchedPreset){
+                $scaleSelect.val(matchedPreset.value);
+            } else {
+                $scaleSelect.val('');
+            }
+        });
+    });
+  }
 }
 
