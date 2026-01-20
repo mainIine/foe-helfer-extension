@@ -183,7 +183,7 @@ const Profile = {
         cl.push(HTML.Format(roadAmount)+'</span>');
 
         cl.push('<span><img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_expansion.png`,true)+'" />');
-        cl.push(HTML.Format(CityMap.UnlockedAreas.length*16+256-16)+'</span>'); // unlocked areas + start area (- 16 somehow?)
+        cl.push(HTML.Format(CityMap.Main.unlockedAreas.length*16+256-16)+'</span>'); // unlocked areas + start area (- 16 somehow?)
         cl.push('</div>');
 
         cl.push('<div class="greatbuildings pad text-center">')
@@ -548,7 +548,7 @@ const Profile = {
 
         let content = [];
         CityMap.OtherPlayer.eraName = Profile.otherPlayer.other_player.era;
-        let buildings = Object.values(CityMap.createNewCityMapEntities(Object.values(CityMap.OtherPlayer.mapData)));
+        let buildings = Object.values(CityBuildings.createBuildings(Object.values(CityMap.OtherPlayer.mapData)));
         let boosts = {
             "critical_hit_chance": 0,
             "forge_points_production": 0,

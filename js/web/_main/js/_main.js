@@ -341,8 +341,8 @@ GetFights = () =>{
 		GoodsList = data.responseData.goodsList
 
 		// freigeschaltete Erweiterungen sichern
-		CityMap.UnlockedAreas = data.responseData.city_map.unlocked_areas;
-		CityMap.BlockedAreas = data.responseData.city_map.blocked_areas;
+		CityMap.Main.unlockedAreas = data.responseData.city_map.unlocked_areas;
+		CityMap.Main.blockedAreas = data.responseData.city_map.blocked_areas;
 
 		// EventCountdown
 		let eventCountDownFeature = data.responseData.feature_flags?.features.filter((v) => { return (v.feature === "event_start_countdown") });
@@ -413,7 +413,7 @@ GetFights = () =>{
 		MainParser.UpdateActiveMap(data.responseData.gridId);
 
 		if (ActiveMap === 'era_outpost') {
-			CityMap.EraOutpostData = Object.assign({}, ...data.responseData['entities'].map((x) => ({ [x.id]: x })));
+			CityMap.EraOutpost.data = Object.assign({}, ...data.responseData['entities'].map((x) => ({ [x.id]: x })));
 			CityMap.EraOutpost.areas = data.responseData['unlocked_areas'];
 		}
 		else if (ActiveMap === 'guild_raids') {
@@ -441,14 +441,14 @@ GetFights = () =>{
 
 		if (ActiveMap === 'gg') return; // getEntities wurde in den GG ausgelöst => Map nicht ändern
 		MainParser.UpdateActiveMap('main');
-		CityMap.OtherPlayer = { mapData: {}, unlockedAreas: null};
+		CityMap.OtherPlayer = { mapData: {}, unlockedAreas: null, name: '', eraName: null};
 	});
 
 
 	// main is entered
 	FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, postData) => {
 		MainParser.UpdateActiveMap('main');
-		CityMap.OtherPlayer = { mapData: {}, unlockedAreas: null};
+		CityMap.OtherPlayer = { mapData: {}, unlockedAreas: null, name: '', eraName: null};
 	});
 
 	// gex is entered
@@ -475,6 +475,7 @@ GetFights = () =>{
 	FoEproxy.addHandler('OtherPlayerService', 'visitPlayer', (data, postData) => {
 		MainParser.UpdateActiveMap('OtherPlayer');
 		LastMapPlayerID = data.responseData.other_player.player_id;
+		CityMap.OtherPlayer.name = data.responseData.other_player.name;
 		CityMap.OtherPlayer.unlockedAreas = data.responseData.city_map.unlocked_areas;
 		CityMap.OtherPlayer.mapData = Object.assign({}, ...data.responseData.city_map.entities.map(x => ({ [x.id]: x })));
 	});
@@ -495,7 +496,7 @@ GetFights = () =>{
 					return
 				}
 				else if (ActiveMap === "era_outpost") {
-					CityMap.EraOutpostData[building.id] = building
+					CityMap.EraOutpost.data[building.id] = building
 					return
 				}
 				else if (ActiveMap === "guild_raids") {
@@ -513,7 +514,7 @@ GetFights = () =>{
 				return
 			}
 			else if (ActiveMap === "era_outpost") {
-				delete CityMap.EraOutpostData[ID];
+				delete CityMap.EraOutpost.data[ID];
 				return
 			}
 			else if (ActiveMap === "guild_raids") {
@@ -522,8 +523,8 @@ GetFights = () =>{
 			}
 			if (ID && MainParser.CityMapData[ID]) {
 				delete MainParser.CityMapData[ID];
-				if (MainParser.NewCityMapData[ID])
-					delete MainParser.NewCityMapData[ID];
+				if (MainParser.CityBuildingsData[ID])
+					delete MainParser.CityBuildingsData[ID];
 			}
 		}
 		FoEproxy.triggerFoeHelperHandler('CityMapUpdated');
@@ -776,7 +777,7 @@ GetFights = () =>{
 			if (MainParser.Inventory[postData?.requestData?.[0]?.itemId].itemAssetName =="store_building") {
 				let id= postData?.requestData?.[0]?.mapEntityId
 				if (MainParser.CityMapData[id]) delete MainParser.CityMapData[id]
-				if (MainParser.NewCityMapData[id]) delete MainParser.NewCityMapData[id]
+				if (MainParser.CityBuildingsData[id]) delete MainParser.CityBuildingsData[id]
 			}
 		}
 	});
@@ -996,10 +997,9 @@ let MainParser = {
 
 	// all buildings of the player
 	CityMapData: {},
-	NewCityMapData: {},
+	CityBuildingsData: {},
 
 	// Unlocked extensions
-	UnlockedAreas: null,
 	Quests: null,
 	ArkBonus: 0,
 	Inventory: {},
@@ -2047,7 +2047,7 @@ let MainParser = {
 				MainParser.CityMapData[ID] = Buildings[i];
 			} 
 			if (ActiveMap === "era_outpost") {
-				CityMap.EraOutpostData[ID] = Buildings[i];
+				CityMap.EraOutpost.data[ID] = Buildings[i];
 			}
 			else if (ActiveMap === "cultural_outpost") {
 				CityMap.CulturalOutpost.data[ID] = Buildings[i];

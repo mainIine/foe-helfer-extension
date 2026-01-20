@@ -652,14 +652,7 @@ let _menu = {
 		let btn_CityBG = _menu.MakeButton('cityMap', i18n('Menu.Citymap.Title'), i18n('Menu.Citymap.Desc'));
 
 		let btn_City = $('<span />').on('click', function () {
-			if (LastMapPlayerID === ExtPlayerID) {
-				CityMap.init(false, MainParser.NewCityMapData);
-			}
-			else {
-				let Player = PlayerDict[LastMapPlayerID];
-				let PlayerName = (Player ? Player['PlayerName'] : '???');
-				CityMap.init(false, CityMap.OtherPlayer.mapData, PlayerName);
-            }
+			CityMap.init(false);
 		});
 
 		return btn_CityBG.append(btn_City);
