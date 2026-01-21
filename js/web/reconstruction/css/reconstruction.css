@@ -42,7 +42,7 @@
   border: none;
 }
 #ReconstructionMap.window-box {
-  background: #0001;
+  background: var(--black-15);
   pointer-events: none;
   width: 50%;
   height: 50%;

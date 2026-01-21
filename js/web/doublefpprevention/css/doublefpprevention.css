@@ -24,6 +24,6 @@
     align-items: center;
     text-align: center;
     font-size: 120%;
-    background-color: rgba(103, 1, 1, 0.5);
+    background-color: var(--table-bg-error);
 }
 

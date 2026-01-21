@@ -37,7 +37,7 @@
 	left: 0;
 	width: 100%;
 	height: 100%;
-	background: #000000c0;
+	background: var(--black-65);
 	z-index: 100;
 	opacity: 1;
 

@@ -592,8 +592,8 @@ const Profile = {
             }
         }
         if (n) {
-            boosts['att_boost_defender-all'] = Math.random() * 30000 + 300;
-            boosts['def_boost_defender-all'] = Math.random() * 32000 + 300;
+            boosts['att_boost_defender'] = Math.random() * 30000 + 300;
+            boosts['def_boost_defender'] = Math.random() * 32000 + 300;
         }
 
         content.push('<div class="dailyProd pad text-center">');
@@ -644,8 +644,8 @@ const Profile = {
         content.push('<table><tr class="general">'
             +'<td><span class="aAtt">'+HTML.Format(parseInt(boosts['att_boost_attacker-all']))+'</span>'
             +'<span class="aDef">'+HTML.Format(parseInt(boosts['def_boost_attacker-all']))+'</span> </td>'
-            +`<td></td><td><span class="dAtt ${n?'blur" data-original-title="'+i18n('Boxes.PlayerProfile.OtherPlayerNotAvailable')+'"':'"'}">`+HTML.Format(parseInt(boosts['att_boost_defender-all']))+'</span>'
-            +`<span class="dDef ${n?'blur" data-original-title="'+i18n('Boxes.PlayerProfile.OtherPlayerNotAvailable')+'"':'"'}>`+HTML.Format(parseInt(boosts['def_boost_defender-all']))+'</span> </td></tr>');
+            +`<td></td><td><span class="dAtt ${n?'blur" data-original-title="'+i18n('Boxes.PlayerProfile.OtherPlayerNotAvailable')+'"':'"'}">`+HTML.Format(parseInt(n?boosts['att_boost_defender']:boosts['att_boost_defender-all']))+'</span>'
+            +`<span class="dDef ${n?'blur" data-original-title="'+i18n('Boxes.PlayerProfile.OtherPlayerNotAvailable')+'"':'"'}>`+HTML.Format(parseInt(n?boosts['def_boost_defender']:boosts['def_boost_defender-all']))+'</span> </td></tr>');
         content.push('<tr>'
             +'<td><span class="aAtt">'+HTML.Format(parseInt(boosts['att_boost_attacker-battleground']+boosts['att_boost_attacker-all']))+'</span>'
             +'<span class="aDef">'+HTML.Format(parseInt(boosts['def_boost_attacker-battleground']+boosts['def_boost_attacker-all']))+'</span> </td>'
