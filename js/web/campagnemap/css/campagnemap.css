@@ -50,7 +50,7 @@
 }
 
 #campagne #campagneBody .text-danger {
-	color: #ff4040;
+	color: var(--text-danger);
 	font-weight: 700;
 }
 
@@ -83,7 +83,7 @@
 	position: absolute;
 	white-space: nowrap;
 	text-align: left;
-	background: rgba(0,0,0, 0.7);
+	background: var(--black-65);
 	padding: 5px;
 	right: 6px;
 	top: 25px;
