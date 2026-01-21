@@ -75,7 +75,7 @@
     position: absolute;
     right: 320px;
     bottom: 10px;
-    background: #a4a45d;
+    background: var(--tooltip-inhabitant);
 }
 .HXBuilding .inhabitant {
     max-width: unset;
@@ -83,7 +83,7 @@
     position: absolute;
     right: 320px;
     bottom: 10px;
-    background: #a4a45d;
+    background: var(--tooltip-inhabitant);
 }
 td:nth-child(3) .HXBuilding .inhabitant {
     display: none;
@@ -99,7 +99,7 @@ td:nth-child(3) .HXBuilding .inhabitant {
     padding-right: 0px;
 }
 .HXBuilding .randomProductions {
-    border: 2px #350000e8 solid;
+    border: 2px var(--table-bg-error) solid;
     margin-left: -6px;
     margin-top: -4px;
     margin-bottom: -4px;
@@ -316,8 +316,8 @@ td:nth-child(3) .HXBuilding .inhabitant {
     font-size: large;
     font-weight: bolder;
     text-align: right;
-    color: darkorange;
-	filter: drop-shadow(2px 4px 6px black);
+    color: var(--orange);
+	filter: drop-shadow(2px 4px 6px var(--black));
 }
 .inventoryChainAscendedStock::after {
 	content: '';
@@ -362,7 +362,7 @@ td:nth-child(3) .HXBuilding .inhabitant {
     display: inline-flex;
     height: 22px;
     align-items: center;
-    color: #74c409;
+    color: var(--text-highlight);
     margin-left: 4px;
     padding: 0 4px;
     background-color: var(--black-50);
@@ -393,7 +393,7 @@ td:nth-child(3) .HXBuilding .inhabitant {
 
 .inventoryTooltip .upgrades .silver,
 .buildingTT .upgrades .silver {
-	color: #b8b9b9;
+	color: var(--silver);
 }
 
 .inventoryTooltip .upgrades .silver::after,
@@ -403,7 +403,7 @@ td:nth-child(3) .HXBuilding .inhabitant {
 
 .inventoryTooltip .upgrades .golden,
 .buildingTT .upgrades .golden {
-	color: #fedc00;
+	color: var(--golden);
 }
 
 .inventoryTooltip .upgrades .golden::after,
@@ -413,7 +413,7 @@ td:nth-child(3) .HXBuilding .inhabitant {
 
 .inventoryTooltip .upgrades .platinum,
 .buildingTT .upgrades .platinum {
-	color: #e9ceef;
+	color: var(--platinum);
 }
 
 .inventoryTooltip .upgrades .platinum::after,
@@ -423,7 +423,7 @@ td:nth-child(3) .HXBuilding .inhabitant {
 
 .inventoryTooltip .upgrades .ascended,
 .buildingTT .upgrades .ascended {
-	color: #ffae33e0;
+	color: var(--ascended);
 }
 
 .inventoryTooltip .upgrades .ascended::after,

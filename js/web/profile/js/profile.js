@@ -5,7 +5,8 @@ FoEproxy.addHandler('AchievementsService','getOverview', (data, postData) => {
         $('#playerProfile-Btn').removeClass('hud-btn-red');
         $('#playerProfile-Btn-closed').remove();
     }
-});FoEproxy.addHandler('OtherPlayerService','visitPlayer', (data, postData) => {
+});
+FoEproxy.addHandler('OtherPlayerService','visitPlayer', (data, postData) => {
     Profile.otherPlayer = data.responseData;
     Profile.showButton();
 });
@@ -547,6 +548,7 @@ const Profile = {
         HTML.AddCssFile('profile');
 
         let content = [];
+        let n = (Profile.otherPlayer.other_player.is_guild_member === undefined && Profile.otherPlayer.other_player.is_friend === undefined);
         CityMap.OtherPlayer.eraName = Profile.otherPlayer.other_player.era;
         let buildings = Object.values(CityBuildings.createBuildings(Object.values(CityMap.OtherPlayer.mapData)));
         let boosts = {
@@ -588,6 +590,10 @@ const Profile = {
                 if (boost.type[0] === "guild_goods_production")
                     boosts.guild_goods_production += boost.value;
             }
+        }
+        if (n) {
+            boosts['att_boost_defender-all'] = Math.random() * 30000 + 300;
+            boosts['def_boost_defender-all'] = Math.random() * 32000 + 300;
         }
 
         content.push('<div class="dailyProd pad text-center">');
@@ -638,8 +644,8 @@ const Profile = {
         content.push('<table><tr class="general">'
             +'<td><span class="aAtt">'+HTML.Format(parseInt(boosts['att_boost_attacker-all']))+'</span>'
             +'<span class="aDef">'+HTML.Format(parseInt(boosts['def_boost_attacker-all']))+'</span> </td>'
-            +'<td></td><td><span class="dAtt">'+HTML.Format(parseInt(boosts['att_boost_defender-all']))+'</span>'
-            +'<span class="dDef">'+HTML.Format(parseInt(boosts['def_boost_defender-all']))+'</span> </td></tr>');
+            +`<td></td><td><span class="dAtt ${n?'blur" data-original-title="'+i18n('Boxes.PlayerProfile.OtherPlayerNotAvailable')+'"':'"'}">`+HTML.Format(parseInt(boosts['att_boost_defender-all']))+'</span>'
+            +`<span class="dDef ${n?'blur" data-original-title="'+i18n('Boxes.PlayerProfile.OtherPlayerNotAvailable')+'"':'"'}>`+HTML.Format(parseInt(boosts['def_boost_defender-all']))+'</span> </td></tr>');
         content.push('<tr>'
             +'<td><span class="aAtt">'+HTML.Format(parseInt(boosts['att_boost_attacker-battleground']+boosts['att_boost_attacker-all']))+'</span>'
             +'<span class="aDef">'+HTML.Format(parseInt(boosts['def_boost_attacker-battleground']+boosts['def_boost_attacker-all']))+'</span> </td>'
@@ -691,6 +697,7 @@ const Profile = {
                 $(this).remove();
                 $('.tooltip').remove();
             });
+            $('#OtherPlayerProfile [data-original-title]').tooltip();
         });
 	},
 

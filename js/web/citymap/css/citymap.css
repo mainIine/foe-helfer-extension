@@ -48,7 +48,7 @@
 	right: 240px;
 	bottom: 0;
 	left: 0;
-	border-right: 2px solid #281207;
+	border-right: 2px solid var(--text-darker);
 	background-color: var(--black-50);
 	box-sizing: border-box;
 }
@@ -126,7 +126,7 @@
 }
 
 .outpost.guild_raids .qiSums {
-	background: linear-gradient(180deg, #452c16 20%, transparent);
+	background: linear-gradient(180deg, var(--text-dark2) 20%, transparent);
 	padding: 7px;
 }
 .outpost.guild_raids .qiSums span {
@@ -389,7 +389,7 @@
 	left: 50%;
 	top: 50%;
 	padding: 2px 3px;
-	background-color: #333;
+	background-color: var(--grey);
 	white-space: nowrap;
 }
 
