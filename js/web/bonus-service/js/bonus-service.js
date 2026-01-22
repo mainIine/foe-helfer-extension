@@ -43,11 +43,8 @@ FoEproxy.addHandler('BonusService', 'getLimitedBonuses', (data, postData) => {
 });
 
 FoEproxy.addFoeHelperHandler('QuestsUpdated', data => {
-	if ($('#bonus-hud').length > 0) {
+	if ($('#bonus-hud').length == 0) return;
 		BonusService.CalcBonusData();
-	} else if (Settings.GetSetting('RivalSound')) {
-		BonusService.checkRivalComplete();
-	}
 });
 
 // Guildfights enter
@@ -282,15 +279,5 @@ let BonusService = {
 			if (Quest['state'] === 'collectReward') Ret += 1;
 		}
 		return Ret;
-    },
-
-	checkRivalComplete: () => {
-		if (!MainParser.Quests) return; 
-		for (let Quest of MainParser.Quests) {
-			if (Quest?.questGiver?.id.indexOf("rival") >=0 && Quest.state == 'collectReward') {
-				helper.sounds.play("message");
-				break;
-			}
-		}
-	}
+    }
 }
