@@ -156,11 +156,11 @@ let Productions = {
 	init: () => {
 		if (ActiveMap === 'OtherPlayer') return
 
-		MainParser.NewCityMapData = CityMap.createNewCityMapEntities(Object.values(MainParser.CityMapData))
-		Productions.CombinedCityMapData = MainParser.NewCityMapData
+		MainParser.CityBuildingsData = CityBuildings.createBuildings(Object.values(MainParser.CityMapData))
+		Productions.CombinedCityMapData = MainParser.CityBuildingsData
 
-		if (CityMap.EraOutpostData) {
-			Productions.CombinedCityMapData = Object.assign({}, Productions.CombinedCityMapData, CityMap.EraOutpostData)
+		if (CityMap.EraOutpost.data) {
+			Productions.CombinedCityMapData = Object.assign({}, Productions.CombinedCityMapData, CityMap.EraOutpost.data)
 		}
 
 		// leere Arrays erzeugen
@@ -483,18 +483,18 @@ let Productions = {
 
 
 	setChainsAndSets(buildings) {
-		if (buildings === undefined) buildings = Object.values(MainParser.NewCityMapData)
+		if (buildings === undefined) buildings = Object.values(MainParser.CityBuildingsData)
 
 		for (const building of buildings) {
 			if (building?.setBuilding !== undefined) {
 				// todo
-				// CityMap.findAdjacentSetBuildingByCoords(building.coords.x, building.coords.y, building.setBuilding.name)
+				// CityBuildings.findAdjacentSetBuildingByCoords(building.coords.x, building.coords.y, building.setBuilding.name)
 			} 
 			else if (building?.chainBuilding !== undefined && building?.chainBuilding?.type === "start") {
 
-				let linkedBuildings = CityMap.hasLinks(building);
+				let linkedBuildings = CityBuildings.hasLinks(building);
 				if (linkedBuildings.length > 1) {
-					CityMap.createChainedBuilding(linkedBuildings);
+					CityBuildings.createChainedBuilding(linkedBuildings);
 
 					for (const link of linkedBuildings) {
 						if (link.chainBuilding.type === 'linked') {
@@ -518,7 +518,7 @@ let Productions = {
 		buildingIds = Productions.BuildingsProducts[type]
 
 		buildingIds.forEach(b => {
-			let building = CityMap.getBuildingById(b.id)
+			let building = CityBuildings.getBuildingById(b.id)
 			if (building.player_id === ExtPlayerID) {
 			rowA.push('<tr>')
 			rowA.push('<td>')
@@ -625,7 +625,7 @@ let Productions = {
 
 			if (type !== 'goods' && type !== 'clan_goods' && type !== 'guild_raids') {
 				for (const b of buildingIds) {
-					let building = CityMap.getBuildingById(b.id)
+					let building = CityBuildings.getBuildingById(b.id)
 					if (building?.player_id !== ExtPlayerID) continue;
 					// makes random productions with resources and others disappear from the item list
 					if (type === 'items' && Productions.showBuildingItems(true, building)[0] === "" || building.chainBuilding?.type === "linked") continue;
@@ -900,14 +900,14 @@ let Productions = {
 	getRelevantGoodsByEra: (buildingIds, guildGoods = false) => {
 		let eras = [];
 		for (const b of buildingIds) {
-			let building = CityMap.getBuildingById(b.id);
+			let building = CityBuildings.getBuildingById(b.id);
 			if (building.player_id !== ExtPlayerID) continue;
 			
 			let allGoods = {};
 			if (guildGoods)
-				allGoods = CityMap.getBuildingGuildGoodsByEra(false, building, true);
+				allGoods = CityBuildings.getBuildingGuildGoodsByEra(false, building, true);
 			else
-				allGoods = CityMap.getBuildingGoodsByEra(false, building, true);
+				allGoods = CityBuildings.getBuildingGoodsByEra(false, building, true);
 
 			if (allGoods === undefined) continue;
 
@@ -949,7 +949,7 @@ let Productions = {
 
 		// single view table content
 		for (const b of buildingIds) {
-			let building = CityMap.getBuildingById(b.id);
+			let building = CityBuildings.getBuildingById(b.id);
 			if (building.player_id !== ExtPlayerID) continue;
 
 			rowA.push('<tr>')
@@ -1113,7 +1113,7 @@ let Productions = {
 
 		// single view table content
 		for (const b of buildingIds) {
-			let building = CityMap.getBuildingById(b.id)
+			let building = CityBuildings.getBuildingById(b.id)
 			if (building.player_id !== ExtPlayerID) continue; 
 
 			rowA.push('<tr>')
@@ -1139,8 +1139,8 @@ let Productions = {
 				updateGroup.amount++
 			}
 
-			let currentGoods = CityMap.getBuildingGuildGoodsByEra(true, building, true)
-			let allGoods = CityMap.getBuildingGuildGoodsByEra(false, building, true)
+			let currentGoods = CityBuildings.getBuildingGuildGoodsByEra(true, building, true)
+			let allGoods = CityBuildings.getBuildingGuildGoodsByEra(false, building, true)
 
 			for (const era of eras) {
 				let currentGoodAmount = 0
@@ -1447,7 +1447,7 @@ let Productions = {
 		}
 
 		if (category === "goods") {
-			return CityMap.getBuildingGoodsByEra(current, building, true);
+			return CityBuildings.getBuildingGoodsByEra(current, building, true);
 		}
 		if (category === "forge_points_production" || category === "coin_production" || category === "supply_production") {
 			prod.amount = building.boosts.filter(x => x.type[0] === category)[0].value // not really rock solid like this
@@ -1585,7 +1585,7 @@ let Productions = {
 		let IDArray = (ids.length !== undefined ? ids : [ids]);
 
 		if( $('#citymap-main').length < 1 )
-			CityMap.init(null, MainParser.CityMapData);
+			CityMap.init(null);
 
 		$('#grid-outer').removeClass('desaturate');
 		$('[data-id]').removeClass('highlighted');
@@ -1610,7 +1610,7 @@ let Productions = {
 
 	ShowSearchOnMap: (name) => {
 		if( $('#citymap-main').length < 1 )
-			CityMap.init(null, MainParser.CityMapData);
+			CityMap.init(null);
 
 		$('#grid-outer').removeClass('desaturate');
 
@@ -1785,7 +1785,7 @@ let Productions = {
 		let h = [];
 
 		let withAllies = Productions.efficiencySettings.showallies;
-		Productions.BuildingsAll = Object.values(CityMap.createNewCityMapEntities(Object.values(MainParser.CityMapData),withAllies));
+		Productions.BuildingsAll = Object.values(CityBuildings.createBuildings(Object.values(MainParser.CityMapData),withAllies));
 		Productions.setChainsAndSets(Productions.BuildingsAll);
 
 		// grab special buildings
@@ -1803,7 +1803,7 @@ let Productions = {
 		for (let [id,data] of Object.entries(InventoryBuildings)){
 			//if(!id || id.slice(0, 2) !== 'W_') continue; // if starts not with "W_", continue
 			let metaData = MainParser.CityEntities[id];
-			let building = CityMap.createNewCityMapEntity(metaData, CurrentEra);
+			let building = CityBuildings.createBuilding(metaData, CurrentEra);
 			building.isInInventory = true;
 			Productions.BuildingsAll.push(building);
 			buildingCount[id+"I"] = data.amount||1;
@@ -2333,7 +2333,7 @@ let Productions = {
 	rateBuildings: (uniqueBuildings,additional=false,era=null) => {
 		let ratedBuildings = [];
 		if (additional) {
-			uniqueBuildings = uniqueBuildings.map(x=>CityMap.createNewCityMapEntity(x,era||CurrentEra));
+			uniqueBuildings = uniqueBuildings.map(x=>CityBuildings.createBuilding(x,era||CurrentEra));
 		}
 		for (const building of uniqueBuildings) {
 			// do not include wishingwell type buildings
@@ -2398,7 +2398,7 @@ let Productions = {
 			return Productions.getBuildingProductionByCategory(false, building, type).amount
 
 		else if (type.includes("goods") && !type.includes("guild_raids_")) {
-			let allGoods = CityMap.getBuildingGoodsByEra(false, building);
+			let allGoods = CityBuildings.getBuildingGoodsByEra(false, building);
 			let era = (ActiveMap === "OtherPlayer" ? CityMap.OtherPlayer.eraName : CurrentEra)
 
 			if (allGoods !== undefined) {

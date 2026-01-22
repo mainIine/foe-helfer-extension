@@ -31,7 +31,7 @@
 }
 
 #bluegalaxy #bluegalaxyBody strong.error {
-    color: #ec4d4d;
+    color: var(--text-danger);
 }
 
 .text-bright {

@@ -31,7 +31,7 @@
 
 #moppelhelper .bigerror {
     font-size: 150%;
-    color: #ec4d4d;
+    color: var(--text-danger);
 }
 
 #moppelhelper .header {

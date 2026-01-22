@@ -319,7 +319,7 @@ let Tooltips = {
                 out += `<tr><td class="limited">${srcLinks.icons("limited_building_downgrade") + MainParser.CityEntities[levels.AllAge.limited.config.targetCityEntityId].name} (${i18n("Boxes.Tooltip.Building.after")} ${formatTime(levels.AllAge.limited.config.expireTime)})${efficiencyDifference ? " → "+i18n("Boxes.Kits.Efficiency")+": " + (efficiency - efficiencyDifference): ""}</td></tr>`
             }   
 
-            if (await CityMap.canAscend(meta.id)) {
+            if (await CityBuildings.canAscend(meta.id)) {
                 let ascendedId=(await CityMap.AscendingBuildings)[meta.id]
                 if (efficiency) {
                     let ratings = Productions.rateBuildings([meta.id,ascendedId],true,era)?.map(x=>Math.round(100 * x?.rating?.totalScore)||0)

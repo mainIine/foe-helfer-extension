@@ -53,12 +53,12 @@
 	display: table;
 }
 #Productions #ProductionsBody table tbody.parent th {
-	background-color: #3f2a1b;
+	background-color: var(--text-dark2);
 	color: var(--bright-color);
 	padding-top: 15px;
 }
 #Productions #ProductionsBody table tr.highlight-row {
-	background-color: rgba(40, 18, 7, 0.8);
+	background-color: var(--table-bg-highlight);
 	color: var(--bright-color);
 }
 #Productions #ProductionsBody table #all-search {
@@ -69,7 +69,7 @@
 	line-height: 18px;
 }
 #Productions #ProductionsBody table thead {
-	background-color: rgba(0, 0, 0, 0.35);
+	background-color: var(--black-30);
 }
 #Productions #ProductionsBody table thead th small {
 	font-weight: normal;
@@ -78,7 +78,7 @@
 	display: inline-block;
 	padding: 2px 4px;
 	border-radius: 2px;
-	background-color: rgba(0, 0, 0, 0.4);
+	background-color: var(--black-30);
 	margin: 3px 8px 2px 0;
 	white-space: nowrap;
 }
@@ -638,7 +638,7 @@ input[id*="ProdPerTile"] {
 	color: var(--text-highlight);
 }
 #ProductionsRatingBody strong.error {
-	color: #ec4d4d;
+	color: var(--text-danger);
 }
 #ProductionsRatingBody span.resicon {
 	display: inline-block;

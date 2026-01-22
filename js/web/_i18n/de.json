@@ -938,6 +938,7 @@
     "Boxes.PlayerProfile.GamePlay": "Spielweise",
     "Boxes.PlayerProfile.NoSettlementsFinished": "Noch keine Siedlungen abgeschlossen",
     "Boxes.PlayerProfile.OpenProduction": "Bitte öffne den Güter- und Gildengüter-Tab in der Produktionsübersicht, um diese Daten anzuzeigen.",
+    "Boxes.PlayerProfile.OtherPlayerNotAvailable": "Dieser Wert ist nicht verfügbar, weil der Spieler weder in deiner Gilde, noch ein Freund ist.",
     "Boxes.PlayerProfile.OtherPlayerDisclaimer": "Hinweis: Geboostete Produktionen können etwas höher sein, weil der Boost auf die Summe, nicht auf einzelne Gebäude gerechnet wird. Die Kampfkraft ist meist höher als angegeben, weil wir keine Informationen zu Verbündeten auslesen können.",
     "Boxes.PlayerProfile.OtherPlayerTroubleshooting": "Fehlende/kaputte Werte? Die Effizienzbewertung wird als Grundlage der Daten genommen, bitte aktiviere alle notwendigen Felder.",
     "Boxes.PlayerProfile.QIBoosts": "QI Boosts",

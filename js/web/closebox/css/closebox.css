@@ -30,8 +30,8 @@
 }
 
 #CloseBoxBody {
-    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px, rgb(116 73 24) 0px 0px 0px 3px;
-    background: rgb(116 73 24);
+    box-shadow: var(--black-30) 0px 1px 4px, var(--border-tab) 0px 0px 0px 3px;
+    background: var(--border-tab);
     border-radius: 5px;
 }
 

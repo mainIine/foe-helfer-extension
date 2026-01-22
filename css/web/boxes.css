@@ -2250,6 +2250,10 @@ tr.sorter-header th:not(.no-sort).descending:after {
 	width: 100%
 }
 
+.blur {
+	filter: blur(3px);
+}
+
 .scrollup {
 	border-radius: 50%;
 	width: 30px;
