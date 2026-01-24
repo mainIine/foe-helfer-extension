@@ -1031,7 +1031,7 @@
     "Boxes.ProductionsRating.Best": "Meilleur",
     "Boxes.ProductionsRating.BuildingName": "Bâtiment",
     "Boxes.ProductionsRating.ConfirmReset": "Confirmer la réinitialisation ?",
-    "Boxes.ProductionsRating.CountTooltip": "Montant actuel placé dans votre ville. Remarque : tous les bâtiments ne correspondent peut-être pas à l'ère indiquée à côté du nom. Vérifiez la carte pour être sûr !",
+    "Boxes.ProductionsRating.CountTooltip": "Nombre actuel placé dans votre ville. Remarque : tous les bâtiments ne correspondent peut-être pas à l'ère indiquée à côté du nom. Vérifiez la carte pour être sûr !",
     "Boxes.ProductionsRating.Disclaimer": "Pour les bâtiments de chaîne, l’ensemble de la chaîne est traité comme un seul bâtiment. Pour les ensembles, nous supposons que toutes les pièces sont entièrement connectées.",
     "Boxes.ProductionsRating.Enabled": "Activé",
     "Boxes.ProductionsRating.Explainer": "Sélectionnez la quantité idéale que chacun de vos bâtiments devrait produire par case. L'équilibre entre toutes les valeurs sélectionnées est important pour la note finale. Utilisez des valeurs plus élevées pour les choses qui ne vous intéressent pas autant et des valeurs plus basses si vous souhaitez mettre davantage l'accent sur des ressources/boost particuliers.Si vous possédez plus d’un bâtiment du même type, seul le bâtiment ayant l’ancienneté la plus élevée sera évalué.",
