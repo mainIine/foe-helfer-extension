@@ -468,7 +468,7 @@ GetFights = () =>{
 		if (!data.responseData?.endsAt) return;
 
 		MainParser.UpdateActiveMap('guild_raids');
-
+		CityMap.QI.level = data.responseData.raidInstance?.difficultyLevel;
 	});
 
 	// visiting another player

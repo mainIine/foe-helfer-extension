@@ -45,7 +45,8 @@ let CityMap = {
 	QI: {
 		data: null,
 		stats: null,
-		areas: []
+		areas: [],
+		level: 0
 	},
 	metrics: {
 		buildings: 0,
@@ -83,8 +84,6 @@ let CityMap = {
 
 	/**
 	 * @param event
-	 * @param Data The City data
-	 * @param Title Name of the city
 	 */
 	init: (event)=> {
 		let Title = i18n('Boxes.CityMap.YourCity');
@@ -105,8 +104,11 @@ let CityMap = {
 			Data = CityMap.CulturalOutpost.data;
 		else if (ActiveMap === "era_outpost") 
 			Data = CityMap.EraOutpost.data;
-		else if (ActiveMap === "guild_raids") 
+		else if (ActiveMap === "guild_raids") {
 			Data = CityMap.QI.data;
+			Title = i18n('Boxes.General.Quantum_Incursion.short')+' '+i18n('Boxes.General.Level')+' '+CityMap.QI.level;
+			console.log(CityMap.QI.data);
+		}
 		else if (ActiveMap === "OtherPlayer") {
 			Data = CityMap.OtherPlayer.mapData;
 			Title = CityMap.OtherPlayer.name;
