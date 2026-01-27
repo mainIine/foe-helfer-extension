@@ -107,18 +107,11 @@ let CityMap = {
 		else if (ActiveMap === "guild_raids") {
 			Data = CityMap.QI.data;
 			Title = i18n('Boxes.General.Quantum_Incursion.short')+' '+i18n('Boxes.General.Level')+' '+CityMap.QI.level;
-			console.log(CityMap.QI.data);
 		}
 		else if (ActiveMap === "OtherPlayer") {
 			Data = CityMap.OtherPlayer.mapData;
 			Title = CityMap.OtherPlayer.name;
 		}
-
-		// what's this for? no idea, so away it goes
-		/*CityMap.CityData = Object.values(Data).sort(function (X1, X2) {
-			if (X1.x < X2.x) return -1;
-			if (X1.x > X2.x) return 1;
-		});*/
 
 		if( $('#citymap-main').length < 1 ) {
 			HTML.AddCssFile('citymap');

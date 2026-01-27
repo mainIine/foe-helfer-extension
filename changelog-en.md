@@ -7,6 +7,7 @@
 - Efficiency: You can now evaluate buildings without the ally boosts
 - Productions: Added a list for special productions
 - Settings: Removed some "open automatically" settings if they are already available in the modules windows settings
+- QI city: The title changes with the difficulty level now
 
 **Bugfix**
 - Copy city data: data format was slightly off by accident, works like before now

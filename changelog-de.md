@@ -7,6 +7,7 @@
 - Effizienzbewertung: Man kann die Gebäude nun auch ohne Boosts der Verbündeten bewerten lassen
 - Produktionsübersicht: Es gibt nun eine Liste für Spezialgüter-Produktionen
 - Einstellungen: Manche "Automatisch öffnen"-Einstellungen wurden entfernt, weil sie auch im jeweiligen Fenster zu finden sind
+- QI Stadtübersicht: Der Titel passt sich nun an
 
 **Bugfix**
 - Stadtdaten kopieren: das Datenformat hat nicht mehr zu den bekannten Schnittstellen gepasst - geht jetzt wieder
