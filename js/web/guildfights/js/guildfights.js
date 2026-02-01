@@ -1438,13 +1438,13 @@ let GuildFights = {
 			idSpan.text('');
 			$(`#timer-${id}`).find('.time-static').html(`<strong class="text-success">offen</strong>`); // @ToDo: translate
 
-			// remove timer after 10s
+			// remove timer after 5s
 			setTimeout(() => {
 				$(`#timer-${id}`).fadeToggle(function () {
 					$(this).remove();
 					GuildFights.ToggleCopyButton();
 				});
-			}, 10000);
+			}, 5000);
 		}
 	},
 

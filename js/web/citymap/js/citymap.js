@@ -1893,8 +1893,20 @@ let CityBuildings = {
 						if (product.onlyWhenMotivated !== true)
 							resource.doubleWhenMotivated = true;
 						// make special goods their own type
-						if (Object.keys(resource.resources).find(x => x.includes("special_good")))
+						let specialGood = Object.keys(resource.resources).find(x => x.includes("special_good"));
+						let resourceAmount = Object.keys(resource.resources).length;
+						if (specialGood && resourceAmount === 1) 
 							resource.type = "special_goods";
+						else if (specialGood && resourceAmount > 1) {
+							let special_good = {
+								type: "special_goods",
+								needsMotivation: resource.needsMotivation,
+								doubleWhenMotivated: resource.doubleWhenMotivated,
+								resources: {[specialGood]:resource.resources[specialGood]}
+							}
+							productions.push(special_good);
+							delete resource.resources[specialGood];
+						}
 					}
 					else if (product.type === "guildResources") {
 						resource.resources = product.guildResources.resources
