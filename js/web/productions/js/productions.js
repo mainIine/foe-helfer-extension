@@ -319,9 +319,9 @@ let Productions = {
 							}
 						})
 					}
-					if (production.type === 'special_goods') { // space carrier
-						if (Productions.BuildingsProducts.goods.find(x => x.id === building.id) === undefined)
-							Productions.BuildingsProducts["special_goods"].push(saveBuilding)
+					if (production.type === 'special_goods') {
+						if (Productions.BuildingsProducts.special_goods.find(x => x.id === building.id) === undefined) {
+							Productions.BuildingsProducts["special_goods"].push(saveBuilding)}
 					}
 					if (production.type === "resources") {
 						let types = Object.keys(production.resources)
@@ -347,10 +347,6 @@ let Productions = {
 						if (types.find(x => x.includes('random_good_of_') || x.includes('all_goods_of_'))) {
 							if (Productions.BuildingsProducts.goods.find(x => x.id === building.id) === undefined)
 								Productions.BuildingsProducts["goods"].push(saveBuilding)
-						}
-						if (types.find(x => x.includes('special_goods'))) {
-							if (Productions.BuildingsProducts.special_goods.find(x => x.id === building.id) === undefined)
-								Productions.BuildingsProducts["special_goods"].push(saveBuilding)
 						}
 					}
 					if (production.resources?.type === "consumable") {
