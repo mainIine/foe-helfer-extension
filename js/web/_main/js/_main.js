@@ -1690,6 +1690,7 @@ let MainParser = {
 				}
 			})
 			Object.values(MainParser.Inventory).filter(x=>x?.item?.reward?.assembledReward?.type=="ally").forEach(x=>{
+				if (!x.inStock) return;
 				rooms[0+"#" + unassigned] = {
 					fragmentsAmount: x.inStock,
 					fragmentsNeeded: x.item.reward.requiredAmount,
