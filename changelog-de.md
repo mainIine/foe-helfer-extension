@@ -11,7 +11,9 @@
 
 **Bugfix**
 - Stadtdaten kopieren: das Datenformat hat nicht mehr zu den bekannten Schnittstellen gepasst - geht jetzt wieder
-- Verbündete: Die Summen waren nicht korrekt und die Boosts sind beim leveln explodiert
+- Verbündete: 
+	- Die Summen waren nicht korrekt und die Boosts sind beim leveln explodiert
+	- Ein frisch zusammengesetzter Verbündeter tauchte doppelt in der Liste auf, wenn nach dem Zusammensetzen genau 0 Fragmente übrig waren
 - Produktionen: Die Güter vom Klapperknochen-Technoclub waren falsch berechnet
 
 ---

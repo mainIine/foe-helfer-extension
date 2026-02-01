@@ -11,7 +11,9 @@
 
 **Bugfix**
 - Copy city data: data format was slightly off by accident, works like before now
-- Allies: The sums weren't correct and boosts were *slightly* off after leveling allies
+- Allies: 
+	- The sums weren't correct and boosts were *slightly* off after leveling allies
+	- A freshly assembled Ally was listed twice, when the amount of fragments was exactly 0 after assembly
 - Productions: Rattlebone Raveyards goods productions weren't calculated correctly
 
 
