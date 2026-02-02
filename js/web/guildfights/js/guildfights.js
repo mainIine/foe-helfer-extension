@@ -1976,10 +1976,9 @@ let ProvinceMap = {
 				else if (ProvinceMap.view == "battleType" && sector.battleType == "blue" && sector.owner.colors.cid !== "own_guild_colour")
 					ProvinceMap.MapCTX.fillStyle = "#4a98dd";
 
-				if (mapType === 'volcano_archipelago') 
-					sector.drawSectorShape();
-				else
-					drawHex(mapStuff.x, mapStuff.y, mapStuff.hexwidth, mapStuff.hexheight);
+				const path = sector.drawSectorShape(mapType);
+				ProvinceMap.MapCTX.fill(path);
+				ProvinceMap.MapCTX.stroke(path);
 
 				mapStuff.y = mapStuff.y - 20;
 				
@@ -1992,11 +1991,9 @@ let ProvinceMap = {
 				}
 
 				mapStuff.y = mapStuff.y+23;
-
 				sector.drawUnlockTime(mapStuff);
 
 				mapStuff.y = mapStuff.y+10;
-
 				if (sector.lockedUntil !== undefined) 
 					mapStuff.y = mapStuff.y+20;
 
@@ -2085,49 +2082,62 @@ let ProvinceMap = {
 
 			flag_image.onload = function () {
 				ProvinceMap.MapCTX.fillStyle = sector.owner.colors.highlight;
-				if (mapType !== 'waterfall_archipelago') 
-					sector.drawSectorShape();
-				else
-					drawHex(mapStuff.x, mapStuff.y, mapStuff.hexwidth, mapStuff.hexheight);
-
+				const path = sector.drawSectorShape(mapType);
+				ProvinceMap.MapCTX.fill(path);
+				ProvinceMap.MapCTX.stroke(path);
 				ProvinceMap.MapCTX.drawImage(this, flagX, flagY, flagSize, flagSize);
 			}
 		}
 
-        Province.prototype.drawSectorShape = function() {    
-            let xy = { x: 1, y: -1 }; // change first quadrant
-			let radius = this.circlePosition.radius;
-			let initRadius = this.circlePosition.initRadius;
-			let angle = this.circlePosition.angle;
-			let angleFragment = this.circlePosition.angleFragment;
+        
 
-			ProvinceMap.MapCTX.beginPath();
-            ProvinceMap.MapCTX.moveTo(xy.x*(radius-initRadius) * Math.sin(angle), xy.y*(radius-initRadius) * Math.cos(angle));
-            ProvinceMap.MapCTX.lineTo(xy.x*radius * Math.sin(angle), xy.y*radius * Math.cos(angle));
-            ProvinceMap.MapCTX.lineTo(xy.x*radius * Math.sin(angle+angleFragment/2), xy.y*radius * Math.cos(angle+angleFragment/2));
-            ProvinceMap.MapCTX.lineTo(xy.x*radius * Math.sin(angle+angleFragment), xy.y*radius * Math.cos(angle+angleFragment));
-            ProvinceMap.MapCTX.lineTo(xy.x*(radius-initRadius) * Math.sin(angle+angleFragment), xy.y*(radius-initRadius) * Math.cos(angle+angleFragment));
-            ProvinceMap.MapCTX.lineTo(xy.x*(radius-initRadius) * Math.sin(angle), xy.y*(radius-initRadius) * Math.cos(angle));
-            ProvinceMap.MapCTX.closePath();
-            ProvinceMap.MapCTX.fill();
-            ProvinceMap.MapCTX.strokeStyle = ProvinceMap.StrokeColor;
-            ProvinceMap.MapCTX.stroke();   
-        }
+		Province.prototype.drawSectorShape = function (mapType = 'waterfall_archipelago') {
+			const path = new Path2D();
 
-		let drawHex = function (x, y, width, height) {
-			let pointers = width / 4;
-			let topBottomWidth = width / 2;
-			ProvinceMap.MapCTX.beginPath();
-			ProvinceMap.MapCTX.moveTo(x - pointers, y - (height / 2));
-			ProvinceMap.MapCTX.lineTo(x + pointers, y - (height / 2));
-			ProvinceMap.MapCTX.lineTo(x + topBottomWidth, y);
-			ProvinceMap.MapCTX.lineTo(x + pointers, y + (height / 2));
-			ProvinceMap.MapCTX.lineTo(x - pointers, y + (height / 2));
-			ProvinceMap.MapCTX.lineTo(x - topBottomWidth, y);
-			ProvinceMap.MapCTX.lineTo(x - pointers, y - (height / 2));
-			ProvinceMap.MapCTX.closePath();
-			ProvinceMap.MapCTX.fill();
-			ProvinceMap.MapCTX.stroke();
+			if (mapType === 'volcano_archipelago') {
+				let xy = { x: 1, y: -1 };
+				let r = this.circlePosition.radius;
+				let ir = this.circlePosition.initRadius;
+				let a = this.circlePosition.angle;
+				let af = this.circlePosition.angleFragment;
+
+				path.moveTo(xy.x*(r-ir) * Math.sin(a), xy.y*(r-ir) * Math.cos(a));
+				path.lineTo(xy.x*r * Math.sin(a), xy.y*r * Math.cos(a));
+				path.lineTo(xy.x*r * Math.sin(a+af/2), xy.y*r * Math.cos(a+af/2));
+				path.lineTo(xy.x*r * Math.sin(a+af), xy.y*r * Math.cos(a+af));
+				path.lineTo(xy.x*(r-ir) * Math.sin(a+af), xy.y*(r-ir) * Math.cos(a+af));
+				path.closePath();
+
+				return path;
+			}
+
+			// WATERFALL / HEX MAP
+			let hexwidthFactor = 7.5;
+			let hexheightFactor = 10;
+
+			let w = ProvinceMap.Size.width / hexwidthFactor;
+			let h = ProvinceMap.Size.height / hexheightFactor;
+
+			let x =
+				this.flag.x * (ProvinceMap.Size.width / (hexwidthFactor*2 + hexwidthFactor*2/3)) +
+				ProvinceMap.Size.width / (hexwidthFactor*2 + hexwidthFactor*2/3);
+
+			let y =
+				this.flag.y * (ProvinceMap.Size.height / (hexheightFactor*2)) +
+				(ProvinceMap.Size.height / (hexheightFactor*2));
+
+			let p = w / 4;
+			let tb = w / 2;
+
+			path.moveTo(x - p, y - h/2);
+			path.lineTo(x + p, y - h/2);
+			path.lineTo(x + tb, y);
+			path.lineTo(x + p, y + h/2);
+			path.lineTo(x - p, y + h/2);
+			path.lineTo(x - tb, y);
+			path.closePath();
+
+			return path;
 		}
 
 		// Implementation
