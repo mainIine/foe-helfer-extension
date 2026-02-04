@@ -2616,6 +2616,7 @@ let CityBuildings = {
 			id: data.id||0,
 
 			entityId: data.cityentity_id||metaData.id,
+			allyRoom: metaData.components?.AllAge?.ally?.rooms[0]?.allyType || null,
 			name: metaData.name,
 			type: this.setType(metaData),
 			eraName: ((data.cityentity_id||metaData.id).includes("CastleSystem") ? CurrentEra : era),
@@ -2653,12 +2654,11 @@ let CityBuildings = {
 
 		entity.rating = Productions.rateBuilding(entity);
 
-		// no itdea why this is called here? so, away it goes
+		// no idea why this is called here? so, away it goes
 		//this.getBuildingGuildGoodsByEra(false, entity, false);
 		
-		//if (entity.name.includes("Ewiger Markt"))
-		//	console.log('entity ', entity.name, entity, metaData, data);
-		// ewiger markt spezialgüter
+		//if (entity.type !== "street")
+		//	console.log('entity ', entity.name, entity, entity.allyRoom, data);
 		return entity;
 	},
 };
