@@ -242,6 +242,20 @@ let Parts = {
 				Parts.CalcBody(Parts.Level);
 			});
 
+			// Quick copy for FP values (places + remaining to level)
+			$('#OwnPartBox').on('click', '.copy-fp', function (e) {
+				e.preventDefault();
+				e.stopPropagation();
+				let $this = $(this),
+					value = $this.data('copy');
+
+				if (value === undefined || value === '' || value === '-') return;
+
+				helper.str.copyToClipboardLegacy(String(value));
+				$this.addClass('copied');
+				setTimeout(() => $this.removeClass('copied'), 800);
+			});
+
 			// CopyBox
 			$('#OwnPartBox').on('blur', '#player-name', function () {
 				let PlayerName = $('#player-name').val();
@@ -764,8 +778,12 @@ let Parts = {
 				EigenCounter += EigenStart;
 
 				h.push('<tr>');
+				let OwnPartStartText = (Eigens[i] > 0
+					? '<span class="copy-fp clickable" data-copy="' + Eigens[i] + '">' + HTML.Format(Eigens[i]) + '</span>'
+						+ ' <small class="copy-fp clickable" data-copy="' + (Eigens[i] + EigenStart) + '">(=' + HTML.Format(Eigens[i] + EigenStart) + ')</small>'
+					: '-');
 				h.push('<td>' + i18n('Boxes.OwnpartCalculator.OwnPart') + '</td>');
-				h.push('<td class="text-center"><strong class="' + (PlayerID === ExtPlayerID ? 'success' : '') + '">' + (Eigens[i] > 0 ? HTML.Format(Eigens[i]) + ' <small>(=' + HTML.Format(Eigens[i] + EigenStart) + ')</small>' : '-') + '</strong></td>');
+				h.push('<td class="text-center"><strong class="' + (PlayerID === ExtPlayerID ? 'success' : '') + '">' + OwnPartStartText + '</strong></td>');
 				h.push('<td class="text-center"><strong class="info">' + HTML.Format(EigenStart) + '</strong></td>');
 				if (printsEnabled && medalsEnabled) h.push('<td colspan="4"></td>');
 				else if (printsEnabled || medalsEnabled) h.push('<td colspan="3"></td>');
@@ -775,8 +793,12 @@ let Parts = {
 			else {
 				if (Eigens[i] > 0) {
 					h.push('<tr>');
+					let OwnPartText = '<span class="copy-fp clickable" data-copy="' + Eigens[i] + '">' + HTML.Format(Eigens[i]) + '</span>';
+					if (EigenCounter > Eigens[i]) {
+						OwnPartText += ' <small class="copy-fp clickable" data-copy="' + EigenCounter + '">(=' + HTML.Format(EigenCounter) + ')</small>';
+					}
 					h.push('<td>' + i18n('Boxes.OwnpartCalculator.OwnPart') + '</td>');
-					h.push('<td class="text-center"><strong class="' + (PlayerID === ExtPlayerID ? 'success' : '') + '">' + HTML.Format(Eigens[i]) + (EigenCounter > Eigens[i] ? ' <small>(=' + HTML.Format(EigenCounter) + ')</small>' : '') + '</strong></td>');
+					h.push('<td class="text-center"><strong class="' + (PlayerID === ExtPlayerID ? 'success' : '') + '">' + OwnPartText + '</strong></td>');
 					if (printsEnabled && medalsEnabled) h.push('<td colspan="5"></td>');
 					else if (printsEnabled || medalsEnabled) h.push('<td colspan="4"></td>');
 					else if (!minView) h.push('<td colspan="3"></td>');
@@ -789,7 +811,7 @@ let Parts = {
 			h.push('<td>' + i18n('Boxes.OwnpartCalculator.Place') + ' ' + (i+1) + '</td>');
 
 			if (Parts.PlaceAvailables[i]) {
-				h.push('<td class="text-center"><strong class="' + (PlayerID === ExtPlayerID ? '' : 'success') + '">' + (Parts.Maezens[i] > 0 ? HTML.Format(Parts.Maezens[i]) : '-') + '</strong >' + '</td>');
+				h.push('<td class="text-center"><strong class="' + (PlayerID === ExtPlayerID ? '' : 'success') + (Parts.Maezens[i] > 0 ? ' copy-fp clickable' : '') + '" data-copy="' + (Parts.Maezens[i] > 0 ? Parts.Maezens[i] : '') + '">' + (Parts.Maezens[i] > 0 ? HTML.Format(Parts.Maezens[i]) : '-') + '</strong >' + '</td>');
 				if (Parts.LeveltLG[i]) {
 					h.push(`<td class="text-center"><strong class="error">${i18n("Boxes.OwnpartCalculator.levelt")}</strong></td>`);
 				}
@@ -803,6 +825,8 @@ let Parts = {
 			else {
 				h.push('<td class="text-center"><strong>-</strong></td>');
 				let MaezenString = Parts.Maezens[i] > 0 ? HTML.Format(Parts.Maezens[i]) : '-';
+				let MaezenCopyClass = Parts.Maezens[i] > 0 ? ' copy-fp' : '';
+				let MaezenCopyValue = Parts.Maezens[i] > 0 ? Parts.Maezens[i] : '';
 				let MaezenDiff = Parts.Maezens[i] - FPRewards[i];
 				let MaezenDiffString = '';
 				if (Parts.Maezens[i] > 0) {
@@ -814,7 +838,7 @@ let Parts = {
 					}
 				}
 
-				h.push('<td class="text-center"><strong class="info">' + MaezenString + '</strong>' + MaezenDiffString + '</td>');
+				h.push('<td class="text-center"><strong class="info' + MaezenCopyClass + '" data-copy="' + MaezenCopyValue + '">' + MaezenString + '</strong>' + MaezenDiffString + '</td>');
 			}
 
 			if (printsEnabled) h.push('<td class="text-center">' + HTML.Format(BPRewards[i]) + '</td>');
@@ -846,8 +870,12 @@ let Parts = {
 			EigenCounter += Eigens[5];
 
 			h.push('<tr>');
+			let OwnPartRestText = '<span class="copy-fp clickable" data-copy="' + Eigens[5] + '">' + HTML.Format(Eigens[5]) + '</span>';
+			if (EigenCounter > Eigens[5]) {
+				OwnPartRestText += ' <small class="copy-fp clickable" data-copy="' + (EigenCounter - EigenStart) + '">(=' + HTML.Format(EigenCounter - EigenStart) + ')</small>';
+			}
 			h.push('<td>' + i18n('Boxes.OwnpartCalculator.OwnPart') + '</td>');
-			h.push('<td class="text-center"><strong class="' + (PlayerID === ExtPlayerID ? 'success' : '') + '">' + Eigens[5] + (EigenCounter > HTML.Format(Eigens[5]) ? ' <small>(=' + HTML.Format(EigenCounter - EigenStart) + ')</small>' : '') + '</strong></td>');
+			h.push('<td class="text-center"><strong class="' + (PlayerID === ExtPlayerID ? 'success' : '') + '">' + OwnPartRestText + '</strong></td>');
 			h.push('<td colspan="5"></td>');
 			h.push('</tr>');
 		}
@@ -894,7 +922,7 @@ let Parts = {
 			}
 			if (!minView) {
 				h.push('<div class="text-center d-flex" style="padding:3px 0;">');
-				h.push('<em>' + i18n('Boxes.Calculator.Up2LevelUp') + ': <span id="up-to-level-up">' + HTML.Format(rest) + '</span> ' + i18n('Boxes.Calculator.FP') + '</em>');
+				h.push('<em>' + i18n('Boxes.Calculator.Up2LevelUp') + ': <span id="up-to-level-up" class="copy-fp clickable" data-copy="' + rest + '">' + HTML.Format(rest) + '</span> ' + i18n('Boxes.Calculator.FP') + '</em>');
 				h.push('</div>');
 			}
 			h.push('<div class="bottom-buttons text-center">');
@@ -1686,4 +1714,6 @@ let Parts = {
 		});
 	}
 };
+
+
 
