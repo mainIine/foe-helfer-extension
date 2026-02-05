@@ -341,6 +341,7 @@
 
 #ProvinceMapBody {
 	background: #222;
+	position: relative;
 }
 
 #ProvinceMap.volcano_archipelago {
@@ -364,6 +365,18 @@
 	width: 100%;
 }
 
+#ProvinceMap #provDetails {
+	position: absolute;
+	bottom: 0.75em;
+	right: 0.75em;
+	padding: 0.75em;
+	background-color: #333;
+	border-radius: 5px;
+	border: 2px solid #222;
+	color: #eee;
+	display: none;
+}
+
 #ProvinceMap #province-map {
 	background-color: #222;
 	position: relative;
@@ -378,7 +391,7 @@
 
 #ProvinceMap #zoomGBGMap {
 	position: absolute;
-	top: 40px;
+	top: 3px;
 	left: 3px;
 }
 
