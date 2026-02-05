@@ -84,6 +84,10 @@
 	color: var(--text-success) !important;
 }
 
+#OwnPartBox #OwnPartBoxBody .copy-fp:hover {
+	filter: brightness(1.4) contrast(1.4);
+}
+
 #OwnPartBox #OwnPartBoxBody .info {
 	color: var(--text-info) !important;
 }

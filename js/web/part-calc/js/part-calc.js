@@ -779,8 +779,8 @@ let Parts = {
 
 				h.push('<tr>');
 				let OwnPartStartText = (Eigens[i] > 0
-					? '<span class="copy-fp" data-copy="' + Eigens[i] + '">' + HTML.Format(Eigens[i]) + '</span>'
-						+ ' <small class="copy-fp" data-copy="' + (Eigens[i] + EigenStart) + '">(=' + HTML.Format(Eigens[i] + EigenStart) + ')</small>'
+					? '<span class="copy-fp clickable" data-copy="' + Eigens[i] + '">' + HTML.Format(Eigens[i]) + '</span>'
+						+ ' <small class="copy-fp clickable" data-copy="' + (Eigens[i] + EigenStart) + '">(=' + HTML.Format(Eigens[i] + EigenStart) + ')</small>'
 					: '-');
 				h.push('<td>' + i18n('Boxes.OwnpartCalculator.OwnPart') + '</td>');
 				h.push('<td class="text-center"><strong class="' + (PlayerID === ExtPlayerID ? 'success' : '') + '">' + OwnPartStartText + '</strong></td>');
@@ -793,9 +793,9 @@ let Parts = {
 			else {
 				if (Eigens[i] > 0) {
 					h.push('<tr>');
-					let OwnPartText = '<span class="copy-fp" data-copy="' + Eigens[i] + '">' + HTML.Format(Eigens[i]) + '</span>';
+					let OwnPartText = '<span class="copy-fp clickable" data-copy="' + Eigens[i] + '">' + HTML.Format(Eigens[i]) + '</span>';
 					if (EigenCounter > Eigens[i]) {
-						OwnPartText += ' <small class="copy-fp" data-copy="' + EigenCounter + '">(=' + HTML.Format(EigenCounter) + ')</small>';
+						OwnPartText += ' <small class="copy-fp clickable" data-copy="' + EigenCounter + '">(=' + HTML.Format(EigenCounter) + ')</small>';
 					}
 					h.push('<td>' + i18n('Boxes.OwnpartCalculator.OwnPart') + '</td>');
 					h.push('<td class="text-center"><strong class="' + (PlayerID === ExtPlayerID ? 'success' : '') + '">' + OwnPartText + '</strong></td>');
@@ -811,7 +811,7 @@ let Parts = {
 			h.push('<td>' + i18n('Boxes.OwnpartCalculator.Place') + ' ' + (i+1) + '</td>');
 
 			if (Parts.PlaceAvailables[i]) {
-				h.push('<td class="text-center"><strong class="' + (PlayerID === ExtPlayerID ? '' : 'success') + (Parts.Maezens[i] > 0 ? ' copy-fp' : '') + '" data-copy="' + (Parts.Maezens[i] > 0 ? Parts.Maezens[i] : '') + '">' + (Parts.Maezens[i] > 0 ? HTML.Format(Parts.Maezens[i]) : '-') + '</strong >' + '</td>');
+				h.push('<td class="text-center"><strong class="' + (PlayerID === ExtPlayerID ? '' : 'success') + (Parts.Maezens[i] > 0 ? ' copy-fp clickable' : '') + '" data-copy="' + (Parts.Maezens[i] > 0 ? Parts.Maezens[i] : '') + '">' + (Parts.Maezens[i] > 0 ? HTML.Format(Parts.Maezens[i]) : '-') + '</strong >' + '</td>');
 				if (Parts.LeveltLG[i]) {
 					h.push(`<td class="text-center"><strong class="error">${i18n("Boxes.OwnpartCalculator.levelt")}</strong></td>`);
 				}
@@ -870,9 +870,9 @@ let Parts = {
 			EigenCounter += Eigens[5];
 
 			h.push('<tr>');
-			let OwnPartRestText = '<span class="copy-fp" data-copy="' + Eigens[5] + '">' + HTML.Format(Eigens[5]) + '</span>';
+			let OwnPartRestText = '<span class="copy-fp clickable" data-copy="' + Eigens[5] + '">' + HTML.Format(Eigens[5]) + '</span>';
 			if (EigenCounter > Eigens[5]) {
-				OwnPartRestText += ' <small class="copy-fp" data-copy="' + (EigenCounter - EigenStart) + '">(=' + HTML.Format(EigenCounter - EigenStart) + ')</small>';
+				OwnPartRestText += ' <small class="copy-fp clickable" data-copy="' + (EigenCounter - EigenStart) + '">(=' + HTML.Format(EigenCounter - EigenStart) + ')</small>';
 			}
 			h.push('<td>' + i18n('Boxes.OwnpartCalculator.OwnPart') + '</td>');
 			h.push('<td class="text-center"><strong class="' + (PlayerID === ExtPlayerID ? 'success' : '') + '">' + OwnPartRestText + '</strong></td>');
@@ -922,7 +922,7 @@ let Parts = {
 			}
 			if (!minView) {
 				h.push('<div class="text-center d-flex" style="padding:3px 0;">');
-				h.push('<em>' + i18n('Boxes.Calculator.Up2LevelUp') + ': <span id="up-to-level-up" class="copy-fp" data-copy="' + rest + '">' + HTML.Format(rest) + '</span> ' + i18n('Boxes.Calculator.FP') + '</em>');
+				h.push('<em>' + i18n('Boxes.Calculator.Up2LevelUp') + ': <span id="up-to-level-up" class="copy-fp clickable" data-copy="' + rest + '">' + HTML.Format(rest) + '</span> ' + i18n('Boxes.Calculator.FP') + '</em>');
 				h.push('</div>');
 			}
 			h.push('<div class="bottom-buttons text-center">');
