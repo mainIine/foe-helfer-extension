@@ -14,6 +14,7 @@
 - Allies: 
 	- The sums weren't correct and boosts were *slightly* off after leveling allies
 	- A freshly assembled Ally was listed twice, when the amount of fragments was exactly 0 after assembly
+	- the Box did not close when already open upon menu click
 - Productions: Rattlebone Raveyards goods productions weren't calculated correctly
 
 

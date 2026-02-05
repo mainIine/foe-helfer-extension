@@ -14,6 +14,7 @@
 - Verbündete: 
 	- Die Summen waren nicht korrekt und die Boosts sind beim leveln explodiert
 	- Ein frisch zusammengesetzter Verbündeter tauchte doppelt in der Liste auf, wenn nach dem Zusammensetzen genau 0 Fragmente übrig waren
+	- Die Box wurde nicht geschlossen, wenn der Menüeintrag angeklickt wurde
 - Produktionen: Die Güter vom Klapperknochen-Technoclub waren falsch berechnet
 
 ---
