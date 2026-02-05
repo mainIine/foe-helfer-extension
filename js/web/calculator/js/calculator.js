@@ -112,6 +112,20 @@ let Calculator = {
 				}
 			});
 
+			// Quick copy for contribution values
+			$('#costCalculator').on('click', '.copy-fp', function (e) {
+				e.preventDefault();
+				e.stopPropagation();
+				let $this = $(this),
+					value = $this.data('copy');
+
+				if (value === undefined || value === '' || value === '-') return;
+
+				helper.str.copyToClipboardLegacy(String(value));
+				$this.addClass('copied');
+				setTimeout(() => $this.removeClass('copied'), 800);
+			});
+
         }
 
 		let ForderBonusLoaded = false;
@@ -537,9 +551,11 @@ let Calculator = {
 					EinsatzClass = 'info';
 				}
 
-				EinsatzText = HTML.Format(Einzahlungen[Rank]);
-				if (Einzahlungen[Rank] !== ForderFPRewards[Rank]) {
-					EinsatzText += '/' + HTML.Format(ForderFPRewards[Rank]);
+				let OwnContributionMain = Einzahlungen[Rank];
+				let OwnContributionAlt = ForderFPRewards[Rank];
+				EinsatzText = HTML.Format(OwnContributionMain);
+				if (OwnContributionMain !== OwnContributionAlt) {
+					EinsatzText += ' <small>(=' + HTML.Format(OwnContributionAlt) + ')</small>';
 				}
 				EinsatzText += Calculator.FormatForderRankDiff(ForderRankDiff);
 
@@ -629,7 +645,18 @@ let Calculator = {
 
 			hFordern.push('<tr class="' + RowClass + '">');
 			hFordern.push('<td class="text-center"><strong class="' + RankClass + ' td-tooltip" title="' + HTML.i18nTooltip(RankTooltip.join('<br>')) + '">' + RankText + '</strong></td>');
-			hFordern.push('<td class="text-center"><strong class="' + EinsatzClass + ' td-tooltip" title="' + HTML.i18nTooltip(EinsatzTooltip.join('<br>')) + '">' + EinsatzText + '</strong></td>');
+			let CopyContributionValue = (ForderStates[Rank] === 'Self' ? Einzahlungen[Rank] : ForderFPRewards[Rank]);
+			let CopyContributionText = '<span class="copy-fp" data-copy="' + CopyContributionValue + '">' + HTML.Format(CopyContributionValue) + '</span>' + Calculator.FormatForderRankDiff(ForderRankDiff);
+			if (ForderStates[Rank] === 'Self') {
+				let OwnContributionMain = Einzahlungen[Rank];
+				let OwnContributionAlt = ForderFPRewards[Rank];
+				CopyContributionText = '<span class="copy-fp" data-copy="' + OwnContributionMain + '">' + HTML.Format(OwnContributionMain) + '</span>';
+				if (OwnContributionMain !== OwnContributionAlt) {
+					CopyContributionText += ' <small class="copy-fp" data-copy="' + OwnContributionAlt + '">(=' + HTML.Format(OwnContributionAlt) + ')</small>';
+				}
+				CopyContributionText += Calculator.FormatForderRankDiff(ForderRankDiff);
+			}
+			hFordern.push('<td class="text-center"><strong class="' + EinsatzClass + ' td-tooltip" title="' + HTML.i18nTooltip(EinsatzTooltip.join('<br>')) + '">' + CopyContributionText + '</strong></td>');
 			hFordern.push('<td class="text-center"><strong class="' + GewinnClass + ' td-tooltip" title="' + HTML.i18nTooltip(GewinnTooltip.join('<br>')) + '">' + GewinnText + '</strong></td>');
 			hFordern.push('<td class="text-center">' + HTML.Format(BPRewards[Rank]) + '</td>');
 			hFordern.push('<td class="text-center">' + HTML.Format(MedalRewards[Rank]) + '</td>');
