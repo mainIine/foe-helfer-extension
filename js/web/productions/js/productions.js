@@ -89,46 +89,198 @@ let Productions = {
 	Rating: {
 		Data:null,
 		Types:null,
+		Presets: null,
+		PresetStorageKey: 'Productions.Rating.Presets',
+		LegacyStorageKey: 'Productions.Rating.Data',
+
+		getDefaultData: () => ({
+			'strategy_points': {order:1,perTile:8,active:true},
+			'money': {order:2,perTile:null,active:false},
+			'supplies': {order:3,perTile:null,active:false},
+			'medals': {order:4,perTile:null,active:false},
+			'clan_goods': {order:6,perTile:10,active:true},
+			'population': {order:7,perTile:null,active:false},
+			'happiness': {order:8,perTile:null,active:false},
+			'units': {order:9,perTile:4,active:true},
+			'att_boost_attacker-all': {order:10,perTile:8,active:true} ,
+			'att_boost_attacker-guild_expedition': {order:11,perTile:11,active:true},
+			'att_boost_attacker-battleground': {order:12,perTile:10,active:true} ,
+			'att_boost_attacker-guild_raids': {order:13,perTile:null,active:false},
+			'def_boost_attacker-all': {order:14,perTile:8,active:true},
+			'def_boost_attacker-guild_expedition': {order:15,perTile:11,active:true},
+			'def_boost_attacker-battleground': {order:16,perTile:10,active:true} ,
+			'def_boost_attacker-guild_raids': {order:17,perTile:null,active:false},
+			'att_boost_defender-all': {order:18,perTile:8,active:true},
+			'att_boost_defender-guild_expedition': {order:19,perTile:11,active:false},
+			'att_boost_defender-battleground': {order:20,perTile:10,active:true},
+			'att_boost_defender-guild_raids': {order:21,perTile:null,active:false},
+			'def_boost_defender-all': {order:22,perTile:8,active:true},
+			'def_boost_defender-guild_expedition': {order:23,perTile:11,active:true},
+			'def_boost_defender-battleground': {order:24,perTile:10,active:true},
+			'def_boost_defender-guild_raids': {order:25,perTile:null,active:false},
+			'goods-previous': {order:26,perTile:7,active:true},
+			'goods-current': {order:27,perTile:6,active:true},
+			'goods-next': {order:28,perTile:5,active:true},
+			'fsp': {order:29,perTile:0.8,active:true},
+			'guild_raids_action_points_collection': {order:29,perTile:8,active:true},
+			'guild_raids_goods_start': {order:30,perTile:1,active:false},
+			'guild_raids_units_start': {order:31,perTile:1,active:false},
+			'guild_raids_coins_start': {order:32,perTile:5000,active:true},
+			'guild_raids_coins_production': {order:33,perTile:1,active:true},
+			'guild_raids_supplies_start': {order:34,perTile:5000,active:true},
+			'guild_raids_supplies_production': {order:35,perTile:1,active:true},
+		}),
+
+		cloneData: (data) => JSON.parse(JSON.stringify(data || {})),
+		normalizeData: (data) => Object.assign(Productions.Rating.getDefaultData(), Productions.Rating.cloneData(data || {})),
+		getActivePreset: () => {
+			const presets = Productions.Rating.Presets;
+			if (!presets?.presets) return null;
+			return presets.presets[presets.activePresetId] || null;
+		},
+		updateTypes: () => {
+			Productions.Rating.Types = Object.keys(Productions.Rating.Data)
+				.sort((a,b)=>Productions.Rating.Data[a].order-Productions.Rating.Data[b].order);
+		},
+		savePresets: () => {
+			if (!Productions.Rating.Presets) return;
+			localStorage.setItem(Productions.Rating.PresetStorageKey, JSON.stringify(Productions.Rating.Presets));
+		},
+		ensurePresets: () => {
+			if (Productions.Rating.Presets) return;
+			let stored = localStorage.getItem(Productions.Rating.PresetStorageKey);
+			if (stored) {
+				try {
+					Productions.Rating.Presets = JSON.parse(stored);
+				} catch (e) {
+					Productions.Rating.Presets = null;
+				}
+			}
+			if (!Productions.Rating.Presets) {
+				const legacyData = JSON.parse(localStorage.getItem(Productions.Rating.LegacyStorageKey)||"{}");
+				const presetId = 'default';
+				Productions.Rating.Presets = {
+					activePresetId: presetId,
+					presets: {
+						[presetId]: {
+							name: i18n('Boxes.ProductionsRating.PresetDefault'),
+							data: Productions.Rating.normalizeData(legacyData)
+						}
+					}
+				};
+				localStorage.removeItem(Productions.Rating.LegacyStorageKey);
+				Productions.Rating.savePresets();
+			}
+			if (!Productions.Rating.Presets.presets || Object.keys(Productions.Rating.Presets.presets).length === 0) {
+				const presetId = 'default';
+				Productions.Rating.Presets = {
+					activePresetId: presetId,
+					presets: {
+						[presetId]: {
+							name: i18n('Boxes.ProductionsRating.PresetDefault'),
+							data: Productions.Rating.normalizeData({})
+						}
+					}
+				};
+				Productions.Rating.savePresets();
+			}
+			if (!Productions.Rating.Presets.presets[Productions.Rating.Presets.activePresetId]) {
+				Productions.Rating.Presets.activePresetId = Object.keys(Productions.Rating.Presets.presets)[0];
+				Productions.Rating.savePresets();
+			}
+		},
+		setActivePreset: (presetId) => {
+			Productions.Rating.ensurePresets();
+			if (!Productions.Rating.Presets.presets[presetId]) return;
+			Productions.Rating.Presets.activePresetId = presetId;
+			Productions.Rating.savePresets();
+			Productions.Rating.load();
+		},
+		isPresetNameTaken: (name, ignoreId = null) => {
+			const presets = Productions.Rating.Presets?.presets || {};
+			const check = (name || '').trim().toLowerCase();
+			return Object.entries(presets).some(([id, preset]) => id !== ignoreId && preset.name.trim().toLowerCase() === check);
+		},
+		createPreset: (name, data) => {
+			const presetId = `preset_${Date.now().toString(36)}_${Math.random().toString(36).slice(2,7)}`;
+			Productions.Rating.Presets.presets[presetId] = {
+				name: name,
+				data: Productions.Rating.normalizeData(data)
+			};
+			return presetId;
+		},
+		deletePreset: (presetId) => {
+			if (!Productions.Rating.Presets?.presets[presetId]) return false;
+			delete Productions.Rating.Presets.presets[presetId];
+			if (Productions.Rating.Presets.activePresetId === presetId) {
+				Productions.Rating.Presets.activePresetId = Object.keys(Productions.Rating.Presets.presets)[0] || null;
+			}
+			return true;
+		},
+		resetActivePreset: () => {
+			const preset = Productions.Rating.getActivePreset();
+			if (!preset) return;
+			preset.data = Productions.Rating.normalizeData({});
+			Productions.Rating.Data = preset.data;
+			Productions.Rating.updateTypes();
+			Productions.Rating.savePresets();
+		},
+		getPresetOptions: () => {
+			const presets = Productions.Rating.Presets?.presets || {};
+			const activeId = Productions.Rating.Presets?.activePresetId;
+			return Object.entries(presets)
+				.map(([id, preset]) => `<option value="${id}" ${id === activeId ? 'selected' : ''}>${HTML.escapeHtml(preset.name)}</option>`)
+				.join('');
+		},
+		exportPresets: () => {
+			Productions.Rating.ensurePresets();
+			const payload = {
+				version: 1,
+				activePresetId: Productions.Rating.Presets.activePresetId,
+				presets: Productions.Rating.Presets.presets
+			};
+			const fileName = `EfficiencyRatingPresets_${moment().format('YYMMDD-HHmm')}.json`;
+			MainParser.ExportFile(new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" }), fileName);
+		},
+		importPresets: (file) => {
+			if (!file) return;
+			const reader = new FileReader();
+			reader.onload = (evt) => {
+				try {
+					const data = JSON.parse(evt.target.result);
+					const presets = data?.presets;
+					if (!presets || typeof presets !== 'object') throw new Error('invalid');
+					const importedPresets = {};
+					for (const [id, preset] of Object.entries(presets)) {
+						if (!preset?.data) continue;
+						const name = preset.name || i18n('Boxes.ProductionsRating.PresetImported');
+						importedPresets[id] = { name: name, data: Productions.Rating.normalizeData(preset.data) };
+					}
+					if (Object.keys(importedPresets).length === 0) throw new Error('empty');
+					Productions.Rating.Presets = {
+						activePresetId: data.activePresetId && importedPresets[data.activePresetId] ? data.activePresetId : Object.keys(importedPresets)[0],
+						presets: importedPresets
+					};
+					Productions.Rating.savePresets();
+					Productions.Rating.load();
+					Productions.CalcRatingBody();
+				} catch (e) {
+					alert(i18n('Boxes.ProductionsRating.PresetImportError'));
+				}
+			};
+			reader.onerror = () => alert(i18n('Boxes.ProductionsRating.PresetImportError'));
+			reader.readAsText(file);
+		},
 
 		load: (overwrite = null) => {
-			Productions.Rating.Data = Object.assign({
-				'strategy_points': {order:1,perTile:8,active:true},
-				'money': {order:2,perTile:null,active:false},
-				'supplies': {order:3,perTile:null,active:false},
-				'medals': {order:4,perTile:null,active:false},
-				'clan_goods': {order:6,perTile:10,active:true},
-				'population': {order:7,perTile:null,active:false},
-				'happiness': {order:8,perTile:null,active:false},
-				'units': {order:9,perTile:4,active:true},
-				'att_boost_attacker-all': {order:10,perTile:8,active:true} ,
-				'att_boost_attacker-guild_expedition': {order:11,perTile:11,active:true},
-				'att_boost_attacker-battleground': {order:12,perTile:10,active:true} ,
-				'att_boost_attacker-guild_raids': {order:13,perTile:null,active:false},
-				'def_boost_attacker-all': {order:14,perTile:8,active:true},
-				'def_boost_attacker-guild_expedition': {order:15,perTile:11,active:true},
-				'def_boost_attacker-battleground': {order:16,perTile:10,active:true} ,
-				'def_boost_attacker-guild_raids': {order:17,perTile:null,active:false},
-				'att_boost_defender-all': {order:18,perTile:8,active:true},
-				'att_boost_defender-guild_expedition': {order:19,perTile:11,active:false},
-				'att_boost_defender-battleground': {order:20,perTile:10,active:true},
-				'att_boost_defender-guild_raids': {order:21,perTile:null,active:false},
-				'def_boost_defender-all': {order:22,perTile:8,active:true},
-				'def_boost_defender-guild_expedition': {order:23,perTile:11,active:true},
-				'def_boost_defender-battleground': {order:24,perTile:10,active:true},
-				'def_boost_defender-guild_raids': {order:25,perTile:null,active:false},
-				'goods-previous': {order:26,perTile:7,active:true},
-				'goods-current': {order:27,perTile:6,active:true},
-				'goods-next': {order:28,perTile:5,active:true},
-				'fsp': {order:29,perTile:0.8,active:true},
-				'guild_raids_action_points_collection': {order:29,perTile:8,active:true},
-				'guild_raids_goods_start': {order:30,perTile:1,active:false},
-				'guild_raids_units_start': {order:31,perTile:1,active:false},
-				'guild_raids_coins_start': {order:32,perTile:5000,active:true},
-				'guild_raids_coins_production': {order:33,perTile:1,active:true},
-				'guild_raids_supplies_start': {order:34,perTile:5000,active:true},
-				'guild_raids_supplies_production': {order:35,perTile:1,active:true},
-			}, overwrite || JSON.parse(localStorage.getItem('Productions.Rating.Data')||"{}"))
-			Productions.Rating.Types = Object.keys(Productions.Rating.Data).sort((a,b)=>Productions.Rating.Data[a].order-Productions.Rating.Data[b].order)
+			Productions.Rating.ensurePresets();
+			const activePreset = Productions.Rating.getActivePreset();
+			let data = overwrite || activePreset?.data || {};
+			Productions.Rating.Data = Productions.Rating.normalizeData(data);
+			if (activePreset) {
+				activePreset.data = Productions.Rating.Data;
+			}
+			Productions.Rating.updateTypes();
 
 			if (localStorage.getItem('ProductionRatingProdPerTiles')) {
 				let RatingProdPerTiles = Object.assign({},JSON.parse(localStorage.getItem('ProductionRatingProdPerTiles')||"{}"))
@@ -146,7 +298,12 @@ let Productions = {
 		},
 
 		save:() => {
-			localStorage.setItem('Productions.Rating.Data', JSON.stringify(Productions.Rating.Data))
+			Productions.Rating.ensurePresets();
+			const preset = Productions.Rating.getActivePreset();
+			if (preset) {
+				preset.data = Productions.Rating.Data;
+			}
+			Productions.Rating.savePresets();
 			// hier
 		}
 
@@ -1850,6 +2007,24 @@ let Productions = {
 		if (Productions.RatingCurrentTab === 'Settings') {
 			h.push('<div id="ProductionsRatingSettings">')
 			h.push('<a id="RatingsResults" class="toggle-tab btn btn-slim" data-value="Results"><span>' + i18n('Boxes.ProductionsRating.Results') + '</span></a>')
+			Productions.Rating.ensurePresets();
+			h.push('<div class="rating-presets dark-bg">')
+			h.push(`<label for="ratingPresetSelect">${i18n('Boxes.ProductionsRating.PresetActive')}</label>`)
+			h.push(`<select id="ratingPresetSelect" class="no-grow">${Productions.Rating.getPresetOptions()}</select>`)
+			h.push('<div class="btn-group">')
+			h.push(`<button class="btn" id="ratingPresetSave">${i18n('Boxes.ProductionsRating.PresetSave')}</button>`)
+			h.push(`<button class="btn" id="ratingPresetSaveAs">${i18n('Boxes.ProductionsRating.PresetSaveAs')}</button>`)
+			h.push(`<button class="btn" id="ratingPresetRename">${i18n('Boxes.ProductionsRating.PresetRename')}</button>`)
+			h.push(`<button class="btn" id="ratingPresetDuplicate">${i18n('Boxes.ProductionsRating.PresetDuplicate')}</button>`)
+			h.push(`<button class="btn" id="ratingPresetDelete">${i18n('Boxes.ProductionsRating.PresetDelete')}</button>`)
+			h.push(`<button class="btn" id="ratingPresetReset">${i18n('Boxes.ProductionsRating.PresetReset')}</button>`)
+			h.push('</div>')
+			h.push('<div class="btn-group">')
+			h.push(`<button class="btn" id="ratingPresetExport">${i18n('Boxes.ProductionsRating.PresetExport')}</button>`)
+			h.push(`<button class="btn" id="ratingPresetImport">${i18n('Boxes.ProductionsRating.PresetImport')}</button>`)
+			h.push('<input type="file" id="ratingPresetImportFile" accept="application/json" style="display:none" />')
+			h.push('</div>')
+			h.push('</div>')
 			h.push('<ul class="foe-table">')
 
 			h.push('<li class="dark-bg">')
@@ -2107,6 +2282,93 @@ let Productions = {
 
 		$('#ProductionsRatingBody').html(h.join('')).promise().done(function () {
 			$('.TSinactive').removeClass('TSinactive');
+			const refreshPresetSelect = () => {
+				Productions.Rating.ensurePresets();
+				$('#ratingPresetSelect').html(Productions.Rating.getPresetOptions());
+			};
+			$('#ratingPresetSelect').on('change', function () {
+				const presetId = $(this).val();
+				if (!presetId) return;
+				Productions.Rating.setActivePreset(presetId);
+				Productions.CalcRatingBody();
+			});
+			$('#ratingPresetSave').on('click', () => {
+				Productions.Rating.save();
+				refreshPresetSelect();
+			});
+			$('#ratingPresetSaveAs').on('click', () => {
+				const name = prompt(i18n('Boxes.ProductionsRating.PresetPromptSaveAs'));
+				if (!name) return;
+				const trimmed = name.trim();
+				if (!trimmed) return;
+				if (Productions.Rating.isPresetNameTaken(trimmed)) {
+					alert(i18n('Boxes.ProductionsRating.PresetNameExists'));
+					return;
+				}
+				const newId = Productions.Rating.createPreset(trimmed, Productions.Rating.Data);
+				Productions.Rating.setActivePreset(newId);
+				Productions.Rating.savePresets();
+				Productions.CalcRatingBody();
+			});
+			$('#ratingPresetRename').on('click', () => {
+				const preset = Productions.Rating.getActivePreset();
+				if (!preset) return;
+				const name = prompt(i18n('Boxes.ProductionsRating.PresetPromptRename'), preset.name || '');
+				if (!name) return;
+				const trimmed = name.trim();
+				if (!trimmed) return;
+				const activeId = Productions.Rating.Presets?.activePresetId;
+				if (Productions.Rating.isPresetNameTaken(trimmed, activeId)) {
+					alert(i18n('Boxes.ProductionsRating.PresetNameExists'));
+					return;
+				}
+				preset.name = trimmed;
+				Productions.Rating.savePresets();
+				refreshPresetSelect();
+			});
+			$('#ratingPresetDuplicate').on('click', () => {
+				const preset = Productions.Rating.getActivePreset();
+				if (!preset) return;
+				const name = prompt(i18n('Boxes.ProductionsRating.PresetPromptDuplicate'), `${preset.name} (${i18n('Boxes.ProductionsRating.PresetCopySuffix')})`);
+				if (!name) return;
+				const trimmed = name.trim();
+				if (!trimmed) return;
+				if (Productions.Rating.isPresetNameTaken(trimmed)) {
+					alert(i18n('Boxes.ProductionsRating.PresetNameExists'));
+					return;
+				}
+				const newId = Productions.Rating.createPreset(trimmed, preset.data);
+				Productions.Rating.setActivePreset(newId);
+				Productions.Rating.savePresets();
+				Productions.CalcRatingBody();
+			});
+			$('#ratingPresetDelete').on('click', () => {
+				const preset = Productions.Rating.getActivePreset();
+				if (!preset) return;
+				if (!window.confirm(i18n('Boxes.ProductionsRating.PresetConfirmDelete'))) return;
+				const activeId = Productions.Rating.Presets?.activePresetId;
+				Productions.Rating.deletePreset(activeId);
+				Productions.Rating.savePresets();
+				Productions.Rating.load();
+				Productions.CalcRatingBody();
+			});
+			$('#ratingPresetReset').on('click', () => {
+				if (!window.confirm(i18n('Boxes.ProductionsRating.PresetConfirmReset'))) return;
+				Productions.Rating.resetActivePreset();
+				Productions.Rating.save();
+				Productions.CalcRatingBody();
+			});
+			$('#ratingPresetExport').on('click', () => {
+				Productions.Rating.exportPresets();
+			});
+			$('#ratingPresetImport').on('click', () => {
+				$('#ratingPresetImportFile').trigger('click');
+			});
+			$('#ratingPresetImportFile').on('change', function () {
+				const file = this.files?.[0];
+				this.value = '';
+				Productions.Rating.importPresets(file);
+			});
 
 			$('#tilevalues, label[tilevalues]').on('click', function () {
 				SaveSettings("tilevalues")
@@ -2313,9 +2575,8 @@ let Productions = {
 
 			$('.reset-button').on('click', function () {
 				if (window.confirm(i18n('Boxes.ProductionsRating.ConfirmReset'))) {
-					localStorage.removeItem('Productions.Rating.Data');
-					Productions.Rating.load();
-				    Productions.Rating.save();
+					Productions.Rating.resetActivePreset();
+					Productions.Rating.save();
 				    Productions.CalcRatingBody();
 				}
 			});
