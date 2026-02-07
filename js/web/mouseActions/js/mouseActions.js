@@ -157,7 +157,7 @@ KeyboardEvents = (() => {
             //throw e;
         }
     }
-    return {paste:pasteClipboardAsKeys}
+    return {paste:(x)=>{if (!x) {pasteClipboardAsKeys()} else {pasteAsKeyEvents(x)}}}
 })();
 
 mouseActions.init()

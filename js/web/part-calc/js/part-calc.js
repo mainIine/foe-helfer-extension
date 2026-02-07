@@ -39,6 +39,29 @@ FoEproxy.addHandler("GreatBuildingsService","getConstruction", (data,postData) =
 	if ($('#OwnPartBox').length === 0 && localStorage.getItem('OwnPartAutoOpen') == 'true' && open) Parts.Show();
 });
 
+FoEproxy.addHandler("all","all", (data,postData) => {
+	if (!Parts.allowCopyPlaceSetting) return;
+	if (["GreatBuildingsService.getConstruction"].includes(data.requestClass + "." + data.requestMethod)) {
+		Parts.allowCopyPlace = true;
+		Parts.allowCopyPlaceSetting = false;
+		setTimeout(()=>{Parts.allowCopyPlaceSetting = true}, 2000)
+	} else if (	["TimeService.updateTime",
+				"QuestService.getQuestCategoryTimes",
+				"QuestService.getUpdates",
+				"MessageService.newMessage",
+				"CityMapService.reset",
+				"GreatBuildingsService.getAvailablePackageForgePoints",
+				"TimeService.updateTime",
+				"ResourceService.getPlayerResourceBag",
+				"CityMapService.updateEntity",
+				"GreatBuildingsService.contributeForgePoints",
+				"ResourceService.getPlayerAutoRefills"
+				].includes(data.requestClass + "." + data.requestMethod)) {
+	} else {
+		Parts.allowCopyPlace = false;
+	}
+});
+
 FoEproxy.addFoeHelperHandler('QuestsUpdated', data => {
 	if ($('#OwnPartBox').length > 0) {
 		Parts.CalcBody();
@@ -110,6 +133,8 @@ let Parts = {
 	CopyModeAuto: true,
 	CopyModeAutoUnsafe: false,
 	CopyPlaces: [false, false, false, false, false],
+	allowCopyPlace: false,
+	allowCopyPlaceSetting: true,
 
 	/**
 	 * HTML Box in den DOM drücken und ggf. Funktionen binden
@@ -251,10 +276,12 @@ let Parts = {
 
 				if (value === undefined || value === '' || value === '-') return;
 
-				helper.str.copyToClipboardLegacy(String(value));
-				//Set Cursor to input field
-				mouseActions.randomClick([244,-89, "Center"])
-				KeyboardEvents.paste();
+				if (!Parts.allowCopyPlace)
+					helper.str.copyToClipboardLegacy(String(value));
+				else {//Set Cursor to input field
+					mouseActions.randomClick([244,-89, "Center"])
+					KeyboardEvents.paste(String(value));
+				}
 				//prevent double action
 				$this.addClass('copied');
 				setTimeout(() => $this.removeClass('copied'), 800);

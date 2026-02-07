@@ -120,10 +120,12 @@ let Calculator = {
 
 				if (value === undefined || value === '' || value === '-') return;
 
-				helper.str.copyToClipboardLegacy(String(value));
-				//Set Cursor to input field
-				mouseActions.randomClick([244,-89, "Center"])
-				KeyboardEvents.paste();
+				if (!Parts.allowCopyPlace)
+					helper.str.copyToClipboardLegacy(String(value));
+				else {//Set Cursor to input field
+					mouseActions.randomClick([244,-89, "Center"])
+					KeyboardEvents.paste(String(value));
+				}
 				//prevent double action
 				$this.addClass('copied');
 				setTimeout(() => $this.removeClass('copied'), 800);
