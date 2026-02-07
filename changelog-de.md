@@ -9,6 +9,7 @@
 - Einstellungen: Manche "Automatisch öffnen"-Einstellungen wurden entfernt, weil sie auch im jeweiligen Fenster zu finden sind
 - QI Stadtübersicht: Der Titel passt sich nun an
 - Eigenanteilsrechner/Kostenrechner: die FP Werte können nun angeklickt werden - der Wert wird direkt in das Eingabefeld des LB-Fensters eingetragen oder zumindest in die Zwischenablage gelegt
+- Eigenanteilsrechner: Option hinzugefügt, ob im Summenwert die bereits eingezahlten FP enthalten sein sollen
 
 **Bugfix**
 - Stadtdaten kopieren: das Datenformat hat nicht mehr zu den bekannten Schnittstellen gepasst - geht jetzt wieder

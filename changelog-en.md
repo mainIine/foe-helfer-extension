@@ -8,7 +8,8 @@
 - Productions: Added a list for special productions
 - Settings: Removed some "open automatically" settings if they are already available in the modules windows settings
 - QI city: The title changes with the difficulty level now
-- OwnpartCalculator/GB Cost Calculator: the FP values can now be clicked - the value is written directly to the input field or at least copied to the clipboard
+- Ownpart Calculator/GB Cost Calculator: the FP values can now be clicked - the value is written directly to the input field or at least copied to the clipboard	
+- Ownpart Calculator: added an Option to in-/exclude initial FP in given sum values
 
 **Bugfix**
 - Copy city data: data format was slightly off by accident, works like before now
