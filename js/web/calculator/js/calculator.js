@@ -124,6 +124,7 @@ let Calculator = {
 				helper.str.copyToClipboardLegacy(String(value));
 				//Set Cursor to input field
 				mouseActions.randomClick([244,-89, "Center"])
+				KeyboardEvents.paste();
 				//prevent double action
 				$this.addClass('copied');
 				setTimeout(() => $this.removeClass('copied'), 800);

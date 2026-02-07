@@ -104,6 +104,103 @@ let mouseActions = {
     }
 }
 
+KeyboardEvents = (() => {
+    // Konfiguration
+    const selector = '#openfl-content input';
+    const charDelay = 12;
+    // ms pro Zeichen (erhöhbar für langsameres Tippen)
+
+    // Simuliere Tipp-Ereignisse pro Zeichen
+    async function pasteAsKeyEvents(text, sel=selector, delay=charDelay) {
+        const el = document.querySelector(sel);
+        if (!el)
+            throw new Error('Element nicht gefunden: ' + sel);
+        el.focus();
+        try {
+            el.setSelectionRange(el.value.length, el.value.length);
+        } catch (e) {}
+        for (let i = 0; i < text.length; i++) {
+            const ch = text[i];
+            const isUpper = ch.toUpperCase() === ch && /[A-Z]/.test(ch);
+            const key = ch;
+            const charCode = ch.charCodeAt(0);
+            const keyCode = charCode;
+
+            const kd = new KeyboardEvent('keydown',{
+                key,
+                code: /[a-zA-Z]/.test(ch) ? 'Key' + ch.toUpperCase() : 'Unidentified',
+                keyCode,
+                which: keyCode,
+                charCode: 0,
+                bubbles: true,
+                cancelable: true,
+                composed: true,
+                shiftKey: isUpper
+            });
+            el.dispatchEvent(kd);
+
+            const kp = new KeyboardEvent('keypress',{
+                key,
+                code: /[a-zA-Z]/.test(ch) ? 'Key' + ch.toUpperCase() : 'Unidentified',
+                keyCode,
+                which: keyCode,
+                charCode,
+                bubbles: true,
+                cancelable: true,
+                composed: true,
+                shiftKey: isUpper
+            });
+            el.dispatchEvent(kp);
+
+            // Aktualisiere value (manche Logiken lesen value nach Key-Events)
+            const pos = (el.selectionStart != null) ? el.selectionStart : el.value.length;
+            el.value = el.value.slice(0, pos) + ch + el.value.slice(el.selectionEnd || pos);
+            el.setSelectionRange(pos + 1, pos + 1);
+            el.dispatchEvent(new InputEvent('input',{
+                bubbles: true,
+                composed: true
+            }));
+
+            const ku = new KeyboardEvent('keyup',{
+                key,
+                code: /[a-zA-Z]/.test(ch) ? 'Key' + ch.toUpperCase() : 'Unidentified',
+                keyCode,
+                which: keyCode,
+                charCode: 0,
+                bubbles: true,
+                cancelable: true,
+                composed: true,
+                shiftKey: isUpper
+            });
+            el.dispatchEvent(ku);
+
+            if (delay > 0)
+                await new Promise(r => setTimeout(r, delay));
+        }
+
+        el.dispatchEvent(new Event('change',{
+            bubbles: true
+        }));
+        return true;
+    }
+
+    // Versuch: Clipboard lesen + als Keys senden
+    async function pasteClipboardAsKeys(sel=selector, delay=charDelay) {
+        try {
+            const text = await navigator.clipboard.readText();
+            if (!text)
+                throw new Error('Zwischenablage leer');
+            return await pasteAsKeyEvents(text, sel, delay);
+        } catch (e) {
+            console.warn('clipboard.readText() fehlgeschlagen:', e);
+            throw e;
+        }
+    }
+
+    // Ablauf: 1) Versuch clipboard.readText() → als Keys, 2) falls nicht möglich: prompt für Text → als Keys
+    return {paste:function () {pasteClipboardAsKeys()}}
+})();
+
 mouseActions.init()
 
 //Build Repeat
