@@ -806,7 +806,7 @@ let Parts = {
 		for (let i = 0; i < 5; i++) {
 			EigenCounter += Eigens[i];
 			if (i === 0 && EigenStart > 0) {
-				EigenCounter += EigenStart;
+				if (localStorage.getItem('OwnPartIncludeStart') != 'false') EigenCounter += EigenStart;
 
 				h.push('<tr>');
 				let OwnPartStartText = (Eigens[i] > 0
@@ -898,6 +898,7 @@ let Parts = {
 
 		// Restzahlung
 		if (Eigens[5] > 0) {
+			if (!(localStorage.getItem('OwnPartIncludeStart') != 'false')) EigenCounter += EigenStart;
 			EigenCounter += Eigens[5];
 
 			h.push('<tr>');
@@ -1631,6 +1632,7 @@ let Parts = {
 			showPrints = localStorage.getItem('OwnPartShowBP') || 'true',
 			minView = localStorage.getItem('OwnPartMinView') || 'false',
 			autoOpen = localStorage.getItem('OwnPartAutoOpen') || 'false',
+			includeStart = localStorage.getItem('OwnPartIncludeStart') || 'true',
 			nV = `<p class="new-row text-center bbd p5 flex gap"><label>${i18n('Boxes.Calculator.Settings.newValue')}:</label> <input type="number" class="settings-values" style="width:30px"> <span class="btn btn-green btn-slim" onclick="Parts.SettingsInsertNewRow()">+</span></p>`;
 		
 			if(sB) {
@@ -1663,7 +1665,8 @@ let Parts = {
 		c.push('<br><input type="checkbox" id="showprints" class="showprints game-cursor" ' + ((showPrints == 'true') ? 'checked' : '') + '> <label for="showprints">' + i18n('Settings.ShowOwnPartBP.Desc') + '</label>');
 		c.push('<br><input type="checkbox" id="minview" class="minview game-cursor" ' + ((minView == 'true') ? 'checked' : '') + '> <label for="minview">' + i18n('Settings.ShowOwnPartMinView.Desc') + '</label>');
 		c.push('<br><input type="checkbox" id="openonaliengb" class="openonaliengb game-cursor" ' + ((allGB == 'true') ? 'checked' : '') + '> <label for="openonaliengb">' + i18n('Settings.ShowOwnPartOnAllGBs.Desc') + '</label>');
-		c.push('<br><input type="checkbox" id="autoOpen" class="autoOpen game-cursor" ' + ((autoOpen == 'true') ? 'checked' : '') + '> <label for="autoOpen">' + i18n('Settings.ShowOwnPartAutoOpen.Desc') + '</label></p>');
+		c.push('<br><input type="checkbox" id="autoOpen" class="autoOpen game-cursor" ' + ((autoOpen == 'true') ? 'checked' : '') + '> <label for="autoOpen">' + i18n('Settings.ShowOwnPartAutoOpen.Desc') + '</label>');
+		c.push('<br><input type="checkbox" id="includeStart" class="includeStart game-cursor" ' + ((includeStart == 'true') ? 'checked' : '') + '> <label for="includeStart">' + i18n('Settings.ShowOwnPartIncludeStart.Desc') + '</label></p>');
 
 		// save button
 		c.push(`<p class="text-center p2"><button id="save-calculator-settings" class="btn btn-green" onclick="Parts.SettingsSaveValues()">${i18n('Boxes.Calculator.Settings.Save')}</button></p>`);
@@ -1735,6 +1738,10 @@ let Parts = {
 		if ($("#autoOpen").is(':not(:checked)'))
 			autoOpen = false;
 		localStorage.setItem('OwnPartAutoOpen',autoOpen);
+		let includeStart = true;
+		if ($("#includeStart").is(':not(:checked)'))
+			includeStart = false;
+		localStorage.setItem('OwnPartIncludeStart',includeStart);
 
 		$(`#OwnPartBoxSettingsBox`).fadeToggle('fast', function(){
 			$(this).remove();

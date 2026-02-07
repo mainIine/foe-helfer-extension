@@ -1628,6 +1628,7 @@
     "Settings.ShowNotifications.Desc": "The Helper uses notifications in various places. You can switch this on or off here.",
     "Settings.ShowNotifications.Title": "Notifications",
     "Settings.ShowOwnPartAutoOpen.Desc": "Open automatically",
+    "Settings.ShowOwnPartIncludeStart.Desc": "Include initial FP in sum",
     "Settings.ShowOwnPartBP.Desc": "Show Blueprints",
     "Settings.ShowOwnPartMedals.Desc": "Show Medals",
     "Settings.ShowOwnPartMinView.Desc": "Hide most details",
