@@ -8,6 +8,7 @@
 - Produktionsübersicht: Es gibt nun eine Liste für Spezialgüter-Produktionen
 - Einstellungen: Manche "Automatisch öffnen"-Einstellungen wurden entfernt, weil sie auch im jeweiligen Fenster zu finden sind
 - QI Stadtübersicht: Der Titel passt sich nun an
+- Eigenanteilsrechner/Kostenrechner: die FP Werte können nun angeklickt werden - der Wert wird direkt in das Eingabefeld des LB-Fensters eingetragen oder zumindest in die Zwischenablage gelegt
 
 **Bugfix**
 - Stadtdaten kopieren: das Datenformat hat nicht mehr zu den bekannten Schnittstellen gepasst - geht jetzt wieder
@@ -28,6 +29,7 @@
 **Update**
 - Stadt Übersicht: 
 	- Die Statistiken und Filter an der Seite wurden überarbeitet: es gibt neue, interessantere Fakten zu den Gebäuden in der Stadt
+	- Die Filter wurden optisch angepasst und befinden sich nun am unteren Ende der Seitenleiste (Schau genau hin, du findest sie schon!)
 	- Die verfügbare Fläche ist jetzt auch bei anderen Spielern zu sehen
 - Profil: 
 	- QI Aktionskapazität hinzugefügt

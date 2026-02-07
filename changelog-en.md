@@ -8,6 +8,7 @@
 - Productions: Added a list for special productions
 - Settings: Removed some "open automatically" settings if they are already available in the modules windows settings
 - QI city: The title changes with the difficulty level now
+- OwnpartCalculator/GB Cost Calculator: the FP values can now be clicked - the value is written directly to the input field or at least copied to the clipboard
 
 **Bugfix**
 - Copy city data: data format was slightly off by accident, works like before now
@@ -27,6 +28,7 @@
 **Update**
 - City Map: 
 	- Sidebar stats have been reworked: more interesting facts about buildings in the city were added
+	- Filters have been revamped and are now in the bottom area of the sidebar (you will find them if you look hard enough)
 	- Available area for other players cities has been added
 - Profile: 
 	- QI capacity added
