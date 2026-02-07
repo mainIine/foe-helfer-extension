@@ -645,7 +645,7 @@ let Calculator = {
 
 			hFordern.push('<tr class="' + RowClass + '">');
 			hFordern.push('<td class="text-center"><strong class="' + RankClass + ' td-tooltip" title="' + HTML.i18nTooltip(RankTooltip.join('<br>')) + '">' + RankText + '</strong></td>');
-			hFordern.push('<td class="text-center"><strong class="' + EinsatzClass + ' td-tooltip copy-fp clickable" data-copy="' + Einzahlungen[Rank] + '" title="' + HTML.i18nTooltip(EinsatzTooltip.join('<br>')) + '">' + EinsatzText + '</strong></td>');
+			hFordern.push('<td class="text-center"><strong class="' + EinsatzClass + ' td-tooltip copy-fp clickable" data-copy="' + ForderFPRewards[Rank] + '" title="' + HTML.i18nTooltip(EinsatzTooltip.join('<br>')) + '">' + EinsatzText + '</strong></td>');
 			hFordern.push('<td class="text-center"><strong class="' + GewinnClass + ' td-tooltip" title="' + HTML.i18nTooltip(GewinnTooltip.join('<br>')) + '">' + GewinnText + '</strong></td>');
 			hFordern.push('<td class="text-center">' + HTML.Format(BPRewards[Rank]) + '</td>');
 			hFordern.push('<td class="text-center">' + HTML.Format(MedalRewards[Rank]) + '</td>');
