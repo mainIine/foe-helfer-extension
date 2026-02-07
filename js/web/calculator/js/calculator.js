@@ -18,7 +18,6 @@ FoEproxy.addFoeHelperHandler('QuestsUpdated', data => {
 });
 
 let Calculator = {
-
 	ForderBonus: 90,
     PlayerName: undefined,
     LastPlayerID: 0,
@@ -555,12 +554,9 @@ let Calculator = {
 					EinsatzClass = 'info';
 				}
 
-				let OwnContributionMain = Einzahlungen[Rank];
-				let OwnContributionAlt = ForderFPRewards[Rank];
-				EinsatzText = HTML.Format(OwnContributionMain);
-				if (OwnContributionMain !== OwnContributionAlt) {
-					EinsatzText += ' <small>(=' + HTML.Format(OwnContributionAlt) + ')</small>';
-				}
+				EinsatzText = HTML.Format(Einzahlungen[Rank]);
+				if (Einzahlungen[Rank] !== ForderFPRewards[Rank]) 
+					EinsatzText += ' <small>(=' + HTML.Format(ForderFPRewards[Rank]) + ')</small>';
 				EinsatzText += Calculator.FormatForderRankDiff(ForderRankDiff);
 
 
@@ -649,18 +645,7 @@ let Calculator = {
 
 			hFordern.push('<tr class="' + RowClass + '">');
 			hFordern.push('<td class="text-center"><strong class="' + RankClass + ' td-tooltip" title="' + HTML.i18nTooltip(RankTooltip.join('<br>')) + '">' + RankText + '</strong></td>');
-			let CopyContributionValue = (ForderStates[Rank] === 'Self' ? Einzahlungen[Rank] : ForderFPRewards[Rank]);
-			let CopyContributionText = '<span class="copy-fp" data-copy="' + CopyContributionValue + '">' + HTML.Format(CopyContributionValue) + '</span>' + Calculator.FormatForderRankDiff(ForderRankDiff);
-			if (ForderStates[Rank] === 'Self') {
-				let OwnContributionMain = Einzahlungen[Rank];
-				let OwnContributionAlt = ForderFPRewards[Rank];
-				CopyContributionText = '<span class="copy-fp" data-copy="' + OwnContributionMain + '">' + HTML.Format(OwnContributionMain) + '</span>';
-				if (OwnContributionMain !== OwnContributionAlt) {
-					CopyContributionText += ' <small class="copy-fp" data-copy="' + OwnContributionAlt + '">(=' + HTML.Format(OwnContributionAlt) + ')</small>';
-				}
-				CopyContributionText += Calculator.FormatForderRankDiff(ForderRankDiff);
-			}
-			hFordern.push('<td class="text-center"><strong class="' + EinsatzClass + ' td-tooltip" title="' + HTML.i18nTooltip(EinsatzTooltip.join('<br>')) + '">' + CopyContributionText + '</strong></td>');
+			hFordern.push('<td class="text-center"><strong class="' + EinsatzClass + ' td-tooltip copy-fp clickable" data-copy="' + Einzahlungen[Rank] + '" title="' + HTML.i18nTooltip(EinsatzTooltip.join('<br>')) + '">' + EinsatzText + '</strong></td>');
 			hFordern.push('<td class="text-center"><strong class="' + GewinnClass + ' td-tooltip" title="' + HTML.i18nTooltip(GewinnTooltip.join('<br>')) + '">' + GewinnText + '</strong></td>');
 			hFordern.push('<td class="text-center">' + HTML.Format(BPRewards[Rank]) + '</td>');
 			hFordern.push('<td class="text-center">' + HTML.Format(MedalRewards[Rank]) + '</td>');
