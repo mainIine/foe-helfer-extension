@@ -51,11 +51,14 @@ FoEproxy.addHandler("all","all", (data,postData) => {
 				"MessageService.newMessage",
 				"CityMapService.reset",
 				"GreatBuildingsService.getAvailablePackageForgePoints",
-				"TimeService.updateTime",
 				"ResourceService.getPlayerResourceBag",
 				"CityMapService.updateEntity",
 				"GreatBuildingsService.contributeForgePoints",
-				"ResourceService.getPlayerAutoRefills"
+				"ResourceService.getPlayerAutoRefills",
+				"BlueprintService.getGreatBuildingInventoryForGreatBuilding",
+				"GreatBuildingsService.getUnlockCosts",
+				"BlueprintService.unlockLevel",
+				"GreatBuildingsService.getConstructionRanking"
 				].includes(data.requestClass + "." + data.requestMethod)) {
 	} else {
 		Parts.allowCopyPlace = false;
