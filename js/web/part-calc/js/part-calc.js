@@ -805,17 +805,20 @@ let Parts = {
 		h.push('</tr>');
 		h.push('</thead>');
 		h.push('<tbody>');
-
+		let IncludeStart = localStorage.getItem('OwnPartIncludeStart') != 'false';
+		let opt = (platz, gesamt)=>{
+			let ret = '<span class="copy-fp clickable" data-copy="' + platz + '">' + HTML.Format(platz) + '</span>';
+			if (gesamt > platz) {
+				ret += ` <small class="${IncludeStart ? "":"copy-fp "}clickable" data-copy="${gesamt}">(=${HTML.Format(gesamt)})</small>`;
+			}
+			return ret;
+		}
 		for (let i = 0; i < 5; i++) {
 			EigenCounter += Eigens[i];
 			if (i === 0 && EigenStart > 0) {
-				if (localStorage.getItem('OwnPartIncludeStart') != 'false') EigenCounter += EigenStart;
-
+				if (IncludeStart) EigenCounter += EigenStart;
 				h.push('<tr>');
-				let OwnPartStartText = (Eigens[i] > 0
-					? '<span class="copy-fp clickable" data-copy="' + Eigens[i] + '">' + HTML.Format(Eigens[i]) + '</span>'
-						+ ' <small class="copy-fp clickable" data-copy="' + (Eigens[i] + EigenStart) + '">(=' + HTML.Format(Eigens[i] + EigenStart) + ')</small>'
-					: '-');
+				let OwnPartStartText = (Eigens[i] > 0 ? opt(Eigens[i], EigenCounter): '-');
 				h.push('<td>' + i18n('Boxes.OwnpartCalculator.OwnPart') + '</td>');
 				h.push('<td class="text-center"><strong class="' + (PlayerID === ExtPlayerID ? 'success' : '') + '">' + OwnPartStartText + '</strong></td>');
 				h.push('<td class="text-center"><strong class="info">' + HTML.Format(EigenStart) + '</strong></td>');
@@ -827,10 +830,7 @@ let Parts = {
 			else {
 				if (Eigens[i] > 0) {
 					h.push('<tr>');
-					let OwnPartText = '<span class="copy-fp clickable" data-copy="' + Eigens[i] + '">' + HTML.Format(Eigens[i]) + '</span>';
-					if (EigenCounter > Eigens[i]) {
-						OwnPartText += ' <small class="copy-fp clickable" data-copy="' + EigenCounter + '">(=' + HTML.Format(EigenCounter) + ')</small>';
-					}
+					let OwnPartText = opt(Eigens[i], EigenCounter);
 					h.push('<td>' + i18n('Boxes.OwnpartCalculator.OwnPart') + '</td>');
 					h.push('<td class="text-center"><strong class="' + (PlayerID === ExtPlayerID ? 'success' : '') + '">' + OwnPartText + '</strong></td>');
 					if (printsEnabled && medalsEnabled) h.push('<td colspan="5"></td>');
@@ -901,14 +901,9 @@ let Parts = {
 
 		// Restzahlung
 		if (Eigens[5] > 0) {
-			if (!(localStorage.getItem('OwnPartIncludeStart') != 'false')) EigenCounter += EigenStart;
 			EigenCounter += Eigens[5];
-
 			h.push('<tr>');
-			let OwnPartRestText = '<span class="copy-fp clickable" data-copy="' + Eigens[5] + '">' + HTML.Format(Eigens[5]) + '</span>';
-			if (EigenCounter > Eigens[5]) {
-				OwnPartRestText += ' <small class="copy-fp clickable" data-copy="' + (EigenCounter - EigenStart) + '">(=' + HTML.Format(EigenCounter - EigenStart) + ')</small>';
-			}
+			let OwnPartRestText = opt(Eigens[5], EigenCounter);
 			h.push('<td>' + i18n('Boxes.OwnpartCalculator.OwnPart') + '</td>');
 			h.push('<td class="text-center"><strong class="' + (PlayerID === ExtPlayerID ? 'success' : '') + '">' + OwnPartRestText + '</strong></td>');
 			h.push('<td colspan="5"></td>');
