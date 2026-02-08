@@ -1639,6 +1639,7 @@
     "Settings.ShowNotifications.Title": "Notifications",
     "Settings.ShowOwnPartAutoOpen.Desc": "Ouvrir automatiquement",
     "Settings.ShowOwnPartBP.Desc": "Afficher les plans",
+    "Settings.ShowOwnPartIncludeStart.Desc": "Inclure les PF initiaux dans la somme",
     "Settings.ShowOwnPartMedals.Desc": "Afficher les médailles",
     "Settings.ShowOwnPartMinView.Desc": "Masquer la plupart des détails",
     "Settings.ShowOwnPartOnAllGBs.Desc": "Modifie la 'Calculatrice GM interne' pour les GM des autres joueurs",
