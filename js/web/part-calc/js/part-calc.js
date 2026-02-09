@@ -859,8 +859,6 @@ let Parts = {
 			else {
 				h.push('<td class="text-center"><strong>-</strong></td>');
 				let MaezenString = Parts.Maezens[i] > 0 ? HTML.Format(Parts.Maezens[i]) : '-';
-				let MaezenCopyClass = Parts.Maezens[i] > 0 ? ' copy-fp' : '';
-				let MaezenCopyValue = Parts.Maezens[i] > 0 ? Parts.Maezens[i] : '';
 				let MaezenDiff = Parts.Maezens[i] - FPRewards[i];
 				let MaezenDiffString = '';
 				if (Parts.Maezens[i] > 0) {
@@ -872,7 +870,7 @@ let Parts = {
 					}
 				}
 
-				h.push('<td class="text-center"><strong class="info' + MaezenCopyClass + '" data-copy="' + MaezenCopyValue + '">' + MaezenString + '</strong>' + MaezenDiffString + '</td>');
+				h.push('<td class="text-center"><strong class="info">' + MaezenString + '</strong>' + MaezenDiffString + '</td>');
 			}
 
 			if (printsEnabled) h.push('<td class="text-center">' + HTML.Format(BPRewards[i]) + '</td>');
