@@ -491,11 +491,9 @@ p {
 	justify-content: center;
 	flex-wrap: wrap;
 }
-
 .flex.between {
 	justify-content: space-between;
 }
-
 .flex.gap {
 	gap: 2px;
 }
@@ -503,7 +501,6 @@ p {
 .p2 {
 	padding: 2px;
 }
-
 .p5 {
 	padding: 5px;
 }
@@ -534,6 +531,10 @@ p {
 
 .text-bold {
 	font-weight: 700;
+}
+
+.copy-fp:hover {
+	filter: brightness(1.4) contrast(1.4);
 }
 
 /* MENU ICONS */

@@ -1626,7 +1626,7 @@ let MainParser = {
 			return ally
 		},
 
-		showAllyList:()=>{
+		showAllyList:(closeIfOpen = false)=>{
 			
 			//console.log(0, MainParser.Allies);
 
@@ -1642,6 +1642,11 @@ let MainParser = {
 					settings: 'MainParser.Allies.ShowSettings()',
 					active_maps:"main",				
 				});
+			} else {
+				if (closeIfOpen) {
+					HTML.CloseOpenBox('AllyList');
+					return;
+				}
 			}
 			MainParser.Allies.updateAllyList()
 		},

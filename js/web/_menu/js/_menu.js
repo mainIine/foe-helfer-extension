@@ -467,7 +467,7 @@ let _menu = {
 		let btn = _menu.MakeButton('allies', i18n('Menu.Allies.Title'), desc, red);
 
 		let btn_outpost = $('<span />').bind('click', function () {
-			MainParser.Allies.showAllyList();
+			MainParser.Allies.showAllyList(true);
 		});
 
 		return btn.append(btn_outpost);
