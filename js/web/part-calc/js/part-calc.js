@@ -807,9 +807,9 @@ let Parts = {
 		h.push('<tbody>');
 		let IncludeStart = localStorage.getItem('OwnPartIncludeStart') != 'false';
 		let opt = (platz, gesamt)=>{
-			let ret = '<span class="copy-fp clickable" data-copy="' + platz + '">' + HTML.Format(platz) + '</span>';
+			let ret = `<span class="${PlayerID==ExtPlayerID ? "copy-fp clickable":""}" data-copy="${platz}">${HTML.Format(platz)}</span>`;
 			if (gesamt > platz) {
-				ret += ` <small class="${IncludeStart ? "":"copy-fp "}clickable" data-copy="${gesamt}">(=${HTML.Format(gesamt)})</small>`;
+				ret += ` <small class="${IncludeStart || PlayerID!=ExtPlayerID ? "":"copy-fp clickable"}" data-copy="${gesamt}">(=${HTML.Format(gesamt)})</small>`;
 			}
 			return ret;
 		}
@@ -845,7 +845,7 @@ let Parts = {
 			h.push('<td>' + i18n('Boxes.OwnpartCalculator.Place') + ' ' + (i+1) + '</td>');
 
 			if (Parts.PlaceAvailables[i]) {
-				h.push('<td class="text-center"><strong class="' + (PlayerID === ExtPlayerID ? '' : 'success') + (Parts.Maezens[i] > 0 ? ' copy-fp clickable' : '') + '" data-copy="' + (Parts.Maezens[i] > 0 ? Parts.Maezens[i] : '') + '">' + (Parts.Maezens[i] > 0 ? HTML.Format(Parts.Maezens[i]) : '-') + '</strong >' + '</td>');
+				h.push('<td class="text-center"><strong class="' + (PlayerID === ExtPlayerID ? '' : 'success' + (Parts.Maezens[i] > 0 ? ' copy-fp clickable' : '')) + '" data-copy="' + (Parts.Maezens[i] > 0 ? Parts.Maezens[i] : '') + '">' + (Parts.Maezens[i] > 0 ? HTML.Format(Parts.Maezens[i]) : '-') + '</strong >' + '</td>');
 				if (Parts.LeveltLG[i]) {
 					h.push(`<td class="text-center"><strong class="error">${i18n("Boxes.OwnpartCalculator.levelt")}</strong></td>`);
 				}
