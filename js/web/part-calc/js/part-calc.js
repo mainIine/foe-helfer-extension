@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2025 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -37,6 +37,32 @@ FoEproxy.addWsHandler('OtherPlayerService', 'newEvent', data => {
 FoEproxy.addHandler("GreatBuildingsService","getConstruction", (data,postData) => {
 	let open = postData[0].requestData[1] == ExtPlayerID || localStorage.getItem('ShowOwnPartOnAllGBs') == 'true';
 	if ($('#OwnPartBox').length === 0 && localStorage.getItem('OwnPartAutoOpen') == 'true' && open) Parts.Show();
+});
+
+FoEproxy.addHandler("all","all", (data,postData) => {
+	if (!Parts.allowCopyPlaceSetting) return;
+	if (["GreatBuildingsService.getConstruction"].includes(data.requestClass + "." + data.requestMethod)) {
+		Parts.allowCopyPlace = true;
+		Parts.allowCopyPlaceSetting = false;
+		setTimeout(()=>{Parts.allowCopyPlaceSetting = true}, 2000)
+	} else if (	["TimeService.updateTime",
+				"QuestService.getQuestCategoryTimes",
+				"QuestService.getUpdates",
+				"MessageService.newMessage",
+				"CityMapService.reset",
+				"GreatBuildingsService.getAvailablePackageForgePoints",
+				"ResourceService.getPlayerResourceBag",
+				"CityMapService.updateEntity",
+				"GreatBuildingsService.contributeForgePoints",
+				"ResourceService.getPlayerAutoRefills",
+				"BlueprintService.getGreatBuildingInventoryForGreatBuilding",
+				"GreatBuildingsService.getUnlockCosts",
+				"BlueprintService.unlockLevel",
+				"GreatBuildingsService.getConstructionRanking"
+				].includes(data.requestClass + "." + data.requestMethod)) {
+	} else {
+		Parts.allowCopyPlace = false;
+	}
 });
 
 FoEproxy.addFoeHelperHandler('QuestsUpdated', data => {
@@ -110,6 +136,8 @@ let Parts = {
 	CopyModeAuto: true,
 	CopyModeAutoUnsafe: false,
 	CopyPlaces: [false, false, false, false, false],
+	allowCopyPlace: false,
+	allowCopyPlaceSetting: true,
 
 	/**
 	 * HTML Box in den DOM drücken und ggf. Funktionen binden
@@ -240,6 +268,26 @@ let Parts = {
 				let copyParts = Parts.CopyFunction($(this), 'save');
 				helper.str.copyToClipboardLegacy(copyParts);
 				Parts.CalcBody(Parts.Level);
+			});
+
+			// Quick copy for FP values (places + remaining to level)
+			$('#OwnPartBox').on('click', '.copy-fp', function (e) {
+				e.preventDefault();
+				e.stopPropagation();
+				let $this = $(this),
+					value = $this.data('copy');
+
+				if (value === undefined || value === '' || value === '-') return;
+
+				if (!Parts.allowCopyPlace)
+					helper.str.copyToClipboardLegacy(String(value));
+				else {//Set Cursor to input field
+					mouseActions.randomClick([244,-89, "Center"])
+					KeyboardEvents.paste(String(value));
+				}
+				//prevent double action
+				$this.addClass('copied');
+				setTimeout(() => $this.removeClass('copied'), 800);
 			});
 
 			// CopyBox
@@ -757,15 +805,22 @@ let Parts = {
 		h.push('</tr>');
 		h.push('</thead>');
 		h.push('<tbody>');
-
+		let IncludeStart = localStorage.getItem('OwnPartIncludeStart') != 'false';
+		let opt = (platz, gesamt)=>{
+			let ret = `<span class="${PlayerID==ExtPlayerID ? "copy-fp clickable":""}" data-copy="${platz}">${HTML.Format(platz)}</span>`;
+			if (gesamt > platz) {
+				ret += ` <small class="${IncludeStart || PlayerID!=ExtPlayerID ? "":"copy-fp clickable"}" data-copy="${gesamt}">(=${HTML.Format(gesamt)})</small>`;
+			}
+			return ret;
+		}
 		for (let i = 0; i < 5; i++) {
 			EigenCounter += Eigens[i];
 			if (i === 0 && EigenStart > 0) {
-				EigenCounter += EigenStart;
-
+				if (IncludeStart) EigenCounter += EigenStart;
 				h.push('<tr>');
+				let OwnPartStartText = (Eigens[i] > 0 ? opt(Eigens[i], EigenCounter): '-');
 				h.push('<td>' + i18n('Boxes.OwnpartCalculator.OwnPart') + '</td>');
-				h.push('<td class="text-center"><strong class="' + (PlayerID === ExtPlayerID ? 'success' : '') + '">' + (Eigens[i] > 0 ? HTML.Format(Eigens[i]) + ' <small>(=' + HTML.Format(Eigens[i] + EigenStart) + ')</small>' : '-') + '</strong></td>');
+				h.push('<td class="text-center"><strong class="' + (PlayerID === ExtPlayerID ? 'success' : '') + '">' + OwnPartStartText + '</strong></td>');
 				h.push('<td class="text-center"><strong class="info">' + HTML.Format(EigenStart) + '</strong></td>');
 				if (printsEnabled && medalsEnabled) h.push('<td colspan="4"></td>');
 				else if (printsEnabled || medalsEnabled) h.push('<td colspan="3"></td>');
@@ -775,8 +830,9 @@ let Parts = {
 			else {
 				if (Eigens[i] > 0) {
 					h.push('<tr>');
+					let OwnPartText = opt(Eigens[i], EigenCounter);
 					h.push('<td>' + i18n('Boxes.OwnpartCalculator.OwnPart') + '</td>');
-					h.push('<td class="text-center"><strong class="' + (PlayerID === ExtPlayerID ? 'success' : '') + '">' + HTML.Format(Eigens[i]) + (EigenCounter > Eigens[i] ? ' <small>(=' + HTML.Format(EigenCounter) + ')</small>' : '') + '</strong></td>');
+					h.push('<td class="text-center"><strong class="' + (PlayerID === ExtPlayerID ? 'success' : '') + '">' + OwnPartText + '</strong></td>');
 					if (printsEnabled && medalsEnabled) h.push('<td colspan="5"></td>');
 					else if (printsEnabled || medalsEnabled) h.push('<td colspan="4"></td>');
 					else if (!minView) h.push('<td colspan="3"></td>');
@@ -789,7 +845,7 @@ let Parts = {
 			h.push('<td>' + i18n('Boxes.OwnpartCalculator.Place') + ' ' + (i+1) + '</td>');
 
 			if (Parts.PlaceAvailables[i]) {
-				h.push('<td class="text-center"><strong class="' + (PlayerID === ExtPlayerID ? '' : 'success') + '">' + (Parts.Maezens[i] > 0 ? HTML.Format(Parts.Maezens[i]) : '-') + '</strong >' + '</td>');
+				h.push('<td class="text-center"><strong class="' + (PlayerID === ExtPlayerID ? '' : 'success' + (Parts.Maezens[i] > 0 ? ' copy-fp clickable' : '')) + '" data-copy="' + (Parts.Maezens[i] > 0 ? Parts.Maezens[i] : '') + '">' + (Parts.Maezens[i] > 0 ? HTML.Format(Parts.Maezens[i]) : '-') + '</strong >' + '</td>');
 				if (Parts.LeveltLG[i]) {
 					h.push(`<td class="text-center"><strong class="error">${i18n("Boxes.OwnpartCalculator.levelt")}</strong></td>`);
 				}
@@ -844,10 +900,10 @@ let Parts = {
 		// Restzahlung
 		if (Eigens[5] > 0) {
 			EigenCounter += Eigens[5];
-
 			h.push('<tr>');
+			let OwnPartRestText = opt(Eigens[5], EigenCounter);
 			h.push('<td>' + i18n('Boxes.OwnpartCalculator.OwnPart') + '</td>');
-			h.push('<td class="text-center"><strong class="' + (PlayerID === ExtPlayerID ? 'success' : '') + '">' + Eigens[5] + (EigenCounter > HTML.Format(Eigens[5]) ? ' <small>(=' + HTML.Format(EigenCounter - EigenStart) + ')</small>' : '') + '</strong></td>');
+			h.push('<td class="text-center"><strong class="' + (PlayerID === ExtPlayerID ? 'success' : '') + '">' + OwnPartRestText + '</strong></td>');
 			h.push('<td colspan="5"></td>');
 			h.push('</tr>');
 		}
@@ -894,7 +950,7 @@ let Parts = {
 			}
 			if (!minView) {
 				h.push('<div class="text-center d-flex" style="padding:3px 0;">');
-				h.push('<em>' + i18n('Boxes.Calculator.Up2LevelUp') + ': <span id="up-to-level-up">' + HTML.Format(rest) + '</span> ' + i18n('Boxes.Calculator.FP') + '</em>');
+				h.push('<em>' + i18n('Boxes.Calculator.Up2LevelUp') + ': <span id="up-to-level-up" class="copy-fp clickable" data-copy="' + rest + '">' + HTML.Format(rest) + '</span> ' + i18n('Boxes.Calculator.FP') + '</em>');
 				h.push('</div>');
 			}
 			h.push('<div class="bottom-buttons text-center">');
@@ -1572,6 +1628,7 @@ let Parts = {
 			showPrints = localStorage.getItem('OwnPartShowBP') || 'true',
 			minView = localStorage.getItem('OwnPartMinView') || 'false',
 			autoOpen = localStorage.getItem('OwnPartAutoOpen') || 'false',
+			includeStart = localStorage.getItem('OwnPartIncludeStart') || 'true',
 			nV = `<p class="new-row text-center bbd p5 flex gap"><label>${i18n('Boxes.Calculator.Settings.newValue')}:</label> <input type="number" class="settings-values" style="width:30px"> <span class="btn btn-green btn-slim" onclick="Parts.SettingsInsertNewRow()">+</span></p>`;
 		
 			if(sB) {
@@ -1604,7 +1661,8 @@ let Parts = {
 		c.push('<br><input type="checkbox" id="showprints" class="showprints game-cursor" ' + ((showPrints == 'true') ? 'checked' : '') + '> <label for="showprints">' + i18n('Settings.ShowOwnPartBP.Desc') + '</label>');
 		c.push('<br><input type="checkbox" id="minview" class="minview game-cursor" ' + ((minView == 'true') ? 'checked' : '') + '> <label for="minview">' + i18n('Settings.ShowOwnPartMinView.Desc') + '</label>');
 		c.push('<br><input type="checkbox" id="openonaliengb" class="openonaliengb game-cursor" ' + ((allGB == 'true') ? 'checked' : '') + '> <label for="openonaliengb">' + i18n('Settings.ShowOwnPartOnAllGBs.Desc') + '</label>');
-		c.push('<br><input type="checkbox" id="autoOpen" class="autoOpen game-cursor" ' + ((autoOpen == 'true') ? 'checked' : '') + '> <label for="autoOpen">' + i18n('Settings.ShowOwnPartAutoOpen.Desc') + '</label></p>');
+		c.push('<br><input type="checkbox" id="autoOpen" class="autoOpen game-cursor" ' + ((autoOpen == 'true') ? 'checked' : '') + '> <label for="autoOpen">' + i18n('Settings.ShowOwnPartAutoOpen.Desc') + '</label>');
+		c.push('<br><input type="checkbox" id="includeStart" class="includeStart game-cursor" ' + ((includeStart == 'true') ? 'checked' : '') + '> <label for="includeStart">' + i18n('Settings.ShowOwnPartIncludeStart.Desc') + '</label></p>');
 
 		// save button
 		c.push(`<p class="text-center p2"><button id="save-calculator-settings" class="btn btn-green" onclick="Parts.SettingsSaveValues()">${i18n('Boxes.Calculator.Settings.Save')}</button></p>`);
@@ -1676,6 +1734,10 @@ let Parts = {
 		if ($("#autoOpen").is(':not(:checked)'))
 			autoOpen = false;
 		localStorage.setItem('OwnPartAutoOpen',autoOpen);
+		let includeStart = true;
+		if ($("#includeStart").is(':not(:checked)'))
+			includeStart = false;
+		localStorage.setItem('OwnPartIncludeStart',includeStart);
 
 		$(`#OwnPartBoxSettingsBox`).fadeToggle('fast', function(){
 			$(this).remove();
@@ -1686,4 +1748,6 @@ let Parts = {
 		});
 	}
 };
+
+
 

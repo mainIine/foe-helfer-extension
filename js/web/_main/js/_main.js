@@ -1,7 +1,7 @@
 /*
  * *************************************************************************************
  *
- * Copyright (C) 2025 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -265,13 +265,14 @@ GetFights = () =>{
 		MainParser.Allies.getAllies(data.responseData);
 	});
 	FoEproxy.addHandler('AllyService', 'updateAlly', (data, postData) => {
+		MainParser.Allies.buildingBoostSums = [];
 		MainParser.Allies.updateAlly(data.responseData);
 	});
 	FoEproxy.addHandler('AllyService', 'addAlly', (data, postData) => {
 		MainParser.Allies.addAlly(data.responseData);
 	});
 	FoEproxy.addFoeHelperHandler('InventoryUpdated', () => {
-		MainParser.Allies.updateAllyList()
+		MainParser.Allies.updateAllyList();
 	});
 
 	// Portrait-Mapping für Spieler Avatare
@@ -340,8 +341,8 @@ GetFights = () =>{
 		GoodsList = data.responseData.goodsList
 
 		// freigeschaltete Erweiterungen sichern
-		CityMap.UnlockedAreas = data.responseData.city_map.unlocked_areas;
-		CityMap.BlockedAreas = data.responseData.city_map.blocked_areas;
+		CityMap.Main.unlockedAreas = data.responseData.city_map.unlocked_areas;
+		CityMap.Main.blockedAreas = data.responseData.city_map.blocked_areas;
 
 		// EventCountdown
 		let eventCountDownFeature = data.responseData.feature_flags?.features.filter((v) => { return (v.feature === "event_start_countdown") });
@@ -412,16 +413,16 @@ GetFights = () =>{
 		MainParser.UpdateActiveMap(data.responseData.gridId);
 
 		if (ActiveMap === 'era_outpost') {
-			CityMap.EraOutpostData = Object.assign({}, ...data.responseData['entities'].map((x) => ({ [x.id]: x })));
-			CityMap.EraOutpostAreas = data.responseData['unlocked_areas'];
+			CityMap.EraOutpost.data = Object.assign({}, ...data.responseData['entities'].map((x) => ({ [x.id]: x })));
+			CityMap.EraOutpost.areas = data.responseData['unlocked_areas'];
 		}
 		else if (ActiveMap === 'guild_raids') {
-			CityMap.QIData = Object.assign({}, ...data.responseData['entities'].map((x) => ({ [x.id]: x })));
-			CityMap.QIAreas = data.responseData['unlocked_areas'];
+			CityMap.QI.data = Object.assign({}, ...data.responseData['entities'].map((x) => ({ [x.id]: x })));
+			CityMap.QI.areas = data.responseData['unlocked_areas'];
 		}
 		else if (ActiveMap === 'cultural_outpost') {
-			CityMap.CulturalOutpostData = Object.assign({}, ...data.responseData['entities'].map((x) => ({ [x.id]: x })));
-			CityMap.CulturalOutpostAreas = data.responseData['unlocked_areas'];
+			CityMap.CulturalOutpost.data = Object.assign({}, ...data.responseData['entities'].map((x) => ({ [x.id]: x })));
+			CityMap.CulturalOutpost.areas = data.responseData['unlocked_areas'];
 		}
 	});
 
@@ -440,14 +441,14 @@ GetFights = () =>{
 
 		if (ActiveMap === 'gg') return; // getEntities wurde in den GG ausgelöst => Map nicht ändern
 		MainParser.UpdateActiveMap('main');
-		CityMap.OtherPlayer = { mapData: {}, unlockedAreas: null};
+		CityMap.OtherPlayer = { mapData: {}, unlockedAreas: null, name: '', eraName: null};
 	});
 
 
 	// main is entered
 	FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, postData) => {
 		MainParser.UpdateActiveMap('main');
-		CityMap.OtherPlayer = { mapData: {}, unlockedAreas: null};
+		CityMap.OtherPlayer = { mapData: {}, unlockedAreas: null, name: '', eraName: null};
 	});
 
 	// gex is entered
@@ -467,13 +468,14 @@ GetFights = () =>{
 		if (!data.responseData?.endsAt) return;
 
 		MainParser.UpdateActiveMap('guild_raids');
-
+		CityMap.QI.level = data.responseData.raidInstance?.difficultyLevel;
 	});
 
 	// visiting another player
 	FoEproxy.addHandler('OtherPlayerService', 'visitPlayer', (data, postData) => {
 		MainParser.UpdateActiveMap('OtherPlayer');
 		LastMapPlayerID = data.responseData.other_player.player_id;
+		CityMap.OtherPlayer.name = data.responseData.other_player.name;
 		CityMap.OtherPlayer.unlockedAreas = data.responseData.city_map.unlocked_areas;
 		CityMap.OtherPlayer.mapData = Object.assign({}, ...data.responseData.city_map.entities.map(x => ({ [x.id]: x })));
 	});
@@ -490,15 +492,15 @@ GetFights = () =>{
 			let building = data.responseData[0];
 			if (building && building.id) {
 				if (ActiveMap === "cultural_outpost") {
-					CityMap.CulturalOutpostData[building.id] = building
+					CityMap.CulturalOutpost.data[building.id] = building
 					return
 				}
 				else if (ActiveMap === "era_outpost") {
-					CityMap.EraOutpostData[building.id] = building
+					CityMap.EraOutpost.data[building.id] = building
 					return
 				}
 				else if (ActiveMap === "guild_raids") {
-					CityMap.QIData[building.id] = building
+					CityMap.QI.data[building.id] = building
 					return
 				}
 
@@ -508,21 +510,21 @@ GetFights = () =>{
 		else if (data.requestMethod === 'removeBuilding') {
 			let ID = postData[0].requestData[0];
 			if (ActiveMap === "cultural_outpost") {
-				delete CityMap.CulturalOutpostData[ID];
+				delete CityMap.CulturalOutpost.data[ID];
 				return
 			}
 			else if (ActiveMap === "era_outpost") {
-				delete CityMap.EraOutpostData[ID];
+				delete CityMap.EraOutpost.data[ID];
 				return
 			}
 			else if (ActiveMap === "guild_raids") {
-				delete CityMap.QIData[ID];
+				delete CityMap.QI.data[ID];
 				return
 			}
 			if (ID && MainParser.CityMapData[ID]) {
 				delete MainParser.CityMapData[ID];
-				if (MainParser.NewCityMapData[ID])
-					delete MainParser.NewCityMapData[ID];
+				if (MainParser.CityBuildingsData[ID])
+					delete MainParser.CityBuildingsData[ID];
 			}
 		}
 		FoEproxy.triggerFoeHelperHandler('CityMapUpdated');
@@ -775,7 +777,7 @@ GetFights = () =>{
 			if (MainParser.Inventory[postData?.requestData?.[0]?.itemId].itemAssetName =="store_building") {
 				let id= postData?.requestData?.[0]?.mapEntityId
 				if (MainParser.CityMapData[id]) delete MainParser.CityMapData[id]
-				if (MainParser.NewCityMapData[id]) delete MainParser.NewCityMapData[id]
+				if (MainParser.CityBuildingsData[id]) delete MainParser.CityBuildingsData[id]
 			}
 		}
 	});
@@ -995,10 +997,9 @@ let MainParser = {
 
 	// all buildings of the player
 	CityMapData: {},
-	NewCityMapData: {},
+	CityBuildingsData: {},
 
 	// Unlocked extensions
-	UnlockedAreas: null,
 	Quests: null,
 	ArkBonus: 0,
 	Inventory: {},
@@ -1483,6 +1484,7 @@ let MainParser = {
 		//console.log('StartUp done')
 	},
 
+
 	forceLoadCityEntities: () => {
 		if (MainParser.CityEntities) return;
 		//console.log('Forcing load of CityEntities');
@@ -1490,6 +1492,8 @@ let MainParser = {
         xhr.open("GET", MainParser.MetaUrls['city_entities'], true);
         xhr.send();
 	},
+
+
 	/**
 	 * Update own data (guild change etc)
 	 *
@@ -1625,7 +1629,7 @@ let MainParser = {
 			return ally
 		},
 
-		showAllyList:()=>{
+		showAllyList:(closeIfOpen = false)=>{
 			
 			//console.log(0, MainParser.Allies);
 
@@ -1638,14 +1642,21 @@ let MainParser = {
 					dragdrop: true,
 					minimize: true,
 					resize: true,
+					settings: 'MainParser.Allies.ShowSettings()',
 					active_maps:"main",				
 				});
+			} else {
+				if (closeIfOpen) {
+					HTML.CloseOpenBox('AllyList');
+					return;
+				}
 			}
 			MainParser.Allies.updateAllyList()
 		},
 
-		updateAllyList:()=>{	
-			if ($('#AllyList').length === 0) return
+		updateAllyList:()=>{
+			MainParser.Allies.buildingBoostSums=[]	
+			if ($('#AllyList').length === 0) return;
 			let buildings = Object.assign({},...Object.values(MainParser.CityMapData).map(x=>({id:x.id,metaID:x.cityentity_id,rooms:structuredClone(MainParser.CityEntities[x.cityentity_id]?.components?.AllAge?.ally?.rooms)})).filter(x=>x.rooms!==undefined).map(x=>({[x.id]:x})))
 			let rooms = {}
 			let unassigned = 0
@@ -1687,6 +1698,7 @@ let MainParser = {
 				}
 			})
 			Object.values(MainParser.Inventory).filter(x=>x?.item?.reward?.assembledReward?.type=="ally").forEach(x=>{
+				if (!x.inStock) return;
 				rooms[0+"#" + unassigned] = {
 					fragmentsAmount: x.inStock,
 					fragmentsNeeded: x.item.reward.requiredAmount,
@@ -1738,14 +1750,15 @@ let MainParser = {
 						</tr>`;
 
 				// gather sums of all boosts
-				if (buildingId!==0 && r.allyBoosts !== null) 
+				if (buildingId!=0 && r.allyBoosts !== null) {
 					for (let boost of r.allyBoosts) {
 						let bBoost = MainParser.Allies.buildingBoostSums.find(x => x.type === boost.type && x.targetedFeature === boost.targetedFeature);
 						if (bBoost)
 							bBoost.value += boost.value;
 						else
-							MainParser.Allies.buildingBoostSums.push(boost);
+							MainParser.Allies.buildingBoostSums.push(structuredClone(boost));
 					}
+				}
 			}
 			MainParser.Allies.buildingBoostSums.sort((a, b) => {
 				if (a.type < b.type) return -1
@@ -1801,7 +1814,26 @@ let MainParser = {
 				ret+=`<span class="${b.targetedFeature}">${srcLinks.icons(b.type+feature[b.targetedFeature])} ${b.value + Boosts.percent(b.type)}</span>`
 			}
 			return ret
-		}
+		},
+
+		ShowSettings: () => {
+			let autoOpen = Settings.GetSetting('ShowAllyList');
+
+			let h = [];
+			h.push(`<p><label><input id="allyListAutoOpen" type="checkbox" ${(autoOpen === true) ? ' checked="checked"' : ''} />${i18n('Boxes.Settings.Autostart')}</label></p>`);
+			h.push(`<p><button onclick="MainParser.Allies.SaveSettings()" id="save-bghelper-settings" class="btn" style="width:100%">${i18n('Boxes.Settings.Save')}</button></p>`);
+
+			$('#AllyListSettingsBox').html(h.join(''));
+		},
+
+		SaveSettings: () => {
+			let value = false;
+			if ($("#allyListAutoOpen").is(':checked'))
+				value = true;
+			localStorage.setItem('ShowAllyList', value);
+			
+			$(`#AllyListSettingsBox`).remove();
+		},
 
 
 	},
@@ -2024,13 +2056,13 @@ let MainParser = {
 				MainParser.CityMapData[ID] = Buildings[i];
 			} 
 			if (ActiveMap === "era_outpost") {
-				CityMap.EraOutpostData[ID] = Buildings[i];
+				CityMap.EraOutpost.data[ID] = Buildings[i];
 			}
 			else if (ActiveMap === "cultural_outpost") {
-				CityMap.CulturalOutpostData[ID] = Buildings[i];
+				CityMap.CulturalOutpost.data[ID] = Buildings[i];
 			}
 			else if (ActiveMap === "guild_raids") {
-				CityMap.QIData[ID] = Buildings[i];
+				CityMap.QI.data[ID] = Buildings[i];
 			}
 		}
 		MainParser.SetArkBonus2();

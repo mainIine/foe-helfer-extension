@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2024 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -95,8 +95,8 @@
   width: 2em;
   height: 1em;
   border-radius: 1em;
-  border: 2px solid rgb(147 9 9 / 100%);
-  background-color: rgb(147 9 9 / 36%);
+  border: 2px solid var(--red);
+  background-color: var(--table-bg-error);
   content: "";
   margin-right: 0.7em;
   transition: background-color 0.5s linear;
@@ -111,15 +111,15 @@
   background-color: var(--text-normal);
   content: "";
   transition: margin 0.1s linear;
-  box-shadow: 0px 0px 5px #aaa;
+  box-shadow: 0px 0px 5px var(--text-muted);
   position: absolute;
   left: 2px;
   top: 2px;
   z-index: 10;
 }
 #betterMusicDialogBody [type="checkbox"]:checked + label:before {
-  background-color: rgb(10 139 65 / 59%);
-  border-color: rgb(10 139 65 / 100%);
+  background-color: var(--table-bg-success);
+  border-color: var(--table-bb-success);
 }
 #betterMusicDialogBody [type="checkbox"]:checked + label:after {
   margin: 0 0 0 1em;

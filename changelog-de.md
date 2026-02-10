@@ -1,6 +1,26 @@
 ## Changelog - Extension
 
 
+##### 4.1.1.0
+
+**Update**
+- Effizienzbewertung: Man kann die Gebäude nun auch ohne Boosts der Verbündeten bewerten lassen
+- Produktionsübersicht: Es gibt nun eine Liste für Spezialgüter-Produktionen
+- Einstellungen: Manche "Automatisch öffnen"-Einstellungen wurden entfernt, weil sie auch im jeweiligen Fenster zu finden sind
+- QI Stadtübersicht: Der Titel passt sich nun an
+- Eigenanteilsrechner/Kostenrechner: die FP Werte können nun angeklickt werden - der Wert wird direkt in das Eingabefeld des LB-Fensters eingetragen oder zumindest in die Zwischenablage gelegt
+- Eigenanteilsrechner: Option hinzugefügt, ob im Summenwert die bereits eingezahlten FP enthalten sein sollen
+
+**Bugfix**
+- Stadtdaten kopieren: das Datenformat hat nicht mehr zu den bekannten Schnittstellen gepasst - geht jetzt wieder
+- Verbündete: 
+	- Die Summen waren nicht korrekt und die Boosts sind beim leveln explodiert
+	- Ein frisch zusammengesetzter Verbündeter tauchte doppelt in der Liste auf, wenn nach dem Zusammensetzen genau 0 Fragmente übrig waren
+	- Die Box wurde nicht geschlossen, wenn der Menüeintrag angeklickt wurde
+- Produktionen: Die Güter vom Klapperknochen-Technoclub waren falsch berechnet
+
+---
+
 ##### 4.1.0.0
 
 **Neu**
@@ -10,6 +30,7 @@
 **Update**
 - Stadt Übersicht: 
 	- Die Statistiken und Filter an der Seite wurden überarbeitet: es gibt neue, interessantere Fakten zu den Gebäuden in der Stadt
+	- Die Filter wurden optisch angepasst und befinden sich nun am unteren Ende der Seitenleiste (Schau genau hin, du findest sie schon!)
 	- Die verfügbare Fläche ist jetzt auch bei anderen Spielern zu sehen
 - Profil: 
 	- QI Aktionskapazität hinzugefügt

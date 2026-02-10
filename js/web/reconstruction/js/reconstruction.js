@@ -51,6 +51,8 @@ FoEproxy.addHandler('AutoAidService', 'getStates', (data, postData) => {
     $('#ReconstructionList').remove();
     $('#ReconstructionMap').remove();
 });
+
+
 FoEproxy.addHandler('InventoryService', 'getGreatBuildings', (data, postData) => {
     $('#ReconstructionList').remove();
     $('#ReconstructionMap').remove();
@@ -220,7 +222,7 @@ let reconstruction = {
         let c = `<div class="map-grid-wrapper" style="--scale:${storedUnit}">`;
         c += `<div class="map-grid">`;
 
-        for(let area of CityMap.UnlockedAreas) {
+        for(let area of CityMap.Main.unlockedAreas) {
             let startArea = area.width === 16 ? ' startarea' : '';
             c += `<span class="map-bg${startArea}" style="left:${area.x*reconstruction.mapScale||0}px;top:${area.y*reconstruction.mapScale||0}px;"></span>`
 		}

@@ -1,7 +1,7 @@
 ﻿/*
  * *************************************************************************************
  *
- * Copyright (C) 2024 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -135,14 +135,14 @@ let BlueGalaxy = {
 	 */
     CalcBody: (data) => {
         
-        CityMap.createNewCityMapEntities(data)
+        CityBuildings.createBuildings(data)
 
         let Buildings = [],
             FPB = Productions.Boosts['fp'] === undefined ? (Boosts.Sums['forge_points_production'] + 100) / 100 : Productions.Boosts['fp']
             FPBoost = (FP) => { return Math.round(FP * FPB) },
             showBGFragments = JSON.parse(localStorage.getItem('showBGFragments')||"true");
         
-        for (let CityEntity of Object.values(MainParser.NewCityMapData)) {
+        for (let CityEntity of Object.values(MainParser.CityBuildingsData)) {
             
             if (['main_building', 'greatbuilding', 'off_grid'].includes(CityEntity.type)) {
                 continue;
@@ -198,7 +198,7 @@ let BlueGalaxy = {
                         building: CityEntity,
                         ID: CityEntity.id, 
                         EntityID: CityEntity.entityId,
-                        name: MainParser.NewCityMapData[CityEntity.id].name,
+                        name: MainParser.CityBuildingsData[CityEntity.id].name,
                         Fragments: Fragments, 
                         FragmentAmount: FragmentAmount,
                         FP: FP, 
@@ -270,7 +270,7 @@ let BlueGalaxy = {
 
         for (let i = 0; i < 50 && i < Buildings.length; i++) { // limits the list to max 50 items
 
-            let isPolivated = MainParser.NewCityMapData[Buildings[i]['ID']].state.isPolivated;
+            let isPolivated = MainParser.CityBuildingsData[Buildings[i]['ID']].state.isPolivated;
             table.push('<tr>');
             table.push('<td>' + (isPolivated != undefined ? (isPolivated ? '<span class="text-bright">★</span>' : '☆') : '') + '</td>');
             table.push('<td data-text="'+Buildings[i]['name'].replace(/[. -]/g,"")+'">' + Buildings[i]['name'] + '</td>');

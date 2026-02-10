@@ -1,7 +1,7 @@
 /*
  * *************************************************************************************
  *
- * Copyright (C) 2024 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -467,7 +467,7 @@ let _menu = {
 		let btn = _menu.MakeButton('allies', i18n('Menu.Allies.Title'), desc, red);
 
 		let btn_outpost = $('<span />').bind('click', function () {
-			MainParser.Allies.showAllyList();
+			MainParser.Allies.showAllyList(true);
 		});
 
 		return btn.append(btn_outpost);
@@ -652,14 +652,7 @@ let _menu = {
 		let btn_CityBG = _menu.MakeButton('cityMap', i18n('Menu.Citymap.Title'), i18n('Menu.Citymap.Desc'));
 
 		let btn_City = $('<span />').on('click', function () {
-			if (LastMapPlayerID === ExtPlayerID) {
-				CityMap.init(false, MainParser.NewCityMapData);
-			}
-			else {
-				let Player = PlayerDict[LastMapPlayerID];
-				let PlayerName = (Player ? Player['PlayerName'] : '???');
-				CityMap.init(false, CityMap.OtherPlayer.mapData, PlayerName);
-            }
+			CityMap.init(false);
 		});
 
 		return btn_CityBG.append(btn_City);

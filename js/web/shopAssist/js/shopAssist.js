@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2025 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -270,7 +270,7 @@ let shopAssist = {
 				costs = "";
 				canBuy = true;
 				Object.entries(slot.baseCost?.resources||{}).forEach(([res, amount])=>{
-					let cost = Math.ceil(neededBuys * amount*(1-(slot.discount||0)));
+					let cost = neededBuys * Math.ceil(amount*(1-(slot.discount||0)));
 					if ((ResourceStock[res] || 0) < cost) 
 						canBuy = false;
 					costs += `<div class="text-right">${HTML.Format(cost) + srcLinks.icons(res)}</div>`
@@ -286,7 +286,7 @@ let shopAssist = {
 					canBuy = true;
 					fullBuys = Math.floor(slot.reward.requiredAmount / slot.reward.amount);
 					Object.entries(slot.baseCost?.resources||{}).forEach(([res, amount])=>{
-						let cost = Math.ceil(fullBuys * amount*(1-(slot.discount||0)));
+						let cost = fullBuys * Math.ceil(amount*(1-(slot.discount||0)));
 						if ((ResourceStock[res] || 0) < cost) canBuy = false;
 						costs += `<div class="text-right">` + HTML.Format(cost) + srcLinks.icons(res)+ "</div>"
 					})
@@ -305,13 +305,13 @@ let shopAssist = {
 			let maxBuys = Math.min(slot.flag?.value=="increasingCosts" ? 1 : Infinity,limitedBuys);
 			if (maxBuys > 0) {
 				Object.entries(slot.baseCost?.resources||{}).forEach(([res, amount])=>{
-					maxBuys = Math.min(maxBuys,Math.floor((ResourceStock[res] || 0) / (amount*(1-(slot.discount||0)))));
+					maxBuys = Math.min(maxBuys,Math.floor((ResourceStock[res] || 0) / Math.ceil(amount*(1-(slot.discount||0)))));
 				})
 			}
 			if (maxBuys != Infinity && maxBuys > 0) {
 				canBuy = true;
 				Object.entries(slot.baseCost?.resources||{}).forEach(([res, amount])=>{
-					let cost = Math.ceil(maxBuys * amount*(1-(slot.discount||0)));
+					let cost = maxBuys * Math.ceil(amount*(1-(slot.discount||0)));
 					costs += `<div class="text-right">` + HTML.Format(cost) + srcLinks.icons(res)+ "</div>"
 				})
 			}
@@ -331,7 +331,7 @@ let shopAssist = {
 				costs = "";
 				canBuy = true;
 				Object.entries(slot.baseCost?.resources||{}).forEach(([res, amount])=>{
-					let cost = Math.ceil(limitedBuys * amount*(1-(slot.discount||0)));
+					let cost = limitedBuys * Math.ceil(amount*(1-(slot.discount||0)));
 					if ((ResourceStock[res] || 0) < cost) canBuy = false;
 					costs += `<div class="text-right">` + HTML.Format(cost) + srcLinks.icons(res)+ "</div>"
 				})

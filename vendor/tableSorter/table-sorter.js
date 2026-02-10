@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2024 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -217,7 +217,7 @@
         } else if (len < 36) {
             str = str + padding.substr(1, 36 - len);
         }
-        return parseInt(str);
+        return str;
     }
 
 }(jQuery));

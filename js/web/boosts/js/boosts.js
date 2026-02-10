@@ -1,7 +1,7 @@
 /*
  * *************************************************************************************
  *
- * Copyright (C) 2025 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -88,6 +88,7 @@ let Boosts = {
         'att_boost_defender': 0,
         'def_boost_defender': 0,
         'goods_production': 0,
+        'special_goods_production': 0,
         'guild_raids-att_boost_attacker': 0,
         'guild_raids-def_boost_attacker': 0,
         'guild_raids-att_boost_defender': 0,
@@ -167,7 +168,6 @@ let Boosts = {
         if (!AllBoosts || AllBoosts.length==0) return
 
         for (let b of AllBoosts||[]) {
-            
             if (b.type == 'happiness') continue; // => handled in productions.js
             if (b.type == 'life_support') continue; // => handled in productions.js
             if (b.origin == "castle_system") {
@@ -232,7 +232,7 @@ let Boosts = {
                 Boosts.Remove([{entityId:building.id}])
                 let metaData = structuredClone(MainParser.CityEntities[building.cityentity_id])
                 let era = Technologies.getEraName(building.cityentity_id, building.level)
-                let NCE=CityMap.createNewCityMapEntity(metaData, era, building)
+                let NCE=CityBuildings.createBuilding(metaData, era, building)
                 if (!NCE.boosts||NCE.boosts.length==0) continue
                 for (let boost of NCE.boosts||[]) {
                     boost.startTime = building.state.next_state_transition_at
@@ -258,7 +258,7 @@ let Boosts = {
                     let target = metaData.components.AllAge.limited.config.targetCityEntityId
                     let metaTarget = structuredClone(MainParser.CityEntities[target])
                     let era = Technologies.getEraName(building.cityentity_id, building.level)
-                    let NCE=CityMap.createNewCityMapEntity(metaTarget, era)
+                    let NCE=CityBuildings.createBuilding(metaTarget, era)
                     for (let boost of NCE.boosts||[]) {
                         boost.startTime = building.state.decaysAt || building.state.next_state_transition_at + metaData.components.AllAge.limited.config.expireTime
                         boost.entityId = building.id

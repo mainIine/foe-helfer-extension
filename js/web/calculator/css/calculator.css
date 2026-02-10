@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2025 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -24,7 +24,7 @@
 
 #costCalculator #costCalculatorBody input {
 	display: inline-block;
-	width: 25px;
+	width: 35px;
 	text-align: center;
 	padding: 1px 5px;
 	line-height: 1.5;
@@ -97,7 +97,7 @@
 
 #costCalculator #costCalculatorBody td.error,
 #costCalculator #costCalculatorBody td .error {
-	color: #ec4d4d;
+	color: var(--text-danger);
 }
 
 #costCalculator #costCalculatorBody strong.success {
@@ -106,8 +106,8 @@
 
 #costCalculator #costCalculatorBody .text-grey,
 #costCalculator #costCalculatorBody .text-grey strong {
-	color: #b1b1b1;
-	opacity: 0.75;
+	color: var(--text-tab);
+	opacity: 0.9;
 }
 
 #costCalculator #costCalculatorBody strong.info {

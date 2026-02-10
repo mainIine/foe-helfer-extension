@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2025 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -17,22 +17,37 @@
  */
 let CityMap = {
 	CityData: null,
-	OwnCityData: null,
-	CityEntities: null,
-	ScaleUnit: 100,
-	CityView: 'skew',
-	UnlockedAreas: null,
-	BlockedAreas: null,
-	OccupiedArea: 0,
 	EfficiencyFactor: 0,
-	OutpostScaleUnit: 100,
-	CulturalOutpostData: {},
-	CulturalOutpostAreas: [],
-	EraOutpostData: null,
-	EraOutpostAreas: [],
-	QIData: null,
-	QIStats: null,
-	QIAreas: [],
+	map: {
+		scale: 100,
+		outpostScale: 100,
+		view: 'skew',
+		gridSize: 1,
+	},
+	Main: {
+		unlockedAreas: null,
+		blockedAreas: null,
+	},
+	OtherPlayer: {
+		mapData: {},
+		unlockedAreas: null,
+		eraName: null,
+		name: ''
+	},
+	CulturalOutpost: {
+		data: {},
+		areas: []
+	},
+	EraOutpost: {
+		data: null,
+		areas: [],
+	},
+	QI: {
+		data: null,
+		stats: null,
+		areas: [],
+		level: 0
+	},
 	metrics: {
 		buildings: 0,
 		qiBuildings: 0,
@@ -55,11 +70,6 @@ let CityMap = {
 		buildingAreas: [],
 		buildingTypes: []
 	},
-	OtherPlayer: {
-		mapData: {},
-		unlockedAreas: null,
-		eraName: null,
-	},
 
 	AscendingBuildings: new Promise((resolve) => {
 		let timer = () => {
@@ -74,51 +84,40 @@ let CityMap = {
 
 	/**
 	 * @param event
-	 * @param event
-	 * @param Data The City data
-	 * @param Title Name of the city
 	 */
-	init: (event, Data = null, Title = i18n('Boxes.CityMap.YourCity'))=> {
-		if (Data === null) { // No data => own city
-			Data = MainParser.CityMapData
-			CityMap.OwnCityData = MainParser.NewCityMapData
-			if (ActiveMap === "cultural_outpost") {
-				Data = CityMap.CulturalOutpostData
-			}
-			else if (ActiveMap === "era_outpost") {
-				Data = CityMap.EraOutpostData
-			}
-			else if (ActiveMap === "guild_raids") {
-				Data = CityMap.QIData
-			}
-		}
+	init: (event)=> {
+		let Title = i18n('Boxes.CityMap.YourCity');
 
-		CityMap.CityData = Object.values(Data).sort(function (X1, X2) {
-			if (X1.x < X2.x) return -1;
-			if (X1.x > X2.x) return 1;
-		});
-
+		// grid sizing and view
 		let scale = localStorage.getItem('CityMapScale'),
 			outpostScale = localStorage.getItem('OutpostMapScale'),
 			view = localStorage.getItem('CityMapView');
+		if(null !== scale)
+			CityMap.map.scale = parseInt(scale);
+		if(null !== view)
+			CityMap.map.view = view;
+		if(null !== outpostScale)
+			CityMap.map.outpostScale = parseInt(outpostScale);
 
-		if(null !== scale) { // scaling has already been set?
-			CityMap.ScaleUnit = parseInt(scale);
+		let Data = MainParser.CityMapData;
+		if (ActiveMap === "cultural_outpost") 
+			Data = CityMap.CulturalOutpost.data;
+		else if (ActiveMap === "era_outpost") 
+			Data = CityMap.EraOutpost.data;
+		else if (ActiveMap === "guild_raids") {
+			Data = CityMap.QI.data;
+			Title = i18n('Boxes.General.Quantum_Incursion.short')+' '+i18n('Boxes.General.Level')+' '+CityMap.QI.level;
+		}
+		else if (ActiveMap === "OtherPlayer") {
+			Data = CityMap.OtherPlayer.mapData;
+			Title = CityMap.OtherPlayer.name;
 		}
 
-		if(null !== view) { // view has already been set?
-			CityMap.CityView = view;
-		}
-
-		if(null !== outpostScale) { // scaling has already been set?
-			CityMap.OutpostScaleUnit = parseInt(outpostScale);
-		}
-
-		if( $('#city-map-overlay').length < 1 ) {
+		if( $('#citymap-main').length < 1 ) {
 			HTML.AddCssFile('citymap');
 
 			HTML.Box({
-				id: 'city-map-overlay',
+				id: 'citymap-main',
 				title: Title,
 				auto_close: true,
 				dragdrop: true,
@@ -127,49 +126,43 @@ let CityMap = {
 				ask: i18n('Boxes.CityMap.HelpLink'),
 			});
 
-
 			setTimeout(()=>{
-				CityMap.PrepareBox(Title);
+				CityMap.PrepareBox(Title,'citymap-main');
 			}, 100);
 		}
 		else if (!event) {
-			HTML.CloseOpenBox('city-map-overlay');
+			HTML.CloseOpenBox('citymap-main');
 			return;
 		}
 
 		setTimeout(()=>{
-			// separate city
-			if (Data === false) {
-				setTimeout(()=> {
-					CityMap.SetMapBuildings();
-				}, 100);
-
-			} else {
-				CityMap.SetMapBuildings(Data);
-			}
-
+			CityMap.SetMapBuildings(Data);
 		}, 100);
 	},
 
 
 	/**
-	 * Stadtkarte vorbereiten => Menü rein
-	 * @param Title
+	 * Sidebar Menu
 	 */
-	PrepareBox: (Title)=> {
-		let oB = $('#city-map-overlayBody'),
+	PrepareBox: (Title,elemId="citymap-main")=> {
+		let oB = $('#'+elemId+'Body'),
 			wrapper = $('<div id="citymap-wrapper" />'),
-			mapfilters = $('<div id="map-filters" />'),
 			menu = $('<div id="city-map-menu" />');
+
+		/* scale */
+		let scaleUnit = CityMap.map.scale;
+		if (ActiveMap === "cultural_outpost" || ActiveMap === "era_outpost" || ActiveMap === "guild_raids") 
+			scaleUnit = CityMap.map.outpostScale;
 
 		wrapper
 			.append($('<div id="map-container" />')
-				.append($(`<div id="grid-outer" data-unit="${CityMap.ScaleUnit}" data-view="${CityMap.CityView}" />`)
-					.append($('<div id="map-grid" />'))))
+				.append($(`<div id="grid-outer" data-unit="${scaleUnit}" data-view="${CityMap.map.view}" />`)
+					.append($('<div id="map-grid" />'))
+					.append($('<div id="map-buildings" />'))))
 			.append($('<div id="sidebar" />')
-				.append(mapfilters));
+				.append($('<div id="map-filters" />')));
 
-		$('#city-map-overlayHeader > .title').attr('id', 'map' + CityMap.hashCode(Title));
+		$('#'+elemId+'Header > .title').attr('id', 'map' + CityMap.hashCode(Title));
 
 		if (ActiveMap === "cultural_outpost" || ActiveMap === "era_outpost" || ActiveMap === "guild_raids") {
 			oB.addClass('outpost').addClass(ActiveMap)
@@ -177,23 +170,14 @@ let CityMap = {
 
 		/* change view */
 		let dropView = $('<select id="menu-view" class="game-cursor" />')
-			.append($('<option class="game-cursor" data-view="normal" />').prop('selected', CityMap.CityView === 'normal').text(i18n('Boxes.CityMap.NormalPerspecitve')) )
-			.append($('<option class="game-cursor" data-view="skew" />').prop('selected', CityMap.CityView === 'skew').text(i18n('Boxes.CityMap.CavalierPerspecitve')) );
+			.append($('<option class="game-cursor" data-view="normal" />').prop('selected', CityMap.map.view === 'normal').text(i18n('Boxes.CityMap.NormalPerspecitve')) )
+			.append($('<option class="game-cursor" data-view="skew" />').prop('selected', CityMap.map.view === 'skew').text(i18n('Boxes.CityMap.CavalierPerspecitve')) );
 
-		menu.append(dropView);
-
-		$('#city-map-overlay').on('change', '#menu-view', function(){
+		$('#'+elemId).on('change', '#menu-view', function(){
 			let view = $('#menu-view option:selected').data('view');
-
 			$('#grid-outer').attr('data-view', view);
 			localStorage.setItem('CityMapView', view);
 		});
-
-
-		/* change scale */
-		let scaleUnit = CityMap.ScaleUnit;
-		if (ActiveMap === "cultural_outpost" || ActiveMap === "era_outpost" || ActiveMap === "guild_raids") 
-			scaleUnit = CityMap.OutpostScaleUnit;
 		
 		let scaleView = $('<select id="scale-view" class="game-cursor" />')
 			.append( $('<option class="game-cursor" data-scale="60" />').prop('selected', scaleUnit === 60).text('60%') )
@@ -205,32 +189,22 @@ let CityMap = {
 			.append( $('<option class="game-cursor" data-scale="180" />').prop('selected', scaleUnit === 180).text('180%') )
 		;
 
-		menu.append(scaleView);
+		menu.append(dropView).append(scaleView);
 
-		$('#city-map-overlay').on('change', '#scale-view', function(){
+		$('#'+elemId).on('change', '#scale-view', function(){
 			let unit = parseInt($('#scale-view option:selected').data('scale'));
-			
-			if(ActiveMap === 'main'){
-				$('#highlight-old-buildings')[0].checked=false;
-				$('#show-worst-buildings')[0].checked=false;
-			}
-
 			$('#grid-outer').attr('data-unit', unit);
 
 			if (ActiveMap === "cultural_outpost" || ActiveMap === "era_outpost" || ActiveMap === "guild_raids") {
 				localStorage.setItem('OutpostMapScale', unit);
-				CityMap.OutpostScaleUnit = unit;
+				CityMap.map.outpostScale = unit;
 			}
 			else {
 				localStorage.setItem('CityMapScale', unit);
-				CityMap.ScaleUnit = unit;	
+				CityMap.map.scale = unit;	
 			}
 
-			CityMap.SetMapBuildings(false);
-
 			$('#map-container').scrollTo( $('.highlighted') , 800, {offset: {left: -280, top: -280}, easing: 'swing'});
-			$('.too-old-legends').hide();
-			$('.building-count-area').show();
 		});
 
 		// Button for submit Box
@@ -245,12 +219,12 @@ let CityMap = {
 		oB.append(wrapper);
 
 		if (ActiveMap === "guild_raids")
-			if (CityMap.QIData) {
+			if (CityMap.QI.data) {
 				menu.append($(`<button class="btn ml-auto" id="copy-meta-infos" onclick="CityMap.copyMetaInfos()" style="margin-left:auto" />`).text(i18n('Boxes.CityMap.CopyMetaInfos')));
 				$("#sidebar").append(CityMap.showQIBuildingList());
 			}
 
-		$('#citymap-wrapper').append(menu);
+		wrapper.append(menu);
 
 		if (ActiveMap === "cultural_outpost" || ActiveMap === "era_outpost") 
 			$("#sidebar").append(CityMap.showOutpostBuildings());
@@ -271,44 +245,35 @@ let CityMap = {
 	 * Builds the background grid
 	 */
 	BuildGrid: () => {
-		let ua = CityMap.UnlockedAreas;
+		let ua = CityMap.Main.unlockedAreas;
 		if (ActiveMap === "OtherPlayer")
 			ua = CityMap.OtherPlayer.unlockedAreas;
 		let xOffset = 0;
 		let yOffset = 0;
-		let scaleUnit = CityMap.ScaleUnit;
 		if (ActiveMap === "cultural_outpost") {
-			ua = CityMap.CulturalOutpostAreas;
+			ua = CityMap.CulturalOutpost.areas;
 			xOffset = 500;
-			scaleUnit = CityMap.OutpostScaleUnit;
 		}
 		else if (ActiveMap === "era_outpost") {
-			ua = CityMap.EraOutpostAreas;
+			ua = CityMap.EraOutpost.areas;
 			yOffset = 500;
-			scaleUnit = CityMap.OutpostScaleUnit;
 		}
 		else if (ActiveMap === "guild_raids") {
-			ua = CityMap.QIAreas;
+			ua = CityMap.QI.areas;
 			yOffset = 500;
 			xOffset = 500;
-			scaleUnit = CityMap.OutpostScaleUnit;
 		}
 
 		for(let i in ua) {
 			if(!ua.hasOwnProperty(i))
 				break;
 
-			let w = ((ua[i]['width'] * scaleUnit) / 100 ),
-				h = ((ua[i]['length'] * scaleUnit) / 100 ),
-				x = (((ua[i]['x']-xOffset) * scaleUnit) / 100 ),
-				y = (((ua[i]['y']-yOffset) * scaleUnit) / 100 ),
-				G = $('#map-grid')
+			let x = (((ua[i]['x']-xOffset) * CityMap.map.gridSize) ),
+				y = (((ua[i]['y']-yOffset) * CityMap.map.gridSize) );
 
 			let a = $('<span />')
 				.addClass('map-bg')
 				.css({
-					width: w + 'em',
-					height: h + 'em',
 					left: x + 'em',
 					top: y + 'em',
 				});
@@ -318,7 +283,7 @@ let CityMap = {
 				a.addClass('startmap');
 			}
 
-			G.append(a);
+			$('#map-grid').append(a);
 		}
 	},
 
@@ -329,17 +294,17 @@ let CityMap = {
 
 		CityMap.BuildGrid();
 
-		let buildings = CityMap.CulturalOutpostData;
+		let buildings = CityMap.CulturalOutpost.data;
 		let xOffset = 0, yOffset = 0;
 		if (ActiveMap === "era_outpost") {
-			buildings = CityMap.EraOutpostData;
+			buildings = CityMap.EraOutpost.data;
 			yOffset = 500;
 		}
 		else if (ActiveMap === "cultural_outpost") {
 			xOffset = 500;
 		}
 		else if (ActiveMap === "guild_raids") {
-			buildings = CityMap.QIData;
+			buildings = CityMap.QI.data;
 			xOffset = 500;
 			yOffset = 500;
 		}
@@ -351,10 +316,10 @@ let CityMap = {
 				d = MainParser.CityEntities[CityMapEntity['cityentity_id']],
 				BuildingSize = CityMap.GetBuildingSize(CityMapEntity),
 
-				xx = (parseInt(x) * CityMap.OutpostScaleUnit) / 100,
-				yy = (parseInt(y) * CityMap.OutpostScaleUnit) / 100,
-				xsize = ((parseInt(BuildingSize['xsize']) * CityMap.OutpostScaleUnit) / 100),
-				ysize = ((parseInt(BuildingSize['ysize']) * CityMap.OutpostScaleUnit) / 100)
+				xx = (parseInt(x) * CityMap.map.gridSize),
+				yy = (parseInt(y) * CityMap.map.gridSize),
+				xsize = ((parseInt(BuildingSize['xsize']) * CityMap.map.gridSize)),
+				ysize = ((parseInt(BuildingSize['ysize']) * CityMap.map.gridSize))
 				
 				let collectSoon = "";
 				let thresholdTime = 10800;
@@ -373,11 +338,11 @@ let CityMap = {
 					(collectSoon != "" ? '<br>'+collectionString : '') )
 				.attr('data-entityid', CityMapEntity['id']);
 
-			$('#grid-outer').append( f );
+			$('#map-buildings').append( f );
 		}
 
 		$('[data-original-title]').tooltip({
-			container: '#city-map-overlayBody',
+			container: '#citymap-main',
 			html: true,
 		});
 
@@ -386,25 +351,25 @@ let CityMap = {
 
 
 	showQIStats: () => {
-		if (!CityMap.QIData) return;
+		if (!CityMap.QI.data) return;
 
 		out = '<div class="qiSums">';
 		out += '<p class="text-center"><i>'+i18n('Boxes.CityMap.QIHint')+'</i></p>';
 		out += '<div class="flex between" style="margin-bottom: 10px;">';
-        out += '<span><img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_expansion.png`,true)+'" />' +  CityMap.QIAreas.length + '</span>';
-		out += '<div class="popStats"><span class="prod population">'+CityMap.QIStats.availablePopulation+'/'+CityMap.QIStats.totalPopulation+'</span> ';
-		let euphoria = Math.round(CityMap.QIStats.euphoriaBoost*100);
-		out += '<span class="prod happiness euphoria'+euphoria+'" title="'+CityMap.QIStats.euphoria+'">'+euphoria+'%</span></div>';
+        out += '<span><img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_expansion.png`,true)+'" />' +  CityMap.QI.areas.length + '</span>';
+		out += '<div class="popStats"><span class="prod population">'+CityMap.QI.stats.availablePopulation+'/'+CityMap.QI.stats.totalPopulation+'</span> ';
+		let euphoria = Math.round(CityMap.QI.stats.euphoriaBoost*100);
+		out += '<span class="prod happiness euphoria'+euphoria+'" title="'+CityMap.QI.stats.euphoria+'">'+euphoria+'%</span></div>';
 		out += '</div>';
 
 		out += '<div class="productions">';
-		for (let [prod, value] of Object.entries(CityMap.QIStats.resources)) {
+		for (let [prod, value] of Object.entries(CityMap.QI.stats.resources)) {
 			out += '<span class="'+prod+'">'+srcLinks.icons(prod);
 				out += HTML.Format(value);
 			out += "</span> ";
 		}
 		out += '</div><div class="boosts">';
-		for (let [boost, value] of Object.entries(CityMap.QIStats.boosts)) {
+		for (let [boost, value] of Object.entries(CityMap.QI.stats.boosts)) {
 			if (boost.includes("action_points"))
 				out += '<span class="'+boost+'">'+srcLinks.icons(boost)+value+"</span> ";
 			else 
@@ -417,11 +382,11 @@ let CityMap = {
 
 
 	showQIBuildingList: () => {
-		if (!CityMap.QIData) return;
+		if (!CityMap.QI.data) return;
 		let boosts = Boosts.Sums;
-		let buildings = Object.values(CityMap.QIData);
+		let buildings = Object.values(CityMap.QI.data);
 		
-		CityMap.QIStats = { 
+		CityMap.QI.stats = { 
 			resources: {
 				guild_raids_chrono_alloy: 0,
 				guild_raids_money: 0,
@@ -451,9 +416,9 @@ let CityMap = {
 			building.count = count;
 			uniqueBuildings.push(building);
 			
-			CityMap.QIStats.euphoria += building.euphoria*count || 0;
-			CityMap.QIStats.totalPopulation += (building.population >= 0 ? building.population*count : 0);
-			CityMap.QIStats.availablePopulation += building.population*count;
+			CityMap.QI.stats.euphoria += building.euphoria*count || 0;
+			CityMap.QI.stats.totalPopulation += (building.population >= 0 ? building.population*count : 0);
+			CityMap.QI.stats.availablePopulation += building.population*count;
 		}
 		uniqueBuildings.sort((a, b) => {
 			if (a.entityId < b.entityId) return -1
@@ -462,14 +427,14 @@ let CityMap = {
 		});
 
 
-		let euphoriaFactor = CityMap.QIStats.euphoria/CityMap.QIStats.totalPopulation;
-		CityMap.QIStats.euphoriaBoost = 1.5;
-		if (euphoriaFactor <= 0.2) CityMap.QIStats.euphoriaBoost = 0.2;
-		else if (euphoriaFactor > 0.20 && euphoriaFactor <= 0.60) CityMap.QIStats.euphoriaBoost = 0.6;
-		else if (euphoriaFactor > 0.60 && euphoriaFactor <= 0.80) CityMap.QIStats.euphoriaBoost = 0.8;
-		else if (euphoriaFactor > 0.80 && euphoriaFactor <= 1.20) CityMap.QIStats.euphoriaBoost = 1;
-		else if (euphoriaFactor > 1.20 && euphoriaFactor <= 1.40) CityMap.QIStats.euphoriaBoost = 1.1;
-		else if (euphoriaFactor > 1.40 && euphoriaFactor < 2.0) CityMap.QIStats.euphoriaBoost = 1.2;
+		let euphoriaFactor = CityMap.QI.stats.euphoria/CityMap.QI.stats.totalPopulation;
+		CityMap.QI.stats.euphoriaBoost = 1.5;
+		if (euphoriaFactor <= 0.2) CityMap.QI.stats.euphoriaBoost = 0.2;
+		else if (euphoriaFactor > 0.20 && euphoriaFactor <= 0.60) CityMap.QI.stats.euphoriaBoost = 0.6;
+		else if (euphoriaFactor > 0.60 && euphoriaFactor <= 0.80) CityMap.QI.stats.euphoriaBoost = 0.8;
+		else if (euphoriaFactor > 0.80 && euphoriaFactor <= 1.20) CityMap.QI.stats.euphoriaBoost = 1;
+		else if (euphoriaFactor > 1.20 && euphoriaFactor <= 1.40) CityMap.QI.stats.euphoriaBoost = 1.1;
+		else if (euphoriaFactor > 1.40 && euphoriaFactor < 2.0) CityMap.QI.stats.euphoriaBoost = 1.2;
 
 		for (let building of uniqueBuildings) {
 			if (building.type === "impediment" || building.type === "street") continue;
@@ -488,7 +453,7 @@ let CityMap = {
 					out += (building.production.guild_raids_money ? '<span class="prod guild_raids_money">'+HTML.Format(building.production.guild_raids_money*-1.0)+'</span> ' : "")	
 				}
 				else {
-					let euphoriaBoost = CityMap.QIStats.euphoriaBoost;
+					let euphoriaBoost = CityMap.QI.stats.euphoriaBoost;
 					for (let [prod, value] of Object.entries(building.production)) {
 						// add coin and supply boosts
 						let boost = 0;
@@ -504,7 +469,7 @@ let CityMap = {
 						}
 						let boostedValue = Math.round(value*(euphoriaBoost+(boost/100)))
 						out += srcLinks.icons(prod)+HTML.Format(boostedValue)+" ";
-						CityMap.QIStats.resources[prod] += boostedValue*building.count;
+						CityMap.QI.stats.resources[prod] += boostedValue*building.count;
 					}
 				}
 			}
@@ -512,7 +477,7 @@ let CityMap = {
 				for (let boost of building.boosts) {
 					let percentChar = (boost.type.includes("action_points") ? " " : "% ")
 					out += srcLinks.icons(boost.type)+boost.value+percentChar;
-					CityMap.QIStats.boosts.hasOwnProperty(boost.type) ? CityMap.QIStats.boosts[boost.type] += boost.value*building.count : CityMap.QIStats.boosts[boost.type] = boost.value*building.count;
+					CityMap.QI.stats.boosts.hasOwnProperty(boost.type) ? CityMap.QI.stats.boosts[boost.type] += boost.value*building.count : CityMap.QI.stats.boosts[boost.type] = boost.value*building.count;
 				}
 			}
 			out += "</td></tr>";
@@ -603,9 +568,9 @@ let CityMap = {
 
 
 	showOutpostBuildings: () => {
-		let buildings = Object.values(CityMap.CulturalOutpostData);
+		let buildings = Object.values(CityMap.CulturalOutpost.data);
 		if (ActiveMap === "era_outpost")
-			buildings = Object.values(CityMap.EraOutpostData);
+			buildings = Object.values(CityMap.EraOutpost.data);
 
 		let uniques = {};
 		for (let b of buildings) {
@@ -709,9 +674,9 @@ let CityMap = {
 			MaxY = 71;
 
 		if (ActiveMap === 'OtherPlayer')
-			buildingData = CityMap.createNewCityMapEntities(Object.values(CityMap.OtherPlayer.mapData))
+			buildingData = CityBuildings.createBuildings(Object.values(CityMap.OtherPlayer.mapData))
 		else
-			buildingData = CityMap.createNewCityMapEntities(Object.values(MainParser.CityMapData))
+			buildingData = CityBuildings.createBuildings(Object.values(MainParser.CityMapData))
 
 		// find highest rating in all buildings, do not include roads
 		let buildingsWithoutStreets = Object.values(buildingData).filter((x) => x.type !== "street");
@@ -729,16 +694,16 @@ let CityMap = {
 		for (const building of Object.values(buildingData)) {
 			if (building.coords.x < MinX || building.coords.x > MaxX || building.coords.y < MinY || building.coords.y > MaxY) continue
 
-			let x = (building.coords.x === undefined ? 0 : parseInt((building.coords.x * CityMap.ScaleUnit)) / 100),
-			y = (building.coords.y === undefined ? 0 : parseInt((building.coords.y * CityMap.ScaleUnit)) / 100),
-			xsize = (building.size.width * CityMap.ScaleUnit) / 100,
-			ysize = (building.size.length * CityMap.ScaleUnit) / 100
+			let x = (building.coords.x === undefined ? 0 : parseInt((building.coords.x * CityMap.map.gridSize))),
+			y = (building.coords.y === undefined ? 0 : parseInt((building.coords.y * CityMap.map.gridSize))),
+			xsize = (building.size.width * CityMap.map.gridSize),
+			ysize = (building.size.length * CityMap.map.gridSize)
 
 			let noStreet = (building.needsStreet === 0 ? ' noStreet' : '');
 			let isLimited = (building.isLimited ? ' isLimited' : '');
 			let fromQI = (building.entityId.includes("_GR") ? ' fromQI' : '');
 			let fromGBG = (building.entityId.includes("_GBG") ? ' fromGBG' : '');
-			let canAscend = (await CityMap.canAscend(building.entityId) ? ' ascendable' : '');
+			let canAscend = (await CityBuildings.canAscend(building.entityId) ? ' ascendable' : '');
 			let isDecayed = (building.state.isDecayed ? ' decayed' : '');
 			let isSpecial = (building.isSpecial ? ' special' : '');
 			let chainBuilding = (building.chainBuilding !== undefined ? ' chain' : '');
@@ -810,7 +775,7 @@ let CityMap = {
 			if (!CityMap.metrics.buildingTypes[building.type]) 
 				CityMap.metrics.buildingTypes[building.type] = 0;
 			CityMap.metrics.buildingTypes[building.type]++;
-			CityMap.metrics.area = ((CityMap.UnlockedAreas.length -1) * 16) + 256; // x + (4*4) + 16*16
+			CityMap.metrics.area = ((CityMap.Main.unlockedAreas.length -1) * 16) + 256; // x + (4*4) + 16*16
 			CityMap.metrics.areaAvailable = CityMap.metrics.area - CityMap.metrics.areaOccupied;
 			StreetsNeeded += (building.state.connected && building.type !== "street" ? parseFloat(Math.min(building.size.width, building.size.length)) * building.needsStreet / 2 : 0)
 
@@ -847,7 +812,7 @@ let CityMap = {
 				f.addClass('highlighted');
 			}
 
-			$('#grid-outer').append( f );
+			$('#map-buildings').append( f );
 		}
 
 		let StreetsUsed = CityMap.metrics.buildingAreas['street'] | 0;
@@ -857,17 +822,17 @@ let CityMap = {
 		CityMap.getAreas();
 		
 		$('[data-original-title]').tooltip({
-			container: '#city-map-overlayBody',
+			container: '#citymap-main',
 			html: true,
 		});
 	},
 
 
 	/**
-	 * Main city sidebar stats
+	 * Sidebar for own and other player cities
 	 */
 	getAreas: ()=>{
-		let total = ((CityMap.UnlockedAreas.length -1) * 16) + 256, // x + (4*4) + 16*16
+		let total = ((CityMap.Main.unlockedAreas.length -1) * 16) + 256, // x + (4*4) + 16*16
 			occupied = CityMap.metrics.areaOccupied,
 			txtFree = (total - occupied);
 
@@ -885,7 +850,6 @@ let CityMap = {
 		}
 
 
-		// Non player city => Unlocked areas cant be detected => dont show free space
 		if (ActiveMap !== 'OtherPlayer') {
 			$('.building-stats').html(
 				'<img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_expansion.png`,true)+'" />'+
@@ -930,10 +894,13 @@ let CityMap = {
 			'<li onClick="CityMap.highlightDecayedBuildings()" class="clickable"><span data-original-title="'+i18n('Boxes.CityMap.ShowDecayedBuildings')+', '+parseFloat(100*CityMap.metrics.decayedBuildings/CityMap.metrics.buildings).toFixed(1)+'%"><img style="filter:saturate(0.5)" src="'+srcLinks.get(`/shared/icons/limited_building_downgrade.png`,true)+'" />' + CityMap.metrics.decayedBuildings + '</span> <span><img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_expansion.png`,true)+'" />' + CityMap.metrics.decayedBuildingsArea + '</span></li>');
 
 		areaStats.push('<li class="ratings clickable">')
-		areaStats.push(`<label for="show-worst-buildings"><input type="checkbox" id="show-worst-buildings" onclick="CityMap.highlightWorstBuildings()" /> ${i18n('Boxes.CityMap.ShowWorstBuildings')}</label>`)
-		areaStats.push('<span onclick="Productions.ShowRating()" class="clickable"></span></li>')
+			areaStats.push(`<label for="show-worst-buildings"><input type="checkbox" id="show-worst-buildings" onclick="CityMap.highlightWorstBuildings()" /> ${i18n('Boxes.CityMap.ShowWorstBuildings')}</label>`)
+			if (ActiveMap !== 'OtherPlayer') 
+				areaStats.push('<span onclick="Productions.ShowRating()" class="clickable"></span>')
+		areaStats.push('</li>')
 
-		areaStats.push(`<li class="clickable"><label for="highlight-old-buildings"><input type="checkbox" id="highlight-old-buildings" onclick="CityMap.highlightOldBuildings()"> ${i18n('Boxes.CityMap.HighlightOldBuildings')}</label></li>`)
+		if (ActiveMap !== 'OtherPlayer') 
+			areaStats.push(`<li class="clickable"><label for="highlight-old-buildings"><input type="checkbox" id="highlight-old-buildings" onclick="CityMap.highlightOldBuildings()"> ${i18n('Boxes.CityMap.HighlightOldBuildings')}</label></li>`)
 		areaStats.push('</ul>')
 
 		// let cityEfficiency = parseFloat(CityMap.metrics.connectedBuildingsArea / CityMap.metrics.roadsArea * 100).toFixed(0);
@@ -957,10 +924,7 @@ let CityMap = {
 
 
 	/**
-	 * Erzeugt einen Hash vom String
-	 *
-	 * @param str
-	 * @returns {number}
+	 * Create a hash from string
 	 */
 	hashCode: (str)=>{
 		return str.split('').reduce((prevHash, currVal) => (((prevHash << 5) - prevHash) + currVal.charCodeAt(0))|0, 0);
@@ -968,7 +932,7 @@ let CityMap = {
 
 
 	/**
-	 * Show the submit box
+	 * Show the submit box for foe-helper.com
 	 */
 	showSubmitBox: () => {
 		let $CityMapSubmit = $('#CityMapSubmit');
@@ -996,37 +960,30 @@ let CityMap = {
 
 
 	/**
-	 * Highlight old buildings
+	 * Sidebar building highlighting
 	 */
 	highlightOldBuildings: ()=> {
 		$('.oldBuildings').toggleClass('diagonal');
 		$('.too-old-legends').slideToggle();
 	},
-
 	highlightNoStreetBuildings: ()=> {
 		$('.noStreet').toggleClass('highlight');
 	},
-
 	highlightAscendableBuildings: ()=> {
 		$('.ascendable').toggleClass('highlight2');
 	},
-
 	highlightDecayedBuildings: ()=> {
 		$('.decayed').toggleClass('highlight3');
 	},
-
 	highlightLimitedBuildings: ()=> {
 		$('#grid-outer').toggleClass('showLimited');
 	},
-
 	highlightGBGBuildings: ()=> {
 		$('#grid-outer').toggleClass('showGBG');
 	},
-
 	highlightQIBuildings: ()=> {
 		$('#grid-outer').toggleClass('showQI');
 	},
-
 	highlightWorstBuildings: ()=> {
 		$('.rating10').toggleClass('highlight4');
 		$('.rating20').toggleClass('highlight4');
@@ -1035,8 +992,7 @@ let CityMap = {
 
 
 	/**
-	 * Send citydata to the server
-	 *
+	 * Send citydata to the foe-helper.com
 	 */
 	SubmitData: ()=> {
 		let apiToken = localStorage.getItem('ApiToken');
@@ -1068,8 +1024,8 @@ let CityMap = {
 				apiToken: apiToken,
 				eras: Technologies.Eras,
 				entities: CityMap.removeDoubleUnderscoreKeys(MainParser.CityMapData),
-				areas: CityMap.removeDoubleUnderscoreKeys(CityMap.UnlockedAreas),
-				blockedAreas: CityMap.removeDoubleUnderscoreKeys(CityMap.BlockedAreas),
+				areas: CityMap.removeDoubleUnderscoreKeys(CityMap.Main.unlockedAreas),
+				blockedAreas: CityMap.removeDoubleUnderscoreKeys(CityMap.Main.blockedAreas),
 				goods: GoodsData,
 				metaIDs: {
 					entity: MainParser.MetaIds['city_entities'],
@@ -1114,18 +1070,19 @@ let CityMap = {
         let data = {};
         switch (ActiveMap) {
             case 'guild_raids':
-                data.CityMapData = CityMap.removeDoubleUnderscoreKeys(CityMap.QIData);
-                data.UnlockedAreas = CityMap.removeDoubleUnderscoreKeys(CityMap.QIAreas);
+                data.CityMapData = CityMap.removeDoubleUnderscoreKeys(CityMap.QI.data);
+                data.UnlockedAreas = CityMap.removeDoubleUnderscoreKeys(CityMap.QI.areas);
                 break;
             default:
                 data.CityMapData = CityMap.removeDoubleUnderscoreKeys(MainParser.CityMapData);
-                data.UnlockedAreas = CityMap.removeDoubleUnderscoreKeys(CityMap.UnlockedAreas);
+                data.UnlockedAreas = CityMap.removeDoubleUnderscoreKeys(CityMap.Main.unlockedAreas);
 				data.CityEntities = CityMap.removeDoubleUnderscoreKeys(MainParser.CityEntities);
                 break;
         }
         data.CityEntities = CityMap.removeDoubleUnderscoreKeys(MainParser.CityEntities);
+
         helper.str.copyToClipboard(
-            JSON.stringify({data})
+            JSON.stringify(data)
         ).then(() => {
             HTML.ShowToastMsg({
                 head: i18n('Boxes.CityMap.ToastHeadCopyData'),
@@ -1229,6 +1186,43 @@ let CityMap = {
 	},
 
 
+	/**
+	 * Removes any keys that start with "__class__" or "__enum__" from the provided object or its nested structures.
+	 * The function traverses objects and arrays recursively to apply the rule at any depth.
+	 */
+	removeDoubleUnderscoreKeys (obj) {
+		if (typeof obj !== 'object' || obj === null) {
+			return obj; // Only process objects/arrays
+		}
+
+		if (Array.isArray(obj)) {
+			return obj.map(item => CityMap.removeDoubleUnderscoreKeys(item)); // Process arrays recursively
+		}
+
+		const newObj = {};
+
+		for (const key in obj) {
+			if (!Object.prototype.hasOwnProperty.call(obj, key)) continue;
+
+			const value = obj[key];
+
+			// Remove any keys that start with "__class__" or "__enum__"
+			if (key.startsWith('__class__') || key.startsWith('__enum__')) {
+				continue;
+			}
+
+			// Keep everything else, but apply the rule recursively to nested structures
+			newObj[key] = CityMap.removeDoubleUnderscoreKeys(value);
+		}
+
+		return newObj;
+	},
+};
+
+// // // // // // // // // // // // //
+// Data for MainParser.CityBuildingsData
+// // // // // // // // // // // // //
+let CityBuildings = {
 	// returns negative numbers for builidings that use population, 0 for buildings that dont provide or use it
 	setPopulation: (metaData, data, era) => {
 		let population = 0
@@ -1266,12 +1260,11 @@ let CityMap = {
 		return population
 	},
 
-
 	// returns 0 if building does not provide or substract happiness
 	setHappiness(metaData, data, era) {
 		let happiness = 0
 		let eraId = Technologies.InnoEras[era]
-		let isPolivated = CityMap.setPolivation(data, metaData)
+		let isPolivated = CityBuildings.setPolivation(data, metaData)
 
 		let bgHappiness = data.bonus
 		if (metaData.__class__ !== "GenericCityEntity") {
@@ -1311,7 +1304,6 @@ let CityMap = {
 			}
 		}
 	},
-
 
 	// returns undefined if building cannot be motivated or polished
 	setPolivation(data, metaData) { 
@@ -1355,7 +1347,6 @@ let CityMap = {
 		return undefined
 	},
 
-
 	// returns undefined if building cannot be motivated or polished
 	setPolivationable(metaData) {
 		let isPolivationable = false
@@ -1370,7 +1361,6 @@ let CityMap = {
 			isPolivationable = (metaData.components.AllAge.socialInteraction !== undefined)
 		return isPolivationable
 	},
-
 
 	// returns chainId (string), returns undefined if not a chain building
 	setChainBuilding(metaData) {
@@ -1398,7 +1388,6 @@ let CityMap = {
 			return { name: chainId, type: type, chainPosX: x, chainPosY: y }
 	},
 
-
 	// this creates a pseudo building for effiency ratings etc
 	createChainedBuilding(allLinkedBuildings = []) {
 		let chainedBuilding = allLinkedBuildings[0]; // first building is the start building
@@ -1423,7 +1412,6 @@ let CityMap = {
 		return chainedBuilding;
 	},
 
-
 	// returns setId (string), returns undefined if not a set building
 	setSetBuilding(metaData) {
 		let setId = undefined
@@ -1434,7 +1422,6 @@ let CityMap = {
 		if (setId !== undefined)
 			return { name: setId }
 	},
-
 
 	// returns an object with the building size
 	setSize(metaData) {
@@ -1448,9 +1435,8 @@ let CityMap = {
 		return size
 	},
 
-
 	// returns an array with all boosts, returns undefined when there are none
-	setBuildingBoosts(metaData, data, era) {
+	setBuildingBoosts(metaData, data, era, withAlly=true) {
 		let eraName = (era === 'AllAge' ? 'BronzeAge' : era) // for some reason Watchtower Level 2 (example) has an era list even though the boost is the same everywhere. thx inno
 		let boosts = []
 		let isSet = this.setSetBuilding(metaData)
@@ -1551,16 +1537,18 @@ let CityMap = {
 				})
 			}
 		}
-		let allyStats = MainParser.Allies.getProd(data.id||0)
-		if (allyStats?.currentLevel?.boosts||allyStats?.boosts) {
-			(allyStats?.currentLevel?.boosts||allyStats?.boosts||[]).forEach(abilityBoost => {
-				let boost = {
-					feature: abilityBoost.targetedFeature,
-					type: Boosts.Mapper[abilityBoost.type] || [abilityBoost.type],
-					value: abilityBoost.value,
-				};
-				boosts.push(boost)
-			})
+		if (withAlly) {
+			let allyStats = MainParser.Allies.getProd(data.id||0)
+			if (allyStats?.currentLevel?.boosts||allyStats?.boosts) {
+				(allyStats?.currentLevel?.boosts||allyStats?.boosts||[]).forEach(abilityBoost => {
+					let boost = {
+						feature: abilityBoost.targetedFeature,
+						type: Boosts.Mapper[abilityBoost.type] || [abilityBoost.type],
+						value: abilityBoost.value,
+					};
+					boosts.push(boost)
+				})
+			}
 		}
 		
 		if (boosts.length > 0)
@@ -1568,7 +1556,6 @@ let CityMap = {
 		return undefined
 	},
 
-	
 	setState(data) { 
 		if ((data?.state?.__class__ === "IdleState" && !data?.cityentity_id?.includes("CastleSystem")) || data?.state?.__class__ === undefined)
 			return "idle"
@@ -1581,14 +1568,12 @@ let CityMap = {
 		return "producing"
 	},
 
-
 	// building is not in construction menu
 	isSpecialBuilding(metaData) { 
 		if (metaData.__class__ === "GenericCityEntity")
 			return true // generic buildings are always special
 		return metaData.is_special
 	},
-
 
 	// returns street level (1 or 2) or 0
 	needsStreet(metaData) {
@@ -1604,7 +1589,6 @@ let CityMap = {
 		return (needsStreet === undefined ? 0 : needsStreet)
 	},
 
-
 	setStateTimes(data) {
 		let state = this.setState(data)
 		
@@ -1619,14 +1603,12 @@ let CityMap = {
 		return { at: undefined, in: undefined };
 	},
 
-
 	isExpiredBuilding(data) {
 		if (data.type === "generic_building")
 			if (data.decayedFromCityEntityId !== undefined)
 				return true;
 		return false;
 	},
-
 
 	// returns false, time or total collections
 	isLimitedBuilding(metaData) {
@@ -1638,7 +1620,6 @@ let CityMap = {
 		}
 		return false
 	},
-
 
 	isBoostableBuilding(metaData) {
 		if (metaData.type === 'greatbuilding' || metaData.type === 'main_building') {
@@ -1654,7 +1635,6 @@ let CityMap = {
 		return true
 	},
 
-
 	// returns undefined or time the building was built
 	setBuildTime(data) {
 		if (data.type === "generic_building")
@@ -1663,7 +1643,6 @@ let CityMap = {
 		return undefined;
 	},
 
-
 	// returns true or false
 	setConnection(metaData, data) {
 		let connected = (this.needsStreet(metaData, data) === 0)
@@ -1671,7 +1650,6 @@ let CityMap = {
 			connected = (data?.connected === 1)
 		return connected
 	},
-
 
 	// find out if a chain start building has links, return all buildings in an array
 	hasLinks(building, connectedBuildings = [], dirX = 0, dirY = 0) {
@@ -1684,11 +1662,11 @@ let CityMap = {
 		let x = building.coords.x + dirX;
 		let y = building.coords.y + dirY;
 
-		let nextBuilding = CityMap.getBuildingByCoords(x, y);
+		let nextBuilding = CityBuildings.getBuildingByCoords(x, y);
 		let x1 = x + dirX;
 		let y1 = y + dirY;
 		while (nextBuilding === undefined) {
-			nextBuilding = CityMap.getBuildingByCoords(x1, y1);
+			nextBuilding = CityBuildings.getBuildingByCoords(x1, y1);
 			x1 += dirX;
 			y1 += dirY;
 			if (x1 < 0 || y1 < 0 || x1 > 72 || y1 > 72) break; // min and max of current map
@@ -1703,7 +1681,6 @@ let CityMap = {
 		}
 	},
 
-
 	// find out if a chain link building is connected to the chain start building (through other links)
 	isLinked(building, x = 0, y = 0) {
 		if (typeof building?.chainBuilding?.chainPosX === 'number') {
@@ -1714,7 +1691,7 @@ let CityMap = {
 			let x1 = (posX !== 0 ? posX / Math.abs(posX) : 0) - x*xNeg
 			let y1 = (posY !== 0 ? posY / Math.abs(posY) : 0) - y*yNeg
 
-			let prevBuilding = CityMap.getBuildingByCoords(building?.coords?.x - x1, building?.coords?.y - y1)
+			let prevBuilding = CityBuildings.getBuildingByCoords(building?.coords?.x - x1, building?.coords?.y - y1)
 
 			if (y1 < 0 || x1 < 0 || x1 > 72 || y1 > 72) return false // min and max of current map
 			else {
@@ -1740,7 +1717,6 @@ let CityMap = {
 			}
 		}
 	},
-
 
 	// returns false if building does not produce anything
 	// production types: resources (coins, supplies, goods, medals etc), unit, genericReward (consumables like fragments), random, guildResources (power and goods)
@@ -1913,9 +1889,24 @@ let CityMap = {
 						resources: {}
 					}
 					if (product.type === "resources") {
-						resource.resources = product.playerResources.resources
+						resource.resources = product.playerResources.resources;
 						if (product.onlyWhenMotivated !== true)
-							resource.doubleWhenMotivated = true
+							resource.doubleWhenMotivated = true;
+						// make special goods their own type
+						let specialGood = Object.keys(resource.resources).find(x => x.includes("special_good"));
+						let resourceAmount = Object.keys(resource.resources).length;
+						if (specialGood && resourceAmount === 1) 
+							resource.type = "special_goods";
+						else if (specialGood && resourceAmount > 1) {
+							let special_good = {
+								type: "special_goods",
+								needsMotivation: resource.needsMotivation,
+								doubleWhenMotivated: resource.doubleWhenMotivated,
+								resources: {[specialGood]:resource.resources[specialGood]}
+							}
+							productions.push(special_good);
+							delete resource.resources[specialGood];
+						}
 					}
 					else if (product.type === "guildResources") {
 						resource.resources = product.guildResources.resources
@@ -1945,10 +1936,10 @@ let CityMap = {
 									let amount = (lookupData.totalAmount || lookupData.amount)
 									let type = (lookupData.type === "set" ? "consumable" : lookupData.type)
 
-									if (reward.product.reward.id.search('good') !== -1) {
-										subType = Object.keys(this.setGoodsRewardFromGeneric(lookupData))[0]
-										amount = Object.values(this.setGoodsRewardFromGeneric(lookupData))[0]
-										type = "goods"
+									if (reward.product.reward.id.search('good') !== -1 && reward.product.reward.id.search('fragment') === -1) {
+										subType = Object.keys(this.setGoodsRewardFromGeneric(lookupData))[0];
+										amount = Object.values(this.setGoodsRewardFromGeneric(lookupData))[0];
+										type = "goods";
 									}
 
 									let name = this.setRewardNameFromLookupData(lookupData, metaData)
@@ -1985,6 +1976,7 @@ let CityMap = {
 											amount: Object.values(reward.product.playerResources.resources)[0],
 											dropChance: reward.dropChance,
 										}
+										//console.log(metaData.name, reward.product, newReward)
 										rewards.push(newReward)
 									}
 								}
@@ -1994,7 +1986,7 @@ let CityMap = {
 						}
 					}
 					else {
-						console.log("CityMap.setAllProductions() is missing an option for ",metaData.name)
+						console.log("setAllProductions() is missing an option for ",metaData.name)
 					}
 					productions.push(resource);
 				});
@@ -2012,11 +2004,10 @@ let CityMap = {
 		}
 	},
 
-
 	// returns undefined if building is idle or there are no productions (yet)
 	setCurrentProductions(data, metaData, era) {
-		let productions = []
-		let state = CityMap.setState(data)
+		let productions = [];
+		let state = CityBuildings.setState(data);
 		if (state !== "idle") {
 			if (metaData.__class__ !== "GenericCityEntity") {
 				if (data.state.current_product) {
@@ -2081,7 +2072,7 @@ let CityMap = {
 					}
 				}
 				if (data.type === "main_building") {
-					let prod = CityMap.setAllProductions(metaData, data, era)
+					let prod = CityBuildings.setAllProductions(metaData, data, era)
 					return prod
 				}
 			}
@@ -2092,8 +2083,14 @@ let CityMap = {
 							type: production.type,
 							resources: {}
 						}
-						if (production.type === "resources")
-							resource.resources = production.playerResources.resources
+						if (production.type === "resources") {
+							resource.resources = production.playerResources.resources;
+							
+							// check if first resource is a special good and change the type accordingly
+							let specialGood = FHResourcesList.find(x => x.id === Object.keys(production.playerResources?.resources)[0] && x.abilities.specialResource?.type === "specialResource")
+							if (specialGood)
+								resource.type = "special_goods";
+						}
 						else if (production.type === "guildResources")
 							resource.resources = production.guildResources.resources
 						else if (production.type === "unit") 
@@ -2110,7 +2107,7 @@ let CityMap = {
 							}
 						}
 						else
-							console.log(metaData.name, "CityMap.setCurrentProductions() production is missing")
+							console.log(metaData.name, "setCurrentProductions() production is missing")
 						
 						productions.push(resource)
 					});
@@ -2125,7 +2122,6 @@ let CityMap = {
 		}
 		return undefined
 	},
-
 
 	// todo: set buildings
 	
@@ -2209,7 +2205,7 @@ let CityMap = {
 		if (lookupData) 
 			name = this.setRewardNameFromLookupData(lookupData, metaData)
 		else {
-			console.log("CityMap.setGenericReward() data missing for", metaData.name, metaData, product);
+			console.log("setGenericReward() data missing for", metaData.name, metaData, product);
 			name = "DEFINE NAME";
 		}
 		
@@ -2255,7 +2251,6 @@ let CityMap = {
 		return reward
 	},
 
-
 	// random_good_of_previous_age   random_good_of_age   random_good_of_next_age
 	// all_goods_of_previous_age   all_goods_of_age   all_goods_of_next_age
 	// special_goods_of_any_age
@@ -2285,7 +2280,6 @@ let CityMap = {
 		}
 		return {[typeString + 'of_' + eraString + 'age']: amount}
 	},
-
 
 	// returns { unit_type: amount } 
 	// unit_type can be: random, rogue, light_melee, heavy_melee, short_ranged, long_ranged, fast, next#light_melee -> next# for next era units
@@ -2323,7 +2317,6 @@ let CityMap = {
 		return { [type]: amount }
 	},
 
-
 	setRewardNameFromLookupData(lookupData, metaData) {
 		let name = ""
 		if (lookupData.subType === "fragment") 
@@ -2356,11 +2349,10 @@ let CityMap = {
 		else if (lookupData.type === "good"){
 			name = lookupData.name.replace(/^\+?\d+\s]*/,"")
 		} else {
-			console.log("CityMap.setRewardNameFromLookupData(): undefined name from type", metaData.name, lookupData, lookupData.type, lookupData.subType)
+			console.log("setRewardNameFromLookupData(): undefined name from type", metaData.name, lookupData, lookupData.type, lookupData.subType)
 		}
 		return name
 	},
-
 
 	setOldProductionResourceFromAbility(ability, era) {
 		let resource = {
@@ -2427,16 +2419,13 @@ let CityMap = {
 		return resource
 	},
 
-
 	getBuildingById(id) {
-		return Object.values(MainParser.NewCityMapData).find(x => x.id === id)
+		return Object.values(MainParser.CityBuildingsData).find(x => x.id === id)
 	},
-
 
 	getBuildingByCoords(x,y) {
-		return Object.values(MainParser.NewCityMapData).find(b => b.coords.x === x && b.coords.y === y)
+		return Object.values(MainParser.CityBuildingsData).find(b => b.coords.x === x && b.coords.y === y)
 	},
-
 
 	getBuildingGoodsByEra(current, building, boosted = false) {
 		let productions = (current ? building.state.production : building.production)
@@ -2472,9 +2461,7 @@ let CityMap = {
 							isGood = true
 						}
 						else if (specialGood !== undefined) {
-							goodEra = Technologies.InnoEras[specialGood.era]
-							resourceName = specialGood.id
-							isGood = true
+							isGood = false
 						}
 						else if (resourceName.includes('previous_age')) {
 							goodEra = Technologies.getPreviousEraIdByCurrentEraName(building.eraName)
@@ -2510,11 +2497,15 @@ let CityMap = {
 								goodEra = Technologies.getPreviousEraIdByCurrentEraName(building.eraName);
 							else if (resource.type.includes('next') || resource.subType?.toLowerCase().includes('next') || resource.id?.toLowerCase().includes('next'))
 								goodEra = Technologies.getNextEraIdByCurrentEraName(building.eraName);
+							else
+								goodEra = Technologies.getEraIdByCurrentEraName(building.eraName);
+
+							let boostedExtra = Math.round(resource.amount*goodsBoost/100)
 
 							if (goods.eras[goodEra] === undefined)
-								goods.eras[goodEra] = parseFloat(resource.amount * resource.dropChance);
+								goods.eras[goodEra] = parseFloat((resource.amount + boostedExtra) * resource.dropChance);
 							else
-								goods.eras[goodEra] += parseFloat(resource.amount * resource.dropChance);
+								goods.eras[goodEra] += parseFloat((resource.amount + boostedExtra) * resource.dropChance);
 						}
 					}
 				}
@@ -2535,7 +2526,6 @@ let CityMap = {
 			return goods;
 		}
 	},
-
 
 	getBuildingGuildGoodsByEra(current, building, boosted = false) {
 		let productions = (current ? building.state.production : building.production)
@@ -2584,22 +2574,21 @@ let CityMap = {
 		}
 	},
 
-
 	setType(metaData) {
 		return metaData.type
 	},
 
-
-	async canAscend(buildingEntityId) {
-		return (await CityMap.AscendingBuildings).hasOwnProperty(buildingEntityId)
+	setDecayed(data) {
+		return (data.decayedFromCityEntityId !== undefined)
 	},
 
+	async canAscend(buildingEntityId) {
+		return (await CityMap.AscendingBuildings).hasOwnProperty(buildingEntityId);
+	},
 
-	createNewCityMapEntities(data) {
-		if (data === undefined && ActiveMap !== 'OtherPlayer') {
-			data = Object.values(MainParser.CityMapData)
-		}
-		else if (ActiveMap === 'OtherPlayer') {
+	createBuildings(data=Object.values(MainParser.CityMapData),withAllies=true) {
+		data = Object.values(MainParser.CityMapData);
+		if (ActiveMap === 'OtherPlayer') {
 			data = Object.values(CityMap.OtherPlayer.mapData);
 		}
 
@@ -2607,72 +2596,18 @@ let CityMap = {
 			if (ActiveMap === 'OtherPlayer' && building.eraName !== undefined) continue
 			let metaData = Object.values(MainParser.CityEntities).find(x => x.id === building.cityentity_id)
 			let era = Technologies.getEraName(building.cityentity_id, building.level);
-			let newCityEntity = CityMap.createNewCityMapEntity(metaData, era, building);
+			let newCityEntity = CityBuildings.createBuilding(metaData, era, building,withAllies);
 
 			if (ActiveMap === 'OtherPlayer') 
 				CityMap.OtherPlayer.mapData[building.id] = newCityEntity
 			else
-				MainParser.NewCityMapData[building.id] = newCityEntity
+				MainParser.CityBuildingsData[building.id] = newCityEntity
 		}
 
-		return (ActiveMap === 'OtherPlayer' ? CityMap.OtherPlayer.mapData : MainParser.NewCityMapData) 
+		return (ActiveMap === 'OtherPlayer' ? CityMap.OtherPlayer.mapData : MainParser.CityBuildingsData) 
 	},
 
-
-	setDecayed(data) {
-		return (data.decayedFromCityEntityId !== undefined)
-	},
-
-
-	// todo: fix it, use it
-	setEra(data) {
-		let era = (data.type !== "greatbuilding" ? data.level : 1)
-		return (data.decayedFromCityEntityId.includes("CastleSystem") ? CurrentEra : Technologies.InnoEraNames[era])
-	},
-
-
-	/**
-	 * Removes any keys that start with "__class__" or "__enum__" from the provided object or its nested structures.
-	 *
-	 * The function will remove a key-value pair if and only if the key name begins with "__class__" or "__enum__"
-	 * (e.g., "__class__", "__class__Foo", "__enum__", etc.). All other keys remain untouched, including keys
-	 * that start with other double-underscore prefixes.
-	 *
-	 * The function traverses objects and arrays recursively to apply the rule at any depth.
-	 *
-	 * @param {Object|Array} obj The object or array to process. If the input is not an object or array, it will be returned as is.
-	 * @return {Object|Array} A new object or array with all keys starting with "__class__" or "__enum__" removed.
-	 */
-	removeDoubleUnderscoreKeys (obj) {
-		if (typeof obj !== 'object' || obj === null) {
-			return obj; // Only process objects/arrays
-		}
-
-		if (Array.isArray(obj)) {
-			return obj.map(item => CityMap.removeDoubleUnderscoreKeys(item)); // Process arrays recursively
-		}
-
-		const newObj = {};
-
-		for (const key in obj) {
-			if (!Object.prototype.hasOwnProperty.call(obj, key)) continue;
-
-			const value = obj[key];
-
-			// Remove any keys that start with "__class__" or "__enum__"
-			if (key.startsWith('__class__') || key.startsWith('__enum__')) {
-				continue;
-			}
-
-			// Keep everything else, but apply the rule recursively to nested structures
-			newObj[key] = CityMap.removeDoubleUnderscoreKeys(value);
-		}
-
-		return newObj;
-	},
-
-
-	createNewCityMapEntity(metaData, era=CurrentEra, data={}) {
+	createBuilding(metaData, era=CurrentEra, data={}, withAlly=true) {
 		if (typeof(metaData)=="string") {
 			metaData=MainParser.CityEntities[metaData];
 		}
@@ -2681,6 +2616,7 @@ let CityMap = {
 			id: data.id||0,
 
 			entityId: data.cityentity_id||metaData.id,
+			allyRoom: metaData.components?.AllAge?.ally?.rooms[0]?.allyType || null,
 			name: metaData.name,
 			type: this.setType(metaData),
 			eraName: ((data.cityentity_id||metaData.id).includes("CastleSystem") ? CurrentEra : era),
@@ -2696,7 +2632,7 @@ let CityMap = {
 			happiness: this.setHappiness(metaData, data, era),
 			needsStreet: this.needsStreet(metaData),
 			
-			boosts: this.setBuildingBoosts(metaData, data, era),
+			boosts: this.setBuildingBoosts(metaData, data, era, withAlly),
 			production: this.setAllProductions(metaData, data, era),
 			rating: null,
 
@@ -2718,10 +2654,11 @@ let CityMap = {
 
 		entity.rating = Productions.rateBuilding(entity);
 
-		CityMap.getBuildingGuildGoodsByEra(false, entity, false);
+		// no idea why this is called here? so, away it goes
+		//this.getBuildingGuildGoodsByEra(false, entity, false);
 		
-		//if (entity.entityId.includes("MultiAge_WIN19"))
-		//	console.log('entity ', entity.name, entity, metaData, data);
+		//if (entity.type !== "street")
+		//	console.log('entity ', entity.name, entity, entity.allyRoom, data);
 		return entity;
 	},
 };

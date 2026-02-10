@@ -20,10 +20,10 @@
 	text-align: center;
 	width: 100%;
 	height: 50px;
-	border: 2px dotted #bbb;
+	border: 2px dotted var(--text-muted);
 	border-radius: 10px;
 	padding: 20px 0px;
-	color: #bbb;
+	color: var(--text-muted);
 	cursor: pointer;
 }
 
@@ -41,7 +41,7 @@ table {
 	left: 0;
 	width: 100%;
 	height: 100%;
-	background: #000000c0;
+	background: var(--black-60);
 	z-index: 100;
 	opacity: 1;
 
@@ -104,7 +104,7 @@ table {
 
 #DBExport #debex_import_wrapper .icon.error {
 	font-size: 1.3rem;
-	color: rgb(158, 0, 0);
+	color: var(--red);
 }
 
 #DBExport #debex_import_wrapper .errmsg {
@@ -123,7 +123,7 @@ table {
 	margin: -75px 0 0 -75px;
 	border-radius: 50%;
 	border: 3px solid transparent;
-	border-top-color: #543118;
+	border-top-color: var(--text-dark);
 	-webkit-animation: spin 2s linear infinite;
 	animation: spin 2s linear infinite;
 }
@@ -137,7 +137,7 @@ table {
 	bottom: 5px;
 	border-radius: 50%;
 	border: 3px solid transparent;
-	border-top-color: #f8af36;
+	border-top-color: var(--bright-color);
 	-webkit-animation: spin 3s linear infinite;
 	animation: spin 3s linear infinite;
 }
@@ -151,7 +151,7 @@ table {
 	bottom: 15px;
 	border-radius: 50%;
 	border: 3px solid transparent;
-	border-top-color: #f3d6a0;
+	border-top-color: var(--text-normal);
 	-webkit-animation: spin 1.5s linear infinite;
 	animation: spin 1.5s linear infinite;
 }
@@ -186,10 +186,10 @@ table {
 
 @keyframes glow {
 	from {
-		box-shadow: inset 0 0 5px -5px #fc8f007c;
+		box-shadow: inset 0 0 5px -5px var(--table-bg-bright);
 	}
 
 	to {
-		box-shadow: inset 0 0 5px 5px #fc8f007c;
+		box-shadow: inset 0 0 5px 5px var(--table-bg-bright);
 	}
 }
