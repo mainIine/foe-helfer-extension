@@ -1,7 +1,7 @@
 /*
  * *************************************************************************************
  *
- * Copyright (C) 2024 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -103,6 +103,62 @@ let mouseActions = {
         mouseActions.simulate(mouseActions.targetEl, "mousemove", previousCoords)
     }
 }
+
+KeyboardEvents = (() => {
+    const selector = '#openfl-content input';
+    const charDelay = 5;    // ms per character
+
+    // simluate key events for each character in text, with optional delay between characters
+    async function pasteAsKeyEvents(text, sel=selector, delay=charDelay) {
+        const el = document.querySelector(sel);
+        for (let i = 0; i < text.length; i++) {
+            const ch = text[i];
+            const isUpper = ch.toUpperCase() === ch && /[A-Z]/.test(ch);
+            const key = ch;
+            const charCode = ch.charCodeAt(0);
+            const keyCode = charCode;
+
+            const kd = new KeyboardEvent('keydown',{
+                key,
+                code: /[a-zA-Z]/.test(ch) ? 'Key' + ch.toUpperCase() : 'Unidentified',
+                keyCode,
+                which: keyCode,
+                charCode: 0,
+                bubbles: true,
+                cancelable: true,
+                composed: true,
+                shiftKey: isUpper
+            });
+            el.dispatchEvent(kd);
+
+            // Aktualisiere value (manche Logiken lesen value nach Key-Events)
+            const pos = (el.selectionStart != null) ? el.selectionStart : el.value.length;
+            el.value = el.value.slice(0, pos) + ch + el.value.slice(el.selectionEnd || pos);
+            el.setSelectionRange(pos + 1, pos + 1);
+            el.dispatchEvent(new InputEvent('input',{
+                bubbles: true,
+                composed: true
+            }));
+
+            if (delay > 0)
+                await new Promise(r => setTimeout(r, delay));
+        }
+        return true;
+    }
+
+    async function pasteClipboardAsKeys(sel=selector, delay=charDelay) {
+        try {
+            const text = await navigator.clipboard.readText();
+            if (!text)
+                throw new Error('Zwischenablage leer');
+            return await pasteAsKeyEvents(text, sel, delay);
+        } catch (e) {
+            //console.warn('clipboard.readText() fehlgeschlagen:', e);
+            //throw e;
+        }
+    }
+    return {paste:(x)=>{if (!x) {pasteClipboardAsKeys()} else {pasteAsKeyEvents(x)}}}
+})();
 
 mouseActions.init()
 

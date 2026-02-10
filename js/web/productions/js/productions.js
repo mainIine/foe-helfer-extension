@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2025 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -25,16 +25,17 @@ let Productions = {
 	TabsContent: [],
 
 	Types: [
-		'strategy_points',	// Forge Points
-		'forge_points_production', // FP Boost
-		'goods',			// Goods and special goods
-		'items',			// Fragments, blueprints, boosts etc
-		'money',			// Coins
-		'coin_production', // Coin Boost
+		'strategy_points',			// Forge Points
+		'forge_points_production', 	// FP Boost
+		'goods',					// Regular goods
+		'special_goods', 			// *special* goods
+		'items',					// Fragments, blueprints, boosts etc
+		'money',					// Coins
+		'coin_production', 			// Coin Boost
 		'supplies',
-		'supply_production', // Supply Boost
+		'supply_production', 		// Supply Boost
 		'medals',
-		'premium',			// Diamonds
+		'premium',					// Diamonds
 		'population',
 		'happiness',
 		'units',
@@ -78,7 +79,8 @@ let Productions = {
 			"inventorybuildings":false,
 			"inventorybuildingscore":0,
 			"gBs":true,
-			"showLimited":true
+			"showLimited":true,
+			"showallies":true
 			}`
 		),
 		{showhighlighted: false}
@@ -154,11 +156,11 @@ let Productions = {
 	init: () => {
 		if (ActiveMap === 'OtherPlayer') return
 
-		MainParser.NewCityMapData = CityMap.createNewCityMapEntities(Object.values(MainParser.CityMapData))
-		Productions.CombinedCityMapData = MainParser.NewCityMapData
+		MainParser.CityBuildingsData = CityBuildings.createBuildings(Object.values(MainParser.CityMapData))
+		Productions.CombinedCityMapData = MainParser.CityBuildingsData
 
-		if (CityMap.EraOutpostData) {
-			Productions.CombinedCityMapData = Object.assign({}, Productions.CombinedCityMapData, CityMap.EraOutpostData)
+		if (CityMap.EraOutpost.data) {
+			Productions.CombinedCityMapData = Object.assign({}, Productions.CombinedCityMapData, CityMap.EraOutpost.data)
 		}
 
 		// leere Arrays erzeugen
@@ -317,9 +319,9 @@ let Productions = {
 							}
 						})
 					}
-					if (production.type === 'special_goods') { // space carrier
-						if (Productions.BuildingsProducts.goods.find(x => x.id === building.id) === undefined)
-							Productions.BuildingsProducts["goods"].push(saveBuilding)
+					if (production.type === 'special_goods') {
+						if (Productions.BuildingsProducts.special_goods.find(x => x.id === building.id) === undefined) {
+							Productions.BuildingsProducts["special_goods"].push(saveBuilding)}
 					}
 					if (production.type === "resources") {
 						let types = Object.keys(production.resources)
@@ -477,18 +479,18 @@ let Productions = {
 
 
 	setChainsAndSets(buildings) {
-		if (buildings === undefined) buildings = Object.values(MainParser.NewCityMapData)
+		if (buildings === undefined) buildings = Object.values(MainParser.CityBuildingsData)
 
 		for (const building of buildings) {
 			if (building?.setBuilding !== undefined) {
 				// todo
-				// CityMap.findAdjacentSetBuildingByCoords(building.coords.x, building.coords.y, building.setBuilding.name)
+				// CityBuildings.findAdjacentSetBuildingByCoords(building.coords.x, building.coords.y, building.setBuilding.name)
 			} 
 			else if (building?.chainBuilding !== undefined && building?.chainBuilding?.type === "start") {
 
-				let linkedBuildings = CityMap.hasLinks(building);
+				let linkedBuildings = CityBuildings.hasLinks(building);
 				if (linkedBuildings.length > 1) {
-					CityMap.createChainedBuilding(linkedBuildings);
+					CityBuildings.createChainedBuilding(linkedBuildings);
 
 					for (const link of linkedBuildings) {
 						if (link.chainBuilding.type === 'linked') {
@@ -512,7 +514,7 @@ let Productions = {
 		buildingIds = Productions.BuildingsProducts[type]
 
 		buildingIds.forEach(b => {
-			let building = CityMap.getBuildingById(b.id)
+			let building = CityBuildings.getBuildingById(b.id)
 			if (building.player_id === ExtPlayerID) {
 			rowA.push('<tr>')
 			rowA.push('<td>')
@@ -619,7 +621,7 @@ let Productions = {
 
 			if (type !== 'goods' && type !== 'clan_goods' && type !== 'guild_raids') {
 				for (const b of buildingIds) {
-					let building = CityMap.getBuildingById(b.id)
+					let building = CityBuildings.getBuildingById(b.id)
 					if (building?.player_id !== ExtPlayerID) continue;
 					// makes random productions with resources and others disappear from the item list
 					if (type === 'items' && Productions.showBuildingItems(true, building)[0] === "" || building.chainBuilding?.type === "linked") continue;
@@ -894,14 +896,14 @@ let Productions = {
 	getRelevantGoodsByEra: (buildingIds, guildGoods = false) => {
 		let eras = [];
 		for (const b of buildingIds) {
-			let building = CityMap.getBuildingById(b.id);
+			let building = CityBuildings.getBuildingById(b.id);
 			if (building.player_id !== ExtPlayerID) continue;
 			
 			let allGoods = {};
 			if (guildGoods)
-				allGoods = CityMap.getBuildingGuildGoodsByEra(false, building, true);
+				allGoods = CityBuildings.getBuildingGuildGoodsByEra(false, building, true);
 			else
-				allGoods = CityMap.getBuildingGoodsByEra(false, building, true);
+				allGoods = CityBuildings.getBuildingGoodsByEra(false, building, true);
 
 			if (allGoods === undefined) continue;
 
@@ -943,7 +945,7 @@ let Productions = {
 
 		// single view table content
 		for (const b of buildingIds) {
-			let building = CityMap.getBuildingById(b.id);
+			let building = CityBuildings.getBuildingById(b.id);
 			if (building.player_id !== ExtPlayerID) continue;
 
 			rowA.push('<tr>')
@@ -1025,8 +1027,8 @@ let Productions = {
 		table.push('<table id="'+type+'-list" class="foe-table sortable-table exportable TSinactive '+type+'-list active">')
 		table.push('<thead class="sticky">')
 		table.push('<tr>')
-		table.push('<th colspan="6"><span class="btn change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeGroups') + '</span> <input type="text" placeholder="' + i18n('Boxes.Productions.FilterTable') + '" class="filterCurrentList"></th>')
-		table.push(`<th colspan=${eras.length} class="textright">${HTML.Format(Object.values(erasCurrent).reduce((a,b)=>a+b))}/${HTML.Format(Object.values(erasTotal).reduce((a,b)=>a+b))}</th>`)
+		table.push('<th colspan="5"><span class="btn change-view game-cursor" data-type="' + type + '">' + i18n('Boxes.Productions.ModeGroups') + '</span> <input type="text" placeholder="' + i18n('Boxes.Productions.FilterTable') + '" class="filterCurrentList"></th>')
+		table.push(`<th colspan=${eras.length+1} class="textright">${HTML.Format(Object.values(erasCurrent).reduce((a,b)=>a+b))}/${HTML.Format(Object.values(erasTotal).reduce((a,b)=>a+b))} 	<button class="typeBoost btn btn-slim"><a href="#special_goods" class="game-cursor">★</a></button> </th>`)
 		table.push('</tr>')
 
 		table.push('<tr class="sorter-header exportheader">')
@@ -1107,7 +1109,7 @@ let Productions = {
 
 		// single view table content
 		for (const b of buildingIds) {
-			let building = CityMap.getBuildingById(b.id)
+			let building = CityBuildings.getBuildingById(b.id)
 			if (building.player_id !== ExtPlayerID) continue; 
 
 			rowA.push('<tr>')
@@ -1133,8 +1135,8 @@ let Productions = {
 				updateGroup.amount++
 			}
 
-			let currentGoods = CityMap.getBuildingGuildGoodsByEra(true, building, true)
-			let allGoods = CityMap.getBuildingGuildGoodsByEra(false, building, true)
+			let currentGoods = CityBuildings.getBuildingGuildGoodsByEra(true, building, true)
+			let allGoods = CityBuildings.getBuildingGuildGoodsByEra(false, building, true)
 
 			for (const era of eras) {
 				let currentGoodAmount = 0
@@ -1371,25 +1373,13 @@ let Productions = {
 							let Utype=resource.name
 							prod.units.push({type:Utype.replace(/next./,""),amount:0,random:resource.amount * resource.dropChance,era:Utype=="rogue"?0:Uera})
 						}
-						if (resource.type === "guild_goods" && category === "clan_goods") {
-							prod.amount += resource.amount * resource.dropChance
-							prod.hasRandomProductions = true
-						}
-						if (resource.subType === "strategy_points" && category === "strategy_points") {
-							prod.amount += resource.amount * resource.dropChance
-							prod.hasRandomProductions = true
-						}
-						if (resource.subType === "money" && category === "money") {
-							prod.amount += resource.amount * resource.dropChance
-							prod.hasRandomProductions = true
-						}
-						if (resource.subType === "supplies" && category === "supplies") {
-							prod.amount += resource.amount * resource.dropChance
-							prod.hasRandomProductions = true
-						}
-						if (resource.subType === "medals" && category === "medals") {
-							prod.amount += resource.amount * resource.dropChance
-							prod.hasRandomProductions = true
+						if (resource.type === "guild_goods" && category === "clan_goods" 
+							|| resource.subType === "strategy_points" && category === "strategy_points"
+							|| resource.subType === "money" && category === "money" 
+							|| resource.subType === "supplies" && category === "supplies"
+							|| resource.subType === "medals" && category === "medals") {
+							prod.amount += resource.amount * resource.dropChance;
+							prod.hasRandomProductions = true;
 						}
 					})
 				}
@@ -1398,6 +1388,14 @@ let Productions = {
 						prod.doubleWhenMotivated = production.doubleWhenMotivated
 						prod.amount += production.resources[category] //* doubleMoney
 					}
+				}
+				if (production.type === "special_goods" && category === "special_goods") {
+					let combinedValues = Object.entries(production.resources).length === 1 ? Math.round(prod.amount * Boosts.Sums.special_goods_production/100) : 0;
+					for (let [type,value] of Object.entries(production.resources)) {
+						let boostedValue = Math.round(value * Boosts.Sums.special_goods_production/100);
+						combinedValues += value+boostedValue;
+					}
+					prod.amount = combinedValues;
 				}
 				if (production.type+"s" === category) { // units
 					let Utype = Object.keys(production.resources)[0]
@@ -1445,7 +1443,7 @@ let Productions = {
 		}
 
 		if (category === "goods") {
-			return CityMap.getBuildingGoodsByEra(current, building, true);
+			return CityBuildings.getBuildingGoodsByEra(current, building, true);
 		}
 		if (category === "forge_points_production" || category === "coin_production" || category === "supply_production") {
 			prod.amount = building.boosts.filter(x => x.type[0] === category)[0].value // not really rock solid like this
@@ -1582,8 +1580,8 @@ let Productions = {
 	ShowOnMap: (ids) => {
 		let IDArray = (ids.length !== undefined ? ids : [ids]);
 
-		if( $('#city-map-overlay').length < 1 )
-			CityMap.init(null, MainParser.CityMapData);
+		if( $('#citymap-main').length < 1 )
+			CityMap.init(null);
 
 		$('#grid-outer').removeClass('desaturate');
 		$('[data-id]').removeClass('highlighted');
@@ -1607,8 +1605,8 @@ let Productions = {
 
 
 	ShowSearchOnMap: (name) => {
-		if( $('#city-map-overlay').length < 1 )
-			CityMap.init(null, MainParser.CityMapData);
+		if( $('#citymap-main').length < 1 )
+			CityMap.init(null);
 
 		$('#grid-outer').removeClass('desaturate');
 
@@ -1731,7 +1729,7 @@ let Productions = {
 				helper.preloader.show('#ProductionsRating');
 				Productions.RatingCurrentTab = $(this).data('value');
 
-				Productions.CalcRatingBody();
+				Productions.CalcRatingBody(era);
 			});
 			Productions.CalcRatingBody(era);
 
@@ -1774,8 +1772,16 @@ let Productions = {
 		}
 	},
 	
+	// era is needed for otherplayer ratings
 	CalcRatingBody: (era = '') => {
-		Productions.BuildingsAll = Object.values(CityMap.createNewCityMapEntities());
+		let buildingCount = {};
+		let uniqueBuildings = [];
+		let buildingSizes = [];
+		let ratedBuildings = [];
+		let h = [];
+
+		let withAllies = Productions.efficiencySettings.showallies;
+		Productions.BuildingsAll = Object.values(CityBuildings.createBuildings(Object.values(MainParser.CityMapData),withAllies));
 		Productions.setChainsAndSets(Productions.BuildingsAll);
 
 		// grab special buildings
@@ -1786,21 +1792,14 @@ let Productions = {
 				Productions.AdditionalSpecialBuildings[x.id] = {id:x.id,name:x.name,selected:false,filter:x.id+";"+x.name}
 			}
 		}
-		let h = [];
-
-		let buildingCount = {}
-		let uniqueBuildings = []
-		let buildingSizes = []
-		let ratedBuildings = []
-
-		let InventoryBuildings = Productions.InventoryBuildings = Kits.BuildingsFromInventory()
+		let InventoryBuildings = Productions.InventoryBuildings = Kits.BuildingsFromInventory();
 		if (ActiveMap === 'OtherPlayer')
 			InventoryBuildings = [];
 
 		for (let [id,data] of Object.entries(InventoryBuildings)){
 			//if(!id || id.slice(0, 2) !== 'W_') continue; // if starts not with "W_", continue
 			let metaData = MainParser.CityEntities[id];
-			let building = CityMap.createNewCityMapEntity(metaData, CurrentEra);
+			let building = CityBuildings.createBuilding(metaData, CurrentEra);
 			building.isInInventory = true;
 			Productions.BuildingsAll.push(building);
 			buildingCount[id+"I"] = data.amount||1;
@@ -1810,29 +1809,32 @@ let Productions = {
 		for (const building of Productions.BuildingsAll) {
 			if (building === undefined || building.type === 'street' || building.type === 'military' || building.id >= 2000000000 || building.type.includes('hub')) continue
 
-			let compare = building.name
-			if (MainParser.Allies.buildingList?.[building.id]) {
-				compare += "+" + Object.keys(MainParser.Allies.buildingList?.[building.id]).join("+")
-			}
+			let compare = building.name;
+			if (MainParser.Allies.buildingList?.[building.id] && withAllies) 
+				compare += "+" + Object.keys(MainParser.Allies.buildingList?.[building.id]).join("+");
+			
 			let foundBuildingIndex = uniqueBuildings.findIndex(x => x.name === compare && x.isInInventory === building.isInInventory && !MainParser.Allies.buildingList?.[x.id])
+			if (!withAllies) 
+				foundBuildingIndex = uniqueBuildings.findIndex(x => x.name === compare && x.isInInventory === building.isInInventory)
+			
 			let inventoryIdentifier = (building.isInInventory ? "I" : "C");
 			if (foundBuildingIndex === -1) {
 				uniqueBuildings.push(building)
 				if (buildingCount[building.entityId+inventoryIdentifier] === undefined)
-					buildingCount[building.entityId+inventoryIdentifier] = 1
-				delete Productions.AdditionalSpecialBuildings[building.entityId]
+					buildingCount[building.entityId+inventoryIdentifier] = 1;
+				delete Productions.AdditionalSpecialBuildings[building.entityId];
 			} else {
 				let foundBuilding = uniqueBuildings[foundBuildingIndex]
 				buildingCount[building.entityId+inventoryIdentifier] += 1
 
 				if (Technologies.InnoEras[foundBuilding.eraName] < Technologies.InnoEras[building.eraName])
-					uniqueBuildings[foundBuildingIndex] = building
+					uniqueBuildings[foundBuildingIndex] = building;
 			}
 
 			// gather building sizes
 			let buildingSize = building.size.length * building.size.width;
 			if (buildingSizes.find(x => x === buildingSize) === undefined)
-				buildingSizes.push(buildingSize)
+				buildingSizes.push(buildingSize);
 		}
 
 		buildingSizes.sort((a,b)=>{
@@ -1887,8 +1889,6 @@ let Productions = {
 				return 0
 			});
 
-			let colNumber = Object.values(Productions.Rating.Data).filter(x=>x.active && x.perTile!=null).length
-
 			// combine attack and defend boosts if both are active
 			let combinedRatingTypes = [];
 			for (const type of Productions.Rating.Types) {
@@ -1914,6 +1914,8 @@ let Productions = {
 				}
 			}
 
+			let colNumber = Object.values(Productions.Rating.Data).filter(x=>x.active && x.perTile!=null).length;
+
 			h.push('<div class="ratingtable">');
 			h.push('<a id="RatingsResults" class="toggle-tab btn btn-slim" data-value="Settings">' + i18n('Boxes.ProductionsRating.Settings') + '</a>')
 			h.push('<table class="foe-table sortable-table TSinactive exportable">');
@@ -1933,6 +1935,8 @@ let Productions = {
 						'<label for="inventorybuildingscore" data-original-title="'+i18n('Boxes.ProductionsRating.InventoryBuildingScoreExplanation')+'">' + i18n('Boxes.ProductionsRating.InventoryBuildingScore') + ': <input type="number" size="6" value="'+(Productions.efficiencySettings.inventorybuildingscore*100)+'" id="inventorybuildingscore" /></label>'+
 						'<label for="showLimited" data-original-title="'+i18n('Boxes.ProductionsRating.NoLimitedExplanation')+'"><input type="checkbox" id="showLimited" /><img src="'+srcLinks.get(`/shared/gui/upgrade/upgrade_icon_limited_building.png`,true)+'" /></label>'+
 						'</div>');
+						h.push('<label for="showallies" data-original-title="'+i18n('Boxes.ProductionsRating.ShowAllies')+'"><input type="checkbox" id="showallies" '+(Productions.efficiencySettings.showallies? 'checked' : '')+' /><span class="filter showallies"></span></label>');
+
 				}
 				h.push('<label for="showitems" data-original-title="'+i18n('Boxes.ProductionsRating.ShowItems')+'"><input type="checkbox" id="showitems" /><span class="filter showitems"></span></label>');
 				h.push('</div></div></th>');
@@ -1973,8 +1977,8 @@ let Productions = {
 
 			h.push('<th data-type="ratinglist" data-export="Items" class="no-sort items">Items</th>');
 			h.push('</tr>');
-			h.push('</thead>');
 
+			h.push('</thead>');
 			h.push('<tbody class="ratinglist">');
 
 			for (const building of ratedBuildings) {
@@ -1997,19 +2001,18 @@ let Productions = {
 				h.push('<span data-meta_id="'+building.entityId+'" data-eff="'+building.rating.totalScore * 100+'" data-era="'+(building.eraName==="AllAge"?"":building.eraName)+'" data-callback_tt="Tooltips.buildingTT" class="helperTT" '+ MainParser.Allies.tooltip(building.id) + '>'+building.name+'</span>')
 
 				let eraShortName = i18n("Eras."+Technologies.Eras[building.eraName]+".short")
-
-				if (eraShortName !== "-"){
+				if (eraShortName !== "-")
 					h.push(" ("+i18n("Eras."+Technologies.Eras[building.eraName]+".short") +')')
-				}
-
-				let buildingAmount = (MainParser.Allies.buildingList?.[building.id] ? 1 : (buildingCount[building.entityId+"C"] || 1));
-				h.push('</div></td><td exportvalue="'+buildingAmount+'" data-number="'+buildingAmount+'"><div class="text-right">')
+				h.push("</div></td>");
+				
 				// show amount in city if > 1
-				if (buildingAmount > 1) {
-					h.push('<span data-original-title="'+i18n('Boxes.ProductionsRating.CountTooltip')+'">' + buildingCount[building.entityId+"C"]+'x</span> ')
-				}
+				let buildingAmount = (MainParser.Allies.buildingList?.[building.id] && withAllies ? 1 : (buildingCount[building.entityId+"C"] || 1));
+				h.push('<td exportvalue="'+buildingAmount+'" data-number="'+buildingAmount+'"><div class="text-right">')
+				if (buildingAmount > 1) 
+					h.push('<span data-original-title="'+i18n('Boxes.ProductionsRating.CountTooltip')+'">' + buildingCount[building.entityId+"C"]+'x</span>')
+				h.push("</div></td>");
 
-				h.push('</div></td><td class="text-center">')
+				h.push('<td class="text-center">')
 				// show additional buildings from inventory
 				if ((buildingCount[building.entityId+"I"] !== undefined && !building.isInInventory) || building.isInInventory)
 					h.push('<span data-callback_tt="Kits.InventoryTooltip" data-id="'+building.entityId+'" class="helperTT"><img alt="" class="game-cursor" src="' + srcLinks.get(`/shared/gui/event_hub/event_meta_icon_checkmark.png`,true) + '" /></span> ')
@@ -2076,7 +2079,10 @@ let Productions = {
 					h.push('<div class="content">')
 						h.push('<input id="findMetaBuilding" placeholder="'+i18n('Boxes.ProductionsRating.FindSpecialBuilding')+'" value="">')
 						h.push('<ul class="results"></ul>')
+						h.push('<div class="btns">')
+						h.push('<a class="btn selectMetaBuildings">'+i18n('Boxes.ProductionsRating.ToggleBuildingSelection')+'</a>')
 						h.push('<a class="btn closeMetaBuilding btn-green">'+i18n('Boxes.ProductionsRating.AddBuildings')+'</a>')
+						h.push('</div>')
 					h.push('</div>')
 				h.push('</div>')
 			h.push('</div>');
@@ -2124,7 +2130,6 @@ let Productions = {
 
 			$('#inventorybuildings, label[inventorybuildings]').on('click', function () {
 				SaveSettings("inventorybuildings")
-				//Productions.CalcRatingBody();
 			});
 
 			$('.show-all').on('click', function () {
@@ -2148,7 +2153,7 @@ let Productions = {
 					marked.push(el.dataset.text)
 				})
 				search=new RegExp($('#efficiencyBuildingFilter').val(),"i")
-				Productions.CalcRatingBody()
+				Productions.CalcRatingBody();
 				setTimeout(()=>{
 					$(".ratingtable td:nth-child(2)").each((x,el)=>{
 						if (marked.includes(el.dataset.text)) {
@@ -2186,6 +2191,14 @@ let Productions = {
 				Productions.AdditionalSpecialBuildings[id].selected =!Productions.AdditionalSpecialBuildings[id].selected
 				e.target.classList.toggle("selected")
 			})
+			$('#ProductionsRatingBody .overlay .selectMetaBuildings').on("click",(e)=>{
+				let li = $('#ProductionsRatingBody .overlay .results li');
+				for (let item of li) {
+					item.classList.toggle("selected");
+					let id = item.dataset.meta_id;
+					Productions.AdditionalSpecialBuildings[id].selected =!Productions.AdditionalSpecialBuildings[id].selected
+				}
+			})
 
 			$('#ProductionsRatingSettings input[type=checkbox]').on('click', function () {
 				let elem = $(this)
@@ -2201,7 +2214,12 @@ let Productions = {
 					Productions.CalcRatingBody();
 				}
 				Productions.Rating.save()
-			})
+			});
+
+			$('#showallies, label[allies]').on('click', function () {
+				SaveSettings("showallies");
+				Productions.CalcRatingBody();
+			});
 
 			// settings: change any number
 			$('#ProductionsRatingSettings input[type=number]').on('blur', function () {
@@ -2308,10 +2326,10 @@ let Productions = {
     },
 
 
-	rateBuildings: (uniqueBuildings,additional=false, era=null) => {
+	rateBuildings: (uniqueBuildings,additional=false,era=null) => {
 		let ratedBuildings = [];
 		if (additional) {
-			uniqueBuildings = uniqueBuildings.map(x=>CityMap.createNewCityMapEntity(x,era||CurrentEra));
+			uniqueBuildings = uniqueBuildings.map(x=>CityBuildings.createBuilding(x,era||CurrentEra));
 		}
 		for (const building of uniqueBuildings) {
 			// do not include wishingwell type buildings
@@ -2376,7 +2394,7 @@ let Productions = {
 			return Productions.getBuildingProductionByCategory(false, building, type).amount
 
 		else if (type.includes("goods") && !type.includes("guild_raids_")) {
-			let allGoods = CityMap.getBuildingGoodsByEra(false, building);
+			let allGoods = CityBuildings.getBuildingGoodsByEra(false, building);
 			let era = (ActiveMap === "OtherPlayer" ? CityMap.OtherPlayer.eraName : CurrentEra)
 
 			if (allGoods !== undefined) {

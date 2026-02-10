@@ -1,6 +1,25 @@
 ## Changelog - Extension
 
 
+##### 4.1.1.0
+
+**Update**
+- Efficiency: You can now evaluate buildings without the ally boosts
+- Productions: Added a list for special productions
+- Settings: Removed some "open automatically" settings if they are already available in the modules windows settings
+- QI city: The title changes with the difficulty level now
+- Ownpart Calculator/GB Cost Calculator: the FP values can now be clicked - the value is written directly to the input field or at least copied to the clipboard	
+- Ownpart Calculator: added an Option to in-/exclude initial FP in given sum values
+
+**Bugfix**
+- Copy city data: data format was slightly off by accident, works like before now
+- Allies: 
+	- The sums weren't correct and boosts were *slightly* off after leveling allies
+	- A freshly assembled Ally was listed twice, when the amount of fragments was exactly 0 after assembly
+	- the Box did not close when already open upon menu click
+- Productions: Rattlebone Raveyards goods productions weren't calculated correctly
+
+
 ##### 4.1.0.0
 
 **New**
@@ -10,6 +29,7 @@
 **Update**
 - City Map: 
 	- Sidebar stats have been reworked: more interesting facts about buildings in the city were added
+	- Filters have been revamped and are now in the bottom area of the sidebar (you will find them if you look hard enough)
 	- Available area for other players cities has been added
 - Profile: 
 	- QI capacity added

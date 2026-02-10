@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2024 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -18,7 +18,6 @@ FoEproxy.addFoeHelperHandler('QuestsUpdated', data => {
 });
 
 let Calculator = {
-
 	ForderBonus: 90,
     PlayerName: undefined,
     LastPlayerID: 0,
@@ -110,6 +109,26 @@ let Calculator = {
 				} else {
 					$('#CalculatorTone').addClass('deactivated');
 				}
+			});
+
+			// Quick copy for contribution values
+			$('#costCalculator').on('click', '.copy-fp', function (e) {
+				e.preventDefault();
+				e.stopPropagation();
+				let $this = $(this),
+					value = $this.data('copy');
+
+				if (value === undefined || value === '' || value === '-') return;
+
+				if (!Parts.allowCopyPlace)
+					helper.str.copyToClipboardLegacy(String(value));
+				else {//Set Cursor to input field
+					mouseActions.randomClick([244,-89, "Center"])
+					KeyboardEvents.paste(String(value));
+				}
+				//prevent double action
+				$this.addClass('copied');
+				setTimeout(() => $this.removeClass('copied'), 800);
 			});
 
         }
@@ -267,7 +286,7 @@ let Calculator = {
 							RecurringQuestString = i18n('Boxes.Calculator.Done');
 						}
 
-						h.push('<div class="text-center dark-bg" style="padding:3px 0;"><em>' + i18n('Boxes.Calculator.ActiveRecurringQuest') + ' <span id="recurringquests" style="color:#FFB539">' + RecurringQuestString + '</span></em></div>');
+						h.push('<div class="text-center dark-bg" style="padding:3px 0;"><em>' + i18n('Boxes.Calculator.ActiveRecurringQuest') + ' <span id="recurringquests" style="color:#FFB539" class="copy-fp clickable" data-copy="'+ (MaxProgress - CurrentProgress) +'">' + RecurringQuestString + '</span></em></div>');
 					}
 				}
 			}
@@ -538,9 +557,8 @@ let Calculator = {
 				}
 
 				EinsatzText = HTML.Format(Einzahlungen[Rank]);
-				if (Einzahlungen[Rank] !== ForderFPRewards[Rank]) {
-					EinsatzText += '/' + HTML.Format(ForderFPRewards[Rank]);
-				}
+				if (Einzahlungen[Rank] !== ForderFPRewards[Rank]) 
+					EinsatzText += ' <small>(=' + HTML.Format(ForderFPRewards[Rank]) + ')</small>';
 				EinsatzText += Calculator.FormatForderRankDiff(ForderRankDiff);
 
 
@@ -629,7 +647,7 @@ let Calculator = {
 
 			hFordern.push('<tr class="' + RowClass + '">');
 			hFordern.push('<td class="text-center"><strong class="' + RankClass + ' td-tooltip" title="' + HTML.i18nTooltip(RankTooltip.join('<br>')) + '">' + RankText + '</strong></td>');
-			hFordern.push('<td class="text-center"><strong class="' + EinsatzClass + ' td-tooltip" title="' + HTML.i18nTooltip(EinsatzTooltip.join('<br>')) + '">' + EinsatzText + '</strong></td>');
+			hFordern.push('<td class="text-center"><strong class="' + EinsatzClass + ' td-tooltip copy-fp clickable" data-copy="' + ForderFPRewards[Rank] + '" title="' + HTML.i18nTooltip(EinsatzTooltip.join('<br>')) + '">' + EinsatzText + '</strong></td>');
 			hFordern.push('<td class="text-center"><strong class="' + GewinnClass + ' td-tooltip" title="' + HTML.i18nTooltip(GewinnTooltip.join('<br>')) + '">' + GewinnText + '</strong></td>');
 			hFordern.push('<td class="text-center">' + HTML.Format(BPRewards[Rank]) + '</td>');
 			hFordern.push('<td class="text-center">' + HTML.Format(MedalRewards[Rank]) + '</td>');

@@ -1,7 +1,7 @@
 /*
  * *************************************************************************************
  *
- * Copyright (C) 2024 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -280,7 +280,7 @@ FoEproxy.addHandler('CityMapService', 'showAppliedBonus', (data, postData) => {
 		metaData = MainParser.CityEntities[buildingData.cityentity_id],
 		era = Technologies.getEraName(buildingData.cityentity_id, buildingData.level)
 
-		let building = CityMap.createNewCityMapEntity(metaData, era, buildingData)
+		let building = CityBuildings.createBuilding(metaData, era, buildingData)
 		let FPproduction = parseFloat(Productions.getBuildingProductionByCategory(true, building, 'strategy_points').amount) 
 		let FP = FPproduction + Math.round(FPproduction * ((Boosts.Sums.forge_points_production) / 100))
 

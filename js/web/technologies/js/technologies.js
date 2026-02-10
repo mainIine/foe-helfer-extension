@@ -1,7 +1,7 @@
 /*
  * *************************************************************************************
  *
- * Copyright (C) 2025 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -212,6 +212,10 @@ let Technologies = {
 
     getPreviousEraIdByCurrentEraName: (eraName) => {
         return parseInt(Technologies.InnoEras[eraName]-1||1)
+    },
+
+    getEraIdByCurrentEraName: (eraName) => {
+        return parseInt(Technologies.InnoEras[eraName]||1)
     },
 
     getNextEraIdByCurrentEraName: (eraName) => {

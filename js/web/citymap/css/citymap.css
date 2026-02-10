@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2025 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -11,18 +11,18 @@
  * **************************************************************************************
  */
 
-#city-map-overlay {
+#citymap-main {
 	left: 15px;
 	width: 70em;
 	bottom: 15px;
 	top: 15px;
 }
 
-#city-map-overlayBody.window-body {
+#citymap-mainBody.window-body {
 	position: relative;
 }
 
-#city-map-overlayBody #citymap-wrapper {
+#citymap-mainBody #citymap-wrapper {
 	position: relative;
 	width: 100%;
 	height: 100%;
@@ -48,7 +48,7 @@
 	right: 240px;
 	bottom: 0;
 	left: 0;
-	border-right: 2px solid #281207;
+	border-right: 2px solid var(--text-darker);
 	background-color: var(--black-50);
 	box-sizing: border-box;
 }
@@ -126,7 +126,7 @@
 }
 
 .outpost.guild_raids .qiSums {
-	background: linear-gradient(180deg, #452c16 20%, transparent);
+	background: linear-gradient(180deg, var(--text-dark2) 20%, transparent);
 	padding: 7px;
 }
 .outpost.guild_raids .qiSums span {
@@ -208,7 +208,7 @@
 	filter: brightness(1.2);
 }
 
-#city-map-overlayBody .prod::before {
+#citymap-mainBody .prod::before {
 	background: transparent url('../../productions/images/productions.png') -233px 2px no-repeat;
 	background-size: auto 100%;
 	display: inline-block;
@@ -217,15 +217,15 @@
 	height: 20px;
 }
 
-#city-map-overlayBody .prod.population::before { background-position: -142px 2px; }
-#city-map-overlayBody .prod.happiness::before { background-position: -122px 2px; }
-#city-map-overlayBody .prod.guild_raids_money::before { background-position: -20px 2px; }
-#city-map-overlayBody .prod.guild_raids_supplies::before { background-position: -40px 2px; }
-#city-map-overlayBody .prod.att_def_boost_attacker::before { background-position: -340px 1px; }
-#city-map-overlayBody .prod.att_def_boost_defender::before { background-position: -362px 1px; }
-#city-map-overlayBody .prod.guild_raids_action_points_collection::before { background-position: -383px 2px; }
+#citymap-mainBody .prod.population::before { background-position: -142px 2px; }
+#citymap-mainBody .prod.happiness::before { background-position: -122px 2px; }
+#citymap-mainBody .prod.guild_raids_money::before { background-position: -20px 2px; }
+#citymap-mainBody .prod.guild_raids_supplies::before { background-position: -40px 2px; }
+#citymap-mainBody .prod.att_def_boost_attacker::before { background-position: -340px 1px; }
+#citymap-mainBody .prod.att_def_boost_defender::before { background-position: -362px 1px; }
+#citymap-mainBody .prod.guild_raids_action_points_collection::before { background-position: -383px 2px; }
 
-#city-map-overlayBody th.population::before, #city-map-overlayBody th.happiness::before {
+#citymap-mainBody th.population::before, #citymap-mainBody th.happiness::before {
 	background: transparent url('../../productions/images/productions.png') -233px 0 no-repeat;
 	background-size: auto 100%;
 	display: inline-block;
@@ -233,10 +233,10 @@
 	width: 23px;
 	height: 23px;
 }
-#city-map-overlayBody th.population::before { background-position: -162px 0; }
-#city-map-overlayBody th.happiness::before { background-position: -140px 0; }
-#city-map-overlayBody th .diplomacy::before { zoom: 0.45; }
-#city-map-overlayBody th .diplomacy { height: 24px; }
+#citymap-mainBody th.population::before { background-position: -162px 0; }
+#citymap-mainBody th.happiness::before { background-position: -140px 0; }
+#citymap-mainBody th .diplomacy::before { zoom: 0.45; }
+#citymap-mainBody th .diplomacy { height: 24px; }
 
 #sidebar p {
 	margin-bottom: 5px;
@@ -263,6 +263,8 @@
 #map-grid {
 	display: flex;
 	flex-wrap: wrap;
+	width: 60.1em;
+	height: 64em;
 }
 
 #map-grid span[data-grid] {
@@ -273,82 +275,39 @@
 
 #map-grid .map-bg {
 	background: transparent url('../images/map-bg.png') center / cover no-repeat;
+	width: 4em;
+	height: 4em;
 }
 #map-grid .map-bg.startmap {
 	background: transparent url('../images/start-map-bg.png') center / cover no-repeat;
+	width: 16em;
+	height: 16em;
 }
 
 /* ------------------------------ */
-[data-unit="180"] #map-grid {
-	width: 108.18em;
-	height: 115.2em;
+[data-unit="180"] #map-grid, [data-unit="180"] #map-buildings {
+	zoom: 1.8
 }
-[data-unit="180"] #map-grid span[data-grid] {
-	width: 1.8em;
-	height: 1.8em;
+[data-unit="160"] #map-grid, [data-unit="160"] #map-buildings {
+	zoom: 1.6
 }
-
-/* ------------------------------ */
-[data-unit="160"] #map-grid {
-	width: 96.16em;
-	height: 102.4em;
+[data-unit="140"] #map-grid, [data-unit="140"] #map-buildings {
+	zoom: 1.4
 }
-[data-unit="160"] #map-grid span[data-grid] {
-	width: 1.6em;
-	height: 1.6em;
+[data-unit="120"] #map-grid, [data-unit="120"] #map-buildings {
+	zoom: 1.2
 }
-
-/* ------------------------------ */
-[data-unit="140"] #map-grid {
-	width: 84.14em;
-	height: 89.6em;
-}
-[data-unit="140"] #map-grid span[data-grid] {
-	width: 1.4em;
-	height: 1.4em;
-}
-
-/* ------------------------------ */
-[data-unit="120"] #map-grid {
-	width: 72.12em;
-	height: 76.8em;
-}
-[data-unit="120"] #map-grid span[data-grid] {
-	width: 1.2em;
-	height: 1.2em;
-}
-
-/* ------------------------------ */
-[data-unit="100"] #map-grid {
-	width: 60.1em;
-	height: 64em;
+[data-unit="100"] #map-grid, [data-unit="100"] #map-buildings {
+	zoom: 1
 }
 [data-unit="100"][data-view="skew"] {
 	transform: translate(0, -20%);
 }
-[data-unit="100"] #map-grid span[data-grid] {
-	width: 1em;
-	height: 1em;
+[data-unit="80"] #map-grid, [data-unit="80"] #map-buildings {
+	zoom: 0.8
 }
-
-/* ------------------------------ */
-[data-unit="80"] #map-grid {
-	width: 48.08em;
-	height: 51.2em;
-}
-[data-unit="2.5"] #map-grid span[data-grid] {
-	width: 0.8em;
-	height: 0.8em;
-}
-
-/* ------------------------------ */
-[data-unit="60"] #map-grid {
-	width: 36.06em;
-	height: 38.4em;
-}
-[data-unit="60"] #map-grid span[data-grid] {
-	width: 0.6em;
-	height: 0.6em;
+[data-unit="60"] #map-grid, [data-unit="60"] #map-buildings {
+	zoom: 0.6
 }
 
 /* ------------------------------ */
@@ -430,7 +389,7 @@
 	left: 50%;
 	top: 50%;
 	padding: 2px 3px;
-	background-color: #333;
+	background-color: var(--grey);
 	white-space: nowrap;
 }
 
@@ -637,7 +596,7 @@
     filter: contrast(1.2);
 }
 
-#city-map-overlay #grid-outer span.highlighted {
+#citymap-main #grid-outer span.highlighted {
     border-width: 2px !important;
     filter: saturate(1.3) brightness(1.3) !important;
 	mix-blend-mode: color-dodge;

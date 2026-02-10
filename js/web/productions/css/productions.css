@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2025 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -53,12 +53,12 @@
 	display: table;
 }
 #Productions #ProductionsBody table tbody.parent th {
-	background-color: #3f2a1b;
+	background-color: var(--text-dark2);
 	color: var(--bright-color);
 	padding-top: 15px;
 }
 #Productions #ProductionsBody table tr.highlight-row {
-	background-color: rgba(40, 18, 7, 0.8);
+	background-color: var(--table-bg-highlight);
 	color: var(--bright-color);
 }
 #Productions #ProductionsBody table #all-search {
@@ -69,7 +69,7 @@
 	line-height: 18px;
 }
 #Productions #ProductionsBody table thead {
-	background-color: rgba(0, 0, 0, 0.35);
+	background-color: var(--black-30);
 }
 #Productions #ProductionsBody table thead th small {
 	font-weight: normal;
@@ -78,7 +78,7 @@
 	display: inline-block;
 	padding: 2px 4px;
 	border-radius: 2px;
-	background-color: rgba(0, 0, 0, 0.4);
+	background-color: var(--black-30);
 	margin: 3px 8px 2px 0;
 	white-space: nowrap;
 }
@@ -113,7 +113,7 @@
 #Productions #ProductionsBody .tabs ul li a span, #Productions th.boost span, #BoostList table .boost {
 	background: transparent url('../images/productions.png') -233px 2px no-repeat;
 }
-#Productions #ProductionsBody table, #Productions #ProductionsBody .tabs ul li.forge_points_production, #Productions #ProductionsBody .tabs ul li.coin_production, #Productions #ProductionsBody .tabs ul li.supply_production {
+#Productions #ProductionsBody table, #Productions #ProductionsBody .tabs ul li.forge_points_production, #Productions #ProductionsBody .tabs ul li.special_goods, #Productions #ProductionsBody .tabs ul li.coin_production, #Productions #ProductionsBody .tabs ul li.supply_production {
 	display: none;
 }
 #Productions #ProductionsBody .btn-slim.typeBoost {
@@ -267,7 +267,7 @@
 #ProductionsRatingBody .overlay .content li.selected::after {
 	content: '✔';
 }
-#ProductionsRatingBody .overlay .btn.closeMetaBuilding {
+#ProductionsRatingBody .overlay .btns {
 	margin: 0 auto;
     display: block;
     width: max-content;
@@ -591,12 +591,16 @@
 	margin-bottom: -24px;
 	z-index: 201;
 }
-#ProductionsRatingBody span.filter.showitems {
+#ProductionsRatingBody span.filter.showitems, #ProductionsRatingBody span.filter.showallies {
 	background-position: -415px 0;
 	width: 26px;
 	height: 24px;
 	display: inline-block;
 	margin: -3px 0;
+}
+#ProductionsRatingBody span.filter.showallies {
+	margin: -3px 0;
+	background: url('../../x_img/ally.png') top left no-repeat;
 }
 
 input[id*="ProdPerTile"] {
@@ -634,7 +638,7 @@ input[id*="ProdPerTile"] {
 	color: var(--text-highlight);
 }
 #ProductionsRatingBody strong.error {
-	color: #ec4d4d;
+	color: var(--text-danger);
 }
 #ProductionsRatingBody span.resicon {
 	display: inline-block;

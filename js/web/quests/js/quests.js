@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2024 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -16,6 +16,27 @@ FoEproxy.addRequestHandler('QuestService', 'abortQuest', (postData) => {
 	if(postData['requestClass'] === 'QuestService' && postData['requestMethod'] === 'abortQuest'){
 		Quests.UpdateCounter();
 	}
+	Quests.DeactivateRival();
+});
+
+FoEproxy.addRequestHandler('GreatBuildingsService', 'getConstruction', (postData) => {
+	Quests.DeactivateRival();
+});
+FoEproxy.addRequestHandler("ChallengeService", 'all', (postData) => {
+	Quests.DeactivateRival();
+});
+
+FoEproxy.addFoeHelperHandler('QuestsUpdated', data => {
+	if ($('#bonus-hud').length > 0) return;
+	if (!Settings.GetSetting('RivalSound')) return;
+	if (Quests.RivalInActive) return;
+	if (!MainParser.Quests) return; 
+	for (let Quest of MainParser.Quests) {
+		if (Quest?.questGiver?.id.indexOf("rival") >=0 && Quest.state == 'collectReward') {
+			helper.sounds.play("message");
+			break;
+		}
+	}
 });
 
 
@@ -23,10 +44,18 @@ FoEproxy.addRequestHandler('QuestService', 'abortQuest', (postData) => {
  * @type {{InsertStorage: Quests.InsertStorage, init: Quests.init, Counter: number, Date: null, UpdateCounter: Quests.UpdateCounter}}
  */
 let Quests = {
-
+	RivalInActive: null,
 	Counter: 2000,
 	Date: null,
 
+	DeactivateRival: () => {
+		if (Quests.RivalInActive) {
+			clearTimeout(Quests.RivalInActive);
+		}
+		Quests.RivalInActive = setTimeout(() => {
+			Quests.RivalInActive = null;
+		}, 1000)
+	},
 
 	init: ()=> {
 

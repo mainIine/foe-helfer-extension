@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2024 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -24,6 +24,6 @@
     align-items: center;
     text-align: center;
     font-size: 120%;
-    background-color: rgba(103, 1, 1, 0.5);
+    background-color: var(--table-bg-error);
 }
 

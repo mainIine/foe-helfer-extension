@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2024 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -28,7 +28,7 @@
     align-items: center;
     text-align: center;
     font-size: 120%;
-    background-color: rgba(103, 1, 1, 0.5);
+    background-color: var(--table-bg-error);
 }
 
 #battleAssistRogueDialog {
@@ -50,7 +50,7 @@
     align-items: center;
     text-align: center;
     font-size: 120%;
-	background-color: rgba(103, 1, 1, 0.5);
+	background-color: var(--table-bg-error);
 }
 
 #battleAssistRogueDialogBody,
@@ -59,11 +59,11 @@
 }
 
 @keyframes battleAssistBlink {
-    0% {color: #fafa6c;}
-    25% {color: #fcfcb2;}
+    0% {color: var(--bright-color);}
+    25% {color: var(--text-normal);}
     50% {color: transparent;}
-    75% {color: #fcfcb2;}
-    100% {color: #fafa6c;}
+    75% {color: var(--text-normal);}
+    100% {color: var(--bright-color);}
 }
 
 #battleAssistAddAdvice {
@@ -112,8 +112,8 @@
 }
 #battleAssistArmyAdviceBody {
     background: 5px;
-    color: #000;
-    background-color: orange;
+    color: var(--black);
+    background-color: var(--bright-color);
 }
 #battleAssistArmyAdviceBody span {
     margin-left: 5px;
@@ -133,7 +133,7 @@
 }
 
 #battleAssistAAConfig .BattleWave img {
-    border: 1px #000 solid;
+    border: 1px var(--black) solid;
     height: 35px;
 }
 
