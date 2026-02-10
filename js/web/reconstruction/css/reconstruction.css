@@ -12,8 +12,7 @@
  */
 
 
-
- #ReconstructionListBody {
+#ReconstructionListBody {
     overflow-y: auto;
 }
 #ReconstructionList {
@@ -36,7 +35,9 @@
 }
 
 
-#ReconstructionMap.window-box, #ReconstructionMap .window-body, #ReconstructionMap .window-head {
+#ReconstructionMap.window-box, 
+#ReconstructionMap .window-body, 
+#ReconstructionMap .window-head {
   background: none;
   box-shadow: none;
   border: none;
@@ -65,7 +66,9 @@
 #ReconstructionMap .window-head:hover {
   background: var(--black-30);
 }
-#ReconstructionMap .window-grippy, #ReconstructionMap .window-head, #ReconstructionMap .settingsbox-wrapper {
+#ReconstructionMap .window-grippy, 
+#ReconstructionMap .window-head, 
+#ReconstructionMap .settingsbox-wrapper {
   pointer-events: all;
 }
 #ReconstructionMap .settingsbox-wrapper {

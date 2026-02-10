@@ -1,0 +1,203 @@
+/*
+ * **************************************************************************************
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
+ *
+ * See file LICENSE.md or go to
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
+ *
+ * **************************************************************************************
+ */
+
+#CityBuilderBox.window-box,
+#CityBuilderBox .window-body,
+#CityBuilderBox .window-head {
+	background: none;
+	box-shadow: none;
+	border: none;
+}
+#CityBuilderBox.window-box {
+	pointer-events: none;
+	width: 50%;
+	height: 50%;
+	top: 25%;
+	left: 25px;
+	min-width: 600px;
+	display: flex;
+	flex-direction: column;
+}
+#CityBuilderBox .window-body {
+	text-align: right;
+	position: relative;
+}
+.optimized-city-controls {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	z-index: 10;
+	pointer-events: all;
+	background-color: #070b18b5;
+	padding: 4px 8px;
+	border-radius: 4px;
+	border: 1px solid var(--black-65);
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+.optimized-city-controls input[type="range"] {
+	width: 100px;
+	cursor: pointer;
+}
+.scale-value {
+	min-width: 25px;
+	display: inline-block;
+	text-align: right;
+}
+.optimized-city-settings {
+	padding: 10px;
+}
+#CityBuilderBox {
+	left: calc(min(max(50vw + var(--x)),100vw - 60px)) !important;
+}
+#CityBuilderBox .window-head {
+	padding: 2px;
+	border-bottom: 1px dotted var(--black-65);
+	width: 300px;
+	align-self: end;
+	background-color: #070b18b5;
+}
+#CityBuilderBox .window-head:hover {
+	background: var(--black-30);
+}
+#CityBuilderBox .window-grippy,
+#CityBuilderBox .window-head,
+#CityBuilderBox .settingsbox-wrapper {
+	pointer-events: all;
+}
+#CityBuilderBox .settingsbox-wrapper {
+	filter: saturate(0.5)
+}
+#CityBuilderBox .window-grippy {
+	background-color: var(--black-65);
+	padding: 0;
+	bottom: 0;
+	right: 0;
+	border-radius: 9px 4px 4px 4px;
+}
+
+.map-grid-wrapper {
+	position: relative;
+	height: 2000px;
+	width: 2000px;
+	overflow: hidden;
+	--scale: 100;
+	--scale-x: calc(var(--scale) / 100);
+	--scale-y: calc(0.25 * var(--scale) / 100);
+	--tx: calc((-296289 / var(--scale) + 1471) * 1px);
+	--ty: calc((-104533 / var(--scale) + 212) * 1px);
+	transform: skewX(-63.5deg) skewY(14deg) scale(var(--scale-x), var(--scale-y)) translate(var(--tx), var(--ty));
+	opacity: 0.9;
+}
+.map-grid-canvas {
+	position: absolute;
+	left: 0;
+	top: 0;
+}
+.map-grid-tooltips {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	pointer-events: none;
+}
+.map-grid-tooltips .map-building {
+	position: absolute;
+	pointer-events: all;
+}
+.map-building {
+	border: 1px solid;
+}
+
+.map-building.residential {
+	background-color: var(--background-color-residential);
+	border-color: var(--border-color-residential);
+}
+.map-building.production {
+	background-color: var(--background-color-production);
+	border-color: var(--border-color-production);
+}
+.map-building.greatbuilding {
+	background-color: var(--background-color-greatbuilding);
+	border-color: var(--border-color-greatbuilding);
+}
+.map-building.main_building {
+	background-color: var(--background-color-main_building);
+	border-color: var(--border-color-main_building);
+}
+.map-building.military {
+	background-color: var(--background-color-military);
+	border-color: var(--border-color-military);
+}
+.map-building.goods {
+	background-color: var(--background-color-goods);
+	border-color: var(--border-color-goods);
+}
+.map-building.culture {
+	background-color: var(--background-color-culture);
+	border-color: var(--border-color-culture);
+}
+.map-building.decoration {
+	background-color: var(--background-color-decoration);
+	border-color: var(--border-color-decoration);
+}
+.map-building.street {
+	background-color: var(--background-color-street);
+	border-color: var(--border-color-street);
+}
+.map-building.random_production {
+	background-color: var(--background-color-random_production);
+	border-color: var(--border-color-random_production);
+}
+.map-building.tower {
+	background-color: var(--background-color-tower);
+	border-color: var(--border-color-tower);
+}
+.map-building.roadless {
+	background-color: var(--background-color-noStreet);
+	border-color: var(--border-color-noStreet);
+}
+.map-building:hover {
+	background-color: rgba(255, 255, 255, 0.2);
+	opacity: 0.5 !important;
+	outline: 2px solid #ffffff;
+	box-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+	z-index: 100;
+}
+
+/* Fallback für Gebäude ohne spezifischen Typ (generic_building) */
+.map-building.generic_building {
+	background-color: #A0A0A0; /* Mittelgrau */
+	border-color: #404040;
+}
+
+/* WICHTIG: Straßen sichtbar machen! (Sonst sind die Wege transparent) */
+.map-building.street {
+	background-color: #333333; /* Dunkelgrau für Asphalt */
+	border-color: #111111;
+	z-index: 1; /* Straßen liegen ganz unten */
+}
+
+/* Lila Deko (Deko ohne Straßenanschluss) */
+.map-building.roadless {
+	background-color: #8A2BE2;
+	border-color: #4B0082;
+	opacity: 0.8;
+}
+
+/* Optional: Fallback, falls CSS-Variablen mal nicht laden */
+.map-building {
+	box-sizing: border-box;
+}

@@ -1483,6 +1483,7 @@ let MainParser = {
 		//console.log('StartUp done')
 	},
 
+
 	forceLoadCityEntities: () => {
 		if (MainParser.CityEntities) return;
 		//console.log('Forcing load of CityEntities');
@@ -1490,6 +1491,8 @@ let MainParser = {
         xhr.open("GET", MainParser.MetaUrls['city_entities'], true);
         xhr.send();
 	},
+
+
 	/**
 	 * Update own data (guild change etc)
 	 *

@@ -51,6 +51,8 @@ FoEproxy.addHandler('AutoAidService', 'getStates', (data, postData) => {
     $('#ReconstructionList').remove();
     $('#ReconstructionMap').remove();
 });
+
+
 FoEproxy.addHandler('InventoryService', 'getGreatBuildings', (data, postData) => {
     $('#ReconstructionList').remove();
     $('#ReconstructionMap').remove();
