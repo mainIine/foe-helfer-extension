@@ -45,21 +45,24 @@ FoEproxy.addHandler("all","all", (data,postData) => {
 		Parts.allowCopyPlace = true;
 		Parts.allowCopyPlaceSetting = false;
 		setTimeout(()=>{Parts.allowCopyPlaceSetting = true}, 2000)
-	} else if (	["TimeService.updateTime",
-				"QuestService.getQuestCategoryTimes",
-				"QuestService.getUpdates",
-				"MessageService.newMessage",
-				"CityMapService.reset",
-				"GreatBuildingsService.getAvailablePackageForgePoints",
-				"ResourceService.getPlayerResourceBag",
-				"CityMapService.updateEntity",
-				"GreatBuildingsService.contributeForgePoints",
-				"ResourceService.getPlayerAutoRefills",
-				"BlueprintService.getGreatBuildingInventoryForGreatBuilding",
-				"GreatBuildingsService.getUnlockCosts",
-				"BlueprintService.unlockLevel",
-				"GreatBuildingsService.getConstructionRanking"
-				].includes(data.requestClass + "." + data.requestMethod)) {
+	} else if (	[
+		"BlueprintService.getGreatBuildingInventoryForGreatBuilding",
+		"BlueprintService.unlockLevel",
+		"CityMapService.reset",
+		"CityMapService.updateEntity",
+		"GreatBuildingsService.contributeForgePoints",
+		"GreatBuildingsService.getAvailablePackageForgePoints",
+		"GreatBuildingsService.getConstructionRanking",
+		"GreatBuildingsService.getUnlockCosts",
+		"InventoryService.getItemAmount",
+		"InventoryService.updateItem",
+		"MessageService.newMessage",
+		"QuestService.getQuestCategoryTimes",
+		"QuestService.getUpdates",
+		"ResourceService.getPlayerAutoRefills",
+		"ResourceService.getPlayerResourceBag",
+		"TimeService.updateTime"
+		].includes(data.requestClass + "." + data.requestMethod)) {
 	} else {
 		Parts.allowCopyPlace = false;
 	}
