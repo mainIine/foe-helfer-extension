@@ -192,19 +192,75 @@
 #negotiationBox .suggestion {
 	height: 4.5em;
 }
-#negotiationBox .numberIcon {
+#negotiationBox .numberIconGroup {
 	position: absolute;
 	bottom: 0.3em;
 	left: calc(50% + 0.5em);
+	transform: translate(10px, 0px);
+	display: inline-flex;
+	gap: 0.2em;
+	align-items: center;
+	z-index: 2;
+}
+
+#negotiationBox .numberStepDot {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 1.2em;
+	height: 1.2em;
+	border-radius: 50%;
+	background: rgba(40,18,7,0.9);
+	border: 1px solid var(--text-medium2);
+	color: var(--text-warning);
+	font-size: 1.05em;
+	line-height: 1;
+	user-select: none;
+	transition: transform .08s ease, background-color .08s ease, color .08s ease, box-shadow .08s ease;
+}
+
+#negotiationBox .numberStepDot:hover {
+	background: #402010;
+}
+
+#negotiationBox .numberIcon {
+	position: relative;
 	background-color: #281207;
 	border: 1px solid var(--text-medium2);
 	display: inline-block;
-	padding: 0 0.4em;
+	padding: 0 0.45em;
 	box-sizing: border-box;
 	margin: 0;
-	transform: translate(10px, 0px);
 	border-radius: 10px;
 	color: var(--text-normal);
+	min-width: 1.7em;
+	text-align: center;
+	line-height: 1.4;
+	user-select: none;
+	transition: transform .08s ease, background-color .08s ease, color .08s ease;
+}
+
+#negotiationBox .numberIcon.seq-next {
+	background-color: #6b2a0c;
+	color: #fff;
+	box-shadow: 0 0 0 1px rgba(255,190,130,.9), 0 0 8px rgba(255,140,60,.55);
+}
+
+#negotiationBox .numberIcon:hover {
+	background-color: #402010;
+}
+
+#negotiationBox .numberIcon:focus-visible {
+	outline: 1px solid var(--text-warning);
+	outline-offset: 1px;
+}
+
+#negotiationBox .numberIcon.is-clicked,
+#negotiationBox .numberIcon:active {
+	transform: translateY(1px) scale(0.96);
+	background-color: #6b2a0c;
+	color: #fff;
 }
 
 #negotiationBox .missmatch {
@@ -227,4 +283,6 @@
 	border: none;
 	margin: auto;
 }
+
+
 
