@@ -54,6 +54,7 @@ FoEproxy.addHandler("all","all", (data,postData) => {
 		"GreatBuildingsService.getAvailablePackageForgePoints",
 		"GreatBuildingsService.getConstructionRanking",
 		"GreatBuildingsService.getUnlockCosts",
+		"GreatBuildingsService.getOtherPlayerOverview",
 		"InventoryService.getItemAmount",
 		"InventoryService.updateItem",
 		"MessageService.newMessage",
