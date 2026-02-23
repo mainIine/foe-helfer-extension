@@ -389,9 +389,9 @@ let _menu = {
 
 		let btn_Own = $('<span />').on('click', function () {
 			// nur wenn es für diese Session ein LG gibt zünden
-			if (Parts.CityMapEntity !== undefined && Parts.Rankings !== undefined) {
+			//if (Parts.CityMapEntity !== undefined && Parts.Rankings !== undefined) {
 				Parts.Show();
-			}
+			//}
 		});
 
 		btn_OwnBG.append(btn_Own);

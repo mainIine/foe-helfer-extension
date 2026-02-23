@@ -172,7 +172,7 @@ let Parts = {
 			});
 
 			HTML.AddCssFile('part-calc');
-			Parts.CalcBody();
+			if (Parts.CityMapEntity !== undefined && Parts.Rankings !== undefined) Parts.CalcBody();
 
 			$('#OwnPartBox').on('click', '#PartsTone', function () {
 				let disabled = $(this).hasClass('deactivated');
@@ -422,7 +422,7 @@ let Parts = {
 				Parts.CalcBackgroundBody();
 			});
 
-			Parts.CalcBody();
+			if (Parts.CityMapEntity !== undefined && Parts.Rankings !== undefined) Parts.CalcBody();
 		}
 		else {
 			HTML.CloseOpenBox('OwnPartBox');
