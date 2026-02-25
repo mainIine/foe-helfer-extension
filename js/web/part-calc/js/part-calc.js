@@ -283,12 +283,8 @@ let Parts = {
 
 				if (value === undefined || value === '' || value === '-') return;
 
-				if (!Parts.allowCopyPlace)
-					helper.str.copyToClipboardLegacy(String(value));
-				else {//Set Cursor to input field
-					mouseActions.randomClick([244,-89, "Center"])
-					KeyboardEvents.paste(String(value));
-				}
+				Parts.setDonation(value);
+
 				//prevent double action
 				$this.addClass('copied');
 				setTimeout(() => $this.removeClass('copied'), 800);
@@ -1750,6 +1746,15 @@ let Parts = {
 			if (Parts.CopyFormatPerGB !== OldCopyFormatPerGB) Parts.FirstCycle = true;
 			Parts.CalcBody();
 		});
+	},
+	setDonation: (value) => {
+		if (!Parts.allowCopyPlace)
+			helper.str.copyToClipboardLegacy(String(value));
+		else {//Set Cursor to input field
+			mouseActions.randomClick([189, -62, 'Center']); //new position
+			//mouseActions.randomClick([244,-89, "Center"]); //old position
+			KeyboardEvents.paste(String(value));
+		}
 	}
 };
 

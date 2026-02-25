@@ -120,12 +120,7 @@ let Calculator = {
 
 				if (value === undefined || value === '' || value === '-') return;
 
-				if (!Parts.allowCopyPlace)
-					helper.str.copyToClipboardLegacy(String(value));
-				else {//Set Cursor to input field
-					mouseActions.randomClick([244,-89, "Center"])
-					KeyboardEvents.paste(String(value));
-				}
+				Parts.setDonation(value);
 				//prevent double action
 				$this.addClass('copied');
 				setTimeout(() => $this.removeClass('copied'), 800);
