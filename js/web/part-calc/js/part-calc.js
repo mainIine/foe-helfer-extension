@@ -45,21 +45,25 @@ FoEproxy.addHandler("all","all", (data,postData) => {
 		Parts.allowCopyPlace = true;
 		Parts.allowCopyPlaceSetting = false;
 		setTimeout(()=>{Parts.allowCopyPlaceSetting = true}, 2000)
-	} else if (	["TimeService.updateTime",
-				"QuestService.getQuestCategoryTimes",
-				"QuestService.getUpdates",
-				"MessageService.newMessage",
-				"CityMapService.reset",
-				"GreatBuildingsService.getAvailablePackageForgePoints",
-				"ResourceService.getPlayerResourceBag",
-				"CityMapService.updateEntity",
-				"GreatBuildingsService.contributeForgePoints",
-				"ResourceService.getPlayerAutoRefills",
-				"BlueprintService.getGreatBuildingInventoryForGreatBuilding",
-				"GreatBuildingsService.getUnlockCosts",
-				"BlueprintService.unlockLevel",
-				"GreatBuildingsService.getConstructionRanking"
-				].includes(data.requestClass + "." + data.requestMethod)) {
+	} else if (	[
+		"BlueprintService.getGreatBuildingInventoryForGreatBuilding",
+		"BlueprintService.unlockLevel",
+		"CityMapService.reset",
+		"CityMapService.updateEntity",
+		"GreatBuildingsService.contributeForgePoints",
+		"GreatBuildingsService.getAvailablePackageForgePoints",
+		"GreatBuildingsService.getConstructionRanking",
+		"GreatBuildingsService.getUnlockCosts",
+		"GreatBuildingsService.getOtherPlayerOverview",
+		"InventoryService.getItemAmount",
+		"InventoryService.updateItem",
+		"MessageService.newMessage",
+		"QuestService.getQuestCategoryTimes",
+		"QuestService.getUpdates",
+		"ResourceService.getPlayerAutoRefills",
+		"ResourceService.getPlayerResourceBag",
+		"TimeService.updateTime"
+		].includes(data.requestClass + "." + data.requestMethod)) {
 	} else {
 		Parts.allowCopyPlace = false;
 	}
@@ -168,7 +172,7 @@ let Parts = {
 			});
 
 			HTML.AddCssFile('part-calc');
-			Parts.CalcBody();
+			if (Parts.CityMapEntity !== undefined && Parts.Rankings !== undefined) Parts.CalcBody();
 
 			$('#OwnPartBox').on('click', '#PartsTone', function () {
 				let disabled = $(this).hasClass('deactivated');
@@ -279,12 +283,8 @@ let Parts = {
 
 				if (value === undefined || value === '' || value === '-') return;
 
-				if (!Parts.allowCopyPlace)
-					helper.str.copyToClipboardLegacy(String(value));
-				else {//Set Cursor to input field
-					mouseActions.randomClick([244,-89, "Center"])
-					KeyboardEvents.paste(String(value));
-				}
+				Parts.setDonation(value);
+
 				//prevent double action
 				$this.addClass('copied');
 				setTimeout(() => $this.removeClass('copied'), 800);
@@ -418,7 +418,7 @@ let Parts = {
 				Parts.CalcBackgroundBody();
 			});
 
-			Parts.CalcBody();
+			if (Parts.CityMapEntity !== undefined && Parts.Rankings !== undefined) Parts.CalcBody();
 		}
 		else {
 			HTML.CloseOpenBox('OwnPartBox');
@@ -1746,6 +1746,15 @@ let Parts = {
 			if (Parts.CopyFormatPerGB !== OldCopyFormatPerGB) Parts.FirstCycle = true;
 			Parts.CalcBody();
 		});
+	},
+	setDonation: (value) => {
+		if (!Parts.allowCopyPlace)
+			helper.str.copyToClipboardLegacy(String(value));
+		else {//Set Cursor to input field
+			mouseActions.randomClick([189, -62, 'Center']); //new position
+			//mouseActions.randomClick([244,-89, "Center"]); //old position
+			KeyboardEvents.paste(String(value));
+		}
 	}
 };
 
