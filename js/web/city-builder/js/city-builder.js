@@ -18,7 +18,7 @@ let CityBuilder = {
 
 
     /**
-     * Initialisiert die optimierte Stadtkarte
+     * Initialisiert den Builder
      */
     init: async () => {
         if ($('#CityBuilderBox').length > 0) {
@@ -66,7 +66,7 @@ let CityBuilder = {
         let h = [];
 
         // Zoom Steuerungen oben rechts
-        h.push(`<div class="city-builder-controls">`);
+        h.push(`<div class="optimized-city-controls">`);
         h.push(`<span>${i18n('Boxes.CityBuilder.Zoom')}: </span>`);
         h.push(`<input type="range" class="scale-slider" name="optimizedcityscale" min="50" max="200" step="1" value="${storedUnit}" />`);
         h.push(`<span class="scale-value">${storedUnit}</span>`);
@@ -126,10 +126,10 @@ let CityBuilder = {
         let areas = [];
         try {
             if (typeof CityMap !== 'undefined') {
-                if (typeof ActiveMap !== 'undefined' && ActiveMap === 'era_outpost') areas = CityMap.EraOutpostAreas;
-                else if (typeof ActiveMap !== 'undefined' && ActiveMap === 'guild_raids') areas = CityMap.QIAreas;
-                else if (typeof ActiveMap !== 'undefined' && ActiveMap === 'cultural_outpost') areas = CityMap.CulturalOutpostAreas;
-                else areas = CityMap.UnlockedAreas;
+                if (typeof ActiveMap !== 'undefined' && ActiveMap === 'era_outpost') areas = CityMap.EraOutpost.areas;
+                else if (typeof ActiveMap !== 'undefined' && ActiveMap === 'guild_raids') areas = CityMap.QI.areas;
+                else if (typeof ActiveMap !== 'undefined' && ActiveMap === 'cultural_outpost') areas = CityMap.CulturalOutpost.areas;
+                else areas = CityMap.Main.unlockedAreas;
             }
         } catch (err) {
             console.error('CityBuilder: Error accessing CityMap', err);
@@ -387,8 +387,9 @@ let CityBuilder = {
         else if (ActiveMap === 'guild_raids') mapData = CityMap.QIData;
         else if (ActiveMap === 'cultural_outpost') mapData = CityMap.CulturalOutpostData;
 
-        if (!mapData || !entities) {
-            console.error("Daten nicht gefunden!", {mapData, entities, ActiveMap});
+        if (!mapData || typeof mapData !== 'object' || !entities || typeof entities !== 'object') {
+            console.error("Daten nicht gefunden oder ungültig!", {mapData, entities, ActiveMap});
+            $('#CityBuilderBoxBody').html('<div style="padding:20px; color:red;">' + i18n('Boxes.CityBuilder.NoData') + '</div>');
             return;
         }
 
@@ -456,7 +457,14 @@ let CityBuilder = {
 
     CalculateNewCity: (buildingsInput)=> {
 
-        const mapData = CityMap.UnlockedAreas;
+        const mapData = CityMap.Main.unlockedAreas;
+
+        if (!mapData || (Array.isArray(mapData) && mapData.length === 0) || (typeof mapData === 'object' && Object.keys(mapData).length === 0)) {
+            console.error("Keine freigeschalteten Gebiete gefunden!", mapData);
+            $('#CityBuilderBoxBody').html('<div style="padding:20px; color:red;">Fehler: Keine freigeschalteten Gebiete gefunden!</div>');
+            return;
+        }
+
         const blob = new Blob([CityBuilder.WorkerCode], { type: 'application/javascript' });
         const workerUrl = URL.createObjectURL(blob);
         const worker = new Worker(workerUrl);
@@ -504,8 +512,12 @@ let CityBuilder = {
             }
     
             processData(rawMap, rawBuildings) {
+                if (!rawMap) {
+                    console.error("Worker: rawMap ist leer/null");
+                    return;
+                }
                 const validTiles = new Set();
-                const mapArray = Array.isArray(rawMap) ? rawMap : Object.values(rawMap);
+                const mapArray = Array.isArray(rawMap) ? rawMap : Object.values(rawMap || {});
     
                 mapArray.forEach(area => {
                     const ax = area.x || 0;
