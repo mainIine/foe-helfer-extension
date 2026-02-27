@@ -14,12 +14,12 @@
 #costCalculator {
 	top: 30%;
 	left: 30px;
-	min-width: 350px;
+	min-width: 280px;
 }
 
 #costCalculator #costCalculatorBody {
 	position: relative;
-	min-width: 320px;
+	min-width: 270px;
 }
 
 #costCalculator #costCalculatorBody input {
@@ -43,7 +43,8 @@
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	margin: 3px 0;
+	padding: 5px 0;
+	font-size: 90%;
 }
 
 #costCalculator #costCalculatorBody .header span {
@@ -51,7 +52,7 @@
 }
 
 #costCalculator #costCalculatorBody .header .building-name {
-	font-size: 115%;
+	font-size: 125%;
 }
 
 #costCalculator #costCalculatorBody .header .player-name {
@@ -137,7 +138,6 @@
 
 #costCalculatorBody .costFactorWrapper > div:first-child {
 	text-align: center;
-	width: 36%;
 	white-space: nowrap;
 }
 
@@ -163,4 +163,8 @@
 
 #costCalculatorBody #costTable {
 	user-select: text;
+}
+
+.btn.arkBonus {
+	font-weight: bold;
 }
