@@ -100,7 +100,7 @@ let Parts = {
 	CopyStrings: {},
 
 	DefaultButtons: [
-		80, 85, 90, 'ark'
+		80, 90, 100, 'ark'
 	],
 
 	// Settings
@@ -759,7 +759,7 @@ let Parts = {
 
 		h.push('<span class="btn-group">');
 		// different arc bonus-buttons
-		let investmentSteps = [80, 85, 90, MainParser.ArkBonus],
+		let investmentSteps = [80, 90, 100, MainParser.ArkBonus],
 			customButtons = localStorage.getItem('CustomPartCalcButtons');
 
 		// custom buttons available

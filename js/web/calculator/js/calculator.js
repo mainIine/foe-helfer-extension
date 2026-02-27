@@ -36,7 +36,7 @@ let Calculator = {
 	ShowBP: true,
 	ShowMedals: true,
 	DefaultButtons: [
-		80, 85, 90, 'ark'
+		80, 90, 100, 'ark'
 	],
 	ClanId: null,
 	ClanName: null,
@@ -197,7 +197,7 @@ let Calculator = {
 		//h.push(i18n('Boxes.Calculator.ArkBonus') + ': ' + MainParser.ArkBonus + '%<br>');
 
 		// different arc bonus-buttons
-		let investmentSteps = [80, 85, 90, MainParser.ArkBonus],
+		let investmentSteps = [80, 90, 100, MainParser.ArkBonus],
 			customButtons = localStorage.getItem('CustomCalculatorButtons');
 
 		if(customButtons) {
