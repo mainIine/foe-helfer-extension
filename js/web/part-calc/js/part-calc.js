@@ -1627,7 +1627,7 @@ let Parts = {
 			showMedals = localStorage.getItem('OwnPartShowMedals') || 'true',
 			showPrints = localStorage.getItem('OwnPartShowBP') || 'true',
 			minView = localStorage.getItem('OwnPartMinView') || 'false',
-			autoOpen = localStorage.getItem('OwnPartAutoOpen') || 'false',
+			autoOpen = localStorage.getItem('OwnPartAutoOpen') || 'true',
 			includeStart = localStorage.getItem('OwnPartIncludeStart') || 'true',
 			nV = `<p class="new-row text-center bbd p5 flex gap"><label>${i18n('Boxes.Calculator.Settings.newValue')}:</label> <input type="number" class="settings-values" style="width:30px"> <span class="btn btn-green btn-slim" onclick="Parts.SettingsInsertNewRow()">+</span></p>`;
 		

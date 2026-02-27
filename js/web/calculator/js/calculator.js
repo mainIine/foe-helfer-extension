@@ -17,6 +17,11 @@ FoEproxy.addFoeHelperHandler('QuestsUpdated', data => {
 	}
 });
 
+FoEproxy.addHandler("GreatBuildingsService","getConstruction", (data,postData) => {
+	if ($('#costCalculator').length === 0 && localStorage.getItem('CalcAutoOpen') == 'true') 
+		Calculator.Show();
+});
+
 let Calculator = {
 	ForderBonus: 90,
     PlayerName: undefined,
@@ -26,6 +31,7 @@ let Calculator = {
 	CityMapEntity : undefined,
 	LastRecurringQuests: undefined,
 	ForderBonusPerConversation: true,
+	AutoOpen: false,
 	DefaultButtons: [
 		80, 85, 90, 'ark'
 	],
@@ -50,6 +56,7 @@ let Calculator = {
 		}
 
 		Calculator.ForderBonusPerConversation = (localStorage.getItem('CalculatorForderBonusPerConversation') !== 'false');
+		Calculator.AutoOpen = (localStorage.getItem('CalcuAutoOpen') !== 'false');
 
         // Wenn die Box noch nicht da ist, neu erzeugen und in den DOM packen
         if ($('#costCalculator').length === 0) {
@@ -75,12 +82,11 @@ let Calculator = {
 				active_maps:"main",
 			});
 
-			// CSS in den DOM prügeln
 			HTML.AddCssFile('calculator');
 
 			Calculator.CurrentPlayer = parseInt(localStorage.getItem('current_player_id'));
 
-			// schnell zwischen den Prozenten wechseln
+			// toggle percentages
 			$('#costCalculator').on('click', '.btn-toggle-arc', function () {
 				Calculator.ForderBonus = parseFloat($(this).data('value'));
 				$('#costFactor').val(Calculator.ForderBonus);
@@ -98,7 +104,6 @@ let Calculator = {
 			});
 
 			$('#costCalculator').on('click', '#CalculatorTone', function () {
-
 				let disabled = $(this).hasClass('deactivated');
 
 				localStorage.setItem('CalculatorTone', (disabled ? '' : 'deactivated'));
@@ -708,8 +713,10 @@ let Calculator = {
 			buttons,
 			defaults = Calculator.DefaultButtons,
 			sB = localStorage.getItem('CustomCalculatorButtons'),
-			nV = `<p class="new-row text-center bbd p5 flex gap">${i18n('Boxes.Calculator.Settings.newValue')}: <input type="number" class="settings-values" style="width:30px"> <span class="btn btn-green btn-slim" onclick="Calculator.SettingsInsertNewRow()">+</span></p>`;
-
+			nV = `<p class="new-row text-center bbd p5 flex gap">
+				${i18n('Boxes.Calculator.Settings.newValue')}: <input type="number" class="settings-values" style="width:30px"> 
+				<span class="btn btn-green btn-slim" onclick="Calculator.SettingsInsertNewRow()">+</span>
+				</p>`;
 
 		if(sB) {
 			// buttons = [...new Set([...defaults,...JSON.parse(sB)])];
@@ -722,7 +729,6 @@ let Calculator = {
 			buttons = defaults;
 		}
 
-
 		c.push('<section class="flex gap p2">');
 		buttons.forEach(bonus => {
 			if(bonus === 'ark') {
@@ -734,15 +740,15 @@ let Calculator = {
 		});
 		c.push('</section>');
 
-		// new own button
+		// new custom button
 		c.push(nV);
 
-		c.push('<p><input id="forderbonusperconversation" class="forderbonusperconversation game-cursor" ' + (Calculator.ForderBonusPerConversation ? 'checked' : '') + ' type="checkbox"> ' + i18n('Boxes.Calculator.ForderBonusPerConversation'));
+		c.push('<label for="forderbonusperconversation"><input id="forderbonusperconversation" class="forderbonusperconversation game-cursor" ' + (Calculator.ForderBonusPerConversation ? 'checked' : '') + ' type="checkbox"> ' + i18n('Boxes.Calculator.ForderBonusPerConversation')+'</label><br/>');
+		c.push('<label for="CalcAutoOpen"><input id="CalcAutoOpen" class="CalcAutoOpen game-cursor" ' + (Calculator.AutoOpen ? 'checked' : '') + ' type="checkbox"> ' + i18n('Settings.ShowOwnPartAutoOpen.Desc'));
 
 		// save button
 		c.push(`<p class="text-center"><button id="save-calculator-settings" class="btn btn-green" onclick="Calculator.SettingsSaveValues()">${i18n('Boxes.Calculator.Settings.Save')}</button></p>`);
 
-		// insert into DOM
 		$('#costCalculatorSettingsBox').html(c.join(''));
 	},
 
@@ -779,6 +785,8 @@ let Calculator = {
 
 			Calculator.ForderBonusPerConversation = $('.forderbonusperconversation').prop('checked');
 			localStorage.setItem('CalculatorForderBonusPerConversation', Calculator.ForderBonusPerConversation);
+			Calculator.AutoOpen = $('.CalcAutoOpen').prop('checked');
+			localStorage.setItem('CalcAutoOpen', Calculator.AutoOpen);
 		});
 
 		// save new buttons
