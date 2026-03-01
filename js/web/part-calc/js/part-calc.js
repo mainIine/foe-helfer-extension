@@ -1465,7 +1465,7 @@ let Parts = {
 			}
 			
 			let FPGreatBuilding = GreatBuildings.GreatBuildingsData.find(obj => (obj.ID === EntityID && obj.FPProductions));
-			if (FPGreatBuilding && EntityID !== 'X_FutureEra_Landmark1') { //FP produzierende LGs ohne Arche
+			if (FPGreatBuilding && !['X_FutureEra_Landmark1','X_AllAge_Expedition'].includes(EntityID)) { //FP produzierende LGs ohne Arche
 				HasDoubleCollection = true;
 				if (i < FPGreatBuilding.FPProductions.length) {
 					DoubleCollections[i] = FPGreatBuilding.FPProductions[i];
