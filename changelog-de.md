@@ -1,6 +1,17 @@
 ## Changelog - Extension
 
 
+##### 4.2.0.0
+
+**Update**
+- Kostenrechner: Einstellung zum automatischen Öffnen hinzugefügt
+- Beide LG Rechner: Standard-Werte von 80, 85, 90 auf 80, 90, 100 geändert
+- Effizienzberechnung: Man kann jetzt verschiedene Einstellungen zur Bewertung erstellen
+
+**Bugfix**
+- Beide LG Rechner: Ein Spiel-Update hat das LG Fenster verschoben, sodass die neue FP-Kopier-Funktion nicht mehr funktioniert hat
+
+
 ##### 4.1.1.0
 
 **Update**

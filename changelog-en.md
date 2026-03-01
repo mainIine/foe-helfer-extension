@@ -1,6 +1,17 @@
 ## Changelog - Extension
 
 
+##### 4.2.0.0
+
+**Update**
+- Cost Calculator: Added setting to open it automatically
+- Calculators: Changed default buttons from 80, 85, 90 to 80, 90, 100
+- Efficiency: Presets were added so you can have different evaluation settings
+
+**Bugfix**
+- Calculators: a game update moved the GB window so that the new copy function was not working anymore
+
+
 ##### 4.1.1.0
 
 **Update**

@@ -852,7 +852,7 @@ let Alerts = function(){
 								<div class="btn-group">
 								<span class="btn btn-slim alert-button" data-id="${alert.id}" data-action="preview">${labels.preview}</span>
 								<span class="btn btn-slim alert-button btn-edit" data-id="${alert.id}" data-action="edit" title="${labels.edit}"></span>
-								<span class="btn btn-slim alert-button btn-delete" data-id="${alert.id}" data-action="delete" title="${labels.delete}"></span>
+								<span class="btn btn-slim alert-button btn-delete icon" data-id="${alert.id}" data-action="delete" title="${labels.delete}"></span>
 								</div>
 							</td>
 						</tr>`;

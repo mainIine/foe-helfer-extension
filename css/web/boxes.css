@@ -255,6 +255,21 @@ a[target="_blank"] svg {
 	background: var(--btn-bg-red-onclick);
 }
 
+.btn-delete.icon:not([disabled]) {
+    background-image: url('../../js/web/x_img/trash.svg'), var(--btn-bg-red);
+    background-size: 75% 75%, cover;
+    background-repeat: no-repeat, repeat;
+    background-position: center;
+	width: 22px;
+}
+
+.btn-delete.icon:not([disabled]):hover, .btn-delete.icon:not([disabled]):active {
+    background-image: url('../../js/web/x_img/trash.svg'), var(--btn-bg-red-active);
+    background-size: 75% 75%, cover;
+    background-repeat: no-repeat, repeat;
+    background-position: center;
+}
+
 .btn-group {
 	display: inline-flex;
 }
