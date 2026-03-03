@@ -51,7 +51,7 @@ FoEproxy.addHandler('MergerGameService', 'all', (data, postData) => {
 	for (let x of mergerGame.cells) {
 		if (x.isFixed) mergerGame.state.maxProgress += mergerGame.levelValues[x.level];
 	};
-	for (let x of mergerGame.cells[1].spawnChances) {
+	for (let x of mergerGame.cells[0].spawnChances) {
 		if (!x) continue;
 		if (!mergerGame.spawnChances[x.type.value]) mergerGame.spawnChances[x.type.value] = {}
 		mergerGame.spawnChances[x.type.value][x.level] = x.spawnChance;
@@ -59,11 +59,11 @@ FoEproxy.addHandler('MergerGameService', 'all', (data, postData) => {
 	mergerGame.updateTable();
 	
 	if (data.requestMethod == "getOverview") {
-		mergerGame.checkSave();
+		//mergerGame.checkSave();
 		mergerGame.ShowDialog();
 	} else { //resetBoard
 		mergerGame.state.energyUsed += (mergerGame.settings.useAverage && mergerGame.settings.useAverage > 0) ? mergerGame.settings.useAverage : mergerGame.resetCost;
-		mergerGame.saveState();
+		//mergerGame.saveState();
 		mergerGame.updateDialog();
 	}
 	if (mergerGame.state.progress == mergerGame.state.maxProgress) {
@@ -84,7 +84,7 @@ FoEproxy.addHandler('MergerGameService', 'spawnPieces', (data, postData) => {
 	mergerGame.cells.push(data.responseData[0])
 	mergerGame.state.energyUsed += mergerGame.spawnCost;
 	mergerGame.updateTable();
-	mergerGame.saveState();
+	//mergerGame.saveState();
 	mergerGame.updateDialog();
 });
 
@@ -104,7 +104,7 @@ FoEproxy.addHandler('MergerGameService', 'useBooster', (data, postData) => {
 	}
 
 	mergerGame.updateTable();
-	mergerGame.saveState();
+	//mergerGame.saveState();
 	mergerGame.updateDialog();
 
 });
@@ -129,7 +129,7 @@ FoEproxy.addHandler('MergerGameService', 'mergePieces', (data, postData) => {
 	mergerGame.cells.splice(origin,1);
 
 	mergerGame.updateTable();
-	mergerGame.saveState();
+	//mergerGame.saveState();
 
 	mergerGame.updateDialog();
 
@@ -147,12 +147,27 @@ FoEproxy.addHandler('MergerGameService', 'convertPiece', (data, postData) => {
 	mergerGame.cells.splice(target,1);
 
 	mergerGame.updateTable();
-	mergerGame.saveState();
+	//mergerGame.saveState();
 
 	mergerGame.updateDialog();
 });
 
+FoEproxy.addHandler('TimedTasksService', 'all', (data, postData) => {
+	if (['getOverview','claimReward'].includes(data.requestMethod)) {
+		data.responseData.slots.forEach(slot => {
+			mergerGame.tasks[slot.type] = {
+				currentProgress: slot.task.currentProgress || 0,
+				requiredProgress: slot.task.requiredProgress
+			};
+		});
+	} else if (data.requestMethod == "pushTaskProgress") {
+		mergerGame.tasks[data.responseData.slotType].currentProgress = data.responseData.currentProgress;
+	} else return;
+	mergerGame.checkTaskProgress();
+});
+
 let mergerGame = {
+	tasks:{},
 	hasJoker:false,
 	event:"anniversary",
 	colors: ["white","yellow","blue","colorless"],
@@ -170,7 +185,15 @@ let mergerGame = {
 	resetCost: 0,
 	levelValues: {1:1,2:1,3:1,4:2},
 	keyValues: {1:1, 2:1, 3:1, 4:3},
-	settings: JSON.parse(localStorage.getItem("MergerGameSettings") || '{"keyValue":1.3,"targetProgress":3750,"availableCurrency":11000,"hideOverlay":true,"useAverage":0}'),
+	settings: Object.assign({
+		keyValue: 1.3,
+		targetProgress: 3750,
+		availableCurrency: 11000,
+		hideOverlay: true,
+		useAverage: 0,
+		audibleTaskWarning: true,
+		opticalTaskWarning: false
+	}, JSON.parse(localStorage.getItem("MergerGameSettings") || '{}')),
 	eventData:{
 		anniversary: {
 			progress:"/shared/seasonalevents/league/league_anniversary_icon_progress.png",
@@ -232,15 +255,16 @@ let mergerGame = {
 		};
 		mergerGame.state["table"] = table;
 		mergerGame.state["unlocked"] = unlocked;
-		
+		/*
 		if (!mergerGame.hasJoker) {
 			mergerGame.solve();
-		} else {
+		} else*/ {
 			mergerGame.solved = {keys:0,progress:0};
 			mergerGame.simResult = {keys:{min:"?",max:"?",average:"?"},progress:{min:"?",max:"?",average:"?"}}
 		}
+			
 	},
-
+	/*
 	checkSave: () => {
 		let x = localStorage.getItem("mergerGameState");
 		if (!x) return;
@@ -259,7 +283,7 @@ let mergerGame = {
 	
 	saveState:() => {
 		localStorage.setItem("mergerGameState",JSON.stringify(mergerGame.state))
-	},
+	},*/
 
 	keySum:() => {
 		let sum = 0;
@@ -320,23 +344,22 @@ let mergerGame = {
 		if ($('#mergerGameDialog').length === 0) {
 			return;
 		}
-		htmltext=``
-		
+			
 		let table = mergerGame.state.table
-		let targetEfficiency = mergerGame.settings.targetProgress/mergerGame.settings.availableCurrency;
-		let effcolor = (eff,target=targetEfficiency) => {
+		//let targetEfficiency = mergerGame.settings.targetProgress/mergerGame.settings.availableCurrency;
+		/*let effcolor = (eff,target=targetEfficiency) => {
 			return eff > target*1.15 ? 'var(--text-success)' : eff > target*1 ? 'yellow' : eff > target * 0.95 ? 'var(--text-bright)' : 'red';
-		}
-		let keys = mergerGame.keySum();
-		let totalValue = mergerGame.state.progress + keys*mergerGame.settings.keyValue;
-		let efficiency = (totalValue / mergerGame.state.energyUsed).toFixed(2);
-		let simEff = mergerGame.hasJoker?"???":Math.round((mergerGame.state.progress + mergerGame.solved.progress + (mergerGame.state.keys + mergerGame.solved.keys)*mergerGame.settings.keyValue)/mergerGame.state.energyUsed*100)/100||0
+		}*/
+		//let keys = mergerGame.keySum();
+		//let totalValue = mergerGame.state.progress + keys*mergerGame.settings.keyValue;
+		//let efficiency = (totalValue / mergerGame.state.energyUsed).toFixed(2);
+		//let simEff = mergerGame.hasJoker?"???":Math.round((mergerGame.state.progress + mergerGame.solved.progress + (mergerGame.state.keys + mergerGame.solved.keys)*mergerGame.settings.keyValue)/mergerGame.state.energyUsed*100)/100||0
 		
-		let simMinEff = mergerGame.hasJoker?"?":Math.round((simEff * mergerGame.state.energyUsed + mergerGame.simResult.value.min)/(mergerGame.state.energyUsed + mergerGame.spawnCost)*100)/100
-		let simMaxEff = mergerGame.hasJoker?"?":Math.round((simEff * mergerGame.state.energyUsed + mergerGame.simResult.value.max)/(mergerGame.state.energyUsed + mergerGame.spawnCost)*100)/100
-		let simAvgEff = mergerGame.hasJoker?"?":Math.round((simEff * mergerGame.state.energyUsed + mergerGame.simResult.value.average)/(mergerGame.state.energyUsed + mergerGame.spawnCost)*100)/100
+		//let simMinEff = mergerGame.hasJoker?"?":Math.round((simEff * mergerGame.state.energyUsed + mergerGame.simResult.value.min)/(mergerGame.state.energyUsed + mergerGame.spawnCost)*100)/100
+		//let simMaxEff = mergerGame.hasJoker?"?":Math.round((simEff * mergerGame.state.energyUsed + mergerGame.simResult.value.max)/(mergerGame.state.energyUsed + mergerGame.spawnCost)*100)/100
+		//let simAvgEff = mergerGame.hasJoker?"?":Math.round((simEff * mergerGame.state.energyUsed + mergerGame.simResult.value.average)/(mergerGame.state.energyUsed + mergerGame.spawnCost)*100)/100
 
-		let dailyEff = Math.round(((mergerGame.state.progress + mergerGame.state.daily.progress + (mergerGame.state.keys + mergerGame.state.daily.keys)*mergerGame.settings.keyValue)/(mergerGame.state.energyUsed+mergerGame.state.daily.energyUsed))*100)/100;
+		//let dailyEff = Math.round(((mergerGame.state.progress + mergerGame.state.daily.progress + (mergerGame.state.keys + mergerGame.state.daily.keys)*mergerGame.settings.keyValue)/(mergerGame.state.energyUsed+mergerGame.state.daily.energyUsed))*100)/100;
 
 		let totalPieces = {}
 		for (x of mergerGame.colors) {
@@ -345,18 +368,19 @@ let mergerGame = {
 				totalPieces[x][t]=0;
 			}
 		}
-		let maxKeys= keys;
+		//let maxKeys= keys;
 		for (let i of mergerGame.colors) {
 			for (let t of mergerGame.types) {
 				totalPieces[i][t] = table[i][1][t] + table[i][2][t] + table[i][3][t] + table[i][4][t];
 			}
 			totalPieces[i]["min"] = Math.min(totalPieces[i][type1],totalPieces[i][type2]);
-			maxKeys+=totalPieces[i]["min"]*mergerGame.keyValues[4];
+			//maxKeys+=totalPieces[i]["min"]*mergerGame.keyValues[4];
 		}
 		let keyimg = (color,type) => {
 			return srcLinks.get(`/shared/seasonalevents/${mergerGame.event}/event/${mergerGame.lookup.keyIconAssetIds[color][type]}.png`,true)
 		}
-
+		html=``;
+		/*
 		html = `<table class="foe-table ${mergerGame.hideDaily ? 'hideDaily':''}" id="MGstatus"><tr><th title="${i18n("Boxes.MergerGame.Status.Title")}">${i18n("Boxes.MergerGame.Status")}</th>`
 		html += `<th onclick="$('#MGstatus').toggleClass('hideDaily'); mergerGame.hideDaily=!mergerGame.hideDaily" title="${i18n("Boxes.MergerGame.Round.Title")}">${i18n("Boxes.MergerGame.Round")}</th>`
 		html += `<th onclick="$('#MGstatus').toggleClass('hideDaily'); mergerGame.hideDaily=!mergerGame.hideDaily" title="${i18n("Boxes.MergerGame.Day.Title")}">${i18n("Boxes.MergerGame.Day")}</th>`
@@ -397,13 +421,14 @@ let mergerGame = {
 		html += `<td title="min - max (avg)" style="text-align:left;color: ${effcolor(simAvgEff)}">(${simAvgEff})</td></tr>`
 		
 		html += `</table>`
-
+		*/
 		for (let i of mergerGame.colors) {
 			html += `<table class="foe-table"><tr><th></th>`
 			for (let lev = 4; lev>0; lev--) {
 				html += `<th>${mergerGame.state.unlocked[i][lev].none}<img src="${srcLinks.get(`/shared/seasonalevents/${mergerGame.event}/event/${mergerGame.event}${mergerGame.eventData[mergerGame.event].tile}_${i}_${lev}.png`,true)}" title="${mergerGame.spawnChances?.[i]?.[lev]||0}%"></th>`
 			}
 			for (let o of mergerGame.types) {
+				if (o=="full") continue;
 				let m = totalPieces[i].min;
 				let t = totalPieces[i][o];
 				html += `</tr><tr><td ${((t==m && o != "full") || (0==m && o == "full") ) ? 'style="font-weight:bold"' : ''}>${t}${(o == "full") ? '/'+ (t+m) : ''}`;
@@ -419,39 +444,75 @@ let mergerGame = {
 		
 		$('#mergerGameDialogBody').html(html);
 	},
-
 	ShowSettingsButton: () => {
         let h = [];
-		h.push(`<table class="foe-table"><tr><td>`)
-        h.push(`${i18n('Boxes.MergerGame.KeyValue.'+mergerGame.event)}</td><td>`);
-        h.push(`<input type="Number" id="MGkeyValue" oninput="mergerGame.SaveSettings()" value="${mergerGame.settings.keyValue}"></td></tr><tr><td>`);
-        h.push(`${i18n('Boxes.MergerGame.availableCurrency.'+mergerGame.event)}</td><td>`);
-        h.push(`<input type="Number" id="MGavailableCurrency" oninput="mergerGame.SaveSettings()" value="${mergerGame.settings.availableCurrency}"></td></tr><tr><td>`);
-        h.push(`${i18n('Boxes.MergerGame.targetProgress')}</td><td>`);
-        h.push(`<input type="Number" id="MGtargetProgress" oninput="mergerGame.SaveSettings()" value="${mergerGame.settings.targetProgress}"></td></tr><tr><td>`);
-        h.push(`${i18n('Boxes.MergerGame.hideOverlay')}</td><td>`);
-        h.push(`<input type="checkbox" id="MGhideOverlay" oninput="mergerGame.SaveSettings()"${mergerGame.settings.hideOverlay ? ' checked' : ''}></td></tr><tr><td>`);
-        h.push(`${i18n('Boxes.MergerGame.useAverage')}</td><td>`);
-        h.push(`<input type="Number" id="MGuseAverage" oninput="mergerGame.SaveSettings()" value="${mergerGame.settings.useAverage || 0}"></td></tr></table>`);
-        
-		$('#mergerGameDialogSettingsBox').html(h.join(''));
+		h.push(`<table class="foe-table">`)
+        //h.push(`<tr><td>${i18n('Boxes.MergerGame.KeyValue.'+mergerGame.event)}</td>`);
+        //h.push(`<td><input type="Number" id="MGkeyValue" oninput="mergerGame.SaveSettings()" value="${mergerGame.settings.keyValue}"></td></tr>`);
+        //h.push(`<tr><td>${i18n('Boxes.MergerGame.availableCurrency.'+mergerGame.event)}</td>`);
+        //h.push(`<td><input type="Number" id="MGavailableCurrency" oninput="mergerGame.SaveSettings()" value="${mergerGame.settings.availableCurrency}"></td></tr>`);
+        //h.push(`<tr><td>${i18n('Boxes.MergerGame.targetProgress')}</td>`);
+        //h.push(`<td><input type="Number" id="MGtargetProgress" oninput="mergerGame.SaveSettings()" value="${mergerGame.settings.targetProgress}"></td></tr>`);
+        //h.push(`<tr><td>${i18n('Boxes.MergerGame.hideOverlay')}</td>`);
+        //h.push(`<td><input type="checkbox" id="MGhideOverlay" oninput="mergerGame.SaveSettings()"${mergerGame.settings.hideOverlay ? ' checked' : ''}></td></tr>`);
+        //h.push(`<tr><td>${i18n('Boxes.MergerGame.useAverage')}</td>`);
+        //h.push(`<td><input type="Number" id="MGuseAverage" oninput="mergerGame.SaveSettings()" value="${mergerGame.settings.useAverage || 0}"></td></tr>`);
+        h.push(`<tr><td>${i18n('Boxes.MergerGame.opticalTaskWarning')}</td>`);
+        h.push(`<td><input type="checkbox" id="opticalTaskWarning" oninput="mergerGame.SaveSettings()"${mergerGame.settings.opticalTaskWarning ? ' checked' : ''}></td></tr>`);
+        h.push(`<tr><td>${i18n('Boxes.MergerGame.audibleTaskWarning')}</td>`);
+        h.push(`<td><input type="checkbox" id="audibleTaskWarning" oninput="mergerGame.SaveSettings()"${mergerGame.settings.audibleTaskWarning ? ' checked' : ''}></td></tr>`);
+		h.push(`</table>`)
+        $('#mergerGameDialogSettingsBox').html(h.join(''));
+		/*
 		$("#mergerGameDialogSettingsBox input").keyup(function(event) {
 			if (event.keyCode === 13) {
 				$("#mergerGameDialogButtons .window-settings").trigger("click");
 			}
-		});
+		});*/
     },
 	
 	SaveSettings: () => {
-        mergerGame.settings["keyValue"] = Number($('#MGkeyValue').val()) || 1;
-		mergerGame.settings["targetProgress"] = Number($('#MGtargetProgress').val()) || 3250;
-		mergerGame.settings["availableCurrency"] = Number($('#MGavailableCurrency').val()) || 10500;
-		mergerGame.settings["useAverage"] = Number($('#MGuseAverage').val()) || 0;
-		mergerGame.settings["hideOverlay"] = $('#MGhideOverlay')[0].checked;
-		localStorage.setItem('MergerGameSettings', JSON.stringify(mergerGame.settings));
-        mergerGame.updateDialog();
-    },
+        //mergerGame.settings["keyValue"] = Number($('#MGkeyValue').val()) || 1;
+		//mergerGame.settings["targetProgress"] = Number($('#MGtargetProgress').val()) || 3250;
+		//mergerGame.settings["availableCurrency"] = Number($('#MGavailableCurrency').val()) || 10500;
+		//mergerGame.settings["useAverage"] = Number($('#MGuseAverage').val()) || 0;
+		//mergerGame.settings["hideOverlay"] = $('#MGhideOverlay')[0].checked;
+		mergerGame.settings["opticalTaskWarning"] = $('#opticalTaskWarning')[0].checked;
+		mergerGame.settings["audibleTaskWarning"] = $('#audibleTaskWarning')[0].checked;
 
+		localStorage.setItem('MergerGameSettings', JSON.stringify(mergerGame.settings));
+        //mergerGame.updateDialog();
+    },
+	checkTaskProgress: () => {
+		for (let t in mergerGame.tasks) {
+			$('#mergerGameTaskWarning').remove();
+			if (mergerGame.tasks[t].currentProgress >= mergerGame.tasks[t].requiredProgress) {
+				if (mergerGame.settings.audibleTaskWarning) {
+					helper.sounds.play("message");
+				}
+				if (mergerGame.settings.opticalTaskWarning) {
+					warningActive = true;
+					$('<div id="mergerGameTaskWarning" class="mergerGameTaskWarning">' + i18n("Boxes.MergerGame.TaskReady") + ' ➤' + '</div>')
+						.css({
+								"position": "absolute",
+								"left": "calc(50vw - 424px)",
+								"top": "calc(50vh - 115px)",
+								"width": "641px",
+								"height": "320px",
+								"zIndex": "1000",
+								"background": "var(--background-color-ascendable)",
+								"text-align": "center",
+								"align-content": "center",
+								"font-size": "xx-large",
+						})
+						.appendTo('body')
+						.on("click",()=>{$('#mergerGameTaskWarning').remove()});
+				}
+				break;
+			}
+		}
+	}
+	/*
 	solve:() => {
 		let type1 = mergerGame.types[1],
 			type2 = mergerGame.types[0];
@@ -1455,5 +1516,5 @@ let mergerGame = {
 		}
 			
 		return {keys:keys, progress:startProgress-endProgress,locked:lockedO, free:freeO}
-	},
+	},*/
 }
