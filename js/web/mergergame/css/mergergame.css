@@ -98,3 +98,32 @@
     height:15px;
     fill:var(--bright-color);
 }
+
+#mergerGameTaskWarning {
+    position: absolute;
+    left: calc(50vw - 424px);
+    top: calc(50vh - 115px);
+    width: 641px;
+    height: 320px;
+    z-index: 1000;
+    text-align: center;
+    align-content: center;
+    font-size: xx-large;
+    backdrop-filter: blur(3px) contrast(1.3);
+    background-color: var(--black-50);
+    border: 2px solid var(--border-tab);
+    color: var(--text-normal);
+    text-shadow: 0 3px 10px var(--black), 0 2px 3px var(--black);
+    font-weight: bold;
+}
+
+.foeHelper {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    font-size: small;
+    font-weight: normal;
+    font-style: italic;
+    opacity: 0.5;
+    color: var(--text-light);
+}

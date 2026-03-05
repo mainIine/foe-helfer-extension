@@ -492,19 +492,7 @@ let mergerGame = {
 				}
 				if (mergerGame.settings.opticalTaskWarning) {
 					warningActive = true;
-					$('<div id="mergerGameTaskWarning" class="mergerGameTaskWarning">' + i18n("Boxes.MergerGame.TaskReady") + ' ➤' + '</div>')
-						.css({
-								"position": "absolute",
-								"left": "calc(50vw - 424px)",
-								"top": "calc(50vh - 115px)",
-								"width": "641px",
-								"height": "320px",
-								"zIndex": "1000",
-								"background": "var(--background-color-ascendable)",
-								"text-align": "center",
-								"align-content": "center",
-								"font-size": "xx-large",
-						})
+					$('<div id="mergerGameTaskWarning" class="mergerGameTaskWarning"><div class="foeHelper">' + i18n("Global.BoxTitle") + '</div>' + i18n("Boxes.MergerGame.TaskReady") + ' ➤' + '</div>')
 						.appendTo('body')
 						.on("click",()=>{$('#mergerGameTaskWarning').remove()});
 				}
