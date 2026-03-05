@@ -95,6 +95,7 @@ let Productions = {
 
 		getDefaultData: () => ({
 			'strategy_points': {order:1,perTile:8,active:true,group:1},
+			'forge_points_production': {order:2,perTile:0.25,active:true,group:1},
 			'fsp': {order:3,perTile:0.8,active:true,group:1},
 			'goods-previous': {order:5,perTile:7,active:true,group:1},
 			'goods-current': {order:7,perTile:6,active:true,group:1},
@@ -1839,6 +1840,9 @@ let Productions = {
 		else if (GoodType === 'fsp') {
 			return i18n('Boxes.Productions.FSP');
         }
+		else if (GoodType === 'forge_points_production') {
+			return i18n('Boxes.Productions.fp_boost');
+        }
 		else {
 			if(GoodType && GoodsData[GoodType]){
 				return GoodsData[GoodType]['name'];
@@ -2608,6 +2612,14 @@ let Productions = {
 				bsum += boost.value;
 			}
 			return bsum;
+		}
+		else if (type === "forge_points_production") {
+			if (building.boosts === undefined) return 0;
+			for (const boost of building.boosts) {
+				if (boost.type[0] === 'forge_points_production')  {
+					return boost.value;
+				}
+			}
 		}
 		else if (type === "strategy_points" || type === "medals" || type === "premium" || type === "money" || type === "supplies" || type === "units" || type === "clan_goods")
 			return Productions.getBuildingProductionByCategory(false, building, type).amount

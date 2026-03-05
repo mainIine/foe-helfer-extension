@@ -483,6 +483,10 @@
 #Productions #ProductionsBody .tabs ul li.strategy_points a span {
 	background-position: 0 2px;
 }
+#ProductionsRatingBody .tabs ul li.forge_points_production {
+	background-position: 0 2px;
+	filter: hue-rotate(45deg);
+}
 #Productions #ProductionsBody .tabs ul li.money a span {
 	background-position: -26px 3px;
 }
@@ -668,6 +672,10 @@ input[id*="ProdPerTile"] {
 }
 #ProductionsRatingBody span.resicon.strategy_points {
 	background-position: 0 0;
+}
+#ProductionsRatingBody span.resicon.forge_points_production {
+	background-position: 0 0;
+	filter: hue-rotate(45deg);
 }
 #ProductionsRatingBody span.resicon.money {
 	background-position: -26px 2px;
