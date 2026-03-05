@@ -2,6 +2,7 @@
 
 body {
     scrollbar-color: #47677d #0e171d;
+    font-family: sans-serif;
 }
 
 body, html {
@@ -46,14 +47,23 @@ body, html {
     color: var(--text-danger)
 }
 
-textarea, button, input {
+textarea, button, input, .btn {
     background-color: inherit;
     color: inherit;
-    border: 1px solid #eee;
+    border: 1px solid #eeeeeeaa;
+    border-radius: 5px;
+}
+
+.btn {
+    padding: 3px 6px;
 }
 
 .wrapper {
     display: flex;
+}
+
+.sidebar {
+    font-size: smaller;
 }
 
 #buildings {
@@ -119,6 +129,15 @@ textarea, button, input {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    position: absolute;
+    z-index: 100;
+    width: 100%;
+    padding: 0 1rem;
+}
+
+.content header h1 {
+    font-size: medium;
+    background-color: #0006;
 }
 
 .content header h1, .content header .stats {
@@ -134,8 +153,35 @@ textarea, button, input {
 #map .buttons {
     z-index: 1200;
     position: absolute;
+    top: 70px;
+    display: flex;
+    gap: 3px;
+}
+
+#map .buttons.left {
+    left: 0.5em;
+}
+
+#map .buttons.right {
     right: 0.5em;
-    top: 0.5em;
+}
+
+.buttons .group {
+    display: inline-flex;
+}
+
+.buttons .group .btn {
+    border-radius: 0;
+    border-left: none;
+}
+
+.buttons .group .btn:first-child {
+    border-left: 1px solid #eeea;
+    border-radius: 5px 0 0 5px;
+}
+
+.buttons .group .btn:last-child {
+    border-radius: 0 5px 5px 0;
 }
 
 #map .info {
@@ -155,14 +201,24 @@ button {
     border-radius: 3px;
 }
 
+#storeSelection { display: none; }
+#storeSelection.show { display: inline-block; }
+
 #storeSelection span:not(:empty)::before { content: '(' }
 #storeSelection span:not(:empty)::after { content: ')' }
 
 #canvasWrapper {
     overflow: hidden;
 	position: relative;
-	height: calc(100vh - 70px);
+	height: 100vh;
 	width: calc(100vw - 250px);
+}
+#canvasWrapper .shadow {
+	position: absolute;
+	height: 100%;
+	width: 100%;
+    pointer-events: none;
+    box-shadow: inset 0 0 20px #0b1217, inset 0 0 5px #0b1217 !important;
 }
 
 canvas {
