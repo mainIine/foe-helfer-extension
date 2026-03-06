@@ -1026,6 +1026,7 @@
     "Boxes.Productions.def_boost_attacker": "Verteidigungsbonus angr. Armee",
     "Boxes.Productions.def_boost_defender": "Verteidigungsbonus vert. Armee",
     "Boxes.Productions.goods": "Güter",
+    "Boxes.Productions.goods_boost": "Güter Boost",
     "Boxes.Productions.goods_current": "Güter, aktuelles Zeitalter",
     "Boxes.Productions.goods_next": "Güter, nächstes Zeilalter",
     "Boxes.Productions.goods_previous": "Güter, vorheriges Zeitalter",

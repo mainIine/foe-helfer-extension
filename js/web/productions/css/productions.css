@@ -430,16 +430,16 @@
 	background-image: url('../../x_img/gbg-green.png'), url('../images/productions.png');
 	background-size: 80%, auto;
 	background-repeat: no-repeat;
-	background-position: 10px 8px, -312px 0px;
+	background-position: 8px 8px, -312px 0px;
 }
 #ProductionsRatingBody span.resicon.def_boost_attacker-battleground {
-	background-position: 10px 8px, -366px 0px;
+	background-position: 8px 8px, -366px 0px;
 }
 #ProductionsRatingBody span.resicon.att_boost_defender-battleground {
-	background-position: 10px 8px, -340px 0px;
+	background-position: 8px 8px, -340px 0px;
 }
 #ProductionsRatingBody span.resicon.def_boost_defender-battleground {
-	background-position: 10px 8px, -391px 0px;
+	background-position: 8px 8px, -391px 0px;
 }
 #ratingPresetSelect li {
 	padding: 0 7px;
@@ -483,9 +483,14 @@
 #Productions #ProductionsBody .tabs ul li.strategy_points a span {
 	background-position: 0 2px;
 }
-#ProductionsRatingBody .tabs ul li.forge_points_production {
-	background-position: 0 2px;
-	filter: hue-rotate(45deg);
+#ProductionsRatingBody span.resicon.forge_points_production, #ProductionsRatingBody .tabs ul li.forge_points_production, 
+#ProductionsRatingBody span.resicon.goods_production, #ProductionsRatingBody .tabs ul li.goods_production {
+	background-image: url('../images/productions.png'), url('../images/productions.png');
+	background-repeat: no-repeat;
+	background-position: -812px 2px, 0 0;
+}
+#ProductionsRatingBody span.resicon.goods_production, #ProductionsRatingBody .tabs ul li.goods_production {
+	background-position: -812px 3px, -104px 3px;
 }
 #Productions #ProductionsBody .tabs ul li.money a span {
 	background-position: -26px 3px;
@@ -672,10 +677,6 @@ input[id*="ProdPerTile"] {
 }
 #ProductionsRatingBody span.resicon.strategy_points {
 	background-position: 0 0;
-}
-#ProductionsRatingBody span.resicon.forge_points_production {
-	background-position: 0 0;
-	filter: hue-rotate(45deg);
 }
 #ProductionsRatingBody span.resicon.money {
 	background-position: -26px 2px;

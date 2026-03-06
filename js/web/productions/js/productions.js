@@ -100,6 +100,7 @@ let Productions = {
 			'goods-previous': {order:5,perTile:7,active:true,group:1},
 			'goods-current': {order:7,perTile:6,active:true,group:1},
 			'goods-next': {order:9,perTile:5,active:true,group:1},
+			'goods_production': {order:11,perTile:0.25,active:true,group:1},
 			'money': {order:13,perTile:null,active:false,group:1},
 			'supplies': {order:15,perTile:null,active:false,group:1},
 			'medals': {order:16,perTile:null,active:false,group:1},
@@ -1843,6 +1844,9 @@ let Productions = {
 		else if (GoodType === 'forge_points_production') {
 			return i18n('Boxes.Productions.fp_boost');
         }
+		else if (GoodType === 'goods_production') {
+			return i18n('Boxes.Productions.goods_boost');
+        }
 		else {
 			if(GoodType && GoodsData[GoodType]){
 				return GoodsData[GoodType]['name'];
@@ -2613,10 +2617,13 @@ let Productions = {
 			}
 			return bsum;
 		}
-		else if (type === "forge_points_production") {
+		else if (type === "forge_points_production" || type === "goods_production") {
 			if (building.boosts === undefined) return 0;
 			for (const boost of building.boosts) {
-				if (boost.type[0] === 'forge_points_production')  {
+				if (boost.type[0] === 'forge_points_production' && type === 'forge_points_production')  {
+					return boost.value;
+				}
+				if (boost.type[0] === 'goods_production' && type === 'goods_production')  {
 					return boost.value;
 				}
 			}
