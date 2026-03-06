@@ -6,10 +6,11 @@
 **Update**
 - Cost Calculator: Added setting to open it automatically
 - Calculators: Changed default buttons from 80, 85, 90 to 80, 90, 100
-- Efficiency: Presets were added so you can have different evaluation settings
+- Efficiency: Added FP and goods boost + presets were added so you can have different evaluation settings
 
 **Bugfix**
 - Calculators: a game update moved the GB window so that the new copy function was not working anymore
+- Auto opening: Some windows didn't open on default anymore if you never changed the settings before. It's back to normal, but also: look at the settings, they are nice!
 
 
 ##### 4.1.1.0
