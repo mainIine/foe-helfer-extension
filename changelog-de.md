@@ -7,9 +7,11 @@
 - Kostenrechner: Einstellung zum automatischen Öffnen hinzugefügt
 - Beide LG Rechner: Standard-Werte von 80, 85, 90 auf 80, 90, 100 geändert
 - Effizienzberechnung: FP-Boost & Güter Boost hinzugefügt und man kann jetzt verschiedene Einstellungen zur Bewertung erstellen
+- Merger-Minispiel: Tabelle reduziert und Warnfenster hinzugefügt, wenn Tasks fertig sind
 
 **Bugfix**
 - Beide LG Rechner: Ein Spiel-Update hat das LG Fenster verschoben, sodass die neue FP-Kopier-Funktion nicht mehr funktioniert hat
+- Eigenanteilsrechner: beim Kopieren werden die bereits eingezahlten FP berücksichtigt (fremde LG)
 - Automatisches öffnen: einige Fenster sind nicht mehr von alleine aufgegangen, wenn man sich noch nie mit den Einstellungen befasst hatte - funktioniert jetzt wieder wie vorher, aber: Guckt euch die Einstellungen an, sie sind praktisch.
 
 
