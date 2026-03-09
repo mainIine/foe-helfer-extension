@@ -532,7 +532,8 @@ let Parts = {
 			EigenTotal, // Summe aller Eigenanteile
 			ExtTotal = 0, // Summe aller Externen Einzahlungen
 			EigenCounter = 0, // Eigenanteile Counter während Tabellenerstellung
-			Rest = Total; // Verbleibende FP: Counter während Berechnung
+			Rest = Total, // Verbleibende FP: Counter während Berechnung
+			AlreadyPaid = 0; // Bereits gezahlter Anteil für aktuellen Platz (Fremde LG)
 
 		Parts.PlaceAvailables = [false, false, false, false, false]; // Wird auf true gesetz, wenn auf einem Platz noch eine (nicht externe) Zahlung einzuzahlen ist (wird in Spalte Einzahlen angezeigt)
 		Parts.DangerPlaces = [0, 0, 0, 0, 0]; // Feld mit Dangerinformationen. Wenn > 0, dann die gefährdeten FP
@@ -563,6 +564,9 @@ let Parts = {
 			for (let i = 0; i < Parts.Rankings.length; i++) {
 				// Owner
 				let CurrentMaezen = Parts.Rankings[i]['forge_points'];
+				if (Parts.Rankings[i]?.player?.is_self) {
+					AlreadyPaid = CurrentMaezen;
+				}
 				if (Parts.Rankings[i]['player'] && Parts.Rankings[i]['player']['player_id'] === Parts.CityMapEntity['player_id']) {
 					EigenStart = CurrentMaezen;
 					Rest -= EigenStart;
@@ -845,7 +849,10 @@ let Parts = {
 			h.push('<td>' + i18n('Boxes.OwnpartCalculator.Place') + ' ' + (i+1) + '</td>');
 
 			if (Parts.PlaceAvailables[i]) {
-				h.push('<td class="text-center"><strong class="' + (PlayerID === ExtPlayerID ? '' : 'success' + (Parts.Maezens[i] > 0 ? ' copy-fp clickable' : '')) + '" data-copy="' + (Parts.Maezens[i] > 0 ? Parts.Maezens[i] : '') + '">' + (Parts.Maezens[i] > 0 ? HTML.Format(Parts.Maezens[i]) : '-') + '</strong >' + '</td>');
+				let copyvalue = Parts.Maezens[i];
+				if (AlreadyPaid && PlayerID !== ExtPlayerID)
+					copyvalue = Math.max(Parts.Maezens[i]-AlreadyPaid, 0);
+				h.push('<td class="text-center"><strong class="' + (PlayerID === ExtPlayerID ? '' : 'success' + (Parts.Maezens[i] > 0 ? ' copy-fp clickable' : '')) + '" data-copy="' + (copyvalue > 0 ? copyvalue : '') + '">' + (Parts.Maezens[i] > 0 ? HTML.Format(Parts.Maezens[i]) : '-') + '</strong >' + '</td>');
 				if (Parts.LeveltLG[i]) {
 					h.push(`<td class="text-center"><strong class="error">${i18n("Boxes.OwnpartCalculator.levelt")}</strong></td>`);
 				}
