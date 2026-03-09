@@ -805,6 +805,8 @@
     "Boxes.MergerGame.opticalTaskWarning": "Brett blockieren, wenn Aufgabe abgeschlossen",
     "Boxes.MergerGame.audibleTaskWarning": "Ton abspielen, wenn Aufgabe abgeschlossen",
     "Boxes.MergerGame.TaskReady": "Aufgabe einsammeln!",
+    "Boxes.MergerGame.CurrencyOverflowWarning": "Shopwährung wird überlaufen!",
+    "Boxes.MergerGame.WorldChallengeOverflowWarning": "Herausforderung wird überlaufen!",
     "Boxes.MoppelHelper.Attacks": "Angriffe",
     "Boxes.MoppelHelper.CityProtected": "Die Stadt dieses Spielers kann nicht angegriffen werden",
     "Boxes.MoppelHelper.Days": "__days__ Tag(e)",

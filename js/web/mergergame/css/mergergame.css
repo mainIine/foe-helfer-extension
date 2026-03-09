@@ -127,3 +127,42 @@
     opacity: 0.5;
     color: var(--text-light);
 }
+
+#mergerGameTaskWarning:not(.showCurrencyOverflowWarning) .CurrencyOverflowWarning,
+#mergerGameTaskWarning:not(.showWorldChallengeOverflowWarning) .WorldChallengeOverflowWarning {
+    display: none;
+}
+
+.CurrencyOverflowWarning,
+.WorldChallengeOverflowWarning {
+    position: absolute;
+    right: 20px;
+    text-align: right;
+    width: calc(100%-40px);
+    font-size: large;
+    overflow: hidden;
+    color: var(--text-danger);
+    animation: blink 1s infinite;
+    text-shadow: 0px 0px 2px black, 0px 0px 4px white;    
+}
+.CurrencyOverflowWarning {
+    top: 20px;
+}
+.WorldChallengeOverflowWarning {
+    bottom: 20px;
+}
+
+@keyframes blink {
+    0% {
+        opacity: 0.7;
+    }
+    30% {
+        opacity: 1;
+    }
+    70% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0.7;
+    }
+}

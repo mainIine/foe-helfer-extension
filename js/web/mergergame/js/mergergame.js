@@ -157,7 +157,11 @@ FoEproxy.addHandler('TimedTasksService', 'all', (data, postData) => {
 		data.responseData.slots.forEach(slot => {
 			mergerGame.tasks[slot.type] = {
 				currentProgress: slot.task.currentProgress || 0,
-				requiredProgress: slot.task.requiredProgress
+				requiredProgress: slot.task.requiredProgress,
+				rewardResource: slot.task.reward.subType,
+				rewardAmount: (slot.task.reward.amount||1)*(slot.rewardMultiplier || 1),
+				worldChallengeTokens: ({easy:1,medium:2,hard:4})[slot.type],
+				alerted: !(data.requestMethod == "getOverview" || !slot.task.currentProgress)
 			};
 		});
 	} else if (data.requestMethod == "pushTaskProgress") {
@@ -483,20 +487,39 @@ let mergerGame = {
 		localStorage.setItem('MergerGameSettings', JSON.stringify(mergerGame.settings));
         //mergerGame.updateDialog();
     },
-	checkTaskProgress: () => {
-		for (let t in mergerGame.tasks) {
-			$('#mergerGameTaskWarning').remove();
-			if (mergerGame.tasks[t].currentProgress >= mergerGame.tasks[t].requiredProgress) {
-				if (mergerGame.settings.audibleTaskWarning) {
+	checkTaskProgress: (warn = true) => {
+		//Do not show window if deactivated in settings
+		if(!Settings.GetSetting('ShowEventChest') || !(Settings.GetSetting('EventHelperMerge') === undefined ? true : Settings.GetSetting('EventHelperMerge'))) {
+			return;
+		}
+		$('#mergerGameTaskWarning').remove();
+		for (let [t,slot] of Object.entries(mergerGame.tasks)) {
+			if (slot.currentProgress >= slot.requiredProgress) {
+				if (mergerGame.settings.audibleTaskWarning && warn && !slot.alerted) {
 					helper.sounds.play("message");
 				}
-				if (mergerGame.settings.opticalTaskWarning) {
-					warningActive = true;
-					$('<div id="mergerGameTaskWarning" class="mergerGameTaskWarning"><div class="foeHelper">' + i18n("Global.BoxTitle") + '</div>' + i18n("Boxes.MergerGame.TaskReady") + ' ➤' + '</div>')
+				if (mergerGame.settings.opticalTaskWarning && warn && !slot.alerted) {
+					$(`<div id="mergerGameTaskWarning" class="mergerGameTaskWarning">
+							<div class="foeHelper">
+								${i18n("Global.BoxTitle")}
+							</div>
+							${i18n("Boxes.MergerGame.TaskReady")} ➤
+							<div class="CurrencyOverflowWarning">
+								${i18n("Boxes.MergerGame.CurrencyOverflowWarning")} ▲▲▲
+							</div>
+							<div class="WorldChallengeOverflowWarning">
+								${i18n("Boxes.MergerGame.WorldChallengeOverflowWarning")} ▼▼▼
+							</div>
+						</div>`)
 						.appendTo('body')
 						.on("click",()=>{$('#mergerGameTaskWarning').remove()});
 				}
-				break;
+				slot.alerted = true;
+				if ((GoodsData[slot.rewardResource].abilities?.resourceCap?.amount || Infinity) < slot.rewardAmount +  ResourceStock[slot.rewardResource])
+					$('#mergerGameTaskWarning').addClass('showCurrencyOverflowWarning');
+				if (worldChallenge.currentPoints + slot.worldChallengeTokens > worldChallenge.requiredPoints)
+					$('#mergerGameTaskWarning').addClass('showWorldChallengeOverflowWarning');
+				warn = false;
 			}
 		}
 	}
