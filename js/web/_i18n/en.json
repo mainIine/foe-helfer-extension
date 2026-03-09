@@ -801,6 +801,8 @@
     "Boxes.MergerGame.opticalTaskWarning": "Block board when Task complete",
     "Boxes.MergerGame.audibleTaskWarning": "Play sound when Task complete",
     "Boxes.MergerGame.TaskReady": "Collect Task!",
+    "Boxes.MergerGame.CurrencyOverflowWarning": "Shop Currency will overflow!",
+    "Boxes.MergerGame.WorldChallengeOverflowWarning": "Challenge will overflow!",
     "Boxes.MoppelHelper.Attacks": "Attacks",
     "Boxes.MoppelHelper.CityProtected": "This players city can not be attacked",
     "Boxes.MoppelHelper.Columns": "Columns",
