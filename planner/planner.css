@@ -64,6 +64,7 @@ textarea, button, input, .btn {
 
 .sidebar {
     font-size: smaller;
+    user-select: none;
 }
 
 #buildings {
@@ -133,6 +134,8 @@ textarea, button, input, .btn {
     z-index: 100;
     width: 100%;
     padding: 0 1rem;
+    pointer-events: none;
+    box-sizing: border-box;
 }
 
 .content header h1 {

@@ -32,7 +32,33 @@
     </section>
     <div class="wrapper">
         <section id="buildings" class="sidebar">
-            <!--<button>Add Building</button>-->
+            <input id="buildingFilterText" type="text" placeholder="Filter buildings">
+
+<select id="buildingSort">
+  <option value="area-desc">Size ↓</option>
+  <option value="area-asc">Size ↑</option>
+  <option value="name-asc">Name A–Z</option>
+  <option value="name-desc">Name Z–A</option>
+  <option value="width-asc">Width ↑</option>
+  <option value="width-desc">Width ↓</option>
+  <option value="height-asc">Height ↑</option>
+  <option value="height-desc">Height ↓</option>
+</select>
+
+<select id="buildingTypeFilter">
+  <option value="all">All types</option>
+  <option value="residential">Residential</option>
+  <option value="production">Production</option>
+  <option value="greatbuilding">Great Building</option>
+  <option value="military">Military</option>
+  <option value="main_building">Main Building</option>
+</select>
+
+<select id="buildingStreetFilter">
+  <option value="all">All street reqs</option>
+  <option value="street">Needs street</option>
+  <option value="nostreet">No street needed</option>
+</select>
             <ul></ul>
         </section>
         <div class="content">
@@ -64,7 +90,18 @@
             </section>
         </div>
     </div>
-    <script src="planner.js"></script>
-</body>
+    <script src="vars.js"></script>
+    <script src="mapbuilding.js"></script>
+    <script src="placement.js"></script>
+    <script src="sidebar.js"></script>
+    <script src="draw.js"></script>
+    <script src="events.js"></script>
+    <script src="main.js"></script>
 
+    <!-- TODO
+        - saving
+        - sharing
+        - streets 
+    -->
+</body>
 </html>
