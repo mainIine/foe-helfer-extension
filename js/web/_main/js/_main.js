@@ -1474,11 +1474,11 @@ let MainParser = {
 		});
 
 		ExtPlayerAvatar = d.portrait_id;
-
+		await ExistenceConfirmed('MainParser.CityEntities||srcLinks.FileList||Infoboard||EventHandler');
+	
 		Infoboard.Init();
 		EventHandler.Init();
 		setTimeout(MainParser.forceLoadCityEntities, 15000);
-		await ExistenceConfirmed('MainParser.CityEntities||srcLinks.FileList')
 	
 		window.dispatchEvent(new CustomEvent('foe-helper#StartUpDone'))
 		//console.log('StartUp done')

@@ -248,10 +248,6 @@ input.hidden {
 }
 
 #Alerts .btn-delete {
-    background-image: url('../../x_img/trash.svg'), var(--btn-bg-red);
-    background-size: 13px 13px, cover;
-    background-repeat: no-repeat, repeat;
-    background-position: center;
     width: 18px;
 }
 

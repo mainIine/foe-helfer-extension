@@ -17,6 +17,12 @@ FoEproxy.addFoeHelperHandler('QuestsUpdated', data => {
 	}
 });
 
+FoEproxy.addHandler("GreatBuildingsService","getConstruction", (data,postData) => {
+	if ($('#costCalculator').length === 0 && localStorage.getItem('CalcAutoOpen') == 'true' && postData[0].requestData[1] !== ExtPlayerID) {
+		Calculator.Show();
+	}
+});
+
 let Calculator = {
 	ForderBonus: 90,
     PlayerName: undefined,
@@ -26,8 +32,11 @@ let Calculator = {
 	CityMapEntity : undefined,
 	LastRecurringQuests: undefined,
 	ForderBonusPerConversation: true,
+	AutoOpen: false,
+	ShowBP: true,
+	ShowMedals: true,
 	DefaultButtons: [
-		80, 85, 90, 'ark'
+		80, 90, 100, 'ark'
 	],
 	ClanId: null,
 	ClanName: null,
@@ -38,22 +47,20 @@ let Calculator = {
 	 * @param action
 	 * @constructor
 	 */
-	Show: (action = '') => {
-        // moment.js global setzen
-        //moment.locale(MainParser.Language);
+	Show: (action = "") => {
 
         // close at the second click
-		if ($('#costCalculator').length > 0 && action === 'menu')
-		{
+		if ($('#costCalculator').length > 0 && action == "menu") {
 			HTML.CloseOpenBox('costCalculator');
 			return;
 		}
 
 		Calculator.ForderBonusPerConversation = (localStorage.getItem('CalculatorForderBonusPerConversation') !== 'false');
+		Calculator.AutoOpen = (localStorage.getItem('CalcAutoOpen') !== 'false');
 
         // Wenn die Box noch nicht da ist, neu erzeugen und in den DOM packen
         if ($('#costCalculator').length === 0) {
-            let spk = localStorage.getItem('CalculatorTone');
+            /*let spk = localStorage.getItem('CalculatorTone');
 
             if (spk === null) {
                 localStorage.setItem('CalculatorTone', 'deactivated');
@@ -61,7 +68,7 @@ let Calculator = {
 
             } else {
                 Calculator.PlayInfoSound = (spk !== 'deactivated');
-            }		
+            }	*/	
 
             HTML.Box({
 				id: 'costCalculator',
@@ -75,12 +82,11 @@ let Calculator = {
 				active_maps:"main",
 			});
 
-			// CSS in den DOM prügeln
 			HTML.AddCssFile('calculator');
 
 			Calculator.CurrentPlayer = parseInt(localStorage.getItem('current_player_id'));
 
-			// schnell zwischen den Prozenten wechseln
+			// toggle percentages
 			$('#costCalculator').on('click', '.btn-toggle-arc', function () {
 				Calculator.ForderBonus = parseFloat($(this).data('value'));
 				$('#costFactor').val(Calculator.ForderBonus);
@@ -98,7 +104,6 @@ let Calculator = {
 			});
 
 			$('#costCalculator').on('click', '#CalculatorTone', function () {
-
 				let disabled = $(this).hasClass('deactivated');
 
 				localStorage.setItem('CalculatorTone', (disabled ? '' : 'deactivated'));
@@ -120,18 +125,15 @@ let Calculator = {
 
 				if (value === undefined || value === '' || value === '-') return;
 
-				if (!Parts.allowCopyPlace)
-					helper.str.copyToClipboardLegacy(String(value));
-				else {//Set Cursor to input field
-					mouseActions.randomClick([244,-89, "Center"])
-					KeyboardEvents.paste(String(value));
-				}
+				Parts.setDonation(value);
 				//prevent double action
 				$this.addClass('copied');
 				setTimeout(() => $this.removeClass('copied'), 800);
 			});
-
         }
+
+		// if data is missing, abort and wait for the mainparser to call this function again when the data is available
+		if (Calculator.CityMapEntity == undefined) return;
 
 		let ForderBonusLoaded = false;
 			if(Calculator.ForderBonusPerConversation && MainParser.OpenConversation){
@@ -152,17 +154,17 @@ let Calculator = {
 				}
 			}
 
-		let PlayerID = Calculator.CityMapEntity['player_id'],
+		let PlayerID = Calculator.CityMapEntity.player_id,
             h = [];
 
         // If the player has changed, then reset BuildingName/PlayerName
-		if (Calculator.CityMapEntity['player_id'] !== Calculator.LastPlayerID) {
+		if (PlayerID !== Calculator.LastPlayerID) {
 			Calculator.PlayerName = undefined;
 			Calculator.ClanId = undefined;
 			Calculator.ClanName = undefined;
 		}
 
-		if (Calculator.PlayerName === undefined && PlayerDict[Calculator.CityMapEntity['player_id']] !== undefined) {
+		if (Calculator.PlayerName === undefined && PlayerDict[PlayerID] !== undefined) {
 			Calculator.PlayerName = PlayerDict[PlayerID]['PlayerName'];
 		}
 		if (PlayerDict[PlayerID] !== undefined && PlayerDict[PlayerID]['ClanName'] !== undefined) {
@@ -172,49 +174,38 @@ let Calculator = {
 
         // BuildingName could not be loaded from the BuildingInfo
 		let BuildingName = MainParser.CityEntities[Calculator.CityMapEntity['cityentity_id']]['name'];
-		let Level = (Calculator.CityMapEntity['level'] !== undefined ? Calculator.CityMapEntity['level'] : 0);
-		let MaxLevel = (Calculator.CityMapEntity['max_level'] !== undefined ? Calculator.CityMapEntity['max_level'] : 0);
+		let Level = (Calculator.CityMapEntity.level !== undefined ? Calculator.CityMapEntity.level : 0);
+		let MaxLevel = (Calculator.CityMapEntity.max_level !== undefined ? Calculator.CityMapEntity.max_level : 0);
 
-        h.push('<div class="text-center dark-bg" style="padding:5px 0 3px;">');
 
-        // BG - Data + player name
-		h.push('<div class="header"><strong><span class="building-name">' + BuildingName + '</span>');
-
+		h.push('<div class="header text-center dark-bg">');
+		h.push('<strong><span class="building-name">' + BuildingName + '</span></strong>');
+        h.push('<p style="margin: 0 0 8px">'+i18n('Boxes.Calculator.Step') + '' + Level + ' &rarr; ' + (Level + 1) + ' | ' + i18n('Boxes.Calculator.MaxLevel') + ': ' + MaxLevel + '</p>');
+ 
 		if (Calculator.PlayerName) {
 			h.push('<span class="player-name">' 
 				+ `<span class="activity activity_${PlayerDict[PlayerID]['Activity']}"></span> `
 				+ MainParser.GetPlayerLink(PlayerID, Calculator.PlayerName));
 
 			if (Calculator.ClanName) {
-				h.push(`<br>[${MainParser.GetGuildLink(Calculator.ClanId, Calculator.ClanName)}]`);
+				h.push(`<br>${MainParser.GetGuildLink(Calculator.ClanId, Calculator.ClanName)}`);
 			}
 
 			h.push('</span></strong>');
 		}
 
-        h.push('<p style="margin: 8px 0 0">'+i18n('Boxes.Calculator.Step') + '' + Level + ' &rarr; ' + (Level + 1) + ' | ' + i18n('Boxes.Calculator.MaxLevel') + ': ' + MaxLevel + '</p></div>');
-
-		h.push('</div>');
-
-		h.push('<div class="dark-bg costFactorWrapper">');
-
-		h.push(i18n('Boxes.Calculator.ArkBonus') + ': ' + MainParser.ArkBonus + '%<br>');
-
-		h.push('<div class="btn-group">');
+		//h.push(i18n('Boxes.Calculator.ArkBonus') + ': ' + MainParser.ArkBonus + '%<br>');
 
 		// different arc bonus-buttons
-		let investmentSteps = [80, 85, 90, MainParser.ArkBonus],
+		let investmentSteps = [80, 90, 100, MainParser.ArkBonus],
 			customButtons = localStorage.getItem('CustomCalculatorButtons');
 
-		// custom buttons available
-		if(customButtons)
-		{
+		if(customButtons) {
 			investmentSteps = [];
 			let bonuses = JSON.parse(customButtons);
 
 			bonuses.forEach(bonus => {
-				if(bonus === 'ark')
-				{
+				if (bonus === 'ark') {
 					investmentSteps.push(MainParser.ArkBonus);
 				}
 				else {
@@ -223,37 +214,38 @@ let Calculator = {
 			})
 		}
 
+		h.push('<div class="costFactorWrapper">');
+		h.push('<div class="btn-group">');
 		investmentSteps = investmentSteps.filter((item, index) => investmentSteps.indexOf(item) === index); //Remove duplicates
 		investmentSteps.sort((a, b) => a - b);
 		investmentSteps.forEach(bonus => {
-			h.push(`<button class="btn btn-toggle-arc ${(bonus === Calculator.ForderBonus ? 'btn-active' : '')}" data-value="${bonus}">${bonus}%</button>`);
+			h.push(`<button class="btn btn-toggle-arc ${(bonus === Calculator.ForderBonus ? 'btn-active' : '')}${(bonus === MainParser.ArkBonus ? ' arkBonus' : '')}" data-value="${bonus}">${bonus}%</button>`);
 		});
         h.push('</div><br>');
 		
-		h.push('<span><strong>' + i18n('Boxes.Calculator.FriendlyInvestment') + '</strong> ' + '<input type="number" id="costFactor" step="0.1" min="12" max="200" value="' + Calculator.ForderBonus + '">%</span>');
+		h.push('<span>' + i18n('Boxes.Calculator.FriendlyInvestment') + '<input type="number" id="costFactor" step="0.1" min="12" max="200" value="' + Calculator.ForderBonus + '">%</span>');
 
         h.push('</div>');
+		h.push('</div>');
 
-        // Tabelle zusammen fummeln
 		h.push('<table id="costTableFordern" style="width:100%" class="foe-table"></table>');
 
-        // Wieviel fehlt noch bis zum leveln?
+        // how much is missing to level up?
 		let rest = (Calculator.CityMapEntity['state']['invested_forge_points'] === undefined ? Calculator.CityMapEntity['state']['forge_points_for_level_up'] : Calculator.CityMapEntity['state']['forge_points_for_level_up'] - Calculator.CityMapEntity['state']['invested_forge_points']);
 
 		h.push('<div class="text-center dark-bg" style="padding-top:5px;padding-bottom:5px;"><em>' + i18n('Boxes.Calculator.Up2LevelUp') + ': <span id="up-to-level-up" style="color:#FFB539">' + HTML.Format(rest) + '</span> ' + i18n('Boxes.Calculator.FP') + '</em></div>');
 
 		h.push(Calculator.GetRecurringQuestsLine(Calculator.PlayInfoSound));
 
-        // in die bereits vorhandene Box drücken
         $('#costCalculator').find('#costCalculatorBody').html(h.join(''));
         $('#costCalculator').find('.tooltip').remove();
 
-        // Stufe ist noch nicht freigeschaltet
+        // level is not unlocked yet
 		if (Calculator.CityMapEntity['level'] === Calculator.CityMapEntity['max_level']) {
             $('#costCalculator').find('#costCalculatorBody').append($('<div />').addClass('lg-not-possible').attr('data-text', i18n('Boxes.Calculator.LGNotOpen')));
 		}
 
-		// es fehlt eine Straßenanbindung
+		// no street connection
 		else if (Calculator.CityMapEntity['connected'] === undefined) {
             $('#costCalculator').find('#costCalculatorBody').append($('<div />').addClass('lg-not-possible').attr('data-text', i18n('Boxes.Calculator.LGNotConnected')));
         }
@@ -490,10 +482,12 @@ let Calculator = {
 		hFordern.push('<thead>' +
 			'<th>#</th>' +
 			'<th><span class="forgepoints" title="' + HTML.i18nTooltip(i18n('Boxes.Calculator.Commitment')) + '"></span></th>' +
-			'<th>' + i18n('Boxes.Calculator.Profit') + '</th>' +
-			'<th><span class="blueprint" title="' + HTML.i18nTooltip(i18n('Boxes.Calculator.BPs')) + '"></span></th>' +
-			'<th><span class="medal" title="' + HTML.i18nTooltip(i18n('Boxes.Calculator.Meds')) + '"></span></th>' +
-			'</thead>');
+			'<th>' + i18n('Boxes.Calculator.Profit') + '</th>');
+			if (Calculator.ShowBP)
+				hFordern.push('<th><span class="blueprint" title="' + HTML.i18nTooltip(i18n('Boxes.Calculator.BPs')) + '"></span></th>');
+			if (Calculator.ShowMedals)
+				hFordern.push('<th><span class="medal" title="' + HTML.i18nTooltip(i18n('Boxes.Calculator.Meds')) + '"></span></th>');
+		hFordern.push('</thead>');
 
 		for (let Rank = 0; Rank < ForderRankCosts.length; Rank++) {
 			let ForderCosts = (ForderStates[Rank] === 'Self' ? Einzahlungen[Rank] : ForderFPRewards[Rank]),
@@ -649,8 +643,11 @@ let Calculator = {
 			hFordern.push('<td class="text-center"><strong class="' + RankClass + ' td-tooltip" title="' + HTML.i18nTooltip(RankTooltip.join('<br>')) + '">' + RankText + '</strong></td>');
 			hFordern.push('<td class="text-center"><strong class="' + EinsatzClass + ' td-tooltip copy-fp clickable" data-copy="' + ForderFPRewards[Rank] + '" title="' + HTML.i18nTooltip(EinsatzTooltip.join('<br>')) + '">' + EinsatzText + '</strong></td>');
 			hFordern.push('<td class="text-center"><strong class="' + GewinnClass + ' td-tooltip" title="' + HTML.i18nTooltip(GewinnTooltip.join('<br>')) + '">' + GewinnText + '</strong></td>');
-			hFordern.push('<td class="text-center">' + HTML.Format(BPRewards[Rank]) + '</td>');
-			hFordern.push('<td class="text-center">' + HTML.Format(MedalRewards[Rank]) + '</td>');
+			
+			if (Calculator.ShowBP)
+				hFordern.push('<td class="text-center">' + HTML.Format(BPRewards[Rank]) + '</td>');
+			if (Calculator.ShowMedals)
+				hFordern.push('<td class="text-center">' + HTML.Format(MedalRewards[Rank]) + '</td>');
 			hFordern.push('</tr>');
 		}
 
@@ -713,8 +710,10 @@ let Calculator = {
 			buttons,
 			defaults = Calculator.DefaultButtons,
 			sB = localStorage.getItem('CustomCalculatorButtons'),
-			nV = `<p class="new-row text-center bbd p5 flex gap">${i18n('Boxes.Calculator.Settings.newValue')}: <input type="number" class="settings-values" style="width:30px"> <span class="btn btn-green btn-slim" onclick="Calculator.SettingsInsertNewRow()">+</span></p>`;
-
+			nV = `<p class="new-row text-center bbd p5 flex gap">
+				${i18n('Boxes.Calculator.Settings.newValue')}: <input type="number" class="settings-values" style="width:30px"> 
+				<span class="btn btn-green btn-slim" onclick="Calculator.SettingsInsertNewRow()">+</span>
+				</p>`;
 
 		if(sB) {
 			// buttons = [...new Set([...defaults,...JSON.parse(sB)])];
@@ -727,7 +726,6 @@ let Calculator = {
 			buttons = defaults;
 		}
 
-
 		c.push('<section class="flex gap p2">');
 		buttons.forEach(bonus => {
 			if(bonus === 'ark') {
@@ -739,15 +737,15 @@ let Calculator = {
 		});
 		c.push('</section>');
 
-		// new own button
+		// new custom button
 		c.push(nV);
 
-		c.push('<p><input id="forderbonusperconversation" class="forderbonusperconversation game-cursor" ' + (Calculator.ForderBonusPerConversation ? 'checked' : '') + ' type="checkbox"> ' + i18n('Boxes.Calculator.ForderBonusPerConversation'));
+		c.push('<label for="forderbonusperconversation"><input id="forderbonusperconversation" class="forderbonusperconversation game-cursor" ' + (Calculator.ForderBonusPerConversation ? 'checked' : '') + ' type="checkbox"> ' + i18n('Boxes.Calculator.ForderBonusPerConversation')+'</label><br/>');
+		c.push('<label for="CalcAutoOpen"><input id="CalcAutoOpen" class="CalcAutoOpen game-cursor" ' + (Calculator.AutoOpen ? 'checked' : '') + ' type="checkbox"> ' + i18n('Settings.ShowOwnPartAutoOpen.Desc'));
 
 		// save button
 		c.push(`<p class="text-center"><button id="save-calculator-settings" class="btn btn-green" onclick="Calculator.SettingsSaveValues()">${i18n('Boxes.Calculator.Settings.Save')}</button></p>`);
 
-		// insert into DOM
 		$('#costCalculatorSettingsBox').html(c.join(''));
 	},
 
@@ -784,6 +782,8 @@ let Calculator = {
 
 			Calculator.ForderBonusPerConversation = $('.forderbonusperconversation').prop('checked');
 			localStorage.setItem('CalculatorForderBonusPerConversation', Calculator.ForderBonusPerConversation);
+			Calculator.AutoOpen = $('.CalcAutoOpen').prop('checked');
+			localStorage.setItem('CalcAutoOpen', Calculator.AutoOpen);
 		});
 
 		// save new buttons

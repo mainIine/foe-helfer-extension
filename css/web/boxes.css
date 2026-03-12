@@ -174,7 +174,7 @@ a[target="_blank"] svg {
 	background: var(--btn-bg-moz);
 	background: var(--btn-bg-webkit);
 	background: var(--btn-bg);
-	border: #2a0f00 1px solid;
+	border: var(--border-dark) 1px solid;
 	border-radius: 4px;
 	color: var(--text-btn);
 	cursor: url('../images/cursor_default.cur'), auto;
@@ -255,6 +255,21 @@ a[target="_blank"] svg {
 	background: var(--btn-bg-red-onclick);
 }
 
+.btn-delete.icon:not([disabled]) {
+    background-image: url('../../js/web/x_img/trash.svg'), var(--btn-bg-red);
+    background-size: 75% 75%, cover;
+    background-repeat: no-repeat, repeat;
+    background-position: center;
+	width: 22px;
+}
+
+.btn-delete.icon:not([disabled]):hover, .btn-delete.icon:not([disabled]):active {
+    background-image: url('../../js/web/x_img/trash.svg'), var(--btn-bg-red-active);
+    background-size: 75% 75%, cover;
+    background-repeat: no-repeat, repeat;
+    background-position: center;
+}
+
 .btn-group {
 	display: inline-flex;
 }
@@ -321,8 +336,8 @@ a[target="_blank"] svg {
 	padding: 0;
 	margin: 0;
 	border-radius: 50px;
-	background-color: #a00c;
-	color: #fcc;
+	background-color: var(--red);
+	color: var(--text-light);
 	transform: rotate(45deg);
 	z-index: 100;
 }
@@ -348,7 +363,7 @@ a[target="_blank"] svg {
 .window-box ::-webkit-scrollbar-thumb,
 .window-body::-webkit-scrollbar-thumb,
 .window-body * ::-webkit-scrollbar-thumb {
-	background: var(--window-body-scroll-bar);
+	background: var(--border-dark);
 	border-radius: 4px;
 	border-top: 1px solid var(--border-table-top);
 	border-right: 1px solid var(--border-table-bottom);
@@ -360,7 +375,7 @@ a[target="_blank"] svg {
 @supports(-moz-appearance:none) {
 	.window-box,
 	.window-body {
-		scrollbar-color: var(--window-body-scroll-bar) var(--window-body-scroll-bg);
+		scrollbar-color: var(--border-dark) var(--window-body-scroll-bg);
 		scrollbar-width: thin;
 	}
 }
@@ -518,7 +533,7 @@ p {
 }
 
 .text-danger, .danger {
-	color: #f92727;
+	color: var(--bright-red);
 }
 
 .text-info, .info {
@@ -1541,10 +1556,10 @@ FP-Bar */
 .jq-toast-wrap.top-left { top: 20px; left: 20px; right: unset }
 .jq-toast-wrap.top-right { top: 20px; right: 40px; left: unset }
 
-.jq-toast-single { display: block; /*width: 100%*/; padding: 10px; margin: 0 0 5px; border-radius: 4px; font-size: 12px; font-family: arial, sans-serif; line-height: 17px; position: relative;  pointer-events: all !important; background-color: #444444; color: white; }
+.jq-toast-single { display: block; /*width: 100%*/; padding: 10px; margin: 0 0 5px; border-radius: 4px; font-size: 12px; font-family: arial, sans-serif; line-height: 17px; position: relative;  pointer-events: all !important; background-color: var(--grey); color: var(--text-light); }
 
 .jq-toast-single h2 { font-family: arial, sans-serif; font-size: 14px; margin: 0 0 7px; background: none; color: inherit; line-height: inherit; letter-spacing: normal; }
-.jq-toast-single a { color: #eee; text-decoration: none; font-weight: bold; border-bottom: 1px solid white; padding-bottom: 3px; font-size: 12px; }
+.jq-toast-single a { color: var(--tooltip); text-decoration: none; font-weight: bold; border-bottom: 1px solid white; padding-bottom: 3px; font-size: 12px; }
 
 .jq-toast-single ul { margin: 0; background: none; padding:0;list-style: none }
 .jq-toast-single ul li { line-height: 17px; background: none; margin: 0; padding: 0; letter-spacing: normal; }
@@ -1580,7 +1595,7 @@ FP-Bar */
 }
 
 .jq-icon-success .jq-toast-heading {
-	color: #63990a;
+	color: var(--hud-counter-success);
 }
 .jq-icon-error .jq-toast-heading {
 	color: var(--text-danger);
@@ -1745,13 +1760,13 @@ FP-Bar */
 	--litepickerButtonResetBtn: #909090 !important;
 	--litepickerButtonResetBtnHover: var(--bright-color) !important;
 	--litepickerHighlightedDayColor: #333 !important;
-	--litepickerHighlightedDayBg: #ffeb3b !important
+	--litepickerHighlightedDayBg: var(--bright-color) !important
 }
 
 .litepicker .container__months {
-	background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.3)), url('../../css/images/hud/box-bg.png') 0 0 repeat;
-	box-shadow: 0 0 5px rgba(0,0,0,0.4) !important;
-	border: 1px solid #000;
+	background: linear-gradient(var(--black-50), var(--black-30)), url('../../css/images/hud/box-bg.png') 0 0 repeat;
+	box-shadow: 0 0 5px var(--black-50) !important;
+	border: 1px solid var(--black);
 }
 
 .litepicker .container__months .month-item-header {

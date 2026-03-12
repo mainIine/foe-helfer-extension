@@ -17,7 +17,6 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>FoE Helper - City Planner</title>
-    <link href="/vendor/bootstrap-4.2.1/css/bootstrap.min.css" rel="stylesheet">
     <link href="planner.css" rel="stylesheet">
 </head>
 
@@ -33,7 +32,33 @@
     </section>
     <div class="wrapper">
         <section id="buildings" class="sidebar">
-            <!--<button>Add Building</button>-->
+            <input id="buildingFilterText" type="text" placeholder="Filter buildings">
+
+<select id="buildingSort">
+  <option value="area-desc">Size ↓</option>
+  <option value="area-asc">Size ↑</option>
+  <option value="name-asc">Name A–Z</option>
+  <option value="name-desc">Name Z–A</option>
+  <option value="width-asc">Width ↑</option>
+  <option value="width-desc">Width ↓</option>
+  <option value="height-asc">Height ↑</option>
+  <option value="height-desc">Height ↓</option>
+</select>
+
+<select id="buildingTypeFilter">
+  <option value="all">All types</option>
+  <option value="residential">Residential</option>
+  <option value="production">Production</option>
+  <option value="greatbuilding">Great Building</option>
+  <option value="military">Military</option>
+  <option value="main_building">Main Building</option>
+</select>
+
+<select id="buildingStreetFilter">
+  <option value="all">All street reqs</option>
+  <option value="street">Needs street</option>
+  <option value="nostreet">No street needed</option>
+</select>
             <ul></ul>
         </section>
         <div class="content">
@@ -49,19 +74,34 @@
                 </div>
             </header>
             <section id="map">
-                <div class="buttons">
-                    <button id="storeSelection">Store Selection <span></span></button>
-                    <button id="storeAll">Store Everything</button>
-                    <button id="removeStreets">Remove Streets</button>
-                    <button id="reset">Reset</button>
-                    <!--<button id="zoom">Zoom</button>-->
+                <div class="buttons left">
+                    <div class="group">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-download-icon lucide-download btn"><path d="M12 15V3"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/></svg>
+                    <button id="storeSelection" class="btn">Selection <span></span></button>
+                    <button id="storeAll" class="btn">Everything</button></div>
+                    <button id="removeStreets" class="btn">Remove Streets</button>
+                    <button id="reset"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-rotate-ccw-icon lucide-rotate-ccw"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg></button>
                 </div>
-                <div class="info">Drag map by holding ALT key, select multiple buildings with CTRL key, clear selection with right click</div>
-                <div id="canvasWrapper"><canvas id="planner" width="2500" height="2500"></canvas></div>
+                <div class="buttons right">
+                    <div class="group"><button id="zoomIn" class="btn">+</button><button id="zoomOut" class="btn">−</button></div>
+                </div>
+                <div class="info">Drag map by holding ALT key, (de)select buildings with CTRL key, clear selection with right click</div>
+                <div id="canvasWrapper"><div class="shadow"></div><canvas id="planner" width="2500" height="2500"></canvas></div>
             </section>
         </div>
     </div>
-    <script src="planner.js"></script>
-</body>
+    <script src="vars.js"></script>
+    <script src="mapbuilding.js"></script>
+    <script src="placement.js"></script>
+    <script src="sidebar.js"></script>
+    <script src="draw.js"></script>
+    <script src="events.js"></script>
+    <script src="main.js"></script>
 
+    <!-- TODO
+        - saving
+        - sharing
+        - streets 
+    -->
+</body>
 </html>

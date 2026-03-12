@@ -45,21 +45,25 @@ FoEproxy.addHandler("all","all", (data,postData) => {
 		Parts.allowCopyPlace = true;
 		Parts.allowCopyPlaceSetting = false;
 		setTimeout(()=>{Parts.allowCopyPlaceSetting = true}, 2000)
-	} else if (	["TimeService.updateTime",
-				"QuestService.getQuestCategoryTimes",
-				"QuestService.getUpdates",
-				"MessageService.newMessage",
-				"CityMapService.reset",
-				"GreatBuildingsService.getAvailablePackageForgePoints",
-				"ResourceService.getPlayerResourceBag",
-				"CityMapService.updateEntity",
-				"GreatBuildingsService.contributeForgePoints",
-				"ResourceService.getPlayerAutoRefills",
-				"BlueprintService.getGreatBuildingInventoryForGreatBuilding",
-				"GreatBuildingsService.getUnlockCosts",
-				"BlueprintService.unlockLevel",
-				"GreatBuildingsService.getConstructionRanking"
-				].includes(data.requestClass + "." + data.requestMethod)) {
+	} else if (	[
+		"BlueprintService.getGreatBuildingInventoryForGreatBuilding",
+		"BlueprintService.unlockLevel",
+		"CityMapService.reset",
+		"CityMapService.updateEntity",
+		"GreatBuildingsService.contributeForgePoints",
+		"GreatBuildingsService.getAvailablePackageForgePoints",
+		"GreatBuildingsService.getConstructionRanking",
+		"GreatBuildingsService.getUnlockCosts",
+		"GreatBuildingsService.getOtherPlayerOverview",
+		"InventoryService.getItemAmount",
+		"InventoryService.updateItem",
+		"MessageService.newMessage",
+		"QuestService.getQuestCategoryTimes",
+		"QuestService.getUpdates",
+		"ResourceService.getPlayerAutoRefills",
+		"ResourceService.getPlayerResourceBag",
+		"TimeService.updateTime"
+		].includes(data.requestClass + "." + data.requestMethod)) {
 	} else {
 		Parts.allowCopyPlace = false;
 	}
@@ -96,7 +100,7 @@ let Parts = {
 	CopyStrings: {},
 
 	DefaultButtons: [
-		80, 85, 90, 'ark'
+		80, 90, 100, 'ark'
 	],
 
 	// Settings
@@ -168,7 +172,7 @@ let Parts = {
 			});
 
 			HTML.AddCssFile('part-calc');
-			Parts.CalcBody();
+			if (Parts.CityMapEntity !== undefined && Parts.Rankings !== undefined) Parts.CalcBody();
 
 			$('#OwnPartBox').on('click', '#PartsTone', function () {
 				let disabled = $(this).hasClass('deactivated');
@@ -279,12 +283,8 @@ let Parts = {
 
 				if (value === undefined || value === '' || value === '-') return;
 
-				if (!Parts.allowCopyPlace)
-					helper.str.copyToClipboardLegacy(String(value));
-				else {//Set Cursor to input field
-					mouseActions.randomClick([244,-89, "Center"])
-					KeyboardEvents.paste(String(value));
-				}
+				Parts.setDonation(value);
+
 				//prevent double action
 				$this.addClass('copied');
 				setTimeout(() => $this.removeClass('copied'), 800);
@@ -418,7 +418,7 @@ let Parts = {
 				Parts.CalcBackgroundBody();
 			});
 
-			Parts.CalcBody();
+			if (Parts.CityMapEntity !== undefined && Parts.Rankings !== undefined) Parts.CalcBody();
 		}
 		else {
 			HTML.CloseOpenBox('OwnPartBox');
@@ -532,7 +532,8 @@ let Parts = {
 			EigenTotal, // Summe aller Eigenanteile
 			ExtTotal = 0, // Summe aller Externen Einzahlungen
 			EigenCounter = 0, // Eigenanteile Counter während Tabellenerstellung
-			Rest = Total; // Verbleibende FP: Counter während Berechnung
+			Rest = Total, // Verbleibende FP: Counter während Berechnung
+			AlreadyPaid = 0; // Bereits gezahlter Anteil für aktuellen Platz (Fremde LG)
 
 		Parts.PlaceAvailables = [false, false, false, false, false]; // Wird auf true gesetz, wenn auf einem Platz noch eine (nicht externe) Zahlung einzuzahlen ist (wird in Spalte Einzahlen angezeigt)
 		Parts.DangerPlaces = [0, 0, 0, 0, 0]; // Feld mit Dangerinformationen. Wenn > 0, dann die gefährdeten FP
@@ -563,6 +564,9 @@ let Parts = {
 			for (let i = 0; i < Parts.Rankings.length; i++) {
 				// Owner
 				let CurrentMaezen = Parts.Rankings[i]['forge_points'];
+				if (Parts.Rankings[i]?.player?.is_self) {
+					AlreadyPaid = CurrentMaezen;
+				}
 				if (Parts.Rankings[i]['player'] && Parts.Rankings[i]['player']['player_id'] === Parts.CityMapEntity['player_id']) {
 					EigenStart = CurrentMaezen;
 					Rest -= EigenStart;
@@ -759,7 +763,7 @@ let Parts = {
 
 		h.push('<span class="btn-group">');
 		// different arc bonus-buttons
-		let investmentSteps = [80, 85, 90, MainParser.ArkBonus],
+		let investmentSteps = [80, 90, 100, MainParser.ArkBonus],
 			customButtons = localStorage.getItem('CustomPartCalcButtons');
 
 		// custom buttons available
@@ -845,7 +849,10 @@ let Parts = {
 			h.push('<td>' + i18n('Boxes.OwnpartCalculator.Place') + ' ' + (i+1) + '</td>');
 
 			if (Parts.PlaceAvailables[i]) {
-				h.push('<td class="text-center"><strong class="' + (PlayerID === ExtPlayerID ? '' : 'success' + (Parts.Maezens[i] > 0 ? ' copy-fp clickable' : '')) + '" data-copy="' + (Parts.Maezens[i] > 0 ? Parts.Maezens[i] : '') + '">' + (Parts.Maezens[i] > 0 ? HTML.Format(Parts.Maezens[i]) : '-') + '</strong >' + '</td>');
+				let copyvalue = Parts.Maezens[i];
+				if (AlreadyPaid && PlayerID !== ExtPlayerID)
+					copyvalue = Math.max(Parts.Maezens[i]-AlreadyPaid, 0);
+				h.push('<td class="text-center"><strong class="' + (PlayerID === ExtPlayerID ? '' : 'success' + (Parts.Maezens[i] > 0 ? ' copy-fp clickable' : '')) + '" data-copy="' + (copyvalue > 0 ? copyvalue : '') + '">' + (Parts.Maezens[i] > 0 ? HTML.Format(Parts.Maezens[i]) : '-') + '</strong >' + '</td>');
 				if (Parts.LeveltLG[i]) {
 					h.push(`<td class="text-center"><strong class="error">${i18n("Boxes.OwnpartCalculator.levelt")}</strong></td>`);
 				}
@@ -1465,7 +1472,7 @@ let Parts = {
 			}
 			
 			let FPGreatBuilding = GreatBuildings.GreatBuildingsData.find(obj => (obj.ID === EntityID && obj.FPProductions));
-			if (FPGreatBuilding && EntityID !== 'X_FutureEra_Landmark1') { //FP produzierende LGs ohne Arche
+			if (FPGreatBuilding && !['X_FutureEra_Landmark1','X_AllAge_Expedition'].includes(EntityID)) { //FP produzierende LGs ohne Arche
 				HasDoubleCollection = true;
 				if (i < FPGreatBuilding.FPProductions.length) {
 					DoubleCollections[i] = FPGreatBuilding.FPProductions[i];
@@ -1627,7 +1634,7 @@ let Parts = {
 			showMedals = localStorage.getItem('OwnPartShowMedals') || 'true',
 			showPrints = localStorage.getItem('OwnPartShowBP') || 'true',
 			minView = localStorage.getItem('OwnPartMinView') || 'false',
-			autoOpen = localStorage.getItem('OwnPartAutoOpen') || 'false',
+			autoOpen = localStorage.getItem('OwnPartAutoOpen') || 'true',
 			includeStart = localStorage.getItem('OwnPartIncludeStart') || 'true',
 			nV = `<p class="new-row text-center bbd p5 flex gap"><label>${i18n('Boxes.Calculator.Settings.newValue')}:</label> <input type="number" class="settings-values" style="width:30px"> <span class="btn btn-green btn-slim" onclick="Parts.SettingsInsertNewRow()">+</span></p>`;
 		
@@ -1746,6 +1753,15 @@ let Parts = {
 			if (Parts.CopyFormatPerGB !== OldCopyFormatPerGB) Parts.FirstCycle = true;
 			Parts.CalcBody();
 		});
+	},
+	setDonation: (value) => {
+		if (!Parts.allowCopyPlace)
+			helper.str.copyToClipboardLegacy(String(value));
+		else {//Set Cursor to input field
+			mouseActions.randomClick([189, -62, 'Center']); //new position
+			//mouseActions.randomClick([244,-89, "Center"]); //old position
+			KeyboardEvents.paste(String(value));
+		}
 	}
 };
 

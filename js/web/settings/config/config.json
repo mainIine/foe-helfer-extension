@@ -262,6 +262,26 @@
 		"callback": "GexStockWarning",
 		"group": "Auto",
 		"sort": 19
+	},
+
+	{
+		"name": "ShowBlueGalaxyHelper",
+		"status": true,
+		"hidden": true
+	},
+	{
+		"name": "ShowAllyList",
+		"status": true,
+		"hidden": true
+	},
+	{
+		"name": "ShowInvestments",
+		"status": true,
+		"hidden": true
+	},
+	{
+		"name": "ShowOwnPartOnAllGBs",
+		"status": true,
+		"hidden": true
 	}
-	
 ]

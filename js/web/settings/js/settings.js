@@ -11,10 +11,6 @@
  * **************************************************************************************
  */
 
-/**
- *
- * @type {{Help: (function(): string), NotificationView: (function(): string), GetSetting: ((function(*, *=): *)|*), MenuSelected: (function(): string), BoxGroups: string[], BuildBox: Settings.BuildBox, About: (function(): string), StoreSettings: Settings.StoreSettings, InfoboxInputEntryCount: (function(): *|jQuery), VersionInfo: (function(): string), Init: Settings.Init, ExportView: (function(): string), MenuInputLength: (function(): *|jQuery), NotificationStack: (function(): *|jQuery), ImportSettings: Settings.ImportSettings, LoadConfig: Settings.LoadConfig, BuildBody: Settings.BuildBody, ResetBoxCoords: Settings.ResetBoxCoords, LanguageDropdown: (function(): string), Preferences: null, MenuContent: (function(): *), ExportSettings: Settings.ExportSettings}}
- */
 let Settings = {
 
 	/**
@@ -89,7 +85,6 @@ let Settings = {
 	 *
 	 */
 	BuildBody: () => {
-
 		let parentLis = [],
 			div = [],
 			content;
@@ -105,7 +100,7 @@ let Settings = {
 			parentLis.push(`<li><a href="#tab-${i}"><span>${i18n('Settings.Tab.' + g)}</span></a></li>`);
 
 			for (let x in grps) {
-				if (!grps.hasOwnProperty(x)) {
+				if (!grps.hasOwnProperty(x) || grps[x].hidden) {
 					break;
 				}
 

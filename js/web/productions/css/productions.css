@@ -180,7 +180,7 @@
 	background-position: 13px 13px, -366px 0px;
 }
 #ProductionsRatingBody span.resicon.att_boost_defender-guild_expedition {
-	background-position: 13px 13px, -340px 0px;
+	background-position: 13px 13px, -339px 0px;
 }
 #ProductionsRatingBody span.resicon.def_boost_defender-guild_expedition {
 	background-position: 13px 13px, -391px 0px;
@@ -430,22 +430,25 @@
 	background-image: url('../../x_img/gbg-green.png'), url('../images/productions.png');
 	background-size: 80%, auto;
 	background-repeat: no-repeat;
-	background-position: 10px 8px, -312px 0px;
+	background-position: 8px 8px, -312px 0px;
 }
 #ProductionsRatingBody span.resicon.def_boost_attacker-battleground {
-	background-position: 10px 8px, -366px 0px;
+	background-position: 8px 8px, -366px 0px;
 }
 #ProductionsRatingBody span.resicon.att_boost_defender-battleground {
-	background-position: 10px 8px, -340px 0px;
+	background-position: 8px 8px, -340px 0px;
 }
 #ProductionsRatingBody span.resicon.def_boost_defender-battleground {
-	background-position: 10px 8px, -391px 0px;
+	background-position: 8px 8px, -391px 0px;
+}
+#ratingPresetSelect li {
+	padding: 0 7px;
 }
 #Productions th.boost.att_boost_attacker span, #ProductionsRatingBody span.resicon.att_boost_attacker-all {
-	background-position: -311px 0px;
+	background-position: -312px 0px;
 }
 #Productions th.boost.att_boost_defender span, #ProductionsRatingBody span.resicon.att_boost_defender-all {
-	background-position: -340px 0px;
+	background-position: -339px 0px;
 }
 #Productions th.boost.def_boost_attacker span, #ProductionsRatingBody span.resicon.def_boost_attacker-all {
 	background-position: -366px 0px;
@@ -479,6 +482,15 @@
 }
 #Productions #ProductionsBody .tabs ul li.strategy_points a span {
 	background-position: 0 2px;
+}
+#ProductionsRatingBody span.resicon.forge_points_production, #ProductionsRatingBody .tabs ul li.forge_points_production, 
+#ProductionsRatingBody span.resicon.goods_production, #ProductionsRatingBody .tabs ul li.goods_production {
+	background-image: url('../images/productions.png'), url('../images/productions.png');
+	background-repeat: no-repeat;
+	background-position: -812px 2px, 0 0;
+}
+#ProductionsRatingBody span.resicon.goods_production, #ProductionsRatingBody .tabs ul li.goods_production {
+	background-position: -812px 3px, -104px 3px;
 }
 #Productions #ProductionsBody .tabs ul li.money a span {
 	background-position: -26px 3px;
@@ -571,15 +583,27 @@
 	margin: 3px auto 1em;
 	box-shadow: 0 0 500px #000;
 }
-#ProductionsRatingBody div p {
-	max-width: 600px;
-	margin: 1em auto;
-}
 #ProductionsRatingBody .settings th {
 	border-bottom: 1px dotted var(--text-darker);
 }
 #ProductionsRatingSettings {
 	position: relative;
+}
+#ProductionsRatingSettings .heading {
+	padding: 0.5rem 2rem;
+    font-weight: bold;
+    font-size: 1rem;
+    background: var(--black-50);
+}
+#ProductionsRatingSettings .content {
+	max-width: 600px;
+	margin: 1em auto;
+}
+#ProductionsRatingSettings .content .toggle-tab {
+	margin: 0 auto 1em;
+	display: block;
+	width: 120px;
+	font-size: 1rem;
 }
 #RatingsResults {
 	position: sticky;
@@ -604,7 +628,7 @@
 }
 
 input[id*="ProdPerTile"] {
-	width: 100px;
+	width: 80px;
 }
 #ProductionsRating ul.foe-table li > a {
 	flex: none;
@@ -631,9 +655,6 @@ input[id*="ProdPerTile"] {
 #ProductionsRatingBody table td:first-child[data-number^="1"], #ProductionsRatingBody table td:first-child[data-number^="2"], #ProductionsRatingBody table td:first-child[data-number^="3"], #ProductionsRatingBody table td:first-child[data-number^="4"], #ProductionsRatingBody table td:first-child[data-number^="5"], #ProductionsRatingBody table td:first-child[data-number^="6"], #ProductionsRatingBody table td:first-child[data-number^="7"], #ProductionsRatingBody table td:first-child[data-number^="8"], #ProductionsRatingBody table td:first-child[data-number^="9"] {
 	color: var(--text-highlight);
 }
-#ProductionsRatingBody li[class$="guild_expedition"], #ProductionsRatingBody li[class$="battleground"], #ProductionsRatingBody li[class$="guild_raids"] {
-	padding-left: 2em;
-}
 #ProductionsRatingBody strong.success {
 	color: var(--text-highlight);
 }
@@ -642,7 +663,7 @@ input[id*="ProdPerTile"] {
 }
 #ProductionsRatingBody span.resicon {
 	display: inline-block;
-	width: 24px;
+	width: 25px;
 	height: 26px;
 	background: transparent url('../images/productions.png') -236px 2px no-repeat;
 }

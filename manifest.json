@@ -2,7 +2,7 @@
 	"name": "__MSG_appName__",
 	"description": "__MSG_appDesc__",
 	"default_locale": "en",
-	"version": "4.1.1.0",
+	"version": "4.2.0.0",
 
 	"manifest_version": 3,
 	"permissions": [
@@ -53,11 +53,11 @@
 			"world": "MAIN"
 		},
 		{
-            "matches": ["https://*.forgeofempires.com/*"],
-            "include_globs": [ "*forgeofempires.com/game*" ],
-            "js": ["js/foeproxy-fallback.js"],
-            "run_at": "document_start"
-        },
+			"matches": ["https://*.forgeofempires.com/*"],
+			"include_globs": [ "*forgeofempires.com/game*" ],
+			"js": ["js/foeproxy-fallback.js"],
+			"run_at": "document_start"
+		},
 		{
 			"matches": ["https://*.forgeofempires.com/*"],
 			"include_globs": [ "*forgeofempires.com/game*" ],
