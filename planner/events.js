@@ -139,6 +139,25 @@ window.PlannerApp = window.PlannerApp || {};
         if (state.placingBuilding) return;
         if (e.altKey || e.ctrlKey) return;
 
+        if (state.streetPlacement.active) {
+            const point = app.getCanvasPointElem(e);
+            const tile = app.worldToTile(point.x, point.y);
+
+            if (!state.streetPlacement.startTile) {
+                state.streetPlacement.startTile = tile;
+                state.streetPlacement.previewTiles = [tile];
+            } else {
+                state.streetPlacement.previewTiles = app.getStraightLineTiles(
+                    state.streetPlacement.startTile,
+                    tile
+                );
+                commitStreetPreview();
+            }
+
+            app.redrawMap();
+            return;
+        }
+
         const point = app.getCanvasPointElem(e);
         const building = app.hitTestBuilding(point.x, point.y);
         if (!building) return;
@@ -162,6 +181,22 @@ window.PlannerApp = window.PlannerApp || {};
 
     function handleCanvasMouseMove(e) {
         state.lastMouseElem = app.getCanvasPointElem(e);
+
+        if (state.streetPlacement.active) {
+            const currentTile = app.worldToTile(state.lastMouseElem.x, state.lastMouseElem.y);
+
+            if (state.streetPlacement.startTile) {
+                state.streetPlacement.previewTiles = app.getStraightLineTiles(
+                    state.streetPlacement.startTile,
+                    currentTile
+                );
+            } else {
+                state.streetPlacement.previewTiles = [currentTile];
+            }
+
+            app.redrawMap();
+            return;
+        }
 
         if (!state.placingBuilding) return;
 
@@ -206,12 +241,73 @@ window.PlannerApp = window.PlannerApp || {};
         continuePlacingStoredBuilding(placedMetaId);
     }
 
+    function getStreetMeta() {
+        return Object.values(state.metaData).find(x => x.type === 'street') || null;
+    }
+
+    function startStreetPlacement() {
+        if (state.streetPlacement.active) {
+            cancelStreetPlacement();
+            return;
+        }
+        state.placingBuilding = null;
+        state.dragCopy = null;
+        state.streetPlacement.active = true;
+        state.streetPlacement.startTile = null;
+        state.streetPlacement.previewTiles = [];
+        dom.placeStreetBtn.classList.add('active');
+        app.redrawMap();
+    }
+
+    function cancelStreetPlacement() {
+        state.streetPlacement.active = false;
+        state.streetPlacement.startTile = null;
+        state.streetPlacement.previewTiles = [];
+        dom.placeStreetBtn.classList.remove('active');
+        app.redrawMap();
+    }
+
+    function createStreetBuildingAtTile(tx, ty, streetMeta) {
+        const forcedMeta = { ...streetMeta, width: 1, length: 1 };
+        return new app.MapBuilding(
+            {
+                cityentity_id: streetMeta.id,
+                type: 'street',
+                x: tx,
+                y: ty
+            },
+            forcedMeta
+        );
+    }
+
+    function commitStreetPreview() {
+        const streetMeta = getStreetMeta();
+        if (!streetMeta) return;
+
+        for (const tile of state.streetPlacement.previewTiles) {
+            if (app.isTileOccupiedByNonStreet(tile.x, tile.y)) continue;
+
+            const existing = state.occupiedTiles.get(app.tileKey(tile.x, tile.y));
+            if (existing && existing.meta.type === 'street') continue;
+
+            const street = createStreetBuildingAtTile(tile.x, tile.y, streetMeta);
+            state.mapBuildings.push(street);
+            app.addBuildingToOccupiedTiles(street);
+        }
+
+        app.updateStats();
+        state.streetPlacement.startTile = null;
+        state.streetPlacement.previewTiles = [];
+        app.redrawMap();
+    }
+
     function bindMapDrag() {
         let drag = null;
 
         const mouseDownHandler = (e) => {
             if (e.button !== 0) return;
             if (state.placingBuilding) return;
+            if (state.streetPlacement.active && !e.altKey) return;
 
             let mode = null;
 
@@ -389,6 +485,7 @@ window.PlannerApp = window.PlannerApp || {};
 
         dom.zoomInBtn.addEventListener('click', app.zoomIn);
         dom.zoomOutBtn.addEventListener('click', app.zoomOut);
+        dom.placeStreetBtn.addEventListener('click', startStreetPlacement);
 
         dom.storeBuildingsBtn.addEventListener('click', () => {
             state.storedBuildings = state.storedBuildings.concat(state.mapBuildings);
@@ -432,6 +529,11 @@ window.PlannerApp = window.PlannerApp || {};
 
         document.addEventListener('contextmenu', (e) => {
             e.preventDefault();
+
+            if (state.streetPlacement.active) {
+                cancelStreetPlacement();
+                return;
+            }
 
             if (state.placingBuilding) {
                 state.placingBuilding = null;

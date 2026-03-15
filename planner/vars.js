@@ -27,7 +27,8 @@ window.PlannerApp.dom = {
     buildingStreetFilter: document.querySelector('#buildingStreetFilter'),
 
     oldStreetsEl: document.querySelector('.old .streets'),
-    newStreetsEl: document.querySelector('.new .streets')
+    newStreetsEl: document.querySelector('.new .streets'),
+    placeStreetBtn: document.querySelector('#placeStreet'),
 };
 
 window.PlannerApp.state = {
@@ -59,5 +60,10 @@ window.PlannerApp.state = {
         filterText: '',
         filterType: 'all',
         filterStreetReq: 'all'
+    },
+    streetPlacement: {
+        active: false,
+        startTile: null,
+        previewTiles: []
     }
 };

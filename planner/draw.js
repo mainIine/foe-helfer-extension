@@ -120,7 +120,7 @@ window.PlannerApp = window.PlannerApp || {};
                 buildingData.type !== 'friends_tavern' &&
                 !String(buildingData.type).includes('hub')
             ) {
-                const newBuilding = new app.MapBuilding(building, buildingData);
+                const newBuilding = new app.MapBuilding({ ...building }, buildingData);
                 state.mapBuildings.push(newBuilding);
             }
         }
@@ -166,6 +166,8 @@ window.PlannerApp = window.PlannerApp || {};
         if (state.dragCopy) {
             drawBuildingCopy(ctx, state.dragCopy.building, state.dragCopy.x, state.dragCopy.y, state.dragCopy.valid);
         }
+
+        drawStreetPreview(ctx);
     }
 
     function updateStats() {
@@ -216,6 +218,29 @@ window.PlannerApp = window.PlannerApp || {};
         zoomAtScreenPoint(newScale, cx, cy);
     }
 
+    function drawStreetPreview(context) {
+        const streetState = state.streetPlacement;
+        if (!streetState.active || !streetState.previewTiles.length) return;
+
+        context.save();
+
+        for (const tile of streetState.previewTiles) {
+            const blocked = app.isTileOccupiedByNonStreet(tile.x, tile.y);
+
+            context.globalAlpha = 0.55;
+            context.fillStyle = blocked ? '#ff4d4d' : '#66c440';
+            context.fillRect(tile.x * SIZE, tile.y * SIZE, SIZE, SIZE);
+
+            context.globalAlpha = 1;
+            context.strokeStyle = blocked ? '#8b0000' : '#1d6b2a';
+            context.lineWidth = 2 / state.zoomScale;
+            context.setLineDash([6 / state.zoomScale, 4 / state.zoomScale]);
+            context.strokeRect(tile.x * SIZE, tile.y * SIZE, SIZE, SIZE);
+        }
+
+        context.restore();
+    }
+
     app.ctx = ctx;
     app.resizeCanvasToCSSSize = resizeCanvasToCSSSize;
     app.getCanvasPointElem = getCanvasPointElem;
@@ -231,4 +256,5 @@ window.PlannerApp = window.PlannerApp || {};
     app.zoomAtScreenPoint = zoomAtScreenPoint;
     app.zoomIn = zoomIn;
     app.zoomOut = zoomOut;
+    app.drawStreetPreview = drawStreetPreview;
 })(window.PlannerApp);

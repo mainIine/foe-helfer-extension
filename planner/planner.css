@@ -231,3 +231,10 @@ canvas {
 .hidden { display: none; }
 
 .sideview { transform: rotate(33deg) skew(-30deg,-5deg) }
+
+#placeStreet.active {
+    background-color: #1d6b2a;
+    border-color: #66c440;
+    color: #fff;
+    box-shadow: 0 0 6px #66c44088;
+}
