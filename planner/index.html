@@ -28,42 +28,59 @@
             <p>The button submits the latest text from your clipboard and tries to parse it. Please use the "Copy to Clipboard" function in the City Overview of your City before clicking it.</p>
             <button>Submit</button>
             <span class="error"></span>
+            <hr style="border-color:#ffffff22; margin: 1em 0">
+            <p style="margin:0 0 0.5em">Or load a previously exported save file:</p>
+            <label style="cursor:pointer"><input type="file" id="overlayImportFileInput" accept=".json" style="display:none"><button onclick="this.closest('label').querySelector('input').click(); return false;">Load save file</button></label>
         </div>
     </section>
+
+
     <div class="wrapper">
-        <section id="buildings" class="sidebar">
-            <input id="buildingFilterText" type="text" placeholder="Filter buildings">
+        <section class="sidebar">
+            <div>
+            
+            <div id="metaSearch">
+                <input id="metaSearchInput" type="text" placeholder="Add a new building…" autocomplete="off">
+                <ul id="metaSearchResults"></ul>
+            </div>
+            
+            <input id="buildingFilterText" type="text" placeholder="Find buildings">
 
-<select id="buildingSort">
-  <option value="area-desc">Size ↓</option>
-  <option value="area-asc">Size ↑</option>
-  <option value="name-asc">Name A–Z</option>
-  <option value="name-desc">Name Z–A</option>
-  <option value="width-asc">Width ↑</option>
-  <option value="width-desc">Width ↓</option>
-  <option value="height-asc">Height ↑</option>
-  <option value="height-desc">Height ↓</option>
-</select>
+            <select id="buildingSort">
+                <option value="name-asc">Name A–Z</option>
+                <option value="name-desc">Name Z–A</option>
+                <option value="width-asc">y ↑</option>
+                <option value="width-desc">y ↓</option>
+                <option value="height-asc">x ↑</option>
+                <option value="height-desc">x ↓</option>
+            </select>
 
-<select id="buildingTypeFilter">
-  <option value="all">All types</option>
-  <option value="residential">Residential</option>
-  <option value="production">Production</option>
-  <option value="greatbuilding">Great Building</option>
-  <option value="military">Military</option>
-  <option value="main_building">Main Building</option>
-</select>
+            <select id="buildingTypeFilter">
+                <option value="all">Types</option>
+                <option value="residential">Residential</option>
+                <option value="production">Production</option>
+                <option value="greatbuilding">Great Building</option>
+                <option value="military">Military</option>
+                <option value="main_building">Main Building</option>
+            </select>
 
-<select id="buildingStreetFilter">
-  <option value="all">All street reqs</option>
-  <option value="street">Needs street</option>
-  <option value="nostreet">No street needed</option>
-</select>
-            <ul></ul>
+            <select id="buildingStreetFilter">
+                <option value="all">Streets</option>
+                <option value="street">With street</option>
+                <option value="nostreet">No streets</option>
+            </select>
+            </div>
+            <ul id="storedBuildingsList"></ul>
+            
+            <div class="group">
+                <button id="saveState" class="btn">Save</button>
+                <button id="exportState" class="btn">Export</button>
+                <button id="importState" class="btn">Import</button>
+            </div>
         </section>
         <div class="content">
             <header>
-                <h1>FoE Helper - City Planner v0.1</h1>
+                <h1>FoE Helper - City Planner v0.2</h1>
                 <div class="stats">
                     <div class="old">
                         Streets: <span class="streets"></span>
@@ -79,14 +96,17 @@
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-download-icon lucide-download btn"><path d="M12 15V3"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/></svg>
                     <button id="storeSelection" class="btn">Selection <span></span></button>
                     <button id="storeAll" class="btn">Everything</button></div>
-                    <button id="removeStreets" class="btn">Remove Streets</button>
-                    <button id="placeStreet">Place streets</button>
+                    <div class="group">
+                        <button id="removeStreets" class="btn">Remove All Streets</button>
+                        <button id="placeStreet">Place streets</button>
+                    </div>
+                    <input type="file" id="importFileInput" accept=".json" style="display:none">
                     <button id="reset"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-rotate-ccw-icon lucide-rotate-ccw"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg></button>
                 </div>
                 <div class="buttons right">
                     <div class="group"><button id="zoomIn" class="btn">+</button><button id="zoomOut" class="btn">−</button></div>
                 </div>
-                <div class="info">Drag map by holding ALT key, (de)select buildings with CTRL key, clear selection with right click</div>
+                <div class="info">Drag map by holding ALT key, (de)select buildings with CTRL key, cancel actions with right click</div>
                 <div id="canvasWrapper"><div class="shadow"></div><canvas id="planner" width="2500" height="2500"></canvas></div>
             </section>
         </div>
@@ -100,9 +120,7 @@
     <script src="main.js"></script>
 
     <!-- TODO
-        - saving
         - sharing
-        - streets 
     -->
 </body>
 </html>

@@ -167,6 +167,7 @@ window.PlannerApp = window.PlannerApp || {};
             drawBuildingCopy(ctx, state.dragCopy.building, state.dragCopy.x, state.dragCopy.y, state.dragCopy.valid);
         }
 
+        drawSelectionRect(ctx);
         drawStreetPreview(ctx);
     }
 
@@ -218,6 +219,49 @@ window.PlannerApp = window.PlannerApp || {};
         zoomAtScreenPoint(newScale, cx, cy);
     }
 
+    function drawSelectionRect(context) {
+        const rect = state.selectionRect;
+        if (!rect) return;
+
+        const minX = Math.min(rect.start.x, rect.end.x);
+        const minY = Math.min(rect.start.y, rect.end.y);
+        const maxX = Math.max(rect.start.x, rect.end.x);
+        const maxY = Math.max(rect.start.y, rect.end.y);
+        const w = maxX - minX;
+        const h = maxY - minY;
+
+        // Highlight buildings that fall within the current drag rect.
+        for (const building of state.mapBuildings) {
+            if (building.meta.type === 'street') continue;
+            const intersects =
+                building.x <= maxX &&
+                building.y <= maxY &&
+                (building.x + building.width)  >= minX &&
+                (building.y + building.height) >= minY;
+
+            if (intersects && !building.isSelected) {
+                context.save();
+                context.globalAlpha = 0.25;
+                context.fillStyle = '#4af';
+                context.fillRect(building.x, building.y, building.width, building.height);
+                context.restore();
+            }
+        }
+
+        // Draw the rubber-band rectangle itself.
+        context.save();
+        context.globalAlpha = 0.15;
+        context.fillStyle = '#4af';
+        context.fillRect(minX, minY, w, h);
+
+        context.globalAlpha = 1;
+        context.strokeStyle = '#4af';
+        context.lineWidth = 1 / state.zoomScale;
+        context.setLineDash([6 / state.zoomScale, 3 / state.zoomScale]);
+        context.strokeRect(minX, minY, w, h);
+        context.restore();
+    }
+
     function drawStreetPreview(context) {
         const streetState = state.streetPlacement;
         if (!streetState.active || !streetState.previewTiles.length) return;
@@ -256,5 +300,6 @@ window.PlannerApp = window.PlannerApp || {};
     app.zoomAtScreenPoint = zoomAtScreenPoint;
     app.zoomIn = zoomIn;
     app.zoomOut = zoomOut;
+    app.drawSelectionRect = drawSelectionRect;
     app.drawStreetPreview = drawStreetPreview;
 })(window.PlannerApp);
