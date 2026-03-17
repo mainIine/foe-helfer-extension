@@ -178,6 +178,7 @@
     "Boxes.Calculator.MaxLevel": "Max. Level",
     "Boxes.Calculator.Meds": "Meds",
     "Boxes.Calculator.Profit": "Differenz",
+    "Boxes.Calculator.OwnPartClose": "Eigenanteilsrechner schließen, wenn der Kostenrechner geöffnet wird",
     "Boxes.Calculator.Settings.Save": "Speichern",
     "Boxes.Calculator.Settings.newValue": "neuer Wert",
     "Boxes.Calculator.Step": "Stufe ",

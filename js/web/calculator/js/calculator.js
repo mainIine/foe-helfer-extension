@@ -21,6 +21,10 @@ FoEproxy.addHandler("GreatBuildingsService","getConstruction", (data,postData) =
 	if ($('#costCalculator').length === 0 && localStorage.getItem('CalcAutoOpen') == 'true' && postData[0].requestData[1] !== ExtPlayerID) {
 		Calculator.Show();
 	}
+	if (localStorage.getItem('OwnPartClose') == 'true' && localStorage.getItem('CalcAutoOpen') == 'true')
+		if ($('#OwnPartBox').length > 0) {
+			HTML.CloseOpenBox('OwnPartBox');
+		}
 });
 
 let Calculator = {
@@ -33,6 +37,7 @@ let Calculator = {
 	LastRecurringQuests: undefined,
 	ForderBonusPerConversation: true,
 	AutoOpen: false,
+	OwnPartClose: false,
 	ShowBP: true,
 	ShowMedals: true,
 	DefaultButtons: [
@@ -741,7 +746,8 @@ let Calculator = {
 		c.push(nV);
 
 		c.push('<label for="forderbonusperconversation"><input id="forderbonusperconversation" class="forderbonusperconversation game-cursor" ' + (Calculator.ForderBonusPerConversation ? 'checked' : '') + ' type="checkbox"> ' + i18n('Boxes.Calculator.ForderBonusPerConversation')+'</label><br/>');
-		c.push('<label for="CalcAutoOpen"><input id="CalcAutoOpen" class="CalcAutoOpen game-cursor" ' + (Calculator.AutoOpen ? 'checked' : '') + ' type="checkbox"> ' + i18n('Settings.ShowOwnPartAutoOpen.Desc'));
+		c.push('<label for="CalcAutoOpen"><input id="CalcAutoOpen" class="CalcAutoOpen game-cursor" ' + (Calculator.AutoOpen ? 'checked' : '') + ' type="checkbox"> ' + i18n('Settings.ShowOwnPartAutoOpen.Desc')+'</label><br/>');
+		c.push('<label for="OwnPartClose"><input id="OwnPartClose" class="OwnPartClose game-cursor" ' + (Calculator.OwnPartClose ? 'checked' : '') + ' type="checkbox"> ' + i18n('Boxes.Calculator.OwnPartClose') + '</label>');
 
 		// save button
 		c.push(`<p class="text-center"><button id="save-calculator-settings" class="btn btn-green" onclick="Calculator.SettingsSaveValues()">${i18n('Boxes.Calculator.Settings.Save')}</button></p>`);
@@ -784,6 +790,8 @@ let Calculator = {
 			localStorage.setItem('CalculatorForderBonusPerConversation', Calculator.ForderBonusPerConversation);
 			Calculator.AutoOpen = $('.CalcAutoOpen').prop('checked');
 			localStorage.setItem('CalcAutoOpen', Calculator.AutoOpen);
+			Calculator.OwnPartClose = $('.OwnPartClose').prop('checked');
+			localStorage.setItem('OwnPartClose', Calculator.OwnPartClose)
 		});
 
 		// save new buttons

@@ -177,6 +177,7 @@
     "Boxes.Calculator.LevelWarning": "Warning! Levelling this GB!",
     "Boxes.Calculator.MaxLevel": "Max level",
     "Boxes.Calculator.Meds": "Meds",
+    "Boxes.Calculator.OwnPartClose": "Close the GB Calculator when this window is auto-opened",
     "Boxes.Calculator.Profit": "Difference",
     "Boxes.Calculator.Settings.Save": "Save",
     "Boxes.Calculator.Settings.newValue": "New Value",
