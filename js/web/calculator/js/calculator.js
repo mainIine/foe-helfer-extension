@@ -21,7 +21,7 @@ FoEproxy.addHandler("GreatBuildingsService","getConstruction", (data,postData) =
 	if ($('#costCalculator').length === 0 && localStorage.getItem('CalcAutoOpen') == 'true' && postData[0].requestData[1] !== ExtPlayerID) {
 		Calculator.Show();
 	}
-	if (localStorage.getItem('OwnPartClose') == 'true' && localStorage.getItem('CalcAutoOpen') == 'true')
+	if (localStorage.getItem('OwnPartClose') == 'true' && localStorage.getItem('CalcAutoOpen') == 'true' && postData[0].requestData[1] !== ExtPlayerID)
 		if ($('#OwnPartBox').length > 0) {
 			HTML.CloseOpenBox('OwnPartBox');
 		}
