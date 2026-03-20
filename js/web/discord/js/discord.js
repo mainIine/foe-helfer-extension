@@ -62,15 +62,8 @@ let Discord = {
 			$body = $('body');
 		h.push('<div id="helperWebhook"></div>');
 
-		$('#DiscordBody').append(h.join(''));
-
-		h.push(`<table class="foe-table no-hover vertical-top">`);
-			h.push(`<thead>`);
-				h.push(`<tr>`);
-					h.push(`<th colspan="2">${i18n('Boxes.Discord.Message')}</th>`);
-				h.push(`</tr>`);
-			h.push(`</thead>`);
-		h.push(`<tbody>`);
+		h.push(`<h1 class="p5 dark-bg">${i18n('Boxes.Discord.TitleEntries')}</h1>`);
+		h.push(`<ul class="foe-table">`);
 
 		for(let i in Discord.WebHooks) {
 			if(!Discord.WebHooks.hasOwnProperty(i) || !Discord.WebHooks[i]) {
@@ -79,9 +72,9 @@ let Discord = {
 
 			let d = Discord.WebHooks[i];
 
-			h.push(`<tr>`);
-				h.push(`<td>${d.message}</td>`);
-				h.push(`<td style="white-space:nowrap;" class="text-right">
+			h.push(`<li>`);
+				h.push(`<span>${d.message}</span>`);
+				h.push(`<span style="white-space:nowrap;" class="text-right">
 					<span class="btn-group">
 					<button class="btn btn-green btn-slim" role="button" type="button" onclick="Discord.SendEntry(${i})">${i18n('General.Send')}</button>
 					<button class="btn btn-slim" role="button" type="button" data-original-title="${i18n('Boxes.Discord.CopyTitle')}" onclick="Discord.CopyEntry(${i})"><img src="${extUrl}js/web/discord/images/copy-paste.svg" style="width: 17px;" alt="" /></button>
@@ -89,16 +82,15 @@ let Discord = {
 					<button class="btn btn-slim btn-delete icon" role="button" type="button" onclick="Discord.Delete(${i})"></button>
 					
 					</span>
-					</td>`);
-			h.push(`</tr>`);
+					</span>`);
+			h.push(`</li>`);
 		}
 
-		h.push(`</tbody>`);
-		h.push(`</table>`);
+		h.push(`</ul>`);
 		h.push(`<div class="formWrapper"></div>`);
 
 		h.push(`<div>`);
-			h.push(`<button class="btn" id="addEntry" role="button" type="button" onclick="Discord.EntryForm()">${i18n('Boxes.Discord.TitleNewEntry')}</button>`);
+			h.push(`<button class="btn" id="addDiscordEntry" role="button" type="button" onclick="Discord.EntryForm()">${i18n('Boxes.Discord.TitleNewEntry')}</button>`);
 		h.push(`</div>`);
 
 		$('#DiscordBody').html(h.join(''));
@@ -116,7 +108,7 @@ let Discord = {
 		let h = [];
 		h.push(`<div class="foehelper-accordion ${state}">`);
 			h.push('<div class="foehelper-accordion-head">');
-				h.push('<strong>Webhook URLs</strong>');
+				h.push(`<strong>${i18n('Boxes.Discord.WebhookUrlManage')}</strong>`);
 			h.push(`</div>`);
 		
 		h.push('<div class="foehelper-accordion-body">');
@@ -124,12 +116,6 @@ let Discord = {
 		h.push(`<form onsubmit="return false;" autocomplete="off">`);
 		h.push(`<table class="foe-table no-hover vertical-middle" style="margin-bottom: 1.5rem;">`);
 		h.push(`<thead>`);
-		h.push(`<tr>`);
-		h.push(`<th>Name</th>`);
-		h.push(`<th>URL</th>`);
-		h.push(`<th style="width:1%" class="text-right"></th>`);
-		h.push(`</tr>`);
-		h.push(`</thead>`);
 		h.push(`<tbody>`);
 
 		for(let url of Discord.WebHooksUrls) {
@@ -167,7 +153,7 @@ let Discord = {
 	},
 
 	EntryForm: (i = '')=> {
-		$('#addEntry').hide();
+		$('#addDiscordEntry').hide();
 		if ($('#discord-entry-form').length && $('#discord-entry-form').data('entry') === String(i)) {
 			$('#discord-entry-form').slideDown(function(){ $(this).remove(); });
 			return;
@@ -181,11 +167,15 @@ let Discord = {
 
 		let h = [];
 
-		h.push(`<div id="discord-entry-form" style="display:none;">`);
+		h.push(`<div id="discord-entry-form" style="display:none;" class="dark-bg">
+			<h1 class="p5">${i18n('Boxes.Discord.TitleNewEntry')}</h1>`);
 		h.push(`<form action="" onsubmit="return false;" autocomplete="off">
 			<b>${i18n('Boxes.Discord.WebhookUrl')}</b>`);
 		h.push(`<ul id="url-list" class="clickable">`);
-
+		
+		if (Discord.WebHooksUrls.length === 0) {
+			h.push(`<li><em>${i18n('Boxes.Discord.WebhookUrlNeeded')}</em></li>`);
+		}
 		for(let j in Discord.WebHooksUrls){
 			if(!Discord.WebHooksUrls.hasOwnProperty(j)) continue;
 
@@ -208,8 +198,8 @@ let Discord = {
 
 		h.push(`<div>`);
 		h.push(`<button class="btn" role="button" type="button" onclick="Discord.CancelEntryForm()">${i18n('General.Cancel')}</button>&nbsp;`);
-		h.push(`<button class="btn" role="button" type="button" onclick="Discord.SendEntry()">${i18n('General.Send')}</button>&nbsp;`);
-		h.push(`<button class="btn btn-green" role="button" type="button" onclick="Discord.SaveEntry(${i})">${i18n('General.Save')}</button></div>`);
+		h.push(`<button class="btn btn-green" role="button" type="button" onclick="Discord.SendEntry()">${i18n('General.Send')}</button>&nbsp;`);
+		h.push(`<button class="btn" role="button" type="button" onclick="Discord.SaveEntry(${i})">${i18n('General.Save')}</button></div>`);
 
 		h.push(`</form></div>`);
 
@@ -220,7 +210,7 @@ let Discord = {
 
 
 	SaveEntry: (i = '')=> {
-		$('#addEntry').show();
+		$('#addDiscordEntry').show();
 		const data = {
 			url: $('#url').val(),
 			message: $('#message').val()
@@ -240,7 +230,7 @@ let Discord = {
 
 	CancelEntryForm: ()=> {
 		$('#discord-entry-form').slideUp(function(){ $(this).remove(); });
-		$('#addEntry').show();
+		$('#addDiscordEntry').show();
 	},
 
 

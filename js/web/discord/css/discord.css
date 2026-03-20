@@ -17,7 +17,7 @@
 }
 
 #discord-entry-form b {
-	width: 150px;
+	width: 155px;
 }
 
 #discord-entry-form #url-list {
@@ -51,4 +51,9 @@
 
 #discord-entry-form textarea {
 	width: calc(100% - 160px);
+	resize: vertical;
+}
+
+#Discord #addDiscordEntry {
+	margin-top: 0.5rem;
 }
