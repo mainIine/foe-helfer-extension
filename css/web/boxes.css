@@ -879,8 +879,12 @@ Accordion */
 	margin-bottom: 2px;
 	border-top: 1px solid var(--border-table-top);
 	border-bottom: 1px solid var(--border-table-bottom);
-	padding: 3px 0;
+	padding: 3px;
 	position: relative;
+}
+
+.foehelper-accordion:hover .foehelper-accordion-head {
+    box-shadow: inset 0px 0px 0px 2000px var(--table-bg-hover);
 }
 
 .foehelper-accordion-head::after {

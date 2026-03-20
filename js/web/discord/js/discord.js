@@ -12,19 +12,6 @@
  * *************************************************************************************
  */
 
-/*
-
-@Todo:
-- Testbutton to check the Settings
--
-
-*/
-
-/**
- *
- * @type {{Delete: Discord.Delete, init: Discord.init, WebHookDone: {}, ActiveEntry: number, CopyEntry: Discord.CopyEntry, TestEntry: Discord.TestEntry, CloseOverlay: Discord.CloseOverlay, PrepareMessageForSend: Discord.PrepareMessageForSend, BuildBox: Discord.BuildBox, EntryForm: Discord.EntryForm, SaveTheData: Discord.SaveTheData, WebhookUrls: Discord.WebhookUrls, StorageName: string, Save: Discord.Save, CheckForEvent: Discord.CheckForEvent, WebHooks: *[], BuildContent: Discord.BuildContent, WebHooksUrls: *[], SendMessage: (function(*, *): Promise<Response>)}}
- */
-
 let Discord = {
 
 	StorageName: 'DiscordWebHooks',
@@ -38,38 +25,31 @@ let Discord = {
 	 * Get active Webhooks
 	 */
 	init: ()=> {
-
 		let webhooks = JSON.parse(localStorage.getItem(Discord.StorageName));
-
-		if (webhooks)
-		{
+		if (webhooks) {
 			Discord.WebHooks = webhooks;
 		}
 
 		let url = JSON.parse(localStorage.getItem('DiscordWebHookUrls'));
-
-		if (url)
-		{
+		if (url) {
 			Discord.WebHooksUrls = url;
 		}
 	},
 
 
 	BuildBox: ()=> {
-		if ($('#Discord').length === 0)
-		{
+		if ($('#Discord').length === 0) {
 			HTML.Box({
 				id: 'Discord',
 				title: i18n('Boxes.Discord.Title'),
 				auto_close: true,
 				dragdrop: true,
-				ask: i18n('Boxes.Discord.HelpLink')
+				resize: true
 			});
 
 			HTML.AddCssFile('discord');
 		}
-		else
-		{
+		else {
 			HTML.CloseOpenBox('Discord');
 			return ;
 		}
@@ -77,64 +57,121 @@ let Discord = {
 		Discord.BuildContent();
 	},
 
-
 	BuildContent: ()=> {
-
 		let h = [],
 			$body = $('body');
+		h.push('<div id="helperWebhook"></div>');
+
+		$('#DiscordBody').append(h.join(''));
 
 		h.push(`<table class="foe-table no-hover vertical-top">`);
 			h.push(`<thead>`);
 				h.push(`<tr>`);
-					h.push(`<th>${i18n('Boxes.Discord.Name')}</th>`);
-					h.push(`<th>${i18n('Boxes.Discord.Event')}</th>`);
-					h.push(`<th>${i18n('Boxes.Discord.Message')}</th>`);
-					h.push(`<th style="width:1%" class="text-right"><button class="btn btn-slim" role="button" type="button" onclick="Discord.WebhookUrlsForm()">Webhook URLs</button></th>`);
+					h.push(`<th colspan="2">${i18n('Boxes.Discord.Message')}</th>`);
 				h.push(`</tr>`);
 			h.push(`</thead>`);
 		h.push(`<tbody>`);
 
-		for(let i in Discord.WebHooks)
-		{
-			if(!Discord.WebHooks.hasOwnProperty(i)) {
-				continue;
-			}
-
-			if(!Discord.WebHooks[i] || !Discord.WebHooks[i]['name']){
+		for(let i in Discord.WebHooks) {
+			if(!Discord.WebHooks.hasOwnProperty(i) || !Discord.WebHooks[i]) {
 				continue;
 			}
 
 			let d = Discord.WebHooks[i];
 
 			h.push(`<tr>`);
-				h.push(`<td>${d.name}</td>`);
-				h.push(`<td>${d.event}</td>`);
 				h.push(`<td>${d.message}</td>`);
-				h.push(`<td style="white-space:nowrap;"><span class="btn-group"><button class="btn" role="button" type="button" data-original-title="${i18n('Boxes.Discord.CopyTitle')}" onclick="Discord.CopyEntry(${i})"><img src="${extUrl}js/web/discord/images/copy-paste.svg" style="width: 19px;" alt="" /></button><button class="btn" role="button" type="button" onclick="Discord.EntryForm(${i})">${i18n('Boxes.Discord.EditEntry')}</button><button class="btn btn-delete" role="button" type="button" onclick="Discord.Delete(${i})">${i18n('Boxes.Discord.DeleteEntry')}</button></span></td>`);
+				h.push(`<td style="white-space:nowrap;" class="text-right">
+					<span class="btn-group">
+					<button class="btn btn-green btn-slim" role="button" type="button" onclick="Discord.SendEntry(${i})">${i18n('General.Send')}</button>
+					<button class="btn btn-slim" role="button" type="button" data-original-title="${i18n('Boxes.Discord.CopyTitle')}" onclick="Discord.CopyEntry(${i})"><img src="${extUrl}js/web/discord/images/copy-paste.svg" style="width: 17px;" alt="" /></button>
+					<button class="btn btn-slim btn-edit" role="button" type="button" onclick="Discord.EntryForm(${i})">${i18n('Boxes.Discord.EditEntry')}</button>
+					<button class="btn btn-slim btn-delete icon" role="button" type="button" onclick="Discord.Delete(${i})"></button>
+					
+					</span>
+					</td>`);
 			h.push(`</tr>`);
 		}
 
-		h.push(`<tr>`);
-			h.push(`<td colspan="5" class="text-right"><small><em class="text-warning">${i18n('Boxes.Discord.VisitGGMapBefore')}</em></small>&nbsp;&nbsp;<button class="btn btn-green" role="button" type="button" onclick="Discord.EntryForm()">${i18n('Boxes.Discord.TitleNewEntry')}</button></td>`);
-		h.push(`</tr>`);
-
 		h.push(`</tbody>`);
 		h.push(`</table>`);
+		h.push(`<div class="formWrapper"></div>`);
+
+		h.push(`<div>`);
+			h.push(`<button class="btn" id="addEntry" role="button" type="button" onclick="Discord.EntryForm()">${i18n('Boxes.Discord.TitleNewEntry')}</button>`);
+		h.push(`</div>`);
 
 		$('#DiscordBody').html(h.join(''));
 
-		$body.on('click', '#DiscordNewEntryclose', function (){
-			Discord.CloseOverlay('DiscordNewEntry');
-		});
 		$('[data-original-title]').tooltip();
 
 		$body.on('click', '#DiscordWebhookUrlsclose', function (){
 			Discord.CloseOverlay('DiscordWebhookUrls');
 		});
+
+		Discord.BuildWebhookFormContent();	
 	},
 
+	BuildWebhookFormContent(state = '') {
+		let h = [];
+		h.push(`<div class="foehelper-accordion ${state}">`);
+			h.push('<div class="foehelper-accordion-head">');
+				h.push('<strong>Webhook URLs</strong>');
+			h.push(`</div>`);
+		
+		h.push('<div class="foehelper-accordion-body">');
+		
+		h.push(`<form onsubmit="return false;" autocomplete="off">`);
+		h.push(`<table class="foe-table no-hover vertical-middle" style="margin-bottom: 1.5rem;">`);
+		h.push(`<thead>`);
+		h.push(`<tr>`);
+		h.push(`<th>Name</th>`);
+		h.push(`<th>URL</th>`);
+		h.push(`<th style="width:1%" class="text-right"></th>`);
+		h.push(`</tr>`);
+		h.push(`</thead>`);
+		h.push(`<tbody>`);
+
+		for(let url of Discord.WebHooksUrls) {
+			h.push(`<tr>`);
+			h.push(`<td style="width: 1%;">${url.name}</td>`);
+			h.push(`<td style="word-break:break-all;font-size:smaller;">${url.url}</td>`);
+			h.push(`<td style="white-space:nowrap;"><button class="btn btn-delete" role="button" type="button" onclick="Discord.DeleteWebhookUrl(${Discord.WebHooksUrls.indexOf(url)})">${i18n('Boxes.Discord.DeleteEntry')}</button></td>`);
+			h.push(`</tr>`);
+		}
+
+		h.push(`<tr>`);
+		h.push(`<td style="width: 1%;"><input style="width:80px" id="webhookUrlName" name="name" type="text" placeholder="Name" spellcheck="false"></td>`);
+		h.push(`<td><input id="webhookUrlInput" name="url" placeholder="Webhook-URL" type="text" spellcheck="false" style="width:100%"></td>`);
+		h.push(`<td style="white-space:nowrap;" class="text-right"><button class="btn" role="button" type="button" onclick="Discord.SaveWebhookUrl()">${i18n('Boxes.Discord.Save')}</button></td>`);
+		h.push(`</tr>`);
+
+		h.push(`</tbody>`);
+		h.push(`</table>`);
+		h.push(`</form>`);
+		h.push(`</div>`);
+		h.push(`</div>`);
+
+		$('#helperWebhook').html(h.join('')).promise().done(function() {
+			document.querySelector('#DiscordBody .foehelper-accordion-head').addEventListener('click',function (event) {
+				let $this = $(event.target).parent('.foehelper-accordion'),
+					isOpen = $this.hasClass('open');
+
+				$('#DiscordBody .foehelper-accordion').removeClass('open');
+
+				if(!isOpen){
+					$this.addClass('open');
+				}
+			});
+		});
+	},
 
 	EntryForm: (i = '')=> {
+		$('#addEntry').hide();
+		if ($('#discord-entry-form').length && $('#discord-entry-form').data('entry') === String(i)) {
+			$('#discord-entry-form').slideDown(function(){ $(this).remove(); });
+			return;
+		}
 
 		let data;
 
@@ -142,91 +179,50 @@ let Discord = {
 			data = Discord.WebHooks[parseInt(i)];
 		}
 
-		HTML.Box({
-			id: 'DiscordNewEntry',
-			title: i18n('Boxes.Discord.TitleNewEntry')
-		});
+		let h = [];
 
-		setTimeout(()=>{
-			let h = [];
+		h.push(`<div id="discord-entry-form" style="display:none;">`);
+		h.push(`<form action="" onsubmit="return false;" autocomplete="off">
+			<b>${i18n('Boxes.Discord.WebhookUrl')}</b>`);
+		h.push(`<ul id="url-list" class="clickable">`);
 
-			h.push(`<form id="discord-webhooks" action="" onsubmit="return false;" autocomplete="off">`);
-			h.push(`<table class="foe-table no-hover vertical-top">`);
-			h.push(`<thead>`);
+		for(let j in Discord.WebHooksUrls){
+			if(!Discord.WebHooksUrls.hasOwnProperty(j)) continue;
 
-			h.push(`<tr>`);
-			h.push(`<th>${i18n('Boxes.Discord.Name')}</th>`);
-			h.push(`<td><input value="${data?data['name']:''}"  id="name" name="name" type="text" spellcheck="false"></td>`);
-			h.push(`</tr>`);
+			let url = Discord.WebHooksUrls[j];
+			let isSelected = url && (
+				(data && url['url'] === data['url']) ||
+				(!data && Discord.WebHooksUrls.length === 1)
+			);
 
-			h.push(`<tr>`);
-			h.push(`<th style="white-space:nowrap">${i18n('Boxes.Discord.WebhookUrl')}</th>`);
-			h.push(`<td>`);
-			h.push(`<select id="url">`);
+			h.push(`<li data-url="${url['url']}" class="discord-url-item${isSelected ? ' selected' : ''}" onclick="Discord.SelectUrl(this)">${url['name']}</li>`);
+		}
 
-			for(let i in Discord.WebHooksUrls){
-				if(!Discord.WebHooksUrls.hasOwnProperty(i)) {
-					continue;
-				}
+		h.push(`</ul>`);
+		h.push(`<input type="hidden" id="url" value="${data && data['url'] ? data['url'] : (Discord.WebHooksUrls.length === 1 ? Discord.WebHooksUrls[0]['url'] : '')}">`);
 
-				let url = Discord.WebHooksUrls[i];
 
-				h.push(`<option${url && data && (url['url'] === data['url'] || Discord.WebHooksUrls.length === 1) ? ' selected' : ''} value="${url['url']}">${url['name']}</option>`);
-			}
+		h.push(`<b>${i18n('Boxes.Discord.Message')}</b>`);
+		h.push(`<textarea id="message" name="message" spellcheck="false">${data ? data['message'] : ':robot: **Test message**\nFoE Helper was here!'}</textarea>`);
 
-			h.push(`</td>`);
-			h.push(`</tr>`);
 
-			h.push(`<tr>`);
-			h.push(`<th>Event</th>`);
-			h.push(`<td>
-				<select id="event">
-					<option value="gbg"${data && data['event'] === 'gbg' ? ' selected' : ''}>${i18n('Boxes.Infobox.FilterGuildFights')}</option>
-				</select> `);
+		h.push(`<div>`);
+		h.push(`<button class="btn" role="button" type="button" onclick="Discord.CancelEntryForm()">${i18n('General.Cancel')}</button>&nbsp;`);
+		h.push(`<button class="btn" role="button" type="button" onclick="Discord.SendEntry()">${i18n('General.Send')}</button>&nbsp;`);
+		h.push(`<button class="btn btn-green" role="button" type="button" onclick="Discord.SaveEntry(${i})">${i18n('General.Save')}</button></div>`);
 
-			if(GuildFights?.MapData?.map['id']){
-				h.push(`<select id="province">`);
+		h.push(`</form></div>`);
 
-				for(let i in ProvinceMap.ProvinceData()) {
-					let d = ProvinceMap.ProvinceData()[i];
-
-					h.push(`<option${data && parseInt(data['province']) === d['id'] ? ' selected' : ''} value="${d['id']}">${d['name']}</option>`);
-				}
-
-				h.push(`</select>`);
-			}
-
-			h.push(`</td>`);
-			h.push(`</tr>`);
-
-			h.push(`<tr>`);
-			h.push(`<th>${i18n('Boxes.Discord.Message')}</th>`);
-			h.push(`<td><textarea id="message" name="message" spellcheck="false">${data?data['message']:':flame: **Fighters!**\n' +
-				'Attack #province_name# now'}</textarea><small><em class="text-warning">#province_name# for province name replace</em></small></td>`);
-			h.push(`</tr>`);
-
-			h.push(`<tr>`);
-			h.push(`<td colspan="2" class="text-right">
-				<button class="btn" role="button" type="button" onclick="Discord.TestEntry()">${i18n('Boxes.Discord.TestEntry')}</button>&nbsp;
-				<button class="btn btn-green" role="button" type="button" onclick="Discord.Save(${i})">${i18n('Boxes.Discord.Save')}</button>
-			</td>`);
-			h.push(`</tr>`);
-			h.push(`</thead>`);
-			h.push(`<tbody>`);
-
-			$('#DiscordNewEntryBody').html(h.join(''));
-
-		}, 600);
+		$('#discord-entry-form').remove();
+		$('#DiscordBody .formWrapper').append(h.join(''));
+		$('#discord-entry-form').data('entry', String(i)).slideDown();
 	},
 
 
-	Save: (i = '')=> {
-
+	SaveEntry: (i = '')=> {
+		$('#addEntry').show();
 		const data = {
-			name: $('#name').val(),
 			url: $('#url').val(),
-			event: $('#event').val(),
-			province: parseInt($('#province').val()),
 			message: $('#message').val()
 		};
 
@@ -239,86 +235,33 @@ let Discord = {
 
 		// save & rebuild
 		Discord.SaveTheData();
-
-		Discord.CloseOverlay();
 	},
 
 
-	WebhookUrlsForm: ()=> {
-
-		$('body').prepend( $('<div class="foe-helper-overlay" />') );
-
-		HTML.Box({
-			id: 'DiscordWebhookUrls',
-			title: i18n('Boxes.Discord.WebhookUrls'),
-			dragdrop: true
-		});
-
-		setTimeout(()=>{
-			Discord.BuildWebhookFormContent();
-		}, 600);
-
-	},
-
-
-	BuildWebhookFormContent: ()=> {
-		let h = [];
-
-		h.push(`<form onsubmit="return false;" autocomplete="off">`);
-		h.push(`<table class="foe-table no-hover vertical-middle">`);
-		h.push(`<thead>`);
-		h.push(`<tr>`);
-		h.push(`<th>Channel</th>`);
-		h.push(`<th>Url</th>`);
-		h.push(`<th style="width:1%" class="text-right"></th>`);
-		h.push(`</tr>`);
-		h.push(`</thead>`);
-		h.push(`<tbody>`);
-
-		for(let url of Discord.WebHooksUrls) {
-			h.push(`<tr>`);
-			h.push(`<td style="width: 1%;">${url.name}</td>`);
-			h.push(`<td>${url.url?.substring(0, 30)}...</td>`);
-			h.push(`<td style="white-space:nowrap;"><button class="btn btn-delete" role="button" type="button" onclick="Discord.DeleteWebhookUrl(${Discord.WebHooksUrls.indexOf(url)})">${i18n('Boxes.Discord.DeleteEntry')}</button></td>`);
-			h.push(`</tr>`);
-		}
-
-		h.push(`<tr>`);
-		h.push(`<td style="width: 1%;"><input id="name" name="name" type="text" spellcheck="false"></td>`);
-		h.push(`<td><input id="url" name="url" type="text" spellcheck="false" style="width:100%"></td>`);
-		h.push(`<td style="white-space:nowrap;" class="text-right"><button class="btn" role="button" type="button" onclick="Discord.SaveWebhookUrl()">${i18n('Boxes.Discord.Save')}</button></td>`);
-		h.push(`</tr>`);
-
-		h.push(`</tbody>`);
-		h.push(`</table>`);
-		h.push(`</form>`);
-
-		$('#DiscordWebhookUrlsBody').html(h.join(''));
+	CancelEntryForm: ()=> {
+		$('#discord-entry-form').slideUp(function(){ $(this).remove(); });
+		$('#addEntry').show();
 	},
 
 
 	SaveWebhookUrl: ()=> {
-
 		Discord.WebHooksUrls.push({
-			name: $('#name').val(),
-			url: $('#url').val(),
+			name: $('#webhookUrlName').val(),
+			url: $('#webhookUrlInput').val(),
 		});
-
-		// save the array to localstorage
 		localStorage.setItem('DiscordWebHookUrls', JSON.stringify(Discord.WebHooksUrls));
-
-		Discord.BuildWebhookFormContent();
+		Discord.BuildWebhookFormContent('open');
 	},
 
 
 	TestEntry: ()=> {
+		const url = $('#url').val();
 
-		if($('#province').length === 0)
-		{
+		if(!url) {
 			HTML.ShowToastMsg({
 				show: 'force',
 				head: 'Error',
-				text: 'Please visit the GBG map first!',
+				text: 'Please select a Webhook URL first!',
 				type: 'error',
 				hideAfter: 6000,
 			});
@@ -327,14 +270,47 @@ let Discord = {
 		}
 
 		let e = {
-				url: $('#url').val(),
+				url: url,
 				message: '**This is only a test!**' + "\n\n" + $('#message').val()
-			},
-			d = {
-				name: ProvinceMap.ProvinceData()[parseInt($('#province').val())].name
 			};
 
-		Discord.PrepareMessageForSend(e, d);
+		Discord.PrepareMessageForSend(e);
+
+		HTML.ShowToastMsg({
+			show: 'force',
+			head: 'Is send',
+			text: 'The message was sent to the webhook.',
+			type: 'success',
+			hideAfter: 2500,
+		});
+	},
+
+
+	SendEntry: (entryId = null)=> {
+		let url = $('#url').val();
+		let msg = $('#message').val();
+		if (entryId !== null) {
+			url = Discord.WebHooks[entryId].url;
+			msg = Discord.WebHooks[entryId].message;
+		}
+		if(!url) {
+			HTML.ShowToastMsg({
+				show: 'force',
+				head: 'Error',
+				text: 'Please select a Webhook URL first!',
+				type: 'error',
+				hideAfter: 6000,
+			});
+
+			return;
+		}
+
+		let e = {
+				url: url,
+				message: msg
+			};
+
+		Discord.PrepareMessageForSend(e);
 
 		HTML.ShowToastMsg({
 			show: 'force',
@@ -348,13 +324,8 @@ let Discord = {
 
 	/**
 	 * Delete a entry from the given index
-	 *
-	 * @param i
-	 * @constructor
 	 */
 	Delete: (i)=> {
-
-		// delete entry
 		delete Discord.WebHooks[i];
 
 		Discord.WebHooks = Discord.WebHooks.filter(function (el) {
@@ -365,12 +336,6 @@ let Discord = {
 	},
 
 
-	/**
-	 * Delete a entry from the given index
-	 *
-	 * @param i
-	 * @constructor
-	 */
 	DeleteWebhookUrl: (i)=> {
 
 		// delete entry
@@ -383,21 +348,13 @@ let Discord = {
 		// save the array to localstorage
 		localStorage.setItem('DiscordWebHookUrls', JSON.stringify(Discord.WebHooksUrls));
 
-		Discord.BuildWebhookFormContent();
+		Discord.BuildWebhookFormContent('open');
 	},
 
 
-	/**
-	 * Create a copy from the given index
-	 *
-	 * @param i
-	 * @constructor
-	 */
 	CopyEntry: (i) => {
 		i = parseInt(i);
 		let data = Object.assign({}, Discord.WebHooks[i]);
-
-		data['name'] = i18n('Boxes.Discord.CopyTitle') + ' - ' + data['name'];
 
 		Discord.WebHooks.push(data);
 
@@ -417,8 +374,6 @@ let Discord = {
 
 
 	CheckForEvent: (event, id = 0)=> {
-
-		// No event or almost done
 		if(Discord.WebHooks.length === 0 || Discord.WebHookDone[id]){
 			return;
 		}
@@ -427,40 +382,24 @@ let Discord = {
 
 		for(let i in entries)
 		{
-			switch(event)
-			{
-				case 'gbg':
-
-					let e = entries[i],
-						d = ProvinceMap.ProvinceData()[id];
-
-					if(e.province !== id){
-						return ;
-					}
-
-					Discord.PrepareMessageForSend(e, d);
-
-					// save for check
-					Discord.WebHookDone[id] = 'gbg';
-
-					break;
-			}
+			let e = entries[i];
+			Discord.PrepareMessageForSend(e);
+			Discord.WebHookDone[id] = event;
 		}
 	},
 
 
-	PrepareMessageForSend: (e, d)=> {
+	PrepareMessageForSend: (e)=> {
 		// send message to discord api
 		Discord.SendMessage(
 			e.url,
 			{
 				username: 'FoE Helper',
 				avatar_url: 'https://foe-helper.com/theme/img/favicon/apple-touch-icon.png',
-				content: e.message.replace('#province_name#', d.name)
+				content: e.message
 			}
 		)
-			.then();
-		//.then(a => a.json()).then(console.log); // only for debug
+		.then();
 	},
 
 
@@ -472,6 +411,13 @@ let Discord = {
 			},
 			body: JSON.stringify(msg)
 		});
+	},
+
+
+	SelectUrl: (el)=> {
+		$('#url-list .discord-url-item').css('font-weight', '').removeClass('selected');
+		$(el).css('font-weight', 'bold').addClass('selected');
+		$('#url').val($(el).data('url'));
 	},
 
 
