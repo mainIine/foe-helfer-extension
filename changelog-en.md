@@ -1,6 +1,13 @@
 ## Changelog - Extension
 
 
+##### 4.3.0.0
+
+**Update**
+- Discord Webhooks: Reworked the module - send custom messages instantly via webhook.
+
+---
+
 ##### 4.2.0.0
 
 **Update**
