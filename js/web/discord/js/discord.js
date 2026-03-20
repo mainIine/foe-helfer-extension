@@ -250,8 +250,8 @@ let Discord = {
 		if(!url) {
 			HTML.ShowToastMsg({
 				show: 'force',
-				head: 'Error',
-				text: 'Please select a Webhook URL first!',
+				head: i18n('General.Error'),
+				text: 'Please select a Webhook URL!',
 				type: 'error',
 				hideAfter: 6000,
 			});
@@ -268,8 +268,8 @@ let Discord = {
 
 		HTML.ShowToastMsg({
 			show: 'force',
-			head: 'Is send',
-			text: 'The message was sent to the webhook.',
+			head: i18n('General.Success'),
+			text: 'The message was sent.',
 			type: 'success',
 			hideAfter: 2500,
 		});
@@ -297,14 +297,14 @@ let Discord = {
 
 		let e = {
 				url: url,
-				message: msg
+				message: msg + " - " + ExtPlayerName
 			};
 
 		Discord.PrepareMessageForSend(e);
 
 		HTML.ShowToastMsg({
 			show: 'force',
-			head: 'Is send',
+			head: 'Sent!',
 			text: 'The message was sent to the webhook.',
 			type: 'success',
 			hideAfter: 2500,
