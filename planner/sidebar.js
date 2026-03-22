@@ -84,10 +84,6 @@ window.PlannerApp = window.PlannerApp || {};
                 case 'height-desc':
                     return b.height - a.height || b.width - a.width || a.name.localeCompare(b.name);
 
-                case 'area-asc':
-                    return a.area - b.area || a.name.localeCompare(b.name);
-
-                case 'area-desc':
                 default:
                     return b.area - a.area || a.name.localeCompare(b.name);
             }
@@ -106,8 +102,9 @@ window.PlannerApp = window.PlannerApp || {};
 
             return (
                 '<li data-id="' + item.id + '" class="' + item.type + noStreet + '">' +
-                    '<span class="name">' + item.name + ' (' + item.height + 'x' + item.width + ')</span>' +
                     '<span class="amount">' + (item.amount > 1 ? item.amount : '') + '</span>' +
+                    '<span class="name">' + item.name + '</span>' +
+                    ' <span class="height">' + item.height + '</span>x<span class="width">' + item.width + '</span>' +
                 '</li>'
             );
         });
@@ -119,4 +116,64 @@ window.PlannerApp = window.PlannerApp || {};
     app.filterStoredBuildingGroups = filterStoredBuildingGroups;
     app.sortStoredBuildingGroups = sortStoredBuildingGroups;
     app.showStoredBuildings = showStoredBuildings;
+
+    // --- Meta building search ---
+
+    const EXCLUDED_TYPES = new Set(['off_grid', 'outpost_ship', 'friends_tavern', 'street']);
+
+    function searchMeta(query) {
+        if (!query || query.length < 2) return [];
+
+        const q = query.toLowerCase();
+
+        return Object.values(state.metaData)
+            .filter(meta => {
+                if (!meta.name) return false;
+                if (EXCLUDED_TYPES.has(meta.type)) return false;
+                if (String(meta.type).includes('hub')) return false;
+                return meta.name.toLowerCase().includes(q);
+            })
+            .sort((a, b) => {
+                // Exact / prefix matches first, then alphabetical.
+                const aName = a.name.toLowerCase();
+                const bName = b.name.toLowerCase();
+                const aStarts = aName.startsWith(q);
+                const bStarts = bName.startsWith(q);
+                if (aStarts !== bStarts) return aStarts ? -1 : 1;
+                return aName.localeCompare(bName);
+            })
+            .slice(0, 30);
+    }
+
+    function renderMetaSearchResults(results) {
+        if (!results.length) {
+            dom.metaSearchResults.innerHTML = '';
+            dom.metaSearchResults.classList.remove('open');
+            return;
+        }
+
+        const html = results.map(meta => {
+            const dims = app.getMetaSize(meta);
+            const typeClass = meta.type || '';
+            return (
+                '<li data-meta-id="' + meta.id + '" class="' + typeClass + '">' +
+                    '<span class="name">' + meta.name + '</span>' +
+                    '<span class="dims">' + dims.height + 'x' + dims.width + '</span>' +
+                '</li>'
+            );
+        });
+
+        dom.metaSearchResults.innerHTML = html.join('');
+        dom.metaSearchResults.classList.add('open');
+    }
+
+    function clearMetaSearch() {
+        dom.metaSearchInput.value = '';
+        dom.metaSearchResults.innerHTML = '';
+        dom.metaSearchResults.classList.remove('open');
+    }
+
+    app.searchMeta = searchMeta;
+    app.renderMetaSearchResults = renderMetaSearchResults;
+    app.clearMetaSearch = clearMetaSearch;
 })(window.PlannerApp);

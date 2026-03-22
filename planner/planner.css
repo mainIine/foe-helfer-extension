@@ -31,7 +31,7 @@ body, html {
     top: 50%;
     left: 50%;
     margin-top: -150px;
-    margin-left: -250px;
+    margin-left: -290px;
     box-sizing: border-box;
     padding: 10px 1em;
     border-radius: 10px;
@@ -63,27 +63,40 @@ textarea, button, input, .btn {
 }
 
 .sidebar {
-    font-size: smaller;
+    font-size: small;
     user-select: none;
+    width: 290px;
+    max-height: 100vh;
+    border-right: 1px dotted #47677d;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 5px;
 }
 
-#buildings {
-    min-width: 250px;
-    border-right: 1px dotted #47677d;
-    padding: 5px;
+.sidebar.drop-target {
+    box-shadow: 0 0 30px #66c440;
+    border-right: 1px solid #65e035;
+    background-color: #53b82c21;
+    transition: background-color 0.1s, border-color 0.1s;
+}
+
+#storedBuildingsList {
     box-sizing: border-box;
-    max-height: 100vh;
     overflow: auto;
     scrollbar-width: thin;
+    flex-grow: 2;
+    width: 100%;
 }
 
-#buildings ul {
+.sidebar ul {
     list-style: none;
     margin: 0;
-    padding: 0;
+    padding: 5px;
 }
 
-#buildings li {
+.sidebar li {
     margin: 0; 
     padding: 3px 0;
     font-size: 90%;
@@ -92,7 +105,7 @@ textarea, button, input, .btn {
     justify-content: space-between;
 }
 
-#buildings li::before {
+.sidebar li .name::before {
     content: '';
     width: 9px;
     height: 9px;
@@ -102,18 +115,26 @@ textarea, button, input, .btn {
     margin-right: 5px;
 }
 
-#buildings .name {
+.sidebar .name {
     flex-grow: 3;
 }
 
-#buildings .residential::before { background-color: #7abaff;}
-#buildings .greatbuilding::before { background-color: #e6542f;}
-#buildings .production::before { background-color: #416dff;}
-#buildings .nostreet::before { background-color: #793bc9;}
-#buildings .main_building::before { background-color: #ffb300;}
+.sidebar .residential .name::before { background-color: #7abaff;}
+.sidebar .greatbuilding .name::before { background-color: #e6542f;}
+.sidebar .production .name::before { background-color: #416dff;}
+.sidebar .nostreet .name::before { background-color: #793bc9;}
+.sidebar .main_building .name::before { background-color: #ffb300;}
 
 .amount {
-    padding-left: 4px;
+    width: 25px;
+    box-sizing: border-box;
+    text-align: right;
+    border-radius: 2px;
+    padding: 1px 3px;
+    margin-right: 4px;
+}
+.amount:not(:empty) {
+    background-color: #333;
 }
 
 .amount:not(:empty)::after {
@@ -231,3 +252,88 @@ canvas {
 .hidden { display: none; }
 
 .sideview { transform: rotate(33deg) skew(-30deg,-5deg) }
+
+#placeStreet.active {
+    background-color: #1d6b2a;
+    border-color: #66c440;
+    color: #fff;
+    box-shadow: 0 0 6px #66c44088;
+}
+
+/* --- Meta building search --- */
+#metaSearch {
+    position: relative;
+    margin-bottom: 6px;
+}
+
+#metaSearchInput {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 4px 6px;
+    font-size: 90%;
+}
+
+#metaSearchResults {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 500;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    background: #1a2a35;
+    border: 1px solid #47677d;
+    border-top: none;
+    border-radius: 0 0 5px 5px;
+    max-height: 260px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+}
+
+#metaSearchResults.open {
+    display: block;
+}
+
+#metaSearchResults li {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding: 4px 6px;
+    cursor: pointer;
+    font-size: 85%;
+    gap: 4px;
+}
+
+#metaSearchResults li:hover {
+    background: #2a3f50;
+}
+
+#metaSearchResults li::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background-color: #888;
+}
+
+#metaSearchResults li.residential::before   { background-color: #7abaff; }
+#metaSearchResults li.greatbuilding::before { background-color: #e6542f; }
+#metaSearchResults li.production::before    { background-color: #416dff; }
+#metaSearchResults li.main_building::before { background-color: #ffb300; }
+#metaSearchResults li.military::before      { background-color: #fff; }
+
+#metaSearchResults .name {
+    flex-grow: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#metaSearchResults .dims {
+    flex-shrink: 0;
+    opacity: 0.6;
+    font-size: 80%;
+}
