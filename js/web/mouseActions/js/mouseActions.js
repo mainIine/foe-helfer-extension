@@ -171,10 +171,6 @@ FoEproxy.addRequestHandler("CityMapService","placeBuilding",(data)=>{
     if (MainParser.CityEntities[data.requestData[0].cityentity_id].type != "street") buildRepeat.click()
 })
 
-FoEproxy.addFoeHelperHandler('ReconstructionBuildingPlaced',(data)=>{
-    if (MainParser.CityMapData[data.id].type != "street" && !data.last)  buildRepeat.click()
-});
-
 let buildRepeat = {
     lastBuildClick: null,
     click: () => {
