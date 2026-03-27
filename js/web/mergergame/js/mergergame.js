@@ -160,7 +160,7 @@ FoEproxy.addHandler('TimedTasksService', 'all', (data, postData) => {
 				requiredProgress: slot.task.requiredProgress,
 				rewardResource: slot.task.reward.subType,
 				rewardAmount: (slot.task.reward.amount||1)*(slot.rewardMultiplier || 1),
-				worldChallengeTokens: ({easy:1,medium:2,hard:4})[slot.type],
+				worldChallengeTokens: ({easy:1,medium:1,hard:1})[slot.type],
 				alerted: !(data.requestMethod == "getOverview" || !slot.task.currentProgress)
 			};
 		});
