@@ -37,7 +37,7 @@
 
     <div class="wrapper">
         <section class="sidebar">
-            <div>
+            <div class="filter">
             
             <div id="metaSearch">
                 <input id="metaSearchInput" type="text" placeholder="Add a new building…" autocomplete="off">
@@ -47,8 +47,8 @@
             <input id="buildingFilterText" type="text" placeholder="Find buildings">
 
             <select id="buildingSort">
-                <option value="name-asc">Name A–Z</option>
-                <option value="name-desc">Name Z–A</option>
+                <option value="name-asc">A–Z</option>
+                <option value="name-desc">Z–A</option>
                 <option value="width-asc">y ↑</option>
                 <option value="width-desc">y ↓</option>
                 <option value="height-asc">x ↑</option>
@@ -59,9 +59,8 @@
                 <option value="all">Types</option>
                 <option value="residential">Residential</option>
                 <option value="production">Production</option>
-                <option value="greatbuilding">Great Building</option>
+                <option value="greatbuilding">GB</option>
                 <option value="military">Military</option>
-                <option value="main_building">Main Building</option>
             </select>
 
             <select id="buildingStreetFilter">
@@ -72,7 +71,7 @@
             </div>
             <ul id="storedBuildingsList"></ul>
             
-            <div class="group">
+            <div class="group save">
                 <button id="saveState" class="btn">Save</button>
                 <button id="exportState" class="btn">Export</button>
                 <button id="importState" class="btn">Import</button>

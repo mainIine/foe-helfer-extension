@@ -75,6 +75,20 @@ textarea, button, input, .btn {
     gap: 5px;
 }
 
+.sidebar .filter, .sidebar .save {
+    padding: 3px;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.sidebar .filter input {
+    width: 100%;
+    display: block;
+    box-sizing: border-box;
+    padding: 4px 6px;
+    margin-bottom: 2px;
+}
+
 .sidebar.drop-target {
     box-shadow: 0 0 30px #66c440;
     border-right: 1px solid #65e035;
@@ -263,14 +277,6 @@ canvas {
 /* --- Meta building search --- */
 #metaSearch {
     position: relative;
-    margin-bottom: 6px;
-}
-
-#metaSearchInput {
-    width: 100%;
-    box-sizing: border-box;
-    padding: 4px 6px;
-    font-size: 90%;
 }
 
 #metaSearchResults {
