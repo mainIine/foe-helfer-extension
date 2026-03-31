@@ -572,6 +572,14 @@ let Stats = {
 			value: Technologies.EraNames[CurrentEraID]
 		});
 
+		const btnSelectNextEra = Stats.RenderButton({
+			name: i18n('Boxes.Stats.BtnNextEra'),
+			isActive: selectedEras.length === 1 && selectedEras[0] === Technologies.EraNames[CurrentEraID + 1],
+			dataType: 'selectEras',
+			disabled: !Stats.isSelectedPlayerSources() && !Stats.isSelectedTreasureSources() && !Stats.isSelectedUnitSources(),
+			value: Technologies.EraNames[CurrentEraID + 1]
+		});
+
 		const btnSelectAll = Stats.RenderButton({
 			name: i18n('Boxes.Stats.BtnAll'),
 			title: i18n('Boxes.Stats.BtnAllTittle'),
@@ -678,6 +686,7 @@ let Stats = {
 					<span class="btn-group">
 					${btnSelectAllEra}
 					${btnSelectMyEra}
+					${Technologies.EraNames[CurrentEraID + 1] ? btnSelectNextEra : ''}
 					${CurrentEraID > 2 ? btnSelectTwoLastEra : ''}
 					${btnSelectAll}
 					${btnSelectNoEra}
