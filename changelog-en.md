@@ -1,10 +1,15 @@
 ## Changelog - Extension
 
 
-##### 4.3.0.0
+##### 4.2.1.0
 
 **Update**
 - Discord Webhooks: Reworked the module - send custom messages instantly via webhook.
+- Stats: Added a quick select for next era goods.
+- repeated building: removed for the reconstruction mode, as there now is an ingame implementation.
+
+**Bugfix**
+- Merger Minigame: Works now as intended.
 
 ---
 
