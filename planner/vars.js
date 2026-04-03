@@ -11,7 +11,7 @@ window.PlannerApp.dom = {
     storeSelectionBtn: document.querySelector('#storeSelection'),
     storeSelectionCount: document.querySelector('#storeSelection span'),
 
-    buildingsListEl: document.querySelector('#buildings ul'),
+    buildingsListEl: document.querySelector('#storedBuildingsList'),
 
     zoomInBtn: document.querySelector('#zoomIn'),
     zoomOutBtn: document.querySelector('#zoomOut'),
@@ -26,8 +26,18 @@ window.PlannerApp.dom = {
     buildingTypeFilter: document.querySelector('#buildingTypeFilter'),
     buildingStreetFilter: document.querySelector('#buildingStreetFilter'),
 
+    metaSearchInput: document.querySelector('#metaSearchInput'),
+    metaSearchResults: document.querySelector('#metaSearchResults'),
+
     oldStreetsEl: document.querySelector('.old .streets'),
-    newStreetsEl: document.querySelector('.new .streets')
+    newStreetsEl: document.querySelector('.new .streets'),
+    placeStreetBtn: document.querySelector('#placeStreet'),
+
+    saveBtn: document.querySelector('#saveState'),
+    exportBtn: document.querySelector('#exportState'),
+    importBtn: document.querySelector('#importState'),
+    importFileInput: document.querySelector('#importFileInput'),
+    overlayImportFileInput: document.querySelector('#overlayImportFileInput'),
 };
 
 window.PlannerApp.state = {
@@ -53,11 +63,17 @@ window.PlannerApp.state = {
     gridCanvas: null,
     gridCtx: null,
     lastMouseElem: null,
+    selectionRect: null,
 
     sidebarState: {
-        sortBy: 'area-desc',
+        sortBy: 'name-desc',
         filterText: '',
         filterType: 'all',
         filterStreetReq: 'all'
+    },
+    streetPlacement: {
+        active: false,
+        startTile: null,
+        previewTiles: []
     }
 };

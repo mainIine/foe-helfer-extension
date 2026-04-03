@@ -160,8 +160,8 @@ FoEproxy.addHandler('TimedTasksService', 'all', (data, postData) => {
 				requiredProgress: slot.task.requiredProgress,
 				rewardResource: slot.task.reward.subType,
 				rewardAmount: (slot.task.reward.amount||1)*(slot.rewardMultiplier || 1),
-				worldChallengeTokens: ({easy:1,medium:2,hard:4})[slot.type],
-				alerted: !(data.requestMethod == "getOverview" || !slot.task.currentProgress)
+				worldChallengeTokens: ({easy:1,medium:1,hard:1})[slot.type],
+				alerted: (data.requestMethod != "getOverview") && ((slot.task.currentProgress||0) >= slot.task.requiredProgress)
 			};
 		});
 	} else if (data.requestMethod == "pushTaskProgress") {
@@ -171,6 +171,7 @@ FoEproxy.addHandler('TimedTasksService', 'all', (data, postData) => {
 });
 
 let mergerGame = {
+	allowRemoveWarning: true,
 	tasks:{},
 	hasJoker:false,
 	event:"anniversary",
@@ -492,35 +493,49 @@ let mergerGame = {
 		if(!Settings.GetSetting('ShowEventChest') || !(Settings.GetSetting('EventHelperMerge') === undefined ? true : Settings.GetSetting('EventHelperMerge'))) {
 			return;
 		}
-		$('#mergerGameTaskWarning').remove();
+		let raiseAlert = false;
+		let rewardsSum = {};
+		let wcSum = 0;
 		for (let [t,slot] of Object.entries(mergerGame.tasks)) {
 			if (slot.currentProgress >= slot.requiredProgress) {
-				if (mergerGame.settings.audibleTaskWarning && warn && !slot.alerted) {
-					helper.sounds.play("message");
-				}
-				if (mergerGame.settings.opticalTaskWarning && warn && !slot.alerted) {
-					$(`<div id="mergerGameTaskWarning" class="mergerGameTaskWarning">
-							<div class="foeHelper">
-								${i18n("Global.BoxTitle")}
-							</div>
-							${i18n("Boxes.MergerGame.TaskReady")} ➤
-							<div class="CurrencyOverflowWarning">
-								${i18n("Boxes.MergerGame.CurrencyOverflowWarning")} ▲▲▲
-							</div>
-							<div class="WorldChallengeOverflowWarning">
-								${i18n("Boxes.MergerGame.WorldChallengeOverflowWarning")} ▼▼▼
-							</div>
-						</div>`)
-						.appendTo('body')
-						.on("click",()=>{$('#mergerGameTaskWarning').remove()});
-				}
-				slot.alerted = true;
-				if ((GoodsData[slot.rewardResource].abilities?.resourceCap?.amount || Infinity) < slot.rewardAmount +  ResourceStock[slot.rewardResource])
-					$('#mergerGameTaskWarning').addClass('showCurrencyOverflowWarning');
-				if (worldChallenge.currentPoints + slot.worldChallengeTokens > worldChallenge.requiredPoints)
-					$('#mergerGameTaskWarning').addClass('showWorldChallengeOverflowWarning');
-				warn = false;
+				if (!slot.alerted) {
+					raiseAlert = true;
+					slot.alerted = true;
+				}				
+				rewardsSum[slot.rewardResource] = (rewardsSum[slot.rewardResource] || 0) + (slot.rewardAmount || 0);
+				wcSum += slot.worldChallengeTokens || 0;
 			}
+		}
+		if (mergerGame.settings.audibleTaskWarning && warn && raiseAlert) {
+			helper.sounds.play("message");
+		}
+		if (mergerGame.settings.opticalTaskWarning && warn && raiseAlert && $('#mergerGameTaskWarning').length === 0) {
+			mergerGame.allowRemoveWarning = false;
+			setTimeout(() => {
+				mergerGame.allowRemoveWarning = true;
+			}, 200);
+			$(`<div id="mergerGameTaskWarning" class="mergerGameTaskWarning">
+					<div class="foeHelper">
+						${i18n("Global.BoxTitle")}
+					</div>
+					${i18n("Boxes.MergerGame.TaskReady")} ➤
+					<div class="CurrencyOverflowWarning">
+						${i18n("Boxes.MergerGame.CurrencyOverflowWarning")} ▲▲▲
+					</div>
+					<div class="WorldChallengeOverflowWarning">
+						${i18n("Boxes.MergerGame.WorldChallengeOverflowWarning")} ▼▼▼
+					</div>
+				</div>`)
+				.appendTo('body')
+				.on("click",()=>{$('#mergerGameTaskWarning').remove()});
+		} else {
+			if (mergerGame.allowRemoveWarning && warn) $('#mergerGameTaskWarning').remove();
+		}
+		if (worldChallenge.currentPoints + wcSum > worldChallenge.requiredPoints)
+			$('#mergerGameTaskWarning').addClass('showWorldChallengeOverflowWarning');
+		for (let [r,amount] of Object.entries(rewardsSum)) {
+			if ((GoodsData[r].abilities?.resourceCap?.amount || Infinity) < amount +  ResourceStock[r])
+				$('#mergerGameTaskWarning').addClass('showCurrencyOverflowWarning');
 		}
 	}
 	/*

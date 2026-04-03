@@ -1,17 +1,3 @@
-/*
- * *************************************************************************************
- *
- * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
- * You may use, distribute and modify this code under the
- * terms of the AGPL license.
- *
- * See file LICENSE.md or go to
- * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
- * for full license details.
- *
- * *************************************************************************************
- */
-
 #Discord {
     width: 750px;
     top: calc(30vh);
@@ -19,32 +5,55 @@
 }
 
 #Discord .window-body {
-	max-height: calc(100vh - 150px);
 	overflow-y: auto;
 }
 
-#Discord .window-body .textarea {
-    min-width: 13.125rem;
+#discord-entry-form form {
+	display: flex;
+	gap: 5px;
+	flex-wrap: wrap;
+	justify-content: end;
+	padding: 5px;
 }
 
-#DiscordNewEntry {
-	width: 550px;
-	top: calc(50vh - 105px);
-	left: calc(50vw - 275px);
-	z-index: 1000;
+#discord-entry-form b {
+	width: 155px;
 }
 
-#DiscordNewEntryBody input, #DiscordNewEntryBody textarea {
- 	width: 100%;
+#discord-entry-form #url-list {
+	padding: 0;
+	margin: 0;
+	list-style: none;
+	display: inline-block;
+	width: calc(100% - 170px);
 }
 
-#DiscordNewEntryBody textarea {
-	height: 100px;
+#discord-entry-form #url-list {
+	padding: 0;
+	margin: 0;
+	list-style: none;
+	display: inline-block;
+	width: calc(100% - 160px);
 }
 
-#DiscordWebhookUrls {
-	width: 600px;
-	top: calc(50vh - 50px);
-	left: calc(50vw - 300px);
-	z-index: 1000;
+#discord-entry-form #url-list li {
+	padding: 0 2px;
+	margin: 0 3px;
+	display: inline-block;
+	border-radius: 2px;
+}
+
+#discord-entry-form #url-list li.selected {
+	font-weight: bold;
+	color: var(--bright-color);
+	background-color: var(--black-50);
+}
+
+#discord-entry-form textarea {
+	width: calc(100% - 160px);
+	resize: vertical;
+}
+
+#Discord #addDiscordEntry {
+	margin-top: 0.5rem;
 }

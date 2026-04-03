@@ -82,8 +82,8 @@ window.PlannerApp = window.PlannerApp || {};
         }
 
         draw(context) {
-            context.fillStyle = this.isSelected ? '#eee' : this.isActive ? '#66c440' : this.fill;
-            context.strokeStyle = this.isSelected ? '#111' : this.stroke;
+            context.fillStyle = this.isSelected ? '#cfe5f0' : this.isActive ? '#66c440' : this.fill;
+            context.strokeStyle = this.isSelected ? '#2a4670' : this.stroke;
 
             context.fillRect(this.x, this.y, this.width, this.height);
             context.lineWidth = 2;

@@ -536,9 +536,6 @@ let Info = {
             prov = ProvinceMap.ProvinceData().find(o => (o['id'] === data['id']));
         }
 
-		// Hook for Discord events
-		Discord.CheckForEvent('gbg', data['id']);
-
         if (data['lockedUntil'] !== undefined) {
 
             // keine Übernahme
