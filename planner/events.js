@@ -116,6 +116,7 @@ window.PlannerApp = window.PlannerApp || {};
         app.showStoredBuildings();
         app.redrawMap();
         app.updateStats();
+        app.autoSave();
     }
 
     function resetCity() {
@@ -138,6 +139,25 @@ window.PlannerApp = window.PlannerApp || {};
     function handleCanvasClick(e) {
         if (state.placingBuilding) return;
         if (e.altKey || e.ctrlKey) return;
+
+        if (state.streetPlacement.active) {
+            const point = app.getCanvasPointElem(e);
+            const tile = app.worldToTile(point.x, point.y);
+
+            if (!state.streetPlacement.startTile) {
+                state.streetPlacement.startTile = tile;
+                state.streetPlacement.previewTiles = [tile];
+            } else {
+                state.streetPlacement.previewTiles = app.getStraightLineTiles(
+                    state.streetPlacement.startTile,
+                    tile
+                );
+                commitStreetPreview();
+            }
+
+            app.redrawMap();
+            return;
+        }
 
         const point = app.getCanvasPointElem(e);
         const building = app.hitTestBuilding(point.x, point.y);
@@ -163,6 +183,22 @@ window.PlannerApp = window.PlannerApp || {};
     function handleCanvasMouseMove(e) {
         state.lastMouseElem = app.getCanvasPointElem(e);
 
+        if (state.streetPlacement.active) {
+            const currentTile = app.worldToTile(state.lastMouseElem.x, state.lastMouseElem.y);
+
+            if (state.streetPlacement.startTile) {
+                state.streetPlacement.previewTiles = app.getStraightLineTiles(
+                    state.streetPlacement.startTile,
+                    currentTile
+                );
+            } else {
+                state.streetPlacement.previewTiles = [currentTile];
+            }
+
+            app.redrawMap();
+            return;
+        }
+
         if (!state.placingBuilding) return;
 
         const snappedX = app.snapToGrid(state.lastMouseElem.x - state.placingBuilding.width / 2);
@@ -187,23 +223,104 @@ window.PlannerApp = window.PlannerApp || {};
         if (!state.dragCopy.valid) return;
 
         const placedMetaId = state.placingBuilding.meta.id;
+        const fromMeta = state.placingBuilding._fromMeta === true;
 
         state.placingBuilding.x = state.dragCopy.x;
         state.placingBuilding.y = state.dragCopy.y;
         state.placingBuilding.data.x = state.dragCopy.x / SIZE;
         state.placingBuilding.data.y = state.dragCopy.y / SIZE;
         state.placingBuilding.isActive = false;
+        state.placingBuilding._fromMeta = undefined;
 
         state.mapBuildings.push(state.placingBuilding);
         app.addBuildingToOccupiedTiles(state.placingBuilding);
 
-        const idx = state.storedBuildings.findIndex(b => String(b.meta.id) === String(placedMetaId));
-        if (idx !== -1) state.storedBuildings.splice(idx, 1);
+        if (fromMeta) {
+            // Re-arm immediately with a fresh copy of the same building.
+            const meta = state.metaById.get(String(placedMetaId));
+            if (meta) {
+                state.placingBuilding = new app.MapBuilding(
+                    { cityentity_id: meta.id, x: 0, y: 0 },
+                    meta
+                );
+                state.placingBuilding.isActive = true;
+                state.placingBuilding._fromMeta = true;
+            } else {
+                state.placingBuilding = null;
+                state.dragCopy = null;
+            }
+        } else {
+            const idx = state.storedBuildings.findIndex(b => String(b.meta.id) === String(placedMetaId));
+            if (idx !== -1) state.storedBuildings.splice(idx, 1);
+            continuePlacingStoredBuilding(placedMetaId);
+        }
 
         app.showStoredBuildings();
         app.updateStats();
+        app.autoSave();
 
         continuePlacingStoredBuilding(placedMetaId);
+    }
+
+    function getStreetMeta() {
+        return Object.values(state.metaData).find(x => x.type === 'street') || null;
+    }
+
+    function startStreetPlacement() {
+        if (state.streetPlacement.active) {
+            cancelStreetPlacement();
+            return;
+        }
+        state.placingBuilding = null;
+        state.dragCopy = null;
+        state.streetPlacement.active = true;
+        state.streetPlacement.startTile = null;
+        state.streetPlacement.previewTiles = [];
+        dom.placeStreetBtn.classList.add('active');
+        app.redrawMap();
+    }
+
+    function cancelStreetPlacement() {
+        state.streetPlacement.active = false;
+        state.streetPlacement.startTile = null;
+        state.streetPlacement.previewTiles = [];
+        dom.placeStreetBtn.classList.remove('active');
+        app.redrawMap();
+    }
+
+    function createStreetBuildingAtTile(tx, ty, streetMeta) {
+        const forcedMeta = { ...streetMeta, width: 1, length: 1 };
+        return new app.MapBuilding(
+            {
+                cityentity_id: streetMeta.id,
+                type: 'street',
+                x: tx,
+                y: ty
+            },
+            forcedMeta
+        );
+    }
+
+    function commitStreetPreview() {
+        const streetMeta = getStreetMeta();
+        if (!streetMeta) return;
+
+        for (const tile of state.streetPlacement.previewTiles) {
+            if (app.isTileOccupiedByNonStreet(tile.x, tile.y)) continue;
+
+            const existing = state.occupiedTiles.get(app.tileKey(tile.x, tile.y));
+            if (existing && existing.meta.type === 'street') continue;
+
+            const street = createStreetBuildingAtTile(tile.x, tile.y, streetMeta);
+            state.mapBuildings.push(street);
+            app.addBuildingToOccupiedTiles(street);
+        }
+
+        app.updateStats();
+        app.autoSave();
+        state.streetPlacement.startTile = null;
+        state.streetPlacement.previewTiles = [];
+        app.redrawMap();
     }
 
     function bindMapDrag() {
@@ -212,6 +329,7 @@ window.PlannerApp = window.PlannerApp || {};
         const mouseDownHandler = (e) => {
             if (e.button !== 0) return;
             if (state.placingBuilding) return;
+            if (state.streetPlacement.active && !e.altKey) return;
 
             let mode = null;
 
@@ -280,6 +398,8 @@ window.PlannerApp = window.PlannerApp || {};
 
             if (drag.mode === 'select') {
                 drag.endElem = app.getCanvasPointElem(e);
+                state.selectionRect = { start: drag.startElem, end: drag.endElem };
+                app.redrawMap();
                 return;
             }
 
@@ -308,6 +428,13 @@ window.PlannerApp = window.PlannerApp || {};
                     drag.building.data.y = snappedY / SIZE;
                 }
 
+                // Highlight the sidebar when the building is dragged over it.
+                const sidebarRect = dom.buildingsListEl.closest('.sidebar').getBoundingClientRect();
+                const overSidebar =
+                    e.clientX >= sidebarRect.left && e.clientX <= sidebarRect.right &&
+                    e.clientY >= sidebarRect.top  && e.clientY <= sidebarRect.bottom;
+                dom.buildingsListEl.closest('.sidebar').classList.toggle('drop-target', overSidebar);
+
                 app.redrawMap();
                 return;
             }
@@ -318,6 +445,7 @@ window.PlannerApp = window.PlannerApp || {};
             e.preventDefault();
 
             if (drag.mode === 'select') {
+                state.selectionRect = null;
                 const endElem = app.getCanvasPointElem(e);
 
                 const min = {
@@ -360,9 +488,44 @@ window.PlannerApp = window.PlannerApp || {};
             }
 
             if (drag.mode === 'move') {
-                app.addBuildingToOccupiedTiles(drag.building);
+                const sidebar = dom.buildingsListEl.closest('.sidebar');
+                sidebar.classList.remove('drop-target');
+
+                const sidebarRect = sidebar.getBoundingClientRect();
+                const overSidebar =
+                    e.clientX >= sidebarRect.left && e.clientX <= sidebarRect.right &&
+                    e.clientY >= sidebarRect.top  && e.clientY <= sidebarRect.bottom;
+
+                if (overSidebar) {
+                    // Building was already removed from occupiedTiles on mousedown —
+                    // just remove it from mapBuildings and send it to storedBuildings.
+                    const idx = state.mapBuildings.indexOf(drag.building);
+                    if (idx !== -1) state.mapBuildings.splice(idx, 1);
+
+                    drag.building.x = 0;
+                    drag.building.y = 0;
+                    drag.building.data.x = 0;
+                    drag.building.data.y = 0;
+                    drag.building.isActive = false;
+                    state.activeBuilding = null;
+                    state.storedBuildings.push(drag.building);
+
+                    app.showStoredBuildings();
+                    app.updateStats();
+                } else {
+                    // Normal drop: place back on the map.
+                    app.addBuildingToOccupiedTiles(drag.building);
+                }
+
                 state.dragCopy = null;
                 app.redrawMap();
+                app.autoSave();
+
+                document.removeEventListener('mousemove', mouseMoveHandler);
+                document.removeEventListener('mouseup', mouseUpHandler);
+                drag = null;
+                state.dragCopy = null;
+                return;
             }
 
             document.removeEventListener('mousemove', mouseMoveHandler);
@@ -372,6 +535,27 @@ window.PlannerApp = window.PlannerApp || {};
         };
 
         dom.canvas.addEventListener('mousedown', mouseDownHandler);
+    }
+
+    function startPlacingMetaBuilding(metaId) {
+        const meta = state.metaById.get(String(metaId));
+        if (!meta) return;
+
+        if (state.activeBuilding) {
+            state.activeBuilding.isActive = false;
+            state.activeBuilding = null;
+        }
+
+        // Create a fresh building from meta — not tied to storedBuildings.
+        state.placingBuilding = new app.MapBuilding(
+            { cityentity_id: meta.id, x: 0, y: 0 },
+            meta
+        );
+        state.placingBuilding.isActive = true;
+        state.placingBuilding._fromMeta = true;  // flag: not from storedBuildings
+
+        app.clearMetaSearch();
+        updatePlacingBuildingPreview();
     }
 
     function bindEvents(init) {
@@ -389,6 +573,7 @@ window.PlannerApp = window.PlannerApp || {};
 
         dom.zoomInBtn.addEventListener('click', app.zoomIn);
         dom.zoomOutBtn.addEventListener('click', app.zoomOut);
+        dom.placeStreetBtn.addEventListener('click', startStreetPlacement);
 
         dom.storeBuildingsBtn.addEventListener('click', () => {
             state.storedBuildings = state.storedBuildings.concat(state.mapBuildings);
@@ -402,6 +587,7 @@ window.PlannerApp = window.PlannerApp || {};
             app.showStoredBuildings();
             app.updateStats();
             app.drawEmptyMap();
+            app.autoSave();
         });
 
         dom.storeSelectionBtn.addEventListener('click', storeSelectedBuildings);
@@ -419,25 +605,61 @@ window.PlannerApp = window.PlannerApp || {};
         dom.canvas.addEventListener('mousedown', handleCanvasMouseDownPlace);
 
         dom.removeStreetsBtn.addEventListener('click', () => {
-            state.mapBuildings = state.mapBuildings.filter(x => x.data.type !== 'street');
+            state.mapBuildings = state.mapBuildings.filter(x => x.meta.type !== 'street');
             app.rebuildOccupiedTiles();
             app.redrawMap();
             app.updateStats();
+            app.autoSave();
         });
 
         dom.resetBtn.addEventListener('click', () => {
             const reset = confirm('Do you want to restart from scratch? Your changes will not be saved');
-            if (reset) resetCity();
+            if (reset) {
+                localStorage.removeItem('foe_planner_save');
+                resetCity();
+            }
         });
+
+        if (dom.saveBtn) {
+            dom.saveBtn.addEventListener('click', () => app.saveState());
+        }
+
+        if (dom.exportBtn) {
+            dom.exportBtn.addEventListener('click', () => app.exportStateToFile());
+        }
+
+        if (dom.importBtn) {
+            dom.importBtn.addEventListener('click', () => dom.importFileInput.click());
+        }
+
+        if (dom.importFileInput) {
+            dom.importFileInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    app.importStateFromFile(file);
+                    e.target.value = '';
+                }
+            });
+        }
 
         document.addEventListener('contextmenu', (e) => {
             e.preventDefault();
+
+            if (state.streetPlacement.active) {
+                cancelStreetPlacement();
+                return;
+            }
 
             if (state.placingBuilding) {
                 state.placingBuilding = null;
                 state.dragCopy = null;
                 app.redrawMap();
                 return;
+            }
+            
+            if (state.activeBuilding) {
+                state.activeBuilding.isActive = false;
+                state.activeBuilding = null;
             }
 
             clearSelection();
@@ -468,6 +690,37 @@ window.PlannerApp = window.PlannerApp || {};
         dom.buildingStreetFilter.addEventListener('change', (e) => {
             state.sidebarState.filterStreetReq = e.target.value;
             app.showStoredBuildings();
+        });
+
+        if (dom.overlayImportFileInput) {
+            dom.overlayImportFileInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    app.importStateFromFile(file);
+                    e.target.value = '';
+                }
+            });
+        }
+
+        dom.metaSearchInput.addEventListener('input', (e) => {
+            const results = app.searchMeta(e.target.value.trim());
+            app.renderMetaSearchResults(results);
+        });
+
+        dom.metaSearchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') app.clearMetaSearch();
+        });
+
+        dom.metaSearchResults.addEventListener('click', (e) => {
+            const li = e.target.closest('li[data-meta-id]');
+            if (!li) return;
+            startPlacingMetaBuilding(li.dataset.metaId);
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('#metaSearch')) {
+                app.clearMetaSearch();
+            }
         });
 
         bindMapDrag();

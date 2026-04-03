@@ -573,6 +573,8 @@ const Profile = {
             // gather boosts from efficiency ratings
             for (let [boost, value] of Object.entries(building.rating)) {
                 if (boost.includes('-tile')) continue;
+                // forge_points_production and goods_production are also gathered from building.boosts below — skip here to avoid double-counting
+                if (boost === 'forge_points_production' || boost === 'goods_production') continue;
                 if (boosts[boost] === undefined)
                     boosts[boost] = value;
                 else

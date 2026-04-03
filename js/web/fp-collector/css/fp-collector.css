@@ -33,10 +33,6 @@
     max-width: unset;
 }
 
-#fp-collectorBody .foehelper-accordion:hover .foehelper-accordion-head {
-	box-shadow: inset 0px 0px 0px 2000px var(--table-bg-hover);
-}
-
 #fp-collectorBody .foehelper-accordion-head {
 	margin-bottom: 0;
 }

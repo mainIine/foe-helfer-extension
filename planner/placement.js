@@ -92,6 +92,42 @@ window.PlannerApp = window.PlannerApp || {};
         return null;
     }
 
+    function isTileOccupiedByNonStreet(tx, ty) {
+        const occupant = state.occupiedTiles.get(tileKey(tx, ty));
+        return !!(occupant && occupant.meta.type !== 'street');
+    }
+
+    function getStraightLineTiles(startTile, endTile) {
+        if (!startTile || !endTile) return [];
+
+        const dx = endTile.x - startTile.x;
+        const dy = endTile.y - startTile.y;
+
+        // force straight line only
+        if (Math.abs(dx) >= Math.abs(dy)) {
+            const step = dx >= 0 ? 1 : -1;
+            const tiles = [];
+            for (let x = startTile.x; x !== endTile.x + step; x += step) {
+                tiles.push({ x, y: startTile.y });
+            }
+            return tiles;
+        } else {
+            const step = dy >= 0 ? 1 : -1;
+            const tiles = [];
+            for (let y = startTile.y; y !== endTile.y + step; y += step) {
+                tiles.push({ x: startTile.x, y });
+            }
+            return tiles;
+        }
+    }
+
+    function worldToTile(pointX, pointY) {
+        return {
+            x: Math.floor(pointX / SIZE),
+            y: Math.floor(pointY / SIZE)
+        };
+    }
+
     app.SIZE = SIZE;
     app.tileKey = tileKey;
     app.canvasToTileX = canvasToTileX;
@@ -103,4 +139,7 @@ window.PlannerApp = window.PlannerApp || {};
     app.snapToGrid = snapToGrid;
     app.canPlaceAt = canPlaceAt;
     app.hitTestBuilding = hitTestBuilding;
+    app.isTileOccupiedByNonStreet = isTileOccupiedByNonStreet;
+    app.getStraightLineTiles = getStraightLineTiles;
+    app.worldToTile = worldToTile;
 })(window.PlannerApp);
