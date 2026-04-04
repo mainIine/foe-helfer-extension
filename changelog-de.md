@@ -1,7 +1,7 @@
 ## Changelog - Extension
  
 
-##### 4.3.0.0
+##### 4.2.1.0
 
 **Update**
 - Discord Webhooks: Modul wurde komplett verändert und kann nun jederzeit Nachrichten verschicken.
