@@ -1,6 +1,12 @@
 ## Changelog - Extension
  
 
+##### 4.2.1.1
+
+**Bugfix**
+- Beide Rechner waren kaputt nach dem Spiel-Update auf Version 1.332
+
+
 ##### 4.2.1.0
 
 **Update**
@@ -10,6 +16,7 @@
 
 **Bugfix**
 - Merger-Minispiel: funktioniert nun wie ursprünglich geplant
+
 
 ---
 
