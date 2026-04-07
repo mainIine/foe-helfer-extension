@@ -691,13 +691,13 @@ GetFights = () =>{
 
 	// gbUpdateData sammelt die informationen aus mehreren Handlern
 	let gbUpdateData = null;
+	let gbCityMapEntity = null;
 
 	FoEproxy.addHandler('GreatBuildingsService', 'all', (data, postData) => {
 		let getConstruction = data.requestMethod === 'getConstruction' ? data : null;
 		let getConstructionRanking = data.requestMethod === 'getConstructionRanking' ? data : null;
 		let contributeForgePoints = data.requestMethod === 'contributeForgePoints' ? data : null;
 		let Rankings, Bonus = {}, Era;
-
 
 		if (getConstruction != null) {
 			Rankings = getConstruction.responseData.rankings;
@@ -718,9 +718,7 @@ GetFights = () =>{
 
 		if (Rankings) {
 			if (!gbUpdateData || !gbUpdateData.CityMapEntity) {
-				gbUpdateData = { Rankings: Rankings, CityMapEntity: null, Bonus: null };
-				// reset gbUpdateData after all handlers were called
-				setTimeout(() => gbUpdateData = null, 1000);
+				gbUpdateData = { Rankings: Rankings, CityMapEntity: gbLastCityMapEntity, Bonus: null };
 			}
 			else {
 				gbUpdateData.Rankings = Rankings;
@@ -762,10 +760,10 @@ GetFights = () =>{
 
 	FoEproxy.addHandler('OtherPlayerService', 'getOtherPlayerCityMapEntity', (data, postData) => {
 		let formattedData = { ...data, responseData: [data.responseData] };
+		gbLastCityMapEntity = formattedData;
 
 		if (!gbUpdateData || !gbUpdateData.Rankings) {
 			gbUpdateData = { Rankings: null, CityMapEntity: formattedData };
-			setTimeout(() => gbUpdateData = null, 1000);
 		} else {
 			gbUpdateData.CityMapEntity = formattedData;
 			lgUpdate();
