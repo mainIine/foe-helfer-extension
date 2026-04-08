@@ -389,7 +389,7 @@ let Calculator = {
 			if (Calculator.Rankings[i]['forge_points'] !== undefined)
 				Einzahlungen[Rank] = Calculator.Rankings[i]['forge_points'];
 
-			CurrentFP = (Calculator.CityMapEntity['state']['invested_forge_points'] !== undefined ? Calculator.CityMapEntity['state']['invested_forge_points'] : 0) - EigenBetrag;
+			CurrentFP = Calculator.Rankings.reduce((acc,entry)=>acc+(entry?.forge_points|0),0) - EigenBetrag;
 			TotalFP = Calculator.CityMapEntity['state']['forge_points_for_level_up'];
 			RestFP = TotalFP - CurrentFP;
 
