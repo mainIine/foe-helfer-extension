@@ -236,7 +236,7 @@ let Calculator = {
 		h.push('<table id="costTableFordern" style="width:100%" class="foe-table"></table>');
 
         // how much is missing to level up?
-		let rest = (Calculator.CityMapEntity['state']['invested_forge_points'] === undefined ? Calculator.CityMapEntity['state']['forge_points_for_level_up'] : Calculator.CityMapEntity['state']['forge_points_for_level_up'] - Calculator.CityMapEntity['state']['invested_forge_points']);
+		let rest = Calculator.CityMapEntity['state']['forge_points_for_level_up'] - Calculator.Rankings.reduce((acc,entry)=>acc+(entry?.forge_points|0),0);
 
 		h.push('<div class="text-center dark-bg" style="padding-top:5px;padding-bottom:5px;"><em>' + i18n('Boxes.Calculator.Up2LevelUp') + ': <span id="up-to-level-up" style="color:#FFB539">' + HTML.Format(rest) + '</span> ' + i18n('Boxes.Calculator.FP') + '</em></div>');
 
