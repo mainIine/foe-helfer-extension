@@ -718,20 +718,20 @@ GetFights = () =>{
 
 		if (Rankings) {
 			if (!gbUpdateData || !gbUpdateData.CityMapEntity) {
-				gbUpdateData = { Rankings: Rankings, CityMapEntity: gbLastCityMapEntity, Bonus: null };
+				gbUpdateData = { Rankings: Rankings, CityMapEntity: gbCityMapEntity, Bonus: null };
 			}
 			else {
 				gbUpdateData.Rankings = Rankings;
 				gbUpdateData.Bonus = Bonus;
 				gbUpdateData.Era = Era;
-
-				if(gbUpdateData.Rankings && gbUpdateData.CityMapEntity){
-					if(!IsLevelScroll) MainParser.SendLGData(gbUpdateData);
-				}
-
-				lgUpdate();
 			}
 		}
+
+		if(gbUpdateData?.Rankings && gbUpdateData?.CityMapEntity){
+			if(!IsLevelScroll) MainParser.SendLGData(gbUpdateData);
+			lgUpdate();
+		}
+
 	});
 
 	FoEproxy.addHandler('GreatBuildingsService', 'getContributions', (data, postData) => {
@@ -760,7 +760,7 @@ GetFights = () =>{
 
 	FoEproxy.addHandler('OtherPlayerService', 'getOtherPlayerCityMapEntity', (data, postData) => {
 		let formattedData = { ...data, responseData: [data.responseData] };
-		gbLastCityMapEntity = formattedData;
+		gbCityMapEntity = formattedData;
 
 		if (!gbUpdateData || !gbUpdateData.Rankings) {
 			gbUpdateData = { Rankings: null, CityMapEntity: formattedData };
