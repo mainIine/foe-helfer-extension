@@ -689,8 +689,9 @@ GetFights = () =>{
 
 	// es wird ein LG eines Spielers geöffnet
 
-	// lgUpdateData sammelt die informationen aus mehreren Handlern
-	let lgUpdateData = null;
+	// gbUpdateData sammelt die informationen aus mehreren Handlern
+	let gbUpdateData = null;
+	let gbCityMapEntity = null;
 
 	FoEproxy.addHandler('GreatBuildingsService', 'all', (data, postData) => {
 		let getConstruction = data.requestMethod === 'getConstruction' ? data : null;
@@ -700,8 +701,8 @@ GetFights = () =>{
 
 		if (getConstruction != null) {
 			Rankings = getConstruction.responseData.rankings;
-			Bonus['passive'] = getConstruction.responseData.next_passive_bonus;
-			Bonus['production'] = getConstruction.responseData.next_production_bonus;
+			Bonus['passive'] = getConstruction.responseData.next_passive_bonus; // GB update to do
+			Bonus['production'] = getConstruction.responseData.next_production_bonus; // GB update to do
 			let EraName = getConstruction.responseData.ownerEra;
 			if (EraName) Era = Technologies.Eras[EraName];
 			IsLevelScroll = false;
@@ -716,36 +717,35 @@ GetFights = () =>{
 		}
 
 		if (Rankings) {
-			if (!lgUpdateData || !lgUpdateData.CityMapEntity) {
-				lgUpdateData = { Rankings: Rankings, CityMapEntity: null, Bonus: null };
-				// reset lgUpdateData so bald wie möglich (nachdem alle einzelnen Handler ausgeführt wurden)
-				Promise.resolve().then(() => lgUpdateData = null);
+			if (!gbUpdateData || !gbUpdateData.CityMapEntity) {
+				gbUpdateData = { Rankings: Rankings, CityMapEntity: gbCityMapEntity, Bonus: null };
 			}
 			else {
-				lgUpdateData.Rankings = Rankings;
-				lgUpdateData.Bonus = Bonus;
-				lgUpdateData.Era = Era;
-
-				if(lgUpdateData.Rankings && lgUpdateData.CityMapEntity){
-					if(!IsLevelScroll) MainParser.SendLGData(lgUpdateData);
-				}
-
-				lgUpdate();
+				gbUpdateData.Rankings = Rankings;
+				gbUpdateData.Bonus = Bonus;
+				gbUpdateData.Era = Era;
 			}
 		}
+
+		if(gbUpdateData?.Rankings && gbUpdateData?.CityMapEntity){
+			if(!IsLevelScroll) MainParser.SendLGData(gbUpdateData);
+			lgUpdate();
+		}
+
 	});
 
 	FoEproxy.addHandler('GreatBuildingsService', 'getContributions', (data, postData) => {
 		MainParser.UpdatePlayerDict(data.responseData, 'LGContributions');
 	});
 
+	// can be removed after game update 1.332
 	FoEproxy.addHandler('CityMapService', 'updateEntity', (data, postData) => {
-		if (!lgUpdateData || !lgUpdateData.Rankings) {
-			lgUpdateData = { Rankings: null, CityMapEntity: data };
-			// reset lgUpdateData sobald wie möglich (nachdem alle einzelnen Handler ausgeführt wurden)
-			Promise.resolve().then(() => lgUpdateData = null);
+		if (!gbUpdateData || !gbUpdateData.Rankings) {
+			gbUpdateData = { Rankings: null, CityMapEntity: data };
+			// reset gbUpdateData sobald wie möglich (nachdem alle einzelnen Handler ausgeführt wurden)
+			Promise.resolve().then(() => gbUpdateData = null);
 		} else {
-			lgUpdateData.CityMapEntity = data;
+			gbUpdateData.CityMapEntity = data;
 			lgUpdate();
 		}
 		
@@ -753,6 +753,25 @@ GetFights = () =>{
 			
 			if ($('#OwnPartBox').length > 0) {
 				Parts.CityMapEntity.max_level = data.responseData[0]?.max_level;
+				Parts.CalcBody();
+			}
+		}
+	});
+
+	FoEproxy.addHandler('OtherPlayerService', 'getOtherPlayerCityMapEntity', (data, postData) => {
+		let formattedData = { ...data, responseData: [data.responseData] };
+		gbCityMapEntity = formattedData;
+
+		if (!gbUpdateData || !gbUpdateData.Rankings) {
+			gbUpdateData = { Rankings: null, CityMapEntity: formattedData };
+		} else {
+			gbUpdateData.CityMapEntity = formattedData;
+			lgUpdate();
+		}
+		
+		if (formattedData.responseData[0]?.player_id === ExtPlayerID) {
+			if ($('#OwnPartBox').length > 0) {
+				Parts.CityMapEntity.max_level = formattedData.responseData[0]?.max_level;
 				Parts.CalcBody();
 			}
 		}
@@ -782,15 +801,15 @@ GetFights = () =>{
 		}
 	});
 
-	// Update Funktion, die ausgeführt wird, sobald beide Informationen in lgUpdateData vorhanden sind.
+	// Update Funktion, die ausgeführt wird, sobald beide Informationen in gbUpdateData vorhanden sind.
 	function lgUpdate() {
-		const { CityMapEntity, Rankings, Bonus } = lgUpdateData;
-		lgUpdateData = null;
+		const { CityMapEntity, Rankings, Bonus } = gbUpdateData;
+		gbUpdateData = null;
 		let IsPreviousLevel = false;
 
 		if (!Rankings) return; //Keine Rankings => Fehlermeldung z.B. "Stufe wurde bereits erhöht" wenn man versucht einzuzahlen obwohl schon gelevelt wurde
 
-		//Eigenes LG
+		// Own GB
 		if (CityMapEntity.responseData[0].player_id === ExtPlayerID || Settings.GetSetting('ShowOwnPartOnAllGBs')) {
 			//LG Scrollaktion: Beim ersten mal Öffnen Medals von P1 notieren. Wenn gescrollt wird und P1 weniger Medals hat, dann vorheriges Level, sonst aktuelles Level
 			if (IsLevelScroll) {
@@ -830,9 +849,8 @@ GetFights = () =>{
 			}
 		}
 
-		// Fremdes LG
-		if (CityMapEntity.responseData[0].player_id !== ExtPlayerID && !IsLevelScroll)
-		{
+		// Other players GB
+		if (CityMapEntity.responseData[0].player_id !== ExtPlayerID && !IsLevelScroll) {
 			$('#calculator-Btn').removeClass('hud-btn-red');
 			$('#calculator-Btn-closed').remove();
 
@@ -1630,8 +1648,6 @@ let MainParser = {
 		},
 
 		showAllyList:(closeIfOpen = false)=>{
-			
-			//console.log(0, MainParser.Allies);
 
 			if ($('#AllyList').length === 0) {
 				HTML.Box({

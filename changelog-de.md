@@ -1,7 +1,13 @@
 ## Changelog - Extension
  
 
-##### 4.3.0.0
+##### 4.2.1.1
+
+**Bugfix**
+- Beide Rechner waren kaputt nach dem Spiel-Update auf Version 1.332
+
+
+##### 4.2.1.0
 
 **Update**
 - Discord Webhooks: Modul wurde komplett verändert und kann nun jederzeit Nachrichten verschicken.
@@ -10,6 +16,7 @@
 
 **Bugfix**
 - Merger-Minispiel: funktioniert nun wie ursprünglich geplant
+
 
 ---
 
