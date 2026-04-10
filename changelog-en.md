@@ -3,8 +3,8 @@
 
 ##### 4.2.1.1
 
-**Bugfix**
-- Calculatores were broken after game update to version 1.332
+**Hotfix**
+- Calculators were broken after game update to version 1.332
 
 
 ##### 4.2.1.0

@@ -297,7 +297,7 @@ let Discord = {
 
 		let e = {
 				url: url,
-				message: msg + " - " + ExtPlayerName
+				message: msg + " \n-# " + ExtPlayerName
 			};
 
 		Discord.PrepareMessageForSend(e);
