@@ -927,12 +927,12 @@ let Parts = {
 			h.push('<table style="width: 100%">');
 			h.push('<tr>');
 			h.push('<td>' + i18n('Boxes.OwnpartCalculator.PatronPart') + ': <strong class="' + (PlayerID === ExtPlayerID ? '' : 'success') + '">' + HTML.Format(MaezenTotal + ExtTotal) + '</strong></td>');
-			h.push('<td class="text-right">' + i18n('Boxes.OwnpartCalculator.OwnPart') + ': <strong class="' + (PlayerID === ExtPlayerID ? 'success' : '') + '">' + HTML.Format(EigenTotal) + '</strong></td>');
+			h.push('<td class="text-right">' + i18n('Boxes.OwnpartCalculator.OwnPart') + ': <strong data-copy="'+(EigenTotal)+'" class="clickable copy-fp ' + (PlayerID === ExtPlayerID ? 'success' : '') + '">' + HTML.Format(EigenTotal) + '</strong></td>');
 			h.push('</tr>');
 			h.push('<tr>');
 			h.push('<td>' + i18n('Boxes.OwnpartCalculator.LGTotalFP') + ': <strong>' + HTML.Format(Total) + '</strong></td>');
 			if (EigenStart > 0) {
-				h.push('<td class="text-right">' + i18n('Boxes.OwnpartCalculator.OwnPartRemaining') + ': <strong class="' + (PlayerID === ExtPlayerID ? 'success' : '') + '">' + HTML.Format(EigenTotal - EigenStart) + '</strong></td>');
+				h.push('<td class="text-right">' + i18n('Boxes.OwnpartCalculator.OwnPartRemaining') + ': <strong data-copy="'+(EigenTotal - EigenStart)+'" class="clickable copy-fp ' + (PlayerID === ExtPlayerID ? 'success' : '') + '">' + HTML.Format(EigenTotal - EigenStart) + '</strong></td>');
 			}
 			else {
 				h.push('<td></td>');
@@ -1178,13 +1178,12 @@ let Parts = {
 
 		// ---------------------------------------------------------------------------------------------
 
-		// Box wurde schon in den DOM gelegt?
 		if( $('.OwnPartBoxBackground').length > 0 ){
 			$('.OwnPartBoxBackgroundBody').html( h.join('') );
 			return;
 		}
 
-		// Container zusammen setzen
+		// assemble
 		let div = $('<div />').addClass('OwnPartBoxBackground'),
 			a = $('<div />').addClass('outerArrow').append( $('<span />').addClass('arrow game-cursor').attr('id', 'OwnPartBoxArrow') ).append( $('<div />').addClass('OwnPartBoxBackgroundBody window-box').append(h.join('')) );
 
@@ -1193,8 +1192,7 @@ let Parts = {
 			.append($('<div />')
 				.addClass('black-bg').hide());
 
-		// der "Toogle"-Pfeil wurde geklickt,
-		// lasst die Spiele beginnen
+		// der "Toggle"-Pfeil wurde geklickt
 		$('#OwnPartBoxArrow').bind('click', function(){
 			if( $OwnPartBox.hasClass('show') ){
 				Parts.BackGroundBoxAnimation(false);
