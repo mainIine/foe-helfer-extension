@@ -1,4 +1,4 @@
-## Changelog - Extension
+## Extension Changelog
  
 
 ##### 4.2.1.1
@@ -6,6 +6,7 @@
 **Hotfix**
 - Calculators were broken after game update to version 1.332
 
+---
 
 ##### 4.2.1.0
 

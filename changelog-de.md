@@ -1,4 +1,4 @@
-## Changelog - Extension
+## Extension Changelog
  
 
 ##### 4.2.1.1
@@ -6,6 +6,7 @@
 **Bugfix**
 - Beide Rechner waren kaputt nach dem Spiel-Update auf Version 1.332
 
+---
 
 ##### 4.2.1.0
 
