@@ -177,6 +177,7 @@
     "Boxes.Calculator.LevelWarning": "ACHTUNG! Levelt das Bauwerk!",
     "Boxes.Calculator.MaxLevel": "Max. Level",
     "Boxes.Calculator.Meds": "Meds",
+    "Boxes.Calculator.PlayInfoSound": "Spiele Ton ab, wenn Plätze sicher belegt werden können",
     "Boxes.Calculator.Profit": "Differenz",
     "Boxes.Calculator.OwnPartClose": "Eigenanteilsrechner schließen, wenn der Kostenrechner geöffnet wird",
     "Boxes.Calculator.Settings.Save": "Speichern",

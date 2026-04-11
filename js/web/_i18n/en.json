@@ -178,6 +178,7 @@
     "Boxes.Calculator.MaxLevel": "Max level",
     "Boxes.Calculator.Meds": "Meds",
     "Boxes.Calculator.OwnPartClose": "Close the GB Calculator when this window is auto-opened",
+    "Boxes.Calculator.PlayInfoSound": "Play sound when spots can be taken safely",
     "Boxes.Calculator.Profit": "Difference",
     "Boxes.Calculator.Settings.Save": "Save",
     "Boxes.Calculator.Settings.newValue": "New Value",
