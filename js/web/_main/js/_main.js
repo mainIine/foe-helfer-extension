@@ -710,6 +710,33 @@ GetFights = () =>{
 		else if (getConstructionRanking != null) {
 			Rankings = getConstructionRanking.responseData;
 			IsLevelScroll = true;
+			
+			/* data collection stuff - ignore it
+			let gbDataCollector = JSON.parse(localStorage.getItem('gbDataCollector'));
+			let p1 = getConstructionRanking.responseData[1];
+			let p1fp;
+			if (p1?.rank === 1) {
+				p1fp = p1.reward?.strategy_point_amount;
+			}
+			else {
+				p1 = getConstructionRanking.responseData[0];
+				
+				if (p1?.rank === 1)
+					p1fp = p1.reward?.strategy_point_amount;
+			}
+			if (p1fp) {
+				let era = Technologies.Eras[Calculator.CityMapEntity.cityentity_id.split("_")[1]];
+				console.log(p1fp, era);
+				if (gbDataCollector[era].includes(p1fp))
+					console.log(p1fp + " already collected")
+				else {
+					console.log(gbDataCollector[era]);
+					gbDataCollector[era].push(p1fp);
+					gbDataCollector[era].sort();
+					console.log(gbDataCollector[era]);
+					localStorage.setItem('gbDataCollector',JSON.stringify(gbDataCollector));
+				}
+			}*/
 		}
 		else if (contributeForgePoints != null) {
 			Rankings = contributeForgePoints.responseData;
@@ -738,7 +765,6 @@ GetFights = () =>{
 		MainParser.UpdatePlayerDict(data.responseData, 'LGContributions');
 	});
 
-	// can be removed after game update 1.332
 	FoEproxy.addHandler('CityMapService', 'updateEntity', (data, postData) => {
 		if (!gbUpdateData || !gbUpdateData.Rankings) {
 			gbUpdateData = { Rankings: null, CityMapEntity: data };
@@ -750,14 +776,13 @@ GetFights = () =>{
 		}
 		
 		if (data.responseData[0]?.player_id === ExtPlayerID) {
-			
 			if ($('#OwnPartBox').length > 0) {
 				Parts.CityMapEntity.max_level = data.responseData[0]?.max_level;
 				Parts.CalcBody();
 			}
 		}
 	});
-
+	
 	FoEproxy.addHandler('OtherPlayerService', 'getOtherPlayerCityMapEntity', (data, postData) => {
 		let formattedData = { ...data, responseData: [data.responseData] };
 		gbCityMapEntity = formattedData;
