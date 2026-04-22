@@ -887,12 +887,17 @@ let HTML = {
 
 		$(Table).each(function () {
 			let ColumnNames = [];
+			let index = 0;
 			let findBy = "th"
 			if ($(Table).find('.exportheader th').length > 0){
 				findBy = '.exportheader th';
 			}
 			
 			$(Table).find(findBy).each(function () {
+				if($(this)[0].classList.contains("buildingvalue")){
+					index++;
+					return;
+				}
 				let ColumnCount = $(this).attr('colspan');
 				if (ColumnCount) {
 					ColumnCount = ColumnCount - 0;
@@ -902,11 +907,13 @@ let HTML = {
                 }
 
 				if (ColumnCount === 1) {
-					ColumnNames.push($(this).data('export'))
+					ColumnNames[index] = $(this).data('export')
+					index++;
 				}
 				else {
 					for (let i = 0; i < ColumnCount; i++) {
-						ColumnNames.push($(this).data('export' + (i + 1)));
+						ColumnNames[index] = $(this).data('export' + (i + 1));
+						index++;
 					}
                 }
 			});
