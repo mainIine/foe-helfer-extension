@@ -1236,7 +1236,7 @@ FP-Bar */
 
 
 .window-head .box-buttons {
-	gap: 2px;
+	gap: 1px;
 }
 
 .window-head .box-buttons span {
@@ -1259,6 +1259,7 @@ FP-Bar */
 
 .window-head span.title small em {
 	font-weight: lighter;
+	font-size: 90%;
 }
 
 .window-head span:nth-child(2) {

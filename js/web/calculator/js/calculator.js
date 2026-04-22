@@ -68,11 +68,11 @@ let Calculator = {
             let spk = localStorage.getItem('CalculatorTone');
 
             if (spk === null) {
-                localStorage.setItem('CalculatorTone', 'deactivated');
+                localStorage.setItem('CalculatorTone', 'false');
                 Calculator.PlayInfoSound = false;
 
             } else {
-                Calculator.PlayInfoSound = (spk !== 'deactivated');
+                Calculator.PlayInfoSound = (spk !== 'false');
             }
 
             HTML.Box({
