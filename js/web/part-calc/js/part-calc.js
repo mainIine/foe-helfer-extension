@@ -1136,6 +1136,7 @@ let Parts = {
 
 		Parts.CopyPlayerName = (PlayerID === ExtPlayerID ? Parts.CopyOwnPlayerName : PlayerDict[PlayerID]['PlayerName']);
 
+		h.push('<span class="icon-close"></span>');
 		h.push('<section class="p5">');
 		h.push('<strong>' + i18n('Boxes.OwnpartCalculator.Preview') + '</strong><br>');
 		Parts.CopyString = Parts.GetCopyString();
@@ -1201,6 +1202,11 @@ let Parts = {
 		$OwnPartBox.append( $('<div class="OwnPartBoxBackgroundBody settingsbox-wrapper" />').append(h.join('')) );
 		if (isOpen)
 			$('.OwnPartBoxBackgroundBody').show();
+
+		$('.OwnPartBoxBackgroundBody .icon-close').bind('click', function() {
+			$('.OwnPartBoxBackgroundBody').fadeToggle();
+			$('#OwnPartBox').toggleClass('gbSettingsOpen');
+		});
 	},
 
 

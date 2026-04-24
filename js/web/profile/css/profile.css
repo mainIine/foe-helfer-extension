@@ -834,7 +834,7 @@
 
 
 .playerprofile.window-box.sunrise-light .window-close {
-    filter: saturate(0.7) contrast(3) hue-rotate(45deg)
+    filter: saturate(0.7) contrast(3) hue-rotate(45deg) !important;
 }
 
 
@@ -1066,7 +1066,7 @@
 }
 
 .playerprofile.sepia .window-close {
-    filter: saturate(0.7) contrast(1.7) sepia(0.7);
+    filter: saturate(0.7) contrast(1.7) sepia(0.7) !important;
 }
 
 
