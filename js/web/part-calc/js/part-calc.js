@@ -265,12 +265,20 @@ let Parts = {
 				let copyParts = Parts.CopyFunction($(this), 'copy');
 				helper.str.copyToClipboardLegacy(copyParts);
 				Parts.CalcBody(Parts.Level);
+				if ($('#OwnPartBox').hasClass('gbSettingsOpen')) {
+					$('.OwnPartBoxBackgroundBody').fadeToggle();
+					$('#OwnPartBox').toggleClass('gbSettingsOpen');
+				}
 			});
 
 			$('#OwnPartBox').on('click', '.button-save-own', function () {
 				let copyParts = Parts.CopyFunction($(this), 'save');
 				helper.str.copyToClipboardLegacy(copyParts);
 				Parts.CalcBody(Parts.Level);
+				if ($('#OwnPartBox').hasClass('gbSettingsOpen')) {
+					$('.OwnPartBoxBackgroundBody').fadeToggle();
+					$('#OwnPartBox').toggleClass('gbSettingsOpen');
+				}
 			});
 
 			// Quick copy for FP values (places + remaining to level)
@@ -960,18 +968,20 @@ let Parts = {
 				h.push('</div>');
 			}
 			h.push('<div class="bottom-buttons text-center">');
+			h.push('<div class="flex">');
+			h.push('<span id="OwnPartCalcGBSettings" class="fh-icon-settings"></span>'); 
 			h.push('<div class="btn-group">');
 			if (Parts.SafePlaces.length > 0 || Parts.CopyModeAll) { //Copy bzw. Note Button nur einblenden wenn zumindest ein Platz safe ist
-				h.push('<span class="btn button-own">' + i18n('Boxes.OwnpartCalculator.CopyValues') + '</span>');
-				if (Parts.CityMapEntity['player_id'] === ExtPlayerID) h.push('<span class="btn button-save-own">' + i18n('Boxes.OwnpartCalculator.Note') + '</span>');
+				h.push('<span class="btn btn-slim button-own">' + i18n('Boxes.OwnpartCalculator.CopyValues') + '</span>');
+				if (Parts.CityMapEntity['player_id'] === ExtPlayerID) h.push('<span class="btn btn-slim button-save-own">' + i18n('Boxes.OwnpartCalculator.Note') + '</span>');
 			}
 			else {
 				h.push(i18n('Boxes.OwnpartCalculator.NoPlaceSafe'));
 			}
-			h.push('</div>');
+			h.push('</div></div>');
 
 			h.push('<div class="btn-group">');
-			h.push('<span class="btn button-powerleveling">' + i18n('Boxes.OwnpartCalculator.PowerLeveling') + '</span>');
+			h.push('<span class="btn btn-slim button-powerleveling">' + i18n('Boxes.OwnpartCalculator.PowerLeveling') + '</span>');
 			h.push('</div>');
 			h.push('</div>');
 			h.push('</div>');
@@ -995,19 +1005,28 @@ let Parts = {
 		if ($('#PowerLevelingBox').length > 0 && !Parts.IsPreviousLevel) {
 			Parts.CalcBodyPowerLeveling();
 		}
+
+		$('#OwnPartCalcGBSettings').bind('click', function() {
+			$('.OwnPartBoxBackgroundBody').fadeToggle();
+			$('#OwnPartBox').toggleClass('gbSettingsOpen');
+		});
 	},
 
 
 	/**
-	 * Daten für die Kopierbuttons
-	 *
+	 * Data for the Copy buttons
 	 */
 	CalcBackgroundBody: () => {
 		let h = [],
 			$OwnPartBox = $('#OwnPartBox'),
 			EntityID = Parts.CityMapEntity['cityentity_id'];
-
 		let SavedBuildingName = localStorage.getItem(Parts.GetStorageKey('CopyGBName', Parts.CityMapEntity['cityentity_id']));
+		$OwnPartBox.find('.OwnPartBoxBackgroundBody').remove();
+
+		let isOpen = false;
+		if($('#OwnPartBox').hasClass('gbSettingsOpen')) 
+			isOpen = true;
+
 		if (SavedBuildingName !== null) {
 			Parts.CopyBuildingName = SavedBuildingName;
 		}
@@ -1117,8 +1136,14 @@ let Parts = {
 
 		Parts.CopyPlayerName = (PlayerID === ExtPlayerID ? Parts.CopyOwnPlayerName : PlayerDict[PlayerID]['PlayerName']);
 
-		h.push('<section class="p2 bbd">');
-		h.push('<strong>' + i18n('Boxes.OwnpartCalculator.CopyValues') + '</strong>');
+		h.push('<section class="p5">');
+		h.push('<strong>' + i18n('Boxes.OwnpartCalculator.Preview') + '</strong><br>');
+		Parts.CopyString = Parts.GetCopyString();
+		h.push('<input type="text" id="copystring" value="' + Parts.CopyString + '">');
+		
+		h.push('</section>');
+
+		h.push('<section class="p2">');
 		if (PlayerID === ExtPlayerID) {
 			h.push('<div class="flex between"><span>' + i18n('Boxes.OwnpartCalculator.PlayerName') + ':</span><input type="text" id="player-name" value="' + Parts.CopyPlayerName + '"></div>');
 		}
@@ -1126,7 +1151,9 @@ let Parts = {
 			h.push('<div><span>' + i18n('Boxes.OwnpartCalculator.PlayerName') + ':</span>' + Parts.CopyPlayerName + '</div>');
 		}
 		h.push('<div class="flex between"><span>' + i18n('Boxes.OwnpartCalculator.BuildingName') + ':</span><input type="text" id="build-name" value="' + (Parts.CopyBuildingName) + '"></div>');
-		h.push('</section><section class="p2 bbd">');
+		h.push('</section>');
+
+		h.push('<section class="p2">');
 		h.push('<strong>' + i18n('Boxes.OwnpartCalculator.IncludeData') + '</strong>');
 		let Options = '<div class="checkboxes">' +
 			'<label class="form-check-label game-cursor" for="options-player"><input type="checkbox" class="form-check-input" id="options-player" data-options="player" ' + (Parts.CopyIncludePlayer ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.OptionsPlayer') + '</span></label>' +
@@ -1149,7 +1176,7 @@ let Parts = {
 
 			h.push(DangerOptions);
 		}
-		h.push('</section><section class="p2 bbd">');
+		h.push('</section><section class="p2">');
 		h.push('<strong>' + i18n('Boxes.OwnpartCalculator.Places') + '</strong>');
 
 		let cb = '<div class="checkboxes">' +
@@ -1164,80 +1191,16 @@ let Parts = {
 		'</div>';
 
 		h.push(cb);
-
-		h.push('</section><section class="p2 bbd">');
-		h.push('<strong>' + i18n('Boxes.OwnpartCalculator.Preview') + '</strong><br>');
-		Parts.CopyString = Parts.GetCopyString();
-		h.push('<input type="text" id="copystring" value="' + Parts.CopyString + '">');
-		
-		h.push('</section>');
+		h.push('</section>')
 		h.push('<div class="btn-outer text-center" style="margin-top: 10px">');
 		h.push('<span class="btn button-own">' + i18n('Boxes.OwnpartCalculator.CopyValues') + '</span> ');
-		if (Parts.CityMapEntity['player_id'] === ExtPlayerID) h.push('<span class="btn button-save-own">' + i18n('Boxes.OwnpartCalculator.Note') + '</span>'); //Kein Merken für fremde LGs
+		if (Parts.CityMapEntity['player_id'] === ExtPlayerID) 
+			h.push('<span class="btn button-save-own">' + i18n('Boxes.OwnpartCalculator.Note') + '</span>'); 
 		h.push('</div>');
 
-		// ---------------------------------------------------------------------------------------------
-
-		if( $('.OwnPartBoxBackground').length > 0 ){
-			$('.OwnPartBoxBackgroundBody').html( h.join('') );
-			return;
-		}
-
-		// assemble
-		let div = $('<div />').addClass('OwnPartBoxBackground'),
-			a = $('<div />').addClass('outerArrow').append( $('<span />').addClass('arrow game-cursor').attr('id', 'OwnPartBoxArrow') ).append( $('<div />').addClass('OwnPartBoxBackgroundBody window-box').append(h.join('')) );
-
-		$OwnPartBox
-			.append( div.append(a) )
-			.append($('<div />')
-				.addClass('black-bg').hide());
-
-		// der "Toggle"-Pfeil wurde geklickt
-		$('#OwnPartBoxArrow').bind('click', function(){
-			if( $OwnPartBox.hasClass('show') ){
-				Parts.BackGroundBoxAnimation(false);
-			} else {
-				Parts.BackGroundBoxAnimation(true);
-			}
-		});
-	},
-
-
-	/**
-	 * Lecker Animation für das Anzeigen der Kopieren Buttons
-	 *
-	 * @param show
-	 */
-	BackGroundBoxAnimation: (show)=> {
-		let $box = $('#OwnPartBox'),
-			$boxBg = $('.OwnPartBoxBackgroundBody');
-
-		if(show === true)
-		{
-			let e = /** @type {HTMLElement} */ (document.getElementsByClassName('OwnPartBoxBackgroundBody')[0]);
-
-			e.style.height = 'auto';
-			let h = e.offsetHeight;
-			e.style.height = '0px';
-
-			// center overlay to parent box
-			let $boxWidth = $('#OwnPartBox').outerWidth() - 10,
-				$bgBodyWidth = $boxBg.outerWidth();
-
-			// animation
-			$boxBg.animate({height: h, opacity: 1}, 250, function () {
-				$box.addClass('show');
-				$box.find('.black-bg').show();
-				e.style.height = 'auto';
-			});
-		}
-
-		else {
-			$('.OwnPartBoxBackgroundBody').animate({height: 0, opacity: 0}, 250, function () {
-				$box.removeClass('show');
-				$box.find('.black-bg').hide();
-			});
-		}
+		$OwnPartBox.append( $('<div class="OwnPartBoxBackgroundBody settingsbox-wrapper" />').append(h.join('')) );
+		if (isOpen)
+			$('.OwnPartBoxBackgroundBody').show();
 	},
 
 
@@ -1305,19 +1268,15 @@ let Parts = {
 
 
 	/**
-	 * Ausgeben oder Merken
-	 *
-	 * @param Event
-	 * @param Action
-	 * @returns {string}
+	 * Note or copy
 	 */
 	CopyFunction: (Event, Action) => {
 		let CopyString = $('#copystring').val();
 	
 		$(Event).removeClass('btn-green');
 
-		// wieder zuklappen
-		Parts.BackGroundBoxAnimation(false);
+		$('.OwnPartBoxBackgroundBody').fadeToggle();
+		$('#OwnPartBox').toggleClass('gbSettingsOpen');
 
 		Parts.CopyStrings[Parts.CityMapEntity['cityentity_id']] = CopyString;
 
@@ -1330,7 +1289,7 @@ let Parts = {
 		}
 
 		if (Action === 'copy') {
-			Parts.CopyStrings = {}; // Kopieren löscht die Liste
+			Parts.CopyStrings = {}; // delete list
 		}
 
 		return Copy;
