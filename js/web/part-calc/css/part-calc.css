@@ -73,6 +73,20 @@
 	display: inline-flex;
 }
 
+#OwnPartBox .icon-close {
+    filter: saturate(0.7) contrast(1.7);
+    opacity: 0.5;
+    background-image: url('../../../../css/images/hud/box-sprite.png'), none;
+    background-position: -2px -2px, 0 0;
+    box-shadow: none;
+	width: 22px;
+	height: 22px;
+	display: inline-block;
+	position: absolute;
+	right: 0;
+	top: 0;
+}
+
 #OwnPartBox.gbSettingsOpen #OwnPartBoxBody .fh-icon-settings {
 	filter: brightness(1.9) saturate(1.5) contrast(1.1);
 	box-shadow: 0 0 3px var(--black-65), 0 0 10px var(--text-light), 0 0 15px var(--black-65);
