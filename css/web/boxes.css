@@ -1239,7 +1239,7 @@ FP-Bar */
 	gap: 1px;
 }
 
-.window-head .box-buttons span {
+.window-head .box-buttons span, .fh-icon-settings {
 	width: 22px;
 	height: 22px;
 	border-radius: 2px;
@@ -1293,7 +1293,7 @@ FP-Bar */
 	background-position: -77px -1px, 0 0;
 }
 
-.window-settings {
+.window-settings, .fh-icon-settings {
 	background-position: -192px -2px, 0 0;
 }
 
