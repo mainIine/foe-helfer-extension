@@ -99,9 +99,6 @@ FoEproxy.addHandler('TimerService', 'getTimers', (data, postData) => {
 	})
 });
 
-/**
- * @type {{Alerts: *[], GlobalRankingTimeout: null, PrevAction: null, PrevActionTimestamp: null, NewAction: null, NewActionTimestamp: null, MapData: null, Neighbours: *[], PlayersPortraits: null, Colors: null, SortedColors: null, ProvinceNames: null, InjectionLoaded: boolean, PlayerBoxContent: *[], CurrentGBGRound: null, GBGRound: null, GBGAllRounds: null, GBGHistoryView: boolean, LogDatePicker: null, curDateFilter: null, curDateEndFilter: null, curDetailViewFilter: null, PlayerBoxSettings: {showRoundSelector: number, showLogButton: number, showProgressFilter: number, showOnlyActivePlayers: number}, showGuildColumn: number, showAdjacentSectors: number, showOwnSectors: number, Tabs: *[], TabsContent: *[], checkForDB: ((function(*): Promise<void>)|*), init: GuildFights.init, HandlePlayerLeaderboard: ((function(*): Promise<void>)|*), UpdateDB: ((function(*, *): Promise<void>)|*), SetBoxNavigation: ((function(*): Promise<void>)|*), ToggleProgressList: GuildFights.ToggleProgressList, SetTabs: GuildFights.SetTabs, GetTabs: (function(): string), SetTabContent: GuildFights.SetTabContent, GetTabContent: (function(): string), GetAlertButton: (function(Intl.NumberFormatPartTypeRegistry.integer): string), ShowGuildBox: GuildFights.ShowGuildBox, ShowPlayerBox: GuildFights.ShowPlayerBox, ShowDetailViewBox: GuildFights.ShowDetailViewBox, BuildPlayerContent: ((function(*): Promise<void>)|*), BuildDetailViewContent: ((function(*): Promise<void>)|*), DeleteOldSnapshots: ((function(*): Promise<void>)|*), BuildDetailViewLog: ((function(*): Promise<void>)|*), BuildFightContent: GuildFights.BuildFightContent, BuildProgressTab: (function(): *[]), BuildNextUpTab: (function(): *[]), intiateDatePicker: ((function(): Promise<void>)|*), formatRange: (function(): string), ToggleCopyButton: GuildFights.ToggleCopyButton, CopyToClipBoard: GuildFights.CopyToClipBoard, UpdateCounter: GuildFights.UpdateCounter, PrepareColors: GuildFights.PrepareColors, RefreshTable: GuildFights.RefreshTable, ShowPlayerBoxSettings: GuildFights.ShowPlayerBoxSettings, PlayerBoxSettingsSaveValues: GuildFights.PlayerBoxSettingsSaveValues, GetAlerts: (function(): Promise<unknown>), SetAlert: GuildFights.SetAlert, DeleteAlert: GuildFights.DeleteAlert, ShowLiveFightSettings: GuildFights.ShowLiveFightSettings, SaveLiveFightSettings: GuildFights.SaveLiveFightSettings}}
- */
 let GuildFights = {
 
 	Alerts: [],
@@ -135,7 +132,9 @@ let GuildFights = {
 	showGuildColumn: 0,
 	showAdjacentSectors: 0,
 	showOwnSectors: 0,
+	showTileColors: JSON.parse(localStorage.getItem("LiveFightSettings"))?.showTileColors || 1,
 	serverOffset: JSON.parse(localStorage.getItem("GuildFights.serverOffset")||"null"),
+	discordWebhook: JSON.parse(localStorage.getItem("LiveFightSettings"))?.discordWebhook || "",
 
 	Tabs: [],
 	TabsContent: [],
@@ -159,9 +158,6 @@ let GuildFights = {
 	},
 
 	init: () => {
-		// moment.js global set
-		//moment.locale(MainParser.Language);
-
 		GuildFights.GetAlerts();
 
 		if (GuildFights.InjectionLoaded === false) {
@@ -188,10 +184,6 @@ let GuildFights = {
 	},
 
 
-	/**
-	 * @param d
-	 * @returns {Promise<void>}
-	 */
 	HandlePlayerLeaderboard: async (d) => {
 		// immer zwei vorhalten, für Referenz Daten (LiveUpdate)
 		if (localStorage.getItem('GuildFights.NewAction') !== null)
@@ -253,15 +245,10 @@ let GuildFights = {
 	},
 
 
-	/**
-	 * @param content
-	 * @param data
-	 * @returns {Promise<void>}
-	 */
+
 	UpdateDB: async (content, data) => {
 
-		if (content === 'history')
-		{
+		if (content === 'history') {
 			await GuildFights.db.history.put({ 
 					gbground: GuildFights.CurrentGBGRound, 
 					sumNegotiations: data.sumNegotiations, 
@@ -270,9 +257,7 @@ let GuildFights = {
 				});
 		}
 
-		if (content === 'player')
-		{
-
+		if (content === 'player') {
 			let battles = 0,
 				negotiations = 0,
 				attrition = 0;
@@ -312,10 +297,6 @@ let GuildFights = {
 	},
 
 
-	/**
-	 * @param gbground
-	 * @returns {Promise<void>}
-	 */
 	SetBoxNavigation: async (gbground) => {
 		let h = [];
 		let i = 0;
@@ -423,7 +404,6 @@ let GuildFights = {
 
 	/**
 	 * Filters the list for players with new progress
-	 * @param id
 	 */
 	ToggleProgressList: (id) => {
 
@@ -455,56 +435,27 @@ let GuildFights = {
 	},
 
 
-	/**
-	 * Merkt sich alle Tabs
-	 *
-	 * @param id
-	 */
 	SetTabs: (id) => {
 		GuildFights.Tabs.push('<li class="' + id + ' game-cursor"><a href="#' + id + '" class="game-cursor"><span>&nbsp;</span></a></li>');
 	},
 
 
-	/**
-	 * Gibt alle gemerkten Tabs aus
-	 *
-	 * @returns {string}
-	 */
 	GetTabs: () => {
 		return '<ul class="horizontal dark-bg">' + GuildFights.Tabs.join('') + '</ul>';
 	},
 
 
-	/**
-	 * Speichert BoxContent zwischen
-	 *
-	 * @param id
-	 * @param content
-	 */
-	SetTabContent: (id, content) => {
-		// ab dem zweiten Eintrag verstecken
-		let style = GuildFights.TabsContent.length > 0 ? ' style="display:none"' : '';
-
-		GuildFights.TabsContent.push('<div id="' + id + '"' + style + '>' + content + '</div>');
+	SetTabContent: (id, content) => {    
+		let cls = GuildFights.TabsContent.length > 0 ? ' class="hidden-tab"' : '';
+    	GuildFights.TabsContent.push('<div id="' + id + '"' + cls + '>' + content + '</div>');
 	},
 
 
-	/**
-	 * Setzt alle gespeicherten Tabellen zusammen
-	 *
-	 * @returns {string}
-	 */
 	GetTabContent: () => {
 		return GuildFights.TabsContent.join('');
 	},
 
 
-	/**
-	 *
-	 * @param {boolean} alertActive
-	 * @param {integer} provId
-	 * @param {integer} alertId
-	 */
 	GetAlertButton: (provId) => {
 		let btn;
 		if (GuildFights.Alerts.find((a) => a.provId == provId) !== undefined) {
@@ -1105,6 +1056,8 @@ let GuildFights = {
 
 		$('#LiveGildFighting').find('#LiveGildFightingBody').html(h.join('')).promise().done(function () {
 			$('.gbg-tabs').tabslet({ active: activeTab });
+			$('[data-original-title]').tooltip();
+
 			$('.gbg-tabs').on('_after', (e) => {
 				GuildFights.ToggleCopyButton();
 			});
@@ -1221,7 +1174,7 @@ let GuildFights = {
 
 	BuildNextUpTab: function() {
 		let nextup = [],
-			mapdata = GuildFights.MapData['map']['provinces'],
+			mapdata = GuildFights.MapData.map.provinces,
 			gbgGuilds = GuildFights.MapData['battlegroundParticipants'],
 			own = gbgGuilds.find(e => e['clan']['id'] === ExtGuildID),
 			LiveFightSettings = JSON.parse(localStorage.getItem('LiveFightSettings'));
@@ -1275,7 +1228,7 @@ let GuildFights = {
 						GuildFights.UpdateCounter(countDownDate, intervalID, prov[x]['id']);
 					}, 1000);
 
-				nextup.push(`<tr id="timer-${prov[x]['id']}" class="timer" data-tab="nextup" data-id=${prov[x]['id']}>`);
+				nextup.push(`<tr id="timer-${prov[x].id}" class="timer" data-tab="nextup" data-id=${prov[x].id}>`);
 				nextup.push(`<td class="prov-name" title="${i18n('Boxes.GuildFights.Owner')}: ${prov[x]['owner']}">`)
 				nextup.push(`<span class="province-color" ${color['main'] ? 'style="background-color:' + color['main'] + '"' : ''}"></span> `)
 				nextup.push(`<span class="battletype ${battleType}"></span>`)
@@ -1288,9 +1241,19 @@ let GuildFights = {
 					nextup.push(`<td>${prov[x]['owner']}</td>`);
 				}
 
-				nextup.push(`<td class="time-static" style="user-select:text">${moment(countDownDate).add(LiveFightSettings?.showServerTime ? - 60 * (GuildFights.serverOffset ?? 0) : 0 , "seconds").format('HH:mm:ss')}</td>`);
+				let timeAt = moment(countDownDate).add(LiveFightSettings?.showServerTime ? - 60 * (GuildFights.serverOffset ?? 0) : 0 , "seconds");
+				nextup.push(`<td class="time-static" style="user-select:text">${timeAt.format('HH:mm:ss')}</td>`);
 				nextup.push(`<td class="time-dynamic" id="counter-${prov[x]['id']}">${countDownDate.format('HH:mm:ss')}</td>`);
-				nextup.push(`<td class="text-right" id="alert-${prov[x]['id']}">${GuildFights.GetAlertButton(prov[x]['id'])}</td>`);
+
+				let discordButton = '';
+				let isUnder30Min = ((prov[x]['lockedUntil'] - Math.round(Date.now() / 1000)) / 60) < 30;
+				if (prov[x]['owner'] !== own['clan']['name'] && isUnder30Min) {
+					discordButton = `<button class="btn btn-slim discord" data-original-title="${i18n('Boxes.GuildFights.DiscordSend')}" onclick="Discord.sendGBGSector(${prov[x]['id']},'${battleType}');"></button>`;
+				}
+				nextup.push(`<td class="text-right" id="alert-${prov[x]['id']}">
+					<div class="btn-group">
+					${discordButton}
+					${GuildFights.GetAlertButton(prov[x]['id'])}</div></td>`);
 				nextup.push('</tr>');
 			}
 		}
@@ -1303,8 +1266,6 @@ let GuildFights = {
 
 	/**
 	 * Initatite the Litepicker object
-	 *
-	 * @returns {Promise<void>}
 	 */
 	intiateDatePicker: async () => {
 
@@ -1490,8 +1451,6 @@ let GuildFights = {
 
 	/**
 	 * Real time update of the map box
-	 *
-	 * @param data
 	 */
 	RefreshTable: (data) => {
 
@@ -1725,16 +1684,31 @@ let GuildFights = {
 		let showOwnSectors = (LiveFightSettings && LiveFightSettings.showOwnSectors !== undefined) ? LiveFightSettings.showOwnSectors : 0;
 		let showTileColors = (LiveFightSettings && LiveFightSettings.showTileColors !== undefined) ? LiveFightSettings.showTileColors : 1;
 		let showServerTime = LiveFightSettings?.showServerTime ?? 0;
+		let discordWebhook = LiveFightSettings?.discordWebhook ?? '';
 
 		c.push(`<p><input id="showguildcolumn" name="showguildcolumn" value="1" type="checkbox" ${(showGuildColumn === 1) ? ' checked="checked"' : ''} /> <label for="showguildcolumn">${i18n('Boxes.GuildFights.ShowOwner')}</label></p>`);
 		c.push(`<p><label for="showAdjacentSectors"><input id="showAdjacentSectors" name="showAdjacentSectors" value="0" type="checkbox" ${(showAdjacentSectors === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.ShowAdjacentSectors')}</label></p>`);
 		c.push(`<p><label for="showownsectors"><input id="showownsectors" name="showownsectors" value="0" type="checkbox" ${(showOwnSectors === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.ShowOwnSectors')}</label></p>`);
 		c.push(`<p><label for="showtilecolors"><input id="showtilecolors" name="showtilecolors" value="0" type="checkbox" ${(showTileColors === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.ShowTileColors')}</label></p>`);
-		c.push(`<p><label for="showservertime"><input id="showservertime" name="showservertime" value="0" type="checkbox" ${(showServerTime === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.ShowServerTime')}</label></p>`);
+		c.push(`<hr><p><label for="showservertime"><input id="showservertime" name="showservertime" value="0" type="checkbox" ${(showServerTime === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.ShowServerTime')}</label></p>`);
 		c.push(`<p><label for="serverOffset">${i18n('Boxes.GuildFights.serverOffset')}<input id="serverOffset" name="serverOffset" value="${GuildFights.serverOffset??""}" type="text" maxlength="5" size = "5"/></label></p>`);
-		c.push(`<p><button onclick="GuildFights.SaveLiveFightSettings()" id="save-livefight-settings" class="btn" style="width:100%">${i18n('Boxes.GuildFights.SaveSettings')}</button></p>`);
 
-		// insert into DOM
+		c.push(`<hr><p>`);
+			c.push(`<label for="gbgWebhook"><b>${i18n('Menu.Discord.Title')}</b></label><br />`);
+			if (Discord.WebHooksUrls.length === 0)
+				c.push(`${i18n('Boxes.GuildFights.DiscordSetup')}: <span class="btn btn-slim" onclick="Discord.BuildBox()">${i18n('General.Open')}</span>`);
+			else {
+				c.push(`<select id="gbgWebhook" name="gbgWebhook">`);
+				c.push(`<option value="">${i18n('General.Choose')}</option>`);
+				for(let url of Discord.WebHooksUrls) {
+					c.push(`<option value="${url.url}" ${discordWebhook === url.url ? ' selected="selected"' : ''}>${url.name}</option>`);
+				}
+			c.push(`</select>`);
+			}
+			c.push(`</p>`);
+		c.push(`<p><button onclick="GuildFights.SaveLiveFightSettings()" id="save-livefight-settings" class="btn btn-green">${i18n('Boxes.GuildFights.SaveSettings')}</button></p>`);
+
+		
 		$('#LiveGildFightingSettingsBox').html(c.join(''));
 	},
 
@@ -1747,6 +1721,7 @@ let GuildFights = {
 		value.showOwnSectors = 0;
 		value.showTileColors = 0;
 		value.showServerTime = 0;
+		value.discordWebhook = '';
 
 		if ($("#showguildcolumn").is(':checked')) 
 			value.showGuildColumn = 1;
@@ -1762,12 +1737,15 @@ let GuildFights = {
 
 		if ($("#showservertime").is(':checked')) 
 			value.showServerTime = 1;
+
+		value.discordWebhook = $("#gbgWebhook").val();
 				
 		GuildFights.showGuildColumn = value.showGuildColumn;
 		GuildFights.showAdjacentSectors = value.showAdjacentSectors;
 		GuildFights.showOwnSectors = value.showOwnSectors;
 		GuildFights.showTileColors = value.showTileColors;
 		GuildFights.showServerTime = value.showServerTime;
+		GuildFights.discordWebhook = value.discordWebhook;
 		GuildFights.serverOffset = parseInt($("#serverOffset").val()) ?? null;
 		if (GuildFights.serverOffset != null)
 			localStorage.setItem('GuildFights.serverOffset', JSON.stringify(GuildFights.serverOffset)) 
@@ -1783,10 +1761,6 @@ let GuildFights = {
 	},	
 };
 
-/**
- *
- * @type {{ToolTipActive: boolean, prepare: ProvinceMap.prepare, Provinces: *[], MapCTX: {}, StrokeColor: string, Map: {width: number, height: number}, Refresh: ProvinceMap.Refresh, Mouse: {x: undefined, y: undefined}, StrokeWidth: number, build: ProvinceMap.build, ToolTipId: boolean, ProvinceData: ((function(): (*|undefined))|*), Map: {}, hexToRgb: ((function(*, *): string)|*)}}
- */
 let ProvinceMap = {
 
 	Map: {},
