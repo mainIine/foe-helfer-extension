@@ -421,14 +421,15 @@ let Discord = {
 
 	sendGBGSector: (id,battleType)=> {
 		let sector = GuildFights.MapData.map.provinces.find(x => x.id === id);
-
+		console.log(sector);
 		let timeAt = moment.unix(sector.lockedUntil - 2);
 		let battleColor = (GuildFights.showTileColors != 0 ? (battleType == 'BTattack' ? '🔴' : '🔵') : '');
-		let msg = battleColor +" **" + sector.title + "** @ " + timeAt.format('HH:mm') + " - " + sector.gainAttritionChance + "%* "
+		let msg = battleColor +" **" + sector.title + "** @ <t:" + timeAt/1000 + ":t> - " + sector.gainAttritionChance + "%* "
+		msg +=" \n-# :medal:`" + sector.victoryPoints + " (+" + sector.victoryPointsBonus + ")` "
 
 		let e = {
 				url: GuildFights.discordWebhook,
-				message: msg + " \n-# " + ExtPlayerName
+				message: msg + " - " + ExtPlayerName
 			};
 		Discord.PrepareMessageForSend(e);
 	}
