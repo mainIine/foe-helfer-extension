@@ -568,12 +568,6 @@
 #Productions .items-sum td:nth-child(2) {
 	width: 15px;
 }
-#ProductionsRating {
-	top: 100px;
-	left: 100px;
-	width: 780px;
-	height: 500px;
-}
 #ProductionsRatingBody {
 	overflow-x: hidden;
 	overflow-y: auto;

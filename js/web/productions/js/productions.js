@@ -308,25 +308,24 @@ let Productions = {
 
 
 	init: () => {
-		if (ActiveMap === 'OtherPlayer') return
+		if (ActiveMap === 'OtherPlayer') return;
 
-		MainParser.CityBuildingsData = CityBuildings.createBuildings(Object.values(MainParser.CityMapData))
-		Productions.CombinedCityMapData = MainParser.CityBuildingsData
+		MainParser.CityBuildingsData = CityBuildings.createBuildings(Object.values(MainParser.CityMapData));
+		Productions.CombinedCityMapData = MainParser.CityBuildingsData;
 
 		if (CityMap.EraOutpost.data) {
-			Productions.CombinedCityMapData = Object.assign({}, Productions.CombinedCityMapData, CityMap.EraOutpost.data)
+			Productions.CombinedCityMapData = Object.assign({}, Productions.CombinedCityMapData, CityMap.EraOutpost.data);
 		}
 
-		// leere Arrays erzeugen
 		for(let i in Productions.Types) {
-			if (!Productions.Types.hasOwnProperty(i)) continue
+			if (!Productions.Types.hasOwnProperty(i)) continue;
 
-			Productions.BuildingsProducts[Productions.Types[i]] = []
-			if (Productions.Types[i] === 'goods') continue
-			Productions.BuildingsProductsGroups[ Productions.Types[i] ] = []
+			Productions.BuildingsProducts[Productions.Types[i]] = [];
+			if (Productions.Types[i] === 'goods') continue;
+			Productions.BuildingsProductsGroups[ Productions.Types[i] ] = [];
 		}
 
-		Productions.ReadData()
+		Productions.ReadData();
 	},
 
 
@@ -363,14 +362,10 @@ let Productions = {
 	},
 
 
-	/**
-	 * HTML Box erstellen und einblenden
-	 */
 	showBox: () => {
 
 		if ($('#Productions').length > 0){
 			HTML.CloseOpenBox('Productions');
-
 			return;
 		}
 
@@ -389,13 +384,10 @@ let Productions = {
 		Productions.ActiveTab = 1;
 		Productions.CalcBody();
 
-		Productions.SwitchFunction()
+		Productions.SwitchTabs()
 	},
 
 
-	/**
-	 * Aktualisiert den Inhalt
-	 */
 	CalcBody: () => {
 		Productions.Tabs = [];
 		Productions.TabsContent = [];
@@ -1659,12 +1651,6 @@ let Productions = {
 	},
 
 
-	/**
-	* alle Produkte auslesen
-	*
-	* @param d
-	* @returns {{eid: *, at: *, in: *, name: *, id: *, type: *, products: *, motivatedproducts: *}}
-	*/
     readType: (d) => {
 	   // Boost ausrechnen und bereitstellen falls noch nicht initialisiert
 	   if (Productions.Boosts['money'] === undefined) Productions.Boosts['money'] = ((Boosts.Sums['coin_production'] + 100) / 100);
@@ -1692,10 +1678,7 @@ let Productions = {
 		return Productions.TabsContent.join('');
 	},
 
-	/**
-	 * Switch Tabs [List|Group]
-	 */
-	SwitchFunction: ()=>{
+	SwitchTabs: ()=>{
 		$('#Productions').on('click', '.change-view', function() {
 			let activeTable = $(this).parents('table'),
 				hiddenTable = activeTable.next('table') 
@@ -1711,26 +1694,6 @@ let Productions = {
 	},
 
 
-	/**
-	 * Gibt an, ob der jeweilige Ressourcentyp produziert wird oder nicht (z.B. Bevölkerung, Zufriedenheits, Kampfboosts)
-	*
-    * @param Type
-    */
-	TypeHasProduction: (Type) => {
-		if (Type === 'population' || Type === 'happiness' || Type === 'att_boost_attacker' || Type === 'att_boost_defender' || Type === 'def_boost_attacker' || Type === 'def_boost_defender') {
-			return false;
-		}
-		else {
-			return true;
-        }
-    },
-
-
-	/**
-	 * Zeigt pulsierend ein Gebäude auf der Map
-	 *
-	 * @param ids
-	 */
 	ShowOnMap: (ids) => {
 		let IDArray = (ids.length !== undefined ? ids : [ids]);
 
