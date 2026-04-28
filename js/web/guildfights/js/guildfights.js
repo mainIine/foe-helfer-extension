@@ -1246,8 +1246,8 @@ let GuildFights = {
 				nextup.push(`<td class="time-dynamic" id="counter-${prov[x]['id']}">${countDownDate.format('HH:mm:ss')}</td>`);
 
 				let discordButton = '';
-				let isUnder30Min = ((prov[x]['lockedUntil'] - Math.round(Date.now() / 1000)) / 60) < 30;
-				if (prov[x]['owner'] !== own['clan']['name'] && isUnder30Min) {
+				let isUnder60Min = ((prov[x]['lockedUntil'] - Math.round(Date.now() / 1000)) / 60) < 60;
+				if (prov[x]['owner'] !== own['clan']['name'] && isUnder60Min) {
 					discordButton = `<button class="btn btn-slim discord" data-original-title="${i18n('Boxes.GuildFights.DiscordSend')}" onclick="Discord.sendGBGSector(${prov[x]['id']},'${battleType}');"></button>`;
 				}
 				nextup.push(`<td class="text-right" id="alert-${prov[x]['id']}">
