@@ -1247,7 +1247,7 @@ let GuildFights = {
 
 				let discordButton = '';
 				let isUnder60Min = ((prov[x]['lockedUntil'] - Math.round(Date.now() / 1000)) / 60) < 60;
-				if (prov[x]['owner'] !== own['clan']['name'] && isUnder60Min) {
+				if (prov[x]['owner'] !== own['clan']['name'] && isUnder60Min && GuildFights.discordWebhook != '') {
 					discordButton = `<button class="btn btn-slim discord" data-original-title="${i18n('Boxes.GuildFights.DiscordSend')}" onclick="Discord.sendGBGSector(${prov[x]['id']},'${battleType}');"></button>`;
 				}
 				nextup.push(`<td class="text-right" id="alert-${prov[x]['id']}">
