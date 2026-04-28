@@ -106,6 +106,8 @@ let Discord = {
 
 	BuildWebhookFormContent(state = '') {
 		let h = [];
+		state = (Discord.WebHooksUrls.length == 0 ? 'open' : state);
+
 		h.push(`<div class="foehelper-accordion ${state}">`);
 			h.push('<div class="foehelper-accordion-head">');
 				h.push(`<strong>${i18n('Boxes.Discord.WebhookUrlManage')}</strong>`);
@@ -380,7 +382,6 @@ let Discord = {
 
 
 	PrepareMessageForSend: (e)=> {
-		// send message to discord api
 		Discord.SendMessage(
 			e.url,
 			{
@@ -417,6 +418,20 @@ let Discord = {
 			$('.foe-helper-overlay').remove();
 		});
 	},
+
+	sendGBGSector: (id,battleType)=> {
+		let sector = GuildFights.MapData.map.provinces.find(x => x.id === id);
+
+		let timeAt = moment.unix(sector.lockedUntil - 2);
+		let battleColor = (GuildFights.showTileColors != 0 ? (battleType == 'BTattack' ? '🔴' : '🔵') : '');
+		let msg = battleColor +" **" + sector.title + "** @ " + timeAt.format('HH:mm') + " - " + sector.gainAttritionChance + "%* "
+
+		let e = {
+				url: GuildFights.discordWebhook,
+				message: msg + " \n-# " + ExtPlayerName
+			};
+		Discord.PrepareMessageForSend(e);
+	}
 };
 
 // get all WebHooks
