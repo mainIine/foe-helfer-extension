@@ -72,26 +72,39 @@ let Discord = {
 
 			let d = Discord.WebHooks[i];
 
-			h.push(`<li>`);
-				h.push(`<span>${d.message}</span>`);
-				h.push(`<span style="white-space:nowrap;" class="text-right">
-					<span class="btn-group">
-					<button class="btn btn-green btn-slim" role="button" type="button" onclick="Discord.SendEntry(${i})">${i18n('General.Send')}</button>
-					<button class="btn btn-slim" role="button" type="button" data-original-title="${i18n('Boxes.Discord.CopyTitle')}" onclick="Discord.CopyEntry(${i})"><img src="${extUrl}js/web/discord/images/copy-paste.svg" style="width: 17px;" alt="" /></button>
-					<button class="btn btn-slim btn-edit" role="button" type="button" onclick="Discord.EntryForm(${i})">${i18n('Boxes.Discord.EditEntry')}</button>
-					<button class="btn btn-slim btn-delete icon" role="button" type="button" onclick="Discord.Delete(${i})"></button>
+			h.push(`<li>
+				<span>`);
+				if (d.type == 'template')
+					h.push(`<b>${d.name}</b> `);
+
+				h.push(`${d.message}
+				</span>
+					
+				<span style="white-space:nowrap;" class="text-right">
+					<span class="btn-group">`);
+					if (d.type != 'template')
+						h.push(`<button class="btn btn-green btn-slim" role="button" type="button" onclick="Discord.SendEntry(${i})">${i18n('General.Send')}</button>`);
+				
+					h.push(`<button class="btn btn-slim" role="button" type="button" data-original-title="${i18n('Boxes.Discord.CopyTitle')}" onclick="Discord.CopyEntry(${i})"><img src="${extUrl}js/web/discord/images/copy-paste.svg" style="width: 17px;" alt="" /></button>`);
+					if (d.type != 'template')
+						h.push(`<button class="btn btn-slim btn-edit" role="button" type="button" onclick="Discord.EntryForm(${i})">${i18n('Boxes.Discord.EditEntry')}</button>`);
+					else
+						h.push(`<button class="btn btn-slim btn-edit" role="button" type="button" onclick="Discord.TemplateForm(${i})">${i18n('Boxes.Discord.EditEntry')}</button>`);
+
+					h.push(`<button class="btn btn-slim btn-delete icon" role="button" type="button" onclick="Discord.Delete(${i})"></button>
 					
 					</span>
-					</span>`);
-			h.push(`</li>`);
+				</span>
+			</li>`);
 		}
 
-		h.push(`</ul>`);
-		h.push(`<div class="formWrapper"></div>`);
+		h.push(`</ul>
+			<div class="formWrapper"></div>`);
 
-		h.push(`<div>`);
-			h.push(`<button class="btn" id="addDiscordEntry" role="button" type="button" onclick="Discord.EntryForm()">${i18n('Boxes.Discord.TitleNewEntry')}</button>`);
-		h.push(`</div>`);
+		h.push(`<div class="flex between p5">
+			<button class="btn" id="addDiscordEntry" onclick="Discord.EntryForm()">${i18n('Boxes.Discord.TitleNewEntry')}</button>
+			<button class="btn" id="addDiscordTemplate" onclick="Discord.TemplateForm()">${i18n('Boxes.Discord.TitleNewTemplate')}</button>
+			</div>`);
 
 		$('#DiscordBody').html(h.join(''));
 
@@ -155,7 +168,9 @@ let Discord = {
 	},
 
 	EntryForm: (i = '')=> {
+		$('#DiscordBody .formWrapper').html('');
 		$('#addDiscordEntry').hide();
+		$('#addDiscordTemplate').hide();
 		if ($('#discord-entry-form').length && $('#discord-entry-form').data('entry') === String(i)) {
 			$('#discord-entry-form').slideDown(function(){ $(this).remove(); });
 			return;
@@ -169,7 +184,7 @@ let Discord = {
 
 		let h = [];
 
-		h.push(`<div id="discord-entry-form" style="display:none;" class="dark-bg">
+		h.push(`<div id="discord-entry-form" style="display:none;" class="dark-bg discordForm">
 			<h1 class="p5">${i18n('Boxes.Discord.TitleNewEntry')}</h1>`);
 		h.push(`<form action="" onsubmit="return false;" autocomplete="off">
 			<b>${i18n('Boxes.Discord.WebhookUrl')}</b>`);
@@ -210,6 +225,47 @@ let Discord = {
 		$('#discord-entry-form').data('entry', String(i)).slideDown();
 	},
 
+	TemplateForm: (i = '')=> {
+		$('#DiscordBody .formWrapper').html('');
+		$('#addDiscordTemplate').hide();
+		$('#addDiscordEntry').hide();
+		if ($('#discord-template-form').length && $('#discord-template-form').data('entry') === String(i)) {
+			$('#discord-template-form').slideDown(function(){ $(this).remove(); });
+			return;
+		}
+
+		let data;
+
+		if(i !== ''){
+			data = Discord.WebHooks[parseInt(i)];
+		}
+
+		let h = [];		
+
+		h.push(`<div id="discord-template-form" style="display:none;" class="dark-bg discordForm">
+			<h1 class="p5">${i18n('Boxes.Discord.TitleNewTemplate')}</h1>
+			<form action="" onsubmit="return false;" autocomplete="off">
+				<b>${i18n('Boxes.Discord.Name')}</b>
+				<input id="discord-template-name" type="text" value="${data ? data['name'] : ''}" />
+
+				<b>${i18n('Boxes.Discord.Message')}</b>
+				<textarea id="message" name="message" spellcheck="false">${data ? data['message'] : ':robot: #battletype **#name** <t:#time:R>'}</textarea>
+
+				<div class="w-full">
+					${i18n('Boxes.Discord.GBGVariables')}: #name, #battletype, #time, #attrition, #guild, #vp <br/>
+					<a class="external-link" href="https://support.discord.com/hc/en-us/articles/210298617-Markdown-Text-101-Chat-Formatting-Bold-Italic-Underline" target="_blank">${i18n('Boxes.Discord.MarkdownLinkText')}</a>
+				</div>
+				<div>
+					<button class="btn" onclick="Discord.CancelTemplateForm()">${i18n('General.Cancel')}</button>
+					<button class="btn" onclick="Discord.SaveTemplate(${i})">${i18n('General.Save')}</button>
+				</div>
+			</form></div>`);
+
+		$('#discord-template-form').remove();
+		$('#DiscordBody .formWrapper').append(h.join(''));
+		$('#discord-template-form').data('entry', String(i)).slideDown();
+	},
+
 
 	SaveEntry: (i = '')=> {
 		$('#addDiscordEntry').show();
@@ -230,9 +286,36 @@ let Discord = {
 	},
 
 
+	SaveTemplate: (i = '')=> {
+		$('#addDiscordTemplate').show();
+		const data = {
+			message: $('#message').val(),
+			type: 'template',
+			name: $('#discord-template-name').val()
+		};
+
+		if(i !== ''){
+			Discord.WebHooks[parseInt(i)] = data;
+		}
+		else {
+			Discord.WebHooks.push(data);
+		}
+
+		// save & rebuild
+		Discord.SaveTheData();
+	},
+
+
 	CancelEntryForm: ()=> {
 		$('#discord-entry-form').slideUp(function(){ $(this).remove(); });
 		$('#addDiscordEntry').show();
+		$('#addDiscordTemplate').show();
+	},
+
+	CancelTemplateForm: ()=> {
+		$('#discord-template-form').slideUp(function(){ $(this).remove(); });
+		$('#addDiscordEntry').show();
+		$('#addDiscordTemplate').show();
 	},
 
 
@@ -419,18 +502,43 @@ let Discord = {
 		});
 	},
 
-	sendGBGSector: (id,battleType)=> {
+	sendGBGSector: (id)=> {
 		let sector = GuildFights.MapData.map.provinces.find(x => x.id === id);
-		let timeAt = moment.unix(sector.lockedUntil - 2);
-		let battleColor = (GuildFights.showTileColors != 0 ? (battleType == 'BTattack' ? '🔴' : '🔵') : '');
-		let msg = battleColor +" **" + sector.title + "** @ <t:" + timeAt/1000 + ":R> - " + sector.gainAttritionChance + "%* "
-		msg +=" \n-# :medal:`" + sector.victoryPoints + " (+" + sector.victoryPointsBonus + ")` "
+		let timeAt = moment.unix(sector.lockedUntil - 2)/1000;
+		let battleColor = (GuildFights.showTileColors != 0 ? (sector.isAttackBattleType ? '🔴' : '🔵') : '');
+		let msg = battleColor +" **" + sector.title + "** <t:" + timeAt + ":R>";
 
-		let e = {
+		Discord.PrepareMessageForSend({
 				url: GuildFights.discordWebhook,
-				message: msg + " - " + ExtPlayerName
-			};
-		Discord.PrepareMessageForSend(e);
+				message: msg + " \n-# " + ExtPlayerName
+			});
+	},
+
+	sendGBGSectorCustom: (id)=> {
+		let sector = GuildFights.MapData.map.provinces.find(x => x.id === id);
+		let timeAt = moment.unix(sector.lockedUntil - 2)/1000;
+		let battleColor = sector.isAttackBattleType ? '🔴' : '🔵';
+
+		const vars = {
+			'#battletype': battleColor,
+			'#name': sector.title,
+			'#time': timeAt,
+			'#attrition': sector.gainAttritionChance,
+			'#guild': sector.owner,
+			'#vp': ''+sector.victoryPoints+ (sector.victoryPointsBonus ? " (+" + sector.victoryPointsBonus + ")":''),
+		};
+		let msg = (GuildFights.discordWebhookTemplate != '') ? Discord.WebHooks.find(x => x.name == GuildFights.discordWebhookTemplate).message
+        			: '#battletype **#name** @ <t:#name:R> - #attrition%*\n-# :medal:`#vp)`';
+
+		msg = Object.entries(vars).reduce(
+			(str, [placeholder, value]) => str.replaceAll(placeholder, value ?? ''),
+			msg
+		);
+
+		Discord.PrepareMessageForSend({
+				url: GuildFights.discordWebhook,
+				message: msg + " \n-# " + ExtPlayerName
+			});
 	}
 };
 
