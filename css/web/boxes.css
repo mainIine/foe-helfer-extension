@@ -278,7 +278,7 @@ a[target="_blank"] svg {
 	width: 22px;
 }
 
-.btn.discord:hover, .btn.discord:active {
+.btn.discord:hover, .btn.discord:active, .btn.discord.custom:hover {
     background-image: url('../../css/images/menu/discord.png'), var(--btn-bg-active);
     background-size: 80%, cover;
     background-repeat: no-repeat, repeat;
@@ -1179,7 +1179,7 @@ FP-Bar */
 .button--lg,
 .custom-option,
 .hud-btn,
-.tabs a {
+a {
 	cursor: url('../images/cursor_default.cur'), auto;
 }
 
@@ -1193,7 +1193,7 @@ FP-Bar */
 .button-own:hover,
 .button--lg:hover,
 .hud-btn:hover,
-.tabs a:hover {
+a:hover {
 	cursor: url('../images/cursor_hover.cur'), auto;
 }
 
@@ -1852,6 +1852,7 @@ SettingsBox */
 	border-bottom: 1px solid var(--text-medium2);
 	border-left: none;
 	border-right: none;
+	margin: 0.5em 0;
 }
 
 

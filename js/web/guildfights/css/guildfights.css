@@ -337,6 +337,15 @@
 	background-image: url(../../x_img/gbg-gray.png);
 }
 
+.btn-group:hover .btn.discord.custom {
+	display: block;
+}
+
+.btn.discord.custom {
+	display: none;
+    background-image: url('../../../../css/images/menu/discord.png'), var(--tabs-bg);
+}
+
 /*************************************************************************************************************/
 
 #ProvinceMapBody {

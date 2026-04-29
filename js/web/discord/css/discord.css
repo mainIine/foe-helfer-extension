@@ -8,7 +8,7 @@
 	overflow-y: auto;
 }
 
-#discord-entry-form form {
+.discordForm form {
 	display: flex;
 	gap: 5px;
 	flex-wrap: wrap;
@@ -16,11 +16,11 @@
 	padding: 5px;
 }
 
-#discord-entry-form b {
+.discordForm b {
 	width: 155px;
 }
 
-#discord-entry-form #url-list {
+.discordForm #url-list {
 	padding: 0;
 	margin: 0;
 	list-style: none;
@@ -28,7 +28,7 @@
 	width: calc(100% - 170px);
 }
 
-#discord-entry-form #url-list {
+.discordForm #url-list {
 	padding: 0;
 	margin: 0;
 	list-style: none;
@@ -36,24 +36,20 @@
 	width: calc(100% - 160px);
 }
 
-#discord-entry-form #url-list li {
+.discordForm #url-list li {
 	padding: 0 2px;
 	margin: 0 3px;
 	display: inline-block;
 	border-radius: 2px;
 }
 
-#discord-entry-form #url-list li.selected {
+.discordForm #url-list li.selected {
 	font-weight: bold;
 	color: var(--bright-color);
 	background-color: var(--black-50);
 }
 
-#discord-entry-form textarea {
+.discordForm textarea, .discordForm input {
 	width: calc(100% - 160px);
 	resize: vertical;
-}
-
-#Discord #addDiscordEntry {
-	margin-top: 0.5rem;
 }
