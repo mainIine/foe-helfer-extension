@@ -515,8 +515,6 @@ let Discord = {
 	},
 
 	sendGBGSectors: () => {
-		console.log(GuildFights.discordCache);
-
 		let msg = ""
 		for (let sector of GuildFights.discordCache) {
 			let timeAt = moment.unix(sector.lockedUntil - 2)/1000;
