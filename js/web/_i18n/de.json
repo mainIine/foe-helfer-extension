@@ -505,6 +505,7 @@
     "Boxes.GuildFights.DeleteMessage.Title": "Gelöscht!",
     "Boxes.GuildFights.DiscordSend": "An Discord schicken",
     "Boxes.GuildFights.DiscordSendCustom": "Mit Template an Discord schicken",
+    "Boxes.GuildFights.DiscordSendSelection": "Auswahl an Discord schicken",
     "Boxes.GuildFights.DiscordSetup": "Keine Webhooks verfügbar. Bitte erstellen",
     "Boxes.GuildFights.Fights": "Kämpfe",
     "Boxes.GuildFights.LastSnapshot": " - letzter Snapshot vor __time__",

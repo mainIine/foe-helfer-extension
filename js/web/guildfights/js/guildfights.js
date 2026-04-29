@@ -136,6 +136,7 @@ let GuildFights = {
 	serverOffset: JSON.parse(localStorage.getItem("GuildFights.serverOffset")||"null"),
 	discordWebhook: JSON.parse(localStorage.getItem("LiveFightSettings"))?.discordWebhook || "",
 	discordWebhookTemplate: JSON.parse(localStorage.getItem("LiveFightSettings"))?.discordWebhookTemplate || "",
+	discordCache: null,
 
 	Tabs: [],
 	TabsContent: [],
@@ -1003,7 +1004,6 @@ let GuildFights = {
 	 */
 	BuildFightContent: () => {
 
-		GuildFights.CopyCache = [];
 		GuildFights.Tabs = [];
 		GuildFights.TabsContent = [];
 
@@ -1045,12 +1045,15 @@ let GuildFights = {
 
 		let h = [];
 
+		h.push(`<div class="btn-group">
+			<button class="btn copybutton all" onclick="GuildFights.CopyToClipBoard(event)">${i18n('Boxes.GuildFights.SelectAll')}</button>
+			<button class="btn dcbutton discord" onclick="GuildFights.PrepareForDiscord(event)" data-original-title="${i18n('Boxes.GuildFights.DiscordSendSelection')}" style="display:none;"></button>
+			<button class="btn mapbutton" onclick="ProvinceMap.build()">${i18n('Boxes.GuildFights.OpenMap')}</button>
+			</div>
+		</div>`);
 		h.push('<div class="gbg-tabs tabs">');
 		h.push(GuildFights.GetTabs());
 		h.push(GuildFights.GetTabContent());
-		h.push('<button class="btn copybutton all" onclick="GuildFights.CopyToClipBoard(event)">'+ i18n('Boxes.GuildFights.SelectAll') +'</button>');
-		h.push('<button class="btn mapbutton" onclick="ProvinceMap.build()">'+ i18n('Boxes.GuildFights.OpenMap') +'</button>');
-		h.push('</div>');
 
 		let activeTab = 1;
 		if ($('.gbgprogress.active').length > 0) activeTab = 2;
@@ -1250,10 +1253,11 @@ let GuildFights = {
 				let isUnder60Min = ((prov[x]['lockedUntil'] - Math.round(Date.now() / 1000)) / 60) < 60;
 
 				if (prov[x]['owner'] !== own['clan']['name'] && isUnder60Min && GuildFights.discordWebhook != '') {
-					console.log(GuildFights.discordWebhookTemplate);
-					if (GuildFights.discordWebhookTemplate != '')
-						discordButton += `<button class="btn btn-slim discord custom" data-original-title="${i18n('Boxes.GuildFights.DiscordSendCustom')}" onclick="Discord.sendGBGSectorCustom(${prov[x]['id']});"></button>`;
-
+					if (GuildFights.discordWebhookTemplate != '') {
+						let tpl = Discord.WebHooks.find(x => x.name == GuildFights.discordWebhookTemplate);
+						if (tpl)
+							discordButton += `<button class="btn btn-slim discord custom" data-original-title="${i18n('Boxes.GuildFights.DiscordSendCustom')}" onclick="Discord.sendGBGSectorCustom(${prov[x]['id']});"></button>`;
+					}
 					discordButton += `<button class="btn btn-slim discord" data-original-title="${i18n('Boxes.GuildFights.DiscordSend')}" onclick="Discord.sendGBGSector(${prov[x]['id']});"></button>`;
 				}
 
@@ -1323,15 +1327,18 @@ let GuildFights = {
 
 
 	ToggleCopyButton: () => {
-		if ($('#nextup').is(':visible')) {
-			$('.copybutton').show();
-		} else {
+		$('.dcbutton').hide();
+		$('.copybutton').show();
+
+		if (!$('#nextup').is(':visible')) {
 			$('.copybutton').hide();
 			return;
 		}
+
 		if ($('.timer.highlight-row').length > 0) {
 			$('.copybutton').html(i18n('Boxes.GuildFights.Copy'));
 			$('.copybutton').removeClass('all');
+			$('.dcbutton').show();
 		} else {
 			$('.copybutton').html(i18n('Boxes.GuildFights.SelectAll'));
 			$('.copybutton').addClass('all');
@@ -1345,13 +1352,13 @@ let GuildFights = {
 			GuildFights.ToggleCopyButton();
 			return;
 		}
-		let copy = '';
 		let copycache = [];
 		$('.timer.highlight-row').each(function () {
 			copycache.push(GuildFights.MapData['map']['provinces'].find((mapItem) => mapItem.id == $(this).data('id')));
 		});
 
 		copycache.sort(function (a, b) { return a.lockedUntil - b.lockedUntil });
+		let copy = '';
 		copycache.forEach((mapElem) => {
 			let battleType = mapElem.isAttackBattleType ? '🔴' : '🔵';
 			let LiveFightSettings = JSON.parse(localStorage.getItem('LiveFightSettings'));
@@ -1377,6 +1384,26 @@ let GuildFights = {
 					hideAfter: 5000
 				});
 			});
+		}
+	},
+
+
+
+	PrepareForDiscord: (e) => {
+		if (e.target.classList.contains('all')) {
+			$('.timer').addClass('highlight-row');
+			GuildFights.ToggleCopyButton();
+			return;
+		}
+		GuildFights.discordCache = [];
+		$('.timer.highlight-row').each(function () {
+			GuildFights.discordCache.push(GuildFights.MapData['map']['provinces'].find((mapItem) => mapItem.id == $(this).data('id')));
+		});
+
+		GuildFights.discordCache.sort(function (a, b) { return a.lockedUntil - b.lockedUntil });
+
+		if (GuildFights.discordCache.length > 0) {
+			Discord.sendGBGSectors();
 		}
 	},
 

@@ -509,9 +509,25 @@ let Discord = {
 		let msg = battleColor +" **" + sector.title + "** <t:" + timeAt + ":R>";
 
 		Discord.PrepareMessageForSend({
-				url: GuildFights.discordWebhook,
-				message: msg + " \n-# " + ExtPlayerName
-			});
+			url: GuildFights.discordWebhook,
+			message: msg + " \n-# " + ExtPlayerName
+		});
+	},
+
+	sendGBGSectors: () => {
+		console.log(GuildFights.discordCache);
+
+		let msg = ""
+		for (let sector of GuildFights.discordCache) {
+			let timeAt = moment.unix(sector.lockedUntil - 2)/1000;
+			let battleColor = (GuildFights.showTileColors != 0 ? (sector.isAttackBattleType ? '🔴' : '🔵') : '');
+			msg += battleColor +" **" + sector.title + "** <t:" + timeAt + ":R> \n";
+		}
+
+		Discord.PrepareMessageForSend({
+			url: GuildFights.discordWebhook,
+			message: msg + "-# " + ExtPlayerName
+		});
 	},
 
 	sendGBGSectorCustom: (id)=> {
@@ -536,9 +552,9 @@ let Discord = {
 		);
 
 		Discord.PrepareMessageForSend({
-				url: GuildFights.discordWebhook,
-				message: msg + " \n-# " + ExtPlayerName
-			});
+			url: GuildFights.discordWebhook,
+			message: msg + " \n-# " + ExtPlayerName
+		});
 	}
 };
 
