@@ -504,6 +504,7 @@
     "Boxes.GuildFights.DeleteMessage.Title": "Deleted!",
     "Boxes.GuildFights.DiscordSend": "Send to Discord",
     "Boxes.GuildFights.DiscordSendCustom": "Send to Discord with template",
+    "Boxes.GuildFights.DiscordSendSelection": "Send selected provinces to Discord",
     "Boxes.GuildFights.DiscordSetup": "No Webhooks available. Create one first",
     "Boxes.GuildFights.Fights": "Fights",
     "Boxes.GuildFights.LastSnapshot": " - Last snapshot: __time__ ago",

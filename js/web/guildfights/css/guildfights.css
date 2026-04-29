@@ -235,16 +235,10 @@
 	position: relative;
 }
 
-#LiveGildFightingBody .tabs>button.mapbutton {
+#LiveGildFightingBody >.btn-group {
 	position: absolute;
 	top: 40px;
 	right: 7px;
-}
-
-#LiveGildFightingBody .tabs>button.copybutton {
-	position: absolute;
-	top: 40px;
-	right: 64px;
 }
 
 #LiveGildFightingBody #nextup {
