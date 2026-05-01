@@ -143,12 +143,6 @@
 #Productions td.ally::after {
 	content: ' 🙋';
 }
-#ProductionsRatingBody span.resicon.att_boost_attacker-guild_expedition, #ProductionsRatingBody span.resicon.def_boost_attacker-guild_expedition, #ProductionsRatingBody span.resicon.att_boost_defender-guild_expedition, #ProductionsRatingBody span.resicon.def_boost_defender-guild_expedition {
-	background-image: url('../../x_img/ge.png'), url('../images/productions.png');
-	background-size: 50%, auto;
-	background-repeat: no-repeat;
-	background-position: 13px 13px, -312px 0px;
-}
 #ProductionsRatingBody .settings label[for="inventorybuildingscore"], 
 #ProductionsRatingBody .settings label[for="showLimited"], 
 #ProductionsRatingBody .ratingtable tr.hidden, 
@@ -176,21 +170,6 @@
 	display: table-cell;
 }
 
-#ProductionsRatingBody span.resicon.def_boost_attacker-guild_expedition {
-	background-position: 13px 13px, -366px 0px;
-}
-#ProductionsRatingBody span.resicon.att_boost_defender-guild_expedition {
-	background-position: 13px 13px, -339px 0px;
-}
-#ProductionsRatingBody span.resicon.def_boost_defender-guild_expedition {
-	background-position: 13px 13px, -391px 0px;
-}
-#ProductionsRatingBody span.resicon.fsp {
-	background-position: -762px 0px;
-}
-#ProductionsRatingBody span.resicon.guild_raids_action_points_collection {
-	background-position: -498px 2px;
-}
 #ProductionsRatingBody #efficiencyBuidlingFilter {
 	width: 120px;
 }
@@ -411,36 +390,6 @@
 #ProductionsRatingBody th.inventory-buildings img {
 	height: 26px;
 }
-#ProductionsRatingBody span.resicon.att_boost_attacker-guild_raids, #ProductionsRatingBody span.resicon.def_boost_attacker-guild_raids, #ProductionsRatingBody span.resicon.att_boost_defender-guild_raids, #ProductionsRatingBody span.resicon.def_boost_defender-guild_raids {
-	background-image: url('../../x_img/guild_raids.png'), url('../images/productions.png');
-	background-size: 75%, auto;
-	background-repeat: no-repeat;
-	background-position: 8px 8px, -312px 0px;
-}
-#ProductionsRatingBody span.resicon.def_boost_attacker-guild_raids {
-	background-position: 8px 8px, -366px 0px;
-}
-#ProductionsRatingBody span.resicon.att_boost_defender-guild_raids {
-	background-position: 8px 8px, -340px 0px;
-}
-#ProductionsRatingBody span.resicon.def_boost_defender-guild_raids {
-	background-position: 8px 8px, -391px 0px;
-}
-#ProductionsRatingBody span.resicon.att_boost_attacker-battleground, #ProductionsRatingBody span.resicon.def_boost_attacker-battleground, #ProductionsRatingBody span.resicon.att_boost_defender-battleground, #ProductionsRatingBody span.resicon.def_boost_defender-battleground, #ProductionsRatingBody span.filter.showitems {
-	background-image: url('../../x_img/gbg-green.png'), url('../images/productions.png');
-	background-size: 80%, auto;
-	background-repeat: no-repeat;
-	background-position: 8px 8px, -312px 0px;
-}
-#ProductionsRatingBody span.resicon.def_boost_attacker-battleground {
-	background-position: 8px 8px, -366px 0px;
-}
-#ProductionsRatingBody span.resicon.att_boost_defender-battleground {
-	background-position: 8px 8px, -340px 0px;
-}
-#ProductionsRatingBody span.resicon.def_boost_defender-battleground {
-	background-position: 8px 8px, -391px 0px;
-}
 #ratingPresetSelect li {
 	padding: 0 7px;
 }
@@ -655,12 +604,6 @@ input[id*="ProdPerTile"] {
 #ProductionsRatingBody strong.error {
 	color: var(--text-danger);
 }
-#ProductionsRatingBody span.resicon {
-	display: inline-block;
-	width: 25px;
-	height: 26px;
-	background: transparent url('../images/productions.png') -236px 2px no-repeat;
-}
 #ProductionsRatingBody span.resicon:first-child:not(:only-child) {
 	position: relative;
 	z-index: 2;
@@ -701,18 +644,6 @@ input[id*="ProdPerTile"] {
 }
 #ProductionsRatingBody span.resicon.units {
 	background-position: -287px 2px;
-}
-#ProductionsRatingBody span.resicon.att_boost_attacker {
-	background-position: -311px 2px;
-}
-#ProductionsRatingBody span.resicon.att_boost_defender {
-	background-position: -338px 2px;
-}
-#ProductionsRatingBody span.resicon.def_boost_attacker {
-	background-position: -365px 2px;
-}
-#ProductionsRatingBody span.resicon.def_boost_defender {
-	background-position: -390px 2px;
 }
 #ProductionsRatingBody span.resicon.goods-next {
 	background-position: -550px 2px;
