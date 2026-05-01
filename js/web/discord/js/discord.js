@@ -502,11 +502,17 @@ let Discord = {
 		});
 	},
 
-	sendGBGSector: (id)=> {
-		let sector = GuildFights.MapData.map.provinces.find(x => x.id === id);
+	createGBGMessage: (sector) => {
 		let timeAt = moment.unix(sector.lockedUntil - 2)/1000;
 		let battleColor = (GuildFights.showTileColors != 0 ? (sector.isAttackBattleType ? '🔴' : '🔵') : '');
-		let msg = battleColor +" **" + sector.title + "** <t:" + timeAt + ":R>";
+		let msg = battleColor +" **" + sector.title + "** <t:" + timeAt + ":t>, <t:" + timeAt + ":R>";
+
+		return msg;
+	},
+
+	sendGBGSector: (id) => {
+		let sector = GuildFights.MapData.map.provinces.find(x => x.id === id);
+		let msg = Discord.createGBGMessage(sector);
 
 		Discord.PrepareMessageForSend({
 			url: GuildFights.discordWebhook,
@@ -517,9 +523,7 @@ let Discord = {
 	sendGBGSectors: () => {
 		let msg = ""
 		for (let sector of GuildFights.discordCache) {
-			let timeAt = moment.unix(sector.lockedUntil - 2)/1000;
-			let battleColor = (GuildFights.showTileColors != 0 ? (sector.isAttackBattleType ? '🔴' : '🔵') : '');
-			msg += battleColor +" **" + sector.title + "** <t:" + timeAt + ":R> \n";
+			msg += Discord.createGBGMessage(sector) + "\n";
 		}
 
 		Discord.PrepareMessageForSend({
