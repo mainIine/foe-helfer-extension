@@ -541,8 +541,10 @@ let Discord = {
 		for (let n of sector.neighbor) {
 			let result = GuildFights.MapData.battlegroundParticipants.find(x => n == x.participantId);
 			if (result)
-				if (neighbors.find(x => x == result.clan.name) == undefined && GuildFights.MapData.currentParticipantId !== result.participantId)
-					neighbors.push(result.clan.name);
+				if (neighbors.find(x => x == result.clan.name) == undefined 
+					&& GuildFights.MapData.currentParticipantId !== result.participantId
+					&& result.participantId !== sector.ownerId)
+						neighbors.push(result.clan.name);
 		}
 
 		const vars = {
