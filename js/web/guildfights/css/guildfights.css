@@ -235,16 +235,10 @@
 	position: relative;
 }
 
-#LiveGildFightingBody .tabs>button.mapbutton {
+#LiveGildFightingBody >.btn-group {
 	position: absolute;
 	top: 40px;
 	right: 7px;
-}
-
-#LiveGildFightingBody .tabs>button.copybutton {
-	position: absolute;
-	top: 40px;
-	right: 64px;
 }
 
 #LiveGildFightingBody #nextup {
@@ -335,6 +329,15 @@
 
 #LiveGildFightingBody .gbg-own_guild_colour:before {
 	background-image: url(../../x_img/gbg-gray.png);
+}
+
+.btn-group:hover .btn.discord.custom {
+	display: block;
+}
+
+.btn.discord.custom {
+	display: none;
+    background-image: url('../../../../css/images/menu/discord.png'), var(--tabs-bg);
 }
 
 /*************************************************************************************************************/

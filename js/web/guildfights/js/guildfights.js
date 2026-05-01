@@ -135,6 +135,8 @@ let GuildFights = {
 	showTileColors: JSON.parse(localStorage.getItem("LiveFightSettings"))?.showTileColors || 1,
 	serverOffset: JSON.parse(localStorage.getItem("GuildFights.serverOffset")||"null"),
 	discordWebhook: JSON.parse(localStorage.getItem("LiveFightSettings"))?.discordWebhook || "",
+	discordWebhookTemplate: JSON.parse(localStorage.getItem("LiveFightSettings"))?.discordWebhookTemplate || "",
+	discordCache: null,
 
 	Tabs: [],
 	TabsContent: [],
@@ -1002,7 +1004,6 @@ let GuildFights = {
 	 */
 	BuildFightContent: () => {
 
-		GuildFights.CopyCache = [];
 		GuildFights.Tabs = [];
 		GuildFights.TabsContent = [];
 
@@ -1044,12 +1045,15 @@ let GuildFights = {
 
 		let h = [];
 
+		h.push(`<div class="btn-group">
+			<button class="btn copybutton all" onclick="GuildFights.CopyToClipBoard(event)">${i18n('Boxes.GuildFights.SelectAll')}</button>
+			<button class="btn dcbutton discord" onclick="GuildFights.PrepareForDiscord(event)" data-original-title="${i18n('Boxes.GuildFights.DiscordSendSelection')}" style="display:none;"></button>
+			<button class="btn mapbutton" onclick="ProvinceMap.build()">${i18n('Boxes.GuildFights.OpenMap')}</button>
+			</div>
+		</div>`);
 		h.push('<div class="gbg-tabs tabs">');
 		h.push(GuildFights.GetTabs());
 		h.push(GuildFights.GetTabContent());
-		h.push('<button class="btn copybutton all" onclick="GuildFights.CopyToClipBoard(event)">'+ i18n('Boxes.GuildFights.SelectAll') +'</button>');
-		h.push('<button class="btn mapbutton" onclick="ProvinceMap.build()">'+ i18n('Boxes.GuildFights.OpenMap') +'</button>');
-		h.push('</div>');
 
 		let activeTab = 1;
 		if ($('.gbgprogress.active').length > 0) activeTab = 2;
@@ -1247,9 +1251,16 @@ let GuildFights = {
 
 				let discordButton = '';
 				let isUnder60Min = ((prov[x]['lockedUntil'] - Math.round(Date.now() / 1000)) / 60) < 60;
+
 				if (prov[x]['owner'] !== own['clan']['name'] && isUnder60Min && GuildFights.discordWebhook != '') {
-					discordButton = `<button class="btn btn-slim discord" data-original-title="${i18n('Boxes.GuildFights.DiscordSend')}" onclick="Discord.sendGBGSector(${prov[x]['id']},'${battleType}');"></button>`;
+					if (GuildFights.discordWebhookTemplate != '') {
+						let tpl = Discord.WebHooks.find(x => x.name == GuildFights.discordWebhookTemplate);
+						if (tpl)
+							discordButton += `<button class="btn btn-slim discord custom" data-original-title="${i18n('Boxes.GuildFights.DiscordSendCustom')}" onclick="Discord.sendGBGSectorCustom(${prov[x]['id']});"></button>`;
+					}
+					discordButton += `<button class="btn btn-slim discord" data-original-title="${i18n('Boxes.GuildFights.DiscordSend')}" onclick="Discord.sendGBGSector(${prov[x]['id']});"></button>`;
 				}
+
 				nextup.push(`<td class="text-right" id="alert-${prov[x]['id']}">
 					<div class="btn-group">
 					${discordButton}
@@ -1316,15 +1327,18 @@ let GuildFights = {
 
 
 	ToggleCopyButton: () => {
-		if ($('#nextup').is(':visible')) {
-			$('.copybutton').show();
-		} else {
+		$('.dcbutton').hide();
+		$('.copybutton').show();
+
+		if (!$('#nextup').is(':visible')) {
 			$('.copybutton').hide();
 			return;
 		}
+
 		if ($('.timer.highlight-row').length > 0) {
 			$('.copybutton').html(i18n('Boxes.GuildFights.Copy'));
 			$('.copybutton').removeClass('all');
+			$('.dcbutton').show();
 		} else {
 			$('.copybutton').html(i18n('Boxes.GuildFights.SelectAll'));
 			$('.copybutton').addClass('all');
@@ -1338,13 +1352,13 @@ let GuildFights = {
 			GuildFights.ToggleCopyButton();
 			return;
 		}
-		let copy = '';
 		let copycache = [];
 		$('.timer.highlight-row').each(function () {
 			copycache.push(GuildFights.MapData['map']['provinces'].find((mapItem) => mapItem.id == $(this).data('id')));
 		});
 
 		copycache.sort(function (a, b) { return a.lockedUntil - b.lockedUntil });
+		let copy = '';
 		copycache.forEach((mapElem) => {
 			let battleType = mapElem.isAttackBattleType ? '🔴' : '🔵';
 			let LiveFightSettings = JSON.parse(localStorage.getItem('LiveFightSettings'));
@@ -1370,6 +1384,26 @@ let GuildFights = {
 					hideAfter: 5000
 				});
 			});
+		}
+	},
+
+
+
+	PrepareForDiscord: (e) => {
+		if (e.target.classList.contains('all')) {
+			$('.timer').addClass('highlight-row');
+			GuildFights.ToggleCopyButton();
+			return;
+		}
+		GuildFights.discordCache = [];
+		$('.timer.highlight-row').each(function () {
+			GuildFights.discordCache.push(GuildFights.MapData['map']['provinces'].find((mapItem) => mapItem.id == $(this).data('id')));
+		});
+
+		GuildFights.discordCache.sort(function (a, b) { return a.lockedUntil - b.lockedUntil });
+
+		if (GuildFights.discordCache.length > 0) {
+			Discord.sendGBGSectors();
 		}
 	},
 
@@ -1685,6 +1719,7 @@ let GuildFights = {
 		let showTileColors = (LiveFightSettings && LiveFightSettings.showTileColors !== undefined) ? LiveFightSettings.showTileColors : 1;
 		let showServerTime = LiveFightSettings?.showServerTime ?? 0;
 		let discordWebhook = LiveFightSettings?.discordWebhook ?? '';
+		let discordWebhookTemplate = LiveFightSettings?.discordWebhookTemplate ?? '';
 
 		c.push(`<p><input id="showguildcolumn" name="showguildcolumn" value="1" type="checkbox" ${(showGuildColumn === 1) ? ' checked="checked"' : ''} /> <label for="showguildcolumn">${i18n('Boxes.GuildFights.ShowOwner')}</label></p>`);
 		c.push(`<p><label for="showAdjacentSectors"><input id="showAdjacentSectors" name="showAdjacentSectors" value="0" type="checkbox" ${(showAdjacentSectors === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.ShowAdjacentSectors')}</label></p>`);
@@ -1705,6 +1740,14 @@ let GuildFights = {
 				}
 			c.push(`</select>`);
 			}
+			let templates = Discord.WebHooks.filter(x => x.type == "template");
+			if (Discord.WebHooksUrls.length !== 0 && templates.length != 0) {
+				c.push(`<select id="gbgWebhookTemplate" name="gbgWebhookTemplate">`);
+				c.push(`<option value="">${i18n('Boxes.Discord.TitleNewTemplate')}</option>`);
+				for(let tpl of templates) {
+					c.push(`<option value="${tpl.name}" ${discordWebhookTemplate === tpl.name ? ' selected="selected"' : ''}>${tpl.name}</option>`);
+				}
+			c.push(`</select>`);}
 			c.push(`</p>`);
 		c.push(`<p><button onclick="GuildFights.SaveLiveFightSettings()" id="save-livefight-settings" class="btn btn-green">${i18n('Boxes.GuildFights.SaveSettings')}</button></p>`);
 
@@ -1722,6 +1765,7 @@ let GuildFights = {
 		value.showTileColors = 0;
 		value.showServerTime = 0;
 		value.discordWebhook = '';
+		value.discordWebhookTemplate = '';
 
 		if ($("#showguildcolumn").is(':checked')) 
 			value.showGuildColumn = 1;
@@ -1739,6 +1783,7 @@ let GuildFights = {
 			value.showServerTime = 1;
 
 		value.discordWebhook = $("#gbgWebhook").val();
+		value.discordWebhookTemplate = $("#gbgWebhookTemplate").val();
 				
 		GuildFights.showGuildColumn = value.showGuildColumn;
 		GuildFights.showAdjacentSectors = value.showAdjacentSectors;
@@ -1746,6 +1791,7 @@ let GuildFights = {
 		GuildFights.showTileColors = value.showTileColors;
 		GuildFights.showServerTime = value.showServerTime;
 		GuildFights.discordWebhook = value.discordWebhook;
+		GuildFights.discordWebhookTemplate = value.discordWebhookTemplate;
 		GuildFights.serverOffset = parseInt($("#serverOffset").val()) ?? null;
 		if (GuildFights.serverOffset != null)
 			localStorage.setItem('GuildFights.serverOffset', JSON.stringify(GuildFights.serverOffset)) 
