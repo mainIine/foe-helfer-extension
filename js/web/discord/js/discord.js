@@ -252,7 +252,7 @@ let Discord = {
 				<textarea id="message" name="message" spellcheck="false">${data ? data['message'] : ':robot: #battletype **#name** <t:#time:R>'}</textarea>
 
 				<div class="w-full">
-					${i18n('Boxes.Discord.GBGVariables')}: #name, #battletype, #time, #attrition, #guild, #vp <br/>
+					${i18n('Boxes.Discord.GBGVariables')}: #name, #battletype, #time, #attrition, #guild, #vp, #neighbors <br/>
 					<a class="external-link" href="https://support.discord.com/hc/en-us/articles/210298617-Markdown-Text-101-Chat-Formatting-Bold-Italic-Underline" target="_blank">${i18n('Boxes.Discord.MarkdownLinkText')}</a>
 				</div>
 				<div>
@@ -506,7 +506,7 @@ let Discord = {
 		let timeAt = moment.unix(sector.lockedUntil - 2)/1000;
 		let battleColor = (GuildFights.showTileColors != 0 ? (sector.isAttackBattleType ? '🔴' : '🔵') : '');
 		let msg = battleColor +" **" + sector.title + "** <t:" + timeAt + ":t>, <t:" + timeAt + ":R>";
-
+		
 		return msg;
 	},
 
@@ -536,6 +536,14 @@ let Discord = {
 		let sector = GuildFights.MapData.map.provinces.find(x => x.id === id);
 		let timeAt = moment.unix(sector.lockedUntil - 2)/1000;
 		let battleColor = sector.isAttackBattleType ? '🔴' : '🔵';
+		
+		let neighbors = [];
+		for (let n of sector.neighbor) {
+			let result = GuildFights.MapData.battlegroundParticipants.find(x => n == x.participantId);
+			if (result)
+				if (neighbors.find(x => x == result.clan.name) == undefined && GuildFights.MapData.currentParticipantId !== result.participantId)
+					neighbors.push(result.clan.name);
+		}
 
 		const vars = {
 			'#battletype': battleColor,
@@ -544,7 +552,9 @@ let Discord = {
 			'#attrition': sector.gainAttritionChance,
 			'#guild': sector.owner,
 			'#vp': ''+sector.victoryPoints+ (sector.victoryPointsBonus ? " (+" + sector.victoryPointsBonus + ")":''),
+			'#neighbors': neighbors.join(", ")
 		};
+
 		let msg = (GuildFights.discordWebhookTemplate != '') ? Discord.WebHooks.find(x => x.name == GuildFights.discordWebhookTemplate).message
         			: '#battletype **#name** @ <t:#name:R> - #attrition%*\n-# :medal:`#vp)`';
 
