@@ -314,6 +314,75 @@ a[target="_blank"] svg {
 	border-radius: 4px;
 	border-right-width: 1px;
 }
+span.resicon {
+	display: inline-block;
+	width: 25px;
+	height: 26px;
+	background: transparent url('../../js/web/productions/images/productions.png') -236px 2px no-repeat;
+}
+span.resicon.att_boost_attacker-all {
+	background-position: -311px 2px;
+}
+span.resicon.att_boost_defender-all {
+	background-position: -338px 2px;
+}
+span.resicon.def_boost_attacker-all {
+	background-position: -365px 2px;
+}
+span.resicon.def_boost_defender-all {
+	background-position: -390px 2px;
+}
+span.resicon.att_boost_attacker-guild_expedition, span.resicon.def_boost_attacker-guild_expedition, span.resicon.att_boost_defender-guild_expedition, span.resicon.def_boost_defender-guild_expedition {
+	background-image: url('../../js/web/x_img/ge.png'), url('../../js/web/productions/images/productions.png');
+	background-size: 50%, auto;
+	background-repeat: no-repeat;
+	background-position: 13px 13px, -312px 0px;
+}
+span.resicon.def_boost_attacker-guild_expedition {
+	background-position: 13px 13px, -366px 0px;
+}
+span.resicon.att_boost_defender-guild_expedition {
+	background-position: 13px 13px, -339px 0px;
+}
+span.resicon.def_boost_defender-guild_expedition {
+	background-position: 13px 13px, -391px 0px;
+}
+span.resicon.fsp {
+	background-position: -762px 0px;
+}
+span.resicon.guild_raids_action_points_collection {
+	background-position: -498px 2px;
+}
+span.resicon.att_boost_attacker-guild_raids, span.resicon.def_boost_attacker-guild_raids, span.resicon.att_boost_defender-guild_raids, span.resicon.def_boost_defender-guild_raids {
+	background-image: url('../../js/web/x_img/guild_raids.png'), url('../../js/web/productions/images/productions.png');
+	background-size: 75%, auto;
+	background-repeat: no-repeat;
+	background-position: 8px 8px, -312px 0px;
+}
+span.resicon.def_boost_attacker-guild_raids {
+	background-position: 8px 8px, -366px 0px;
+}
+span.resicon.att_boost_defender-guild_raids {
+	background-position: 8px 8px, -340px 0px;
+}
+span.resicon.def_boost_defender-guild_raids {
+	background-position: 8px 8px, -391px 0px;
+}
+span.resicon.att_boost_attacker-battleground, span.resicon.def_boost_attacker-battleground, span.resicon.att_boost_defender-battleground, span.resicon.def_boost_defender-battleground, span.filter.showitems {
+	background-image: url('../../js/web/x_img/gbg-green.png'), url('../../js/web/productions/images/productions.png');
+	background-size: 80%, auto;
+	background-repeat: no-repeat;
+	background-position: 8px 8px, -312px 0px;
+}
+span.resicon.def_boost_attacker-battleground {
+	background-position: 8px 8px, -366px 0px;
+}
+span.resicon.att_boost_defender-battleground {
+	background-position: 8px 8px, -340px 0px;
+}
+span.resicon.def_boost_defender-battleground {
+	background-position: 8px 8px, -391px 0px;
+}
 
 .ml-auto {
 	margin-left: auto;
@@ -2440,9 +2509,8 @@ tr.sorter-header th:not(.no-sort).descending:after {
 	content: '';
 	display: block;
 }
-
-#AllyListTable tr:last-child span {
-	padding: 0 3px;
+#AllyListBody {
+	overflow: auto;
 }
 
 
