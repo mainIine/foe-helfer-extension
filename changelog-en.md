@@ -1,6 +1,15 @@
 ## Extension Changelog
  
 
+##### 4.2.2.0
+
+**New**
+- GBG: You can now add a Discord Webhook in the settings of the countdown window
+- Discord Webhooks: Create templates for personalized GBG messages and add them to the GBG countdown window
+
+---
+ 
+
 ##### 4.2.1.1
 
 **Hotfix**
