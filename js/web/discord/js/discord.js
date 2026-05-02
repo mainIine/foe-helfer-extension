@@ -252,7 +252,7 @@ let Discord = {
 				<textarea id="message" name="message" spellcheck="false">${data ? data['message'] : ':robot: #battletype **#name** <t:#time:R>'}</textarea>
 
 				<div class="w-full">
-					${i18n('Boxes.Discord.GBGVariables')}: #name, #battletype, #time, #attrition, #guild, #vp, #neighbors <br/>
+					${i18n('Boxes.Discord.GBGVariables')}: #name, #battletype, #time, #guild, #vp, #attrition, #neighbors <br/>
 					<a class="external-link" href="https://support.discord.com/hc/en-us/articles/210298617-Markdown-Text-101-Chat-Formatting-Bold-Italic-Underline" target="_blank">${i18n('Boxes.Discord.MarkdownLinkText')}</a>
 				</div>
 				<div>
@@ -510,30 +510,7 @@ let Discord = {
 		return msg;
 	},
 
-	sendGBGSector: (id) => {
-		let sector = GuildFights.MapData.map.provinces.find(x => x.id === id);
-		let msg = Discord.createGBGMessage(sector);
-
-		Discord.PrepareMessageForSend({
-			url: GuildFights.discordWebhook,
-			message: msg + " \n-# " + ExtPlayerName
-		});
-	},
-
-	sendGBGSectors: () => {
-		let msg = ""
-		for (let sector of GuildFights.discordCache) {
-			msg += Discord.createGBGMessage(sector) + "\n";
-		}
-
-		Discord.PrepareMessageForSend({
-			url: GuildFights.discordWebhook,
-			message: msg + "-# " + ExtPlayerName
-		});
-	},
-
-	sendGBGSectorCustom: (id)=> {
-		let sector = GuildFights.MapData.map.provinces.find(x => x.id === id);
+	createGBGCustomMessage: (sector,tpl) => {
 		let timeAt = moment.unix(sector.lockedUntil - 2)/1000;
 		let battleColor = sector.isAttackBattleType ? '🔴' : '🔵';
 		
@@ -557,17 +534,59 @@ let Discord = {
 			'#neighbors': neighbors.join(", ")
 		};
 
-		let msg = (GuildFights.discordWebhookTemplate != '') ? Discord.WebHooks.find(x => x.name == GuildFights.discordWebhookTemplate).message
+		let msg = (tpl != '') ? Discord.WebHooks.find(x => x.name == tpl).message
         			: '#battletype **#name** @ <t:#name:R> - #attrition%*\n-# :medal:`#vp)`';
 
 		msg = Object.entries(vars).reduce(
 			(str, [placeholder, value]) => str.replaceAll(placeholder, value ?? ''),
 			msg
 		);
+		
+		return msg;
+	},
+
+	sendGBGSector: (id) => {
+		let sector = GuildFights.MapData.map.provinces.find(x => x.id === id);
+		let msg = Discord.createGBGMessage(sector);
 
 		Discord.PrepareMessageForSend({
-			url: GuildFights.discordWebhook,
+			url: GuildFights.discordWebhook.url,
 			message: msg + " \n-# " + ExtPlayerName
+		});
+	},
+
+	sendGBGSectors: () => {
+		let msg = ""
+		for (let sector of GuildFights.discordCache) {
+			msg += Discord.createGBGMessage(sector) + "\n";
+		}
+
+		Discord.PrepareMessageForSend({
+			url: GuildFights.discordWebhook.url,
+			message: msg + "-# " + ExtPlayerName
+		});
+	},
+
+	sendGBGSectorCustom: (id)=> {
+		let sector = GuildFights.MapData.map.provinces.find(x => x.id === id);
+		let msg = Discord.createGBGCustomMessage(sector,GuildFights.discordWebhook.template);
+
+		Discord.PrepareMessageForSend({
+			url: GuildFights.discordWebhook.url,
+			message: msg + " \n-# " + ExtPlayerName
+		});
+	},
+
+	sendGBGSectorsCustom: () => {
+		let msg = "";
+		for (let sector of GuildFights.discordCache) {
+			console.log(sector.name);
+			msg += Discord.createGBGCustomMessage(sector,GuildFights.discordWebhook.bulkTemplate) + "\n";
+		}
+
+		Discord.PrepareMessageForSend({
+			url: GuildFights.discordWebhook.url,
+			message: msg + "-# " + ExtPlayerName
 		});
 	}
 };
