@@ -134,8 +134,11 @@ let GuildFights = {
 	showOwnSectors: 0,
 	showTileColors: JSON.parse(localStorage.getItem("LiveFightSettings"))?.showTileColors || 1,
 	serverOffset: JSON.parse(localStorage.getItem("GuildFights.serverOffset")||"null"),
-	discordWebhook: JSON.parse(localStorage.getItem("LiveFightSettings"))?.discordWebhook || "",
-	discordWebhookTemplate: JSON.parse(localStorage.getItem("LiveFightSettings"))?.discordWebhookTemplate || "",
+	discordWebhook: { 
+		url: JSON.parse(localStorage.getItem("LiveFightSettings"))?.discordWebhook || "",
+		template: JSON.parse(localStorage.getItem("LiveFightSettings"))?.discordWebhookTemplate || "",
+		bulkTemplate: JSON.parse(localStorage.getItem("LiveFightSettings"))?.discordWebhookTemplateBulk || "",
+	},
 	discordCache: null,
 
 	Tabs: [],
@@ -1047,6 +1050,7 @@ let GuildFights = {
 
 		h.push(`<div class="btn-group">
 			<button class="btn copybutton all" onclick="GuildFights.CopyToClipBoard(event)">${i18n('Boxes.GuildFights.SelectAll')}</button>
+			<button class="btn dcbutton discord custom" onclick="GuildFights.PrepareForDiscord(event)" data-original-title="${i18n('Boxes.GuildFights.DiscordSendSelectionCustom')}" style="display:none;"></button>
 			<button class="btn dcbutton discord" onclick="GuildFights.PrepareForDiscord(event)" data-original-title="${i18n('Boxes.GuildFights.DiscordSendSelection')}" style="display:none;"></button>
 			<button class="btn mapbutton" onclick="ProvinceMap.build()">${i18n('Boxes.GuildFights.OpenMap')}</button>
 			</div>
@@ -1252,9 +1256,9 @@ let GuildFights = {
 				let discordButton = '';
 				let isUnder60Min = ((prov[x]['lockedUntil'] - Math.round(Date.now() / 1000)) / 60) < 60;
 
-				if (prov[x]['owner'] !== own['clan']['name'] && isUnder60Min && GuildFights.discordWebhook != '') {
-					if (GuildFights.discordWebhookTemplate != '') {
-						let tpl = Discord.WebHooks.find(x => x.name == GuildFights.discordWebhookTemplate);
+				if (prov[x]['owner'] !== own['clan']['name'] && isUnder60Min && GuildFights.discordWebhook.url != '') {
+					if (GuildFights.discordWebhook.template != '') {
+						let tpl = Discord.WebHooks.find(x => x.name == GuildFights.discordWebhook.template);
 						if (tpl)
 							discordButton += `<button class="btn btn-slim discord custom" data-original-title="${i18n('Boxes.GuildFights.DiscordSendCustom')}" onclick="Discord.sendGBGSectorCustom(${prov[x]['id']});"></button>`;
 					}
@@ -1390,11 +1394,6 @@ let GuildFights = {
 
 
 	PrepareForDiscord: (e) => {
-		if (e.target.classList.contains('all')) {
-			$('.timer').addClass('highlight-row');
-			GuildFights.ToggleCopyButton();
-			return;
-		}
 		GuildFights.discordCache = [];
 		$('.timer.highlight-row').each(function () {
 			GuildFights.discordCache.push(GuildFights.MapData['map']['provinces'].find((mapItem) => mapItem.id == $(this).data('id')));
@@ -1403,6 +1402,11 @@ let GuildFights = {
 		GuildFights.discordCache.sort(function (a, b) { return a.lockedUntil - b.lockedUntil });
 
 		if (GuildFights.discordCache.length > 0) {
+			
+			if (e.target.classList.contains('custom')) {
+				Discord.sendGBGSectorsCustom();
+				return;
+			}
 			Discord.sendGBGSectors();
 		}
 	},
@@ -1720,6 +1724,7 @@ let GuildFights = {
 		let showServerTime = LiveFightSettings?.showServerTime ?? 0;
 		let discordWebhook = LiveFightSettings?.discordWebhook ?? '';
 		let discordWebhookTemplate = LiveFightSettings?.discordWebhookTemplate ?? '';
+		let discordWebhookTemplateBulk = LiveFightSettings?.discordWebhookTemplateBulk ?? '';
 
 		c.push(`<p><input id="showguildcolumn" name="showguildcolumn" value="1" type="checkbox" ${(showGuildColumn === 1) ? ' checked="checked"' : ''} /> <label for="showguildcolumn">${i18n('Boxes.GuildFights.ShowOwner')}</label></p>`);
 		c.push(`<p><label for="showAdjacentSectors"><input id="showAdjacentSectors" name="showAdjacentSectors" value="0" type="checkbox" ${(showAdjacentSectors === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.ShowAdjacentSectors')}</label></p>`);
@@ -1736,7 +1741,7 @@ let GuildFights = {
 				c.push(`<select id="gbgWebhook" name="gbgWebhook">`);
 				c.push(`<option value="">${i18n('General.Choose')}</option>`);
 				for(let url of Discord.WebHooksUrls) {
-					c.push(`<option value="${url.url}" ${discordWebhook === url.url ? ' selected="selected"' : ''}>${url.name}</option>`);
+					c.push(`<option value="${url.url}" ${GuildFights.discordWebhook.url === url.url ? ' selected="selected"' : ''}>${url.name}</option>`);
 				}
 			c.push(`</select>`);
 			}
@@ -1745,7 +1750,14 @@ let GuildFights = {
 				c.push(`<select id="gbgWebhookTemplate" name="gbgWebhookTemplate">`);
 				c.push(`<option value="">${i18n('Boxes.Discord.TitleNewTemplate')}</option>`);
 				for(let tpl of templates) {
-					c.push(`<option value="${tpl.name}" ${discordWebhookTemplate === tpl.name ? ' selected="selected"' : ''}>${tpl.name}</option>`);
+					c.push(`<option value="${tpl.name}" ${GuildFights.discordWebhook.template === tpl.name ? ' selected="selected"' : ''}>${tpl.name}</option>`);
+				}
+			c.push(`</select>`);}
+			if (Discord.WebHooksUrls.length !== 0 && templates.length != 0) {
+				c.push(`<select id="gbgWebhookTemplateBulk" name="gbgWebhookTemplateBulk">`);
+				c.push(`<option value="">${i18n('Boxes.GuildFights.DiscordTemplateBulk')}</option>`);
+				for(let tpl of templates) {
+					c.push(`<option value="${tpl.name}" ${GuildFights.discordWebhook.bulkTemplate === tpl.name ? ' selected="selected"' : ''}>${tpl.name}</option>`);
 				}
 			c.push(`</select>`);}
 			c.push(`</p>`);
@@ -1766,6 +1778,7 @@ let GuildFights = {
 		value.showServerTime = 0;
 		value.discordWebhook = '';
 		value.discordWebhookTemplate = '';
+		value.discordWebhookTemplateBulk = '';
 
 		if ($("#showguildcolumn").is(':checked')) 
 			value.showGuildColumn = 1;
@@ -1784,6 +1797,7 @@ let GuildFights = {
 
 		value.discordWebhook = $("#gbgWebhook").val();
 		value.discordWebhookTemplate = $("#gbgWebhookTemplate").val();
+		value.discordWebhookTemplateBulk = $("#gbgWebhookTemplateBulk").val();
 				
 		GuildFights.showGuildColumn = value.showGuildColumn;
 		GuildFights.showAdjacentSectors = value.showAdjacentSectors;
@@ -1791,8 +1805,10 @@ let GuildFights = {
 		GuildFights.showTileColors = value.showTileColors;
 		GuildFights.showServerTime = value.showServerTime;
 		GuildFights.discordWebhook = value.discordWebhook;
-		GuildFights.discordWebhookTemplate = value.discordWebhookTemplate;
+		GuildFights.discordWebhook.template = value.discordWebhookTemplate;
+		GuildFights.discordWebhook.bulkTemplate = value.discordWebhookTemplateBulk;
 		GuildFights.serverOffset = parseInt($("#serverOffset").val()) ?? null;
+
 		if (GuildFights.serverOffset != null)
 			localStorage.setItem('GuildFights.serverOffset', JSON.stringify(GuildFights.serverOffset)) 
 		else
