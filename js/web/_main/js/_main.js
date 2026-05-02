@@ -1733,7 +1733,7 @@ let MainParser = {
 				}
 			html+=`</select></div>`
 			html+=`<table id="AllyListTable" class="foe-table">`
-			html+=`<thead><tr class="sorter-header">
+			html+=`<thead><tr class="sorter-header sort2">
 							<th class="no-sort">${i18n('Boxes.AllyList.Ally')}</th>
 							<th class="is-number" data-type="ally-list">${i18n('Boxes.AllyList.Level')}</th>`;
 							for (const b of boostList) {

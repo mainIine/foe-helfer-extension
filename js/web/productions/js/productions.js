@@ -2033,7 +2033,7 @@ let Productions = {
 				h.push('</div></div></th>');
 			h.push('</tr>');
 
-			h.push('<tr class="sorter-header exportheader">');
+			h.push('<tr class="sorter-header exportheader sort2">');
 			h.push('<th data-type="ratinglist" class="is-number" data-export="' + i18n('Boxes.ProductionsRating.Score') + '">' + i18n('Boxes.ProductionsRating.Score') + '</th>');
 			h.push('<th data-type="ratinglist" data-export="'+ i18n('Boxes.ProductionsRating.BuildingName') +'"><div class="flex-between"><span>'+ i18n('Boxes.ProductionsRating.BuildingName') +'</span>' +
 			' <div id="buildingsize"><span>'+i18n('Boxes.Productions.Headings.size')+'</span><ul>');

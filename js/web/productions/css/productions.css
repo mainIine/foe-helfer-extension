@@ -252,30 +252,6 @@
     width: max-content;
 	font-weight: bold;
 }
-#ProductionsRatingBody tr.sorter-header th {
-	padding: 5px 6px 7px;
-}
-#ProductionsRatingBody tr.sorter-header th:not(.no-sort):hover, #ProductionsRatingBody tr.sorter-header th.ascending, #ProductionsRatingBody tr.sorter-header th.descending {
-	color: var(--bright-color);
-}
-#ProductionsRatingBody tr.sorter-header th:not(.no-sort):hover, #ProductionsRatingBody tr.sorter-header th.ascending .resicon, #ProductionsRatingBody tr.sorter-header th.descending .resicon {
-	filter: brightness(1.2);
-}
-#ProductionsRatingBody #efficiencyBuildingFilter {
-	width: 130px;
-}
-#ProductionsRatingBody tr.sorter-header th:before, #ProductionsRatingBody tr.sorter-header th:after {
-	display: none;
-	width: 100%;
-	text-align: center;
-	bottom: -5px;
-	right: 0;
-	font-size: 1em;
-	transform: scale(1.1, 1);
-}
-#Productions th.boost span, #ProductionsRatingBody tr.sorter-header th.ascending:before, #ProductionsRatingBody tr.sorter-header th.descending:after, #buildingsize.active ul, #ProductionsRatingBody th i {
-	display: block;
-}
 #ProductionsRating #RatingSettings {
 	position: absolute;
 	top: 41px;
@@ -285,6 +261,12 @@
 #ProductionsRating .show-all img {
 	width: 18px;
 	height: 18px;
+}
+#efficiencyBuildingFilter {
+	width: 130px;
+}
+#Productions th.boost span, #ProductionsRatingBody #buildingsize.active ul, #ProductionsRatingBody th i {
+	display: block;
 }
 #ProductionsRatingBody .ratingtable tr.settings th {
 	padding: 0;
