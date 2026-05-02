@@ -2472,6 +2472,29 @@ tr.sorter-header th:not(.no-sort).descending:after {
     }
 }
 
+tr.sorter-header.sort2 th {
+	padding: 5px 6px 7px;
+}
+tr.sorter-header.sort2 th:not(.no-sort):hover, tr.sorter-header.sort2 th.ascending, tr.sorter-header.sort2 th.descending {
+	color: var(--bright-color);
+}
+tr.sorter-header.sort2 th:not(.no-sort):hover, tr.sorter-header.sort2 th.ascending .resicon, tr.sorter-header.sort2 th.descending .resicon {
+	filter: brightness(1.2);
+}
+tr.sorter-header.sort2 th:before, tr.sorter-header.sort2 th:after {
+	display: none;
+	width: 100%;
+	text-align: center;
+	bottom: -5px;
+	right: 0;
+	font-size: 1em;
+	transform: scale(1.1, 1);
+}
+tr.sorter-header.sort2 th.ascending:before, tr.sorter-header.sort2 th.descending:after {
+	display: block;
+	bottom: -8px;
+}
+
 .unit_skill::before {
 	content: "";
 	background-image: url('../../js/web/unit/images/unit_skill.png');
