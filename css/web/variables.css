@@ -85,7 +85,9 @@
 	--table-bt-success: #667f34;
 	--table-bb-success: #293d0f;
 	--table-bg-error: #7908084d;
-	--table-bg-bright: #d07e0366;
+	--table-bt-error: #933636;
+	--table-bb-error: #4f0e0e;
+	--table-bb-bright: #d07e0366;
 	--table-bg-highlight: #281207cc;
 
 	--hud-border-error: #9c2d18;
