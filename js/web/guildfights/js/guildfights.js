@@ -1307,7 +1307,7 @@ let GuildFights = {
 					GuildFights.UpdateCounter(countDownDate, intervalID, province.id);
 				}, 1000);
 
-			content.push(`<tr id="timer-${province.id}" class="timer ${province.usedBuildingSlots < province.totalBuildingSlots ? 'bg-red':''}" data-tab="gbgowned" data-id=${province.id}>
+			content.push(`<tr id="timer-${province.id}" class="timer ${(province.usedBuildingSlots||0) < province.totalBuildingSlots ? 'bg-red':''}" data-tab="gbgowned" data-id=${province.id}>
 				<td class="prov-name" title="${i18n('Boxes.GuildFights.Owner')}: ${province.owner}">
 					<span class="province-color" ${color['main'] ? 'style="background-color:' + color['main'] + '"' : ''}"></span> 
 					<b>${province.title}</b> 
@@ -1321,7 +1321,7 @@ let GuildFights = {
 
 			let timeAt = moment(countDownDate).add(LiveFightSettings?.showServerTime ? - 60 * (GuildFights.serverOffset ?? 0) : 0 , "seconds");
 			content.push(`<td class="time-dynamic"><span data-original-title="${timeAt.format('HH:mm:ss')}"><span id="counter-${province.id}">${countDownDate.format('HH:mm:ss')}</span></span></td>`);
-			content.push(`<td>${province.usedBuildingSlots}/${province.totalBuildingSlots}</td>`);
+			content.push(`<td>${province.usedBuildingSlots||0}/${province.totalBuildingSlots}</td>`);
 			content.push(`<td>${province.victoryPoints}</td>`);
 			content.push('</tr>');
 		}
