@@ -221,12 +221,15 @@
 #LiveGildFightingBody .tabs ul li a span {
 	width: 21px;
 	top: 4px;
-	background: transparent url('../../unit/images/unit-icons.png') 0 3px no-repeat;
 	background-size: 90px 20px;
 }
 
 #LiveGildFightingBody .tabs ul li.gbgprogress a span {
 	background: transparent url('../../stats/images/tabs.png') -237px 2px no-repeat;
+}
+
+#LiveGildFightingBody .tabs ul li.gbgowned a span {
+	background: transparent url('../../stats/images/tabs.png') -326px 2px no-repeat;
 }
 
 #LiveGildFightingBody .tabs ul li.gbgnextup a span {
