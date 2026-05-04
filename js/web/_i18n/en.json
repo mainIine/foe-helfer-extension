@@ -1481,7 +1481,7 @@
     "Menu.Notification.Position.top-right": "top right",
     "Menu.OutP.Desc": "Displays the resources required (by item) for your Settlement.",
     "Menu.OutP.DescWarningBuildings": "<em id='outPW' class='tooltip-error'>Disabled: Start a Settlement first!<br></em>Displays the resources required (by item) for your Settlement.",
-    "Menu.OutP.DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Disabled: Start a Settlement and reload the game (F5)",
+    "Menu.OutP.DescWarningOutpostData": "<em id='outPW' class='tooltip-error'>Disabled: Start a Settlement and reload the game (F5)</em>",
     "Menu.OutP.Title": "Settlements Overview",
     "Menu.OwnpartCalculator.Desc": "Create payment plan, calculate external spots and copy values for your GBs",
     "Menu.OwnpartCalculator.Title": "GB Calculator",
