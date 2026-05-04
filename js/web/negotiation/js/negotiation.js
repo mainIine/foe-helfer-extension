@@ -80,7 +80,8 @@ let Negotiation = {
 				'ask': i18n('Boxes.Negotiation.HelpLink'),
 				'auto_close': true,
 				'minimize': true,
-				'dragdrop': true
+				'dragdrop': true,
+				settings: 'Negotiation.ShowSettings()',
 			});
 
 			// CSS in den DOM prügeln
@@ -127,10 +128,6 @@ let Negotiation = {
 	},
 
 
-	/**
-	 * Berechnungen durchführen
-	 *
-	 */
 	CalcBody: () => {
 		const CurrentTry = Negotiation.CurrentTry;
 		const Guesses = Negotiation.Guesses;
@@ -306,6 +303,25 @@ let Negotiation = {
 				});
 			}
 		});
+	},
+
+	ShowSettings: () => {
+		let autoOpen = Settings.GetSetting('AutomaticNegotiation');
+
+		let h = [];
+		h.push(`<p><label><input id="negotiationAutoOpen" type="checkbox" ${(autoOpen === true) ? ' checked="checked"' : ''} />${i18n('Boxes.Settings.Autostart')}</label></p>`);
+		h.push(`<p><button onclick="Negotiation.SaveSettings()" id="save-negotiationAutoOpen-settings" class="btn" style="width:100%">${i18n('Boxes.Settings.Save')}</button></p>`);
+
+		$('#negotiationBoxSettingsBox').html(h.join(''));
+	},
+
+	SaveSettings: () => {
+		let value = false;
+		if ($("#negotiationAutoOpen").is(':checked'))
+			value = true;
+		localStorage.setItem('AutomaticNegotiation', value);
+		
+		$(`#negotiationBoxSettingsBox`).remove();
 	},
 
 
