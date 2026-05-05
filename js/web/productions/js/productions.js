@@ -12,7 +12,6 @@
  */
 
 let Productions = {
-
 	CombinedCityMapData: {},
 	BuildingsAll: [],
 	BuildingsProducts: [],
@@ -213,14 +212,14 @@ let Productions = {
 			Productions.Rating.savePresets();
 			Productions.Rating.load();
 		},
-		resetActivePreset: () => {
+		resetActivePreset: async () => {
 			const preset = Productions.Rating.getActivePreset();
 			if (!preset) return;
 			preset.data = Productions.Rating.normalizeData({});
 			Productions.Rating.Data = preset.data;
 			Productions.Rating.updateTypes();
 			Productions.Rating.savePresets();
-			Productions.CalcRatingBody();
+			await Productions.CalcRatingBody();
 		},
 		getPresetOptions: () => {
 			const presets = Productions.Rating.Presets?.presets || {};
@@ -363,7 +362,6 @@ let Productions = {
 
 
 	showBox: () => {
-
 		if ($('#Productions').length > 0){
 			HTML.CloseOpenBox('Productions');
 			return;
@@ -1820,7 +1818,7 @@ let Productions = {
 	},
 
 
-	ShowRating: (external = false, eraName = null) => {
+	ShowRating: async (external = false, eraName = null) => {
 		if (!Productions.Rating.Data) 
 			Productions.Rating.load();
 
@@ -1850,9 +1848,9 @@ let Productions = {
 				helper.preloader.show('#ProductionsRating');
 				Productions.RatingCurrentTab = $(this).data('value');
 
-				Productions.CalcRatingBody(era);
+				await Productions.CalcRatingBody(era);
 			});
-			Productions.CalcRatingBody(era);
+			await Productions.CalcRatingBody(era);
 
 		} else {
 			HTML.CloseOpenBox('ProductionsRating');
@@ -1894,7 +1892,7 @@ let Productions = {
 	},
 	
 	// era is needed for otherplayer ratings
-	CalcRatingBody: (era = '') => {
+	CalcRatingBody: async (era = '') => {
 		let buildingCount = {};
 		let uniqueBuildings = [];
 		let buildingSizes = [];
@@ -2094,7 +2092,16 @@ let Productions = {
 				let eraShortName = i18n("Eras."+Technologies.Eras[building.eraName]+".short")
 				if (eraShortName !== "-")
 					h.push(" ("+i18n("Eras."+Technologies.Eras[building.eraName]+".short") +')')
-				h.push("</div></td>");
+
+					if (await CityBuildings.canAscend(building.entityId)) {
+						let ascendedId = (await CityMap.AscendingBuildings)[building.entityId];
+						
+						let inInventory = Object.keys(InventoryBuildings).find(x => x === ascendedId);
+						if (inInventory)
+							h.push(`<span class="upgrades helperTT" data-meta_id="${ascendedId}" data-callback_tt="Tooltips.buildingTT" data-era="${building.eraName==="AllAge"?"":building.eraName}"><span class="ascended"></span></span>`);
+					}
+
+				h.push(`</div></td>`);
 				
 				// show amount in city if > 1
 				let buildingAmount = (MainParser.Allies.buildingList?.[building.id] && withAllies ? 1 : (buildingCount[building.entityId+"C"] || 1));
@@ -2202,21 +2209,21 @@ let Productions = {
 				Productions.Rating.ensurePresets();
 				$('#ratingPresetSelect').html(Productions.Rating.getPresetOptions());
 			};
-			$('#ratingPresetSelect li:not(.duplicate)').on('click', function () {
+			$('#ratingPresetSelect li:not(.duplicate)').on('click', async function () {
 				const presetId = $(this).data('id');
 				if (!presetId) return;
 				Productions.Rating.setActivePreset(presetId);
-				Productions.CalcRatingBody();
+				await Productions.CalcRatingBody();
 			});
-			$('#ratingPresetDuplicate').on('click', () => {
+			$('#ratingPresetDuplicate').on('click', async () => {
 				const preset = Productions.Rating.getActivePreset();
 				if (!preset) return;
 				const newId = Productions.Rating.createPreset(preset.data);
 				Productions.Rating.setActivePreset(newId);
 				Productions.Rating.savePresets();
-				Productions.CalcRatingBody();
+				await Productions.CalcRatingBody();
 			});
-			$('.ratingPresetDelete').on('click', () => {
+			$('.ratingPresetDelete').on('click', async () => {
 				const preset = Productions.Rating.getActivePreset();
 				if (!preset) return;
 				if (!window.confirm(i18n('Boxes.ProductionsRating.PresetConfirmDelete'))) return;
@@ -2224,13 +2231,13 @@ let Productions = {
 				Productions.Rating.deletePreset(activeId);
 				Productions.Rating.savePresets();
 				Productions.Rating.load();
-				Productions.CalcRatingBody();
+				await Productions.CalcRatingBody();
 			});
-			$('#ratingPresetReset').on('click', () => {
+			$('#ratingPresetReset').on('click', async () => {
 				if (!window.confirm(i18n('Boxes.ProductionsRating.PresetConfirmReset'))) return;
 				Productions.Rating.resetActivePreset();
 				Productions.Rating.save();
-				Productions.CalcRatingBody();
+				await Productions.CalcRatingBody();
 			});
 			$('#ratingPresetExport').on('click', () => {
 				Productions.Rating.exportPresets();
@@ -2281,7 +2288,7 @@ let Productions = {
 			})
 
 			// closing "add building" screen
-			$('.closeMetaBuilding').on('click',function () {
+			$('.closeMetaBuilding').on('click', async function () {
 				$(this).parent('.overlay').hide()
 
 				marked=[]
@@ -2289,7 +2296,7 @@ let Productions = {
 					marked.push(el.dataset.text)
 				})
 				search=new RegExp($('#efficiencyBuildingFilter').val(),"i")
-				Productions.CalcRatingBody();
+				await Productions.CalcRatingBody();
 				setTimeout(()=>{
 					$(".ratingtable td:nth-child(2)").each((x,el)=>{
 						if (marked.includes(el.dataset.text)) {
@@ -2336,7 +2343,7 @@ let Productions = {
 				}
 			})
 
-			$('#ProductionsRatingSettings input[type=checkbox]').on('click', function () {
+			$('#ProductionsRatingSettings input[type=checkbox]').on('click', async function () {
 				let elem = $(this)
 				let isChecked = elem.prop('checked')
 				let type = elem.attr('id').replace('Enabled-','')
@@ -2347,14 +2354,14 @@ let Productions = {
 				Productions.calculateFSP(type,0)
 
 				if (isChecked) {
-					Productions.CalcRatingBody();
+					await Productions.CalcRatingBody();
 				}
 				Productions.Rating.save()
 			});
 
-			$('#showallies, label[allies]').on('click', function () {
+			$('#showallies, label[allies]').on('click', async function () {
 				SaveSettings("showallies");
-				Productions.CalcRatingBody();
+				await Productions.CalcRatingBody();
 			});
 
 			// settings: change any number
@@ -2438,9 +2445,9 @@ let Productions = {
 			});
 
 			// change minimum score for inventory buildings
-			$('#inventorybuildingscore').on('blur', e => {
+			$('#inventorybuildingscore').on('blur', async e => {
 				SaveSettings("inventorybuildingscore");
-				Productions.CalcRatingBody();
+				await Productions.CalcRatingBody();
 			});
 
 			$('#ProductionsRatingBody [data-original-title]').tooltip({container: "#game_body", html:true});
