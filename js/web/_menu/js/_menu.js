@@ -339,7 +339,6 @@ let _menu = {
 		{ id: 'notice', title: i18n('Menu.Notice.Title'), description: i18n('Menu.Notice.Desc') },
 		{ id: 'recurringQuests', title: i18n('Menu.recurringQuests.Title'), description: i18n('Menu.recurringQuests.Desc') },
 		{ id: 'hiddenRewards', title: i18n('Menu.HiddenRewards.Title'), description: i18n('Menu.HiddenRewards.Desc') },
-		{ id: 'qiMap', title: i18n('Menu.QIMap.Title'), description: i18n('Menu.QIMap.Desc') },
 		{ id: 'cityMap', title: i18n('Menu.Citymap.Title'), description: i18n('Menu.Citymap.Desc') },
 	],
 
@@ -585,18 +584,6 @@ let _menu = {
 		});
 
 		return btn_CityBG.append(btn_City);
-	},
-
-	qiMap_Btn: () => {
-		let btn_QIMapBG = _menu.MakeButton('qiMap', true);
-
-		let btn_QIMap = $('<span />').on('click', function () {
-			if (Object.keys(QIMap.CurrentMapData).length > 0) 
-				QIMap.showBox()
-			
-		});
-
-		return btn_QIMapBG.append(btn_QIMap);
 	},
 
 	/**

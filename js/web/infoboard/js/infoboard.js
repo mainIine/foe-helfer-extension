@@ -22,14 +22,11 @@ FoEproxy.addHandler('ConversationService', 'getCategory', (data, postData) => {
     MainParser.setConversations(data.responseData);
 });
 
-/**
- * @type {{MaxEntries: number, GbgProvShortNameFl: boolean, DebugWebSocket: boolean, OriginalDocumentTitle: string, TitleBlinkEvent: null, ResetBox: Infoboard.ResetBox, SavedFilter: string[], SavedTextFilter: string, HandleMessage: Infoboard.HandleMessage, Box: ((function(): (boolean|undefined))|*), History: *[], StartTitleBlinking: Infoboard.StartTitleBlinking, Init: Infoboard.Init, InjectionLoaded: boolean, StopTitleBlinking: Infoboard.StopTitleBlinking, FilterInput: Infoboard.FilterInput, Show: Infoboard.Show, PostMessage: Infoboard.PostMessage, PlayInfoSound: boolean}}
- */
 let Infoboard = {
 
     InjectionLoaded: false,
     PlayInfoSound: true,
-    SavedFilter: ["auction", "gex", "gbg", "trade", "level", "msg", "text"],
+    SavedFilter: ["auction", "ge", "gbg", "qi", "trade", "level", "msg", "text"],
     SavedTextFilter: "",
     DebugWebSocket: false,
     History: [],
@@ -57,10 +54,8 @@ let Infoboard = {
      * Zeigt die InfoBox an
      */
     Show: () => {
-
         let StorageHeader = localStorage.getItem('ConversationsHeaders');
 
-        // wenn noch nichts drin , aber im LocalStorage vorhanden, laden
         if (MainParser.Conversations.length === 0 && StorageHeader !== null) {
             MainParser.Conversations = JSON.parse(StorageHeader);
         }
@@ -74,10 +69,7 @@ let Infoboard = {
      *
      */
     Box: () => {
-
-        // Wenn die Box noch nicht da ist, neu erzeugen und in den DOM packen
         if ($('#BackgroundInfo').length === 0) {
-
             let spk = localStorage.getItem('infoboxTone');
 
             if (spk === null) {
@@ -128,8 +120,9 @@ let Infoboard = {
 
         h.push('<ul>');
         h.push('<li><label class="game-cursor"><input type="checkbox" data-type="auction" class="filter-msg game-cursor" ' + (Infoboard.SavedFilter.includes("auction") ? "checked" : "") + '> ' + i18n('Boxes.Infobox.FilterAuction') + '</label></li>');
-        h.push('<li><label class="game-cursor"><input type="checkbox" data-type="gex" class="filter-msg game-cursor" ' + (Infoboard.SavedFilter.includes("gex") ? "checked" : "") + '> ' + i18n('Boxes.General.Guild_Expedition.short') + '</label></li>');
+        h.push('<li><label class="game-cursor"><input type="checkbox" data-type="ge" class="filter-msg game-cursor" ' + (Infoboard.SavedFilter.includes("ge") ? "checked" : "") + '> ' + i18n('Boxes.General.Guild_Expedition.short') + '</label></li>');
         h.push('<li><label class="game-cursor"><input type="checkbox" data-type="gbg" class="filter-msg game-cursor" ' + (Infoboard.SavedFilter.includes("gbg") ? "checked" : "") + '> ' + i18n('Boxes.General.Guild_Battlegrounds.short') + '</label></li>');
+        h.push('<li><label class="game-cursor"><input type="checkbox" data-type="qi" class="filter-msg game-cursor" ' + (Infoboard.SavedFilter.includes("qi") ? "checked" : "") + '> ' + i18n('Boxes.General.Quantum_Incursion.short') + '</label></li>');
         h.push('<li><label class="game-cursor"><input type="checkbox" data-type="trade" class="filter-msg game-cursor" ' + (Infoboard.SavedFilter.includes("trade") ? "checked" : "") + '> ' + i18n('Boxes.Infobox.FilterTrade') + '</label></li>');
         h.push('<li><label class="game-cursor"><input type="checkbox" data-type="level" class="filter-msg game-cursor" ' + (Infoboard.SavedFilter.includes("level") ? "checked" : "") + '> ' + i18n('Boxes.Infobox.FilterLevel') + '</label></li>');
         h.push('<li><label class="game-cursor"><input type="checkbox" data-type="msg" class="filter-msg game-cursor" ' + (Infoboard.SavedFilter.includes("msg") ? "checked" : "") + '> ' + i18n('Boxes.Infobox.FilterMessage') + '</label></li>');
@@ -138,15 +131,11 @@ let Infoboard = {
         h.push('</div>');
 
         h.push('<button class="btn btn-reset-box">' + i18n('Boxes.Infobox.ResetBox') + '</button>');
-
         h.push('</div>');
 
 
-        // Tabelle
         h.push('<table id="BackgroundInfoTable" class="info-table">');
-
         h.push('<tbody></tbody>');
-
         h.push('</table>');
 
         div.find('#BackgroundInfoBody').html(h.join(''));
@@ -170,7 +159,6 @@ let Infoboard = {
         }
 
         div.on('click', '#infoboxTone', function () {
-
             let disabled = $(this).hasClass('deactivated');
 
             localStorage.setItem('infoboxTone', (disabled ? '' : 'deactivated'));
@@ -187,17 +175,11 @@ let Infoboard = {
 
     /**
      * Setzt eine neue Zeile für die Box zusammen
-     *
-     * @param dir
-     * @param data
      */
     HandleMessage: async (dir, data) => {
-
         let Msg = data[0];
 
-        if (!Msg || !Msg['requestClass']) {
-            return;
-        }
+        if (!Msg || !Msg['requestClass']) return;
 
         let c = Msg['requestClass'],
             m = Msg['requestMethod'],
@@ -208,10 +190,7 @@ let Infoboard = {
             console.log(JSON.stringify(data))
         }
 
-        // Gibt es eine Funktion dafür?
-        if (!Info[s]) {
-            return;
-        }
+        if (!Info[s]) return;
 
         let bd = await Info[s](Msg['responseData']);
 
@@ -231,10 +210,8 @@ let Infoboard = {
     PostMessage: (bd, add = true) => {
         if (!bd['date']) bd['date'] = new Date();
 
-        if ($('#BackgroundInfo').length > 0)
-        {
-            if(bd['class'] !== 'welcome' && add)
-            {
+        if ($('#BackgroundInfo').length > 0) {
+            if(bd['class'] !== 'welcome' && add) {
                 if(Infoboard.MaxEntries > 0 && Infoboard.History.length >= Infoboard.MaxEntries){
                     Infoboard.History.shift();
                 }
@@ -248,12 +225,10 @@ let Infoboard = {
 				filterStatus = textfilter.some(e => msg.toLowerCase().includes(e.toLowerCase()));
 
             // wenn nicht angezeigt werden soll, direkt verstecken
-            if ((!status || !filterStatus) && bd.class !== 'welcome')
-            {
+            if ((!status || !filterStatus) && bd.class !== 'welcome') {
                 tr.hide();
             }
-            else
-            {
+            else {
                 if(Infoboard.MaxEntries > 0 && $('#BackgroundInfoTable tbody tr').length >= Infoboard.MaxEntries)
                 {
                     while(Infoboard.MaxEntries > 0 && $('#BackgroundInfoTable tbody tr').length >= Infoboard.MaxEntries)
@@ -272,14 +247,12 @@ let Infoboard = {
 
             tr.append(
                 '<td></td>' +
-                '<td>' + type + '<br><small><em>' + moment(bd['date']).format('HH:mm:ss') + '</em></small></td>' +
-                '<td>' + msg + '</td>'
+                '<td><small><em>' + moment(bd['date']).format('HH:mm:ss') + '</em></small><br/>' + msg + '</td>'
             );
 
             $('#BackgroundInfoTable tbody').prepend(tr);
 
-            if (Infoboard.PlayInfoSound && status && filterStatus)
-            {
+            if (Infoboard.PlayInfoSound && status && filterStatus) {
                 helper.sounds.play("ping");
             }
         }
@@ -287,8 +260,7 @@ let Infoboard = {
 
 
     /**
-     * Filter für Message Type
-     *
+     * Filter Message Type
      */
     FilterInput: () => {
         $('#BackgroundInfo').on('change', '.filter-msg', function () {
@@ -314,7 +286,7 @@ let Infoboard = {
                     textfilter = $('input[data-type="text"]').val().split("|"),
                     type = tr.attr('class');
 
-                if ((active.some(e => type.startsWith(e)) && textfilter.some(e => $(tr.children()[2]).html().toLowerCase().includes(e.toLowerCase()))) || tr.hasClass('welcome')) {
+                if ((active.some(e => type.startsWith(e)) && textfilter.some(e => $(tr.children()[1]).html().toLowerCase().includes(e.toLowerCase()))) || tr.hasClass('welcome')) {
                     tr.show();
                 } else {
                     tr.hide();
@@ -402,9 +374,6 @@ let Info = {
 
     /**
      * Jmd hat in einer Auktion mehr geboten
-     *
-     * @param d
-     * @returns {{class: 'auction', msg: string, type: string}}
      */
     ItemAuctionService_updateBid: (d) => {
         let PlayerLink = MainParser.GetPlayerLink(d['player']['player_id'], d['player']['name']);
@@ -424,9 +393,6 @@ let Info = {
 
     /**
      * Nachricht in einem bekannten Chat
-     *
-     * @param d
-     * @returns {class: 'message', msg: string, type: string, img: string | undefined}
      */
     ConversationService_getNewMessage: (d) => {
         let chat = MainParser.Conversations.find(obj => obj.id === d['conversationId']),
@@ -498,9 +464,6 @@ let Info = {
 
     /**
      * Nachricht in einem unbekannten Chat
-     *
-     * @param d
-     * @returns {class: 'message', msg: string, type: string}
      */
     ConversationService_getConversationUpdate: (d) => {
         let chat = MainParser.Conversations.find(obj => obj.id === d['conversationId']);
@@ -516,10 +479,7 @@ let Info = {
 
 
     /**
-     * Auf der GG-Map kämpft jemand
-     *
-     * @param d
-     * @returns {{msg: string, type: string, class: string}}
+     * GBG Map figths
      */
     GuildBattlegroundService_getProvinces: async (d) => {
 
@@ -562,7 +522,6 @@ let Info = {
             };
         }
 
-        // kein aktiver Kampf
         if (!data['conquestProgress'][0]) return undefined;
 
         // Es wird gerade gekämpft
@@ -630,16 +589,11 @@ let Info = {
 
     /**
      * LG wurde gelevelt
-     *
-     * @param d
-     * @returns {{class: 'level', msg: string, type: string}}
      */
     OtherPlayerService_newEventgreat_building_contribution: (d) => {
-
-        let newFP=-1;
-        if (d['rank'] >= 6) {
-            newFP = 0
-        }
+        let newFP = -1;
+        if (d['rank'] >= 6) 
+            newFP = 0;
         else {
             let Entity = Object.values(MainParser.CityEntities).find(obj => (obj['name'] === d['great_building_name']));
                 EntityID = Entity['id'],
@@ -671,9 +625,6 @@ let Info = {
 
     /**
      * Handel wurde angenommen
-     *
-     * @param d
-     * @returns {{class: 'trade', msg: string, type: string}}
      */
     OtherPlayerService_newEventtrade_accepted: (d) => {
         let PlayerLink = MainParser.GetPlayerLink(d['other_player']['player_id'], d['other_player']['name']);
@@ -696,13 +647,8 @@ let Info = {
 
     /**
      * Ein Gildenmitglied hat in der GEX gekämpft
-     *
-     * @param d
-     * @returns {boolean|{msg: *, type: string, class: string}}
      */
     GuildExpeditionService_receiveContributionNotification: (d) => {
-
-        // "mich" nicht anzeigen
         if (d['player']['player_id'] === ExtPlayerID) {
             return false;
         }
@@ -710,8 +656,8 @@ let Info = {
         let PlayerLink = MainParser.GetPlayerLink(d['player']['player_id'], d['player']['name']);
 
         return {
-            class: 'gex',
-            type: 'GEX',
+            class: 'ge',
+            type: 'GE',
             msg: HTML.i18nReplacer(
                 i18n('Boxes.Infobox.Messages.GEX'), {
                 'player': PlayerLink,
@@ -720,4 +666,43 @@ let Info = {
             )
         };
     },
+
+    GuildRaidsMapService_updateNodeCurrentProgress: (d) => {
+        let nodeData = QiProgress.QiMap.nodes.find(x => x.id === d.nodeId);
+        let image = ('qi-'+nodeData.type?.type);
+        if (nodeData.type?.armyType !== undefined)
+            image = ('qi-'+nodeData.type?.armyType||"") + '-' + (nodeData.type?.fightType||"");
+
+        return {
+            class: 'qi',
+            type: 'QI',
+            msg: HTML.i18nReplacer(
+                i18n('Boxes.Infobox.Messages.QINodeProgress'), {
+                'id': (""+d.nodeId).toUpperCase(),
+                'points': HTML.Format(d.currentProgress)
+            }),
+            img: image
+        };
+    },
+
+    GuildRaidsMapService_updateState: (d) => {
+        if (d.causingPlayerId === ExtPlayerID) return false;
+
+        let PlayerLink = MainParser.GetPlayerLink(d.causingPlayerId, PlayerDict[d.causingPlayerId]?.PlayerName);
+        let nodeData = QiProgress.QiMap.nodes.find(x => x.id === d.nodeId);
+        let image = ('qi-'+nodeData.type?.type);
+        if (nodeData.type?.armyType !== undefined)
+            image = ('qi-'+nodeData.type?.armyType||"") + '-' + (nodeData.type?.fightType||"");
+
+        return {
+            class: 'qi',
+            type: 'QI',
+            msg: HTML.i18nReplacer(
+                i18n('Boxes.Infobox.Messages.QINodeFinished'), {
+                'player': PlayerLink,
+                'id': (""+d.state.nodeId).toUpperCase()
+            }),
+            img: image
+        };
+    }
 };

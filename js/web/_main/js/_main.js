@@ -399,7 +399,7 @@ GetFights = () =>{
 
 	// QI map
 	FoEproxy.addHandler('GuildRaidsMapService', 'getOverview', (data, postData) => {		
-		QIMap.init(data.responseData)
+		QiProgress.QiMap = data.responseData;
 	})
 
 	// CastleSystem rewards

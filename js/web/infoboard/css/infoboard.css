@@ -110,77 +110,142 @@ table.info-table tr td {
 }
 
 #BackgroundInfoTable .welcome td:first-child {
-	background-image: url('../../../../css/images/menu/info.png');
-	background-size: 30px;
+	background-image: url('../../../../css/images/menu/info.png'), linear-gradient(90deg, var(--black-65), transparent);
+	background-size: 30px, cover;
 }
 
 #BackgroundInfoTable .msg td:first-child {
-	background-image: url('../../x_img/msg.png');
-	background-size: 25px;
+	background-image: url('../../x_img/msg.png'), linear-gradient(90deg, var(--black-65), transparent);
+	background-size: 25px, cover;
 }
 
 #BackgroundInfoTable .msg-important td:first-child {
-	background-image: url('../../x_img/msg-important.png');
-	background-size: 25px;
+	background-image: url('../../x_img/msg-important.png'), linear-gradient(90deg, var(--black-65), transparent);
+	background-size: 25px, cover;
 }
 
 #BackgroundInfoTable .msg-favorite td:first-child {
-	background-image: url('../../x_img/msg-favorite.png');
-	background-size: 25px;
+	background-image: url('../../x_img/msg-favorite.png'), linear-gradient(90deg, var(--black-65), transparent);
+	background-size: 25px, cover;
 }
 
 #BackgroundInfoTable .auction td:first-child {
-	background-image: url('../../x_img/ant.png');
+	background-image: url('../../x_img/ant.png'), linear-gradient(90deg, var(--black-65), transparent);
+	background-size: 30px, cover;
 }
 
-#BackgroundInfoTable .gex td:first-child {
-	background-image: url('../../x_img/ge.png');
+#BackgroundInfoTable .ge td:first-child {
+	background-image: url('../../x_img/ge.png'), linear-gradient(90deg, var(--black-65), transparent);
+	background-size: 30px, cover;
+}
+
+#BackgroundInfoTable [class*=qi] td:first-child {
+	background-image: url('../../x_img/qi.png'), linear-gradient(90deg, var(--black-65), transparent);
+	background-size: 30px, cover;
+	position: relative;
+}
+
+#BackgroundInfoTable [class*=qi] td:first-child::after {
+	background-image:url('../../x_img/qinodes.png');
+	background-size: auto 20px;
+	width: 20px;
+	height: 20px;
+	content: '';
+	display: block;
+	position: absolute;
+	bottom: 2px;
+	right: 2px;
+}
+
+#BackgroundInfoTable [class*=qi] td:first-child::before {
+	width: 10px;
+	height: 10px;
+	content: '';
+	display: block;
+	position: absolute;
+	bottom: 5px;
+	left: 4px;
+	border-radius: 30px;
+}
+
+#BackgroundInfoTable [class*=defending] td:first-child::before {
+	background-color: var(--def);
+	box-shadow: 0 0 3px var(--black);
+}
+
+#BackgroundInfoTable [class*=attacking] td:first-child::before {
+	background-color: var(--att);
+	box-shadow: 0 0 3px var(--black);
+}
+
+#BackgroundInfoTable [class*=stronghold] td:first-child::after {
+	background-position: -64px 0;
+}
+
+#BackgroundInfoTable [class*=mini] td:first-child::after {
+	background-position: -86px 0;
+}
+
+#BackgroundInfoTable [class*=final] td:first-child::after {
+	background-position: -108px 0;
+}
+
+#BackgroundInfoTable [class*=resources] td:first-child::after {
+	background-position: -130px 0;
+}
+
+#BackgroundInfoTable [class*=regular] td:first-child::after {
+	background-position: -156px 0;
+}
+
+#BackgroundInfoTable [class*=garrison] td:first-child::after {
+	background-position: -180px 0;
 }
 
 #BackgroundInfoTable .level td:first-child {
-	background-image: url('../../x_img/gb.png');
+	background-image: url('../../x_img/gb.png'), linear-gradient(90deg, var(--black-65), transparent);
 }
 
 #BackgroundInfoTable .trade td:first-child {
-	background-image: url('../../x_img/trade.png');
-	background-size: 25px;
+	background-image: url('../../x_img/trade.png'), linear-gradient(90deg, var(--black-65), transparent);
+	background-size: 25px, cover;
 }
 
 #BackgroundInfoTable .gbg-red td:first-child {
-	background-image: url('../../x_img/gbg-red.png');
+	background-image: url('../../x_img/gbg-red.png'), linear-gradient(90deg, var(--black-65), transparent);
 }
 
 #BackgroundInfoTable .gbg-green td:first-child {
-	background-image: url('../../x_img/gbg-green.png');
+	background-image: url('../../x_img/gbg-green.png'), linear-gradient(90deg, var(--black-65), transparent);
 }
 
 #BackgroundInfoTable .gbg-yellow td:first-child {
-	background-image: url('../../x_img/gbg-yellow.png');
+	background-image: url('../../x_img/gbg-yellow.png'), linear-gradient(90deg, var(--black-65), transparent);
 }
 
 #BackgroundInfoTable .gbg-teal td:first-child {
-	background-image: url('../../x_img/gbg-teal.png');
+	background-image: url('../../x_img/gbg-teal.png'), linear-gradient(90deg, var(--black-65), transparent);
 }
 
 #BackgroundInfoTable .gbg-orange td:first-child {
-	background-image: url('../../x_img/gbg-orange.png');
+	background-image: url('../../x_img/gbg-orange.png'), linear-gradient(90deg, var(--black-65), transparent);
 }
 
 #BackgroundInfoTable .gbg-blue td:first-child {
-	background-image: url('../../x_img/gbg-blue.png');
+	background-image: url('../../x_img/gbg-blue.png'), linear-gradient(90deg, var(--black-65), transparent);
 }
 
 #BackgroundInfoTable .gbg-purple td:first-child {
-	background-image: url('../../x_img/gbg-purple.png');
+	background-image: url('../../x_img/gbg-purple.png'), linear-gradient(90deg, var(--black-65), transparent);
 }
 
 #BackgroundInfoTable .gbg-pink td:first-child {
-	background-image: url('../../x_img/gbg-pink.png');
+	background-image: url('../../x_img/gbg-pink.png'), linear-gradient(90deg, var(--black-65), transparent);
 }
 
 #BackgroundInfoTable .gbg-lock td:first-child {
-	background-image: url('../../x_img/gbg-lock.png');
-	background-size: 30px;
+	background-image: url('../../x_img/gbg-lock.png'), linear-gradient(90deg, var(--black-65), transparent);
+	background-size: 30px, cover;
 }
 
 #BackgroundInfoTable .gbg-undefined td:first-child {
