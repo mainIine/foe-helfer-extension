@@ -18,36 +18,6 @@
 	height: 450px;
 }
 
-.info-table {
-	border-spacing: 0;
-	border-collapse: separate;
-	width: 100%;
-	background-color: transparent;
-}
-
-.info-table a {
-	text-decoration: none;
-	color: inherit;
-}
-
-.info-table a:hover {
-	text-decoration: underline;
-}
-
-table.info-table:not(.no-hover) tbody tr:hover {
-	background-color: var(--table-bg-hover) !important;
-}
-
-table.info-table tr th,
-table.info-table tr td {
-	padding: 2px 5px;
-}
-
-table.info-table tr td {
-	border-top: 1px solid var(--border-table-top);
-	border-bottom: 1px solid var(--border-table-bottom);
-}
-
 #BackgroundInfo #BackgroundInfoBody {
 	overflow: auto;
 }
@@ -64,9 +34,8 @@ table.info-table tr td {
 	padding: 5px;
 }
 
-#BackgroundInfo #BackgroundInfoBody .filter-row span {
-	display: inline-block;
-	margin-right: 15px;
+#BackgroundInfo #BackgroundInfoBody .filter-row span.arrow {
+	top: 7px;
 }
 
 #BackgroundInfo #BackgroundInfoBody .filter-row span input {
@@ -98,54 +67,86 @@ table.info-table tr td {
 	width: 16px;
 }
 
-#BackgroundInfoTable td:first-child {
+#BackgroundInfoList li {
+	justify-content: space-between;
+	background: linear-gradient(90deg, var(--black-65), transparent 30%);
+	position: relative;
+}
+
+#BackgroundInfoList .icon {
 	background: url('../../x_img/gbg-gray.png') center center no-repeat;
 	background-size: contain;
 	width: 30px;
+	height: 30px;
 }
 
-#BackgroundInfoTable .welcome {
+#BackgroundInfoList .main {
+	width: calc(100% - 30px);
+}
+
+#BackgroundInfoList .fav {
+	position: absolute;
+	top: 0;
+	right: 2px;
+	opacity: 0.5;
+	border-radius: 20px;
+}
+
+#BackgroundInfoList .welcome .fav {
+	display: none;
+}
+
+#BackgroundInfoList .fav:hover, #BackgroundInfoList .fav.active {
+	opacity: 0.9;
+	color: var(--bright-color);
+}
+
+#BackgroundInfoList [class*=msg] .content {
+	font-size: 85%;
+}
+
+#BackgroundInfoList .welcome {
 	-webkit-backdrop-filter: brightness(1.1) saturate(1.1);
 	backdrop-filter: brightness(1.1) saturate(1.1);
 }
 
-#BackgroundInfoTable .welcome td:first-child {
-	background-image: url('../../../../css/images/menu/info.png'), linear-gradient(90deg, var(--black-65), transparent);
-	background-size: 30px, cover;
+#BackgroundInfoList .welcome .icon {
+	background-image: url('../../../../css/images/menu/info.png');
+	background-size: 30px;
 }
 
-#BackgroundInfoTable .msg td:first-child {
-	background-image: url('../../x_img/msg.png'), linear-gradient(90deg, var(--black-65), transparent);
-	background-size: 25px, cover;
+#BackgroundInfoList [class*=msg] .icon {
+	background-image: url('../../x_img/msg.png');
+	background-size: 25px;
 }
 
-#BackgroundInfoTable .msg-important td:first-child {
-	background-image: url('../../x_img/msg-important.png'), linear-gradient(90deg, var(--black-65), transparent);
-	background-size: 25px, cover;
+#BackgroundInfoList [class*=msg-important] .icon {
+	background-image: url('../../x_img/msg-important.png');
+	background-size: 25px;
 }
 
-#BackgroundInfoTable .msg-favorite td:first-child {
-	background-image: url('../../x_img/msg-favorite.png'), linear-gradient(90deg, var(--black-65), transparent);
-	background-size: 25px, cover;
+#BackgroundInfoList [class*=msg-favorite] .icon {
+	background-image: url('../../x_img/msg-favorite.png');
+	background-size: 25px;
 }
 
-#BackgroundInfoTable .auction td:first-child {
-	background-image: url('../../x_img/ant.png'), linear-gradient(90deg, var(--black-65), transparent);
-	background-size: 30px, cover;
+#BackgroundInfoList .auction .icon {
+	background-image: url('../../x_img/ant.png');
+	background-size: 30px;
 }
 
-#BackgroundInfoTable .ge td:first-child {
-	background-image: url('../../x_img/ge.png'), linear-gradient(90deg, var(--black-65), transparent);
-	background-size: 30px, cover;
+#BackgroundInfoList .ge .icon {
+	background-image: url('../../x_img/ge.png');
+	background-size: 30px;
 }
 
-#BackgroundInfoTable [class*=qi] td:first-child {
-	background-image: url('../../x_img/qi.png'), linear-gradient(90deg, var(--black-65), transparent);
-	background-size: 30px, cover;
+#BackgroundInfoList [class*=qi] .icon {
+	background-image: url('../../x_img/qi.png');
+	background-size: 30px;
 	position: relative;
 }
 
-#BackgroundInfoTable [class*=qi] td:first-child::after {
+#BackgroundInfoList [class*=qi] .icon::after {
 	background-image:url('../../x_img/qinodes.png');
 	background-size: auto 20px;
 	width: 20px;
@@ -153,111 +154,111 @@ table.info-table tr td {
 	content: '';
 	display: block;
 	position: absolute;
-	bottom: 2px;
-	right: 2px;
+	bottom: -2px;
+	right: -2px;
 }
 
-#BackgroundInfoTable [class*=qi] td:first-child::before {
+#BackgroundInfoList [class*=qi] .icon::before {
 	width: 10px;
 	height: 10px;
 	content: '';
 	display: block;
 	position: absolute;
-	bottom: 5px;
-	left: 4px;
+	bottom: 0;
+	left: -2px;
 	border-radius: 30px;
 }
 
-#BackgroundInfoTable [class*=defending] td:first-child::before {
+#BackgroundInfoList [class*=defending] .icon::before {
 	background-color: var(--def);
 	box-shadow: 0 0 3px var(--black);
 }
 
-#BackgroundInfoTable [class*=attacking] td:first-child::before {
+#BackgroundInfoList [class*=attacking] .icon::before {
 	background-color: var(--att);
 	box-shadow: 0 0 3px var(--black);
 }
 
-#BackgroundInfoTable [class*=stronghold] td:first-child::after {
+#BackgroundInfoList [class*=stronghold] .icon::after {
 	background-position: -64px 0;
 }
 
-#BackgroundInfoTable [class*=mini] td:first-child::after {
+#BackgroundInfoList [class*=mini] .icon::after {
 	background-position: -86px 0;
 }
 
-#BackgroundInfoTable [class*=final] td:first-child::after {
+#BackgroundInfoList [class*=final] .icon::after {
 	background-position: -108px 0;
 }
 
-#BackgroundInfoTable [class*=resources] td:first-child::after {
+#BackgroundInfoList [class*=resources] .icon::after {
 	background-position: -130px 0;
 }
 
-#BackgroundInfoTable [class*=regular] td:first-child::after {
+#BackgroundInfoList [class*=regular] .icon::after {
 	background-position: -156px 0;
 }
 
-#BackgroundInfoTable [class*=garrison] td:first-child::after {
+#BackgroundInfoList [class*=garrison] .icon::after {
 	background-position: -180px 0;
 }
 
-#BackgroundInfoTable .level td:first-child {
-	background-image: url('../../x_img/gb.png'), linear-gradient(90deg, var(--black-65), transparent);
+#BackgroundInfoList .level .icon {
+	background-image: url('../../x_img/gb.png');
 }
 
-#BackgroundInfoTable .trade td:first-child {
-	background-image: url('../../x_img/trade.png'), linear-gradient(90deg, var(--black-65), transparent);
-	background-size: 25px, cover;
+#BackgroundInfoList .trade .icon {
+	background-image: url('../../x_img/trade.png');
+	background-size: 25px;
 }
 
-#BackgroundInfoTable .gbg-red td:first-child {
-	background-image: url('../../x_img/gbg-red.png'), linear-gradient(90deg, var(--black-65), transparent);
+#BackgroundInfoList .gbg-red .icon {
+	background-image: url('../../x_img/gbg-red.png');
 }
 
-#BackgroundInfoTable .gbg-green td:first-child {
-	background-image: url('../../x_img/gbg-green.png'), linear-gradient(90deg, var(--black-65), transparent);
+#BackgroundInfoList .gbg-green .icon {
+	background-image: url('../../x_img/gbg-green.png');
 }
 
-#BackgroundInfoTable .gbg-yellow td:first-child {
-	background-image: url('../../x_img/gbg-yellow.png'), linear-gradient(90deg, var(--black-65), transparent);
+#BackgroundInfoList .gbg-yellow .icon {
+	background-image: url('../../x_img/gbg-yellow.png');
 }
 
-#BackgroundInfoTable .gbg-teal td:first-child {
-	background-image: url('../../x_img/gbg-teal.png'), linear-gradient(90deg, var(--black-65), transparent);
+#BackgroundInfoList .gbg-teal .icon {
+	background-image: url('../../x_img/gbg-teal.png');
 }
 
-#BackgroundInfoTable .gbg-orange td:first-child {
-	background-image: url('../../x_img/gbg-orange.png'), linear-gradient(90deg, var(--black-65), transparent);
+#BackgroundInfoList .gbg-orange .icon {
+	background-image: url('../../x_img/gbg-orange.png');
 }
 
-#BackgroundInfoTable .gbg-blue td:first-child {
-	background-image: url('../../x_img/gbg-blue.png'), linear-gradient(90deg, var(--black-65), transparent);
+#BackgroundInfoList .gbg-blue .icon {
+	background-image: url('../../x_img/gbg-blue.png');
 }
 
-#BackgroundInfoTable .gbg-purple td:first-child {
-	background-image: url('../../x_img/gbg-purple.png'), linear-gradient(90deg, var(--black-65), transparent);
+#BackgroundInfoList .gbg-purple .icon {
+	background-image: url('../../x_img/gbg-purple.png');
 }
 
-#BackgroundInfoTable .gbg-pink td:first-child {
-	background-image: url('../../x_img/gbg-pink.png'), linear-gradient(90deg, var(--black-65), transparent);
+#BackgroundInfoList .gbg-pink .icon {
+	background-image: url('../../x_img/gbg-pink.png');
 }
 
-#BackgroundInfoTable .gbg-lock td:first-child {
-	background-image: url('../../x_img/gbg-lock.png'), linear-gradient(90deg, var(--black-65), transparent);
-	background-size: 30px, cover;
+#BackgroundInfoList .gbg-lock .icon {
+	background-image: url('../../x_img/gbg-lock.png');
+	background-size: 30px;
 }
 
-#BackgroundInfoTable .gbg-undefined td:first-child {
+#BackgroundInfoList .gbg-undefined .icon {
 	background-image: url('../../x_img/gbg-undefined.png');
 }
 
-#BackgroundInfoTable a[target="_blank"] {
+#BackgroundInfoList a[target="_blank"] {
 	color: var(--text-normal);
 	text-decoration: underline;
 }
 
-#BackgroundInfoTable a[target="_blank"] svg {
+#BackgroundInfoList a[target="_blank"] svg {
 	fill: var(--text-normal);
 }
 

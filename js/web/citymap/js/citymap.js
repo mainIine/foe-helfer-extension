@@ -342,7 +342,7 @@ let CityMap = {
 		}
 
 		$('[data-original-title]').tooltip({
-			container: '#citymap-main',
+			container: 'body',
 			html: true,
 		});
 
@@ -822,7 +822,7 @@ let CityMap = {
 		CityMap.getAreas();
 		
 		$('[data-original-title]').tooltip({
-			container: '#citymap-main',
+			container: 'body',
 			html: true,
 		});
 	},

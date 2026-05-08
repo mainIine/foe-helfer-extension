@@ -91,12 +91,12 @@
 }
 .shopAssistTable .shopFavourite:after{
 	content: '☆';
-	color: goldenrod;
+	color: var(--bright-color);
 	font-size: large;
 }
 .shopAssistTable .isShopFavourite .shopFavourite:after{
 	content: '★';
-	color: goldenrod;
+	color: var(--bright-color);
 }
 .shopAssistTable .shopAlert:after {
 	content: '🔕';
