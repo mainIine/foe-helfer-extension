@@ -1307,7 +1307,7 @@ let GuildFights = {
 					GuildFights.UpdateCounter(countDownDate, intervalID, province.id);
 				}, 1000);
 
-			content.push(`<tr id="timer-${province.id}" class="timer ${(province.usedBuildingSlots||0) < province.totalBuildingSlots ? 'bg-red':''}" data-tab="gbgowned" data-id=${province.id}>
+			content.push(`<tr id="time-${province.id}" class="time ${(province.usedBuildingSlots||0) < province.totalBuildingSlots ? 'bg-red':''}" data-tab="gbgowned" data-id=${province.id}>
 				<td class="prov-name" title="${i18n('Boxes.GuildFights.Owner')}: ${province.owner}">
 					<span class="province-color" ${color['main'] ? 'style="background-color:' + color['main'] + '"' : ''}"></span> 
 					<b>${province.title}</b> 
@@ -1452,7 +1452,7 @@ let GuildFights = {
 	PrepareForDiscord: (e) => {
 		GuildFights.discordCache = [];
 		$('.timer.highlight-row').each(function () {
-			GuildFights.discordCache.push(GuildFights.MapData['map']['provinces'].find((mapItem) => mapItem.id == $(this).data('id')));
+			GuildFights.discordCache.push(GuildFights.MapData.map.provinces.find((mapItem) => mapItem.id == $(this).data('id')));
 		});
 
 		GuildFights.discordCache.sort(function (a, b) { return a.lockedUntil - b.lockedUntil });
@@ -1469,7 +1469,6 @@ let GuildFights = {
 
 
 	UpdateCounter: (countDownDate, intervalID, id) => {
-
 		let idSpan = $(`#counter-${id}`),
 			removeIt = false;
 
@@ -1491,7 +1490,7 @@ let GuildFights = {
 			clearInterval(intervalID);
 
 			idSpan.text('');
-			$(`#timer-${id}`).find('.time-static').html(`<strong class="text-success">offen</strong>`); // @ToDo: translate
+			$(`#timer-${id}`).find('.time-static').html(`<strong class="text-success">!!</strong>`); // @ToDo: translate
 
 			// remove timer after 5s
 			setTimeout(() => {
@@ -1797,7 +1796,7 @@ let GuildFights = {
 				c.push(`<select id="gbgWebhook" name="gbgWebhook">`);
 				c.push(`<option value="">${i18n('General.Choose')}</option>`);
 				for(let url of Discord.WebHooksUrls) {
-					c.push(`<option value="${url.url}" ${GuildFights.discordWebhook.url === url.url ? ' selected="selected"' : ''}>${url.name}</option>`);
+					c.push(`<option value="${url.url}" ${discordWebhook === url.url ? ' selected="selected"' : ''}>${url.name}</option>`);
 				}
 			c.push(`</select>`);
 			}
@@ -1806,14 +1805,14 @@ let GuildFights = {
 				c.push(`<select id="gbgWebhookTemplate" name="gbgWebhookTemplate">`);
 				c.push(`<option value="">${i18n('Boxes.Discord.TitleNewTemplate')}</option>`);
 				for(let tpl of templates) {
-					c.push(`<option value="${tpl.name}" ${GuildFights.discordWebhook.template === tpl.name ? ' selected="selected"' : ''}>${tpl.name}</option>`);
+					c.push(`<option value="${tpl.name}" ${discordWebhookTemplate === tpl.name ? ' selected="selected"' : ''}>${tpl.name}</option>`);
 				}
 			c.push(`</select>`);}
 			if (Discord.WebHooksUrls.length !== 0 && templates.length != 0) {
 				c.push(`<select id="gbgWebhookTemplateBulk" name="gbgWebhookTemplateBulk">`);
 				c.push(`<option value="">${i18n('Boxes.GuildFights.DiscordTemplateBulk')}</option>`);
 				for(let tpl of templates) {
-					c.push(`<option value="${tpl.name}" ${GuildFights.discordWebhook.bulkTemplate === tpl.name ? ' selected="selected"' : ''}>${tpl.name}</option>`);
+					c.push(`<option value="${tpl.name}" ${discordWebhookTemplateBulk === tpl.name ? ' selected="selected"' : ''}>${tpl.name}</option>`);
 				}
 			c.push(`</select>`);}
 			c.push(`</p>`);
@@ -1860,7 +1859,7 @@ let GuildFights = {
 		GuildFights.showOwnSectors = value.showOwnSectors;
 		GuildFights.showTileColors = value.showTileColors;
 		GuildFights.showServerTime = value.showServerTime;
-		GuildFights.discordWebhook = value.discordWebhook;
+		GuildFights.discordWebhook.url = value.discordWebhook;
 		GuildFights.discordWebhook.template = value.discordWebhookTemplate;
 		GuildFights.discordWebhook.bulkTemplate = value.discordWebhookTemplateBulk;
 		GuildFights.serverOffset = parseInt($("#serverOffset").val()) ?? null;
