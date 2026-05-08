@@ -1648,7 +1648,7 @@ a:hover {
 .jq-toast-wrap.top-left { top: 20px; left: 20px; right: unset }
 .jq-toast-wrap.top-right { top: 20px; right: 40px; left: unset }
 
-.jq-toast-single { display: block; /*width: 100%*/; padding: 10px; margin: 0 0 5px; border-radius: 4px; font-size: 12px; font-family: arial, sans-serif; line-height: 17px; position: relative;  pointer-events: all !important; background-color: var(--grey); color: var(--text-light); }
+.jq-toast-single { display: block; padding: 10px; margin: 0 0 5px; border-radius: 4px; font-size: 13px; font-family: arial, sans-serif; line-height: 17px; position: relative;  pointer-events: all !important; background-color: #1a1713c7; color: var(--text-light); backdrop-filter: blur(4px); }
 
 .jq-toast-single h2 { font-family: arial, sans-serif; font-size: 14px; margin: 0 0 7px; background: none; color: inherit; line-height: inherit; letter-spacing: normal; }
 .jq-toast-single a { color: var(--tooltip); text-decoration: none; font-weight: bold; border-bottom: 1px solid white; padding-bottom: 3px; font-size: 12px; }
@@ -1658,40 +1658,14 @@ a:hover {
 
 .close-jq-toast-single { position: absolute; top: 3px; right: 7px; font-size: 14px; cursor: pointer; }
 
-.jq-toast-loader { display: block; position: absolute; top: 0; height: 2px; width: 0; left: 0; border-radius: 5px; background: red; }
+.jq-toast-loader { display: block; position: absolute; top: 0; height: 2px; width: 0; left: 0; border-radius: 5px; background: var(--bright-color); }
 .jq-toast-loaded { width: 100%; }
-.jq-has-icon { padding: 10px; box-shadow: var(--window-shadow); }
+.jq-has-icon { padding: 10px; box-shadow: var(--menu-shadow); }
 
-.jq-icon-info {
-	background: #5e5a4e;
-	color: #d9edf7;
-}
-
-.jq-icon-info .jq-toast-heading {
-	color: #d9edf7;
-}
-
-.jq-icon-warning {
-	background: #5e5a4e;
-	color: #f7f4d9;
-}
-
-.jq-icon-error {
-	background: #5e5a4e;
-	color: #f2dede;
-}
-
-.jq-icon-success {
-	background: #5e5a4e;
-	color: #d9edf7;
-}
-
-.jq-icon-success .jq-toast-heading {
-	color: var(--hud-counter-success);
-}
-.jq-icon-error .jq-toast-heading {
-	color: var(--text-danger);
-}
+.jq-icon-success .jq-toast-loader { background: var(--hud-counter-success); }
+.jq-icon-success .jq-toast-heading { color: var(--hud-counter-success); }
+.jq-icon-error .jq-toast-loader { background: var(--text-danger); }
+.jq-icon-error .jq-toast-heading { color: var(--text-danger); }
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 
