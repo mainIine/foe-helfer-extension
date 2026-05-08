@@ -108,7 +108,7 @@ let Discord = {
 
 		$('#DiscordBody').html(h.join(''));
 
-		$('[data-original-title]').tooltip();
+		$('[data-original-title]').tooltip({container: 'body'});
 
 		$body.on('click', '#DiscordWebhookUrlsclose', function (){
 			Discord.CloseOverlay('DiscordWebhookUrls');

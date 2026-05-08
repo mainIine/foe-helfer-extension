@@ -1067,7 +1067,7 @@ let GuildFights = {
 
 		$('#LiveGildFighting').find('#LiveGildFightingBody').html(h.join('')).promise().done(function () {
 			$('.gbg-tabs').tabslet({ active: activeTab });
-			$('[data-original-title]').tooltip();
+			$('[data-original-title]').tooltip({container: 'body'});
 
 			$('.gbg-tabs').on('_after', (e) => {
 				GuildFights.ToggleCopyButton();
