@@ -50,15 +50,11 @@ let Infoboard = {
     },
 
 
-    /**
-     * Zeigt die InfoBox an
-     */
     Show: () => {
         let StorageHeader = localStorage.getItem('ConversationsHeaders');
 
-        if (MainParser.Conversations.length === 0 && StorageHeader !== null) {
+        if (MainParser.Conversations.length === 0 && StorageHeader !== null) 
             MainParser.Conversations = JSON.parse(StorageHeader);
-        }
 
         Infoboard.Box();
     },
@@ -128,7 +124,6 @@ let Infoboard = {
 
         h.push('<button class="btn btn-reset-box">' + i18n('Boxes.Infobox.ResetBox') + '</button>');
         h.push('</div>');
-
 
         h.push('<ul id="BackgroundInfoList" class="foe-table">');
         h.push('</ul>');
