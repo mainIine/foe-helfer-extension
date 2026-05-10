@@ -2331,9 +2331,8 @@ tr.sorter-header th:not(.no-sort).descending:after {
 	z-index: 200;
 }
 
-.w-full {
-	width: 100%
-}
+.w-full { width: 100% }
+.w-small { width: 1%; }
 
 .blur {
 	filter: blur(3px);

@@ -242,6 +242,7 @@
 	position: absolute;
 	top: 40px;
 	right: 7px;
+	z-index: 100;
 }
 
 #LiveGildFightingBody #nextup {

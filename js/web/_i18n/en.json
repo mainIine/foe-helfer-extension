@@ -246,7 +246,7 @@
     "Boxes.CityMap.FilterBuildings": "Search Building",
     "Boxes.CityMap.FreeArea": "Available Squares: ",
     "Boxes.CityMap.HelpLink": "https://docs.foe-helper.com/english/module/town",
-    "Boxes.CityMap.Highlight": "Highlight",
+    "Boxes.CityMap.Highlight": "Highlight Buildings",
     "Boxes.CityMap.HighlightOldBuildings": "Lower Era buildings",
     "Boxes.CityMap.MissingApiKeyErrorHeader": "API Token missing",
     "Boxes.CityMap.MissingApiKeySubmitError": "Without an API token for this world (obtainable free of charge from the website) you cannot transfer cities or notes.<br>Click here for instructions:",
