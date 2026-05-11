@@ -335,13 +335,30 @@
 	background-image: url(../../x_img/gbg-gray.png);
 }
 
-.btn-group:hover .btn.discord.custom {
-	display: block;
+#LiveGildFightingBody tr .btn.discord {
+	visibility: hidden;
+}
+
+#LiveGildFightingBody tr:hover .btn.discord {
+	visibility: visible;
 }
 
 .btn.discord.custom {
-	display: none;
     background-image: url('../../../../css/images/menu/discord.png'), var(--tabs-bg);
+}
+
+.btn[class*=alertbutton] {
+	background-image: url(../../../../css/images/menu/alerts.png), var(--btn-bg);
+	background-size: 90%, 100%;
+	background-repeat: no-repeat;
+	background-position: center;
+	width: 22px;
+	height: 22px;
+}
+
+.btn.deletealertbutton {
+	background-image: url(../../../../css/images/menu/alerts.png), var(--btn-bg-red);
+	width: 26px;
 }
 
 /*************************************************************************************************************/

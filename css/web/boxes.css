@@ -240,21 +240,6 @@ a[target="_blank"] svg {
 	background: var(--btn-bg-red);
 }
 
-.btn-delete:not([disabled]):hover {
-	background: var(--btn-bg-red-active-fallback);
-	background: var(--btn-bg-red-active-moz);
-	background: var(--btn-bg-red-active-webkit);
-	background: var(--btn-bg-red-active);
-}
-
-.btn-delete:not([disabled]):active {
-	color: var(--text-light);
-	background: var(--btn-bg-red-onclick-fallback);
-	background: var(--btn-bg-red-onclick-moz);
-	background: var(--btn-bg-red-onclick-webkit);
-	background: var(--btn-bg-red-onclick);
-}
-
 .btn-delete.icon:not([disabled]) {
     background-image: url('../../js/web/x_img/trash.svg'), var(--btn-bg-red);
     background-size: 75% 75%, cover;
@@ -276,6 +261,7 @@ a[target="_blank"] svg {
     background-repeat: no-repeat, repeat;
     background-position: center;
 	width: 22px;
+	min-height: 22px;
 }
 
 .btn.discord:hover, .btn.discord:active, .btn.discord.custom:hover {
