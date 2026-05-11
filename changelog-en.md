@@ -1,11 +1,17 @@
 ## Extension Changelog
  
 
-##### 4.2.2.0
+##### 4.3.0.0
 
 **New**
 - GBG: You can now add a Discord Webhook in the settings of the countdown window
 - Discord Webhooks: Create templates for personalized GBG messages and add them to the GBG countdown window
+
+**Update**
+- Allies: Boosts are now displayed per category and can be sorted
+- Infobox: Added QI Actions and an option to select stuff as favorite
+- GB Calculator: The arrow on the side of the window is now a sogwheel in the bottom left corner instead
+- Efficiency Rating: Buildings that can be upgraded to their ascended version now show an arrow next to their name
 
 ---
  

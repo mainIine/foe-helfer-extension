@@ -1,11 +1,17 @@
 ## Extension Changelog
  
 
-##### 4.2.2.0
+##### 4.3.0.0
 
 **Neu**
 - Gefechte: In den Einstellungen bei den Gefechts-Countdowns kann man jetzt einen Discord Webhook definieren
 - Discord Webhooks: Erstelle Vorlagen (Templates) für eigene Gefechtsnachrichten und füge sie in den GG Einstellungen hinzu
+
+**Update**
+- Verbündete: Die Boosts sind nun tabellarisch nach Kategorie aufgelistet und können auch sortiert werden
+- Infobox: QI Aktionen werden nun auch geloggt. Außerdem gibt es nun eine Favoritenfunktion
+- Eigenanteilsrechner: Der Konfigurationspfeil am Rand des Fensters ist nun ein Zahnrad in der Ecke unten links.
+- Effizienzbewertung: Gebäude, die auf eine erhabene Version aufgewertet werden können, werden jetzt mit dem entsprechenden Pfeil gekennzeichnet
 
 ---
  
