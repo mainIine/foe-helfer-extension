@@ -49,7 +49,7 @@ input[type=number] {
 }
 
 a[target="_blank"] {
-	color: var(--bright-color);
+	color: var(--sunflower);
 	text-decoration: none;
 }
 
@@ -58,7 +58,7 @@ a[target="_blank"]:hover {
 }
 
 a[target="_blank"] svg {
-	fill: var(--text-info);
+	fill: var(--info-blue);
 	width: 16px;
 	height: 12px;
 	text-decoration: underline;
@@ -408,7 +408,7 @@ span.resicon.def_boost_defender-battleground {
 	margin: 0;
 	border-radius: 50px;
 	background-color: var(--red);
-	color: var(--text-light);
+	color: var(--white);
 	transform: rotate(45deg);
 	z-index: 100;
 }
@@ -537,7 +537,7 @@ table.foe-table tr td, ul.foe-table li {
 
 table.foe-table tr.success td,
 .text-success {
-	color: var(--text-success);
+	color: var(--success);
 }
 
 table.foe-table tr.bg-green td {
@@ -568,7 +568,7 @@ p {
 	text-align: right;
 }
 .text-light {
-	color: var(--text-light);
+	color: var(--white);
 }
 .hidden-text {
 	opacity: 0;
@@ -606,7 +606,7 @@ p {
 }
 
 .text-warning, .text-bright {
-	color: var(--bright-color);
+	color: var(--sunflower);
 }
 
 .text-danger, .danger {
@@ -614,7 +614,7 @@ p {
 }
 
 .text-info, .info {
-	color: var(--text-info);
+	color: var(--info-blue);
 }
 
 .text-muted {
@@ -914,7 +914,7 @@ Tabs */
 	text-decoration: none;
 	padding: 3px 5px;
 	display: block;
-	color: var(--text-normal);
+	color: var(--beige);
 	position: relative;
 }
 
@@ -927,7 +927,7 @@ Tabs */
 .window-body .tabs ul.vertical li.active a,
 .window-body .tabs ul.vertical li:hover a {
 	background-color: rgba(40, 18, 7, 0.8);
-	color: var(--bright-color);
+	color: var(--sunflower);
 }
 
 .window-body .tabs .sub-tab {
@@ -996,7 +996,7 @@ Potions */
 	z-index: 100;
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
 	font-size: 0.8rem;
-	color: var(--text-normal);
+	color: var(--beige);
 	position: fixed;
 	top: 40px;
 	right: 8px;
@@ -1110,7 +1110,7 @@ FP-Bar */
 	z-index: 100;
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
 	font-size: 0.8rem;
-	color: var(--text-normal);
+	color: var(--beige);
 	position: fixed;
 	top: 2px;
 	left: calc(50vw  + 130px);
@@ -1274,7 +1274,7 @@ a:hover {
 	font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
 	font-size: 0.9rem;
 	font-weight: 400;
-	color: var(--text-normal);
+	color: var(--beige);
 	text-shadow: 0 1px 1px var(--black-65);
 	position: absolute;
 	text-align: left;
@@ -1398,7 +1398,7 @@ a:hover {
 .window-body textarea:focus {
     border: 1px solid var(--text-medium);
     outline: none;
-    box-shadow: 0 0 0 1pt var(--text-normal), 0 0 2pt 1pt var(--text-normal);
+    box-shadow: 0 0 0 1pt var(--beige), 0 0 2pt 1pt var(--beige);
 }
 
 .window-body input[type=text],
@@ -1634,7 +1634,7 @@ a:hover {
 .jq-toast-wrap.top-left { top: 20px; left: 20px; right: unset }
 .jq-toast-wrap.top-right { top: 20px; right: 40px; left: unset }
 
-.jq-toast-single { display: block; padding: 10px; margin: 0 0 5px; border-radius: 4px; font-size: 13px; font-family: arial, sans-serif; line-height: 17px; position: relative;  pointer-events: all !important; background-color: #1a1713c7; color: var(--text-light); backdrop-filter: blur(4px); }
+.jq-toast-single { display: block; padding: 10px; margin: 0 0 5px; border-radius: 4px; font-size: 13px; font-family: arial, sans-serif; line-height: 17px; position: relative;  pointer-events: all !important; background-color: #1a1713c7; color: var(--white); backdrop-filter: blur(4px); }
 
 .jq-toast-single h2 { font-family: arial, sans-serif; font-size: 14px; margin: 0 0 7px; background: none; color: inherit; line-height: inherit; letter-spacing: normal; }
 .jq-toast-single a { color: var(--tooltip); text-decoration: none; font-weight: bold; border-bottom: 1px solid white; padding-bottom: 3px; font-size: 12px; }
@@ -1644,14 +1644,14 @@ a:hover {
 
 .close-jq-toast-single { position: absolute; top: 3px; right: 7px; font-size: 14px; cursor: pointer; }
 
-.jq-toast-loader { display: block; position: absolute; top: 0; height: 2px; width: 0; left: 0; border-radius: 5px; background: var(--bright-color); }
+.jq-toast-loader { display: block; position: absolute; top: 0; height: 2px; width: 0; left: 0; border-radius: 5px; background: var(--sunflower); }
 .jq-toast-loaded { width: 100%; }
 .jq-has-icon { padding: 10px; box-shadow: var(--menu-shadow); }
 
 .jq-icon-success .jq-toast-loader { background: var(--hud-counter-success); }
 .jq-icon-success .jq-toast-heading { color: var(--hud-counter-success); }
-.jq-icon-error .jq-toast-loader { background: var(--text-danger); }
-.jq-icon-error .jq-toast-heading { color: var(--text-danger); }
+.jq-icon-error .jq-toast-loader { background: var(--danger-red); }
+.jq-icon-error .jq-toast-heading { color: var(--danger-red); }
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 
@@ -1715,10 +1715,10 @@ a:hover {
 }
 .custom-option:hover {
 	cursor: pointer;
-	background-color: var(--text-normal);
+	background-color: var(--beige);
 }
 .custom-option.selected {
-	color: var(--bright-color);
+	color: var(--sunflower);
 	background-color: var(--text-dark);
 }
 
@@ -1789,30 +1789,30 @@ a:hover {
 
 :root{
 	--litepickerBgColor: var(--text-dark) !important;
-	--litepickerMonthHeaderTextColor: var(--text-normal) !important;
+	--litepickerMonthHeaderTextColor: var(--beige) !important;
 	--litepickerMonthButton: var(--text-medium) !important;
-	--litepickerMonthButtonHover: var(--bright-color) !important;
+	--litepickerMonthButtonHover: var(--sunflower) !important;
 	--litepickerMonthWidth: calc(var(--litepickerDayWidth) * 7) !important;
 	--litepickerMonthWeekdayColor: var(--text-medium) !important;
-	--litepickerDayColor: var(--text-normal) !important;
-	--litepickerDayColorHover: var(--bright-color) !important;
-	--litepickerDayIsTodayColor: var(--bright-color) !important;
+	--litepickerDayColor: var(--beige) !important;
+	--litepickerDayColorHover: var(--sunflower) !important;
+	--litepickerDayIsTodayColor: var(--sunflower) !important;
 	--litepickerDayIsInRange: var(--black-50) !important;
 	--litepickerDayIsLockedColor: var(--text-medium) !important;
 	--litepickerDayIsBookedColor: var(--text-medium) !important;
 	--litepickerDayIsStartColor: var(--text-dark) !important;
-	--litepickerDayIsStartBg: var(--bright-color) !important;
+	--litepickerDayIsStartBg: var(--sunflower) !important;
 	--litepickerDayIsEndColor: var(--text-dark) !important;
-	--litepickerDayIsEndBg: var(--bright-color) !important;
+	--litepickerDayIsEndBg: var(--sunflower) !important;
 	--litepickerDayWidth: 33px !important;
 	--litepickerButtonCancelColor: var(--text-dark) !important;
 	--litepickerButtonCancelBg: var(--text-medium) !important;
 	--litepickerButtonApplyColor: var(--text-dark) !important;
-	--litepickerButtonApplyBg: var(--bright-color) !important;
+	--litepickerButtonApplyBg: var(--sunflower) !important;
 	--litepickerButtonResetBtn: #909090 !important;
-	--litepickerButtonResetBtnHover: var(--bright-color) !important;
+	--litepickerButtonResetBtnHover: var(--sunflower) !important;
 	--litepickerHighlightedDayColor: #333 !important;
-	--litepickerHighlightedDayBg: var(--bright-color) !important
+	--litepickerHighlightedDayBg: var(--sunflower) !important
 }
 
 .litepicker .container__months {
@@ -1837,7 +1837,7 @@ SettingsBox */
 	top: 40px;
 	border: 2px solid var(--text-medium2);
 	background-color: var(--window-settings-bg);
-	color: var(--text-normal);
+	color: var(--beige);
 	padding: 5px;
 	z-index: 20;
 	border-radius: 5px;
@@ -1895,7 +1895,7 @@ SettingsBox */
 	font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
 	font-size: 0.9rem;
 	font-weight: 400;
-	color: var(--text-normal);
+	color: var(--beige);
 	text-shadow: 0 1px 1px var(--black-65);
 	user-select: none;
 }
@@ -1917,8 +1917,8 @@ input[type="range"]::-webkit-slider-thumb {
 	height: 13px;
 	width: 13px;
 	border-radius: 50%;
-	background: var(--text-normal);
-	box-shadow: 0 0 2px 0 var(--black-50), inset -1px -1px 3px var(--text-normal);
+	background: var(--beige);
+	box-shadow: 0 0 2px 0 var(--black-50), inset -1px -1px 3px var(--beige);
 	transition: background .3s ease-in-out;
 }
 
@@ -2284,7 +2284,7 @@ tr.sorter-header th:not(.no-sort) {
 
 tr.sorter-header th:not(.no-sort):before,
 tr.sorter-header th:not(.no-sort):after {
-	color: var(--bright-color);
+	color: var(--sunflower);
 	position: absolute;
 	display: block;
 	opacity: .2;
@@ -2352,7 +2352,7 @@ tr.sorter-header th:not(.no-sort).descending:after {
 	display: inline-flex;
 	height: 22px;
 	align-items: center;
-    color: var(--text-highlight);
+    color: var(--limegreen);
 	margin-left: 4px;
 	padding: 0 3px;
 }
@@ -2367,7 +2367,7 @@ tr.sorter-header th:not(.no-sort).descending:after {
 	background-size: auto 100%;
 }
 
-.upgrades .base { color: var(--text-normal); }
+.upgrades .base { color: var(--beige); }
 .upgrades .base::after { background-position: -72px 0; width: 20px; }
 
 .upgrades .silver { color: #b8b9b9; }
@@ -2418,7 +2418,7 @@ tr.sorter-header th:not(.no-sort).descending:after {
     bottom: 5px;
     border-radius: 50%;
     border: 3px solid transparent;
-    border-top-color: var(--bright-color);
+    border-top-color: var(--sunflower);
     -webkit-animation: spin 3s linear infinite;
     animation: spin 3s linear infinite;
 }
@@ -2469,7 +2469,7 @@ tr.sorter-header.sort2 th {
 	padding: 5px 6px 7px;
 }
 tr.sorter-header.sort2 th:not(.no-sort):hover, tr.sorter-header.sort2 th.ascending, tr.sorter-header.sort2 th.descending {
-	color: var(--bright-color);
+	color: var(--sunflower);
 }
 tr.sorter-header.sort2 th:not(.no-sort):hover, tr.sorter-header.sort2 th.ascending .resicon, tr.sorter-header.sort2 th.descending .resicon {
 	filter: brightness(1.2);

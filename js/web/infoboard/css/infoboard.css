@@ -23,7 +23,7 @@
 }
 
 #BackgroundInfo #BackgroundInfoBody strong {
-	color: var(--bright-color);
+	color: var(--sunflower);
 }
 
 #BackgroundInfo #BackgroundInfoBody .filter-row {
@@ -98,7 +98,7 @@
 
 #BackgroundInfoList .fav:hover, #BackgroundInfoList .fav.active {
 	opacity: 0.9;
-	color: var(--bright-color);
+	color: var(--sunflower);
 }
 
 #BackgroundInfoList [class*=msg] .content {
@@ -254,12 +254,12 @@
 }
 
 #BackgroundInfoList a[target="_blank"] {
-	color: var(--text-normal);
+	color: var(--beige);
 	text-decoration: underline;
 }
 
 #BackgroundInfoList a[target="_blank"] svg {
-	fill: var(--text-normal);
+	fill: var(--beige);
 }
 
 input.textfilter{

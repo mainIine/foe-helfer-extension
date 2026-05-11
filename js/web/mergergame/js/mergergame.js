@@ -353,7 +353,7 @@ let mergerGame = {
 		let table = mergerGame.state.table
 		//let targetEfficiency = mergerGame.settings.targetProgress/mergerGame.settings.availableCurrency;
 		/*let effcolor = (eff,target=targetEfficiency) => {
-			return eff > target*1.15 ? 'var(--text-success)' : eff > target*1 ? 'yellow' : eff > target * 0.95 ? 'var(--text-bright)' : 'red';
+			return eff > target*1.15 ? 'var(--success)' : eff > target*1 ? 'yellow' : eff > target * 0.95 ? 'var(--text-bright)' : 'red';
 		}*/
 		//let keys = mergerGame.keySum();
 		//let totalValue = mergerGame.state.progress + keys*mergerGame.settings.keyValue;

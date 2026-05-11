@@ -33,7 +33,7 @@
 	align-items: center;
 	background-color: var(--black-50);
 	height: 50px;
-	border-bottom: 2px solid #864c1e;
+	border-bottom: 2px solid var(--border-tab);
 }
 
 #stats .options-2 .btn-slim {
@@ -67,7 +67,7 @@
 }
 
 #stats .option-chart-type-wrap span.active {
-	color: var(--bright-color);
+	color: var(--sunflower);
 }
 
 #stats .option-source-wrap {
@@ -124,7 +124,7 @@
 #stats .highcharts-data-table table thead tr th,
 #stats .highcharts-data-table table th,
 .thead th {
-	background-color: rgba(0,0,0, 0.5);
+	background-color: var(--black-50);
 }
 
 #stats .sprite-50 {
@@ -132,7 +132,7 @@
 }
 
 #stats .highcharts-data-table table tbody tr:nth-child(odd) {
-	background-color: rgba(255,255,255, 0.07);
+	background-color: var(--white-65);
 }
 
 #stats .highcharts-data-table table:not(.no-hover) tbody tr:hover {
@@ -224,7 +224,7 @@
 }
 
 #LowStock .selected {
-	border-color: #74c02c;
+	border-color: var(--limegreen);
 }
 #LowStockID {
 	width: 300px;
@@ -251,10 +251,9 @@
 }
 .LShighlight {
 	background: var(--background-medium);
-    color: var(--text-light);
+    color: var(--white);
 }
 #LowStockAlarmsList img {
     height: 25px;
     background-color: var(--background-light);
-	
 }

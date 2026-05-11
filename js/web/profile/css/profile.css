@@ -1,10 +1,10 @@
 .playerprofile {
     --main-background: linear-gradient(196deg, #00041c 0%, rgba(3,18,51,1) 100%);
     --main-border: 3px solid #0a173d;
-    --main-color: var(--text-light);
+    --main-color: var(--white);
     --daysPlayed-background: radial-gradient(circle, rgba(0,0,0,0) 0%, rgba(0,0,0,0.65) 100%);
     --daysPlayed-color: #b8d7ff;
-    --important-color: var(--text-danger);
+    --important-color: var(--danger-red);
     --important-underline: #f005;
     --crit-background: linear-gradient(132deg, #752f09, #61270755);
     --header-background: linear-gradient(#061327 50%, #00031311 50%, #0000);
@@ -790,7 +790,7 @@
     --main-color: #ffd9cd;
     --daysPlayed-background: radial-gradient(circle, #ff5e0008 20%, #690024a6 100%);
     --daysPlayed-color: #f80;
-    --important-color: var(--text-danger);
+    --important-color: var(--danger-red);
     --important-underline: #f005;
     --crit-background: linear-gradient(132deg, #ff8a0085, #61270755);
     --header-background: linear-gradient(#d58b0082 50%, #ff000011 50%, #0000);
@@ -881,10 +881,10 @@
 .playerprofile.window-box.green {
     --main-background: linear-gradient(196deg, #1c3a04 0%, rgb(0, 51, 34) 100%);
     --main-border: 3px solid #004b04;
-    --main-color: var(--text-light);
+    --main-color: var(--white);
     --daysPlayed-background: radial-gradient(circle, #0000 0%, #004b04d6 100%);
     --daysPlayed-color: #b7ffb2b0;
-    --important-color: var(--text-danger);
+    --important-color: var(--danger-red);
     --important-underline: #f005;
     --crit-background: linear-gradient(132deg, #ff8a0085, #61270755);
     --header-background: linear-gradient(#21a90078 50%, #3bcf0011 50%, #0000);
@@ -902,7 +902,7 @@
     --main-color: #e9d8d8;
     --daysPlayed-background: radial-gradient(circle, #0000 0%, rgb(65 0 24 / 65%) 100%);
     --daysPlayed-color: #f1bdbd;
-    --important-color: var(--text-danger);
+    --important-color: var(--danger-red);
     --important-underline: #f005;
     --crit-background: linear-gradient(132deg, #ff8a0085, #61270755);
     --header-background: linear-gradient(#6b000078 50%, #3a0414 50%, #0000);
@@ -915,15 +915,15 @@
 .playerprofile.window-box.foe {
     --main-background: linear-gradient(to bottom, #1e06006e, #270f005e), url(../../../../css/images/hud/box-bg.png) center center repeat;
     --main-border: 3px solid #9f652a;
-    --main-color: var(--text-normal);
+    --main-color: var(--beige);
     --daysPlayed-background: none;
     --daysPlayed-color: #c7a882;
-    --important-color: var(--text-danger);
+    --important-color: var(--danger-red);
     --important-underline: #f005;
     --crit-background: linear-gradient(132deg, #ff8a0085, #61270755);
     --header-background: linear-gradient(#661919, #3d0b0b 50%, #7d5229 50%, #7d5229 52%, #0001 52%, #0000);
     --secondary-background: linear-gradient(to bottom, #00000000, #0000003d);
-    --secondary-color: var(--text-normal);
+    --secondary-color: var(--beige);
     --h2-background: linear-gradient(to bottom, #493f42de, #252730ad 75%);
     --item-border-color: #00000040;
 }
@@ -936,7 +936,7 @@
     box-shadow: 0 0 5px #000;
 }
 .playerprofile.window-box.foe h1 {
-    color: var(--bright-color);
+    color: var(--sunflower);
 }
 .playerprofile.foe table tr:nth-child(2n) {
     background: linear-gradient(to right, transparent, #0002, transparent);

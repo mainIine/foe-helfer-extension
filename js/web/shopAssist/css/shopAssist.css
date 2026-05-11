@@ -65,7 +65,7 @@
 }
 .shopAssistTable td.canBuy {
 	background-color: var(--table-bg-success);
-	color: var(--text-success);
+	color: var(--success);
 }
 .shopAssistTable td.locked {
 	background-color: var(--table-bg-error);
@@ -91,12 +91,12 @@
 }
 .shopAssistTable .shopFavourite:after{
 	content: '☆';
-	color: var(--bright-color);
+	color: var(--sunflower);
 	font-size: large;
 }
 .shopAssistTable .isShopFavourite .shopFavourite:after{
 	content: '★';
-	color: var(--bright-color);
+	color: var(--sunflower);
 }
 .shopAssistTable .shopAlert:after {
 	content: '🔕';
@@ -108,7 +108,7 @@
 
 .shopAssistTable .shopAlert:hover,
 .shopAssistTable .shopFavourite:hover{
-	text-shadow: 0 0 3px goldenrod;
+	text-shadow: 0 0 3px var(--sunflower);
 	opacity: 1;
 }
 
@@ -137,9 +137,9 @@
 }
 
 #shopAssist .buyable {
-	color: var(--text-success);
+	color: var(--success);
     font-weight: 600;
-    text-shadow: 0px 0px 3px #000000;
+    text-shadow: 0px 0px 3px var(--black);
 }
 
 #shopAssist .currencyFiltered {
