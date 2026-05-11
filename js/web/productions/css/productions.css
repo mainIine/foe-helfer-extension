@@ -26,7 +26,7 @@
 	overflow-y: auto;
 }
 #Productions strong.success, #Productions span.success {
-	color: var(--text-success);
+	color: var(--success);
 }
 #Productions .show-entity {
 	display: inline-block;
@@ -39,7 +39,7 @@
 	padding-top: 15px;
 }
 #Productions #ProductionsBody strong {
-	color: var(--bright-color);
+	color: var(--sunflower);
 }
 #Productions #ProductionsBody table td {
 	font-size: 85%;
@@ -54,12 +54,12 @@
 }
 #Productions #ProductionsBody table tbody.parent th {
 	background-color: var(--text-dark2);
-	color: var(--bright-color);
+	color: var(--sunflower);
 	padding-top: 15px;
 }
 #Productions #ProductionsBody table tr.highlight-row {
 	background-color: var(--table-bg-highlight);
-	color: var(--bright-color);
+	color: var(--sunflower);
 }
 #Productions #ProductionsBody table #all-search {
 	background-color: var(--background-light);
@@ -85,7 +85,7 @@
 #Productions #ProductionsBody table td.total-products span {
 	display: inline-block;
 	padding: 2px 4px;
-	color: var(--bright-color);
+	color: var(--sunflower);
 	white-space: nowrap;
 }
 #Productions #ProductionsBody .tabs ul li {
@@ -219,7 +219,7 @@
 	padding: 1em;
 	box-sizing: border-box;
 	background: linear-gradient(to bottom, #1e06006e, #270f005e), url(../../../../css/images/hud/box-bg.png) center center repeat;
-	color: var(--text-normal);
+	color: var(--beige);
 	border-radius: 5px;
 }
 #ProductionsRatingBody .overlay .content ul {
@@ -236,11 +236,11 @@
 	border-bottom: 1px solid var(--border-table-bottom);
 }
 #ProductionsRatingBody .overlay .content li:hover {
-	color: var(--bright-color);
+	color: var(--sunflower);
 	background: var(--table-bg-hover);
 }
 #ProductionsRatingBody .overlay .content li.selected {
-	color: var(--bright-color);
+	color: var(--sunflower);
 	background: var(--black-50);
 }
 #ProductionsRatingBody .overlay .content li.selected::after {
@@ -293,7 +293,7 @@
 	font-style: italic;
 }
 #ProductionsRatingBody tr.highlighted2 td:nth-child(2) {
-	color: var(--text-light);
+	color: var(--white);
 }
 #ProductionsRatingBody tr.highlighted2 td:nth-child(2) div div:first-child::after {
 	content: ' 🔎';
@@ -313,7 +313,7 @@
 	background: url('../../x_img/inventory.png') no-repeat center;
 }
 #ProductionsRatingBody tr.highlighted2 td.ally:nth-child(2) {
-	color: var(--text-light);
+	color: var(--white);
 }
 #ProductionsRatingBody tr.additional td {
 	background: var(--table-bg-info);
@@ -321,16 +321,16 @@
 	border-bottom-color: var(--table-bb-info);
 }
 #ProductionsRatingBody tr.additional td:nth-child(1) {
-	color: var(--text-info) !important;
+	color: var(--info-blue) !important;
 }
 #ProductionsRatingBody tr.inventory-building td:nth-child(1) {
-	color: var(--bright-color) !important;
+	color: var(--sunflower) !important;
 }
 #ProductionsRatingBody tr.additional td:nth-child(2) {
 	font-style: italic;
 }
 #ProductionsRatingBody tr.highlighted td:nth-child(2) {
-	color: var(--bright-color);
+	color: var(--sunflower);
 	font-weight: 600;
 }
 #ProductionsRatingBody tr .show-all {
@@ -580,16 +580,16 @@ input[id*="ProdPerTile"] {
 	margin: 0 -3px;
 }
 #ProductionsRatingBody table td:first-child[data-number^="-"] {
-	color: var(--text-danger);
+	color: var(--danger-red);
 }
 #ProductionsRatingBody table td:first-child[data-number^="1"], #ProductionsRatingBody table td:first-child[data-number^="2"], #ProductionsRatingBody table td:first-child[data-number^="3"], #ProductionsRatingBody table td:first-child[data-number^="4"], #ProductionsRatingBody table td:first-child[data-number^="5"], #ProductionsRatingBody table td:first-child[data-number^="6"], #ProductionsRatingBody table td:first-child[data-number^="7"], #ProductionsRatingBody table td:first-child[data-number^="8"], #ProductionsRatingBody table td:first-child[data-number^="9"] {
-	color: var(--text-highlight);
+	color: var(--limegreen);
 }
 #ProductionsRatingBody strong.success {
-	color: var(--text-highlight);
+	color: var(--limegreen);
 }
 #ProductionsRatingBody strong.error {
-	color: var(--text-danger);
+	color: var(--danger-red);
 }
 #ProductionsRatingBody span.resicon:first-child:not(:only-child) {
 	position: relative;
@@ -684,7 +684,7 @@ input[id*="ProdPerTile"] {
 
 #buildingsize {
 	width: 45px;
-	background-color: var(--text-normal);
+	background-color: var(--beige);
 	color: var(--text-darker);
 	text-shadow: none;
 	overflow: visible;
@@ -721,13 +721,13 @@ input[id*="ProdPerTile"] {
 	padding: 2px;
 	margin: 0;
 	width: calc(100% - 4px);
-	background-color: var(--text-normal);
+	background-color: var(--beige);
 	text-align: right;
 	border-radius: 0 0 2px 2px;
 }
 
 #buildingsize li:hover {
-	background-color: var(--text-light);
+	background-color: var(--white);
 }
 
 #buildingsize li::after {
@@ -740,7 +740,7 @@ input[id*="ProdPerTile"] {
 
 #buildingsize li.selected::after {
 	opacity: 1;
-	color: var(--text-success);
+	color: var(--success);
 }
 
 #ShowFSPCalculator {

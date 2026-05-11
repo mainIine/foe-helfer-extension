@@ -35,7 +35,7 @@
 }
 
 #technologies #technologiesBody .techno-head strong {
-	color: var(--bright-color);
+	color: var(--sunflower);
 }
 
 #technologies #technologiesBody table th {
@@ -44,22 +44,22 @@
 }
 
 #technologies #technologiesBody tr.total-row td {
-	border-top: 2px solid #efcf9a;
+	border-top: 2px solid var(--beige);
 	font-weight: 700;
 }
 
 #technologies #technologiesBody tr.resource-row td {
-	color: var(--bright-color);
+	color: var(--sunflower);
 	font-weight: 700;
 }
 
 #technologies #technologiesBody .text-danger {
-	color: #ff4040;
+	color: var(--danger-red);
 	font-weight: 700;
 }
 
 #technologies #technologiesBody .text-success {
-	color: var(--text-success);
+	color: var(--success);
 	font-weight: 700;
 }
 
@@ -76,7 +76,7 @@
 	font-weight: 700;
 	display: inline-block;
 	margin-left: 6px;
-	background: var(--text-info);
+	background: var(--info-blue);
 	padding: 0 4px;
 	border-radius: 50%;
 	width: 10px;

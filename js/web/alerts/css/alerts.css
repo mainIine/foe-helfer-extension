@@ -86,7 +86,7 @@ div.alert-popup .box-inner-content h3 {
     background-color: var(--black-30);
     box-shadow: 0 20px 12px -22px var(--table-bg-hover) inset;
     border-bottom: 1px solid var(--text-dark);
-    color: var(--bright-color);
+    color: var(--sunflower);
     display: block;
     font-weight: 700;
     font-size: 90%;
@@ -106,7 +106,7 @@ div.alert-popup .box-inner-form {
 .box-inner input { box-sizing: border-box; }
 .box-inner input:focus,
 .box-inner textarea:focus {
-    outline: 3px solid var(--text-normal);
+    outline: 3px solid var(--beige);
 }
 
 .box-inner input[type="text"],
@@ -202,7 +202,7 @@ div.alert-popup #alert-expires,
     font-size: 0.8rem;
     line-height: 1.5;
     background: var(--btn-bg);
-    color: var(--text-normal);
+    color: var(--beige);
     cursor: url('../../../../css/images/cursor_default.cur'), auto;
     transition: color .15s ease-in-out,background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
     outline: none !important;
@@ -268,7 +268,7 @@ input.hidden {
     border-bottom: 1px solid var(--text-dark2);
     padding: 4px 10px;
     font-weight: 700;
-    color: var(--bright-color);
+    color: var(--sunflower);
     background-color: var(--black-30);
 }
 

@@ -89,10 +89,10 @@
 
 #OwnPartBox.gbSettingsOpen #OwnPartBoxBody .fh-icon-settings {
 	filter: brightness(1.9) saturate(1.5) contrast(1.1);
-	box-shadow: 0 0 3px var(--black-65), 0 0 10px var(--text-light), 0 0 15px var(--black-65);
+	box-shadow: 0 0 3px var(--black-65), 0 0 10px var(--white), 0 0 15px var(--black-65);
 	border-radius: 3px;
 	scale: 1.1;
-	border: 2px solid var(--text-light);
+	border: 2px solid var(--white);
 	margin: 2px;
 	left: -4px;
 }
@@ -102,23 +102,23 @@
 }
 
 #OwnPartBox #OwnPartBoxBody strong {
-	color: var(--bright-color);
+	color: var(--sunflower);
 }
 
 #OwnPartBox #OwnPartBoxBody strong.normal {
-	color: var(--bright-color);
+	color: var(--sunflower);
 }
 
 #OwnPartBox #OwnPartBoxBody .success {
-	color: var(--text-success) !important;
+	color: var(--success) !important;
 }
 
 #OwnPartBox #OwnPartBoxBody .info {
-	color: var(--text-info) !important;
+	color: var(--info-blue) !important;
 }
 
 #OwnPartBox #OwnPartTable .error {
-	color: var(--text-danger);
+	color: var(--danger-red);
 }
 
 #OwnPartBox #OwnPartBoxBody .lb-info {
@@ -142,7 +142,7 @@
 }
 
 #OwnPartBox #up-to-level-up {
-	color: var(--bright-color);
+	color: var(--sunflower);
 }
 
 #OwnPartBox .bottom-buttons {
@@ -224,7 +224,7 @@
 }
 
 .OwnPartBoxBackgroundBody strong {
-	color: var(--bright-color)
+	color: var(--sunflower)
 }
 
 .OwnPartBoxBackgroundBody > div > span:not(.btn) {
@@ -309,10 +309,10 @@
 }
 
 #PowerLevelingBox #PowerLevelingBoxBody .foe-table td.bright, strong.bright {
-	color: var(--bright-color);
+	color: var(--sunflower);
 	font-weight: bold;
 }
 
 #PowerLevelingBox #PowerLevelingBoxBody .success {
-	color: var(--text-success);
+	color: var(--success);
 }

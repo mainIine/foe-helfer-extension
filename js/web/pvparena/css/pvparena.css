@@ -38,11 +38,11 @@
 }
 
 #PvPArena #PvPArenaBody .text-danger {
-    color: var(--text-danger);
+    color: var(--danger-red);
     font-weight: 700;
 }
 
 #PvPArena #PvPArenaBody .text-success {
-    color: var(--text-success);
+    color: var(--success);
     font-weight: 700;
 }

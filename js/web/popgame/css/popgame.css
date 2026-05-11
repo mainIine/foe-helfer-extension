@@ -41,8 +41,8 @@
     width: 400px;
     display: inline-block;
     vertical-align: top;
-    text-shadow: 1px 1px black;
-    color: orangered;
+    text-shadow: 1px 1px var(--black);
+    color: var(--danger-red);
 }
 .PGtool {
     height: 50px;
@@ -53,7 +53,7 @@
     pointer-events: auto;
 }
 .PGselected {
-    border: white solid 2px;
+    border: var(--white) solid 2px;
 }
 .PGcolumn {
     display: table-cell;

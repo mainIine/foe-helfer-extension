@@ -337,7 +337,7 @@
     "Boxes.Discord.DeleteEntry": "Löschen",
     "Boxes.Discord.EditEntry": "Bearbeiten",
     "Boxes.Discord.Event": "Event",
-    "Boxes.Discord.GBGVariables": "Du kannst diese Platzhalter für die GG nutzen. Achtung: Siegpunkte, Nachbarn und Zermürbungschance können sich bis zum Öffnen des Sektors ändern.",
+    "Boxes.Discord.GBGVariables": "Achtung: Siegpunkte, Nachbarn und Zermürbungschance können sich bis zum Öffnen des Sektors ändern. Du kannst diese Platzhalter für die GG nutzen:",
     "Boxes.Discord.HelpLink": "https://docs.foe-helper.com/deutsch/module/discord",
     "Boxes.Discord.MarkdownLinkText": "Schau dir Discord Textformatierung hier an",
     "Boxes.Discord.Message": "Nachricht",

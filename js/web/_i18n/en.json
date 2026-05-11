@@ -336,7 +336,7 @@
     "Boxes.Discord.DeleteEntry": "Delete",
     "Boxes.Discord.EditEntry": "Edit",
     "Boxes.Discord.Event": "Event",
-    "Boxes.Discord.GBGVariables": "You can use these placeholders for GBG provinces in your template. Attention: Victory points, neighboring guilds and attrition can change before the province is actually available.",
+    "Boxes.Discord.GBGVariables": "Attention: Victory points, neighboring guilds and attrition can change before the province is actually available. You can use these placeholders for GBG provinces in your template:",
     "Boxes.Discord.HelpLink": "https://docs.foe-helper.com/english/module/discord",
     "Boxes.Discord.MarkdownLinkText": "Discord text formatting",
     "Boxes.Discord.Message": "Message",

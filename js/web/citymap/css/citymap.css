@@ -86,7 +86,7 @@
 	border-top: 1px dotted var(--text-darker);
 	padding: 5px 0;
 	margin: 5px 0 2px;
-	color: var(--bright-color);
+	color: var(--sunflower);
 	display: block;
 }
 
@@ -111,7 +111,7 @@
 }
 #sidebar #area-state li.clickable:hover span:first-child {
 	font-weight: bold;
-	color: var(--bright-color);
+	color: var(--sunflower);
 }
 
 .outpost #BuildingsFilter, .outpost #city-map-menu .btn-group, .outpost #map-filters {
@@ -152,12 +152,12 @@
 }
 
 .outpost.guild_raids .euphoria150 {
-	color: var(--text-highlight);
+	color: var(--limegreen);
 	font-weight: bold;
 }
 
 .outpost.guild_raids .euphoria20 {
-	color: var(--text-danger);
+	color: var(--danger-red);
 	font-weight: bold;
 }
 

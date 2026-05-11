@@ -135,14 +135,14 @@
 
 #MarketOffersEvents #MarketOffersEventsBody table .sorter-header .ascending:after {
     content: "↑";
-    color: var(--bright-color);
+    color: var(--sunflower);
     left: 4px;
     position: relative;
 }
 
 #MarketOffersEvents #MarketOffersEventsBody table .sorter-header .descending:after {
     content: "↓";
-    color: var(--bright-color);
+    color: var(--sunflower);
     left: 4px;
     position: relative;
 }

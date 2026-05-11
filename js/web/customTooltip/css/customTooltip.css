@@ -134,11 +134,11 @@ td:nth-child(3) .HXBuilding .inhabitant {
     animation-iteration-count: infinite;
 }
 .HXBuilding span.positive {
-    color: var(--text-success);
+    color: var(--success);
     font-weight: bold;
 }
 .HXBuilding span.negative {
-    color: var(--text-danger);
+    color: var(--danger-red);
     font-weight: bold;
 }
 .HXBuilding .limited {
@@ -184,7 +184,7 @@ td:nth-child(3) .HXBuilding .inhabitant {
     border-radius: 10px;
     padding: 2px;
     margin-top: 2px;
-    color: var(--text-normal);
+    color: var(--beige);
     background: var(--text-darker);
     border: 2px solid var(--text-dark);
 }

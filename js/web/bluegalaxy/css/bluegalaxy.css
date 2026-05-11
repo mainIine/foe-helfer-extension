@@ -27,15 +27,15 @@
 }
 
 #bluegalaxy #bluegalaxyBody strong.success {
-    color: var(--text-success);
+    color: var(--success);
 }
 
 #bluegalaxy #bluegalaxyBody strong.error {
-    color: var(--text-danger);
+    color: var(--danger-red);
 }
 
 .text-bright {
-    color: var(--bright-color);
+    color: var(--sunflower);
 }
 
 #bluegalaxy .title {
@@ -108,5 +108,5 @@
 }
 
 #bluegalaxy #bluegalaxyBody .foe-table tr:first-child td:nth-child(5) strong {
-    color: var(--text-success);
+    color: var(--success);
 }

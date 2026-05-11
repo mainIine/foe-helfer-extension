@@ -76,16 +76,16 @@
 }
 
 #GildPlayersBody tr.mark-player td {
-	border-top: 1px solid var(--bright-color);
-	border-bottom: 1px solid var(--bright-color);
+	border-top: 1px solid var(--sunflower);
+	border-bottom: 1px solid var(--sunflower);
 }
 
 #GildPlayersBody tr.mark-player td:first-child {
-	border-left: 1px solid var(--bright-color);
+	border-left: 1px solid var(--sunflower);
 }
 
 #GildPlayersBody tr.mark-player td:last-child {
-	border-right: 1px solid var(--bright-color);
+	border-right: 1px solid var(--sunflower);
 }
 
 #GildPlayersBody table .tdmin,
@@ -125,7 +125,7 @@
 
 #GildPlayersDetailViewBody .pname {
 	padding: 10px 5px;
-	color: var(--bright-color);
+	color: var(--sunflower);
 	font-size: 1.0rem;
 }
 
@@ -158,7 +158,7 @@
 }
 
 #GildPlayersDetailViewBody tr.open td {
-	color: var(--bright-color);
+	color: var(--sunflower);
 }
 
 #GildPlayersDetailViewBody .foe-table td.nopadding {
@@ -265,7 +265,7 @@
 
 #LiveGildFightingBody table.foe-table tr.highlight-row {
 	background-color: rgba(40, 18, 7, 0.8);
-	color: var(--bright-color);
+	color: var(--sunflower);
 }
 
 #LiveGildFightingBody tr td {
