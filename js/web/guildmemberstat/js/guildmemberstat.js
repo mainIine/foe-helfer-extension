@@ -1014,31 +1014,26 @@ let GuildMemberStat = {
 			GuildMemberStat.MemberDict[MemberID]['name'] = member['name'];
 			GuildMemberStat.MemberDict[MemberID]['deleted'] = deletedMember;
 
-			h.push(`<tr id="gms${x}" ` +
-				`class="${deletedMember ? 'strikeout gms-tooltip ' : ''}${stateClass}" ` +
-				`" data-id="${MemberID}"` +
-				`${deletedMember ? 'title="' + HTML.i18nTooltip(i18n('Boxes.GuildMemberStat.MemberLeavedGuild')) + '"' : ''}>`);
+			h.push(`<tr id="gms${x}" class="${deletedMember ? 'strikeout gms-tooltip ' : 'clickable '}${stateClass}" " data-id="${MemberID}" ${deletedMember ? 'title="' + HTML.i18nTooltip(i18n('Boxes.GuildMemberStat.MemberLeavedGuild')) + '"' : ''}>
+				<td class="is-number text-center${rankDiffClass}" data-number="${!deletedMember ? rank : member['score']}">${!deletedMember ? '#' + (rank - deletedCount) : ''}</td>
+				<td class="case-sensitive copyable" data-text="${helper.str.cleanup(member['name'])}"><img style="max-width: 22px" src="${srcLinks.GetPortrait(member.avatar)}" alt="${member['name']}"> <span>${MainParser.GetPlayerLink(member['player_id'], member['name'])}</span></td>
+				<td class="is-number" data-number="${member['score']}">${HTML.Format(member['score'])}${scoreDiff > 0 || scoreDiff < 0 ? '<span class="prev_score ' + scoreDiffClass + '">' + (scoreDiff > 0 ? '+' : '') + HTML.Format(scoreDiff) + '</span>' : ''}</td>`);
 
-			h.push(`<td class="is-number text-center${rankDiffClass}" data-number="${!deletedMember ? rank : member['score']}">${!deletedMember ? '#' + (rank - deletedCount) : ''}</td>`);
-			h.push(`<td class="case-sensitive copyable" data-text="${helper.str.cleanup(member['name'])}"><img style="max-width: 22px" src="${srcLinks.GetPortrait(member.avatar)}" alt="${member['name']}"> <span>${MainParser.GetPlayerLink(member['player_id'], member['name'])}</span></td>`);
-			h.push(`<td class="is-number" data-number="${member['score']}">${HTML.Format(member['score'])}${scoreDiff > 0 || scoreDiff < 0 ? '<span class="prev_score ' + scoreDiffClass + '">' + (scoreDiff > 0 ? '+' : '') + HTML.Format(scoreDiff) + '</span>' : ''}</td>`);
+				if (GuildMemberStat.Settings.showBattlesWon) {
+					let battleDiff = member.won_battles - member.prev_battles;
+					h.push(`<td class="is-number" data-number="${member['won_battles']}">${HTML.Format(member['won_battles'] ? member['won_battles'] : 0)}${battleDiff > 0 ? '<span class="prev_score green">+' + HTML.Format(battleDiff) + '</span>' : ''}</td>`);
+				}
 
-			if (GuildMemberStat.Settings.showBattlesWon) {
-				let battleDiff = member.won_battles - member.prev_battles;
-				h.push(`<td class="is-number" data-number="${member['won_battles']}">${HTML.Format(member['won_battles'] ? member['won_battles'] : 0)}${battleDiff > 0 ? '<span class="prev_score green">+' + HTML.Format(battleDiff) + '</span>' : ''}</td>`);
-			}
-
-			h.push(`<td class="is-number" data-number="${Technologies.Eras[member['era']]}">${i18n('Eras.' + Technologies.Eras[member['era']]+'.short')}</td>`);
-			h.push(`<td style="display:none" class="is-number" data-number="${member['guildgoods']}">${member['guildgoods']}</td>`);
+			h.push(`<td class="is-number" data-number="${Technologies.Eras[member['era']]}">${i18n('Eras.' + Technologies.Eras[member['era']]+'.short')}</td>
+					<td style="display:none" class="is-number" data-number="${member['guildgoods']}">${member['guildgoods']}</td>`);
 
 			if (GuildMemberStat.hasGuildMemberRights)
 				h.push(`<td class="is-number" data-number="${member['activity']}"><span class="activity activity_${member['activity']}"></span> ${ActWarnCount > 0 ? '<span class="warn">(' + ActWarnCount + ')</span>' : ''}</td>`);
 
-			h.push(`<td class="is-number text-center" data-number="${forumActivityCount}">${forumActivityCount}</td>`);
-			h.push(`<td class="is-number text-center" data-number="${gexActivityCount}">${gexActivityCount}</td>`);
-			h.push(`<td class="is-number text-center" data-number="${gbgActivityCount}">${gbgActivityCount}</td>`);
-
-			h.push(`</tr>`);
+			h.push(`<td class="is-number text-center" data-number="${forumActivityCount}">${forumActivityCount}</td>
+				<td class="is-number text-center" data-number="${gexActivityCount}">${gexActivityCount}</td>
+				<td class="is-number text-center" data-number="${gbgActivityCount}">${gbgActivityCount}</td>
+			</tr>`);
 
 			exportData.push([(rank - deletedCount), member['player_id'], member['name'], member['score'], Technologies.Eras[member['era']], i18n('Eras.' + Technologies.Eras[member['era']]+'.short'), member['guildgoods'], ActWarnCount, forumActivityCount, gexActivityCount, gbgActivityCount, member['won_battles'], deletedMember ? 0 : 1]);
 
@@ -1078,7 +1073,7 @@ let GuildMemberStat = {
 				$('#GuildMemberTable th.expand-all').removeClass("open").addClass("closed");
 			});
 
-			$('#GuildMemberTable > tbody tr').each(function() {
+			$('#GuildMemberTable > tbody tr:not(.strikeout)').each(function() {
 				$(this).on('click', async () => { 
 					let memberId = $(this).data('id');
 					await GuildMemberStat.ShowMemberDetail(memberId)});
@@ -1121,7 +1116,11 @@ let GuildMemberStat = {
 				<div>
 				<h1>${GuildMemberStat.MemberDict[id].name}</h1>
 				${i18n('Eras.'+Technologies.Eras[memberData.era])}
-				<div class="average"><span class="gex"></span> <span class="gbg"></span> <span class="qi"></span> <span class="goods"></span> 
+				<div class="average">
+					<span class="gex"></span> 
+					<span class="gbg"></span> 
+					<span class="qi"></span> 
+					<span class="goods"></span> 
 				<i class="info-tip" data-original-title="${i18n('Boxes.GuildMemberStat.MemberDetail.Info')}">i</i></div>
 				</div>
 			</div>
@@ -1233,7 +1232,7 @@ let GuildMemberStat = {
 			<div class="foehelper-accordion-head">${i18n('Boxes.General.Quantum_Incursion.short')}</div>
 			<div class="foehelper-accordion-body">
 				<table class="foe-table"><thead class="sticky"><tr>
-					<th>${i18n('Boxes.GuildMemberStat.Rank')}</th>
+					<th>${i18n('Boxes.General.Season')}</th>
 					<th>${i18n('Boxes.GuildMemberStat.Rank')}</th>
 					<th>${i18n('Boxes.QiProgress.Progress')}</th>
 				</tr></thead><tbody>`);
@@ -1347,9 +1346,9 @@ let GuildMemberStat = {
 
 		$('#GuildMemberDetail' + id + 'Body').append(d.join(''));
 
-		$('#GuildMemberDetail' + id + 'Body .summary .gex').text(gexNumber);
-		$('#GuildMemberDetail' + id + 'Body .summary .gbg').text(HTML.Format(gbgNumber));
-		$('#GuildMemberDetail' + id + 'Body .summary .qi').text(HTML.Format(qiNumber));
+		$('#GuildMemberDetail' + id + 'Body .summary .gex').text(gexNumber).attr('data-original-title', HTML.i18nReplacer(i18n('Boxes.GuildMemberStat.MemberDetail.Average'), { 'seasons': Member.gex?.length||0 }));
+		$('#GuildMemberDetail' + id + 'Body .summary .gbg').text(HTML.Format(gbgNumber)).attr('data-original-title', HTML.i18nReplacer(i18n('Boxes.GuildMemberStat.MemberDetail.Average'), { 'seasons': Member.gbg?.length||0 }));
+		$('#GuildMemberDetail' + id + 'Body .summary .qi').text(HTML.Format(qiNumber)).attr('data-original-title', HTML.i18nReplacer(i18n('Boxes.GuildMemberStat.MemberDetail.Average'), { 'seasons': playedSeasons||0 }));
 		$('#GuildMemberDetail' + id + 'Body .summary .goods').text(HTML.Format(totalGoods));
 
 		$('#GuildMemberDetail' + id + 'Body .foehelper-accordion-head').on('click', function () {
