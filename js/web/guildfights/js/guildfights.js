@@ -309,8 +309,7 @@ let GuildFights = {
 		GuildFights.PlayerBoxSettings.showLogButton = (PlayerBoxSettings.showLogButton !== undefined) ? PlayerBoxSettings.showLogButton : GuildFights.PlayerBoxSettings.showLogButton;
 		GuildFights.PlayerBoxSettings.showProgressFilter = (PlayerBoxSettings.showProgressFilter !== undefined) ? PlayerBoxSettings.showProgressFilter : GuildFights.PlayerBoxSettings.showProgressFilter;
 
-		if (GuildFights.GBGAllRounds === undefined || GuildFights.GBGAllRounds === null)
-		{
+		if (GuildFights.GBGAllRounds === undefined || GuildFights.GBGAllRounds === null) {
 			// get all available GBG entires
 			const gbgRounds = await GuildFights.db.history.where('gbground').above(0).keys();
 			gbgRounds.sort(function (a, b) { return b - a });
@@ -319,21 +318,18 @@ let GuildFights = {
 		}
 
 		//set latest GBG round to show if available and no specific GBG round is set
-		if (!gbground && GuildFights.GBGAllRounds && GuildFights.GBGAllRounds.length)
-		{
+		if (!gbground && GuildFights.GBGAllRounds && GuildFights.GBGAllRounds.length) {
 			gbground = GuildFights.GBGAllRounds[i];
 		}
 
-		if (gbground && GuildFights.GBGAllRounds && GuildFights.GBGAllRounds.length)
-		{
+		if (gbground && GuildFights.GBGAllRounds && GuildFights.GBGAllRounds.length) {
 			let index = GuildFights.GBGAllRounds.indexOf(gbground);
 			let previousweek = GuildFights.GBGAllRounds[index + 1] || null;
 			let nextweek = GuildFights.GBGAllRounds[index - 1] || null;
 
 			h.push(`<div id="gbg_roundswitch" class="roundswitch dark-bg">`);
 
-			if (GuildFights.PlayerBoxSettings.showRoundSelector)
-			{
+			if (GuildFights.PlayerBoxSettings.showRoundSelector) {
 				h.push(`${i18n('Boxes.GuildMemberStat.GBFRound')} <button class="btn btn-set-week" data-week="${previousweek}"${previousweek === null ? ' disabled' : ''}>&lt;</button> `);
 				h.push(`<select id="gbg-select-gbground">`);
 
@@ -345,11 +341,9 @@ let GuildFights = {
 				h.push(`<button class="btn btn-set-week last" data-week="${nextweek}"${nextweek === null ? ' disabled' : ''}>&gt;</button>`);
 			}
 
-			if (gbground === GuildFights.CurrentGBGRound)
-			{
+			if (gbground === GuildFights.CurrentGBGRound) {
 				h.push(`<div id="gbgLogFilter">`);
-				if (GuildFights.PlayerBoxSettings.showProgressFilter === 1)
-				{
+				if (GuildFights.PlayerBoxSettings.showProgressFilter === 1) {
 					h.push(`<button id="gbg_filterProgressList" title="${HTML.i18nTooltip(i18n('Boxes.GuildFights.ProgressFilterDesc'))}" class="btn" disabled>&#8593;</button>`);
 				}
 

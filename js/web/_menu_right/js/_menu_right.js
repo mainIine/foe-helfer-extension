@@ -59,11 +59,9 @@ let _menu_right = {
 
 	/**
 	 * Collective function
-	 *
-	 * @param reset
 	 */
 	SetMenuHeight: (reset = true) => {
-		// Höhe ermitteln und setzten
+		// calibrate height
 		_menu_right.Prepare();
 
 		if (reset) {
@@ -77,12 +75,10 @@ let _menu_right = {
 
 			$('.hud-btn-up').removeClass('hud-btn-up-active');
 
-			if (_menu.SlideParts > 1) {
+			if (_menu.SlideParts > 1) 
 				$('.hud-btn-down').addClass('hud-btn-down-active');
-			}
-			else { //Gesamtes Menü passt auf 1 Seite => Kein Scrollbutton nach unten
+			else // button not needed
 				$('.hud-btn-down').removeClass('hud-btn-down-active');	
-			}
 		}
 	},
 
@@ -121,7 +117,6 @@ let _menu_right = {
 	 * Make panel scrollable
 	 */
 	CheckButtons: async () => {
-
 		let activeIdx = 0;
 
 		await ExistenceConfirmed("jQuery._data($('body').get(0), 'events' ).click||$('.hud-btn')");
