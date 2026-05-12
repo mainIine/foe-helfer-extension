@@ -79,6 +79,10 @@
     height: 23px;
 }
 
+[id*=GuildMemberDetail] .summary .flex {
+    justify-content: left;
+}
+
 [id*=GuildMember] .summary .average span {
     padding: 0 2px;
 }
