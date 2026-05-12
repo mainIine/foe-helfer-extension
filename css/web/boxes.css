@@ -246,6 +246,7 @@ a[target="_blank"] svg {
     background-repeat: no-repeat, repeat;
     background-position: center;
 	width: 22px;
+	min-height: 22px;
 }
 
 .btn-delete.icon:not([disabled]):hover, .btn-delete.icon:not([disabled]):active {
@@ -300,6 +301,17 @@ a[target="_blank"] svg {
 	border-radius: 4px;
 	border-right-width: 1px;
 }
+
+.info-tip {
+	background-color: var(--table-bb-info);
+	color: var(--white);
+	border-radius: 20px;
+	width: 20px;
+	height: 20px;
+	display: inline-block;
+	text-align: center;
+}
+
 span.resicon {
 	display: inline-block;
 	width: 25px;
@@ -560,16 +572,6 @@ table.foe-table td .error {
 p {
 	margin: 0 0 10px 0;
 }
-
-.text-center {
-	text-align: center;
-}
-.text-right {
-	text-align: right;
-}
-.text-light {
-	color: var(--white);
-}
 .hidden-text {
 	opacity: 0;
 	display: inline-block;
@@ -578,52 +580,31 @@ p {
 	overflow: hidden;
 }
 
-.flex {
+.flex { 
 	display: flex;
 	justify-content: center;
 	flex-wrap: wrap;
 }
-.flex.between {
-	justify-content: space-between;
-}
-.flex.gap {
-	gap: 2px;
-}
+.flex.between { justify-content: space-between; }
+.flex.gap { gap: 2px; }
 
-.p2 {
-	padding: 2px;
-}
-.p5 {
-	padding: 5px;
-}
+.p2 { padding: 2px; }
+.p5 { padding: 5px; }
+.p10 { padding: 10px; }
 
-.bbd {
-	border-bottom: 1px dotted var(--black-50);
-}
+.bbd { border-bottom: 1px dotted var(--black-50); }
 
-.wsnw {
-	white-space: nowrap;
-}
+.wsnw { white-space: nowrap; }
 
-.text-warning, .text-bright {
-	color: var(--sunflower);
-}
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+.text-light { color: var(--white); }
+.text-warning, .text-bright { color: var(--sunflower); }
+.text-danger, .danger { color: var(--bright-red); }
+.text-info, .info { color: var(--info-blue); }
+.text-muted { color: var(--text-muted); }
 
-.text-danger, .danger {
-	color: var(--bright-red);
-}
-
-.text-info, .info {
-	color: var(--info-blue);
-}
-
-.text-muted {
-	color: var(--text-muted);
-}
-
-.text-bold {
-	font-weight: 700;
-}
+.text-bold { font-weight: 700; }
 
 .copy-fp:hover {
 	filter: brightness(1.4) contrast(1.4);
@@ -949,7 +930,6 @@ Accordion */
 .foehelper-accordion-head {
 	display: flex;
 	flex-direction: row;
-	margin-bottom: 2px;
 	border-top: 1px solid var(--border-table-top);
 	border-bottom: 1px solid var(--border-table-bottom);
 	padding: 3px 5px;
@@ -2105,7 +2085,7 @@ input[type="range"]::-webkit-slider-thumb {
 	position: absolute;
 	top: 0;
 	right: 0;
-	transition: top 0.7s ease-in-out;
+	transition: top 0.5s ease-in-out;
 	width: 100%;
 }
 

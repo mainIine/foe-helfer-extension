@@ -9,9 +9,10 @@
 
 **Update**
 - Allies: Boosts are now displayed per category and can be sorted
-- Infobox: Added QI Actions and an option to select stuff as favorite
+- Infobox: Added QI Actions and an option to select stuff as favorite. The window received a slight facelift
 - GB Calculator: The arrow on the side of the window is now a cogwheel in the bottom left corner instead
 - Efficiency Rating: Buildings that can be upgraded to their ascended version now show an arrow next to their name
+- Guild Member Overview: Member details are now opened in their own window and include more data
 
 ---
  

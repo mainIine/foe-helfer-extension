@@ -586,6 +586,7 @@
     "Boxes.GuildMemberStat.MaxLevel": "max. Stufe",
     "Boxes.GuildMemberStat.Member": "Mitglied",
     "Boxes.GuildMemberStat.MemberActiviy": "Aktivität des Gildenmitglieds",
+    "Boxes.GuildMemberStat.MemberDetail.Info": "Durchschnittlicher Beitrag zu Gilden-Spielen und produzierte Gildengüter. Diese Daten sind nur korrekt, wenn du immer nach Ende von GEX, GG und QI die Mitgliederliste aufrufst und den Spieler kürzlich besucht hast.",
     "Boxes.GuildMemberStat.MemberLeavedGuild": "Der Spieler ist nicht mehr in der Gilde.",
     "Boxes.GuildMemberStat.MemberWithoutGB": "Mitglieder ohne __greatbuilding__",
     "Boxes.GuildMemberStat.MinLevel": "min. Stufe",

@@ -18,6 +18,15 @@
     left: calc(50vw - 310px);
 }
 
+[id*=GuildMemberDetail].window-box {
+    width: 390px;
+    height: 400px;
+}
+
+[id*=GuildMemberDetail].window-body {
+    overflow: auto;
+}
+
 .text-bright {
     color: var(--sunflower);
 }
@@ -65,10 +74,21 @@
     vertical-align: bottom;
 }
 
-#GuildMemberStatBody .detail-item tr th span {
+#GuildMemberStatBody .detail-item tr th span, [id*=GuildMember] .summary span::before {
     width: 23px;
     height: 23px;
-    vertical-align: center;
+}
+
+[id*=GuildMember] .summary .average span {
+    padding: 0 2px;
+}
+
+[id*=GuildMember] .summary .average span::before {
+    content: '';
+    display: inline-block;
+    vertical-align: bottom;
+    position: relative;
+    top: 2px;
 }
 
 #GuildMemberStatBody tr th span.activity {
@@ -76,14 +96,26 @@
     background-size: contain;
 }
 
-#GuildMemberStatBody tr th span.gex {
+#GuildMemberStatBody tr th span.gex, [id*=GuildMember] .summary span.gex::before {
     background: url(../../x_img/ge.png) center no-repeat;
     background-size: contain;
 }
 
-#GuildMemberStatBody tr th span.gbg {
+#GuildMemberStatBody tr th span.gbg, [id*=GuildMember] .summary span.gbg::before {
     background: url(../../x_img/gbg-gray.png) center no-repeat;
     background-size: contain;
+}
+[id*=GuildMember] .summary span.qi::before {
+	background-image: url('../../x_img/qi.png');
+	background-size: contain;
+}
+[id*=GuildMember] .summary span.goods::before {
+	background-image: url('../../x_img/guildGoods.png');
+	background-size: contain;
+}
+[id*=GuildMemberDetail] .goods-sprite {
+	width: 1.2em;
+    height: 1.2em
 }
 
 #GuildMemberStatBody tr th span.messages {
