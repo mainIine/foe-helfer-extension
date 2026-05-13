@@ -1375,13 +1375,11 @@ let Parts = {
 				helper.str.copyToClipboardLegacy(CopyParts);
 			});
 		}
-		else if (!event)
-		{
+		else if (!event) {
 			HTML.CloseOpenBox('PowerLevelingBox');
 			return;
 		}
 
-		// Body zusammen fummeln
 		Parts.CalcBodyPowerLeveling();
 	},
 
@@ -1496,7 +1494,7 @@ let Parts = {
 				h.push('<td class="no-select">' + HTML.Format(MainParser.round(DoubleCollections[i])) + '</td>');
 			}
 			h.push('<td><strong class="info no-select">' + HTML.Format(MainParser.round(EigenNettos[i])) + '</strong></td>');
-			h.push('<td><span class="hidden-text">' + i + '</span><span class="btn button-powerlevel-copy">' + i18n('Boxes.PowerLeveling.CopyValues') + '</span></td>');
+			h.push('<td><span class="hidden-text">' + i + '</span><span class="btn btn-slim button-powerlevel-copy">' + i18n('Boxes.PowerLeveling.CopyValues') + '</span></td>');
 			h.push('</tr>');
 		}
 	},
@@ -1568,10 +1566,10 @@ let Parts = {
 		h.push('<th>' + i18n('Boxes.PowerLeveling.P4') + '</th>');
 		h.push('<th>' + i18n('Boxes.PowerLeveling.P5') + '</th>');
 		if (HasDoubleCollection) {
-			h.push('<th>' + i18n('Boxes.PowerLeveling.OwnPartBrutto') + '</th>');
-			h.push('<th>' + i18n('Boxes.PowerLeveling.DoubleCollection') + '</th>');
+			h.push('<th class="no-select">' + i18n('Boxes.PowerLeveling.OwnPartBrutto') + '</th>');
+			h.push('<th class="no-select">' + i18n('Boxes.PowerLeveling.DoubleCollection') + '</th>');
 		}
-		h.push('<th>' + i18n('Boxes.PowerLeveling.OwnPartNetto') + '</th>');
+		h.push('<th class="no-select">' + i18n('Boxes.PowerLeveling.OwnPartNetto') + '</th>');
 		h.push('<th></th>');
 		h.push('</tr>');
 		h.push('</thead>');
