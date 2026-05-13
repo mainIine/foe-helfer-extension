@@ -240,7 +240,7 @@
 
 #LiveGildFightingBody >.btn-group {
 	position: absolute;
-	top: 40px;
+	top: 44px;
 	right: 7px;
 	z-index: 100;
 }
@@ -250,6 +250,15 @@
 	overflow-y: auto;
 	flex-grow: 2;
 	user-select: text;
+}
+
+#LiveGildFightingBody #nextup .secure .prov-name b {
+	text-decoration: underline;
+}
+
+#LiveGildFightingBody #nextup .secure .battletype {
+	border: 1px solid var(--black-65);
+	margin: -1px;
 }
 
 #LiveGildFightingBody #progress {
