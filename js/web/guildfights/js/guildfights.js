@@ -1232,10 +1232,11 @@ let GuildFights = {
 					discordButtons += `<button class="btn btn-slim discord" data-original-title="${i18n('Boxes.GuildFights.DiscordSend')}" onclick="Discord.sendGBGSector(${prov[x]['id']});"></button>`;
 				}
 
-				nextup.push(`<td class="text-right">
-					<div class="btn-group">
-					${discordButtons}
-					</div></td>`);
+				if (discordButtons != '')
+					nextup.push(`<td class="text-right">
+						<div class="btn-group">
+						${discordButtons}
+						</div></td>`);
 
 				nextup.push(`<td class="text-right" id="alert-${prov[x]['id']}">
 					${GuildFights.GetAlertButton(prov[x].id)}
