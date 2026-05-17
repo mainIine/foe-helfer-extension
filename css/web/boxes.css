@@ -2051,6 +2051,11 @@ input[type="range"]::-webkit-slider-thumb {
 	font-size: 0.8rem;
 }
 
+.hud-btn #gex-attempt-count[data-number^="8"] {
+	background-color: var(--red);
+    box-shadow: 0 0 1px 1px var(--danger-red);
+}
+
 
 #foe-helper-hud.hud-right {
 	right: 0;
