@@ -1145,10 +1145,9 @@ let GuildFights = {
 			nextup.push('<th>' + i18n('Boxes.GuildFights.Owner') + '</th>');
 		
 		nextup.push(`<th class="time-static w-small">${i18n('Boxes.GuildFights.Time')}</th>
-				<th class="time-dynamic w-small">${i18n('Boxes.GuildFights.Count')}</th>`);
-				if (GuildFights.discordWebhook.url != '')
-					nextup.push(`<th></th>`);
-				nextup.push(`<th></th>
+				<th class="time-dynamic w-small">${i18n('Boxes.GuildFights.Count')}</th>
+				<th></th>
+				<th></th>
 			</tr></thead>`);
 
 		let arrayprov = [];
@@ -1232,11 +1231,10 @@ let GuildFights = {
 					discordButtons += `<button class="btn btn-slim discord" data-original-title="${i18n('Boxes.GuildFights.DiscordSend')}" onclick="Discord.sendGBGSector(${prov[x]['id']});"></button>`;
 				}
 
+				nextup.push(`<td class="text-right">`);
 				if (discordButtons != '')
-					nextup.push(`<td class="text-right">
-						<div class="btn-group">
-						${discordButtons}
-						</div></td>`);
+					nextup.push(`<div class="btn-group">${discordButtons}</div>`);
+				nextup.push(`</td>`);
 
 				nextup.push(`<td class="text-right" id="alert-${prov[x]['id']}">
 					${GuildFights.GetAlertButton(prov[x].id)}
