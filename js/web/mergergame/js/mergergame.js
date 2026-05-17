@@ -153,6 +153,7 @@ FoEproxy.addHandler('MergerGameService', 'convertPiece', (data, postData) => {
 });
 
 FoEproxy.addHandler('TimedTasksService', 'all', (data, postData) => {
+	if (!["anniversary_event", "care_event"].includes(postData[0].requestData[0])) return;
 	if (['getOverview','claimReward'].includes(data.requestMethod)) {
 		data.responseData.slots.forEach(slot => {
 			mergerGame.tasks[slot.type] = {
