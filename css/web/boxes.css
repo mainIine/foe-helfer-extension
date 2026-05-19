@@ -1108,11 +1108,20 @@ FP-Bar */
 }
 
 #fp-bar .fp-storage, #fp-bar .buyable-fp {
-	background: rgba(0, 0, 0, 0.50) url('../../js/web/strategy-points/images/fp-bar-storage-bg.png') 0 0 no-repeat;
-	background-position: 2px center;
-	background-size: 85%;
+	background: rgba(0, 0, 0, 0.50);
 	border: 1px solid rgba(113, 74, 35, 1);
 	border-radius: 4px;
+}
+
+#fp-bar .fp-storage::before, #fp-bar .buyable-fp::before {
+    content: " ";
+    background: url('../../js/web/strategy-points/images/fp-bar-storage-bg.png') 0 0 no-repeat;
+    width: 32px;
+    height: 32px;
+    position: absolute;
+    left: 3px;
+    top: 6px;
+    background-size: 190%;
 }
 
 #fp-bar .buyable-fp {
