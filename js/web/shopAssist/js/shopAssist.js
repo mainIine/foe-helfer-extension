@@ -422,7 +422,7 @@ let shopAssist = {
 			checkCurrencyFilters();
 		});
 		checkCurrencyFilters();
-		$('[data-original-title]').tooltip();
+		$('[data-original-title]').tooltip({container: 'body'});
 		localStorage.setItem("shopAssist.alerts",JSON.stringify(shopAssist.alerts));
     },
 

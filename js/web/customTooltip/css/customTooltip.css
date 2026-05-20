@@ -134,11 +134,11 @@ td:nth-child(3) .HXBuilding .inhabitant {
     animation-iteration-count: infinite;
 }
 .HXBuilding span.positive {
-    color: var(--text-success);
+    color: var(--success);
     font-weight: bold;
 }
 .HXBuilding span.negative {
-    color: var(--text-danger);
+    color: var(--danger-red);
     font-weight: bold;
 }
 .HXBuilding .limited {
@@ -184,7 +184,7 @@ td:nth-child(3) .HXBuilding .inhabitant {
     border-radius: 10px;
     padding: 2px;
     margin-top: 2px;
-    color: var(--text-normal);
+    color: var(--beige);
     background: var(--text-darker);
     border: 2px solid var(--text-dark);
 }
@@ -359,74 +359,6 @@ td:nth-child(3) .HXBuilding .inhabitant {
 
 .inventoryTooltip .upgrades span,
 .buildingTT .upgrades span {
-    display: inline-flex;
-    height: 22px;
-    align-items: center;
-    color: var(--text-highlight);
-    margin-left: 4px;
-    padding: 0 4px;
     background-color: var(--black-50);
     border-radius: 20px;
-}
-
-.inventoryTooltip .upgrades span::after,
-.buildingTT .upgrades span::after {
-	content: '';
-	display: inline-block;
-	width: 17px;
-	height: 22px;
-	margin-left: 2px;
-	background: url('../../x_img/upgrades.png') no-repeat left top;
-	background-size: auto 100%;
-}
-
-.inventoryTooltip .upgrades .base,
-.buildingTT .upgrades .base {
-	color: var(--text-normal);
-}
-
-.inventoryTooltip .upgrades .base::after,
-.buildingTT .upgrades .base::after {
-	background-position: -72px 0;
-	width: 20px;
-}
-
-.inventoryTooltip .upgrades .silver,
-.buildingTT .upgrades .silver {
-	color: var(--silver);
-}
-
-.inventoryTooltip .upgrades .silver::after,
-.buildingTT .upgrades .silver::after {
-	background-position: -18px 0;
-}
-
-.inventoryTooltip .upgrades .golden,
-.buildingTT .upgrades .golden {
-	color: var(--golden);
-}
-
-.inventoryTooltip .upgrades .golden::after,
-.buildingTT .upgrades .golden::after {
-	background-position: -36px 0;
-}
-
-.inventoryTooltip .upgrades .platinum,
-.buildingTT .upgrades .platinum {
-	color: var(--platinum);
-}
-
-.inventoryTooltip .upgrades .platinum::after,
-.buildingTT .upgrades .platinum::after {
-	background-position: -52px 0;
-}
-
-.inventoryTooltip .upgrades .ascended,
-.buildingTT .upgrades .ascended {
-	color: var(--ascended);
-}
-
-.inventoryTooltip .upgrades .ascended::after,
-.buildingTT .upgrades .ascended::after {
-	background-position: -92px 0;
 }

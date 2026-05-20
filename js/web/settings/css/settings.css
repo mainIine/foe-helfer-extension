@@ -23,16 +23,15 @@
 	overflow-y: auto;
 }
 
-
 #SettingsBoxBody h2 {
 	font-size: 110%;
 	font-weight: 700;
-	color: var(--bright-color);
+	color: var(--sunflower);
 	margin: 10px 0 5px;
 }
 
 #SettingsBoxBody .item-row a {
-	color: #ffcc68;
+	color: var(--sunflower);
 }
 
 #SettingsBoxBody .item-row .desc {
@@ -68,7 +67,7 @@
 	text-align: center;
 	line-height: 32px;
 	font-size: 0.9rem;
-	color: #b0bbcd;
+	color: var(--light-blue);
 	font-weight: 700;
 }
 
@@ -172,7 +171,7 @@
 	border-top: 1px solid var(--border-table-top);
 	border-bottom: 1px solid var(--border-table-bottom);
 	padding: 5px;
-	color: var(--text-normal);
+	color: var(--beige);
 }
 
 #SettingsBoxBody .helplist a:hover {
@@ -211,7 +210,7 @@
 }
 
 #SettingsBoxBody .info-box dt {
-	color: var(--bright-color);
+	color: var(--sunflower);
 	font-weight: bold;
 }
 
@@ -219,7 +218,6 @@
 	border: 1px solid var(--text-dark);
 }
 
-/* Menu Inhalt */
 .setting .hud-btn {
 	margin-right: 6px;
 	margin-bottom: 6px;

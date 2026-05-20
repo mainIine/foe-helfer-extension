@@ -36,7 +36,7 @@
 }
 
 #costCalculator #costCalculatorBody strong {
-	color: var(--bright-color);
+	color: var(--sunflower);
 }
 
 #costCalculator #costCalculatorBody .header {
@@ -48,7 +48,7 @@
 }
 
 #costCalculator #costCalculatorBody .header span {
-	color: var(--text-normal);
+	color: var(--beige);
 }
 
 #costCalculator #costCalculatorBody .header .building-name {
@@ -58,7 +58,7 @@
 #costCalculator #costCalculatorBody .header .player-name {
 	display: block;
 	white-space: nowrap;
-	color: var(--bright-color);
+	color: var(--sunflower);
 	margin: 0 10px;
 }
 
@@ -98,11 +98,11 @@
 
 #costCalculator #costCalculatorBody td.error,
 #costCalculator #costCalculatorBody td .error {
-	color: var(--text-danger);
+	color: var(--danger-red);
 }
 
 #costCalculator #costCalculatorBody strong.success {
-	color: var(--text-success);
+	color: var(--success);
 }
 
 #costCalculator #costCalculatorBody .text-grey,
@@ -112,7 +112,7 @@
 }
 
 #costCalculator #costCalculatorBody strong.info {
-	color: var(--text-info);
+	color: var(--info-blue);
 }
 
 #costCalculator #costCalculatorBody tr.info-row {

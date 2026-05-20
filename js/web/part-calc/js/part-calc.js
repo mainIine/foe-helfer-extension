@@ -265,12 +265,20 @@ let Parts = {
 				let copyParts = Parts.CopyFunction($(this), 'copy');
 				helper.str.copyToClipboardLegacy(copyParts);
 				Parts.CalcBody(Parts.Level);
+				if ($('#OwnPartBox').hasClass('gbSettingsOpen')) {
+					$('.OwnPartBoxBackgroundBody').fadeToggle();
+					$('#OwnPartBox').toggleClass('gbSettingsOpen');
+				}
 			});
 
 			$('#OwnPartBox').on('click', '.button-save-own', function () {
 				let copyParts = Parts.CopyFunction($(this), 'save');
 				helper.str.copyToClipboardLegacy(copyParts);
 				Parts.CalcBody(Parts.Level);
+				if ($('#OwnPartBox').hasClass('gbSettingsOpen')) {
+					$('.OwnPartBoxBackgroundBody').fadeToggle();
+					$('#OwnPartBox').toggleClass('gbSettingsOpen');
+				}
 			});
 
 			// Quick copy for FP values (places + remaining to level)
@@ -845,7 +853,7 @@ let Parts = {
 			}
 
 			h.push('<tr>');
-			h.push('<td>' + i18n('Boxes.OwnpartCalculator.Place') + ' ' + (i+1) + '</td>');
+			h.push('<td><b>' + (i+1) + '</b></td>');
 
 			if (Parts.PlaceAvailables[i]) {
 				let copyvalue = Parts.Maezens[i];
@@ -896,7 +904,7 @@ let Parts = {
 		// Bestehende Einzahlungen, die aus den P5 raus geschoben wurden
 		if (MaezenRest > 0) {
 			h.push('<tr>');
-			h.push('<td>' + i18n('Boxes.OwnpartCalculator.Place') + ' 6' + (Parts.Maezens.length > 6 ? ('-' + Parts.Maezens.length) : '') + '</td>');
+			h.push('<td>#6' + (Parts.Maezens.length > 6 ? ('-' + Parts.Maezens.length) : '') + '</td>');
 			h.push('<td class="text-center">-</td>');
 			h.push('<td class="text-center"><strong class="info">' + HTML.Format(MaezenRest) + '</strong></td>');
 			if (!minView) h.push('<td colspan="4"></td>');
@@ -927,12 +935,12 @@ let Parts = {
 			h.push('<table style="width: 100%">');
 			h.push('<tr>');
 			h.push('<td>' + i18n('Boxes.OwnpartCalculator.PatronPart') + ': <strong class="' + (PlayerID === ExtPlayerID ? '' : 'success') + '">' + HTML.Format(MaezenTotal + ExtTotal) + '</strong></td>');
-			h.push('<td class="text-right">' + i18n('Boxes.OwnpartCalculator.OwnPart') + ': <strong class="' + (PlayerID === ExtPlayerID ? 'success' : '') + '">' + HTML.Format(EigenTotal) + '</strong></td>');
+			h.push('<td class="text-right">' + i18n('Boxes.OwnpartCalculator.OwnPart') + ': <strong data-copy="'+(EigenTotal)+'" class="clickable copy-fp ' + (PlayerID === ExtPlayerID ? 'success' : '') + '">' + HTML.Format(EigenTotal) + '</strong></td>');
 			h.push('</tr>');
 			h.push('<tr>');
 			h.push('<td>' + i18n('Boxes.OwnpartCalculator.LGTotalFP') + ': <strong>' + HTML.Format(Total) + '</strong></td>');
 			if (EigenStart > 0) {
-				h.push('<td class="text-right">' + i18n('Boxes.OwnpartCalculator.OwnPartRemaining') + ': <strong class="' + (PlayerID === ExtPlayerID ? 'success' : '') + '">' + HTML.Format(EigenTotal - EigenStart) + '</strong></td>');
+				h.push('<td class="text-right">' + i18n('Boxes.OwnpartCalculator.OwnPartRemaining') + ': <strong data-copy="'+(EigenTotal - EigenStart)+'" class="clickable copy-fp ' + (PlayerID === ExtPlayerID ? 'success' : '') + '">' + HTML.Format(EigenTotal - EigenStart) + '</strong></td>');
 			}
 			else {
 				h.push('<td></td>');
@@ -960,18 +968,20 @@ let Parts = {
 				h.push('</div>');
 			}
 			h.push('<div class="bottom-buttons text-center">');
+			h.push('<div class="flex">');
+			h.push('<span id="OwnPartCalcGBSettings" class="fh-icon-settings"></span>'); 
 			h.push('<div class="btn-group">');
 			if (Parts.SafePlaces.length > 0 || Parts.CopyModeAll) { //Copy bzw. Note Button nur einblenden wenn zumindest ein Platz safe ist
-				h.push('<span class="btn button-own">' + i18n('Boxes.OwnpartCalculator.CopyValues') + '</span>');
-				if (Parts.CityMapEntity['player_id'] === ExtPlayerID) h.push('<span class="btn button-save-own">' + i18n('Boxes.OwnpartCalculator.Note') + '</span>');
+				h.push('<span class="btn btn-slim button-own">' + i18n('Boxes.OwnpartCalculator.CopyValues') + '</span>');
+				if (Parts.CityMapEntity['player_id'] === ExtPlayerID) h.push('<span class="btn btn-slim button-save-own">' + i18n('Boxes.OwnpartCalculator.Note') + '</span>');
 			}
 			else {
 				h.push(i18n('Boxes.OwnpartCalculator.NoPlaceSafe'));
 			}
-			h.push('</div>');
+			h.push('</div></div>');
 
 			h.push('<div class="btn-group">');
-			h.push('<span class="btn button-powerleveling">' + i18n('Boxes.OwnpartCalculator.PowerLeveling') + '</span>');
+			h.push('<span class="btn btn-slim button-powerleveling">' + i18n('Boxes.OwnpartCalculator.PowerLeveling') + '</span>');
 			h.push('</div>');
 			h.push('</div>');
 			h.push('</div>');
@@ -995,19 +1005,28 @@ let Parts = {
 		if ($('#PowerLevelingBox').length > 0 && !Parts.IsPreviousLevel) {
 			Parts.CalcBodyPowerLeveling();
 		}
+
+		$('#OwnPartCalcGBSettings').bind('click', function() {
+			$('.OwnPartBoxBackgroundBody').fadeToggle();
+			$('#OwnPartBox').toggleClass('gbSettingsOpen');
+		});
 	},
 
 
 	/**
-	 * Daten für die Kopierbuttons
-	 *
+	 * Data for the Copy buttons
 	 */
 	CalcBackgroundBody: () => {
 		let h = [],
 			$OwnPartBox = $('#OwnPartBox'),
 			EntityID = Parts.CityMapEntity['cityentity_id'];
-
 		let SavedBuildingName = localStorage.getItem(Parts.GetStorageKey('CopyGBName', Parts.CityMapEntity['cityentity_id']));
+		$OwnPartBox.find('.OwnPartBoxBackgroundBody').remove();
+
+		let isOpen = false;
+		if($('#OwnPartBox').hasClass('gbSettingsOpen')) 
+			isOpen = true;
+
 		if (SavedBuildingName !== null) {
 			Parts.CopyBuildingName = SavedBuildingName;
 		}
@@ -1117,8 +1136,15 @@ let Parts = {
 
 		Parts.CopyPlayerName = (PlayerID === ExtPlayerID ? Parts.CopyOwnPlayerName : PlayerDict[PlayerID]['PlayerName']);
 
-		h.push('<section class="p2 bbd">');
-		h.push('<strong>' + i18n('Boxes.OwnpartCalculator.CopyValues') + '</strong>');
+		h.push('<span class="icon-close"></span>');
+		h.push('<section class="p5">');
+		h.push('<strong>' + i18n('Boxes.OwnpartCalculator.Preview') + '</strong><br>');
+		Parts.CopyString = Parts.GetCopyString();
+		h.push('<input type="text" id="copystring" value="' + Parts.CopyString + '">');
+		
+		h.push('</section>');
+
+		h.push('<section class="p2">');
 		if (PlayerID === ExtPlayerID) {
 			h.push('<div class="flex between"><span>' + i18n('Boxes.OwnpartCalculator.PlayerName') + ':</span><input type="text" id="player-name" value="' + Parts.CopyPlayerName + '"></div>');
 		}
@@ -1126,7 +1152,9 @@ let Parts = {
 			h.push('<div><span>' + i18n('Boxes.OwnpartCalculator.PlayerName') + ':</span>' + Parts.CopyPlayerName + '</div>');
 		}
 		h.push('<div class="flex between"><span>' + i18n('Boxes.OwnpartCalculator.BuildingName') + ':</span><input type="text" id="build-name" value="' + (Parts.CopyBuildingName) + '"></div>');
-		h.push('</section><section class="p2 bbd">');
+		h.push('</section>');
+
+		h.push('<section class="p2">');
 		h.push('<strong>' + i18n('Boxes.OwnpartCalculator.IncludeData') + '</strong>');
 		let Options = '<div class="checkboxes">' +
 			'<label class="form-check-label game-cursor" for="options-player"><input type="checkbox" class="form-check-input" id="options-player" data-options="player" ' + (Parts.CopyIncludePlayer ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.OptionsPlayer') + '</span></label>' +
@@ -1149,97 +1177,36 @@ let Parts = {
 
 			h.push(DangerOptions);
 		}
-		h.push('</section><section class="p2 bbd">');
+		h.push('</section><section class="p2">');
 		h.push('<strong>' + i18n('Boxes.OwnpartCalculator.Places') + '</strong>');
 
 		let cb = '<div class="checkboxes">' +
-			'<label class="form-check-label game-cursor" for="chain-p1"><input type="checkbox" class="form-check-input" id="chain-p1" data-place="1" ' + (Parts.CopyPlaces[0] ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.Place') + ' 1</span></label>' +
-			'<label class="form-check-label game-cursor" for="chain-p2"><input type="checkbox" class="form-check-input" id="chain-p2" data-place="2" ' + (Parts.CopyPlaces[1] ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.Place') + ' 2</span></label>' +
-			'<label class="form-check-label game-cursor" for="chain-p3"><input type="checkbox" class="form-check-input" id="chain-p3" data-place="3" ' + (Parts.CopyPlaces[2] ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.Place') + ' 3</span></label>' +
-			'<label class="form-check-label game-cursor" for="chain-p4"><input type="checkbox" class="form-check-input" id="chain-p4" data-place="4" ' + (Parts.CopyPlaces[3] ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.Place') + ' 4</span></label>' +
-			'<label class="form-check-label game-cursor" for="chain-p5"><input type="checkbox" class="form-check-input" id="chain-p5" data-place="5" ' + (Parts.CopyPlaces[4] ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.Place') + ' 5</span></label>' +
+			'<label class="form-check-label game-cursor" for="chain-p1"><input type="checkbox" class="form-check-input" id="chain-p1" data-place="1" ' + (Parts.CopyPlaces[0] ? 'checked' : '') + '> <span>1</span></label>' +
+			'<label class="form-check-label game-cursor" for="chain-p2"><input type="checkbox" class="form-check-input" id="chain-p2" data-place="2" ' + (Parts.CopyPlaces[1] ? 'checked' : '') + '> <span>2</span></label>' +
+			'<label class="form-check-label game-cursor" for="chain-p3"><input type="checkbox" class="form-check-input" id="chain-p3" data-place="3" ' + (Parts.CopyPlaces[2] ? 'checked' : '') + '> <span>3</span></label>' +
+			'<label class="form-check-label game-cursor" for="chain-p4"><input type="checkbox" class="form-check-input" id="chain-p4" data-place="4" ' + (Parts.CopyPlaces[3] ? 'checked' : '') + '> <span>4</span></label>' +
+			'<label class="form-check-label game-cursor" for="chain-p5"><input type="checkbox" class="form-check-input" id="chain-p5" data-place="5" ' + (Parts.CopyPlaces[4] ? 'checked' : '') + '> <span>5</span></label>' +
 			'<label class="form-check-label game-cursor" for="chain-all"><input type="checkbox" class="form-check-input" id="chain-all" data-place="all" ' + (Parts.CopyModeAll ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.All') + '</span></label>' +
 			'<label class="form-check-label game-cursor" for="chain-auto"><input type="checkbox" class="form-check-input" id="chain-auto" data-place="auto" ' + (Parts.CopyModeAuto ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.Auto') + '</span></label>' +
 			'<label class="form-check-label game-cursor" for="chain-auto-unsafe"><input type="checkbox" class="form-check-input" id="chain-auto-unsafe" data-place="auto-unsafe" ' + (Parts.CopyModeAutoUnsafe ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.AutoWithUnsafe') + '</span></label>' +
 		'</div>';
 
 		h.push(cb);
-
-		h.push('</section><section class="p2 bbd">');
-		h.push('<strong>' + i18n('Boxes.OwnpartCalculator.Preview') + '</strong><br>');
-		Parts.CopyString = Parts.GetCopyString();
-		h.push('<input type="text" id="copystring" value="' + Parts.CopyString + '">');
-		
-		h.push('</section>');
+		h.push('</section>')
 		h.push('<div class="btn-outer text-center" style="margin-top: 10px">');
 		h.push('<span class="btn button-own">' + i18n('Boxes.OwnpartCalculator.CopyValues') + '</span> ');
-		if (Parts.CityMapEntity['player_id'] === ExtPlayerID) h.push('<span class="btn button-save-own">' + i18n('Boxes.OwnpartCalculator.Note') + '</span>'); //Kein Merken für fremde LGs
+		if (Parts.CityMapEntity['player_id'] === ExtPlayerID) 
+			h.push('<span class="btn button-save-own">' + i18n('Boxes.OwnpartCalculator.Note') + '</span>'); 
 		h.push('</div>');
 
-		// ---------------------------------------------------------------------------------------------
+		$OwnPartBox.append( $('<div class="OwnPartBoxBackgroundBody settingsbox-wrapper" />').append(h.join('')) );
+		if (isOpen)
+			$('.OwnPartBoxBackgroundBody').show();
 
-		// Box wurde schon in den DOM gelegt?
-		if( $('.OwnPartBoxBackground').length > 0 ){
-			$('.OwnPartBoxBackgroundBody').html( h.join('') );
-			return;
-		}
-
-		// Container zusammen setzen
-		let div = $('<div />').addClass('OwnPartBoxBackground'),
-			a = $('<div />').addClass('outerArrow').append( $('<span />').addClass('arrow game-cursor').attr('id', 'OwnPartBoxArrow') ).append( $('<div />').addClass('OwnPartBoxBackgroundBody window-box').append(h.join('')) );
-
-		$OwnPartBox
-			.append( div.append(a) )
-			.append($('<div />')
-				.addClass('black-bg').hide());
-
-		// der "Toogle"-Pfeil wurde geklickt,
-		// lasst die Spiele beginnen
-		$('#OwnPartBoxArrow').bind('click', function(){
-			if( $OwnPartBox.hasClass('show') ){
-				Parts.BackGroundBoxAnimation(false);
-			} else {
-				Parts.BackGroundBoxAnimation(true);
-			}
+		$('.OwnPartBoxBackgroundBody .icon-close').bind('click', function() {
+			$('.OwnPartBoxBackgroundBody').fadeToggle();
+			$('#OwnPartBox').toggleClass('gbSettingsOpen');
 		});
-	},
-
-
-	/**
-	 * Lecker Animation für das Anzeigen der Kopieren Buttons
-	 *
-	 * @param show
-	 */
-	BackGroundBoxAnimation: (show)=> {
-		let $box = $('#OwnPartBox'),
-			$boxBg = $('.OwnPartBoxBackgroundBody');
-
-		if(show === true)
-		{
-			let e = /** @type {HTMLElement} */ (document.getElementsByClassName('OwnPartBoxBackgroundBody')[0]);
-
-			e.style.height = 'auto';
-			let h = e.offsetHeight;
-			e.style.height = '0px';
-
-			// center overlay to parent box
-			let $boxWidth = $('#OwnPartBox').outerWidth() - 10,
-				$bgBodyWidth = $boxBg.outerWidth();
-
-			// animation
-			$boxBg.animate({height: h, opacity: 1}, 250, function () {
-				$box.addClass('show');
-				$box.find('.black-bg').show();
-				e.style.height = 'auto';
-			});
-		}
-
-		else {
-			$('.OwnPartBoxBackgroundBody').animate({height: 0, opacity: 0}, 250, function () {
-				$box.removeClass('show');
-				$box.find('.black-bg').hide();
-			});
-		}
 	},
 
 
@@ -1307,19 +1274,15 @@ let Parts = {
 
 
 	/**
-	 * Ausgeben oder Merken
-	 *
-	 * @param Event
-	 * @param Action
-	 * @returns {string}
+	 * Note or copy
 	 */
 	CopyFunction: (Event, Action) => {
 		let CopyString = $('#copystring').val();
 	
 		$(Event).removeClass('btn-green');
 
-		// wieder zuklappen
-		Parts.BackGroundBoxAnimation(false);
+		$('.OwnPartBoxBackgroundBody').fadeToggle();
+		$('#OwnPartBox').toggleClass('gbSettingsOpen');
 
 		Parts.CopyStrings[Parts.CityMapEntity['cityentity_id']] = CopyString;
 
@@ -1332,7 +1295,7 @@ let Parts = {
 		}
 
 		if (Action === 'copy') {
-			Parts.CopyStrings = {}; // Kopieren löscht die Liste
+			Parts.CopyStrings = {}; // delete list
 		}
 
 		return Copy;
@@ -1412,13 +1375,11 @@ let Parts = {
 				helper.str.copyToClipboardLegacy(CopyParts);
 			});
 		}
-		else if (!event)
-		{
+		else if (!event) {
 			HTML.CloseOpenBox('PowerLevelingBox');
 			return;
 		}
 
-		// Body zusammen fummeln
 		Parts.CalcBodyPowerLeveling();
 	},
 
@@ -1533,7 +1494,7 @@ let Parts = {
 				h.push('<td class="no-select">' + HTML.Format(MainParser.round(DoubleCollections[i])) + '</td>');
 			}
 			h.push('<td><strong class="info no-select">' + HTML.Format(MainParser.round(EigenNettos[i])) + '</strong></td>');
-			h.push('<td><span class="hidden-text">' + i + '</span><span class="btn button-powerlevel-copy">' + i18n('Boxes.PowerLeveling.CopyValues') + '</span></td>');
+			h.push('<td><span class="hidden-text">' + i + '</span><span class="btn btn-slim button-powerlevel-copy">' + i18n('Boxes.PowerLeveling.CopyValues') + '</span></td>');
 			h.push('</tr>');
 		}
 	},
@@ -1605,10 +1566,10 @@ let Parts = {
 		h.push('<th>' + i18n('Boxes.PowerLeveling.P4') + '</th>');
 		h.push('<th>' + i18n('Boxes.PowerLeveling.P5') + '</th>');
 		if (HasDoubleCollection) {
-			h.push('<th>' + i18n('Boxes.PowerLeveling.OwnPartBrutto') + '</th>');
-			h.push('<th>' + i18n('Boxes.PowerLeveling.DoubleCollection') + '</th>');
+			h.push('<th class="no-select">' + i18n('Boxes.PowerLeveling.OwnPartBrutto') + '</th>');
+			h.push('<th class="no-select">' + i18n('Boxes.PowerLeveling.DoubleCollection') + '</th>');
 		}
-		h.push('<th>' + i18n('Boxes.PowerLeveling.OwnPartNetto') + '</th>');
+		h.push('<th class="no-select">' + i18n('Boxes.PowerLeveling.OwnPartNetto') + '</th>');
 		h.push('<th></th>');
 		h.push('</tr>');
 		h.push('</thead>');

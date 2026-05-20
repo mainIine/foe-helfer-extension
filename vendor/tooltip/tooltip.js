@@ -113,7 +113,7 @@
 				, e = $.Event('show')
 
 			if (this.hasContent() && this.enabled) {
-				this.$element.trigger(e)
+				this.$element.triggerHandler(e)
 				if (e.isDefaultPrevented()) return
 				$tip = this.tip()
 				this.setContent()
@@ -165,7 +165,7 @@
 				}
 
 				this.applyPlacement(tp, placement)
-				this.$element.trigger('shown')
+				this.$element.triggerHandler('shown')
 			}
 		}
 
@@ -233,7 +233,7 @@
 				, $tip = this.tip()
 				, e = $.Event('hide')
 
-			this.$element.trigger(e)
+			this.$element.triggerHandler(e)
 			if (e.isDefaultPrevented()) return
 
 			$tip.removeClass('in')
@@ -253,7 +253,7 @@
 				removeWithAnimation() :
 				$tip.detach()
 
-			this.$element.trigger('hidden')
+			this.$element.triggerHandler('hidden')
 
 			return this
 		}

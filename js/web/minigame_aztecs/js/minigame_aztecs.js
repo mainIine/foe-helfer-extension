@@ -165,7 +165,8 @@ let AztecsHelper = {
                 'auto_close': true,
                 'minimize': true,
                 'dragdrop': false,
-			    active_maps:"cultural_outpost"
+			    active_maps:"cultural_outpost",
+				settings: 'AztecsHelper.ShowSettings()',
             });
 
             // CSS in den DOM prügeln
@@ -279,6 +280,26 @@ let AztecsHelper = {
             $('#aztecsHelper').length > 0 && HTML.CloseOpenBox('aztecsHelper');
         }
     },
+
+	ShowSettings: () => {
+		let autoOpen = Settings.GetSetting('ShowAztecHelper');
+
+		let h = [];
+		h.push(`<p><label><input id="aztecsAutoOpen" type="checkbox" ${(autoOpen === true) ? ' checked="checked"' : ''} />${i18n('Boxes.Settings.Autostart')}</label></p>`);
+		h.push(`<p><button onclick="AztecsHelper.SaveSettings()" id="save-aztecsAutoOpen-settings" class="btn" style="width:100%">${i18n('Boxes.Settings.Save')}</button></p>`);
+
+		$('#aztecsHelperSettingsBox').html(h.join(''));
+	},
+
+	SaveSettings: () => {
+		let value = false;
+		if ($("#aztecsAutoOpen").is(':checked'))
+			value = true;
+		localStorage.setItem('ShowAztecHelper', value);
+		
+		$(`#aztecsHelperSettingsBox`).remove();
+	},
+
     /**
      * Checks adjacent cells for possible Resources
      * @param {number} x //Width

@@ -27,7 +27,7 @@
 }
 
 #outpostConsumables #outpostConsumablesBody tr.resource-row td {
-	color: var(--bright-color);
+	color: var(--sunflower);
 	font-weight: 700;
 }
 
@@ -37,7 +37,7 @@
 }
 
 #outpostConsumables #outpostConsumablesBody .text-success {
-	color: var(--text-success);
+	color: var(--success);
 	font-weight: 700;
 }
 
@@ -49,7 +49,7 @@
 	font-weight: 700;
 	display: inline-block;
 	margin-left: 6px;
-	background: var(--text-info);
+	background: var(--info-blue);
 	padding: 0 4px;
 	border-radius: 50%;
 	width: 10px;

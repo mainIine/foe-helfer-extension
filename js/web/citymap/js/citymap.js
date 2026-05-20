@@ -342,7 +342,7 @@ let CityMap = {
 		}
 
 		$('[data-original-title]').tooltip({
-			container: '#citymap-main',
+			container: 'body',
 			html: true,
 		});
 
@@ -822,7 +822,7 @@ let CityMap = {
 		CityMap.getAreas();
 		
 		$('[data-original-title]').tooltip({
-			container: '#citymap-main',
+			container: 'body',
 			html: true,
 		});
 	},
@@ -2653,9 +2653,6 @@ let CityBuildings = {
 		}
 
 		entity.rating = Productions.rateBuilding(entity);
-
-		// no idea why this is called here? so, away it goes
-		//this.getBuildingGuildGoodsByEra(false, entity, false);
 		
 		//if (entity.type !== "street")
 		//	console.log('entity ', entity.name, entity, entity.allyRoom, data);
