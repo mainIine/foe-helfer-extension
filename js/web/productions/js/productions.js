@@ -68,6 +68,8 @@ let Productions = {
 	],
 
 	RatingCurrentTab: 'Results',
+	RatingFilteredSizes: [],
+	RatingSearchTerm: '',
 
 	fragmentsSet: new Set(),
 	efficiencySettings: Object.assign(
@@ -92,6 +94,7 @@ let Productions = {
 		Presets: null,
 		PresetStorageKey: 'Productions.Rating.Presets',
 		LegacyStorageKey: 'Productions.Rating.Data',
+
 
 		getDefaultData: () => ({
 			'strategy_points': {order:1,perTile:8,active:true,group:1},
@@ -133,23 +136,34 @@ let Productions = {
 			'def_boost_defender-guild_raids': {order:80,perTile:null,active:false,group:3},
 		}),
 
+
 		cloneData: (data) => JSON.parse(JSON.stringify(data || {})),
+
+
 		normalizeData: (data) => Object.assign(Productions.Rating.getDefaultData(), Productions.Rating.cloneData(data || {})),
+
+
 		getActivePreset: () => {
 			const presets = Productions.Rating.Presets;
 			if (!presets?.presets) return null;
 			return presets.presets[presets.activePresetId] || null;
 		},
+
+
 		updateTypes: () => {
 			Productions.Rating.Types = Object.keys(Productions.Rating.Data)
 				.sort((a,b) => {
 					Productions.Rating.Data[a].order - Productions.Rating.Data[b].order
 				});
 		},
+
+
 		savePresets: () => {
 			if (!Productions.Rating.Presets) return;
 			localStorage.setItem(Productions.Rating.PresetStorageKey, JSON.stringify(Productions.Rating.Presets));
 		},
+
+
 		createPreset: (data) => {
 			const presetId = `preset_${Date.now().toString(36)}_${Math.random().toString(36).slice(2,7)}`;
 			Productions.Rating.Presets.presets[presetId] = {
@@ -157,6 +171,8 @@ let Productions = {
 			};
 			return presetId;
 		},
+
+
 		deletePreset: (presetId) => {
 			if (!Productions.Rating.Presets?.presets[presetId]) return false;
 			delete Productions.Rating.Presets.presets[presetId];
@@ -165,6 +181,8 @@ let Productions = {
 			}
 			return true;
 		},
+
+
 		ensurePresets: () => {
 			if (Productions.Rating.Presets) return;
 			let stored = localStorage.getItem(Productions.Rating.PresetStorageKey);
@@ -206,6 +224,8 @@ let Productions = {
 				Productions.Rating.savePresets();
 			}
 		},
+
+
 		setActivePreset: (presetId) => {
 			Productions.Rating.ensurePresets();
 			if (!Productions.Rating.Presets.presets[presetId]) return;
@@ -213,6 +233,8 @@ let Productions = {
 			Productions.Rating.savePresets();
 			Productions.Rating.load();
 		},
+
+
 		resetActivePreset: () => {
 			const preset = Productions.Rating.getActivePreset();
 			if (!preset) return;
@@ -222,6 +244,8 @@ let Productions = {
 			Productions.Rating.savePresets();
 			Productions.CalcRatingBody();
 		},
+
+
 		getPresetOptions: () => {
 			const presets = Productions.Rating.Presets?.presets || {};
 			const activeId = Productions.Rating.Presets?.activePresetId;
@@ -233,6 +257,8 @@ let Productions = {
 			}
 			return listItems;
 		},
+
+
 		exportPresets: () => {
 			Productions.Rating.ensurePresets();
 			const payload = {
@@ -243,6 +269,8 @@ let Productions = {
 			const fileName = `EfficiencyRatingPresets_${moment().format('YYMMDD-HHmm')}.json`;
 			MainParser.ExportFile(new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" }), fileName);
 		},
+
+
 		importPresets: (file) => {
 			if (!file) return;
 			const reader = new FileReader();
@@ -271,6 +299,7 @@ let Productions = {
 			reader.readAsText(file);
 		},
 
+
 		load: (overwrite = null) => {
 			Productions.Rating.ensurePresets();
 			const activePreset = Productions.Rating.getActivePreset();
@@ -295,6 +324,7 @@ let Productions = {
 			}
 		},
 
+
 		save:() => {
 			Productions.Rating.ensurePresets();
 			const preset = Productions.Rating.getActivePreset();
@@ -303,7 +333,6 @@ let Productions = {
 			}
 			Productions.Rating.savePresets();
 		}
-
 	},
 
 
@@ -1677,9 +1706,11 @@ let Productions = {
 		Productions.Tabs.push('<li class="' + id + '" id="prod-' + id + '"><a href="#' + id + '"><span>&nbsp;</span></a></li>');
 	},
 
+
 	GetTabs: ()=> {
 		return '<ul class="horizontal dark-bg clickable">' + Productions.Tabs.join('') + '</ul>';
 	},
+
 
 	SetTabContent: (id, content)=> {
 		// ab dem zweiten Eintrag verstecken
@@ -1687,6 +1718,7 @@ let Productions = {
 
 		Productions.TabsContent.push('<div class="content" id="' + id + '"' + style + '>' + content + '</div>');
 	},
+
 
 	GetTabContent: ()=> {
 		return Productions.TabsContent.join('');
@@ -1899,6 +1931,7 @@ let Productions = {
 
 	AdditionalSpecialBuildings:null,
 
+	
 	efficiencyTT: (e) => {
 		let type=e?.currentTarget?.dataset?.type
 		let y = Productions.ratedBuildings.filter(x=>(!x.isInInventory && x?.rating?.[type]>0)).map(x=>(x.rating[type])).sort((a,b) => a - b);
@@ -1909,6 +1942,7 @@ let Productions = {
 		tooltip += `<tr><td>${i18n("Boxes.ProductionsRating.top10percent")}:</td><td>${y[Math.round((y.length-1)*0.9)].toFixed(2)}</td></tr></table>`
 		return tooltip
 	},
+
 
 	calculateFSP: (type,value) =>{
 		let sum = 0
@@ -2012,8 +2046,8 @@ let Productions = {
 			helper.preloader.show('#ProductionsRating');
 
 			ratedBuildings.sort((a,b) => {
-				if (a.rating.totalScore < b.rating.totalScore) return -1
-				if (a.rating.totalScore > b.rating.totalScore) return 1
+				if (a.rating.totalScore < b.rating.totalScore) return 1
+				if (a.rating.totalScore > b.rating.totalScore) return -1
 				return 0
 			});
 
@@ -2053,7 +2087,7 @@ let Productions = {
 				h.push('<th colspan="'+(colNumber+5)+'"><div class="options">');
 				h.push('<a class="btn" id="addMetaBuilding">' + i18n('Boxes.ProductionsRating.AddBuilding') + '</a>');
 				h.push('<label for="tilevalues"><input type="checkbox" id="tilevalues" />' + i18n('Boxes.ProductionsRating.ShowValuesPerTile') + '</label>');
-				h.push('<input type="text" id="efficiencyBuildingFilter" size=20 placeholder="' + i18n('Boxes.ProductionsRating.Filter') + ': neo|eden" />');
+				h.push('<input type="text" id="efficiencyBuildingFilter" size=20 value="' + Productions.RatingSearchTerm + '" placeholder="' + i18n('Boxes.ProductionsRating.Filter') + ': neo|eden" />');
 				h.push('<label for="showhighlighted" data-original-title="'+i18n('Boxes.ProductionsRating.ShowHighlightedExplanation')+'"><input type="checkbox" id="showhighlighted" />' + i18n('Boxes.ProductionsRating.ShowHighlighted') + '</label>')
 				h.push('<div>');
 				h.push('<label for="gBs" data-original-title="'+i18n('Boxes.ProductionsRating.NoGBsExplanation')+'"><input type="checkbox" id="gBs" /><img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_greatbuilding.png`,true)+'" /></label>');
@@ -2071,11 +2105,11 @@ let Productions = {
 			h.push('</tr>');
 
 			h.push('<tr class="sorter-header exportheader">');
-			h.push('<th data-type="ratinglist" class="is-number" data-export="' + i18n('Boxes.ProductionsRating.Score') + '">' + i18n('Boxes.ProductionsRating.Score') + '</th>');
+			h.push('<th data-type="ratinglist" class="is-number descending" data-export="' + i18n('Boxes.ProductionsRating.Score') + '">' + i18n('Boxes.ProductionsRating.Score') + '</th>');
 			h.push('<th data-type="ratinglist" data-export="'+ i18n('Boxes.ProductionsRating.BuildingName') +'"><div class="flex-between"><span>'+ i18n('Boxes.ProductionsRating.BuildingName') +'</span>' +
 			' <div id="buildingsize"><span>'+i18n('Boxes.Productions.Headings.size')+'</span><ul>');
 				for (let size of buildingSizes) {
-					h.push('<li data-value="'+size+'">'+size+'</li>')
+					h.push('<li data-value="'+size+'" class="' + (Productions.RatingFilteredSizes.includes(size) ? 'selected' : '') + '">'+size+'</li>')
 				}
 			h.push('</ul></div></div></th><th data-type="ratinglist" class="is-number" data-export="#"></th><th class="no-sort inventory-buildings text-center"><img alt="" data-original-title="'+i18n('Boxes.ProductionsRating.InventoryTooltip')+'" class="game-cursor" src="' + extUrl + 'js/web/x_img/inventory.png" /></th>');
 
@@ -2406,6 +2440,7 @@ let Productions = {
 			// result: search function
 			$('#efficiencyBuildingFilter').on('input', e => {
 				let filter = $('#efficiencyBuildingFilter').val();
+				Productions.RatingSearchTerm = filter;
 				let regEx = new RegExp(filter,"i");
 
 				$('.ratinglist tr td:nth-child(2)').each((x,y) => {
@@ -2442,29 +2477,28 @@ let Productions = {
 			});
 
 			// result: building size filter
-			let filteredSizes = [];
 			$('#buildingsize li').on('click', e => {
 				e.stopPropagation();
 				let filter = parseInt(e.target.getAttribute('data-value'));
 				e.target.classList.toggle('selected');
 
-				if (filteredSizes.includes(filter)) {
-					let index = filteredSizes.indexOf(filter);
-					filteredSizes.splice(index, 1);
+				if (Productions.RatingFilteredSizes.includes(filter)) {
+					let index = Productions.RatingFilteredSizes.indexOf(filter);
+					Productions.RatingFilteredSizes.splice(index, 1);
 				}
 				else {
-					filteredSizes.push(filter);
+					Productions.RatingFilteredSizes.push(filter);
 				}
 
 				$('.ratinglist tr').addClass('hidden');
-				if (isNaN(parseInt(filter)) || filteredSizes.length === 0) {
+				if (isNaN(parseInt(filter)) || Productions.RatingFilteredSizes.length === 0) {
 					$('.ratinglist tr').removeClass('hidden');
 					return;
 				}
 				$('.ratinglist tr').each((i,elem) => {
-					let size = elem.classList.values().find(x => x.includes('size'));
+					let size = Array.from(elem.classList).find(x => x.includes('size'));
 					if (size) {
-						for (let filteredSize of filteredSizes) {
+						for (let filteredSize of Productions.RatingFilteredSizes) {
 							if ("size"+filteredSize === size) {
 								elem.classList.remove('hidden');
 								return;
@@ -2493,6 +2527,25 @@ let Productions = {
 
 			helper.preloader.hide('#ProductionsRating');
 			//$('#ProductionsRatingBody').fadeIn(501);
+
+			if (Productions.RatingSearchTerm !== "") {
+				$('#efficiencyBuildingFilter').trigger('input');
+			}
+
+			if (Productions.RatingFilteredSizes.length > 0) {
+				$('.ratinglist tr').addClass('hidden');
+				$('.ratinglist tr').each((i,elem) => {
+					let size = Array.from(elem.classList).find(x => x.includes('size'));
+					if (size) {
+						for (let filteredSize of Productions.RatingFilteredSizes) {
+							if ("size"+filteredSize === size) {
+								elem.classList.remove('hidden');
+								return;
+							}
+						}
+					}
+				});
+			}
 		});
     },
 
@@ -2906,3 +2959,35 @@ let Productions = {
 		$(itemId).html(h)
 	},
 };
+
+FoEproxy.addHandler('CityMapService', 'placeBuilding', (data, postData) => {
+	if ($('#ProductionsRating').length > 0) {
+		setTimeout(() => {
+				Productions.CalcRatingBody();
+		}, 250);
+	}
+});
+
+FoEproxy.addHandler('CityMapService', 'removeBuilding', (data, postData) => {
+	if ($('#ProductionsRating').length > 0) {
+		setTimeout(() => {
+			Productions.CalcRatingBody();
+		}, 250);
+	}
+});
+
+FoEproxy.addHandler('InventoryService', 'updateItem', (data, postData) => {
+	if ($('#ProductionsRating').length > 0) {
+		setTimeout(() => {
+			Productions.CalcRatingBody();
+		}, 250);
+	}
+});
+
+FoEproxy.addHandler('InventoryService', 'useItem', (data, postData) => {
+	if ($('#ProductionsRating').length > 0) {
+		setTimeout(() => {
+			Productions.CalcRatingBody();
+		}, 250);
+	}
+});
