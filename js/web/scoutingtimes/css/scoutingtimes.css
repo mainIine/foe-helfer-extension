@@ -11,9 +11,7 @@
  * **************************************************************************************
  */
 
-
-
- #mapScoutingTimesDialog img{
+#mapScoutingTimesDialog img{
     width: 25px;
     height: 25px;
 }
@@ -27,15 +25,14 @@
 }
 
 #mapScoutingTimesDialogBody td.scouting {
-
     animation-name: scouting;
     animation-duration: 6s;
     padding-left:5px;
     animation-iteration-count: infinite;
-  }
+}
 
-  @keyframes scouting {
+@keyframes scouting {
     0% {padding-left:5px;}
     50% {padding-left:50px;}
     100% {padding-left:5px;}
-  }
+}

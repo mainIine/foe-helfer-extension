@@ -96,11 +96,11 @@
 }
 @-webkit-keyframes bgblink {
 	from {background-color: var(--hud-counter-success);}
-	50% {background-color: var(--text-info)}
+	50% {background-color: var(--info-blue)}
 	to {background-color: var(--hud-counter-success);}
 }
 @keyframes bgblink {
 	from {background-color: var(--hud-counter-success);}
-	50% {background-color: var(--text-info)}
+	50% {background-color: var(--info-blue)}
 	to {background-color: var(--hud-counter-success);}
 }

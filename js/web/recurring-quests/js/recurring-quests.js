@@ -17,7 +17,7 @@ FoEproxy.addHandler('QuestService', 'getUpdates', (data, postData) => {
     for (let q in data.responseData) {
         if (!data.responseData.hasOwnProperty(q)) continue;
         let quest = data.responseData[q];
-        if (quest.id >= 900000 && quest.id < 1000000) {
+        if (quest.type=="generic" && quest.id >= 900000 && quest.id < 1000000  ) {
             if (quest.genericRewards?.length > 0) {
                 if (!Recurring.data.Questlist[quest.id] && quest.genericRewards[0].flags.includes('random')) {
                     Recurring.data.Questlist[quest.id] = {'title':quest.title, 'diamonds': false};

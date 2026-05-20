@@ -108,7 +108,7 @@
   width: 1em;
   height: 1em;
   border-radius: 1em;
-  background-color: var(--text-normal);
+  background-color: var(--beige);
   content: "";
   transition: margin 0.1s linear;
   box-shadow: 0px 0px 5px var(--text-muted);

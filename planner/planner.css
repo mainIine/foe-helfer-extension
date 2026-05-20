@@ -44,7 +44,7 @@ body, html {
 }
 
 .error {
-    color: var(--text-danger)
+    color: var(--danger-red)
 }
 
 textarea, button, input, .btn {

@@ -31,7 +31,7 @@ let Calculator = {
 	ForderBonus: 90,
     PlayerName: undefined,
     LastPlayerID: 0,
-    PlayInfoSound: null,
+    PlayInfoSound: false,
 	Rankings : undefined,
 	CityMapEntity : undefined,
 	LastRecurringQuests: undefined,
@@ -65,15 +65,15 @@ let Calculator = {
 
         // Wenn die Box noch nicht da ist, neu erzeugen und in den DOM packen
         if ($('#costCalculator').length === 0) {
-            /*let spk = localStorage.getItem('CalculatorTone');
+            let spk = localStorage.getItem('CalculatorTone');
 
             if (spk === null) {
-                localStorage.setItem('CalculatorTone', 'deactivated');
+                localStorage.setItem('CalculatorTone', 'false');
                 Calculator.PlayInfoSound = false;
 
             } else {
-                Calculator.PlayInfoSound = (spk !== 'deactivated');
-            }	*/	
+                Calculator.PlayInfoSound = (spk !== 'false');
+            }
 
             HTML.Box({
 				id: 'costCalculator',
@@ -82,7 +82,6 @@ let Calculator = {
 				auto_close: true,
 				dragdrop: true,
 				minimize: true,
-				//speaker: 'CalculatorTone',
 				settings: 'Calculator.ShowCalculatorSettings()',
 				active_maps:"main",
 			});
@@ -106,19 +105,6 @@ let Calculator = {
 				let StorageKey = (Calculator.ForderBonusPerConversation && MainParser.OpenConversation ? 'CalculatorForderBonus_' + MainParser.OpenConversation : 'CalculatorForderBonus');
 				localStorage.setItem(StorageKey, Calculator.ForderBonus);
 				Calculator.Show();
-			});
-
-			$('#costCalculator').on('click', '#CalculatorTone', function () {
-				let disabled = $(this).hasClass('deactivated');
-
-				localStorage.setItem('CalculatorTone', (disabled ? '' : 'deactivated'));
-				Calculator.PlayInfoSound = !!disabled;
-
-				if (disabled === true) {
-					$('#CalculatorTone').removeClass('deactivated');
-				} else {
-					$('#CalculatorTone').addClass('deactivated');
-				}
 			});
 
 			// Quick copy for contribution values
@@ -647,7 +633,7 @@ let Calculator = {
 			hFordern.push('<tr class="' + RowClass + '">');
 			hFordern.push('<td class="text-center"><strong class="' + RankClass + ' td-tooltip" title="' + HTML.i18nTooltip(RankTooltip.join('<br>')) + '">' + RankText + '</strong></td>');
 			hFordern.push('<td class="text-center"><strong class="' + EinsatzClass + ' td-tooltip copy-fp clickable" data-copy="' + ForderFPRewards[Rank] + '" title="' + HTML.i18nTooltip(EinsatzTooltip.join('<br>')) + '">' + EinsatzText + '</strong></td>');
-			hFordern.push('<td class="text-center"><strong class="' + GewinnClass + ' td-tooltip" title="' + HTML.i18nTooltip(GewinnTooltip.join('<br>')) + '">' + GewinnText + '</strong></td>');
+			hFordern.push('<td class="text-center"><strong class="' + GewinnClass + ' td-tooltip copy-fp" data-copy="'+ForderGewinn+'" title="' + HTML.i18nTooltip(GewinnTooltip.join('<br>')) + '">' + GewinnText + '</strong></td>');
 			
 			if (Calculator.ShowBP)
 				hFordern.push('<td class="text-center">' + HTML.Format(BPRewards[Rank]) + '</td>');
@@ -698,11 +684,6 @@ let Calculator = {
 	},
 
 		
-	/**
-	 * Spielt einen Sound im Calculator ab
-	 *
-	 * @returns {string}
-	 */
     PlaySound: () => {
         if (Calculator.PlayInfoSound) {
 			helper.sounds.play("message");
@@ -745,9 +726,10 @@ let Calculator = {
 		// new custom button
 		c.push(nV);
 
-		c.push('<label for="forderbonusperconversation"><input id="forderbonusperconversation" class="forderbonusperconversation game-cursor" ' + (Calculator.ForderBonusPerConversation ? 'checked' : '') + ' type="checkbox"> ' + i18n('Boxes.Calculator.ForderBonusPerConversation')+'</label><br/>');
 		c.push('<label for="CalcAutoOpen"><input id="CalcAutoOpen" class="CalcAutoOpen game-cursor" ' + (Calculator.AutoOpen ? 'checked' : '') + ' type="checkbox"> ' + i18n('Settings.ShowOwnPartAutoOpen.Desc')+'</label><br/>');
-		c.push('<label for="OwnPartClose"><input id="OwnPartClose" class="OwnPartClose game-cursor" ' + (Calculator.OwnPartClose ? 'checked' : '') + ' type="checkbox"> ' + i18n('Boxes.Calculator.OwnPartClose') + '</label>');
+		c.push('<label for="forderbonusperconversation"><input id="forderbonusperconversation" class="forderbonusperconversation game-cursor" ' + (Calculator.ForderBonusPerConversation ? 'checked' : '') + ' type="checkbox"> ' + i18n('Boxes.Calculator.ForderBonusPerConversation')+'</label><br/>');
+		c.push('<label for="OwnPartClose"><input id="OwnPartClose" class="OwnPartClose game-cursor" ' + (Calculator.OwnPartClose ? 'checked' : '') + ' type="checkbox"> ' + i18n('Boxes.Calculator.OwnPartClose') + '</label><br/>');
+		c.push('<label for="CalculatorTone"><input id="CalculatorTone" class="CalculatorTone game-cursor" ' + (Calculator.PlayInfoSound ? 'checked' : '') + ' type="checkbox"> ' + i18n('Boxes.Calculator.PlayInfoSound') + '</label>');
 
 		// save button
 		c.push(`<p class="text-center"><button id="save-calculator-settings" class="btn btn-green" onclick="Calculator.SettingsSaveValues()">${i18n('Boxes.Calculator.Settings.Save')}</button></p>`);
@@ -791,7 +773,9 @@ let Calculator = {
 			Calculator.AutoOpen = $('.CalcAutoOpen').prop('checked');
 			localStorage.setItem('CalcAutoOpen', Calculator.AutoOpen);
 			Calculator.OwnPartClose = $('.OwnPartClose').prop('checked');
-			localStorage.setItem('OwnPartClose', Calculator.OwnPartClose)
+			localStorage.setItem('OwnPartClose', Calculator.OwnPartClose);
+			Calculator.PlayInfoSound = $('#CalculatorTone').prop('checked');
+			localStorage.setItem('CalculatorTone', Calculator.PlayInfoSound);
 		});
 
 		// save new buttons

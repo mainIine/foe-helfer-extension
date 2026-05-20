@@ -75,12 +75,12 @@
 #eventpresentsBody tr.visible td {
     opacity: 1;
     font-weight: bold;
-    color: var(--bright-color);
+    color: var(--sunflower);
 }
 
 #eventpresentsBody tr.used td {
     background-color: var(--table-bg-success);
-    color: var(--text-success);
+    color: var(--success);
     font-weight: bold;
     opacity: 0.8
 }

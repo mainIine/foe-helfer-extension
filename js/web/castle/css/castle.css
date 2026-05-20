@@ -24,7 +24,7 @@
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	color: var(--bright-color);
+	color: var(--sunflower);
 }
 
 #Castle .castle_wrapper .content .warning {
@@ -57,7 +57,7 @@
 
 #Castle #casPointsDiff {
 	padding-left: 5px;
-	color: var(--text-success);
+	color: var(--success);
 }
 
 #Castle #casLogWrapper .overview {
@@ -85,7 +85,7 @@
 }
 
 #Castle #casLogWrapper tr.caption td {
-	color: var(--text-normal);
+	color: var(--beige);
 }
 
 #Castle #casLogWrapper tr.caption td span,

@@ -30,8 +30,6 @@ let Settings = {
 
 	/**
 	 * load the settings from the json
-	 *
-	 * @constructor
 	 */
 	Init: () => {
 		Settings.LoadConfig((response) => {
@@ -42,9 +40,6 @@ let Settings = {
 
 	/**
 	 * Load config from config file
-	 *
-	 * @param callback
-	 * @constructor
 	 */
 	LoadConfig: (callback) => {
 		fetch(
@@ -180,6 +175,10 @@ let Settings = {
 
 		$('#SettingsBoxBody').on('click', 'input.setting-check', function () {
 			Settings.StoreSettings($(this));
+		});
+		$('.setting [data-original-title]').tooltip({
+			container: 'body',
+			html: true,
 		});
 	},
 
@@ -590,28 +589,21 @@ let Settings = {
 			menuItems.push(...hiddenArray);
 		}
 
-		for (let i in menuItems)
-		{
-			if (!menuItems.hasOwnProperty(i)) {
-				break;
-			}
+		for (let i in menuItems) {
+			if (!menuItems.hasOwnProperty(i)) break;
 
 			const name = menuItems[i];
-
-			// exclude settings
-			if(name === 'settings'){
-				continue;
-			}
+			if(name === 'settings') continue;
 
 			// is there a function?
-			if (_menu[name + '_Btn'])
-			{
+			if (_menu[name + '_Btn']) {
 				let btnBG = $('<div />')
 					.attr({ id: `setting-${name}-Btn` })
 					.addClass('hud-btn')
 					.addClass(hiddenArray.includes(name) ? 'hud-btn-red' : '');
+				let btnData = _menu.ItemsData.find(x => x.id === name);
 
-				let btn = $(`<span onclick="_menu.ToggleItemVisibility('${name}')"></span>`);
+				let btn = $(`<span onclick="_menu.ToggleItemVisibility('${name}')" data-original-title='<b>${btnData?.title||""}</b><br>${btnData?.description||""}'></span>`);
 		
 				btnBG.append(btn);
 				bl.append(btnBG);
