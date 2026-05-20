@@ -663,11 +663,17 @@ let Productions = {
 
 	setChainsAndSets(buildings) {
 		if (buildings === undefined) buildings = Object.values(MainParser.CityBuildingsData)
+		let idsToRemove = [];
 
 		for (const building of buildings) {
 			if (building?.setBuilding !== undefined) {
-				// todo
-				// CityBuildings.findAdjacentSetBuildingByCoords(building.coords.x, building.coords.y, building.setBuilding.name)
+				let adjacentIds = CityBuildings.findAdjacentSetBuildingByCoords(building);
+				let uniqueAdjacentEntities = new Set();
+				for (let id of adjacentIds) {
+					let adjB = CityBuildings.getBuildingById(id);
+					if (adjB) uniqueAdjacentEntities.add(adjB.entityId);
+				}
+				building.setBuilding.uniqueAdjacentCount = uniqueAdjacentEntities.size;
 			} 
 			else if (building?.chainBuilding !== undefined && building?.chainBuilding?.type === "start") {
 
@@ -677,13 +683,15 @@ let Productions = {
 
 					for (const link of linkedBuildings) {
 						if (link.chainBuilding.type === 'linked') {
-							// todo: kann irgendwie kaputt gehen
-							// let index = Productions.BuildingsAll.findIndex(x => x.id === link.id)
-							// delete Productions.BuildingsAll[index]
+							idsToRemove.push(link.id);
 						}
 					}
 				}
 			}
+		}
+
+		if (idsToRemove.length > 0) {
+			Productions.BuildingsAll = Productions.BuildingsAll.filter(b => !idsToRemove.includes(b.id));
 		}
 	},
 
@@ -2666,6 +2674,10 @@ let Productions = {
 				let bType = boost.type.find(x => x === type.split('-')[0]);
 				if (bType === undefined) continue;
 
+				if (boost.needsLink && building.setBuilding !== undefined) {
+					if (boost.requiredLinks > (building.setBuilding.uniqueAdjacentCount || 0)) continue;
+				}
+
 				bsum += boost.value;
 			}
 			return bsum;
@@ -2673,6 +2685,9 @@ let Productions = {
 		else if (type === "forge_points_production" || type === "goods_production") {
 			if (building.boosts === undefined) return 0;
 			for (const boost of building.boosts) {
+				if (boost.needsLink && building.setBuilding !== undefined) {
+					if (boost.requiredLinks > (building.setBuilding.uniqueAdjacentCount || 0)) continue;
+				}
 				if (boost.type[0] === 'forge_points_production' && type === 'forge_points_production')  {
 					return boost.value;
 				}
