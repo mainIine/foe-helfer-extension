@@ -670,10 +670,10 @@ let Info = {
     GuildRaidsMapService_updateState: (d) => {
         if (d.causingPlayerId === ExtPlayerID) return false;
 
-        let nodeID = d.state.noteId;
+        let nodeID = d.state.nodeId;
         let PlayerLink = MainParser.GetPlayerLink(d.causingPlayerId, PlayerDict[d.causingPlayerId]?.PlayerName) || '';
         let nodeData = QiProgress.QiMap.nodes.find(x => x.id === nodeID);
-        let image = ('qi-'+nodeData.type?.type);
+        let image = ('qi-'+nodeData.type?.type) || 'qi';
         if (nodeData.type?.armyType !== undefined)
             image = ('qi-'+nodeData.type?.armyType||"") + '-' + (nodeData.type?.fightType||"");
 
