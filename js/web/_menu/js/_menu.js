@@ -447,7 +447,6 @@ let _menu = {
 	 * Product overview button
 	 */
 	productions_Btn: () => {
-		let btnData = _menu.ItemsData.find(x => x.id === 'productions');
 		let pB = _menu.MakeButton('productions');
 
 		let btnSpan = $('<span />').on('click', function() {

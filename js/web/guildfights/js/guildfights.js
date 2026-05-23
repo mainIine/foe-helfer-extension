@@ -1027,7 +1027,6 @@ let GuildFights = {
 
 		$('#LiveGildFighting').find('#LiveGildFightingBody').html(h.join('')).promise().done(function () {
 			$('.gbg-tabs').tabslet({ active: activeTab });
-			$('[data-original-title]').tooltip({container: 'body'});
 
 			$('.gbg-tabs').on('_after', (e) => {
 				GuildFights.ToggleCopyButton();
@@ -1044,6 +1043,7 @@ let GuildFights = {
 				$(this).toggleClass('highlight-row');
 				GuildFights.ToggleCopyButton();
 			});
+			$('[data-original-title]').tooltip({container: 'body'});
 		});
 	},
 
@@ -1723,6 +1723,7 @@ let GuildFights = {
 			id: alert.alertId,
 		}).then(() => {
 			GuildFights.Alerts = GuildFights.Alerts.filter((a) => a.provId != provId);
+			$('.tooltip').remove();
 			HTML.ShowToastMsg({
 				head: i18n('Boxes.GuildFights.DeleteMessage.Title'),
 				text: HTML.i18nReplacer(i18n('Boxes.GuildFights.DeleteMessage.Desc'), { provinceName: prov.title }),
