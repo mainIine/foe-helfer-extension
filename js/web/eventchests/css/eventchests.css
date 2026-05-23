@@ -28,7 +28,8 @@
 #eventpresents {
     top: 100px;
     left: 48%;
-    height: 400px;
+    max-height: 90vh;
+    height: auto;
 }
 
 #eventpresentsBody {
@@ -36,7 +37,7 @@
 }
 
 #eventpresentsBody img {
-    width: 30px;
+    width: 26px;
 }
 
 #eventpresentsBody img.visible {
@@ -47,14 +48,14 @@
 
 #eventpresentsBody td.icon {
     position: relative;
-    width: 30px;
+    width: 26px;
     vertical-align: top;
 }
 
 #eventpresentsBody .fragment {
     position: absolute;
-    top: 18px;
-    left: 20px;
+    top: 15px;
+    left: 19px;
 }
 
 #eventpresentsBody .fragment img {
@@ -69,7 +70,7 @@
 }
 
 #eventpresentsBody td {
-    height: 30px;
+    height: 26px;
 }
 
 #eventpresentsBody tr.visible td {

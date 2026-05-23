@@ -18,6 +18,11 @@
 	height: 500px;
 }
 
+ #ProductionsRating {
+	height: 95vh;
+	width: 95vw;
+}
+
 #ProductionsRatingBody {
 	opacity: 1;
 }
