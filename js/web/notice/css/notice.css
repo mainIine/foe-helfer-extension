@@ -118,6 +118,17 @@
 	overflow-y: auto;
 }
 
+#noticesBody .content-text:focus, #noticesBody .content-head:focus {
+	outline: 2px solid var(--text-dark);
+}
+
+#noticesBody .content-text * {
+	font-family: inherit !important;
+	color: inherit !important;
+    background-color: transparent !important;
+	border-color: var(--text-dark) !important;
+}
+
 /*******************************************************************************/
 #notices-modal,
 #notices-modal-players {
