@@ -1322,9 +1322,6 @@ let MainParser = {
 
 	/**
 	 * Check whether an update is necessary
-	 *
-	 * @param ep
-	 * @returns {*}
 	 */
 	checkNextUpdate: (ep) => {
 		let s = localStorage.getItem(ep),
@@ -1362,8 +1359,7 @@ let MainParser = {
 	},
 
 	GetBuildingLink: (BuildingID, BuildingName) => {
-		if (Settings.GetSetting('ShowLinks'))
-		{
+		if (Settings.GetSetting('ShowLinks')) {
 			let BuildingLink = HTML.i18nReplacer(BuildingsLinkFormat, {'buildingid': BuildingID });
 
 			return `<a class="external-link game-cursor" href="${BuildingLink}" target="_blank">${BuildingName} ${LinkIcon}</a>`;
@@ -1487,7 +1483,9 @@ let MainParser = {
 		setTimeout(MainParser.forceLoadCityEntities, 15000);
 	
 		window.dispatchEvent(new CustomEvent('foe-helper#StartUpDone'))
-		//console.log('StartUp done')
+		
+		// remove campagnemap storage - can be removed again at some point
+		localStorage.removeItem('AllProvinces');
 	},
 
 
