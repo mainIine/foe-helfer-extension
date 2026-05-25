@@ -59,6 +59,7 @@ let mapTradeWarning = {
             'id': 'mapTradeWarningDialog',
             'title': i18n('Boxes.mapTradeWarning.Title'),
             'auto_close': true,
+            'class': 'window-warning',
             'dragdrop': false,
             'minimize': false
         });

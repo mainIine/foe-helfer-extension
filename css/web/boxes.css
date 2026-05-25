@@ -436,8 +436,7 @@ span.resicon.def_boost_defender-battleground {
 
 .window-box ::-webkit-scrollbar,
 .window-body::-webkit-scrollbar,
-.window-body * ::-webkit-scrollbar
-{
+.window-body * ::-webkit-scrollbar {
 	width: 7px;
 	background: var(--window-body-scroll-bg);
 	border-left: 1px solid var(--border-table-top);
@@ -1274,6 +1273,30 @@ a:hover {
 	border: var(--window-border);
 	border-radius: 5px;
 	max-height: calc(100vh - 6px);
+}
+
+.window-box.window-warning {
+	border: none;
+    background: var(--red);
+}
+
+.window-box.window-warning .window-head {
+    background: none;
+    border-bottom: 1px dotted var(--black);
+    box-shadow: none;
+    padding: 3px;
+}
+
+.window-box.window-warning .window-close {
+    mix-blend-mode: darken;
+}
+
+.window-box.window-warning .window-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+	padding: 2px;
 }
 
 .closed.window-box {
