@@ -32,25 +32,12 @@
 }
 
 #battleAssistRogueDialog {
-    top: calc(50vh + 230px);
-    /*left: calc(50vw - 92px);*/
-    left: calc(50vw - 277px);
+    top: calc(50vh + 240px);
+    left: calc(50vw - 270px);
 }
-/*
-#battleAssistRogueDialog.ABnew {
-    top: calc(50vh + 230px);
-    left: calc(50vw - 277px);
-}*/
 
 #battleAssistRogueDialogBody {
     width: 360px;
-    height: 100px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    font-size: 120%;
-	background-color: var(--table-bg-error);
 }
 
 #battleAssistRogueDialogBody,
@@ -60,9 +47,7 @@
 
 @keyframes battleAssistBlink {
     0% {color: var(--sunflower);}
-    25% {color: var(--beige);}
-    50% {color: transparent;}
-    75% {color: var(--beige);}
+    50% {color: var(--beige);}
     100% {color: var(--sunflower);}
 }
 

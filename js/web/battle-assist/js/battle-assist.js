@@ -238,6 +238,7 @@ let BattleAssist = {
         HTML.Box({
             'id': 'battleAssistRogueDialog',
             'title': i18n('Boxes.BattleAssist.Title'),
+            'class': 'window-warning',
             'auto_close': true,
             'dragdrop': false,
             'minimize': false

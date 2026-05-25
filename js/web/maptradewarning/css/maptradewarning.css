@@ -1,28 +1,9 @@
 #mapTradeWarningDialog {
     top: calc(50vh + 180px);
     left: calc(50vw - 170px);
-    border: none;
-    background: var(--red);
     width: 183px;
 }
 
-#mapTradeWarningDialog .window-head {
-    background: none;
-    border-bottom: 1px dotted var(--black);
-    box-shadow: none;
-    padding: 3px;
-}
-
-#mapTradeWarningDialog .window-close {
-    mix-blend-mode: darken;
-}
-
 #mapTradeWarningDialogBody {
-    padding: 2px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
     font-size: 90%;
 }
-
