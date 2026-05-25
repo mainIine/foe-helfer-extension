@@ -22,12 +22,9 @@ FoEproxy.addMetaHandler('castle_system_levels', (data, postData) => {
     let resp = JSON.parse(data['response']);
     let castlebonus = 1;
         
-    for (let l of resp)
-	{
-        if(!l['level'])
-		{
+    for (let l of resp) {
+        if(!l['level']) 
 			continue;
-		}
 
         for (let boost of l.permanentRewards.BronzeAge) {
             if(boost.subType !== 'army_scout_time')
@@ -275,7 +272,7 @@ let scoutingTimes = {
     },
 
     CheckSectors: (data) => {
-            // Is the box enabled in the settings?
+        // Is the box enabled in the settings?
         if (!Settings.GetSetting('ShowScoutingTimes')) {
             return;
         }
@@ -293,12 +290,8 @@ let scoutingTimes = {
         scoutingTimes.Provinces[Id].isPlayerOwned = true;
 
         return scoutingTimes.ShowDialog();
-
     },
     
-    /**
-    *
-    */
      ShowSettings: () => {
 		let autoOpen = Settings.GetSetting('ShowScoutingTimes');
 
@@ -309,9 +302,6 @@ let scoutingTimes = {
         $('#mapScoutingTimesDialogSettingsBox').html(h.join(''));
     },
 
-    /**
-    *
-    */
     SaveSettings: () => {
         let value = false;
 		if ($("#autoStartScout").is(':checked'))
