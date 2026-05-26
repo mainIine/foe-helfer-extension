@@ -101,7 +101,7 @@
 	padding: 0;
 }
 
-#gbCosts strong, #gbCosts strong.normal, #OwnPartBox #up-to-level-up {
+#gbCosts strong, #gbCosts strong.normal, #up-to-level-up, .recurringquests {
 	color: var(--sunflower);
 }
 
