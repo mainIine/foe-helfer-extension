@@ -118,7 +118,7 @@
 	background-color: var(--table-bg-bright);
 }
 
-#gbCalculatorBody .costFactorWrapper {
+#gbCalc .costFactorWrapper {
 	padding-top: 5px;
 	text-align: center;
 }
@@ -128,12 +128,12 @@
 	align-items: stretch;
 }
 
-#gbCalculatorBody .costFactorWrapper .btn-group {
+#gbCalc .costFactorWrapper .btn-group {
 	text-align: center;
 	white-space: nowrap;
 }
 
-#gbCalculatorBody #costTable {
+#gbCalc #costTable {
 	user-select: text;
 }
 
