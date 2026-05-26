@@ -11,18 +11,7 @@
  * **************************************************************************************
  */
 
-#costCalculator {
-	top: 30%;
-	left: 30px;
-	min-width: 280px;
-}
-
-#costCalculator #costCalculatorBody {
-	position: relative;
-	min-width: 270px;
-}
-
-#costCalculator #costCalculatorBody input {
+#gbCalc input {
 	display: inline-block;
 	width: 35px;
 	text-align: center;
@@ -36,115 +25,115 @@
 	transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
 
-#costCalculator #costCalculatorBody strong {
+#gbCalc strong {
 	color: var(--sunflower);
 }
 
-#costCalculator #costCalculatorBody .header {
+#gbCalc .header {
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	font-size: 90%;
 }
 
-#costCalculator #costCalculatorBody .header span {
+#gbCalc .header span {
 	color: var(--beige);
 }
 
-#costCalculator #costCalculatorBody .header .building-name {
+#gbCalc .header .building-name {
 	font-size: 125%;
 }
 
-#costCalculator #costCalculatorBody .header .player-name {
+#gbCalc .header .player-name {
 	display: block;
 	white-space: nowrap;
 }
 
-#costCalculator #costCalculatorBody table.foe-table {
+#gbCalc table.foe-table {
 	margin-top: 2px;
 }
 
-#costCalculator tr th {
+#gbCalc tr th {
 	text-align: center;
 }
 
-#costCalculator tr th span {
+#gbCalc tr th span {
 	display: inline-block;
 	width: 25px;
 	height: 25px;
 	vertical-align: bottom;
 }
 
-#costCalculator tr th span.blueprint {
+#gbCalc tr th span.blueprint {
 	background: url(../../x_img/blueprint.png) center no-repeat;
 	background-size: contain;
 }
 
-#costCalculator tr th span.medal {
+#gbCalc tr th span.medal {
 	background: url(../../x_img/medal.png) center no-repeat;
 	background-size: contain;
 }
 
-#costCalculator tr th span.forgepoints {
+#gbCalc tr th span.forgepoints {
 	background: url(../../x_img/forgepoints.png) center no-repeat;
 	background-size: contain;
 }
 
-#costCalculator #costCalculatorBody .foe-table td {
+#gbCalc .foe-table td {
 	white-space: nowrap;
 }
 
-#costCalculator #costCalculatorBody td.error,
-#costCalculator #costCalculatorBody td .error {
+#gbCalc td.error,
+#gbCalc td .error {
 	color: var(--danger-red);
 }
 
-#costCalculator #costCalculatorBody strong.success {
+#gbCalc strong.success {
 	color: var(--success);
 }
 
-#costCalculator #costCalculatorBody .text-grey,
-#costCalculator #costCalculatorBody .text-grey strong {
+#gbCalc .text-grey,
+#gbCalc .text-grey strong {
 	color: var(--text-tab);
 	opacity: 0.9;
 }
 
-#costCalculator #costCalculatorBody strong.info {
+#gbCalc strong.info {
 	color: var(--info-blue);
 }
 
-#costCalculator #costCalculatorBody tr.info-row {
+#gbCalc tr.info-row {
 	background-color: var(--table-bg-info);
 }
 
-#costCalculator #costCalculatorBody tr.bg-green {
+#gbCalc tr.bg-green {
 	background-color: var(--table-bg-success);
 }
 
-#costCalculator #costCalculatorBody tr.bg-red {
+#gbCalc tr.bg-red {
 	background-color: var(--table-bg-error);
 }
 
-#costCalculator #costCalculatorBody tr.bg-yellow {
+#gbCalc tr.bg-yellow {
 	background-color: var(--table-bg-bright);
 }
 
-#costCalculatorBody .costFactorWrapper {
+#gbCalculatorBody .costFactorWrapper {
 	padding-top: 5px;
 	text-align: center;
 }
 
-#costCalculator .costFactorWrapper span {
+#gbCalc .costFactorWrapper span {
 	display: inline-flex;
 	align-items: stretch;
 }
 
-#costCalculatorBody .costFactorWrapper .btn-group {
+#gbCalculatorBody .costFactorWrapper .btn-group {
 	text-align: center;
 	white-space: nowrap;
 }
 
-#costCalculatorBody #costTable {
+#gbCalculatorBody #costTable {
 	user-select: text;
 }
 

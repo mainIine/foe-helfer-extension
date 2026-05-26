@@ -34,7 +34,7 @@
 	top: -3px;
 }
 
-#OwnPartBox .OwnPartDrops .inputWrapper input, #OwnPartBox .OwnPartDrops div select, #OwnPartBox #OwnPartTable input, #PowerLevelingBox input, .OwnPartBoxBackgroundBody input, .OwnPartBoxBackgroundBody select  {
+#OwnPartBox .OwnPartDrops .inputWrapper input, #OwnPartBox .OwnPartDrops div select, #gbCosts input, #PowerLevelingBox input, .OwnPartBoxBackgroundBody input, .OwnPartBoxBackgroundBody select  {
 	background-color: var(--background-light);
 	color: var(--text-medium);
 	background-clip: padding-box;
@@ -58,13 +58,13 @@
 	margin-top: 10px;
 }
 
-#OwnPartBoxBody {
+#gbCosts {
 	position: relative;
 	margin-left: 0;
 	font-size: 85%;
 }
 
-#OwnPartBox.gbSettingsOpen #OwnPartBoxBody {
+#OwnPartBox.gbSettingsOpen #gbCosts {
 	filter: brightness(0.3);
 }
 
@@ -87,7 +87,7 @@
 	top: 0;
 }
 
-#OwnPartBox.gbSettingsOpen #OwnPartBoxBody .fh-icon-settings {
+#OwnPartBox.gbSettingsOpen #gbCosts .fh-icon-settings {
 	filter: brightness(1.9) saturate(1.5) contrast(1.1);
 	box-shadow: 0 0 3px var(--black-65), 0 0 10px var(--white), 0 0 15px var(--black-65);
 	border-radius: 3px;
@@ -97,38 +97,38 @@
 	left: -4px;
 }
 
-#OwnPartBoxBody h1 {
+#gbCosts h1 {
 	padding: 0;
 }
 
-#OwnPartBoxBody strong, #OwnPartBoxBody strong.normal, #OwnPartBox #up-to-level-up {
+#gbCosts strong, #gbCosts strong.normal, #OwnPartBox #up-to-level-up {
 	color: var(--sunflower);
 }
 
-#OwnPartBoxBody .success, #OwnPartBoxBody .success strong {
+#gbCosts .success, #gbCosts .success strong {
 	color: var(--success) !important;
 }
 
-#OwnPartBoxBody .info {
+#gbCosts .info {
 	color: var(--info-blue) !important;
 }
 
-#OwnPartBox #OwnPartTable .error {
+#gbCosts .error {
 	color: var(--danger-red);
 }
 
-#OwnPartBoxBody .lb-info {
+#gbCosts .lb-info {
 	flex-grow: 2;
 }
 
-#OwnPartBox #OwnPartTable input, #PowerLevelingBox input {
+#gbCosts input, #PowerLevelingBox input {
 	line-height: 1;
 	width: 35px;
 	text-align: center;
 	margin: 0 -2px;
 }
 
-#OwnPartBox #arc-percent {
+#gbCosts #arc-percent {
 	background-color: var(--background-light);
 	color: var(--text-medium);
 	background-clip: padding-box;
@@ -138,13 +138,13 @@
 	margin: 0 5px;
 }
 
-#OwnPartBox .bottom-buttons {
+#gbCosts .bottom-buttons {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 }
 
-#OwnPartBox .bottom-buttons .flex {
+#gbCosts .bottom-buttons .flex {
 	align-items: center;
 }
 
@@ -157,39 +157,39 @@
 	left: 0;
 }
 
-#OwnPartBox tr th span {
+#gbCosts tr th span {
 	display: inline-block;
 	width: 25px;
 	height: 25px;
 	vertical-align: bottom;
 }
 
-#OwnPartBox tr th span.blueprint {
+#gbCosts tr th span.blueprint {
 	background: url(../../x_img/blueprint.png) center no-repeat;
 	background-size: contain;
 }
 
-#OwnPartBox tr th span.medal {
+#gbCosts tr th span.medal {
 	background: url(../../x_img/medal.png) center no-repeat;
 	background-size: contain;
 }
 
-#OwnPartBox tr th span.arc_bonus {
+#gbCosts tr th span.arc_bonus {
 	background: url(../../x_img/arc_bonus.png) center no-repeat;
 	background-size: contain;
 }
 
-#OwnPartBox tr th span.forgepoints {
+#gbCosts tr th span.forgepoints {
 	background: url(../../x_img/forgepoints.png) center no-repeat;
 	background-size: contain;
 }
 
-#OwnPartBox tr th span.forgepoints_done {
+#gbCosts tr th span.forgepoints_done {
 	background: url(../../x_img/forgepoints_done.png) center no-repeat;
 	background-size: contain;
 }
 
-#OwnPartBox tr td:nth-child(6) {
+#gbCosts tr td:nth-child(6) {
 	border-left: 3px solid rgba(0,0,0,0.01);
 }
 
@@ -201,7 +201,6 @@
 	border-top: 1px solid var(--text-medium2);
 	border-bottom: 1px solid #9e774e;
 }
-
 
 .OwnPartBoxBackgroundBody {
 	width: 300px;

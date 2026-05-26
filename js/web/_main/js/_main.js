@@ -754,7 +754,7 @@ GetFights = () =>{
 		if (data.responseData[0]?.player_id === ExtPlayerID) {
 			
 			if ($('#OwnPartBox').length > 0) {
-				Parts.CityMapEntity.max_level = data.responseData[0]?.max_level;
+				MainParser.CurrentGB.Entity.max_level = data.responseData[0]?.max_level;
 				Parts.CalcBody();
 			}
 		}
@@ -773,7 +773,7 @@ GetFights = () =>{
 		
 		if (formattedData.responseData[0]?.player_id === ExtPlayerID) {
 			if ($('#OwnPartBox').length > 0) {
-				Parts.CityMapEntity.max_level = formattedData.responseData[0]?.max_level;
+				MainParser.CurrentGB.Entity.max_level = formattedData.responseData[0]?.max_level;
 				Parts.CalcBody();
 			}
 		}
@@ -809,62 +809,44 @@ GetFights = () =>{
 		gbUpdateData = null;
 		let IsPreviousLevel = false;
 
-		if (!Rankings) return; //Keine Rankings => Fehlermeldung z.B. "Stufe wurde bereits erhöht" wenn man versucht einzuzahlen obwohl schon gelevelt wurde
+		if (!Rankings) return;
 
-		// Own GB
-		if (CityMapEntity.responseData[0].player_id === ExtPlayerID || Settings.GetSetting('ShowOwnPartOnAllGBs')) {
-			//LG Scrollaktion: Beim ersten mal Öffnen Medals von P1 notieren. Wenn gescrollt wird und P1 weniger Medals hat, dann vorheriges Level, sonst aktuelles Level
-			if (IsLevelScroll) {
-				let Medals = 0;
-				for (let i = 0; i < Rankings.length; i++) {
-					if (Rankings[i]['reward'] !== undefined) {
-						Medals = Rankings[i]['reward']['resources']['medals'];
-						break;
-					}
-				}
-
-				if (Medals !== LGCurrentLevelMedals) {
-					IsPreviousLevel = true;
+		// LG Scrollaktion: Beim ersten mal Öffnen Medals von P1 notieren. Wenn gescrollt wird und P1 weniger Medals hat, dann vorheriges Level, sonst aktuelles Level
+		if (IsLevelScroll) {
+			let Medals = 0;
+			for (let i = 0; i < Rankings.length; i++) {
+				if (Rankings[i]['reward'] !== undefined) {
+					Medals = Rankings[i]['reward']['resources']['medals'];
+					break;
 				}
 			}
-			else {
-				let Medals = 0;
-				for (let i = 0; i < Rankings.length; i++) {
-					if (Rankings[i]['reward'] !== undefined) {
-						Medals = Rankings[i]['reward']['resources']['medals'];
-						break;
-					}
-				}
-				LGCurrentLevelMedals = Medals;
-			}
 
-			Parts.CityMapEntity = CityMapEntity.responseData[0];
-			Parts.Rankings = Rankings;
-			Parts.IsPreviousLevel = IsPreviousLevel;
-
-			// das erste LG wurde geladen
-			$('#partCalc-Btn').removeClass('hud-btn-red');
-			$('#partCalc-Btn-closed').remove();
-
-			if ($('#OwnPartBox').length > 0) {
-				Parts.CalcBody();
+			if (Medals !== LGCurrentLevelMedals) {
+				IsPreviousLevel = true;
 			}
 		}
-
-		// Other players GB
-		if (CityMapEntity.responseData[0].player_id !== ExtPlayerID && !IsLevelScroll) {
-			$('#calculator-Btn').removeClass('hud-btn-red');
-			$('#calculator-Btn-closed').remove();
-
-			Calculator.Rankings = Rankings;
-			Calculator.CityMapEntity = CityMapEntity['responseData'][0];
-
-			// wenn schon offen, den Inhalt updaten
-			if ($('#costCalculator').length > 0) {
-				Calculator.Show();
+		else {
+			let Medals = 0;
+			for (let i = 0; i < Rankings.length; i++) {
+				if (Rankings[i]['reward'] !== undefined) {
+					Medals = Rankings[i]['reward']['resources']['medals'];
+					break;
+				}
 			}
+			LGCurrentLevelMedals = Medals;
 		}
 
+		MainParser.CurrentGB.Entity = CityMapEntity.responseData[0];
+		MainParser.CurrentGB.Rankings = Rankings;
+		Parts.IsPreviousLevel = IsPreviousLevel;
+
+		// GB was loaded
+		$('#partCalc-Btn').removeClass('hud-btn-red');
+		$('#partCalc-Btn-closed').remove();
+
+		if ($('#OwnPartBox').length > 0) {
+			Parts.CalcBody();
+		}
 	}
 
 
@@ -1014,6 +996,10 @@ let MainParser = {
 	StartUpType: null,
 	OpenConversation: null,
 	CastleSystemChest: null,
+	CurrentGB: {
+		Entity: undefined,
+		Rankings: undefined
+	},
 
 	// all buildings of the player
 	CityMapData: {},
