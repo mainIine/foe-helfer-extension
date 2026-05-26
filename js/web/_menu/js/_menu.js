@@ -29,7 +29,7 @@ let _menu = {
 	MenuOptions: ['BottomBar', 'RightBar', 'Box'],
 	
 	Items: [
-		'calculator',
+		//'calculator',
 		'partCalc',
 		'outpost',
 		'productions',
@@ -356,23 +356,6 @@ let _menu = {
 		});
 
 		return btn.append(btnEl);
-	},
-
-	/**
-	 * Cost calculator button
-	 */
-	calculator_Btn: () => {
-		let btn = _menu.MakeButton('calculator',true);
-
-		let btnEl = $('<span />').bind('click', function () {
-			if (Calculator.CityMapEntity) {
-				Calculator.Show('menu');
-			}
-		});
-
-		btn.append(btnEl);
-
-		return btn;
 	},
 
 	/**
