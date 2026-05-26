@@ -1629,13 +1629,13 @@ let Parts = {
 		c.push(nV);
 
 		c.push(`<p class="bbd p5">
-				<input id="copyformatpergb" class="copyformatpergb game-cursor"${(Parts.CopyFormatPerGB ? 'checked' : '')} type="checkbox"> <label for="copyformatpergb">${i18n('Boxes.OwnpartCalculator.CopyFormatPerGB')}</label><br>
-				<input type="checkbox" id="autoOpen" class="autoOpen game-cursor"${((autoOpen == 'true') ? 'checked' : '')}"> <label for="autoOpen">${i18n('Settings.ShowOwnPartAutoOpen.Desc')}</label><br>
-				<input type="checkbox" id="showmedals" class="showmedals game-cursor"${((showMedals == 'true') ? 'checked' : '')}"> <label for="showmedals">${i18n('Settings.ShowOwnPartMedals.Desc')}</label><br>
-				<input type="checkbox" id="showprints" class="showprints game-cursor"${((showPrints == 'true') ? 'checked' : '')}"> <label for="showprints">${i18n('Settings.ShowOwnPartBP.Desc')}</label><br>
-				<input type="checkbox" id="minview" class="minview game-cursor"${((minView == 'true') ? 'checked' : '')}"> <label for="minview">${i18n('Settings.ShowOwnPartMinView.Desc')}</label><br>
-				<input type="checkbox" id="openonaliengb" class="openonaliengb game-cursor"${((allGB == 'true') ? 'checked' : '')}"> <label for="openonaliengb">${i18n('Settings.ShowOwnPartOnAllGBs.Desc')}</label><br>
-				<input type="checkbox" id="includeStart" class="includeStart game-cursor"${((includeStart == 'true') ? 'checked' : '')}"> <label for="includeStart">${i18n('Settings.ShowOwnPartIncludeStart.Desc')}</label>
+				<input type="checkbox" id="autoOpen" class="autoOpen game-cursor" ${((autoOpen == 'true') ? 'checked' : '')}> <label for="autoOpen">${i18n('Settings.ShowOwnPartAutoOpen.Desc')}</label><br>
+				<input type="checkbox" id="openonaliengb" class="openonaliengb game-cursor" ${((allGB == 'true') ? 'checked' : '')}> <label for="openonaliengb">${i18n('Settings.ShowOwnPartOnAllGBs.Desc')}</label><br>
+				<input type="checkbox" id="showmedals" class="showmedals game-cursor" ${((showMedals == 'true') ? 'checked' : '')}> <label for="showmedals">${i18n('Settings.ShowOwnPartMedals.Desc')}</label><br>
+				<input type="checkbox" id="showprints" class="showprints game-cursor" ${((showPrints == 'true') ? 'checked' : '')}> <label for="showprints">${i18n('Settings.ShowOwnPartBP.Desc')}</label><br>
+				<input type="checkbox" id="minview" class="minview game-cursor" ${((minView == 'true') ? 'checked' : '')}> <label for="minview">${i18n('Settings.ShowOwnPartMinView.Desc')}</label><br>
+				<input id="copyformatpergb" class="copyformatpergb game-cursor" ${(Parts.CopyFormatPerGB ? 'checked' : '')} type="checkbox"> <label for="copyformatpergb">${i18n('Boxes.OwnpartCalculator.CopyFormatPerGB')}</label><br>
+				<input type="checkbox" id="includeStart" class="includeStart game-cursor" ${((includeStart == 'true') ? 'checked' : '')}> <label for="includeStart">${i18n('Settings.ShowOwnPartIncludeStart.Desc')}</label>
 			</p>
 			<p class="text-center p2">
 				<button id="save-calculator-settings" class="btn btn-green" onclick="Parts.SettingsSaveValues()">${i18n('Boxes.Calculator.Settings.Save')}</button>
