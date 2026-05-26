@@ -948,7 +948,7 @@ let Parts = {
 
 		Parts.CalcBackgroundBody();
 
-		h.push(Calculator.GetRecurringQuestsLine(Parts.PlayInfoSound));
+		h.push(`<div class="text-center">${Calculator.GetRecurringQuestsLine(Parts.PlayInfoSound)}</div>`);
 
 		// Wieviel fehlt noch bis zum leveln?
 		if (Parts.IsPreviousLevel === false) {

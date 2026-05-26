@@ -11,12 +11,6 @@
  * **************************************************************************************
  */
 
-FoEproxy.addFoeHelperHandler('QuestsUpdated', data => {
-	if ($('#costCalculator').length > 0) {
-		Calculator.Show();
-	}
-});
-
 let Calculator = {
 	ForderBonus: 90,
     PlayerName: undefined,
@@ -34,12 +28,6 @@ let Calculator = {
 	ClanId: null,
 	ClanName: null,
 
-	/**
-	 * Show calculator
-	 *
-	 * @param action
-	 * @constructor
-	 */
 	Show: (action = "") => {
 		Calculator.ForderBonusPerConversation = (localStorage.getItem('CalculatorForderBonusPerConversation') !== 'false');
 
@@ -52,8 +40,6 @@ let Calculator = {
 		} else {
 			Calculator.PlayInfoSound = (spk !== 'false');
 		}
-
-		// 'Calculator.ShowCalculatorSettings()',
 
 		HTML.AddCssFile('calculator');
 
@@ -174,9 +160,11 @@ let Calculator = {
         // how much is missing to level up?
 		let rest = MainParser.CurrentGB.Entity['state']['forge_points_for_level_up'] - MainParser.CurrentGB.Rankings.reduce((acc,entry)=>acc+(entry?.forge_points|0),0);
 
-		h.push('<div class="text-center dark-bg p5"><em>' + i18n('Boxes.Calculator.Up2LevelUp') + ': <span id="up-to-level-up" style="color:#FFB539">' + HTML.Format(rest) + '</span> ' + i18n('Boxes.Calculator.FP') + '</em></div>');
+		h.push('<div class="text-center dark-bg p5"><em>' + i18n('Boxes.Calculator.Up2LevelUp') + ': <span id="up-to-level-up">' + HTML.Format(rest) + '</span> ' + i18n('Boxes.Calculator.FP') + '</em>');
 
 		h.push(Calculator.GetRecurringQuestsLine(Calculator.PlayInfoSound));
+
+		h.push('</div>');
 
         $('#OwnPartBox').find('#OwnPartBoxBody').html(h.join(''));
         $('#OwnPartBox').find('.tooltip').remove();
@@ -197,15 +185,10 @@ let Calculator = {
 	},
 
 
-	/**
-	 * Zeile für Schleifenquests generieren
-	 * *
-	 * */
 	GetRecurringQuestsLine: (PlaySound) => {
 		let h = [],
 			RecurringQuests = 0;
 
-		// Schleifenquest für "Benutze FP" suchen
 		for (let Quest of MainParser.Quests) {
 			if (Quest.id >= 900000 && Quest.id < 1000000) {
 				for (let cond of Quest.successConditions) {
@@ -221,13 +204,13 @@ let Calculator = {
 							RecurringQuestString = i18n('Boxes.Calculator.Done');
 						}
 
-						h.push('<div class="text-center dark-bg" style="padding:3px 0;"><em>' + i18n('Boxes.Calculator.ActiveRecurringQuest') + ' <span id="recurringquests" style="color:#FFB539" class="copy-fp clickable" data-copy="'+ (MaxProgress - CurrentProgress) +'">' + RecurringQuestString + '</span></em></div>');
+						h.push('<div class="rq"><em>' + i18n('Boxes.Calculator.ActiveRecurringQuest') + ' <span class="recurringquests copy-fp clickable" data-copy="'+ (MaxProgress - CurrentProgress) +'">' + RecurringQuestString + '</span></em></div>');
 					}
 				}
 			}
 		}
 
-		if (Calculator.LastRecurringQuests !== undefined && RecurringQuests !== Calculator.LastRecurringQuests) { //Schleifenquest gestartet oder abgeschlossen
+		if (Calculator.LastRecurringQuests !== undefined && RecurringQuests !== Calculator.LastRecurringQuests) { 
 			if (PlaySound) { //Nicht durch Funktion PlaySound ersetzen!!! GetRecurringQuestLine wird auch vom EARechner aufgerufen.
 				helper.sounds.play("message");
 			}
@@ -380,15 +363,12 @@ let Calculator = {
 					ExitLoop = true;
 				}
 				else {
-					if (SaveRankCosts[Rank] === RestFP) {
+					if (SaveRankCosts[Rank] === RestFP) 
 						SaveStates[Rank] = 'LevelWarning';
-					}
-					else if (FPRewards[Rank] < SaveRankCosts[Rank]) {
+					else if (FPRewards[Rank] < SaveRankCosts[Rank]) 
 						SaveStates[Rank] = 'NegativeProfit';
-					}
-					else {
+					else 
 						SaveStates[Rank] = 'Profit';
-					}
 				}
 
 				if (ExitLoop)
@@ -421,7 +401,6 @@ let Calculator = {
 			}
 		}
 
-		// Tabellen ausgeben
 		h.push('<thead>' +
 			'<th>#</th>' +
 			'<th><span class="forgepoints" title="' + HTML.i18nTooltip(i18n('Boxes.Calculator.Commitment')) + '"></span></th>' +
@@ -450,14 +429,12 @@ let Calculator = {
 			}
 
 
-			// Fördern
-
 			let RowClass,
 				RankClass,
-				RankText = Rank + 1, //Default: Rangnummer
+				RankText = Rank + 1,
 				RankTooltip = [],
 
-				EinsatzClass = (ForderFPRewards[Rank] - EigenBetrag > StrategyPoints.AvailableFP ? 'error' : ''), //Default: rot wenn Vorrat nicht ausreichend, sonst gelb
+				EinsatzClass = (ForderFPRewards[Rank] - EigenBetrag > StrategyPoints.AvailableFP ? 'error' : ''), 
 				EinsatzText = HTML.Format(ForderFPRewards[Rank]) + Calculator.FormatForderRankDiff(ForderRankDiff), //Default: Einsatz + ForderRankDiff
 				EinsatzTooltip = [HTML.i18nReplacer(i18n('Boxes.Calculator.TTForderCosts'), { 'nettoreward': FPNettoRewards[Rank], 'forderfactor': (100 + Calculator.ForderBonus), 'costs': ForderFPRewards[Rank] })],
 

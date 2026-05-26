@@ -49,6 +49,10 @@
 	white-space: nowrap;
 }
 
+#gbCalc .rq {
+	font-size: 90%;
+}
+
 #gbCalc table.foe-table {
 	margin-top: 2px;
 }
