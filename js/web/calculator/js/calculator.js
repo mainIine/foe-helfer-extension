@@ -169,9 +169,9 @@ let Calculator = {
 		let MaxLevel = (Calculator.CityMapEntity.max_level !== undefined ? Calculator.CityMapEntity.max_level : 0);
 
 
-		h.push('<div class="header text-center dark-bg">');
+		h.push('<div class="header text-center dark-bg p5">');
 		h.push('<strong><span class="building-name">' + BuildingName + '</span></strong>');
-        h.push('<p style="margin: 0 0 8px">'+i18n('Boxes.Calculator.Step') + '' + Level + ' &rarr; ' + (Level + 1) + ' | ' + i18n('Boxes.Calculator.MaxLevel') + ': ' + MaxLevel + '</p>');
+        h.push('<p style="margin: 0 0 5px">'+ Level + ' &rarr; ' + (Level + 1) + ' &middot; ' + i18n('Boxes.Calculator.MaxLevel') + ': ' + MaxLevel + '</p>');
  
 		if (Calculator.PlayerName) {
 			h.push('<span class="player-name">' 
@@ -210,12 +210,12 @@ let Calculator = {
 		investmentSteps = investmentSteps.filter((item, index) => investmentSteps.indexOf(item) === index); //Remove duplicates
 		investmentSteps.sort((a, b) => a - b);
 		investmentSteps.forEach(bonus => {
-			h.push(`<button class="btn btn-toggle-arc ${(bonus === Calculator.ForderBonus ? 'btn-active' : '')}${(bonus === MainParser.ArkBonus ? ' arkBonus' : '')}" data-value="${bonus}">${bonus}%</button>`);
+			h.push(`<button class="btn btn-mid btn-toggle-arc ${(bonus === Calculator.ForderBonus ? 'btn-active' : '')}${(bonus === MainParser.ArkBonus ? ' arkBonus' : '')}" data-value="${bonus}">${bonus}%</button>`);
 		});
-        h.push('</div><br>');
 		
-		h.push('<span>' + i18n('Boxes.Calculator.FriendlyInvestment') + '<input type="number" id="costFactor" step="0.1" min="12" max="200" value="' + Calculator.ForderBonus + '">%</span>');
+		h.push(`<span data-original-title="${i18n('Boxes.Calculator.FriendlyInvestment')} x%">  <input type="number" id="costFactor" step="0.1" min="12" max="200" value="${Calculator.ForderBonus}"></span>`);
 
+        h.push('</div>');
         h.push('</div>');
 		h.push('</div>');
 
@@ -224,7 +224,7 @@ let Calculator = {
         // how much is missing to level up?
 		let rest = Calculator.CityMapEntity['state']['forge_points_for_level_up'] - Calculator.Rankings.reduce((acc,entry)=>acc+(entry?.forge_points|0),0);
 
-		h.push('<div class="text-center dark-bg" style="padding-top:5px;padding-bottom:5px;"><em>' + i18n('Boxes.Calculator.Up2LevelUp') + ': <span id="up-to-level-up" style="color:#FFB539">' + HTML.Format(rest) + '</span> ' + i18n('Boxes.Calculator.FP') + '</em></div>');
+		h.push('<div class="text-center dark-bg p5"><em>' + i18n('Boxes.Calculator.Up2LevelUp') + ': <span id="up-to-level-up" style="color:#FFB539">' + HTML.Format(rest) + '</span> ' + i18n('Boxes.Calculator.FP') + '</em></div>');
 
 		h.push(Calculator.GetRecurringQuestsLine(Calculator.PlayInfoSound));
 
@@ -631,22 +631,22 @@ let Calculator = {
 
 
 			hFordern.push('<tr class="' + RowClass + '">');
-			hFordern.push('<td class="text-center"><strong class="' + RankClass + ' td-tooltip" title="' + HTML.i18nTooltip(RankTooltip.join('<br>')) + '">' + RankText + '</strong></td>');
-			hFordern.push('<td class="text-center"><strong class="' + EinsatzClass + ' td-tooltip copy-fp clickable" data-copy="' + ForderFPRewards[Rank] + '" title="' + HTML.i18nTooltip(EinsatzTooltip.join('<br>')) + '">' + EinsatzText + '</strong></td>');
-			hFordern.push('<td class="text-center"><strong class="' + GewinnClass + ' td-tooltip copy-fp" data-copy="'+ForderGewinn+'" title="' + HTML.i18nTooltip(GewinnTooltip.join('<br>')) + '">' + GewinnText + '</strong></td>');
+			hFordern.push('<td class="text-center"><strong class="' + RankClass + ' td-tooltip" data-original-title="' + HTML.i18nTooltip(RankTooltip.join('<br>')) + '">' + RankText + '</strong></td>');
+			hFordern.push('<td class="text-center"><strong class="' + EinsatzClass + ' td-tooltip copy-fp clickable" data-copy="' + ForderFPRewards[Rank] + '" data-original-title="' + HTML.i18nTooltip(EinsatzTooltip.join('<br>')) + '">' + EinsatzText + '</strong></td>');
+			hFordern.push('<td class="text-center"><strong class="' + GewinnClass + ' td-tooltip copy-fp" data-copy="'+ForderGewinn+'" data-original-title="' + HTML.i18nTooltip(GewinnTooltip.join('<br>')) + '">' + GewinnText + '</strong></td>');
 			
 			if (Calculator.ShowBP)
 				hFordern.push('<td class="text-center">' + HTML.Format(BPRewards[Rank]) + '</td>');
 			if (Calculator.ShowMedals)
-				hFordern.push('<td class="text-center">' + HTML.Format(MedalRewards[Rank]) + '</td>');
+				hFordern.push('<td class="text-center"><small>' + HTML.Format(MedalRewards[Rank]) + '</small></td>');
 			hFordern.push('</tr>');
 		}
 
 		$('#costTableFordern').html(hFordern.join(''));
 
-		$('.td-tooltip').tooltip({
+		$('[data-original-title]').tooltip({
 			html: true,
-			container: '#costCalculator'
+			container: 'body'
 		});
 	},
 		

@@ -111,7 +111,7 @@
   background-color: var(--beige);
   content: "";
   transition: margin 0.1s linear;
-  box-shadow: 0px 0px 5px var(--text-muted);
+  box-shadow: 0px 0px 5px var(--ash);
   position: absolute;
   left: 2px;
   top: 2px;

@@ -58,7 +58,7 @@
 	margin-top: 10px;
 }
 
-#OwnPartBox #OwnPartBoxBody {
+#OwnPartBoxBody {
 	position: relative;
 	margin-left: 0;
 	font-size: 85%;
@@ -97,23 +97,19 @@
 	left: -4px;
 }
 
-#OwnPartBox #OwnPartBoxBody h1 {
+#OwnPartBoxBody h1 {
 	padding: 0;
 }
 
-#OwnPartBox #OwnPartBoxBody strong {
+#OwnPartBoxBody strong, #OwnPartBoxBody strong.normal, #OwnPartBox #up-to-level-up {
 	color: var(--sunflower);
 }
 
-#OwnPartBox #OwnPartBoxBody strong.normal {
-	color: var(--sunflower);
-}
-
-#OwnPartBox #OwnPartBoxBody .success {
+#OwnPartBoxBody .success, #OwnPartBoxBody .success strong {
 	color: var(--success) !important;
 }
 
-#OwnPartBox #OwnPartBoxBody .info {
+#OwnPartBoxBody .info {
 	color: var(--info-blue) !important;
 }
 
@@ -121,14 +117,15 @@
 	color: var(--danger-red);
 }
 
-#OwnPartBox #OwnPartBoxBody .lb-info {
+#OwnPartBoxBody .lb-info {
 	flex-grow: 2;
 }
 
 #OwnPartBox #OwnPartTable input, #PowerLevelingBox input {
-	line-height: 1.5;
+	line-height: 1;
 	width: 35px;
 	text-align: center;
+	margin: 0 -2px;
 }
 
 #OwnPartBox #arc-percent {
@@ -139,10 +136,6 @@
 	text-align: center;
 	width: 30px;
 	margin: 0 5px;
-}
-
-#OwnPartBox #up-to-level-up {
-	color: var(--sunflower);
 }
 
 #OwnPartBox .bottom-buttons {
