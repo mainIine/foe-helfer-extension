@@ -110,7 +110,7 @@
 
 #SettingsBoxBody .settings-wrapper {
 	position: absolute;
-	top: 75px;
+	top: 69px;
 	bottom: 0;
 	left: 0;
 	right: 0;
@@ -131,16 +131,10 @@
 
 #SettingsBoxBody .tabs ul.vertical {
 	position: static;
-	width: 230px;
+	width: 234px;
 	height: auto;
-	padding-top: 5px;
-	margin-bottom: 2px;
 	overflow-y: auto;
 	overflow-x: hidden;
-}
-
-#SettingsBoxBody .tabs ul.vertical li {
-	margin-bottom: 2px;
 }
 
 #SettingsBoxBody .tabs .sub-tab {
@@ -180,13 +174,12 @@
 
 #SettingsBoxBody .helplist li span {
 	display: inline-block;
-	background-color: #000;
+	background-color: var(--black);
 	width: 30px;
 	height: 32px;
 	margin-right: 7px;
 	background: url('../images/help.png') 0 0 no-repeat;
 	text-decoration: none;
-	float: left;
 }
 
 #SettingsBoxBody .helplist .discord {
