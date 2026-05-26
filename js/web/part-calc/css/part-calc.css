@@ -121,7 +121,7 @@
 	flex-grow: 2;
 }
 
-#gbCosts input, #PowerLevelingBox input {
+#gbCosts input[type=number], #PowerLevelingBox input {
 	line-height: 1;
 	width: 35px;
 	text-align: center;
