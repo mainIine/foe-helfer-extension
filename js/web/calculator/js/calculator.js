@@ -76,21 +76,6 @@ let Calculator = {
 			Calculator.Show();
 		});
 
-		// Quick copy for contribution values
-		$('#OwnPartBox').on('click', '.copy-fp', function (e) {
-			e.preventDefault();
-			e.stopPropagation();
-			let $this = $(this),
-				value = $this.data('copy');
-
-			if (value === undefined || value === '' || value === '-') return;
-
-			Parts.setDonation(value);
-			//prevent double action
-			$this.addClass('copied');
-			setTimeout(() => $this.removeClass('copied'), 800);
-		});
-
         Calculator.ShowBody();
 	},
 
