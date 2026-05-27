@@ -303,7 +303,6 @@ let _menu = {
 	/*----------------------------------------------------------------------------------------------------------------*/
 	
 	ItemsData: [
-		{ id: 'calculator', title: i18n('Menu.Calculator.Title'), description: i18n('Menu.Calculator.Desc'), warning: '<em id="calculator-Btn-closed" class="tooltip-error">' + i18n('Menu.Calculator.Warning') + '<br></em>'},
 		{ id: 'partCalc', title: i18n('Menu.OwnpartCalculator.Title'), description: i18n('Menu.OwnpartCalculator.Desc'), warning: '<em id="partCalc-Btn-closed" class="tooltip-error">' + i18n('Menu.OwnpartCalculator.Warning') + '<br></em>'},
 		{ id: 'unit', title: i18n('Menu.Unit.Title'), description: i18n('Menu.Unit.Desc'), warning: '<em id="unit-Btn-closed" class="tooltip-error">' + i18n('Menu.Unit.Warning') + '<br></em>'},
 		{ id: 'outpost', title: i18n('Menu.OutP.Title'), description: i18n('Menu.OutP.Desc'), warning: i18n('Menu.OutP.DescWarningOutpostData') },
@@ -311,7 +310,6 @@ let _menu = {
 		{ id: 'productionsRating', title: i18n('Menu.ProductionsRating.Title'), description: i18n('Menu.ProductionsRating.Desc') },
 		{ id: 'negotiation', title: i18n('Menu.Negotiation.Title'), description: i18n('Menu.Negotiation.Desc'), warning: '<em id="negotiation-Btn-closed" class="tooltip-error">' + i18n('Menu.Negotiation.Warning') + '<br></em>' },
 		{ id: 'playerProfile', title: i18n('Menu.PlayerProfile.Title'), description: i18n('Menu.PlayerProfile.Desc'), warning: '<em id="PlayerProfile-Btn-closed" class="tooltip-error">' + i18n('Menu.PlayerProfile.Warning') + '<br></em>' },
-		{ id: 'campagneMap', title: i18n('Menu.Campagne.Title'), description: i18n('Menu.Campagne.Desc'), warning: '<em id="campagneMap-Btn-closed" class="tooltip-error">' + i18n('Menu.Campagne.Warning') + '<br></em>' },
 		{ id: 'guildMemberstat', title: i18n('Menu.GuildMemberStat.Title'), description: i18n('Menu.GuildMemberStat.Desc'), warning: '<em id="guildmemberstat-Btn-closed" class="tooltip-error">' + i18n('Menu.GuildMemberStat.Warning') + '<br></em>' },
 		{ id: 'gildFight', title: i18n('Menu.Gildfight.Title'), description: i18n('Menu.Gildfight.Desc'), warning: i18n('Menu.Gildfight.Warning') },
 		{ id: 'market', title: i18n('Menu.Market.Title'), description: i18n('Menu.Market.Desc'), warning: '<em id="market-Btn-closed" class="tooltip-error">' + i18n('Menu.Market.Warning') + '<br></em>' },
@@ -538,21 +536,6 @@ let _menu = {
 		});
 
 		return btn_TechBG.append(btn_Tech);
-	},
-
-	/**
-	 * KampanienMap
-	 */
-	campagneMap_Btn: () => {
-		let btn_MapBG = _menu.MakeButton('campagneMap',true);
-
-		let btn_Map = $('<span />').on('click', function () {
-			if (KampagneMap.Provinces !== null) {
-				KampagneMap.Show();
-			}
-		});
-
-		return btn_MapBG.append(btn_Map);
 	},
 
 	/**

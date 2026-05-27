@@ -641,7 +641,7 @@ p {
 }
 
 [id$=calculator-Btn] span {
-	background-image: url('../images/menu/calculator.png');
+	display: none;
 }
 
 [id$=outpost-Btn] span {
@@ -664,8 +664,8 @@ p {
 	background-image: url('../images/menu/recurringQuests.png');
 }
 
-[id$=campagneMap-Btn] span {
-	background-image: url('../images/menu/map.png');
+[id$=campagneMap-Btn] {
+	display: none;
 }
 
 [id$=cityMap-Btn] span {
