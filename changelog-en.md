@@ -4,6 +4,7 @@
 ##### 4.3.0.0
 
 **New**
+- Calculators: There is now only one calculator, but we did not remove any functionality. Check out the Calculator window settings if you want to use the "removed one" for other peoples GBs
 - GBG: You can now add a Discord Webhook in the settings of the countdown window
 - Discord Webhooks: Create templates for personalized GBG messages and add them to the GBG countdown window
 
@@ -13,6 +14,7 @@
 - GB Calculator: The arrow on the side of the window is now a cogwheel in the bottom left corner instead
 - Efficiency Rating: Buildings that can be upgraded to their ascended version now show an arrow next to their name
 - Guild Member Overview: Member details are now opened in their own window and include more data
+- Continent Map Overview has been removed! Negotiating on the map is a very niche play style and goods much easier to come by these days
 
 ---
  
