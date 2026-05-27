@@ -97,6 +97,21 @@
 	left: -4px;
 }
 
+/* temporary information about calculator merge */
+
+#calcInfo {
+	position: relative;
+	background: var(--table-bg-info);
+	border-bottom: 1px solid var(--table-bt-info);
+}
+
+#calcInfo img {
+	height: 20px;
+}
+
+#calcInfo .calcInfo { display: none; width: 240px; margin: 0 auto; }
+#calcInfo:hover .calcInfo { display: block; }
+
 #gbCosts h1 {
 	padding: 0;
 }
