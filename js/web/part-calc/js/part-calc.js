@@ -1595,7 +1595,7 @@ let Parts = {
 			buttons,
 			defaults = Parts.DefaultButtons,
 			sB = localStorage.getItem('CustomPartCalcButtons'),
-			allGB = true,
+			allGB = localStorage.getItem('ShowOwnPartOnAllGBs') || 'false',
 			showMedals = localStorage.getItem('OwnPartShowMedals') || 'true',
 			showPrints = localStorage.getItem('OwnPartShowBP') || 'true',
 			minView = localStorage.getItem('OwnPartMinView') || 'false',
