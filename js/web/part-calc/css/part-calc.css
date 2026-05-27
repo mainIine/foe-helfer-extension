@@ -101,7 +101,7 @@
 	padding: 0;
 }
 
-#gbCosts strong, #gbCosts strong.normal, #up-to-level-up, .recurringquests {
+#gbCosts strong, #gbCosts strong.normal, #up-to-level-up, .recurringquests, #gbCosts .yellow-text {
 	color: var(--sunflower);
 }
 
@@ -109,7 +109,7 @@
 	color: var(--success) !important;
 }
 
-#gbCosts .info {
+#gbCosts .info, #gbCosts .paidFP {
 	color: var(--info-blue) !important;
 }
 
