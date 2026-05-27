@@ -293,6 +293,12 @@ let Parts = {
 				setTimeout(() => $this.removeClass('copied'), 800);
 			});
 
+			// temporary: CalculatorHintRead
+			$('#OwnPartBox').on('click', '#calcInfo .icon-close', function (e) {
+				localStorage.setItem('CalculatorHintRead',true);
+				$('#calcInfo').remove();
+			});
+
 			// CopyBox
 			$('#OwnPartBox').on('blur', '#player-name', function () {
 				let PlayerName = $('#player-name').val();
@@ -729,17 +735,25 @@ let Parts = {
 		for (let i = 0; i < 5; i++) {
 			if (Eigens[i] > 0) break;
 				
-			if (Parts.PlaceAvailables[i]) {
+			if (Parts.PlaceAvailables[i]) 
 				Parts.SafePlaces.push(i);
-			}
 		}
 		
         // Level is locked
 		if (PlayerID === ExtPlayerID && MainParser.CityMapData[MainParser.CurrentGB.Entity.id]?.level === MainParser.CityMapData[MainParser.CurrentGB.Entity.id]?.max_level) {
 			h.push('<div class="lg-not-possible" data-text="'+i18n('Boxes.Calculator.LGNotOpen')+'"></div>');
 		}
-		h.push(`<div id="gbCosts">
-			<div class="dark-bg text-center p5">
+		h.push(`<div id="gbCosts">`);
+		
+		// temporary calculator merge hint
+		let hintRead = JSON.parse(localStorage.getItem('CalculatorHintRead'));
+		if (!hintRead)
+			h.push(`<div id="calcInfo" class="p5">
+				<div class="text-center"><img src="${extUrl}css/images/menu/calculator.png" /> <img src="${extUrl}css/images/menu/part-calc.png" /> ?!</div> <span class="icon-close clickable"></span> 
+				<div class="calcInfo">${i18n('Boxes.Calculator.InfoUpdate')}</div>
+			</div>`)
+
+		h.push(`<div class="dark-bg text-center p5">
 			<div class="flex gap" style="justify-content:space-between;align-items:end;margin-bottom:5px;">
 			<div class="lb-info">
 			<h1>${CityEntity['name']}</h1>`);
