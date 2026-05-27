@@ -108,18 +108,26 @@
 
 #gbCalc tr.info-row {
 	background-color: var(--table-bg-info);
+	border-top-color: var(--table-bt-info);
+	border-bottom-color: var(--table-bb-info);
 }
 
 #gbCalc tr.bg-green {
 	background-color: var(--table-bg-success);
+	border-top-color: var(--table-bt-success);
+	border-bottom-color: var(--table-bb-success);
 }
 
 #gbCalc tr.bg-red {
 	background-color: var(--table-bg-error);
+	border-top-color: var(--table-bt-error);
+	border-bottom-color: var(--table-bb-error);
 }
 
 #gbCalc tr.bg-yellow {
 	background-color: var(--table-bg-bright);
+	border-top-color: var(--table-bt-bright);
+	border-bottom-color: var(--table-bb-bright);
 }
 
 #gbCalc .costFactorWrapper {

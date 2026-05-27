@@ -20,8 +20,6 @@ let Calculator = {
 	ForderBonusPerConversation: true,
 	AutoOpen: false,
 	OwnPartClose: false,
-	ShowBP: true,
-	ShowMedals: true,
 	DefaultButtons: [
 		80, 90, 100, 'ark'
 	],
@@ -182,43 +180,6 @@ let Calculator = {
 		$('#OwnPartBoxBody').html(h.join(''));
 
 		Calculator.BuildTable();
-	},
-
-
-	GetRecurringQuestsLine: (PlaySound) => {
-		let h = [],
-			RecurringQuests = 0;
-
-		for (let Quest of MainParser.Quests) {
-			if (Quest.id >= 900000 && Quest.id < 1000000) {
-				for (let cond of Quest.successConditions) {
-					let CurrentProgress = cond.currentProgress || 0;
-					let MaxProgress = cond.maxProgress;
-					if (cond.iconType=="icon_quest_alchemie" && ((CurrentEraID <= 3 && MaxProgress >= 3) || (MaxProgress > 15 && CurrentEraID <=15) || MaxProgress>=100)) { // Unterscheidung Buyquests von UseQuests: Bronze/Eiszeit haben nur UseQuests, Rest hat Anzahl immer >15, Buyquests immer <=15
-						let RecurringQuestString;
-						if (MaxProgress - CurrentProgress !== 0) {
-							RecurringQuestString = HTML.Format(MaxProgress - CurrentProgress) + i18n('Boxes.Calculator.FP');
-							RecurringQuests += 1;
-						}
-						else {
-							RecurringQuestString = i18n('Boxes.Calculator.Done');
-						}
-
-						h.push('<div class="rq"><em>' + i18n('Boxes.Calculator.ActiveRecurringQuest') + ' <span class="recurringquests copy-fp clickable" data-copy="'+ (MaxProgress - CurrentProgress) +'">' + RecurringQuestString + '</span></em></div>');
-					}
-				}
-			}
-		}
-
-		if (Calculator.LastRecurringQuests !== undefined && RecurringQuests !== Calculator.LastRecurringQuests) { 
-			if (PlaySound) { //Nicht durch Funktion PlaySound ersetzen!!! GetRecurringQuestLine wird auch vom EARechner aufgerufen.
-				helper.sounds.play("message");
-			}
-        }
-
-		Calculator.LastRecurringQuests = RecurringQuests;
-
-		return h.join('');
 	},
 
 
@@ -405,10 +366,8 @@ let Calculator = {
 			'<th>#</th>' +
 			'<th><span class="forgepoints" title="' + HTML.i18nTooltip(i18n('Boxes.Calculator.Commitment')) + '"></span></th>' +
 			'<th>' + i18n('Boxes.Calculator.Profit') + '</th>');
-			if (Calculator.ShowBP)
-				h.push('<th><span class="blueprint" title="' + HTML.i18nTooltip(i18n('Boxes.Calculator.BPs')) + '"></span></th>');
-			if (Calculator.ShowMedals)
-				h.push('<th><span class="medal" title="' + HTML.i18nTooltip(i18n('Boxes.Calculator.Meds')) + '"></span></th>');
+			h.push('<th><span class="blueprint" title="' + HTML.i18nTooltip(i18n('Boxes.Calculator.BPs')) + '"></span></th>');
+			h.push('<th><span class="medal" title="' + HTML.i18nTooltip(i18n('Boxes.Calculator.Meds')) + '"></span></th>');
 		h.push('</thead>');
 
 		for (let Rank = 0; Rank < ForderRankCosts.length; Rank++) {
@@ -455,7 +414,6 @@ let Calculator = {
 
 			if (ForderStates[Rank] === 'Self') {
 				RowClass = 'info-row';
-
 				RankClass = 'info';
 
 				if (Einzahlungen[Rank] < ForderFPRewards[Rank]) {
@@ -494,7 +452,6 @@ let Calculator = {
 			}
 			else if (ForderStates[Rank] === 'NegativeProfit') {
 				RowClass = 'bg-red';
-
 				RankClass = 'error';
 
 				EinsatzTooltip.push(HTML.i18nReplacer(i18n('Boxes.Calculator.TTForderNegativeProfit'), { 'fpcount': ForderRankDiff, 'totalfp': ForderRankCosts[Rank] }));
@@ -503,15 +460,12 @@ let Calculator = {
 			}
 			else if (ForderStates[Rank] === 'LevelWarning') {
 				RowClass = 'bg-yellow';
-
 				RankClass = '';
+
+				EinsatzTooltip.push(i18n('Boxes.Calculator.LevelWarning'));
 
 				if (ForderRankDiff < 0) {
 					Calculator.PlaySound();
-				}
-
-				EinsatzTooltip.push(i18n('Boxes.Calculator.LevelWarning'));
-				if (ForderRankDiff < 0) {
 					EinsatzTooltip.push(HTML.i18nReplacer(i18n('Boxes.Calculator.TTLevelWarning'), { 'fpcount': (0 - ForderRankDiff), 'totalfp': ForderRankCosts[Rank] }));
 				}
 
@@ -519,14 +473,12 @@ let Calculator = {
 			}
 			else if (ForderStates[Rank] === 'Profit') {
 				RowClass = 'bg-green';
-
 				RankClass = 'success';
 
 				Calculator.PlaySound();
 			}
 			else {
 				RowClass = 'text-grey';
-
 				RankClass = '';
 
 				EinsatzText = HTML.Format(ForderFPRewards[Rank]);
@@ -535,40 +487,35 @@ let Calculator = {
 				GewinnTooltip = [];
 			}
 
-			// BP+Meds
+			// no clue why this is already set above and then cleared again?!
+			// RowClass = '';
 
-			RowClass = '';
-
-			if (ForderStates[Rank] === 'NotPossible' && SaveStates[Rank] === 'NotPossible') {
+			if (ForderStates[Rank] === 'NotPossible' && SaveStates[Rank] === 'NotPossible') 
 				RowClass = 'text-grey';
-			}
-			else if (ForderStates[Rank] === 'WorseProfit' && SaveStates[Rank] === 'WorseProfit') {
-				RowClass = 'text-grey';
-			}
-			else if (ForderStates[Rank] === 'Self' && SaveStates[Rank] === 'Self') {
-				RowClass = 'info-row';
-			}
-			else if (ForderStates[Rank] === 'NegativeProfit' && SaveStates[Rank] === 'NegativeProfit') {
-				RowClass = 'bg-red';
-			}
-			else if (ForderStates[Rank] === 'LevelWarning' && SaveStates[Rank] === 'LevelWarning') {
-				RowClass = 'bg-yellow';
-			}
-			else if (ForderStates[Rank] === 'Profit' && SaveStates[Rank] === 'Profit') {
+			else if (ForderStates[Rank] === 'Profit' && SaveStates[Rank] === 'Profit') 
 				RowClass = 'bg-green';
-			}
+			else if (ForderStates[Rank] === 'WorseProfit' && SaveStates[Rank] === 'WorseProfit') 
+				RowClass = 'text-grey';
+			else if (ForderStates[Rank] === 'Self' && SaveStates[Rank] === 'Self') 
+				RowClass = 'info-row';
+			else if (ForderStates[Rank] === 'NegativeProfit' && SaveStates[Rank] === 'NegativeProfit') 
+				RowClass = 'bg-red';
+			else if (ForderStates[Rank] === 'LevelWarning' && SaveStates[Rank] === 'LevelWarning') 
+				RowClass = 'bg-yellow';
 
-
-			h.push('<tr class="' + RowClass + '">');
-			h.push('<td class="text-center"><strong class="' + RankClass + ' td-tooltip" data-original-title="' + HTML.i18nTooltip(RankTooltip.join('<br>')) + '">' + RankText + '</strong></td>');
-			h.push('<td class="text-center"><strong class="' + EinsatzClass + ' td-tooltip copy-fp clickable" data-copy="' + ForderFPRewards[Rank] + '" data-original-title="' + HTML.i18nTooltip(EinsatzTooltip.join('<br>')) + '">' + EinsatzText + '</strong></td>');
-			h.push('<td class="text-center"><strong class="' + GewinnClass + ' td-tooltip copy-fp" data-copy="'+ForderGewinn+'" data-original-title="' + HTML.i18nTooltip(GewinnTooltip.join('<br>')) + '">' + GewinnText + '</strong></td>');
-			
-			if (Calculator.ShowBP)
-				h.push('<td class="text-center">' + HTML.Format(BPRewards[Rank]) + '</td>');
-			if (Calculator.ShowMedals)
-				h.push('<td class="text-center"><small>' + HTML.Format(MedalRewards[Rank]) + '</small></td>');
-			h.push('</tr>');
+			h.push(`<tr class="text-center ${RowClass}">
+				<td>
+					<strong class="${RankClass} td-tooltip" data-original-title="${HTML.i18nTooltip(RankTooltip.join('<br>'))}">${RankText}</strong>
+				</td>
+				<td>
+					<strong class="${EinsatzClass} td-tooltip copy-fp clickable" data-copy="${ForderFPRewards[Rank]}" data-original-title="${HTML.i18nTooltip(EinsatzTooltip.join('<br>'))}">${EinsatzText}</strong>
+				</td>
+				<td>
+					<strong class="${GewinnClass} td-tooltip copy-fp" data-copy="'+ForderGewinn+'" data-original-title="${HTML.i18nTooltip(GewinnTooltip.join('<br>'))}">${GewinnText}</strong>
+				</td>
+				<td> ${HTML.Format(BPRewards[Rank])} </td>
+				<td> <small> ${HTML.Format(MedalRewards[Rank])} </small> </td>
+			</tr>`);
 		}
 
 		$('#costTableFordern').html(h.join(''));
@@ -578,20 +525,42 @@ let Calculator = {
 			container: 'body'
 		});
 	},
-		
 
-	/**
-	 * Formats the course
-	 *
-	 * @param Kurs
-	 */
-	FormatKurs: (Kurs) => {
-		if (Kurs === 0) {
-			return '-';
+
+	GetRecurringQuestsLine: (PlaySound) => {
+		let h = [],
+			RecurringQuests = 0;
+
+		for (let Quest of MainParser.Quests) {
+			if (Quest.id >= 900000 && Quest.id < 1000000) {
+				for (let cond of Quest.successConditions) {
+					let CurrentProgress = cond.currentProgress || 0;
+					let MaxProgress = cond.maxProgress;
+					if (cond.iconType=="icon_quest_alchemie" && ((CurrentEraID <= 3 && MaxProgress >= 3) || (MaxProgress > 15 && CurrentEraID <=15) || MaxProgress>=100)) { // Unterscheidung Buyquests von UseQuests: Bronze/Eiszeit haben nur UseQuests, Rest hat Anzahl immer >15, Buyquests immer <=15
+						let RecurringQuestString;
+						if (MaxProgress - CurrentProgress !== 0) {
+							RecurringQuestString = HTML.Format(MaxProgress - CurrentProgress) + i18n('Boxes.Calculator.FP');
+							RecurringQuests += 1;
+						}
+						else {
+							RecurringQuestString = i18n('Boxes.Calculator.Done');
+						}
+
+						h.push('<div class="rq"><em>' + i18n('Boxes.Calculator.ActiveRecurringQuest') + ' <span class="recurringquests copy-fp clickable" data-copy="'+ (MaxProgress - CurrentProgress) +'">' + RecurringQuestString + '</span></em></div>');
+					}
+				}
+			}
 		}
-		else {
-			return HTML.Format(Kurs) + '%';
-		}
+
+		if (Calculator.LastRecurringQuests !== undefined && RecurringQuests !== Calculator.LastRecurringQuests) { 
+			if (PlaySound) { //Nicht durch Funktion PlaySound ersetzen!!! GetRecurringQuestLine wird auch vom EARechner aufgerufen.
+				helper.sounds.play("message");
+			}
+        }
+
+		Calculator.LastRecurringQuests = RecurringQuests;
+
+		return h.join('');
 	},
 
 
