@@ -15,6 +15,7 @@
 - Efficiency Rating: Buildings that can be upgraded to their ascended version now show an arrow next to their name
 - Guild Member Overview: Member details are now opened in their own window and include more data
 - Continent Map Overview has been removed! Negotiating on the map is a very niche play style and goods much easier to come by these days
+- UI: Various small changes in multiple areas
 
 ---
  

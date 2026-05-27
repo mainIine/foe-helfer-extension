@@ -13,6 +13,7 @@
 
 #OwnPartBox {
 	top: 100px;
+	min-width: 250px;
 }
 
 #OwnPartBox .OwnPartDrops {
@@ -109,8 +110,8 @@
 	height: 20px;
 }
 
-#calcInfo .calcInfo { display: none; width: 240px; margin: 0 auto; }
-#calcInfo:hover .calcInfo { display: block; }
+#calcInfo .calcInfo { height: 0; overflow: hidden; width: 240px; margin: 0 auto; }
+#calcInfo:hover .calcInfo { height: auto; }
 
 #gbCosts h1 {
 	padding: 0;

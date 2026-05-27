@@ -749,7 +749,7 @@ let Parts = {
 		let hintRead = JSON.parse(localStorage.getItem('CalculatorHintRead'));
 		if (!hintRead)
 			h.push(`<div id="calcInfo" class="p5">
-				<div class="text-center"><img src="${extUrl}css/images/menu/calculator.png" /> <img src="${extUrl}css/images/menu/part-calc.png" /> ?!</div> <span class="icon-close clickable"></span> 
+				<div class="text-center"><img src="${extUrl}css/images/menu/calculator.png" /> <img src="${extUrl}css/images/menu/part-calc.png" /> <b>?!</b></div> <span class="icon-close clickable"></span> 
 				<div class="calcInfo">${i18n('Boxes.Calculator.InfoUpdate')}</div>
 			</div>`)
 
@@ -1641,7 +1641,6 @@ let Parts = {
 		});
 		c.push('</section>');
 
-		// new own button
 		c.push(nV);
 
 		c.push(`<p class="bbd p5">

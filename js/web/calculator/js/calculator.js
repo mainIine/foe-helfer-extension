@@ -594,6 +594,7 @@ let Calculator = {
 			buttons,
 			defaults = Calculator.DefaultButtons,
 			sB = localStorage.getItem('CustomCalculatorButtons'),
+			allGB = JSON.parse(localStorage.getItem('ShowOwnPartOnAllGBs')),
 			nV = `<p class="new-row text-center bbd p5 flex gap">
 				${i18n('Boxes.Calculator.Settings.newValue')}: <input type="number" class="settings-values" style="width:30px"> 
 				<span class="btn btn-green btn-slim" onclick="Calculator.SettingsInsertNewRow()">+</span>
@@ -621,13 +622,14 @@ let Calculator = {
 		});
 		c.push('</section>');
 
-		// new custom button
 		c.push(nV);
 
-		c.push('<label for="forderbonusperconversation"><input id="forderbonusperconversation" class="forderbonusperconversation game-cursor" ' + (Calculator.ForderBonusPerConversation ? 'checked' : '') + ' type="checkbox"> ' + i18n('Boxes.Calculator.ForderBonusPerConversation')+'</label><br/>');
-		c.push('<label for="CalculatorTone"><input id="CalculatorTone" class="CalculatorTone game-cursor" ' + (Calculator.PlayInfoSound ? 'checked' : '') + ' type="checkbox"> ' + i18n('Boxes.Calculator.PlayInfoSound') + '</label>');
+		c.push(`<p class="bbd p5">
+			<label for="forderbonusperconversation"><input id="forderbonusperconversation" class="forderbonusperconversation game-cursor" ${(Calculator.ForderBonusPerConversation ? 'checked' : '')} type="checkbox">${i18n('Boxes.Calculator.ForderBonusPerConversation')}</label><br/>
+			<label for="openonaliengb"><input type="checkbox" id="openonaliengb" class="openonaliengb game-cursor" ${((!allGB) ? 'checked' : '')}> ${i18n('Settings.ShowOwnPartOnAllGBs.Desc')}</label><br>
+			<label for="CalculatorTone"><input id="CalculatorTone" class="CalculatorTone game-cursor" ${(Calculator.PlayInfoSound ? 'checked' : '')} type="checkbox"> ${i18n('Boxes.Calculator.PlayInfoSound')}</label>
+		</p>`);
 
-		// save button
 		c.push(`<p class="text-center"><button id="save-calculator-settings" class="btn btn-green" onclick="Calculator.SettingsSaveValues()">${i18n('Boxes.Calculator.Settings.Save')}</button></p>`);
 
 		$('#OwnPartBoxSettingsBox').html(c.join(''));
@@ -650,8 +652,6 @@ let Calculator = {
 
 	SettingsSaveValues: ()=> {
     	let values = [];
-
-    	// get each visible value
 		$('.settings-values').each(function(){
 			let v = $(this).val().trim();
 
@@ -662,19 +662,23 @@ let Calculator = {
 					values.push(v);
 				}
 			}
-
-			Calculator.ForderBonusPerConversation = $('.forderbonusperconversation').prop('checked');
-			localStorage.setItem('CalculatorForderBonusPerConversation', Calculator.ForderBonusPerConversation);
-			Calculator.PlayInfoSound = $('#CalculatorTone').prop('checked');
-			localStorage.setItem('CalculatorTone', Calculator.PlayInfoSound);
 		});
-
-		// save new buttons
 		localStorage.setItem('CustomCalculatorButtons', JSON.stringify(values));
+
+		Calculator.ForderBonusPerConversation = $('.forderbonusperconversation').prop('checked');
+		localStorage.setItem('CalculatorForderBonusPerConversation', Calculator.ForderBonusPerConversation);
+
+		Calculator.PlayInfoSound = $('#CalculatorTone').prop('checked');
+		localStorage.setItem('CalculatorTone', Calculator.PlayInfoSound);
+
+		let openforeignGB = false;
+		if ($("#openonaliengb").is(':not(:checked)')) openforeignGB = true;
+		localStorage.setItem('ShowOwnPartOnAllGBs',openforeignGB);
+
 
 		$(`#OwnPartBoxSettingsBox`).fadeToggle('fast', function(){
 			$(this).remove();
-			Calculator.Show();
+			Parts.CalcBody();
 		});
 	}
 };
