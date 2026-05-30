@@ -602,7 +602,7 @@ p {
 .text-right { text-align: right; }
 .text-light { color: var(--white); }
 .text-warning, .text-bright { color: var(--sunflower); }
-.text-danger, .danger { color: var(--bright-red); }
+.text-danger, .danger { color: var(--danger-red); }
 .text-info, .info { color: var(--info-blue); }
 .text-muted { color: var(--ash); }
 
