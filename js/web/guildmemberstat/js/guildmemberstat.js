@@ -1240,7 +1240,7 @@ let GuildMemberStat = {
 		let qiData = await QiProgress.db.history.toArray();
 		qiData.reverse();
 		for (let season of qiData) {
-			let memberParticipation = season.participation.find(x => x.player_id === id);
+			let memberParticipation = season.participation?.find(x => x.player_id === id);
 			if (memberParticipation === undefined) continue;
 
 			qi.push(`<tr>
