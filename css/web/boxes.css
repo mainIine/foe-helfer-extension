@@ -548,10 +548,22 @@ table.foe-table tr.bg-green td {
     border-bottom-color: var(--table-bb-success);
 }
 
+table.foe-table tr.bg-yellow td {
+	background-color: var(--table-bg-bright);
+	border-top-color: var(--table-bt-bright);
+    border-bottom-color: var(--table-bb-bright);
+}
+
 table.foe-table tr.bg-red td {
 	background-color: var(--table-bg-error);
 	border-top-color: var(--table-bt-error);
     border-bottom-color: var(--table-bb-error);
+}
+
+table.foe-table tr.bg-blue td {
+	background-color: var(--table-bg-info);
+	border-top-color: var(--table-bt-info);
+    border-bottom-color: var(--table-bb-info);
 }
 
 table.foe-table td .error {
