@@ -6,6 +6,7 @@
 **New**
 - Calculators: There is now only one calculator, but we did not remove any functionality. Check out the Calculator window settings if you want to use the "removed one" for other peoples GBs
 - GBG: You can now add a Discord Webhook in the settings of the countdown window
+- GBG: Added a tab for owned provinces to easily see which ones still need buildings
 - Discord Webhooks: Create templates for personalized GBG messages and add them to the GBG countdown window
 
 **Update**
