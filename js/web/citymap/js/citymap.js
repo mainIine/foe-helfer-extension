@@ -230,7 +230,7 @@ let CityMap = {
 			$("#sidebar").append(CityMap.showOutpostBuildings());
 		
 		if (ActiveMap === "cultural_outpost")
-			$('#citymap-wrapper').append('<img class="clickable openOverview" data-original-title="'+i18n('Menu.OutP.Title')+'" onClick="Outposts.BuildInfoBox()" src="' + extUrl + 'css/images/menu/vikings_ship.png">');
+			$('#citymap-wrapper').append('<span class="btn btn-mid openOverview" onClick="Outposts.BuildInfoBox()">'+i18n('Menu.OutP.Title')+'</span>');
 
 		if (ActiveMap === 'OtherPlayer') {
 			let townhall = (Object.values(CityMap.OtherPlayer.mapData).find(x => x.type === 'main_building'));
@@ -353,7 +353,7 @@ let CityMap = {
 	showQIStats: () => {
 		if (!CityMap.QI.data) return;
 
-		out = '<div class="qiSums">';
+		out = '<div class="metaSums">';
 		out += '<p class="text-center"><i>'+i18n('Boxes.CityMap.QIHint')+'</i></p>';
 		out += '<div class="flex between" style="margin-bottom: 10px;">';
         out += '<span><img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_expansion.png`,true)+'" />' +  CityMap.QI.areas.length + '</span>';
@@ -594,10 +594,17 @@ let CityMap = {
 		});
 
 		let out = '<table class="foe-table allBuildings">'
-		out += '<thead><tr><th colspan="2">'+i18n('Boxes.CityMap.Building')+'</th><th class="population textright"></th><th><span class="goods-sprite diplomacy"></span></th>'+
-		'<th>'+i18n('Boxes.CityMap.Boosts')+'</th></tr></thead>'
+		out += `<thead><tr>
+			<th colspan="2">${i18n('Boxes.CityMap.Building')}</th>
+			<th class="population textright"></th>
+			<th><span class="goods-sprite ${(ActiveMap !== "era_outpost"?'diplomacy':'')}"></span></th>
+			<th>${i18n('Boxes.CityMap.Boosts')}</th></tr></thead>`
 		out += "<tbody>"
 
+		let totals = {
+			diplomacy: 0,
+			population: 0,
+		};
 		for (let building of uniqueBuildings) {
 			if (building.type !== "impediment" && building.type !== "street" && building.type !== "off_grid") {				
 				out += "<tr class='"+building.type+"'>" + 
@@ -614,10 +621,25 @@ let CityMap = {
 					}
 				}
 				out += "</td></tr>";
+
+				if (building.diplomacy>0) {
+					totals.diplomacy += building.diplomacy*building.count;
+				}
+				totals.population += building.population*building.count;
 			}
 		}
+
+		let meta = "";
+		if (totals.diplomacy > 0) {
+			meta += `<div class="metaSums p5 text-center">
+						<i>${i18n('Boxes.CityMap.QIHint')}</i><br/> 
+						<span class="population"></span>${totals.population}
+						<span class="goods-sprite diplomacy"></span>${totals.diplomacy}
+					</div>`;
+		}
+
 		out += "</tbody></table>";
-		return out;
+		return meta + out;
 	},
 
 
