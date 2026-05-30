@@ -280,7 +280,7 @@ let Calculator = {
 				SaveStates[Rank] = 'Self';
 
 				for (let j = i + 1; j < MainParser.CurrentGB.Rankings.length; j++) {
-					//Spieler selbst oder Spieler gelöscht => nächsten Rang überprüfen
+					// Spieler selbst oder Spieler gelöscht => nächsten Rang überprüfen
 					if (MainParser.CurrentGB.Rankings[j]['rank'] !== undefined && MainParser.CurrentGB.Rankings[j]['rank'] !== -1 && MainParser.CurrentGB.Rankings[j]['forge_points'] !== undefined) {
 						SaveRankCosts[Rank] = MainParser.round((MainParser.CurrentGB.Rankings[j]['forge_points'] + RestFP) / 2);
 						break;
@@ -306,15 +306,12 @@ let Calculator = {
 					ExitLoop = true;
 				}
 				else {
-					if (ForderRankCosts[Rank] === RestFP) {
+					if (ForderRankCosts[Rank] === RestFP) 
 						ForderStates[Rank] = 'LevelWarning';
-					}
-					else if (ForderRankCosts[Rank] <= ForderFPRewards[Rank]) {
+					else if (ForderRankCosts[Rank] <= ForderFPRewards[Rank]) 
 						ForderStates[Rank] = 'Profit';
-					}
-					else {
+					else 
 						ForderStates[Rank] = 'NegativeProfit';
-					}
 				}
 
 				// Platz schon vergeben
@@ -413,7 +410,7 @@ let Calculator = {
 			}
 
 			if (ForderStates[Rank] === 'Self') {
-				RowClass = 'info-row';
+				RowClass = 'bg-blue';
 				RankClass = 'info';
 
 				if (Einzahlungen[Rank] < ForderFPRewards[Rank]) {
@@ -497,7 +494,7 @@ let Calculator = {
 			else if (ForderStates[Rank] === 'WorseProfit' && SaveStates[Rank] === 'WorseProfit') 
 				RowClass = 'text-grey';
 			else if (ForderStates[Rank] === 'Self' && SaveStates[Rank] === 'Self') 
-				RowClass = 'info-row';
+				RowClass = 'bg-blue';
 			else if (ForderStates[Rank] === 'NegativeProfit' && SaveStates[Rank] === 'NegativeProfit') 
 				RowClass = 'bg-red';
 			else if (ForderStates[Rank] === 'LevelWarning' && SaveStates[Rank] === 'LevelWarning') 
