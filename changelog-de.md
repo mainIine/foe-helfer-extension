@@ -6,6 +6,7 @@
 **Neu**
 - LG Rechner: Es gibt nur noch einen Rechner, aber es wurde keine Funktionalität entfernt. Wenn ihr die bisherige Kostenrechner-Ansicht sucht, schaut in die Einstellung vom Fenster des Rechners!
 - Gefechte: In den Einstellungen bei den Gefechts-Countdowns kann man jetzt einen Discord Webhook definieren
+- Gefechte: Es gibt einen neuen Bereich, wo man schnell sehen kann, welche der eigenen Sektoren noch bebaut werden müssen
 - Discord Webhooks: Erstelle Vorlagen (Templates) für eigene Gefechtsnachrichten und füge sie in den GG Einstellungen hinzu
 
 **Update**
