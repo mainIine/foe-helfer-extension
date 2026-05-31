@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -56,17 +56,17 @@
 #noticesBody .sub-tab-edit {
 	width: 24px;
 	height: 24px;
-	background: rgba(255,255,255,0.2) url('../../../../css/images/hud/edit.png') center center no-repeat;
+	background: var(--black-50) url('../../../../css/images/hud/edit.png') center center no-repeat;
 	position: absolute;
 	background-size: 80%;
-	border: 1px solid var(--text-normal);
+	border: 1px solid var(--border-table-bottom);
 	border-radius: 3px;
 	z-index: 50;
 }
 
 #noticesBody .tab-edit:hover,
 #noticesBody .sub-tab-edit:hover {
-	border-color: var(--text-bright);
+	border-color: var(--sunflower);
 }
 
 #noticesBody .tabs ul.horizontal {
@@ -84,13 +84,13 @@
 #noticesBody .content-head {
 	font-size: 110%;
 	font-weight: 700;
-	color: var(--text-bright);
+	color: var(--sunflower);
 	margin-bottom: 5px;
 }
 
 #noticesBody .content-head-player {
 	display: flex;
-	color: var(--text-bright);
+	color: var(--sunflower);
 	margin-bottom: 15px;
 }
 
@@ -109,10 +109,6 @@
 	margin-bottom: 15px;
 }
 
-#noticesBody .content-head-player span.clan-name {
-
-}
-
 #noticesBody .content-head-player div.info-text {
 	margin-left: auto;
 }
@@ -120,6 +116,17 @@
 #noticesBody .content-text {
 	overflow: hidden;
 	overflow-y: auto;
+}
+
+#noticesBody .content-text:focus, #noticesBody .content-head:focus {
+	outline: 2px solid var(--text-dark);
+}
+
+#noticesBody .content-text * {
+	font-family: inherit !important;
+	color: inherit !important;
+    background-color: transparent !important;
+	border-color: var(--text-dark) !important;
 }
 
 /*******************************************************************************/
@@ -135,8 +142,18 @@
 #notices-modalBody,
 #notices-modal-playersBody {
 	padding: 10px;
+	flex-wrap: wrap;
 	display: flex;
-	flex-direction: column;
+}
+
+#notices-modalBody input {
+	width: 100%;
+	margin-bottom: 5px;
+}
+
+#notices-modalBody .btn {
+	margin: 0 1px;
+	flex-grow: 2;
 }
 
 #notices-modal-playersBody {
@@ -145,8 +162,12 @@
 
 #notices-modal-playersBody .custom-option {
 	display: flex;
-	border-bottom: 1px solid var(--text-normal);
+	border-bottom: 1px solid var(--beige);
 	align-items: center;
+}
+
+#notices-modal-playersBody .custom-select__trigger {
+	width: 260px;
 }
 
 #notices-modal-playersBody .custom-option .avatar {

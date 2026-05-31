@@ -1,7 +1,7 @@
 
 /*
  * **************************************************************************************
- * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -22,7 +22,7 @@ FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, post
         newSound.volume = 0;
         newSound.loop = true;
         newSound.onloadedmetadata = function () {betterMusic.setEvent(id="betterMusic1")}
-        $('#musicControl-Btn').append(newSound);
+        $('#game_body').append(newSound);
         betterMusic.Ids.push(newSound.id);
         
         let newSound2 = document.createElement("audio");
@@ -30,7 +30,7 @@ FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, post
         newSound2.volume = 0;
         newSound2.loop = true;
         newSound2.onloadedmetadata = function () {betterMusic.setEvent(id="betterMusic2")}
-        $('#musicControl-Btn').append(newSound2);
+        $('#game_body').append(newSound2);
         betterMusic.Ids.push(newSound2.id);
         
         let newSound3 = document.createElement("audio");
@@ -38,7 +38,7 @@ FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, post
         newSound3.volume = 0;
         newSound3.loop = true;
         newSound3.onloadedmetadata = function () {betterMusic.setEvent(id="betterMusic3")}
-        $('#musicControl-Btn').append(newSound3);
+        $('#game_body').append(newSound3);
         betterMusic.Ids.push(newSound3.id);
         
         betterMusic.loadSettings();
@@ -47,7 +47,6 @@ FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, post
         if (!betterMusic.playStatus) betterMusic.pause();
         
         betterMusic.buildlists();
-        betterMusic.initialize(10000);
         first = true;
 
         
@@ -95,6 +94,11 @@ FoEproxy.addHandler('GuildExpeditionService', 'getOverview', (data, postData) =>
     betterMusic.setScene("ge");
     
 });
+FoEproxy.addHandler('BattlefieldService', 'startByBattleType', (data, postData) => {
+    if (!data.responseData.map) return;
+    betterMusic.setScene("battle");
+    
+});
 
 FoEproxy.addHandler('PVPArenaService', 'getOverview', (data, postData) => {
        
@@ -114,6 +118,18 @@ FoEproxy.addHandler('GrandPrizeService', 'getGrandPrizes', (data, postData) => {
     };
     
 });
+FoEproxy.addHandler('EventPassService', 'getPreview', (data, postData) => {
+
+    Eventname = data.responseData?.teaserPrizes?.context;
+    
+    if (!betterMusic.Settings.Events) return;
+    
+    for (t in betterMusic.PossibleTracks) {
+        if (betterMusic.PossibleTracks[t].Event != Eventname) continue;
+        return betterMusic.setScene(t);
+    };
+    
+});
 
 FoEproxy.addHandler('FriendsTavernService', 'getConfig', (data, postData) => {
        
@@ -121,8 +137,26 @@ FoEproxy.addHandler('FriendsTavernService', 'getConfig', (data, postData) => {
     
 });
 
+$('#game_body').click(function () {
+    if (!betterMusic.first || $('#betterMusic1').length === 0) return;
+    betterMusic.first = false;
+    betterMusic.TrackSelector();
+})
+$('#game_body').contextmenu(function () {
+    if (!betterMusic.first || $('#betterMusic1').length === 0) return;
+    betterMusic.first = false;
+    betterMusic.TrackSelector();
+})
+$('#game_body').keydown(function () {
+    if (!betterMusic.first || $('#betterMusic1').length === 0) return;
+    betterMusic.first = false;
+    betterMusic.TrackSelector();
+})
+
+
 let betterMusic = {
 
+    first: true,
     NextEvent: null,
     Ids: [],
     currentId: "",
@@ -150,7 +184,8 @@ let betterMusic = {
                 "foe_music_jupiter_moon_city": true,
                 "foe_music_tavern": true,
                 "foe_music_stpatricks_v2": true,
-                "foe_music_anniversary": true
+                "foe_music_anniversary": true,
+                "foe_music_history":true
             },
             "settlement": {
                 "foe_music_expedition": true,
@@ -160,7 +195,8 @@ let betterMusic = {
                 "foe_music_japanese": true,
                 "foe_music_egyptians": true,
                 "foe_music_aztecs": true,
-                "foe_music_mughals": true
+                "foe_music_mughals": true,
+                "foe_music_polynesia":true
             },
             "colony": {
                 "foe_music_mars": true,
@@ -173,18 +209,15 @@ let betterMusic = {
                 "foe_music_wildlife": true,
                 "foe_music_archeology": true,
                 "foe_music_aztecs": true,
-                "foe_music_mughals": true
+                "foe_music_mughals": true,
+                "foe_music_polynesia":true
             },
             "gbg": {
                 "foe_music_expedition": true,
                 "foe_music_battlegrounds": true,
                 "foe_music_pvp_arena": true,
-                "FoE_BattleTheme_Vs1": true
-            },
-            "gvg": {
-                "foe_music_battlegrounds": true,
-                "foe_music_pvp_arena": true,
-                "FoE_BattleTheme_Vs1": true
+                "FoE_BattleTheme_Vs1": true,
+                "foe_music_polynesia":true
             },
             "battle": {
                 "foe_music_battlegrounds": true,
@@ -211,43 +244,53 @@ let betterMusic = {
     },
     playStatus: false,
     Scenes: {
-        "main": {Name: "Main City", TitleList: []},
-        "settlement":{Name: "Settlement", TitleList: []},
-        "colony":{Name: "Colony", TitleList: []},
-        "ge":{Name: "Expedition", TitleList: []},
-        "gbg":{Name: "Battlegrounds", TitleList: []},
-        "gvg":{Name: "Guild vs Guild", TitleList: []},
-        "battle":{Name: "Battle", TitleList: []},
-        "map":{Name: "Map", TitleList: []},
+        "main": {Name: i18n('Boxes.BetterMusic.Main'), TitleList: []},
+        "settlement":{Name: i18n('Boxes.BetterMusic.Settlement'), TitleList: []},
+        "colony":{Name: i18n('Boxes.BetterMusic.Colony'), TitleList: []},
+        "ge":{Name: i18n('Boxes.BetterMusic.GE'), TitleList: []},
+        "gbg":{Name: i18n('Boxes.BetterMusic.GBG'), TitleList: []},
+        "battle":{Name: i18n('Boxes.BetterMusic.Battle'), TitleList: []},
+        "map":{Name: i18n('Boxes.BetterMusic.Map'), TitleList: []},
     },
     PossibleTracks: {
         "FoE_CityTrack_Vs2": {Volume:1, Name:"Stone Age - Early Middle Ages", Age:1, Agelimit: 4},
         "foe_music_hma_to_col_1_vs2": {Volume:1, Name:"High middle Ages - Colonial Age", Age:5, Agelimit: 7},
-        "foe_music_ind_to_pro_1_vs1": {Volume:1, Name:"Industrial Age - Progressive Era", Age:8, Agelimit: 9},
-        "foe_music_tmr_to_fut": {Volume:1, Name:"Modern Era - Space Age Mars", Age:10, Agelimit: 18},
+        "foe_music_ind_to_pro_1_vs1": {Volume:1, Name:"Industrial Age - Contemporary Era", Age:8, Agelimit: 12},
+        "foe_music_tmr_to_fut": {Volume:1, Name:"Tomorrow Era - Space Age Mars", Age:13, Agelimit: 18},
+        "foe_music_future_2_vs1": {Volume:1, Name:"Future 2", Age:14, Agelimit: 14},
         "foe_music_mars": {Volume:1, Name:"Space Age Mars (Colony)", Age:18, Agelimit: 18, Outpost: true},
         "foe_music_asteroid_belt_city": {Volume:1, Name:"Space Age Asteroid Belt - Space Age Venus", Age:19, Agelimit: 20},
         "foe_music_asteroid_belt": {Volume:1, Name:"Space Age Asteroid Belt (Colony)", Age:19, Agelimit: 19, Outpost: true},
         "foe_music_venus": {Volume:1, Name:"Space Age Venus (Colony)", Age:20, Agelimit: 20, Outpost: true},
         "foe_music_jupiter_moon_city": {Volume:1, Name:"Space Age Jupiter Moon", Age:21, Agelimit: 21},
-        "foe_music_jupiter_moon": {Volume:1, Name:"Space Age Jupiter Moon (Colony)", Age:21, Agelimit: 21, Outpost: true},
+        "foe_music_jupiter_moon": {Volume:1, Name:"Space Age Jupiter Moon (Colony)", Age:21, Agelimit: 22, Outpost: true},
+        "foe_music_titan": {Volume:1, Name:"Space Age Titan", Age:22, Agelimit: 22},
+        "foe_music_space_hub": {Volume:1, Name:"Space Age Space Hub", Age:23, Agelimit: 23},
         "foe_music_tavern": {Volume:.7, Name:"Tavern"},
         "foe_music_expedition": {Volume:.7, Name:"Guild Expedition"},
         "foe_music_battlegrounds": {Volume:.7, Name:"Guild Battlegrounds"},
         "foe_music_pvp_arena": {Volume:.6, Name:"PvP Arena"},
         "FoE_BattleTheme_Vs1": {Volume:.7, Name:"Battle Theme"},
         "foe_music_stpatricks_v2": {Volume:.6, Name:"St Patricks Day Event", Event:"st_patricks_event"},
-        "foe_music_wildlife": {Volume:1, Name:"Wildlife Event", Event:"wildlife_event"},
+        "age23_background_music": {Volume:.6, Name:"Anniversary Event", Event:"anniversary_event"},
+        "foe_music_anniversary": {Volume:.5, Name:"Ages Event", Event:"forge_ages_event"},
+        "foe_music_wildlife": {Volume:.6, Name:"Wildlife Event", Event:"wildlife_event"},
         "foe_music_archeology": {Volume:.6, Name:"Archaeology  Event", Event:"archeology_event"},
+        "foe_music_hero": {Volume:.6, Name:"Fellowship Event 22", Event:"hero_event"},
+        "cup23_background_music": {Volume:.6, Name:"Soccer Event", Event:"soccer_event"},
+        "foe_music_fellowship": {Volume:.6, Name:"Fellowship Event 23", Event:"fellowship_event"},
+        "foe_music_history": {Volume:.6, Name:"History Event", Event:"history_event"},
+        "foe_music_care": {Volume:.6, Name:"Care Event", Event:"care_event"},
         "foe_music_summer": {Volume:.7, Name:"Summer Event", Event:"summer_event"},
+        "foe_music_fall": {Volume:.7, Name:"Fall Event", Event:"fall_event"},
         "foe_music_halloween": {Volume:.6, Name:"Halloween Event", Event:"halloween_event"},
         "foe_music_winter": {Volume:.6, Name:"Winter Event", Event:"winter_event"},
-        "foe_music_anniversary": {Volume:1, Name:"Anniversary Event", Event:"forge_ages_event"},
         "foe_music_vikings": {Volume:1, Name:"Viking Settlement", Settlement:"vikings"},
         "foe_music_japanese": {Volume:1, Name:"Japanese Settlement", Settlement:"japanese"},
         "foe_music_egyptians": {Volume:1, Name:"Egypt Settlement", Settlement:"egyptians"},
         "foe_music_aztecs": {Volume:1, Name:"Aztec Settlement", Settlement:"aztecs"},
         "foe_music_mughals": {Volume:1, Name:"Mughal Settlement", Settlement:"mughals"},
+        "foe_music_polynesia": {Volume:1, Name:"Polynesia Settlement", Settlement:"polynesia"},
     },
 
     
@@ -259,31 +302,37 @@ let betterMusic = {
     ShowDialog: () => {
 
                 
-        let htmltext = ``;
-        htmltext += `<table id="musicSettingsGeneral" class="musicSettings"><caption>General Settings</caption><tr>`;
-        htmltext += `<td><input id="musicSettingsVolume" type="range" min="0" max="1" step ="0.05" value="${betterMusic.Settings.Volume}" oninput="betterMusic.newVolume(Number(this.value))"><br><label for="musicSettingsVolume">Volume</label></td>`;
-        htmltext += `<td><input id="musicSettingsPlayOnClose" type="checkbox" ${betterMusic.Settings.PlayOnStart ? 'checked="checked"' : ''}" oninput="betterMusic.Settings.PlayOnStart = this.checked"><label for="musicSettingsPlayOnClose">play automatically</label></td></tr><tr>`;
+        let htmltext = `<div class="flex">`;
+        htmltext += `<div id="musicSettingsGeneral" class="musicSettings"><h1>${i18n('Boxes.BetterMusic.GeneralSettings')}</h1>`;
+        htmltext += `<label for="musicSettingsVolume">${i18n('Boxes.BetterMusic.Volume')} <input id="musicSettingsVolume" type="range" min="0" max="1" step ="0.05" value="${betterMusic.Settings.Volume}" oninput="betterMusic.newVolume(Number(this.value))"></label> <br>`;
+        htmltext += `<input id="musicSettingsPlayOnClose" type="checkbox" ${betterMusic.Settings.PlayOnStart ? 'checked="checked"' : ''}" oninput="betterMusic.Settings.PlayOnStart = this.checked"><label for="musicSettingsPlayOnClose">${i18n('Boxes.BetterMusic.Auto')}</label></div>`;
         
-        htmltext += `</tr></table><table id="musicSettingsTitle" class="musicSettings"><caption>Title Settings</caption><tr>`;
-        htmltext += `<td><input id="musicSettingsTransitionTime" type="range" min="0" max="5000" step ="500" value="${betterMusic.Settings.TransitionTime}" oninput="betterMusic.Settings.TransitionTime = Number(this.value)"><br><label for="musicSettingsTransitionTime">Transition between Titels</label></td>`;
-        htmltext += `<td><input id="musicSettingsFinish" type="checkbox" ${betterMusic.Settings.Finish ? 'checked="checked"' : ''}" oninput="betterMusic.Settings.Finish = this.checked"><label for="musicSettingsFinish">let titles finish</label></td>`;
-               
-        htmltext += `</tr></table><table id="musicSettingsScenes" class="musicSettings"><caption>Scene Settings</caption><tr>`
-        htmltext += `<td><label for="musicSettingsMainCity">In City </label><select id="musicSettingsMainCity" type="select" oninput="betterMusic.Settings.MainCity = this.selectedIndex"><option value="0" ${betterMusic.Settings.MainCity === 0 ? 'selected="selected"': ''}>ignore era</option><option value="1" ${betterMusic.Settings.MainCity === 1 ? 'selected="selected"': ''}>play up to current era</option><option value="2" ${betterMusic.Settings.MainCity === 2 ? 'selected="selected"': ''}>play only current era</option></input></td>`;
-        htmltext += `<td><input id="musicSettingsTavern" type="checkbox" ${betterMusic.Settings.Tavern ? 'checked="checked"' : ''}" oninput="betterMusic.Settings.Tavern = this.checked"><label for="musicSettingsTavern">allow tavern trigger</label></td>`;
-        htmltext += `<td><input id="musicSettingsPvP" type="checkbox" ${betterMusic.Settings.Pvp ? 'checked="checked"' : ''}" oninput="betterMusic.Settings.Pvp = this.checked"><label for="musicSettingsPvp">allow pvp trigger</label></td></tr><tr>`;
-        htmltext += `</tr><tr>`
-        htmltext += `<td><label for="musicSettingsColony">In Colony </label><select id="musicSettingsColony" type="select" oninput="betterMusic.Settings.Colony = this.selectedIndex"><option value="0" ${betterMusic.Settings.Colony === 0 ? 'selected="selected"': ''}>ignore era</option><option value="1" ${betterMusic.Settings.Colony === 1 ? 'selected="selected"': ''}>play up to current era</option><option value="2" ${betterMusic.Settings.Colony === 2 ? 'selected="selected"': ''}>play only current era</option></input></td>`;
-        htmltext += `<td><input id="musicSettingsIgnoreSettlement" type="checkbox" ${betterMusic.Settings.IgnoreSettlement ? 'checked="checked"' : ''}" oninput="betterMusic.Settings.IgnoreSettlement = this.checked"><label for="musicSettingsIgnoreSettlement">ignore settlement type</label></td>`;
-        htmltext += `<td><input id="musicSettingsEvents" type="checkbox" ${betterMusic.Settings.Events ? 'checked="checked"' : ''}" oninput="betterMusic.Settings.Events = this.checked"><label for="musicSettingsEvents">allow Event trigger</label></td>`;
-        htmltext += `</tr></table>`;
+        htmltext += `<div id="musicSettingsTitle" class="musicSettings"><h1>${i18n('Boxes.BetterMusic.TitleSettings')}</h1>`;
+        htmltext += `<label for="musicSettingsTransitionTime">${i18n('Boxes.BetterMusic.Transition')} <input id="musicSettingsTransitionTime" type="range" min="0" max="5000" step ="500" value="${betterMusic.Settings.TransitionTime}" oninput="betterMusic.Settings.TransitionTime = Number(this.value)"></label><br>`;
+        htmltext += `<input id="musicSettingsFinish" type="checkbox" ${betterMusic.Settings.Finish ? 'checked="checked"' : ''}" oninput="betterMusic.Settings.Finish = this.checked"><label for="musicSettingsFinish">${i18n('Boxes.BetterMusic.Finish')}</label></div>`;
+        htmltext += `</div>`;
 
-        htmltext += `<table id="musicSettingsScenesX" class="foe-table"><caption style="font-weight: bold; font-size: initial; padding-top: 10px;">Select, which titles are allowed in which respective scene</caption><tr><th>Title</th>`;
+        htmltext += `<div id="musicSettingsScenes" class="musicSettings"><h1 class="text-center">${i18n('Boxes.BetterMusic.SceneSettings')}</h1>`
+        htmltext += `<div class="flex">`;
+        htmltext += `<div class="text-right">`;
+        htmltext += `<label for="musicSettingsMainCity">${i18n('Boxes.BetterMusic.InCity')} </label><select id="musicSettingsMainCity" type="select" oninput="betterMusic.Settings.MainCity = this.selectedIndex"><option value="0" ${betterMusic.Settings.MainCity === 0 ? 'selected="selected"': ''}>${i18n('Boxes.BetterMusic.IgnoreEra')} </option><option value="1" ${betterMusic.Settings.MainCity === 1 ? 'selected="selected"': ''}>${i18n('Boxes.BetterMusic.ToEra')} </option><option value="2" ${betterMusic.Settings.MainCity === 2 ? 'selected="selected"': ''}>${i18n('Boxes.BetterMusic.CurrentEra')} </option></select><br>`;
+        htmltext += `<label for="musicSettingsColony">${i18n('Boxes.BetterMusic.InColony')} </label>`;
+        htmltext += `<select id="musicSettingsColony" type="select" oninput="betterMusic.Settings.Colony = this.selectedIndex"><option value="0" ${betterMusic.Settings.Colony === 0 ? 'selected="selected"': ''}>${i18n('Boxes.BetterMusic.IgnoreEra')}</option><option value="1" ${betterMusic.Settings.Colony === 1 ? 'selected="selected"': ''}>${i18n('Boxes.BetterMusic.ToEra')}</option><option value="2" ${betterMusic.Settings.Colony === 2 ? 'selected="selected"': ''}>${i18n('Boxes.BetterMusic.CurrentEra')}</option></select>`;
+        htmltext += `</div>`;
+        htmltext += `<div>`;
+        htmltext += `<input id="musicSettingsTavern" type="checkbox" ${betterMusic.Settings.Tavern ? 'checked="checked"' : ''}" oninput="betterMusic.Settings.Tavern = this.checked"><label for="musicSettingsTavern">${i18n('Boxes.BetterMusic.TavernT')}</label>`;
+        htmltext += `<input id="musicSettingsPvp" type="checkbox" ${betterMusic.Settings.Pvp ? 'checked="checked"' : ''}" oninput="betterMusic.Settings.Pvp = this.checked"><label for="musicSettingsPvp">${i18n('Boxes.BetterMusic.PvPT')}</label>`;
+        htmltext += `<input id="musicSettingsIgnoreSettlement" type="checkbox" ${betterMusic.Settings.IgnoreSettlement ? 'checked="checked"' : ''}" oninput="betterMusic.Settings.IgnoreSettlement = this.checked"><label for="musicSettingsIgnoreSettlement">${i18n('Boxes.BetterMusic.IgnoreSettlement')}</label>`;
+        htmltext += `<input id="musicSettingsEvents" type="checkbox" ${betterMusic.Settings.Events ? 'checked="checked"' : ''}" oninput="betterMusic.Settings.Events = this.checked"><label for="musicSettingsEvents">${i18n('Boxes.BetterMusic.EventT')}</label>`;
+        htmltext += `</div>`;
+        htmltext += `</div>`;
+
+        htmltext += `<table id="musicSettingsScenesX" class="foe-table"><caption style="font-weight: bold; font-size: initial; padding-top: 10px;">${i18n('Boxes.BetterMusic.Scenes')}</caption><thead class="sticky">><tr><th>${i18n('Boxes.BetterMusic.TitleName')}</th>`;
         
         for (let scene in betterMusic.Scenes) {
-            htmltext += `<th>${betterMusic.Scenes[scene].Name}</th>`;
+            htmltext += `<th><span>${betterMusic.Scenes[scene].Name}</span></th>`;
         }
-        htmltext += `</tr>`;
+        htmltext += `</tr></thead>`;
         
         for (let title in betterMusic.PossibleTracks) {
             htmltext += `<tr><td class="betterMusicTitle" onclick="betterMusic.switchTrack('${title}', 0)" onmouseout="betterMusic.pause(event)">${betterMusic.PossibleTracks[title].Name}</td>`;
@@ -301,7 +350,7 @@ let betterMusic = {
     
             HTML.Box({
                 id: 'betterMusicDialog',
-                title: 'Better Music',
+                title: i18n('Boxes.BetterMusic.Title'),
                 auto_close: true,
                 dragdrop: true,
                 minimize: true,
@@ -334,8 +383,8 @@ let betterMusic = {
     switchTrack: (newTrack, transition = betterMusic.Settings.TransitionTime) => {
         let $SoundC = $(`#${betterMusic.Ids.shift()}`);
         let $SoundN = $(`#${betterMusic.Ids[0]}`);
-        
-        if ($SoundC[0].src == MainParser.InnoCDN + 'assets/sounds/shared/theme/'+ newTrack +'.ogg') {
+        let path = srcLinks.get(betterMusic.PossibleTracks[newTrack].Path || '/sounds/shared/theme/'+ newTrack +'.ogg', true)
+        if ($SoundC[0].src == path) {
         
             betterMusic.Ids.unshift($SoundC[0].id);
             betterMusic.setEvent($SoundC[0].id, 0);
@@ -349,7 +398,7 @@ let betterMusic = {
             $SoundC.animate({volume: 0}, transition);
             
             $SoundN[0].volume = 0;
-            $SoundN[0].src = MainParser.InnoCDN + 'assets/sounds/shared/theme/'+ newTrack +'.ogg';
+            $SoundN[0].src = path;
             
             clearTimeout(betterMusic.nextEvent);
             var playPromise = $SoundN[0].play();
@@ -361,9 +410,13 @@ let betterMusic = {
                     $SoundN.animate({volume: 1*betterMusic.PossibleTracks[newTrack].Volume*betterMusic.Settings.Volume}, transition);
                 })
                 .catch(error => {
-                    betterMusic.PossibleTracks[newTrack].banned = true;
-                    console.log("↑ ↑ ↑ ↑ banned from playlist ↑ ↑ ↑ ↑ ↑");
-                    betterMusic.buildlist(betterMusic.currentScene);
+                    if (error.toString() == "NotSupportedError: Failed to load because no supported source was found.") {
+                        console.log(`↑ ↑ ↑ ↑ ${newTrack} banned from playlist ↑ ↑ ↑ ↑ ↑`);
+                        if (betterMusic.PossibleTracks[newTrack]) {
+                            betterMusic.PossibleTracks[newTrack].banned = true;
+                            betterMusic.buildlist(betterMusic.currentScene);
+                        }
+                    }
                     betterMusic.TrackSelector();
                 });
             }
@@ -443,8 +496,12 @@ let betterMusic = {
     loadSettings: ()=> {
 
 		tempSettings = JSON.parse(localStorage.getItem('betterMusicSettings') || '{}');
+        if (tempSettings.Scenes) {
+            for (let i of Object.keys(tempSettings.Scenes)) {
+                if (!betterMusic.Settings.Scenes[i]) delete tempSettings.Scenes[i];
+            }
+        }
         betterMusic.Settings = betterMusic.update(betterMusic.Settings,tempSettings);
-
     },
     
     saveSettings: ()=> {
@@ -452,11 +509,6 @@ let betterMusic = {
         betterMusic.buildlists();
     },
     
-    initialize: (value=10000) => {
-        //clearTimeout(betterMusic.nextEvent);
-        betterMusic.nextEvent = setTimeout(function() {betterMusic.TrackSelector()}, value);
-    },
-
     update (obj/*, …*/) {
         for (var i=1; i<arguments.length; i++) {
             for (var prop in arguments[i]) {
@@ -492,7 +544,7 @@ let betterMusic = {
         if (!betterMusic.Scenes[scene]) return;
         betterMusic.Scenes[scene].TitleList = [];
         for (title in betterMusic.Settings.Scenes[scene]) {
-            if (betterMusic.PossibleTracks[title].banned) continue;
+            if (betterMusic.PossibleTracks[title]?.banned) continue;
             if (scene==="settlement" && (betterMusic.PossibleTracks[title].Settlement != Outposts?.OutpostData?.content) && (betterMusic.PossibleTracks[title].Settlement != undefined) && (!betterMusic.IgnoreSettlement)) continue;
             if (scene==="colony" && (
                 ((betterMusic.PossibleTracks[title].Agelimit < CurrentEraID || betterMusic.PossibleTracks[title].Age > CurrentEraID ) && betterMusic.Settings.Colony == 2) ||

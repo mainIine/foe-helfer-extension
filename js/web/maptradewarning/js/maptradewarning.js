@@ -1,7 +1,7 @@
 
 /*
  * **************************************************************************************
- * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -59,6 +59,7 @@ let mapTradeWarning = {
             'id': 'mapTradeWarningDialog',
             'title': i18n('Boxes.mapTradeWarning.Title'),
             'auto_close': true,
+            'class': 'window-warning',
             'dragdrop': false,
             'minimize': false
         });

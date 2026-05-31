@@ -1,0 +1,20 @@
+[
+	"dexie/dexie.min",
+	"i18njs/i18njs.min",
+	"moment/moment-with-locales.min",
+	"CountUp/jquery.easy_number_animate.min",
+	"Tabslet/jquery.tabslet.min",
+	"ScrollTo/jquery.scrollTo.min",
+	"jQuery/jquery-resizable.min",
+	"jQuery/jquery-ui.min",
+	"jQuery/jquery.toast",
+	"tooltip/tooltip",
+	"tableSorter/table-sorter",
+	"Sortable/Sortable.min",
+	"jsZip/jszip.min",
+	"date-range/lightpick",
+	"lit-html/lit-html.bundle.min",
+	"SimpleMarkdown/simple-markdown.min",
+	"downloadjs/downloadjs.min",
+	"dexie/dexie-export-import"
+]

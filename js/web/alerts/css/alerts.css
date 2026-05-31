@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -32,11 +32,10 @@
 
 #Alerts #AlertsBody .scrollable{
     height: 350px;
-    height: calc(100% - 40px);
+    height: calc(100% - 34px);
     overflow: hidden;
     overflow-y: auto;
-    margin: 2px 0 4px 0;
-    border-bottom: 1px solid var(--black-50);
+    margin: 0;
 }
 
 #Alerts #AlertsBody .content {
@@ -52,11 +51,8 @@
     bottom: 0;
     padding: 50px 0;
 }
-#Alerts #AlertsBody .no-permission {
-    background-color: rgba(0, 0, 0, 0.9);
-}
-#Alerts #AlertsBody .overlay-disable {
-    background-color: rgba(0, 0, 0, 0.75);
+#Alerts #AlertsBody .no-permission, #Alerts #AlertsBody .overlay-disable {
+    background-color: var(--black-65);
 }
 #Alerts #AlertsBody #alerts-preferences {
     position: relative;
@@ -84,13 +80,13 @@ div.alert-popup .box-inner { padding: 8px; }
 div.alert-popup .box-inner-content {
     border: .5px solid var(--border-table-top);
     margin-bottom: 15px;
-    box-shadow: 0 4px 3px 0 rgba(0,0,0, 0.2);
+    box-shadow: 0 4px 3px 0 var(--black-30);
 }
 div.alert-popup .box-inner-content h3 {
-    background-color: rgba(0,0,0,0.15);
-    box-shadow: 0 20px 12px -22px rgba(235,222,185,0.3) inset;
-    border-bottom: 1px solid rgb(65,41,17);
-    color: #ffcc68;
+    background-color: var(--black-30);
+    box-shadow: 0 20px 12px -22px var(--table-bg-hover) inset;
+    border-bottom: 1px solid var(--text-dark);
+    color: var(--sunflower);
     display: block;
     font-weight: 700;
     font-size: 90%;
@@ -110,7 +106,7 @@ div.alert-popup .box-inner-form {
 .box-inner input { box-sizing: border-box; }
 .box-inner input:focus,
 .box-inner textarea:focus {
-    outline: 3px solid var(--text-normal);
+    outline: 3px solid var(--beige);
 }
 
 .box-inner input[type="text"],
@@ -147,18 +143,18 @@ div.alert-popup #alert-expires,
 .box-inner select,
 .box-inner textarea {
     width: 100%;
-    border: 1px solid #000;
+    border: 1px solid var(--black);
 }
 
 .box-inner .error-text {
-    color: #f87c58;
+    color: var(--tooltip-disabled);
 }
 
 .box-inner input[type="text"].error-box,
 .box-inner input[type="datetime-local"].error-box,
 .box-inner select.error-box
 .box-inner textarea.error-box {
-    border: 1px solid #d4401f;
+    border: 1px solid var(--hud-border-error);
 }
 
 .box-inner form {
@@ -202,38 +198,28 @@ div.alert-popup #alert-expires,
     font-weight: 400;
     text-align: center;
     vertical-align: middle;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
     user-select: none;
     font-size: 0.8rem;
     line-height: 1.5;
-    background: rgb(183,112,55);
-    background: -moz-linear-gradient(top, rgb(183,112,55) 0%, rgb(176,96,38) 1%, rgb(145,72,30) 30%, rgb(130,62,24) 99%, rgb(176,104,50) 100%);
-    background: -webkit-linear-gradient(top, rgb(183,112,55) 0%,rgb(176,96,38) 1%,rgb(145,72,30) 30%,rgb(130,62,24) 99%,rgb(176,104,50) 100%);
-    background: linear-gradient(to bottom, rgb(183,112,55) 0%,rgb(176,96,38) 1%,rgb(145,72,30) 30%,rgb(130,62,24) 99%,rgb(176,104,50) 100%);
-    color: var(--text-normal);
-    cursor: url(https://foede.innogamescdn.com/assets/shared/cursors/cursor_default.cur), auto;
+    background: var(--btn-bg);
+    color: var(--beige);
+    cursor: url('../../../../css/images/cursor_default.cur'), auto;
     transition: color .15s ease-in-out,background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
     outline: none !important;
 }
 
 .radio-toolbar input[type="radio"]:checked + label,
 .radio-toolbar input[type="radio"]:hover + label {
-    background: rgb(228,193,75);
-    background: -moz-linear-gradient(top,  rgb(228,193,75) 0%, rgb(204,146,59) 1%, rgb(171,94,36) 30%, rgb(135,70,26) 99%, rgb(176,104,50) 100%);
-    background: -webkit-linear-gradient(top,  rgb(228,193,75) 0%,rgb(204,146,59) 1%,rgb(171,94,36) 30%,rgb(135,70,26) 99%,rgb(176,104,50) 100%);
-    background: linear-gradient(to bottom,  rgb(228,193,75) 0%,rgb(204,146,59) 1%,rgb(171,94,36) 30%,rgb(135,70,26) 99%,rgb(176,104,50) 100%);
+    background: var(--btn-bg-active);
 	cursor: url('../../../../css/images/cursor_hover.cur'), auto;
 }
 
-.column-160 { max-width: 160px; }
+.column-160 { max-width: 180px; }
 .column-200 { max-width: 200px; }
 .column-160, .column-200 {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-
 }
 
 input.hidden {
@@ -250,7 +236,7 @@ input.hidden {
 }
 
 #Alerts .btn-edit {
-    background-image: url('../../../../css/images/hud/edit.png'), var(--background-btn);
+    background-image: url('../../../../css/images/hud/edit.png'), var(--btn-bg);
     background-size: 13px 13px, cover;
     background-repeat: no-repeat, repeat;
     background-position: center;
@@ -258,36 +244,32 @@ input.hidden {
 }
 
 #Alerts .btn-edit:hover {
-    background-image: url('../../../../css/images/hud/edit.png'), var(--background-btn-active);
+    background-image: url('../../../../css/images/hud/edit.png'), var(--btn-bg-active);
 }
 
 #Alerts .btn-delete {
-    background-image: url('../../x_img/trash.svg'), var(--background-btn-red);
-    background-size: 13px 13px, cover;
-    background-repeat: no-repeat, repeat;
-    background-position: center;
     width: 18px;
 }
 
 #Alerts .btn-delete:hover {
-    background-image: url('../../x_img/trash.svg'), var(--background-btn-red-active);
+    background-image: url('../../x_img/trash.svg'), var(--btn-bg-red-active);
 }
 
 /* Preferences */
 #Alerts #alerts-preferences .item {
     border: .5px solid var(--border-table-top);
     margin-bottom: 15px;
-    box-shadow: 0 4px 3px 0 rgba(0,0,0, 0.2);
+    box-shadow: 0 4px 3px 0 var(--black-30);
     font-size: 90%;
 }
 
 #Alerts #alerts-preferences .item .title {
-    box-shadow: 0 20px 12px -22px rgba(235,222,185,0.3) inset;
-    border-bottom: 1px solid rgb(65,41,17);
+    box-shadow: 0 20px 12px -22px var(--table-bg-hover) inset;
+    border-bottom: 1px solid var(--text-dark2);
     padding: 4px 10px;
     font-weight: 700;
-    color: #ffcc68;
-    background-color: rgba(0,0,0,0.15);
+    color: var(--sunflower);
+    background-color: var(--black-30);
 }
 
 #Alerts #alerts-preferences .item .item-row {

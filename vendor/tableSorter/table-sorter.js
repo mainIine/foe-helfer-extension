@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -112,13 +112,7 @@
                 let tbody = $(this).data('type');
                 let tableHeaders = $(this).parent().children();
                 let column = tableHeaders.index($(this));
-                let direction = $(this).hasClass('ascending') ? -1 : 1;
-
-                tableHeaders.each(function () {
-                    $(this).hasClass('ascending') ? $(this).removeClass('ascending') : null;
-                    $(this).hasClass('descending') ? $(this).removeClass('descending') : null;
-                });
-
+                
                 switch (true) {
                     case $(this).hasClass('is-number'):
                         type = 'numeric';
@@ -130,6 +124,14 @@
                         type = 'caseSensitive';
                         break;
                 }
+
+                let direction = type == "numeric" ? 
+                    ($(this).hasClass('descending') ? 1 : -1) : 
+                    ($(this).hasClass('ascending') ? -1 : 1);
+                tableHeaders.each(function () {
+                    $(this).hasClass('ascending') ? $(this).removeClass('ascending') : null;
+                    $(this).hasClass('descending') ? $(this).removeClass('descending') : null;
+                });
 
                 direction === 1 ? $(this).addClass('ascending') : $(this).addClass('descending');
                 let rows = $('.' + tbody + ' tr', table).not('.sorter-header, .other-header').get();
@@ -194,7 +196,7 @@
             rtn = assignNumberToString(val);
 
         } else {
-            rtn = assignNumberToString(val.toLowerCase());
+            rtn = assignNumberToString((``+val).toLowerCase());
         }
 
         if (isNaN(rtn)) {
@@ -215,7 +217,7 @@
         } else if (len < 36) {
             str = str + padding.substr(1, 36 - len);
         }
-        return parseInt(str);
+        return str;
     }
 
 }(jQuery));

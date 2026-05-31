@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -11,98 +11,9 @@
  * **************************************************************************************
  */
 
-#menu_box {
-    top: 30%;
-    right: 15%;
-    width: 120px;
-    height: 60px;
-    min-width: 95px !important;
-	min-height: 50px !important;
-}
-
-#menu_box.closed {
-	border-image-source: url('../images/hud/window-menu-closed.png');
-	min-height: 0 !important;
-}
-
-#menu_boxHeader {
-	background: linear-gradient(#33435e, #243048);
-    box-shadow: inset 0 1px 1px #242235, inset 0 2px 0 #737793;
-}
-
-#menu_box.closed #menu_boxHeader {
-	top: -33px;
-}
-
-#menu_box .window-head span.title {
-	font-size: 95%;
-	color: #eee;
-	padding-top: 1px;
-}
-
-#menu_box .header {
-    margin-bottom: 2px;
-    padding: 1em 0;
-}
-
-#menu_box #menu_boxBody {
-	overflow: auto;
-	padding: 2px
-}
-
-.hud-btn {
-	background: url('../images/hud/menu-sm.png') top left no-repeat;
-}
-
-.hud-btn {	
-	display: inline-block;
-	width: 45px;
-	height: 45px;
-	position: relative;
-	margin: 1px;
-	border-radius: 4px;
-	box-shadow: inset 0 0 3px 1px #00000087, 0 0 2px #00000087;
-	border: 2px solid transparent;
-    box-sizing: border-box;
-	background: linear-gradient(#553419, #553419) padding-box, linear-gradient(to bottom, #82ae4c, #4f7421) border-box;
-}
-
-.hud-btn-red {
-	background: linear-gradient(to bottom, #4f291b, #553419) padding-box, linear-gradient(to bottom, #a84a35, #88301e) border-box;
-}
-
-.hud-btn span:first-child {
-	background-position: center center;
-	background-repeat: no-repeat;
-	width: 65%;
-	height: 65%;
-	background-size: contain;
-	position: absolute;
-	top: 7px;
-	left: 7px;
-}
-
-.menu-placeholder {
-	display: inline-block;
-	width: 45px;
-	height: 45px;
-	background: var(--black-50);
-}
-
-.hud-btn span.hud-counter {
-	width: 15px;
-	height: 15px;
-	position: absolute;
-	padding: 1px;
-	bottom: 4px;
-	top: unset;
-	left: 4px;
-	background-color: var(--hud-counter);
-	border-radius: 50%;
-	line-height: 13px;
-	text-align: center;
-    box-shadow: 1px 0 0 1px rgba(0,0,0,0.245);
-	pointer-events: none;
-	font-weight: bold;
-	font-size: 0.8rem;
+#menu_box .hud-btn span:first-child {
+	display: inline-flex;
+	width: 80%;
+	height: 80%;
+	margin-top: 10%;
 }

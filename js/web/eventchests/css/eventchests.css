@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -23,4 +23,70 @@
 
 #eventchests td.border-left {
     border-left: 1px solid var(--border-table-top);
+}
+
+#eventpresents {
+    top: 100px;
+    left: 48%;
+    max-height: 90vh;
+    height: auto;
+}
+
+#eventpresentsBody {
+    overflow: auto;
+}
+
+#eventpresentsBody img {
+    width: 26px;
+}
+
+#eventpresentsBody img.visible {
+    width: auto;
+    height: 20px;
+    float: right;
+}
+
+#eventpresentsBody td.icon {
+    position: relative;
+    width: 26px;
+    vertical-align: top;
+}
+
+#eventpresentsBody .fragment {
+    position: absolute;
+    top: 15px;
+    left: 19px;
+}
+
+#eventpresentsBody .fragment img {
+    height: 18px;
+    width: auto;
+}
+
+#eventpresentsBody tr.destroyed td {
+    text-decoration: line-through;
+    background-color: var(--black-65);
+    opacity: 0.7
+}
+
+#eventpresentsBody td {
+    height: 26px;
+}
+
+#eventpresentsBody tr.visible td {
+    opacity: 1;
+    font-weight: bold;
+    color: var(--sunflower);
+}
+
+#eventpresentsBody tr.used td {
+    background-color: var(--table-bg-success);
+    color: var(--success);
+    font-weight: bold;
+    opacity: 0.8
+}
+
+#eventpresentsBody tr.hidden {
+    visibility: inherit;
+    display: revert;
 }

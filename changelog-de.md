@@ -1,1135 +1,1216 @@
-## Changelog - Extension
+## Extension Changelog
+ 
 
-##### 2.7.0.1
-
-**Update**
-- St.Patricks Box:
-	- das Ziellevel bei den Upgrade-Kosten kann nun sebst bestimmt werden
-
-
-**BugFix**
--  St.Patricks Box:
-    - [#2341] es gab keinen Reset der Gebäude bei Start der nächsten Stadt
-	- Berechnung der Zeit bis zum Erreichen der 8,4Q für die nächste Stadt war nicht korrekt
-
-- Ereignisse:
-	- [#2340] die "Null" ist nun wieder versteckt, wenn es keine Ereignisse gibt
-
-
----
-
-##### 2.7.0.0
-
-**New**
-- Musik Modul:
-    - [#2335](https://github.com/mainIine/foe-helfer-extension/issues/2335) [Infos](https://github.com/mainIine/foe-helfer-extension/issues/2335)
-      - Du kannst wählen, ob Titel, die an eine Epoche gebunden sind, in Deiner Stadt oder in der Kolonie gespielt werden dürfen:
-        - Nu aktuelle Epoche (nur Titel, die mit der aktuellen Epoche verbunden sind, werden gespielt)
-        - bis zur aktuellen Epoche (es werden nur Titel gespielt, die mit der aktuellen oder einer früheren Epoche verbunden sind)
-        - Ära ignorieren (alle Titel können gespielt werden)
-        - Du kannst auswählen, ob der Besuch der Taverne, der PvP-Arena oder das Öffnen des Ereignisfensters den zugehörigen Titel auslösen soll
-        - Du kannst auswählen, ob in Siedlungen die Titel anderer Siedlungen gespielt werden dürfen (z.B. Ägypten darf in Azteken gespielt werden, wenn unten ausgewählt)
-
-**Update**
-- St.Patricks Box:
-  	- Die Box kann nun in der Größe verändert werden
-
-- Ereignisse:
-	- Es kann nun in den Einstellungen gewählt werden, ob Relikte in der Anzahl an verfügbaren Relikten berücksichtigt werden
-
-**BugFix**
-- Alarme:
-    - [#2332](https://github.com/mainIine/foe-helfer-extension/issues/2332) Die Alarm-Übersicht lies sich nicht öffnen
-
-- Gildengefechte:
-	- Die Übersichtsbox der Provinzen ließ sich nicht öffnen
-
----
-
-##### 2.6.0.1
-
-**Update**
-- Scout-Info:
-  - Mit einem MouseOver wird das Zeitalter, in dem eine Provinz offen, ist angezeigt
-
-**BugFix**
-- Scout-Info:
-  - [#2326](https://github.com/mainIine/foe-helfer-extension/issues/2326) [#2327](https://github.com/mainIine/foe-helfer-extension/issues/2327) Bei manchen Spielern konnte das Spiel komplett abstürzen
-  
-- Außenposten:
-  - die Durchlauf-zahl und der 4x Bonus wurden für die Endlos-Durchläufe nicht korrekt bearbeitet
-
----
-
-##### 2.6.0.0
+##### 4.3.0.0
 
 **Neu**
-- St. Pattrick [#2309](https://github.com/mainIine/foe-helfer-extension/issues/2309):
-  - berechnet die stündlichen Produktionsraten für jede der Stationen und hebt den Flaschenhals hervor 
-  - berechnet die benötigte Menge an Kleeblättern, um ein Gebäude auf den nächsten Schwellenwert zu bringen, und gibt eine Zeitschätzung für die Herstellung der benötigten Menge bei der aktuellen Produktionsrate an 
-  - nennt die nächsten 6 anstehenden Aufgaben 
-  - gibt eine Zeitschätzung für die "nächste Stadt" auf der Grundlage der aktuellen Produktion an
-
-- Scout-Info [#2311](https://github.com/mainIine/foe-helfer-extension/issues/2311):
-	- Es wurde eine Info-Box für den Späher hinzugefügt. Beim Öffnen der Karte (unabhängig davon, auf welcher Karte sich der Späher gerade befindet), gibt sie Informationen über
-        - Provinzen, die bereit sind, eingenommen zu werden (grün)
-        - Kosten und Aufklärungszeit für Provinzen, die gerade ausgekundschaftet werden können 
-        - verbleibende Zeit für die aktuelle Aufklärungsarbeit
+- LG Rechner: Es gibt nur noch einen Rechner, aber es wurde keine Funktionalität entfernt. Wenn ihr die bisherige Kostenrechner-Ansicht sucht, schaut in die Einstellung vom Fenster des Rechners!
+- Gefechte: In den Einstellungen bei den Gefechts-Countdowns kann man jetzt einen Discord Webhook definieren
+- Gefechte: Es gibt einen neuen Bereich, wo man schnell sehen kann, welche der eigenen Sektoren noch bebaut werden müssen
+- Discord Webhooks: Erstelle Vorlagen (Templates) für eigene Gefechtsnachrichten und füge sie in den GG Einstellungen hinzu
 
 **Update**
-- Investitionsübersicht:
-    - [#2247](https://github.com/mainIine/foe-helfer-extension/issues/2247) Links zum Spielerprofil auf scoredb.io hinzugefügt.
+- Verbündete: Die Boosts sind nun tabellarisch nach Kategorie aufgelistet und können auch sortiert werden
+- Infobox: QI Aktionen werden nun auch geloggt. Außerdem gibt es nun eine Favoritenfunktion und das Fenster ist etwas kompakter geworden
+- LG Rechner: Der Konfigurationspfeil am Rand des Fensters ist nun ein Zahnrad in der Ecke unten links!
+- Effizienzbewertung: Gebäude, die auf eine erhabene Version aufgewertet werden können, werden jetzt mit dem entsprechenden Pfeil gekennzeichnet
+- Gildenmitglieder Übersicht: Die Detailansicht eines Mitglieds öffnet sich in einem eigenen Fenster und beinhaltet jetzt auch durchschnittliche Daten, sowie QI Daten
+- "Kampagne" Modul entfernt! Sektoren zu verhandeln ist ein selten gewordener Spielstil und Güter gibt es heutzutage in Hülle und Fülle
+- UI: An verschiedenen Stellen sieht der Helfer nun etwas anders aus
+- Gebäude Effizienzberechnung: Die Ansicht öffnet sich per default mit absteigender Sortierung und wird sofort aktualisiert, sobald ein Gebäude entfernt, hinzugefügt oder ge-updated wird
 
-- FP-Einsammlungen:
-    - Formatierung für größere Werte integriert
+---
+ 
 
-- Ereignisse:
-    - [#2314](https://github.com/mainIine/foe-helfer-extension/issues/2314) versteckte Belohnungen zeigen jetzt Relikte und Scherben der Fliegenden Insel an
+##### 4.2.1.1
+
+**Bugfix**
+- Beide Rechner waren kaputt nach dem Spiel-Update auf Version 1.332
+
+---
+
+##### 4.2.1.0
+
+**Update**
+- Discord Webhooks: Modul wurde komplett verändert und kann nun jederzeit Nachrichten verschicken.
+- Statistik: Güter des nächten Zeitalters in die Schnellauswahl hinzugefügt.
+- Wiederholtes Bauen: entfernt für Umbaumodus, da nun spieleigene Funktion vorhanden.
+
+**Bugfix**
+- Merger-Minispiel: funktioniert nun wie ursprünglich geplant
+
+
+---
+
+##### 4.2.0.0
+
+**Update**
+- Kostenrechner: Einstellung zum automatischen Öffnen hinzugefügt
+- Beide LG Rechner: Standard-Werte von 80, 85, 90 auf 80, 90, 100 geändert
+- Effizienzberechnung: FP-Boost & Güter Boost hinzugefügt und man kann jetzt verschiedene Einstellungen zur Bewertung erstellen
+- Merger-Minispiel: Tabelle reduziert und Warnfenster hinzugefügt, wenn Tasks fertig sind
+
+**Bugfix**
+- Beide LG Rechner: Ein Spiel-Update hat das LG Fenster verschoben, sodass die neue FP-Kopier-Funktion nicht mehr funktioniert hat
+- Eigenanteilsrechner: beim Kopieren werden die bereits eingezahlten FP berücksichtigt (fremde LG)
+- Automatisches öffnen: einige Fenster sind nicht mehr von alleine aufgegangen, wenn man sich noch nie mit den Einstellungen befasst hatte - funktioniert jetzt wieder wie vorher, aber: Guckt euch die Einstellungen an, sie sind praktisch.
+
+---
+
+##### 4.1.1.0
+
+**Update**
+- Effizienzbewertung: Man kann die Gebäude nun auch ohne Boosts der Verbündeten bewerten lassen
+- Produktionsübersicht: Es gibt nun eine Liste für Spezialgüter-Produktionen
+- Einstellungen: Manche "Automatisch öffnen"-Einstellungen wurden entfernt, weil sie auch im jeweiligen Fenster zu finden sind
+- QI Stadtübersicht: Der Titel passt sich nun an
+- Eigenanteilsrechner/Kostenrechner: die FP Werte können nun angeklickt werden - der Wert wird direkt in das Eingabefeld des LB-Fensters eingetragen oder zumindest in die Zwischenablage gelegt
+- Eigenanteilsrechner: Option hinzugefügt, ob im Summenwert die bereits eingezahlten FP enthalten sein sollen
+
+**Bugfix**
+- Stadtdaten kopieren: das Datenformat hat nicht mehr zu den bekannten Schnittstellen gepasst - geht jetzt wieder
+- Verbündete: 
+	- Die Summen waren nicht korrekt und die Boosts sind beim leveln explodiert
+	- Ein frisch zusammengesetzter Verbündeter tauchte doppelt in der Liste auf, wenn nach dem Zusammensetzen genau 0 Fragmente übrig waren
+	- Die Box wurde nicht geschlossen, wenn der Menüeintrag angeklickt wurde
+- Produktionen: Die Güter vom Klapperknochen-Technoclub waren falsch berechnet
+
+---
+
+##### 4.1.0.0
+
+**Neu**
+- Alles-Einsammeln-Blocker: schon mal 5 Diamanten ausgegeben, obwohl die FP-Leiste zu voll war? Aktivier den Blocker in den Einstellungen bei Pop-ups, damit das nicht nochmal passiert
+- Umbaumodus: es kann nun eine Karte angeschaltet werden, die sich beim Bauen aktualisiert, den Button dafür findet ihr in der Umbaumodusliste
+
+**Update**
+- Stadt Übersicht: 
+	- Die Statistiken und Filter an der Seite wurden überarbeitet: es gibt neue, interessantere Fakten zu den Gebäuden in der Stadt
+	- Die Filter wurden optisch angepasst und befinden sich nun am unteren Ende der Seitenleiste (Schau genau hin, du findest sie schon!)
+	- Die verfügbare Fläche ist jetzt auch bei anderen Spielern zu sehen
+- Profil: 
+	- QI Aktionskapazität hinzugefügt
+	- Das Mini-Profilbild hat den Spiel-Button im Forschungsbaum verdeckt und wurde deshalb verschoben
+	- Man kann den mittleren teil nun markieren und dann kopieren, um seine Werte auch im Spien in Nachrichten teilen zu können
+- Menü-Icon für Gebäude-Sets und -Ketten-Modul ausgetauscht
+- Verbündete: es gibt nun Summen unten im Fenster
+- Die Einstellungen innerhalb von Fenstern wurden anders angemalt
+- GG Liste: Sekunden in der "in"-Spalte hinzugefügt
+- Wir haben den Sound für FP-Quests aus den Rechnern entfernt. Lasst uns wissen, wenn ihr den zurückhaben möchtet
+
+**Bugfix**
+- Produktionsübersicht: Die Güter von Gilden-LB waren manchmal zu hoch, weil Boosts angerechnet wurden
+- QI Karte: Die Summen waren nicht korrekt gerundet
+- QI Kapazität von 100.000 auf 200.000 erhöht
+- Profil: Die Güter von anderen Spielern waren inkorrekt, wenn sie nicht im gleichen Zeitalter wie man selbst waren
+
+---
+
+##### 4.0.2.0
+
+**Update**
+- Effizienzbewertung: 
+	- Default-Werte angepasst
+	- Wenn die Option "zeige erhabene/eingeschränkte Gebäude" deaktiviert ist, wird für solche Gebäude, die aktuell in der Stadt sind, kein Inventarhaken angezeigt 
+- Verbündetenboosts: an veränderte Datenübertragung angepasst
+
+**Bugfix**
+- Effizienzbewertung: Der Button zum Zurücksetzen in den Einstellungen hat nicht funktioniert.
+- Produktionsübersicht: Der Item-Tab ging nicht auf, wenn man Zugteile mit Massenselbsthilfekit-Fragmenten hatte
+- Abgelaufene Gebäude wurden nicht mehr überprüft beim Spielstart (zz1)
+- Ältere Browserversionen konnten den Helfer nicht mehr starten
+
+---
+
+##### 4.0.1.0
+
+**Update**
+- GG
+	- da die Serverzeit nicht konsistent durch das Spiel übertragen wird, kann die Differenz nun manuell gesetzt werden
+- Allgemein
+	- Weitere Verbesserung des Ladeverhaltens
+
+---
+
+##### 4.0.0.0
+
+**Update**
+- Allgemein
+	- Verbessertes Ladeverhalten des Helfers
+- QI Stadtübersicht
+	- Anzahl Erweiterungen hinzugefügt
+	- Rathaus produktion hinzugefügt
+	- Geänderte Hervorhebung für bald fertige Produktionen
+- GG
+ 	- Öffnungszeiten werden nun beim Kopieren in Serverzeit umgewandelt
+	- Öffnungszeiten können per Einstellung in Serverzeit angegeben werden statt in lokaler Zeit
+- Spieler-Links
+	- Es kann nun zwischen foestats.com und scoredb.io gewählt werden in den allgemeinen Einstellungen 
+- Shop Assistent
+	- Spalte "Fehlend" gibt nun immer die Menge bis zum nächsten vollen Satz an
+- Siedlung
+	- Güter für Piratensiedlung hinzugefügt
+- Spieler Profile:
+	- Jetzt auch für andere Spieler: einfach besuchen und oben links in die Ecke klicken
+
+
+**Bugfix**
+- Shop Assistent
+	- Alarme für alte Shop-Versionen wurden nicht korrekt gelöscht 
+- QI Aktionsberechnung
+	- Kapazitätsbonus wurde nicht korrekt beachtet
+- Effizienzübersicht
+	- Wurde für Kampf-Boosts nicht korrekt angezeigt, wenn nur ein Typ (Angriff oder Verteidigung) ausgewählt wurde
+
+---
+
+##### 3.13.1.0
+
+**Update**
+- Allgemein
+	- Anpassung des Helfers an neues Ladeverhalten des Spiels 
+	- Einige Hud Elemente wurden "nicht auswählbar" gemacht
+	- Handling für Kettengebäude mit Spezialproduktion hinzugefügt
+- Power Leveln
+	- Viele neue Stufen fürs Atomium hinzugefügt
+- FP Collector
+	- Übersetzungen hinzugefügt
+- Effizienzübersicht
+	- Styling in der Suche angepasst
+- Shop Assistent
+	- Filter für Shop Währungen hinzugefügt – wenn eine Währung ignoriert werden soll, einfach draufklicken
+	- Die Spalte "Ganz" wurde entfernt – dieser Wert ist nun sichtbar, wenn man mit der Maus auf die "Fehlend" Spalte zeigt
+	- Spalte "Max" hinzugefügt – zeigt an, wie viel mit der vorhandenen Währung gekauft werden kann
+	- Wenn man auf die "Max" Spalte zeigt, wird der Wert "Alle" angezeigt – also wie viel Währung nötig ist, um den Shop leer zu kaufen  
+	- Tooltip für Verbündete hinzugefügt
+- Stadtübersicht
+	- QI: Hervorhebung für Euphorie Niveau hinzugefügt
+	- QI: Hervorhebung von Gebäuden, die bald bereit für die Ernte sind
+- FP-Leiste
+	- Position in GE angepasst an verändertes Spiel-UI
+- Menü
+	- Einträge für den Shop Helfer und die Verbündeten hinzugefügt
+
+**Bugfix**
+- Effizienzübersicht
+	- QI Güter Bewertung hat nicht funktioniert
+- Verhandlungsfenster 
+	- Schloss sich, wenn Tavernen update stattfand
+- Stadtübersicht 
+	- Reihenfolge der Dimensionen im Tooltip korrigiert
+	- QI: Summenberechung korrigiert 
+
+---
+
+
+##### 3.13.0.0
+**Neu**
+- GEX Güter Verbrauch
+	- Es kann ein Schwellwert angegeben werden.
+	- Wenn bei Freischaltung der GEX Stufe der prozentuale Güterverbrauch größer ist als die Schwelle, wird eine Box geöffnet in der die 10 größten prozentualen Verbrauche vom Gildenvorrat angegeben werden
+	- Aktivierung in den Einstellungen!
+
+**Update**
+- Effizienz
+	- Neue Filter für LG und eingeschränkte Gebäude
+- Stadtübersicht
+	- Gebäudeliste für Siedlungen und Kolonien hinzugefügt
+	- an kommende Veränderungen der QI angepasst
+- Shop Assistent
+	- Seltenheitsgrad des Angebots hinzugefügt
+	- Bestand an Kaufwährung hinzugefügt
+	- sind noch keine Favoriten ausgewählt, wird der Filter automatisch deaktiviert
+- Blaue Galaxy
+	- Berücksichtigt nun auch große FP-Pakete
+- Gebäude Tooltip
+	- wenn Fragmente produziert werden, werden nun auch die Anzahl an benötigter Fragmente angezeigt
+- Gefechte Gebäudeempfehlung
+	- Box schließt sich nun automatisch wenn Kampf/Verhandlung gestartet wird
+
+**Bugfix**
+- Eigenanteilsrechner
+	- Rechenfehler behoben
+
+---
+
+##### 3.12.0.1
+
+**Update**
+- Shop Assistent
+	- Freischaltbedingung "Getätigte Käufe der Seltenheit X" hinzugefügt
+
+**Bugfix**
+- Effizienzübersicht
+	- Boosts funktionieren wieder richtig
+
+
+---
+
+##### 3.12.0.0
+**Neu**
+- Shop Assistent
+	- kann in den Einstellungen aktiviert werden
+	- listet, wieviel von den Angeboten bereits im Inventar verfügbar ist
+	- listet wieviele Fragmente für eine Vervollständigung fehlen und wieviel das kosten würde
+	- Es können Favoriten angegegeben werden und die Ansicht kann auf die Favoriten beschränkt werden
+	- Gesperrte Gegenstände können ausgeblendet werden
+	- Es kann für die Angebote ein Alarm gesetzt werden - sobald genug Währung für den Gegenstand verfügbar ist, erscheint eine Meldung
+
+**Update** 
+- Design des Helpers wurde an einigen Stellen überarbeitet 
+	- Boxen können nicht mehr größer sein, als das Browserfenster
+
+- Effizienzübersicht
+	- Verarbeitung der Kettengebäude wurde an neue Datenstruktur angepasst
+	- QI Bonis wurden ergänzt
+	- beim Besuch einer fremden Stadt werden nun Inventarinhalte nicht mehr dargestellt
+
+- Profil
+	- Gildengüter-Boost hinzugefügt
+	- Design des Profils kann durch Klick auf das Avatarbild verändert werden
+	- Menu-Eintrag zum Aufruf des Profils hinzugefügt
+
+- Idle Game
+	- Verarbeitung der Daten wurde angepasst an veränderte Datenstruktur
+
+- Einstellungen
+	- Event Assistenten können nun einzeln de-/aktiviert werden
+
+- Einheiten Modul
+	- wurde reaktiviert
+
+- Armee Empfehlungen
+	- kann nun auch in der PvP Arena genutzt werden 
+
+**Bugfix**
+- Popgame
+	- Anpassung an verändertes Event-Fenster
+
+- Effizienzübersicht
+	- Güterauswertung korrigiert
+
+---
+
+##### 3.11.7.0
+
+**Update**
+- Effizienzübersicht:
+	- in den Einstellungen für die Produktion/Feld Werte werden beim Zeigen auf das Eingabefeld nun Werte aus der Stadt zum Vergleich angegeben
+		- bester Wert
+		- fünftbester Wert
+		- beste 10%
+		- Hinweis: ist euch eine Produktion im Vergleich zu den anderen Produktionen wichtig, sollte sich der Wert, den ihr eingebt, am niedrigsten dieser Werte oder einem noch niedrigeren Wert orientieren. Ist euch eine Produktion nicht so wichtig, sollte sich der eingegebene Wert am besten Wert oder einem noch größeren Wert orientieren
+	- Rechner zur Ermittlung des Produktion/Feld Werts für "Spezialproduktion abschließen"-Fragmente hinzugefügt
+		- Klick auf das Abakus/Taschenrechner-Zeichen öffnet den Rechner
+		- hier können die zu erwartenden Produktionen, die der Einsatz des SPA bringen wird, eingegeben werden (Produktion des Gebäudes, das geerntet wird, evtl. mit BG Faktor)
+		- Der Rechner ermittelt den Produktion/Feld Wert für das SPA anhand der eingegebenen Produktion/Feld Werte für die entsprechenden Produktionen
+
+- Gebäude Tooltips:
+	- zeigt nun für eingeschränkte/erhabene Gebäude die Effizienz des verfallenen Gebäudes an
+	- zeigt nun für Gebäude, die zu eingeschränkten/erhabenen Gebäuden aufgewertet werden können die Effizienz des eingeschränkten Gebäudes mit an
+	- zeigt nun an, welche Kits nötig sind, für das Gebäude
+	- Kettengebäude mit zeitalter abhängigen Werten werden nun korrekt ausgewertet
+
+- QI Aktionspunkterechner:
+	- Kapazitätserhöhung sollte nun mit beachtet werden 
+
+- Gildenmitglieder Übersicht:
+	- Gildengüterproduktion zu Export hinzugefügt
+
+**Entfernt**
+- Einheiten-Modul
+
+- Marktplatz-Angebote
+	- Funktionalität wurde in die Marktübersicht transferiert
+
+**BugFix**
+- Effizienzübersicht: Sortieren nach Wert/Feld war nicht mehr möglich und ein kleiner Anzeigefehler wurde behoben
+
+---
+
+##### 3.11.6.0
+
+**Update**
+- Effizienzübersicht:
+	- wenn die Option "Inventar" aktiviert ist, werden nun auch zusammensetzbare Gebäude gelistet. Im Tooltip des Inventar-Icon des jeweiligen Gebäudes werden nun angezeigt:
+	- wie viele Gebäude dieses Typs insgesamt errichtet werden können, welche Upgrades dafür nötig sind und welche Upgrade-Pfade man zur verfügung hat. Dabei werden betrachtet:
+		- komplette Gebäude im Inventar
+		- Gebäude in der Stadt, die durch Inventargegenstände (Kits) verbessert werden können
+		- Inventargegenstände, die zu kompletten Gebäuden zusammengesetzt werden können
+		- Fragmente die zusammengesetzt werden können
+	- Erhabene Gebäude werden zusätzlich in ihrer nicht erhabenen Form erfasst
+	- wie viele erhabene Kits im Inventar vorrätig sind
+	- wenn es ein Gebäude einer höheren Stufe gibt, was dafür nötig ist
+	- Größenfilter: Mehrfachauswahl möglich
+
+- Kits
+	- wurde reduziert auf Sets und Ketten
+
+**Entfernt**
+- Boost-Inventar
+	- wurde ersetzt durch oben beschriebene Änderung in der Effizienzübersicht
+
+**BugFix**
+
+- Effizienzübersicht:
+  - Veränderungen der Werte in den Einstellungen wurden nicht sofort angewendet
+
+---
+
+##### 3.11.5.0
+
+**Update**
+- Manifest Datei korrigiert
+
+- Gildenkasse
+  - Schreibfehler behoben
+
+---
+
+##### 3.11.4.0
+
+**Update**
+- Ressourcenmanagement angepasst an veränderte Datenübertragung
+
+---
+
+##### 3.11.3.0
+
+**Update**
+- Verhandlungsassistent
+	- angepasst an veränderte Datenübertragung
+
+---
+
+##### 3.11.2.0
+
+**Entfernt**
+- Kistenauswahlassistent (Es gibt keine Events mehr, für den dieser Relevant ist)
+
+**Update**
+- Verhandlungsassistent
+	- unterstützt nun auch Verhandlungen mit 5 Versuchen
+
+- Spielerprofil
+	- enthält nun noch mehr Daten
+
+- Belohnungsliste 
+	- wird nun auch in der GE angezeigt
+
+- Boxen
+	- GBG Provinzliste wird nicht mehr automatisch geschlossen
+	- Einstellung hinzugefügt, um automatisches Schließen abzuschalten
+
+- Wiederkehrende Quests (Diamanten Checkliste)
+	- Zustand (?/✓) kann nun durch geklickt Halten (5 Sekunden) umgeschaltet werden
+	- Abkürzung der Aufgabentexte erfolgt nun in Abhängigkeit vom vorhandenen Platz
+
+- Effizienzbewertung:
+	- Einige Boosts wurden zusammengefasst. Dies hat aber keinen Einfluss auf den Score, er wird wie gehabt berechnet
+	- Quanten Aktionen zur Effizienzbewertung hinzugefügt
 
 - Stadtübersicht:
-    - [#2231](https://github.com/mainIine/foe-helfer-extension/issues/2294) [#2294](https://github.com/mainIine/foe-helfer-extension/issues/2310) Farbliche Legende integriert - Danke an [stebach](https://github.com/stebach)
-    - [#2312](https://github.com/mainIine/foe-helfer-extension/issues/2312) Suchfeld für das finden von Gebäuden integriert
-    - [#2313](https://github.com/mainIine/foe-helfer-extension/issues/2313) Wenn alte Gebäude hervorgehoben werden, werden sie nun in 4 verschiedenen Farben kategorisiert
+	- Man kann nun weniger effiziente Gebäude markieren lassen
+	- Wir haben den bisherigen Tooltip durch den vollständigen Gebäude-Tooltip ersetzt
+
+**BugFix**
+- Wiederkehrende Quests (Diamanten Checkliste)
+	- unabhängig von den Einstellungen bzw. vom Stand wurde nach Start der Zähler im Menu angezeigt
+
+- Gildenkassenexport
+	- Jahr wurde in manchen Sprachen falsch ausgelesen (z.B. 4025 statt 2025)
+
+---
+
+##### 3.11.1.0
+
+**Neu**
+- GG Belohnungsliste 
+	- über dem Belohnungsbalken wird ausgegeben, welche Belohnung erhalten wurde
+
+**Update**
+- Boxen werden automatisch geschlossen, wenn Spielbereiche geöffnet werden, für die die Box nicht vorgesehen ist
+
+**BugFix**
+- Scrollbalken wurden eingeblendet, wenn eine Box über den Fensterrand herausragte
+- Fenster konnten nicht bewegt werden nach dem ersten Öffnen
+- Menu bleibt nach Fenstergrößenveränderung im Box Modus
+
+---
+
+##### 3.11.0.0
+
+**Neu**
+- Spieler Profil
+	- Nachdem das Profil geöffnet wurde, erscheint links neben dem Stadtnamen ein Icon, zum Öffnen der Profilansicht
+- Einstellungen
+	- Popups für QI und GG sind nun deaktivierbar
+- Verbündeten übersicht
+	- Öffnet bei Klick auf das "Historische Verbündete" Gebäude
+	- Zeigt eine Liste der Verbündeten und Gebäuden mit Räumen an - leere Räume und unzugewiesene Verbündete stehen am Anfang der Liste
+- QI-Aktionspunkte-Rechner
+	- In den QI wird am rechten Ende der Aktionspunkte-Leiste eine Sanduhr angezeigt
+	- Im Tooltip der Sanduhr wird angezeigt, wann die Leiste voll sein wird
+
+**Update**
+- Effizienz
+	- Gebäude aus dem Inventar hinzugefügt (noch nicht alle)
+	- Filter für Gebäudegröße hinzugefügt
+- Eigenanteilsrechner
+	- Einstellung zum automatischen Öffnen hinzugefügt
+	- Einstellung zum Entfernen der meisten kaum genutzten Features
+- FoE Helper Updates öffnen nun nicht mehr automatisch einen neuen Browsertab zum Changelog
+- Produktionsübersicht (Einheiten)
+	- Grafik hinzugefügt für Einheiten des nächsten Zeitalters
+- Box-Positionen werden nun in Bezug zur Bildschirmmitte ausgerichtet statt relativ zur linken oberen Ecke
+
+**BugFix**
+- Überlappungen an manchen Stellen behoben
+- Beim Export der Gildenkasse war das Datum manchmal falsch
+
+---
+
+##### 3.10.1.0
+
+**Update**
+- Tooltip
+	- 'Einmalige Gebäude' Eigenschaft hinzugefügt
+
+**BugFix**
+- Alarme gingen immer noch nicht
+- Effizienz 
+	- Gebäude mit Verbündeten zeigten falsche Anzahl
+- Markt Übersicht
+	- Filterliste überlagerte Tabellenkopf
+- Gildenkassenbeiträge
+	- Beim Export wurde das Datum nicht korrekt gelesen
+- Blaue Galaxie und Gebäudeeffizienz
+	- Fenster gingen manchmal nicht auf oder waren leer (ist noch in Untersuchung, ob die Reparatur geklappt hat)
+- Tooltip
+	- "motivieren"/"polieren" Eigenschaft war falsch herum für Gebäude der neuen Generation
+
+---
+
+##### 3.10.0.1
+
+**BugFix**
+- Alarme gingen nicht
+
+---
+
+##### 3.10.0.0
+
+**Neu**
+- QI Fortschritts Übersicht hinzugefügt (öffnet sich automatisch, wenn die QI-Spieler Rangliste geöffnet wird)
+- Quellen für Gegenstände: In der Produktionsübersicht für Gegenstände und Fragmente gibt es nun die Möglichkeit, sich eine Liste von Gebäude ausgeben zu lassen, die einen bestimmten Gegenstand produzieren (auch, wenn diese nicht gebaut sind)
+- Produktionsübersicht: Tabellen für Münz-, Vorrats- und FP-Boots hinzugefügt
+- Effizienzbewertung: Feld für Spezialproduktion abschließen Fragmente hinzugefügt
+- Stadtübersicht: Anzeigeoption für Gebäude, die eine erhabene Stufe haben und "abgelaufene" Gebäude
+- Wiederholtes Bauen:
+	- !!! ACHTUNG !!! Obwohl das Feature an sich grünes Licht von Inno bekommen hat, könnte es trotzdem vorkommen, dass die Bot-Erkennung ausgelöst wird. Benutzung auf eigene Gefahr!!!
+	- Kann in den Einstellungen aktiviert werden
+	- Wenn ein Gebäude aus dem Baumenü oder dem Umbaulager gebaut wird, wird das gleiche Gebäude automatisch erneut ausgewählt
+
+**Update**
+- Tooltip: Design der Gebäude-Tooltips angepasst
+- Gebäude-Effizienz: 
+	- Gebäude-Tooltips hinzugefügt
+	- Ergebnisseite wird nun zuerst angezeigt
+	- Itemliste versteckt
+- Menü: Von unten nach rechts verschoben, weil die möglichen Einstellungen gerne übersehen werden
+- Gefechte: 
+	- Symbole für blauen/roten Angriff in die Countdown-Liste hinzugefügt
+	- Angriffsfarben zur Karte hinzugefügt
+	- Neue Kartenansicht, die die Angriffsfarben besser sichtbar macht
+- GG Aktive Spieler:
+	- Modul entfernt auf Anfrage durch Inno 
+
+**BugFix**
+- Tooltip: 
+	- manche Browser haben nicht das korrekte Design verwendet
+	- konnte offen bleiben, obwohl zugehöriges Fenster geschlossen wurde
+- Umbau-Liste: 
+	- Standardhöhe gesetzt
+	- Umplatzieren von Gebäuden verringerte den Zähler
+- Gebäude-Effizienz:
+	- Die Bewertungen bei anderen Spielern haben dein aktuelles Zeitalter genutzt, statt ihr eigenes
+
+---
+
+##### 3.9.0.0
+
+**Neu**
+- Im Umbaumodus wird nun eine nach Größe sortierbare Gebäudeliste angezeigt
+- Gex-Ergebnisse: Menu-Icon zeigt nun die aktuelle Anzahl an GE-Versuchen an
+- Tooltips: in bestimmten Modulen werden nun die Gebäude-informationen als Tooltip angezeigt:
+	- im Effizienz-Modul, im "Gebäude hinzufügen" dialog
+	- im Boost-Inventar
+	- in der Umbau-Größenliste
+	- lasst uns auf Discord wissen, wo ihr diese Info noch gerne sehen würdet
+
+**Update**
+- Statistik: Dunkle Materie zu Spezial-Gütern hinzugefügt
+- Einstellung "Lade aktuelle Beta" angepasst
+
+**BugFix**
+- Gebäude-Effizienz: 
+	- Ist wegen eines Spiel-Updates kaputt gegangen
+	- Gleiche Gebäude mit und ohne Verbündete wurden nicht korrekt gezählt
+- Produktionsübersicht:
+	- In der Fragmente-Übersicht war die Anzahl an Fragmenten teilweise nicht korrekt
+	- In der Fragmente-Übersicht wurden nicht alle Gebäude gelistet
+
+---
+
+##### 3.8.1.0
+
+**Neu**
+- Produktionsübersicht:
+	- QI Übersicht hinzugefügt
+	- Einstellungen hinzugefügt: Man kann jetzt einstellen, ob man eine Art Countdown oder die Uhrzeit sehen möchte
+	- "Fertig" und "Ernte" Spalte kombiniert: wenn eine Produktion fertig ist, wird es in dieser Spalte angezeigt
+
+**Update**
+- Idle Game Events:
+	- Die Kosten zum günstigeren Abschluss einer Runde werden nun aus den Spieldaten generiert und sollten sich von alleine aktualisieren
+- Legendäre Bauwerke Rechner - Powerlevel-Werte für Stufen 1-68 für Weltraumbasis hinzugefügt
+
+**BugFix**
+- Produktionsübersicht: ist wegen eines Spiel-Updates kaputtgegangen
+- Der Weltraumfrachter hat in der Produktionsübersicht gefehlt
+- Verhandlungs-Assistent: Die Güter wurden nicht angezeigt, wenn man alte Betriebssysteme nutzt
+- LG Investitionen: Fenster repariert, die blaue Galaxie fehlt noch, aber man sollte die sowieso bis Stufe 91 leveln
+- Burgsystem: Das Fenster war nach einem Spiel-Update kaputt
+
+---
+
+##### 3.8.0.0
+
+**Neu**
+- Produktionsübersicht Update:
+	- Fehlerkorrekturen und fehlende Gebäude hinzugefügt
+	- Güter-Übersicht überarbeitet
+	- Übersicht aller Fragmente und Items hinzugefügt inkl. Summe über alle Gebäude
+	- Filter hinzugefügt
+	- Kampf-Boosts kategorisiert
+	- Einheiten produktion nach Typ und Zeitalter summiert
+
+- Effizienzbewertung Update:
+	- Neue Kategorien hinzugefügt
+	- Neue Übersicht inklusive Anzeige der produzierten Fragmente/Items
+	- Neu: Möglichkeit zu suchen und zu filtern
+	- Neu: Anzeige der Werte pro Feld hinzugefügt
+	- Neu: Gebäude, die man nicht hat, zum Vergleichen hinzufügen
+
+- Boost-Inventar
+	- listet alle Gebäude aus dem Inventar, die Boosts (zum Beispiel für den Kampf) bereitstellen
+
+- Aktive Mitglieder anderer Gilden
+	- wenn innerhalb von 5 Minuten, zweimal nacheinander die Details derselben fremden Gilde aufgerufen werden (Hauptquartier in den GG) und zumindest ein Mitglied dieser Gilde aktiv war, wird ein Fenster geöffnet, in dem die aktiven Mitglieder gelistet werden
+
+**Update**
+- Kampf-Assistent:
+	- es wird keine Warnung mehr ausgegeben, wenn eine Einheit eines höheren Zeitalters gefallen ist, da diese Einheiten jetzt im Krankenhaus wiederbelebt werden können
 
 - Kits:
-    - [#2308](https://github.com/mainIine/foe-helfer-extension/issues/2308) Überarbeitet und neu organisiert, zeigt alle Teile eines Sets an + Link zum Wiki - Danke an [oesi03](https://github.com/oesi03)
+	- Effizienz-Werte der Gebäude hinzugefügt
 
-- Statistikmodul:
-    - [#2315](https://github.com/mainIine/foe-helfer-extension/issues/2315) Delta-Diagramm ist jetzt ein Säulendiagramm
+- Technologien:
+	- Raumfahrt: Weltraumbasis Daten und Güter hinzugefügt
 
-- Gildenübersicht:
-    - [#2316](https://github.com/mainIine/foe-helfer-extension/issues/2316) zusätzliche Anzahl von Gildenmitgliedern in den Gildengütern
+- Einstellungen:
+	- Kategorien umstrukturiert
+	- Fenster vergrößert und verschiebbar gemacht
 
-- Außenposten:
-	- [#2317](https://github.com/mainIine/foe-helfer-extension/issues/2317) Die Güterübersicht liefert nun einen Kostenvoranschlag, der den x4 Bonus in einem Mouseover darstellt
+- Stadtübersicht QI:
+	- Gebäude werden nun nach Typ kategorisiert
+	- Münz-, Vorrats- und Quantenaktionsboosts aus der Hauptstadt werden mitberechnet - danke Juber!
 
 **BugFix**
-- Gildenmitglieder Übersicht:
-    - [#2224](https://github.com/mainIine/foe-helfer-extension/issues/2224) Falscher Levelwert beim Export von Gildengebäuden behoben.
-
-- Infobox:
-  - [#2241](https://github.com/mainIine/foe-helfer-extension/issues/2241) Der Zeitstempel wurde beim erneuten öffnen der Box anders vergeben
-  - [#2238](https://github.com/mainIine/foe-helfer-extension/issues/2238) Keine Fortschritsanzeige für den X1X Sektor
-
-- Produktionsübersicht: 
-  - [#2276](https://github.com/mainIine/foe-helfer-extension/issues/2276) [#2282](https://github.com/mainIine/foe-helfer-extension/issues/2282) Nicht motivierte Gebäude werden in der Produktionsübersicht nicht mehr angezeigt
-
-- Karte der Kontinente:
-  - [#2273](https://github.com/mainIine/foe-helfer-extension/issues/2273) [#2274](https://github.com/mainIine/foe-helfer-extension/issues/2274) Kontinentale Kartenübersicht zeigt alle Provinzen als erobert an
+- Fenster:
+	- können nun nicht mehr verschoben werden, wenn die Maus auf einen der Buttons des Fensters zeigt
 
 ---
 
-##### 2.5.10.1
-
-**Update**
--Gildengefechte:
-	- [#2230](https://github.com/mainIine/foe-helfer-extension/issues/2230) Neue Provinzen ergänzt
-
----
-
-##### 2.5.10.0
+##### 3.7.0.0
 
 **Neu**
-- Burgsystem:
-	- [#2190](https://github.com/mainIine/foe-helfer-extension/issues/2190) Burgsystem Assistent:
-		- Übersicht über den Fortschritt der täglichen/ wöchentliche Ziele für den Erhalt von Burgpunkten
-		- Log über alle erhaltenen Burgpunkte der letzten Tage 
+- Tränke Übersicht hinzugefügt in der oberen rechten Ecke um
+	- die Laufzeit des Tranks mit kürzesten verbliebenen Laufzeit anzuzeigen (Tränke die für das aktuell gewählte Feature nicht relevant sind, werden ignoriert)
+	- alle aktuell aktiven Tränke in einem Mouse-Over Pop-Up anzuzeigen 
+	- alle im Inventar verfügbaren Tränke in einem Mouse-Over Pop-Up anzuzeigen
 
 **Update**
-- versteckte Ereignisse:
-    - [#2184](https://github.com/mainIine/foe-helfer-extension/issues/2184) Die Box schließt jetzt automatisch, wenn alle versteckten Ereignisse eingesammelt wurden
+- Kits - neue Teile hinzugefügt (bis Herbst 2024)
 
-- Gildenmitglieder Übersicht:
-    - [#2211](https://github.com/mainIine/foe-helfer-extension/issues/2211) Zeitstempel im Dateinamen beim Export der Daten
-    - [#2212](https://github.com/mainIine/foe-helfer-extension/issues/2212) bei bestimmten Gebäuden (z.B. Ruhmeshalle) wurde die produzierte Gildenmacht falsch berechnet
+- Mergergame an Care Event angepasst
 
-- i18n:
-	- [#2208](https://github.com/mainIine/foe-helfer-extension/issues/2208) Fehlende Übersetzungen ergänzt
 
-- Alles Schließen Box:
-  - Option zum automatischen Ausblenden aller FoE Helfer Fenster beim Betreten eines Kampfes in den Einstellungen der Box hinzugefügt. 
+---
+
+##### 3.6.5.0
+
+**Neu**
+- Sommer Event:
+	- Der Event-Truhen-Helfer zeigt nun verdeckte Preise eines Bretts an
+
+**Update**
+- Stadtübersicht:
+	- QI Aktionspunkte die durch Gebäude produziert werden, werden jetzt in der Stadtübersicht angezeigt (wenn in QI)
+	- Man sieht nun auch bei anderen Spielern, welche Gebäude keine Straßenverbindungen benötigen
+
+- Kulturelle Siedlungen:
+	- Auf 5-Stunden Zyklus angepasst
+
+- Alle verstecken/schließen funktioniert nun auch für Minispiel-Blocker
+
+- Blaue Galaxie:
+	- Aktuelle Güter werden nun separat gelistet
+
+- Kits:
+	- Aktualisiert bis Sommer Event 2024
+	- Bilder werden nun erst geladen, wenn tatsächlich benötigt, um Ladezeiten zu verkürzen
+	- Erhabene Upgrades werden nun auch in gelistet
+
+- Abgelaufene beschränkte Gebäude:
+	- Es kann nun eingestellt werden, für welche Gebäude die "ist abgelaufen" Warnung bei Start nicht mehr angezeigt werden soll
+
+- Statistik:
+	- Ereignisse und Scherben werden wieder gelistet
 
 **BugFix**
-- Gildenmitglieder Übersicht:
-  - [#2180](https://github.com/mainIine/foe-helfer-extension/issues/2180) Goldene Felder in die Übersicht der Gildengüter produzierenden Gebäude hinzugefügt
-  - [#2204](https://github.com/mainIine/foe-helfer-extension/issues/2204) Fehlerhafte Erhöhung der Gildengüter/macht beim mehrfachen Erweitern der Detailansicht eines Mitglieds
+- GG Gebäude-Empfehlung:
+	- In 3er-Provinzen wurden manche Kombination übergangen
+
+- (QI) Pass Belohnungen wurden nicht korrekt behandelt, wenn mehr als eine Belohnung auf einmal eingesammelt wurde
+
+- FP-Einsammlungen:
+	- QI-Belohnungen wurden falsch gezählt
 
 - Stadtübersicht:
-  - [#2200](https://github.com/mainIine/foe-helfer-extension/issues/2200) falsches Hintergrundbild entfernt
+	- Bestimmte Gebäude konnten verhindern, dass die Übersicht korrekt lädt
 
-- Produktionsübersicht:
-  - [#2187](https://github.com/mainIine/foe-helfer-extension/issues/2187) Goldene Felder wurden nicht erkannt
-  - [#2188](https://github.com/mainIine/foe-helfer-extension/issues/2187) Punkte des Rathauses wurden nicht erkannt
-  
+- Bilder der Wiederkehrende Quest Übersicht werden wieder korrekt geladen
+
 
 ---
 
-##### 2.5.9.3
-
-**Neu**
-- Alles Schließen Box:
-	-[#2044](https://github.com/mainIine/foe-helfer-extension/issues/2044) Schwebende Box zum Ausblenden und Schließen aller FoE Helfer Fenster
-		- aktivierbar in den Einstellungen des Helfers unter Boxen -> Alles Schließen Box 
-
-**BugFix**
-- Menü:
-	-[2172](https://github.com/mainIine/foe-helfer-extension/issues/2172) Die Tooltipwarnung wurden dauerhaft angezeigt, auch wenn die Bedingungen erfüllt waren.
+##### 3.6.4.0
 
 **Update**
-- Gildengefecht Box:
-	-[#2170](https://github.com/mainIine/foe-helfer-extension/issues/2170) Erweiterung der Snapshot Funktion:
-		- Chronologische Speicherung der einzelnen Gildengefechtsrunden
-		- Jeder Snapshot innerhalb der aktuell laufenden Gildengefechtsrunde, mit den jeweiligen Zuwächsen der Mitglieder, wird gespeichert. Mit Beginn einer neuen Gildengefechtsrunde werden die gespeicherten Snapshots der vorherigen Runde gelöscht.
-		- Filterfunktion für die gepeicherten Snapshots (Spieler und Datum)
-	-[#2176](https://github.com/mainIine/foe-helfer-extension/issues/2176) Filter um nur Mitglieder mit einem veränderten Fortschritt anzuzeigen hinzugefügt.
+- Website Kommunikation:
+	- Datenübertragung an die Webseite (Notizen + Stadtplaner) benötigt nun einen Token
+	- der Token wird nach Registrierung auf der Webseite generiert und muss in die Helfer Einstellungen übertragen werden
 
-- Gildenmitglieder Übersicht:
-	-[#2164](https://github.com/mainIine/foe-helfer-extension/issues/2164) 0 Werte bei Gex/GG in der Gildenmitgliederverwaltung anzeigen
-		- Optional über das Einstellungsmenü der Box können nun auch die Einträge der einzelnen Spieler angezeigt werden, an dem der Spieler keine Teilnahme an GEX od. GG hatte
-	-[#2165](https://github.com/mainIine/foe-helfer-extension/issues/2165) Datumsformat Gex/GG in der Mitgliederverwaltung
-		- Das Datumsformat der Gex/GG Teilnahmen kann nun von Kalenderwoche zu Startdatum, Enddatum oder Kalenderwoche geändert werden
-	- [#2174](https://github.com/mainIine/foe-helfer-extension/issues/2174) In der Mitgliederliste und den Zeitaltern ist es nun möglich alle Details mit einem Klick anzuzeigen/auszuklappen.
+- Stadt-Übersicht:
+	- zeigt in den QI eine Produktionsübersicht
 
-- Investitionsübersicht:
-	-[#2173](https://github.com/mainIine/foe-helfer-extension/issues/2173) Der gesamte Gewinn an Medaillen wird in der Investitionsübersicht mit angezeigt, wenn in den Einstellungen der Box die Spalte Medaillen aktiviert ist.
+- Cardgame:
+	- die Warnung wegen geringer Lebenspunkte schließt sich nun gemeinsam mit dem Helfer-Fenster
 
----
-
-##### 2.5.9.2
-
-**Update**
-- Gildenmitglieder Übersicht:
-    - [#2137](https://github.com/mainIine/foe-helfer-extension/issues/2137):
-        - Gewonnene Kämpfe der Mitglieder können in der Übersicht mit angezeigt werden (in den Einstellungen der Gilden Mitgliederübersicht aktivierbar).
-        - Gewonnene Kämpfe und ob der Spieler noch aktives Mitglied der Gilde ist, wurden in den Export mit aufgenommen.
-
-- Investitionsübersicht:
-    - [#2141](https://github.com/mainIine/foe-helfer-extension/issues/2141): Anzeige einer Spalte mit dem Datum der letzten Einzahlung in das LG
-
-- EA-Rechner:
-    - [#2142](https://github.com/mainIine/foe-helfer-extension/issues/2142) Logik geändert wie Einstellungen im EA Rechner gespeichert werden.
-        Anmerkung: Diese Änderungen haben zu Folge, dass einige Einstellungen (z.B. Copy Format) nach dem Update einmalig auf Standardeinstellungen zurück gesetzt werden müssen
-
-- Moppelassistent:
-    - [#2148](https://github.com/mainIine/foe-helfer-extension/issues/2148) Spieleraktivitätsicons hinzugefügt, die anzeigen ob der Spieler mehr als 2 (gelb) oder 7 (rot) Tage nicht mehr eingelogged war (funktioniert für Freunde und Gildenmitglieder falls man mindestens Anführerrechte besitzt)
-
-- Produktionsübersicht:
-    - Boni und tägliche Belohnungskiste des Burgsystems hinzugefügt
-  
-- Blaue Galaxie Helfer:
-	- [#2103](https://github.com/mainIine/foe-helfer-extension/issues/2103) Wenn das automatische öffnen aktiviert ist, schließt sich die Box am Ende aller Versuche auch automatisch
+- Kits:
+	- Es können nun Favoriten angelegt und gefiltert werden
 
 **BugFix**
-- Gildenmitglieder Übersicht:
-    - [#2117](https://github.com/mainIine/foe-helfer-extension/issues/2117) Darstellung der GEX Kalenderwoche ist jetzt der Beginn der GEX und nicht mehr das Ende
-    - [#2128](https://github.com/mainIine/foe-helfer-extension/issues/2128) Die Übersicht öffnet sich nicht mehr automatisch und Inaktivitäten wurden nicht mehr übernommen aufgrund geänderter Berechtigungswerte durch Inno
-
-- Export der Einstellungen und Daten
-    - [#2119](https://github.com/mainIine/foe-helfer-extension/issues/2119) Weltspezifischer Fehler beim Import der lokalen Einstellungen behoben.
-
-- Investitionsübersicht:
-    - [#2138](https://github.com/mainIine/foe-helfer-extension/issues/2138) [2134](https://github.com/mainIine/foe-helfer-extension/issues/2134) Die Investitionsliste wird jetzt korrekt aktualisiert, wenn keine Investitionen mehr vorhanden sind.
-
-- Produktionsübersicht, Stadtübersicht, Gebäudeeffizienzbewertung
-    - [#2122](https://github.com/mainIine/foe-helfer-extension/issues/2122) Absturz behoben, der durch das neue Eventgebäude "Golden Crops" (Herbestevent) am Betaserver ausgelöst wurde
-
-- LG Investitionen
-    - [#2116](https://github.com/mainIine/foe-helfer-extension/issues/2116) Güterproduktion des Atlantis Museum korrigiert
-
-- Außenposten
-    - [#2147](https://github.com/mainIine/foe-helfer-extension/issues/2147) Moghulreich: Namen des ersten Gebäudes korrigiert von "Allee" in "Wasserkanal"
-
-- Gildengefecht Box:
-    - [#2150](https://github.com/mainIine/foe-helfer-extension/issues/2150) Fehlerhafte Zeichenkodierung beim Export behoben
+- Statistik:
+	- einige Güterbelohnungen wurden nicht kombiniert
 
 ---
 
-##### 2.5.9.1
+##### 3.6.3.0
+
+**Update**
+- Stadtübersicht:
+	- Neu: Stadtübersicht auch bei Siedlungen, Kolonien und Quanten Invasionen
+- Card Game:
+	- An Änderungen des Geschichte-Events 2024 angepasst
+- Quests:
+	- Wenn eine Rivalen-Quest erfüllt ist, wird ein Ton abgespielt. Kann in den Einstellungen deaktiviert werden
+- FP Sammlung:
+	- QI und Event-Pass als mögliche Quellen hinzugefügt
+- Statistik:
+	- QI-Belohnungen werden erfasst
+	- Güter- und Einheiten-Belohnungen werden nun gruppiert angezeigt, statt für jeden Typ einzeln
+- Siedlungen:
+	- Bilder für Polynesien hinzugefügt
+- GvG:
+	- Modul entfernt
+- FP Leiste:
+	- Wird in QI nun auf der linken Seite angezeigt
+	- Wird nun auch in der Stadt angezeigt, wenn mehr als 999 FP in der Leiste sind
+- GG Gebäudeempfehlung:
+	- Einige Empfehlungen wurden entfernt
+	- Empfehlungen werden nun hervorgehoben um darzustellen, warum diese empfohlen werden.
+- Musik:
+	- Neue Titel hinzugefügt (Polynesien und Geschichtsevent)
+	- Kategorie GvG entfernt
+- Kits:
+	- Neue Gebäude bis Geschichtsevent 2024 hinzugefügt
+	- Favoriten-Option hinzugefügt
+- Idle-Game:
+	- Es wurde ein separater Timer für 6.3Q (25% Rabatt) hinzugefügt
+- Kampf-Empfehlungen:
+	- Design angepasst
+
+**BugFix**
+- Idle Game:
+	- Es konnte passieren, dass die Strategie nicht bearbeitet werden konnte
+- Titan LB:
+	- Manche Boosts waren vertauscht
+- Kits:
+	- In seltenen Fällen wurden falsche Bild-Daten genutzt
+- Produktions-Übersicht:
+	- Für das Rathaus wurde bei Berechnung des Platzbedarf angenommen, dass dies eine Straße braucht
+- Kampf-Empfehlungen:
+	- Einheiten Bilder für QI korrigiert
+- Merger-Game:
+	- Schlüssel-Werte korrigiert
+- Wiederkehrende Quests (Diamanten-Abhaken):
+	- Es war möglich, dass 1 oder 2 Quests aus einem früheren Zeitalter in der Liste stehen blieben - dies sollte nun nicht mehr passieren, sobald man das nächste Zeitalter erreicht
+
+---
+
+##### 3.6.2.0
+
+**Update**
+- Mergergame:
+	- Eventänderungen eingearbeitet
+
+- Kits/Sets Modul:
+	- benötigte Anzahl an Teilen für volles Gebäude wird angezeigt
+
+**BugFix**
+- Siedlungen:
+	- beim ersten Durchlauf einer Siedlung wird nun die korrekte 4x Chance angezeigt
+
+- Statistiken:
+	- verbesserte Datumsauswahl (thanks Linnun!)
+
+---
+
+##### 3.6.1.1
+
+**BugFix**
+- FP-Leiste:
+	- Auf vielen Geräten hat die Animation zu Problemen geführt, wurde entfernt
+
+---
+
+##### 3.6.1.0
+
+**Update**
+- FP-Leiste:
+	- neues Design
+
+- Kits/Set:
+	- neues Design
+	- Liga-Belohnungen werden nun auch gefunden
+	- neue Gebäude bis Geburtstag 2024 hinzugefügt
+
+- Mergergame (Geburtags-Event):
+	- vorbereitet für Änderungen
+	- Vorhersage für nächstes Teil und voraussichtliche Belohnungen entfernt
+
+- Blaue Galaxie:
+	- Sortierung wird nun gespeichert
+	- Sortierung umschaltbar zwischen kombinierter Wertung und Einzelwertung (FP/Güter/Gildengüter/Fragmente)
+
+- Effizienzbewertung:
+	- werte 0 und kleiner werden auch angezeigt
+
+- Gildenmitglieder übersicht
+	- Gildengüterproduktion einiger Gebäude hinzugefügt
+
+- Eigenanteils-Rechner:
+	- Einstellungen hinzugefügt: Medaillen- und Blaupausen-Anzeige deaktivieren
+
+**BugFix**
+- Eigenanteils-Rechner:
+	- Einstellungen korrekt speichern/auswerten
+
+---
+
+##### 3.5.0.2
+
+**BugFix**
+- Export-Funktion:
+	- Typo im Code gefixt
+
+---
+
+##### 3.5.0.1
+**Update**
+- Stadtübersicht
+	- Gebäude-Highlighting verbessert
+	- Markierung für Gebäude, die keine Straße benötigen, hinzugefügt
+  	- globale Sortierung integriert, zeigt an wo Spalten sortiert werden können
+
+**BugFix**
+- Galaxie Helfer:
+	- Liste hat sich nicht immer aktualisiert
+	- Liste war zu lang
+
+---
+
+##### 3.5.0.0
+**New**
+- PvP Arena Protokoll (thanks to dersiedler1)
+	- Es muss nicht durch protokoll geklickt werden
+	- Protokolleinträge kategorisiert 
+	- kann in den Einstellungen aktiviert werden, damit es beim Öffnen der Arena aufpoppt
+
+- Armee Empfehlung
+	- wurde bereits vor einiger Zeit hinzugefügt, aber nie in einem Changelog erwähnt
+	- kann in den Einstellungen aktiviert werden
+	- verfolgt die durchgeführten Kämpfe
+	- wenn ein Kampf unvorteilhaft verläuft (z.B. 2 oder mehr Einheiten Verlust) erfolgt ein Pop-Up
+	- der Spieler kann für Gegnerkombinationen und deren Boni Empfehlungen festlegen, die dann bei der Armeeauswahl angezeigt werden
 
 **Update**
 - Blaue Galaxie:
-    - [#1984](https://github.com/mainIine/foe-helfer-extension/issues/1984) Die Anzahl der verbleibenden Aufladungen wird nun im Menüicon angezeigt
+	- jetzt immer verfügbar
+	- Fragmente und Gildengüter hinzugefügt
+	- Auswertung der Gebäudeproduktion verbessert (z.B. Ägäisches Resort)
 
-- EA-Rechner:
-    - [#1888](https://github.com/mainIine/foe-helfer-extension/issues/1888) Eigenanteil kann nun auch zum Copystring hinzugefügt werden
+- Popgame:
+	- Layout für kommendes Event angepasst
 
-**BugFix**
-- Erweiterung: 
-    - [#1547](https://github.com/mainIine/foe-helfer-extension/issues/1547) Einige Boxen wurden beim zweiten Klick ins Menü nicht geschlossen
+- Gebäudeeffizienz:
+	- listet auch LB
 
-- GEX Ergebnisse:
-	- Die gespeicherten Einstellungen wurden nach Reload des Spiels wieder auf die Standardeinstellungen gesetzt.
+- LB Spürhund:
+	- an veränderte Server-Daten angepasst
 
-- GvG Freigaben:
-	- [#2104](https://github.com/mainIine/foe-helfer-extension/issues/2104) Die Zähler wurden nach Neuladen des Spiels zurückgesetzt. Passiert nun nicht mehr.
-	
-- Gildenmitglieder Übersicht:
-    - [#2108](https://github.com/mainIine/foe-helfer-extension/issues/2108) Ungültiger scoredb Link bei einigen Spielern im Tab "legendäre Bauwerke"
-
-- Menü:
-    - [#1537](https://github.com/mainIine/foe-helfer-extension/issues/1537) Einige Boxen konnten durch einen 2. Klick des Menüicons nicht geschlossen werden
-
-- Infoboard:
-    - [#2097](https://github.com/mainIine/foe-helfer-extension/issues/2097) Der Spielername wurde nicht korrekt angezeigt, wenn man in einer Auktion überboten wurde
-
-- Produktionsübersicht/Effizienzbewertung:
-    - [#2094](https://github.com/mainIine/foe-helfer-extension/issues/2094) Falsche Werte von Vorrats/Münzproduktion bei mehrmaligem öffnen der Produktionsübersicht
-    - [#2099](https://github.com/mainIine/foe-helfer-extension/issues/2099) Ungültige Werte bei der Güterproduktion bei Gebäuden, die Gildengüter produzieren
-    - [#2110](https://github.com/mainIine/foe-helfer-extension/issues/2110) Ungültige Werte bei der Güterproduktion, falls gerade eine Produktionsoption <> 24h aktiv ist
-
----
-
-##### 2.5.9
-
-**Neu**
-- GEX Ergebnisse
-	- die Ergebnisse der Gildenexpeditionen werden chronologisch jede Woche gespeichert (Rangliste und Mitgliederbeteiligung). Der Besuch der Teilnehmerübersicht und das Öffnen der Gilden Rangliste ist für die Aktualisierung der Daten notwendig. 
-	- grafische Darstellung des Verlaufs der Gildenexpeditionen (Punkte, Begegnungen, Mitglieder (gesamt), Teilnehmer, Rang)
-	- Export der Ergebnisse (Rangliste und Mitgliederbeteiligung) zu CSV / JSON
-
-- Export der Einstellungen und Daten
-	- Die gesamte Konfiguration des FOE-Helper sowie alle lokal gepeicherten Datenbanken können nun in den Einstellungen unter Import/Export gesichert und auf einem anderen PC oder Browser wiederhergestellt werden. 
-
-- Gebäude Effizienzbewertung
-	- Tool zum Auffinden nicht mehr effizienter Gebäude. Der Spieler legt fest welchen Ertrag pro Feld er wünscht. Das Tool gibt aus, welche Gebäude diesen Ertrag erreichen welche nicht.
-
-- Links zum Spielerprofil auf scoredb.io
-	- [#149](https://github.com/mainIine/foe-helfer-extension/issues/149) Spielernamen in Foe Helfer werden durch Links auf das Profil des Spielers auf der Seite scoredb.io ersetzt (kann im Einstellungsmenü aktivert bzw. deaktiviert werden)
-
-**Update**
-- Gildenmitglieder Übersicht
-	- [#2033](https://github.com/mainIine/foe-helfer-extension/issues/2033) LG Liste aller Gildenmitglieder
-	Filterbare Liste der LG aller Gildenmitglieder mit der aktuellen Stufe, freigeschalteten Stufen, investierten FP und benötigten FP zum Leveln.
-
-- LG Investitionen
-    - [#1550](https://github.com/mainIine/foe-helfer-extension/issues/1550) Option für die Berücksichtigung von Boni für die angreifende Armee
-	- Unterstützung für Relikttempel und fliegende Insel
-
-- Produktionsübersicht:
-    - [#2060](https://github.com/mainIine/foe-helfer-extension/issues/2060) Es wird nun bei allen Ressourcen wie bei den Forgen Punkten zusätzlich die maximale Produktion wenn alles motiviert/poliert ist angezeigt
-
-- Eigenanteilsrechner:
-	- [#2045](https://github.com/mainIine/foe-helfer-extension/issues/2045) Die Buttons "Kopieren" und "Merken" sind nun auch im Hauptfenster vorhanden sofern ein Platz sicher ist. Es werden hierbei die Defaulteinstellungen zum Kopieren verwendet
-	- Anzeige welche legendären Gebäude bereits gemerkt wurden
-	- Nach dem Merken eines Gebäudes wird nun die aktuelle Liste auch in die Zwischenablage kopiert
-	- [#2046](https://github.com/mainIine/foe-helfer-extension/issues/2046) Plätze, die als Mäzenbelohnung keine FP abwerfen werden und mit 1FP vorgeschlagen
-	- In der Copybox wurde die Option "Alle + leere" durch die Option "Auto + nicht sichere" ersetzt. Diese kopiert alle Plätze, die noch nicht belegt sind
-
-- Diverses:
-	- [#1965](https://github.com/mainIine/foe-helfer-extension/issues/1965) Globale Einstellung zum Deaktivieren aller Soundeffekte im Foe Helfer hinzugefügt
-	- [#2064](https://github.com/mainIine/foe-helfer-extension/issues/2064) Bei langen Tabellen wurde der Header beim Hinunterscrollen nun fixiert
+- LB/Eigenanteil Rechner:
+	- Spieler-Aktivitätsindikator hinzugefügt
 
 **BugFix**
-- Gildenmitglieder Übersicht
-	- [#2085](https://github.com/mainIine/foe-helfer-extension/issues/2085) Falsche Anzeige des Zeitalters bei Gildengüter produzierenden Gebäuden
-	- [#2086](https://github.com/mainIine/foe-helfer-extension/issues/2086) Gildengüter/macht produzierende Gebäude wurden in der Detailansicht manchmal nicht angezeigt
-
-- Eigenanteilsrechner:
-	- [#2052](https://github.com/mainIine/foe-helfer-extension/issues/2052) Mehrfaches Merken desselben legendären Bauwerks konnte zu doppelten Zeilen führen
-	- [#2075](https://github.com/mainIine/foe-helfer-extension/issues/2075) Beim Einzahlen in legendäre Gebäude, die bereits gelevelt wurden konnten ungültige Werte angezeigt werden
-
-- FP Einsammlungen:
-	- [#2089](https://github.com/mainIine/foe-helfer-extension/issues/2089) Beim Datumsauswahldialog wurde das Jahr 1912 ausgewählt wenn die Sprache des Foe Helfers auf Niederländisch eingestellt war
-
-- Investitionsübersicht:
-	- [#2035](https://github.com/mainIine/foe-helfer-extension/issues/2035) Gewinn/Medaillen/Blaupausen wurden nach dem leveln der eigenen Arche nicht sofort aktualisiert.
-	- Ausgeblendete LG wurden nach dem leveln der eigenen Arche wieder eingeblendet obwohl keine Investition stattgefunden hat.
-
-- Produktionsübersicht:
-	- [#2062](https://github.com/mainIine/foe-helfer-extension/issues/2062) Güterproduktion: Warnmeldung falls der Venus Außenposten noch nicht besucht wurde hinzugefügt (wie bei Mars und Asteroiden)
-	- [#2058](https://github.com/mainIine/foe-helfer-extension/issues/2058) Beim Upgraden von Straßen konnten ungültige Werte angezeigt werden.
-	- [#2090](https://github.com/mainIine/foe-helfer-extension/issues/2090) Rundung der Größenangaben auf 1 Stelle geändert, da der Wert auch den durchschnittlichen Straßenbedarf enthält
-
-- LG Investitionen:
-	- [#2029](https://github.com/mainIine/foe-helfer-extension/issues/2029) Güter berücksichtigen ließ sich nicht permanent deaktivieren
-
-- Marktfilter:
-	- [#2084](https://github.com/mainIine/foe-helfer-extension/issues/2084) Korrektur falscher Angaben in der Spalte "Seite" des "Vorteilhaft" Filters bei eigenen Angeboten
-
-- Infobox:
-	- [#1907](https://github.com/mainIine/foe-helfer-extension/issues/1907) [#2065](https://github.com/mainIine/foe-helfer-extension/issues/2065) In der Infobox konnten beim Leveln von LGs manchmal falsche FP Werte angezeigt werden
-
-- CityMap:
-	- [#1986](https://github.com/mainIine/foe-helfer-extension/issues/1986) Anzeige der gesamten und freien Fläche bei fremden Städten ausgeblendet, da die freigeschalteten Erweiterungen nur bei der eigenen Stadt bekannt sind
-
-- Ereignisse:
-	- [#1991](https://github.com/mainIine/foe-helfer-extension/issues/1991) Scherben der fliegenden Insel hinzugefügt
-
-- Außenposten:
-	- [#2067](https://github.com/mainIine/foe-helfer-extension/issues/2067) Berechnung der benötigten Beute bei Ägyptern fehlerhaft
-
----
-
-##### 2.5.8
-
-**Neu**
-
-- GvG Karte & Protokoll (BETA):
-	- GvG Karte: Zeigt alle Gilden, die gerade auf einer Karte vertreten sind (auch die, die nur belagern). Die Sektoren zeigen beim Klick weitere Details an. Diese Details werden beim Neuladen einer Karte aktualisiert.
-	- Karte bearbeiten: Beim Klick auf Bearbeiten kannst du aus der Liste eine Gilde auswählen (oder oben über den weißen Button gar keine) und dann die Sektoren der gewünschten Gilde zuteilen. Die Gildenliste wird entsprechend aktualisiert. 
-	- GvG Protokoll: Erfasst alle Aktionen, die auf einer GvG Karte passieren während du sie betrachtest.
-	- GvG Protokoll Filter: Kann den Log nach allen enthaltenen Zeichen filtern.
-- GVG Freigaben:
-	- [#1781](https://github.com/mainIine/foe-helfer-extension/issues/1781) Anzahl deiner Sektor-Freigaben seit der letzten Abrechnung.
-
-**Update**
-- Extension:
-    - [#692](https://github.com/mainIine/foe-helfer-extension/issues/692) [#1975](https://github.com/mainIine/foe-helfer-extension/issues/1975) Exportmöglichkeiten für diverse Boxen des Helfers. (Die Tabellen für "Markt", "Technologien" und "MoppelHelper" können nun in CSV exportiert werden. Weitere werden in zukünftigen Updates hinzugefügt)
-- Gildenmitglieder Statistik:
-	- [#1949](https://github.com/mainIine/foe-helfer-extension/issues/1949) [#1924](https://github.com/mainIine/foe-helfer-extension/issues/1924) Exportfunktion für jeden Tab der Statistik
-	- Detailansicht aller Gildengebäude (erneuter Besuch aller Gildenmitglieder für die korrekte Darstellung empfohlen.) 
-- Investitionsübersicht:
-	- [#1990](https://github.com/mainIine/foe-helfer-extension/issues/1990) Anzeige von Medaillen und Blaupausen über Boxmenü auswählbar
-- Statistiken: 
-	- Die Belohnungen der fliegenden Insel werden nun erfasst.
-	- Ereignisse werden jetzt erfasst.
-	- Sobald sie da ist, werden auch die Belohnungen aus der PvP Arena erfasst.
-- FP-Einsammlungen:
-	- Man kann jetzt einen Zeitraum auswählen. Danke an Likeke181.
-- LB-Aufladungen/Quests:
-	- Den Symbolen wurden Tooltips hinzugefügt.
-
-**BugFix**
-- Extension:
-    - [#2022](https://github.com/mainIine/foe-helfer-extension/issues/2022) Typo in deutscher Übersetzung ("Himej" >> "Himeji")
-- Menü:
-    - [#1928](https://github.com/mainIine/foe-helfer-extension/issues/1928) Fehler im CSS Code zerstörte Tooltipp
-- Einstellungen:
-    - [#1999](https://github.com/mainIine/foe-helfer-extension/issues/1999) [#2000](https://github.com/mainIine/foe-helfer-extension/issues/2000) Im Einstellungsmenü des Helfers war die Ansicht bei der Auswahl der Menü-Icons in einer bestimmten Ansicht falsch
-- Gildenmitglieder Statistik:
-	- Die Berechnung der Gildenmacht war in bestimmten Fällen ungenau.
-- FP-Einsammlungen:
-	- Manchmal wurden zu den Ereignissen FP aus anderen Quellen hinzugezählt.
-- Infoboard:
-    - Das "Ping" kam immer, obwohl nach einem besstimmten Inhalt gefiltert wurde. Das ist nun behoben
-- BonusBar:
-    - [#1989](https://github.com/mainIine/foe-helfer-extension/issues/1989) Außenposten Quests werden bei Quest Icon der BonusBar gezählt
-- Eigenanteilsrechner:
-    - [#1994](https://github.com/mainIine/foe-helfer-extension/issues/1994) Beim Zurückblättern von Leveln wird nun das Level korrekt anzeigen
-    - [#2004](https://github.com/mainIine/foe-helfer-extension/issues/2004) Es fehlte Stufe 52
-- Produktionsübersicht:
-    - [#2026](https://github.com/mainIine/foe-helfer-extension/issues/2026) FP Produktion des Luftschiffs wurde nicht gezählt wenn nicht motiviert
-    
----
-
-##### 2.5.7.1
-
-**BugFix**
-
-- Extension:
-    - Firefox BugFix
-	- [#1970](https://github.com/mainIine/foe-helfer-extension/issues/1970) Menü Einstellung > Inhalt. versteckte Icons wurden nach mehrmaligem öffnen doppelt angezeigt
-	- Menütooltip für Gildenstatistik fehlte
-
-- Quest Grenze:
-	- date = null BugFix, zählt nun korrekt
-
---
-
-##### 2.5.7.0
-
-**Neu**
-- Gildenmitglieder Statistik:
-	- Anzeige detailierter Informationen der Gildenmitglieder:
-		- Zeitalter
-		- GEX/GG Teilnahmen
-		- Anzahl der Nachrichten im Gildenforum
-		- Gildengüter produzierende Gebäude
-		- Inaktivitätsverlauf (nur mit Gildengründer/-führer Rechten)
-	- Übersicht aller Gildengüter produzierender Gebäude der Gildenmitglieder
-	- Übersicht der vorhandenen Gildenkassen Güter 
-
-- GVG Freigaben:
-	- [#1781](https://github.com/mainIine/foe-helfer-extension/issues/1781) Zeigt an, wie viele Freigaben man selbst bereits seit der Abrechnung (20 Uhr) im GvG getätigt hat
-
-- Questabschluss Info:
-	- [#1915](https://github.com/mainIine/foe-helfer-extension/issues/1915) Questabschluss-Benachrichtigung in Gildengefechten
-		- lässt einen Sound erklingen wenn ein Quest abgeschlossen wurde
-
-- Quest Grenze:
-	- [#1960](https://github.com/mainIine/foe-helfer-extension/issues/1960) Zeigt einen kleinen Counter wie viele Quest für diesen Tag noch übersprungen werden können
-		- Ist per default deaktiviert (Einstellungen > Boxen > 2k Quest Grenze)
-
-- Export Funktion für Tabellen:
-	- [#692](https://github.com/mainIine/foe-helfer-extension/issues/692) Die Tabellen in den Modulen "Marktfilter", "Technologien" und "Moppelassistent" können nun mit Hilfe des Zahnrad Symbols als .csv oder .json Datei exportiert werden
-
-**Update**
-- Eigenanteilsrechner:
-	- [#1923](https://github.com/mainIine/foe-helfer-extension/issues/1923) Automatische Aktualisierung beim Leveln fremder LGs
-		- Ist im EA Rechner gerade ein fremdes LG geöffnet und dieses wird gelevelt, so wird die Anzeige nun automatisch aktualisiert.
-
-- Menü:
-	- Es lässt sich ab sofort über die Einstellungen festlegen welche Icons überhaupt im Menü dargestellt werden sollen; "Einstellungen > Erweiterungen > Menü Inhalt"
-
-**Bugfix**
-
-- Gebäude-Kits:
-    - Kann wieder wie gewohnt aufgerufen werden
-
-- EA-/Kostenrechner:
-	- [#1921](https://github.com/mainIine/foe-helfer-extension/issues/1921) [#1958](https://github.com/mainIine/foe-helfer-extension/issues/1958) "Fliegende Insel" ergänzt
-	
-- Gildenmitglieder Statistik:
-	- [#1938](https://github.com/mainIine/foe-helfer-extension/issues/1938) Updated nun die Mitglieder die aus der Gilde ausgetreten sind
-
-- Infobox:
-	- [#1941](https://github.com/mainIine/foe-helfer-extension/issues/1941) wenn ein "<" oder ">" im Titel eins Threads war, gab es eine falsche Darstellung
-
----
-
-##### 2.5.6.3
-
-**Update**
-- Investitionsübersicht:
-    - [#1871](https://github.com/mainIine/foe-helfer-extension/issues/1871) Es werden keine Daten mehr an foe-rechner.de gesendet
-
-- Forschungskostenrechner:
-    - [#1897](https://github.com/mainIine/foe-helfer-extension/issues/1897) Ab diesem Update wird das Zeitalter Venus korrekt erkannt
-
-- Gildengefechte:
-    - Wir haben die Ansicht der Gildengefechte-Box umgeschrieben, für die Übersichtlichkeit
-
-- Moppelassistent:
-    - [#1912](https://github.com/mainIine/foe-helfer-extension/issues/1912) Die Sortierung der Namen hat nicht richtig funktioniert, das klappt nun
-
-- LG Investitionen:
-    - Option für die Berücksichtigung von Güterproduktionen
-
-- Bonus Bar:
-	- [#1915](https://github.com/mainIine/foe-helfer-extension/issues/1915) Bonus Bar zeigt nun auch abgeschlossene Quests an
-
-**BugFix**
-- Extension:
-    - [#1892](https://github.com/mainIine/foe-helfer-extension/issues/1892) Ein doppeltes Anführungszeichen konnte ein Tooltip zerstören
-
-- Verhandlungsassistent:
-    - [#1879](https://github.com/mainIine/foe-helfer-extension/issues/1879) Manchmal wurden die anzahl der Züge nicht korrekt erkannt, das wurde behoben
-
-- Eigenanteilsrechner:
-    - [#1891](https://github.com/mainIine/foe-helfer-extension/issues/1891) Erledigter Eigenanteil wurde falsch berechnet, wenn gelöschter Spieler etwas eingezahlt hatte
-
-- Gebäude-Kits:
-    - [#1910](https://github.com/mainIine/foe-helfer-extension/issues/1910) Die Anzahl wird nun korrekt berechnet
-
----
-
-##### 2.5.6.2
-
-**Update**
-- Produktionsübersicht:
-    - [#1668](https://github.com/mainIine/foe-helfer-extension/issues/1668) Angriff und Verteidigung wurden als neue Reiter eingefügt
-
-- Gildengefechte:
-    - verbesserte Ansicht wenn Provinz noch keinen Besitzer hat
-
-- Investitionen: 
-    - [#1853](https://github.com/mainIine/foe-helfer-extension/issues/1853) Investitionen können ignoriert - und Plätze nur "sicher" dargestellt werden
-
-**BugFix**
-- Menü:
-    - [#1861](https://github.com/mainIine/foe-helfer-extension/issues/1861) Durch einen case sensitive (Groß-Kleinschreibung) Fehler konnte das Alarmicon nicht verschoben werden, oder verschwand
-
-- Alerts:
-    - [#1848](https://github.com/mainIine/foe-helfer-extension/issues/1848) Firefox Bug: Alarm konnte nicht erstellt werden
-
-- Investitionen:
-    - [#1854](https://github.com/mainIine/foe-helfer-extension/issues/1854) Falsche Sortierung der Eintragszeit bei Investitionen korrigiert
-
----
-
-##### 2.5.6.1
-
-**Update**
-- Extension:
-    - viele Übersetzungen/Korrekturen von [i18n.foe-helper.com](https://i18n.foe-helper.com) integriert [#1849](https://github.com/mainIine/foe-helfer-extension/issues/1849)
-
-- Ivestitionen:
-    - es lassen sich ab sofort unrentable LBs ausblenden und aus der Rechnung entfernen
-
-**BugFix**
-- Alerts:
-    - [#1841](https://github.com/mainIine/foe-helfer-extension/issues/1841) das Icon vom Alarm Modul lies sich nicht verschieben oder verschwand einfach
-
-- Martplatzfilter:
-    - [#1847](https://github.com/mainIine/foe-helfer-extension/issues/1847) die Standardfilter waren verschwunden und die Box beim Start leer
-
----
-
-##### 2.5.6.0
-**Neu**
-- Alerts (Alarme):
-	- Erstelle Alarme mit dem von Dir gewünschten Zeitpunkt, so viele Du willst. Du hast dabei fast grenzenlose Einstellungsmöglichkeiten:
-		- exakten Zeitpunkt mittels Datepicker auswählen
-		- wiederholbare Alarme, auch mit vordefinierten Intervallen
-		- erkennt Provinzen und deren Sperren, und kann sie als Alarm, auch direkt aus dem neuen Gildengefecht Tool erstellen
-		- erkennt das Angebot im Antiquitätenhändler und kann daraus einen Alarm erstellen
-		- die eingestellte Benachrichtigung erscheint auf dem Desktop von Windows
-		- es muss nur der Browser offen sein, nicht das Spiel um die Benachrichtigungen zu erhalten
-
-
-- Gildengefechte Übersicht:
-	- zur Box der Spielerfortschritte, ist nun eine neue Box (im Menü) gekommen, die alle Fortschritte der umkämpften Provinzen in Echtzeit darstellt
-	- ein zweiter Reiter zeigt in Echtzeit an, wann angrenzende Sektoren deiner Gilde, demnächst ihre Sperre verlieren
-	- durch den Klick auf den kleinen Map-Marker, rechts oben in der Box, erscheint eine MiniMap die sich in Echtzeit aktualisiert
-
-**Update**
-- Investitionen: _danke an [danielvoigt01](https://github.com/danielvoigt01) für die Vorlage_
-	- die kleine Box enthält nun detailliert alle Deine Investitionen und zeigt Dir jeden einzelnen Fortschritt an
-	- Du siehst auf einen Blick, in welches LG weiter eingezahlt wurde
-	- Die Box kann, jeder Zeit, aus dem Menü heraus, aufgerufen werden
-	
-- Statistikmodul:
-	- [#1799](https://github.com/mainIine/foe-helfer-extension/issues/1799) Die Tabelle unter der Grafik kann jetzt, via Copy & Paste, kopiert werden
-
-**BugFix**
-- Kostenrechner:
-	- [#1793](https://github.com/mainIine/foe-helfer-extension/issues/1793) Ein Schleifenquest der Artischen Zukunft (Spende 200 FP) wurde nicht korrekt erkannt
-
-- Forschungskostenrechner:
-	- [#1749](https://github.com/mainIine/foe-helfer-extension/issues/1749) Box ist resizeable und scrollbar geworden
-
-- Toast-Meldungen (Benachrichtigungen):
-	- [#1772](https://github.com/mainIine/foe-helfer-extension/issues/1772) sind intelligenter geworden. Menüpositionen rechts und unten werden erkannt
-
-- Stadtübersicht:
-	- [#1774](https://github.com/mainIine/foe-helfer-extension/issues/1774) Übermittlungsbox zu foe-rechner.de verschwand nicht mehr
-	
-
----
-
-##### 2.5.5.1
-
-**Bugfix**
-- Gildengefecht Box:
-	- [#1779](https://github.com/mainIine/foe-helfer-extension/issues/1779) mit der Exportfunktion der Übersicht kam ein er kleiner Bug der den Unterschied zwischen den Schnappschüssen nicht mehr anzeigte
-
----
-
-##### 2.5.5.0
-
-**Update**
-- Kostenrechner:
-	- Tabellenüberschriften teilweise durch Icons getauscht, die Übersetzungen sind in manchen Sprachen viel zu lang
-
-- Eigenanteilsrechner:
-	- [#1507](https://github.com/mainIine/foe-helfer-extension/issues/1507) Tabellenüberschriften teilweise durch Icons getauscht, die Übersetzungen sind in manchen Sprachen viel zu lang
-
-- Gildengefecht Box:
-	- Tabellenüberschriften teilweise durch Icons getauscht, die Übersetzungen sind in manchen Sprachen viel zu lang
-
-**Bugfix**
-- Extension:
-	- [#1770](https://github.com/mainIine/foe-helfer-extension/issues/1770) auf der Beta wurden die Spieler-Avatare nicht korrekt geladen, das haben wir vorsorglich bereits behoben
-
----
-
-##### 2.5.4.4
-**Neu**
-- Handelsblocker:
-	- Wenn gewünscht, legt sich eine kleine Box in der Karte der Kontinente über den "Verhandeln"-Button um diesen nicht ausversehen zu drücken
-
-**Update**
-- Extension:
-	- moderneres Design für die Boxen
-	- neue modernere Buttons für die Boxen integriert
-	- diverse Übersetzungen von euch integriert
-
-- FP-Collector:
-	- Grafiken ergänzt (aktuelle/kommende Events)
-
-- Kostenrechner:
-	- Einstellungsbutton in der Box hinzugefügt, Werte der Archeförderung lassen sich nun einstellen
-
-- Eigenanteilsrechner:
-	- Einstellungsbutton in der Box hinzugefügt, Werte der Archeförderung lassen sich nun einstellen
-
-
-**Bugfix**
-- Forschungskosten:
-	- [#1754](https://github.com/mainIine/foe-helfer-extension/issues/1754) Es wurden keine Werte mehr angezeigt
-
----
-
-##### 2.5.4.3
-
-**Update**
-- Produktionsübersicht:
-	- [#1647](https://github.com/mainIine/foe-helfer-extension/issues/1647) [#1662](https://github.com/mainIine/foe-helfer-extension/issues/1662) Ab sofort steht in jedem Tab in grüner Farbe rechts oben was fertig ist und geerntet werden kann
-
-**Bugfix**
-- Extension:
-	- Kompatibilität zu älteren Browsern wieder hergestellt
-
-- Marktplatz Filter:
-	- [#1723](https://github.com/mainIine/foe-helfer-extension/issues/1723) Der Inhalt des Marktplatz-Filters wurde nicht angezeigt, Geht nun wieder
-
-- Produktionsübersicht:
-	- [#1726](https://github.com/mainIine/foe-helfer-extension/issues/1726) Eventgebäude die nicht an eine Straße angeschlossen sind produzieren dennoch Bevölkerung, das wurde korrigiert
-
----
-
-##### 2.5.4.2
-
-**Update**
-- Produktionsübersicht:
-	- Alcatraz in die Übersicht für "Einheiten" hinzugefügt
-
-- FP-Collector:
-	- Pfeile hinzugefügt um dazustellen das man die Einträge aufklappen kann
-
-- Infobox:
-	- [#1704](https://github.com/mainIine/foe-helfer-extension/issues/1704) Kann ab sofort, wenn gewünscht mit dem Spielstart geladen werden => "Einstellungen > Boxen > Infobox"
-	- [#1416](https://github.com/mainIine/foe-helfer-extension/issues/1416) Kann ab ab sofort auf eine Länge beschränkt werden => "Einstellungen > Boxen > Infobox Nachrichten" um den Browser bei sehr vielen Einträgen zu schonen
-	- Die Einträge der Infobox werden gespeichert wenn sie nur geschlossen und wieder geöffnet wird
-
-
-**Bugfix**
-- Extension:
-	- [#1720](https://github.com/mainIine/foe-helfer-extension/issues/1720) Filter im Moppelassistent reagiert falsch, wenn Infobox offen ist
-	- [#1707](https://github.com/mainIine/foe-helfer-extension/issues/1707) Einige Mitteilungen wurden nicht angezeigt
-
-- Menü-Box:
-	- [#1717](https://github.com/mainIine/foe-helfer-extension/issues/1717) Wenn die Box oben am Rand liegt, verschwanden die Tooltips ausserhalb des sichtbaren Bereiches
-
-- Produktionsübersicht:
-	- [#1709](https://github.com/mainIine/foe-helfer-extension/issues/1709) Die Box wurde zu lang, die ist nun wieder scrollbar
-
-- Infobox:
-	- [#1694](https://github.com/mainIine/foe-helfer-extension/issues/1694) Falsche Übersetzung im Filter gefixt "GvG" => "GG"
-	- Der Nachrichtenfilter ist nun case-Insesitive (Groß- Kleinschreibung wird ignoriert)
-
 - Moppelhelfer:
-	- [#1658](https://github.com/mainIine/foe-helfer-extension/issues/1658) Datumserkennung für CZ gefixt
+	- Sortierung nach Zeitalter gefixt
+
+- GG
+	- Eigene Provinzen wurden manchmal nicht in der "gesperrt" Liste geführt
 
 ---
 
-##### 2.5.4.1
+##### 3.4.0.0
+**New**
+- GG Gebäude Optimierer:
+	- gibt eine Liste von Provinz-Gebäude Kombinationen die die geringste Belastung für die Gildenkasse darstellen
 
-**Bugfix**
-- Menü:
-	- [#1701](https://github.com/mainIine/foe-helfer-extension/issues/1701) [#1702](https://github.com/mainIine/foe-helfer-extension/issues/1702) in älteren Browsern konnte der Helfer nicht geladen werden
+**Update**
+- Card Game:
+	- Datenerfassung ergänzt (Ausgegebene Zähne, aktuelles Level, aktuelle LP, erhaltene Schlüssel)
 
+- GG Beteiligungstabelle:
+	- Zermürbungsspalte hinzugefügt
+
+**BugFix**
+- GG Provinz Liste und Karte:
+	- Code wurde an neue Datenstruktur der Serverübertragung angepasst (Danke Arklur!)
+
+---
+
+##### 3.3.0.0
+**New**
+- Card Game (Halloween Event):
+	- gibt eine Übersichtstabelle mit den verbleibenden Karten
+	- warnt, wenn die Durchführung des nächsten Zuges das Ende der Runde bedeutet
+
+---
+
+##### 3.2.9.0
+**Update**
+- Sets/Kits:
+	- Gebäude Stand Halloween 2023 hinzugefügt
+	
+- Allgemein:
+	- wenn ein beschränktes Gebäude verfällt, wird nun ein Alarm ausgegeben
+
+---
+
+##### 3.2.8.0
+**Update**
+- Produktionen (Dank an bencptest/apophis):
+	- Fragmente Tab wurde ergänzt - hier werden alle Fragmente angezeigt die aktuell produziert werden (unmotivierte Produktionen werden ignoriert)
+	
+- Idle Game:
+	- wenn der Markt (Festival/Bankett) eine höhere Produktion hat als die anderen Gebäude, wird nun in einem Tooltip über der Zeit für die Produktion der Upgrade-Kosten die Zeit angegeben unter der Annahme, dass kein Engpass vorliegt (z.B. wenn an den Zwischenlagern genug Vorrat anliegt)
+
+- Popgame:
+	- Anpassungen für Herbstevent
+
+**BugFix**
+- Idle Game:
+	- es war möglich, dass Zeiten wie "1h:60min" ausgegeben wurden - dies passiert nun nicht mehr
+
+---
+
+##### 3.2.7.0
+**Update**
+- Wiederkehrende Quests:
+	- man kann nun zwischen dem Titel der Quest und den Aufgaben der Quest hin und her schalten (Spaltenkopf klicken - Shuffle-Pfeile)
+
+**BugFix**
+- Extension:
+	- Kleine Bugs gefixt - vor allem in Bezug auf Titan
+
+---
+
+##### 3.2.6.0
+
+**Update**
+- GvG Übersicht: 
+  - Man kann jetzt in der GvG Übersicht ebenfalls auf den orange farbenen Button klickt, um die gesamte Macht und alle Gilden inklusive Daten einzelner Karten zu sehen. Bitte einmal alle Karten durchklicken, damit die Gilden und Sektoren erfasst werden können.
+
+- Merger Game:
+	- tägliche Übersicht hinzugefügt - es kann zwischen der Übersicht für den Tag und das aktuelle Spiel durch Klick auf den Kopf der zweiten Spalte gewechselt werden
+	- Position des Blockers korrigiert
+	- Es wurde eine Option hinzugefügt, die es erlaubt einen spezifischen Wert für die Rücksetz-Kosten (Reset) anzugeben der statt der tatsächlichen verwendet werden soll 
+		- es sollte der Mittelwert der zu erwartenden Rücksetz-Kosten eingetragen werden (z.B.: 3 Spiele pro Tag --> 20, 4 Spiele pro Tag --> 35)
+		- dies hilft dabei, die Effizienz eines Spiels besser abzuschätzen, da diese nicht mehr durch die Reset-Kosten beeinflusst wird
+
+- Wildlife Preview --> Pop-Game Preview
+	- Modul wurde für das Herbstevent vorbereitet
+
+- Kits/Sets
+	- ein paar fehlende Teile wurden ergänzt
+
+**BugFix**
+- Die Einladungslinks zu Discord waren abgelaufen, wir haben sie ersetzt.
+
+---
+
+##### 3.2.5.0
+
+**Update**
+- Raumfahrt Titan:
+	- diverse Komponenten wurden für Raumfahrt Titan angepasst
+
+- Burg System:
+	- GE5 wird nun beachtet
+
+- Gebäude Kits:
+	- neue Teile wurden ergänzt
+
+- Idle Game:
+	- neue Bedingung "W"(arte bis Aufgabe aktiv oder erfüllt ist) wurde hinzugefügt:
+		- ähnlich zu Typ "T", aber wird auch schon erfüllt, sobald die angegebene Aufgabe aktiv ist
+		- z.B.: "warte bis aktualisiere 100 Gebäude aktiv #W-26"
+
+- Merger Game:
+	- jetzt kompatibel mit dem Soccer Event
+	- die Tabelle zeigt nun in der jeweils ersten Zeile die Anzahl an freien Teilen an
+	- In der Spalte "Sim" ist zu sehen, wieviel Fortschritt bzw. Spieler/Schlüssel mit der aktuellen Konfiguration erreichbar sind und wie effizient das ist
+	- In der Spalte "nächster Spawn" wird angezeigt, wieviel Fortschritt/Spieler/Schlüssel durch das Erzeugen eines weiteren Spielsteins erreichbar sind und wie Effizient das wäre: Min - Max (Mittel)
+
+**BugFix**
 - Produktionsübersicht:
-	- [#1696](https://github.com/mainIine/foe-helfer-extension/issues/1696) In manchen Browsers war die Tabelle nicht breit genug
-
-- Extension:
-	- [#1699](https://github.com/mainIine/foe-helfer-extension/issues/1699) Benachrichtiungen wurden trotz Deaktivierung dargestellt
+	- FP Boost wurde auch auf LB angewandt
+  
+- Idle Game:
+	- Wecker/Timer werden nun korrekt gesetzt - beschränkt auf zeiten geringer als 24 Stunden
 
 ---
 
-##### 2.5.4.0
-
-**Neu**
-- Menü:
-	- [#1664](https://github.com/mainIine/foe-helfer-extension/issues/1664) [#1665](https://github.com/mainIine/foe-helfer-extension/issues/1665) Es gibt nun 3 Menü Varianten (rechts, unten und Box)
-	- Auswählbar über "Einstellungen > Erweiterung > Menü wechseln"
-	- Redesign (kleiner, neue Grafiken) des unteren und der Box Variante für mehr Platz
-
-- Erweiterung:
-	- Die Benachrichtigungen sind nun abschaltbar "Einstellungen > Erweiterung > Benachrichtigung"
-	- Die Benachrichtiungen können an unterschiedlichen Positionen erscheinen "Einstellungen > Erweiterung > Benachrichtigungs- positionen"
+##### 3.2.4.0
 
 **Update**
-- Stadtübersicht:
-	- [#1659](https://github.com/mainIine/foe-helfer-extension/issues/1659) Übersetzungen für die Statistiken wurden ergänzt
+- Idle Game:
+	- funktioniert nun auch im Gemeinschaftsevent
+	- Strategy-Liste hinzugefügt
+		- wenn du z.B. mooing cats Strategie Guides magst, wird dir dies helfen, diese auch umzusetzen ohne ständig nachschauen zu müssen
+		- die Schritte des Guides können in der Event Box manuell hinzugefügt werden und werden für jedes Event und jeden Stadttyp unabhängig gespeichert. Format:
+			- ...Beschreibung...#Bedingung1#Bedingung2#Bedingung3
+			- Es kann beliebig viele Bedingungen geben
+			- Bedingungs-Typen: L(evel) M(anager) T(ask)
+			- Gebäudetypen: T(ransport) (Schiff, Kutsche), F(estival), 1, 2, 3, 4, 5 (Fabriken 1-5)
+			- z.B.:
+				- Festival Manager 3 + Ship Manager 3  #MF-3#MT-3
+				- Hüte Manager 3, Level 10  #M1-3#L1-10
+				- Warten bis 50B Blumen gesammelt sind#T-67
+			- Die Bedingungen sind optional und werden nur benötgt, wenn du willst, dass der Helfer die Schritte automatisch abhakt
+			- Schritte können manuell abgehakt und wieder geöffnet werden
 
-- Blaue Galaxy Helfer:
-	- [#1653](https://github.com/mainIine/foe-helfer-extension/issues/1653) kann nun nach Güter gewichten. Soll nur nach FP gewichtet werden, ändere den Wert auf "0" (Null)
+- Produktionsübersicht und -effizienz:
+	- die neuen Armee-Boosts (Angriff+Verteidigung) und der FP boost werden nun korrekt verarbeitet
 
-- Produktionsübersicht:
-	- [#1646](https://github.com/mainIine/foe-helfer-extension/issues/1646) aktualisiert sich nun wenn die Ernte mit Diamanten eingesammelt wird
+- GB Spürhund
+	- kann nun minimiert werden
 
+- Gildengefechte
+	- wenn in der Provinzübersicht keine Zeile ausgewählt ist, wird nun ein "alle auswählen" Button angezeigt
+
+- Moppelhelfer
+	- Spalte "Gilde" hinzugefügt
+	- es kann nun ausgewählt werden, welche der Spalten Gilde, Era und Punkte angezeigt werden
+
+- Powerleveln
+	- Es kann nun ein Start Level angegeben werden
+
+- Freunde in Gruppen finden
+	- zeigt nun die Spieleraktivität
+
+**BugFix**
+- Wiederkehrenden Quests (Diamanten Check)
+	- die Questliste setzt sich nun ordentlich zurück bei ZA-Wechsel
+
+- Gildenexpedtions-Statistik
+	- gelegentlich wurden für einzelne Spieler NaA angezeigt
+	- Teilnahme% für GE seit Einführung von GE5 geändert
+	- korrektes Icon für GE5
+
+---
+
+##### 3.2.3.0
+
+**Update**
 - Infobox:
-	- [#1552](https://github.com/mainIine/foe-helfer-extension/issues/1552) ab sofort kann im Filter nach einem Text gesucht werden
+	- es kann nun eingestellt werden, dass statt des vollen GG-Provinznamen nur das Kürzel ausgegeben wird.
 
-- Erweiterung:
-	- viele Übersetzungen von [i18n.foe-helper.com](http://i18n.foe-helper.com/projects/foe-helper/extension/) wurden integriert. Helfe auch du noch mehr Übersetzungen zu integrieren und registriere dich
+**BugFix**
+- externe Bilder:
+	- wenn die Spieldatei nicht im Cache vorlag, konnte es passieren, dass Bilder von Innogames nicht korrekt geladen wurden
 
-**Bugfix**
-- FP-Collector:
-	- [#1690](https://github.com/mainIine/foe-helfer-extension/issues/1690) der Collector hat nicht alle Verdopplungen gezählt
-	- [#1693](https://github.com/mainIine/foe-helfer-extension/issues/1693) Übersetzungsfehler behoben
+- Eigenanteils-Rechner:
+	- war die Infobox vor dem Eigenanteilsrechner offen, konnte es passieren, dass durch Klick auf den Filter in der Infobox, die Einstellungen des Eigenanteilrechners geöffnet wurde.
 
-- Erweiterung:
-	- [#1687](https://github.com/mainIine/foe-helfer-extension/issues/1687) im Firefox wurden nicht alle Übersetzungen geladen
+##### 3.2.2.0
 
+**Update**
+- Merger Game:
+	- Die Parameter, die die Farbe der Effizienz bestimmen können nun in den Optionen eingestellt werden
+		- Fortschritt je Schlüssel: Soviel Fortschritt ist ein Schlüssel etwa wert (Kistenkauf - Standard:1,3)
+		- Zielfortschritt: soweit willst du kommen in den Hauptpreisen (Standard: 3750 für goldenes Kit)
+		- vorhandene Währung: soviel Energie steht zur Verfügung (Standard: 11000 - 10500 von Quests und geschätzte 500 von Ereignissen)
+			- gekaufte Währung sollte entsprechend aufaddiert werden
+		- Die Effizienz wird rot, wenn 5% unterhalb des Zielwerts
+		- Die Effizienz ist grün 15% oberhalb des Zielwerts
+		- Die Effizienz ist also gelb, wenn gerade gut genug, um Ziel zu erreichen
+	- wenn auf die Effizienz gezeigt wird, wird in einem Tooltip ausgegeben, wie viel Fortschritt mit dieser Effizienz erreicht werden kann
+	- wenn auf die Energie gezeigt wird, wird in einem Tooltip ausgegeben, wie viel Fortschritt für die aktuell ausgegebene Enrgie auf dem Brett gemacht werden sollte, um den Zielfortschritt zu erreichen
+	- wenn der Reset-Blocker (nicht) verschwinden soll, wenn die Box minimiert wird, kann das nun eingestellt werden
+
+- Statistik:
+	- Belohnungen können nun nach Namen gefiltert werden
+
+- Verhandlungshelfer:
+	- Tooltip für die Hinweise zur Tastenkombination hinzugefügt
+
+- Sets und Kits:
+	- fehlende Teile hinzugefügt
+
+- Boxen:
+	- können nun nicht mehr über den Fensterrand hinaus vergrößert werden
+
+**BugFix**
+- Quest zähler:
+	- [#2541](https://github.com/mainIine/foe-helfer-extension/issues/2541) wurden mehrere Wiederkehrenden Quests in kurzer Folge abgebrochen wurde nur eine gezählt
+
+##### 3.2.1.0
+
+**Update**
+- Merger Game:
+	- geänderte Werte (Inno Update) - sollte jetzt robuster sein, sollten weitere Änderungen kommen
+
+- FP-Einsammlungen:
+	- Geburtstags-Event ergänzt
+	
+---
+
+##### 3.2.0.0
+
+**New**
+- Merger Game (Geburtstagsevent Minispiel)
+	- gibt einen Überblick über die auf dem Spielbrett vorhandenen Schlüsselteile
+
+**Update**
+- Musik-Modul:
+	- neuer Track hinzugefügt (aktuell nur auf Beta-Server verfügbar)
+
+- Event-Kosten Rechner:
+	- zweite Kostenspalte am Ende der Tabelle eingefügt 
+	- Hervorheben der günstigsten Option erfolgt jetzt zusätzlich in der entsprechenden Kostenspalte
+
+- Kits:
+	- Die Liste kann nun gefiltert werden - nach Name des Gegenstands oder des Sets
+
+**BugFix**
+- General:
+	- Spieler-Portraits wurden manchmal nicht angezeigt, wenn Module zu zeitig nach Spielstart geöffnet wurden
+
+---
+
+##### 3.1.0.1
+
+**Update**
+- Spieler-ID hinzugefügt zum Export von:
+	- Expeditionsdaten
+	- GG-Daten
+	- Gildenmitglieder-Daten
+
+**BugFix**
+- Alarme:
+	- Alarme wurden vorzeitig gelöscht
+
+- General:
+	- Die Changelog wurden nicht mehr aufgerufen, nachdem ein Update durchgeführt wurde
+
+---
+
+##### 3.1.0.0
+
+**Neu**
+- LB Spürhund:
+	- hilft bei der LB-Suche - z.B. bei der BP-Jagd
+	- während durch die LB-Rangliste oder die LB-Liste anderer Spieler geklickt wird, zeichnet der LB-Spürhund alle LB auf, die angegebenen Kriterien entsprechen
+	- wähle das gewünschte LB aus, gib gegebenenfalls einen Stufenbereich an und geh auf die Jagd
+	- "zurücksetzen" löscht die Liste und den Filter
+
+**Update**
+- LB Rechner:
+	- neue Formatierung
+
+- GvG:
+	- BA Kosten für die nächste Belagerung wurden hinzugefügt
+	- Macht Bonus für die ersten drei Gilden auf einer Karte wurde hinzugefügt
+
+**BugFix**
 - Menü:
-	- [#1681](https://github.com/mainIine/foe-helfer-extension/issues/1681) das Drag&Drop war zu empfindlich und hat immer die Meldung gerbacht "Das neue Menü-Reihenfolge wurde gespeichert", das haben wir geändert
+	- Es konnte passieren, dass Tooltips zurückgelassen wurden, wenn das Menü durch Zoom oder ähnliche Aktionen von einem Modus in einen anderen Modus gezwungen wurde.
+
+- StPatrick:
+	- aktualisierte nicht mehr korrekt
+
+- GG:
+	- X1 wurde nicht korrekt aktualisiert
 
 ---
 
-##### 2.5.3.2
-
-**BugFix**
-- FP-Collector:
-	- Ein kleiner Bug verhinderte das Anzeigen des Menübuttons
-
----
-
-##### 2.5.3.1
-
-**Neu**
-
-- FP-Collector:
-	- Sammelt tagesweise und nach Art sortiert alle FPs ein die Du im kompletten Spiel sammelst um so eine Gesamtübersicht deiner "nebenbei" FPs zu erstellen
-
-**Update**
-
-- Menü:
-	- [#1661](https://github.com/mainIine/foe-helfer-extension/issues/1661) [#1657](https://github.com/mainIine/foe-helfer-extension/issues/1657) wegen dem neuen dynamischen Menü weicht das Menü des Helfers an den unteren Rand aus
-
-- Moppelhelfer:
-	- Über den Tabbelkopf können die Werte sortiert werden
-	- Filter für verschiedene Ereignisse [#1652](https://github.com/mainIine/foe-helfer-extension/issues/1652)
-	- Farbige Werte für besseres unterscheiden
-
-**BugFix**
-
-- Eventhelfer:
-	- [#1655](https://github.com/mainIine/foe-helfer-extension/issues/1655) Fehlerhafte Erkennung des Tagespreises Football Event 2021
-
----
-
-##### 2.5.3.0
-
-**Neu**
-
-- Blaue Galaxy Helfer:
-	- Wenn in den "Einstellungen > Boxen > Blaue Galaxy" aktivert (default "an") wird beim Klick auf die erntbare Blaue Galaxy eine Box geöffnet die die FP stärksten verdoppelbaren Gebäude mit der korrekten Versuchanzahl darstellt
-
-- Moppelhelfer ****BETA****:
-	- Wenn in den "Einstellungen > Boxen > Motivationen" aktivert (default = "an") werden sämtliche Ereignisse im Rathaus notiert und können über den Button im Menü geöffnet werden.
-	  Sollte ein Tab durchgestrichen sein, bitte unten die Tabs des Spieles entsprechend anklicken.
-
-**Update**
-- Extension:
-	- Icons überarbeitet
-
-- Eigenanteilsrechner:
-	- [#1638](https://github.com/mainIine/foe-helfer-extension/issues/1638) Kopier-Overlay zentriert und neue Checkbox integriert
-
-- Kampfassistent:
-	- [#903](https://github.com/mainIine/foe-helfer-extension/issues/903) Das Warnfenster lässt sich nun in den Einstellungen deaktiveren
-
-- Produktüberischt:
-	- [#1629](https://github.com/mainIine/foe-helfer-extension/issues/1629) Ein weiterer Tab zeigt an wie viele Einheiten in nicht militärischen Gebäuden produziert werden
-
-**Bugfix**
-- Extension:
-	- [#1649](https://github.com/mainIine/foe-helfer-extension/issues/1649) Innogames hat etwas im Code umgestellt was das Menü zerschossen hatte
-
-- Produktüberischt:
-	- [#1640](https://github.com/mainIine/foe-helfer-extension/issues/1640) Produzierte FP der Ehrenstatue wurden nicht dargestellt
-
----
-
-##### 2.5.2.9
-
-**Bugfix**
-
-- Extension:
-	- kleiner Bug beim Ansprechen der API
-
----
-
-##### 2.5.2.8
-
-**Bugfix**
-
-- Kostenrechner:
-	- beim Öffnen eines anderen LGs schloss sich die Box
-
----
-
-##### 2.5.2.7
-
-**Update**
-- Forschungskosten:
-	- [#1622](https://github.com/mainIine/foe-helfer-extension/issues/1622) Das Fenster lässt sich nun individuell in der Größe verändern
-
-- Kostenrechner:
-	- [#1590](https://github.com/mainIine/foe-helfer-extension/issues/1590) Die Box schliesst sich beim zweiten Klick im Menü
-
-**Bugfix**
-- Notizen:
-	- [#1627](https://github.com/mainIine/foe-helfer-extension/issues/1627) Es konnte keine neue Seite angelegt werden
-
-- Kostenrechner:
-	- [#1619](https://github.com/mainIine/foe-helfer-extension/issues/1619) Rundungsfehlern bei manchen Archefaktoren behoben
-
----
-
-##### 2.5.2.6
-
-**Update**
-- Extension:
-	- viele Übersetzungen von [i18n.foe-helper.com](https://i18n.foe-helper.com) importiert
-
-**Bugfix**
-- Extension:
-	- Motivieren/Polieren angepasst, API neu gestaltet
-
----
-
-##### 2.5.2.5
-
-**Update**
-- Extension:
-	- viele Übersetzungen von [i18n.foe-helper.com](https://i18n.foe-helper.com) importiert
-
-- Notizen:
-	- der letzte Tab wird "gemerkt" wenn neue Seiten angelegt werden
-
-**Bugfix**
-- Verhandlungsassistenen:
-	- Optische Korrekturen am Verhandlungsassistenen
-
----
-
-##### 2.5.2.4
-
-**BugFix**
-- Verhandlungsassisten:
-	- roten Rahmen beim falschen Auswählen eines Gutes gefixt
-
-- Gefechtsassistent:
-	- Das Fenster beim Verlieren einer Einheit aus dem nächsten ZA lässt sich nun "normal" wegklicken
-
----
-
-##### 2.5.2.3
-
-**Update**
-- Motivieren/Polieren:
-	- Übermittlung an foe-rechner.de überarbeitet
-
----
-
-##### 2.5.2.2
-
-**Update**
-- Event/Schrittrechner:
-	- [#1592](https://github.com/mainIine/foe-helfer-extension/issues/1592) Einstellung zum deaktivieren der Box hinzugefügt
-
-- Gefechtsassistent:
-	- Ab sofort wird auch einen Warnung ausgegeben wenn eine seltene Einheit des nächsten ZAs gestorben ist => Möglichkeit zu heilen
-
-**BugFix**
-- Eigenanteilsrechner:
-	- [#1586](https://github.com/mainIine/foe-helfer-extension/issues/1586) Beim Ändern von Archefaktor oder externen Werten sprang der EA-Rechner auf das aktuelle Level zurück, falls zu einem höheren Level weitergescrollt wurde
-	- [#1588](https://github.com/mainIine/foe-helfer-extension/issues/1588) EA Rechner ludt nicht bzw. aktualisierte sich, wenn externe Spalten befüllt wurden
-
-- Legendäre Bauwerke:
-	- [#1587](https://github.com/mainIine/foe-helfer-extension/issues/1587) LG-Investitionen Innovation Tower waren unterhalb von Level 10 verrutscht
-
-- Forgepunkte Balken:
-	- [#1589](https://github.com/mainIine/foe-helfer-extension/issues/1589) FP-Counter in GG zählte nicht hoch
-
-- Notizen:
-	- fehlenden "Speicher"-Button ergänzt
-
----
-##### 2.5.2.1
-
-**Neu**
-- Gildenchat:
-	- überarbeitet und mit verschiedenen "Räumen"
-
-**Update**
-- Tavernenbadge:
-	- entfernt da es Inno nachgebaut hat
-
-- Kostenrechner:
-	- [#1504](https://github.com/mainIine/foe-helfer-extension/issues/1504) Redesign der "Kopieren" Funktion, Scheme ist ab sofort selber einstellbar
-
-- Legendäre Bauwerke:
-	- [#1518](https://github.com/mainIine/foe-helfer-extension/issues/1518) der erforderliche Platz Faktor kann ab sofort geändert werden
-	- [#1574](https://github.com/mainIine/foe-helfer-extension/issues/1574) Unterstützung für blaue Galaxie hinzugefügt
-
-- Infobox:
-	- [#1542](https://github.com/mainIine/foe-helfer-extension/issues/1542) "Willkommenstext" kann mit "Box leeren" entfernt werden
+##### 3.0.0.1
 
 **BugFix**
 - Statistiken:
-	- [#1522](https://github.com/mainIine/foe-helfer-extension/issues/1522) [#1568](https://github.com/mainIine/foe-helfer-extension/issues/1568) beim wechsel zwischen Außenposten und Stadt gab es einen Knick in der Statistik
-
-- Marktplatz Filter:
-	- [#1541](https://github.com/mainIine/foe-helfer-extension/issues/1541) hat man den Filter manuell geöffnet, wurde er nicht geöffnet
-	- [#1543](https://github.com/mainIine/foe-helfer-extension/issues/1543) "fair bei niedrigem Lagerstand" wurde korrigiert
-
-- Gildengefechte:
-	- [#1547](https://github.com/mainIine/foe-helfer-extension/issues/1547) Tabellenkopf wurde überarbeitet
-
-- Legendäre Bauwerke:
-	- [#1567](https://github.com/mainIine/foe-helfer-extension/issues/1567) LG wurden dauerhauft ausgeblendet wenn die Güterkosten zu hoch waren
+  - Script wurde nicht immer lokal eingebunden, das ist nun geändert
 
 ---
 
-##### 2.5.2.0
+##### 3.0.0.0
 
 **Neu**
-- Gildenkassen Export:
-	- [#670](https://github.com/mainIine/foe-helfer-extension/issues/670) [#926](https://github.com/mainIine/foe-helfer-extension/issues/926) [#1042](https://github.com/mainIine/foe-helfer-extension/issues/1042) klick alle Seiten durch bis zum gewünschten Datum, dann exportiere dir eine CSV; daraus kannst Du dir eine Excel Pivot Tabelle erstellen; einstellbar in den Einstellungen
-
-- Marktplatz Filter:
-	- beim betreten des Marktplatzes öffnet sich ein Fenster in dem alle Einträge nach belieben gefiltert werden können, die Seitenzahl zeigt sofort an wo im Spiel das Angebot anschließend zu finden ist; einstellbar in den Einstellungen
+- Erweiterung:
+  - Kompatibilität für die neuen Manifest V3 Anforderungen für Chromium-Browser geschaffen, Firefox folgt  im 1 Quartal 2023
+  - diverse CSS Anpassungen
 
 **Update**
-- Legendäre Bauwerke:
-	- [#1501](https://github.com/mainIine/foe-helfer-extension/issues/1501) can be calculated for a friend/guild member after a visit
-
-- Infobox:
-	- [#1509](https://github.com/mainIine/foe-helfer-extension/issues/1509) [#1515](https://github.com/mainIine/foe-helfer-extension/issues/1515) Style überarbeitet, für die neue Version (aktiv auf der Beta) angepasst
-
-- Extension:
-	- [#1514](https://github.com/mainIine/foe-helfer-extension/issues/1514) Boxen können durch anklicken in den Vordergrund geholt werden
-
-- Event/Schrittrechner:
-	- [#1532](https://github.com/mainIine/foe-helfer-extension/issues/1532) ab sofort werden auch Zutaten des Herbstevents korrekt erkannt
+- Discord Webhooks:
+  - Kopieren Button ergänzt
+  - Maximale Höhe für viele Einträge ergänzt
+  - Testbutton integriert
+  - beliebig viele Webhook Urls können hinterlegt werden
+  - neue Funktionen werden folgen...
 
 **BugFix**
-- Infobox:
-	- [#1439](https://github.com/mainIine/foe-helfer-extension/issues/1439) vierfach Einträge gefixt
+- Notizfunktion: 
+  	- Box wurde wegen eines fehlerhaften Avatar links nicht angezeigt
 
-- Kostenrechner:
-	- [#1503](https://github.com/mainIine/foe-helfer-extension/issues/1503) falsche Farbe in der Differenz Spalte führte zu irretationen
-
-- Infobox:
-	- [#1506](https://github.com/mainIine/foe-helfer-extension/issues/1506) wenn eine Provinz in der GG eingenommen wurde diese Meldung doppelt mit einem anderern Event angezeigt
-	- [#1520](https://github.com/mainIine/foe-helfer-extension/issues/1520) das löschen eines Gebäudes auf der GG Map erzeugte einen leeren Eintrag
-
-- Legendäre Bauwerke:
-	- [#1525](https://github.com/mainIine/foe-helfer-extension/issues/1525) wenn man die Kosten auf 0 stellte verschwand das LG
-
-- Produktionsübersicht:
-	- [#1528](https://github.com/mainIine/foe-helfer-extension/issues/1528) Boosts von Markusdom. Leuchtturm etc. wurden bei deaktivierter Übermittlung an foe-rechner.de ignoriert
-
----
-
-##### 2.5.1.0
-
-**Neu**
-- Eigenanteilsrechner:
-	- Powerleveln hinzugefügt:
-		- ein neuer Button, unten rechts, startet diese Funktion in einer extra Box
-		- Stufen bis > 100 Verfügbar
-		- Gebäude mit Doppelernten werden berücksichtigt
-
-**Update**
-- Notizen:
-	- [#1300](https://github.com/mainIine/foe-helfer-extension/issues/1300) Notizen werden beim schliessen der Box gespeichert
-
-- Einstellungen:
-	- [#1413](https://github.com/mainIine/foe-helfer-extension/issues/1413) Buttons aus dem Menü in die neue Einstellungsbox verschoben
-
-- Produktionsübersicht:
-	- [#1424](https://github.com/mainIine/foe-helfer-extension/issues/1424) Bonus von Botschaftern und Gildenboni wurde bei der Rückkehr beim Rathaus nicht angezeigt
-
-- Kostenrechner:
-	- [#1433](https://github.com/mainIine/foe-helfer-extension/issues/1433) korrekte Formatierung ergänzt
-
-- Stadtübersicht:
-	- [#1438](https://github.com/mainIine/foe-helfer-extension/issues/1438) auf der Map werden beim Mouseover die Zeitalter angezeigt
-
-**BugFix**
-- Infobox:
-	- [#1375](https://github.com/mainIine/foe-helfer-extension/issues/1375) doppelte Einträge gefixt
-
-- Statistiken:
-	- [#917](https://github.com/mainIine/foe-helfer-extension/issues/917) "seit Dienstag" gefixt
-
-- Übersetzungen:
-	- [#924](https://github.com/mainIine/foe-helfer-extension/issues/924) String gefixt
-
-- Ereignisse:
-	- [#1321](https://github.com/mainIine/foe-helfer-extension/issues/1324) Counter im Menü zählt nun korrekt
-
-- Produktionsübersicht:
-	- [#1343](https://github.com/mainIine/foe-helfer-extension/issues/1343) Produktionen konnten doppelt erscheinen
-
-- Eigenanteilsrechner:
-	- [#1378](https://github.com/mainIine/foe-helfer-extension/issues/1378) beim Öffnen fremder LGs wurde der eigene Spielernamen angezeigt
-
-- Notizen:
-	- [#1454](https://github.com/mainIine/foe-helfer-extension/issues/1454) Content wurde zu breit angezeigt
-
-- Kostenrechner:
-	- [#1471](https://github.com/mainIine/foe-helfer-extension/issues/1471) Tooltip bliebt manchmal hängen
-	- [#1495](https://github.com/mainIine/foe-helfer-extension/issues/1495) Farben der Level-Warnung angepasst
-
----
-
-##### 2.5.0.1
-
-**Update**
-- Kostenrechner:
-	- [#550](https://github.com/mainIine/foe-helfer-extension/issues/550) 80% Button hinzugefügt
-
-**BugFix**
-
-- Eigenanteilsrechner:
-	- [#1317](https://github.com/mainIine/foe-helfer-extension/issues/1317) Sound beim Wechseln einer wiederholbaren "gib X FP aus" Quest wird nicht zuverlässig wiedergegeben
-	- [#1318](https://github.com/mainIine/foe-helfer-extension/issues/1318) Ton im Kostenrechner komm in Bronzezeit bis FMA auch bei der Quest "erforsche 2 Technologien"
-
-- versteckte Ereignisse:
-	- [#1295](https://github.com/mainIine/foe-helfer-extension/issues/1295) blaues Zählericon verhinderte Klick
-	- [#1314](https://github.com/mainIine/foe-helfer-extension/issues/1314) doppelte Straßen wurden nicht angezeigt
-
-- Legendäre Bauwerke:
-	- [#1305](https://github.com/mainIine/foe-helfer-extension/issues/1305) die Eingabe der FP Kosten verschwand in ein anderes Feld
-	- [#1315](https://github.com/mainIine/foe-helfer-extension/issues/1315) Fehler wenn eines der FP produzierenden LG über lvl100 oder höher ist
-
-- Verhandlungsassistent:
-	- [#1342](https://github.com/mainIine/foe-helfer-extension/issues/1342) auf dem Beta Server konnte man den Helfer in der GG manuell starten (Inno Games möchte das aber nicht)
-
----
-
-##### 2.5.0.0
-
-**Neu**
-- Boost-Box:
-	- eine kleine Box, die in der GEX, GG, GvG und bei den Nachbarn eingeblendet wird zeigt an, wie viele Versuche für Kriegsbeute oder Verhandlungen verbleiben
-
-- Legendäre Bauwerke:
-	- diese Box errechnet, welches FP produzierende Gebäude das nächste kostengünstigeste wäre
-
-- Notizen:
-	- gruppiert und sortiert Notizen aller Art ablegen. Diese Funktion arbeite mit dem Server und ist geräteübergreifend
-
-**Update**
-- Gemäß Innos Wünschen haben wir folgende Elemente entfernt oder abgeändert: [https://foe-rechner.de/news/aenderungen-am-foe-helfer](https://foe-rechner.de/news/aenderungen-am-foe-helfer)
-	- Snipe Spalte im Kostenrechner entfernt
-	- PvP Aktivitäten entfernt
-	- "Plünderhilfe" + Angriff und Verteidigungswerte entfernt
-	- Event-Quest wird nur noch verlinkt
-	- Verhandlungsassistent wird in den Gildengefechten ausgeblendet
-	- versteckte Ereignisse werden ohne Ablaufdatum dargestellt
-
-- Hidden Rewards:
-	- ein Zähler zeigt an wie viele Ereignisse noch irgend wo auf der Map liegen
-
-- Produktionsübersicht:
-	- [#1185](https://github.com/mainIine/foe-helfer-extension/issues/1185) Zeitalter wird mit ausgegeben
-	- Gildenmacht als neuer Tab Verfügbar
-	- [#1205](https://github.com/mainIine/foe-helfer-extension/issues/1205) Sortierfunktion für Güter
-
-- Kostenrechner:
-	- [#1168](https://github.com/mainIine/foe-helfer-extension/issues/1186) neue Checkbox "Alle", damit werden ohne Abhängkeiten alle Plätze 1-5 ausgegeben
-
-- Enstellungen:
-	- [#1169](https://github.com/mainIine/foe-helfer-extension/issues/1189) Firefox: Einstellungsmenü zeigt sporadisch keine übersetzten Texte
-
-**BugFixes**
-- Kostenrechner:
-	- [#1153](https://github.com/mainIine/foe-helfer-extension/issues/1153) bereits eingzahlte FP wurden nicht korrekt erkannt
-
-- Tavernenbadge:
-	- [#1182](https://github.com/mainIine/foe-helfer-extension/issues/1182) Counter für 4. Versuch stimmt nicht, Zeiten werden ab sofort vom Spiel übernommen
-
-- CityMap (intern):
-	- [#1184](https://github.com/mainIine/foe-helfer-extension/issues/1184) Fehlerhafte Anzeige der freien Fläche
-	- [#1204](https://github.com/mainIine/foe-helfer-extension/issues/1204) Übermittlungsbox wird nicht mehr bim Nachbarn angezeigt
-
-- Produtkionsübersicht:
-	- [#1201](https://github.com/mainIine/foe-helfer-extension/issues/1201) Straße mit "Zufriedenheit" werden nicht mehr mit Straßenbindung berechnet
-	- [#952](https://github.com/mainIine/foe-helfer-extension/issues/952) [#982](https://github.com/mainIine/foe-helfer-extension/issues/982) basierend auf den Gebäuden des Nachbarn kann ein ca. Angriff/Verteidigungswert berechnet werden

@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -25,10 +25,6 @@
 	height: 500px;
 }
 
-#GildPlayers.closed {
-	height: 22px !important;
-}
-
 #GildPlayersHeader small {
 	font-weight: lighter;
 }
@@ -49,8 +45,6 @@
 
 #GildPlayersBody tr th,
 #GildPlayersDetailViewBody tr th {
-	position: sticky;
-	top: 0;
 	background-color: rgba(0, 0, 0, 0.45);
 	line-height: 25px;
 
@@ -82,21 +76,16 @@
 }
 
 #GildPlayersBody tr.mark-player td {
-	border-top: 1px solid var(--text-bright);
-	border-bottom: 1px solid var(--text-bright);
+	border-top: 1px solid var(--sunflower);
+	border-bottom: 1px solid var(--sunflower);
 }
 
 #GildPlayersBody tr.mark-player td:first-child {
-	border-left: 1px solid var(--text-bright);
+	border-left: 1px solid var(--sunflower);
 }
 
 #GildPlayersBody tr.mark-player td:last-child {
-	border-right: 1px solid var(--text-bright);
-}
-
-
-#GildPlayersBody tr.bg-green td {
-	background-color: var(--background-table-success);
+	border-right: 1px solid var(--sunflower);
 }
 
 #GildPlayersBody table .tdmin,
@@ -136,7 +125,7 @@
 
 #GildPlayersDetailViewBody .pname {
 	padding: 10px 5px;
-	color: var(--text-bright);
+	color: var(--sunflower);
 	font-size: 1.0rem;
 }
 
@@ -169,24 +158,17 @@
 }
 
 #GildPlayersDetailViewBody tr.open td {
-	color: var(--text-bright);
+	color: var(--sunflower);
 }
 
 #GildPlayersDetailViewBody .foe-table td.nopadding {
 	padding: 0;
 }
 
-
 #GildPlayersDetailViewBody .datetimepicker {
 	padding: 2px 0 0 2px;
 	background-color: rgba(0, 0, 0, 0.45);
 	height: 28px;
-	position: sticky;
-	top: 0;
-}
-
-#GildPlayersDetailViewBody .gbglog th {
-	top: 30px;
 }
 
 #GildPlayersDetailViewBody .sorter-header th {
@@ -213,178 +195,54 @@
 }
 
 #LiveGildFightingBody .province-color, #LiveGildFightingBody .province-color-round {
-	width: 10px;
-	height: 10px;
+	width: 13px;
+	height: 13px;
 	display: inline-block;
 	box-shadow: 0 1px 1px var(--black-65);
-	border-radius: 50%;
+	border-radius: 2px;
+	top: 2px;
+	position: relative;
 }
-
-/* A */
-#province-0 .province-color,
-#province-4 .province-color,
-#province-5 .province-color,
-#province-12 .province-color,
-#province-13 .province-color,
-#province-14 .province-color,
-#province-15 .province-color,
-#province-28 .province-color,
-#province-29 .province-color,
-#province-30 .province-color,
-#province-31 .province-color,
-#province-32 .province-color,
-#province-33 .province-color,
-#province-34 .province-color,
-#province-35 .province-color,
-#timer-0 .province-color,
-#timer-4 .province-color,
-#timer-5 .province-color,
-#timer-12 .province-color,
-#timer-13 .province-color,
-#timer-14 .province-color,
-#timer-15 .province-color,
-#timer-28 .province-color,
-#timer-29 .province-color,
-#timer-30 .province-color,
-#timer-31 .province-color,
-#timer-32 .province-color,
-#timer-33 .province-color,
-#timer-34 .province-color,
-#timer-35 .province-color {
-	border-radius: 2px 100% 2px 2px;
+#LiveGildFightingBody .battletype {
+	width: 9px;
+	height: 9px;
+	box-shadow: 0 1px 1px var(--black-65);
+	border-radius: 5px;
+	display: inline-block;
+	position: relative;
 }
-
-/* B */
-#province-1 .province-color,
-#province-6 .province-color,
-#province-7 .province-color,
-#province-16 .province-color,
-#province-17 .province-color,
-#province-18 .province-color,
-#province-19 .province-color,
-#province-36 .province-color,
-#province-37 .province-color,
-#province-38 .province-color,
-#province-39 .province-color,
-#province-40 .province-color,
-#province-41 .province-color,
-#province-42 .province-color,
-#province-43 .province-color,
-#timer-1 .province-color,
-#timer-6 .province-color,
-#timer-7 .province-color,
-#timer-16 .province-color,
-#timer-17 .province-color,
-#timer-18 .province-color,
-#timer-19 .province-color,
-#timer-36 .province-color,
-#timer-37 .province-color,
-#timer-38 .province-color,
-#timer-39 .province-color,
-#timer-40 .province-color,
-#timer-41 .province-color,
-#timer-42 .province-color,
-#timer-43 .province-color {
-	border-radius: 2px 2px 100% 2px;
+#LiveGildFightingBody .battletype.BTattack {
+	background-color: rgb(209, 38, 38);
 }
-
-/* C */
-#province-2 .province-color,
-#province-8 .province-color,
-#province-9 .province-color,
-#province-20 .province-color,
-#province-21 .province-color,
-#province-22 .province-color,
-#province-23 .province-color,
-#province-44 .province-color,
-#province-45 .province-color,
-#province-46 .province-color,
-#province-47 .province-color,
-#province-48 .province-color,
-#province-49 .province-color,
-#province-50 .province-color,
-#province-51 .province-color,
-#timer-2 .province-color,
-#timer-8 .province-color,
-#timer-9 .province-color,
-#timer-20 .province-color,
-#timer-21 .province-color,
-#timer-22 .province-color,
-#timer-23 .province-color,
-#timer-44 .province-color,
-#timer-45 .province-color,
-#timer-46 .province-color,
-#timer-47 .province-color,
-#timer-48 .province-color,
-#timer-49 .province-color,
-#timer-50 .province-color,
-#timer-51 .province-color {
-	border-radius: 2px 2px 2px 100%;
-}
-
-/* D */
-#province-3 .province-color,
-#province-10 .province-color,
-#province-11 .province-color,
-#province-24 .province-color,
-#province-25 .province-color,
-#province-26 .province-color,
-#province-27 .province-color,
-#province-52 .province-color,
-#province-53 .province-color,
-#province-54 .province-color,
-#province-55 .province-color,
-#province-56 .province-color,
-#province-57 .province-color,
-#province-58 .province-color,
-#province-59 .province-color,
-#timer-3 .province-color,
-#timer-10 .province-color,
-#timer-11 .province-color,
-#timer-24 .province-color,
-#timer-25 .province-color,
-#timer-26 .province-color,
-#timer-27 .province-color,
-#timer-52 .province-color,
-#timer-53 .province-color,
-#timer-54 .province-color,
-#timer-55 .province-color,
-#timer-56 .province-color,
-#timer-57 .province-color,
-#timer-58 .province-color,
-#timer-59 .province-color {
-	border-radius: 100% 2px 2px 2px;
+#LiveGildFightingBody .battletype.BTdefence {
+	background-color: rgb(45, 77, 255);
 }
 
 #LiveGildFightingBody .tabs ul li a span {
 	width: 21px;
-	top: 6px;
-	background: transparent url('../../unit/images/unit-icons.png') 0 3px no-repeat;
+	top: 4px;
 	background-size: 90px 20px;
 }
 
 #LiveGildFightingBody .tabs ul li.gbgprogress a span {
-	background: transparent url('../../stats/images/tabs.png') -237px 0 no-repeat;
+	background: transparent url('../../stats/images/tabs.png') -237px 2px no-repeat;
+}
+
+#LiveGildFightingBody .tabs ul li.gbgowned a span {
+	background: transparent url('../../stats/images/tabs.png') -326px 2px no-repeat;
 }
 
 #LiveGildFightingBody .tabs ul li.gbgnextup a span {
 	background: transparent url('../../x_img/hourglass.png') no-repeat;
 	background-size: contain;
-	top: 8px;
 	position: relative;
 }
 
-#LiveGildFightingBody .tabs>button.mapbutton {
+#LiveGildFightingBody >.btn-group {
 	position: absolute;
-	top: 40px;
+	top: 44px;
 	right: 7px;
-}
-
-#LiveGildFightingBody .tabs>button.copybutton {
-	display: none;
-	position: absolute;
-	top: 40px;
-	right: 64px;
+	z-index: 100;
 }
 
 #LiveGildFightingBody #nextup {
@@ -392,6 +250,15 @@
 	overflow-y: auto;
 	flex-grow: 2;
 	user-select: text;
+}
+
+#LiveGildFightingBody #nextup .secure .prov-name b {
+	text-decoration: underline;
+}
+
+#LiveGildFightingBody #nextup .secure .battletype {
+	border: 1px solid var(--black-65);
+	margin: -1px;
 }
 
 #LiveGildFightingBody #progress {
@@ -402,12 +269,12 @@
 
 #LiveGildFightingBody #progress tr td:first-child,
 #LiveGildFightingBody #nextup tr td:first-child {
-	width: 60px;
+	width: 69px;
 }
 
 #LiveGildFightingBody table.foe-table tr.highlight-row {
 	background-color: rgba(40, 18, 7, 0.8);
-	color: var(--text-bright);
+	color: var(--sunflower);
 }
 
 #LiveGildFightingBody tr td {
@@ -433,6 +300,12 @@
 	display: inline-block;
 	content: '';
 	vertical-align: middle;
+}
+
+#LiveGildFightingBody .smaller {
+	font-size: 8px;
+	bottom: 2px;
+	position: relative;
 }
 
 #LiveGildFightingBody .gbg-red:before {
@@ -471,17 +344,92 @@
 	background-image: url(../../x_img/gbg-gray.png);
 }
 
+#LiveGildFightingBody tr .btn.discord {
+	visibility: hidden;
+}
+
+#LiveGildFightingBody tr:hover .btn.discord {
+	visibility: visible;
+}
+
+.btn.discord.custom {
+    background-image: url('../../../../css/images/menu/discord.png'), var(--tabs-bg);
+}
+
+.btn[class*=alertbutton] {
+	background-image: url(../../../../css/images/menu/alerts.png), var(--btn-bg);
+	background-size: 90%, 100%;
+	background-repeat: no-repeat;
+	background-position: center;
+	width: 22px;
+	height: 22px;
+}
+
+.btn.deletealertbutton {
+	background-image: url(../../../../css/images/menu/alerts.png), var(--btn-bg-red);
+	width: 26px;
+}
+
 /*************************************************************************************************************/
 
-#ProvinceMap {
-	width: 560px;
-	height: 438px;
+#ProvinceMapBody {
+	background: #222;
+	position: relative;
+}
+
+#ProvinceMap.volcano_archipelago {
+	width: 800px;
+	height: 800px;
 	left: calc(50vw - 280px);
 	top: calc(50vh - 219px);
 }
 
-#ProvinceMap #province-map {
+#ProvinceMap.waterfall_archipelago {
+	width: 800px;
+	height: 800px;
+	left: calc(50vw - 256px);
+	top: calc(50vh - 219px);
+}
+
+#ProvinceMap #province-map-wrap {
+	overflow: hidden;
+	position: relative;
 	height: 100%;
-	background: transparent url('../images/volcano_archipelago_bg.jpg');
-	background-size: 100%;
+	width: 100%;
+}
+
+#ProvinceMap #provDetails {
+	position: absolute;
+	bottom: 0.75em;
+	right: 0.75em;
+	padding: 0.75em;
+	background-color: #333;
+	border-radius: 5px;
+	border: 2px solid #222;
+	color: #eee;
+	display: none;
+}
+
+#ProvinceMap #province-map {
+	background-color: #222;
+	position: relative;
+	height: 100%;
+	margin: 0 auto;
+	display: block;
+}
+
+#ProvinceMap #province-map.zoomed {
+	height: auto;
+}
+
+#ProvinceMap #zoomGBGMap {
+	position: absolute;
+	top: 3px;
+	left: 3px;
+}
+
+#ProvinceMap #switchGBGMap {
+	position: absolute;
+	top: 40px;
+	right: 3px;
 }

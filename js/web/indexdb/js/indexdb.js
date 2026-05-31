@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -89,7 +89,12 @@ let IndexDB = {
 
         const db = IndexDB.db = new Dexie(primaryDBName);
         IndexDB._applyIndexSchema(db);
-        db.open();
+        db.open().catch((e) => {
+            //console.error(e);
+            setTimeout(() => {
+                IndexDB.Init(playerId);
+            }, 100);
+        });
 
         try {
             if (isNewDB) {
@@ -102,6 +107,7 @@ let IndexDB = {
 
         setTimeout(() => {
             IndexDB.GarbageCollector();
+            IndexDB.rewardDBCleanup()
         }, 10 * 1000);
     },
 
@@ -140,6 +146,9 @@ let IndexDB = {
             statsTreasurePlayerD: 'date',
             statsTreasureClanH: 'date, clanId',
             statsTreasureClanD: 'date, clanId',
+        });
+        db.version(3).stores({
+            buildingMeta: 'id, hash, json',
         });
     },
 
@@ -282,7 +291,7 @@ let IndexDB = {
         }
 
         function log(text) {
-            console.log('mergeDatabases: ' + text);
+            //console.log('mergeDatabases: ' + text);
             let logTxt = localStorage.getItem('FH_IndexDBLastMigraion') || '';
             logTxt += text + '\n';
             localStorage.setItem('FH_IndexDBLastMigraion', logTxt);
@@ -373,6 +382,26 @@ let IndexDB = {
 
         for (const table of ['statsGBGPlayers', 'statsGBGPlayerCache']) {
             await IndexDB.db[table].where('date').below(gbgExpiryTime).delete();
+        }
+    },
+
+    rewardDBCleanup: async () => {
+        //reward type for shard, Ad chests and shards was changed around april 11 and code was amended for that on May 19 - this will switch all old entries for incidents to the new type
+        if (!localStorage.getItem("HiddenRewardOverwrite")) {
+            let x = await IndexDB.db.statsRewards.toArray();
+            let y= [];
+            x.forEach(a=>{
+                if (a.type=="hidden_reward") {
+                    a.type="shards"
+                    y.push(a)
+                }
+                if (a.type=="default" || a.type=="living_city") {
+                    a.type="hidden_reward"
+                    y.push(a)
+                }
+                });
+            IndexDB.db.statsRewards.bulkPut(y);
+            localStorage.setItem("HiddenRewardOverwrite","done");
         }
     },
 

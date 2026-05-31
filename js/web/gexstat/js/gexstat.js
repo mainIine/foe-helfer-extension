@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -25,6 +25,7 @@ FoEproxy.addHandler('GuildExpeditionService', 'getContributionList', (data, post
 	if (data && data.responseData && (+MainParser.getCurrentDate() - GexStat.ResponseBlockTime) > 2000)
 	{
 		GexStat.ResponseBlockTime = +MainParser.getCurrentDate();
+		GexStat.GexData = data.responseData; // Store GEX data for cost calculations
 		GexStat.UpdateData('participation', data.responseData);
 	}
 });
@@ -52,6 +53,8 @@ let GexStat = {
 	CurrentStatGroup: 'Ranking',
 	ResponseBlockTime: 0,
 	Chart: undefined,
+	TrailCosts: null,
+	GexData: null,
 	Settings: {
 		deleteOlderThan: 20,
 		showAxisLabel: true,
@@ -215,10 +218,11 @@ let GexStat = {
 						partdata[k].name = player.name;
 						partdata[k].avatar = player.avatar;
 						partdata[k].expeditionPoints = data[k].expeditionPoints ? data[k].expeditionPoints : 0;
-						partdata[k].solvedEncounters = data[k].solvedEncounters;
+						partdata[k].solvedEncounters = data[k].solvedEncounters || 0;
+						partdata[k].trial = data[k].currentTrial || 0;
 
 						sumExpeditionPoints += data[k].expeditionPoints ? data[k].expeditionPoints : 0;
-						sumEncounters += data[k].solvedEncounters;
+						sumEncounters += data[k].solvedEncounters || 0;
 						activeMembers = partdata[k].expeditionPoints !== 0 ? activeMembers + 1 : activeMembers;
 					}
 				}
@@ -298,8 +302,8 @@ let GexStat = {
 			h.push(`<tr>`);
 			h.push(`<td class="td-rank"><span class="winner-rank rank-${rankClass}"><span>${participant.rank}</span></span></td>`);
 			h.push(`<td>` +
-				`<div class="clanflag"><img src="${MainParser.InnoCDN + 'assets/shared/clanflags/' + participant.flag + '.jpg'}" /></div>` +
-				`<div class="claninfo"><span class="clanname">${participant.name}</span><br /> ` +
+				`<div class="clanflag"><img alt="" src="${srcLinks.get('/shared/clanflags/' + participant.flag + '.jpg', true)}" /></div>` +
+				`<div class="claninfo"><span class="clanname">${MainParser.GetGuildLink(participant['guildId'], participant['name'], participant['worldId'])}</span><br /> ` +
 				`<span class="clanworld">${participant.worldName}</span></div></td>`);
 			h.push(`<td class="progress"><div class="progbar rank-${rankClass}${stripedClass}" style="width: ${progressWidth}%"></div> ${participant.points}%</td>`);
 			h.push(`<td><div class="flex justify-content-between mbottom2"><div>${i18n('Boxes.GexStat.Rank')}: ${participant.worldrank} </div><div>${i18n('Boxes.GexStat.Member')}: ${participant.memberCount}</div></div>` +
@@ -353,7 +357,14 @@ let GexStat = {
 			return a.rank - b.rank;
 		});
 		let sEncounters = GexParticipation.solvedEncounters;
-		let aEncounters = GexParticipation.countMember * 48;
+		if (isNaN(sEncounters)) {
+			sEncounters = 0
+			for (let x = 0; x < participation.length; x++)	{
+				sEncounters += participation[x].solvedEncounters || 0;
+			}
+		}
+		let base = gexweek > 1680501600 ? 64 : 48;
+		let aEncounters = GexParticipation.countMember * base;
 		let processing = Number((sEncounters / aEncounters) * 100).toFixed(2);
 
 		h.push(`<div class="participation_overview justify-content-between"><div>${i18n('Boxes.GexStat.Points')}<br />${HTML.Format(GexParticipation.expeditionPoints)}</div>` +
@@ -369,23 +380,25 @@ let GexStat = {
 			`<th class="is-number" data-type="gexs-group">${i18n('Boxes.GexStat.Points')}</th>` +
 			`<th class="is-number" data-type="gexs-group">${i18n('Boxes.GexStat.Level')}</th>` +
 			`<th class="is-number" data-type="gexs-group">${i18n('Boxes.GexStat.Encounters')}</th>` +
+			`<th class="is-number" data-type="gexs-group">${i18n('Boxes.GexStat.GexTrial')}</th>` +
 			`</tr></thead>` +
 			`<tbody class="gexs-group">`);
 
 		for (let x = 0; x < participation.length; x++)
 		{
 			const member = participation[x];
-			let level = Math.ceil(member.solvedEncounters / 16);
+			let level = Math.ceil((member.solvedEncounters || 0) / 16);
 			let encounterClass = ' level' + level;
 			h.push(`<tr>`);
 			h.push(`<td class="text-center is-number" data-number="${member.rank}">${member.rank}</td>`);
 			h.push(`<td class="text-center is-number" data-number="${level}"><span class="level${encounterClass}" title="${HTML.i18nTooltip(i18n('Boxes.GexStat.Level') + ' ' + level)}"></span></td>`);
-			h.push(`<td class="case-sensitive" data-text="${member.name.toLowerCase().replace(/[\W_ ]+/g, "")}">` +
-				`<div class="avatar"><img src="${MainParser.InnoCDN + 'assets/shared/avatars/' + MainParser.PlayerPortraits[member.avatar] + '.jpg'}" /></div>` +
+			h.push(`<td class="case-sensitive" data-text="${helper.str.cleanup(member.name)}">` +
+				`<div class="avatar"><img src="${srcLinks.GetPortrait(member.avatar)}" /></div>` +
 				`<div class="membername">${MainParser.GetPlayerLink(member.player_id, member.name)}</div></td>`);
 			h.push(`<td class="is-number" data-number="${member.expeditionPoints}">${HTML.Format(member.expeditionPoints)}</td>`);
 			h.push(`<td class="is-number" data-number="${level}">${level}</td>`);
-			h.push(`<td class="is-number" data-number="${member.solvedEncounters}">${member.solvedEncounters}/48</td>`);
+			h.push(`<td class="is-number" data-number="${member.solvedEncounters||0}">${member.solvedEncounters||0}/${base}</td>`);
+			h.push(`<td class="is-number" data-number="${member.trial||0}">${member.trial||0}</td>`);
 
 			h.push(`</tr>`);
 
@@ -480,103 +493,103 @@ let GexStat = {
 		}
 		//console.log(CourseData);
 
-		// to prevent double include of Highcharts get it from Stats module 
+		// to prevent double include of Highcharts get it from Stats module
 		await Stats.loadHighcharts();
 
 		const series = await GexStat.GetChartSeries(CourseData);
 
 		GexStat.Chart = new Highcharts.chart('gexsContentWrapper', {
 
-			title: {
-				text: i18n('Boxes.GexStat.Gex') + ' ' + i18n('Boxes.GexStat.Rounds')
-			},
-			subtitle: {
-				text: CourseData.weeks[0] + ' - ' + CourseData.weeks[CourseData.weeks.length - 1] +
-					' (' + CourseData.weeks.length + ' ' + i18n('Boxes.GexStat.Rounds') + ')'
-			},
-			yAxis: [{
-				allowDecimals: false,
-				labels: {
-					enabled: (GexStat.Settings.showAxisLabel && series.yaxis.includes(0)),
-				},
 				title: {
-					enabled: (GexStat.Settings.showAxisLabel && series.yaxis.includes(0)),
-					text: i18n('Boxes.GexStat.Points'),
-				}
-			}, {
-				allowDecimals: false,
-				title: {
-					enabled: (GexStat.Settings.showAxisLabel && series.yaxis.includes(1)),
-					text: i18n('Boxes.GexStat.Member') + ' / ' + i18n('Boxes.GexStat.Participant'),
+					text: i18n('Boxes.GexStat.Gex') + ' ' + i18n('Boxes.GexStat.Rounds')
 				},
-				labels: {
-					enabled: (GexStat.Settings.showAxisLabel && series.yaxis.includes(1)),
+				subtitle: {
+					text: CourseData.weeks[0] + ' - ' + CourseData.weeks[CourseData.weeks.length - 1] +
+						' (' + CourseData.weeks.length + ' ' + i18n('Boxes.GexStat.Rounds') + ')'
 				},
-				opposite: true
-			},
-			{
-				allowDecimals: false,
-				labels: {
-					enabled: (GexStat.Settings.showAxisLabel && series.yaxis.includes(2)),
+				yAxis: [{
+					allowDecimals: false,
+					labels: {
+						enabled: (GexStat.Settings.showAxisLabel && series.yaxis.includes(0)),
+					},
+					title: {
+						enabled: (GexStat.Settings.showAxisLabel && series.yaxis.includes(0)),
+						text: i18n('Boxes.GexStat.Points'),
+					}
+				}, {
+					allowDecimals: false,
+					title: {
+						enabled: (GexStat.Settings.showAxisLabel && series.yaxis.includes(1)),
+						text: i18n('Boxes.GexStat.Member') + ' / ' + i18n('Boxes.GexStat.Participant'),
+					},
+					labels: {
+						enabled: (GexStat.Settings.showAxisLabel && series.yaxis.includes(1)),
+					},
+					opposite: true
 				},
-				title: {
-					enabled: (GexStat.Settings.showAxisLabel && series.yaxis.includes(2)),
-					text: i18n('Boxes.GexStat.Encounters'),
+					{
+						allowDecimals: false,
+						labels: {
+							enabled: (GexStat.Settings.showAxisLabel && series.yaxis.includes(2)),
+						},
+						title: {
+							enabled: (GexStat.Settings.showAxisLabel && series.yaxis.includes(2)),
+							text: i18n('Boxes.GexStat.Encounters'),
+						},
+					},
+					{
+						allowDecimals: false,
+						labels: {
+							enabled: false,
+						},
+						title: {
+							enabled: false
+						},
+						reversed: true
+					}],
+				xAxis: {
+					categories: CourseData.weeks,
+					crosshair: true,
 				},
-			},
-			{
-				allowDecimals: false,
-				labels: {
-					enabled: false,
+				legend: {
+					layout: 'vertical',
+					align: 'right',
+					verticalAlign: 'middle'
 				},
-				title: {
+				plotOptions: {
+					column: {
+						grouping: false,
+						shadow: false,
+						borderWidth: 0
+					},
+					series: {
+						label: {
+							connectorAllowed: false
+						}
+					}
+				},
+				series: series.data,
+				tooltip: {
+					shared: true
+				},
+				exporting: {
 					enabled: false
 				},
-				reversed: true
-			}],
-			xAxis: {
-				categories: CourseData.weeks,
-				crosshair: true,
-			},
-			legend: {
-				layout: 'vertical',
-				align: 'right',
-				verticalAlign: 'middle'
-			},
-			plotOptions: {
-				column: {
-					grouping: false,
-					shadow: false,
-					borderWidth: 0
-				},
-				series: {
-					label: {
-						connectorAllowed: false
-					}
+				responsive: {
+					rules: [{
+						condition: {
+							maxWidth: 800
+						},
+						chartOptions: {
+							legend: {
+								align: 'center',
+								verticalAlign: 'bottom',
+								layout: 'horizontal'
+							},
+						}
+					}]
 				}
 			},
-			series: series.data,
-			tooltip: {
-				shared: true
-			},
-			exporting: {
-				enabled: false
-			},
-			responsive: {
-				rules: [{
-					condition: {
-						maxWidth: 800
-					},
-					chartOptions: {
-						legend: {
-							align: 'center',
-							verticalAlign: 'bottom',
-							layout: 'horizontal'
-						},
-					}
-				}]
-			}
-		},
 			function (chart) {
 
 				GexStat.hidePreloader();
@@ -639,7 +652,8 @@ let GexStat = {
 		h.push(`<li${GexStat.CurrentStatGroup === 'Ranking' ? ' class="active"' : ''}><a class="toggle-statistic" data-value="Ranking"><span>${i18n('Boxes.GexStat.Ranking')}</span></a></li>`);
 		h.push(`<li${GexStat.CurrentStatGroup === 'Participation' ? ' class="active"' : ''}><a class="toggle-statistic" data-value="Participation"><span>${i18n('Boxes.GexStat.MemberParticipation')}</span></a></li>`);
 		h.push(`<li${GexStat.CurrentStatGroup === 'Course' ? ' class="active"' : ''}><a class="toggle-statistic" data-value="Course"><span>${i18n('Boxes.GexStat.Course')}</span></a></li>`);
-		h.push(`</ul></div>`);
+		h.push(`</ul>`);
+		h.push(`</div>`);
 
 		if (gexweek && GexStat.GexWeeks && GexStat.GexWeeks.length)
 		{
@@ -650,7 +664,7 @@ let GexStat = {
 
 			GexStat.CurrentGexWeek = gexweek;
 
-			h.push(`<div id="gexs_weekswitch" class="weekswitch dark-bg" data-group="${GexStat.CurrentStatGroup}">${i18n('Boxes.GexStat.Gex')} ${i18n('Boxes.GexStat.Week')} <button class="btn btn-default btn-set-week" data-week="${previousweek}"${previousweek === null ? ' disabled' : ''}>&lt;</button> `);
+			h.push(`<div id="gexs_weekswitch" class="weekswitch dark-bg" data-group="${GexStat.CurrentStatGroup}">${i18n('Boxes.GexStat.Gex')} ${i18n('Boxes.GexStat.Week')} <button class="btn btn-set-week" data-week="${previousweek}"${previousweek === null ? ' disabled' : ''}>&lt;</button> `);
 			h.push(`<select id="gexs-select-gexweek">`);
 
 			GexStat.GexWeeks.forEach(week => {
@@ -658,7 +672,7 @@ let GexStat = {
 			});
 
 			h.push(`</select>`);
-			h.push(`<button class="btn btn-default btn-set-week" data-week="${nextweek}"${nextweek === null ? ' disabled' : ''}>&gt;</button>`);
+			h.push(`<button class="btn btn-set-week" data-week="${nextweek}"${nextweek === null ? ' disabled' : ''}>&gt;</button>`);
 			h.push(`</div>`);
 		}
 
@@ -755,9 +769,9 @@ let GexStat = {
 		let disabledExport = '';
 		if (GexStat.CurrentStatGroup === 'Course') { disabledExport = ' disabled'; }
 
-		c.push(`<p class="text-left"><button class="btn btn-default" onclick="GexStat.ExportContent('${GexStat.CurrentStatGroup}','csv')" title="${HTML.i18nTooltip(i18n('Boxes.General.ExportCSV'))}"${disabledExport}>CSV</button>` +
-			`<button class="btn btn-default" onclick="GexStat.ExportContent('${GexStat.CurrentStatGroup}','json')" title="${HTML.i18nTooltip(i18n('Boxes.General.ExportJSON'))}"${disabledExport}>JSON</button></p>`);
-		c.push(`<hr><p><button id="save-GexStat-settings" class="btn btn-default" style="width:100%" onclick="GexStat.SettingsSaveValues()">${i18n('Boxes.GexStat.Save')}</button></p>`);
+		c.push(`<p class="text-left"><button class="btn" onclick="GexStat.ExportContent('${GexStat.CurrentStatGroup}','csv')" title="${HTML.i18nTooltip(i18n('Boxes.General.ExportCSV'))}"${disabledExport}>CSV</button>` +
+			`<button class="btn" onclick="GexStat.ExportContent('${GexStat.CurrentStatGroup}','json')" title="${HTML.i18nTooltip(i18n('Boxes.General.ExportJSON'))}"${disabledExport}>JSON</button></p>`);
+		c.push(`<hr><p><button id="save-GexStat-settings" class="btn" style="width:100%" onclick="GexStat.SettingsSaveValues()">${i18n('Boxes.GexStat.Save')}</button></p>`);
 		$('#GexStatSettingsBox').html(c.join(''));
 
 	},
@@ -885,6 +899,8 @@ let GexStat = {
 		return series;
 	},
 
+
+	// yvi
 	ExportContent: async (content, type) => {
 
 		let exportLimit = $('#gexsExportLimit').length ? parseInt($('#gexsExportLimit').val()) : GexStat.Settings.exportLimit;
@@ -917,12 +933,12 @@ let GexStat = {
 			case 'Participation':
 				let Participation = await GexStat.db.participation.reverse().limit(exportLimit).toArray();
 				if (!Participation) { return; }
-				exportData.push(['gexWeek', 'player', 'expeditionPoints', 'solvedEncounters', 'rank']);
+				exportData.push(['gexWeek', 'player ID', 'player', 'expeditionPoints', 'solvedEncounters', 'rank', 'trial']);
 				Participation.sort((a, b) => a.gexweek - b.gexweek).forEach(gexweek => {
 					let participation = gexweek.participation;
 					let weekdate = moment(gexweek.gexweek * 1000).format(i18n('Date'));
 					participation.sort((a, b) => a.rank - b.rank).forEach(participant => {
-						exportData.push([weekdate, participant.name, participant.expeditionPoints, participant.solvedEncounters, participant.rank]);
+						exportData.push([weekdate, participant.player_id, participant.name, participant.expeditionPoints, participant.solvedEncounters, participant.rank, participant.trial||0]);
 					});
 				});
 				break;
@@ -1010,5 +1026,179 @@ let GexStat = {
 
 		return JSON.stringify(result);
 	},
-
 }
+
+FoEproxy.addFoeHelperHandler('ResourcesUpdated', () => {
+	GExAttempts.setCount(ResourceStock.guild_expedition_attempt || 0)
+});
+
+FoEproxy.addHandler('ResourceService', 'getPlayerAutoRefills', (data, postData) => {
+	GExAttempts.setNext(data.responseData.resources.guild_expedition_attempt)
+});
+
+FoEproxy.addHandler('GuildExpeditionService', 'getOverview', (data, postData) => {
+	if (data.responseData) GExAttempts.updateState(data.responseData)
+});
+
+FoEproxy.addHandler('GuildExpeditionNotificationService', 'GuildExpeditionStateNotification', (data, postData) => {
+	if (data.responseData) GExAttempts.updateState(data.responseData)
+});
+
+FoEproxy.addHandler('GuildExpeditionService', 'getState', (data, postData) => {
+	for (let x of data.responseData) {
+		if (!x.currentEntityId) continue;
+		GExAttempts.state.GEprogress = x.currentEntityId;
+		localStorage.setItem('GEx.state',JSON.stringify(GExAttempts.state))
+		GExAttempts.refreshGUI()
+	}
+});
+
+FoEproxy.addHandler('GuildExpeditionService', 'changeDifficulty', (data, postData) => {
+	if (data.responseData) GExAttempts.updateState(data.responseData)
+});
+
+let GExAttempts = {
+	count:0,
+	next:null,
+	state: JSON.parse(localStorage.getItem('GEx.state'))||{
+		GEprogress:0,
+		active:true,
+		deactivationTime:null,
+		activationTime:null
+	},
+	deactivationTimer:null,
+	activationTimer:null,
+	last:null,
+
+	refreshGUI:()=>{
+		//hidenumber when GE completed, not running or out of attempts
+		if (GExAttempts.state.GEprogress === 159 || GExAttempts.count === 0 || !GExAttempts.state.active) {
+			$('#gex-attempt-count').hide();
+		}
+		//setnumber when GE running
+		else {
+			$('#gex-attempt-count').text(GExAttempts.count).attr('data-number',GExAttempts.count).show();
+		}
+
+		//set timer for GE deactivation if deactivation time known
+		if (!GExAttempts.deactivationTimer && GExAttempts.state.deactivationTime && GExAttempts.state.active) {
+			GExAttempts.deactivationTimer = setTimeout(() => {
+				GExAttempts.state.active = false
+				GExAttempts.state.activationTime = GExAttempts.state.deactivationTime + 86400
+				GExAttempts.state.deactivationTime = null
+				GExAttempts.deactivationTimer = null
+				GExAttempts.state.GEprogress = 0
+				localStorage.setItem('GEx.state',JSON.stringify(GExAttempts.state))
+				GExAttempts.refreshGUI()
+			}, (GExAttempts.state.deactivationTime-GameTime.get()) * 1000);
+		}
+
+		//set timer for GE activation if activation time known
+		if (!GExAttempts.activationTimer && GExAttempts.state.activationTime && !GExAttempts.state.active) {
+			GExAttempts.activationTimer = setTimeout(() => {
+				GExAttempts.state.active = true
+				GExAttempts.state.deactivationTime = GExAttempts.state.activationTime + 604800
+				GExAttempts.state.activationTime = null
+				GExAttempts.activationTimer = null
+				localStorage.setItem('GEx.state',JSON.stringify(GExAttempts.state))
+				GExAttempts.refreshGUI()
+			}, (GExAttempts.state.activationTime-GameTime.get()) * 1000);
+		}
+
+	},
+
+	setCount:(n)=>{
+		GExAttempts.count = n
+		GExAttempts.refreshGUI()
+	},
+
+	setNext:(time)=>{
+		let timer=3600000
+
+		if (time) {
+			timer = (time-GameTime.get()+3600)*1000
+			GExAttempts.last = time
+		} else {
+			let amount = Math.floor((moment().unix() - GExAttempts.last + 100)/3600)
+			GExAttempts.setCount(Math.min(GExAttempts.count + amount,8))
+			GExAttempts.last += 3600*amount
+			timer = (GExAttempts.last - moment().unix() + 3600)*1000
+		}
+
+		if (GExAttempts.next) clearTimeout(GExAttempts.next)
+
+		GExAttempts.next = setTimeout(GExAttempts.setNext,timer)
+
+	},
+
+	checkNext:()=>{
+		if (moment()<GExAttempts.next) return
+		GExAttempts.setNext()
+		GExAttempts.setCount(Math.min(GExAttempts.count+1,8))
+	},
+
+	updateState:(data) =>{
+		GExAttempts.state.active = data.state === "active"
+
+		if (GExAttempts.state.active) {
+			GExAttempts.state.deactivationTime = data.nextStateTime || null
+			GExAttempts.state.activationTime = null
+			GExAttempts.state.GEprogress = data.progress?.currentEntityId || 0
+		} else {
+			GExAttempts.state.activationTime = data.nextStateTime || null
+			GExAttempts.state.deactivationTime = null
+			GExAttempts.state.GEprogress = 0
+		}
+
+		localStorage.setItem('GEx.state', JSON.stringify(GExAttempts.state))
+		GExAttempts.refreshGUI()
+
+	}
+}
+
+let GexStockWarning = {
+	check: (stock,costs) => {
+		let min = JSON.parse(localStorage.getItem('GexStockWarningMin')||"100");
+		if (min == 100) return
+		let parts = []
+		for (let [res,amount] of Object.entries(costs)) {
+			parts.push({
+				resource:res, 
+				part: Math.round(amount/(stock[res]||0.1)*10000)/100
+			})
+		}
+		parts = parts.sort((a,b)=>
+			b.part-a.part
+		)
+		parts = parts.slice(0,10)
+		
+		if (parts[0].part <= min) return
+		
+		if ($('#GexStockWarning').length === 0)	{
+			HTML.Box({
+				id: 'GexStockWarning',
+				title: i18n('Settings.GexStockWarning.Title'),
+				auto_close: true,
+				dragdrop: true,
+				resize: true,
+				minimize: true,
+			});
+			HTML.AddCssFile('gexstat');
+		}
+		let h = `<table class="foe-table">`
+		for (let part of parts) {
+			h+=`<tr>
+			<td>${srcLinks.icons(part.resource)}</td>
+			<td>${GoodsData[part.resource].name} (${i18n("Eras."+Technologies.Eras[GoodsData[part.resource].era]+".short")})</td>
+			<td>${part.part}%</td>
+			</tr>`
+		}
+		h+=`</table>`
+		
+		$('#GexStockWarningBody').html(h);
+
+	}
+}
+FoEproxy.addHandler("GuildExpeditionService","getUnlockCosts",(data,postData)=>{
+	GexStockWarning.check (data.responseData.treasuryResources.resources,data.responseData.unlockCosts.resources)
+})

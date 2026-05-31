@@ -1,20 +1,21 @@
 /*
- * **************************************************************************************
- * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * *************************************************************************************
+ *
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
- * See file LICENSE.md or go to 
- * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md 
+ * See file LICENSE.md or go to
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
  * for full license details.
  *
- * **************************************************************************************
+ * *************************************************************************************
  */
 
 let _menu = {
 
 	isBottom: false,
-	selectedMenu: 'BottomBar',
+	selectedMenu: 'RightBar',
 	MenuScrollTop: 0,
 	MenuScrollLeft: 0,
 	SlideParts: 0,
@@ -28,7 +29,7 @@ let _menu = {
 	MenuOptions: ['BottomBar', 'RightBar', 'Box'],
 	
 	Items: [
-		'calculator',
+		//'calculator',
 		'partCalc',
 		'outpost',
 		'productions',
@@ -38,9 +39,8 @@ let _menu = {
 		'infobox',
 		'notice',
 		'technologies',
-		'campagneMap',
+		//'campagneMap',
 		'cityMap',
-		'unit',
 		'settings',
 		'stats',
 		'kits',
@@ -57,28 +57,35 @@ let _menu = {
 		'castle',
 		'music',
 		'musicControl',
-		// 'marketOffers',
-		// 'discord'
+		'minigame_aztecs',
+		'recurringQuests',
+		'compare_friends_threads',
+		'discord',
+		'findGB',
+		'playerProfile',
+		'unit',
+		'shopAssist',
+		'allies',
 	],
-
 	HiddenItems: [],
 
 
 	/**
 	 * Create the div holders and put them to the DOM
-	 *
-	 * @param selMenu
-	 * @constructor
 	 */
-	CallSelectedMenu: (selMenu = 'BottomBar') => {
+	CallSelectedMenu: (selMenu = 'RightBar') => {
+	
+		window.onresize = (function(event){
+			if (event.target == window) _menu.OverflowCheck()
+		})
 
-		if (selMenu === 'BottomBar') {
-			_menu.selectedMenu = 'BottomBar';
-			_menu_bottom.BuildOverlayMenu();
-		}
-		else if (selMenu === 'RightBar') {
+		if (selMenu === 'RightBar') {
 			_menu.selectedMenu = 'RightBar';
 			_menu_right.BuildOverlayMenu();
+		}
+		else if (selMenu === 'BottomBar') {
+			_menu.selectedMenu = 'BottomBar';
+			_menu_bottom.BuildOverlayMenu();
 		}
 		else if (selMenu === 'Box') {
 			_menu.selectedMenu = 'Box';
@@ -92,14 +99,20 @@ let _menu = {
 		if (Settings.GetSetting('AutoOpenCloseBox')) {
 			CloseBox.BuildBox();
 		}
+		
+		_menu.OverflowCheck(_menu.selectedMenu, true);
 	},
 
+	OverflowCheck: (selMenu='Box', flag) => {
+		if (window.innerHeight >= 600 && window.innerWidth >= 950 && (!flag && selMenu != MainParser.SelectedMenu)) {			
+			$('#menu_box').remove();
+			$('.tooltip').remove();
+			_menu.CallSelectedMenu(MainParser.SelectedMenu);
+		}
+	},
 
 	/**
 	 * Hides a button. The HUD slider must already be filled for this.
-	 *
-	 * @param buttonId
-	 * @constructor
 	 */
 	HideButton: (buttonId) => {
 		if ($('#foe-helper-hud-slider').has(`div#${buttonId}`).length > 0)
@@ -120,17 +133,8 @@ let _menu = {
 	},
 
 	
-	/**
-	 * Tooltip Box
-	 *
-	 * @param {object} btn
-	 * @param {string} title
-	 * @param {string} desc
-	 */
 	toolTipp: (btn, title, desc) => {
-
 		$(btn).attr('title', desc);
-
 		let pos = (_menu.selectedMenu === 'RightBar' ? 'left' : 'top');
 
 		// fix the tooltip position when menu is box and at the top border
@@ -236,19 +240,16 @@ let _menu = {
 
 	/**
 	 * Toggle a menu buttons' visibility, update HiddenItems and corresponding settings button
-	 * 
-	 * @param name 
 	 */
 	ToggleItemVisibility: (name) => {
-
-		if(_menu.HiddenItems.includes(name))
-		{
+		if(_menu.HiddenItems.includes(name)) {
 			$('#' + name + '-Btn').removeClass('btn-hidden');
 			$('#setting-' + name + '-Btn').removeClass('hud-btn-red');
 
 			_menu.HiddenItems = _menu.HiddenItems.filter(e => {
 				return e !== name;
 			});
+			if (_menu.Items.indexOf(name) == -1) _menu.Items.push(name);
 		}
 		else {
 			$('#' + name + '-Btn').addClass('btn-hidden');
@@ -258,14 +259,18 @@ let _menu = {
 		}
 		
 		localStorage.setItem('MenuHiddenItems', JSON.stringify(_menu.HiddenItems));
+
+		// refresh the Menü after setting-toggle
+		setTimeout(()=> {
+			$('#foe-helper-hud, #menu_box').remove();
+			_menu.CallSelectedMenu(MainParser.SelectedMenu);
+		}, 100);
+
 	},
 
 
 	/**
 	 * Checks whether anything has changed in the sorting of the items.
-	 *
-	 * @param storedItems
-	 * @returns {boolean}
 	 */
 	equalTo: (storedItems) => {
 		for (let i = 0; i < storedItems.length; i++) {
@@ -277,100 +282,106 @@ let _menu = {
 	},
 
 
-	MakeButton: (slug, titel, desc, red = false)=> {
-
+	MakeButton: (slug, red = false)=> {
+		let btnData = _menu.ItemsData.find(x => x.id === slug);
 		let btn = _menu.toolTipp(
 			$('<div />').attr({
 				id: `${slug}-Btn`,
 				'data-slug': slug
 			}).addClass('hud-btn'),
-			titel,
-			desc,
+			btnData?.title,
+			(btnData?.warning||"") + btnData?.description,
 			`${slug}-btn`
 		);
 
-		if(red) {
+		if (red) 
 			btn.addClass('hud-btn-red');
-		}
 
 		return btn;
 	},
 
 	/*----------------------------------------------------------------------------------------------------------------*/
-	/*----------------------------------------------------------------------------------------------------------------*/
+	
+	ItemsData: [
+		{ id: 'partCalc', title: i18n('Menu.OwnpartCalculator.Title'), description: i18n('Menu.OwnpartCalculator.Desc'), warning: '<em id="partCalc-Btn-closed" class="tooltip-error">' + i18n('Menu.OwnpartCalculator.Warning') + '<br></em>'},
+		{ id: 'unit', title: i18n('Menu.Unit.Title'), description: i18n('Menu.Unit.Desc'), warning: '<em id="unit-Btn-closed" class="tooltip-error">' + i18n('Menu.Unit.Warning') + '<br></em>'},
+		{ id: 'outpost', title: i18n('Menu.OutP.Title'), description: i18n('Menu.OutP.Desc'), warning: i18n('Menu.OutP.DescWarningOutpostData') },
+		{ id: 'shopAssist', title: i18n('Menu.ShopAssist.Title'), description: i18n('Menu.ShopAssist.Desc'), warning: '<i id="shopAssist-Btn-closed" class="tooltip-error">' + i18n('Menu.ShopAssist.DescWarning') + '</i>' },
+		{ id: 'productionsRating', title: i18n('Menu.ProductionsRating.Title'), description: i18n('Menu.ProductionsRating.Desc') },
+		{ id: 'negotiation', title: i18n('Menu.Negotiation.Title'), description: i18n('Menu.Negotiation.Desc'), warning: '<em id="negotiation-Btn-closed" class="tooltip-error">' + i18n('Menu.Negotiation.Warning') + '<br></em>' },
+		{ id: 'playerProfile', title: i18n('Menu.PlayerProfile.Title'), description: i18n('Menu.PlayerProfile.Desc'), warning: '<em id="PlayerProfile-Btn-closed" class="tooltip-error">' + i18n('Menu.PlayerProfile.Warning') + '<br></em>' },
+		{ id: 'guildMemberstat', title: i18n('Menu.GuildMemberStat.Title'), description: i18n('Menu.GuildMemberStat.Desc'), warning: '<em id="guildmemberstat-Btn-closed" class="tooltip-error">' + i18n('Menu.GuildMemberStat.Warning') + '<br></em>' },
+		{ id: 'gildFight', title: i18n('Menu.Gildfight.Title'), description: i18n('Menu.Gildfight.Desc'), warning: i18n('Menu.Gildfight.Warning') },
+		{ id: 'market', title: i18n('Menu.Market.Title'), description: i18n('Menu.Market.Desc'), warning: '<em id="market-Btn-closed" class="tooltip-error">' + i18n('Menu.Market.Warning') + '<br></em>' },
+		{ id: 'allies', title: i18n('Menu.Allies.Title'), description: i18n('Menu.Allies.Desc') },
+		{ id: 'productions', title: i18n('Menu.Productions.Title'), description: i18n('Menu.Productions.Desc') },
+		{ id: 'minigame_aztecs', title: i18n('Menu.AztecMiniGame.Title'), description: i18n('Menu.AztecMiniGame.Desc') },
+		{ id: 'infobox', title: i18n('Menu.Info.Title'), description: i18n('Menu.Info.Desc') },
+		{ id: 'findGB', title: i18n('Boxes.findGB.Title'), description: i18n('Menu.findGB.Desc') },
+		{ id: 'technologies', title: i18n('Menu.Technologies.Title'), description: i18n('Menu.Technologies.Desc') },
+		{ id: 'musicControl', title: i18n('Menu.MusicControl.Title'), description: i18n('Menu.MusicControl.Desc') },
+		{ id: 'music', title: i18n('Menu.Music.Title'), description: i18n('Menu.Music.Desc') },
+		{ id: 'discord', title: i18n('Menu.Discord.Title'), description: i18n('Menu.Discord.Desc') },
+		{ id: 'compare_friends_threads', title: i18n('Menu.CompareFriendsThreads.Title'), description: i18n('Menu.CompareFriendsThreads.Desc') },
+		{ id: 'castle', title: i18n('Menu.Castle.Title'), description: i18n('Menu.Castle.Desc') },
+		{ id: 'gexStat', title: i18n('Menu.GexStat.Title'), description: i18n('Menu.GexStat.Desc') },
+		{ id: 'investment', title: i18n('Menu.Investment.Title'), description: i18n('Menu.Investment.Desc') },
+		{ id: 'alerts', title: i18n('Menu.Alerts.Title'), description: i18n('Menu.Alerts.Desc') },
+		{ id: 'fpCollector', title: i18n('Menu.fpCollector.Title'), description: i18n('Menu.fpCollector.Desc') },
+		{ id: 'moppelHelper', title: i18n('Menu.Moppelhelper.Title'), description: i18n('Menu.Moppelhelper.Desc') },
+		{ id: 'blueGalaxy', title: i18n('Menu.Bluegalaxy.Title'), description: i18n('Menu.Bluegalaxy.Desc') },
+		{ id: 'greatBuildings', title: i18n('Menu.greatbuildings.Title'), description: i18n('Menu.greatbuildings.Desc') },
+		{ id: 'kits', title: i18n('Menu.Kits.Title'), description: i18n('Menu.Kits.Desc') },
+		{ id: 'stats', title: i18n('Menu.Stats.Title'), description: i18n('Menu.Stats.Desc') },
+		{ id: 'settings', title: i18n('Menu.Settings.Title'), description: i18n('Menu.Settings.Desc') },
+		{ id: 'notice', title: i18n('Menu.Notice.Title'), description: i18n('Menu.Notice.Desc') },
+		{ id: 'recurringQuests', title: i18n('Menu.recurringQuests.Title'), description: i18n('Menu.recurringQuests.Desc') },
+		{ id: 'hiddenRewards', title: i18n('Menu.HiddenRewards.Title'), description: i18n('Menu.HiddenRewards.Desc') },
+		{ id: 'cityMap', title: i18n('Menu.Citymap.Title'), description: i18n('Menu.Citymap.Desc') },
+	],
 
 	/**
-	 * Cost calculator button
-	 *
-	 * @returns {*|jQuery}
+	 * Armies
 	 */
-	calculator_Btn: () => {
-		let btn_CalcBG = _menu.MakeButton(
-			'calculator',
-			i18n('Menu.Calculator.Title'),
-			'<em id="calculator-Btn-closed" class="tooltip-error">' + i18n('Menu.Calculator.Warning') + '<br></em>' + i18n('Menu.Calculator.Desc'),
-			true
-		);
+	unit_Btn: () => {
+		let btn = _menu.MakeButton('unit',true);
+		let btnEl = $('<span />');
 
-		let btn_Calc = $('<span />').bind('click', function () {
-			if (Calculator.CityMapEntity) {
-				Calculator.Show('menu');
+		btnEl.on('click', function () {
+			if (Unit.Cache !== null) {
+				Unit.Show();
 			}
 		});
 
-		btn_CalcBG.append(btn_Calc);
-
-		return btn_CalcBG;
+		return btn.append(btnEl);
 	},
 
 	/**
 	 * Own contribution calculator button
-	 *
-	 * @returns {*|jQuery}
 	 */
 	partCalc_Btn: () => {
-		let btn_OwnBG = _menu.MakeButton(
-			'partCalc',
-			i18n('Menu.OwnpartCalculator.Title'),
-			'<em id="partCalc-Btn-closed" class="tooltip-error">' + i18n('Menu.OwnpartCalculator.Warning') + '<br></em>' + i18n('Menu.OwnpartCalculator.Desc'),
-			true
-		);
+		let btn = _menu.MakeButton('partCalc',true);
 
 		let btn_Own = $('<span />').on('click', function () {
-			// nur wenn es für diese Session ein LG gibt zünden
-			if (Parts.CityMapEntity !== undefined && Parts.Rankings !== undefined) {
-				Parts.Show();
-			}
+			Parts.Show();
 		});
 
-		btn_OwnBG.append(btn_Own);
+		btn.append(btn_Own);
 
-		return btn_OwnBG;
+		return btn;
 	},
 
 	/**
 	 * Outpost Button
-	 *
-	 * @returns {*|jQuery}
 	 */
 	outpost_Btn: () => {
-
-		let desc = i18n('Menu.OutP.Desc'),
-			red = false;
-
-		if (Outposts.OutpostData === null) {
+		let red = false;
+		if (Outposts.OutpostData === null || localStorage.getItem('OutpostBuildings') === null) 
 			red = true;
-			desc = i18n('Menu.OutP.DescWarningOutpostData');
-		}
 
-		if (localStorage.getItem('OutpostBuildings') === null) {
-			red = true;
-			desc = i18n('Menu.OutP.DescWarningBuildings');
-		}
+		let btn = _menu.MakeButton('outpost', red);
 
-		let btn = _menu.MakeButton('outpost', i18n('Menu.OutP.Title'), desc, red);
-
-		let btn_outpost = $('<span />').bind('click', function () {
+		let btnEl = $('<span />').bind('click', function () {
 			let OutpostBuildings = localStorage.getItem('OutpostBuildings');
 
 			if (OutpostBuildings !== null) {
@@ -378,16 +389,46 @@ let _menu = {
 			}
 		});
 
-		return btn.append(btn_outpost);
+		return btn.append(btnEl);
+	},
+
+	/**
+	 * Shop Assistant Button
+	 */
+	shopAssist_Btn: () => {
+		let red = true;
+		if (shopAssist.storeId !== null) 
+			red = false;
+
+		let btn = _menu.MakeButton('shopAssist', red);
+
+		let btnEl = $('<span />').bind('click', function () {
+			if (shopAssist.storeId !== null) {
+				shopAssist.Show();
+			}
+		});
+
+		return btn.append(btnEl);
+	},
+
+	/**
+	 * Ally PopUp Button
+	 */
+	allies_Btn: () => {
+		let btn = _menu.MakeButton('allies');
+
+		let btnEl = $('<span />').bind('click', function () {
+			MainParser.Allies.showAllyList(true);
+		});
+
+		return btn.append(btnEl);
 	},
 
 	/**
 	 * Product overview button
-	 *
-	 * @returns {*|jQuery}
 	 */
 	productions_Btn: () => {
-		let pB = _menu.MakeButton('productions', i18n('Menu.Productions.Title'), i18n('Menu.Productions.Desc'));
+		let pB = _menu.MakeButton('productions');
 
 		let btnSpan = $('<span />').on('click', function() {
 			Productions.init();
@@ -397,12 +438,25 @@ let _menu = {
 	},
 
 	/**
-	 * Outpost Button
-	 *
-	 * @returns {*|jQuery}
+	 * Aztec Minigame
+	 */
+	minigame_aztecs_Btn: () => {
+		let btn = _menu.MakeButton('minigame_aztecs');
+
+		let btnEl = $('<span />').on('click', function () {
+			if ($('#minigame_aztecs-Btn').hasClass('hud-btn-red') === false) {
+				AztecsHelper.Show();
+			}
+		});
+
+		return btn.append(btnEl);
+	},
+
+	/**
+	 * Efficiency Button
 	 */
 	productionsRating_Btn: () => {
-		let btn_prodratBG = _menu.MakeButton('productionsRating', i18n('Menu.ProductionsRating.Title'), i18n('Menu.ProductionsRating.Desc'));
+		let btn_prodratBG = _menu.MakeButton('productionsRating');
 
 		let btn_prodrat = $('<span />').bind('click', function () {
 			Productions.ShowRating();
@@ -413,16 +467,9 @@ let _menu = {
 
 	/**
 	 * Negotiation
-	 *
-	 * @returns {*|jQuery}
 	 */
 	negotiation_Btn: () => {
-		let btn_NegotiationBG = _menu.MakeButton(
-			'negotiation',
-			i18n('Menu.Negotiation.Title'),
-			'<em id="negotiation-Btn-closed" class="tooltip-error">' + i18n('Menu.Negotiation.Warning') + '<br></em>' + i18n('Menu.Negotiation.Desc'),
-			true
-		);
+		let btn = _menu.MakeButton('negotiation',true);
 
 		let btn_Negotiation = $('<span />').bind('click', function () {
 			if ($('#negotiation-Btn').hasClass('hud-btn-red') === false) {
@@ -430,37 +477,57 @@ let _menu = {
 			}
 		});
 
-		return btn_NegotiationBG.append(btn_Negotiation);
+		return btn.append(btn_Negotiation);
 	},
 
 	/**
-	 * InfoBox für den Hintergrund "Verkehr"
-	 *
-	 * @returns {*|jQuery}
+	 * Profile
+	 */
+	playerProfile_Btn: () => {
+		let btn_playerProfileBG = _menu.MakeButton('playerProfile',true);
+
+		let btn_playerProfile = $('<span />').bind('click', function () {
+			if ($('#playerProfile-Btn').hasClass('hud-btn-red') === false) {
+				Profile.show();
+			}
+		});
+
+		btn_playerProfile.append('<img src="'+srcLinks.GetPortrait(ExtPlayerAvatar)+'" />');
+
+		return btn_playerProfileBG.append(btn_playerProfile);
+	},
+
+	/**
+	 * InfoBox 
 	 */
 	infobox_Btn: () => {
-
-		let btn_Info = _menu.MakeButton('infobox', i18n('Menu.Info.Title'), i18n('Menu.Info.Desc'));
+		let btn = _menu.MakeButton('infobox');
 
 		let btn_Inf = $('<span />').on('click', function () {
 			Infoboard.Show();
 		});
 
-		return btn_Info.append(btn_Inf);
+		return btn.append(btn_Inf);
+	},
+
+	/**
+	 * tracked GB nach Filterbedingung
+	 */
+	findGB_Btn: () => {
+		let btn_ = _menu.MakeButton('findGB');
+
+		let btn = $('<span />').on('click', function () {
+			findGB.ShowDialog();
+		});
+
+		return btn_.append(btn);
 	},
 
 	/**
 	 * Technologien
-	 *
-	 * @returns {*|jQuery}
 	 */
 	technologies_Btn: () => {
-		let btn_TechBG = _menu.MakeButton(
-			'technologies',
-			i18n('Menu.Technologies.Title'),
-			'<em id="technologies-Btn-closed" class="tooltip-error">' + i18n('Menu.Technologies.Warning') + '<br></em>' + i18n('Menu.Technologies.Desc'),
-			true
-		);
+		let btn_TechBG = _menu.MakeButton('technologies');
 
 		let btn_Tech = $('<span />').on('click', function () {
 			if (Technologies.AllTechnologies !== null) {
@@ -472,44 +539,13 @@ let _menu = {
 	},
 
 	/**
-	 * KampanienMap
-	 *
-	 * @returns {*|jQuery}
-	 */
-	campagneMap_Btn: () => {
-		let btn_MapBG = _menu.MakeButton(
-			'campagneMap',
-			i18n('Menu.Campagne.Title'),
-			'<em id="campagneMap-Btn-closed" class="tooltip-error">' + i18n('Menu.Campagne.Warning') + '<br></em>' + i18n('Menu.Campagne.Desc'),
-			true
-		);
-
-		let btn_Map = $('<span />').on('click', function () {
-			if (KampagneMap.Provinces !== null) {
-				KampagneMap.Show();
-			}
-		});
-
-		return btn_MapBG.append(btn_Map);
-	},
-
-	/**
 	 * citymap
-	 *
-	 * @returns {*|jQuery}
 	 */
 	cityMap_Btn: () => {
-		let btn_CityBG = _menu.MakeButton('cityMap', i18n('Menu.Citymap.Title'), i18n('Menu.Citymap.Desc'));
+		let btn_CityBG = _menu.MakeButton('cityMap');
 
 		let btn_City = $('<span />').on('click', function () {
-			if (LastMapPlayerID === ExtPlayerID) {
-				CityMap.init(false);
-			}
-			else {
-				let Player = PlayerDict[LastMapPlayerID];
-				let PlayerName = (Player ? Player['PlayerName'] : '???');
-				CityMap.init(false, MainParser.OtherPlayerCityMapData, PlayerName);
-            }
+			CityMap.init(false);
 		});
 
 		return btn_CityBG.append(btn_City);
@@ -517,11 +553,9 @@ let _menu = {
 
 	/**
 	 * Events in the city and the surrounding area
-	 *
-	 * @returns {null|undefined|jQuery}
 	 */
 	hiddenRewards_Btn: () => {
-		let btn_RewardsBG = _menu.MakeButton('hiddenRewards', i18n('Menu.HiddenRewards.Title'), i18n('Menu.HiddenRewards.Desc'));
+		let btn_RewardsBG = _menu.MakeButton('hiddenRewards');
 
 		let btn_Rewards = $('<span />').on('click', function () {
 			HiddenRewards.init();
@@ -530,42 +564,27 @@ let _menu = {
 		return btn_RewardsBG.append(btn_Rewards, $('<span id="hidden-reward-count" class="hud-counter">0</span>'));
 	},
 
-	/**
-	 * Armies
-	 * @returns {*|jQuery}
-	 */
-	unit_Btn: () => {
-		let btn_UnitBG = _menu.MakeButton(
-			'unit',
-			i18n('Menu.Unit.Title'),
-			'<em id="unit-Btn-closed" class="tooltip-error">' + i18n('Menu.Unit.Warning') + '<br></em>' + i18n('Menu.Unit.Desc'),
-			true
-		);
+	recurringQuests_Btn: () => {
+		let btn = _menu.MakeButton('recurringQuests');
 
-		let btn_Unit = $('<span />');
+		let btn_Rewards = $('<span />').on('click', function () {
+			Recurring.init();
+		})
 
-		btn_Unit.on('click', function () {
-			if (Unit.Cache !== null) {
-				Unit.Show();
-			}
-		});
-
-		return btn_UnitBG.append(btn_Unit);
+		return btn.append(btn_Rewards, $(`<span id="recurring-count" class="hud-counter" style="${!Recurring.data.count || !Recurring.data.showCounter?"display:none;":""}">${Recurring.data.count || 0}</span>`));
 	},
 
 	/**
-	 * Notice function
-	 *
-	 * @returns {null|undefined|jQuery|HTMLElement|void}
+	 * Note function
 	 */
 	notice_Btn: () => {
-		let btn_NoticeBG = _menu.MakeButton('notice', i18n('Menu.Notice.Title'), i18n('Menu.Notice.Desc'));
+		let btn = _menu.MakeButton('notice');
 
 		let btn_Notice = $('<span />').on('click', function () {
 			Notice.init();
 		});
 
-		return btn_NoticeBG.append(btn_Notice);
+		return btn.append(btn_Notice);
 	},
 
 	/**
@@ -573,8 +592,7 @@ let _menu = {
 	 *
 	 */
 	settings_Btn: () => {
-
-		let btn = _menu.MakeButton('settings', i18n('Menu.Settings.Title'), i18n('Menu.Settings.Desc'));
+		let btn = _menu.MakeButton('settings');
 
 		let btn_Set = $('<span />').on('click', function () {
 			Settings.BuildBox();
@@ -588,7 +606,7 @@ let _menu = {
 	 * @returns {*|jQuery}
 	 */
 	stats_Btn: () => {
-		let btn_StatsBG = _menu.MakeButton('stats', i18n('Menu.Stats.Title'), i18n('Menu.Stats.Desc'));
+		let btn = _menu.MakeButton('stats');
 
 		let btn_Stats = $('<span />').on('click', function() {
 			Stats.page = 1;
@@ -596,15 +614,14 @@ let _menu = {
 			Stats.Show(false);
 		});
 
-		return btn_StatsBG.append(btn_Stats);
+		return btn.append(btn_Stats);
 	},
 
 	/**
 	 * Set Übersicht
 	 */
 	kits_Btn: ()=> {
-
-		let btn = _menu.MakeButton('kits', i18n('Menu.Kits.Title'), i18n('Menu.Kits.Desc'));
+		let btn = _menu.MakeButton('kits');
 
 		let btn_sp = $('<span />').on('click', function(){
 			Kits.init();
@@ -617,8 +634,7 @@ let _menu = {
 	 * FP Produzierende LGs
 	 */
 	greatBuildings_Btn: () => {
-
-		let btn = _menu.MakeButton('greatBuildings', i18n('Menu.greatbuildings.Title'), i18n('Menu.greatbuildings.Desc'));
+		let btn = _menu.MakeButton('greatBuildings');
 
 		let btn_sp = $('<span />').on('click', function () {
 			GreatBuildings.Show();
@@ -631,12 +647,7 @@ let _menu = {
 	 * Marktplatz Filter
 	 */
 	market_Btn: () => {
-		let btn = _menu.MakeButton(
-			'market',
-			i18n('Menu.Market.Title'),
-			'<em id="market-Btn-closed" class="tooltip-error">' + i18n('Menu.Market.Warning') + '<br></em>' + i18n('Menu.Market.Desc'),
-			true
-		);
+		let btn = _menu.MakeButton('market',true);
 
 		let btn_Market = $('<span />').bind('click', function () {
 			if ($('#market-Btn').hasClass('hud-btn-red') === false) {
@@ -645,26 +656,6 @@ let _menu = {
 		});
 
 		return btn.append(btn_Market);
-	},
-
-	/**
-	* Marktangebote
-	*/
-	marketOffers_Btn: () => {
-		let btn = _menu.MakeButton(
-			'marketOffers',
-			i18n('Menu.MarketOffers.Title'),
-			'<em id="marketOffers-Btn-closed" class="tooltip-error">' + i18n('Menu.MarketOffers.Warning') + '<br></em>' + i18n('Menu.MarketOffers.Desc'),
-			true
-		);
-
-		let btn_MarketOffers = $('<span />').bind('click', function () {
-			if ($('#marketOffers-Btn').hasClass('hud-btn-red') === false) {
-				MarketOffers.Show(false);
-			}
-		});
-
-		return btn.append(btn_MarketOffers);
 	},
 
 	/**
@@ -680,7 +671,7 @@ let _menu = {
 			return;
 		}
 
-		let btn = _menu.MakeButton('blueGalaxy', i18n('Menu.Bluegalaxy.Title'), i18n('Menu.Bluegalaxy.Desc'));
+		let btn = _menu.MakeButton('blueGalaxy');
 
 		let btn_sp = $('<span />').on('click', function () {
 			BlueGalaxy.Show();
@@ -693,12 +684,10 @@ let _menu = {
 	 * Moppelassistent
 	 * */
 	moppelHelper_Btn: () => {
-		// active?
-		if(!Settings.GetSetting('ShowPlayersMotivation')){
+		if(!Settings.GetSetting('ShowPlayersMotivation'))
 			return;
-		}
 
-		let btn = _menu.MakeButton('moppelHelper', i18n('Menu.Moppelhelper.Title'), i18n('Menu.Moppelhelper.Desc'));
+		let btn = _menu.MakeButton('moppelHelper');
 
 		let btn_sp = $('<span />').on('click', function () {
 			EventHandler.ShowMoppelHelper();
@@ -711,7 +700,7 @@ let _menu = {
 	 * FP Collector box
 	 */
 	fpCollector_Btn: () => {
-		let btn = _menu.MakeButton('fpCollector', i18n('Menu.fpCollector.Title'), i18n('Menu.fpCollector.Desc'));
+		let btn = _menu.MakeButton('fpCollector');
 
 		let btn_sp = $('<span />').on('click', function () {
 			FPCollector.ShowFPCollectorBox();
@@ -722,11 +711,9 @@ let _menu = {
 
 	/**
 	 * Shows the box for managing all alerts
-	 *
-	 * @returns {*|jQuery}
 	 */
 	alerts_Btn: () => {
-		let btn = _menu.MakeButton('alerts', i18n('Menu.Alerts.Title'), i18n('Menu.Alerts.Desc'));
+		let btn = _menu.MakeButton('alerts');
 
 		let btn_sp = $('<span />').on('click', function () {
 			Alerts.show();
@@ -735,51 +722,20 @@ let _menu = {
 		return btn.append(btn_sp);
 	},
 
-	/**
-	 * Shows the box for gex units stats
-	 *
-	 * @returns {*|jQuery}
-	 */
-	unitsGex_Btn: () => {
-		let btn = _menu.MakeButton('unitsGex', i18n('Menu.unitsGex.Title'), i18n('Menu.unitsGex.Desc'));
-
-		let btn_sp = $('<span />').on('click', function () {
-			UnitGex.showBox();
-		});
-
-		return btn.append(btn_sp);
-	},
-
-	/**
-	 * Guildfight Overview
-	 * 	
-	 * @returns {*|jQuery}
-	 * */
 	gildFight_Btn: () => {
-		let btn = _menu.MakeButton(
-			'gildFight',
-				i18n('Menu.Gildfight.Title'),
-				i18n('Menu.Gildfight.Warning') + i18n('Menu.Gildfight.Desc'),
-			 	true
-			);
+		let btn = _menu.MakeButton('gildFight',true);
 
 		let btn_sp = $('<span />').on('click', function (){
-			if(GildFights.MapData) {
-				GildFights.ShowGildBox();
+			if(GuildFights.MapData) {
+				GuildFights.ShowGuildBox();
 			}
 		});
 
 		return btn.append(btn_sp);
 	},
 
-	/**
-	 * InfoBox für Investitions Historie
-	 *
-	 * @returns {*|jQuery}
-	 */
 	investment_Btn: () => {
-
-		let btn = _menu.MakeButton('investment', i18n('Menu.Investment.Title'), i18n('Menu.Investment.Desc'));
+		let btn = _menu.MakeButton('investment');
 
 		let btn_sp = $('<span />').on('click', function () {
 			Investment.BuildBox(false);
@@ -788,16 +744,8 @@ let _menu = {
 		return btn.append(btn_sp);
 	},
 
-	/**
-	 * Guild member statistic
-	 */
 	guildMemberstat_Btn: () => {
-		let btn = _menu.MakeButton(
-			'guildMemberstat',
-			i18n('Menu.GuildMemberStat.Title'),
-			'<em id="guildmemberstat-Btn-closed" class="tooltip-error">' + i18n('Menu.GuildMemberStat.Warning') + '<br></em>' + i18n('Menu.GuildMemberStat.Desc'),
-			true
-		);
+		let btn = _menu.MakeButton('guildMemberstat',true);
 
 		let btn_sp = $('<span />').bind('click', function () {
 			if ($('#guildmemberstat-Btn').hasClass('hud-btn-red') === false) {
@@ -808,26 +756,19 @@ let _menu = {
 		return btn.append(btn_sp);
 	},
 
-	/**
-	 * GEX statistic
-	 */
 	gexStat_Btn: () => {
-		let btn = _menu.MakeButton('gexStat', i18n('Menu.GexStat.Title'), i18n('Menu.GexStat.Desc'));
+		let btn = _menu.MakeButton('gexStat');
 
 		let btn_sp = $('<span />').bind('click', function () {
 			if ($('#gexstat-Btn').hasClass('hud-btn-red') === false) {
 				GexStat.BuildBox(false);
 			}
 		});
-
-		return btn.append(btn_sp);
+		return btn.append(btn_sp, $(`<span id="gex-attempt-count" class="hud-counter">${GExAttempts.count||0}</span>`)).ready(GExAttempts.refreshGUI);
 	},
 
-	/**
-	 * Castle System
-	 */
 	castle_Btn: () => {
-		let btn = _menu.MakeButton('castle', i18n('Menu.Castle.Title'), i18n('Menu.Castle.Desc'));
+		let btn = _menu.MakeButton('castle');
 
 		let btn_sp = $('<span />').bind('click', function () {
 			if ($('#castle-Btn').hasClass('hud-btn-red') === false) {
@@ -839,10 +780,20 @@ let _menu = {
 	},
 
 	/**
-	 * Discord Webhooks
+	 * Compare friends and threads
 	 */
+	compare_friends_threads_Btn: () => {
+		let btn = _menu.MakeButton('compare_friends_threads');
+
+		let btn_sp = $('<span />').bind('click', function () {
+			CompareFriendsThreads.BuildBody();
+		});
+
+		return btn.append(btn_sp);
+	},
+
 	discord_Btn: () => {
-		let btn = _menu.MakeButton('discord', i18n('Menu.Discord.Title'), i18n('Menu.Discord.Desc'));
+		let btn = _menu.MakeButton('discord');
 
 		let btn_sp = $('<span />').bind('click', function () {
 			Discord.BuildBox();
@@ -852,7 +803,7 @@ let _menu = {
 	},
 
 	music_Btn: () => {
-		let btn = _menu.MakeButton('music', i18n('Menu.Music.Title'), i18n('Menu.Music.Desc'));
+		let btn = _menu.MakeButton('music');
 
 		let btn_sp = $('<span />').bind('click', function () {
 			if ($('#betterMusicDialog').length > 0) {
@@ -867,7 +818,7 @@ let _menu = {
 	},
 
 	musicControl_Btn: () => {
-		let btn = _menu.MakeButton('musicControl', i18n('Menu.MusicControl.Title'), i18n('Menu.MusicControl.Desc'));
+		let btn = _menu.MakeButton('musicControl');
 
 		let btn_sp = $('<span />').bind('click', function () {
 			if ($('#musicControl-Btn').hasClass('hud-btn-red') === false) {

@@ -1,111 +1,133 @@
 [
 	{
-		"name": "GlobalSend",
+		"name": "ShowEventChest",
+		"callback": "ShowEventHelpers",
 		"status": true,
-		"group": "Sending",
-		"sort": 0
+		"group": "Auto",
+		"sort": 1
 	},
 	{
-		"name": "AutomaticNegotiation",
-		"status": true,
-		"group": "Boxes",
-		"sort": 0
-	},
-	{
-		"name": "ShowInvestments",
-		"status": true,
-		"group": "Boxes",
+		"name": "BlockCollectAll",
+		"status": false,
+		"group": "Auto",
 		"sort": 2
 	},
 	{
-		"name": "ShowGuildTreasuryLogExport",
-		"status": true,
-		"group": "Boxes",
-		"sort": 3
-	},
-	{
-		"name": "ShowMarketFilter",
+		"name": "AutoOpenCloseBox",
 		"status": false,
-		"group": "Boxes",
+		"group": "Auto",
 		"sort": 4
 	},
 	{
-		"name": "ShowOwnPartOnAllGBs",
+		"name": "ShowReconstructionList",
 		"status": true,
-		"group": "Boxes",
-		"sort": 5
-	},
-	{
-		"name": "ShowEventChest",
-		"status": true,
-		"group": "Boxes",
+		"group": "Auto",
 		"sort": 6
 	},
 	{
 		"name": "ShowRougeUnitWarning",
 		"status": true,
-		"group": "Boxes",
-		"sort": 7
-	},
-	{
-		"name": "ShowBlueGalaxyHelper",
-		"status": true,
-		"group": "Boxes",
-		"sort": 8
-	},
-	{
-		"name": "ShowPlayersMotivation",
-		"status": true,
-		"group": "Boxes",
-		"sort": 9
-	},
-	{
-		"name": "AutoOpenInfoBox",
-		"status": false,
-		"group": "Boxes",
+		"group": "Auto",
 		"sort": 10
 	},
 	{
-		"name": "AutoOpenCloseBox",
-		"status": false,
-		"group": "Boxes",
-		"sort": 11
-	},
-	{
-		"name": "InfoboxEntryCount",
-		"callback": "InfoboxInputEntryCount",
-		"group": "Boxes",
+		"name": "ShowScoutingTimes",
+		"status": true,
+		"group": "Auto",
 		"sort": 12
 	},
 	{
 		"name": "ShowMapTradeWarning",
 		"status": true,
-		"group": "Boxes",
+		"group": "Auto",
 		"sort": 13
 	},
 	{
-		"name": "ShowScoutingTimes",
+		"name": "ShowPvPArena",
+		"status": true,
+		"group": "Auto",
+		"sort": 15
+	},
+	{
+		"name": "ShowGBGBuildings",
+		"status": false,
+		"group": "Auto",
+		"sort": 16
+	},
+	{
+		"name": "ShowGBGPlayerInfo",
+		"status": true,
+		"group": "Auto",
+		"sort": 18
+	},
+	{
+		"name": "ShowQIPlayerInfo",
+		"status": true,
+		"group": "Auto",
+		"sort": 21
+	},
+	{
+		"name": "ShowArmyAdvice",
+		"status": false,
+		"group": "Auto",
+		"button":"BattleAssist.ShowArmyAdviceConfig()",
+		"sort": 24
+	},
+	{
+		"name": "ShowGuildTreasuryLogExport",
+		"status": true,
+		"group": "Auto",
+		"sort": 35
+	},
+	{
+		"name": "GexStockWarning",
+		"callback": "GexStockWarning",
+		"group": "Auto",
+		"sort": 40
+	},
+	{
+		"name": "ResetBoxPositions",
+		"button": "Settings.ResetBoxCoords()",
+		"group": "Boxes",
+		"sort": 0
+	},
+	{
+		"name": "ShowLinks",
+		"status": true,
+		"callback": "SelectWebsite",
+		"group": "Boxes",
+		"sort": 2
+	},
+	{
+		"name": "ShowPlayersMotivation",
 		"status": true,
 		"group": "Boxes",
-		"sort": 13
+		"sort": 3
 	},
 	{
-		"name": "ExcludeRelics",
+		"name": "ShowPotions",
+		"status": true,
+		"group": "Boxes",
+		"sort": 5
+	},
+	{
+		"name": "doubleFPtimeout",
+		"callback": "doubleFPtimeout",
+		"group": "Boxes",
+		"sort": 7
+	},
+	{
+		"name": "Auctions",
 		"status": false,
 		"group": "Boxes",
-		"sort": 13
+		"button":"Auction.BuildBody()",
+		"sort": 9
 	},
 	{
 		"name": "Show2kQuestMark",
 		"status": false,
 		"group": "Boxes",
-		"sort": 14
-	},
-	{
-		"name": "ShowPlayerLinks",
-		"status": true,
-		"group": "Boxes",
-		"sort": 15
+		"sort": 11
 	},
 	{
 		"name": "HideHelperDuringBattle",
@@ -114,82 +136,150 @@
 		"sort": 15
 	},
 	{
-		"name": "ChangeLanguage",
-		"callback": "LanguageDropdown",
-		"group": "Extension",
-		"sort": 0
+		"name": "ExportSettings",
+		"callback": "ExportView",
+		"group": "Boxes",
+		"sort": 19
+	},
+	{
+		"name": "RepeatSelectBuilding",
+		"status": false,
+		"group": "Boxes",
+		"sort": 20
+	},
+	{
+		"name": "ShowGBGRewards",
+		"status": false,
+		"group": "Boxes",
+		"sort": 19
 	},
 	{
 		"name": "SelectedMenu",
 		"callback": "MenuSelected",
 		"group": "Extension",
-		"sort": 1
+		"sort": 2
 	},
 	{
 		"name": "MenuContent",
 		"callback": "MenuContent",
 		"group": "Extension",
-		"sort": 2
+		"sort": 3
 	},
 	{
 		"name": "MenuLength",
 		"callback": "MenuInputLength",
 		"group": "Extension",
-		"sort": 3
-	},
-	{
-		"name": "ResetBoxPositions",
-		"button": "ResetBoxCoords",
-		"group": "Extension",
 		"sort": 4
-	},
-	{
-		"name": "ExportSettings",
-		"callback": "ExportView",
-		"group": "Extension",
-		"sort": 5
 	},
 	{
 		"name": "EnableSound",
 		"status": true,
 		"group": "Extension",
-		"sort": 6
+		"sort": 7
+	},
+	{
+		"name": "RivalSound",
+		"status": true,
+		"group": "Extension",
+		"sort": 8
+	},
+	{
+		"name": "ShowBuildingsExpired",
+		"status": true,
+		"group": "Extension",
+		"button":"MainParser.Inactives.showSettings()",
+		"sort": 9
 	},
 	{
 		"name": "ShowNotifications",
 		"status": true,
 		"group": "Extension",
-		"sort": 7
+		"sort": 10
 	},
 	{
 		"name": "NotificationsPosition",
 		"callback": "NotificationView",
 		"group": "Extension",
 		"status": "bottom-right",
-		"sort": 8
+		"sort": 11
 	},
 	{
 		"name": "NotificationsStack",
 		"callback": "NotificationStack",
 		"group": "Extension",
+		"sort": 13
+	},
+	{
+		"name": "ChangeLanguage",
+		"callback": "LanguageDropdown",
+		"group": "About",
+		"sort": 0
+	},
+	{
+		"name": "GlobalSend",
+		"status": true,
+		"group": "About",
+		"sort": 5
+	},
+	{
+		"name": "ApiToken",
+		"callback": "ApiTokenInput",
+		"group": "About",
+		"sort": 7
+	},
+	{
+		"name": "Help",
+		"callback": "Help",
+		"group": "About",
 		"sort": 9
 	},
 	{
 		"name": "About",
 		"callback": "About",
 		"group": "About",
-		"sort": 0
+		"sort": 10
 	},
 	{
 		"name": "Version",
 		"callback": "VersionInfo",
 		"group": "About",
-		"sort": 1
+		"sort": 13
 	},
 	{
-		"name": "Help",
-		"callback": "Help",
+		"name": "LoadBeta2",
 		"group": "About",
-		"sort": 2
+		"button":"window.open('https://github.com/mainIine/foe-helfer-extension/archive/refs/heads/beta.zip', '_blank').focus();",
+		"sort": 19
+	},
+
+	{
+		"name": "ShowBlueGalaxyHelper",
+		"status": true,
+		"hidden": true
+	},
+	{
+		"name": "ShowAllyList",
+		"status": true,
+		"hidden": true
+	},
+	{
+		"name": "ShowInvestments",
+		"status": true,
+		"hidden": true
+	},
+	{
+		"name": "ShowOwnPartOnAllGBs",
+		"status": true,
+		"hidden": true
+	},
+	{
+		"name": "AutomaticNegotiation",
+		"status": true,
+		"hidden": true
+	},
+	{
+		"name": "ShowAztecHelper",
+		"status": true,
+		"hidden": true
 	}
 ]

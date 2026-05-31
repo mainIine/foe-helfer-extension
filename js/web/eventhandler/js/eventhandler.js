@@ -1,6 +1,7 @@
 ﻿/*
- * **************************************************************************************
- * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * *************************************************************************************
+ *
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -8,8 +9,10 @@
  * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
  * for full license details.
  *
- * **************************************************************************************
+ * *************************************************************************************
  */
+
+// Motivate/Polish Helper
 
 FoEproxy.addHandler('OtherPlayerService', 'getEventsPaginated', (data, postData) => {
     if (data.responseData['events'] && Settings.GetSetting('ShowPlayersMotivation')) {
@@ -17,13 +20,22 @@ FoEproxy.addHandler('OtherPlayerService', 'getEventsPaginated', (data, postData)
     }
 });
 
+FoEproxy.addHandler('OtherPlayerService', 'getCityProtections', (data, postData) => {
+	if (!Array.isArray(data.responseData)) return;
+	for (x of data.responseData) {
+		EventHandler.isProtected[x.playerId] = x.expireTime;
+	}
+});
+
 let EventHandler = {
 	EventIDs: {},
 
 	db: null,
+	dbLoaded: new Promise(resolve => 
+		window.addEventListener('foe-helper#eventDBloaded', resolve, {capture: false, once: true, passive: true})),
 
 	CurrentPlayerGroup: null,
-
+	
 	FilterMoppelEvents: true,
 	FilterTavernVisits: false,
 	FilterAttacks: false,
@@ -31,10 +43,44 @@ let EventHandler = {
 	FilterTrades: false,
 	FilterGBs: false,
 	FilterOthers: false,
-
+	isProtected:{},
 	AllInvalidDates: [],
 
+	/**
+	 * Controls (some) of the columns whether to be shown or not
+	 */
+	ShowHideColumns: {
+		"GuildName": true,
+		"Era": true,
+		"Points": true
+	},
+
 	MaxVisitCount : 7,
+
+	/**
+	 * Initialize EventHandler 
+	 */
+	Init: () => {
+		// Keys not saved in the local storage are added from the attribute
+		let vShowHideColumns = JSON.parse(localStorage.getItem('MoppelHelper.Settings.ShowHideColumns')) || {};
+
+		for(let iColKey in EventHandler.ShowHideColumns) {
+			if (!vShowHideColumns.hasOwnProperty(iColKey)) {
+				vShowHideColumns[iColKey] = EventHandler.ShowHideColumns[iColKey];
+			}
+		}
+		EventHandler.ShowHideColumns = vShowHideColumns;
+		EventHandler.SaveSettings();
+	},
+
+
+	/**
+	 * Save settings to LocalStorage
+	 */
+	SaveSettings:() => {
+		localStorage.setItem('MoppelHelper.Settings.ShowHideColumns', JSON.stringify(EventHandler.ShowHideColumns));
+	},
+
 
 	/**
 	*
@@ -53,6 +99,7 @@ let EventHandler = {
 		});
 
 		EventHandler.db.open();
+		window.dispatchEvent(new CustomEvent('foe-helper#eventDBloaded'))
 	},
 
 
@@ -61,6 +108,7 @@ let EventHandler = {
 	 * @returns {boolean} true if the data is new in the database
 	 */
 	insertIntoDB: async (data) => {
+		await EventHandler.dbLoaded;
 		const db = EventHandler.db;
 		const eventsDB = db.Events;
 		const id = data.eventid;
@@ -187,6 +235,7 @@ let EventHandler = {
 
 		// Fallback @Todo: Was könnte dann passieren?
 		if(!matcher){
+			moment.locale(OldLocale);
 			return undefined;
 		}
 
@@ -210,13 +259,10 @@ let EventHandler = {
 				// get the correct 24h time
 				if(match['groups']['half'])
 				{
-					if(match['groups']['half'] === 'am' && h === 12)
-					{
-						h = 12;
-					}
-					else if(match['groups']['half'] === 'am' && h !== 12)
-					{
+					if(match['groups']['half'] === 'pm' && h !== 12) {
 						h += 12;
+					} else if (match['groups']['half'] === 'am' && h === 12) {
+						h = 0;
 					}
 				}
 
@@ -231,7 +277,10 @@ let EventHandler = {
 					case 'yesterday':
 						refDate = moment().subtract(1, 'day');
 						break;
-
+					case 'date':
+						moment.locale(OldLocale);
+						refDate = moment([Number(match['groups']['year'])+(match['groups']['year'].length<=2 ? 2000:0),Number(match['groups']['month'])-1,Number(match['groups']['day'])])
+						break;
 					default:
 						refDate = moment().day(capitalize(day));
 						if (refDate.isAfter(MainParser.getCurrentDate())) refDate = refDate.subtract(7 * 86400000); //Date is in the future => subtract 1 week
@@ -248,13 +297,13 @@ let EventHandler = {
 				return moment( refDate, moment.defaultFormat).toDate();
 			}
 		}
-
+		moment.locale(OldLocale);
 		return undefined;
 	},
 
 
 	ShowMoppelHelper: () => {
-		moment.locale(i18n('Local'));
+		//moment.locale(18n('Local'));
 
 		if ($('#moppelhelper').length === 0) {
 			HTML.Box({
@@ -304,6 +353,27 @@ let EventHandler = {
 				EventHandler.CalcMoppelHelperTable();
 			});
 
+			// Column visibility -> GuildName
+			$('#moppelhelper').on('click', '.col-visibility-guildname', function () {
+				EventHandler.ShowHideColumns.GuildName = !EventHandler.ShowHideColumns.GuildName;
+				EventHandler.SaveSettings();
+				EventHandler.CalcMoppelHelperTable();
+			});
+
+			// Column visibility -> Era
+			$('#moppelhelper').on('click', '.col-visibility-era', function () {
+				EventHandler.ShowHideColumns.Era = !EventHandler.ShowHideColumns.Era;
+				EventHandler.SaveSettings();
+				EventHandler.CalcMoppelHelperTable();
+			});
+
+			// Column visibility -> Points
+			$('#moppelhelper').on('click', '.col-visibility-points', function () {
+				EventHandler.ShowHideColumns.Points = !EventHandler.ShowHideColumns.Points;
+				EventHandler.SaveSettings();
+				EventHandler.CalcMoppelHelperTable();
+			});
+
 			// Choose Neighbors/Guildmembers/Friends
 			$('#moppelhelper').on('click', '.toggle-players', function () {
 				EventHandler.CurrentPlayerGroup = $(this).data('value');
@@ -341,16 +411,45 @@ let EventHandler = {
 
 		/* Filters */
 		h.push('<div class="text-center dark-bg header"><strong class="title">' + i18n('Boxes.MoppelHelper.HeaderWarning') + '</strong><br></div>');
-		h.push('<div class="dark-bg"><div class="dropdown" style="float:right">');
-        h.push('<input type="checkbox" class="dropdown-checkbox" id="event-checkbox-toggle"><label class="dropdown-label game-cursor" for="event-checkbox-toggle">' + i18n('Boxes.Infobox.Filter') + '</label><span class="arrow"></span>');
+		h.push('<div class="dark-bg">');
+
+		// Event filter dropdown
+		h.push('<div class="dropdown" style="float:right">');
+		h.push('<input type="checkbox" class="dropdown-checkbox" id="event-checkbox-toggle"><label class="dropdown-label game-cursor" for="event-checkbox-toggle">' + i18n('Boxes.Infobox.Filter') + '</label><span class="arrow"></span>');
         h.push('<ul>');
-        h.push('<li><label class="game-cursor"><input type="checkbox" data-type="auction" class="filtermoppelevents game-cursor" ' + (EventHandler.FilterMoppelEvents ? 'checked' : '') + '> ' + i18n('Boxes.MoppelHelper.MoppelEvents') + '</label></li>');
-        h.push('<li><label class="game-cursor"><input type="checkbox" data-type="gex" class="filtertavernvisits game-cursor" ' + (EventHandler.FilterTavernVisits ? 'checked' : '') + '> ' + i18n('Boxes.MoppelHelper.TavernVisits') + '</label></li>');
-        h.push('<li><label class="game-cursor"><input type="checkbox" data-type="gbg" class="filterattacks game-cursor" ' + (EventHandler.FilterAttacks ? 'checked' : '') + '> ' + i18n('Boxes.MoppelHelper.Attacks') + '</label></li>');
-        h.push('<li><label class="game-cursor"><input type="checkbox" data-type="trade" class="filterplunders game-cursor" ' + (EventHandler.FilterPlunders ? 'checked' : '') + '> ' + i18n('Boxes.MoppelHelper.Plunders') + '</label></li>');
-        h.push('<li><label class="game-cursor"><input type="checkbox" data-type="level" class="filtertrades game-cursor" ' + (EventHandler.FilterTrades ? 'checked' : '') + '> ' + i18n('Boxes.MoppelHelper.Trades') + '</label></li>');
-        h.push('<li><label class="game-cursor"><input type="checkbox" data-type="msg" class="filtergbs game-cursor" ' + (EventHandler.FilterGBs ? 'checked' : '') + '> ' + i18n('Boxes.MoppelHelper.GBs') + '</label></li>');
-        //h.push('<li><label class="game-cursor"><input type="checkbox" data-type="msg" class="filterothers game-cursor" ' + (EventHandler.FilterOthers ? 'checked' : '') + '> ' + i18n('Boxes.MoppelHelper.Others') + '</label></li>');
+        h.push('<li><label class="game-cursor"><input type="checkbox" data-type="auction" class="filtermoppelevents game-cursor" ' 
+			+ (EventHandler.FilterMoppelEvents ? 'checked' : '') + '> ' + i18n('Boxes.MoppelHelper.MoppelEvents') + '</label></li>');
+        h.push('<li><label class="game-cursor"><input type="checkbox" data-type="gex" class="filtertavernvisits game-cursor" ' 
+			+ (EventHandler.FilterTavernVisits ? 'checked' : '') + '> ' + i18n('Boxes.MoppelHelper.TavernVisits') + '</label></li>');
+        h.push('<li><label class="game-cursor"><input type="checkbox" data-type="gbg" class="filterattacks game-cursor" ' 
+			+ (EventHandler.FilterAttacks ? 'checked' : '') + '> ' + i18n('Boxes.MoppelHelper.Attacks') + '</label></li>');
+        h.push('<li><label class="game-cursor"><input type="checkbox" data-type="trade" class="filterplunders game-cursor" ' 
+			+ (EventHandler.FilterPlunders ? 'checked' : '') + '> ' + i18n('Boxes.MoppelHelper.Plunders') + '</label></li>');
+        h.push('<li><label class="game-cursor"><input type="checkbox" data-type="level" class="filtertrades game-cursor" ' 
+			+ (EventHandler.FilterTrades ? 'checked' : '') + '> ' + i18n('Boxes.MoppelHelper.Trades') + '</label></li>');
+        h.push('<li><label class="game-cursor"><input type="checkbox" data-type="msg" class="filtergbs game-cursor" ' 
+			+ (EventHandler.FilterGBs ? 'checked' : '') + '> ' + i18n('Boxes.MoppelHelper.GBs') + '</label></li>');
+        /*h.push('<li><label class="game-cursor"><input type="checkbox" data-type="msg" class="filterothers game-cursor" ' 
+			+ (EventHandler.FilterOthers ? 'checked' : '') + '> ' + i18n('Boxes.MoppelHelper.Others') + '</label></li>');*/
+        h.push('</ul>');
+		h.push('</div>');
+
+		// Column selector dropdown
+		h.push('<div class="dropdown" style="float:right">');
+		h.push('<input type="checkbox" class="dropdown-checkbox" id="event-checkbox-col-sel"><label class="dropdown-label game-cursor" for="event-checkbox-col-sel">' + i18n('Boxes.MoppelHelper.Columns') + '</label><span class="arrow"></span>');
+        h.push('<ul>');
+		for (var iColumn in EventHandler.ShowHideColumns) {
+			var DropdownItemLabel = "N/A";
+			var DropdownItemClass = "col-visibility-na"
+			switch(iColumn) {
+				case "GuildName": DropdownItemLabel = i18n("General.Guild"); DropdownItemClass = "col-visibility-guildname"; break;
+				case "Era": DropdownItemLabel = i18n("Boxes.MoppelHelper.Era"); DropdownItemClass = "col-visibility-era"; break;
+				case "Points": DropdownItemLabel = i18n("Boxes.MoppelHelper.Points"); DropdownItemClass = "col-visibility-points"; break;
+			}
+			h.push('<li><label class="game-cursor"><input type="checkbox" class="' + DropdownItemClass + ' game-cursor" ' 
+				+ (EventHandler.ShowHideColumns[iColumn] ? 'checked' : '') + '> ' + DropdownItemLabel + '</label></li>'
+			);
+		}
         h.push('</ul>');
 		h.push('</div>');
 		
@@ -410,22 +509,31 @@ let EventHandler = {
 			return b['Score'] - a['Score'];
 		});
 
-		h.push('<tbody class="moppelhelper">');
+		h.push('<thead>');
 		h.push('<tr class="sorter-header">');
-		h.push('<th columnname="Rank" class="is-number ascending" data-type="moppelhelper">' + i18n('Boxes.MoppelHelper.Rank') + '</th>');
+		h.push('<th data-export="Rank" class="is-number ascending" data-type="moppelhelper">' + i18n('Boxes.MoppelHelper.Rank') + '</th>');
 		h.push('<th></th>');
-		h.push('<th columnname="Name" data-type="moppelhelper">' + i18n('Boxes.MoppelHelper.Name') + '</th>');
-		h.push('<th columnname="Era" data-type="moppelhelper">' + i18n('Boxes.MoppelHelper.Era') + '</th>');
-		h.push('<th columnname="Points" class="is-number" data-type="moppelhelper">' + i18n('Boxes.MoppelHelper.Points') + '</th>');
+		h.push('<th data-export="Name" data-type="moppelhelper" class="name-col">' + i18n('Boxes.MoppelHelper.Name') + '</th>');
+        h.push('<th style="display:none" data-export="Player_ID"></th>');
+		if (EventHandler.CurrentPlayerGroup !== 'Guild' && EventHandler.ShowHideColumns.GuildName) {
+			h.push('<th data-export="GuildName" data-type="moppelhelper" class="name-col">' + i18n('General.Guild') + '</th>');
+		}
+		if (EventHandler.ShowHideColumns.Era) {
+			h.push('<th class="is-number" data-export="Era" data-type="moppelhelper">' + i18n('Boxes.MoppelHelper.Era') + '</th>');
+		}
+		if (EventHandler.ShowHideColumns.Points) {
+			h.push('<th data-export="Points" class="is-number" data-type="moppelhelper">' + i18n('Boxes.MoppelHelper.Points') + '</th>');
+		}
 
 		for (let i = 0; i < EventHandler.MaxVisitCount; i++)
 		{
-			h.push('<th columnname="Event'+ (i+1) +'" class="is-number" data-type="moppelhelper">' + i18n('Boxes.MoppelHelper.Event') + (i + 1) + '</th>');
+			h.push('<th data-export="Event'+ (i+1) +'" class="is-number" data-type="moppelhelper">' + i18n('Boxes.MoppelHelper.Event') + (i + 1) + '</th>');
 		}
 
-		h.push('</tr>');
+		h.push('</tr></thead>');
 
-		let HasGuildPermission = ((ExtGuildPermission & GuildMemberStat.GuildPermission_Leader) > 0 || (ExtGuildPermission & GuildMemberStat.GuildPermission_Founder) > 0);
+		h.push('<tbody class="moppelhelper">');
+		let pImage = `<img style="max-width: 22px" src="${srcLinks.get('/shared/gui/tavern/shop/tavern_shop_boost_shield1_icon.png', true)}" title="${i18n('Boxes.MoppelHelper.CityProtected')}" alt="${i18n('Boxes.MoppelHelper.CityProtected')}"></img>`
 		for (let i = 0; i < PlayerList.length; i++)
 		{
 			let Player = PlayerList[i];
@@ -462,35 +570,53 @@ let EventHandler = {
 
 			Visits = Visits.sort(function (a, b) {
 				return b['date'] - a['date'];
-			});	
+			});
 			
 			h.push('<tr>');
+			
+			// Rank column
 			h.push('<td class="is-number" data-number="' + (i + 1) + '">#' + (i + 1) + '</td>');
 
-			h.push(`<td><img style="max-width: 22px" src="${MainParser.InnoCDN + 'assets/shared/avatars/' + MainParser.PlayerPortraits[Player['Avatar']]}.jpg" alt="${Player['PlayerName']}"></td>`);
+			// Portrait column
+			h.push(`<td><img style="max-width: 22px" src="${srcLinks.GetPortrait(Player['Avatar'])}" alt="${Player['PlayerName']}"></td>`);
+			
+			// Player Name column
+			h.push('<td style="white-space:nowrap;text-align:left;" data-text="' + helper.str.cleanup(Player['PlayerName']) + '">');
 
-			h.push('<td style="white-space:nowrap;text-align:left;" data-text="' + Player['PlayerName'].toLowerCase().replace(/[\W_ ]+/g, "") + '">');
-
-			if (EventHandler.CurrentPlayerGroup === 'Friends' || (EventHandler.CurrentPlayerGroup === 'Guild' && HasGuildPermission)) {
-				h.push(`<img class="small" src="${extUrl}js/web/guildmemberstat/images/act_${Player['Activity']}.png">`);
-            }
+			h.push(`<span class="activity activity_${Player['Activity']}"></span> `);
 			h.push(MainParser.GetPlayerLink(Player['PlayerID'], Player['PlayerName']));
 
-			h.push(`<td data-text="${i18n('Eras.' + Technologies.Eras[Player['Era']])}">${i18n('Eras.' + Technologies.Eras[Player['Era']])}</td>`);
+            // Player ID
+            h.push('<td style="display:none" data-text="' + Player['PlayerID'] + '">' + Player['PlayerID'] + '</td>');
 
-			h.push('<td class="is-number" data-number="' + Player['Score'] + '">' + HTML.Format(Player['Score']) + '</td>');
+			// Guild name column
+			if (EventHandler.CurrentPlayerGroup != 'Guild' && EventHandler.ShowHideColumns.GuildName) {
+				h.push('<td style="white-space:nowrap;text-align:left;" data-text="' + (helper.str.cleanup(Player['ClanName'] || "")) + '">');
+				h.push(Player['ClanName'] ? MainParser.GetGuildLink(Player['ClanId'], Player['ClanName']) : "");
+			}
 
-			for (let j = 0; j < EventHandler.MaxVisitCount; j++)
-			{
-				if (j < Visits.length)
-				{
+			// Player Age column (with shield icons if protected)
+			if (EventHandler.ShowHideColumns.Era) {
+				let pTime = EventHandler.isProtected[Player['PlayerID']] | 0;
+				let pImg = (EventHandler.CurrentPlayerGroup === 'Neighbors' && (pTime == -1 || pTime * 1000 > MainParser.getCurrentDateTime())) ? pImage : '';
+				h.push(`<td data-number="${Technologies.Eras[Player['Era']]}" exportvalue="${i18n('Eras.' + Technologies.Eras[Player['Era']])}">${pImg + i18n('Eras.' + Technologies.Eras[Player['Era']]) + pImg}</td>`);
+			}
+
+			// Player points column
+			if (EventHandler.ShowHideColumns.Points) {
+				h.push('<td class="is-number" data-number="' + Player['Score'] + '">' + HTML.Format(Player['Score']) + '</td>');
+			}
+
+			// Event columns
+			for (let j = 0; j < EventHandler.MaxVisitCount; j++) {
+				if (j < Visits.length) {
 					let Seconds = (MainParser.getCurrentDateTime() - Visits[j]['date'].getTime()) / 1000;
 					let Days = Seconds / 86400; //24*3600
 					let StrongColor = (Days < 3 * (j + 1) ? HTML.GetColorGradient(Days, 0, 3 * (j + 1), '00ff00', 'ffff00') : HTML.GetColorGradient(Days, 3 * (j + 1), 7 * (j + 1), 'ffff00', 'ff0000'));
 					let FormatedDays = HTML.i18nReplacer(i18n('Boxes.MoppelHelper.Days'), { 'days': Math.round(Days) });
 					let EventType = EventHandler.GetEventType(Visits[j]);
 
-					h.push('<td style="white-space:nowrap" class="events-image" data-number="' + Days + '"><span class="events-sprite-50 sm ' + EventType + '"></span><strong style="color:#' + StrongColor + '">' + FormatedDays + '</strong></td>');
+					h.push('<td style="white-space:nowrap" class="events-image" data-number="' + Days + '"><span class="events-sprite-35 ' + EventType + '"></span><strong style="color:#' + StrongColor + '">' + FormatedDays + '</strong></td>');
 				}
 				else {
 					h.push('<td class="is-date" data-number="999999999"><strong style="color:#ff0000">' + i18n('Boxes.MoppelHelper.Never') + '</strong></td>');
@@ -528,20 +654,8 @@ let EventHandler = {
 	*/
 	ShowMoppelHelperSettingsButton: () => {
 		let h = [];
-		h.push(`<p class="text-center"><button class="btn btn-default" onclick="HTML.ExportTable($('#moppelhelperBody').find('.foe-table.exportable'), 'csv', 'MoppelHelper${EventHandler.CurrentPlayerGroup}')">${i18n('Boxes.General.ExportCSV')}</button></p>`);
-		h.push(`<p class="text-center"><button class="btn btn-default" onclick="HTML.ExportTable($('#moppelhelperBody').find('.foe-table.exportable'), 'json', 'MoppelHelper${EventHandler.CurrentPlayerGroup}')">${i18n('Boxes.General.ExportJSON')}</button></p>`);
-
-		$('#moppelhelperSettingsBox').html(h.join(''));
-	},
-
-
-	/**
-	*
-	*/
-	ShowMoppelHelperSettingsButton: () => {
-		let h = [];
-		h.push(`<p class="text-center"><button class="btn btn-default" onclick="HTML.ExportTable($('#moppelhelperBody').find('.foe-table.exportable'), 'csv', 'MoppelHelper${EventHandler.CurrentPlayerGroup}')">${i18n('Boxes.General.ExportCSV')}</button></p>`);
-		h.push(`<p class="text-center"><button class="btn btn-default" onclick="HTML.ExportTable($('#moppelhelperBody').find('.foe-table.exportable'), 'json', 'MoppelHelper${EventHandler.CurrentPlayerGroup}')">${i18n('Boxes.General.ExportJSON')}</button></p>`);
+		h.push(`<p class="text-center"><button class="btn" onclick="HTML.ExportTable($('#moppelhelperBody').find('.foe-table.exportable'), 'csv', 'MoppelHelper${EventHandler.CurrentPlayerGroup}')">${i18n('Boxes.General.ExportCSV')}</button></p>`);
+		h.push(`<p class="text-center"><button class="btn" onclick="HTML.ExportTable($('#moppelhelperBody').find('.foe-table.exportable'), 'json', 'MoppelHelper${EventHandler.CurrentPlayerGroup}')">${i18n('Boxes.General.ExportJSON')}</button></p>`);
 
 		$('#moppelhelperSettingsBox').html(h.join(''));
 	},
@@ -566,6 +680,7 @@ let EventHandler = {
 				friday    	: /Freitag um (?<h>[012]?\d):(?<m>[0-5]?\d)/g,
 				saturday  	: /Samstag um (?<h>[012]?\d):(?<m>[0-5]?\d)/g,
 				sunday   	: /Sonntag um (?<h>[012]?\d):(?<m>[0-5]?\d)/g,
+				date	   	: /am (?<day>.*?)\.(?<month>.*?)\.(?<year>.*?) um (?<h>[012]?\d):(?<m>[0-5]?\d)/g,
 			},
 			en: {
 				today     : /today at (?<h>[012]?\d):(?<m>[0-5]?\d) (?<half>(a|p)m)/g,
@@ -577,6 +692,7 @@ let EventHandler = {
 				friday    : /Friday at (?<h>[012]?\d):(?<m>[0-5]?\d) (?<half>(a|p)m)/g,
 				saturday  : /Saturday at (?<h>[012]?\d):(?<m>[0-5]?\d) (?<half>(a|p)m)/g,
 				sunday    : /Sunday at (?<h>[012]?\d):(?<m>[0-5]?\d) (?<half>(a|p)m)/g,
+				date      : /on (?<month>.*?)\/(?<day>.*?)\/(?<year>.*?) at (?<h>[012]?\d):(?<m>[0-5]?\d) (?<half>(a|p)m)/g,
 			},
 			pt: {
 				today     : /hoje às (?<h>[012]?\d):(?<m>[0-5]?\d)( horas)?/g,
@@ -610,6 +726,7 @@ let EventHandler = {
 				friday    : /Vendredi à (?<h>[012]?\d):(?<m>[0-5]?\d)/g,
 				saturday  : /Samedi à (?<h>[012]?\d):(?<m>[0-5]?\d)/g,
 				sunday    : /Dimanche à (?<h>[012]?\d):(?<m>[0-5]?\d)/g,
+				date 	  : /le (?<day>.*?)\/(?<month>.*?)\/(?<year>.*?) à (?<h>[012]?\d):(?<m>[0-5]?\d)/g,
 			},
 			it: {
 				today     : /oggi alle (?<h>[012]?\d):(?<m>[0-5]?\d)/g,

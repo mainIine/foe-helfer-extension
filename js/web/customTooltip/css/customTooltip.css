@@ -1,0 +1,364 @@
+#TooltipContainer.window-box {
+	border: 2px solid #2a2c27;
+	background: #343832;
+	color: #f7f4ed;
+}
+
+#TooltipContainer.window-box .foe-table tr td {
+	border-top: 1px solid #fff3;
+    border-bottom: 1px solid #0004;
+}
+
+#TooltipContainer.window-box .foe-table th {
+    background: #0004;
+    box-shadow: inset 0 0 0 2000px var(--black-50), 0 1px 0 0 #fff3, 0 2px 0 0 #0004;
+}
+
+.buildingTT table.foe-table tbody tr:nth-child(odd), .buildingTT .foe-table li:nth-child(odd) {
+    background-color: #fff1;
+    backdrop-filter: none;
+}
+
+.buildingTT {
+    width: min-content;
+}
+
+#TooltipContainer h2 {
+    padding: 0.2em 0.5em;
+    color: #f2ede1;
+    background-color: #0002;
+}
+#TooltipContainer h1 {
+    padding: 0.2em 0.5em;
+    color: #f2ede1;
+    background-color: #16356b8f;
+    font-size: small;
+    text-align: left;
+    font-weight: 400;
+}
+
+.buildingTT .imgContainer {
+    min-width:150px; 
+    max-width:150px; 
+    vertical-align:top
+}
+
+.buildingTT .imgContainer img {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+}
+
+.HXBuilding th {
+    border-bottom: unset;
+}
+.HXBuilding td {
+    width: 300px;
+    display: flex;
+    white-space: nowrap;
+}
+.HXBuilding img {
+    padding-right: 3px;
+    max-width: 24px;
+    max-height: 25px;
+}
+.HXBuilding .multiCol {
+    flex-wrap: wrap;
+    width: 300px;
+}
+.HXBuilding .multiCol > div {
+    flex: 1 1 150px;
+}
+.HXBuilding .inhabitant {
+    max-width: unset;
+    max-height: unset;
+    position: absolute;
+    right: 320px;
+    bottom: 10px;
+    background: var(--tooltip-inhabitant);
+}
+.HXBuilding .inhabitant {
+    max-width: unset;
+    max-height: unset;
+    position: absolute;
+    right: 320px;
+    bottom: 10px;
+    background: var(--tooltip-inhabitant);
+}
+td:nth-child(3) .HXBuilding .inhabitant {
+    display: none;
+}
+.HXBuilding td:has(.inhabitant) {
+    position: relative;
+}
+.HXBuilding .ifMot {
+    margin-left: auto;
+    padding-left: 5px;
+}
+.HXBuilding .ifMot img {
+    padding-right: 0px;
+}
+.HXBuilding .randomProductions {
+    border: 2px var(--table-bg-error) solid;
+    margin-left: -6px;
+    margin-top: -4px;
+    margin-bottom: -4px;
+}
+.HXBuilding .randomProductions td {
+    width: 270px;
+}
+.HXBuilding .randomProductions .dropChance {
+    flex-basis: 33px;
+    flex-shrink: 0;
+    margin-left: auto;
+    padding-left: 5px;
+    text-align: right;
+}
+.HXBuilding .isGeneric {
+    display: flex;
+}
+.HXBuilding .overflowBox {
+    width: 300px;
+    overflow: hidden;
+    left: 5px;
+    position: relative;
+    margin-right: 5px;
+}
+.HXBuilding .handleOverflow {
+    position: relative;
+    top: 0;
+    left: 0;
+    display: inline-block;
+    animation-name: bounce;
+    animation-duration: 7s;
+    animation-iteration-count: infinite;
+}
+.HXBuilding span.positive {
+    color: var(--success);
+    font-weight: bold;
+}
+.HXBuilding span.negative {
+    color: var(--danger-red);
+    font-weight: bold;
+}
+.HXBuilding .limited {
+    text-wrap: auto;
+}
+
+.HXBuilding .limited img{
+    align-self: flex-start;
+}
+.HXBuilding .allyName {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 0.5em;
+}
+
+#QIActions {
+    position: absolute;
+    top: 46px;
+    left: 150px;
+    z-index: 100;
+}
+
+#RewardsList {
+    position: absolute;
+    top: calc(50vh);
+    left: calc(100vw - 200px);
+    width: 150px;
+    height: calc(50vh - 80px);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-end;
+    pointer-events: none;
+    overflow: hidden;
+    user-select: none;
+}
+#RewardsList > span {
+    white-space: nowrap;
+    font-size: 1.3em;
+    display: flex;
+    align-items: center;
+    border-radius: 10px;
+    padding: 2px;
+    margin-top: 2px;
+    color: var(--beige);
+    background: var(--text-darker);
+    border: 2px solid var(--text-dark);
+}
+
+#RewardsList img {
+    max-height: 30px;
+    margin: auto 1px;
+}
+
+@keyframes bounce {
+    0% {  transform: translateX(0%)    }
+    30% {  transform: translateX(0%)    }
+    85% {  transform: translateX(-100%)    }
+    95% {  transform: translateX(-100%)    }
+}
+
+.inventoryTooltip{
+    display: flex;
+    flex-direction: column;
+	max-height: 100vh;
+	overflow: hidden;
+}
+
+.inventoryTooltip .maxBuildingDetails{
+    margin-left: 7px;
+    display: flex;
+    place-content: space-between;
+    flex-wrap: wrap;
+}
+.inventoryChains {
+	overflow: hidden;
+}
+.inventoryChain{
+    display: flex;
+    align-items: stretch;
+	border-top: 2px solid #0003;
+}
+.inventoryChain:first-child{
+    margin-top: 5px;
+}
+.inventoryChain:last-child{
+    margin-bottom: 0;
+}
+.inventoryChainCount{
+    align-self: center;
+	font-size: larger;
+	font-weight: bolder;
+    margin-left: 10px;
+	margin-right: 10px;
+	width: 2em;
+	text-align: right;
+}
+.inventoryChainItem{
+    width: 130px;
+    display: flex;
+    flex-direction: column;
+	justify-content: flex-start;
+    text-align: center;
+    align-items: center;
+	margin-right: 5px;
+	padding: 5px;
+	margin-top:5px;
+	position: relative;
+	border-left: 1px dotted #0003;
+}
+.inventoryChainItem:not(:last-child)::after{
+	content: "";
+	width: 35px;
+    height: 35px;
+	background-image: url('../../x_img/green_arrow.png'); 
+    background-size: contain;
+    background-repeat: no-repeat;
+	position:absolute;
+	left: 130px;
+    top: 50px;
+    z-index: 1;
+}
+.inventoryChainItem:last-child{
+	margin-right: 0;
+}
+.inventoryChainItemImg{
+    width: 130px;
+	height: 7vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    padding: 5px 0;
+}
+.inventoryChainItemImg img {
+	max-width: 100px;
+	max-height: 7vh;
+}
+.inventoryChainItemDesc{
+    max-height: 4.3em;
+    overflow: hidden;
+    padding: 5px 0;
+	font-size: 0.8em;
+}
+.inventoryChainItem span{
+	font-style: italic;
+}
+.inventoryChainItem.building.city::before,
+.inventoryChainItem.building.inventory::before {
+    width: 30px;
+    height: 30px;
+    background-size: contain;
+    content: "";
+    background-repeat: no-repeat;
+    left: 3px;
+    position: absolute;
+    top: 3px;
+	filter: drop-shadow(2px 4px 6px var(--black-65));
+}
+
+.inventoryChainItem.building.city::before {
+	background-image: url('../../x_img/city.png'); 
+}
+.inventoryChainItem.building.inventory::before {
+    background-image: url('../../x_img/inventory.png');
+}
+
+.inventoryChainItemCount {
+    width: 35px;
+    height: 35px;
+    right: 5px;
+    position: absolute;
+    top: 0px;
+    align-items: center;
+    font-size: large;
+    font-weight: bolder;
+    text-align: right;
+    color: var(--orange);
+	filter: drop-shadow(2px 4px 6px var(--black));
+}
+.inventoryChainAscendedStock::after {
+	content: '';
+	display: inline-block;
+	width: 17px;
+	height: 22px;
+	margin-left: 2px;
+	background: url('../../x_img/upgrades.png') no-repeat left top;
+	background-size: auto 100%;
+	background-position: -92px 0;
+	zoom: 1.3;
+    position: relative;
+    top: 7px;
+}
+.inventoryChainAscendedStock {
+    position: absolute;
+    right: 10px;
+    top: 20px;
+    font-size: large;
+    font-weight: bolder;
+}
+
+.inventoryTooltip h2{
+	display: flex;
+    justify-content: space-between;
+}
+.buildingTT h2 {
+	display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+.inventoryTooltip .upgrades{
+	margin-left: 15px;
+}
+.buildingTT .upgrades {
+	margin-left: auto;
+}
+
+.inventoryTooltip .upgrades span,
+.buildingTT .upgrades span {
+    background-color: var(--black-50);
+    border-radius: 20px;
+}

@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -30,12 +30,12 @@
 }
 
 #Investment #InvestmentBody strong {
-	color: var(--text-bright);
+	color: var(--sunflower);
 }
 
 
 #InvestmentBody #history-wrapper {
-	border-top: 2px solid var(--text-bright);
+	border-top: 2px solid var(--sunflower);
 	margin-bottom: 18px;
 }
 
@@ -44,14 +44,11 @@
 }
 
 #InvestmentBody table th {
-	position: sticky;
-	top: 0;
 	cursor: pointer;
-	z-index: 1;
 }
 
 #InvestmentBody table tr.new td {
-	background: var(--background-table-success);
+	background: var(--table-bg-success);
 }
 
 #InvestmentBody table tr.hidden {
@@ -70,7 +67,7 @@
 	border-left: 1px solid var(--border-table-top);
 	border-right: 1px solid var(--border-table-top);
 	background: none;
-	color: var(--text-light);
+	color: var(--white);
 	position: relative;
 }
 
@@ -95,12 +92,12 @@
 	left: 0;
 	top: 0;
 	bottom: 0;
-	background: var(--background-btn-green-fallback);
-	background: var(--background-btn-green-moz);
-	background: var(--background-btn-green-webkit);
-	background: var(--background-btn-green);
+	background: var(--btn-bg-green-fallback);
+	background: var(--btn-bg-green-moz);
+	background: var(--btn-bg-green-webkit);
+	background: var(--btn-bg-green);
 	z-index: -1;
-	color: var(--text-light);
+	color: var(--white);
 }
 
 #InvestmentBody table tbody td div.diff {
@@ -111,7 +108,7 @@
 	top: 1px;
 	font-size: 0.85em;
 	padding: 1px 2px;
-	color: var(--text-bright);
+	color: var(--sunflower);
 	font-weight: bold;
 	text-shadow: 0 2px 2px black, 0 1px 0 black;
 }
@@ -132,13 +129,13 @@
 	background: #bf0000;
 }
 #InvestmentBody table tbody td .success{
-	color: var(--text-success);
+	color: var(--success);
 }
 #InvestmentBody table tbody td .error{
 	color: #f11616;
 }
 #InvestmentBody table tbody td .warning{
-	color: var(--text-bright);
+	color: var(--sunflower);
 }
 
 #InvestmentBody table tbody td img.rank {
@@ -180,7 +177,7 @@
 }
 
 #InvestmentBody .last-update-message .updaterequired {
-    color: var(--text-bright);
+    color: var(--sunflower);
 }
 
 #InvestmentBody .last-update-message span.icon {
@@ -215,7 +212,7 @@
 }
 
 #InvestmentBody .last-update-message .updaterequired {
-    color: var(--text-bright);
+    color: var(--sunflower);
 }
 
 #InvestmentBody .last-update-message span.icon {

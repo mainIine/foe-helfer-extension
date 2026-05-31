@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -18,42 +18,12 @@
 	height: 450px;
 }
 
-.info-table {
-	border-spacing: 0;
-	border-collapse: separate;
-	width: 100%;
-	background-color: transparent;
-}
-
-.info-table a {
-	text-decoration: none;
-	color: inherit;
-}
-
-.info-table a:hover {
-	text-decoration: underline;
-}
-
-table.info-table:not(.no-hover) tbody tr:hover {
-	background-color: var(--background-table-hover) !important;
-}
-
-table.info-table tr th,
-table.info-table tr td {
-	padding: 2px 5px;
-}
-
-table.info-table tr td {
-	border-top: 1px solid var(--border-table-top);
-	border-bottom: 1px solid var(--border-table-bottom);
-}
-
 #BackgroundInfo #BackgroundInfoBody {
 	overflow: auto;
 }
 
 #BackgroundInfo #BackgroundInfoBody strong {
-	color: var(--text-bright);
+	color: var(--sunflower);
 }
 
 #BackgroundInfo #BackgroundInfoBody .filter-row {
@@ -61,15 +31,11 @@ table.info-table tr td {
 	display: flex;
 	align-items: center;
 	background-color: rgba(0,0,0, 0.5);
-	position: sticky;
-	top: 0;
 	padding: 5px;
-	z-index: 100;
 }
 
-#BackgroundInfo #BackgroundInfoBody .filter-row span {
-	display: inline-block;
-	margin-right: 15px;
+#BackgroundInfo #BackgroundInfoBody .filter-row span.arrow {
+	top: 7px;
 }
 
 #BackgroundInfo #BackgroundInfoBody .filter-row span input {
@@ -101,101 +67,199 @@ table.info-table tr td {
 	width: 16px;
 }
 
-#BackgroundInfoTable td:first-child {
+#BackgroundInfoList li {
+	justify-content: space-between;
+	background: linear-gradient(90deg, var(--black-65), transparent 30%);
+	position: relative;
+}
+
+#BackgroundInfoList .icon {
 	background: url('../../x_img/gbg-gray.png') center center no-repeat;
 	background-size: contain;
 	width: 30px;
+	height: 30px;
 }
 
-#BackgroundInfoTable .welcome {
-	background-color: var(--background-table-odd);
+#BackgroundInfoList .main {
+	width: calc(100% - 30px);
 }
 
-#BackgroundInfoTable .welcome td:first-child {
+#BackgroundInfoList .fav {
+	position: absolute;
+	top: 0;
+	right: 2px;
+	opacity: 0.5;
+	border-radius: 20px;
+}
+
+#BackgroundInfoList .welcome .fav {
+	display: none;
+}
+
+#BackgroundInfoList .fav:hover, #BackgroundInfoList .fav.active {
+	opacity: 0.9;
+	color: var(--sunflower);
+}
+
+#BackgroundInfoList [class*=msg] .content {
+	font-size: 85%;
+}
+
+#BackgroundInfoList .welcome {
+	-webkit-backdrop-filter: brightness(1.1) saturate(1.1);
+	backdrop-filter: brightness(1.1) saturate(1.1);
+}
+
+#BackgroundInfoList .welcome .icon {
 	background-image: url('../../../../css/images/menu/info.png');
 	background-size: 30px;
 }
 
-#BackgroundInfoTable .msg td:first-child {
+#BackgroundInfoList [class*=msg] .icon {
 	background-image: url('../../x_img/msg.png');
 	background-size: 25px;
 }
 
-#BackgroundInfoTable .msg-important td:first-child {
+#BackgroundInfoList [class*=msg-important] .icon {
 	background-image: url('../../x_img/msg-important.png');
 	background-size: 25px;
 }
 
-#BackgroundInfoTable .msg-favorite td:first-child {
+#BackgroundInfoList [class*=msg-favorite] .icon {
 	background-image: url('../../x_img/msg-favorite.png');
 	background-size: 25px;
 }
 
-#BackgroundInfoTable .auction td:first-child {
+#BackgroundInfoList .auction .icon {
 	background-image: url('../../x_img/ant.png');
+	background-size: 30px;
 }
 
-#BackgroundInfoTable .gex td:first-child {
+#BackgroundInfoList .ge .icon {
 	background-image: url('../../x_img/ge.png');
+	background-size: 30px;
 }
 
-#BackgroundInfoTable .level td:first-child {
+#BackgroundInfoList [class*=qi] .icon {
+	background-image: url('../../x_img/qi.png');
+	background-size: 30px;
+	position: relative;
+}
+
+#BackgroundInfoList [class*=qi] .icon::after {
+	background-image:url('../../x_img/qinodes.png');
+	background-size: auto 20px;
+	width: 20px;
+	height: 20px;
+	content: '';
+	display: block;
+	position: absolute;
+	bottom: -2px;
+	right: -2px;
+}
+
+#BackgroundInfoList [class*=qi] .icon::before {
+	width: 10px;
+	height: 10px;
+	content: '';
+	display: block;
+	position: absolute;
+	bottom: 0;
+	left: -2px;
+	border-radius: 30px;
+}
+
+#BackgroundInfoList [class*=defending] .icon::before {
+	background-color: var(--def);
+	box-shadow: 0 0 3px var(--black);
+}
+
+#BackgroundInfoList [class*=attacking] .icon::before {
+	background-color: var(--att);
+	box-shadow: 0 0 3px var(--black);
+}
+
+#BackgroundInfoList [class*=stronghold] .icon::after {
+	background-position: -64px 0;
+}
+
+#BackgroundInfoList [class*=mini] .icon::after {
+	background-position: -86px 0;
+}
+
+#BackgroundInfoList [class*=final] .icon::after {
+	background-position: -108px 0;
+}
+
+#BackgroundInfoList [class*=resources] .icon::after {
+	background-position: -130px 0;
+}
+
+#BackgroundInfoList [class*=regular] .icon::after {
+	background-position: -156px 0;
+}
+
+#BackgroundInfoList [class*=garrison] .icon::after {
+	background-position: -180px 0;
+}
+
+#BackgroundInfoList .level .icon {
 	background-image: url('../../x_img/gb.png');
 }
 
-#BackgroundInfoTable .trade td:first-child {
+#BackgroundInfoList .trade .icon {
 	background-image: url('../../x_img/trade.png');
 	background-size: 25px;
 }
 
-#BackgroundInfoTable .gbg-red td:first-child {
+#BackgroundInfoList .gbg-red .icon {
 	background-image: url('../../x_img/gbg-red.png');
 }
 
-#BackgroundInfoTable .gbg-green td:first-child {
+#BackgroundInfoList .gbg-green .icon {
 	background-image: url('../../x_img/gbg-green.png');
 }
 
-#BackgroundInfoTable .gbg-yellow td:first-child {
+#BackgroundInfoList .gbg-yellow .icon {
 	background-image: url('../../x_img/gbg-yellow.png');
 }
 
-#BackgroundInfoTable .gbg-teal td:first-child {
+#BackgroundInfoList .gbg-teal .icon {
 	background-image: url('../../x_img/gbg-teal.png');
 }
 
-#BackgroundInfoTable .gbg-orange td:first-child {
+#BackgroundInfoList .gbg-orange .icon {
 	background-image: url('../../x_img/gbg-orange.png');
 }
 
-#BackgroundInfoTable .gbg-blue td:first-child {
+#BackgroundInfoList .gbg-blue .icon {
 	background-image: url('../../x_img/gbg-blue.png');
 }
 
-#BackgroundInfoTable .gbg-purple td:first-child {
+#BackgroundInfoList .gbg-purple .icon {
 	background-image: url('../../x_img/gbg-purple.png');
 }
 
-#BackgroundInfoTable .gbg-pink td:first-child {
+#BackgroundInfoList .gbg-pink .icon {
 	background-image: url('../../x_img/gbg-pink.png');
 }
 
-#BackgroundInfoTable .gbg-lock td:first-child {
+#BackgroundInfoList .gbg-lock .icon {
 	background-image: url('../../x_img/gbg-lock.png');
 	background-size: 30px;
 }
 
-#BackgroundInfoTable .gbg-undefined td:first-child {
+#BackgroundInfoList .gbg-undefined .icon {
 	background-image: url('../../x_img/gbg-undefined.png');
 }
 
-#BackgroundInfoTable a[target="_blank"] {
-	color: var(--text-normal);
+#BackgroundInfoList a[target="_blank"] {
+	color: var(--beige);
 	text-decoration: underline;
 }
 
-#BackgroundInfoTable a[target="_blank"] svg {
-	fill: var(--text-normal);
+#BackgroundInfoList a[target="_blank"] svg {
+	fill: var(--beige);
 }
 
 input.textfilter{

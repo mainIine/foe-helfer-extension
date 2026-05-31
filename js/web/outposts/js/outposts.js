@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -46,7 +46,8 @@ let Outposts = {
 				auto_close: true,
 				dragdrop: true,
 				minimize: true,
-				resize: true
+				resize: true,
+			    active_maps:"cultural_outpost"
 				// popout: 'Outposts.PopOutBox()'
 			};
 
@@ -135,10 +136,9 @@ let Outposts = {
 		const plannedTiles = Outposts.PlannedTiles[OutpostData.content] || {};
 
 		const currentRun = {
-			id: OutpostData.completedPlaythroughs,
-			productionBonusProbability: OutpostData.completedPlaythroughs < OutpostData.playthroughs.length ? OutpostData.playthroughs[OutpostData.completedPlaythroughs].productionBonusProbability : OutpostData.playthroughs[OutpostData.playthroughs.length-1].productionBonusProbability,
+			id: OutpostData.completedPlaythroughs || 0,
+			productionBonusProbability: OutpostData.completedPlaythroughs === undefined ? OutpostData.playthroughs[0].productionBonusProbability : (OutpostData.completedPlaythroughs < OutpostData.playthroughs.length ? OutpostData.playthroughs[OutpostData.completedPlaythroughs].productionBonusProbability : OutpostData.playthroughs[OutpostData.playthroughs.length-1].productionBonusProbability),
 		}
-
 
 		// Diplomatische Gebäude raussuchen, die erforscht sind
 		/** @type {{name: string, diplomacy: number}[]}} */
@@ -174,7 +174,7 @@ let Outposts = {
 		;
 
 		/** @type {number} */
-		const current4HProductionRate = buildings.reduce(
+		const current5HProductionRate = buildings.reduce(
 			/** @type {(acc: number, building: FoE_JSON_CityMapEntity) => number} */
 			(acc, building) => {
 				const state = building.state;
@@ -187,12 +187,12 @@ let Outposts = {
 				if (production.__class__ === 'CityEntityProductionProduct') {
 					const amount = production.product.resources[primaryResourceId];
 					if (amount != null) {
-						return acc + amount*(60*60*4/* 4h */)/production.production_time;
+						return acc + amount/production.production_time*(60*60*5 /* 5h */);
 					}
 				} else if (production.__class__ === 'CityEntityResourcesWithRequirementsProduct') {
 					const amount = production.resources.resources[primaryResourceId];
 					if (amount != null) {
-						return acc + amount*(60*60*4/* 4h */)/production.production_time;
+						return acc + amount/production.production_time*(60*60*5 /* 5h */);
 					}
 				}
 				return acc;
@@ -235,8 +235,8 @@ let Outposts = {
 			'</span><span><strong>'
 			+ GoodsData[primaryResourceId].name + ': ' + HTML.Format(ResourceStock[primaryResourceId]||0)
 			+ '</strong> (+ '
-			+ (current4HProductionRate > 0 ? HTML.Format(MainParser.round(current4HProductionRate)) : '???')
-			+ '/4h)'
+			+ (current5HProductionRate > 0 ? HTML.Format(MainParser.round(current5HProductionRate)) : '???')
+			+ `/5h)`
 			+ '</span>'
 		);
 		t.push('</p>');
@@ -318,8 +318,8 @@ let Outposts = {
 		for (let resourceID of resourceIDs)
 		{
 			let IconID = resourceID;
-			if (resourceID === 'barley' || resourceID === 'pottery' || resourceID === 'flowers' || resourceID === 'sacrificial_offerings') IconID = 'fine_' + IconID;
-			t.push(`<th class="text-center"><span class="goods-sprite-50 ${IconID} goods-name" title="${GoodsData[resourceID].name}"></span></th>`);
+			if (['barley', 'pottery', 'flowers', 'sacrificial_offerings','fresh_fish','coconuts','kava','catamarans'].includes(resourceID)) IconID = 'fine_' + IconID;
+			t.push(`<th class="text-center"><span class="goods-sprite sprite-50 ${IconID} goods-name" title="${GoodsData[resourceID].name}"></span></th>`);
 		}
 
 		t.push('</tr>');
@@ -532,7 +532,7 @@ let Outposts = {
 
 		t.push('<tr>');
 		t.push('<td colspan="8" class="text-right">');
-		t.push(`<button class="btn-default" onclick="Outposts.SubmitData()">${i18n('Boxes.CityMap.Submit')}</button>`);
+		t.push(`<button class="btn" onclick="Outposts.SubmitData()">${i18n('Boxes.CityMap.OutpostSubmit')}</button>`);
 		t.push('</td>');
 		t.push('</tr>');
 
@@ -587,7 +587,7 @@ let Outposts = {
 	 * @returns {void}
 	 */
 	CollectResources: () => {
-		if (Outposts.OutpostData === null) return; //Kein Außenposten aktiv
+		if (Outposts.OutpostData === null) return; // Kein Außenposten aktiv
 		Outposts.RequestGUIUpdate();
 	},
 
@@ -649,6 +649,19 @@ let Outposts = {
 
 
 	SubmitData: () => {
+		let apiToken = localStorage.getItem('ApiToken');
+
+		if(apiToken === null) {
+			HTML.ShowToastMsg({
+				head: i18n('Boxes.CityMap.MissingApiKeyErrorHeader'),
+				text: i18n('Boxes.CityMap.MissingApiKeySubmitError'),
+				type: 'error',
+				hideAfter: 10000,
+			});
+
+			return;
+		}
+
 		let currentDate = new Date(),
 			d = {
 				time: currentDate.toISOString().split('T')[0] + ' ' + currentDate.getHours() + ':' + currentDate.getMinutes() + ':' + currentDate.getSeconds(),
@@ -658,6 +671,7 @@ let Outposts = {
 					world: ExtWorld,
 					avatar: ExtPlayerAvatar
 				},
+				apiToken: apiToken,
 				type: localStorage.getItem('OutpostType'),
 				eras: Technologies.Eras,
 				entities: Outposts.CityMap['entities'],
@@ -683,10 +697,7 @@ let Outposts = {
 			else {
 				HTML.ShowToastMsg({
 					head: i18n('Boxes.CityMap.SubmitErrorHeader'),
-					text: [
-						i18n('Boxes.CityMap.SubmitError'),
-						'<a href="https://github.com/mainIine/foe-helfer-extension/issues" target="_blank">Github</a>'
-					],
+					text: resp['msg'],
 					type: 'error',
 					hideAfter: 10000,
 				});

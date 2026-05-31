@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -32,9 +32,6 @@ let KampagneMap = {
     Provinces: null,
     AllProvinces: null,
 
-    /**
-     * Zeigt
-     */
     Show: () => {
         if ($('#campagne').length === 0) {
 
@@ -43,7 +40,8 @@ let KampagneMap = {
 				'title': i18n('Boxes.Campagne.Title'),
 				'auto_close': true,
 				'dragdrop': true,
-				'minimize': true
+				'minimize': true,
+                active_maps:"map",
 			});
 
 			// CSS in den DOM prügeln
@@ -57,17 +55,11 @@ let KampagneMap = {
     },
 
 
-    /**
-	 *
-	 */
     BuildBox: () => {
         KampagneMap.CalcBody();
     },
 
 
-    /**
-	 *
-	 */
     CalcBody: () => {
 
         let h = [];

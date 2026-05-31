@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -12,22 +12,19 @@
  */
 
 #Market {
-    top: 100px;
-    right: 100px;
-    width: 650px;
+	top: 100px;
+	right: 100px;
+	width: 650px;
+	height: 500px;
 }
 
 #Market #MarketBody {
     overflow-y: auto;
-	min-height: 400px;
-    max-height: 750px;
+    max-height: 2160px;
 }
 
 #Market #MarketBody table th {
-	position: sticky;
-	top: 0;
 	cursor: pointer;
-	z-index: 1;
 	font-size: 85%;
 }
 
@@ -59,15 +56,14 @@
 	background-color: var(--black-50);
 }
 
-#Market #MarketBody .goods-sprite-50.sm {
+#Market #MarketBody .sprite-35 {
 	width: 25px;
 	height: 25px;
 	text-align: center;
 }
 
-#Market #MarketBody .goods-sprite-50.sm::before { 
-	zoom: 0.7; 
+#Market #MarketBody .sprite-35::before { 
 	overflow: hidden;
-	position: static;
+	/*position: static;*/
 	display: inline-block;
 }

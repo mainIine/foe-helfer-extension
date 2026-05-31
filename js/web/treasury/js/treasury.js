@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -32,6 +32,7 @@ let Treasury = {
                 'title': i18n('Boxes.Treasury.Title'),
                 'auto_close': true,
                 'dragdrop': true,
+                settings: 'Treasury.ShowSettings()'
             });
 
             // CSS in den DOM prügeln
@@ -48,11 +49,13 @@ let Treasury = {
             });
         }
 
-        let LogArray = Logs['responseData']['logs'];
-        for (let i = 0; i < LogArray.length; i++) {
-            Treasury.Logs[Treasury.Logs.length] = LogArray[i];           
-        }
-        
+        let LogArray = Logs['responseData']['logs'].map(x=>{
+            let date = EventHandler.ParseDate(x.createdAt)
+            x.createdAt = date||x.createdAt
+            return x
+        });
+        Treasury.Logs = Treasury.Logs.concat(LogArray);           
+                
         Treasury.CalcBody();
     },
 
@@ -62,8 +65,8 @@ let Treasury = {
 
         h.push('<strong>' + i18n('Boxes.Treasury.Message') + '</strong><br>');
         h.push(i18n('Boxes.Treasury.RowNumber') + ': ' + HTML.Format(Treasury.Logs.length) + '<br>');
-        h.push('<span class="btn-default button-reset">' + i18n('Boxes.Treasury.Reset') + '</span>');
-        h.push('<span class="btn-default button-export">' + i18n('Boxes.Treasury.Export') + '</span>');
+        h.push('<span class="btn button-reset">' + i18n('Boxes.Treasury.Reset') + '</span>');
+        h.push('<span class="btn button-export">' + i18n('Boxes.Treasury.Export') + '</span>');
 
         $('#treasuryBody').html(h.join(''));
     },
@@ -96,7 +99,7 @@ let Treasury = {
             CurrentLine.push(GoodsData[GoodID]['name'].replace(/;/g, ''));
             CurrentLine.push(CurrentLog['amount']);
             CurrentLine.push(CurrentLog['action'].replace(/;/g, ''));
-            CurrentLine.push(CurrentLog['createdAt'].replace(/;/g, ''));
+            CurrentLine.push(typeof CurrentLog['createdAt'] == "object" ? CurrentLog['createdAt'].toLocaleString().replace(/,/g,"") : CurrentLog['createdAt'].replace(/;/g, ''));
 
             h.push(CurrentLine.join(';'));
         }
@@ -104,6 +107,31 @@ let Treasury = {
         let ExportString = h.join('\r\n');
         let BOM = "\uFEFF";
         let Blob1 = new Blob([BOM + ExportString], { type: "application/octet-binary;charset=ANSI" });
-        MainParser.ExportFile(Blob1, 'GBG-export.csv');
-    }
+        MainParser.ExportFile(Blob1, 'GuildTreasury-'+moment().format('YYYY-MM-DD')+'.csv');
+    },
+
+    /**
+    *
+    */
+     ShowSettings: () => {
+		let autoOpen = Settings.GetSetting('ShowGuildTreasuryLogExport');
+
+        let h = [];
+        h.push(`<p><input id="autoStartTreasuryExport" name="autoStartTreasuryExport" value="1" type="checkbox" ${(autoOpen === true) ? ' checked="checked"' : ''} /> <label for="autoStartMarket">${i18n('Boxes.Settings.Autostart')}</label></p>`);
+        h.push(`<p><button onclick="Treasury.SaveSettings()" id="save-treasury-settings" class="btn" style="width:100%">${i18n('Boxes.Settings.Save')}</button></p>`);
+
+        $('#treasurySettingsBox').html(h.join(''));
+    },
+
+    /**
+    *
+    */
+    SaveSettings: () => {
+        let value = false;
+		if ($("#autoStartMarket").is(':checked'))
+			value = true;
+
+		localStorage.setItem('ShowGuildTreasuryLogExport', value);
+		$(`#treasurySettingsBox`).remove();
+    },
 };

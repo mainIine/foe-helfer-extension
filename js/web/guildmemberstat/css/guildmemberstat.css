@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -18,97 +18,22 @@
     left: calc(50vw - 310px);
 }
 
+[id*=GuildMemberDetail].window-box {
+    width: 390px;
+    height: 400px;
+}
+
+[id*=GuildMemberDetail].window-body {
+    overflow: auto;
+}
+
 .text-bright {
-    color: var(--text-bright);
+    color: var(--sunflower);
 }
 
 #GuildMemberStat #GuildMemberStatBody {
     font-size: 0.9rem;
     overflow-y: scroll;
-
-}
-
-#GuildMemberStat #gms-loading-data {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: #000000c0;
-    z-index: 100;
-    opacity: 1;
-
-}
-
-#gms-loading-data .loadericon {
-    display: block;
-    position: relative;
-    left: 50%;
-    top: 50%;
-    width: 150px;
-    height: 150px;
-    margin: -75px 0 0 -75px;
-    border-radius: 50%;
-    border: 3px solid transparent;
-    border-top-color: #543118;
-    -webkit-animation: spin 2s linear infinite;
-    animation: spin 2s linear infinite;
-}
-
-#gms-loading-data .loadericon:before {
-    content: "";
-    position: absolute;
-    top: 5px;
-    left: 5px;
-    right: 5px;
-    bottom: 5px;
-    border-radius: 50%;
-    border: 3px solid transparent;
-    border-top-color: #f8af36;
-    -webkit-animation: spin 3s linear infinite;
-    animation: spin 3s linear infinite;
-}
-
-#gms-loading-data .loadericon:after {
-    content: "";
-    position: absolute;
-    top: 15px;
-    left: 15px;
-    right: 15px;
-    bottom: 15px;
-    border-radius: 50%;
-    border: 3px solid transparent;
-    border-top-color: #f3d6a0;
-    -webkit-animation: spin 1.5s linear infinite;
-    animation: spin 1.5s linear infinite;
-}
-
-@-webkit-keyframes spin {
-    0% {
-        -webkit-transform: rotate(0deg);
-        -ms-transform: rotate(0deg);
-        transform: rotate(0deg);
-    }
-
-    100% {
-        -webkit-transform: rotate(360deg);
-        -ms-transform: rotate(360deg);
-        transform: rotate(360deg);
-    }
-}
-
-@keyframes spin {
-    0% {
-        -webkit-transform: rotate(0deg);
-        -ms-transform: rotate(0deg);
-        transform: rotate(0deg);
-    }
-
-    100% {
-        -webkit-transform: rotate(360deg);
-        -ms-transform: rotate(360deg);
-        transform: rotate(360deg);
-    }
 }
 
 #GuildMemberStatBody #GuildMemberTable,
@@ -149,10 +74,25 @@
     vertical-align: bottom;
 }
 
-#GuildMemberStatBody .detail-item tr th span {
+#GuildMemberStatBody .detail-item tr th span, [id*=GuildMember] .summary span::before {
     width: 23px;
     height: 23px;
-    vertical-align: center;
+}
+
+[id*=GuildMemberDetail] .summary .flex {
+    justify-content: left;
+}
+
+[id*=GuildMember] .summary .average span {
+    padding: 0 2px;
+}
+
+[id*=GuildMember] .summary .average span::before {
+    content: '';
+    display: inline-block;
+    vertical-align: bottom;
+    position: relative;
+    top: 2px;
 }
 
 #GuildMemberStatBody tr th span.activity {
@@ -160,14 +100,26 @@
     background-size: contain;
 }
 
-#GuildMemberStatBody tr th span.gex {
+#GuildMemberStatBody tr th span.gex, [id*=GuildMember] .summary span.gex::before {
     background: url(../../x_img/ge.png) center no-repeat;
     background-size: contain;
 }
 
-#GuildMemberStatBody tr th span.gbg {
+#GuildMemberStatBody tr th span.gbg, [id*=GuildMember] .summary span.gbg::before {
     background: url(../../x_img/gbg-gray.png) center no-repeat;
     background-size: contain;
+}
+[id*=GuildMember] .summary span.qi::before {
+	background-image: url('../../x_img/qi.png');
+	background-size: contain;
+}
+[id*=GuildMember] .summary span.goods::before {
+	background-image: url('../../x_img/guildGoods.png');
+	background-size: contain;
+}
+[id*=GuildMemberDetail] .goods-sprite {
+	width: 1.2em;
+    height: 1.2em
 }
 
 #GuildMemberStatBody tr th span.messages {
@@ -189,10 +141,7 @@
 
 #GuildMemberStatBody table th {
     line-height: 23px;
-    position: sticky;
-    top: 0;
     cursor: pointer;
-    z-index: 10;
 }
 
 #GuildMemberStatBody .detail-item>table th {
@@ -216,7 +165,7 @@
     height: 0;
     border-style: solid;
     border-width: 0 5px 10px 5px;
-    border-color: transparent transparent var(--text-success) transparent;
+    border-color: transparent transparent var(--success) transparent;
 }
 
 #GuildMemberStatBody table tr td.decreased:after {
@@ -263,13 +212,18 @@
     width: 100%;
 }
 
+#GuildMemberStatBody .detail-item.buildings {
+    max-height: 300px;
+    overflow: auto;
+}
+
 #GuildMemberStatBody img.small {
     width: 18px;
     height: 18px;
 }
 
 #GuildMemberStatBody .warn {
-    color: var(--text-bright);
+    color: var(--sunflower);
 }
 
 #GuildMemberStatBody table tr.warning {
@@ -300,7 +254,7 @@
 }
 
 #GuildMemberStatBody .prev_score.green {
-    color: var(--text-success);
+    color: var(--success);
 }
 
 #GuildMemberStatBody .prev_score.red {
@@ -346,7 +300,7 @@
 }
 
 #GuildMemberStatBody .last-update-message .updaterequired {
-    color: var(--text-bright);
+    color: var(--sunflower);
 }
 
 #GuildMemberStatBody .last-update-message span.icon {
@@ -373,7 +327,7 @@
     top: -4px;
     font-size: 0.85em;
     padding: 0 0 0 3px;
-    color: var(--text-bright);
+    color: var(--sunflower);
     font-weight: bold;
     text-shadow: 0 2px 2px black, 0 1px 0 black;
 }
@@ -390,25 +344,8 @@
     overflow: hidden;
 }
 
-#GuildMemberStat .deleteButton {
-    background: #ff000036;
-    border: 1px solid #f800005c;
-    border-radius: 2em;
-    color: #fff;
-    font-size: 14px;
-    height: 18px;
-    padding: 0;
-    text-align: center;
-    width: 18px;
-    position: absolute;
-    right: 4px;
-    top: 1px;
-    cursor: pointer;
+#GuildMemberStat .btn-delete {
     display: none;
-}
-
-#GuildMemberStat .deleteButton:hover {
-    background: #00000036;
 }
 
 #GuildMemberStat #gms-filter-input {
@@ -416,11 +353,13 @@
     font-size: 1rem;
     padding: 3px 5px;
     background-color: var(--text-btn);
+    position: relative;
+    z-index: 1;
 }
 
 #GuildMemberStat #gms-filter-input.highlight {
-    border-color: var(--text-bright);
-    background-color: var(--text-bright);
+    border-color: var(--sunflower);
+    background-color: var(--sunflower);
     color: var(--black);
 }
 
@@ -430,15 +369,15 @@
     border-radius: 50%;
     display: inline-block;
     margin-left: 6px;
-    background: var(--background-btn-green-fallback);
-    background: var(--background-btn-green-moz);
-    background: var(--background-btn-green-webkit);
-    background: var(--background-btn-green);
+    background: var(--btn-bg-green-fallback);
+    background: var(--btn-bg-green-moz);
+    background: var(--btn-bg-green-webkit);
+    background: var(--btn-bg-green);
 }
 
 #GuildMemberStat .warningoverlay {
     position: absolute;
-    z-index: 1;
+    z-index: 1000;
     left: 0;
     top: 0;
     width: 100%;
@@ -456,17 +395,16 @@
 }
 
 #GuildMemberStat tr.nohover:hover {
-    background-color: var(--background-table-odd);
+    background-color: var(--table-bg-odd);
 }
 
-#GuildMemberStat .goods-sprite-50.sm {
+#GuildMemberStat .sprite-35 {
     width: 25px;
     height: 19px;
     vertical-align: middle;
 }
 
-#GuildMemberStat .goods-sprite-50.sm::before {
-    zoom: 0.7;
+#GuildMemberStat .sprite-35::before {
     overflow: hidden;
     position: static;
     display: inline-block;

@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -12,9 +12,10 @@
  */
 
 
-#betterMusicDialog {
+ #betterMusicDialog {
   top: 50px;
   left: calc(100vw - 350px);
+  width: 550px;
 }
 
 #betterMusicDialogBody {
@@ -28,26 +29,31 @@
 }
 
 .betterMusicSelected {
-  background-color: var(--background-table-success);
+  background-color: var(--table-bg-success);
 }
 .betterMusicNotSelected {
-  background-color: var(--background-table-error);
+  background-color: var(--table-bg-error);
 }
 
 #musicSettingsScenesX tr th:first-child {
   writing-mode: horizontal-tb;
-  vertical-align: bottom;
   text-align: left;
+  width:auto;
+}
+
+#betterMusicDialog .flex > div {
+  min-width: 40%;
+  padding: 0.5em;
 }
 
 #musicSettingsScenesX tr th {
-  writing-mode:vertical-lr;
-  text-align: right;
+  vertical-align: bottom;
+  width:15px;
 }
 
-#betterMusicDialogBody table caption{
-  font-weight: bold;
-  font-size: large;
+#musicSettingsScenesX tr th span {
+  writing-mode: vertical-lr;
+  transform: rotate(180deg);
 }
 
 #betterMusicDialogBody table {
@@ -67,3 +73,54 @@
   text-align: right;
 }
 
+
+#betterMusicDialogBody [type="checkbox"] {
+  display: none;
+}
+#betterMusicDialogBody [type="select"] {
+  margin-top: 8px;
+  margin-bottom: 15px;
+}
+#betterMusicDialogBody [type="checkbox"] + label {
+  position: relative;
+  display: block;
+  cursor: pointer;
+  font-family: sans-serif;
+  padding-left:2.8em;
+  position: relative;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+#betterMusicDialogBody [type="checkbox"] + label:before {
+  width: 2em;
+  height: 1em;
+  border-radius: 1em;
+  border: 2px solid var(--red);
+  background-color: var(--table-bg-error);
+  content: "";
+  margin-right: 0.7em;
+  transition: background-color 0.5s linear;
+  z-index: 5;
+  position: absolute;
+  left: 0px;
+}
+#betterMusicDialogBody [type="checkbox"] + label:after {
+  width: 1em;
+  height: 1em;
+  border-radius: 1em;
+  background-color: var(--beige);
+  content: "";
+  transition: margin 0.1s linear;
+  box-shadow: 0px 0px 5px var(--ash);
+  position: absolute;
+  left: 2px;
+  top: 2px;
+  z-index: 10;
+}
+#betterMusicDialogBody [type="checkbox"]:checked + label:before {
+  background-color: var(--table-bg-success);
+  border-color: var(--table-bb-success);
+}
+#betterMusicDialogBody [type="checkbox"]:checked + label:after {
+  margin: 0 0 0 1em;
+}

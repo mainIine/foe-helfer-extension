@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -21,11 +21,6 @@ FoEproxy.addHandler('CampaignService', 'start', (data, postData) => {
 	BonusService.InitBonus();
 });
 
-// GvG Map is opend
-FoEproxy.addHandler('ClanBattleService', 'getContinent', (data, postData) => {
-	BonusService.InitBonus();
-});
-
 // neihbor is visit
 FoEproxy.addHandler('OtherPlayerService', 'visitPlayer', (data, postData) => {
 	let OtherPlayer = data.responseData.other_player;
@@ -40,7 +35,7 @@ FoEproxy.addHandler('OtherPlayerService', 'visitPlayer', (data, postData) => {
 FoEproxy.addHandler('BonusService', 'getLimitedBonuses', (data, postData) => {
 	BonusService.Bonuses = data['responseData'];
 
-	FoEproxy.pushFoeHelperMessage('BonusUpdated');
+	FoEproxy.triggerFoeHelperHandler('BonusUpdated');
 
 	if ($('#bonus-hud').length > 0) {
 		BonusService.CalcBonusData();
@@ -48,9 +43,8 @@ FoEproxy.addHandler('BonusService', 'getLimitedBonuses', (data, postData) => {
 });
 
 FoEproxy.addFoeHelperHandler('QuestsUpdated', data => {
-	if ($('#bonus-hud').length > 0) {
+	if ($('#bonus-hud').length == 0) return;
 		BonusService.CalcBonusData();
-	}
 });
 
 // Guildfights enter
@@ -70,6 +64,7 @@ FoEproxy.addHandler('AnnouncementsService', 'fetchAllAnnouncements', (data, post
  */
 let BonusService = {
 	
+	timeout:null,
 	Bonuses: [],
 	BonusTypes: [
 		'first_strike',
@@ -87,35 +82,13 @@ let BonusService = {
 	 * @constructor
 	 */
 	InitBonus: (isGex = false)=> {
-		let bt = BonusService.BonusTypes,
-			exist = false;
-
-		// check if player has some of these 4 bonuses
-		for(let i in bt)
-		{
-			if(!bt.hasOwnProperty(i)) break;
-
-			BonusService.Bonuses.forEach((arr)=>{
-				if(arr['type'].includes(bt[i])){
-					exist = true;
-					return false;
-				}
-			});
-
-			if(exist === true) break;
-		}
-
-		// no? exit...
-		if(exist === false){
-			return;
-		}
-
 		if($('#bonus-hud').length === 0){
 			HTML.AddCssFile('bonus-service');
 
 			// wait 2s
-			setTimeout(()=>{
+			BonusService.timeout = setTimeout(()=>{
 				BonusService.ShowBonusSidebar(isGex);
+				BonusService.timeout = null;
 			},2000);
 		}
 	},
@@ -153,6 +126,10 @@ let BonusService = {
 	 * Removes the bonus-Hud
 	 */
 	HideBonusSidebar: ()=> {
+		if (BonusService.timeout !== null) {
+			clearTimeout(BonusService.timeout);
+			BonusService.timeout = null;
+		}
 		if($('#bonus-hud').length > 0){
 			$('#bonus-hud').fadeToggle(function(){
 				$(this).remove();
@@ -277,7 +254,7 @@ let BonusService = {
 					si.addClass('bonus-blink');
 
 					if (bt[i] === 'donequests') {
-						if (Settings.GetSetting('EnableSound')) Calculator.SoundFile.play();
+						helper.sounds.play("message");
 					}
 
 					setTimeout(()=>{
@@ -298,6 +275,7 @@ let BonusService = {
 		for (let i = 0; i < MainParser.Quests.length; i++) {
 			let Quest = MainParser.Quests[i];
 			if (Quest['category'] === 'outpost') continue;
+			if (Quest['type'] === 'ReplayableSeason_Allies_Milestone') continue;
 			if (Quest['state'] === 'collectReward') Ret += 1;
 		}
 		return Ret;

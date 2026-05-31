@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -19,7 +19,7 @@
 #statsBody {
 	width: 1100px;
 	max-height: 800px;
-	overflow: scroll;
+	overflow: auto;
 }
 
 #stats #highcharts {
@@ -29,34 +29,32 @@
 #stats .options {
 	display: flex;
 	flex-direction: row;
-	justify-content: space-around;
+	justify-content: space-between;
 	align-items: center;
 	background-color: var(--black-50);
 	height: 50px;
-	border-bottom: 2px solid #864c1e;
+	border-bottom: 2px solid var(--border-tab);
 }
 
-#stats .options-2 {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-}
-
-#stats .options-2 .btn-tight {
+#stats .options-2 .btn-slim {
 	margin: 2px 0;
 }
 
 #stats .option-era-dropdown {
-	width: 146px;
+	width: 170px;
 }
 
-#stats .option-era-wrap {
-	width: 370px;
+#stats .option-era-dropdown .dropdown {
+	width: 100%;
+}
+
+#stats .option-era-dropdown .dropdown ul li {
+	padding: 0.1rem;
 }
 
 #stats .tabs  {
-	width: 256px;
 	align-self: flex-end;
+	padding: 0 5px;
 }
 
 #stats .option-chart-type-wrap {
@@ -69,7 +67,7 @@
 }
 
 #stats .option-chart-type-wrap span.active {
-	color: var(--text-bright);
+	color: var(--sunflower);
 }
 
 #stats .option-source-wrap {
@@ -80,7 +78,11 @@
 	align-content: baseline;
 }
 
-.hidden {
+#stats .datepicker {
+	padding-right: 10px;
+}
+
+#stats .hidden {
 	visibility: hidden;
 }
 
@@ -122,19 +124,19 @@
 #stats .highcharts-data-table table thead tr th,
 #stats .highcharts-data-table table th,
 .thead th {
-	background-color: rgba(0,0,0, 0.5);
+	background-color: var(--black-50);
 }
 
-#stats .goods-sprite-50 {
+#stats .sprite-50 {
 	width: 30px;
 }
 
 #stats .highcharts-data-table table tbody tr:nth-child(odd) {
-	background-color: rgba(255,255,255, 0.07);
+	background-color: var(--white-65);
 }
 
 #stats .highcharts-data-table table:not(.no-hover) tbody tr:hover {
-	background-color: var(--background-table-hover);
+	background-color: var(--table-bg-hover);
 }
 
 #stats .highcharts-data-table table tr th {
@@ -155,35 +157,103 @@
 	border-bottom: none;
 }
 
+#stats .tabs ul.horizontal li {
+	line-height: 32px;
+}
+
+#stats .tabs ul.horizontal li a span {
+	width: 27px;
+}
+
 #stats .window-body .tabs ul.horizontal li {
 	margin-right: 2px;
 }
 
 #stats .tabs ul li a span {
-	background: transparent url('../images/tabs.png') -233px 5px no-repeat;
-	width: 24px;
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
 }
 #stats .tabs ul li.statsTreasurePlayerD a span {
-	background-position: 0 2px;
-}
-#stats .tabs ul li.statsTreasurePlayerH a span {
-	background-position: -40px 2px;
+	background-image: url(../../x_img/resources.png);
 }
 #stats .tabs ul li.statsTreasureClanD a span {
-	background-position: -80px 3px;
-}
-#stats .tabs ul li.statsTreasureClanH a span {
-	background-position: -120px 3px;
+	background-image: url(../../x_img/guildGoods.png);
 }
 #stats .tabs ul li.statsUnitsD a span {
-	background-position: -160px 3px;
-}
-#stats .tabs ul li.statsUnitsH a span {
-	background-position: -200px 3px;
+	background-image: url(../../x_img/units.png);
 }
 #stats .tabs ul li.statsRewards a span {
-	background-position: -280px 2px;
+	background-image: url(../../x_img/event.png);
 }
 #stats .tabs ul li.statsGBGPlayers a span {
-	background-position: -237px 2px;
+	background-image: url(../../x_img/gbg.png);
+}
+#stats .tabs ul li.diplomaticGifts a span {
+	background-image: url(../../x_img/diplomatic_gifts.png);
+}
+#stats .tabs ul li.spoilsOfWar a span {
+	background-image: url(../../x_img/spoils_of_war.png);
+}
+#stats .tabs ul li.guildExpedition a span {
+	background-image: url(../../x_img/ge.png);
+}
+#stats .tabs ul li.battlegrounds_conquest a span {
+	background-image: url(../../x_img/gbg-gray.png);
+}
+#stats .tabs ul li.__event a span {
+	background-image: url(../../x_img/event.png);
+}
+#stats .tabs ul li.hidden_reward a span {
+	background-image: url(../../x_img/incident.png);
+}
+#stats .tabs ul li.pvp_arena a span {
+	background-image: url(../../x_img/pvp_arena.png);
+}
+#stats .tabs ul li.guild_raids a span {
+	background-image: url(../../x_img/guild_raids.png);
+}
+#stats .tabs ul li.shards a span {
+	background-image: url(../../x_img/shards.png);
+}
+
+#LowStock .options {
+	border: 3px solid transparent;
+	height: 30px;
+	background-color: var(--background-light);
+}
+
+#LowStock .selected {
+	border-color: var(--limegreen);
+}
+#LowStockID {
+	width: 300px;
+	height: 34px;
+	margin-left: 5px;
+}
+#LowStockValue {
+	height: 30px;
+	margin-left: 5px;
+	margin-right: 5px;
+	background-color: var(--background-light);
+}
+#LowStockAddBtn {
+	height: 29px;
+    font-size: 18px;
+    margin-left: 5px;
+	font-weight: 900;
+}
+.LowStockRemBtn {
+	height: 20px;
+    font-size: 12px;
+    margin-left: 5px;
+	font-weight: 900;
+}
+.LShighlight {
+	background: var(--background-medium);
+    color: var(--white);
+}
+#LowStockAlarmsList img {
+    height: 25px;
+    background-color: var(--background-light);
 }

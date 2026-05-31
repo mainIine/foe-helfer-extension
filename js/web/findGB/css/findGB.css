@@ -1,0 +1,26 @@
+/*
+ * **************************************************************************************
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
+ *
+ * See file LICENSE.md or go to
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
+ *
+ * **************************************************************************************
+ */
+
+
+
+ #findGBDialog{
+  width: 500px;
+  height: 400px;
+}
+#findGBDialogBody{
+  overflow: auto;
+}
+
+#foundGB .progress {
+  background: linear-gradient(90deg, var(--table-bg-success) 0, var(--table-bg-success) var(--p), transparent var(--p), transparent)
+}

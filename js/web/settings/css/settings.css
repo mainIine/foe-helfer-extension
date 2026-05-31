@@ -1,6 +1,6 @@
  /*
  * **************************************************************************************
- * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -14,25 +14,24 @@
 #SettingsBox {
 	top: calc(50vh - 165px);
 	left: calc(50vw - 305px);
-	width: 610px;
-	height: 330px;
-	font-size: 80%;
+	width: 680px;
+	height: 410px;
+	font-size: 85%;
 }
 
 #SettingsBoxBody {
 	overflow-y: auto;
 }
 
-
 #SettingsBoxBody h2 {
 	font-size: 110%;
 	font-weight: 700;
-	color: var(--text-bright);
+	color: var(--sunflower);
 	margin: 10px 0 5px;
 }
 
 #SettingsBoxBody .item-row a {
-	color: #ffcc68;
+	color: var(--sunflower);
 }
 
 #SettingsBoxBody .item-row .desc {
@@ -68,11 +67,11 @@
 	text-align: center;
 	line-height: 32px;
 	font-size: 0.9rem;
-	color: #b0bbcd;
+	color: var(--light-blue);
 	font-weight: 700;
 }
 
-#SettingsBoxBody .item-row .btn-default,
+#SettingsBoxBody .item-row .btn,
 #SettingsBoxBody .item-row .setting-dropdown {
 	width: 172px;
 	padding: 4px 0;
@@ -111,7 +110,7 @@
 
 #SettingsBoxBody .settings-wrapper {
 	position: absolute;
-	top: 75px;
+	top: 69px;
 	bottom: 0;
 	left: 0;
 	right: 0;
@@ -132,21 +131,16 @@
 
 #SettingsBoxBody .tabs ul.vertical {
 	position: static;
-	width: 200px;
+	width: 234px;
 	height: auto;
-	padding-top: 5px;
-	margin-bottom: 2px;
 	overflow-y: auto;
 	overflow-x: hidden;
 }
 
-#SettingsBoxBody .tabs ul.vertical li {
-	margin-bottom: 2px;
-}
-
 #SettingsBoxBody .tabs .sub-tab {
 	margin-left: 0;
-	margin-bottom: 2px;
+	margin-bottom: 0;
+	margin-top: 2px;
 	border-left: 0;
 	width: 100%;
 	overflow-y: auto;
@@ -171,22 +165,21 @@
 	border-top: 1px solid var(--border-table-top);
 	border-bottom: 1px solid var(--border-table-bottom);
 	padding: 5px;
-	color: var(--text-normal);
+	color: var(--beige);
 }
 
 #SettingsBoxBody .helplist a:hover {
-	background-color: var(--background-table-hover);
+	background-color: var(--table-bg-hover);
 }
 
 #SettingsBoxBody .helplist li span {
 	display: inline-block;
-	background-color: #000;
+	background-color: var(--black);
 	width: 30px;
 	height: 32px;
 	margin-right: 7px;
 	background: url('../images/help.png') 0 0 no-repeat;
 	text-decoration: none;
-	float: left;
 }
 
 #SettingsBoxBody .helplist .discord {
@@ -210,7 +203,7 @@
 }
 
 #SettingsBoxBody .info-box dt {
-	color: var(--text-bright);
+	color: var(--sunflower);
 	font-weight: bold;
 }
 
@@ -218,7 +211,6 @@
 	border: 1px solid var(--text-dark);
 }
 
-/* Menu Inhalt */
 .setting .hud-btn {
 	margin-right: 6px;
 	margin-bottom: 6px;

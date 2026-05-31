@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -27,7 +27,7 @@
     left: 5px;
     width: 57px;
     height: 30px;
-    background: #c9af7f url('../../x_img/quest.png') no-repeat 1px center;
+    background: var(--dark-beige) url('../../x_img/quest.png') no-repeat 1px center;
     background-size: 39%;
     border-radius: 0 25px 25px 0;
     border: 2px solid var(--text-darker);

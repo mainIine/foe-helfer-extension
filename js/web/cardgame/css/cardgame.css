@@ -1,0 +1,170 @@
+/*
+ * **************************************************************************************
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
+ *
+ * See file LICENSE.md or go to
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
+ *
+ * **************************************************************************************
+ */
+
+#cardGameDialog {
+    top: 50px;
+    left: 350px;
+    width: 200px;
+    height: 200px;
+}
+#cardGameDialogBody {
+    overflow-y: auto;
+}
+#cardGameDialog .cardtop {
+    background-position: 233px -34px;
+    height: 29px;
+    width: 207px;
+    z-index: -1;
+    position: relative;
+    border-radius: 4px;
+}
+#cardGameDialog .attack, #cardGameDialog .bonus {
+    width: 15%;
+    text-align: center;
+}
+#cardGameDialog table.foe-table tbody tr:nth-child(odd) {
+    background-color: transparent;
+}
+#cardGameDialog .name {
+    color: var(--text-darker);
+    text-shadow: none;
+    font-weight: bold;
+    display: flex;
+    margin: -2px -5px;
+    text-shadow: 0 0 3px #000 8, 0 1px 1px #000 9;
+}
+#cardGameDialog .name.commander {
+    color: #f5bc72;
+}
+#cardGameDialog .name.manipulator {
+    color: #8680e7;
+}
+#cardGameDialog .name.genius {
+    color: #89c7f0;
+}
+#cardGameDialog .name.champion {
+    color: #d64d4d;
+}
+#cardGameDialog .name.none {
+    color: #3ec9c9;
+}
+#cardGameDialog .name.none .faction {
+    background-image: url(../../x_img/hero_ability.png);
+}
+#cardGameDialog .name .faction {
+    width: 23px;
+    height: 23px;
+    display: inline-block;
+    background-size: contain;
+    flex-shrink: 0;
+}
+#cardGameDialog .name.highlightWeak .cardName::before {
+    display: inline-block;
+    background-color: var(--hud-border-error);
+    content: '!';
+    border-radius: 50px;
+    color: var(--white);
+    text-align: center;
+    text-shadow: none;
+    width: 19px;
+    height: 19px;
+    font-weight: bold;
+    margin-right: 2px;
+    margin-top: 2px;
+}
+#cardGameDialog .highlight, #cardGameDialog .highlightOptions {
+    color: var(--white);
+    box-shadow: inset 0 0 20px #000 c;
+    text-transform: uppercase;
+    font-style: italic;
+}
+#cardGameDialog .highlight .name, #cardGameDialog .highlightOptions .name {
+    font-weight: bolder;
+    filter: saturate(1.2) brightness(1.2);
+    text-shadow: 0 0 3px #000 a, 0 1px 1px #000 a;
+}
+#cardGameDialog .highlight .name.commander, #cardGameDialog .highlightOptions .name.commander {
+    background: linear-gradient(to right, #ea9f39 44 10%, #ea9f39 0 40%);
+}
+#cardGameDialog .highlight .name.manipulator, #cardGameDialog .highlightOptions .name.manipulator {
+    background: linear-gradient(to right, #655fbc 44 10%, #655fbc 0 40%);
+}
+#cardGameDialog .highlight .name.genius, #cardGameDialog .highlightOptions .name.genius {
+    background: linear-gradient(to right, #5faee3 44 10%, #5faee3 0 40%);
+}
+#cardGameDialog .highlight .name.champion, #cardGameDialog .highlightOptions .name.champion {
+    background: linear-gradient(to right, #b72b2b 44 10%, #b72b2b 0 40%);
+}
+#cardGameDialog .highlight .name.none, #cardGameDialog .highlightOptions .name.none {
+    background: linear-gradient(to right, #11b4b5 44 10%, #11b4b5 0 40%);
+}
+#cardGameDialog .cardbonus, #cardGameDialog .cardattack {
+    background-position: 122px 68px;
+    height: 25px;
+    width: 33px;
+    padding-left: 41px;
+    border-radius: 4px;
+    line-height: 23px;
+    border: 2px solid #0c070e;
+}
+#cardGameDialog .cardattack {
+    background-position: 477px 68px;
+}
+#cardGameDialog .cardbonus.highlightStrong div::before, #cardGameDialog .cardbonus.highlightWeak div::before {
+    display: block;
+    height: 28px;
+    width: 79px;
+    margin-left: -41px;
+    margin-bottom: -28px;
+    background-color: var(--table-bg-success);
+    content: '';
+}
+#cardGameDialog .cardbonus.highlightWeak::before {
+    background-color: var(--table-bg-error);
+}
+#cardGameDialog .highlightStrong div {
+    background-color: var(--success);
+    display: inline-block;
+    border-radius: 50px;
+    color: var(--text-darker);
+    text-shadow: none;
+    padding: 0 6px;
+    font-weight: bold;
+}
+#cardGameDialog th {
+    width: 95px;
+}
+#cardGameDialog th:first-child {
+    width: 220px;
+}
+#cardGameDialog td {
+    font-weight: 600;
+}
+#cardGameFightBlocker {
+    width: 110px;
+    height: 110px;
+    position: absolute;
+    z-index: 100;
+    background: var(--btn-bg-active);
+    border-radius: 30px;
+    border: 3px solid var(--hud-border-error);
+    top: calc(50vh + 188px);
+    left: calc(50vw - 62px);
+}
+#cardGameFightBlocker.halloween_event {
+    top: calc(50vh - 39px);
+    left: calc(50vw - 58px);
+}
+#cardGameFightBlocker:hover {
+    background: var(--btn-bg-red);
+}

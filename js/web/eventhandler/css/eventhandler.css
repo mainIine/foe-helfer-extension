@@ -1,6 +1,6 @@
 ﻿/*
  * **************************************************************************************
- * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -31,7 +31,7 @@
 
 #moppelhelper .bigerror {
     font-size: 150%;
-    color: #ec4d4d;
+    color: var(--danger-red);
 }
 
 #moppelhelper .header {
@@ -46,7 +46,7 @@
 }
 
 #moppelhelper #moppelhelperBody td a {
-    color: var(--text-bright);
+    color: var(--sunflower);
     text-decoration: none;
 }
 
@@ -54,50 +54,35 @@
     text-decoration: underline;
 }
 
-#moppelhelper #moppelhelperBody .dropdown span.arrow {
-	top: 14px;
-	right: 8px;
-}
-
 #moppelhelper #moppelhelperBody .dropdown input[type=checkbox]:checked ~ span.arrow {
 	top: 11px;
 }
 
 #moppelhelper #moppelhelperBody .foe-table tr:first-child td:nth-child(5) strong {
-    color: var(--text-success);
-}
-
-#moppelhelper #moppelhelperBody table .sorter-header .ascending:after {
-    content: "↑";
-	color: var(--text-bright);
-	left: 4px;
-	position: relative;
-}
-
-#moppelhelper #moppelhelperBody table .sorter-header .descending:after {
-    content: "↓";
-	color: var(--text-bright);
-	left: 4px;
-	position: relative;
+    color: var(--success);
 }
 
 #moppelhelper #moppelhelperBody table.foe-table tr th {
     text-align: center;
 }
-
+/*
 #moppelhelper #moppelhelperBody table.foe-table tr th:nth-child(3) {
     text-align: left;
 }
+*/
 
-#moppelhelper #moppelhelperBody .events-sprite-50.sm {
+#moppelhelper #moppelhelperBody table.foe-table tr th.name-col {
+    text-align: left;
+}
+
+#moppelhelper #moppelhelperBody .events-sprite-35 {
     text-align: center;
 	display: inline-block;
     margin-right: 2px;
     vertical-align: text-bottom;
 }
 
-#moppelhelper #moppelhelperBody .events-sprite-50.sm::before {
-    zoom: 0.7;
+#moppelhelper #moppelhelperBody .events-sprite-35::before {
     overflow: hidden;
     position: static;
     display: inline-block;

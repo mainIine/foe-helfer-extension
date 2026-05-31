@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -374,11 +374,8 @@ if ( typeof Object.create !== 'function' ) {
 		allowToastClose: false,
 		hideAfter: 3000,
 		loader: true,
-		loaderBg: '#F3D6A0',
 		stack: 4,
 		position: 'bottom-right',
-		bgColor: '#4C2F1E',
-		textColor: '#FFB539',
 		textAlign: 'left',
 		icon: false,
 		beforeShow: function () {},

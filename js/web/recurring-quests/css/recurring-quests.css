@@ -1,0 +1,80 @@
+/*
+ * **************************************************************************************
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
+ *
+ * See file LICENSE.md or go to
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
+ *
+ * **************************************************************************************
+ */
+
+#RecurringQuestsBox {
+    width:300px;
+    height: 500px;
+}
+#RecurringQuestsBoxBody {
+    overflow: auto;
+}
+
+#RecurringQuestsBoxBody div {
+    color: var(--sunflower);
+    padding: 5px;
+    font-size: smaller;
+    text-align: justify;
+}
+
+#RecurringQuestsBoxBody th:last-child,
+#RecurringQuestsBoxBody td:last-child {
+    text-align: center;
+    font-weight: bold;
+    font-size: large;
+    width: 27px;
+}
+
+#RecurringQuestsBoxBody td.check:last-child {
+    color: var(--limegreen);
+}
+#RecurringQuestsBoxBody td:last-child {
+    color: var(--sunflower);
+}
+#recurringTable.hideTasks th:nth-child(1),
+#recurringTable.hideTasks td:nth-child(1){
+    display:none;
+    width: 90%;
+}
+#recurringTable:not(.hideTasks) th:nth-child(2),
+#recurringTable:not(.hideTasks) td:nth-child(2){
+    display:none;
+    width: 90%;
+}
+#recurringTable th:nth-child(1),
+#recurringTable th:nth-child(2){
+    color:var(--sunflower);
+}
+#recurringTable {
+    table-layout: fixed;
+}
+#recurringTable span {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    display: block;
+}
+#recurringTable img{
+    height: 25px;
+}
+#recurringTable .switchState.loading::before {
+    content: '';
+    display: block;
+    width: 15px;
+    height: 15px;
+    margin-right: 0px;
+    margin-bottom: -25px;
+    border: 5px solid transparent;
+    border-top-color: var(--def);
+    border-radius: 15px;
+    animation: spin 5s linear infinite;
+}

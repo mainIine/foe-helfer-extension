@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -25,7 +25,7 @@ let _menu_box = {
 	 * Create a html box and put it into the DOM
 	 */
 	Show: () => {
-        moment.locale(i18n('Local'));
+        //moment.locale(18n('Local'));
 
 		HTML.Box({
 			id: 'menu_box',

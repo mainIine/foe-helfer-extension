@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -15,6 +15,10 @@
     top: calc(50vh + 230px);
     left: calc(50vw - 298px);
 }
+#battleAssistNextEraDialog.BattleAssistNoTournamnt{
+    top: calc(50vh + 200px);
+    left: calc(50vw - 298px);
+}
 
 #battleAssistNextEraDialogBody {
     width: 576px;
@@ -24,23 +28,16 @@
     align-items: center;
     text-align: center;
     font-size: 120%;
-    background-color: rgba(103, 1, 1, 0.5);
+    background-color: var(--table-bg-error);
 }
 
 #battleAssistRogueDialog {
-    top: calc(50vh + 230px);
-    left: calc(50vw - 92px);
+    top: calc(50vh + 240px);
+    left: calc(50vw - 270px);
 }
 
 #battleAssistRogueDialogBody {
     width: 360px;
-    height: 100px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    font-size: 120%;
-	background-color: rgba(103, 1, 1, 0.5);
 }
 
 #battleAssistRogueDialogBody,
@@ -49,9 +46,154 @@
 }
 
 @keyframes battleAssistBlink {
-    0% {color: #fafa6c;}
-    25% {color: #fcfcb2;}
-    50% {color: transparent;}
-    75% {color: #fcfcb2;}
-    100% {color: #fafa6c;}
+    0% {color: var(--sunflower);}
+    50% {color: var(--beige);}
+    100% {color: var(--sunflower);}
+}
+
+#battleAssistAddAdvice {
+    top: calc(50vh - 299px);
+    left: calc(50vw + 115px);
+    width: 120px;
+    height: 34px;
+}
+
+#battleAssistAddAdviceHeader {
+    background: none;
+    border-bottom-width: 0;
+    box-shadow: none;
+    justify-content: right;
+}
+
+#battleAssistAddAdviceHeader .title {
+    display: none;
+}
+
+#battleAssistAddAdviceHeader .box-buttons {
+    z-index: 1001;
+}
+#battleAssistAddAdviceBody {
+    background: var(--btn-bg);
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    box-sizing: border-box;
+    padding: 0.2rem 0.4rem;
+    position: relative;
+    top: -34px;
+    height: 34px;
+    border-radius: 3px;
+}
+#battleAssistAddAdviceBody:hover {
+    background: var(--btn-bg-active);
+}
+
+#battleAssistArmyAdvice {
+    top: calc(50vh - 269px);
+    left: calc(50vw - 258px);
+    width: 646px;
+    height: 80px;
+    overflow-y: hidden;
+}
+#battleAssistArmyAdviceBody {
+    background: 5px;
+    color: var(--black);
+    background-color: var(--sunflower);
+}
+#battleAssistArmyAdviceBody span {
+    margin-left: 5px;
+}
+
+#battleAssistAAConfig {
+    height: 60vh;
+}
+
+#battleAssistAAConfig .BattleWave {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    height: 75px;
+    width: 150px;
+    align-content: flex-start;
+}
+
+#battleAssistAAConfig .BattleWave img {
+    border: 1px var(--black) solid;
+    height: 35px;
+}
+
+#battleAssistAAConfigBody {
+    overflow-y: auto;
+}
+#battleAssistAAConfig .explanation {
+    color: var(--sunflower);
+    margin: 3px;
+    border: solid 1px;
+    border-radius: 4px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-bottom: 5px;
+}
+#battleAssistAAConfig .closed {
+    float:right;
+}
+#battleAssistAAConfig h1 {
+    color: var(--sunflower);
+    margin-left: 5px;
+}
+#battleAssistAAConfigSettingsBox input{
+    width: 35px;
+}
+.AASetAdvice textarea {
+    width: 300px;
+    height: 75px;
+    overflow: hidden;
+}
+.AASetBonus input {
+    width: 50px;
+}
+
+.AASetAdvice {
+    width:300px;
+    position: relative;
+}
+.battleAssistOverrideTypeGroup {
+    display: none;
+    position: absolute;
+    top: 0px;
+    width: 25px;
+    right: 0px;
+}
+.battleAssistOverrideTypeGroup img{
+    width: 100%;
+}
+.battleAssistOverrideType img{
+    opacity: 50%;
+}
+.battleAssistOverrideType.active img{
+    opacity: 100%;
+}
+#battleAssistAAConfigBody table td:hover .battleAssistOverrideTypeGroup {
+    display:block;
+}
+
+.AASetBonus {
+    width:80px;
+}
+
+#battleAssistAAConfigBody table th:nth-child(1) {
+    min-width:150px;
+}
+#battleAssistAAConfigBody table th:nth-child(2) {
+    min-width:150px;
+}
+#battleAssistAAConfigBody table th:nth-child(5) {
+    min-width:300px;
+}
+
+#battleAssistAAConfigBody [data-id^="attack%"] {
+    background: var(--table-bg-error);
+}
+#battleAssistAAConfigBody [data-id^="defense%"] {
+    background: var(--table-bg-info);
 }

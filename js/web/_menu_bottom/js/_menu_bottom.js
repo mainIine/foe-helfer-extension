@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -13,7 +13,7 @@
 
 let _menu_bottom = {
 
-	btnSize: 45,
+	btnSize: 42,
 
 	/**
 	 * Create the div holders and put them to the DOM
@@ -23,7 +23,7 @@ let _menu_bottom = {
 
 	BuildOverlayMenu: () => {
 
-		let hud = $('<div />').attr('id', 'foe-helper-hud').addClass('game-cursor'),
+		let hud = $('<div />').attr({'id': 'foe-helper-hud','class': 'hud-bottom'}).addClass('game-cursor'),
 			hudWrapper = $('<div />').attr('id', 'foe-helper-hud-wrapper'),
 			hudInner = $('<div />').attr('id', 'foe-helper-hud-slider');
 
@@ -35,23 +35,23 @@ let _menu_bottom = {
 		hud.append(btnUp);
 		hud.append(hudWrapper)
 		hud.append(btnDown);
-
-		$('body').append(hud).promise().done(function(){
+		
+		// If the window size changes, recalculate
+		window.onresize = function(event) {
+			if (event.target == window) _menu_bottom.SetMenuWidth(true);
+		};
+		
+		$('body').append(hud).promise().done(async function(){
 
 			// Insert buttons
 			_menu.ListLinks(_menu_bottom.InsertMenuItem);
-			_menu_bottom.CheckButtons();
+			await _menu_bottom.CheckButtons();
 
 			// Determine the correct place for the menu
 			_menu_bottom.SetMenuWidth();
 
 			window.dispatchEvent(new CustomEvent('foe-helper#menu_loaded'));
 		});
-
-		// If the window size changes, recalculate
-		window.onresize = function (event) {
-			_menu_bottom.SetMenuWidth(true);
-		};
 	},
 
 
@@ -115,7 +115,14 @@ let _menu_bottom = {
 
 		_menu.HudCount = Math.floor((($(window).outerWidth() - 50) - $('#foe-helper-hud').offset().left) / _menu_bottom.btnSize);
 		_menu.HudCount = Math.min(_menu.HudCount, MenuItemCount);
-
+		if (_menu.HudCount <= 0) {
+			$('#foe-helper-hud').remove();
+			$('.tooltip').remove();
+			window.onresize = function(){};
+			_menu.CallSelectedMenu('Box');
+			return;
+		} 
+			
 		// hat der Spieler eine Länge vorgebeben?
 		let MenuLength = localStorage.getItem('MenuLength');
 
@@ -127,8 +134,8 @@ let _menu_bottom = {
 		_menu.HudWidth = (_menu.HudCount * _menu_bottom.btnSize);
 		_menu.SlideParts = Math.ceil(MenuItemCount / _menu.HudCount);
 
-		$('#foe-helper-hud').width(_menu.HudWidth + 3);
-		$('#foe-helper-hud-wrapper').width(_menu.HudWidth + 3);
+		$('#foe-helper-hud').width(_menu.HudWidth);
+		$('#foe-helper-hud-wrapper').width(_menu.HudWidth);
 		$('#foe-helper-hud-slider').width( ($("#foe-helper-hud-slider").children().length * _menu_bottom.btnSize));
 	},
 	
@@ -137,23 +144,26 @@ let _menu_bottom = {
 	 * Panel scrollbar machen
 	 *
 	 */
-	CheckButtons: () => {
+	CheckButtons: async () => {
 		let activeIdx = 0;
+		await ExistenceConfirmed("jQuery._data($('body').get(0), 'events' ).click||$('.hud-btn')");
 		$('.hud-btn').click(function () {
 			activeIdx = $(this).index('.hud-btn');
 		});
 
+		if (jQuery._data($('body').get(0), 'events' ).click.filter((elem) => elem.selector == ".hud-btn-right-active").length == 0) {
+			// Klick auf Pfeil nach rechts
+			$('body').on('click', '.hud-btn-right-active', function () {
+				_menu_bottom.ClickButtonRight();
+			});
+		};
 
-		// Klick auf Pfeil nach unten
-		$('body').on('click', '.hud-btn-right-active', function () {
-			_menu_bottom.ClickButtonRight();
-		});
-
-
-		// Klick auf Pfeil nach oben
-		$('body').on('click', '.hud-btn-left-active', function () {
-			_menu_bottom.ClickButtonLeft();
-		});
+		if (jQuery._data($('body').get(0), 'events' ).click.filter((elem) => elem.selector == ".hud-btn-left-active").length == 0) {
+			// Klick auf Pfeil nach links
+			$('body').on('click', '.hud-btn-left-active', function () {
+				_menu_bottom.ClickButtonLeft();
+			});
+		};
 
 
 		// Tooltipp top ermitteln und einblenden
@@ -174,7 +184,7 @@ let _menu_bottom = {
 		$('#foe-helper-hud-slider').sortable({
 			placeholder: 'menu-placeholder',
 			axis: 'x',
-			distance: 15,
+			distance: 22,
 			start: function () {
 				$('#foe-helper-hud').addClass('is--sorting');
 			},

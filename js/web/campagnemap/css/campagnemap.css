@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -36,7 +36,7 @@
 }
 
 #campagne #campagneBody .campagne-head strong {
-	color: var(--text-bright);
+	color: var(--sunflower);
 }
 
 #campagne #campagneBody tr.total-row td {
@@ -45,22 +45,22 @@
 }
 
 #campagne #campagneBody tr.resource-row td {
-	color: var(--text-bright);
+	color: var(--sunflower);
 	font-weight: 700;
 }
 
 #campagne #campagneBody .text-danger {
-	color: #ff4040;
+	color: var(--danger-red);
 	font-weight: 700;
 }
 
 #campagne #campagneBody .text-success {
-	color: var(--text-success);
+	color: var(--success);
 	font-weight: 700;
 }
 
 #campagne #campagneBody .text-muted {
-	color: var(--text-muted);
+	color: var(--ash);
 }
 
 #campagne #campagneBody td {
@@ -71,7 +71,7 @@
 	font-weight: 700;
 	display: inline-block;
 	margin-left: 6px;
-	background: var(--text-info);
+	background: var(--info-blue);
 	padding: 0 4px;
 	border-radius: 50%;
 	width: 10px;
@@ -83,7 +83,7 @@
 	position: absolute;
 	white-space: nowrap;
 	text-align: left;
-	background: rgba(0,0,0, 0.7);
+	background: var(--black-65);
 	padding: 5px;
 	right: 6px;
 	top: 25px;

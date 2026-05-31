@@ -1,6 +1,7 @@
 /*
- * **************************************************************************************
- * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * *************************************************************************************
+ *
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -8,7 +9,7 @@
  * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
  * for full license details.
  *
- * **************************************************************************************
+ * *************************************************************************************
  */
 
 /*
@@ -37,6 +38,7 @@ helper.str = {
 	 * <a href="/param">@param</a> {string} [textToCopy] Source string
 	 */
 	copyToClipboard: async(textToCopy) => {
+		if (!document.hasFocus()) return;
 		if (navigator && navigator.clipboard && navigator.clipboard.writeText) {
 			return navigator.clipboard.writeText(textToCopy);
 		} else {
@@ -59,7 +61,11 @@ helper.str = {
 		copyFrom.select();
 		document.execCommand('copy');
 		copyFrom.remove();
-    },
+	},
+
+	cleanup: (textToCleanup) => {
+		return textToCleanup.toLowerCase().replace(/ä/g, 'a').replace(/ö/g, 'o').replace(/ü/g, 'u').replace(/[\W_ ]+/g, '')
+	},
 };
 
 helper.arr = {
@@ -133,6 +139,26 @@ helper.permutations = (()=>{
 	return permutations;
 })();
 
+helper.sounds = {
+	ping: new Audio(extUrl + 'vendor/sounds/ping.mp3'),
+    message: new Audio(extUrl + 'vendor/sounds/message.mp3'),
+	play: (sound) => {
+		if (Settings.GetSetting('EnableSound')) helper.sounds[sound].play();
+	},
+};
+
+helper.preloader = { 
+	show: function(id) {
+		$(id+' .loading-data').remove();
+		$(id).append('<div class="loading-data"><div class="loadericon"></div></div>');
+	},
+
+	hide: function(id) {
+		$(id+' .loading-data').fadeOut(600, 'easeInCubic', function () {
+			$(this).remove();
+		})
+	}
+};
 
 let HTML = {
 
@@ -158,34 +184,37 @@ let HTML = {
 	Box: (args) => {
 
 		let title = $('<span />').addClass('title').html(args['title']);
-
+		
 		if (args['onlyTitle'] !== true) {
-			title = $('<span />').addClass('title').html(args['title'] + ' <small><em> - ' + i18n('Global.BoxTitle') + '</em></small>');
+			title = $('<span />').addClass('title').html((extVersion.indexOf("beta") > -1 ? '(Beta) ': '') + args['title'] + ' <small><em> - FoE Helper</em></small>');
 		}
-
-		let close = $('<span />').attr('id', args['id'] + 'close').addClass('window-close'),
-
+		title = title.attr('title', title[0].textContent);
+		let	buttons = $('<div />').attr('id', args['id'] + 'Buttons').addClass('box-buttons'),
 			head = $('<div />').attr('id', args['id'] + 'Header').attr('class', 'window-head').append(title),
 			body = $('<div />').attr('id', args['id'] + 'Body').attr('class', 'window-body'),
 			div = $('<div />').attr('id', args['id']).attr('class', 'window-box open').append(head).append(body).hide(),
 			cords = localStorage.getItem(args['id'] + 'Cords');
-
+		
+		// close button
+		let close = $('<span />').attr('id', args['id'] + 'close').addClass('window-close');
 
 		if (args['auto_close'] !== false) {
-			head.append(close);
+			buttons.append(close);
 		}
-
-		// Minimierenbutton
+		if (args["active_maps"] && args["active_maps"].length > 0) {
+			let maps = args["active_maps"].replace(" ","").split(",").map(x => "ActiveOn"+x);
+			div.addClass("MapActivityCheck "+maps.join(" "));
+		}
+		// minimize
 		if (args['minimize']) {
 			let min = $('<span />').addClass('window-minimize');
-			min.insertAfter(title);
+			buttons.prepend(min);
 		}
 
-		// insert a wrench icon
-		// set a click event on it
+		// insert a wrench icon, set a click event on it
 		if (args['settings']) {
 			let set = $('<span />').addClass('window-settings').attr('id', `${args['id']}-settings`);
-			set.insertAfter(title);
+			buttons.prepend(set);
 
 			if (typeof args['settings'] !== 'boolean') {
 				HTML.customFunctions[`${args['id']}Settings`] = args['settings'];
@@ -194,7 +223,7 @@ let HTML = {
 
 		if (args['popout']) {
 			let set = $('<span />').addClass('window-settings').attr('id', `${args['id']}-popout`);
-			set.insertAfter(title);
+			buttons.prepend(set);
 
 			if (typeof args['popout'] !== 'boolean') {
 				HTML.customFunctions[`${args['id']}PopOut`] = args['popout'];
@@ -203,33 +232,48 @@ let HTML = {
 
 		if (args['map']) {
 			let set = $('<span />').addClass('window-map').attr('id', `${args['id']}-map`);
-			set.insertAfter(title);
+			buttons.prepend(set);
 
 			if (typeof args['map'] !== 'boolean') {
 				HTML.customFunctions[`${args['id']}Map`] = args['map'];
 			}
 		}
 
-		// Lautsprecher für Töne
+		// Sounds (was in the calculators)
 		if (args['speaker']) {
 			let spk = $('<span />').addClass('window-speaker').attr('id', args['speaker']);
-			spk.insertAfter(title);
+			buttons.prepend(spk);
 
 			$('#' + args['speaker']).addClass(localStorage.getItem(args['speaker']));
 		}
+		
+		// Position von beweglichen Fenstern initialisieren und Verhindern, dass Fenster außerhalb plaziert werden
+		if (args.dragdrop) div.css({"--x": "0px","--y": "0px","left":"calc(min(max(50vw + var(--x),0px),100vw - 60px))","top":"calc(min(max(50vh + var(--y),0px), 100vh - 60px))"});
 
-		// es gibt gespeicherte Koordinaten
+		// load saved coords
 		if (cords) {
-			let c = cords.split('|');
-
+			c = null
+			if (cords.includes('|')) {
+				cords = cords.split('|') 
+				cords = mouseActions.calcCoords([Number(cords[1]), Number(cords[0])], "Center")
+			} else {
+				cords = JSON.parse(cords)
+			}
 			// Verhindere, dass Fenster außerhalb plaziert werden
-			div.offset({ top: Math.min(parseInt(c[0]), window.innerHeight - 50), left: Math.min(parseInt(c[1]), window.innerWidth - 100) });
+			div.css({"--x": cords[0]+"px","--y": cords[1]+"px"});
 		}
 
-		// Ein Link zu einer Seite
+		// link to documentation
 		if (args['ask']) {
-			div.find(title).after($('<span />').addClass('window-ask').attr('data-url', args['ask']));
+			let ask = $('<span />').addClass('window-ask').attr('data-url', args['ask']);
+			buttons.prepend(ask);
 		}
+
+		if (args['class']) {
+			div.addClass(args['class']);
+		}
+
+		head.append(buttons);
 
 		// wenn Box im DOM, verfeinern
 		$('body').append(div).promise().done(function () {
@@ -239,6 +283,9 @@ let HTML = {
 				HTML.BringToFront(div);
 			}, 300);
 
+			$("#"+args['id'] + 'Header .box-buttons span').on("pointerdown",(e)=>{
+				e.stopPropagation()
+			})
 
 			if (args['auto_close']) {
 				$(`#${args.id}`).on('click', `#${args['id']}close`, function () {
@@ -248,6 +295,8 @@ let HTML = {
 
 					$('#' + args['id']).fadeToggle('fast', function () {
 						$(this).remove();
+						Tooltips.deactivate()
+						$("div.tooltip").remove();
 					});
 				});
 			}
@@ -337,6 +386,8 @@ let HTML = {
 			$('body').on('click', '.window-box', function () {
 				HTML.BringToFront($(this));
 			});
+
+			return true;
 		});
 	},
 
@@ -387,7 +438,8 @@ let HTML = {
 	MinimizeBeforeBattle: () => {
 		let HideHelperDuringBattle = localStorage.getItem('HideHelperDuringBattle');
 		let MenuSetting = localStorage.getItem('SelectedMenu');
-		if (HideHelperDuringBattle == 'true' && MenuSetting == 'Box' && $('body').find("#menu_box").hasClass('open')) {
+
+		if (HideHelperDuringBattle === 'true' && MenuSetting === 'Box' && $('body').find("#menu_box").hasClass('open')) {
 			HTML.Minimize();
 			HTML.boxWasMinimizedForBattle = true;
 		}
@@ -413,9 +465,9 @@ let HTML = {
 
 		document.getElementById(el.id + "Header").removeEventListener("pointerdown", dragMouseDown);
 
-		let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0, top = 0, left = 0, id;
+		let xStartM=0, yStartM=0, xStartEl=0, yStartEl=0;			
 
-		id = el.id;
+		let id = el.id;
 
 		if (document.getElementById(el.id + "Header")) {
 			document.getElementById(el.id + "Header").onpointerdown = dragMouseDown;
@@ -427,8 +479,10 @@ let HTML = {
 			e = e || window.event;
 			e.preventDefault();
 
-			pos3 = e.clientX;
-			pos4 = e.clientY;
+			xStartM = e.clientX;
+			yStartM = e.clientY;
+			xStartEl = el.offsetLeft;
+			yStartEl = el.offsetTop;
 
 			document.onpointerup = closeDragElement;
 			document.onpointermove = elementDrag;
@@ -438,29 +492,13 @@ let HTML = {
 			e = e || window.event;
 			e.preventDefault();
 
-			pos1 = pos3 - e.clientX;
-			pos2 = pos4 - e.clientY;
-			pos3 = e.clientX;
-			pos4 = e.clientY;
+			let cords = mouseActions.calcCoords([(xStartEl - xStartM + e.clientX), yStartEl - yStartM + e.clientY], "Center");
+			//let cords = mouseActions.calcCoords([e.clientX, e.clientY], "Center");
 
-			top = (el.offsetTop - pos2);
-			left = (el.offsetLeft - pos1);
-
-			// Schutz gegen "zu Hoch geschoben"
-			if (top < 0) {
-				top = 12;
-
-				document.onpointerup = null;
-				document.onpointermove = null;
-			}
-
-			el.style.top = top + "px";
-			el.style.left = left + "px";
+			$(el).css({"--x":cords[0]+"px","--y":cords[1]+"px"})
 
 			if (save === true) {
-				let cords = top + '|' + left;
-
-				localStorage.setItem(id + 'Cords', cords);
+				localStorage.setItem(id + 'Cords', JSON.stringify(cords));
 			}
 		}
 
@@ -502,6 +540,11 @@ let HTML = {
 				box.width(s[0]).height(s[1]);
 			}
 		}
+		else {
+			setTimeout(()=>{
+				box.width(box.width()).height(box.height());
+			}, 800);
+		}
 
 		box.append(grip);
 
@@ -512,21 +555,38 @@ let HTML = {
 				sw: '.window-grippy',
 				nw: '.window-grippy'
 			},
-			minHeight: $(box).css("min-width") || 200,
-			minWidth: $(box).css("min-height") || 250,
+			minHeight: 100,
+			minWidth: 220,
 			stop: (e, $el) => {
-				let size = $el.element.width() + '|' + $el.element.height();
+				let w = $el.element.width();
+				let h = $el.element.height();
+				let t = $el.element.offset().top;
+				let l = $el.element.offset().left;
+				if (window.innerHeight<h+t) {
+					let h= window.innerHeight-t-5;
+					$el.element.height(h);
+				}
+				if (window.innerWidth<l+w) {
+					let w= window.innerWidth-l-5;
+					$el.element.width(w);
+				}
+				
+				let size = w + '|' + h;
 
 				localStorage.setItem(id + 'Size', size);
 			}
 		};
 
-		// keep aspect Ratio
-		if (keepRatio) {
-			let width = box.width(),
-				height = box.height();
+		// Except the "menu Box"
+		if(id === 'menu_box')
+		{
+			options['minWidth'] = 101;
+			options['minHeight'] = 87;
+		}
 
-			options['aspectRatio'] = width / height;
+		// keep aspect ratio
+		if (keepRatio) {
+			options['aspectRatio'] = box.width() + ' / ' + box.height();
 
 			box.resizable(options);
 		}
@@ -566,7 +626,7 @@ let HTML = {
 
 
 	/**
-	 * Zweiter Klick auf das Menü-Icon schliesst eine ggf. offene Box
+	 * A second click on the menu icon closes any open box
 	 *
 	 * @param cssid
 	 * @returns {boolean}
@@ -619,7 +679,26 @@ let HTML = {
 		if (number === 0) {
 			return '-';
 		} else {
+			if (typeof number !== 'number' && isNaN(Number(number))) return "" + number;
 			return Number(number).toLocaleString(i18n('Local'));
+		}
+	},
+
+
+	/**
+	 * Formatiert Zahlen oder gibt = 0 einen "-" aus
+	 *
+	 * @param number
+	 * @returns {*}
+	 */
+	FormatNumberShort: (number,replaceZero=true,language='Local') => {
+		if (number === 0 && replaceZero) {
+			return '-';
+		} else {
+			return Intl.NumberFormat(i18n(language), {
+				notation: "compact",
+				maximumFractionDigits: 1
+			  }).format(Number(number));
 		}
 	},
 
@@ -662,7 +741,7 @@ let HTML = {
 
 
 	/**
-	 * Ersetzt Variablen in einem String mit Argumenten
+	 * Replaces variables in a string with arguments
 	 *
 	 * @param string
 	 * @param args
@@ -686,12 +765,11 @@ let HTML = {
 
 
 	/**
-	* Ersetzt " durch &quot;
-	*
-	* @param string
-	* @param args
-	* @returns {*}
-	*/
+	 * Replaces " with &quot;
+	 *
+	 * @param string
+	 * @returns {*}
+	 */
 	i18nTooltip: (string) => {
 		return string.replace(/"/g, "&quot;")
 	},
@@ -767,8 +845,9 @@ let HTML = {
 			text: d['text'],
 			icon: d['type'],
 			hideAfter: d['hideAfter'],
+			allowToastClose:  d['allowToastClose'],
 			position: Settings.GetSetting('NotificationsPosition', true),
-			extraClass: localStorage.getItem('SelectedMenu') || 'bottombar',
+			extraClass: localStorage.getItem('SelectedMenu') || 'RightBar',
 			stack: localStorage.getItem('NotificationStack') || 4
 		});
 	},
@@ -808,8 +887,17 @@ let HTML = {
 
 		$(Table).each(function () {
 			let ColumnNames = [];
-
-			$(Table).find('th').each(function () {
+			let index = 0;
+			let findBy = "th"
+			if ($(Table).find('.exportheader th').length > 0){
+				findBy = '.exportheader th';
+			}
+			
+			$(Table).find(findBy).each(function () {
+				if($(this)[0].classList.contains("buildingvalue")){
+					index++;
+					return;
+				}
 				let ColumnCount = $(this).attr('colspan');
 				if (ColumnCount) {
 					ColumnCount = ColumnCount - 0;
@@ -819,11 +907,13 @@ let HTML = {
                 }
 
 				if (ColumnCount === 1) {
-					ColumnNames.push($(this).attr('columnname'))
+					ColumnNames[index] = $(this).data('export')
+					index++;
 				}
 				else {
 					for (let i = 0; i < ColumnCount; i++) {
-						ColumnNames.push($(this).attr('columnname' + (i + 1)));
+						ColumnNames[index] = $(this).data('export' + (i + 1));
+						index++;
 					}
                 }
 			});
@@ -884,7 +974,7 @@ let HTML = {
 						let CurrentCell = DataRow[ValidColumnNames[j]];
 						if (CurrentCell !== undefined) {
 							if ($.isNumeric(CurrentCell)) {
-								CurrentCells.push(Number(CurrentCell).toLocaleString(i18n('Local')));
+								CurrentCells.push(Number(CurrentCell).toLocaleString(i18n('Local'),{useGrouping:false}));
 							}
 							else {
 								CurrentCells.push(CurrentCell);
@@ -902,9 +992,29 @@ let HTML = {
 				return;
 			}
 
-			let BOM = "\uFEFF";
-			let Blob1 = new Blob([BOM + FileContent], { type: "application/octet-binary;charset=ANSI" });
-			MainParser.ExportFile(Blob1, FileName + '.' + Format);
+			// with UTF-8 BOM
+			let BlobData = new Blob(["\uFEFF" + FileContent], { type: "application/octet-binary;charset=ANSI" });
+			MainParser.ExportFile(BlobData, FileName + '-' + moment().format('YYYY-MM-DD') + '.' + Format);
+		});
+	},
+
+
+	FilterTable: (selector) => {
+		$(selector).on('click', (e) => {e.stopPropagation()})
+		$(selector).on('keyup', function (e) {
+			let filter = $(this).val().toLowerCase()
+			let table = $(this).parents("table")
+			if (filter.length >= 2) {
+				$("tbody tr", table).hide()
+				$("tbody tr", table).filter(function() {
+					let foundText = ($(this).text().toLowerCase().indexOf(filter) > -1)
+					if (foundText)
+						$(this).show()
+				});
+			}
+			else {
+				$("tbody tr", table).show()
+			}
 		});
 	},
 
@@ -949,3 +1059,10 @@ let HTML = {
         }
 	},
 };
+
+FoEproxy.addFoeHelperHandler('ActiveMapUpdated', () => {
+	$('.MapActivityCheck:not(.ActiveOn'+ActiveMap+")").remove();
+	$('.MapActivityHide').hide();
+	$('.MapActivityHide.ActiveOn'+ActiveMap).show();
+
+});

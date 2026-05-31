@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -17,13 +17,17 @@
 	width: 720px;
 }
 
+#outpostConsumablesBody {
+	overflow: auto;
+}
+
 #outpostConsumables #outpostConsumablesBody tr.total-row td {
 	border-top: 2px solid #efcf9a;
 	font-weight: 700;
 }
 
 #outpostConsumables #outpostConsumablesBody tr.resource-row td {
-	color: var(--text-bright);
+	color: var(--sunflower);
 	font-weight: 700;
 }
 
@@ -33,28 +37,24 @@
 }
 
 #outpostConsumables #outpostConsumablesBody .text-success {
-	color: var(--text-success);
+	color: var(--success);
 	font-weight: 700;
 }
 
 #outpostConsumables #outpostConsumablesBody .text-muted {
-	color: var(--text-muted);
-}
-
-#outpostConsumables #outpostConsumablesBody td {
-	position: relative;
+	color: var(--ash);
 }
 
 #outpostConsumables #outpostConsumablesBody .diplomacy-ask {
 	font-weight: 700;
 	display: inline-block;
 	margin-left: 6px;
-	background: var(--text-info);
+	background: var(--info-blue);
 	padding: 0 4px;
 	border-radius: 50%;
 	width: 10px;
 	line-height: 1.3em;
-	z-index: 1;
+	position: relative;
 }
 
 #outpostConsumables #outpostConsumablesBody .diplomacy-tip {
@@ -64,8 +64,8 @@
 	background: rgba(0,0,0, 0.7);
 	padding: 5px;
 	right: 6px;
-	top: 25px;
-	z-index: 1;
+	bottom: 6px;
+	z-index: 1000;
 	display: none;
 }
 
@@ -73,7 +73,7 @@
 	display: block;
 }
 
-#outpostConsumables #outpostConsumablesBody .goods-sprite-50 {
+#outpostConsumables #outpostConsumablesBody .sprite-50 {
 	width: 34px;
 	height: 34px;
 	vertical-align: center;

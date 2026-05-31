@@ -1,6 +1,6 @@
 /*
  * **************************************************************************************
- * Copyright (C) 2021 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
  * You may use, distribute and modify this code under the
  * terms of the AGPL license.
  *
@@ -11,81 +11,61 @@
  * **************************************************************************************
  */
 
-#Productions {
+ #Productions {
 	top: 100px;
 	left: 100px;
 	width: 820px;
 	height: 500px;
 }
 
+ #ProductionsRating {
+	height: 95vh;
+	width: 95vw;
+}
+
+#ProductionsRatingBody {
+	opacity: 1;
+}
 #Productions #ProductionsBody {
 	overflow-x: hidden;
 	overflow-y: auto;
 }
-
-#Productions #ProductionsBody strong.success {
-	color: var(--text-success);
+#Productions strong.success, #Productions span.success {
+	color: var(--success);
 }
-
-#Productions #ProductionsBody span.success {
-	color: var(--text-success);
-}
-
-#Productions #ProductionsBody .show-entity {
+#Productions .show-entity {
 	display: inline-block;
+}
+#Productions .show-entity, #Productions .show-entity img, #ProductionsRating .show-all img {
 	width: 20px;
 	height: 20px;
 }
-
-#Productions #ProductionsBody .show-entity img {
-	width: 20px;
-	height: 20px;
-}
-
 #Productions table tr.building-type td {
 	padding-top: 15px;
 }
-
 #Productions #ProductionsBody strong {
-	color: var(--text-bright);
+	color: var(--sunflower);
 }
-
-#Productions #ProductionsBody table .sorter-header th {
-	position: relative;
-}
-
-#Productions #ProductionsBody table .sorter-header .ascending:after,
-#Productions #ProductionsBody table .sorter-header .descending:after {
-	color: var(--text-bright);
-	position: absolute;
-	top: -3px;
-	font-size: 20px;
-}
-
-#Productions #ProductionsBody table .sorter-header .ascending:after {
-	content: "↑";
-}
-#Productions #ProductionsBody table .sorter-header .descending:after {
-	content: "↓";
-}
-
 #Productions #ProductionsBody table td {
 	font-size: 85%;
 }
-
+#Productions #ProductionsBody .empty-list {
+	text-align: center;
+	padding: 2em;
+	font-size: 120%;
+}
+#Productions #ProductionsBody table.active {
+	display: table;
+}
 #Productions #ProductionsBody table tbody.parent th {
-	background-color: #3f2a1b;
-	color: var(--text-bright);
+	background-color: var(--text-dark2);
+	color: var(--sunflower);
 	padding-top: 15px;
-	position: sticky;
-	top: 0;
 }
-
 #Productions #ProductionsBody table tr.highlight-row {
-	background-color: rgba(40, 18, 7, 0.8);
-	color: var(--text-bright);
+	background-color: var(--table-bg-highlight);
+	color: var(--sunflower);
 }
-
 #Productions #ProductionsBody table #all-search {
 	background-color: var(--background-light);
 	color: var(--text-medium);
@@ -93,46 +73,356 @@
 	border: 1px solid var(--text-dark);
 	line-height: 18px;
 }
-
-#Productions #ProductionsBody table tr.sorter-header th {
-	position: sticky;
-	top: 0;
-	background-color: rgba(0,0,0, 0.35);
+#Productions #ProductionsBody table thead {
+	background-color: var(--black-30);
 }
-
+#Productions #ProductionsBody table thead th small {
+	font-weight: normal;
+}
 #Productions #ProductionsBody table td.all-products span {
 	display: inline-block;
 	padding: 2px 4px;
 	border-radius: 2px;
-	background-color: rgba(0,0,0, 0.4);
+	background-color: var(--black-30);
 	margin: 3px 8px 2px 0;
 	white-space: nowrap;
 }
-
 #Productions #ProductionsBody table td.total-products span {
 	display: inline-block;
 	padding: 2px 4px;
-	color: var(--text-bright);
+	color: var(--sunflower);
 	white-space: nowrap;
 }
-
 #Productions #ProductionsBody .tabs ul li {
 	margin: 0 1px 0 0;
 }
-
+#Productions #ProductionsBody .tabs ul li.premium, #Productions #ProductionsBody .tabs ul li.happiness, #Productions #ProductionsBody .tabs ul li.def_boost_defender {
+	margin: 0 7px 0 0;
+}
+#Productions .chain-set-ico {
+	padding-right: 3px;
+	height: 18px;
+}
 #Productions #ProductionsBody .tabs ul li a {
 	padding: 0 3px;
 }
-
-#Productions #ProductionsBody .tabs ul li a span {
+#Productions #ProductionsBody .tabs ul li a span, #Productions th.boost span, #BoostList table .boost {
 	width: 27px;
 }
-
-#Productions #ProductionsBody .tabs ul li a span {
+#Productions #ProductionsBody table .unit {
+	background: transparent url('../../unit/images/unit_skill.png') -233px 2px no-repeat;
+}
+#Productions #ProductionsBody .ratingtable {
+	position: relative;
+}
+#Productions #ProductionsBody .tabs ul li a span, #Productions th.boost span, #BoostList table .boost {
 	background: transparent url('../images/productions.png') -233px 2px no-repeat;
+}
+#Productions #ProductionsBody table, #Productions #ProductionsBody .tabs ul li.forge_points_production, #Productions #ProductionsBody .tabs ul li.special_goods, #Productions #ProductionsBody .tabs ul li.coin_production, #Productions #ProductionsBody .tabs ul li.supply_production {
+	display: none;
+}
+#Productions #ProductionsBody .btn-slim.typeBoost {
+	border-radius: 3px;
+}
+#Productions th.boost span {
+	height: 25px;
+	margin: 0 auto;
+}
+#BoostList table .boost {
+	height: 25px;
+	margin: 0 auto;
+	display: inline-block;
+}
+#Productions th.boost.battleground span {
+	background: transparent url('../../x_img/gbg-green.png') no-repeat;
+	background-size: contain;
+}
+#Productions th.boost.guild_expedition span {
+	background: transparent url('../../x_img/ge.png') no-repeat;
+	background-size: contain;
+}
+#Productions th.boost.guild_raids span {
+	background: transparent url('../../x_img/guild_raids.png') no-repeat;
+	background-size: contain;
+}
+#Productions td.ally::after {
+	content: ' 🙋';
+}
+#ProductionsRatingBody .settings label[for="inventorybuildingscore"], 
+#ProductionsRatingBody .settings label[for="showLimited"], 
+#ProductionsRatingBody .ratingtable tr.hidden, 
+#ProductionsRatingBody.tilevalues .buildingvalue, 
+#ProductionsRatingBody:not(.tilevalues) .tilevalue, 
+#ProductionsRatingBody .items, 
+#ProductionsRating #ProductionsRatingSettings .foe-table li input.hidden {
+	display: none;
+}
+#ProductionsRatingBody.inventorybuildings .settings label[for="inventorybuildingscore"],
+#ProductionsRatingBody.inventorybuildings .settings label[for="showLimited"] 
+ {
+	display: inline-flex;
+}
+#ProductionsRatingBody.inventorybuildings .inventory {
+	box-shadow: inset 1px 2px 8px #000000b8;
+	border: 1px solid #000000c4;
+	border-left: 1px dotted var(--text-dark);
+	border-right: 1px dotted var(--text-dark);
+	margin: -2px;
+	padding: 1px;
+}
+
+#ProductionsRatingBody.showitems .items {
+	display: table-cell;
+}
+
+#ProductionsRatingBody #efficiencyBuidlingFilter {
+	width: 120px;
+}
+#ProductionsRatingBody #addMetaBuilding {
+	padding: 0.15em 0.4em;
+}
+#ProductionsRatingBody .settings label {
+	margin-right: 0.3em;
+	display: inline-flex;
+	align-items: center;
+}
+#ProductionsRatingBody .settings img {
+	height: 24px;
+}
+#ProductionsRatingBody .overlay {
+	width: 100%;
+	height: calc(100% - 36px);
+	position: absolute;
+	top: 36px;
+	left: 0;
+	z-index: 2100;
+	background: var(--black-65);
+	display: none;
+}
+#ProductionsRatingBody .overlay input {
+	width: 100%;
+	box-sizing: border-box;
+	padding: 0.5em;
+	font-size: 120%;
+	background-color: var(--background-light);
+	border: none;
+	border-radius: 3px;
+}
+#ProductionsRatingBody .overlay .window-close {
+	position: absolute;
+	top: 1rem;
+	right: calc(20% - 50px);
+	width: 20px;
+	height: 20px;
+	background-position: -2px -2px, -2px -2px;
+}
+#ProductionsRatingBody .overlay .content {
+	width: 60%;
+	min-width: 300px;
+	height: calc(100% - 2rem);
+	margin: 1rem auto;
+	padding: 1em;
+	box-sizing: border-box;
+	background: linear-gradient(to bottom, #1e06006e, #270f005e), url(../../../../css/images/hud/box-bg.png) center center repeat;
+	color: var(--beige);
+	border-radius: 5px;
+}
+#ProductionsRatingBody .overlay .content ul {
+	height: calc(100% - 90px);
+	overflow: auto;
+	margin: 10px 0;
+	padding: 0;
+	box-sizing: border-box;
+	list-style: none;
+}
+#ProductionsRatingBody .overlay .content li {
+	padding: 0.1rem 0.2rem;
+	border-top: 1px solid var(--border-table-top);
+	border-bottom: 1px solid var(--border-table-bottom);
+}
+#ProductionsRatingBody .overlay .content li:hover {
+	color: var(--sunflower);
+	background: var(--table-bg-hover);
+}
+#ProductionsRatingBody .overlay .content li.selected {
+	color: var(--sunflower);
+	background: var(--black-50);
+}
+#ProductionsRatingBody .overlay .content li.selected::after {
+	content: '✔';
+}
+#ProductionsRatingBody .overlay .btns {
+	margin: 0 auto;
+    display: block;
+    width: max-content;
+	font-weight: bold;
+}
+#ProductionsRating #RatingSettings {
+	position: absolute;
+	top: 41px;
+	right: 10px;
+	z-index: 1500;
+}
+#ProductionsRating .show-all img {
+	width: 18px;
+	height: 18px;
+}
+#efficiencyBuildingFilter {
+	width: 130px;
+}
+#Productions th.boost span, #ProductionsRatingBody #buildingsize.active ul, #ProductionsRatingBody th i {
+	display: block;
+}
+#ProductionsRatingBody .ratingtable tr.settings th {
+	padding: 0;
+}
+#ProductionsRatingBody .ratingtable tr.settings div {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+}
+#ProductionsRatingBody .ratingtable tr.settings .options {
+	padding: 0.1rem 0.25rem;
+}
+#ProductionsRatingBody #inventorybuildingscore {
+	width: 52px;
+	margin-left: 3px;
+	line-height: 14px;
+}
+#ProductionsRatingBody .sorter-header .flex-between {
+	display: flex;
+	justify-content: space-between;
+	align-items: end;
+}
+#ProductionsRatingBody.inventorybuildings .inventory-building td:nth-child(2) {
+	font-style: italic;
+}
+#ProductionsRatingBody tr.highlighted2 td:nth-child(2) {
+	color: var(--white);
+}
+#ProductionsRatingBody tr.highlighted2 td:nth-child(2) div div:first-child::after {
+	content: ' 🔎';
+	filter: saturate(0.1);
+	opacity: 0.7;
+}
+#ProductionsRatingBody tr td.ally:nth-child(2) span:nth-child(2)::after, #ProductionsRatingBody tr span.inventory::after {
+	content: ' ';
+	background: url('../../x_img/ally.png') no-repeat center;
+	background-size: contain;
+	display: inline-block;
+	width: 20px;
+	height: 18px;
+	vertical-align: bottom;
+}
+#ProductionsRatingBody tr span.inventory::after {
+	background: url('../../x_img/inventory.png') no-repeat center;
+}
+#ProductionsRatingBody tr.highlighted2 td.ally:nth-child(2) {
+	color: var(--white);
+}
+#ProductionsRatingBody tr.additional td:nth-child(1) {
+	color: var(--info-blue) !important;
+}
+#ProductionsRatingBody tr.inventory-building td:nth-child(1) {
+	color: var(--sunflower) !important;
+}
+#ProductionsRatingBody tr.additional td:nth-child(2) {
+	font-style: italic;
+}
+#ProductionsRatingBody tr.highlighted td:nth-child(2) {
+	color: var(--sunflower);
+	font-weight: 600;
+}
+#ProductionsRatingBody tr .show-all {
+	width: 18px;
+	display: inline-block;
+	padding-right: 0.5em;
+}
+#ProductionsRatingBody tr .show-all img, #ProductionsRatingBody td:nth-child(4) img, table .upgrades .ascended::after {
+	max-width: 18px;
+	opacity: 0.6;
+}
+#ProductionsRatingBody td:nth-child(4) img, table .upgrades .ascended::after {
+	filter: sepia(0.85);
+}
+#ProductionsRatingBody tr .show-all img:hover, #ProductionsRatingBody td:nth-child(4) img:hover, table .upgrades:hover .ascended::after {
+	opacity: 1;
+	filter: none;
+}
+
+#ProductionsRatingBody tfoot tr, 
+#ProductionsRatingBody.showhighlighted tbody tr.highlighted-explained, 
+#ProductionsRatingBody.showhighlighted tbody tr.highlighted, 
+#ProductionsRatingBody.showhighlighted tbody tr.highlighted2, 
+#ProductionsRatingBody.showhighlighted tbody tr.additional{
+	display: table-row;
+}
+#ProductionsRatingBody:not(.inventorybuildings) tbody tr.inventory-building,
+#ProductionsRatingBody:not(.gBs) tbody tr.gb,
+#ProductionsRatingBody:not(.showLimited) tbody tr.inventory-building.limited,
+#ProductionsRatingBody.showhighlighted tbody tr {
+	display: none;
+}
+
+#ProductionsRatingBody tr.highlighted-explained td {
+	font-weight: normal !important;
+	padding: 1em;
+	text-align: center;
+	font-size: 120%;
+}
+#ProductionsRatingBody th.inventory-buildings img {
+	height: 26px;
+}
+#ratingPresetSelect li {
+	padding: 0 7px;
+}
+#Productions th.boost.att_boost_attacker span, #ProductionsRatingBody span.resicon.att_boost_attacker-all {
+	background-position: -312px 0px;
+}
+#Productions th.boost.att_boost_defender span, #ProductionsRatingBody span.resicon.att_boost_defender-all {
+	background-position: -339px 0px;
+}
+#Productions th.boost.def_boost_attacker span, #ProductionsRatingBody span.resicon.def_boost_attacker-all {
+	background-position: -366px 0px;
+}
+#Productions th.boost.def_boost_defender span, #ProductionsRatingBody span.resicon.def_boost_defender-all {
+	background-position: -390px 0px;
+}
+#Productions th.boost.qiactions span, #BoostList table .boost.guild_raids_action_points_collection {
+	background-position: -498px 2px;
+}
+#Productions th.boost.qicapacity span, #BoostList table .boost.guild_raids_action_points_collection {
+	background-position: -786px 1px;
+}
+#Productions th.boost.qicoins span, #BoostList .boost.guild_raids_coins_production, #ProductionsRatingBody span.resicon.guild_raids_coins_production {
+	background-position: -603px 2px;
+}
+#Productions th.boost.qicoins_start span, #BoostList .boost.guild_raids_coins_start, #ProductionsRatingBody span.resicon.guild_raids_coins_start {
+	background-position: -630px 2px;
+}
+#Productions th.boost.qisupplies span, #BoostList .boost.guild_raids_supplies_production, #ProductionsRatingBody span.resicon.guild_raids_supplies_production {
+	background-position: -655px 2px;
+}
+#Productions th.boost.qisupplies_start span, #BoostList .boost.guild_raids_supplies_start, #ProductionsRatingBody span.resicon.guild_raids_supplies_start {
+	background-position: -680px 2px;
+}
+#Productions th.boost.qigoods_start span, #BoostList .boost.guild_raids_goods_start, #ProductionsRatingBody span.resicon.guild_raids_goods_start {
+	background-position: -708px 2px;
+}
+#Productions th.boost.qiunits_start span, #BoostList .boost.guild_raids_units_start, #ProductionsRatingBody span.resicon.guild_raids_units_start {
+	background-position: -733px 0;
 }
 #Productions #ProductionsBody .tabs ul li.strategy_points a span {
 	background-position: 0 2px;
+}
+#ProductionsRatingBody span.resicon.forge_points_production, #ProductionsRatingBody .tabs ul li.forge_points_production, 
+#ProductionsRatingBody span.resicon.goods_production, #ProductionsRatingBody .tabs ul li.goods_production {
+	background-image: url('../images/productions.png'), url('../images/productions.png');
+	background-repeat: no-repeat;
+	background-position: -812px 2px, 0 0;
+}
+#ProductionsRatingBody span.resicon.goods_production, #ProductionsRatingBody .tabs ul li.goods_production {
+	background-position: -812px 3px, -104px 3px;
 }
 #Productions #ProductionsBody .tabs ul li.money a span {
 	background-position: -26px 3px;
@@ -149,7 +439,7 @@
 #Productions #ProductionsBody .tabs ul li.happiness a span {
 	background-position: -156px 3px;
 }
-#Productions #ProductionsBody .tabs ul li.goods a span {
+#Productions #ProductionsBody .tabs ul li.goods a span, #ProductionsRatingBody span.resicon[class*="goods-"] {
 	background-position: -104px 3px;
 }
 #Productions #ProductionsBody .tabs ul li.premium a span {
@@ -177,96 +467,303 @@
 #Productions #ProductionsBody .tabs ul li.def_boost_defender a span {
 	background-position: -390px 3px;
 }
-
-
-
-
-
-
-
-#ProductionsRating {
-	top: 100px;
-	left: 100px;
-	width: 780px;
-	height: 500px;
+#Productions #ProductionsBody .tabs ul li.items a span {
+	background-position: -415px 3px;
 }
-
-#ProductionsRating #ProductionsRatingBody {
+#Productions #ProductionsBody .tabs ul li.guild_raids a span, #ProductionsRatingBody span.resicon.guild_raids {
+	background-position: -576px 2px;
+}
+#Productions .units-sum td:nth-child(1), #Productions .units-sum thead tr:nth-child(2) th:nth-child(1) {
+	text-align: right;
+}
+#Productions .units-sum td:nth-child(2) {
+	width: 80%;
+}
+#Productions span[class*="skill"] {
+	display: inline-flex;
+	position: relative;
+	top: 4px;
+	margin-top: -8px;
+}
+#Productions span[class*="skill"]::before {
+	zoom: 1.5;
+	top: 1px;
+}
+#Productions span.next_era::after {
+	zoom: 1.5;
+	top: 1px;
+}
+#Productions .items-sum td:nth-child(1) {
+	width: 80px;
+	text-align: right;
+}
+#Productions .items-sum td:nth-child(2) {
+	width: 15px;
+}
+#ProductionsRatingBody {
 	overflow-x: hidden;
 	overflow-y: auto;
 }
-
-#ProductionsRating #ProductionsRatingBody table th {
-	font-size: 85%;
+#ProductionsRatingBody ul.foe-table {
+	max-width: 500px;
+	margin: 3px auto 1em;
+	box-shadow: 0 0 500px #000;
+}
+#ProductionsRatingBody .settings th {
+	border-bottom: 1px dotted var(--text-darker);
+}
+#ProductionsRatingSettings {
+	position: relative;
+}
+#ProductionsRatingSettings .heading {
+	padding: 0.5rem 2rem;
+    font-weight: bold;
+    font-size: 1rem;
+    background: var(--black-50);
+}
+#ProductionsRatingSettings .content {
+	max-width: 600px;
+	margin: 1em auto;
+}
+#ProductionsRatingSettings .content .toggle-tab {
+	margin: 0 auto 1em;
+	display: block;
+	width: 120px;
+	font-size: 1rem;
+}
+#RatingsResults {
 	position: sticky;
-	top: 0;
-	cursor: pointer;
-	z-index: 1;
+	top: 3px;
+	float: right;
+	margin-right: 2px;
+	height: 20px;
+	line-height: 20px;
+	margin-bottom: -24px;
+	z-index: 201;
+}
+#ProductionsRatingBody span.filter.showitems, #ProductionsRatingBody span.filter.showallies {
+	background-position: -415px 0;
+	width: 26px;
+	height: 24px;
+	display: inline-block;
+	margin: -3px 0;
+}
+#ProductionsRatingBody span.filter.showallies {
+	margin: -3px 0;
+	background: url('../../x_img/ally.png') top left no-repeat;
 }
 
-#ProductionsRating #ProductionsRatingBody table td {
+input[id*="ProdPerTile"] {
+	width: 80px;
+}
+#ProductionsRating ul.foe-table li > a {
+	flex: none;
+	width: 40%;
+}
+#ProductionsRatingBody table thead {
+	font-size: 85%;
+	cursor: pointer;
+}
+#ProductionsRatingBody table td {
 	font-size: 85%;
 }
-
-#ProductionsRating #ProductionsRatingBody strong.success {
-	color: var(--text-success);
+#ProductionsRatingBody table td:first-child {
+	font-size: 95%;
+	width: 50px;
+	font-weight: bold;
 }
-
-#ProductionsRating #ProductionsRatingBody strong.error {
-	color: #ec4d4d;
+#ProductionsRatingBody table td:nth-child(3) {
+	white-space: nowrap;
 }
-
-#ProductionsRating #ProductionsRatingBody table span.resicon {
-	display: inline-block;
-	width: 24px;
-	height: 26px;
-	background: transparent url('../images/productions.png') -236px 2px no-repeat;
+#ProductionsRatingBody .upgrades {
+	vertical-align: bottom;
+	margin: 0 -3px;
 }
-#ProductionsRating #ProductionsRatingBody table span.resicon.empty{
-	background-position: 1000px, 1000px;
+#ProductionsRatingBody table td:first-child[data-number^="-"] {
+	color: var(--danger-red);
 }
-#ProductionsRating #ProductionsRatingBody table span.resicon.strategy_points {
+#ProductionsRatingBody table td:first-child[data-number^="1"], #ProductionsRatingBody table td:first-child[data-number^="2"], #ProductionsRatingBody table td:first-child[data-number^="3"], #ProductionsRatingBody table td:first-child[data-number^="4"], #ProductionsRatingBody table td:first-child[data-number^="5"], #ProductionsRatingBody table td:first-child[data-number^="6"], #ProductionsRatingBody table td:first-child[data-number^="7"], #ProductionsRatingBody table td:first-child[data-number^="8"], #ProductionsRatingBody table td:first-child[data-number^="9"] {
+	color: var(--limegreen);
+}
+#ProductionsRatingBody strong.success {
+	color: var(--limegreen);
+}
+#ProductionsRatingBody strong.error {
+	color: var(--danger-red);
+}
+#ProductionsRatingBody span.resicon:first-child:not(:only-child) {
+	position: relative;
+	z-index: 2;
+	margin-bottom: -26px;
+}
+#ProductionsRatingBody span.resicon.empty {
+	background-position: 1000px 1000px;
+}
+#ProductionsRatingBody span.resicon.strategy_points {
 	background-position: 0 0;
 }
-#ProductionsRating #ProductionsRatingBody table span.resicon.money {
+#ProductionsRatingBody span.resicon.money {
 	background-position: -26px 2px;
 }
-#ProductionsRating #ProductionsRatingBody table span.resicon.supplies {
+#ProductionsRatingBody span.resicon.supplies {
 	background-position: -51px 2px;
 }
-#ProductionsRating #ProductionsRatingBody table span.resicon.medals {
+#ProductionsRatingBody span.resicon.medals {
 	background-position: -78px 2px;
 }
-#ProductionsRating #ProductionsRatingBody table span.resicon.population {
+#ProductionsRatingBody span.resicon.population {
 	background-position: -183px 2px;
 }
-#ProductionsRating #ProductionsRatingBody table span.resicon.happiness {
+#ProductionsRatingBody span.resicon.happiness {
 	background-position: -158px 2px;
 }
-#ProductionsRating #ProductionsRatingBody table span.resicon.goods {
+#ProductionsRatingBody span.resicon.goods-current {
 	background-position: -104px 2px;
 }
-#ProductionsRating #ProductionsRatingBody table span.resicon.premium {
+#ProductionsRatingBody span.resicon.premium {
 	background-position: -209px 2px;
 }
-#ProductionsRating #ProductionsRatingBody table span.resicon.all {
+#ProductionsRatingBody span.resicon.all {
 	background-position: -130px 2px;
 }
-#ProductionsRating #ProductionsRatingBody table span.resicon.clan_power {
+#ProductionsRatingBody span.resicon.clan_power {
 	background-position: -262px 2px;
 }
-#ProductionsRating #ProductionsRatingBody table span.resicon.units {
+#ProductionsRatingBody span.resicon.units {
 	background-position: -287px 2px;
 }
-#ProductionsRating #ProductionsRatingBody table span.resicon.att_boost_attacker {
-	background-position: -311px 2px;
+#ProductionsRatingBody span.resicon.goods-next {
+	background-position: -550px 2px;
 }
-#ProductionsRating #ProductionsRatingBody table span.resicon.att_boost_defender {
-	background-position: -338px 2px;
+#ProductionsRatingBody span.resicon.goods-previous {
+	background-position: -524px 2px;
 }
-#ProductionsRating #ProductionsRatingBody table span.resicon.def_boost_attacker {
-	background-position: -365px 2px;
+#ItemSources {
+	height: 500px;
 }
-#ProductionsRating #ProductionsRatingBody table span.resicon.def_boost_defender {
-	background-position: -390px 2px;
+#ItemSourcesBody div {
+	overflow-y: auto;
+	height: 100%;
+}
+#ItemSourcesBody img {
+	width: 25px;
+}
+#ItemSourcesBody table {
+	width: 100%;
+}
+#ItemSourcesBody td {
+	background-image: url('../../../../css/images/hud/chevron-down.svg');
+    background-size: 20px 20px;
+    background-position: right 5px;
+    background-repeat: no-repeat;
+}
+#ItemSourcesBody td.open {
+	background-image: url('../../../../css/images/hud/chevron-left.svg');
+}
+#ItemSourcesBody td:hover {
+	cursor: url('../../../../css/images/cursor_hover.cur'), auto;
+}
+#ItemSourcesBody .filterTable {
+	float: right;
+}
+#ItemSourcesBody .innerTable {
+	background: var(--text-darker);
+	margin: 0 -5px;
+}
+#ItemSourcesBody .innerTable:not(:empty) {
+	margin-top: 5px;
+}
+
+#BoostList {
+	height: 400px;
+}
+
+#BoostListBody {
+	overflow: auto;
+}
+
+#buildingsize {
+	width: 45px;
+	background-color: var(--beige);
+	color: var(--text-darker);
+	text-shadow: none;
+	overflow: visible;
+	position: relative;
+	border-radius: 2px;
+}
+
+#buildingsize ul:hover {
+	filter: brightness(0.9) contrast(0.9);
+}
+
+#buildingsize span {
+	padding: 0 2px;
+	display: inline-flex;
+	justify-content: space-between;
+	align-items: center;
+	height: 22px;
+	line-height: 22px;
+	width: calc(100% - 5px);
+}
+
+#buildingsize.active span::after {
+	content: "×";
+	font-weight: normal;
+	color: var(--text-medium);
+}
+
+#buildingsize ul {
+	position: absolute;
+	top: 22px;
+	left: 0;
+	display: none;
+	list-style: none;
+	padding: 2px;
+	margin: 0;
+	width: calc(100% - 4px);
+	background-color: var(--beige);
+	text-align: right;
+	border-radius: 0 0 2px 2px;
+}
+
+#buildingsize li:hover {
+	background-color: var(--white);
+}
+
+#buildingsize li::after {
+	content: "✓";
+	display: inline-block;
+	padding-left: 0.5em;
+	text-align: center;
+	opacity: 0;
+}
+
+#buildingsize li.selected::after {
+	opacity: 1;
+	color: var(--success);
+}
+
+#ShowFSPCalculator {
+	text-align: right;
+}
+#ProductionsRatingBody #FSPCalculator span.resicon {
+    position: relative;
+    z-index: 2;
+    margin-bottom: -8px;
+}
+
+#FSPCalculator {
+	padding-left: 2em;
+}
+
+#FSPCalculator .cats {
+	gap: 1em;
+}
+
+#FSPCalculator .cats input {
+	width: 50px;
+}
+
+#ProductionsRatingBody:not(.showLimited) .limited span[data-callback_tt="Kits.InventoryTooltip"], #items-list th:nth-child(3)::before, #items-list th:nth-child(3)::after {
+	display: none;
 }

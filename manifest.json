@@ -2,22 +2,25 @@
 	"name": "__MSG_appName__",
 	"description": "__MSG_appDesc__",
 	"default_locale": "en",
-	"version": "2.7.0.0",
-  
-	"manifest_version": 2,
+	"version": "4.3.0.0",
+
+	"manifest_version": 3,
 	"permissions": [
 		"alarms",
 		"storage",
 		"tabs",
-	  	"notifications",
-		"clipboardWrite",
+		"notifications",
+		"clipboardWrite"
+	],
+
+	"host_permissions": [
 		"https://*.forgeofempires.com/*",
 		"https://foe-helper.com/*",
 		"https://*.foe-helper.com/*",
 		"https://*.foe-rechner.de/*"
 	],
 
-	"browser_action": {
+	"action": {
 		"default_icon": "images/app16.png",
 		"default_popup": "content/popup.html",
 		"default_title": "__MSG_appName__"
@@ -30,25 +33,40 @@
 	},
 
 	"web_accessible_resources": [
-		"css/web/*.css",
-		"vendor/*.js",
-		"vendor/sounds/*.mp3",
-		"js/web/*.*",
-		"images/*.*",
-		"css/images/*.*",
-		"content/*.html"
+		{
+			"resources": [
+				"js/*",
+				"vendor/*",
+				"css/*",
+				"content/*"
+			],
+			"matches": [ "https://*/*" ]
+		}
 	],
-	
+
 	"content_scripts": [
 		{
 			"matches": ["https://*.forgeofempires.com/*"],
 			"include_globs": [ "*forgeofempires.com/game*" ],
+			"js": ["js/foeproxy.js"],
 			"run_at": "document_start",
+			"world": "MAIN"
+		},
+		{
+			"matches": ["https://*.forgeofempires.com/*"],
+			"include_globs": [ "*forgeofempires.com/game*" ],
+			"js": ["js/foeproxy-fallback.js"],
+			"run_at": "document_start"
+		},
+		{
+			"matches": ["https://*.forgeofempires.com/*"],
+			"include_globs": [ "*forgeofempires.com/game*" ],
 			"js": [
 				"vendor/browser-polyfill/browser-polyfill.min.js",
 				"js/web/_languages/js/_languages.js",
 				"js/inject.js"
-			]
+			],
+			"run_at": "document_end"
 		}
 	],
 
@@ -58,11 +76,6 @@
 	},
 
 	"background": {
-		"scripts": [
-			"vendor/browser-polyfill/browser-polyfill.min.js",
-			"vendor/dexie/dexie.min.js",
-			"js/background.js"
-		],
-		"persistent": true
+		"service_worker": "background.js"
 	}
 }

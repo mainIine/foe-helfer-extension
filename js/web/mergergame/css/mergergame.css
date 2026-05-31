@@ -1,0 +1,168 @@
+/*
+ * **************************************************************************************
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
+ *
+ * See file LICENSE.md or go to
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
+ *
+ * **************************************************************************************
+ */
+
+#mergerGameDialog {
+	top: 50px;
+	left: calc(100vw - 350px);
+	width: 285px;
+    height: 500px;
+}
+
+#mergerGameDialog img,
+#mergerGameSolutionBody img {
+    width: 33px;
+    height: 33px;
+    zoom: 75%;
+}
+
+#mergerGameDialogBody {
+    text-align: center;
+    overflow-y: auto;
+}
+
+#mergerGameResetBlocker {
+    width: 60px;
+    height: 56px;
+    position: absolute;
+    z-index: 100;
+    background-color: #ff9400;
+    border-radius: 10px;
+    border: red solid 2px;
+}
+#mergerGameResetBlocker.soccer {
+    top: calc(50vh + 243px);
+    left: calc(50vw - 334px);
+}
+#mergerGameResetBlocker.anniversary {
+    top: calc(50vh + 248px);
+    left: calc(50vw + 288px);
+}
+#mergerGameResetBlocker.care {
+    top: calc(50vh + 245px);
+    left: calc(50vw + 288px);
+}
+
+#MGstatus.hideDaily th:nth-child(3),
+#MGstatus.hideDaily td:nth-child(3){
+        display:none;
+}
+#MGstatus:not(.hideDaily) th:nth-child(2),
+#MGstatus:not(.hideDaily) td:nth-child(2){
+        display:none;
+}
+#MGstatus th:nth-child(2),
+#MGstatus th:nth-child(3){
+        color:var(--sunflower);
+}
+
+#mergerGameDialogSettingsBox input{
+    width:4.5em;
+}
+
+#mergerGameDialog .toprightcorner{
+    object-fit: none;
+    object-position: top right;
+}   
+#mergerGameDialog .bottomrightcorner{
+    object-fit: none;
+    object-position: bottom right;
+}   
+
+#mergerGameDialog .toprightcorner.full,
+#mergerGameDialog .bottomrightcorner.full {
+    width: 35px;
+    height: 40px;
+    zoom: 60%;
+}   
+
+
+#mergerGameSolutionBody {
+    overflow-y: auto;
+}
+
+#mergerGameSolutionBody div{
+    margin:5px;
+    color:var(--sunflower);
+}
+#mergerGameDialogBody svg{
+    height:15px;
+    fill:var(--sunflower);
+}
+
+#mergerGameTaskWarning {
+    position: absolute;
+    left: calc(50vw - 424px);
+    top: calc(50vh - 115px);
+    width: 641px;
+    height: 320px;
+    z-index: 1000;
+    text-align: center;
+    align-content: center;
+    font-size: xx-large;
+    backdrop-filter: blur(3px) contrast(1.3);
+    background-color: var(--black-50);
+    border: 2px solid var(--border-tab);
+    color: var(--beige);
+    text-shadow: 0 3px 10px var(--black), 0 2px 3px var(--black);
+    font-weight: bold;
+}
+
+.foeHelper {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    font-size: small;
+    font-weight: normal;
+    font-style: italic;
+    opacity: 0.5;
+    color: var(--white);
+}
+
+#mergerGameTaskWarning:not(.showCurrencyOverflowWarning) .CurrencyOverflowWarning,
+#mergerGameTaskWarning:not(.showWorldChallengeOverflowWarning) .WorldChallengeOverflowWarning {
+    display: none;
+}
+
+.CurrencyOverflowWarning,
+.WorldChallengeOverflowWarning {
+    position: absolute;
+    right: 20px;
+    text-align: right;
+    width: calc(100%-40px);
+    font-size: large;
+    overflow: hidden;
+    color: var(--danger-red);
+    animation: blink 1s infinite;
+    text-shadow: 0px 0px 2px black, 0px 0px 4px var(--red);    
+}
+.CurrencyOverflowWarning {
+    top: 20px;
+}
+.WorldChallengeOverflowWarning {
+    bottom: 20px;
+}
+
+@keyframes blink {
+    0% {
+        opacity: 0.7;
+    }
+    30% {
+        opacity: 1;
+    }
+    70% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0.7;
+    }
+}
