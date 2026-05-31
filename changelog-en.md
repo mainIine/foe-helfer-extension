@@ -17,6 +17,7 @@
 - Guild Member Overview: Member details are now opened in their own window and include more data
 - Continent Map Overview has been removed! Negotiating on the map is a very niche play style and goods much easier to come by these days
 - UI: Various small changes in multiple areas
+- Building efficiency calculation: The view opens by default sorted in descending order and is updated immediately whenever a building is removed, added or updated
 
 ---
  
