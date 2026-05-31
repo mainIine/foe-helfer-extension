@@ -135,22 +135,9 @@ let EventPresents = {
         for (let present of EventPresents.Presents) {
             let icon;
             let frag = "";
-            let warning = false;
-
-            // warning for currency overflow
-            if (present.reward.subType === (currencyName1 || currencyName2)) {
-                let currency = present.reward.subType;
-                let currencyInfo = FHResourcesList.find(x => x.id == currency);
-                let currencyCapAmount = currencyInfo?.abilities?.resourceCap?.amount || null;
-                if (currencyCapAmount) {
-                    console.log(currencyCapAmount, ResourceStock[currency]);
-                    if (ResourceStock[currency] === currencyCapAmount)
-                        warning = true;
-                }
-            }
 
             if (present.status.value !== "used") {
-                h.push(`<tr class="${present.status.value} ${warning ? 'bg-red' : ''}">`);
+                h.push(`<tr class="${present.status.value}">`);
 
                 if(present.reward.type === "unit") {
                     asset = present.reward.subType
@@ -170,9 +157,22 @@ let EventPresents = {
 
                 h.push('<td class="icon">'+ (icon.search("antiquedealer_flag") === -1 ? icon : '') + frag + '</td>');
                 h.push(`<td>
-                    ${present.reward.name} 
-                    ${(warning ? `<b class="danger" title="${i18n('Boxes.MergerGame.CurrencyOverflowWarning')}">!!!</b>` : '')}
-                    ${(present.status.value === "visible" ? '<img class="visible" src="' + extUrl + 'css/images/hud/open-eye.png" alt="">' : '')}
+                    ${present.reward.name} `);
+
+                    let warning = false;
+
+                    // warning for currency overflow
+                    if (present.reward.subType === (currencyName1) || present.reward.subType === (currencyName2)) {
+                        let currency = present.reward.subType;
+                        let currencyInfo = FHResourcesList.find(x => x.id == currency);
+                        let currencyCapAmount = currencyInfo?.abilities?.resourceCap?.amount || null;
+                        if (currencyCapAmount) {
+                            if (ResourceStock[currency] === (currencyCapAmount-1))
+                                warning = true;
+                        }
+                        h.push(`${(currencyCapAmount ? `&middot; <i ${warning ? ' class="danger"' : ''}>${ResourceStock[currency]}/${currencyCapAmount}</i>` : '')}`);
+                    }
+                    h.push(`${(present.status.value === "visible" ? '<img class="visible" src="' + extUrl + 'css/images/hud/open-eye.png" alt="">' : '')}
                     </td>`);
                 h.push('</tr>');
             }
