@@ -225,7 +225,6 @@
 	height: 20px;
 }
 
-#citymap-mainBody .prod.population::before { background-position: -142px 2px; }
 #citymap-mainBody .prod.happiness::before { background-position: -122px 2px; }
 #citymap-mainBody .prod.guild_raids_money::before { background-position: -20px 2px; }
 #citymap-mainBody .prod.guild_raids_supplies::before { background-position: -40px 2px; }
