@@ -67,13 +67,13 @@
 }
 
 #kits h1, #kits h2, #kits h3 {
-	color: var(--bright-color);
+	color: var(--sunflower);
 	margin: 0;
 	padding: 5px;
 }
 
 #kits h1 {
-	color: var(--text-normal);
+	color: var(--beige);
 	text-align: center;
 	background-color: var(--text-darker);
 	border-top: 1px solid var(--black-50)
@@ -97,68 +97,6 @@
 #kits h2 .upgrades {
 	float: right;
 	vertical-align: middle;
-}
-
-#kits .upgrades span {
-	display: inline-flex;
-	height: 22px;
-	align-items: center;
-	color: #74c409;
-	margin-left: 4px;
-	padding: 0 4px;
-	background-color: var(--black-50);
-	border-radius: 20px;
-}
-
-#kits .upgrades span::after {
-	content: '';
-	display: inline-block;
-	width: 17px;
-	height: 22px;
-	margin-left: 2px;
-	background: url('../../x_img/upgrades.png') no-repeat left top;
-	background-size: auto 100%;
-}
-
-#kits .upgrades .base {
-	color: var(--text-normal);
-}
-
-#kits .upgrades .base::after {
-	background-position: -72px 0;
-	width: 20px;
-}
-
-#kits .upgrades .silver {
-	color: #b8b9b9;
-}
-
-#kits .upgrades .silver::after {
-	background-position: -18px 0;
-}
-
-#kits .upgrades .golden {
-	color: #fedc00;
-}
-
-#kits .upgrades .golden::after {
-	background-position: -36px 0;
-}
-
-#kits .upgrades .platinum {
-	color: #e9ceef;
-}
-
-#kits .upgrades .platinum::after {
-	background-position: -52px 0;
-}
-
-#kits .upgrades .ascended {
-	color: #ffae33e0;
-}
-
-#kits .upgrades .ascended::after {
-	background-position: -92px 0;
 }
 
 #kits .item-kits {
@@ -225,7 +163,7 @@
 	top: 55px;
 	left: calc(50% + 20px);
 	background: var(--hud-counter-color);
-	color: var(--text-light);
+	color: var(--white);
 	border-radius: 10px;
 	min-width: 14px;
 	padding: 2px 4px;

@@ -13,10 +13,7 @@
 
 #OwnPartBox {
 	top: 100px;
-}
-
-#OwnPartBox.closed .OwnPartBoxBackground {
-	display: none;
+	min-width: 250px;
 }
 
 #OwnPartBox .OwnPartDrops {
@@ -38,7 +35,7 @@
 	top: -3px;
 }
 
-#OwnPartBox .OwnPartDrops .inputWrapper input, #OwnPartBox .OwnPartDrops div select, #OwnPartBox #OwnPartTable input, #PowerLevelingBox input, .OwnPartBoxBackground input, .OwnPartBoxBackground select  {
+#OwnPartBox .OwnPartDrops .inputWrapper input, #OwnPartBox .OwnPartDrops div select, #gbCosts input, #PowerLevelingBox input, .OwnPartBoxBackgroundBody input, .OwnPartBoxBackgroundBody select  {
 	background-color: var(--background-light);
 	color: var(--text-medium);
 	background-clip: padding-box;
@@ -62,47 +59,92 @@
 	margin-top: 10px;
 }
 
-#OwnPartBox #OwnPartBoxBody {
+#gbCosts {
 	position: relative;
 	margin-left: 0;
 	font-size: 85%;
 }
 
-#OwnPartBox #OwnPartBoxBody h1 {
+#OwnPartBox.gbSettingsOpen #gbCosts {
+	filter: brightness(0.3);
+}
+
+#OwnPartBox .fh-icon-settings {
+	margin-right: 1px;
+	display: inline-flex;
+}
+
+#OwnPartBox .icon-close {
+    filter: saturate(0.7) contrast(1.7);
+    opacity: 0.5;
+    background-image: url('../../../../css/images/hud/box-sprite.png'), none;
+    background-position: -2px -2px, 0 0;
+    box-shadow: none;
+	width: 22px;
+	height: 22px;
+	display: inline-block;
+	position: absolute;
+	right: 0;
+	top: 0;
+}
+
+#OwnPartBox.gbSettingsOpen #gbCosts .fh-icon-settings {
+	filter: brightness(1.9) saturate(1.5) contrast(1.1);
+	box-shadow: 0 0 3px var(--black-65), 0 0 10px var(--white), 0 0 15px var(--black-65);
+	border-radius: 3px;
+	scale: 1.1;
+	border: 2px solid var(--white);
+	margin: 2px;
+	left: -4px;
+}
+
+/* temporary information about calculator merge */
+
+#calcInfo {
+	position: relative;
+	background: var(--table-bg-info);
+	border-bottom: 1px solid var(--table-bt-info);
+}
+
+#calcInfo img {
+	height: 20px;
+}
+
+#calcInfo .calcInfo { height: 0; overflow: hidden; width: 240px; margin: 0 auto; }
+#calcInfo:hover .calcInfo { height: auto; }
+
+#gbCosts h1 {
 	padding: 0;
 }
 
-#OwnPartBox #OwnPartBoxBody strong {
-	color: var(--bright-color);
+#gbCosts strong, #gbCosts strong.normal, #up-to-level-up, .recurringquests, #gbCosts .yellow-text {
+	color: var(--sunflower);
 }
 
-#OwnPartBox #OwnPartBoxBody strong.normal {
-	color: var(--bright-color);
+#gbCosts .success, #gbCosts .success strong {
+	color: var(--success) !important;
 }
 
-#OwnPartBox #OwnPartBoxBody .success {
-	color: var(--text-success) !important;
+#gbCosts .info, #gbCosts .paidFP {
+	color: var(--info-blue) !important;
 }
 
-#OwnPartBox #OwnPartBoxBody .info {
-	color: var(--text-info) !important;
+#gbCosts .error {
+	color: var(--danger-red);
 }
 
-#OwnPartBox #OwnPartTable .error {
-	color: #ec4d4d;
-}
-
-#OwnPartBox #OwnPartBoxBody .lb-info {
+#gbCosts .lb-info {
 	flex-grow: 2;
 }
 
-#OwnPartBox #OwnPartTable input, #PowerLevelingBox input {
-	line-height: 1.5;
+#gbCosts input[type=number], #PowerLevelingBox input {
+	line-height: 1;
 	width: 35px;
 	text-align: center;
+	margin: 0 -2px;
 }
 
-#OwnPartBox #arc-percent {
+#gbCosts #arc-percent {
 	background-color: var(--background-light);
 	color: var(--text-medium);
 	background-clip: padding-box;
@@ -112,13 +154,13 @@
 	margin: 0 5px;
 }
 
-#OwnPartBox #up-to-level-up {
-	color: var(--bright-color);
-}
-
-#OwnPartBox .bottom-buttons {
+#gbCosts .bottom-buttons {
 	display: flex;
 	justify-content: space-between;
+	align-items: center;
+}
+
+#gbCosts .bottom-buttons .flex {
 	align-items: center;
 }
 
@@ -131,50 +173,43 @@
 	left: 0;
 }
 
-#OwnPartBox tr th span {
+#gbCosts tr th span {
 	display: inline-block;
 	width: 25px;
 	height: 25px;
 	vertical-align: bottom;
 }
 
-#OwnPartBox tr th span.blueprint {
+#gbCosts tr th span.blueprint {
 	background: url(../../x_img/blueprint.png) center no-repeat;
 	background-size: contain;
 }
 
-#OwnPartBox tr th span.medal {
+#gbCosts tr th span.medal {
 	background: url(../../x_img/medal.png) center no-repeat;
 	background-size: contain;
 }
 
-#OwnPartBox tr th span.arc_bonus {
+#gbCosts tr th span.arc_bonus {
 	background: url(../../x_img/arc_bonus.png) center no-repeat;
 	background-size: contain;
 }
 
-#OwnPartBox tr th span.forgepoints {
+#gbCosts tr th span.forgepoints {
 	background: url(../../x_img/forgepoints.png) center no-repeat;
 	background-size: contain;
 }
 
-#OwnPartBox tr th span.forgepoints_done {
+#gbCosts tr th span.forgepoints_done {
 	background: url(../../x_img/forgepoints_done.png) center no-repeat;
 	background-size: contain;
 }
 
-#OwnPartBox tr td:nth-child(6) {
+#gbCosts tr td:nth-child(6) {
 	border-left: 3px solid rgba(0,0,0,0.01);
 }
 
-.OwnPartBoxBackground {
-	position: absolute;
-	width: 210px;
-	top: 0;
-	left: -6px;
-}
-
-.OwnPartBoxBackground .divider {
+.OwnPartBoxBackgroundBody .divider {
 	display: block;
 	height: 0;
 	margin: 10px auto;
@@ -183,52 +218,21 @@
 	border-bottom: 1px solid #9e774e;
 }
 
-.OwnPartBoxBackground .outerArrow:before {
-	content: "";
-	width: 28px;
-	height: 28px;
-	position: absolute;
-	top: 51px;
-	left: -23px;
-	z-index: -1;
-	background: #895022;
-	border-radius: 3px 0 0 3px;
-}
-
-.OwnPartBoxBackground .outerArrow span.arrow {
-	width: 22px;
-	height: 22px;
-	background-position: -77px -2px, -2px -26px;
-	position: absolute;
-	top: 54px;
-	left: -20px;
-}
-
-.OwnPartBoxBackground .outerArrow span.arrow:hover {
-	background-position: -77px -2px, -28px -26px;
-}
-
-.show .OwnPartBoxBackground .outerArrow span.arrow {
-	background-position: -53px -2px, -2px -26px;
-}
-
-.show .OwnPartBoxBackground .outerArrow span.arrow:hover {
-	background-position: -53px -2px, -28px -26px;
-}
-
-
-.OwnPartBoxBackground .OwnPartBoxBackgroundBody {
+.OwnPartBoxBackgroundBody {
 	width: 300px;
-	height: 0;
 	position: absolute;
 	overflow: hidden;
 	overflow-y: auto;
-	top: 0;
-	left: 3px;
+	top: -5px;
+	left: -5px;
 	padding: 0 7px;
 	border-width: 3px;
-	opacity: 0;
 	border-radius: 5px;
+	display: none;
+}
+
+.OwnPartBoxBackgroundBody strong {
+	color: var(--sunflower)
 }
 
 .OwnPartBoxBackgroundBody > div > span:not(.btn) {
@@ -236,25 +240,28 @@
 	width: 70px;
 }
 
-.OwnPartBoxBackground .btn-outer {
+.OwnPartBoxBackgroundBody .btn-outer {
 	margin-bottom: 6px;
 }
 
-.OwnPartBoxBackground input,
-.OwnPartBoxBackground select {
+.OwnPartBoxBackgroundBody input,
+.OwnPartBoxBackgroundBody select {
 	font-size: 0.8rem;
 	height: 18px;
 	width: 164px;
 	padding: 2px 5px;
+	text-align: left !important;
 }
 
-.OwnPartBoxBackground input[id=copystring] {
-	font-size: 0.6rem;
-	font-weight: bold;
-	width: 300px;
+.OwnPartBoxBackgroundBody input[id=copystring] {
+	width: 100%;
+	background-color: inherit;
+	color: inherit;
+	border: none;
+	padding: 0;
 }
 
-.OwnPartBoxBackground .checkboxes {
+.OwnPartBoxBackgroundBody .checkboxes {
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: space-between;
@@ -262,19 +269,19 @@
 	gap: 2px;
 }
 
-.OwnPartBoxBackground .checkboxes::after {
+.OwnPartBoxBackgroundBody .checkboxes::after {
 	content: '';
 	flex: auto;
 }
 
-.OwnPartBoxBackground input.form-check-input {
+.OwnPartBoxBackgroundBody input.form-check-input {
 	position: absolute;
 	top: 0;
 	left: 0;
 	width: auto;
 }
 
-.OwnPartBoxBackground label.form-check-label {
+.OwnPartBoxBackgroundBody label.form-check-label {
 	line-height: 1.2rem;
 	width: calc(50% - 1px);
 	vertical-align: middle;
@@ -282,7 +289,7 @@
 	background: var(--table-bg-odd);
 }
 
-.OwnPartBoxBackground label.form-check-label span, .OwnPartBoxBackground label.form-check-label-wide span {
+.OwnPartBoxBackgroundBody label.form-check-label span, .OwnPartBoxBackgroundBody label.form-check-label-wide span {
 	display: inline-block;
 	margin-left: 22px;
 }
@@ -310,10 +317,10 @@
 }
 
 #PowerLevelingBox #PowerLevelingBoxBody .foe-table td.bright, strong.bright {
-	color: var(--bright-color);
+	color: var(--sunflower);
 	font-weight: bold;
 }
 
 #PowerLevelingBox #PowerLevelingBoxBody .success {
-	color: var(--text-success);
+	color: var(--success);
 }

@@ -1077,7 +1077,7 @@ let GExAttempts = {
 		}
 		//setnumber when GE running
 		else {
-			$('#gex-attempt-count').text(GExAttempts.count).show();
+			$('#gex-attempt-count').text(GExAttempts.count).attr('data-number',GExAttempts.count).show();
 		}
 
 		//set timer for GE deactivation if deactivation time known

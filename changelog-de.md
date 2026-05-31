@@ -1,4 +1,25 @@
-## Changelog - Extension
+## Extension Changelog
+ 
+
+##### 4.3.0.0
+
+**Neu**
+- LG Rechner: Es gibt nur noch einen Rechner, aber es wurde keine Funktionalität entfernt. Wenn ihr die bisherige Kostenrechner-Ansicht sucht, schaut in die Einstellung vom Fenster des Rechners!
+- Gefechte: In den Einstellungen bei den Gefechts-Countdowns kann man jetzt einen Discord Webhook definieren
+- Gefechte: Es gibt einen neuen Bereich, wo man schnell sehen kann, welche der eigenen Sektoren noch bebaut werden müssen
+- Discord Webhooks: Erstelle Vorlagen (Templates) für eigene Gefechtsnachrichten und füge sie in den GG Einstellungen hinzu
+
+**Update**
+- Verbündete: Die Boosts sind nun tabellarisch nach Kategorie aufgelistet und können auch sortiert werden
+- Infobox: QI Aktionen werden nun auch geloggt. Außerdem gibt es nun eine Favoritenfunktion und das Fenster ist etwas kompakter geworden
+- LG Rechner: Der Konfigurationspfeil am Rand des Fensters ist nun ein Zahnrad in der Ecke unten links!
+- Effizienzbewertung: Gebäude, die auf eine erhabene Version aufgewertet werden können, werden jetzt mit dem entsprechenden Pfeil gekennzeichnet
+- Gildenmitglieder Übersicht: Die Detailansicht eines Mitglieds öffnet sich in einem eigenen Fenster und beinhaltet jetzt auch durchschnittliche Daten, sowie QI Daten
+- "Kampagne" Modul entfernt! Sektoren zu verhandeln ist ein selten gewordener Spielstil und Güter gibt es heutzutage in Hülle und Fülle
+- UI: An verschiedenen Stellen sieht der Helfer nun etwas anders aus
+- Gebäude Effizienzberechnung: Die Ansicht öffnet sich per default mit absteigender Sortierung und wird sofort aktualisiert, sobald ein Gebäude entfernt, hinzugefügt oder ge-updated wird
+
+---
  
 
 ##### 4.2.1.1
@@ -6,6 +27,7 @@
 **Bugfix**
 - Beide Rechner waren kaputt nach dem Spiel-Update auf Version 1.332
 
+---
 
 ##### 4.2.1.0
 

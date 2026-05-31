@@ -230,7 +230,7 @@ let CityMap = {
 			$("#sidebar").append(CityMap.showOutpostBuildings());
 		
 		if (ActiveMap === "cultural_outpost")
-			$('#citymap-wrapper').append('<img class="clickable openOverview" data-original-title="'+i18n('Menu.OutP.Title')+'" onClick="Outposts.BuildInfoBox()" src="' + extUrl + 'css/images/menu/vikings_ship.png">');
+			$('#citymap-wrapper').append('<span class="btn btn-mid openOverview" onClick="Outposts.BuildInfoBox()">'+i18n('Menu.OutP.Title')+'</span>');
 
 		if (ActiveMap === 'OtherPlayer') {
 			let townhall = (Object.values(CityMap.OtherPlayer.mapData).find(x => x.type === 'main_building'));
@@ -342,7 +342,7 @@ let CityMap = {
 		}
 
 		$('[data-original-title]').tooltip({
-			container: '#citymap-main',
+			container: 'body',
 			html: true,
 		});
 
@@ -353,7 +353,7 @@ let CityMap = {
 	showQIStats: () => {
 		if (!CityMap.QI.data) return;
 
-		out = '<div class="qiSums">';
+		out = '<div class="metaSums">';
 		out += '<p class="text-center"><i>'+i18n('Boxes.CityMap.QIHint')+'</i></p>';
 		out += '<div class="flex between" style="margin-bottom: 10px;">';
         out += '<span><img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_expansion.png`,true)+'" />' +  CityMap.QI.areas.length + '</span>';
@@ -594,10 +594,17 @@ let CityMap = {
 		});
 
 		let out = '<table class="foe-table allBuildings">'
-		out += '<thead><tr><th colspan="2">'+i18n('Boxes.CityMap.Building')+'</th><th class="population textright"></th><th><span class="goods-sprite diplomacy"></span></th>'+
-		'<th>'+i18n('Boxes.CityMap.Boosts')+'</th></tr></thead>'
+		out += `<thead><tr>
+			<th colspan="2">${i18n('Boxes.CityMap.Building')}</th>
+			<th class="population textright"></th>
+			<th><span class="goods-sprite ${(ActiveMap !== "era_outpost"?'diplomacy':'')}"></span></th>
+			<th>${i18n('Boxes.CityMap.Boosts')}</th></tr></thead>`
 		out += "<tbody>"
 
+		let totals = {
+			diplomacy: 0,
+			population: 0,
+		};
 		for (let building of uniqueBuildings) {
 			if (building.type !== "impediment" && building.type !== "street" && building.type !== "off_grid") {				
 				out += "<tr class='"+building.type+"'>" + 
@@ -614,10 +621,25 @@ let CityMap = {
 					}
 				}
 				out += "</td></tr>";
+
+				if (building.diplomacy>0) {
+					totals.diplomacy += building.diplomacy*building.count;
+				}
+				totals.population += building.population*building.count;
 			}
 		}
+
+		let meta = "";
+		if (totals.diplomacy > 0) {
+			meta += `<div class="metaSums p5 text-center">
+						<i>${i18n('Boxes.CityMap.QIHint')}</i><br/> 
+						<span class="population"></span>${totals.population}
+						<span class="goods-sprite diplomacy"></span>${totals.diplomacy}
+					</div>`;
+		}
+
 		out += "</tbody></table>";
-		return out;
+		return meta + out;
 	},
 
 
@@ -822,7 +844,7 @@ let CityMap = {
 		CityMap.getAreas();
 		
 		$('[data-original-title]').tooltip({
-			container: '#citymap-main',
+			container: 'body',
 			html: true,
 		});
 	},
@@ -1465,27 +1487,29 @@ let CityBuildings = {
 					})
 				}
 				if ((isSet !== undefined && ability.__class__ === "BonusOnSetAdjacencyAbility") || (isChain !== undefined && ability.__class__ === "ChainLinkAbility")) {
-					for (const bonus of ability.bonuses) {
-						if (bonus.boost.length === 0) return
-						else {
-							if (bonus.boost[eraName]) {
-								let boost = {
-									feature: bonus.boost[eraName].targetedFeature,
-									type: Boosts.Mapper[bonus.boost[eraName].type] || [bonus.boost[eraName].type],
-									value: bonus.boost[eraName].value,
-									needsLink: true
-								}
-								boosts.push(boost)
+					for (let i = 0; i < ability.bonuses.length; i++) {
+						const bonus = ability.bonuses[i];
+						if (bonus.boost.length === 0) continue;
+						
+						if (bonus.boost[eraName]) {
+							let boost = {
+								feature: bonus.boost[eraName].targetedFeature,
+								type: Boosts.Mapper[bonus.boost[eraName].type] || [bonus.boost[eraName].type],
+								value: bonus.boost[eraName].value,
+								needsLink: true,
+								requiredLinks: i + 1
 							}
-							else if (bonus.boost.AllAge) {
-								let boost = {
-									feature: bonus.boost.AllAge.targetedFeature,
-									type: Boosts.Mapper[bonus.boost.AllAge.type] || [bonus.boost.AllAge.type],
-									value: bonus.boost.AllAge.value,
-									needsLink: true
-								}
-								boosts.push(boost)
+							boosts.push(boost)
+						}
+						else if (bonus.boost.AllAge) {
+							let boost = {
+								feature: bonus.boost.AllAge.targetedFeature,
+								type: Boosts.Mapper[bonus.boost.AllAge.type] || [bonus.boost.AllAge.type],
+								value: bonus.boost.AllAge.value,
+								needsLink: true,
+								requiredLinks: i + 1
 							}
+							boosts.push(boost)
 						}
 					}
 				}
@@ -1706,16 +1730,35 @@ let CityBuildings = {
 		}
 	},
 
-	// todo: need it for sets
-	findAdjacentSetBuildingByCoords(x,y, linkName = "") {
-		for (let i = x; i >= (x-10); i--) {
-			for (let j = y; j >= (y-10); j--) {
-				let building = this.getBuildingByCoords(i,j)
-				//if (building !== undefined && building?.setBuilding?.name === linkName) {
-				//	return console.log(building)
-				//}
-			}
+	findAdjacentSetBuildingByCoords(building) {
+		let x = building.coords.x,
+			y = building.coords.y,
+			w = building.size.width,
+			h = building.size.length,
+			setName = building.setBuilding.name,
+			adjacents = new Set(),
+			allBuildings = Object.values(MainParser.CityBuildingsData);
+
+		const getB = (tx, ty) => {
+			return allBuildings.find(b =>
+				tx >= b.coords.x && tx < b.coords.x + b.size.width &&
+				ty >= b.coords.y && ty < b.coords.y + b.size.length
+			);
+		};
+
+		for (let i = 0; i < h; i++) {
+			let bL = getB(x - 1, y + i);
+			if (bL && bL.setBuilding?.name === setName && bL.id !== building.id) adjacents.add(bL.id);
+			let bR = getB(x + w, y + i);
+			if (bR && bR.setBuilding?.name === setName && bR.id !== building.id) adjacents.add(bR.id);
 		}
+		for (let i = 0; i < w; i++) {
+			let bT = getB(x + i, y - 1);
+			if (bT && bT.setBuilding?.name === setName && bT.id !== building.id) adjacents.add(bT.id);
+			let bB = getB(x + i, y + h);
+			if (bB && bB.setBuilding?.name === setName && bB.id !== building.id) adjacents.add(bB.id);
+		}
+		return Array.from(adjacents);
 	},
 
 	// returns false if building does not produce anything
@@ -2653,9 +2696,6 @@ let CityBuildings = {
 		}
 
 		entity.rating = Productions.rateBuilding(entity);
-
-		// no idea why this is called here? so, away it goes
-		//this.getBuildingGuildGoodsByEra(false, entity, false);
 		
 		//if (entity.type !== "street")
 		//	console.log('entity ', entity.name, entity, entity.allyRoom, data);

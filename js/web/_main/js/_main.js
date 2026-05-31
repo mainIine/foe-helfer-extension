@@ -197,12 +197,14 @@ GetFights = () =>{
 
 	// globale Handler
 	// die Gebäudenamen übernehmen
+	/* removed as inno changed city entity loading
 	FoEproxy.addMetaHandler('city_entities', (xhr, postData) => {
 		let EntityArray = JSON.parse(xhr.responseText);
 		MainParser.CityEntities = Object.assign({}, ...EntityArray.map((x) => ({ [x.id]: x })));
 		MainParser.correctBuildingType()
 		MainParser.Inactives.check();
 	});
+	*/
 	FoEproxy.addMetaHandler('building_entity_lookup', (xhr, postData) => {
 		let buildingUrlsRaw = JSON.parse(xhr.responseText || "[]");
 		let buildingUrls = Object.assign({}, ...buildingUrlsRaw.map((x) => ({ [x.identifier.replace("building_entity_","")]: {url: x.url, hash: x.url.replace(/.*?([^-]+$)/gm,"$1")} })));
@@ -399,7 +401,7 @@ GetFights = () =>{
 
 	// QI map
 	FoEproxy.addHandler('GuildRaidsMapService', 'getOverview', (data, postData) => {		
-		QIMap.init(data.responseData)
+		QiProgress.QiMap = data.responseData;
 	})
 
 	// CastleSystem rewards
@@ -752,7 +754,7 @@ GetFights = () =>{
 		if (data.responseData[0]?.player_id === ExtPlayerID) {
 			
 			if ($('#OwnPartBox').length > 0) {
-				Parts.CityMapEntity.max_level = data.responseData[0]?.max_level;
+				MainParser.CurrentGB.Entity.max_level = data.responseData[0]?.max_level;
 				Parts.CalcBody();
 			}
 		}
@@ -771,7 +773,7 @@ GetFights = () =>{
 		
 		if (formattedData.responseData[0]?.player_id === ExtPlayerID) {
 			if ($('#OwnPartBox').length > 0) {
-				Parts.CityMapEntity.max_level = formattedData.responseData[0]?.max_level;
+				MainParser.CurrentGB.Entity.max_level = formattedData.responseData[0]?.max_level;
 				Parts.CalcBody();
 			}
 		}
@@ -807,62 +809,44 @@ GetFights = () =>{
 		gbUpdateData = null;
 		let IsPreviousLevel = false;
 
-		if (!Rankings) return; //Keine Rankings => Fehlermeldung z.B. "Stufe wurde bereits erhöht" wenn man versucht einzuzahlen obwohl schon gelevelt wurde
+		if (!Rankings) return;
 
-		// Own GB
-		if (CityMapEntity.responseData[0].player_id === ExtPlayerID || Settings.GetSetting('ShowOwnPartOnAllGBs')) {
-			//LG Scrollaktion: Beim ersten mal Öffnen Medals von P1 notieren. Wenn gescrollt wird und P1 weniger Medals hat, dann vorheriges Level, sonst aktuelles Level
-			if (IsLevelScroll) {
-				let Medals = 0;
-				for (let i = 0; i < Rankings.length; i++) {
-					if (Rankings[i]['reward'] !== undefined) {
-						Medals = Rankings[i]['reward']['resources']['medals'];
-						break;
-					}
-				}
-
-				if (Medals !== LGCurrentLevelMedals) {
-					IsPreviousLevel = true;
+		// LG Scrollaktion: Beim ersten mal Öffnen Medals von P1 notieren. Wenn gescrollt wird und P1 weniger Medals hat, dann vorheriges Level, sonst aktuelles Level
+		if (IsLevelScroll) {
+			let Medals = 0;
+			for (let i = 0; i < Rankings.length; i++) {
+				if (Rankings[i]['reward'] !== undefined) {
+					Medals = Rankings[i]['reward']['resources']['medals'];
+					break;
 				}
 			}
-			else {
-				let Medals = 0;
-				for (let i = 0; i < Rankings.length; i++) {
-					if (Rankings[i]['reward'] !== undefined) {
-						Medals = Rankings[i]['reward']['resources']['medals'];
-						break;
-					}
-				}
-				LGCurrentLevelMedals = Medals;
-			}
 
-			Parts.CityMapEntity = CityMapEntity.responseData[0];
-			Parts.Rankings = Rankings;
-			Parts.IsPreviousLevel = IsPreviousLevel;
-
-			// das erste LG wurde geladen
-			$('#partCalc-Btn').removeClass('hud-btn-red');
-			$('#partCalc-Btn-closed').remove();
-
-			if ($('#OwnPartBox').length > 0) {
-				Parts.CalcBody();
+			if (Medals !== LGCurrentLevelMedals) {
+				IsPreviousLevel = true;
 			}
 		}
-
-		// Other players GB
-		if (CityMapEntity.responseData[0].player_id !== ExtPlayerID && !IsLevelScroll) {
-			$('#calculator-Btn').removeClass('hud-btn-red');
-			$('#calculator-Btn-closed').remove();
-
-			Calculator.Rankings = Rankings;
-			Calculator.CityMapEntity = CityMapEntity['responseData'][0];
-
-			// wenn schon offen, den Inhalt updaten
-			if ($('#costCalculator').length > 0) {
-				Calculator.Show();
+		else {
+			let Medals = 0;
+			for (let i = 0; i < Rankings.length; i++) {
+				if (Rankings[i]['reward'] !== undefined) {
+					Medals = Rankings[i]['reward']['resources']['medals'];
+					break;
+				}
 			}
+			LGCurrentLevelMedals = Medals;
 		}
 
+		MainParser.CurrentGB.Entity = CityMapEntity.responseData[0];
+		MainParser.CurrentGB.Rankings = Rankings;
+		Parts.IsPreviousLevel = IsPreviousLevel;
+
+		// GB was loaded
+		$('#partCalc-Btn').removeClass('hud-btn-red');
+		$('#partCalc-Btn-closed').remove();
+
+		if ($('#OwnPartBox').length > 0) {
+			Parts.CalcBody();
+		}
 	}
 
 
@@ -1012,6 +996,10 @@ let MainParser = {
 	StartUpType: null,
 	OpenConversation: null,
 	CastleSystemChest: null,
+	CurrentGB: {
+		Entity: undefined,
+		Rankings: undefined
+	},
 
 	// all buildings of the player
 	CityMapData: {},
@@ -1320,9 +1308,6 @@ let MainParser = {
 
 	/**
 	 * Check whether an update is necessary
-	 *
-	 * @param ep
-	 * @returns {*}
 	 */
 	checkNextUpdate: (ep) => {
 		let s = localStorage.getItem(ep),
@@ -1331,11 +1316,6 @@ let MainParser = {
 		return MainParser.compareTime(a, s);
 	},
 
-
-	/**
-	 * @param PlayerID
-	 * @param PlayerName
-	 */
 	GetPlayerLink: (PlayerID, PlayerName) => {
 		if (Settings.GetSetting('ShowLinks')) {
 			let PlayerLink = HTML.i18nReplacer(PlayerLinkFormat, { 'world': ExtWorld.toUpperCase(), 'playerid': PlayerID });
@@ -1349,11 +1329,6 @@ let MainParser = {
 		}
 	},
 	
-	/**
-	 * @param GuildID
-	 * @param GuildName
-	 * @param WorldId
-	 */
 	GetGuildLink: (GuildID, GuildName, WorldId) => {
 		if(!WorldId) WorldId = ExtWorld;
 
@@ -1369,13 +1344,8 @@ let MainParser = {
 		}
 	},
 
-	/**
-	 * @param BuildingID
-	 * @param BuildingName
-	 */
 	GetBuildingLink: (BuildingID, BuildingName) => {
-		if (Settings.GetSetting('ShowLinks'))
-		{
+		if (Settings.GetSetting('ShowLinks')) {
 			let BuildingLink = HTML.i18nReplacer(BuildingsLinkFormat, {'buildingid': BuildingID });
 
 			return `<a class="external-link game-cursor" href="${BuildingLink}" target="_blank">${BuildingName} ${LinkIcon}</a>`;
@@ -1499,7 +1469,9 @@ let MainParser = {
 		setTimeout(MainParser.forceLoadCityEntities, 15000);
 	
 		window.dispatchEvent(new CustomEvent('foe-helper#StartUpDone'))
-		//console.log('StartUp done')
+		
+		// remove campagnemap storage - can be removed again at some point
+		localStorage.removeItem('AllProvinces');
 	},
 
 
@@ -1675,7 +1647,21 @@ let MainParser = {
 			if ($('#AllyList').length === 0) return;
 			let buildings = Object.assign({},...Object.values(MainParser.CityMapData).map(x=>({id:x.id,metaID:x.cityentity_id,rooms:structuredClone(MainParser.CityEntities[x.cityentity_id]?.components?.AllAge?.ally?.rooms)})).filter(x=>x.rooms!==undefined).map(x=>({[x.id]:x})))
 			let rooms = {}
-			let unassigned = 0
+			let unassigned = 0;
+			let boostList = [
+				{feature:"all",type: "att_boost_attacker"},
+				{feature:"all",type: "att_boost_defender"},
+				{feature:"battleground",type: "att_boost_attacker"},
+				{feature:"battleground",type: "att_boost_defender"},
+				{feature:"guild_expedition",type: "att_boost_attacker"},
+				{feature:"guild_expedition",type: "att_boost_defender"},
+				{feature:"all",type: "def_boost_attacker"},
+				{feature:"all",type: "def_boost_defender"},
+				{feature:"battleground",type: "def_boost_attacker"},
+				{feature:"battleground",type: "def_boost_defender"},
+				{feature:"guild_expedition",type: "def_boost_attacker"},
+				{feature:"guild_expedition",type: "def_boost_defender"},
+			]
 			Object.values(MainParser.Allies.allyList).forEach(x=>{
 				if (x.mapEntityId) {
 					let rs=buildings[x.mapEntityId].rooms
@@ -1726,18 +1712,23 @@ let MainParser = {
 				unassigned++
 			})
 
-			html=`<div class="dark-bg"><select id="AllyFilter"><option value="">${i18n('Boxes.AllyList.All')}</option>`
-			for (let r of Object.values(MainParser.Allies.rarities)) {
-				html+=`<option value="${r.id.value}">${r.name}</option>`
-			}
+			html=`<div class="dark-bg">
+				<select id="AllyFilter"><option value="">${i18n('Boxes.AllyList.All')}</option>`
+				for (let r of Object.values(MainParser.Allies.rarities)) {
+					html+=`<option value="${r.id.value}">${r.name}</option>`
+				}
 			html+=`</select></div>`
 			html+=`<table id="AllyListTable" class="foe-table">`
-			html+=`<thead><tr>
-							<th colspan=3>${i18n('Boxes.AllyList.Building')}</th>
-							<th colspan=2>${i18n('Boxes.AllyList.Ally')}</th>
-							<th>${i18n('Boxes.AllyList.Level')}</th>
-							<th>${i18n('Boxes.AllyList.Boosts')}</th>
-					</tr></thead>`
+			html+=`<thead><tr class="sorter-header sort2">
+							<th class="no-sort">${i18n('Boxes.AllyList.Ally')}</th>
+							<th class="is-number" data-type="ally-list">${i18n('Boxes.AllyList.Level')}</th>`;
+							for (const b of boostList) {
+								html+= `<th class="is-number" data-type="ally-list"><span class="resicon ${b.type}-${b.feature}"></span></th>`
+							}
+					html+=`<th class="no-sort">${i18n('Boxes.AllyList.Building')}</th>
+					</tr>
+				</thead>
+				<tbody class="ally-list">`;
 			sortedRooms = Object.entries(rooms).sort((a,b)=>{
 				f=(r)=>{return Object.keys(MainParser.Allies.rarities).indexOf(r.allyRarity) + (r.buildingName?10:0) + (r.fragmentsAmount?100:0)}
 				return f(a[1])-f(b[1])
@@ -1749,22 +1740,29 @@ let MainParser = {
 				rarities.push(r.allyRarity)
 				rarities=rarities.map(x=>"Rarity-"+x)
 
-				//${MainParser.Allies.tooltip(buildingId)}
 				html+=`<tr class="allyRoomRow ${rarities.join(" ")}">
-							<td style="white-space:nowrap">${MainParser.Allies.rarityStars(r.roomRarity)}</td>
+						   	<td style="white-space:nowrap">
+								${MainParser.Allies.rarityStars(r.allyRarity)}
+								${r.allyName || ""}${r.fragmentsAmount?srcLinks.icons("icon_tooltip_fragment") + r.fragmentsAmount+"/"+r.fragmentsNeeded:""}
+							</td>
+						   	<td data-number="${(r.allyLevel || 0)}">${r.allyLevel || ""}</td>`;
+							for (let b of boostList) {
+								let allyB = MainParser.Allies.boostsArray(r.allyBoosts);
+								let boost = allyB.find(x => x.type == b.type && x.feature == b.feature);
+						   		html+=`<td data-number="${(boost ? boost.value : 0)}">${(boost ? boost.value : '-')}</td>`
+							}
+						html+=`
 					   	   	<td ${buildingId!=0?`class="helperTT" 
 								data-id="${buildingId}" 
 								data-era="${Technologies.InnoEraNames[MainParser.CityMapData[buildingId].level]}"
 								data-callback_tt="Tooltips.buildingTT" 
 								`:``}
-							>${r.buildingName || ""}</td>
-							<td>${buildingId!=0?`<span class="show-entity" data-id="${buildingId}"><img class="game-cursor" src="${ extUrl + 'css/images/hud/open-eye.png'}"></span>`:""}</td>
-						   	<td style="white-space:nowrap">${MainParser.Allies.rarityStars(r.allyRarity)}</td>
-						   	<td>${r.allyName || ""}${r.fragmentsAmount?srcLinks.icons("icon_tooltip_fragment") + r.fragmentsAmount+"/"+r.fragmentsNeeded:""}</td>
-						   	<td>${r.allyLevel || ""}</td>
-						   	<td>${MainParser.Allies.boosts(r.allyBoosts)}</td>
-						</tr>`;
-
+							>
+								${r.buildingName || ""}
+								${buildingId!=0?`<span class="show-entity" data-id="${buildingId}"><img class="game-cursor" src="${ extUrl + 'css/images/hud/open-eye.png'}"></span>`:""}
+							</td>
+							</tr>`;
+				
 				// gather sums of all boosts
 				if (buildingId!=0 && r.allyBoosts !== null) {
 					for (let boost of r.allyBoosts) {
@@ -1786,11 +1784,13 @@ let MainParser = {
 				if (a.targetedFeature > b.targetedFeature) return 1
 				return 0
 			});
-			html+=`<tr><td colspan="7" class="text-center dark-bg">
+			html+=`</tbody><tr><td colspan="19" class="text-center dark-bg">
 				${MainParser.Allies.boosts(MainParser.Allies.buildingBoostSums)}
 				</td></tr></table>`
 			
-			$('#AllyListBody').html(html).css("overflow","auto")
+			$('#AllyListBody').html(html).promise().done(function () {
+				$('#AllyListTable').tableSorter();
+			})
 
 			$('#AllyFilter').on("change",()=>{
 				let rarity=$('#AllyFilter option:selected').val()
@@ -1830,6 +1830,30 @@ let MainParser = {
 				ret+=`<span class="${b.targetedFeature}">${srcLinks.icons(b.type+feature[b.targetedFeature])} ${b.value + Boosts.percent(b.type)}</span>`
 			}
 			return ret
+		},
+
+		boostsArray: (boosts) => {
+			let ret = [];
+			for (b of boosts||[]) {
+				let combinedBoosts = Boosts.Mapper[b.type];
+				if (combinedBoosts) {
+					for (let type of combinedBoosts) {
+						let foundBoost = ret.find(x => x.feature === b.targetedFeature && x.type === type);
+						if (foundBoost)
+							foundBoost.value += b.value;
+						else
+						ret.push({'feature':b.targetedFeature,'value':b.value,'type':type})
+					}
+				}
+				else {
+				let foundBoost = ret.find(x => x.feature === b.targetedFeature && x.type === b.type);
+				if (foundBoost)
+					foundBoost.value += b.value;
+				else
+					ret.push({feature:b.targetedFeature,value:b.value,type:b.type});
+				}
+			}
+			return ret;
 		},
 
 		ShowSettings: () => {

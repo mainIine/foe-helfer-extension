@@ -1,29 +1,9 @@
-/*
- * **************************************************************************************
- * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
- * You may use, distribute and modify this code under the
- * terms of the AGPL license.
- *
- * See file LICENSE.md or go to
- * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
- * for full license details.
- *
- * **************************************************************************************
- */
-
 #mapTradeWarningDialog {
-    top: calc(50vh + 165px);
-    left: calc(50vw - 180px);
+    top: calc(50vh + 180px);
+    left: calc(50vw - 170px);
+    width: 183px;
 }
 
 #mapTradeWarningDialogBody {
-    width: 180px;
-    height: 25px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    font-size: 120%;
-    background-color: rgba(103, 1, 1, 0.5);
+    font-size: 90%;
 }
-

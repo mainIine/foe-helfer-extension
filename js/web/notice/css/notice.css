@@ -66,7 +66,7 @@
 
 #noticesBody .tab-edit:hover,
 #noticesBody .sub-tab-edit:hover {
-	border-color: var(--bright-color);
+	border-color: var(--sunflower);
 }
 
 #noticesBody .tabs ul.horizontal {
@@ -84,13 +84,13 @@
 #noticesBody .content-head {
 	font-size: 110%;
 	font-weight: 700;
-	color: var(--bright-color);
+	color: var(--sunflower);
 	margin-bottom: 5px;
 }
 
 #noticesBody .content-head-player {
 	display: flex;
-	color: var(--bright-color);
+	color: var(--sunflower);
 	margin-bottom: 15px;
 }
 
@@ -116,6 +116,17 @@
 #noticesBody .content-text {
 	overflow: hidden;
 	overflow-y: auto;
+}
+
+#noticesBody .content-text:focus, #noticesBody .content-head:focus {
+	outline: 2px solid var(--text-dark);
+}
+
+#noticesBody .content-text * {
+	font-family: inherit !important;
+	color: inherit !important;
+    background-color: transparent !important;
+	border-color: var(--text-dark) !important;
 }
 
 /*******************************************************************************/
@@ -151,7 +162,7 @@
 
 #notices-modal-playersBody .custom-option {
 	display: flex;
-	border-bottom: 1px solid var(--text-normal);
+	border-bottom: 1px solid var(--beige);
 	align-items: center;
 }
 

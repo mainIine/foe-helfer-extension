@@ -32,9 +32,6 @@ let KampagneMap = {
     Provinces: null,
     AllProvinces: null,
 
-    /**
-     * Zeigt
-     */
     Show: () => {
         if ($('#campagne').length === 0) {
 
@@ -58,17 +55,11 @@ let KampagneMap = {
     },
 
 
-    /**
-	 *
-	 */
     BuildBox: () => {
         KampagneMap.CalcBody();
     },
 
 
-    /**
-	 *
-	 */
     CalcBody: () => {
 
         let h = [];

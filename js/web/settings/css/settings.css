@@ -23,16 +23,15 @@
 	overflow-y: auto;
 }
 
-
 #SettingsBoxBody h2 {
 	font-size: 110%;
 	font-weight: 700;
-	color: var(--bright-color);
+	color: var(--sunflower);
 	margin: 10px 0 5px;
 }
 
 #SettingsBoxBody .item-row a {
-	color: #ffcc68;
+	color: var(--sunflower);
 }
 
 #SettingsBoxBody .item-row .desc {
@@ -68,7 +67,7 @@
 	text-align: center;
 	line-height: 32px;
 	font-size: 0.9rem;
-	color: #b0bbcd;
+	color: var(--light-blue);
 	font-weight: 700;
 }
 
@@ -111,7 +110,7 @@
 
 #SettingsBoxBody .settings-wrapper {
 	position: absolute;
-	top: 75px;
+	top: 69px;
 	bottom: 0;
 	left: 0;
 	right: 0;
@@ -132,16 +131,10 @@
 
 #SettingsBoxBody .tabs ul.vertical {
 	position: static;
-	width: 230px;
+	width: 234px;
 	height: auto;
-	padding-top: 5px;
-	margin-bottom: 2px;
 	overflow-y: auto;
 	overflow-x: hidden;
-}
-
-#SettingsBoxBody .tabs ul.vertical li {
-	margin-bottom: 2px;
 }
 
 #SettingsBoxBody .tabs .sub-tab {
@@ -172,7 +165,7 @@
 	border-top: 1px solid var(--border-table-top);
 	border-bottom: 1px solid var(--border-table-bottom);
 	padding: 5px;
-	color: var(--text-normal);
+	color: var(--beige);
 }
 
 #SettingsBoxBody .helplist a:hover {
@@ -181,13 +174,12 @@
 
 #SettingsBoxBody .helplist li span {
 	display: inline-block;
-	background-color: #000;
+	background-color: var(--black);
 	width: 30px;
 	height: 32px;
 	margin-right: 7px;
 	background: url('../images/help.png') 0 0 no-repeat;
 	text-decoration: none;
-	float: left;
 }
 
 #SettingsBoxBody .helplist .discord {
@@ -211,7 +203,7 @@
 }
 
 #SettingsBoxBody .info-box dt {
-	color: var(--bright-color);
+	color: var(--sunflower);
 	font-weight: bold;
 }
 
@@ -219,7 +211,6 @@
 	border: 1px solid var(--text-dark);
 }
 
-/* Menu Inhalt */
 .setting .hud-btn {
 	margin-right: 6px;
 	margin-bottom: 6px;

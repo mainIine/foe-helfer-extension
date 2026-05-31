@@ -178,7 +178,7 @@
 	border-left: 1px solid var(--border-table-top);
 	border-right: 1px solid var(--border-table-top);
 	background: none;
-	color: var(--text-light);
+	color: var(--white);
 	position: relative;
 	min-width: 150px;
 }
@@ -193,7 +193,7 @@
 	background: var(--btn-bg-green-webkit);
 	background: var(--btn-bg-green);
 	z-index: -1;
-	color: var(--text-light);
+	color: var(--white);
 }
 
 #GexStat table tbody td div.progbar.rank-1 {
@@ -302,7 +302,7 @@
 }
 
 #GexStat .participation_overview>div {
-	color: var(--bright-color);
+	color: var(--sunflower);
 }
 
 #GexStat #gexsParticipationTable {
