@@ -239,6 +239,8 @@
     "Boxes.CityMap.Building": "Building",
     "Boxes.CityMap.BuildingsAmount": "buildings total",
     "Boxes.CityMap.CavalierPerspecitve": "Side View",
+    "Boxes.CityMap.ChainBuildings": "Chain buildings",
+    "Boxes.CityMap.SetBuildings": "Set buildings",
     "Boxes.CityMap.CityGridScore": "City Grid Score",
     "Boxes.CityMap.CityGridScoreText": "Area of all connected buildings that need roads divided by area of all roads multiplied by 100",
     "Boxes.CityMap.CollectSoon": "Collectable soon: __hours__ hours",
