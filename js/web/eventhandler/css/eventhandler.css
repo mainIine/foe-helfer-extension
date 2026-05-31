@@ -31,7 +31,7 @@
 
 #moppelhelper .bigerror {
     font-size: 150%;
-    color: var(--text-danger);
+    color: var(--danger-red);
 }
 
 #moppelhelper .header {
@@ -46,7 +46,7 @@
 }
 
 #moppelhelper #moppelhelperBody td a {
-    color: var(--bright-color);
+    color: var(--sunflower);
     text-decoration: none;
 }
 
@@ -59,7 +59,7 @@
 }
 
 #moppelhelper #moppelhelperBody .foe-table tr:first-child td:nth-child(5) strong {
-    color: var(--text-success);
+    color: var(--success);
 }
 
 #moppelhelper #moppelhelperBody table.foe-table tr th {

@@ -21,7 +21,7 @@
     background-image: none;
 }
 
-#aztecsHelper #aztecsHelperHeader {
+#aztecsHelper #aztecsHelperHeader, #aztecsHelper #aztecsHelperSettingsBox {
     pointer-events: auto;
 }
 

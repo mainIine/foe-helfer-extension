@@ -153,6 +153,7 @@ FoEproxy.addHandler('MergerGameService', 'convertPiece', (data, postData) => {
 });
 
 FoEproxy.addHandler('TimedTasksService', 'all', (data, postData) => {
+	if (!["anniversary_event", "care_event"].includes(postData[0].requestData[0])) return;
 	if (['getOverview','claimReward'].includes(data.requestMethod)) {
 		data.responseData.slots.forEach(slot => {
 			mergerGame.tasks[slot.type] = {
@@ -353,7 +354,7 @@ let mergerGame = {
 		let table = mergerGame.state.table
 		//let targetEfficiency = mergerGame.settings.targetProgress/mergerGame.settings.availableCurrency;
 		/*let effcolor = (eff,target=targetEfficiency) => {
-			return eff > target*1.15 ? 'var(--text-success)' : eff > target*1 ? 'yellow' : eff > target * 0.95 ? 'var(--text-bright)' : 'red';
+			return eff > target*1.15 ? 'var(--success)' : eff > target*1 ? 'yellow' : eff > target * 0.95 ? 'var(--text-bright)' : 'red';
 		}*/
 		//let keys = mergerGame.keySum();
 		//let totalValue = mergerGame.state.progress + keys*mergerGame.settings.keyValue;

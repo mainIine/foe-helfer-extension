@@ -57,9 +57,9 @@ let QiProgress = {
 		showProgressFilter: 1,
 		showOnlyActivePlayers: 0,
 	},
+	QiMap: {},
 
 	/**
-	 *
 	 * @returns {Promise<void>}
 	 */
 	checkForDB: async (playerID) => {

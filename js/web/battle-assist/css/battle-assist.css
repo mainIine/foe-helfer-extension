@@ -32,25 +32,12 @@
 }
 
 #battleAssistRogueDialog {
-    top: calc(50vh + 230px);
-    /*left: calc(50vw - 92px);*/
-    left: calc(50vw - 277px);
+    top: calc(50vh + 240px);
+    left: calc(50vw - 270px);
 }
-/*
-#battleAssistRogueDialog.ABnew {
-    top: calc(50vh + 230px);
-    left: calc(50vw - 277px);
-}*/
 
 #battleAssistRogueDialogBody {
     width: 360px;
-    height: 100px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    font-size: 120%;
-	background-color: var(--table-bg-error);
 }
 
 #battleAssistRogueDialogBody,
@@ -59,11 +46,9 @@
 }
 
 @keyframes battleAssistBlink {
-    0% {color: var(--bright-color);}
-    25% {color: var(--text-normal);}
-    50% {color: transparent;}
-    75% {color: var(--text-normal);}
-    100% {color: var(--bright-color);}
+    0% {color: var(--sunflower);}
+    50% {color: var(--beige);}
+    100% {color: var(--sunflower);}
 }
 
 #battleAssistAddAdvice {
@@ -113,7 +98,7 @@
 #battleAssistArmyAdviceBody {
     background: 5px;
     color: var(--black);
-    background-color: var(--bright-color);
+    background-color: var(--sunflower);
 }
 #battleAssistArmyAdviceBody span {
     margin-left: 5px;
@@ -141,7 +126,7 @@
     overflow-y: auto;
 }
 #battleAssistAAConfig .explanation {
-    color: var(--bright-color);
+    color: var(--sunflower);
     margin: 3px;
     border: solid 1px;
     border-radius: 4px;
@@ -153,7 +138,7 @@
     float:right;
 }
 #battleAssistAAConfig h1 {
-    color: var(--bright-color);
+    color: var(--sunflower);
     margin-left: 5px;
 }
 #battleAssistAAConfigSettingsBox input{

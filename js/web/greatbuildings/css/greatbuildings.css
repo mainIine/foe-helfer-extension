@@ -26,11 +26,11 @@
 }
 
 #greatbuildings #greatbuildingsBody strong.success {
-	color: var(--text-success);
+	color: var(--success);
 }
 
 .text-bright {
-	color: var(--bright-color);
+	color: var(--sunflower);
 }
 
 #greatbuildings .title {
@@ -55,7 +55,7 @@
 #greatbuildings #greatbuildingsBody strong.player-name {
 	display: block;
 	white-space: nowrap;
-	color: var(--bright-color);
+	color: var(--sunflower);
 	margin: 0 10px;
 }
 

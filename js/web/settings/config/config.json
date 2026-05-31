@@ -1,11 +1,5 @@
 [
 	{
-		"name": "AutomaticNegotiation",
-		"status": true,
-		"group": "Auto",
-		"sort": 0
-	},
-	{
 		"name": "ShowEventChest",
 		"callback": "ShowEventHelpers",
 		"status": true,
@@ -13,28 +7,28 @@
 		"sort": 1
 	},
 	{
-		"name": "ShowRougeUnitWarning",
-		"status": true,
-		"group": "Auto",
-		"sort": 2
-	},
-	{
-		"name": "ShowGuildTreasuryLogExport",
-		"status": true,
-		"group": "Auto",
-		"sort": 7
-	},
-	{
-		"name": "ShowGBGBuildings",
+		"name": "BlockCollectAll",
 		"status": false,
 		"group": "Auto",
-		"sort": 9
+		"sort": 2
 	},
 	{
 		"name": "AutoOpenCloseBox",
 		"status": false,
 		"group": "Auto",
-		"sort": 11
+		"sort": 4
+	},
+	{
+		"name": "ShowReconstructionList",
+		"status": true,
+		"group": "Auto",
+		"sort": 6
+	},
+	{
+		"name": "ShowRougeUnitWarning",
+		"status": true,
+		"group": "Auto",
+		"sort": 10
 	},
 	{
 		"name": "ShowScoutingTimes",
@@ -49,22 +43,16 @@
 		"sort": 13
 	},
 	{
-		"name": "BlockCollectAll",
-		"status": false,
-		"group": "Auto",
-		"sort": 13
-	},
-	{
-		"name": "ShowAztecHelper",
-		"status": true,
-		"group": "Auto",
-		"sort": 14
-	},
-	{
 		"name": "ShowPvPArena",
 		"status": true,
 		"group": "Auto",
 		"sort": 15
+	},
+	{
+		"name": "ShowGBGBuildings",
+		"status": false,
+		"group": "Auto",
+		"sort": 16
 	},
 	{
 		"name": "ShowGBGPlayerInfo",
@@ -86,16 +74,29 @@
 		"sort": 24
 	},
 	{
-		"name": "ShowReconstructionList",
+		"name": "ShowGuildTreasuryLogExport",
 		"status": true,
 		"group": "Auto",
-		"sort": 30
+		"sort": 35
+	},
+	{
+		"name": "GexStockWarning",
+		"callback": "GexStockWarning",
+		"group": "Auto",
+		"sort": 40
 	},
 	{
 		"name": "ResetBoxPositions",
 		"button": "Settings.ResetBoxCoords()",
 		"group": "Boxes",
 		"sort": 0
+	},
+	{
+		"name": "ShowLinks",
+		"status": true,
+		"callback": "SelectWebsite",
+		"group": "Boxes",
+		"sort": 2
 	},
 	{
 		"name": "ShowPlayersMotivation",
@@ -129,13 +130,6 @@
 		"sort": 11
 	},
 	{
-		"name": "ShowLinks",
-		"status": true,
-		"callback": "SelectWebsite",
-		"group": "Boxes",
-		"sort": 13
-	},
-	{
 		"name": "HideHelperDuringBattle",
 		"status": false,
 		"group": "Boxes",
@@ -155,7 +149,7 @@
 	},
 	{
 		"name": "ShowGBGRewards",
-		"status": true,
+		"status": false,
 		"group": "Boxes",
 		"sort": 19
 	},
@@ -257,12 +251,6 @@
 		"button":"window.open('https://github.com/mainIine/foe-helfer-extension/archive/refs/heads/beta.zip', '_blank').focus();",
 		"sort": 19
 	},
-	{
-		"name": "GexStockWarning",
-		"callback": "GexStockWarning",
-		"group": "Auto",
-		"sort": 19
-	},
 
 	{
 		"name": "ShowBlueGalaxyHelper",
@@ -281,6 +269,16 @@
 	},
 	{
 		"name": "ShowOwnPartOnAllGBs",
+		"status": true,
+		"hidden": true
+	},
+	{
+		"name": "AutomaticNegotiation",
+		"status": true,
+		"hidden": true
+	},
+	{
+		"name": "ShowAztecHelper",
 		"status": true,
 		"hidden": true
 	}

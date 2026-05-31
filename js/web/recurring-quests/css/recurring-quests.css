@@ -20,7 +20,7 @@
 }
 
 #RecurringQuestsBoxBody div {
-    color: var(--bright-color);
+    color: var(--sunflower);
     padding: 5px;
     font-size: smaller;
     text-align: justify;
@@ -28,31 +28,31 @@
 
 #RecurringQuestsBoxBody th:last-child,
 #RecurringQuestsBoxBody td:last-child {
-        text-align: center;
-        font-weight: bold;
-        font-size: large;
-        width: 27px;
+    text-align: center;
+    font-weight: bold;
+    font-size: large;
+    width: 27px;
 }
 
 #RecurringQuestsBoxBody td.check:last-child {
-    color:chartreuse;
+    color: var(--limegreen);
 }
 #RecurringQuestsBoxBody td:last-child {
-    color:orange;
+    color: var(--sunflower);
 }
 #recurringTable.hideTasks th:nth-child(1),
 #recurringTable.hideTasks td:nth-child(1){
-        display:none;
-        width: 90%;
+    display:none;
+    width: 90%;
 }
 #recurringTable:not(.hideTasks) th:nth-child(2),
 #recurringTable:not(.hideTasks) td:nth-child(2){
-        display:none;
-        width: 90%;
+    display:none;
+    width: 90%;
 }
 #recurringTable th:nth-child(1),
 #recurringTable th:nth-child(2){
-        color:var(--bright-color);
+    color:var(--sunflower);
 }
 #recurringTable {
     table-layout: fixed;
@@ -64,7 +64,7 @@
     display: block;
 }
 #recurringTable img{
-        height: 25px;
+    height: 25px;
 }
 #recurringTable .switchState.loading::before {
     content: '';
@@ -74,7 +74,7 @@
     margin-right: 0px;
     margin-bottom: -25px;
     border: 5px solid transparent;
-    border-top-color: blue;
+    border-top-color: var(--def);
     border-radius: 15px;
     animation: spin 5s linear infinite;
 }

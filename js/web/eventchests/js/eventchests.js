@@ -127,14 +127,17 @@ let EventPresents = {
     BuildBox: () => {
         let h = [];
 
-        h.push('<table class="foe-table">');
+        // change when needed!
+        const currencyName1 = 'arthur_event_token_common';
+        const currencyName2 = 'arthur_event_token_rare';
 
+        h.push('<table class="foe-table">');
         for (let present of EventPresents.Presents) {
             let icon;
-            let frag = ""
+            let frag = "";
 
             if (present.status.value !== "used") {
-                h.push('<tr class="'+present.status.value+'">');
+                h.push(`<tr class="${present.status.value}">`);
 
                 if(present.reward.type === "unit") {
                     asset = present.reward.subType
@@ -153,7 +156,24 @@ let EventPresents = {
                 icon = `<img src="${srcLinks.getReward(asset)}" alt="">`;
 
                 h.push('<td class="icon">'+ (icon.search("antiquedealer_flag") === -1 ? icon : '') + frag + '</td>');
-                h.push('<td>' + present.reward.name + (present.status.value === "visible" ? '<img class="visible" src="' + extUrl + 'css/images/hud/open-eye.png" alt="">' : '') +'</td>');
+                h.push(`<td>
+                    ${present.reward.name} `);
+
+                    let warning = false;
+
+                    // warning for currency overflow
+                    if (present.reward.subType === (currencyName1) || present.reward.subType === (currencyName2)) {
+                        let currency = present.reward.subType;
+                        let currencyInfo = FHResourcesList.find(x => x.id == currency);
+                        let currencyCapAmount = currencyInfo?.abilities?.resourceCap?.amount || null;
+                        if (currencyCapAmount) {
+                            if (ResourceStock[currency] === (currencyCapAmount-1))
+                                warning = true;
+                        }
+                        h.push(`${(currencyCapAmount ? `&middot; <i ${warning ? ' class="danger"' : ''}>${ResourceStock[currency]}/${currencyCapAmount}</i>` : '')}`);
+                    }
+                    h.push(`${(present.status.value === "visible" ? '<img class="visible" src="' + extUrl + 'css/images/hud/open-eye.png" alt="">' : '')}
+                    </td>`);
                 h.push('</tr>');
             }
         }
@@ -164,16 +184,10 @@ let EventPresents = {
     }
 }
 
-/**
- *
- * @type {{Show: EventChests.Show, BuildBox: EventChests.BuildBox, CalcBody: EventChests.CalcBody, Chests: null}}
- */
+
 let EventChests = {
     Chests: null,
 
-    /**
-     *
-     */
     Show: () => {
         return;
         if ($('#eventchests').length === 0) {
@@ -192,17 +206,10 @@ let EventChests = {
         EventChests.BuildBox();
     },
 
-    /**
-    *
-    */
     BuildBox: () => {
         EventChests.CalcBody();
     },
 
-
-    /**
-    *
-    */
     CalcBody: () => {
         let h = [];
 
