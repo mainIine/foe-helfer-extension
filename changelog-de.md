@@ -17,6 +17,7 @@
 - Gildenmitglieder Übersicht: Die Detailansicht eines Mitglieds öffnet sich in einem eigenen Fenster und beinhaltet jetzt auch durchschnittliche Daten, sowie QI Daten
 - "Kampagne" Modul entfernt! Sektoren zu verhandeln ist ein selten gewordener Spielstil und Güter gibt es heutzutage in Hülle und Fülle
 - UI: An verschiedenen Stellen sieht der Helfer nun etwas anders aus
+- Gebäude Effizienzberechnung: Die Ansicht öffnet sich per default mit absteigender Sortierung und wird sofort aktualisiert, sobald ein Gebäude entfernt, hinzugefügt oder ge-updated wird
 
 ---
  
