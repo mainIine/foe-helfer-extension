@@ -13,9 +13,69 @@
 
 
 /**
- * CityMap class
+ * Represents the City Map configuration and functionality, including data related to various map types,
+ * map settings, building metrics, and initialization logic.
+ *
+ * @namespace CityMap
+ * @property {Object|null} CityData - The primary data structure for city-related details.
+ * @property {number} EfficiencyFactor - A configurable factor affecting the efficiency of city operations.
+ * @property {Object} map - Settings related to map scaling, view, and grid size.
+ * @property {number} map.scale - Scale of the main city's map.
+ * @property {number} map.outpostScale - Scale of cultural or era outpost maps.
+ * @property {string} map.view - The perspective view of the map (e.g., 'normal', 'skew').
+ * @property {number} map.gridSize - The size of the grid units in the city map.
+ * @property {Object} Main - City map data specific to the main city.
+ * @property {Array|null} Main.unlockedAreas - List of areas unlocked in the city map.
+ * @property {Array|null} Main.blockedAreas - List of areas currently blocked in the city map.
+ * @property {Object} OtherPlayer - Data related to another player's city map view.
+ * @property {Object} OtherPlayer.mapData - Details of the map for the other player.
+ * @property {Array|null} OtherPlayer.unlockedAreas - Areas unlocked for the other player's map.
+ * @property {string|null} OtherPlayer.eraName - The name of the era relevant to the other player's map.
+ * @property {string} OtherPlayer.name - The name of the other player.
+ * @property {Object} CulturalOutpost - Data related to a cultural outpost map.
+ * @property {Object} CulturalOutpost.data - Specific map data for the cultural outpost.
+ * @property {Array} CulturalOutpost.areas - Areas related to the cultural outpost map.
+ * @property {Object} EraOutpost - Data specific to the era outpost map.
+ * @property {Object|null} EraOutpost.data - Specific map data related to an era outpost.
+ * @property {Array} EraOutpost.areas - Areas within the era outpost.
+ * @property {Object} QI - Data related to the Quantum Incursion map feature.
+ * @property {Object|null} QI.data - Specific data for Quantum Incursion maps.
+ * @property {Object|null} QI.stats - Statistics for the Quantum Incursion map.
+ * @property {Array} QI.areas - Areas in the Quantum Incursion map.
+ * @property {number} QI.level - The level of the Quantum Incursion.
+ * @property {Object} metrics - Statistics and metrics for the city map.
+ * @property {number} metrics.buildings - Total count of buildings.
+ * @property {number} metrics.qiBuildings - Count of Quantum Incursion buildings.
+ * @property {number} metrics.qiArea - Area occupied by Quantum Incursion buildings.
+ * @property {number} metrics.gbgBuildings - Count of Guild Battleground buildings.
+ * @property {number} metrics.gbgArea - Area occupied by Guild Battleground buildings.
+ * @property {number} metrics.geBuildings - Count of Guild Expeditions buildings.
+ * @property {number} metrics.geArea - Area occupied by Guild Expeditions buildings.
+ * @property {number} metrics.roadlessBuildings - Count of roadless buildings.
+ * @property {number} metrics.roadlessBuildingsArea - Area occupied by roadless buildings.
+ * @property {number} metrics.connectedBuildings - Count of buildings connected by roads.
+ * @property {number} metrics.connectedBuildingsArea - Area occupied by connected buildings.
+ * @property {number} metrics.limitedBuildings - Count of limited buildings.
+ * @property {number} metrics.limitedBuildingsArea - Area occupied by limited buildings.
+ * @property {number} metrics.roads - Count of roads in the city.
+ * @property {number} metrics.roadsArea - Area occupied by roads.
+ * @property {number} metrics.area - Total area of the city map.
+ * @property {number} metrics.areaOccupied - Total occupied city area.
+ * @property {number} metrics.areaAvailable - Total available city area.
+ * @property {Array} metrics.buildingAreas - Detailed description of each building's area data.
+ * @property {Array} metrics.buildingTypes - Definitions of the types of buildings in the city.
+ * @property {Promise<Object>} AscendingBuildings - A promise that resolves to a map of building IDs to
+ * their upgraded ascended building IDs. The resolution process retries periodically until upgrade data is available.
+ * @function init
+ * @description Initializes the City Map, sets configurations, retrieves data, and optionally toggles map UI visibility.
+ * @param {Object} [event] - Optional event object triggering the initialization.
+ * @function PrepareBox
+ * @description Prepares the main UI, initializes view settings, adds filter or action handlers, adapts content to the active map, and populates UI components.
+ * @param {string} Title - The title of the map box.
+ * @param {string} [elemId="citymap-main"] - The ID of the map container box.
  */
 let CityMap = {
+
 	CityData: null,
 	EfficiencyFactor: 0,
 	map: {
@@ -71,6 +131,19 @@ let CityMap = {
 		buildingTypes: []
 	},
 
+
+	/**
+	 * A Promise that resolves with an object mapping building IDs to their corresponding upgraded building IDs
+	 * for buildings related to ascended upgrades.
+	 *
+	 * The resolution process checks for the availability of `MainParser.BuildingUpgrades`. If it is not available,
+	 * the function retries after a delay of 500 milliseconds until the data is accessible.
+	 *
+	 * Once available, it processes the `BuildingUpgrades` data to:
+	 * - Filter upgrades related to ascended items.
+	 * - Map the initial building IDs from the first upgrade step to the upgraded building IDs from the second upgrade step.
+	 * - Combine these mappings into a single resolved object.
+	 */
 	AscendingBuildings: new Promise((resolve) => {
 		let timer = () => {
 			if (!MainParser.BuildingUpgrades) {
@@ -79,11 +152,17 @@ let CityMap = {
 				resolve (Object.assign({},...Object.values(MainParser.BuildingUpgrades).filter(x => x.upgradeItem.id.includes("ascended")).map(x=>x.upgradeSteps[0].buildingIds.map((Id,i)=>({[Id]:x.upgradeSteps[1].buildingIds[i]}))).flat())) 
 			}
 		}
-		timer()
-	  }),
+
+		timer();
+	}),
+
 
 	/**
-	 * @param event
+	 * Initializes the City Map based on the selected map type and user preferences.
+	 * This function handles retrieving map scale, view settings, and map data,
+	 * and manages the creation or update of the City Map UI.
+	 *
+	 * @param {Object} event - An optional event object passed when triggered. If not provided, it toggles the visibility of the map UI.
 	 */
 	init: (event)=> {
 		let Title = i18n('Boxes.CityMap.YourCity');
@@ -142,9 +221,20 @@ let CityMap = {
 
 
 	/**
-	 * Sidebar Menu
+	 * Prepares and initializes the main UI box and sidebar for the City Map.
+	 *
+	 * This function:
+	 * - Sets up the HTML structure for the map container and sidebar.
+	 * - Initializes map scale and perspective (view) settings from local storage.
+	 * - Adds event listeners for view changes and scale adjustments.
+	 * - Configures filters and action buttons (e.g., meta info copy, submit box).
+	 * - Handles different map contexts: main city, cultural outposts, era outposts, guild raids, and other players.
+	 * - Populates the sidebar with statistics or building lists specific to the active map.
+	 *
+	 * @param {string} Title - The title of the map box.
+	 * @param {string} [elemId="citymap-main"] - The ID of the box element.
 	 */
-	PrepareBox: (Title,elemId="citymap-main")=> {
+	PrepareBox: (Title,elemId="citymap-main")=> {	
 		let oB = $('#'+elemId+'Body'),
 			wrapper = $('<div id="citymap-wrapper" />'),
 			menu = $('<div id="city-map-menu" />');
@@ -242,9 +332,16 @@ let CityMap = {
 
 
 	/**
-	 * Builds the background grid
+	 * Dynamically constructs the background grid for the city map based on unlocked areas.
+	 *
+	 * This method:
+	 * - Identifies the unlocked areas for the active map type (Main city, Other player, or various Outposts).
+	 * - Calculates position offsets based on the map type (e.g., Cultural Outposts, Era Outposts, Guild Raids).
+	 * - Iterates through the unlocked areas and creates background tile elements (`<span>`).
+	 * - Applies CSS classes to differentiate the initial 16x16 starting map from expansions.
+	 * - Appends the generated tile elements to the `#map-grid` container.
 	 */
-	BuildGrid: () => {
+	BuildGrid: () => {	
 		let ua = CityMap.Main.unlockedAreas;
 		if (ActiveMap === "OtherPlayer")
 			ua = CityMap.OtherPlayer.unlockedAreas;
@@ -288,6 +385,28 @@ let CityMap = {
 	},
 
 
+	/**
+	 * Updates and renders the buildings for a specific outpost map on the city grid.
+	 *
+	 * This function:
+	 * - Clears all existing map backgrounds and entities.
+	 * - Rebuilds the grid for the city map.
+	 * - Loads the appropriate building data based on the active map.
+	 * - Calculates the position offsets for different map types.
+	 * - Iterates through the building data, calculating positions and sizes for each building entity.
+	 * - Adds tooltip information for each building, including size, name, and optional collection timer text.
+	 * - Makes the outer grid draggable.
+	 *
+	 * The function handles three types of maps:
+	 * - "era_outpost": Standard outpost with a y-offset adjustment.
+	 * - "cultural_outpost": Cultural outpost with an x-offset adjustment.
+	 * - "guild_raids": Guild raid map with both x-offset and y-offset adjustments.
+	 *
+	 * Additional functionality:
+	 * - If the active map is "guild_raids" and a building entity is in a "ProducingState" with a collection timer
+	 *   below the threshold (`10800` seconds), it marks the entity with specific classes to indicate upcoming
+	 *   collection availability and adjusts its tooltip.
+	 */
 	SetOutpostBuildings: () => {
 		$('#grid-outer').find('.map-bg').remove();
 		$('#grid-outer').find('.entity').remove();
@@ -323,12 +442,12 @@ let CityMap = {
 				
 				let collectSoon = "";
 				let thresholdTime = 10800;
-				let hours = Math.round(CityMapEntity.state.next_state_transition_in/60/60*100);
-				if (ActiveMap === "guild_raids" && CityMapEntity.state.__class__ === "ProducingState" && CityMapEntity.state.next_state_transition_in < thresholdTime) {
+				let hours = CityMapEntity.state?.next_state_transition_in ? Math.round(CityMapEntity.state.next_state_transition_in/60/60*100) : 0;
+				if (ActiveMap === "guild_raids" && CityMapEntity.state?.__class__ === "ProducingState" && CityMapEntity.state.next_state_transition_in < thresholdTime) {
 					collectSoon = " collectSoon collect" + (hours < 100 ? "" : hours);
 				}
 				let collectionString = HTML.i18nReplacer(i18n('Boxes.CityMap.CollectSoon'), {hours: hours/100})
-				f = $('<span />').addClass('entity ' + d['type'] + collectSoon).css({
+				let f = $('<span />').addClass('entity ' + d['type'] + collectSoon).css({
 					width: xsize + 'em',
 					height: ysize + 'em',
 					left: xx + 'em',
@@ -350,10 +469,29 @@ let CityMap = {
 	},
 
 
+	/**
+	 * Displays statistical information related to the QI (Quality Index) of the city map.
+	 *
+	 * This method generates an HTML string that includes various statistical and summary information
+	 * about the QI, such as population, euphoria, resources, and boosts. The output is structured with
+	 * different sections containing population stats, euphoria ratings, resource productions, and active
+	 * boosts.
+	 *
+	 * The method will return early without doing anything if `CityMap.QI.data` is not defined.
+	 *
+	 * Key components of the output:
+	 * - A descriptive hint about QI.
+	 * - Number of areas in the city.
+	 * - Total and available population alongside euphoria percentage.
+	 * - A list of resource productions and their values.
+	 * - A list of active boosts and their respective percentage values.
+	 *
+	 * @returns {string|null} The generated HTML string containing QI stats, or null if data is unavailable.
+	 */
 	showQIStats: () => {
 		if (!CityMap.QI.data) return;
 
-		out = '<div class="metaSums">';
+		let out = '<div class="metaSums">';
 		out += '<p class="text-center"><i>'+i18n('Boxes.CityMap.QIHint')+'</i></p>';
 		out += '<div class="flex between" style="margin-bottom: 10px;">';
         out += '<span><img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_expansion.png`,true)+'" />' +  CityMap.QI.areas.length + '</span>';
@@ -381,6 +519,40 @@ let CityMap = {
 	},
 
 
+	/**
+	 * Displays the QI (Quality Inspection) building list for the current city map.
+	 *
+	 * This function provides a detailed table representation of the unique buildings
+	 * in the city map along with statistics such as population, euphoria, boosts, and
+	 * production breakdown. It calculates the euphoria factor and applies various boosts
+	 * to the resources based on the buildings' characteristics and the city's state.
+	 *
+	 * The function organizes and sorts unique buildings, computes aggregated data like
+	 * population and euphoria, and generates an output table with all relevant information
+	 * for display.
+	 *
+	 * Key functionalities:
+	 * - Filters and processes unique buildings in the city map.
+	 * - Calculates population, euphoria boost, and production resources.
+	 * - Computes boosts for specific building types, including goods and military buildings.
+	 * - Displays a detailed table with building information, including type, count, population,
+	 *   euphoria, production, and boosts.
+	 *
+	 * Dependencies:
+	 * - Requires `CityMap.QI.data` to contain building data for processing.
+	 * - Utilizes `Boosts.Sums` for calculating resource boosts.
+	 * - Relies on helper functions such as `CityMap.setQIBuilding`, `HTML.Format`, `srcLinks.get`,
+	 *   `srcLinks.icons`, and `CityMap.showQIStats`.
+	 *
+	 * Returns:
+	 * - A string containing the combination of QI statistics and the HTML table format of
+	 *   buildings.
+	 *
+	 * Notes:
+	 * - Buildings of type `impediment` and `street` are excluded from the table.
+	 * - Adjusts euphoria boosts based on a calculated factor derived from the ratio of e```uphoriajavascript
+
+	 */
 	showQIBuildingList: () => {
 		if (!CityMap.QI.data) return;
 		let boosts = Boosts.Sums;
@@ -490,6 +662,26 @@ let CityMap = {
 	},
 
 
+	/**
+	 * Processes and transforms building data into a structured format.
+	 *
+	 * @param {Object} data - The input data containing building information.
+	 * @param {string} data.name - The name of the building.
+	 * @param {string} data.type - The type of the building (e.g., "main_building").
+	 * @param {string} data.asset_id - The unique asset identifier of the building.
+	 * @param {Object} data.components - An object containing component information for the building.
+	 * @param {Object} data.available_products - An array of available products for the building, applicable to "main_building".
+	 *
+	 * @returns {Object} A structured building object containing the following properties:
+	 * - name {string} - The name of the building.
+	 * - boosts {Object|null} - Boosts associated with the building, if available.
+	 * - euphoria {number} - The euphoria value, representing happiness-related data for guild raids.
+	 * - population {number} - The population value tied to the building, derived from guild raid specifications.
+	 * - production {Object|null} - The production resource information for the building, if applicable.
+	 * - type {string} - The type of the building as provided in the input.
+	 * - entityId {string} - The unique asset identifier for the building.
+	 * - count {number} - The initial count of the building, defaulted to 1.
+	 */
 	setQIBuilding: (data) => {
 		let production = data.components?.AllAge?.production?.options
 		if (production !== undefined && production.length === 1) // goods and units have multiple production options, rest has one
@@ -503,7 +695,7 @@ let CityMap = {
 		let boosts = data.components?.AllAge?.boosts?.boosts
 		let population = data.components?.AllAge?.staticResources?.resources?.resources.guild_raids_population
 
-		let building = {
+		return {
 			name: data.name,
 			boosts: boosts || null,
 			euphoria: euphoria || 0,
@@ -513,11 +705,41 @@ let CityMap = {
 			entityId: data.asset_id,
 			count: 1,
 		}
-
-		return building
 	},
 
 
+	/**
+	 * Processes data for an outpost building, extracting and calculating essential attributes
+	 * such as population, production, diplomacy, and building type, based on the active map
+	 * (cultural or era outpost).
+	 *
+	 * The method analyses various properties of the input data to determine:
+	 * - Population, based on building type, cultural or era settings.
+	 * - Production resources, depending on the number and type of production options available.
+	 * - Diplomacy value, if applicable in cultural outposts.
+	 *
+	 * Structures the extracted data into an object representing the building's relevant metadata
+	 * including name, population, production, diplomacy (if applicable), type, and entity ID.
+	 *
+	 * @param {Object} data - The data object containing information about the outpost building.
+	 *   Expected properties include:
+	 *   - `components` (Object): Contains production details.
+	 *   - `type` (string): Specifies the building type, such as 'main_building' or 'residential'.
+	 *   - `id` (string): Identifier for the building, used to determine population type.
+	 *   - `staticResources` (Object): Resources added by the building.
+	 *   - `requirements` (Object): Costs required to construct the building.
+	 *   - `available_products` (Array): List of products the building can produce.
+	 *   - `name` (string): Human-readable name of the building.
+	 *   - `asset_id` (string): Unique identifier for the building entity.
+	 *
+	 * @returns {Object} An object representing the processed building metadata, containing:
+	 *   - `name` (string): Name of the building.
+	 *   - `population` (number): Population added or required by the building.
+	 *   - `production` (Object|null): Production resources provided by the building, or null if none.
+	 *   - `diplomacy` (number|null): Diplomacy value provided by the building (cultural outposts only).
+	 *   - `type` (string): Type of the building (e.g., 'main_building', 'residential').
+	 *   - `entityId` (string): Unique ID of the building entity.
+	 */
 	setOutpostBuilding: (data) => {
 		let production = data.components?.AllAge?.production?.options;
 		if (production !== undefined && production.length === 1) // goods and units have multiple production options, rest has one
@@ -567,6 +789,25 @@ let CityMap = {
 	},
 
 
+	/**
+	 * Generates and displays a detailed table of outpost buildings along with their counts, stats, and production values.
+	 *
+	 * The function first determines the list of outpost buildings based on the current active map (either a cultural outpost or an era outpost).
+	 * It consolidates unique buildings, calculates their counts, and retrieves additional metadata for each building.
+	 * The buildings are then sorted by their entity IDs and presented in a dynamically generated HTML table.
+	 *
+	 * The table includes the following data for each unique building:
+	 * - Building image
+	 * - Count of the building in the outpost
+	 * - Population associated with the building
+	 * - Diplomacy points (if any)
+	 * - Production output (if applicable)
+	 *
+	 * Additionally, the function calculates total population and diplomacy points across all buildings,
+	 * and includes the total metadata at the end of the generated content.
+	 *
+	 * @returns {string} A string containing the HTML table of the buildings and their metadata.
+	 */
 	showOutpostBuildings: () => {
 		let buildings = Object.values(CityMap.CulturalOutpost.data);
 		if (ActiveMap === "era_outpost")
@@ -644,8 +885,37 @@ let CityMap = {
 
 
 	/**
-	 * Container gemäß den Koordianten zusammensetzen
-	 * @param Data
+	 * Asynchronously sets and renders buildings on the map depending on the active map type and provided data.
+	 *
+	 * This function clears the currently displayed map, initializes metrics for various building types,
+	 * and determines the placement and characteristics of buildings to be displayed on the grid. Metrics
+	 * are updated based on building attributes, and additional styles and highlights are applied to the
+	 * rendered elements.
+	 *
+	 * Key functionalities:
+	 * - Resets the map for specific active map types (`cultural_outpost`, `era_outpost`, or `guild_raids`)
+	 *   or proceeds with city or other player map configurations.
+	 * - Clears all previous map elements such as previously drawn buildings or roads.
+	 * - Recalculates city metrics including counts and areas for roadless buildings, connected buildings,
+	 *   limited buildings, decayed buildings, and others.
+	 * - Constructs a grid bounding box for the map with default dimensions and constraints.
+	 * - Creates visual representations of buildings based on their attributes (e.g., type, state, size,
+	 *   connectivity) and assigns corresponding CSS classes for styling and tooltips for additional details.
+	 * - Highlights "old" buildings based on their era relative to the current era.
+	 * - Computes efficiency factors related to road usage and sets up drag-and-drop functionality for the map grid.
+	 *
+	 * Metrics:
+	 * - Keeps track of different building types, area metrics, and available space for buildings.
+	 * - Differentiates buildings by their requirements, such as streets, and their states, such as decayed or ascendable.
+	 *
+	 * Highlights:
+	 * - Applies specific style classes to buildings based on their rating, era, and other attributes.
+	 * - Supports differentiation for buildings from external sources like expeditions or guild battlegrounds.
+	 *
+	 * @param {Object|null} [Data=null] - Input data used to populate the buildings on the map.
+	 *                                    Defaults to `null` and uses internal map data when not provided.
+	 *
+	 * @returns {Promise<void>}
 	 */
 	SetMapBuildings: async (Data = null)=> {
 		if (ActiveMap === "cultural_outpost" || ActiveMap === "era_outpost" || ActiveMap === "guild_raids") {
@@ -677,6 +947,10 @@ let CityMap = {
 			connectedBuildingsArea: 0,
 			limitedBuildings: 0,
 			limitedBuildingsArea: 0,
+			chainBuildings: 0,
+			chainArea: 0,
+			setBuildings: 0,
+			setArea: 0,
 			roads: 0,
 			roadsArea: 0,
 			greatBuildings: 0,
@@ -695,6 +969,7 @@ let CityMap = {
 			MaxX = 71,
 			MaxY = 71;
 
+		let buildingData;
 		if (ActiveMap === 'OtherPlayer')
 			buildingData = CityBuildings.createBuildings(Object.values(CityMap.OtherPlayer.mapData))
 		else
@@ -708,9 +983,11 @@ let CityMap = {
 			if (a > b) return 1
 			return 0
 		});
-		rating10 = buildingRatings[parseInt(buildingRatings.length/10)];
-		rating20 = buildingRatings[parseInt(buildingRatings.length/5)];
-		rating30 = buildingRatings[parseInt(buildingRatings.length/3)];
+		let rating10 = buildingRatings[parseInt(buildingRatings.length/10)];
+		let rating20 = buildingRatings[parseInt(buildingRatings.length/5)];
+		let rating30 = buildingRatings[parseInt(buildingRatings.length/3)];
+
+		let unlockedAreas = (ActiveMap === 'OtherPlayer' ? CityMap.OtherPlayer.unlockedAreas : CityMap.Main.unlockedAreas);
 
 		// create building elements
 		for (const building of Object.values(buildingData)) {
@@ -729,11 +1006,12 @@ let CityMap = {
 			let isDecayed = (building.state.isDecayed ? ' decayed' : '');
 			let isSpecial = (building.isSpecial ? ' special' : '');
 			let chainBuilding = (building.chainBuilding !== undefined ? ' chain' : '');
+			let setBuilding = (building.setBuilding !== undefined ? ' set' : '');
 			let rating = (building.rating?.totalScore*100 <= (rating10) ? ' rating10' : 
 						(building.rating?.totalScore*100 <= (rating20) ? ' rating20' :	
 						(building.rating?.totalScore*100 <= (rating30) ? ' rating30' : '')))
 			
-			f = $('<span '+ MainParser.Allies.tooltip(building.id) + '/>').addClass('entity helperTT ' + building.type + noStreet + isSpecial + canAscend + isDecayed + chainBuilding + rating + isLimited + fromQI + fromGBG).css({
+			let f = $('<span '+ MainParser.Allies.tooltip(building.id) + '/>').addClass('entity helperTT ' + building.type + noStreet + isSpecial + canAscend + isDecayed + chainBuilding + setBuilding + rating + isLimited + fromQI + fromGBG).css({
 				width: xsize + 'em',
 				height: ysize + 'em',
 				left: x + 'em',
@@ -744,7 +1022,24 @@ let CityMap = {
 				.attr('data-size', building.size.length + 'x' + building.size.width)
 				.attr('data-id', building.id)
 				.attr('data-title', building.name)
-				.attr('data-meta_id',building.entityId);
+				.attr('data-meta_id',building.entityId)
+				.on('click', function() {
+					let chainId = $(this).attr('data-chain-id');
+					let setId = $(this).attr('data-set-id');
+					if (chainId || setId) {
+						CityMap.highlightRelatedBuildings(chainId || setId, chainId ? 'chain' : 'set');
+					} else {
+						$('.entity').removeClass('highlighted');
+						$('#grid-outer').removeClass('desaturate');
+					}
+				});
+
+			if (building.chainBuilding) {
+				f.attr('data-chain-id', building.chainBuilding.id);
+			}
+			if (building.setBuilding) {
+				f.attr('data-set-id', building.setBuilding.name);
+			}
 
 
 			// collect metrics for sidebar
@@ -776,6 +1071,15 @@ let CityMap = {
 					CityMap.metrics.limitedBuildingsArea += building.size.width * building.size.length;
 				}
 
+				if (building.chainBuilding !== undefined) {
+					CityMap.metrics.chainBuildings++;
+					CityMap.metrics.chainArea += building.size.width * building.size.length;
+				}
+				if (building.setBuilding !== undefined) {
+					CityMap.metrics.setBuildings++;
+					CityMap.metrics.setArea += building.size.width * building.size.length;
+				}
+
 				if (building.entityId.includes("_GR")) {
 					CityMap.metrics.qiBuildings++;
 					CityMap.metrics.qiArea += building.size.width * building.size.length;
@@ -797,7 +1101,7 @@ let CityMap = {
 			if (!CityMap.metrics.buildingTypes[building.type]) 
 				CityMap.metrics.buildingTypes[building.type] = 0;
 			CityMap.metrics.buildingTypes[building.type]++;
-			CityMap.metrics.area = ((CityMap.Main.unlockedAreas.length -1) * 16) + 256; // x + (4*4) + 16*16
+			CityMap.metrics.area = ((unlockedAreas?.length || 1) -1) * 16 + 256; // x + (4*4) + 16*16
 			CityMap.metrics.areaAvailable = CityMap.metrics.area - CityMap.metrics.areaOccupied;
 			StreetsNeeded += (building.state.connected && building.type !== "street" ? parseFloat(Math.min(building.size.width, building.size.length)) * building.needsStreet / 2 : 0)
 
@@ -851,10 +1155,30 @@ let CityMap = {
 
 
 	/**
-	 * Sidebar for own and other player cities
+	 * Updates and manages the display of area-related statistics and highlights on the CityMap.
+	 * This function calculates total areas, occupied areas, and free areas, and updates
+	 * the relevant UI elements in the sidebar. It also provides detailed breakdowns of
+	 * building types and their associated statistics. Additionally, it manages interactive
+	 * UI elements for highlighting specific categories of buildings.
+	 *
+	 * Functionality includes:
+	 * - Calculating total, occupied, and free areas.
+	 * - Rendering and updating the sidebar with building and area statistics.
+	 * - Sorting and displaying building types by count with visual and numerical indicators.
+	 * - Providing interactive options to highlight specific building subsets, such as roadless
+	 *   buildings, buildings from special sources, and buildings based on certain conditions.
+	 * - Managing the display of building stats legends related to building age and other properties.
+	 *
+	 * Notes:
+	 * - The method dynamically creates and updates elements in the DOM, specifically within
+	 *   the sidebar and the "#area-state" and "#map-stats" containers.
+	 * - Highlights include clickable elements to toggle visibility or settings for subsets of buildings.
+	 * - Uses localization (`i18n`) for consistent support across multiple languages.
+	 * - Depends on various global variables such as `CityMap`, `ActiveMap`, and `srcLinks`.
 	 */
 	getAreas: ()=>{
-		let total = ((CityMap.Main.unlockedAreas.length -1) * 16) + 256, // x + (4*4) + 16*16
+		let unlockedAreas = (ActiveMap === 'OtherPlayer' ? CityMap.OtherPlayer.unlockedAreas : CityMap.Main.unlockedAreas);
+		let total = (((unlockedAreas?.length || 1) -1) * 16) + 256, // x + (4*4) + 16*16
 			occupied = CityMap.metrics.areaOccupied,
 			txtFree = (total - occupied);
 
@@ -913,7 +1237,9 @@ let CityMap = {
 			'<li onClick="CityMap.highlightQIBuildings()" class="clickable"><span data-original-title="'+i18n('Boxes.CityMap.buildingFromQI')+', '+parseFloat(100*CityMap.metrics.qiBuildings/CityMap.metrics.buildings).toFixed(1)+'%"><img src="'+srcLinks.get(`/guild_raids/windows/guild_raids_guild_raid_emblem.png`,true)+'" />' + CityMap.metrics.qiBuildings + '</span> <span><img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_expansion.png`,true)+'" />' + CityMap.metrics.qiArea+ '</span></li>' + 
 			'<li onClick="CityMap.highlightLimitedBuildings()" class="clickable"><span data-original-title="'+i18n('Boxes.CityMap.limited')+', '+parseFloat(100*CityMap.metrics.limitedBuildings/CityMap.metrics.buildings).toFixed(1)+'%"><img src="'+srcLinks.get(`/shared/gui/upgrade/upgrade_icon_limited_building.png`,true)+'" />' + CityMap.metrics.limitedBuildings + '</span> <span><img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_expansion.png`,true)+'" />' + CityMap.metrics.limitedBuildingsArea + '</span></li>' +
 			'<li onClick="CityMap.highlightAscendableBuildings()" class="clickable"><span data-original-title="'+i18n('Boxes.CityMap.ShowAscendableBuildings')+', '+parseFloat(100*CityMap.metrics.ascendableBuildings/CityMap.metrics.buildings).toFixed(1)+'%"><img src="'+srcLinks.get(`/shared/icons/limited_building_upgrade.png`,true)+'" />' + CityMap.metrics.ascendableBuildings + '</span> <span><img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_expansion.png`,true)+'" />' + CityMap.metrics.ascendableBuildingsArea + '</span></li>' +
-			'<li onClick="CityMap.highlightDecayedBuildings()" class="clickable"><span data-original-title="'+i18n('Boxes.CityMap.ShowDecayedBuildings')+', '+parseFloat(100*CityMap.metrics.decayedBuildings/CityMap.metrics.buildings).toFixed(1)+'%"><img style="filter:saturate(0.5)" src="'+srcLinks.get(`/shared/icons/limited_building_downgrade.png`,true)+'" />' + CityMap.metrics.decayedBuildings + '</span> <span><img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_expansion.png`,true)+'" />' + CityMap.metrics.decayedBuildingsArea + '</span></li>');
+			'<li onClick="CityMap.highlightDecayedBuildings()" class="clickable"><span data-original-title="'+i18n('Boxes.CityMap.ShowDecayedBuildings')+', '+parseFloat(100*CityMap.metrics.decayedBuildings/CityMap.metrics.buildings).toFixed(1)+'%"><img style="filter:saturate(0.5)" src="'+srcLinks.get(`/shared/icons/limited_building_downgrade.png`,true)+'" />' + CityMap.metrics.decayedBuildings + '</span> <span><img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_expansion.png`,true)+'" />' + CityMap.metrics.decayedBuildingsArea + '</span></li>' +
+			'<li onClick="CityMap.highlightChainBuildings()" class="clickable"><span data-original-title="'+i18n('Boxes.CityMap.ChainBuildings')+', '+parseFloat(100*CityMap.metrics.chainBuildings/CityMap.metrics.buildings).toFixed(1)+'%"><img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_expansion.png`,true)+'" />' + CityMap.metrics.chainBuildings + '</span> <span><img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_expansion.png`,true)+'" />' + CityMap.metrics.chainArea + '</span></li>' +
+			'<li onClick="CityMap.highlightSetBuildings()" class="clickable"><span data-original-title="'+i18n('Boxes.CityMap.SetBuildings')+', '+parseFloat(100*CityMap.metrics.setBuildings/CityMap.metrics.buildings).toFixed(1)+'%"><img src="'+srcLinks.get(`/shared/gui/upgrade/upgrade_icon_limited_building.png`,true)+'" />' + CityMap.metrics.setBuildings + '</span> <span><img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_expansion.png`,true)+'" />' + CityMap.metrics.setArea + '</span></li>');
 
 		areaStats.push('<li class="ratings clickable">')
 			areaStats.push(`<label for="show-worst-buildings"><input type="checkbox" id="show-worst-buildings" onclick="CityMap.highlightWorstBuildings()" /> ${i18n('Boxes.CityMap.ShowWorstBuildings')}</label>`)
@@ -946,7 +1272,15 @@ let CityMap = {
 
 
 	/**
-	 * Create a hash from string
+	 * Generates a hash code for a given string.
+	 *
+	 * The hash code is computed using a specific algorithm that takes into account
+	 * the character codes of the string's characters. The algorithm operates by iterating
+	 * through each character in the string, applying bitwise and arithmetic operations to
+	 * calculate a unique integer value.
+	 *
+	 * @param {string} str - The input string for which the hash code will be generated.
+	 * @returns {number} The computed hash code for the given string.
 	 */
 	hashCode: (str)=>{
 		return str.split('').reduce((prevHash, currVal) => (((prevHash << 5) - prevHash) + currVal.charCodeAt(0))|0, 0);
@@ -954,7 +1288,22 @@ let CityMap = {
 
 
 	/**
-	 * Show the submit box for foe-helper.com
+	 * Displays the submit box for the City Map feature.
+	 *
+	 * This function manages the visibility of the City Map Submit Box. If the box is already present
+	 * in the DOM, it removes it. If the box is not present, it creates a new submit box with the necessary
+	 * content and styling. The box includes a localized title and description, as well as a button
+	 * that triggers the `CityMap.SubmitData` functionality.
+	 *
+	 * Dependencies:
+	 * - Requires the presence of the `HTML.Box` and `HTML.AddCssFile` functions for creating the box
+	 *   and applying styles.
+	 * - Utilizes the `i18n` function for localization of text elements.
+	 * - Expects an element with `id="CityMapSubmitBody"` to populate with box content.
+	 *
+	 * Side effects:
+	 * - Adds or removes the submit box in the DOM.
+	 * - Dynamically loads the `citymap` CSS file if it doesn't already exist in the scope.
 	 */
 	showSubmitBox: () => {
 		let $CityMapSubmit = $('#CityMapSubmit');
@@ -982,30 +1331,129 @@ let CityMap = {
 
 
 	/**
-	 * Sidebar building highlighting
+	 * Toggles the highlight effect for elements associated with old buildings.
+	 *
+	 * This method performs the following actions:
+	 * 1. Toggles the 'diagonal' CSS class on elements with the class 'oldBuildings'.
+	 * 2. Toggles the visibility of elements with the class 'too-old-legends' using a sliding animation.
 	 */
 	highlightOldBuildings: ()=> {
 		$('.oldBuildings').toggleClass('diagonal');
 		$('.too-old-legends').slideToggle();
 	},
+
+
+	/**
+	 * Highlights all buildings belonging to the same chain or set.
+	 *
+	 * @param {string} id - The chain ID or set ID.
+	 * @param {string} type - 'chain' or 'set'.
+	 */
+	highlightRelatedBuildings: (id, type) => {
+		let spans = $('span.entity');
+		let found = false;
+
+		for (let sp of spans) {
+			let chainId = $(sp).attr('data-chain-id');
+			let setId = $(sp).attr('data-set-id');
+
+			if ((type === 'chain' && chainId === id) || (type === 'set' && setId === id)) {
+				$(sp).addClass('highlighted');
+				found = true;
+			} else {
+				$(sp).removeClass('highlighted');
+			}
+		}
+
+		if (found) {
+			$('#grid-outer').addClass('desaturate');
+		} else {
+			$('#grid-outer').removeClass('desaturate');
+		}
+	},
+
+
+	/**
+	 * Toggles the "highlight" class on all elements with the "noStreet" class.
+	 * This function is typically used to visually emphasize buildings
+	 * that lack associated street information on a map or interface.
+	 */
 	highlightNoStreetBuildings: ()=> {
 		$('.noStreet').toggleClass('highlight');
 	},
+
+
+	/**
+	 * Toggles the "highlight2" CSS class on elements with the "ascendable" class.
+	 *
+	 * This method identifies all elements in the DOM that have the "ascendable" class
+	 * and adds or removes the "highlight2" class, effectively toggling their highlighted state.
+	 * It utilizes jQuery to perform class manipulation on selected elements.
+	 */
 	highlightAscendableBuildings: ()=> {
 		$('.ascendable').toggleClass('highlight2');
 	},
+
+
+	/**
+	 * Toggles the 'highlight3' CSS class for all elements with the 'decayed' class.
+	 * This can be used to visually identify or highlight elements representing decayed buildings.
+	 */
 	highlightDecayedBuildings: ()=> {
 		$('.decayed').toggleClass('highlight3');
 	},
+
+
+	/**
+	 * Toggles the 'showLimited' class on the element with the ID 'grid-outer'.
+	 * This method is typically used to highlight or indicate a limited subset of buildings on the grid.
+	 */
 	highlightLimitedBuildings: ()=> {
 		$('#grid-outer').toggleClass('showLimited');
 	},
+
+
+	/**
+	 * Toggles the 'showGBG' CSS class on the element with the ID 'grid-outer'.
+	 * This method is used to visually highlight or unhighlight Great Buildings (GBG) on the grid.
+	 */
 	highlightGBGBuildings: ()=> {
 		$('#grid-outer').toggleClass('showGBG');
 	},
+
+
+	/**
+	 * Toggles the 'showChains' CSS class on the element with the ID 'grid-outer'.
+	 * This method is used to visually highlight or unhighlight chain buildings on the grid.
+	 */
+	highlightChainBuildings: ()=> {
+		$('#grid-outer').toggleClass('showChains');
+	},
+
+
+	/**
+	 * Toggles the 'showSets' CSS class on the element with the ID 'grid-outer'.
+	 * This method is used to visually highlight or unhighlight set buildings on the grid.
+	 */
+	highlightSetBuildings: ()=> {
+		$('#grid-outer').toggleClass('showSets');
+	},
+
+
+	/**
+	 * Toggles the 'showQI' CSS class on the element with the ID 'grid-outer'.
+	 * This can be used to highlight or unhighlight Quality Inspection (QI) buildings in the UI.
+	 */
 	highlightQIBuildings: ()=> {
 		$('#grid-outer').toggleClass('showQI');
 	},
+
+
+	/**
+	 * Toggles the `highlight4` CSS class on elements with specific rating classes.
+	 * This method identifies elements based on their class names (`rating10`, `rating20`, `rating30`)
+	 * and applies the `highlight4` class, or removes it if already present.
+	 */
 	highlightWorstBuildings: ()=> {
 		$('.rating10').toggleClass('highlight4');
 		$('.rating20').toggleClass('highlight4');
@@ -1014,7 +1462,20 @@ let CityMap = {
 
 
 	/**
-	 * Send citydata to the foe-helper.com
+	 * Collects and submits the city map data to the server.
+	 *
+	 * This method gathers information about the current player, their active map's entities,
+	 * unlocked areas, blocked areas, goods, and city entities. It then sends this data
+	 * to the server via `MainParser.send2Server`. Upon successful submission, a toast message is
+	 * displayed. In case of an error, an error toast message is shown.
+	 *
+	 * Workflow:
+	 * - Validates the existence of an API token.
+	 * - Identifies the active map and retrieves corresponding entity and area data.
+	 * - Compiles a data object including player info, map data, and various city entities.
+	 * - Sends the compiled data to the 'CityPlanner' endpoint on the server.
+	 * - Displays success or error feedback through toast notifications.
+	 * - Removes the submission button after completion.
 	 */
 	SubmitData: ()=> {
 		let apiToken = localStorage.getItem('ApiToken');
@@ -1033,6 +1494,26 @@ let CityMap = {
 			return;
 		}
 
+		let entities = MainParser.CityMapData,
+			areas = CityMap.Main.unlockedAreas,
+			blockedAreas = CityMap.Main.blockedAreas;
+
+		if (ActiveMap === 'cultural_outpost') {
+			entities = CityMap.CulturalOutpost.data;
+			areas = CityMap.CulturalOutpost.areas;
+			blockedAreas = [];
+		}
+		else if (ActiveMap === 'era_outpost') {
+			entities = CityMap.EraOutpost.data;
+			areas = CityMap.EraOutpost.areas;
+			blockedAreas = [];
+		}
+		else if (ActiveMap === 'guild_raids') {
+			entities = CityMap.QI.data;
+			areas = CityMap.QI.areas;
+			blockedAreas = [];
+		}
+
 		let currentDate = new Date(),
 			d = {
 				time: currentDate.toISOString().split('T')[0] + ' ' + currentDate.getHours() + ':' + currentDate.getMinutes() + ':' + currentDate.getSeconds(),
@@ -1044,16 +1525,15 @@ let CityMap = {
 					avatarUrl: srcLinks.GetPortrait(ExtPlayerAvatar)
 				},
 				apiToken: apiToken,
+				type: ActiveMap === 'cultural_outpost' ? localStorage.getItem('OutpostType') : (ActiveMap === 'era_outpost' ? 'era_outpost' : (ActiveMap === 'guild_raids' ? 'guild_raids' : 'main')),
 				eras: Technologies.Eras,
-				entities: CityMap.removeDoubleUnderscoreKeys(MainParser.CityMapData),
-				areas: CityMap.removeDoubleUnderscoreKeys(CityMap.Main.unlockedAreas),
-				blockedAreas: CityMap.removeDoubleUnderscoreKeys(CityMap.Main.blockedAreas),
+				entities: CityMap.removeDoubleUnderscoreKeys(entities),
+				areas: CityMap.removeDoubleUnderscoreKeys(areas),
+				blockedAreas: CityMap.removeDoubleUnderscoreKeys(blockedAreas),
 				goods: GoodsData,
-				metaIDs: {
-					entity: MainParser.MetaIds['city_entities'],
-					set: MainParser.MetaIds['building_sets'],
-					upgrade: MainParser.MetaIds['building_upgrades']
-				}
+				cityEntities: CityMap.removeDoubleUnderscoreKeys(MainParser.CityEntities),
+				allEntities: CityMap.removeDoubleUnderscoreKeys(Outposts.Advancements),
+				mainEntities: ActiveMap !== 'main' ? CityMap.removeDoubleUnderscoreKeys(MainParser.CityMapData) : null
 			};
 
 		MainParser.send2Server(d, 'CityPlanner', function(resp){
@@ -1086,7 +1566,21 @@ let CityMap = {
 
 
 	/**
-	 * Copy citydata to the clipboard
+	 * Copies metadata information based on the currently active map and prepares it to be shared via the clipboard.
+	 * The method retrieves specific map-related data, removes keys with double underscores, and formats it
+	 * into a JSON structure before copying it to the clipboard. A toast message is displayed to indicate success.
+	 *
+	 * Workflow:
+	 * - Determines the active map type (`guild_raids` or others).
+	 * - Extracts and processes map data using `CityMap.removeDoubleUnderscoreKeys` for various properties.
+	 * - Serializes the processed data to JSON format.
+	 * - Copies the serialized data to the clipboard using `helper.str.copyToClipboard`.
+	 * - Displays a toast notification upon successful copying.
+	 *
+	 * Structure of the data object:
+	 * - CityMapData: Processed map data related to the city.
+	 * - UnlockedAreas: List of areas unlocked in the city.
+	 * - CityEntities (if applicable): Entities present in the city.
 	 */
 	copyMetaInfos: () => {
         let data = {};
@@ -1116,12 +1610,26 @@ let CityMap = {
 	},
 
 
+	/**
+	 * Determines the size and connectivity requirements of a building within a city map.
+	 *
+	 * @param {Object} CityMapEntity - An object representing a building or city entity that contains specific
+	 *                                 properties and state information.
+	 * @returns {Object} An object containing the following properties:
+	 *                   - `is_connected`: {boolean} Indicates whether the building is connected to essential services.
+	 *                   - `xsize`: {number} The width of the building.
+	 *                   - `ysize`: {number} The length of the building.
+	 *                   - `streets_required`: {number} The required level of street connection for the building, if applicable.
+	 *                   - `building_area`: {number} The total area of the building calculated as width * length.
+	 *                   - `street_area`: {number} The area required for street connectivity (calculated based on connection requirements).
+	 *                   - `total_area`: {number} The sum of `building_area` and `street_area`.
+	 */
 	GetBuildingSize: (CityMapEntity) => {
 		let CityEntity = MainParser.CityEntities[CityMapEntity['cityentity_id']];
 
 		let Ret = {};
 
-		Ret['is_connected'] = (CityMapEntity['state']['__class__'] !== 'UnconnectedState' && CityMapEntity['state']['pausedAt'] === undefined && CityMapEntity['state']['pausedState'] === undefined);
+		Ret['is_connected'] = (CityMapEntity['state']?.__class__ !== 'UnconnectedState' && CityMapEntity['state']?.pausedAt === undefined && CityMapEntity['state']?.pausedState === undefined);
 
 		if (CityEntity['requirements']) {
 			Ret['xsize'] = CityEntity['width'];
@@ -1135,10 +1643,10 @@ let CityMap = {
 			}
 		}
 		else {
-			let Size = CityEntity['components']['AllAge']['placement']['size'];
+			let Size = CityEntity?.components?.AllAge?.placement?.size;
 
-			Ret['xsize'] = Size['x'];
-			Ret['ysize'] = Size['y'];
+			Ret['xsize'] = Size?.x || 0;
+			Ret['ysize'] = Size?.y || 0;
 			Ret['streets_required'] = CityEntity?.components?.AllAge?.streetConnectionRequirement?.requiredLevel | 0;
 		}
 
@@ -1150,10 +1658,23 @@ let CityMap = {
 	},
 
 
+	/**
+	 * Filters and highlights building elements based on a string query.
+	 *
+	 * This function iterates over elements with the class 'entity' and evaluates their
+	 * 'data-title' and 'data-size' attributes against a provided query string. Elements
+	 * matching the query string are given a 'highlighted' class; others have this class removed.
+	 * Additionally, the outer grid container is visually modified based on whether the query
+	 * string is empty or not.
+	 *
+	 * @param {string} string - The query string used to filter the building elements. If the
+	 * string matches a pattern of a numerical dimension (e.g., "10x20"), it is prefixed with a comma.
+	 * When empty, all highlights are removed, and the grid container's visual effect is reset.
+	 */
 	filterBuildings: (string) => {
 		let spans = $('span.entity');
 		if (/[0-9]+x[0-9]*/.test(string)) string = ","+string
-		for (sp of spans) {
+		for (let sp of spans) {
 			let title = $(sp).attr('data-title') +","+ $(sp).attr('data-size');
 			if ((string !== "") && (title.substr(0,title.toLowerCase().indexOf(string.toLowerCase()) > -1))) {
 				$(sp).addClass('highlighted');
@@ -1168,6 +1689,20 @@ let CityMap = {
 	},
 
 
+	/**
+	 * Determines the era of a building represented by the provided CityMapEntity object.
+	 *
+	 * @function
+	 * @param {Object} CityMapEntity - The entity data of the building from the city map.
+	 * @param {string} CityMapEntity.cityentity_id - Unique identifier for the building entity.
+	 * @param {number} [CityMapEntity.level] - Optional property indicating the building's level.
+	 *
+	 * @returns {number|string} - The era identifier for the building. It can be:
+	 *   - The current era (if it's a great building or an all-age building).
+	 *   - The derived era based on the `level` property or specific components of the entity.
+	 *   - The era extracted from the building's ID using a regular expression.
+	 *   - If no specific era is determined, defaults to the current era.
+	 */
 	GetBuildingEra: (CityMapEntity) => {
 		let CityEntity = MainParser.CityEntities[CityMapEntity['cityentity_id']];
 
@@ -1193,7 +1728,7 @@ let CityMap = {
 				testEra = regExString.exec(CityMapEntity['cityentity_id']);
 
 			if (testEra && testEra.length > 1) {
-				era = Technologies.Eras[testEra[1]];
+				let era = Technologies.Eras[testEra[1]];
 
 				// AllAge => Current era
 				if (era === 0) {
@@ -1209,8 +1744,10 @@ let CityMap = {
 
 
 	/**
-	 * Removes any keys that start with "__class__" or "__enum__" from the provided object or its nested structures.
-	 * The function traverses objects and arrays recursively to apply the rule at any depth.
+	 * Removes all keys from an object that start with "__class__" or "__enum__", including keys in nested objects or arrays.
+	 *
+	 * @param {Object|Array} obj - The object or array to process. Non-object or null values are returned as-is.
+	 * @return {Object|Array} A new object or array with the specified keys removed, preserving the structure of the input.
 	 */
 	removeDoubleUnderscoreKeys (obj) {
 		if (typeof obj !== 'object' || obj === null) {
@@ -1241,11 +1778,20 @@ let CityMap = {
 	},
 };
 
+
 // // // // // // // // // // // // //
 // Data for MainParser.CityBuildingsData
 // // // // // // // // // // // // //
 let CityBuildings = {
-	// returns negative numbers for builidings that use population, 0 for buildings that dont provide or use it
+	
+	/**
+	 * Calculates the population provided or required by a building based on its metadata and era.
+	 *
+	 * @param {Object} metaData - The metadata of the building entity.
+	 * @param {Object} data - The specific instance data of the building.
+	 * @param {string} era - The current era identifier.
+	 * @returns {number} The calculated population value (positive for provided, negative for required).
+	 */
 	setPopulation: (metaData, data, era) => {
 		let population = 0
 		let eraId = Technologies.InnoEras[era]
@@ -1282,7 +1828,16 @@ let CityBuildings = {
 		return population
 	},
 
-	// returns 0 if building does not provide or substract happiness
+	
+	/**
+	 * Calculates the happiness (or euphoria in QI) provided by a building.
+	 * Takes into account whether the building is polished/motivated.
+	 *
+	 * @param {Object} metaData - The metadata of the building entity.
+	 * @param {Object} data - The specific instance data of the building.
+	 * @param {string} era - The current era identifier.
+	 * @returns {number} The calculated happiness value.
+	 */
 	setHappiness(metaData, data, era) {
 		let happiness = 0
 		let eraId = Technologies.InnoEras[era]
@@ -1326,9 +1881,16 @@ let CityBuildings = {
 			}
 		}
 	},
-
-	// returns undefined if building cannot be motivated or polished
-	setPolivation(data, metaData) { 
+	
+	
+	/**
+	 * Determines if a building is currently motivated or polished.
+	 *
+	 * @param {Object} data - The specific instance data of the building.
+	 * @param {Object} metaData - The metadata of the building entity.
+	 * @returns {boolean|undefined} True if motivated/polished, false otherwise, or undefined if not applicable.
+	 */
+	setPolivation(data, metaData) {
 		let isPolivationable = false;
 		let isPolishable = false;
 		metaData.abilities.forEach(ability => {
@@ -1369,7 +1931,13 @@ let CityBuildings = {
 		return undefined
 	},
 
-	// returns undefined if building cannot be motivated or polished
+	
+	/**
+	 * Checks if a building is capable of being motivated or polished based on its abilities.
+	 *
+	 * @param {Object} metaData - The metadata of the building entity.
+	 * @returns {boolean} True if the building can be motivated/polished.
+	 */
 	setPolivationable(metaData) {
 		let isPolivationable = false
 		metaData.abilities.forEach(ability => {
@@ -1383,8 +1951,14 @@ let CityBuildings = {
 			isPolivationable = (metaData.components.AllAge.socialInteraction !== undefined)
 		return isPolivationable
 	},
-
-	// returns chainId (string), returns undefined if not a chain building
+	
+	
+	/**
+	 * Extracts chain-related information from a building's metadata.
+	 *
+	 * @param {Object} metaData - The metadata of the building entity.
+	 * @returns {Object|undefined} An object containing chain ID, type (start/link), and attachment coordinates, or undefined if not a chain building.
+	 */
 	setChainBuilding(metaData) {
 		let chainId = undefined;
 		let type = null, x = 0, y = 0;
@@ -1410,11 +1984,18 @@ let CityBuildings = {
 			return { name: chainId, type: type, chainPosX: x, chainPosY: y }
 	},
 
-	// this creates a pseudo building for effiency ratings etc
+	
+	/**
+	 * Combines multiple chained building parts into a single virtual building entity.
+	 * Calculates aggregated stats like size, happiness, boosts, and production.
+	 *
+	 * @param {Array} allLinkedBuildings - Array of building objects that form a chain, starting with the anchor building.
+	 * @returns {Object} A single building object representing the entire chain.
+	 */
 	createChainedBuilding(allLinkedBuildings = []) {
 		let chainedBuilding = allLinkedBuildings[0]; // first building is the start building
 
-		for (link of allLinkedBuildings) {
+		for (let link of allLinkedBuildings) {
 			if (link.chainBuilding.type === "start") continue;
 			chainedBuilding.size.width = chainedBuilding.size.width + (link.coords.x !== chainedBuilding.coords.x ? link.size.width : 0);
 			chainedBuilding.size.length = chainedBuilding.size.length + (link.coords.y !== chainedBuilding.coords.y ? link.size.length : 0);
@@ -1433,8 +2014,14 @@ let CityBuildings = {
 		chainedBuilding.rating = Productions.rateBuilding(chainedBuilding);
 		return chainedBuilding;
 	},
-
-	// returns setId (string), returns undefined if not a set building
+	
+	
+	/**
+	 * Checks if a building belongs to a building set and extracts the set ID.
+	 *
+	 * @param {Object} metaData - The metadata of the building entity.
+	 * @returns {Object|undefined} An object with the set name, or undefined if not a set building.
+	 */
 	setSetBuilding(metaData) {
 		let setId = undefined
 		metaData.abilities.forEach(ability => {
@@ -1444,8 +2031,14 @@ let CityBuildings = {
 		if (setId !== undefined)
 			return { name: setId }
 	},
-
-	// returns an object with the building size
+	
+	
+	/**
+	 * Determines the dimensions (width and length) of a building from its metadata.
+	 *
+	 * @param {Object} metaData - The metadata of the building entity.
+	 * @returns {Object} An object containing width and length.
+	 */
 	setSize(metaData) {
 		let size = { width: 0, length: 0 }
 		if (metaData.length)
@@ -1457,7 +2050,17 @@ let CityBuildings = {
 		return size
 	},
 
-	// returns an array with all boosts, returns undefined when there are none
+	
+	/**
+	 * Extracts all active boosts provided by a building based on its metadata, instance data, and era.
+	 * Considers set bonuses, chain bonuses, great building bonuses, and castle system boosts.
+	 *
+	 * @param {Object} metaData - The metadata of the building entity.
+	 * @param {Object} data - The specific instance data of the building.
+	 * @param {string} era - The current era identifier.
+	 * @param {boolean} [withAlly=true] - Whether to include boosts from assigned allies.
+	 * @returns {Array|undefined} An array of boost objects, or undefined if no boosts are found.
+	 */
 	setBuildingBoosts(metaData, data, era, withAlly=true) {
 		let eraName = (era === 'AllAge' ? 'BronzeAge' : era) // for some reason Watchtower Level 2 (example) has an era list even though the boost is the same everywhere. thx inno
 		let boosts = []
@@ -1526,7 +2129,7 @@ let CityBuildings = {
 				}
 			}
 			else if (metaData.id.includes("CastleSystem")) {
-				for (castleBoost of (Boosts?.CastleSystem || [])) {
+				for (let castleBoost of (Boosts?.CastleSystem || [])) {
 					let boost = {
 						feature: "all",
 						type: Boosts.Mapper[castleBoost.type] || [castleBoost.type],
@@ -1580,7 +2183,14 @@ let CityBuildings = {
 		return undefined
 	},
 
-	setState(data) { 
+	
+	/**
+	 * Determines the current state of a building (e.g., idle, collectable, producing, plundered).
+	 *
+	 * @param {Object} data - The specific instance data of the building.
+	 * @returns {string} The state identifier ("idle", "collectable", "plundered", or "producing").
+	 */
+	setState(data) { 	
 		if ((data?.state?.__class__ === "IdleState" && !data?.cityentity_id?.includes("CastleSystem")) || data?.state?.__class__ === undefined)
 			return "idle"
 		else if (data.state.__class__ === "ProductionFinishedState")
@@ -1591,16 +2201,28 @@ let CityBuildings = {
 			return "producing"
 		return "producing"
 	},
-
-	// building is not in construction menu
-	isSpecialBuilding(metaData) { 
+	
+	
+	/**
+	 * Checks if a building is considered a special building.
+	 *
+	 * @param {Object} metaData - The metadata of the building entity.
+	 * @returns {boolean} True if the building is special.
+	 */
+	isSpecialBuilding(metaData) { 	
 		if (metaData.__class__ === "GenericCityEntity")
 			return true // generic buildings are always special
 		return metaData.is_special
 	},
-
-	// returns street level (1 or 2) or 0
-	needsStreet(metaData) {
+	
+	
+	/**
+	 * Determines if a building requires a street connection and what level is required.
+	 *
+	 * @param {Object} metaData - The metadata of the building entity.
+	 * @returns {number} The required street connection level (0 if no street needed).
+	 */
+	needsStreet(metaData) {	
 		let needsStreet = metaData.requirements?.street_connection_level
 		if (needsStreet === undefined) {
 			metaData.abilities.forEach(ability => {
@@ -1613,7 +2235,14 @@ let CityBuildings = {
 		return (needsStreet === undefined ? 0 : needsStreet)
 	},
 
-	setStateTimes(data) {
+	
+	/**
+	 * Calculates the timestamps for state transitions (e.g., when production finishes).
+	 *
+	 * @param {Object} data - The specific instance data of the building.
+	 * @returns {Object} An object containing 'at' (unix timestamp) and 'in' (seconds remaining).
+	 */
+	setStateTimes(data) {	
 		let state = this.setState(data)
 		
 		if (state === "producing") {
@@ -1626,16 +2255,29 @@ let CityBuildings = {
 			return { at: moment().unix(), in: 0 }
 		return { at: undefined, in: undefined };
 	},
-
-	isExpiredBuilding(data) {
+	
+	
+	/**
+	 * Checks if a building has expired (decayed).
+	 *
+	 * @param {Object} data - The specific instance data of the building.
+	 * @returns {boolean} True if the building is expired.
+	 */
+	isExpiredBuilding(data) {	
 		if (data.type === "generic_building")
 			if (data.decayedFromCityEntityId !== undefined)
 				return true;
 		return false;
 	},
-
-	// returns false, time or total collections
-	isLimitedBuilding(metaData) {
+	
+	
+	/**
+	 * Checks if a building is a limited-time building and returns its limit config.
+	 *
+	 * @param {Object} metaData - The metadata of the building entity.
+	 * @returns {number|boolean} The expire time or collection amount if limited, false otherwise.
+	 */
+	isLimitedBuilding(metaData) {	
 		if (metaData.components?.AllAge?.limited !== undefined) {
 			if (metaData.components?.AllAge?.limited.config.expireTime !== undefined)
 				return metaData.components.AllAge.limited.config.expireTime
@@ -1645,7 +2287,14 @@ let CityBuildings = {
 		return false
 	},
 
-	isBoostableBuilding(metaData) {
+	
+	/**
+	 * Determines if a building's production can be boosted by external factors.
+	 *
+	 * @param {Object} metaData - The metadata of the building entity.
+	 * @returns {boolean} True if the building is boostable.
+	 */
+	isBoostableBuilding(metaData) {	
 		if (metaData.type === 'greatbuilding' || metaData.type === 'main_building') {
 			return false
 		}
@@ -1658,25 +2307,47 @@ let CityBuildings = {
 		}
 		return true
 	},
-
-	// returns undefined or time the building was built
-	setBuildTime(data) {
+	
+	
+	/**
+	 * Retrieves the construction finish time for a building.
+	 *
+	 * @param {Object} data - The specific instance data of the building.
+	 * @returns {number|undefined} The finish timestamp, or undefined if not applicable.
+	 */
+	setBuildTime(data) {	
 		if (data.type === "generic_building")
 			if (data?.state?.constructionFinishedAt !== undefined) 
 				return data?.state?.constructionFinishedAt;
 		return undefined;
 	},
 
-	// returns true or false
-	setConnection(metaData, data) {
+	
+	/**
+	 * Checks if a building is currently connected to a street if required.
+	 *
+	 * @param {Object} metaData - The metadata of the building entity.
+	 * @param {Object} data - The specific instance data of the building.
+	 * @returns {boolean} True if connected or if no connection is needed.
+	 */
+	setConnection(metaData, data) {	
 		let connected = (this.needsStreet(metaData, data) === 0)
 		if (!connected) 
 			connected = (data?.connected === 1)
 		return connected
 	},
-
-	// find out if a chain start building has links, return all buildings in an array
-	hasLinks(building, connectedBuildings = [], dirX = 0, dirY = 0) {
+	
+	
+	/**
+	 * Recursively finds all buildings linked to a chain start or a chain link in a specific direction.
+	 *
+	 * @param {Object} building - The starting building to check for links.
+	 * @param {Array} [connectedBuildings=[]] - Accumulator for connected buildings.
+	 * @param {number} [dirX=0] - Horizontal direction for the search.
+	 * @param {number} [dirY=0] - Vertical direction for the search.
+	 * @returns {Array} List of all buildings in the chain.
+	 */
+	hasLinks(building, connectedBuildings = [], dirX = 0, dirY = 0) {	
 		connectedBuildings.push(building);
 		
 		if (building.chainBuilding?.type === "start") {
@@ -1705,8 +2376,16 @@ let CityBuildings = {
 		}
 	},
 
-	// find out if a chain link building is connected to the chain start building (through other links)
-	isLinked(building, x = 0, y = 0) {
+	
+	/**
+	 * Checks if a building is linked to a valid chain anchor.
+	 *
+	 * @param {Object} building - The building to check.
+	 * @param {number} [x=0] - Search offset X.
+	 * @param {number} [y=0] - Search offset Y.
+	 * @returns {boolean} True if building is correctly linked in a chain.
+	 */
+	isLinked(building, x = 0, y = 0) {	
 		if (typeof building?.chainBuilding?.chainPosX === 'number') {
 			let posX = building?.chainBuilding?.chainPosX
 			let posY = building?.chainBuilding?.chainPosY
@@ -1730,6 +2409,17 @@ let CityBuildings = {
 		}
 	},
 
+
+	/**
+	 * Finds adjacent buildings that belong to the same set as the given building, based on coordinates.
+	 *
+	 * @param {Object} building The building object used as the reference point. It must contain the following properties:
+	 * - `coords` (Object): The coordinates of the building with `x` and `y` properties.
+	 * - `size` (Object): The dimensions of the building with `width` and `length` properties.
+	 * - `setBuilding` (Object): An object representing the set information, containing at least a `name` property.
+	 * - `id` (any): A unique identifier for the building.
+	 * @return {Array} An array of IDs representing adjacent buildings that belong to the same set as the provided building.
+	 */
 	findAdjacentSetBuildingByCoords(building) {
 		let x = building.coords.x,
 			y = building.coords.y,
@@ -1761,8 +2451,18 @@ let CityBuildings = {
 		return Array.from(adjacents);
 	},
 
-	// returns false if building does not produce anything
-	// production types: resources (coins, supplies, goods, medals etc), unit, genericReward (consumables like fragments), random, guildResources (power and goods)
+
+	/**
+	 * Sets all production configurations for a given entity based on metadata, associated data, and the current era.
+	 * The method processes various types of buildings, including special buildings, main buildings, and generic city entities,
+	 * collecting detailed production information such as resources, guild resources, and rewards.
+	 *
+	 * @param {Object} metaData - The metadata of the entity, containing configuration details, entity levels, abilities, and other properties.
+	 * @param {Object} data - Additional data used for determining building-specific configurations or resources.
+	 * @param {string} era - The current era in which the entity operates, determining production values and applicable bonuses.
+	 * @return {(Array|boolean)} Returns an array of production objects detailing the resources, motivation needs, and other specific settings for the entity,
+	 *                           or false if no production data is available for the given entity configuration.
+	 */
 	setAllProductions(metaData, data, era) {
 		let productions = []
 		if (metaData.__class__ !== "GenericCityEntity" && metaData.type !== "greatbuilding") {
@@ -1795,8 +2495,7 @@ let CityBuildings = {
 						productions.push(resource)
 				})
 				if (metaData.__class__ === "CityEntityRandomProductProductionBuilding") { // if weird old building, use current production
-					let currentProduction = this.setCurrentProductions(data, metaData, era)
-					productions = currentProduction
+					productions = this.setCurrentProductions(data, metaData, era)
 				}
 			}
 			if (metaData.type === "main_building") { // add emissary production to town hall
@@ -1826,7 +2525,7 @@ let CityBuildings = {
 					MainParser.CastleSystemLevels[(currentLevel-1)].dailyReward[era].rewards.forEach(reward => {
 						let resources = {[reward.subType]: reward.amount} 
 						if (reward.id.search("#") !== -1) { // "goods#random#CurrentEra#30" "goods#random#PreviousEra#15"
-							amount = reward.id.match(/\d+$/)[0]
+							let amount = reward.id.match(/\d+$/)[0]
 							if (reward.id.search("goods") !== -1 && reward.id.search("CurrentEra") !== -1)
 								resources = { 'random_good_of_age': amount }
 							else if (reward.id.search("goods") !== -1 && reward.id.search("PreviousEra") !== -1)
@@ -1840,7 +2539,9 @@ let CityBuildings = {
 						productions.push(resource)
 					})
 			}
+			
 			let isChain = this.setChainBuilding(metaData)
+			
 			if (isChain !== undefined) {
 				for (const ability of metaData.abilities) {
 					if (ability.__class__ === "ChainLinkAbility")
@@ -1912,12 +2613,12 @@ let CityBuildings = {
 
 			if (production) {
 				if (metaData.type === "production") { // production buildings do not have a default production
-					for (product of production.options) {
+					for (let product of production.options) {
 						let resource = {
 							type: product.products[0].type,
 							needsMotivation: false,
 							doubleWhenMotivated: true,
-							resources: product.products[0].playerResources?.resources, // breaks if buildings with guildresources or multiple productions would be added
+							resources: product.products[0].playerResources?.resources, // breaks if buildings with guild resources or multiple productions are added
 							time: product.time
 						}
 						productions.push(resource)
@@ -2047,7 +2748,19 @@ let CityBuildings = {
 		}
 	},
 
-	// returns undefined if building is idle or there are no productions (yet)
+
+	/**
+	 * Sets and determines the current productions for a given city entity based on provided data, metadata, and era.
+	 * This method generates an array of production objects or specific production types related to resources,
+	 * guild resources, units, or special goods, depending on the state and type of the city entity.
+	 *
+	 * @param {Object} data - The data object containing current state and production-related details of a city entity.
+	 * @param {Object} metaData - The metadata object providing additional contextual information about the entity and its abilities.
+	 * @param {string} era - The era in which the city entity resides, influencing production types and capabilities.
+	 * @return {Array|Object|undefined} An array of production objects or a production structure for main buildings, guild resources, and specific productions.
+	 *                                   
+	 *  Returns `undefined` if no valid production can be determined.
+	 */
 	setCurrentProductions(data, metaData, era) {
 		let productions = [];
 		let state = CityBuildings.setState(data);
@@ -2166,9 +2879,18 @@ let CityBuildings = {
 		return undefined
 	},
 
-	// todo: set buildings
-	
-	// returns a generic reward or a unit reward
+
+	/**
+	 * Configures a generic reward object based on the provided parameters.
+	 * It evaluates a product's reward data, metadata, and era to determine the correct reward details
+	 * such as amount, type, subtype, and other properties. The reward information is adjusted
+	 * based on whether it involves blueprints, goods, units, or other types of rewards.
+	 *
+	 * @param {Object} product - The product object containing reward details, such as `id`, `type`, `subType`, `amount`, etc.
+	 * @param {Object} metaData - The metadata object related to the product, containing additional information about its components, chains, and lookup data.
+	 * @param {string} era - The era or age associated with the product, used to determine era-specific configurations.
+	 * @return {Object} - A reward object with properties such as `id`, `name`, `type`, `subType`, `amount`, and `icon`. If applicable, returns a unit or goods reward derived from the generic reward.
+	 */
 	setGenericReward(product, metaData, era) {
 		let amount = 0;
 		let lookupData = false;
@@ -2194,54 +2916,64 @@ let CityBuildings = {
 					Object.assign(lookupRewards, MainParser.CityEntities[chainBuilding]?.components?.[era]?.lookup?.rewards||{})
 				})
 			}
-			if (product.reward.id.search("blueprint") !== -1) {
-				if (lookupRewards[product.reward.id]) {
-					lookupData = lookupRewards[product.reward.id]
-				}
-				else { // blueprint chest, e.g. vineyard
-					for (const [key, reward] of Object.entries(lookupRewards)) {
-						if (reward.id.search("blueprint") !== -1)
-							lookupData = reward
+			let setId = this.setSetBuilding(metaData)?.name;
+			if (setId && MainParser.BuildingSets[setId]) {
+				MainParser.BuildingSets[setId].buildings.forEach(setBuilding => {
+					Object.assign(lookupRewards, MainParser.CityEntities[setBuilding.cityEntityId]?.components?.[era]?.lookup?.rewards || MainParser.CityEntities[setBuilding.cityEntityId]?.components?.AllAge?.lookup?.rewards || {})
+				})
+			}
+
+			// 1. Try to find the reward in lookupRewards (either direct match or in a chest)
+			lookupData = lookupRewards[product.reward.id];
+
+			if (lookupData === undefined) {
+				for (const key in lookupRewards) {
+					if (lookupRewards[key].possible_rewards) {
+						const found = lookupRewards[key].possible_rewards.find(p => p.reward.id === product.reward.id);
+						if (found) {
+							lookupData = found.reward;
+							break;
+						}
 					}
 				}
 			}
-			else if (product.reward.type === "good") { // this can break if there is more than one generic goods reward for a building
-				for (const [key, reward] of Object.entries(lookupRewards)) {
-					if (reward.id.includes("good"))
-						lookupData = reward
+
+			// 2. Type-specific handling and fallbacks
+			if (product.reward.id.includes("blueprint")) {
+				if (lookupData === undefined) {
+					lookupData = Object.values(lookupRewards).find(r => r.id?.includes("blueprint"));
 				}
 			}
-			else if (product.reward.id.includes('goods') && !/(fragment|rush)/.test(product.reward.id)) { // for nextage goods, because they are in a chest (random ones)
-				// todo: this not only covers chests now, so implementation needs to be looked at more carefully
-				lookupData = lookupRewards[product.reward.id]; // take first chest reward and work with that
+			else if (product.reward.type === "good") {
+				if (lookupData === undefined) {
+					lookupData = Object.values(lookupRewards).find(r => r.id?.includes("good"));
+				}
+			}
+			else if (product.reward.id.includes('goods') && !/(fragment|rush)/.test(product.reward.id)) {
+				// Handle generic goods (e.g. "current_era_goods") which might be hidden in a chest or need fallback icons
+				if (lookupData === undefined) {
+					lookupData = Object.values(lookupRewards).find(r => r.id?.includes('good') || r.iconAssetName?.includes('good'));
+				}
+				
 				reward = {
 					id: product.reward.id,
-					name: lookupData.name.replace(/^\d+\s*/,""),
+					name: lookupData?.name ? lookupData.name.replace(/^\d+\s*/, "") : product.reward.id,
 					type: "resources",
 					subType: "good",
-					amount: lookupData.totalAmount || parseInt(product.reward.id.match(/\d+$/)[0]),
-					icon: lookupData.iconAssetName
-				}
-				return this.setGoodsRewardFromGeneric(reward)
+					amount: lookupData?.totalAmount || lookupData?.amount || (product.reward.id.match(/\d+$/) ? parseInt(product.reward.id.match(/\d+$/)[0]) : 0),
+					icon: lookupData?.iconAssetName
+				};
+				return this.setGoodsRewardFromGeneric(reward);
 			}
-			else {
-				lookupData = lookupRewards[product.reward.id];
-				if (lookupData === undefined) {
-					let chest = Object.keys(lookupRewards).find(x => x.includes("chest" || "random_unit")) // currently only applies to wish fountain or things with "random unit chest"
-					if (lookupRewards[chest]?.possible_rewards)
-						for (possibleReward of lookupRewards[chest]?.possible_rewards) {
-							if (possibleReward.reward.id === product.reward.id)
-								lookupData = possibleReward.reward;
-						}
-				}
-				else {
-					amount = lookupData.totalAmount || lookupData.amount;
-				}
+
+			// For all other cases, if we found lookupData, ensure amount is set
+			if (lookupData) {
+				amount = amount || lookupData.totalAmount || lookupData.amount;
 			}
 		}
-		if (amount === 0) {
-			amount = Number(lookupData?.name?.replace(/^([+-]*[0-9]+?) .*/,"$1"));
-			if (isNaN(amount)) amount = lookupData.amount
+		if (amount === 0 && lookupData) {
+			amount = Number(lookupData.name?.replace(/^([+-]*[0-9]+?) .*/,"$1"));
+			if (isNaN(amount)) amount = lookupData.amount;
 		}
 
 		let name = ""
@@ -2294,9 +3026,16 @@ let CityBuildings = {
 		return reward
 	},
 
-	// random_good_of_previous_age   random_good_of_age   random_good_of_next_age
-	// all_goods_of_previous_age   all_goods_of_age   all_goods_of_next_age
-	// special_goods_of_any_age
+
+	/**
+	 * Processes a reward object and returns a transformed representation of the reward based on its type and era.
+	 *
+	 * @param {Object} reward - The reward object containing details about the reward.
+	 * @param {string} reward.id - The identifier for the reward, which includes details about type and era.
+	 * @param {number} reward.amount - The base amount of the reward.
+	 * @param {Array} [reward.possible_rewards] - An optional list of possible rewards, used for random productions.
+	 * @return {Object} An object representing the processed rewards with keys indicating reward type and its context (e.g., era) and values indicating the reward amount.
+	 */
 	setGoodsRewardFromGeneric(reward) {
 		let amount = reward.amount
 
@@ -2324,8 +3063,14 @@ let CityBuildings = {
 		return {[typeString + 'of_' + eraString + 'age']: amount}
 	},
 
-	// returns { unit_type: amount } 
-	// unit_type can be: random, rogue, light_melee, heavy_melee, short_ranged, long_ranged, fast, next#light_melee -> next# for next era units
+
+	/**
+	 * Sets the unit reward based on the given product and emissary status.
+	 *
+	 * @param {Object} product - The product object containing details about the reward.
+	 * @param {boolean} [isEmissary=false] - Indicates whether the reward is for an emissary.
+	 * @return {Object} An object where the key is the unit type and the value is the reward amount.
+	 */
 	setUnitReward(product, isEmissary = false) {
 		let amount, type
 		if (isEmissary) {
@@ -2360,6 +3105,16 @@ let CityBuildings = {
 		return { [type]: amount }
 	},
 
+
+	/**
+	 * Sets the reward name based on the provided lookup data and its properties.
+	 *
+	 * The method determines the appropriate name based on specific conditions, such as `subType`, `type`, or `id` within the `lookupData` object. In cases where the conditions are not met, a message is logged, and no name is set.
+	 *
+	 * @param {Object} lookupData - The data object containing information about the reward. It includes properties like `subType`, `type`, `id`, `name`, and others.
+	 * @param {Object} metaData - Additional metadata object that may include context or description for the lookup operation.
+	 * @return {string} - The determined reward name based on the lookup data. Returns an empty string if no specific conditions match.
+	 */
 	setRewardNameFromLookupData(lookupData, metaData) {
 		let name = ""
 		if (lookupData.subType === "fragment") 
@@ -2397,6 +3152,16 @@ let CityBuildings = {
 		return name
 	},
 
+
+	/**
+	 * Configures and returns a resource object based on the given ability and era parameters.
+	 *
+	 * @param {Object} ability - The ability object used to determine resource settings. The object contains type and details
+	 * relevant to the specific production resource configurations.
+	 * @param {string} era - The era identifier used to fetch era-specific resources or rewards.
+	 * @return {Object} An object representing the configured resources. The object contains details like resource type,
+	 * motivation requirements, and the consolidated list of resources or rewards.
+	 */
 	setOldProductionResourceFromAbility(ability, era) {
 		let resource = {
 			type: 'resources',
@@ -2462,15 +3227,39 @@ let CityBuildings = {
 		return resource
 	},
 
+
+	/**
+	 * Retrieves a building object by its unique identifier from the CityBuildingsData.
+	 *
+	 * @param {string|number} id - The unique identifier of the building to retrieve.
+	 * @return {Object|undefined} The building object with the given id, or undefined if no such building is found.
+	 */
 	getBuildingById(id) {
 		return Object.values(MainParser.CityBuildingsData).find(x => x.id === id)
 	},
 
-	getBuildingByCoords(x,y) {
+	
+	/**
+	 * Retrieves a building entity by its map coordinates.
+	 *
+	 * @param {number} x - The X coordinate.
+	 * @param {number} y - The Y coordinate.
+	 * @returns {Object|undefined} The building entity at the specified coordinates, or undefined if none.
+	 */
+	getBuildingByCoords(x,y) {	
 		return Object.values(MainParser.CityBuildingsData).find(b => b.coords.x === x && b.coords.y === y)
 	},
 
-	getBuildingGoodsByEra(current, building, boosted = false) {
+
+	/**
+	 * Calculates the goods production of a building by era.
+	 *
+	 * @param {boolean} current - Whether to use current production state or base production.
+	 * @param {Object} building - The building entity to analyze.
+	 * @param {boolean} [boosted=false] - Whether to apply goods production boosts.
+	 * @returns {Object|undefined} An object containing total goods per era and random production status.
+	 */
+	getBuildingGoodsByEra(current, building, boosted = false) {	
 		let productions = (current ? building.state.production : building.production)
 		let goods = {
 			hasRandomProduction: false,
@@ -2570,7 +3359,16 @@ let CityBuildings = {
 		}
 	},
 
-	getBuildingGuildGoodsByEra(current, building, boosted = false) {
+
+	/**
+	 * Calculates the guild goods production of a building by era.
+	 *
+	 * @param {boolean} current - Whether to use current production state or base production.
+	 * @param {Object} building - The building entity to analyze.
+	 * @param {boolean} [boosted=false] - Whether to apply guild goods production boosts.
+	 * @returns {Object|undefined} An object containing total guild goods per era.
+	 */
+	getBuildingGuildGoodsByEra(current, building, boosted = false) {	
 		let productions = (current ? building.state.production : building.production)
 		let goods = {
 			eras: {}
@@ -2617,25 +3415,54 @@ let CityBuildings = {
 		}
 	},
 
-	setType(metaData) {
+
+	/**
+	 * Extracts the building type from metadata.
+	 *
+	 * @param {Object} metaData - The metadata of the building entity.
+	 * @returns {string} The building type identifier.
+	 */
+	setType(metaData) {	
 		return metaData.type
 	},
 
-	setDecayed(data) {
+
+	/**
+	 * Checks if a building instance is in a decayed state.
+	 *
+	 * @param {Object} data - The specific instance data of the building.
+	 * @returns {boolean} True if the building is decayed.
+	 */
+	setDecayed(data) {	
 		return (data.decayedFromCityEntityId !== undefined)
 	},
 
-	async canAscend(buildingEntityId) {
+
+	/**
+	 * Determines if a building can be upgraded to an ascended version.
+	 *
+	 * @param {string} buildingEntityId - The unique asset ID of the building.
+	 * @returns {Promise<boolean>} A promise that resolves to true if the building is ascendable.
+	 */
+	async canAscend(buildingEntityId) {	
 		return (await CityMap.AscendingBuildings).hasOwnProperty(buildingEntityId);
 	},
 
-	createBuildings(data=Object.values(MainParser.CityMapData),withAllies=true) {
-		data = Object.values(MainParser.CityMapData);
+
+	/**
+	 * Processes a list of raw building data and creates a map of structured building entities.
+	 * Updates the global city buildings data and handles different map contexts (e.g., OtherPlayer).
+	 *
+	 * @param {Array} [data=Object.values(MainParser.CityMapData)] - Raw building data from the game.
+	 * @param {boolean} [withAllies=true] - Whether to include ally-related data.
+	 * @returns {Object} A map of structured building entities keyed by their unique instance ID.
+	 */
+	createBuildings(data=Object.values(MainParser.CityMapData),withAllies=true) {	
 		if (ActiveMap === 'OtherPlayer') {
 			data = Object.values(CityMap.OtherPlayer.mapData);
 		}
 
-		for (building of data) {
+		for (let building of data) {
 			if (ActiveMap === 'OtherPlayer' && building.eraName !== undefined) continue
 			let metaData = Object.values(MainParser.CityEntities).find(x => x.id === building.cityentity_id)
 			let era = Technologies.getEraName(building.cityentity_id, building.level);
@@ -2650,7 +3477,18 @@ let CityBuildings = {
 		return (ActiveMap === 'OtherPlayer' ? CityMap.OtherPlayer.mapData : MainParser.CityBuildingsData) 
 	},
 
-	createBuilding(metaData, era=CurrentEra, data={}, withAlly=true) {
+
+	/**
+	 * Creates a single structured building entity from raw data and metadata.
+	 * Aggregates all relevant properties like size, production, boosts, population, etc.
+	 *
+	 * @param {Object|string} metaData - The building metadata or entity ID.
+	 * @param {string} [era=CurrentEra] - The era identifier for the building.
+	 * @param {Object} [data={}] - Raw instance data of the building.
+	 * @param {boolean} [withAlly=true] - Whether to include ally boosts.
+	 * @returns {Object} A fully structured building entity.
+	 */
+	createBuilding(metaData, era=CurrentEra, data={}, withAlly=true) {	
 		if (typeof(metaData)=="string") {
 			metaData=MainParser.CityEntities[metaData];
 		}

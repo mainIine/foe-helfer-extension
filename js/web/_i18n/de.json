@@ -240,6 +240,8 @@
     "Boxes.CityMap.Building": "Gebäude",
     "Boxes.CityMap.BuildingsAmount": "Gebäude insgesamt",
     "Boxes.CityMap.CavalierPerspecitve": "Kavalierperspektive",
+    "Boxes.CityMap.ChainBuildings": "Kettengebäude",
+    "Boxes.CityMap.SetBuildings": "Set-Gebäude",
     "Boxes.CityMap.CityGridScore": "Stadt-Bewertung",
     "Boxes.CityMap.CityGridScoreText": "Fläche aller Gebäude, die Straßen benötigen, geteilt durch Fläche aller Straßen mal 100",
     "Boxes.CityMap.CollectSoon": "Ernte bald: __hours__ Stunden",
