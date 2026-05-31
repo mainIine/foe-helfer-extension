@@ -216,18 +216,6 @@
 		"sort": 0
 	},
 	{
-		"name": "GlobalSend",
-		"status": true,
-		"group": "About",
-		"sort": 5
-	},
-	{
-		"name": "ApiToken",
-		"callback": "ApiTokenInput",
-		"group": "About",
-		"sort": 7
-	},
-	{
 		"name": "Help",
 		"callback": "Help",
 		"group": "About",

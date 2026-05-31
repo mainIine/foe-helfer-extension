@@ -146,7 +146,7 @@ let CloseBox = {
     HideAllBoxes: () => {
 
         $("#cb-hide-all-windows").removeClass("btn-green").addClass("invisible btn-delete");
-        let openBoxes = $(".window-box, #foe-helper-hud, .helper-blocker");
+        let openBoxes = $(".window-box, #forgehammer-hud, .helper-blocker");
 
         $.each(openBoxes, function () {
 
@@ -163,7 +163,7 @@ let CloseBox = {
     ShowAllBoxes: () => {
 
         $("#cb-hide-all-windows").removeClass("invisible btn-delete").addClass("btn-green");
-        $(".window-box, #foe-helper-hud, .helper-blocker").show();
+        $(".window-box, #forgehammer-hud, .helper-blocker").show();
         $("#TooltipContainer").hide();
         
     },

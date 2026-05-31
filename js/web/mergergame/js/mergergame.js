@@ -330,7 +330,6 @@ let mergerGame = {
 				dragdrop: true,
 				minimize: true,
 				resize : true,
-				ask: i18n('Boxes.MergerGame.HelpLink'),
 				settings: 'mergerGame.ShowSettingsButton()',
 			    active_maps:"main"
 			});

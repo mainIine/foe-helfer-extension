@@ -198,7 +198,6 @@ let scoutingTimes = {
                     auto_close: true,
                     dragdrop: true,
                     minimize: true,
-                    ask: i18n('Boxes.scoutingTimes.HelpLink'),
                     settings: 'scoutingTimes.ShowSettings()',
                 });
             }

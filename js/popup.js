@@ -16,35 +16,35 @@ let lng = window.navigator.language.split('-')[0];
 
 let i18n = {
 	'de' : {
-		'title' : 'FoE Helfer',
+		'title' : 'Forge Hammer',
 		'intro' : "Eine inoffizielle Browser-Erweiterung für Forge of Empires.",
 		'donate' : 'Spenden',
 		'desc' : "Dir gefällt diese kostenlose Extension?<br> Jede kleine Spende ist immer gern gesehen.",
 		'thanks' : 'Vielen Dank!'
 	},
 	'en' : {
-		'title' : 'FoE Helper',
+		'title' : 'Forge Hammer',
 		'intro' : "A thirdparty browser extension for Forge of Empires.",
 		'donate' : 'Donate',
 		'desc' : "Like this free extension? Every little donation is always welcome.",
 		'thanks' : 'Thank you so much!'
 	},
 	'fr' : {
-		'title' : 'FoE Helper',
+		'title' : 'Forge Hammer',
 		'intro' : "Une extension de navigateur tierce pour Forge of Empires.",
 		'donate' : 'Donate',
 		'desc' : "Vous aimez cette petite extension? Chaque petite donation est toujours la bienvenue.",
 		'thanks' : 'Merci beaucoup!'
 	},
 	'ru' : {
-		'title' : 'FoE Helper',
+		'title' : 'Forge Hammer',
 		'intro' : "A thirdparty browser extension for Forge of Empires.",
 		'donate' : 'Donate',
 		'desc' : "Вам нравится это маленькое бесплатное расширение и вы хотите поддержать его, чтобы оно оставалось таким же? <br> Тогда каждое маленькое пожертвование в поддержку проекта всегда приветствуется.",
 		'thanks' : 'Большое спасибо!'
 	},
 	'sv' : {
-		'title' : 'FoE Helper',
+		'title' : 'Forge Hammer',
 		'intro' : "Ett webbläsartillägg från tredje part för Forge of Empires.",
 		'donate' : 'Donate',
 		'desc' : "Du kommer tycka om detta lilla gratis tillägg och stöd det så det kan fortsätta så? <br> Varje liten donation för support är välkommet.",
@@ -53,13 +53,9 @@ let i18n = {
 };
 
 $(function(){
-	// Open external links in new tab
-	$('body').on('click', '.foe-link', ()=> {
-		chrome.tabs.create({url: "https://foe-helper.com/"});
-	});
 
 	$('body').on('click', '.paypal-link', ()=> {
-		chrome.tabs.create({url: "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=CNZWYJWRFY3T2&source=url"});
+		chrome.tabs.create({url: "#"});
 	});
 
 	// Set current year in footer

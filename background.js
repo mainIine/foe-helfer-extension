@@ -259,7 +259,7 @@ alertsDB.version(1).stores({
 						message: alert.data.body,
 						iconUrl: '/images/app128.png',
 						eventTime: alert.data.expires,
-						contextMessage: 'FoE-Helper − '+trimPrefix(alert.server, "https://")
+						contextMessage: 'Forge Hammer − '+trimPrefix(alert.server, "https://")
 						
 					}
 				)
@@ -369,13 +369,6 @@ alertsDB.version(1).stores({
 		if(lng !== 'de' && lng !== 'en'){
 			lng = 'en';
 		}
-
-		// @ts-ignore
-		//const askText = ask[lng];
-		
-		/*if(!isDevMode() ) browser.tabs.create({
-			url: `https://foe-helper.com/extension/update?lang=${lng}`
-		});*/
 	});
 
 

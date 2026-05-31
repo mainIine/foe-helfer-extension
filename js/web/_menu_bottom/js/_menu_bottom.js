@@ -23,9 +23,9 @@ let _menu_bottom = {
 
 	BuildOverlayMenu: () => {
 
-		let hud = $('<div />').attr({'id': 'foe-helper-hud','class': 'hud-bottom'}).addClass('game-cursor'),
-			hudWrapper = $('<div />').attr('id', 'foe-helper-hud-wrapper'),
-			hudInner = $('<div />').attr('id', 'foe-helper-hud-slider');
+		let hud = $('<div />').attr({'id': 'forgehammer-hud','class': 'hud-bottom'}).addClass('game-cursor'),
+			hudWrapper = $('<div />').attr('id', 'forgehammer-hud-wrapper'),
+			hudInner = $('<div />').attr('id', 'forgehammer-hud-slider');
 
 		hudWrapper.append(hudInner);
 
@@ -50,7 +50,7 @@ let _menu_bottom = {
 			// Determine the correct place for the menu
 			_menu_bottom.SetMenuWidth();
 
-			window.dispatchEvent(new CustomEvent('foe-helper#menu_loaded'));
+			window.dispatchEvent(new CustomEvent('forgehammer#menu_loaded'));
 		});
 	},
 
@@ -61,7 +61,7 @@ let _menu_bottom = {
 	* @param MenuItem
 	*/
 	InsertMenuItem: (MenuItem) => {
-		$('#foe-helper-hud-slider').append(MenuItem);
+		$('#forgehammer-hud-slider').append(MenuItem);
 	},
 
 
@@ -71,7 +71,7 @@ let _menu_bottom = {
 	* @param MenuItem
 	*/
 	InsertMenuItem: (MenuItem) => {
-		$('#foe-helper-hud-slider').append(MenuItem);
+		$('#forgehammer-hud-slider').append(MenuItem);
 	},
 
 
@@ -87,7 +87,7 @@ let _menu_bottom = {
 
 		if (reset) {
 			// Slider nach links resetten
-			$('#foe-helper-hud-slider').css({ 
+			$('#forgehammer-hud-slider').css({ 
 				left: 0
 			});
 
@@ -111,12 +111,12 @@ let _menu_bottom = {
 	 *
 	 */
 	Prepare: () => {
-		let MenuItemCount = $("#foe-helper-hud-slider").children().length;
+		let MenuItemCount = $("#forgehammer-hud-slider").children().length;
 
-		_menu.HudCount = Math.floor((($(window).outerWidth() - 50) - $('#foe-helper-hud').offset().left) / _menu_bottom.btnSize);
+		_menu.HudCount = Math.floor((($(window).outerWidth() - 50) - $('#forgehammer-hud').offset().left) / _menu_bottom.btnSize);
 		_menu.HudCount = Math.min(_menu.HudCount, MenuItemCount);
 		if (_menu.HudCount <= 0) {
-			$('#foe-helper-hud').remove();
+			$('#forgehammer-hud').remove();
 			$('.tooltip').remove();
 			window.onresize = function(){};
 			_menu.CallSelectedMenu('Box');
@@ -134,9 +134,9 @@ let _menu_bottom = {
 		_menu.HudWidth = (_menu.HudCount * _menu_bottom.btnSize);
 		_menu.SlideParts = Math.ceil(MenuItemCount / _menu.HudCount);
 
-		$('#foe-helper-hud').width(_menu.HudWidth);
-		$('#foe-helper-hud-wrapper').width(_menu.HudWidth);
-		$('#foe-helper-hud-slider').width( ($("#foe-helper-hud-slider").children().length * _menu_bottom.btnSize));
+		$('#forgehammer-hud').width(_menu.HudWidth);
+		$('#forgehammer-hud-wrapper').width(_menu.HudWidth);
+		$('#forgehammer-hud-slider').width( ($("#forgehammer-hud-slider").children().length * _menu_bottom.btnSize));
 	},
 	
 
@@ -181,12 +181,12 @@ let _menu_bottom = {
 		});
 
 		// Sortierfunktion der Menü-items
-		$('#foe-helper-hud-slider').sortable({
+		$('#forgehammer-hud-slider').sortable({
 			placeholder: 'menu-placeholder',
 			axis: 'x',
 			distance: 22,
 			start: function () {
-				$('#foe-helper-hud').addClass('is--sorting');
+				$('#forgehammer-hud').addClass('is--sorting');
 			},
 			sort: function () {
 
@@ -227,7 +227,7 @@ let _menu_bottom = {
 
 				localStorage.setItem('MenuSort', JSON.stringify(_menu.Items));
 
-				$('#foe-helper-hud').removeClass('is--sorting');
+				$('#forgehammer-hud').removeClass('is--sorting');
 				if (_menu.equalTo(storedItems)) return;
 
 				HTML.ShowToastMsg({
@@ -253,11 +253,11 @@ let _menu_bottom = {
 		_menu.ActiveSlide++;
 
 		_menu.MenuScrollLeft -= _menu.HudWidth;
-		if (_menu.ActiveSlide * _menu.HudWidth > $('#foe-helper-hud-slider').width())
-			_menu.MenuScrollLeft = - (($('#foe-helper-hud-slider').width()/_menu.HudWidth) - 1) *_menu.HudWidth;
+		if (_menu.ActiveSlide * _menu.HudWidth > $('#forgehammer-hud-slider').width())
+			_menu.MenuScrollLeft = - (($('#forgehammer-hud-slider').width()/_menu.HudWidth) - 1) *_menu.HudWidth;
 
 
-		$('#foe-helper-hud-slider').css({
+		$('#forgehammer-hud-slider').css({
 			left: _menu.MenuScrollLeft + 'px'
 		});
 
@@ -286,7 +286,7 @@ let _menu_bottom = {
 		else
 			_menu.MenuScrollLeft += _menu.HudWidth;
 
-		$('#foe-helper-hud-slider').css({
+		$('#forgehammer-hud-slider').css({
 			left: _menu.MenuScrollLeft + 'px'
 		});
 

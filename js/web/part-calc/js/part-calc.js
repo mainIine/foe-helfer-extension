@@ -156,7 +156,6 @@ let Parts = {
 			HTML.Box({
 				id: 'OwnPartBox',
 				title: i18n('Boxes.OwnpartCalculator.Title'),
-				ask: i18n('Boxes.OwnpartCalculator.HelpLink'),
 				auto_close: true,
 				dragdrop: true,
 				minimize: true,

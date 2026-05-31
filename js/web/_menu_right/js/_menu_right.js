@@ -17,9 +17,9 @@ let _menu_right = {
 	 *
 	 */
 	BuildOverlayMenu: () => {
-		let hud = $('<div />').attr({'id': 'foe-helper-hud','class': 'hud-right'}).addClass('game-cursor'),
-			hudWrapper = $('<div />').attr('id', 'foe-helper-hud-wrapper'),
-			hudInner = $('<div />').attr('id', 'foe-helper-hud-slider');
+		let hud = $('<div />').attr({'id': 'forgehammer-hud','class': 'hud-right'}).addClass('game-cursor'),
+			hudWrapper = $('<div />').attr('id', 'forgehammer-hud-wrapper'),
+			hudInner = $('<div />').attr('id', 'forgehammer-hud-slider');
 
 		hudWrapper.append(hudInner);
 
@@ -41,7 +41,7 @@ let _menu_right = {
 
 			_menu_right.SetMenuHeight();
 
-			window.dispatchEvent(new CustomEvent('foe-helper#menu_loaded'));
+			window.dispatchEvent(new CustomEvent('forgehammer#menu_loaded'));
 		});
 
 	},
@@ -53,7 +53,7 @@ let _menu_right = {
 	* @param MenuItem
 	*/
 	InsertMenuItem: (MenuItem) => {
-		$('#foe-helper-hud-slider').append(MenuItem);
+		$('#forgehammer-hud-slider').append(MenuItem);
     },
 
 
@@ -66,7 +66,7 @@ let _menu_right = {
 
 		if (reset) {
 			// Slider nach oben resetten
-			$('#foe-helper-hud-slider').css({
+			$('#forgehammer-hud-slider').css({
 				'top': '0'
 			});
 
@@ -88,13 +88,13 @@ let _menu_right = {
 	 *
 	 */
 	Prepare: () => {
-		let MenuItemCount = $("#foe-helper-hud-slider").children().length;
+		let MenuItemCount = $("#forgehammer-hud-slider").children().length;
 
-		_menu.HudCount = Math.floor((($(window).outerHeight() - 20) - $('#foe-helper-hud').offset().top) / 48);
+		_menu.HudCount = Math.floor((($(window).outerHeight() - 20) - $('#forgehammer-hud').offset().top) / 48);
 		_menu.HudCount = Math.min(_menu.HudCount, MenuItemCount);
 
 		if (_menu.HudCount <= 0) {
-			$('#foe-helper-hud').remove();
+			$('#forgehammer-hud').remove();
 			_menu.CallSelectedMenu('Box')
 		}
 			
@@ -108,8 +108,8 @@ let _menu_right = {
 		_menu.HudHeight = (_menu.HudCount * 47);
 		_menu.SlideParts = Math.ceil(MenuItemCount / _menu.HudCount);
 
-		$('#foe-helper-hud').height(_menu.HudHeight + 2);
-		$('#foe-helper-hud-wrapper').height(_menu.HudHeight);
+		$('#forgehammer-hud').height(_menu.HudHeight + 2);
+		$('#forgehammer-hud-wrapper').height(_menu.HudHeight);
 	},
 
 
@@ -154,12 +154,12 @@ let _menu_right = {
 		});
 
 		// Sortierfunktion der Menü-items
-		$('#foe-helper-hud-slider').sortable({
+		$('#forgehammer-hud-slider').sortable({
 			placeholder: 'menu-placeholder',
 			axis: 'y',
 			distance: 22,
 			start: function () {
-				$('#foe-helper-hud').addClass('is--sorting');
+				$('#forgehammer-hud').addClass('is--sorting');
 			},
 			sort: function () {
 
@@ -198,7 +198,7 @@ let _menu_right = {
 
 				localStorage.setItem('MenuSort', JSON.stringify(_menu.Items));
 
-				$('#foe-helper-hud').removeClass('is--sorting');
+				$('#forgehammer-hud').removeClass('is--sorting');
 
 				HTML.ShowToastMsg({
 					show: 'force',
@@ -224,10 +224,10 @@ let _menu_right = {
 		_menu.ActiveSlide++;
 
 		_menu.MenuScrollTop -= _menu.HudHeight;
-		if (_menu.ActiveSlide * _menu.HudHeight > $('#foe-helper-hud-slider').height())
-			_menu.MenuScrollTop = - (($('#foe-helper-hud-slider').height()/_menu.HudHeight) - 1) *_menu.HudHeight;
+		if (_menu.ActiveSlide * _menu.HudHeight > $('#forgehammer-hud-slider').height())
+			_menu.MenuScrollTop = - (($('#forgehammer-hud-slider').height()/_menu.HudHeight) - 1) *_menu.HudHeight;
 
-		$('#foe-helper-hud-slider').css({
+		$('#forgehammer-hud-slider').css({
 			'top': _menu.MenuScrollTop + 'px'
 		});
 
@@ -257,7 +257,7 @@ let _menu_right = {
 		else
 			_menu.MenuScrollTop += _menu.HudHeight;
 
-		$('#foe-helper-hud-slider').css({
+		$('#forgehammer-hud-slider').css({
 			'top': _menu.MenuScrollTop + 'px'
 		});
 

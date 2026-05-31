@@ -32,7 +32,7 @@ let EventHandler = {
 
 	db: null,
 	dbLoaded: new Promise(resolve => 
-		window.addEventListener('foe-helper#eventDBloaded', resolve, {capture: false, once: true, passive: true})),
+		window.addEventListener('forgehammer#eventDBloaded', resolve, {capture: false, once: true, passive: true})),
 
 	CurrentPlayerGroup: null,
 	
@@ -99,7 +99,7 @@ let EventHandler = {
 		});
 
 		EventHandler.db.open();
-		window.dispatchEvent(new CustomEvent('foe-helper#eventDBloaded'))
+		window.dispatchEvent(new CustomEvent('forgehammer#eventDBloaded'))
 	},
 
 

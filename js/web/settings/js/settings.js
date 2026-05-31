@@ -364,9 +364,6 @@ let Settings = {
 	 */
 	About: () => {
 		return '<hr>' +
-			'<h2>' + i18n('Settings.About.TranslateTitle') + '</h2>' +
-			'<p>' + i18n('Settings.About.TranslateDesc') + ' <a href="http://i18n.foe-helper.com/projects/foe-helper/extension/" target="_blank">Weblate</a></p>' +
-			'<hr>' +
 			'<h2>' + i18n('Settings.About.RatingTitle') + '</h2>' +
 			'<p>' + i18n('Settings.About.RatingDesc') + '</p>';
 	},
@@ -379,10 +376,7 @@ let Settings = {
 	 */
 	Help: () => {
 		return '<ul class="helplist">' +
-			'<li><a href="https://foe-helper.com" target="_blank"><span class="website">&nbsp;</span>' + i18n('Settings.Help.Website') + '</a></li>' +
-			'<li><a href="https://docs.foe-helper.com" target="_blank"><span class="website">&nbsp;</span>' + i18n('Settings.Help.Documentation') + '</a></li>' +
-			'<li><a href="https://discord.gg/uQY7rqDJ7z" target="_blank"><span class="discord">&nbsp;</span>' + i18n('Settings.Help.Discord') + '</a></li>' +
-			'<li><a href="https://github.com/mainIine/foe-helfer-extension/issues" target="_blank"><span class="github">&nbsp;</span>' + i18n('Settings.Help.Github') + '</a></li>' +
+			'<li><a href="#" target="_blank"><span class="discord">&nbsp;</span>' + i18n('Settings.Help.Discord') + '</a></li>' +
 			'</ul>';
 	},
 

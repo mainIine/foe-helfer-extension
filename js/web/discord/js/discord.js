@@ -210,7 +210,7 @@ let Discord = {
 
 
 		h.push(`<b>${i18n('Boxes.Discord.Message')}</b>`);
-		h.push(`<textarea id="message" name="message" spellcheck="false">${data ? data['message'] : ':robot: **Test message**\nFoE Helper was here!'}</textarea>`);
+		h.push(`<textarea id="message" name="message" spellcheck="false">${data ? data['message'] : ':robot: **Test message**\nForge Hammer was here!'}</textarea>`);
 
 
 		h.push(`<div>`);
@@ -468,8 +468,8 @@ let Discord = {
 		Discord.SendMessage(
 			e.url,
 			{
-				username: 'FoE Helper',
-				avatar_url: 'https://foe-helper.com/theme/img/favicon/apple-touch-icon.png',
+				username: 'Forge Hammer',
+				avatar_url: '#', // to do: change forge hammer
 				content: e.message
 			}
 		)
@@ -498,7 +498,7 @@ let Discord = {
 	CloseOverlay: (id)=> {
 		$(`#${id}`).fadeToggle(function() {
 			$(this).remove();
-			$('.foe-helper-overlay').remove();
+			$('.forgehammer-overlay').remove();
 		});
 	},
 

@@ -1218,7 +1218,7 @@ FP-Bar */
 .window-map,
 .window-close,
 .window-head:not(span),
-.foe-helper-overlay,
+.forgehammer-overlay,
 .button-own,
 .window-box,
 .cursor-default,
@@ -1769,7 +1769,7 @@ a:hover {
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 
-.foe-helper-overlay {
+.forgehammer-overlay {
 	position: absolute;
 	top: 0;
 	right: 0;
@@ -1939,7 +1939,7 @@ input[type="range"]::-webkit-slider-thumb {
 
 /* menu right and bottom */
 
-#foe-helper-hud {
+#forgehammer-hud {
 	position: absolute;
 	z-index: 150;
 	font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
@@ -1951,7 +1951,7 @@ input[type="range"]::-webkit-slider-thumb {
 	user-select: none;
 }
 
-#foe-helper-hud-wrapper {
+#forgehammer-hud-wrapper {
 	position: absolute;
 	overflow: hidden;
 }
@@ -2025,11 +2025,11 @@ input[type="range"]::-webkit-slider-thumb {
 	border-left: 6px solid var(--menu-arrow-color);
 }
 
-#foe-helper-hud.is--sorting .hud-btn {
+#forgehammer-hud.is--sorting .hud-btn {
 	filter: brightness(0.6) saturate(0.9);
 }
 
-#foe-helper-hud.is--sorting .hud-btn.ui-sortable-helper {
+#forgehammer-hud.is--sorting .hud-btn.ui-sortable-helper {
 	filter: brightness(1.2);
 }
 
@@ -2090,7 +2090,7 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 
-#foe-helper-hud.hud-right {
+#forgehammer-hud.hud-right {
 	right: 0;
 	top: 420px;
 	width: calc(var(--menu-btn-size) + 4px);
@@ -2112,14 +2112,14 @@ input[type="range"]::-webkit-slider-thumb {
 	bottom: 0;
 }
 
-.hud-right #foe-helper-hud-wrapper {
+.hud-right #forgehammer-hud-wrapper {
 	width: inherit;
 	height: 218px;
 	right: 0;
 	top: 1px;
 }
 
-.hud-right #foe-helper-hud-slider {
+.hud-right #forgehammer-hud-slider {
 	position: absolute;
 	top: 0;
 	right: 0;

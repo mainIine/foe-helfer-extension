@@ -38,7 +38,7 @@ let _menu_box = {
 		});
 		_menu_box.CalcBody();
 
-		window.dispatchEvent(new CustomEvent('foe-helper#menu_loaded'));
+		window.dispatchEvent(new CustomEvent('forgehammer#menu_loaded'));
 	},
 
 

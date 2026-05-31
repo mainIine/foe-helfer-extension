@@ -95,7 +95,6 @@ let Notice = {
 			HTML.Box({
 				id: 'notices',
 				title: i18n('Boxes.Notice.Title'),
-				ask: i18n('Boxes.Notice.HelpLink'),
 				auto_close: true,
 				dragdrop: true,
 				resize: true,
@@ -316,7 +315,7 @@ let Notice = {
 		});
 
 		$('body').on('click', '#notices-modalclose, #notices-modal-playersclose', function(){
-			$('.foe-helper-overlay').remove();
+			$('.forgehammer-overlay').remove();
 		});
 
 		// save content when close box
@@ -366,7 +365,7 @@ let Notice = {
 			auto_close: true,
 		});
 
-		$('body').prepend( $('<div class="foe-helper-overlay" />') );
+		$('body').prepend( $('<div class="forgehammer-overlay" />') );
 
 
 		let inp = $('<input />'),
@@ -501,7 +500,7 @@ let Notice = {
 				$('#notices-modal').fadeToggle('fast', function(){
 					$(this).remove();
 
-					$('.foe-helper-overlay').remove();
+					$('.forgehammer-overlay').remove();
 				});
 
 				Notice.EditMode = false;
@@ -554,7 +553,7 @@ let Notice = {
 				$('#notices-modal').fadeToggle('fast', function(){
 					$(this).remove();
 
-					$('.foe-helper-overlay').remove();
+					$('.forgehammer-overlay').remove();
 				});
 
 				Notice.EditMode = false;
@@ -616,7 +615,7 @@ let Notice = {
 			dragdrop: true
 		});
 
-		$('body').prepend( $('<div class="foe-helper-overlay" />') );
+		$('body').prepend( $('<div class="forgehammer-overlay" />') );
 
 		const mapper = {
 			guild: 'IsGuildMember',
@@ -700,7 +699,7 @@ let Notice = {
 				$('#notices-modal-players').fadeToggle('fast', function(){
 					$(this).remove();
 
-					$('.foe-helper-overlay').remove();
+					$('.forgehammer-overlay').remove();
 				});
 
 				Notice.buildBox();
@@ -856,7 +855,7 @@ let Notice = {
 				$('#notices-modal').fadeToggle('fast', function(){
 					$(this).remove();
 
-					$('.foe-helper-overlay').remove();
+					$('.forgehammer-overlay').remove();
 				});
 
 				Notice.EditMode = false;

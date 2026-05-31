@@ -140,7 +140,6 @@ let CompareFriendsThreads = {
 			HTML.Box({
 				id: 'friendsCompareBox',
 				title: i18n('Boxes.CompareFriendsThreads.Title'),
-				ask: i18n('Boxes.CompareFriendsThreads.HelpLink'),
 				auto_close: true,
 				dragdrop: true,
 				minimize: true,

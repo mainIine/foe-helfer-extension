@@ -183,10 +183,10 @@ let HTML = {
 	 */
 	Box: (args) => {
 
-		let title = $('<span />').addClass('title').html(args['title']);
+		let title = $('<span />').addClass('title');
 		
 		if (args['onlyTitle'] !== true) {
-			title = $('<span />').addClass('title').html((extVersion.indexOf("beta") > -1 ? '(Beta) ': '') + args['title'] + ' <small><em> - FoE Helper</em></small>');
+			title = $('<span />').addClass('title').html((extVersion.indexOf("beta") > -1 ? '(Beta) ': '') + args['title'] + ' <small>🔨</small>');
 		}
 		title = title.attr('title', title[0].textContent);
 		let	buttons = $('<div />').attr('id', args['id'] + 'Buttons').addClass('box-buttons'),

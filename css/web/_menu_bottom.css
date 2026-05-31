@@ -11,7 +11,7 @@
  * **************************************************************************************
  */
 
-#foe-helper-hud.hud-bottom {
+#forgehammer-hud.hud-bottom {
 	left: 1035px;
 	bottom: 0;
 	width: 270px;
@@ -21,14 +21,14 @@
 	border-bottom-width: 0;
 }
 
-.hud-bottom #foe-helper-hud-wrapper {
+.hud-bottom #forgehammer-hud-wrapper {
 	width: 220px;
 	height: inherit;
 	bottom: 0;
 	left: 0;
 }
 
-.hud-bottom #foe-helper-hud-slider {
+.hud-bottom #forgehammer-hud-slider {
 	position: absolute;
 	left: 0;
 	top: 0;

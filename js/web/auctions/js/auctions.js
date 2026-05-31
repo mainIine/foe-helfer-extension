@@ -65,7 +65,6 @@ let Auction = {
 			HTML.Box({
 				id: 'auctionSettingsBox',
 				title: i18n('Boxes.AuctionSettings.Title'),
-				//ask: i18n('Boxes.AuctionSettings.HelpLink'),
 				auto_close: true,
 				dragdrop: true,
 				minimize: true,

@@ -115,9 +115,9 @@ let _menu = {
 	 * Hides a button. The HUD slider must already be filled for this.
 	 */
 	HideButton: (buttonId) => {
-		if ($('#foe-helper-hud-slider').has(`div#${buttonId}`).length > 0)
+		if ($('#forgehammer-hud-slider').has(`div#${buttonId}`).length > 0)
 		{
-			$($('#foe-helper-hud-slider').children(`div#${buttonId}`)[0]).hide();
+			$($('#forgehammer-hud-slider').children(`div#${buttonId}`)[0]).hide();
 		}
 	},
 
@@ -126,9 +126,9 @@ let _menu = {
 	 * Shows a hidden button again
 	 */
 	ShowButton: (buttonId) => {
-		if ($('#foe-helper-hud-slider').has(`div#${buttonId}`))
+		if ($('#forgehammer-hud-slider').has(`div#${buttonId}`))
 		{
-			$($('#foe-helper-hud-slider').children(`div#${buttonId}`)[0]).show();
+			$($('#forgehammer-hud-slider').children(`div#${buttonId}`)[0]).show();
 		}
 	},
 
@@ -262,7 +262,7 @@ let _menu = {
 
 		// refresh the Menü after setting-toggle
 		setTimeout(()=> {
-			$('#foe-helper-hud, #menu_box').remove();
+			$('#forgehammer-hud, #menu_box').remove();
 			_menu.CallSelectedMenu(MainParser.SelectedMenu);
 		}, 100);
 

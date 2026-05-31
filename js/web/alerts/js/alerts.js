@@ -419,7 +419,7 @@ let Alerts = function(){
 			// [pref] option to create a new alert when plunder (to return in 24 hours) ?
 			aux: {
 				key: {
-					generate: (key) => { return 'foe-helper-alerts-' + key; }
+					generate: (key) => { return 'forgehammer-alerts-' + key; }
 				}
 			},
 
@@ -1547,7 +1547,6 @@ let Alerts = function(){
 					HTML.Box( {
 						id: 'Alerts',
 						title: i18n( 'Boxes.Alerts.Title', 'Alerts' ),
-                		ask: i18n('Boxes.Alerts.HelpLink'),
 						auto_close: true,
 						dragdrop: true,
 						minimize: true,
