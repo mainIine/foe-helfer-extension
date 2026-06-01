@@ -1270,7 +1270,7 @@ let GuildMemberStat = {
 			let guildGoodsBuildings = guildbuildings['buildings'].filter(function (data) { return data.resources !== undefined }).reduce(function (res, obj) {
 				let objname = obj.name + '#' + obj.level + '#';
 				if (!(objname in res)) {
-					res.__array.push(res[objname] = obj);
+					res.__array.push(res[objname] = Object.assign({}, obj, { resources: Object.assign({}, obj.resources) }));
 					res[objname].count = 1;
 				}
 				else {
@@ -1283,7 +1283,7 @@ let GuildMemberStat = {
 			// Group guildpower buildings only by name. Era isn't relevant here
 			let guildPowerBuildings = guildbuildings['buildings'].filter(function (data) { return data.power !== undefined }).reduce(function (res, obj) {
 				if (!(obj.name in res)) {
-					res.__array.push(res[obj.name] = obj);
+					res.__array.push(res[obj.name] = Object.assign({}, obj, { power: Object.assign({}, obj.power) }));
 					res[obj.name].count = 1;
 				}
 				else {
