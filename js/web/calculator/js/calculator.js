@@ -508,7 +508,7 @@ let Calculator = {
 					<strong class="${EinsatzClass} td-tooltip copy-fp clickable" data-copy="${ForderFPRewards[Rank]}" data-original-title="${HTML.i18nTooltip(EinsatzTooltip.join('<br>'))}">${EinsatzText}</strong>
 				</td>
 				<td>
-					<strong class="${GewinnClass} td-tooltip copy-fp" data-copy="'+ForderGewinn+'" data-original-title="${HTML.i18nTooltip(GewinnTooltip.join('<br>'))}">${GewinnText}</strong>
+					<strong class="${GewinnClass} td-tooltip copy-fp" data-copy="${ForderGewinn}" data-original-title="${HTML.i18nTooltip(GewinnTooltip.join('<br>'))}">${GewinnText}</strong>
 				</td>
 				<td> ${HTML.Format(BPRewards[Rank])} </td>
 				<td> <small> ${HTML.Format(MedalRewards[Rank])} </small> </td>
