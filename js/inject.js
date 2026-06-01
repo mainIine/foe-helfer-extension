@@ -121,10 +121,10 @@ function inject (loadBeta = false, extUrl = chrome.runtime.getURL(''), betaDate=
 			let cssname = "_menu_" + MenuSetting.toLowerCase().replace("bar","");
 
 			let cssFiles = [
+				'boxes',
 				'variables',
 				'goods',
-				cssname,
-				'boxes'
+				cssname
 			];
 
 			// insert stylesheet
@@ -133,7 +133,7 @@ function inject (loadBeta = false, extUrl = chrome.runtime.getURL(''), betaDate=
 					break;
 				}
 				let css = document.createElement('link');
-				css.href = extUrl + `css/web/${cssFiles[i]}.css?v=${v}`;
+				css.href = extUrl + `css/${cssFiles[i]}.css?v=${v}`;
 				css.rel = 'stylesheet';
 				document.head.appendChild(css);
 			}

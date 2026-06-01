@@ -102,7 +102,7 @@
 }
 
 #BackgroundInfoList [class*=msg] .content {
-	font-size: 85%;
+	font-size: 90%;
 }
 
 #BackgroundInfoList .welcome {
@@ -111,7 +111,7 @@
 }
 
 #BackgroundInfoList .welcome .icon {
-	background-image: url('../../../../css/images/menu/info.png');
+	background-image: url('../../../../images/menu/info.png');
 	background-size: 30px;
 }
 

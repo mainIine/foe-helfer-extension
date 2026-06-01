@@ -91,7 +91,7 @@
 .playerprofile .box-buttons .window-close {
     filter: saturate(0.7) contrast(1.7);
     opacity: 0.5;
-    background-image: url('../../../../css/images/hud/box-sprite.png'), none;
+    background-image: url('../../../../images/hud/box-sprite.png'), none;
     background-position: -2px -2px, 0 0;
     box-shadow: none;
 }
@@ -647,7 +647,7 @@
     width: 20px;
     height: 20px;
     background-size: contain;
-	background-image: url('../../../../css/images/hud/chevron-down.svg');
+	background-image: url('../../../../images/hud/chevron-down.svg');
     filter: saturate(0);
     mix-blend-mode: color-dodge;
     transition: all 0.3s linear;
@@ -656,7 +656,7 @@
 
 .playerprofile .toggleMore:hover {
     mix-blend-mode: normal;
-    cursor: url('../../../../css/images/cursor_hover.cur'), auto;
+    cursor: url('../../../../images/cursor_hover.cur'), auto;
 }
 
 .playerprofile.expanded .toggleMore {
@@ -913,7 +913,7 @@
 }
 
 .playerprofile.window-box.foe {
-    --main-background: linear-gradient(to bottom, #1e06006e, #270f005e), url(../../../../css/images/hud/box-bg.png) center center repeat;
+    --main-background: linear-gradient(to bottom, #1e06006e, #270f005e), url(../../../../images/hud/box-bg.png) center center repeat;
     --main-border: 3px solid #9f652a;
     --main-color: var(--beige);
     --daysPlayed-background: none;

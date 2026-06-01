@@ -97,7 +97,7 @@ table {
 }
 
 #DBExport #debex_import_wrapper .icon.success {
-	background-image: url(../../../../css/images/hud/success-icon.png);
+	background-image: url(../../../../images/hud/success-icon.png);
 	background-repeat: no-repeat;
 	zoom: 0.7;
 }

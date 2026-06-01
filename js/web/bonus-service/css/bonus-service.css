@@ -29,7 +29,7 @@
 	width: 37px;
 	height: 37px;
 	background-image: none;
-	background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.3)), url('../../../../css/images/hud/box-bg.png') 0 0 no-repeat;
+	background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.3)), url('../../../../images/hud/box-bg.png') 0 0 no-repeat;
 	border-radius: 50% 0 0 50%;
 	border: 2px solid var(--hud-border-success);
 	border-right: none;

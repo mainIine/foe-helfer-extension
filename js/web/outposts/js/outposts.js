@@ -724,9 +724,9 @@ let Outposts = {
 						<html>
 							<head id="popout-${id}-head">
 								<title>PopOut Test - ${i18n('Boxes.Outpost.Title')}</title>
-								<link rel="stylesheet" href="${extUrl}css/web/variables.css">
-								<link rel="stylesheet" href="${extUrl}css/web/boxes.css">
-								<link rel="stylesheet" href="${extUrl}css/web/goods.css">
+								<link rel="stylesheet" href="${extUrl}css/variables.css">
+								<link rel="stylesheet" href="${extUrl}css/boxes.css">
+								<link rel="stylesheet" href="${extUrl}css/goods.css">
 								<link rel="stylesheet" href="${extUrl}js/web/outposts/css/outposts.css">
 							</head>
 							<body class="popup-body" id="outpostConsumablesBody">${content}</body>

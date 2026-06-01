@@ -233,7 +233,6 @@ let CityMap = {
 			menu.append(
 				$('<div class="btn-group" />')
 					.append($('<button class="btn ml-auto" />').attr({ id: 'copy-meta-infos', onclick: 'CityMap.copyMetaInfos()' }).text(i18n('Boxes.CityMap.CopyMetaInfos')))
-					.append($('<button class="btn ml-auto" />').attr({ id: 'show-submit-box', onclick: 'CityMap.showSubmitBox()' }).text(i18n('Boxes.CityMap.ShowSubmitBox')))
 			);
 		}
 		oB.append(wrapper);
@@ -658,39 +657,6 @@ let CityMap = {
 	},
 
 
-	/**
-	 * Asynchronously sets and renders buildings on the map depending on the active map type and provided data.
-	 *
-	 * This function clears the currently displayed map, initializes metrics for various building types,
-	 * and determines the placement and characteristics of buildings to be displayed on the grid. Metrics
-	 * are updated based on building attributes, and additional styles and highlights are applied to the
-	 * rendered elements.
-	 *
-	 * Key functionalities:
-	 * - Resets the map for specific active map types (`cultural_outpost`, `era_outpost`, or `guild_raids`)
-	 *   or proceeds with city or other player map configurations.
-	 * - Clears all previous map elements such as previously drawn buildings or roads.
-	 * - Recalculates city metrics including counts and areas for roadless buildings, connected buildings,
-	 *   limited buildings, decayed buildings, and others.
-	 * - Constructs a grid bounding box for the map with default dimensions and constraints.
-	 * - Creates visual representations of buildings based on their attributes (e.g., type, state, size,
-	 *   connectivity) and assigns corresponding CSS classes for styling and tooltips for additional details.
-	 * - Highlights "old" buildings based on their era relative to the current era.
-	 * - Computes efficiency factors related to road usage and sets up drag-and-drop functionality for the map grid.
-	 *
-	 * Metrics:
-	 * - Keeps track of different building types, area metrics, and available space for buildings.
-	 * - Differentiates buildings by their requirements, such as streets, and their states, such as decayed or ascendable.
-	 *
-	 * Highlights:
-	 * - Applies specific style classes to buildings based on their rating, era, and other attributes.
-	 * - Supports differentiation for buildings from external sources like expeditions or guild battlegrounds.
-	 *
-	 * @param {Object|null} [Data=null] - Input data used to populate the buildings on the map.
-	 *                                    Defaults to `null` and uses internal map data when not provided.
-	 *
-	 * @returns {Promise<void>}
-	 */
 	SetMapBuildings: async (Data = null)=> {
 		if (ActiveMap === "cultural_outpost" || ActiveMap === "era_outpost" || ActiveMap === "guild_raids") {
 			CityMap.SetOutpostBuildings();
@@ -928,28 +894,6 @@ let CityMap = {
 	},
 
 
-	/**
-	 * Updates and manages the display of area-related statistics and highlights on the CityMap.
-	 * This function calculates total areas, occupied areas, and free areas, and updates
-	 * the relevant UI elements in the sidebar. It also provides detailed breakdowns of
-	 * building types and their associated statistics. Additionally, it manages interactive
-	 * UI elements for highlighting specific categories of buildings.
-	 *
-	 * Functionality includes:
-	 * - Calculating total, occupied, and free areas.
-	 * - Rendering and updating the sidebar with building and area statistics.
-	 * - Sorting and displaying building types by count with visual and numerical indicators.
-	 * - Providing interactive options to highlight specific building subsets, such as roadless
-	 *   buildings, buildings from special sources, and buildings based on certain conditions.
-	 * - Managing the display of building stats legends related to building age and other properties.
-	 *
-	 * Notes:
-	 * - The method dynamically creates and updates elements in the DOM, specifically within
-	 *   the sidebar and the "#area-state" and "#map-stats" containers.
-	 * - Highlights include clickable elements to toggle visibility or settings for subsets of buildings.
-	 * - Uses localization (`i18n`) for consistent support across multiple languages.
-	 * - Depends on various global variables such as `CityMap`, `ActiveMap`, and `srcLinks`.
-	 */
 	getAreas: ()=>{
 		let unlockedAreas = (ActiveMap === 'OtherPlayer' ? CityMap.OtherPlayer.unlockedAreas : CityMap.Main.unlockedAreas);
 		let total = (((unlockedAreas?.length || 1) -1) * 16) + 256, // x + (4*4) + 16*16
@@ -1045,57 +989,8 @@ let CityMap = {
 	},
 
 
-	/**
-	 * Generates a hash code for a given string.
-	 *
-	 * @param {string} str - The input string for which the hash code will be generated.
-	 * @returns {number} The computed hash code for the given string.
-	 */
 	hashCode: (str)=>{
 		return str.split('').reduce((prevHash, currVal) => (((prevHash << 5) - prevHash) + currVal.charCodeAt(0))|0, 0);
-	},
-
-
-	/**
-	 * Displays the submit box for the City Map feature.
-	 *
-	 * This function manages the visibility of the City Map Submit Box. If the box is already present
-	 * in the DOM, it removes it. If the box is not present, it creates a new submit box with the necessary
-	 * content and styling. The box includes a localized title and description, as well as a button
-	 * that triggers the `CityMap.SubmitData` functionality.
-	 *
-	 * Dependencies:
-	 * - Requires the presence of the `HTML.Box` and `HTML.AddCssFile` functions for creating the box
-	 *   and applying styles.
-	 * - Utilizes the `i18n` function for localization of text elements.
-	 * - Expects an element with `id="CityMapSubmitBody"` to populate with box content.
-	 *
-	 * Side effects:
-	 * - Adds or removes the submit box in the DOM.
-	 * - Dynamically loads the `citymap` CSS file if it doesn't already exist in the scope.
-	 */
-	showSubmitBox: () => {
-		let $CityMapSubmit = $('#CityMapSubmit');
-
-		if ($CityMapSubmit.length > 0) {
-			$CityMapSubmit.remove();
-		}
-
-		if ($CityMapSubmit.length < 1) {
-			HTML.Box({
-				'id': 'CityMapSubmit',
-				'title': i18n('Boxes.CityMap.TitleSend'),
-				'auto_close': true,
-				'saveCords': false
-			});
-
-			HTML.AddCssFile('citymap');
-
-			let desc = '<p class="text-center">' + i18n('Boxes.CityMap.Desc1') + '</p>';
-			desc += '<p class="text-center" id="msg-line"><button class="btn" onclick="CityMap.SubmitData()">' + i18n('Boxes.CityMap.Submit') + '</button></p>';
-
-			$('#CityMapSubmitBody').html(desc);
-		}
 	},
 
 
@@ -1105,12 +1000,6 @@ let CityMap = {
 	},
 
 
-	/**
-	 * Highlights all buildings belonging to the same chain or set.
-	 *
-	 * @param {string} id - The chain ID or set ID.
-	 * @param {string} type - 'chain' or 'set'.
-	 */
 	highlightRelatedBuildings: (id, type) => {
 		let spans = $('span.entity');
 		let found = false;

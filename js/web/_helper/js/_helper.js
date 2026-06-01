@@ -188,7 +188,6 @@ let HTML = {
 		if (args['onlyTitle'] !== true) {
 			title = $('<span />').addClass('title').html((extVersion.indexOf("beta") > -1 ? '(Beta) ': '') + args['title'] + ' <small>🔨</small>');
 		}
-		title = title.attr('title', title[0].textContent);
 		let	buttons = $('<div />').attr('id', args['id'] + 'Buttons').addClass('box-buttons'),
 			head = $('<div />').attr('id', args['id'] + 'Header').attr('class', 'window-head').append(title),
 			body = $('<div />').attr('id', args['id'] + 'Body').attr('class', 'window-body'),
@@ -861,9 +860,9 @@ let HTML = {
 						<html>
 							<head id="popout-${id}-head">
 								<title>PopOut Test - ${i18n('Boxes.Outpost.Title')}</title>
-								<link rel="stylesheet" href="${extUrl}css/web/variables.css">
-								<link rel="stylesheet" href="${extUrl}css/web/boxes.css">
-								<link rel="stylesheet" href="${extUrl}css/web/goods.css">
+								<link rel="stylesheet" href="${extUrl}css/variables.css">
+								<link rel="stylesheet" href="${extUrl}css/boxes.css">
+								<link rel="stylesheet" href="${extUrl}css/goods.css">
 							</head>
 							<body id="popout-${id}-body"></body>
 						</html>`;

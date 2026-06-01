@@ -223,7 +223,7 @@
 	margin: 1rem auto;
 	padding: 1em;
 	box-sizing: border-box;
-	background: linear-gradient(to bottom, #1e06006e, #270f005e), url(../../../../css/images/hud/box-bg.png) center center repeat;
+	background: linear-gradient(to bottom, #1e06006e, #270f005e), url(../../../../images/hud/box-bg.png) center center repeat;
 	color: var(--beige);
 	border-radius: 5px;
 }
@@ -652,16 +652,16 @@ input[id*="ProdPerTile"] {
 	width: 100%;
 }
 #ItemSourcesBody td {
-	background-image: url('../../../../css/images/hud/chevron-down.svg');
+	background-image: url('../../../../images/hud/chevron-down.svg');
     background-size: 20px 20px;
     background-position: right 5px;
     background-repeat: no-repeat;
 }
 #ItemSourcesBody td.open {
-	background-image: url('../../../../css/images/hud/chevron-left.svg');
+	background-image: url('../../../../images/hud/chevron-left.svg');
 }
 #ItemSourcesBody td:hover {
-	cursor: url('../../../../css/images/cursor_hover.cur'), auto;
+	cursor: url('../../../../images/cursor_hover.cur'), auto;
 }
 #ItemSourcesBody .filterTable {
 	float: right;

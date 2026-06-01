@@ -1833,7 +1833,7 @@ let MainParser = {
 								`:``}
 							>
 								${r.buildingName || ""}
-								${buildingId!=0?`<span class="show-entity" data-id="${buildingId}"><img class="game-cursor" src="${ extUrl + 'css/images/hud/open-eye.png'}"></span>`:""}
+								${buildingId!=0?`<span class="show-entity" data-id="${buildingId}"><img class="game-cursor" src="${ extUrl + 'images/hud/open-eye.png'}"></span>`:""}
 							</td>
 							</tr>`;
 				
@@ -2510,5 +2510,5 @@ if (window.foeHelperBgApiHandler !== undefined && window.foeHelperBgApiHandler i
 	delete window.foeHelperBgApiHandler;
 }
 
-console.log('FOE Helper version ' + extVersion + ' started' + (extVersion.indexOf("beta") > -1 ? ' in Beta Mode': '') + '. ID: ' + extID);
+console.log('Forge Hammer version ' + extVersion + ' started' + (extVersion.indexOf("beta") > -1 ? ' in Beta Mode': '') + '. ID: ' + extID);
 console.log(navigator.userAgent);

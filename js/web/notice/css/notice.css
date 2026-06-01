@@ -56,7 +56,7 @@
 #noticesBody .sub-tab-edit {
 	width: 24px;
 	height: 24px;
-	background: var(--black-50) url('../../../../css/images/hud/edit.png') center center no-repeat;
+	background: var(--black-50) url('../../../../images/hud/edit.png') center center no-repeat;
 	position: absolute;
 	background-size: 80%;
 	border: 1px solid var(--border-table-bottom);

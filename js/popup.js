@@ -36,20 +36,6 @@ let i18n = {
 		'desc' : "Vous aimez cette petite extension? Chaque petite donation est toujours la bienvenue.",
 		'thanks' : 'Merci beaucoup!'
 	},
-	'ru' : {
-		'title' : 'Forge Hammer',
-		'intro' : "A thirdparty browser extension for Forge of Empires.",
-		'donate' : 'Donate',
-		'desc' : "Вам нравится это маленькое бесплатное расширение и вы хотите поддержать его, чтобы оно оставалось таким же? <br> Тогда каждое маленькое пожертвование в поддержку проекта всегда приветствуется.",
-		'thanks' : 'Большое спасибо!'
-	},
-	'sv' : {
-		'title' : 'Forge Hammer',
-		'intro' : "Ett webbläsartillägg från tredje part för Forge of Empires.",
-		'donate' : 'Donate',
-		'desc' : "Du kommer tycka om detta lilla gratis tillägg och stöd det så det kan fortsätta så? <br> Varje liten donation för support är välkommet.",
-		'thanks' : 'Tack så mucket!'
-	},
 };
 
 $(function(){

@@ -27,12 +27,12 @@
 	},
 
 	"web_accessible_resources": [
-		"css/web/*.css",
+		"css/*.css",
 		"vendor/*.js",
 		"vendor/sounds/*.mp3",
 		"js/web/*.*",
 		"images/*.*",
-		"css/images/*.*",
+		"images/*.*",
 		"content/*.html",
 		"js/vendor.json",
 		"js/internal.json",

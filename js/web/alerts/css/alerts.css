@@ -203,7 +203,7 @@ div.alert-popup #alert-expires,
     line-height: 1.5;
     background: var(--btn-bg);
     color: var(--beige);
-    cursor: url('../../../../css/images/cursor_default.cur'), auto;
+    cursor: url('../../../../images/cursor_default.cur'), auto;
     transition: color .15s ease-in-out,background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
     outline: none !important;
 }
@@ -211,7 +211,7 @@ div.alert-popup #alert-expires,
 .radio-toolbar input[type="radio"]:checked + label,
 .radio-toolbar input[type="radio"]:hover + label {
     background: var(--btn-bg-active);
-	cursor: url('../../../../css/images/cursor_hover.cur'), auto;
+	cursor: url('../../../../images/cursor_hover.cur'), auto;
 }
 
 .column-160 { max-width: 180px; }
@@ -236,7 +236,7 @@ input.hidden {
 }
 
 #Alerts .btn-edit {
-    background-image: url('../../../../css/images/hud/edit.png'), var(--btn-bg);
+    background-image: url('../../../../images/hud/edit.png'), var(--btn-bg);
     background-size: 13px 13px, cover;
     background-repeat: no-repeat, repeat;
     background-position: center;
@@ -244,7 +244,7 @@ input.hidden {
 }
 
 #Alerts .btn-edit:hover {
-    background-image: url('../../../../css/images/hud/edit.png'), var(--btn-bg-active);
+    background-image: url('../../../../images/hud/edit.png'), var(--btn-bg-active);
 }
 
 #Alerts .btn-delete {
