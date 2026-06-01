@@ -2028,15 +2028,21 @@ let Productions = {
 		else if (GoodType.includes('units')) {
 			return i18n('Boxes.Productions.Units');
 		}
-		else if (GoodType.includes('battleground')) {
-			return i18n('Boxes.General.Guild_Battlegrounds');
-		}
 		else if (GoodType.includes('guild_expedition')) {
 			return i18n('Boxes.General.Guild_Expedition');
 		}
-		/*else if (GoodType.includes('guild_raids')) {
-			return i18n('Boxes.General.Quantum_Incursion');
-		}*/
+		else if (GoodType.includes('boost_attacker-guild_raid')) {
+			return i18n('Boxes.Productions.raids_att_boost_attaker');
+		}
+		else if (GoodType.includes('boost_defender-guild_raids')) {
+			return i18n('Boxes.Productions.raids_att_boost_defender');
+		}
+		else if (GoodType.includes('boost_attacker-battleground')) {
+			return i18n('Boxes.Productions.gildfight_att_boost_attaker');
+		}
+		else if (GoodType.includes('boost_defender-battleground')) {
+			return i18n('Boxes.Productions.gildfight_att_boost_defender');
+		}
 		else if (GoodType.includes('att_boost_attacker') || GoodType.includes('att_boost_attacker-all')) {
 			return i18n('Boxes.Productions.att_boost_attacker');
 		}
