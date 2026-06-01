@@ -261,6 +261,10 @@
     color: #ff0000db;
 }
 
+#GuildMemberTable tr.clickable:hover td {
+    text-decoration: underline;
+}
+
 #GuildMemberTable>tbody tr.hasdetail.open td,
 #GuildErasTable>tbody tr.hasdetail.open td {
 
