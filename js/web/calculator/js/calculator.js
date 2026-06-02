@@ -27,6 +27,7 @@ let Calculator = {
 	ClanName: null,
 
 	Show: (action = "") => {
+		$('.tooltip').remove();
 		Calculator.ForderBonusPerConversation = (localStorage.getItem('CalculatorForderBonusPerConversation') !== 'false');
 
         let spk = localStorage.getItem('CalculatorTone');
