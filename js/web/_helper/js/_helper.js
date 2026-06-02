@@ -229,12 +229,14 @@ let HTML = {
 			}
 		}
 
-		if (args['map']) {
-			let set = $('<span />').addClass('window-map').attr('id', `${args['id']}-map`);
-			buttons.prepend(set);
+		if (args['custom_buttons']) {
+			if (typeof args.custom_buttons === "object") {
+				for (const button of args.custom_buttons) {
+					let set = $('<span />').addClass(button.class).attr('id', `${args['id']}${button.class}`);
+					buttons.prepend(set);
 
-			if (typeof args['map'] !== 'boolean') {
-				HTML.customFunctions[`${args['id']}Map`] = args['map'];
+					HTML.customFunctions[args['id']+button.class] = button.callback;
+				}
 			}
 		}
 
@@ -315,7 +317,6 @@ let HTML = {
 				}
 			}
 
-			// is there a callback function?
 			if (args['settings']) {
 				if (typeof args['settings'] !== 'boolean') {
 					$(`#${args['id']}`).on('click', `#${args['id']}-settings`, function () {
@@ -343,25 +344,6 @@ let HTML = {
 				}
 			}
 
-			if (args['map']) {
-				if (typeof args['map'] !== 'boolean') {
-					$(`#${args['id']}`).on('click', `#${args['id']}-map`, function () {
-
-						// exist? remove!
-						if ($(`#${args['id']}MapBox`).length > 0) {
-							$(`#${args['id']}MapBox`).fadeToggle('fast', function () {
-								$(this).remove();
-							});
-						}
-
-						// create a new one
-						else {
-							HTML.MapBox(args['id']);
-						}
-					});
-				}
-			}
-
 			if (args['resize']) {
 				HTML.Resizeable(args['id'], args['keepRatio']);
 			}
@@ -370,8 +352,14 @@ let HTML = {
 				HTML.MinimizeBox(div);
 			}
 
-			if (args['speaker']) {
-				$('#' + args['speaker']).addClass(localStorage.getItem(args['speaker']));
+			if (args['custom_buttons']) {
+				if (typeof args.custom_buttons === "object") {
+					for (const button of args.custom_buttons) {
+						$('#'+args['id']).on('click', `#${args['id']}${button.class}`, function () {
+							HTML.CustomBox(args.id,button.class);
+						});
+					}
+				}
 			}
 
 			div.fadeToggle('fast');
@@ -617,9 +605,9 @@ let HTML = {
 	},
 
 
-	MapBox: (id) => {
+	CustomBox: (id,cls) => {
 		setTimeout(() => {
-			new Function(`${HTML.customFunctions[id + 'Map']}`)();
+			new Function(`${HTML.customFunctions[id + cls]}`)();
 		}, 100);
 	},
 

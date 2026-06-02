@@ -165,7 +165,7 @@ let reconstruction = {
 				dragdrop: true,
 				minimize: true,
 				resize: true,
-                map: "reconstruction.showMap();",
+                custom_buttons: [{class: "window-map", callback: "reconstruction.showMap();"}],
 			    active_maps:"main"
 			});
         }           
