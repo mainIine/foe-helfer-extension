@@ -1,15 +1,6 @@
 /*
- * *************************************************************************************
- *
  * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
- * You may use, distribute and modify this code under the
- * terms of the AGPL license.
- *
- * See file LICENSE.md or go to
- * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
- * for full license details.
- *
- * *************************************************************************************
+ * Licensed under AGPL - see LICENSE.md for details.
  */
 
 let ExtbaseData = JSON.parse(localStorage.getItem("HelperBaseData")||"{}");
@@ -1727,7 +1718,7 @@ let MainParser = {
 				}
 			html+=`</select></div>`
 			html+=`<table id="AllyListTable" class="foe-table">`
-			html+=`<thead><tr class="sorter-header sort2">
+			html+=`<thead class="sticky"><tr class="sorter-header sort2">
 							<th class="no-sort">${i18n('Boxes.AllyList.Ally')}</th>
 							<th class="is-number" data-type="ally-list">${i18n('Boxes.AllyList.Level')}</th>`;
 							for (const b of boostList) {

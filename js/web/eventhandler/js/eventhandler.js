@@ -1,15 +1,6 @@
 ﻿/*
- * *************************************************************************************
- *
  * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
- * You may use, distribute and modify this code under the
- * terms of the AGPL license.
- *
- * See file LICENSE.md or go to
- * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
- * for full license details.
- *
- * *************************************************************************************
+ * Licensed under AGPL - see LICENSE.md for details.
  */
 
 // Motivate/Polish Helper

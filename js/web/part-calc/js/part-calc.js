@@ -85,6 +85,7 @@ let Parts = {
 	DangerPlaces: undefined,
 	LeveltLG: undefined,
 	Maezens: [],
+	LockedMaezens: [],
 
 	CurrentMaezens: [],
 	RemainingOwnPart: null,
@@ -159,7 +160,6 @@ let Parts = {
 				auto_close: true,
 				dragdrop: true,
 				minimize: true,
-				//speaker: 'PartsTone',
 				settings: 'Parts.ShowCalculatorSettings()',
 			    active_maps:"main"
 			});
@@ -665,7 +665,7 @@ let Parts = {
 
 		for (let i = 0; i < 5; i++) {
 			if (FPRewards[i] <= Parts.Maezens[i] || Rest <= Parts.Maezens[i]) {
-				if (Parts.LockExistingPlaces) { //Bestehende Einzahlung absichern
+				if (Parts.LockExistingPlaces) { // Bestehende Einzahlung absichern
 					let NextMaezen = Parts.Maezens[i + 1] !== undefined ? Parts.Maezens[i + 1] : 0;
 					Eigens[i] = Math.ceil(Rest + (Parts.TrustExistingPlaces ? 0 : NextMaezen) - Parts.Maezens[i]);
 					Eigens[i] = Math.max(Eigens[i], 0);
@@ -696,7 +696,10 @@ let Parts = {
 					Parts.DangerPlaces[i] -= Parts.Maezens[i] - Rest;
 				Parts.Maezens[i] = Rest;
 			}
-			Parts.PlaceAvailables[i] = true;
+			// hier weiter mit besserem gehirn
+			//if (i !== Parts.LockedMaezens.find(x => x == i)) 
+				Parts.PlaceAvailables[i] = true;
+			
 			MaezenTotal += Parts.Maezens[i];
 			Rest -= Eigens[i] + Parts.Maezens[i];
 		}
@@ -868,8 +871,8 @@ let Parts = {
 
 			// other players contributions
 
-			h.push('<tr>');
-			h.push('<td><b>' + (i+1) + '</b></td>');
+			h.push(`<tr>`);
+			h.push(`<td ${Parts.PlaceAvailables[i] ? `class="notTaken" onClick="Parts.reRank(${i})"` : ''}><b>` + (i+1) + '</b></td>');
 
 			if (Parts.PlaceAvailables[i]) {
 				let copyvalue = Parts.Maezens[i];
@@ -1033,6 +1036,11 @@ let Parts = {
 			$('.OwnPartBoxBackgroundBody').fadeToggle();
 			$('#OwnPartBox').toggleClass('gbSettingsOpen');
 		});
+	},
+
+	reRank: (n) => {
+		Parts.LockedMaezens.push(n);
+		Parts.CalcBody();
 	},
 
 
