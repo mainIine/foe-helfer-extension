@@ -54,7 +54,7 @@
 	--background-light: #F9EBC6;
 	--background-medium: #b3a582;
 
-	--window-border: 2px solid #895022;
+	--window-border: 2px solid #9f7553;
 	--window-shadow: 0 0 9px 2px #000000aa, 0 0 0px 1px #000000aa;
 	--window-bg: url('../images/hud/box-bg.png') center center repeat;
 
@@ -79,7 +79,7 @@
 	--btn-bg-red-active: linear-gradient(to bottom, #a71f1f 0%,#590d0d 100%);
 	--btn-bg-red-onclick: linear-gradient(to bottom, #610a0a 0%,#2e0505 100%);
 
-	--tabs-bg: linear-gradient(#494241, #2b2c33);
+	--tabs-bg: linear-gradient(#3c3c43, #2b2c33);
 	--tabs-bg-active: linear-gradient(#4a5c7a, #3b4863);
 	--tabs-bg-shadow: inset 0 1px 1px #2a1f31, inset 0 2px 0 #5a5155, 0 -1px 3px #000;
 	--tabs-bg-shadow-active: inset 0 1px 1px #242235, inset 0 2px 0 #737793, 0 -1px 3px #000;
@@ -106,7 +106,8 @@
 	--hud-border-error: #9c2d18;
 	--hud-border-success: #93c554;
 
-	--border-tab: #864c1e;
+	--border-tab: #44516d;
+	--border-tab-vertical: linear-gradient(45deg,#44516d, var(--text-darker)) 10;
 	--border-table-top: #694c2e;
 	--border-table-bottom: #3D250F;
 	--border-table-bottom-darker: #170602;

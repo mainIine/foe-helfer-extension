@@ -24,10 +24,10 @@
 }
 
 #SettingsBoxBody h2 {
-	font-size: 110%;
+	font-size: 115%;
 	font-weight: 700;
-	color: var(--sunflower);
-	margin: 10px 0 5px;
+	color: var(--light-blue);
+	margin: 0 0 5px;
 }
 
 #SettingsBoxBody .item-row a {
@@ -140,7 +140,7 @@
 #SettingsBoxBody .tabs .sub-tab {
 	margin-left: 0;
 	margin-bottom: 0;
-	margin-top: 2px;
+	margin-top: 0;
 	border-left: 0;
 	width: 100%;
 	overflow-y: auto;
@@ -203,7 +203,7 @@
 }
 
 #SettingsBoxBody .info-box dt {
-	color: var(--sunflower);
+	color: var(--light-blue);
 	font-weight: bold;
 }
 

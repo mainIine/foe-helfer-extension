@@ -733,8 +733,9 @@ p {
 
 [id$=notice-Btn] span {
 	background-image: url('../images/menu/notices.png');
-	display: none;
 }
+
+[id$=notice-Btn] { display: none; }
 
 [id$=blueGalaxy-Btn] span {
 	background-image: url('../images/menu/BlueGalaxy.png');
@@ -804,16 +805,13 @@ Tabs */
 }
 
 .window-body .tabs ul.horizontal li {
-	margin: 0 4px 0 0;
+	margin: 2px 4px 0 0;
 	padding: 0;
 	display: inline-block;
 	line-height: 30px;
 	position: relative;
-	border-radius: 4px 4px 0 0;
-	border: var(--tabs-border);
-	border-bottom: none;
+	border-radius: 5px 5px 0 0;
 	background: var(--tabs-bg);
-	box-shadow: var(--tabs-bg-shadow);
 }
 
 .window-body .tabs ul.horizontal li:hover {
@@ -821,8 +819,6 @@ Tabs */
 }
 
 .window-body .tabs ul.horizontal li.active {
-	border: var(--tabs-border-active);
-	border-bottom: none;
 	background: var(--tabs-bg-active);
 	box-shadow: var(--tabs-bg-shadow-active);
 }
@@ -863,22 +859,13 @@ Tabs */
 	left: 0;
 	top: 0;
 	bottom: 0;
-	border-right: 2px solid var(--border-tab);
 }
 
 .window-body .tabs ul.vertical li {
 	display: block;
 	margin: 0;
 	padding: 0;
-	border-style: solid;
-	border-width: 2px 0;
-	border-color: transparent;
-	line-height: 24px;
-	position: relative;
-}
-
-.window-body .tabs ul.vertical li:not(:first-child) {
-	top: -2px;
+	border-bottom: 2px solid transparent;
 }
 
 .window-body .tabs ul.vertical li a {
@@ -886,7 +873,7 @@ Tabs */
 	white-space: nowrap;
 	text-overflow: ellipsis;
 	text-decoration: none;
-	padding: 3px 5px;
+	padding: 5px;
 	display: block;
 	color: var(--beige);
 	position: relative;
@@ -894,13 +881,16 @@ Tabs */
 
 .window-body .tabs ul.vertical li.active,
 .window-body .tabs ul.vertical li:hover {
-	border-color: var(--border-tab);
+	border-image: var(--border-tab-vertical);
 }
 
 .window-body .tabs ul.vertical li.active a,
 .window-body .tabs ul.vertical li:hover a {
 	background-color: var(--text-darker);
-	color: var(--sunflower);
+}
+
+.window-body .tabs ul.vertical li.active a {
+	font-weight: bold;
 }
 
 .window-body .tabs .sub-tab {
@@ -1302,7 +1292,6 @@ a:hover {
 	align-items: center;
 	background: var(--window-head-bg);
 	padding: 4px 5px;
-	border-bottom: var(--window-border);
 	border-radius: 3px 3px 0 0;
 	box-sizing: border-box;
 }
