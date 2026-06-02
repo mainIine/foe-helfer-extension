@@ -47,6 +47,7 @@ function inject (loadBeta = false, extUrl = chrome.runtime.getURL(''), betaDate=
 	 function promisedLoadCode(src, base="base") {
 		return new Promise(async (resolve, reject) => {
 			let sc = document.createElement('script');
+			sc.async = false;
 			sc.src = src;
 			if (scripts[base]) {
 				scripts[base].push(src);
@@ -195,21 +196,34 @@ function inject (loadBeta = false, extUrl = chrome.runtime.getURL(''), betaDate=
 			// wait for ant and i18n to be loaded
 			await jQueryLoading;
 
-			// load all vendor scripts first (unknown order)
+			// load all vendor scripts parallel (execution order is preserved)
 			const vendorScriptsToLoad = await vendorListPromise;
+			const vendorPromises = [];
 			for (let i = 0; i < vendorScriptsToLoad.length; i++){
-				await promisedLoadCode(`${extUrl}vendor/${vendorScriptsToLoad[i]}.js?v=${v}`,"vendor");
+				vendorPromises.push(promisedLoadCode(`${extUrl}vendor/${vendorScriptsToLoad[i]}.js?v=${v}`,"vendor"));
 			}
-			//await Promise.all(vendorScriptsToLoad.map(vendorScript => promisedLoadCode(`${extUrl}vendor/${vendorScript}.js?v=${v}`,"vendor")));
+			await Promise.all(vendorPromises);
 			
 			scriptLoaded("primed", "vendor");
 			
-			// load scripts (one after the other)
+			// load scripts (parallel, execution order is preserved)
 			const internalScriptsToLoad = await scriptListPromise;
+			const internalPromises = [];
 
 			for (let i = 0; i < internalScriptsToLoad.length; i++){
-				await promisedLoadCode(`${extUrl}js/web/${internalScriptsToLoad[i]}/js/${internalScriptsToLoad[i]}.js?v=${v}`, "internal");
+				let entry = internalScriptsToLoad[i];
+				let scriptName = typeof entry === 'string' ? entry : entry.name;
+				let parts = typeof entry === 'object' ? entry.parts : [];
+
+				internalPromises.push(promisedLoadCode(`${extUrl}js/web/${scriptName}/js/${scriptName}.js?v=${v}`, "internal"));
+
+				if (parts && parts.length > 0) {
+					for (let p of parts) {
+						internalPromises.push(promisedLoadCode(`${extUrl}js/web/${scriptName}/js/parts/${p}.js?v=${v}`, "internal"));
+					}
+				}
 			}
+			await Promise.all(internalPromises);
 					
 			scriptLoaded("primed", "internal");
 
