@@ -523,7 +523,7 @@ let QiProgress = {
 			h.push(`<div id="qi_roundswitch" class="roundswitch dark-bg">`);
 
 			if (QiProgress.ProgressSettings.showRoundSelector) {
-				h.push(`${i18n('Boxes.QiProgress.QiRound')} <button class="btn btn-set-week" data-week="${previousweek}"${previousweek === null ? ' disabled' : ''}>&lt;</button> `);
+				h.push(`${i18n('Boxes.QiProgress.QiRound')} <button class="btn btn-mid btn-set-week" data-week="${previousweek}"${previousweek === null ? ' disabled' : ''}>&lt;</button> `);
 				h.push(`<select id="qi-select-qiRound">`);
 
 				QiProgress.AllRounds.forEach(week => {
@@ -531,7 +531,7 @@ let QiProgress = {
 				});
 
 				h.push(`</select> `);
-				h.push(`<button class="btn btn-set-week last" data-week="${nextweek}"${nextweek === null ? ' disabled' : ''}>&gt;</button>`);
+				h.push(`<button class="btn btn-mid btn-set-week last" data-week="${nextweek}"${nextweek === null ? ' disabled' : ''}>&gt;</button>`);
 			}
 
 			if (qiRound === QiProgress.CurrentQISeason) {

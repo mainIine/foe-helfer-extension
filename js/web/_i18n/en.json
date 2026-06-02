@@ -1600,7 +1600,7 @@
     "Settings.LoadBeta2.Button": "Download Beta Extension",
     "Settings.LoadBeta2.Desc": "The Beta-Extension musst be installed and updated manually. Either regularly click the button below to download the current beta or use a Git-Manager></br></br>Unpack the downloaded zip and in the Chrome extension settings activate developer mode to 'load unpacked extension'.</br></br>Only one Version of the Helper should be active at any time to prevent interference!",
     "Settings.LoadBeta2.Title": "Load current Beta",
-    "Settings.MenuContent.Desc": "Which buttons do you want in the menu?<br>Green: show button. Red: don't show button.",
+    "Settings.MenuContent.Desc": "Which buttons do you want in the menu?<br>Green: show button. Grey: don't show button.",
     "Settings.MenuContent.Title": "Menu Content",
     "Settings.MenuLength.Desc": "How many elements should the menu display?<br>Empty or \"0\" means automatic height.",
     "Settings.MenuLength.Title": "Menu Length",

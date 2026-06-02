@@ -320,7 +320,7 @@ let GuildFights = {
 			h.push(`<div id="gbg_roundswitch" class="roundswitch dark-bg">`);
 
 			if (GuildFights.PlayerBoxSettings.showRoundSelector) {
-				h.push(`${i18n('Boxes.GuildMemberStat.GBFRound')} <button class="btn btn-set-week" data-week="${previousweek}"${previousweek === null ? ' disabled' : ''}>&lt;</button> `);
+				h.push(`${i18n('Boxes.GuildMemberStat.GBFRound')} <button class="btn btn-mid btn-set-week" data-week="${previousweek}"${previousweek === null ? ' disabled' : ''}>&lt;</button> `);
 				h.push(`<select id="gbg-select-gbground">`);
 
 				GuildFights.GBGAllRounds.forEach(week => {
@@ -328,7 +328,7 @@ let GuildFights = {
 				});
 
 				h.push(`</select>`);
-				h.push(`<button class="btn btn-set-week last" data-week="${nextweek}"${nextweek === null ? ' disabled' : ''}>&gt;</button>`);
+				h.push(`<button class="btn btn-mid btn-set-week last" data-week="${nextweek}"${nextweek === null ? ' disabled' : ''}>&gt;</button>`);
 			}
 
 			if (gbground === GuildFights.CurrentGBGRound) {

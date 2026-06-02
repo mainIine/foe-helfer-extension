@@ -596,6 +596,7 @@ p {
 .text-danger, .danger { color: var(--danger-red); }
 .text-info, .info { color: var(--info-blue); }
 .text-muted { color: var(--ash); }
+.show-entity, .show-entity img, .show-all img { height: 20px; }
 
 .text-bold { font-weight: 700; }
 
@@ -1291,7 +1292,7 @@ a:hover {
 	justify-content: space-between;
 	align-items: center;
 	background: var(--window-head-bg);
-	padding: 4px 5px;
+	padding: 4px;
 	border-radius: 3px 3px 0 0;
 	box-sizing: border-box;
 }
@@ -2517,6 +2518,7 @@ tr.sorter-header.sort2 th.ascending:before, tr.sorter-header.sort2 th.descending
 }
 #AllyListBody {
 	overflow: auto;
+	font-size: 90%;
 }
 
 

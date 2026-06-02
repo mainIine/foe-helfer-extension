@@ -1,14 +1,6 @@
 /*
- * **************************************************************************************
  * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
- * You may use, distribute and modify this code under the
- * terms of the AGPL license.
- *
- * See file LICENSE.md or go to
- * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
- * for full license details.
- *
- * **************************************************************************************
+ * Licensed under AGPL - see LICENSE.md for details.
  */
 
 :root {
@@ -68,7 +60,7 @@
 
 	--window-settings-bg: #3a2313;
 
-	--btn-bg: linear-gradient(to bottom, #b77037 0%,#b06026 1%,#91481e 30%,#823e18 99%,#b06832 100%);
+	--btn-bg: linear-gradient(to bottom, #a75920, #773714);
 	--btn-bg-disabled: linear-gradient(to bottom, #27170a 0%,#444444 1%,#2c2c2c 30%,#2d2d2d 99%, #373737 100%);
 	--btn-bg-active: linear-gradient(to bottom, #f5cd48 0%,#df9a34 1%,#ba6320 30%,#924715 99%,#a35d28 100%);
 	--btn-bg-onclick: linear-gradient(to bottom, #f5cd48 0%,#df9a34 1%,#ba6320 20%,#673213 80%,#875026 100%);
@@ -132,7 +124,7 @@
 	--menu-btn-bg-green: linear-gradient(to bottom, #6e9b4b, #306f2e) border-box;
 	--menu-btn-bg-red: linear-gradient(to bottom, #6b4e4e, #4b2b2b) border-box;
 	--menu-btn-bg-grey: linear-gradient(#332a23, #413c39) padding-box;
-	--menu-btn-bg: linear-gradient(#432e1d, #462b16) padding-box, var(--menu-btn-bg-green);
+	--menu-btn-bg: linear-gradient(#3d3520, #463516) padding-box, var(--menu-btn-bg-green);
 	--menu-btn-shadow: inset 0 0 1px 1px #1f1309cc, 0 0 2px #000000c9;
 	--menu-btn-disabled-bg: var(--menu-btn-bg-grey), var(--menu-btn-bg-red);
 	--menu-btn-bg-settings: linear-gradient(#2e2e2e,#2e2e2e) padding-box, var(--menu-btn-bg-green);

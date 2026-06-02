@@ -1758,7 +1758,7 @@ let MainParser = {
 								`:``}
 							>
 								${r.buildingName || ""}
-								${buildingId!=0?`<span class="show-entity" data-id="${buildingId}"><img class="game-cursor" src="${ extUrl + 'images/hud/open-eye.png'}"></span>`:""}
+								${buildingId!=0?`<img class="show-entity" data-id="${buildingId}" src="${ extUrl + 'images/hud/open-eye.png'}">`:""}
 							</td>
 							</tr>`;
 				

@@ -664,7 +664,7 @@ let GexStat = {
 
 			GexStat.CurrentGexWeek = gexweek;
 
-			h.push(`<div id="gexs_weekswitch" class="weekswitch dark-bg" data-group="${GexStat.CurrentStatGroup}">${i18n('Boxes.GexStat.Gex')} ${i18n('Boxes.GexStat.Week')} <button class="btn btn-set-week" data-week="${previousweek}"${previousweek === null ? ' disabled' : ''}>&lt;</button> `);
+			h.push(`<div id="gexs_weekswitch" class="weekswitch dark-bg" data-group="${GexStat.CurrentStatGroup}">${i18n('Boxes.GexStat.Gex')} ${i18n('Boxes.GexStat.Week')} <button class="btn btn-mid btn-set-week" data-week="${previousweek}"${previousweek === null ? ' disabled' : ''}>&lt;</button> `);
 			h.push(`<select id="gexs-select-gexweek">`);
 
 			GexStat.GexWeeks.forEach(week => {
@@ -672,7 +672,7 @@ let GexStat = {
 			});
 
 			h.push(`</select>`);
-			h.push(`<button class="btn btn-set-week" data-week="${nextweek}"${nextweek === null ? ' disabled' : ''}>&gt;</button>`);
+			h.push(`<button class="btn btn-mid btn-set-week" data-week="${nextweek}"${nextweek === null ? ' disabled' : ''}>&gt;</button>`);
 			h.push(`</div>`);
 		}
 
