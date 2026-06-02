@@ -854,31 +854,30 @@ let idleGame = {
 	},
 
 	addAlert:(hours,minutes)=>{
-					
-			const data = {
-				title: "Idle Game",
-				body: i18n("Boxes.idleGame.AlertText"),
-				expires: moment().add(hours,"hours").add(minutes,"minutes").valueOf(),
-				repeat: -1,
-				persistent: true,
-				tag: '',
-				category: 'event',
-				vibrate: false,
-				actions: [{title:"OK"}]
-			};
-	
-			MainParser.sendExtMessage({
-				type: 'alerts',
-				playerId: ExtPlayerID,
-				action: 'create',
-				data: data,
-			}).then((aId) => {
-				HTML.ShowToastMsg({
-					head: "Idle Game",
-					text: HTML.i18nReplacer(i18n('Boxes.idleGame.AlertSetText'), { minutes: minutes,hours: hours }),
-					type: 'success',
-					hideAfter: 5000
-				});
+		const data = {
+			title: "Idle Game",
+			body: i18n("Boxes.idleGame.AlertText"),
+			expires: moment().add(hours,"hours").add(minutes,"minutes").valueOf(),
+			repeat: -1,
+			persistent: true,
+			tag: '',
+			category: 'event',
+			vibrate: false,
+			actions: [{title:"OK"}]
+		};
+
+		MainParser.sendExtMessage({
+			type: 'alerts',
+			playerId: ExtPlayerID,
+			action: 'create',
+			data: data,
+		}).then((aId) => {
+			HTML.ShowToastMsg({
+				head: "Idle Game",
+				text: HTML.i18nReplacer(i18n('Boxes.idleGame.AlertSetText'), { minutes: minutes,hours: hours }),
+				type: 'success',
+				hideAfter: 5000
 			});
+		});
 	}
 };

@@ -132,7 +132,6 @@ let CityMap = {
 				dragdrop: true,
 				resize: true,
 				minimize : true,
-				ask: i18n('Boxes.CityMap.HelpLink'),
 			});
 
 			setTimeout(()=>{

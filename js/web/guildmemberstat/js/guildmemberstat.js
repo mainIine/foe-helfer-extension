@@ -1129,9 +1129,9 @@ let GuildMemberStat = {
 
 		
 		if (Member.activity !== undefined) {
-			d.push(`<div class="foehelper-accordion warnings">
-				<div class="foehelper-accordion-head">${i18n('Boxes.GuildMemberStat.Inactivity')}</div>
-				<div class="foehelper-accordion-body">
+			d.push(`<div class="fham-accordion warnings">
+				<div class="fham-accordion-head">${i18n('Boxes.GuildMemberStat.Inactivity')}</div>
+				<div class="fham-accordion-body">
 				<table class="foe-table">
 					<thead class="sticky"><tr>
 						<th>${i18n('Boxes.GuildMemberStat.Inactivity')}</th>
@@ -1159,9 +1159,9 @@ let GuildMemberStat = {
 
 		
 		if (Member.gex !== undefined) {
-			d.push(`<div class="foehelper-accordion gex">
-				<div class="foehelper-accordion-head">${i18n('Boxes.General.Guild_Expedition.short')}</div>
-				<div class="foehelper-accordion-body">
+			d.push(`<div class="fham-accordion gex">
+				<div class="fham-accordion-head">${i18n('Boxes.General.Guild_Expedition.short')}</div>
+				<div class="fham-accordion-body">
 				<table class="foe-table">
 				<thead class="sticky"><tr><th><span class="gex"></span> ${i18n('Boxes.GuildMemberStat.GEXWeek')}</th><th>${i18n('Boxes.GuildMemberStat.Rank')}</th>
 				<th>${i18n('Boxes.GuildMemberStat.Level')}</th><th>${i18n('Boxes.GuildMemberStat.GexTrial')}</th></th></tr></thead><tbody>`);
@@ -1192,9 +1192,9 @@ let GuildMemberStat = {
 
 		
 		if (Member.gbg !== undefined) {
-			d.push(`<div class="foehelper-accordion gbg">
-				<div class="foehelper-accordion-head">${i18n('Boxes.General.Guild_Battlegrounds.short')}</div>
-				<div class="foehelper-accordion-body"><table class="foe-table"><thead class="sticky"><tr><th><span class="gbg"></span> ${i18n('Boxes.GuildMemberStat.GBFRound')}</th><th>${i18n('Boxes.GuildMemberStat.Rank')}</th><th>${i18n('Boxes.GuildMemberStat.Battles')}</th><th>${i18n('Boxes.GuildMemberStat.Negotiations')}</th></tr></thead><tbody>`);
+			d.push(`<div class="fham-accordion gbg">
+				<div class="fham-accordion-head">${i18n('Boxes.General.Guild_Battlegrounds.short')}</div>
+				<div class="fham-accordion-body"><table class="foe-table"><thead class="sticky"><tr><th><span class="gbg"></span> ${i18n('Boxes.GuildMemberStat.GBFRound')}</th><th>${i18n('Boxes.GuildMemberStat.Rank')}</th><th>${i18n('Boxes.GuildMemberStat.Battles')}</th><th>${i18n('Boxes.GuildMemberStat.Negotiations')}</th></tr></thead><tbody>`);
 
 			let gbg = Member['gbg'];
 
@@ -1228,9 +1228,9 @@ let GuildMemberStat = {
 
 		let playedSeasons = 0;
 		let qi = [];
-		qi.push(`<div class="foehelper-accordion qi">
-			<div class="foehelper-accordion-head">${i18n('Boxes.General.Quantum_Incursion.short')}</div>
-			<div class="foehelper-accordion-body">
+		qi.push(`<div class="fham-accordion qi">
+			<div class="fham-accordion-head">${i18n('Boxes.General.Quantum_Incursion.short')}</div>
+			<div class="fham-accordion-body">
 				<table class="foe-table"><thead class="sticky"><tr>
 					<th>${i18n('Boxes.General.Season')}</th>
 					<th>${i18n('Boxes.GuildMemberStat.Rank')}</th>
@@ -1261,9 +1261,9 @@ let GuildMemberStat = {
 		if (Member.guildbuildings !== undefined) {
 			let totalPower = 0;
 
-			d.push(`<div class="foehelper-accordion guildbuildings">
-				<div class="foehelper-accordion-head">Guild Buildings</div>
-				<div class="foehelper-accordion-body">${i18n('Boxes.GuildMemberStat.GuildSupportBuildings')} 
+			d.push(`<div class="fham-accordion guildbuildings">
+				<div class="fham-accordion-head">Guild Buildings</div>
+				<div class="fham-accordion-body">${i18n('Boxes.GuildMemberStat.GuildSupportBuildings')} 
 				<small>(${i18n('Boxes.GuildMemberStat.LastUpdate')} ${guildbuildings?.date ? moment(guildbuildings.date).fromNow() : '-'})</small>`);
 
 			// Group GuildGoods buildings by name and their era
@@ -1351,7 +1351,7 @@ let GuildMemberStat = {
 		$('#GuildMemberDetail' + id + 'Body .summary .qi').text(HTML.Format(qiNumber)).attr('data-original-title', HTML.i18nReplacer(i18n('Boxes.GuildMemberStat.MemberDetail.Average'), { 'seasons': playedSeasons||0 }));
 		$('#GuildMemberDetail' + id + 'Body .summary .goods').text(HTML.Format(totalGoods));
 
-		$('#GuildMemberDetail' + id + 'Body .foehelper-accordion-head').on('click', function () {
+		$('#GuildMemberDetail' + id + 'Body .fham-accordion-head').on('click', function () {
 			$(this).parent().toggleClass('open');
 		});
 

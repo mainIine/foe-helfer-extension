@@ -217,7 +217,7 @@ alertsDB.version(1).stores({
 			// don't actually delete an alarm with notification since the user can still interact with the notification
 			const notifications = await browser.notifications.getAll();
 			if (notifications[tagId]) {
-				// mark this alarm for deletion so it is deletet from the API point of view
+				// mark this alarm for deletion so it is deleted from the API point of view
 				await db.alerts.update(id, {delete: true});
 			} else {
 				await db.alerts.delete(id);
@@ -607,17 +607,6 @@ alertsDB.version(1).stores({
 
 			case 'storeData': { // type
 				await browser.storage.local.set({ [request.key] : request.data });
-				return APIsuccess(true);
-			}
-
-			case 'send2Api': { // type
-				fetch(request.url, {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json'
-					},
-					body: request.data
-				});
 				return APIsuccess(true);
 			}
 

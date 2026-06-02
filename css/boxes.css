@@ -922,12 +922,12 @@ Tabs */
 /*----------------------------------------------------------------------------------------------------------------------
 Accordion */
 
-.foehelper-accordion strong,
-.foehelper-accordion span {
+.fham-accordion strong,
+.fham-accordion span {
 	display: inline-block;
 }
 
-.foehelper-accordion-head {
+.fham-accordion-head {
 	display: flex;
 	flex-direction: row;
 	border-top: 1px solid var(--border-table-top);
@@ -936,11 +936,11 @@ Accordion */
 	position: relative;
 }
 
-.foehelper-accordion:hover .foehelper-accordion-head {
+.fham-accordion:hover .fham-accordion-head {
     box-shadow: inset 0px 0px 0px 2000px var(--table-bg-hover);
 }
 
-.foehelper-accordion-head::after {
+.fham-accordion-head::after {
 	content: ' ';
 	background-image: url('../images/hud/chevron-left.svg');
 	background-size: contain;
@@ -951,21 +951,21 @@ Accordion */
 	top: 4px;
 }
 
-.foehelper-accordion.open .foehelper-accordion-head::after {
+.fham-accordion.open .fham-accordion-head::after {
 	background-image: url('../images/hud/chevron-down.svg');
 }
 
-.foehelper-accordion-body {
+.fham-accordion-body {
 	display: none;
 	background-color: rgba(0,0,0,0.25);
 }
 
-.foehelper-accordion-body div {
+.fham-accordion-body div {
 	font-size: 90%;
 	padding: 2px 0;
 }
 
-.foehelper-accordion.open .foehelper-accordion-body {
+.fham-accordion.open .fham-accordion-body {
 	display: block;
 }
 

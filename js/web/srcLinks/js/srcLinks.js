@@ -53,19 +53,6 @@ let srcLinks = {
             // ExtPlayerId is not available on this point
             let c = localStorage.getItem('current_player_id');
 
-            // if mainline self
-            if(c !== null && parseInt(c) === 103416) {
-
-                if(sessionStorage.getItem('sendListToday') === null) {
-                    MainParser.sendExtMessage({
-                        type: 'send2Api',
-                        url: `${ApiURL}BuildingList/?world=${ExtWorld}&v=${extVersion}`,
-                        data: JSON.stringify(srcLinks.FileList)
-                    });
-
-                    sessionStorage.setItem('sendListToday', 'true');
-                }
-            }
         } 
         catch {
             console.log("parsing of ForgeHX failed");

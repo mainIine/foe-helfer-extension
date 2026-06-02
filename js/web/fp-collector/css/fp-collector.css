@@ -33,44 +33,44 @@
     max-width: unset;
 }
 
-#fp-collectorBody .foehelper-accordion-head {
+#fp-collectorBody .fham-accordion-head {
 	margin-bottom: 0;
 }
 
-#fp-collectorBody .open .foehelper-accordion-body {
+#fp-collectorBody .open .fham-accordion-body {
 	margin: 0 0 2px 0;
 }
 
-#fp-collectorBody .foehelper-accordion-head strong {
+#fp-collectorBody .fham-accordion-head strong {
 	width: 75px;
 	text-align: right;
 	margin: 0 8px 0 2px;
 }
 
-#fp-collectorBody .foehelper-accordion-body div {
+#fp-collectorBody .fham-accordion-body div {
 	border-top: 1px solid var(--border-table-top);
     border-bottom: 1px solid var(--border-table-bottom-darker);
     display: flex;
 }
 
-#fp-collectorBody .foehelper-accordion-body div .fps {
+#fp-collectorBody .fham-accordion-body div .fps {
 	width: 105px;
 	color: var(--sunflower);
 	text-align: right;
 	margin: 0 8px 0 0;
 }
 
-#fp-collectorBody .foehelper-accordion-body div .desc {
+#fp-collectorBody .fham-accordion-body div .desc {
 	width: 180px;
 }
 
-#fp-collectorBody .foehelper-accordion-body div img {
+#fp-collectorBody .fham-accordion-body div img {
 	max-height: 25px;
 	border-radius: 2px;
 	margin-right: 4px;;
 }
 
-#fp-collectorBody .foehelper-accordion-head span.image {
+#fp-collectorBody .fham-accordion-head span.image {
 	width: 30px;
 	height: 24px;
 	background-size: 24px auto;
@@ -79,148 +79,148 @@
 	image-rendering: -webkit-optimize-contrast;
 }
 
-.foehelper-accordion-head.hiddenReward-head span.image, .foehelper-accordion-head.hidden_reward-head span.image {
+.fham-accordion-head.hiddenReward-head span.image, .fham-accordion-head.hidden_reward-head span.image {
 	background-image: url('../../x_img/incident.png') !important;
 }
 
-.foehelper-accordion-head.chest-head  span.image {
+.fham-accordion-head.chest-head  span.image {
 	background-image: url('../../x_img/expedition.png') !important;
 }
 
-.foehelper-accordion-head.guildExpedition-head span.image, .foehelper-accordion-head.guild_expedition_reward_notification-head span.image {
+.fham-accordion-head.guildExpedition-head span.image, .fham-accordion-head.guild_expedition_reward_notification-head span.image {
 	background-image: url('../../x_img/relic.png') !important;
 }
 
-.foehelper-accordion-head.shards-head span.image {
+.fham-accordion-head.shards-head span.image {
 	background-image: url('../../x_img/shards.png') !important;
 }
 
-.foehelper-accordion-head.item_store-head span.image {
+.fham-accordion-head.item_store-head span.image {
 	background-image: url('../../x_img/item_store.png') !important;
 }
 
-.foehelper-accordion-head.battlegrounds_conquest-head span.image {
+.fham-accordion-head.battlegrounds_conquest-head span.image {
 	background-image: url('../../x_img/gbg.png') !important;
 }
 
-.foehelper-accordion-head.satDown-head span.image {
+.fham-accordion-head.satDown-head span.image {
 	background-image: url('../../x_img/sat_down.png') !important;
 }
 
-.foehelper-accordion-head.Quest-head span.image {
+.fham-accordion-head.Quest-head span.image {
 	background-image: url('../../x_img/quest.png') !important;
 }
 
-.foehelper-accordion-head.spoilsOfWar-head span.image {
+.fham-accordion-head.spoilsOfWar-head span.image {
 	background-image: url('../../x_img/spoils_of_war.png') !important;
 }
 
-.foehelper-accordion-head.diplomaticGifts-head span.image {
+.fham-accordion-head.diplomaticGifts-head span.image {
 	background-image: url('../../x_img/diplomatic_gifts.png') !important;
 }
 
-.foehelper-accordion-head.antiquesDealer-head span.image {
+.fham-accordion-head.antiquesDealer-head span.image {
 	background-image: url('../../x_img/ant.png') !important;
 }
 
-.foehelper-accordion-head.double_collection-head span.image {
+.fham-accordion-head.double_collection-head span.image {
 	background-image: url('../../../../images/menu/BlueGalaxy.png') !important;
 }
 
-.foehelper-accordion-head.dailyChallenges-head span.image {
+.fham-accordion-head.dailyChallenges-head span.image {
 	background-image: url('../../x_img/dailyChallenges.png') !important;
 }
 
-.foehelper-accordion-head.plunderReward-head span.image {
+.fham-accordion-head.plunderReward-head span.image {
 	background-image: url('../../x_img/plunder.png') !important;
 }
 
-.foehelper-accordion-head.collectReward-head span.image {
+.fham-accordion-head.collectReward-head span.image {
 	background-image: url('../../x_img/quest.png') !important;
 }
 
-.foehelper-accordion-head.pvp_arena-head span.image {
+.fham-accordion-head.pvp_arena-head span.image {
 	background-image: url('../../x_img/pvp_arena.png') !important;
 }
 
-.foehelper-accordion-head.castle_system_daily_reward_chest-head span.image {
+.fham-accordion-head.castle_system_daily_reward_chest-head span.image {
 	background-image: url('../../x_img/castle_system_daily_reward_chest.png') !important;
 }
 
-.foehelper-accordion-head.guild_raids-head span.image {
+.fham-accordion-head.guild_raids-head span.image {
 	background-image: url('../../x_img/guild_raids.png') !important;
 }
 
 /* Events */
 
-.foehelper-accordion-head.event_pass-head span.image {
+.fham-accordion-head.event_pass-head span.image {
 	background-image: url('../../x_img/event_pass.png') !important;
 }
 
-.foehelper-accordion-head.leagueReward-head span.image {
+.fham-accordion-head.leagueReward-head span.image {
 	background-image: url('../../x_img/leagueReward.png') !important;
 }
 /*Event*/
-.foehelper-accordion-head.event-head span.image {
+.fham-accordion-head.event-head span.image {
 	background-image: url('../../x_img/event.png') !important;
 }
 /*Forge-Bowl Event*/
-.foehelper-accordion-head.forge_bowl_event-head span.image {
+.fham-accordion-head.forge_bowl_event-head span.image {
 	background-image: url('../../x_img/forge_bowl_event.png') !important;
 }
 /*Archaeology Event*/
-.foehelper-accordion-head.archeology_event-head span.image {
+.fham-accordion-head.archeology_event-head span.image {
 	background-image: url('../../x_img/archeology_event.png') !important;
 }
 /*St Patrick's Day Event*/
-.foehelper-accordion-head.st_patricks_event-head span.image, .foehelper-accordion-head.st_patricks_event_task_reward-head span.image {
+.fham-accordion-head.st_patricks_event-head span.image, .fham-accordion-head.st_patricks_event_task_reward-head span.image {
 	background-image: url('../../x_img/st_patricks_event.png') !important;
 }
 /*May-Day Event*/
-.foehelper-accordion-head.may_day_event-head span.image {
+.fham-accordion-head.may_day_event-head span.image {
 	background-image: url('../../x_img/may_day_event.png') !important;
 }
 /*Carnival Event*/
-.foehelper-accordion-head.carnival_event-head span.image {
+.fham-accordion-head.carnival_event-head span.image {
 	background-image: url('../../x_img/carnival_event.png') !important;
 }
 /*Ages Event*/
-.foehelper-accordion-head.forge_ages_event-head span.image {
+.fham-accordion-head.forge_ages_event-head span.image {
 	background-image: url('../../x_img/forge_ages_event.png') !important;
 }
 /*Spring Event*/
-.foehelper-accordion-head.spring_event-head span.image {
+.fham-accordion-head.spring_event-head span.image {
 	background-image: url('../../x_img/spring_event.png') !important;
 }
 /*FoE Soccer Cup*/
-.foehelper-accordion-head.soccer_event-head span.image {
+.fham-accordion-head.soccer_event-head span.image {
 	background-image: url('../../x_img/soccer_event.png') !important;
 }
 /*Wildlife Event*/
-.foehelper-accordion-head.wildlife_event-head span.image {
+.fham-accordion-head.wildlife_event-head span.image {
 	background-image: url('../../x_img/wildlife_event.png') !important;
 }
 /*Summer Event*/
-.foehelper-accordion-head.summer_event-head span.image {
+.fham-accordion-head.summer_event-head span.image {
 	background-image: url('../../x_img/summer_event.png') !important;
 }
 /*Hero Event*/
-.foehelper-accordion-head.hero_event-head span.image {
+.fham-accordion-head.hero_event-head span.image {
 	background-image: url('../../x_img/hero_event.png') !important;
 }
 /*Fall Event*/
-.foehelper-accordion-head.fall_event-head span.image {
+.fham-accordion-head.fall_event-head span.image {
 	background-image: url('../../x_img/fall_event.png') !important;
 }
 /*Halloween Event*/
-.foehelper-accordion-head.halloween_event-head span.image {
+.fham-accordion-head.halloween_event-head span.image {
 	background-image: url('../../x_img/halloween_event.png') !important;
 }
 /*Winter Event*/
-.foehelper-accordion-head.winter_event-head span.image {
+.fham-accordion-head.winter_event-head span.image {
 	background-image: url('../../x_img/winter_event.png') !important;
 }
 /*Anniversary Event*/
-.foehelper-accordion-head.anniversary_event-head span.image {
+.fham-accordion-head.anniversary_event-head span.image {
 	background-image: url('../../x_img/anniversary_event.png') !important;
 }

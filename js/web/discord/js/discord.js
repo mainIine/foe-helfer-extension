@@ -121,12 +121,12 @@ let Discord = {
 		let h = [];
 		state = (Discord.WebHooksUrls.length == 0 ? 'open' : state);
 
-		h.push(`<div class="foehelper-accordion ${state}">`);
-			h.push('<div class="foehelper-accordion-head">');
+		h.push(`<div class="fham-accordion ${state}">`);
+			h.push('<div class="fham-accordion-head">');
 				h.push(`<strong>${i18n('Boxes.Discord.WebhookUrlManage')}</strong>`);
 			h.push(`</div>`);
 		
-		h.push('<div class="foehelper-accordion-body">');
+		h.push('<div class="fham-accordion-body">');
 		
 		h.push(`<form onsubmit="return false;" autocomplete="off">`);
 		h.push(`<table class="foe-table no-hover vertical-middle" style="margin-bottom: 1.5rem;">`);
@@ -154,11 +154,11 @@ let Discord = {
 		h.push(`</div>`);
 
 		$('#helperWebhook').html(h.join('')).promise().done(function() {
-			document.querySelector('#DiscordBody .foehelper-accordion-head').addEventListener('click',function (event) {
-				let $this = $(event.target).parent('.foehelper-accordion'),
+			document.querySelector('#DiscordBody .fham-accordion-head').addEventListener('click',function (event) {
+				let $this = $(event.target).parent('.fham-accordion'),
 					isOpen = $this.hasClass('open');
 
-				$('#DiscordBody .foehelper-accordion').removeClass('open');
+				$('#DiscordBody .fham-accordion').removeClass('open');
 
 				if(!isOpen){
 					$this.addClass('open');
@@ -469,7 +469,6 @@ let Discord = {
 			e.url,
 			{
 				username: 'Forge Hammer',
-				avatar_url: '#', // to do: change forge hammer
 				content: e.message
 			}
 		)

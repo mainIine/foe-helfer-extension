@@ -94,7 +94,7 @@ let ApiURL = 'https://api.foe-rechner.de/',
 	GuildLinkFormat = 'https://foe.scoredb.io/__world__/Guild/__guildid__',
 	GuildLinkFormat2 = 'https://foestats.com/__server__/__world__/guilds/__guildid__',
 	BuildingsLinkFormat = 'https://forgeofempires.fandom.com/wiki/__buildingid__',
-	LinkIcon = '<svg xmlns="http://www.w3.org/2000/svg" width="22pt" height="22pt" viewBox="0 0 22 22"><g><path id="foehelper-external-link-icon" d="M 13 0 L 13 2 L 18.5625 2 L 6.28125 14.28125 L 7.722656 15.722656 L 20 3.4375 L 20 9 L 22 9 L 22 0 Z M 0 4 L 0 22 L 18 22 L 18 9 L 16 11 L 16 20 L 2 20 L 2 6 L 11 6 L 13 4 Z M 0 4 "/></g></svg>';
+	LinkIcon = '<svg xmlns="http://www.w3.org/2000/svg" width="22pt" height="22pt" viewBox="0 0 22 22"><g><path id="fham-external-link-icon" d="M 13 0 L 13 2 L 18.5625 2 L 6.28125 14.28125 L 7.722656 15.722656 L 20 3.4375 L 20 9 L 22 9 L 22 0 Z M 0 4 L 0 22 L 18 22 L 18 9 L 16 11 L 16 20 L 2 20 L 2 6 L 11 6 L 13 4 Z M 0 4 "/></g></svg>';
 
 let GameTime = {
 	Offset: 0,
@@ -185,15 +185,6 @@ GetFights = () =>{
 }
 
 (function () {
-
-	// the world select window is opened, get world list update
-	FoEproxy.addHandler('WorldService', 'getWorlds', (data, postData) => {
-		MainParser.sendExtMessage({
-			type: 'send2Api',
-			url: `${ApiURL}Worlds/?world=${ExtWorld}`,
-			data: JSON.stringify(data['responseData'])
-		});
-	})
 
 	// globale Handler
 	// die Gebäudenamen übernehmen
@@ -331,9 +322,6 @@ GetFights = () =>{
 			'PlayerList',
 			Object.keys(vals).reduce((a, b) => vals[a] > vals[b] ? a : b)
 		);
-
-		// eigene Daten, Maximal alle 6h updaten
-		MainParser.SelfPlayer(data.responseData.user_data);
 
 		// Alle Gebäude sichern
 		LastMapPlayerID = ExtPlayerID;
@@ -730,7 +718,6 @@ GetFights = () =>{
 		}
 
 		if(gbUpdateData?.Rankings && gbUpdateData?.CityMapEntity){
-			if(!IsLevelScroll) MainParser.SendLGData(gbUpdateData);
 			lgUpdate();
 		}
 
@@ -1557,58 +1544,6 @@ let MainParser = {
 	},
 
 
-	/**
-	 * Update own data (guild change etc)
-	 *
-	 * @param d
-	 */
-	SelfPlayer: (d) => {
-
-		if (Settings.GetSetting('GlobalSend') === false) {
-			return;
-		}
-
-		let data = {
-			player_id: d['player_id'],
-			user_name: d['user_name'],
-			portrait_id: d['portrait_id'],
-			clan_id: d['clan_id'],
-		};
-
-		MainParser.sendExtMessage({
-			type: 'send2Api',
-			url: `${ApiURL}SelfPlayer/?player_id=${ExtPlayerID}&guild_id=${ExtGuildID}&world=${ExtWorld}&v=${extVersion}`,
-			data: JSON.stringify(data)
-		});
-	},
-
-
-	/**
-	 * Collect some stats for the website api
-	 *
-	 * @param d
-	 * @returns {boolean}
-	 * @constructor
-	 */
-	SendLGData: (d)=> {
-
-		const dataEntity = d['CityMapEntity']['responseData'][0],
-			realData = {
-				image: srcLinks.get(`/city/buildings/${dataEntity['cityentity_id'].replace('X_', 'X_SS_')}.png`, true),
-				entity: dataEntity,
-				ranking: d['Rankings'],
-				bonus: d['Bonus'],
-				era: d['Era'],
-			}
-
-		MainParser.sendExtMessage({
-			type: 'send2Api',
-			url: `${ApiURL}OwnLGData/?world=${ExtWorld}${MainParser.DebugMode ? '&debug' : ''}&v=${extVersion}`,
-			data: JSON.stringify(realData)
-		});
-	},
-
-
 	Allies: {
 		buildingList:null,
 		allyList:null,
@@ -1699,7 +1634,6 @@ let MainParser = {
 				HTML.Box({
 					id: 'AllyList',
 					title: i18n('Boxes.AllyList.Title'),
-					ask: i18n('Boxes.AllyList.HelpLink'),
 					auto_close: true,
 					dragdrop: true,
 					minimize: true,
@@ -2451,7 +2385,6 @@ let MainParser = {
 				HTML.Box({
 					id: 'inactivesSettingsBox',
 					title: i18n('Boxes.InactivesSettings.Title'),
-					//ask: i18n('Boxes.AuctionSettings.HelpLink'),
 					auto_close: true,
 					dragdrop: true,
 					minimize: true,
