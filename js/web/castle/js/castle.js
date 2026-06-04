@@ -1048,7 +1048,7 @@ let Castle = {
         });
         c.push(`</select></p>`);
 
-        c.push(`<hr><p><button id="save-Castle-settings" class="btn" style="width:100%" onclick="Castle.SettingsSaveValues()">${i18n('Boxes.General.Save')}</button></p>`);
+        c.push(`<hr><button id="save-Castle-settings" class="btn saveSettings" onclick="Castle.SettingsSaveValues()">${i18n('Boxes.General.Save')}</button>`);
         $('#CastleSettingsBox').html(c.join(''));
 
     },

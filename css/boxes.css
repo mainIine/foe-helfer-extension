@@ -205,7 +205,13 @@ a[target="_blank"] svg {
 	padding: 0.15rem 0.3rem !important;
 }
 
-.btn-green:not([disabled]),
+.btn.saveSettings {
+	display: block;
+	width: auto;
+	margin: 0 auto;
+}
+
+.btn.saveSettings, .btn-green:not([disabled]),
 .btn-green:not([disabled]):hover,
 .btn-green:not([disabled]):active {
 	background: var(--btn-bg-green-fallback);

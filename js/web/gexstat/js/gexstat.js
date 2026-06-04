@@ -771,7 +771,7 @@ let GexStat = {
 
 		c.push(`<p class="text-left"><button class="btn" onclick="GexStat.ExportContent('${GexStat.CurrentStatGroup}','csv')" title="${HTML.i18nTooltip(i18n('Boxes.General.ExportCSV'))}"${disabledExport}>CSV</button>` +
 			`<button class="btn" onclick="GexStat.ExportContent('${GexStat.CurrentStatGroup}','json')" title="${HTML.i18nTooltip(i18n('Boxes.General.ExportJSON'))}"${disabledExport}>JSON</button></p>`);
-		c.push(`<hr><p><button id="save-GexStat-settings" class="btn" style="width:100%" onclick="GexStat.SettingsSaveValues()">${i18n('Boxes.GexStat.Save')}</button></p>`);
+		c.push(`<hr><button id="save-GexStat-settings" class="btn saveSettings" onclick="GexStat.SettingsSaveValues()">${i18n('Boxes.GexStat.Save')}</button>`);
 		$('#GexStatSettingsBox').html(c.join(''));
 
 	},

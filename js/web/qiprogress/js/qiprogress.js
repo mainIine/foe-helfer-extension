@@ -583,7 +583,7 @@ let QiProgress = {
 		let Settings = QiProgress.ProgressSettings;
 		c.push(`<input id="gf_showRoundSelector" name="showroundswitcher" value="1" type="checkbox" ${(Settings.showRoundSelector === 1) ? ' checked="checked"' : ''} /> <label for="gf_showRoundSelector">${i18n('Boxes.QiProgress.ShowRoundSelector')}</label></p>`);
 		c.push(`<p class="text-left"><input id="gf_showProgressFilter" name="showprogressfilter" value="1" type="checkbox" ${(Settings.showProgressFilter === 1) ? ' checked="checked"' : ''} /> <label for="gf_showProgressFilter">${i18n('Boxes.QiProgress.ShowProgressFilter')}</label></p>`);
-		c.push(`<p><button id="save-QiProgressPlayerBox-settings" class="btn" style="width:100%" onclick="QiProgress.ProgressListSettingsSaveValues()">${i18n('Boxes.General.Save')}</button></p>`);
+		c.push(`<p><button id="save-QiProgressPlayerBox-settings" class="btn saveSettings" onclick="QiProgress.ProgressListSettingsSaveValues()">${i18n('Boxes.General.Save')}</button></p>`);
 		c.push(`<hr><p>${i18n('Boxes.General.Export')}: <span class="btn-group"><button class="btn" onclick="HTML.ExportTable($('#QiProgressTable'),'csv','QI')" title="${HTML.i18nTooltip(i18n('Boxes.General.ExportCSV'))}">CSV</button>`);
 		c.push(`<button class="btn" onclick="HTML.ExportTable($('#QiProgressTable'),'json','QI')" title="${HTML.i18nTooltip(i18n('Boxes.General.ExportJSON'))}">JSON</button></span></p>`);
 

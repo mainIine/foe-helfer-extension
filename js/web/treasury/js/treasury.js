@@ -110,7 +110,7 @@ let Treasury = {
 
         let h = [];
         h.push(`<p><input id="autoStartTreasuryExport" name="autoStartTreasuryExport" value="1" type="checkbox" ${(autoOpen === true) ? ' checked="checked"' : ''} /> <label for="autoStartMarket">${i18n('Boxes.Settings.Autostart')}</label></p>`);
-        h.push(`<p><button onclick="Treasury.SaveSettings()" id="save-treasury-settings" class="btn" style="width:100%">${i18n('Boxes.Settings.Save')}</button></p>`);
+        h.push(`<p><button onclick="Treasury.SaveSettings()" id="save-treasury-settings" class="btn saveSettings">${i18n('Boxes.Settings.Save')}</button></p>`);
 
         $('#treasurySettingsBox').html(h.join(''));
     },

@@ -208,7 +208,7 @@ let CloseBox = {
         }
         c.push(`<p class="text-left"><span class="settingtitle">${i18n('Boxes.CloseBox.Automation')}</span>`);
         c.push(`<input id="cb_auto_hide_on_battle" name="autohideonbattle" value="1" type="checkbox" ${(Settings.AutoHideOnBattle) ? ' checked="checked"' : ''} /> <label for="cb_auto_hide_on_battle"><i>${i18n('Boxes.CloseBox.AutoHideOnBattle')}</i></label></p>`);
-        c.push(`<hr><p><button id="save-GexStat-settings" class="btn" style="width:100%" onclick="CloseBox.SaveSettings()">${i18n('Boxes.General.Save')}</button></p>`);
+        c.push(`<hr><button id="save-GexStat-settings" class="btn saveSettings" onclick="CloseBox.SaveSettings()">${i18n('Boxes.General.Save')}</button>`);
 
         $('#CloseBoxSettingsBox').html(c.join(''));
 

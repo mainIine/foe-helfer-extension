@@ -2206,7 +2206,7 @@ let GuildMemberStat = {
 			c.push(`<option value="0">${i18n('Boxes.GuildMemberStat.ConfirmNo')}</option>`);
 			c.push(`<option value="reset">${i18n('Boxes.GuildMemberStat.ConfirmYes')}</option>`);
 		c.push(`</select></p>`);
-		c.push(`<hr><p><button id="save-GuildMemberStat-settings" class="btn" style="width:100%" onclick="GuildMemberStat.SettingsSaveValues()">${i18n('Boxes.Investment.Overview.SettingsSave')}</button></p>`);
+		c.push(`<hr><button id="save-GuildMemberStat-settings" class="btn saveSettings" onclick="GuildMemberStat.SettingsSaveValues()">${i18n('Boxes.Investment.Overview.SettingsSave')}</button>`);
 		c.push(`<hr><p class="text-left">${i18n('Boxes.General.Export')}: <button class="btn" onclick="GuildMemberStat.ExportContent('${GuildMemberStat.CurrentStatGroup}','csv')" title="${HTML.i18nTooltip(i18n('Boxes.General.ExportCSV'))}">CSV</button>`);
 		c.push(`<button class="btn" onclick="GuildMemberStat.ExportContent('${GuildMemberStat.CurrentStatGroup}','json')" title="${HTML.i18nTooltip(i18n('Boxes.General.ExportJSON'))}">JSON</button></p>`);
 

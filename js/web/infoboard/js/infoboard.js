@@ -339,7 +339,7 @@ let Infoboard = {
                 <hr>
                 <p><label for="infoboxentry-length">${i18n('Settings.InfoboxEntryCount.Desc')}</label>
                 <input class="setting-input" type="number" id="infoboxentry-length" step="1" min="1" max="2000" value="${(messagesAmount)}"></p>
-                <button onclick="Infoboard.SaveSettings()" id="saveInfoboardSettings" class="btn" style="width:100%">${i18n('Boxes.Settings.Save')}</button>`);
+                <button onclick="Infoboard.SaveSettings()" id="saveInfoboardSettings" class="btn saveSettings">${i18n('Boxes.Settings.Save')}</button>`);
 
         $('#BackgroundInfoSettingsBox').html(h.join(''));
     },

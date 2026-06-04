@@ -301,7 +301,7 @@ let Negotiation = {
 
 		let h = [];
 		h.push(`<p><label><input id="negotiationAutoOpen" type="checkbox" ${(autoOpen === true) ? ' checked="checked"' : ''} />${i18n('Boxes.Settings.Autostart')}</label></p>`);
-		h.push(`<p><button onclick="Negotiation.SaveSettings()" id="save-negotiationAutoOpen-settings" class="btn" style="width:100%">${i18n('Boxes.Settings.Save')}</button></p>`);
+		h.push(`<p><button onclick="Negotiation.SaveSettings()" id="save-negotiationAutoOpen-settings" class="btn saveSettings">${i18n('Boxes.Settings.Save')}</button></p>`);
 
 		$('#negotiationBoxSettingsBox').html(h.join(''));
 	},

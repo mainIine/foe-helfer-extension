@@ -822,7 +822,7 @@ let Unit = {
 					<button class="btn btn-slim btn-set-value" data-value="1">&gt;</button>
 					<span class="validity"></span>
 				</p>`);
-		h.push(`<p><button onclick="Unit.SaveSettings()" id="unit-save-settings" class="btn" style="width:100%">${i18n('Boxes.Settings.Save')}</button></p>`);
+		h.push(`<p><button onclick="Unit.SaveSettings()" id="unit-save-settings" class="btn saveSettings">${i18n('Boxes.Settings.Save')}</button></p>`);
 
 		$('#UnitOverviewSettingsBox').html(h.join(''));
 		

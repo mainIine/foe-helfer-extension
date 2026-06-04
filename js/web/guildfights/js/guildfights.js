@@ -1621,7 +1621,7 @@ let GuildFights = {
 			`<input id="gf_showRoundSelector" name="showroundswitcher" value="1" type="checkbox" ${(Settings.showRoundSelector === 1) ? ' checked="checked"' : ''} /> <label for="gf_showRoundSelector">${i18n('Boxes.GuildFights.ShowRoundSelector')}</label></p>`);
 		c.push(`<p class="text-left"><input id="gf_showProgressFilter" name="showprogressfilter" value="1" type="checkbox" ${(Settings.showProgressFilter === 1) ? ' checked="checked"' : ''} /> <label for="gf_showProgressFilter">${i18n('Boxes.GuildFights.ShowProgressFilter')}</label></p>`);
 		c.push(`<p class="text-left"><input id="gf_showLogButton" name="showlogbutton" value="1" type="checkbox" ${(Settings.showLogButton === 1) ? ' checked="checked"' : ''} /> <label for="gf_showLogButton">${i18n('Boxes.GuildFights.ShowLogButton')}</label></p>`);
-		c.push(`<p><button id="save-GuildFightsPlayerBox-settings" class="btn" style="width:100%" onclick="GuildFights.PlayerBoxSettingsSaveValues()">${i18n('Boxes.General.Save')}</button></p>`);
+		c.push(`<p><button id="save-GuildFightsPlayerBox-settings" class="btn saveSettings" onclick="GuildFights.PlayerBoxSettingsSaveValues()">${i18n('Boxes.General.Save')}</button></p>`);
 		c.push(`<hr><p>${i18n('Boxes.General.Export')}: <span class="btn-group"><button class="btn" onclick="HTML.ExportTable($('#GildPlayersTable'),'csv','GBG-PlayerList')" title="${HTML.i18nTooltip(i18n('Boxes.General.ExportCSV'))}">CSV</button>`);
 		c.push(`<button class="btn" onclick="HTML.ExportTable($('#GildPlayersTable'),'json','GBG-PlayerList')" title="${HTML.i18nTooltip(i18n('Boxes.General.ExportJSON'))}">JSON</button></span></p>`);
 

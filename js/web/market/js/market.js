@@ -511,7 +511,7 @@ let Market = {
         h.push(`<button class="btn" onclick="HTML.ExportTable($('#MarketBody').find('.foe-table.exportable'), 'json', 'Market')">JSON</button></span>`);
         h.push(`<p><input id="autoStartMarket" name="autoStartMarket" value="1" type="checkbox" ${(autoOpen === true) ? ' checked="checked"' : ''} /> <label for="autoStartMarket">${i18n('Boxes.Market.Settings.Autostart')}</label></p>`);
 
-        h.push(`<p><button onclick="Market.SaveSettings()" id="save-market-settings" class="btn" style="width:100%">${i18n('Boxes.Settings.Save')}</button></p>`);
+        h.push(`<p><button onclick="Market.SaveSettings()" id="save-market-settings" class="btn saveSettings">${i18n('Boxes.Settings.Save')}</button></p>`);
 
         $('#MarketSettingsBox').html(h.join(''));
     },

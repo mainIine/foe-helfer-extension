@@ -474,7 +474,6 @@ let Calculator = {
 				contributionClass = 'info';
 			if (rank.contribution === 0)
 				rankClass = 'info';
-			console.log(rank);
 
 			h.push(`<tr class="text-center ${rowClass}">
 				<td> <strong class="${rankClass}">${rankText}</strong> </td>
