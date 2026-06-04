@@ -31,36 +31,38 @@
 }
 
 #SettingsBoxBody .item-row .check {
-	background-image: url('../images/setting-cb.png');
+	background-image: var(--tabs-bg-active);
+	border-radius: 4px;
 }
 
 #SettingsBoxBody .item-row .check {
 	position: relative;
 	display: inline-block;
-	width: 173px;
-	height: 32px;
+	width: 140px;
+	margin: 2px 2px 0 0;
 }
 
 #SettingsBoxBody .item-row .unchecked {
-	background-position: 0 -32px;
+	background-image: var(--tabs-bg);
 }
 
 #SettingsBoxBody .item-row .check input.setting-check {
 	position: absolute;
-	right: 3px;
-	top: 7px;
-	width: 21px;
-	transform: scale(1.5, 1.5);
+	right: 4px;
+	top: 4px;
+	transform: scale(1.3);
 }
 
 #SettingsBoxBody .item-row .check span.toogle-word {
 	display: block;
-	width: 141px;
 	text-align: center;
-	line-height: 32px;
+	line-height: 30px;
 	font-size: 0.9rem;
 	color: var(--light-blue);
 	font-weight: 700;
+	width: 113px;
+	line-height: 26px;
+	border-right: 1px solid var(--table-bb-info);
 }
 
 #SettingsBoxBody .item-row .btn,
