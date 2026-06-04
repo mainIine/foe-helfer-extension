@@ -678,10 +678,6 @@ let CityMap = {
 			connectedBuildingsArea: 0,
 			limitedBuildings: 0,
 			limitedBuildingsArea: 0,
-			chainBuildings: 0,
-			chainArea: 0,
-			setBuildings: 0,
-			setArea: 0,
 			roads: 0,
 			roadsArea: 0,
 			greatBuildings: 0,
@@ -735,14 +731,12 @@ let CityMap = {
 			let fromGBG = (building.entityId.includes("_GBG") ? ' fromGBG' : '');
 			let canAscend = (await CityBuildings.canAscend(building.entityId) ? ' ascendable' : '');
 			let isDecayed = (building.state.isDecayed ? ' decayed' : '');
-			let isSpecial = (building.isSpecial ? ' special' : '');
-			let chainBuilding = (building.chainBuilding !== undefined ? ' chain' : '');
-			let setBuilding = (building.setBuilding !== undefined ? ' set' : '');
+			let isNotPolivated = (building.state.isPolivated === false ? ' notPolivated' : '');
 			let rating = (building.rating?.totalScore*100 <= (rating10) ? ' rating10' : 
 						(building.rating?.totalScore*100 <= (rating20) ? ' rating20' :	
 						(building.rating?.totalScore*100 <= (rating30) ? ' rating30' : '')))
 			
-			let f = $('<span '+ MainParser.Allies.tooltip(building.id) + '/>').addClass('entity helperTT ' + building.type + noStreet + isSpecial + canAscend + isDecayed + chainBuilding + setBuilding + rating + isLimited + fromQI + fromGBG).css({
+			let f = $('<span '+ MainParser.Allies.tooltip(building.id) + '/>').addClass('entity helperTT ' + building.type + noStreet + isNotPolivated + canAscend + isDecayed + rating + isLimited + fromQI + fromGBG).css({
 				width: xsize + 'em',
 				height: ysize + 'em',
 				left: x + 'em',
@@ -754,24 +748,6 @@ let CityMap = {
 				.attr('data-id', building.id)
 				.attr('data-title', building.name)
 				.attr('data-meta_id',building.entityId)
-				.on('click', function() {
-					let chainId = $(this).attr('data-chain-id');
-					let setId = $(this).attr('data-set-id');
-					if (chainId || setId) {
-						CityMap.highlightRelatedBuildings(chainId || setId, chainId ? 'chain' : 'set');
-					} else {
-						$('.entity').removeClass('highlighted');
-						$('#grid-outer').removeClass('desaturate');
-					}
-				});
-
-			if (building.chainBuilding) {
-				f.attr('data-chain-id', building.chainBuilding.id);
-			}
-			if (building.setBuilding) {
-				f.attr('data-set-id', building.setBuilding.name);
-			}
-
 
 			// collect metrics for sidebar
 			if (building.type === "street") {
@@ -800,15 +776,6 @@ let CityMap = {
 				else if (building.isLimited) {
 					CityMap.metrics.limitedBuildings++;
 					CityMap.metrics.limitedBuildingsArea += building.size.width * building.size.length;
-				}
-
-				if (building.chainBuilding !== undefined) {
-					CityMap.metrics.chainBuildings++;
-					CityMap.metrics.chainArea += building.size.width * building.size.length;
-				}
-				if (building.setBuilding !== undefined) {
-					CityMap.metrics.setBuildings++;
-					CityMap.metrics.setArea += building.size.width * building.size.length;
 				}
 
 				if (building.entityId.includes("_GR")) {
@@ -941,14 +908,12 @@ let CityMap = {
 
 		areaStats.push(`<b>${i18n('Boxes.CityMap.Highlight')}</b>`)
 		areaStats.push('<ul class="highlight-map">' +
-			'<li onClick="CityMap.highlightNoStreetBuildings()" class="clickable"><span data-original-title="'+i18n('Boxes.CityMap.roadless')+', '+parseFloat(100*CityMap.metrics.roadlessBuildings/CityMap.metrics.buildings).toFixed(1)+'%"><img src="'+srcLinks.get(`/shared/gui/buffbar/buffbar_icon_buff_unconnected.png`,true)+'" />' + CityMap.metrics.roadlessBuildings + '</span> <span><img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_expansion.png`,true)+'" />' + CityMap.metrics.roadlessBuildingsArea + '</span></li>' +
-			'<li onClick="CityMap.highlightGBGBuildings()" class="clickable"><span data-original-title="'+i18n('Boxes.CityMap.buildingFromGBG')+', '+parseFloat(100*CityMap.metrics.gbgBuildings/CityMap.metrics.buildings).toFixed(1)+'%"><img src="'+srcLinks.get(`/cash_shop/gui/cash_shop_icon_navi_gbg_selected.png`,true)+'" />' + CityMap.metrics.gbgBuildings + '</span> <span><img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_expansion.png`,true)+'" />' + CityMap.metrics.gbgArea+ '</span></li>' +
-			'<li onClick="CityMap.highlightQIBuildings()" class="clickable"><span data-original-title="'+i18n('Boxes.CityMap.buildingFromQI')+', '+parseFloat(100*CityMap.metrics.qiBuildings/CityMap.metrics.buildings).toFixed(1)+'%"><img src="'+srcLinks.get(`/guild_raids/windows/guild_raids_guild_raid_emblem.png`,true)+'" />' + CityMap.metrics.qiBuildings + '</span> <span><img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_expansion.png`,true)+'" />' + CityMap.metrics.qiArea+ '</span></li>' + 
-			'<li onClick="CityMap.highlightLimitedBuildings()" class="clickable"><span data-original-title="'+i18n('Boxes.CityMap.limited')+', '+parseFloat(100*CityMap.metrics.limitedBuildings/CityMap.metrics.buildings).toFixed(1)+'%"><img src="'+srcLinks.get(`/shared/gui/upgrade/upgrade_icon_limited_building.png`,true)+'" />' + CityMap.metrics.limitedBuildings + '</span> <span><img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_expansion.png`,true)+'" />' + CityMap.metrics.limitedBuildingsArea + '</span></li>' +
-			'<li onClick="CityMap.highlightAscendableBuildings()" class="clickable"><span data-original-title="'+i18n('Boxes.CityMap.ShowAscendableBuildings')+', '+parseFloat(100*CityMap.metrics.ascendableBuildings/CityMap.metrics.buildings).toFixed(1)+'%"><img src="'+srcLinks.get(`/shared/icons/limited_building_upgrade.png`,true)+'" />' + CityMap.metrics.ascendableBuildings + '</span> <span><img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_expansion.png`,true)+'" />' + CityMap.metrics.ascendableBuildingsArea + '</span></li>' +
-			'<li onClick="CityMap.highlightDecayedBuildings()" class="clickable"><span data-original-title="'+i18n('Boxes.CityMap.ShowDecayedBuildings')+', '+parseFloat(100*CityMap.metrics.decayedBuildings/CityMap.metrics.buildings).toFixed(1)+'%"><img style="filter:saturate(0.5)" src="'+srcLinks.get(`/shared/icons/limited_building_downgrade.png`,true)+'" />' + CityMap.metrics.decayedBuildings + '</span> <span><img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_expansion.png`,true)+'" />' + CityMap.metrics.decayedBuildingsArea + '</span></li>' +
-			'<li onClick="CityMap.highlightChainBuildings()" class="clickable"><span data-original-title="'+i18n('Boxes.CityMap.ChainBuildings')+', '+parseFloat(100*CityMap.metrics.chainBuildings/CityMap.metrics.buildings).toFixed(1)+'%"><img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_expansion.png`,true)+'" />' + CityMap.metrics.chainBuildings + '</span> <span><img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_expansion.png`,true)+'" />' + CityMap.metrics.chainArea + '</span></li>' +
-			'<li onClick="CityMap.highlightSetBuildings()" class="clickable"><span data-original-title="'+i18n('Boxes.CityMap.SetBuildings')+', '+parseFloat(100*CityMap.metrics.setBuildings/CityMap.metrics.buildings).toFixed(1)+'%"><img src="'+srcLinks.get(`/shared/gui/upgrade/upgrade_icon_limited_building.png`,true)+'" />' + CityMap.metrics.setBuildings + '</span> <span><img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_expansion.png`,true)+'" />' + CityMap.metrics.setArea + '</span></li>');
+			'<li onClick="CityMap.highlightNoStreetBuildings()" class="clickable" data-original-title="'+i18n('Boxes.CityMap.roadless')+', '+parseFloat(100*CityMap.metrics.roadlessBuildings/CityMap.metrics.buildings).toFixed(1)+'%"><span><img src="'+srcLinks.get(`/shared/gui/buffbar/buffbar_icon_buff_unconnected.png`,true)+'" />' + CityMap.metrics.roadlessBuildings + '</span> <span><img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_expansion.png`,true)+'" />' + CityMap.metrics.roadlessBuildingsArea + '</span></li>' +
+			'<li onClick="CityMap.highlightGBGBuildings()" class="clickable" data-original-title="'+i18n('Boxes.CityMap.buildingFromGBG')+', '+parseFloat(100*CityMap.metrics.gbgBuildings/CityMap.metrics.buildings).toFixed(1)+'%"><span><img src="'+srcLinks.get(`/cash_shop/gui/cash_shop_icon_navi_gbg_selected.png`,true)+'" />' + CityMap.metrics.gbgBuildings + '</span> <span><img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_expansion.png`,true)+'" />' + CityMap.metrics.gbgArea+ '</span></li>' +
+			'<li onClick="CityMap.highlightQIBuildings()" class="clickable" data-original-title="'+i18n('Boxes.CityMap.buildingFromQI')+', '+parseFloat(100*CityMap.metrics.qiBuildings/CityMap.metrics.buildings).toFixed(1)+'%"><span><img src="'+srcLinks.get(`/guild_raids/windows/guild_raids_guild_raid_emblem.png`,true)+'" />' + CityMap.metrics.qiBuildings + '</span> <span><img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_expansion.png`,true)+'" />' + CityMap.metrics.qiArea+ '</span></li>' + 
+			'<li onClick="CityMap.highlightLimitedBuildings()" class="clickable" data-original-title="'+i18n('Boxes.CityMap.limited')+', '+parseFloat(100*CityMap.metrics.limitedBuildings/CityMap.metrics.buildings).toFixed(1)+'%"><span><img src="'+srcLinks.get(`/shared/gui/upgrade/upgrade_icon_limited_building.png`,true)+'" />' + CityMap.metrics.limitedBuildings + '</span> <span><img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_expansion.png`,true)+'" />' + CityMap.metrics.limitedBuildingsArea + '</span></li>' +
+			'<li onClick="CityMap.highlightAscendableBuildings()" class="clickable" data-original-title="'+i18n('Boxes.CityMap.ShowAscendableBuildings')+', '+parseFloat(100*CityMap.metrics.ascendableBuildings/CityMap.metrics.buildings).toFixed(1)+'%"><span><img src="'+srcLinks.get(`/shared/icons/limited_building_upgrade.png`,true)+'" />' + CityMap.metrics.ascendableBuildings + '</span> <span><img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_expansion.png`,true)+'" />' + CityMap.metrics.ascendableBuildingsArea + '</span></li>' +
+			'<li onClick="CityMap.highlightDecayedBuildings()" class="clickable" data-original-title="'+i18n('Boxes.CityMap.ShowDecayedBuildings')+', '+parseFloat(100*CityMap.metrics.decayedBuildings/CityMap.metrics.buildings).toFixed(1)+'%"><span><img style="filter:saturate(0.5)" src="'+srcLinks.get(`/shared/icons/limited_building_downgrade.png`,true)+'" />' + CityMap.metrics.decayedBuildings + '</span> <span><img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_expansion.png`,true)+'" />' + CityMap.metrics.decayedBuildingsArea + '</span></li>');
 
 		areaStats.push('<li class="ratings clickable">')
 			areaStats.push(`<label for="show-worst-buildings"><input type="checkbox" id="show-worst-buildings" onclick="CityMap.highlightWorstBuildings()" /> ${i18n('Boxes.CityMap.ShowWorstBuildings')}</label>`)
@@ -958,6 +923,9 @@ let CityMap = {
 
 		if (ActiveMap !== 'OtherPlayer') 
 			areaStats.push(`<li class="clickable"><label for="highlight-old-buildings"><input type="checkbox" id="highlight-old-buildings" onclick="CityMap.highlightOldBuildings()"> ${i18n('Boxes.CityMap.HighlightOldBuildings')}</label></li>`)
+
+		if (ActiveMap !== 'OtherPlayer') 
+			areaStats.push(`<li class="clickable"><label for="highlightNotPolivatedBuildings"><input type="checkbox" id="highlightNotPolivatedBuildings" onclick="CityMap.highlightNotPolivatedBuildings()"> ${i18n('Boxes.CityMap.HighlightNotPolivatedBuildings')}</label></li>`)
 		areaStats.push('</ul>')
 
 		// let cityEfficiency = parseFloat(CityMap.metrics.connectedBuildingsArea / CityMap.metrics.roadsArea * 100).toFixed(0);
@@ -991,27 +959,8 @@ let CityMap = {
 	},
 
 
-	highlightRelatedBuildings: (id, type) => {
-		let spans = $('span.entity');
-		let found = false;
-
-		for (let sp of spans) {
-			let chainId = $(sp).attr('data-chain-id');
-			let setId = $(sp).attr('data-set-id');
-
-			if ((type === 'chain' && chainId === id) || (type === 'set' && setId === id)) {
-				$(sp).addClass('highlighted');
-				found = true;
-			} else {
-				$(sp).removeClass('highlighted');
-			}
-		}
-
-		if (found) {
-			$('#grid-outer').addClass('desaturate');
-		} else {
-			$('#grid-outer').removeClass('desaturate');
-		}
+	highlightNotPolivatedBuildings: ()=> {
+		$('#map-buildings').toggleClass('transparent');
 	},
 
 
@@ -1037,16 +986,6 @@ let CityMap = {
 
 	highlightGBGBuildings: ()=> {
 		$('#grid-outer').toggleClass('showGBG');
-	},
-
-
-	highlightChainBuildings: ()=> {
-		$('#grid-outer').toggleClass('showChains');
-	},
-
-
-	highlightSetBuildings: ()=> {
-		$('#grid-outer').toggleClass('showSets');
 	},
 
 

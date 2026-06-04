@@ -1315,7 +1315,7 @@ a:hover {
 .window-head .box-buttons span, .fh-icon-settings {
 	width: 20px;
 	height: 20px;
-	border-radius: 1px;
+	border-radius: 2px;
 	position: relative;
 	background-image: var(--window-head-btn-bg);
 	box-shadow: var(--window-head-btn-shadow);
@@ -1355,7 +1355,7 @@ a:hover {
 	position: relative;
 }
 .closed .window-minimize {
-	background-position: -76px -2px, 0 0;
+	background-position: -78px -2px, 0 0;
 }
 
 .window-settings, .fh-icon-settings {

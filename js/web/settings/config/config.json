@@ -13,26 +13,21 @@
 		"sort": 2
 	},
 	{
-		"name": "AutoOpenCloseBox",
-		"status": false,
+		"name": "ShowReconstructionList",
+		"status": true,
 		"group": "Auto",
 		"sort": 4
 	},
 	{
-		"name": "ShowReconstructionList",
-		"status": true,
+		"name": "AutoOpenCloseBox",
+		"status": false,
 		"group": "Auto",
 		"sort": 6
 	},
 	{
-		"name": "ShowRougeUnitWarning",
-		"status": true,
-		"group": "Auto",
-		"sort": 10
-	},
-	{
 		"name": "ShowScoutingTimes",
 		"status": true,
+		"cssClass": "spacer",
 		"group": "Auto",
 		"sort": 12
 	},
@@ -43,6 +38,25 @@
 		"sort": 13
 	},
 	{
+		"name": "ShowRougeUnitWarning",
+		"status": true,
+		"group": "Auto",
+		"sort": 10
+	},
+	{
+		"name": "ShowArmyAdvice",
+		"status": false,
+		"group": "Auto",
+		"button":"BattleAssist.ShowArmyAdviceConfig()",
+		"sort": 24
+	},
+	{
+		"name": "ShowPotions",
+		"status": false,
+		"group": "Boxes",
+		"sort": 5
+	},
+	{
 		"name": "ShowPvPArena",
 		"status": true,
 		"group": "Auto",
@@ -51,6 +65,7 @@
 	{
 		"name": "ShowGBGBuildings",
 		"status": false,
+		"cssClass": "spacer",
 		"group": "Auto",
 		"sort": 16
 	},
@@ -65,13 +80,6 @@
 		"status": true,
 		"group": "Auto",
 		"sort": 21
-	},
-	{
-		"name": "ShowArmyAdvice",
-		"status": false,
-		"group": "Auto",
-		"button":"BattleAssist.ShowArmyAdviceConfig()",
-		"sort": 24
 	},
 	{
 		"name": "ShowGuildTreasuryLogExport",
@@ -90,12 +98,6 @@
 		"status": true,
 		"group": "Boxes",
 		"sort": 3
-	},
-	{
-		"name": "ShowPotions",
-		"status": false,
-		"group": "Boxes",
-		"sort": 5
 	},
 	{
 		"name": "doubleFPtimeout",
@@ -201,16 +203,16 @@
 		"sort": 13
 	},
 	{
-		"name": "ChangeLanguage",
-		"callback": "LanguageDropdown",
-		"group": "About",
-		"sort": 0
-	},
-	{
 		"name": "Version",
 		"callback": "VersionInfo",
 		"group": "About",
-		"sort": 13
+		"sort": 1
+	},
+	{
+		"name": "ChangeLanguage",
+		"callback": "LanguageDropdown",
+		"group": "About",
+		"sort": 10
 	},
 	{
 		"name": "ShowLinks",

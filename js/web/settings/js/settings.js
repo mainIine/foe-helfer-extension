@@ -240,15 +240,15 @@ let Settings = {
 	 */
 	VersionInfo: () => {
 		let v = extVersion.includes('beta') ? `` : `<p>${i18n('Settings.Version.Link').replace('__version__', '')}</p>`;
-		v +=	`<p><a href="${extUrl}content/about.html" target="_blank">${i18n('Settings.About.Title')}</a><br />
-					<a href="${extUrl}content/help.html" target="_blank">${i18n('Settings.Help.Title')}</a>
-				</p>
-				<dl class="info-box">
+		v +=	`<dl class="info-box">
 					<dt>${i18n('Settings.Version.Title')}</dt><dd>${extVersion}</dd>
 					<dt>${i18n('Settings.Version.PlayerId')}</dt><dd>${ExtPlayerID}</dd>
 					<dt>${i18n('Settings.Version.GuildId')}</dt><dd>${(ExtGuildID ? ExtGuildID : 'N/A')}</dd>
 					<dt>${i18n('Settings.Version.World')}</dt><dd>${ExtWorld}</dd>
-				</dl>`;
+				</dl>
+				<p><a href="${extUrl}content/about.html" target="_blank">${i18n('Settings.About.Title')}</a><br />
+					<a href="${extUrl}content/help.html" target="_blank">${i18n('Settings.Help.Title')}</a>
+				</p>`;
 		return v;
 		
 	},
