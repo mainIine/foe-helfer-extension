@@ -472,6 +472,9 @@
 #map-buildings.transparent span:not(.notPolivated) {
 	opacity: 0.35;
 }
+#grid-outer.desaturated span:not(.collectable) {
+	filter: saturate(0.1) brightness(0.3) contrast(1.2);
+}
 
 [data-view="skew"] .older-1.diagonal {
 	background-image: repeating-linear-gradient(15deg, transparent, transparent 5px, rgb(128, 152, 93) 2px, rgb(128, 152, 93) 7px)

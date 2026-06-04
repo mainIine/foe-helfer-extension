@@ -243,6 +243,7 @@
     "Boxes.CityMap.FreeArea": "Available Squares: ",
     "Boxes.CityMap.HelpLink": "https://docs.foe-helper.com/english/module/town",
     "Boxes.CityMap.Highlight": "Highlight Buildings",
+    "Boxes.CityMap.HighlightCollectableBuildings": "Collectable buildings",
     "Boxes.CityMap.HighlightNotPolivatedBuildings": "Not polivated buildings",
     "Boxes.CityMap.HighlightOldBuildings": "Lower Era buildings",
     "Boxes.CityMap.MissingApiKeyErrorHeader": "API Token missing",

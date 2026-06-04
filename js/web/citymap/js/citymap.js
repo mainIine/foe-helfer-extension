@@ -732,11 +732,12 @@ let CityMap = {
 			let canAscend = (await CityBuildings.canAscend(building.entityId) ? ' ascendable' : '');
 			let isDecayed = (building.state.isDecayed ? ' decayed' : '');
 			let isNotPolivated = (building.state.isPolivated === false ? ' notPolivated' : '');
+			let isCollectable = (building.state.name == "collectable" ? ' collectable' : '');
 			let rating = (building.rating?.totalScore*100 <= (rating10) ? ' rating10' : 
 						(building.rating?.totalScore*100 <= (rating20) ? ' rating20' :	
 						(building.rating?.totalScore*100 <= (rating30) ? ' rating30' : '')))
 			
-			let f = $('<span '+ MainParser.Allies.tooltip(building.id) + '/>').addClass('entity helperTT ' + building.type + noStreet + isNotPolivated + canAscend + isDecayed + rating + isLimited + fromQI + fromGBG).css({
+			let f = $('<span '+ MainParser.Allies.tooltip(building.id) + '/>').addClass('entity helperTT ' + building.type + noStreet + isNotPolivated + isCollectable + canAscend + isDecayed + rating + isLimited + fromQI + fromGBG).css({
 				width: xsize + 'em',
 				height: ysize + 'em',
 				left: x + 'em',
@@ -921,11 +922,11 @@ let CityMap = {
 				areaStats.push('<span onclick="Productions.ShowRating()" class="clickable"></span>')
 		areaStats.push('</li>')
 
-		if (ActiveMap !== 'OtherPlayer') 
-			areaStats.push(`<li class="clickable"><label for="highlight-old-buildings"><input type="checkbox" id="highlight-old-buildings" onclick="CityMap.highlightOldBuildings()"> ${i18n('Boxes.CityMap.HighlightOldBuildings')}</label></li>`)
-
-		if (ActiveMap !== 'OtherPlayer') 
-			areaStats.push(`<li class="clickable"><label for="highlightNotPolivatedBuildings"><input type="checkbox" id="highlightNotPolivatedBuildings" onclick="CityMap.highlightNotPolivatedBuildings()"> ${i18n('Boxes.CityMap.HighlightNotPolivatedBuildings')}</label></li>`)
+		if (ActiveMap !== 'OtherPlayer') {
+			areaStats.push(`<li class="clickable"><label for="highlight-old-buildings"><input type="checkbox" id="highlight-old-buildings" onclick="CityMap.highlightOldBuildings()"> ${i18n('Boxes.CityMap.HighlightOldBuildings')}</label></li>`);
+			areaStats.push(`<li class="clickable"><label for="highlightNotPolivatedBuildings"><input type="checkbox" id="highlightNotPolivatedBuildings" onclick="CityMap.highlightNotPolivatedBuildings()"> ${i18n('Boxes.CityMap.HighlightNotPolivatedBuildings')}</label></li>`);
+			areaStats.push(`<li class="clickable"><label for="highlightCollectableBuildings"><input type="checkbox" id="highlightCollectableBuildings" onclick="CityMap.highlightCollectableBuildings()"> ${i18n('Boxes.CityMap.HighlightCollectableBuildings')}</label></li>`);
+		}
 		areaStats.push('</ul>')
 
 		// let cityEfficiency = parseFloat(CityMap.metrics.connectedBuildingsArea / CityMap.metrics.roadsArea * 100).toFixed(0);
@@ -961,6 +962,11 @@ let CityMap = {
 
 	highlightNotPolivatedBuildings: ()=> {
 		$('#map-buildings').toggleClass('transparent');
+	},
+
+
+	highlightCollectableBuildings: ()=> {
+		$('#grid-outer').toggleClass('desaturated');
 	},
 
 

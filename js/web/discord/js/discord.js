@@ -112,37 +112,37 @@ let Discord = {
 		let h = [];
 		state = (Discord.WebHooksUrls.length == 0 ? 'open' : state);
 
-		h.push(`<div class="fham-accordion ${state}">`);
-			h.push('<div class="fham-accordion-head">');
-				h.push(`<strong>${i18n('Boxes.Discord.WebhookUrlManage')}</strong>`);
-			h.push(`</div>`);
-		
-		h.push('<div class="fham-accordion-body">');
-		
-		h.push(`<form onsubmit="return false;" autocomplete="off">`);
-		h.push(`<table class="foe-table no-hover vertical-middle" style="margin-bottom: 1.5rem;">`);
-		h.push(`<thead>`);
-		h.push(`<tbody>`);
+		h.push(`<div class="fham-accordion ${state}">
+			<div class="fham-accordion-head">
+				<strong>${i18n('Boxes.Discord.WebhookUrlManage')}</strong>
+			</div>
+
+			<div class="fham-accordion-body">
+				<form onsubmit="return false;" autocomplete="off">
+				<table class="foe-table no-hover vertical-middle" style="margin-bottom: 1.5rem;">
+				<thead>
+				<tbody>`);
 
 		for(let url of Discord.WebHooksUrls) {
-			h.push(`<tr>`);
-			h.push(`<td style="width: 1%;">${url.name}</td>`);
-			h.push(`<td style="word-break:break-all;font-size:smaller;">${url.url}</td>`);
-			h.push(`<td style="white-space:nowrap;"><button class="btn btn-delete" role="button" type="button" onclick="Discord.DeleteWebhookUrl(${Discord.WebHooksUrls.indexOf(url)})">${i18n('Boxes.Discord.DeleteEntry')}</button></td>`);
+			h.push(`<tr>
+					<td style="width: 1%;">${url.name}</td>
+					<td style="word-break:break-all;font-size:smaller;">${url.url}</td>
+					<td style="white-space:nowrap;">
+						<button class="btn btn-mid btn-delete" role="button" type="button" onclick="Discord.DeleteWebhookUrl(${Discord.WebHooksUrls.indexOf(url)})">${i18n('Boxes.Discord.DeleteEntry')}</button>
+					</td>`);
 			h.push(`</tr>`);
 		}
 
-		h.push(`<tr>`);
-		h.push(`<td style="width: 1%;"><input style="width:80px" id="webhookUrlName" name="name" type="text" placeholder="Name" spellcheck="false"></td>`);
-		h.push(`<td><input id="webhookUrlInput" name="url" placeholder="Webhook-URL" type="text" spellcheck="false" style="width:100%"></td>`);
-		h.push(`<td style="white-space:nowrap;" class="text-right"><button class="btn" role="button" type="button" onclick="Discord.SaveWebhookUrl()">${i18n('Boxes.Discord.Save')}</button></td>`);
-		h.push(`</tr>`);
+		h.push(`<tr>
+			<td style="width: 1%;"><input style="width:80px" id="webhookUrlName" name="name" type="text" placeholder="Name" spellcheck="false"></td>
+			<td><input id="webhookUrlInput" name="url" placeholder="Webhook-URL" type="text" spellcheck="false" style="width:100%"></td>
+			<td style="white-space:nowrap;" class="text-right"><button class="btn btn-mid" role="button" type="button" onclick="Discord.SaveWebhookUrl()">${i18n('Boxes.Discord.Save')}</button></td>
+		</tr>`);
 
-		h.push(`</tbody>`);
-		h.push(`</table>`);
-		h.push(`</form>`);
-		h.push(`</div>`);
-		h.push(`</div>`);
+		h.push(`</tbody></table>
+			</form>
+			</div>
+			</div>`);
 
 		$('#helperWebhook').html(h.join('')).promise().done(function() {
 			document.querySelector('#DiscordBody .fham-accordion-head').addEventListener('click',function (event) {

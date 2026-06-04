@@ -251,6 +251,7 @@
     "Boxes.CityMap.FreeArea": "Freie Fläche",
     "Boxes.CityMap.HelpLink": "https://docs.foe-helper.com/english/module/town",
     "Boxes.CityMap.Highlight": "Markiere",
+    "Boxes.CityMap.HighlightCollectableBuildings": "Fertige Produktionen",
     "Boxes.CityMap.HighlightNotPolivatedBuildings": "Unmotivierte Gebäude",
     "Boxes.CityMap.HighlightOldBuildings": "Alte Gebäude",
     "Boxes.CityMap.NormalPerspecitve": "Normal",
