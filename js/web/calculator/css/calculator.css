@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2026 Forge Hammer - All Rights Reserved
  * Licensed under AGPL - see LICENSE.md for details.
  */
 
@@ -94,7 +95,7 @@
 	opacity: 0.9;
 }
 
-#gbCalc strong.info {
+#gbCalc strong.info, #gbCalc td strong.info {
 	color: var(--info-blue);
 }
 

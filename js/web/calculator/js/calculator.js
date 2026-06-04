@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2026 Forge Hammer - All Rights Reserved
  * Licensed under AGPL - see LICENSE.md for details.
  */
 
@@ -17,6 +18,15 @@ let Calculator = {
 	],
 	ClanId: null,
 	ClanName: null,
+	RankState: {
+		NOT_POSSIBLE:    'NotPossible',
+		ALREADY_CONTRIBUTED:    'AlreadyContributed',
+		PROFIT:          'Profit',
+		WORSE_PROFIT:    'WorseProfit',
+		NEGATIVE_PROFIT: 'NegativeProfit',
+		LEVEL_WARNING:   'LevelWarning',
+		SELF:            'Self',
+	},
 
 	Show: (action = "") => {
 		$('.tooltip').remove();
@@ -180,174 +190,150 @@ let Calculator = {
 	 * The table body with all functions
 	 */
 	BuildTable: ()=> {
-		h = [];
+		let h = [];
 
-		let BestKurs = 999999,
-			arc = 1 + (MainParser.ArkBonus / 100),
-			ForderArc = 1 + (Calculator.ForderBonus / 100);
+		let bestRate = 999999,
+			arcMultiplier = 1 + (MainParser.ArkBonus / 100),
+			donorArcMultiplier = 1 + (Calculator.ForderBonus / 100);
 
-        let EigenPos,
-            EigenBetrag = 0;
+		let selfRankIndex,
+			selfContribution = 0;
 
-        // Ränge durchsteppen, Suche nach Eigeneinzahlung
-		for (let i = 0; i < MainParser.CurrentGB.Rankings.length;i++) {
-			if (MainParser.CurrentGB.Rankings[i]['player']['player_id'] !== undefined && MainParser.CurrentGB.Rankings[i]['player']['player_id'] === ExtPlayerID) {
-                EigenPos = i;
-				EigenBetrag = (isNaN(parseInt(MainParser.CurrentGB.Rankings[i]['forge_points']))) ? 0 : parseInt(MainParser.CurrentGB.Rankings[i]['forge_points']);
-                break;
-            }
+		// Step through ranks, search for own contribution
+		for (let i = 0; i < MainParser.CurrentGB.Rankings.length; i++) {
+			const entry = MainParser.CurrentGB.Rankings[i];
+			if (entry.player.player_id !== undefined && entry.player.player_id === ExtPlayerID) {
+				selfRankIndex = i;
+				selfContribution = (isNaN(parseInt(entry.forge_points))) ? 0 : parseInt(entry.forge_points);
+				break;
+			}
 		}
 
-		let ForderStates = [],
-			SaveStates = [],
-			FPNettoRewards = [],
-			FPRewards = [],
-			BPRewards = [],
-			MedalRewards = [],
-			ForderFPRewards = [],
-			ForderRankCosts = [],
-			SaveRankCosts = [],
-			Einzahlungen = [],
-			BestGewinn = -999999,
-			SaveLastRankCost = undefined;
+		// Pre-calculate values that don't change per iteration
+		const currentFP = MainParser.CurrentGB.Rankings.reduce((acc, entry) => acc + (entry?.forge_points | 0), 0) - selfContribution;
+		const totalFP = MainParser.CurrentGB.Entity.state.forge_points_for_level_up;
+		const remainingFP = totalFP - currentFP;
+
+		const ranks = []; // Each entry: { donorState, safeState, fpNetReward, fpGrossReward, bpReward, medalReward, donorFpReward, donorRankCost, safeRankCost, contribution }
+
+		let bestProfit = -999999,
+			lastSafeRankCost = undefined;
 
 		for (let i = 0; i < MainParser.CurrentGB.Rankings.length; i++) {
-			let Rank,
-				CurrentFP,
-				TotalFP,
-				RestFP,
-				IsSelf = false;
+			const entry = MainParser.CurrentGB.Rankings[i];
+			if (entry.rank === undefined || entry.rank === -1) continue;
+			if (entry.reward === undefined) break;
 
-			if (MainParser.CurrentGB.Rankings[i]['rank'] === undefined || MainParser.CurrentGB.Rankings[i]['rank'] === -1) {
-				continue;
-			}
-			else {
-				Rank = MainParser.CurrentGB.Rankings[i]['rank'] - 1;
-			}
+			let rankIndex = entry.rank - 1,
+				isSelf = false;
 
-			if (MainParser.CurrentGB.Rankings[i]['reward'] === undefined) break; // Ende der Belohnungsränge => raus
+			ranks[rankIndex] = {
+				donorState:    undefined, // NotPossible / WorseProfit / Self / NegativeProfit / LevelWarning / Profit
+				safeState:     undefined, // NotPossible / WorseProfit / Self / NegativeProfit / LevelWarning / Profit
+				fpNetReward:   0,
+				fpGrossReward: 0,
+				bpReward:      0,
+				medalReward:   0,
+				donorFpReward: 0,
+				donorRankCost: undefined,
+				safeRankCost:  undefined,
+				contribution:  0,
+			};
 
-			ForderStates[Rank] = undefined; // NotPossible / WorseProfit / Self / NegativeProfit / LevelWarning / Profit
-			SaveStates[Rank] = undefined; // NotPossible / WorseProfit / Self / NegativeProfit / LevelWarning / Profit
-			FPNettoRewards[Rank] = 0;
-			FPRewards[Rank] = 0;
-			BPRewards[Rank] = 0;
-			MedalRewards[Rank] = 0;
-			ForderFPRewards[Rank] = 0;
-			ForderRankCosts[Rank] = undefined;
-			SaveRankCosts[Rank] = undefined;
-			Einzahlungen[Rank] = 0;
+			const rank = ranks[rankIndex];
 
-			if (MainParser.CurrentGB.Rankings[i]['reward']['strategy_point_amount'] !== undefined)
-				FPNettoRewards[Rank] = MainParser.round(MainParser.CurrentGB.Rankings[i]['reward']['strategy_point_amount']);
+			if (entry.reward.strategy_point_amount !== undefined)
+				rank.fpNetReward = MainParser.round(entry.reward.strategy_point_amount);
 
-			if (MainParser.CurrentGB.Rankings[i]['reward']['blueprints'] !== undefined)
-				BPRewards[Rank] = MainParser.round(MainParser.CurrentGB.Rankings[i]['reward']['blueprints']);
+			if (entry.reward.blueprints !== undefined)
+				rank.bpReward = MainParser.round(entry.reward.blueprints);
 
-			if (MainParser.CurrentGB.Rankings[i]['reward']['resources']['medals'] !== undefined)
-				MedalRewards[Rank] = MainParser.round(MainParser.CurrentGB.Rankings[i]['reward']['resources']['medals']);
+			if (entry.reward.resources?.medals !== undefined)
+				rank.medalReward = MainParser.round(entry.reward.resources.medals);
 
-			FPRewards[Rank] = MainParser.round(FPNettoRewards[Rank] * arc);
-			BPRewards[Rank] = MainParser.round(BPRewards[Rank] * arc);
-			MedalRewards[Rank] = MainParser.round(MedalRewards[Rank] * arc);
-			ForderFPRewards[Rank] = MainParser.round(FPNettoRewards[Rank] * ForderArc);
+			rank.fpGrossReward  = MainParser.round(rank.fpNetReward * arcMultiplier);
+			rank.bpReward       = MainParser.round(rank.bpReward * arcMultiplier);
+			rank.medalReward    = MainParser.round(rank.medalReward * arcMultiplier);
+			rank.donorFpReward  = MainParser.round(rank.fpNetReward * donorArcMultiplier);
 
-			if (EigenPos !== undefined && i > EigenPos) {
-				ForderStates[Rank] = 'NotPossible';
-				SaveStates[Rank] = 'NotPossible';
+			if (selfRankIndex !== undefined && i > selfRankIndex) {
+				rank.donorState = Calculator.RankState.NOT_POSSIBLE;
+				rank.safeState  = Calculator.RankState.NOT_POSSIBLE;
 				continue;
 			}
 
-			if (MainParser.CurrentGB.Rankings[i]['player']['player_id'] !== undefined && MainParser.CurrentGB.Rankings[i]['player']['player_id'] === ExtPlayerID)
-				IsSelf = true;
+			if (entry.player.player_id !== undefined && entry.player.player_id === ExtPlayerID)
+				isSelf = true;
 
-			if (MainParser.CurrentGB.Rankings[i]['forge_points'] !== undefined)
-				Einzahlungen[Rank] = MainParser.CurrentGB.Rankings[i]['forge_points'];
+			if (entry.forge_points !== undefined)
+				rank.contribution = entry.forge_points;
 
-			CurrentFP = MainParser.CurrentGB.Rankings.reduce((acc,entry)=>acc+(entry?.forge_points|0),0) - EigenBetrag;
-			TotalFP = MainParser.CurrentGB.Entity['state']['forge_points_for_level_up'];
-			RestFP = TotalFP - CurrentFP;
-
-			if (IsSelf) {
-				ForderStates[Rank] = 'Self';
-				SaveStates[Rank] = 'Self';
+			if (isSelf) {
+				rank.donorState = Calculator.RankState.SELF;
+				rank.safeState  = Calculator.RankState.SELF;
 
 				for (let j = i + 1; j < MainParser.CurrentGB.Rankings.length; j++) {
-					// Spieler selbst oder Spieler gelöscht => nächsten Rang überprüfen
-					if (MainParser.CurrentGB.Rankings[j]['rank'] !== undefined && MainParser.CurrentGB.Rankings[j]['rank'] !== -1 && MainParser.CurrentGB.Rankings[j]['forge_points'] !== undefined) {
-						SaveRankCosts[Rank] = MainParser.round((MainParser.CurrentGB.Rankings[j]['forge_points'] + RestFP) / 2);
+					// Self or deleted player? 
+					const nextEntry = MainParser.CurrentGB.Rankings[j];
+					if (nextEntry.rank !== undefined && nextEntry.rank !== -1 && nextEntry.forge_points !== undefined) {
+						rank.safeRankCost = MainParser.round((nextEntry.forge_points + remainingFP) / 2);
 						break;
 					}
 				}
 
-				if (SaveRankCosts[Rank] === undefined)
-					SaveRankCosts[Rank] = MainParser.round(RestFP / 2); // Keine Einzahlung gefunden => Rest / 2
+				if (rank.safeRankCost === undefined)
+					rank.safeRankCost = MainParser.round(remainingFP / 2); // No contribution found => remaining / 2
 
-				ForderRankCosts[Rank] = Math.max(ForderFPRewards[Rank], SaveRankCosts[Rank]);
+				rank.donorRankCost = Math.max(rank.donorFpReward, rank.safeRankCost);
 			}
 			else {
-				SaveRankCosts[Rank] = MainParser.round((Einzahlungen[Rank] + RestFP) / 2);
-				ForderRankCosts[Rank] = Math.max(ForderFPRewards[Rank], SaveRankCosts[Rank]);
-				ForderRankCosts[Rank] = Math.min(ForderRankCosts[Rank], RestFP);
+				rank.safeRankCost  = MainParser.round((rank.contribution + remainingFP) / 2);
+				rank.donorRankCost = Math.max(rank.donorFpReward, rank.safeRankCost);
+				rank.donorRankCost = Math.min(rank.donorRankCost, remainingFP); // Cap at remainingFP to avoid levelling the building
 
-				let ExitLoop = false;
-
-				// Platz schon vergeben
-				if (SaveRankCosts[Rank] <= Einzahlungen[Rank]) {
-					ForderRankCosts[Rank] = 0;
-					ForderStates[Rank] = 'NotPossible';
-					ExitLoop = true;
-				}
-				else {
-					if (ForderRankCosts[Rank] === RestFP) 
-						ForderStates[Rank] = 'LevelWarning';
-					else if (ForderRankCosts[Rank] <= ForderFPRewards[Rank]) 
-						ForderStates[Rank] = 'Profit';
-					else 
-						ForderStates[Rank] = 'NegativeProfit';
-				}
-
-				// Platz schon vergeben
-				if (SaveRankCosts[Rank] <= Einzahlungen[Rank]) {
-					SaveRankCosts[Rank] = 0;
-					SaveStates[Rank] = 'NotPossible';
-					ExitLoop = true;
-				}
-				else {
-					if (SaveRankCosts[Rank] === RestFP) 
-						SaveStates[Rank] = 'LevelWarning';
-					else if (FPRewards[Rank] < SaveRankCosts[Rank]) 
-						SaveStates[Rank] = 'NegativeProfit';
-					else 
-						SaveStates[Rank] = 'Profit';
-				}
-
-				if (ExitLoop)
+				// Rank already taken
+				if (rank.safeRankCost <= rank.contribution) {
+					rank.donorState    = Calculator.RankState.NOT_POSSIBLE;
+					rank.safeState     = Calculator.RankState.NOT_POSSIBLE;
+					rank.donorRankCost = 0;
+					rank.safeRankCost  = 0;
 					continue;
-
-				// Selbe Kosten wie vorheriger Rang => nicht belegbar
-				if (SaveLastRankCost !== undefined && SaveRankCosts[Rank] === SaveLastRankCost) {
-					ForderStates[Rank] = 'NotPossible';
-					ForderRankCosts[Rank] = undefined;
-					SaveStates[Rank] = 'NotPossible';
-					SaveRankCosts[Rank] = undefined;
-					ExitLoop = true;
-				}
-				else {
-					SaveLastRankCost = SaveRankCosts[Rank];
 				}
 
-				if (ExitLoop)
+				if (rank.donorRankCost === remainingFP)
+					rank.donorState = Calculator.RankState.LEVEL_WARNING;
+				else if (rank.donorRankCost <= rank.donorFpReward)
+					rank.donorState = Calculator.RankState.PROFIT;
+				else
+					rank.donorState = Calculator.RankState.NEGATIVE_PROFIT;
+
+				if (rank.safeRankCost === remainingFP)
+					rank.safeState = Calculator.RankState.LEVEL_WARNING;
+				else if (rank.fpGrossReward < rank.safeRankCost)
+					rank.safeState = Calculator.RankState.NEGATIVE_PROFIT;
+				else
+					rank.safeState = Calculator.RankState.PROFIT;
+
+				// Same cost as previous rank => not claimable
+				if (lastSafeRankCost !== undefined && rank.safeRankCost === lastSafeRankCost) {
+					rank.donorState    = Calculator.RankState.NOT_POSSIBLE;
+					rank.donorRankCost = undefined;
+					rank.safeState     = Calculator.RankState.NOT_POSSIBLE;
+					rank.safeRankCost  = undefined;
 					continue;
-
-				let CurrentGewinn = FPRewards[Rank] - SaveRankCosts[Rank];
-				if (CurrentGewinn > BestGewinn) {
-					if (SaveStates[Rank] !== 'LevelWarning')
-						BestGewinn = CurrentGewinn;
 				}
 				else {
-					SaveStates[Rank] = 'WorseProfit';
-					ForderStates[Rank] = 'WorseProfit';
+					lastSafeRankCost = rank.safeRankCost;
+				}
+
+				const currentProfit = rank.fpGrossReward - rank.safeRankCost;
+				if (currentProfit > bestProfit) {
+					if (rank.safeState !== Calculator.RankState.LEVEL_WARNING)
+						bestProfit = currentProfit;
+				}
+				else {
+					rank.safeState  = Calculator.RankState.WORSE_PROFIT;
+					rank.donorState = Calculator.RankState.WORSE_PROFIT;
 				}
 			}
 		}
@@ -360,151 +346,146 @@ let Calculator = {
 			h.push('<th><span class="medal" title="' + HTML.i18nTooltip(i18n('Boxes.Calculator.Meds')) + '"></span></th>');
 		h.push('</thead>');
 
-		for (let Rank = 0; Rank < ForderRankCosts.length; Rank++) {
-			let ForderCosts = (ForderStates[Rank] === 'Self' ? Einzahlungen[Rank] : ForderFPRewards[Rank]),
-				SaveCosts = (SaveStates[Rank] === 'Self' ? Einzahlungen[Rank] : SaveRankCosts[Rank]);
+		for (let rankIndex = 0; rankIndex < ranks.length; rankIndex++) {
+			const rank = ranks[rankIndex];
 
-			let ForderGewinn = FPRewards[Rank] - ForderCosts,
-				ForderRankDiff = (ForderRankCosts[Rank] !== undefined ? ForderRankCosts[Rank] - ForderFPRewards[Rank] : 0),
-				SaveGewinn = FPRewards[Rank] - SaveCosts,
-				Kurs = (FPNettoRewards[Rank] > 0 ? MainParser.round(SaveCosts / FPNettoRewards[Rank] * 1000)/10 : 0);
+			let donorCosts = (rank.donorState === Calculator.RankState.SELF ? rank.contribution : rank.donorFpReward),
+				safeCosts  = (rank.safeState  === Calculator.RankState.SELF ? rank.contribution : rank.safeRankCost);
 
-			if (SaveStates[Rank] !== 'Self' && Kurs > 0) {
-				if (Kurs < BestKurs) {
-					BestKurs = Kurs;
-					let BestKursNettoFP = FPNettoRewards[Rank],
-						BestKursEinsatz = SaveRankCosts[Rank];
+			let donorProfit   = rank.fpGrossReward - donorCosts,
+				donorRankDiff = (rank.donorRankCost !== undefined ? rank.donorRankCost - rank.donorFpReward : 0),
+				rate          = (rank.fpNetReward > 0 ? MainParser.round(safeCosts / rank.fpNetReward * 1000) / 10 : 0);
+
+			if (rank.safeState !== Calculator.RankState.SELF && rate > 0) {
+				if (rate < bestRate) {
+					bestRate = rate;
+					let bestRateNetFP  = rank.fpNetReward,
+						bestRateInvest = rank.safeRankCost;
 				}
 			}
 
+			let rowClass,
+				rankClass,
+				rankText    = rankIndex + 1,
+				rankTooltip = [],
 
-			let RowClass,
-				RankClass,
-				RankText = Rank + 1,
-				RankTooltip = [],
+				contributionClass   = (rank.donorFpReward - selfContribution > StrategyPoints.AvailableFP ? 'error' : ''),
+				contributionText    = HTML.Format(rank.donorFpReward) + Calculator.FormatForderRankDiff(donorRankDiff),
+				contributionTooltip = [HTML.i18nReplacer(i18n('Boxes.Calculator.TTForderCosts'), { 'nettoreward': rank.fpNetReward, 'forderfactor': (100 + Calculator.ForderBonus), 'costs': rank.donorFpReward })],
 
-				EinsatzClass = (ForderFPRewards[Rank] - EigenBetrag > StrategyPoints.AvailableFP ? 'error' : ''), 
-				EinsatzText = HTML.Format(ForderFPRewards[Rank]) + Calculator.FormatForderRankDiff(ForderRankDiff), //Default: Einsatz + ForderRankDiff
-				EinsatzTooltip = [HTML.i18nReplacer(i18n('Boxes.Calculator.TTForderCosts'), { 'nettoreward': FPNettoRewards[Rank], 'forderfactor': (100 + Calculator.ForderBonus), 'costs': ForderFPRewards[Rank] })],
+				profitClass   = (donorProfit >= 0 ? 'success' : 'error'),
+				profitText    = HTML.Format(donorProfit),
+				profitTooltip;
 
-				GewinnClass = (ForderGewinn >= 0 ? 'success' : 'error'), //Default: Grün wenn >= 0 sonst rot
-				GewinnText = HTML.Format(ForderGewinn), //Default: Gewinn
-				GewinnTooltip;
-
-			if (ForderFPRewards[Rank] - EigenBetrag > StrategyPoints.AvailableFP) {
-				EinsatzTooltip.push(HTML.i18nReplacer(i18n('Boxes.Calculator.TTForderFPStockLow'), { 'fpstock': StrategyPoints.AvailableFP, 'costs': ForderFPRewards[Rank] - EigenBetrag, 'tooless': (ForderFPRewards[Rank] - EigenBetrag - StrategyPoints.AvailableFP) }));
+			if (rank.donorFpReward - selfContribution > StrategyPoints.AvailableFP) {
+				contributionTooltip.push(HTML.i18nReplacer(i18n('Boxes.Calculator.TTForderFPStockLow'), { 'fpstock': StrategyPoints.AvailableFP, 'costs': rank.donorFpReward - selfContribution, 'tooless': (rank.donorFpReward - selfContribution - StrategyPoints.AvailableFP) }));
 			}
 
-			if (ForderGewinn >= 0) {
-				GewinnTooltip = [HTML.i18nReplacer(i18n('Boxes.Calculator.TTProfit'), { 'nettoreward': FPNettoRewards[Rank], 'arcfactor': (100 + MainParser.ArkBonus), 'bruttoreward': FPRewards[Rank], 'safe': SaveRankCosts[Rank], 'costs': ForderFPRewards[Rank], 'profit': ForderGewinn })]
+			if (donorProfit >= 0) {
+				profitTooltip = [HTML.i18nReplacer(i18n('Boxes.Calculator.TTProfit'), { 'nettoreward': rank.fpNetReward, 'arcfactor': (100 + MainParser.ArkBonus), 'bruttoreward': rank.fpGrossReward, 'safe': rank.safeRankCost, 'costs': rank.donorFpReward, 'profit': donorProfit })]
 			}
 			else {
-				GewinnTooltip = [HTML.i18nReplacer(i18n('Boxes.Calculator.TTLoss'), { 'nettoreward': FPNettoRewards[Rank], 'arcfactor': (100 + MainParser.ArkBonus), 'bruttoreward': FPRewards[Rank], 'safe': SaveRankCosts[Rank], 'costs': ForderFPRewards[Rank], 'loss': 0-ForderGewinn })]
+				profitTooltip = [HTML.i18nReplacer(i18n('Boxes.Calculator.TTLoss'), { 'nettoreward': rank.fpNetReward, 'arcfactor': (100 + MainParser.ArkBonus), 'bruttoreward': rank.fpGrossReward, 'safe': rank.safeRankCost, 'costs': rank.donorFpReward, 'loss': 0 - donorProfit })]
 			}
 
-			if (ForderStates[Rank] === 'Self') {
-				RowClass = 'bg-blue';
-				RankClass = 'info';
+			if (rank.donorState === Calculator.RankState.SELF) {
+				rankClass = 'info';
 
-				if (Einzahlungen[Rank] < ForderFPRewards[Rank]) {
-					EinsatzClass = 'error';
-					EinsatzTooltip.push(HTML.i18nReplacer(i18n('Boxes.Calculator.TTPaidTooLess'), { 'paid': Einzahlungen[Rank], 'topay': ForderFPRewards[Rank], 'tooless': ForderFPRewards[Rank] - Einzahlungen[Rank] }));
+				if (rank.contribution < rank.donorFpReward) {
+					contributionClass = 'error';
+					contributionTooltip.push(HTML.i18nReplacer(i18n('Boxes.Calculator.TTPaidTooLess'), { 'paid': rank.contribution, 'topay': rank.donorFpReward, 'tooless': rank.donorFpReward - rank.contribution }));
 				}
-				else if (Einzahlungen[Rank] > ForderFPRewards[Rank]) {
-					EinsatzClass = 'warning';
-					EinsatzTooltip.push(HTML.i18nReplacer(i18n('Boxes.Calculator.TTPaidTooMuch'), { 'paid': Einzahlungen[Rank], 'topay': ForderFPRewards[Rank], 'toomuch': Einzahlungen[Rank] - ForderFPRewards[Rank]}));
+				else if (rank.contribution > rank.donorFpReward) {
+					contributionClass = 'warning';
+					contributionTooltip.push(HTML.i18nReplacer(i18n('Boxes.Calculator.TTPaidTooMuch'), { 'paid': rank.contribution, 'topay': rank.donorFpReward, 'toomuch': rank.contribution - rank.donorFpReward }));
 				}
 				else {
-					EinsatzClass = 'info';
+					contributionClass = 'info';
 				}
 
-				EinsatzText = HTML.Format(Einzahlungen[Rank]);
-				if (Einzahlungen[Rank] !== ForderFPRewards[Rank]) 
-					EinsatzText += ' <small>(=' + HTML.Format(ForderFPRewards[Rank]) + ')</small>';
-				EinsatzText += Calculator.FormatForderRankDiff(ForderRankDiff);
+				contributionText = HTML.Format(rank.contribution);
+				if (rank.contribution !== rank.donorFpReward)
+					contributionText += ' <small>(=' + HTML.Format(rank.donorFpReward) + ')</small>';
+				contributionText += Calculator.FormatForderRankDiff(donorRankDiff);
 
-
-				if (ForderRankDiff > 0 && Einzahlungen[Rank] < ForderRankCosts[Rank]) {
-					EinsatzTooltip.push(HTML.i18nReplacer(i18n('Boxes.Calculator.TTForderNegativeProfit'), { 'fpcount': ForderRankDiff, 'totalfp': ForderRankCosts[Rank] }));
+				if (donorRankDiff > 0 && rank.contribution < rank.donorRankCost) {
+					contributionTooltip.push(HTML.i18nReplacer(i18n('Boxes.Calculator.TTForderNegativeProfit'), { 'fpcount': donorRankDiff, 'totalfp': rank.donorRankCost }));
 				}
-				else if (ForderRankDiff < 0) {
-					EinsatzTooltip.push(HTML.i18nReplacer(i18n('Boxes.Calculator.TTLevelWarning'), { 'fpcount': (0 - ForderRankDiff), 'totalfp': ForderRankCosts[Rank] }));
+				else if (donorRankDiff < 0) {
+					contributionTooltip.push(HTML.i18nReplacer(i18n('Boxes.Calculator.TTLevelWarning'), { 'fpcount': (0 - donorRankDiff), 'totalfp': rank.donorRankCost }));
 				}
 
-				if (ForderGewinn > 0) {
-					GewinnTooltip = [HTML.i18nReplacer(i18n('Boxes.Calculator.TTProfitSelf'), { 'nettoreward': FPNettoRewards[Rank], 'arcfactor': (100 + MainParser.ArkBonus), 'bruttoreward': FPRewards[Rank], 'paid': Einzahlungen[Rank], 'profit': ForderGewinn })]
+				if (donorProfit > 0) {
+					profitTooltip = [HTML.i18nReplacer(i18n('Boxes.Calculator.TTProfitSelf'), { 'nettoreward': rank.fpNetReward, 'arcfactor': (100 + MainParser.ArkBonus), 'bruttoreward': rank.fpGrossReward, 'paid': rank.contribution, 'profit': donorProfit })]
 				}
 				else {
-					GewinnTooltip = [HTML.i18nReplacer(i18n('Boxes.Calculator.TTLossSelf'), { 'nettoreward': FPNettoRewards[Rank], 'arcfactor': (100 + MainParser.ArkBonus), 'bruttoreward': FPRewards[Rank], 'paid': Einzahlungen[Rank], 'loss': 0 - ForderGewinn })]
+					profitTooltip = [HTML.i18nReplacer(i18n('Boxes.Calculator.TTLossSelf'), { 'nettoreward': rank.fpNetReward, 'arcfactor': (100 + MainParser.ArkBonus), 'bruttoreward': rank.fpGrossReward, 'paid': rank.contribution, 'loss': 0 - donorProfit })]
 				}
 
-				GewinnClass = 'info';
+				profitClass = 'info';
 			}
-			else if (ForderStates[Rank] === 'NegativeProfit') {
-				RowClass = 'bg-red';
-				RankClass = 'error';
+			else if (rank.donorState === Calculator.RankState.NEGATIVE_PROFIT) {
+				rankClass = 'error';
 
-				EinsatzTooltip.push(HTML.i18nReplacer(i18n('Boxes.Calculator.TTForderNegativeProfit'), { 'fpcount': ForderRankDiff, 'totalfp': ForderRankCosts[Rank] }));
+				contributionTooltip.push(HTML.i18nReplacer(i18n('Boxes.Calculator.TTForderNegativeProfit'), { 'fpcount': donorRankDiff, 'totalfp': rank.donorRankCost }));
 
-				GewinnClass = 'error';
+				profitClass = 'error';
 			}
-			else if (ForderStates[Rank] === 'LevelWarning') {
-				RowClass = 'bg-yellow';
-				RankClass = '';
+			else if (rank.donorState === Calculator.RankState.LEVEL_WARNING) {
+				rankClass = '';
 
-				EinsatzTooltip.push(i18n('Boxes.Calculator.LevelWarning'));
+				contributionTooltip.push(i18n('Boxes.Calculator.LevelWarning'));
 
-				if (ForderRankDiff < 0) {
+				if (donorRankDiff < 0) {
 					Calculator.PlaySound();
-					EinsatzTooltip.push(HTML.i18nReplacer(i18n('Boxes.Calculator.TTLevelWarning'), { 'fpcount': (0 - ForderRankDiff), 'totalfp': ForderRankCosts[Rank] }));
+					contributionTooltip.push(HTML.i18nReplacer(i18n('Boxes.Calculator.TTLevelWarning'), { 'fpcount': (0 - donorRankDiff), 'totalfp': rank.donorRankCost }));
 				}
 
-				GewinnClass = '';
+				profitClass = '';
 			}
-			else if (ForderStates[Rank] === 'Profit') {
-				RowClass = 'bg-green';
-				RankClass = 'success';
+			else if (rank.donorState === Calculator.RankState.PROFIT) {
+				rankClass = 'success';
 
 				Calculator.PlaySound();
 			}
 			else {
-				RowClass = 'text-grey';
-				RankClass = '';
+				rankClass = '';
 
-				EinsatzText = HTML.Format(ForderFPRewards[Rank]);
+				contributionText = HTML.Format(rank.donorFpReward);
 
-				GewinnText = '-';
-				GewinnTooltip = [];
+				profitText    = '-';
+				profitTooltip = [];
 			}
 
-			// no clue why this is already set above and then cleared again?!
-			// RowClass = '';
+			if (rank.donorState === Calculator.RankState.NOT_POSSIBLE && rank.safeState === Calculator.RankState.NOT_POSSIBLE)
+				rowClass = 'text-grey';
+			else if (rank.donorState === Calculator.RankState.PROFIT && rank.safeState === Calculator.RankState.PROFIT)
+				rowClass = 'bg-green';
+			else if (rank.donorState === Calculator.RankState.WORSE_PROFIT && rank.safeState === Calculator.RankState.WORSE_PROFIT)
+				rowClass = 'text-grey';
+			else if (rank.donorState === Calculator.RankState.SELF && rank.safeState === Calculator.RankState.SELF)
+				rowClass = 'bg-blue';
+			else if (rank.donorState === Calculator.RankState.NEGATIVE_PROFIT && rank.safeState === Calculator.RankState.NEGATIVE_PROFIT)
+				rowClass = 'bg-red';
+			else if (rank.donorState === Calculator.RankState.LEVEL_WARNING && rank.safeState === Calculator.RankState.LEVEL_WARNING)
+				rowClass = 'bg-yellow';
 
-			if (ForderStates[Rank] === 'NotPossible' && SaveStates[Rank] === 'NotPossible') 
-				RowClass = 'text-grey';
-			else if (ForderStates[Rank] === 'Profit' && SaveStates[Rank] === 'Profit') 
-				RowClass = 'bg-green';
-			else if (ForderStates[Rank] === 'WorseProfit' && SaveStates[Rank] === 'WorseProfit') 
-				RowClass = 'text-grey';
-			else if (ForderStates[Rank] === 'Self' && SaveStates[Rank] === 'Self') 
-				RowClass = 'bg-blue';
-			else if (ForderStates[Rank] === 'NegativeProfit' && SaveStates[Rank] === 'NegativeProfit') 
-				RowClass = 'bg-red';
-			else if (ForderStates[Rank] === 'LevelWarning' && SaveStates[Rank] === 'LevelWarning') 
-				RowClass = 'bg-yellow';
+			if (rank.contribution > 0 && rank.donorState !== Calculator.RankState.PROFIT && rank.donorState !== Calculator.RankState.LEVEL_WARNING)
+				contributionClass = 'info';
+			if (rank.contribution === 0)
+				rankClass = 'info';
+			console.log(rank);
 
-			h.push(`<tr class="text-center ${RowClass}">
+			h.push(`<tr class="text-center ${rowClass}">
+				<td> <strong class="${rankClass}">${rankText}</strong> </td>
 				<td>
-					<strong class="${RankClass} td-tooltip" data-original-title="${HTML.i18nTooltip(RankTooltip.join('<br>'))}">${RankText}</strong>
+					<strong class="${contributionClass} td-tooltip copy-fp clickable" data-copy="${rank.donorFpReward}" data-original-title="${HTML.i18nTooltip(contributionTooltip.join('<br>'))}">${contributionText}</strong>
 				</td>
 				<td>
-					<strong class="${EinsatzClass} td-tooltip copy-fp clickable" data-copy="${ForderFPRewards[Rank]}" data-original-title="${HTML.i18nTooltip(EinsatzTooltip.join('<br>'))}">${EinsatzText}</strong>
+					<strong class="${profitClass} td-tooltip copy-fp" data-copy="${donorProfit}" data-original-title="${HTML.i18nTooltip(profitTooltip.join('<br>'))}">${profitText}</strong>
 				</td>
-				<td>
-					<strong class="${GewinnClass} td-tooltip copy-fp" data-copy="${ForderGewinn}" data-original-title="${HTML.i18nTooltip(GewinnTooltip.join('<br>'))}">${GewinnText}</strong>
-				</td>
-				<td> ${HTML.Format(BPRewards[Rank])} </td>
-				<td> <small> ${HTML.Format(MedalRewards[Rank])} </small> </td>
+				<td> ${HTML.Format(rank.bpReward)} </td>
+				<td> <small> ${HTML.Format(rank.medalReward)} </small> </td>
 			</tr>`);
 		}
 
