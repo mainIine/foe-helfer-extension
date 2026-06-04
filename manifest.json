@@ -19,7 +19,7 @@
 
 	"action": {
 		"default_icon": "images/app16.png",
-		"default_popup": "content/popup.html",
+		"default_popup": "content/info.html",
 		"default_title": "__MSG_appName__"
 	},
 

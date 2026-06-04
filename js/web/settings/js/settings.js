@@ -87,9 +87,7 @@ let Settings = {
 			parentLis.push(`<li><a href="#tab-${i}"><span>${i18n('Settings.Tab.' + g)}</span></a></li>`);
 
 			for (let x in grps) {
-				if (!grps.hasOwnProperty(x) || grps[x].hidden) {
-					break;
-				}
+				if (!grps.hasOwnProperty(x) || grps[x].hidden) break;
 
 				let d = grps[x],
 					status = d['status'],
@@ -101,7 +99,6 @@ let Settings = {
 					cs = $('<div />').addClass('setting');
 
 				if ("SelectedMenu" !== d['name'] && 'NotificationsPosition' !== d['name'] && 'ApiToken' !== d['name']) {
-
 					let s = localStorage.getItem(d['name']);
 
 					if (s !== null) {
@@ -136,7 +133,12 @@ let Settings = {
 				cd.html(i18n(`Settings.${d['name']}.Desc`));
 				ct.text(i18n(`Settings.${d['name']}.Title`));
 
-				childLis.push(`<li><a href="#subtab-${cnt}" title="${i18n('Settings.Entry.' + d['name'])}">${i18n('Settings.Entry.' + d['name'])}</a></li>`);
+				childLis.push(`<li class="${d['cssClass']||""}">`);
+				if (d.link)
+					childLis.push(`<a href="${extUrl}${d.link}" target="_blank">${i18n('Settings.Entry.' + d['name'])}</a>`);
+				else
+					childLis.push(`<a href="#subtab-${cnt}">${i18n('Settings.Entry.' + d['name'])}</a>`);
+				childLis.push(`</li>`);
 
 				let h = c.append(cr.append(ct, cd, cs));
 				childDivs.push('<div id="subtab-' + cnt + '" class="sub-tab">' + h.html() + '</div>');
@@ -172,6 +174,10 @@ let Settings = {
 			container: 'body',
 			html: true,
 		});
+	},
+
+	NoCallback: () => {
+		return;
 	},
 
 
@@ -234,7 +240,10 @@ let Settings = {
 	 */
 	VersionInfo: () => {
 		let v = extVersion.includes('beta') ? `` : `<p>${i18n('Settings.Version.Link').replace('__version__', '')}</p>`;
-		v +=	`<dl class="info-box">
+		v +=	`<p><a href="${extUrl}content/about.html" target="_blank">${i18n('Settings.About.Title')}</a><br />
+					<a href="${extUrl}content/help.html" target="_blank">${i18n('Settings.Help.Title')}</a>
+				</p>
+				<dl class="info-box">
 					<dt>${i18n('Settings.Version.Title')}</dt><dd>${extVersion}</dd>
 					<dt>${i18n('Settings.Version.PlayerId')}</dt><dd>${ExtPlayerID}</dd>
 					<dt>${i18n('Settings.Version.GuildId')}</dt><dd>${(ExtGuildID ? ExtGuildID : 'N/A')}</dd>
@@ -346,30 +355,6 @@ let Settings = {
 				alert(i18n('Settings.ExportImport.Error'));
 			}
 		}
-	},
-
-
-	/**
-	 * General Information	 
-	 *
-	 * @returns {string}
-	 */
-	About: () => {
-		return '<hr>' +
-			'<h2>' + i18n('Settings.About.RatingTitle') + '</h2>' +
-			'<p>' + i18n('Settings.About.RatingDesc') + '</p>';
-	},
-
-
-	/**
-	 * Help list
-	 *
-	 * @returns {string}
-	 */
-	Help: () => {
-		return '<ul class="helplist">' +
-			'<li><a href="#" target="_blank"><span class="discord">&nbsp;</span>' + i18n('Settings.Help.Discord') + '</a></li>' +
-			'</ul>';
 	},
 
 

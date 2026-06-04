@@ -1784,7 +1784,7 @@ let GuildFights = {
 				}
 			c.push(`</select>`);}
 			c.push(`</p>`);
-		c.push(`<p><button onclick="GuildFights.SaveLiveFightSettings()" id="save-livefight-settings" class="btn btn-green">${i18n('Boxes.GuildFights.SaveSettings')}</button></p>`);
+		c.push(`<p><button onclick="GuildFights.SaveLiveFightSettings()" id="save-livefight-settings" class="btn saveSettings">${i18n('Boxes.GuildFights.SaveSettings')}</button></p>`);
 
 		
 		$('#LiveGildFightingSettingsBox').html(c.join(''));

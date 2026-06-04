@@ -86,19 +86,6 @@
 		"sort": 40
 	},
 	{
-		"name": "ResetBoxPositions",
-		"button": "Settings.ResetBoxCoords()",
-		"group": "Boxes",
-		"sort": 0
-	},
-	{
-		"name": "ShowLinks",
-		"status": true,
-		"callback": "SelectWebsite",
-		"group": "Boxes",
-		"sort": 2
-	},
-	{
 		"name": "ShowPlayersMotivation",
 		"status": true,
 		"group": "Boxes",
@@ -106,7 +93,7 @@
 	},
 	{
 		"name": "ShowPotions",
-		"status": true,
+		"status": false,
 		"group": "Boxes",
 		"sort": 5
 	},
@@ -130,14 +117,8 @@
 		"sort": 11
 	},
 	{
-		"name": "HideHelperDuringBattle",
+		"name": "ShowGBGRewards",
 		"status": false,
-		"group": "Boxes",
-		"sort": 15
-	},
-	{
-		"name": "ExportSettings",
-		"callback": "ExportView",
 		"group": "Boxes",
 		"sort": 19
 	},
@@ -148,22 +129,30 @@
 		"sort": 20
 	},
 	{
-		"name": "ShowGBGRewards",
+		"name": "ResetBoxPositions",
+		"button": "Settings.ResetBoxCoords()",
+		"group": "Boxes",
+		"cssClass": "spacer",
+		"sort": 23
+	},
+	{
+		"name": "HideHelperDuringBattle",
 		"status": false,
 		"group": "Boxes",
-		"sort": 19
+		"sort": 24
+	},
+
+	{
+		"name": "MenuContent",
+		"callback": "MenuContent",
+		"group": "Extension",
+		"sort": 1
 	},
 	{
 		"name": "SelectedMenu",
 		"callback": "MenuSelected",
 		"group": "Extension",
 		"sort": 2
-	},
-	{
-		"name": "MenuContent",
-		"callback": "MenuContent",
-		"group": "Extension",
-		"sort": 3
 	},
 	{
 		"name": "MenuLength",
@@ -175,6 +164,7 @@
 		"name": "EnableSound",
 		"status": true,
 		"group": "Extension",
+		"cssClass": "spacer",
 		"sort": 7
 	},
 	{
@@ -188,6 +178,7 @@
 		"status": true,
 		"group": "Extension",
 		"button":"MainParser.Inactives.showSettings()",
+		"cssClass": "spacer",
 		"sort": 9
 	},
 	{
@@ -216,28 +207,32 @@
 		"sort": 0
 	},
 	{
-		"name": "Help",
-		"callback": "Help",
-		"group": "About",
-		"sort": 9
-	},
-	{
-		"name": "About",
-		"callback": "About",
-		"group": "About",
-		"sort": 10
-	},
-	{
 		"name": "Version",
 		"callback": "VersionInfo",
 		"group": "About",
 		"sort": 13
 	},
 	{
+		"name": "ShowLinks",
+		"status": true,
+		"callback": "SelectWebsite",
+		"cssClass": "spacer",
+		"group": "About",
+		"sort": 20
+	},
+	{
+		"name": "ExportSettings",
+		"callback": "ExportView",
+		"cssClass": "spacer",
+		"group": "About",
+		"sort": 25
+	},
+	{
 		"name": "LoadBeta2",
 		"group": "About",
 		"button":"window.open('https://github.com/mainIine/foe-helfer-extension/archive/refs/heads/beta.zip', '_blank').focus();",
-		"sort": 19
+		"sort": 19,
+		"hidden": true
 	},
 
 	{

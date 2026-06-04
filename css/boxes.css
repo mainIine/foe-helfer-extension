@@ -674,9 +674,7 @@ p {
 	background-image: url('../images/menu/recurringQuests.png');
 }
 
-[id$=campagneMap-Btn] {
-	display: none;
-}
+[id$=campagneMap-Btn], [id$=notice-Btn] { display: none !important; }
 
 [id$=cityMap-Btn] span {
 	background-image: url('../images/menu/citymap.png');
@@ -741,8 +739,6 @@ p {
 [id$=notice-Btn] span {
 	background-image: url('../images/menu/notices.png');
 }
-
-[id$=notice-Btn] { display: none; }
 
 [id$=blueGalaxy-Btn] span {
 	background-image: url('../images/menu/BlueGalaxy.png');
@@ -884,6 +880,10 @@ Tabs */
 	display: block;
 	color: var(--beige);
 	position: relative;
+}
+
+.window-body .tabs ul.vertical li.spacer {
+	margin-top: 0.75em;
 }
 
 .window-body .tabs ul.vertical li.active,
@@ -2032,6 +2032,7 @@ input[type="range"]::-webkit-slider-thumb {
 
 .hud-btn-red {
 	background: var(--menu-btn-disabled-bg);
+	box-shadow: var(--menu-btn-shadow-disabled);
 }
 
 .hud-btn span:first-child {

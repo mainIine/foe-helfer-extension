@@ -697,7 +697,7 @@ let Parts = {
 				Parts.Maezens[i] = Rest;
 			}
 			// hier weiter mit besserem gehirn
-			//if (i !== Parts.LockedMaezens.find(x => x == i)) 
+			if (i !== Parts.LockedMaezens.find(x => x == i)) 
 				Parts.PlaceAvailables[i] = true;
 			
 			MaezenTotal += Parts.Maezens[i];
@@ -1659,9 +1659,7 @@ let Parts = {
 				<input id="copyformatpergb" class="copyformatpergb game-cursor" ${(Parts.CopyFormatPerGB ? 'checked' : '')} type="checkbox"> <label for="copyformatpergb">${i18n('Boxes.OwnpartCalculator.CopyFormatPerGB')}</label><br>
 				<input type="checkbox" id="includeStart" class="includeStart game-cursor" ${((includeStart == 'true') ? 'checked' : '')}> <label for="includeStart">${i18n('Settings.ShowOwnPartIncludeStart.Desc')}</label>
 			</p>
-			<p class="text-center p2">
-				<button id="save-calculator-settings" class="btn btn-green" onclick="Parts.SettingsSaveValues()">${i18n('Boxes.Calculator.Settings.Save')}</button>
-			</p>`);
+			<button id="save-calculator-settings" class="btn saveSettings" onclick="Parts.SettingsSaveValues()">${i18n('Boxes.Calculator.Settings.Save')}</button>`);
 
 		$('#OwnPartBoxSettingsBox').html(c.join(''));
 	},

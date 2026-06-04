@@ -1,0 +1,86 @@
+/*
+ * Copyright (C) 2026 Forge Hammer - All Rights Reserved
+ * Licensed under AGPL - see LICENSE.md for details.
+ */
+
+html {
+	background-color: #242420;
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	background: #242420;
+	color: #eee;
+	margin: 0;
+	padding: 0;
+	font-size: 0.9em;
+	min-width: 330px;
+}
+
+body.fullpage {
+	background: #242420 url(../images/contentbg.jpg) bottom right;
+	background-size: cover;
+	min-height: 100vh;
+}
+
+section {
+	max-width: 700px;
+	width: calc(100% - 2em);
+	margin: 0 auto;
+	padding: 1em 0;
+}
+
+header {
+	text-align: center;
+	background-color: #fff1;
+	padding: 1em 0.5em;
+	box-sizing: border-box;
+	margin-bottom: 0.5em;
+	border-radius: 0.5em;
+}
+
+header img {
+	padding-bottom: 0.5em;
+}
+
+h1 {
+	font-size: 1.2em;
+	margin: 0 0 0.5em;
+}
+
+.fullpage h1 { font-size: 1.5em; }
+.fullpage h2 { font-size: 1.2em; }
+
+a {
+	color: #ef9444;
+}
+
+a:hover,
+a:focus, h1, h2, h3 {
+	color: #f5be27;
+}
+
+hr {
+	border-width: 1px 0;
+	border-style: solid;
+	border-color: #000 transparent #333;
+	margin: 2em 0;
+}
+
+p img.icon {
+	height: 1em;
+	vertical-align: baseline;
+}
+
+h2 img.icon {
+	height: 1.3em;
+	float: right;
+}
+
+code {
+	font-size: 1.1em;
+	padding: 2px;
+	margin: -2px;
+	background-color: #141414a2;
+}
