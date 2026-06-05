@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2026 Forge Hammer - All Rights Reserved
  * Licensed under AGPL - see LICENSE.md for details.
  */
 
@@ -7,7 +7,7 @@
 	--white: #fff;
 	--beige: #d4d0cc;
 	--dark-beige: #8c8880;
-	--sunflower: #b6a37e;
+	--sunflower: #f9ce79;
 	--text-medium: #7a7670;
 	--text-medium2: #5e5a55;
 	--text-dark: #3a3733;
@@ -24,16 +24,13 @@
 	--black-65: #000000a6;
 	--white-65: #ffffffa6;
 
-	--success: #6a9e5a;
+	--success: #77c960;
 	--limegreen: #5ac84a;
-	--info-blue: #5a8ab0;
+	--info-blue: #5ca1db;
 	--danger-red: #c04040;
 
 	--text-tab-active: #c8c4be;
 	--text-tab: #807d79;
-
-	--text-btn-disabled: #5a5a5a;
-	--text-btn: #b8b4ae;
 
 	--background-light: #bebdbd;
 	--background-medium: #1e1c1a;
@@ -60,6 +57,9 @@
 	--btn-border: 1px solid #0a0908;
 	--btn-border-active-color: #0a0908;
 
+	--text-btn-disabled: #5a5a5a;
+	--text-btn: #d3ccc1;
+
 	--btn-bg-red: linear-gradient(to bottom, #4e1414,#280808);
 	--btn-bg-red-active: linear-gradient(to bottom, #6a1a1a,#380a0a);
 	--btn-bg-red-onclick: linear-gradient(to bottom, #3a0808, #1e0404);
@@ -73,7 +73,7 @@
 	--border-tab: #091a43;
 
 	--table-bg-hover: #492a9e22;
-	--table-bg-odd: #00000038;
+	--table-bg-odd: #0000004b;
 	--table-bg-darker: #08060480;
 	--table-bg-info: #1a1a2e4d;
 	--table-bt-info: #2a2a3e;
