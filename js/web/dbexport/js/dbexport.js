@@ -83,7 +83,12 @@ let DBExport = {
         const databases = DBInfo;
         databases.forEach(item => {
             item = Object.values(item)[0];
-            h.push(`<tr><td><input class="inpExport" type="checkbox" value="1" data-type="indexdb" data-value="${item.dbname}" checked="checked" /></td><td>${item.dbname}</td><td>indexDB</td><td>${item.tableCount}</td><td>${item.rowCount}</td></tr>`);
+            if (item.dbname == "HX-DB") return;
+
+            h.push(`<tr>
+                <td><input class="inpExport" type="checkbox" value="1" data-type="indexdb" data-value="${item.dbname}" checked="checked" /></td>
+                <td>${item.dbname}</td><td>indexDB</td><td>${item.tableCount}</td><td>${item.rowCount}</td>
+                </tr>`);
         });
 
         h.push(`</tbody></table>`);
