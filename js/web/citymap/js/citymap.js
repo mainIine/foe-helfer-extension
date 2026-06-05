@@ -58,7 +58,8 @@ let CityMap = {
 		areaOccupied: 0,
 		areaAvailable: 0,
 		buildingAreas: [],
-		buildingTypes: []
+		buildingTypes: [],
+		hasCollectableBuildings: false
 	},
 
 
@@ -732,10 +733,15 @@ let CityMap = {
 			let canAscend = (await CityBuildings.canAscend(building.entityId) ? ' ascendable' : '');
 			let isDecayed = (building.state.isDecayed ? ' decayed' : '');
 			let isNotPolivated = (building.state.isPolivated === false ? ' notPolivated' : '');
-			let isCollectable = (building.state.name == "collectable" ? ' collectable' : '');
+
+			let isCollectable = '';
+			if (building.state.name == "collectable") {
+				isCollectable = ' collectable';
+				CityMap.metrics.hasCollectableBuildings = true;
+			}
 			let rating = (building.rating?.totalScore*100 <= (rating10) ? ' rating10' : 
 						(building.rating?.totalScore*100 <= (rating20) ? ' rating20' :	
-						(building.rating?.totalScore*100 <= (rating30) ? ' rating30' : '')))
+						(building.rating?.totalScore*100 <= (rating30) ? ' rating30' : '')));
 			
 			let f = $('<span '+ MainParser.Allies.tooltip(building.id) + '/>').addClass('entity helperTT ' + building.type + noStreet + isNotPolivated + isCollectable + canAscend + isDecayed + rating + isLimited + fromQI + fromGBG).css({
 				width: xsize + 'em',
@@ -925,7 +931,8 @@ let CityMap = {
 		if (ActiveMap !== 'OtherPlayer') {
 			areaStats.push(`<li class="clickable"><label for="highlight-old-buildings"><input type="checkbox" id="highlight-old-buildings" onclick="CityMap.highlightOldBuildings()"> ${i18n('Boxes.CityMap.HighlightOldBuildings')}</label></li>`);
 			areaStats.push(`<li class="clickable"><label for="highlightNotPolivatedBuildings"><input type="checkbox" id="highlightNotPolivatedBuildings" onclick="CityMap.highlightNotPolivatedBuildings()"> ${i18n('Boxes.CityMap.HighlightNotPolivatedBuildings')}</label></li>`);
-			areaStats.push(`<li class="clickable"><label for="highlightCollectableBuildings"><input type="checkbox" id="highlightCollectableBuildings" onclick="CityMap.highlightCollectableBuildings()"> ${i18n('Boxes.CityMap.HighlightCollectableBuildings')}</label></li>`);
+			if (CityMap.metrics.hasCollectableBuildings)
+				areaStats.push(`<li class="clickable"><label for="highlightCollectableBuildings"><input type="checkbox" id="highlightCollectableBuildings" onclick="CityMap.highlightCollectableBuildings()"> ${i18n('Boxes.CityMap.HighlightCollectableBuildings')}</label></li>`);
 		}
 		areaStats.push('</ul>')
 
