@@ -110,13 +110,15 @@ function inject (loadBeta = false, extUrl = chrome.runtime.getURL(''), betaDate=
 		if(document.head !== null){
 			let MenuSetting = localStorage.getItem('SelectedMenu');
 			MenuSetting = MenuSetting ? MenuSetting : 'RightBar';
-			let cssname = "_menu_" + MenuSetting.toLowerCase().replace("bar","");
+			let menuCss = "_menu_" + MenuSetting.toLowerCase().replace("bar","");
+
+			let skinCss = localStorage.getItem('HammerSkin')||'variables';
 
 			let cssFiles = [
 				'boxes',
-				'variables',
+				skinCss,
 				'goods',
-				cssname
+				menuCss
 			];
 
 			// insert stylesheet

@@ -1687,5 +1687,9 @@
     "Settings.doubleFPtimeout.Title": "Double donation blocker",
     "StrategyPoints.BuyableFP": "Forge Hammer: Number of FPs that can be bought with coins.",
     "StrategyPoints.FPInBar": "Forge Hammer: Number of FPs in your bar.",
-    "_Language": "English"
+    "_Language": "English",
+
+    "Settings.Entry.Skins": "Colors",
+    "Settings.Skins.Title": "Change appearance",
+    "Settings.Skins.Desc": "Change all window colors to a predefined theme. More themes will be added in the future."
 }

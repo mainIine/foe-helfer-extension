@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2026 Forge Hammer - All Rights Reserved
  * Licensed under AGPL - see LICENSE.md for details.
  */
 
@@ -181,12 +182,6 @@ let Settings = {
 	},
 
 
-	/**
-	 * Save on click
-	 *
-	 * @param el
-	 * @param changeText
-	 */
 	StoreSettings: (el, changeText = true) => {
 		let id = $(el).data('id'),
 			v = $(el).prop('checked');
@@ -207,13 +202,6 @@ let Settings = {
 	},
 
 
-	/**
-	 * Returns the status from the localStorage or the Settings
-	 *
-	 * @param name
-	 * @param is_string
-	 * @returns {any}
-	 */
 	GetSetting: (name, is_string = false) => {
 		let s = localStorage.getItem(name);
 
@@ -233,11 +221,6 @@ let Settings = {
 	},
 
 
-	/**
-	 * Version number and Player Info 
-	 *
-	 * @returns {string}
-	 */
 	VersionInfo: () => {
 		let v = extVersion.includes('beta') ? `` : `<p>${i18n('Settings.Version.Link').replace('__version__', '')}</p>`;
 		v +=	`<dl class="info-box">
@@ -254,22 +237,11 @@ let Settings = {
 	},
 
 
-	/**
-	 * View for Export-Import
-	 *
-	 * @returns {string}
-	 * @constructor
-	 */
 	ExportView: () => {
 		return `<p><button class="btn" onclick="DBExport.BuildBox()">${i18n('Settings.ExportSettings.OpenImportExportTool')}</button></p>`;
 	},
 
 
-	/**
-	 * Export extension settigns
-	 *
-	 * @constructor
-	 */
 	ExportSettings: () => {
 		let settings = {};
 
@@ -295,11 +267,6 @@ let Settings = {
 	},
 
 
-	/**
-	 * Relocation for Menu
-	 * 
-	 * @returns {string}
-	 */
 	MenuSelected: () => {
 		let dp = [];
 
@@ -328,8 +295,7 @@ let Settings = {
 
 
 	/**
-	 * Import saved settigns
-	 *
+	 * Import saved settings
 	 * @constructor
 	 */
 	ImportSettings: () => {
@@ -384,7 +350,6 @@ let Settings = {
 
 	/**
 	 * Resets all Box Coordinated to the default values
-	 *
 	 */
 	ResetBoxCoords: () => {
 		$.each(localStorage, function (key, value) {
@@ -417,11 +382,6 @@ let Settings = {
 	},
 
 
-	/**
-	 * Language switcher
-	 *
-	 * @returns {string}
-	 */
 	LanguageDropdown: () => {
 		let dp = [];
 
@@ -449,12 +409,33 @@ let Settings = {
 	},
 
 
-	/**
-	 *	Erzeugt in Input Feld
-	 *
-	 * @returns {null|undefined|jQuery}
-	 */
-	 MenuInputLength: () => {
+	ChooseSkin: () => {
+		let dp = [];
+
+		let skins = [
+			{name: "Forge Hammer", path: "variables"},
+			{name: "Test", path: "themes/test"}
+		];
+
+		let currentSkin = localStorage.getItem('HammerSkin')||"default";
+
+		dp.push('<select class="setting-dropdown" id="changeSkin">');
+		for (let skin of Object.values(skins)) {
+			dp.push('<option value="' + skin.path + '"' + (currentSkin === skin.path ? ' selected' : '') + '>' + skin.name + '</option>');
+		}
+		dp.push('</select>');
+
+		$('#SettingsBoxBody').on('change', '#changeSkin', function () {
+			let skin = $(this).val();
+			localStorage.setItem('HammerSkin', skin);
+			HTML.ChangeSkinCssFile(skin);
+		});
+
+		return dp.join('');
+	},
+
+
+	MenuInputLength: () => {
 		let ip = $('<input />').addClass('setting-input').attr({
 			type: 'number',
 			id: 'menu-input-length',
@@ -512,11 +493,7 @@ let Settings = {
 		return ip;
 	},
 	
-	/**
-	 *	Erzeugt in Input Feld
-	 *
-	 * @returns {null|undefined|jQuery}
-	 */
+
 	doubleFPtimeout: () => {
 		let ip = $('<input />').addClass('setting-input').attr({
 			type: 'number',

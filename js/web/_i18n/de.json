@@ -1693,5 +1693,9 @@
     "Settings.doubleFPtimeout.Title": "Doppeleinzahlungsblocker",
     "StrategyPoints.BuyableFP": "Forge Hammer: Anzahl der Forge Punkte, welche mit Münzen gekauft werden können.",
     "StrategyPoints.FPInBar": "Forge Hammer: Anzahl der Forge Punkte, in der FP-Leiste.",
-    "_Language": "Deutsch"
+    "_Language": "Deutsch",
+
+    "Settings.Entry.Skins": "Farben",
+    "Settings.Skins.Title": "Aussehen verändern",
+    "Settings.Skins.Desc": "Verändere die Farben, die benutzt werden. Über Zeit werden mehr hinzugefügt."
 }

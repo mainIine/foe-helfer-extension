@@ -1298,6 +1298,7 @@ a:hover {
 	justify-content: space-between;
 	align-items: center;
 	background: var(--window-head-bg);
+	box-shadow: var(--window-head-shadow);
 	padding: 4px;
 	border-radius: 3px 3px 0 0;
 	box-sizing: border-box;

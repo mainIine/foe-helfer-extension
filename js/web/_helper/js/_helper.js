@@ -625,22 +625,33 @@ let HTML = {
 
 	/**
 	 * Bindet auf Wunsch eine weitere CSS eines Modules ein
-	 *
 	 * @param modul
 	 */
 	AddCssFile: (modul) => {
-		// prüfen ob schon geladen
 		if ($('#' + modul + '-css').length > 0) {
 			return;
 		}
 
-		// noch nicht im DOM, einfügen
 		let url = extUrl + 'js/web/' + modul + '/',
 			cssUrl = url + 'css/' + modul + '.css?v=' + extVersion;
 
 		let css = $('<link />')
 			.attr('href', cssUrl)
 			.attr('id', modul + '-css')
+			.attr('rel', 'stylesheet');
+
+		$('head').append(css);
+	},
+
+
+	ChangeSkinCssFile: (filepath) => {
+		$('#hammerskin').remove();
+
+		let cssUrl = extUrl + 'css/' + filepath + '.css?v=' + extVersion;
+
+		let css = $('<link />')
+			.attr('href', cssUrl)
+			.attr('id', 'hammerskin')
 			.attr('rel', 'stylesheet');
 
 		$('head').append(css);

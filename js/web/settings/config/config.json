@@ -215,6 +215,12 @@
 		"sort": 10
 	},
 	{
+		"name": "Skins",
+		"callback": "ChooseSkin",
+		"group": "About",
+		"sort": 15
+	},
+	{
 		"name": "ShowLinks",
 		"status": true,
 		"callback": "SelectWebsite",
