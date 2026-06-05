@@ -17,25 +17,10 @@
 	--ash: #8a8a8a;
 	--light-blue: #b0bbcd;
 
-	--grey: #444;
-	--black: #000;
-	--black-30: #00000048;
-	--black-50: #00000080;
-	--black-65: #000000a6;
-	--white-65: #ffffffa6;
-
 	--success: #95c567;
 	--limegreen: #7ce64c;
 	--info-blue: #5cb1f6;
 	--danger-red: #f34f4f;
-	--red: #930909;
-	--orange: #ff8c00;
-	--silver: #b8b9b9;
-	--golden: #fedc00;
-	--platinum: #e9ceef;
-	--ascended: #e79d2e;
-	--def: #3e68f7;
-	--att: #c72c2c;
 
 	--text-tab-active: #e2e2e2;
 	--text-tab: #9c9c9c;
@@ -45,6 +30,7 @@
 
 	--background-light: #F9EBC6;
 	--background-medium: #b3a582;
+	--background-dark: #281207;
 
 	--window-border: 2px solid #9f7553;
 	--window-shadow: 0 0 9px 2px #000000aa, 0 0 0px 1px #000000aa;
@@ -56,7 +42,6 @@
 	--window-head-btn-shadow:  none;
 
 	--window-body-scroll-bg: #57250c;
-	--border-dark: #281207;
 
 	--window-settings-bg: #3a2313;
 
@@ -65,6 +50,8 @@
 	--btn-bg-active: linear-gradient(to bottom, #f5cd48 0%,#df9a34 1%,#ba6320 30%,#924715 99%,#a35d28 100%);
 	--btn-bg-onclick: linear-gradient(to bottom, #f5cd48 0%,#df9a34 1%,#ba6320 20%,#673213 80%,#875026 100%);
 	--btn-bg-green: linear-gradient(to bottom, #469e2b 0%,#1f6517 100%);
+	--btn-border: 1px solid #281207;
+	--btn-border-active-color: #281207;
 	--btn-green-color: #dde9ca;
 
 	--btn-bg-red: linear-gradient(to bottom, #871313 0%,#440909 100%);
@@ -109,7 +96,6 @@
 	--tooltip-disabled: #f79090;
 	--tooltip: #f2ede1;
 	--tooltip-head-bg: #0000002a;
-	--tooltip-inhabitant: #a4a45d;
 
 	--hud-counter-color: #468fca;
 	--hud-counter-success: #5c8d20;
@@ -125,6 +111,7 @@
 	--menu-btn-bg-red: linear-gradient(to bottom, #6b4e4e, #4b2b2b) border-box;
 	--menu-btn-bg-grey: linear-gradient(#332a23, #413c39) border-box;
 	--menu-btn-bg: linear-gradient(#3d3520, #463516) padding-box, var(--menu-btn-bg-green);
+	--menu-btn-bg-color: #3d3520;
 	--menu-btn-shadow: inset 0 0 1px 1px #1f1309cc, 0 0 2px #000000c9;
 	--menu-btn-shadow-disabled: inset 0 0 1px 1px #3b0606f0, 0 0 2px #000000c9;
 	--menu-btn-disabled-bg: var(--menu-btn-bg-grey);
@@ -133,6 +120,27 @@
 	--menu-boxed-head-shadow: inset 0 1px 1px #384354, inset 0 2px 0 #575d69;
 	--menu-boxed-head-color: #eee;
 
+
+	/* static */
+
+	--grey: #444;
+	--black: #000;
+	--black-30: #00000048;
+	--black-50: #00000080;
+	--black-65: #000000a6;
+	--white-65: #ffffffa6;
+	
+	--red: #930909;
+	--orange: #ff8c00;
+	--silver: #b8b9b9;
+	--golden: #fedc00;
+	--platinum: #e9ceef;
+	--ascended: #e79d2e;
+	--def: #3e68f7;
+	--att: #c72c2c;
+
+	--tooltip-inhabitant: #a4a45d;
+	--btn-bg-discord: linear-gradient(to bottom, #5662f6, #4852e4);
 
 	/* city map buildings*/
 

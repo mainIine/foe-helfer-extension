@@ -265,7 +265,7 @@
 }
 
 #LiveGildFightingBody table.foe-table tr.highlight-row {
-	background-color: rgba(40, 18, 7, 0.8);
+	background-color: var(--table-bg-darker);
 	color: var(--sunflower);
 }
 

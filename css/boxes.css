@@ -156,7 +156,7 @@ a[target="_blank"] svg {
 	background: var(--btn-bg-moz);
 	background: var(--btn-bg-webkit);
 	background: var(--btn-bg);
-	border: var(--border-dark) 1px solid;
+	border: var(--btn-border);
 	border-radius: 4px;
 	color: var(--text-btn);
 	cursor: url('../images/cursor_default.cur'), auto;
@@ -179,6 +179,7 @@ a[target="_blank"] svg {
 	filter: brightness(140%);
 	cursor: url('../images/cursor_hover.cur'), auto;
 	text-shadow: 0 1px 1px var(--black);
+	border-color: var(--btn-border-active-color);
 }
 
 .btn:not([disabled]):active,
@@ -186,6 +187,7 @@ a[target="_blank"] svg {
 	filter: brightness(150%) saturate(120%);
 	cursor: url('../images/cursor_hover.cur'), auto;
 	text-shadow: 0 1px 1px var(--black);
+	border-color: var(--btn-border-active-color);
 }
 
 .btn-slim {
@@ -258,7 +260,6 @@ a[target="_blank"] svg {
     background-size: 80%, cover;
     background-repeat: no-repeat, repeat;
     background-position: center;
-	filter: hue-rotate(210deg);
 }
 
 .btn-group {
@@ -433,7 +434,7 @@ span.resicon.def_boost_defender-battleground {
 .window-box ::-webkit-scrollbar-thumb,
 .window-body::-webkit-scrollbar-thumb,
 .window-body * ::-webkit-scrollbar-thumb {
-	background: var(--border-dark);
+	background: var(--background-dark);
 	border-radius: 4px;
 	border-top: 1px solid var(--border-table-top);
 	border-right: 1px solid var(--border-table-bottom);
@@ -445,7 +446,7 @@ span.resicon.def_boost_defender-battleground {
 @supports(-moz-appearance:none) {
 	.window-box,
 	.window-body {
-		scrollbar-color: var(--border-dark) var(--window-body-scroll-bg);
+		scrollbar-color: var(--background-dark) var(--window-body-scroll-bg);
 		scrollbar-width: thin;
 	}
 }
@@ -697,11 +698,11 @@ p {
 }
 
 [id$=discord-Btn] {
-	background: radial-gradient(#5865f2 25%, #463526 75%) padding-box, var(--menu-btn-bg-green) !important;
+	background: radial-gradient(#5865f2 25%, var(--menu-btn-bg-color) 75%) padding-box, var(--menu-btn-bg-green) !important;
 }
 
 [id$=discord-Btn].hud-btn-red {
-	background: radial-gradient(#5865f2 25%, #463526 75%) padding-box, var(--menu-btn-bg-red) !important;
+	background: radial-gradient(#5865f2 25%, var(--menu-btn-bg-color) 75%) padding-box, var(--menu-btn-bg-red) !important;
 }
 
 [id$=marketOffers-Btn] span {
@@ -1259,7 +1260,7 @@ a:hover {
 	top: 30%;
 	left: 40%;
 	user-select: none;
-	box-shadow: 0 0 1px 1px #000000aa;
+    box-shadow: var(--window-shadow);
 	border: var(--window-border);
 	border-radius: 5px;
 	max-height: calc(100vh - 6px);

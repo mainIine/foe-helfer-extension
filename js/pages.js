@@ -4,4 +4,6 @@
  */
 $(function() {
 	let extUrl = chrome.runtime.getURL('');
+
+	$('[data-original-title]').tooltip();
 });

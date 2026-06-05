@@ -84,3 +84,223 @@ code {
 	margin: -2px;
 	background-color: #141414a2;
 }
+
+
+
+
+/**/
+
+
+#playerProfile-Btn span img {
+	border-radius: 3px 3px 10px 3px;
+    box-shadow: 0 2px 2px var(--black-65);
+    border: 1px solid var(--text-darker);
+	width: 100%;
+}
+
+#setting-playerProfile-Btn span {
+	background-image: url('../images/menu/profile.jpg');
+	border-radius: 3px 3px 10px 3px;
+    box-shadow: 0 2px 2px var(--black-65);
+    border: 1px solid var(--text-darker);
+}
+
+[id$=market-Btn] span {
+	background-image: url('../images/menu/market.png');
+}
+
+[id$=moppelHelper-Btn] span {
+	background-image: url('../images/menu/polivation.png');
+}
+
+[id$=fpCollector-Btn] span {
+	background-image: url('../images/menu/forgepoints.png');
+}
+
+[id$=greatBuildings-Btn] span {
+	background-image: url('../images/menu/greatbuildings.png');
+}
+
+[id$=productions-Btn] span {
+	background-image: url('../images/menu/productions.png');
+}
+
+[id$=productionsRating-Btn] span {
+	background-image: url('../images/menu/productionsrating.png');
+}
+
+[id$=calculator-Btn] span {
+	display: none;
+}
+
+[id$=outpost-Btn] span {
+	background-image: url('../images/menu/vikings_ship.png');
+}
+
+[id$=partCalc-Btn] span {
+	background-image: url('../images/menu/calc.png');
+}
+
+[id$=technologies-Btn] span {
+	background-image: url('../images/menu/technologies.png');
+}
+
+[id$=hiddenRewards-Btn] span:first-child {
+	background-image: url('../images/menu/incident_crates.png');
+}
+
+[id$=recurringQuests-Btn] span:first-child {
+	background-image: url('../images/menu/recurringQuests.png');
+}
+
+[id$=campagneMap-Btn], [id$=notice-Btn] { display: none !important; }
+
+[id$=cityMap-Btn] span {
+	background-image: url('../images/menu/citymap.png');
+}
+
+[id$=settings-Btn] span {
+	background-image: url('../images/menu/settings.png');
+}
+
+[id$=shopAssist-Btn] span {
+	background-image: url('../images/menu/store.png');
+}
+
+[id$=allies-Btn] span {
+	background-image: url('../images/menu/allies.png');
+}
+
+[id$=settings-Btn] {
+	background: var(--menu-btn-bg-settings) !important;
+}
+
+[id$=discord-Btn] {
+	background: radial-gradient(#5865f2 25%, #25231e 75%) padding-box, linear-gradient(to bottom, #6e9b4b, #306f2e) border-box;
+}
+
+[id$=marketOffers-Btn] span {
+	background-image: url('../images/menu/marketOffers.png');
+}
+
+[id$=stats-Btn] span {
+	background-image: url('../images/menu/stats.png');
+}
+
+[id$=infobox-Btn] span {
+	background-image: url('../images/menu/info.png');
+}
+
+[id$=findGB-Btn] span {
+	background-image: url('../images/menu/findGB.png');
+}
+
+[id$=unit-Btn] span {
+	background-image: url('../images/menu/units.png');
+}
+
+[id$=negotiation-Btn] span {
+	background-image: url('../images/menu/negotation.png');
+}
+
+[id$=kits-Btn] span {
+	background-image: url('../images/menu/kits.png');
+}
+
+[id$=alerts-Btn] span {
+	background-image: url('../images/menu/alerts.png');
+}
+
+[id$=notice-Btn] span {
+	background-image: url('../images/menu/notices.png');
+}
+
+[id$=blueGalaxy-Btn] span {
+	background-image: url('../images/menu/BlueGalaxy.png');
+}
+
+[id$=unitsGex-Btn] span {
+	background-image: url('../images/menu/gex.png');
+}
+
+[id$=gildFight-Btn] span {
+	background-image: url('../images/menu/gbg.png');
+}
+
+[id$=investment-Btn] span {
+	background-image: url('../images/menu/investhistory.png');
+}
+
+[id$=guildMemberstat-Btn] span {
+	background-image: url('../images/menu/guildmemberstat.png');
+}
+
+[id$=gexStat-Btn] span {
+	background-image: url('../images/menu/gex.png');
+}
+
+[id$=dbexport-Btn] span {
+	background-image: url('../images/menu/dbexport.png');
+}
+
+[id$=castle-Btn] span {
+	background-image: url('../images/menu/castle.png');
+}
+
+[id$=music-Btn] span {
+	background-image: url('../images/menu/music.png');
+}
+[id$=musicControl-Btn] span {
+	background-image: url('../images/menu/musicplay.png');
+}
+[id$=musicControl-Btn].musicmuted span {
+	background-image: url('../images/menu/musicmute.png');
+}
+[id$=minigame_aztecs-Btn] span {
+	background-image: url('../images/menu/aztecsHelper.png');
+}
+[id$=compare_friends_threads-Btn] span {
+	background-image: url('../images/menu/comparefriendsthreads.png');
+}
+[id$=discord-Btn] span {
+	background-image: url('../images/menu/discord.png');
+}
+
+.setting {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 3px;
+	justify-content: center;
+	display: none;
+}
+
+.hud-btn {
+	width: 50px;
+	height: 50px;
+	position: relative;
+	box-sizing: border-box;
+	border: 2px solid transparent;
+	border-radius: 4px;
+	background: linear-gradient(#161513, #161513) padding-box, linear-gradient(to bottom, #6e9b4b, #306f2e) border-box;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.hud-btn span {
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-size: contain;
+	width: 80%;
+	height: 80%;
+	max-height: 30px;
+	max-width: 30px;
+}
+
+.tooltip {
+	background: #000;
+	width: 300px;
+	position: absolute;
+	padding: 5px;
+	top: 50px;
+}

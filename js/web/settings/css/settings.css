@@ -31,15 +31,13 @@
 }
 
 #SettingsBoxBody .item-row .check {
-	background-image: var(--tabs-bg-active);
 	border-radius: 4px;
-}
-
-#SettingsBoxBody .item-row .check {
 	position: relative;
 	display: inline-block;
 	width: 140px;
-	margin: 2px 2px 0 0;
+	margin: 2px 2px 2px 0;
+	box-shadow: var(--menu-shadow);
+	background-image: var(--tabs-bg-active);
 }
 
 #SettingsBoxBody .item-row .unchecked {

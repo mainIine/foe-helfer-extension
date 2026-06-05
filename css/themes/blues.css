@@ -1,0 +1,180 @@
+/*
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
+ * Licensed under AGPL - see LICENSE.md for details.
+ */
+
+:root {
+	--white: #fff;
+	--beige: #dce8f5;
+	--dark-beige: #8faec8;
+	--sunflower: #59d4d8;
+	--text-medium: #6a8499;
+	--text-medium2: #4a6a82;
+	--text-dark: #263544;
+	--text-dark2: #1d2b38;
+	--text-darker: #161c27;
+	--text-darkest: #090b11;
+	--ash: #8a8a8a;
+	--light-blue: #9fc6ee;
+
+	--success: #4db87a;
+	--limegreen: #3de07a;
+	--info-blue: #5cb1f6;
+	--danger-red: #f34f4f;
+
+	--text-tab-active: #e2e8f0;
+	--text-tab: #8fa3b8;
+
+	--text-btn-disabled: #899aaa;
+	--text-btn: #c8dff0;
+
+	--background-light: #e2ebf3;
+	--background-medium: #6e8fa8;
+	--background-dark: #071828;
+
+	--window-border: 2px solid #0e0f10;
+	--window-shadow: none;
+	--window-bg: url('../images/hud/blue-bg.png') center center repeat;
+
+	--window-head-bg: linear-gradient(-50deg, #0e181e, #203e52);
+	--window-head-shadow: none;
+	--window-head-btn-bg: url(../images/hud/box-sprite.png), linear-gradient(to bottom, #2a5878, #1e4a68);
+	--window-head-btn-shadow:  none;
+
+	--window-body-scroll-bg: #0c2d47;
+
+	--window-settings-bg: #0f2336;
+
+	--btn-bg: linear-gradient(transparent, transparent);
+	--btn-bg-disabled: linear-gradient(to bottom, #0a1a27 0%,#2a2a2a 1%,#1e1e1e 30%,#1f1f1f 99%, #252525 100%);
+	--btn-bg-active: linear-gradient(to bottom, #48c8e8 0%,#2aa8cc 1%,#1880aa 30%,#0f5a80 99%,#1a6a9e 100%);
+	--btn-bg-onclick: linear-gradient(to bottom, #48c8e8 0%,#2aa8cc 1%,#1880aa 20%,#0a3e60 80%,#155078 100%);
+	--btn-bg-green: linear-gradient(to bottom, #2a8e5e 0%,#1a6040 100%);
+	--btn-green-color: #a1ebc6;
+	--btn-border: 1px solid #0a3258;
+	--btn-border-active-color: #0a5b81;
+
+	--btn-bg-red: linear-gradient(to bottom, #7a1a1a 0%,#3d0a0a 100%);
+	--btn-bg-red-active: linear-gradient(to bottom, #9e2a2a 0%,#520e0e 100%);
+	--btn-bg-red-onclick: linear-gradient(to bottom, #5a0a0a 0%,#2a0505 100%);
+
+	--tabs-bg: linear-gradient(#28303e, #1c2330);
+	--tabs-bg-active: linear-gradient(#2a4a6e, #1e3858);
+	--tabs-bg-shadow: inset 0 1px 1px #0f1e31, inset 0 2px 0 #3a4a62, 0 -1px 3px #000;
+	--tabs-bg-shadow-active: inset 0 1px 0 #5a7898;
+	--tabs-border: 2px solid #0f3a5e;
+	--tabs-border-active: 2px solid #2a6a9e;
+	--border-tab: #2a4a6e;
+	--border-tab-vertical: linear-gradient(45deg,#2a4a6e, var(--text-darker)) 10;
+
+	--table-bg-hover: #2a9ec833;
+	--table-bg-odd: #06121a36;
+	--table-bg-darker: #080d1180;
+	--table-bg-info: #00417769;
+	--table-bt-info: #3a5878;
+	--table-bb-info: #1a2a48;
+	--table-bg-success: #094d144d;
+	--table-bt-success: #2a7a50;
+	--table-bb-success: #0f3820;
+	--table-bg-error: #4d090e4d;
+	--table-bt-error: #7a2a2a;
+	--table-bb-error: #3a0a0a;
+	--table-bg-bright: #0a6a9e40;
+	--table-bt-bright: #1a8abe66;
+	--table-bb-bright: #052a4866;
+	--table-bg-highlight: #071828cc;
+	--border-table-top: #2a587870;
+	--border-table-bottom: #0f2a3e;
+	--border-table-bottom-darker: #050f18;
+
+	--hud-border-error: #9c2d18;
+	--hud-border-success: #2a9e60;
+
+	--tooltip-border: 2px solid #1a2a38;
+	--tooltip-bg: #1e2e3e;
+	--tooltip-disabled: #f79090;
+	--tooltip: #deeaf5;
+	--tooltip-head-bg: #0000002a;
+
+	--hud-counter-color: #48a8e8;
+	--hud-counter-success: #2a8a50;
+	--hud-counter-bg: 1px 0 0 1px #0000003e;
+	--hud-counter-size: 16px;
+
+	--menu-bg: #0a1e30cc;
+	--menu-shadow: 0 0 1px 1px #00000080;
+	--menu-arrow-bg: linear-gradient(to bottom, #2a7aaa, #1a4a78);
+	--menu-arrow-color: #0a1e30;
+	--menu-btn-size: 45px;
+	--menu-btn-bg-green: linear-gradient(to bottom, #2a7a52, #1a4e36) border-box;
+	--menu-btn-bg-red: linear-gradient(to bottom, #4e2a2a, #2e1818) border-box;
+	--menu-btn-bg-grey: linear-gradient(#1e2830, #2a3040) border-box;
+	--menu-btn-bg: linear-gradient(#1a2a3a, #223040) padding-box, var(--menu-btn-bg-green);
+	--menu-btn-bg-color: #1a2a3a;
+	--menu-btn-shadow: inset 0 0 1px 1px #05101acc, 0 0 2px #000000c9;
+	--menu-btn-shadow-disabled: inset 0 0 1px 1px #060a18f0, 0 0 2px #000000c9;
+	--menu-btn-disabled-bg: var(--menu-btn-bg-grey);
+	--menu-btn-bg-settings: linear-gradient(#1e2830,#1e2830) padding-box, linear-gradient(to bottom, #5a7898, #2a4a68) border-box;
+	--menu-boxed-head-bg: linear-gradient(#1e2e44, #14223a);
+	--menu-boxed-head-shadow: inset 0 1px 1px #1e2e44, inset 0 2px 0 #3a4e68;
+	--menu-boxed-head-color: #eee;
+
+
+	/* static */
+
+	--grey: #444;
+	--black: #000;
+	--black-30: #00000048;
+	--black-50: #00000080;
+	--black-65: #000000a6;
+	--white-65: #ffffffa6;
+	
+	--red: #930909;
+	--orange: #ff8c00;
+	--silver: #b8b9b9;
+	--golden: #fedc00;
+	--platinum: #e9ceef;
+	--ascended: #e79d2e;
+	--def: #3e68f7;
+	--att: #c72c2c;
+	
+	--tooltip-inhabitant: #a4a45d;
+	--btn-bg-discord: linear-gradient(to bottom, #5662f6, #4852e4);
+
+	/* city map buildings*/
+
+	--background-color-ascendable: #f37317;
+	--border-color-ascendable: #ce5900;
+	--background-color-decayed: #2b2b2b;
+	--border-color-decayed: #161616;
+	--background-color-military: #fff;
+	--border-color-military: #bbb;
+	--background-color-residential: #7abaff;
+	--border-color-residential: #219eff;
+	--background-color-qi: #51ffd9;
+	--border-color-qi: #13cfcf;
+	--background-color-noStreet: #793bc9;
+	--border-color-noStreet: #3d2783;
+	--background-color-chain: #bb23ae;
+	--border-color-chain: #86127d;
+	--background-color-decoration: #497445;
+	--border-color-decoration: #1c7430;
+	--background-color-street: #666666;
+	--border-color-street: #636363;
+	--background-color-goods: #7d2a4d;
+	--border-color-goods: #6a2a3a;
+	--background-color-culture: #7d4900;
+	--border-color-culture: #582c00;
+	--background-color-main_building: #ffb300;
+	--border-color-main_building: #ffb300;
+	--background-color-production: #416dff;
+	--border-color-production: #2732ff;
+	--background-color-greatbuilding: #e6542f;
+	--border-color-greatbuilding: #af3d2b;
+	--background-color-random_production: #a8ff18;
+	--border-color-random_production: #4cff11;
+	--background-color-tower: #cdcdcd;
+	--border-color-tower: #787a7a;
+	--background-color-gbg: #ffeac2;
+	--border-color-gbg: #dac195;
+}

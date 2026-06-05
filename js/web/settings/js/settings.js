@@ -414,7 +414,8 @@ let Settings = {
 
 		let skins = [
 			{name: "Forge Hammer", path: "variables"},
-			{name: "Test", path: "themes/test"}
+			{name: "Grey", path: "themes/grey"},
+			{name: "Blues", path: "themes/blues"}
 		];
 
 		let currentSkin = localStorage.getItem('HammerSkin')||"default";
