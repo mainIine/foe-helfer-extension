@@ -26,6 +26,42 @@ function initPopout() {
     });
     $('body').on("pointerleave", ".helperTT", () => Tooltips.deactivate());
 
+    Tooltips.set = (content) => {
+        if (!content) return;
+        Tooltips.Container.innerHTML = content;
+        Tooltips.checkposition();
+    };
+    Tooltips.activate = () => {
+        Tooltips.containerActive = true;
+        Tooltips.Container.style.display = "block";
+    };
+    Tooltips.deactivate = () => {
+        Tooltips.containerActive = false;
+        Tooltips.Container.style.display = "none";
+    };
+    Tooltips.followMouse = (event) => {
+        Tooltips.Container.style.left = (event.x + 10) + "px";
+        Tooltips.Container.style.top = (event.y + 10) + "px";
+        Tooltips.checkposition();
+    };
+    Tooltips.checkposition = () => {
+        try {
+            if (Tooltips.containerActive) {
+                if (Tooltips.Container.firstChild.clientHeight + 7 + Number(Tooltips.Container.style.top.replace("px", "")) > Tooltips.Container.parentElement.clientHeight) {
+                    let newTop = Tooltips.Container.parentElement.clientHeight - Tooltips.Container.firstChild.clientHeight - 7;
+                    if (newTop < 0) newTop = 0;
+                    Tooltips.Container.style.top = newTop + "px";
+                }
+                if (Tooltips.Container.firstChild.clientWidth + 7 + Number(Tooltips.Container.style.left.replace("px", "")) > Tooltips.Container.parentElement.clientWidth) {
+                    let newLeft = Tooltips.Container.parentElement.clientWidth - Tooltips.Container.firstChild.clientWidth - 7;
+                    if (newLeft < 0) newLeft = 0;
+                    Tooltips.Container.style.left = newLeft + "px";
+                }
+            }
+        } catch (e) {}
+    };
+    window.addEventListener("pointermove", Tooltips.followMouse);
+
 
     // copy of all relevant eventhandlers below
 

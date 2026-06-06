@@ -2977,8 +2977,7 @@ let Productions = {
 			winObj.helper = helper;
 			winObj.SaveSettings = SaveSettings;
 			winObj.StartUpDone = Promise.resolve();
-			winObj.Kits = Kits;
-			winObj.srcLinks = srcLinks;           // needed by Tooltips.init() line 56
+			winObj.srcLinks = srcLinks;
 			winObj.QIActions = { TT: () => {} }; // stub to prevent throw on line 56
 			winObj.HTML = {
 				AddCssFile: (name) => {
@@ -2988,7 +2987,9 @@ let Productions = {
 					winObj.document.head.appendChild(link);
 				}
 			};
-			winObj.Tooltips = Tooltips;
+			const popoutTooltips = Object.assign({}, Tooltips);
+			winObj.Tooltips = popoutTooltips;
+			winObj.Kits = Object.assign({}, Kits);
 			winObj.initPopout();
 			$('#ProductionsRating').remove();
 		};

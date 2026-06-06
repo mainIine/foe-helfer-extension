@@ -5,7 +5,7 @@
 - Themes! Schau in die Einstellungen bei "Farben", um andere Farb-Schemata auszuwählen.
 - Spiel Filter! Du kannst in den Einstellungen nun auch ein paar Spielfarben verändern.
 - Ändere den Ton! Du kannst in den Einstellungen jetzt zwischen sieben Tönen aussuchen.
-- Pop Ups: Teste eine erste Version für das Effiezienz-Fenster und erfreu dich am gewonnenen Platz im Spiel. Es funktioniert leider (noch) nicht alles
+- Pop Ups: Teste eine erste Version des Features im Effiezienz-Fenster und erfreu dich am gewonnenen Platz im Spiel. Es funktioniert leider (noch) nicht alles im Pop Up.
 
 ### Update
 - Stadt Übersicht: Neue Filter für Gebäude, die eingesammelt werden können, und Gebäude, die noch motiviert werden müssen
