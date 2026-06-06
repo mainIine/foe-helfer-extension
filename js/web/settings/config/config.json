@@ -165,6 +165,7 @@
 	{
 		"name": "EnableSound",
 		"callback": "SoundEffects",
+		"status": false,
 		"group": "Extension",
 		"cssClass": "spacer",
 		"sort": 7

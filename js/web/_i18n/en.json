@@ -1515,8 +1515,6 @@
     "Settings.ChangeLanguage.Desc": "Choose your preferred language from the drop-down list",
     "Settings.ChangeLanguage.Title": "Change Language",
     "Settings.CountRelics": "Count relics in menu icon",
-    "Settings.EnableSound.Desc": "Enable sound effects in the extension.",
-    "Settings.EnableSound.Title": "Enable sound",
     "Settings.Entry.About": "About",
     "Settings.Entry.ApiToken": "Website Api-Token",
     "Settings.Entry.Auctions": "Auctions",
@@ -1689,6 +1687,9 @@
     "StrategyPoints.FPInBar": "Forge Hammer: Number of FPs in your bar.",
     "_Language": "English",
     "Boxes.General.Version": "Version",
+    
+    "Settings.EnableSound.Desc": "Enable sound effects and chose a sound.",
+    "Settings.EnableSound.Title": "Enable sound",
 
     "Settings.Entry.Skins": "Colors",
     "Settings.Skins.Title": "Change AddOn appearance",

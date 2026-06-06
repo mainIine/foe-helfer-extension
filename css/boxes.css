@@ -159,7 +159,7 @@ a[target="_blank"] svg {
 	border: var(--btn-border);
 	border-radius: 4px;
 	color: var(--text-btn);
-	cursor: url('../images/cursor_default.cur'), auto;
+	cursor: url('../images/cursor_hover.cur'), auto;
 	transition: color .15s ease-in-out,background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 	outline: none !important;
 }
@@ -386,13 +386,11 @@ span.resicon.def_boost_defender-battleground {
 	margin-bottom: 5px;
 }
 
-.clickable {
-	cursor: url('../images/cursor_hover.cur'), auto;
-}
+.simpleList { margin: 0; padding: 0; list-style: none; }
+.simpleList li { margin: 0; padding: 3px 5px; }
 
-.removable {
-	position: relative;
-}
+.clickable { cursor: url('../images/cursor_hover.cur'), auto; }
+.removable { position: relative; }
 
 .removable::before {
 	transition: opacity 0.3s ease-in-out;
@@ -1229,7 +1227,7 @@ a {
 .button-own:hover,
 .button--lg:hover,
 .hud-btn:hover,
-a:hover {
+a:hover, input[type="radio"] {
 	cursor: url('../images/cursor_hover.cur'), auto;
 }
 

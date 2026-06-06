@@ -345,6 +345,49 @@ let Settings = {
 	},
 
 
+	SoundEffects: () => {
+		let chosenSound = localStorage.getItem('hammerSound')||"message";
+
+		let v =	`<ul class="soundEffects simpleList">
+					<li> 
+						<input name="nSound" value="message" type="radio" ${chosenSound == "message" ? 'checked' : ''} />
+						<audio controls controlslist="noplaybackrate nofullscreen nodownload"><source src="${extUrl}vendor/sounds/message.mp3" type="audio/mpeg" /></audio> 
+					</li>
+					<li> 
+						<input name="nSound" value="notification1" type="radio" ${chosenSound == "notification1" ? 'checked' : ''} />
+						<audio controls controlslist="noplaybackrate nofullscreen nodownload"><source src="${extUrl}vendor/sounds/notification1.mp3" type="audio/mpeg" /></audio> 
+					</li>
+					<li> 
+						<input name="nSound" value="notification2" type="radio" ${chosenSound == "notification2" ? 'checked' : ''} />
+						<audio controls controlslist="noplaybackrate nofullscreen nodownload"><source src="${extUrl}vendor/sounds/notification2.mp3" type="audio/mpeg" /></audio> 
+					</li>
+					<li> 
+						<input name="nSound" value="notification3" type="radio" ${chosenSound == "notification3" ? 'checked' : ''} />
+						<audio controls controlslist="noplaybackrate nofullscreen nodownload"><source src="${extUrl}vendor/sounds/notification3.mp3" type="audio/mpeg" /></audio> 
+					</li>
+					<li> 
+						<input name="nSound" value="notification4" type="radio" ${chosenSound == "notification4" ? 'checked' : ''} />
+						<audio controls controlslist="noplaybackrate nofullscreen nodownload"><source src="${extUrl}vendor/sounds/notification4.mp3" type="audio/mpeg" /></audio> 
+					</li>
+					<li> 
+						<input name="nSound" value="notification5" type="radio" ${chosenSound == "notification5" ? 'checked' : ''} />
+						<audio controls controlslist="noplaybackrate nofullscreen nodownload"><source src="${extUrl}vendor/sounds/notification5.mp3" type="audio/mpeg" /></audio> 
+					</li>
+					<li> 
+						<input name="nSound" value="notification6" type="radio" ${chosenSound == "notification6" ? 'checked' : ''} />
+						<audio controls controlslist="noplaybackrate nofullscreen nodownload"><source src="${extUrl}vendor/sounds/notification6.mp3" type="audio/mpeg" /></audio> 
+					</li>
+				</ul>`;
+
+		$('#SettingsBoxBody')
+			.on('change.soundEffects', 'input', function () {
+				localStorage.setItem('hammerSound', $(this).val());
+			});
+
+		return v;
+	},
+
+
 	/**
 	 * Import saved settings
 	 * @constructor

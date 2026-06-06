@@ -1519,8 +1519,6 @@
     "Settings.ChangeLanguage.Desc": "Wähle deine bevorzugte Sprache aus der drop-down-Liste",
     "Settings.ChangeLanguage.Title": "Sprache wechseln",
     "Settings.CountRelics": "Relikte in Menu-Icon mitzählen",
-    "Settings.EnableSound.Desc": "Sollen Soundeffekte der Extension aktiviert werden",
-    "Settings.EnableSound.Title": "Ton aktivieren",
     "Settings.Entry.About": "Über uns",
     "Settings.Entry.ApiToken": "Website API-Token",
     "Settings.Entry.Auctions": "Auktionen",
@@ -1695,6 +1693,9 @@
     "StrategyPoints.FPInBar": "Forge Hammer: Anzahl der Forge Punkte, in der FP-Leiste.",
     "_Language": "Deutsch",
     "Boxes.General.Version": "Version",
+
+    "Settings.EnableSound.Desc": "Soundeffekte aktivieren und Ton auswählen",
+    "Settings.EnableSound.Title": "Töne",
 
     "Settings.Entry.Skins": "Farben",
     "Settings.Skins.Title": "Aussehen verändern",

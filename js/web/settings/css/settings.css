@@ -147,6 +147,10 @@
 	width: 100px
 }
 
+#SettingsBoxBody .soundEffects audio {
+	height: 25px;
+}
+
 #SettingsBoxBody .info-box {
 	border: 1px solid var(--text-dark);
 	padding: 5px;
