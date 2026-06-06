@@ -387,7 +387,7 @@ span.resicon.def_boost_defender-battleground {
 }
 
 .simpleList { margin: 0; padding: 0; list-style: none; }
-.simpleList li { margin: 0; padding: 3px 5px; }
+.simpleList li { margin: 0; padding: 3px; }
 
 .clickable { cursor: url('../images/cursor_hover.cur'), auto; }
 .removable { position: relative; }

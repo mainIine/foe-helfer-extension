@@ -1688,8 +1688,8 @@
     "_Language": "English",
     "Boxes.General.Version": "Version",
     
-    "Settings.EnableSound.Desc": "Enable sound effects and chose a sound.",
-    "Settings.EnableSound.Title": "Enable sound",
+    "Settings.EnableSound.Desc": "Enable sound effects and choose a sound.",
+    "Settings.EnableSound.Title": "Sounds",
 
     "Settings.Entry.Skins": "Colors",
     "Settings.Skins.Title": "Change AddOn appearance",

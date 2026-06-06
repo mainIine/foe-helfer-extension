@@ -131,9 +131,8 @@ helper.permutations = (()=>{
 })();
 
 helper.sounds = {
-	customSound: localStorage.getItem('hammerSound')||"message",
 	ping: new Audio(extUrl + 'vendor/sounds/ping.mp3'),
-    message: new Audio(extUrl + 'vendor/sounds/'+customSound+'.mp3'),
+    message: new Audio(extUrl + 'vendor/sounds/'+(localStorage.getItem('hammerSound')||"message")+'.mp3'),
 	play: (sound) => {
 		if (Settings.GetSetting('EnableSound')) helper.sounds[sound].play();
 	},
@@ -245,7 +244,6 @@ let HTML = {
 
 		// load saved coords
 		if (cords) {
-			c = null
 			if (cords.includes('|')) {
 				cords = cords.split('|') 
 				cords = mouseActions.calcCoords([Number(cords[1]), Number(cords[0])], "Center")
