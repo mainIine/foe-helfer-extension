@@ -1,6 +1,32 @@
 function initPopout() {
     let era = CurrentEra;
 
+    // manually set up tooltip container
+    let container = document.createElement("div");
+    container.id = "TooltipContainer";
+    container.className = "window-box";
+    container.setAttribute('style', 'z-index:1000; position: absolute; display: none; pointer-events: none;');
+    document.body.appendChild(container);
+    Tooltips.Container = container;
+
+    // some things that need to work a bit differenty in the popout
+    window.addEventListener("pointermove", Tooltips.followMouse);
+    $('body').on("pointerenter", ".helperTT", async (e) => {
+        if (e.currentTarget.dataset.callback_tt) {
+            Tooltips.activate();
+            let f = eval(e.currentTarget.dataset.callback_tt);
+            if (typeof f === "function") {
+                let content = await f(e);
+                if (content) Tooltips.set(content);
+                else Tooltips.deactivate();
+            } else {
+                Tooltips.set(f);
+            }
+        }
+    });
+    $('body').on("pointerleave", ".helperTT", () => Tooltips.deactivate());
+
+
     // copy of all relevant eventhandlers below
 
     SaveSettings=(x)=>{

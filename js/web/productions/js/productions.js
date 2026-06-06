@@ -2953,16 +2953,16 @@ let Productions = {
 								<link rel="stylesheet" href="${extUrl}css/${skinCss}.css">
 								<link rel="stylesheet" href="${extUrl}css/goods.css">
 								<link rel="stylesheet" href="${extUrl}js/web/productions/css/productions.css">
+								<link rel="stylesheet" href="${extUrl}js/web/customTooltip/css/customTooltip.css">
 								<style>#RatingsResults, #addMetaBuilding, label[for="inventorybuildingscore"], label[for="showallies"] {display: none !important;}</style>
 							</head>
-							<body class="popup-body" id="ProductionsRatingBody">${content}</body>
+							<body class="popup-body"><div id="ProductionsRatingBody">${content}</div></body>
 							<script src="${extUrl}vendor/jQuery/jquery.min.js"></script>
 							<script src="${extUrl}vendor/tooltip/tooltip.js"></script>
 							<script src="${extUrl}vendor/tableSorter/table-sorter.js"></script>
 							<script src="${extUrl}js/foeproxy.js"></script>
 							<script src="${extUrl}js/web/_main/js/_main.js"></script>
 							<script src="${extUrl}js/web/_helper/js/_helper.js"></script>
-							<script src="${extUrl}js/web/customTooltip/js/customtooltip.js"></script>
 							<script src="${extUrl}js/web/productions/js/popout.js"></script>
 						</html>`;
 
@@ -2970,11 +2970,25 @@ let Productions = {
 			new Blob([winHtml], { type: "text/html;charset=utf8" })
 		);
 
+		// objects needed for the popout to work and functions that need to be adjusted
 		window.popoutReady = () => {
 			winObj.Productions = Productions;
 			winObj.i18n = i18n;
 			winObj.helper = helper;
 			winObj.SaveSettings = SaveSettings;
+			winObj.StartUpDone = Promise.resolve();
+			winObj.Kits = Kits;
+			winObj.srcLinks = srcLinks;           // needed by Tooltips.init() line 56
+			winObj.QIActions = { TT: () => {} }; // stub to prevent throw on line 56
+			winObj.HTML = {
+				AddCssFile: (name) => {
+					const link = winObj.document.createElement('link');
+					link.rel = 'stylesheet';
+					link.href = `${extUrl}css/${name}.css`;
+					winObj.document.head.appendChild(link);
+				}
+			};
+			winObj.Tooltips = Tooltips;
 			winObj.initPopout();
 			$('#ProductionsRating').remove();
 		};

@@ -27,8 +27,8 @@ let Tooltips = {
         let container = document.createElement("div");
         container.id = "TooltipContainer"
         container.className = "window-box"
-        container.style = "z-index:1000; position: absolute; display: none; pointer-events: none;"
-        $('#game_body').append(container);
+        container.setAttribute('style', 'z-index:1000; position: absolute; display: none; pointer-events: none;');
+        (document.getElementById('game_body') ? $('#game_body') : $('body')).append(container);
         Tooltips.Container = container;
 
         window.addEventListener("pointermove", Tooltips.followMouse);

@@ -2222,9 +2222,9 @@ let MainParser = {
 
 
 	ResizeFunctions: () => {
-
 		// FP-Bar
-		StrategyPoints.HandleWindowResize();
+		if (document.getElementById('game_body'))
+			StrategyPoints.HandleWindowResize();
 	},
 
 
