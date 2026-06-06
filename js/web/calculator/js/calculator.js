@@ -27,6 +27,8 @@ let Calculator = {
 		LEVEL_WARNING:   'LevelWarning',
 		SELF:            'Self',
 	},
+	ConversationContent: null,
+	ConversationContentNew: null,
 
 	Show: (action = "") => {
 		$('.tooltip').remove();
@@ -50,15 +52,14 @@ let Calculator = {
 		$('#OwnPartBox').on('click', '.btn-toggle-arc', function () {
 			Calculator.ForderBonus = parseFloat($(this).data('value'));
 			$('#costFactor').val(Calculator.ForderBonus);
-			let StorageKey = (Calculator.ForderBonusPerConversation && MainParser.OpenConversation ? 'CalculatorForderBonus_' + MainParser.OpenConversation : 'CalculatorForderBonus');
+			let StorageKey = (Calculator.ForderBonusPerConversation && MainParser.OpenConversation ? 'CalculatorForderBonus_' + MainParser.OpenConversation.id : 'CalculatorForderBonus');
 			localStorage.setItem(StorageKey, Calculator.ForderBonus);
 			Calculator.Show();
 		});
 
-		// wenn der Wert des Archebonus verändert wird, Event feuern
 		$('#OwnPartBox').on('blur', '#costFactor', function () {
 			Calculator.ForderBonus = parseFloat($('#costFactor').val());
-			let StorageKey = (Calculator.ForderBonusPerConversation && MainParser.OpenConversation ? 'CalculatorForderBonus_' + MainParser.OpenConversation : 'CalculatorForderBonus');
+			let StorageKey = (Calculator.ForderBonusPerConversation && MainParser.OpenConversation ? 'CalculatorForderBonus_' + MainParser.OpenConversation.id : 'CalculatorForderBonus');
 			localStorage.setItem(StorageKey, Calculator.ForderBonus);
 			Calculator.Show();
 		});
@@ -70,7 +71,7 @@ let Calculator = {
 		let ForderBonusLoaded = false;
 
 		if(Calculator.ForderBonusPerConversation && MainParser.OpenConversation){
-			let StorageKey = 'CalculatorForderBonus_' + MainParser.OpenConversation,
+			let StorageKey = 'CalculatorForderBonus_' + MainParser.OpenConversation.id,
 				StorageValue = localStorage.getItem(StorageKey);
 			
 			if(StorageValue !== null){
@@ -650,5 +651,42 @@ let Calculator = {
 			$(this).remove();
 			Parts.CalcBody();
 		});
+	},
+
+	showToPay: (previousmessage, sentmessage) => {
+		let entriesAfter = sentmessage.split(/\r\n|\r|\n/).map(l => l.trim());
+		let entriesBefore = previousmessage.split(/\r\n|\r|\n/).map(l => l.trim());
+
+		let consideredOutput = [];
+		for (const entry of entriesBefore) {
+			let matched = false;
+			for (const afterEntry of entriesAfter) {
+				if (entry.includes(afterEntry) && entry !== afterEntry) {
+					consideredOutput.push({ before: entry, after: afterEntry });
+					matched = true;
+					break;
+				}
+			}
+			if (!matched) {
+				consideredOutput.push({ before: true, after: entry });
+			}
+		}
+
+		let output = [];
+		for (let { before, after } of consideredOutput) {
+			if (before === true) {
+				output.push(after);
+			} else {
+				const afterTokens = new Set(after.split(/\s+/));
+				const beforeTokens = before.split(/\s+/);
+				const diffTokens = beforeTokens.filter(token => !afterTokens.has(token));
+
+				const prefix = before.split(/\s+/).slice(0, 2).join(' ');
+				output.push(prefix ? `${prefix} ${diffTokens.join(' ')}` : diffTokens.join(' '));
+			}
+		}
+		// to do: better matching
+
+		console.log(output);
 	}
 };

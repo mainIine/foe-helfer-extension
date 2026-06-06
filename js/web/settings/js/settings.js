@@ -207,8 +207,8 @@ let Settings = {
 
 		if (s !== null) {
 			return is_string ? s : JSON.parse(s);
-
-		} else {
+		} 
+		else {
 
 			if (Settings.Preferences === null) {
 				console.error('Error getting default value of setting "' + name + '". config.json not loaded');
@@ -222,18 +222,69 @@ let Settings = {
 
 
 	VersionInfo: () => {
-		let v = extVersion.includes('beta') ? `` : `<p>${i18n('Settings.Version.Link').replace('__version__', '')}</p>`;
-		v +=	`<dl class="info-box">
-					<dt>${i18n('Settings.Version.Title')}</dt><dd>${extVersion}</dd>
-					<dt>${i18n('Settings.Version.PlayerId')}</dt><dd>${ExtPlayerID}</dd>
-					<dt>${i18n('Settings.Version.GuildId')}</dt><dd>${(ExtGuildID ? ExtGuildID : 'N/A')}</dd>
-					<dt>${i18n('Settings.Version.World')}</dt><dd>${ExtWorld}</dd>
-				</dl>
-				<p><a href="${extUrl}content/about.html" target="_blank">${i18n('Settings.About.Title')}</a><br />
-					<a href="${extUrl}content/help.html" target="_blank">${i18n('Settings.Help.Title')}</a>
-				</p>`;
+		let v = '<p>';
+		v +=	extVersion.includes('beta') ? `` : `${i18n('Settings.Version.Link').replace('__version__', '')}<br />`;
+		v +=	`<a href="${extUrl}content/about.html" target="_blank">${i18n('Settings.About.Title')}</a><br />
+				<a href="${extUrl}content/help.html" target="_blank">${i18n('Settings.Help.Title')}</a>
+				</p>
+				<div class="info-box">
+					<span><b>${i18n('Settings.Version.Title')}</b> ${extVersion}</span>
+					<span><b>${i18n('Settings.Version.PlayerId')}</b> ${ExtPlayerID}</span>
+					<span><b>${i18n('Settings.Version.GuildId')}</b> ${(ExtGuildID ? ExtGuildID : 'N/A')}</span>
+					<span><b>${i18n('Settings.Version.World')}</b> ${ExtWorld}</span>
+				</div>`;
 		return v;
 		
+	},
+
+
+	GameFilters: () => {
+		const defaultValues = {
+			brightness: 1,
+			contrast: 1,
+			saturation: 1,
+			hue: 0,
+		};
+
+		let filters = JSON.parse(localStorage.getItem('hammerGameFilters')) ?? { ...defaultValues };
+
+		const applyFilters = () => {
+			$('#game-container').css('filter',
+				`brightness(${filters.brightness}) contrast(${filters.contrast}) saturate(${filters.saturation}) hue-rotate(${filters.hue}deg)`
+			);
+			localStorage.setItem('hammerGameFilters', JSON.stringify(filters));
+		};
+
+		const syncInputs = () => {
+			for (const [name, value] of Object.entries(filters)) {
+				const input = $(`#game${name}`);
+				input.val(value);
+				input.next('output').text(value);
+			}
+		};
+
+		let v = `<div class="gameFilters">
+			<span>${i18n('Boxes.Settings.GameFilters.Brightness')}</span> <input type="range" name="brightness" id="gamebrightness" min="0.1" max="1.5" step="0.02" value="${filters.brightness}" /> <output for="gamebrightness">${filters.brightness}</output><br />
+			<span>${i18n('Boxes.Settings.GameFilters.Contrast')}</span> <input type="range" name="contrast" id="gamecontrast" min="0.5" max="1.5" step="0.02" value="${filters.contrast}" /> <output for="gamecontrast">${filters.contrast}</output><br />
+			<span>${i18n('Boxes.Settings.GameFilters.Saturation')}</span> <input type="range" name="saturation" id="gamesaturation" min="0" max="1" step="0.02" value="${filters.saturation}" /> <output for="gamesaturation">${filters.saturation}</output><br />
+			<span>${i18n('Boxes.Settings.GameFilters.Hue')}</span> <input type="range" name="hue" id="gamehue" min="0" max="360" step="1" value="${filters.hue}" /> <output for="gamehue">${filters.hue}</output>
+		</div>
+		<button class="btn resetColors">${i18n('Boxes.General.Reset')}</button>`;
+
+		$('#SettingsBoxBody')
+			.off('change.gameFilters click.gameFilters')
+			.on('change.gameFilters', 'input[name="brightness"], input[name="contrast"], input[name="saturation"], input[name="hue"]', function () {
+				filters[this.name] = parseFloat(this.value);
+				$(this).next('output').text(this.value);
+				applyFilters();
+			})
+			.on('click.gameFilters', '.resetColors', function () {
+				filters = { ...defaultValues };
+				syncInputs();
+				applyFilters();
+			});
+
+		return v;
 	},
 
 

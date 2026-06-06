@@ -868,8 +868,8 @@ GetFights = () =>{
 		_menu.CallSelectedMenu(MainParser.SelectedMenu);
 		
 		MainParser.setLanguage();
-
-		Quests.init();	
+		MainParser.setGameFilters();
+		Quests.init();
 	});
 
 
@@ -929,12 +929,20 @@ GetFights = () =>{
 
 	// Messages: Thread opened
 	FoEproxy.addHandler('ConversationService', 'getConversation', (data, postData) => {
-		MainParser.OpenConversation = data.responseData['id'];
+		MainParser.OpenConversation = data.responseData;
+		Calculator.ConversationContent = data.responseData.messages[0].text;
 	});
 
 	// Messages: Thread closed
 	FoEproxy.addHandler('ConversationService', 'markMessageRead', (data, postData) => {
 		MainParser.OpenConversation = null;
+		Calculator.ConversationContent = null;
+		Calculator.ConversationContentNew = null;
+	});
+
+	FoEproxy.addHandler('ConversationService', 'sendMessage', (data, postData) => {
+		Calculator.ConversationContentNew = data.responseData.text;
+		//	Calculator.showToPay(Calculator.ConversationContent, Calculator.ConversationContentNew)
 	});
 
 })();
@@ -1044,25 +1052,10 @@ let MainParser = {
 	 * Asynchronously builds city entity metadata by fetching and processing data for each provided building URL.
 	 * The function ensures that metadata is fetched and updated only when changes are detected in the hash values
 	 * from the input URLs and existing stored metadata.
-	 *
 	 * @param {Object} buildingUrls - A mapping where keys represent building IDs and values are objects containing
 	 *                                metadata with the following properties:
 	 *                                - `url` {string}: The URL from which the building metadata can be fetched.
 	 *                                - `hash` {string}: A hash representing the state of the metadata for change detection.
-	 *
-	 * The function performs the following operations:
-	 * - Accesses the IndexDB to retrieve and compare existing metadata for buildings.
-	 * - Determines which metadata requires updating based on differences in hash values.
-	 * - Fetches new metadata concurrently, with a maximum of 10 simultaneous network requests.
-	 * - Implements retry logic for failed requests, allowing up to 3 retries per request.
-	 * - Updates the IndexDB storage with newly fetched metadata.
-	 * - Updates the global `MainParser.CityEntities` object with the latest metadata.
-	 * - Invokes necessary parsing and checking functions from `MainParser`:
-	 *   - `MainParser.correctBuildingType()`: Corrects building types in the updated metadata.
-	 *   - `MainParser.Inactives.check()`: Performs post-processing checks for inactive entities.
-	 *
-	 * The function ensures robust error handling, timeout management for HTTP requests, and retries
-	 * to handle occasional network failures. Metadata updates are written back to IndexDB in bulk.
 	 */
 	CityEntityBuilder: async (buildingUrls) => {
 		await IndexDB.getDB();
@@ -1147,11 +1140,6 @@ let MainParser = {
 
 	/**
 	 * Updates the `type` property of each CityEntity in `MainParser.CityEntities` if it is missing.
-	 * The `type` is set based on the `buildingType` attribute found within the
-	 * `components.AllAge.tags.tags` structure of the entity.
-	 *
-	 * Iterates through all entries in the `MainParser.CityEntities` object, ensuring the
-	 * existence of the property `buildingType` before attempting to assign it.
 	 */
 	correctBuildingType: () => {
 		for (let i in MainParser.CityEntities) {
@@ -1174,9 +1162,7 @@ let MainParser = {
 		/** @type {null|Promise<{ok:true,data:any}|{ok:false,error:string}|unknown>} */
 		let _responsePromise = null;
 
-		// @ts-ignore
 		if (typeof chrome !== 'undefined') {
-			// @ts-ignore
 			_responsePromise = new Promise(resolve => chrome.runtime.sendMessage(extID, data, resolve));
 		}
 		else if (bgApiHandler != null) {
@@ -1208,13 +1194,17 @@ let MainParser = {
 	},
 
 
-	/**
-	 * Sets the application language by assigning the `GuiLng` value to `MainParser.Language`.
-	 * This function facilitates the configuration of the language settings for the application.
-	 */
 	setLanguage: () => {
-		// Translation
 		MainParser.Language = GuiLng;
+	},
+
+
+	setGameFilters: () => {
+		let filters = JSON.parse(localStorage.getItem('hammerGameFilters'));
+		if (filters)
+			$('#game-container').css('filter',
+				`brightness(${filters.brightness}) contrast(${filters.contrast}) saturate(${filters.saturation}) hue-rotate(${filters.hue}deg)`
+			);
 	},
 
 
@@ -1241,8 +1231,6 @@ let MainParser = {
 
 
 	/**
-	 * Returns the current date time
-	 *
 	 * @returns {number}
 	 */
 	getCurrentDateTime: () => {
@@ -1251,8 +1239,6 @@ let MainParser = {
 
 
 	/**
-	 * Returns the current date in playing time
-	 *
 	 * @returns {Date}
 	 */
 	getCurrentDate: () => {
@@ -1260,12 +1246,6 @@ let MainParser = {
 	},
 
 
-	/**
-	 * Performs rounding taking into account floating point inaccuracy
-	 *
-	 * @param {number} value
-	 * @returns {number}
-	 */
 	round: (value) => {
 		let Epsilon = 0.000001;
 
@@ -1286,11 +1266,8 @@ let MainParser = {
 	 * @returns {string|boolean}
 	 */
 	compareTime: (actual, storage) => {
-
-		// es gibt noch keinen Eintrag
 		if (storage === null) {
 			return true;
-
 		} else if (actual > storage) {
 			return true;
 
@@ -1334,9 +1311,6 @@ let MainParser = {
 
 
 	/**
-	 * Generates a player link or returns the player's name based on the application settings.
-	 *
-	 * @function GetPlayerLink
 	 * @param {string} PlayerID - The unique identifier for the player.
 	 * @param {string} PlayerName - The display name of the player.
 	 * @returns {string} A hyperlink to the player's profile if links are enabled in settings,
@@ -1357,19 +1331,10 @@ let MainParser = {
 
 
 	/**
-	 * Constructs a link or plain text for a guild based on the given parameters and settings.
-	 *
 	 * @param {string} GuildID - The unique identifier for the guild.
 	 * @param {string} GuildName - The name of the guild.
 	 * @param {string} [WorldId] - The world identifier. Defaults to `ExtWorld` when not provided.
 	 * @returns {string} - A hyperlink to the guild or the plain text of the guild name, depending on the settings.
-	 *
-	 * - If `Settings.GetSetting('ShowLinks')` is true:
-	 *   - Constructs a hyperlink using `GuildLinkFormat`, replacing placeholders for the `world` and `guildid`.
-	 *   - If the `localStorage` key `linkSite` equals `siteForgedb`, constructs the hyperlink with `GuildLinkFormat2`.
-	 *   - Returns the link as an HTML-safe string with the guild name and an icon.
-	 * - If `Settings.GetSetting('ShowLinks')` is false:
-	 *   - Returns the guild name as plain HTML-escaped text.
 	 */
 	GetGuildLink: (GuildID, GuildName, WorldId) => {
 		if(!WorldId) WorldId = ExtWorld;
@@ -1388,9 +1353,6 @@ let MainParser = {
 
 
 	/**
-	 * Generates a link for a building if the 'ShowLinks' setting is enabled.
-	 * Otherwise, it returns the building name as plain text.
-	 *
 	 * @param {string} BuildingID - The unique identifier for the building.
 	 * @param {string} BuildingName - The name of the building to be displayed.
 	 * @returns {string} A string containing either an HTML link or plain text for the building name.

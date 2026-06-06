@@ -221,6 +221,12 @@
 		"sort": 15
 	},
 	{
+		"name": "Filters",
+		"callback": "GameFilters",
+		"group": "About",
+		"sort": 18
+	},
+	{
 		"name": "ShowLinks",
 		"status": true,
 		"callback": "SelectWebsite",

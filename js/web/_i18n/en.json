@@ -1677,11 +1677,11 @@
     "Settings.Tab.Boxes": "Other",
     "Settings.Tab.Extension": "Menu + Notifications",
     "Settings.Tab.Sending": "Upload Data",
-    "Settings.Version.Desc": "The data below can be marked to copy it.",
+    "Settings.Version.Desc": "Forge Hammer is a player-made browser AddOn for Forge. Use the links below for further information.",
     "Settings.Version.GuildId": "Guild ID:",
-    "Settings.Version.Link": "<a target='_blank' href='https://github.com/outoftheline/forge-hammer/blob/main/changelog-en.md'  class='game-cursor'>Last Changelog</a>",
+    "Settings.Version.Link": "<a target='_blank' href='https://github.com/outoftheline/forge-hammer/blob/main/changelog-en.md'  class='game-cursor'>View latest Changes</a>",
     "Settings.Version.PlayerId": "Player ID:",
-    "Settings.Version.Title": "Version",
+    "Settings.Version.Title": "About Forge Hammer",
     "Settings.Version.World": "World:",
     "Settings.doubleFPtimeout.Desc": "Shows a box that temporarily covers the FP entry field in GB after a donation. The value determines the duration the box is shown in seconds - when 0, the box does not show",
     "Settings.doubleFPtimeout.Title": "Double donation blocker",
@@ -1690,6 +1690,15 @@
     "_Language": "English",
 
     "Settings.Entry.Skins": "Colors",
-    "Settings.Skins.Title": "Change appearance",
-    "Settings.Skins.Desc": "Change all window colors to a predefined theme. More themes will be added in the future."
+    "Settings.Skins.Title": "Change AddOn appearance",
+    "Settings.Skins.Desc": "Change all window colors to a predefined theme. More themes will be added in the future.",
+
+    "Settings.Entry.Filters": "Game Colors",
+    "Settings.Filters.Title": "Change the Look of the Game",
+    "Settings.Filters.Desc": "Some more or less useful and playful changes you can apply to the game colors.",
+    "Boxes.Settings.GameFilters.Brightness": "Brightness",
+    "Boxes.Settings.GameFilters.Contrast": "Contrast",
+    "Boxes.Settings.GameFilters.Saturation": "Saturation",
+    "Boxes.Settings.GameFilters.Hue": "Hue",
+    "Boxes.General.Reset": "Reset"
 }

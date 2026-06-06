@@ -1683,11 +1683,11 @@
     "Settings.Tab.Boxes": "Anderes",
     "Settings.Tab.Extension": "Menü + Meldungen",
     "Settings.Tab.Sending": "Übermittlung",
-    "Settings.Version.Desc": "Die unten stehenden Daten können markiert werden, um sie zu kopieren.",
+    "Settings.Version.Desc": "Forge Hammer ist ein von Spielern erstelltes Browser AddOn für Forge. Klick die Links unten für weitere Infos.",
     "Settings.Version.GuildId": "Gilden Id:",
-    "Settings.Version.Link": "<a target='_blank' href='https://github.com/outoftheline/forge-hammer/blob/main/changelog-de.md'  class='game-cursor'>Letzter Changelog</a>",
+    "Settings.Version.Link": "<a target='_blank' href='https://github.com/outoftheline/forge-hammer/blob/main/changelog-de.md'  class='game-cursor'>Liste mit Neuerungen</a>",
     "Settings.Version.PlayerId": "Spieler Id:",
-    "Settings.Version.Title": "Version",
+    "Settings.Version.Title": "Über Forge Hammer",
     "Settings.Version.World": "Welt:",
     "Settings.doubleFPtimeout.Desc": "Zeigt eine Box über dem LB Einzahlfeld an, nachdem eine Einzahlung getätigt wurde. Der Wert bestimmt, wie lange die Box angezeigt wird in Sekunden - bei 0 wird die Box gar nicht angezeigt.",
     "Settings.doubleFPtimeout.Title": "Doppeleinzahlungsblocker",
@@ -1697,5 +1697,14 @@
 
     "Settings.Entry.Skins": "Farben",
     "Settings.Skins.Title": "Aussehen verändern",
-    "Settings.Skins.Desc": "Verändere die Farben, die benutzt werden. Über Zeit werden mehr hinzugefügt."
+    "Settings.Skins.Desc": "Verändere die Farben, die benutzt werden. Über Zeit werden mehr hinzugefügt.",
+
+    "Settings.Entry.Filters": "Spielfarben",
+    "Settings.Filters.Title": "Spielfarben anpassen",
+    "Settings.Filters.Desc": "Mehr oder weniger nützliche Anpassungen für das Spiel. Farben von Forge Hammer werden nicht verändert.",
+    "Boxes.Settings.GameFilters.Brightness": "Helligkeit",
+    "Boxes.Settings.GameFilters.Contrast": "Kontrast",
+    "Boxes.Settings.GameFilters.Saturation": "Sättigung",
+    "Boxes.Settings.GameFilters.Hue": "Farbton",
+    "Boxes.General.Reset": "Zurücksetzen"
 }
