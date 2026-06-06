@@ -1891,7 +1891,8 @@ let Productions = {
 				dragdrop: true,
 				minimize: true,
 				resize: true,
-				settings: 'Productions.RSettings()'
+				settings: 'Productions.RSettings()',
+				custom_buttons: [{class: "window-popout", callback: "Productions.ratingPopOut();"}],
 			});
 			
 			helper.preloader.show('#ProductionsRating');
@@ -2937,6 +2938,53 @@ let Productions = {
 		h+=`</ul>`
 		$(itemId).html(h)
 	},
+
+
+	ratingPopOut: ()=> {
+		let skinCss = localStorage.getItem('HammerSkin')||'variables';
+		let id = 'ProductionsRating',
+			content = $('#ProductionsRatingBody').html(),
+			winHtml = `<!DOCTYPE html>
+						<html>
+							<head id="popout-${id}-head">
+								<meta charset="utf-8" />
+								<title>${i18n('Menu.ProductionsRating.Title')} - Alpha Version - Forge Hammer</title>
+								<link rel="stylesheet" href="${extUrl}css/boxes.css">
+								<link rel="stylesheet" href="${extUrl}css/${skinCss}.css">
+								<link rel="stylesheet" href="${extUrl}css/goods.css">
+								<link rel="stylesheet" href="${extUrl}js/web/productions/css/productions.css">
+								<style>#RatingsResults, #addMetaBuilding, label[for="inventorybuildingscore"], label[for="showallies"] {display: none !important;}</style>
+							</head>
+							<body class="popup-body" id="ProductionsRatingBody">${content}</body>
+							<script src="${extUrl}vendor/jQuery/jquery.min.js"></script>
+							<script src="${extUrl}vendor/tooltip/tooltip.js"></script>
+							<script src="${extUrl}vendor/tableSorter/table-sorter.js"></script>
+							<script src="${extUrl}js/foeproxy.js"></script>
+							<script src="${extUrl}js/web/_main/js/_main.js"></script>
+							<script src="${extUrl}js/web/_helper/js/_helper.js"></script>
+							<script src="${extUrl}js/web/customTooltip/js/customtooltip.js"></script>
+							<script src="${extUrl}js/web/productions/js/popout.js"></script>
+						</html>`;
+
+		const winUrl = URL.createObjectURL(
+			new Blob([winHtml], { type: "text/html;charset=utf8" })
+		);
+
+		window.popoutReady = () => {
+			winObj.Productions = Productions;
+			winObj.i18n = i18n;
+			winObj.helper = helper;
+			winObj.SaveSettings = SaveSettings;
+			winObj.initPopout();
+			$('#ProductionsRating').remove();
+		};
+
+		const winObj = window.open(
+			winUrl,
+			`popOut-ProductionsRatingBody`,
+			`width=1200,height=600,screenX=100,screenY=100`
+		);
+	}
 };
 
 FoEproxy.addHandler('CityMapService', 'placeBuilding', (data, postData) => {

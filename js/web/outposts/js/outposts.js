@@ -25,13 +25,9 @@ let Outposts = {
 	DisplayAllTiles: false,
 
 
-	/**
-	 * Füg eine Box in den DOM ein
-	 */
 	BuildInfoBox: ()=> {
 
-		if( $('#outpostConsumables').length === 0 )
-		{
+		if( $('#outpostConsumables').length === 0 ) {
 			let args = {
 				id: 'outpostConsumables',
 				title: i18n('Boxes.Outpost.Title'),
@@ -39,8 +35,8 @@ let Outposts = {
 				dragdrop: true,
 				minimize: true,
 				resize: true,
-			    active_maps:"cultural_outpost"
-				// popout: 'Outposts.PopOutBox()'
+			    active_maps:"cultural_outpost",
+				//popout: 'Outposts.PopOutBox()'
 			};
 
 			HTML.Box(args);
@@ -522,12 +518,6 @@ let Outposts = {
 
 		t.push('</tr>');
 
-		t.push('<tr>');
-		t.push('<td colspan="8" class="text-right">');
-		t.push(`<button class="btn" onclick="Outposts.SubmitData()">${i18n('Boxes.CityMap.OutpostSubmit')}</button>`);
-		t.push('</td>');
-		t.push('</tr>');
-
 		t.push('</table>');
 
 
@@ -640,84 +630,16 @@ let Outposts = {
 	},
 
 
-	SubmitData: () => {
-		let apiToken = localStorage.getItem('ApiToken');
-
-		if(apiToken === null) {
-			HTML.ShowToastMsg({
-				head: i18n('Boxes.CityMap.MissingApiKeyErrorHeader'),
-				text: i18n('Boxes.CityMap.MissingApiKeySubmitError'),
-				type: 'error',
-				hideAfter: 10000,
-			});
-
-			return;
-		}
-
-		let currentDate = new Date(),
-			d = {
-				time: currentDate.toISOString().split('T')[0] + ' ' + currentDate.getHours() + ':' + currentDate.getMinutes() + ':' + currentDate.getSeconds(),
-				player: {
-					name: ExtPlayerName,
-					id: ExtPlayerID,
-					world: ExtWorld,
-					avatar: ExtPlayerAvatar
-				},
-				apiToken: apiToken,
-				type: localStorage.getItem('OutpostType'),
-				eras: Technologies.Eras,
-				entities: Outposts.CityMap['entities'],
-				areas: Outposts.CityMap['unlocked_areas'],
-				blockedAreas: Outposts.CityMap['blocked_areas'],
-				allEntities: Outposts.Advancements
-			};
-
-		MainParser.send2Server(d, 'CityPlanner', function(resp){
-
-			if(resp.status === 'OK')
-			{
-				HTML.ShowToastMsg({
-					head: i18n('Boxes.CityMap.SubmitSuccessHeader'),
-					text: [
-						i18n('Boxes.CityMap.SubmitSuccess'),
-						'<a target="_blank" href="https://foe-helper.com/citymap/overview">foe-helper.com</a>'
-					],
-					type: 'success',
-					hideAfter: 10000,
-				});
-			}
-			else {
-				HTML.ShowToastMsg({
-					head: i18n('Boxes.CityMap.SubmitErrorHeader'),
-					text: resp['msg'],
-					type: 'error',
-					hideAfter: 10000,
-				});
-			}
-		});
-	},
-
-
 	PopOutBox: ()=> {
-		/*
-		let winObj = HTML.PopOutBoxBuilder({
-			id: 'outpostConsumables',
-			title: 'PopOut Test - ' + i18n('Boxes.Outpost.Title'),
-			width: 720,
-			height: 400
-		})
-		*/
-
-
-
+		let skinCss = localStorage.getItem('HammerSkin')||'variables';
 		let id = 'outpostConsumables',
 			content = $('#outpostConsumablesBody').html(),
 			winHtml = `<!DOCTYPE html>
 						<html>
 							<head id="popout-${id}-head">
 								<title>PopOut Test - ${i18n('Boxes.Outpost.Title')}</title>
-								<link rel="stylesheet" href="${extUrl}css/variables.css">
 								<link rel="stylesheet" href="${extUrl}css/boxes.css">
+								<link rel="stylesheet" href="${extUrl}css/${skinCss}.css">
 								<link rel="stylesheet" href="${extUrl}css/goods.css">
 								<link rel="stylesheet" href="${extUrl}js/web/outposts/css/outposts.css">
 							</head>

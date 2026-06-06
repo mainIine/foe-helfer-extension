@@ -211,15 +211,6 @@ let HTML = {
 			}
 		}
 
-		if (args['popout']) {
-			let set = $('<span />').addClass('window-settings').attr('id', `${args['id']}-popout`);
-			buttons.prepend(set);
-
-			if (typeof args['popout'] !== 'boolean') {
-				HTML.customFunctions[`${args['id']}PopOut`] = args['popout'];
-			}
-		}
-
 		if (args['custom_buttons']) {
 			if (typeof args.custom_buttons === "object") {
 				for (const button of args.custom_buttons) {

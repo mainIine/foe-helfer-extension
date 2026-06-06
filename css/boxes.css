@@ -7,6 +7,7 @@ body {
 	position: absolute !important;
 	height: 100% !important;
 	width: 100% !important;
+	margin: 0;
 }
 
 h1, h2, h3 {
@@ -1239,7 +1240,8 @@ a:hover, input[type="radio"] {
 .window-ask,
 .window-settings,
 .window-speaker,
-.window-close {
+.window-close,
+.window-popout {
 	background-image:  url('../images/hud/box-sprite.png'), url('../images/hud/box-sprite.png');
 }
 
@@ -1360,6 +1362,9 @@ a:hover, input[type="radio"] {
 
 .window-settings, .fh-icon-settings {
 	background-position: -193px -3px, 0 0;
+}
+.window-popout {
+	background-position: -234px -3px, 0 0;
 }
 
 .window-map {
