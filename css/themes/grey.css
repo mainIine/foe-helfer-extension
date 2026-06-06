@@ -71,6 +71,7 @@
 	--tabs-border: 2px solid #081a43;
 	--tabs-border-active: 2px solid #552a9a;
 	--border-tab: #091a43;
+	--border-tab-vertical: linear-gradient(45deg,#2a2825, var(--text-darker)) 10;
 
 	--table-bg-hover: #492a9e22;
 	--table-bg-odd: #0000004b;
@@ -88,14 +89,13 @@
 	--table-bt-bright: #5a2a8055;
 	--table-bb-bright: #1e0a3055;
 	--table-bg-highlight: #0e0c0acc;
+	--border-table-top: #2d2928de;
+	--border-table-bottom: #060606;
+	--border-table-bottom-darker: #000;
 
 	--hud-border-error: #6e1e10;
 	--hud-border-success: #3a6e28;
 
-	--border-tab-vertical: linear-gradient(45deg,#2a2825, var(--text-darker)) 10;
-	--border-table-top: #161616;
-	--border-table-bottom: #060606;
-	--border-table-bottom-darker: #000;
 
 	--tooltip-border: 2px solid #141210;
 	--tooltip-bg: #1c1a18;

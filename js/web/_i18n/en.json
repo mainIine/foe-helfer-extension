@@ -1688,6 +1688,7 @@
     "StrategyPoints.BuyableFP": "Forge Hammer: Number of FPs that can be bought with coins.",
     "StrategyPoints.FPInBar": "Forge Hammer: Number of FPs in your bar.",
     "_Language": "English",
+    "Boxes.General.Version": "Version",
 
     "Settings.Entry.Skins": "Colors",
     "Settings.Skins.Title": "Change AddOn appearance",

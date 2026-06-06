@@ -228,7 +228,7 @@ let Settings = {
 				<a href="${extUrl}content/help.html" target="_blank">${i18n('Settings.Help.Title')}</a>
 				</p>
 				<div class="info-box">
-					<span><b>${i18n('Settings.Version.Title')}</b> ${extVersion}</span>
+					<span><b>${i18n('Boxes.General.Version')}</b> ${extVersion}</span>
 					<span><b>${i18n('Settings.Version.PlayerId')}</b> ${ExtPlayerID}</span>
 					<span><b>${i18n('Settings.Version.GuildId')}</b> ${(ExtGuildID ? ExtGuildID : 'N/A')}</span>
 					<span><b>${i18n('Settings.Version.World')}</b> ${ExtWorld}</span>
@@ -263,13 +263,13 @@ let Settings = {
 			}
 		};
 
-		let v = `<div class="gameFilters">
-			<span>${i18n('Boxes.Settings.GameFilters.Brightness')}</span> <input type="range" name="brightness" id="gamebrightness" min="0.1" max="1.5" step="0.02" value="${filters.brightness}" /> <output for="gamebrightness">${filters.brightness}</output><br />
-			<span>${i18n('Boxes.Settings.GameFilters.Contrast')}</span> <input type="range" name="contrast" id="gamecontrast" min="0.5" max="1.5" step="0.02" value="${filters.contrast}" /> <output for="gamecontrast">${filters.contrast}</output><br />
-			<span>${i18n('Boxes.Settings.GameFilters.Saturation')}</span> <input type="range" name="saturation" id="gamesaturation" min="0" max="1" step="0.02" value="${filters.saturation}" /> <output for="gamesaturation">${filters.saturation}</output><br />
-			<span>${i18n('Boxes.Settings.GameFilters.Hue')}</span> <input type="range" name="hue" id="gamehue" min="0" max="360" step="1" value="${filters.hue}" /> <output for="gamehue">${filters.hue}</output>
-		</div>
-		<button class="btn resetColors">${i18n('Boxes.General.Reset')}</button>`;
+		let v = `<ul class="gameFilters foe-table">
+			<li><span>${i18n('Boxes.Settings.GameFilters.Brightness')}</span> <input type="range" name="brightness" id="gamebrightness" min="0.1" max="1.5" step="0.02" value="${filters.brightness}" /> <output for="gamebrightness">${filters.brightness}</output></li>
+			<li><span>${i18n('Boxes.Settings.GameFilters.Contrast')}</span> <input type="range" name="contrast" id="gamecontrast" min="0.5" max="1.5" step="0.02" value="${filters.contrast}" /> <output for="gamecontrast">${filters.contrast}</output></li>
+			<li><span>${i18n('Boxes.Settings.GameFilters.Saturation')}</span> <input type="range" name="saturation" id="gamesaturation" min="0" max="1" step="0.02" value="${filters.saturation}" /> <output for="gamesaturation">${filters.saturation}</output></li>
+			<li><span>${i18n('Boxes.Settings.GameFilters.Hue')}</span> <input type="range" name="hue" id="gamehue" min="0" max="360" step="1" value="${filters.hue}" /> <output for="gamehue">${filters.hue}</output></li>
+		</ul>
+		<button class="btn resetColors my-5">${i18n('Boxes.General.Reset')}</button>`;
 
 		$('#SettingsBoxBody')
 			.off('change.gameFilters click.gameFilters')

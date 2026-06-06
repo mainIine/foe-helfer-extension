@@ -139,64 +139,21 @@
 	overflow-x: hidden;
 }
 
-#SettingsBoxBody .helplist {
-	margin: 0;
-	list-style: none;
-	padding: 0;
+#SettingsBoxBody ul.foe-table.gameFilters li > * {
+	flex-grow: unset;
 }
 
-#SettingsBoxBody .helplist li {
-	clear: left;
-	margin: 0;
-}
-
-#SettingsBoxBody .helplist a {
-	text-decoration: none;
-	display: block;
-	overflow: hidden;
-	border-top: 1px solid var(--border-table-top);
-	border-bottom: 1px solid var(--border-table-bottom);
-	padding: 5px;
-	color: var(--beige);
-}
-
-#SettingsBoxBody .helplist a:hover {
-	background-color: var(--table-bg-hover);
-}
-
-#SettingsBoxBody .helplist li span {
-	display: inline-block;
-	background-color: var(--black);
-	width: 30px;
-	height: 32px;
-	margin-right: 7px;
-	background: url('../images/help.png') 0 0 no-repeat;
-	text-decoration: none;
-}
-
-#SettingsBoxBody .helplist .discord {
-	background-position: -33px 0;
-}
-
-#SettingsBoxBody .helplist .forums {
-	background-position: -63px 0;
-	width: 34px;
-	margin-right: 4px;
-}
-
-#SettingsBoxBody .helplist .website {
-	background-position: -97px 0;
-	width: 32px;
+#SettingsBoxBody ul.foe-table.gameFilters span {
+	width: 100px
 }
 
 #SettingsBoxBody .info-box {
 	border: 1px solid var(--text-dark);
 	padding: 5px;
-}
-
-#SettingsBoxBody .info-box dt {
-	color: var(--light-blue);
-	font-weight: bold;
+	user-select: all;
+	display: flex;
+    gap: 10px;
+    justify-content: center;
 }
 
 #SettingsBoxBody hr {
