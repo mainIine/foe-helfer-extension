@@ -45,7 +45,7 @@
 
 .discordForm #url-list li.selected {
 	font-weight: bold;
-	color: var(--sunflower);
+	color: var(--text-highlight);
 	background-color: var(--black-50);
 }
 

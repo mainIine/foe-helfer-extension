@@ -67,7 +67,7 @@
 #eventpresentsBody tr.visible td {
     opacity: 1;
     font-weight: bold;
-    color: var(--sunflower);
+    color: var(--text-highlight);
 }
 
 #eventpresentsBody tr.used td {

@@ -27,6 +27,6 @@
 
 #QiProgressPlayerDetails .pname {
 	padding: 10px 5px;
-	color: var(--sunflower);
+	color: var(--text-highlight);
 	font-size: 1.0rem;
 }

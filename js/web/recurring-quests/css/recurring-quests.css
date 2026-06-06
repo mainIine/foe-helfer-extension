@@ -12,7 +12,7 @@
 }
 
 #RecurringQuestsBoxBody div {
-    color: var(--sunflower);
+    color: var(--text-highlight);
     padding: 5px;
     font-size: smaller;
     text-align: justify;
@@ -30,7 +30,7 @@
     color: var(--limegreen);
 }
 #RecurringQuestsBoxBody td:last-child {
-    color: var(--sunflower);
+    color: var(--text-highlight);
 }
 #recurringTable.hideTasks th:nth-child(1),
 #recurringTable.hideTasks td:nth-child(1){
@@ -44,7 +44,7 @@
 }
 #recurringTable th:nth-child(1),
 #recurringTable th:nth-child(2){
-    color:var(--sunflower);
+    color:var(--text-highlight);
 }
 #recurringTable {
     table-layout: fixed;

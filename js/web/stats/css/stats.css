@@ -59,7 +59,7 @@
 }
 
 #stats .option-chart-type-wrap span.active {
-	color: var(--sunflower);
+	color: var(--text-highlight);
 }
 
 #stats .option-source-wrap {
@@ -212,7 +212,7 @@
 #LowStock .options {
 	border: 3px solid transparent;
 	height: 30px;
-	background-color: var(--background-light);
+	background-color: var(--bg-light);
 }
 
 #LowStock .selected {
@@ -227,7 +227,7 @@
 	height: 30px;
 	margin-left: 5px;
 	margin-right: 5px;
-	background-color: var(--background-light);
+	background-color: var(--bg-light);
 }
 #LowStockAddBtn {
 	height: 29px;
@@ -242,10 +242,10 @@
 	font-weight: 900;
 }
 .LShighlight {
-	background: var(--background-medium);
+	background: var(--bg-medium);
     color: var(--white);
 }
 #LowStockAlarmsList img {
     height: 25px;
-    background-color: var(--background-light);
+    background-color: var(--bg-light);
 }

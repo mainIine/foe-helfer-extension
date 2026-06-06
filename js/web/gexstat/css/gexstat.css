@@ -302,7 +302,7 @@
 }
 
 #GexStat .participation_overview>div {
-	color: var(--sunflower);
+	color: var(--text-highlight);
 }
 
 #GexStat #gexsParticipationTable {

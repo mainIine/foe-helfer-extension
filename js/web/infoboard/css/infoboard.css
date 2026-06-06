@@ -15,7 +15,7 @@
 }
 
 #BackgroundInfo #BackgroundInfoBody strong {
-	color: var(--sunflower);
+	color: var(--text-highlight);
 }
 
 #BackgroundInfo #BackgroundInfoBody .filter-row {
@@ -90,7 +90,7 @@
 
 #BackgroundInfoList .fav:hover, #BackgroundInfoList .fav.active {
 	opacity: 0.9;
-	color: var(--sunflower);
+	color: var(--text-highlight);
 }
 
 #BackgroundInfoList [class*=msg] .content {

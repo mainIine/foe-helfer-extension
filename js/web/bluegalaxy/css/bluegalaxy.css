@@ -27,7 +27,7 @@
 }
 
 .text-bright {
-    color: var(--sunflower);
+    color: var(--text-highlight);
 }
 
 #bluegalaxy .title {

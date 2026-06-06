@@ -71,7 +71,7 @@ table {
 
 #DBExport #dbex-loading-data .progressbar .state {
 	width: 80px;
-	background-color: var(--sunflower);
+	background-color: var(--text-highlight);
 	height: 9px;
 	margin-top: 5px;
 }
@@ -82,11 +82,11 @@ table {
 }
 
 #DBExport #debex_import_wrapper p.error {
-	color: var(--sunflower);
+	color: var(--text-highlight);
 }
 
 #DBExport #debex_import_wrapper p.success {
-	color: var(--sunflower);
+	color: var(--text-highlight);
 }
 
 #DBExport #debex_import_wrapper .icon {
@@ -137,7 +137,7 @@ table {
 	bottom: 5px;
 	border-radius: 50%;
 	border: 3px solid transparent;
-	border-top-color: var(--sunflower);
+	border-top-color: var(--text-highlight);
 	-webkit-animation: spin 3s linear infinite;
 	animation: spin 3s linear infinite;
 }

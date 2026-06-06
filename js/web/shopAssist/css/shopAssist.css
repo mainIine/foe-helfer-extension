@@ -83,12 +83,12 @@
 }
 .shopAssistTable .shopFavourite:after{
 	content: '☆';
-	color: var(--sunflower);
+	color: var(--text-highlight);
 	font-size: large;
 }
 .shopAssistTable .isShopFavourite .shopFavourite:after{
 	content: '★';
-	color: var(--sunflower);
+	color: var(--text-highlight);
 }
 .shopAssistTable .shopAlert:after {
 	content: '🔕';
@@ -100,7 +100,7 @@
 
 .shopAssistTable .shopAlert:hover,
 .shopAssistTable .shopFavourite:hover{
-	text-shadow: 0 0 3px var(--sunflower);
+	text-shadow: 0 0 3px var(--text-highlight);
 	opacity: 1;
 }
 

@@ -59,7 +59,7 @@
 }
 
 #kits h1, #kits h2, #kits h3 {
-	color: var(--sunflower);
+	color: var(--text-highlight);
 	margin: 0;
 	padding: 5px;
 }

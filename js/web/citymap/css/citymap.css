@@ -78,7 +78,7 @@
 	border-top: 1px dotted var(--text-darker);
 	padding: 5px 0;
 	margin: 5px 0 2px;
-	color: var(--sunflower);
+	color: var(--text-highlight);
 	display: block;
 }
 
@@ -103,7 +103,7 @@
 }
 #sidebar #area-state li.clickable:hover span:first-child {
 	font-weight: bold;
-	color: var(--sunflower);
+	color: var(--text-highlight);
 }
 
 .outpost #BuildingsFilter, .outpost #city-map-menu .btn-group, .outpost #map-filters {

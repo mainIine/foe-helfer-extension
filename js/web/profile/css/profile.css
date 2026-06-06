@@ -936,7 +936,7 @@
     box-shadow: 0 0 5px #000;
 }
 .playerprofile.window-box.foe h1 {
-    color: var(--sunflower);
+    color: var(--text-highlight);
 }
 .playerprofile.foe table tr:nth-child(2n) {
     background: linear-gradient(to right, transparent, #0002, transparent);

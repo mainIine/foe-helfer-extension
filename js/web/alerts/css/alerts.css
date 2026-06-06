@@ -78,7 +78,7 @@ div.alert-popup .box-inner-content h3 {
     background-color: var(--black-30);
     box-shadow: 0 20px 12px -22px var(--table-bg-hover) inset;
     border-bottom: 1px solid var(--text-dark);
-    color: var(--sunflower);
+    color: var(--text-highlight);
     display: block;
     font-weight: 700;
     font-size: 90%;
@@ -106,7 +106,7 @@ div.alert-popup .box-inner-form {
 .box-inner input[type="datetime-local"],
 .box-inner textarea,
 .box-inner select {
-    background-color: var(--background-light);
+    background-color: var(--bg-light);
     color: var(--text-medium);
     background-clip: padding-box;
     border: 1px solid var(--text-dark);
@@ -260,7 +260,7 @@ input.hidden {
     border-bottom: 1px solid var(--text-dark2);
     padding: 4px 10px;
     font-weight: 700;
-    color: var(--sunflower);
+    color: var(--text-highlight);
     background-color: var(--black-30);
 }
 

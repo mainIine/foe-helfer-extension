@@ -28,7 +28,7 @@
 }
 
 #OwnPartBox .OwnPartDrops .inputWrapper input, #OwnPartBox .OwnPartDrops div select, #gbCosts input, #PowerLevelingBox input, .OwnPartBoxBackgroundBody input, .OwnPartBoxBackgroundBody select  {
-	background-color: var(--background-light);
+	background-color: var(--bg-light);
 	color: var(--text-medium);
 	background-clip: padding-box;
 	border: 1px solid var(--text-dark);
@@ -110,7 +110,7 @@
 }
 
 #gbCosts strong, #gbCosts strong.normal, #up-to-level-up, .recurringquests, #gbCosts .yellow-text {
-	color: var(--sunflower);
+	color: var(--text-highlight);
 }
 
 #gbCosts .success, #gbCosts .success strong {
@@ -138,7 +138,7 @@
 }
 
 #gbCosts #arc-percent {
-	background-color: var(--background-light);
+	background-color: var(--bg-light);
 	color: var(--text-medium);
 	background-clip: padding-box;
 	border: 1px solid var(--text-dark);
@@ -225,7 +225,7 @@
 }
 
 .OwnPartBoxBackgroundBody strong {
-	color: var(--sunflower)
+	color: var(--text-highlight)
 }
 
 .OwnPartBoxBackgroundBody > div > span:not(.btn) {
@@ -310,7 +310,7 @@
 }
 
 #PowerLevelingBox #PowerLevelingBoxBody .foe-table td.bright, strong.bright {
-	color: var(--sunflower);
+	color: var(--text-highlight);
 	font-weight: bold;
 }
 

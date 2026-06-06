@@ -10,7 +10,7 @@
 	text-align: center;
 	padding: 1px 5px;
 	line-height: 1.5;
-	background-color: var(--background-light);
+	background-color: var(--bg-light);
 	color: var(--text-medium);
 	background-clip: padding-box;
 	border: 1px solid var(--text-dark);
@@ -19,7 +19,7 @@
 }
 
 #gbCalc strong {
-	color: var(--sunflower);
+	color: var(--text-highlight);
 }
 
 #gbCalc .header {

@@ -47,7 +47,7 @@
 
 #fp-collectorBody .fham-accordion-body div .fps {
 	width: 105px;
-	color: var(--sunflower);
+	color: var(--text-highlight);
 	text-align: right;
 	margin: 0 8px 0 0;
 }

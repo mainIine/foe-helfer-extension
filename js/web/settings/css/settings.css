@@ -23,7 +23,7 @@
 }
 
 #SettingsBoxBody .item-row a {
-	color: var(--sunflower);
+	color: var(--text-highlight);
 }
 
 #SettingsBoxBody .item-row .desc {

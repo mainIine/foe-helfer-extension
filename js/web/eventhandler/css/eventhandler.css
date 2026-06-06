@@ -38,7 +38,7 @@
 }
 
 #moppelhelper #moppelhelperBody td a {
-    color: var(--sunflower);
+    color: var(--text-highlight);
     text-decoration: none;
 }
 

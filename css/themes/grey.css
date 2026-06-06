@@ -7,13 +7,12 @@
 	--white: #fff;
 	--beige: #d4d0cc;
 	--dark-beige: #8c8880;
-	--sunflower: #f9ce79;
+	--text-highlight: #f9ce79;
 	--text-medium: #7a7670;
 	--text-medium2: #5e5a55;
 	--text-dark: #3a3733;
 	--text-dark2: #2e2c28;
 	--text-darker: #1c1a17;
-	--text-darkest: #0e0d0b;
 	--ash: #6a6a6a;
 	--light-blue: #a8a28a;
 
@@ -24,7 +23,7 @@
 	--black-65: #000000a6;
 	--white-65: #ffffffa6;
 
-	--success: #77c960;
+	--success: #74da58;
 	--limegreen: #5ac84a;
 	--info-blue: #5ca1db;
 	--danger-red: #c04040;
@@ -32,9 +31,10 @@
 	--text-tab-active: #c8c4be;
 	--text-tab: #807d79;
 
-	--background-light: #bebdbd;
-	--background-medium: #1e1c1a;
-	--background-dark: #0a0908;
+	--bg-light: #bebdbd;
+	--bg-medium: #1e1c1a;
+	--bg-dark: #0a0908;
+	--bg-darkest: #0e0d0b;
 
 	--window-border: 2px solid #635f5a;
 	--window-shadow: 0 0 9px 2px #000000aa, 0 0 0px 1px #000000aa;
@@ -177,4 +177,8 @@
 	--border-color-tower: #787a7a;
 	--background-color-gbg: #ffeac2;
 	--border-color-gbg: #dac195;
+}
+
+.btn:not([disabled]):hover, .btn-active:not([disabled]), .btn-active:not([disabled]):hover {
+    filter: brightness(140%) saturate(1.6);
 }

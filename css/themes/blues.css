@@ -7,13 +7,13 @@
 	--white: #fff;
 	--beige: #dce8f5;
 	--dark-beige: #8faec8;
-	--sunflower: #59d4d8;
+	--text-highlight: #59d4d8;
 	--text-medium: #6a8499;
 	--text-medium2: #4a6a82;
 	--text-dark: #263544;
 	--text-dark2: #1d2b38;
 	--text-darker: #161c27;
-	--text-darkest: #090b11;
+	--bg-darkest: #090b11;
 	--ash: #8a8a8a;
 	--light-blue: #9fc6ee;
 
@@ -28,9 +28,9 @@
 	--text-btn-disabled: #899aaa;
 	--text-btn: #c8dff0;
 
-	--background-light: #e2ebf3;
-	--background-medium: #6e8fa8;
-	--background-dark: #071828;
+	--bg-light: #e2ebf3;
+	--bg-medium: #6e8fa8;
+	--bg-dark: #071828;
 
 	--window-border: 2px solid #0e0f10;
 	--window-shadow: none;

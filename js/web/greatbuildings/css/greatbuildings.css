@@ -22,7 +22,7 @@
 }
 
 .text-bright {
-	color: var(--sunflower);
+	color: var(--text-highlight);
 }
 
 #greatbuildings .title {
@@ -47,7 +47,7 @@
 #greatbuildings #greatbuildingsBody strong.player-name {
 	display: block;
 	white-space: nowrap;
-	color: var(--sunflower);
+	color: var(--text-highlight);
 	margin: 0 10px;
 }
 

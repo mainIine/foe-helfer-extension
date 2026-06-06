@@ -38,9 +38,9 @@
 }
 
 @keyframes battleAssistBlink {
-    0% {color: var(--sunflower);}
+    0% {color: var(--text-highlight);}
     50% {color: var(--beige);}
-    100% {color: var(--sunflower);}
+    100% {color: var(--text-highlight);}
 }
 
 #battleAssistAddAdvice {
@@ -90,7 +90,7 @@
 #battleAssistArmyAdviceBody {
     background: 5px;
     color: var(--black);
-    background-color: var(--sunflower);
+    background-color: var(--text-highlight);
 }
 #battleAssistArmyAdviceBody span {
     margin-left: 5px;
@@ -118,7 +118,7 @@
     overflow-y: auto;
 }
 #battleAssistAAConfig .explanation {
-    color: var(--sunflower);
+    color: var(--text-highlight);
     margin: 3px;
     border: solid 1px;
     border-radius: 4px;
@@ -130,7 +130,7 @@
     float:right;
 }
 #battleAssistAAConfig h1 {
-    color: var(--sunflower);
+    color: var(--text-highlight);
     margin-left: 5px;
 }
 #battleAssistAAConfigSettingsBox input{

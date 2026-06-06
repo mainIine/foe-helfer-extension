@@ -28,7 +28,7 @@
 }
 
 #campagne #campagneBody .campagne-head strong {
-	color: var(--sunflower);
+	color: var(--text-highlight);
 }
 
 #campagne #campagneBody tr.total-row td {
@@ -37,7 +37,7 @@
 }
 
 #campagne #campagneBody tr.resource-row td {
-	color: var(--sunflower);
+	color: var(--text-highlight);
 	font-weight: 700;
 }
 

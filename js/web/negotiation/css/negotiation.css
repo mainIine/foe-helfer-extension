@@ -82,7 +82,7 @@
 }
 
 #negotiationBox #negotiationBoxBody tr.resource-row td {
-	color: var(--sunflower);
+	color: var(--text-highlight);
 	font-weight: 700;
 }
 

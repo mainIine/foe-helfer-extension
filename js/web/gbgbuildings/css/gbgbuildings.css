@@ -24,9 +24,9 @@
 }
 #GBGBuildingsBody .highlight {
 	font-weight: 800;
-	color: var(--sunflower);
+	color: var(--text-highlight);
 }
 #GBGBuildingsBody .breakline td {
-	border-top: 2px solid var(--sunflower);
+	border-top: 2px solid var(--text-highlight);
 }
 

@@ -58,7 +58,7 @@
 
 #noticesBody .tab-edit:hover,
 #noticesBody .sub-tab-edit:hover {
-	border-color: var(--sunflower);
+	border-color: var(--text-highlight);
 }
 
 #noticesBody .tabs ul.horizontal {
@@ -76,13 +76,13 @@
 #noticesBody .content-head {
 	font-size: 110%;
 	font-weight: 700;
-	color: var(--sunflower);
+	color: var(--text-highlight);
 	margin-bottom: 5px;
 }
 
 #noticesBody .content-head-player {
 	display: flex;
-	color: var(--sunflower);
+	color: var(--text-highlight);
 	margin-bottom: 15px;
 }
 

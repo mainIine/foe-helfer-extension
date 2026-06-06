@@ -54,7 +54,7 @@
 }
 #MGstatus th:nth-child(2),
 #MGstatus th:nth-child(3){
-        color:var(--sunflower);
+        color:var(--text-highlight);
 }
 
 #mergerGameDialogSettingsBox input{
@@ -84,11 +84,11 @@
 
 #mergerGameSolutionBody div{
     margin:5px;
-    color:var(--sunflower);
+    color:var(--text-highlight);
 }
 #mergerGameDialogBody svg{
     height:15px;
-    fill:var(--sunflower);
+    fill:var(--text-highlight);
 }
 
 #mergerGameTaskWarning {

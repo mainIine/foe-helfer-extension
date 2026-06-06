@@ -20,7 +20,7 @@
 }
 
 .text-bright {
-    color: var(--sunflower);
+    color: var(--text-highlight);
 }
 
 #GuildMemberStat #GuildMemberStatBody {
@@ -215,7 +215,7 @@
 }
 
 #GuildMemberStatBody .warn {
-    color: var(--sunflower);
+    color: var(--text-highlight);
 }
 
 #GuildMemberStatBody table tr.warning {
@@ -296,7 +296,7 @@
 }
 
 #GuildMemberStatBody .last-update-message .updaterequired {
-    color: var(--sunflower);
+    color: var(--text-highlight);
 }
 
 #GuildMemberStatBody .last-update-message span.icon {
@@ -323,7 +323,7 @@
     top: -4px;
     font-size: 0.85em;
     padding: 0 0 0 3px;
-    color: var(--sunflower);
+    color: var(--text-highlight);
     font-weight: bold;
     text-shadow: 0 2px 2px black, 0 1px 0 black;
 }
@@ -345,7 +345,7 @@
 }
 
 #GuildMemberStat #gms-filter-input {
-    background-color: var(--background-light);
+    background-color: var(--bg-light);
     font-size: 1rem;
     padding: 3px 5px;
     background-color: var(--text-btn);
@@ -354,8 +354,8 @@
 }
 
 #GuildMemberStat #gms-filter-input.highlight {
-    border-color: var(--sunflower);
-    background-color: var(--sunflower);
+    border-color: var(--text-highlight);
+    background-color: var(--text-highlight);
     color: var(--black);
 }
 

@@ -24,7 +24,7 @@
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	color: var(--sunflower);
+	color: var(--text-highlight);
 }
 
 #Castle .castle_wrapper .content .warning {
