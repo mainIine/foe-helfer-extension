@@ -255,6 +255,10 @@
 	-webkit-box-sizing: border-box;
 }
 
+#grid-outer[data-view="turned"] {
+	transform: rotate(90deg);
+}
+
 #grid-outer[data-view="skew"] {
 	transform: rotate(33deg) skew(-30deg,-5deg);
 }
@@ -307,6 +311,9 @@
 }
 [data-unit="60"] #map-grid, [data-unit="60"] #map-buildings {
 	zoom: 0.6
+}
+[data-unit="60"][data-view="turned"] {
+	top: 50px;
 }
 
 /* ------------------------------ */

@@ -183,6 +183,7 @@ let CityMap = {
 		/* change view */
 		let dropView = $('<select id="menu-view" class="game-cursor" />')
 			.append($('<option class="game-cursor" data-view="normal" />').prop('selected', CityMap.map.view === 'normal').text(i18n('Boxes.CityMap.NormalPerspecitve')) )
+			.append($('<option class="game-cursor" data-view="turned" />').prop('selected', CityMap.map.view === 'turned').text(i18n('Boxes.CityMap.TurnedPerspecitve')) )
 			.append($('<option class="game-cursor" data-view="skew" />').prop('selected', CityMap.map.view === 'skew').text(i18n('Boxes.CityMap.CavalierPerspecitve')) );
 
 		$('#'+elemId).on('change', '#menu-view', function(){

@@ -1702,5 +1702,7 @@
     "Boxes.Settings.GameFilters.Contrast": "Contrast",
     "Boxes.Settings.GameFilters.Saturation": "Saturation",
     "Boxes.Settings.GameFilters.Hue": "Hue",
-    "Boxes.General.Reset": "Reset"
+    "Boxes.General.Reset": "Reset",
+
+    "Boxes.CityMap.TurnedPerspecitve": "90° Top View"
 }
