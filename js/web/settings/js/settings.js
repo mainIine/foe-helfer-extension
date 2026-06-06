@@ -380,7 +380,7 @@ let Settings = {
 				</ul>`;
 
 		$('#SettingsBoxBody')
-			.on('change.soundEffects', 'input', function () {
+			.on('change.soundEffects', 'input:checked', function () {
 				localStorage.setItem('hammerSound', $(this).val());
 			});
 
@@ -507,12 +507,13 @@ let Settings = {
 		let dp = [];
 
 		let skins = [
-			{name: "Forge Hammer", path: "variables"},
+			{name: "Forge Hammer", path: "themes/hammer"},
+			{name: "Oldschool", path: "variables"},
 			{name: "Grey", path: "themes/grey"},
 			{name: "Blues", path: "themes/blues"}
 		];
 
-		let currentSkin = localStorage.getItem('HammerSkin')||"default";
+		let currentSkin = localStorage.getItem('HammerSkin')||"variables";
 
 		dp.push('<select class="setting-dropdown" id="changeSkin">');
 		for (let skin of Object.values(skins)) {
