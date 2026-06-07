@@ -8,4 +8,6 @@
 - Window Pop Outs: You can try an alpha version of it in the efficiency window. It will not have full functionality.
 
 ### Updated
-- City overview: New highlights for buildings that are not motivated and buildings that can be collected
+- GB Calculator: Added a botton at the top to easily switch views
+- City Overview: New highlights for buildings that are not motivated and buildings that can be collected
+- City Overview: Turn the view 90° around. Some might say this is the only true way to look at your city!
