@@ -1,17 +1,8 @@
 /*
- * **************************************************************************************
  * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
- * You may use, distribute and modify this code under the
- * terms of the AGPL license.
- *
- * See file LICENSE.md or go to
- * https://github.com/dsiekiera/foe-helfer-extension/blob/master/LICENSE.md
- * for full license details.
- *
- * **************************************************************************************
- */
-
-// This module is for the player's GBs ("GB Calculator")
+ * Copyright (C) 2026 Forge Hammer
+ * Licensed under AGPL - See LICENSE.md for full license details.
+*/
 
 // leveled alien GB
 FoEproxy.addWsHandler('OtherPlayerService', 'newEvent', data => {

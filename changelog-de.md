@@ -11,6 +11,7 @@
 - LG Rechner: Button in der oberen Leiste hinzugefügt, um die Ansicht mit einem Klick zu ändern
 - Stadt Übersicht: Neue Filter für Gebäude, die eingesammelt werden können, und Gebäude, die noch motiviert werden müssen
 - Stadt Übersicht: Man kann die Ansicht jetzt auch um 90° in die andere (manche sagen "richtige") Richtung drehen
+- Gefechte: Man kann in den Einstellungen jetzt die Zeit für die Benachrichtungen anpassen
 
 ### Entfernt
 - Alle Links zur FoE Helper Website, inklusive Stadtübertragung

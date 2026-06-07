@@ -1682,12 +1682,13 @@ let GuildFights = {
 
 
 	SetAlert: (id) => {
-		let prov = GuildFights.MapData['map']['provinces'].find(e => e.id === id);
+		let prov = GuildFights.MapData.map.provinces.find(e => e.id === id);
+		let alertOffset = parseInt( JSON.parse(localStorage.getItem('LiveFightSettings') )?.gbgAlertOffset || 30);
 
 		const data = {
 			title: prov.title,
 			body: HTML.i18nReplacer(i18n('Boxes.GuildFights.SaveAlert'), { provinceName: prov.title }),
-			expires: (prov.lockedUntil - 30) * 1000, // -30s * Microtime
+			expires: (prov.lockedUntil - alertOffset) * 1000, // -30s * Microtime
 			repeat: -1,
 			persistent: true,
 			tag: '',
@@ -1745,19 +1746,35 @@ let GuildFights = {
 		let showOwnSectors = (LiveFightSettings && LiveFightSettings.showOwnSectors !== undefined) ? LiveFightSettings.showOwnSectors : 0;
 		let showTileColors = (LiveFightSettings && LiveFightSettings.showTileColors !== undefined) ? LiveFightSettings.showTileColors : 1;
 		let showServerTime = LiveFightSettings?.showServerTime ?? 0;
+		let gbgAlertOffset = LiveFightSettings?.gbgAlertOffset ?? 30;
 		let discordWebhook = LiveFightSettings?.discordWebhook ?? '';
 		let discordWebhookTemplate = LiveFightSettings?.discordWebhookTemplate ?? '';
 		let discordWebhookTemplateBulk = LiveFightSettings?.discordWebhookTemplateBulk ?? '';
 
-		c.push(`<p><input id="showguildcolumn" name="showguildcolumn" value="1" type="checkbox" ${(showGuildColumn === 1) ? ' checked="checked"' : ''} /> <label for="showguildcolumn">${i18n('Boxes.GuildFights.ShowOwner')}</label></p>`);
-		c.push(`<p><label for="showAdjacentSectors"><input id="showAdjacentSectors" name="showAdjacentSectors" value="0" type="checkbox" ${(showAdjacentSectors === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.ShowAdjacentSectors')}</label></p>`);
-		c.push(`<p><label for="showownsectors"><input id="showownsectors" name="showownsectors" value="0" type="checkbox" ${(showOwnSectors === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.ShowOwnSectors')}</label></p>`);
-		c.push(`<p><label for="showtilecolors"><input id="showtilecolors" name="showtilecolors" value="0" type="checkbox" ${(showTileColors === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.ShowTileColors')}</label></p>`);
-		c.push(`<hr><p><label for="showservertime"><input id="showservertime" name="showservertime" value="0" type="checkbox" ${(showServerTime === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.ShowServerTime')}</label></p>`);
-		c.push(`<p><label for="serverOffset">${i18n('Boxes.GuildFights.serverOffset')}<input id="serverOffset" name="serverOffset" value="${GuildFights.serverOffset??""}" type="text" maxlength="5" size = "5"/></label></p>`);
+		c.push(`<p><input id="showguildcolumn" name="showguildcolumn" value="1" type="checkbox" ${(showGuildColumn === 1) ? ' checked="checked"' : ''} /> 
+			<label for="showguildcolumn">${i18n('Boxes.GuildFights.ShowOwner')}</label></p>
+			<p><input id="showAdjacentSectors" name="showAdjacentSectors" value="0" type="checkbox" ${(showAdjacentSectors === 1) ? ' checked="checked"' : ''} /> 
+			<label for="showAdjacentSectors">${i18n('Boxes.GuildFights.ShowAdjacentSectors')}</label></p>
+			<p><input id="showownsectors" name="showownsectors" value="0" type="checkbox" ${(showOwnSectors === 1) ? ' checked="checked"' : ''} /> 
+			<label for="showownsectors">${i18n('Boxes.GuildFights.ShowOwnSectors')}</label></p>
+			<p><input id="showtilecolors" name="showtilecolors" value="0" type="checkbox" ${(showTileColors === 1) ? ' checked="checked"' : ''} /> 
+			<label for="showtilecolors">${i18n('Boxes.GuildFights.ShowTileColors')}</label></p>
 
-		c.push(`<hr><p>`);
-			c.push(`<label for="gbgWebhook"><b>${i18n('Menu.Discord.Title')}</b></label><br />`);
+		<hr>
+
+		<p><input id="showservertime" name="showservertime" value="0" type="checkbox" ${(showServerTime === 1) ? ' checked="checked"' : ''} /> 
+		<label for="showservertime">${i18n('Boxes.GuildFights.ShowServerTime')}</label></p>
+		<p><label for="serverOffset">${i18n('Boxes.GuildFights.serverOffset')}</label> 
+		<input id="serverOffset" name="serverOffset" value="${GuildFights.serverOffset??""}" type="text" maxlength="5" size="5"/></p>
+
+		<hr>
+
+		<p><label for="gbgalertoffset">${i18n('Boxes.GuildFights.AlertOffset')}</label> 
+		<input id="gbgalertoffset" name="gbgalertoffset" value="${gbgAlertOffset}" maxlength="3" size="3" type="text" /> </p>
+		
+		<hr>
+
+		<p><label for="gbgWebhook"><b>${i18n('Menu.Discord.Title')}</b></label><br />`);
 			if (Discord.WebHooksUrls.length === 0)
 				c.push(`${i18n('Boxes.GuildFights.DiscordSetup')}: <span class="btn btn-slim" onclick="Discord.BuildBox()">${i18n('General.Open')}</span>`);
 			else {
@@ -1799,6 +1816,7 @@ let GuildFights = {
 		value.showOwnSectors = 0;
 		value.showTileColors = 0;
 		value.showServerTime = 0;
+		value.gbgAlertOffset = 30;
 		value.discordWebhook = '';
 		value.discordWebhookTemplate = '';
 		value.discordWebhookTemplateBulk = '';
@@ -1818,6 +1836,7 @@ let GuildFights = {
 		if ($("#showservertime").is(':checked')) 
 			value.showServerTime = 1;
 
+		value.gbgAlertOffset = $("#gbgalertoffset").val();
 		value.discordWebhook = $("#gbgWebhook").val();
 		value.discordWebhookTemplate = $("#gbgWebhookTemplate").val();
 		value.discordWebhookTemplateBulk = $("#gbgWebhookTemplateBulk").val();
@@ -1827,6 +1846,7 @@ let GuildFights = {
 		GuildFights.showOwnSectors = value.showOwnSectors;
 		GuildFights.showTileColors = value.showTileColors;
 		GuildFights.showServerTime = value.showServerTime;
+		GuildFights.gbgAlertOffset = value.gbgAlertOffset;
 		GuildFights.discordWebhook.url = value.discordWebhook;
 		GuildFights.discordWebhook.template = value.discordWebhookTemplate;
 		GuildFights.discordWebhook.bulkTemplate = value.discordWebhookTemplateBulk;

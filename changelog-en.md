@@ -5,12 +5,13 @@
 - Themes! Check the settings to choose a different skin for the addon.
 - Game Filters! You can adjust some basic game colors in the settings now
 - Change notification sound! Check the settings to choose from seven different sound effects
-- Window Pop Outs: You can try an alpha version of it in the efficiency window. It will not have full functionality.
+- Window Pop Outs: You can try an alpha version of it in the efficiency window. It will not have full functionality
 
 ### Updated
 - GB Calculator: Added a botton at the top to easily switch views
 - City Overview: New highlights for buildings that are not motivated and buildings that can be collected
 - City Overview: Turn the view 90° around. Some might say this is the only true way to look at your city!
+- GBG: You can now change the time the notification shows up before a province opens in the windows settings
 
 ### Removed
 - Any Links to FoE Helper, included city transmission
