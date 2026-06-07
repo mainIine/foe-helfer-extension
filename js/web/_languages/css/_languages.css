@@ -1,0 +1,50 @@
+
+
+#TranslationTable.show-only-missing tbody tr:not(.missing) {
+    display:none;
+}
+
+#TranslationTable.search-active tbody tr:not(.found) {
+    display:none;
+}
+
+#TranslationTable thead th {
+    position: sticky;
+    top: 0;
+}
+
+#TranslationBody {
+    overflow-y: auto;
+}
+
+#TranslationTable {
+    width: 100%;
+    table-layout: fixed;
+}
+
+#TranslationTable td {
+    width: 50%;   
+}
+
+#TranslationTable td:nth-child(3):hover {
+  background: var(--bg-dark);
+}
+
+#TranslationFooter {
+    position: sticky;
+    width: 100%;
+    bottom: 0;
+    background: var(--bg-darkest);
+}
+
+#TranslationTable tbody textarea {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+#TranslationTable .hidden {
+    display: none;
+}
+
+
