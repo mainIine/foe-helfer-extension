@@ -49,7 +49,7 @@ let Translation = {
 				resize: true
 			});		
 			let html = `
-				<div id="TranslationHeader">
+				<div id="TranslationHeader" class="p5">
 					<label for="ReferenceLanguage">${i18n('Boxes.Translation.ReferenceLanguage')}</label>
 					<select id="ReferenceLanguage" selected="en">
 						${["en","de"].map((code)=>`<option value="${code}">${Languages.PossibleLanguages[code]}</option>`).join('')}
@@ -74,7 +74,7 @@ let Translation = {
 					<tbody>
 					</tbody>
 				</table>
-				<div id="TranslationFooter">
+				<div id="TranslationFooter" class="p5">
 					<div class="btn btn-default" id="CopyJSON">${i18n('Boxes.Translation.CopyJSON')}</div>
 				</div>
 			`
