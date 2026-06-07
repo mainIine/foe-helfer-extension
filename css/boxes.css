@@ -2264,9 +2264,9 @@ span.activity {
     top: 1px;
 }
 
-span.activity.activity_2 { background: var(--tabs-bg-active); }
-span.activity.activity_1 { background: var(--btn-bg-active); }
-span.activity.activity_0 { background: var(--btn-bg-red); }
+span.activity.activity_2 { background: var(--activity-active); }
+span.activity.activity_1 { background: var(--activity-warning); }
+span.activity.activity_0 { background: var(--activity-inactive); }
 span.activity.activity_undefined {display:none}
 
 

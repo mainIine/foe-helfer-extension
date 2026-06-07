@@ -141,6 +141,10 @@
 	--tooltip-inhabitant: #a4a45d;
 	--btn-bg-discord: linear-gradient(to bottom, #5662f6, #4852e4);
 
+	--activity-active: linear-gradient(#4a5c7a, #3b4863);
+	--activity-warning: linear-gradient(linear-gradient(to bottom, #f5cd48 0%,#df9a34 1%,#ba6320 30%,#924715 99%,#a35d28 100%));
+	--activity-inactive: linear-gradient(to bottom, #871313 0%,#440909 100%);
+
 	/* city map buildings*/
 
 	--background-color-ascendable: #f37317;
