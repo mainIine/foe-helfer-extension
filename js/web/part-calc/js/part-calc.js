@@ -161,10 +161,11 @@ let Parts = {
 				dragdrop: true,
 				minimize: true,
 				settings: 'Parts.ShowCalculatorSettings()',
-			    active_maps:"main"
+			    active_maps:"main",
+				custom_buttons: [{class: "window-viewswitch", callback: "Parts.SwitchCalculator();"}]
 			});
 
-			HTML.AddCssFile('part-calc');	
+			HTML.AddCssFile('part-calc');
 
 			if (MainParser.CurrentGB.Entity !== undefined && MainParser.CurrentGB.Rankings !== undefined) Parts.CalcBody();
 
@@ -187,7 +188,6 @@ let Parts = {
 					v = $this.prop('checked');
 
 				Parts.LockExistingPlaces = v;
-
 				Parts.CalcBody();
 			});
 
@@ -197,7 +197,6 @@ let Parts = {
 					v = $this.prop('checked');
 
 				Parts.TrustExistingPlaces = v;
-
 				Parts.CalcBody();
 			});
 
@@ -435,17 +434,18 @@ let Parts = {
 	},
 
 
-	/**
-	 * Visible part
-	 *
-	 */
-	CalcBody: async (NextLevel) => {
+	CalcBody: async (NextLevel, showCalculator = false) => {
 		await StartUpDone;
 		if (MainParser.CurrentGB.Entity['level'] === NextLevel) NextLevel = 0;
+			
+		if (MainParser.CurrentGB.Entity.player_id !== ExtPlayerID)  // cannot use the other view
+			$('#OwnPartBox .window-viewswitch').removeClass('inactive');
+		else
+			$('#OwnPartBox .window-viewswitch').addClass('inactive');
 
 		// load other calculator if selected
 		let useThisCalculator = JSON.parse(localStorage.getItem('ShowOwnPartOnAllGBs'))
-		if (!useThisCalculator && MainParser.CurrentGB.Entity.player_id !== ExtPlayerID) {
+		if ((!useThisCalculator && MainParser.CurrentGB.Entity.player_id !== ExtPlayerID) || showCalculator) {
 			Calculator.Show();
 			return;	
 		}
@@ -1036,6 +1036,20 @@ let Parts = {
 			$('.OwnPartBoxBackgroundBody').fadeToggle();
 			$('#OwnPartBox').toggleClass('gbSettingsOpen');
 		});
+	},
+
+
+	SwitchCalculator: () => {
+		if ($('#gbCosts').length > 0 && MainParser.CurrentGB.Entity.player_id !== ExtPlayerID) { // is PartCalc, so show the other one
+			$('#OwnPartBox .window-viewswitch').removeClass('inactive');
+			Parts.CalcBody(0, true);
+			return;
+		}
+		else if ($('#gbCosts').length > 0 && MainParser.CurrentGB.Entity.player_id === ExtPlayerID) {
+			$('#OwnPartBox .window-viewswitch').addClass('inactive');
+			console.log(2)
+		}
+		Parts.CalcBody();
 	},
 
 	reRank: (n) => {

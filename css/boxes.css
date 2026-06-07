@@ -1341,30 +1341,21 @@ a:hover, input[type="radio"] {
 	margin-left: auto;
 }
 
-.window-ask {
-	background-position: -27px -2px, 0 0;
-}
-
-.window-speaker:hover, .window-speaker.deactivated {
-	background-position: -147px -3px, 0 0;
-}
-.window-speaker, .window-speaker.deactivated:hover {
-	background-position: -106px -3px, 0 0;
-}
+.window-ask { background-position: -27px -2px, 0 0; }
+.window-speaker:hover, .window-speaker.deactivated { background-position: -147px -3px, 0 0; }
+.window-speaker, .window-speaker.deactivated:hover { background-position: -106px -3px, 0 0; }
 
 .window-minimize {
 	background-position: -54px -3px, 0 0;
 	position: relative;
 }
-.closed .window-minimize {
-	background-position: -78px -2px, 0 0;
-}
+.closed .window-minimize { background-position: -78px -2px, 0 0; }
 
-.window-settings, .fh-icon-settings {
-	background-position: -193px -3px, 0 0;
-}
-.window-popout {
-	background-position: -234px -3px, 0 0;
+.window-settings, .fh-icon-settings { background-position: -193px -3px, 0 0; }
+.window-popout { background-position: -234px -3px, 0 0; }
+.window-viewswitch { background-position: -275px -3px, 0 0; }
+.window-viewswitch.inactive {
+	opacity: 0.1;
 }
 
 .window-map {
@@ -1380,7 +1371,7 @@ a:hover, input[type="radio"] {
 	position: relative;
 }
 
-.window-ask:hover, .open .window-minimize:hover, .closed .window-minimize:hover, .window-settings:hover, .window-map:hover, .window-close:hover {
+.window-head .box-buttons span:hover {
 	filter: brightness(130%);
 }
 
