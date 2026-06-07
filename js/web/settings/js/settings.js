@@ -480,7 +480,6 @@ let Settings = {
 		let dp = [];
 
 		dp.push('<select class="setting-dropdown" id="change-lang">');
-
 		for (let iso in Languages.PossibleLanguages) {
 			if (!Languages.PossibleLanguages.hasOwnProperty(iso)) {
 				break;
@@ -488,8 +487,11 @@ let Settings = {
 
 			dp.push('<option value="' + iso + '"' + (MainParser.Language === iso ? ' selected' : '') + '>' + Languages.PossibleLanguages[iso] + '</option>');
 		}
-
 		dp.push('</select>');
+
+		if (localStorage.getItem('user-language') !== "de") {
+			dp.push(`<hr />${i18n('Settings.ChangeLanguage.TranslateDescription')} <a href="#" onClick="Translation.Show()">${i18n('Settings.ChangeLanguage.Translate')}</a>`);
+		}
 
 		$('#SettingsBoxBody').on('change', '#change-lang', function () {
 			let uLng = $(this).val();
