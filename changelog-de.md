@@ -14,4 +14,4 @@
 
 ### Entfernt
 - Alle Links zur FoE Helper Website, inklusive Stadtübertragung
-- Notizen: Die Daten wurden auf der Website gespeichert, weshalb das Modul entfernt werden musste. Wir werden nach anderen Möglichkeiten gucken, aber wahrscheinlich werden wir nicht anbieten, das Daten in der Cloud speichert, also wird es keine Synchronisation zwischen verschiedenen Geräten geben
+- Notizen: Die Daten wurden auf der Website gespeichert, weshalb das Modul entfernt werden musste. Wir werden nach anderen Möglichkeiten gucken, aber wahrscheinlich werden wir nichts anbieten, das Daten in der Cloud speichert, also wird es keine Synchronisation zwischen verschiedenen Geräten geben
