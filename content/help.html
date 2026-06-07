@@ -8,164 +8,178 @@
 <html>
 
 <head>
-    <meta charset="utf-8">
-    <link rel="icon" type="image/x-icon" href="../images/app48.png">
-    <title>Help - Forge Hammer</title>
-    <link href="../css/pages.css" rel="stylesheet">
-    <script defer src="../vendor/jQuery/jquery.min.js"></script>
-    <script defer src="../vendor/tooltip/tooltip.js"></script>
-    <script defer src="../js/pages.js"></script>
+        <meta charset="utf-8">
+        <link rel="icon" type="image/x-icon" href="../images/app48.png">
+        <title>Help - Forge Hammer</title>
+        <link href="../css/pages.css" rel="stylesheet">
+        <script defer src="../vendor/jQuery/jquery.min.js"></script>
+        <script defer src="../vendor/tooltip/tooltip.js"></script>
+        <script defer src="../js/pages.js"></script>
 </head>
 
 <body class="fullpage">
-    <section>
-        <header>
-            <img src="../images/app128.png" />
-            <h1>Forge Hammer</h1>
-            Free browser addon for Forge of Empires<br />
-            <small>maintained by outoftheline and Beelzebob666</small>
-        </header>
-        <div class="setting">
-            <a href="#" id="setting-partCalc-Btn" class="hud-btn"><span
-                    data-original-title="&lt;b&gt;GB Calculator&lt;/b&gt;&lt;br&gt;Create payment plan, calculate external spots and copy values for your GBs"></span>
-            </a>
-            <a href="#" id="setting-productions-Btn" class="hud-btn"><span
-                    data-original-title="&lt;b&gt;Production Overview&lt;/b&gt;&lt;br&gt;Displays your current daily productions."></span>
-            </a>
-            <a href="#" id="setting-productionsRating-Btn" class="hud-btn"><span
-                    data-original-title="&lt;b&gt;Building Efficiency Rating&lt;/b&gt;&lt;br&gt;Search for buildings that produce less resources per tile than expected."></span>
-            </a>
-            <a href="#" id="setting-cityMap-Btn" class="hud-btn"><span
-                    data-original-title="&lt;b&gt;Town Overview&lt;/b&gt;&lt;br&gt;Displays a schematics of your city"></span>
-            </a>
-            <a href="#" id="setting-gildFight-Btn" class="hud-btn"><span
-                    data-original-title="&lt;b&gt;GBG&lt;/b&gt;&lt;br&gt;Displays current and upcoming GBG battles"></span>
-            </a>
-            <a href="#" id="setting-guildMemberstat-Btn" class="hud-btn"><span
-                    data-original-title="&lt;b&gt;Guild Member Overview&lt;/b&gt;&lt;br&gt;A list of all guild members, their buildings and activity, and some treasury data"></span>
-            </a>
-            <a href="#" id="setting-shopAssist-Btn" class="hud-btn"><span
-                    data-original-title="&lt;b&gt;Shop Assistant&lt;/b&gt;&lt;br&gt;List of all items in a store"></span>
-            </a>
-            <a href="#" id="setting-stats-Btn" class="hud-btn"><span
-                    data-original-title="&lt;b&gt;Statistics&lt;/b&gt;&lt;br&gt;Displays game stats on goods, units, rewards, GBG"></span>
-            </a>
-            <a href="#" id="setting-discord-Btn" class="hud-btn"><span
-                    data-original-title="&lt;b&gt;Discord Webhooks&lt;/b&gt;&lt;br&gt;Set up messages for your Discord server"></span>
-            </a>
-            <a href="#" id="setting-greatBuildings-Btn" class="hud-btn"><span
-                    data-original-title="&lt;b&gt;GB Investment&lt;/b&gt;&lt;br&gt;Which FP producing GB should you upgrade next?"></span>
-            </a>
-            <a href="#" id="setting-castle-Btn" class="hud-btn"><span
-                    data-original-title="&lt;b&gt;Castle System&lt;/b&gt;&lt;br&gt;Shows you the available opportunities to earn castle points."></span>
-            </a>
-            <a href="#" id="setting-music-Btn" class="hud-btn"><span
-                    data-original-title="&lt;b&gt;Background Music&lt;/b&gt;&lt;br&gt;Choose your own Soundtrack!"></span>
-            </a>
-            <a href="#" id="setting-recurringQuests-Btn" class="hud-btn"><span
-                    data-original-title="&lt;b&gt;Recurring Quests&lt;/b&gt;&lt;br&gt;Tracks, which of the recurring quests already gave diamonds"></span>
-            </a>
-            <a href="#" id="setting-technologies-Btn" class="hud-btn"><span
-                    data-original-title="&lt;b&gt;Technology (Tech) Tree&lt;/b&gt;&lt;br&gt;View and calculate Tech Tree research costs"></span>
-            </a>
-            <a href="#" id="setting-moppelHelper-Btn" class="hud-btn"><span
-                    data-original-title="&lt;b&gt;Motivate/Polish Helper&lt;/b&gt;&lt;br&gt;Displays when your friends, guild members or neighbours last motivated, polished, attacked, plundered, etc your buildings"></span>
-            </a>
-            <a href="#" id="setting-gexStat-Btn" class="hud-btn"><span
-                    data-original-title="&lt;b&gt;GE Results&lt;/b&gt;&lt;br&gt;Displays your Guild" s="" expedition=""
-                    results'=""></span>
-            </a>
-            <a href="#" id="setting-market-Btn" class="hud-btn"><span
-                    onclick="_menu.ToggleItemVisibility('market')"
-                    data-original-title="&lt;b&gt;Market Filter&lt;/b&gt;&lt;br&gt;Displays and Filters all trades that are in the Market"></span>
-            </a>
-            <a href="#" id="setting-blueGalaxy-Btn" class="hud-btn"><span
-                    data-original-title="&lt;b&gt;Blue Galaxy Helper&lt;/b&gt;&lt;br&gt;This tool helps you find the best buildings to collect with your Blue Galaxy"></span>
-            </a>
-            <a href="#" id="setting-findGB-Btn" class="hud-btn"><span
-                    data-original-title="&lt;b&gt;GB Tracker&lt;/b&gt;&lt;br&gt;creates a List of all the matching GB you come accross in other Players GB List or the ranking"></span>
-            </a>
-            <a href="#" id="setting-playerProfile-Btn" class="hud-btn"><span
-                    data-original-title="&lt;b&gt;Player Profile&lt;/b&gt;&lt;br&gt;Overview of most boosts, achievements, items and other city stats."></span>
-            </a>
-            <a href="#" id="setting-negotiation-Btn" class="hud-btn"><span
-                    data-original-title="&lt;b&gt;Negotiation Helper&lt;/b&gt;&lt;br&gt;Select resources for successful negotiations."></span>
-            </a>
-            <a href="#" id="setting-minigame_aztecs-Btn" class="hud-btn"><span
-                    data-original-title="&lt;b&gt;Aztec Helper&lt;/b&gt;&lt;br&gt;&lt;em id=&quot;minigame_aztecs-Btn-closed&quot; class=&quot;tooltip-error&quot;&gt;Opens automatically when starting a aztec mini game&lt;br&gt;&lt;/em&gt;Aztec Minigame Helper"></span>
-            </a>
-            <a href="#" id="setting-kits-Btn" class="hud-btn"><span
-                    data-original-title="&lt;b&gt;Sets and Chains&lt;/b&gt;&lt;br&gt;Displays all your in-stock buildings, upgrades, and selection kits from Sets and Chains."></span>
-            </a>
-            <a href="#" id="setting-allies-Btn" class="hud-btn"><span
-                    data-original-title="&lt;b&gt;Allies&lt;/b&gt;&lt;br&gt;Overview of all allies and buildings that have room for them."></span>
-            </a>
-            <a href="#" id="setting-alerts-Btn" class="hud-btn"><span
-                    data-original-title="&lt;b&gt;Alerts&lt;/b&gt;&lt;br&gt;Create and manage reminders"></span>
-            </a>
-            <a href="#" id="setting-unit-Btn" class="hud-btn"><span
-                    data-original-title="&lt;b&gt;Military Units Overview&lt;/b&gt;&lt;br&gt;Displays current status of all your military units"></span>
-            </a>
-            <a href="#" id="setting-fpCollector-Btn" class="hud-btn"><span
-                    data-original-title="&lt;b&gt;FP Collector Overview&lt;/b&gt;&lt;br&gt;Displays all FPs collected details sorted by type, date, from where and how many."></span>
-            </a>
-            <a href="#" id="setting-outpost-Btn" class="hud-btn"><span
-                    data-original-title="&lt;b&gt;Settlements Overview&lt;/b&gt;&lt;br&gt;Displays the resources required (by item) for your Settlement."></span>
-            </a>
-            <a href="#" id="setting-hiddenRewards-Btn" class="hud-btn"><span
-                    data-original-title="&lt;b&gt;Incidents&lt;/b&gt;&lt;br&gt;Displays Incident types, times and locations"></span>
-            </a>
-            <a href="#" id="setting-notice-Btn" class="hud-btn"><span
-                    data-original-title="&lt;b&gt;Notes&lt;/b&gt;&lt;br&gt;Take notes on anything you don" t="" want=""
-                    to="" forget.'=""></span>
-            </a>
-            <a href="#" id="setting-investment-Btn" class="hud-btn"><span
-                    data-original-title="&lt;b&gt;FP Investments&lt;/b&gt;&lt;br&gt;List of your latest investments"></span>
-            </a>
-            <a href="#" id="setting-compare_friends_threads-Btn" class="hud-btn"><span
-                    data-original-title="&lt;b&gt;Compare Friends with Threads&lt;/b&gt;&lt;br&gt;To find same friends in different chats"></span>
-            </a>
-            <a href="#" id="setting-infobox-Btn" class="hud-btn"><span
-                    data-original-title="&lt;b&gt;Info Box&lt;/b&gt;&lt;br&gt;Displays events happening in the background"></span>
-            </a>
-        </div>
+        <section>
+                <header>
+                        <img src="../images/app128.png" />
+                        <h1>Forge Hammer</h1>
+                        Free browser addon for Forge of Empires<br />
+                        <small><i>maintained by <b>outoftheline</b> and <b>Beelzebob666</b></i></small>
+                </header>
+                <div class="setting">
+                        <a href="#" id="setting-partCalc-Btn" class="hud-btn"><span
+                                        data-original-title="&lt;b&gt;GB Calculator&lt;/b&gt;&lt;br&gt;Create payment plan, calculate external spots and copy values for your GBs"></span>
+                        </a>
+                        <a href="#" id="setting-productions-Btn" class="hud-btn"><span
+                                        data-original-title="&lt;b&gt;Production Overview&lt;/b&gt;&lt;br&gt;Displays your current daily productions."></span>
+                        </a>
+                        <a href="#" id="setting-productionsRating-Btn" class="hud-btn"><span
+                                        data-original-title="&lt;b&gt;Building Efficiency Rating&lt;/b&gt;&lt;br&gt;Search for buildings that produce less resources per tile than expected."></span>
+                        </a>
+                        <a href="#" id="setting-cityMap-Btn" class="hud-btn"><span
+                                        data-original-title="&lt;b&gt;Town Overview&lt;/b&gt;&lt;br&gt;Displays a schematics of your city"></span>
+                        </a>
+                        <a href="#" id="setting-gildFight-Btn" class="hud-btn"><span
+                                        data-original-title="&lt;b&gt;GBG&lt;/b&gt;&lt;br&gt;Displays current and upcoming GBG battles"></span>
+                        </a>
+                        <a href="#" id="setting-guildMemberstat-Btn" class="hud-btn"><span
+                                        data-original-title="&lt;b&gt;Guild Member Overview&lt;/b&gt;&lt;br&gt;A list of all guild members, their buildings and activity, and some treasury data"></span>
+                        </a>
+                        <a href="#" id="setting-shopAssist-Btn" class="hud-btn"><span
+                                        data-original-title="&lt;b&gt;Shop Assistant&lt;/b&gt;&lt;br&gt;List of all items in a store"></span>
+                        </a>
+                        <a href="#" id="setting-stats-Btn" class="hud-btn"><span
+                                        data-original-title="&lt;b&gt;Statistics&lt;/b&gt;&lt;br&gt;Displays game stats on goods, units, rewards, GBG"></span>
+                        </a>
+                        <a href="#" id="setting-discord-Btn" class="hud-btn"><span
+                                        data-original-title="&lt;b&gt;Discord Webhooks&lt;/b&gt;&lt;br&gt;Set up messages for your Discord server"></span>
+                        </a>
+                        <a href="#" id="setting-greatBuildings-Btn" class="hud-btn"><span
+                                        data-original-title="&lt;b&gt;GB Investment&lt;/b&gt;&lt;br&gt;Which FP producing GB should you upgrade next?"></span>
+                        </a>
+                        <a href="#" id="setting-castle-Btn" class="hud-btn"><span
+                                        data-original-title="&lt;b&gt;Castle System&lt;/b&gt;&lt;br&gt;Shows you the available opportunities to earn castle points."></span>
+                        </a>
+                        <a href="#" id="setting-music-Btn" class="hud-btn"><span
+                                        data-original-title="&lt;b&gt;Background Music&lt;/b&gt;&lt;br&gt;Choose your own Soundtrack!"></span>
+                        </a>
+                        <a href="#" id="setting-recurringQuests-Btn" class="hud-btn"><span
+                                        data-original-title="&lt;b&gt;Recurring Quests&lt;/b&gt;&lt;br&gt;Tracks, which of the recurring quests already gave diamonds"></span>
+                        </a>
+                        <a href="#" id="setting-technologies-Btn" class="hud-btn"><span
+                                        data-original-title="&lt;b&gt;Technology (Tech) Tree&lt;/b&gt;&lt;br&gt;View and calculate Tech Tree research costs"></span>
+                        </a>
+                        <a href="#" id="setting-moppelHelper-Btn" class="hud-btn"><span
+                                        data-original-title="&lt;b&gt;Motivate/Polish Helper&lt;/b&gt;&lt;br&gt;Displays when your friends, guild members or neighbours last motivated, polished, attacked, plundered, etc your buildings"></span>
+                        </a>
+                        <a href="#" id="setting-gexStat-Btn" class="hud-btn"><span
+                                        data-original-title="&lt;b&gt;GE Results&lt;/b&gt;&lt;br&gt;Displays your Guild"
+                                        s="" expedition="" results'=""></span>
+                        </a>
+                        <a href="#" id="setting-market-Btn" class="hud-btn"><span
+                                        onclick="_menu.ToggleItemVisibility('market')"
+                                        data-original-title="&lt;b&gt;Market Filter&lt;/b&gt;&lt;br&gt;Displays and Filters all trades that are in the Market"></span>
+                        </a>
+                        <a href="#" id="setting-blueGalaxy-Btn" class="hud-btn"><span
+                                        data-original-title="&lt;b&gt;Blue Galaxy Helper&lt;/b&gt;&lt;br&gt;This tool helps you find the best buildings to collect with your Blue Galaxy"></span>
+                        </a>
+                        <a href="#" id="setting-findGB-Btn" class="hud-btn"><span
+                                        data-original-title="&lt;b&gt;GB Tracker&lt;/b&gt;&lt;br&gt;creates a List of all the matching GB you come accross in other Players GB List or the ranking"></span>
+                        </a>
+                        <a href="#" id="setting-playerProfile-Btn" class="hud-btn"><span
+                                        data-original-title="&lt;b&gt;Player Profile&lt;/b&gt;&lt;br&gt;Overview of most boosts, achievements, items and other city stats."></span>
+                        </a>
+                        <a href="#" id="setting-negotiation-Btn" class="hud-btn"><span
+                                        data-original-title="&lt;b&gt;Negotiation Helper&lt;/b&gt;&lt;br&gt;Select resources for successful negotiations."></span>
+                        </a>
+                        <a href="#" id="setting-minigame_aztecs-Btn" class="hud-btn"><span
+                                        data-original-title="&lt;b&gt;Aztec Helper&lt;/b&gt;&lt;br&gt;&lt;em id=&quot;minigame_aztecs-Btn-closed&quot; class=&quot;tooltip-error&quot;&gt;Opens automatically when starting a aztec mini game&lt;br&gt;&lt;/em&gt;Aztec Minigame Helper"></span>
+                        </a>
+                        <a href="#" id="setting-kits-Btn" class="hud-btn"><span
+                                        data-original-title="&lt;b&gt;Sets and Chains&lt;/b&gt;&lt;br&gt;Displays all your in-stock buildings, upgrades, and selection kits from Sets and Chains."></span>
+                        </a>
+                        <a href="#" id="setting-allies-Btn" class="hud-btn"><span
+                                        data-original-title="&lt;b&gt;Allies&lt;/b&gt;&lt;br&gt;Overview of all allies and buildings that have room for them."></span>
+                        </a>
+                        <a href="#" id="setting-alerts-Btn" class="hud-btn"><span
+                                        data-original-title="&lt;b&gt;Alerts&lt;/b&gt;&lt;br&gt;Create and manage reminders"></span>
+                        </a>
+                        <a href="#" id="setting-unit-Btn" class="hud-btn"><span
+                                        data-original-title="&lt;b&gt;Military Units Overview&lt;/b&gt;&lt;br&gt;Displays current status of all your military units"></span>
+                        </a>
+                        <a href="#" id="setting-fpCollector-Btn" class="hud-btn"><span
+                                        data-original-title="&lt;b&gt;FP Collector Overview&lt;/b&gt;&lt;br&gt;Displays all FPs collected details sorted by type, date, from where and how many."></span>
+                        </a>
+                        <a href="#" id="setting-outpost-Btn" class="hud-btn"><span
+                                        data-original-title="&lt;b&gt;Settlements Overview&lt;/b&gt;&lt;br&gt;Displays the resources required (by item) for your Settlement."></span>
+                        </a>
+                        <a href="#" id="setting-hiddenRewards-Btn" class="hud-btn"><span
+                                        data-original-title="&lt;b&gt;Incidents&lt;/b&gt;&lt;br&gt;Displays Incident types, times and locations"></span>
+                        </a>
+                        <a href="#" id="setting-notice-Btn" class="hud-btn"><span
+                                        data-original-title="&lt;b&gt;Notes&lt;/b&gt;&lt;br&gt;Take notes on anything you don"
+                                        t="" want="" to="" forget.'=""></span>
+                        </a>
+                        <a href="#" id="setting-investment-Btn" class="hud-btn"><span
+                                        data-original-title="&lt;b&gt;FP Investments&lt;/b&gt;&lt;br&gt;List of your latest investments"></span>
+                        </a>
+                        <a href="#" id="setting-compare_friends_threads-Btn" class="hud-btn"><span
+                                        data-original-title="&lt;b&gt;Compare Friends with Threads&lt;/b&gt;&lt;br&gt;To find same friends in different chats"></span>
+                        </a>
+                        <a href="#" id="setting-infobox-Btn" class="hud-btn"><span
+                                        data-original-title="&lt;b&gt;Info Box&lt;/b&gt;&lt;br&gt;Displays events happening in the background"></span>
+                        </a>
+                </div>
 
-        <h2>Data</h2>
-        <p>This addon is best enjoyed if you do not clear your browser data regularly, as it saves game
-            data locally, so on your device only, and has a lot of settings that would be reset everytime you do
-            so.<br />That being said: Clearing only your <b>cache</b> is fine. Data is stored in
-            a local database (IndexedDB) and localStorage, not in the cache.</p>
-        <p>You can also save your data to your computer before deleting any browser data in <img class="icon"
-                src="../images/menu/settings.png" /> <b>Settings</b> and reimport it afterwards!</p>
-        <p>No data is sent to external websites.</p>
+                <h2>Help, I need information!</h2>
+                <p>We will extend this page as we go and added a <a
+                                href="https://github.com/outoftheline/forge-hammer/wiki/Forge-Hammer-Wiki"
+                                target="_blank">wiki on GitHub</a> which we'll work on when we find the time. If you
+                        want to, you can contribute to the wiki!</p>
+                <p>You can also ask questions on <a href="https://discord.gg/M32xurRsQ9">Discord</a></p>
 
-        <hr />
+                <hr />
 
-        <h2><img class="icon" src="../images/menu/alerts.png" /> I don't receive any notifications, how can I
-            fix that?</h2>
+                <h2>Data</h2>
+                <p>This addon is best enjoyed if you do not clear your browser data regularly, as it saves game
+                        data locally, so on your device only, and has a lot of settings that would be reset everytime
+                        you do
+                        so.<br />That being said: Clearing only your <b>cache</b> is fine. Data is stored in
+                        a local database (IndexedDB) and localStorage, not in the cache.</p>
+                <p>You can also save your data to your computer before deleting any browser data in <img class="icon"
+                                src="../images/menu/settings.png" /> <b>Settings</b> and reimport it afterwards!</p>
+                <p>No data is sent to external websites.</p>
 
-        <p>Create an entry with a title and a date in the <img class="icon" src="../images/menu/alerts.png" /> <b>Alerts
-                module</b> and hit the Preview button. <br />
-            If nothing happens, notifications are probably not allowed in your OS (Windows/Mac etc) or in your browser.
-            Check those settings. </p>
+                <hr />
 
-        <hr />
+                <h2><img class="icon" src="../images/menu/alerts.png" /> I don't receive any notifications, how can I
+                        fix that?</h2>
 
-        <h2><img class="icon" src="../images/menu/discord.png" /> How do I customize Discord Webhook messages?</h2>
-        <p>You can use some <a
-                href="https://support.discord.com/hc/en-us/articles/210298617-Markdown-Text-101-Chat-Formatting-Bold-Italic-Underline"
-                target="_blank">Markdown</a>.</p>
+                <p>Create an entry with a title and a date in the <img class="icon" src="../images/menu/alerts.png" />
+                        <b>Alerts
+                                module</b> and hit the Preview button. <br />
+                        If nothing happens, notifications are probably not allowed in your OS (Windows/Mac etc) or in
+                        your browser.
+                        Check those settings. </p>
 
-        <p>Pinging custom groups or users can be achieved by their ID. To be able to see IDs, enable developer mode in
-            your Discord settings.<br />
-            User ping syntax:
-            <code><@303034383893938393></code><br />
-            Group ping syntax:
-            <code><@&3434373535323434323></code>
-        </p>
-        <p><a href="https://discordtimestamp.org/" target="_blank">For timestamp syntax look here</a></p>
+                <hr />
 
-    </section>
+                <h2><img class="icon" src="../images/menu/discord.png" /> How do I customize Discord Webhook messages?
+                </h2>
+                <p>You can use some <a
+                                href="https://support.discord.com/hc/en-us/articles/210298617-Markdown-Text-101-Chat-Formatting-Bold-Italic-Underline"
+                                target="_blank">Markdown</a>.</p>
+
+                <p>Pinging custom groups or users can be achieved by their ID. To be able to see IDs, enable developer
+                        mode in
+                        your Discord settings.<br />
+                        User ping syntax:
+                        <code><@303034383893938393></code><br />
+                        Group ping syntax:
+                        <code><@&3434373535323434323></code>
+                </p>
+                <p><a href="https://discordtimestamp.org/" target="_blank">For timestamp syntax look here</a></p>
+
+        </section>
 </body>
 
 </html>
