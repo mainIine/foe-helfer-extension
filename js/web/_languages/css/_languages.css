@@ -47,4 +47,14 @@
     display: none;
 }
 
+#CopyJSONInfo {
+    width: 300px;
+    display: inline-block;
+    height: 20px;
+    overflow: hidden;
+}
+
+#CopyJSONInfo:hover {
+    height: auto;
+}
 
