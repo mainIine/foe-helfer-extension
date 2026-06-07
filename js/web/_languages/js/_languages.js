@@ -18,9 +18,9 @@ let Languages = {
 		'hu': 'Magyar',
 		'it': 'Italiano',
 		'ja': '日本語',
-		'nb_NO': 'Norsk bokmål',
+		//'nb_NO': 'Norsk bokmål',
 		'nl': 'Nederlands',
-		'nn': 'Nynorsk',
+		//'nn': 'Nynorsk',
 		'pl': 'Polski',
 		'pt': 'Português',
 		'pt-br': 'Português do Brasil',
@@ -76,7 +76,7 @@ let Translation = {
 				</table>
 				<div id="TranslationFooter" class="p5">
 					<span class="btn btn-default" id="CopyJSON">${i18n('Boxes.Translation.CopyJSON')}</span>
-					<div id="CopyJSONInfo"><h2>Explanation</h2> <ul><li>Create a GitHub Account</li><li>Fork the Forge Hammer repository including all branches</li><li>Use the Copy button on the left to copy the translation data</li><li>Overwrite the content of the respective language file in your forks development branch.</li><li>Create a pull request from there into the Forge Hammer 'development' branch to get the translation into the next release.</li></ul></div>
+					<div id="CopyJSONInfo"><h2>Explanation</h2> <ul><li>Create a GitHub Account</li><li>Fork the Forge Hammer repository including all branches</li><li>Use the Copy button on the left to copy the translation data</li><li>Overwrite the content of the respective language file in your forks 'develop' branch.</li><li>Create a pull request from there into the Forge Hammer 'develop' branch to get the translation into the next release.</li></ul></div>
 				</div>
 			`
 
