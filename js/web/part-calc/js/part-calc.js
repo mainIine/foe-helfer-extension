@@ -425,7 +425,7 @@ let Parts = {
 	},
 
 
-	CalcBody: async (NextLevel, showCalculator = false) => {
+	CalcBody: async (NextLevel, switchView = '') => {
 		await StartUpDone;
 		if (MainParser.CurrentGB.Entity['level'] === NextLevel) NextLevel = 0;
 			
@@ -435,10 +435,11 @@ let Parts = {
 			$('#OwnPartBox .window-viewswitch').addClass('inactive');
 
 		// load other calculator if selected
-		let useThisCalculator = JSON.parse(localStorage.getItem('ShowOwnPartOnAllGBs'))
-		if ((!useThisCalculator && MainParser.CurrentGB.Entity.player_id !== ExtPlayerID) || showCalculator) {
+		let useThisCalculator = JSON.parse(localStorage.getItem('ShowOwnPartOnAllGBs'));
+		if ((!useThisCalculator && MainParser.CurrentGB.Entity.player_id !== ExtPlayerID && !(switchView === 'partcalc')) 
+			|| (switchView === 'calculator' && MainParser.CurrentGB.Entity.player_id !== ExtPlayerID)) {
 			Calculator.Show();
-			return;	
+			return;
 		}
 
 		let PlayerID = MainParser.CurrentGB.Entity['player_id'],
@@ -1033,14 +1034,13 @@ let Parts = {
 	SwitchCalculator: () => {
 		if ($('#gbCosts').length > 0 && MainParser.CurrentGB.Entity.player_id !== ExtPlayerID) { // is PartCalc, so show the other one
 			$('#OwnPartBox .window-viewswitch').removeClass('inactive');
-			Parts.CalcBody(0, true);
+			Parts.CalcBody(0, 'calculator');
 			return;
 		}
 		else if ($('#gbCosts').length > 0 && MainParser.CurrentGB.Entity.player_id === ExtPlayerID) {
 			$('#OwnPartBox .window-viewswitch').addClass('inactive');
-			console.log(2)
 		}
-		Parts.CalcBody();
+		Parts.CalcBody(0, 'partcalc');
 	},
 
 	reRank: (n) => {
