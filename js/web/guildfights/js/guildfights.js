@@ -1,17 +1,8 @@
 /*
- *
- *  * **************************************************************************************
- *  * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
- *  * You may use, distribute and modify this code under the
- *  * terms of the AGPL license.
- *  *
- *  * See file LICENSE.md or go to
- *  * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
- *  * for full license details.
- *  *
- *  * **************************************************************************************
- *
- */
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2026 Forge Hammer
+ * Licensed under AGPL - see LICENSE.md for details.
+*/
 
 FoEproxy.addMetaHandler('guild_battleground_maps', (xhr, postData) => {
 	GuildFights.ProvinceNames = JSON.parse(xhr.responseText);
@@ -1661,16 +1652,14 @@ let GuildFights = {
 				GuildFights.Alerts = [];
 
 				resp.forEach((alert) => {
-					if (alert['data']['category'] === 'gbg')
-					{
+					if (alert['data']['category'] === 'gbg') {
 						let alertTime = alert['data']['expires'],
 							name = alert['data']['title'],
 							prov = GuildFights.MapData['map']['provinces'].find(
 								e => e.title === name && alertTime > currentTime
 							);
 
-						if (prov !== undefined)
-						{
+						if (prov !== undefined) {
 							GuildFights.Alerts.push({ provId: prov['id'], alertId: alert.id });
 						}
 					}
@@ -1686,8 +1675,8 @@ let GuildFights = {
 		let alertOffset = parseInt( JSON.parse(localStorage.getItem('LiveFightSettings') )?.gbgAlertOffset || 30);
 
 		const data = {
-			title: prov.title,
-			body: HTML.i18nReplacer(i18n('Boxes.GuildFights.SaveAlert'), { provinceName: prov.title }),
+			title: HTML.i18nReplacer(i18n('Boxes.GuildFights.SaveAlert'), { provinceName: prov.title }),
+			body:'',
 			expires: (prov.lockedUntil - alertOffset) * 1000, // -30s * Microtime
 			repeat: -1,
 			persistent: true,
