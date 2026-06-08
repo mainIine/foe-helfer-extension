@@ -567,7 +567,6 @@ let _menu = {
 
 	/**
 	 * Note function
-	 */
 	notice_Btn: () => {
 		let btn = _menu.MakeButton('notice');
 
@@ -577,6 +576,7 @@ let _menu = {
 
 		return btn.append(btn_Notice);
 	},
+	 */
 
 	/**
 	 * Settings
