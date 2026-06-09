@@ -285,12 +285,6 @@ let Parts = {
 				setTimeout(() => $this.removeClass('copied'), 800);
 			});
 
-			// temporary: CalculatorHintRead
-			$('#OwnPartBox').on('click', '#calcInfo .icon-close', function (e) {
-				localStorage.setItem('CalculatorHintRead',true);
-				$('#calcInfo').remove();
-			});
-
 			// CopyBox
 			$('#OwnPartBox').on('blur', '#player-name', function () {
 				let PlayerName = $('#player-name').val();
@@ -741,14 +735,6 @@ let Parts = {
 			h.push('<div class="lg-not-possible" data-text="'+i18n('Boxes.Calculator.LGNotOpen')+'"></div>');
 		}
 		h.push(`<div id="gbCosts">`);
-		
-		// temporary calculator merge hint
-		let hintRead = JSON.parse(localStorage.getItem('CalculatorHintRead'));
-		if (!hintRead)
-			h.push(`<div id="calcInfo" class="p5">
-				<div class="text-center"><img src="${extUrl}images/menu/calculator.png" /> <img src="${extUrl}images/menu/part-calc.png" /> <b>?!</b></div> <span class="icon-close clickable"></span> 
-				<div class="calcInfo">${i18n('Boxes.Calculator.InfoUpdate')}</div>
-			</div>`)
 
 		h.push(`<div class="dark-bg text-center p5">
 			<div class="flex gap" style="justify-content:space-between;align-items:end;margin-bottom:5px;">
