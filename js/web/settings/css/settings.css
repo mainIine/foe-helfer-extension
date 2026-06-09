@@ -1,5 +1,6 @@
  /*
  * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2026 Forge Hammer
  * Licensed under AGPL - see LICENSE.md for details.
  */
 
@@ -8,7 +9,7 @@
 	left: calc(50vw - 305px);
 	width: 680px;
 	height: 410px;
-	font-size: 85%;
+	font-size: 90%;
 }
 
 #SettingsBoxBody {

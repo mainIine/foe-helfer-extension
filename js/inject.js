@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2026 Forge Hammer
  * Licensed under AGPL - see LICENSE.md for details.
  */
 
@@ -112,7 +113,7 @@ function inject (loadBeta = false, extUrl = chrome.runtime.getURL(''), betaDate=
 			MenuSetting = MenuSetting ? MenuSetting : 'RightBar';
 			let menuCss = "_menu_" + MenuSetting.toLowerCase().replace("bar","");
 
-			let skinCss = localStorage.getItem('HammerSkin')||'variables';
+			let skinCss = localStorage.getItem('HammerSkin')||'themes/hammer';
 
 			let cssFiles = [
 				'boxes',

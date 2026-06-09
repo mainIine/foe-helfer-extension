@@ -1,17 +1,8 @@
 /*
- *
- *  * **************************************************************************************
- *  * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
- *  * You may use, distribute and modify this code under the
- *  * terms of the AGPL license.
- *  *
- *  * See file LICENSE.md or go to
- *  * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
- *  * for full license details.
- *  *
- *  * **************************************************************************************
- *
- */
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2026 Forge Hammer
+ * Licensed under AGPL - see LICENSE.md for details.
+*/
 
 // neues Postfach
 FoEproxy.addHandler('ConversationService', 'getOverviewForCategory', (data, postData) => {
@@ -122,7 +113,7 @@ let Infoboard = {
         h.push('</ul>');
         h.push('</div>');
 
-        h.push('<button class="btn btn-reset-box">' + i18n('Boxes.Infobox.ResetBox') + '</button>');
+        h.push('<button class="btn btn-mid btn-reset-box">' + i18n('Boxes.Infobox.ResetBox') + '</button>');
         h.push('</div>');
 
         h.push('<ul id="BackgroundInfoList" class="foe-table">');
