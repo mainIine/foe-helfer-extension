@@ -26,6 +26,9 @@ FoEproxy.addWsHandler('OtherPlayerService', 'newEvent', data => {
 });
 
 FoEproxy.addHandler("GreatBuildingsService","getConstruction", (data,postData) => {
+	if ($('#OwnPartBox').length === 0 && localStorage.getItem('CalcAutoOpen') == 'true' && postData[0].requestData[1] !== ExtPlayerID) {
+		Parts.Show('calculator');
+	}
 	if ($('#OwnPartBox').length === 0 && localStorage.getItem('OwnPartAutoOpen') == 'true') 
 		Parts.Show();
 });
@@ -133,7 +136,7 @@ let Parts = {
 	allowCopyPlace: false,
 	allowCopyPlaceSetting: true,
 
-	Show: () => {
+	Show: (view = '') => {
 		if ($('#OwnPartBox').length === 0) {
 			/*let spk = localStorage.getItem('PartsTone');
 
@@ -158,7 +161,7 @@ let Parts = {
 
 			HTML.AddCssFile('part-calc');
 
-			if (MainParser.CurrentGB.Entity !== undefined && MainParser.CurrentGB.Rankings !== undefined) Parts.CalcBody();
+			if (MainParser.CurrentGB.Entity !== undefined && MainParser.CurrentGB.Rankings !== undefined) Parts.CalcBody(view);
 
 			/*$('#OwnPartBox').on('click', '#PartsTone', function () {
 				let disabled = $(this).hasClass('deactivated');
@@ -425,7 +428,7 @@ let Parts = {
 	},
 
 
-	CalcBody: async (NextLevel, switchView = '') => {
+	CalcBody: async (switchView = '', NextLevel) => {
 		await StartUpDone;
 		if (MainParser.CurrentGB.Entity['level'] === NextLevel) NextLevel = 0;
 			
@@ -1034,13 +1037,13 @@ let Parts = {
 	SwitchCalculator: () => {
 		if ($('#gbCosts').length > 0 && MainParser.CurrentGB.Entity.player_id !== ExtPlayerID) { // is PartCalc, so show the other one
 			$('#OwnPartBox .window-viewswitch').removeClass('inactive');
-			Parts.CalcBody(0, 'calculator');
+			Parts.CalcBody('calculator');
 			return;
 		}
 		else if ($('#gbCosts').length > 0 && MainParser.CurrentGB.Entity.player_id === ExtPlayerID) {
 			$('#OwnPartBox .window-viewswitch').addClass('inactive');
 		}
-		Parts.CalcBody(0, 'partcalc');
+		Parts.CalcBody('partcalc');
 	},
 
 	reRank: (n) => {

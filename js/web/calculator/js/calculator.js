@@ -596,8 +596,9 @@ let Calculator = {
 		c.push(nV);
 
 		c.push(`<p class="bbd p5">
-			<label for="forderbonusperconversation"><input id="forderbonusperconversation" class="forderbonusperconversation game-cursor" ${(Calculator.ForderBonusPerConversation ? 'checked' : '')} type="checkbox">${i18n('Boxes.Calculator.ForderBonusPerConversation')}</label><br/>
+			<label for="CalcAutoOpen"><input id="CalcAutoOpen" class="CalcAutoOpen game-cursor" ${(Calculator.AutoOpen ? 'checked' : '')} type="checkbox"> ${i18n('Settings.ShowOwnPartAutoOpen.Desc')}</label><br/>
 			<label for="openonaliengb"><input type="checkbox" id="openonaliengb" class="openonaliengb game-cursor" ${((!allGB) ? 'checked' : '')}> ${i18n('Settings.ShowOwnPartOnAllGBs.Desc')}</label><br>
+			<label for="forderbonusperconversation"><input id="forderbonusperconversation" class="forderbonusperconversation game-cursor" ${(Calculator.ForderBonusPerConversation ? 'checked' : '')} type="checkbox">${i18n('Boxes.Calculator.ForderBonusPerConversation')}</label><br/>
 			<label for="CalculatorTone"><input id="CalculatorTone" class="CalculatorTone game-cursor" ${(Calculator.PlayInfoSound ? 'checked' : '')} type="checkbox"> ${i18n('Boxes.Calculator.PlayInfoSound')}</label>
 		</p>`);
 
@@ -636,6 +637,9 @@ let Calculator = {
 		});
 		localStorage.setItem('CustomCalculatorButtons', JSON.stringify(values));
 
+		Calculator.AutoOpen = $('.CalcAutoOpen').prop('checked');
+		localStorage.setItem('CalcAutoOpen', Calculator.AutoOpen);
+		
 		Calculator.ForderBonusPerConversation = $('.forderbonusperconversation').prop('checked');
 		localStorage.setItem('CalculatorForderBonusPerConversation', Calculator.ForderBonusPerConversation);
 
