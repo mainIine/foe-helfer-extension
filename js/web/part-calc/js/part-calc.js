@@ -27,7 +27,8 @@ FoEproxy.addWsHandler('OtherPlayerService', 'newEvent', data => {
 
 FoEproxy.addHandler("GreatBuildingsService","getConstruction", (data,postData) => {
 	if ($('#OwnPartBox').length === 0 && localStorage.getItem('CalcAutoOpen') == 'true' && postData[0].requestData[1] !== ExtPlayerID) {
-		Parts.Show('calculator');
+		Parts.View = 'calculator';
+		Parts.Show();
 	}
 	if ($('#OwnPartBox').length === 0 && localStorage.getItem('OwnPartAutoOpen') == 'true') 
 		Parts.Show();
@@ -70,6 +71,7 @@ FoEproxy.addFoeHelperHandler('QuestsUpdated', data => {
 
 
 let Parts = {
+	View: 'partcalc', // partcalc or calculator
 	Rankings: undefined,
 	IsPreviousLevel: false,
 	IsNextLevel: false,
@@ -422,7 +424,7 @@ let Parts = {
 	},
 
 
-	CalcBody: async (switchView = '', NextLevel) => {
+	CalcBody: async (NextLevel) => {
 		await StartUpDone;
 		if (MainParser.CurrentGB.Entity['level'] === NextLevel) NextLevel = 0;
 			
@@ -433,8 +435,8 @@ let Parts = {
 
 		// load other calculator if selected
 		let useThisCalculator = JSON.parse(localStorage.getItem('ShowOwnPartOnAllGBs'));
-		if ((!useThisCalculator && MainParser.CurrentGB.Entity.player_id !== ExtPlayerID && !(switchView === 'partcalc')) 
-			|| (switchView === 'calculator' && MainParser.CurrentGB.Entity.player_id !== ExtPlayerID)) {
+		if ((!useThisCalculator && MainParser.CurrentGB.Entity.player_id !== ExtPlayerID && !(Parts.View === 'partcalc')) 
+			|| (Parts.View === 'calculator' && MainParser.CurrentGB.Entity.player_id !== ExtPlayerID)) {
 			Calculator.Show();
 			return;
 		}
@@ -1023,13 +1025,15 @@ let Parts = {
 	SwitchCalculator: () => {
 		if ($('#gbCosts').length > 0 && MainParser.CurrentGB.Entity.player_id !== ExtPlayerID) { // is PartCalc, so show the other one
 			$('#OwnPartBox .window-viewswitch').removeClass('inactive');
-			Parts.CalcBody('calculator');
+			Parts.View = 'calculator';
+			Parts.CalcBody();
 			return;
 		}
 		else if ($('#gbCosts').length > 0 && MainParser.CurrentGB.Entity.player_id === ExtPlayerID) {
 			$('#OwnPartBox .window-viewswitch').addClass('inactive');
 		}
-		Parts.CalcBody('partcalc');
+		Parts.View = 'partcalc';
+		Parts.CalcBody();
 	},
 
 	reRank: (n) => {
