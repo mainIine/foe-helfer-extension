@@ -511,7 +511,7 @@ let Settings = {
 		let skins = [
 			{name: "Forge Hammer", path: "themes/hammer"},
 			{name: "Oldschool", path: "variables"},
-			{name: "Grey", path: "themes/grey"},
+			{name: "Dark", path: "themes/grey"},
 			{name: "Blues", path: "themes/blues"}
 		];
 

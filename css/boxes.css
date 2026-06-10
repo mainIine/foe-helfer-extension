@@ -1805,7 +1805,7 @@ a:hover, input[type="radio"] {
 }
 
 .litepicker .container__months {
-	background: linear-gradient(var(--black-50), var(--black-30)), url('../../images/hud/box-bg.png') 0 0 repeat;
+	background-color: var(--bg-dark) !important;
 	box-shadow: 0 0 5px var(--black-50) !important;
 	border: 1px solid var(--black);
 }
@@ -1822,15 +1822,15 @@ SettingsBox */
 .settingsbox-wrapper {
 	text-align: left;
 	position: absolute;
-	right: 10px;
-	top: 40px;
+	right: 5px;
+	top: 35px;
 	border: 2px solid var(--text-medium2);
 	background-color: var(--window-settings-bg);
 	color: var(--beige);
 	padding: 5px;
 	z-index: 20;
 	border-radius: 5px;
-	box-shadow: 0 0 4px 4px var(--black-50), inset 0 0 0 1px var(--window-settings-bg), inset 0 0 1px 2px var(--black-30);
+	box-shadow: 0 0 4px 4px var(--black-50);
 	min-width: 120px;
 	max-width: 280px;
 	z-index: 1000;
@@ -1840,11 +1840,11 @@ SettingsBox */
 .settingsbox-wrapper::after {
 	content: '';
 	position: absolute;
-	top: -18px;
-	right: 35px;
-	border-bottom: 18px solid var(--window-settings-bg);
-	border-left: 18px solid transparent;
-	border-right: 18px solid transparent;
+	top: -12px;
+	right: 40px;
+	border-bottom: 12px solid var(--window-settings-bg);
+	border-left: 12px solid transparent;
+	border-right: 12px solid transparent;
 }
 
 .settingsbox-wrapper input[type="text"],

@@ -43,25 +43,25 @@
 
 	--window-body-scroll-bg: #3a2c26;
 
-	--window-settings-bg: #3a2313;
+	--window-settings-bg: #2c241f;
 
 	--btn-bg: linear-gradient(to bottom, #a75920, #773714);
-	--btn-bg-disabled: linear-gradient(to bottom, #27170a 0%,#444444 1%,#2c2c2c 30%,#2d2d2d 99%, #373737 100%);
-	--btn-bg-active: linear-gradient(to bottom, #f5cd48 0%,#df9a34 1%,#ba6320 30%,#924715 99%,#a35d28 100%);
-	--btn-bg-onclick: linear-gradient(to bottom, #f5cd48 0%,#df9a34 1%,#ba6320 20%,#673213 80%,#875026 100%);
-	--btn-bg-green: linear-gradient(to bottom, #469e2b 0%,#1f6517 100%);
+	--btn-bg-disabled: linear-gradient(to bottom, #444444 1%,#2c2c2c 30%,#2d2d2d 99%);
+	--btn-bg-active: linear-gradient(to bottom, #df9a34 1%,#ba6320 30%,#924715 99%);
+	--btn-bg-onclick: linear-gradient(to bottom, #df9a34 1%,#ba6320 20%,#673213 80%);
+	--btn-bg-green: linear-gradient(to bottom, #469e2b, #1f6517);
 	--btn-border: 1px solid #281207;
 	--btn-border-active-color: #281207;
 	--btn-green-color: #dde9ca;
 
-	--btn-bg-red: linear-gradient(to bottom, #871313 0%,#440909 100%);
-	--btn-bg-red-active: linear-gradient(to bottom, #a71f1f 0%,#590d0d 100%);
-	--btn-bg-red-onclick: linear-gradient(to bottom, #610a0a 0%,#2e0505 100%);
+	--btn-bg-red: linear-gradient(to bottom, #871313,#440909);
+	--btn-bg-red-active: linear-gradient(to bottom, #a71f1f,#590d0d);
+	--btn-bg-red-onclick: linear-gradient(to bottom, #610a0a,#2e0505);
 
 	--tabs-bg: linear-gradient(#43433c, #332f2b);
-	--tabs-bg-active: linear-gradient(#955d24, #7b4c1d);
+	--tabs-bg-active: linear-gradient(#955d24, #ad6318);
 	--tabs-bg-shadow: inset 0 2px 0 #5a5155;
-	--tabs-bg-shadow-active: inset 1px 1px 1px 0 #bb6f21;
+	--tabs-bg-shadow-active: inset 2px 2px 0 0 #bb6f21, inset -2px 1px 0 0 #bb6f21;
 	--tabs-border: 2px solid #522c0f;
 	--tabs-border-active: 2px solid #895022;
 	--border-tab: #bb6f21;
