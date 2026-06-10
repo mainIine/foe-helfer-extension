@@ -817,6 +817,8 @@ GetFights = () =>{
 		MainParser.CurrentGB.Entity = CityMapEntity.responseData[0];
 		MainParser.CurrentGB.Rankings = Rankings;
 		Parts.IsPreviousLevel = MainParser.CurrentGB.isPreviousLevel;
+		if (!MainParser.CurrentGB.isPreviousLevel) 
+			Parts.View = '';
 
 		// GB was loaded
 		$('#partCalc-Btn').removeClass('hud-btn-red');

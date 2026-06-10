@@ -71,7 +71,7 @@ FoEproxy.addFoeHelperHandler('QuestsUpdated', data => {
 
 
 let Parts = {
-	View: 'partcalc', // partcalc or calculator
+	View: '', // partcalc or calculator
 	Rankings: undefined,
 	IsPreviousLevel: false,
 	IsNextLevel: false,
@@ -163,7 +163,7 @@ let Parts = {
 
 			HTML.AddCssFile('part-calc');
 
-			if (MainParser.CurrentGB.Entity !== undefined && MainParser.CurrentGB.Rankings !== undefined) Parts.CalcBody(view);
+			if (MainParser.CurrentGB.Entity !== undefined && MainParser.CurrentGB.Rankings !== undefined) Parts.CalcBody();
 
 			/*$('#OwnPartBox').on('click', '#PartsTone', function () {
 				let disabled = $(this).hasClass('deactivated');
