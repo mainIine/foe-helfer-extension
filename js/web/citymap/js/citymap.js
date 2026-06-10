@@ -301,6 +301,17 @@ let CityMap = {
 		$('#grid-outer').find('.map-bg').remove();
 		$('#grid-outer').find('.entity').remove();
 
+		let cssPosition = JSON.parse(localStorage.getItem('CityMapViewOffset'))||null;
+		if (cssPosition) {
+			let key = Object.keys(cssPosition).find(x => x == [ActiveMap+'_'+CityMap.map.view]);
+			if (key) {
+				$('#grid-outer').css({
+					'top': cssPosition[key].top+'px',
+					'left': cssPosition[key].left+'px'
+				});
+			}
+		}
+
 		CityMap.BuildGrid();
 
 		let buildings = CityMap.CulturalOutpost.data;
@@ -355,7 +366,16 @@ let CityMap = {
 			html: true,
 		});
 
-		$('#grid-outer').draggable();
+		$('#grid-outer').draggable({
+			stop: function( event, ui ) {
+				let mapOffsets = {
+					[ActiveMap+'_'+CityMap.map.view]: ui.position
+				}
+				let view = JSON.parse(localStorage.getItem('CityMapViewOffset'))||{};
+
+				localStorage.setItem('CityMapViewOffset',JSON.stringify(Object.assign(view,mapOffsets)));
+			}
+		});
 	},
 
 
@@ -656,6 +676,17 @@ let CityMap = {
 			return;
 		}
 
+		let cssPosition = JSON.parse(localStorage.getItem('CityMapViewOffset'))||null;
+		if (cssPosition) {
+			let key = Object.keys(cssPosition).find(x => x == [ActiveMap+'_'+CityMap.map.view]);
+			if (key) {
+				$('#grid-outer').css({
+					'top': cssPosition[key].top+'px',
+					'left': cssPosition[key].left+'px'
+				});
+			}
+		}
+
 		let ActiveId = $('#grid-outer').find('.highlighted').data('entityid') || null;
 
 		// einmal komplett leer machen, wenn gewünscht
@@ -850,7 +881,16 @@ let CityMap = {
 		let StreetsUsed = CityMap.metrics.buildingAreas['street'] | 0;
 		CityMap.EfficiencyFactor = StreetsNeeded / StreetsUsed;
 
-		$('#grid-outer').draggable();
+		$('#grid-outer').draggable({
+			stop: function( event, ui ) {
+				let mapOffsets = {
+					[ActiveMap+'_'+CityMap.map.view]: ui.position
+				}
+				let view = JSON.parse(localStorage.getItem('CityMapViewOffset'))||{};
+
+				localStorage.setItem('CityMapViewOffset',JSON.stringify(Object.assign(view,mapOffsets)));
+			}
+		});
 		CityMap.getAreas();
 		
 		$('[data-original-title]').tooltip({
