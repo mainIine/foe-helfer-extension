@@ -528,7 +528,7 @@ let Calculator = {
 				if (entry.player.player_id == MainParser.CurrentGB.Entity.player_id) continue;
 
 				let fpToPayWithSelectedBonus = (MainParser.round((100+Calculator.ForderBonus) * (entry.reward?.strategy_point_amount||0) / 100));
-				let paidFairly = (entry.forge_points - fpToPayWithSelectedBonus > 0)
+				let paidFairly = (entry.forge_points - fpToPayWithSelectedBonus >= 0)
 				
 				output += `<tr class="text-center text-grey ${paidFairly ? '' : 'bg-red'}">
 					<td><b>${entry.rank}</b></td>
