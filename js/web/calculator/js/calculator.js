@@ -162,7 +162,8 @@ let Calculator = {
         // how much is missing to level up?
 		let rest = MainParser.CurrentGB.Entity['state']['forge_points_for_level_up'] - MainParser.CurrentGB.Rankings.reduce((acc,entry)=>acc+(entry?.forge_points|0),0);
 
-		h.push('<div class="text-center dark-bg p5"><em>' + i18n('Boxes.Calculator.Up2LevelUp') + ': <span id="up-to-level-up">' + HTML.Format(rest) + '</span> ' + i18n('Boxes.Calculator.FP') + '</em>');
+		if (!MainParser.CurrentGB.isPreviousLevel)
+			h.push('<div class="text-center dark-bg p5"><em>' + i18n('Boxes.Calculator.Up2LevelUp') + ': <span id="up-to-level-up">' + HTML.Format(rest) + '</span> ' + i18n('Boxes.Calculator.FP') + '</em>');
 
 		h.push(Calculator.GetRecurringQuestsLine(Calculator.PlayInfoSound));
 
@@ -192,6 +193,19 @@ let Calculator = {
 	 */
 	BuildTable: ()=> {
 		let h = [];
+
+		// load different table for previous levels
+		if (MainParser.CurrentGB.isPreviousLevel) {
+			h.push(Calculator.BuildTableForPrevLevel());
+			
+			$('#costTableFordern').html(h.join(''));
+
+			$('[data-original-title]').tooltip({
+				html: true,
+				container: 'body'
+			});
+			return;
+		}
 
 		let bestRate = 999999,
 			arcMultiplier = 1 + (MainParser.ArkBonus / 100),
@@ -339,13 +353,13 @@ let Calculator = {
 			}
 		}
 
-		h.push('<thead>' +
+		h.push('<thead><tr>' +
 			'<th>#</th>' +
 			'<th><span class="forgepoints" title="' + HTML.i18nTooltip(i18n('Boxes.Calculator.Commitment')) + '"></span></th>' +
 			'<th>' + i18n('Boxes.Calculator.Profit') + '</th>');
 			h.push('<th><span class="blueprint" title="' + HTML.i18nTooltip(i18n('Boxes.Calculator.BPs')) + '"></span></th>');
 			h.push('<th><span class="medal" title="' + HTML.i18nTooltip(i18n('Boxes.Calculator.Meds')) + '"></span></th>');
-		h.push('</thead>');
+		h.push('</tr></thead>');
 
 		for (let rankIndex = 0; rankIndex < ranks.length; rankIndex++) {
 			const rank = ranks[rankIndex];
@@ -495,6 +509,38 @@ let Calculator = {
 			html: true,
 			container: 'body'
 		});
+	},
+
+
+	BuildTableForPrevLevel: () => {
+		let output = `<thead>
+				<tr>
+				<th>#</th>
+				<th><span class="forgepoints" title="${HTML.i18nTooltip(i18n('Boxes.Calculator.Commitment'))}"></span></th>
+				<th>${i18n('Boxes.Calculator.Profit')}</th>
+				<th><span class="blueprint" title="${HTML.i18nTooltip(i18n('Boxes.Calculator.BPs'))}"></span></th>
+				<th><span class="medal" title="${HTML.i18nTooltip(i18n('Boxes.Calculator.Meds'))}"></span></th>
+				</tr>
+				</thead>
+			<tbody>`;
+
+			for (let entry of MainParser.CurrentGB.Rankings) {
+				if (entry.player.player_id == MainParser.CurrentGB.Entity.player_id) continue;
+
+				let fpToPayWithSelectedBonus = (MainParser.round((100+Calculator.ForderBonus) * (entry.reward.strategy_point_amount||0) / 100));
+				let paidFairly = (entry.forge_points - fpToPayWithSelectedBonus > 0)
+				console.log(fpToPayWithSelectedBonus, entry.forge_points);
+				
+				output += `<tr class="text-center text-grey ${paidFairly ? '' : 'bg-red'}">
+					<td><b>${entry.rank}</b></td>
+					<td><b>${HTML.Format(entry.forge_points)}</b></td>
+					<td><b class=" ${paidFairly ? '' : 'error'}">${entry.forge_points - fpToPayWithSelectedBonus}</b></td>
+					<td>${HTML.Format(MainParser.round(entry.reward.blueprints ? MainParser.round(entry.reward.blueprints * (MainParser.ArkBonus + 100)) / 100 : 0))}</td>
+					<td><small>${HTML.Format(MainParser.round(entry.reward.resources?.medals ? MainParser.round(entry.reward.resources.medals * (MainParser.ArkBonus + 100)) / 100 : 0))}</small></td>
+				</tr>`;
+			}
+			output += `</tbody>`;
+		return output;
 	},
 
 
