@@ -1678,28 +1678,26 @@ let Productions = {
    },
 
 
-	SetTabs: (id)=> {
+	SetTabs: (id) => {
 		Productions.Tabs.push('<li class="' + id + '" id="prod-' + id + '"><a href="#' + id + '"><span>&nbsp;</span></a></li>');
 	},
 
 
-	GetTabs: ()=> {
+	GetTabs: () => {
 		return '<ul class="horizontal dark-bg clickable">' + Productions.Tabs.join('') + '</ul>';
 	},
 
-	SetTabContent: (id, content)=> {
-		// ab dem zweiten Eintrag verstecken
+	SetTabContent: (id, content) => {
 		let style = Productions.TabsContent.length > 0 ? ' style="display:none"' : '';
-
 		Productions.TabsContent.push('<div class="content" id="' + id + '"' + style + '>' + content + '</div>');
 	},
 
-	GetTabContent: ()=> {
+	GetTabContent: () => {
 		return Productions.TabsContent.join('');
 	},
 
 
-	SwitchFunction: ()=>{
+	SwitchFunction: () => {
 		$('#Productions').on('click', '.change-view', function() {
 			let activeTable = $(this).parents('table'),
 				hiddenTable = activeTable.next('table') 
@@ -1716,8 +1714,6 @@ let Productions = {
 
 
 	/**
-	 * Checks if a specific production type has any production from buildings.
-	 *
 	 * @param {string} Type - The production type to check.
 	 * @returns {boolean} True if there is production for the type, false otherwise.
 	 */
@@ -1732,14 +1728,12 @@ let Productions = {
 
 
 	/**
-	 * Highlights buildings on the city map based on their IDs.
-	 *
 	 * @param {Array} ids - Array of building IDs to highlight.
 	 */
 	ShowOnMap: (ids) => {
 		let IDArray = (ids.length !== undefined ? ids : [ids]);
 
-		if( $('#citymap-main').length < 1 )
+		if ($('#citymap-main').length < 1)
 			CityMap.init(null);
 
 		$('#grid-outer').removeClass('desaturate');
@@ -1748,24 +1742,20 @@ let Productions = {
 		setTimeout(() => {
 			$('#grid-outer').addClass('desaturate');
 			for (let i = 0; i < IDArray.length; i++) {
-				let target = document.querySelector('.entity[data-id="' + IDArray[i] + '"]')
+				let target = document.querySelector('.entity[data-id="' + IDArray[i] + '"]');
 				if (target) {
-					let targetStyle = window.getComputedStyle(document.querySelector('.entity[data-id="' + IDArray[i] + '"]'))
-					let tLeft = (parseInt(targetStyle.getPropertyValue("left").replace("px","")) - 100)
-					let tTop = (parseInt(targetStyle.getPropertyValue("top").replace("px","")) - 100)
-					// todo: andere perspektive beachten, andere werte benutzen?
-
-					if (i === 0) $('#map-container').scrollTo({left: tLeft, top: tTop}, 800, { easing: 'swing' });
 					target.classList.add('highlighted');
 				}
-            }
+			}
+			let first = document.querySelector('.entity.highlighted');
+			if (first) 
+				$('#map-container').scrollTo($(first), 800, { offset: { left: -150, top: -150 }, easing: 'swing' });
+			
 		}, 500);
 	},
 
 
 	/**
-	 * Highlights buildings on the city map based on their name.
-	 *
 	 * @param {string} name - The name (or partial name) of buildings to highlight.
 	 */
 	ShowSearchOnMap: (name) => {
