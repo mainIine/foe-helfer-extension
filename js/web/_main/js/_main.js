@@ -1030,7 +1030,7 @@ let MainParser = {
 			HTML.ShowToastMsg({
 				show: true,
 				head: i18n('Menu.NewVersion.Title'),
-				text: i18n('Menu.NewVersion.Desc') + ' <a href="https://foe-helper.com/extension/update?lang=en" target="_blank">ChangeLog</a>',
+				text: i18n('Menu.NewVersion.Desc') + ' <a href="https://github.com/outoftheline/forge-hammer/blob/main/changelog-en.md" target="_blank">ChangeLog</a>',
 				type: 'success',
 				allowToastClose: true,
 				hideAfter: 30000,
