@@ -1,10 +1,6 @@
 
 
-#TranslationTable.show-only-missing tbody tr:not(.missing) {
-    display:none;
-}
-
-#TranslationTable.search-active tbody tr:not(.found) {
+#TranslationTable.show-only-missing tbody tr:not(.missing), #TranslationTable.search-active tbody tr:not(.found), #TranslationTable .hidden {
     display:none;
 }
 
@@ -43,18 +39,12 @@
     box-sizing: border-box;
 }
 
-#TranslationTable .hidden {
+#CopyJSONInfo ul {
+    width: 350px;
     display: none;
 }
 
-#CopyJSONInfo {
-    width: 300px;
-    display: inline-block;
-    height: 20px;
-    overflow: hidden;
-}
-
-#CopyJSONInfo:hover {
-    height: auto;
+#CopyJSONInfo:hover ul {
+    display: block;
 }
 

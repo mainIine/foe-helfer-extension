@@ -74,9 +74,18 @@ let Translation = {
 					<tbody>
 					</tbody>
 				</table>
-				<div id="TranslationFooter" class="p5">
-					<span class="btn btn-default" id="CopyJSON">${i18n('Boxes.Translation.CopyJSON')}</span>
-					<div id="CopyJSONInfo"><h2>Explanation</h2> <ul><li>Create a GitHub Account</li><li>Fork the Forge Hammer repository including all branches</li><li>Use the Copy button on the left to copy the translation data</li><li>Overwrite the content of the respective language file in your forks 'develop' branch.</li><li>Create a pull request from there into the Forge Hammer 'develop' branch to get the translation into the next release.</li></ul></div>
+				<div id="TranslationFooter" class="flex between">
+					<div class="p5" id="CopyJSONInfo">
+						<h2>How to help translate</h2> 
+						<ul>
+							<li>You need a <a href="https://github.com" target="_blank">GitHub</a> Account</li>
+							<li>Fork the <a href="https://github.com/outoftheline/forge-hammer" target="_blank">Forge Hammer</a> repository including all branches</li>
+							<li>Use the Copy button on the right to copy the translation data</li>
+							<li>Overwrite the content of the respective language json file in your forks 'develop' branch. Path: /js/web/_i18n/ </li>
+							<li>Create a <a href="https://github.com/outoftheline/forge-hammer/pulls" target="_blank">pull request</a> into the Forge Hammer 'develop' branch to get the translation into the next release.</li>
+						</ul>
+					</div>
+					<div class="p5"><span class="btn btn-default" id="CopyJSON">${i18n('Boxes.Translation.CopyJSON')}</span></div>
 				</div>
 			`
 
