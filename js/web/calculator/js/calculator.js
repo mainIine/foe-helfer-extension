@@ -11,7 +11,7 @@ let Calculator = {
     PlayInfoSound: false,
 	LastRecurringQuests: undefined,
 	ForderBonusPerConversation: true,
-	AutoOpen: false,
+	AutoOpen: localStorage.getItem('CalcAutoOpen') || false,
 	OwnPartClose: false,
 	DefaultButtons: [
 		80, 90, 100, 'ark'
@@ -46,23 +46,7 @@ let Calculator = {
 
 		HTML.AddCssFile('calculator');
 
-		Calculator.CurrentPlayer = parseInt(localStorage.getItem('current_player_id'));
-
-		// toggle percentages
-		$('#OwnPartBox').on('click', '.btn-toggle-arc', function () {
-			Calculator.ForderBonus = parseFloat($(this).data('value'));
-			$('#costFactor').val(Calculator.ForderBonus);
-			let StorageKey = (Calculator.ForderBonusPerConversation && MainParser.OpenConversation ? 'CalculatorForderBonus_' + MainParser.OpenConversation.id : 'CalculatorForderBonus');
-			localStorage.setItem(StorageKey, Calculator.ForderBonus);
-			Calculator.Show();
-		});
-
-		$('#OwnPartBox').on('blur', '#costFactor', function () {
-			Calculator.ForderBonus = parseFloat($('#costFactor').val());
-			let StorageKey = (Calculator.ForderBonusPerConversation && MainParser.OpenConversation ? 'CalculatorForderBonus_' + MainParser.OpenConversation.id : 'CalculatorForderBonus');
-			localStorage.setItem(StorageKey, Calculator.ForderBonus);
-			Calculator.Show();
-		});
+		Calculator.CurrentPlayer = parseInt(localStorage.getItem('current_player_id'));		
 
         Calculator.ShowBody();
 	},
@@ -97,11 +81,11 @@ let Calculator = {
 		}
 
 		if (Calculator.PlayerName === undefined && PlayerDict[PlayerID] !== undefined) {
-			Calculator.PlayerName = PlayerDict[PlayerID]['PlayerName'];
+			Calculator.PlayerName = PlayerDict[PlayerID].PlayerName;
 		}
-		if (PlayerDict[PlayerID] !== undefined && PlayerDict[PlayerID]['ClanName'] !== undefined) {
-			Calculator.ClanId = PlayerDict[PlayerID]['ClanId'];
-			Calculator.ClanName = PlayerDict[PlayerID]['ClanName'];
+		if (PlayerDict[PlayerID] !== undefined && PlayerDict[PlayerID].ClanName !== undefined) {
+			Calculator.ClanId = PlayerDict[PlayerID].ClanId;
+			Calculator.ClanName = PlayerDict[PlayerID].ClanName;
 		}
 
         // BuildingName could not be loaded from the BuildingInfo
@@ -109,21 +93,22 @@ let Calculator = {
 		let Level = (MainParser.CurrentGB.Entity.level !== undefined ? MainParser.CurrentGB.Entity.level : 0);
 		let MaxLevel = (MainParser.CurrentGB.Entity.max_level !== undefined ? MainParser.CurrentGB.Entity.max_level : 0);
 
-		h.push('<div id="gbCalc"><div class="header text-center dark-bg p5">');
-		h.push('<strong><span class="building-name">' + BuildingName + '</span></strong>');
-        h.push('<p style="margin: 0 0 5px">'+ Level + ' &rarr; ' + (Level + 1) + ' &middot; ' + i18n('Boxes.Calculator.MaxLevel') + ': ' + MaxLevel + '</p>');
+		h.push(`<div id="gbCalc">
+				<div class="header text-center dark-bg p5">
+					<strong><span class="building-name">${BuildingName}</span></strong>
+					<p style="margin: 0 0 5px">${Level} &rarr; ${(Level + 1)} &middot; ${i18n('Boxes.Calculator.MaxLevel')}: ${MaxLevel}</p>`);
  
-		if (Calculator.PlayerName) {
-			h.push('<span class="player-name">' 
-				+ `<span class="activity activity_${PlayerDict[PlayerID]['Activity']}"></span> `
-				+ MainParser.GetPlayerLink(PlayerID, Calculator.PlayerName));
+			if (Calculator.PlayerName) {
+				h.push(`<span class="player-name">
+					<span class="activity activity_${PlayerDict[PlayerID]['Activity']}"></span>
+					${MainParser.GetPlayerLink(PlayerID, Calculator.PlayerName)}`);
 
-			if (Calculator.ClanName) {
-				h.push(`<br>${MainParser.GetGuildLink(Calculator.ClanId, Calculator.ClanName)}`);
+				if (Calculator.ClanName) {
+					h.push(`<br> ${MainParser.GetGuildLink(Calculator.ClanId, Calculator.ClanName)}`);
+				}
+
+				h.push(`</span></strong>`);
 			}
-
-			h.push('</span></strong>');
-		}
 
 		// different arc bonus-buttons
 		let investmentSteps = [80, 90, 100, MainParser.ArkBonus],
@@ -143,21 +128,21 @@ let Calculator = {
 			})
 		}
 
-		h.push('<div class="costFactorWrapper">');
-		h.push('<div class="btn-group">');
-		investmentSteps = investmentSteps.filter((item, index) => investmentSteps.indexOf(item) === index); //Remove duplicates
-		investmentSteps.sort((a, b) => a - b);
-		investmentSteps.forEach(bonus => {
-			h.push(`<button class="btn btn-mid btn-toggle-arc ${(bonus === Calculator.ForderBonus ? 'btn-active' : '')}${(bonus === MainParser.ArkBonus ? ' arkBonus' : '')}" data-value="${bonus}">${bonus}%</button>`);
-		});
+		h.push(`<div class="costFactorWrapper">
+				<div class="btn-group">`);
+			investmentSteps = investmentSteps.filter((item, index) => investmentSteps.indexOf(item) === index); //Remove duplicates
+			investmentSteps.sort((a, b) => a - b);
+			investmentSteps.forEach(bonus => {
+				h.push(`<button class="btn btn-mid btn-toggle-arc ${(bonus === Calculator.ForderBonus ? 'btn-active' : '')}${(bonus === MainParser.ArkBonus ? ' arkBonus' : '')}" data-value="${bonus}">${bonus}%</button>`);
+			});
 		
 		h.push(`<span data-original-title="${i18n('Boxes.Calculator.FriendlyInvestment')} x%">  <input type="number" id="costFactor" step="0.1" min="12" max="200" value="${Calculator.ForderBonus}"></span>`);
 
-        h.push('</div>');
-        h.push('</div>');
-		h.push('</div>');
-
-		h.push('<table id="costTableFordern" style="width:100%" class="foe-table"></table>');
+        h.push(`</div>
+				</div>
+			</div>
+				
+		<table id="costTableFordern" style="width:100%" class="foe-table"> </table>`);
 
         // how much is missing to level up?
 		let rest = MainParser.CurrentGB.Entity['state']['forge_points_for_level_up'] - MainParser.CurrentGB.Rankings.reduce((acc,entry)=>acc+(entry?.forge_points|0),0);
@@ -169,7 +154,6 @@ let Calculator = {
 
 		h.push('</div>');
 
-        $('#OwnPartBox').find('#OwnPartBoxBody').html(h.join(''));
         $('#OwnPartBox').find('.tooltip').remove();
 
         // level is not unlocked yet
@@ -182,6 +166,7 @@ let Calculator = {
             $('#OwnPartBox').find('#OwnPartBoxBody').append($('<div />').addClass('lg-not-possible').attr('data-text', i18n('Boxes.Calculator.LGNotConnected')));
         }
 		h.push('</div>');
+
 		$('#OwnPartBoxBody').html(h.join(''));
 
 		Calculator.BuildTable();

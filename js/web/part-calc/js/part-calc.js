@@ -415,6 +415,26 @@ let Parts = {
 				Parts.CalcBackgroundBody();
 			});
 
+			$('#OwnPartBox').on('click', '.btn-toggle-arc', function () {
+				Calculator.ForderBonus = parseFloat($(this).data('value'));
+				$('#costFactor').val(Calculator.ForderBonus);
+				let StorageKey = (Calculator.ForderBonusPerConversation && MainParser.OpenConversation ? 'CalculatorForderBonus_' + MainParser.OpenConversation.id : 'CalculatorForderBonus');
+				localStorage.setItem(StorageKey, Calculator.ForderBonus);
+				Calculator.Show();
+			});
+
+			$('#OwnPartBox').on('blur', '#costFactor', function () {
+				Calculator.ForderBonus = parseFloat($('#costFactor').val());
+				let StorageKey = (Calculator.ForderBonusPerConversation && MainParser.OpenConversation ? 'CalculatorForderBonus_' + MainParser.OpenConversation.id : 'CalculatorForderBonus');
+				localStorage.setItem(StorageKey, Calculator.ForderBonus);
+				Calculator.Show();
+			});
+
+			$('#OwnPartCalcGBSettings').on('click', function() {
+				$('.OwnPartBoxBackgroundBody').fadeToggle();
+				$('#OwnPartBox').toggleClass('gbSettingsOpen');
+			});
+
 			if (MainParser.CurrentGB.Entity !== undefined && MainParser.CurrentGB.Rankings !== undefined) Parts.CalcBody();
 		}
 		else {
@@ -789,30 +809,27 @@ let Parts = {
 			h.push(`<button class="btn btn-mid btn-set-arc${(Parts.ArcPercents[0] === bonus ? ' btn-active' : '')}" data-value="${bonus}">${bonus}%</button>`);
 		});
 
-		h.push('</span>');		
+		h.push('</span>');
 		h.push('</div>');
 		
-		let medalsEnabled = (localStorage.getItem('OwnPartShowMedals') == "true")
-		if (localStorage.getItem('OwnPartShowMedals') == null) medalsEnabled = true
-		let printsEnabled = (localStorage.getItem('OwnPartShowBP') == "true")
-		if (localStorage.getItem('OwnPartShowBP') == null) printsEnabled = true
-		let minView = (localStorage.getItem('OwnPartMinView') == "true")
-		if (localStorage.getItem('OwnPartMinView') == null) minView = false
+		let medalsEnabled = (localStorage.getItem('OwnPartShowMedals') ?? 'true') === 'true';
+		let printsEnabled = (localStorage.getItem('OwnPartShowBP') ?? 'true') === 'true';
+		let minView = (localStorage.getItem('OwnPartMinView') ?? 'false') === 'true';
 
-		h.push('<table id="OwnPartTable" class="foe-table" style="margin-top:2px">');
-		h.push('<thead>');
-
-		h.push('<tr>');
-		h.push('<th>' + i18n('Boxes.OwnpartCalculator.Order') + '</th>');
-		h.push('<th class="text-center"><span class="forgepoints" title="' + HTML.i18nTooltip(i18n('Boxes.OwnpartCalculator.Deposit')) + '"></th>');
-		h.push('<th class="text-center">' + i18n('Boxes.OwnpartCalculator.Done') + '</th>');
-		if (printsEnabled) h.push('<th class="text-center"><span class="blueprint" title="' + HTML.i18nTooltip(i18n('Boxes.OwnpartCalculator.BPs')) + '"></span></th>');
-		if (medalsEnabled) h.push('<th class="text-center"><span class="medal" title="' + HTML.i18nTooltip(i18n('Boxes.OwnpartCalculator.Meds')) + '"></span></th>');
-		if (!minView) h.push('<th class="text-center">' + i18n('Boxes.OwnpartCalculator.Ext') + '</th>');
-		if (!minView) h.push('<th class="text-center">' + i18n('Boxes.OwnpartCalculator.Arc') + '</th>');
-		h.push('</tr>');
-		h.push('</thead>');
-		h.push('<tbody>');
+		h.push(`<table id="OwnPartTable" class="foe-table" style="margin-top:2px">
+			<thead>
+			<tr>
+				<th>${i18n('Boxes.OwnpartCalculator.Order')}</th>
+				<th class="text-center"><span class="forgepoints" title="${HTML.i18nTooltip(i18n('Boxes.OwnpartCalculator.Deposit'))}"></th>
+				<th class="text-center">${i18n('Boxes.OwnpartCalculator.Done')}</th>`);
+					if (printsEnabled) h.push(`<th class="text-center"><span class="blueprint" title="${HTML.i18nTooltip(i18n('Boxes.OwnpartCalculator.BPs'))}"></span></th>`);
+					if (medalsEnabled) h.push(`<th class="text-center"><span class="medal" title="${HTML.i18nTooltip(i18n('Boxes.OwnpartCalculator.Meds'))}"></span></th>`);
+					if (!minView) h.push(`<th class="text-center">${i18n('Boxes.OwnpartCalculator.Ext')}</th>`);
+					if (!minView) h.push(`<th class="text-center">${i18n('Boxes.OwnpartCalculator.Arc')}</th>`);
+			h.push(`</tr>
+			</thead>
+			
+			<tbody>`);
 		let IncludeStart = localStorage.getItem('OwnPartIncludeStart') != 'false';
 		let opt = (platz, gesamt)=>{
 			let ret = `<strong class="${PlayerID==ExtPlayerID ? "copy-fp clickable":""}" data-copy="${platz}">${HTML.Format(platz)}</strong>`;
@@ -853,9 +870,8 @@ let Parts = {
 			}
 
 			// other players contributions
-
-			h.push(`<tr>`);
-			h.push(`<td ${Parts.PlaceAvailables[i] ? `class="notTaken" onClick="Parts.reRank(${i})"` : ''}><b>` + (i+1) + '</b></td>');
+			h.push(`<tr>
+				<td ${Parts.PlaceAvailables[i] ? `class="notTaken" onClick="Parts.reRank(${i})"` : ''}><b>` + (i+1) + '</b></td>');
 
 			if (Parts.PlaceAvailables[i]) {
 				let copyvalue = Parts.Maezens[i];
@@ -1014,11 +1030,6 @@ let Parts = {
 		if ($('#PowerLevelingBox').length > 0 && !Parts.IsPreviousLevel) {
 			Parts.CalcBodyPowerLeveling();
 		}
-
-		$('#OwnPartCalcGBSettings').bind('click', function() {
-			$('.OwnPartBoxBackgroundBody').fadeToggle();
-			$('#OwnPartBox').toggleClass('gbSettingsOpen');
-		});
 	},
 
 
@@ -1232,7 +1243,7 @@ let Parts = {
 		if (isOpen)
 			$('.OwnPartBoxBackgroundBody').show();
 
-		$('.OwnPartBoxBackgroundBody .icon-close').bind('click', function() {
+		$('#OwnPartBox').on('click', '.icon-close', function() {
 			$('.OwnPartBoxBackgroundBody').fadeToggle();
 			$('#OwnPartBox').toggleClass('gbSettingsOpen');
 		});

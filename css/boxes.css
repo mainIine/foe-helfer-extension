@@ -391,7 +391,6 @@ span.resicon.def_boost_defender-battleground {
 .simpleList { margin: 0; padding: 0; list-style: none; }
 .simpleList li { margin: 0; padding: 3px; }
 
-.clickable { cursor: url('../images/cursor_hover.cur'), auto; }
 .removable { position: relative; }
 
 .removable::before {
@@ -1205,7 +1204,7 @@ FP-Bar */
 .game-cursor option,
 .window-minimize,
 .window-settings,
-.window-map,
+.window-box,
 .window-close,
 .window-head:not(span),
 .forgehammer-overlay,
@@ -1214,9 +1213,9 @@ FP-Bar */
 .cursor-default,
 .button--lg,
 .custom-option,
-.hud-btn,
+.hud-btn, label:hover, 
 a {
-	cursor: url('../images/cursor_default.cur'), auto;
+	cursor: url('../images/cursor_default.cur'), auto !important;
 }
 
 .game-cursor:hover,
@@ -1229,8 +1228,8 @@ a {
 .button-own:hover,
 .button--lg:hover,
 .hud-btn:hover,
-a:hover, input[type="radio"] {
-	cursor: url('../images/cursor_hover.cur'), auto;
+a:hover, input[type="radio"], .clickable {
+	cursor: url('../images/cursor_hover.cur'), auto !important;
 }
 
 /*******************************************************************************/
