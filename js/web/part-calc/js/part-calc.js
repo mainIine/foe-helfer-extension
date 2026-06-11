@@ -119,17 +119,19 @@ let Parts = {
 	CopyPlayerName: null,
 	CopyBuildingName: null,
 
-	CopyDangerPrefix: '!!!',
-	CopyDangerSuffix: '',
-	CopyIncludeDanger: false,
-	CopyIncludePlayer: true,
-	CopyIncludeGB: true,
-	CopyIncludeLevel: false,
-	CopyIncludeFP: true,
-	CopyIncludeOwnPart: false,
 	CopyPreP: true,
-	CopyDescending: true,
-	CopyIncludeLevelString: false,
+	CopySettings: {
+		includePlayer: true,
+		includeGB: true,
+		includeFP: true,
+		includeLevel: false,
+		includeLevelString: false,
+		includeDanger: false,
+		includeOwnPart: false,
+		descending: true,
+		dangerPrefix: '!!!',
+		dangerSuffix: '',
+	},
 
 	CopyModeAll: false,
 	CopyModeAuto: true,
@@ -346,44 +348,44 @@ let Parts = {
 					let StorageKey;
 
 					if (OptionsName === 'danger') {
-						Parts.CopyIncludeDanger = !Parts.CopyIncludeDanger;
+						Parts.CopySettings.includeDanger = !Parts.CopySettings.includeDanger;
 						StorageKey = Parts.GetStorageKey('CopyIncludeDanger', (Parts.CopyFormatPerGB ? MainParser.CurrentGB.Entity['cityentity_id'] : null));
-						localStorage.setItem(StorageKey, Parts.CopyIncludeDanger);
+						localStorage.setItem(StorageKey, Parts.CopySettings.includeDanger);
 					}
 					else if (OptionsName === 'player') {
-						Parts.CopyIncludePlayer = !Parts.CopyIncludePlayer;
+						Parts.CopySettings.includePlayer = !Parts.CopySettings.includePlayer;
 						StorageKey = Parts.GetStorageKey('CopyIncludePlayer', (Parts.CopyFormatPerGB ? MainParser.CurrentGB.Entity['cityentity_id'] : null));
-						localStorage.setItem(StorageKey, Parts.CopyIncludePlayer);
+						localStorage.setItem(StorageKey, Parts.CopySettings.includePlayer);
 					}
 					else if (OptionsName === 'gb') {
-						Parts.CopyIncludeGB = !Parts.CopyIncludeGB;
+						Parts.CopySettings.includeGB = !Parts.CopySettings.includeGB;
 						StorageKey = Parts.GetStorageKey('CopyIncludeGB', (Parts.CopyFormatPerGB ? MainParser.CurrentGB.Entity['cityentity_id'] : null));
-						localStorage.setItem(StorageKey, Parts.CopyIncludeGB);
+						localStorage.setItem(StorageKey, Parts.CopySettings.includeGB);
 					}
 					else if (OptionsName === 'level') {
-						Parts.CopyIncludeLevel = !Parts.CopyIncludeLevel;
+						Parts.CopySettings.includeLevel = !Parts.CopySettings.includeLevel;
 						StorageKey = Parts.GetStorageKey('CopyIncludeLevel', (Parts.CopyFormatPerGB ? MainParser.CurrentGB.Entity['cityentity_id'] : null));
-						localStorage.setItem(StorageKey, Parts.CopyIncludeLevel);
+						localStorage.setItem(StorageKey, Parts.CopySettings.includeLevel);
 					}
 					else if (OptionsName === 'fp') {
-						Parts.CopyIncludeFP = !Parts.CopyIncludeFP;
+						Parts.CopySettings.includeFP = !Parts.CopySettings.includeFP;
 						StorageKey = Parts.GetStorageKey('CopyIncludeFP', (Parts.CopyFormatPerGB ? MainParser.CurrentGB.Entity['cityentity_id'] : null));
-						localStorage.setItem(StorageKey, Parts.CopyIncludeFP);
+						localStorage.setItem(StorageKey, Parts.CopySettings.includeFP);
 					}
 					else if (OptionsName === 'descending') {
-						Parts.CopyDescending = !Parts.CopyDescending;
+						Parts.CopySettings.descending = !Parts.CopySettings.descending;
 						StorageKey = Parts.GetStorageKey('CopyDescending', (Parts.CopyFormatPerGB ? MainParser.CurrentGB.Entity['cityentity_id'] : null));
-						localStorage.setItem(StorageKey, Parts.CopyDescending);
+						localStorage.setItem(StorageKey, Parts.CopySettings.descending);
 					}
 					else if (OptionsName === 'levelup') {
-						Parts.CopyIncludeLevelString = !Parts.CopyIncludeLevelString;
+						Parts.CopySettings.includeLevelString = !Parts.CopySettings.includeLevelString;
 						StorageKey = Parts.GetStorageKey('CopyIncludeLevelString', (Parts.CopyFormatPerGB ? MainParser.CurrentGB.Entity['cityentity_id'] : null));
-						localStorage.setItem(StorageKey, Parts.CopyIncludeLevelString);
+						localStorage.setItem(StorageKey, Parts.CopySettings.includeLevelString);
 					}
 					else if (OptionsName === 'ownpart') {
-						Parts.CopyIncludeOwnPart = !Parts.CopyIncludeOwnPart;
+						Parts.CopySettings.includeOwnPart = !Parts.CopySettings.includeOwnPart;
 						StorageKey = Parts.GetStorageKey('CopyIncludeOwnPart', (Parts.CopyFormatPerGB ? MainParser.CurrentGB.Entity['cityentity_id'] : null));
-						localStorage.setItem(StorageKey, Parts.CopyIncludeOwnPart);
+						localStorage.setItem(StorageKey, Parts.CopySettings.includeOwnPart);
 					}
 					else if (OptionsName === 'prep') {
 						Parts.CopyPreP = !Parts.CopyPreP;
@@ -401,14 +403,14 @@ let Parts = {
 					let StorageKey;
 
 					if (OptionsName === 'danger-prefix') {
-						Parts.CopyDangerPrefix = $(this).val();
+						Parts.CopySettings.dangerPrefix = $(this).val();
 						StorageKey = Parts.GetStorageKey('CopyDangerPrefix', (Parts.CopyFormatPerGB ? MainParser.CurrentGB.Entity['cityentity_id'] : null));
-						localStorage.setItem(StorageKey, Parts.CopyDangerPrefix);
+						localStorage.setItem(StorageKey, Parts.CopySettings.dangerPrefix);
 					}
 					else if (OptionsName === 'danger-suffix') {
-						Parts.CopyDangerSuffix = $(this).val();
+						Parts.CopySettings.dangerSuffix = $(this).val();
 						StorageKey = Parts.GetStorageKey('CopyDangerSuffix', (Parts.CopyFormatPerGB ? MainParser.CurrentGB.Entity['cityentity_id'] : null));
-						localStorage.setItem(StorageKey, Parts.CopyDangerSuffix);
+						localStorage.setItem(StorageKey, Parts.CopySettings.dangerSuffix);
 					}
 				}
 
@@ -430,7 +432,7 @@ let Parts = {
 				Calculator.Show();
 			});
 
-			$('#OwnPartCalcGBSettings').on('click', function() {
+			$('#OwnPartBox').on('click', '#OwnPartCalcGBSettings, .icon-close', function() {
 				$('.OwnPartBoxBackgroundBody').fadeToggle();
 				$('#OwnPartBox').toggleClass('gbSettingsOpen');
 			});
@@ -497,34 +499,34 @@ let Parts = {
 			Parts.CopyFormatPerGB = (localStorage.getItem(Parts.GetStorageKey('CopyFormatPerGB', null)) === 'true');
 			if (!Parts.CopyFormatPerGB) {
 				let SavedCopyIncludeDanger = localStorage.getItem(Parts.GetStorageKey('CopyIncludeDanger', null));
-				if (SavedCopyIncludeDanger !== null) Parts.CopyIncludeDanger = (SavedCopyIncludeDanger === 'true');
+				if (SavedCopyIncludeDanger !== null) Parts.CopySettings.includeDanger = (SavedCopyIncludeDanger === 'true');
 
 				let SavedCopyDangerPrefix = localStorage.getItem(Parts.GetStorageKey('CopyDangerPrefix', null));
-				if (SavedCopyDangerPrefix !== null) Parts.CopyDangerPrefix = SavedCopyDangerPrefix;
+				if (SavedCopyDangerPrefix !== null) Parts.CopySettings.dangerPrefix = SavedCopyDangerPrefix;
 
 				let SavedCopyDangerSuffix = localStorage.getItem(Parts.GetStorageKey('CopyDangerSuffix', null));
-				if (SavedCopyDangerSuffix !== null) Parts.CopyDangerSuffix = SavedCopyDangerSuffix;
+				if (SavedCopyDangerSuffix !== null) Parts.CopySettings.dangerSuffix = SavedCopyDangerSuffix;
 
 				let SavedCopyIncludePlayer = localStorage.getItem(Parts.GetStorageKey('CopyIncludePlayer', null));
-				if (SavedCopyIncludePlayer !== null) Parts.CopyIncludePlayer = (SavedCopyIncludePlayer === 'true');
+				if (SavedCopyIncludePlayer !== null) Parts.CopySettings.includePlayer = (SavedCopyIncludePlayer === 'true');
 
 				let SavedCopyIncludeGB = localStorage.getItem(Parts.GetStorageKey('CopyIncludeGB', null));
-				if (SavedCopyIncludeGB !== null) Parts.CopyIncludeGB = (SavedCopyIncludeGB === 'true');
+				if (SavedCopyIncludeGB !== null) Parts.CopySettings.includeGB = (SavedCopyIncludeGB === 'true');
 
 				let SavedCopyIncludeLevel = localStorage.getItem(Parts.GetStorageKey('CopyIncludeLevel', null));
-				if (SavedCopyIncludeLevel !== null) Parts.CopyIncludeLevel = (SavedCopyIncludeLevel === 'true');
+				if (SavedCopyIncludeLevel !== null) Parts.CopySettings.includeLevel = (SavedCopyIncludeLevel === 'true');
 
 				let SavedCopyIncludeFP = localStorage.getItem(Parts.GetStorageKey('CopyIncludeFP', null));
-				if (SavedCopyIncludeFP !== null) Parts.CopyIncludeFP = (SavedCopyIncludeFP === 'true');
+				if (SavedCopyIncludeFP !== null) Parts.CopySettings.includeFP = (SavedCopyIncludeFP === 'true');
 
 				let SavedCopyIncludeOwnPart = localStorage.getItem(Parts.GetStorageKey('CopyIncludeOwnPart', null));
-				if (SavedCopyIncludeOwnPart !== null) Parts.CopyIncludeOwnPart = (SavedCopyIncludeOwnPart === 'true');
+				if (SavedCopyIncludeOwnPart !== null) Parts.CopySettings.includeOwnPart = (SavedCopyIncludeOwnPart === 'true');
 
 				let SavedCopyPreP = localStorage.getItem(Parts.GetStorageKey('CopyPreP', null));
 				if (SavedCopyPreP !== null) Parts.CopyPreP = (SavedCopyPreP === 'true');
 
 				let SavedCopyDescending = localStorage.getItem(Parts.GetStorageKey('CopyDescending', null));
-				if (SavedCopyDescending !== null) Parts.CopyDescending = (SavedCopyDescending === 'true');
+				if (SavedCopyDescending !== null) Parts.CopySettings.descending = (SavedCopyDescending === 'true');
 			}
 		}
 
@@ -538,7 +540,7 @@ let Parts = {
 			Parts.LockExistingPlaces = true;
 			Parts.TrustExistingPlaces = false;
 			for (let i = 0; i < 5; i++) Parts.Exts[i] = 0;
-			Parts.CopyIncludeLevelString = false;
+			Parts.CopySettings.includeLevelString = false;
 		}
 
 		Parts.FirstCycle = false;
@@ -1075,85 +1077,19 @@ let Parts = {
 		}
 
 		if (localStorage.getItem(Parts.GetStorageKey('CopyFormatPerGB', null)) === 'true') {
-			let SavedCopyIncludeDanger = localStorage.getItem(Parts.GetStorageKey('CopyIncludeDanger', MainParser.CurrentGB.Entity['cityentity_id']));
-			if (SavedCopyIncludeDanger !== null) {
-				Parts.CopyIncludeDanger = (SavedCopyIncludeDanger === 'true');
-			}
-			else {
-				Parts.CopyIncludeDanger = false;
-			}
+			let gbID = MainParser.CurrentGB.Entity['cityentity_id'];
+			let ls = key => localStorage.getItem(Parts.GetStorageKey(key, gbID));
 
-			let SavedCopyDangerPrefix = localStorage.getItem(Parts.GetStorageKey('CopyDangerPrefix', MainParser.CurrentGB.Entity['cityentity_id']));
-			if (SavedCopyDangerPrefix !== null) {
-				Parts.CopyDangerPrefix = SavedCopyDangerPrefix;
-			}
-			else {
-				Parts.CopyDangerPrefix = '!!!';
-			}
-
-			let SavedCopyDangerSuffix = localStorage.getItem(Parts.GetStorageKey('CopyDangerSuffix', MainParser.CurrentGB.Entity['cityentity_id']));
-			if (SavedCopyDangerSuffix !== null) {
-				Parts.CopyDangerSuffix = SavedCopyDangerSuffix;
-			}
-			else {
-				Parts.CopyDangerSuffix = '';
-			}
-
-			let SavedCopyIncludePlayer = localStorage.getItem(Parts.GetStorageKey('CopyIncludePlayer', MainParser.CurrentGB.Entity['cityentity_id']));
-			if (SavedCopyIncludePlayer !== null) {
-				Parts.CopyIncludePlayer = (SavedCopyIncludePlayer === 'true');
-			}
-			else {
-				Parts.CopyIncludePlayer = true;
-			}
-
-			let SavedCopyIncludeGB = localStorage.getItem(Parts.GetStorageKey('CopyIncludeGB', MainParser.CurrentGB.Entity['cityentity_id']));
-			if (SavedCopyIncludeGB !== null) {
-				Parts.CopyIncludeGB = (SavedCopyIncludeGB === 'true');
-			}
-			else {
-				Parts.CopyIncludeGB = true;
-			}
-
-			let SavedCopyIncludeLevel = localStorage.getItem(Parts.GetStorageKey('CopyIncludeLevel', MainParser.CurrentGB.Entity['cityentity_id']));
-			if (SavedCopyIncludeLevel !== null) {
-				Parts.CopyIncludeLevel = (SavedCopyIncludeLevel === 'true');
-			}
-			else {
-				Parts.CopyIncludeLevel = true;
-			}
-
-			let SavedCopyIncludeFP = localStorage.getItem(Parts.GetStorageKey('CopyIncludeFP', MainParser.CurrentGB.Entity['cityentity_id']));
-			if (SavedCopyIncludeFP !== null) {
-				Parts.CopyIncludeFP = (SavedCopyIncludeFP === 'true');
-			}
-			else {
-				Parts.CopyIncludeFP = true;
-			}
-
-			let SavedCopyIncludeOwnPart = localStorage.getItem(Parts.GetStorageKey('CopyIncludeOwnPart', MainParser.CurrentGB.Entity['cityentity_id']));
-			if (SavedCopyIncludeOwnPart !== null) {
-				Parts.CopyIncludeOwnPart = (SavedCopyIncludeOwnPart === 'true');
-			}
-			else {
-				Parts.CopyIncludeOwnPart = false;
-			}
-
-			let SavedCopyPreP = localStorage.getItem(Parts.GetStorageKey('CopyPreP', MainParser.CurrentGB.Entity['cityentity_id']));
-			if (SavedCopyPreP !== null) {
-				Parts.CopyPreP = (SavedCopyPreP === 'true');
-			}
-			else {
-				Parts.CopyPreP = true;
-			}
-
-			let SavedCopyDescending = localStorage.getItem(Parts.GetStorageKey('CopyDescending', MainParser.CurrentGB.Entity['cityentity_id']));
-			if (SavedCopyDescending !== null) {
-				Parts.CopyDescending = (SavedCopyDescending === 'true');
-			}
-			else {
-				Parts.CopyDescending = true;
-			}
+			Parts.CopySettings.includeDanger = (ls('CopyIncludeDanger') ?? 'false') === 'true';
+			Parts.CopySettings.includePlayer = (ls('CopyIncludePlayer') ?? 'true') === 'true';
+			Parts.CopySettings.includeGB = (ls('CopyIncludeGB') ?? 'true') === 'true';
+			Parts.CopySettings.includeLevel = (ls('CopyIncludeLevel') ?? 'true') === 'true';
+			Parts.CopySettings.includeFP = (ls('CopyIncludeFP') ?? 'true') === 'true';
+			Parts.CopySettings.includeOwnPart = (ls('CopyIncludeOwnPart') ?? 'false') === 'true';
+			Parts.CopyPreP = (ls('CopyPreP') ?? 'true') === 'true';
+			Parts.CopySettings.descending = (ls('CopyDescending') ?? 'true') === 'true';
+			Parts.CopySettings.dangerPrefix = ls('CopyDangerPrefix') ?? '!!!';
+			Parts.CopySettings.dangerSuffix = ls('CopyDangerSuffix') ?? '';
 		}
 
 		if (Parts.CopyModeAll) {
@@ -1197,23 +1133,23 @@ let Parts = {
 		h.push('<section class="p2">');
 		h.push('<strong>' + i18n('Boxes.OwnpartCalculator.IncludeData') + '</strong>');
 		let Options = '<div class="checkboxes">' +
-			'<label class="form-check-label game-cursor" for="options-player"><input type="checkbox" class="form-check-input" id="options-player" data-options="player" ' + (Parts.CopyIncludePlayer ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.OptionsPlayer') + '</span></label>' +
-			'<label class="form-check-label game-cursor" for="options-gb"><input type="checkbox" class="form-check-input" id="options-gb" data-options="gb" ' + (Parts.CopyIncludeGB ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.OptionsGB') + '</span></label>' +
-			'<label class="form-check-label game-cursor" for="options-level"><input type="checkbox" class="form-check-input" id="options-level" data-options="level" ' + (Parts.CopyIncludeLevel ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.OptionsLevel') + '</span></label>' +
-			'<label class="form-check-label game-cursor" for="options-fp"><input type="checkbox" class="form-check-input" id="options-fp" data-options="fp" ' + (Parts.CopyIncludeFP ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.OptionsFP') + '</span></label>' +
-			'<label class="form-check-label game-cursor" for="options-descending"><input type="checkbox" class="form-check-input" id="options-descending" data-options="descending" ' + (Parts.CopyDescending ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.OptionsDescending') + '</span></label>' +
-			'<label class="form-check-label game-cursor" for="options-levelup"><input type="checkbox" class="form-check-input" id="options-levelup" data-options="levelup" ' + (Parts.CopyIncludeLevelString ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.OptionsLevelUp') + '</span></label>' +
-			'<label class="form-check-label game-cursor" for="options-ownpart"><input type="checkbox" class="form-check-input" id="options-ownpart" data-options="ownpart" ' + (Parts.CopyIncludeOwnPart ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.OptionsOwnPart') + '</span></label>' +
+			'<label class="form-check-label game-cursor" for="options-player"><input type="checkbox" class="form-check-input" id="options-player" data-options="player" ' + (Parts.CopySettings.includePlayer ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.OptionsPlayer') + '</span></label>' +
+			'<label class="form-check-label game-cursor" for="options-gb"><input type="checkbox" class="form-check-input" id="options-gb" data-options="gb" ' + (Parts.CopySettings.includeGB ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.OptionsGB') + '</span></label>' +
+			'<label class="form-check-label game-cursor" for="options-level"><input type="checkbox" class="form-check-input" id="options-level" data-options="level" ' + (Parts.CopySettings.includeLevel ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.OptionsLevel') + '</span></label>' +
+			'<label class="form-check-label game-cursor" for="options-fp"><input type="checkbox" class="form-check-input" id="options-fp" data-options="fp" ' + (Parts.CopySettings.includeFP ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.OptionsFP') + '</span></label>' +
+			'<label class="form-check-label game-cursor" for="options-descending"><input type="checkbox" class="form-check-input" id="options-descending" data-options="descending" ' + (Parts.CopySettings.descending ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.OptionsDescending') + '</span></label>' +
+			'<label class="form-check-label game-cursor" for="options-levelup"><input type="checkbox" class="form-check-input" id="options-levelup" data-options="levelup" ' + (Parts.CopySettings.includeLevelString ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.OptionsLevelUp') + '</span></label>' +
+			'<label class="form-check-label game-cursor" for="options-ownpart"><input type="checkbox" class="form-check-input" id="options-ownpart" data-options="ownpart" ' + (Parts.CopySettings.includeOwnPart ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.OptionsOwnPart') + '</span></label>' +
 			'<label class="form-check-label game-cursor" for="options-prep"><input type="checkbox" class="form-check-input" id="options-prep" data-options="prep" ' + (Parts.CopyPreP ? 'checked' : '') + '> <span>P(xx)</span></label>' +
-			'<label class="form-check-label game-cursor" for="options-danger"><input type="checkbox" class="form-check-input" id="options-danger" data-options="danger" ' + (Parts.CopyIncludeDanger ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.OptionsDanger') + '</span></label>' +
+			'<label class="form-check-label game-cursor" for="options-danger"><input type="checkbox" class="form-check-input" id="options-danger" data-options="danger" ' + (Parts.CopySettings.includeDanger ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.OptionsDanger') + '</span></label>' +
 			'</div>';
 
 		h.push(Options)
 
-		if (Parts.CopyIncludeDanger) {
+		if (Parts.CopySettings.includeDanger) {
 			let DangerOptions = '<strong>' + i18n('Boxes.OwnpartCalculator.OptionsDanger') + '</strong>' +
-			'<div><span>' + i18n('Boxes.OwnpartCalculator.OptionsDangerPrefix') + ':</span><input type="text" class="form-text-input" id="options-danger-prefix" data-options="danger-prefix" value="' + Parts.CopyDangerPrefix + '"></div>' +
-			'<div><span>' + i18n('Boxes.OwnpartCalculator.OptionsDangerSuffix') + ':</span><input type="text" class="form-text-input" id="options-danger-suffix" data-options="danger-suffix" value="' + Parts.CopyDangerSuffix + '"></div>';
+			'<div><span>' + i18n('Boxes.OwnpartCalculator.OptionsDangerPrefix') + ':</span><input type="text" class="form-text-input" id="options-danger-prefix" data-options="danger-prefix" value="' + Parts.CopySettings.dangerPrefix + '"></div>' +
+			'<div><span>' + i18n('Boxes.OwnpartCalculator.OptionsDangerSuffix') + ':</span><input type="text" class="form-text-input" id="options-danger-suffix" data-options="danger-suffix" value="' + Parts.CopySettings.dangerSuffix + '"></div>';
 
 			h.push(DangerOptions);
 		}
@@ -1242,11 +1178,6 @@ let Parts = {
 		$OwnPartBox.append( $('<div class="OwnPartBoxBackgroundBody settingsbox-wrapper" />').append(h.join('')) );
 		if (isOpen)
 			$('.OwnPartBoxBackgroundBody').show();
-
-		$('#OwnPartBox').on('click', '.icon-close', function() {
-			$('.OwnPartBoxBackgroundBody').fadeToggle();
-			$('#OwnPartBox').toggleClass('gbSettingsOpen');
-		});
 	},
 
 
@@ -1268,15 +1199,15 @@ let Parts = {
 	GetCopyStringEx: (Places, Maezens, Level, OwnPart, PlaceAll, PlaceAuto, PlaceAutoUnsafe, DangerPlaces, LeveltLG) => {	
 		let Ret = [];
 
-		if (Parts.CopyIncludeDanger && Parts.CopyDangerPrefix !== '' && (DangerPlaces.find(e => e > 5) || LeveltLG.find(e => e))) Ret.push(Parts.CopyDangerPrefix);
+		if (Parts.CopySettings.includeDanger && Parts.CopySettings.dangerPrefix !== '' && (DangerPlaces.find(e => e > 5) || LeveltLG.find(e => e))) Ret.push(Parts.CopySettings.dangerPrefix);
 
-		if (Parts.CopyIncludePlayer) Ret.push(Parts.CopyPlayerName);
+		if (Parts.CopySettings.includePlayer) Ret.push(Parts.CopyPlayerName);
 
-		if (Parts.CopyIncludeGB) Ret.push(Parts.CopyBuildingName);
+		if (Parts.CopySettings.includeGB) Ret.push(Parts.CopyBuildingName);
 
-		if (Parts.CopyIncludeLevelString) Ret.push(i18n('Boxes.OwnpartCalculator.OptionsLevelUp'));
+		if (Parts.CopySettings.includeLevelString) Ret.push(i18n('Boxes.OwnpartCalculator.OptionsLevelUp'));
 
-		if (Parts.CopyIncludeLevel) Ret.push(Level + '→' + (Level + 1));
+		if (Parts.CopySettings.includeLevel) Ret.push(Level + '→' + (Level + 1));
 
 		let NoPlacesSelected = true;
 		for (let i = 0; i < 5; i++) {
@@ -1285,19 +1216,19 @@ let Parts = {
 
 		if (!NoPlacesSelected) {
 			for (let i = 0; i < 5; i++) {
-				let Place = (Parts.CopyDescending ? 5 - i - 1 : i);
+				let Place = (Parts.CopySettings.descending ? 5 - i - 1 : i);
 
 				if (!Places[Place]) continue;
 				if (PlaceAll && Maezens[Place] === 0) continue;
 				
-				if (Parts.CopyIncludeFP) {
+				if (Parts.CopySettings.includeFP) {
 					Ret.push((Parts.CopyPreP ? 'P' : '') + (Place + 1) + '(' + Maezens[Place] + ')');
 				}
 				else {
 					Ret.push((Parts.CopyPreP ? 'P' : '') + (Place + 1));
 				}
 
-				if (Parts.CopyIncludeDanger && Parts.CopyDangerSuffix !== '' && (DangerPlaces[Place] > 5 || LeveltLG[Place])) Ret.push(Parts.CopyDangerSuffix);
+				if (Parts.CopySettings.includeDanger && Parts.CopySettings.dangerSuffix !== '' && (DangerPlaces[Place] > 5 || LeveltLG[Place])) Ret.push(Parts.CopySettings.dangerSuffix);
 			}
 		}
 		else if (PlaceAuto) {
@@ -1307,7 +1238,7 @@ let Parts = {
 			Ret.push(i18n('Boxes.OwnpartCalculator.NoPlaceAvailable'));
 		}
 		
-		if (Parts.CopyIncludeOwnPart) Ret.push(i18n('Boxes.OwnpartCalculator.OwnPartShort') + '(' + OwnPart + ')');
+		if (Parts.CopySettings.includeOwnPart) Ret.push(i18n('Boxes.OwnpartCalculator.OwnPartShort') + '(' + OwnPart + ')');
 
 		return Ret.join(' ');
 	},
