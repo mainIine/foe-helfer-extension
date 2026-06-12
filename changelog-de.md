@@ -11,6 +11,7 @@
 - LG Rechner: Button in der oberen Leiste hinzugefügt, um die Ansicht mit einem Klick zu ändern
 - Stadt Übersicht: Neue Filter für Gebäude, die eingesammelt werden können, und Gebäude, die noch motiviert werden müssen
 - Stadt Übersicht: Man kann die Ansicht jetzt auch um 90° in die andere (manche sagen "richtige") Richtung drehen
+- Stadt Übersicht: Es wird nun ein Fenster geöffnet, wenn man auf erhabene Gebäude klickt, das eine Liste von allen öffnet
 - Gefechte: In den Einstellungen des Fensters kann die Zeit für Benachrichtungen angepasst werden
 
 ### Bug Fixes

@@ -11,6 +11,7 @@
 - GB Calculator: Added a button at the top to easily switch views
 - City Overview: New highlights for buildings that are not motivated and buildings that can be collected
 - City Overview: Turn the view 90° around. Some might say this is the only true way to look at your city
+- City Overview: Clicking on ascended buildings now opens a window with a list of all of them
 - GBG: You can now change the time the notification shows up before a province opens in the windows settings
 
 ### Bug fixes
