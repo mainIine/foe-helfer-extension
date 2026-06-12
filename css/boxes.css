@@ -568,9 +568,7 @@ table.foe-table td .error {
 	display: inline-block;
 }
 
-p {
-	margin: 0 0 10px 0;
-}
+p { margin: 0 0 10px 0; }
 .hidden-text {
 	opacity: 0;
 	display: inline-block;
@@ -587,6 +585,8 @@ p {
 .flex.between { justify-content: space-between; }
 .flex.gap { gap: 2px; }
 
+.text-smaller { font-size: 90% }
+
 .p2 { padding: 2px; }
 .p5 { padding: 5px; }
 .p10 { padding: 10px; }
@@ -602,7 +602,7 @@ p {
 .text-danger, .danger { color: var(--danger-red); }
 .text-info, .info { color: var(--info-blue); }
 .text-muted { color: var(--ash); }
-.show-entity, .show-entity img, .show-all img { height: 20px; }
+.show-entity, .show-entity img, .show-all img { height: 18px; display: inline-block; }
 
 .text-bold { font-weight: 700; }
 
