@@ -50,8 +50,7 @@ let ExistenceConfirmed = async (varlist)=>{
 	intval = setInterval(checkForJQuery, 1);
 }
 
-let ApiURL = 'https://api.foe-rechner.de/',
-	ActiveMap = 'main',
+let ActiveMap = 'main',
 	LastMapPlayerID = null,
 	ExtPlayerID = 0,
 	ExtPlayerName = null,
@@ -1393,40 +1392,6 @@ let MainParser = {
 		}
 		return obj2FormData;
 	})(),
-
-
-	/**
-	 * Sending data "home"
-	 *
-	 * @param data
-	 * @param ep
-	 * @param successCallback
-	 */
-	send2Server: (data, ep, successCallback) => {
-
-		let req = fetch(
-			ApiURL + ep + '/?player_id=' + ExtPlayerID + '&guild_id=' + ExtGuildID + '&world=' + ExtWorld,
-			{
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({ data })
-			}
-		);
-
-		if (successCallback !== undefined) {
-			req
-				.then(response => {
-					if (response.status === 200) {
-						response
-							.json()
-							.then(successCallback)
-							;
-					}
-				});
-		}
-	},
 
 
 	/**
