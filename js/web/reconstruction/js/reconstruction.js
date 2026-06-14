@@ -51,6 +51,7 @@ FoEproxy.addHandler('InventoryService', 'getGreatBuildings', (data, postData) =>
 });
 
 FoEproxy.addRequestHandler('CityReconstructionService', 'saveDraft', (data) => {
+    if(!Settings.GetSetting('ShowReconstructionList')) return;
     for (let x of data.requestData[0]) {
         let id = MainParser.CityMapData[x.entityId].cityentity_id + "#" + (MainParser.CityMapData[x.entityId].level||0);
         let pagesUpdated=false;
