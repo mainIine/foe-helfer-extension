@@ -14,6 +14,20 @@
 		"https://*.forgeofempires.com/*"
 	],
 
+	"browser_specific_settings": {
+		"gecko": {
+			"id": "__MSG_appName__",
+			"data_collection_permissions": {
+				"required": [
+					"websiteActivity",
+					"websiteContent",
+					"personalCommunications",
+					"browsingActivity"
+				]
+			}
+		}
+	},
+
 	"browser_action": {
 		"default_icon": "images/app16.png",
 		"default_popup": "content/info.html",
