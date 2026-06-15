@@ -136,15 +136,13 @@ let DBExport = {
 
                 data.localStorage = localSettings.length ? true : false;
 
-                if (!data.indexdb && !data.localStorage) 
-                {
+                if (!data.indexdb && !data.localStorage) {
                     DBExport.hidePreloader();
                     return;
                 }
 
                 DBExport.showPreloader('#DBExport');
                 DBExport.ExportSelection(data);
-
             });
 
             DBExport.hidePreloader();
@@ -410,8 +408,7 @@ let DBExport = {
         let saveIndexDB = data.indexdb && data.indexdb.length ? true : false;
         let saveLocalStorage = data.localStorage === true ? true : false;
 
-        if (!data || (!data.indexdb && !data.localStorage))
-        {
+        if (!data || (!data.indexdb && !data.localStorage)) {
             DBExport.hidePreloader();
             return;
         }
@@ -421,51 +418,39 @@ let DBExport = {
         $("#dbex-loading-data .message").html('<span class="progress">' + exportState + ' / ' + exportCounter + '</span>' +
             '<div class="progressbar"><div class="state"></div></div>');
 
-        if (data.localStorage === true)
-        {
+        if (data.localStorage === true) {
             let localStorageJSON = JSON.stringify(localStorage, null, 2);
             let localStorageBlob = new Blob([localStorageJSON], { type: "application/json" });
             $("#dbex-loading-data .message span.progress").html((++exportState) + ' / ' + exportCounter);
-            if (exportCounter > 1)
-            {
+            if (exportCounter > 1) {
                 zip.file(ExtWorld + '_localStorage_' + moment().format("YYYYMMDD-HHmmss") + ".json", localStorageBlob);
             }
-            else
-            {
+            else {
                 download(localStorageBlob, ExtWorld + '_localStorage_' + moment().format("YYMMDD-HHmm") + "_" + ExtPlayerID + ".json", "application/json");
             }
 
         }
 
-        if (saveIndexDB)
-        {
-
-            for (let i in data.indexdb)
-            {
+        if (saveIndexDB) {
+            for (let i in data.indexdb) {
                 if (!data.indexdb.hasOwnProperty(i))
-                {
                     continue;
-                }
 
                 const database = data.indexdb[i];
                 let DexieDB = await new Dexie(database);
                 await DexieDB.open();
-                try
-                {
-                    const blob = await DexieDB.export({ prettyJson: true, progressCallback });
-                    if (exportCounter > 1)
-                    {
+                try {
+                    const blob = await DexieDB.export({ prettyJson: true, filter: (table, value, key) => table !== 'buildingMeta',progressCallback });
+                    if (exportCounter > 1) {
                         zip.file(ExtWorld + '_' + DexieDB.name + ".json", blob);
                     }
-                    else
-                    {
+                    else {
                         download(blob, ExtWorld + '_' + DexieDB.name + ".json", "application/json")
                     }
                     $("#dbex-loading-data .message span.progress").html((++exportState) + ' / ' + exportCounter);
                     await DexieDB.close();
                 }
-                catch (error)
-                {
+                catch (error) {
                     console.error('' + error);
                 }
             }
