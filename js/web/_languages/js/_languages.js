@@ -83,9 +83,15 @@ let Translation = {
 							<li>Use the Copy button on the right to copy the translation data</li>
 							<li>Overwrite the content of the respective language json file in your forks 'develop' branch. Path: /js/web/_i18n/ </li>
 							<li>Create a <a href="https://github.com/outoftheline/forge-hammer/pulls" target="_blank">pull request</a> into the Forge Hammer 'develop' branch to get the translation into the next release.</li>
+							<li>You can save your translation progress locally - it is not applied to the extension content though, before you apply it to the extension files.</li>
+							<li>If you use a local copy of the extension, you can apply the translation bit by bit and test how it looks in the extension before you submit it.</li>
 						</ul>
 					</div>
-					<div class="p5"><span class="btn btn-default" id="CopyJSON">${i18n('Boxes.Translation.CopyJSON')}</span></div>
+					<div class="p5">
+						<span class="btn btn-default" id="CopyJSON">${i18n('Boxes.Translation.CopyJSON')}</span>
+						<span class="btn btn-default" id="TempStorage">${i18n('Boxes.Translation.TempStorage')}</span>
+						<span class="btn btn-default" id="ClearStorage">${i18n('Boxes.Translation.ClearStorage')}</span>
+					</div>
 				</div>
 			`
 
@@ -105,6 +111,18 @@ let Translation = {
 				if (value.trim() !== '') target[key] = value;
 			});
 			navigator.clipboard.writeText(JSON.stringify(target, null, 2));
+		});
+		$('#TempStorage').on('click', ()=>{
+			let target = {};
+			$('#TranslationTable tbody tr').each((i, row)=>{
+				let key = $(row).find('td:nth-child(1)').html();
+				let value = $(row).find('td:nth-child(3) span').html();
+				if (value.trim() !== '') target[key] = value;
+			});
+			localStorage.setItem('Translation.Temp', JSON.stringify(target));
+		});
+		$('#ClearStorage').on('click', ()=>{
+			localStorage.removeItem('Translation.Temp');
 		});
 		$('#TranslationTable').on('click', 'td:nth-child(3)', function() {
 			let td = $(this);
@@ -136,13 +154,16 @@ let Translation = {
 		let reference = $('#ReferenceLanguage')[0].value;
 		let showOnlyMissing = $('#ShowOnlyMissing')[0].checked;
 
-		let targetData = await fetch(extUrl + 'js/web/_i18n/'+target+'.json').then(res=>res.json());
-		let referenceData = await fetch(extUrl + 'js/web/_i18n/'+reference+'.json').then(res=>res.json());
+		let targetData = await fetch(extUrl + 'js/web/_i18n/'+target+'.json').then(res=>res.json()).catch(()=>({}));
+		let referenceData = await fetch(extUrl + 'js/web/_i18n/'+reference+'.json').then(res=>res.json()).catch(()=>({}));
 		
+		localData = JSON.parse(localStorage.getItem('Translation.Temp') || '{}');	
+
 		referenceData = Object.entries(referenceData).sort((a, b) => a[0].localeCompare(b[0])).map(([key, value])=>({key, value}));
 		let rowsHtml = referenceData.map(({key, value})=>{
 			let targetValue = targetData[key] || '';
 			let missing = targetValue.trim() === '';
+			targetValue = localData[key] || targetValue;
 			return `<tr class="${missing ? 'missing' : ''}">
 				<td>${key}</td>
 				<td>${value}</td>
