@@ -23,6 +23,28 @@
 	margin: 0 0 5px;
 }
 
+#SettingsBoxBody a.kofi {
+	display: inline-block;
+    padding: 5px 10px;
+    border-radius: 10px;
+    background-color: #202020;
+	color: #fff !important;
+	font-weight: bold;
+	text-shadow: none;
+	margin-bottom: 10px;
+	line-height: 22px;
+}
+
+#SettingsBoxBody a.kofi:hover {
+	text-decoration: none;
+    background-color: #ff5a16;
+	color: #202020 !important;
+}
+
+#SettingsBoxBody .kofi img {
+	height: 22px;
+}
+
 #SettingsBoxBody .item-row a {
 	color: var(--text-highlight);
 }

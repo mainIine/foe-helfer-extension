@@ -40,6 +40,49 @@ header {
 	border-radius: 0.5em;
 }
 
+header .links {
+	display: flex;
+	gap: 5px;
+	justify-content: center;
+	align-items: center;
+	margin-top: 10px;
+	position: relative;
+	overflow: visible;
+	text-align: center;
+	transition: all 0.2s linear;
+	font-size: 5px;
+}
+
+header .links:hover {
+	margin-bottom: 15px;
+	font-size: 14px;
+}
+
+header .links img {
+	max-height: 30px;
+	max-width: 35px;
+	padding: 5px;
+	transition: all 0.2s linear;
+}
+
+header .links img:hover {
+	transform: rotate(10deg) scale(1.3);
+}
+
+header .links span {
+	display: none;
+	position: absolute;
+	top: 30px;
+	left: 0;
+	width: 300px;
+	font-weight: bold;
+}
+
+header .links a:hover span {
+	display: block;
+	color: #ddd;
+}
+
 header img {
 	padding-bottom: 0.5em;
 }
