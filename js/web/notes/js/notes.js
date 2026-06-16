@@ -49,7 +49,7 @@ let Notes = {
 				? `<span>${checkedCount}/${checkCount}</span>`
 				: '';
 
-			return `<li class="p5 bbd" data-time="${entry.time}">
+			return `<li class="p5 bbd clickable" data-time="${entry.time}">
 				<h2 class="flex between"><span>${entry.title}</span> ${checkSummary}</h2>
 				<span>${excerpt}</span>
 			</li>`;
@@ -196,7 +196,7 @@ let Notes = {
 
 		let title = $('#editTitle').val().trim();
 		let text = $('#editNoteContent').val().trim();
-		
+
 		if (!title) $('#editTitle').addClass('error');
 		if (!text) $('#editNoteContent').addClass('error');
 		if (!title || !text) return;

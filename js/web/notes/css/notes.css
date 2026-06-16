@@ -3,8 +3,16 @@
 }
 
 #Notes .simpleList, .note-view {
-    margin: 1em auto;
+    margin: 0.25em auto;
     max-width: 400px;
+}
+
+#Notes .simpleList li:hover {
+    background-color: var(--table-bg-odd);
+}
+
+#Notes .simpleList li:hover h2, #Notes .note-view h2 {
+    color: var(--text-highlight);
 }
 
 #noteView label {
