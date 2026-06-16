@@ -2,7 +2,7 @@
 	"name": "__MSG_appName__",
 	"description": "__MSG_appDesc__",
 	"default_locale": "en",
-	"version": "0.9",
+	"version": "1.0",
 
 	"manifest_version": 2,
 	"permissions": [
@@ -16,7 +16,7 @@
 
 	"browser_specific_settings": {
 		"gecko": {
-			"id": "__MSG_appName__",
+			"id": "@__MSG_appName__",
 			"data_collection_permissions": {
 				"required": [
 					"websiteActivity",
