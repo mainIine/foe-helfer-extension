@@ -1675,8 +1675,8 @@ let GuildFights = {
 		let alertOffset = parseInt( JSON.parse(localStorage.getItem('LiveFightSettings') )?.gbgAlertOffset || 30);
 
 		const data = {
-			title: HTML.i18nReplacer(i18n('Boxes.GuildFights.SaveAlert'), { provinceName: prov.title }),
-			body:'',
+			title: prov.title,
+        	body: HTML.i18nReplacer(i18n('Boxes.GuildFights.SaveAlert'), { provinceName: prov.title }),
 			expires: (prov.lockedUntil - alertOffset) * 1000, // -30s * Microtime
 			repeat: -1,
 			persistent: true,
