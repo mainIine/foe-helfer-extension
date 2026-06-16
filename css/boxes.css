@@ -692,6 +692,10 @@ p { margin: 0 0 10px 0; }
 	background-image: url('../images/menu/allies.png');
 }
 
+[id$=notes-Btn] span {
+	background-image: url('../images/menu/notes.png');
+}
+
 [id$=settings-Btn] {
 	background: var(--menu-btn-bg-settings) !important;
 }
@@ -1409,6 +1413,10 @@ a:hover, input[type="radio"], .clickable {
 	text-align: center;
 }
 
+.window-body input[type=text].error, .window-body textarea.error {
+	border: 2px solid var(--danger-red) !important;
+}
+
 .window-body textarea {
 	line-height: unset;
 }
@@ -1439,6 +1447,15 @@ a:hover, input[type="radio"], .clickable {
 
 .on-top {
 	z-index: 150;
+}
+
+.icon-close {
+    background-image: url('../images/hud/box-sprite.png'), none;
+    background-position: -2px -2px, 0 0;
+    box-shadow: none;
+	width: 22px;
+	height: 22px;
+	display: inline-block;
 }
 
 /* ------------------------------------------------------------------------------------------------------------------ */

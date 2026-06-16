@@ -1,5 +1,11 @@
 # Changelog
  
+## Version 1.0
+### Neu
+- Notizen/To Dos: Mach dir Listen, um die an deine wichtigsten Vorhaben zu erinnern
+
+---
+ 
 ## Version 0.9
 ### Neu
 - Themes! Schau in die Einstellungen bei "Farben", um andere Farb-Schemata für alle Fenster auszuwählen

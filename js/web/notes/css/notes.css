@@ -1,0 +1,64 @@
+#NotesBody {
+    overflow: auto;
+}
+
+#Notes .simpleList, .note-view {
+    margin: 1em auto;
+    max-width: 400px;
+}
+
+#noteView label {
+    display: block;
+}
+
+#newNote {
+    min-height: 100%;
+    overflow: auto;
+    position: relative;
+}
+
+#noteEdit {
+    height: inherit;
+}
+
+input#editTitle {
+    width: 100%;
+    box-sizing: border-box;
+    background: inherit;
+    color: inherit;
+    font-size: 120%;
+    border: none;
+}
+
+textarea#editNoteContent {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 5px;
+    height: calc(100% - 55px);
+    background: inherit;
+    color: inherit;
+}
+
+#newNoteContent {
+    min-height: 200px;
+}
+
+#Notes .options {
+    position: sticky;
+    top: 0;
+}
+
+#backToList {
+    font-size: 120%;
+    font-weight: bold;
+}
+
+#Notes :focus-visible {
+    outline: none;
+    box-shadow: var(--menu-shadow);
+}
+
+#Notes .drag-handle {
+    cursor: url(../../../../images/cursor_drag.cur), auto;
+}

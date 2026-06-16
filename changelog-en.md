@@ -1,5 +1,11 @@
 # Changelog
  
+## Version 1.0
+### New
+- Notes/To Dos: Create lists of your most important plans
+
+---
+ 
 ## Version 0.9
 ### New
 - Themes! Check the settings to choose a different skin for the addon

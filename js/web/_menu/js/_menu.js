@@ -20,7 +20,6 @@ let _menu = {
 	MenuOptions: ['BottomBar', 'RightBar', 'Box'],
 	
 	Items: [
-		//'calculator',
 		'partCalc',
 		'outpost',
 		'productions',
@@ -30,7 +29,6 @@ let _menu = {
 		'infobox',
 		'notice',
 		'technologies',
-		//'campagneMap',
 		'cityMap',
 		'settings',
 		'stats',
@@ -57,6 +55,7 @@ let _menu = {
 		'unit',
 		'shopAssist',
 		'allies',
+		'notes'
 	],
 	HiddenItems: [],
 
@@ -325,7 +324,7 @@ let _menu = {
 		{ id: 'kits', title: i18n('Menu.Kits.Title'), description: i18n('Menu.Kits.Desc') },
 		{ id: 'stats', title: i18n('Menu.Stats.Title'), description: i18n('Menu.Stats.Desc') },
 		{ id: 'settings', title: i18n('Menu.Settings.Title'), description: i18n('Menu.Settings.Desc') },
-		{ id: 'notice', title: i18n('Menu.Notice.Title'), description: i18n('Menu.Notice.Desc') },
+		{ id: 'notes', title: i18n('Menu.Notes.Title'), description: i18n('Menu.Notes.Desc') },
 		{ id: 'recurringQuests', title: i18n('Menu.recurringQuests.Title'), description: i18n('Menu.recurringQuests.Desc') },
 		{ id: 'hiddenRewards', title: i18n('Menu.HiddenRewards.Title'), description: i18n('Menu.HiddenRewards.Desc') },
 		{ id: 'cityMap', title: i18n('Menu.Citymap.Title'), description: i18n('Menu.Citymap.Desc') },
@@ -608,9 +607,6 @@ let _menu = {
 		return btn.append(btn_Stats);
 	},
 
-	/**
-	 * Set Übersicht
-	 */
 	kits_Btn: ()=> {
 		let btn = _menu.MakeButton('kits');
 
@@ -621,9 +617,16 @@ let _menu = {
 		return btn.append(btn_sp);
 	},
 
-	/**
-	 * FP Produzierende LGs
-	 */
+	notes_Btn: ()=> {
+		let btn = _menu.MakeButton('notes');
+
+		let btn_sp = $('<span />').on('click', function(){
+			Notes.Show();
+		});
+
+		return btn.append(btn_sp);
+	},
+
 	greatBuildings_Btn: () => {
 		let btn = _menu.MakeButton('greatBuildings');
 
@@ -634,9 +637,6 @@ let _menu = {
 		return btn.append(btn_sp);
 	},
 
-	/**
-	 * Marktplatz Filter
-	 */
 	market_Btn: () => {
 		let btn = _menu.MakeButton('market',true);
 
@@ -649,9 +649,6 @@ let _menu = {
 		return btn.append(btn_Market);
 	},
 
-	/**
-	 * Helper Blue Galaxy
-	 */
 	blueGalaxy_Btn: () => {
 		let OwnGalaxy = Object.values(MainParser.CityMapData).find(obj => (obj['cityentity_id'] === 'X_OceanicFuture_Landmark3'));;
 
@@ -671,9 +668,6 @@ let _menu = {
 		return btn.append(btn_sp, $('<span id="hidden-blue-galaxy-count" class="hud-counter">0</span>'));
 	},
 	
-	/**
-	 * Moppelassistent
-	 * */
 	moppelHelper_Btn: () => {
 		if(!Settings.GetSetting('ShowPlayersMotivation'))
 			return;
@@ -687,9 +681,6 @@ let _menu = {
 		return btn.append(btn_sp);
     },
 
-	/**
-	 * FP Collector box
-	 */
 	fpCollector_Btn: () => {
 		let btn = _menu.MakeButton('fpCollector');
 
@@ -700,9 +691,6 @@ let _menu = {
 		return btn.append(btn_sp);
 	},
 
-	/**
-	 * Shows the box for managing all alerts
-	 */
 	alerts_Btn: () => {
 		let btn = _menu.MakeButton('alerts');
 
