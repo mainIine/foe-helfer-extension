@@ -301,7 +301,7 @@ let Technologies = {
             TechDict[Technologies.AllTechnologies[i]['id']] = i;
         }
 
-        // Suche erforschte Technologien
+        // Look up researched tech
         for (let i = 0; i < Technologies.UnlockedTechnologies['unlockedTechnologies'].length; i++) {
             let TechName = Technologies.UnlockedTechnologies['unlockedTechnologies'][i];
             let Index = TechDict[TechName];
@@ -316,7 +316,7 @@ let Technologies = {
             Technologies.AllTechnologies[Index]['currentSP'] = InProgTech['currentSP'];
         }
 
-        // Güter zaehlen
+        // Count goods
         let RequiredResources = [],
             TechCount = 0;
         for (let i = 1; i < Technologies.AllTechnologies.length; i++) {
@@ -328,19 +328,20 @@ let Technologies = {
                 let EraID = Technologies.Eras[Tech['era']];
 
                 if (EraID < CurrentEraID && Technologies.IgnorePrevEra) continue; // Vorherige ZA ausblenden
-                if (EraID >= CurrentEraID && Tech['childTechnologies'].length === 0 && Technologies.IgnoreCurrentEraOptional) continue; // Aktuelles/zukünfiges ZA und optionale Technologie ausblenden
+                if (EraID >= CurrentEraID && Tech.childTechnologies?.length === 0 && Technologies.IgnoreCurrentEraOptional) continue; // Aktuelles/zukünfiges ZA und optionale Technologie ausblenden
 
                 if (EraID >= CurrentEraID && EraID <= Technologies.SelectedEraID) { // Alle Technologien voriger ZA und optionale Technologien ausblenden
-                    if (RequiredResources['strategy_points'] === undefined)
-                    	RequiredResources['strategy_points'] = 0;
 
-                    RequiredResources['strategy_points'] += Tech['maxSP'] - Tech['currentSP'];
+                    if (RequiredResources.strategy_points === undefined)
+                    	RequiredResources.strategy_points = 0;
 
-                    for (let ResourceName in Tech['requirements']['resources']) {
+                    RequiredResources.strategy_points += (Tech['maxSP']||0) - (Tech['currentSP']||0);
+
+                    for (let ResourceName in Tech.requirements.resources) {
                         if (RequiredResources[ResourceName] === undefined)
                         	RequiredResources[ResourceName] = 0;
 
-                        RequiredResources[ResourceName] += Tech['requirements']['resources'][ResourceName];
+                        RequiredResources[ResourceName] += Tech.requirements.resources[ResourceName];
                     }
 
                     TechCount++;

@@ -832,14 +832,14 @@ GetFights = () =>{
 
 	// player goods
 	FoEproxy.addHandler('ResourceService', 'getPlayerResources', (data, postData) => {
-		ResourceStock = data.responseData.resources; // Lagerbestand immer aktualisieren. Betrifft auch andere Module wie Technologies oder Negotiation
+		ResourceStock = data.responseData.resources; // Keep this updated
 		Outposts.CollectResources();
 		FoEproxy.triggerFoeHelperHandler('ResourcesUpdated')
 		Castle.UpdateCastlePoints(data['requestId']);
 	});
 	FoEproxy.addHandler('ResourceService', 'getPlayerResourceBag', (data, postData) => {
 		if (data.responseData?.type?.value && data.responseData?.type?.value != 'PlayerMain') return; // for now ignore all other source types
-		ResourceStock = data.responseData.resources.resources; // Lagerbestand immer aktualisieren. Betrifft auch andere Module wie Technologies oder Negotiation
+		ResourceStock = data.responseData.resources.resources;
 		Outposts.CollectResources();
 		FoEproxy.triggerFoeHelperHandler('ResourcesUpdated')
 		Castle.UpdateCastlePoints(data['requestId']);
