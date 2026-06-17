@@ -471,7 +471,16 @@ let Stats = {
 	 * @returns {Promise<void>}
 	 */
 	Render: async () => {
-		$('#statsBody').html(`<div class="options">${Stats.RenderOptions()}</div><div class="options-2"></div><div id="statsWrapper"><div id="statsTitle"></div><canvas id="statsChart"></canvas><div id="statsLegend"></div><div id="statsTooltip" style="display:none;"></div></div>`);
+		$('#statsBody').html(`<div class="options">${Stats.RenderOptions()}</div>
+							<div class="options-2"></div>
+							<div id="statsWrapper"><div id="statsTitle"></div><canvas id="statsChart"></canvas>
+							<div id="statsLegendWrapper">
+								<div class="StatsRewardFilter">
+									<input type="text" id="StatsRewardFilter" placeholder="${i18n("Boxes.Stats.FilterRewards")}" value="${Stats.state.filter}" oninput="Stats.state.filter=this.value;Stats.updateCharts();">
+								</div>
+								<div id="statsLegend"></div>
+							</div>
+							<div id="statsTooltip" style="display:none;"></div></div>`);
 
 		Stats.updateOptions();
 		await Stats.loadChartJS();
@@ -483,7 +492,6 @@ let Stats = {
 	 * Update options
 	 */
 	updateOptions: () => {
-		//console.log('updateOptions');
 		$('#statsBody .options').html(Stats.RenderOptions());
 
 		$('#statsBody').promise().done(function(){
@@ -665,9 +673,6 @@ let Stats = {
 								<ul class="horizontal">
 									${btnsRewardSelect.join('')}
 								</ul>
-							</div>
-							<div class="StatsRewardFilter">
-								<input type="text" id="StatsRewardFilter" placeholder="${i18n("Boxes.Stats.FilterRewards")}" value="${Stats.state.filter}" oninput="Stats.state.filter=this.value;Stats.updateCharts();">
 							</div>`;
 		}
 		else {
@@ -1296,11 +1301,11 @@ let Stats = {
 						: meta.avatarUrl
 							? `<img src="${meta.avatarUrl}" class="stats-legend-img">`
 							: '';
-					return `<span class="stats-legend-item ${hidden}" data-index="${item.datasetIndex}">
+					return `<div class="stats-legend-item ${hidden}" data-index="${item.datasetIndex}">
 						<span class="stats-legend-swatch" style="background:${item.strokeStyle};border-color:${item.strokeStyle};"></span>
 						${img}
 						<span class="stats-legend-label">${item.text}</span>
-					</span>`;
+					</div>`;
 				}).join('');
 
 				container.querySelectorAll('.stats-legend-item').forEach(el => {

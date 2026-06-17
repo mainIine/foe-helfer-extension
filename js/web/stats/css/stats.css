@@ -223,7 +223,7 @@
 	gap: 3px;
 }
 
-#statsLegend {
+#statsLegendWrapper {
 	position: absolute;
 	bottom: 5px;
 	left: 5%;
@@ -251,16 +251,27 @@
 	max-height: 22px;
 }
 
+.StatsRewardFilter { 
+	display: none; 
+	position: sticky;
+	top: 0;
+}
+
+.StatsRewardFilter input { 
+	width: 100%;
+	box-sizing: border-box;
+}
+
 #statsBody.stats-doughnut #statsChart {
 	transform: translateX(-240px);
 }
 
-#statsBody.stats-doughnut #statsLegend {
+#statsBody.stats-doughnut #statsLegendWrapper {
 	left: unset;
 	bottom: unset;
     top: 60px;
     right: 5px;
-    width: 300px;
+    width: 375px;
     max-height: 536px;
 }
 
@@ -281,3 +292,4 @@
     padding: 30px;
     box-sizing: border-box;
 }
+#statsBody.stats-doughnut .StatsRewardFilter { display: block; }
