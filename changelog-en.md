@@ -4,6 +4,13 @@
 ### New
 - Notes/To Dos: Create lists of your most important plans
 
+### Updated
+- Stats: Changed the graphs to ChartJS. You can now drag and zoom instead of selecting sections with your mouse. Data export is not a feature included with ChartJS, so this is currently gone, but will be implemented soon
+
+### Bug fixes
+- Technologies: A game change broke it
+- GBG notifications: Work as expected again instead of sometimes doubling or just being forgotten
+
 ---
  
 ## Version 0.9
