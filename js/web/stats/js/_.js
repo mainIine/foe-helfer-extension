@@ -3,7 +3,8 @@
  * Licensed under AGPL - see LICENSE.md for details.
  */
 
-// GBG leader board log
+// Guild Battlegrounds leader board log
+// Gildengefechte
 FoEproxy.addHandler('GuildBattlegroundService', 'getPlayerLeaderboard', async (data, postData) => {
 	Stats.HandlePlayerLeaderboard(data.responseData);
 });
@@ -65,6 +66,7 @@ FoEproxy.addHandler('RewardService', 'collectReward', async (data, postData) => 
 });
 
 FoEproxy.addHandler('RewardService', 'collectRewardSet', async (data, postData) => {
+	//console.log(JSON.parse(JSON.stringify(data)))
 	let rewardIncidentSource = data.responseData.context;
 	if (rewardIncidentSource!='guild_raids' && rewardIncidentSource.indexOf('guild_raids')>=0) rewardIncidentSource='guild_raidsP'; //QI-Pass detection
 	if (rewardIncidentSource.indexOf('event')<0 && !["guild_raids","guild_raidsP"].includes(rewardIncidentSource)) return; //exclude Main city collection "collect all", "aid_all"
@@ -471,7 +473,7 @@ let Stats = {
 	 * @returns {Promise<void>}
 	 */
 	Render: async () => {
-		$('#statsBody').html(`<div class="options">${Stats.RenderOptions()}</div><div class="options-2"></div><div id="statsWrapper"><div id="statsTitle"></div><canvas id="statsChart"></canvas><div id="statsLegend"></div><div id="statsTooltip" style="display:none;"></div></div>`);
+		$('#statsBody').html(`<div class="options">${Stats.RenderOptions()}</div><div class="options-2"></div><canvas id="statsChart"></canvas><div id="statsLegend"></div>`);
 
 		Stats.updateOptions();
 		await Stats.loadChartJS();
@@ -489,12 +491,6 @@ let Stats = {
 		$('#statsBody').promise().done(function(){
 			if ($('#StatsDatePicker').length > 0) {
 				$('#StatsDatePicker').text(`${Stats.formatRange()}`);
-
-				// remove from body, because it was attached every time stats were opened
-				if (Stats.DatePickerObj) {
-					Stats.DatePickerObj.destroy();
-					Stats.DatePickerObj = null;
-				}
 
 				Stats.DatePickerObj = new Litepicker({
 					element: document.getElementById('StatsDatePicker'),
@@ -946,7 +942,7 @@ let Stats = {
 			const era = unitInfo.minEra;
 			return {
 				name: unitInfo.name,
-				era: era ? i18n('Eras.' + Technologies.Eras[era] + '.short') : '',
+				era: era ? i18n('Eras.' + Technologies.Eras[era]) : '',
 				unitId,
 				unitUrl:srcLinks.get("/shared/unit_portraits/armyuniticons_50x50/armyuniticons_50x50_"+unitId+".jpg", true),
 				data: data.map(({date, army}) => [
@@ -983,7 +979,7 @@ let Stats = {
 
 		const series = Stats.getSelectedEras().map(era => {
 			return {
-				name: i18n('Eras.' + Technologies.Eras[era] + '.short'),
+				name: i18n('Eras.' + Technologies.Eras[era]),
 				// Group by era's resources
 				data: data.map(({date, resources}) => [
 					+date,
@@ -1038,7 +1034,7 @@ let Stats = {
 		const series = selectedResources.map(it => {
 			const goodsData = (GoodsData[it] || {name: it})
 			return {
-				era: goodsData.era ? i18n('Eras.' + Technologies.Eras[goodsData.era] + '.short') : '',
+				era: goodsData.era ? i18n('Eras.' + Technologies.Eras[goodsData.era]) : '',
 				goodsId: it,
 				name: goodsData.name,
 				data: data.map(({date, resources}) => {
@@ -1075,7 +1071,7 @@ let Stats = {
 
 		const series = Stats.getSelectedEras().map(era => {
 			return {
-				name: i18n('Eras.' + Technologies.Eras[era] + '.short'),
+				name: i18n('Eras.' + Technologies.Eras[era]),
 				// Group by era's resources
 				data: data.map(({date, resources}) => [
 					+date,
@@ -1130,7 +1126,7 @@ let Stats = {
 		const series = selectedResources.map(it => {
 			const goodsData = (GoodsData[it] || {name: it})
 			return {
-				era: goodsData.era ? i18n('Eras.' + Technologies.Eras[goodsData.era] + '.short') : '',
+				era: goodsData.era ? i18n('Eras.' + Technologies.Eras[goodsData.era]) : '',
 				goodsId: it,
 				name: goodsData.name,
 				data: data.map(({date, resources}) => {
@@ -1147,7 +1143,7 @@ let Stats = {
 
 
 	/**
-	 * Calculate diff between points and use it as 'y', change chartType to 'bar'
+	 * Calculate diff between points and use it as 'y', change chartType to 'line'
 	 *
 	 * @param series
 	 * @param args
@@ -1209,25 +1205,6 @@ let Stats = {
 
 
 	/**
-	 * Add alpha to any CSS color string (hex, hsl, rgb)
-	 *
-	 * @param color
-	 * @param alpha  0–1
-	 * @returns {string}
-	 */
-	colorWithAlpha: (color, alpha) => {
-		if (color.startsWith('hsl('))
-			return color.replace('hsl(', 'hsla(').replace(')', `, ${alpha})`);
-		if (color.startsWith('rgb('))
-			return color.replace('rgb(', 'rgba(').replace(')', `, ${alpha})`);
-		// hex #rrggbb or #rgb — append two-digit alpha
-		if (color.startsWith('#'))
-			return color + Math.round(alpha * 255).toString(16).padStart(2, '0');
-		return color;
-	},
-
-
-	/**
 	 * Update chart
 	 *
 	 * @param series
@@ -1239,9 +1216,10 @@ let Stats = {
 		const title = i18n('Boxes.Stats.SourceTitle.' + Stats.state.source);
 		const isColumn = chartType === 'column';
 
+		// Default color palette (10 distinct colors)
 		const defaultColors = [
-			'#62a2df','#434357','#8ecf70','#db9255','#7478c7',
-			'#d35572','#d4c33e','#2b908f','#d15959','#7acfc8'
+			'#7cb5ec','#434348','#90ed7d','#f7a35c','#8085e9',
+			'#f15c80','#e4d354','#2b908f','#f45b5b','#91e8e1'
 		];
 		const palette = colors || defaultColors;
 
@@ -1252,13 +1230,12 @@ let Stats = {
 				label: s.name,
 				data: s.data.map(([x, y]) => ({x, y})),
 				borderColor: color,
-				backgroundColor: isColumn ? color : Stats.colorWithAlpha(color, 0.2),
+				backgroundColor: isColumn ? color : color + '33',
 				borderWidth: isColumn ? 0 : 1.5,
-				barThickness: isColumn ? 3 : undefined,
 				pointRadius: 0,
 				pointHoverRadius: 4,
 				fill: false,
-				// custom metadata for tooltip and legend
+				// carry custom metadata for tooltip callbacks
 				_meta: { era: s.era, goodsId: s.goodsId, unitUrl: s.unitUrl, avatarUrl: s.avatarUrl },
 			};
 		});
@@ -1266,20 +1243,15 @@ let Stats = {
 		const isSharedTooltip = series.length <= 8 ||
 			series.every(x => x.era !== undefined && x.era === series[0].era);
 
-		// Destroy previous instance and clear UI elements
+		// Destroy previous instance and clear legend
 		if (Stats._chartInstance) {
 			Stats._chartInstance.destroy();
 			Stats._chartInstance = null;
 		}
 		$('#statsLegend').empty();
-		$('#statsTooltip').hide();
-		$('#statsTitle').text(title);
-		$('#statsBody').removeClass('stats-doughnut');
 
 		const ctx = document.getElementById('statsChart');
 		if (!ctx) return;
-
-		ctx.style.maxHeight = '';
 
 		const htmlLegendPlugin = {
 			id: 'htmlLegend',
@@ -1290,15 +1262,8 @@ let Stats = {
 				const items = chart.options.plugins.legend.labels.generateLabels(chart);
 				container.innerHTML = items.map(item => {
 					const hidden = item.hidden ? 'stats-legend-hidden' : '';
-					const meta = chart.data.datasets[item.datasetIndex]?._meta || {};
-					const img = meta.unitUrl
-						? `<img src="${meta.unitUrl}" class="stats-legend-img">`
-						: meta.avatarUrl
-							? `<img src="${meta.avatarUrl}" class="stats-legend-img">`
-							: '';
 					return `<span class="stats-legend-item ${hidden}" data-index="${item.datasetIndex}">
-						<span class="stats-legend-swatch" style="background:${item.strokeStyle};border-color:${item.strokeStyle};"></span>
-						${img}
+						<span class="stats-legend-swatch" style="background:${item.fillStyle};border-color:${item.strokeStyle};"></span>
 						<span class="stats-legend-label">${item.text}</span>
 					</span>`;
 				}).join('');
@@ -1323,71 +1288,36 @@ let Stats = {
 				responsive: true,
 				maintainAspectRatio: true,
 				layout: {
-					padding: { top: 30, bottom: 50 }
+					padding: { top: 20 }
 				},
 				plugins: {
 					title: {
-						display: false,
+						display: true,
+						text: title,
 					},
 					legend: {
 						display: false,
 					},
 					tooltip: {
-						enabled: false,
 						mode: isSharedTooltip ? 'index' : 'nearest',
 						intersect: false,
-						external: ({chart, tooltip}) => {
-							const el = document.getElementById('statsTooltip');
-							if (!el) return;
-
-							if (tooltip.opacity === 0) {
-								el.style.display = 'none';
-								return;
-							}
-
-							const dateTitle = tooltip.dataPoints?.length
-								? moment(tooltip.dataPoints[0].parsed.x).format(i18n('Date'))
-								: '';
-
-							const rows = (tooltip.dataPoints || []).map(item => {
-								const ds = item.dataset;
-								const meta = ds._meta || {};
-								const color = ds.borderColor;
+						usePointStyle: true,
+						callbacks: {
+							title: (items) => {
+								if (!items.length) return '';
+								return moment(items[0].parsed.x).format(i18n('Date'));
+							},
+							label: (item) => {
+								const meta = item.dataset._meta || {};
+								const name = item.dataset.label;
 								const val = item.parsed.y;
-								const era = meta.era ? `${meta.era}:` : '';
-								const img = meta.unitUrl
-									? `<img src="${meta.unitUrl}" class="stats-tooltip-img">`
-									: meta.avatarUrl
-										? `<img src="${meta.avatarUrl}" class="stats-tooltip-img">`
-										: meta.goodsId
-											? `<span class="goods-sprite sprite-50 ${meta.goodsId}"></span>`
-											: '';
-								return `<li class="flex between">
-									<span class="legend">${img} <span class="stats-tooltip-swatch" style="background:${color};"></span> ${era} ${ds.label}:</span>
-									<b>${HTML.Format(val)}</b>
-								</li>`;
-							});
-
-							el.innerHTML = `<div class="stats-tooltip-title">${dateTitle}</div>
-								<ul class="simpleList">${rows.join('')}</ul>`;
-
-							// Position relative to the chart canvas
-							const canvasRect = chart.canvas.getBoundingClientRect();
-							const bodyRect = document.body.getBoundingClientRect();
-							const statsRect = document.getElementById('stats')?.getBoundingClientRect() || bodyRect;
-
-							let left = canvasRect.left - statsRect.left + tooltip.caretX + 12;
-							let top = canvasRect.top - statsRect.top + tooltip.caretY;
-
-							el.style.display = 'block';
-
-							// Flip horizontally if overflowing right edge
-							if (left + el.offsetWidth > statsRect.width) {
-								left = canvasRect.left - statsRect.left + tooltip.caretX - el.offsetWidth - 12;
-							}
-
-							el.style.left = left + 'px';
-							el.style.top = top + 'px';
+								const era = meta.era ? ` (${meta.era})` : '';
+								return ` ${name}: ${val}${era}`;
+							},
+							labelColor: (item) => ({
+								borderColor: item.dataset.borderColor,
+								backgroundColor: item.dataset.borderColor,
+							}),
 						},
 					},
 					zoom: {
@@ -1470,7 +1400,7 @@ let Stats = {
 						url = srcLinks.get("/shared/gui/pvp_arena/hud/pvp_arena_icon_army.png",true);
 						text = rewardInfo.amount + " " + (rewardInfo.amount > 1 ? i18n("General.Units"):i18n("General.Unit"));
 					}
-					pointImage = `<img src="${url}" />`
+					pointImage = `<img src="${url}" style="width: 45px; height: 45px; margin-right: 4px;">`
 					//console.log(rewardInfo)
 					return {
 						iconClass,
@@ -1482,7 +1412,7 @@ let Stats = {
 					url = srcLinks.get("/shared/icons/goods/goods.png",true);
 					text = rewardInfo.amount + " " + (rewardInfo.amount > 1 ? i18n("General.Goods"):i18n("General.Good"));
 
-					pointImage = `<img src="${url}" />`
+					pointImage = `<img src="${url}" style="width: 45px; height: 45px; margin-right: 4px;">`
 					return {
 						iconClass,
 						pointImage,
@@ -1507,7 +1437,7 @@ let Stats = {
 							url = srcLinks.get(`/city/buildings/${rewardInfo.subType.replace(/^(\w)_/, '$1_SS_')}.png`, true);
 					}
 					if (url) {
-						pointImage = `<img src="${url}">`
+						pointImage = `<img src="${url}" style="width: 45px; height: 45px; margin-right: 4px;">`
 					}
 					return {
 						iconClass,
@@ -1556,27 +1486,17 @@ let Stats = {
 		// series[0].data is [{name, y, pointImage, iconClass}, ...]
 		const serieData = series[0]?.data || [];
 
-		// Destroy previous instance and clear UI elements
+		// Destroy previous instance and clear legend
 		if (Stats._chartInstance) {
 			Stats._chartInstance.destroy();
 			Stats._chartInstance = null;
 		}
 		$('#statsLegend').empty();
-		$('#statsTooltip').hide();
-		$('#statsTitle').text(title);
-		$('#statsBody').addClass('stats-doughnut');
 
 		const ctx = document.getElementById('statsChart');
 		if (!ctx) return;
 
-		ctx.style.maxHeight = '550px';
-
 		const total = serieData.reduce((acc, d) => acc + d.y, 0);
-
-		const defaultColors = [
-			'#62a2df','#434357','#8ecf70','#db9255','#7478c7',
-			'#d35572','#d4c33e','#2b908f','#d15959','#7acfc8'
-		];
 
 		const htmlLegendPlugin = {
 			id: 'htmlLegend',
@@ -1594,7 +1514,7 @@ let Stats = {
 					return `<span class="stats-legend-item ${hidden}" data-index="${i}">
 						<span class="stats-legend-swatch" style="background:${color};"></span>
 						${pointImage ? `<span class="stats-legend-img">${pointImage}</span>` : ''}
-						<span class="stats-legend-label">${label}: ${HTML.Format(serieData[i].y)} (${pct}%)</span>
+						<span class="stats-legend-label">${label}: ${serieData[i].y} (${pct}%)</span>
 					</span>`;
 				}).join('');
 
@@ -1611,74 +1531,39 @@ let Stats = {
 		};
 
 		Stats._chartInstance = new Chart(ctx, {
-			type: 'doughnut',
+			type: 'pie',
 			data: {
 				labels: serieData.map(d => d.name),
 				datasets: [{
 					data: serieData.map(d => d.y),
-					backgroundColor: serieData.map((_, i) => defaultColors[i % defaultColors.length]),
-					borderColor: '#222',
-    				borderWidth: 0.5,
+					// pointImage stored for legend and tooltip use
 					_pointImages: serieData.map(d => d.pointImage || ''),
 				}],
 			},
 			options: {
 				animation: false,
 				responsive: true,
-				maintainAspectRatio: false,
-				layout: {
-					padding: 20,
-				},
 				plugins: {
 					title: {
-						display: false,
+						display: true,
+						text: title,
 					},
 					legend: {
 						display: false,
 					},
 					tooltip: {
-						enabled: false,
-						external: ({chart, tooltip}) => {
-							const el = document.getElementById('statsTooltip');
-							if (!el) return;
-
-							if (tooltip.opacity === 0) {
-								el.style.display = 'none';
-								return;
-							}
-
-							const item = tooltip.dataPoints?.[0];
-							if (!item) return;
-
-							const index = item.dataIndex;
-							const dataset = chart.data.datasets[0];
-							const label = chart.data.labels[index];
-							const val = item.parsed;
-							const pct = total > 0 ? ((val / total) * 100).toFixed(1) : 0;
-							const pointImage = dataset._pointImages?.[index] || '';
-							const color = dataset.backgroundColor[index] || '#ccc';
-
-							el.innerHTML = `<div class="stats-tooltip-title">
-									<span class="stats-tooltip-swatch" style="background:${color};"></span>
-									${pointImage}
-									<span>${label}</span>
-								</div>
-								<div class="stats-tooltip-value"><b>${val}</b> (${pct}%)</div>`;
-
-							const canvasRect = chart.canvas.getBoundingClientRect();
-							const statsRect = document.getElementById('stats')?.getBoundingClientRect() || document.body.getBoundingClientRect();
-
-							let left = canvasRect.left - statsRect.left + tooltip.caretX + 12;
-							let top = canvasRect.top - statsRect.top + tooltip.caretY;
-
-							el.style.display = 'block';
-
-							if (left + el.offsetWidth > statsRect.width) {
-								left = canvasRect.left - statsRect.left + tooltip.caretX - el.offsetWidth - 12;
-							}
-
-							el.style.left = left + 'px';
-							el.style.top = top + 'px';
+						usePointStyle: true,
+						callbacks: {
+							label: (item) => {
+								const val = item.parsed;
+								const pct = total > 0 ? ((val / total) * 100).toFixed(1) : 0;
+								return ` ${item.label}: ${val} (${pct}%)`;
+							},
+							afterLabel: (item) => {
+								// return the image HTML — Chart.js tooltip doesn't render HTML,
+								// but we store it here for future custom tooltip implementation
+								return item.dataset._pointImages?.[item.dataIndex] || '';
+							},
 						},
 					},
 				},
