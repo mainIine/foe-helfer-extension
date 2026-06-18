@@ -3,8 +3,7 @@
  * Licensed under AGPL - see LICENSE.md for details.
  */
 
-// Guild Battlegrounds leader board log
-// Gildengefechte
+// GBG leader board log
 FoEproxy.addHandler('GuildBattlegroundService', 'getPlayerLeaderboard', async (data, postData) => {
 	Stats.HandlePlayerLeaderboard(data.responseData);
 });
@@ -66,7 +65,6 @@ FoEproxy.addHandler('RewardService', 'collectReward', async (data, postData) => 
 });
 
 FoEproxy.addHandler('RewardService', 'collectRewardSet', async (data, postData) => {
-	//console.log(JSON.parse(JSON.stringify(data)))
 	let rewardIncidentSource = data.responseData.context;
 	if (rewardIncidentSource!='guild_raids' && rewardIncidentSource.indexOf('guild_raids')>=0) rewardIncidentSource='guild_raidsP'; //QI-Pass detection
 	if (rewardIncidentSource.indexOf('event')<0 && !["guild_raids","guild_raidsP"].includes(rewardIncidentSource)) return; //exclude Main city collection "collect all", "aid_all"
@@ -256,9 +254,7 @@ FoEproxy.addHandler('ArmyUnitManagementService', 'getArmyInfo', async (data, pos
 	StockAlarm.checkArmy();
 });
 
-/**
- * @type {{RenderOptions: (function(): string), isSelectedUnitSources: (function(): boolean), DatePickerObj: null, applyDeltaToSeriesIfNeed: (function({series: *, [p: string]: *}): {series: *, chartType: string}), shortEraName: (function(*): (void|string|*)), Render: (function(): Promise<void>), RenderButton: (function({name: *, isActive?: *, dataType: *, value: *, title?: *, disabled?: *}): string), updateCharts: (function(): Promise<void>), getSelectedEras: (function(): string[]), updateOptions: Stats.updateOptions, treasureSources: [string, string, string, string], createUnitsSeries: (function(): Promise<{series, pointFormat: string, footerFormat: string}>), loadHighcharts: (function(): Promise<void>), RemoveTable: Stats.RemoveTable, createTreasureSeries: (function(): Promise<{series, pointFormat: string, colors: *[], footerFormat: string}>), ResMap: {NoAge: [string, string, string, string, string], special: [string, string, string, string]}, RenderCheckbox: (function({name: *, isActive: *, dataType: *, value: *}): string), state: {eras: {}, showAnnotations: boolean, currentType: null, chartType: string, rewardSource: string, eraSelectOpen: boolean, source: string, isGroupByEra: boolean}, createRewardSeries: (function(): Promise<{series: {data: this, name: string}[], title: string}>), isVisitingCulturalOutpost: boolean, isSelectedGBGSources: (function(): boolean), gbgSources: [string], promisedLoadCode: (function(*=): Promise<unknown>), createGBGSeries: (function(*=): Promise<{series: {data, avatarUrl: (string), name: string}[], pointFormat: string}>), createTreasureGroupByEraSeries: (function(): Promise<{series: {data, name: *}[]}>), RenderTab: (function({name: *, isActive?: *, dataType: *, value: *, title?: *, disabled?: *}): string), kilos: (function(*=): string), HandlePlayerLeaderboard: (function(*=): Promise<undefined>), isSelectedTreasureSources: (function(): boolean), RenderBox: (function({name: *, isActive: *, disabled: *, dataType: *, value: *}): string), getAnnotations: (function(): Promise<{xAxisPlotLines: {color: string, dashStyle: string, width: number, value: *}[], annotations: {useHTML: boolean, labelOptions: {verticalAlign: string, backgroundColor: string, y: number, style: {fontSize: string}}, labels: {text: string, point: {xAxis: number, x: *, y: number}}[]}[]}>), updateCommonChart: (function({series: *, colors?: *, pointFormat?: *, footerFormat?: *, chartType?: *}): Promise<void>), RenderSecondaryOptions: (function(): string), PlayableEras: string[], unitSources: [string, string], equals: (function(*=, *=): boolean), isSelectedRewardSources: (function(): boolean), Show: Stats.Show, RenderEraSwitchers: (function(): string), updateRewardCharts: Stats.updateRewardCharts, rewardSources: [string]}}
- */
+
 let Stats = {
 
 	isVisitingCulturalOutpost: false,
@@ -431,7 +427,7 @@ let Stats = {
 						Stats.PlayableEras.forEach(era => Stats.state.eras[era] = true);
 
 					} else if (isChangedToGBG) {
-						Stats.state.chartType = 'delta';
+						Stats.state.chartType = 'line';
 						Stats.isGG = true;
 
 					} else if (isChangedToReward) {
@@ -465,7 +461,7 @@ let Stats = {
 	 * Remove previous data-table
 	 */
 	RemoveTable: () => {
-		$('.highcharts-data-table').remove();
+		$('.stats-data-table').remove();
 	},
 
 
@@ -475,10 +471,19 @@ let Stats = {
 	 * @returns {Promise<void>}
 	 */
 	Render: async () => {
-		$('#statsBody').html(`<div class="options">${Stats.RenderOptions()}</div><div class="options-2"></div><div id="highcharts">Loading...</div>`);
+		$('#statsBody').html(`<div class="options">${Stats.RenderOptions()}</div>
+							<div class="options-2"></div>
+							<div id="statsWrapper"><div id="statsTitle"></div><canvas id="statsChart"></canvas>
+							<div id="statsLegendWrapper">
+								<div class="StatsRewardFilter">
+									<input type="text" id="StatsRewardFilter" placeholder="${i18n("Boxes.Stats.FilterRewards")}" value="${Stats.state.filter}" oninput="Stats.state.filter=this.value;Stats.updateCharts();">
+								</div>
+								<div id="statsLegend"></div>
+							</div>
+							<div id="statsTooltip" style="display:none;"></div></div>`);
 
 		Stats.updateOptions();
-		await Stats.loadHighcharts();
+		await Stats.loadChartJS();
 		await Stats.updateCharts(Stats.DatePickerStart, Stats.DatePickerEnd);
 	},
 
@@ -487,12 +492,17 @@ let Stats = {
 	 * Update options
 	 */
 	updateOptions: () => {
-		//console.log('updateOptions');
 		$('#statsBody .options').html(Stats.RenderOptions());
 
 		$('#statsBody').promise().done(function(){
 			if ($('#StatsDatePicker').length > 0) {
 				$('#StatsDatePicker').text(`${Stats.formatRange()}`);
+
+				// remove from body, because it was attached every time stats were opened
+				if (Stats.DatePickerObj) {
+					Stats.DatePickerObj.destroy();
+					Stats.DatePickerObj = null;
+				}
 
 				Stats.DatePickerObj = new Litepicker({
 					element: document.getElementById('StatsDatePicker'),
@@ -630,7 +640,7 @@ let Stats = {
 			value: source
 		}));
 
-		const chartTypes = ['line', 'streamgraph', 'delta'].map(it => Stats.RenderButton({
+		const chartTypes = ['line', 'delta'].map(it => Stats.RenderButton({
 			name: i18n('Boxes.Stats.BtnChartType.' + it),
 			title: i18n('Boxes.Stats.BtnChartTypeTitle.' + it),
 			isActive: Stats.state.chartType === it,
@@ -663,9 +673,6 @@ let Stats = {
 								<ul class="horizontal">
 									${btnsRewardSelect.join('')}
 								</ul>
-							</div>
-							<div class="StatsRewardFilter">
-								<input type="text" id="StatsRewardFilter" placeholder="${i18n("Boxes.Stats.FilterRewards")}" value="${Stats.state.filter}" oninput="Stats.state.filter=this.value;Stats.updateCharts();">
 							</div>`;
 		}
 		else {
@@ -859,10 +866,10 @@ let Stats = {
 
 
 	/**
-	 * Battlegrounds series for highcharts
+	 * Battlegrounds series
 	 *
 	 * @param dates		Date obj with {start, end}
-	 * @returns {Promise<{series: {data, avatarUrl: (string|string), name: string}[], pointFormat: string}>}
+	 * @returns {Promise<{series: {data, avatarUrl: (string|string), name: string}[]}>}
 	 */
 	createGBGSeries: async () => {
 		let data;
@@ -901,17 +908,6 @@ let Stats = {
 
 		return {
 			series,
-			pointFormat: `<tr>
-							<td>
-								<img src="{series.options.avatarUrl}" style="width: 45px; height: 45px; border: 1px white solid; margin-right: 4px;"/>
-							</td>
-							<td>
-								<span style="margin: 0 5px;"><span style="color:{point.color}">●</span> {series.name}: </span>
-							</td>
-							<td class="text-right">
-								<b>{point.y}</b>
-							</td>
-						</tr>`,
 		};
 	},
 
@@ -955,7 +951,7 @@ let Stats = {
 			const era = unitInfo.minEra;
 			return {
 				name: unitInfo.name,
-				era: era ? i18n('Eras.' + Technologies.Eras[era]) : '',
+				era: era ? i18n('Eras.' + Technologies.Eras[era] + '.short') : '',
 				unitId,
 				unitUrl:srcLinks.get("/shared/unit_portraits/armyuniticons_50x50/armyuniticons_50x50_"+unitId+".jpg", true),
 				data: data.map(({date, army}) => [
@@ -966,18 +962,6 @@ let Stats = {
 		});
 		return {
 			series,
-			pointFormat: `<tr>
-								<td>
-									<img src="{series.options.unitUrl}" style="width: 45px; height: 45px; border: 1px white solid; margin-right: 4px;"/>
-								</td>
-								<td>
-									<span style="margin: 0 5px;"><span style="color:{point.color}">●</span> {series.name}: </span>
-								</td>
-								<td class="text-right">
-									<b>{point.y}</b>
-								</td>
-							</tr>`,
-			footerFormat: '</table><br/><small>{series.options.era}</small>'
 		};
 	},
 
@@ -1004,7 +988,7 @@ let Stats = {
 
 		const series = Stats.getSelectedEras().map(era => {
 			return {
-				name: i18n('Eras.' + Technologies.Eras[era]),
+				name: i18n('Eras.' + Technologies.Eras[era] + '.short'),
 				// Group by era's resources
 				data: data.map(({date, resources}) => [
 					+date,
@@ -1022,7 +1006,6 @@ let Stats = {
 	 */
 	createTreasureSeries: async () => {
 		const selectedEras = Stats.getSelectedEras();
-		const hcColors = Highcharts.getOptions().colors;
 		let data = null;
 
 		if(Stats.DatePickerFrom !== null && Stats.DatePickerTo !== null){
@@ -1039,27 +1022,28 @@ let Stats = {
 
 		let colors;
 
-		// Build color set - brighten each per
+		// Build color set - brighten each resource within an era from the era's base hue
 		if (selectedEras.length > 1) {
 			let colorIndex = 0;
 			colors = [];
 			selectedEras.forEach(era => {
-				const baseColor = colorIndex % 9; // there is only 9 colors in theme
+				const hue = (colorIndex % 9) * 40; // spread 9 base hues across 360°
 				colorIndex++;
 				Stats.ResMap[era].forEach((it, index) => {
-					colors.push(Highcharts.color(hcColors[baseColor]).brighten(index * 0.05).get())
+					const lightness = 45 + index * 5; // brighten each successive good
+					colors.push(`hsl(${hue}, 70%, ${lightness}%)`);
 				});
 			});
 		}
 
 		const selectedResources = Stats.getSelectedEras()
-			.map(it => Stats.ResMap[it]) // map to arrays of goods of filtered eras
-			.reduce((acc, it) => acc.concat(it), []);// unflat array
+			.map(it => Stats.ResMap[it])
+			.reduce((acc, it) => acc.concat(it), []);
 
 		const series = selectedResources.map(it => {
 			const goodsData = (GoodsData[it] || {name: it})
 			return {
-				era: goodsData.era ? i18n('Eras.' + Technologies.Eras[goodsData.era]) : '',
+				era: goodsData.era ? i18n('Eras.' + Technologies.Eras[goodsData.era] + '.short') : '',
 				goodsId: it,
 				name: goodsData.name,
 				data: data.map(({date, resources}) => {
@@ -1071,18 +1055,6 @@ let Stats = {
 		return {
 			series,
 			colors,
-			pointFormat: `<tr>
-								<td>
-									<span class="goods-sprite sprite-50 {series.options.goodsId}"></span>
-								</td>
-								<td>
-									<span style="margin: 0 5px;"><span style="color:{point.color}">●</span> {series.name}: </span>
-								</td>
-								<td class="text-right">
-									<b>{point.y}</b>
-								</td>
-							</tr>`,
-			footerFormat: '</table><br/><small>{series.options.era}</small>'
 		};
 	},
 
@@ -1108,7 +1080,7 @@ let Stats = {
 
 		const series = Stats.getSelectedEras().map(era => {
 			return {
-				name: i18n('Eras.' + Technologies.Eras[era]),
+				name: i18n('Eras.' + Technologies.Eras[era] + '.short'),
 				// Group by era's resources
 				data: data.map(({date, resources}) => [
 					+date,
@@ -1126,7 +1098,6 @@ let Stats = {
 	 */
 	createPlayerSourcesSeries: async () => {
 		const selectedEras = Stats.getSelectedEras();
-		const hcColors = Highcharts.getOptions().colors;
 		let data = null;
 
 		if(Stats.DatePickerFrom !== null && Stats.DatePickerTo !== null){
@@ -1143,27 +1114,28 @@ let Stats = {
 
 		let colors;
 
-		// Build color set - brighten each per
+		// Build color set - brighten each resource within an era from the era's base hue
 		if (selectedEras.length > 1) {
 			let colorIndex = 0;
 			colors = [];
 			selectedEras.forEach(era => {
-				const baseColor = colorIndex % 9; // there is only 9 colors in theme
+				const hue = (colorIndex % 9) * 40;
 				colorIndex++;
 				Stats.ResMap[era].forEach((it, index) => {
-					colors.push(Highcharts.color(hcColors[baseColor]).brighten(index * 0.05).get())
+					const lightness = 45 + index * 5;
+					colors.push(`hsl(${hue}, 70%, ${lightness}%)`);
 				});
 			});
 		}
 
 		const selectedResources = Stats.getSelectedEras()
-			.map(it => Stats.ResMap[it]) // map to arrays of goods of filtered eras
-			.reduce((acc, it) => acc.concat(it), []);// unflat array
+			.map(it => Stats.ResMap[it])
+			.reduce((acc, it) => acc.concat(it), []);
 
 		const series = selectedResources.map(it => {
 			const goodsData = (GoodsData[it] || {name: it})
 			return {
-				era: goodsData.era ? i18n('Eras.' + Technologies.Eras[goodsData.era]) : '',
+				era: goodsData.era ? i18n('Eras.' + Technologies.Eras[goodsData.era] + '.short') : '',
 				goodsId: it,
 				name: goodsData.name,
 				data: data.map(({date, resources}) => {
@@ -1175,24 +1147,12 @@ let Stats = {
 		return {
 			series,
 			colors,
-			pointFormat: `<tr>
-								<td>
-									<span class="goods-sprite sprite-50 {series.options.goodsId}"></span>
-								</td>
-								<td>
-									<span style="margin: 0 5px;"><span style="color:{point.color}">●</span> {series.name}: </span>
-								</td>
-								<td class="text-right">
-									<b>{point.y}</b>
-								</td>
-							</tr>`,
-			footerFormat: '</table><br/><small>{series.options.era}</small>'
 		};
 	},
 
 
 	/**
-	 * Calculate diff between points and use it as 'y', change chartType to 'line'
+	 * Calculate diff between points and use it as 'y', change chartType to 'bar'
 	 *
 	 * @param series
 	 * @param args
@@ -1254,91 +1214,212 @@ let Stats = {
 
 
 	/**
+	 * Add alpha to any CSS color string (hex, hsl, rgb)
+	 *
+	 * @param color
+	 * @param alpha  0–1
+	 * @returns {string}
+	 */
+	colorWithAlpha: (color, alpha) => {
+		if (color.startsWith('hsl('))
+			return color.replace('hsl(', 'hsla(').replace(')', `, ${alpha})`);
+		if (color.startsWith('rgb('))
+			return color.replace('rgb(', 'rgba(').replace(')', `, ${alpha})`);
+		// hex #rrggbb or #rgb — append two-digit alpha
+		if (color.startsWith('#'))
+			return color + Math.round(alpha * 255).toString(16).padStart(2, '0');
+		return color;
+	},
+
+
+	/**
 	 * Update chart
 	 *
 	 * @param series
 	 * @param colors
-	 * @param pointFormat
-	 * @param footerFormat
 	 * @param chartType
 	 * @returns {Promise<void>}
 	 */
-	updateCommonChart: async ({series, colors, pointFormat, footerFormat, chartType}) => {
-		colors = colors || Highcharts.getOptions().colors;
-		pointFormat = pointFormat || '<tr><td><span style="color:{point.color}">●</span> {series.name}:</td><td class="text-right"><b>{point.y}</b></td></tr>';
-		footerFormat = footerFormat || '</table>';
-
+	updateCommonChart: async ({series, colors, chartType}) => {
 		const title = i18n('Boxes.Stats.SourceTitle.' + Stats.state.source);
+		const isColumn = chartType === 'column';
 
-		Highcharts.chart('highcharts', {
-			chart: {
-				type: chartType,
-				marginTop: 30,
-				zoomType: 'xy'
-			},
-			boost: {
-				useAlpha: false,
-				seriesThreshold: (chartType === 'column') ? 300 : 30,
-				// debug: {
-				//	timeSetup: true,
-				//	timeSeriesProcessing: true,
-				//	timeBufferCopy: true,
-				//	timeKDTree: true,
-				//	showSkipSummary: true,
-				// },
-				useGPUTranslations: true,
-			},
-			colors,
-			title: {
-				floating: true,
-				align: 'center',
-				text: title
-			},
-			xAxis: {
-				type: 'datetime',
-			},
-			tooltip: {
-				useHTML: true,
-				shared: series.length <= 8 || series.filter((x, index, array) => x.era == array[0].era && x.era != undefined).length == series.length,
-				headerFormat: '<small>{point.key}</small><br/><table>',
-				borderWidth: series.length <= 5 ? 0 : 1,
-				pointFormat,
-				footerFormat,
-			},
-			yAxis: {
-				maxPadding: 0,
-				title: {text: null},
-				visible: chartType !== 'streamgraph',
-				startOnTick: chartType !== 'streamgraph',
-				endOnTick: chartType !== 'streamgraph',
-			},
-			legend: {enabled: series.length < 26},
-			plotOptions: {
-				series: {
-					marker: {
-						enabled: false
-					}
+		const defaultColors = [
+			'#62a2df','#434357','#8ecf70','#db9255','#7478c7',
+			'#d35572','#d4c33e','#2b908f','#d15959','#7acfc8'
+		];
+		const palette = colors || defaultColors;
+
+		// Map series to Chart.js datasets; data is [[timestamp, value], ...]
+		const datasets = series.map((s, i) => {
+			const color = palette[i % palette.length];
+			return {
+				label: s.name,
+				data: s.data.map(([x, y]) => ({x, y})),
+				borderColor: color,
+				backgroundColor: isColumn ? color : Stats.colorWithAlpha(color, 0.2),
+				borderWidth: isColumn ? 0 : 1.5,
+				barThickness: isColumn ? 3 : undefined,
+				pointRadius: 0,
+				pointHoverRadius: 4,
+				fill: false,
+				// custom metadata for tooltip and legend
+				_meta: { era: s.era, goodsId: s.goodsId, unitUrl: s.unitUrl, avatarUrl: s.avatarUrl },
+			};
+		});
+
+		const isSharedTooltip = series.length <= 8 ||
+			series.every(x => x.era !== undefined && x.era === series[0].era);
+
+		// Destroy previous instance and clear UI elements
+		if (Stats._chartInstance) {
+			Stats._chartInstance.destroy();
+			Stats._chartInstance = null;
+		}
+		$('#statsLegend').empty();
+		$('#statsTooltip').hide();
+		$('#statsTitle').text(title);
+		$('#statsBody').removeClass('stats-doughnut');
+
+		const ctx = document.getElementById('statsChart');
+		if (!ctx) return;
+
+		ctx.style.maxHeight = '';
+
+		const htmlLegendPlugin = {
+			id: 'htmlLegend',
+			afterUpdate(chart) {
+				const container = document.getElementById('statsLegend');
+				if (!container) return;
+
+				const items = chart.options.plugins.legend.labels.generateLabels(chart);
+				container.innerHTML = items.map(item => {
+					const hidden = item.hidden ? 'stats-legend-hidden' : '';
+					const meta = chart.data.datasets[item.datasetIndex]?._meta || {};
+					const img = meta.unitUrl
+						? `<img src="${meta.unitUrl}" class="stats-legend-img">`
+						: meta.avatarUrl
+							? `<img src="${meta.avatarUrl}" class="stats-legend-img">`
+							: '';
+					return `<div class="stats-legend-item ${hidden}" data-index="${item.datasetIndex}">
+						<span class="stats-legend-swatch" style="background:${item.strokeStyle};border-color:${item.strokeStyle};"></span>
+						${img}
+						<span class="stats-legend-label">${item.text}</span>
+					</div>`;
+				}).join('');
+
+				container.querySelectorAll('.stats-legend-item').forEach(el => {
+					el.addEventListener('click', () => {
+						const index = Number(el.dataset.index);
+						const meta = chart.getDatasetMeta(index);
+						meta.hidden = !meta.hidden;
+						el.classList.toggle('stats-legend-hidden');
+						chart.update();
+					});
+				});
+			}
+		};
+
+		Stats._chartInstance = new Chart(ctx, {
+			type: isColumn ? 'bar' : 'line',
+			data: { datasets },
+			options: {
+				animation: false,
+				responsive: true,
+				maintainAspectRatio: true,
+				layout: {
+					padding: { top: 30, bottom: 50 }
 				},
-				column: {
-					stacking: 'normal',
-					pointPadding: 0,
-					groupPadding: 0,
-					dataLabels: {
-						enabled: false
-					}
+				plugins: {
+					title: {
+						display: false,
+					},
+					legend: {
+						display: false,
+					},
+					tooltip: {
+						enabled: false,
+						mode: isSharedTooltip ? 'index' : 'nearest',
+						intersect: false,
+						external: ({chart, tooltip}) => {
+							const el = document.getElementById('statsTooltip');
+							if (!el) return;
+
+							if (tooltip.opacity === 0) {
+								el.style.display = 'none';
+								return;
+							}
+
+							const dateTitle = tooltip.dataPoints?.length
+								? moment(tooltip.dataPoints[0].parsed.x).format(i18n('Date'))
+								: '';
+
+							const rows = (tooltip.dataPoints || []).map(item => {
+								const ds = item.dataset;
+								const meta = ds._meta || {};
+								const color = ds.borderColor;
+								const val = item.parsed.y;
+								const era = meta.era ? `${meta.era}:` : '';
+								const img = meta.unitUrl
+									? `<img src="${meta.unitUrl}" class="stats-tooltip-img">`
+									: meta.avatarUrl
+										? `<img src="${meta.avatarUrl}" class="stats-tooltip-img">`
+										: meta.goodsId
+											? `<span class="goods-sprite sprite-50 ${meta.goodsId}"></span>`
+											: '';
+								return `<li class="flex between">
+									<span class="legend">${img} <span class="stats-tooltip-swatch" style="background:${color};"></span> ${era} ${ds.label}:</span>
+									<b>${HTML.Format(val)}</b>
+								</li>`;
+							});
+
+							el.innerHTML = `<div class="stats-tooltip-title">${dateTitle}</div>
+								<ul class="simpleList">${rows.join('')}</ul>`;
+
+							// Position relative to the chart canvas
+							const canvasRect = chart.canvas.getBoundingClientRect();
+							const bodyRect = document.body.getBoundingClientRect();
+							const statsRect = document.getElementById('stats')?.getBoundingClientRect() || bodyRect;
+
+							let left = canvasRect.left - statsRect.left + tooltip.caretX + 12;
+							let top = canvasRect.top - statsRect.top + tooltip.caretY;
+
+							el.style.display = 'block';
+
+							// Flip horizontally if overflowing right edge
+							if (left + el.offsetWidth > statsRect.width) {
+								left = canvasRect.left - statsRect.left + tooltip.caretX - el.offsetWidth - 12;
+							}
+
+							el.style.left = left + 'px';
+							el.style.top = top + 'px';
+						},
+					},
+					zoom: {
+						pan: { enabled: true, mode: 'xy' },
+						zoom: {
+							wheel: { enabled: true },
+							pinch: { enabled: true },
+							mode: 'xy',
+						},
+					},
+				},
+				scales: {
+					x: {
+						type: 'time',
+						time: {
+							tooltipFormat: i18n('Date'),
+						},
+					},
+					y: {
+						stacked: isColumn,
+						ticks: {
+							callback: (val) => Math.abs(val) >= 1000 ? Stats.kilos(val) : +val.toFixed(3),
+						},
+					},
 				},
 			},
-			series,
-			exporting: {
-				buttons: {
-					contextButton: {
-						// Because of FOE freezing removed next: "printChart", downloadPNG", "downloadJPEG", "downloadPDF", "downloadSVG"
-						menuItems: ['viewFullscreen', 'separator', 'downloadCSV', 'downloadXLS', 'viewData'],
-					}
-				},
-				sourceWidth: 800,
-				sourceHeight: 600
-			},
+			plugins: [htmlLegendPlugin],
 		});
 	},
 
@@ -1394,7 +1475,7 @@ let Stats = {
 						url = srcLinks.get("/shared/gui/pvp_arena/hud/pvp_arena_icon_army.png",true);
 						text = rewardInfo.amount + " " + (rewardInfo.amount > 1 ? i18n("General.Units"):i18n("General.Unit"));
 					}
-					pointImage = `<img src="${url}" style="width: 45px; height: 45px; margin-right: 4px;">`
+					pointImage = `<img src="${url}" />`
 					//console.log(rewardInfo)
 					return {
 						iconClass,
@@ -1406,7 +1487,7 @@ let Stats = {
 					url = srcLinks.get("/shared/icons/goods/goods.png",true);
 					text = rewardInfo.amount + " " + (rewardInfo.amount > 1 ? i18n("General.Goods"):i18n("General.Good"));
 
-					pointImage = `<img src="${url}" style="width: 45px; height: 45px; margin-right: 4px;">`
+					pointImage = `<img src="${url}" />`
 					return {
 						iconClass,
 						pointImage,
@@ -1431,7 +1512,7 @@ let Stats = {
 							url = srcLinks.get(`/city/buildings/${rewardInfo.subType.replace(/^(\w)_/, '$1_SS_')}.png`, true);
 					}
 					if (url) {
-						pointImage = `<img src="${url}" style="width: 45px; height: 45px; margin-right: 4px;">`
+						pointImage = `<img src="${url}">`
 					}
 					return {
 						iconClass,
@@ -1477,47 +1558,137 @@ let Stats = {
 	 * @param title
 	 */
 	updateRewardCharts: ({series, title}) => {
-		Highcharts.chart('highcharts', {
-			chart: {
-				plotBackgroundColor: null,
-				plotBorderWidth: null,
-				plotShadow: false,
-				type: 'pie',
-			},
-			title: {
-				text: title,
-			},
-			tooltip: {
-				useHTML: true,
-				headerFormat: '',
-				pointFormat: '<span class="{point.iconClass}"></span>{point.pointImage} {point.name}: <b>{point.y} ({point.percentage:.1f}%)</b>'
-			},
-			accessibility: {
-				point: {
-					valueSuffix: '%'
-				}
-			},
-			plotOptions: {
-				pie: {
-					allowPointSelect: true,
-					cursor: 'pointer',
-					dataLabels: {
-						enabled: true,
-						format: '<b>{point.name}</b>: {point.y} ({point.percentage:.1f} %)'
-					}
-				}
-			},
-			series: series,
-			exporting: {
-				buttons: {
-					contextButton: {
-						// Because of FOE freezing removed next: "printChart", downloadPNG", "downloadJPEG", "downloadPDF", "downloadSVG"
-						menuItems: ['viewFullscreen', 'separator', 'downloadCSV', 'downloadXLS', 'viewData'],
-					}
-				},
-				sourceWidth: 800,
-				sourceHeight: 600
+		// series[0].data is [{name, y, pointImage, iconClass}, ...]
+		const serieData = series[0]?.data || [];
+
+		// Destroy previous instance and clear UI elements
+		if (Stats._chartInstance) {
+			Stats._chartInstance.destroy();
+			Stats._chartInstance = null;
+		}
+		$('#statsLegend').empty();
+		$('#statsTooltip').hide();
+		$('#statsTitle').text(title);
+		$('#statsBody').addClass('stats-doughnut');
+
+		const ctx = document.getElementById('statsChart');
+		if (!ctx) return;
+
+		ctx.style.maxHeight = '550px';
+
+		const total = serieData.reduce((acc, d) => acc + d.y, 0);
+
+		const defaultColors = [
+			'#62a2df','#434357','#8ecf70','#db9255','#7478c7',
+			'#d35572','#d4c33e','#2b908f','#d15959','#7acfc8'
+		];
+
+		const htmlLegendPlugin = {
+			id: 'htmlLegend',
+			afterUpdate(chart) {
+				const container = document.getElementById('statsLegend');
+				if (!container) return;
+
+				const dataset = chart.data.datasets[0];
+				const meta = chart.getDatasetMeta(0);
+				container.innerHTML = chart.data.labels.map((label, i) => {
+					const color = dataset.backgroundColor[i] || '#ccc';
+					const hidden = meta.data[i]?.hidden ? 'stats-legend-hidden' : '';
+					const pointImage = dataset._pointImages?.[i] || '';
+					const pct = total > 0 ? ((serieData[i].y / total) * 100).toFixed(1) : 0;
+					return `<span class="stats-legend-item ${hidden}" data-index="${i}">
+						<span class="stats-legend-swatch" style="background:${color};"></span>
+						${pointImage ? `<span class="stats-legend-img">${pointImage}</span>` : ''}
+						<span class="stats-legend-label">${label}: ${HTML.Format(serieData[i].y)} (${pct}%)</span>
+					</span>`;
+				}).join('');
+
+				container.querySelectorAll('.stats-legend-item').forEach(el => {
+					el.addEventListener('click', () => {
+						const index = Number(el.dataset.index);
+						const pointMeta = chart.getDatasetMeta(0).data[index];
+						pointMeta.hidden = !pointMeta.hidden;
+						el.classList.toggle('stats-legend-hidden');
+						chart.update();
+					});
+				});
 			}
+		};
+
+		Stats._chartInstance = new Chart(ctx, {
+			type: 'doughnut',
+			data: {
+				labels: serieData.map(d => d.name),
+				datasets: [{
+					data: serieData.map(d => d.y),
+					backgroundColor: serieData.map((_, i) => defaultColors[i % defaultColors.length]),
+					borderColor: '#222',
+    				borderWidth: 0.5,
+					_pointImages: serieData.map(d => d.pointImage || ''),
+				}],
+			},
+			options: {
+				animation: false,
+				responsive: true,
+				maintainAspectRatio: false,
+				layout: {
+					padding: 20,
+				},
+				plugins: {
+					title: {
+						display: false,
+					},
+					legend: {
+						display: false,
+					},
+					tooltip: {
+						enabled: false,
+						external: ({chart, tooltip}) => {
+							const el = document.getElementById('statsTooltip');
+							if (!el) return;
+
+							if (tooltip.opacity === 0) {
+								el.style.display = 'none';
+								return;
+							}
+
+							const item = tooltip.dataPoints?.[0];
+							if (!item) return;
+
+							const index = item.dataIndex;
+							const dataset = chart.data.datasets[0];
+							const label = chart.data.labels[index];
+							const val = item.parsed;
+							const pct = total > 0 ? ((val / total) * 100).toFixed(1) : 0;
+							const pointImage = dataset._pointImages?.[index] || '';
+							const color = dataset.backgroundColor[index] || '#ccc';
+
+							el.innerHTML = `<div class="stats-tooltip-title">
+									<span class="stats-tooltip-swatch" style="background:${color};"></span>
+									${pointImage}
+									<span>${label}</span>
+								</div>
+								<div class="stats-tooltip-value"><b>${val}</b> (${pct}%)</div>`;
+
+							const canvasRect = chart.canvas.getBoundingClientRect();
+							const statsRect = document.getElementById('stats')?.getBoundingClientRect() || document.body.getBoundingClientRect();
+
+							let left = canvasRect.left - statsRect.left + tooltip.caretX + 12;
+							let top = canvasRect.top - statsRect.top + tooltip.caretY;
+
+							el.style.display = 'block';
+
+							if (left + el.offsetWidth > statsRect.width) {
+								left = canvasRect.left - statsRect.left + tooltip.caretX - el.offsetWidth - 12;
+							}
+
+							el.style.left = left + 'px';
+							el.style.top = top + 'px';
+						},
+					},
+				},
+			},
+			plugins: [htmlLegendPlugin],
 		});
 	},
 
@@ -1566,43 +1737,30 @@ let Stats = {
 
 
 	/**
-	 * Load Highcharts
+	 * Load Chart.js and required plugins
 	 *
 	 * @returns {Promise<void>}
 	 */
-	loadHighcharts: function () {
-		if (!Stats._highChartPromise) {
-			Stats._highChartPromise = load();
+	loadChartJS: function () {
+		if (!Stats._chartJSPromise) {
+			Stats._chartJSPromise = load();
 		}
 
-		return Stats._highChartPromise;
+		return Stats._chartJSPromise;
 
 		async function load()
 		{
+			const baseUrl = extUrl + 'vendor/';
 			const sources = [
-				'highcharts.js',
-				'modules/streamgraph.js',
-				'modules/exporting.js',
-				'modules/export-data.js',
-				'modules/boost.js',
-				'modules/annotations.js',
+				'chartjs/chart.umd.min.js',
+				'chartjs/chartjs-adapter-moment.min.js',
+				'hammerjs/hammer.min.js',
+				'chartjs/chartjs-plugin-zoom.min.js',
 			];
 
 			for (const file of sources) {
-				const baseUrl = extUrl + 'vendor/highchart-8.0.4/';
 				await Stats.promisedLoadCode(baseUrl + file);
 			}
-
-			await Stats.promisedLoadCode(extUrl + 'vendor/highchart-8.0.4/foe/foe-theme.js');
-
-			// Use local timezone
-			const timezone = new Date().getTimezoneOffset();
-
-			Highcharts.setOptions({
-				global: {
-					timezoneOffset: timezone
-				}
-			});
 		}
 	},
 

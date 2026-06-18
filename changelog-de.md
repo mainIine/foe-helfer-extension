@@ -4,6 +4,13 @@
 ### Neu
 - Notizen/To Dos: Mach dir Listen, um die an deine wichtigsten Vorhaben zu erinnern
 
+### Update
+- Statistiken: Der Code, der für die Darstellung der Statistiken benutzt wird, kommt nun von ChartJS. Man kann nun scrollen und zoomen anstatt wie bisher mit der Maus bereiche zu markieren. Daten-Export ist im Moment nicht möglich, wird aber demnächst wieder hinzugefügt
+
+### Bug Fixes
+- Forschung: Ein Spielupdate hat dafür gesorgt, dass die FP nicht mehr gezählt wurden oder das Fenster leer war
+- GG Benachrichtungen: Laufen wieder wie gewollt, statt mal doppelt, mal gar nicht
+
 ---
  
 ## Version 0.9

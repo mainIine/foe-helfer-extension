@@ -335,7 +335,8 @@ let Technologies = {
                     if (RequiredResources.strategy_points === undefined)
                     	RequiredResources.strategy_points = 0;
 
-                    RequiredResources.strategy_points += (Tech['maxSP']||0) - (Tech['currentSP']||0);
+                    if (Tech.researchCost?.resources?.strategy_points)
+                        RequiredResources.strategy_points += (Tech.researchCost.resources.strategy_points) - (Tech['currentSP']||0);
 
                     for (let ResourceName in Tech.requirements.resources) {
                         if (RequiredResources[ResourceName] === undefined)
