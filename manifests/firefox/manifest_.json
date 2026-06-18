@@ -16,7 +16,7 @@
 
 	"browser_specific_settings": {
 		"gecko": {
-			"id": "@__MSG_appName__"
+			"id": "@forge-hammer"
 		}
 	},
 
