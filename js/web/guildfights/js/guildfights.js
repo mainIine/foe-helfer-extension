@@ -17,6 +17,10 @@ FoEproxy.addHandler('GuildBattlegroundService', 'getPlayerLeaderboard', (data, p
 	GuildFights.HandlePlayerLeaderboard(data.responseData);
 });
 
+FoEproxy.addHandler('GuildBattlegroundService', 'getLeaderboard', (data, postData) => {
+	GuildFights.HandleLeaderboard(data.responseData);
+});
+
 /*FoEproxy.addWsHandler('GuildBattlegroundService', 'getAction', (data, postData) => {
 	if (data.responseData.action === "province_conquered")
 		console.log(data.responseData.provinceId);
@@ -137,7 +141,6 @@ let GuildFights = {
 	 * @returns {Promise<void>}
 	 */
 	checkForDB: async (playerID) => {
-
 		const DBName = `FoeHelperDB_GuildFights_${playerID}`;
 
 		GuildFights.db = new Dexie(DBName);
@@ -145,6 +148,10 @@ let GuildFights = {
 		GuildFights.db.version(1).stores({
 			snapshots: '&[player_id+gbground+time],[gbground+player_id], [date+player_id], gbground',
 			history: '&gbground'
+		});
+
+		GuildFights.db.version(21).stores({
+			guildHistory: '[gbground+time], gbground'
 		});
 
 		GuildFights.db.open();
@@ -231,8 +238,38 @@ let GuildFights = {
 	},
 
 
+	HandleLeaderboard: async (rankingData) => {
+		if (!GuildFights.CurrentGBGRound) return;
+
+		const guilds = rankingData.map(rank => ({
+			id: rank.clan.id,
+			name: rank.clan.name,
+			points: rank.victoryPointsTotal || 0,
+		}));
+
+		await GuildFights.UpdateDB('guildHistory', guilds);
+
+		// to do: progression data list or graph
+	},
+
+
 
 	UpdateDB: async (content, data) => {
+
+		if (content === 'guildHistory') {
+			let gbground = GuildFights.CurrentGBGRound;
+
+			// points changed since last snapshot?!
+			let lastEntry = await GuildFights.db.guildHistory.where('gbground').equals(gbground).last();
+			let newTotal = data.reduce((sum, g) => sum + g.points, 0);
+			let lastTotal = lastEntry?.guilds.reduce((sum, g) => sum + g.points, 0) ?? -1;
+			// no new points? no new entry
+			if (lastTotal === newTotal) return;
+
+			let time = moment().startOf('hour').unix();
+
+			await GuildFights.db.guildHistory.add({ gbground, time, guilds: data });
+		}
 
 		if (content === 'history') {
 			await GuildFights.db.history.put({ 
@@ -790,20 +827,17 @@ let GuildFights = {
 
 		if (player_id === null && content === "player") return;
 
-		if (content === "player")
-		{
+		if (content === "player") {
 			detaildata = await GuildFights.db.snapshots.where({ gbground: gbground, player_id: player_id }).toArray();
 
 			playerName = detaildata[0].name;
 			dailyFights = detaildata.reduce(function (res, obj) {
 				let date = moment.unix(obj.time).format('YYYYMMDD');
 
-				if (!(date in res))
-				{
+				if (!(date in res)) {
 					res.__array.push(res[date] = { date: date, time: obj.time, battles: obj.battles, negotiations: obj.negotiations });
 				}
-				else
-				{
+				else {
 					res[date].battles += +obj.battles;
 					res[date].negotiations += +obj.negotiations;
 				}
@@ -836,8 +870,7 @@ let GuildFights = {
 
 			h.push('</tbody></table>');
 		}
-		else if (content === "filter")
-		{
+		else if (content === "filter") {
 			detaildata = await GuildFights.db.snapshots.where({ gbground: gbground }).and(function (item) {
 				return (item.date >= GuildFights.curDateFilter && item.date <= GuildFights.curDateEndFilter)
 			}).toArray();
