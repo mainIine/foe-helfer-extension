@@ -16,17 +16,17 @@
 
 	"browser_specific_settings": {
 		"gecko": {
-			"id": "@forge-hammer"
+			"strict_min_version": "140",
+			"id": "@forge-hammer",
+			"data_collection_permissions": {
+                "required": [
+                    "websiteActivity",
+                    "websiteContent",
+                    "personalCommunications",
+                    "browsingActivity"
+                ]
+            }
 		}
-	},
-
-	"data_collection": {
-		"required": [
-			"websiteActivity",
-			"websiteContent",
-			"personalCommunications",
-			"browsingActivity"
-		]
 	},
 
 	"browser_action": {
