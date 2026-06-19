@@ -303,7 +303,7 @@ let GuildFights = {
 		let guildColors = {};
 		if (GuildFights.SortedColors && GuildFights.MapData?.battlegroundParticipants) {
 			for (let participant of GuildFights.MapData.battlegroundParticipants) {
-				let color = GuildFights.SortedColors.find(c => c.id === participant.participantId);
+				let color = GuildFights.SortedColors.find(x => x.id === participant.participantId);
 				if (color) {
 					guildColors[participant.clan.id] = color.main;
 				}
@@ -312,15 +312,17 @@ let GuildFights = {
 
 		// prepare data for chart
 		let datasets = guildNames.map(name => {
-			let guildId = entries.flatMap(e => e.guilds).find(g => g.name === name)?.id;
+			let guildId = entries.flatMap(e => e.guilds).find(x => x.name === name)?.id;
 			let color = guildColors[guildId] ?? null;
 
 			return {
 				label: name,
 				borderColor: color,
 				backgroundColor: color,
+				spanGaps: true,
 				data: entries.map(snapshot => {
-					let guild = snapshot.guilds.find(g => g.name === name);
+					let guild = snapshot.guilds.find(x => x.name === name);
+					if (!guild) return null;
 					return {
 						x: snapshot.time * 1000,
 						y: guild?.points ?? null,
