@@ -10,7 +10,6 @@ function initPopout() {
     Tooltips.Container = container;
 
     // some things that need to work a bit differenty in the popout
-    window.addEventListener("pointermove", Tooltips.followMouse);
     $('body').on("pointerenter", ".helperTT", async (e) => {
         if (e.currentTarget.dataset.callback_tt) {
             Tooltips.activate();
@@ -40,27 +39,35 @@ function initPopout() {
         Tooltips.Container.style.display = "none";
     };
     Tooltips.followMouse = (event) => {
-        Tooltips.Container.style.left = (event.x + 10) + "px";
-        Tooltips.Container.style.top = (event.y + 10) + "px";
+        Tooltips.Container.style.left = (event.x + window.scrollX + 10) + "px";
+        Tooltips.Container.style.top = (event.y + window.scrollY + 10) + "px";
         Tooltips.checkposition();
     };
     Tooltips.checkposition = () => {
         try {
             if (Tooltips.containerActive) {
-                if (Tooltips.Container.firstChild.clientHeight + 7 + Number(Tooltips.Container.style.top.replace("px", "")) > Tooltips.Container.parentElement.clientHeight) {
-                    let newTop = Tooltips.Container.parentElement.clientHeight - Tooltips.Container.firstChild.clientHeight - 7;
+                const scrollY = window.scrollY;
+                const scrollX = window.scrollX;
+                const viewH   = Tooltips.Container.parentElement.clientHeight;
+                const viewW   = Tooltips.Container.parentElement.clientWidth;
+
+                const currentTop  = Number(Tooltips.Container.style.top.replace("px", ""));
+                const currentLeft = Number(Tooltips.Container.style.left.replace("px", ""));
+
+                if (Tooltips.Container.firstChild.clientHeight + 7 + currentTop > viewH + scrollY) {
+                    let newTop = viewH + scrollY - Tooltips.Container.firstChild.clientHeight - 7;
                     if (newTop < 0) newTop = 0;
                     Tooltips.Container.style.top = newTop + "px";
                 }
-                if (Tooltips.Container.firstChild.clientWidth + 7 + Number(Tooltips.Container.style.left.replace("px", "")) > Tooltips.Container.parentElement.clientWidth) {
-                    let newLeft = Tooltips.Container.parentElement.clientWidth - Tooltips.Container.firstChild.clientWidth - 7;
+                if (Tooltips.Container.firstChild.clientWidth + 7 + currentLeft > viewW + scrollX) {
+                    let newLeft = viewW + scrollX - Tooltips.Container.firstChild.clientWidth - 7;
                     if (newLeft < 0) newLeft = 0;
                     Tooltips.Container.style.left = newLeft + "px";
                 }
             }
         } catch (e) {}
     };
-    window.addEventListener("pointermove", Tooltips.followMouse);
+    window.addEventListener("pointermove", (e) => Tooltips.followMouse(e));
 
 
     // copy of all relevant eventhandlers below
