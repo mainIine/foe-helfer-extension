@@ -1,20 +1,12 @@
 /*
- * **************************************************************************************
  * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
- * You may use, distribute and modify this code under the
- * terms of the AGPL license.
- *
- * See file LICENSE.md or go to
- * https://github.com//mainIine/foe-helfer-extension/blob/master/LICENSE.md
- * for full license details.
- *
- * **************************************************************************************
- */
+ * Copyright (C) 2026 Forge Hammer
+ * Licensed under AGPL - see LICENSE.md for details.
+*/
 
 // Guild rank in GEX
 FoEproxy.addHandler('ChampionshipService', 'getOverview', (data, postData) => {
-	if (data && data.responseData)
-	{
+	if (data && data.responseData) {
 		GexStat.UpdateData('championship', data.responseData);
 	}
 });
@@ -22,8 +14,7 @@ FoEproxy.addHandler('ChampionshipService', 'getOverview', (data, postData) => {
 // GEX member statistic
 FoEproxy.addHandler('GuildExpeditionService', 'getContributionList', (data, postData) => {
 	// Inno sends response data two times... so prevent double processing with ResponseBlockTime
-	if (data && data.responseData && (+MainParser.getCurrentDate() - GexStat.ResponseBlockTime) > 2000)
-	{
+	if (data && data.responseData && (+MainParser.getCurrentDate() - GexStat.ResponseBlockTime) > 2000) {
 		GexStat.ResponseBlockTime = +MainParser.getCurrentDate();
 		GexStat.GexData = data.responseData; // Store GEX data for cost calculations
 		GexStat.UpdateData('participation', data.responseData);
@@ -32,14 +23,11 @@ FoEproxy.addHandler('GuildExpeditionService', 'getContributionList', (data, post
 
 FoEproxy.addHandler('GuildExpeditionService', 'getOverview', (data, postData) => {
 	let Data = data.responseData;
-	if (Data !== undefined)
-	{
-		if (data.responseData['state'] !== 'inactive')
-		{
+	if (Data !== undefined) {
+		if (data.responseData['state'] !== 'inactive') {
 			GexStat.GEXId = Data.nextStateTime;
 		}
-		else
-		{
+		else {
 			GexStat.GEXId = (Data.nextStateTime * 1 - 86400);
 		}
 	}
@@ -58,7 +46,7 @@ let GexStat = {
 	Settings: {
 		deleteOlderThan: 20,
 		showAxisLabel: true,
-		chartSeries: ['points', 'encounters', 'member', 'participants', 'rank'],
+		chartSeries: ['encounters', 'member', 'participants', 'rank'],
 		showRoundLimit: 10,
 		exportLimit: 10
 	},
@@ -87,8 +75,7 @@ let GexStat = {
 
 	BuildBox: (event) => {
 
-		if ($('#GexStat').length === 0)
-		{
+		if ($('#GexStat').length === 0) {
 			HTML.Box({
 				id: 'GexStat',
 				title: i18n('Boxes.GexStat.Title'),
@@ -103,8 +90,7 @@ let GexStat = {
 
 			HTML.AddCssFile('gexstat');
 		}
-		else if (!event)
-		{
+		else if (!event) {
 			HTML.CloseOpenBox('GexStat');
 			return;
 		}
@@ -134,13 +120,11 @@ let GexStat = {
 
 		let gexid = GexStat.GEXId;
 
-		if (!gexid || !data || !source)
-		{
+		if (!gexid || !data || !source) {
 			return;
 		}
 
-		switch (source)
-		{
+		switch (source) {
 			case 'championship':
 
 				let ranking = data.ranking;
@@ -158,8 +142,7 @@ let GexStat = {
 
 				participants.forEach(guild => {
 
-					if (rankingdata[guild.id] === undefined)
-					{
+					if (rankingdata[guild.id] === undefined) {
 						rankingdata[guild.id] = {};
 					}
 
@@ -201,15 +184,12 @@ let GexStat = {
 				let countMember = data.length;
 				let activeMembers = 0;
 
-				for (let k in data)
-				{
-					if (data.hasOwnProperty(k))
-					{
+				for (let k in data) {
+					if (data.hasOwnProperty(k)) {
 						const player = data[k].player ? data[k].player : undefined;
 						if (!player) { return; };
 
-						if (partdata[k] === undefined)
-						{
+						if (partdata[k] === undefined) {
 							partdata[k] = {};
 						}
 
@@ -263,21 +243,18 @@ let GexStat = {
 
 		let h = [];
 
-		if (gexweek === undefined || gexweek === null)
-		{
+		if (gexweek === undefined || gexweek === null) {
 			GexRanking = await GexStat.db.ranking.reverse().first();
 			gexweek = GexRanking && GexRanking.gexweek ? GexRanking.gexweek : undefined;
 		}
-		else
-		{
+		else {
 			GexRanking = await GexStat.db.ranking.where('gexweek').equals(gexweek).first();
 		}
 
 		await GexStat.SetBoxNavigation(gexweek);
 
 		// No GEX data available
-		if (gexweek === undefined || !GexRanking || !GexRanking.participants)
-		{
+		if (gexweek === undefined || !GexRanking || !GexRanking.participants) {
 			GexStat.hidePreloader("#GexStat");
 			h.push(`<div class="no-data"><p>${i18n('Boxes.GexStat.ResultsNoData')}</p></div>`);
 			$('#gexsContentWrapper').html(h.join(''))
@@ -291,8 +268,7 @@ let GexStat = {
 		h.push(`<table id="gexsRankingTable" class="foe-table">` +
 			`<tbody><tr>`);
 
-		for (let x = 0; x < GexPaticipants.length; x++)
-		{
+		for (let x = 0; x < GexPaticipants.length; x++) {
 			const participant = GexPaticipants[x];
 			let points = parseInt(participant.points);
 			let progressWidth = points >= 100 ? 100 : points;
@@ -333,20 +309,17 @@ let GexStat = {
 		let GexParticipation = undefined;
 		let h = [];
 
-		if (gexweek === undefined || gexweek === null)
-		{
+		if (gexweek === undefined || gexweek === null) {
 			GexParticipation = await GexStat.db.participation.reverse().first();
 			gexweek = GexParticipation && GexParticipation.gexweek ? GexParticipation.gexweek : undefined;
 		}
-		else
-		{
+		else {
 			GexParticipation = await GexStat.db.participation.where('gexweek').equals(gexweek).first();
 		}
 
 		await GexStat.SetBoxNavigation(gexweek);
 
-		if (!GexParticipation || !GexParticipation.participation)
-		{
+		if (!GexParticipation || !GexParticipation.participation) {
 			GexStat.hidePreloader("#GexStat");
 			h.push(`<div class="no-data"><p>${i18n('Boxes.GexStat.ParticipationNoData')}</p></div>`);
 			$('#gexsContentWrapper').html(h.join(''));
@@ -384,8 +357,7 @@ let GexStat = {
 			`</tr></thead>` +
 			`<tbody class="gexs-group">`);
 
-		for (let x = 0; x < participation.length; x++)
-		{
+		for (let x = 0; x < participation.length; x++) {
 			const member = participation[x];
 			let level = Math.ceil((member.solvedEncounters || 0) / 16);
 			let encounterClass = ' level' + level;
@@ -415,7 +387,6 @@ let GexStat = {
 
 
 	ShowCourse: async () => {
-
 		GexStat.showPreloader("#GexStat");
 		GexStat.InitSettings();
 		GexStat.CurrentStatGroup = 'Course';
@@ -435,8 +406,7 @@ let GexStat = {
 		let GexParticipation = await GexStat.db.participation.reverse().limit(GexStat.Settings.showRoundLimit).toArray();
 		let GexRanking = await GexStat.db.ranking.reverse().limit(GexStat.Settings.showRoundLimit).toArray();
 
-		if ((!GexParticipation || !GexParticipation.length) && (!GexRanking || !GexRanking.length))
-		{
+		if ((!GexParticipation || !GexParticipation.length) && (!GexRanking || !GexRanking.length)) {
 			GexStat.hidePreloader("#GexStat");
 			$('#gexsContentWrapper').html(`<div class="no-data"><p>${i18n('Boxes.GexStat.ParticipationNoData')}</p></div>`);
 			return;
@@ -445,23 +415,21 @@ let GexStat = {
 		let data = [...[GexRanking, GexParticipation].reduce((m, a) => (a.forEach(o => m.has(o.gexweek) && Object.assign(m.get(o.gexweek), o) || m.set(o.gexweek, o)), m), new Map).values()];
 		data.sort(function (a, b) { return a.gexweek - b.gexweek });
 
-		for (let x = 0; x < data.length; x++)
-		{
+		for (let x = 0; x < data.length; x++) {
 			const gexweek = data[x];
 			let hasParticipation = true;
 			let hasParticipants = true;
 
-			CourseData.weeks.push(moment(gexweek.gexweek * 1000).format(i18n('Date')));
+			CourseData.weeks.push(moment(gexweek.gexweek * 1000).format(i18n('DateShort')));
 			CourseData.pointSum += gexweek.expeditionPoints !== undefined ? gexweek.expeditionPoints : 0;
 			CourseData.pointsData.push(gexweek.expeditionPoints !== undefined ? gexweek.expeditionPoints : null);
-			CourseData.encounterData.push(gexweek.solvedEncounters !== undefined ? gexweek.solvedEncounters : null);
 			CourseData.allMemberData.push(gexweek.countMember !== undefined ? gexweek.countMember : null);
+			CourseData.encounterData.push(gexweek.solvedEncounters !== undefined && gexweek.countMember ? Math.round(gexweek.solvedEncounters / gexweek.countMember * 10) / 10 : null);
 
 			if (!gexweek.participation && !gexweek.activeMembers) { CourseData.activeMemberData.push(null); hasParticipation = false; }
 			if (!gexweek.participants && !gexweek.currentGuildRank) { CourseData.rankData.push(null); hasParticipants = false; }
 
-			if (!gexweek.activeMembers && hasParticipation)
-			{
+			if (!gexweek.activeMembers && hasParticipation) {
 				let count = gexweek.participation.filter(function (solved) {
 					return solved.solvedEncounters > 0;
 				}).length;
@@ -470,13 +438,11 @@ let GexStat = {
 				// Update DB
 				await GexStat.db.participation.update(gexweek.gexweek, { activeMembers: count });
 			}
-			else if (hasParticipation)
-			{
+			else if (hasParticipation) {
 				CourseData.activeMemberData.push(gexweek.activeMembers);
 			}
 
-			if (!gexweek.currentGuildRank && hasParticipants)
-			{
+			if (!gexweek.currentGuildRank && hasParticipants) {
 				let rankdata = gexweek.participants.filter(function (d) {
 					return d.guildId === ExtGuildID;
 				});
@@ -485,131 +451,118 @@ let GexStat = {
 				//Update DB
 				await GexStat.db.ranking.update(gexweek.gexweek, { currentGuildRank: rankdata[0].rank });
 			}
-			else if (hasParticipants)
-			{
+			else if (hasParticipants) {
 				CourseData.rankData.push(gexweek.currentGuildRank);
 			}
 
 		}
-		//console.log(CourseData);
 
-		// to prevent double include of Highcharts get it from Stats module
-		await Stats.loadHighcharts();
+		await helper.loadChartJS();
 
 		const series = await GexStat.GetChartSeries(CourseData);
 
-		GexStat.Chart = new Highcharts.chart('gexsContentWrapper', {
+		const canvas = document.createElement('canvas');
+		$('#gexsContentWrapper').empty().append(canvas);
 
-				title: {
-					text: i18n('Boxes.GexStat.Gex') + ' ' + i18n('Boxes.GexStat.Rounds')
-				},
-				subtitle: {
-					text: CourseData.weeks[0] + ' - ' + CourseData.weeks[CourseData.weeks.length - 1] +
-						' (' + CourseData.weeks.length + ' ' + i18n('Boxes.GexStat.Rounds') + ')'
-				},
-				yAxis: [{
-					allowDecimals: false,
-					labels: {
-						enabled: (GexStat.Settings.showAxisLabel && series.yaxis.includes(0)),
-					},
-					title: {
-						enabled: (GexStat.Settings.showAxisLabel && series.yaxis.includes(0)),
-						text: i18n('Boxes.GexStat.Points'),
-					}
-				}, {
-					allowDecimals: false,
-					title: {
-						enabled: (GexStat.Settings.showAxisLabel && series.yaxis.includes(1)),
-						text: i18n('Boxes.GexStat.Member') + ' / ' + i18n('Boxes.GexStat.Participant'),
-					},
-					labels: {
-						enabled: (GexStat.Settings.showAxisLabel && series.yaxis.includes(1)),
-					},
-					opposite: true
-				},
-					{
-						allowDecimals: false,
-						labels: {
-							enabled: (GexStat.Settings.showAxisLabel && series.yaxis.includes(2)),
-						},
-						title: {
-							enabled: (GexStat.Settings.showAxisLabel && series.yaxis.includes(2)),
-							text: i18n('Boxes.GexStat.Encounters'),
-						},
-					},
-					{
-						allowDecimals: false,
-						labels: {
-							enabled: false,
-						},
-						title: {
-							enabled: false
-						},
-						reversed: true
-					}],
-				xAxis: {
-					categories: CourseData.weeks,
-					crosshair: true,
-				},
-				legend: {
-					layout: 'vertical',
-					align: 'right',
-					verticalAlign: 'middle'
-				},
-				plotOptions: {
-					column: {
-						grouping: false,
-						shadow: false,
-						borderWidth: 0
-					},
-					series: {
-						label: {
-							connectorAllowed: false
-						}
-					}
-				},
-				series: series.data,
-				tooltip: {
-					shared: true
-				},
-				exporting: {
-					enabled: false
-				},
-				responsive: {
-					rules: [{
-						condition: {
-							maxWidth: 800
-						},
-						chartOptions: {
-							legend: {
-								align: 'center',
-								verticalAlign: 'bottom',
-								layout: 'horizontal'
-							},
-						}
-					}]
-				}
+		if (GexStat.Chart) {
+			GexStat.Chart.destroy();
+		}
+
+		GexStat.Chart = new Chart(canvas, {
+			data: {
+				labels: CourseData.weeks,
+				datasets: series.data
 			},
-			function (chart) {
-
-				GexStat.hidePreloader();
-
-				$('#GexStat').on('resize', function () {
-					GexStat.showPreloader('#GexStat');
-					chart.setSize($(this).find('#gexsContentWrapper').width(), $(this).find('#gexsContentWrapper').height(),
-						GexStat.hidePreloader())
-				});
+			options: {
+				responsive: true,
+				maintainAspectRatio: false,
+				interaction: {
+					mode: 'index',
+					intersect: false
+				},
+				plugins: {
+					title: {
+						display: true,
+						text: i18n('Boxes.GexStat.Gex') + ' ' + i18n('Boxes.GexStat.Rounds')
+					},
+					subtitle: {
+						display: true,
+						text: CourseData.weeks[0] + ' - ' + CourseData.weeks[CourseData.weeks.length - 1] +
+							' (' + CourseData.weeks.length + ' ' + i18n('Boxes.GexStat.Rounds') + ')'
+					},
+					legend: {
+						position: 'bottom'
+					},
+					tooltip: {
+						callbacks: {
+							label: (ctx) => {
+								const ds = ctx.dataset;
+								const real = ds._realData ? ds._realData[ctx.dataIndex] : ctx.parsed.y;
+								return ds.label + ': ' + (real ?? ctx.parsed.y);
+							}
+						}
+					}
+				},
+				scales: {
+					x: {
+						ticks: { maxRotation: 45 }
+					},
+					y0: {
+						type: 'linear',
+						position: 'left',
+						display: series.yaxis.includes('y0'),
+						ticks: { precision: 0 },
+						title: {
+							display: GexStat.Settings.showAxisLabel && series.yaxis.includes('y0'),
+							text: i18n('Boxes.GexStat.Points')
+						}
+					},
+					y1: {
+						type: 'linear',
+						position: 'right',
+						stacked: true,
+						display: series.yaxis.includes('y1'),
+						ticks: { precision: 0 },
+						title: {
+							display: GexStat.Settings.showAxisLabel && series.yaxis.includes('y1'),
+							text: i18n('Boxes.GexStat.Member') + ' / ' + i18n('Boxes.GexStat.Participant')
+						},
+						grid: { drawOnChartArea: false }
+					},
+					y2: {
+						type: 'linear',
+						position: 'left',
+						display: series.yaxis.includes('y2'),
+						ticks: { precision: 0 },
+						title: {
+							display: GexStat.Settings.showAxisLabel && series.yaxis.includes('y2'),
+							text: i18n('Boxes.GexStat.Encounters') + ' (⌀)'
+						},
+						grid: { drawOnChartArea: false }
+					},
+					y3: {
+						type: 'linear',
+						position: 'right',
+						display: series.yaxis.includes('y3'),
+						reverse: true,
+						ticks: { display: false },
+						title: {
+							display: false
+						},
+						grid: { drawOnChartArea: false }
+					}
+				}
 			}
-		);
+		});
+
+		GexStat.hidePreloader();
 	},
 
 
 	ShowTabContent: (StatGroup, week) => {
-
 		if ($('#GexStatSettingsBox').length) { $('#GexStatSettingsBox').remove(); }
 
-		switch (StatGroup)
-		{
+		switch (StatGroup) {
 			case 'Ranking':
 				GexStat.Show(week);
 				break;
@@ -655,8 +608,7 @@ let GexStat = {
 		h.push(`</ul>`);
 		h.push(`</div>`);
 
-		if (gexweek && GexStat.GexWeeks && GexStat.GexWeeks.length)
-		{
+		if (gexweek && GexStat.GexWeeks && GexStat.GexWeeks.length) {
 
 			let index = GexStat.GexWeeks.indexOf(gexweek);
 			let previousweek = GexStat.GexWeeks[index + 1] || null;
@@ -685,8 +637,7 @@ let GexStat = {
 
 				let week = $(this).data('week');
 
-				if (!GexStat.GexWeeks.includes(week))
-				{
+				if (!GexStat.GexWeeks.includes(week)) {
 					return;
 				};
 
@@ -697,8 +648,7 @@ let GexStat = {
 
 				let week = parseInt($(this).val());
 
-				if (!GexStat.GexWeeks.includes(week) || week === GexStat.CurrentGexWeek)
-				{
+				if (!GexStat.GexWeeks.includes(week) || week === GexStat.CurrentGexWeek) {
 					return;
 				};
 
@@ -742,15 +692,7 @@ let GexStat = {
 		});
 
 		c.push(`</select>`);
-		c.push(`<hr><p class="text-left"><span class="settingtitle">${i18n('Boxes.GexStat.Course')}</span>` +
-			`<input id="gmsShowAxisLabel" name="showaxislabel" value="1" type="checkbox" ${(Settings.showAxisLabel) ? ' checked="checked"' : ''} /> <label for="gmsShowAxisLabel">${i18n('Boxes.GexStat.ShowAxisLabel')}</label>` +
-			`</p>` +
-			`<p class="text-left"><input id="gmsShowChartPoints" name="showchartenpoints" value="1" type="checkbox" ${(Settings.chartSeries.includes('points')) ? ' checked="checked"' : ''} /> <label for="gmsShowChartPoints"><i>${i18n('Boxes.GexStat.Points')}</i></label><br />` +
-			`<input id="gmsShowChartEncounters" name="showchartencounters" value="1" type="checkbox" ${(Settings.chartSeries.includes('encounters')) ? ' checked="checked"' : ''} /> <label for="gmsShowChartEncounters"><i>${i18n('Boxes.GexStat.Encounters')}</i></label><br />` +
-			`<input id="gmsShowChartMember" name="showchartmember" value="1" type="checkbox" ${(Settings.chartSeries.includes('member')) ? ' checked="checked"' : ''} /> <label for="gmsShowChartMember"><i>${i18n('Boxes.GexStat.Member')}</i></label><br />` +
-			`<input id="gmsShowChartParticipants" name="showchartparticipants" value="1" type="checkbox" ${(Settings.chartSeries.includes('participants')) ? ' checked="checked"' : ''} /> <label for="gmsShowChartParticipants"><i>${i18n('Boxes.GexStat.Participant')}</i><br /></label>` +
-			`<input id="gmsShowChartRank" name="showchartrank" value="1" type="checkbox" ${(Settings.chartSeries.includes('rank')) ? ' checked="checked"' : ''} /> <label for="gmsShowChartRank"><i>${i18n('Boxes.GexStat.Rank')}</i></label>` +
-			`</p>`);
+		c.push(`<hr><p class="text-left"><span class="settingtitle">${i18n('Boxes.GexStat.Course')}</span></p>`);
 		c.push(`<p class="text-left">${i18n('Boxes.GexStat.CompareLast')} <select id="gexsShowRoundLimit" name="showroundlimit">`);
 		showRounds.forEach(round => {
 			let option = round + ' ' + i18n('Boxes.GexStat.Rounds');
@@ -783,8 +725,7 @@ let GexStat = {
 		let showRoundLimit = parseInt($('#gexsShowRoundLimit').val());
 		let exportLimit = parseInt($('#gexsExportLimit').val());
 
-		if (GexStat.Settings.deleteOlderThan !== tmpDeleteOlder && tmpDeleteOlder > 0)
-		{
+		if (GexStat.Settings.deleteOlderThan !== tmpDeleteOlder && tmpDeleteOlder > 0) {
 			GexStat.showPreloader('#GexStat');
 
 			await GexStat.DeleteOldData(tmpDeleteOlder);
@@ -793,18 +734,12 @@ let GexStat = {
 		GexStat.Settings.deleteOlderThan = tmpDeleteOlder;
 		GexStat.Settings.showRoundLimit = showRoundLimit;
 		GexStat.Settings.exportLimit = exportLimit;
-		GexStat.Settings.showAxisLabel = $("#gmsShowAxisLabel").is(':checked') ? true : false;
+		GexStat.Settings.showAxisLabel = true;
 
 		let chartSeries = GexStat.Settings.chartSeries = [];
 
-		if ($("#gmsShowChartPoints").is(':checked')) { chartSeries.push('points'); }
-		if ($("#gmsShowChartEncounters").is(':checked')) { chartSeries.push('encounters'); }
-		if ($("#gmsShowChartMember").is(':checked')) { chartSeries.push('member'); }
-		if ($("#gmsShowChartParticipants").is(':checked')) { chartSeries.push('participants'); }
-		if ($("#gmsShowChartRank").is(':checked')) { chartSeries.push('rank'); }
-
 		// if nothing is selected, set series to default
-		if (!chartSeries.length) { chartSeries.push('points', 'encounters', 'member', 'participants', 'rank') }
+		if (!chartSeries.length) { chartSeries.push('encounters', 'member', 'participants', 'rank') }
 
 		localStorage.setItem('GexStatSettings', JSON.stringify(GexStat.Settings));
 
@@ -823,13 +758,11 @@ let GexStat = {
 
 		let Settings = JSON.parse(localStorage.getItem('GexStatSettings'));
 
-		if (!Settings)
-		{
+		if (!Settings) {
 			return;
 		}
 
-		for (const k in Settings)
-		{
+		for (const k in Settings) {
 			if (!Settings.hasOwnProperty(k) ||
 				!GexStat.Settings.hasOwnProperty(k)) { continue; }
 
@@ -840,59 +773,63 @@ let GexStat = {
 
 	GetChartSeries: async (data) => {
 
-		const buildZones = function (data) {
-
-			let zones = [],
-				i = -1, len = data.length, current, previous, dashStyle, value;
-
-			while (data[++i] === null);
-			zones.push({
-				value: i
-			});
-
-			while (++i < len)
-			{
-				previous = data[i - 1];
-				current = data[i];
-				dashStyle = '';
-
-				if (previous !== null && current === null)
-				{
-					dashStyle = 'solid';
-					value = i - 1;
-				} else if (previous === null && current !== null)
-				{
-					dashStyle = 'dot';
-					value = i;
-				}
-
-				if (dashStyle)
-				{
-					zones.push({
-						dashStyle: dashStyle,
-						value: value
-					});
-				}
-			}
-
-			return zones;
-		}
-
 		const chartSeries = {
-			points: { name: i18n('Boxes.GexStat.Points'), zones: buildZones(data.pointsData), zoneAxis: 'x', connectNulls: true, data: data.pointsData, color: '#DDDF0D', yAxis: 0, zIndex: 3 },
-			encounters: { gridLineWidth: 0, zones: buildZones(data.encounterData), zoneAxis: 'x', connectNulls: true, name: i18n('Boxes.GexStat.Encounters'), data: data.encounterData, color: '#7798BF', zIndex: 3, yAxis: 2 },
-			member: { type: 'column', name: i18n('Boxes.GexStat.Member'), data: data.allMemberData, color: '#55bf3b', pointPadding: 0.3, pointPlacement: -0.2, yAxis: 1, zIndex: 1 },
-			participants: { type: 'column', name: i18n('Boxes.GexStat.Participant'), data: data.activeMemberData, color: '#DF5353', pointPadding: 0.4, pointPlacement: -0.2, yAxis: 1, zIndex: 2 },
-			rank: { name: i18n('Boxes.GexStat.Rank'), zones: buildZones(data.rankData), zoneAxis: 'x', connectNulls: true, data: data.rankData, color: '#d6dae0', yAxis: 3, marker: { symbol: 'square' }, dataLabels: { enabled: true }, zIndex: 2 }
-		}
+			encounters: {
+				type: 'line',
+				label: i18n('Boxes.GexStat.Encounters') + ' (⌀)',
+				data: data.encounterData,
+				borderColor: '#cedbeb',
+				backgroundColor: '#cedbeb',
+				spanGaps: false,
+				yAxisID: 'y2',
+				pointRadius: 0,
+				order: 2
+			},
+			member: {
+				type: 'bar',
+				label: i18n('Boxes.GexStat.Member'),
+				data: data.allMemberData.map((m, i) => m !== null && data.activeMemberData[i] !== null ? m - data.activeMemberData[i] : m),
+				_realData: data.allMemberData,
+				borderColor: '#525a2d',
+				backgroundColor: '#525a2d',
+				yAxisID: 'y1',
+				stack: 'members',
+				order: 4
+			},
+			participants: {
+				type: 'bar',
+				label: i18n('Boxes.GexStat.Participant'),
+				data: data.activeMemberData,
+				borderColor: '#458635',
+				backgroundColor: '#458635',
+				yAxisID: 'y1',
+				stack: 'members',
+				order: 3
+			},
+			rank: {
+				type: 'line',
+				label: i18n('Boxes.GexStat.Rank'),
+				data: data.rankData,
+				borderWidth: 0,
+				borderColor: '#e9d732',
+				backgroundColor: '#e9d732',
+				spanGaps: false,
+				pointStyle: 'circle',
+				pointRadius: 8,
+				datalabels: { display: true },
+				yAxisID: 'y3',
+				order: 1
+			}
+		};
 
 		let series = { data: [], yaxis: [] };
 
 		GexStat.Settings.chartSeries.forEach(v => {
+			if (!chartSeries[v]) { return; }
 			series.data.push(chartSeries[v]);
-			if (!series.yaxis.includes(chartSeries[v].yAxis))
-			{
-				series.yaxis.push(chartSeries[v].yAxis);
+			const axisID = chartSeries[v].yAxisID;
+			if (!series.yaxis.includes(axisID)) {
+				series.yaxis.push(axisID);
 			}
 		});
 
@@ -900,20 +837,15 @@ let GexStat = {
 	},
 
 
-	// yvi
 	ExportContent: async (content, type) => {
-
 		let exportLimit = $('#gexsExportLimit').length ? parseInt($('#gexsExportLimit').val()) : GexStat.Settings.exportLimit;
 		let exportData = [];
 		let FileContent = '';
 
 		if (!content || !type || isNaN(exportLimit))
-		{
 			return;
-		}
 
-		switch (content)
-		{
+		switch (content) {
 			case 'Ranking':
 				let Ranking = await GexStat.db.ranking.reverse().limit(exportLimit).toArray();
 				if (!Ranking) { return; }
@@ -970,8 +902,7 @@ let GexStat = {
 		}
 		let BOM = "\uFEFF";
 
-		if (type === 'json')
-		{
+		if (type === 'json') {
 			FileContent = GexStat.CsvToJson(FileContent);
 			filetype = "text/json;charset=utf-8";
 		}
@@ -987,9 +918,7 @@ let GexStat = {
 
 
 	showPreloader: (id) => {
-
-		if (!$('#gexs-loading-data').length)
-		{
+		if (!$('#gexs-loading-data').length) {
 			$(id).append('<div id="gexs-loading-data"><div class="loadericon"></div></div>');
 		}
 
@@ -997,27 +926,22 @@ let GexStat = {
 
 
 	hidePreloader: () => {
-
 		$('#gexs-loading-data').fadeOut(600, function () {
 			$(this).remove();
 		});
-
 	},
 
 
 	CsvToJson: (csv) => {
-
 		let lines = csv.split("\r\n");
 		let result = [];
 		let headers = lines[0].split(";");
 
-		for (let i = 1; i < lines.length - 1; i++)
-		{
+		for (let i = 1; i < lines.length - 1; i++) {
 			let obj = {};
 			let currentline = lines[i].split(";");
 
-			for (let j = 0; j < headers.length; j++)
-			{
+			for (let j = 0; j < headers.length; j++) {
 				obj[headers[j]] = currentline[j];
 			}
 

@@ -483,7 +483,7 @@ let Stats = {
 							<div id="statsTooltip" style="display:none;"></div></div>`);
 
 		Stats.updateOptions();
-		await Stats.loadChartJS();
+		await helper.loadChartJS();
 		await Stats.updateCharts(Stats.DatePickerStart, Stats.DatePickerEnd);
 	},
 
@@ -1705,64 +1705,6 @@ let Stats = {
 	},
 
 
-	/**
-	 *
-	 * @param src
-	 * @returns {Promise<unknown>}
-	 */
-	promisedLoadCode: (src) => {
-		return new Promise(async (resolve, reject) => {
-			let sc = document.createElement('script');
-			sc.src = src;
-
-			sc.addEventListener('load', function () {
-				this.remove();
-				resolve();
-			});
-
-			sc.addEventListener('error', function () {
-				console.error('error loading script ' + src);
-				this.remove();
-				reject();
-			});
-
-			while (!document.head && !document.documentElement) await new Promise((resolve) => {
-				// @ts-ignore
-				requestIdleCallback(resolve);
-			});
-
-			(document.head || document.documentElement).appendChild(sc);
-		});
-	},
-
-
-	/**
-	 * Load Chart.js and required plugins
-	 *
-	 * @returns {Promise<void>}
-	 */
-	loadChartJS: function () {
-		if (!Stats._chartJSPromise) {
-			Stats._chartJSPromise = load();
-		}
-
-		return Stats._chartJSPromise;
-
-		async function load()
-		{
-			const baseUrl = extUrl + 'vendor/';
-			const sources = [
-				'chartjs/chart.umd.min.js',
-				'chartjs/chartjs-adapter-moment.min.js',
-				'hammerjs/hammer.min.js',
-				'chartjs/chartjs-plugin-zoom.min.js',
-			];
-
-			for (const file of sources) {
-				await Stats.promisedLoadCode(baseUrl + file);
-			}
-		}
-	},
 
 
 	/* Handlers */

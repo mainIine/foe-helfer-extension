@@ -68,8 +68,7 @@ helper.arr = {
 	 * <a href="/param">@param</a> {array} [order_by] List of directions (ASC, DESC)
 	 * @returns {array}
 	 */
-	multisort: function(arr, columns, order_by)
-	{
+	multisort: function(arr, columns, order_by) {
 		if(typeof columns == 'undefined') {
 			columns = [];
 			for(let x = 0; x < arr[0].length; x++) {
@@ -150,6 +149,55 @@ helper.preloader = {
 		})
 	}
 };
+
+
+/**
+ * Load a JavaScript file into the page.
+ * @param {string} src - URL to load
+ * @returns {Promise<void>}
+ */
+helper.promisedLoadCode = (src) => {
+	return new Promise((resolve, reject) => {
+		let sc = document.createElement('script');
+		sc.src = src;
+		sc.addEventListener('load', function () {
+			this.remove();
+			resolve();
+		});
+		sc.addEventListener('error', function () {
+			console.error('error loading script ' + src);
+			this.remove();
+			reject();
+		});
+		(document.head || document.documentElement).appendChild(sc);
+	});
+};
+
+/**
+ * @returns {Promise<void>}
+ */
+helper.loadChartJS = () => {
+	async function load() {
+		const baseUrl = extUrl + 'vendor/';
+		const sources = [
+			'chartjs/chart.umd.min.js',
+			'chartjs/chartjs-adapter-moment.min.js',
+			'hammerjs/hammer.min.js',
+			'chartjs/chartjs-plugin-zoom.min.js',
+		];
+
+		for (const file of sources) {
+			await helper.promisedLoadCode(baseUrl + file);
+		}
+	}
+
+	if (!helper._chartJSPromise) {
+		helper._chartJSPromise = load();
+	}
+
+	return helper._chartJSPromise;
+};
+
 
 let HTML = {
 

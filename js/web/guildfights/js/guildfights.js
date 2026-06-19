@@ -362,12 +362,11 @@ let GuildFights = {
 			if (gbground === GuildFights.CurrentGBGRound) {
 				h.push(`<div id="gbgLogFilter">`);
 				if (GuildFights.PlayerBoxSettings.showProgressFilter === 1) {
-					h.push(`<button id="gbg_filterProgressList" title="${HTML.i18nTooltip(i18n('Boxes.GuildFights.ProgressFilterDesc'))}" class="btn" disabled>&#8593;</button>`);
+					h.push(`<button id="gbg_filterProgressList" title="${HTML.i18nTooltip(i18n('Boxes.GuildFights.ProgressFilterDesc'))}" class="btn btn-mid" disabled>&#8593;</button>`);
 				}
 
-				if (GuildFights.PlayerBoxSettings.showLogButton === 1)
-				{
-					h.push(`<button id="gbg_showLog" class="btn">${i18n('Boxes.GuildFights.SnapshotLog')}</button>`);
+				if (GuildFights.PlayerBoxSettings.showLogButton === 1) {
+					h.push(`<button id="gbg_showLog" class="btn btn-mid">${i18n('Boxes.GuildFights.SnapshotLog')}</button>`);
 				}
 				h.push(`</div>`);
 			}
@@ -383,23 +382,16 @@ let GuildFights = {
 				GuildFights.GBGHistoryView = true;
 				let week = $(this).data('week');
 
-				if (!GuildFights.GBGAllRounds.includes(week))
-				{
-					return;
-				};
+				if (!GuildFights.GBGAllRounds.includes(week)) return;
 
 				GuildFights.BuildPlayerContent(week);
 			});
 
 			$('#gbg-select-gbground').off().on('change', function () {
-
 				GuildFights.GBGHistoryView = true;
 				let week = parseInt($(this).val());
 
-				if (!GuildFights.GBGAllRounds.includes(week) || week === GuildFights.CurrentGBGRound)
-				{
-					return;
-				};
+				if (!GuildFights.GBGAllRounds.includes(week) || week === GuildFights.CurrentGBGRound) return;
 
 				GuildFights.BuildPlayerContent(week);
 			});

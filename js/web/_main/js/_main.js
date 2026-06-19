@@ -544,7 +544,7 @@ GetFights = () =>{
 		if ([901,902].includes(data.responseData.error_code)) {
 			return;
 		}
-		if (data.responseData["armyId"] === 1 || data.responseData["state"]["round"] === 1 || data.responseData["battleType"]["totalWaves"] === 1) {
+		if (data.responseData["armyId"] === 1 || data.responseData.state?.round === 1 || data.responseData["battleType"]["totalWaves"] === 1) {
 			let units = data.responseData.state.unitsOrder;
 
 			for (let i = 0; i < units.length; i++) {

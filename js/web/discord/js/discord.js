@@ -1,7 +1,8 @@
 /*
  * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
+ * Copyright (C) 2026 Forge Hammer
  * Licensed under AGPL - see LICENSE.md for details.
- */
+*/
 
 let Discord = {
 
@@ -570,7 +571,6 @@ let Discord = {
 	sendGBGSectorsCustom: () => {
 		let msg = "";
 		for (let sector of GuildFights.discordCache) {
-			console.log(sector.name);
 			msg += Discord.createGBGCustomMessage(sector,GuildFights.discordWebhook.bulkTemplate) + "\n";
 		}
 
