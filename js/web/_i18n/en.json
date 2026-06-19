@@ -551,6 +551,8 @@
   "Boxes.GuildFights.ShowTileColors": "Copy attack colors",
   "Boxes.GuildFights.SnapshotLog": "Snapshot Log",
   "Boxes.GuildFights.SnapShotLogDisclaimer": "Disclaimer: This data is based on your collected data. The numbers shown here are probably not 100% accurate. You'd have to open the list at midnight for them to be correct.",
+  "Boxes.GuildFights.Stats.Open": "Stats",
+  "Boxes.GuildFights.Stats.Title": "GBG Stats",
   "Boxes.GuildFights.Switch": "Switch view",
   "Boxes.GuildFights.Time": "at",
   "Boxes.GuildFights.TimeZoneWarning.Desc": "From now on, the times are copied in server time. If you want to change your displayed times to server time, check the settings.",

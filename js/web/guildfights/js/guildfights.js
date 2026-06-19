@@ -18,7 +18,7 @@ FoEproxy.addHandler('GuildBattlegroundService', 'getPlayerLeaderboard', (data, p
 });
 
 FoEproxy.addHandler('GuildBattlegroundService', 'getLeaderboard', (data, postData) => {
-	GuildFights.HandleLeaderboard(data.responseData);
+	GuildFights.HandleGuildLeaderboard(data.responseData);
 });
 
 /*FoEproxy.addWsHandler('GuildBattlegroundService', 'getAction', (data, postData) => {
@@ -133,6 +133,8 @@ let GuildFights = {
 	},
 	discordCache: null,
 
+	Chart: undefined,
+
 	Tabs: [],
 	TabsContent: [],
 
@@ -238,20 +240,113 @@ let GuildFights = {
 	},
 
 
-	HandleLeaderboard: async (rankingData) => {
+	HandleGuildLeaderboard: async (rankingData) => {
 		if (!GuildFights.CurrentGBGRound) return;
 
-		const guilds = rankingData.map(rank => ({
+		// update DB
+
+		let guilds = rankingData.map(rank => ({
 			id: rank.clan.id,
 			name: rank.clan.name,
 			points: rank.victoryPointsTotal || 0,
 		}));
 
 		await GuildFights.UpdateDB('guildHistory', guilds);
-
-		// to do: progression data list or graph
 	},
 
+
+	ShowGBGCharts: async () => {
+		if (!GuildFights.CurrentGBGRound) return;
+
+		if ($('#StatsGBG').length === 0) {
+			HTML.Box({
+				id: 'StatsGBG',
+				title: i18n('Boxes.GuildFights.Stats.Title'),
+				auto_close: true,
+				dragdrop: true,
+				minimize: true,
+			});
+		}
+		else {
+			HTML.CloseOpenBox('StatsGBG');
+			return;
+		}
+
+		let entries = await GuildFights.db.guildHistory.where('gbground').equals(GuildFights.CurrentGBGRound).toArray();
+		let guildNames = [...new Set(entries.flatMap(e => e.guilds.map(g => g.name)))];
+
+		let guildColors = {};
+		if (GuildFights.SortedColors && GuildFights.MapData?.battlegroundParticipants) {
+			for (let participant of GuildFights.MapData.battlegroundParticipants) {
+				let color = GuildFights.SortedColors.find(c => c.id === participant.participantId);
+				if (color) {
+					guildColors[participant.clan.id] = color.main;
+				}
+			}
+		}
+
+		// prepare data for chart
+		let datasets = guildNames.map(name => {
+			let guildId = entries.flatMap(e => e.guilds).find(g => g.name === name)?.id;
+			let color = guildColors[guildId] ?? null;
+
+			return {
+				label: name,
+				borderColor: color,
+				backgroundColor: color,
+				data: entries.map(snapshot => {
+					let guild = snapshot.guilds.find(g => g.name === name);
+					return {
+						x: snapshot.time * 1000,
+						y: guild?.points ?? null,
+					};
+				}),
+			};
+		});
+
+		await helper.loadChartJS();
+
+		if (GuildFights.Chart) GuildFights.Chart.destroy();
+
+		let canvas = document.createElement('canvas');
+		canvas.width = 600;
+		canvas.height = 400;
+		$('#StatsGBGBody').empty().append(canvas);
+
+		GuildFights.Chart = new Chart(canvas, {
+			type: 'line',
+			data: { datasets: datasets },
+			options: {
+				color: '#ccc',
+				interaction: {
+					mode: 'index',
+					intersect: false,
+				},
+				pointRadius: 2,
+				pointHitRadius: 5,
+				scales: {
+					x: {
+						type: 'time',
+						time: {
+							unit: 'hour',
+							displayFormats: { hour: 'dd, HH:mm' }
+						},
+						ticks: { maxRotation: 45 }
+					},
+					y: { beginAtZero: false }
+				},
+				plugins: {
+					legend: { 
+						position: 'bottom', 
+						labels: {
+							boxWidth: 15,
+							pointStyle: 'circle'
+						} 
+					},
+				},
+			}
+		});
+	},
 
 
 	UpdateDB: async (content, data) => {
@@ -345,19 +440,23 @@ let GuildFights = {
 			let previousweek = GuildFights.GBGAllRounds[index + 1] || null;
 			let nextweek = GuildFights.GBGAllRounds[index - 1] || null;
 
-			h.push(`<div id="gbg_roundswitch" class="roundswitch dark-bg">`);
+			h.push(`<div id="gbg_meta" class="flex between dark-bg p5">`);
 
 			if (GuildFights.PlayerBoxSettings.showRoundSelector) {
-				h.push(`${i18n('Boxes.GuildMemberStat.GBFRound')} <button class="btn btn-mid btn-set-week" data-week="${previousweek}"${previousweek === null ? ' disabled' : ''}>&lt;</button> `);
-				h.push(`<select id="gbg-select-gbground">`);
+				h.push(`<div>
+					<button class="btn btn-mid btn-set-week" data-week="${previousweek}"${previousweek === null ? ' disabled' : ''}>&lt;</button> 
+					<select id="gbg-select-gbground">`);
 
-				GuildFights.GBGAllRounds.forEach(week => {
-					h.push(`<option value="${week}"${gbground === week ? ' selected="selected"' : ''}>` + moment.unix(week).subtract(11, 'd').format(i18n('Date')) + ` - ` + moment.unix(week).format(i18n('Date')) + `</option>`);
-				});
+					GuildFights.GBGAllRounds.forEach(week => {
+						h.push(`<option value="${week}"${gbground === week ? ' selected="selected"' : ''}>` + moment.unix(week).subtract(11, 'd').format(i18n('Date')) + ` - ` + moment.unix(week).format(i18n('Date')) + `</option>`);
+					});
 
-				h.push(`</select>`);
-				h.push(`<button class="btn btn-mid btn-set-week last" data-week="${nextweek}"${nextweek === null ? ' disabled' : ''}>&gt;</button>`);
+				h.push(`</select>
+					<button class="btn btn-mid btn-set-week last" data-week="${nextweek}"${nextweek === null ? ' disabled' : ''}>&gt;</button>
+					</div>`);
 			}
+
+			h.push(`<button class="btn btn-mid" onclick="GuildFights.ShowGBGCharts()">${i18n('Boxes.GuildFights.Stats.Open')}</button>`);
 
 			if (gbground === GuildFights.CurrentGBGRound) {
 				h.push(`<div id="gbgLogFilter">`);
@@ -414,7 +513,7 @@ let GuildFights = {
 	 */
 	ToggleProgressList: (id) => {
 
-		let elem = $('#GildPlayersTable > tbody');
+		let elem = $('#GuildPlayersTable > tbody');
 		let nelem = elem.find('tr.new');
 		let act = $('#' + id).hasClass('filtered') ? 'show' : 'hide';
 
@@ -423,7 +522,7 @@ let GuildFights = {
 				let oelem = elem.find('tr:not(.new)');
 				GuildFights.PlayerBoxSettings.showOnlyActivePlayers = 1;
 				localStorage.setItem('GuildFightsPlayerBoxSettings', JSON.stringify(GuildFights.PlayerBoxSettings));
-				$('#GildPlayersTable > thead .text-warning').hide();
+				$('#GuildPlayersTable > thead .text-warning').hide();
 				oelem.hide();
 				$('#' + id).addClass('filtered btn-green');
 			}
@@ -433,7 +532,7 @@ let GuildFights = {
 			elem.find('tr').show();
 			GuildFights.PlayerBoxSettings.showOnlyActivePlayers = 0;
 			localStorage.setItem('GuildFightsPlayerBoxSettings', JSON.stringify(GuildFights.PlayerBoxSettings));
-			$('#GildPlayersTable > thead .text-warning').show();
+			$('#GuildPlayersTable > thead .text-warning').show();
 			$('#' + id).removeClass('filtered btn-green');
 		}
 	},
@@ -514,7 +613,7 @@ let GuildFights = {
 				minimize: true,
 				resize: true,
 				settings: 'GuildFights.ShowPlayerBoxSettings()',
-			    active_maps:"gg"
+			    active_maps:"gg",
 			});
 			HTML.AddCssFile('guildfights');
 		}
@@ -632,22 +731,19 @@ let GuildFights = {
 				// Is there any data on this player?
 				if (playerOld !== undefined) {
 
-					if (playerOld['negotiationsWon'] < playerNew['negotiationsWon'])
-					{
+					if (playerOld['negotiationsWon'] < playerNew['negotiationsWon']) {
 						diffNegotiations = playerNew['negotiationsWon'] - playerOld['negotiationsWon'];
 						negotaionAddOn = ' <small class="text-success">&#8593; ' + diffNegotiations + '</small>';
 						change = true;
 					}
 
-					if (playerOld['battlesWon'] < playerNew['battlesWon'])
-					{
+					if (playerOld['battlesWon'] < playerNew['battlesWon']) {
 						diffBattles = playerNew['battlesWon'] - playerOld['battlesWon'];
 						fightAddOn = ' <small class="text-success">&#8593; ' + diffBattles + '</small>';
 						change = true;
 					}
 
-					if (playerOld['attrition'] < playerNew['attrition'])
-					{
+					if (playerOld['attrition'] < playerNew['attrition']) {
 						diffAttr = playerNew['attrition'] - playerOld['attrition'];
 						attritionAddOn = ' <small class="text-success">&#8593; ' + diffAttr + '</small>';
 						change = true;
@@ -655,8 +751,7 @@ let GuildFights = {
 				}
 			}
 
-			if ((change === true || newRound === true) && GuildFights.GBGHistoryView === false)
-			{
+			if ((change === true || newRound === true) && GuildFights.GBGHistoryView === false) {
 				await GuildFights.UpdateDB('player', { 
 						gbground: GuildFights.CurrentGBGRound, 
 						player_id: playerNew['player_id'], 
@@ -721,7 +816,7 @@ let GuildFights = {
 
 		let tNF = (tN * 2) + tF;
 
-		t.push('<table id="GildPlayersTable" class="exportable foe-table' + (histView === false ? ' chevron-right' : '') + '">');
+		t.push('<table id="GuildPlayersTable" class="exportable foe-table' + (histView === false ? ' chevron-right' : '') + '">');
 
 		t.push('<thead class="sticky">');
 		t.push('<tr>');
@@ -767,14 +862,12 @@ let GuildFights = {
 			});
 
 			// check if member has a new progress
-			let newPlayer = $('#GildPlayersTable tbody').find('tr.new').length;
-			if (newPlayer > 0)
-			{
+			let newPlayer = $('#GuildPlayersTable tbody').find('tr.new').length;
+			if (newPlayer > 0) {
 				$('button#gbg_filterProgressList').html('&#8593; ' + newPlayer);
 				$('button#gbg_filterProgressList').attr("disabled", false);
 
-				if (GuildFights.PlayerBoxSettings.showOnlyActivePlayers === 1)
-				{
+				if (GuildFights.PlayerBoxSettings.showOnlyActivePlayers === 1) {
 					GuildFights.ToggleProgressList('gbg_filterProgressList');
 				}
 			}
@@ -1638,8 +1731,8 @@ let GuildFights = {
 		c.push(`<p class="text-left"><input id="gf_showProgressFilter" name="showprogressfilter" value="1" type="checkbox" ${(Settings.showProgressFilter === 1) ? ' checked="checked"' : ''} /> <label for="gf_showProgressFilter">${i18n('Boxes.GuildFights.ShowProgressFilter')}</label></p>`);
 		c.push(`<p class="text-left"><input id="gf_showLogButton" name="showlogbutton" value="1" type="checkbox" ${(Settings.showLogButton === 1) ? ' checked="checked"' : ''} /> <label for="gf_showLogButton">${i18n('Boxes.GuildFights.ShowLogButton')}</label></p>`);
 		c.push(`<p><button id="save-GuildFightsPlayerBox-settings" class="btn saveSettings" onclick="GuildFights.PlayerBoxSettingsSaveValues()">${i18n('Boxes.General.Save')}</button></p>`);
-		c.push(`<hr><p>${i18n('Boxes.General.Export')}: <span class="btn-group"><button class="btn" onclick="HTML.ExportTable($('#GildPlayersTable'),'csv','GBG-PlayerList')" title="${HTML.i18nTooltip(i18n('Boxes.General.ExportCSV'))}">CSV</button>`);
-		c.push(`<button class="btn" onclick="HTML.ExportTable($('#GildPlayersTable'),'json','GBG-PlayerList')" title="${HTML.i18nTooltip(i18n('Boxes.General.ExportJSON'))}">JSON</button></span></p>`);
+		c.push(`<hr><p>${i18n('Boxes.General.Export')}: <span class="btn-group"><button class="btn" onclick="HTML.ExportTable($('#GuildPlayersTable'),'csv','GBG-PlayerList')" title="${HTML.i18nTooltip(i18n('Boxes.General.ExportCSV'))}">CSV</button>`);
+		c.push(`<button class="btn" onclick="HTML.ExportTable($('#GuildPlayersTable'),'json','GBG-PlayerList')" title="${HTML.i18nTooltip(i18n('Boxes.General.ExportJSON'))}">JSON</button></span></p>`);
 
 		$('#GildPlayersSettingsBox').html(c.join(''));
 	},

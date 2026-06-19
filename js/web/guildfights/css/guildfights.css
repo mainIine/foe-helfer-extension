@@ -86,28 +86,6 @@
 	white-space: nowrap;
 }
 
-#GildPlayersBody .roundswitch {
-	padding: 2px 5px;
-}
-
-#GildPlayersBody .roundswitch .btn-set-week.last {
-	margin-right: 10px;
-}
-
-#GildPlayersBody .roundswitch:after {
-	content: "";
-	display: table;
-	clear: both;
-}
-
-#GildPlayersBody #gbgLogFilter {
-	float: right;
-}
-
-#GildPlayersBody #gbg-select-gbground {
-	margin-right: 4px;
-}
-
 #GildPlayersSettingsBox .settingtitle {
 	display: block;
 	margin-bottom: 7px;
