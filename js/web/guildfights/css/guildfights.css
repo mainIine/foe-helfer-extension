@@ -3,107 +3,107 @@
  * Licensed under AGPL - see LICENSE.md for details.
  */
 
-#GildPlayers {
+#GuildPlayers {
 	left: calc(50vw - 285px);
 	top: calc(50vh - 270px);
 	width: 570px;
 	height: 500px;
 }
 
-#GildPlayersDetailView {
+#GuildPlayersDetailView {
 	left: calc(50vw + 285px);
 	top: calc(50vh - 250px);
 	width: 465px;
 	height: 500px;
 }
 
-#GildPlayersHeader small {
+#GuildPlayersHeader small {
 	font-weight: lighter;
 }
 
-#GildPlayersBody,
-#GildPlayersDetailViewBody {
+#GuildPlayersBody,
+#GuildPlayersDetailViewBody {
 	overflow-x: hidden;
 	overflow-y: auto;
 }
 
-#GildPlayersBody table tbody {
+#GuildPlayersBody table tbody {
 	user-select: text;
 }
 
-#GildPlayersDetailViewBody {
+#GuildPlayersDetailViewBody {
 	user-select: none;
 }
 
-#GildPlayersBody tr th,
-#GildPlayersDetailViewBody tr th {
+#GuildPlayersBody tr th,
+#GuildPlayersDetailViewBody tr th {
 	background-color: rgba(0, 0, 0, 0.45);
 	line-height: 25px;
 
 }
 
-#GildPlayersBody tr th span,
-#GildPlayersDetailViewBody tr th span {
+#GuildPlayersBody tr th span,
+#GuildPlayersDetailViewBody tr th span {
 	display: inline-block;
 	width: 25px;
 	height: 25px;
 	vertical-align: bottom;
 }
 
-#GildPlayersBody tr th span.negotiation,
-#GildPlayersDetailViewBody tr th span.negotiation {
+#GuildPlayersBody tr th span.negotiation,
+#GuildPlayersDetailViewBody tr th span.negotiation {
 	background: url('../../x_img/negotiation.png') center no-repeat;
 	background-size: contain;
 }
 
-#GildPlayersBody tr th span.fight,
-#GildPlayersDetailViewBody tr th span.fight {
+#GuildPlayersBody tr th span.fight,
+#GuildPlayersDetailViewBody tr th span.fight {
 	background: url('../../x_img/fight.png') center no-repeat;
 	background-size: contain;
 }
 
-#GildPlayersBody tr td img {
+#GuildPlayersBody tr td img {
 	max-width: 25px;
 	border-radius: 2px;
 }
 
-#GildPlayersBody tr.mark-player td {
+#GuildPlayersBody tr.mark-player td {
 	border-top: 1px solid var(--text-highlight);
 	border-bottom: 1px solid var(--text-highlight);
 }
 
-#GildPlayersBody tr.mark-player td:first-child {
+#GuildPlayersBody tr.mark-player td:first-child {
 	border-left: 1px solid var(--text-highlight);
 }
 
-#GildPlayersBody tr.mark-player td:last-child {
+#GuildPlayersBody tr.mark-player td:last-child {
 	border-right: 1px solid var(--text-highlight);
 }
 
-#GildPlayersBody table .tdmin,
-#GildPlayersDetailViewBody table .tdmin {
+#GuildPlayersBody table .tdmin,
+#GuildPlayersDetailViewBody table .tdmin {
 	width: 1%;
 	white-space: nowrap;
 }
 
-#GildPlayersSettingsBox .settingtitle {
+#GuildPlayersSettingsBox .settingtitle {
 	display: block;
 	margin-bottom: 7px;
 	font-size: 0.9em;
 	text-decoration: underline;
 }
 
-#GildPlayersDetailViewBody .pname {
+#GuildPlayersDetailViewBody .pname {
 	padding: 10px 5px;
 	color: var(--text-highlight);
 	font-size: 1.0rem;
 }
 
-#GildPlayersDetailViewBody table tr.hasdetail {
+#GuildPlayersDetailViewBody table tr.hasdetail {
 	position: relative;
 }
 
-#GildPlayersBody table.chevron-right td:last-child {
+#GuildPlayersBody table.chevron-right td:last-child {
 	background-image: url('../../../../images/hud/chevron-right.svg');
 	background-size: 20px 20px;
 	background-position: center right;
@@ -111,8 +111,8 @@
 	width: 7px;
 }
 
-#GildPlayersDetailViewBody table tr.hasdetail td:last-child,
-#GildPlayersDetailViewBody table thead.hasdetail tr th:last-child {
+#GuildPlayersDetailViewBody table tr.hasdetail td:last-child,
+#GuildPlayersDetailViewBody table thead.hasdetail tr th:last-child {
 	background-image: url('../../../../images/hud/chevron-left.svg');
 	background-size: 20px 20px;
 	background-position: center right;
@@ -121,32 +121,32 @@
 
 }
 
-#GildPlayersDetailViewBody table tr.hasdetail.open td:last-child,
-#GildPlayersDetailViewBody table thead.hasdetail.open tr th:last-child {
+#GuildPlayersDetailViewBody table tr.hasdetail.open td:last-child,
+#GuildPlayersDetailViewBody table thead.hasdetail.open tr th:last-child {
 	background-image: url('../../../../images/hud/chevron-down.svg');
 	width: 7px;
 }
 
-#GildPlayersDetailViewBody tr.open td {
+#GuildPlayersDetailViewBody tr.open td {
 	color: var(--text-highlight);
 }
 
-#GildPlayersDetailViewBody .foe-table td.nopadding {
+#GuildPlayersDetailViewBody .foe-table td.nopadding {
 	padding: 0;
 }
 
-#GildPlayersDetailViewBody .datetimepicker {
+#GuildPlayersDetailViewBody .datetimepicker {
 	padding: 2px 0 0 2px;
 	background-color: rgba(0, 0, 0, 0.45);
 	height: 28px;
 }
 
-#GildPlayersDetailViewBody .sorter-header th {
+#GuildPlayersDetailViewBody .sorter-header th {
 	cursor: pointer;
 }
 
-#GildPlayersDetailViewBody table.foe-table tr td:last-child,
-#GildPlayersDetailViewBody table.foe-table tr th:last-child {
+#GuildPlayersDetailViewBody table.foe-table tr td:last-child,
+#GuildPlayersDetailViewBody table.foe-table tr th:last-child {
 	width: 15px;
 }
 
