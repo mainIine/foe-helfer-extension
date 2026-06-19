@@ -111,6 +111,7 @@ let GuildFights = {
 	GBGRound: null,
 	GBGAllRounds: null,
 	GBGHistoryView: false,
+	GBGRoundGuilds: null,
 	LogDatePicker: null,
 	curDateFilter: null,
 	curDateEndFilter: null,
@@ -203,7 +204,6 @@ let GuildFights = {
 		let sumAttrition = 0;
 
 		for (let i in d) {
-
 			if (!d.hasOwnProperty(i)) break;
 
 			sumNegotiations += d[i]['negotiationsWon'] || 0;
@@ -224,6 +224,15 @@ let GuildFights = {
 
 		await GuildFights.UpdateDB('history', { participation: players, sumNegotiations: sumNegotiations, sumBattles: sumBattles });
 
+		// update history if there is guild data
+		if (GuildFights.GBGRoundGuilds) {
+			await GuildFights.db.history.update(
+				GuildFights.CurrentGBGRound,
+				{ guilds: GuildFights.GBGRoundGuilds }
+			);
+			GuildFights.GBGRoundGuilds = null;
+		}
+
 		GuildFights.GBGHistoryView = false;
 		GuildFights.NewAction = players;
 		localStorage.setItem('GuildFights.NewAction', JSON.stringify(GuildFights.NewAction));
@@ -243,15 +252,30 @@ let GuildFights = {
 	HandleGuildLeaderboard: async (rankingData) => {
 		if (!GuildFights.CurrentGBGRound) return;
 
-		// update DB
+		let participants = GuildFights.MapData?.battlegroundParticipants ?? [];
 
-		let guilds = rankingData.map(rank => ({
+		let guildHistoryData = rankingData.map(rank => ({
 			id: rank.clan.id,
 			name: rank.clan.name,
+			flag: participant?.clan.flag ?? null,
 			points: rank.victoryPointsTotal || 0,
 		}));
 
-		await GuildFights.UpdateDB('guildHistory', guilds);
+		let historyData = guildsForHistory.map(({ flag, ...data }) => data);
+
+		await GuildFights.UpdateDB('guildHistory', guildHistoryData);
+
+		GuildFights.GBGRoundGuilds = historyData;
+
+		// update history record if it already exists
+		let enrtyExists = await GuildFights.db.history.where({ gbground: GuildFights.CurrentGBGRound }).first();
+		if (enrtyExists) {
+			await GuildFights.db.history.update(
+				GuildFights.CurrentGBGRound,
+				{ guilds: historyData }
+			);
+			GuildFights.GBGRoundGuilds = null;
+		}
 	},
 
 
