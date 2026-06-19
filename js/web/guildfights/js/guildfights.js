@@ -40,6 +40,7 @@ FoEproxy.addWsHandler('GuildBattlegroundSignalsService', 'updateSignal', data =>
 });*/
 
 FoEproxy.addHandler('GuildBattlegroundStateService', 'getState', (data, postData) => {
+	if (data.responseData.stateId === 'unsubscribed') return;
 	GuildFights.GlobalRankingTimeout = setTimeout(()=>{
 		if (data.responseData['stateId'] !== 'participating')	{
 			GuildFights.CurrentGBGRound = parseInt(data.responseData['startsAt']) - 259200;
@@ -210,7 +211,7 @@ let GuildFights = {
 			players.push({
 				gbground: GuildFights.CurrentGBGRound,
 				rank: i * 1 + 1,
-				player_id: d[i]['player']['player_id'],
+				player_id: d[i].player.player_id,
 				name: d[i]['player']['name'],
 				avatar: d[i]['player']['avatar'],
 				battlesWon: d[i]['battlesWon'] || 0,
@@ -374,6 +375,7 @@ let GuildFights = {
 
 
 	UpdateDB: async (content, data) => {
+		if (!GuildFights.CurrentGBGRound) return;
 
 		if (content === 'guildHistory') {
 			let gbground = GuildFights.CurrentGBGRound;
