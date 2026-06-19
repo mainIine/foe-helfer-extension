@@ -103,6 +103,10 @@
 	position: relative;
 }
 
+#GuildPlayersDetailView table tr.spacer td {
+	border-bottom-width: 3px;
+}
+
 #GuildPlayersBody table.chevron-right td:last-child {
 	background-image: url('../../../../images/hud/chevron-right.svg');
 	background-size: 20px 20px;

@@ -953,13 +953,12 @@ let GuildFights = {
 			dailyFights.forEach(day => {
 				let id = moment.unix(day.time).format(i18n('DateTime'));
 				let sum = (day.battles + day.negotiations * 2);
-				h.push('<tr id="gbgdetail_' + id + '" data-gbground="' + gbground + '" data-player="' + player_id + '" data-id="' + id + '">');
+				h.push(`<tr id="gbgdetail_${id}" data-gbground="${gbground}" data-player="${player_id}" data-id="${id}">`);
 				h.push(`<td class="is-number" data-number="${day.time}">${moment.unix(day.time).format(i18n('Date'))}</td>`);
 				h.push(`<td class="is-number text-center" data-number="${day.negotiations}">${HTML.Format(day.negotiations)}</td>`);
 				h.push(`<td class="is-number text-center" data-number="${day.battles}">${HTML.Format(day.battles)}</td>`);
 				h.push(`<td class="is-number text-center" data-number="${sum}">${HTML.Format(sum)}</td>`);
 				h.push('</tr>');
-
 			});
 
 			h.push('</tbody></table>');
@@ -982,17 +981,19 @@ let GuildFights = {
 			h.push('</tr>');
 			h.push('</thead><tbody class="gbg-log-group">');
 
+			let lastDataId = 0;
 			detaildata.forEach(e => {
 				sumN += e.negotiations;
 				sumF += e.battles;
 				let sum = (e.battles + e.negotiations * 2);
-				h.push('<tr data-id="' + e.time + '" id="gbgtime_' + e.time + '">');
+				h.push(`<tr  ${e.time === lastDataId ? '' : 'class="spacer"'} data-id="${e.time}" id="gbgtime_${e.time}">`);
 				h.push(`<td class="is-number" data-number="${e.time}">${moment.unix(e.time).format(i18n('DateTime'))}</td>`);
 				h.push(`<td class="case-sensitive" data-text="${helper.str.cleanup(e.name)}">${e.name}</td>`);
 				h.push(`<td class="is-number text-center" data-number="${e.negotiations}">${HTML.Format(e.negotiations)}</td>`);
 				h.push(`<td class="is-number text-center" data-number="${e.battles}">${HTML.Format(e.battles)}</td>`);
 				h.push(`<td class="is-number text-center" data-number="${sum}">${HTML.Format(sum)}</td>`);
 				h.push('</tr>');
+				lastDataId = e.time;
 			});
 
 			h.push('</tbody></table>');
@@ -1002,8 +1003,7 @@ let GuildFights = {
 
 			$('#GuildPlayersDetailViewBody .gbglog').tableSorter();
 
-			if ($('#gbgLogDatepicker').length !== 0)
-			{
+			if ($('#gbgLogDatepicker').length !== 0) {
 				GuildFights.intiateDatePicker();
 			}
 			$('#GuildPlayersDetailViewBody tr.sorter-header').on('click', function () {
@@ -1013,15 +1013,12 @@ let GuildFights = {
 
 			$('#GuildPlayersDetailViewBody > .foe-table tr').on('click', function () {
 
-				if ($(this).next("tr.detailview").length)
-				{
+				if ($(this).next("tr.detailview").length) {
 					$(this).next("tr.detailview").remove();
 					$(this).removeClass('open');
 				}
-				else
-				{
-					if (!$(this).hasClass("hasdetail"))
-					{
+				else {
+					if (!$(this).hasClass("hasdetail")) {
 						return;
 					}
 
@@ -1424,7 +1421,11 @@ let GuildFights = {
 	 * Initatite the Litepicker object
 	 */
 	intiateDatePicker: async () => {
-
+		if (GuildFights.LogDatePicker) {
+			GuildFights.LogDatePicker.destroy();
+			GuildFights.LogDatePicker = null;
+		}
+		
 		GuildFights.LogDatePicker = new Litepicker({
 			element: document.getElementById('gbgLogDatepicker'),
 			format: 'YYYYMMDD',
