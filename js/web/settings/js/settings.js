@@ -380,7 +380,7 @@ let Settings = {
 				</ul>`;
 
 		$('#SettingsBoxBody')
-			.on('change.soundEffects', 'input:checked', function () {
+			.on('change.soundEffects', 'input[name="nSound"]:checked', function () {
 				localStorage.setItem('hammerSound', $(this).val());
 			});
 

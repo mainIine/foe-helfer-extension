@@ -131,7 +131,7 @@ helper.permutations = (()=>{
 
 helper.sounds = {
 	ping: new Audio(extUrl + 'vendor/sounds/ping.mp3'),
-    message: new Audio(extUrl + 'vendor/sounds/'+(localStorage.getItem('hammerSound')||"message")+'.mp3'),
+	message: new Audio(extUrl + 'vendor/sounds/'+(localStorage.getItem('hammerSound')||"message").replace(/^on$/,"message")+'.mp3'),  //temporary fix for faulty setting
 	play: (sound) => {
 		if (Settings.GetSetting('EnableSound')) helper.sounds[sound].play();
 	},
