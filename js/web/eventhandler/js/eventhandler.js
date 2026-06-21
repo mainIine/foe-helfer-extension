@@ -401,7 +401,7 @@ let EventHandler = {
 		}
 
 		/* Filters */
-		h.push('<div class="text-center dark-bg header"><strong class="title">' + i18n('Boxes.MoppelHelper.HeaderWarning') + '</strong><br></div>');
+		h.push('<div class="text-center dark-bg header"><strong class="title">' + i18n('Boxes.MoppelHelper.HeaderWarning') + '</strong></div>');
 		h.push('<div class="dark-bg">');
 
 		// Event filter dropdown
@@ -602,7 +602,7 @@ let EventHandler = {
 			if (EventHandler.ShowHideColumns.Era) {
 				let pTime = EventHandler.isProtected[Player['PlayerID']] | 0;
 				let pImg = (EventHandler.CurrentPlayerGroup === 'Neighbors' && (pTime == -1 || pTime * 1000 > MainParser.getCurrentDateTime())) ? pImage : '';
-				h.push(`<td data-number="${Technologies.Eras[Player['Era']]}" exportvalue="${i18n('Eras.' + Technologies.Eras[Player['Era']])}">${pImg + i18n('Eras.' + Technologies.Eras[Player['Era']]) + pImg}</td>`);
+				h.push(`<td data-number="${Technologies.Eras[Player['Era']]}" exportvalue="${i18n('Eras.' + Technologies.Eras[Player['Era']])}">${pImg + i18n('Eras.' + Technologies.Eras[Player['Era']]+'.short') + pImg}</td>`);
 			}
 
 			// Player points column

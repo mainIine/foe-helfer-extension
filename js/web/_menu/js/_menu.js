@@ -669,9 +669,6 @@ let _menu = {
 	},
 	
 	moppelHelper_Btn: () => {
-		if(!Settings.GetSetting('ShowPlayersMotivation'))
-			return;
-
 		let btn = _menu.MakeButton('moppelHelper');
 
 		let btn_sp = $('<span />').on('click', function () {
