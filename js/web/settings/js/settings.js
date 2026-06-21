@@ -230,7 +230,7 @@ let Settings = {
 		v +=	`<li><a href="${extUrl}content/about.html" target="_blank">${i18n('Settings.About.Title')}</a></li>
 				<li><a href="${extUrl}content/help.html" target="_blank">${i18n('Settings.Help.Title')}</a></li>
 				</ul>
-				<p>${i18n('Settings.Version.Donate')}</p> <a class="kofi" href="https://ko-fi.com/forgehammer" target="_blank"><img src="${extUrl}images/kofi.png" /> Support us on Ko-fi! </a>
+				<p>${i18n('Settings.Version.Donate')}</p> <a class="kofi" href="https://ko-fi.com/forgehammer" target="_blank"><img src="${extUrl}images/kofi.png" height="22" /> Support us on Ko-fi! </a>
 				<div class="info-box">
 					<span><b>${i18n('Boxes.General.Version')}</b> ${extVersion}</span>
 					<span><b>${i18n('Settings.Version.PlayerId')}</b> ${ExtPlayerID}</span>
