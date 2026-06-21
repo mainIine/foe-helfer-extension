@@ -3,6 +3,7 @@
 ## Version 1.0
 ### New
 - Notes/To Dos: Create lists of your most important plans
+- GBG Stats: Guild progress is now tracked every time you open the leaderboard. It will be displayed in a chart when you click on "Stats"
 
 ### Updated
 - Stats: Changed the graphs to ChartJS. You can now drag and zoom instead of selecting sections with your mouse. Data export is not a feature included with ChartJS, so this is currently gone, but will be implemented soon
@@ -10,6 +11,9 @@
 ### Bug fixes
 - Technologies: A game change broke it
 - GBG notifications: Work as expected again instead of sometimes doubling or just being forgotten
+- Settings: Sound settings could get lost
+- Settings: Menu tooltips were broken for some languages
+- Settings: The Motivate/polish tracker was not added to the menu if you deactivated tracking. It now works differently
 
 ---
  

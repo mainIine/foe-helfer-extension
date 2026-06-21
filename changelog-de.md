@@ -2,7 +2,8 @@
  
 ## Version 1.0
 ### Neu
-- Notizen/To Dos: Mach dir Listen, um die an deine wichtigsten Vorhaben zu erinnern
+- Notizen/To Dos: Mach dir Listen, um dich an deine wichtigsten Vorhaben zu erinnern
+- Gefechte: Schau dir den Punkteverlauf einer Runde in den Statistiken an
 
 ### Update
 - Statistiken: Der Code, der für die Darstellung der Statistiken benutzt wird, kommt nun von ChartJS. Man kann nun scrollen und zoomen anstatt wie bisher mit der Maus bereiche zu markieren. Daten-Export ist im Moment nicht möglich, wird aber demnächst wieder hinzugefügt
@@ -10,6 +11,9 @@
 ### Bug Fixes
 - Forschung: Ein Spielupdate hat dafür gesorgt, dass die FP nicht mehr gezählt wurden oder das Fenster leer war
 - GG Benachrichtungen: Laufen wieder wie gewollt, statt mal doppelt, mal gar nicht
+- Einstellungen: Der ausgewählte Ton konnte unter Umständen wieder verschwinden
+- Einstellungen: Tooltips vom Menü sind in manchen Sprachen kaputt gewesen
+- Einstellungen: Der Moppelhelfer wurde nicht ins Menü geladen, wenn man die Aktivitäten nicht gespeichert hat. Das funktioniert jetzt anders
 
 ---
  
