@@ -1382,7 +1382,7 @@
   "Menu.Alerts.Title": "Alerts",
   "Menu.Allies.Desc": "Overview of all allies and buildings that have room for them.",
   "Menu.Allies.Title": "Allies",
-  "Menu.AztecMiniGame.Desc": "<em id=\"minigame_aztecs-Btn-closed\" class=\"tooltip-error\">Opens automatically when starting a aztec mini game<br></em>Aztec Minigame Helper",
+  "Menu.AztecMiniGame.Desc": "<em id=\"minigame_aztecs-Btn-closed\" class=\"tooltip-error\">Opens automatically when starting an aztec mini game</em>",
   "Menu.AztecMiniGame.Title": "Aztec Helper",
   "Menu.Bluegalaxy.Desc": "This tool helps you find the best buildings to collect with your Blue Galaxy",
   "Menu.Bluegalaxy.Title": "Blue Galaxy Helper",

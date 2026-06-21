@@ -652,7 +652,7 @@ let Settings = {
 					.addClass(hiddenArray.includes(name) ? 'hud-btn-red' : '');
 				let btnData = _menu.ItemsData.find(x => x.id === name);
 
-				let btn = $(`<span onclick="_menu.ToggleItemVisibility('${name}')" data-original-title='<b>${btnData?.title||""}</b><br>${btnData?.description||""}'></span>`);
+				let btn = $(`<span onclick="_menu.ToggleItemVisibility('${name}')" data-original-title="<b>${btnData?.title||""}</b><br>${btnData?.description.replace(/<[^>]+>/g, '')||""}"></span>`);
 		
 				btnBG.append(btn);
 				bl.append(btnBG);
