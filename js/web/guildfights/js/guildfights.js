@@ -291,6 +291,13 @@ let GuildFights = {
 				dragdrop: true,
 				minimize: true,
 			});
+
+			$('#StatsGBG').on('click', '#StatsGBGclose', () => {
+				if (GuildFights.Chart) {
+					GuildFights.Chart.destroy();
+					GuildFights.Chart = null;
+				}
+			});
 		}
 		else {
 			HTML.CloseOpenBox('StatsGBG');
