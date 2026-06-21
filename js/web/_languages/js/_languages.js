@@ -85,7 +85,7 @@ let Translation = {
 						<h2>How to help translate</h2> 
 						<ul>
 							<li>using a local version of the <a href="https://github.com/outoftheline/forge-hammer/develop" target="_blank">Forge Hammer develop branch</a></li> is preferred but optional
-							<li>Add missing translations or correct missing ones</li>
+							<li>Add missing translations or correct faulty ones</li>
 							<li>Confirm correctness of translations where appropriate by clicking the checkmark icon</li>
 							<li>Use the Copy button on the right to copy the translation data</li>
 							<li>Submit the copied JSON data in the Translation channel on our <a href="https://discord.gg/M32xurRsQ9" target="_blank">Discord server</a></li>
@@ -149,10 +149,12 @@ let Translation = {
 					newValue = originalValue;
 				}
 			}
-			textarea.parent().html(`<span>${newValue}</span>`);
-			textarea.parent().attr('title', ``);
-			if (newValue == originalValue) return;
-			Translation.targetData[key] = {s: newValue, r:Translation.referenceData[key]?.s || Translation.referenceData[key]};
+			
+			if (newValue != originalValue && newValue !== '') Translation.targetData[key] = {s: newValue, r:Translation.referenceData[key]?.s || Translation.referenceData[key]};
+			let reference = Translation.referenceData[key]?.s || Translation.referenceData[key] || '';
+			let updated = !Translation.targetData[key]?.r || (reference.s || reference) !== Translation.targetData[key]?.r;
+			textarea.parent().html(`${(updated && newValue != "") ? `<b title="click to confirm translation as correct">✓ </b>` : ''}<span>${newValue}</span>`);
+			textarea.parent().attr('title', ``);	
 		})
 
 
