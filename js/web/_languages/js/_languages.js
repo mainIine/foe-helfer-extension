@@ -35,6 +35,8 @@ let Languages = {
 };
 
 let Translation = {
+	targetData: null,
+	referenceData: null,
 	Show: ()=> {
 		if ( $('#Translation').length === 0 ) {
 
@@ -50,10 +52,6 @@ let Translation = {
 			});		
 			let html = `
 				<div id="TranslationHeader" class="p5">
-					<label for="ReferenceLanguage">${i18n('Boxes.Translation.ReferenceLanguage')}</label>
-					<select id="ReferenceLanguage" selected="en">
-						${["en","de"].map((code)=>`<option value="${code}">${Languages.PossibleLanguages[code]}</option>`).join('')}
-					</select>
 					<label for="TargetLanguage">${i18n('Boxes.Translation.TargetLanguage')}</label>
 					<select id="TargetLanguage">
 						<option value="" disabled selected>${i18n('Boxes.Translation.SelectLanguage')}...</option>
@@ -61,7 +59,14 @@ let Translation = {
 					</select>
 					<input type="checkbox" id="ShowOnlyMissing" />
 					<label for="ShowOnlyMissing">${i18n('Boxes.Translation.ShowOnlyMissing')}</label>
+					<input type="checkbox" id="ShowOnlyUpdated" />
+					<label for="ShowOnlyUpdated">${i18n('Boxes.Translation.ShowOnlyUpdated')}</label>
 					<input type="text" id="TranslationSearch" placeholder="${i18n('Boxes.Translation.SearchPlaceholder')}" length="50"/>
+					<label for="ComparisonLanguage">${i18n('Boxes.Translation.ComparisonLanguage')}</label>
+					<select id="ComparisonLanguage">
+						${Object.entries(Languages.PossibleLanguages).map(([code, name])=>`<option value="${code}" ${code === 'de' ? 'selected' : ''}>${name}</option>`).join('')}
+					</select>
+					
 				</div>
 				<table id="TranslationTable" class="foe-table">
 					<thead>
@@ -98,19 +103,16 @@ let Translation = {
 			$('#TranslationBody').html(html)
 		}
 		$('#TargetLanguage').on('change', Translation.UpdateTable);
-		$('#ReferenceLanguage').on('change', Translation.UpdateTable);
+		$('#ComparisonLanguage').on('change', Translation.UpdateTable);
 		$('#ShowOnlyMissing').on('change', ()=>{
 			$('#TranslationTable')[0].classList.toggle('show-only-missing', $('#ShowOnlyMissing')[0].checked);
 		});
+		$('#ShowOnlyUpdated').on('change', ()=>{
+			$('#TranslationTable')[0].classList.toggle('show-only-updated', $('#ShowOnlyUpdated')[0].checked);
+		});
 		$('#TranslationSearch').on('input', Translation.FilterTable);
 		$('#CopyJSON').on('click', ()=>{
-			let target = {};
-			$('#TranslationTable tbody tr').each((i, row)=>{
-				let key = $(row).find('td:nth-child(1)').html();
-				let value = $(row).find('td:nth-child(3) span').html();
-				if (value.trim() !== '') target[key] = value;
-			});
-			navigator.clipboard.writeText(JSON.stringify(target, null, 2));
+			navigator.clipboard.writeText(JSON.stringify(Translation.targetData, null, 2));
 		});
 		$('#TempStorage').on('click', ()=>{
 			let target = {};
@@ -133,8 +135,15 @@ let Translation = {
 			let input = td.find('textarea');
 			input.focus();
 		});
+		$('#TranslationTable').on('click', 'td:nth-child(3) b', function(e) {
+			let key = $(this).parent().siblings(':first').html();
+			Translation.targetData[key] = {s: Translation.targetData[key]?.s || Translation.targetData[key], r:Translation.referenceData[key]?.s || Translation.referenceData[key]};
+			$(this).remove();
+			e.stopPropagation();
+		});
 		$('#TranslationTable').on('blur', 'td:nth-child(3) textarea', function() {
 			let textarea = $(this);
+			let key = textarea.parent().siblings(':first').html();
 			let originalValue = textarea.next().html();
 			let newValue = textarea.val();
 			if (newValue.trim() === '') newValue = '';
@@ -144,6 +153,9 @@ let Translation = {
 				}
 			}
 			textarea.parent().html(`<span>${newValue}</span>`);
+			textarea.parent().attr('title', ``);
+			if (newValue == originalValue) return;
+			Translation.targetData[key] = {s: newValue, r:Translation.referenceData[key]?.s || Translation.referenceData[key]};
 		})
 
 
@@ -151,23 +163,25 @@ let Translation = {
 
 	UpdateTable: async ()=> {
 		let target = $('#TargetLanguage')[0].value;
-		let reference = $('#ReferenceLanguage')[0].value;
-		let showOnlyMissing = $('#ShowOnlyMissing')[0].checked;
+		let comparison = $('#ComparisonLanguage')[0].value;
 
-		let targetData = await fetch(extUrl + 'js/web/_i18n/'+target+'.json').then(res=>res.json()).catch(()=>({}));
-		let referenceData = await fetch(extUrl + 'js/web/_i18n/'+reference+'.json').then(res=>res.json()).catch(()=>({}));
+		Translation.targetData = await fetch(extUrl + 'js/web/_languages/json/'+target+'.json').then(res=>res.json()).catch(()=>({}));
+		Translation.referenceData = await fetch(extUrl + 'js/web/_languages/json/en.json').then(res=>res.json()).catch(()=>({}));
+		let comparisonData = await fetch(extUrl + 'js/web/_languages/json/'+comparison+'.json').then(res=>res.json()).catch(()=>({}));
 		
 		localData = JSON.parse(localStorage.getItem('Translation.Temp') || '{}');	
 
-		referenceData = Object.entries(referenceData).sort((a, b) => a[0].localeCompare(b[0])).map(([key, value])=>({key, value}));
-		let rowsHtml = referenceData.map(({key, value})=>{
-			let targetValue = targetData[key] || '';
+		referenceData = Object.entries(Translation.referenceData).sort((a, b) => a[0].localeCompare(b[0])).map(([key, reference])=>({key, reference}));
+		let rowsHtml = referenceData.map(({key, reference})=>{
+			let targetValue = Translation.targetData[key]?.s || Translation.targetData[key] || '';
+			let comparisonValue = comparisonData[key]?.s || comparisonData[key] || '';
 			let missing = targetValue.trim() === '';
+			let updated = !Translation.targetData[key]?.r || (reference.s || reference) !== Translation.targetData[key]?.r;
 			targetValue = localData[key] || targetValue;
-			return `<tr class="${missing ? 'missing' : ''}">
+			return `<tr class="${missing ? 'missing' : ''} ${updated ? 'updated' : ''}">
 				<td>${key}</td>
-				<td>${value}</td>
-				<td><span>${targetValue}</span></td>
+				<td title="Comparison Value: ${HTML.escapeHtml(comparisonValue)}">${reference.s||reference}</td>
+				<td ${updated ? `title="Old Reference: ${HTML.escapeHtml(Translation.targetData[key]?.r || '')}"` : ''}>${updated ? `<b title="click to confirm translation as correct">✓ </b>` : ''}<span>${targetValue}</span></td>
 			</tr>`;
 		}).join('');
 		$('#TranslationTable tbody').html(rowsHtml);
@@ -193,7 +207,5 @@ let Translation = {
 			}
 		});
 	}
-
-
 
 };

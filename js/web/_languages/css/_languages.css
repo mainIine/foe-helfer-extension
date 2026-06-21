@@ -1,6 +1,9 @@
 
 
-#TranslationTable.show-only-missing tbody tr:not(.missing), #TranslationTable.search-active tbody tr:not(.found), #TranslationTable .hidden {
+#TranslationTable.show-only-updated tbody tr:not(.updated), 
+#TranslationTable.show-only-missing tbody tr:not(.missing), 
+#TranslationTable.search-active tbody tr:not(.found), 
+#TranslationTable .hidden {
     display:none;
 }
 
@@ -48,3 +51,12 @@
     display: block;
 }
 
+#TranslationTable td:nth-child(3) b {
+    cursor: pointer;
+    color: orange;
+}
+
+#TranslationTable td:nth-child(3) b:hover {
+    cursor: pointer;
+    color: limegreen;
+}
