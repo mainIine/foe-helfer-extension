@@ -824,6 +824,8 @@
   "Boxes.MergerGame.TaskReady": "Aufgabe einsammeln!",
   "Boxes.MergerGame.useAverage": "Statt der tatsächlichen Reset-Kosten diesen Wert nehmen (0 für aus)",
   "Boxes.MergerGame.WorldChallengeOverflowWarning": "Herausforderung wird überlaufen!",
+  "Boxes.MoppelHelper.ActivateButton": "Hier aktivieren",
+  "Boxes.MoppelHelper.ActivateDesc": "Inaktiv, bitte aktiviere erst das Tracking! Danach einmal dieses Fenster schließen und wieder öffnen",
   "Boxes.MoppelHelper.Attacks": "Angriffe",
   "Boxes.MoppelHelper.CityProtected": "Die Stadt dieses Spielers kann nicht angegriffen werden",
   "Boxes.MoppelHelper.Columns": "Spalten",

@@ -46,9 +46,9 @@ let Settings = {
 
 
 	/**
-	 * Box initiieren
+	 * activeTab and activeSubTab need to be integers
 	 */
-	BuildBox: () => {
+	BuildBox: (activeTab = null, activeSubTab = null) => {
 		if ($('#SettingsBox').length < 1) {
 
 			HTML.AddCssFile('settings');
@@ -64,15 +64,11 @@ let Settings = {
 			HTML.CloseOpenBox('SettingsBox');
 		}
 
-		Settings.BuildBody();
+		Settings.BuildBody(activeTab, activeSubTab);
 	},
 
 
-	/**
-	 * Box zusammen setzen
-	 *
-	 */
-	BuildBody: () => {
+	BuildBody: (activeTab = null, activeSubTab = null) => {
 		let parentLis = [],
 			div = [],
 			content;
@@ -93,7 +89,7 @@ let Settings = {
 				let d = grps[x],
 					status = d['status'],
 					button = d['button'],
-					c = $('<div />').addClass('item'),
+					c = $('<div class="item" />'),
 					cr = $('<div />').addClass('item-row'),
 					ct = $('<h2 />'),
 					cd = $('<div />').addClass('desc'),
@@ -163,8 +159,15 @@ let Settings = {
 		// wait for html in the DOM
 		$('#SettingsBoxBody').html(content).promise().done(function () {
 			// init Tabslet
-			$('.settings').tabslet();
-			$('.settings-sub').tabslet();
+			if (activeTab) 
+				$('.settings').tabslet({active: activeTab});
+			else 
+				$('.settings').tabslet();
+			
+			if (activeSubTab) 
+				$('.settings-sub').tabslet({active: activeSubTab});
+			else 
+				$('.settings-sub').tabslet();
 		});
 
 

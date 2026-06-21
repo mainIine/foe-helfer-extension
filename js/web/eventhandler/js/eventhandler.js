@@ -452,6 +452,18 @@ let EventHandler = {
 
 		h.push('</ul></div></div>');
 
+
+		
+		if(!Settings.GetSetting('ShowPlayersMotivation')) {
+			h.push(`<div class="flex itemscenter" style="height: 300px">
+				<div class="text-center">Tracking is inactive! <br />
+				<button class="btn" onclick="Settings.BuildBox(4,2)">Activate it here</button></div>
+				</div>`);
+			await $('#moppelhelperBody').html(h.join(''));
+			return;
+		}
+
+
 		h.push('<table id="moppelhelperTable" class="foe-table sortable-table exportable">');		
 		h.push('</table>');	
 
@@ -469,8 +481,8 @@ let EventHandler = {
 	 */
 	CalcMoppelHelperTable: async () => {
 		let h = [];
-
 		let PlayerList = [];
+
 		if (EventHandler.CurrentPlayerGroup === 'Friends') {
 			if (!PlayerDictFriendsUpdated) {
 				h.push('<div class="text-center"><strong class="bigerror">' + i18n('Boxes.MoppelHelper.FriendsSocialTabTT') + '</strong></div>');
