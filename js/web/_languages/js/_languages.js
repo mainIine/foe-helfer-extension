@@ -115,13 +115,7 @@ let Translation = {
 			navigator.clipboard.writeText(JSON.stringify(Translation.targetData, null, 2));
 		});
 		$('#TempStorage').on('click', ()=>{
-			let target = {};
-			$('#TranslationTable tbody tr').each((i, row)=>{
-				let key = $(row).find('td:nth-child(1)').html();
-				let value = $(row).find('td:nth-child(3) span').html();
-				if (value.trim() !== '') target[key] = value;
-			});
-			localStorage.setItem('Translation.Temp', JSON.stringify(target));
+			localStorage.setItem('Translation.Temp', JSON.stringify(Translation.targetData));
 		});
 		$('#ClearStorage').on('click', ()=>{
 			localStorage.removeItem('Translation.Temp');
