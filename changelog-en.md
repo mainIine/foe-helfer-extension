@@ -7,6 +7,9 @@
 
 ### Updated
 - Stats: Changed the graphs to ChartJS. You can now drag and zoom instead of selecting sections with your mouse. Data export is not a feature included with ChartJS, so this is currently gone, but will be implemented soon
+- Translations: 
+    - The reference string corresponding to a translated string is now saved - when the reference changes, this can be highlighted in the tool
+    - When changes are stored temporarily, the updated strings will be used directly in the extension - some might need a reload though
 
 ### Bug fixes
 - Technologies: A game change broke it
@@ -23,6 +26,7 @@
 - Game Filters! You can adjust some basic game colors in the settings now
 - Change notification sound! Check the settings to choose from seven different sound effects
 - Window Pop Outs: You can try an alpha version of it in the efficiency window. It will not have full functionality
+- Translations: to replace weblate, a translation tool was added - it can be accessed in the Settings' language option
 
 ### Updated
 - GB Calculator: Added a button at the top to easily switch views

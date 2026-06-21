@@ -1239,7 +1239,7 @@
   "Boxes.Translation.SearchPlaceholder": "Suche...",
   "Boxes.Translation.SelectLanguage": "Sprache auswählen",
   "Boxes.Translation.ShowOnlyMissing": "Nur fehlende anzeigen",
-  "Boxes.Translation.ShowOnlyMissing": "Nur aktualisierte anzeigen",
+  "Boxes.Translation.ShowOnlyUpdated": "Nur aktualisierte anzeigen",
   "Boxes.Translation.Target": "Text",
   "Boxes.Translation.TargetLanguage": "Zielsprache",
   "Boxes.Translation.TempStorage": "Zwischenspeichern",

@@ -94,12 +94,10 @@ let GameTime = {
 	get:()=>{
 		return moment().unix()+GameTime.Offset;
 	}
-	
-
 }
 
 let i18n = (key) => {
-	return i18nData[key]?.s || i18nData[key] || key;
+	return Translation.tempData?.[key]?.s || Translation.tempData?.[key] || i18nData[key] || key;
 }
 let i18nData = null;
 
