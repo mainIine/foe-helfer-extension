@@ -49,9 +49,9 @@
 	--btn-bg-disabled: linear-gradient(to bottom, #0a1a27 0%,#2a2a2a 1%,#1e1e1e 30%,#1f1f1f 99%, #252525 100%);
 	--btn-bg-active: linear-gradient(to bottom, #48c8e8 0%,#2aa8cc 1%,#1880aa 30%,#0f5a80 99%,#1a6a9e 100%);
 	--btn-bg-onclick: linear-gradient(to bottom, #48c8e8 0%,#2aa8cc 1%,#1880aa 20%,#0a3e60 80%,#155078 100%);
-	--btn-bg-green: linear-gradient(to bottom, #2a8e5e 0%,#1a6040 100%);
+	--btn-bg-green: linear-gradient(to bottom, #267c52 0%,#195339 100%);
 	--btn-green-color: #a1ebc6;
-	--btn-border: 1px solid #0a3258;
+	--btn-border: 1px solid #1a3e60;
 	--btn-border-active-color: #0a5b81;
 
 	--btn-bg-red: linear-gradient(to bottom, #7a1a1a 0%,#3d0a0a 100%);
@@ -118,7 +118,8 @@
 	--menu-boxed-head-bg: linear-gradient(#1e2e44, #14223a);
 	--menu-boxed-head-shadow: inset 0 1px 1px #1e2e44, inset 0 2px 0 #3a4e68;
 	--menu-boxed-head-color: #eee;
-
+	
+	--bg-chart: #16161ca3;
 
 	/* static */
 

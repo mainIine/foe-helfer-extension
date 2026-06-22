@@ -125,7 +125,8 @@
 	--menu-boxed-head-bg: linear-gradient(#1e1c1a, #141210);
 	--menu-boxed-head-shadow: inset 0 1px 1px #1e1c1a, inset 0 2px 0 #2a2825;
 	--menu-boxed-head-color: #c8c4be;
-
+	
+	--bg-chart: #1116;
 
 	/* static */
 	

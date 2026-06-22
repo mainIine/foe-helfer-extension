@@ -351,6 +351,7 @@ let GuildFights = {
 			type: 'line',
 			data: { datasets: datasets },
 			options: {
+				animation: false,
 				color: '#ccc',
 				interaction: {
 					mode: 'index',
@@ -470,9 +471,8 @@ let GuildFights = {
 			let previousweek = GuildFights.GBGAllRounds[index + 1] || null;
 			let nextweek = GuildFights.GBGAllRounds[index - 1] || null;
 
-			h.push(`<div id="gbg_meta" class="flex between dark-bg p5">`);
-
-				h.push(`<div>
+			h.push(`<div id="gbg_meta" class="flex between dark-bg p5">
+				<div>
 					<button class="btn btn-mid btn-set-week" data-week="${previousweek}"${previousweek === null ? ' disabled' : ''}>&lt;</button> 
 					<select id="gbg-select-gbground">`);
 
@@ -482,14 +482,14 @@ let GuildFights = {
 
 				h.push(`</select>
 					<button class="btn btn-mid btn-set-week last" data-week="${nextweek}"${nextweek === null ? ' disabled' : ''}>&gt;</button>
-					</div>`);
+				</div>`);
 
 			if (gbground === GuildFights.CurrentGBGRound) {
-				h.push(`<button class="btn btn-mid" onclick="GuildFights.ShowGBGCharts()">${i18n('Boxes.GuildFights.Stats.Open')}</button>`);
 				h.push(`<div id="gbgLogFilter">
-					<button id="gbg_filterProgressList" title="${HTML.i18nTooltip(i18n('Boxes.GuildFights.ProgressFilterDesc'))}" class="btn btn-mid" disabled>&#8593;</button>
-					<button id="gbg_showLog" class="btn btn-mid">${i18n('Boxes.GuildFights.SnapshotLog')}</button>
-					</div>`);
+							<button class="btn btn-mid" onclick="GuildFights.ShowGBGCharts()">${i18n('Boxes.GuildFights.Stats.Open')}</button>
+							<button id="gbg_filterProgressList" title="${HTML.i18nTooltip(i18n('Boxes.GuildFights.ProgressFilterDesc'))}" class="btn btn-mid" disabled>&#8593;</button>
+							<button id="gbg_showLog" class="btn btn-mid">${i18n('Boxes.GuildFights.SnapshotLog')}</button>
+						</div>`);
 			}
 			h.push(`</div>`);
 		}

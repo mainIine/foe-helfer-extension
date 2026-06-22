@@ -474,6 +474,8 @@ let GexStat = {
 				datasets: series.data
 			},
 			options: {
+				animation: false,
+				color: '#ccc',
 				responsive: true,
 				maintainAspectRatio: false,
 				interaction: {

@@ -199,7 +199,7 @@
 }
 
 #statsWrapper {
-	background-color: #2226;
+	background-color: var(--bg-chart);
 	height: 550px;
 }
 
