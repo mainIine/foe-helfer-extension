@@ -58,16 +58,17 @@ let Translation = {
 						<option value="" disabled selected>${i18n('Boxes.Translation.SelectLanguage')}...</option>
 						${Object.entries(Languages.PossibleLanguages).map(([code, name])=>`<option value="${code}">${name}</option>`).join('')}
 					</select>
-					<input type="checkbox" id="ShowOnlyMissing" />
-					<label for="ShowOnlyMissing">${i18n('Boxes.Translation.ShowOnlyMissing')}</label>
-					<input type="checkbox" id="ShowOnlyUpdated" />
-					<label for="ShowOnlyUpdated">${i18n('Boxes.Translation.ShowOnlyUpdated')}</label>
 					<input type="text" id="TranslationSearch" placeholder="${i18n('Boxes.Translation.SearchPlaceholder')}" length="50"/>
 					<label for="ComparisonLanguage">${i18n('Boxes.Translation.ComparisonLanguage')}</label>
 					<select id="ComparisonLanguage">
 						${Object.entries(Languages.PossibleLanguages).map(([code, name])=>`<option value="${code}" ${code === 'de' ? 'selected' : ''}>${name}</option>`).join('')}
 					</select>
+					<br />
 					
+					<input type="checkbox" id="ShowOnlyMissing" />
+					<label for="ShowOnlyMissing">${i18n('Boxes.Translation.ShowOnlyMissing')}</label>
+					<input type="checkbox" id="ShowOnlyUpdated" />
+					<label for="ShowOnlyUpdated">${i18n('Boxes.Translation.ShowOnlyUpdated')}</label>
 				</div>
 				<table id="TranslationTable" class="foe-table">
 					<thead>

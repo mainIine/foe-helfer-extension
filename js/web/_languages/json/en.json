@@ -1509,7 +1509,7 @@
   "Settings.ChangeLanguage.Desc": "Choose your preferred language from the drop-down list.",
   "Settings.ChangeLanguage.Title": "Change Language",
   "Settings.ChangeLanguage.Translate": "Translate",
-  "Settings.ChangeLanguage.TranslateDescription": "We can only provide translations for English and German ourselves. You can help with other languages by using our translate module and GitHub:",
+  "Settings.ChangeLanguage.TranslateDescription": "We can only provide translations for English and German ourselves. You can help with other languages by using the translation module:",
   "Settings.CountRelics": "Count relics in menu icon",
   "Settings.doubleFPtimeout.Desc": "Shows a box that temporarily covers the FP entry field in GB after a donation. The value determines the duration the box is shown in seconds - when 0, the box does not show",
   "Settings.doubleFPtimeout.Title": "Double donation blocker",
