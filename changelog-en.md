@@ -2,7 +2,7 @@
  
 ## Version 1.0
 ### New
-- Notes/To Dos: Create lists of your most important plans
+- Notes/To Dos: Create lists for your most important plans
 - GBG Stats: Guild progress is now tracked every time you open the leaderboard. It will be displayed in a chart when you click on "Stats"
 
 ### Updated
