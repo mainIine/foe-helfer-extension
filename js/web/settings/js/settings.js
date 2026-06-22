@@ -269,7 +269,7 @@ let Settings = {
 		let v = `<ul class="gameFilters foe-table">
 			<li><span>${i18n('Boxes.Settings.GameFilters.Brightness')}</span> <input type="range" name="brightness" id="gamebrightness" min="0.1" max="1.5" step="0.01" value="${filters.brightness}" /> <output for="gamebrightness">${filters.brightness}</output></li>
 			<li><span>${i18n('Boxes.Settings.GameFilters.Contrast')}</span> <input type="range" name="contrast" id="gamecontrast" min="0.5" max="1.5" step="0.01" value="${filters.contrast}" /> <output for="gamecontrast">${filters.contrast}</output></li>
-			<li><span>${i18n('Boxes.Settings.GameFilters.Saturation')}</span> <input type="range" name="saturation" id="gamesaturation" min="0" max="1.4" step="0.01" value="${filters.saturation}" /> <output for="gamesaturation">${filters.saturation}</output></li>
+			<li><span>${i18n('Boxes.Settings.GameFilters.Saturation')}</span> <input type="range" name="saturation" id="gamesaturation" min="0" max="1.5" step="0.01" value="${filters.saturation}" /> <output for="gamesaturation">${filters.saturation}</output></li>
 			<li><span>${i18n('Boxes.Settings.GameFilters.Hue')}</span> <input type="range" name="hue" id="gamehue" min="0" max="360" step="1" value="${filters.hue}" /> <output for="gamehue">${filters.hue}</output></li>
 		</ul>
 		<button class="btn resetColors my-5">${i18n('Boxes.General.Reset')}</button>`;
