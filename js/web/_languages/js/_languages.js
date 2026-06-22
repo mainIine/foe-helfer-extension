@@ -84,13 +84,13 @@ let Translation = {
 					<div class="p5" id="CopyJSONInfo">
 						<h2>How to help translate</h2> 
 						<ul>
-							<li>using a local version of the <a href="https://github.com/outoftheline/forge-hammer/develop" target="_blank">Forge Hammer develop branch</a></li> is preferred but optional
+							<li>Using a local version of the <a href="https://github.com/outoftheline/forge-hammer/develop" target="_blank">Forge Hammer develop branch</a></li> is preferred, so you have the latest changes, but optional
 							<li>Add missing translations or correct faulty ones</li>
-							<li>Confirm correctness of translations where appropriate by clicking the checkmark icon</li>
-							<li>Use the Copy button on the right to copy the translation data</li>
+							<li>Confirm correctness of translations where appropriate by clicking the checkmark icon - mainly for the first pass-over after Forge Hammer release</li>
+							<li>Use the Copy JSON button on the right to copy the translation data</li>
 							<li>Submit the copied JSON data in the Translation channel on our <a href="https://discord.gg/M32xurRsQ9" target="_blank">Discord server</a></li>
 							<li>You can save your translation progress locally - it also is applied to the extension directly then, although some strings might need a reload</li>
-							<li>If you use a local copy of the extension, you can apply the translation bit by bit and test how it looks in the extension before you submit it.</li>
+							<li>If you use a fork of the extension, you can also copy the JSON data into the respective language file and create a pull request on Github to get your changes merged.</li>
 						</ul>
 					</div>
 					<div class="p5">
