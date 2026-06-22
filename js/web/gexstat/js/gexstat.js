@@ -271,7 +271,7 @@ let GexStat = {
 		for (let x = 0; x < GexPaticipants.length; x++) {
 			const participant = GexPaticipants[x];
 			let points = parseInt(participant.points);
-			let progressWidth = points >= 100 ? 100 : points;
+			let progressWidth = points / 125 * 100;
 			let rankClass = participant.rank <= 3 ? participant.rank : 0;
 			let stripedClass = points > 100 ? ' glow' : '';
 
