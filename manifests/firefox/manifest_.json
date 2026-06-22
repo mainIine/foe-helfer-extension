@@ -16,7 +16,7 @@
 
 	"browser_specific_settings": {
 		"gecko": {
-			"strict_min_version": "140",
+			"strict_min_version": "140.0",
 			"id": "@forge-hammer",
 			"data_collection_permissions": {
                 "required": [
