@@ -1165,6 +1165,26 @@ let GuildFights = {
 				$(this).toggleClass('highlight-row');
 				GuildFights.ToggleCopyButton();
 			});
+			// in BuildFightContent(), inside .promise().done(), alongside the existing delegated listeners:
+			$('#LiveGildFightingBody .gbg-tabs').on('mouseenter', 'tr', function (e) {
+				if (ProvinceMap.selectedProvince?.owner) {
+					ProvinceMap.selectedProvince.isSelected = false;
+					ProvinceMap.selectedProvince.updateMapSector();
+				}
+
+				let pId = $(this).attr("data-id");
+				ProvinceMap.selectedProvince = ProvinceMap.Provinces[pId] || null;
+				if (ProvinceMap.selectedProvince?.owner) {
+					ProvinceMap.selectedProvince.isSelected = true;
+					ProvinceMap.selectedProvince.updateMapSector();
+				}
+			}).on('mouseleave', 'tr', function () {
+				if (ProvinceMap.selectedProvince?.owner) {
+					ProvinceMap.selectedProvince.isSelected = false;
+					ProvinceMap.selectedProvince.updateMapSector();
+				}
+				ProvinceMap.selectedProvince = null;
+			});
 			$('[data-original-title]').tooltip({container: 'body'});
 		});
 	},
@@ -2110,6 +2130,8 @@ let ProvinceMap = {
 			this.circlePosition = data.circlePosition;
 			this.totalBuildingSlots = data.totalBuildingSlots;
 			this._shapeCache = {};
+			this.isSelected = false;
+
 			return this;
 		}
 
@@ -2152,6 +2174,7 @@ let ProvinceMap = {
 			
 			else {
 				ProvinceMap.MapCTX.fillStyle = sector.owner.colors.highlight;
+				if (this.isSelected) ProvinceMap.MapCTX.fillStyle = this.owner.colors.base;
 
 				if (ProvinceMap.view == "battleType" && sector.battleType == "red" && sector.owner.colors.cid !== "own_guild_colour")
 					ProvinceMap.MapCTX.fillStyle = "#cf401e";
@@ -2186,6 +2209,7 @@ let ProvinceMap = {
 		Province.prototype.drawUnlockTime = function(mapStuff) {
 			ProvinceMap.MapCTX.font = 'bold 20px Courier New';
 			ProvinceMap.MapCTX.fillStyle = '#000';
+			if (this.isSelected) ProvinceMap.MapCTX.fillStyle = '#fff';
 			let provinceUnlockTime = (moment.unix(this.lockedUntil).format('HH:mm') != 'Invalid date') ? moment.unix(this.lockedUntil).format('HH:mm') : '';
 			ProvinceMap.MapCTX.fillText(provinceUnlockTime,mapStuff.x,mapStuff.y+5);
 		}
@@ -2201,6 +2225,7 @@ let ProvinceMap = {
 			// do not draw dots for own sectors
 			if (this.owner.colors.cid != "own_guild_colour") {
 				ProvinceMap.MapCTX.strokeStyle = '#000';
+				if (this.isSelected) ProvinceMap.MapCTX.strokeStyle = '#fff';
 
 				ProvinceMap.MapCTX.beginPath();
 				ProvinceMap.MapCTX.arc(x-36, titleY+12, 5, 0, 2*Math.PI);
@@ -2216,11 +2241,14 @@ let ProvinceMap = {
 			}
 
 			ProvinceMap.MapCTX.strokeStyle = '#fff5';
+			if (this.isSelected) ProvinceMap.MapCTX.strokeStyle = '#000';
 
 			ProvinceMap.MapCTX.font = 'bold 28px Arial';
 			ProvinceMap.MapCTX.strokeText(this.short, x, titleY);
 
 			ProvinceMap.MapCTX.fillStyle = '#000';
+			if (this.isSelected) ProvinceMap.MapCTX.fillStyle = '#fff';
+
 			ProvinceMap.MapCTX.fillText(this.short, x, titleY);
 			
 			if (this.totalBuildingSlots != undefined) {
@@ -2241,8 +2269,9 @@ let ProvinceMap = {
 			ProvinceMap.MapCTX.strokeStyle = ProvinceMap.StrokeColor;
 			if (this.conquestProgress !== undefined && this.conquestProgress.length > 0)
 				this.conquestProgress.forEach(function(prog, index) {
+					let colors = [...GuildFights.SortedColors]
 					let progDiff = (prog.progress / prog.maxProgress);
-					let color = GuildFights.SortedColors.find(c => (c.id === prog.participantId));
+					let color = colors.find(c => (c.id === prog.participantId));
 					let barWidth = 50;
 					let x = mapStuff.x-27;
 
