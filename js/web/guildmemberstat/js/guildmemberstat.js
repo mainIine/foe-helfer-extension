@@ -993,8 +993,6 @@ let GuildMemberStat = {
 			member['rank'] = typeof member['rank'] !== 'undefined' ? member['rank'] : [rank, rank]
 			let rankDiffClass = (member['rank'] && member['rank'][1] > member['rank'][0]) ? ' decreased' : member['rank'][0] > member['rank'][1] ? ' increased' : '';
 
-			scoreDiff = scoreDiff > 0 ? '+' + scoreDiff : scoreDiff;
-
 			// build an dictionary for detail views
 			if (GuildMemberStat.MemberDict[MemberID] === undefined) GuildMemberStat.MemberDict[MemberID] = {};
 			if (ActWarnCount > 0) GuildMemberStat.MemberDict[MemberID]['activity'] = activityWarnings;
@@ -1008,7 +1006,7 @@ let GuildMemberStat = {
 			h.push(`<tr id="gms${x}" class="${deletedMember ? 'strikeout gms-tooltip ' : 'clickable '}${stateClass}" " data-id="${MemberID}" ${deletedMember ? 'title="' + HTML.i18nTooltip(i18n('Boxes.GuildMemberStat.MemberLeavedGuild')) + '"' : ''}>
 				<td class="is-number text-center${rankDiffClass}" data-number="${!deletedMember ? rank : member['score']}">${!deletedMember ? '#' + (rank - deletedCount) : ''}</td>
 				<td class="case-sensitive copyable" data-text="${helper.str.cleanup(member['name'])}"><img style="max-width: 22px" src="${srcLinks.GetPortrait(member.avatar)}" alt="${member['name']}"> <span>${MainParser.GetPlayerLink(member['player_id'], member['name'])}</span></td>
-				<td class="is-number" data-number="${member['score']}">${HTML.Format(member['score'])}${scoreDiff > 0 || scoreDiff < 0 ? '<span class="prev_score ' + scoreDiffClass + '">' + (scoreDiff > 0 ? '+' : '') + HTML.Format(scoreDiff) + '</span>' : ''}</td>`);
+				<td class="is-number" data-number="${member['score']}">${HTML.Format(member['score'])}${scoreDiff > 0 || scoreDiff < 0 ? '<span class="prev_score ' + scoreDiffClass + '">' + (scoreDiff > 0 ? '+' : '') + HTML.FormatNumberShort(scoreDiff) + '</span>' : ''}</td>`);
 
 				if (GuildMemberStat.Settings.showBattlesWon) {
 					let battleDiff = member.won_battles - member.prev_battles;
