@@ -3,14 +3,51 @@
  * Licensed under AGPL - see LICENSE.md for details.
  */
 
-let ExtbaseData = JSON.parse(localStorage.getItem("HelperBaseData")||"{}");
-const extID = ExtbaseData.extID,
-	extUrl = ExtbaseData.extUrl,
-	GuiLng = ExtbaseData.GuiLng,
-	extVersion = ExtbaseData.extVersion,
-	isRelease = ExtbaseData.isRelease,
-	devMode = ExtbaseData.devMode,
-	loadBeta = ExtbaseData.loadBeta;
+(function () {
+
+let HelperWarning = () => {
+	let div = document.createElement('div');
+	div.innerHTML = `<div style="position:fixed;top:0;left:0;width:100%;height:100%;background-color:#000000cc;color:white;z-index:9999999999;display:flex;align-items:center;justify-content:center;font-size:2rem;text-align:center;flex-direction:column;">
+		<div><h2>FoE-Helper detected!!! </h2> Please remove or deactivate Helper for proper functionality of Forge Hammer in your extension settings!<br>
+		See <a href="https://github.com/outoftheline/forge-hammer/wiki/Switching-from-FoE-Helper-to-Forge-Hammer" target="_blank">here</a> for more information - see below to access extension settings:</div>
+		<div style="display: grid;grid-template-columns: 1fr 1fr;grid-gap: 1rem;margin-top: 1rem;">
+		<span>Brave </span><span>brave://extensions/</span>
+		<span>Chrome </span><span>chrome://extensions/</span>
+		<span>Edge </span><span>edge://extensions/</span>
+		<span>Opera </span><span>opera://extensions/</span>
+		<span>Firefox </span><span>about:addons</span></div>
+	</div>`;
+	document.body.appendChild(div);
+	window.stop();
+}
+
+const duplicateDetected = !!(
+	window.ExtbaseData ||
+	window.MainParser ||
+	window.HelperBeta ||
+	window.ExistenceConfirmed ||
+	window.i18n
+);
+
+if (duplicateDetected) {
+	HelperWarning();
+	return;
+}
+
+setTimeout(() => {
+	if (typeof window.GetFights != "undefined") {
+		HelperWarning();
+	}
+}, 5000);
+
+window.ExtbaseData = JSON.parse(localStorage.getItem("HelperBaseData")||"{}");
+window.extID = ExtbaseData.extID;
+window.extUrl = ExtbaseData.extUrl;
+window.GuiLng = ExtbaseData.GuiLng;
+window.extVersion = ExtbaseData.extVersion;
+window.isRelease = ExtbaseData.isRelease;
+window.devMode = ExtbaseData.devMode;
+window.loadBeta = ExtbaseData.loadBeta;
 
 let ExistenceConfirmed = async (varlist)=>{
 	varlist = varlist.split('||')
@@ -50,41 +87,38 @@ let ExistenceConfirmed = async (varlist)=>{
 	intval = setInterval(checkForJQuery, 1);
 }
 
-let ActiveMap = 'main',
-	LastMapPlayerID = null,
-	ExtPlayerID = 0,
-	ExtPlayerName = null,
-	ExtPlayerAvatar = null,
-	ExtGuildID = 0,
-	ExtGuildPermission = 0,
-	ExtWorld = window.location.hostname.split('.')[0],
-	CurrentEra = null,
-	CurrentEraID = null,
-	GoodsData = {},
-	GoodsList = [],
-	FHResourcesList = [],
-	PlayerDict = {},
-	PlayerDictNeighborsUpdated = false,
-	PlayerDictGuildUpdated = false,
-	PlayerDictFriendsUpdated = false,
-	ResourceStock = [],
-	MainMenuLoaded = false,
-	LGCurrentLevelMedals = undefined,
-	IsLevelScroll = false,
-	EventCountdown = false,
-	StartUpDone = new Promise(resolve => 
-			window.addEventListener('foe-helper#StartUpDone', resolve, {once: true, passive: true})),
-	Fights = [],
-	OwnUnits = [],
-	EnemyUnits = [],
-	UnlockedFeatures = [],
-	possibleMaps = ['main', 'gex', 'gg', 'era_outpost', 'guild_raids', 'cultural_outpost'],
-	PlayerLinkFormat = 'https://foe.scoredb.io/__world__/Player/__playerid__',
-	PlayerLinkFormat2 = 'https://foestats.com/__server__/__world__/players/__playerid__',
-	GuildLinkFormat = 'https://foe.scoredb.io/__world__/Guild/__guildid__',
-	GuildLinkFormat2 = 'https://foestats.com/__server__/__world__/guilds/__guildid__',
-	BuildingsLinkFormat = 'https://forgeofempires.fandom.com/wiki/__buildingid__',
-	LinkIcon = '<svg xmlns="http://www.w3.org/2000/svg" width="22pt" height="22pt" viewBox="0 0 22 22"><g><path id="fham-external-link-icon" d="M 13 0 L 13 2 L 18.5625 2 L 6.28125 14.28125 L 7.722656 15.722656 L 20 3.4375 L 20 9 L 22 9 L 22 0 Z M 0 4 L 0 22 L 18 22 L 18 9 L 16 11 L 16 20 L 2 20 L 2 6 L 11 6 L 13 4 Z M 0 4 "/></g></svg>';
+window.ActiveMap = 'main';
+window.LastMapPlayerID = null;
+window.ExtPlayerID = 0;
+window.ExtPlayerName = null;
+window.ExtPlayerAvatar = null;
+window.ExtGuildID = 0;
+window.ExtGuildPermission = 0;
+window.ExtWorld = window.location.hostname.split('.')[0];
+window.CurrentEra = null;
+window.CurrentEraID = null;
+window.GoodsData = {};
+window.GoodsList = [];
+window.FHResourcesList = [];
+window.PlayerDict = {};
+window.PlayerDictNeighborsUpdated = false;
+window.PlayerDictGuildUpdated = false;
+window.PlayerDictFriendsUpdated = false;
+window.ResourceStock = [];
+window.MainMenuLoaded = false;
+window.LGCurrentLevelMedals = undefined;
+window.IsLevelScroll = false;
+window.EventCountdown = false;
+window.StartUpDone = new Promise(resolve => 
+		window.addEventListener('foe-helper#StartUpDone', resolve, {once: true, passive: true}));
+window.UnlockedFeatures = [];
+window.possibleMaps = ['main', 'gex', 'gg', 'era_outpost', 'guild_raids', 'cultural_outpost'];
+window.PlayerLinkFormat = 'https://foe.scoredb.io/__world__/Player/__playerid__';
+window.PlayerLinkFormat2 = 'https://foestats.com/__server__/__world__/players/__playerid__';
+window.GuildLinkFormat = 'https://foe.scoredb.io/__world__/Guild/__guildid__';
+window.GuildLinkFormat2 = 'https://foestats.com/__server__/__world__/guilds/__guildid__';
+window.BuildingsLinkFormat = 'https://forgeofempires.fandom.com/wiki/__buildingid__';
+window.LinkIcon = '<svg xmlns="http://www.w3.org/2000/svg" width="22pt" height="22pt" viewBox="0 0 22 22"><g><path id="fham-external-link-icon" d="M 13 0 L 13 2 L 18.5625 2 L 6.28125 14.28125 L 7.722656 15.722656 L 20 3.4375 L 20 9 L 22 9 L 22 0 Z M 0 4 L 0 22 L 18 22 L 18 9 L 16 11 L 16 20 L 2 20 L 2 6 L 11 6 L 13 4 Z M 0 4 "/></g></svg>';
 
 let GameTime = {
 	Offset: 0,
@@ -137,14 +171,6 @@ document.addEventListener("DOMContentLoaded", function () {
 		}
 	});
 });
-
-GetFights = () =>{
-	var a = document.createElement("a");
-	var file = new Blob([JSON.stringify(Fights)], { type: "application/json" });
-	a.href = URL.createObjectURL(file);
-	a.download = 'fights.json';
-	a.click();
-}
 
 (function () {
 
@@ -517,34 +543,7 @@ GetFights = () =>{
 		if ([901,902].includes(data.responseData.error_code)) {
 			return;
 		}
-		if (data.responseData["armyId"] === 1 || data.responseData.state?.round === 1 || data.responseData.battleType?.totalWaves === 1) {
-			let units = data.responseData.state.unitsOrder;
-
-			for (let i = 0; i < units.length; i++) {
-				const unit = units[i];
-				if (unit.teamFlag === 1 && data.responseData["battleType"]["totalWaves"] === 1) {
-					OwnUnits.push({ "unitTypeId": unit.unitTypeId, "startHitpoints": unit.startHitpoints, "bonuses": unit.bonuses, "abilities": unit.abilities });
-				} else if (unit.teamFlag === 2) {
-					EnemyUnits.push({ "unitTypeId": unit.unitTypeId, "startHitpoints": unit.startHitpoints, "bonuses": unit.bonuses, "abilities": unit.abilities });
-				}
-			}
-
-			Fights.push({enemy:EnemyUnits, own:OwnUnits, won:(data.responseData["state"]["winnerBit"] === 1)});
-			EnemyUnits = [];
-			OwnUnits = [];
-		}
-		else if(data.responseData["battleType"]["totalWaves"] === 2 && data.responseData["battleType"]["currentWaveId"] == null){
-			let units = data.responseData.state.unitsOrder;
-			for (let i = 0; i < units.length; i++) {
-				const unit = units[i];
-				if (unit.teamFlag === 1) {
-					OwnUnits.push({ "unitTypeId": unit.unitTypeId, "startHitpoints": unit.startHitpoints, "bonuses": unit.bonuses, "abilities": unit.abilities });
-				} else if (unit.teamFlag === 2) {
-					EnemyUnits.push({ "unitTypeId": unit.unitTypeId, "startHitpoints": unit.startHitpoints, "bonuses": unit.bonuses, "abilities": unit.abilities });
-				}
-			}
-		}
-
+		
 		// not autobattling in either round 1 or 2
 		if (!data.responseData["isAutoBattle"]) {
 			HTML.MinimizeBeforeBattle();
@@ -2370,5 +2369,14 @@ if (window.foeHelperBgApiHandler !== undefined && window.foeHelperBgApiHandler i
 	delete window.foeHelperBgApiHandler;
 }
 
+window.MainParser = MainParser;
+window.HelperBeta = HelperBeta;
+window.ExistenceConfirmed = ExistenceConfirmed;
+window.i18n = i18n;
+window.HelperWarning = HelperWarning;
+window.GameTime = GameTime;
+
 console.log('Forge Hammer version ' + extVersion + ' started' + (extVersion.indexOf("beta") > -1 ? ' in Beta Mode': '') + '. ID: ' + extID);
 console.log(navigator.userAgent);
+
+})();
