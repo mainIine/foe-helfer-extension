@@ -1386,9 +1386,13 @@ let Stats = {
 
 							el.style.display = 'block';
 
-							// Flip horizontally if overflowing right edge
-							if (left + el.offsetWidth > statsRect.width) {
+							// Prevent overflowing
+							if (left + el.offsetWidth > statsRect.width) 
 								left = canvasRect.left - statsRect.left + tooltip.caretX - el.offsetWidth - 12;
+							
+							if (top + el.offsetHeight > (statsRect.height - 70)) {
+								top = top - ((top + el.offsetHeight) - (statsRect.height - 70));
+								if (top < 60) top = 60;
 							}
 
 							el.style.left = left + 'px';

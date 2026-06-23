@@ -77,6 +77,7 @@
 
 #stats .sprite-50 {
 	width: 30px;
+	margin: -6px 0;
 }
 
 #stats .tabs .horizontal {
