@@ -1907,9 +1907,11 @@ styles for extra-goods.png - manually created!!!!
 .goods-sprite.cocoa_beans::before, 
 .goods-sprite.rupees::before, 
 .goods-sprite.shells::before,
+.goods-sprite.guild_raids_medals::before,
+.goods-sprite.castle_points::before,
 .goods-sprite.doubloons::before {
 	background: url('../images/goods/goods-extra.png') top left no-repeat;
-	background-size: 512px 128px;
+	background-size: 576px 128px;
 	width: 64px;
 	height: 64px;
 }
@@ -1960,4 +1962,10 @@ styles for extra-goods.png - manually created!!!!
 }
 .goods-sprite.doubloons::before {
 	background-position: -448px -64px;
+}
+.goods-sprite.guild_raids_medals::before {
+	background-position: -512px 0;
+}
+.goods-sprite.castle_points::before{
+	background-position: -512px -64px;
 }

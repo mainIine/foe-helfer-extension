@@ -260,7 +260,7 @@ let Stats = {
 	isVisitingCulturalOutpost: false,
 	goodsSubTypes:[],
 	ResMap: {
-		NoAge: ['money', 'supplies', 'tavern_silver', 'medals', 'premium', 'guild_raids_medals'],
+		NoAge: ['money', 'supplies', 'tavern_silver', 'medals', 'premium', 'guild_raids_medals', 'castle_points'],
 		special: ['promethium', 'orichalcum', 'mars_ore', 'asteroid_ice', 'venus_carbon', 'unknown_dna','crystallized_hydrocarbons','dark_matter'],
 	},
 
