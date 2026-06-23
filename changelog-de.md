@@ -1,5 +1,18 @@
 # Changelog
  
+## Version 1.1
+### Neu
+- Warnung hinzugefügt, wenn der FoE-Helfer erkannt wurde
+
+### Update
+- Statistiken: Datumsauswahl nur noch bei den Belohnungen - in den anderen Diagrammen kann der Zoom per Mausrad benutzt werden
+- GBG: Wenn in der Provinzliste auf eine Provinz gezeigt wird, wird diese nun in der Karte hervorgehoben
+
+### Bug Fixes
+- Statistiken: Tooltip konnte aus dem Diagram herauslaufen
+
+---
+
 ## Version 1.0
 ### Neu
 - Notizen/To Dos: Mach dir Listen, um dich an deine wichtigsten Vorhaben zu erinnern

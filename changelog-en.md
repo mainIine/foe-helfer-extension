@@ -1,5 +1,18 @@
 # Changelog
  
+## Version 1.1
+### Neu
+- Added a warning, when FoE Helper was detected
+
+### Update
+- Stats: Date picker only in the rewards - the other charts can be zoomed using the mouse wheel
+- GBG: Map now shows what Province is hovered in the list
+
+### Bug Fixes
+- Stats: Tooltip could overflow the graph
+
+---
+
 ## Version 1.0
 ### New
 - Notes/To Dos: Create lists for your most important plans
