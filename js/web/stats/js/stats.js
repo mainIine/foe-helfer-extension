@@ -673,7 +673,8 @@ let Stats = {
 								<ul class="horizontal">
 									${btnsRewardSelect.join('')}
 								</ul>
-							</div>`;
+							</div>` +
+							`<div class="datepicker"><button class="btn" id="StatsDatePicker">${Stats.formatRange()}</button></div>`;
 		}
 		else {
 			moreOptions = `<div class="option-era-dropdown">
@@ -704,8 +705,7 @@ let Stats = {
 					${sourceBtns.join('')}
 					</ul>
 				</div>`
-				+ moreOptions +
-				`<div class="datepicker"><button class="btn" id="StatsDatePicker">${Stats.formatRange()}</button></div>`;
+				+ moreOptions;
 	},
 
 	formatRange: ()=> {
@@ -1400,11 +1400,11 @@ let Stats = {
 						},
 					},
 					zoom: {
-						pan: { enabled: true, mode: 'xy' },
+						pan: { enabled: true, mode: 'x' },
 						zoom: {
 							wheel: { enabled: true },
 							pinch: { enabled: true },
-							mode: 'xy',
+							mode: 'x',
 						},
 					},
 				},
