@@ -7,7 +7,7 @@
 
 let HelperWarning = () => {
 	let div = document.createElement('div');
-	div.innerHTML = `<div style="position:fixed;top:0;left:0;width:100%;height:100%;background-color:#000000cc;color:white;z-index:9999999999;display:flex;align-items:center;justify-content:center;font-size:2rem;text-align:center;flex-direction:column;">
+	div.innerHTML = `<div id="HelperWarning" style="position:fixed;top:0;left:0;width:100%;height:100%;background-color:#000000cc;color:white;z-index:9999999999;display:flex;align-items:center;justify-content:center;font-size:2rem;text-align:center;flex-direction:column;">
 		<div><h2>FoE-Helper detected!!! </h2> Please remove or deactivate Helper for proper functionality of Forge Hammer in your extension settings!<br>
 		See <a href="https://github.com/outoftheline/forge-hammer/wiki/Switching-from-FoE-Helper-to-Forge-Hammer" target="_blank">here</a> for more information - see below to access extension settings:</div>
 		<div style="display: grid;grid-template-columns: 1fr 1fr;grid-gap: 1rem;margin-top: 1rem;">
@@ -15,10 +15,11 @@ let HelperWarning = () => {
 		<span>Chrome </span><span>chrome://extensions/</span>
 		<span>Edge </span><span>edge://extensions/</span>
 		<span>Opera </span><span>opera://extensions/</span>
-		<span>Firefox </span><span>about:addons</span></div>
+		<span>Firefox </span><span>about:addons</span>
+		</div></br>
+		<button onclick="document.getElementById('HelperWarning').remove()" style="font-size: 2rem;">Close Overlay</button>
 	</div>`;
 	document.body.appendChild(div);
-	window.stop();
 }
 
 const duplicateDetected = !!(
@@ -35,7 +36,7 @@ if (duplicateDetected) {
 }
 
 setTimeout(() => {
-	if (typeof window.GetFights != "undefined") {
+	if (typeof window.GetFights != "undefined" && !duplicateDetected) {
 		HelperWarning();
 	}
 }, 5000);
