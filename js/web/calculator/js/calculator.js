@@ -27,6 +27,7 @@ let Calculator = {
 	ClanName: null,
 
 	Show: (action = "") => {
+		$('.tooltip').remove();
 		Calculator.ForderBonusPerConversation = (localStorage.getItem('CalculatorForderBonusPerConversation') !== 'false');
 
         let spk = localStorage.getItem('CalculatorTone');
@@ -42,23 +43,6 @@ let Calculator = {
 		HTML.AddCssFile('calculator');
 
 		Calculator.CurrentPlayer = parseInt(localStorage.getItem('current_player_id'));
-
-		// toggle percentages
-		$('#OwnPartBox').on('click', '.btn-toggle-arc', function () {
-			Calculator.ForderBonus = parseFloat($(this).data('value'));
-			$('#costFactor').val(Calculator.ForderBonus);
-			let StorageKey = (Calculator.ForderBonusPerConversation && MainParser.OpenConversation ? 'CalculatorForderBonus_' + MainParser.OpenConversation : 'CalculatorForderBonus');
-			localStorage.setItem(StorageKey, Calculator.ForderBonus);
-			Calculator.Show();
-		});
-
-		// wenn der Wert des Archebonus verändert wird, Event feuern
-		$('#OwnPartBox').on('blur', '#costFactor', function () {
-			Calculator.ForderBonus = parseFloat($('#costFactor').val());
-			let StorageKey = (Calculator.ForderBonusPerConversation && MainParser.OpenConversation ? 'CalculatorForderBonus_' + MainParser.OpenConversation : 'CalculatorForderBonus');
-			localStorage.setItem(StorageKey, Calculator.ForderBonus);
-			Calculator.Show();
-		});
 
         Calculator.ShowBody();
 	},
@@ -508,7 +492,7 @@ let Calculator = {
 					<strong class="${EinsatzClass} td-tooltip copy-fp clickable" data-copy="${ForderFPRewards[Rank]}" data-original-title="${HTML.i18nTooltip(EinsatzTooltip.join('<br>'))}">${EinsatzText}</strong>
 				</td>
 				<td>
-					<strong class="${GewinnClass} td-tooltip copy-fp" data-copy="'+ForderGewinn+'" data-original-title="${HTML.i18nTooltip(GewinnTooltip.join('<br>'))}">${GewinnText}</strong>
+					<strong class="${GewinnClass} td-tooltip copy-fp" data-copy="${ForderGewinn}" data-original-title="${HTML.i18nTooltip(GewinnTooltip.join('<br>'))}">${GewinnText}</strong>
 				</td>
 				<td> ${HTML.Format(BPRewards[Rank])} </td>
 				<td> <small> ${HTML.Format(MedalRewards[Rank])} </small> </td>

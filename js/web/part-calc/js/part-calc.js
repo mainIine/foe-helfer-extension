@@ -257,6 +257,22 @@ let Parts = {
 				Parts.ShowPowerLeveling(false);
 			});
 
+			$('#OwnPartBox').on('click', '.btn-toggle-arc', function () {
+				Calculator.ForderBonus = parseFloat($(this).data('value'));
+				$('#costFactor').val(Calculator.ForderBonus);
+				let StorageKey = (Calculator.ForderBonusPerConversation && MainParser.OpenConversation ? 'CalculatorForderBonus_' + MainParser.OpenConversation : 'CalculatorForderBonus');
+				localStorage.setItem(StorageKey, Calculator.ForderBonus);
+				Calculator.Show();
+			});
+
+			// wenn der Wert des Archebonus verändert wird, Event feuern
+			$('#OwnPartBox').on('blur', '#costFactor', function () {
+				Calculator.ForderBonus = parseFloat($('#costFactor').val());
+				let StorageKey = (Calculator.ForderBonusPerConversation && MainParser.OpenConversation ? 'CalculatorForderBonus_' + MainParser.OpenConversation : 'CalculatorForderBonus');
+				localStorage.setItem(StorageKey, Calculator.ForderBonus);
+				Calculator.Show();
+			});
+
 			$('#OwnPartBox').on('click', '.button-own', function () {
 				let copyParts = Parts.CopyFunction($(this), 'copy');
 				helper.str.copyToClipboardLegacy(copyParts);

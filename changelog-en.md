@@ -1,5 +1,14 @@
 ## Extension Changelog
- 
+
+##### 4.3.0.1
+
+**BugFix**
+
+- Research Tree:
+	- A structural change in the Inno data caused an error in Helfer
+
+---
+
 
 ##### 4.3.0.0
 

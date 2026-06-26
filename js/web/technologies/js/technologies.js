@@ -28,6 +28,7 @@ FoEproxy.addHandler('ResearchService', 'getProgress', (data, postData) => {
 
 FoEproxy.addHandler('ResearchService', 'payTechnology', (data, postData) => {
 	let era = data.responseData.technology.era;
+
     if (Technologies.Eras[era] > CurrentEraID) {
         CurrentEraID = Technologies.EraNames[era];
         CurrentEra = era;
@@ -115,7 +116,7 @@ let Technologies = {
         NextEra: 24,
     },
 
-    // need this for cityentities
+    // need this for identities
     InnoEras: {
         StoneAge: 0,
         BronzeAge: 1,
@@ -198,36 +199,106 @@ let Technologies = {
         22: 'SpaceAgeSpaceHub'
     },
     maxEra:null,
+
+
+    /**
+     * Retrieves the maximum era based on the requirements of all great buildings in the city entities.
+     * If the maximum era has not been previously calculated, it computes the value by iterating
+     * through the city entities, filtering for great buildings, and mapping their minimum era requirements
+     * to a numerical value. The result is stored in `Technologies.maxEra` for caching and returned.
+     *
+     * @returns {number} The numerical value representing the maximum era.
+     */
     getMaxEra:()=>{ // 1 more than "InnoEra"
-        if (!Technologies.maxEra) Technologies.maxEra = Math.max(...Object.values(MainParser.CityEntities).filter(x=>x.type=="greatbuilding").map(x=>Technologies.Eras[x.requirements.min_era]));
+        if (!Technologies.maxEra) {
+            Technologies.maxEra = Math.max(...Object.values(MainParser.CityEntities).filter(x => x.type === "greatbuilding").map(x => Technologies.Eras[x.requirements.min_era]));
+        }
         return Technologies.maxEra;
     },
 
+
+    /**
+     * Retrieves the era name associated with a given entityId and level.
+     * If the era name within the entityId is 'MultiAge', the era name is determined
+     * using the provided level and the Technologies.InnoEraNames mapping.
+     *
+     * @param {string} entityId - The identifier used to extract the era name. Typically formatted as parts separated by underscores with the era name in the second position.
+     * @param {number} level - The level used to determine the era name if the era is 'MultiAge'.
+     * @returns {string} The resolved era name based on the entityId and/or level.
+     */
     getEraName: (entityId, level) => {
         let eraName = entityId.split('_')[1]
-        if (eraName == 'MultiAge')
+
+        if (eraName === 'MultiAge') {
             return Technologies.InnoEraNames[level]
+        }
+
         return eraName
     },
 
+
+    /**
+     * Retrieves the ID of the previous era based on the name of the current era.
+     *
+     * @param {string} eraName - The name of the current era.
+     * @returns {number} The ID of the previous era. If the era ID cannot be determined,
+     * it defaults to 1.
+     */
     getPreviousEraIdByCurrentEraName: (eraName) => {
-        return parseInt(Technologies.InnoEras[eraName]-1||1)
+        return parseInt(Technologies.InnoEras[eraName]-1 || 1)
     },
 
+
+    /**
+     * Retrieves the numeric ID associated with the provided era name.
+     *
+     * This function looks up the corresponding era ID for the given era name
+     * from the `Technologies.InnoEras` collection. If the era name does not
+     * exist in the collection, it defaults to returning 1.
+     *
+     * @param {string} eraName - The name of the current era to look up.
+     * @returns {number} The numeric ID for the specified era, or 1 if the era name is not found.
+     */
     getEraIdByCurrentEraName: (eraName) => {
         return parseInt(Technologies.InnoEras[eraName]||1)
     },
 
+
+    /**
+     * Determines the next era ID based on the current era name.
+     * If the player is already in the highest era, the function returns the current era ID.
+     *
+     * @param {string} eraName - The name of the current era.
+     * @returns {number} The ID of the next era, or the current era ID if the player is in the highest era.
+     */
     getNextEraIdByCurrentEraName: (eraName) => {
         // if player is in the highest era, return current age number
-        let era = (Technologies.InnoEras[eraName] === Technologies.getMaxEra()-1) ? parseInt(Technologies.InnoEras[eraName]) : parseInt(Technologies.InnoEras[eraName]+1)
-        return era
+        return (Technologies.InnoEras[eraName] === Technologies.getMaxEra()-1) ? parseInt(Technologies.InnoEras[eraName]) : parseInt(Technologies.InnoEras[eraName]+1)
     },
 
 
-	/**
-	 * Zeigt
-	 */
+    /**
+     * Displays or toggles the "technologies" box in the interface.
+     * If the box does not exist, it creates the box, adds relevant styling,
+     * and initializes event listeners. If the box already exists, it closes the
+     * open box.
+     *
+     * Functionality includes:
+     * - Adding a "technologies" box with various configuration options such as
+     *   auto-close, draggable, minimizable, resizable, and configurable settings.
+     * - Injecting the necessary CSS file for the technologies box.
+     * - Setting the initially selected era for displaying technologies.
+     * - Handling user interactions like toggling settings for ignoring previous
+     *   or current era optional technologies, and saving states in localStorage.
+     * - Switching between different eras based on user input, recalculating the
+     *   content of the box accordingly, and updating button states.
+     * - Building and rendering the UI for the "technologies" box.
+     *
+     * Event listeners:
+     * - `.ignoreprevera`: Toggles the ignore previous era flag for technologies.
+     * - `.ignorecurrenteraoptional`: Toggles the ignore current era optional flag for technologies.
+     * - `.btn-switchage`: Switches the selected era to the specified value and updates the box content.
+     */
     Show: ()=> {
 		if ($('#technologies').length === 0) {
 
@@ -246,50 +317,66 @@ let Technologies = {
 
 			Technologies.SelectedEraID = CurrentEraID;
 
+            let $technologiesBox = $('#technologies');
+
+            $technologiesBox.on('click', '.ignoreprevera', function () {
+                let $this = $(this);
+
+                Technologies.IgnorePrevEra = $this.prop('checked');
+
+                localStorage.setItem('TechnologiesIgnorePrevEra', Technologies.IgnorePrevEra);
+
+                Technologies.CalcBody();
+            });
+
+            $technologiesBox.on('click', '.ignorecurrenteraoptional', function () {
+                let $this = $(this);
+
+                Technologies.IgnoreCurrentEraOptional = $this.prop('checked');
+
+                localStorage.setItem('TechnologiesIgnoreCurrentEraOptional', Technologies.IgnoreCurrentEraOptional);
+
+                Technologies.CalcBody();
+            });
+
+            // Zeitalter vor und zurück schalten
+            $technologiesBox.on('click', '.btn-switchage', function () {
+
+                $('.btn-switchage').removeClass('btn-active');
+
+                Technologies.SelectedEraID = $(this).data('value');
+                Technologies.CalcBody();
+
+                $(this).addClass('btn-active');
+            });
+
 		} else {
 			HTML.CloseOpenBox('technologies');
         }
-
-        $('#technologies').on('click', '.ignoreprevera', function () {
-            let $this = $(this),
-                v = $this.prop('checked');
-
-            Technologies.IgnorePrevEra = v;
-
-            localStorage.setItem('TechnologiesIgnorePrevEra', Technologies.IgnorePrevEra);
-
-            Technologies.CalcBody();
-        });
-
-        $('#technologies').on('click', '.ignorecurrenteraoptional', function () {
-            let $this = $(this),
-                v = $this.prop('checked');
-
-            Technologies.IgnoreCurrentEraOptional = v;
-
-            localStorage.setItem('TechnologiesIgnoreCurrentEraOptional', Technologies.IgnoreCurrentEraOptional);
-
-            Technologies.CalcBody();
-        });
-
-        // Zeitalter vor und zurück schalten
-        $('#technologies').on('click', '.btn-switchage', function () {
-
-            $('.btn-switchage').removeClass('btn-active');
-
-            Technologies.SelectedEraID = $(this).data('value');
-            Technologies.CalcBody();
-
-            $(this).addClass('btn-active');
-        });
 
 		Technologies.BuildBox();
     },
 
 
-	/**
-	 *
-	 */
+    /**
+     * Initializes and builds the technologies box configuration.
+     * This method sets up certain configuration flags for ignoring
+     * research of specific technologies based on the current era and
+     * previous era preferences stored in localStorage.
+     * After updating the configuration flags, it triggers the recalculation
+     * of the technologies display body.
+     *
+     * Flags:
+     * - `Technologies.IgnorePrevEra`: Determines whether to ignore technologies
+     *   from the previous era. This is retrieved from localStorage.
+     *   Defaults to 'true' if the value in localStorage is not 'false'.
+     * - `Technologies.IgnoreCurrentEraOptional`: Determines whether to ignore
+     *   optional technologies from the current era. This is retrieved from
+     *   localStorage. Defaults to 'true' if the value in localStorage is not 'false'.
+     *
+     * Dependencies:
+     * - `Technologies.CalcBody()`: Recalculates and updates the technologies display body.
+     */
     BuildBox: () => {
         Technologies.IgnorePrevEra = (localStorage.getItem('TechnologiesIgnorePrevEra') !== 'false' ? 'true' : 'false')
         Technologies.IgnoreCurrentEraOptional = (localStorage.getItem('TechnologiesIgnoreCurrentEraOptional') !== 'false' ? 'true' : 'false')
@@ -298,9 +385,38 @@ let Technologies = {
     },
 
 
-	/**
-	 *
-	 */
+    /**
+     * Calculates and renders the body content for the technologies module.
+     * This includes processing researched and in-progress technologies,
+     * calculating required resources for unlocking further technologies,
+     * and dynamically generating HTML content to display relevant data.
+     *
+     * The function performs the following steps:
+     * 1. Builds an index mapping technology IDs to array indices for quick access.
+     * 2. Marks technologies as researched or partially researched based on the current state.
+     * 3. Computes the total resources required to unlock remaining technologies, taking into
+     *    account various user-defined filters such as ignoring previous or optional technologies.
+     * 4. Assembles a list of resources and their statuses (required, in stock, missing).
+     * 5. Generates HTML content, including era navigation, settings, and a table displaying resource requirements.
+     *
+     * Data sources:
+     * - `Technologies.AllTechnologies`: Array of all available technologies with their details.
+     * - `Technologies.UnlockedTechnologies`: Object containing arrays for unlocked and in-progress technologies.
+     * - `Technologies.Eras`: Mapping of era names to era IDs.
+     * - `GoodsList`: Array of all possible resources for the technologies.
+     * - `ResourceStock`: Object containing current user stock of resources.
+     * - `StrategyPoints.AvailableFP`: Number of available strategy points.
+     * - `GoodsData`: Object containing metadata for each resource (ID and name).
+     *
+     * Rendering:
+     * - Builds and populates the `#technologiesBody` DOM element with dynamically
+     *   generated HTML content, including tables, buttons, and options.
+     *
+     * Filters applied:
+     * - Technologies from previous eras are ignored if `Technologies.IgnorePrevEra` is true.
+     * - Optional technologies from the current or future eras are ignored if
+     *   `Technologies.IgnoreCurrentEraOptional` is true.
+     */
     CalcBody: ()=> {
         let h = [],
             TechDict = [];
@@ -315,7 +431,7 @@ let Technologies = {
             let TechName = Technologies.UnlockedTechnologies['unlockedTechnologies'][i];
             let Index = TechDict[TechName];
             Technologies.AllTechnologies[Index]['isResearched'] = true;
-            Technologies.AllTechnologies[Index]['currentSP'] = Technologies.AllTechnologies[Index]['maxSP'];
+            Technologies.AllTechnologies[Index]['currentSP'] = Technologies.AllTechnologies[Index]['max_progress'] || 0;
         }
 
         // Teilweise erforscht
@@ -328,6 +444,7 @@ let Technologies = {
         // Güter zaehlen
         let RequiredResources = [],
             TechCount = 0;
+
         for (let i = 1; i < Technologies.AllTechnologies.length; i++) {
             let Tech = Technologies.AllTechnologies[i];
             if (Tech['currentSP'] === undefined)
@@ -336,14 +453,22 @@ let Technologies = {
             if (!Tech['isResearched'] && !Tech['isTeaser']) {
                 let EraID = Technologies.Eras[Tech['era']];
 
-                if (EraID < CurrentEraID && Technologies.IgnorePrevEra) continue; // Vorherige ZA ausblenden
-                if (EraID >= CurrentEraID && Tech['childTechnologies'].length === 0 && Technologies.IgnoreCurrentEraOptional) continue; // Aktuelles/zukünfiges ZA und optionale Technologie ausblenden
+                // Vorherige ZA ausblenden
+                if (EraID < CurrentEraID && Technologies.IgnorePrevEra) {
+                    continue;
+                }
 
-                if (EraID >= CurrentEraID && EraID <= Technologies.SelectedEraID) { // Alle Technologien voriger ZA und optionale Technologien ausblenden
+                // Aktuelles/zukünfiges ZA und optionale Technologie ausblenden
+                if (EraID >= CurrentEraID && Tech['children'].length === 0 && Technologies.IgnoreCurrentEraOptional) {
+                    continue;
+                }
+
+                // Alle Technologien voriger ZA und optionale Technologien ausblenden
+                if (EraID >= CurrentEraID && EraID <= Technologies.SelectedEraID) {
                     if (RequiredResources['strategy_points'] === undefined)
                     	RequiredResources['strategy_points'] = 0;
 
-                    RequiredResources['strategy_points'] += Tech['maxSP'] - Tech['currentSP'];
+                    RequiredResources['strategy_points'] += (Tech['max_progress'] || 0) - Tech['currentSP'];
 
                     for (let ResourceName in Tech['requirements']['resources']) {
                         if (RequiredResources[ResourceName] === undefined)
@@ -357,14 +482,14 @@ let Technologies = {
             }
         }
 
-        let PreviousEraID = Math.max(Technologies.SelectedEraID - 1, CurrentEraID),
+        let PreviousEraID = Math.max(Technologies.SelectedEraID - 1, 1),
             NextEraID = Math.min(Technologies.SelectedEraID + 1, Technologies.getMaxEra());
 
         h.push('<div class="dark-bg" style="margin-bottom: 3px">');
 	        h.push('<div class="techno-head">');
-				h.push('<button class="btn btn-switchage" data-value="' + PreviousEraID + '">' + i18n('Eras.'+PreviousEraID) + '</button>');
+				h.push('<button class="btn btn-switchage" style="' + (Technologies.SelectedEraID === 1 ? 'visibility:hidden' : '') + '" data-value="' + PreviousEraID + '">' + i18n('Eras.'+PreviousEraID) + '</button>');
 				h.push('<div class="text-center"><strong>' + i18n('Eras.'+Technologies.SelectedEraID) + '</strong></div>');
-				h.push('<button class="btn btn-switchage" data-value="' + NextEraID + '">' + i18n('Eras.'+NextEraID) + '</button>');
+				h.push('<button class="btn btn-switchage" style="' + (Technologies.SelectedEraID === Technologies.getMaxEra() ? 'visibility:hidden' : '') + '" data-value="' + NextEraID + '">' + i18n('Eras.'+NextEraID) + '</button>');
 	        h.push('</div>');
 	        h.push('<div class="text-small">');
             h.push('<input id="IgnorePrevEra" class="ignoreprevera game-cursor" ' + (Technologies.IgnorePrevEra ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Technologies.IgnorePrevEra') + '<br>');
@@ -451,8 +576,17 @@ let Technologies = {
     },
 
     /**
-    *
-    */
+     * Displays the settings button in the technologies settings box.
+     * Renders two buttons for exporting data in CSV and JSON formats.
+     *
+     * The function uses jQuery to dynamically populate the content of
+     * the `#technologiesSettingsBox` element with the HTML for the buttons.
+     * - The first button allows the user to export the table data in CSV format.
+     * - The second button allows the user to export the table data in JSON format.
+     *
+     * Both export actions leverage the `HTML.ExportTable` method, ensuring
+     * the appropriate table and export format are passed as arguments.
+     */
     ShowSettingsButton: () => {
         let h = [];
         h.push(`<p class="text-center"><button class="btn" onclick="HTML.ExportTable($('#technologiesBody').find('.foe-table.exportable'), 'csv', 'technologies')">${i18n('Boxes.General.ExportCSV')}</button></p>`);

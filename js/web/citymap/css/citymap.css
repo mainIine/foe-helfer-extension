@@ -477,6 +477,14 @@
 	background-color: var(--background-color-qi);
 	border-color: var(--border-color-qi);
 }
+#grid-outer.showChains .chain {
+    background-color: #ff00ff77;
+    border-color: #ff00ff;
+}
+#grid-outer.showSets .set {
+    background-color: #00ffff77;
+    border-color: #00ffff;
+}
 
 [data-view="skew"] .older-1.diagonal {
 	background-image: repeating-linear-gradient(15deg, transparent, transparent 5px, rgb(128, 152, 93) 2px, rgb(128, 152, 93) 7px)
