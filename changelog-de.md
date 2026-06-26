@@ -1,5 +1,13 @@
 ## Extension Changelog
- 
+
+##### 4.3.0.1
+
+**BugFix**
+
+- Forschungsbaum:
+  - Eine strukturelle Umstellung in den Daten von Inno erzeugte im Helfer einen Fehler
+
+---
 
 ##### 4.3.0.0
 
