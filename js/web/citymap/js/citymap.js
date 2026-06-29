@@ -261,6 +261,22 @@ let CityMap = {
 	},
 
 
+	/**
+	 * Builds and renders a grid representation of unlocked areas for the active map.
+	 * This function dynamically adjusts the grid based on the active map's context
+	 * and properties such as unlocked areas, offsets, and grid sizes.
+	 *
+	 * Different map contexts supported:
+	 * - "OtherPlayer"
+	 * - "cultural_outpost"
+	 * - "era_outpost"
+	 * - "guild_raids"
+	 * - Default "CityMap.Main" if no specific map is active.
+	 *
+	 * The function creates grid elements for each unlocked area, positioning them
+	 * based on their coordinates and map-specific offsets. It further applies a
+	 * specific class to the initial grid if it matches predefined dimensions (16x16).
+	 */
 	BuildGrid: () => {	
 		let ua = CityMap.Main.unlockedAreas;
 		if (ActiveMap === "OtherPlayer")
@@ -305,6 +321,29 @@ let CityMap = {
 	},
 
 
+	/**
+	 * Sets up and displays the outpost buildings on the map.
+	 * The function initializes the grid, processes building data, and dynamically
+	 * appends building elements to the map based on the active map configuration.
+	 *
+	 * Updates:
+	 * - Removes previous map elements and grid.
+	 * - Builds the base grid for the map.
+	 * - Determines which set of buildings to use based on the active map type ('era_outpost',
+	 *   'cultural_outpost', or 'guild_raids').
+	 * - Adjusts building coordinates and offsets for display.
+	 * - Creates and appends interactive building elements to the map
+	 *   with dynamic size, position, tooltips, and styling.
+	 *
+	 * Behavior specific to guild raids:
+	 * - Highlights buildings where a collection is due soon (threshold: 10800 seconds / 3 hours).
+	 * - Adds dynamic classes and messages for buildings with impending collection state transitions.
+	 *
+	 * Interactivity:
+	 * - Enables tooltips for building elements, showing building details such as name,
+	 *   size, and impending collection information if applicable.
+	 * - Enables map dragging for navigation via interaction with `#grid-outer`.
+	 */
 	SetOutpostBuildings: () => {
 		$('#grid-outer').find('.map-bg').remove();
 		$('#grid-outer').find('.entity').remove();
@@ -367,6 +406,26 @@ let CityMap = {
 	},
 
 
+	/**
+	 * Displays the Quality of Infrastructure (QI) statistics for the city map.
+	 *
+	 * The method generates an HTML string containing various details about the city's QI,
+	 * including the number of areas, available and total population, euphoria boost percentage,
+	 * resources, and boosts. This information is presented in a visually structured layout
+	 * using divs, spans, and images.
+	 *
+	 * Key details displayed:
+	 * - City area coverage.
+	 * - Population statistics (available vs total).
+	 * - Euphoria boost percentage.
+	 * - List of resources with their respective values.
+	 * - List of boosts with associated percentage or values.
+	 *
+	 * Utilizes data from the `CityMap.QI` object. If no data is available, the method immediately
+	 * exits without generating any output.
+	 *
+	 * @returns {string|null} An HTML string representing the QI statistics, or null if data is unavailable.
+	 */
 	showQIStats: () => {
 		if (!CityMap.QI.data) return;
 
@@ -398,6 +457,24 @@ let CityMap = {
 	},
 
 
+	/**
+	 * Displays a detailed list of buildings for Quantum Interface (QI) on the city map.
+	 * This method computes and generates an HTML table that outlines the list of all
+	 * unique buildings in the city map, along with their properties such as population,
+	 * euphoria, boosts, and production values while calculating relevant statistics.
+	 *
+	 * The method performs the following tasks:
+	 * - Retrieves building data from `CityMap.QI.data`.
+	 * - Calculates statistics for buildings such as resources, boosts, euphoria, total
+	 *   population, and available population.
+	 * - Computes `euphoriaBoost` based on the ratio of euphoria to total population.
+	 * - Aggregates unique buildings and computes their respective counts.
+	 * - Generates an HTML table showcasing building data such as population, euphoria,
+	 *   production values, and boosts.
+	 * - Populates statistics for resources and boosts based on building attributes.
+	 *
+	 * Returns the generated HTML table along with statistical data.
+	 */
 	showQIBuildingList: () => {
 		if (!CityMap.QI.data) return;
 		let boosts = Boosts.Sums;
