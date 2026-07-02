@@ -195,25 +195,21 @@ GetFights = () =>{
 
 	// globale Handler
 	// die Gebäudenamen übernehmen
-	/* removed as inno changed city entity loading
-	FoEproxy.addMetaHandler('city_entities', (xhr, postData) => {
-		let EntityArray = JSON.parse(xhr.responseText);
-		MainParser.CityEntities = Object.assign({}, ...EntityArray.map((x) => ({ [x.id]: x })));
-		MainParser.correctBuildingType()
-		MainParser.Inactives.check();
-	});
-	*/
 	FoEproxy.addMetaHandler('building_entity_lookup', (xhr, postData) => {
 		let buildingUrlsRaw = JSON.parse(xhr.responseText || "[]");
 		let buildingUrls = Object.assign({}, ...buildingUrlsRaw.map((x) => ({ [x.identifier.replace("building_entity_","")]: {url: x.url, hash: x.url.replace(/.*?([^-]+$)/gm,"$1")} })));
-		setTimeout(()=>{MainParser.CityEntityBuilder(buildingUrls)},500);
+
+		setTimeout(()=>{ MainParser.CityEntityBuilder(buildingUrls) },500);
 	});
 
 	// Building-Upgrades
 	FoEproxy.addMetaHandler('building_upgrades', (xhr, postData) => {
 		let BuildingUpgradesArray = JSON.parse(xhr.responseText);
 		MainParser.BuildingUpgrades = Object.assign({}, ...BuildingUpgradesArray.map((x) => ({ [x.upgradeItem.id]: x })));
-		if (MainParser.SelectionKits != null) Kits.CreateUpgradeSchemes();
+
+		if (MainParser.SelectionKits != null) {
+			Kits.CreateUpgradeSchemes();
+		}
 	});
 
 	// Building-Sets
@@ -232,8 +228,12 @@ GetFights = () =>{
 	FoEproxy.addMetaHandler('selection_kits', (xhr, postData) => {
 		let SelectKitsArray = JSON.parse(xhr.responseText);
 		MainParser.SelectionKits = Object.assign({}, ...SelectKitsArray.map((x) => ({ [x.selectionKitId]: x })));
-		if (MainParser.BuildingUpgrades != null) Kits.CreateUpgradeSchemes();
+
+		if (MainParser.BuildingUpgrades != null) {
+			Kits.CreateUpgradeSchemes();
+		}
 	});
+
 	FoEproxy.addMetaHandler("building_families", (xhr,postData) => {
 		MainParser.BuildingFamilyLimits = JSON.parse(xhr.responseText)?.families;
 	})	
@@ -1178,7 +1178,10 @@ let MainParser = {
 			if (!MainParser.CityEntities.hasOwnProperty(i)) continue;
 
 			let CityEntity = MainParser.CityEntities[i];
-			if (!CityEntity.type) CityEntity.type = CityEntity?.components?.AllAge?.tags?.tags?.find(value => value.hasOwnProperty('buildingType')).buildingType;
+
+			if (!CityEntity.type) {
+				CityEntity.type = CityEntity?.components?.AllAge?.tags?.tags?.find(value => value.hasOwnProperty('buildingType')).buildingType;
+			}
         }
 	},
 
