@@ -584,6 +584,26 @@ let CityMap = {
 	},
 
 
+	/**
+	 * Processes and returns a structured representation of a given QI building's data.
+	 *
+	 * @param {Object} data - The input data object representing the QI building.
+	 * @param {string} data.name - The name of the building.
+	 * @param {Object} data.components - Contains components of the building, such as AllAge data and resources.
+	 * @param {string} data.type - The type of the building (e.g., "main_building").
+	 * @param {string} data.asset_id - The unique asset identifier for the building.
+	 * @param {Object[]} [data.available_products] - The available products for "main_building" type.
+	 *
+	 * @returns {Object} An object containing the building's details:
+	 * - `name` {string}: The name of the building.
+	 * - `boosts` {Object|null}: Boost information, or null if no boosts are available.
+	 * - `euphoria` {number}: Euphoria (happiness) value, defaults to 0 if unavailable.
+	 * - `population` {number}: Population value, defaults to 0 if unavailable.
+	 * - `production` {Object|null}: Resource production data, or null if unavailable.
+	 * - `type` {string}: The type of the building.
+	 * - `entityId` {string}: The building's unique asset identifier.
+	 * - `count` {number}: A fixed value of 1.
+	 */
 	setQIBuilding: (data) => {
 		let production = data.components?.AllAge?.production?.options
 		if (production !== undefined && production.length === 1) // goods and units have multiple production options, rest has one
@@ -610,6 +630,37 @@ let CityMap = {
 	},
 
 
+	/**
+	 * Processes and transforms data for outpost buildings in a game context.
+	 *
+	 * This function evaluates the building data provided and extracts key details
+	 * such as production output, population impact, diplomacy values, and other
+	 * relevant metadata based on the active map context in the game (e.g., "cultural_outpost" or "era_outpost").
+	 *
+	 * The method distinguishes between different building types (e.g., main buildings, residential buildings)
+	 * and cultural or era-based populations to calculate specific resources and outputs associated with the building.
+	 *
+	 * @param {Object} data - The input object containing building data.
+	 * @param {string} data.id - The unique identifier for the building, used to determine population name.
+	 * @param {string} data.type - The type of the building (e.g., "main_building", "residential").
+	 * @param {string} data.name - The name of the building.
+	 * @param {Object} data.components - Components of the building containing resource and production information.
+	 * @param {Object} data.components.AllAge.production - Contains production options and products for the building.
+	 * @param {Array} data.available_products - Array of available products, used for certain building types.
+	 * @param {Object} data.staticResources - Contains static resource contributions such as population or diplomacy.
+	 * @param {Object} data.staticResources.resources - Resource map for the building (e.g., population, diplomacy).
+	 * @param {Object} data.requirements - Requirements for building operations or constructions.
+	 * @param {Object} data.requirements.cost - Cost details for resources required by the building.
+	 * @param {string} data.asset_id - An identifier for the building's associated entity.
+	 *
+	 * @returns {Object} An object representing the processed building data, containing:
+	 * - name: {string} The name of the building.
+	 * - population: {number} The population change associated with the building (positive or negative).
+	 * - production: {Object|null} The production resources/output associated with the building, or null if none.
+	 * - diplomacy: {number|null} The diplomacy value provided by the building (cultural outposts only), or null if none.
+	 * - type: {string} The type of the building.
+	 * - entityId: {string} The identifier for the associated building entity.
+	 */
 	setOutpostBuilding: (data) => {
 		let production = data.components?.AllAge?.production?.options;
 		if (production !== undefined && production.length === 1) // goods and units have multiple production options, rest has one
@@ -659,6 +710,23 @@ let CityMap = {
 	},
 
 
+	/**
+	 * Displays a list of outpost buildings in a table format, segregated by their unique
+	 * entity IDs, and calculates various totals such as population and diplomacy values.
+	 * This function handles the buildings for both cultural outposts and era outposts
+	 * depending on the current active map.
+	 *
+	 * Key functionalities:
+	 * - Collects and processes building data from the active map (either cultural outpost or era outpost).
+	 * - Aggregates data to identify unique buildings by their entity IDs and counts their occurrences.
+	 * - Constructs a sorted list of unique buildings.
+	 * - Generates an HTML table output with details for each building, including their image, count,
+	 *   population, diplomacy, and production statistics.
+	 * - Calculates overall totals for population and diplomacy values.
+	 * - Adds a metadata section summarizing the calculated totals.
+	 *
+	 * @returns {string} An HTML string representing the table of outpost buildings and a summary metadata section.
+	 */
 	showOutpostBuildings: () => {
 		let buildings = Object.values(CityMap.CulturalOutpost.data);
 		if (ActiveMap === "era_outpost")
@@ -1320,7 +1388,9 @@ let CityMap = {
 					id: ExtPlayerID,
 					world: ExtWorld,
 					avatar: ExtPlayerAvatar,
-					avatarUrl: srcLinks.GetPortrait(ExtPlayerAvatar)
+					avatarUrl: srcLinks.GetPortrait(ExtPlayerAvatar),
+					era: CurrentEra,
+					era_id: CurrentEraID
 				},
 				apiToken: apiToken,
 				type: ActiveMap === 'cultural_outpost' ? localStorage.getItem('OutpostType') : (ActiveMap === 'era_outpost' ? 'era_outpost' : (ActiveMap === 'guild_raids' ? 'guild_raids' : 'main')),
