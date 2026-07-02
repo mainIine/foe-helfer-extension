@@ -1401,7 +1401,9 @@ let CityMap = {
 				goods: GoodsData,
 				cityEntities: CityMap.removeDoubleUnderscoreKeys(MainParser.CityEntities),
 				allEntities: CityMap.removeDoubleUnderscoreKeys(Outposts.Advancements),
-				mainEntities: ActiveMap !== 'main' ? CityMap.removeDoubleUnderscoreKeys(MainParser.CityMapData) : null
+				mainEntities: ActiveMap !== 'main' ? CityMap.removeDoubleUnderscoreKeys(MainParser.CityMapData) : null,
+				selectionKits: MainParser.SelectionKits || null,
+				// upgradeBuildings: MainParser.BuildingUpgrades || null
 			};
 
 		MainParser.send2Server(d, 'CityPlanner', function(resp){
