@@ -269,6 +269,7 @@
     "Boxes.CityMap.ShowWorstBuildings": "Worst rated buildings",
     "Boxes.CityMap.StreetsAmount": "Number of Streets: ",
     "Boxes.CityMap.Submit": "Submit",
+    "Boxes.CityMap.SubmitProcessing": "The data is being processed. This can take up to 10 seconds...",
     "Boxes.CityMap.SubmitError": "Your city data could not be sent to the server. Please report this error directly to ",
     "Boxes.CityMap.SubmitErrorHeader": "Error occurred",
     "Boxes.CityMap.SubmitSuccess": "Data was successfully Uploaded…  Now visit ",
