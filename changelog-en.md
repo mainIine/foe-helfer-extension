@@ -1,5 +1,14 @@
 ## Extension Changelog
 
+##### 4.3.1.0
+
+**Update**
+
+- Research Tree:
+	- The module has been revised, and a new column has been added. From the next unexplored ZA onwards, this column displays a summary of all missing elements.
+
+---
+
 ##### 4.3.0.1
 
 **BugFix**

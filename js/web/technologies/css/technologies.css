@@ -110,7 +110,23 @@
 	text-align: center;
 }
 
-#technologies #technologiesBody .sprite-35::before { 
+#technologies #technologiesBody .sprite-35::before {
 	overflow: hidden;
 	display: inline-block;
+}
+
+/* Hinweis, wenn im aktuellen Zeitalter nichts mehr benötigt wird */
+#technologies #technologiesBody .technologies-hint {
+	margin: 4px 0 6px;
+	padding: 6px 8px;
+	text-align: center;
+	font-weight: bold;
+	color: var(--text-2, #d8c9a3);
+	background-color: var(--black-50);
+	border-radius: 3px;
+}
+
+/* Fertige Zeilen (nichts mehr benötigt) abdimmen */
+#technologies #technologiesBody tr.technologies-done {
+	opacity: 0.4;
 }

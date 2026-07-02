@@ -104,8 +104,6 @@ let GameTime = {
 	get:()=>{
 		return moment().unix()+GameTime.Offset;
 	}
-	
-
 }
 
 // Übersetzungen laden
