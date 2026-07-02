@@ -1,5 +1,14 @@
 ## Extension Changelog
 
+##### 4.3.1.0
+
+**Update**
+
+- Forschungsbaum:
+	- Überarbeitung des Moduls, neue Spalte ergänzt. Diese zeigt ab dem nächsten unerforschtem ZA eine Spalte aller summierten fehlenden Elemente 
+
+---
+
 ##### 4.3.0.1
 
 **BugFix**

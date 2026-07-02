@@ -71,8 +71,9 @@ FoEproxy.addHandler('ResearchService', 'payTechnology', (data, postData) => {
     let ID = CurrentTech['id']
     if (ID === undefined) return;
 
-    let TechCount = Technologies.UnlockedTechnologies.unlockedTechnologies.length
-    Technologies.UnlockedTechnologies.unlockedTechnologies[TechCount] = ID;
+    // Inno verwaltet die erforschten Technologien jetzt in 'unlockedNodes' (vorher 'unlockedTechnologies').
+    if (!Array.isArray(Technologies.UnlockedTechnologies.unlockedNodes)) Technologies.UnlockedTechnologies.unlockedNodes = [];
+    Technologies.UnlockedTechnologies.unlockedNodes.push(ID);
 
     if ($('#technologies').length !== 0) {
         Technologies.CalcBody();
@@ -386,6 +387,24 @@ let Technologies = {
 
 
     /**
+     * Returns the total forge point (strategy_points) cost of a technology.
+     * Inno moved this value from the former `max_progress` field into
+     * `researchCost.resources.strategy_points`. The old field is kept as a
+     * fallback for backward compatibility.
+     *
+     * @param {Object} Tech - A technology entry from Technologies.AllTechnologies.
+     * @returns {number} The forge point cost, or 0 if none is defined.
+     */
+    GetTechFP: (Tech) => {
+        if (!Tech) return 0;
+        if (Tech['max_progress'] !== undefined) return Tech['max_progress'] || 0;
+        if (Tech['researchCost'] && Tech['researchCost']['resources'] && typeof Tech['researchCost']['resources'] === 'object')
+            return Tech['researchCost']['resources']['strategy_points'] || 0;
+        return 0;
+    },
+
+
+    /**
      * Calculates and renders the body content for the technologies module.
      * This includes processing researched and in-progress technologies,
      * calculating required resources for unlocking further technologies,
@@ -427,11 +446,15 @@ let Technologies = {
         }
 
         // Suche erforschte Technologien
-        for (let i = 0; i < Technologies.UnlockedTechnologies['unlockedTechnologies'].length; i++) {
-            let TechName = Technologies.UnlockedTechnologies['unlockedTechnologies'][i];
+        let ResearchedTechs = (Technologies.UnlockedTechnologies['unlockedNodes'] && Technologies.UnlockedTechnologies['unlockedNodes'].length)
+            ? Technologies.UnlockedTechnologies['unlockedNodes']
+            : (Technologies.UnlockedTechnologies['unlockedTechnologies'] || []);
+        for (let i = 0; i < ResearchedTechs.length; i++) {
+            let TechName = ResearchedTechs[i];
             let Index = TechDict[TechName];
+            if (Index === undefined) continue;
             Technologies.AllTechnologies[Index]['isResearched'] = true;
-            Technologies.AllTechnologies[Index]['currentSP'] = Technologies.AllTechnologies[Index]['max_progress'] || 0;
+            Technologies.AllTechnologies[Index]['currentSP'] = Technologies.GetTechFP(Technologies.AllTechnologies[Index]);
         }
 
         // Teilweise erforscht
@@ -441,34 +464,71 @@ let Technologies = {
             Technologies.AllTechnologies[Index]['currentSP'] = InProgTech['currentSP'];
         }
 
-        // Güter zaehlen
-        let RequiredResources = [],
+        // Güter zählen
+        let RequiredResources = [],            // Bedarf NUR des gewählten Zeitalters
+            CumulativeResources = [],          // Bedarf kumulativ: aktuelles ZA bis gewähltes ZA
+            RelevantResources = { strategy_points: true, money: true, supplies: true },
             TechCount = 0;
+
+        let SelEraID = Technologies.SelectedEraID;
+        // Untere Grenze des kumulativen Bereichs: das jeweils niedrigere von aktuellem
+        // und gewähltem Zeitalter (beim Vorausblättern also das aktuelle Zeitalter).
+        let CumLowerEraID = Math.min(CurrentEraID, SelEraID);
 
         for (let i = 1; i < Technologies.AllTechnologies.length; i++) {
             let Tech = Technologies.AllTechnologies[i];
             if (Tech['currentSP'] === undefined)
             	Tech['currentSP'] = 0;
 
-            if (!Tech['isResearched'] && !Tech['isTeaser']) {
-                let EraID = Technologies.Eras[Tech['era']];
+            if (Tech['isTeaser']) continue;
 
-                // Vorherige ZA ausblenden
-                if (EraID < CurrentEraID && Technologies.IgnorePrevEra) {
-                    continue;
+            let EraID = Technologies.Eras[Tech['era']];
+
+            // Zeitalter unterhalb des kumulativen Bereichs ausblenden
+            if (EraID < CumLowerEraID && Technologies.IgnorePrevEra) {
+                continue;
+            }
+
+            // Aktuelles/zukünftiges ZA und optionale Technologie ausblenden
+            if (EraID >= CurrentEraID && Tech['children'].length === 0 && Technologies.IgnoreCurrentEraOptional) {
+                continue;
+            }
+
+            // Außerhalb des kumulativen Bereichs irrelevant
+            if (EraID < CumLowerEraID || EraID > SelEraID) {
+                continue;
+            }
+
+            let TechFP = Technologies.GetTechFP(Tech);
+
+            // Kumulativ: gesamter Bereich [CumLowerEraID .. SelEraID]
+            if (!Tech['isResearched']) {
+                if (CumulativeResources['strategy_points'] === undefined)
+                	CumulativeResources['strategy_points'] = 0;
+
+                CumulativeResources['strategy_points'] += TechFP - Tech['currentSP'];
+
+                for (let ResourceName in Tech['requirements']['resources']) {
+                    if (CumulativeResources[ResourceName] === undefined)
+                    	CumulativeResources[ResourceName] = 0;
+
+                    CumulativeResources[ResourceName] += Tech['requirements']['resources'][ResourceName];
+                }
+            }
+
+            // Pro gewähltem Zeitalter: nur Technologien genau dieses Zeitalters
+            if (EraID === SelEraID) {
+                // Alle vorkommenden Güter merken, damit sie immer gelistet werden
+                for (let ResourceName in Tech['requirements']['resources']) {
+                    RelevantResources[ResourceName] = true;
                 }
 
-                // Aktuelles/zukünfiges ZA und optionale Technologie ausblenden
-                if (EraID >= CurrentEraID && Tech['children'].length === 0 && Technologies.IgnoreCurrentEraOptional) {
-                    continue;
-                }
-
-                // Alle Technologien voriger ZA und optionale Technologien ausblenden
-                if (EraID >= CurrentEraID && EraID <= Technologies.SelectedEraID) {
+                // Nur noch nicht erforschte Technologien tragen zum Bedarf bei
+                if (!Tech['isResearched']) {
                     if (RequiredResources['strategy_points'] === undefined)
                     	RequiredResources['strategy_points'] = 0;
 
-                    RequiredResources['strategy_points'] += (Tech['max_progress'] || 0) - Tech['currentSP'];
+                    RequiredResources['strategy_points'] += TechFP - Tech['currentSP'];
 
                     for (let ResourceName in Tech['requirements']['resources']) {
                         if (RequiredResources[ResourceName] === undefined)
@@ -497,18 +557,29 @@ let Technologies = {
         	h.push('</div>');
         h.push('</div>');
 
+        // Hinweis, wenn im sichtbaren ZA-Bereich nichts mehr benötigt wird
+        if (TechCount === 0) {
+            h.push('<div class="technologies-hint">' + i18n('Boxes.Technologies.NoTechs') + '</div>');
+        }
+
         h.push('<table class="foe-table exportable">');
+
+        // Kumulative Spalte nur einblenden, wenn ein zukünftiges Zeitalter gewählt ist
+        // (sonst wäre sie identisch zur Spalte "Benötigt").
+        let ShowCumulative = SelEraID > CurrentEraID;
 
         h.push('<thead class="sticky">' +
             '<tr>' +
             '<th colspan="2" data-export2="resource">' + i18n('Boxes.Technologies.Resource') + '</th>' +
             '<th data-export="required">' + i18n('Boxes.Technologies.DescRequired') + '</th>' +
+            (ShowCumulative ? '<th data-export="cumulative">' + i18n('Boxes.Technologies.DescCumulative') + '</th>' : '') +
             '<th data-export="instock">' + i18n('Boxes.Technologies.DescInStock') + '</th>' +
             '<th data-export="remaining" class="text-right">' + i18n('Boxes.Technologies.DescStillMissing') + '</th>' +
             '</tr>' +
             '</thead>');
 
-        if (TechCount > 0) {
+        // Tabelleninhalt – immer alle relevanten Ressourcen ausgeben
+        {
             // Reihenfolge der Ausgabe generieren
             let OutputList = ['strategy_points', 'money', 'supplies'];
             for (let i = 0; i < 70; i++) {
@@ -549,26 +620,27 @@ let Technologies = {
 
             for (let i = 0; i < OutputList.length; i++) {
                 let ResourceName = OutputList[i];
-                if (RequiredResources[ResourceName] !== undefined) {
-                    let Required = RequiredResources[ResourceName];
+                if (RelevantResources[ResourceName]) {
+                    let Required = RequiredResources[ResourceName] || 0;
+                    let Cumulative = CumulativeResources[ResourceName] || 0;
                     let Stock = (ResourceName === 'strategy_points' ? StrategyPoints.AvailableFP : ResourceStock[ResourceName]);
                     if (Stock === undefined) Stock = 0;
                     let Diff = Stock - Required;
 
-                    h.push('<tr>');
+                    // Fertige Ressourcen (weder im gewählten ZA noch kumulativ benötigt) werden abgedimmt
+                    let IsDone = Required <= 0 && (!ShowCumulative || Cumulative <= 0);
+                    h.push('<tr' + (IsDone ? ' class="technologies-done"' : '') + '>');
                     h.push('<td class="goods-image" style="width:25px"><span class="goods-sprite sprite-35 '+ GoodsData[ResourceName]['id'] +'"></span></td>');
                     h.push('<td>' + GoodsData[ResourceName]['name'] + '</td>');
                     h.push('<td>' + HTML.Format(Required) + '</td>');
+                    if (ShowCumulative) {
+                        h.push('<td>' + HTML.Format(Cumulative) + '</td>');
+                    }
                     h.push('<td>' + HTML.Format(Stock) + '</td>');
                     h.push('<td class="text-right text-' + (Diff < 0 ? 'danger' : 'success') + '">' + HTML.Format(Diff) + '</td>');
                     h.push('</tr>');
                 }
             }
-        }
-        else {
-            h.push('<tr>');
-            	h.push('<td colspan="5" class="text-center">' + i18n('Boxes.Technologies.NoTechs') + '</td>');
-            h.push('</tr>');
         }
         h.push('</table');
 
