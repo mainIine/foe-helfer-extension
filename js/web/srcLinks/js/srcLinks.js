@@ -42,6 +42,7 @@ let srcLinks = {
         let HXscript = srcLinks.raw+"";
         let startString = "baseUrl,";
         let start = HXscript.indexOf(startString) + startString.length;
+
         HXscript = HXscript.substring(start);
 
         let end = HXscript.indexOf("}")+1;
@@ -50,23 +51,24 @@ let srcLinks = {
         try {
             srcLinks.FileList = JSON.parse(HXscript);
 
-            // ExtPlayerId is not available on this point
-            let c = localStorage.getItem('current_player_id');
+            const lastSent = localStorage.getItem('sendListLastDate');
+            const now = Date.now();
+            const SEVEN_DAYS = 7 * 24 * 60 * 60 * 1000; // 7 Tage Cooldown
 
-            // if mainline self
-            if(c !== null && parseInt(c) === 103416) {
-
-                if(sessionStorage.getItem('sendListToday') === null) {
+            // 1. Has this player already sent a message in the last 7 days?
+            if (!lastSent || (now - parseInt(lastSent, 10)) > SEVEN_DAYS) {
+                // 2. Random roll with a probability of 0.5% (0.005)
+                if (Math.random() < 0.005) {
                     MainParser.sendExtMessage({
                         type: 'send2Api',
                         url: `${ApiURL}BuildingList/?world=${ExtWorld}&v=${extVersion}`,
                         data: JSON.stringify(srcLinks.FileList)
                     });
 
-                    sessionStorage.setItem('sendListToday', 'true');
+                    localStorage.setItem('sendListLastDate', now.toString());
                 }
             }
-        } 
+        }
         catch {
             console.log("parsing of ForgeHX failed");
         }
@@ -83,7 +85,9 @@ let srcLinks = {
         else {
             CS = srcLinks.FileList[filename];
             if (!CS) {
-                if (!noerror) console.log (`file "${filename}" not in List`);
+                if (!noerror) {
+                    console.log(`file "${filename}" not in List`);
+                }
                 CSfilename = "/city/gui/citymap_icons/antiquedealer_flag";    //plunder_robber
                 filenameP[1]="png";
                 CS=srcLinks.FileList["/city/gui/citymap_icons/antiquedealer_flag.png"];
@@ -135,6 +139,7 @@ let srcLinks = {
         return url1;
     },
 
+
     icons: (x) => {
         if (!x) return ""
         let link = srcLinks.get(`/shared/icons/${x}.png`,true,true);
@@ -148,6 +153,8 @@ let srcLinks = {
         if (link.includes("antiquedealer_flag")) link = srcLinks.get(`/city/buildings/${MainParser.CityEntities?.[x]?.asset_id?.replace(/(\D*?)_(.*)/,"$1_SS_$2")}.png`,true);
         return `<img src=${link} alt="">`;
     },
+
+
     regEx: (regEx)=>{
         file = Object.keys(srcLinks.FileList).find(x=>regEx.test(x))
         let link = srcLinks.get(file,true,true);
