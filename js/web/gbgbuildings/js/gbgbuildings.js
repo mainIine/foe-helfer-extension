@@ -15,6 +15,7 @@
 
 
 FoEproxy.addHandler('GuildBattlegroundBuildingService', 'getBuildings', (data, postData) => {
+	GBGBuildings.storeBuildingCosts(data.responseData);
 	if (!Settings.GetSetting('ShowGBGBuildings')) return;
 
 	GBGBuildings.costs={};
@@ -323,4 +324,22 @@ let GBGBuildings = {
 		
 		return Object.values(sets);
 	},
+
+
+	storeBuildingCosts:(data)=> {
+		let provinceId = data.provinceId || 0;
+		if (data.availableBuildings.length === 0) return;
+
+		let stored = JSON.parse(localStorage.getItem("GBGBuildingCosts") || "{}");
+		if (stored.GBGRound != GuildFights.CurrentGBGRound)
+			stored = {};
+
+		let costsMap = {};
+		for (let building of data.availableBuildings) {
+			costsMap[building.buildingId] = building.costs.resources;
+			stored[provinceId] = costsMap;
+		}
+
+		localStorage.setItem("GBGBuildingCosts", JSON.stringify(Object.assign(stored, {GBGRound: GuildFights.CurrentGBGRound})));
+	}
 }

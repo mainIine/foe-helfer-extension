@@ -1,5 +1,78 @@
-## Changelog - Extension
+## Extension Changelog
 
+##### 4.3.1.0
+
+**Update**
+
+- Forschungsbaum:
+	- Überarbeitung des Moduls, neue Spalte ergänzt. Diese zeigt ab dem nächsten unerforschtem ZA eine Spalte aller summierten fehlenden Elemente 
+
+---
+
+##### 4.3.0.1
+
+**BugFix**
+
+- Forschungsbaum:
+  - Eine strukturelle Umstellung in den Daten von Inno erzeugte im Helfer einen Fehler
+
+---
+
+##### 4.3.0.0
+
+**Neu**
+- LG Rechner: Es gibt nur noch einen Rechner, aber es wurde keine Funktionalität entfernt. Wenn ihr die bisherige Kostenrechner-Ansicht sucht, schaut in die Einstellung vom Fenster des Rechners!
+- Gefechte: In den Einstellungen bei den Gefechts-Countdowns kann man jetzt einen Discord Webhook definieren
+- Gefechte: Es gibt einen neuen Bereich, wo man schnell sehen kann, welche der eigenen Sektoren noch bebaut werden müssen
+- Discord Webhooks: Erstelle Vorlagen (Templates) für eigene Gefechtsnachrichten und füge sie in den GG Einstellungen hinzu
+
+**Update**
+- Verbündete: Die Boosts sind nun tabellarisch nach Kategorie aufgelistet und können auch sortiert werden
+- Infobox: QI Aktionen werden nun auch geloggt. Außerdem gibt es nun eine Favoritenfunktion und das Fenster ist etwas kompakter geworden
+- LG Rechner: Der Konfigurationspfeil am Rand des Fensters ist nun ein Zahnrad in der Ecke unten links!
+- Effizienzbewertung: Gebäude, die auf eine erhabene Version aufgewertet werden können, werden jetzt mit dem entsprechenden Pfeil gekennzeichnet
+- Gildenmitglieder Übersicht: Die Detailansicht eines Mitglieds öffnet sich in einem eigenen Fenster und beinhaltet jetzt auch durchschnittliche Daten, sowie QI Daten
+- "Kampagne" Modul entfernt! Sektoren zu verhandeln ist ein selten gewordener Spielstil und Güter gibt es heutzutage in Hülle und Fülle
+- UI: An verschiedenen Stellen sieht der Helfer nun etwas anders aus
+- Gebäude Effizienzberechnung: Die Ansicht öffnet sich per default mit absteigender Sortierung und wird sofort aktualisiert, sobald ein Gebäude entfernt, hinzugefügt oder ge-updated wird
+
+---
+ 
+
+##### 4.2.1.1
+
+**Bugfix**
+- Beide Rechner waren kaputt nach dem Spiel-Update auf Version 1.332
+
+---
+
+##### 4.2.1.0
+
+**Update**
+- Discord Webhooks: Modul wurde komplett verändert und kann nun jederzeit Nachrichten verschicken.
+- Statistik: Güter des nächten Zeitalters in die Schnellauswahl hinzugefügt.
+- Wiederholtes Bauen: entfernt für Umbaumodus, da nun spieleigene Funktion vorhanden.
+
+**Bugfix**
+- Merger-Minispiel: funktioniert nun wie ursprünglich geplant
+
+
+---
+
+##### 4.2.0.0
+
+**Update**
+- Kostenrechner: Einstellung zum automatischen Öffnen hinzugefügt
+- Beide LG Rechner: Standard-Werte von 80, 85, 90 auf 80, 90, 100 geändert
+- Effizienzberechnung: FP-Boost & Güter Boost hinzugefügt und man kann jetzt verschiedene Einstellungen zur Bewertung erstellen
+- Merger-Minispiel: Tabelle reduziert und Warnfenster hinzugefügt, wenn Tasks fertig sind
+
+**Bugfix**
+- Beide LG Rechner: Ein Spiel-Update hat das LG Fenster verschoben, sodass die neue FP-Kopier-Funktion nicht mehr funktioniert hat
+- Eigenanteilsrechner: beim Kopieren werden die bereits eingezahlten FP berücksichtigt (fremde LG)
+- Automatisches öffnen: einige Fenster sind nicht mehr von alleine aufgegangen, wenn man sich noch nie mit den Einstellungen befasst hatte - funktioniert jetzt wieder wie vorher, aber: Guckt euch die Einstellungen an, sie sind praktisch.
+
+---
 
 ##### 4.1.1.0
 

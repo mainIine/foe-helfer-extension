@@ -11,10 +11,6 @@
  * **************************************************************************************
  */
 
-/**
- *
- * @type {{Help: (function(): string), NotificationView: (function(): string), GetSetting: ((function(*, *=): *)|*), MenuSelected: (function(): string), BoxGroups: string[], BuildBox: Settings.BuildBox, About: (function(): string), StoreSettings: Settings.StoreSettings, InfoboxInputEntryCount: (function(): *|jQuery), VersionInfo: (function(): string), Init: Settings.Init, ExportView: (function(): string), MenuInputLength: (function(): *|jQuery), NotificationStack: (function(): *|jQuery), ImportSettings: Settings.ImportSettings, LoadConfig: Settings.LoadConfig, BuildBody: Settings.BuildBody, ResetBoxCoords: Settings.ResetBoxCoords, LanguageDropdown: (function(): string), Preferences: null, MenuContent: (function(): *), ExportSettings: Settings.ExportSettings}}
- */
 let Settings = {
 
 	/**
@@ -34,8 +30,6 @@ let Settings = {
 
 	/**
 	 * load the settings from the json
-	 *
-	 * @constructor
 	 */
 	Init: () => {
 		Settings.LoadConfig((response) => {
@@ -46,9 +40,6 @@ let Settings = {
 
 	/**
 	 * Load config from config file
-	 *
-	 * @param callback
-	 * @constructor
 	 */
 	LoadConfig: (callback) => {
 		fetch(
@@ -89,7 +80,6 @@ let Settings = {
 	 *
 	 */
 	BuildBody: () => {
-
 		let parentLis = [],
 			div = [],
 			content;
@@ -105,7 +95,7 @@ let Settings = {
 			parentLis.push(`<li><a href="#tab-${i}"><span>${i18n('Settings.Tab.' + g)}</span></a></li>`);
 
 			for (let x in grps) {
-				if (!grps.hasOwnProperty(x)) {
+				if (!grps.hasOwnProperty(x) || grps[x].hidden) {
 					break;
 				}
 
@@ -185,6 +175,10 @@ let Settings = {
 
 		$('#SettingsBoxBody').on('click', 'input.setting-check', function () {
 			Settings.StoreSettings($(this));
+		});
+		$('.setting [data-original-title]').tooltip({
+			container: 'body',
+			html: true,
 		});
 	},
 
@@ -595,28 +589,21 @@ let Settings = {
 			menuItems.push(...hiddenArray);
 		}
 
-		for (let i in menuItems)
-		{
-			if (!menuItems.hasOwnProperty(i)) {
-				break;
-			}
+		for (let i in menuItems) {
+			if (!menuItems.hasOwnProperty(i)) break;
 
 			const name = menuItems[i];
-
-			// exclude settings
-			if(name === 'settings'){
-				continue;
-			}
+			if(name === 'settings') continue;
 
 			// is there a function?
-			if (_menu[name + '_Btn'])
-			{
+			if (_menu[name + '_Btn']) {
 				let btnBG = $('<div />')
 					.attr({ id: `setting-${name}-Btn` })
 					.addClass('hud-btn')
 					.addClass(hiddenArray.includes(name) ? 'hud-btn-red' : '');
+				let btnData = _menu.ItemsData.find(x => x.id === name);
 
-				let btn = $(`<span onclick="_menu.ToggleItemVisibility('${name}')"></span>`);
+				let btn = $(`<span onclick="_menu.ToggleItemVisibility('${name}')" data-original-title='<b>${btnData?.title||""}</b><br>${btnData?.description||""}'></span>`);
 		
 				btnBG.append(btn);
 				bl.append(btnBG);

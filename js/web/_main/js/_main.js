@@ -104,8 +104,6 @@ let GameTime = {
 	get:()=>{
 		return moment().unix()+GameTime.Offset;
 	}
-	
-
 }
 
 // Übersetzungen laden
@@ -197,23 +195,21 @@ GetFights = () =>{
 
 	// globale Handler
 	// die Gebäudenamen übernehmen
-	FoEproxy.addMetaHandler('city_entities', (xhr, postData) => {
-		let EntityArray = JSON.parse(xhr.responseText);
-		MainParser.CityEntities = Object.assign({}, ...EntityArray.map((x) => ({ [x.id]: x })));
-		MainParser.correctBuildingType()
-		MainParser.Inactives.check();
-	});
 	FoEproxy.addMetaHandler('building_entity_lookup', (xhr, postData) => {
 		let buildingUrlsRaw = JSON.parse(xhr.responseText || "[]");
 		let buildingUrls = Object.assign({}, ...buildingUrlsRaw.map((x) => ({ [x.identifier.replace("building_entity_","")]: {url: x.url, hash: x.url.replace(/.*?([^-]+$)/gm,"$1")} })));
-		setTimeout(()=>{MainParser.CityEntityBuilder(buildingUrls)},500);
+
+		setTimeout(()=>{ MainParser.CityEntityBuilder(buildingUrls) },500);
 	});
 
 	// Building-Upgrades
 	FoEproxy.addMetaHandler('building_upgrades', (xhr, postData) => {
 		let BuildingUpgradesArray = JSON.parse(xhr.responseText);
 		MainParser.BuildingUpgrades = Object.assign({}, ...BuildingUpgradesArray.map((x) => ({ [x.upgradeItem.id]: x })));
-		if (MainParser.SelectionKits != null) Kits.CreateUpgradeSchemes();
+
+		if (MainParser.SelectionKits != null) {
+			Kits.CreateUpgradeSchemes();
+		}
 	});
 
 	// Building-Sets
@@ -232,8 +228,12 @@ GetFights = () =>{
 	FoEproxy.addMetaHandler('selection_kits', (xhr, postData) => {
 		let SelectKitsArray = JSON.parse(xhr.responseText);
 		MainParser.SelectionKits = Object.assign({}, ...SelectKitsArray.map((x) => ({ [x.selectionKitId]: x })));
-		if (MainParser.BuildingUpgrades != null) Kits.CreateUpgradeSchemes();
+
+		if (MainParser.BuildingUpgrades != null) {
+			Kits.CreateUpgradeSchemes();
+		}
 	});
+
 	FoEproxy.addMetaHandler("building_families", (xhr,postData) => {
 		MainParser.BuildingFamilyLimits = JSON.parse(xhr.responseText)?.families;
 	})	
@@ -399,7 +399,7 @@ GetFights = () =>{
 
 	// QI map
 	FoEproxy.addHandler('GuildRaidsMapService', 'getOverview', (data, postData) => {		
-		QIMap.init(data.responseData)
+		QiProgress.QiMap = data.responseData;
 	})
 
 	// CastleSystem rewards
@@ -689,8 +689,9 @@ GetFights = () =>{
 
 	// es wird ein LG eines Spielers geöffnet
 
-	// lgUpdateData sammelt die informationen aus mehreren Handlern
-	let lgUpdateData = null;
+	// gbUpdateData sammelt die informationen aus mehreren Handlern
+	let gbUpdateData = null;
+	let gbCityMapEntity = null;
 
 	FoEproxy.addHandler('GreatBuildingsService', 'all', (data, postData) => {
 		let getConstruction = data.requestMethod === 'getConstruction' ? data : null;
@@ -700,8 +701,8 @@ GetFights = () =>{
 
 		if (getConstruction != null) {
 			Rankings = getConstruction.responseData.rankings;
-			Bonus['passive'] = getConstruction.responseData.next_passive_bonus;
-			Bonus['production'] = getConstruction.responseData.next_production_bonus;
+			Bonus['passive'] = getConstruction.responseData.next_passive_bonus; // GB update to do
+			Bonus['production'] = getConstruction.responseData.next_production_bonus; // GB update to do
 			let EraName = getConstruction.responseData.ownerEra;
 			if (EraName) Era = Technologies.Eras[EraName];
 			IsLevelScroll = false;
@@ -716,43 +717,61 @@ GetFights = () =>{
 		}
 
 		if (Rankings) {
-			if (!lgUpdateData || !lgUpdateData.CityMapEntity) {
-				lgUpdateData = { Rankings: Rankings, CityMapEntity: null, Bonus: null };
-				// reset lgUpdateData so bald wie möglich (nachdem alle einzelnen Handler ausgeführt wurden)
-				Promise.resolve().then(() => lgUpdateData = null);
+			if (!gbUpdateData || !gbUpdateData.CityMapEntity) {
+				gbUpdateData = { Rankings: Rankings, CityMapEntity: gbCityMapEntity, Bonus: null };
 			}
 			else {
-				lgUpdateData.Rankings = Rankings;
-				lgUpdateData.Bonus = Bonus;
-				lgUpdateData.Era = Era;
-
-				if(lgUpdateData.Rankings && lgUpdateData.CityMapEntity){
-					if(!IsLevelScroll) MainParser.SendLGData(lgUpdateData);
-				}
-
-				lgUpdate();
+				gbUpdateData.Rankings = Rankings;
+				gbUpdateData.Bonus = Bonus;
+				gbUpdateData.Era = Era;
 			}
 		}
+
+		if(gbUpdateData?.Rankings && gbUpdateData?.CityMapEntity){
+			if(!IsLevelScroll) MainParser.SendLGData(gbUpdateData);
+			lgUpdate();
+		}
+
 	});
 
 	FoEproxy.addHandler('GreatBuildingsService', 'getContributions', (data, postData) => {
 		MainParser.UpdatePlayerDict(data.responseData, 'LGContributions');
 	});
 
+	// can be removed after game update 1.332
 	FoEproxy.addHandler('CityMapService', 'updateEntity', (data, postData) => {
-		if (!lgUpdateData || !lgUpdateData.Rankings) {
-			lgUpdateData = { Rankings: null, CityMapEntity: data };
-			// reset lgUpdateData sobald wie möglich (nachdem alle einzelnen Handler ausgeführt wurden)
-			Promise.resolve().then(() => lgUpdateData = null);
+		if (!gbUpdateData || !gbUpdateData.Rankings) {
+			gbUpdateData = { Rankings: null, CityMapEntity: data };
+			// reset gbUpdateData sobald wie möglich (nachdem alle einzelnen Handler ausgeführt wurden)
+			Promise.resolve().then(() => gbUpdateData = null);
 		} else {
-			lgUpdateData.CityMapEntity = data;
+			gbUpdateData.CityMapEntity = data;
 			lgUpdate();
 		}
 		
 		if (data.responseData[0]?.player_id === ExtPlayerID) {
 			
 			if ($('#OwnPartBox').length > 0) {
-				Parts.CityMapEntity.max_level = data.responseData[0]?.max_level;
+				MainParser.CurrentGB.Entity.max_level = data.responseData[0]?.max_level;
+				Parts.CalcBody();
+			}
+		}
+	});
+
+	FoEproxy.addHandler('OtherPlayerService', 'getOtherPlayerCityMapEntity', (data, postData) => {
+		let formattedData = { ...data, responseData: [data.responseData] };
+		gbCityMapEntity = formattedData;
+
+		if (!gbUpdateData || !gbUpdateData.Rankings) {
+			gbUpdateData = { Rankings: null, CityMapEntity: formattedData };
+		} else {
+			gbUpdateData.CityMapEntity = formattedData;
+			lgUpdate();
+		}
+		
+		if (formattedData.responseData[0]?.player_id === ExtPlayerID) {
+			if ($('#OwnPartBox').length > 0) {
+				MainParser.CurrentGB.Entity.max_level = formattedData.responseData[0]?.max_level;
 				Parts.CalcBody();
 			}
 		}
@@ -782,69 +801,50 @@ GetFights = () =>{
 		}
 	});
 
-	// Update Funktion, die ausgeführt wird, sobald beide Informationen in lgUpdateData vorhanden sind.
+	// Update Funktion, die ausgeführt wird, sobald beide Informationen in gbUpdateData vorhanden sind.
 	function lgUpdate() {
-		const { CityMapEntity, Rankings, Bonus } = lgUpdateData;
-		lgUpdateData = null;
+		const { CityMapEntity, Rankings, Bonus } = gbUpdateData;
+		gbUpdateData = null;
 		let IsPreviousLevel = false;
 
-		if (!Rankings) return; //Keine Rankings => Fehlermeldung z.B. "Stufe wurde bereits erhöht" wenn man versucht einzuzahlen obwohl schon gelevelt wurde
+		if (!Rankings) return;
 
-		//Eigenes LG
-		if (CityMapEntity.responseData[0].player_id === ExtPlayerID || Settings.GetSetting('ShowOwnPartOnAllGBs')) {
-			//LG Scrollaktion: Beim ersten mal Öffnen Medals von P1 notieren. Wenn gescrollt wird und P1 weniger Medals hat, dann vorheriges Level, sonst aktuelles Level
-			if (IsLevelScroll) {
-				let Medals = 0;
-				for (let i = 0; i < Rankings.length; i++) {
-					if (Rankings[i]['reward'] !== undefined) {
-						Medals = Rankings[i]['reward']['resources']['medals'];
-						break;
-					}
-				}
-
-				if (Medals !== LGCurrentLevelMedals) {
-					IsPreviousLevel = true;
+		// LG Scrollaktion: Beim ersten mal Öffnen Medals von P1 notieren. Wenn gescrollt wird und P1 weniger Medals hat, dann vorheriges Level, sonst aktuelles Level
+		if (IsLevelScroll) {
+			let Medals = 0;
+			for (let i = 0; i < Rankings.length; i++) {
+				if (Rankings[i]['reward'] !== undefined) {
+					Medals = Rankings[i]['reward']['resources']['medals'];
+					break;
 				}
 			}
-			else {
-				let Medals = 0;
-				for (let i = 0; i < Rankings.length; i++) {
-					if (Rankings[i]['reward'] !== undefined) {
-						Medals = Rankings[i]['reward']['resources']['medals'];
-						break;
-					}
-				}
-				LGCurrentLevelMedals = Medals;
-			}
 
-			Parts.CityMapEntity = CityMapEntity.responseData[0];
-			Parts.Rankings = Rankings;
-			Parts.IsPreviousLevel = IsPreviousLevel;
-
-			// das erste LG wurde geladen
-			$('#partCalc-Btn').removeClass('hud-btn-red');
-			$('#partCalc-Btn-closed').remove();
-
-			if ($('#OwnPartBox').length > 0) {
-				Parts.CalcBody();
+			if (Medals !== LGCurrentLevelMedals) {
+				IsPreviousLevel = true;
 			}
 		}
-
-		// Fremdes LG
-		if (CityMapEntity.responseData[0].player_id !== ExtPlayerID && !IsLevelScroll)
-		{
-			$('#calculator-Btn').removeClass('hud-btn-red');
-			$('#calculator-Btn-closed').remove();
-
-			Calculator.Rankings = Rankings;
-			Calculator.CityMapEntity = CityMapEntity['responseData'][0];
-
-			// wenn schon offen, den Inhalt updaten
-			if ($('#costCalculator').length > 0) {
-				Calculator.Show();
+		else {
+			let Medals = 0;
+			for (let i = 0; i < Rankings.length; i++) {
+				if (Rankings[i]['reward'] !== undefined) {
+					Medals = Rankings[i]['reward']['resources']['medals'];
+					break;
+				}
 			}
+			LGCurrentLevelMedals = Medals;
 		}
 
+		MainParser.CurrentGB.Entity = CityMapEntity.responseData[0];
+		MainParser.CurrentGB.Rankings = Rankings;
+		Parts.IsPreviousLevel = IsPreviousLevel;
+
+		// GB was loaded
+		$('#partCalc-Btn').removeClass('hud-btn-red');
+		$('#partCalc-Btn-closed').remove();
+
+		if ($('#OwnPartBox').length > 0) {
+			Parts.CalcBody();
+		}
 	}
 
 
@@ -994,6 +994,10 @@ let MainParser = {
 	StartUpType: null,
 	OpenConversation: null,
 	CastleSystemChest: null,
+	CurrentGB: {
+		Entity: undefined,
+		Rankings: undefined
+	},
 
 	// all buildings of the player
 	CityMapData: {},
@@ -1055,6 +1059,31 @@ let MainParser = {
 		localStorage.setItem('LastAgreedVersion', extVersion); //Comment out this line if you have something the player must agree on
 	},
 
+
+	/**
+	 * Asynchronously builds city entity metadata by fetching and processing data for each provided building URL.
+	 * The function ensures that metadata is fetched and updated only when changes are detected in the hash values
+	 * from the input URLs and existing stored metadata.
+	 *
+	 * @param {Object} buildingUrls - A mapping where keys represent building IDs and values are objects containing
+	 *                                metadata with the following properties:
+	 *                                - `url` {string}: The URL from which the building metadata can be fetched.
+	 *                                - `hash` {string}: A hash representing the state of the metadata for change detection.
+	 *
+	 * The function performs the following operations:
+	 * - Accesses the IndexDB to retrieve and compare existing metadata for buildings.
+	 * - Determines which metadata requires updating based on differences in hash values.
+	 * - Fetches new metadata concurrently, with a maximum of 10 simultaneous network requests.
+	 * - Implements retry logic for failed requests, allowing up to 3 retries per request.
+	 * - Updates the IndexDB storage with newly fetched metadata.
+	 * - Updates the global `MainParser.CityEntities` object with the latest metadata.
+	 * - Invokes necessary parsing and checking functions from `MainParser`:
+	 *   - `MainParser.correctBuildingType()`: Corrects building types in the updated metadata.
+	 *   - `MainParser.Inactives.check()`: Performs post-processing checks for inactive entities.
+	 *
+	 * The function ensures robust error handling, timeout management for HTTP requests, and retries
+	 * to handle occasional network failures. Metadata updates are written back to IndexDB in bulk.
+	 */
 	CityEntityBuilder: async (buildingUrls) => {
 		await IndexDB.getDB();
 		let buildingsOld = await IndexDB.db.buildingMeta.toArray();
@@ -1070,6 +1099,7 @@ let MainParser = {
 			return new Promise(resolve => {
 				const xhr = new XMLHttpRequest();
 				xhr.open("GET", meta.url, true);
+
 				let timeout = setTimeout(() => {
 					xhr.abort();
 				}, 10000); // 10 Sekunden Timeout
@@ -1107,7 +1137,7 @@ let MainParser = {
 			while (active < maxConcurrent && index < ids.length) {
 				const id = ids[index++];
 				const meta = buildingUrls[id];
-				if (!buildingsOld[id] || buildingsOld[id].hash != meta.hash) {
+				if (!buildingsOld[id] || buildingsOld[id].hash !== meta.hash) {
 					active++;
 					fetchMeta(id, meta).then(() => {
 						active--;
@@ -1133,14 +1163,28 @@ let MainParser = {
 		MainParser.correctBuildingType();
 		MainParser.Inactives.check();
 	},
+
+
+	/**
+	 * Updates the `type` property of each CityEntity in `MainParser.CityEntities` if it is missing.
+	 * The `type` is set based on the `buildingType` attribute found within the
+	 * `components.AllAge.tags.tags` structure of the entity.
+	 *
+	 * Iterates through all entries in the `MainParser.CityEntities` object, ensuring the
+	 * existence of the property `buildingType` before attempting to assign it.
+	 */
 	correctBuildingType: () => {
 		for (let i in MainParser.CityEntities) {
 			if (!MainParser.CityEntities.hasOwnProperty(i)) continue;
 
 			let CityEntity = MainParser.CityEntities[i];
-			if (!CityEntity.type) CityEntity.type = CityEntity?.components?.AllAge?.tags?.tags?.find(value => value.hasOwnProperty('buildingType')).buildingType;
+
+			if (!CityEntity.type) {
+				CityEntity.type = CityEntity?.components?.AllAge?.tags?.tags?.find(value => value.hasOwnProperty('buildingType')).buildingType;
+			}
         }
 	},
+
 
 	/**
 	 * Etwas zur background.js schicken
@@ -1188,7 +1232,8 @@ let MainParser = {
 
 
 	/**
-	 *
+	 * Sets the application language by assigning the `GuiLng` value to `MainParser.Language`.
+	 * This function facilitates the configuration of the language settings for the application.
 	 */
 	setLanguage: () => {
 		// Translation
@@ -1302,9 +1347,6 @@ let MainParser = {
 
 	/**
 	 * Check whether an update is necessary
-	 *
-	 * @param ep
-	 * @returns {*}
 	 */
 	checkNextUpdate: (ep) => {
 		let s = localStorage.getItem(ep),
@@ -1315,8 +1357,13 @@ let MainParser = {
 
 
 	/**
-	 * @param PlayerID
-	 * @param PlayerName
+	 * Generates a player link or returns the player's name based on the application settings.
+	 *
+	 * @function GetPlayerLink
+	 * @param {string} PlayerID - The unique identifier for the player.
+	 * @param {string} PlayerName - The display name of the player.
+	 * @returns {string} A hyperlink to the player's profile if links are enabled in settings,
+	 * or the player's name as plain text otherwise.
 	 */
 	GetPlayerLink: (PlayerID, PlayerName) => {
 		if (Settings.GetSetting('ShowLinks')) {
@@ -1330,11 +1377,22 @@ let MainParser = {
 			return HTML.escapeHtml(PlayerName);
 		}
 	},
-	
+
+
 	/**
-	 * @param GuildID
-	 * @param GuildName
-	 * @param WorldId
+	 * Constructs a link or plain text for a guild based on the given parameters and settings.
+	 *
+	 * @param {string} GuildID - The unique identifier for the guild.
+	 * @param {string} GuildName - The name of the guild.
+	 * @param {string} [WorldId] - The world identifier. Defaults to `ExtWorld` when not provided.
+	 * @returns {string} - A hyperlink to the guild or the plain text of the guild name, depending on the settings.
+	 *
+	 * - If `Settings.GetSetting('ShowLinks')` is true:
+	 *   - Constructs a hyperlink using `GuildLinkFormat`, replacing placeholders for the `world` and `guildid`.
+	 *   - If the `localStorage` key `linkSite` equals `siteForgedb`, constructs the hyperlink with `GuildLinkFormat2`.
+	 *   - Returns the link as an HTML-safe string with the guild name and an icon.
+	 * - If `Settings.GetSetting('ShowLinks')` is false:
+	 *   - Returns the guild name as plain HTML-escaped text.
 	 */
 	GetGuildLink: (GuildID, GuildName, WorldId) => {
 		if(!WorldId) WorldId = ExtWorld;
@@ -1351,13 +1409,17 @@ let MainParser = {
 		}
 	},
 
+
 	/**
-	 * @param BuildingID
-	 * @param BuildingName
+	 * Generates a link for a building if the 'ShowLinks' setting is enabled.
+	 * Otherwise, it returns the building name as plain text.
+	 *
+	 * @param {string} BuildingID - The unique identifier for the building.
+	 * @param {string} BuildingName - The name of the building to be displayed.
+	 * @returns {string} A string containing either an HTML link or plain text for the building name.
 	 */
 	GetBuildingLink: (BuildingID, BuildingName) => {
-		if (Settings.GetSetting('ShowLinks'))
-		{
+		if (Settings.GetSetting('ShowLinks')) {
 			let BuildingLink = HTML.i18nReplacer(BuildingsLinkFormat, {'buildingid': BuildingID });
 
 			return `<a class="external-link game-cursor" href="${BuildingLink}" target="_blank">${BuildingName} ${LinkIcon}</a>`;
@@ -1474,14 +1536,16 @@ let MainParser = {
 		});
 
 		ExtPlayerAvatar = d.portrait_id;
-
+		await ExistenceConfirmed('MainParser.CityEntities||srcLinks.FileList||Infoboard||EventHandler');
+	
 		Infoboard.Init();
 		EventHandler.Init();
 		setTimeout(MainParser.forceLoadCityEntities, 15000);
-		await ExistenceConfirmed('MainParser.CityEntities||srcLinks.FileList')
 	
 		window.dispatchEvent(new CustomEvent('foe-helper#StartUpDone'))
-		//console.log('StartUp done')
+		
+		// remove campagnemap storage - can be removed again at some point
+		localStorage.removeItem('AllProvinces');
 	},
 
 
@@ -1544,6 +1608,7 @@ let MainParser = {
 			data: JSON.stringify(realData)
 		});
 	},
+
 
 	Allies: {
 		buildingList:null,
@@ -1630,8 +1695,6 @@ let MainParser = {
 		},
 
 		showAllyList:(closeIfOpen = false)=>{
-			
-			//console.log(0, MainParser.Allies);
 
 			if ($('#AllyList').length === 0) {
 				HTML.Box({
@@ -1659,7 +1722,21 @@ let MainParser = {
 			if ($('#AllyList').length === 0) return;
 			let buildings = Object.assign({},...Object.values(MainParser.CityMapData).map(x=>({id:x.id,metaID:x.cityentity_id,rooms:structuredClone(MainParser.CityEntities[x.cityentity_id]?.components?.AllAge?.ally?.rooms)})).filter(x=>x.rooms!==undefined).map(x=>({[x.id]:x})))
 			let rooms = {}
-			let unassigned = 0
+			let unassigned = 0;
+			let boostList = [
+				{feature:"all",type: "att_boost_attacker"},
+				{feature:"all",type: "att_boost_defender"},
+				{feature:"battleground",type: "att_boost_attacker"},
+				{feature:"battleground",type: "att_boost_defender"},
+				{feature:"guild_expedition",type: "att_boost_attacker"},
+				{feature:"guild_expedition",type: "att_boost_defender"},
+				{feature:"all",type: "def_boost_attacker"},
+				{feature:"all",type: "def_boost_defender"},
+				{feature:"battleground",type: "def_boost_attacker"},
+				{feature:"battleground",type: "def_boost_defender"},
+				{feature:"guild_expedition",type: "def_boost_attacker"},
+				{feature:"guild_expedition",type: "def_boost_defender"},
+			]
 			Object.values(MainParser.Allies.allyList).forEach(x=>{
 				if (x.mapEntityId) {
 					let rs=buildings[x.mapEntityId].rooms
@@ -1710,18 +1787,23 @@ let MainParser = {
 				unassigned++
 			})
 
-			html=`<div class="dark-bg"><select id="AllyFilter"><option value="">${i18n('Boxes.AllyList.All')}</option>`
-			for (let r of Object.values(MainParser.Allies.rarities)) {
-				html+=`<option value="${r.id.value}">${r.name}</option>`
-			}
+			html=`<div class="dark-bg">
+				<select id="AllyFilter"><option value="">${i18n('Boxes.AllyList.All')}</option>`
+				for (let r of Object.values(MainParser.Allies.rarities)) {
+					html+=`<option value="${r.id.value}">${r.name}</option>`
+				}
 			html+=`</select></div>`
 			html+=`<table id="AllyListTable" class="foe-table">`
-			html+=`<thead><tr>
-							<th colspan=3>${i18n('Boxes.AllyList.Building')}</th>
-							<th colspan=2>${i18n('Boxes.AllyList.Ally')}</th>
-							<th>${i18n('Boxes.AllyList.Level')}</th>
-							<th>${i18n('Boxes.AllyList.Boosts')}</th>
-					</tr></thead>`
+			html+=`<thead class="sticky"><tr class="sorter-header sort2">
+							<th class="no-sort">${i18n('Boxes.AllyList.Ally')}</th>
+							<th class="is-number" data-type="ally-list">${i18n('Boxes.AllyList.Level')}</th>`;
+							for (const b of boostList) {
+								html+= `<th class="is-number" data-type="ally-list"><span class="resicon ${b.type}-${b.feature}"></span></th>`
+							}
+					html+=`<th class="no-sort">${i18n('Boxes.AllyList.Building')}</th>
+					</tr>
+				</thead>
+				<tbody class="ally-list">`;
 			sortedRooms = Object.entries(rooms).sort((a,b)=>{
 				f=(r)=>{return Object.keys(MainParser.Allies.rarities).indexOf(r.allyRarity) + (r.buildingName?10:0) + (r.fragmentsAmount?100:0)}
 				return f(a[1])-f(b[1])
@@ -1733,22 +1815,29 @@ let MainParser = {
 				rarities.push(r.allyRarity)
 				rarities=rarities.map(x=>"Rarity-"+x)
 
-				//${MainParser.Allies.tooltip(buildingId)}
 				html+=`<tr class="allyRoomRow ${rarities.join(" ")}">
-							<td style="white-space:nowrap">${MainParser.Allies.rarityStars(r.roomRarity)}</td>
+						   	<td style="white-space:nowrap">
+								${MainParser.Allies.rarityStars(r.allyRarity)}
+								${r.allyName || ""}${r.fragmentsAmount?srcLinks.icons("icon_tooltip_fragment") + r.fragmentsAmount+"/"+r.fragmentsNeeded:""}
+							</td>
+						   	<td data-number="${(r.allyLevel || 0)}">${r.allyLevel || ""}</td>`;
+							for (let b of boostList) {
+								let allyB = MainParser.Allies.boostsArray(r.allyBoosts);
+								let boost = allyB.find(x => x.type == b.type && x.feature == b.feature);
+						   		html+=`<td data-number="${(boost ? boost.value : 0)}">${(boost ? boost.value : '-')}</td>`
+							}
+						html+=`
 					   	   	<td ${buildingId!=0?`class="helperTT" 
 								data-id="${buildingId}" 
 								data-era="${Technologies.InnoEraNames[MainParser.CityMapData[buildingId].level]}"
 								data-callback_tt="Tooltips.buildingTT" 
 								`:``}
-							>${r.buildingName || ""}</td>
-							<td>${buildingId!=0?`<span class="show-entity" data-id="${buildingId}"><img class="game-cursor" src="${ extUrl + 'css/images/hud/open-eye.png'}"></span>`:""}</td>
-						   	<td style="white-space:nowrap">${MainParser.Allies.rarityStars(r.allyRarity)}</td>
-						   	<td>${r.allyName || ""}${r.fragmentsAmount?srcLinks.icons("icon_tooltip_fragment") + r.fragmentsAmount+"/"+r.fragmentsNeeded:""}</td>
-						   	<td>${r.allyLevel || ""}</td>
-						   	<td>${MainParser.Allies.boosts(r.allyBoosts)}</td>
-						</tr>`;
-
+							>
+								${r.buildingName || ""}
+								${buildingId!=0?`<span class="show-entity" data-id="${buildingId}"><img class="game-cursor" src="${ extUrl + 'css/images/hud/open-eye.png'}"></span>`:""}
+							</td>
+							</tr>`;
+				
 				// gather sums of all boosts
 				if (buildingId!=0 && r.allyBoosts !== null) {
 					for (let boost of r.allyBoosts) {
@@ -1770,11 +1859,13 @@ let MainParser = {
 				if (a.targetedFeature > b.targetedFeature) return 1
 				return 0
 			});
-			html+=`<tr><td colspan="7" class="text-center dark-bg">
+			html+=`</tbody><tr><td colspan="19" class="text-center dark-bg">
 				${MainParser.Allies.boosts(MainParser.Allies.buildingBoostSums)}
 				</td></tr></table>`
 			
-			$('#AllyListBody').html(html).css("overflow","auto")
+			$('#AllyListBody').html(html).promise().done(function () {
+				$('#AllyListTable').tableSorter();
+			})
 
 			$('#AllyFilter').on("change",()=>{
 				let rarity=$('#AllyFilter option:selected').val()
@@ -1788,6 +1879,7 @@ let MainParser = {
 			});
 			return rooms
 		},
+
 		rarityStars: (r) => {
 			if (!r || r=="") return ""
 			let i = Object.keys(MainParser.Allies.rarities).indexOf(r)
@@ -1814,6 +1906,30 @@ let MainParser = {
 				ret+=`<span class="${b.targetedFeature}">${srcLinks.icons(b.type+feature[b.targetedFeature])} ${b.value + Boosts.percent(b.type)}</span>`
 			}
 			return ret
+		},
+
+		boostsArray: (boosts) => {
+			let ret = [];
+			for (b of boosts||[]) {
+				let combinedBoosts = Boosts.Mapper[b.type];
+				if (combinedBoosts) {
+					for (let type of combinedBoosts) {
+						let foundBoost = ret.find(x => x.feature === b.targetedFeature && x.type === type);
+						if (foundBoost)
+							foundBoost.value += b.value;
+						else
+						ret.push({'feature':b.targetedFeature,'value':b.value,'type':type})
+					}
+				}
+				else {
+				let foundBoost = ret.find(x => x.feature === b.targetedFeature && x.type === b.type);
+				if (foundBoost)
+					foundBoost.value += b.value;
+				else
+					ret.push({feature:b.targetedFeature,value:b.value,type:b.type});
+				}
+			}
+			return ret;
 		},
 
 		ShowSettings: () => {
@@ -1871,6 +1987,14 @@ let MainParser = {
 	},
 
 
+	/**
+	 * Updates the ArkBonus value if the new value is greater than the current value stored
+	 * in MainParser.ArkBonus. If the ArkBonus is updated and the current value was greater than 0,
+	 * a developer log is optionally shown as a toast message in developer mode.
+	 *
+	 * @param {number} ArkBonus - The new ArkBonus value to set.
+	 * @param {string} Source - A string representing the source or origin of the update.
+	 */
 	updateArkBonus:(ArkBonus, Source)=>{
 		if (ArkBonus > MainParser.ArkBonus) {
 			if (MainParser.ArkBonus > 0) {

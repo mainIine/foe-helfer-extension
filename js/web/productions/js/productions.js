@@ -68,6 +68,8 @@ let Productions = {
 	],
 
 	RatingCurrentTab: 'Results',
+	RatingFilteredSizes: [],
+	RatingSearchTerm: '',
 
 	fragmentsSet: new Set(),
 	efficiencySettings: Object.assign(
@@ -86,49 +88,298 @@ let Productions = {
 		{showhighlighted: false}
 	),
 
+	
+	
 	Rating: {
 		Data:null,
 		Types:null,
+		Presets: null,
+		PresetStorageKey: 'Productions.Rating.Presets',
+		LegacyStorageKey: 'Productions.Rating.Data',
 
+
+		/**
+		 * Returns the default rating data configuration.
+		 *
+		 * @returns {Object} Default data object with scores per tile and active status for each production type.
+		 */
+		getDefaultData: () => ({
+			'strategy_points': {order:1,perTile:8,active:true,group:1},
+			'forge_points_production': {order:2,perTile:0.25,active:true,group:1},
+			'fsp': {order:3,perTile:0.8,active:true,group:1},
+			'goods-previous': {order:5,perTile:7,active:true,group:1},
+			'goods-current': {order:7,perTile:6,active:true,group:1},
+			'goods-next': {order:9,perTile:5,active:true,group:1},
+			'goods_production': {order:11,perTile:0.25,active:true,group:1},
+			'money': {order:13,perTile:null,active:false,group:1},
+			'supplies': {order:15,perTile:null,active:false,group:1},
+			'medals': {order:16,perTile:null,active:false,group:1},
+			'population': {order:17,perTile:null,active:false,group:1},
+			'happiness': {order:19,perTile:null,active:false,group:1},
+			'clan_goods': {order:21,perTile:10,active:true,group:1},
+			'units': {order:22,perTile:4,active:true,group:2},
+			'att_boost_attacker-all': {order:23,perTile:8,active:true,group:2} ,
+			'att_boost_attacker-guild_expedition': {order:24,perTile:11,active:true,group:2},
+			'att_boost_attacker-battleground': {order:25,perTile:10,active:true,group:2} ,
+			'def_boost_attacker-all': {order:26,perTile:8,active:true,group:2},
+			'def_boost_attacker-guild_expedition': {order:27,perTile:11,active:true,group:2},
+			'def_boost_attacker-battleground': {order:28,perTile:10,active:true,group:2} ,
+			'att_boost_defender-all': {order:29,perTile:8,active:true,group:2},
+			'att_boost_defender-guild_expedition': {order:30,perTile:11,active:true,group:2},
+			'att_boost_defender-battleground': {order:31,perTile:10,active:true,group:2},
+			'def_boost_defender-all': {order:32,perTile:8,active:true,group:2},
+			'def_boost_defender-guild_expedition': {order:33,perTile:11,active:true,group:2},
+			'def_boost_defender-battleground': {order:34,perTile:10,active:true,group:2},
+			'guild_raids_action_points_collection': {order:60,perTile:8,active:true,group:3},
+			'guild_raids_goods_start': {order:62,perTile:1,active:false,group:3},
+			'guild_raids_units_start': {order:64,perTile:1,active:false,group:3},
+			'guild_raids_coins_start': {order:66,perTile:5000,active:true,group:3},
+			'guild_raids_coins_production': {order:68,perTile:1,active:false,group:3},
+			'guild_raids_supplies_start': {order:70,perTile:5000,active:true,group:3},
+			'guild_raids_supplies_production': {order:72,perTile:1,active:false,group:3},
+			'att_boost_attacker-guild_raids': {order:74,perTile:null,active:false,group:3},
+			'def_boost_attacker-guild_raids': {order:76,perTile:null,active:false,group:3},
+			'att_boost_defender-guild_raids': {order:78,perTile:null,active:false,group:3},
+			'def_boost_defender-guild_raids': {order:80,perTile:null,active:false,group:3},
+		}),
+
+
+		/**
+		 * Creates a deep copy of the provided data object.
+		 *
+		 * @param {Object} data - The object to clone.
+		 * @returns {Object} A deep copy of the data.
+		 */
+		cloneData: (data) => JSON.parse(JSON.stringify(data || {})),
+
+
+		/**
+		 * Merges provided data with default rating values to ensure all fields are present.
+		 *
+		 * @param {Object} data - The custom data to normalize.
+		 * @returns {Object} Normalized data object.
+		 */
+		normalizeData: (data) => Object.assign(Productions.Rating.getDefaultData(), Productions.Rating.cloneData(data || {})),
+
+
+		/**
+		 * Retrieves the currently active preset.
+		 *
+		 * @returns {Object|null} The active preset object or null if none is active.
+		 */
+		getActivePreset: () => {
+			const presets = Productions.Rating.Presets;
+			if (!presets?.presets) return null;
+			return presets.presets[presets.activePresetId] || null;
+		},
+
+
+		/**
+		 * Updates the list of production types and sorts them based on their defined order.
+		 */
+		updateTypes: () => {
+			Productions.Rating.Types = Object.keys(Productions.Rating.Data)
+				.sort((a,b) => {
+					Productions.Rating.Data[a].order - Productions.Rating.Data[b].order
+				});
+		},
+
+
+		/**
+		 * Saves all presets to the local storage.
+		 */
+		savePresets: () => {
+			if (!Productions.Rating.Presets) return;
+			localStorage.setItem(Productions.Rating.PresetStorageKey, JSON.stringify(Productions.Rating.Presets));
+		},
+
+
+		/**
+		 * Creates a new preset with unique ID and normalizes its data.
+		 *
+		 * @param {Object} data - The data for the new preset.
+		 * @returns {string} The ID of the created preset.
+		 */
+		createPreset: (data) => {
+			const presetId = `preset_${Date.now().toString(36)}_${Math.random().toString(36).slice(2,7)}`;
+			Productions.Rating.Presets.presets[presetId] = {
+				data: Productions.Rating.normalizeData(data)
+			};
+			return presetId;
+		},
+
+
+		/**
+		 * Deletes a preset by its ID and resets the active preset if necessary.
+		 *
+		 * @param {string} presetId - The ID of the preset to delete.
+		 * @returns {boolean} True if deletion was successful, false otherwise.
+		 */
+		deletePreset: (presetId) => {
+			if (!Productions.Rating.Presets?.presets[presetId]) return false;
+			delete Productions.Rating.Presets.presets[presetId];
+			if (Productions.Rating.Presets.activePresetId === presetId) {
+				Productions.Rating.Presets.activePresetId = Object.keys(Productions.Rating.Presets.presets)[0] || null;
+			}
+			return true;
+		},
+
+
+		/**
+		 * Ensures that the presets structure exists, loading from storage or migrating legacy data if needed.
+		 */
+		ensurePresets: () => {
+			if (Productions.Rating.Presets) return;
+			let stored = localStorage.getItem(Productions.Rating.PresetStorageKey);
+			if (stored) {
+				try {
+					Productions.Rating.Presets = JSON.parse(stored);
+				} catch (e) {
+					Productions.Rating.Presets = null;
+				}
+			}
+			if (!Productions.Rating.Presets) {
+				const legacyData = JSON.parse(localStorage.getItem(Productions.Rating.LegacyStorageKey)||"{}");
+				const presetId = 'default';
+				Productions.Rating.Presets = {
+					activePresetId: presetId,
+					presets: {
+						[presetId]: {
+							data: Productions.Rating.normalizeData(legacyData)
+						}
+					}
+				};
+				localStorage.removeItem(Productions.Rating.LegacyStorageKey);
+				Productions.Rating.savePresets();
+			}
+			if (!Productions.Rating.Presets.presets || Object.keys(Productions.Rating.Presets.presets).length === 0) {
+				const presetId = 'default';
+				Productions.Rating.Presets = {
+					activePresetId: presetId,
+					presets: {
+						[presetId]: {
+							data: Productions.Rating.normalizeData({})
+						}
+					}
+				};
+				Productions.Rating.savePresets();
+			}
+			if (!Productions.Rating.Presets.presets[Productions.Rating.Presets.activePresetId]) {
+				Productions.Rating.Presets.activePresetId = Object.keys(Productions.Rating.Presets.presets)[0];
+				Productions.Rating.savePresets();
+			}
+		},
+
+
+		/**
+		 * Sets the specified preset as active and loads its data.
+		 *
+		 * @param {string} presetId - The ID of the preset to activate.
+		 */
+		setActivePreset: (presetId) => {
+			Productions.Rating.ensurePresets();
+			if (!Productions.Rating.Presets.presets[presetId]) return;
+			Productions.Rating.Presets.activePresetId = presetId;
+			Productions.Rating.savePresets();
+			Productions.Rating.load();
+		},
+
+
+		/**
+		 * Resets the currently active preset to default values.
+		 */
+		resetActivePreset: () => {
+			const preset = Productions.Rating.getActivePreset();
+			if (!preset) return;
+			preset.data = Productions.Rating.normalizeData({});
+			Productions.Rating.Data = preset.data;
+			Productions.Rating.updateTypes();
+			Productions.Rating.savePresets();
+			Productions.CalcRatingBody();
+		},
+
+
+		/**
+		 * Generates HTML list items for the preset selection menu.
+		 *
+		 * @returns {string} HTML string of list items representing available presets.
+		 */
+		getPresetOptions: () => {
+			const presets = Productions.Rating.Presets?.presets || {};
+			const activeId = Productions.Rating.Presets?.activePresetId;
+			let listItems = '';
+			let i = 1;
+			for (let [id, preset] of Object.entries(presets)) {
+				listItems += `<li data-id="${id}" ${id === activeId ? 'class="active"' : ''}>${i}</li>`;
+				i++;
+			}
+			return listItems;
+		},
+
+
+		/**
+		 * Exports all presets to a JSON file.
+		 */
+		exportPresets: () => {
+			Productions.Rating.ensurePresets();
+			const payload = {
+				version: 1,
+				activePresetId: Productions.Rating.Presets.activePresetId,
+				presets: Productions.Rating.Presets.presets
+			};
+			const fileName = `EfficiencyRatingPresets_${moment().format('YYMMDD-HHmm')}.json`;
+			MainParser.ExportFile(new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" }), fileName);
+		},
+
+
+		/**
+		 * Imports presets from a JSON file.
+		 *
+		 * @param {File} file - The JSON file containing preset data.
+		 */
+		importPresets: (file) => {
+			if (!file) return;
+			const reader = new FileReader();
+			reader.onload = (evt) => {
+				try {
+					const data = JSON.parse(evt.target.result);
+					const presets = data?.presets;
+					if (!presets || typeof presets !== 'object') throw new Error('invalid');
+					const importedPresets = {};
+					for (const [id, preset] of Object.entries(presets)) {
+						if (!preset?.data) continue;
+						importedPresets[id] = { data: Productions.Rating.normalizeData(preset.data) };
+					}
+					if (Object.keys(importedPresets).length === 0) throw new Error('empty');
+					Productions.Rating.Presets = {
+						activePresetId: data.activePresetId && importedPresets[data.activePresetId] ? data.activePresetId : Object.keys(importedPresets)[0],
+						presets: importedPresets
+					};
+					Productions.Rating.savePresets();
+					Productions.Rating.load();
+				} catch (e) {
+					alert(i18n('Boxes.ProductionsRating.PresetImportError'));
+				}
+			};
+			reader.onerror = () => alert(i18n('Boxes.ProductionsRating.PresetImportError'));
+			reader.readAsText(file);
+		},
+
+
+		/**
+		 * Loads rating data, either from an active preset or an overwrite object.
+		 *
+		 * @param {Object|null} [overwrite=null] - Optional data to overwrite current rating.
+		 */
 		load: (overwrite = null) => {
-			Productions.Rating.Data = Object.assign({
-				'strategy_points': {order:1,perTile:8,active:true},
-				'money': {order:2,perTile:null,active:false},
-				'supplies': {order:3,perTile:null,active:false},
-				'medals': {order:4,perTile:null,active:false},
-				'clan_goods': {order:6,perTile:10,active:true},
-				'population': {order:7,perTile:null,active:false},
-				'happiness': {order:8,perTile:null,active:false},
-				'units': {order:9,perTile:4,active:true},
-				'att_boost_attacker-all': {order:10,perTile:8,active:true} ,
-				'att_boost_attacker-guild_expedition': {order:11,perTile:11,active:true},
-				'att_boost_attacker-battleground': {order:12,perTile:10,active:true} ,
-				'att_boost_attacker-guild_raids': {order:13,perTile:null,active:false},
-				'def_boost_attacker-all': {order:14,perTile:8,active:true},
-				'def_boost_attacker-guild_expedition': {order:15,perTile:11,active:true},
-				'def_boost_attacker-battleground': {order:16,perTile:10,active:true} ,
-				'def_boost_attacker-guild_raids': {order:17,perTile:null,active:false},
-				'att_boost_defender-all': {order:18,perTile:8,active:true},
-				'att_boost_defender-guild_expedition': {order:19,perTile:11,active:false},
-				'att_boost_defender-battleground': {order:20,perTile:10,active:true},
-				'att_boost_defender-guild_raids': {order:21,perTile:null,active:false},
-				'def_boost_defender-all': {order:22,perTile:8,active:true},
-				'def_boost_defender-guild_expedition': {order:23,perTile:11,active:true},
-				'def_boost_defender-battleground': {order:24,perTile:10,active:true},
-				'def_boost_defender-guild_raids': {order:25,perTile:null,active:false},
-				'goods-previous': {order:26,perTile:7,active:true},
-				'goods-current': {order:27,perTile:6,active:true},
-				'goods-next': {order:28,perTile:5,active:true},
-				'fsp': {order:29,perTile:0.8,active:true},
-				'guild_raids_action_points_collection': {order:29,perTile:8,active:true},
-				'guild_raids_goods_start': {order:30,perTile:1,active:false},
-				'guild_raids_units_start': {order:31,perTile:1,active:false},
-				'guild_raids_coins_start': {order:32,perTile:5000,active:true},
-				'guild_raids_coins_production': {order:33,perTile:1,active:true},
-				'guild_raids_supplies_start': {order:34,perTile:5000,active:true},
-				'guild_raids_supplies_production': {order:35,perTile:1,active:true},
-			}, overwrite || JSON.parse(localStorage.getItem('Productions.Rating.Data')||"{}"))
-			Productions.Rating.Types = Object.keys(Productions.Rating.Data).sort((a,b)=>Productions.Rating.Data[a].order-Productions.Rating.Data[b].order)
+			Productions.Rating.ensurePresets();
+			const activePreset = Productions.Rating.getActivePreset();
+			let data = overwrite || activePreset?.data || {};
+			Productions.Rating.Data = Productions.Rating.normalizeData(data);
+			if (activePreset) {
+				activePreset.data = Productions.Rating.Data;
+			}
+			Productions.Rating.updateTypes();
 
 			if (localStorage.getItem('ProductionRatingProdPerTiles')) {
 				let RatingProdPerTiles = Object.assign({},JSON.parse(localStorage.getItem('ProductionRatingProdPerTiles')||"{}"))
@@ -142,17 +393,26 @@ let Productions = {
 			if (Productions.Rating.Data.clan_power) {
 				delete Productions.Rating.Data.clan_power;
 			}
-			//------------------------------------------------------------------------------
 		},
 
-		save:() => {
-			localStorage.setItem('Productions.Rating.Data', JSON.stringify(Productions.Rating.Data))
-			// hier
-		}
 
+		/**
+		 * Saves the current rating data back to the active preset and persists to storage.
+		 */
+		save:() => {
+			Productions.Rating.ensurePresets();
+			const preset = Productions.Rating.getActivePreset();
+			if (preset) {
+				preset.data = Productions.Rating.Data;
+			}
+			Productions.Rating.savePresets();
+		}
 	},
 
 
+	/**
+	 * Initializes the Productions module, sets up building data, and reads productions.
+	 */
 	init: () => {
 		if (ActiveMap === 'OtherPlayer') return
 
@@ -175,9 +435,9 @@ let Productions = {
 		Productions.ReadData()
 	},
 
-
+	
 	/**
-	 * Calculate Boosts
+	 * Processes city building data, calculates population and happiness sums, and shows the production box.
 	 */
 	ReadData: ()=> {
 		Productions.BuildingsAll = Object.values(Productions.CombinedCityMapData)
@@ -210,7 +470,7 @@ let Productions = {
 
 
 	/**
-	 * HTML Box erstellen und einblenden
+	 * Displays the main production overview box.
 	 */
 	showBox: () => {
 
@@ -238,9 +498,9 @@ let Productions = {
 		Productions.SwitchFunction()
 	},
 
-
+	
 	/**
-	 * Aktualisiert den Inhalt
+	 * Calculates and generates the content for the production overview box, including tabs and tables.
 	 */
 	CalcBody: () => {
 		Productions.Tabs = [];
@@ -478,13 +738,25 @@ let Productions = {
 	},
 
 
+	/**
+	 * Calculates and updates set and chain bonuses for buildings.
+	 * Identifies adjacent set buildings and processes chained building links.
+	 *
+	 * @param {Array} [buildings] - Optional array of buildings to process. Defaults to all city buildings.
+	 */
 	setChainsAndSets(buildings) {
 		if (buildings === undefined) buildings = Object.values(MainParser.CityBuildingsData)
+		let idsToRemove = [];
 
 		for (const building of buildings) {
 			if (building?.setBuilding !== undefined) {
-				// todo
-				// CityBuildings.findAdjacentSetBuildingByCoords(building.coords.x, building.coords.y, building.setBuilding.name)
+				let adjacentIds = CityBuildings.findAdjacentSetBuildingByCoords(building);
+				let uniqueAdjacentEntities = new Set();
+				for (let id of adjacentIds) {
+					let adjB = CityBuildings.getBuildingById(id);
+					if (adjB) uniqueAdjacentEntities.add(adjB.entityId);
+				}
+				building.setBuilding.uniqueAdjacentCount = uniqueAdjacentEntities.size;
 			} 
 			else if (building?.chainBuilding !== undefined && building?.chainBuilding?.type === "start") {
 
@@ -494,17 +766,25 @@ let Productions = {
 
 					for (const link of linkedBuildings) {
 						if (link.chainBuilding.type === 'linked') {
-							// todo: kann irgendwie kaputt gehen
-							// let index = Productions.BuildingsAll.findIndex(x => x.id === link.id)
-							// delete Productions.BuildingsAll[index]
+							idsToRemove.push(link.id);
 						}
 					}
 				}
 			}
 		}
+
+		if (idsToRemove.length > 0) {
+			Productions.BuildingsAll = Productions.BuildingsAll.filter(b => !idsToRemove.includes(b.id));
+		}
 	},
 
-
+	
+	/**
+	 * Builds and returns an HTML table displaying Quantum Invasion (QI) related production data.
+	 *
+	 * @param {string} type - The QI production type.
+	 * @returns {string} HTML string representing the QI production table.
+	 */
 	buildQITable(type) {
 		let table = [],
 		tableGr = [],
@@ -592,12 +872,18 @@ let Productions = {
 		else {
 			table.push('<div class="empty-list">'+i18n('Boxes.Productions.EmptyList')+'</div>')
 		}
-		let content = table.join('') + tableGr.join('')
-
-		return content
+		
+		return table.join('') + tableGr.join('')
 	},
 
 
+	/**
+	 * Builds a table based on the specified type by aggregating relevant data and formatting it into rows.
+	 *
+	 * @param {string} type - The type of data used to construct the table. Valid values can include types like 'money', 'supplies', 'strategy_points', etc.
+	 * @return {Array} The constructed table data, formatted as an array of rows containing detailed information
+	 *                 derived from city buildings and associated productions, boosts, or other attributes.
+	 */
 	buildTableByType(type) {
 		let table = [],
 			tableGr = [],
@@ -892,7 +1178,13 @@ let Productions = {
 	},
 
 
-	// can be used for goods and guild goods
+	/**
+	 * Identifies and returns a sorted list of eras for which goods are produced by the given buildings.
+	 *
+	 * @param {Array<{ id: string }>} buildingIds - Array of building IDs to analyze.
+	 * @param {boolean} [guildGoods=false] - Whether to look for guild goods or regular goods.
+	 * @returns {Array<number>} Sorted array of era indices.
+	 */
 	getRelevantGoodsByEra: (buildingIds, guildGoods = false) => {
 		let eras = [];
 		for (const b of buildingIds) {
@@ -924,6 +1216,13 @@ let Productions = {
 	},
 
 
+	/**
+	 * Builds and returns an HTML table displaying the production of regular or special goods.
+	 *
+	 * @param {Array<{ id: string }>} buildingIds - Array of building objects to process.
+	 * @param {string} [type="goods"] - The type of goods to display ("goods" or "special_goods").
+	 * @returns {string} HTML string representing the goods production tables (single and grouped view).
+	 */
 	buildGoodsTable: (buildingIds, type = "goods") => {
 		let table = [],
 			rowB = [],
@@ -1088,6 +1387,16 @@ let Productions = {
 	},
 
 
+	/**
+	 * Builds and returns an HTML table displaying the production of guild goods from a list of buildings.
+	 *
+	 * The table includes data about individual buildings, grouped buildings, and their production statistics by era.
+	 * It also provides both single-view (per building) and grouped-view (summarized by building type) representations.
+	 *
+	 * @param {Array} buildingIds - Array of building IDs to process and display in the table.
+	 * @param {string} [type="clan_goods"] - The type of goods table to generate. Default is "clan_goods".
+	 * @returns {string} An HTML string representing the table of guild goods production.
+	 */
 	buildGuildGoodsTable: (buildingIds, type = "clan_goods") => {
 		let table = [],
 			rowB = [],
@@ -1246,7 +1555,15 @@ let Productions = {
 		return table.join('')
 	},
 
-
+	
+	/**
+	 * Builds and returns an HTML table displaying grouped production data.
+	 *
+	 * @param {string} type - The type of production.
+	 * @param {Array} groupedBuildings - Array of grouped building objects.
+	 * @param {number} boostCounter - Total boost value applied.
+	 * @returns {string} HTML string representing the grouped production table.
+	 */
 	buildGroupedTable: (type, groupedBuildings, boostCounter) => {
 		let tableGr = [], rowB = []
 		tableGr.push('<table class="foe-table sortable-table TSinactive '+type+'-group">')
@@ -1300,6 +1617,13 @@ let Productions = {
 	},
 
 
+	/**
+	 * Builds and returns an HTML table displaying summarized production data for a specific type.
+	 *
+	 * @param {string} type - The production type.
+	 * @param {number} Sum - The total production amount.
+	 * @returns {string} HTML string representing the summary table.
+	 */
 	buildSumTable: (type,Sum) => {
 		if (Object.values(Sum).length==0) return []
 
@@ -1345,6 +1669,14 @@ let Productions = {
 	},
 
 
+	/**
+	 * Calculates production values for a building based on the specified category.
+	 *
+	 * @param {boolean} [current=false] - If true, calculates based on current production state; otherwise, base production.
+	 * @param {Object} building - The building object to analyze.
+	 * @param {string} category - The production category (e.g., "strategy_points", "clan_goods", "units").
+	 * @returns {Object} An object containing production amount, type, and unit details.
+	 */
 	getBuildingProductionByCategory(current = false, building, category) {
 		let prod = {
 			amount: 0,
@@ -1452,6 +1784,13 @@ let Productions = {
 	},
 
 
+	/**
+	 * Gathers and returns HTML representations of items and units produced by a building.
+	 *
+	 * @param {boolean} [current=false] - Whether to use current state or base production.
+	 * @param {Object} building - The building object.
+	 * @returns {Array} Array containing HTML strings for items, units, and raw item data.
+	 */
 	showBuildingItems(current = false, building) {
 		let allItems = '',
 			allUnits = '',
@@ -1506,11 +1845,11 @@ let Productions = {
 
 
 	/**
-	* alle Produkte auslesen
-	*
-	* @param d
-	* @returns {{eid: *, at: *, in: *, name: *, id: *, type: *, products: *, motivatedproducts: *}}
-	*/
+	 * Determines the specific sub-type of production data.
+	 *
+	 * @param {Object} d - The data object to analyze.
+	 * @returns {string} The identified production sub-type.
+	 */
     readType: (d) => {
 	   // Boost ausrechnen und bereitstellen falls noch nicht initialisiert
 	   if (Productions.Boosts['money'] === undefined) Productions.Boosts['money'] = ((Boosts.Sums['coin_production'] + 100) / 100);
@@ -1519,14 +1858,32 @@ let Productions = {
    },
 
 
+	/**
+	 * Sets the active tab ID.
+	 *
+	 * @param {number|string} id - The ID of the tab to set as active.
+	 */
 	SetTabs: (id)=> {
 		Productions.Tabs.push('<li class="' + id + '" id="prod-' + id + '"><a href="#' + id + '"><span>&nbsp;</span></a></li>');
 	},
 
+
+	/**
+	 * Retrieves the current active tab ID.
+	 *
+	 * @returns {number|string} The active tab ID.
+	 */
 	GetTabs: ()=> {
 		return '<ul class="horizontal dark-bg clickable">' + Productions.Tabs.join('') + '</ul>';
 	},
 
+
+	/**
+	 * Adds content to a specific tab.
+	 *
+	 * @param {number|string} id - The ID of the tab.
+	 * @param {string} content - The HTML content for the tab.
+	 */
 	SetTabContent: (id, content)=> {
 		// ab dem zweiten Eintrag verstecken
 		let style = Productions.TabsContent.length > 0 ? ' style="display:none"' : '';
@@ -1534,12 +1891,20 @@ let Productions = {
 		Productions.TabsContent.push('<div class="content" id="' + id + '"' + style + '>' + content + '</div>');
 	},
 
+
+	/**
+	 * Retrieves all tab content.
+	 *
+	 * @returns {Array} Array of tab content strings.
+	 */
 	GetTabContent: ()=> {
 		return Productions.TabsContent.join('');
 	},
 
+
+
 	/**
-	 * Switch Tabs [List|Group]
+	 * Initializes or refreshes the tab switching functionality and event handlers.
 	 */
 	SwitchFunction: ()=>{
 		$('#Productions').on('click', '.change-view', function() {
@@ -1558,10 +1923,11 @@ let Productions = {
 
 
 	/**
-	 * Gibt an, ob der jeweilige Ressourcentyp produziert wird oder nicht (z.B. Bevölkerung, Zufriedenheits, Kampfboosts)
-	*
-    * @param Type
-    */
+	 * Checks if a specific production type has any production from buildings.
+	 *
+	 * @param {string} Type - The production type to check.
+	 * @returns {boolean} True if there is production for the type, false otherwise.
+	 */
 	TypeHasProduction: (Type) => {
 		if (Type === 'population' || Type === 'happiness' || Type === 'att_boost_attacker' || Type === 'att_boost_defender' || Type === 'def_boost_attacker' || Type === 'def_boost_defender') {
 			return false;
@@ -1573,9 +1939,9 @@ let Productions = {
 
 
 	/**
-	 * Zeigt pulsierend ein Gebäude auf der Map
+	 * Highlights buildings on the city map based on their IDs.
 	 *
-	 * @param ids
+	 * @param {Array} ids - Array of building IDs to highlight.
 	 */
 	ShowOnMap: (ids) => {
 		let IDArray = (ids.length !== undefined ? ids : [ids]);
@@ -1604,6 +1970,11 @@ let Productions = {
 	},
 
 
+	/**
+	 * Highlights buildings on the city map based on their name.
+	 *
+	 * @param {string} name - The name (or partial name) of buildings to highlight.
+	 */
 	ShowSearchOnMap: (name) => {
 		if( $('#citymap-main').length < 1 )
 			CityMap.init(null);
@@ -1617,6 +1988,12 @@ let Productions = {
 	},
 
 
+	/**
+	 * Returns a translated name for a given good type or era-specific good.
+	 *
+	 * @param {string} GoodType - The good type identifier.
+	 * @returns {string} The localized name of the good type.
+	 */
 	GetTypeName: (GoodType) => {
 		if (GoodType.includes('happiness')) {
 			return i18n('Boxes.Productions.Happiness');
@@ -1657,9 +2034,9 @@ let Productions = {
 		else if (GoodType.includes('guild_expedition')) {
 			return i18n('Boxes.General.Guild_Expedition');
 		}
-		else if (GoodType.includes('guild_raids')) {
+		/*else if (GoodType.includes('guild_raids')) {
 			return i18n('Boxes.General.Quantum_Incursion');
-		}
+		}*/
 		else if (GoodType.includes('att_boost_attacker') || GoodType.includes('att_boost_attacker-all')) {
 			return i18n('Boxes.Productions.att_boost_attacker');
 		}
@@ -1687,6 +2064,12 @@ let Productions = {
 		else if (GoodType === 'fsp') {
 			return i18n('Boxes.Productions.FSP');
         }
+		else if (GoodType === 'forge_points_production') {
+			return i18n('Boxes.Productions.fp_boost');
+        }
+		else if (GoodType === 'goods_production') {
+			return i18n('Boxes.Productions.goods_boost');
+        }
 		else {
 			if(GoodType && GoodsData[GoodType]){
 				return GoodsData[GoodType]['name'];
@@ -1697,6 +2080,12 @@ let Productions = {
 	},
 
 
+	/**
+	 * Displays the building efficiency rating box.
+	 *
+	 * @param {boolean} [external=false] - Whether the box is opened from an external trigger.
+	 * @param {string} [eraName=null] - The era to use for calculations.
+	 */
 	ShowRating: (external = false, eraName = null) => {
 		if (!Productions.Rating.Data) 
 			Productions.Rating.load();
@@ -1724,8 +2113,6 @@ let Productions = {
 			HTML.AddCssFile('productions');
 
 			$('body').on('click', '.toggle-tab', async function () {
-				//console.log('$ProductionsRating: click');
-				
 				helper.preloader.show('#ProductionsRating');
 				Productions.RatingCurrentTab = $(this).data('value');
 
@@ -1741,6 +2128,13 @@ let Productions = {
 
 	AdditionalSpecialBuildings:null,
 
+	
+	/**
+	 * Generates a tooltip HTML string showing best and top efficiency values for a production type.
+	 *
+	 * @param {Event} e - The mouse event triggering the tooltip.
+	 * @returns {string} HTML string for the tooltip.
+	 */
 	efficiencyTT: (e) => {
 		let type=e?.currentTarget?.dataset?.type
 		let y = Productions.ratedBuildings.filter(x=>(!x.isInInventory && x?.rating?.[type]>0)).map(x=>(x.rating[type])).sort((a,b) => a - b);
@@ -1752,6 +2146,13 @@ let Productions = {
 		return tooltip
 	},
 
+
+	/**
+	 * Calculates the Finish Special Production (FSP) efficiency and updates the rating data.
+	 *
+	 * @param {string} type - The type of production being calculated.
+	 * @param {number} value - The efficiency value to check or update.
+	 */
 	calculateFSP: (type,value) =>{
 		let sum = 0
 		for (let x of Productions.FSPqualifiedResources) {
@@ -1771,15 +2172,19 @@ let Productions = {
 			$("#ProdPerTile-fsp").trigger("blur")
 		}
 	},
-	
-	// era is needed for otherplayer ratings
+
+
+	/**
+	 * Calculates and generates the body content for the building efficiency rating box.
+	 *
+	 * @param {string} [era=''] - The era to use for calculations, defaults to current era if empty.
+	 */
 	CalcRatingBody: (era = '') => {
 		let buildingCount = {};
 		let uniqueBuildings = [];
 		let buildingSizes = [];
 		let ratedBuildings = [];
 		let h = [];
-
 		let withAllies = Productions.efficiencySettings.showallies;
 		Productions.BuildingsAll = Object.values(CityBuildings.createBuildings(Object.values(MainParser.CityMapData),withAllies));
 		Productions.setChainsAndSets(Productions.BuildingsAll);
@@ -1845,47 +2250,18 @@ let Productions = {
 
 		let selectedAdditionals = Object.values(Productions.AdditionalSpecialBuildings).filter(x=>x.selected).map(x=>x.id);
 
-		Productions.ratedBuildings = ratedBuildings = Productions.rateBuildings(uniqueBuildings,false,era).concat(Productions.rateBuildings(selectedAdditionals,true,era))
+		Productions.ratedBuildings = ratedBuildings = Productions.rateBuildings(uniqueBuildings,false,era).concat(Productions.rateBuildings(selectedAdditionals,true,era));
 
 		if (Productions.RatingCurrentTab === 'Settings') {
-			h.push('<div id="ProductionsRatingSettings">')
-			h.push('<a id="RatingsResults" class="toggle-tab btn btn-slim" data-value="Results"><span>' + i18n('Boxes.ProductionsRating.Results') + '</span></a>')
-			h.push('<ul class="foe-table">')
-
-			h.push('<li class="dark-bg">')
-			h.push('<span>' + i18n('Boxes.ProductionsRating.Enabled') + '</span>')
-			h.push('<span></span><span></span>')
-			h.push('<span class="text-right">' + i18n('Boxes.ProductionsRating.ProdPerTile') + '</span>')
-			h.push('</li>')
-
-			for (let type of Productions.Rating.Types) {
-				h.push('<li class="'+type+'">')
-				let activeSetting = (Productions.Rating.Data[type]?.perTile !== null && Productions.Rating.Data[type]?.active !== false)
-				h.push('<input id="Enabled-' + type + '" class="no-grow enabled game-cursor" ' + (activeSetting ? 'checked' : '') + ' type="checkbox">')
-				h.push('<span class="no-grow resicon ' + type + '"></span>')
-				h.push('<label for="Enabled-'+type+'">' + Productions.GetTypeName(type) + '</label>')
-				if (type=="fsp") h.push(`<span id="ShowFSPCalculator" class="clickable" data-original-title="${i18n("Boxes.ProductionsRating.ShowFSPCalculator")}">🧮</span>`)
-				//if (Productions.Rating.Data[type].perTile !== null) {
-				h.push('<input type="number" id="ProdPerTile-' + type + '" step="0.01" min="0" max="1000000" class="no-grow helperTT '+(Productions.Rating.Data[type]?.active ? '': 'hidden')+'" value="' + (Productions.Rating.Data[type]?.perTile||0) + '", data-callback_tt="Productions.efficiencyTT", data-type="'+type+'-tile">')
-				//}
-				//else {
-				//	h.push('<input type="number" class="hidden no-grow" id="ProdPerTile-' + type + '" step="0.01" min="0" max="1000000" value="0">')
-				//}
-				h.push('</li>')
-			}
-			h.push('<li><a class="toggle-tab btn" data-value="Results"><span>' + i18n('Boxes.ProductionsRating.Results') + '</span></a><a class="reset-button btn" data-value="Results"><span>' + i18n('Boxes.ProductionsRating.Reset') + '</span></a></li>')
-			h.push('</ul>')
-			h.push('<p>'+i18n('Boxes.ProductionsRating.Explainer')+'</p>')
-			h.push('<p>'+i18n('Boxes.ProductionsRating.Disclaimer')+'</p>')
-			h.push('</div>')
+			h.push(Productions.CalcRatingSettings());
 		}
 
 		else if (Productions.RatingCurrentTab === 'Results') {
 			helper.preloader.show('#ProductionsRating');
 
 			ratedBuildings.sort((a,b) => {
-				if (a.rating.totalScore < b.rating.totalScore) return -1
-				if (a.rating.totalScore > b.rating.totalScore) return 1
+				if (a.rating.totalScore < b.rating.totalScore) return 1
+				if (a.rating.totalScore > b.rating.totalScore) return -1
 				return 0
 			});
 
@@ -1925,7 +2301,7 @@ let Productions = {
 				h.push('<th colspan="'+(colNumber+5)+'"><div class="options">');
 				h.push('<a class="btn" id="addMetaBuilding">' + i18n('Boxes.ProductionsRating.AddBuilding') + '</a>');
 				h.push('<label for="tilevalues"><input type="checkbox" id="tilevalues" />' + i18n('Boxes.ProductionsRating.ShowValuesPerTile') + '</label>');
-				h.push('<input type="text" id="efficiencyBuildingFilter" size=20 placeholder="' + i18n('Boxes.ProductionsRating.Filter') + ': neo|eden" />');
+				h.push('<input type="text" id="efficiencyBuildingFilter" size=20 value="' + Productions.RatingSearchTerm + '" placeholder="' + i18n('Boxes.ProductionsRating.Filter') + ': neo|eden" />');
 				h.push('<label for="showhighlighted" data-original-title="'+i18n('Boxes.ProductionsRating.ShowHighlightedExplanation')+'"><input type="checkbox" id="showhighlighted" />' + i18n('Boxes.ProductionsRating.ShowHighlighted') + '</label>')
 				h.push('<div>');
 				h.push('<label for="gBs" data-original-title="'+i18n('Boxes.ProductionsRating.NoGBsExplanation')+'"><input type="checkbox" id="gBs" /><img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_greatbuilding.png`,true)+'" /></label>');
@@ -1942,12 +2318,12 @@ let Productions = {
 				h.push('</div></div></th>');
 			h.push('</tr>');
 
-			h.push('<tr class="sorter-header exportheader">');
-			h.push('<th data-type="ratinglist" class="is-number" data-export="' + i18n('Boxes.ProductionsRating.Score') + '">' + i18n('Boxes.ProductionsRating.Score') + '</th>');
+			h.push('<tr class="sorter-header exportheader sort2">');
+			h.push('<th data-type="ratinglist" class="is-number descending" data-export="' + i18n('Boxes.ProductionsRating.Score') + '">' + i18n('Boxes.ProductionsRating.Score') + '</th>');
 			h.push('<th data-type="ratinglist" data-export="'+ i18n('Boxes.ProductionsRating.BuildingName') +'"><div class="flex-between"><span>'+ i18n('Boxes.ProductionsRating.BuildingName') +'</span>' +
 			' <div id="buildingsize"><span>'+i18n('Boxes.Productions.Headings.size')+'</span><ul>');
 				for (let size of buildingSizes) {
-					h.push('<li data-value="'+size+'">'+size+'</li>')
+					h.push('<li data-value="'+size+'" class="' + (Productions.RatingFilteredSizes.includes(size) ? 'selected' : '') + '">'+size+'</li>')
 				}
 			h.push('</ul></div></div></th><th data-type="ratinglist" class="is-number" data-export="#"></th><th class="no-sort inventory-buildings text-center"><img alt="" data-original-title="'+i18n('Boxes.ProductionsRating.InventoryTooltip')+'" class="game-cursor" src="' + extUrl + 'js/web/x_img/inventory.png" /></th>');
 
@@ -1991,7 +2367,7 @@ let Productions = {
 				let buildingSize = building.size.length * building.size.width;
 
 				[randomItems,randomUnits] = Productions.showBuildingItems(false, building)
-				h.push(`<tr class="${building.type==='greatbuilding'?'gb ':''}${building.isLimited?'limited ':''}${building.highlight?'additional ':''}${building.isInInventory?'inventory-building ':''}size${buildingSize}">`)
+				h.push(`<tr class="${building.type==='greatbuilding'?'gb ':''}${building.isLimited?'limited ':''}${building.highlight?'additional bg-blue ':''}${building.isInInventory?'inventory-building ':''}size${buildingSize}">`)
 				h.push('<td data-number="'+ (building.rating.totalScore * 100) +'" class="text-right">'+Math.round(building.rating.totalScore * 100)+'</td>')
 
 				h.push('<td exportvalue="'+building.name+'" data-text="'+helper.str.cleanup(building.name)+'" class="'+(MainParser.Allies.buildingList?.[building.id]?"ally" : "") +'"><div class="flex-between"><div>');
@@ -2107,6 +2483,51 @@ let Productions = {
 
 		$('#ProductionsRatingBody').html(h.join('')).promise().done(function () {
 			$('.TSinactive').removeClass('TSinactive');
+			const refreshPresetSelect = () => {
+				Productions.Rating.ensurePresets();
+				$('#ratingPresetSelect').html(Productions.Rating.getPresetOptions());
+			};
+			$('#ratingPresetSelect li:not(.duplicate)').on('click', function () {
+				const presetId = $(this).data('id');
+				if (!presetId) return;
+				Productions.Rating.setActivePreset(presetId);
+				Productions.CalcRatingBody();
+			});
+			$('#ratingPresetDuplicate').on('click', () => {
+				const preset = Productions.Rating.getActivePreset();
+				if (!preset) return;
+				const newId = Productions.Rating.createPreset(preset.data);
+				Productions.Rating.setActivePreset(newId);
+				Productions.Rating.savePresets();
+				Productions.CalcRatingBody();
+			});
+			$('.ratingPresetDelete').on('click', () => {
+				const preset = Productions.Rating.getActivePreset();
+				if (!preset) return;
+				if (!window.confirm(i18n('Boxes.ProductionsRating.PresetConfirmDelete'))) return;
+				const activeId = Productions.Rating.Presets?.activePresetId;
+				Productions.Rating.deletePreset(activeId);
+				Productions.Rating.savePresets();
+				Productions.Rating.load();
+				Productions.CalcRatingBody();
+			});
+			$('#ratingPresetReset').on('click', () => {
+				if (!window.confirm(i18n('Boxes.ProductionsRating.PresetConfirmReset'))) return;
+				Productions.Rating.resetActivePreset();
+				Productions.Rating.save();
+				Productions.CalcRatingBody();
+			});
+			$('#ratingPresetExport').on('click', () => {
+				Productions.Rating.exportPresets();
+			});
+			$('#ratingPresetImport').on('click', () => {
+				$('#ratingPresetImportFile').trigger('click');
+			});
+			$('#ratingPresetImportFile').on('change', function () {
+				const file = this.files?.[0];
+				this.value = '';
+				Productions.Rating.importPresets(file);
+			});
 
 			$('#tilevalues, label[tilevalues]').on('click', function () {
 				SaveSettings("tilevalues")
@@ -2233,6 +2654,7 @@ let Productions = {
 			// result: search function
 			$('#efficiencyBuildingFilter').on('input', e => {
 				let filter = $('#efficiencyBuildingFilter').val();
+				Productions.RatingSearchTerm = filter;
 				let regEx = new RegExp(filter,"i");
 
 				$('.ratinglist tr td:nth-child(2)').each((x,y) => {
@@ -2269,29 +2691,28 @@ let Productions = {
 			});
 
 			// result: building size filter
-			let filteredSizes = [];
 			$('#buildingsize li').on('click', e => {
 				e.stopPropagation();
 				let filter = parseInt(e.target.getAttribute('data-value'));
 				e.target.classList.toggle('selected');
 
-				if (filteredSizes.includes(filter)) {
-					let index = filteredSizes.indexOf(filter);
-					filteredSizes.splice(index, 1);
+				if (Productions.RatingFilteredSizes.includes(filter)) {
+					let index = Productions.RatingFilteredSizes.indexOf(filter);
+					Productions.RatingFilteredSizes.splice(index, 1);
 				}
 				else {
-					filteredSizes.push(filter);
+					Productions.RatingFilteredSizes.push(filter);
 				}
 
 				$('.ratinglist tr').addClass('hidden');
-				if (isNaN(parseInt(filter)) || filteredSizes.length === 0) {
+				if (isNaN(parseInt(filter)) || Productions.RatingFilteredSizes.length === 0) {
 					$('.ratinglist tr').removeClass('hidden');
 					return;
 				}
 				$('.ratinglist tr').each((i,elem) => {
-					let size = elem.classList.values().find(x => x.includes('size'));
+					let size = Array.from(elem.classList).find(x => x.includes('size'));
 					if (size) {
-						for (let filteredSize of filteredSizes) {
+						for (let filteredSize of Productions.RatingFilteredSizes) {
 							if ("size"+filteredSize === size) {
 								elem.classList.remove('hidden');
 								return;
@@ -2313,19 +2734,105 @@ let Productions = {
 
 			$('.reset-button').on('click', function () {
 				if (window.confirm(i18n('Boxes.ProductionsRating.ConfirmReset'))) {
-					localStorage.removeItem('Productions.Rating.Data');
-					Productions.Rating.load();
-				    Productions.Rating.save();
-				    Productions.CalcRatingBody();
+					Productions.Rating.resetActivePreset();
+					Productions.Rating.save();
 				}
 			});
 
 			helper.preloader.hide('#ProductionsRating');
 			//$('#ProductionsRatingBody').fadeIn(501);
+
+			if (Productions.RatingSearchTerm !== "") {
+				$('#efficiencyBuildingFilter').trigger('input');
+			}
+
+			if (Productions.RatingFilteredSizes.length > 0) {
+				$('.ratinglist tr').addClass('hidden');
+				$('.ratinglist tr').each((i,elem) => {
+					let size = Array.from(elem.classList).find(x => x.includes('size'));
+					if (size) {
+						for (let filteredSize of Productions.RatingFilteredSizes) {
+							if ("size"+filteredSize === size) {
+								elem.classList.remove('hidden');
+								return;
+							}
+						}
+					}
+				});
+			}
 		});
     },
 
 
+	/**
+	 * Calculates and generates the HTML content for the efficiency rating settings tab.
+	 *
+	 * @returns {string} HTML string representing the rating settings.
+	 */
+	CalcRatingSettings: () => {
+		let h = [];
+		h.push('<div id="ProductionsRatingSettings">');
+			h.push('<a id="RatingsResults" class="toggle-tab btn btn-slim" data-value="Results"><span>' + i18n('Boxes.ProductionsRating.Results') + '</span></a>')
+			Productions.Rating.ensurePresets();
+			h.push('<div class="tabs rating-presets dark-bg">')
+			h.push(`<ul id="ratingPresetSelect" class="no-grow horizontal dark-bg clickable">
+				${Productions.Rating.getPresetOptions()}
+				</ul>`)
+			h.push('</div>')
+			h.push('<input type="file" id="ratingPresetImportFile" accept="application/json" style="display:none" />')
+			h.push('<ul class="foe-table">')
+
+			h.push('<li class="dark-bg">')
+			h.push('<span>' + i18n('Boxes.ProductionsRating.Enabled') + '</span>')
+			h.push('<span></span><span></span>')
+			h.push('<span class="text-right">' + i18n('Boxes.ProductionsRating.ProdPerTile') + '</span>')
+			h.push('</li>')
+
+			for (let type of Productions.Rating.Types) {
+				if (type === "guild_raids_action_points_collection")
+					h.push(`<li class="heading">${i18n('Boxes.General.Quantum_Incursion')}</li>`)
+				else if (type === "units")
+					h.push(`<li class="heading">${i18n('General.Battle')}</li>`)
+				h.push('<li class="'+type+'">')
+				let activeSetting = (Productions.Rating.Data[type]?.perTile !== null && Productions.Rating.Data[type]?.active !== false)
+				h.push('<input id="Enabled-' + type + '" class="no-grow enabled game-cursor" ' + (activeSetting ? 'checked' : '') + ' type="checkbox">')
+				h.push('<span class="no-grow resicon ' + type + '"></span>')
+				h.push('<label for="Enabled-'+type+'">' + Productions.GetTypeName(type) + '</label>')
+				if (type=="fsp") h.push(`<span id="ShowFSPCalculator" class="clickable" data-original-title="${i18n("Boxes.ProductionsRating.ShowFSPCalculator")}">🧮</span>`)
+				h.push('<input type="number" id="ProdPerTile-' + type + '" step="0.01" min="0" max="1000000" class="no-grow helperTT '+(Productions.Rating.Data[type]?.active ? '': 'hidden')+'" value="' + (Productions.Rating.Data[type]?.perTile||0) + '", data-callback_tt="Productions.efficiencyTT", data-type="'+type+'-tile">')
+				h.push('</li>');
+			}
+
+			h.push(`<li class="text-right">
+				<div class="btn-group" style="justify-content:end;">
+				<button class="reset-button btn" data-value="Results">${i18n('Boxes.ProductionsRating.Reset')}</button>
+				<button id="ratingPresetDuplicate" class="btn duplicate clickable">${i18n('Boxes.ProductionsRating.PresetDuplicate')}</button>
+				<button class="btn btn-delete icon ratingPresetDelete"></button>
+				</li>`);
+			h.push('</ul>');
+			h.push('<div class="content">');
+				h.push('<a class="toggle-tab btn btn-green" data-value="Results">' + i18n('Boxes.ProductionsRating.Results') + '</a>');
+				h.push('<p>'+i18n('Boxes.ProductionsRating.Explainer')+'</p>')
+				h.push('<p>'+i18n('Boxes.ProductionsRating.Disclaimer')+'</p>')
+				h.push('<div class="btn-group">')
+				h.push(`<button class="btn" id="ratingPresetExport">${i18n('Boxes.ProductionsRating.PresetExport')}</button>`)
+				h.push(`<button class="btn" id="ratingPresetImport">${i18n('Boxes.ProductionsRating.PresetImport')}</button>`)
+				h.push('</div>')
+			h.push('</div>')
+		h.push('</div>')
+
+		return h.join('');
+	},
+
+
+	/**
+	 * Filters and prepares buildings for rating, excluding certain types like wishing wells.
+	 *
+	 * @param {Array} uniqueBuildings - List of unique buildings to rate.
+	 * @param {boolean} [additional=false] - If true, treats buildings as additional/manually added.
+	 * @param {string} [era=null] - The era to use for additional buildings.
+	 * @returns {Array} Array of buildings prepared for rating.
+	 */
 	rateBuildings: (uniqueBuildings,additional=false,era=null) => {
 		let ratedBuildings = [];
 		if (additional) {
@@ -2343,6 +2850,12 @@ let Productions = {
 	},
 
 
+	/**
+	 * Calculates the efficiency score for a single building based on the current rating configuration.
+	 *
+	 * @param {Object} building - The building object to rate.
+	 * @returns {Object} Score object containing total score and individual scores per production type.
+	 */
 	rateBuilding: (building) => {
 		if (!Productions.Rating.Data) Productions.Rating.load();
 		let size = building.size.width * building.size.length;
@@ -2369,6 +2882,13 @@ let Productions = {
 	},
 
 
+	/**
+	 * Retrieves the production value for a specific type from a building, considering boosts and set/chain bonuses.
+	 *
+	 * @param {Object} building - The building object.
+	 * @param {string} type - The production type to retrieve the value for.
+	 * @returns {number} The production value.
+	 */
 	getRatingValueForType: (building, type) => {
 		if (type === "happiness")
 			return building.happiness;
@@ -2386,9 +2906,27 @@ let Productions = {
 				let bType = boost.type.find(x => x === type.split('-')[0]);
 				if (bType === undefined) continue;
 
+				if (boost.needsLink && building.setBuilding !== undefined) {
+					if (boost.requiredLinks > (building.setBuilding.uniqueAdjacentCount || 0)) continue;
+				}
+
 				bsum += boost.value;
 			}
 			return bsum;
+		}
+		else if (type === "forge_points_production" || type === "goods_production") {
+			if (building.boosts === undefined) return 0;
+			for (const boost of building.boosts) {
+				if (boost.needsLink && building.setBuilding !== undefined) {
+					if (boost.requiredLinks > (building.setBuilding.uniqueAdjacentCount || 0)) continue;
+				}
+				if (boost.type[0] === 'forge_points_production' && type === 'forge_points_production')  {
+					return boost.value;
+				}
+				if (boost.type[0] === 'goods_production' && type === 'goods_production')  {
+					return boost.value;
+				}
+			}
 		}
 		else if (type === "strategy_points" || type === "medals" || type === "premium" || type === "money" || type === "supplies" || type === "units" || type === "clan_goods")
 			return Productions.getBuildingProductionByCategory(false, building, type).amount
@@ -2458,6 +2996,13 @@ let Productions = {
 	},
 
 
+	/**
+	 * Retrieves a boost value for a building and executes a callback with the result.
+	 *
+	 * @param {Object} building - The building object.
+	 * @param {string} boostName - The name of the boost to retrieve.
+	 * @param {Function} callback - Callback function receiving the boost value object or undefined.
+	 */
 	getBoost: (building, boostName, callback) => {
 		building.boosts?.forEach(boost => {
 			let type = boost.type.find(x => x === boostName)
@@ -2472,9 +3017,9 @@ let Productions = {
 	},
 
 
-    /**
-    *
-    */
+	/**
+	 * Displays the settings for the production overview box.
+	 */
 	ShowSettings: () => {
         let showRelativeProductionTime = JSON.parse(localStorage.getItem('productionsShowRelativeTime')||"false")
         let showAMPMTime = JSON.parse(localStorage.getItem('productionsShowAMPMTime')||"false")
@@ -2496,7 +3041,10 @@ let Productions = {
         $('#ProductionsSettingsBox').html(h.join(''))
     },
 
-	// settings for the efficiency rating table
+
+	/**
+	 * Displays the settings for the efficiency rating box.
+	 */
 	RSettings: () => {
 		let c = [];
 		c.push(`<p class="text-left">${i18n('Boxes.General.Export')}: <span class="btn-group"><button class="btn" onclick="HTML.ExportTable($('.ratingtable table'),'csv','EfficiencyRating')">CSV</button>`);
@@ -2506,10 +3054,10 @@ let Productions = {
 	},
 
 
-    /**
-    *
-    */
-    SaveSettings: () => {
+	/**
+	 * Saves the settings for the production overview box.
+	 */
+	SaveSettings: () => {
         let showRelativeProductionTime = false
 		if ($("#productionsShowRelativeTime").is(':checked')) showRelativeProductionTime = true
 		localStorage.setItem('productionsShowRelativeTime', showRelativeProductionTime)
@@ -2529,6 +3077,22 @@ let Productions = {
 	},
 
 
+	/**
+	 * Displays a modal box containing a list of item sources.
+	 *
+	 * If the modal box with the ID "ItemSources" does not already exist, it creates
+	 * one with customizable attributes such as auto_close, dragdrop, minimize, and resize.
+	 *
+	 * The item sources list is retrieved from the `Productions.buildingItemList` method and
+	 * rendered in a sortable and filterable table format. Each item can be clicked to update
+	 * item sources through the `Productions.updateItemSources` method.
+	 *
+	 * Functionality includes:
+	 * - Dynamically rendering a table of item sources with item icons and names.
+	 * - A filter input to narrow down visible items in the list.
+	 * - Making table rows sortable using the `tableSorter` function.
+	 * - Adding an interactive sub-table for each item toggled by a click event.
+	 */
 	showItemSources:()=>{
 		if ( $('#ItemSources').length === 0 ) {
 			HTML.Box({
@@ -2561,6 +3125,28 @@ let Productions = {
 	},
 
 
+	/**
+	 * Generates a list of building items by parsing city entities data and filtering specific attributes.
+	 *
+	 * The function processes city entities to extract details about items associated with buildings.
+	 * It generates an object containing item information such as `id`, `name`, `icon`, and
+	 * the buildings where they are utilized. It filters out irrelevant items such as fragments, icons,
+	 * or those matching the goods list.
+	 *
+	 * Steps performed by this function:
+	 * 1. Parses `MainParser.CityEntities` to retrieve relevant building entities that have IDs starting with "W".
+	 * 2. Extracts item data (id, name, icon) from JSON formatted data using regex patterns.
+	 * 3. Cleans the extracted data, normalizing IDs and names by removing fragments or numeric sequences.
+	 * 4. Filters out items based on their inclusion in `GoodsList` or matching specific conditions.
+	 * 5. Consolidates item information into an object where each item is mapped by its `id`,
+	 *    including relevant details and the buildings it is associated with.
+	 *
+	 * @returns {Object} An object where each key is an item `id` and the value is an object containing:
+	 *                   - `name` (String): The name of the item.
+	 *                   - `buildings` (Array): A list of building IDs where the item is utilized.
+	 *                   - `id` (String): The unique identifier of the item.
+	 *                   - `icon` (String): The icon asset name associated with the item.
+	 */
 	buildingItemList: () => {
 		let temp = Object.assign({},...Object.values(MainParser.CityEntities).filter(b=>b.id[0]==="W").map(x=>({[x.id]:[...JSON.stringify(x).matchAll(/"id":"([^"]*?)"[^()[\]{}]*?"name":"([^"]*?)"[^()[\]{}]*?"iconAssetName":"([^"]*?)"[^{}]*?"__class__":"(GenericReward|TimedReward)"/gm)].map(a=>({id:a[1],name:a[2],icon:a[3]}))})))
 
@@ -2590,6 +3176,28 @@ let Productions = {
 	},
 
 
+	/**
+	 * Retrieves a list of city buildings categorized by specific boost types.
+	 *
+	 * This method filters city entities based on their id, specifically those that start with "W",
+	 * and then evaluates their boost components to determine if they provide any of the specified boosts.
+	 *
+	 * Buildings that match the specified boosts are grouped and returned in a categorized object,
+	 * where each key is a boost type and the value is an array of buildings providing that boost.
+	 *
+	 * Special cases:
+	 * - Buildings tied to guild raid activities (identified by ids containing 'GuildRaids') are excluded
+	 *   for boosts that include 'guild_raids'.
+	 *
+	 * @param {string[]} [boostArray=[]] - An array of boost types to search for.
+	 * @returns {Object} An object where each key is a boost type from the input array, and the value is
+	 *                   an array of objects containing the name and entityId of the matching buildings.
+	 *                   Example structure:
+	 *                   {
+	 *                      "boost1": [{ name: "Building1", entityId: "W123" }],
+	 *                      "boost2": [{ name: "Building2", entityId: "W456" }]
+	 *                   }
+	 */
 	getBuildingsByBoosts: (boostArray = []) => {
 		let buildings = Object.values(MainParser.CityEntities).filter(b=>b.id[0]==="W")
 		let boostList = {};
@@ -2617,6 +3225,11 @@ let Productions = {
 	},
 
 
+	/**
+	 * Creates a list of buildings providing the specified boosts and displays it.
+	 *
+	 * @param {Array} [boostArray=[]] - Array of boost types to filter buildings by.
+	 */
 	createBuildingBoostList: (boostArray = []) => {
 		if ( $('#BoostList').length === 0 ) {
 			HTML.Box({
@@ -2653,6 +3266,19 @@ let Productions = {
 	},
 
 
+	/**
+	 * Updates the sources of a given item and toggles its display state in the UI.
+	 *
+	 * This function adjusts the content and visibility of a specific HTML element corresponding
+	 * to the provided item. It either clears the element's content or populates it with a list
+	 * of buildings associated with the item. Additionally, it toggles a CSS class to change
+	 * the appearance of the parent element.
+	 *
+	 * @param {Object} item - The item object containing information to render the sources.
+	 * @param {string} item.name - The name of the item used to identify the target element.
+	 * @param {Array<string>} item.buildings - An array of building IDs associated with the item,
+	 * which are used to generate a list of building information.
+	 */
 	updateItemSources:(item)=>{
 		let itemId = '#item-'+helper.str.cleanup(item.name)
 		$(itemId).parent('td').toggleClass('open')
@@ -2668,3 +3294,35 @@ let Productions = {
 		$(itemId).html(h)
 	},
 };
+
+FoEproxy.addHandler('CityMapService', 'placeBuilding', (data, postData) => {
+	if ($('#ProductionsRating').length > 0) {
+		setTimeout(() => {
+				Productions.CalcRatingBody();
+		}, 250);
+	}
+});
+
+FoEproxy.addHandler('CityMapService', 'removeBuilding', (data, postData) => {
+	if ($('#ProductionsRating').length > 0) {
+		setTimeout(() => {
+			Productions.CalcRatingBody();
+		}, 250);
+	}
+});
+
+FoEproxy.addHandler('InventoryService', 'updateItem', (data, postData) => {
+	if ($('#ProductionsRating').length > 0) {
+		setTimeout(() => {
+			Productions.CalcRatingBody();
+		}, 250);
+	}
+});
+
+FoEproxy.addHandler('InventoryService', 'useItem', (data, postData) => {
+	if ($('#ProductionsRating').length > 0) {
+		setTimeout(() => {
+			Productions.CalcRatingBody();
+		}, 250);
+	}
+});

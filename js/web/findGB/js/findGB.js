@@ -12,18 +12,6 @@
  * **************************************************************************************
  */
 
-FoEproxy.addMetaHandler('city_entities', (data, postData) => {
-
-    let resp = JSON.parse(data['response']);
-        
-    for (let building of resp)
-	{
-        if(!building['type'] || building.type != "greatbuilding") continue;
-        findGB.list.push(building.name);
-    }
-    findGB.list.sort()
-});
-
 FoEproxy.addHandler('RankingService', 'getRanking', (data, postData) => {
     if (data.responseData.category.value != "great_building" || $('#findGBDialog').length === 0) return;
     findGB.check(data.responseData.rankings);
@@ -36,6 +24,16 @@ FoEproxy.addHandler('GreatBuildingsService', 'getOtherPlayerOverview', (data, po
 let findGB = {
     list:[],
     found:[],
+
+    init: async () => {
+        await ExistenceConfirmed("MainParser.CityEntities")
+        for (let building of Object.values(MainParser.CityEntities)) {
+            if(building.type != "greatbuilding") continue;
+            findGB.list.push(building.name);
+        }
+        findGB.list.sort()
+    },
+
     ShowDialog: () => {
         
 		if ($('#findGBDialog').length > 0){
@@ -109,7 +107,6 @@ let findGB = {
     row: (i) => {
         return `<tr><td>${MainParser.GetPlayerLink(i.playerID,i.player)}</td><td>${i.GB}</td><td class="progress" style="--p:${i.progress}%">${i.level}</td></tr>`
     }
-
-
-
 };
+
+findGB.init();

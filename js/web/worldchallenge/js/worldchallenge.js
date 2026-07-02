@@ -11,10 +11,15 @@
  * **************************************************************************************
  */
 
-FoEproxy.addHandler('WorldChallengeService', 'getOverview', (data, postData) => {
-	
-	worldChallenge.count = data.responseData?.taskProgressPoints || 0;
-	
+FoEproxy.addHandler('WorldChallengeService', 'all', (data, postData) => {
+	if (data.requestMethod=='getOverview') {
+		worldChallenge.currentPoints = data.responseData?.taskProgressPoints || 0;
+	}
+	if (data.requestMethod=='getConfig')
+		worldChallenge.requiredPoints = data.responseData.requiredPointsPerTask;
+	if (data.requestMethod=="collectTaskReward")
+		worldChallenge.currentPoints = data.responseData?.taskProgressPoints || 0;
+	mergerGame.checkTaskProgress(false);
 });
 
 FoEproxy.addHandler('LeagueService', 'getRank', (data, postData) => {
@@ -31,7 +36,8 @@ FoEproxy.addHandler('LeagueService', 'getRank', (data, postData) => {
 
 
 let worldChallenge = {
-	count: undefined,
-	leaguepoints:0,
-
+	//count: undefined,
+	//leaguepoints:0,
+	currentPoints:0,
+	requiredPoints:12,	
 }

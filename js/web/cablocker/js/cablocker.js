@@ -58,6 +58,8 @@ CABlocker = {
         let ongoingProductions = Object.values(MainParser.CityMapData).filter(x => x.state && x.state.productionOption && x.state.next_state_transition_at > now && !x.state.pausedAt)
         let nextFinish = Math.min(...ongoingProductions.map(x => new Date(x.state.next_state_transition_at)));
         
+        if (!nextFinish || nextFinish == Infinity) return;
+
         setTimeout(() => {
             CABlocker.checkBuildings();            
         }, (nextFinish - now + 1)*1000);

@@ -1,5 +1,78 @@
-## Changelog - Extension
+## Extension Changelog
 
+##### 4.3.1.0
+
+**Update**
+
+- Research Tree:
+	- The module has been revised, and a new column has been added. From the next unexplored ZA onwards, this column displays a summary of all missing elements.
+
+---
+
+##### 4.3.0.1
+
+**BugFix**
+
+- Research Tree:
+	- A structural change in the Inno data caused an error in Helfer
+
+---
+
+
+##### 4.3.0.0
+
+**New**
+- Calculators: There is now only one calculator, but we did not remove any functionality. Check out the Calculator window settings if you want to use the "removed one" for other peoples GBs
+- GBG: You can now add a Discord Webhook in the settings of the countdown window
+- GBG: Added a tab for owned provinces to easily see which ones still need buildings
+- Discord Webhooks: Create templates for personalized GBG messages and add them to the GBG countdown window
+
+**Update**
+- Allies: Boosts are now displayed per category and can be sorted
+- Infobox: Added QI Actions and an option to select stuff as favorite. The window received a slight facelift
+- GB Calculator: The arrow on the side of the window is now a cogwheel in the bottom left corner instead
+- Efficiency Rating: Buildings that can be upgraded to their ascended version now show an arrow next to their name
+- Guild Member Overview: Member details are now opened in their own window and include more data
+- Continent Map Overview has been removed! Negotiating on the map is a very niche play style and goods much easier to come by these days
+- UI: Various small changes in multiple areas
+- Building efficiency calculation: The view opens by default sorted in descending order and is updated immediately whenever a building is removed, added or updated
+
+---
+ 
+
+##### 4.2.1.1
+
+**Hotfix**
+- Calculators were broken after game update to version 1.332
+
+---
+
+##### 4.2.1.0
+
+**Update**
+- Discord Webhooks: Reworked the module - send custom messages instantly via webhook.
+- Stats: Added a quick select for next era goods.
+- repeated building: removed for the reconstruction mode, as there now is an ingame implementation.
+
+**Bugfix**
+- Merger Minigame: Works now as intended.
+
+---
+
+##### 4.2.0.0
+
+**Update**
+- Cost Calculator: Added setting to open it automatically
+- Calculators: Changed default buttons from 80, 85, 90 to 80, 90, 100
+- Efficiency: Added FP and goods boost + presets were added so you can have different evaluation settings
+- Merger Minigame: reduced table content + added warnings for completed tasks
+
+**Bugfix**
+- Calculators: a game update moved the GB window so that the new copy function was not working anymore
+- Own Part Calculator: already paid FP are now deducted when copying (another player GB)
+- Auto opening: Some windows didn't open on default anymore if you never changed the settings before. It's back to normal, but also: look at the settings, they are nice!
+
+---
 
 ##### 4.1.1.0
 

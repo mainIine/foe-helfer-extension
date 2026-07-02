@@ -86,7 +86,7 @@
 	border-top: 1px dotted var(--text-darker);
 	padding: 5px 0;
 	margin: 5px 0 2px;
-	color: var(--bright-color);
+	color: var(--sunflower);
 	display: block;
 }
 
@@ -111,7 +111,7 @@
 }
 #sidebar #area-state li.clickable:hover span:first-child {
 	font-weight: bold;
-	color: var(--bright-color);
+	color: var(--sunflower);
 }
 
 .outpost #BuildingsFilter, .outpost #city-map-menu .btn-group, .outpost #map-filters {
@@ -125,18 +125,31 @@
 	z-index: 5001;
 }
 
-.outpost.guild_raids .qiSums {
+.outpost .metaSums {
 	background: linear-gradient(180deg, var(--text-dark2) 20%, transparent);
 	padding: 7px;
 }
-.outpost.guild_raids .qiSums span {
+.outpost.guild_raids .metaSums span {
 	padding: 2px;
 }
-.outpost.guild_raids .qiSums i {
+.outpost:not(.guild_raids) .metaSums span {
+	height: 20px;
+	display: inline-flex;
+	width: 25px;
+	position: relative;
+}
+.outpost:not(.guild_raids) .metaSums span::before {
+	position: absolute;
+	top: 3px;
+}
+.outpost:not(.guild_raids) .metaSums span.diplomacy::before {
+	top: 21px;
+}
+.outpost .metaSums i {
 	font-size: 90%;
 }
 
-.outpost.guild_raids .qiSums .productions, .outpost.guild_raids .qiSums .boosts {
+.outpost .metaSums .productions, .outpost .metaSums .boosts {
 	display: flex;
 	justify-content: center;
 	gap: 2px;
@@ -152,12 +165,12 @@
 }
 
 .outpost.guild_raids .euphoria150 {
-	color: var(--text-highlight);
+	color: var(--limegreen);
 	font-weight: bold;
 }
 
 .outpost.guild_raids .euphoria20 {
-	color: var(--text-danger);
+	color: var(--danger-red);
 	font-weight: bold;
 }
 
@@ -169,7 +182,7 @@
 	font-size: 90%;
 }
 
-.outpost.guild_raids #sidebar .allBuildings img, .outpost.guild_raids .qiSums .boosts img {
+.outpost.guild_raids #sidebar .allBuildings img, .outpost .metaSums .boosts img {
 	max-height: 20px;
 }
 
@@ -200,12 +213,7 @@
 	position: absolute;
 	top: 1px;
 	right: 423px;
-	height: 25px;
 	z-index: 5001;
-}
-
-.outpost.cultural_outpost .openOverview:hover {
-	filter: brightness(1.2);
 }
 
 #citymap-mainBody .prod::before {
@@ -217,7 +225,6 @@
 	height: 20px;
 }
 
-#citymap-mainBody .prod.population::before { background-position: -142px 2px; }
 #citymap-mainBody .prod.happiness::before { background-position: -122px 2px; }
 #citymap-mainBody .prod.guild_raids_money::before { background-position: -20px 2px; }
 #citymap-mainBody .prod.guild_raids_supplies::before { background-position: -40px 2px; }
@@ -225,7 +232,7 @@
 #citymap-mainBody .prod.att_def_boost_defender::before { background-position: -362px 1px; }
 #citymap-mainBody .prod.guild_raids_action_points_collection::before { background-position: -383px 2px; }
 
-#citymap-mainBody th.population::before, #citymap-mainBody th.happiness::before {
+#citymap-mainBody .population::before, #citymap-mainBody th.happiness::before {
 	background: transparent url('../../productions/images/productions.png') -233px 0 no-repeat;
 	background-size: auto 100%;
 	display: inline-block;
@@ -233,9 +240,9 @@
 	width: 23px;
 	height: 23px;
 }
-#citymap-mainBody th.population::before { background-position: -162px 0; }
+#citymap-mainBody .population::before { background-position: -162px 0; }
 #citymap-mainBody th.happiness::before { background-position: -140px 0; }
-#citymap-mainBody th .diplomacy::before { zoom: 0.45; }
+#citymap-mainBody .diplomacy::before { zoom: 0.45; }
 #citymap-mainBody th .diplomacy { height: 24px; }
 
 #sidebar p {
@@ -469,6 +476,14 @@
 #grid-outer.showQI .fromQI {
 	background-color: var(--background-color-qi);
 	border-color: var(--border-color-qi);
+}
+#grid-outer.showChains .chain {
+    background-color: #ff00ff77;
+    border-color: #ff00ff;
+}
+#grid-outer.showSets .set {
+    background-color: #00ffff77;
+    border-color: #00ffff;
 }
 
 [data-view="skew"] .older-1.diagonal {

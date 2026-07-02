@@ -90,7 +90,7 @@
 }
 
 #negotiationBox #negotiationBoxBody tr.resource-row td {
-	color: var(--bright-color);
+	color: var(--sunflower);
 	font-weight: 700;
 }
 
@@ -107,12 +107,12 @@
 }
 
 #negotiationBox #negotiationBoxBody .text-success {
-	color: var(--text-success);
+	color: var(--success);
 	font-weight: 700;
 }
 
 #negotiationBox #negotiationBoxBody td.success {
-	color: var(--text-success);
+	color: var(--success);
 }
 
 #negotiationBox #negotiationBoxBody td.warning {
@@ -124,7 +124,7 @@
 }
 
 #negotiationBox #negotiationBoxBody .text-muted {
-	color: var(--text-muted);
+	color: var(--ash);
 }
 
 #negotiationBox #negotiationBoxBody td {
@@ -135,7 +135,7 @@
 	font-weight: 700;
 	display: inline-block;
 	margin-left: 6px;
-	background: var(--text-info);
+	background: var(--info-blue);
 	padding: 0 4px;
 	border-radius: 50%;
 	width: 10px;
