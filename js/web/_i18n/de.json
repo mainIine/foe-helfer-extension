@@ -268,6 +268,7 @@
     "Boxes.CityMap.ShowWorstBuildings": "Ineffiziente Gebäude",
     "Boxes.CityMap.StreetsAmount": "Anzahl Straßen",
     "Boxes.CityMap.Submit": "Abschicken",
+    "Boxes.CityMap.SubmitProcessing": "Die Daten werden verarbeitet. Dies kann bis zu 10 Sekunden dauern...",
     "Boxes.CityMap.MissingApiKeySubmitError": "Ohne einen API-Token für diese Welt, den Du kostenlos auf der Website erhalten kannst, werden keine Städte oder Notizen übertragen.<br>Für eine Anleitung, klicke hier:",
     "Boxes.CityMap.MissingApiKeyErrorHeader": "API Token fehlt!",
     "Boxes.CityMap.SubmitError": "Deine Stadtdaten konnten nicht an den Server gesendet werden. Bitte melden Sie diesen Fehler direkt an ",

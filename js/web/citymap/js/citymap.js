@@ -1360,6 +1360,25 @@ let CityMap = {
 			return;
 		}
 
+		helper.preloader.show('#CityMapSubmit');
+
+		$('#CityMapSubmit .loading-data').append(
+			$('<div class="loading-message" />')
+				.css({
+					position: 'absolute',
+					top: '75%',
+					left: '0',
+					width: '100%',
+					textAlign: 'center',
+					color: '#ffffff',
+					padding: '0 20px',
+					boxSizing: 'border-box',
+					fontSize: '14px',
+					textShadow: '1px 1px 2px #000'
+				})
+				.text(i18n('Boxes.CityMap.SubmitProcessing'))
+		);
+
 		let entities = MainParser.CityMapData,
 			areas = CityMap.Main.unlockedAreas,
 			blockedAreas = CityMap.Main.blockedAreas;
