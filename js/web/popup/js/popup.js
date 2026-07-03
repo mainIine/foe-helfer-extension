@@ -29,6 +29,11 @@ let Popup = {
 	 */
 	windows: {},
 
+	/**
+	 * Boxes whose pop-up window is currently being opened: id -> true
+	 */
+	_pending: {},
+
 
 	/**
 	 * Is there already a pop-up open for this box?
@@ -46,14 +51,24 @@ let Popup = {
 	 * Moves an existing box (HTML.Box) into its own browser window.
 	 * If the window is closed, the box returns to the main page.
 	 *
+	 * Uses the Document Picture-in-Picture API where available (Chromium):
+	 * that window always stays on top of other windows, even when the game
+	 * is focused. Falls back to a regular pop-up window (e.g. Firefox, or
+	 * when another PiP window is already open).
+	 *
 	 * @param id       CSS ID of the box (z.B. 'bluegalaxy')
-	 * @param options  {width, height, title, onClose}
+	 * @param options  {width, height, title, onClose, alwaysOnTop}
+	 *                 alwaysOnTop: false forces a regular pop-up window
 	 * @returns {boolean} true if the pop-up has been opened or is already open
 	 */
 	PopOut: (id, options = {}) => {
 
+		if (Popup._pending[id]) {
+			return true;
+		}
+
 		if (Popup.IsOpen(id)) {
-			Popup.windows[id].win.focus();
+			try { Popup.windows[id].win.focus(); } catch (e) { /* PiP windows cannot be focused */ }
 			return true;
 		}
 
@@ -69,9 +84,7 @@ let Popup = {
 		} catch (e) { /* No entry/invalid entry */ }
 
 		const width  = (size && size.w) || options.width  || Math.max(box.offsetWidth, 320),
-			height = (size && size.h) || options.height || Math.max(box.offsetHeight, 220),
-			left = window.screenX + Math.max(0, Math.round((window.outerWidth - width) / 2)),
-			top  = window.screenY + Math.max(0, Math.round((window.outerHeight - height) / 2));
+			height = (size && size.h) || options.height || Math.max(box.offsetHeight, 220);
 
 		const boxTitle = box.querySelector('.window-head .title');
 		let title = options.title || (boxTitle ? boxTitle.textContent.trim() : 'FoE Helper');
@@ -87,6 +100,40 @@ let Popup = {
 			}
 		});
 		cssLinks.push(`<link rel="stylesheet" href="${extUrl}js/web/popup/css/popup.css?v=${extVersion}">`);
+
+		// Document Picture-in-Picture: always-on-top, but only one window per tab
+		const usePiP = options.alwaysOnTop !== false
+			&& typeof documentPictureInPicture !== 'undefined'
+			&& !documentPictureInPicture.window;
+
+		Popup._pending[id] = true;
+
+		if (usePiP) {
+			documentPictureInPicture.requestWindow({width: width, height: height})
+				.then((win) => {
+					win.document.head.innerHTML = `<meta charset="utf-8"><title>${title}</title>${cssLinks.join('')}`;
+					win.document.body.className = 'foe-helper-popup';
+					Popup._adopt(id, win, box, options, width, height);
+				})
+				.catch(() => {
+					// no user gesture or API blocked - regular pop-up window instead
+					Popup._openPopupWindow(id, box, options, width, height, title, cssLinks);
+				});
+			return true;
+		}
+
+		return Popup._openPopupWindow(id, box, options, width, height, title, cssLinks);
+	},
+
+
+	/**
+	 * Fallback: opens a regular browser pop-up window (window.open) with a
+	 * same-origin blob document and adopts the box once it is ready.
+	 */
+	_openPopupWindow: (id, box, options, width, height, title, cssLinks) => {
+
+		const left = window.screenX + Math.max(0, Math.round((window.outerWidth - width) / 2)),
+			top  = window.screenY + Math.max(0, Math.round((window.outerHeight - height) / 2));
 
 		const winHtml = `<!DOCTYPE html>
 			<html>
@@ -108,6 +155,7 @@ let Popup = {
 
 		if (!win) {
 			URL.revokeObjectURL(winUrl);
+			delete Popup._pending[id];
 			HTML.ShowToastMsg({
 				head: 'FoE Helper',
 				text: i18n('PopUp.Blocked'),
@@ -117,20 +165,11 @@ let Popup = {
 			return false;
 		}
 
-		const entry = Popup.windows[id] = {
-			win: win,
-			options: options,
-			restoreCss: box.style.cssText,
-			observer: null,
-			watchdog: null,
-			lastSize: {w: width, h: height}
-		};
-
 		// wait until the Blob document is ready (not the initial about:blank)
 		const initTimer = setInterval(() => {
 			if (win.closed) {
 				clearInterval(initTimer);
-				Popup._cleanup(id);
+				delete Popup._pending[id];
 				return;
 			}
 
@@ -146,34 +185,57 @@ let Popup = {
 			clearInterval(initTimer);
 			URL.revokeObjectURL(winUrl);
 
-			// Disable in-page drag-and-drop; it will be re-enabled when you return
-			const header = document.getElementById(id + 'Header');
-			if (header) {
-				header.onpointerdown = null;
-			}
-
-			// Move the box, along with all its event bindings, to the pop-up
-			box.classList.add('popup-mode');
-			win.document.body.appendChild(win.document.adoptNode(box));
-
-			// make the tooltip system (customTooltip) available in the pop-up as well
-			if (typeof Tooltips !== 'undefined' && Tooltips.attach) {
-				Tooltips.attach(win);
-			}
-
-			// jQuery UI widgets cache their document; rebuild them for the new one
-			Popup._rebindUiWidgets(box);
-
-			// the module removes its own box (e.g. HTML.CloseOpenBox), close windows
-			entry.observer = new MutationObserver(() => {
-				if (!win.document.getElementById(id)) {
-					win.close();
-				}
-			});
-			entry.observer.observe(win.document.body, {childList: true, subtree: true});
-
-			win.addEventListener('pagehide', () => Popup._cleanup(id), {once: true});
+			Popup._adopt(id, win, box, options, width, height);
 		}, 20);
+
+		return true;
+	},
+
+
+	/**
+	 * Shared setup for both window types: moves the box into the target
+	 * window and wires up tooltips, widgets and the closing lifecycle.
+	 */
+	_adopt: (id, win, box, options, width, height) => {
+
+		const entry = Popup.windows[id] = {
+			win: win,
+			options: options,
+			restoreCss: box.style.cssText,
+			observer: null,
+			watchdog: null,
+			lastSize: {w: width, h: height}
+		};
+
+		delete Popup._pending[id];
+
+		// Disable in-page drag-and-drop; it will be re-enabled when you return
+		const header = document.getElementById(id + 'Header');
+		if (header) {
+			header.onpointerdown = null;
+		}
+
+		// Move the box, along with all its event bindings, to the pop-up
+		box.classList.add('popup-mode');
+		win.document.body.appendChild(win.document.adoptNode(box));
+
+		// make the tooltip system (customTooltip) available in the pop-up as well
+		if (typeof Tooltips !== 'undefined' && Tooltips.attach) {
+			Tooltips.attach(win);
+		}
+
+		// jQuery UI widgets cache their document; rebuild them for the new one
+		Popup._rebindUiWidgets(box);
+
+		// the module removes its own box (e.g. HTML.CloseOpenBox), close windows
+		entry.observer = new MutationObserver(() => {
+			if (!win.document.getElementById(id)) {
+				win.close();
+			}
+		});
+		entry.observer.observe(win.document.body, {childList: true, subtree: true});
+
+		win.addEventListener('pagehide', () => Popup._cleanup(id), {once: true});
 
 		// Fallback in case `pagehide` never fires; also remembers the window size
 		entry.watchdog = setInterval(() => {
@@ -185,8 +247,6 @@ let Popup = {
 				entry.lastSize = {w: win.innerWidth, h: win.innerHeight};
 			} catch (e) { /* Window currently unavailable */ }
 		}, 1000);
-
-		return true;
 	},
 
 
@@ -239,6 +299,8 @@ let Popup = {
 	 * @param id CSS-ID der Box
 	 */
 	_cleanup: (id) => {
+		delete Popup._pending[id];
+
 		const entry = Popup.windows[id];
 		if (!entry) return;
 
