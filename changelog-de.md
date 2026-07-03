@@ -1,5 +1,39 @@
 ## Extension Changelog
 
+##### 4.4.0.0
+
+**Neu**
+- PopOut:
+	- Größere Boxen können einfach in ein eigenes Fenster ausgelagert werden, alle Funktionen bleiben erhalten. Viele Boxen haben diese Funktion bereits, es kommen schnell mehr dazu
+      - Wird das PopUp-Fenster geschlossen, springt die eigentliche Box wieder an die alte Stelle im Spiel zurück (DOM)
+      - Wird die Box im PopUp geschlossen, verschwindet die Box bis zum erneuten öffnen
+      - Sind PopUp's blockiert, wird darauf hingewiesen
+      - Diese PopUps bleiben immer on top, über dem Spiel und verschwinden nicht nach hinten, können aber minimiert werden
+      - Wird das Spiel geschlossen, schließen sich automatisch alle PopUps
+
+**Update**
+- Gebäude Tooltips:
+	- Überarbeitung des Moduls. Permanentes Berechnen der Mauspositionen entfernt, schon die Ressourcen bei kleineren CPUs
+    - Gefährliche eval() Funktion entfernt
+    - Start/Stopp verbessert für PopOut
+
+
+- Stadtübersicht:
+  - Übermitteln der Daten an den CityPlanner v2 (foe-helper.com)
+    - Modal ergänzt, dass einen Spinner zeigt, für ungeduldige
+    - Einige Daten für Informationen im CityPlanner ergänzt
+
+
+- Allgemeines Code-Cleaning gemäß [JSDoc](https://jsdoc.fyi) begonnen:
+  - Dient der Lesbarkeit der gesamten Extension für externe Entwickler
+  - Docstrings mit Parametern/Returns
+  - Formatierungen gemäß "Visual Paragraphs" zugunsten der Lesbarkeit
+  - Viele kleine Formatierungsfehler behoben
+  - Anpassungen zu ES6 begonnen
+
+---
+
+
 ##### 4.3.1.0
 
 **Update**

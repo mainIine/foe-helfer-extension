@@ -141,9 +141,20 @@ let GuildFights = {
 	Tabs: [],
 	TabsContent: [],
 
+
 	/**
+	 * Initializes and verifies the existence of a local IndexedDB database specific to the given player ID.
 	 *
-	 * @returns {Promise<void>}
+	 * Creates a new Dexie database instance named with the pattern `FoeHelperDB_GuildFights_<playerID>`.
+	 * Defines the database schema with two object stores:
+	 * - `snapshots`: Indexed by a composite key of `player_id+gbground+time`,
+	 *   and secondary indexes on `gbground+player_id`, `date+player_id`, and `gbground`.
+	 * - `history`: Indexed by a unique `gbground` key.
+	 *
+	 * Opens a connection to the database upon creation.
+	 *
+	 * @param {string} playerID - The unique identifier of the player for whom the database is being checked or initialized.
+	 * @returns {Promise<void>} Resolves when the database has been successfully initialized and opened.
 	 */
 	checkForDB: async (playerID) => {
 
@@ -159,6 +170,23 @@ let GuildFights = {
 		GuildFights.db.open();
 	},
 
+
+	/**
+	 * Initializes the `GuildFights` module by invoking the `GetAlerts` method and setting up WebSocket handlers.
+	 *
+	 * The WebSocket handler listens for messages related to the `GuildBattlegroundService` and processes
+	 * incoming data. It updates the `MapData` with province information, refreshes the live fighting table
+	 * if it exists in the DOM, and refreshes the province minimap if it is present.
+	 *
+	 * Behavior:
+	 * - Calls `GuildFights.GetAlerts()` to initialize alert data.
+	 * - Checks if the WebSocket injection has already been loaded and, if not, sets up a handler for
+	 *   the "GuildBattlegroundService" to process received data.
+	 * - Updates the `GuildFights.MapData.map.provinces` with the data from the WebSocket response.
+	 * - Updates the DOM components:
+	 *   - Refreshes the live fighting table if the `#LiveGildFighting` element exists in the DOM.
+	 *   - Refreshes the province minimap if the `#ProvinceMap` element exists in the DOM.
+	 */
 	init: () => {
 		GuildFights.GetAlerts();
 
@@ -186,6 +214,30 @@ let GuildFights = {
 	},
 
 
+	/**
+	 * Handles the player leaderboard for guild fights by collecting player data,
+	 * calculating totals, updating the database, and refreshing the user interface.
+	 *
+	 * This function processes the data of players participating in a guild battle,
+	 * computes cumulative statistics (such as negotiations won, battles won, and attrition),
+	 * and updates both the local storage and the database with this information. It also
+	 * ensures that the user interface reflects the latest participant data.
+	 *
+	 * @async
+	 * @function
+	 * @param {Object} d - An object containing player data for the guild battle. Keys are
+	 *                     player ranks (zero-based indices), and values are objects that
+	 *                     include player details and performance statistics.
+	 * @property {Object} d[i].player - Details of the individual player.
+	 * @property {number} d[i].player.player_id - Unique identifier of the player.
+	 * @property {string} d[i].player.name - Name of the player.
+	 * @property {string} d[i].player.avatar - URL or identifier for the player's avatar.
+	 * @property {number} [d[i].battlesWon=0] - Number of battles won by the player (defaults to 0 if missing).
+	 * @property {number} [d[i].negotiationsWon=0] - Number of negotiations won by the player (defaults to 0 if missing).
+	 * @property {number} [d[i].attrition=0] - Attrition value for the player (defaults to 0 if missing).
+	 *
+	 * @throws {Error} Throws an error if database updating fails or if an unexpected issue occurs during execution.
+	 */
 	HandlePlayerLeaderboard: async (d) => {
 		// immer zwei vorhalten, für Referenz Daten (LiveUpdate)
 		if (localStorage.getItem('GuildFights.NewAction') !== null) {
@@ -240,7 +292,30 @@ let GuildFights = {
 	},
 
 
-
+	/**
+	 * Updates the database with the specified content type and data.
+	 *
+	 * The method performs different operations depending on the `content` type:
+	 * - If the `content` type is "history", it updates the history data for the current GBG round.
+	 * - If the `content` type is "player", it updates or adds player snapshot data for the current GBG round.
+	 *
+	 * @async
+	 * @function UpdateDB
+	 * @param {string} content - The type of content to update ("history" or "player").
+	 * @param {Object} data - The data to be updated in the database.
+	 * @param {number} [data.sumNegotiations] - Total number of negotiations for history content.
+	 * @param {number} [data.sumBattles] - Total number of battles for history content.
+	 * @param {number} [data.participation] - Participation level for history content.
+	 * @param {string} [data.player_id] - The ID of the player for player content.
+	 * @param {string} [data.name] - The name of the player for player content.
+	 * @param {number} [data.time] - The timestamp of the update for player content.
+	 * @param {number} [data.battles] - Total battles conducted by the player, used if no snapshot exists.
+	 * @param {number} [data.negotiations] - Total negotiations conducted by the player, used if no snapshot exists.
+	 * @param {number} [data.attrition] - Total attrition level of the player, used if no snapshot exists.
+	 * @param {number} [data.diffbat] - Difference in battles since the last snapshot, used if a snapshot exists.
+	 * @param {number} [data.diffneg] - Difference in negotiations since the last snapshot, used if a snapshot exists.
+	 * @param {number} [data.diffattr] - Difference in attrition level since the last snapshot, used if a snapshot exists.
+	 */
 	UpdateDB: async (content, data) => {
 
 		if (content === 'history') {
@@ -290,6 +365,27 @@ let GuildFights = {
 	},
 
 
+	/**
+	 * Asynchronously sets up the navigation controls and content for Guild Battles Ground (GBG) rounds in a player's box.
+	 * This function retrieves GBG round data, updates player preferences, and builds relevant UI components.
+	 *
+	 * @async
+	 * @function
+	 * @param {number} gbground - The specific GBG round to display. If not provided, the latest available round is used.
+	 *
+	 * @description
+	 * - Fetches and sets player preferences for showing the round selector, log button, and progress filter.
+	 * - Retrieves all available GBG rounds from the database if not already available.
+	 * - Determines the navigation and content display based on the selected or latest GBG round.
+	 * - Creates UI components including round switching buttons, a dropdown selector for rounds, and additional buttons for filtering logs and progress.
+	 *
+	 * @remarks
+	 * - If no `gbground` is provided, the most recent round is selected by default.
+	 * - Includes event listeners for interactive UI components such as buttons and the round selector dropdown.
+	 * - Depends on global variables like `GuildFights`, assumes this object is pre-defined and initialized.
+	 *
+	 * @throws {Error} Throws if unexpected data issues occur or required global dependencies are unavailable.
+	 */
 	SetBoxNavigation: async (gbground) => {
 		let h = [];
 		let i = 0;
@@ -1859,6 +1955,17 @@ let ProvinceMap = {
 	StrokeColor: '#111',
 	selectedProvince: null,
 
+
+	/**
+	 * Enables drag functionality for the province map. Allows the user to click and drag to scroll the map.
+	 *
+	 * Updates the map's scroll position dynamically based on user mouse movement. Also determines
+	 * the selected province based on the cursor's position on the map and displays any associated
+	 * province details.
+	 *
+	 * Mouse event handlers are added for `mousedown`, `mousemove`, and `mouseup` events to
+	 * implement the drag behavior.
+	 */
 	mapDrag: () => {
 		const wrapper = document.getElementById('province-map-wrap');	
 		let pos = { top: 0, left: 0, x: 0, y: 0 };
@@ -1896,6 +2003,19 @@ let ProvinceMap = {
         }, false);
 	},
 
+
+	/**
+	 * Retrieves the sector color configuration for a given owner ID.
+	 *
+	 * If an `ownerID` is provided and matches an existing configuration in `GuildFights.SortedColors`,
+	 * the corresponding color object is returned. If no `ownerID` is provided, a default color
+	 * configuration is returned.
+	 *
+	 * @param {string|undefined} ownerID - The ID of the owner whose sector colors are to be retrieved.
+	 *                                      If undefined, the default color configuration is returned.
+	 * @returns {Object} An object representing the sector's color configuration.
+	 *                   The object contains properties `main`, `highlight`, `shadow`, `base`, and `id`.
+	 */
 	getSectorColors: (ownerID) => {
 		if (ownerID !== undefined)
 			return GuildFights.SortedColors.find(c => (c.id === ownerID))
@@ -1909,6 +2029,19 @@ let ProvinceMap = {
 			}
 	},
 
+
+	/**
+	 * Constructs or handles the "ProvinceMap" user interface element.
+	 *
+	 * This function performs the following:
+	 * - Checks if an element with the ID "ProvinceMap" exists in the DOM.
+	 *   - If not, creates a new box element using the HTML.Box method with defined properties.
+	 *     - Sets the ID, title, and other properties of the box (e.g., auto_close, dragdrop, minimize).
+	 *     - Adds additional functionality for popout and active map configuration.
+	 *     - Loads a CSS file named "guildfights".
+	 * - If the element already exists, it closes the open box using the HTML.CloseOpenBox method.
+	 * - Calls the `prepare` method on the `ProvinceMap` object to perform any additional setup.
+	 */
 	build: () => {
 		if ($('#ProvinceMap').length === 0) {
 			HTML.Box({
@@ -1918,18 +2051,26 @@ let ProvinceMap = {
 				dragdrop: true,
 				minimize: true,
 				resize: true,
+				popout: 'MainParser.PopOut(\'ProvinceMap\', 650, 580)',
 			    active_maps:"gg"
 			});
 
 			// add css to the dom
 			HTML.AddCssFile('guildfights');
-		} else {
+		}
+		else {
 			HTML.CloseOpenBox('ProvinceMap')
 		}
 
 		ProvinceMap.prepare();
 	},
 
+
+	/**
+	 * Sets up the province map with necessary DOM elements, classes, and configurations.
+	 * Initializes the canvas, context, and appropriate event handlers for interaction.
+	 * Additionally, configures the appearance of the map and draws initial map assets.
+	 */
 	prepare: () => {
 		$('#ProvinceMap').addClass(GuildFights.MapData.map['id']);
 
@@ -2268,6 +2409,19 @@ let ProvinceMap = {
 		ProvinceMap.BuildMap();
 	},
 
+
+	/**
+	 * Calculates the canvas point coordinates from a given event.
+	 *
+	 * This function determines the relative position on the canvas based on
+	 * the event's client coordinates and the canvas's bounding rectangle.
+	 * It also adjusts the coordinates if the current map is "volcano_archipelago."
+	 *
+	 * @param {MouseEvent | TouchEvent} e - The event containing client coordinates.
+	 * @returns {Object} An object containing the computed canvas coordinates:
+	 *                   - `x` {number}: X-coordinate on the canvas.
+	 *                   - `y` {number}: Y-coordinate on the canvas.
+	 */
 	getCanvasPoint: (e) => {
 		const rect = ProvinceMap.Map.getBoundingClientRect();
 
@@ -2285,6 +2439,19 @@ let ProvinceMap = {
 		return { x, y };
 	},
 
+
+	/**
+	 * Finds the province at a specified x and y coordinate on the map.
+	 *
+	 * This function iterates through all provinces stored in `ProvinceMap.Provinces`,
+	 * checks if the point (x, y) lies within the path of any province,
+	 * and returns the corresponding province object if found.
+	 * If no province contains the given point, the function returns `null`.
+	 *
+	 * @param {number} x - The x-coordinate of the point to check.
+	 * @param {number} y - The y-coordinate of the point to check.
+	 * @returns {Object|null} The province object at the specified coordinates, or `null` if not found.
+	 */
 	findProvinceAt: (x, y) => {
 		const mapType = GuildFights.MapData.map['id'];
 
@@ -2298,6 +2465,16 @@ let ProvinceMap = {
 		return null;
 	},
 
+
+	/**
+	 * Displays detailed information about the selected province.
+	 *
+	 * This function retrieves additional data for the currently selected province
+	 * from the map data, such as its victory points. It then updates the
+	 * HTML element with ID `provDetails` to display the province's name,
+	 * owner's name, and victory points. The border color of the element is
+	 * also updated to match the base color of the province's owner.
+	 */
 	showProvinceDetails: () => {
 		let additionalData = GuildFights.MapData.map.provinces.find(x => x.id === ProvinceMap.selectedProvince.id);
 
@@ -2308,8 +2485,19 @@ let ProvinceMap = {
 		elem.innerHTML += `<p>${additionalData.victoryPoints}</p>`;
 	},
 
+
 	/**
-	 * @param socketData
+	 * Updates the attributes of a province (sector) on the map based on the provided socket data.
+	 * This function handles the conquest progress, locking state, and ownership changes for a sector.
+	 *
+	 * @function
+	 * @param {Object} [socketData=[]] - Data received from the socket, containing details about
+	 *                                   the sector to be updated.
+	 * @param {number} [socketData.id] - The ID of the sector to update. Defaults to the first sector
+	 *                                   if not provided.
+	 * @param {number} [socketData.conquestProgress] - The current conquest progress of the sector.
+	 * @param {Date} [socketData.lockedUntil] - The timestamp until which the sector is locked.
+	 * @param {number} [socketData.ownerId] - The ID of the new owner of the sector.
 	 */
 	RefreshSector: (socketData = []) => {
 		let updatedProvince = ProvinceMap.Provinces.find(p => p.id === 0); // first sector does not have an ID, make it the default one
@@ -2333,7 +2521,9 @@ let ProvinceMap = {
 
 
 	/**
-	 * Build the Canvas
+	 * Rebuilds the map by clearing the existing map context and updating each province's map sector.
+	 * - Clears the current map using the provided map context dimensions.
+	 * - Iterates through all provinces to update their corresponding map sectors.
 	 */
 	BuildMap: () => {
 		ProvinceMap.MapCTX.clearRect(0, 0, ProvinceMap.Size.width, ProvinceMap.Size.height);
@@ -2345,6 +2535,17 @@ let ProvinceMap = {
 	},
 
 
+	/**
+	 * Converts a hexadecimal color code to its RGB or RGBA string representation.
+	 *
+	 * @param {string} hex - The hexadecimal color code (e.g., "#FFFFFF" or "FFF").
+	 *                      This can optionally include a leading '#' character.
+	 * @param {number} [alpha] - Optional alpha value for the color, ranging from 0 to 1,
+	 *                           resulting in an RGBA string if provided.
+	 * @returns {string} A string representing the color in either "rgb(r, g, b)" or
+	 *                   "rgba(r, g, b, a)" format depending on whether the alpha value
+	 *                   is supplied.
+	 */
 	hexToRgb: (hex, alpha) => {
 		hex = hex.trim();
 		hex = hex[0] === '#' ? hex.substr(1) : hex;
@@ -2372,6 +2573,20 @@ let ProvinceMap = {
 	},
 
 
+	/**
+	 * Retrieves province data for the "volcano_archipelago"/"waterfall_archipelago" map.
+	 *
+	 * The function returns an array of province objects, where each object contains the following information:
+	 * - `id`: The unique identifier of the province.
+	 * - `name`: The full name of the province.
+	 * - `connections`: An array of IDs for provinces that are directly connected to this province.
+	 * - `short`: A short identifier for the province.
+	 * - `flag`: An object containing x and y coordinates representing the province's flag location.
+	 *
+	 * Note: This function is specific to when `GuildFights.MapData.map.id` is equal to "volcano_archipelago".
+	 *
+	 * @returns {Object[]} Array of province objects with detailed data about provinces and their connections.
+	 */
 	ProvinceData: () => {
 		if (GuildFights.MapData.map['id'] === "volcano_archipelago") {
 			return [{
