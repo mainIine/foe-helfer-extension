@@ -453,13 +453,13 @@ let Tooltips = {
             for (let r of levels.AllAge?.ally?.rooms || []) {
                 let allydata = null;
                 for (let a of allies || []) {
-                    allydata = MainParser.Allies.getAllieData(a);
+                    allydata = Allies.getAllieData(a);
                     if (r.allyType === allydata.type && (!r.rarity?.value || r.rarity?.value === allydata.rarity)) break;
                     allydata = null;
                 }
-                ally += `<tr><td>${srcLinks.icons("historical_allies_slot_tooltip_icon_" + (allydata ? "full" : "empty"))}<div>${MainParser.Allies.types[r.allyType]?.name + (r.rarity?.value ? (" (" + i18n("Boxes.Productions.AllyRarity." + r.rarity?.value) + ")") : "")}`;
+                ally += `<tr><td>${srcLinks.icons("historical_allies_slot_tooltip_icon_" + (allydata ? "full" : "empty"))}<div>${Allies.types[r.allyType]?.name + (r.rarity?.value ? (" (" + i18n("Boxes.Productions.AllyRarity." + r.rarity?.value) + ")") : "")}`;
                 if (allydata) {
-                    ally += `<div class="allyName"><span>${MainParser.Allies.meta[allydata.allyId]?.name}</span><span>(${i18n("Boxes.Productions.AllyRarity." + allydata.rarity)} - ${i18n("General.Level")} ${allydata.level})</span></div>`;
+                    ally += `<div class="allyName"><span>${Allies.meta[allydata.allyId]?.name}</span><span>(${i18n("Boxes.Productions.AllyRarity." + allydata.rarity)} - ${i18n("General.Level")} ${allydata.level})</span></div>`;
                     for (let b of allydata.currentLevel?.boosts || allydata.boosts || []) {
                         ally += `${srcLinks.icons(b.type + feature[b.targetedFeature])} ${b.value + Boosts.percent(b.type)}`;
                     }

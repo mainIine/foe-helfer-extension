@@ -221,8 +221,8 @@ let shopAssist = {
 			if (slot.reward?.assembledReward?.type == "ally") {
 				let allTT = `<table class="foe-table shopAssistTable">
 							<tr><th><img src=${srcLinks.get("/historical_allies/portraits/historical_allies_portrait_ally_"+slot.reward.assembledReward.iconAssetName+".png",true)} style="height:unset">
-							${MainParser.Allies.rarityStars(slot.reward.assembledReward.rarity.value)}</th></tr>
-							<tr><td> ${MainParser.Allies.boosts(slot.reward.assembledReward.boosts)}</td></tr>
+							${Allies.rarityStars(slot.reward.assembledReward.rarity.value)}</th></tr>
+							<tr><td> ${Allies.boosts(slot.reward.assembledReward.boosts)}</td></tr>
 							</table>`
 				shopAssist.allTTContent[slot.slotId+"A"] = allTT;
 			}
