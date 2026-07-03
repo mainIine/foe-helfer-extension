@@ -1747,10 +1747,13 @@ let Parts = {
 		});
 	},
 
+
 	setDonation: (value) => {
-		if (!Parts.allowCopyPlace)
+		if (!Parts.allowCopyPlace) {
 			helper.str.copyToClipboardLegacy(String(value));
-		else { //Set Cursor to input field
+		}
+		//Set Cursor to input field
+		else {
 			mouseActions.randomClick([189, -62, 'Center']);
 			KeyboardEvents.paste(String(value));
 		}

@@ -654,7 +654,10 @@ let Outposts = {
 		if(apiToken === null) {
 			HTML.ShowToastMsg({
 				head: i18n('Boxes.CityMap.MissingApiKeyErrorHeader'),
-				text: i18n('Boxes.CityMap.MissingApiKeySubmitError'),
+				text: [
+					i18n('Boxes.CityMap.MissingApiKeySubmitError'),
+					`<a target="_blank" href="${i18n('Settings.ApiTokenUrl')}">${i18n('Settings.ApiTokenUrl')}</a>`
+				],
 				type: 'error',
 				hideAfter: 10000,
 			});
@@ -669,7 +672,10 @@ let Outposts = {
 					name: ExtPlayerName,
 					id: ExtPlayerID,
 					world: ExtWorld,
-					avatar: ExtPlayerAvatar
+					avatar: ExtPlayerAvatar,
+					avatarUrl: srcLinks.GetPortrait(ExtPlayerAvatar),
+					era: CurrentEra,
+					era_id: CurrentEraID
 				},
 				apiToken: apiToken,
 				type: localStorage.getItem('OutpostType'),
