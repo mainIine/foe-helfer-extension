@@ -38,6 +38,7 @@ let srcLinks = {
         xhr.send();
     },
 
+
     readHX: () => {
         let HXscript = srcLinks.raw+"";
         let startString = "baseUrl,";
@@ -73,6 +74,7 @@ let srcLinks = {
             console.log("parsing of ForgeHX failed");
         }
     },
+
 
     get: (filename, full = false, noerror = false) => {
         let CS = undefined;

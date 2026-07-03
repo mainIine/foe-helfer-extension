@@ -161,7 +161,11 @@ let mouseActions = {
 
 
 /**
- * Module dedicated to transforming paste and raw string text directly into sequential key injection sequences.
+ * Provides utility functions to programmatically simulate keyboard events on input fields.
+ * Includes methods for injecting text character by character and reading from the system clipboard.
+ * These operations simulate user keystrokes for testing or automated input purposes.
+ *
+ * @namespace KeyboardEvents
  */
 let KeyboardEvents = (() => {
     const selector = '#openfl-content input';
@@ -226,13 +230,14 @@ let KeyboardEvents = (() => {
     async function pasteClipboardAsKeys(sel = selector, delay = charDelay) {
         try {
             const text = await navigator.clipboard.readText();
-            if (!text) throw new Error('Zwischenablage leer');
+            if (!text) {
+                throw new Error('Zwischenablage leer');
+            }
             return await pasteAsKeyEvents(text, sel, delay);
         } catch (e) {
             /* Silent Catch to match original behavior */
         }
     }
-
 
     return {
         paste: (x) => {
@@ -253,8 +258,11 @@ mouseActions.init();
  */
 let buildRepeat = {
     lastBuildClick: null,
+
     click: () => {
-        if (!Settings.GetSetting('RepeatSelectBuilding')) return;
+        if (!Settings.GetSetting('RepeatSelectBuilding')) {
+            return;
+        }
         mouseActions.randomClick(buildRepeat.lastBuildClick);
     }
 };
@@ -265,7 +273,7 @@ mouseActions.addAction([[210, -487, 'BottomLeft'], [0, 0, "BottomLeft"]], (X, Y)
 });
 
 FoEproxy.addRequestHandler("CityMapService", "placeBuilding", (data) => {
-    if (MainParser.CityEntities[data.requestData[0].cityentity_id].type !== "street") {
+    if (MainParser.CityEntities[data['requestData'][0].cityentity_id].type !== "street") {
         buildRepeat.click();
     }
 });
