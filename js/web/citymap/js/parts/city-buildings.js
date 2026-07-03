@@ -329,7 +329,7 @@ let CityBuildings = {
 			}
 		}
 		if (withAlly) {
-			let allyStats = MainParser.Allies.getProd(data.id||0)
+			let allyStats = Allies.getProd(data.id||0)
 			if (allyStats?.currentLevel?.boosts||allyStats?.boosts) {
 				(allyStats?.currentLevel?.boosts||allyStats?.boosts||[]).forEach(abilityBoost => {
 					let boost = {

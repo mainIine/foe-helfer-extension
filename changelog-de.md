@@ -18,6 +18,12 @@
     - Start/Stopp verbessert für PopOut
 
 
+- Historische Verbündete:
+  - Zeigt nun an wie viel die nächste Stufe bringe
+  - Fragment-Bestände sind farbig
+  - Schalter für Kompakt-und Boostansicht
+
+
 - Stadtübersicht:
   - Übermitteln der Daten an den CityPlanner v2 (foe-helper.com)
     - Modal ergänzt, dass einen Spinner zeigt, für ungeduldige

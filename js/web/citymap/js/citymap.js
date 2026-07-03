@@ -932,7 +932,7 @@ let CityMap = {
 						(building.rating?.totalScore*100 <= (rating20) ? ' rating20' :	
 						(building.rating?.totalScore*100 <= (rating30) ? ' rating30' : '')))
 			
-			let f = $('<span '+ MainParser.Allies.tooltip(building.id) + '/>').addClass('entity fh-tooltip ' + building.type + noStreet + isSpecial + canAscend + isDecayed + chainBuilding + setBuilding + rating + isLimited + fromQI + fromGBG).css({
+			let f = $('<span '+ Allies.tooltip(building.id) + '/>').addClass('entity fh-tooltip ' + building.type + noStreet + isSpecial + canAscend + isDecayed + chainBuilding + setBuilding + rating + isLimited + fromQI + fromGBG).css({
 				width: xsize + 'em',
 				height: ysize + 'em',
 				left: x + 'em',

@@ -418,7 +418,7 @@ let _menu = {
 		let btn = _menu.MakeButton('allies');
 
 		let btnEl = $('<span />').bind('click', function () {
-			MainParser.Allies.showAllyList(true);
+			Allies.showAllyList(true);
 		});
 
 		return btn.append(btnEl);

@@ -303,7 +303,9 @@ let Popup = {
 	 * @param root element whose subtree (including itself) is processed
 	 */
 	_rebindInlineHandlers: (root) => {
-		if (!root || root.nodeType !== 1) return;
+		if (!root || root.nodeType !== 1) {
+			return;
+		}
 
 		const selector = Popup._inlineEventAttrs.map(a => '[' + a + ']').join(',');
 		const elements = [root, ...root.querySelectorAll(selector)];
