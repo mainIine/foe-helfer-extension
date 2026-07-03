@@ -1,0 +1,59 @@
+/*
+ * *************************************************************************************
+ *
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
+ *
+ * See file LICENSE.md or go to
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
+ *
+ * *************************************************************************************
+ */
+
+/* Wird nur im Popup-Fenster geladen: die Box füllt das gesamte Fenster aus */
+
+body.foe-helper-popup {
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	background: var(--window-bg, #33454f);
+}
+
+body.foe-helper-popup .window-box.popup-mode {
+	display: flex !important;
+	flex-direction: column;
+	position: fixed !important;
+	top: 0 !important;
+	left: 0 !important;
+	width: 100vw !important;
+	height: 100vh !important;
+	max-height: 100vh !important;
+	transform: none !important;
+	margin: 0 !important;
+	opacity: 1 !important;
+	border: none;
+	border-radius: 0;
+	box-shadow: none;
+}
+
+body.foe-helper-popup .window-box.popup-mode > .window-head {
+	flex: 0 0 auto;
+	border-radius: 0;
+	cursor: default;
+}
+
+body.foe-helper-popup .window-box.popup-mode > .window-body {
+	flex: 1 1 auto;
+	height: auto !important;
+	visibility: visible !important;
+	overflow: auto;
+}
+
+/* Buttons ohne Funktion im Popup ausblenden */
+body.foe-helper-popup .window-minimize,
+body.foe-helper-popup .window-popout,
+body.foe-helper-popup .window-grippy {
+	display: none !important;
+}

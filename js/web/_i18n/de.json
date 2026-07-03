@@ -1532,6 +1532,8 @@
     "Menu.recurringQuests.Title": "Wiederkehrende Quests",
     "Menu.unitsGex.Desc": "???",
     "Menu.unitsGex.Title": "???",
+    "PopUp.Blocked": "Der Browser hat das Pop-up-Fenster blockiert. Bitte Pop-ups für diese Seite erlauben.",
+    "PopUp.TooltipButton": "In eigenem Fenster öffnen",
     "Quests.CounterTooltip.Content": "Es gibt ein Limit von 2000 übersprungenen Quests pro Tag",
     "Settings.About.Desc": "Der FoE Helper ist eine kostenlose Browser-Erweiterung für Forge of Empires, die von Spielern für Spieler entwickelt wurde. Das Tool ist nicht mit InnoGames verbunden.",
     "Settings.About.RatingDesc": "Gefällt dir, was du siehst? Dann würden wir uns über eine Rezension im Store freuen!",
