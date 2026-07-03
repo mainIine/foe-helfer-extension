@@ -227,10 +227,21 @@ let Popup = {
 		// jQuery UI widgets cache their document; rebuild them for the new one
 		Popup._rebindUiWidgets(box);
 
-		// the module removes its own box (e.g. HTML.CloseOpenBox), close windows
-		entry.observer = new MutationObserver(() => {
+		// inline handlers (onclick="...") must run in the main window's scope
+		Popup._rebindInlineHandlers(box);
+
+		// close the window when the module removes its own box (e.g.
+		// HTML.CloseOpenBox); rebind inline handlers of re-rendered content
+		entry.observer = new MutationObserver((mutations) => {
 			if (!win.document.getElementById(id)) {
 				win.close();
+				return;
+			}
+
+			for (const mutation of mutations) {
+				for (const node of mutation.addedNodes) {
+					Popup._rebindInlineHandlers(node);
+				}
 			}
 		});
 		entry.observer.observe(win.document.body, {childList: true, subtree: true});
@@ -268,6 +279,44 @@ let Popup = {
 	CloseAll: () => {
 		for (const id of Object.keys(Popup.windows)) {
 			Popup.Close(id);
+		}
+	},
+
+
+	/**
+	 * Inline event handler attributes rebound by _rebindInlineHandlers
+	 */
+	_inlineEventAttrs: [
+		'onclick', 'ondblclick', 'onchange', 'oninput', 'onblur', 'onfocus',
+		'onsubmit', 'onkeyup', 'onkeydown', 'onmouseenter', 'onmouseleave',
+		'onmouseover', 'onmouseout'
+	],
+
+
+	/**
+	 * Inline handlers like onclick="*****.SaveSettings()" are compiled by
+	 * the browser in the global scope of the element's own document. In a
+	 * pop-up document the module globals of the main page do not exist there,
+	 * so the handlers would fail. Recompile them as functions of the main
+	 * window instead, where all modules are reachable.
+	 *
+	 * @param root element whose subtree (including itself) is processed
+	 */
+	_rebindInlineHandlers: (root) => {
+		if (!root || root.nodeType !== 1) return;
+
+		const selector = Popup._inlineEventAttrs.map(a => '[' + a + ']').join(',');
+		const elements = [root, ...root.querySelectorAll(selector)];
+
+		for (const el of elements) {
+			for (const name of Popup._inlineEventAttrs) {
+				const code = el.getAttribute(name);
+				if (code) {
+					try {
+						el[name] = new Function('event', code);
+					} catch (e) { /* invalid handler code */ }
+				}
+			}
 		}
 	},
 
