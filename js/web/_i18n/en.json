@@ -1533,6 +1533,8 @@
     "Menu.recurringQuests.Title": "Recurring Quests",
     "Menu.unitsGex.Desc": "???",
     "Menu.unitsGex.Title": "???",
+    "PopUp.Blocked": "The browser blocked the pop-up window. Please allow pop-ups for this page.",
+    "PopUp.TooltipButton": "Open in a separate window",
     "Quests.CounterTooltip.Content": "There is a limit of 2000 aborted quests per day.",
     "Settings.About.Desc": "The FoE Helper is a free browser extension for Forge of Empires developed for players by players. The tool is not affiliated with InnoGames.",
     "Settings.About.RatingDesc": "If you like what you see and what we do, please leave a good review in the Store!",

@@ -14,29 +14,67 @@
 
 /**
  * A module responsible for handling tooltip functionality within the application.
+ *
+ * Elemente mit der CSS-Klasse "fh-tooltip" und einem data-callback_tt-Attribut
+ * (Objektpfad zu einer Funktion, z.B. "Kits.InventoryTooltip") bekommen beim
+ * Überfahren einen Tooltip. Das System ist Dokument-übergreifend: Über
+ * Tooltips.attach(win) werden auch Popup-Fenster (Popup-Modul) bedient.
+ * "helperTT" wird als veralteter Alias weiterhin unterstützt.
  */
 let Tooltips = {
-    Container: null,
-    containerActive: false,
-    targetElement: null,
+
+    /** Selektor für Tooltip-Elemente; helperTT ist der veraltete Alias */
+    selector: '.fh-tooltip, .helperTT',
+
+    /** angebundene Fenster: Window -> {win, doc, container} */
+    contexts: new Map(),
+
+    /** Kontext, in dem gerade ein Tooltip angezeigt wird */
+    active: null,
+
+    /** aufgelöste data-callback_tt-Funktionen */
+    callbackCache: {},
 
 
     /**
-     * Resolves a string path (e.g., "Tooltips.buildingTT") to the actual function
-     * without using dangerous eval().
+     * Registriert eine Tooltip-Funktion explizit unter ihrem Pfadnamen.
+     * Optional - resolveCallback findet globale Module auch ohne Registrierung.
+     */
+    register: (name, fn) => {
+        Tooltips.callbackCache[name] = fn;
+    },
+
+
+    /**
+     * Resolves a string path (e.g., "Kits.InventoryTooltip") to the actual function.
+     *
+     * Module werden global mit let/const deklariert und sind damit nicht als
+     * window-Property sichtbar. Eine im globalen Scope erzeugte Function
+     * erreicht diese Bindings trotzdem; das Regex stellt sicher, dass nur ein
+     * reiner Objektpfad und kein sonstiger Code ausgewertet wird.
      */
     resolveCallback: (pathString) => {
-        const scopes = { Tooltips, QIActions };
-        const parts = pathString.split('.');
-
-        // Falls der Pfad mit einem bekannten Objekt startet, nutzen wir unsere Map, sonst window
-        let currentScope = scopes[parts[0]] ? scopes : window;
-
-        for (const part of parts) {
-            if (!currentScope) return null;
-            currentScope = currentScope[part];
+        if (Tooltips.callbackCache[pathString]) {
+            return Tooltips.callbackCache[pathString];
         }
-        return typeof currentScope === "function" ? currentScope : null;
+
+        if (!/^[A-Za-z_$][\w$]*(\.[A-Za-z_$][\w$]*)*$/.test(pathString)) {
+            return null;
+        }
+
+        let fn = null;
+        try {
+            fn = new Function(`try { return ${pathString} } catch (e) { return null }`)();
+        } catch (e) {
+            fn = null;
+        }
+
+        if (typeof fn !== "function") {
+            return null;
+        }
+
+        Tooltips.callbackCache[pathString] = fn;
+        return fn;
     },
 
 
@@ -48,20 +86,36 @@ let Tooltips = {
 
         HTML.AddCssFile('customTooltip');
 
-        let container = document.createElement("div");
+        Tooltips.attach(window);
+
+        $(`<div id="QIActions" class="fh-tooltip" data-callback_tt="QIActions.TT">${srcLinks.icons("time")}</div>`).appendTo('body').hide();
+        $(`<div id="RewardsList"></div>`).appendTo('body');
+    },
+
+
+    /**
+     * Bindet das Tooltip-System an ein Fenster (Hauptseite oder Popup):
+     * legt dort einen Tooltip-Container an und delegiert die Pointer-Events.
+     */
+    attach: (win = window) => {
+        if (Tooltips.contexts.has(win)) return;
+
+        const doc = win.document;
+
+        const container = doc.createElement("div");
         container.id = "TooltipContainer";
         container.className = "window-box";
         container.style = "z-index:1000; position: absolute; display: none; pointer-events: none;";
-        $('#game_body').append(container);
-        Tooltips.Container = container;
+        (doc.getElementById('game_body') || doc.body).append(container);
 
-        const $body = $('body');
+        const ctx = {win: win, doc: doc, container: container};
+        Tooltips.contexts.set(win, ctx);
 
-        $body.on("pointerenter", ".helperTT", async (e) => {
+        $(doc.body).on("pointerenter.fhtooltip", Tooltips.selector, async (e) => {
             const callbackStr = e.currentTarget.dataset.callback_tt;
             if (!callbackStr) return;
 
-            Tooltips.activate();
+            Tooltips.activate(ctx);
             const callbackFn = Tooltips.resolveCallback(callbackStr);
 
             if (callbackFn) {
@@ -77,12 +131,31 @@ let Tooltips = {
             }
         });
 
-        $body.on("pointerleave", ".helperTT", () => {
+        $(doc.body).on("pointerleave.fhtooltip", Tooltips.selector, () => {
             Tooltips.deactivate();
         });
+    },
 
-        $(`<div id="QIActions" class="helperTT" data-callback_tt="QIActions.TT">${srcLinks.icons("time")}</div>`).appendTo('body').hide();
-        $(`<div id="RewardsList"></div>`).appendTo('body');
+
+    /**
+     * Löst die Anbindung eines Fensters wieder (z.B. beim Schließen eines Popups)
+     */
+    detach: (win) => {
+        const ctx = Tooltips.contexts.get(win);
+        if (!ctx) return;
+
+        if (Tooltips.active === ctx) {
+            Tooltips.deactivate();
+        }
+
+        Tooltips.contexts.delete(win);
+
+        try {
+            $(ctx.doc.body).off(".fhtooltip");
+            ctx.container.remove();
+        } catch (e) {
+            /* Dokument bereits zerstört */
+        }
     },
 
 
@@ -90,9 +163,9 @@ let Tooltips = {
      * Updates the tooltip content and adjusts its position.
      */
     set: (content) => {
-        if (!content) return;
+        if (!content || !Tooltips.active) return;
 
-        Tooltips.Container.innerHTML = content;
+        Tooltips.active.container.innerHTML = content;
         Tooltips.check_position();
     },
 
@@ -102,12 +175,13 @@ let Tooltips = {
      */
     check_position: () => {
         try {
-            if (Tooltips.containerActive) {
-                const containerStyle = Tooltips.Container.style;
-                const parentClientHeight = Tooltips.Container.parentElement.clientHeight;
-                const parentClientWidth = Tooltips.Container.parentElement.clientWidth;
-                const firstChildHeight = Tooltips.Container.firstChild.clientHeight;
-                const firstChildWidth = Tooltips.Container.firstChild.clientWidth;
+            if (Tooltips.active) {
+                const container = Tooltips.active.container;
+                const containerStyle = container.style;
+                const parentClientHeight = container.parentElement.clientHeight;
+                const parentClientWidth = container.parentElement.clientWidth;
+                const firstChildHeight = container.firstChild.clientHeight;
+                const firstChildWidth = container.firstChild.clientWidth;
 
                 if (firstChildHeight + 7 + Number(containerStyle.top.replace("px", "")) > parentClientHeight) {
                     let newTop = parentClientHeight - firstChildHeight - 7;
@@ -126,15 +200,20 @@ let Tooltips = {
 
 
     /**
-     * Activates the tooltip container and binds the mouse tracker dynamicly.
+     * Activates the tooltip container of the given context and binds the mouse tracker.
      */
-    activate: () => {
-        if (!Tooltips.containerActive) {
-            Tooltips.containerActive = true;
-            Tooltips.Container.style.display = "block";
+    activate: (ctx) => {
+        ctx = ctx || Tooltips.contexts.get(window);
+        if (!ctx || Tooltips.active === ctx) return;
 
-            window.addEventListener("pointermove", Tooltips.followMouse);
+        if (Tooltips.active) {
+            Tooltips.deactivate();
         }
+
+        Tooltips.active = ctx;
+        ctx.container.style.display = "block";
+
+        ctx.win.addEventListener("pointermove", Tooltips.followMouse);
     },
 
 
@@ -142,11 +221,16 @@ let Tooltips = {
      * Deactivates the tooltip container and unbinds the mouse tracker.
      */
     deactivate: () => {
-        if (Tooltips.containerActive) {
-            Tooltips.containerActive = false;
-            Tooltips.Container.style.display = "none";
+        const ctx = Tooltips.active;
+        if (!ctx) return;
 
-            window.removeEventListener("pointermove", Tooltips.followMouse);
+        Tooltips.active = null;
+
+        try {
+            ctx.container.style.display = "none";
+            ctx.win.removeEventListener("pointermove", Tooltips.followMouse);
+        } catch (e) {
+            /* Popup-Fenster bereits geschlossen */
         }
     },
 
@@ -155,8 +239,10 @@ let Tooltips = {
      * Updates the position of the tooltip container to follow the mouse cursor.
      */
     followMouse: (event) => {
-        Tooltips.Container.style.left = (event.x + 10) + "px";
-        Tooltips.Container.style.top = (event.y + 10) + "px";
+        if (!Tooltips.active) return;
+
+        Tooltips.active.container.style.left = (event.x + 10) + "px";
+        Tooltips.active.container.style.top = (event.y + 10) + "px";
         Tooltips.check_position();
     },
 

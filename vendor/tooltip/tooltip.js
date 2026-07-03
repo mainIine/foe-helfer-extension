@@ -142,7 +142,16 @@
 					.detach()
 					.css({ top: 0, left: 0, display: 'block' })
 
-				this.options.container ? $tip.appendTo(this.options.container) : $tip.insertAfter(this.$element)
+				// resolve string containers (e.g. 'body') against the element's own
+				// document, so tooltips also work inside popup windows (Popup module)
+				if (this.options.container) {
+					var container = typeof this.options.container == 'string' ?
+						$(this.options.container, this.$element[0].ownerDocument) :
+						$(this.options.container)
+					$tip.appendTo(container)
+				} else {
+					$tip.insertAfter(this.$element)
+				}
 
 				pos = this.getPosition()
 

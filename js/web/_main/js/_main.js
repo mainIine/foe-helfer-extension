@@ -1705,15 +1705,18 @@ let MainParser = {
 					dragdrop: true,
 					minimize: true,
 					resize: true,
+					popout: 'MainParser.PopOut(\'AllyList\', 970, 600)',
 					settings: 'MainParser.Allies.ShowSettings()',
 					active_maps:"main",				
 				});
-			} else {
+			}
+			else {
 				if (closeIfOpen) {
 					HTML.CloseOpenBox('AllyList');
 					return;
 				}
 			}
+
 			MainParser.Allies.updateAllyList()
 		},
 
@@ -1827,7 +1830,7 @@ let MainParser = {
 						   		html+=`<td data-number="${(boost ? boost.value : 0)}">${(boost ? boost.value : '-')}</td>`
 							}
 						html+=`
-					   	   	<td ${buildingId!=0?`class="helperTT" 
+					   	   	<td ${buildingId!=0?`class="fh-tooltip" 
 								data-id="${buildingId}" 
 								data-era="${Technologies.InnoEraNames[MainParser.CityMapData[buildingId].level]}"
 								data-callback_tt="Tooltips.buildingTT" 
@@ -1950,8 +1953,6 @@ let MainParser = {
 			
 			$(`#AllyListSettingsBox`).remove();
 		},
-
-
 	},
 
 
@@ -2197,6 +2198,17 @@ let MainParser = {
 
 		FPCollector.CityMapDataNew = Buildings;
 		FoEproxy.triggerFoeHelperHandler('CityMapUpdated');
+	},
+
+
+	/**
+	 * Opens a popup window with the specified configuration.
+	 */
+	PopOut: (id, width, height) => {
+		Popup.PopOut(id, {
+			width: width,
+			height: height
+		});
 	},
 
 

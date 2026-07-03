@@ -132,6 +132,7 @@ let CityMap = {
 				dragdrop: true,
 				resize: true,
 				minimize : true,
+				popout: 'MainParser.PopOut(\'citymap-main\', 1100, 580)',
 				ask: i18n('Boxes.CityMap.HelpLink'),
 			});
 
@@ -397,7 +398,8 @@ let CityMap = {
 			$('#map-buildings').append( f );
 		}
 
-		$('[data-original-title]').tooltip({
+		// .add() erfasst die Box auch, wenn sie gerade als Popup ausgelagert ist
+		$('[data-original-title]').add($('#citymap-main [data-original-title]')).tooltip({
 			container: 'body',
 			html: true,
 		});
@@ -930,7 +932,7 @@ let CityMap = {
 						(building.rating?.totalScore*100 <= (rating20) ? ' rating20' :	
 						(building.rating?.totalScore*100 <= (rating30) ? ' rating30' : '')))
 			
-			let f = $('<span '+ MainParser.Allies.tooltip(building.id) + '/>').addClass('entity helperTT ' + building.type + noStreet + isSpecial + canAscend + isDecayed + chainBuilding + setBuilding + rating + isLimited + fromQI + fromGBG).css({
+			let f = $('<span '+ MainParser.Allies.tooltip(building.id) + '/>').addClass('entity fh-tooltip ' + building.type + noStreet + isSpecial + canAscend + isDecayed + chainBuilding + setBuilding + rating + isLimited + fromQI + fromGBG).css({
 				width: xsize + 'em',
 				height: ysize + 'em',
 				left: x + 'em',
@@ -1065,8 +1067,9 @@ let CityMap = {
 
 		$('#grid-outer').draggable();
 		CityMap.getAreas();
-		
-		$('[data-original-title]').tooltip({
+
+		// .add() erfasst die Box auch, wenn sie gerade als Popup ausgelagert ist
+		$('[data-original-title]').add($('#citymap-main [data-original-title]')).tooltip({
 			container: 'body',
 			html: true,
 		});

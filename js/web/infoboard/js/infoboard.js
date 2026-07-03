@@ -92,6 +92,7 @@ let Infoboard = {
                 resize: true,
                 minimize: true,
                 speaker: 'infoboxTone',
+                popout: 'MainParser.PopOut(\'BackgroundInfo\', 560, 380)',
                 settings: 'Infoboard.ShowSettings()'
             });
             HTML.AddCssFile('infoboard');

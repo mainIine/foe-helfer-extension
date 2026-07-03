@@ -85,6 +85,7 @@ let BlueGalaxy = {
                 minimize: true,
                 resize: true,
                 settings: 'BlueGalaxy.ShowSettings()',
+                popout: 'MainParser.PopOut(\'bluegalaxy\', 520, 560)',
                 active_maps:"main",
             });
 
