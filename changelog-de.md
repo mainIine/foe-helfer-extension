@@ -4,7 +4,7 @@
 
 **Neu**
 - PopOut:
-	- Größere Boxen können einfach in ein eigenes Fenster ausgelagert werden, alle Funktionen bleiben erhalten. Viele Boxen haben diese Funktion bereits, es kommen schnell mehr dazu
+	- Größere Boxen können einfach in ein eigenes Fenster (Picture-in-Picture Chrome/ PopUp in Firefox) ausgelagert werden, alle Funktionen bleiben erhalten. Viele Boxen haben diese Funktion bereits, es kommen schnell mehr dazu
       - Wird das PopUp-Fenster geschlossen, springt die eigentliche Box wieder an die alte Stelle im Spiel zurück (DOM)
       - Wird die Box im PopUp geschlossen, verschwindet die Box bis zum erneuten öffnen
       - Sind PopUp's blockiert, wird darauf hingewiesen
