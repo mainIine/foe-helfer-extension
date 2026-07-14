@@ -886,6 +886,7 @@ let GreatBuildings = {
         }
     },
 
+
     RefreshDetailsVisible: (Index) => {
         $('#greatbuildings tr.gbdetailsrow').each(function () {
             let Data = $(this).data()['value'];

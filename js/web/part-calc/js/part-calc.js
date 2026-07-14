@@ -774,6 +774,39 @@ let Parts = {
 			<div class="lb-info">
 			<h1>${CityEntity['name']}</h1>`);
 		if (PlayerName) h.push(`<span class="activity activity_${PlayerDict[PlayerID]['Activity']}"></span> ${MainParser.GetPlayerLink(PlayerID, PlayerName)}`);
+
+		// Aktueller Status des LB: Level / Maxlevel, Fortschritt und Tier (Tier nur via getOtherPlayerOverview verfügbar)
+		let StatusEntity = MainParser.CurrentGB.Entity,
+			OverviewRow = MainParser.CurrentGB.OverviewRow,
+			TierNames = {
+				copper: i18n('Boxes.OwnpartCalculator.TierCopper'),
+				silver: i18n('Boxes.OwnpartCalculator.TierSilver'),
+				gold: i18n('Boxes.OwnpartCalculator.TierGold')
+			},
+			Status = [];
+
+		Status.push(`${i18n('Boxes.OwnpartCalculator.Step')} ${StatusEntity['level']}${StatusEntity['max_level'] ? '&#8201;/&#8201;' + HTML.Format(StatusEntity['max_level']) : ''}`);
+
+		if (StatusEntity['state'] && StatusEntity['state']['forge_points_for_level_up'] !== undefined) {
+			Status.push(`${HTML.Format(StatusEntity['state']['invested_forge_points'] || 0)}&#8201;/&#8201;${HTML.Format(StatusEntity['state']['forge_points_for_level_up'])} ${i18n('Boxes.Calculator.FP')}`);
+		}
+
+		// Tier nur anzeigen, wenn die Overview-Daten noch zum aktuellen Level passen (sonst veraltet, z.B. nach Levelup)
+		if (OverviewRow && OverviewRow['currentTier'] && OverviewRow['level'] === StatusEntity['level']) {
+			let TierValue = OverviewRow['currentTier']['value'],
+				TierName = TierNames[TierValue] || TierValue,
+				TierIcon = srcLinks.get(`/shared/gui/greatbuildings/prestige/icon_prestige_${TierValue}.png`, true, true);
+
+			if (TierIcon.includes('antiquedealer_flag')) {
+				// Icon nicht im ForgeHX-Dateiindex → Fallback auf Text
+				Status.push(`${i18n('Boxes.OwnpartCalculator.Tier')}: ${TierName}`);
+			}
+			else {
+				Status.push(`<img class="lb-tier-icon" src="${TierIcon}" alt="${TierName}" title="${i18n('Boxes.OwnpartCalculator.Tier')}: ${TierName}">`);
+			}
+		}
+
+		h.push(`<div class="lb-status">${Status.join(' &middot; ')}</div>`);
 		h.push('</div>');
 
 		h.push('<div class="level-switch">');
