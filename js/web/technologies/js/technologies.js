@@ -647,6 +647,7 @@ let Technologies = {
         $('#technologiesBody').html(h.join(''));
     },
 
+
     /**
      * Displays the settings button in the technologies settings box.
      * Renders two buttons for exporting data in CSV and JSON formats.

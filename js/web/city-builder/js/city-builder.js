@@ -81,7 +81,7 @@ let CityBuilder = {
         // Canvas für die Karte
         h.push(`<canvas id="city-builder-canvas" class="map-grid-canvas"></canvas>`);
 
-        // Tooltip Layer (unsichtbare Spans für helperTT)
+        // Tooltip Layer (unsichtbare Spans für fh-tooltip)
         h.push(`<div class="map-grid-tooltips">`);
         for (let building of CityBuilder.Data) {
             h.push(CityBuilder.placeBuilding(building));
@@ -360,8 +360,8 @@ let CityBuilder = {
         if (isNaN(x) || isNaN(y) || isNaN(w) || isNaN(h)) return '';
 
         // Tooltip-Attribute (Straßen brauchen meist keinen Tooltip, aber wir rendern das Element trotzdem)
-        // Wir geben Straßen keine 'helperTT' Klasse, damit kein leeres Popup kommt
-        let tooltipClass = (type === 'street') ? '' : 'helperTT';
+        // Wir geben Straßen keine 'fh-tooltip' Klasse, damit kein leeres Popup kommt
+        let tooltipClass = (type === 'street') ? '' : 'fh-tooltip';
 
         let tooltipAttrs = `
             class="map-building ${type}${street} ${tooltipClass}" 

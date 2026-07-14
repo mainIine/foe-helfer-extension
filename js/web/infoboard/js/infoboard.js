@@ -92,6 +92,7 @@ let Infoboard = {
                 resize: true,
                 minimize: true,
                 speaker: 'infoboxTone',
+                popout: 'MainParser.PopOut(\'BackgroundInfo\', 560, 380)',
                 settings: 'Infoboard.ShowSettings()'
             });
             HTML.AddCssFile('infoboard');
@@ -469,10 +470,10 @@ let Info = {
      * GBG Map figths
      */
     GuildBattlegroundService_getProvinces: async (d) => {
-        await ExistenceConfirmed('GuildFights.SortedColors')
+        await ExistenceConfirmed('Guild_fights.SortedColors')
 
         let data = d[0];
-        let bP = GuildFights.MapData['battlegroundParticipants'],
+        let bP = Guild_fights.MapData['battlegroundParticipants'],
             prov;
 
         if (!data.id || data.id === 0) {
@@ -486,7 +487,7 @@ let Info = {
             if (data.lockedUntil < Math.floor(MainParser.getCurrentDateTime() / 1000) + 14390) return undefined;
 
             let p = bP.find(o => (o['participantId'] === data['ownerId'])),
-                colors = GuildFights.SortedColors.find(c => (c['id'] === data['ownerId']));
+                colors = Guild_fights.SortedColors.find(c => (c['id'] === data['ownerId']));
 
             let tc = colors['highlight'],
                 ts = colors['shadow'];
@@ -509,14 +510,14 @@ let Info = {
         if (!data.conquestProgress[0]) return undefined;
 
         // Es wird gerade gekämpft
-        let color = GuildFights.SortedColors.find(c => (c['id'] === data['ownerId'])), t = '', image;
+        let color = Guild_fights.SortedColors.find(c => (c['id'] === data['ownerId'])), t = '', image;
 
         for (let i in data.conquestProgress) {
             if (!data.conquestProgress.hasOwnProperty(i))  break;
 
             let d = data.conquestProgress[i],
                 p = bP.find(o => (o['participantId'] === d.participantId)),
-                colors = GuildFights.SortedColors.find(c => (c['id'] === d.participantId));
+                colors = Guild_fights.SortedColors.find(c => (c['id'] === d.participantId));
 
             // es gibt mehrere Gilden in einer Provinz, aber eine kämpft gar nicht, überspringen
             if (Info.GuildPoints[data.id] !== undefined &&

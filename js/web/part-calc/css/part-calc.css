@@ -137,6 +137,27 @@
 	flex-grow: 2;
 }
 
+#gbCosts .lb-status {
+	font-size: 0.85em;
+	color: var(--text-medium);
+	margin-top: 2px;
+}
+
+#gbCosts .lb-status .lb-tier-icon {
+	height: 18px;
+	vertical-align: text-bottom;
+}
+
+#gbCosts .bp-tier-amount {
+	white-space: nowrap;
+}
+
+#gbCosts .bp-tier-icon {
+	height: 16px;
+	vertical-align: text-bottom;
+	margin-left: 1px;
+}
+
 #gbCosts input[type=number], #PowerLevelingBox input {
 	line-height: 1;
 	width: 35px;

@@ -1,5 +1,60 @@
 ## Extension Changelog
 
+##### 4.4.0.0
+
+**New**
+- PopOut:
+	- Larger boxes can be moved into their own window (picture-in-picture in Chrome / popup in Firefox) while keeping all of their functionality. Many boxes already support this, more will follow quickly
+      - Closing the popup window moves the box back to its old place in the game (DOM)
+      - Closing the box inside the popup hides it until it is opened again
+      - If popups are blocked in general, a hint is shown
+      - These popups always stay on top of the game and never disappear behind it, but they can be minimized
+      - Closing the game automatically closes all popups
+
+**Update**
+- Building tooltips:
+	- Module reworked. Removed the permanent mouse position calculation, which eases the load on smaller CPUs
+    - Removed the dangerous eval() function
+    - Improved start/stop handling for PopOut
+
+
+- Historical Allies:
+  - Now shows how much the next level provides
+  - Fragment stocks are colored
+  - Toggle for compact and boost view
+
+
+- City overview:
+  - Data transfer to the CityPlanner v2 (foe-helper.com)
+    - Added a modal with a spinner for the impatient
+    - Added additional data for information shown in the CityPlanner
+
+
+- GB Calculator (support for the new multi-tier Great Buildings):
+  - When opening a GB, its current status is now shown in the window header: level / max level, invested FP of the current level
+  - Additionally the tier (Copper, Silver, Gold) is shown as a prestige icon – for own and other players' GBs alike
+  - Blueprint rewards in the table are now split by tier (e.g. 40× Copper + 11× Silver), including the contribution boost per tier
+  - The blueprint icon in the table header adapts to the tier of the building (Copper, Silver, Gold)
+  - The "Open automatically" option is now also available in the settings of the view for other players' GBs
+
+
+- General code cleanup following [JSDoc](https://jsdoc.fyi) started:
+  - Improves the readability of the whole extension for external developers
+  - Docstrings with parameters/returns
+  - Formatting following "visual paragraphs" in favor of readability
+  - Fixed many small formatting issues
+  - Started migrating to ES6
+
+**BugFix**
+- GB Calculator:
+  - Opening an own GB right after another player's GB mixed the data of both buildings (wrong name, wrong FP costs). The data matching now follows the new game logic, which no longer transfers building data when opening an own GB
+  - Clicking the cogwheel without an opened GB caused an error and the settings stayed empty permanently afterwards
+  - Without a loaded GB the box now shows a hint instead of an empty window
+
+
+---
+
+
 ##### 4.3.1.0
 
 **Update**

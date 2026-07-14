@@ -222,7 +222,7 @@ let HTML = {
 		}
 
 		if (args['popout']) {
-			let set = $('<span />').addClass('window-settings').attr('id', `${args['id']}-popout`);
+			let set = $('<span />').addClass('window-popout').attr('id', `${args['id']}-popout`).attr('title', i18n('PopUp.TooltipButton'));
 			buttons.prepend(set);
 
 			if (typeof args['popout'] !== 'boolean') {

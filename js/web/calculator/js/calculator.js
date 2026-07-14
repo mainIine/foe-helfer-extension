@@ -89,9 +89,15 @@ let Calculator = {
 		let Level = (MainParser.CurrentGB.Entity.level !== undefined ? MainParser.CurrentGB.Entity.level : 0);
 		let MaxLevel = (MainParser.CurrentGB.Entity.max_level !== undefined ? MainParser.CurrentGB.Entity.max_level : 0);
 
+		// Tier (copper/silver/gold) preferably from the current rankings,
+		// otherwise from getOtherPlayerOverview, as long as its data still matches the current level
+		let Tier = MainParser.CurrentGB.Tier
+			|| ((MainParser.CurrentGB.OverviewRow && MainParser.CurrentGB.OverviewRow['level'] === MainParser.CurrentGB.Entity['level']) ? MainParser.CurrentGB.OverviewRow['currentTier'] : null);
+		let TierBadge = GreatBuildings.TierBadge(Tier);
+
 		h.push('<div id="gbCalc"><div class="header text-center dark-bg p5">');
 		h.push('<strong><span class="building-name">' + BuildingName + '</span></strong>');
-        h.push('<p style="margin: 0 0 5px">'+ Level + ' &rarr; ' + (Level + 1) + ' &middot; ' + i18n('Boxes.Calculator.MaxLevel') + ': ' + MaxLevel + '</p>');
+        h.push('<p style="margin: 0 0 5px">'+ Level + ' &rarr; ' + (Level + 1) + ' &middot; ' + i18n('Boxes.Calculator.MaxLevel') + ': ' + MaxLevel + (TierBadge ? ' &middot; ' + TierBadge : '') + '</p>');
  
 		if (Calculator.PlayerName) {
 			h.push('<span class="player-name">' 
@@ -194,6 +200,7 @@ let Calculator = {
 			FPNettoRewards = [],
 			FPRewards = [],
 			BPRewards = [],
+			BPTierRewards = [], // blueprint rewards per rank split by tier: {tier, amount}[] (amount already boosted)
 			MedalRewards = [],
 			ForderFPRewards = [],
 			ForderRankCosts = [],
@@ -241,6 +248,12 @@ let Calculator = {
 			FPRewards[Rank] = MainParser.round(FPNettoRewards[Rank] * arc);
 			BPRewards[Rank] = MainParser.round(BPRewards[Rank] * arc);
 			MedalRewards[Rank] = MainParser.round(MedalRewards[Rank] * arc);
+
+			// Blueprints split by tier (multi-tier great buildings)
+			BPTierRewards[Rank] = (MainParser.CurrentGB.Rankings[i]['reward']['blueprintRewards'] || []).map(bp => ({
+				tier: bp['tier'],
+				amount: MainParser.round((bp['amount'] || 0) * arc)
+			}));
 			ForderFPRewards[Rank] = MainParser.round(FPNettoRewards[Rank] * ForderArc);
 
 			if (EigenPos !== undefined && i > EigenPos) {
@@ -347,7 +360,7 @@ let Calculator = {
 			'<th>#</th>' +
 			'<th><span class="forgepoints" title="' + HTML.i18nTooltip(i18n('Boxes.Calculator.Commitment')) + '"></span></th>' +
 			'<th>' + i18n('Boxes.Calculator.Profit') + '</th>');
-			h.push('<th><span class="blueprint" title="' + HTML.i18nTooltip(i18n('Boxes.Calculator.BPs')) + '"></span></th>');
+			h.push('<th><span class="blueprint"' + GreatBuildings.BlueprintIconStyle(MainParser.CurrentGB.Tier) + ' title="' + HTML.i18nTooltip(i18n('Boxes.Calculator.BPs')) + '"></span></th>');
 			h.push('<th><span class="medal" title="' + HTML.i18nTooltip(i18n('Boxes.Calculator.Meds')) + '"></span></th>');
 		h.push('</thead>');
 
@@ -494,7 +507,7 @@ let Calculator = {
 				<td>
 					<strong class="${GewinnClass} td-tooltip copy-fp" data-copy="${ForderGewinn}" data-original-title="${HTML.i18nTooltip(GewinnTooltip.join('<br>'))}">${GewinnText}</strong>
 				</td>
-				<td> ${HTML.Format(BPRewards[Rank])} </td>
+				<td> ${GreatBuildings.FormatBlueprintRewards(BPTierRewards[Rank], BPRewards[Rank])} </td>
 				<td> <small> ${HTML.Format(MedalRewards[Rank])} </small> </td>
 			</tr>`);
 		}
@@ -576,6 +589,7 @@ let Calculator = {
 			defaults = Calculator.DefaultButtons,
 			sB = localStorage.getItem('CustomCalculatorButtons'),
 			allGB = JSON.parse(localStorage.getItem('ShowOwnPartOnAllGBs')),
+			autoOpen = localStorage.getItem('OwnPartAutoOpen'),
 			nV = `<p class="new-row text-center bbd p5 flex gap">
 				${i18n('Boxes.Calculator.Settings.newValue')}: <input type="number" class="settings-values" style="width:30px"> 
 				<span class="btn btn-green btn-slim" onclick="Calculator.SettingsInsertNewRow()">+</span>
@@ -608,6 +622,7 @@ let Calculator = {
 		c.push(`<p class="bbd p5">
 			<label for="forderbonusperconversation"><input id="forderbonusperconversation" class="forderbonusperconversation game-cursor" ${(Calculator.ForderBonusPerConversation ? 'checked' : '')} type="checkbox">${i18n('Boxes.Calculator.ForderBonusPerConversation')}</label><br/>
 			<label for="openonaliengb"><input type="checkbox" id="openonaliengb" class="openonaliengb game-cursor" ${((!allGB) ? 'checked' : '')}> ${i18n('Settings.ShowOwnPartOnAllGBs.Desc')}</label><br>
+			<label for="autoOpen"><input type="checkbox" id="autoOpen" class="autoOpen game-cursor" ${((autoOpen == 'true') ? 'checked' : '')}> ${i18n('Settings.ShowOwnPartAutoOpen.Desc')}</label><br>
 			<label for="CalculatorTone"><input id="CalculatorTone" class="CalculatorTone game-cursor" ${(Calculator.PlayInfoSound ? 'checked' : '')} type="checkbox"> ${i18n('Boxes.Calculator.PlayInfoSound')}</label>
 		</p>`);
 
@@ -655,6 +670,9 @@ let Calculator = {
 		let openforeignGB = false;
 		if ($("#openonaliengb").is(':not(:checked)')) openforeignGB = true;
 		localStorage.setItem('ShowOwnPartOnAllGBs',openforeignGB);
+
+		// same key as in the own part calculator: box opens automatically on GreatBuildingsService.getConstruction
+		localStorage.setItem('OwnPartAutoOpen', $('#autoOpen').prop('checked'));
 
 
 		$(`#OwnPartBoxSettingsBox`).fadeToggle('fast', function(){

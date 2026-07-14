@@ -418,7 +418,7 @@ let _menu = {
 		let btn = _menu.MakeButton('allies');
 
 		let btnEl = $('<span />').bind('click', function () {
-			MainParser.Allies.showAllyList(true);
+			Allies.showAllyList(true);
 		});
 
 		return btn.append(btnEl);
@@ -726,8 +726,8 @@ let _menu = {
 		let btn = _menu.MakeButton('gildFight',true);
 
 		let btn_sp = $('<span />').on('click', function (){
-			if(GuildFights.MapData) {
-				GuildFights.ShowGuildBox();
+			if(Guild_fights.MapData) {
+				Guild_fights.ShowGuildBox();
 			}
 		});
 

@@ -375,7 +375,9 @@ let Productions = {
 			Productions.Rating.ensurePresets();
 			const activePreset = Productions.Rating.getActivePreset();
 			let data = overwrite || activePreset?.data || {};
+
 			Productions.Rating.Data = Productions.Rating.normalizeData(data);
+
 			if (activePreset) {
 				activePreset.data = Productions.Rating.Data;
 			}
@@ -383,9 +385,13 @@ let Productions = {
 
 			if (localStorage.getItem('ProductionRatingProdPerTiles')) {
 				let RatingProdPerTiles = Object.assign({},JSON.parse(localStorage.getItem('ProductionRatingProdPerTiles')||"{}"))
+
 				for (let [type,perTile] of Object.entries(RatingProdPerTiles)) {
-					if (Productions.Rating.Data[type]) Productions.Rating.Data[type].perTile = perTile
+					if (Productions.Rating.Data[type]) {
+						Productions.Rating.Data[type].perTile = perTile
+					}
 				}
+
 				localStorage.removeItem('ProductionRatingProdPerTiles')
 				Productions.Rating.save()
 			}
@@ -423,12 +429,16 @@ let Productions = {
 			Productions.CombinedCityMapData = Object.assign({}, Productions.CombinedCityMapData, CityMap.EraOutpost.data)
 		}
 
-		// leere Arrays erzeugen
+		// Create empty arrays
 		for(let i in Productions.Types) {
-			if (!Productions.Types.hasOwnProperty(i)) continue
+			if (!Productions.Types.hasOwnProperty(i)) {
+				continue
+			}
 
 			Productions.BuildingsProducts[Productions.Types[i]] = []
-			if (Productions.Types[i] === 'goods') continue
+			if (Productions.Types[i] === 'goods') {
+				continue
+			}
 			Productions.BuildingsProductsGroups[ Productions.Types[i] ] = []
 		}
 
@@ -489,6 +499,7 @@ let Productions = {
 			dragdrop: true,
 			minimize: true,
 			resize: true,
+			popout: 'MainParser.PopOut(\'Productions\', 1100, 580)',
         	settings: 'Productions.ShowSettings()'
 		});
 
@@ -804,7 +815,7 @@ let Productions = {
 				if (building.chainBuilding !== undefined)
 					rowA.push('<img src="' + srcLinks.get('/shared/icons/' + building.chainBuilding.name + '.png', true) + '" class="chain-set-ico">')
 			rowA.push('</td>')
-			rowA.push('<td data-text="'+helper.str.cleanup(building.name)+'" class="' + (MainParser.Allies.buildingList?.[building.id]?"ally" : "") +'">' + building.name + '</td>')
+			rowA.push('<td data-text="'+helper.str.cleanup(building.name)+'" class="' + (Allies.buildingList?.[building.id]?"ally" : "") +'">' + building.name + '</td>')
 
 			if (building.boosts !== undefined) {
 				boosts = {}
@@ -920,7 +931,7 @@ let Productions = {
 						if (building.chainBuilding !== undefined)
 						rowA.push('<img src="' + srcLinks.get('/shared/icons/' + building.chainBuilding.name + '.png', true) + '" class="chain-set-ico">')
 					rowA.push('</td>')
-					rowA.push('<td data-text="'+helper.str.cleanup(building.name)+'" exportvalue="'+building.name+'" class="' + (MainParser.Allies.buildingList?.[building.id]?"ally" : "") +'">' + building.name + '</td>')
+					rowA.push('<td data-text="'+helper.str.cleanup(building.name)+'" exportvalue="'+building.name+'" class="' + (Allies.buildingList?.[building.id]?"ally" : "") +'">' + building.name + '</td>')
 
 					if (!type.includes('att') && !type.includes('def')) {
 						if (type !== 'items') {
@@ -1251,7 +1262,7 @@ let Productions = {
 			rowA.push('<td>')
 			rowA.push((building.state.isPolivated !== undefined ? (building.state.isPolivated ? '<span class="text-bright">★</span>' : '☆') : ''))
 			rowA.push('</td>')
-			rowA.push('<td data-text="'+helper.str.cleanup(building.name)+'"  class="' + (MainParser.Allies.buildingList?.[building.id]?"ally" : "") +'">' + building.name + '</td>')
+			rowA.push('<td data-text="'+helper.str.cleanup(building.name)+'"  class="' + (Allies.buildingList?.[building.id]?"ally" : "") +'">' + building.name + '</td>')
 
 			// prepare grouped buildings
 			let updateGroup = groupedBuildings.find(x => x.building.name === building.name)
@@ -1368,7 +1379,7 @@ let Productions = {
 		for (const building of groupedBuildings) {
 			rowB.push('<tr>')
 			rowB.push('<td data-number="'+building.amount+'">'+building.amount+'x </td>')
-			rowB.push('<td data-text="'+building.building.name.replace(/[. -]/g,"")+'"  class="' + (MainParser.Allies.buildingList?.[building.building.id]?"ally" : "") +'">'+ building.building.name +'</td>')
+			rowB.push('<td data-text="'+building.building.name.replace(/[. -]/g,"")+'"  class="' + (Allies.buildingList?.[building.building.id]?"ally" : "") +'">'+ building.building.name +'</td>')
 			for (const era of eras) {
 				rowB.push('<td data-number="'+building[era]+'" class="text-center">')
 				rowB.push(HTML.Format(building[era]))
@@ -1425,7 +1436,7 @@ let Productions = {
 			rowA.push('<td>')
 			rowA.push((building.state.isPolivated !== undefined ? (building.state.isPolivated ? '<span class="text-bright">★</span>' : '☆') : ''))
 			rowA.push('</td>')
-			rowA.push('<td data-text="'+helper.str.cleanup(building.name)+'"  class="' + (MainParser.Allies.buildingList?.[building.id]?"ally" : "") +'">' + building.name + '</td>')
+			rowA.push('<td data-text="'+helper.str.cleanup(building.name)+'"  class="' + (Allies.buildingList?.[building.id]?"ally" : "") +'">' + building.name + '</td>')
 
 			// prepare grouped buildings
 			let updateGroup = groupedBuildings.find(x => x.building.name === building.name)
@@ -1539,7 +1550,7 @@ let Productions = {
 			groupedBuildings.forEach(building => {
 				rowB.push('<tr>')
 				rowB.push('<td data-number="'+building.amount+'">'+building.amount+'x </td>')
-				rowB.push('<td data-text="'+building.building.name.replace(/[. -]/g,"")+'"  class="' + (MainParser.Allies.buildingList?.[building.building.id]?"ally" : "") +'">'+ building.building.name +'</td>')
+				rowB.push('<td data-text="'+building.building.name.replace(/[. -]/g,"")+'"  class="' + (Allies.buildingList?.[building.building.id]?"ally" : "") +'">'+ building.building.name +'</td>')
 				for (const era of eras) {
 					rowB.push('<td data-number="'+building[era]+'" class="text-center">')
 					rowB.push(HTML.Format(building[era]))
@@ -1589,7 +1600,7 @@ let Productions = {
 			groupedBuildings.forEach(building => {
 				rowB.push('<tr>')
 				rowB.push('<td data-number="'+building.amount+'">'+building.amount+'x </td>')
-				rowB.push('<td data-text="'+building.building.name.replace(/[. -]/g,"")+'" class="' + (MainParser.Allies.buildingList?.[building.building.id]?"ally" : "") +'">'+ building.building.name +'</td>')
+				rowB.push('<td data-text="'+building.building.name.replace(/[. -]/g,"")+'" class="' + (Allies.buildingList?.[building.building.id]?"ally" : "") +'">'+ building.building.name +'</td>')
 				if (type.includes('att') || type.includes('def')) {
 					rowB.push('<td data-number="'+building.boosts.all*building.amount+'" class="text-center">'+ (building.boosts.all !== 0 ? HTML.Format(building.boosts.all*building.amount) : '') +'</td>')
 					rowB.push('<td data-number="'+building.boosts.battleground*building.amount+'" class="text-center">'+ (building.boosts.battleground !== 0 ? HTML.Format(building.boosts.battleground*building.amount) : '') +'</td>')
@@ -2105,6 +2116,7 @@ let Productions = {
 				dragdrop: true,
 				minimize: true,
 				resize: true,
+				popout: 'MainParser.PopOut(\'ProductionsRating\', 1100, 580)',
 				settings: 'Productions.RSettings()'
 			});
 			
@@ -2125,6 +2137,7 @@ let Productions = {
 		}
 
 	},
+
 
 	AdditionalSpecialBuildings:null,
 
@@ -2215,10 +2228,10 @@ let Productions = {
 			if (building === undefined || building.type === 'street' || building.type === 'military' || building.id >= 2000000000 || building.type.includes('hub')) continue
 
 			let compare = building.name;
-			if (MainParser.Allies.buildingList?.[building.id] && withAllies) 
-				compare += "+" + Object.keys(MainParser.Allies.buildingList?.[building.id]).join("+");
+			if (Allies.buildingList?.[building.id] && withAllies) 
+				compare += "+" + Object.keys(Allies.buildingList?.[building.id]).join("+");
 			
-			let foundBuildingIndex = uniqueBuildings.findIndex(x => x.name === compare && x.isInInventory === building.isInInventory && !MainParser.Allies.buildingList?.[x.id])
+			let foundBuildingIndex = uniqueBuildings.findIndex(x => x.name === compare && x.isInInventory === building.isInInventory && !Allies.buildingList?.[x.id])
 			if (!withAllies) 
 				foundBuildingIndex = uniqueBuildings.findIndex(x => x.name === compare && x.isInInventory === building.isInInventory)
 			
@@ -2370,11 +2383,11 @@ let Productions = {
 				h.push(`<tr class="${building.type==='greatbuilding'?'gb ':''}${building.isLimited?'limited ':''}${building.highlight?'additional bg-blue ':''}${building.isInInventory?'inventory-building ':''}size${buildingSize}">`)
 				h.push('<td data-number="'+ (building.rating.totalScore * 100) +'" class="text-right">'+Math.round(building.rating.totalScore * 100)+'</td>')
 
-				h.push('<td exportvalue="'+building.name+'" data-text="'+helper.str.cleanup(building.name)+'" class="'+(MainParser.Allies.buildingList?.[building.id]?"ally" : "") +'"><div class="flex-between"><div>');
+				h.push('<td exportvalue="'+building.name+'" data-text="'+helper.str.cleanup(building.name)+'" class="'+(Allies.buildingList?.[building.id]?"ally" : "") +'"><div class="flex-between"><div>');
 				if (!building.highlight && !building.isInInventory)
 					h.push('<span class="show-all" data-original-title="'+i18n('Boxes.General.ShowOnMap')+'" data-name="'+building.name+'"><img class="game-cursor" alt="" src="' + extUrl + 'css/images/hud/open-eye.png"></span>');
 
-				h.push('<span data-meta_id="'+building.entityId+'" data-eff="'+building.rating.totalScore * 100+'" data-era="'+(building.eraName==="AllAge"?"":building.eraName)+'" data-callback_tt="Tooltips.buildingTT" class="helperTT" '+ MainParser.Allies.tooltip(building.id) + '>'+building.name+'</span>')
+				h.push('<span data-meta_id="'+building.entityId+'" data-eff="'+building.rating.totalScore * 100+'" data-era="'+(building.eraName==="AllAge"?"":building.eraName)+'" data-callback_tt="Tooltips.buildingTT" class="fh-tooltip" '+ Allies.tooltip(building.id) + '>'+building.name+'</span>')
 
 				let eraShortName = i18n("Eras."+Technologies.Eras[building.eraName]+".short")
 				if (eraShortName !== "-")
@@ -2382,16 +2395,17 @@ let Productions = {
 				h.push("</div></td>");
 				
 				// show amount in city if > 1
-				let buildingAmount = (MainParser.Allies.buildingList?.[building.id] && withAllies ? 1 : (buildingCount[building.entityId+"C"] || 1));
+				let buildingAmount = (Allies.buildingList?.[building.id] && withAllies ? 1 : (buildingCount[building.entityId+"C"] || 1));
 				h.push('<td exportvalue="'+buildingAmount+'" data-number="'+buildingAmount+'"><div class="text-right">')
 				if (buildingAmount > 1) 
 					h.push('<span data-original-title="'+i18n('Boxes.ProductionsRating.CountTooltip')+'">' + buildingCount[building.entityId+"C"]+'x</span>')
 				h.push("</div></td>");
 
 				h.push('<td class="text-center">')
+
 				// show additional buildings from inventory
 				if ((buildingCount[building.entityId+"I"] !== undefined && !building.isInInventory) || building.isInInventory)
-					h.push('<span data-callback_tt="Kits.InventoryTooltip" data-id="'+building.entityId+'" class="helperTT"><img alt="" class="game-cursor" src="' + srcLinks.get(`/shared/gui/event_hub/event_meta_icon_checkmark.png`,true) + '" /></span> ')
+					h.push('<span data-callback_tt="Kits.InventoryTooltip" data-id="'+building.entityId+'" class="fh-tooltip"><img alt="" class="game-cursor" src="' + srcLinks.get(`/shared/gui/event_hub/event_meta_icon_checkmark.png`,true) + '" /></span> ')
 				h.push('</td>')
 
 				for (const type of combinedRatingTypes) {
@@ -2603,7 +2617,7 @@ let Productions = {
 				let foundBuildings = Object.values(Productions.AdditionalSpecialBuildings).filter(x => regEx.test(x.filter)).sort((a,b)=>(((a.selected !== b.selected) ? (a.selected ? -2 : 2) : 0)+(a.name>b.name?1:-1)))
 
 				for (building of foundBuildings) {
-					$('#ProductionsRatingBody .overlay .results').append(`<li data-meta_id="${building.id}" data-era="${(era==="AllAge"?"":era)}" data-callback_tt="Tooltips.buildingTT" class="helperTT${building.selected ? " selected":""}">${building.name}</li>`)
+					$('#ProductionsRatingBody .overlay .results').append(`<li data-meta_id="${building.id}" data-era="${(era==="AllAge"?"":era)}" data-callback_tt="Tooltips.buildingTT" class="fh-tooltip${building.selected ? " selected":""}">${building.name}</li>`)
 				}
 			}
 			filterMeta(/./)
@@ -2799,7 +2813,7 @@ let Productions = {
 				h.push('<span class="no-grow resicon ' + type + '"></span>')
 				h.push('<label for="Enabled-'+type+'">' + Productions.GetTypeName(type) + '</label>')
 				if (type=="fsp") h.push(`<span id="ShowFSPCalculator" class="clickable" data-original-title="${i18n("Boxes.ProductionsRating.ShowFSPCalculator")}">🧮</span>`)
-				h.push('<input type="number" id="ProdPerTile-' + type + '" step="0.01" min="0" max="1000000" class="no-grow helperTT '+(Productions.Rating.Data[type]?.active ? '': 'hidden')+'" value="' + (Productions.Rating.Data[type]?.perTile||0) + '", data-callback_tt="Productions.efficiencyTT", data-type="'+type+'-tile">')
+				h.push('<input type="number" id="ProdPerTile-' + type + '" step="0.01" min="0" max="1000000" class="no-grow fh-tooltip '+(Productions.Rating.Data[type]?.active ? '': 'hidden')+'" value="' + (Productions.Rating.Data[type]?.perTile||0) + '", data-callback_tt="Productions.efficiencyTT", data-type="'+type+'-tile">')
 				h.push('</li>');
 			}
 
@@ -3253,7 +3267,7 @@ let Productions = {
 							for (let [group, buildings] of Object.entries(groupedBuildings)) {
 								h += '<tr><td><h2><span class="boost '+group+'"></span> '+i18n('Boxes.BoostList.'+group)+'</h2><ul>'
 								for (let building of buildings) {
-									h += '<li class="helperTT" data-era="'+CurrentEra+'" data-callback_tt="Tooltips.buildingTT" data-meta_id="'+building.entityId+'">'+building.name+'</li>'
+									h += '<li class="fh-tooltip" data-era="'+CurrentEra+'" data-callback_tt="Tooltips.buildingTT" data-meta_id="'+building.entityId+'">'+building.name+'</li>'
 								}
 								h += '</ul></td></tr>';
 							}
@@ -3288,7 +3302,7 @@ let Productions = {
 		}
 		h=`<ul class="foe-table">`
 		for (b of item.buildings) {
-			h+=`<li class="helperTT" data-era=${CurrentEra} data-callback_tt="Tooltips.buildingTT" data-meta_id="${b}">${MainParser.CityEntities[b].name}</li>`
+			h+=`<li class="fh-tooltip" data-era=${CurrentEra} data-callback_tt="Tooltips.buildingTT" data-meta_id="${b}">${MainParser.CityEntities[b].name}</li>`
 		}
 		h+=`</ul>`
 		$(itemId).html(h)
