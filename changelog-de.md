@@ -4,10 +4,10 @@
 
 **Neu**
 - PopOut:
-	- Größere Boxen können einfach in ein eigenes Fenster (Picture-in-Picture Chrome/ PopUp in Firefox) ausgelagert werden, alle Funktionen bleiben erhalten. Viele Boxen haben diese Funktion bereits, es kommen schnell mehr dazu
+	- Größere Boxen können einfach in ein eigenes Fenster (Picture-in-Picture Chrome/ PopUp in Firefox) ausgelagert werden, alle Funktionen bleiben erhalten Viele Boxen haben diese Funktion bereits, es kommen schnell mehr dazu
       - Wird das PopUp-Fenster geschlossen, springt die eigentliche Box wieder an die alte Stelle im Spiel zurück (DOM)
       - Wird die Box im PopUp geschlossen, verschwindet die Box bis zum erneuten öffnen
-      - Sind PopUp's blockiert, wird darauf hingewiesen
+      - Sind PopUp's generell blockiert, wird darauf hingewiesen
       - Diese PopUps bleiben immer on top, über dem Spiel und verschwinden nicht nach hinten, können aber minimiert werden
       - Wird das Spiel geschlossen, schließen sich automatisch alle PopUps
 
@@ -30,12 +30,27 @@
     - Einige Daten für Informationen im CityPlanner ergänzt
 
 
+- LG Rechner (Unterstützung der neuen mehrstufigen Legendären Bauwerke):
+  - Beim Öffnen eines LGs wird nun dessen aktueller Status im Kopf des Fensters angezeigt: Stufe / Maximalstufe, eingezahlte FP der aktuellen Stufe
+  - Zusätzlich wird der Rang (Kupfer, Silber, Gold) als Prestige-Icon angezeigt – bei eigenen wie fremden LGs
+  - Blaupausen-Belohnungen werden in der Tabelle nach Rang aufgeschlüsselt (z.B. 40× Kupfer + 11× Silber), inkl. Berücksichtigung des Förderbonus je Stufe
+  - Das Blaupausen-Icon im Tabellenkopf passt sich dem Rang des Gebäudes an (Kupfer, Silber, Gold)
+  - Die Option "Automatisch öffnen" ist jetzt auch in den Einstellungen der Ansicht für fremde LGs erreichbar
+
+
 - Allgemeines Code-Cleaning gemäß [JSDoc](https://jsdoc.fyi) begonnen:
   - Dient der Lesbarkeit der gesamten Extension für externe Entwickler
   - Docstrings mit Parametern/Returns
   - Formatierungen gemäß "Visual Paragraphs" zugunsten der Lesbarkeit
   - Viele kleine Formatierungsfehler behoben
   - Anpassungen zu ES6 begonnen
+
+**BugFix**
+- LG Rechner:
+  - Beim Öffnen eines eigenen LGs direkt nach einem fremden LG wurden die Daten beider Gebäude vermischt (falscher Name, falsche FP-Kosten). Die Datenzuordnung folgt jetzt der neuen Spiellogik, die beim Öffnen eines eigenen LGs keine Gebäudedaten mehr überträgt
+  - Ein Klick auf das Zahnrad ohne geöffnetes LG führte zu einem Fehler, die Einstellungen blieben danach dauerhaft leer
+  - Die Box zeigt ohne geladenes LG jetzt einen Hinweis statt eines leeren Fensters
+
 
 ---
 

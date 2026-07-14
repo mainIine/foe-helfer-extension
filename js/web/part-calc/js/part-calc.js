@@ -165,9 +165,10 @@ let Parts = {
 			    active_maps:"main"
 			});
 
-			HTML.AddCssFile('part-calc');	
+			HTML.AddCssFile('part-calc');
 
 			if (MainParser.CurrentGB.Entity !== undefined && MainParser.CurrentGB.Rankings !== undefined) Parts.CalcBody();
+			else $('#OwnPartBox').find('#OwnPartBoxBody').html(`<div class="text-center dark-bg p5">${i18n('Menu.OwnpartCalculator.Warning')}</div>`);
 
 			/*$('#OwnPartBox').on('click', '#PartsTone', function () {
 				let disabled = $(this).hasClass('deactivated');
@@ -458,6 +459,7 @@ let Parts = {
 	 */
 	CalcBody: async (NextLevel) => {
 		await StartUpDone;
+		if (!MainParser.CurrentGB.Entity || !MainParser.CurrentGB.Rankings) return; // No GB loaded yet
 		if (MainParser.CurrentGB.Entity['level'] === NextLevel) NextLevel = 0;
 
 		// load other calculator if selected
@@ -557,6 +559,7 @@ let Parts = {
 			FPRewards = [], // FP Maezenboni pro Platz (0 basiertes Array)
 			MedalRewards = [], // Medaillen Maezenboni pro Platz (0 basiertes Array)
 			BPRewards = [], // Blaupause Maezenboni pro Platz (0 basiertes Array)
+			BPTierRewards = [], // blueprint rewards per place split by tier: {tier, amount}[] (amount already boosted)
 			h = [],
 			EigenStart = 0, // Bereits eingezahlter Eigenanteil (wird ausgelesen)
 			Eigens = [], // Feld aller Eigeneinzahlungen pro Platz (0 basiertes Array)
@@ -635,11 +638,18 @@ let Parts = {
 						let BlueprintCount = (MainParser.CurrentGB.Rankings[i]['reward']['blueprints'] !== undefined ? parseInt(MainParser.CurrentGB.Rankings[i]['reward']['blueprints']) : 0);
 						BPRewards[Place] = MainParser.round(BlueprintCount * arcs[Place]);
 						if (BPRewards[Place] === undefined) BPRewards[Place] = 0;
+
+						// Blueprints split by tier (multi-tier great buildings)
+						BPTierRewards[Place] = (MainParser.CurrentGB.Rankings[i]['reward']['blueprintRewards'] || []).map(bp => ({
+							tier: bp['tier'],
+							amount: MainParser.round((bp['amount'] || 0) * arcs[Place])
+						}));
 					}
 					else {
 						FPRewards[Place] = 0;
 						MedalRewards[Place] = 0;
 						BPRewards[Place] = 0;
+						BPTierRewards[Place] = null;
 					}
 				}
 			}
@@ -650,6 +660,7 @@ let Parts = {
 				FPRewards[i] = 0;
 				MedalRewards[i] = 0;
 				BPRewards[i] = 0;
+				BPTierRewards[i] = null;
 			}
 		}
 		else {
@@ -659,6 +670,7 @@ let Parts = {
 			FPRewards = GreatBuildings.GetMaezen(P1, Parts.ArcPercents)
 			MedalRewards = [0, 0, 0, 0, 0];
 			BPRewards = [0, 0, 0, 0, 0];
+			BPTierRewards = [];
 		}
 
 		for (let i = 0; i < Parts.Exts.length; i++) {
@@ -775,14 +787,9 @@ let Parts = {
 			<h1>${CityEntity['name']}</h1>`);
 		if (PlayerName) h.push(`<span class="activity activity_${PlayerDict[PlayerID]['Activity']}"></span> ${MainParser.GetPlayerLink(PlayerID, PlayerName)}`);
 
-		// Aktueller Status des LB: Level / Maxlevel, Fortschritt und Tier (Tier nur via getOtherPlayerOverview verfügbar)
+		// Current status of the GB: level / max level, progress and tier
 		let StatusEntity = MainParser.CurrentGB.Entity,
 			OverviewRow = MainParser.CurrentGB.OverviewRow,
-			TierNames = {
-				copper: i18n('Boxes.OwnpartCalculator.TierCopper'),
-				silver: i18n('Boxes.OwnpartCalculator.TierSilver'),
-				gold: i18n('Boxes.OwnpartCalculator.TierGold')
-			},
 			Status = [];
 
 		Status.push(`${i18n('Boxes.OwnpartCalculator.Step')} ${StatusEntity['level']}${StatusEntity['max_level'] ? '&#8201;/&#8201;' + HTML.Format(StatusEntity['max_level']) : ''}`);
@@ -791,19 +798,13 @@ let Parts = {
 			Status.push(`${HTML.Format(StatusEntity['state']['invested_forge_points'] || 0)}&#8201;/&#8201;${HTML.Format(StatusEntity['state']['forge_points_for_level_up'])} ${i18n('Boxes.Calculator.FP')}`);
 		}
 
-		// Tier nur anzeigen, wenn die Overview-Daten noch zum aktuellen Level passen (sonst veraltet, z.B. nach Levelup)
-		if (OverviewRow && OverviewRow['currentTier'] && OverviewRow['level'] === StatusEntity['level']) {
-			let TierValue = OverviewRow['currentTier']['value'],
-				TierName = TierNames[TierValue] || TierValue,
-				TierIcon = srcLinks.get(`/shared/gui/greatbuildings/prestige/icon_prestige_${TierValue}.png`, true, true);
-
-			if (TierIcon.includes('antiquedealer_flag')) {
-				// Icon nicht im ForgeHX-Dateiindex → Fallback auf Text
-				Status.push(`${i18n('Boxes.OwnpartCalculator.Tier')}: ${TierName}`);
-			}
-			else {
-				Status.push(`<img class="lb-tier-icon" src="${TierIcon}" alt="${TierName}" title="${i18n('Boxes.OwnpartCalculator.Tier')}: ${TierName}">`);
-			}
+		// Tier preferably from the current rankings (also works for own GBs),
+		// otherwise from the overview, as long as its data still matches the current level
+		let Tier = MainParser.CurrentGB.Tier
+			|| ((OverviewRow && OverviewRow['level'] === StatusEntity['level']) ? OverviewRow['currentTier'] : null);
+		if (Tier) {
+			let TierBadge = GreatBuildings.TierBadge(Tier);
+			if (TierBadge) Status.push(TierBadge);
 		}
 
 		h.push(`<div class="lb-status">${Status.join(' &middot; ')}</div>`);
@@ -870,7 +871,7 @@ let Parts = {
 		h.push('<th>' + i18n('Boxes.OwnpartCalculator.Order') + '</th>');
 		h.push('<th class="text-center"><span class="forgepoints" title="' + HTML.i18nTooltip(i18n('Boxes.OwnpartCalculator.Deposit')) + '"></th>');
 		h.push('<th class="text-center">' + i18n('Boxes.OwnpartCalculator.Done') + '</th>');
-		if (printsEnabled) h.push('<th class="text-center"><span class="blueprint" title="' + HTML.i18nTooltip(i18n('Boxes.OwnpartCalculator.BPs')) + '"></span></th>');
+		if (printsEnabled) h.push('<th class="text-center"><span class="blueprint"' + GreatBuildings.BlueprintIconStyle(MainParser.CurrentGB.Tier) + ' title="' + HTML.i18nTooltip(i18n('Boxes.OwnpartCalculator.BPs')) + '"></span></th>');
 		if (medalsEnabled) h.push('<th class="text-center"><span class="medal" title="' + HTML.i18nTooltip(i18n('Boxes.OwnpartCalculator.Meds')) + '"></span></th>');
 		if (!minView) h.push('<th class="text-center">' + i18n('Boxes.OwnpartCalculator.Ext') + '</th>');
 		if (!minView) h.push('<th class="text-center">' + i18n('Boxes.OwnpartCalculator.Arc') + '</th>');
@@ -960,7 +961,7 @@ let Parts = {
 				h.push('<td class="text-center paidFP"><b>' + MaezenString + MaezenDiffString + '</b></td>');
 			}
 
-			if (printsEnabled) h.push('<td class="text-center">' + HTML.Format(BPRewards[i]) + '</td>');
+			if (printsEnabled) h.push('<td class="text-center">' + GreatBuildings.FormatBlueprintRewards(BPTierRewards[i], BPRewards[i]) + '</td>');
 			if (medalsEnabled) h.push('<td class="text-center">' + HTML.Format(MedalRewards[i]) + '</td>');
 			if (!minView) h.push('<td class="text-center"><input min="0" step="1" type="number" class="ext-part-input' + i + '" value="' + Parts.Exts[i] + '"></td>');
 			if (!minView) h.push('<td class="text-center"><input type="number" class="arc-percent-input" step="0.1" min="12" max="200" value="' + Parts.ArcPercents[i] + '"></td>');
@@ -1652,7 +1653,7 @@ let Parts = {
 	ShowCalculatorSettings: ()=> {
 		// load other calculators settings if selected
 		let useThisCalculator = JSON.parse(localStorage.getItem('ShowOwnPartOnAllGBs'))
-		if (!useThisCalculator && MainParser.CurrentGB.Entity.player_id !== ExtPlayerID) {
+		if (!useThisCalculator && MainParser.CurrentGB.Entity?.player_id !== ExtPlayerID) {
 			Calculator.ShowCalculatorSettings();
 			return;	
 		}
@@ -1665,7 +1666,7 @@ let Parts = {
 			showMedals = localStorage.getItem('OwnPartShowMedals') || 'true',
 			showPrints = localStorage.getItem('OwnPartShowBP') || 'true',
 			minView = localStorage.getItem('OwnPartMinView') || 'false',
-			autoOpen = localStorage.getItem('OwnPartAutoOpen') || 'true',
+			autoOpen = localStorage.getItem('OwnPartAutoOpen'),
 			includeStart = localStorage.getItem('OwnPartIncludeStart') || 'true',
 			nV = `<p class="new-row text-center bbd p5 flex gap"><label>${i18n('Boxes.Calculator.Settings.newValue')}:</label> <input type="number" class="settings-values" style="width:30px"> <span class="btn btn-green btn-slim" onclick="Parts.SettingsInsertNewRow()">+</span></p>`;
 		

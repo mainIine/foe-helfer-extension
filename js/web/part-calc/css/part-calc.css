@@ -148,6 +148,16 @@
 	vertical-align: text-bottom;
 }
 
+#gbCosts .bp-tier-amount {
+	white-space: nowrap;
+}
+
+#gbCosts .bp-tier-icon {
+	height: 16px;
+	vertical-align: text-bottom;
+	margin-left: 1px;
+}
+
 #gbCosts input[type=number], #PowerLevelingBox input {
 	line-height: 1;
 	width: 35px;
