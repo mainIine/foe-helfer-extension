@@ -195,25 +195,21 @@ GetFights = () =>{
 
 	// globale Handler
 	// die Gebäudenamen übernehmen
-	/* removed as inno changed city entity loading
-	FoEproxy.addMetaHandler('city_entities', (xhr, postData) => {
-		let EntityArray = JSON.parse(xhr.responseText);
-		MainParser.CityEntities = Object.assign({}, ...EntityArray.map((x) => ({ [x.id]: x })));
-		MainParser.correctBuildingType()
-		MainParser.Inactives.check();
-	});
-	*/
 	FoEproxy.addMetaHandler('building_entity_lookup', (xhr, postData) => {
 		let buildingUrlsRaw = JSON.parse(xhr.responseText || "[]");
 		let buildingUrls = Object.assign({}, ...buildingUrlsRaw.map((x) => ({ [x.identifier.replace("building_entity_","")]: {url: x.url, hash: x.url.replace(/.*?([^-]+$)/gm,"$1")} })));
-		setTimeout(()=>{MainParser.CityEntityBuilder(buildingUrls)},500);
+
+		setTimeout(()=>{ MainParser.CityEntityBuilder(buildingUrls) },500);
 	});
 
 	// Building-Upgrades
 	FoEproxy.addMetaHandler('building_upgrades', (xhr, postData) => {
 		let BuildingUpgradesArray = JSON.parse(xhr.responseText);
 		MainParser.BuildingUpgrades = Object.assign({}, ...BuildingUpgradesArray.map((x) => ({ [x.upgradeItem.id]: x })));
-		if (MainParser.SelectionKits != null) Kits.CreateUpgradeSchemes();
+
+		if (MainParser.SelectionKits != null) {
+			Kits.CreateUpgradeSchemes();
+		}
 	});
 
 	// Building-Sets
@@ -232,47 +228,18 @@ GetFights = () =>{
 	FoEproxy.addMetaHandler('selection_kits', (xhr, postData) => {
 		let SelectKitsArray = JSON.parse(xhr.responseText);
 		MainParser.SelectionKits = Object.assign({}, ...SelectKitsArray.map((x) => ({ [x.selectionKitId]: x })));
-		if (MainParser.BuildingUpgrades != null) Kits.CreateUpgradeSchemes();
+
+		if (MainParser.BuildingUpgrades != null) {
+			Kits.CreateUpgradeSchemes();
+		}
 	});
+
 	FoEproxy.addMetaHandler("building_families", (xhr,postData) => {
 		MainParser.BuildingFamilyLimits = JSON.parse(xhr.responseText)?.families;
 	})	
 	// Castle-System-Levels
 	FoEproxy.addMetaHandler('castle_system_levels', (xhr, postData) => {
 		MainParser.CastleSystemLevels = JSON.parse(xhr.responseText);
-	});
-
-	// Allies
-	FoEproxy.addMetaHandler('allies', (xhr, postData) => {
-		MainParser.Allies.setMeta(JSON.parse(xhr.responseText));
-	});
-
-	FoEproxy.addMetaHandler('ally_rarities', (xhr, postData) => {
-		MainParser.Allies.setRarities(JSON.parse(xhr.responseText));
-	});
-
-	FoEproxy.addMetaHandler('ally_types', (xhr, postData) => {
-		MainParser.Allies.setTypes(JSON.parse(xhr.responseText));
-	});
-
-	FoEproxy.addHandler('AllyService', 'getAllies', (data, postData) => {
-		MainParser.Allies.getAllies(data.responseData);
-		
-		if (!Settings.GetSetting('ShowAllyList')) return;
-		if (postData[0].requestMethod == 'getAllies') MainParser.Allies.showAllyList();
-	});
-	FoEproxy.addHandler('AllyService', 'getAssignedAllies', (data, postData) => {
-		MainParser.Allies.getAllies(data.responseData);
-	});
-	FoEproxy.addHandler('AllyService', 'updateAlly', (data, postData) => {
-		MainParser.Allies.buildingBoostSums = [];
-		MainParser.Allies.updateAlly(data.responseData);
-	});
-	FoEproxy.addHandler('AllyService', 'addAlly', (data, postData) => {
-		MainParser.Allies.addAlly(data.responseData);
-	});
-	FoEproxy.addFoeHelperHandler('InventoryUpdated', () => {
-		MainParser.Allies.updateAllyList();
 	});
 
 	// Portrait-Mapping für Spieler Avatare
@@ -308,7 +275,7 @@ GetFights = () =>{
 		EventHandler.checkForDB(ExtPlayerID);
 		GuildMemberStat.checkForDB(ExtPlayerID);
 		GexStat.checkForDB(ExtPlayerID);
-		GuildFights.checkForDB(ExtPlayerID);
+		Guild_fights.checkForDB(ExtPlayerID);
 		QiProgress.checkForDB(ExtPlayerID);
 
 		// which tab is active in StartUp Object?
@@ -680,6 +647,16 @@ GetFights = () =>{
 	FoEproxy.addHandler('GreatBuildingsService', 'getOtherPlayerOverview', (data, postData) => {
 		MainParser.UpdatePlayerDict(data.responseData, 'LGOverview');
 
+		// Remember the status (level, progress, tier) of each GB, shown in the box when a GB is opened.
+		// entity_id is only unique per city, therefore keyed together with the player_id
+		if (Array.isArray(data.responseData)) {
+			for (let row of data.responseData) {
+				if (row['entity_id'] !== undefined && row['player']?.['player_id'] !== undefined) {
+					MainParser.GreatBuildingsOverview[row['player']['player_id'] + '_' + row['entity_id']] = row;
+				}
+			}
+		}
+
 		// update investments
 		if (Investment) {
 			Investment.UpdateData(data.responseData, false);
@@ -706,6 +683,26 @@ GetFights = () =>{
 			let EraName = getConstruction.responseData.ownerEra;
 			if (EraName) Era = Technologies.Eras[EraName];
 			IsLevelScroll = false;
+
+			// The game client no longer requests entity data when opening a GB, it uses its local city model instead
+			// (GreatBuildingsRetrieveLevelInfoCommand only calls getConstruction(entity.id, entity.player_id)).
+			// Determine the matching entity from the request parameters so the rankings are not mixed
+			// with a stale entity of a previously opened GB.
+			const gbRequestData = postData?.[0]?.requestData,
+				requestedEntityId = gbRequestData?.[0],
+				requestedPlayerId = gbRequestData?.[1];
+
+			if (requestedEntityId !== undefined) {
+				if (requestedPlayerId === ExtPlayerID && MainParser.CityMapData[requestedEntityId]) {
+					// Own GB: take the entity from the local city data (like the game client does)
+					gbCityMapEntity = { responseData: [{ ...MainParser.CityMapData[requestedEntityId], player_id: ExtPlayerID }] };
+				}
+				else if (gbCityMapEntity?.responseData?.[0]?.id !== requestedEntityId) {
+					// Entity belongs to a different GB → discard and wait for getOtherPlayerCityMapEntity or updateEntity
+					gbCityMapEntity = null;
+					if (gbUpdateData) gbUpdateData.CityMapEntity = null;
+				}
+			}
 		}
 		else if (getConstructionRanking != null) {
 			Rankings = getConstructionRanking.responseData;
@@ -836,6 +833,13 @@ GetFights = () =>{
 
 		MainParser.CurrentGB.Entity = CityMapEntity.responseData[0];
 		MainParser.CurrentGB.Rankings = Rankings;
+		MainParser.CurrentGB.OverviewRow = MainParser.GreatBuildingsOverview[MainParser.CurrentGB.Entity['player_id'] + '_' + MainParser.CurrentGB.Entity['id']];
+
+		// Derive the current building tier (copper/silver/gold) from the rewards.
+		// While level scrolling the rankings belong to a different level, keep the tier untouched then.
+		if (!IsLevelScroll) {
+			MainParser.CurrentGB.Tier = MainParser.GetGBTierFromRankings(Rankings);
+		}
 		Parts.IsPreviousLevel = IsPreviousLevel;
 
 		// GB was loaded
@@ -996,8 +1000,13 @@ let MainParser = {
 	CastleSystemChest: null,
 	CurrentGB: {
 		Entity: undefined,
-		Rankings: undefined
+		Rankings: undefined,
+		OverviewRow: undefined,
+		Tier: undefined
 	},
+
+	// GreatBuildingContributionRow from getOtherPlayerOverview, key: "<player_id>_<entity_id>" (contains e.g. currentTier + maxLevel)
+	GreatBuildingsOverview: {},
 
 	// all buildings of the player
 	CityMapData: {},
@@ -1178,7 +1187,10 @@ let MainParser = {
 			if (!MainParser.CityEntities.hasOwnProperty(i)) continue;
 
 			let CityEntity = MainParser.CityEntities[i];
-			if (!CityEntity.type) CityEntity.type = CityEntity?.components?.AllAge?.tags?.tags?.find(value => value.hasOwnProperty('buildingType')).buildingType;
+
+			if (!CityEntity.type) {
+				CityEntity.type = CityEntity?.components?.AllAge?.tags?.tags?.find(value => value.hasOwnProperty('buildingType')).buildingType;
+			}
         }
 	},
 
@@ -1588,6 +1600,29 @@ let MainParser = {
 	 * @returns {boolean}
 	 * @constructor
 	 */
+	/**
+	 * Derives the current building tier (copper/silver/gold) from the blueprint rewards
+	 * of the rankings (highest tier found wins). Old servers without blueprintRewards → null.
+	 *
+	 * @param Rankings GreatBuildingRankingRow[] from getConstruction/contributeForgePoints
+	 * @returns {?Object} GreatBuildingTier enum, e.g. {value: 'copper'}, or null
+	 */
+	GetGBTierFromRankings: (Rankings) => {
+		const TierOrder = { copper: 1, silver: 2, gold: 3 };
+		let Tier = null;
+
+		for (let row of (Rankings || [])) {
+			for (let bp of (row?.reward?.blueprintRewards || [])) {
+				if (bp?.tier?.value && (!Tier || (TierOrder[bp.tier.value] || 0) > (TierOrder[Tier.value] || 0))) {
+					Tier = bp.tier;
+				}
+			}
+		}
+
+		return Tier;
+	},
+
+
 	SendLGData: (d)=> {
 
 		const dataEntity = d['CityMapEntity']['responseData'][0],
@@ -1604,351 +1639,6 @@ let MainParser = {
 			url: `${ApiURL}OwnLGData/?world=${ExtWorld}${MainParser.DebugMode ? '&debug' : ''}&v=${extVersion}`,
 			data: JSON.stringify(realData)
 		});
-	},
-
-
-	Allies: {
-		buildingList:null,
-		allyList:null,
-		meta:null,
-		rarities:null,
-		names:null,
-		buildingBoostSums:[],
-
-		getAllies:(allies)=>{
-			MainParser.Allies.allyList = Object.assign({}, ...allies.map(a=>({[a.id]:a})));
-			let list = MainParser.Allies.buildingList = {}
-			for (let ally of allies) {
-				if (!ally.mapEntityId) continue
-				if (list[ally.mapEntityId]) 
-					list[ally.mapEntityId][ally.id]=ally.id
-				else 
-				 	list[ally.mapEntityId] = {[ally.id]:ally.id}
-			}
-			MainParser.Allies.updateAllyList()
-		},
-
-		updateAlly:(ally)=>{
-			if (ally.mapEntityId) {
-				let list = MainParser.Allies.buildingList
-				if (list[ally.mapEntityId]) 
-					list[ally.mapEntityId][ally.id]=ally.id
-				else 
-				 	list[ally.mapEntityId] = {[ally.id]:ally.id}
-			} else {
-				mapID=MainParser.Allies.allyList[ally.id]?.mapEntityId
-				if (mapID) {
-					delete MainParser.Allies.buildingList[mapID][ally.id]
-					if (Object.keys(MainParser.Allies.buildingList[mapID]).length==0) delete MainParser.Allies.buildingList[mapID]
-				}
-			}
-			MainParser.Allies.allyList[ally.id] = ally
-			MainParser.Allies.updateAllyList()
-		},
-
-		addAlly:(ally)=>{
-			MainParser.Allies.allyList[ally.id]=ally
-			MainParser.Allies.updateAllyList()
-		},
-
-		setMeta:(raw)=>{
-			let meta = MainParser.Allies.meta = {} 
-			for (ally of raw) {
-				meta[ally.id]=ally
-			}
-		},
-
-		getProd:(CityMapId) => {
-			let M = MainParser.Allies
-			if (!M.buildingList?.[CityMapId]) return null
-			let prod={}
-			Object.values(M.buildingList[CityMapId]).forEach(id=> {
-				let a=M.allyList[id]
-				if (a.currentLevel?.boosts || a.boosts) prod.boosts = (prod.boosts||[]).concat(a.currentLevel?.boosts || a.boosts)
-			})
-			return prod
-		},
-
-		tooltip:(id)=>{
-			if (!MainParser.Allies.buildingList?.[id]) return ""
-			return `data-allies ="${JSON.stringify(Object.values(MainParser.Allies.buildingList[id]))}"`
-		},
-
-		setRarities:(raw)=>{
-			MainParser.Allies.rarities=Object.assign({}, ...raw.map(r=>({[r.id.value]:r})))
-		},
-
-		setTypes:(raw)=>{
-			MainParser.Allies.types=Object.assign({}, ...raw.map(t=>({[t.id]:t})))
-		},
-
-		getAllieData:(id)=>{
-			let ally = structuredClone(MainParser.Allies.allyList[id])
-			ally.rarity=ally.rarity.value
-			ally.name=MainParser.Allies.meta[ally.allyId]?.name
-			ally.typeName=MainParser.Allies.types[ally.type]?.name
-			ally.type=MainParser.Allies.meta[ally.allyId]?.allyType
-			return ally
-		},
-
-		showAllyList:(closeIfOpen = false)=>{
-
-			if ($('#AllyList').length === 0) {
-				HTML.Box({
-					id: 'AllyList',
-					title: i18n('Boxes.AllyList.Title'),
-					ask: i18n('Boxes.AllyList.HelpLink'),
-					auto_close: true,
-					dragdrop: true,
-					minimize: true,
-					resize: true,
-					settings: 'MainParser.Allies.ShowSettings()',
-					active_maps:"main",				
-				});
-			} else {
-				if (closeIfOpen) {
-					HTML.CloseOpenBox('AllyList');
-					return;
-				}
-			}
-			MainParser.Allies.updateAllyList()
-		},
-
-		updateAllyList:()=>{
-			MainParser.Allies.buildingBoostSums=[]	
-			if ($('#AllyList').length === 0) return;
-			let buildings = Object.assign({},...Object.values(MainParser.CityMapData).map(x=>({id:x.id,metaID:x.cityentity_id,rooms:structuredClone(MainParser.CityEntities[x.cityentity_id]?.components?.AllAge?.ally?.rooms)})).filter(x=>x.rooms!==undefined).map(x=>({[x.id]:x})))
-			let rooms = {}
-			let unassigned = 0;
-			let boostList = [
-				{feature:"all",type: "att_boost_attacker"},
-				{feature:"all",type: "att_boost_defender"},
-				{feature:"battleground",type: "att_boost_attacker"},
-				{feature:"battleground",type: "att_boost_defender"},
-				{feature:"guild_expedition",type: "att_boost_attacker"},
-				{feature:"guild_expedition",type: "att_boost_defender"},
-				{feature:"all",type: "def_boost_attacker"},
-				{feature:"all",type: "def_boost_defender"},
-				{feature:"battleground",type: "def_boost_attacker"},
-				{feature:"battleground",type: "def_boost_defender"},
-				{feature:"guild_expedition",type: "def_boost_attacker"},
-				{feature:"guild_expedition",type: "def_boost_defender"},
-			]
-			Object.values(MainParser.Allies.allyList).forEach(x=>{
-				if (x.mapEntityId) {
-					let rs=buildings[x.mapEntityId].rooms
-					for (let r of rs) {
-						if (!r.ally && r.rarity?.value == x.rarity.value) {
-							r.ally = x
-							return
-						}
-					}
-					for (let r of rs) {
-						if (!r.ally && !r.rarity) {
-							r.ally = x
-						}
-					}
-				} else {
-					rooms[0+"#" + unassigned] = {
-						allyRarity: x.rarity?.value || "",
-						allyLevel: x.level || null,												
-						allyBoosts: x.currentLevel?.boosts || x.boosts || null,
-						allyName: MainParser.Allies.meta[x.allyId]?.name || "",
-					}
-					unassigned++
-				}
-			})
-			Object.values(buildings).forEach(b=>{
-				for (let [i,r] of Object.entries(b.rooms)) {
-					rooms[b.id+"#" + i] = {
-						buildingName: MainParser.CityEntities[b.metaID].name,
-						buildingMeta:b.metaID,
-						roomRarity: r.rarity?.value || Object.keys(MainParser.Allies.rarities).join("#"),
-						allyRarity: r.ally?.rarity?.value || "",
-						allyLevel: r.ally?.level || null,												
-						allyBoosts: r.ally?.currentLevel?.boosts || r.ally?.boosts || null,
-						allyName: MainParser.Allies.meta[r.ally?.allyId]?.name || "",
-					}
-				}
-			})
-			Object.values(MainParser.Inventory).filter(x=>x?.item?.reward?.assembledReward?.type=="ally").forEach(x=>{
-				if (!x.inStock) return;
-				rooms[0+"#" + unassigned] = {
-					fragmentsAmount: x.inStock,
-					fragmentsNeeded: x.item.reward.requiredAmount,
-					allyRarity: x.item.reward.assembledReward.rarity?.value || "",
-					allyLevel: x.item.reward.assembledReward.level || null,												
-					allyBoosts: x.item.reward.assembledReward.boosts || null,
-					allyName: x.item.reward.assembledReward.name,
-				}
-				unassigned++
-			})
-
-			html=`<div class="dark-bg">
-				<select id="AllyFilter"><option value="">${i18n('Boxes.AllyList.All')}</option>`
-				for (let r of Object.values(MainParser.Allies.rarities)) {
-					html+=`<option value="${r.id.value}">${r.name}</option>`
-				}
-			html+=`</select></div>`
-			html+=`<table id="AllyListTable" class="foe-table">`
-			html+=`<thead class="sticky"><tr class="sorter-header sort2">
-							<th class="no-sort">${i18n('Boxes.AllyList.Ally')}</th>
-							<th class="is-number" data-type="ally-list">${i18n('Boxes.AllyList.Level')}</th>`;
-							for (const b of boostList) {
-								html+= `<th class="is-number" data-type="ally-list"><span class="resicon ${b.type}-${b.feature}"></span></th>`
-							}
-					html+=`<th class="no-sort">${i18n('Boxes.AllyList.Building')}</th>
-					</tr>
-				</thead>
-				<tbody class="ally-list">`;
-			sortedRooms = Object.entries(rooms).sort((a,b)=>{
-				f=(r)=>{return Object.keys(MainParser.Allies.rarities).indexOf(r.allyRarity) + (r.buildingName?10:0) + (r.fragmentsAmount?100:0)}
-				return f(a[1])-f(b[1])
-			})
-				
-			for (let [roomId,r] of sortedRooms){
-				let buildingId=roomId.split("#")[0]
-				let rarities=r.roomRarity?.split("#")||[]
-				rarities.push(r.allyRarity)
-				rarities=rarities.map(x=>"Rarity-"+x)
-
-				html+=`<tr class="allyRoomRow ${rarities.join(" ")}">
-						   	<td style="white-space:nowrap">
-								${MainParser.Allies.rarityStars(r.allyRarity)}
-								${r.allyName || ""}${r.fragmentsAmount?srcLinks.icons("icon_tooltip_fragment") + r.fragmentsAmount+"/"+r.fragmentsNeeded:""}
-							</td>
-						   	<td data-number="${(r.allyLevel || 0)}">${r.allyLevel || ""}</td>`;
-							for (let b of boostList) {
-								let allyB = MainParser.Allies.boostsArray(r.allyBoosts);
-								let boost = allyB.find(x => x.type == b.type && x.feature == b.feature);
-						   		html+=`<td data-number="${(boost ? boost.value : 0)}">${(boost ? boost.value : '-')}</td>`
-							}
-						html+=`
-					   	   	<td ${buildingId!=0?`class="helperTT" 
-								data-id="${buildingId}" 
-								data-era="${Technologies.InnoEraNames[MainParser.CityMapData[buildingId].level]}"
-								data-callback_tt="Tooltips.buildingTT" 
-								`:``}
-							>
-								${r.buildingName || ""}
-								${buildingId!=0?`<span class="show-entity" data-id="${buildingId}"><img class="game-cursor" src="${ extUrl + 'css/images/hud/open-eye.png'}"></span>`:""}
-							</td>
-							</tr>`;
-				
-				// gather sums of all boosts
-				if (buildingId!=0 && r.allyBoosts !== null) {
-					for (let boost of r.allyBoosts) {
-						let bBoost = MainParser.Allies.buildingBoostSums.find(x => x.type === boost.type && x.targetedFeature === boost.targetedFeature);
-						if (bBoost)
-							bBoost.value += boost.value;
-						else
-							MainParser.Allies.buildingBoostSums.push(structuredClone(boost));
-					}
-				}
-			}
-			MainParser.Allies.buildingBoostSums.sort((a, b) => {
-				if (a.type < b.type) return -1
-				if (a.type > b.type) return 1
-				return 0
-			});
-			MainParser.Allies.buildingBoostSums.sort((a, b) => {
-				if (a.targetedFeature < b.targetedFeature) return -1
-				if (a.targetedFeature > b.targetedFeature) return 1
-				return 0
-			});
-			html+=`</tbody><tr><td colspan="19" class="text-center dark-bg">
-				${MainParser.Allies.boosts(MainParser.Allies.buildingBoostSums)}
-				</td></tr></table>`
-			
-			$('#AllyListBody').html(html).promise().done(function () {
-				$('#AllyListTable').tableSorter();
-			})
-
-			$('#AllyFilter').on("change",()=>{
-				let rarity=$('#AllyFilter option:selected').val()
-				$('.allyRoomRow').each((i,e)=>{
-					if (rarity=="" || $(e).hasClass("Rarity-"+rarity)) $(e).show()
-					else $(e).hide()
-				})
-			})
-			$('#AllyListBody .foe-table .show-entity').on('click', function () {
-				Productions.ShowOnMap($(this).data('id'));
-			});
-			return rooms
-		},
-
-		rarityStars: (r) => {
-			if (!r || r=="") return ""
-			let i = Object.keys(MainParser.Allies.rarities).indexOf(r)
-			if (i==-1) return `<img style="filter: drop-shadow(0px 2px 2px black)"  src="${srcLinks.get(`/shared/icons/when_motivated.png`, true)}">`
-			if (i==0) return `<span style="font-size: large; color: transparent; text-shadow: 0px 0px 4px black;" >☆</span>`
-			let ret=""					
-			let star = `<img style="margin-left:-3px"  src="${srcLinks.get(`/historical_allies/portraits/historical_allies_portrait_rarity_icon.png`, true)}">`
-			for (let j = 0; j < i; j++) {
-				ret += star
-				star = `<img style="margin-left:-15px" src="${srcLinks.get(`/historical_allies/portraits/historical_allies_portrait_rarity_icon.png`, true)}">`
-			}
-			return ret
-		},
-				
-		boosts: (boosts) => {
-			let feature = {
-				"all":"",
-				"battleground":"_gbg",
-				"guild_expedition":"_gex",
-				"guild_raids":"_gr"
-			}
-			let ret=""
-			for (b of boosts||[]) {
-				ret+=`<span class="${b.targetedFeature}">${srcLinks.icons(b.type+feature[b.targetedFeature])} ${b.value + Boosts.percent(b.type)}</span>`
-			}
-			return ret
-		},
-
-		boostsArray: (boosts) => {
-			let ret = [];
-			for (b of boosts||[]) {
-				let combinedBoosts = Boosts.Mapper[b.type];
-				if (combinedBoosts) {
-					for (let type of combinedBoosts) {
-						let foundBoost = ret.find(x => x.feature === b.targetedFeature && x.type === type);
-						if (foundBoost)
-							foundBoost.value += b.value;
-						else
-						ret.push({'feature':b.targetedFeature,'value':b.value,'type':type})
-					}
-				}
-				else {
-				let foundBoost = ret.find(x => x.feature === b.targetedFeature && x.type === b.type);
-				if (foundBoost)
-					foundBoost.value += b.value;
-				else
-					ret.push({feature:b.targetedFeature,value:b.value,type:b.type});
-				}
-			}
-			return ret;
-		},
-
-		ShowSettings: () => {
-			let autoOpen = Settings.GetSetting('ShowAllyList');
-
-			let h = [];
-			h.push(`<p><label><input id="allyListAutoOpen" type="checkbox" ${(autoOpen === true) ? ' checked="checked"' : ''} />${i18n('Boxes.Settings.Autostart')}</label></p>`);
-			h.push(`<p><button onclick="MainParser.Allies.SaveSettings()" id="save-bghelper-settings" class="btn" style="width:100%">${i18n('Boxes.Settings.Save')}</button></p>`);
-
-			$('#AllyListSettingsBox').html(h.join(''));
-		},
-
-		SaveSettings: () => {
-			let value = false;
-			if ($("#allyListAutoOpen").is(':checked'))
-				value = true;
-			localStorage.setItem('ShowAllyList', value);
-			
-			$(`#AllyListSettingsBox`).remove();
-		},
-
-
 	},
 
 
@@ -2194,6 +1884,17 @@ let MainParser = {
 
 		FPCollector.CityMapDataNew = Buildings;
 		FoEproxy.triggerFoeHelperHandler('CityMapUpdated');
+	},
+
+
+	/**
+	 * Opens a popup window with the specified configuration.
+	 */
+	PopOut: (id, width, height) => {
+		Popup.PopOut(id, {
+			width: width,
+			height: height
+		});
 	},
 
 

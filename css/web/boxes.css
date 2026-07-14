@@ -1251,6 +1251,7 @@ a:hover {
 .window-ask,
 .window-settings,
 .window-speaker,
+.window-popout,
 .window-close {
 	background-image:  url('../images/hud/box-sprite.png'), url('../images/hud/box-sprite.png');
 }
@@ -1359,6 +1360,11 @@ a:hover {
 .window-speaker {
 	background-position: -105px -2px, 0 0;
 }
+
+.window-popout {
+	background-position: -216px -3px, 0 0;
+}
+
 .window-speaker:hover {
 	background-position: -146px -2px, 0 0;
 	filter: brightness(120%);
@@ -1367,6 +1373,7 @@ a:hover {
 .window-speaker.deactivated {
 	background-position: -146px -2px, 0 0;
 }
+
 .window-speaker.deactivated:hover {
 	background-position: -105px -2px, 0 0;
 }
@@ -1396,7 +1403,7 @@ a:hover {
 	position: relative;
 }
 
-.window-ask:hover, .open .window-minimize:hover, .closed .window-minimize:hover, .window-settings:hover, .window-map:hover, .window-close:hover {
+.window-ask:hover, .open .window-minimize:hover, .closed .window-minimize:hover, .window-settings:hover, .window-map:hover, .window-popout:hover, .window-close:hover {
 	filter: brightness(130%);
 }
 

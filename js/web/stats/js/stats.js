@@ -143,10 +143,10 @@ FoEproxy.addHandler('GuildRaidsMapService', 'getNodeExtendedInfo', async (data, 
 FoEproxy.addHandler('GuildRaidsMapService', 'getOverview', async (data, postData) => {
 	Stats.QI.currentNode = data.responseData.currentNode;
 }),
+
 FoEproxy.addHandler('GuildRaidsMapService', 'move', async (data, postData) => {
 	Stats.QI.currentNode = postData[0].requestData[0].pop();
 }),
-
 
 // Player treasure log
 FoEproxy.addHandler('ResourceService', 'getPlayerResources', async (data, postData) => {
@@ -169,6 +169,7 @@ FoEproxy.addHandler('ResourceService', 'getPlayerResources', async (data, postDa
 
 	StockAlarm.checkResources();
 });
+
 FoEproxy.addHandler('ResourceService', 'getPlayerResourceBag', async (data, postData) => {
 	if (data.responseData?.type?.value && data.responseData?.type?.value != 'PlayerMain') return; // for now ignore all other source types
 	const r = data.responseData?.resources?.resources || data.responseData?.resources;
@@ -349,12 +350,13 @@ let Stats = {
 	Show: (event) => {
 		if ($('#stats').length === 0) {
 			let args = {
-				'id': 'stats',
-				'title': i18n('Boxes.Stats.Title'),
-				'ask': i18n('Boxes.Stats.HelpLink'),
-				'auto_close': true,
-				'dragdrop': true,
-				'minimize': true
+				id: 'stats',
+				title: i18n('Boxes.Stats.Title'),
+				ask: i18n('Boxes.Stats.HelpLink'),
+				auto_close: true,
+				dragdrop: true,
+				popout: 'MainParser.PopOut(\'stats\', 1100, 600)',
+				minimize: true
 			};
 
 			HTML.Box(args);

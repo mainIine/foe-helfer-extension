@@ -654,7 +654,10 @@ let Outposts = {
 		if(apiToken === null) {
 			HTML.ShowToastMsg({
 				head: i18n('Boxes.CityMap.MissingApiKeyErrorHeader'),
-				text: i18n('Boxes.CityMap.MissingApiKeySubmitError'),
+				text: [
+					i18n('Boxes.CityMap.MissingApiKeySubmitError'),
+					`<a target="_blank" href="${i18n('Settings.ApiTokenUrl')}">${i18n('Settings.ApiTokenUrl')}</a>`
+				],
 				type: 'error',
 				hideAfter: 10000,
 			});
@@ -669,15 +672,18 @@ let Outposts = {
 					name: ExtPlayerName,
 					id: ExtPlayerID,
 					world: ExtWorld,
-					avatar: ExtPlayerAvatar
+					avatar: ExtPlayerAvatar,
+					avatarUrl: srcLinks.GetPortrait(ExtPlayerAvatar),
+					era: CurrentEra,
+					era_id: CurrentEraID
 				},
 				apiToken: apiToken,
 				type: localStorage.getItem('OutpostType'),
 				eras: Technologies.Eras,
-				entities: Outposts.CityMap['entities'],
-				areas: Outposts.CityMap['unlocked_areas'],
-				blockedAreas: Outposts.CityMap['blocked_areas'],
-				allEntities: Outposts.Advancements
+				entities: CityMap.removeDoubleUnderscoreKeys(Outposts.CityMap['entities']),
+				areas: CityMap.removeDoubleUnderscoreKeys(Outposts.CityMap['unlocked_areas']),
+				blockedAreas: CityMap.removeDoubleUnderscoreKeys(Outposts.CityMap['blocked_areas']),
+				allEntities: CityMap.removeDoubleUnderscoreKeys(Outposts.Advancements)
 			};
 
 		MainParser.send2Server(d, 'CityPlanner', function(resp){

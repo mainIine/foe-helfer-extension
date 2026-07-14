@@ -217,12 +217,12 @@ let shopAssist = {
 				<img src="${(slot.rarity?.value || "none") != "none" ? srcLinks.get("/item_store/store_shared/item_store_rarity_icon_"+slot.rarity.value+".png",true,true):""}" alt="">
 			</td>`
 			//name
-			h+=`<td data-ids="${buildingList}" class="helperTT" data-callback_tt="${buildingList.length>0?'shopAssist.TT':'shopAssist.allTT'}" data-slotid="${slot.slotId}A">${(slot.reward.target?srcLinks.icons("booster_target_"+slot.reward.target):"")+slot.reward.name}</td>`			
+			h+=`<td data-ids="${buildingList}" class="fh-tooltip" data-callback_tt="${buildingList.length>0?'shopAssist.TT':'shopAssist.allTT'}" data-slotid="${slot.slotId}A">${(slot.reward.target?srcLinks.icons("booster_target_"+slot.reward.target):"")+slot.reward.name}</td>`			
 			if (slot.reward?.assembledReward?.type == "ally") {
 				let allTT = `<table class="foe-table shopAssistTable">
 							<tr><th><img src=${srcLinks.get("/historical_allies/portraits/historical_allies_portrait_ally_"+slot.reward.assembledReward.iconAssetName+".png",true)} style="height:unset">
-							${MainParser.Allies.rarityStars(slot.reward.assembledReward.rarity.value)}</th></tr>
-							<tr><td> ${MainParser.Allies.boosts(slot.reward.assembledReward.boosts)}</td></tr>
+							${Allies.rarityStars(slot.reward.assembledReward.rarity.value)}</th></tr>
+							<tr><td> ${Allies.boosts(slot.reward.assembledReward.boosts)}</td></tr>
 							</table>`
 				shopAssist.allTTContent[slot.slotId+"A"] = allTT;
 			}
@@ -275,7 +275,7 @@ let shopAssist = {
 						canBuy = false;
 					costs += `<div class="text-right">${HTML.Format(cost) + srcLinks.icons(res)}</div>`
 				})
-				h += `<td class="costs ${(canBuy && !limitReached && unlocked) ? "canBuy" : "canNotBuy"} helperTT" data-callback_tt="shopAssist.allTT" data-slotid="${slot.slotId}F">
+				h += `<td class="costs ${(canBuy && !limitReached && unlocked) ? "canBuy" : "canNotBuy"} fh-tooltip" data-callback_tt="shopAssist.allTT" data-slotid="${slot.slotId}F">
 					<div><span>${srcLinks.icons("icon_tooltip_fragment") + HTML.Format(neededFragments)}</span> <span>(${neededBuys}x)</span></div>
 					${costs}
 				</td>`
@@ -315,7 +315,7 @@ let shopAssist = {
 					costs += `<div class="text-right">` + HTML.Format(cost) + srcLinks.icons(res)+ "</div>"
 				})
 			}
-			h += `<td class="costs ${(maxBuys>0 && maxBuys==limitedBuys) || (maxBuys>0 && limitedBuys == Infinity)?"canBuy":""} ${limitedBuys > 0 && limitedBuys < Infinity ? 'helperTT" data-callback_tt="shopAssist.allTT" data-slotid="' + slot.slotId + '"':'"'}>
+			h += `<td class="costs ${(maxBuys>0 && maxBuys==limitedBuys) || (maxBuys>0 && limitedBuys == Infinity)?"canBuy":""} ${limitedBuys > 0 && limitedBuys < Infinity ? 'fh-tooltip" data-callback_tt="shopAssist.allTT" data-slotid="' + slot.slotId + '"':'"'}>
 					<div>
 						${slot.reward.subType == "fragment" && maxBuys != Infinity && maxBuys != 0 ? 
 							`<span>${srcLinks.icons("icon_tooltip_fragment") + HTML.Format(maxBuys*slot.reward.amount)}</span>`:``} 

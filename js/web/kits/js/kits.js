@@ -711,10 +711,12 @@ let Kits = {
 
 	CreateUpgradeSchemes: ()=> {
 		let sO = {}
+		let id;
+
 		for (let s of Object.values(MainParser.SelectionKits)) {
 			Kits.Names[s.selectionKitId] = s.name
 			for (let c of s.options || s.eraOptions[CurrentEra].options) {
-				id = (c.item.cityEntityId||c.item.upgradeItemId)
+				id = (c.item.cityEntityId || c.item.upgradeItemId)
 				if (!id)
 					continue
 				if (!sO[id]) {
@@ -722,7 +724,7 @@ let Kits = {
 				} else {
 					sO[id].push(s.selectionKitId)
 				}
-			}			
+			}
 		}
 
 		let endBuildings = {}

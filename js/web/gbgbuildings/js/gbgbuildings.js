@@ -331,7 +331,7 @@ let GBGBuildings = {
 		if (data.availableBuildings.length === 0) return;
 
 		let stored = JSON.parse(localStorage.getItem("GBGBuildingCosts") || "{}");
-		if (stored.GBGRound != GuildFights.CurrentGBGRound)
+		if (stored.GBGRound != Guild_fights.CurrentGBGRound)
 			stored = {};
 
 		let costsMap = {};
@@ -340,6 +340,6 @@ let GBGBuildings = {
 			stored[provinceId] = costsMap;
 		}
 
-		localStorage.setItem("GBGBuildingCosts", JSON.stringify(Object.assign(stored, {GBGRound: GuildFights.CurrentGBGRound})));
+		localStorage.setItem("GBGBuildingCosts", JSON.stringify(Object.assign(stored, {GBGRound: Guild_fights.CurrentGBGRound})));
 	}
 }
