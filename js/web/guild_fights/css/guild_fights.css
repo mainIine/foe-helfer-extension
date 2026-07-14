@@ -238,6 +238,12 @@
 	position: relative;
 }
 
+#LiveGildFightingBody .tabs ul li.gbgranking a span {
+	background: transparent url('../../x_img/ranking.png') no-repeat;
+	background-size: contain;
+	position: relative;
+}
+
 #LiveGildFightingBody >.btn-group {
 	position: absolute;
 	top: 44px;
@@ -275,6 +281,36 @@
 #LiveGildFightingBody table.foe-table tr.highlight-row {
 	background-color: rgba(40, 18, 7, 0.8);
 	color: var(--sunflower);
+}
+
+#LiveGildFightingBody .focus-target {
+	width: 14px;
+	height: 14px;
+	margin-right: 2px;
+	vertical-align: text-bottom;
+}
+
+#LiveGildFightingBody #ranking {
+	overflow: hidden;
+	overflow-y: auto;
+}
+
+#LiveGildFightingBody #ranking .tdmin {
+	width: 1%;
+	white-space: nowrap;
+}
+
+#LiveGildFightingBody tr.mark-guild td {
+	border-top: 1px solid var(--sunflower);
+	border-bottom: 1px solid var(--sunflower);
+}
+
+#LiveGildFightingBody tr.mark-guild td:first-child {
+	border-left: 1px solid var(--sunflower);
+}
+
+#LiveGildFightingBody tr.mark-guild td:last-child {
+	border-right: 1px solid var(--sunflower);
 }
 
 #LiveGildFightingBody tr td {

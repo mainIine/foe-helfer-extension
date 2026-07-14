@@ -275,7 +275,7 @@ GetFights = () =>{
 		EventHandler.checkForDB(ExtPlayerID);
 		GuildMemberStat.checkForDB(ExtPlayerID);
 		GexStat.checkForDB(ExtPlayerID);
-		GuildFights.checkForDB(ExtPlayerID);
+		Guild_fights.checkForDB(ExtPlayerID);
 		QiProgress.checkForDB(ExtPlayerID);
 
 		// which tab is active in StartUp Object?
@@ -647,6 +647,16 @@ GetFights = () =>{
 	FoEproxy.addHandler('GreatBuildingsService', 'getOtherPlayerOverview', (data, postData) => {
 		MainParser.UpdatePlayerDict(data.responseData, 'LGOverview');
 
+		// Status (Level, Fortschritt, Tier) je LG merken, wird beim Öffnen eines LGs in der Box angezeigt.
+		// entity_id ist nur pro Stadt eindeutig, daher zusammen mit der player_id als Schlüssel
+		if (Array.isArray(data.responseData)) {
+			for (let row of data.responseData) {
+				if (row['entity_id'] !== undefined && row['player']?.['player_id'] !== undefined) {
+					MainParser.GreatBuildingsOverview[row['player']['player_id'] + '_' + row['entity_id']] = row;
+				}
+			}
+		}
+
 		// update investments
 		if (Investment) {
 			Investment.UpdateData(data.responseData, false);
@@ -803,6 +813,7 @@ GetFights = () =>{
 
 		MainParser.CurrentGB.Entity = CityMapEntity.responseData[0];
 		MainParser.CurrentGB.Rankings = Rankings;
+		MainParser.CurrentGB.OverviewRow = MainParser.GreatBuildingsOverview[MainParser.CurrentGB.Entity['player_id'] + '_' + MainParser.CurrentGB.Entity['id']];
 		Parts.IsPreviousLevel = IsPreviousLevel;
 
 		// GB was loaded
@@ -963,8 +974,12 @@ let MainParser = {
 	CastleSystemChest: null,
 	CurrentGB: {
 		Entity: undefined,
-		Rankings: undefined
+		Rankings: undefined,
+		OverviewRow: undefined
 	},
+
+	// GreatBuildingContributionRow aus getOtherPlayerOverview, Schlüssel: "<player_id>_<entity_id>" (enthält u.a. currentTier + maxLevel)
+	GreatBuildingsOverview: {},
 
 	// all buildings of the player
 	CityMapData: {},
