@@ -647,8 +647,8 @@ GetFights = () =>{
 	FoEproxy.addHandler('GreatBuildingsService', 'getOtherPlayerOverview', (data, postData) => {
 		MainParser.UpdatePlayerDict(data.responseData, 'LGOverview');
 
-		// Status (Level, Fortschritt, Tier) je LG merken, wird beim Öffnen eines LGs in der Box angezeigt.
-		// entity_id ist nur pro Stadt eindeutig, daher zusammen mit der player_id als Schlüssel
+		// Remember the status (level, progress, tier) of each GB, shown in the box when a GB is opened.
+		// entity_id is only unique per city, therefore keyed together with the player_id
 		if (Array.isArray(data.responseData)) {
 			for (let row of data.responseData) {
 				if (row['entity_id'] !== undefined && row['player']?.['player_id'] !== undefined) {
@@ -683,6 +683,26 @@ GetFights = () =>{
 			let EraName = getConstruction.responseData.ownerEra;
 			if (EraName) Era = Technologies.Eras[EraName];
 			IsLevelScroll = false;
+
+			// The game client no longer requests entity data when opening a GB, it uses its local city model instead
+			// (GreatBuildingsRetrieveLevelInfoCommand only calls getConstruction(entity.id, entity.player_id)).
+			// Determine the matching entity from the request parameters so the rankings are not mixed
+			// with a stale entity of a previously opened GB.
+			const gbRequestData = postData?.[0]?.requestData,
+				requestedEntityId = gbRequestData?.[0],
+				requestedPlayerId = gbRequestData?.[1];
+
+			if (requestedEntityId !== undefined) {
+				if (requestedPlayerId === ExtPlayerID && MainParser.CityMapData[requestedEntityId]) {
+					// Own GB: take the entity from the local city data (like the game client does)
+					gbCityMapEntity = { responseData: [{ ...MainParser.CityMapData[requestedEntityId], player_id: ExtPlayerID }] };
+				}
+				else if (gbCityMapEntity?.responseData?.[0]?.id !== requestedEntityId) {
+					// Entity belongs to a different GB → discard and wait for getOtherPlayerCityMapEntity or updateEntity
+					gbCityMapEntity = null;
+					if (gbUpdateData) gbUpdateData.CityMapEntity = null;
+				}
+			}
 		}
 		else if (getConstructionRanking != null) {
 			Rankings = getConstructionRanking.responseData;
@@ -814,6 +834,12 @@ GetFights = () =>{
 		MainParser.CurrentGB.Entity = CityMapEntity.responseData[0];
 		MainParser.CurrentGB.Rankings = Rankings;
 		MainParser.CurrentGB.OverviewRow = MainParser.GreatBuildingsOverview[MainParser.CurrentGB.Entity['player_id'] + '_' + MainParser.CurrentGB.Entity['id']];
+
+		// Derive the current building tier (copper/silver/gold) from the rewards.
+		// While level scrolling the rankings belong to a different level, keep the tier untouched then.
+		if (!IsLevelScroll) {
+			MainParser.CurrentGB.Tier = MainParser.GetGBTierFromRankings(Rankings);
+		}
 		Parts.IsPreviousLevel = IsPreviousLevel;
 
 		// GB was loaded
@@ -975,10 +1001,11 @@ let MainParser = {
 	CurrentGB: {
 		Entity: undefined,
 		Rankings: undefined,
-		OverviewRow: undefined
+		OverviewRow: undefined,
+		Tier: undefined
 	},
 
-	// GreatBuildingContributionRow aus getOtherPlayerOverview, Schlüssel: "<player_id>_<entity_id>" (enthält u.a. currentTier + maxLevel)
+	// GreatBuildingContributionRow from getOtherPlayerOverview, key: "<player_id>_<entity_id>" (contains e.g. currentTier + maxLevel)
 	GreatBuildingsOverview: {},
 
 	// all buildings of the player
@@ -1573,6 +1600,29 @@ let MainParser = {
 	 * @returns {boolean}
 	 * @constructor
 	 */
+	/**
+	 * Derives the current building tier (copper/silver/gold) from the blueprint rewards
+	 * of the rankings (highest tier found wins). Old servers without blueprintRewards → null.
+	 *
+	 * @param Rankings GreatBuildingRankingRow[] from getConstruction/contributeForgePoints
+	 * @returns {?Object} GreatBuildingTier enum, e.g. {value: 'copper'}, or null
+	 */
+	GetGBTierFromRankings: (Rankings) => {
+		const TierOrder = { copper: 1, silver: 2, gold: 3 };
+		let Tier = null;
+
+		for (let row of (Rankings || [])) {
+			for (let bp of (row?.reward?.blueprintRewards || [])) {
+				if (bp?.tier?.value && (!Tier || (TierOrder[bp.tier.value] || 0) > (TierOrder[Tier.value] || 0))) {
+					Tier = bp.tier;
+				}
+			}
+		}
+
+		return Tier;
+	},
+
+
 	SendLGData: (d)=> {
 
 		const dataEntity = d['CityMapEntity']['responseData'][0],

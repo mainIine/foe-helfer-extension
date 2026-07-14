@@ -152,3 +152,17 @@
 .btn.arkBonus {
 	font-weight: bold;
 }
+#gbCalc .lb-tier-icon {
+	height: 18px;
+	vertical-align: text-bottom;
+}
+
+#gbCalc .bp-tier-amount {
+	white-space: nowrap;
+}
+
+#gbCalc .bp-tier-icon {
+	height: 16px;
+	vertical-align: text-bottom;
+	margin-left: 1px;
+}

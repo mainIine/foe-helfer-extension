@@ -11,8 +11,16 @@
  * **************************************************************************************
  */
 
+/**
+ * Great building investment box: rates all great buildings by their return on
+ * investment (break-even time in days) to suggest which one to level next.
+ */
 let GreatBuildings = {
 
+    /**
+     * First place patron reward (in FP) per era and level.
+     * Key: era id (see Technologies.Eras), value: rewards indexed by level (0-based).
+     */
     Rewards: {
         0: [5, 10, 15, 20, 30, 35, 45, 50, 60, 65, 75, 85, 95, 100, 110, 120, 130, 140, 150, 155, 165, 175, 185, 195, 205, 215, 225, 235, 245, 255, 265, 275, 285, 300, 310, 320, 330, 340, 350, 365, 375, 385, 395, 405, 420, 430, 440, 450, 465, 475, 485, 500, 510, 520, 535, 545, 555, 570, 580, 590, 605, 615, 630, 640, 650, 665, 675, 690, 700, 715, 725, 735, 750, 760, 775, 785, 800, 810, 825, 835, 850, 860, 875, 890, 900, 915, 925, 940, 950, 965, 975, 990, 1005, 1015, 1030, 1040, 1055, 1070, 1080, 1095, 1110, 1120, 1135, 1150, 1160, 1175, 1190, 1200, 1215, 1230, 1240, 1255, 1270, 1280, 1295, 1310, 1325, 1335, 1350, 1365, 1380, 1390, 1405, 1420, 1430, 1445, 1460, 1475, 1490, 1500, 1515, 1530, 1545, 1555, 1570, 1585, 1600, 1615, 1630, 1640, 1655, 1670, 1685, 1700, 1710, 1725, 1740, 1755, 1770, 1785, 1800, 1815, 1825, 1840, 1855, 1870, 1885, 1900, 1915, 1930, 1940, 1955, 1970, 1985, 2000, 2015, 2030, 2045, 2060, 2075, 2090, 2105, 2120, 2130, 2145, 2160, 2175, 2190, 2205, 2220, 2235, 2250, 2265, 2280, 2295, 2310, 2325, 2340, 2355, 2370, 2385, 2400, 2415, 2430, 2445, 2460, 2475, 2490, 2505, 2520, 2535, 2550, 2565, 2580, 2595, 2615, 2625, 2645, 2660, 2675, 2690, 2705, 2720, 2735, 2750, 2765, 2780, 2795, 2810, 2825, 2840, 2860, 2875, 2890, 2905, 2920, 2935, 2950, 2965, 2985, 2995, 3015, 3030, 3045, 3060, 3075, 3090, 3110, 3125, 3140, 3155, 3170, 3185, 3200, 3215, 3235, 3250, 3265, 3280, 3295, 3315, 3330, 3345, 3360, 3375, 3390, 3405, 3425, 3440, 3455, 3470, 3490, 3505, 3520, 3535, 3550, 3570, 3585, 3600, 3615, 3630, 3650, 3665, 3680, 3695, 3715, 3730, 3745, 3760, 3780, 3795, 3810, 3825, 3845, 3860, 3875, 3890, 3910, 3925, 3940, 3955, 3975, 3990, 4005, 4020, 4040, 4055, 4070, 4085, 4105, 4120, 4135, 4155, 4170, 4185, 4200, 4220, 4235, 4250, 4270, 4285, 4300, 4320, 4335, 4350, 4370, 4385, 4400, 4420, 4435, 4450, 4470, 4485, 4500, 4520, 4535, 4550, 4570, 4585, 4600, 4620, 4635, 4650, 4670, 4685, 4705, 4720, 4735, 4755, 4770, 4785, 4805, 4820, 4835, 4855, 4870, 4890, 4905, 4920, 4940, 4955, 4975, 4990, 5005, 5025, 5040, 5060, 5075, 5090, 5110, 5125], 
         2: [5, 10, 10, 15, 25, 30, 35, 40, 45, 55, 60, 65, 75, 80, 85, 95, 100, 110, 115, 125, 130, 140, 145, 155, 160, 170, 180, 185, 195, 200, 210, 220, 225, 235, 245, 250, 260, 270, 275, 285, 295, 300, 310, 320, 330, 340, 345, 355, 365, 375, 380, 390, 400, 410, 420, 430, 440, 445, 455, 465, 475, 485, 495, 505, 510, 520, 530, 540, 550, 560, 570, 580, 590, 600, 610, 620, 630, 640, 650, 660, 670, 680, 690, 700, 710, 720, 730, 740, 750, 760, 770, 780, 790, 800, 810, 820, 830, 840, 850, 860, 870, 880, 890, 905, 915, 925, 935, 945, 955, 965, 975, 985, 995, 1010, 1020, 1030, 1040, 1050, 1060, 1070, 1085, 1095, 1105, 1115, 1125, 1135, 1150, 1160, 1170, 1180, 1190, 1200, 1215, 1225, 1235, 1245, 1255, 1270, 1280, 1290, 1300, 1310, 1325, 1335, 1345, 1355, 1370, 1380, 1390, 1400, 1415, 1425, 1435, 1445, 1460, 1470, 1480, 1490, 1505, 1515, 1525, 1540, 1550, 1560, 1570, 1585, 1595, 1605, 1620, 1630, 1640, 1655, 1665, 1675, 1690, 1700, 1710, 1725, 1735, 1745, 1760, 1770, 1780, 1790, 1805, 1815, 1830, 1840, 1850, 1865, 1875, 1885, 1900, 1910, 1920, 1935, 1945, 1960, 1970, 1980, 1995, 2005, 2015, 2030, 2040, 2055, 2065, 2075, 2090, 2100, 2115, 2125, 2135, 2150, 2160, 2175, 2185, 2195, 2210, 2220, 2235, 2245, 2260, 2270, 2280, 2295, 2305, 2320, 2330, 2345, 2355, 2370, 2380, 2395, 2405, 2415, 2430, 2440, 2455, 2465, 2480, 2490, 2505, 2515, 2530, 2540, 2555, 2565, 2580, 2590, 2605, 2615, 2630, 2640, 2655, 2665, 2680, 2690, 2705, 2715, 2730, 2740, 2755, 2765, 2780, 2790, 2805, 2815, 2830, 2840, 2855, 2865, 2880, 2890, 2905, 2920, 2930, 2945, 2955, 2970, 2980, 2995, 3005, 3020, 3030, 3045, 3060, 3070, 3085, 3095, 3110, 3120, 3135, 3145, 3160, 3175, 3185, 3200, 3210, 3225, 3240, 3250, 3265, 3275, 3290, 3300, 3315, 3330, 3340, 3355, 3370, 3380, 3395, 3405, 3420, 3435, 3445, 3460, 3470, 3485, 3500, 3510, 3525, 3535, 3550, 3565, 3575, 3590, 3605, 3615, 3630, 3640, 3655, 3670, 3680, 3695, 3710, 3720, 3735, 3750, 3760, 3775, 3785, 3800, 3815, 3830, 3840, 3855, 3865, 3880, 3895, 3905, 3920, 3935, 3950, 3960, 3975, 3990, 4000, 4015, 4030, 4040, 4055, 4070, 4080, 4095, 4110, 4120, 4135, 4150, 4160, 4175, 4190, 4205, 4215, 4230, 4245, 4255, 4270, 4285, 4295, 4310, 4325, 4340, 4350, 4365, 4380, 4390, 4405, 4420, 4435, 4445, 4460, 4475, 4490, 4500, 4515, 4530, 4540, 4555, 4570, 4585, 4595, 4610, 4625, 4640, 4650, 4665, 4680, 4695, 4705, 4720, 4735, 4750, 4760, 4775, 4790, 4805, 4815, 4830], 
@@ -39,6 +47,11 @@ let GreatBuildings = {
         23: [10, 20, 30, 45, 65, 80, 95, 115, 135, 150, 170, 190, 210, 230, 250, 270, 290, 310, 335, 355, 375, 400, 420, 445, 465, 490, 515, 535, 560, 585, 605, 630, 655, 680, 705, 730, 750, 775, 800, 825, 850, 875, 905, 930, 955, 980, 1005, 1030, 1055, 1085, 1110, 1135, 1160, 1190, 1215, 1240, 1270, 1295, 1325, 1350, 1375, 1405, 1430, 1460, 1485, 1515, 1545, 1570, 1600, 1625, 1655, 1680, 1710, 1740, 1765, 1795, 1825, 1855, 1880, 1910, 1940, 1970, 1995, 2025, 2055, 2085, 2115, 2145, 2175, 2200, 2230, 2260, 2290, 2320, 2350, 2380, 2410, 2440, 2470, 2500, 2530, 2560, 2590, 2620, 2650, 2685, 2715, 2745, 2775, 2805, 2835, 2865, 2895, 2930, 2960, 2990, 3020, 3055, 3085, 3115, 3145, 3175, 3210, 3240, 3270, 3305, 3335, 3365, 3400, 3430, 3460, 3495, 3525, 3560, 3590, 3620, 3655, 3685, 3720, 3750, 3785, 3815, 3845, 3880, 3910, 3945, 3975, 4010, 4040, 4075, 4110, 4140, 4175, 4205, 4240, 4270, 4305, 4335, 4370, 4405, 4435, 4470, 4505, 4535, 4570, 4605, 4635, 4670, 4705, 4740, 4770, 4805, 4835, 4870, 4905, 4940, 4975, 5005, 5040, 5075, 5110, 5140, 5175, 5210, 5245, 5280, 5315, 5345, 5380, 5415, 5450, 5485, 5520, 5555, 5585, 5620, 5655, 5690, 5725, 5760, 5795, 5830, 5865, 5900, 5935, 5970, 6005, 6040, 6075, 6110]
     }, 
 
+    /**
+     * Static production data of all rated great buildings.
+     * Productions are arrays indexed by level (0-based); levels beyond the
+     * array are extrapolated via the matching `*Increase` value.
+     */
     GreatBuildingsData: [
         { 'ID': 'X_AllAge_Expedition', 'GoodCosts': 0, 'FPProductions': [7.09, 7.39, 7.7, 8, 8.31, 8.62, 8.77, 9.08, 9.39, 9.7, 10.01, 10.17, 10.47, 10.78, 10.93, 11.24, 11.55, 11.7, 12.01, 12.17, 12.48, 12.63, 12.94, 13.1, 13.41, 13.57, 13.73, 14.04, 14.2, 14.36, 14.52, 14.83, 14.99, 15.15, 15.31, 15.47, 15.64, 15.8, 15.96, 16.12, 16.28, 16.45, 16.61, 16.77, 16.93, 17.1, 17.11, 17.28, 17.44, 17.6, 17.77, 17.78, 17.94, 18.11, 18.12, 18.29, 18.45, 18.47, 18.63, 18.64, 18.81, 18.98, 18.99, 19.16, 19.17, 19.34, 19.35, 19.52, 19.53, 19.54, 19.71, 19.72, 19.89, 19.9, 19.91, 20.08, 20.1, 20.11, 20.28, 20.29, 20.3, 20.47, 20.49, 20.5, 20.67, 20.68, 20.69, 20.71, 20.88, 20.89, 20.9, 20.92, 21.09, 21.1, 21.11, 21.12, 21.14, 21.15, 21.32, 21.33, 21.35, 21.36], 'GoodsProductions': [12.98, 13.54, 14.1, 14.66, 15.23, 15.8, 16.09, 16.66, 17.24, 17.81, 18.38, 18.67, 19.23, 19.8, 20.08, 20.65, 21.22, 21.51, 22.07, 22.37, 22.94, 23.23, 23.8, 24.09, 24.67, 24.96, 25.26, 25.83, 26.13, 26.43, 26.73, 27.3, 27.6, 27.9, 28.2, 28.5, 28.8, 29.1, 29.41, 29.7, 30.01, 30.31, 30.62, 30.92, 31.22, 31.53, 31.56, 31.86, 32.17, 32.47, 32.78, 32.81, 33.11, 33.42, 33.45, 33.76, 34.07, 34.1, 34.4, 34.43, 34.74, 35.05, 35.07, 35.39, 35.41, 35.73, 35.75, 36.07, 36.09, 36.12, 36.44, 36.46, 36.78, 36.81, 36.83, 37.14, 37.18, 37.2, 37.52, 37.54, 37.57, 37.89, 37.92, 37.94, 38.26, 38.29, 38.31, 38.34, 38.66, 38.69, 38.72, 38.74, 39.06, 39.09, 39.11, 39.14, 39.17, 39.2, 39.52, 39.54, 39.57, 39.6], GoodsIncrease: 0 }, //Temple of Relics
         { 'ID': 'X_BronzeAge_Landmark1', 'GoodCosts': 0, 'GoodsProductions': [6, 7, 8, 9, 10, 11, 12, 13, 14, 15], GoodsIncrease: 1 }, //Babel
@@ -70,7 +83,12 @@ let GreatBuildings = {
         { 'ID': 'X_SpaceAgeSpaceHub_Landmark1', 'GoodCosts': 30000, 'AttackProductions': [5, 10, 15, 20, 25, 30, 35, 40, 45, 50], AttackIncrease: 5}, //Stellar Warship
     ],
 
-    BlueGalaxyStaticProductions: { // Durchschnitts FP und Güter pro Tag für großen Leuchtturm und Enzianwindmühle
+    /**
+     * Average FP and goods per day of special event buildings (great
+     * lighthouse, gentian windmill, …) that have no regular production data,
+     * used for the Blue Galaxy ranking. Indexed by entity id.
+     */
+    BlueGalaxyStaticProductions: {
         'R_MultiAge_SummerBonus19a': { FP: 0.2, Goods: 1 },
         'R_MultiAge_SummerBonus19b': { FP: 1.4, Goods: 2 },
         'R_MultiAge_SummerBonus19c': { FP: 2.75, Goods: 3.75 },
@@ -86,27 +104,55 @@ let GreatBuildings = {
         'R_MultiAge_SoccerBonus22h': { FP: 11, Goods: 21.5 }
     },
 
+    /** @type {number} Arc bonus in percent, used to calculate the patron rewards */
     ForderBonus: 90,
+
+    /** @type {number} FP earned per day through patron rewards, used to rate further Arc levels */
     RewardPerDay: 0,
+
+    /** @type {number} Opportunity costs: assumed FP value one occupied tile produces per day */
     FPPerTile: 0.2,
+
+    /** @type {boolean} Hide great buildings that are not built yet */
     HideNewGBs: false,
 
+    /** @type {boolean} Include goods productions in the rating */
     ShowGoods: false,
+
+    /** @type {number} FP value of one good of the current era */
     GoodsValue0: 0.2,
+
+    /** @type {number} FP value of one good of the previous era */
     GoodsValue1: 0.15,
+
+    /** @type {number} FP value of one unrefined good (three eras back) */
     GoodsValue3: 0.1,
 
+    /** @type {boolean} Include attack boosts in the rating */
     ShowAttack: false,
+
+    /** @type {number} FP value of 1% attack boost */
     AttackValue: 0.2,
 
+    /** @type {?Object[]} Cache of all city entities that are great buildings */
     GreatBuildingEntityCache: null,
+
+    /** @type {number} Sum of all patron reward FP found in the town hall event history */
     FPRewards: 0,
+
+    /** @type {Object<string, Object>} Already processed town hall events, indexed by event id */
     EventDict: {},
+
+    /** @type {{ID: number, FP: number, Goods: number}[]} Own buildings collectable by the Blue Galaxy, sorted by value (descending) */
     GalaxyBuildings: [],
+
+    /** @type {Object<number, boolean>} Expanded state of the detail rows, indexed by great building index */
     DetailsVisible: {},
 
     /**
-     * Zeigt die Box an oder schließt sie
+     * Toggles the box: on first open the saved settings are restored from
+     * localStorage and all event listeners are registered, otherwise the box
+     * is closed. Afterwards the body is (re-)rendered.
      */
     Show: () => {
         if ($('#greatbuildings').length === 0) {
@@ -280,6 +326,11 @@ let GreatBuildings = {
     },
 
 
+    /**
+     * Renders the box body: the settings header and the ROI table of all
+     * great buildings, sorted by the break-even time of their best level.
+     * Rows for further levels are collapsed behind the main row.
+     */
     CalcBody: () => {
         GreatBuildings.DetailsVisible = {};
 
@@ -647,6 +698,11 @@ let GreatBuildings = {
     },
 
 
+    /**
+     * Rebuilds `GalaxyBuildings`: collects all own buildings with a motivated
+     * FP or goods production (plus the static event building values) and
+     * sorts them by their FP value in descending order.
+     */
     RefreshGalaxyBuildings: () => {
         GreatBuildings.GalaxyBuildings = [];
 
@@ -692,6 +748,16 @@ let GreatBuildings = {
     },
 
 
+    /**
+     * Calculates the daily FP and goods yield of the Blue Galaxy on a given
+     * level, based on the best own buildings from `GalaxyBuildings`.
+     *
+     * @param {number[]} FPProductions Reward factor per level (chance of a double collection per charge)
+     * @param {number[]} Charges Number of charges per level
+     * @param {number} Level Level to calculate (0-based)
+     * @param {boolean} IsDoubleCollection true for the one-time double collection on level-up: skips the buildings already covered by the previous level
+     * @returns {{FP: number, Goods: number}} Average FP and goods per day
+     */
     GetGalaxyProduction: (FPProductions, Charges, Level, IsDoubleCollection) => {
         let StartIndex = 0;
         if (IsDoubleCollection && Level > 1) {
@@ -711,6 +777,23 @@ let GreatBuildings = {
     },
 
 
+    /**
+     * Determines the level with the best return on investment for a great
+     * building, starting from the given level.
+     *
+     * @param {number} Level Current level of the great building (-1 = not built yet)
+     * @param {number[]} NettoCosts Net FP costs (owner share after patron rewards) per level
+     * @param {number[]} FPProductions Daily FP production per level
+     * @param {number[]} GoodsProductions Daily goods production per level
+     * @param {number} GoodsValue FP value of one good
+     * @param {number[]} AttackProductions Attack boost per level
+     * @param {number} AttackValue FP value of 1% attack boost
+     * @param {number} BuildDailyCosts Daily opportunity costs of the occupied tiles (size × FP per tile), counted against an unbuilt great building
+     * @param {number} BuildCosts One-time goods costs of a new construction
+     * @param {boolean} DoubleCollection Whether the double collection on level-up is credited against the costs
+     * @param {number[]} [Charges] Blue Galaxy only: charges per level, switches the production lookup to GetGalaxyProduction
+     * @returns {{CurrentLevel: number, BestLevel: (number|undefined), ROIValues: {Costs: number, FP: number, Goods: number, Attack: number, ROI: number}[], GoodsValue: number, AttackValue: number, BuildDailyCosts: number, BuildCosts: number}} The best level and the ROI values of every examined level
+     */
     GetROIValues: (Level, NettoCosts, FPProductions, GoodsProductions, GoodsValue, AttackProductions, AttackValue, BuildDailyCosts, BuildCosts, DoubleCollection, Charges) => {
         let Ret = { 'CurrentLevel': Level, 'BestLevel': undefined, ROIValues: [], GoodsValue: GoodsValue, AttackValue: AttackValue, BuildDailyCosts: BuildDailyCosts, BuildCosts: BuildCosts };
 
@@ -787,6 +870,94 @@ let GreatBuildings = {
     },
 
 
+    /**
+     * Prestige icon (copper/silver/gold) of the multi-tier great buildings as <img>,
+     * falls back to text if the asset is not part of the ForgeHX file index
+     *
+     * @param Tier GreatBuildingTier enum, e.g. {value: 'copper'}
+     * @returns {string} HTML or empty string
+     */
+    TierBadge: (Tier) => {
+        if (!Tier || !Tier['value']) return '';
+
+        const TierNames = {
+                copper: i18n('Boxes.OwnpartCalculator.TierCopper'),
+                silver: i18n('Boxes.OwnpartCalculator.TierSilver'),
+                gold: i18n('Boxes.OwnpartCalculator.TierGold')
+            },
+            TierName = TierNames[Tier['value']] || Tier['value'],
+            TierIcon = srcLinks.get(`/shared/gui/greatbuildings/prestige/icon_prestige_${Tier['value']}.png`, true, true);
+
+        // Asset not part of the ForgeHX file index or index not loaded yet → fall back to text
+        if (TierIcon.includes('antiquedealer_flag') || TierIcon.includes('-undefined.')) {
+            return `${i18n('Boxes.OwnpartCalculator.Tier')}: ${TierName}`;
+        }
+
+        return `<img class="lb-tier-icon" src="${TierIcon}" alt="${TierName}" title="${i18n('Boxes.OwnpartCalculator.Tier')}: ${TierName}">`;
+    },
+
+
+    /**
+     * Inline style attribute for the blueprint icon in the table header matching the building tier.
+     * Copper (and unknown tiers) keep the bundled default icon from the CSS,
+     * silver/gold use the game assets reward_blueprint_silver/gold.png.
+     *
+     * @param Tier GreatBuildingTier enum, e.g. {value: 'silver'}
+     * @returns {string} ` style="…"` or empty string
+     */
+    BlueprintIconStyle: (Tier) => {
+        const TierValue = Tier?.value;
+        if (TierValue !== 'silver' && TierValue !== 'gold') return '';
+
+        const link = srcLinks.get(`/shared/icons/reward_blueprint_${TierValue}.png`, true, true);
+        if (link.includes('antiquedealer_flag') || link.includes('-undefined.')) return '';
+
+        return ` style="background-image:url('${link}')"`;
+    },
+
+
+    /**
+     * Formats a blueprint reward split by tier (e.g. "40 [copper icon] 11 [silver icon]")
+     * for the ranking tables. Falls back to the plain total if no per-tier data
+     * or icons are available (old servers, ForgeHX index not loaded).
+     *
+     * @param {?{tier: Object, amount: number}[]} TierAmounts Already boosted amounts per tier
+     * @param {number} Total Already boosted total blueprint amount, used as fallback
+     * @returns {string} HTML
+     */
+    FormatBlueprintRewards: (TierAmounts, Total) => {
+        if (!Array.isArray(TierAmounts) || TierAmounts.length === 0) return HTML.Format(Total || 0);
+
+        const TierNames = {
+            copper: i18n('Boxes.OwnpartCalculator.TierCopper'),
+            silver: i18n('Boxes.OwnpartCalculator.TierSilver'),
+            gold: i18n('Boxes.OwnpartCalculator.TierGold')
+        };
+        let Cells = [];
+
+        for (let bp of TierAmounts) {
+            const TierValue = bp?.tier?.value,
+                IconFile = (TierValue === 'silver' || TierValue === 'gold') ? `reward_blueprint_${TierValue}` : 'reward_blueprint',
+                IconLink = srcLinks.get(`/shared/icons/${IconFile}.png`, true, true);
+
+            // Icon missing → show the plain total instead of a broken image
+            if (IconLink.includes('antiquedealer_flag') || IconLink.includes('-undefined.')) return HTML.Format(Total || 0);
+
+            const TierName = TierNames[TierValue] || TierValue || '';
+            Cells.push(`<span class="bp-tier-amount">${HTML.Format(bp.amount || 0)}<img class="bp-tier-icon" src="${IconLink}" alt="${TierName}" title="${TierName}"></span>`);
+        }
+
+        return Cells.join(' ');
+    },
+
+
+    /**
+     * Extracts the era name from an entity/asset id.
+     * Example: "X_BronzeAge_Landmark2" → "BronzeAge"
+     *
+     * @param {string} EntityID Entity or asset id of the great building
+     * @returns {string} The era name
+     */
     GetEraName: (EntityID) => {
         let UnderScorePos = EntityID.indexOf('_');
         let EraName = EntityID.substring(UnderScorePos + 1);
@@ -796,6 +967,14 @@ let GreatBuildings = {
     },
 
 
+    /**
+     * Returns the total FP required to complete a level of a great building.
+     * From level 10 on the costs are extrapolated (+2.5% per level).
+     *
+     * @param {string} EntityID Entity id of the great building
+     * @param {number} Level Level to look up (0-based)
+     * @returns {number} FP costs of the level
+     */
     GetBruttoCosts: (EntityID, Level) => {
         let CityEntity = MainParser.CityEntities[EntityID];
 
@@ -808,6 +987,14 @@ let GreatBuildings = {
     },
 
 
+    /**
+     * Derives the level of a great building from the total FP its current
+     * level-up requires.
+     *
+     * @param {string} EntityID Entity id of the great building
+     * @param {number} TotalFP Total FP required for the level-up
+     * @returns {number|undefined} The level, or undefined if no level matches
+     */
     GetLevel: (EntityID, TotalFP) => {
         let CityEntity = MainParser.CityEntities[EntityID];
 
@@ -828,6 +1015,13 @@ let GreatBuildings = {
     },
 
 
+    /**
+     * Calculates the patron rewards of the places 1-5 including arc bonus.
+     *
+     * @param {number} P1 Base reward of the first place (without arc bonus)
+     * @param {number|number[]} ArcBoni Arc bonus in percent — a single value for all places or one value per place
+     * @returns {number[]} Rewards of the places 1-5
+     */
     GetMaezen: (P1, ArcBoni) => {
         let Ret = [];
 
@@ -854,6 +1048,13 @@ let GreatBuildings = {
     },
 
 
+    /**
+     * Processes one page of the town hall event history: sums up the FP of
+     * all not yet counted great building contribution rewards (places 1-5)
+     * into `FPRewards`, which prefills the "rewards per day" setting.
+     *
+     * @param {Object[]} Events Event entries from the town hall event overview
+     */
     HandleEventPage: (Events) => {
         for (let i = 0; i < Events.length; i++) {
             let Event = Events[i];
@@ -887,6 +1088,12 @@ let GreatBuildings = {
     },
 
 
+    /**
+     * Shows or hides the detail rows (further levels) of a great building
+     * according to its `DetailsVisible` state.
+     *
+     * @param {number} Index Index of the great building in `GreatBuildingsData`
+     */
     RefreshDetailsVisible: (Index) => {
         $('#greatbuildings tr.gbdetailsrow').each(function () {
             let Data = $(this).data()['value'];
