@@ -10,7 +10,15 @@
 - Gebäude-Effizienzbewertung:
   - Der CSV/JSON-Export enthält jetzt die Spalte "In der Stadt aufgebaut" (1 = aufgebaut, 0 = im Inventar)
 
+
+- GG:
+  - Die Vorlaufzeit des Sektor-Alarms ist jetzt in den Einstellungen des Countdown-Fensters einstellbar (5-3600 Sekunden, Standard weiterhin 30)
+
 **Update**
+- GB Tracker:
+  - Wird das Fenster geöffnet, bevor die Gebäudeliste fertig geladen ist, wird die Auswahl jetzt nachträglich befüllt statt leer zu bleiben
+
+
 - Gebäude-Metadaten:
   - Der interne Gebäude-Cache ist robuster: Bei fehlgeschlagenen Downloads wird auf die zuletzt gespeicherte Version zurückgegriffen, defekte Cache-Einträge werden neu geladen, und ist die Browser-Datenbank (IndexedDB) blockiert, lädt die Extension alle Metadaten frisch statt mit leeren Gebäudedaten zu starten
 
