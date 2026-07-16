@@ -6,6 +6,14 @@
 - Infobox:
   - New "Reset filters" button in the settings (gear icon in the title bar). Resets the category filters, "Favorites only" and the text filter to their defaults — helpful when the box appears empty because of old filter settings
 
+
+- Building efficiency rating:
+  - The CSV/JSON export now contains the column "Built in city" (1 = built, 0 = in inventory)
+
+**Update**
+- Building metadata:
+  - The internal building cache is more robust: failed downloads fall back to the last stored version, corrupt cache entries are re-downloaded, and if the browser database (IndexedDB) is blocked the extension fetches all metadata fresh instead of starting with empty building data
+
 **Bugfix**
 - Alerts:
   - Alerts based on timestamps from game data (expiring limited buildings, GBG sector alarm) were silently never created because of fractional values (console error `"data.expires" needs to be a integer`). Timestamps are now rounded

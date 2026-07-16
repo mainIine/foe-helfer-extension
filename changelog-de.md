@@ -6,6 +6,14 @@
 - Infobox:
   - Neuer Button "Filter zurücksetzen" in den Einstellungen (Zahnrad in der Titelleiste). Setzt Kategorie-Filter, "Nur Favoriten" und den Textfilter auf Standard zurück — hilfreich, wenn die Box wegen alter Filtereinstellungen leer erscheint
 
+
+- Gebäude-Effizienzbewertung:
+  - Der CSV/JSON-Export enthält jetzt die Spalte "In der Stadt aufgebaut" (1 = aufgebaut, 0 = im Inventar)
+
+**Update**
+- Gebäude-Metadaten:
+  - Der interne Gebäude-Cache ist robuster: Bei fehlgeschlagenen Downloads wird auf die zuletzt gespeicherte Version zurückgegriffen, defekte Cache-Einträge werden neu geladen, und ist die Browser-Datenbank (IndexedDB) blockiert, lädt die Extension alle Metadaten frisch statt mit leeren Gebäudedaten zu starten
+
 **Bugfix**
 - Alarme:
   - Alarme mit Zeitstempeln aus Spieldaten (auslaufende limitierte Gebäude, GG-Sektor-Alarm) wurden wegen Nachkommastellen stillschweigend nie angelegt (Konsolenfehler `"data.expires" needs to be a integer`). Zeitstempel werden jetzt gerundet

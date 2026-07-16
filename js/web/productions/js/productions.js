@@ -2350,7 +2350,7 @@ let Productions = {
 				for (let size of buildingSizes) {
 					h.push('<li data-value="'+size+'" class="' + (Productions.RatingFilteredSizes.includes(size) ? 'selected' : '') + '">'+size+'</li>')
 				}
-			h.push('</ul></div></div></th><th data-type="ratinglist" class="is-number" data-export="#"></th><th class="no-sort inventory-buildings text-center"><img alt="" data-original-title="'+i18n('Boxes.ProductionsRating.InventoryTooltip')+'" class="game-cursor" src="' + extUrl + 'js/web/x_img/inventory.png" /></th>');
+			h.push('</ul></div></div></th><th data-type="ratinglist" class="is-number" data-export="#"></th><th class="no-sort inventory-buildings text-center" data-export="' + i18n('Boxes.ProductionsRating.ExportBuilt') + '"><img alt="" data-original-title="'+i18n('Boxes.ProductionsRating.InventoryTooltip')+'" class="game-cursor" src="' + extUrl + 'js/web/x_img/inventory.png" /></th>');
 
 			for (const type of combinedRatingTypes) {
 				let firstType = type;
@@ -2413,7 +2413,8 @@ let Productions = {
 					h.push('<span data-original-title="'+i18n('Boxes.ProductionsRating.CountTooltip')+'">' + buildingCount[building.entityId+"C"]+'x</span>')
 				h.push("</div></td>");
 
-				h.push('<td class="text-center">')
+				// export whether the row is a built city building (1) or an inventory item (0) (#3529)
+				h.push('<td class="text-center" exportvalue="' + (building.isInInventory ? 0 : 1) + '">')
 
 				// show additional buildings from inventory
 				if ((buildingCount[building.entityId+"I"] !== undefined && !building.isInInventory) || building.isInInventory)
