@@ -443,8 +443,6 @@ let Productions = {
 		}
 	},
 
-	
-
 
 	/**
 	 * Calculates production values for a building based on the specified category.
@@ -874,8 +872,6 @@ let Productions = {
 	},
 
 
-
-
 	/**
 	 * Retrieves a boost value for a building and executes a callback with the result.
 	 *
@@ -920,8 +916,6 @@ let Productions = {
 
         $('#ProductionsSettingsBox').html(h.join(''))
     },
-
-
 
 
 	/**
