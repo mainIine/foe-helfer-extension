@@ -9,14 +9,22 @@
 
 - Gebäude-Effizienzbewertung:
   - Der CSV/JSON-Export enthält jetzt die Spalte "In der Stadt aufgebaut" (1 = aufgebaut, 0 = im Inventar)
+  - Legendäre Gebäude sind in der Tabelle jetzt sofort am LG-Symbol vor dem Namen zu erkennen
 
 
 - GG:
   - Die Vorlaufzeit des Sektor-Alarms ist jetzt in den Einstellungen des Countdown-Fensters einstellbar (5-3600 Sekunden, Standard weiterhin 30)
 
+- GB Tracker:
+  - Neue Spalte mit dem Rang (Kupfer, Silber, Gold) der mehrstufigen Legendären Gebäude — sichtbar, sobald die Daten des Spielers geladen wurden
+
 **Update**
 - GB Tracker:
   - Wird das Fenster geöffnet, bevor die Gebäudeliste fertig geladen ist, wird die Auswahl jetzt nachträglich befüllt statt leer zu bleiben
+
+
+- Code-Struktur:
+  - Die Gebäude-Effizienzbewertung wurde aus dem Produktions-Modul in eine eigene Datei ausgelagert (keine funktionale Änderung)
 
 
 - Gebäude-Metadaten:
@@ -36,6 +44,8 @@
 - Gebäude-Effizienzbewertung (CSV/JSON-Export):
   - Armee-Boost-Spalten tragen jetzt eindeutige Namen mit Kontext-Zusatz (GEX, GG, QI). Vorher überschrieben die QI-Boost-Werte die Basis-Boost-Werte im Export, und die GEX/GG-Spalten für Angriff und Verteidigung waren nicht unterscheidbar
   - Es werden wieder Gebäudewert und Wert pro Feld exportiert, klar benannt über den Zusatz "(pro Feld)" — der Export passt damit wieder zur Anzeige
+
+---
 
 ##### 4.4.0.0
 

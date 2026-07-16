@@ -9,14 +9,22 @@
 
 - Building efficiency rating:
   - The CSV/JSON export now contains the column "Built in city" (1 = built, 0 = in inventory)
+  - Great Buildings in the table can now be recognized at a glance by the GB icon in front of their name
 
 
 - GBG:
   - The lead time of the sector alert can now be adjusted in the settings of the countdown window (5-3600 seconds, default still 30)
 
+- GB Tracker:
+  - New column showing the tier (Copper, Silver, Gold) of the multi-tier Great Buildings — visible as soon as the player's data has been loaded
+
 **Update**
 - GB Tracker:
   - When the window is opened before the building list has finished loading, the selection is now populated afterwards instead of staying empty
+
+
+- Code structure:
+  - The building efficiency rating has been split out of the productions module into its own file (no functional change)
 
 
 - Building metadata:
@@ -36,6 +44,8 @@
 - Building efficiency rating (CSV/JSON export):
   - Army boost columns now carry unique names with a context suffix (GE, GBG, QI). Previously the QI boost values overwrote the base boost values in the export, and the GE/GBG columns for attack and defense were indistinguishable
   - Both the building value and the value per tile are exported again, clearly labelled via the "(per tile)" suffix — the export matches the display again
+
+---
 
 ##### 4.4.0.0
 
