@@ -16,6 +16,11 @@
   - Güter, die nur in dazwischenliegenden Zeitaltern gebraucht werden, tauchen jetzt ebenfalls in der Tabelle auf
   - Die Option "Forschungen aus vorherigen Zeitaltern ignorieren" funktioniert wieder: abgewählt werden offene Forschungen früherer Zeitalter in den kumulativen Bedarf einbezogen; außerdem ging die Einstellung beim erneuten Öffnen der Box verloren
 
+
+- Gebäude-Effizienzbewertung (CSV/JSON-Export):
+  - Armee-Boost-Spalten tragen jetzt eindeutige Namen mit Kontext-Zusatz (GEX, GG, QI). Vorher überschrieben die QI-Boost-Werte die Basis-Boost-Werte im Export, und die GEX/GG-Spalten für Angriff und Verteidigung waren nicht unterscheidbar
+  - Es werden wieder Gebäudewert und Wert pro Feld exportiert, klar benannt über den Zusatz "(pro Feld)" — der Export passt damit wieder zur Anzeige
+
 ##### 4.4.0.0
 
 **Neu**

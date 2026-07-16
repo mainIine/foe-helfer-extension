@@ -2006,6 +2006,33 @@ let Productions = {
 	 * @returns {string} The localized name of the good type.
 	 */
 	GetTypeName: (GoodType) => {
+		// army boost columns exist in several contexts (base, GE, GBG, QI); include the
+		// context in the name so every column gets a unique label — otherwise the
+		// export overwrites one column with the other (#3503)
+		let BoostContext = '';
+		if (GoodType.includes('-guild_expedition')) {
+			BoostContext = ' (' + i18n('Boxes.General.Guild_Expedition') + ')';
+		}
+		else if (GoodType.includes('-battleground')) {
+			BoostContext = ' (' + i18n('Boxes.General.Guild_Battlegrounds') + ')';
+		}
+		else if (GoodType.includes('-guild_raids')) {
+			BoostContext = ' (' + i18n('Boxes.General.Quantum_Incursion') + ')';
+		}
+
+		if (GoodType.includes('att_boost_attacker')) {
+			return i18n('Boxes.Productions.att_boost_attacker') + BoostContext;
+		}
+		else if (GoodType.includes('att_boost_defender')) {
+			return i18n('Boxes.Productions.att_boost_defender') + BoostContext;
+		}
+		else if (GoodType.includes('def_boost_attacker')) {
+			return i18n('Boxes.Productions.def_boost_attacker') + BoostContext;
+		}
+		else if (GoodType.includes('def_boost_defender')) {
+			return i18n('Boxes.Productions.def_boost_defender') + BoostContext;
+		}
+
 		if (GoodType.includes('happiness')) {
 			return i18n('Boxes.Productions.Happiness');
 		}
@@ -2044,21 +2071,6 @@ let Productions = {
 		}
 		else if (GoodType.includes('guild_expedition')) {
 			return i18n('Boxes.General.Guild_Expedition');
-		}
-		/*else if (GoodType.includes('guild_raids')) {
-			return i18n('Boxes.General.Quantum_Incursion');
-		}*/
-		else if (GoodType.includes('att_boost_attacker') || GoodType.includes('att_boost_attacker-all')) {
-			return i18n('Boxes.Productions.att_boost_attacker');
-		}
-		else if (GoodType.includes('att_boost_defender') || GoodType.includes('att_boost_defender-all')) {
-			return i18n('Boxes.Productions.att_boost_defender');
-		}
-		else if (GoodType.includes('def_boost_attacker') || GoodType.includes('def_boost_attacker-all')) {
-			return i18n('Boxes.Productions.def_boost_attacker');
-		}
-		else if (GoodType.includes('def_boost_defender') || GoodType.includes('def_boost_defender-all')) {
-			return i18n('Boxes.Productions.def_boost_defender');
 		}
 		else if (GoodType.includes('goods-next')) {
 			return i18n('Boxes.Productions.goods_next');
@@ -2356,7 +2368,7 @@ let Productions = {
 					((Productions.Rating.Data[firstType].perTile + (Productions.Rating.Data[secondType]?.perTile || 0) || 0) /divider)+
 					'</i></th>');
 
-				h.push('<th data-type="ratinglist" style="width:1%" data-export="' + Productions.GetTypeName(firstType) + '" class="is-number text-center tilevalue"'+
+				h.push('<th data-type="ratinglist" style="width:1%" data-export="' + Productions.GetTypeName(firstType) + ' (' + i18n('Boxes.ProductionsRating.PerTile') + ')" class="is-number text-center tilevalue"'+
 					(secondType !== null ? ` data-original-title="${Productions.Rating.Data[firstType].perTile} + ${Productions.Rating.Data[secondType]?.perTile} / 2"` : '')+
 					'><span class="resicon ' + firstType + '"></span>'+
 					(secondType !== null ? '<span class="resicon ' + secondType + '"></span><i>': '')+

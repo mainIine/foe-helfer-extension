@@ -16,6 +16,11 @@
   - Goods that are only needed in eras in between are now listed in the table as well
   - The option "Ignore researches of previous eras" works again: when unchecked, open researches of earlier eras are included in the cumulative demand; the setting was also lost when reopening the box
 
+
+- Building efficiency rating (CSV/JSON export):
+  - Army boost columns now carry unique names with a context suffix (GE, GBG, QI). Previously the QI boost values overwrote the base boost values in the export, and the GE/GBG columns for attack and defense were indistinguishable
+  - Both the building value and the value per tile are exported again, clearly labelled via the "(per tile)" suffix — the export matches the display again
+
 ##### 4.4.0.0
 
 **New**
