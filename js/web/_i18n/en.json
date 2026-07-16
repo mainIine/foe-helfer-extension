@@ -1129,6 +1129,7 @@
     "Boxes.ProductionsRating.ShowInventoryBuildings": "Inventory",
     "Boxes.ProductionsRating.ShowInventoryBuildingsExplanation": "Add buildings from your inventory to the list",
     "Boxes.ProductionsRating.ShowItems": "Show Item column",
+    "Boxes.ProductionsRating.PerTile": "per tile",
     "Boxes.ProductionsRating.ShowValuesPerTile": "Value/tile",
     "Boxes.ProductionsRating.Title": "Buildings Efficiency Rating",
     "Boxes.ProductionsRating.TitleFSPCalculator": "How much is expected per FSP-kit?",
