@@ -31,9 +31,13 @@
   - Die Extension fordert das "tabs"-Recht nicht mehr an — jetzt auch in den Chrome- und Firefox-Paketen (im Entwicklungs-Manifest war es bereits entfernt)
 
 
+- Manifest:
+  - Chrome und Firefox nutzen jetzt ein gemeinsames Manifest V3 (eine einzige manifest.json). Firefox läuft damit ebenfalls auf Manifest V3 mit Event-Page statt persistentem Hintergrund; benötigt Firefox 128 oder neuer
+
+
 - Code-Struktur:
   - Die Gebäude-Effizienzbewertung und die Tabellen-Generierung der Produktionsübersicht wurden aus dem Produktions-Modul in eigene Dateien ausgelagert (keine funktionale Änderung)
-  - Die drei Browser-Manifeste werden jetzt aus einer gemeinsamen Quelle generiert (manifests/base.json + Overlays, "node manifests/build.js")
+  - Der alte Planner-Prototyp wurde aus dem Repository entfernt
 
 
 - Gebäude-Metadaten:

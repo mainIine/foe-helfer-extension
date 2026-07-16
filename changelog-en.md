@@ -31,9 +31,13 @@
   - The extension no longer requests the "tabs" permission — now also in the Chrome and Firefox packages (it had already been removed from the development manifest)
 
 
+- Manifest:
+  - Chrome and Firefox now share a single Manifest V3 (one manifest.json). Firefox therefore also runs on Manifest V3 with an event page instead of a persistent background; requires Firefox 128 or newer
+
+
 - Code structure:
   - The building efficiency rating and the table generation of the production overview have been split out of the productions module into their own files (no functional change)
-  - The three browser manifests are now generated from a single source (manifests/base.json + overlays, "node manifests/build.js")
+  - The old planner prototype has been removed from the repository
 
 
 - Building metadata:
