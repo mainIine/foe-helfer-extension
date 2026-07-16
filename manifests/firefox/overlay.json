@@ -1,0 +1,25 @@
+{
+	"manifest_version": 2,
+
+	"web_accessible_resources": [
+		"css/web/*.css",
+		"vendor/*.js",
+		"vendor/sounds/*.mp3",
+		"js/web/*.*",
+		"images/*.*",
+		"css/images/*.*",
+		"content/*.html",
+		"js/vendor.json",
+		"js/internal.json",
+		"js/foeproxy.js"
+	],
+
+	"background": {
+		"scripts": [
+			"vendor/browser-polyfill/browser-polyfill.min.js",
+			"vendor/dexie/dexie.min.js",
+			"background.js"
+		],
+		"persistent": true
+	}
+}

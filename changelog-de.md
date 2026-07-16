@@ -27,8 +27,13 @@
   - Mehrere schnell aufeinanderfolgende Stadt- oder Inventaränderungen lösen jetzt nur noch eine Neuberechnung der Bewertung aus statt einer pro Ereignis
 
 
+- Berechtigungen:
+  - Die Extension fordert das "tabs"-Recht nicht mehr an — jetzt auch in den Chrome- und Firefox-Paketen (im Entwicklungs-Manifest war es bereits entfernt)
+
+
 - Code-Struktur:
   - Die Gebäude-Effizienzbewertung und die Tabellen-Generierung der Produktionsübersicht wurden aus dem Produktions-Modul in eigene Dateien ausgelagert (keine funktionale Änderung)
+  - Die drei Browser-Manifeste werden jetzt aus einer gemeinsamen Quelle generiert (manifests/base.json + Overlays, "node manifests/build.js")
 
 
 - Gebäude-Metadaten:
