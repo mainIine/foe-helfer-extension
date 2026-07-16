@@ -15,8 +15,7 @@
 /**
  * Popup
  *
- * Displays existing HTML.Box modules in a separate browser pop-up window
- * (without a URL bar).
+ * Displays existing HTML.Box modules in a separate browser pop-up window (without a URL bar).
  *
  * Use in a module:
  *   HTML.Box({ id: 'bluegalaxy', ..., MainParser.PopOut('bluegalaxy', 1100, 580 });
