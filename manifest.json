@@ -89,6 +89,11 @@
 		]
 	},
 	"background": {
-		"service_worker": "background.js"
+		"service_worker": "background.js",
+		"scripts": [
+			"vendor/browser-polyfill/browser-polyfill.min.js",
+			"vendor/dexie/dexie.min.js",
+			"background.js"
+		]
 	}
 }
