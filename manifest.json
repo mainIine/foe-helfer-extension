@@ -7,7 +7,7 @@
 
 	"browser_specific_settings": {
 		"gecko": {
-			"id": "@foe-helper",
+			"id": "{0668a87f-e3bb-4ed3-a096-e145c1e9f1d2}",
 			"strict_min_version": "128.0"
 		}
 	},
