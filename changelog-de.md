@@ -23,8 +23,12 @@
   - Wird das Fenster geöffnet, bevor die Gebäudeliste fertig geladen ist, wird die Auswahl jetzt nachträglich befüllt statt leer zu bleiben
 
 
+- Gebäude-Effizienzbewertung:
+  - Mehrere schnell aufeinanderfolgende Stadt- oder Inventaränderungen lösen jetzt nur noch eine Neuberechnung der Bewertung aus statt einer pro Ereignis
+
+
 - Code-Struktur:
-  - Die Gebäude-Effizienzbewertung wurde aus dem Produktions-Modul in eine eigene Datei ausgelagert (keine funktionale Änderung)
+  - Die Gebäude-Effizienzbewertung und die Tabellen-Generierung der Produktionsübersicht wurden aus dem Produktions-Modul in eigene Dateien ausgelagert (keine funktionale Änderung)
 
 
 - Gebäude-Metadaten:
