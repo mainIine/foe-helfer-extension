@@ -1094,15 +1094,36 @@ let MainParser = {
 	 * to handle occasional network failures. Metadata updates are written back to IndexDB in bulk.
 	 */
 	CityEntityBuilder: async (buildingUrls) => {
-		await IndexDB.getDB();
-		let buildingsOld = await IndexDB.db.buildingMeta.toArray();
-		buildingsOld = Object.assign({}, ...buildingsOld.map(x => ({ [x.id]: x })));
+		let buildingsOld = {};
+		let dbAvailable = true;
+		try {
+			await IndexDB.getDB();
+			let stored = await IndexDB.db.buildingMeta.toArray();
+			buildingsOld = Object.assign({}, ...stored.map(x => ({ [x.id]: x })));
+		} catch (e) {
+			// IndexedDB can be blocked or broken (e.g. hardened browsers) — continue
+			// without the cache and fetch all metadata fresh instead of dying here
+			dbAvailable = false;
+			console.warn('buildingMeta cache unavailable, fetching all building metadata fresh', e);
+		}
 		let Metadata = {};
 		let updated = [];
 		const ids = Object.keys(buildingUrls);
 		const maxConcurrent = 10; // z.B. 10 gleichzeitige Requests
 		let active = 0;
 		let index = 0;
+
+		// fallback: reuse the last cached version (even with an outdated hash) so a
+		// failed download does not leave a hole in MainParser.CityEntities
+		function useCachedMeta(id) {
+			if (buildingsOld[id]) {
+				try {
+					Metadata[id] = JSON.parse(buildingsOld[id].json);
+					return true;
+				} catch (e) { /* corrupt cache entry — nothing to fall back to */ }
+			}
+			return false;
+		}
 
 		function fetchMeta(id, meta, retries = 3) {
 			return new Promise(resolve => {
@@ -1119,13 +1140,14 @@ let MainParser = {
 							try {
 								Metadata[id] = JSON.parse(xhr.responseText);
 								updated.push({ id: id, hash: meta.hash, json: xhr.responseText });
-							} catch (e) { Metadata[id] = null; }
+							} catch (e) { useCachedMeta(id); }
 							resolve();
 						} else if (retries > 0) {
 							// Bei Fehler: Retry mit Delay
 							setTimeout(() => fetchMeta(id, meta, retries - 1).then(resolve), 1000);
 						} else {
 							console.warn('Failed to load', meta.url, xhr.status);
+							useCachedMeta(id);
 							resolve();
 						}
 					}
@@ -1135,6 +1157,7 @@ let MainParser = {
 					if (retries > 0) {
 						setTimeout(() => fetchMeta(id, meta, retries - 1).then(resolve), 1000);
 					} else {
+						useCachedMeta(id);
 						resolve();
 					}
 				};
@@ -1146,14 +1169,17 @@ let MainParser = {
 			while (active < maxConcurrent && index < ids.length) {
 				const id = ids[index++];
 				const meta = buildingUrls[id];
-				if (!buildingsOld[id] || buildingsOld[id].hash !== meta.hash) {
+				let cacheHit = false;
+				if (buildingsOld[id] && buildingsOld[id].hash === meta.hash) {
+					// a corrupt cache entry falls through to a fresh download
+					cacheHit = useCachedMeta(id);
+				}
+				if (!cacheHit) {
 					active++;
 					fetchMeta(id, meta).then(() => {
 						active--;
 						runNext();
 					});
-				} else {
-					try { Metadata[id] = JSON.parse(buildingsOld[id].json); } catch (e) { Metadata[id] = null; }
 				}
 			}
 		}
@@ -1167,7 +1193,20 @@ let MainParser = {
 			checkDone();
 		});
 
-		await IndexDB.db.buildingMeta.bulkPut(updated);
+		if (dbAvailable && updated.length > 0) {
+			try {
+				await IndexDB.db.buildingMeta.bulkPut(updated);
+			} catch (e) {
+				console.warn('Could not persist building metadata cache', e);
+			}
+		}
+
+		// drop entities that could not be loaded at all — a missing key is handled
+		// downstream, a null entry is not
+		for (let id in Metadata) {
+			if (Metadata[id] == null) delete Metadata[id];
+		}
+
 		MainParser.CityEntities = Metadata;
 		MainParser.correctBuildingType();
 		MainParser.Inactives.check();

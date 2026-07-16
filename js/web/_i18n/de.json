@@ -1106,6 +1106,7 @@
     "Boxes.ProductionsRating.ShowInventoryBuildings": "Inventar",
     "Boxes.ProductionsRating.ShowInventoryBuildingsExplanation": "Fügt Gebäude aus deinem Inventar, die nicht in der Stadt stehen, hinzu",
     "Boxes.ProductionsRating.ShowItems": "Zeige Item-Spalte",
+    "Boxes.ProductionsRating.ExportBuilt": "In der Stadt aufgebaut",
     "Boxes.ProductionsRating.PerTile": "pro Feld",
     "Boxes.ProductionsRating.ShowValuesPerTile": "Werte pro Feld",
     "Boxes.ProductionsRating.Title": "Gebäude - Effizienzberechnung",
