@@ -509,6 +509,7 @@
     "Boxes.GreatBuildings.TTGoodsValue": "Dieser Wert dient zur Bewertung von Gebäuden, die Güter produzieren. Wieviele FP ist dir ein Gut wert?",
     "Boxes.GreatBuildings.TTRewardPerDay": "Optional: Wie viele FP bekommst du per Tag als Mäzenbelohnungen? Diese Information wird benutzt um die Rentabilität von weiteren Archelveln zu berechnen. Um diesen Wert automatisch zu berechnen gehe zu 'Rathaus'> 'Neuigkeiten'> 'Ereignisübersicht' und scrolle alle Seiten durch",
     "Boxes.GreatBuildings.Title": "LG Investitionen",
+    "Boxes.GuildFights.AlertLeadTime": "Vorlaufzeit des Sektor-Alarms (Sekunden)",
     "Boxes.GuildFights.Attrition": "Zermürbung",
     "Boxes.GuildFights.BoostedVP": "mit Boost: __vp__",
     "Boxes.GuildFights.Copy": "Kopieren",

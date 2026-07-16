@@ -10,7 +10,15 @@
 - Building efficiency rating:
   - The CSV/JSON export now contains the column "Built in city" (1 = built, 0 = in inventory)
 
+
+- GBG:
+  - The lead time of the sector alert can now be adjusted in the settings of the countdown window (5-3600 seconds, default still 30)
+
 **Update**
+- GB Tracker:
+  - When the window is opened before the building list has finished loading, the selection is now populated afterwards instead of staying empty
+
+
 - Building metadata:
   - The internal building cache is more robust: failed downloads fall back to the last stored version, corrupt cache entries are re-downloaded, and if the browser database (IndexedDB) is blocked the extension fetches all metadata fresh instead of starting with empty building data
 
