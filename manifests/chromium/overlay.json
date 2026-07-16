@@ -1,0 +1,24 @@
+{
+	"manifest_version": 3,
+
+	"web_accessible_resources": [
+		{
+			"resources": [
+				"js/*",
+				"vendor/*",
+				"css/*",
+				"content/*"
+			],
+			"matches": [ "https://*/*" ]
+		}
+	],
+
+	"externally_connectable" : {
+		"matches": ["https://*.forgeofempires.com/*"],
+		"ids": ["*"]
+	},
+
+	"background": {
+		"service_worker": "background.js"
+	}
+}

@@ -27,8 +27,13 @@
   - Several city or inventory changes in quick succession now trigger only one recalculation of the rating instead of one per event
 
 
+- Permissions:
+  - The extension no longer requests the "tabs" permission — now also in the Chrome and Firefox packages (it had already been removed from the development manifest)
+
+
 - Code structure:
   - The building efficiency rating and the table generation of the production overview have been split out of the productions module into their own files (no functional change)
+  - The three browser manifests are now generated from a single source (manifests/base.json + overlays, "node manifests/build.js")
 
 
 - Building metadata:
