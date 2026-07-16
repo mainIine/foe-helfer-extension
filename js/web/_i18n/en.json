@@ -692,6 +692,7 @@
     "Boxes.Infobox.Messages.Trade": "<strong>__player__</strong> accepted your trade of __offerValue__ __offer__ for __needValue__ __need__.",
     "Boxes.Infobox.Messages.Welcome": "Welcome to the <strong>Infobox</strong>! As long as this window is open, it will display background events.",
     "Boxes.Infobox.ResetBox": "Clear All",
+    "Boxes.Infobox.ResetFilters": "Reset filters",
     "Boxes.Infobox.Settings.GbgProvShortName": "Use short names for GBG provinces.",
     "Boxes.Infobox.Title": "Infobox",
     "Boxes.Infobox.UnknownConversation": "Unknown Conversation",

@@ -1,5 +1,21 @@
 ## Extension Changelog
 
+##### 4.4.1.0
+
+**Neu**
+- Infobox:
+  - Neuer Button "Filter zurücksetzen" in den Einstellungen (Zahnrad in der Titelleiste). Setzt Kategorie-Filter, "Nur Favoriten" und den Textfilter auf Standard zurück — hilfreich, wenn die Box wegen alter Filtereinstellungen leer erscheint
+
+**Bugfix**
+- Alarme:
+  - Alarme mit Zeitstempeln aus Spieldaten (auslaufende limitierte Gebäude, GG-Sektor-Alarm) wurden wegen Nachkommastellen stillschweigend nie angelegt (Konsolenfehler `"data.expires" needs to be a integer`). Zeitstempel werden jetzt gerundet
+
+
+- Technologiebaum:
+  - Die Spalte "Fehlt noch" rechnet bei zukünftigen Zeitaltern jetzt gegen den kumulativen Bedarf (aktuelles bis gewähltes Zeitalter) statt nur gegen das gewählte Zeitalter
+  - Güter, die nur in dazwischenliegenden Zeitaltern gebraucht werden, tauchen jetzt ebenfalls in der Tabelle auf
+  - Die Option "Forschungen aus vorherigen Zeitaltern ignorieren" funktioniert wieder: abgewählt werden offene Forschungen früherer Zeitalter in den kumulativen Bedarf einbezogen; außerdem ging die Einstellung beim erneuten Öffnen der Box verloren
+
 ##### 4.4.0.0
 
 **Neu**

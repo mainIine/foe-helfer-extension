@@ -1,5 +1,21 @@
 ## Extension Changelog
 
+##### 4.4.1.0
+
+**New**
+- Infobox:
+  - New "Reset filters" button in the settings (gear icon in the title bar). Resets the category filters, "Favorites only" and the text filter to their defaults — helpful when the box appears empty because of old filter settings
+
+**Bugfix**
+- Alerts:
+  - Alerts based on timestamps from game data (expiring limited buildings, GBG sector alarm) were silently never created because of fractional values (console error `"data.expires" needs to be a integer`). Timestamps are now rounded
+
+
+- Technology tree:
+  - The "Still missing" column now calculates against the cumulative demand (current up to the selected era) for future eras instead of only the selected era
+  - Goods that are only needed in eras in between are now listed in the table as well
+  - The option "Ignore researches of previous eras" works again: when unchecked, open researches of earlier eras are included in the cumulative demand; the setting was also lost when reopening the box
+
 ##### 4.4.0.0
 
 **New**

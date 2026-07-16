@@ -694,6 +694,7 @@
     "Boxes.Infobox.Messages.Trade": "<strong>__player__</strong> hat dein Angebot angenommen.<br>Du hast __needValue__ __need__ für __offerValue__ __offer__ bekommen.",
     "Boxes.Infobox.Messages.Welcome": "Herzlich willkommen in der <strong>Infobox</strong>! Solange du dieses Fenster geöffnet hast, wird es nach und nach mit Ereignissen gefüllt, die im Hintergrund ablaufen (unter anderem Chatnachrichten, GG-Angriffe und Auktionsgebote beim Antiquitätenhändler)",
     "Boxes.Infobox.ResetBox": "Box leeren",
+    "Boxes.Infobox.ResetFilters": "Filter zurücksetzen",
     "Boxes.Infobox.Title": "Infobox",
     "Boxes.Infobox.UnknownConversation": "Unbekannte Unterhaltung",
     "Boxes.Investment.AllUpToDate": "Alles aktuell",

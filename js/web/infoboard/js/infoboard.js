@@ -340,17 +340,41 @@ let Infoboard = {
                 <hr>
                 <p><label for="infoboxentry-length">${i18n('Settings.InfoboxEntryCount.Desc')}</label>
                 <input class="setting-input" type="number" id="infoboxentry-length" step="1" min="1" max="2000" value="${(messagesAmount)}"></p>
+                <hr>
+                <p><button onclick="Infoboard.ResetFilters()" id="resetInfoboardFilters" class="btn" style="width:100%">${i18n('Boxes.Infobox.ResetFilters')}</button></p>
                 <button onclick="Infoboard.SaveSettings()" id="saveInfoboardSettings" class="btn" style="width:100%">${i18n('Boxes.Settings.Save')}</button>`);
 
         $('#BackgroundInfoSettingsBox').html(h.join(''));
     },
 
 
-    SaveSettings: () => {        
+    SaveSettings: () => {
         localStorage.setItem('AutoOpenInfoBox', $("#autoStartInfoboard").is(':checked'));
         localStorage.setItem('EntryCount', $("#infoboxentry-length").val());
 
 		$(`#BackgroundInfoSettingsBox`).remove();
+    },
+
+
+    /**
+     * Resets the message filters (category checkboxes, favorites-only toggle and text filter)
+     * back to their defaults so hidden entries become visible again
+     */
+    ResetFilters: () => {
+        Infoboard.SavedFilter = ["auction", "ge", "gbg", "qi", "trade", "level", "msg", "text"];
+        Infoboard.SavedTextFilter = "";
+
+        localStorage.setItem("infoboxSavedFilter", JSON.stringify(Infoboard.SavedFilter));
+        localStorage.setItem("infoboxTextFilter", "");
+
+        // sync the filter dropdown and re-apply visibility to the existing entries
+        $('#BackgroundInfo .filter-msg[type="checkbox"]').each(function () {
+            $(this).prop('checked', $(this).data('type') !== 'favorites');
+        });
+        $('#BackgroundInfo input[data-type="text"]').val('');
+        $('#BackgroundInfo .filter-msg').first().trigger('change');
+
+        $(`#BackgroundInfoSettingsBox`).remove();
     },
 };
 
