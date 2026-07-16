@@ -27,20 +27,27 @@ let findGB = {
 
     init: async () => {
         await ExistenceConfirmed("MainParser.CityEntities")
+        // build into a local array and assign at the end so concurrent init() calls
+        // cannot fill the list twice
+        let names = [];
         for (let building of Object.values(MainParser.CityEntities)) {
             if(building.type != "greatbuilding") continue;
-            findGB.list.push(building.name);
+            names.push(building.name);
         }
-        findGB.list.sort()
+        findGB.list = names.sort();
     },
 
-    ShowDialog: () => {
-        
+    ShowDialog: async () => {
+
 		if ($('#findGBDialog').length > 0){
 			HTML.CloseOpenBox('findGBDialog');
 
 			return;
 		}
+
+        // if the box is opened before the building metadata finished loading,
+        // retry populating the GB list instead of showing an empty dropdown
+        if (findGB.list.length === 0) await findGB.init();
 
         if ($('#findGBDialog').length === 0) {
             HTML.AddCssFile('findGB');
