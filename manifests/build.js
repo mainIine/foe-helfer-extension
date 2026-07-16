@@ -84,7 +84,17 @@ const firefox = buildManifest('manifests/firefox/overlay.json');
 
 write('manifests/chromium/manifest_.json', chromium);
 write('manifests/firefox/manifest_.json', firefox);
-// the repo-root manifest used for local development is the Chrome (MV3) variant
-write('manifest.json', chromium);
 
-console.log(`Manifests generated for version ${base.version} (chromium MV3, firefox MV2, root dev copy)`);
+// The repo-root manifest used for local development is an MV3 manifest that loads
+// in Chrome AND Firefox: both background keys are declared — Chrome uses
+// background.service_worker and ignores "scripts", Firefox (which runs MV3
+// background scripts as an event page) uses "scripts" and ignores "service_worker".
+// Note: the "world": "MAIN" content script requires Firefox 128+.
+const dev = JSON.parse(JSON.stringify(chromium));
+dev.background = {
+	service_worker: chromium.background.service_worker,
+	scripts: firefox.background.scripts,
+};
+write('manifest.json', dev);
+
+console.log(`Manifests generated for version ${base.version} (chromium MV3, firefox MV2, root dual-browser MV3)`);
