@@ -23,8 +23,12 @@
   - When the window is opened before the building list has finished loading, the selection is now populated afterwards instead of staying empty
 
 
+- Building efficiency rating:
+  - Several city or inventory changes in quick succession now trigger only one recalculation of the rating instead of one per event
+
+
 - Code structure:
-  - The building efficiency rating has been split out of the productions module into its own file (no functional change)
+  - The building efficiency rating and the table generation of the production overview have been split out of the productions module into their own files (no functional change)
 
 
 - Building metadata:

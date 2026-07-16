@@ -1301,3 +1301,20 @@ Object.assign(Productions, {
 		$('#ProductionsRatingSettingsBox').html(c.join(''));
 	},
 });
+
+// Rebuild the rating when the city or the inventory changes. A shared debounce
+// collapses event bursts (e.g. placing several buildings in a row) into a
+// single full recalculation instead of one per event.
+{
+	let ratingRefreshTimer = null;
+	const queueRatingRefresh = () => {
+		if ($('#ProductionsRating').length === 0) return;
+		clearTimeout(ratingRefreshTimer);
+		ratingRefreshTimer = setTimeout(() => Productions.CalcRatingBody(), 250);
+	};
+
+	FoEproxy.addHandler('CityMapService', 'placeBuilding', queueRatingRefresh);
+	FoEproxy.addHandler('CityMapService', 'removeBuilding', queueRatingRefresh);
+	FoEproxy.addHandler('InventoryService', 'updateItem', queueRatingRefresh);
+	FoEproxy.addHandler('InventoryService', 'useItem', queueRatingRefresh);
+}
