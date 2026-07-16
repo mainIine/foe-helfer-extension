@@ -664,7 +664,7 @@ Object.assign(Productions, {
 
 				// icon in front of the name so great buildings are recognizable at a glance
 				if (building.type === 'greatbuilding')
-					h.push('<img class="gb-icon" alt="" src="' + srcLinks.get('/shared/celebrate/rules_great_building_contribution.png', true) + '" /> ');
+					h.push('<img class="gb-icon" alt="" src="' + srcLinks.get('/shared/gui/constructionmenu/icon_greatbuilding.png', true) + '" /> ');
 
 				h.push('<span data-meta_id="'+building.entityId+'" data-eff="'+building.rating.totalScore * 100+'" data-era="'+(building.eraName==="AllAge"?"":building.eraName)+'" data-callback_tt="Tooltips.buildingTT" class="fh-tooltip" '+ Allies.tooltip(building.id) + '>'+building.name+'</span>')
 
