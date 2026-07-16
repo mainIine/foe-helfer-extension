@@ -59,6 +59,9 @@ function buildManifest(overlayPath) {
 		manifest_version: mv,
 	};
 
+	// Firefox add-on ID (required for AMO / MV3, ignored by Chrome)
+	if (overlay.browser_specific_settings) out.browser_specific_settings = overlay.browser_specific_settings;
+
 	if (mv >= 3) {
 		// MV3: API and host permissions are separate lists
 		out.permissions = base.permissions;
