@@ -24,3 +24,8 @@
 #foundGB .progress {
   background: linear-gradient(90deg, var(--table-bg-success) 0, var(--table-bg-success) var(--p), transparent var(--p), transparent)
 }
+
+#foundGB .lb-tier-icon {
+  height: 18px;
+  vertical-align: text-bottom;
+}

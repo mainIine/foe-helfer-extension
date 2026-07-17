@@ -27,20 +27,27 @@ let findGB = {
 
     init: async () => {
         await ExistenceConfirmed("MainParser.CityEntities")
+        // build into a local array and assign at the end so concurrent init() calls
+        // cannot fill the list twice
+        let names = [];
         for (let building of Object.values(MainParser.CityEntities)) {
             if(building.type != "greatbuilding") continue;
-            findGB.list.push(building.name);
+            names.push(building.name);
         }
-        findGB.list.sort()
+        findGB.list = names.sort();
     },
 
-    ShowDialog: () => {
-        
+    ShowDialog: async () => {
+
 		if ($('#findGBDialog').length > 0){
 			HTML.CloseOpenBox('findGBDialog');
 
 			return;
 		}
+
+        // if the box is opened before the building metadata finished loading,
+        // retry populating the GB list instead of showing an empty dropdown
+        if (findGB.list.length === 0) await findGB.init();
 
         if ($('#findGBDialog').length === 0) {
             HTML.AddCssFile('findGB');
@@ -69,7 +76,7 @@ let findGB = {
         html += `<td><input type="checkbox" id="GBhasProgress"><label for="GBhasProress">${i18n("Boxes.findGB.hasProgress")}</label></td>`;
         html += `<td colspan="2"><input type="button" id="findGBreset" class="btn" value="${i18n("General.Reset")}"></input></td>`;
         html += `</tr></table>`;
-        html += `<table id="foundGB" class="foe-table"><thead class="sticky"><tr><th>${i18n("General.Player")}</th><th>${i18n("General.GB")}</th><th>${i18n("General.Level")}</th></tr></thead>`
+        html += `<table id="foundGB" class="foe-table"><thead class="sticky"><tr><th>${i18n("General.Player")}</th><th>${i18n("General.GB")}</th><th>${i18n("General.Level")}</th><th class="text-center">${i18n("Boxes.OwnpartCalculator.Tier")}</th></tr></thead>`
         
         for (i of findGB.found) {
             html += findGB.row(i)
@@ -95,7 +102,8 @@ let findGB = {
         for (let GB of data) {
             let progress = Math.round((((GB.points || 0) + (GB.current_progress || 0))/((GB.requiredPoints || 0) + (GB.max_progress || 0)) || 0)*100);
             if (GB.name == name && GB.level>=min && GB.level<=max && ((p && progress > 0) || !p)) {
-                let testGB = {player: GB.player.name, GB: GB.name, level: GB.level, playerID:GB.player.player_id, progress:progress}
+                // multi-tier GBs: overview rows carry the tier as {value: 'copper'|'silver'|'gold'}
+                let testGB = {player: GB.player.name, GB: GB.name, level: GB.level, playerID:GB.player.player_id, progress:progress, tier: GB.currentTier || null}
                 if (!findGB.found.find(obj => obj.player==testGB.player && obj.GB==testGB.GB && obj.level==testGB.level)) {
                     findGB.found.push(testGB);
                     $('#foundGB').append(findGB.row(testGB));
@@ -105,7 +113,8 @@ let findGB = {
     },
 
     row: (i) => {
-        return `<tr><td>${MainParser.GetPlayerLink(i.playerID,i.player)}</td><td>${i.GB}</td><td class="progress" style="--p:${i.progress}%">${i.level}</td></tr>`
+        let tierBadge = (typeof GreatBuildings !== 'undefined' && GreatBuildings.TierBadge) ? GreatBuildings.TierBadge(i.tier) : '';
+        return `<tr><td>${MainParser.GetPlayerLink(i.playerID,i.player)}</td><td>${i.GB}</td><td class="progress" style="--p:${i.progress}%">${i.level}</td><td class="text-center">${tierBadge || '-'}</td></tr>`
     }
 };
 

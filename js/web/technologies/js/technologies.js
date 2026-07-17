@@ -379,8 +379,9 @@ let Technologies = {
      * - `Technologies.CalcBody()`: Recalculates and updates the technologies display body.
      */
     BuildBox: () => {
-        Technologies.IgnorePrevEra = (localStorage.getItem('TechnologiesIgnorePrevEra') !== 'false' ? 'true' : 'false')
-        Technologies.IgnoreCurrentEraOptional = (localStorage.getItem('TechnologiesIgnoreCurrentEraOptional') !== 'false' ? 'true' : 'false')
+        // real booleans — the string 'false' would be truthy in the checks below
+        Technologies.IgnorePrevEra = localStorage.getItem('TechnologiesIgnorePrevEra') !== 'false'
+        Technologies.IgnoreCurrentEraOptional = localStorage.getItem('TechnologiesIgnoreCurrentEraOptional') !== 'false'
 
         Technologies.CalcBody();
     },
@@ -471,9 +472,10 @@ let Technologies = {
             TechCount = 0;
 
         let SelEraID = Technologies.SelectedEraID;
-        // Untere Grenze des kumulativen Bereichs: das jeweils niedrigere von aktuellem
-        // und gewähltem Zeitalter (beim Vorausblättern also das aktuelle Zeitalter).
-        let CumLowerEraID = Math.min(CurrentEraID, SelEraID);
+        // Lower bound of the cumulative range: the lower of current and selected era
+        // (i.e. the current era when browsing ahead). With "ignore previous eras"
+        // unchecked, open researches of earlier eras are included as well.
+        let CumLowerEraID = Technologies.IgnorePrevEra ? Math.min(CurrentEraID, SelEraID) : 1;
 
         for (let i = 1; i < Technologies.AllTechnologies.length; i++) {
             let Tech = Technologies.AllTechnologies[i];
@@ -483,11 +485,6 @@ let Technologies = {
             if (Tech['isTeaser']) continue;
 
             let EraID = Technologies.Eras[Tech['era']];
-
-            // Zeitalter unterhalb des kumulativen Bereichs ausblenden
-            if (EraID < CumLowerEraID && Technologies.IgnorePrevEra) {
-                continue;
-            }
 
             // Aktuelles/zukünftiges ZA und optionale Technologie ausblenden
             if (EraID >= CurrentEraID && Tech['children'].length === 0 && Technologies.IgnoreCurrentEraOptional) {
@@ -513,6 +510,9 @@ let Technologies = {
                     	CumulativeResources[ResourceName] = 0;
 
                     CumulativeResources[ResourceName] += Tech['requirements']['resources'][ResourceName];
+
+                    // also list goods that are only needed in eras in between
+                    RelevantResources[ResourceName] = true;
                 }
             }
 
@@ -564,9 +564,9 @@ let Technologies = {
 
         h.push('<table class="foe-table exportable">');
 
-        // Kumulative Spalte nur einblenden, wenn ein zukünftiges Zeitalter gewählt ist
-        // (sonst wäre sie identisch zur Spalte "Benötigt").
-        let ShowCumulative = SelEraID > CurrentEraID;
+        // Only show the cumulative column when the cumulative range spans more than
+        // the selected era (otherwise it would be identical to the "Required" column).
+        let ShowCumulative = CumLowerEraID < SelEraID;
 
         h.push('<thead class="sticky">' +
             '<tr>' +
@@ -625,7 +625,9 @@ let Technologies = {
                     let Cumulative = CumulativeResources[ResourceName] || 0;
                     let Stock = (ResourceName === 'strategy_points' ? StrategyPoints.AvailableFP : ResourceStock[ResourceName]);
                     if (Stock === undefined) Stock = 0;
-                    let Diff = Stock - Required;
+                    // "Still missing" is calculated against the full cumulative demand,
+                    // not just the selected era (#3544)
+                    let Diff = Stock - (ShowCumulative ? Cumulative : Required);
 
                     // Fertige Ressourcen (weder im gewählten ZA noch kumulativ benötigt) werden abgedimmt
                     let IsDone = Required <= 0 && (!ShowCumulative || Cumulative <= 0);

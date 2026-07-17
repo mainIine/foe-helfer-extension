@@ -16,7 +16,10 @@
 	"unit",
 	"calculator",
 	"infoboard",
-	"productions",
+	{
+		"name": "productions",
+		"parts": ["rating", "tables"]
+	},
 	"part-calc",
 	"alerts",
 	{

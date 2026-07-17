@@ -894,10 +894,6 @@ let HTML = {
 			}
 			
 			$(Table).find(findBy).each(function () {
-				if($(this)[0].classList.contains("buildingvalue")){
-					index++;
-					return;
-				}
 				let ColumnCount = $(this).attr('colspan');
 				if (ColumnCount) {
 					ColumnCount = ColumnCount - 0;
