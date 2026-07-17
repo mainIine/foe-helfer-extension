@@ -135,7 +135,9 @@ let Guild_fights = {
 	showFocusTarget: 1,
 	showTileColors: JSON.parse(localStorage.getItem("LiveFightSettings"))?.showTileColors || 1,
 	serverOffset: JSON.parse(localStorage.getItem("GuildFights.serverOffset")||"null"),
-	discordWebhook: { 
+	// seconds between the sector alert and the actual unlock (#3511)
+	alertLeadTime: JSON.parse(localStorage.getItem("LiveFightSettings"))?.alertLeadTime || 30,
+	discordWebhook: {
 		url: JSON.parse(localStorage.getItem("LiveFightSettings"))?.discordWebhook || "",
 		template: JSON.parse(localStorage.getItem("LiveFightSettings"))?.discordWebhookTemplate || "",
 		bulkTemplate: JSON.parse(localStorage.getItem("LiveFightSettings"))?.discordWebhookTemplateBulk || "",
@@ -1859,7 +1861,7 @@ let Guild_fights = {
 		const data = {
 			title: prov.title,
 			body: HTML.i18nReplacer(i18n('Boxes.GuildFights.SaveAlert'), { provinceName: prov.title }),
-			expires: (prov.lockedUntil - 30) * 1000, // -30s * Microtime
+			expires: (prov.lockedUntil - Guild_fights.alertLeadTime) * 1000, // configurable lead time in seconds * milliseconds
 			repeat: -1,
 			persistent: true,
 			tag: '',
@@ -1919,6 +1921,7 @@ let Guild_fights = {
 		let showVPColumn = LiveFightSettings?.showVPColumn ?? 1;
 		let showFocusTarget = LiveFightSettings?.showFocusTarget ?? 1;
 		let showServerTime = LiveFightSettings?.showServerTime ?? 0;
+		let alertLeadTime = LiveFightSettings?.alertLeadTime ?? 30;
 		let discordWebhook = LiveFightSettings?.discordWebhook ?? '';
 		let discordWebhookTemplate = LiveFightSettings?.discordWebhookTemplate ?? '';
 		let discordWebhookTemplateBulk = LiveFightSettings?.discordWebhookTemplateBulk ?? '';
@@ -1931,6 +1934,7 @@ let Guild_fights = {
 		c.push(`<p><label for="showfocustarget"><input id="showfocustarget" name="showfocustarget" value="0" type="checkbox" ${(showFocusTarget === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.ShowFocusTarget')}</label></p>`);
 		c.push(`<hr><p><label for="showservertime"><input id="showservertime" name="showservertime" value="0" type="checkbox" ${(showServerTime === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.ShowServerTime')}</label></p>`);
 		c.push(`<p><label for="serverOffset">${i18n('Boxes.GuildFights.serverOffset')}<input id="serverOffset" name="serverOffset" value="${Guild_fights.serverOffset??""}" type="text" maxlength="5" size = "5"/></label></p>`);
+		c.push(`<hr><p><label for="alertLeadTime">${i18n('Boxes.GuildFights.AlertLeadTime')} <input id="alertLeadTime" name="alertLeadTime" value="${alertLeadTime}" type="number" min="5" max="3600" step="5" size="6"/></label></p>`);
 
 		c.push(`<hr><p>`);
 			c.push(`<label for="gbgWebhook"><b>${i18n('Menu.Discord.Title')}</b></label><br />`);
@@ -2005,7 +2009,12 @@ let Guild_fights = {
 		value.discordWebhook = $("#gbgWebhook").val();
 		value.discordWebhookTemplate = $("#gbgWebhookTemplate").val();
 		value.discordWebhookTemplateBulk = $("#gbgWebhookTemplateBulk").val();
-				
+
+		// lead time for sector alerts in seconds, clamped to the input range (#3511)
+		let alertLeadTime = parseInt($("#alertLeadTime").val());
+		if (isNaN(alertLeadTime)) alertLeadTime = 30;
+		value.alertLeadTime = Math.min(Math.max(alertLeadTime, 5), 3600);
+
 		Guild_fights.showGuildColumn = value.showGuildColumn;
 		Guild_fights.showAdjacentSectors = value.showAdjacentSectors;
 		Guild_fights.showOwnSectors = value.showOwnSectors;
@@ -2016,6 +2025,7 @@ let Guild_fights = {
 		Guild_fights.discordWebhook.url = value.discordWebhook;
 		Guild_fights.discordWebhook.template = value.discordWebhookTemplate;
 		Guild_fights.discordWebhook.bulkTemplate = value.discordWebhookTemplateBulk;
+		Guild_fights.alertLeadTime = value.alertLeadTime;
 		Guild_fights.serverOffset = parseInt($("#serverOffset").val()) ?? null;
 
 		if (Guild_fights.serverOffset != null)

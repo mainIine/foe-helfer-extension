@@ -1,5 +1,66 @@
 ## Extension Changelog
 
+##### 4.4.1.1
+
+**Bugfix**
+- Notes:
+  - When creating a new sub page, the group assignment could silently get lost (the page was then not saved). This mainly happened when creating a new group and adding a page right away; the active tab was also lost after renaming a group or deleting the last group
+  - When opening the box, a valid group (tab) is now always activated; should no tab be active anyway, the new page is assigned to the first group instead of being discarded
+  - The sorting input when creating a page was previously ignored and works now
+
+---
+
+##### 4.4.1.0
+
+**New**
+- Infobox:
+  - New "Reset filters" button in the settings (gear icon in the title bar). Resets the category filters, "Favorites only" and the text filter to their defaults — helpful when the box appears empty because of old filter settings
+
+
+- Building efficiency rating:
+  - The CSV/JSON export now contains the column "Built in city" (1 = built, 0 = in inventory)
+  - Great Buildings in the table can now be recognized at a glance by the GB icon in front of their name
+
+
+- GBG:
+  - The lead time of the sector alert can now be adjusted in the settings of the countdown window (5-3600 seconds, default still 30)
+
+- GB Tracker:
+  - New column showing the tier (Copper, Silver, Gold) of the multi-tier Great Buildings — visible as soon as the player's data has been loaded
+
+**Update**
+- GB Tracker:
+  - When the window is opened before the building list has finished loading, the selection is now populated afterwards instead of staying empty
+
+
+- Building efficiency rating:
+  - Several city or inventory changes in quick succession now trigger only one recalculation of the rating instead of one per event
+
+
+- Code structure:
+  - The building efficiency rating and the table generation of the production overview have been split out of the productions module into their own files (no functional change)
+
+
+- Building metadata:
+  - The internal building cache is more robust: failed downloads fall back to the last stored version, corrupt cache entries are re-downloaded, and if the browser database (IndexedDB) is blocked the extension fetches all metadata fresh instead of starting with empty building data
+
+**Bugfix**
+- Alerts:
+  - Alerts based on timestamps from game data (expiring limited buildings, GBG sector alarm) were silently never created because of fractional values (console error `"data.expires" needs to be a integer`). Timestamps are now rounded
+
+
+- Technology tree:
+  - The "Still missing" column now calculates against the cumulative demand (current up to the selected era) for future eras instead of only the selected era
+  - Goods that are only needed in eras in between are now listed in the table as well
+  - The option "Ignore researches of previous eras" works again: when unchecked, open researches of earlier eras are included in the cumulative demand; the setting was also lost when reopening the box
+
+
+- Building efficiency rating (CSV/JSON export):
+  - Army boost columns now carry unique names with a context suffix (GE, GBG, QI). Previously the QI boost values overwrote the base boost values in the export, and the GE/GBG columns for attack and defense were indistinguishable
+  - Both the building value and the value per tile are exported again, clearly labelled via the "(per tile)" suffix — the export matches the display again
+
+---
+
 ##### 4.4.0.0
 
 **New**

@@ -90,6 +90,9 @@ alertsDB.version(1).stores({
 			if (typeof data.expires === 'string') data.expires = Number.parseInt(data.expires);
 			if (data.expires === undefined && typeof data.datetime === 'string') data.expires = new Date(data.datetime).getTime();
 			if (typeof data.repeat  === 'string') data.repeat  = Number.parseInt(data.repeat);
+			// game timestamps may carry fractional milliseconds (e.g. lockedUntil floats)
+			if (typeof data.expires === 'number') data.expires = Math.round(data.expires);
+			if (typeof data.repeat  === 'number') data.repeat  = Math.round(data.repeat);
 			if (data.category === undefined) data.category = '';
 			if (data.tag === undefined) data.tag = '';
 			if (data.vibrate === undefined) data.vibrate = false;

@@ -1,5 +1,60 @@
 ## Extension Changelog
 
+##### 4.4.1.1
+
+**Bugfix**
+- Notizen:
+  - Beim Anlegen einer neuen Unterseite konnte die Gruppen-Zuordnung stillschweigend verloren gehen (die Seite wurde dann nicht gespeichert). Betroffen war vor allem der Fall "neue Gruppe anlegen und direkt eine Seite hinzufügen"; auch nach dem Umbenennen einer Gruppe oder dem Löschen der letzten Gruppe war kein Tab mehr aktiv
+  - Beim Öffnen der Box ist jetzt immer eine gültige Gruppe (Tab) aktiviert; falls doch kein Tab aktiv sein sollte, wird die neue Seite der ersten Gruppe zugeordnet statt verworfen
+  - Die Sortier-Eingabe beim Anlegen einer Seite wurde bisher ignoriert und funktioniert jetzt
+
+---
+
+##### 4.4.1.0
+
+**Neu**
+- Infobox:
+  - Neuer Button "Filter zurücksetzen" in den Einstellungen (Zahnrad in der Titelleiste). Setzt Kategorie-Filter, "Nur Favoriten" und den Textfilter auf Standard zurück — hilfreich, wenn die Box wegen alter Filtereinstellungen leer erscheint
+
+- Gebäude-Effizienzbewertung:
+  - Der CSV/JSON-Export enthält jetzt die Spalte "In der Stadt aufgebaut" (1 = aufgebaut, 0 = im Inventar)
+  - Legendäre Gebäude sind in der Tabelle jetzt sofort am LG-Symbol vor dem Namen zu erkennen
+
+- GG:
+  - Die Vorlaufzeit des Sektor-Alarms ist jetzt in den Einstellungen des Countdown-Fensters einstellbar (5-3600 Sekunden, Standard weiterhin 30)
+
+- GB Tracker:
+  - Neue Spalte mit dem Rang (Kupfer, Silber, Gold) der mehrstufigen Legendären Gebäude — sichtbar, sobald die Daten des Spielers geladen wurden
+
+**Update**
+- GB Tracker:
+  - Wird das Fenster geöffnet, bevor die Gebäudeliste fertig geladen ist, wird die Auswahl jetzt nachträglich befüllt statt leer zu bleiben
+
+
+- Gebäude-Effizienzbewertung:
+  - Mehrere schnell aufeinanderfolgende Stadt- oder Inventaränderungen lösen jetzt nur noch eine Neuberechnung der Bewertung aus statt einer pro Ereignis
+
+
+- Gebäude-Metadaten:
+  - Der interne Gebäude-Cache ist robuster: Bei fehlgeschlagenen Downloads wird auf die zuletzt gespeicherte Version zurückgegriffen, defekte Cache-Einträge werden neu geladen, und ist die Browser-Datenbank (IndexedDB) blockiert, lädt die Extension alle Metadaten frisch statt mit leeren Gebäudedaten zu starten
+
+**Bugfix**
+- Alarme:
+  - Alarme mit Zeitstempeln aus Spieldaten (auslaufende limitierte Gebäude, GG-Sektor-Alarm) wurden wegen Nachkommastellen stillschweigend nie angelegt (Konsolenfehler `"data.expires" needs to be a integer`). Zeitstempel werden jetzt gerundet
+
+
+- Technologiebaum:
+  - Die Spalte "Fehlt noch" rechnet bei zukünftigen Zeitaltern jetzt gegen den kumulativen Bedarf (aktuelles bis gewähltes Zeitalter) statt nur gegen das gewählte Zeitalter
+  - Güter, die nur in dazwischenliegenden Zeitaltern gebraucht werden, tauchen jetzt ebenfalls in der Tabelle auf
+  - Die Option "Forschungen aus vorherigen Zeitaltern ignorieren" funktioniert wieder: abgewählt werden offene Forschungen früherer Zeitalter in den kumulativen Bedarf einbezogen; außerdem ging die Einstellung beim erneuten Öffnen der Box verloren
+
+
+- Gebäude-Effizienzbewertung (CSV/JSON-Export):
+  - Armee-Boost-Spalten tragen jetzt eindeutige Namen mit Kontext-Zusatz (GEX, GG, QI). Vorher überschrieben die QI-Boost-Werte die Basis-Boost-Werte im Export, und die GEX/GG-Spalten für Angriff und Verteidigung waren nicht unterscheidbar
+  - Es werden wieder Gebäudewert und Wert pro Feld exportiert, klar benannt über den Zusatz "(pro Feld)" — der Export passt damit wieder zur Anzeige
+
+---
+
 ##### 4.4.0.0
 
 **Neu**

@@ -26,6 +26,10 @@
 #ProductionsRatingBody {
 	opacity: 1;
 }
+#ProductionsRatingBody .gb-icon {
+	height: 16px;
+	vertical-align: text-bottom;
+}
 #Productions #ProductionsBody {
 	overflow-x: hidden;
 	overflow-y: auto;
