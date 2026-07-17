@@ -1,5 +1,26 @@
 ## Extension Changelog
 
+##### 4.4.2.0
+
+**New**
+- GBG:
+  - New attrition column in the countdown tab (can be disabled in the settings): color coded (20% light blue, 40/60% orange, 80%+ red)
+  - The guild's blocking hand marker is now shown in the tables just like the crosshair
+  - Hovering a table row outlines the sector on the province map in the guild's colour
+  - Building slots tab: sectors with empty slots get a subtle red highlight as long as the 20% attrition minimum has not been reached yet
+
+**Update**
+- GBG:
+  - Victory points, attrition and building slots update live in all tabs; the guild ranking picks up new victory points right away as well
+  - Conquered sectors instantly switch to the correct tab and show the new guild name
+  - The "Show VP column" setting now also applies to the building slots tab
+
+**Bugfix**
+- GBG:
+  - Removed sector markers (crosshair/blocking hand) now disappear from the box instead of getting stuck
+
+---
+
 ##### 4.4.1.1
 
 **Bugfix**
