@@ -25,6 +25,7 @@ let ProvinceMap = {
 	Provinces: [],
 	StrokeColor: '#111',
 	selectedProvince: null,
+	HighlightedSector: null,
 
 
 	/**
@@ -177,6 +178,13 @@ let ProvinceMap = {
 		}
 
 		// Objects
+		/**
+		 * Map sector object holding position, ownership and progress data
+		 * plus its cached Path2D shape
+		 *
+		 * @param {Object} data Combined static province data and live map data
+		 * @constructor
+		 */
 		function Province(data) {
 			this.id = data.id || 0;
 			this.name = data.name;
@@ -200,10 +208,19 @@ let ProvinceMap = {
 			return this;
 		}
 
+		/**
+		 * Redraws this sector using the current map type
+		 */
 		Province.prototype.updateMapSector = function () {
 			this.drawMapSector(Guild_fights.MapData.map['id']);
 		}
 
+		/**
+		 * Draws the complete sector: shape in the owner's colour, title, slot dots,
+		 * unlock time and conquest progress bars; spawn spots get the clan flag
+		 *
+		 * @param {string} mapType "waterfall_archipelago" or "volcano_archipelago"
+		 */
 		Province.prototype.drawMapSector = function (mapType = 'waterfall_archipelago') {
 			ProvinceMap.MapCTX.font = 'bold 30px Arial';
 			ProvinceMap.MapCTX.textAlign = "center";
@@ -270,6 +287,11 @@ let ProvinceMap = {
 			}
 		}
 
+		/**
+		 * Draws the unlock time (HH:mm) of a locked sector
+		 *
+		 * @param {Object} mapStuff Precalculated x/y drawing coordinates
+		 */
 		Province.prototype.drawUnlockTime = function(mapStuff) {
 			ProvinceMap.MapCTX.font = 'bold 20px Courier New';
 			ProvinceMap.MapCTX.fillStyle = '#000';
@@ -277,6 +299,15 @@ let ProvinceMap = {
 			ProvinceMap.MapCTX.fillText(provinceUnlockTime,mapStuff.x,mapStuff.y+5);
 		}
 
+		/**
+		 * Draws the sector title, the battle type dot (attack/defence) and one
+		 * dot per building slot
+		 *
+		 * @param {string} mapType Map id, kept for symmetry with the other draw calls
+		 * @param {boolean} drawCentered Center the title when no time/progress is shown
+		 * @param x Drawing x coordinate
+		 * @param y Drawing y coordinate
+		 */
 		Province.prototype.drawTitleAndSlots = function(mapType, drawCentered = true, x, y) {
 			let titleY = y;
 			let slotsY = y - 20;
@@ -324,6 +355,11 @@ let ProvinceMap = {
 			}
 		}
 
+		/**
+		 * Draws one progress bar per attacking guild in its guild colour
+		 *
+		 * @param {Object} mapStuff Precalculated x/y drawing coordinates
+		 */
 		Province.prototype.drawProgress = function(mapStuff) {
 			ProvinceMap.MapCTX.strokeStyle = ProvinceMap.StrokeColor;
 			if (this.conquestProgress !== undefined && this.conquestProgress.length > 0)
@@ -341,6 +377,12 @@ let ProvinceMap = {
 				});
 		}
 
+		/**
+		 * Draws a spawn spot: sector shape plus the owning clan's flag image
+		 *
+		 * @param {Object} mapStuff Precalculated x/y drawing coordinates
+		 * @param {string} mapType Map id for the shape lookup
+		 */
 		Province.prototype.drawStartSector = function(mapStuff, mapType) {
 			let flag_image = new Image();
 			flag_image.src = srcLinks.get(`/shared/clanflags/${this.owner.flagImg}.jpg`, true);
@@ -358,6 +400,13 @@ let ProvinceMap = {
 			}
 		}
 
+		/**
+		 * Returns the Path2D outline of the sector: a ring segment on the volcano
+		 * map, a hexagon on the waterfall map. The path is cached per map type
+		 *
+		 * @param {string} mapType "waterfall_archipelago" or "volcano_archipelago"
+		 * @returns {Path2D}
+		 */
 		Province.prototype.drawSectorShape = function (mapType = 'waterfall_archipelago') {
 			if (this._shapeCache[mapType]) {
 				return this._shapeCache[mapType];
@@ -588,6 +637,54 @@ let ProvinceMap = {
 		}
 
 		updatedProvince.updateMapSector();
+
+		// keep the hover outline visible when the sector got redrawn underneath it
+		if (ProvinceMap.HighlightedSector === updatedProvince.id) {
+			ProvinceMap.HighlightedSector = null;
+			ProvinceMap.HighlightSector(updatedProvince.id);
+		}
+	},
+
+
+	/**
+	 * Outlines a sector on the map with a darker shade of its owner's colour,
+	 * e.g. while hovering the matching table row
+	 *
+	 * @param {number} provinceId
+	 */
+	HighlightSector: (provinceId) => {
+		if ($('#ProvinceMap').length === 0 || !(ProvinceMap.Map instanceof HTMLCanvasElement)) return;
+
+		const province = ProvinceMap.Provinces.find(p => p.id === provinceId);
+		if (!province) return;
+
+		if (ProvinceMap.HighlightedSector !== null && ProvinceMap.HighlightedSector !== provinceId) {
+			ProvinceMap.UnhighlightSector();
+		}
+
+		const path = province.drawSectorShape(Guild_fights.MapData.map['id']);
+
+		ProvinceMap.MapCTX.save();
+		ProvinceMap.MapCTX.strokeStyle = province.owner.colors?.shadow || '#000';
+		ProvinceMap.MapCTX.lineWidth = 8;
+		ProvinceMap.MapCTX.stroke(path);
+		ProvinceMap.MapCTX.restore();
+
+		ProvinceMap.HighlightedSector = provinceId;
+	},
+
+
+	/**
+	 * Removes the hover outline again by redrawing the map
+	 */
+	UnhighlightSector: () => {
+		if (ProvinceMap.HighlightedSector === null) return;
+
+		ProvinceMap.HighlightedSector = null;
+
+		if ($('#ProvinceMap').length === 0 || !(ProvinceMap.Map instanceof HTMLCanvasElement)) return;
+
+		ProvinceMap.BuildMap();
 	},
 
 

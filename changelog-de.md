@@ -1,5 +1,26 @@
 ## Extension Changelog
 
+##### 4.4.2.0
+
+**Neu**
+- GG:
+  - Neue Zermürbungs-Spalte im Countdown-Tab (per Einstellung abschaltbar): farbcodiert (20% hellblau, 40/60% orange, ab 80% rot) und live berechnet
+  - Die Sperr-Hand der Gilde wird jetzt wie das Fadenkreuz in den Tabellen angezeigt
+  - Beim Überfahren einer Tabellenzeile wird der Sektor auf der Provinzkarte in der Gildenfarbe umrandet
+  - Bauslot-Übersicht: Sektoren mit freien Slots werden dezent rot markiert, solange die 20%-Zermürbungsgrenze noch nicht erreicht ist
+
+**Update**
+- GG:
+  - Siegpunkte, Zermürbung und Bauslots aktualisieren sich live in allen Tabs; das Gilden-Ranking übernimmt neue Siegpunkte ebenfalls sofort
+  - Eroberte Sektoren wechseln sofort in den passenden Tab und zeigen direkt den neuen Gildennamen
+  - Die Einstellung "VP-Spalte anzeigen" gilt jetzt auch in der Bauslot-Übersicht
+
+**Bugfix**
+- GG:
+  - Entfernte Sektor-Markierungen (Fadenkreuz/Sperr-Hand) verschwinden jetzt auch aus der Box statt hängen zu bleiben
+
+---
+
 ##### 4.4.1.1
 
 **Bugfix**

@@ -317,6 +317,24 @@
 	transition: background-color .6s;
 }
 
+/* own sectors with empty building slots and attrition still above the 20% minimum */
+#LiveGildFightingBody #gbgowned tr.slot-warning td {
+	background-color: rgba(207, 64, 30, 0.16);
+}
+
+/* attrition chance color coding: 20% light blue, 40/60% orange, 80/100% red */
+#LiveGildFightingBody .attrition-cell.attrition-low {
+	color: #7fd4ff;
+}
+
+#LiveGildFightingBody .attrition-cell.attrition-mid {
+	color: #ffb84d;
+}
+
+#LiveGildFightingBody .attrition-cell.attrition-high {
+	color: #ff6a5e;
+}
+
 #LiveGildFightingBody tr.pulse td {
 	background-color: rgba(208, 200, 172, 0.3);
 	transition: background-color .6s;
