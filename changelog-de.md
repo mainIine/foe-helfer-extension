@@ -5,8 +5,8 @@
 **Neu**
 - GG:
   - Neue Zermürbungs-Spalte im Countdown-Tab (per Einstellung abschaltbar): farbcodiert (20% hellblau, 40/60% orange, ab 80% rot) und live berechnet
-  - Die Sperr-Hand der Gilde wird jetzt wie das Fadenkreuz in den Tabellen angezeigt
-  - Beim Überfahren einer Tabellenzeile wird der Sektor auf der Provinzkarte in der Gildenfarbe umrandet
+  - Die Sperr-Hand der Gilde wird jetzt wie das Fadenkreuz in den Tabellen angezeigt und auf der GildenKarte (Box)
+  - Beim Überfahren einer Tabellenzeile wird der Sektor auf der Provinzkarte in der Gildenfarbe umrandet und pulsiert
   - Bauslot-Übersicht: Sektoren mit freien Slots werden dezent rot markiert, solange die 20%-Zermürbungsgrenze noch nicht erreicht ist
 
 **Update**

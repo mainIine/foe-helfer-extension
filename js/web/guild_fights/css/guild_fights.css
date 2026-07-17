@@ -258,8 +258,8 @@
 	user-select: text;
 }
 
-#LiveGildFightingBody #nextup .secure .prov-name b {
-	text-decoration: underline;
+#LiveGildFightingBody #nextup .secure .prov-name {
+	white-space: nowrap;
 }
 
 #LiveGildFightingBody #nextup .secure .battletype {
@@ -363,39 +363,39 @@
 }
 
 #LiveGildFightingBody .gbg-red:before {
-	background-image: url(../../x_img/gbg-red.png);
+	background-image: url('../../x_img/gbg-red.png');
 }
 
 #LiveGildFightingBody .gbg-green:before {
-	background-image: url(../../x_img/gbg-green.png);
+	background-image: url('../../x_img/gbg-green.png');
 }
 
 #LiveGildFightingBody .gbg-yellow:before {
-	background-image: url(../../x_img/gbg-yellow.png);
+	background-image: url('../../x_img/gbg-yellow.png');
 }
 
 #LiveGildFightingBody .gbg-teal:before {
-	background-image: url(../../x_img/gbg-teal.png);
+	background-image: url('../../x_img/gbg-teal.png');
 }
 
 #LiveGildFightingBody .gbg-orange:before {
-	background-image: url(../../x_img/gbg-orange.png);
+	background-image: url('../../x_img/gbg-orange.png');
 }
 
 #LiveGildFightingBody .gbg-blue:before {
-	background-image: url(../../x_img/gbg-blue.png);
+	background-image: url('../../x_img/gbg-blue.png');
 }
 
 #LiveGildFightingBody .gbg-purple:before {
-	background-image: url(../../x_img/gbg-purple.png);
+	background-image: url('../../x_img/gbg-purple.png');
 }
 
 #LiveGildFightingBody .gbg-pink:before {
-	background-image: url(../../x_img/gbg-pink.png);
+	background-image: url('../../x_img/gbg-pink.png');
 }
 
 #LiveGildFightingBody .gbg-own_guild_colour:before {
-	background-image: url(../../x_img/gbg-gray.png);
+	background-image: url('../../x_img/gbg-gray.png');
 }
 
 #LiveGildFightingBody tr .btn.discord {
@@ -411,7 +411,7 @@
 }
 
 .btn[class*=alertbutton] {
-	background-image: url(../../../../css/images/menu/alerts.png), var(--btn-bg);
+	background-image: url('../../../../css/images/menu/alerts.png'), var(--btn-bg);
 	background-size: 90%, 100%;
 	background-repeat: no-repeat;
 	background-position: center;
@@ -420,7 +420,7 @@
 }
 
 .btn.deletealertbutton {
-	background-image: url(../../../../css/images/menu/alerts.png), var(--btn-bg-red);
+	background-image: url('../../../../css/images/menu/alerts.png'), var(--btn-bg-red);
 	width: 26px;
 }
 
@@ -464,15 +464,32 @@
 	display: none;
 }
 
+/* shrink-wraps the map canvas so the overlay canvas can sit exactly on top */
+#ProvinceMap #province-map-stack {
+	position: relative;
+	height: 100%;
+	width: fit-content;
+	margin: 0 auto;
+}
+
 #ProvinceMap #province-map {
 	background-color: #222;
 	position: relative;
 	height: 100%;
-	margin: 0 auto;
 	display: block;
 }
 
-#ProvinceMap #province-map.zoomed {
+#ProvinceMap #province-map-overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	pointer-events: none;
+}
+
+#ProvinceMap #province-map-stack.zoomed,
+#ProvinceMap #province-map-stack.zoomed #province-map {
 	height: auto;
 }
 
