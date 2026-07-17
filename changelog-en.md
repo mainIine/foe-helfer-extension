@@ -1,5 +1,15 @@
 ## Extension Changelog
 
+##### 4.4.1.1
+
+**Bugfix**
+- Notes:
+  - When creating a new sub page, the group assignment could silently get lost (the page was then not saved). This mainly happened when creating a new group and adding a page right away; the active tab was also lost after renaming a group or deleting the last group
+  - When opening the box, a valid group (tab) is now always activated; should no tab be active anyway, the new page is assigned to the first group instead of being discarded
+  - The sorting input when creating a page was previously ignored and works now
+
+---
+
 ##### 4.4.1.0
 
 **New**
@@ -27,17 +37,8 @@
   - Several city or inventory changes in quick succession now trigger only one recalculation of the rating instead of one per event
 
 
-- Permissions:
-  - The extension no longer requests the "tabs" permission — now also in the Chrome and Firefox packages (it had already been removed from the development manifest)
-
-
-- Manifest:
-  - Chrome and Firefox now share a single Manifest V3 (one manifest.json). Firefox therefore also runs on Manifest V3 with an event page instead of a persistent background; requires Firefox 128 or newer
-
-
 - Code structure:
   - The building efficiency rating and the table generation of the production overview have been split out of the productions module into their own files (no functional change)
-  - The old planner prototype has been removed from the repository
 
 
 - Building metadata:

@@ -1,16 +1,24 @@
 ## Extension Changelog
 
+##### 4.4.1.1
+
+**Bugfix**
+- Notizen:
+  - Beim Anlegen einer neuen Unterseite konnte die Gruppen-Zuordnung stillschweigend verloren gehen (die Seite wurde dann nicht gespeichert). Betroffen war vor allem der Fall "neue Gruppe anlegen und direkt eine Seite hinzufügen"; auch nach dem Umbenennen einer Gruppe oder dem Löschen der letzten Gruppe war kein Tab mehr aktiv
+  - Beim Öffnen der Box ist jetzt immer eine gültige Gruppe (Tab) aktiviert; falls doch kein Tab aktiv sein sollte, wird die neue Seite der ersten Gruppe zugeordnet statt verworfen
+  - Die Sortier-Eingabe beim Anlegen einer Seite wurde bisher ignoriert und funktioniert jetzt
+
+---
+
 ##### 4.4.1.0
 
 **Neu**
 - Infobox:
   - Neuer Button "Filter zurücksetzen" in den Einstellungen (Zahnrad in der Titelleiste). Setzt Kategorie-Filter, "Nur Favoriten" und den Textfilter auf Standard zurück — hilfreich, wenn die Box wegen alter Filtereinstellungen leer erscheint
 
-
 - Gebäude-Effizienzbewertung:
   - Der CSV/JSON-Export enthält jetzt die Spalte "In der Stadt aufgebaut" (1 = aufgebaut, 0 = im Inventar)
   - Legendäre Gebäude sind in der Tabelle jetzt sofort am LG-Symbol vor dem Namen zu erkennen
-
 
 - GG:
   - Die Vorlaufzeit des Sektor-Alarms ist jetzt in den Einstellungen des Countdown-Fensters einstellbar (5-3600 Sekunden, Standard weiterhin 30)
@@ -25,19 +33,6 @@
 
 - Gebäude-Effizienzbewertung:
   - Mehrere schnell aufeinanderfolgende Stadt- oder Inventaränderungen lösen jetzt nur noch eine Neuberechnung der Bewertung aus statt einer pro Ereignis
-
-
-- Berechtigungen:
-  - Die Extension fordert das "tabs"-Recht nicht mehr an — jetzt auch in den Chrome- und Firefox-Paketen (im Entwicklungs-Manifest war es bereits entfernt)
-
-
-- Manifest:
-  - Chrome und Firefox nutzen jetzt ein gemeinsames Manifest V3 (eine einzige manifest.json). Firefox läuft damit ebenfalls auf Manifest V3 mit Event-Page statt persistentem Hintergrund; benötigt Firefox 128 oder neuer
-
-
-- Code-Struktur:
-  - Die Gebäude-Effizienzbewertung und die Tabellen-Generierung der Produktionsübersicht wurden aus dem Produktions-Modul in eigene Dateien ausgelagert (keine funktionale Änderung)
-  - Der alte Planner-Prototyp wurde aus dem Repository entfernt
 
 
 - Gebäude-Metadaten:
