@@ -235,6 +235,14 @@ let Notice = {
 		// wait for html in the DOM
 		$('#notices').find('#noticesBody').html(content).promise().done(function(){
 
+			// ensure a valid tab is always active, otherwise Tabslet marks no tab
+			// as active and "grp" stays empty when a new item is saved
+			const grpCount = $('.notices > ul.horizontal > li').length;
+
+			if(!Number.isInteger(Notice.ActiveTab) || Notice.ActiveTab < 1 || Notice.ActiveTab > grpCount){
+				Notice.ActiveTab = 1;
+			}
+
 			// init Tabslet
 			$('.notices').tabslet({
 				active: Notice.ActiveTab
@@ -492,10 +500,11 @@ let Notice = {
 				Notice.notes = resp['notice'];
 
 				if(id === 'new'){
-					Notice.ActiveTab = Notice.notes[Notice.notes.length -1];
+					Notice.ActiveTab = Notice.notes.length;
 
 				} else {
-					Notice.ActiveTab = Notice.notes.findIndex(idx => (idx.id === id)) +1;
+					// loose comparison, "id" comes from the DOM as a string
+					Notice.ActiveTab = Notice.notes.findIndex(idx => (idx.id == id)) +1;
 				}
 
 				$('#notices-modal').fadeToggle('fast', function(){
@@ -520,12 +529,18 @@ let Notice = {
 	SaveItemModal: (id)=> {
 		let nN = $('.inp-itm-name').val(),
 			txt = nN.trim(),
-			grp = $('ul.horizontal').find('li.active a').data('id'),
-			sortVal = !$(`.inp-itm-sort`).val() || ($(`#tab-${grp}`).find('ul.vertical li').length +1);
+			grp = $('ul.horizontal').find('li.active a').data('id');
 
 		if(txt === ''){
 			return;
 		}
+
+		// fallback: if no tab is marked as active use the first group, "grp" must never be empty
+		if(grp === undefined){
+			grp = $('ul.horizontal').find('li:first a').data('id');
+		}
+
+		let sortVal = $(`.inp-itm-sort`).val() || ($(`#tab-${grp}`).find('ul.vertical li').length +1);
 
 		txt = MainParser.ClearText(txt);
 
@@ -541,14 +556,15 @@ let Notice = {
 			else {
 				Notice.notes = resp['notice'];
 
-				const group = Notice.notes.find(e => (e.id === grp));
-				Notice.ActiveTab = Notice.notes.findIndex(idx => (idx.id === grp)) +1;
+				// loose comparisons, ids may arrive as strings from the DOM
+				const group = Notice.notes.find(e => (e.id == grp));
+				Notice.ActiveTab = Notice.notes.findIndex(idx => (idx.id == grp)) +1;
 
 				if(id === 'new'){
 					Notice.ActiveSubTab = group.items.length +1;
 
 				} else {
-					Notice.ActiveSubTab = group.items.findIndex(i => (i.id === id)) +1;
+					Notice.ActiveSubTab = group.items.findIndex(i => (i.id == id)) +1;
 				}
 
 				$('#notices-modal').fadeToggle('fast', function(){
@@ -852,6 +868,10 @@ let Notice = {
 			}
 			else {
 				Notice.notes = resp['notice'];
+
+				// the deleted element may have been the active one, jump back to the first tab
+				Notice.ActiveTab = 1;
+				Notice.ActiveSubTab = 1;
 
 				$('#notices-modal').fadeToggle('fast', function(){
 					$(this).remove();
