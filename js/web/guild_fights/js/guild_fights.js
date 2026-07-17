@@ -55,6 +55,11 @@ FoEproxy.addWsHandler('GuildBattlegroundSignalsService', 'updateSignal', data =>
 	if ($('#LiveGildFighting').length > 0) {
 		Guild_fights.BuildFightContent();
 	}
+
+	// a focus move clears the marker on another sector too, so repaint the whole overlay
+	if ($('#ProvinceMap').length > 0 && ProvinceMap.Overlay instanceof HTMLCanvasElement) {
+		ProvinceMap.DrawOverlay();
+	}
 });
 
 // building placements arrive via websocket only, getProvinces does not resend the slot count
