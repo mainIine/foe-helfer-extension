@@ -9,7 +9,16 @@
   - Hovering a table row outlines the sector on the province map in the guild's colour
   - Building slots tab: sectors with empty slots get a subtle red highlight as long as the 20% attrition minimum has not been reached yet
 
+- City Builder:
+  - New "City Builder" button in the city overview (own main city only): computes a compact layout suggestion for your city
+  - Several algorithms and build orders compete for a few seconds, the best result wins: every building placed, with as few roads as possible
+  - Great buildings are nested right against the map border and connected by single road tiles; buildings that need no road plug the gaps away from the roads, and the remaining free space stays in one contiguous piece
+  - The map can be dragged around; in the pop-out window it is centered and fitted automatically
+
 **Update**
+- Technologies:
+  - The resource table can now be sorted by clicking the column headers
+
 - GBG:
   - Victory points, attrition and building slots update live in all tabs; the guild ranking picks up new victory points right away as well
   - Conquered sectors instantly switch to the correct tab and show the new guild name
@@ -18,6 +27,8 @@
 **Bugfix**
 - GBG:
   - Removed sector markers (crosshair/blocking hand) now disappear from the box instead of getting stuck
+- City overview:
+  - The building filter, "Copy data" and "City planner" buttons were missing when the box was opened from another map (e.g. GBG or GE); they now show up whenever your own main city is displayed
 
 ---
 

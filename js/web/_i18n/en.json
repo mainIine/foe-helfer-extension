@@ -240,6 +240,8 @@
     "Boxes.Castle.VisitAntiqueDealerWarning": "Open the antique dealer to update the data.",
     "Boxes.Castle.VisitCastleWarning": "Open the castle overview to update the data.",
     "Boxes.Castle.VisitGexWarning": "Open the GE overview to update the data.",
+    "Boxes.CityBuilder.Calculating": "Generating city layout...",
+    "Boxes.CityBuilder.NoData": "No data available",
     "Boxes.CityBuilder.Opacity": "Opacity",
     "Boxes.CityBuilder.Title": "City Builder",
     "Boxes.CityBuilder.Zoom": "Zoom",

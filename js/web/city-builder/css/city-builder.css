@@ -104,6 +104,12 @@
 	position: absolute;
 	left: 0;
 	top: 0;
+	/* drag surface for panning: the transformed hit area is exactly the visible map */
+	pointer-events: all;
+	cursor: grab;
+}
+.map-grid-canvas:active {
+	cursor: grabbing;
 }
 .map-grid-tooltips {
 	position: absolute;
@@ -200,4 +206,24 @@
 /* Optional: Fallback, falls CSS-Variablen mal nicht laden */
 .map-building {
 	box-sizing: border-box;
+}
+
+/* Pop-up window: regular filled layout instead of the in-game city overlay */
+body.foe-helper-popup #CityBuilderBox.window-box {
+	pointer-events: all;
+	width: 100vw;
+	min-width: 0;
+	height: 100vh;
+	top: 0;
+	left: 0 !important;
+}
+body.foe-helper-popup #CityBuilderBox .window-head {
+	width: auto;
+}
+body.foe-helper-popup #CityBuilderBox .window-body {
+	overflow: hidden;
+}
+/* origin 0 0 keeps the centering math in CityBuilder.fitPopout() simple */
+body.foe-helper-popup #CityBuilderBox .map-grid-wrapper {
+	transform-origin: 0 0;
 }

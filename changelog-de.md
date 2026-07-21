@@ -6,10 +6,18 @@
 - GG:
   - Neue Zermürbungs-Spalte im Countdown-Tab (per Einstellung abschaltbar): farbcodiert (20% hellblau, 40/60% orange, ab 80% rot) und live berechnet
   - Die Sperr-Hand der Gilde wird jetzt wie das Fadenkreuz in den Tabellen angezeigt und auf der GildenKarte (Box)
-  - Beim Überfahren einer Tabellenzeile wird der Sektor auf der Provinzkarte in der Gildenfarbe umrandet und pulsiert
   - Bauslot-Übersicht: Sektoren mit freien Slots werden dezent rot markiert, solange die 20%-Zermürbungsgrenze noch nicht erreicht ist
 
+- City Builder:
+  - Neuer Button "City Builder" in der Stadtübersicht (nur in der eigenen Hauptstadt): berechnet einen kompakten Layout-Vorschlag für die Stadt
+  - Mehrere Algorithmen und Bau-Reihenfolgen treten ein paar Sekunden lang gegeneinander an, das beste Ergebnis gewinnt: alle Gebäude untergebracht, mit so wenig Straßen wie möglich
+  - Legendäre Gebäude werden direkt am Kartenrand verschachtelt und nur über einzelne Straßenfelder angebunden; Gebäude ohne Straßenbedarf stopfen Lücken abseits der Straßen, die restliche Freifläche bleibt als ein zusammenhängendes Stück erhalten
+  - Die Karte lässt sich per Drag verschieben; im Pop-out-Fenster wird sie automatisch zentriert und eingepasst
+
 **Update**
+- Technologien:
+  - Die Ressourcen-Tabelle ist jetzt per Klick auf die Spaltenköpfe sortierbar
+
 - GG:
   - Siegpunkte, Zermürbung und Bauslots aktualisieren sich live in allen Tabs; das Gilden-Ranking übernimmt neue Siegpunkte ebenfalls sofort
   - Eroberte Sektoren wechseln sofort in den passenden Tab und zeigen direkt den neuen Gildennamen
@@ -18,6 +26,8 @@
 **Bugfix**
 - GG:
   - Entfernte Sektor-Markierungen (Fadenkreuz/Sperr-Hand) verschwinden jetzt auch aus der Box statt hängen zu bleiben
+- Stadtübersicht:
+  - Gebäude-Filter, "Daten kopieren" und "Stadtplaner" fehlten, wenn die Box von einer anderen Karte aus geöffnet wurde (z. B. GG oder GEX); sie erscheinen jetzt überall dort, wo die eigene Hauptstadt angezeigt wird
 
 ---
 
