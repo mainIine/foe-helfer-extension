@@ -229,13 +229,21 @@ let CityMap = {
 		});
 
 		// Button for submit Box
-		if (ActiveMap === 'main') {
+		// The box renders the own main city on every map without a dedicated view
+		// (e.g. gg/gex), so gate on the rendered city instead of the current map
+		if (!['cultural_outpost', 'era_outpost', 'guild_raids', 'OtherPlayer'].includes(ActiveMap)) {
 			menu.append($('<input type="text" id="BuildingsFilter" placeholder="'+ i18n('Boxes.CityMap.FilterBuildings') +'" oninput="CityMap.filterBuildings(this.value)">'));
-			menu.append(
-				$('<div class="btn-group" />')
-					.append($('<button class="btn ml-auto" />').attr({ id: 'copy-meta-infos', onclick: 'CityMap.copyMetaInfos()' }).text(i18n('Boxes.CityMap.CopyMetaInfos')))
-					.append($('<button class="btn ml-auto" />').attr({ id: 'show-submit-box', onclick: 'CityMap.showSubmitBox()' }).text(i18n('Boxes.CityMap.ShowSubmitBox')))
-			);
+
+			let btnGroup = $('<div class="btn-group" />')
+				.append($('<button class="btn ml-auto" />').attr({ id: 'copy-meta-infos', onclick: 'CityMap.copyMetaInfos()' }).text(i18n('Boxes.CityMap.CopyMetaInfos')))
+				.append($('<button class="btn ml-auto" />').attr({ id: 'show-submit-box', onclick: 'CityMap.showSubmitBox()' }).text(i18n('Boxes.CityMap.ShowSubmitBox')));
+
+			// City builder only works with the main city, not while visiting gg/gex
+			if (ActiveMap === 'main') {
+				btnGroup.append($('<button class="btn ml-auto" />').attr({ id: 'open-city-builder', onclick: 'CityBuilder.init()' }).text(i18n('Boxes.CityBuilder.Title')));
+			}
+
+			menu.append(btnGroup);
 		}
 		oB.append(wrapper);
 
@@ -1423,7 +1431,7 @@ let CityMap = {
 				goods: GoodsData,
 				cityEntities: CityMap.removeDoubleUnderscoreKeys(MainParser.CityEntities),
 				allEntities: CityMap.removeDoubleUnderscoreKeys(Outposts.Advancements),
-				mainEntities: ActiveMap !== 'main' ? CityMap.removeDoubleUnderscoreKeys(MainParser.CityMapData) : null,
+				mainEntities: ['cultural_outpost', 'era_outpost', 'guild_raids'].includes(ActiveMap) ? CityMap.removeDoubleUnderscoreKeys(MainParser.CityMapData) : null,
 				selectionKits: MainParser.SelectionKits || null,
 				// upgradeBuildings: MainParser.BuildingUpgrades || null
 			};

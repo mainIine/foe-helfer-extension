@@ -562,21 +562,24 @@ let Technologies = {
             h.push('<div class="technologies-hint">' + i18n('Boxes.Technologies.NoTechs') + '</div>');
         }
 
-        h.push('<table class="foe-table exportable">');
+        h.push('<table class="foe-table sortable-table exportable">');
 
         // Only show the cumulative column when the cumulative range spans more than
         // the selected era (otherwise it would be identical to the "Required" column).
         let ShowCumulative = CumLowerEraID < SelEraID;
 
         h.push('<thead class="sticky">' +
-            '<tr>' +
-            '<th colspan="2" data-export2="resource">' + i18n('Boxes.Technologies.Resource') + '</th>' +
-            '<th data-export="required">' + i18n('Boxes.Technologies.DescRequired') + '</th>' +
-            (ShowCumulative ? '<th data-export="cumulative">' + i18n('Boxes.Technologies.DescCumulative') + '</th>' : '') +
-            '<th data-export="instock">' + i18n('Boxes.Technologies.DescInStock') + '</th>' +
-            '<th data-export="remaining" class="text-right">' + i18n('Boxes.Technologies.DescStillMissing') + '</th>' +
+            '<tr class="sorter-header">' +
+            '<th class="no-sort"></th>' +
+            '<th data-type="technologiesTBody" data-export="resource">' + i18n('Boxes.Technologies.Resource') + '</th>' +
+            '<th class="is-number" data-type="technologiesTBody" data-export="required">' + i18n('Boxes.Technologies.DescRequired') + '</th>' +
+            (ShowCumulative ? '<th class="is-number" data-type="technologiesTBody" data-export="cumulative">' + i18n('Boxes.Technologies.DescCumulative') + '</th>' : '') +
+            '<th class="is-number" data-type="technologiesTBody" data-export="instock">' + i18n('Boxes.Technologies.DescInStock') + '</th>' +
+            '<th class="is-number text-right" data-type="technologiesTBody" data-export="remaining">' + i18n('Boxes.Technologies.DescStillMissing') + '</th>' +
             '</tr>' +
             '</thead>');
+
+        h.push('<tbody class="technologiesTBody">');
 
         // Tabelleninhalt – immer alle relevanten Ressourcen ausgeben
         {
@@ -633,20 +636,21 @@ let Technologies = {
                     let IsDone = Required <= 0 && (!ShowCumulative || Cumulative <= 0);
                     h.push('<tr' + (IsDone ? ' class="technologies-done"' : '') + '>');
                     h.push('<td class="goods-image" style="width:25px"><span class="goods-sprite sprite-35 '+ GoodsData[ResourceName]['id'] +'"></span></td>');
-                    h.push('<td>' + GoodsData[ResourceName]['name'] + '</td>');
-                    h.push('<td>' + HTML.Format(Required) + '</td>');
+                    h.push('<td data-text="' + helper.str.cleanup(GoodsData[ResourceName]['name']) + '">' + GoodsData[ResourceName]['name'] + '</td>');
+                    h.push('<td data-number="' + Required + '">' + HTML.Format(Required) + '</td>');
                     if (ShowCumulative) {
-                        h.push('<td>' + HTML.Format(Cumulative) + '</td>');
+                        h.push('<td data-number="' + Cumulative + '">' + HTML.Format(Cumulative) + '</td>');
                     }
-                    h.push('<td>' + HTML.Format(Stock) + '</td>');
-                    h.push('<td class="text-right text-' + (Diff < 0 ? 'danger' : 'success') + '">' + HTML.Format(Diff) + '</td>');
+                    h.push('<td data-number="' + Stock + '">' + HTML.Format(Stock) + '</td>');
+                    h.push('<td data-number="' + Diff + '" class="text-right text-' + (Diff < 0 ? 'danger' : 'success') + '">' + HTML.Format(Diff) + '</td>');
                     h.push('</tr>');
                 }
             }
         }
-        h.push('</table');
+        h.push('</tbody></table>');
 
         $('#technologiesBody').html(h.join(''));
+        $('#technologiesBody .sortable-table').tableSorter();
     },
 
 
