@@ -172,9 +172,9 @@ let Guild_fights = {
 		showOnlyActivePlayers: 0,
 	},
 	showGuildColumn: 0,
-	showAdjacentSectors: 0,
+	showAdjacentSectors: 1,
 	showOwnSectors: 0,
-	showVPColumn: 1,
+	showVPColumn: 0,
 	showAttritionColumn: 1,
 	showFocusTarget: 1,
 	showTileColors: JSON.parse(localStorage.getItem("LiveFightSettings"))?.showTileColors || 1,
@@ -1473,7 +1473,7 @@ let Guild_fights = {
 			LiveFightSettings = JSON.parse(localStorage.getItem('LiveFightSettings'));
 
 		Guild_fights.showGuildColumn = (LiveFightSettings && LiveFightSettings.showGuildColumn !== undefined) ? LiveFightSettings.showGuildColumn : 0;
-		Guild_fights.showVPColumn = LiveFightSettings?.showVPColumn ?? 1;
+		Guild_fights.showVPColumn = LiveFightSettings?.showVPColumn ?? 0;
 		Guild_fights.showAttritionColumn = LiveFightSettings?.showAttritionColumn ?? 1;
 		Guild_fights.showFocusTarget = LiveFightSettings?.showFocusTarget ?? 1;
 
@@ -1661,6 +1661,9 @@ let Guild_fights = {
 			<thead><tr>
 			<th class="prov-name">${i18n('Boxes.GuildFights.Province')}</th>`);
 
+		if (Guild_fights.showAttritionColumn)
+			nextup.push(`<th class="text-center w-small" data-original-title="${HTML.i18nTooltip(i18n('Boxes.GuildFights.Attrition'))}">%</th>`);
+
 		if (Guild_fights.showGuildColumn)
 			nextup.push('<th>' + i18n('Boxes.GuildFights.Owner') + '</th>');
 		
@@ -1669,9 +1672,6 @@ let Guild_fights = {
 
 		if (Guild_fights.showVPColumn)
 			nextup.push('<th class="text-center w-small">VP</th>');
-
-		if (Guild_fights.showAttritionColumn)
-			nextup.push(`<th class="text-center w-small" data-original-title="${HTML.i18nTooltip(i18n('Boxes.GuildFights.Attrition'))}">%</th>`);
 
 		nextup.push(`<th></th>
 				<th></th>
@@ -1742,6 +1742,9 @@ let Guild_fights = {
 
 				Guild_fights.UpdateCounter(countDownDate, intervalID, prov[x].id);
 
+				if (Guild_fights.showAttritionColumn)
+					nextup.push(Guild_fights.GetAttritionCell(prov[x]));
+
 				if (Guild_fights.showGuildColumn)
 					nextup.push(`<td>${prov[x].owner}</td>`);
 
@@ -1750,9 +1753,6 @@ let Guild_fights = {
 							<td class="time-dynamic" id="counter-${prov[x].id}">${countDownDate.format('HH:mm:ss')}</td>`);
 				if (Guild_fights.showVPColumn)
 					nextup.push(Guild_fights.GetVPCell(prov[x]));
-
-				if (Guild_fights.showAttritionColumn)
-					nextup.push(Guild_fights.GetAttritionCell(prov[x]));
 
 				let discordButtons = '';
 				if (prov[x].owner !== own.clan.name && Guild_fights.discordWebhook.url != '') {
@@ -2351,7 +2351,7 @@ let Guild_fights = {
 		let showAdjacentSectors = (LiveFightSettings && LiveFightSettings.showAdjacentSectors !== undefined) ? LiveFightSettings.showAdjacentSectors : 1;
 		let showOwnSectors = (LiveFightSettings && LiveFightSettings.showOwnSectors !== undefined) ? LiveFightSettings.showOwnSectors : 0;
 		let showTileColors = (LiveFightSettings && LiveFightSettings.showTileColors !== undefined) ? LiveFightSettings.showTileColors : 1;
-		let showVPColumn = LiveFightSettings?.showVPColumn ?? 1;
+		let showVPColumn = LiveFightSettings?.showVPColumn ?? 0;
 		let showAttritionColumn = LiveFightSettings?.showAttritionColumn ?? 1;
 		let showFocusTarget = LiveFightSettings?.showFocusTarget ?? 1;
 		let showServerTime = LiveFightSettings?.showServerTime ?? 0;
@@ -2424,29 +2424,37 @@ let Guild_fights = {
 		value.discordWebhookTemplate = '';
 		value.discordWebhookTemplateBulk = '';
 
-		if ($("#showguildcolumn").is(':checked')) 
+		if ($("#showguildcolumn").is(':checked')) {
 			value.showGuildColumn = 1;
+		}
 
-		if ($("#showAdjacentSectors").is(':checked')) 
+		if ($("#showAdjacentSectors").is(':checked')) {
 			value.showAdjacentSectors = 1;
+		}
 
-		if ($("#showownsectors").is(':checked')) 
+		if ($("#showownsectors").is(':checked')) {
 			value.showOwnSectors = 1;
+		}
 
-		if ($("#showtilecolors").is(':checked'))
+		if ($("#showtilecolors").is(':checked')) {
 			value.showTileColors = 1;
+		}
 
-		if ($("#showvpcolumn").is(':checked'))
+		if ($("#showvpcolumn").is(':checked')) {
 			value.showVPColumn = 1;
+		}
 
-		if ($("#showattritioncolumn").is(':checked'))
+		if ($("#showattritioncolumn").is(':checked')) {
 			value.showAttritionColumn = 1;
+		}
 
-		if ($("#showfocustarget").is(':checked'))
+		if ($("#showfocustarget").is(':checked')) {
 			value.showFocusTarget = 1;
+		}
 
-		if ($("#showservertime").is(':checked'))
+		if ($("#showservertime").is(':checked')) {
 			value.showServerTime = 1;
+		}
 
 		value.discordWebhook = $("#gbgWebhook").val();
 		value.discordWebhookTemplate = $("#gbgWebhookTemplate").val();
@@ -2471,10 +2479,13 @@ let Guild_fights = {
 		Guild_fights.alertLeadTime = value.alertLeadTime;
 		Guild_fights.serverOffset = parseInt($("#serverOffset").val()) ?? null;
 
-		if (Guild_fights.serverOffset != null)
+		if (Guild_fights.serverOffset != null) {
 			localStorage.setItem('GuildFights.serverOffset', JSON.stringify(Guild_fights.serverOffset))
-		else
+		}
+		else {
 			localStorage.removeItem('GuildFights.serverOffset');
+		}
+
 		localStorage.setItem('LiveFightSettings', JSON.stringify(value));
 
 		$(`#LiveGildFightingSettingsBox`).fadeToggle('fast', function () {
