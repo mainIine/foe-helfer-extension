@@ -7,6 +7,7 @@
   - Neue Zermürbungs-Spalte im Countdown-Tab (per Einstellung abschaltbar): farbcodiert (20% hellblau, 40/60% orange, ab 80% rot) und live berechnet
   - Die Sperr-Hand der Gilde wird jetzt wie das Fadenkreuz in den Tabellen angezeigt und auf der GildenKarte (Box)
   - Bauslot-Übersicht: Sektoren mit freien Slots werden dezent rot markiert, solange die 20%-Zermürbungsgrenze noch nicht erreicht ist
+  - Gildenübersicht: neue Spalte mit der Anzahl der aktuell gehaltenen Provinzen jeder Gilde
 
 - City Builder:
   - Neuer Button "City Builder" in der Stadtübersicht (nur in der eigenen Hauptstadt): berechnet einen kompakten Layout-Vorschlag für die Stadt
@@ -19,6 +20,7 @@
   - Die Ressourcen-Tabelle ist jetzt per Klick auf die Spaltenköpfe sortierbar
 
 - GG:
+  - Die Zermürbungs-Spalte steht jetzt direkt neben der Provinz-Spalte; ohne gespeicherte Einstellungen ist sie standardmäßig eingeblendet und die VP-Spalte ausgeblendet
   - Siegpunkte, Zermürbung und Bauslots aktualisieren sich live in allen Tabs; das Gilden-Ranking übernimmt neue Siegpunkte ebenfalls sofort
   - Eroberte Sektoren wechseln sofort in den passenden Tab und zeigen direkt den neuen Gildennamen
   - Die Einstellung "VP-Spalte anzeigen" gilt jetzt auch in der Bauslot-Übersicht

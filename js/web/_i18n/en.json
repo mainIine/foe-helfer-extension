@@ -542,6 +542,7 @@
     "Boxes.GuildFights.Progress": "Progress",
     "Boxes.GuildFights.ProgressFilterDesc": "Filters all members with existing new progress.",
     "Boxes.GuildFights.Province": "Province",
+    "Boxes.GuildFights.Provinces": "Provinces",
     "Boxes.GuildFights.RequiredProgress": "Required",
     "Boxes.GuildFights.SaveAlert": "Province __provinceName__ unlocks",
     "Boxes.GuildFights.SaveMessage.Desc": "The Alert for __provinceName__ was saved!",

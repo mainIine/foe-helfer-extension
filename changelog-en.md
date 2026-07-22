@@ -8,6 +8,7 @@
   - The guild's blocking hand marker is now shown in the tables just like the crosshair
   - Hovering a table row outlines the sector on the province map in the guild's colour
   - Building slots tab: sectors with empty slots get a subtle red highlight as long as the 20% attrition minimum has not been reached yet
+  - Guild overview: new column showing the number of provinces each guild currently holds
 
 - City Builder:
   - New "City Builder" button in the city overview (own main city only): computes a compact layout suggestion for your city
@@ -20,6 +21,7 @@
   - The resource table can now be sorted by clicking the column headers
 
 - GBG:
+  - The attrition column now sits right next to the province column; without saved settings it is shown by default while the VP column starts hidden
   - Victory points, attrition and building slots update live in all tabs; the guild ranking picks up new victory points right away as well
   - Conquered sectors instantly switch to the correct tab and show the new guild name
   - The "Show VP column" setting now also applies to the building slots tab
