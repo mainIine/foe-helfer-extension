@@ -33,16 +33,59 @@ FoEproxy.addHandler('GuildBattlegroundService', 'getPlayerLeaderboard', (data, p
 
 FoEproxy.addWsHandler('GuildBattlegroundSignalsService', 'updateSignal', data => {
 	let d = data.responseData;
-	if (!d || !d.signal || !Guild_fights.MapData) return;
+	if (!d || !Guild_fights.MapData) return;
 
 	let own = Guild_fights.MapData.battlegroundParticipants.find(p => p.clan.id === ExtGuildID);
 	if (!own) return;
 
-	own.signals = (own.signals || []).filter(s => s.signal !== d.signal);
-	own.signals.push({ provinceId: d.provinceId || 0, signal: d.signal });
+	if (d.signal) {
+		// a province holds at most one signal (setting "ignore" replaces "focus" without
+		// an extra removal frame) and the focus target exists only once guild wide
+		own.signals = (own.signals || []).filter(s =>
+			(s.provinceId || 0) !== (d.provinceId || 0) &&
+			(d.signal !== 'focus' || s.signal !== 'focus')
+		);
+		own.signals.push({ provinceId: d.provinceId || 0, signal: d.signal });
+	}
+	else {
+		// removal frames carry the province id only (e.g. after the sector got conquered)
+		own.signals = (own.signals || []).filter(s => (s.provinceId || 0) !== (d.provinceId || 0));
+	}
 
 	if ($('#LiveGildFighting').length > 0) {
 		Guild_fights.BuildFightContent();
+	}
+
+	// a focus move clears the marker on another sector too, so repaint the whole overlay
+	if ($('#ProvinceMap').length > 0 && ProvinceMap.Overlay instanceof HTMLCanvasElement) {
+		ProvinceMap.DrawOverlay();
+	}
+});
+
+// building placements arrive via websocket only, getProvinces does not resend the slot count
+FoEproxy.addWsHandler('GuildBattlegroundBuildingService', 'getBuildings', data => {
+	Guild_fights.HandleBuildingsUpdate(data.responseData);
+});
+
+// the own build menu delivers the same data via ajax
+FoEproxy.addHandler('GuildBattlegroundBuildingService', 'getBuildings', (data, postData) => {
+	Guild_fights.HandleBuildingsUpdate(data.responseData);
+});
+
+// guild victory points tick in periodically via websocket
+FoEproxy.addWsHandler('GuildBattlegroundService', 'getParticipantVictoryPoints', data => {
+	let vp = data.responseData?.victoryPoints;
+	if (!vp || !Guild_fights.MapData) return;
+
+	for (let participant of Guild_fights.MapData.battlegroundParticipants) {
+		if (vp[participant.participantId] !== undefined) {
+			participant.victoryPoints = vp[participant.participantId];
+		}
+	}
+
+	// re-render only the ranking tab, selections in the other tabs stay untouched
+	if ($('#gbgranking').length > 0) {
+		$('#gbgranking').html(GuildRanking.BuildTab().join(''));
 	}
 });
 
@@ -129,11 +172,14 @@ let Guild_fights = {
 		showOnlyActivePlayers: 0,
 	},
 	showGuildColumn: 0,
-	showAdjacentSectors: 0,
+	showAdjacentSectors: 1,
 	showOwnSectors: 0,
-	showVPColumn: 1,
+	showVPColumn: 0,
+	showAttritionColumn: 1,
 	showFocusTarget: 1,
 	showTileColors: JSON.parse(localStorage.getItem("LiveFightSettings"))?.showTileColors || 1,
+	// known placed buildings per own province, collected from getBuildings responses (ajax + websocket)
+	ProvinceBuildings: JSON.parse(localStorage.getItem('GuildFights.ProvinceBuildings') || '{}'),
 	serverOffset: JSON.parse(localStorage.getItem("GuildFights.serverOffset")||"null"),
 	// seconds between the sector alert and the actual unlock (#3511)
 	alertLeadTime: JSON.parse(localStorage.getItem("LiveFightSettings"))?.alertLeadTime || 30,
@@ -199,20 +245,53 @@ let Guild_fights = {
 		if (Guild_fights.InjectionLoaded === false) {
 			FoEproxy.addWsHandler('GuildBattlegroundService', 'all', data => {
 				if (!data['responseData']?.[0]) return
-				let Pid = data.responseData[0].id || 0;
-				for (let x in data.responseData[0]) {
-					if (!data.responseData[0].hasOwnProperty(x) || x === "id") continue;
-					Guild_fights.MapData.map.provinces[Pid][x] = data.responseData[0][x];
-				}
+				if (!Guild_fights.MapData) return;
 
-				// Update Tables
-				if ($('#LiveGildFighting').length > 0) {
-					Guild_fights.RefreshTable(data['responseData'][0]);
-				}
+				// getProvinces updates arrive as an array of full province snapshots
+				for (let provinceData of data.responseData) {
+					if (!provinceData || provinceData['__class__'] !== 'GuildBattlegroundProvince') continue;
 
-				// Update Minimap
-				if($('#ProvinceMap').length > 0) {
-					ProvinceMap.RefreshSector(data['responseData'][0]);
+					let Pid = provinceData.id || 0,
+						province = Guild_fights.MapData.map.provinces[Pid],
+						ownerChanged = provinceData.ownerId !== undefined && provinceData.ownerId !== province.ownerId;
+
+					for (let x in provinceData) {
+						if (!provinceData.hasOwnProperty(x) || x === "id") continue;
+						province[x] = provinceData[x];
+					}
+
+					// the snapshot omits gainAttritionChance when it no longer applies
+					if (provinceData.gainAttritionChance === undefined) {
+						delete province.gainAttritionChance;
+					}
+
+					// keep the enriched plain text owner name in sync with the ownerId
+					let participant = Guild_fights.MapData.battlegroundParticipants.find(p => p.participantId === province.ownerId);
+					if (participant) {
+						province.owner = participant.clan.name;
+					}
+
+					// buildings do not survive an ownership change
+					if (ownerChanged) {
+						Guild_fights.StoreProvinceBuildings(Pid, null);
+					}
+
+					// Update Tables
+					if ($('#LiveGildFighting').length > 0) {
+						if (ownerChanged) {
+							// a conquered sector switches tabs, rebuild the whole box
+							Guild_fights.BuildFightContent();
+						}
+						else {
+							Guild_fights.RefreshTable(provinceData);
+							Guild_fights.UpdateProvinceCells(Pid);
+						}
+					}
+
+					// Update Minimap
+					if($('#ProvinceMap').length > 0) {
+						ProvinceMap.RefreshSector(provinceData);
+					}
 				}
 			});
 			Guild_fights.InjectionLoaded = true;
@@ -530,27 +609,55 @@ let Guild_fights = {
 	},
 
 
+	/**
+	 * Registers a tab handle for the box navigation
+	 *
+	 * @param {string} id Tab id, also used as the anchor target
+	 */
 	SetTabs: (id) => {
 		Guild_fights.Tabs.push('<li class="' + id + ' game-cursor"><a href="#' + id + '" class="game-cursor"><span>&nbsp;</span></a></li>');
 	},
 
 
+	/**
+	 * Returns the assembled tab navigation markup
+	 *
+	 * @returns {string}
+	 */
 	GetTabs: () => {
 		return '<ul class="horizontal dark-bg">' + Guild_fights.Tabs.join('') + '</ul>';
 	},
 
 
+	/**
+	 * Registers the content pane of a tab; every pane except the first starts hidden
+	 *
+	 * @param {string} id Tab id the pane belongs to
+	 * @param {string} content HTML content of the pane
+	 */
 	SetTabContent: (id, content) => {    
 		let cls = Guild_fights.TabsContent.length > 0 ? ' class="hidden-tab"' : '';
     	Guild_fights.TabsContent.push('<div id="' + id + '"' + cls + '>' + content + '</div>');
 	},
 
 
+	/**
+	 * Returns the assembled markup of all tab content panes
+	 *
+	 * @returns {string}
+	 */
 	GetTabContent: () => {
 		return Guild_fights.TabsContent.join('');
 	},
 
 
+	/**
+	 * Returns the alert button for a province: a delete button when an alert
+	 * already exists, a create button otherwise
+	 *
+	 * @param provId
+	 * @returns {string}
+	 */
 	GetAlertButton: (provId) => {
 		let btn;
 		if (Guild_fights.Alerts.find((a) => a.provId == provId) !== undefined) {
@@ -564,30 +671,40 @@ let Guild_fights = {
 
 
 	/**
-	 * Returns the province id of the own guild's current focus signal
+	 * Returns the own guild's signal on the given province
 	 *
-	 * @returns {?number} Province id or null if no focus is set
+	 * @param provinceId
+	 * @returns {?Object} {provinceId, signal} or undefined
 	 */
-	GetFocusProvinceId: () => {
-		let own = Guild_fights.MapData?.battlegroundParticipants?.find(p => p.clan.id === ExtGuildID),
-			focus = own?.signals?.find(s => s.signal === 'focus');
+	GetProvinceSignal: (provinceId) => {
+		let own = Guild_fights.MapData?.battlegroundParticipants?.find(p => p.clan.id === ExtGuildID);
 
-		return focus !== undefined ? (focus.provinceId || 0) : null;
+		return own?.signals?.find(s => (s.provinceId || 0) === (provinceId || 0));
 	},
 
 
 	/**
-	 * Returns the target icon when the given province is the own guild's focus target
+	 * Returns the signal icon when the province carries a marker of the own guild:
+	 * "focus" (crosshair) or "ignore" (blocking hand)
 	 *
 	 * @param provinceId
 	 * @returns {string}
 	 */
 	GetFocusIcon: (provinceId) => {
-		if (!Guild_fights.showFocusTarget || (provinceId || 0) !== Guild_fights.GetFocusProvinceId()) {
+		if (!Guild_fights.showFocusTarget) {
 			return '';
 		}
 
-		return `<img class="focus-target" src="${srcLinks.get('/guild_battlegrounds/map/shared/guild_battlegrounds_target.png', true)}" alt="" data-original-title="${i18n('Boxes.GuildFights.FocusTarget')}">`;
+		let signal = Guild_fights.GetProvinceSignal(provinceId);
+		if (signal === undefined) {
+			return '';
+		}
+
+		// the game assets are named like the signal, only "focus" maps to "target"
+		let asset = signal.signal === 'focus' ? 'target' : signal.signal,
+			title = signal.signal === 'focus' ? i18n('Boxes.GuildFights.FocusTarget') : i18n('Boxes.GuildFights.IgnoreTarget');
+
+		return `<img class="focus-target" src="${srcLinks.get('/guild_battlegrounds/map/shared/guild_battlegrounds_' + asset + '.png', true)}" alt="" data-original-title="${title}">`;
 	},
 
 
@@ -602,10 +719,218 @@ let Guild_fights = {
 			boost = (province.victoryPointsBonus || 0) - vp;
 
 		if (boost <= 0) {
-			return `<td class="text-center">${HTML.Format(vp)}</td>`;
+			return `<td class="text-center vp-cell">${HTML.Format(vp)}</td>`;
 		}
 
-		return `<td class="text-center" data-original-title="${HTML.i18nTooltip(HTML.i18nReplacer(i18n('Boxes.GuildFights.BoostedVP'), { vp: HTML.Format(vp + boost) }))}">${HTML.Format(vp)} <small class="text-success">+${HTML.Format(boost)}</small></td>`;
+		return `<td class="text-center vp-cell" data-original-title="${HTML.i18nTooltip(HTML.i18nReplacer(i18n('Boxes.GuildFights.BoostedVP'), { vp: HTML.Format(vp + boost) }))}">${HTML.Format(vp)} <small class="text-success">+${HTML.Format(boost)}</small></td>`;
+	},
+
+
+	/**
+	 * Merges a getBuildings response (ajax or websocket) into the map data:
+	 * slot count and the building list used to derive the attrition chance
+	 *
+	 * @param d getBuildings responseData
+	 */
+	HandleBuildingsUpdate: (d) => {
+		if (!Guild_fights.MapData || !d || !Array.isArray(d.placedBuildings)) return;
+
+		let Pid = d.provinceId || 0,
+			province = Guild_fights.MapData.map.provinces[Pid];
+		if (!province) return;
+
+		province.usedBuildingSlots = d.placedBuildings.length;
+		Guild_fights.StoreProvinceBuildings(Pid, d.placedBuildings.map(b => ({ id: b.id, readyAt: b.readyAt || 0 })));
+
+		if ($('#LiveGildFighting').length > 0) {
+			Guild_fights.UpdateProvinceCells(Pid);
+
+			// the buildings also change the attrition chance of all adjacent sectors
+			let connections = ProvinceMap.ProvinceData()?.find(e => e.id === Pid)?.connections || [];
+			connections.forEach(link => Guild_fights.UpdateProvinceCells(link));
+		}
+	},
+
+
+	/**
+	 * Persists the placed buildings of a province for the current GBG round
+	 *
+	 * @param provinceId
+	 * @param {?Object[]} buildingIds [{id, readyAt}], or null to forget the province (e.g. sector lost)
+	 */
+	StoreProvinceBuildings: (provinceId, buildingIds) => {
+		let store = Guild_fights.ProvinceBuildings;
+
+		if (store.gbground !== Guild_fights.CurrentGBGRound) {
+			store = { gbground: Guild_fights.CurrentGBGRound, provinces: {} };
+		}
+
+		if (buildingIds === null) {
+			delete store.provinces[provinceId];
+		}
+		else {
+			store.provinces[provinceId] = buildingIds;
+		}
+
+		Guild_fights.ProvinceBuildings = store;
+		localStorage.setItem('GuildFights.ProvinceBuildings', JSON.stringify(store));
+	},
+
+
+	/**
+	 * Summed block value of the finished buildings on a province
+	 *
+	 * @param province
+	 * @returns {?number} undefined when the buildings of the province are not known yet
+	 */
+	GetProvinceBlock: (province) => {
+		let store = Guild_fights.ProvinceBuildings;
+		if (store.gbground !== Guild_fights.CurrentGBGRound) return undefined;
+
+		let buildings = store.provinces[province.id || 0];
+		if (buildings === undefined) return undefined;
+
+		// stale list, e.g. a build happened while the map was not open
+		if ((province.usedBuildingSlots || 0) !== buildings.length) return undefined;
+
+		let now = moment().unix();
+
+		return buildings.reduce((sum, b) => {
+			// buildings under construction do not block yet
+			if ((b.readyAt || 0) > now) return sum;
+
+			return sum + ((typeof GBGBuildings !== 'undefined' && GBGBuildings.block[b.id]) || 0);
+		}, 0);
+	},
+
+
+	/**
+	 * Attrition chance a province grants for attacks on its adjacent sectors,
+	 * derived from its placed buildings. 20% is the lowest possible value
+	 *
+	 * @param province
+	 * @returns {?number} undefined when the buildings of the province are not known yet
+	 */
+	GetOwnAttritionChance: (province) => {
+		let blocked = Guild_fights.GetProvinceBlock(province);
+		if (blocked === undefined) return undefined;
+
+		return Math.max(20, 100 - blocked);
+	},
+
+
+	/**
+	 * Attrition chance an attack on the given province would have, derived from the
+	 * adjacent own sectors: the block values of ALL their buildings add up
+	 *
+	 * @param province
+	 * @returns {?number} undefined when no adjacent own sector with known buildings exists
+	 */
+	GetNeighborDerivedAttrition: (province) => {
+		let own = Guild_fights.MapData?.currentParticipantId,
+			id = province.id || 0,
+			connections = ProvinceMap.ProvinceData()?.find(e => e.id === id)?.connections || [],
+			totalBlock;
+
+		for (let link of connections) {
+			let neighbor = Guild_fights.MapData.map.provinces[link];
+			if (!neighbor || neighbor.ownerId !== own) continue;
+
+			let block = Guild_fights.GetProvinceBlock(neighbor);
+			if (block === undefined) continue;
+
+			totalBlock = (totalBlock || 0) + block;
+		}
+
+		if (totalBlock === undefined) return undefined;
+
+		return Math.max(20, 100 - totalBlock);
+	},
+
+
+	/**
+	 * Attrition chance of a province. Attackable sectors: the server value from
+	 * getBattleground/getProvinces, improved by the live building knowledge of the
+	 * adjacent own sectors (the server value lags behind fresh builds).
+	 * Own sectors: derived from the placed buildings only
+	 *
+	 * @param province
+	 * @returns {?number}
+	 */
+	GetEffectiveAttrition: (province) => {
+		if (province.ownerId === Guild_fights.MapData?.currentParticipantId) {
+			return Guild_fights.GetOwnAttritionChance(province);
+		}
+
+		let server = province.gainAttritionChance,
+			derived = Guild_fights.GetNeighborDerivedAttrition(province);
+
+		if (server === undefined) return derived;
+		if (derived === undefined) return server;
+
+		// both values can only be outdated upwards
+		return Math.min(server, derived);
+	},
+
+
+	/**
+	 * Returns the attrition chance cell for a province, "-" when the value is not known
+	 *
+	 * @param province
+	 * @returns {string}
+	 */
+	GetAttritionCell: (province) => {
+		let attrition = Guild_fights.GetEffectiveAttrition(province);
+
+		if (attrition === undefined) {
+			return '<td class="text-center attrition-cell">-</td>';
+		}
+
+		let cls = attrition <= 20 ? 'attrition-low' : (attrition < 80 ? 'attrition-mid' : 'attrition-high');
+
+		return `<td class="text-center attrition-cell ${cls}">${attrition}%</td>`;
+	},
+
+
+	/**
+	 * Returns the row class for own sectors with empty building slots.
+	 * No warning when the attrition chance already reached the 20% minimum
+	 *
+	 * @param province
+	 * @returns {string}
+	 */
+	GetSlotWarningClass: (province) => {
+		let used = province.usedBuildingSlots || 0,
+			total = province.totalBuildingSlots || 0;
+
+		return (used < total && Guild_fights.GetEffectiveAttrition(province) !== 20) ? 'slot-warning' : '';
+	},
+
+
+	/**
+	 * Updates VP, attrition chance and building slots of a single province row
+	 * in the open box after a websocket update
+	 *
+	 * @param id province id
+	 */
+	UpdateProvinceCells: (id) => {
+		let province = Guild_fights.MapData.map.provinces.find(p => (p.id || 0) === id);
+		if (!province) return;
+
+		let $nextupRow = $(`#timer-${id}`);
+		if ($nextupRow.length > 0) {
+			$nextupRow.find('.vp-cell').replaceWith(Guild_fights.GetVPCell(province));
+			$nextupRow.find('.attrition-cell').replaceWith(Guild_fights.GetAttritionCell(province));
+			$nextupRow.find('[data-original-title]').tooltip({container: 'body'});
+		}
+
+		let $ownedRow = $(`#time-${id}`);
+		if ($ownedRow.length > 0) {
+			$ownedRow.find('.vp-cell').replaceWith(Guild_fights.GetVPCell(province));
+			$ownedRow.find('.slots-cell').text(`${province.usedBuildingSlots || 0}/${province.totalBuildingSlots}`);
+			$ownedRow.removeClass('slot-warning').addClass(Guild_fights.GetSlotWarningClass(province));
+			$ownedRow.find('[data-original-title]').tooltip({container: 'body'});
+		}
 	},
 
 
@@ -940,6 +1265,10 @@ let Guild_fights = {
 
 
 	/**
+	 * Builds the snapshot detail box: either the daily log of a single player
+	 * or the date filtered log of all guild members
+	 *
+	 * @param {Object} d Filter with content type ("player"/"filter"), player_id and gbground
 	 * @returns {Promise<void>}
 	 */
 	BuildDetailViewContent: async (d) => {
@@ -1083,6 +1412,9 @@ let Guild_fights = {
 
 
 	/**
+	 * Deletes all snapshots that do not belong to the given GBG round
+	 *
+	 * @param gbground Round to keep
 	 * @returns {Promise<void>}
 	 */
 	DeleteOldSnapshots: async (gbground) => {
@@ -1091,6 +1423,10 @@ let Guild_fights = {
 
 
 	/**
+	 * Expands a day row of the player detail view with every single snapshot
+	 * taken on that day
+	 *
+	 * @param {Object} data Player id, date and the column widths of the parent row
 	 * @returns {Promise<void>}
 	 */
 	BuildDetailViewLog: async (data) => {
@@ -1137,7 +1473,8 @@ let Guild_fights = {
 			LiveFightSettings = JSON.parse(localStorage.getItem('LiveFightSettings'));
 
 		Guild_fights.showGuildColumn = (LiveFightSettings && LiveFightSettings.showGuildColumn !== undefined) ? LiveFightSettings.showGuildColumn : 0;
-		Guild_fights.showVPColumn = LiveFightSettings?.showVPColumn ?? 1;
+		Guild_fights.showVPColumn = LiveFightSettings?.showVPColumn ?? 0;
+		Guild_fights.showAttritionColumn = LiveFightSettings?.showAttritionColumn ?? 1;
 		Guild_fights.showFocusTarget = LiveFightSettings?.showFocusTarget ?? 1;
 
 		let mapdata = Guild_fights.MapData['map']['provinces'];
@@ -1207,11 +1544,23 @@ let Guild_fights = {
 				$(this).toggleClass('highlight-row');
 				Guild_fights.ToggleCopyButton();
 			});
+			// outline the hovered sector on the province map
+			$('#nextup, #gbgowned').on('mouseenter', 'tr[data-id]', function () {
+				ProvinceMap.HighlightSector($(this).data('id'));
+			}).on('mouseleave', 'tr[data-id]', function () {
+				ProvinceMap.UnhighlightSector();
+			});
 			$('[data-original-title]').tooltip({container: 'body'});
 		});
 	},
 
 
+	/**
+	 * Builds the conquest progress tab: every province with a running attack,
+	 * showing the attackers' progress and the required maximum
+	 *
+	 * @returns {string[]} HTML fragments of the tab content
+	 */
 	BuildProgressTab: function() {
 		let progress = [],
 			mapdata = Guild_fights.MapData['map']['provinces'],
@@ -1291,6 +1640,13 @@ let Guild_fights = {
 	},
 
 
+	/**
+	 * Builds the "next up" tab: locked sectors sorted by their unlock time with
+	 * countdown, victory points, attrition chance and the discord/alert buttons.
+	 * Respects the adjacent/own sector filters from the box settings
+	 *
+	 * @returns {string[]} HTML fragments of the tab content
+	 */
 	BuildNextUpTab: function() {
 		let nextup = [],
 			mapdata = Guild_fights.MapData.map.provinces,
@@ -1304,6 +1660,9 @@ let Guild_fights = {
 		nextup.push(`<div id="nextup"><table class="foe-table">
 			<thead><tr>
 			<th class="prov-name">${i18n('Boxes.GuildFights.Province')}</th>`);
+
+		if (Guild_fights.showAttritionColumn)
+			nextup.push(`<th class="text-center w-small" data-original-title="${HTML.i18nTooltip(i18n('Boxes.GuildFights.Attrition'))}">%</th>`);
 
 		if (Guild_fights.showGuildColumn)
 			nextup.push('<th>' + i18n('Boxes.GuildFights.Owner') + '</th>');
@@ -1383,6 +1742,9 @@ let Guild_fights = {
 
 				Guild_fights.UpdateCounter(countDownDate, intervalID, prov[x].id);
 
+				if (Guild_fights.showAttritionColumn)
+					nextup.push(Guild_fights.GetAttritionCell(prov[x]));
+
 				if (Guild_fights.showGuildColumn)
 					nextup.push(`<td>${prov[x].owner}</td>`);
 
@@ -1419,7 +1781,14 @@ let Guild_fights = {
 		return nextup;
 	},
 
-
+	
+	/**
+	 * Builds the building slots tab: all own locked sectors with countdown,
+	 * slot usage and victory points. Sectors with empty slots that have not
+	 * reached the 20% attrition minimum yet get a warning background
+	 *
+	 * @returns {string[]} HTML fragments of the tab content
+	 */
 	BuildOwnedTab: function() {
 		let content = [],
 			provinces = Guild_fights.MapData.map.provinces,
@@ -1431,12 +1800,17 @@ let Guild_fights = {
 		content.push('<thead><tr>');
 		content.push('<th class="prov-name" style="user-select:text">' + i18n('Boxes.GuildFights.Province') + '</th>');
 
-		if (Guild_fights.showGuildColumn)
+		if (Guild_fights.showGuildColumn) {
 			content.push('<th>' + i18n('Boxes.GuildFights.Owner') + '</th>');
+		}
 
 		content.push('<th class="time-dynamic">' + i18n('Boxes.GuildFights.Count') + '</th>');
 		content.push('<th>Slots</th>');
-		content.push('<th class="text-center">VP</th>');
+
+		if (Guild_fights.showVPColumn) {
+			content.push('<th class="text-center">VP</th>');
+		}
+
 		content.push('</tr></thead><tbody>');
 
 		for (let province of provinces) {
@@ -1449,7 +1823,7 @@ let Guild_fights = {
 					Guild_fights.UpdateCounter(countDownDate, intervalID, province.id);
 				}, 1000);
 
-			let slotWarning = (province.usedBuildingSlots||0) < province.totalBuildingSlots && province.totalBuildingSlots === 2 ? 'bg-red': ((province.usedBuildingSlots||0) < province.totalBuildingSlots ? 'bg-yellow' : '')
+			let slotWarning = Guild_fights.GetSlotWarningClass(province);
 
 			content.push(`<tr id="time-${province.id}" class="time ${slotWarning}" data-tab="gbgowned" data-id=${province.id}>
 				<td class="prov-name" title="${i18n('Boxes.GuildFights.Owner')}: ${province.owner}">
@@ -1465,8 +1839,12 @@ let Guild_fights = {
 
 			let timeAt = moment(countDownDate).add(LiveFightSettings?.showServerTime ? - 60 * (Guild_fights.serverOffset ?? 0) : 0 , "seconds");
 			content.push(`<td class="time-dynamic"><span data-original-title="${timeAt.format('HH:mm:ss')}"><span id="counter-${province.id}">${countDownDate.format('HH:mm:ss')}</span></span></td>`);
-			content.push(`<td>${province.usedBuildingSlots||0}/${province.totalBuildingSlots}</td>`);
-			content.push(Guild_fights.GetVPCell(province));
+			content.push(`<td class="slots-cell">${province.usedBuildingSlots||0}/${province.totalBuildingSlots}</td>`);
+
+			if (Guild_fights.showVPColumn) {
+				content.push(Guild_fights.GetVPCell(province));
+			}
+
 			content.push('</tr>');
 		}
 		
@@ -1509,6 +1887,11 @@ let Guild_fights = {
 	},
 
 
+	/**
+	 * Formats the currently selected log date filter as a human readable range
+	 *
+	 * @returns {string}
+	 */
 	formatRange: () => {
 		let text = undefined;
 		let dateStart = moment(Guild_fights.curDateFilter);
@@ -1528,6 +1911,10 @@ let Guild_fights = {
 	},
 
 
+	/**
+	 * Toggles the copy and discord buttons depending on the visible tab
+	 * and the current row selection
+	 */
 	ToggleCopyButton: () => {
 		$('.dcbutton').hide();
 		$('.copybutton').show();
@@ -1550,6 +1937,12 @@ let Guild_fights = {
 	},
 
 
+	/**
+	 * Copies the selected sector timers to the clipboard, or selects all rows
+	 * when the button is in "select all" mode
+	 *
+	 * @param {Event} e Click event of the copy button
+	 */
 	CopyToClipBoard: (e) => {
 		if (e.target.classList.contains('all')) {
 			$('.timer').addClass('highlight-row');
@@ -1592,6 +1985,12 @@ let Guild_fights = {
 	},
 
 
+	/**
+	 * Collects the selected sector rows sorted by unlock time and hands them
+	 * over to the discord webhook integration
+	 *
+	 * @param {Event} e Click event of the discord button
+	 */
 	PrepareForDiscord: (e) => {
 		Guild_fights.discordCache = [];
 		$('.timer.highlight-row').each(function () {
@@ -1601,7 +2000,6 @@ let Guild_fights = {
 		Guild_fights.discordCache.sort(function (a, b) { return a.lockedUntil - b.lockedUntil });
 
 		if (Guild_fights.discordCache.length > 0) {
-			
 			if (e.target.classList.contains('custom')) {
 				Discord.sendGBGSectorsCustom();
 				return;
@@ -1611,6 +2009,14 @@ let Guild_fights = {
 	},
 
 
+	/**
+	 * Updates the countdown cell of a sector every second; when it reaches zero
+	 * the interval is cleared and the row fades out after a short delay
+	 *
+	 * @param countDownDate moment object of the unlock time
+	 * @param intervalID Interval handle to clear once the countdown finished
+	 * @param id Province id the counter belongs to
+	 */
 	UpdateCounter: (countDownDate, intervalID, id) => {
 		let idSpan = $(`#counter-${id}`),
 			removeIt = false;
@@ -1788,6 +2194,9 @@ let Guild_fights = {
 	},
 
 
+	/**
+	 * Renders the settings pane of the player box (round selector, filters, export)
+	 */
 	ShowPlayerBoxSettings: () => {
 		let c = [];
 		let Settings = Guild_fights.PlayerBoxSettings;
@@ -1803,6 +2212,9 @@ let Guild_fights = {
 	},
 
 
+	/**
+	 * Persists the player box settings to localStorage and re-renders the box
+	 */
 	PlayerBoxSettingsSaveValues: () => {
 		Guild_fights.PlayerBoxSettings.showRoundSelector = $("#gf_showRoundSelector").is(':checked') ? 1 : 0;
 		Guild_fights.PlayerBoxSettings.showProgressFilter = $("#gf_showProgressFilter").is(':checked') ? 1 : 0;
@@ -1817,6 +2229,12 @@ let Guild_fights = {
 	},
 
 
+	/**
+	 * Fetches all alerts of the gbg category and maps them onto the current
+	 * provinces into Guild_fights.Alerts
+	 *
+	 * @returns {Promise<void>}
+	 */
 	GetAlerts: async () => {
 		return new Promise(async (resolve, reject) => {
 			// is alert.js included?
@@ -1855,6 +2273,12 @@ let Guild_fights = {
 	},
 
 
+	/**
+	 * Creates a browser alert that fires the configured lead time before the
+	 * given sector unlocks
+	 *
+	 * @param id Province id
+	 */
 	SetAlert: (id) => {
 		let prov = Guild_fights.MapData['map']['provinces'].find(e => e.id === id);
 
@@ -1889,6 +2313,11 @@ let Guild_fights = {
 	},
 
 
+	/**
+	 * Deletes the alert of the given province and refreshes its alert button
+	 *
+	 * @param provId
+	 */
 	DeleteAlert: (provId) => {
 		let prov = Guild_fights.MapData['map']['provinces'].find(e => e.id === provId);
 		let alert = Guild_fights.Alerts.find((a) => a.provId == provId);
@@ -1911,6 +2340,10 @@ let Guild_fights = {
 	},
 
 
+	/**
+	 * Renders the settings pane of the live fight box (columns, filters,
+	 * server time, alert lead time and discord webhooks)
+	 */
 	ShowLiveFightSettings: () => {
 		let c = [];
 		let LiveFightSettings = JSON.parse(localStorage.getItem('LiveFightSettings'));
@@ -1918,7 +2351,8 @@ let Guild_fights = {
 		let showAdjacentSectors = (LiveFightSettings && LiveFightSettings.showAdjacentSectors !== undefined) ? LiveFightSettings.showAdjacentSectors : 1;
 		let showOwnSectors = (LiveFightSettings && LiveFightSettings.showOwnSectors !== undefined) ? LiveFightSettings.showOwnSectors : 0;
 		let showTileColors = (LiveFightSettings && LiveFightSettings.showTileColors !== undefined) ? LiveFightSettings.showTileColors : 1;
-		let showVPColumn = LiveFightSettings?.showVPColumn ?? 1;
+		let showVPColumn = LiveFightSettings?.showVPColumn ?? 0;
+		let showAttritionColumn = LiveFightSettings?.showAttritionColumn ?? 1;
 		let showFocusTarget = LiveFightSettings?.showFocusTarget ?? 1;
 		let showServerTime = LiveFightSettings?.showServerTime ?? 0;
 		let alertLeadTime = LiveFightSettings?.alertLeadTime ?? 30;
@@ -1931,6 +2365,7 @@ let Guild_fights = {
 		c.push(`<p><label for="showownsectors"><input id="showownsectors" name="showownsectors" value="0" type="checkbox" ${(showOwnSectors === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.ShowOwnSectors')}</label></p>`);
 		c.push(`<p><label for="showtilecolors"><input id="showtilecolors" name="showtilecolors" value="0" type="checkbox" ${(showTileColors === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.ShowTileColors')}</label></p>`);
 		c.push(`<p><label for="showvpcolumn"><input id="showvpcolumn" name="showvpcolumn" value="0" type="checkbox" ${(showVPColumn === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.ShowVPColumn')}</label></p>`);
+		c.push(`<p><label for="showattritioncolumn"><input id="showattritioncolumn" name="showattritioncolumn" value="0" type="checkbox" ${(showAttritionColumn === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.ShowAttritionColumn')}</label></p>`);
 		c.push(`<p><label for="showfocustarget"><input id="showfocustarget" name="showfocustarget" value="0" type="checkbox" ${(showFocusTarget === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.ShowFocusTarget')}</label></p>`);
 		c.push(`<hr><p><label for="showservertime"><input id="showservertime" name="showservertime" value="0" type="checkbox" ${(showServerTime === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.ShowServerTime')}</label></p>`);
 		c.push(`<p><label for="serverOffset">${i18n('Boxes.GuildFights.serverOffset')}<input id="serverOffset" name="serverOffset" value="${Guild_fights.serverOffset??""}" type="text" maxlength="5" size = "5"/></label></p>`);
@@ -1971,6 +2406,9 @@ let Guild_fights = {
 	},
 
 
+	/**
+	 * Persists the live fight settings to localStorage and rebuilds the box
+	 */
 	SaveLiveFightSettings: () => {
 		let value = {};
 
@@ -1979,32 +2417,44 @@ let Guild_fights = {
 		value.showOwnSectors = 0;
 		value.showTileColors = 0;
 		value.showVPColumn = 0;
+		value.showAttritionColumn = 0;
 		value.showFocusTarget = 0;
 		value.showServerTime = 0;
 		value.discordWebhook = '';
 		value.discordWebhookTemplate = '';
 		value.discordWebhookTemplateBulk = '';
 
-		if ($("#showguildcolumn").is(':checked')) 
+		if ($("#showguildcolumn").is(':checked')) {
 			value.showGuildColumn = 1;
+		}
 
-		if ($("#showAdjacentSectors").is(':checked')) 
+		if ($("#showAdjacentSectors").is(':checked')) {
 			value.showAdjacentSectors = 1;
+		}
 
-		if ($("#showownsectors").is(':checked')) 
+		if ($("#showownsectors").is(':checked')) {
 			value.showOwnSectors = 1;
+		}
 
-		if ($("#showtilecolors").is(':checked'))
+		if ($("#showtilecolors").is(':checked')) {
 			value.showTileColors = 1;
+		}
 
-		if ($("#showvpcolumn").is(':checked'))
+		if ($("#showvpcolumn").is(':checked')) {
 			value.showVPColumn = 1;
+		}
 
-		if ($("#showfocustarget").is(':checked'))
+		if ($("#showattritioncolumn").is(':checked')) {
+			value.showAttritionColumn = 1;
+		}
+
+		if ($("#showfocustarget").is(':checked')) {
 			value.showFocusTarget = 1;
+		}
 
-		if ($("#showservertime").is(':checked'))
+		if ($("#showservertime").is(':checked')) {
 			value.showServerTime = 1;
+		}
 
 		value.discordWebhook = $("#gbgWebhook").val();
 		value.discordWebhookTemplate = $("#gbgWebhookTemplate").val();
@@ -2020,6 +2470,7 @@ let Guild_fights = {
 		Guild_fights.showOwnSectors = value.showOwnSectors;
 		Guild_fights.showTileColors = value.showTileColors;
 		Guild_fights.showVPColumn = value.showVPColumn;
+		Guild_fights.showAttritionColumn = value.showAttritionColumn;
 		Guild_fights.showFocusTarget = value.showFocusTarget;
 		Guild_fights.showServerTime = value.showServerTime;
 		Guild_fights.discordWebhook.url = value.discordWebhook;
@@ -2028,10 +2479,13 @@ let Guild_fights = {
 		Guild_fights.alertLeadTime = value.alertLeadTime;
 		Guild_fights.serverOffset = parseInt($("#serverOffset").val()) ?? null;
 
-		if (Guild_fights.serverOffset != null)
+		if (Guild_fights.serverOffset != null) {
 			localStorage.setItem('GuildFights.serverOffset', JSON.stringify(Guild_fights.serverOffset))
-		else
+		}
+		else {
 			localStorage.removeItem('GuildFights.serverOffset');
+		}
+
 		localStorage.setItem('LiveFightSettings', JSON.stringify(value));
 
 		$(`#LiveGildFightingSettingsBox`).fadeToggle('fast', function () {
