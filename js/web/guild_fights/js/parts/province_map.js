@@ -16,6 +16,8 @@
 let ProvinceMap = {
 	Map: {},
 	MapCTX: {},
+	Overlay: {},
+	OverlayCTX: {},
 
 	Size: {
 		width: 1000,
@@ -25,6 +27,33 @@ let ProvinceMap = {
 	Provinces: [],
 	StrokeColor: '#111',
 	selectedProvince: null,
+	HighlightedSector: null,
+	HighlightPulse: null,
+	SignalImages: {},
+
+
+	/**
+	 * Returns the (cached) game asset image for a signal, loading it on first use.
+	 * Once the asset finished loading the map is redrawn so the watermark shows up
+	 *
+	 * @param {string} asset "target" or "ignore"
+	 * @returns {HTMLImageElement}
+	 */
+	GetSignalImage: (asset) => {
+		let img = ProvinceMap.SignalImages[asset];
+
+		if (!img) {
+			img = new Image();
+			img.onload = () => {
+				if ($('#ProvinceMap').length > 0 && ProvinceMap.Overlay instanceof HTMLCanvasElement)
+					ProvinceMap.DrawOverlay();
+			};
+			img.src = srcLinks.get('/guild_battlegrounds/map/shared/guild_battlegrounds_' + asset + '.png', true);
+			ProvinceMap.SignalImages[asset] = img;
+		}
+
+		return img;
+	},
 
 
 	/**
@@ -155,17 +184,34 @@ let ProvinceMap = {
 			height: ProvinceMap.Size.height,
 		});
 
+		// second canvas on top of the map: hover outline and signal watermarks
+		// live here, so they never force a full map repaint (flicker)
+		ProvinceMap.Overlay = document.createElement("canvas");
+		ProvinceMap.OverlayCTX = ProvinceMap.Overlay.getContext('2d');
+
+		$(ProvinceMap.Overlay).attr({
+			id: 'province-map-overlay',
+			width: ProvinceMap.Size.width,
+			height: ProvinceMap.Size.height,
+		});
+
+		let stack = document.createElement("div");
+		$(stack).attr({
+			id: 'province-map-stack',
+		});
+		$(stack).append(ProvinceMap.Map).append(ProvinceMap.Overlay);
+
 		let wrapper = document.createElement("div");
 		$(wrapper).attr({
 			id: 'province-map-wrap',
 		});
-		$(wrapper).html(ProvinceMap.Map);
+		$(wrapper).html(stack);
 		$('#ProvinceMapBody').html(wrapper).append('<span id="zoomGBGMap" class="btn">'+i18n('Boxes.GvGMap.Action.Zoom')+'</span><div id="provDetails"></div>');
 
 		ProvinceMap.mapDrag();
 
 		$('#zoomGBGMap').click(function (e) {
-			$('#province-map').toggleClass('zoomed');
+			$('#province-map-stack').toggleClass('zoomed');
 		});
 
 		ProvinceMap.MapCTX.strokeStyle = ProvinceMap.StrokeColor;
@@ -174,9 +220,17 @@ let ProvinceMap = {
 		// put 0,0 in the center on volcano map
 		if (Guild_fights.MapData.map['id'] === "volcano_archipelago") {
 			ProvinceMap.MapCTX.translate(ProvinceMap.Size.width/2, ProvinceMap.Size.height/2);
+			ProvinceMap.OverlayCTX.translate(ProvinceMap.Size.width/2, ProvinceMap.Size.height/2);
 		}
 
 		// Objects
+		/**
+		 * Map sector object holding position, ownership and progress data
+		 * plus its cached Path2D shape
+		 *
+		 * @param {Object} data Combined static province data and live map data
+		 * @constructor
+		 */
 		function Province(data) {
 			this.id = data.id || 0;
 			this.name = data.name;
@@ -200,10 +254,19 @@ let ProvinceMap = {
 			return this;
 		}
 
+		/**
+		 * Redraws this sector using the current map type
+		 */
 		Province.prototype.updateMapSector = function () {
 			this.drawMapSector(Guild_fights.MapData.map['id']);
 		}
 
+		/**
+		 * Draws the complete sector: shape in the owner's colour, title, slot dots,
+		 * unlock time and conquest progress bars; spawn spots get the clan flag
+		 *
+		 * @param {string} mapType "waterfall_archipelago" or "volcano_archipelago"
+		 */
 		Province.prototype.drawMapSector = function (mapType = 'waterfall_archipelago') {
 			ProvinceMap.MapCTX.font = 'bold 30px Arial';
 			ProvinceMap.MapCTX.textAlign = "center";
@@ -216,17 +279,15 @@ let ProvinceMap = {
 			// waterfall map
 			let hexwidthFactor = 7.5;
 			let hexheightFactor = 10;
+			let center = sector.getSectorCenter(mapType);
 			let mapStuff = {
 				hexwidth: ProvinceMap.Size.width / hexwidthFactor,
 				hexheight: ProvinceMap.Size.height / hexheightFactor,
-				x: sector.flag.x * (ProvinceMap.Size.width / (hexwidthFactor*2 + hexwidthFactor*2/3)) + ProvinceMap.Size.width / (hexwidthFactor*2 + hexwidthFactor*2/3),
-				y: sector.flag.y * (ProvinceMap.Size.height / (hexheightFactor*2)) + (ProvinceMap.Size.height / (hexheightFactor*2))
+				x: center.x,
+				y: center.y
 			};
 
 			if (mapType === 'volcano_archipelago') {
-				let xy = { x: 1, y: -1};
-				mapStuff.x = xy.x*(sector.circlePosition.radius-sector.circlePosition.initRadius/2)*Math.sin(sector.circlePosition.angle+sector.circlePosition.angleFragment/2);
-				mapStuff.y = xy.y*(sector.circlePosition.radius-sector.circlePosition.initRadius/2)*Math.cos(sector.circlePosition.angle+sector.circlePosition.angleFragment/2);
 				noRealignSectors = [1,2,29,31,30,32,33,34,35,37,38,39,41,42,43,45,46,47,49,50,51,53,54,55,57,58,59];
 
 				// realign some sectors on volcano map to have more space
@@ -270,6 +331,68 @@ let ProvinceMap = {
 			}
 		}
 
+		/**
+		 * Returns the geometric center of the sector in canvas coordinates,
+		 * used for the signal watermark on the overlay canvas
+		 *
+		 * @param {string} mapType "waterfall_archipelago" or "volcano_archipelago"
+		 * @returns {{x: number, y: number}}
+		 */
+		Province.prototype.getSectorCenter = function (mapType = 'waterfall_archipelago') {
+			if (mapType === 'volcano_archipelago') {
+				let xy = { x: 1, y: -1 };
+				return {
+					x: xy.x*(this.circlePosition.radius-this.circlePosition.initRadius/2)*Math.sin(this.circlePosition.angle+this.circlePosition.angleFragment/2),
+					y: xy.y*(this.circlePosition.radius-this.circlePosition.initRadius/2)*Math.cos(this.circlePosition.angle+this.circlePosition.angleFragment/2)
+				};
+			}
+
+			let hexwidthFactor = 7.5;
+			let hexheightFactor = 10;
+
+			return {
+				x: this.flag.x * (ProvinceMap.Size.width / (hexwidthFactor*2 + hexwidthFactor*2/3)) + ProvinceMap.Size.width / (hexwidthFactor*2 + hexwidthFactor*2/3),
+				y: this.flag.y * (ProvinceMap.Size.height / (hexheightFactor*2)) + (ProvinceMap.Size.height / (hexheightFactor*2))
+			};
+		}
+
+		/**
+		 * Draws the own guild's signal (focus crosshair / ignore hand) as a nearly
+		 * sector sized, semi transparent watermark onto the overlay canvas. It is
+		 * painted in canvas coordinates, so it scales along with both the zoomed
+		 * and the fitted map view
+		 *
+		 * @param {number} centerX Sector center x in canvas coordinates
+		 * @param {number} centerY Sector center y in canvas coordinates
+		 */
+		Province.prototype.drawSignal = function (centerX, centerY) {
+			if (!Guild_fights.showFocusTarget) return;
+
+			let signal = Guild_fights.GetProvinceSignal(this.id);
+			if (signal === undefined) return;
+
+			// the game assets are named like the signal, only "focus" maps to "target"
+			let asset = signal.signal === 'focus' ? 'target' : signal.signal;
+			let img = ProvinceMap.GetSignalImage(asset);
+
+			// not loaded yet, the onload redraw will bring the watermark in
+			if (!img.complete || img.naturalWidth === 0) return;
+
+			// almost the full hex height, the PNG keeps its aspect ratio
+			let size = (ProvinceMap.Size.height / 10) * 0.9,
+				width = size * (img.naturalWidth / img.naturalHeight);
+
+			ProvinceMap.OverlayCTX.save();
+			ProvinceMap.OverlayCTX.globalAlpha = 0.45;
+			ProvinceMap.OverlayCTX.drawImage(img, centerX - width/2, centerY - size/2, width, size);
+			ProvinceMap.OverlayCTX.restore();
+		}
+
+		/**
+		 * Draws the unlock time (HH:mm) of a locked sector
+		 *
+		 * @param {Object} mapStuff Precalculated x/y drawing coordinates
+		 */
 		Province.prototype.drawUnlockTime = function(mapStuff) {
 			ProvinceMap.MapCTX.font = 'bold 20px Courier New';
 			ProvinceMap.MapCTX.fillStyle = '#000';
@@ -277,6 +400,15 @@ let ProvinceMap = {
 			ProvinceMap.MapCTX.fillText(provinceUnlockTime,mapStuff.x,mapStuff.y+5);
 		}
 
+		/**
+		 * Draws the sector title, the battle type dot (attack/defence) and one
+		 * dot per building slot
+		 *
+		 * @param {string} mapType Map id, kept for symmetry with the other draw calls
+		 * @param {boolean} drawCentered Center the title when no time/progress is shown
+		 * @param x Drawing x coordinate
+		 * @param y Drawing y coordinate
+		 */
 		Province.prototype.drawTitleAndSlots = function(mapType, drawCentered = true, x, y) {
 			let titleY = y;
 			let slotsY = y - 20;
@@ -324,6 +456,11 @@ let ProvinceMap = {
 			}
 		}
 
+		/**
+		 * Draws one progress bar per attacking guild in its guild colour
+		 *
+		 * @param {Object} mapStuff Precalculated x/y drawing coordinates
+		 */
 		Province.prototype.drawProgress = function(mapStuff) {
 			ProvinceMap.MapCTX.strokeStyle = ProvinceMap.StrokeColor;
 			if (this.conquestProgress !== undefined && this.conquestProgress.length > 0)
@@ -341,6 +478,12 @@ let ProvinceMap = {
 				});
 		}
 
+		/**
+		 * Draws a spawn spot: sector shape plus the owning clan's flag image
+		 *
+		 * @param {Object} mapStuff Precalculated x/y drawing coordinates
+		 * @param {string} mapType Map id for the shape lookup
+		 */
 		Province.prototype.drawStartSector = function(mapStuff, mapType) {
 			let flag_image = new Image();
 			flag_image.src = srcLinks.get(`/shared/clanflags/${this.owner.flagImg}.jpg`, true);
@@ -358,6 +501,13 @@ let ProvinceMap = {
 			}
 		}
 
+		/**
+		 * Returns the Path2D outline of the sector: a ring segment on the volcano
+		 * map, a hexagon on the waterfall map. The path is cached per map type
+		 *
+		 * @param {string} mapType "waterfall_archipelago" or "volcano_archipelago"
+		 * @returns {Path2D}
+		 */
 		Province.prototype.drawSectorShape = function (mapType = 'waterfall_archipelago') {
 			if (this._shapeCache[mapType]) {
 				return this._shapeCache[mapType];
@@ -592,6 +742,114 @@ let ProvinceMap = {
 
 
 	/**
+	 * Outlines a sector with a darker shade of its owner's colour on the overlay
+	 * canvas, e.g. while hovering the matching table row
+	 *
+	 * @param {number} provinceId
+	 */
+	HighlightSector: (provinceId) => {
+		if ($('#ProvinceMap').length === 0 || !(ProvinceMap.Overlay instanceof HTMLCanvasElement)) return;
+
+		const province = ProvinceMap.Provinces.find(p => p.id === provinceId);
+		if (!province) return;
+
+		ProvinceMap.HighlightedSector = provinceId;
+		ProvinceMap.StartHighlightPulse();
+	},
+
+
+	/**
+	 * Removes the hover outline again, only the overlay canvas gets repainted
+	 */
+	UnhighlightSector: () => {
+		ProvinceMap.StopHighlightPulse();
+
+		if (ProvinceMap.HighlightedSector === null) return;
+
+		ProvinceMap.HighlightedSector = null;
+
+		if ($('#ProvinceMap').length === 0 || !(ProvinceMap.Overlay instanceof HTMLCanvasElement)) return;
+
+		ProvinceMap.DrawOverlay();
+	},
+
+
+	/**
+	 * Animates the hover outline with a soft pulse. The loop only runs while a
+	 * sector is highlighted and stops itself when the box got closed meanwhile
+	 */
+	StartHighlightPulse: () => {
+		if (ProvinceMap.HighlightPulse !== null) return;
+
+		const step = (now) => {
+			if (ProvinceMap.HighlightedSector === null || $('#ProvinceMap').length === 0) {
+				ProvinceMap.StopHighlightPulse();
+				return;
+			}
+
+			ProvinceMap.DrawOverlay(now);
+			ProvinceMap.HighlightPulse = requestAnimationFrame(step);
+		};
+
+		ProvinceMap.HighlightPulse = requestAnimationFrame(step);
+	},
+
+
+	/**
+	 * Cancels the pulse animation loop
+	 */
+	StopHighlightPulse: () => {
+		if (ProvinceMap.HighlightPulse === null) return;
+
+		cancelAnimationFrame(ProvinceMap.HighlightPulse);
+		ProvinceMap.HighlightPulse = null;
+	},
+
+
+	/**
+	 * Repaints the overlay canvas: signal watermarks of the own guild plus the
+	 * hover outline. Cheap compared to a full map rebuild, so it never flickers
+	 *
+	 * @param {number} [now] rAF timestamp driving the outline pulse
+	 */
+	DrawOverlay: (now = performance.now()) => {
+		if (!(ProvinceMap.Overlay instanceof HTMLCanvasElement)) return;
+
+		const ctx = ProvinceMap.OverlayCTX;
+		const mapType = Guild_fights.MapData.map['id'];
+
+		// clear in screen space, the volcano map context is translated
+		ctx.save();
+		ctx.setTransform(1, 0, 0, 1, 0, 0);
+		ctx.clearRect(0, 0, ProvinceMap.Size.width, ProvinceMap.Size.height);
+		ctx.restore();
+
+		ProvinceMap.Provinces.forEach(province => {
+			const center = province.getSectorCenter(mapType);
+			province.drawSignal(center.x, center.y);
+		});
+
+		if (ProvinceMap.HighlightedSector !== null) {
+			const province = ProvinceMap.Provinces.find(p => p.id === ProvinceMap.HighlightedSector);
+
+			if (province) {
+				const path = province.drawSectorShape(mapType);
+
+				// soft sine pulse (~1.9s cycle) on width and opacity
+				const pulse = (Math.sin(now / 300) + 1) / 2;
+
+				ctx.save();
+				ctx.strokeStyle = province.owner.colors?.shadow || '#000';
+				ctx.lineWidth = 5 + 4 * pulse;
+				ctx.globalAlpha = 0.55 + 0.45 * pulse;
+				ctx.stroke(path);
+				ctx.restore();
+			}
+		}
+	},
+
+
+	/**
 	 * Rebuilds the map by clearing the existing map context and updating each province's map sector.
 	 * - Clears the current map using the provided map context dimensions.
 	 * - Iterates through all provinces to update their corresponding map sectors.
@@ -603,6 +861,8 @@ let ProvinceMap = {
 		provinces.forEach(province => {
 			province.updateMapSector();
 		});
+
+		ProvinceMap.DrawOverlay();
 	},
 
 
