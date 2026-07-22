@@ -240,6 +240,8 @@
     "Boxes.Castle.VisitAntiqueDealerWarning": "Ouvrez le vendeur d'antiquité pour actualiser les données.",
     "Boxes.Castle.VisitCastleWarning": "Ouvrez l'aperçu du château pour actualiser les données.",
     "Boxes.Castle.VisitGexWarning": "Ouvrez l'aperçu des expéditions de guilde pour actualiser les données.",
+    "Boxes.CityBuilder.Calculating": "Génération du layout de la cité ...",
+    "Boxes.CityBuilder.NoData": "Pas de données disponible",
     "Boxes.CityBuilder.Opacity": "Opacité",
     "Boxes.CityBuilder.Title": "Constructeur de cité",
     "Boxes.CityBuilder.Zoom": "Zoom",
