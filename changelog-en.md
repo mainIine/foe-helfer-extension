@@ -12,12 +12,14 @@
 - GB Cost Calc:
   - The hints "level not unlocked" and "no street connection" are shown again
 
-##### 4.4.2.1
+- GBG:
+  - Countdown tab: sectors whose connection is secured until they unlock are underlined again (the marking got lost with the last update)
 
-**Bugfix**
 - City Planner:
   - If submitting the city data fails, the error is now always shown as a message (including server and network errors) instead of silently doing nothing
   - The server now reports save errors with a readable cause; non-critical problems (e.g. cache files) are shown as a warning while the city is still saved
+
+---
 
 ##### 4.4.2.0
 

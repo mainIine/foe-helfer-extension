@@ -12,12 +12,14 @@
 - LG Fördern:
   - Die Hinweise "Stufe nicht freigeschaltet" und "keine Straßenverbindung" werden wieder angezeigt
 
-##### 4.4.2.1
+- GG:
+	- Countdown-Tab: Sektoren, deren Verbindung bis zur Öffnung gesichert ist, werden wieder unterstrichen (die Markierung war mit dem letzten Update verloren gegangen)
 
-**Bugfix**
 - Stadtplaner:
-  - Schlägt das Übermitteln der Stadtdaten fehl, wird der Fehler jetzt immer als Meldung angezeigt (auch bei Server- und Netzwerkfehlern), statt dass stillschweigend nichts passiert
-  - Der Server meldet Fehler beim Speichern jetzt mit einer verständlichen Ursache zurück; unkritische Probleme (z.&nbsp;B. Cache-Dateien) werden als Warnung angezeigt, die Stadt wird trotzdem gespeichert
+	- Schlägt das Übermitteln der Stadtdaten fehl, wird der Fehler jetzt immer als Meldung angezeigt (auch bei Server- und Netzwerkfehlern), statt dass stillschweigend nichts passiert
+	- Der Server meldet Fehler beim Speichern jetzt mit einer verständlichen Ursache zurück; unkritische Probleme (z.B. Cache-Dateien) werden als Warnung angezeigt, die Stadt wird trotzdem gespeichert
+
+---
 
 ##### 4.4.2.0
 

@@ -262,6 +262,10 @@
 	white-space: nowrap;
 }
 
+#LiveGildFightingBody #nextup .secure .prov-name b {
+	text-decoration: underline;
+}
+
 #LiveGildFightingBody #nextup .secure .battletype {
 	border: 1px solid var(--black-65);
 	margin: -1px;
