@@ -1448,15 +1448,36 @@ let CityMap = {
 					type: 'success',
 					hideAfter: 10000,
 				});
+
+				// nicht-kritische Serverfehler (Cache-Dateien, Avatar, ...) trotzdem anzeigen
+				if (Array.isArray(resp['warnings']) && resp['warnings'].length > 0) {
+					HTML.ShowToastMsg({
+						head: i18n('Boxes.CityMap.SubmitErrorHeader'),
+						text: resp['warnings'].join('<br>'),
+						type: 'warning',
+						hideAfter: 15000,
+					});
+				}
 			}
 			else {
 				HTML.ShowToastMsg({
 					head: i18n('Boxes.CityMap.SubmitErrorHeader'),
-					text: resp['msg'],
+					text: resp['msg'] || 'Unknown server error',
 					type: 'error',
 					hideAfter: 10000,
 				});
 			}
+
+			$('#CityMapSubmit').fadeToggle(function(){
+				$(this).remove();
+			});
+		}, function(errMsg){
+			HTML.ShowToastMsg({
+				head: i18n('Boxes.CityMap.SubmitErrorHeader'),
+				text: errMsg,
+				type: 'error',
+				hideAfter: 10000,
+			});
 
 			$('#CityMapSubmit').fadeToggle(function(){
 				$(this).remove();
