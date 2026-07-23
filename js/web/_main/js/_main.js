@@ -747,8 +747,8 @@ GetFights = () =>{
 		}
 		
 		if (data.responseData[0]?.player_id === ExtPlayerID) {
-			
-			if ($('#OwnPartBox').length > 0) {
+
+			if ($('#OwnPartBox').length > 0 || $('#CalculatorBox').length > 0) {
 				MainParser.CurrentGB.Entity.max_level = data.responseData[0]?.max_level;
 				Parts.CalcBody();
 			}
@@ -767,7 +767,7 @@ GetFights = () =>{
 		}
 		
 		if (formattedData.responseData[0]?.player_id === ExtPlayerID) {
-			if ($('#OwnPartBox').length > 0) {
+			if ($('#OwnPartBox').length > 0 || $('#CalculatorBox').length > 0) {
 				MainParser.CurrentGB.Entity.max_level = formattedData.responseData[0]?.max_level;
 				Parts.CalcBody();
 			}
@@ -846,7 +846,7 @@ GetFights = () =>{
 		$('#partCalc-Btn').removeClass('hud-btn-red');
 		$('#partCalc-Btn-closed').remove();
 
-		if ($('#OwnPartBox').length > 0) {
+		if ($('#OwnPartBox').length > 0 || $('#CalculatorBox').length > 0) {
 			Parts.CalcBody();
 		}
 	}

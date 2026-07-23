@@ -1,5 +1,17 @@
 ## Extension Changelog
 
+##### 4.4.3.0
+
+**New**
+- GB Calculator:
+  - New button in the title bar to split the view: "GB Cost Calc" and "GB Calculator" are shown as separate windows at the same time again
+  - In the split view the GB Calculator keeps the last opened own GB when a foreign GB is opened, and only auto-opens for own GBs (unless "Use current view for GBs of other players" is enabled); foreign GBs go to the "GB Cost Calc" window
+  - The setting is saved; without the split view the box keeps switching automatically between the two calculators as before
+
+**Bugfix**
+- GB Cost Calc:
+  - The hints "level not unlocked" and "no street connection" are shown again
+
 ##### 4.4.2.1
 
 **Bugfix**
