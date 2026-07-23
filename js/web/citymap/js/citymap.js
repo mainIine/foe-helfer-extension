@@ -233,9 +233,9 @@ let CityMap = {
 		// (e.g. gg/gex), so gate on the rendered city instead of the current map
 		if (!['cultural_outpost', 'era_outpost', 'guild_raids', 'OtherPlayer'].includes(ActiveMap)) {
 			menu.append($('<input type="text" id="BuildingsFilter" placeholder="'+ i18n('Boxes.CityMap.FilterBuildings') +'" oninput="CityMap.filterBuildings(this.value)">'));
-
 			let btnGroup = $('<div class="btn-group" />')
 				.append($('<button class="btn ml-auto" />').attr({ id: 'copy-meta-infos', onclick: 'CityMap.copyMetaInfos()' }).text(i18n('Boxes.CityMap.CopyMetaInfos')))
+				.append($('<button class="btn ml-auto" />').attr({ id: 'download-meta-infos', onclick: 'CityMap.downloadMetaInfos()' }).text(i18n('Boxes.CityMap.DownloadMetaInfos')))
 				.append($('<button class="btn ml-auto" />').attr({ id: 'show-submit-box', onclick: 'CityMap.showSubmitBox()' }).text(i18n('Boxes.CityMap.ShowSubmitBox')));
 
 			// City builder only works with the main city, not while visiting gg/gex
@@ -249,7 +249,10 @@ let CityMap = {
 
 		if (ActiveMap === "guild_raids")
 			if (CityMap.QI.data) {
-				menu.append($(`<button class="btn ml-auto" id="copy-meta-infos" onclick="CityMap.copyMetaInfos()" style="margin-left:auto" />`).text(i18n('Boxes.CityMap.CopyMetaInfos')));
+				menu.append($('<div class="btn-group" />')
+					.append($('<button class="btn ml-auto" id="copy-meta-infos" onclick="CityMap.copyMetaInfos()" style="margin-left:auto" />').text(i18n('Boxes.CityMap.CopyMetaInfos')))
+					.append($('<button class="btn ml-auto" id="download-meta-infos" onclick="CityMap.downloadMetaInfos()" />').text(i18n('Boxes.CityMap.DownloadMetaInfos')))
+				);
 				$("#sidebar").append(CityMap.showQIBuildingList());
 			}
 
@@ -1528,6 +1531,37 @@ let CityMap = {
                 hideAfter: 4000,
             })
         });
+	},
+
+
+	/**
+	 * Builds the same data object as `copyMetaInfos` and triggers a file
+	 * download (JSON) instead of writing it to the clipboard.
+	 */
+	downloadMetaInfos: () => {
+		let data = {};
+		switch (ActiveMap) {
+			case 'guild_raids':
+				data.CityMapData = CityMap.removeDoubleUnderscoreKeys(CityMap.QI.data);
+				data.UnlockedAreas = CityMap.removeDoubleUnderscoreKeys(CityMap.QI.areas);
+				break;
+			default:
+				data.CityMapData = CityMap.removeDoubleUnderscoreKeys(MainParser.CityMapData);
+				data.UnlockedAreas = CityMap.removeDoubleUnderscoreKeys(CityMap.Main.unlockedAreas);
+				break;
+		}
+		data.CityEntities = CityMap.removeDoubleUnderscoreKeys(MainParser.CityEntities);
+
+		const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
+		const fileName = (ActiveMap === 'guild_raids' ? 'QI' : ExtWorld) + '_citymap_' + moment().format('YYMMDD-HHmm') + '_' + ExtPlayerID + '.json';
+		download(blob, fileName, 'application/json');
+
+		HTML.ShowToastMsg({
+			head: i18n('Boxes.CityMap.ToastHeadDownloadData'),
+			text: i18n('Boxes.CityMap.ToastBodyDownloadData'),
+			type: 'info',
+			hideAfter: 4000,
+		});
 	},
 
 
