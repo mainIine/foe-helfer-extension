@@ -60,6 +60,7 @@ let Negotiation = {
 	WrongGoodsSelected: false,
 	ContinueListing: false,
 	NeedGoodMissmatchConfirm: false,
+	SuggestionStepIndex: 0,
 
 	StartNegotiationBackupData: undefined,
 
@@ -98,6 +99,49 @@ let Negotiation = {
 					Negotiation.StartNegotiation(Negotiation.StartNegotiationBackupData);
 				}, 150);
 
+			});
+
+			$('#negotiationBox').on('click', '.numberIcon', function(event){
+				event.preventDefault();
+				event.stopPropagation();
+
+				const $this = $(this);
+				if ($this[0] instanceof HTMLElement) {
+					$this[0].blur();
+				}
+
+				const seqIndex = Number.parseInt(String($this.data('seq-index')), 10);
+				const advanceSuggestionStep = () => {
+					if (Number.isNaN(seqIndex)) return;
+					Negotiation.SuggestionStepIndex = seqIndex + 1;
+					Negotiation.updateSuggestionStepPreview();
+				};
+
+				const singleKey = Number.parseInt(String($this.data('key')), 10);
+				if (!Number.isNaN(singleKey)) {
+					Negotiation.animateNumberIconClick($this);
+					Negotiation.simulateSuggestionKeys([singleKey]);
+					advanceSuggestionStep();
+					return;
+				}
+
+				const place = Number.parseInt(String($this.data('place')), 10);
+				const slot = Number.parseInt(String($this.data('slot')), 10);
+
+				if (Number.isNaN(place) || Number.isNaN(slot)) return;
+
+				Negotiation.animateNumberIconClick($this);
+				Negotiation.simulateSuggestionKeys([place, slot]);
+				advanceSuggestionStep();
+			});
+
+			$('#negotiationBox').on('click', '.numberStepDot', function(event){
+				event.preventDefault();
+				event.stopPropagation();
+
+				const $this = $(this);
+				Negotiation.animateNumberIconClick($this);
+				Negotiation.stepSuggestionSequence();
 			});
 
 		} else {
@@ -302,6 +346,8 @@ let Negotiation = {
 					}
 				});
 			}
+
+			Negotiation.updateSuggestionStepPreview();
 		});
 	},
 
@@ -365,6 +411,10 @@ let Negotiation = {
 
 		const nextRoundSuggestion = GuessesSuggestions[Guesses.length];
 		if (nextRoundSuggestion) {
+			Negotiation.SuggestionStepIndex = 0;
+
+			let seqIndex = 0;
+			let stepButtonAdded = false;
 
 			// berechne einen Farbwert für die Wahrscheinlichkeit dass man mit dem Gewinnt
 			let colorStyle = '';
@@ -407,9 +457,24 @@ let Negotiation = {
 				const good_id = slotSugestion ? slotSugestion.resourceId : 'empty';
 
 				if (slotSugestion) {
+					const placeDigit = place + 1;
+					const slotDigit = (slotSugestion.id + 1) % 10;
+					const tooltipText = HTML.i18nReplacer(i18n("Boxes.Negotiation.KeyboardTooltip"), {
+						place: placeDigit,
+						slot: slotDigit,
+						plaats: placeDigit // fallback for older/wrong nl placeholder key
+					});
+
 					h.push('<td class="text-center">');
 					h.push(`<span class="goods-sprite ${good_id}"></span>`);
-					h.push(`<span class="numberIcon" title="${HTML.i18nReplacer(i18n("Boxes.Negotiation.KeyboardTooltip"), {place: place + 1, slot: (slotSugestion.id+1) % 10})}">${place+1} ${(slotSugestion.id+1) % 10}</span>`);
+					h.push('<span class="numberIconGroup">');
+					if (!stepButtonAdded) {
+						h.push('<span class="numberStepDot game-cursor">•</span>');
+						stepButtonAdded = true;
+					}
+					h.push(`<span class="numberIcon game-cursor" data-key="${placeDigit}" data-seq-index="${seqIndex++}" title="${tooltipText}">${placeDigit}</span>`);
+					h.push(`<span class="numberIcon game-cursor" data-key="${slotDigit}" data-seq-index="${seqIndex++}" title="${tooltipText}">${slotDigit}</span>`);
+					h.push('</span>');
 					h.push('</td>');
 				} else {
 					h.push('<td>&nbsp;</td>');
@@ -466,6 +531,181 @@ let Negotiation = {
 		}
 
 		h.push('</tr>');
+	},
+
+
+	/**
+	 * @param {JQuery} $icon
+	 */
+	animateNumberIconClick: ($icon) => {
+		if (!$icon || typeof $icon.addClass !== 'function') return;
+		$icon.addClass('is-clicked');
+		setTimeout(() => $icon.removeClass('is-clicked'), 140);
+	},
+
+
+	stepSuggestionSequence: () => {
+		const icons = $('#negotiationBox .suggestion .numberIcon[data-seq-index]')
+			.get()
+			.sort((a, b) => Number.parseInt(a.dataset.seqIndex || '0', 10) - Number.parseInt(b.dataset.seqIndex || '0', 10));
+
+		if (icons.length === 0) return;
+
+		let idx = Negotiation.SuggestionStepIndex;
+		if (!Number.isInteger(idx) || idx < 0) idx = 0;
+		idx = idx % icons.length;
+
+		const $icon = $(icons[idx]);
+		const key = Number.parseInt(String($icon.data('key')), 10);
+		if (Number.isNaN(key)) return;
+
+		Negotiation.animateNumberIconClick($icon);
+		Negotiation.simulateSuggestionKeys([key]);
+
+		Negotiation.SuggestionStepIndex = idx + 1;
+		Negotiation.updateSuggestionStepPreview();
+	},
+
+
+	updateSuggestionStepPreview: () => {
+		const icons = $('#negotiationBox .suggestion .numberIcon[data-seq-index]')
+			.get()
+			.sort((a, b) => Number.parseInt(a.dataset.seqIndex || '0', 10) - Number.parseInt(b.dataset.seqIndex || '0', 10));
+
+		if (icons.length === 0) return;
+
+		$('#negotiationBox .suggestion .numberIcon').removeClass('seq-next');
+
+		let idx = Negotiation.SuggestionStepIndex;
+		if (!Number.isInteger(idx) || idx < 0) idx = 0;
+		idx = idx % icons.length;
+
+		Negotiation.SuggestionStepIndex = idx;
+		$(icons[idx]).addClass('seq-next');
+	},
+
+
+	simulateSuggestionKeys: (keys) => {
+		if (!Array.isArray(keys) || keys.length === 0) return;
+
+		const openflInput = document.querySelector('#openfl-content input');
+		if (
+			openflInput &&
+			typeof KeyboardEvents !== 'undefined' &&
+			KeyboardEvents &&
+			typeof KeyboardEvents.paste === 'function'
+		) {
+			keys.forEach((key, index) => {
+				setTimeout(() => {
+					try {
+						KeyboardEvents.paste(String(key));
+					} catch (_ignored) {
+						const fallbackTargets = Negotiation.getKeyboardEventTargets();
+						if (fallbackTargets.length > 0) {
+							Negotiation.simulateSingleKeyPress(fallbackTargets, key);
+						}
+					}
+				}, index * 70);
+			});
+			return;
+		}
+
+		const keyboardTargets = Negotiation.getKeyboardEventTargets();
+		if (keyboardTargets.length === 0) return;
+
+		Negotiation.focusKeyboardTarget(keyboardTargets);
+
+		keys.forEach((key, index) => {
+			setTimeout(() => {
+				Negotiation.simulateSingleKeyPress(keyboardTargets, key);
+			}, index * 70);
+		});
+	},
+
+
+	getKeyboardEventTargets: () => {
+		const targets = [];
+
+		const active = document.activeElement;
+		if (active && typeof active.dispatchEvent === 'function') {
+			targets.push(active);
+		}
+
+		for (let element of [
+			document.querySelector('#openfl-content input'),
+			document.querySelector('#openfl-content canvas'),
+			document.querySelector('#game_body'),
+			document,
+			window
+		]) {
+			if (!element || typeof element.dispatchEvent !== 'function') continue;
+			if (targets.includes(element)) continue;
+			targets.push(element);
+		}
+
+		return targets;
+	},
+
+
+	/**
+	 * @param {(EventTarget|Window)[]} targets
+	 */
+	focusKeyboardTarget: (targets) => {
+		const preferredTarget = targets.find(target =>
+			target instanceof HTMLElement && (
+				target.matches('#openfl-content input')
+				|| target.matches('#openfl-content canvas')
+				|| target.matches('#game_body')
+			)
+		) || targets.find(target => target instanceof HTMLElement);
+
+		if (preferredTarget instanceof HTMLElement) {
+			preferredTarget.focus();
+		}
+	},
+
+
+	simulateSingleKeyPress: (targets, keyValue) => {
+		const key = String(keyValue);
+		const keyCode = key.length > 0 ? key.charCodeAt(0) : 0;
+		const code = /^\d$/.test(key) ? `Digit${key}` : 'Unidentified';
+
+		const keyDownEventOptions = {
+			key,
+			code,
+			keyCode,
+			which: keyCode,
+			charCode: 0,
+			bubbles: true,
+			cancelable: true,
+			composed: true,
+		};
+		const keyPressEventOptions = {
+			key,
+			code,
+			keyCode,
+			which: keyCode,
+			charCode: keyCode,
+			bubbles: true,
+			cancelable: true,
+			composed: true,
+		};
+		const keyUpEventOptions = {
+			key,
+			code,
+			keyCode,
+			which: keyCode,
+			charCode: 0,
+			bubbles: true,
+			cancelable: true,
+			composed: true,
+		};
+
+		for (let target of targets) {
+			target.dispatchEvent(new KeyboardEvent('keydown', keyDownEventOptions));
+			target.dispatchEvent(new KeyboardEvent('keypress', keyPressEventOptions));
+			target.dispatchEvent(new KeyboardEvent('keyup', keyUpEventOptions));
+		}
 	},
 
 
