@@ -1,5 +1,17 @@
 ## Extension Changelog
 
+##### 4.4.3.0
+
+**Neu**
+- LG Rechner:
+  - Neuer Knopf in der Titelleiste, um die Ansicht zu teilen: "LG Fördern" (Kostenrechner) und "LG Rechner" (Eigenanteilsrechner) werden dann wieder gleichzeitig als getrennte Fenster angezeigt
+  - In der geteilten Ansicht behält der LG Rechner das zuletzt geöffnete eigene LG, wenn ein fremdes LG geöffnet wird, und öffnet sich automatisch nur bei eigenen LG (außer "Diese Ansicht für LG von Anderen nutzen" ist aktiv); fremde LG landen im Fenster "LG Fördern"
+  - Die Einstellung wird gespeichert; ohne geteilte Ansicht wechselt die Box wie bisher automatisch zwischen den beiden Rechnern
+
+**Bugfix**
+- LG Fördern:
+  - Die Hinweise "Stufe nicht freigeschaltet" und "keine Straßenverbindung" werden wieder angezeigt
+
 ##### 4.4.2.1
 
 **Bugfix**

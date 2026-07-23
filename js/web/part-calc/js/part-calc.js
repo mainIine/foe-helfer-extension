@@ -11,7 +11,9 @@
  * **************************************************************************************
  */
 
-// This module is for the player's GBs ("GB Calculator")
+// This module is for the player's GBs ("GB Calculator").
+// The copy dialog, the power leveling box and the settings dialog are split
+// into js/parts/ (see js/internal.json), they extend the Parts object below.
 
 // leveled alien GB
 FoEproxy.addWsHandler('OtherPlayerService', 'newEvent', data => {
@@ -25,7 +27,16 @@ FoEproxy.addWsHandler('OtherPlayerService', 'newEvent', data => {
 
 	if (Entity['id'] !== MainParser.CurrentGB.Entity['cityentity_id']) return; // Selbes LG
 
-	if ($('#OwnPartBox').length > 0) {
+	if (Calculator.IsSplitView() && !JSON.parse(localStorage.getItem('ShowOwnPartOnAllGBs'))) {
+		// split view: the event concerns a foreign GB, only the cost calculator box shows it
+		if ($('#CalculatorBox').length > 0) {
+			Calculator.Show();
+			if (Parts.PlayInfoSound) {
+				helper.sounds.play("message");
+			}
+		}
+	}
+	else if ($('#OwnPartBox').length > 0 || $('#CalculatorBox').length > 0) {
 		let NewLevel = data.responseData['level'];
 		Parts.CalcBody(NewLevel);
 		if (Parts.PlayInfoSound) {
@@ -35,7 +46,18 @@ FoEproxy.addWsHandler('OtherPlayerService', 'newEvent', data => {
 });
 
 FoEproxy.addHandler("GreatBuildingsService","getConstruction", (data,postData) => {
-	if ($('#OwnPartBox').length === 0 && localStorage.getItem('OwnPartAutoOpen') == 'true') 
+	if (localStorage.getItem('OwnPartAutoOpen') != 'true') return;
+
+	if (Calculator.IsSplitView()) {
+		// the own part box only opens for own GBs (or all GBs if the setting is enabled)
+		let openOwnPart = postData[0]?.requestData?.[1] == ExtPlayerID || localStorage.getItem('ShowOwnPartOnAllGBs') == 'true';
+
+		if (openOwnPart && $('#OwnPartBox').length === 0)
+			Parts.Show(); // also opens the calculator box
+		else if ($('#CalculatorBox').length === 0)
+			Calculator.Show();
+	}
+	else if ($('#OwnPartBox').length === 0)
 		Parts.Show();
 });
 
@@ -69,13 +91,15 @@ FoEproxy.addHandler("all","all", (data,postData) => {
 });
 
 FoEproxy.addFoeHelperHandler('QuestsUpdated', data => {
-	if ($('#OwnPartBox').length > 0) {
+	if ($('#OwnPartBox').length > 0 || $('#CalculatorBox').length > 0) {
 		Parts.CalcBody();
 	}
 });
 
 
 let Parts = {
+	// the GB shown in this box; in split view it deliberately keeps the last own GB (see SnapshotCurrentGB)
+	CurrentGB: {},
 	Rankings: undefined,
 	IsPreviousLevel: false,
 	IsNextLevel: false,
@@ -141,6 +165,11 @@ let Parts = {
 	allowCopyPlace: false,
 	allowCopyPlaceSetting: true,
 
+	/**
+	 * Toggles the own part calculator box: creates it in the DOM including all
+	 * delegated events (a second call closes it again). In split view the cost
+	 * calculator box is opened/closed along with it.
+	 */
 	Show: () => {
 		if ($('#OwnPartBox').length === 0) {
 			/*let spk = localStorage.getItem('PartsTone');
@@ -166,6 +195,12 @@ let Parts = {
 			});
 
 			HTML.AddCssFile('part-calc');
+
+			// split view toggle in the title bar
+			Calculator.AddSplitViewButton('OwnPartBox');
+
+			// events for the cost calculator content shown in this box in combined view
+			Calculator.RegisterBoxEvents('OwnPartBox');
 
 			if (MainParser.CurrentGB.Entity !== undefined && MainParser.CurrentGB.Rankings !== undefined) Parts.CalcBody();
 			else $('#OwnPartBox').find('#OwnPartBoxBody').html(`<div class="text-center dark-bg p5">${i18n('Menu.OwnpartCalculator.Warning')}</div>`);
@@ -258,22 +293,6 @@ let Parts = {
 				Parts.ShowPowerLeveling(false);
 			});
 
-			$('#OwnPartBox').on('click', '.btn-toggle-arc', function () {
-				Calculator.ForderBonus = parseFloat($(this).data('value'));
-				$('#costFactor').val(Calculator.ForderBonus);
-				let StorageKey = (Calculator.ForderBonusPerConversation && MainParser.OpenConversation ? 'CalculatorForderBonus_' + MainParser.OpenConversation : 'CalculatorForderBonus');
-				localStorage.setItem(StorageKey, Calculator.ForderBonus);
-				Calculator.Show();
-			});
-
-			// wenn der Wert des Archebonus verändert wird, Event feuern
-			$('#OwnPartBox').on('blur', '#costFactor', function () {
-				Calculator.ForderBonus = parseFloat($('#costFactor').val());
-				let StorageKey = (Calculator.ForderBonusPerConversation && MainParser.OpenConversation ? 'CalculatorForderBonus_' + MainParser.OpenConversation : 'CalculatorForderBonus');
-				localStorage.setItem(StorageKey, Calculator.ForderBonus);
-				Calculator.Show();
-			});
-
 			$('#OwnPartBox').on('click', '.button-own', function () {
 				let copyParts = Parts.CopyFunction($(this), 'copy');
 				helper.str.copyToClipboardLegacy(copyParts);
@@ -330,7 +349,7 @@ let Parts = {
 				let BuildingName = $('#build-name').val();
 
 				Parts.CopyBuildingName = BuildingName;
-				localStorage.setItem(Parts.GetStorageKey('CopyGBName', MainParser.CurrentGB.Entity['cityentity_id']), BuildingName);
+				localStorage.setItem(Parts.GetStorageKey('CopyGBName', Parts.CurrentGB.Entity['cityentity_id']), BuildingName);
 
 				Parts.CalcBackgroundBody();
 			});
@@ -376,47 +395,47 @@ let Parts = {
 
 					if (OptionsName === 'danger') {
 						Parts.CopyIncludeDanger = !Parts.CopyIncludeDanger;
-						StorageKey = Parts.GetStorageKey('CopyIncludeDanger', (Parts.CopyFormatPerGB ? MainParser.CurrentGB.Entity['cityentity_id'] : null));
+						StorageKey = Parts.GetStorageKey('CopyIncludeDanger', (Parts.CopyFormatPerGB ? Parts.CurrentGB.Entity['cityentity_id'] : null));
 						localStorage.setItem(StorageKey, Parts.CopyIncludeDanger);
 					}
 					else if (OptionsName === 'player') {
 						Parts.CopyIncludePlayer = !Parts.CopyIncludePlayer;
-						StorageKey = Parts.GetStorageKey('CopyIncludePlayer', (Parts.CopyFormatPerGB ? MainParser.CurrentGB.Entity['cityentity_id'] : null));
+						StorageKey = Parts.GetStorageKey('CopyIncludePlayer', (Parts.CopyFormatPerGB ? Parts.CurrentGB.Entity['cityentity_id'] : null));
 						localStorage.setItem(StorageKey, Parts.CopyIncludePlayer);
 					}
 					else if (OptionsName === 'gb') {
 						Parts.CopyIncludeGB = !Parts.CopyIncludeGB;
-						StorageKey = Parts.GetStorageKey('CopyIncludeGB', (Parts.CopyFormatPerGB ? MainParser.CurrentGB.Entity['cityentity_id'] : null));
+						StorageKey = Parts.GetStorageKey('CopyIncludeGB', (Parts.CopyFormatPerGB ? Parts.CurrentGB.Entity['cityentity_id'] : null));
 						localStorage.setItem(StorageKey, Parts.CopyIncludeGB);
 					}
 					else if (OptionsName === 'level') {
 						Parts.CopyIncludeLevel = !Parts.CopyIncludeLevel;
-						StorageKey = Parts.GetStorageKey('CopyIncludeLevel', (Parts.CopyFormatPerGB ? MainParser.CurrentGB.Entity['cityentity_id'] : null));
+						StorageKey = Parts.GetStorageKey('CopyIncludeLevel', (Parts.CopyFormatPerGB ? Parts.CurrentGB.Entity['cityentity_id'] : null));
 						localStorage.setItem(StorageKey, Parts.CopyIncludeLevel);
 					}
 					else if (OptionsName === 'fp') {
 						Parts.CopyIncludeFP = !Parts.CopyIncludeFP;
-						StorageKey = Parts.GetStorageKey('CopyIncludeFP', (Parts.CopyFormatPerGB ? MainParser.CurrentGB.Entity['cityentity_id'] : null));
+						StorageKey = Parts.GetStorageKey('CopyIncludeFP', (Parts.CopyFormatPerGB ? Parts.CurrentGB.Entity['cityentity_id'] : null));
 						localStorage.setItem(StorageKey, Parts.CopyIncludeFP);
 					}
 					else if (OptionsName === 'descending') {
 						Parts.CopyDescending = !Parts.CopyDescending;
-						StorageKey = Parts.GetStorageKey('CopyDescending', (Parts.CopyFormatPerGB ? MainParser.CurrentGB.Entity['cityentity_id'] : null));
+						StorageKey = Parts.GetStorageKey('CopyDescending', (Parts.CopyFormatPerGB ? Parts.CurrentGB.Entity['cityentity_id'] : null));
 						localStorage.setItem(StorageKey, Parts.CopyDescending);
 					}
 					else if (OptionsName === 'levelup') {
 						Parts.CopyIncludeLevelString = !Parts.CopyIncludeLevelString;
-						StorageKey = Parts.GetStorageKey('CopyIncludeLevelString', (Parts.CopyFormatPerGB ? MainParser.CurrentGB.Entity['cityentity_id'] : null));
+						StorageKey = Parts.GetStorageKey('CopyIncludeLevelString', (Parts.CopyFormatPerGB ? Parts.CurrentGB.Entity['cityentity_id'] : null));
 						localStorage.setItem(StorageKey, Parts.CopyIncludeLevelString);
 					}
 					else if (OptionsName === 'ownpart') {
 						Parts.CopyIncludeOwnPart = !Parts.CopyIncludeOwnPart;
-						StorageKey = Parts.GetStorageKey('CopyIncludeOwnPart', (Parts.CopyFormatPerGB ? MainParser.CurrentGB.Entity['cityentity_id'] : null));
+						StorageKey = Parts.GetStorageKey('CopyIncludeOwnPart', (Parts.CopyFormatPerGB ? Parts.CurrentGB.Entity['cityentity_id'] : null));
 						localStorage.setItem(StorageKey, Parts.CopyIncludeOwnPart);
 					}
 					else if (OptionsName === 'prep') {
 						Parts.CopyPreP = !Parts.CopyPreP;
-						StorageKey = Parts.GetStorageKey('CopyPreP', (Parts.CopyFormatPerGB ? MainParser.CurrentGB.Entity['cityentity_id'] : null));
+						StorageKey = Parts.GetStorageKey('CopyPreP', (Parts.CopyFormatPerGB ? Parts.CurrentGB.Entity['cityentity_id'] : null));
 						localStorage.setItem(StorageKey, Parts.CopyPreP);
 					}
 				}
@@ -431,12 +450,12 @@ let Parts = {
 
 					if (OptionsName === 'danger-prefix') {
 						Parts.CopyDangerPrefix = $(this).val();
-						StorageKey = Parts.GetStorageKey('CopyDangerPrefix', (Parts.CopyFormatPerGB ? MainParser.CurrentGB.Entity['cityentity_id'] : null));
+						StorageKey = Parts.GetStorageKey('CopyDangerPrefix', (Parts.CopyFormatPerGB ? Parts.CurrentGB.Entity['cityentity_id'] : null));
 						localStorage.setItem(StorageKey, Parts.CopyDangerPrefix);
 					}
 					else if (OptionsName === 'danger-suffix') {
 						Parts.CopyDangerSuffix = $(this).val();
-						StorageKey = Parts.GetStorageKey('CopyDangerSuffix', (Parts.CopyFormatPerGB ? MainParser.CurrentGB.Entity['cityentity_id'] : null));
+						StorageKey = Parts.GetStorageKey('CopyDangerSuffix', (Parts.CopyFormatPerGB ? Parts.CurrentGB.Entity['cityentity_id'] : null));
 						localStorage.setItem(StorageKey, Parts.CopyDangerSuffix);
 					}
 				}
@@ -445,32 +464,78 @@ let Parts = {
 			});
 
 			if (MainParser.CurrentGB.Entity !== undefined && MainParser.CurrentGB.Rankings !== undefined) Parts.CalcBody();
+
+			// split view: also open the cost calculator box
+			if (Calculator.IsSplitView()) Calculator.Show();
 		}
 		else {
 			HTML.CloseOpenBox('OwnPartBox');
 			HTML.CloseOpenBox('PowerLevelingBox');
+			HTML.CloseOpenBox('CalculatorBox');
 		}
 	},
 
 
 	/**
-	 * Visible part
+	 * Takes over the currently opened GB as the data shown in this box.
+	 * In split view CalcBody skips this for foreign GBs, so the box keeps its last own GB.
+	 */
+	SnapshotCurrentGB: () => {
+		Parts.CurrentGB = {
+			Entity: MainParser.CurrentGB.Entity,
+			Rankings: MainParser.CurrentGB.Rankings,
+			OverviewRow: MainParser.CurrentGB.OverviewRow,
+			Tier: MainParser.CurrentGB.Tier,
+			IsPreviousLevel: Parts.IsPreviousLevel // set by lgUpdate right before CalcBody is called
+		};
+	},
+
+
+	/**
+	 * Calculates and renders the own part view for the GB in Parts.CurrentGB:
+	 * per place the FP a patron has to pay, the own part in between, danger and
+	 * level warnings, external payments and the totals. In split view it keeps
+	 * the cost calculator box in sync and refuses to follow foreign GBs
+	 * (see SnapshotCurrentGB), in the combined view it hands foreign GBs over
+	 * to the cost calculator.
 	 *
+	 * @param {number} [NextLevel] - Render this (future) level instead of the current one
 	 */
 	CalcBody: async (NextLevel) => {
 		await StartUpDone;
 		if (!MainParser.CurrentGB.Entity || !MainParser.CurrentGB.Rankings) return; // No GB loaded yet
-		if (MainParser.CurrentGB.Entity['level'] === NextLevel) NextLevel = 0;
 
-		// load other calculator if selected
-		let useThisCalculator = JSON.parse(localStorage.getItem('ShowOwnPartOnAllGBs'))
-		if (!useThisCalculator && MainParser.CurrentGB.Entity.player_id !== ExtPlayerID) {
-			Calculator.Show();
-			return;	
+		if (Calculator.IsSplitView()) {
+			// split view: keep the cost calculator box in sync
+			if ($('#CalculatorBox').length > 0) Calculator.Show();
+
+			// this box only follows own GBs (or all GBs if the setting is enabled)
+			let useOnAllGBs = JSON.parse(localStorage.getItem('ShowOwnPartOnAllGBs'));
+			if (useOnAllGBs || MainParser.CurrentGB.Entity.player_id === ExtPlayerID) {
+				Parts.SnapshotCurrentGB();
+			}
+			else if (!Parts.CurrentGB.Entity) {
+				// nothing of the player shown yet: show a hint instead of the foreign GB
+				$('#OwnPartBoxBody').html(`<div class="text-center dark-bg p5">${i18n('Menu.OwnpartCalculator.Warning')}</div>`);
+				return;
+			}
+			// else: keep rendering the last own GB from Parts.CurrentGB
+		}
+		else {
+			// combined view: load the other calculator if selected
+			let useThisCalculator = JSON.parse(localStorage.getItem('ShowOwnPartOnAllGBs'))
+			if (!useThisCalculator && MainParser.CurrentGB.Entity.player_id !== ExtPlayerID) {
+				Calculator.Show();
+				return;
+			}
+
+			Parts.SnapshotCurrentGB();
 		}
 
-		let PlayerID = MainParser.CurrentGB.Entity['player_id'],
-			EntityID = MainParser.CurrentGB.Entity['cityentity_id'],
+		if (Parts.CurrentGB.Entity['level'] === NextLevel) NextLevel = 0;
+
+		let PlayerID = Parts.CurrentGB.Entity['player_id'],
+			EntityID = Parts.CurrentGB.Entity['cityentity_id'],
 			CityEntity = MainParser.CityEntities[EntityID],
 			EraName = GreatBuildings.GetEraName(CityEntity['asset_id']),
 			Era = Technologies.Eras[EraName];
@@ -478,15 +543,15 @@ let Parts = {
 		let Total; // Total FP of the current level
 
 		if (NextLevel) {		
-			Parts.IsPreviousLevel = false;
+			Parts.CurrentGB.IsPreviousLevel = false;
 			Parts.IsNextLevel = true;
 			Parts.Level = NextLevel;
 			Total = GreatBuildings.GetBruttoCosts(EntityID, NextLevel);
 		}
 		else {
 			Parts.IsNextLevel = false;
-			Parts.Level = MainParser.CurrentGB.Entity['level'];
-			Total = parseInt(MainParser.CurrentGB.Entity['state']['forge_points_for_level_up']);
+			Parts.Level = Parts.CurrentGB.Entity['level'];
+			Total = parseInt(Parts.CurrentGB.Entity['state']['forge_points_for_level_up']);
 		}
 
 		// Restore Default settings
@@ -575,10 +640,10 @@ let Parts = {
 		Parts.LeveltLG = [false, false, false, false, false];
 		Parts.Maezens = [];
 
-		if (Parts.IsPreviousLevel) {
+		if (Parts.CurrentGB.IsPreviousLevel) {
 			Total = 0;
-			for (let i = 0; i < MainParser.CurrentGB.Rankings.length; i++) {
-				let ToAdd = MainParser.CurrentGB.Rankings[i]['forge_points'];
+			for (let i = 0; i < Parts.CurrentGB.Rankings.length; i++) {
+				let ToAdd = Parts.CurrentGB.Rankings[i]['forge_points'];
 				if (ToAdd !== undefined) Total += ToAdd;
 			}
 			Rest = Total;
@@ -594,33 +659,33 @@ let Parts = {
 
 		// Wenn in Rankings nichts mehr steht, dann abbrechen
 		if (! Parts.IsNextLevel) {
-			for (let i = 0; i < MainParser.CurrentGB.Rankings.length; i++) {
+			for (let i = 0; i < Parts.CurrentGB.Rankings.length; i++) {
 				// Owner
-				let CurrentMaezen = MainParser.CurrentGB.Rankings[i]['forge_points'];
-				if (MainParser.CurrentGB.Rankings[i]?.player?.is_self) {
+				let CurrentMaezen = Parts.CurrentGB.Rankings[i]['forge_points'];
+				if (Parts.CurrentGB.Rankings[i]?.player?.is_self) {
 					AlreadyPaid = CurrentMaezen;
 				}
-				if (MainParser.CurrentGB.Rankings[i]['player'] && MainParser.CurrentGB.Rankings[i]['player']['player_id'] === MainParser.CurrentGB.Entity['player_id']) {
+				if (Parts.CurrentGB.Rankings[i]['player'] && Parts.CurrentGB.Rankings[i]['player']['player_id'] === Parts.CurrentGB.Entity['player_id']) {
 					EigenStart = CurrentMaezen;
 					Rest -= EigenStart;
 					continue;
 				}
 				// Deleted player
-				else if (MainParser.CurrentGB.Rankings[i]['rank'] === undefined || MainParser.CurrentGB.Rankings[i]['rank'] < 0) { //undefined => Eigentümer oder gelöscher Spieler P1-5, -1 => gelöschter Spieler ab P6 abwärts
+				else if (Parts.CurrentGB.Rankings[i]['rank'] === undefined || Parts.CurrentGB.Rankings[i]['rank'] < 0) { //undefined => Eigentümer oder gelöscher Spieler P1-5, -1 => gelöschter Spieler ab P6 abwärts
 					Rest -= CurrentMaezen;
 					MaezenTotal += CurrentMaezen;
 					continue;
 				}
 
-				let Place = MainParser.CurrentGB.Rankings[i]['rank'] - 1,
+				let Place = Parts.CurrentGB.Rankings[i]['rank'] - 1,
 					MedalCount = 0;
 
 				Parts.Maezens[Place] = CurrentMaezen;
 				if (Parts.Maezens[Place] === undefined) Parts.Maezens[Place] = 0;
 
 				if (Place < 5) {
-					if (MainParser.CurrentGB.Rankings[i]['reward'] !== undefined) {
-						let FPCount = (MainParser.CurrentGB.Rankings[i]['reward']['strategy_point_amount'] !== undefined ? parseInt(MainParser.CurrentGB.Rankings[i]['reward']['strategy_point_amount']) : 0);
+					if (Parts.CurrentGB.Rankings[i]['reward'] !== undefined) {
+						let FPCount = (Parts.CurrentGB.Rankings[i]['reward']['strategy_point_amount'] !== undefined ? parseInt(Parts.CurrentGB.Rankings[i]['reward']['strategy_point_amount']) : 0);
 						if (FPCount > 0) {
 							FPRewards[Place] = MainParser.round(FPCount * arcs[Place]);
 						}
@@ -630,17 +695,17 @@ let Parts = {
 						if (FPRewards[Place] === undefined) FPRewards[Place] = 0;
 
 						// Medals
-						MedalCount = (MainParser.CurrentGB.Rankings[i]['reward']['resources'] !== undefined ? parseInt(MainParser.CurrentGB.Rankings[i]['reward']['resources']['medals']) : 0);
+						MedalCount = (Parts.CurrentGB.Rankings[i]['reward']['resources'] !== undefined ? parseInt(Parts.CurrentGB.Rankings[i]['reward']['resources']['medals']) : 0);
 						MedalRewards[Place] = MainParser.round(MedalCount * arcs[Place]);
 						if (MedalRewards[Place] === undefined) MedalRewards[Place] = 0;
 
 						// Blueprints
-						let BlueprintCount = (MainParser.CurrentGB.Rankings[i]['reward']['blueprints'] !== undefined ? parseInt(MainParser.CurrentGB.Rankings[i]['reward']['blueprints']) : 0);
+						let BlueprintCount = (Parts.CurrentGB.Rankings[i]['reward']['blueprints'] !== undefined ? parseInt(Parts.CurrentGB.Rankings[i]['reward']['blueprints']) : 0);
 						BPRewards[Place] = MainParser.round(BlueprintCount * arcs[Place]);
 						if (BPRewards[Place] === undefined) BPRewards[Place] = 0;
 
 						// Blueprints split by tier (multi-tier great buildings)
-						BPTierRewards[Place] = (MainParser.CurrentGB.Rankings[i]['reward']['blueprintRewards'] || []).map(bp => ({
+						BPTierRewards[Place] = (Parts.CurrentGB.Rankings[i]['reward']['blueprintRewards'] || []).map(bp => ({
 							tier: bp['tier'],
 							amount: MainParser.round((bp['amount'] || 0) * arcs[Place])
 						}));
@@ -768,7 +833,7 @@ let Parts = {
 		}
 		
         // Level is locked
-		if (PlayerID === ExtPlayerID && MainParser.CityMapData[MainParser.CurrentGB.Entity.id]?.level === MainParser.CityMapData[MainParser.CurrentGB.Entity.id]?.max_level) {
+		if (PlayerID === ExtPlayerID && MainParser.CityMapData[Parts.CurrentGB.Entity.id]?.level === MainParser.CityMapData[Parts.CurrentGB.Entity.id]?.max_level) {
 			h.push('<div class="lg-not-possible" data-text="'+i18n('Boxes.Calculator.LGNotOpen')+'"></div>');
 		}
 		h.push(`<div id="gbCosts">`);
@@ -788,8 +853,8 @@ let Parts = {
 		if (PlayerName) h.push(`<span class="activity activity_${PlayerDict[PlayerID]['Activity']}"></span> ${MainParser.GetPlayerLink(PlayerID, PlayerName)}`);
 
 		// Current status of the GB: level / max level, progress and tier
-		let StatusEntity = MainParser.CurrentGB.Entity,
-			OverviewRow = MainParser.CurrentGB.OverviewRow,
+		let StatusEntity = Parts.CurrentGB.Entity,
+			OverviewRow = Parts.CurrentGB.OverviewRow,
 			Status = [];
 
 		Status.push(`${i18n('Boxes.OwnpartCalculator.Step')} ${StatusEntity['level']}${StatusEntity['max_level'] ? '&#8201;/&#8201;' + HTML.Format(StatusEntity['max_level']) : ''}`);
@@ -800,7 +865,7 @@ let Parts = {
 
 		// Tier preferably from the current rankings (also works for own GBs),
 		// otherwise from the overview, as long as its data still matches the current level
-		let Tier = MainParser.CurrentGB.Tier
+		let Tier = Parts.CurrentGB.Tier
 			|| ((OverviewRow && OverviewRow['level'] === StatusEntity['level']) ? OverviewRow['currentTier'] : null);
 		if (Tier) {
 			let TierBadge = GreatBuildings.TierBadge(Tier);
@@ -811,7 +876,7 @@ let Parts = {
 		h.push('</div>');
 
 		h.push('<div class="level-switch">');
-		if (Parts.IsPreviousLevel) {
+		if (Parts.CurrentGB.IsPreviousLevel) {
 			let Level = GreatBuildings.GetLevel(EntityID, Total);
 			if (Level) 
 				h.push((Level-1) + ' &rarr; ' + (Level));
@@ -871,7 +936,7 @@ let Parts = {
 		h.push('<th>' + i18n('Boxes.OwnpartCalculator.Order') + '</th>');
 		h.push('<th class="text-center"><span class="forgepoints" title="' + HTML.i18nTooltip(i18n('Boxes.OwnpartCalculator.Deposit')) + '"></th>');
 		h.push('<th class="text-center">' + i18n('Boxes.OwnpartCalculator.Done') + '</th>');
-		if (printsEnabled) h.push('<th class="text-center"><span class="blueprint"' + GreatBuildings.BlueprintIconStyle(MainParser.CurrentGB.Tier) + ' title="' + HTML.i18nTooltip(i18n('Boxes.OwnpartCalculator.BPs')) + '"></span></th>');
+		if (printsEnabled) h.push('<th class="text-center"><span class="blueprint"' + GreatBuildings.BlueprintIconStyle(Parts.CurrentGB.Tier) + ' title="' + HTML.i18nTooltip(i18n('Boxes.OwnpartCalculator.BPs')) + '"></span></th>');
 		if (medalsEnabled) h.push('<th class="text-center"><span class="medal" title="' + HTML.i18nTooltip(i18n('Boxes.OwnpartCalculator.Meds')) + '"></span></th>');
 		if (!minView) h.push('<th class="text-center">' + i18n('Boxes.OwnpartCalculator.Ext') + '</th>');
 		if (!minView) h.push('<th class="text-center">' + i18n('Boxes.OwnpartCalculator.Arc') + '</th>');
@@ -1027,12 +1092,12 @@ let Parts = {
 		h.push(`<div class="text-center">${Calculator.GetRecurringQuestsLine(Parts.PlayInfoSound)}</div>`);
 
 		// How much is still needed to level up?
-		if (Parts.IsPreviousLevel === false) {
+		if (Parts.CurrentGB.IsPreviousLevel === false) {
 			let rest;
 			if (Parts.IsNextLevel) 
 				rest = Total;
 			else 
-				rest = MainParser.CurrentGB.Entity['state']['forge_points_for_level_up'] - MainParser.CurrentGB.Rankings.reduce((acc,entry)=>acc+(entry?.forge_points|0),0);
+				rest = Parts.CurrentGB.Entity['state']['forge_points_for_level_up'] - Parts.CurrentGB.Rankings.reduce((acc,entry)=>acc+(entry?.forge_points|0),0);
 			
 			if (!minView) {
 				h.push('<div class="text-center d-flex" style="padding:3px 0;">');
@@ -1046,7 +1111,7 @@ let Parts = {
 			h.push('<div class="btn-group">');
 			if (Parts.SafePlaces.length > 0 || Parts.CopyModeAll) { //Copy bzw. Note Button nur einblenden wenn zumindest ein Platz safe ist
 				h.push('<span class="btn btn-slim button-own">' + i18n('Boxes.OwnpartCalculator.CopyValues') + '</span>');
-				if (MainParser.CurrentGB.Entity['player_id'] === ExtPlayerID) h.push('<span class="btn btn-slim button-save-own">' + i18n('Boxes.OwnpartCalculator.Note') + '</span>');
+				if (Parts.CurrentGB.Entity['player_id'] === ExtPlayerID) h.push('<span class="btn btn-slim button-save-own">' + i18n('Boxes.OwnpartCalculator.Note') + '</span>');
 			}
 			else {
 				h.push(i18n('Boxes.OwnpartCalculator.NoPlaceSafe'));
@@ -1076,7 +1141,7 @@ let Parts = {
 
 		$('#OwnPartBoxBody').html(h.join(''));
 
-		if ($('#PowerLevelingBox').length > 0 && !Parts.IsPreviousLevel) {
+		if ($('#PowerLevelingBox').length > 0 && !Parts.CurrentGB.IsPreviousLevel) {
 			Parts.CalcBodyPowerLeveling();
 		}
 
@@ -1088,202 +1153,12 @@ let Parts = {
 
 
 	/**
-	 * Data for the Copy buttons
+	 * Builds the localStorage key for a per-player (and optionally per-GB) setting.
+	 *
+	 * @param {string} SettingName - Name of the setting
+	 * @param {?string} EntityID - City entity id of the GB, null for player-wide settings
+	 * @returns {string} The localStorage key
 	 */
-	CalcBackgroundBody: () => {
-		let h = [],
-			$OwnPartBox = $('#OwnPartBox'),
-			EntityID = MainParser.CurrentGB.Entity['cityentity_id'];
-		let SavedBuildingName = localStorage.getItem(Parts.GetStorageKey('CopyGBName', MainParser.CurrentGB.Entity['cityentity_id']));
-		$OwnPartBox.find('.OwnPartBoxBackgroundBody').remove();
-
-		let isOpen = false;
-		if($('#OwnPartBox').hasClass('gbSettingsOpen')) 
-			isOpen = true;
-
-		if (SavedBuildingName !== null) {
-			Parts.CopyBuildingName = SavedBuildingName;
-		}
-		else {
-			Parts.CopyBuildingName = MainParser.CityEntities[EntityID]['name'];
-		}
-
-		if (localStorage.getItem(Parts.GetStorageKey('CopyFormatPerGB', null)) === 'true') {
-			let SavedCopyIncludeDanger = localStorage.getItem(Parts.GetStorageKey('CopyIncludeDanger', MainParser.CurrentGB.Entity['cityentity_id']));
-			if (SavedCopyIncludeDanger !== null) {
-				Parts.CopyIncludeDanger = (SavedCopyIncludeDanger === 'true');
-			}
-			else {
-				Parts.CopyIncludeDanger = false;
-			}
-
-			let SavedCopyDangerPrefix = localStorage.getItem(Parts.GetStorageKey('CopyDangerPrefix', MainParser.CurrentGB.Entity['cityentity_id']));
-			if (SavedCopyDangerPrefix !== null) {
-				Parts.CopyDangerPrefix = SavedCopyDangerPrefix;
-			}
-			else {
-				Parts.CopyDangerPrefix = '!!!';
-			}
-
-			let SavedCopyDangerSuffix = localStorage.getItem(Parts.GetStorageKey('CopyDangerSuffix', MainParser.CurrentGB.Entity['cityentity_id']));
-			if (SavedCopyDangerSuffix !== null) {
-				Parts.CopyDangerSuffix = SavedCopyDangerSuffix;
-			}
-			else {
-				Parts.CopyDangerSuffix = '';
-			}
-
-			let SavedCopyIncludePlayer = localStorage.getItem(Parts.GetStorageKey('CopyIncludePlayer', MainParser.CurrentGB.Entity['cityentity_id']));
-			if (SavedCopyIncludePlayer !== null) {
-				Parts.CopyIncludePlayer = (SavedCopyIncludePlayer === 'true');
-			}
-			else {
-				Parts.CopyIncludePlayer = true;
-			}
-
-			let SavedCopyIncludeGB = localStorage.getItem(Parts.GetStorageKey('CopyIncludeGB', MainParser.CurrentGB.Entity['cityentity_id']));
-			if (SavedCopyIncludeGB !== null) {
-				Parts.CopyIncludeGB = (SavedCopyIncludeGB === 'true');
-			}
-			else {
-				Parts.CopyIncludeGB = true;
-			}
-
-			let SavedCopyIncludeLevel = localStorage.getItem(Parts.GetStorageKey('CopyIncludeLevel', MainParser.CurrentGB.Entity['cityentity_id']));
-			if (SavedCopyIncludeLevel !== null) {
-				Parts.CopyIncludeLevel = (SavedCopyIncludeLevel === 'true');
-			}
-			else {
-				Parts.CopyIncludeLevel = true;
-			}
-
-			let SavedCopyIncludeFP = localStorage.getItem(Parts.GetStorageKey('CopyIncludeFP', MainParser.CurrentGB.Entity['cityentity_id']));
-			if (SavedCopyIncludeFP !== null) {
-				Parts.CopyIncludeFP = (SavedCopyIncludeFP === 'true');
-			}
-			else {
-				Parts.CopyIncludeFP = true;
-			}
-
-			let SavedCopyIncludeOwnPart = localStorage.getItem(Parts.GetStorageKey('CopyIncludeOwnPart', MainParser.CurrentGB.Entity['cityentity_id']));
-			if (SavedCopyIncludeOwnPart !== null) {
-				Parts.CopyIncludeOwnPart = (SavedCopyIncludeOwnPart === 'true');
-			}
-			else {
-				Parts.CopyIncludeOwnPart = false;
-			}
-
-			let SavedCopyPreP = localStorage.getItem(Parts.GetStorageKey('CopyPreP', MainParser.CurrentGB.Entity['cityentity_id']));
-			if (SavedCopyPreP !== null) {
-				Parts.CopyPreP = (SavedCopyPreP === 'true');
-			}
-			else {
-				Parts.CopyPreP = true;
-			}
-
-			let SavedCopyDescending = localStorage.getItem(Parts.GetStorageKey('CopyDescending', MainParser.CurrentGB.Entity['cityentity_id']));
-			if (SavedCopyDescending !== null) {
-				Parts.CopyDescending = (SavedCopyDescending === 'true');
-			}
-			else {
-				Parts.CopyDescending = true;
-			}
-		}
-
-		if (Parts.CopyModeAll) {
-			for (let i = 0; i < 5; i++) {
-				Parts.CopyPlaces[i] = true;
-			}
-		}
-		else if (Parts.CopyModeAuto) {
-			for (let i = 0; i < 5; i++) {
-				Parts.CopyPlaces[i] = (Parts.SafePlaces.includes(i));
-			}
-		}
-		else if (Parts.CopyModeAutoUnsafe) {
-			for (let i = 0; i < 5; i++) {
-				Parts.CopyPlaces[i] = (Parts.PlaceAvailables[i]);
-			}
-		}
-
-		let PlayerID = MainParser.CurrentGB.Entity['player_id'];
-
-		Parts.CopyPlayerName = (PlayerID === ExtPlayerID ? Parts.CopyOwnPlayerName : PlayerDict[PlayerID]['PlayerName']);
-
-		h.push('<span class="icon-close"></span>');
-		h.push('<section class="p5">');
-		h.push('<strong>' + i18n('Boxes.OwnpartCalculator.Preview') + '</strong><br>');
-		Parts.CopyString = Parts.GetCopyString();
-		h.push('<input type="text" id="copystring" value="' + Parts.CopyString + '">');
-		
-		h.push('</section>');
-
-		h.push('<section class="p2">');
-		if (PlayerID === ExtPlayerID) {
-			h.push('<div class="flex between"><span>' + i18n('Boxes.OwnpartCalculator.PlayerName') + ':</span><input type="text" id="player-name" value="' + Parts.CopyPlayerName + '"></div>');
-		}
-		else {
-			h.push('<div><span>' + i18n('Boxes.OwnpartCalculator.PlayerName') + ':</span>' + Parts.CopyPlayerName + '</div>');
-		}
-		h.push('<div class="flex between"><span>' + i18n('Boxes.OwnpartCalculator.BuildingName') + ':</span><input type="text" id="build-name" value="' + (Parts.CopyBuildingName) + '"></div>');
-		h.push('</section>');
-
-		h.push('<section class="p2">');
-		h.push('<strong>' + i18n('Boxes.OwnpartCalculator.IncludeData') + '</strong>');
-		let Options = '<div class="checkboxes">' +
-			'<label class="form-check-label game-cursor" for="options-player"><input type="checkbox" class="form-check-input" id="options-player" data-options="player" ' + (Parts.CopyIncludePlayer ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.OptionsPlayer') + '</span></label>' +
-			'<label class="form-check-label game-cursor" for="options-gb"><input type="checkbox" class="form-check-input" id="options-gb" data-options="gb" ' + (Parts.CopyIncludeGB ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.OptionsGB') + '</span></label>' +
-			'<label class="form-check-label game-cursor" for="options-level"><input type="checkbox" class="form-check-input" id="options-level" data-options="level" ' + (Parts.CopyIncludeLevel ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.OptionsLevel') + '</span></label>' +
-			'<label class="form-check-label game-cursor" for="options-fp"><input type="checkbox" class="form-check-input" id="options-fp" data-options="fp" ' + (Parts.CopyIncludeFP ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.OptionsFP') + '</span></label>' +
-			'<label class="form-check-label game-cursor" for="options-descending"><input type="checkbox" class="form-check-input" id="options-descending" data-options="descending" ' + (Parts.CopyDescending ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.OptionsDescending') + '</span></label>' +
-			'<label class="form-check-label game-cursor" for="options-levelup"><input type="checkbox" class="form-check-input" id="options-levelup" data-options="levelup" ' + (Parts.CopyIncludeLevelString ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.OptionsLevelUp') + '</span></label>' +
-			'<label class="form-check-label game-cursor" for="options-ownpart"><input type="checkbox" class="form-check-input" id="options-ownpart" data-options="ownpart" ' + (Parts.CopyIncludeOwnPart ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.OptionsOwnPart') + '</span></label>' +
-			'<label class="form-check-label game-cursor" for="options-prep"><input type="checkbox" class="form-check-input" id="options-prep" data-options="prep" ' + (Parts.CopyPreP ? 'checked' : '') + '> <span>P(xx)</span></label>' +
-			'<label class="form-check-label game-cursor" for="options-danger"><input type="checkbox" class="form-check-input" id="options-danger" data-options="danger" ' + (Parts.CopyIncludeDanger ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.OptionsDanger') + '</span></label>' +
-			'</div>';
-
-		h.push(Options)
-
-		if (Parts.CopyIncludeDanger) {
-			let DangerOptions = '<strong>' + i18n('Boxes.OwnpartCalculator.OptionsDanger') + '</strong>' +
-			'<div><span>' + i18n('Boxes.OwnpartCalculator.OptionsDangerPrefix') + ':</span><input type="text" class="form-text-input" id="options-danger-prefix" data-options="danger-prefix" value="' + Parts.CopyDangerPrefix + '"></div>' +
-			'<div><span>' + i18n('Boxes.OwnpartCalculator.OptionsDangerSuffix') + ':</span><input type="text" class="form-text-input" id="options-danger-suffix" data-options="danger-suffix" value="' + Parts.CopyDangerSuffix + '"></div>';
-
-			h.push(DangerOptions);
-		}
-		h.push('</section><section class="p2">');
-		h.push('<strong>' + i18n('Boxes.OwnpartCalculator.Places') + '</strong>');
-
-		let cb = '<div class="checkboxes">' +
-			'<label class="form-check-label game-cursor" for="chain-p1"><input type="checkbox" class="form-check-input" id="chain-p1" data-place="1" ' + (Parts.CopyPlaces[0] ? 'checked' : '') + '> <span>1</span></label>' +
-			'<label class="form-check-label game-cursor" for="chain-p2"><input type="checkbox" class="form-check-input" id="chain-p2" data-place="2" ' + (Parts.CopyPlaces[1] ? 'checked' : '') + '> <span>2</span></label>' +
-			'<label class="form-check-label game-cursor" for="chain-p3"><input type="checkbox" class="form-check-input" id="chain-p3" data-place="3" ' + (Parts.CopyPlaces[2] ? 'checked' : '') + '> <span>3</span></label>' +
-			'<label class="form-check-label game-cursor" for="chain-p4"><input type="checkbox" class="form-check-input" id="chain-p4" data-place="4" ' + (Parts.CopyPlaces[3] ? 'checked' : '') + '> <span>4</span></label>' +
-			'<label class="form-check-label game-cursor" for="chain-p5"><input type="checkbox" class="form-check-input" id="chain-p5" data-place="5" ' + (Parts.CopyPlaces[4] ? 'checked' : '') + '> <span>5</span></label>' +
-			'<label class="form-check-label game-cursor" for="chain-all"><input type="checkbox" class="form-check-input" id="chain-all" data-place="all" ' + (Parts.CopyModeAll ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.All') + '</span></label>' +
-			'<label class="form-check-label game-cursor" for="chain-auto"><input type="checkbox" class="form-check-input" id="chain-auto" data-place="auto" ' + (Parts.CopyModeAuto ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.Auto') + '</span></label>' +
-			'<label class="form-check-label game-cursor" for="chain-auto-unsafe"><input type="checkbox" class="form-check-input" id="chain-auto-unsafe" data-place="auto-unsafe" ' + (Parts.CopyModeAutoUnsafe ? 'checked' : '') + '> <span>' + i18n('Boxes.OwnpartCalculator.AutoWithUnsafe') + '</span></label>' +
-		'</div>';
-
-		h.push(cb);
-		h.push('</section>')
-		h.push('<div class="btn-outer text-center" style="margin-top: 10px">');
-		h.push('<span class="btn button-own">' + i18n('Boxes.OwnpartCalculator.CopyValues') + '</span> ');
-		if (MainParser.CurrentGB.Entity['player_id'] === ExtPlayerID) 
-			h.push('<span class="btn button-save-own">' + i18n('Boxes.OwnpartCalculator.Note') + '</span>'); 
-		h.push('</div>');
-
-		$OwnPartBox.append( $('<div class="OwnPartBoxBackgroundBody settingsbox-wrapper" />').append(h.join('')) );
-		if (isOpen)
-			$('.OwnPartBoxBackgroundBody').show();
-
-		$('.OwnPartBoxBackgroundBody .icon-close').bind('click', function() {
-			$('.OwnPartBoxBackgroundBody').fadeToggle();
-			$('#OwnPartBox').toggleClass('gbSettingsOpen');
-		});
-	},
-
-
 	GetStorageKey: (SettingName, EntityID) => {
 		if (EntityID) {
 			return 'OwnPart_' + SettingName + '_' + EntityID + '_' + ExtPlayerID;
@@ -1294,494 +1169,13 @@ let Parts = {
 	},
 
 
-	GetCopyString: () => {
-		return Parts.GetCopyStringEx(Places=Parts.CopyPlaces, Maezens=Parts.Maezens, Level=Parts.Level, OwnPart=Parts.RemainingOwnPart, PlaceAll=Parts.CopyModeAll, PlaceAuto=Parts.CopyModeAuto, PlaceAutoUnsafe=Parts.CopyModeAutoUnsafe, DangerPlaces=Parts.DangerPlaces, LeveltLG=Parts.LeveltLG)
-	},
-
-
-	GetCopyStringEx: (Places, Maezens, Level, OwnPart, PlaceAll, PlaceAuto, PlaceAutoUnsafe, DangerPlaces, LeveltLG) => {	
-		let Ret = [];
-
-		if (Parts.CopyIncludeDanger && Parts.CopyDangerPrefix !== '' && (DangerPlaces.find(e => e > 5) || LeveltLG.find(e => e))) Ret.push(Parts.CopyDangerPrefix);
-
-		if (Parts.CopyIncludePlayer) Ret.push(Parts.CopyPlayerName);
-
-		if (Parts.CopyIncludeGB) Ret.push(Parts.CopyBuildingName);
-
-		if (Parts.CopyIncludeLevelString) Ret.push(i18n('Boxes.OwnpartCalculator.OptionsLevelUp'));
-
-		if (Parts.CopyIncludeLevel) Ret.push(Level + '→' + (Level + 1));
-
-		let NoPlacesSelected = true;
-		for (let i = 0; i < 5; i++) {
-			if (Places[i]) NoPlacesSelected = false;
-		}
-
-		if (!NoPlacesSelected) {
-			for (let i = 0; i < 5; i++) {
-				let Place = (Parts.CopyDescending ? 5 - i - 1 : i);
-
-				if (!Places[Place]) continue;
-				if (PlaceAll && Maezens[Place] === 0) continue;
-				
-				if (Parts.CopyIncludeFP) {
-					Ret.push((Parts.CopyPreP ? 'P' : '') + (Place + 1) + '(' + Maezens[Place] + ')');
-				}
-				else {
-					Ret.push((Parts.CopyPreP ? 'P' : '') + (Place + 1));
-				}
-
-				if (Parts.CopyIncludeDanger && Parts.CopyDangerSuffix !== '' && (DangerPlaces[Place] > 5 || LeveltLG[Place])) Ret.push(Parts.CopyDangerSuffix);
-			}
-		}
-		else if (PlaceAuto) {
-			Ret.push(i18n('Boxes.OwnpartCalculator.NoPlaceSafe'));
-		}
-		else if (PlaceAutoUnsafe) {
-			Ret.push(i18n('Boxes.OwnpartCalculator.NoPlaceAvailable'));
-		}
-		
-		if (Parts.CopyIncludeOwnPart) Ret.push(i18n('Boxes.OwnpartCalculator.OwnPartShort') + '(' + OwnPart + ')');
-
-		return Ret.join(' ');
-	},
-
-
 	/**
-	 * Note or copy
+	 * Quick-copy helper for FP values: pastes the value directly into the game's
+	 * contribution input while a GB screen is open, otherwise copies it to the
+	 * clipboard. Also used by the cost calculator.
+	 *
+	 * @param {number|string} value - The FP value to paste or copy
 	 */
-	CopyFunction: (Event, Action) => {
-		let CopyString = $('#copystring').val();
-	
-		$(Event).removeClass('btn-green');
-
-		$('.OwnPartBoxBackgroundBody').fadeToggle();
-		$('#OwnPartBox').toggleClass('gbSettingsOpen');
-
-		Parts.CopyStrings[MainParser.CurrentGB.Entity['cityentity_id']] = CopyString;
-
-		let Copy = "";
-		let Keys = Object.keys(Parts.CopyStrings);
-		for (let i = 0; i < Keys.length; i++) {
-			let Key = Keys[i];
-			Copy += Parts.CopyStrings[Key];
-			if (i < Keys.length) Copy += '\n';
-		}
-
-		if (Action === 'copy') {
-			Parts.CopyStrings = {}; // delete list
-		}
-
-		return Copy;
-	},
-
-
-	ShowPowerLeveling: (event) => {
-		Parts.BuildBoxPowerLeveling(event);
-	},
-
-
-	BuildBoxPowerLeveling: (event) => {
-		if ($('#PowerLevelingBox').length === 0) {
-			HTML.Box({
-				'id': 'PowerLevelingBox',
-				'title': i18n('Boxes.PowerLeveling.Title'),
-				'auto_close': true,
-				'dragdrop': true,
-				'minimize': true,
-			    active_maps:"main",
-			});
-
-			const box = $('#PowerLevelingBox');
-
-			// Events on the `startLevel` input field
-			box.on('blur', '#startLevel', function () {
-				Parts.PowerLevelingStartLevel = parseFloat($('#startLevel').val());
-				Parts.UpdateTableBodyPowerLeveling();
-			});
-			box.on('keydown', '#startLevel', function (e) {
-				const key = e.key;
-				const input = e.target;
-				if (key === "ArrowUp") {
-					Parts.PowerLevelingStartLevel = Number.parseInt(input.value) + 1;
-					Parts.UpdateTableBodyPowerLeveling();
-					e.preventDefault();
-				} else if (key === "ArrowDown") {
-					Parts.PowerLevelingStartLevel = Number.parseInt(input.value) - 1;
-					Parts.UpdateTableBodyPowerLeveling();
-					e.preventDefault();
-				} else if (key === "Enter") {
-					Parts.PowerLevelingStartLevel = Number.parseInt(input.value);
-					Parts.UpdateTableBodyPowerLeveling();
-				}
-			});
-
-			// Events on the `endLevel` input field
-			box.on('blur', '#endLevel', function () {
-				Parts.PowerLevelingEndLevel = parseFloat($('#endLevel').val());
-				Parts.UpdateTableBodyPowerLeveling();
-				//Parts.CalcBodyPowerLeveling();
-			});
-			box.on('keydown', '#endLevel', function (e) {
-				const key = e.key;
-				const input = e.target;
-				if (key === "ArrowUp") {
-					Parts.PowerLevelingEndLevel = Number.parseInt(input.value) + 1;
-					Parts.UpdateTableBodyPowerLeveling();
-					e.preventDefault();
-				} else if (key === "ArrowDown") {
-					Parts.PowerLevelingEndLevel = Number.parseInt(input.value) - 1;
-					Parts.UpdateTableBodyPowerLeveling();
-					e.preventDefault();
-				} else if (key === "Enter") {
-					Parts.PowerLevelingEndLevel = Number.parseInt(input.value);
-					Parts.UpdateTableBodyPowerLeveling();
-				}
-			});
-
-			// Event on the "Copy values" button in each row
-			box.on('click', '.button-powerlevel-copy', function () {
-				let gb_level = parseInt($(this).parent().find(".hidden-text").html());
-
-				let CopyParts = Parts.GetCopyStringEx(Places=[true, true, true, true, true], Maezens=Parts.PowerLevelingData.Places[gb_level], Level=gb_level, OwnPart=Parts.PowerLevelingData.EigenNettos[gb_level], PlaceAll=true, PlaceAuto=false, PlaceAutoUnsafe=false, DangerPlaces=[0, 0, 0, 0, 0], LeveltLG=[false, false, false, false, false]);
-				helper.str.copyToClipboardLegacy(CopyParts);
-			});
-		}
-		else if (!event) {
-			HTML.CloseOpenBox('PowerLevelingBox');
-			return;
-		}
-
-		Parts.CalcBodyPowerLeveling();
-	},
-
-
-	CalcBodyPowerLevelingData: () => {
-		let EntityID = MainParser.CurrentGB.Entity['cityentity_id'],
-			CityEntity = MainParser.CityEntities[EntityID],
-			EraName = GreatBuildings.GetEraName(EntityID),
-			Era = Technologies.Eras[EraName],
-			StartLevel = Parts.PowerLevelingStartLevel,
-			EndLevel = (GreatBuildings.Rewards[Era] ? Math.min(Parts.PowerLevelingEndLevel, GreatBuildings.Rewards[Era].length) : 0);
-
-		// Limit minimum value for the power leveling range
-		StartLevel = StartLevel < 0 ? 0 : StartLevel;
-		EndLevel = EndLevel <= 0 ? 1 : EndLevel;
-
-		// StartLevel must be a smaller number than EndLevel
-		StartLevel = StartLevel >= EndLevel ? EndLevel - 1 : StartLevel;
-
-		let Totals = [],
-			Places = [],			
-			EigenBruttos = [],
-			HasDoubleCollection = false,
-			DoubleCollections = [],
-			EigenNettos = [];
-
-		let OwnPartSum = 0;
-
-		for (let i = StartLevel; i < EndLevel; i++) {
-			// How many FPs are needed in total to level the GB
-			if (i < 10) {
-				Totals[i] = CityEntity['strategy_points_for_upgrade'][i];
-			}
-			else {
-				Totals[i] = Math.ceil(CityEntity['strategy_points_for_upgrade'][9] * Math.pow(1.025, i - 9));
-			}
-
-			// How many FPs are needed for each spot.
-			// For non-current levels, calculate the FPs for each spot...
-			if (i != Parts.Level) {
-				Places[i] = GreatBuildings.GetMaezen(GreatBuildings.Rewards[Era][i], Parts.ArcPercents)
-
-				EigenBruttos[i] = Totals[i] - Places[i][0] - Places[i][1] - Places[i][2] - Places[i][3] - Places[i][4]
-			}
-			// ...and for the current, it's already calculated
-			else {
-				Places[i] = Parts.CurrentMaezens;
-				
-				EigenBruttos[i] = Parts.RemainingOwnPart;
-			}
-			
-			let FPGreatBuilding = GreatBuildings.GreatBuildingsData.find(obj => (obj.ID === EntityID && obj.FPProductions));
-			if (FPGreatBuilding && !['X_FutureEra_Landmark1','X_AllAge_Expedition'].includes(EntityID)) { //FP produzierende LGs ohne Arche
-				HasDoubleCollection = true;
-				if (i < FPGreatBuilding.FPProductions.length) {
-					DoubleCollections[i] = FPGreatBuilding.FPProductions[i];
-				}
-				else {
-					DoubleCollections[i] = MainParser.round(FPGreatBuilding.FPProductions[9] * (i + 1) / 10);
-				}
-			}
-			else {
-				HasDoubleCollection = false;
-				DoubleCollections[i] = 0;
-			}
-
-			EigenNettos[i] = EigenBruttos[i] - DoubleCollections[i];
-			OwnPartSum += EigenNettos[i];
-		}
-
-		return {
-			HasDoubleCollection,
-			Places,
-			CityEntity,
-			OwnPartSum,
-			StartLevel,
-			EndLevel,
-			EigenBruttos,
-			DoubleCollections,
-			EigenNettos
-		};
-	},
-
-
-	CalcTableBodyPowerLeveling: (h) => {
-		const {
-			HasDoubleCollection,
-			Places,
-			StartLevel,
-			EndLevel,
-			EigenBruttos,
-			DoubleCollections,
-			EigenNettos
-		} = Parts.PowerLevelingData;
-
-
-
-		for (let i = StartLevel; i < EndLevel; i++) {
-			h.push('<tr>');
-			h.push('<td class="bright" style="white-space:nowrap">' + i + ' → ' + (i + 1) + '</td>');
-			h.push('<td><span class="hidden-text"> - #1 (</span>' + HTML.Format(Places[i][0]) + '<span class="hidden-text">)</span></td>');
-			h.push('<td class="text-light"><span class="hidden-text"> - #2 (</span>' + HTML.Format(Places[i][1]) + '<span class="hidden-text">)</span></td>');
-			h.push('<td><span class="hidden-text"> - #3 (</span>' + HTML.Format(Places[i][2]) + '<span class="hidden-text">)</span></td>');
-			h.push('<td class="text-light"><span class="hidden-text"> - #4 (</span>' + HTML.Format(Places[i][3]) + '<span class="hidden-text">)</span></td>');
-			h.push('<td><span class="hidden-text"> - #5 (</span>' + HTML.Format(Places[i][4]) + '<span class="hidden-text">)</span></td>');
-			if (HasDoubleCollection) {
-				h.push('<td class="success no-select"><strong>' + HTML.Format(EigenBruttos[i]) + '</strong></td>');
-				h.push('<td class="no-select">' + HTML.Format(MainParser.round(DoubleCollections[i])) + '</td>');
-			}
-			h.push('<td><strong class="info no-select">' + HTML.Format(MainParser.round(EigenNettos[i])) + '</strong></td>');
-			h.push('<td><span class="hidden-text">' + i + '</span><span class="btn btn-slim button-powerlevel-copy">' + i18n('Boxes.PowerLeveling.CopyValues') + '</span></td>');
-			h.push('</tr>');
-		}
-	},
-
-
-	UpdateTableBodyPowerLeveling: () => {
-		const tableBody = document.getElementById('PowerLevelingBoxTableBody');
-		if (tableBody) {
-			Parts.PowerLevelingData = Parts.CalcBodyPowerLevelingData();
-			/** @type {string[]} */
-			const h = [];
-			
-			Parts.CalcTableBodyPowerLeveling(h);
-
-			tableBody.innerHTML = h.join('');
-
-			// Startlevel
-			const startLevel = /** @type {HTMLInputElement} */(document.getElementById('startLevel'));
-			if (startLevel.value != '' + Parts.PowerLevelingData.StartLevel) {
-				startLevel.value = '' + Parts.PowerLevelingData.StartLevel;
-			}
-			Parts.PowerLevelingStartLevel = Parts.PowerLevelingData.StartLevel;
-
-			// EndLevel
-			const endLevel = /** @type {HTMLInputElement} */(document.getElementById('endLevel'));
-			if (endLevel.value != '' + Parts.PowerLevelingData.EndLevel) {
-				endLevel.value = '' + Parts.PowerLevelingData.EndLevel;
-			}
-			Parts.PowerLevelingEndLevel = Parts.PowerLevelingData.EndLevel;
-
-			const ownPartSum = /** @type {HTMLElement} */(document.getElementById('PowerLevelingBoxOwnPartSum'));
-			ownPartSum.innerText = HTML.Format(MainParser.round(Parts.PowerLevelingData.OwnPartSum));
-		}
-	},
-
-
-	CalcBodyPowerLeveling: () => {
-		Parts.PowerLevelingData = Parts.CalcBodyPowerLevelingData();
-
-		const {
-			HasDoubleCollection,
-			CityEntity,
-			OwnPartSum,
-			StartLevel,
-			EndLevel,
-		} = Parts.PowerLevelingData;
-
-		let h = [];
-		h.push('<div class="dark-bg" style="margin-bottom:3px;padding: 5px;">');
-		h.push('<h1 class="text-center">' + CityEntity['name'] + '</h1>')
-
-		h.push('<div class="d-flex justify-content-center">');
-		h.push('<div style="margin: 5px 10px 0 0;">' + i18n('Boxes.PowerLeveling.StartLevel') + ': <input type="number" id="startLevel" step="1" min=0" max="1000" value="' + StartLevel + '"></div>');
-		h.push('<div style="margin: 5px 10px 0 0;">' + i18n('Boxes.PowerLeveling.EndLevel') + ': <input type="number" id="endLevel" step="1" min=10" max="1000" value="' + EndLevel + '"></div>');
-		h.push('<div>' + i18n('Boxes.PowerLeveling.OwnPartSum') +': <strong class="info" id="PowerLevelingBoxOwnPartSum">'+ HTML.Format(MainParser.round(OwnPartSum)) + '</strong></div>')
-		h.push('</div>');
-		h.push('</div>');
-
-		h.push('<table class="foe-table">');
-
-		h.push('<thead class="sticky">');
-		h.push('<tr>');
-		h.push('<th>' + i18n('Boxes.PowerLeveling.Level') + '</th>');
-		h.push('<th>' + i18n('Boxes.PowerLeveling.P1') + '</th>');
-		h.push('<th>' + i18n('Boxes.PowerLeveling.P2') + '</th>');
-		h.push('<th>' + i18n('Boxes.PowerLeveling.P3') + '</th>');
-		h.push('<th>' + i18n('Boxes.PowerLeveling.P4') + '</th>');
-		h.push('<th>' + i18n('Boxes.PowerLeveling.P5') + '</th>');
-		if (HasDoubleCollection) {
-			h.push('<th class="no-select">' + i18n('Boxes.PowerLeveling.OwnPartBrutto') + '</th>');
-			h.push('<th class="no-select">' + i18n('Boxes.PowerLeveling.DoubleCollection') + '</th>');
-		}
-		h.push('<th class="no-select">' + i18n('Boxes.PowerLeveling.OwnPartNetto') + '</th>');
-		h.push('<th></th>');
-		h.push('</tr>');
-		h.push('</thead>');
-
-		h.push('<tbody id="PowerLevelingBoxTableBody">');
-		Parts.CalcTableBodyPowerLeveling(h);
-		h.push('</tbody>');
-
-		h.push('</table>');
-
-		$('#PowerLevelingBoxBody').html(h.join(''));
-	},
-
-
-	ShowCalculatorSettings: ()=> {
-		// load other calculators settings if selected
-		let useThisCalculator = JSON.parse(localStorage.getItem('ShowOwnPartOnAllGBs'))
-		if (!useThisCalculator && MainParser.CurrentGB.Entity?.player_id !== ExtPlayerID) {
-			Calculator.ShowCalculatorSettings();
-			return;	
-		}
-
-		let c = [],
-			buttons,
-			defaults = Parts.DefaultButtons,
-			sB = localStorage.getItem('CustomPartCalcButtons'),
-			allGB = localStorage.getItem('ShowOwnPartOnAllGBs') || 'false',
-			showMedals = localStorage.getItem('OwnPartShowMedals') || 'true',
-			showPrints = localStorage.getItem('OwnPartShowBP') || 'true',
-			minView = localStorage.getItem('OwnPartMinView') || 'false',
-			autoOpen = localStorage.getItem('OwnPartAutoOpen'),
-			includeStart = localStorage.getItem('OwnPartIncludeStart') || 'true',
-			nV = `<p class="new-row text-center bbd p5 flex gap"><label>${i18n('Boxes.Calculator.Settings.newValue')}:</label> <input type="number" class="settings-values" style="width:30px"> <span class="btn btn-green btn-slim" onclick="Parts.SettingsInsertNewRow()">+</span></p>`;
-		
-		if(sB) {
-			buttons = JSON.parse(sB);
-
-			buttons = buttons.filter((item, index) => buttons.indexOf(item) === index); // remove duplicates
-			buttons.sort((a, b) => a - b); // order
-		}
-		else {
-			buttons = defaults;
-		}
-
-		c.push('<section class="flex gap p2">');
-		buttons.forEach(bonus => {
-			if(bonus === 'ark') 
-				c.push(`<span class="btn-group"><input type="hidden" class="settings-values" value="ark"> <button class="btn btn-slim br">${MainParser.ArkBonus}%</button></span>`);
-			
-			else 
-				c.push(`<span class="btn-group"><button class="btn btn-slim">${bonus}%</button> <input type="hidden" class="settings-values" value="${bonus}"> <span class="btn btn-delete btn-slim" onclick="Parts.SettingsRemoveRow(this)">x</span></span>`);
-			
-		});
-		c.push('</section>');
-
-		c.push(nV);
-
-		c.push(`<p class="bbd p5">
-				<input type="checkbox" id="autoOpen" class="autoOpen game-cursor" ${((autoOpen == 'true') ? 'checked' : '')}> <label for="autoOpen">${i18n('Settings.ShowOwnPartAutoOpen.Desc')}</label><br>
-				<input type="checkbox" id="openonaliengb" class="openonaliengb game-cursor" ${((allGB == 'true') ? 'checked' : '')}> <label for="openonaliengb">${i18n('Settings.ShowOwnPartOnAllGBs.Desc')}</label><br>
-				<input type="checkbox" id="showmedals" class="showmedals game-cursor" ${((showMedals == 'true') ? 'checked' : '')}> <label for="showmedals">${i18n('Settings.ShowOwnPartMedals.Desc')}</label><br>
-				<input type="checkbox" id="showprints" class="showprints game-cursor" ${((showPrints == 'true') ? 'checked' : '')}> <label for="showprints">${i18n('Settings.ShowOwnPartBP.Desc')}</label><br>
-				<input type="checkbox" id="minview" class="minview game-cursor" ${((minView == 'true') ? 'checked' : '')}> <label for="minview">${i18n('Settings.ShowOwnPartMinView.Desc')}</label><br>
-				<input id="copyformatpergb" class="copyformatpergb game-cursor" ${(Parts.CopyFormatPerGB ? 'checked' : '')} type="checkbox"> <label for="copyformatpergb">${i18n('Boxes.OwnpartCalculator.CopyFormatPerGB')}</label><br>
-				<input type="checkbox" id="includeStart" class="includeStart game-cursor" ${((includeStart == 'true') ? 'checked' : '')}> <label for="includeStart">${i18n('Settings.ShowOwnPartIncludeStart.Desc')}</label>
-			</p>
-			<p class="text-center p2">
-				<button id="save-calculator-settings" class="btn btn-green" onclick="Parts.SettingsSaveValues()">${i18n('Boxes.Calculator.Settings.Save')}</button>
-			</p>`);
-
-		$('#OwnPartBoxSettingsBox').html(c.join(''));
-	},
-
-
-	SettingsInsertNewRow: ()=> {
-		let nV = `<p class="new-row">${i18n('Boxes.Calculator.Settings.newValue')}: <input type="number" class="settings-values" style="width:30px"> <span class="btn btn-green" onclick="Parts.SettingsInsertNewRow()">+</span></p>`;
-
-		$(nV).insertAfter( $('.new-row:eq(-1)') );
-	},
-
-
-	SettingsRemoveRow: ($this)=> {
-		$($this).closest('.btn-group').fadeToggle('fast', function() {
-			$(this).remove();
-		});
-	},
-
-
-	SettingsSaveValues: ()=> {
-		let values = [];
-
-		$('.settings-values').each(function() {
-			let v = $(this).val().trim();
-
-			if(v) {
-				if(v !== 'ark')
-					values.push( parseFloat(v) );
-				else 
-					values.push(v);
-			}
-		});
-
-		localStorage.setItem('CustomPartCalcButtons', JSON.stringify(values));
-
-		let OldCopyFormatPerGB = Parts.CopyFormatPerGB;
-		Parts.CopyFormatPerGB = $('.copyformatpergb').prop('checked');
-		localStorage.setItem(Parts.GetStorageKey('CopyFormatPerGB', null), Parts.CopyFormatPerGB);
-
-		let openforeignGB = true;
-		if ($("#openonaliengb").is(':not(:checked)'))
-			openforeignGB = false;
-		localStorage.setItem('ShowOwnPartOnAllGBs',openforeignGB);
-
-		let showMedals = true;
-		if ($("#showmedals").is(':not(:checked)'))
-			showMedals = false;
-		localStorage.setItem('OwnPartShowMedals',showMedals);
-
-		let showPrints = true;
-		if ($("#showprints").is(':not(:checked)'))
-			showPrints = false;
-		localStorage.setItem('OwnPartShowBP',showPrints);
-
-		let minView = true;
-		if ($("#minview").is(':not(:checked)'))
-			minView = false;
-		localStorage.setItem('OwnPartMinView',minView);
-		
-		let autoOpen = true;
-		if ($("#autoOpen").is(':not(:checked)'))
-			autoOpen = false;
-		localStorage.setItem('OwnPartAutoOpen',autoOpen);
-		let includeStart = true;
-		if ($("#includeStart").is(':not(:checked)'))
-			includeStart = false;
-		localStorage.setItem('OwnPartIncludeStart',includeStart);
-
-		$(`#OwnPartBoxSettingsBox`).fadeToggle('fast', function(){
-			$(this).remove();
-
-			if (Parts.CopyFormatPerGB !== OldCopyFormatPerGB) Parts.FirstCycle = true;
-			Parts.CalcBody();
-		});
-	},
-
-
 	setDonation: (value) => {
 		if (!Parts.allowCopyPlace) {
 			helper.str.copyToClipboardLegacy(String(value));

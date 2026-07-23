@@ -11,6 +11,11 @@
  * **************************************************************************************
  */
 
+// Cost calculator ("GB Cost Calc") for contributing to great buildings.
+// It renders into its own box (#CalculatorBox) in split view or into the
+// own part calculator box (#OwnPartBox) in the combined view.
+// The settings dialog is split into js/parts/ (see js/internal.json).
+
 let Calculator = {
 	ForderBonus: 90,
     PlayerName: undefined,
@@ -26,7 +31,28 @@ let Calculator = {
 	ClanId: null,
 	ClanName: null,
 
-	Show: (action = "") => {
+	/**
+	 * Split view: the cost calculator gets its own box instead of sharing one with the own part calculator.
+	 *
+	 * @returns {boolean} true if the split view is enabled
+	 */
+	IsSplitView: () => (localStorage.getItem('CalculatorSplitView') === 'true'),
+
+
+	/**
+	 * The box the calculator currently renders into.
+	 *
+	 * @returns {string} 'CalculatorBox' in split view, 'OwnPartBox' in the combined view
+	 */
+	BoxId: () => (Calculator.IsSplitView() ? 'CalculatorBox' : 'OwnPartBox'),
+
+
+	/**
+	 * Shows the cost calculator for the currently opened GB: loads the settings,
+	 * creates the own box in split view when missing and renders the content
+	 * (or a hint while no GB has been opened yet).
+	 */
+	Show: () => {
 		$('.tooltip').remove();
 		Calculator.ForderBonusPerConversation = (localStorage.getItem('CalculatorForderBonusPerConversation') !== 'false');
 
@@ -44,9 +70,138 @@ let Calculator = {
 
 		Calculator.CurrentPlayer = parseInt(localStorage.getItem('current_player_id'));
 
+		// in split view the calculator has its own box, create it when missing
+		if (Calculator.IsSplitView() && $('#CalculatorBox').length === 0) {
+			HTML.Box({
+				id: 'CalculatorBox',
+				title: i18n('Boxes.Calculator.Title'),
+				ask: i18n('Boxes.Calculator.HelpLink'),
+				auto_close: true,
+				dragdrop: true,
+				minimize: true,
+				settings: 'Calculator.ShowCalculatorSettings()',
+				active_maps: "main"
+			});
+
+			Calculator.RegisterBoxEvents('CalculatorBox', true);
+			Calculator.AddSplitViewButton('CalculatorBox');
+
+			// no saved position yet: offset the new box so it does not fully cover the own part box
+			if (!localStorage.getItem('CalculatorBoxCords')) {
+				let box = document.getElementById('CalculatorBox');
+				box.style.setProperty('--x', '200px');
+				box.style.setProperty('--y', '-40px');
+			}
+		}
+
+		// no GB has been opened yet
+		if (!MainParser.CurrentGB.Entity || !MainParser.CurrentGB.Rankings) {
+			$('#' + Calculator.BoxId() + 'Body').html(`<div class="text-center dark-bg p5">${i18n('Menu.Calculator.Warning')}</div>`);
+			return;
+		}
+
         Calculator.ShowBody();
 	},
 
+
+	/**
+	 * Delegated events for the calculator content, bound once per box.
+	 * The copy handler is only needed for the standalone box, the shared box already binds its own.
+	 *
+	 * @param {string} BoxId - Id of the box the events are bound to
+	 * @param {boolean} [WithCopyHandler=false] - Also bind the quick-copy handler for FP values
+	 */
+	RegisterBoxEvents: (BoxId, WithCopyHandler = false) => {
+		let $box = $('#' + BoxId);
+
+		// toggle percentages
+		$box.on('click', '.btn-toggle-arc', function () {
+			Calculator.ForderBonus = parseFloat($(this).data('value'));
+			$('#costFactor').val(Calculator.ForderBonus);
+			let StorageKey = (Calculator.ForderBonusPerConversation && MainParser.OpenConversation ? 'CalculatorForderBonus_' + MainParser.OpenConversation : 'CalculatorForderBonus');
+			localStorage.setItem(StorageKey, Calculator.ForderBonus);
+			Calculator.Show();
+		});
+
+		// the arc bonus value has been changed
+		$box.on('blur', '#costFactor', function () {
+			Calculator.ForderBonus = parseFloat($('#costFactor').val());
+			let StorageKey = (Calculator.ForderBonusPerConversation && MainParser.OpenConversation ? 'CalculatorForderBonus_' + MainParser.OpenConversation : 'CalculatorForderBonus');
+			localStorage.setItem(StorageKey, Calculator.ForderBonus);
+			Calculator.Show();
+		});
+
+		if (WithCopyHandler) {
+			// quick copy for FP values
+			$box.on('click', '.copy-fp', function (e) {
+				e.preventDefault();
+				e.stopPropagation();
+				let $this = $(this),
+					value = $this.data('copy');
+
+				if (value === undefined || value === '' || value === '-') return;
+
+				Parts.setDonation(value);
+
+				// prevent double action
+				$this.addClass('copied');
+				setTimeout(() => $this.removeClass('copied'), 800);
+			});
+		}
+	},
+
+
+	/**
+	 * Adds the split view toggle button to a box title bar.
+	 *
+	 * @param {string} BoxId - Id of the box whose title bar receives the button
+	 */
+	AddSplitViewButton: (BoxId) => {
+		let btn = $('<span />')
+			.addClass('window-split')
+			.toggleClass('active', Calculator.IsSplitView())
+			.attr('title', i18n('Boxes.Calculator.SplitView'));
+
+		// the generic pointerdown handler from HTML.Box was bound before this button existed, prevent dragging on it
+		btn.on('pointerdown', (e) => e.stopPropagation());
+		btn.on('click', () => Calculator.ToggleSplitView());
+
+		$('#' + BoxId + 'Buttons').prepend(btn);
+	},
+
+
+	/**
+	 * Toggles between the combined box (auto switching content) and two separate
+	 * boxes; the choice is persisted in localStorage ('CalculatorSplitView').
+	 */
+	ToggleSplitView: () => {
+		let split = !Calculator.IsSplitView();
+
+		localStorage.setItem('CalculatorSplitView', split);
+		$('.window-split').toggleClass('active', split);
+
+		if (split) {
+			// open the calculator in its own box
+			Calculator.Show();
+		}
+		else {
+			HTML.CloseOpenBox('CalculatorBox');
+		}
+
+		// re-render or reopen the shared box, its content switching depends on the split view
+		if ($('#OwnPartBox').length > 0) {
+			Parts.CalcBody();
+		}
+		else if (!split) {
+			Parts.Show();
+		}
+	},
+
+	/**
+	 * Renders the calculator content into the current box: header with building,
+	 * level and owner, the arc bonus buttons and the contribution table.
+	 * Overlays a hint when the next level is locked or no street is connected.
+	 */
 	ShowBody: () => {
 		let ForderBonusLoaded = false;
 
@@ -153,31 +308,36 @@ let Calculator = {
 		h.push(Calculator.GetRecurringQuestsLine(Calculator.PlayInfoSound));
 
 		h.push('</div>');
+		h.push('</div>');
 
-        $('#OwnPartBox').find('#OwnPartBoxBody').html(h.join(''));
-        $('#OwnPartBox').find('.tooltip').remove();
+		let $box = $('#' + Calculator.BoxId()),
+			$body = $box.find('#' + Calculator.BoxId() + 'Body');
+
+		$body.html(h.join(''));
+		$box.find('.tooltip').remove();
 
         // level is not unlocked yet
 		if (MainParser.CurrentGB.Entity['level'] === MainParser.CurrentGB.Entity['max_level']) {
-            $('#OwnPartBox').find('#OwnPartBoxBody').append($('<div />').addClass('lg-not-possible').attr('data-text', i18n('Boxes.Calculator.LGNotOpen')));
+            $body.append($('<div />').addClass('lg-not-possible').attr('data-text', i18n('Boxes.Calculator.LGNotOpen')));
 		}
 
 		// no street connection
 		else if (MainParser.CurrentGB.Entity['connected'] === undefined) {
-            $('#OwnPartBox').find('#OwnPartBoxBody').append($('<div />').addClass('lg-not-possible').attr('data-text', i18n('Boxes.Calculator.LGNotConnected')));
+            $body.append($('<div />').addClass('lg-not-possible').attr('data-text', i18n('Boxes.Calculator.LGNotConnected')));
         }
-		h.push('</div>');
-		$('#OwnPartBoxBody').html(h.join(''));
 
 		Calculator.BuildTable();
 	},
 
 
 	/**
-	 * The table body with all functions
+	 * Calculates and renders the contribution table: for every reward rank the
+	 * costs to demand ("fordern") and to safely take the spot, the resulting
+	 * profit and the blueprint/medal rewards, colour coded by state
+	 * (profit, negative profit, level warning, taken, own contribution).
 	 */
 	BuildTable: ()=> {
-		h = [];
+		let h = [];
 
 		let BestKurs = 999999,
 			arc = 1 + (MainParser.ArkBonus / 100),
@@ -326,8 +486,9 @@ let Calculator = {
 						SaveStates[Rank] = 'Profit';
 				}
 
-				if (ExitLoop)
+				if (ExitLoop) {
 					continue;
+				}
 
 				// Selbe Kosten wie vorheriger Rang => nicht belegbar
 				if (SaveLastRankCost !== undefined && SaveRankCosts[Rank] === SaveLastRankCost) {
@@ -341,8 +502,9 @@ let Calculator = {
 					SaveLastRankCost = SaveRankCosts[Rank];
 				}
 
-				if (ExitLoop)
+				if (ExitLoop) {
 					continue;
+				}
 
 				let CurrentGewinn = FPRewards[Rank] - SaveRankCosts[Rank];
 				if (CurrentGewinn > BestGewinn) {
@@ -512,7 +674,7 @@ let Calculator = {
 			</tr>`);
 		}
 
-		$('#costTableFordern').html(h.join(''));
+		$('#' + Calculator.BoxId()).find('#costTableFordern').html(h.join(''));
 
 		$('[data-original-title]').tooltip({
 			html: true,
@@ -521,6 +683,14 @@ let Calculator = {
 	},
 
 
+	/**
+	 * Builds the "active recurring quest" line showing the FP still needed for
+	 * open FP spend/buy quests. Also used by the own part calculator, plays a
+	 * sound when the quest count changes.
+	 *
+	 * @param {boolean} PlaySound - Play a notification sound on quest changes
+	 * @returns {string} HTML string with one line per active recurring quest
+	 */
 	GetRecurringQuestsLine: (PlaySound) => {
 		let h = [],
 			RecurringQuests = 0;
@@ -559,9 +729,10 @@ let Calculator = {
 
 
 	/**
-	 * Formats the +/- display next to the yield (if present)
+	 * Formats the +/- display next to the demand costs (if present).
 	 *
-	 * @param ForderRankDiff
+	 * @param {number} ForderRankDiff - Difference between securing the rank and the demand costs
+	 * @returns {string} HTML string with the coloured difference, empty for 0
 	 */
 	FormatForderRankDiff: (ForderRankDiff) => {
 		if (ForderRankDiff < 0) {
@@ -576,108 +747,12 @@ let Calculator = {
 	},
 
 		
+	/**
+	 * Plays the notification sound if it is enabled in the settings.
+	 */
     PlaySound: () => {
         if (Calculator.PlayInfoSound) {
 			helper.sounds.play("message");
         }
     },
-
-
-	ShowCalculatorSettings: ()=> {
-		let c = [],
-			buttons,
-			defaults = Calculator.DefaultButtons,
-			sB = localStorage.getItem('CustomCalculatorButtons'),
-			allGB = JSON.parse(localStorage.getItem('ShowOwnPartOnAllGBs')),
-			autoOpen = localStorage.getItem('OwnPartAutoOpen'),
-			nV = `<p class="new-row text-center bbd p5 flex gap">
-				${i18n('Boxes.Calculator.Settings.newValue')}: <input type="number" class="settings-values" style="width:30px"> 
-				<span class="btn btn-green btn-slim" onclick="Calculator.SettingsInsertNewRow()">+</span>
-				</p>`;
-
-		if(sB) {
-			// buttons = [...new Set([...defaults,...JSON.parse(sB)])];
-			buttons = JSON.parse(sB);
-
-			buttons = buttons.filter((item, index) => buttons.indexOf(item) === index); // remove duplicates
-			buttons.sort((a, b) => a - b); // order
-		}
-		else {
-			buttons = defaults;
-		}
-
-		c.push('<section class="flex gap p2">');
-		buttons.forEach(bonus => {
-			if(bonus === 'ark') {
-				c.push(`<span class="btn-group"><input type="hidden" class="settings-values" value="ark"> <button class="btn btn-slim br">${MainParser.ArkBonus}%</button></span>`);
-			}
-			else {
-				c.push(`<span class="btn-group flex"><button class="btn btn-slim">${bonus}%</button> <input type="hidden" class="settings-values" value="${bonus}"> <span class="btn btn-delete btn-slim" onclick="Calculator.SettingsRemoveRow(this)">x</span> </span>`);
-			}
-		});
-		c.push('</section>');
-
-		c.push(nV);
-
-		c.push(`<p class="bbd p5">
-			<label for="forderbonusperconversation"><input id="forderbonusperconversation" class="forderbonusperconversation game-cursor" ${(Calculator.ForderBonusPerConversation ? 'checked' : '')} type="checkbox">${i18n('Boxes.Calculator.ForderBonusPerConversation')}</label><br/>
-			<label for="openonaliengb"><input type="checkbox" id="openonaliengb" class="openonaliengb game-cursor" ${((!allGB) ? 'checked' : '')}> ${i18n('Settings.ShowOwnPartOnAllGBs.Desc')}</label><br>
-			<label for="autoOpen"><input type="checkbox" id="autoOpen" class="autoOpen game-cursor" ${((autoOpen == 'true') ? 'checked' : '')}> ${i18n('Settings.ShowOwnPartAutoOpen.Desc')}</label><br>
-			<label for="CalculatorTone"><input id="CalculatorTone" class="CalculatorTone game-cursor" ${(Calculator.PlayInfoSound ? 'checked' : '')} type="checkbox"> ${i18n('Boxes.Calculator.PlayInfoSound')}</label>
-		</p>`);
-
-		c.push(`<p class="text-center"><button id="save-calculator-settings" class="btn btn-green" onclick="Calculator.SettingsSaveValues()">${i18n('Boxes.Calculator.Settings.Save')}</button></p>`);
-
-		$('#OwnPartBoxSettingsBox').html(c.join(''));
-	},
-
-
-	SettingsInsertNewRow: ()=> {
-    	let nV = `<p class="new-row">${i18n('Boxes.Calculator.Settings.newValue')}: <input type="number" class="settings-values" style="width:30px"> <span class="btn btn-green" onclick="Calculator.SettingsInsertNewRow()">+</span></p>`;
-
-		$(nV).insertAfter( $('.new-row:eq(-1)') );
-	},
-
-
-	SettingsRemoveRow: ($this)=> {
-		$($this).closest('.btn-group').fadeToggle('fast', function(){
-			$(this).remove();
-		});
-	},
-
-
-	SettingsSaveValues: ()=> {
-    	let values = [];
-		$('.settings-values').each(function(){
-			let v = $(this).val().trim();
-
-			if(v){
-				if(v !== 'ark'){
-					values.push( parseFloat(v) );
-				} else {
-					values.push(v);
-				}
-			}
-		});
-		localStorage.setItem('CustomCalculatorButtons', JSON.stringify(values));
-
-		Calculator.ForderBonusPerConversation = $('.forderbonusperconversation').prop('checked');
-		localStorage.setItem('CalculatorForderBonusPerConversation', Calculator.ForderBonusPerConversation);
-
-		Calculator.PlayInfoSound = $('#CalculatorTone').prop('checked');
-		localStorage.setItem('CalculatorTone', Calculator.PlayInfoSound);
-
-		let openforeignGB = false;
-		if ($("#openonaliengb").is(':not(:checked)')) openforeignGB = true;
-		localStorage.setItem('ShowOwnPartOnAllGBs',openforeignGB);
-
-		// same key as in the own part calculator: box opens automatically on GreatBuildingsService.getConstruction
-		localStorage.setItem('OwnPartAutoOpen', $('#autoOpen').prop('checked'));
-
-
-		$(`#OwnPartBoxSettingsBox`).fadeToggle('fast', function(){
-			$(this).remove();
-			Parts.CalcBody();
-		});
-	}
 };

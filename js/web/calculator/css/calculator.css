@@ -11,6 +11,16 @@
  * **************************************************************************************
  */
 
+/* own box in split view */
+#CalculatorBox {
+	top: 100px;
+	min-width: 280px;
+}
+
+#CalculatorBoxBody {
+	position: relative;
+}
+
 #gbCalc input {
 	display: inline-block;
 	width: 35px;

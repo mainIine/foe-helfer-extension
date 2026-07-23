@@ -14,13 +14,19 @@
 	"outposts",
 	"profile",
 	"unit",
-	"calculator",
+	{
+		"name": "calculator",
+		"parts": ["settings"]
+	},
 	"infoboard",
 	{
 		"name": "productions",
 		"parts": ["rating", "tables"]
 	},
-	"part-calc",
+	{
+		"name": "part-calc",
+		"parts": ["copybox", "powerleveling", "settings"]
+	},
 	"alerts",
 	{
 		"name": "guild_fights",

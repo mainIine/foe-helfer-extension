@@ -1216,6 +1216,7 @@ FP-Bar */
 .window-minimize,
 .window-settings,
 .window-map,
+.window-split,
 .window-close,
 .window-head:not(span),
 .foe-helper-overlay,
@@ -1234,6 +1235,7 @@ a {
 .window-minimize:hover,
 .window-settings:hover,
 .window-map:hover,
+.window-split:hover,
 .window-close:hover,
 .window-head:not(span):hover,
 .button-own:hover,
@@ -1403,7 +1405,24 @@ a:hover {
 	position: relative;
 }
 
-.window-ask:hover, .open .window-minimize:hover, .closed .window-minimize:hover, .window-settings:hover, .window-map:hover, .window-popout:hover, .window-close:hover {
+.window-split {
+	/* the icon is drawn by the ::after element, move the sprite layer to an empty region */
+	background-position: -120px -95px, 0 0;
+	position: relative;
+}
+
+.window-split::after {
+	content: '';
+	position: absolute;
+	inset: 4px;
+	background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cg fill='none' stroke='%23c8cdd4' stroke-width='1.6'%3E%3Crect x='1' y='2.5' width='6.2' height='11' rx='1'/%3E%3Crect x='8.8' y='2.5' width='6.2' height='11' rx='1'/%3E%3C/g%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+.window-split.active::after {
+	background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cg stroke='%23ffd063' stroke-width='1.6'%3E%3Crect x='1' y='2.5' width='6.2' height='11' rx='1' fill='%23ffd06355'/%3E%3Crect x='8.8' y='2.5' width='6.2' height='11' rx='1' fill='none'/%3E%3C/g%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+.window-ask:hover, .open .window-minimize:hover, .closed .window-minimize:hover, .window-settings:hover, .window-map:hover, .window-popout:hover, .window-close:hover, .window-split:hover {
 	filter: brightness(130%);
 }
 
