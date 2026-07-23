@@ -1,5 +1,12 @@
 ## Extension Changelog
 
+##### 4.4.2.1
+
+**Bugfix**
+- City Planner:
+  - If submitting the city data fails, the error is now always shown as a message (including server and network errors) instead of silently doing nothing
+  - The server now reports save errors with a readable cause; non-critical problems (e.g. cache files) are shown as a warning while the city is still saved
+
 ##### 4.4.2.0
 
 **New**

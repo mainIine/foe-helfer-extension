@@ -1,5 +1,12 @@
 ## Extension Changelog
 
+##### 4.4.2.1
+
+**Bugfix**
+- Stadtplaner:
+  - Schlägt das Übermitteln der Stadtdaten fehl, wird der Fehler jetzt immer als Meldung angezeigt (auch bei Server- und Netzwerkfehlern), statt dass stillschweigend nichts passiert
+  - Der Server meldet Fehler beim Speichern jetzt mit einer verständlichen Ursache zurück; unkritische Probleme (z.&nbsp;B. Cache-Dateien) werden als Warnung angezeigt, die Stadt wird trotzdem gespeichert
+
 ##### 4.4.2.0
 
 **Neu**

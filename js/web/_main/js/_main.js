@@ -1507,8 +1507,9 @@ let MainParser = {
 	 * @param data
 	 * @param ep
 	 * @param successCallback
+	 * @param errorCallback optional - receives a readable message when the request itself fails (network, HTTP != 200, invalid JSON)
 	 */
-	send2Server: (data, ep, successCallback) => {
+	send2Server: (data, ep, successCallback, errorCallback) => {
 
 		let req = fetch(
 			ApiURL + ep + '/?player_id=' + ExtPlayerID + '&guild_id=' + ExtGuildID + '&world=' + ExtWorld,
@@ -1528,8 +1529,16 @@ let MainParser = {
 						response
 							.json()
 							.then(successCallback)
-							;
+							.catch(err => {
+								if (errorCallback) errorCallback('The server sent an invalid response: ' + err.message);
+							});
 					}
+					else if (errorCallback) {
+						errorCallback('The server responded with HTTP ' + response.status + ' (' + response.statusText + ')');
+					}
+				})
+				.catch(err => {
+					if (errorCallback) errorCallback('The server could not be reached: ' + err.message);
 				});
 		}
 	},
