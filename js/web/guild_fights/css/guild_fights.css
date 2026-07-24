@@ -116,11 +116,16 @@
 	margin-right: 4px;
 }
 
-#GildPlayersSettingsBox .settingtitle {
+#GildPlayersSettingsBox .settingtitle,
+#LiveGildFightingSettingsBox .settingtitle {
 	display: block;
 	margin-bottom: 7px;
 	font-size: 0.9em;
 	text-decoration: underline;
+}
+
+#LiveGildFightingSettingsBox .copy-setting {
+	margin-left: 16px;
 }
 
 #GildPlayersDetailViewBody .pname {
@@ -260,6 +265,10 @@
 
 #LiveGildFightingBody #nextup .secure .prov-name {
 	white-space: nowrap;
+}
+
+#LiveGildFightingBody #nextup .secure .prov-name b {
+	text-decoration: underline;
 }
 
 #LiveGildFightingBody #nextup .secure .battletype {

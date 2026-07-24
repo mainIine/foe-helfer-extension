@@ -1,5 +1,44 @@
 ## Extension Changelog
 
+##### 4.4.3.0
+
+**New**
+- GB Calculator:
+  - New button in the title bar to split the view: "GB Cost Calc" and "GB Calculator" are shown as separate windows at the same time again
+  - In the split view the GB Calculator keeps the last opened own GB when a foreign GB is opened, and only auto-opens for own GBs (unless "Use current view for GBs of other players" is enabled); foreign GBs go to the "GB Cost Calc" window
+  - The setting is saved; without the split view the box keeps switching automatically between the two calculators as before
+
+- Building efficiency rating:
+  - New toggle in the header row to show only the highest obtainable stage of each upgradeable building chain (lower stages from city and inventory are hidden)
+
+- GBG:
+  - Copying the sector timers can now also include attrition, the guild's focus target (🎯) and victory points — selectable via a new submenu in the settings
+
+**Update**
+- Sets and Chains: the set list is now generated from the game data instead of a bundled list, so new sets and chains show up without an extension update
+
+**Bugfix**
+- Building efficiency rating:
+  - Typing in the search field now hides all rows that do not match (previously they were only highlighted)
+  - Tooltips no longer stay behind when the table is rebuilt (e.g. after clicking one of the checkboxes)
+
+- Sets and Chains:
+  - Kits stored as fragment bundles are counted correctly when assembling buildings from the inventory
+  - Era based selection kits no longer break the inventory matching
+  - The kit count in the inventory tooltip no longer includes kits from discarded combinations
+
+- GB Cost Calc:
+  - The hints "level not unlocked" and "no street connection" are shown again
+
+- GBG:
+  - Countdown tab: sectors whose connection is secured until they unlock are underlined again (the marking got lost with the last update)
+
+- City Planner:
+  - If submitting the city data fails, the error is now always shown as a message (including server and network errors) instead of silently doing nothing
+  - The server now reports save errors with a readable cause; non-critical problems (e.g. cache files) are shown as a warning while the city is still saved
+
+---
+
 ##### 4.4.2.0
 
 **New**

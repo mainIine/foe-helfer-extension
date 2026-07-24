@@ -1093,6 +1093,7 @@
     "Boxes.ProductionsRating.InventoryTooltip": "Este edifício está no teu inventário",
     "Boxes.ProductionsRating.NoGBsExplanation": "Mostrar Grandes Edifícios",
     "Boxes.ProductionsRating.NoLimitedExplanation": "Mostrar edifícios ascendidos/limitados",
+    "Boxes.ProductionsRating.OnlyMaxStageExplanation": "Mostrar apenas o estágio mais alto alcançável de cada cadeia de edifícios",
     "Boxes.ProductionsRating.PresetActive": "Predefinição ativa",
     "Boxes.ProductionsRating.PresetConfirmDelete": "Eliminar esta predefinição?",
     "Boxes.ProductionsRating.PresetConfirmReset": "Repor esta predefinição para os valores padrão?",

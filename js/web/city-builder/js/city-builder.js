@@ -15,6 +15,7 @@ let CityBuilder = {
 
     Data: [],
     MapScale: 20,
+    Worker: null,
 
 
     /**
@@ -23,6 +24,10 @@ let CityBuilder = {
     init: async () => {
         if ($('#CityBuilderBox').length > 0) {
             HTML.CloseOpenBox('CityBuilderBox');
+            if (CityBuilder.Worker) {
+                CityBuilder.Worker.terminate();
+                CityBuilder.Worker = null;
+            }
             return;
         }
 
@@ -43,7 +48,7 @@ let CityBuilder = {
         $('#CityBuilderBoxBody').html(`<div style="padding:20px; text-align:center;">
             <div class="loader"></div>
             <br>
-            ${i18n('Boxes.CityBuilder.Calculating') || 'Generiere Stadtlayout...'}
+            ${i18n('Boxes.CityBuilder.Calculating') || 'Generiere Stadtlayout...'} <span class="calc-progress"></span>
         </div>`);
 
         // Daten sammeln und Berechnung starten
@@ -222,7 +227,10 @@ let CityBuilder = {
      * - Utilizes CSS variables for dynamic color assignment when applicable.
      */
     renderCanvas: () => {
-        const canvas = document.getElementById('city-builder-canvas');
+        // jQuery lookup on purpose: the PopupAwareInit patch also searches open
+        // pop-up windows, plain document.getElementById would miss the canvas
+        // after the box was popped out during the calculation
+        const canvas = $('#city-builder-canvas')[0];
         if (!canvas) {
             console.warn('CityBuilder: Canvas element not found!');
             return;
@@ -635,9 +643,17 @@ let CityBuilder = {
             return;
         }
 
+        // a still-running worker from a closed and reopened box must not race
+        // this run on the same DOM
+        if (CityBuilder.Worker) {
+            CityBuilder.Worker.terminate();
+            CityBuilder.Worker = null;
+        }
+
         const blob = new Blob([CityBuilder.WorkerCode], { type: 'application/javascript' });
         const workerUrl = URL.createObjectURL(blob);
         const worker = new Worker(workerUrl);
+        CityBuilder.Worker = worker;
 
         console.log("🚀 Starte Stadt-Erstellung mit Worker...");
 
@@ -646,8 +662,21 @@ let CityBuilder = {
             buildingsData: buildingsInput
         });
 
+        const finish = () => {
+            if (CityBuilder.Worker === worker) CityBuilder.Worker = null;
+            worker.terminate();
+            URL.revokeObjectURL(workerUrl);
+        };
+
         worker.onmessage = function(e) {
             const data = e.data;
+
+            // progress ping while the search is still running
+            if (data.progress !== undefined) {
+                $('#CityBuilderBoxBody .calc-progress').text(data.progress);
+                return;
+            }
+
             if (data.success) {
                 console.log("✅ Fertig!", data.stats);
 
@@ -661,8 +690,15 @@ let CityBuilder = {
                 console.error("❌ Fehler:", data.error);
                 $('#CityBuilderBoxBody').html('<div style="padding:20px; color:red;">Fehler: ' + data.error + '</div>');
             }
-            worker.terminate();
-            URL.revokeObjectURL(workerUrl);
+            finish();
+        };
+
+        // a worker killed by the browser or failing outside its own try/catch
+        // would otherwise leave the spinner spinning forever and leak the blob URL
+        worker.onerror = function(err) {
+            console.error("❌ Worker error:", err);
+            $('#CityBuilderBoxBody').html('<div style="padding:20px; color:red;">Fehler: ' + ((err && err.message) || 'Worker error') + '</div>');
+            finish();
         };
     },
 
@@ -927,6 +963,173 @@ let CityBuilder = {
                 }
             }
 
+            // last-resort guarantee that nothing which needs a street stays cut
+            // off: Dijkstra from the road network where free tiles are cheap and
+            // tiles of removable buildings are expensive - if no free path exists
+            // the cheapest blockers get torn down, the stub is built and the
+            // demolished buildings are re-placed next to the network
+            repairUnconnected() {
+                const isProtected = (b) => b.type === 'main_building' || b.type === 'greatbuilding';
+                const requeue = [];
+                let guard = 0;
+
+                while (this.roadTiles.size && guard++ < 60) {
+                    const todo = this.placedBuildings.filter(b => b.street_level > 0 && !this.isConnectedToRoad(b.x, b.y, b.width, b.height));
+                    if (!todo.length) break;
+                    const todoSet = new Set(todo);
+
+                    // tile -> building lookup for demolition costs
+                    const owner = new Map();
+                    for (const b of this.placedBuildings) {
+                        for (let i = b.x; i < b.x + b.width; i++) {
+                            for (let j = b.y; j < b.y + b.height; j++) owner.set(i + ',' + j, b);
+                        }
+                    }
+
+                    // Dijkstra with a small binary heap: free tile costs 1, a tile
+                    // of a removable building costs a lot, so demolition stays the
+                    // last resort; town hall, great buildings and the buildings
+                    // still waiting for their own stub are walls
+                    const dist = new Map(), parent = new Map();
+                    const heap = [];
+                    const push = (key, d) => {
+                        heap.push([d, key]);
+                        let i = heap.length - 1;
+                        while (i > 0) {
+                            const p = (i - 1) >> 1;
+                            if (heap[p][0] <= heap[i][0]) break;
+                            const t = heap[p]; heap[p] = heap[i]; heap[i] = t;
+                            i = p;
+                        }
+                    };
+                    const pop = () => {
+                        const top = heap[0];
+                        const last = heap.pop();
+                        if (heap.length) {
+                            heap[0] = last;
+                            let i = 0;
+                            while (true) {
+                                const l = i * 2 + 1, r = l + 1;
+                                let s = i;
+                                if (l < heap.length && heap[l][0] < heap[s][0]) s = l;
+                                if (r < heap.length && heap[r][0] < heap[s][0]) s = r;
+                                if (s === i) break;
+                                const t = heap[s]; heap[s] = heap[i]; heap[i] = t;
+                                i = s;
+                            }
+                        }
+                        return top;
+                    };
+
+                    for (const key of this.roadTiles) { dist.set(key, 0); push(key, 0); }
+                    while (heap.length) {
+                        const entry = pop();
+                        const d = entry[0], key = entry[1];
+                        if (d > dist.get(key)) continue;
+                        const parts = key.split(',');
+                        const kx = +parts[0], ky = +parts[1];
+                        for (const nk of [(kx-1)+','+ky, (kx+1)+','+ky, kx+','+(ky-1), kx+','+(ky+1)]) {
+                            const val = this.grid.get(nk);
+                            let step;
+                            if (val === 0) step = 1;
+                            else if (val === 1) {
+                                const b = owner.get(nk);
+                                if (!b || isProtected(b) || todoSet.has(b)) continue;
+                                step = 200 + b.width * b.height;
+                            }
+                            else continue;
+                            const nd = d + step;
+                            if (dist.has(nk) && dist.get(nk) <= nd) continue;
+                            dist.set(nk, nd);
+                            parent.set(nk, key);
+                            push(nk, nd);
+                        }
+                    }
+
+                    // cheapest stub over all unconnected buildings, then re-measure
+                    let bestPath = null, bestCost = Infinity;
+                    for (const b of todo) {
+                        const per = [];
+                        for (let i = b.x; i < b.x + b.width; i++) per.push(i + ',' + (b.y - 1), i + ',' + (b.y + b.height));
+                        for (let j = b.y; j < b.y + b.height; j++) per.push((b.x - 1) + ',' + j, (b.x + b.width) + ',' + j);
+                        for (const pt of per) {
+                            const dv = dist.get(pt);
+                            if (dv === undefined || dv === 0 || dv >= bestCost) continue;
+                            const path = [];
+                            let cur = pt;
+                            while (cur && dist.get(cur) > 0) { path.push(cur); cur = parent.get(cur); }
+                            bestPath = path;
+                            bestCost = dv;
+                        }
+                    }
+                    if (!bestPath) break;
+
+                    for (const key of bestPath) {
+                        const b = owner.get(key);
+                        if (b && this.grid.get(key) === 1) {
+                            // demolish: free every tile, re-place the building later
+                            for (let i = b.x; i < b.x + b.width; i++) {
+                                for (let j = b.y; j < b.y + b.height; j++) this.grid.set(i + ',' + j, 0);
+                            }
+                            this.placedBuildings.splice(this.placedBuildings.indexOf(b), 1);
+                            requeue.push(b);
+                        }
+                    }
+                    for (const key of bestPath) {
+                        const parts = key.split(',');
+                        this.placeRoadTile(+parts[0], +parts[1]);
+                    }
+                }
+
+                // re-place what the stubs tore down: next to a road if possible,
+                // any free spot otherwise - the closing connect pass wires them up
+                if (requeue.length) {
+                    const coords = [];
+                    for (let cy = this.mapBounds.minY; cy < this.mapBounds.maxY; cy++) {
+                        for (let cx = this.mapBounds.minX; cx < this.mapBounds.maxX; cx++) coords.push([cx, cy]);
+                    }
+                    for (const b of requeue) {
+                        // free tiles reachable from the road network - a fallback
+                        // spot must border one of them, otherwise the closing
+                        // connect pass could never give it a stub
+                        const reach = new Set();
+                        const fifo = [...this.roadTiles];
+                        const visited = new Set(fifo);
+                        let head = 0;
+                        while (head < fifo.length) {
+                            const key = fifo[head++];
+                            const parts = key.split(',');
+                            const kx = +parts[0], ky = +parts[1];
+                            for (const nk of [(kx-1)+','+ky, (kx+1)+','+ky, kx+','+(ky-1), kx+','+(ky+1)]) {
+                                if (this.grid.get(nk) === 0 && !visited.has(nk)) {
+                                    visited.add(nk);
+                                    reach.add(nk);
+                                    fifo.push(nk);
+                                }
+                            }
+                        }
+                        let spot = null;
+                        for (const [cx, cy] of coords) {
+                            if (this.grid.get(cx + ',' + cy) !== 0 || !this.canPlace(cx, cy, b.width, b.height)) continue;
+                            if (!this.gbKeepsStubSpace(cx, cy, b.width, b.height)) continue;
+                            if (this.isConnectedToRoad(cx, cy, b.width, b.height)) { spot = [cx, cy]; break; }
+                            if (!spot) {
+                                let touches = false;
+                                for (let i = cx; i < cx + b.width && !touches; i++) {
+                                    if (reach.has(i + ',' + (cy - 1)) || reach.has(i + ',' + (cy + b.height))) touches = true;
+                                }
+                                for (let j = cy; j < cy + b.height && !touches; j++) {
+                                    if (reach.has((cx - 1) + ',' + j) || reach.has((cx + b.width) + ',' + j)) touches = true;
+                                }
+                                if (touches) spot = [cx, cy];
+                            }
+                        }
+                        if (spot) this.placeEntity(b, spot[0], spot[1], 1);
+                    }
+                    this.connectPlacedBuildings();
+                }
+            }
+
             // roads must form one network reaching the town hall: join stray
             // components with the shortest free paths, drop what stays unreachable
             unifyRoadNetwork() {
@@ -1122,28 +1325,55 @@ let CityBuilder = {
                     ((rx === b.x - 1 || rx === b.x + b.width) && ry >= b.y && ry < b.y + b.height)
                 );
 
+                // a road tile may go when the network stays one piece without it
+                // and no adjacent building loses its last road tile - unlike pure
+                // dead-end peeling this also removes parallel double roads, which
+                // are connected at both ends and would survive forever otherwise
+                const stillConnected = (skipKey) => {
+                    let start = null;
+                    for (const key of this.roadTiles) { if (key !== skipKey) { start = key; break; } }
+                    if (!start) return true;
+                    const seen = new Set([start, skipKey]);
+                    const stack = [start];
+                    let count = 1;
+                    while (stack.length) {
+                        const k = stack.pop();
+                        const parts = k.split(',');
+                        const kx = +parts[0], ky = +parts[1];
+                        for (const nk of [(kx-1)+','+ky, (kx+1)+','+ky, kx+','+(ky-1), kx+','+(ky+1)]) {
+                            if (this.roadTiles.has(nk) && !seen.has(nk)) {
+                                seen.add(nk);
+                                count++;
+                                stack.push(nk);
+                            }
+                        }
+                    }
+                    return count === this.roadTiles.size - 1;
+                };
+
                 let changed = true;
                 while (changed) {
                     changed = false;
                     for (const key of [...this.roadTiles]) {
                         const [rx, ry] = key.split(',').map(Number);
 
+                        // One connection tile per building is enough - keep this tile
+                        // if some adjacent building would lose its last road tile
+                        if (buildingsTouching(rx, ry).some(b => this.countAdjacentRoadTiles(b) <= 1)) continue;
+
                         let neighbors = 0;
                         if (this.grid.get((rx-1) + ',' + ry) === 2) neighbors++;
                         if (this.grid.get((rx+1) + ',' + ry) === 2) neighbors++;
                         if (this.grid.get(rx + ',' + (ry-1)) === 2) neighbors++;
                         if (this.grid.get(rx + ',' + (ry+1)) === 2) neighbors++;
-                        if (neighbors > 1) continue;
 
-                        // One connection tile per building is enough - only keep this dead end
-                        // if some adjacent building would lose its last road tile
-                        const needed = buildingsTouching(rx, ry).some(b => this.countAdjacentRoadTiles(b) <= 1);
+                        // endpoints can never disconnect the network, everything
+                        // else must pass the connectivity check
+                        if (neighbors > 1 && !stillConnected(key)) continue;
 
-                        if (!needed) {
-                            this.grid.set(key, 0);
-                            this.roadTiles.delete(key);
-                            changed = true;
-                        }
+                        this.grid.set(key, 0);
+                        this.roadTiles.delete(key);
+                        changed = true;
                     }
                 }
             }
@@ -1209,6 +1439,12 @@ let CityBuilder = {
                 }
                 for (let y = trunkTop; y < trunkBottom; y++) this.placeRoadTile(trunkX, y);
 
+                // hook up the pre-placed great buildings while the rows are still
+                // empty - once the bands are built they wall off the free pockets
+                // and no stub can reach the trunk anymore (pruneRoadsSmart removes
+                // stubs that band roads make obsolete afterwards)
+                this.connectPlacedBuildings();
+
                 // build order comes from the variant: bands of similar height need the
                 // fewest road rows, and every building touches its road row by construction
                 const queue = this.sortBuildings([this.townHall, ...street]);
@@ -1261,22 +1497,60 @@ let CityBuilder = {
             layoutOrganic(street) {
                 const minX = this.mapBounds.minX, maxX = this.mapBounds.maxX;
                 const minY = this.mapBounds.minY, maxY = this.mapBounds.maxY;
-                const centerX = (minX + maxX) / 2, centerY = (minY + maxY) / 2;
 
+                // grow from the top-left corner instead of the center: a city
+                // packed into one corner (right below the edge-nested great
+                // buildings) leaves the spare space as one connected block at
+                // the opposite side - a centered city only leaves a useless ring
                 const coords = [];
                 for (let y = minY; y < maxY; y++) {
                     for (let x = minX; x < maxX; x++) coords.push([x, y]);
                 }
-                coords.sort((a, b) =>
-                    (Math.abs(a[0] - centerX) + Math.abs(a[1] - centerY)) -
-                    (Math.abs(b[0] - centerX) + Math.abs(b[1] - centerY)));
+                coords.sort((a, b) => (a[0] + a[1]) - (b[0] + b[1]) || a[1] - b[1]);
 
-                // town hall as close to the center as possible
+                // the town hall must sit in the largest free region: the road
+                // network grows from it, so everything outside its region would
+                // stay unreachable - the center tile alone can be a side pocket
+                const thRegionOf = new Map();
+                const thRegionSizes = [];
+                for (const [key, val] of this.grid) {
+                    if (val !== 0 || thRegionOf.has(key)) continue;
+                    const id = thRegionSizes.length;
+                    let size = 0;
+                    const stack = [key];
+                    thRegionOf.set(key, id);
+                    while (stack.length) {
+                        const k = stack.pop();
+                        size++;
+                        const parts = k.split(',');
+                        const kx = +parts[0], ky = +parts[1];
+                        for (const nk of [(kx-1)+','+ky, (kx+1)+','+ky, kx+','+(ky-1), kx+','+(ky+1)]) {
+                            if (this.grid.get(nk) === 0 && !thRegionOf.has(nk)) { thRegionOf.set(nk, id); stack.push(nk); }
+                        }
+                    }
+                    thRegionSizes.push(size);
+                }
+                let thLargest = -1;
+                thRegionSizes.forEach((s, i) => { if (thLargest === -1 || s > thRegionSizes[thLargest]) thLargest = i; });
+
+                // town hall as close to the top-left corner as possible within
+                // that region
                 for (const [x, y] of coords) {
+                    if (thRegionOf.get(x + ',' + y) !== thLargest) continue;
                     if (this.canPlace(x, y, this.townHall.width, this.townHall.height)) {
                         this.townHallPos = [x, y];
                         this.placeEntity(this.townHall, x, y, 9);
                         break;
+                    }
+                }
+                // fallback: anywhere it fits
+                if (!this.townHallPos) {
+                    for (const [x, y] of coords) {
+                        if (this.canPlace(x, y, this.townHall.width, this.townHall.height)) {
+                            this.townHallPos = [x, y];
+                            this.placeEntity(this.townHall, x, y, 9);
+                            break;
+                        }
                     }
                 }
                 if (!this.townHallPos) return;
@@ -1363,7 +1637,7 @@ let CityBuilder = {
                     }
 
                     // free spots already touching the network cost nothing - otherwise
-                    // collect spots sorted by road cost, center distance breaks ties
+                    // collect spots sorted by road cost, top-left order breaks ties
                     const attempt = (limit) => {
                         let cheap = 0;
                         const candidates = [];
@@ -1483,20 +1757,47 @@ let CityBuilder = {
 
                 if (!this.townHallPos) return { error: "Rathaus konnte nicht platziert werden" };
 
+                // hard guarantee before pruning: tear down blockers if that is the
+                // only way left to give a building its street connection - a
+                // re-placed blocker can itself land badly, so repair runs in up
+                // to three passes (a clean pass exits immediately)
+                for (let rp = 0; rp < 3; rp++) this.repairUnconnected();
+
                 this.pruneRoadsSmart();
 
+                // free-space fragmentation of the pure building layout, measured
+                // before the decorations plug the holes: every free tile outside
+                // the largest connected free region is a scattered speckle the
+                // final layout should not have
+                let fragmentTiles = 0;
+                {
+                    let totalFree = 0, largestFree = 0;
+                    const seen = new Set();
+                    for (const [key, val] of this.grid) {
+                        if (val !== 0) continue;
+                        totalFree++;
+                        if (seen.has(key)) continue;
+                        let size = 0;
+                        const stack = [key];
+                        seen.add(key);
+                        while (stack.length) {
+                            const k = stack.pop();
+                            size++;
+                            const parts = k.split(',');
+                            const kx = +parts[0], ky = +parts[1];
+                            for (const nk of [(kx-1)+','+ky, (kx+1)+','+ky, kx+','+(ky-1), kx+','+(ky+1)]) {
+                                if (this.grid.get(nk) === 0 && !seen.has(nk)) { seen.add(nk); stack.push(nk); }
+                            }
+                        }
+                        if (size > largestFree) largestFree = size;
+                    }
+                    fragmentTiles = totalFree - largestFree;
+                }
+
                 // Roadless buildings: plug the dead pockets between the buildings
-                // first, then nest along the border away from every road - and never
-                // cut the big free area in two, it stays in one piece for expansion
-                const edgeDepth = this.computeEdgeDepth();
-                const edgeCoords = allCoords.filter(c => edgeDepth.has(c[0] + ',' + c[1]));
-                edgeCoords.sort((a, b) => {
-                    const da = edgeDepth.get(a[0] + ',' + a[1]);
-                    const db = edgeDepth.get(b[0] + ',' + b[1]);
-                    if (da !== db) return da - db;
-                    if (a[1] !== b[1]) return a[1] - b[1];
-                    return a[0] - b[0];
-                });
+                // first, then pack the rest row by row from the top-left, tight
+                // against the built-up city - and never cut the big free area in
+                // two, it stays in one piece for expansion
                 decos.sort((a, b) => (b.width * b.height) - (a.width * a.height));
                 for (const b of decos) {
                     // fresh free regions (roads count as walls here)
@@ -1562,32 +1863,43 @@ let CityBuilder = {
                     };
 
                     let done = false;
-                    // 1) dead pockets that do not touch a road
-                    for (const [cx, cy] of edgeCoords) {
-                        const key = cx + ',' + cy;
-                        if (this.grid.get(key) !== 0 || regionOf.get(key) === largestId) continue;
+                    // 1) dead pockets between the buildings - smallest pockets
+                    // first, so the speckles get erased completely before a
+                    // decoration bites into a bigger pocket
+                    const pocketOrder = [];
+                    for (const [cx, cy] of allCoords) {
+                        const rid = regionOf.get(cx + ',' + cy);
+                        if (rid === undefined || rid === largestId) continue;
+                        pocketOrder.push([regionSizes[rid], cx, cy]);
+                    }
+                    pocketOrder.sort((p, q) => p[0] - q[0]);
+                    for (const pc of pocketOrder) {
+                        const cx = pc[1], cy = pc[2];
+                        if (this.grid.get(cx + ',' + cy) !== 0) continue;
                         if (!this.canPlace(cx, cy, b.width, b.height)) continue;
-                        if (this.isConnectedToRoad(cx, cy, b.width, b.height)) continue;
                         this.placeEntity(b, cx, cy, 1);
                         done = true;
                         break;
                     }
-                    // 2) border of the big free area, away from roads, without splitting it
+                    // 2) pack against the built-up city, row by row from the
+                    // top-left: the roadless buildings form one solid block right
+                    // behind the street buildings, so the spare space collects as
+                    // a single area at the far end of the map
                     if (!done) {
-                        for (const [cx, cy] of edgeCoords) {
+                        for (const [cx, cy] of allCoords) {
                             const key = cx + ',' + cy;
                             if (this.grid.get(key) !== 0 || regionOf.get(key) !== largestId) continue;
                             if (!this.canPlace(cx, cy, b.width, b.height)) continue;
-                            if (this.isConnectedToRoad(cx, cy, b.width, b.height)) continue;
                             if (!staysConnected(cx, cy, b.width, b.height)) continue;
                             this.placeEntity(b, cx, cy, 1);
                             done = true;
                             break;
                         }
                     }
-                    // 3) fallback: anywhere it fits, road-adjacent pockets included
+                    // 3) fallback: anywhere it fits, splitting allowed as the
+                    // last resort
                     if (!done) {
-                        for (const [cx, cy] of edgeCoords) {
+                        for (const [cx, cy] of allCoords) {
                             if (this.grid.get(cx + ',' + cy) !== 0) continue;
                             if (this.canPlace(cx, cy, b.width, b.height)) {
                                 this.placeEntity(b, cx, cy, 1);
@@ -1597,6 +1909,37 @@ let CityBuilder = {
                     }
                 }
     
+                // usable spare space: the largest empty rectangle left on the map.
+                // "connected" alone is not enough - a thin ring around the city is
+                // connected but useless; free tiles outside the biggest rectangle
+                // count as waste, so compact corner layouts win the selection
+                let wastedFree = 0;
+                {
+                    const W = maxX - minX;
+                    let finalFree = 0, largestRect = 0;
+                    const heights = new Array(W).fill(0);
+                    for (let y = minY; y < maxY; y++) {
+                        for (let x = minX; x < maxX; x++) {
+                            const free = this.grid.get(x + ',' + y) === 0;
+                            if (free) finalFree++;
+                            heights[x - minX] = free ? heights[x - minX] + 1 : 0;
+                        }
+                        // largest rectangle in histogram, monotonic stack
+                        const stack = [];
+                        for (let i = 0; i <= W; i++) {
+                            const h = i < W ? heights[i] : 0;
+                            while (stack.length && heights[stack[stack.length - 1]] >= h) {
+                                const th = heights[stack.pop()];
+                                const left = stack.length ? stack[stack.length - 1] + 1 : 0;
+                                const area = th * (i - left);
+                                if (area > largestRect) largestRect = area;
+                            }
+                            stack.push(i);
+                        }
+                    }
+                    wastedFree = finalFree - largestRect;
+                }
+
                 // built building area minus road area: the winning strategy places
                 // as much as possible while spending the fewest road tiles; a placed
                 // building that never got a road counts like a missing one
@@ -1618,6 +1961,8 @@ let CityBuilder = {
                         sortMode: this.sortMode,
                         seed: this.seed,
                         score: builtTiles - this.roadTiles.size,
+                        fragments: fragmentTiles,
+                        wasted: wastedFree,
                         roads: this.roadTiles.size,
                         buildings: this.placedBuildings.length,
                         missing: this.buildings.length - this.placedBuildings.length + 1,
@@ -1631,8 +1976,8 @@ let CityBuilder = {
             try {
                 // time-boxed search: deterministic base variants first, then randomized
                 // restarts with jittered build orders - the best score wins
-                const budgetMs = 4000;
-                const maxRuns = 100;
+                const budgetMs = 10000;
+                const maxRuns = 1000;
                 const started = performance.now();
                 const strategies = ['bands', 'bands-vertical', 'organic'];
                 const sortModes = ['height', 'area', 'width'];
@@ -1662,19 +2007,27 @@ let CityBuilder = {
                     const optimizer = new CityOptimizerBrowser(e.data.mapData, e.data.buildingsData, variant);
                     const result = optimizer.run();
                     if (result && result.success) {
-                        tried.push({ strategy: variant.strategy, sortMode: variant.sortMode, seed: variant.seed, score: result.stats.score, roads: result.stats.roads, missing: result.stats.missing, unconnected: result.stats.unconnected });
-                        // complete layouts first, then best score, then fewest roads
+                        tried.push({ strategy: variant.strategy, sortMode: variant.sortMode, seed: variant.seed, score: result.stats.score, fragments: result.stats.fragments, wasted: result.stats.wasted, roads: result.stats.roads, missing: result.stats.missing, unconnected: result.stats.unconnected });
+                        // complete layouts first, then the least disorder: free
+                        // tiles outside the largest empty rectangle (wasted) plus
+                        // speckle pockets the decorations had to plug (fragments) -
+                        // then best score, then fewest roads
                         const badness = (r) => r.stats.missing + r.stats.unconnected;
+                        const disorder = (r) => r.stats.wasted + r.stats.fragments;
                         const beats = !best
                             || badness(result) < badness(best)
-                            || (badness(result) === badness(best) && result.stats.score > best.stats.score)
-                            || (badness(result) === badness(best) && result.stats.score === best.stats.score && result.stats.roads < best.stats.roads);
+                            || (badness(result) === badness(best) && disorder(result) < disorder(best))
+                            || (badness(result) === badness(best) && disorder(result) === disorder(best) && result.stats.score > best.stats.score)
+                            || (badness(result) === badness(best) && disorder(result) === disorder(best) && result.stats.score === best.stats.score && result.stats.roads < best.stats.roads);
                         if (beats) {
                             best = result;
                         }
                     } else {
                         tried.push({ strategy: variant.strategy, sortMode: variant.sortMode, seed: variant.seed, error: (result && result.error) || 'failed' });
                     }
+
+                    // lightweight progress ping for the loader in the main thread
+                    if (tried.length % 20 === 0) self.postMessage({ progress: tried.length });
 
                     if (performance.now() - started > budgetMs && !baseVariants.length) break;
                 }

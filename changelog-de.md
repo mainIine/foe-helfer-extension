@@ -1,5 +1,44 @@
 ## Extension Changelog
 
+##### 4.4.3.0
+
+**Neu**
+- LG Rechner:
+  - Neuer Knopf in der Titelleiste, um die Ansicht zu teilen: "LG Fördern" (Kostenrechner) und "LG Rechner" (Eigenanteilsrechner) werden dann wieder gleichzeitig als getrennte Fenster angezeigt
+  - In der geteilten Ansicht behält der LG Rechner das zuletzt geöffnete eigene LG, wenn ein fremdes LG geöffnet wird, und öffnet sich automatisch nur bei eigenen LG (außer "Diese Ansicht für LG von Anderen nutzen" ist aktiv); fremde LG landen im Fenster "LG Fördern"
+  - Die Einstellung wird gespeichert; ohne geteilte Ansicht wechselt die Box wie bisher automatisch zwischen den beiden Rechnern
+
+- Gebäude-Effizienzbewertung:
+  - Neuer Schalter in der Kopfzeile, um pro Gebäudekette nur die höchste erreichbare Stufe anzuzeigen (niedrigere Stufen aus Stadt und Inventar werden ausgeblendet)
+
+- GG:
+  - Beim Kopieren der Sektor-Zeiten können jetzt auch Zermürbung, Fokus-Ziel (🎯) und Siegpunkte mit kopiert werden — auswählbar über ein neues Untermenü in den Einstellungen
+
+**Update**
+- Gebäude-Sets und -Ketten: Die Liste der Sets wird jetzt aus den Spieldaten erzeugt statt aus einer mitgelieferten Liste — neue Sets und Ketten erscheinen ohne Extension-Update
+
+**Bugfix**
+- Gebäude-Effizienzbewertung:
+  - Beim Tippen im Suchfeld werden nicht passende Zeilen jetzt ausgeblendet (bisher wurden Treffer nur markiert)
+  - Tooltips bleiben nicht mehr stehen, wenn die Tabelle neu aufgebaut wird (z.B. nach Klick auf eine der Checkboxen)
+
+- Gebäude-Sets und -Ketten:
+  - Als Fragment-Bündel vorliegende Kits werden beim Zusammensetzen von Gebäuden aus dem Inventar korrekt gezählt
+  - Zeitalter-basierte Auswahl-Kits lassen die Berechnung nicht mehr abstürzen
+  - Die Kit-Zählung im Inventar-Tooltip enthält keine Kits aus verworfenen Kombinationen mehr
+
+- LG Fördern:
+  - Die Hinweise "Stufe nicht freigeschaltet" und "keine Straßenverbindung" werden wieder sauber angezeigt
+
+- GG:
+	- Countdown-Tab: Sektoren, deren Verbindung bis zur Öffnung gesichert ist, werden wieder unterstrichen (die Markierung war mit dem letzten Update verloren gegangen)
+
+- Stadtplaner:
+	- Schlägt das Übermitteln der Stadtdaten fehl, wird der Fehler jetzt immer als Meldung angezeigt (auch bei Server- und Netzwerkfehlern), statt dass stillschweigend nichts passiert
+	- Der Server meldet Fehler beim Speichern jetzt mit einer verständlichen Ursache zurück; unkritische Probleme (z.B. Cache-Dateien) werden als Warnung angezeigt, die Stadt wird trotzdem gespeichert
+
+---
+
 ##### 4.4.2.0
 
 **Neu**
