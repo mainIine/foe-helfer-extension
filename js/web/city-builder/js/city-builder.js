@@ -1325,28 +1325,55 @@ let CityBuilder = {
                     ((rx === b.x - 1 || rx === b.x + b.width) && ry >= b.y && ry < b.y + b.height)
                 );
 
+                // a road tile may go when the network stays one piece without it
+                // and no adjacent building loses its last road tile - unlike pure
+                // dead-end peeling this also removes parallel double roads, which
+                // are connected at both ends and would survive forever otherwise
+                const stillConnected = (skipKey) => {
+                    let start = null;
+                    for (const key of this.roadTiles) { if (key !== skipKey) { start = key; break; } }
+                    if (!start) return true;
+                    const seen = new Set([start, skipKey]);
+                    const stack = [start];
+                    let count = 1;
+                    while (stack.length) {
+                        const k = stack.pop();
+                        const parts = k.split(',');
+                        const kx = +parts[0], ky = +parts[1];
+                        for (const nk of [(kx-1)+','+ky, (kx+1)+','+ky, kx+','+(ky-1), kx+','+(ky+1)]) {
+                            if (this.roadTiles.has(nk) && !seen.has(nk)) {
+                                seen.add(nk);
+                                count++;
+                                stack.push(nk);
+                            }
+                        }
+                    }
+                    return count === this.roadTiles.size - 1;
+                };
+
                 let changed = true;
                 while (changed) {
                     changed = false;
                     for (const key of [...this.roadTiles]) {
                         const [rx, ry] = key.split(',').map(Number);
 
+                        // One connection tile per building is enough - keep this tile
+                        // if some adjacent building would lose its last road tile
+                        if (buildingsTouching(rx, ry).some(b => this.countAdjacentRoadTiles(b) <= 1)) continue;
+
                         let neighbors = 0;
                         if (this.grid.get((rx-1) + ',' + ry) === 2) neighbors++;
                         if (this.grid.get((rx+1) + ',' + ry) === 2) neighbors++;
                         if (this.grid.get(rx + ',' + (ry-1)) === 2) neighbors++;
                         if (this.grid.get(rx + ',' + (ry+1)) === 2) neighbors++;
-                        if (neighbors > 1) continue;
 
-                        // One connection tile per building is enough - only keep this dead end
-                        // if some adjacent building would lose its last road tile
-                        const needed = buildingsTouching(rx, ry).some(b => this.countAdjacentRoadTiles(b) <= 1);
+                        // endpoints can never disconnect the network, everything
+                        // else must pass the connectivity check
+                        if (neighbors > 1 && !stillConnected(key)) continue;
 
-                        if (!needed) {
-                            this.grid.set(key, 0);
-                            this.roadTiles.delete(key);
-                            changed = true;
-                        }
+                        this.grid.set(key, 0);
+                        this.roadTiles.delete(key);
+                        changed = true;
                     }
                 }
             }
