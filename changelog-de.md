@@ -11,6 +11,9 @@
 - Gebäude-Effizienzbewertung:
   - Neuer Schalter in der Kopfzeile, um pro Gebäudekette nur die höchste erreichbare Stufe anzuzeigen (niedrigere Stufen aus Stadt und Inventar werden ausgeblendet)
 
+- GG:
+  - Beim Kopieren der Sektor-Zeiten können jetzt auch Zermürbung, Fokus-Ziel (🎯) und Siegpunkte mit kopiert werden — auswählbar über ein neues Untermenü in den Einstellungen
+
 **Update**
 - Gebäude-Sets und -Ketten: Die Liste der Sets wird jetzt aus den Spieldaten erzeugt statt aus einer mitgelieferten Liste — neue Sets und Ketten erscheinen ohne Extension-Update
 

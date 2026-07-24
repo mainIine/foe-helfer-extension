@@ -26,10 +26,6 @@ FoEproxy.addHandler('GuildBattlegroundService', 'getPlayerLeaderboard', (data, p
 	Guild_fights.HandlePlayerLeaderboard(data.responseData);
 });
 
-/*FoEproxy.addWsHandler('GuildBattlegroundService', 'getAction', (data, postData) => {
-	if (data.responseData.action === "province_conquered")
-		console.log(data.responseData.provinceId);
-});*/
 
 FoEproxy.addWsHandler('GuildBattlegroundSignalsService', 'updateSignal', data => {
 	let d = data.responseData;
@@ -177,7 +173,6 @@ let Guild_fights = {
 	showVPColumn: 0,
 	showAttritionColumn: 1,
 	showFocusTarget: 1,
-	showTileColors: JSON.parse(localStorage.getItem("LiveFightSettings"))?.showTileColors || 1,
 	// known placed buildings per own province, collected from getBuildings responses (ajax + websocket)
 	ProvinceBuildings: JSON.parse(localStorage.getItem('GuildFights.ProvinceBuildings') || '{}'),
 	serverOffset: JSON.parse(localStorage.getItem("GuildFights.serverOffset")||"null"),
@@ -1939,7 +1934,8 @@ let Guild_fights = {
 
 	/**
 	 * Copies the selected sector timers to the clipboard, or selects all rows
-	 * when the button is in "select all" mode
+	 * when the button is in "select all" mode. Attack color, focus target,
+	 * attrition and victory points are appended according to the copy settings
 	 *
 	 * @param {Event} e Click event of the copy button
 	 */
@@ -1955,12 +1951,34 @@ let Guild_fights = {
 		});
 
 		copycache.sort(function (a, b) { return a.lockedUntil - b.lockedUntil });
+
+		let LiveFightSettings = JSON.parse(localStorage.getItem('LiveFightSettings'));
+		// copyTileColors falls back to the former showTileColors switch it replaced
+		let copyTileColors = LiveFightSettings?.copyTileColors ?? LiveFightSettings?.showTileColors ?? 1,
+			copyAttrition = LiveFightSettings?.copyAttrition ?? 0,
+			copyFocusTarget = LiveFightSettings?.copyFocusTarget ?? 0,
+			copyVP = LiveFightSettings?.copyVP ?? 0;
+
 		let copy = '';
 		copycache.forEach((mapElem) => {
-			let battleType = mapElem.isAttackBattleType ? '🔴' : '🔵';
-			let LiveFightSettings = JSON.parse(localStorage.getItem('LiveFightSettings'));
-			let showTileColors = (LiveFightSettings && LiveFightSettings.showTileColors !== undefined) ? LiveFightSettings.showTileColors : 1;
-			copy += `${moment.unix(mapElem.lockedUntil - 2 - 60 * (Guild_fights.serverOffset || 0)).format('HH:mm')} ${showTileColors === 1 ? battleType : ''} ${mapElem.title} \n`;
+			let parts = [moment.unix(mapElem.lockedUntil - 2 - 60 * (Guild_fights.serverOffset || 0)).format('HH:mm')];
+
+			if (copyTileColors === 1) {
+				parts.push(mapElem.isAttackBattleType ? '🔴' : '🔵');
+			}
+			if (copyFocusTarget === 1 && Guild_fights.GetProvinceSignal(mapElem.id)?.signal === 'focus') {
+				parts.push('🎯');
+			}
+			parts.push(mapElem.title);
+			if (copyAttrition === 1) {
+				let attrition = Guild_fights.GetEffectiveAttrition(mapElem);
+				parts.push(attrition !== undefined ? `[${attrition}%]` : '[-]');
+			}
+			if (copyVP === 1) {
+				parts.push(`${mapElem.victoryPoints || 0} VP`);
+			}
+
+			copy += parts.join(' ') + '\n';
 		});
 
 		if (copy !== '') {
@@ -2350,10 +2368,14 @@ let Guild_fights = {
 		let showGuildColumn = (LiveFightSettings && LiveFightSettings.showGuildColumn !== undefined) ? LiveFightSettings.showGuildColumn : 0;
 		let showAdjacentSectors = (LiveFightSettings && LiveFightSettings.showAdjacentSectors !== undefined) ? LiveFightSettings.showAdjacentSectors : 1;
 		let showOwnSectors = (LiveFightSettings && LiveFightSettings.showOwnSectors !== undefined) ? LiveFightSettings.showOwnSectors : 0;
-		let showTileColors = (LiveFightSettings && LiveFightSettings.showTileColors !== undefined) ? LiveFightSettings.showTileColors : 1;
 		let showVPColumn = LiveFightSettings?.showVPColumn ?? 0;
 		let showAttritionColumn = LiveFightSettings?.showAttritionColumn ?? 1;
 		let showFocusTarget = LiveFightSettings?.showFocusTarget ?? 1;
+		// copyTileColors falls back to the former showTileColors switch it replaced
+		let copyTileColors = LiveFightSettings?.copyTileColors ?? LiveFightSettings?.showTileColors ?? 1;
+		let copyAttrition = LiveFightSettings?.copyAttrition ?? 0;
+		let copyFocusTarget = LiveFightSettings?.copyFocusTarget ?? 0;
+		let copyVP = LiveFightSettings?.copyVP ?? 0;
 		let showServerTime = LiveFightSettings?.showServerTime ?? 0;
 		let alertLeadTime = LiveFightSettings?.alertLeadTime ?? 30;
 		let discordWebhook = LiveFightSettings?.discordWebhook ?? '';
@@ -2363,10 +2385,15 @@ let Guild_fights = {
 		c.push(`<p><input id="showguildcolumn" name="showguildcolumn" value="1" type="checkbox" ${(showGuildColumn === 1) ? ' checked="checked"' : ''} /> <label for="showguildcolumn">${i18n('Boxes.GuildFights.ShowOwner')}</label></p>`);
 		c.push(`<p><label for="showAdjacentSectors"><input id="showAdjacentSectors" name="showAdjacentSectors" value="0" type="checkbox" ${(showAdjacentSectors === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.ShowAdjacentSectors')}</label></p>`);
 		c.push(`<p><label for="showownsectors"><input id="showownsectors" name="showownsectors" value="0" type="checkbox" ${(showOwnSectors === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.ShowOwnSectors')}</label></p>`);
-		c.push(`<p><label for="showtilecolors"><input id="showtilecolors" name="showtilecolors" value="0" type="checkbox" ${(showTileColors === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.ShowTileColors')}</label></p>`);
 		c.push(`<p><label for="showvpcolumn"><input id="showvpcolumn" name="showvpcolumn" value="0" type="checkbox" ${(showVPColumn === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.ShowVPColumn')}</label></p>`);
 		c.push(`<p><label for="showattritioncolumn"><input id="showattritioncolumn" name="showattritioncolumn" value="0" type="checkbox" ${(showAttritionColumn === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.ShowAttritionColumn')}</label></p>`);
 		c.push(`<p><label for="showfocustarget"><input id="showfocustarget" name="showfocustarget" value="0" type="checkbox" ${(showFocusTarget === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.ShowFocusTarget')}</label></p>`);
+
+		c.push(`<hr><p class="settingtitle">${i18n('Boxes.GuildFights.CopyElements')}</p>`);
+		c.push(`<p class="copy-setting"><label for="copytilecolors"><input id="copytilecolors" name="copytilecolors" value="0" type="checkbox" ${(copyTileColors === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.CopyTileColors')}</label></p>`);
+		c.push(`<p class="copy-setting"><label for="copyattrition"><input id="copyattrition" name="copyattrition" value="0" type="checkbox" ${(copyAttrition === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.Attrition')}</label></p>`);
+		c.push(`<p class="copy-setting"><label for="copyfocustarget"><input id="copyfocustarget" name="copyfocustarget" value="0" type="checkbox" ${(copyFocusTarget === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.FocusTarget')} (🎯)</label></p>`);
+		c.push(`<p class="copy-setting"><label for="copyvp"><input id="copyvp" name="copyvp" value="0" type="checkbox" ${(copyVP === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.CopyVP')}</label></p>`);
 		c.push(`<hr><p><label for="showservertime"><input id="showservertime" name="showservertime" value="0" type="checkbox" ${(showServerTime === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.ShowServerTime')}</label></p>`);
 		c.push(`<p><label for="serverOffset">${i18n('Boxes.GuildFights.serverOffset')}<input id="serverOffset" name="serverOffset" value="${Guild_fights.serverOffset??""}" type="text" maxlength="5" size = "5"/></label></p>`);
 		c.push(`<hr><p><label for="alertLeadTime">${i18n('Boxes.GuildFights.AlertLeadTime')} <input id="alertLeadTime" name="alertLeadTime" value="${alertLeadTime}" type="number" min="5" max="3600" step="5" size="6"/></label></p>`);
@@ -2415,7 +2442,10 @@ let Guild_fights = {
 		value.showGuildColumn = 0;
 		value.showAdjacentSectors = 0;
 		value.showOwnSectors = 0;
-		value.showTileColors = 0;
+		value.copyTileColors = 0;
+		value.copyAttrition = 0;
+		value.copyFocusTarget = 0;
+		value.copyVP = 0;
 		value.showVPColumn = 0;
 		value.showAttritionColumn = 0;
 		value.showFocusTarget = 0;
@@ -2436,8 +2466,20 @@ let Guild_fights = {
 			value.showOwnSectors = 1;
 		}
 
-		if ($("#showtilecolors").is(':checked')) {
-			value.showTileColors = 1;
+		if ($("#copytilecolors").is(':checked')) {
+			value.copyTileColors = 1;
+		}
+
+		if ($("#copyattrition").is(':checked')) {
+			value.copyAttrition = 1;
+		}
+
+		if ($("#copyfocustarget").is(':checked')) {
+			value.copyFocusTarget = 1;
+		}
+
+		if ($("#copyvp").is(':checked')) {
+			value.copyVP = 1;
 		}
 
 		if ($("#showvpcolumn").is(':checked')) {
@@ -2468,7 +2510,6 @@ let Guild_fights = {
 		Guild_fights.showGuildColumn = value.showGuildColumn;
 		Guild_fights.showAdjacentSectors = value.showAdjacentSectors;
 		Guild_fights.showOwnSectors = value.showOwnSectors;
-		Guild_fights.showTileColors = value.showTileColors;
 		Guild_fights.showVPColumn = value.showVPColumn;
 		Guild_fights.showAttritionColumn = value.showAttritionColumn;
 		Guild_fights.showFocusTarget = value.showFocusTarget;

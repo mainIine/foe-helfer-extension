@@ -11,6 +11,9 @@
 - Building efficiency rating:
   - New toggle in the header row to show only the highest obtainable stage of each upgradeable building chain (lower stages from city and inventory are hidden)
 
+- GBG:
+  - Copying the sector timers can now also include attrition, the guild's focus target (🎯) and victory points — selectable via a new submenu in the settings
+
 **Update**
 - Sets and Chains: the set list is now generated from the game data instead of a bundled list, so new sets and chains show up without an extension update
 
