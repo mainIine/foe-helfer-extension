@@ -1105,6 +1105,7 @@
     "Boxes.ProductionsRating.InventoryTooltip": "This building is in your inventory",
     "Boxes.ProductionsRating.NoGBsExplanation": "Show Great Buildings",
     "Boxes.ProductionsRating.NoLimitedExplanation": "Show ascended/limited buildings",
+    "Boxes.ProductionsRating.OnlyMaxStageExplanation": "Show only the highest obtainable stage of each upgradeable building chain",
     "Boxes.ProductionsRating.PresetActive": "Active preset",
     "Boxes.ProductionsRating.PresetConfirmDelete": "Delete this preset?",
     "Boxes.ProductionsRating.PresetConfirmReset": "Reset this preset to default values?",

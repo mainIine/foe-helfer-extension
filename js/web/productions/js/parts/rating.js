@@ -33,7 +33,8 @@ Object.assign(Productions, {
 			"inventorybuildingscore":0,
 			"gBs":true,
 			"showLimited":true,
-			"showallies":true
+			"showallies":true,
+			"chainmax":false
 			}`
 		),
 		{showhighlighted: false}
@@ -580,6 +581,10 @@ Object.assign(Productions, {
 
 			let colNumber = Object.values(Productions.Rating.Data).filter(x=>x.active && x.perTile !== null && x.perTile !== undefined).length;
 
+			// render the saved checkbox states inline - the previous trigger("click") sync
+			// re-entered CalcRatingBody endlessly when combined with the chainmax recalc
+			const checked = (key) => Productions.efficiencySettings[key] ? ' checked' : '';
+
 			h.push('<div class="ratingtable">');
 			h.push('<a id="RatingsResults" class="toggle-tab btn btn-slim" data-value="Settings">' + i18n('Boxes.ProductionsRating.Settings') + '</a>')
 			h.push('<table class="foe-table sortable-table TSinactive exportable">');
@@ -588,21 +593,22 @@ Object.assign(Productions, {
 			h.push('<tr class="settings">');
 				h.push('<th colspan="'+(colNumber+5)+'"><div class="options">');
 				h.push('<a class="btn" id="addMetaBuilding">' + i18n('Boxes.ProductionsRating.AddBuilding') + '</a>');
-				h.push('<label for="tilevalues"><input type="checkbox" id="tilevalues" />' + i18n('Boxes.ProductionsRating.ShowValuesPerTile') + '</label>');
+				h.push('<label for="tilevalues"><input type="checkbox" id="tilevalues"'+checked('tilevalues')+' />' + i18n('Boxes.ProductionsRating.ShowValuesPerTile') + '</label>');
 				h.push('<input type="text" id="efficiencyBuildingFilter" size=20 value="' + Productions.RatingSearchTerm + '" placeholder="' + i18n('Boxes.ProductionsRating.Filter') + ': neo|eden" />');
-				h.push('<label for="showhighlighted" data-original-title="'+i18n('Boxes.ProductionsRating.ShowHighlightedExplanation')+'"><input type="checkbox" id="showhighlighted" />' + i18n('Boxes.ProductionsRating.ShowHighlighted') + '</label>')
+				h.push('<label for="showhighlighted" data-original-title="'+i18n('Boxes.ProductionsRating.ShowHighlightedExplanation')+'"><input type="checkbox" id="showhighlighted"'+checked('showhighlighted')+' />' + i18n('Boxes.ProductionsRating.ShowHighlighted') + '</label>')
 				h.push('<div>');
-				h.push('<label for="gBs" data-original-title="'+i18n('Boxes.ProductionsRating.NoGBsExplanation')+'"><input type="checkbox" id="gBs" /><img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_greatbuilding.png`,true)+'" /></label>');
+				h.push('<label for="gBs" data-original-title="'+i18n('Boxes.ProductionsRating.NoGBsExplanation')+'"><input type="checkbox" id="gBs"'+checked('gBs')+' /><img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_greatbuilding.png`,true)+'" /></label>');
 				if (ActiveMap !== 'OtherPlayer') {
 					h.push('<div class="inventory">'+
-						'<label for="inventorybuildings" data-original-title="'+i18n('Boxes.ProductionsRating.ShowInventoryBuildingsExplanation')+'"><input type="checkbox" id="inventorybuildings" /><img class="game-cursor" src="' + extUrl + 'js/web/x_img/inventory.png"></label>'+
+						'<label for="inventorybuildings" data-original-title="'+i18n('Boxes.ProductionsRating.ShowInventoryBuildingsExplanation')+'"><input type="checkbox" id="inventorybuildings"'+checked('inventorybuildings')+' /><img class="game-cursor" src="' + extUrl + 'js/web/x_img/inventory.png"></label>'+
 						'<label for="inventorybuildingscore" data-original-title="'+i18n('Boxes.ProductionsRating.InventoryBuildingScoreExplanation')+'">' + i18n('Boxes.ProductionsRating.InventoryBuildingScore') + ': <input type="number" size="6" value="'+(Productions.efficiencySettings.inventorybuildingscore*100)+'" id="inventorybuildingscore" /></label>'+
-						'<label for="showLimited" data-original-title="'+i18n('Boxes.ProductionsRating.NoLimitedExplanation')+'"><input type="checkbox" id="showLimited" /><img src="'+srcLinks.get(`/shared/gui/upgrade/upgrade_icon_limited_building.png`,true)+'" /></label>'+
+						'<label for="showLimited" data-original-title="'+i18n('Boxes.ProductionsRating.NoLimitedExplanation')+'"><input type="checkbox" id="showLimited"'+checked('showLimited')+' /><img src="'+srcLinks.get(`/shared/gui/upgrade/upgrade_icon_limited_building.png`,true)+'" /></label>'+
 						'</div>');
-						h.push('<label for="showallies" data-original-title="'+i18n('Boxes.ProductionsRating.ShowAllies')+'"><input type="checkbox" id="showallies" '+(Productions.efficiencySettings.showallies? 'checked' : '')+' /><span class="filter showallies"></span></label>');
+						h.push('<label for="chainmax" data-original-title="'+i18n('Boxes.ProductionsRating.OnlyMaxStageExplanation')+'"><input type="checkbox" id="chainmax"'+checked('chainmax')+' /><img src="'+srcLinks.get(`/shared/icons/limited_building_upgrade.png`,true)+'" /></label>');
+						h.push('<label for="showallies" data-original-title="'+i18n('Boxes.ProductionsRating.ShowAllies')+'"><input type="checkbox" id="showallies"'+checked('showallies')+' /><span class="filter showallies"></span></label>');
 
 				}
-				h.push('<label for="showitems" data-original-title="'+i18n('Boxes.ProductionsRating.ShowItems')+'"><input type="checkbox" id="showitems" /><span class="filter showitems"></span></label>');
+				h.push('<label for="showitems" data-original-title="'+i18n('Boxes.ProductionsRating.ShowItems')+'"><input type="checkbox" id="showitems"'+checked('showitems')+' /><span class="filter showitems"></span></label>');
 				h.push('</div></div></th>');
 			h.push('</tr>');
 
@@ -645,6 +651,29 @@ Object.assign(Productions, {
 			h.push('</thead>');
 			h.push('<tbody class="ratinglist">');
 
+			// "highest chain stage only": map every chain member to its scheme and find
+			// the highest stage that is visible under the current filter settings
+			let chainStage = {};
+			for (let [endBuilding, scheme] of Object.entries(Kits.UpgradeSchemes || {})) {
+				scheme.upgradeSteps.forEach((step, index) => {
+					chainStage[step.buildingId] = {family: endBuilding, stage: index};
+				});
+				chainStage[endBuilding] = {family: endBuilding, stage: scheme.upgradeSteps.length};
+			}
+			let chainMaxStage = {};
+			for (const building of ratedBuildings) {
+				if (building.highlight) continue;
+				if (building.isInInventory) {
+					if (!Productions.efficiencySettings.inventorybuildings) continue;
+					if (building.isLimited && !Productions.efficiencySettings.showLimited) continue;
+					if (building.rating.totalScore < Productions.efficiencySettings.inventorybuildingscore) continue;
+					if (buildingCount[building.entityId+"C"] !== undefined) continue;
+				}
+				let stageInfo = chainStage[building.entityId];
+				if (stageInfo && (chainMaxStage[stageInfo.family] ?? -1) < stageInfo.stage)
+					chainMaxStage[stageInfo.family] = stageInfo.stage;
+			}
+
 			for (const building of ratedBuildings) {
 				// skip inventory buildings with a score lower than the threshold
 				if (building.isInInventory && building.rating.totalScore < Productions.efficiencySettings.inventorybuildingscore) continue;
@@ -654,8 +683,12 @@ Object.assign(Productions, {
 
 				let buildingSize = building.size.length * building.size.width;
 
+				// tag rows below the highest visible stage of their upgrade chain
+				let stageInfo = chainStage[building.entityId];
+				let isLowerStage = !building.highlight && stageInfo !== undefined && stageInfo.stage < (chainMaxStage[stageInfo.family] ?? -1);
+
 				[randomItems,randomUnits] = Productions.showBuildingItems(false, building)
-				h.push(`<tr class="${building.type==='greatbuilding'?'gb ':''}${building.isLimited?'limited ':''}${building.highlight?'additional bg-blue ':''}${building.isInInventory?'inventory-building ':''}size${buildingSize}">`)
+				h.push(`<tr class="${building.type==='greatbuilding'?'gb ':''}${building.isLimited?'limited ':''}${building.highlight?'additional bg-blue ':''}${building.isInInventory?'inventory-building ':''}${isLowerStage?'chain-lower ':''}size${buildingSize}">`)
 				h.push('<td data-number="'+ (building.rating.totalScore * 100) +'" class="text-right">'+Math.round(building.rating.totalScore * 100)+'</td>')
 
 				h.push('<td exportvalue="'+building.name+'" data-text="'+helper.str.cleanup(building.name)+'" class="'+(Allies.buildingList?.[building.id]?"ally" : "") +'"><div class="flex-between"><div>');
@@ -775,6 +808,9 @@ Object.assign(Productions, {
 			}
 		}
 
+		// remove open tooltips before the body is replaced, otherwise they stay behind orphaned
+		$('.tooltip').remove();
+
 		$('#ProductionsRatingBody').html(h.join('')).promise().done(function () {
 			$('.TSinactive').removeClass('TSinactive');
 			const refreshPresetSelect = () => {
@@ -841,10 +877,18 @@ Object.assign(Productions, {
 
 			$('#showLimited, label[limited]').on('click', function () {
 				SaveSettings("showLimited")
+				// visibility of limited rows changes which chain stage is the highest visible one
+				if (Productions.efficiencySettings.chainmax) Productions.CalcRatingBody();
 			});
 
 			$('#inventorybuildings, label[inventorybuildings]').on('click', function () {
 				SaveSettings("inventorybuildings")
+				if (Productions.efficiencySettings.chainmax) Productions.CalcRatingBody();
+			});
+
+			$('#chainmax').on('click', function () {
+				SaveSettings("chainmax");
+				Productions.CalcRatingBody();
 			});
 
 			$('.show-all').on('click', function () {
@@ -880,12 +924,12 @@ Object.assign(Productions, {
 				},500)
 			})
 
-			if (Productions.efficiencySettings.tilevalues !== $('#tilevalues').is(':checked')) $('#tilevalues').trigger("click")
-			if (Productions.efficiencySettings.showitems !== $('#showitems').is(':checked')) $('#showitems').trigger("click")
-			if (Productions.efficiencySettings.showhighlighted !== $('#showhighlighted').is(':checked')) $('#showhighlighted').trigger("click")
-			if (Productions.efficiencySettings.inventorybuildings !== $('#inventorybuildings').is(':checked')) $('#inventorybuildings').trigger("click")
-			if (Productions.efficiencySettings.gBs !== $('#gBs').is(':checked')) $('#gBs').trigger("click")
-			if (Productions.efficiencySettings.showLimited !== $('#showLimited').is(':checked')) $('#showLimited').trigger("click")
+			// checkbox states are rendered inline, only sync the body classes with the settings.
+			// no trigger("click") here: the synthetic clicks re-entered CalcRatingBody endlessly
+			// via the chainmax recalc in the showLimited/inventorybuildings handlers
+			for (const key of ['tilevalues', 'showitems', 'showhighlighted', 'inventorybuildings', 'gBs', 'showLimited', 'chainmax', 'showallies']) {
+				$('#ProductionsRatingBody').toggleClass(key, !!Productions.efficiencySettings[key]);
+			}
 
 			$('#findMetaBuilding').on('input', function () {
 				let regEx=new RegExp($(this).val(),"i");
@@ -949,14 +993,23 @@ Object.assign(Productions, {
 			$('#efficiencyBuildingFilter').on('input', e => {
 				let filter = $('#efficiencyBuildingFilter').val();
 				Productions.RatingSearchTerm = filter;
-				let regEx = new RegExp(filter,"i");
+				let regEx;
+				try {
+					regEx = new RegExp(filter,"i");
+				} catch (err) {
+					// incomplete regex while typing (e.g. "(") — treat it as literal text
+					regEx = new RegExp(filter.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'),"i");
+				}
 
 				$('.ratinglist tr td:nth-child(2)').each((x,y) => {
-					if (filter !== "" && regEx.test($(y).text())) {
+					let match = regEx.test($(y).text());
+					if (filter !== "" && match) {
 						y.parentElement.classList.add('highlighted2')
 					} else {
 						y.parentElement.classList.remove('highlighted2')
 					}
+					// hide rows that do not match the search term
+					y.parentElement.classList.toggle('filtered-out', filter !== "" && !match);
 				});
 			});
 			// settings: show FSP calculator

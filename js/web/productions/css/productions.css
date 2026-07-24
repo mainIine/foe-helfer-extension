@@ -364,6 +364,8 @@
 #ProductionsRatingBody:not(.inventorybuildings) tbody tr.inventory-building,
 #ProductionsRatingBody:not(.gBs) tbody tr.gb,
 #ProductionsRatingBody:not(.showLimited) tbody tr.inventory-building.limited,
+#ProductionsRatingBody.chainmax tbody tr.chain-lower,
+#ProductionsRatingBody tbody tr.filtered-out:not(.highlighted),
 #ProductionsRatingBody.showhighlighted tbody tr {
 	display: none;
 }

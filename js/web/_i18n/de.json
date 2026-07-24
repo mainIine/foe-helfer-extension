@@ -1103,6 +1103,7 @@
     "Boxes.ProductionsRating.InventoryTooltip": "Dieses Gebäude ist in deinem Inventar",
     "Boxes.ProductionsRating.NoGBsExplanation": "Zeige Legendäre Bauwerke",
     "Boxes.ProductionsRating.NoLimitedExplanation": "Zeige erhabenen/eingeschränkten Gebäude",
+    "Boxes.ProductionsRating.OnlyMaxStageExplanation": "Nur die höchste erreichbare Stufe einer Gebäudekette anzeigen",
     "Boxes.ProductionsRating.ProdPerTile": "Erwartete Tagesproduktion/Feld",
     "Boxes.ProductionsRating.Results": "Ergebnis",
     "Boxes.ProductionsRating.Score": "Bewertung",

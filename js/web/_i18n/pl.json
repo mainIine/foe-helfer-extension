@@ -1093,6 +1093,7 @@
     "Boxes.ProductionsRating.InventoryTooltip": "Ten budynek znajduje się w twoim inwentarzu",
     "Boxes.ProductionsRating.NoGBsExplanation": "Pokaż Perły Architektury",
     "Boxes.ProductionsRating.NoLimitedExplanation": "Pokaż wzniesione/ograniczone budynki",
+    "Boxes.ProductionsRating.OnlyMaxStageExplanation": "Pokaż tylko najwyższy osiągalny poziom każdego łańcucha budynków",
     "Boxes.ProductionsRating.PresetActive": "Aktywne ustawienie",
     "Boxes.ProductionsRating.PresetConfirmDelete": "Usunąć te ustawienie?",
     "Boxes.ProductionsRating.PresetConfirmReset": "Zresetować to ustawienie do domyślnych wartości?",

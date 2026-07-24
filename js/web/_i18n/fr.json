@@ -1112,6 +1112,7 @@
     "Boxes.ProductionsRating.InventoryTooltip": "Ce bâtiment est dans votre inventaire",
     "Boxes.ProductionsRating.NoGBsExplanation": "Afficher les Grands Monuments",
     "Boxes.ProductionsRating.NoLimitedExplanation": "Afficher les bâtiments augmentés/limités",
+    "Boxes.ProductionsRating.OnlyMaxStageExplanation": "Afficher uniquement le niveau le plus élevé atteignable de chaque chaîne de bâtiments",
     "Boxes.ProductionsRating.PerTile": "par case",
     "Boxes.ProductionsRating.PresetActive": "préréglage actif",
     "Boxes.ProductionsRating.PresetConfirmDelete": "Supprimer ce préréglage ?",
