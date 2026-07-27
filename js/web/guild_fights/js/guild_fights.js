@@ -61,6 +61,7 @@ FoEproxy.addWsHandler('GuildBattlegroundSignalsService', 'updateSignal', data =>
 // building placements arrive via websocket only, getProvinces does not resend the slot count
 FoEproxy.addWsHandler('GuildBattlegroundBuildingService', 'getBuildings', data => {
 	Guild_fights.HandleBuildingsUpdate(data.responseData);
+	Guild_fights.TryAutoOpen();
 });
 
 // the own build menu delivers the same data via ajax
@@ -83,6 +84,8 @@ FoEproxy.addWsHandler('GuildBattlegroundService', 'getParticipantVictoryPoints',
 	if ($('#gbgranking').length > 0) {
 		$('#gbgranking').html(GuildRanking.BuildTab().join(''));
 	}
+
+	Guild_fights.TryAutoOpen();
 });
 
 FoEproxy.addHandler('GuildBattlegroundStateService', 'getState', (data, postData) => {
@@ -118,6 +121,21 @@ FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postDa
 	$('#gildFight-Btn').removeClass('hud-btn-red');
 	$('#selectorCalc-Btn-closed').remove();
 
+	// arm the auto open once per visit; the box itself opens later via TryAutoOpen
+	// as soon as the websocket delivered the first battleground messages
+	if (!Guild_fights.AutoOpenedOnMap) {
+		Guild_fights.AutoOpenedOnMap = true;
+
+		let autoOpen = JSON.parse(localStorage.getItem('LiveFightSettings'))?.autoOpen ?? 1;
+		if (autoOpen === 1 && $('#LiveGildFighting').length === 0) {
+			Guild_fights.AutoOpenPending = true;
+
+			// fallback in case the websocket stays quiet on an idle map
+			clearTimeout(Guild_fights.AutoOpenTimeout);
+			Guild_fights.AutoOpenTimeout = setTimeout(Guild_fights.TryAutoOpen, 3000);
+		}
+	}
+
 	if ($('#ProvinceMap').length > 0) {
 		ProvinceMap.RefreshSector();
 	}
@@ -127,6 +145,15 @@ FoEproxy.addHandler('GuildBattlegroundService', 'getBattleground', (data, postDa
 		Guild_fights.BuildFightContent();
 	}
 });
+// re-arm the auto open as soon as the battlegrounds map is left
+FoEproxy.addFoeHelperHandler('ActiveMapUpdated', () => {
+	if (ActiveMap !== 'gg') {
+		Guild_fights.AutoOpenedOnMap = false;
+		Guild_fights.AutoOpenPending = false;
+		clearTimeout(Guild_fights.AutoOpenTimeout);
+	}
+});
+
 FoEproxy.addHandler('TimerService', 'getTimers', (data, postData) => {
 	if (Guild_fights.serverOffset !== null) return;
 	data.responseData.filter(t=>t.type=="battlegroundsAttrition").forEach(t=>{
@@ -147,6 +174,9 @@ let Guild_fights = {
 	NewAction: null,
 	NewActionTimestamp: null,
 	MapData: null,
+	AutoOpenedOnMap: false,
+	AutoOpenPending: false,
+	AutoOpenTimeout: null,
 	PlayersPortraits: null,
 	Colors: null,
 	SortedColors: null,
@@ -209,7 +239,7 @@ let Guild_fights = {
 
 		Guild_fights.db = new Dexie(DBName);
 
-		Guild_fights.db.version(1).stores({
+		Guild_fights.db.version(21).stores({
 			snapshots: '&[player_id+gbground+time],[gbground+player_id], [date+player_id], gbground',
 			history: '&gbground'
 		});
@@ -288,6 +318,8 @@ let Guild_fights = {
 						ProvinceMap.RefreshSector(provinceData);
 					}
 				}
+
+				Guild_fights.TryAutoOpen();
 			});
 			Guild_fights.InjectionLoaded = true;
 		}
@@ -312,9 +344,9 @@ let Guild_fights = {
 	 * @property {number} d[i].player.player_id - Unique identifier of the player.
 	 * @property {string} d[i].player.name - Name of the player.
 	 * @property {string} d[i].player.avatar - URL or identifier for the player's avatar.
-	 * @property {number} [d[i].battlesWon=0] - Number of battles won by the player (defaults to 0 if missing).
-	 * @property {number} [d[i].negotiationsWon=0] - Number of negotiations won by the player (defaults to 0 if missing).
-	 * @property {number} [d[i].attrition=0] - Attrition value for the player (defaults to 0 if missing).
+	 * @property {number} battlesWon - Number of battles won by the player (defaults to 0 if missing).
+	 * @property {number} negotiationsWon - Number of negotiations won by the player (defaults to 0 if missing).
+	 * @property {number} attrition - Attrition value for the player (defaults to 0 if missing).
 	 *
 	 * @throws {Error} Throws an error if database updating fails or if an unexpected issue occurs during execution.
 	 */
@@ -925,6 +957,24 @@ let Guild_fights = {
 			$ownedRow.find('.slots-cell').text(`${province.usedBuildingSlots || 0}/${province.totalBuildingSlots}`);
 			$ownedRow.removeClass('slot-warning').addClass(Guild_fights.GetSlotWarningClass(province));
 			$ownedRow.find('[data-original-title]').tooltip({container: 'body'});
+		}
+	},
+
+
+	/**
+	 * Opens the live fight box after an armed auto open, but only once the
+	 * full battleground data is available so the box does not render empty
+	 */
+	TryAutoOpen: () => {
+		if (!Guild_fights.AutoOpenPending) return;
+
+		if (!Guild_fights.MapData?.map?.provinces?.length || !Guild_fights.MapData?.battlegroundParticipants?.length) return;
+
+		Guild_fights.AutoOpenPending = false;
+		clearTimeout(Guild_fights.AutoOpenTimeout);
+
+		if ($('#LiveGildFighting').length === 0) {
+			Guild_fights.ShowGuildBox(true);
 		}
 	},
 
@@ -2381,7 +2431,9 @@ let Guild_fights = {
 		let discordWebhook = LiveFightSettings?.discordWebhook ?? '';
 		let discordWebhookTemplate = LiveFightSettings?.discordWebhookTemplate ?? '';
 		let discordWebhookTemplateBulk = LiveFightSettings?.discordWebhookTemplateBulk ?? '';
+		let autoOpen = LiveFightSettings?.autoOpen ?? 1;
 
+		c.push(`<p><label for="autoopenlivefight"><input id="autoopenlivefight" name="autoopenlivefight" value="0" type="checkbox" ${(autoOpen === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.Settings.Autostart')}</label></p>`);
 		c.push(`<p><input id="showguildcolumn" name="showguildcolumn" value="1" type="checkbox" ${(showGuildColumn === 1) ? ' checked="checked"' : ''} /> <label for="showguildcolumn">${i18n('Boxes.GuildFights.ShowOwner')}</label></p>`);
 		c.push(`<p><label for="showAdjacentSectors"><input id="showAdjacentSectors" name="showAdjacentSectors" value="0" type="checkbox" ${(showAdjacentSectors === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.ShowAdjacentSectors')}</label></p>`);
 		c.push(`<p><label for="showownsectors"><input id="showownsectors" name="showownsectors" value="0" type="checkbox" ${(showOwnSectors === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.ShowOwnSectors')}</label></p>`);
@@ -2439,6 +2491,7 @@ let Guild_fights = {
 	SaveLiveFightSettings: () => {
 		let value = {};
 
+		value.autoOpen = 0;
 		value.showGuildColumn = 0;
 		value.showAdjacentSectors = 0;
 		value.showOwnSectors = 0;
@@ -2453,6 +2506,10 @@ let Guild_fights = {
 		value.discordWebhook = '';
 		value.discordWebhookTemplate = '';
 		value.discordWebhookTemplateBulk = '';
+
+		if ($("#autoopenlivefight").is(':checked')) {
+			value.autoOpen = 1;
+		}
 
 		if ($("#showguildcolumn").is(':checked')) {
 			value.showGuildColumn = 1;

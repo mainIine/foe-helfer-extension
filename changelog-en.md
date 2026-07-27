@@ -1,5 +1,13 @@
 ## Extension Changelog
 
+##### 4.4.3.1
+
+**Bugfix**
+- GB - Player Overview:
+	- Version discrepancies led to errors
+
+---
+
 ##### 4.4.3.0
 
 **New**
