@@ -239,7 +239,7 @@ let Guild_fights = {
 
 		Guild_fights.db = new Dexie(DBName);
 
-		Guild_fights.db.version(1).stores({
+		Guild_fights.db.version(21).stores({
 			snapshots: '&[player_id+gbground+time],[gbground+player_id], [date+player_id], gbground',
 			history: '&gbground'
 		});
@@ -344,9 +344,9 @@ let Guild_fights = {
 	 * @property {number} d[i].player.player_id - Unique identifier of the player.
 	 * @property {string} d[i].player.name - Name of the player.
 	 * @property {string} d[i].player.avatar - URL or identifier for the player's avatar.
-	 * @property {number} [d[i].battlesWon=0] - Number of battles won by the player (defaults to 0 if missing).
-	 * @property {number} [d[i].negotiationsWon=0] - Number of negotiations won by the player (defaults to 0 if missing).
-	 * @property {number} [d[i].attrition=0] - Attrition value for the player (defaults to 0 if missing).
+	 * @property {number} battlesWon - Number of battles won by the player (defaults to 0 if missing).
+	 * @property {number} negotiationsWon - Number of negotiations won by the player (defaults to 0 if missing).
+	 * @property {number} attrition - Attrition value for the player (defaults to 0 if missing).
 	 *
 	 * @throws {Error} Throws an error if database updating fails or if an unexpected issue occurs during execution.
 	 */
