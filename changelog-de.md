@@ -1,5 +1,13 @@
 ## Extension Changelog
 
+##### 4.4.3.1
+
+**Bugfix**
+- GG - Spielerübersicht:
+  - Versionsdiskrepanz führte zu Fehlern
+
+---
+
 ##### 4.4.3.0
 
 **Neu**
