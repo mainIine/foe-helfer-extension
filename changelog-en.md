@@ -13,6 +13,7 @@
 - Building efficiency rating:
   - The display options of the header bar moved into a clean "Options" dropdown with labels
   - The size filter shows the selected values directly on the button and is highlighted while a filter is active
+  - Inventory tooltip: if an ascended kit is in stock and the building is its direct base, the ascended step is shown as the first option with the feasible amount; the "0x" kit stock badge is gone
 - Shop Assistant:
   - Code reworked and documented
 

@@ -76,10 +76,11 @@ Object.assign(Productions, {
 	 * stay below it. Great buildings and limited (irreplaceable) buildings are
 	 * never suggested. A single building that is at least as large in both
 	 * dimensions also qualifies, as long as it wastes at most half of the new
-	 * building's area.
+	 * building's area. For variety, each accepted suggestion bans its largest
+	 * building from the following search round.
 	 *
 	 * @param {Object} newBuilding rated inventory building to place
-	 * @returns {{parts: Object[], area: number, score: number}[]} up to three combinations, exact fits first
+	 * @returns {{parts: Object[], area: number, score: number, key: string}[]} up to three structurally different combinations, best net gain first
 	 */
 	RatingFindReplacements: (newBuilding) => {
 		const L = newBuilding.size.length;
@@ -89,7 +90,7 @@ Object.assign(Productions, {
 
 		// only buildings rated worse than the new one (below it in the unfiltered list),
 		// worst first; the town hall belongs to the city and can never be replaced
-		const pool = Productions.ratedBuildings
+		const fullPool = Productions.ratedBuildings
 			.filter(b => !b.isInInventory && !b.highlight && !b.isLimited
 				&& b.type !== 'greatbuilding' && b.type !== 'main_building'
 				&& b.rating.totalScore < targetScore)
@@ -102,63 +103,93 @@ Object.assign(Productions, {
 				avail: counts[b.entityId + 'C'] || 1
 			}));
 
-		const results = [];
-		const seen = new Set();
+		// single buildings may waste at most half the target area, otherwise huge
+		// worthless buildings (e.g. a 7x3 event ship for a 2x3 spot) would top the list
+		const maxWaste = Math.ceil((L * W) / 2);
 
-		const record = (parts, area) => {
-			// the swap must pay off: the combined rating has to stay below the new building
-			const score = parts.reduce((sum, p) => sum + p.score, 0);
-			if (score >= targetScore) return;
-			const key = parts.map(p => p.building.entityId).sort().join('|');
-			if (seen.has(key)) return;
-			seen.add(key);
-			results.push({ parts: parts.slice(), area: area, score: score });
+		// one bounded search over the given candidate pool, best net gain first
+		const runSearch = (pool) => {
+			const results = [];
+			const seen = new Set();
+
+			const record = (parts, area) => {
+				// the swap must pay off: the combined rating has to stay below the new building
+				const score = parts.reduce((sum, p) => sum + p.score, 0);
+				if (score >= targetScore) return;
+				const key = parts.map(p => p.building.entityId).sort().join('|');
+				if (seen.has(key)) return;
+				seen.add(key);
+				results.push({ parts: parts.slice(), area: area, score: score, key: key });
+			};
+
+			// a single building whose footprint fully covers the new one
+			for (const p of pool) {
+				if (p.l >= L && p.w >= W && p.l * p.w - L * W <= maxWaste) record([p], p.l * p.w);
+			}
+
+			// combinations that tile the exact footprint, found via guillotine splits
+			const tiles = pool.filter(p => p.l <= L && p.w <= W).slice(0, 20);
+			let steps = 0;
+			const fill = (regions, parts) => {
+				if (steps++ > 20000 || results.length >= 40) return;
+				if (regions.length === 0) {
+					record(parts, L * W);
+					return;
+				}
+				const [region, ...rest] = regions;
+				for (const p of tiles) {
+					if (p.avail === 0 || p.l > region.l || p.w > region.w) continue;
+					p.avail--;
+					parts.push(p);
+
+					// place the piece in the region corner; the leftover L-shape can be cut two ways
+					const belowFull = { l: region.l - p.l, w: region.w };   // full width strip below the piece
+					const right = { l: p.l, w: region.w - p.w };            // gap right of the piece
+					const rightFull = { l: region.l, w: region.w - p.w };   // full length strip right of the piece
+					const below = { l: region.l - p.l, w: p.w };            // gap below the piece
+
+					for (const split of [[belowFull, right], [rightFull, below]]) {
+						fill(split.filter(r => r.l > 0 && r.w > 0).concat(rest), parts);
+						// both cut variants coincide unless the piece leaves a real L-shape
+						if (belowFull.l === 0 || rightFull.w === 0) break;
+					}
+
+					parts.pop();
+					p.avail++;
+				}
+			};
+			fill([{ l: L, w: W }], []);
+
+			// highest net gain first: the weakest buildings get sieved out of the city first
+			results.sort((a, b) => (a.score - b.score) || (a.area - b.area) || (a.parts.length - b.parts.length));
+			return results;
 		};
 
-		// a single building whose footprint fully covers the new one; capped at half
-		// the target area as waste, otherwise huge worthless buildings (e.g. a 7x3
-		// event ship for a 2x3 spot) would top the list
-		const maxWaste = Math.ceil((L * W) / 2);
-		for (const p of pool) {
-			if (p.l >= L && p.w >= W && p.l * p.w - L * W <= maxWaste) record([p], p.l * p.w);
+		// diversity: after each accepted suggestion its largest building is banned
+		// from the next round, so the suggestions differ structurally instead of
+		// being three near identical variants of the same core set
+		const suggestions = [];
+		const banned = new Set();
+
+		for (let round = 0; round < 3; round++) {
+			const results = runSearch(fullPool.filter(p => !banned.has(p.building.entityId)));
+			const combo = results.find(r => !suggestions.some(s => s.key === r.key));
+			if (!combo) break;
+			suggestions.push(combo);
+			const anchor = combo.parts.reduce((max, p) => (p.l * p.w > max.l * max.w ? p : max), combo.parts[0]);
+			banned.add(anchor.building.entityId);
 		}
 
-		// combinations that tile the exact footprint, found via guillotine splits
-		const tiles = pool.filter(p => p.l <= L && p.w <= W).slice(0, 20);
-		let steps = 0;
-		const fill = (regions, parts) => {
-			if (steps++ > 20000 || results.length >= 40) return;
-			if (regions.length === 0) {
-				record(parts, L * W);
-				return;
+		// fill up with the next best overall combos when banning dried the search up
+		if (suggestions.length < 3) {
+			for (const r of runSearch(fullPool)) {
+				if (suggestions.length >= 3) break;
+				if (!suggestions.some(s => s.key === r.key)) suggestions.push(r);
 			}
-			const [region, ...rest] = regions;
-			for (const p of tiles) {
-				if (p.avail === 0 || p.l > region.l || p.w > region.w) continue;
-				p.avail--;
-				parts.push(p);
+		}
 
-				// place the piece in the region corner; the leftover L-shape can be cut two ways
-				const belowFull = { l: region.l - p.l, w: region.w };   // full width strip below the piece
-				const right = { l: p.l, w: region.w - p.w };            // gap right of the piece
-				const rightFull = { l: region.l, w: region.w - p.w };   // full length strip right of the piece
-				const below = { l: region.l - p.l, w: p.w };            // gap below the piece
-
-				for (const split of [[belowFull, right], [rightFull, below]]) {
-					fill(split.filter(r => r.l > 0 && r.w > 0).concat(rest), parts);
-					// both cut variants coincide unless the piece leaves a real L-shape
-					if (belowFull.l === 0 || rightFull.w === 0) break;
-				}
-
-				parts.pop();
-				p.avail++;
-			}
-		};
-		fill([{ l: L, w: W }], []);
-
-		// highest net gain first: the weakest buildings get sieved out of the city first
-		results.sort((a, b) => (a.score - b.score) || (a.area - b.area) || (a.parts.length - b.parts.length));
-		return results.slice(0, 3);
+		suggestions.sort((a, b) => (a.score - b.score) || (a.area - b.area) || (a.parts.length - b.parts.length));
+		return suggestions;
 	},
 
 
@@ -190,6 +221,21 @@ Object.assign(Productions, {
 		let tt = `<div class="swap-tt"><h2>${i18n('Boxes.ProductionsRating.Replacements')}</h2>`;
 		tt += `<div class="swap-head"><div class="swap-img">${buildingImg(target.entityId)}</div>` +
 			`<p>${target.name}<br>${target.size.length}x${target.size.width} (${targetArea}), ${i18n('Boxes.ProductionsRating.Score')}: <span class="gain">${targetScore}</span></p></div>`;
+
+		// upgrade path from the kits calculation: a lower stage already stands in the
+		// city and the required kits are in stock - upgrading beats any swap
+		const cityChain = (Productions.InventoryBuildings?.[target.entityId]?.chains || [])
+			.find(c => c.chain.some(el => el.type === 'building' && el.from === 'city'));
+		if (cityChain) {
+			const stepName = (el) => {
+				if (el.type === 'upgrade') return MainParser.BuildingUpgrades[el.id]?.upgradeItem?.name || MainParser.SelectionKits[el.id]?.name || el.id;
+				if (el.from === 'selectionKit') return MainParser.SelectionKits[el.id]?.name || el.id;
+				return MainParser.CityEntities[el.id]?.name || el.id;
+			};
+			const steps = cityChain.chain.map(el =>
+				(el.count > 1 ? `${el.count}x ` : '') + stepName(el) + (el.from === 'city' ? ` (${i18n('Boxes.ProductionsRating.ReplacementInCity')})` : ''));
+			tt += `<p class="swap-upgrade">${i18n('Boxes.ProductionsRating.ReplacementUpgrade')}:<br>${steps.join(' &rarr; ')}</p>`;
+		}
 
 		if (combos.length === 0) {
 			return tt + `<p>${i18n('Boxes.ProductionsRating.ReplacementNone')}</p></div>`;

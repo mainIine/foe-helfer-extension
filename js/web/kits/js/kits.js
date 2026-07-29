@@ -1424,32 +1424,67 @@ let Kits = {
 		tooltip += `<h2>${inventoryBuilding.amount}x ${MainParser.CityEntities[id]?.name}${upgrades}</h2>`;
 		tooltip += `<span style="padding:3px 8px;">${i18n('Boxes.Tooltip.Efficiency.description')}:</span>`;
 
-		if (inventoryBuilding.includesAscended) {
+		// only show the ascended kit stock when there actually is any - an "0x" next
+		// to an ascended building straight from the inventory is just noise
+		if (inventoryBuilding.includesAscended && inventoryBuilding.ascendedStock > 0) {
 			tooltip += `<span class="inventoryChainAscendedStock">${inventoryBuilding.ascendedStock}x</span>`;
 		}
 
+		const chainItem = (c) => {
+			let html = `<div class="inventoryChainItem ${c.type} ${c.from}">`;
+			html += `<div class="inventoryChainItemImg"><img src="${srcLinks.getReward(Kits.specialCases[c.id] || c.id)}" alt=""></div>`;
+			html += '<div class="inventoryChainItemDesc">';
+
+			if (c.count > 1) {
+				html += `<span class="inventoryChainItemCount">${c.count}x</span>`;
+			}
+
+			html += `<span>${Kits.Names[c.id] || MainParser.CityEntities[c.id]?.name}</span>`;
+			html += '</div></div>';
+			return html;
+		};
+
 		tooltip += '<div class="inventoryChains">';
+
+		// direct ascended upgrade as the very first option: only when the time
+		// limited top stage is the immediate next step for THIS building and its
+		// kit is in stock
+		const maxBuilding = inventoryBuilding.maxBuilding;
+		let ascendedShown = false;
+		if (maxBuilding && maxBuilding !== id) {
+			const steps = Kits.UpgradeSchemes?.[maxBuilding]?.upgradeSteps || [];
+			const ascStep = steps[steps.length - 1];
+			const ascendedStock = Productions.InventoryBuildings?.[maxBuilding]?.ascendedStock || 0;
+
+			// feasible count: limited by the kit stock AND by how many bases exist
+			// (buildable from inventory plus already standing in the city)
+			const cityCount = Object.values(MainParser.CityMapData).filter(entity => entity.cityentity_id === id).length;
+			const possible = Math.min(ascendedStock, (inventoryBuilding.amount || 0) + cityCount);
+
+			if (ascStep?.upgradeId?.includes('ascended') && ascStep.buildingId === id && possible > 0) {
+				tooltip += '<div class="inventoryChain ascendedOption">';
+				tooltip += `<span class="inventoryChainCount">${possible}x</span>`;
+				tooltip += chainItem({id: id, type: 'building', from: cityCount > 0 ? 'city' : 'inventory', count: 1});
+				tooltip += chainItem({id: ascStep.upgradeId, type: 'upgrade', from: 'inventory', count: 1});
+				tooltip += chainItem({id: maxBuilding, type: 'building', from: 'result', count: 1});
+				tooltip += '</div>';
+				ascendedShown = true;
+			}
+		}
+
 		for (const chain of inventoryBuilding.chains || []) {
 			tooltip += '<div class="inventoryChain">';
 			tooltip += `<span class="inventoryChainCount">${chain.count}x</span>`;
 
 			for (const c of chain.chain) {
-				tooltip += `<div class="inventoryChainItem ${c.type} ${c.from}">`;
-				tooltip += `<div class="inventoryChainItemImg"><img src="${srcLinks.getReward(Kits.specialCases[c.id] || c.id)}" alt=""></div>`;
-				tooltip += '<div class="inventoryChainItemDesc">';
-
-				if (c.count > 1) {
-					tooltip += `<span class="inventoryChainItemCount">${c.count}x</span>`;
-				}
-
-				tooltip += `<span>${Kits.Names[c.id] || MainParser.CityEntities[c.id]?.name}</span>`;
-				tooltip += '</div></div>';
+				tooltip += chainItem(c);
 			}
 			tooltip += '</div>';
 		}
 		tooltip += '</div>';
 
-		if (upgradesMax !== '<span class="upgrades"></span>') {
+		// the footer stays as a hint, unless the ascended step is already shown as first option
+		if (upgradesMax !== '<span class="upgrades"></span>' && !ascendedShown) {
 			tooltip += '<div class="maxBuilding">';
 			tooltip += `<h2>${i18n('Boxes.Kits.maxBuilding')}:</h2>`;
 			tooltip += `<span class="maxBuildingDetails">${MainParser.CityEntities[inventoryBuilding.maxBuilding]?.name}${upgradesMax}</span>`;

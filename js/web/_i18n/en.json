@@ -1114,6 +1114,8 @@
     "Boxes.ProductionsRating.ReplacementsExplanation": "Shows an icon on inventory buildings that suggests on hover which worse rated city buildings could make room for the new building",
     "Boxes.ProductionsRating.ReplacementNone": "No suitable worse rated buildings found in your city",
     "Boxes.ProductionsRating.ReplacementGain": "Rating gain from the swap",
+    "Boxes.ProductionsRating.ReplacementUpgrade": "Upgrade instead of swapping &ndash; a lower stage already stands in your city and the required kits are in stock",
+    "Boxes.ProductionsRating.ReplacementInCity": "in city",
     "Boxes.ProductionsRating.NoLimitedExplanation": "Show ascended/limited buildings",
     "Boxes.ProductionsRating.OnlyMaxStageExplanation": "Show only the highest obtainable stage of each upgradeable building chain",
     "Boxes.ProductionsRating.PresetActive": "Active preset",
