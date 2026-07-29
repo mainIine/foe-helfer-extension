@@ -39,7 +39,6 @@ let _menu = {
 		'infobox',
 		'notice',
 		'technologies',
-		//'campagneMap',
 		'cityMap',
 		'settings',
 		'stats',

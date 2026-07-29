@@ -676,10 +676,6 @@ p {
 	background-image: url('../images/menu/recurringQuests.png');
 }
 
-[id$=campagneMap-Btn] {
-	display: none;
-}
-
 [id$=cityMap-Btn] span {
 	background-image: url('../images/menu/citymap.png');
 }

@@ -639,6 +639,12 @@ GetFights = () =>{
 	});
 
 
+	// Inventory delta sent e.g. after item store purchases: {id, amount, __class__: "InventoryItemUpdate"}
+	FoEproxy.addHandler('InventoryService', 'updateItem', (data, postData) => {
+		MainParser.UpdateInventoryItemAmount(data.responseData);
+	});
+
+
 	// --------------------------------------------------------------------------------------------------
 	// --------------------------------------------------------------------------------------------------
 	// Es wurde das LG eines Mitspielers angeklickt, bzw davor die Übersicht
@@ -918,7 +924,10 @@ GetFights = () =>{
 
 		if (requestClass === 'InventoryService' && requestMethod === 'getItemAmount') {
 			MainParser.UpdateInventoryAmount(responseData);
+		}
 
+		if (requestClass === 'InventoryService' && requestMethod === 'updateItem') {
+			MainParser.UpdateInventoryItemAmount(responseData);
 		}
 	});
 
@@ -1880,6 +1889,25 @@ let MainParser = {
 		let ID = Item['id'];
 		MainParser.Inventory[ID] = Item;
 		FoEproxy.triggerFoeHelperHandler('InventoryUpdated');
+	},
+
+
+	/**
+	 * Applies an InventoryItemUpdate delta ({id, amount}) to a known inventory entry.
+	 * Sent e.g. after item store purchases; unknown items get picked up by the next full sync.
+	 *
+	 * @param {{id: number, amount: number}|{id: number, amount: number}[]} update
+	 */
+	UpdateInventoryItemAmount: (update) => {
+		const updates = Array.isArray(update) ? update : [update];
+		let changed = false;
+		for (const upd of updates) {
+			if (upd?.id === undefined || upd.amount === undefined) continue;
+			if (!MainParser.Inventory[upd.id]) continue;
+			MainParser.Inventory[upd.id].inStock = upd.amount;
+			changed = true;
+		}
+		if (changed) FoEproxy.triggerFoeHelperHandler('InventoryUpdated');
 	},
 
 

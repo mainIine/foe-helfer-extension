@@ -1,5 +1,30 @@
 ## Extension Changelog
 
+##### 4.4.4.0
+
+**Neu**
+- Gebäude-Effizienzbewertung:
+  - Neue Option "Austausch-Vorschläge": Inventar-Gebäude erhalten ein ⇄-Symbol, das beim Überfahren bis zu drei Kombinationen der am schlechtesten bewerteten Stadt-Gebäude vorschlägt, deren Grundflächen die Fläche des neuen Gebäudes exakt ergeben — die Baurichtung wird beachtet (3x2 ≠ 2x3)
+
+- Shop Assistent:
+  - Gebäude-Tooltips zeigen jetzt die Gebäudegrafik unter der Kopfzeile
+
+**Update**
+- Gebäude-Effizienzbewertung:
+  - Die Anzeige-Optionen der Kopfleiste sind in ein aufgeräumtes "Optionen"-Dropdown mit Beschriftungen umgezogen
+  - Der Größen-Filter zeigt die ausgewählten Werte direkt im Knopf an und wird hervorgehoben, solange er aktiv ist
+- Shop Assistent:
+  - Code überarbeitet und dokumentiert
+
+**Bugfix**
+- Inventar:
+  - Shop-Käufe aktualisieren den Inventarbestand jetzt sofort in allen Boxen (z.B. Shop Assistent, Sets und Ketten)
+- Shop Assistent:
+  - Die Einstellung "Nur Entsperrte" überlebt jetzt ein Neuladen
+  - Freischalt-Bedingungen mit Seltenheits-Anforderung zeigen das Icon der jeweiligen Seltenheit statt immer "gewöhnlich"
+
+---
+
 ##### 4.4.3.1
 
 **Bugfix**
