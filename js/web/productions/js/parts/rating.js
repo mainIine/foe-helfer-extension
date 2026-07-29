@@ -75,7 +75,8 @@ Object.assign(Productions, {
 	 * than the new one qualify, and the combined rating of a suggestion must
 	 * stay below it. Great buildings and limited (irreplaceable) buildings are
 	 * never suggested. A single building that is at least as large in both
-	 * dimensions also qualifies.
+	 * dimensions also qualifies, as long as it wastes at most half of the new
+	 * building's area.
 	 *
 	 * @param {Object} newBuilding rated inventory building to place
 	 * @returns {{parts: Object[], area: number, score: number}[]} up to three combinations, exact fits first
@@ -114,9 +115,12 @@ Object.assign(Productions, {
 			results.push({ parts: parts.slice(), area: area, score: score });
 		};
 
-		// a single building whose footprint fully covers the new one
+		// a single building whose footprint fully covers the new one; capped at half
+		// the target area as waste, otherwise huge worthless buildings (e.g. a 7x3
+		// event ship for a 2x3 spot) would top the list
+		const maxWaste = Math.ceil((L * W) / 2);
 		for (const p of pool) {
-			if (p.l >= L && p.w >= W) record([p], p.l * p.w);
+			if (p.l >= L && p.w >= W && p.l * p.w - L * W <= maxWaste) record([p], p.l * p.w);
 		}
 
 		// combinations that tile the exact footprint, found via guillotine splits
