@@ -13,14 +13,13 @@
 - Gebäude-Effizienzbewertung:
   - Die Anzeige-Optionen der Kopfleiste sind in ein aufgeräumtes "Optionen"-Dropdown mit Beschriftungen umgezogen
   - Der Größen-Filter zeigt die ausgewählten Werte direkt im Knopf an und wird hervorgehoben, solange er aktiv ist
-- Shop Assistent:
-  - Code überarbeitet und dokumentiert
+  - Inventar-Tooltip - Ist ein Erhaben-Kit vorrätig und das Gebäude die direkte Basis, wird der Erhaben-Schritt als erste Option mit machbarer Anzahl angezeigt
 
 **Bugfix**
 - Inventar:
   - Shop-Käufe aktualisieren den Inventarbestand jetzt sofort in allen Boxen (z.B. Shop Assistent, Sets und Ketten)
 - Shop Assistent:
-  - Die Einstellung "Nur Entsperrte" überlebt jetzt ein Neuladen
+  - Die Einstellung "Nur entsperrte" überlebt jetzt ein Neuladen
   - Freischalt-Bedingungen mit Seltenheits-Anforderung zeigen das Icon der jeweiligen Seltenheit statt immer "gewöhnlich"
 
 ---

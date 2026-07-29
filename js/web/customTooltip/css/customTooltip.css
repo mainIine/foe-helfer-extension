@@ -222,6 +222,10 @@ td:nth-child(3) .HXBuilding .inhabitant {
     align-items: stretch;
 	border-top: 2px solid #0003;
 }
+.inventoryChain.ascendedOption{
+	background-color: var(--table-bg-success);
+	border-radius: 3px;
+}
 .inventoryChain:first-child{
     margin-top: 5px;
 }

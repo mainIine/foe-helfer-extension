@@ -793,6 +793,13 @@ input[id*="ProdPerTile"] {
 .swap-tt .loss {
 	color: var(--text-red);
 }
+.swap-tt .swap-upgrade {
+	margin: 4px 0;
+	padding: 4px 6px;
+	background-color: var(--table-bg-success);
+	color: var(--success);
+	border-radius: 3px;
+}
 .swap-tt .swap-head {
 	display: flex;
 	align-items: center;
