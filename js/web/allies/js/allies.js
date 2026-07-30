@@ -340,6 +340,7 @@ let Allies = {
 			}
 			else {
 				rooms['0#' + unassigned] = {
+					allyId: x.allyId,
 					allyRarity: x.rarity?.value || '',
 					allyName: Allies.meta[x.allyId]?.name || '',
 					...levelData(x),
@@ -355,6 +356,7 @@ let Allies = {
 					buildingName: MainParser.CityEntities[b.metaID].name,
 					buildingMeta: b.metaID,
 					roomRarity: r.rarity?.value || Object.keys(Allies.rarities).join('#'),
+					allyId: r.ally?.allyId || null,
 					allyRarity: r.ally?.rarity?.value || '',
 					allyName: Allies.meta[r.ally?.allyId]?.name || '',
 					...(r.ally ? levelData(r.ally) : { allyLevel: null, allyBoosts: null }),
@@ -371,6 +373,7 @@ let Allies = {
 				rooms['0#' + unassigned] = {
 					fragmentsAmount: x.inStock,
 					fragmentsNeeded: x.item.reward.requiredAmount,
+					allyId: x.item.reward.assembledReward.iconAssetName || null,
 					allyRarity: x.item.reward.assembledReward.rarity?.value || '',
 					allyLevel: x.item.reward.assembledReward.level || null,
 					allyBoosts: x.item.reward.assembledReward.boosts || null,
@@ -439,7 +442,7 @@ let Allies = {
 			rarities.push(r.allyRarity);
 			rarities = rarities.map(x => 'Rarity-' + x);
 
-			const rowClasses = ['allyRoomRow', ...rarities];
+			const rowClasses = ['allyRoomRow', 'vertical-middle', ...rarities];
 			if (r.isMax) rowClasses.push('ally-max');
 
 			const searchText = ((r.allyName || '') + ' ' + (r.buildingName || '')).toLowerCase().replace(/"/g, '&quot;');
@@ -453,6 +456,7 @@ let Allies = {
 
 			html += `<tr class="${rowClasses.join(' ')}" data-search="${searchText}">
 					<td style="white-space:nowrap">
+						${Allies.portrait(r.allyId)}
 						${Allies.rarityStars(r.allyRarity)}
 						${r.allyName || ''}${fragments}
 					</td>`;
@@ -574,6 +578,39 @@ let Allies = {
 
 			$(e).toggle(matchesRarity && matchesTerm);
 		});
+	},
+
+
+	/**
+	 * Renders the portrait of an ally as a small image.
+	 * On hover a tooltip with the large artwork is shown.
+	 *
+	 * @param {?string} allyId Ally meta id (e.g. "alexander"), also used as the portrait asset name
+	 * @returns {string} HTML string with the portrait image, or an empty string
+	 */
+	portrait: (allyId) => {
+		if (!allyId) return '';
+
+		return `<img class="ally-portrait fh-tooltip" data-ally="${allyId}" data-callback_tt="Allies.portraitTT" src="${srcLinks.get(`/historical_allies/portraits/historical_allies_portrait_ally_${allyId}.png`, true)}" alt="">`;
+	},
+
+
+	/**
+	 * Tooltip callback for ally portraits: shows the large artwork of the ally.
+	 *
+	 * @param {Object} e Pointer event, its target carries the ally meta id in `data-ally`
+	 * @returns {string} HTML string with the large artwork, or an empty string
+	 */
+	portraitTT: (e) => {
+		let allyId = e?.currentTarget?.dataset?.ally;
+		if (!allyId) return '';
+
+		let name = Allies.meta?.[allyId]?.name;
+
+		return `<div class="ally-portrait-tt">
+				${name ? `<h2>${name}</h2>` : ''}
+				<img src="${srcLinks.get(`/historical_allies/allies_large/historical_allies_big_${allyId}.png`, true)}" alt="">
+			</div>`;
 	},
 
 

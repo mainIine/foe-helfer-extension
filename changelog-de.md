@@ -15,6 +15,11 @@
   - Der Größen-Filter zeigt die ausgewählten Werte direkt im Knopf an und wird hervorgehoben, solange er aktiv ist
   - Inventar-Tooltip - Ist ein Erhaben-Kit vorrätig und das Gebäude die direkte Basis, wird der Erhaben-Schritt als erste Option mit machbarer Anzahl angezeigt
 
+- Historische Verbündete:
+  - Die Liste zeigt jetzt die Portraits der Verbündeten — auch bei unzugewiesenen Verbündeten und Fragmenten
+  - Beim Überfahren eines Portraits erscheint das große Artwork des Verbündeten als Tooltip
+  - Die Zeilen der Liste sind jetzt vertikal mittig ausgerichtet
+
 **Bugfix**
 - Inventar:
   - Shop-Käufe aktualisieren den Inventarbestand jetzt sofort in allen Boxen (z.B. Shop Assistent, Sets und Ketten)

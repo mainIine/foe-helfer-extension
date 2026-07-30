@@ -30,6 +30,27 @@
 	white-space: nowrap;
 }
 
+/* ally portrait in the name column */
+#AllyListBody img.ally-portrait {
+	height: 32px;
+	margin-right: 3px;
+	vertical-align: middle;
+}
+
+/* hover tooltip with the large ally artwork (rendered in #TooltipContainer) */
+.ally-portrait-tt {
+	text-align: center;
+}
+
+.ally-portrait-tt h2 {
+	margin: 0 0 3px;
+}
+
+.ally-portrait-tt img {
+	width: 300px;
+	height: auto;
+}
+
 /* progress bar below level (XP) and fragment counts */
 #AllyListBody .xp-bar {
 	height: 3px;
