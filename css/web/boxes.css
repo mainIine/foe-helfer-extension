@@ -527,6 +527,10 @@ table.foe-table.vertical-top td {
 	vertical-align: top;
 }
 
+tr.vertical-middle td {
+	vertical-align: middle;
+}
+
 table.foe-table tr th,
 table.foe-table tr td, ul.foe-table li {
 	padding: 2px 5px;

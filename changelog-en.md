@@ -14,6 +14,12 @@
   - The display options of the header bar moved into a clean "Options" dropdown with labels
   - The size filter shows the selected values directly on the button and is highlighted while a filter is active
   - Inventory tooltip: if an ascended kit is in stock and the building is its direct base, the ascended step is shown as the first option with the feasible amount; the "0x" kit stock badge is gone
+
+- Historical Allies:
+  - The list now shows the allies' portraits — including unassigned allies and fragments
+  - Hovering a portrait shows the ally's large artwork as a tooltip
+  - The list rows are now vertically centered
+
 - Shop Assistant:
   - Code reworked and documented
 
