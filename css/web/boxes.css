@@ -264,6 +264,22 @@ a[target="_blank"] svg {
 	filter: hue-rotate(210deg);
 }
 
+.btn.webrequest {
+    background-image: url('../../js/web/webrequest/images/webrequest.svg'), var(--btn-bg);
+    background-size: 75%, cover;
+    background-repeat: no-repeat, repeat;
+    background-position: center;
+	width: 22px;
+	min-height: 22px;
+}
+
+.btn.webrequest:hover, .btn.webrequest:active {
+    background-image: url('../../js/web/webrequest/images/webrequest.svg'), var(--btn-bg-active);
+    background-size: 75%, cover;
+    background-repeat: no-repeat, repeat;
+    background-position: center;
+}
+
 .btn-group {
 	display: inline-flex;
 }
@@ -797,6 +813,11 @@ p {
 }
 [id$=discord-Btn] span {
 	background-image: url('../images/menu/discord.png');
+}
+
+[id$=webRequest-Btn] span {
+	background-image: url('../../js/web/webrequest/images/webrequest.svg');
+	background-size: 65%;
 }
 
 /***********************************************************************************/

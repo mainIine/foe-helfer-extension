@@ -30,6 +30,7 @@ let _menu = {
 	
 	Items: [
 		//'calculator',
+		'webRequest',
 		'inventory',
 		'partCalc',
 		'outpost',
@@ -322,6 +323,7 @@ let _menu = {
 		{ id: 'musicControl', title: i18n('Menu.MusicControl.Title'), description: i18n('Menu.MusicControl.Desc') },
 		{ id: 'music', title: i18n('Menu.Music.Title'), description: i18n('Menu.Music.Desc') },
 		{ id: 'discord', title: i18n('Menu.Discord.Title'), description: i18n('Menu.Discord.Desc') },
+		{ id: 'webRequest', title: i18n('Menu.WebRequest.Title'), description: i18n('Menu.WebRequest.Desc') },
 		{ id: 'compare_friends_threads', title: i18n('Menu.CompareFriendsThreads.Title'), description: i18n('Menu.CompareFriendsThreads.Desc') },
 		{ id: 'castle', title: i18n('Menu.Castle.Title'), description: i18n('Menu.Castle.Desc') },
 		{ id: 'gexStat', title: i18n('Menu.GexStat.Title'), description: i18n('Menu.GexStat.Desc') },
@@ -811,6 +813,16 @@ let _menu = {
 
 		let btn_sp = $('<span />').bind('click', function () {
 			Discord.BuildBox();
+		});
+
+		return btn.append(btn_sp);
+	},
+
+	webRequest_Btn: () => {
+		let btn = _menu.MakeButton('webRequest');
+
+		let btn_sp = $('<span />').bind('click', function () {
+			WebRequest.BuildBox();
 		});
 
 		return btn.append(btn_sp);

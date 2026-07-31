@@ -8,6 +8,12 @@
   - With an active filter every tile shows the value of the selected property, sortable ascending/descending; building fragments show their progress and are rated like their assembled building
   - Building tooltips like in the efficiency rating, automatic refresh on inventory changes; Historical Allies stay in their own box
 
+- Web Requests:
+  - New module: send battleground sector data to your own server — as GET with URL parameters or as POST with a JSON or form body ($_GET/$_POST)
+  - Freely configurable profiles with placeholders (#name, #time, #attrition, #guild, #vp, #neighbors and more), preview and test requests with sample data
+  - Requests are fire-and-forget: sent without waiting for a response, no CORS setup needed on the server
+  - Selectable in the Guild Battlegrounds settings: send single sectors or the whole selection next to the Discord buttons
+
 ---
 
 ##### 4.4.4.0

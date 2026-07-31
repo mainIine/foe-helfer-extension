@@ -8,6 +8,12 @@
   - Bei aktivem Filter zeigt jede Kachel den Wert der gewählten Eigenschaft, auf- und absteigend sortierbar; Gebäude-Fragmente zeigen ihren Fortschritt und werden wie ihr fertiges Gebäude bewertet
   - Gebäude-Tooltips wie in der Effizienzbewertung, automatische Aktualisierung bei Inventar-Änderungen; Historische Verbündete bleiben ihrer eigenen Box vorbehalten
 
+- Web Requests:
+  - Neues Modul: schicke Sektor-Daten aus den Gildengefechten an deinen eigenen Server — als GET mit URL-Parametern oder als POST mit JSON- oder Formular-Body ($_GET/$_POST)
+  - Frei konfigurierbare Profile mit Platzhaltern (#name, #time, #attrition, #guild, #vp, #neighbors u.v.m.), Vorschau und Test-Requests mit Beispieldaten
+  - Requests sind fire-and-forget: Es wird nicht auf eine Antwort gewartet, der Server braucht keine CORS-Konfiguration
+  - In den Einstellungen der Gildengefechte auswählbar: einzelne Sektoren oder die ganze Auswahl neben den Discord-Buttons versenden
+
 ---
 
 ##### 4.4.4.0
