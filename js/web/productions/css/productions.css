@@ -11,16 +11,16 @@
  * **************************************************************************************
  */
 
- #Productions {
+#Productions {
 	top: 100px;
 	left: 100px;
 	width: 820px;
 	height: 500px;
 }
 
- #ProductionsRating {
-	height: 95vh;
-	width: 95vw;
+#ProductionsRating {
+	height: 65vh;
+	width: 65vw;
 }
 
 #ProductionsRatingBody {

@@ -904,30 +904,33 @@ GetFights = () =>{
 
 
 	// --------------------------------------------------------------------------------------------------
+	// WS frames may bundle several ServerResponse objects - process every message, not just the first
 	FoEproxy.addRawWsHandler((data) => {
-		let Msg = data?.[0];
-		if (!Msg || !Msg.requestClass || !Msg.responseData) return;
+		const messages = Array.isArray(data) ? data : [data];
 
-		let requestClass = Msg.requestClass;
-		let requestMethod = Msg.requestMethod;
-		let responseData = Msg.responseData;
+		for (const Msg of messages) {
+			if (!Msg?.requestClass || !Msg.responseData) continue;
 
-		// Goods Update after accepted Trade
-		if (requestMethod === "newEvent" && responseData.type === "trade_accepted") {
-			ResourceStock[responseData.need.good_id] += responseData.need.value;
-			FoEproxy.triggerFoeHelperHandler("ResourcesUpdated");
-		}
-		// Inventory Update, e.g. when receiving FP packages from GB leveling	
-		if (requestClass === 'InventoryService' && requestMethod === 'getItem') {
-			MainParser.UpdateInventoryItem(responseData);
-		}
+			const { requestClass, requestMethod, responseData } = Msg;
 
-		if (requestClass === 'InventoryService' && requestMethod === 'getItemAmount') {
-			MainParser.UpdateInventoryAmount(responseData);
-		}
+			// Goods Update after accepted Trade
+			if (requestMethod === 'newEvent' && responseData.type === 'trade_accepted') {
+				ResourceStock[responseData.need.good_id] += responseData.need.value;
+				FoEproxy.triggerFoeHelperHandler('ResourcesUpdated');
+			}
 
-		if (requestClass === 'InventoryService' && requestMethod === 'updateItem') {
-			MainParser.UpdateInventoryItemAmount(responseData);
+			// Inventory Update, e.g. when receiving FP packages from GB leveling
+			if (requestClass === 'InventoryService' && requestMethod === 'getItem') {
+				MainParser.UpdateInventoryItem(responseData);
+			}
+
+			if (requestClass === 'InventoryService' && requestMethod === 'getItemAmount') {
+				MainParser.UpdateInventoryAmount(responseData);
+			}
+
+			if (requestClass === 'InventoryService' && requestMethod === 'updateItem') {
+				MainParser.UpdateInventoryItemAmount(responseData);
+			}
 		}
 	});
 

@@ -230,7 +230,7 @@ let CityMap = {
 				CityMap.map.scale = unit;
 			}
 
-			$('#map-container').scrollTo($('.highlighted'), 800, { offset: { left: -280, top: -280 }, easing: 'swing' });
+			CityMap.FocusEntities($('.entity.highlighted').toArray());
 		});
 
 		// Buttons for filter, meta info and submit box
@@ -953,6 +953,43 @@ let CityMap = {
 			container: 'body',
 			html: true,
 		});
+	},
+
+
+	/**
+	 * Centers the map view on the given entity elements by moving the draggable
+	 * grid. The rendered bounding boxes are used, so zoom, the skew perspective
+	 * and the current drag position are all taken into account. A single entity
+	 * ends up in the middle of the viewport, multiple entities are centered on
+	 * their common bounding box.
+	 *
+	 * @param {HTMLElement[]} entities - The map entity elements to focus.
+	 * @param {number} [duration=800] - Animation duration in milliseconds.
+	 */
+	FocusEntities: (entities, duration = 800) => {
+		const container = document.getElementById('map-container');
+		if (!container || entities.length === 0) return;
+
+		const containerRect = container.getBoundingClientRect();
+		const bounds = entities.reduce((acc, entity) => {
+			const rect = entity.getBoundingClientRect();
+			return {
+				left: Math.min(acc.left, rect.left),
+				top: Math.min(acc.top, rect.top),
+				right: Math.max(acc.right, rect.right),
+				bottom: Math.max(acc.bottom, rect.bottom)
+			};
+		}, { left: Infinity, top: Infinity, right: -Infinity, bottom: -Infinity });
+
+		// shift the grid so the center of the bounding box hits the viewport center
+		const dx = (containerRect.left + containerRect.width / 2) - (bounds.left + bounds.right) / 2,
+			dy = (containerRect.top + containerRect.height / 2) - (bounds.top + bounds.bottom) / 2;
+
+		const grid = $('#grid-outer');
+		grid.stop(true).animate({
+			left: (parseFloat(grid.css('left')) || 0) + dx,
+			top: (parseFloat(grid.css('top')) || 0) + dy
+		}, duration, 'swing');
 	},
 
 

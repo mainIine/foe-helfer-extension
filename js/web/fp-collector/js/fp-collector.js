@@ -22,22 +22,23 @@ FoEproxy.addHandler('TimedSpecialRewardService', 'getTimedSpecial', (data, postD
 	}
 });
 
-// - QI 
+// - QI
 FoEproxy.addHandler('RewardService', 'collectRewardSet', (data, postData) => {
 	const d = data.responseData;
-	let event = null, 
-		notes = null;
 
-	if (d.context.toLowerCase().includes("guild_raids")) {
-		event = d.context.toLowerCase()
-	}
+	// since game 1.340 the response does not always carry a context field
+	const rewards = d?.reward?.rewards;
+	if (!Array.isArray(rewards)) return;
 
-	for (const reward of d.reward.rewards) {
+	const context = d.context?.toLowerCase() ?? '';
+	const event = context.includes('guild_raids') ? context : null;
+
+	for (const reward of rewards) {
 		if (reward.subType !== 'strategy_points') continue;
 
 		StrategyPoints.insertIntoDB({
 			event: event,
-			notes: notes ? notes : '',
+			notes: '',
 			amount: reward.amount,
 			date: moment(MainParser.getCurrentDate()).format('YYYY-MM-DD')
 		});
