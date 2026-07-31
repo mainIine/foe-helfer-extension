@@ -1,5 +1,44 @@
 ## Extension Changelog
 
+##### 4.4.4.0
+
+**New**
+- Building efficiency rating:
+  - New option "Replacement suggestions": inventory buildings get a ⇄ icon that suggests on hover up to three combinations of the worst rated city buildings whose footprints exactly tile the area of the new building — orientation is respected (3x2 ≠ 2x3); Great Buildings and limited buildings are never suggested
+
+- Shop Assistant:
+  - Building tooltips now show the building image below the header
+
+**Update**
+- Building efficiency rating:
+  - The display options of the header bar moved into a clean "Options" dropdown with labels
+  - The size filter shows the selected values directly on the button and is highlighted while a filter is active
+  - Inventory tooltip: if an ascended kit is in stock and the building is its direct base, the ascended step is shown as the first option with the feasible amount; the "0x" kit stock badge is gone
+
+- Historical Allies:
+  - The list now shows the allies' portraits — including unassigned allies and fragments
+  - Hovering a portrait shows the ally's large artwork as a tooltip
+  - The list rows are now vertically centered
+
+- Shop Assistant:
+  - Code reworked and documented
+
+**Bugfix**
+- City Builder:
+  - Buildings requiring a two-lane street now sit along double-width road strips (2x2 blocks) leading all the way to the town hall — drawn darker on the map
+  - Chain buildings now stand side by side in chain order (left to right), only the chain head needs the street connection
+- City map:
+  - "Show on map" now correctly centers the view on the building — even at the city edge and in the cavalier perspective; with multiple buildings it centers on the middle of the group
+- Inventory:
+  - Store purchases now update the inventory stock immediately in all boxes (e.g. Shop Assistant, Sets and Chains)
+- Shop Assistant:
+  - The "Only unlocked" setting now survives a reload
+  - Unlock conditions with a rarity requirement show the icon of the actual rarity instead of always "common"
+- Forge points:
+  - FP Collector: rewards in the new format of game update 1.340 (without a "context" field) are recorded again
+
+---
+
 ##### 4.4.3.1
 
 **Bugfix**

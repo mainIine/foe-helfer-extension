@@ -1,5 +1,40 @@
 ## Extension Changelog
 
+##### 4.4.4.0
+
+**Neu**
+- Gebäude-Effizienzbewertung:
+  - Neue Option "Austausch-Vorschläge": Inventar-Gebäude erhalten ein ⇄-Symbol, das beim Überfahren bis zu drei Kombinationen der am schlechtesten bewerteten Stadt-Gebäude vorschlägt, deren Grundflächen die Fläche des neuen Gebäudes exakt ergeben — die Baurichtung wird beachtet (3x2 ≠ 2x3)
+
+- Shop Assistent:
+  - Gebäude-Tooltips zeigen jetzt die Gebäudegrafik unter der Kopfzeile
+
+**Update**
+- Gebäude-Effizienzbewertung:
+  - Die Anzeige-Optionen der Kopfleiste sind in ein aufgeräumtes "Optionen"-Dropdown mit Beschriftungen umgezogen
+  - Der Größen-Filter zeigt die ausgewählten Werte direkt im Knopf an und wird hervorgehoben, solange er aktiv ist
+  - Inventar-Tooltip - Ist ein Erhaben-Kit vorrätig und das Gebäude die direkte Basis, wird der Erhaben-Schritt als erste Option mit machbarer Anzahl angezeigt
+
+- Historische Verbündete:
+  - Die Liste zeigt jetzt die Portraits der Verbündeten — auch bei unzugewiesenen Verbündeten und Fragmenten
+  - Beim Überfahren eines Portraits erscheint das große Artwork des Verbündeten als Tooltip
+
+**Bugfix**
+- City Builder:
+  - Gebäude mit 2-spurigem Straßenbedarf stehen jetzt an doppelt breiten Straßenzügen (2x2-Blöcke), die lückenlos bis zum Rathaus führen — auf der Karte dunkler dargestellt
+  - Kettengebäude stehen jetzt in Kettenreihenfolge direkt nebeneinander (von links nach rechts), nur der Kettenkopf braucht den Straßenanschluss
+- Stadtkarte:
+  - "Auf der Karte zeigen" zentriert die Ansicht jetzt korrekt auf das Gebäude — auch am Stadtrand und in der Schrägansicht; bei mehreren Gebäuden auf die Mitte der Gruppe
+- Inventar:
+  - Shop-Käufe aktualisieren den Inventarbestand jetzt sofort in allen Boxen (z.B. Shop Assistent, Sets und Ketten)
+- Shop Assistent:
+  - Die Einstellung "Nur entsperrte" überlebt jetzt ein Neuladen
+  - Freischalt-Bedingungen mit Seltenheits-Anforderung zeigen das Icon der jeweiligen Seltenheit statt immer "gewöhnlich"
+- Forge-Punkte:
+  - FP-Sammler: Belohnungen im neuen Format von Spiel-Update 1.340 (ohne "context"-Feld) werden wieder erfasst
+
+---
+
 ##### 4.4.3.1
 
 **Bugfix**

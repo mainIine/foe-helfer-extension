@@ -11,16 +11,16 @@
  * **************************************************************************************
  */
 
- #Productions {
+#Productions {
 	top: 100px;
 	left: 100px;
 	width: 820px;
 	height: 500px;
 }
 
- #ProductionsRating {
-	height: 95vh;
-	width: 95vw;
+#ProductionsRating {
+	height: 65vh;
+	width: 65vw;
 }
 
 #ProductionsRatingBody {
@@ -689,13 +689,135 @@ input[id*="ProdPerTile"] {
 }
 
 #buildingsize {
-	width: 45px;
+	min-width: 45px;
+	width: max-content;
 	background-color: var(--beige);
 	color: var(--text-darker);
 	text-shadow: none;
 	overflow: visible;
 	position: relative;
 	border-radius: 2px;
+	white-space: nowrap;
+}
+
+/* highlight while a size filter is active */
+#buildingsize.filtered {
+	background-color: var(--sunflower);
+	font-weight: 600;
+}
+
+/* options dropdown in the settings bar */
+#ratingOptions {
+	position: relative;
+}
+#ProductionsRatingBody #ratingOptions .dropdown-panel {
+	display: none;
+	position: absolute;
+	top: calc(100% + 2px);
+	left: 0;
+	z-index: 2200;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 4px;
+	padding: 8px 10px;
+	background-color: var(--beige);
+	color: var(--text-darker);
+	text-shadow: none;
+	border-radius: 3px;
+	box-shadow: 0 3px 8px rgba(0, 0, 0, 0.6);
+	white-space: nowrap;
+}
+#ProductionsRatingBody #ratingOptions.open .dropdown-panel {
+	display: flex;
+}
+#ProductionsRatingBody #ratingOptions .dropdown-panel label {
+	margin-right: 0;
+}
+
+/* swap icon: replacement suggestions for inventory buildings */
+#ProductionsRatingBody .swap-suggest {
+	display: none;
+	margin-right: 10px;
+}
+#ProductionsRatingBody .swap-suggest::after,
+#ProductionsRatingBody .swap-icon::after {
+	content: "\21C4";
+	font-size: 15px;
+	font-weight: 700;
+	color: var(--sunflower);
+}
+#ProductionsRatingBody .swap-icon::after {
+	color: var(--text-darker);
+	padding-right: 3px;
+}
+#ProductionsRatingBody.replacements tr.inventory-building .swap-suggest {
+	display: inline-block;
+}
+
+/* replacement tooltip: spinner while the suggestions are computed */
+.swap-loading {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 90px;
+	height: 50px;
+}
+.swap-loading div {
+	width: 22px;
+	height: 22px;
+	border: 3px solid var(--beige);
+	border-top-color: transparent;
+	border-radius: 50%;
+	animation: swap-spin 0.8s linear infinite;
+}
+@keyframes swap-spin {
+	to { transform: rotate(360deg); }
+}
+
+/* replacement tooltip content: grows with the widest line, capped by the viewport */
+.swap-tt {
+	width: max-content;
+	max-width: min(90vw, 700px);
+}
+.swap-tt .swap-head p,
+.swap-tt td {
+	white-space: nowrap;
+}
+.swap-tt table {
+	margin-top: 4px;
+	width: 100%;
+}
+.swap-tt .gain {
+	color: var(--success);
+}
+.swap-tt .loss {
+	color: var(--text-red);
+}
+.swap-tt .swap-upgrade {
+	margin: 4px 0;
+	padding: 4px 6px;
+	background-color: var(--table-bg-success);
+	color: var(--success);
+	border-radius: 3px;
+}
+.swap-tt .swap-head {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+.swap-tt .swap-head .swap-img {
+	min-width: 90px;
+	text-align: center;
+}
+.swap-tt .swap-head img {
+	max-width: 120px;
+	max-height: 100px;
+}
+.swap-tt td img {
+	max-height: 26px;
+	max-width: 40px;
+	vertical-align: middle;
+	margin-right: 4px;
 }
 
 #buildingsize ul:hover {

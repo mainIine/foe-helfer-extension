@@ -145,3 +145,13 @@
 #shopAssist .currencyFiltered {
 	display: none;
 }
+
+/* building image row in the building tooltip */
+.buildingTT .buildingTTImg {
+	text-align: center;
+	vertical-align: bottom;
+}
+.buildingTT .buildingTTImg img {
+	max-width: 150px;
+	max-height: 130px;
+}

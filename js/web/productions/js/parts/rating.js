@@ -23,6 +23,245 @@ Object.assign(Productions, {
 	RatingSearchTerm: '',
 
 
+	/**
+	 * Reflects the active size filter in the dropdown label (e.g. "Größe: 4, 9")
+	 * and highlights the dropdown while a filter is set
+	 */
+	RatingUpdateSizeLabel: () => {
+		const sizes = [...Productions.RatingFilteredSizes].sort((a, b) => a - b);
+		const label = i18n('Boxes.Productions.Headings.size') + (sizes.length > 0 ? ': ' + sizes.join(', ') : '');
+		$('#buildingsize > span').text(label);
+		$('#buildingsize').toggleClass('filtered', sizes.length > 0);
+	},
+
+
+	/** @type {Object<string, string|null>} cached replacement tooltips per inventory building, reset on each table rebuild */
+	RatingReplacementCache: {},
+
+	/** @type {Object<string, number>} city/inventory counts per entity id ("<id>C" / "<id>I"), filled by CalcRatingBody */
+	RatingBuildingCount: {},
+
+
+	/**
+	 * Tooltip callback for the swap icon on inventory buildings: shows a spinner,
+	 * then up to three suggestions which worse rated city buildings could make
+	 * room for the hovered building
+	 *
+	 * @param {Object} e pointer event whose currentTarget carries data-entity
+	 * @returns {Promise<string|null|undefined>} tooltip HTML
+	 */
+	ReplacementTT: async (e) => {
+		const entityId = e?.currentTarget?.dataset?.entity;
+		if (!entityId) return;
+
+		if (Productions.RatingReplacementCache[entityId] === undefined) {
+			// show the spinner first; the search only runs if the cursor is still on the icon afterwards
+			Tooltips.set('<div class="swap-loading"><div></div></div>');
+
+			await new Promise(resolve => setTimeout(resolve, 350));
+
+			Productions.RatingReplacementCache[entityId] = Productions.RatingReplacementContent(entityId);
+		}
+		return Productions.RatingReplacementCache[entityId];
+	},
+
+
+	/**
+	 * Searches combinations of worse rated city buildings whose footprints
+	 * exactly tile the footprint of the given inventory building. Matching is
+	 * done purely by dimensions and orientation is respected: a 3x2 building is
+	 * NOT interchangeable with a 2x3 one. Candidates are taken from the bottom
+	 * of the unfiltered list (worst rated first); only buildings rated worse
+	 * than the new one qualify, and the combined rating of a suggestion must
+	 * stay below it. Great buildings and limited (irreplaceable) buildings are
+	 * never suggested. A single building that is at least as large in both
+	 * dimensions also qualifies, as long as it wastes at most half of the new
+	 * building's area. For variety, each accepted suggestion bans its largest
+	 * building from the following search round.
+	 *
+	 * @param {Object} newBuilding rated inventory building to place
+	 * @returns {{parts: Object[], area: number, score: number, key: string}[]} up to three structurally different combinations, best net gain first
+	 */
+	RatingFindReplacements: (newBuilding) => {
+		const L = newBuilding.size.length;
+		const W = newBuilding.size.width;
+		const targetScore = newBuilding.rating.totalScore;
+		const counts = Productions.RatingBuildingCount || {};
+
+		// only buildings rated worse than the new one (below it in the unfiltered list),
+		// worst first; the town hall belongs to the city and can never be replaced
+		const fullPool = Productions.ratedBuildings
+			.filter(b => !b.isInInventory && !b.highlight && !b.isLimited
+				&& b.type !== 'greatbuilding' && b.type !== 'main_building'
+				&& b.rating.totalScore < targetScore)
+			.sort((a, b) => a.rating.totalScore - b.rating.totalScore)
+			.map(b => ({
+				building: b,
+				l: b.size.length,
+				w: b.size.width,
+				score: b.rating.totalScore,
+				avail: counts[b.entityId + 'C'] || 1
+			}));
+
+		// single buildings may waste at most half the target area, otherwise huge
+		// worthless buildings (e.g. a 7x3 event ship for a 2x3 spot) would top the list
+		const maxWaste = Math.ceil((L * W) / 2);
+
+		// one bounded search over the given candidate pool, best net gain first
+		const runSearch = (pool) => {
+			const results = [];
+			const seen = new Set();
+
+			const record = (parts, area) => {
+				// the swap must pay off: the combined rating has to stay below the new building
+				const score = parts.reduce((sum, p) => sum + p.score, 0);
+				if (score >= targetScore) return;
+				const key = parts.map(p => p.building.entityId).sort().join('|');
+				if (seen.has(key)) return;
+				seen.add(key);
+				results.push({ parts: parts.slice(), area: area, score: score, key: key });
+			};
+
+			// a single building whose footprint fully covers the new one
+			for (const p of pool) {
+				if (p.l >= L && p.w >= W && p.l * p.w - L * W <= maxWaste) record([p], p.l * p.w);
+			}
+
+			// combinations that tile the exact footprint, found via guillotine splits
+			const tiles = pool.filter(p => p.l <= L && p.w <= W).slice(0, 20);
+			let steps = 0;
+			const fill = (regions, parts) => {
+				if (steps++ > 20000 || results.length >= 40) return;
+				if (regions.length === 0) {
+					record(parts, L * W);
+					return;
+				}
+				const [region, ...rest] = regions;
+				for (const p of tiles) {
+					if (p.avail === 0 || p.l > region.l || p.w > region.w) continue;
+					p.avail--;
+					parts.push(p);
+
+					// place the piece in the region corner; the leftover L-shape can be cut two ways
+					const belowFull = { l: region.l - p.l, w: region.w };   // full width strip below the piece
+					const right = { l: p.l, w: region.w - p.w };            // gap right of the piece
+					const rightFull = { l: region.l, w: region.w - p.w };   // full length strip right of the piece
+					const below = { l: region.l - p.l, w: p.w };            // gap below the piece
+
+					for (const split of [[belowFull, right], [rightFull, below]]) {
+						fill(split.filter(r => r.l > 0 && r.w > 0).concat(rest), parts);
+						// both cut variants coincide unless the piece leaves a real L-shape
+						if (belowFull.l === 0 || rightFull.w === 0) break;
+					}
+
+					parts.pop();
+					p.avail++;
+				}
+			};
+			fill([{ l: L, w: W }], []);
+
+			// highest net gain first: the weakest buildings get sieved out of the city first
+			results.sort((a, b) => (a.score - b.score) || (a.area - b.area) || (a.parts.length - b.parts.length));
+			return results;
+		};
+
+		// diversity: after each accepted suggestion its largest building is banned
+		// from the next round, so the suggestions differ structurally instead of
+		// being three near identical variants of the same core set
+		const suggestions = [];
+		const banned = new Set();
+
+		for (let round = 0; round < 3; round++) {
+			const results = runSearch(fullPool.filter(p => !banned.has(p.building.entityId)));
+			const combo = results.find(r => !suggestions.some(s => s.key === r.key));
+			if (!combo) break;
+			suggestions.push(combo);
+			const anchor = combo.parts.reduce((max, p) => (p.l * p.w > max.l * max.w ? p : max), combo.parts[0]);
+			banned.add(anchor.building.entityId);
+		}
+
+		// fill up with the next best overall combos when banning dried the search up
+		if (suggestions.length < 3) {
+			for (const r of runSearch(fullPool)) {
+				if (suggestions.length >= 3) break;
+				if (!suggestions.some(s => s.key === r.key)) suggestions.push(r);
+			}
+		}
+
+		suggestions.sort((a, b) => (a.score - b.score) || (a.area - b.area) || (a.parts.length - b.parts.length));
+		return suggestions;
+	},
+
+
+	/**
+	 * Builds the tooltip HTML with up to three replacement suggestions
+	 *
+	 * @param {string} entityId entity id of the inventory building
+	 * @returns {string|null} tooltip HTML or null when the building is unknown
+	 */
+	RatingReplacementContent: (entityId) => {
+		const target = Productions.ratedBuildings.find(b => b.entityId === entityId && b.isInInventory);
+		if (!target) return null;
+
+		// building screenshot from the game assets, same pattern as Tooltips.buildingTT
+		const buildingImg = (id) => {
+			const asset = MainParser.CityEntities[id]?.asset_id;
+
+			if (typeof asset !== 'string') {
+				return '';
+			}
+
+			return `<img alt="" src="${srcLinks.get(`/city/buildings/${asset.replace(/^(\D_)(.*?)/, '$1SS_$2')}.png`, true)}">`;
+		};
+
+		const targetArea = target.size.length * target.size.width;
+		const targetScore = Math.round(target.rating.totalScore * 100);
+		const combos = Productions.RatingFindReplacements(target);
+
+		let tt = `<div class="swap-tt"><h2>${i18n('Boxes.ProductionsRating.Replacements')}</h2>`;
+		tt += `<div class="swap-head"><div class="swap-img">${buildingImg(target.entityId)}</div>` +
+			`<p>${target.name}<br>${target.size.length}x${target.size.width} (${targetArea}), ${i18n('Boxes.ProductionsRating.Score')}: <span class="gain">${targetScore}</span></p></div>`;
+
+		// upgrade path from the kits calculation: a lower stage already stands in the
+		// city and the required kits are in stock - upgrading beats any swap
+		const cityChain = (Productions.InventoryBuildings?.[target.entityId]?.chains || [])
+			.find(c => c.chain.some(el => el.type === 'building' && el.from === 'city'));
+		if (cityChain) {
+			const stepName = (el) => {
+				if (el.type === 'upgrade') return MainParser.BuildingUpgrades[el.id]?.upgradeItem?.name || MainParser.SelectionKits[el.id]?.name || el.id;
+				if (el.from === 'selectionKit') return MainParser.SelectionKits[el.id]?.name || el.id;
+				return MainParser.CityEntities[el.id]?.name || el.id;
+			};
+			const steps = cityChain.chain.map(el =>
+				(el.count > 1 ? `${el.count}x ` : '') + stepName(el) + (el.from === 'city' ? ` (${i18n('Boxes.ProductionsRating.ReplacementInCity')})` : ''));
+			tt += `<p class="swap-upgrade">${i18n('Boxes.ProductionsRating.ReplacementUpgrade')}:<br>${steps.join(' &rarr; ')}</p>`;
+		}
+
+		if (combos.length === 0) {
+			return tt + `<p>${i18n('Boxes.ProductionsRating.ReplacementNone')}</p></div>`;
+		}
+
+		combos.forEach((combo, index) => {
+			// aggregate instances of the same building for display
+			const grouped = {};
+			for (const part of combo.parts) {
+				if (!grouped[part.building.entityId]) grouped[part.building.entityId] = { building: part.building, amount: 0 };
+				grouped[part.building.entityId].amount++;
+			}
+			const gain = targetScore - Math.round(combo.score * 100);
+			tt += `<table class="foe-table"><tr><th colspan="2">#${index + 1} &ndash; ${i18n('Boxes.Productions.Headings.size')}: ${combo.area}/${targetArea}</th>` +
+				`<th class="text-right ${gain >= 0 ? 'gain' : 'loss'}" data-original-title="${i18n('Boxes.ProductionsRating.ReplacementGain')}">${gain >= 0 ? '+' : ''}${gain}</th></tr>`;
+
+			for (const group of Object.values(grouped)) {
+				tt += `<tr><td>${group.amount}x</td><td>${buildingImg(group.building.entityId)}${group.building.name} (${group.building.size.length}x${group.building.size.width})</td>` +
+					`<td class="text-right">${Math.round(group.building.rating.totalScore * 100)}</td></tr>`;
+			}
+			tt += `</table>`;
+		});
+		return tt + `</div>`;
+	},
+
+
 	efficiencySettings: Object.assign(
 		JSON.parse(localStorage.getItem("Productions.efficiencySettings") || 
 			`{
@@ -34,7 +273,8 @@ Object.assign(Productions, {
 			"gBs":true,
 			"showLimited":true,
 			"showallies":true,
-			"chainmax":false
+			"chainmax":false,
+			"replacements":false
 			}`
 		),
 		{showhighlighted: false}
@@ -539,6 +779,10 @@ Object.assign(Productions, {
 
 		let selectedAdditionals = Object.values(Productions.AdditionalSpecialBuildings).filter(x=>x.selected).map(x=>x.id);
 
+		// keep counts for the replacement search and drop cached suggestions
+		Productions.RatingBuildingCount = buildingCount;
+		Productions.RatingReplacementCache = {};
+
 		Productions.ratedBuildings = ratedBuildings = Productions.rateBuildings(uniqueBuildings,false,era).concat(Productions.rateBuildings(selectedAdditionals,true,era));
 
 		if (Productions.RatingCurrentTab === 'Settings') {
@@ -590,26 +834,33 @@ Object.assign(Productions, {
 			h.push('<table class="foe-table sortable-table TSinactive exportable">');
 			h.push('<thead class="sticky">');
 
+			// keep the dropdown open across rebuilds triggered from inside it (e.g. chainmax toggle)
+			const optionsOpen = $('#ratingOptions').hasClass('open');
+
 			h.push('<tr class="settings">');
 				h.push('<th colspan="'+(colNumber+5)+'"><div class="options">');
 				h.push('<a class="btn" id="addMetaBuilding">' + i18n('Boxes.ProductionsRating.AddBuilding') + '</a>');
-				h.push('<label for="tilevalues"><input type="checkbox" id="tilevalues"'+checked('tilevalues')+' />' + i18n('Boxes.ProductionsRating.ShowValuesPerTile') + '</label>');
 				h.push('<input type="text" id="efficiencyBuildingFilter" size=20 value="' + Productions.RatingSearchTerm + '" placeholder="' + i18n('Boxes.ProductionsRating.Filter') + ': neo|eden" />');
-				h.push('<label for="showhighlighted" data-original-title="'+i18n('Boxes.ProductionsRating.ShowHighlightedExplanation')+'"><input type="checkbox" id="showhighlighted"'+checked('showhighlighted')+' />' + i18n('Boxes.ProductionsRating.ShowHighlighted') + '</label>')
-				h.push('<div>');
-				h.push('<label for="gBs" data-original-title="'+i18n('Boxes.ProductionsRating.NoGBsExplanation')+'"><input type="checkbox" id="gBs"'+checked('gBs')+' /><img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_greatbuilding.png`,true)+'" /></label>');
-				if (ActiveMap !== 'OtherPlayer') {
-					h.push('<div class="inventory">'+
-						'<label for="inventorybuildings" data-original-title="'+i18n('Boxes.ProductionsRating.ShowInventoryBuildingsExplanation')+'"><input type="checkbox" id="inventorybuildings"'+checked('inventorybuildings')+' /><img class="game-cursor" src="' + extUrl + 'js/web/x_img/inventory.png"></label>'+
-						'<label for="inventorybuildingscore" data-original-title="'+i18n('Boxes.ProductionsRating.InventoryBuildingScoreExplanation')+'">' + i18n('Boxes.ProductionsRating.InventoryBuildingScore') + ': <input type="number" size="6" value="'+(Productions.efficiencySettings.inventorybuildingscore*100)+'" id="inventorybuildingscore" /></label>'+
-						'<label for="showLimited" data-original-title="'+i18n('Boxes.ProductionsRating.NoLimitedExplanation')+'"><input type="checkbox" id="showLimited"'+checked('showLimited')+' /><img src="'+srcLinks.get(`/shared/gui/upgrade/upgrade_icon_limited_building.png`,true)+'" /></label>'+
-						'</div>');
-						h.push('<label for="chainmax" data-original-title="'+i18n('Boxes.ProductionsRating.OnlyMaxStageExplanation')+'"><input type="checkbox" id="chainmax"'+checked('chainmax')+' /><img src="'+srcLinks.get(`/shared/icons/limited_building_upgrade.png`,true)+'" /></label>');
-						h.push('<label for="showallies" data-original-title="'+i18n('Boxes.ProductionsRating.ShowAllies')+'"><input type="checkbox" id="showallies"'+checked('showallies')+' /><span class="filter showallies"></span></label>');
 
+				// all display options live in one dropdown to keep the bar compact
+				h.push('<div id="ratingOptions"'+(optionsOpen ? ' class="open"' : '')+'>');
+				h.push('<a class="btn" id="ratingOptionsBtn">' + i18n('Boxes.ProductionsRating.Options') + ' &#9662;</a>');
+				h.push('<div class="dropdown-panel">');
+				h.push('<label for="tilevalues"><input type="checkbox" id="tilevalues"'+checked('tilevalues')+' />' + i18n('Boxes.ProductionsRating.ShowValuesPerTile') + '</label>');
+				h.push('<label for="showhighlighted" data-original-title="'+i18n('Boxes.ProductionsRating.ShowHighlightedExplanation')+'"><input type="checkbox" id="showhighlighted"'+checked('showhighlighted')+' />' + i18n('Boxes.ProductionsRating.ShowHighlighted') + '</label>');
+				h.push('<label for="gBs"><input type="checkbox" id="gBs"'+checked('gBs')+' /><img src="'+srcLinks.get(`/shared/gui/constructionmenu/icon_greatbuilding.png`,true)+'" />' + i18n('Boxes.ProductionsRating.NoGBsExplanation') + '</label>');
+				if (ActiveMap !== 'OtherPlayer') {
+					h.push('<label for="inventorybuildings"><input type="checkbox" id="inventorybuildings"'+checked('inventorybuildings')+' /><img class="game-cursor" src="' + extUrl + 'js/web/x_img/inventory.png">' + i18n('Boxes.ProductionsRating.ShowInventoryBuildingsExplanation') + '</label>');
+					h.push('<label for="inventorybuildingscore" data-original-title="'+i18n('Boxes.ProductionsRating.InventoryBuildingScoreExplanation')+'">' + i18n('Boxes.ProductionsRating.InventoryBuildingScore') + ': <input type="number" size="6" value="'+(Productions.efficiencySettings.inventorybuildingscore*100)+'" id="inventorybuildingscore" /></label>');
+					h.push('<label for="showLimited"><input type="checkbox" id="showLimited"'+checked('showLimited')+' /><img src="'+srcLinks.get(`/shared/gui/upgrade/upgrade_icon_limited_building.png`,true)+'" />' + i18n('Boxes.ProductionsRating.NoLimitedExplanation') + '</label>');
+					h.push('<label for="chainmax"><input type="checkbox" id="chainmax"'+checked('chainmax')+' /><img src="'+srcLinks.get(`/shared/icons/limited_building_upgrade.png`,true)+'" />' + i18n('Boxes.ProductionsRating.OnlyMaxStageExplanation') + '</label>');
+					h.push('<label for="showallies"><input type="checkbox" id="showallies"'+checked('showallies')+' /><span class="filter showallies"></span>' + i18n('Boxes.ProductionsRating.ShowAllies') + '</label>');
+					h.push('<label for="replacements" data-original-title="'+i18n('Boxes.ProductionsRating.ReplacementsExplanation')+'"><input type="checkbox" id="replacements"'+checked('replacements')+' /><span class="swap-icon"></span>' + i18n('Boxes.ProductionsRating.Replacements') + '</label>');
 				}
-				h.push('<label for="showitems" data-original-title="'+i18n('Boxes.ProductionsRating.ShowItems')+'"><input type="checkbox" id="showitems"'+checked('showitems')+' /><span class="filter showitems"></span></label>');
-				h.push('</div></div></th>');
+				h.push('<label for="showitems"><input type="checkbox" id="showitems"'+checked('showitems')+' /><span class="filter showitems"></span>' + i18n('Boxes.ProductionsRating.ShowItems') + '</label>');
+				h.push('</div></div>');
+
+				h.push('</div></th>');
 			h.push('</tr>');
 
 			h.push('<tr class="sorter-header exportheader sort2">');
@@ -695,9 +946,15 @@ Object.assign(Productions, {
 				if (!building.highlight && !building.isInInventory)
 					h.push('<span class="show-all" data-original-title="'+i18n('Boxes.General.ShowOnMap')+'" data-name="'+building.name+'"><img class="game-cursor" alt="" src="' + extUrl + 'css/images/hud/open-eye.png"></span>');
 
+				// swap icon on inventory buildings: suggests worse city buildings to replace (visible via the "replacements" option)
+				if (!building.highlight && building.isInInventory) {
+					h.push('<span class="swap-suggest fh-tooltip game-cursor" data-callback_tt="Productions.ReplacementTT" data-entity="' + building.entityId + '"></span>');
+				}
+
 				// icon in front of the name so great buildings are recognizable at a glance
-				if (building.type === 'greatbuilding')
+				if (building.type === 'greatbuilding') {
 					h.push('<img class="gb-icon" alt="" src="' + srcLinks.get('/shared/gui/constructionmenu/icon_greatbuilding.png', true) + '" /> ');
+				}
 
 				h.push('<span data-meta_id="'+building.entityId+'" data-eff="'+building.rating.totalScore * 100+'" data-era="'+(building.eraName==="AllAge"?"":building.eraName)+'" data-callback_tt="Tooltips.buildingTT" class="fh-tooltip" '+ Allies.tooltip(building.id) + '>'+building.name+'</span>')
 
@@ -717,13 +974,15 @@ Object.assign(Productions, {
 				h.push('<td class="text-center" exportvalue="' + (building.isInInventory ? 0 : 1) + '">')
 
 				// show additional buildings from inventory
-				if ((buildingCount[building.entityId+"I"] !== undefined && !building.isInInventory) || building.isInInventory)
-					h.push('<span data-callback_tt="Kits.InventoryTooltip" data-id="'+building.entityId+'" class="fh-tooltip"><img alt="" class="game-cursor" src="' + srcLinks.get(`/shared/gui/event_hub/event_meta_icon_checkmark.png`,true) + '" /></span> ')
+				if ((buildingCount[building.entityId+"I"] !== undefined && !building.isInInventory) || building.isInInventory) {
+					h.push('<span data-callback_tt="Kits.InventoryTooltip" data-id="' + building.entityId + '" class="fh-tooltip"><img alt="" class="game-cursor" src="' + srcLinks.get(`/shared/gui/event_hub/event_meta_icon_checkmark.png`, true) + '" /></span> ')
+				}
 				h.push('</td>')
 
 				for (const type of combinedRatingTypes) {
 					let firstType = type;
 					let secondType = null;
+
 					if (type.includes('att_def_')) {
 						firstType = type.replace('def_','');
 						secondType = type.replace('att_','');
@@ -891,6 +1150,19 @@ Object.assign(Productions, {
 				Productions.CalcRatingBody();
 			});
 
+			$('#replacements').on('click', function () {
+				SaveSettings("replacements");
+			});
+
+			$('#ratingOptionsBtn').on('click', function (e) {
+				e.stopPropagation();
+				$('#ratingOptions').toggleClass('open');
+			});
+			// close the options dropdown when clicking anywhere outside of it
+			$(document).off('click.ratingOptions').on('click.ratingOptions', function (e) {
+				if (!e.target.closest('#ratingOptions')) $('#ratingOptions').removeClass('open');
+			});
+
 			$('.show-all').on('click', function () {
 				Productions.ShowSearchOnMap($(this).attr('data-name'))
 			});
@@ -927,7 +1199,7 @@ Object.assign(Productions, {
 			// checkbox states are rendered inline, only sync the body classes with the settings.
 			// no trigger("click") here: the synthetic clicks re-entered CalcRatingBody endlessly
 			// via the chainmax recalc in the showLimited/inventorybuildings handlers
-			for (const key of ['tilevalues', 'showitems', 'showhighlighted', 'inventorybuildings', 'gBs', 'showLimited', 'chainmax', 'showallies']) {
+			for (const key of ['tilevalues', 'showitems', 'showhighlighted', 'inventorybuildings', 'gBs', 'showLimited', 'chainmax', 'showallies', 'replacements']) {
 				$('#ProductionsRatingBody').toggleClass(key, !!Productions.efficiencySettings[key]);
 			}
 
@@ -1050,6 +1322,7 @@ Object.assign(Productions, {
 				else {
 					Productions.RatingFilteredSizes.push(filter);
 				}
+				Productions.RatingUpdateSizeLabel();
 
 				$('.ratinglist tr').addClass('hidden');
 				if (isNaN(parseInt(filter)) || Productions.RatingFilteredSizes.length === 0) {
@@ -1088,6 +1361,8 @@ Object.assign(Productions, {
 
 			helper.preloader.hide('#ProductionsRating');
 			//$('#ProductionsRatingBody').fadeIn(501);
+
+			Productions.RatingUpdateSizeLabel();
 
 			if (Productions.RatingSearchTerm !== "") {
 				$('#efficiencyBuildingFilter').trigger('input');

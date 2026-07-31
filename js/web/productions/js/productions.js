@@ -719,52 +719,64 @@ let Productions = {
 
 
 	/**
-	 * Highlights buildings on the city map based on their IDs.
+	 * Highlights buildings on the city map based on their IDs and centers the
+	 * map view on them once they are rendered: a single building ends up in the
+	 * middle of the viewport, a group is centered on its common bounding box.
 	 *
-	 * @param {Array} ids - Array of building IDs to highlight.
+	 * @param {Array|number|string} ids - One building ID or an array of building IDs to highlight.
 	 */
 	ShowOnMap: (ids) => {
-		let IDArray = (ids.length !== undefined ? ids : [ids]);
+		const idList = (Array.isArray(ids) ? ids : [ids]);
 
-		if( $('#citymap-main').length < 1 )
-			CityMap.init(null);
+		if ($('#citymap-main').length < 1) CityMap.init(null);
 
 		$('#grid-outer').removeClass('desaturate');
 		$('[data-id]').removeClass('highlighted');
 
-		setTimeout(() => {
-			$('#grid-outer').addClass('desaturate');
-			for (let i = 0; i < IDArray.length; i++) {
-				let target = document.querySelector('.entity[data-id="' + IDArray[i] + '"]')
-				if (target) {
-					let targetStyle = window.getComputedStyle(document.querySelector('.entity[data-id="' + IDArray[i] + '"]'))
-					let tLeft = (parseInt(targetStyle.getPropertyValue("left").replace("px","")) - 100)
-					let tTop = (parseInt(targetStyle.getPropertyValue("top").replace("px","")) - 100)
-					// todo: andere perspektive beachten, andere werte benutzen?
+		// the map may still be rendering, so retry until the entities exist
+		const waitForEntities = (attempt = 0) => {
+			const targets = idList
+				.map(id => document.querySelector(`.entity[data-id="${id}"]`))
+				.filter(Boolean);
 
-					if (i === 0) $('#map-container').scrollTo({left: tLeft, top: tTop}, 800, { easing: 'swing' });
-					target.classList.add('highlighted');
-				}
-            }
-		}, 500);
+			if (targets.length === 0) {
+				if (attempt < 20) setTimeout(() => waitForEntities(attempt + 1), 250);
+				return;
+			}
+
+			$('#grid-outer').addClass('desaturate');
+			targets.forEach(target => target.classList.add('highlighted'));
+			CityMap.FocusEntities(targets);
+		};
+
+		setTimeout(waitForEntities, 300);
 	},
 
 
 	/**
-	 * Highlights buildings on the city map based on their name.
+	 * Highlights buildings on the city map based on their name and centers the
+	 * map view on the matched group.
 	 *
 	 * @param {string} name - The name (or partial name) of buildings to highlight.
 	 */
 	ShowSearchOnMap: (name) => {
-		if( $('#citymap-main').length < 1 )
-			CityMap.init(null);
+		if ($('#citymap-main').length < 1) CityMap.init(null);
 
 		$('#grid-outer').removeClass('desaturate');
 
-		setTimeout(() => {
-			CityMap.filterBuildings(name)
-			$('#BuildingsFilter').attr('value',name)
-		}, 500);
+		// the map may still be rendering, so retry until the entities exist
+		const waitForEntities = (attempt = 0) => {
+			if ($('.entity').length === 0) {
+				if (attempt < 20) setTimeout(() => waitForEntities(attempt + 1), 250);
+				return;
+			}
+
+			CityMap.filterBuildings(name);
+			$('#BuildingsFilter').attr('value', name);
+			CityMap.FocusEntities($('.entity.highlighted').toArray());
+		};
+
+		setTimeout(waitForEntities, 300);
 	},
 
 
