@@ -214,6 +214,7 @@ let Guild_fights = {
 		bulkTemplate: JSON.parse(localStorage.getItem("LiveFightSettings"))?.discordWebhookTemplateBulk || "",
 	},
 	discordCache: null,
+	webRequestProfile: JSON.parse(localStorage.getItem("LiveFightSettings"))?.webRequestProfile || "",
 
 	Tabs: [],
 	TabsContent: [],
@@ -1559,6 +1560,7 @@ let Guild_fights = {
 			<button class="btn btn-slim copybutton all" onclick="Guild_fights.CopyToClipBoard(event)">${i18n('Boxes.GuildFights.SelectAll')}</button>
 			<button class="btn btn-slim dcbutton discord custom" onclick="Guild_fights.PrepareForDiscord(event)" data-original-title="${i18n('Boxes.GuildFights.DiscordSendSelectionCustom')}" style="display:none;"></button>
 			<button class="btn btn-slim dcbutton discord" onclick="Guild_fights.PrepareForDiscord(event)" data-original-title="${i18n('Boxes.GuildFights.DiscordSendSelection')}" style="display:none;"></button>
+			<button class="btn btn-slim dcbutton webrequest" onclick="Guild_fights.PrepareForWebRequest(event)" data-original-title="${i18n('Boxes.GuildFights.WebRequestSendSelection')}" style="display:none;"></button>
 			<button class="btn btn-slim mapbutton" onclick="ProvinceMap.build()">${i18n('Boxes.GuildFights.OpenMap')}</button>
 			</div>
 		</div>`);
@@ -1808,6 +1810,9 @@ let Guild_fights = {
 					}
 					discordButtons += `<button class="btn btn-slim discord" data-original-title="${i18n('Boxes.GuildFights.DiscordSend')}" onclick="Discord.sendGBGSector(${prov[x]['id']});"></button>`;
 				}
+				if (prov[x].owner !== own.clan.name && Guild_fights.webRequestProfile != '' && WebRequest.GetProfile(Guild_fights.webRequestProfile)) {
+					discordButtons += `<button class="btn btn-slim webrequest" data-original-title="${i18n('Boxes.GuildFights.WebRequestSend')}" onclick="WebRequest.sendGBGSector(${prov[x]['id']});"></button>`;
+				}
 
 				nextup.push(`<td class="text-right">`);
 				if (discordButtons != '')
@@ -1975,6 +1980,10 @@ let Guild_fights = {
 			$('.dcbutton').show();
 			if (Guild_fights.discordWebhook.bulkTemplate == "")
 				$('.dcbutton.custom').hide();
+			if (Guild_fights.discordWebhook.url == "")
+				$('.dcbutton.discord').hide();
+			if (Guild_fights.webRequestProfile == "" || !WebRequest.GetProfile(Guild_fights.webRequestProfile))
+				$('.dcbutton.webrequest').hide();
 		} else {
 			$('.copybutton').html(i18n('Boxes.GuildFights.SelectAll'));
 			$('.copybutton').addClass('all');
@@ -2059,6 +2068,40 @@ let Guild_fights = {
 	 *
 	 * @param {Event} e Click event of the discord button
 	 */
+	/**
+	 * Collects the placeholder values of a sector, shared by the Discord
+	 * templates and the web request module
+	 *
+	 * @param {object} sector Province object from the GBG map data
+	 * @returns {object} Placeholder map (#name, #battletype, #time, ...)
+	 */
+	GetSectorVars: (sector) => {
+		let timeAt = moment.unix(sector.lockedUntil - 2)/1000;
+
+		let neighbors = [];
+		for (let n of sector.neighbor) {
+			let result = Guild_fights.MapData.battlegroundParticipants.find(x => n == x.participantId);
+			if (result)
+				if (neighbors.find(x => x == result.clan.name) == undefined
+					&& Guild_fights.MapData.currentParticipantId !== result.participantId
+					&& result.participantId !== sector.ownerId)
+						neighbors.push(result.clan.name);
+		}
+
+		return {
+			'#battletype': sector.isAttackBattleType ? '🔴' : '🔵',
+			'#name': sector.title,
+			'#time': timeAt,
+			'#attrition': sector.gainAttritionChance,
+			'#guild': sector.owner,
+			'#vp': ''+sector.victoryPoints+ (sector.victoryPointsBonus ? " (+" + sector.victoryPointsBonus + ")":''),
+			'#neighbors': neighbors.join(", "),
+			'#player': ExtPlayerName ?? '',
+			'#world': ExtWorld ?? ''
+		};
+	},
+
+
 	PrepareForDiscord: (e) => {
 		Guild_fights.discordCache = [];
 		$('.timer.highlight-row').each(function () {
@@ -2073,6 +2116,34 @@ let Guild_fights = {
 				return;
 			}
 			Discord.sendGBGSectors();
+		}
+	},
+
+
+	/**
+	 * Sends the selected sectors to the configured web request profile,
+	 * one fire-and-forget request per sector
+	 */
+	PrepareForWebRequest: () => {
+		let sectors = [];
+		$('.timer.highlight-row').each(function () {
+			sectors.push(Guild_fights.MapData.map.provinces.find((mapItem) => mapItem.id == $(this).data('id')));
+		});
+
+		sectors.sort(function (a, b) { return a.lockedUntil - b.lockedUntil });
+
+		for (let sector of sectors) {
+			WebRequest.sendGBGSectorData(sector, true);
+		}
+
+		if (sectors.length > 0) {
+			HTML.ShowToastMsg({
+				show: 'force',
+				head: i18n('General.Success'),
+				text: i18n('Boxes.WebRequest.RequestSent'),
+				type: 'success',
+				hideAfter: 2500,
+			});
 		}
 	},
 
@@ -2431,6 +2502,7 @@ let Guild_fights = {
 		let discordWebhook = LiveFightSettings?.discordWebhook ?? '';
 		let discordWebhookTemplate = LiveFightSettings?.discordWebhookTemplate ?? '';
 		let discordWebhookTemplateBulk = LiveFightSettings?.discordWebhookTemplateBulk ?? '';
+		let webRequestProfile = LiveFightSettings?.webRequestProfile ?? '';
 		let autoOpen = LiveFightSettings?.autoOpen ?? 1;
 
 		c.push(`<p><label for="autoopenlivefight"><input id="autoopenlivefight" name="autoopenlivefight" value="0" type="checkbox" ${(autoOpen === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.Settings.Autostart')}</label></p>`);
@@ -2478,6 +2550,20 @@ let Guild_fights = {
 				}
 			c.push(`</select>`);}
 			c.push(`</p>`);
+
+		c.push(`<hr><p>`);
+			c.push(`<label for="gbgWebRequest"><b>${i18n('Menu.WebRequest.Title')}</b></label><br />`);
+			if (WebRequest.Profiles.length === 0)
+				c.push(`${i18n('Boxes.GuildFights.WebRequestSetup')}: <span class="btn btn-slim" onclick="WebRequest.BuildBox()">${i18n('General.Open')}</span>`);
+			else {
+				c.push(`<select id="gbgWebRequest" name="gbgWebRequest">`);
+				c.push(`<option value="">${i18n('General.Choose')}</option>`);
+				for(let profile of WebRequest.Profiles) {
+					c.push(`<option value="${profile.name}" ${webRequestProfile === profile.name ? ' selected="selected"' : ''}>${profile.name}</option>`);
+				}
+				c.push(`</select>`);
+			}
+			c.push(`</p>`);
 		c.push(`<p><button onclick="Guild_fights.SaveLiveFightSettings()" id="save-livefight-settings" class="btn btn-green">${i18n('Boxes.GuildFights.SaveSettings')}</button></p>`);
 
 		
@@ -2506,6 +2592,7 @@ let Guild_fights = {
 		value.discordWebhook = '';
 		value.discordWebhookTemplate = '';
 		value.discordWebhookTemplateBulk = '';
+		value.webRequestProfile = '';
 
 		if ($("#autoopenlivefight").is(':checked')) {
 			value.autoOpen = 1;
@@ -2558,6 +2645,7 @@ let Guild_fights = {
 		value.discordWebhook = $("#gbgWebhook").val();
 		value.discordWebhookTemplate = $("#gbgWebhookTemplate").val();
 		value.discordWebhookTemplateBulk = $("#gbgWebhookTemplateBulk").val();
+		value.webRequestProfile = $("#gbgWebRequest").val() || '';
 
 		// lead time for sector alerts in seconds, clamped to the input range (#3511)
 		let alertLeadTime = parseInt($("#alertLeadTime").val());
@@ -2574,6 +2662,7 @@ let Guild_fights = {
 		Guild_fights.discordWebhook.url = value.discordWebhook;
 		Guild_fights.discordWebhook.template = value.discordWebhookTemplate;
 		Guild_fights.discordWebhook.bulkTemplate = value.discordWebhookTemplateBulk;
+		Guild_fights.webRequestProfile = value.webRequestProfile;
 		Guild_fights.alertLeadTime = value.alertLeadTime;
 		Guild_fights.serverOffset = parseInt($("#serverOffset").val()) ?? null;
 

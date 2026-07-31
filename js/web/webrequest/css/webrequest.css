@@ -1,0 +1,56 @@
+#WebRequest {
+	width: 750px;
+	top: calc(30vh);
+	left: calc(50vw - 375px);
+}
+
+#WebRequest .window-body {
+	overflow-y: auto;
+}
+
+.webrequest-hint {
+	padding: 5px;
+	font-size: smaller;
+}
+
+.webrequest-method {
+	padding: 0 4px;
+	border-radius: 2px;
+	background-color: var(--black-50);
+	color: var(--sunflower);
+	font-size: smaller;
+}
+
+.webrequest-url {
+	word-break: break-all;
+	font-size: smaller;
+}
+
+.webrequestForm form {
+	display: flex;
+	gap: 5px;
+	flex-wrap: wrap;
+	justify-content: end;
+	padding: 5px;
+}
+
+.webrequestForm b {
+	width: 155px;
+}
+
+.webrequestForm textarea,
+.webrequestForm input,
+.webrequestForm select {
+	width: calc(100% - 160px);
+	resize: vertical;
+}
+
+.webrequest-preview {
+	margin: 5px 0;
+	padding: 5px;
+	background-color: var(--black-50);
+	white-space: pre-wrap;
+	word-break: break-all;
+	font-size: smaller;
+	user-select: text;
+}

@@ -407,11 +407,13 @@
 	background-image: url('../../x_img/gbg-gray.png');
 }
 
-#LiveGildFightingBody tr .btn.discord {
+#LiveGildFightingBody tr .btn.discord,
+#LiveGildFightingBody tr .btn.webrequest {
 	visibility: hidden;
 }
 
-#LiveGildFightingBody tr:hover .btn.discord {
+#LiveGildFightingBody tr:hover .btn.discord,
+#LiveGildFightingBody tr:hover .btn.webrequest {
 	visibility: visible;
 }
 

@@ -511,28 +511,7 @@ let Discord = {
 	},
 
 	createGBGCustomMessage: (sector,tpl) => {
-		let timeAt = moment.unix(sector.lockedUntil - 2)/1000;
-		let battleColor = sector.isAttackBattleType ? '🔴' : '🔵';
-		
-		let neighbors = [];
-		for (let n of sector.neighbor) {
-			let result = Guild_fights.MapData.battlegroundParticipants.find(x => n == x.participantId);
-			if (result)
-				if (neighbors.find(x => x == result.clan.name) == undefined 
-					&& Guild_fights.MapData.currentParticipantId !== result.participantId
-					&& result.participantId !== sector.ownerId)
-						neighbors.push(result.clan.name);
-		}
-
-		const vars = {
-			'#battletype': battleColor,
-			'#name': sector.title,
-			'#time': timeAt,
-			'#attrition': sector.gainAttritionChance,
-			'#guild': sector.owner,
-			'#vp': ''+sector.victoryPoints+ (sector.victoryPointsBonus ? " (+" + sector.victoryPointsBonus + ")":''),
-			'#neighbors': neighbors.join(", ")
-		};
+		const vars = Guild_fights.GetSectorVars(sector);
 
 		let msg = (tpl != '') ? Discord.WebHooks.find(x => x.name == tpl).message
         			: '#battletype **#name** @ <t:#name:R> - #attrition%*\n-# :medal:`#vp)`';
