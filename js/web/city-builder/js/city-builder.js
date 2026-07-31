@@ -380,7 +380,7 @@ let CityBuilder = {
                 const bh = parseInt(b.height || 1) * CityBuilder.MapScale;
 
                 let bgColor = '#ccc';
-                if (type === 'street') bgColor = '#333333';
+                if (type === 'street') bgColor = (parseInt(b.level) >= 2) ? '#111111' : '#333333';
                 else if (type === 'roadless') bgColor = '#8A2BE2';
                 else if (type === 'main_building') bgColor = '#FFD700';
                 else if (type === 'greatbuilding') bgColor = '#FF4500';
@@ -606,6 +606,19 @@ let CityBuilder = {
             }
             if (instance.type === 'decoration') reqStreet = 0;
 
+            // Chain buildings: pass the chain id and the position inside the chain
+            // so the worker can keep the members side by side, left to right
+            let chainId = null;
+            let chainPos = -1;
+            const chainRef = meta.components?.AllAge?.chain?.chainId;
+            if (chainRef && MainParser.BuildingChains) {
+                const chainMeta = MainParser.BuildingChains[chainRef] || MainParser.BuildingChains[chainRef.toLowerCase()];
+                if (chainMeta?.cityEntityIds) {
+                    chainPos = chainMeta.cityEntityIds.indexOf(instance.cityentity_id);
+                    if (chainPos >= 0) chainId = chainRef;
+                }
+            }
+
             buildingsInput.push({
                 id: instance.id,
                 asset_id: instance.cityentity_id,
@@ -615,7 +628,9 @@ let CityBuilder = {
                 y: b_y,
                 width: b_width,
                 height: b_height,
-                street_level: reqStreet
+                street_level: reqStreet,
+                chain_id: chainId,
+                chain_pos: chainPos
             });
         }
 
@@ -723,6 +738,8 @@ let CityBuilder = {
                 this.townHall = null;
                 this.townHallPos = null;
                 this.roadTiles = new Set();
+                // road tile key -> 1 (one-lane) or 2 (two-lane)
+                this.roadLevel = new Map();
 
                 this.processData(mapData, buildingsData);
             }
@@ -772,6 +789,8 @@ let CityBuilder = {
                         bCopy.width = bCopy.height;
                         bCopy.height = w;
                     }
+                    // great buildings never need a two-lane street in the game
+                    if (bCopy.type === 'greatbuilding' && (bCopy.street_level || 0) > 1) bCopy.street_level = 1;
                     if (bCopy.type === 'main_building') {
                         this.townHall = bCopy;
                         this.townHall.street_level = 1;
@@ -779,7 +798,72 @@ let CityBuilder = {
                         this.buildings.push(bCopy);
                     }
                 });
-    
+
+                this.buildChainComposites();
+            }
+
+            // chain buildings must stand in one contiguous row, left to right in
+            // chain order - merge each chain into one composite building that is
+            // placed as a unit and split back into its members on export
+            buildChainComposites() {
+                const byChain = new Map();
+                const rest = [];
+                for (const b of this.buildings) {
+                    if (b.chain_id && b.chain_pos >= 0) {
+                        if (!byChain.has(b.chain_id)) byChain.set(b.chain_id, []);
+                        byChain.get(b.chain_id).push(b);
+                    } else {
+                        rest.push(b);
+                    }
+                }
+
+                // the chain runs along the real map x axis - along y in transposed space
+                const span = this.transposed
+                    ? this.mapBounds.maxY - this.mapBounds.minY
+                    : this.mapBounds.maxX - this.mapBounds.minX;
+
+                for (const [cid, list] of byChain) {
+                    list.sort((a, b) => a.chain_pos - b.chain_pos || (a.id > b.id ? 1 : -1));
+
+                    // duplicate members belong to parallel chains: greedily deal
+                    // every instance into the first group it can extend
+                    const groups = [];
+                    for (const m of list) {
+                        let g = null;
+                        for (const cand of groups) {
+                            if (cand[cand.length - 1].chain_pos < m.chain_pos) { g = cand; break; }
+                        }
+                        if (!g) { g = []; groups.push(g); }
+                        g.push(m);
+                    }
+
+                    for (let gi = 0; gi < groups.length; gi++) {
+                        const g = groups[gi];
+                        if (g.length === 1) { rest.push(g[0]); continue; }
+
+                        let len = 0, thick = 0, lvl = 0;
+                        for (const m of g) {
+                            if (this.transposed) { len += m.height; thick = Math.max(thick, m.width); }
+                            else { len += m.width; thick = Math.max(thick, m.height); }
+                            lvl = Math.max(lvl, m.street_level || 0);
+                        }
+                        // a chain longer than the map can never stand in one row
+                        if (len > span) {
+                            for (const m of g) rest.push(m);
+                            continue;
+                        }
+                        rest.push({
+                            id: 'chain-' + cid + '-' + gi,
+                            name: g[0].name,
+                            type: g[0].type,
+                            width: this.transposed ? thick : len,
+                            height: this.transposed ? len : thick,
+                            street_level: lvl,
+                            chainMembers: g
+                        });
+                    }
+                }
+                this.buildings = rest;
             }
 
             // deterministic PRNG so seeded variants are reproducible
@@ -909,10 +993,24 @@ let CityBuilder = {
                 return true;
             }
 
+            // street connection rectangle: chain composites connect through their
+            // head member only - the game wires the rest through the chain
+            connRect(b) {
+                if (b.chainMembers) {
+                    const m0 = b.chainMembers[0];
+                    return { x: b.x, y: b.y, width: m0.width, height: m0.height };
+                }
+                return b;
+            }
+
             // connect every placed street building that has no road yet with the
             // shortest possible stub - one touching tile is enough
             connectPlacedBuildings() {
-                let todo = this.placedBuildings.filter(b => b.street_level > 0 && !this.isConnectedToRoad(b.x, b.y, b.width, b.height));
+                const unconn = (b) => {
+                    const r = this.connRect(b);
+                    return b.street_level > 0 && !this.isConnectedToRoad(r.x, r.y, r.width, r.height);
+                };
+                let todo = this.placedBuildings.filter(unconn);
 
                 while (todo.length && this.roadTiles.size) {
                     // BFS over free tiles from the current network, parents give the path
@@ -937,9 +1035,10 @@ let CityBuilder = {
                     // stubs often bring the next building within zero extra tiles
                     let bestPath = null;
                     for (const b of todo) {
+                        const r = this.connRect(b);
                         const per = [];
-                        for (let i = b.x; i < b.x + b.width; i++) per.push(i + ',' + (b.y - 1), i + ',' + (b.y + b.height));
-                        for (let j = b.y; j < b.y + b.height; j++) per.push((b.x - 1) + ',' + j, (b.x + b.width) + ',' + j);
+                        for (let i = r.x; i < r.x + r.width; i++) per.push(i + ',' + (r.y - 1), i + ',' + (r.y + r.height));
+                        for (let j = r.y; j < r.y + r.height; j++) per.push((r.x - 1) + ',' + j, (r.x + r.width) + ',' + j);
                         for (const pt of per) {
                             const dv = dist.get(pt);
                             if (dv === undefined) continue;
@@ -959,7 +1058,7 @@ let CityBuilder = {
                         const parts = key.split(',');
                         this.placeRoadTile(+parts[0], +parts[1]);
                     }
-                    todo = todo.filter(b => !this.isConnectedToRoad(b.x, b.y, b.width, b.height));
+                    todo = todo.filter(unconn);
                 }
             }
 
@@ -974,7 +1073,10 @@ let CityBuilder = {
                 let guard = 0;
 
                 while (this.roadTiles.size && guard++ < 60) {
-                    const todo = this.placedBuildings.filter(b => b.street_level > 0 && !this.isConnectedToRoad(b.x, b.y, b.width, b.height));
+                    const todo = this.placedBuildings.filter(b => {
+                        const r = this.connRect(b);
+                        return b.street_level > 0 && !this.isConnectedToRoad(r.x, r.y, r.width, r.height);
+                    });
                     if (!todo.length) break;
                     const todoSet = new Set(todo);
 
@@ -1049,9 +1151,10 @@ let CityBuilder = {
                     // cheapest stub over all unconnected buildings, then re-measure
                     let bestPath = null, bestCost = Infinity;
                     for (const b of todo) {
+                        const r = this.connRect(b);
                         const per = [];
-                        for (let i = b.x; i < b.x + b.width; i++) per.push(i + ',' + (b.y - 1), i + ',' + (b.y + b.height));
-                        for (let j = b.y; j < b.y + b.height; j++) per.push((b.x - 1) + ',' + j, (b.x + b.width) + ',' + j);
+                        for (let i = r.x; i < r.x + r.width; i++) per.push(i + ',' + (r.y - 1), i + ',' + (r.y + r.height));
+                        for (let j = r.y; j < r.y + r.height; j++) per.push((r.x - 1) + ',' + j, (r.x + r.width) + ',' + j);
                         for (const pt of per) {
                             const dv = dist.get(pt);
                             if (dv === undefined || dv === 0 || dv >= bestCost) continue;
@@ -1108,18 +1211,21 @@ let CityBuilder = {
                                 }
                             }
                         }
+                        // chain composites connect through the head member only
+                        const hw = b.chainMembers ? b.chainMembers[0].width : b.width;
+                        const hh = b.chainMembers ? b.chainMembers[0].height : b.height;
                         let spot = null;
                         for (const [cx, cy] of coords) {
                             if (this.grid.get(cx + ',' + cy) !== 0 || !this.canPlace(cx, cy, b.width, b.height)) continue;
                             if (!this.gbKeepsStubSpace(cx, cy, b.width, b.height)) continue;
-                            if (this.isConnectedToRoad(cx, cy, b.width, b.height)) { spot = [cx, cy]; break; }
+                            if (this.isConnectedToRoad(cx, cy, hw, hh)) { spot = [cx, cy]; break; }
                             if (!spot) {
                                 let touches = false;
-                                for (let i = cx; i < cx + b.width && !touches; i++) {
-                                    if (reach.has(i + ',' + (cy - 1)) || reach.has(i + ',' + (cy + b.height))) touches = true;
+                                for (let i = cx; i < cx + hw && !touches; i++) {
+                                    if (reach.has(i + ',' + (cy - 1)) || reach.has(i + ',' + (cy + hh))) touches = true;
                                 }
-                                for (let j = cy; j < cy + b.height && !touches; j++) {
-                                    if (reach.has((cx - 1) + ',' + j) || reach.has((cx + b.width) + ',' + j)) touches = true;
+                                for (let j = cy; j < cy + hh && !touches; j++) {
+                                    if (reach.has((cx - 1) + ',' + j) || reach.has((cx + hw) + ',' + j)) touches = true;
                                 }
                                 if (touches) spot = [cx, cy];
                             }
@@ -1229,15 +1335,23 @@ let CityBuilder = {
                     for (const key of comp) {
                         this.grid.set(key, 0);
                         this.roadTiles.delete(key);
+                        this.roadLevel.delete(key);
                     }
                 }
             }
     
-            placeRoadTile(x, y) {
+            placeRoadTile(x, y, level) {
                 const key = x + ',' + y;
+                const lvl = level || 1;
                 if (this.grid.get(key) === 0) {
                     this.grid.set(key, 2);
                     this.roadTiles.add(key);
+                    this.roadLevel.set(key, lvl);
+                    return true;
+                }
+                // an existing road tile can be upgraded to two-lane
+                if (this.grid.get(key) === 2 && lvl > (this.roadLevel.get(key) || 1)) {
+                    this.roadLevel.set(key, lvl);
                     return true;
                 }
                 return false;
@@ -1257,7 +1371,7 @@ let CityBuilder = {
                     for (let j = y; j < y + item.height; j++) {
                         const key = i + ',' + j;
                         this.grid.set(key, etype);
-                        if (etype === 2) this.roadTiles.add(key);
+                        if (etype === 2) { this.roadTiles.add(key); this.roadLevel.set(key, 1); }
                     }
                 }
                 this.placedBuildings.push({ ...item, x: x, y: y });
@@ -1268,6 +1382,355 @@ let CityBuilder = {
                 for (let i = x; i < x + w; i++) if (this.grid.get(i + ',' + (y + h)) === 2) return true;
                 for (let j = y; j < y + h; j++) if (this.grid.get((x - 1) + ',' + j) === 2) return true;
                 for (let j = y; j < y + h; j++) if (this.grid.get((x + w) + ',' + j) === 2) return true;
+                return false;
+            }
+
+            // all two-lane tiles reachable from the town hall through two-lane
+            // tiles only - the game demands an unbroken two-lane path
+            linkedTwoLaneTiles() {
+                const linked = new Set();
+                if (!this.townHallPos) return linked;
+                const isL2 = (key) => this.grid.get(key) === 2 && (this.roadLevel.get(key) || 1) >= 2;
+                const stack = [];
+                const seed = (key) => {
+                    if (isL2(key) && !linked.has(key)) { linked.add(key); stack.push(key); }
+                };
+                const [tx, ty] = this.townHallPos;
+                for (let i = tx; i < tx + this.townHall.width; i++) { seed(i + ',' + (ty - 1)); seed(i + ',' + (ty + this.townHall.height)); }
+                for (let j = ty; j < ty + this.townHall.height; j++) { seed((tx - 1) + ',' + j); seed((tx + this.townHall.width) + ',' + j); }
+                while (stack.length) {
+                    const k = stack.pop();
+                    const parts = k.split(',');
+                    const kx = +parts[0], ky = +parts[1];
+                    seed((kx - 1) + ',' + ky);
+                    seed((kx + 1) + ',' + ky);
+                    seed(kx + ',' + (ky - 1));
+                    seed(kx + ',' + (ky + 1));
+                }
+                return linked;
+            }
+
+            // does the building border on any tile of the given two-lane set?
+            touchesTwoLane(b, linked) {
+                for (let i = b.x; i < b.x + b.width; i++) {
+                    if (linked.has(i + ',' + (b.y - 1)) || linked.has(i + ',' + (b.y + b.height))) return true;
+                }
+                for (let j = b.y; j < b.y + b.height; j++) {
+                    if (linked.has((b.x - 1) + ',' + j) || linked.has((b.x + b.width) + ',' + j)) return true;
+                }
+                return false;
+            }
+
+            // while more two-lane buildings wait, a placement (footprint plus the
+            // planned corridor tiles) must not entomb the two-lane network: the
+            // corridor blocks must still reach the largest free region, where the
+            // future buildings will go - and with enough room for all of them,
+            // one reachable block in a dead-end bottleneck is worthless
+            keepsTwoLaneGrowth(x, y, w, h, pathTiles, needBlocks) {
+                const need = Math.max(1, needBlocks || 1);
+                const linked = this.linkedTwoLaneTiles();
+                const pathSet = new Set(pathTiles || []);
+                if (!linked.size && !pathSet.size) return true;
+                const inFoot = (px, py) => px >= x && px < x + w && py >= y && py < y + h;
+                // corridor tiles count as two-lane road, not as free space
+                const val = (key) => pathSet.has(key) ? 2 : this.grid.get(key);
+
+                // largest free region outside the planned footprint
+                const regionOf = new Map();
+                let largestId = -1, largestSize = 0, regionId = 0;
+                for (const [key] of this.grid) {
+                    if (val(key) !== 0 || regionOf.has(key)) continue;
+                    const parts = key.split(',');
+                    if (inFoot(+parts[0], +parts[1])) continue;
+                    const id = regionId++;
+                    let size = 0;
+                    const stack = [key];
+                    regionOf.set(key, id);
+                    while (stack.length) {
+                        const k = stack.pop();
+                        size++;
+                        const p2 = k.split(',');
+                        const kx = +p2[0], ky = +p2[1];
+                        for (const nk of [(kx-1)+','+ky, (kx+1)+','+ky, kx+','+(ky-1), kx+','+(ky+1)]) {
+                            if (val(nk) !== 0 || regionOf.has(nk)) continue;
+                            const p3 = nk.split(',');
+                            if (inFoot(+p3[0], +p3[1])) continue;
+                            regionOf.set(nk, id);
+                            stack.push(nk);
+                        }
+                    }
+                    if (size > largestSize) { largestSize = size; largestId = id; }
+                }
+                if (largestId === -1) return true;
+
+                // block-level reachability BFS: a tile-connected escape through a
+                // one tile wide gap is useless, the 2x2 corridor blocks themselves
+                // must reach a block lying fully inside the largest free region
+                const blockValid = (bx, by) => {
+                    for (const pt of [[bx, by], [bx + 1, by], [bx, by + 1], [bx + 1, by + 1]]) {
+                        if (inFoot(pt[0], pt[1])) return false;
+                        const v = val(pt[0] + ',' + pt[1]);
+                        if (v !== 0 && v !== 2) return false;
+                    }
+                    return true;
+                };
+                const inRegionBlock = (bx, by) => {
+                    for (const pt of [[bx, by], [bx + 1, by], [bx, by + 1], [bx + 1, by + 1]]) {
+                        if (regionOf.get(pt[0] + ',' + pt[1]) !== largestId) return false;
+                    }
+                    return true;
+                };
+                const seen = new Set();
+                const stack = [];
+                const seed = (bx, by) => {
+                    const key = bx + ',' + by;
+                    if (!seen.has(key) && blockValid(bx, by)) { seen.add(key); stack.push([bx, by]); }
+                };
+                // seeds: blocks on the network (with the planned corridor) plus
+                // fresh blocks anchored at the town hall
+                for (const key of [...linked, ...pathSet]) {
+                    const parts = key.split(',');
+                    const kx = +parts[0], ky = +parts[1];
+                    for (let bx = kx - 1; bx <= kx; bx++) {
+                        for (let by = ky - 1; by <= ky; by++) seed(bx, by);
+                    }
+                }
+                if (this.townHallPos) {
+                    const th = { x: this.townHallPos[0], y: this.townHallPos[1], width: this.townHall.width, height: this.townHall.height };
+                    for (let by = th.y - 2; by <= th.y + th.height; by++) {
+                        for (let bx = th.x - 2; bx <= th.x + th.width; bx++) {
+                            if (this.blockTouchesRect(bx, by, th)) seed(bx, by);
+                        }
+                    }
+                }
+                let regionBlocks = 0;
+                while (stack.length) {
+                    const blk = stack.pop();
+                    if (inRegionBlock(blk[0], blk[1])) {
+                        regionBlocks++;
+                        if (regionBlocks >= need) return true;
+                    }
+                    seed(blk[0] - 1, blk[1]);
+                    seed(blk[0] + 1, blk[1]);
+                    seed(blk[0], blk[1] - 1);
+                    seed(blk[0], blk[1] + 1);
+                }
+                return false;
+            }
+
+            // the four tile keys of the 2x2 block with this top-left corner
+            blockTiles(bx, by) {
+                return [bx + ',' + by, (bx + 1) + ',' + by, bx + ',' + (by + 1), (bx + 1) + ',' + (by + 1)];
+            }
+
+            // does the 2x2 block orthogonally touch the given rectangle?
+            blockTouchesRect(bx, by, r) {
+                for (const key of this.blockTiles(bx, by)) {
+                    const parts = key.split(',');
+                    const px = +parts[0], py = +parts[1];
+                    if ((py === r.y - 1 || py === r.y + r.height) && px >= r.x && px < r.x + r.width) return true;
+                    if ((px === r.x - 1 || px === r.x + r.width) && py >= r.y && py < r.y + r.height) return true;
+                }
+                return false;
+            }
+
+            // Dijkstra over 2x2 block top-left positions. Two-lane streets are 2x2
+            // pieces, so corridors are built from such blocks; upgrading existing
+            // one-lane tiles is cheaper than claiming free ones. Seeds: blocks
+            // fully inside the linked network (free) and blocks touching the town
+            // hall (anchor of a brand-new network)
+            twoLaneBlockDist(linked) {
+                const minX = this.mapBounds.minX, maxX = this.mapBounds.maxX;
+                const minY = this.mapBounds.minY, maxY = this.mapBounds.maxY;
+                // -1 = blocked, otherwise price: free tile 2, one-lane road 1, two-lane 0
+                const blockCost = (bx, by) => {
+                    let cost = 0;
+                    for (const key of this.blockTiles(bx, by)) {
+                        const v = this.grid.get(key);
+                        if (v !== 0 && v !== 2) return -1;
+                        if (v === 0) cost += 2;
+                        else if ((this.roadLevel.get(key) || 1) < 2) cost += 1;
+                    }
+                    return cost;
+                };
+                const th = { x: this.townHallPos[0], y: this.townHallPos[1], width: this.townHall.width, height: this.townHall.height };
+
+                const dist = new Map(), parent = new Map();
+                const heap = [];
+                const push = (key, d) => {
+                    heap.push([d, key]);
+                    let i = heap.length - 1;
+                    while (i > 0) {
+                        const p = (i - 1) >> 1;
+                        if (heap[p][0] <= heap[i][0]) break;
+                        const t = heap[p]; heap[p] = heap[i]; heap[i] = t;
+                        i = p;
+                    }
+                };
+                const pop = () => {
+                    const top = heap[0];
+                    const last = heap.pop();
+                    if (heap.length) {
+                        heap[0] = last;
+                        let i = 0;
+                        while (true) {
+                            const l = i * 2 + 1, r = l + 1;
+                            let s = i;
+                            if (l < heap.length && heap[l][0] < heap[s][0]) s = l;
+                            if (r < heap.length && heap[r][0] < heap[s][0]) s = r;
+                            if (s === i) break;
+                            const t = heap[s]; heap[s] = heap[i]; heap[i] = t;
+                            i = s;
+                        }
+                    }
+                    return top;
+                };
+
+                for (let by = minY; by < maxY - 1; by++) {
+                    for (let bx = minX; bx < maxX - 1; bx++) {
+                        const c = blockCost(bx, by);
+                        if (c < 0) continue;
+                        let d = -1;
+                        if (linked.size && this.blockTiles(bx, by).every(k => linked.has(k))) d = 0;
+                        else if (this.blockTouchesRect(bx, by, th)) d = c;
+                        if (d >= 0) {
+                            const bk = bx + ',' + by;
+                            if (!dist.has(bk) || dist.get(bk) > d) { dist.set(bk, d); push(bk, d); }
+                        }
+                    }
+                }
+
+                while (heap.length) {
+                    const entry = pop();
+                    const d = entry[0], key = entry[1];
+                    if (d > dist.get(key)) continue;
+                    const parts = key.split(',');
+                    const bx = +parts[0], by = +parts[1];
+                    for (const nb of [[bx-1,by],[bx+1,by],[bx,by-1],[bx,by+1]]) {
+                        if (nb[0] < minX || nb[0] >= maxX - 1 || nb[1] < minY || nb[1] >= maxY - 1) continue;
+                        const c = blockCost(nb[0], nb[1]);
+                        if (c < 0) continue;
+                        const nk = nb[0] + ',' + nb[1];
+                        const nd = d + c;
+                        if (dist.has(nk) && dist.get(nk) <= nd) continue;
+                        dist.set(nk, nd);
+                        parent.set(nk, key);
+                        push(nk, nd);
+                    }
+                }
+                return { dist: dist, parent: parent };
+            }
+
+            // build the block path ending in this block, network first
+            materializeBlockPath(bestKey, parent) {
+                let cur = bestKey;
+                while (cur !== undefined) {
+                    const parts = cur.split(',');
+                    for (const key of this.blockTiles(+parts[0], +parts[1])) {
+                        const kp = key.split(',');
+                        this.placeRoadTile(+kp[0], +kp[1], 2);
+                    }
+                    cur = parent.get(cur);
+                }
+            }
+
+            // two-lane requirement: the building must touch a two-lane road whose
+            // network reaches the town hall - give every already placed two-lane
+            // building the cheapest block corridor that is still possible
+            connectTwoLane() {
+                if (!this.townHallPos) return;
+                let guard = 0;
+                while (guard++ < 40) {
+                    const linked = this.linkedTwoLaneTiles();
+                    const todo = this.placedBuildings.filter(b => (b.street_level || 0) >= 2 && !this.touchesTwoLane(this.connRect(b), linked));
+                    if (!todo.length) return;
+
+                    const bd = this.twoLaneBlockDist(linked);
+
+                    // cheapest corridor over all waiting buildings, then re-measure
+                    let bestKey = null, bestCost = Infinity;
+                    for (const t of todo) {
+                        const r = this.connRect(t);
+                        for (let by = r.y - 2; by <= r.y + r.height; by++) {
+                            for (let bx = r.x - 2; bx <= r.x + r.width; bx++) {
+                                if (!this.blockTouchesRect(bx, by, r)) continue;
+                                const dv = bd.dist.get(bx + ',' + by);
+                                if (dv !== undefined && dv < bestCost) { bestCost = dv; bestKey = bx + ',' + by; }
+                            }
+                        }
+                    }
+                    if (bestKey === null) return;
+
+                    this.materializeBlockPath(bestKey, bd.parent);
+                }
+            }
+
+            // organic placement for a two-lane building: prefer spots that already
+            // touch the linked network, otherwise take the spot with the cheapest
+            // block corridor and build that corridor before placing - a corridor
+            // planned after tight packing would find no room anymore
+            placeTwoLaneOrganic(b, coords, keepsGrowth, needed, l2Left) {
+                const linked = this.linkedTwoLaneTiles();
+                const hw = b.chainMembers ? b.chainMembers[0].width : b.width;
+                const hh = b.chainMembers ? b.chainMembers[0].height : b.height;
+                const bd = this.twoLaneBlockDist(linked);
+
+                const candidates = [];
+                for (const [x, y] of coords) {
+                    if (this.grid.get(x + ',' + y) !== 0 || !this.canPlace(x, y, b.width, b.height)) continue;
+                    const head = { x: x, y: y, width: hw, height: hh };
+                    if (this.touchesTwoLane(head, linked)) {
+                        if (!keepsGrowth([], x, y, b.width, b.height, needed)) continue;
+                        if (l2Left > 0 && !this.keepsTwoLaneGrowth(x, y, b.width, b.height, [], l2Left)) continue;
+                        this.placeEntity(b, x, y, 1);
+                        return true;
+                    }
+                    // cheapest block next to the head that does not overlap the footprint
+                    let cost = Infinity, bkey = null;
+                    for (let by = head.y - 2; by <= head.y + head.height; by++) {
+                        for (let bx = head.x - 2; bx <= head.x + head.width; bx++) {
+                            if (bx + 1 >= x && bx < x + b.width && by + 1 >= y && by < y + b.height) continue;
+                            if (!this.blockTouchesRect(bx, by, head)) continue;
+                            const dv = bd.dist.get(bx + ',' + by);
+                            if (dv !== undefined && dv < cost) { cost = dv; bkey = bx + ',' + by; }
+                        }
+                    }
+                    if (bkey !== null) candidates.push([cost, x, y, bkey]);
+                }
+
+                candidates.sort((p, q) => p[0] - q[0]);
+                for (const cand of candidates) {
+                    const x = cand[1], y = cand[2];
+                    // walk the corridor first - it must not cross the footprint
+                    const path = [];
+                    let cur = cand[3], ok = true;
+                    while (cur !== undefined) {
+                        const parts = cur.split(',');
+                        const bx = +parts[0], by = +parts[1];
+                        if (bx + 1 >= x && bx < x + b.width && by + 1 >= y && by < y + b.height) { ok = false; break; }
+                        path.push(cur);
+                        cur = bd.parent.get(cur);
+                    }
+                    if (!ok) continue;
+                    const pathTiles = [];
+                    for (const bk of path) {
+                        const parts = bk.split(',');
+                        for (const key of this.blockTiles(+parts[0], +parts[1])) {
+                            if (this.grid.get(key) === 0) pathTiles.push(key);
+                        }
+                    }
+                    if (!keepsGrowth(pathTiles, x, y, b.width, b.height, needed)) continue;
+                    if (l2Left > 0 && !this.keepsTwoLaneGrowth(x, y, b.width, b.height, pathTiles, l2Left)) continue;
+                    for (const bk of path) {
+                        const parts = bk.split(',');
+                        for (const key of this.blockTiles(+parts[0], +parts[1])) {
+                            const kp = key.split(',');
+                            this.placeRoadTile(+kp[0], +kp[1], 2);
+                        }
+                    }
+                    this.placeEntity(b, x, y, 1);
+                    return true;
+                }
                 return false;
             }
 
@@ -1317,8 +1780,9 @@ let CityBuilder = {
             }
     
             pruneRoadsSmart() {
-                // the town hall counts too: its last road tile must survive
-                const streetBuildings = this.placedBuildings.filter(b => b.street_level > 0);
+                // the town hall counts too: its last road tile must survive -
+                // chain composites only guard the road at their head member
+                const streetBuildings = this.placedBuildings.filter(b => b.street_level > 0).map(b => this.connRect(b));
 
                 const buildingsTouching = (rx, ry) => streetBuildings.filter(b =>
                     ((ry === b.y - 1 || ry === b.y + b.height) && rx >= b.x && rx < b.x + b.width) ||
@@ -1357,6 +1821,9 @@ let CityBuilder = {
                     for (const key of [...this.roadTiles]) {
                         const [rx, ry] = key.split(',').map(Number);
 
+                        // two-lane tiles are deliberate 2x2 blocks - never prune them
+                        if ((this.roadLevel.get(key) || 1) >= 2) continue;
+
                         // One connection tile per building is enough - keep this tile
                         // if some adjacent building would lose its last road tile
                         if (buildingsTouching(rx, ry).some(b => this.countAdjacentRoadTiles(b) <= 1)) continue;
@@ -1373,17 +1840,30 @@ let CityBuilder = {
 
                         this.grid.set(key, 0);
                         this.roadTiles.delete(key);
+                        this.roadLevel.delete(key);
                         changed = true;
                     }
                 }
             }
     
             generateExportData() {
-                const exportList = [...this.placedBuildings];
+                const exportList = [];
+                for (const b of this.placedBuildings) {
+                    // split chain composites back into their members, in chain order
+                    if (b.chainMembers) {
+                        let off = 0;
+                        for (const m of b.chainMembers) {
+                            if (this.transposed) { exportList.push({ ...m, x: b.x, y: b.y + off }); off += m.height; }
+                            else { exportList.push({ ...m, x: b.x + off, y: b.y }); off += m.width; }
+                        }
+                    } else {
+                        exportList.push(b);
+                    }
+                }
                 this.roadTiles.forEach(key => {
                     const [x, y] = key.split(',').map(Number);
                     exportList.push({
-                        x: x, y: y, width: 1, height: 1, type: 'street', name: 'Road', street_level: 0
+                        x: x, y: y, width: 1, height: 1, type: 'street', name: 'Road', street_level: 0, level: this.roadLevel.get(key) || 1
                     });
                 });
                 if (this.transposed) {
@@ -1396,6 +1876,12 @@ let CityBuilder = {
             layoutBands(street) {
                 const minX = this.mapBounds.minX, maxX = this.mapBounds.maxX;
                 const minY = this.mapBounds.minY, maxY = this.mapBounds.maxY;
+
+                // two-lane buildings first: their bands get double road rows and a
+                // double trunk, so the two-lane network stays one connected piece
+                const twoLane = street.filter(b => (b.street_level || 0) >= 2);
+                const oneLane = street.filter(b => (b.street_level || 0) < 2);
+                const hasTwoLane = twoLane.length > 0;
 
                 // buildable stretches per row: all of them get roads and buildings
                 // (side areas cut off by the great buildings included), the widest
@@ -1437,7 +1923,11 @@ let CityBuilder = {
                         }
                     }
                 }
-                for (let y = trunkTop; y < trunkBottom; y++) this.placeRoadTile(trunkX, y);
+                for (let y = trunkTop; y < trunkBottom; y++) {
+                    this.placeRoadTile(trunkX, y, hasTwoLane ? 2 : 1);
+                    // two-lane cities need a two tiles wide trunk (2x2 pieces)
+                    if (hasTwoLane) this.placeRoadTile(trunkX + 1, y, 2);
+                }
 
                 // hook up the pre-placed great buildings while the rows are still
                 // empty - once the bands are built they wall off the free pockets
@@ -1446,8 +1936,12 @@ let CityBuilder = {
                 this.connectPlacedBuildings();
 
                 // build order comes from the variant: bands of similar height need the
-                // fewest road rows, and every building touches its road row by construction
-                const queue = this.sortBuildings([this.townHall, ...street]);
+                // fewest road rows, and every building touches its road row by
+                // construction - the town hall leads the two-lane group so it always
+                // borders a two-lane row
+                const queue = hasTwoLane
+                    ? this.sortBuildings([this.townHall, ...twoLane]).concat(this.sortBuildings(oneLane))
+                    : this.sortBuildings([this.townHall, ...street]);
 
                 // fill one row of buildings along a road row: mode 'above' puts their
                 // bottom edge on it, mode 'below' their top edge
@@ -1472,25 +1966,43 @@ let CityBuilder = {
                     return bandH;
                 };
 
-                // bands top-down: [buildings above][road row][buildings below] ...
+                // bands top-down: [buildings above][road row(s)][buildings below] ...
+                // while two-lane buildings wait, the road row is two tiles thick
                 let y = minY;
+                let lastTwoLaneRow = trunkTop - 1;
                 while (queue.length && y < maxY) {
+                    const dbl = hasTwoLane && queue.some(q => (q.street_level || 0) >= 2);
+                    const rows = dbl ? 2 : 1;
                     const roadY = y + queue[0].height;
-                    if (roadY >= maxY) break;
+                    if (roadY + rows - 1 >= maxY) break;
 
                     // the road row must exist and cross the trunk to stay connected
                     const range = rowRange.get(roadY);
-                    if (!range || roadY < trunkTop || roadY >= trunkBottom || trunkX < range[0] || trunkX >= range[1]) { y++; continue; }
+                    if (!range || roadY < trunkTop || roadY >= trunkBottom || trunkX < range[0] || trunkX >= range[1] || (dbl && !rowRuns.has(roadY + 1))) { y++; continue; }
 
                     // roads first so the row packing sees them, side stretches get
                     // linked to the trunk by the unify pass afterwards
-                    for (const run of rowRuns.get(roadY)) {
-                        for (let x = run[0]; x < run[1]; x++) this.placeRoadTile(x, roadY);
+                    for (let r = 0; r < rows; r++) {
+                        for (const run of rowRuns.get(roadY + r)) {
+                            for (let x = run[0]; x < run[1]; x++) this.placeRoadTile(x, roadY + r, dbl ? 2 : 1);
+                        }
                     }
+                    if (dbl) lastTwoLaneRow = roadY + 1;
                     placeRow(roadY, 'above');
-                    const hBelow = placeRow(roadY, 'below');
+                    const hBelow = placeRow(roadY + rows - 1, 'below');
 
-                    y = roadY + 1 + hBelow;
+                    y = roadY + rows + hBelow;
+                }
+
+                // below the last double row the second trunk column is ordinary
+                // one-lane road again - the prune pass may take it back
+                if (hasTwoLane) {
+                    for (let dy = Math.max(trunkTop, lastTwoLaneRow + 1); dy < trunkBottom; dy++) {
+                        for (const cx of [trunkX, trunkX + 1]) {
+                            const key = cx + ',' + dy;
+                            if (this.roadTiles.has(key)) this.roadLevel.set(key, 1);
+                        }
+                    }
                 }
             }
 
@@ -1568,7 +2080,13 @@ let CityBuilder = {
                 // empty - the grown city would wall them off later
                 this.connectPlacedBuildings();
 
-                const queue = this.sortBuildings([...street]);
+                // two-lane buildings first: while the map is still open their 2x2
+                // block corridors can grow right next to the town hall
+                const twoLane = street.filter(b => (b.street_level || 0) >= 2);
+                const oneLane = street.filter(b => (b.street_level || 0) < 2);
+                const queue = twoLane.length
+                    ? this.sortBuildings(twoLane).concat(this.sortBuildings(oneLane))
+                    : this.sortBuildings([...street]);
 
                 // a placement (with its new road path, if any) must not entomb the
                 // network: the largest connected free region still reachable from the
@@ -1611,11 +2129,20 @@ let CityBuilder = {
                 };
 
                 let remaining = queue.reduce((sum, q) => sum + q.width * q.height, 0);
+                let l2Left = twoLane.length;
 
                 for (const b of queue) {
                     // free area that must stay reachable for the buildings after this one
                     remaining -= b.width * b.height;
                     const needed = remaining;
+
+                    // two-lane buildings get their corridor together with the
+                    // placement - planned afterwards it would find no room
+                    if ((b.street_level || 0) >= 2) {
+                        l2Left--;
+                        this.placeTwoLaneOrganic(b, coords, keepsGrowth, needed, l2Left);
+                        continue;
+                    }
 
                     // BFS from the road network across free tiles: the distance is the
                     // number of new road tiles a spot would cost, parents give the path
@@ -1733,6 +2260,9 @@ let CityBuilder = {
                 // single road stubs for everything the strategy left unconnected
                 this.connectPlacedBuildings();
 
+                // two-lane corridors for buildings the strategy could not serve
+                this.connectTwoLane();
+
                 const allCoords = [];
                 for (let cy = minY; cy < maxY; cy++) {
                     for (let cx = minX; cx < maxX; cx++) allCoords.push([cx, cy]);
@@ -1743,10 +2273,13 @@ let CityBuilder = {
                 const placedIds = new Set(this.placedBuildings.map(b => b.id));
                 const leftovers = [this.townHall, ...street].filter(b => !placedIds.has(b.id));
                 for (const b of leftovers) {
+                    // chain composites connect through the head member only
+                    const hw = b.chainMembers ? b.chainMembers[0].width : b.width;
+                    const hh = b.chainMembers ? b.chainMembers[0].height : b.height;
                     for (const [cx, cy] of allCoords) {
                         if (this.grid.get(cx + ',' + cy) === 0
                             && this.canPlace(cx, cy, b.width, b.height)
-                            && this.isConnectedToRoad(cx, cy, b.width, b.height)
+                            && this.isConnectedToRoad(cx, cy, hw, hh)
                             && this.gbKeepsStubSpace(cx, cy, b.width, b.height)) {
                             if (b.type === 'main_building') this.townHallPos = [cx, cy];
                             this.placeEntity(b, cx, cy, b.type === 'main_building' ? 9 : 1);
@@ -1762,6 +2295,20 @@ let CityBuilder = {
                 // re-placed blocker can itself land badly, so repair runs in up
                 // to three passes (a clean pass exits immediately)
                 for (let rp = 0; rp < 3; rp++) this.repairUnconnected();
+
+                // the repair passes may have moved buildings and freed space -
+                // final chance for every two-lane corridor
+                this.connectTwoLane();
+
+                // two-lane tiles the town hall cannot reach through two-lane
+                // streets are useless in the game - downgrade them to ordinary
+                // one-lane roads (the prune pass may then take them back)
+                {
+                    const linked = this.linkedTwoLaneTiles();
+                    for (const key of this.roadTiles) {
+                        if ((this.roadLevel.get(key) || 1) >= 2 && !linked.has(key)) this.roadLevel.set(key, 1);
+                    }
+                }
 
                 this.pruneRoadsSmart();
 
@@ -1945,8 +2492,12 @@ let CityBuilder = {
                 // building that never got a road counts like a missing one
                 let builtTiles = 0;
                 let unconnected = 0;
+                const l2linked = this.linkedTwoLaneTiles();
                 for (const b of this.placedBuildings) {
-                    if (b.street_level > 0 && !this.isConnectedToRoad(b.x, b.y, b.width, b.height)) {
+                    const r = this.connRect(b);
+                    const bad = (b.street_level > 0 && !this.isConnectedToRoad(r.x, r.y, r.width, r.height))
+                        || ((b.street_level || 0) >= 2 && !this.touchesTwoLane(r, l2linked));
+                    if (bad) {
                         unconnected++;
                         continue;
                     }

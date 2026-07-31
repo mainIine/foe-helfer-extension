@@ -18,14 +18,20 @@
 - Historische Verbündete:
   - Die Liste zeigt jetzt die Portraits der Verbündeten — auch bei unzugewiesenen Verbündeten und Fragmenten
   - Beim Überfahren eines Portraits erscheint das große Artwork des Verbündeten als Tooltip
-  - Die Zeilen der Liste sind jetzt vertikal mittig ausgerichtet
 
 **Bugfix**
+- City Builder:
+  - Gebäude mit 2-spurigem Straßenbedarf stehen jetzt an doppelt breiten Straßenzügen (2x2-Blöcke), die lückenlos bis zum Rathaus führen — auf der Karte dunkler dargestellt
+  - Kettengebäude stehen jetzt in Kettenreihenfolge direkt nebeneinander (von links nach rechts), nur der Kettenkopf braucht den Straßenanschluss
+- Stadtkarte:
+  - "Auf der Karte zeigen" zentriert die Ansicht jetzt korrekt auf das Gebäude — auch am Stadtrand und in der Schrägansicht; bei mehreren Gebäuden auf die Mitte der Gruppe
 - Inventar:
   - Shop-Käufe aktualisieren den Inventarbestand jetzt sofort in allen Boxen (z.B. Shop Assistent, Sets und Ketten)
 - Shop Assistent:
   - Die Einstellung "Nur entsperrte" überlebt jetzt ein Neuladen
   - Freischalt-Bedingungen mit Seltenheits-Anforderung zeigen das Icon der jeweiligen Seltenheit statt immer "gewöhnlich"
+- Forge-Punkte:
+  - FP-Sammler: Belohnungen im neuen Format von Spiel-Update 1.340 (ohne "context"-Feld) werden wieder erfasst
 
 ---
 

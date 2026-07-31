@@ -24,11 +24,18 @@
   - Code reworked and documented
 
 **Bugfix**
+- City Builder:
+  - Buildings requiring a two-lane street now sit along double-width road strips (2x2 blocks) leading all the way to the town hall — drawn darker on the map
+  - Chain buildings now stand side by side in chain order (left to right), only the chain head needs the street connection
+- City map:
+  - "Show on map" now correctly centers the view on the building — even at the city edge and in the cavalier perspective; with multiple buildings it centers on the middle of the group
 - Inventory:
   - Store purchases now update the inventory stock immediately in all boxes (e.g. Shop Assistant, Sets and Chains)
 - Shop Assistant:
   - The "Only unlocked" setting now survives a reload
   - Unlock conditions with a rarity requirement show the icon of the actual rarity instead of always "common"
+- Forge points:
+  - FP Collector: rewards in the new format of game update 1.340 (without a "context" field) are recorded again
 
 ---
 
