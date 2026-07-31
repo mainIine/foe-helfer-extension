@@ -736,6 +736,10 @@ p {
 	background-image: url('../images/menu/kits.png');
 }
 
+[id$=inventory-Btn] span {
+	background-image: url('../../js/web/x_img/inventory.png');
+}
+
 [id$=alerts-Btn] span {
 	background-image: url('../images/menu/alerts.png');
 }

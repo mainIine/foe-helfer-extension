@@ -1,5 +1,15 @@
 ## Extension Changelog
 
+##### 4.5.0.0
+
+**New**
+- Inventory Overview:
+  - New module: browse your complete inventory in one box — with a property filter for buildings (Forge Points, unit boosts, goods, units, happiness, Quantum Incursion and more)
+  - With an active filter every tile shows the value of the selected property, sortable ascending/descending; building fragments show their progress and are rated like their assembled building
+  - Building tooltips like in the efficiency rating, automatic refresh on inventory changes; Historical Allies stay in their own box
+
+---
+
 ##### 4.4.4.0
 
 **New**

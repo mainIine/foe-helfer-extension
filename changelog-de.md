@@ -1,5 +1,15 @@
 ## Extension Changelog
 
+##### 4.5.0.0
+
+**Neu**
+- Inventar-Übersicht:
+  - Neues Modul: das komplette Inventar durchsuchbar in einer Box — mit Eigenschafts-Filter für Gebäude (Forge-Punkte, Kampfboosts, Güter, Einheiten, Zufriedenheit, Quanten-Inkursion u.v.m.)
+  - Bei aktivem Filter zeigt jede Kachel den Wert der gewählten Eigenschaft, auf- und absteigend sortierbar; Gebäude-Fragmente zeigen ihren Fortschritt und werden wie ihr fertiges Gebäude bewertet
+  - Gebäude-Tooltips wie in der Effizienzbewertung, automatische Aktualisierung bei Inventar-Änderungen; Historische Verbündete bleiben ihrer eigenen Box vorbehalten
+
+---
+
 ##### 4.4.4.0
 
 **Neu**
