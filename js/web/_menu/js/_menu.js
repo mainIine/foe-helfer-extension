@@ -30,6 +30,8 @@ let _menu = {
 	
 	Items: [
 		//'calculator',
+		'webRequest',
+		'inventory',
 		'partCalc',
 		'outpost',
 		'productions',
@@ -321,6 +323,7 @@ let _menu = {
 		{ id: 'musicControl', title: i18n('Menu.MusicControl.Title'), description: i18n('Menu.MusicControl.Desc') },
 		{ id: 'music', title: i18n('Menu.Music.Title'), description: i18n('Menu.Music.Desc') },
 		{ id: 'discord', title: i18n('Menu.Discord.Title'), description: i18n('Menu.Discord.Desc') },
+		{ id: 'webRequest', title: i18n('Menu.WebRequest.Title'), description: i18n('Menu.WebRequest.Desc') },
 		{ id: 'compare_friends_threads', title: i18n('Menu.CompareFriendsThreads.Title'), description: i18n('Menu.CompareFriendsThreads.Desc') },
 		{ id: 'castle', title: i18n('Menu.Castle.Title'), description: i18n('Menu.Castle.Desc') },
 		{ id: 'gexStat', title: i18n('Menu.GexStat.Title'), description: i18n('Menu.GexStat.Desc') },
@@ -331,6 +334,7 @@ let _menu = {
 		{ id: 'blueGalaxy', title: i18n('Menu.Bluegalaxy.Title'), description: i18n('Menu.Bluegalaxy.Desc') },
 		{ id: 'greatBuildings', title: i18n('Menu.greatbuildings.Title'), description: i18n('Menu.greatbuildings.Desc') },
 		{ id: 'kits', title: i18n('Menu.Kits.Title'), description: i18n('Menu.Kits.Desc') },
+		{ id: 'inventory', title: i18n('Menu.Inventory.Title'), description: i18n('Menu.Inventory.Desc') },
 		{ id: 'stats', title: i18n('Menu.Stats.Title'), description: i18n('Menu.Stats.Desc') },
 		{ id: 'settings', title: i18n('Menu.Settings.Title'), description: i18n('Menu.Settings.Desc') },
 		{ id: 'notice', title: i18n('Menu.Notice.Title'), description: i18n('Menu.Notice.Desc') },
@@ -630,6 +634,19 @@ let _menu = {
 	},
 
 	/**
+	 * Inventory overview
+	 */
+	inventory_Btn: () => {
+		let btn = _menu.MakeButton('inventory');
+
+		let btn_sp = $('<span />').on('click', function () {
+			InventoryOverview.init();
+		});
+
+		return btn.append(btn_sp);
+	},
+
+	/**
 	 * FP Produzierende LGs
 	 */
 	greatBuildings_Btn: () => {
@@ -796,6 +813,16 @@ let _menu = {
 
 		let btn_sp = $('<span />').bind('click', function () {
 			Discord.BuildBox();
+		});
+
+		return btn.append(btn_sp);
+	},
+
+	webRequest_Btn: () => {
+		let btn = _menu.MakeButton('webRequest');
+
+		let btn_sp = $('<span />').bind('click', function () {
+			WebRequest.BuildBox();
 		});
 
 		return btn.append(btn_sp);
