@@ -1,0 +1,175 @@
+/*
+ * **************************************************************************************
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
+ *
+ * See file LICENSE.md or go to
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
+ *
+ * **************************************************************************************
+ */
+
+/* Box */
+#inventoryOverview {
+	top: 15%;
+	left: 25%;
+	width: 640px;
+	height: 500px;
+}
+
+#inventoryOverviewBody {
+	display: flex;
+	flex-direction: column;
+}
+
+#inventoryOverview #inventoryOverviewTopbar {
+	display: flex;
+	align-items: center;
+	gap: 5px;
+	padding: 3px 5px;
+	border-bottom: 1px solid var(--border-table-bottom);
+}
+
+#inventoryOverview #inventoryOverviewTopbar input {
+	flex: 1 1 auto;
+	min-width: 100px;
+}
+
+#inventoryOverview #inventoryOverviewTopbar select {
+	flex: 0 1 auto;
+	max-width: 250px;
+	background-color: var(--text-darker);
+	color: var(--beige);
+	border: 1px solid var(--border-table-bottom);
+	padding: 2px;
+}
+
+#inventoryOverview #inventoryOverviewSort {
+	min-width: 24px;
+	text-align: center;
+}
+
+#inventoryOverview #inventoryOverviewInner {
+	height: calc(100% - 52px);
+	overflow: hidden auto;
+	border-bottom: 1px solid var(--border-table-bottom);
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(118px, 1fr));
+	gap: 4px;
+	align-content: start;
+	padding: 4px;
+	box-sizing: border-box;
+}
+
+#inventoryOverview .no-results {
+	grid-column: 1 / -1;
+	text-align: center;
+	padding: 20px 0;
+}
+
+#inventoryOverview #inventoryOverviewBottombar {
+	display: flex;
+	justify-content: center;
+	align-items: baseline;
+	padding: 2px 10px;
+	background-color: rgba(0, 0, 0, 0.35);
+	border-top: 1px solid var(--border-table-top);
+}
+
+#inventoryOverview .type-split {
+	margin-left: 8px;
+	font-size: 80%;
+	color: var(--sunflower);
+}
+
+/* Item tiles: fixed size cards so names truncate and values line up */
+#inventoryOverview .item {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	height: 152px;
+	padding: 5px;
+	font-size: 90%;
+	position: relative;
+	box-sizing: border-box;
+	text-align: center;
+	border: 1px solid var(--border-table-bottom);
+	border-radius: 5px;
+	background-color: var(--black-50);
+	box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.4);
+	overflow: hidden;
+}
+
+#inventoryOverview .image {
+	width: 96px;
+	height: 76px;
+	flex: 0 0 76px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: 0 auto 3px;
+}
+
+#inventoryOverview .image img {
+	max-width: 90px;
+	max-height: 70px;
+	image-rendering: -webkit-optimize-contrast;
+}
+
+#inventoryOverview .in-stock {
+	position: absolute;
+	top: 62px;
+	left: calc(50% + 24px);
+	background: var(--hud-counter-color);
+	color: var(--white);
+	border-radius: 10px;
+	min-width: 14px;
+	padding: 2px 4px;
+	text-align: center;
+}
+
+#inventoryOverview .item-name {
+	display: block;
+	width: 100%;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+#inventoryOverview .fragments {
+	display: block;
+	width: 100%;
+	white-space: nowrap;
+}
+
+#inventoryOverview .ItemFragment {
+	height: 20px;
+	vertical-align: middle;
+}
+
+#inventoryOverview .fragment-bar {
+	display: block;
+	width: calc(100% - 20px);
+	height: 5px;
+	margin-top: 2px;
+	background-color: var(--text-darker);
+	border-radius: 3px;
+	overflow: hidden;
+}
+
+#inventoryOverview .fragment-bar span {
+	display: block;
+	height: 100%;
+	background: var(--btn-bg-green);
+}
+
+#inventoryOverview .prop-value {
+	display: inline-block;
+	margin-top: auto;
+	padding: 1px 8px;
+	border-radius: 8px;
+	background-color: var(--text-darker);
+	color: var(--sunflower);
+}
