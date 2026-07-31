@@ -1114,7 +1114,7 @@
     "Boxes.ProductionsRating.Explainer": "Wähle wieviel ein Gebäude pro Feld idealerweise produzieren sollte. Entferne alle Werte, die für dich irrelevant sind. Die Balance zwischen allen Werten ist wichtig für die Bewertung. Wenn du einen Wert weniger stark gewichten möchtest, nimm höhere Zahlen und kleinere, wenn dir eine Ressource/Boost wichtiger ist . Falls du mehr als eins von einem Gebäude hast, wird nur das Gebäude mit dem höchsten Zeitalter bewertet.",
     "Boxes.ProductionsRating.ExplainerHead": "Hilfe",
     "Boxes.ProductionsRating.FindBuilding": "Suche",
-    "Boxes.ProductionsRating.HelpLink": "https://docs.foe-helper.com/english/module/efficiency",
+    "Boxes.ProductionsRating.HelpLink": "https://docs.foe-helper.com/deutsch/module/effizenz",
     "Boxes.ProductionsRating.Hide": "Verstecke",
     "Boxes.ProductionsRating.HighlightsExplained": "Wie markiert man ein Gebäude? Klicke die auf die Zeile des Gebäudes. Suchergebnisse werden automatisch markiert.",
     "Boxes.ProductionsRating.InventoryBuildingScore": "Minimal-Score",
