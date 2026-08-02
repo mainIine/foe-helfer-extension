@@ -173,3 +173,9 @@
 	background-color: var(--text-darker);
 	color: var(--sunflower);
 }
+
+#inventoryOverview .added-time {
+	font-size: 85%;
+	font-weight: normal;
+	color: var(--beige);
+}

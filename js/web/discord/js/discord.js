@@ -42,6 +42,7 @@ let Discord = {
 			HTML.Box({
 				id: 'Discord',
 				title: i18n('Boxes.Discord.Title'),
+				ask: i18n('Boxes.Discord.HelpLink'),
 				auto_close: true,
 				dragdrop: true,
 				resize: true
@@ -54,6 +55,8 @@ let Discord = {
 			return ;
 		}
 
+		// re-read webhooks and urls from localStorage, another tab may have changed them
+		Discord.init();
 		Discord.BuildContent();
 	},
 
@@ -143,12 +146,16 @@ let Discord = {
 
 		h.push(`<tr>`);
 		h.push(`<td style="width: 1%;"><input style="width:80px" id="webhookUrlName" name="name" type="text" placeholder="Name" spellcheck="false"></td>`);
-		h.push(`<td><input id="webhookUrlInput" name="url" placeholder="Webhook-URL" type="text" spellcheck="false" style="width:100%"></td>`);
+		h.push(`<td><div style="display:flex;gap:4px;">
+			<input id="webhookUrlInput" name="url" placeholder="Webhook-URL" type="text" spellcheck="false" style="flex:1 1 auto;min-width:0;">
+			<input id="webhookThreadIdInput" name="thread" placeholder="${i18n('Boxes.Discord.ThreadId')}" type="text" spellcheck="false" style="width:130px;">
+		</div></td>`);
 		h.push(`<td style="white-space:nowrap;" class="text-right"><button class="btn" role="button" type="button" onclick="Discord.SaveWebhookUrl()">${i18n('Boxes.Discord.Save')}</button></td>`);
 		h.push(`</tr>`);
 
 		h.push(`</tbody>`);
 		h.push(`</table>`);
+		h.push(`<p style="font-size:smaller;margin:0 0 1rem;">${i18n('Boxes.Discord.ThreadIdInfo')}</p>`);
 		h.push(`</form>`);
 		h.push(`</div>`);
 		h.push(`</div>`);
@@ -225,6 +232,16 @@ let Discord = {
 		$('#discord-entry-form').data('entry', String(i)).slideDown();
 	},
 
+	/**
+	 * Render the available GBG placeholders as monospace chips
+	 *
+	 * @returns {string} HTML string with one <code> element per placeholder
+	 */
+	PlaceholderList: ()=> ['#name', '#battletype', '#time', '#attrition', '#guild', '#vp', '#neighbors', '#player', '#world']
+		.map(p => `<code>${p}</code>`)
+		.join(' '),
+
+
 	TemplateForm: (i = '')=> {
 		$('#DiscordBody .formWrapper').html('');
 		$('#addDiscordTemplate').hide();
@@ -252,7 +269,8 @@ let Discord = {
 				<textarea id="message" name="message" spellcheck="false">${data ? data['message'] : ':robot: #battletype **#name** <t:#time:R>'}</textarea>
 
 				<div class="w-full">
-					${i18n('Boxes.Discord.GBGVariables')}: #name, #battletype, #time, #guild, #vp, #attrition, #neighbors <br/>
+					${i18n('Boxes.Discord.GBGVariables')}<br/>
+					${Discord.PlaceholderList()}<br/>
 					<a class="external-link" href="https://support.discord.com/hc/en-us/articles/210298617-Markdown-Text-101-Chat-Formatting-Bold-Italic-Underline" target="_blank">${i18n('Boxes.Discord.MarkdownLinkText')}</a>
 				</div>
 				<div>
@@ -319,13 +337,42 @@ let Discord = {
 	},
 
 
+	/**
+	 * Save a new webhook URL, optionally targeting a thread of the webhook's channel
+	 */
 	SaveWebhookUrl: ()=> {
+		let url = $('#webhookUrlInput').val().trim();
+		const threadId = $('#webhookThreadIdInput').val().trim();
+
+		if (!url) {
+			return;
+		}
+
+		if (threadId) {
+			// a Discord snowflake is digits only
+			if (!/^\d+$/.test(threadId)) {
+				HTML.ShowToastMsg({
+					show: 'force',
+					head: i18n('General.Error'),
+					text: i18n('Boxes.Discord.ThreadIdInvalid'),
+					type: 'error',
+					hideAfter: 6000,
+				});
+
+				return;
+			}
+
+			// Discord delivers into the thread/forum post when thread_id is part of the webhook URL
+			url += (url.includes('?') ? '&' : '?') + 'thread_id=' + threadId;
+		}
+
 		Discord.WebHooksUrls.push({
 			name: $('#webhookUrlName').val(),
-			url: $('#webhookUrlInput').val(),
+			url: url,
 		});
 		localStorage.setItem('DiscordWebHookUrls', JSON.stringify(Discord.WebHooksUrls));
 		Discord.BuildWebhookFormContent('open');
+		Discord.RefreshGbgSettings();
 	},
 
 
@@ -424,6 +471,7 @@ let Discord = {
 		localStorage.setItem('DiscordWebHookUrls', JSON.stringify(Discord.WebHooksUrls));
 
 		Discord.BuildWebhookFormContent('open');
+		Discord.RefreshGbgSettings();
 	},
 
 
@@ -444,6 +492,19 @@ let Discord = {
 		if(rebuild){
 			// rebuild table
 			Discord.BuildContent();
+		}
+
+		Discord.RefreshGbgSettings();
+	},
+
+
+	/**
+	 * Refreshes the open guild fights settings pane so new webhooks and
+	 * templates show up there immediately
+	 */
+	RefreshGbgSettings: ()=> {
+		if (typeof Guild_fights !== 'undefined' && $('#LiveGildFightingSettingsBox').length > 0) {
+			Guild_fights.ShowLiveFightSettings();
 		}
 	},
 

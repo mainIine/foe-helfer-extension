@@ -13,6 +13,11 @@
  *
  */
 
+#AllyList {
+	width: 70vW;
+	height: 70vH;
+}
+
 #AllyListBody .ally-toolbar {
 	display: flex;
 	align-items: center;

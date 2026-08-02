@@ -128,6 +128,21 @@
 	margin-left: 16px;
 }
 
+#LiveGildFightingSettingsBox .settings-ask {
+	float: right;
+	width: 22px;
+	height: 22px;
+	border-radius: 2px;
+	cursor: pointer;
+	background-image: url('../../../../css/images/hud/box-sprite.png');
+	background-position: -28px -1px, 0 0;
+	box-shadow: var(--window-head-btn-shadow);
+}
+
+#LiveGildFightingSettingsBox .settings-ask:hover {
+	filter: brightness(130%);
+}
+
 #GildPlayersDetailViewBody .pname {
 	padding: 10px 5px;
 	color: var(--sunflower);

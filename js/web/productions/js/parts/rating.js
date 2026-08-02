@@ -17,7 +17,6 @@
 Object.assign(Productions, {
 	ratedBuildings:null,
 
-
 	RatingCurrentTab: 'Results',
 	RatingFilteredSizes: [],
 	RatingSearchTerm: '',
@@ -727,8 +726,10 @@ Object.assign(Productions, {
 			}
 		}
 		let InventoryBuildings = Productions.InventoryBuildings = Kits.BuildingsFromInventory();
-		if (ActiveMap === 'OtherPlayer')
+
+		if (ActiveMap === 'OtherPlayer') {
 			InventoryBuildings = [];
+		}
 
 		for (let [id,data] of Object.entries(InventoryBuildings)){
 			//if(!id || id.slice(0, 2) !== 'W_') continue; // if starts not with "W_", continue
@@ -741,23 +742,29 @@ Object.assign(Productions, {
 
 		// get one of each building, only highest available era
 		for (const building of Productions.BuildingsAll) {
-			if (building === undefined || building.type === 'street' || building.type === 'military' || building.id >= 2000000000 || building.type.includes('hub')) continue
+			if (building === undefined || building.type === 'street' || building.type === 'military' || building.id >= 2000000000 || building.type.includes('hub')) {
+				continue
+			}
 
 			let compare = building.name;
-			if (Allies.buildingList?.[building.id] && withAllies) 
+			if (Allies.buildingList?.[building.id] && withAllies) {
 				compare += "+" + Object.keys(Allies.buildingList?.[building.id]).join("+");
+			}
 			
 			let foundBuildingIndex = uniqueBuildings.findIndex(x => x.name === compare && x.isInInventory === building.isInInventory && !Allies.buildingList?.[x.id])
-			if (!withAllies) 
+			if (!withAllies) {
 				foundBuildingIndex = uniqueBuildings.findIndex(x => x.name === compare && x.isInInventory === building.isInInventory)
+			}
 			
 			let inventoryIdentifier = (building.isInInventory ? "I" : "C");
+
 			if (foundBuildingIndex === -1) {
 				uniqueBuildings.push(building)
 				if (buildingCount[building.entityId+inventoryIdentifier] === undefined)
 					buildingCount[building.entityId+inventoryIdentifier] = 1;
 				delete Productions.AdditionalSpecialBuildings[building.entityId];
-			} else {
+			}
+			else {
 				let foundBuilding = uniqueBuildings[foundBuildingIndex]
 				buildingCount[building.entityId+inventoryIdentifier] += 1
 
@@ -802,7 +809,9 @@ Object.assign(Productions, {
 			let combinedRatingTypes = [];
 			for (const type of Productions.Rating.Types) {
 				// skip inactive ones
-				if (!Productions.Rating.Data[type]?.active || Productions.Rating.Data[type]?.perTile === null) continue;
+				if (!Productions.Rating.Data[type]?.active || Productions.Rating.Data[type]?.perTile === null) {
+					continue;
+				}
 
 				if (!type.includes('att_') && !type.includes('def_')) {
 					combinedRatingTypes.push(type);
@@ -816,10 +825,12 @@ Object.assign(Productions, {
 
 					if (combinedRatingTypes.find(x => x.includes(combinedType))) continue;
 
-					if (Productions.Rating.Data[twinType]?.active) 
+					if (Productions.Rating.Data[twinType]?.active) {
 						combinedRatingTypes.push(combinedType);
-					else 
+					}
+					else {
 						combinedRatingTypes.push(type);
+					}
 				}
 			}
 
@@ -881,6 +892,7 @@ Object.assign(Productions, {
 					secondType = type.replace('att_','');
 					divider = 2;
 				}
+
 				h.push('<th data-type="ratinglist" style="width:1%" data-export="'+ Productions.GetTypeName(firstType) +'" class="is-number text-center buildingvalue"'+
 					(secondType !== null ? ` data-original-title="${Productions.Rating.Data[firstType].perTile} + ${Productions.Rating.Data[secondType]?.perTile} / 2"` : '')+
 					'><span class="resicon ' + firstType + '"' + (secondType === null ? ' style="margin-bottom:0"' : '') + '></span>'+ (secondType === null ? '<br>' : '') +
@@ -911,6 +923,7 @@ Object.assign(Productions, {
 				});
 				chainStage[endBuilding] = {family: endBuilding, stage: scheme.upgradeSteps.length};
 			}
+
 			let chainMaxStage = {};
 			for (const building of ratedBuildings) {
 				if (building.highlight) continue;
@@ -921,6 +934,7 @@ Object.assign(Productions, {
 					if (buildingCount[building.entityId+"C"] !== undefined) continue;
 				}
 				let stageInfo = chainStage[building.entityId];
+
 				if (stageInfo && (chainMaxStage[stageInfo.family] ?? -1) < stageInfo.stage)
 					chainMaxStage[stageInfo.family] = stageInfo.stage;
 			}
@@ -930,7 +944,9 @@ Object.assign(Productions, {
 				if (building.isInInventory && building.rating.totalScore < Productions.efficiencySettings.inventorybuildingscore) continue;
 
 				// skip inventory buildings that are already in the city
-				if (building.isInInventory && (buildingCount[building.entityId+"C"] !== undefined || buildingCount[building.entityId+"C"] >= 1)) continue;
+				if (building.isInInventory && (buildingCount[building.entityId+"C"] !== undefined || buildingCount[building.entityId+"C"] >= 1)) {
+					continue;
+				}
 
 				let buildingSize = building.size.length * building.size.width;
 
