@@ -55,7 +55,15 @@
 .HXBuilding td {
     width: 300px;
     display: flex;
+    align-items: center;
     white-space: nowrap;
+}
+
+/* rows wrapping to several lines keep their top alignment */
+.HXBuilding td[style*="text-wrap-mode"],
+.HXBuilding td.limited,
+.HXBuilding td:has(.allyName) {
+    align-items: flex-start;
 }
 .HXBuilding img {
     padding-right: 3px;
@@ -141,6 +149,20 @@ td:nth-child(3) .HXBuilding .inhabitant {
     color: var(--danger-red);
     font-weight: bold;
 }
+/* Actual collection amount including the global FP/goods production boosts */
+.HXBuilding .boostedAmount {
+    margin-left: 4px;
+    font-size: 0.82em;
+    color: var(--success);
+    white-space: nowrap;
+}
+.HXBuilding .boostedAmount img {
+    max-width: 14px;
+    max-height: 15px;
+    padding-right: 1px;
+    vertical-align: middle;
+}
+
 .HXBuilding .limited {
     text-wrap: auto;
 }

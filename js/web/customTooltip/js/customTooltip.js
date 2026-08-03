@@ -373,6 +373,41 @@ let Tooltips = {
         let longSpan = (x) => `<div class="overflowBox"><span class="handleOverflow">${x}</span></div>`;
         let range = (x, y, withHighlight = false) => span(x, withHighlight) + (x !== y ? `&nbsp;-&nbsp;` + span(y, withHighlight) : ``);
 
+        // Renders a production value: when one of the player's global production
+        // boosts from boost buildings (Boosts.Sums) applies, the boosted amount is
+        // shown as the actual production, followed by a small breakdown
+        // "(base + boost% [icon])". Without a boost the plain value is rendered.
+        // Covers Forge Points, regular goods, coins and supplies; special goods
+        // have their own boost and are left out on purpose.
+        let boostedAmount = (res, x, y = null) => {
+            let boost = 0;
+            let icon = "";
+
+            if (res === "strategy_points") {
+                boost = Boosts?.Sums?.forge_points_production || 0;
+                icon = "fp";
+            }
+            else if (res === "money" || res === "coins") {
+                boost = Boosts?.Sums?.coin_production || 0;
+                icon = "coin";
+            }
+            else if (res === "supplies") {
+                boost = Boosts?.Sums?.supply_production || 0;
+                icon = "supply";
+            }
+            else if (/^(all_goods_of_age|era_goods|random_good_of_(age(_\d)?|next_age|previous_age))$/.test(res)
+                || (GoodsData?.[res]?.abilities?.goodsProduceable !== undefined && !GoodsData?.[res]?.abilities?.specialResource)) {
+                boost = Boosts?.Sums?.goods_production || 0;
+                icon = "goods_production";
+            }
+            if (!boost || !x) return range(x, y ?? x);
+
+            let apply = (v) => Math.round(v * (100 + boost) / 100);
+            let img = `<img src="${srcLinks.get(`/shared/gui/boost/boost_icon_${icon}.png`, true)}" alt="">`;
+            return range(apply(x), (y || y === 0) ? apply(y) : apply(x))
+                + `<span class="boostedAmount">&nbsp;(${numberWithCommas(x)}${(y && y !== x) ? "&nbsp;-&nbsp;" + numberWithCommas(y) : ""}&nbsp;+&nbsp;${boost}%&nbsp;${img})</span>`;
+        };
+
         let formatTime = (x) => {
             let min = Math.floor(x / 60);
             let sec = x - min * 60;
@@ -533,7 +568,7 @@ let Tooltips = {
                     if (product.type === "resources") {
                         for (let [res, amount] of Object.entries(product.playerResources?.resources || {})) {
                             if (amount !== 0) {
-                                prods += `<tr><td>${srcLinks.icons(resMapper(res, "goods")) + range(amount, maxProductions?.[oIndex]?.products?.[pIndex]?.playerResources?.resources?.[res]) + (res === "each_special_goods_up_to_age" ? "&nbsp;" + i18n("Boxes.Tooltip.Building.perEra") : "") + t + ((["supplies", "coins", "money"].includes(res) && !product.onlyWhenMotivated) ? motMod : "") + (product.onlyWhenMotivated ? ifMot : "")}</td></tr>`;
+                                prods += `<tr><td>${srcLinks.icons(resMapper(res, "goods")) + boostedAmount(res, amount, maxProductions?.[oIndex]?.products?.[pIndex]?.playerResources?.resources?.[res]) + (res === "each_special_goods_up_to_age" ? "&nbsp;" + i18n("Boxes.Tooltip.Building.perEra") : "") + t + ((["supplies", "coins", "money"].includes(res) && !product.onlyWhenMotivated) ? motMod : "") + (product.onlyWhenMotivated ? ifMot : "")}</td></tr>`;
                             }
                         }
                     }
@@ -569,7 +604,7 @@ let Tooltips = {
                             if (random.product.type === "resources") {
                                 for (let [res, amount] of Object.entries(random.product.playerResources?.resources || {})) {
                                     if (amount !== 0)
-                                        prods += srcLinks.icons(resMapper(res, "goods")) + range(amount, maxProductions?.[oIndex]?.products?.[pIndex]?.products?.[rIndex]?.product?.playerResources?.resources?.[res]) + (res === "each_special_goods_up_to_age" ? "&nbsp;" + i18n("Boxes.Tooltip.Building.perEra") : "");
+                                        prods += srcLinks.icons(resMapper(res, "goods")) + boostedAmount(res, amount, maxProductions?.[oIndex]?.products?.[pIndex]?.products?.[rIndex]?.product?.playerResources?.resources?.[res]) + (res === "each_special_goods_up_to_age" ? "&nbsp;" + i18n("Boxes.Tooltip.Building.perEra") : "");
                                 }
                             }
                             if (random.product.type === "guildResources") {
@@ -630,7 +665,7 @@ let Tooltips = {
                         if (product.type === "resources") {
                             for (let [res, amount] of Object.entries(product.playerResources?.resources || {})) {
                                 if (amount !== 0)
-                                    prods += `<tr><td>${b.level + "x" + srcLinks.icons(chain.chainId)} ► ${srcLinks.icons(resMapper(res, "goods")) + span(amount) + (res === "each_special_goods_up_to_age" ? "&nbsp;" + i18n("Boxes.Tooltip.Building.perEra") : "")}</td></tr>`;
+                                    prods += `<tr><td>${b.level + "x" + srcLinks.icons(chain.chainId)} ► ${srcLinks.icons(resMapper(res, "goods")) + boostedAmount(res, amount) + (res === "each_special_goods_up_to_age" ? "&nbsp;" + i18n("Boxes.Tooltip.Building.perEra") : "")}</td></tr>`;
                             }
                         }
                         if (product.type === "guildResources") {
@@ -673,7 +708,7 @@ let Tooltips = {
                     if (product.type === "resources") {
                         for (let [res, amount] of Object.entries(product.playerResources?.resources || {})) {
                             if (amount !== 0)
-                                prods += `<tr><td>${b.level + "x" + srcLinks.icons(chain.chainId)} ► ${srcLinks.icons(resMapper(res, "goods")) + range(amount, chainMax?.config?.bonuses[i].productions[pIndex].playerResources?.resources?.[res]) + (res === "each_special_goods_up_to_age" ? "&nbsp;" + i18n("Boxes.Tooltip.Building.perEra") : "")}</td></tr>`;
+                                prods += `<tr><td>${b.level + "x" + srcLinks.icons(chain.chainId)} ► ${srcLinks.icons(resMapper(res, "goods")) + boostedAmount(res, amount, chainMax?.config?.bonuses[i].productions[pIndex].playerResources?.resources?.[res]) + (res === "each_special_goods_up_to_age" ? "&nbsp;" + i18n("Boxes.Tooltip.Building.perEra") : "")}</td></tr>`;
                         }
                     }
                     if (product.type === "guildResources") {
@@ -814,7 +849,7 @@ let Tooltips = {
             let prods = "";
             if (meta.available_products) {
                 if (levels?.[minEra]?.produced_money && levels?.[maxEra]?.produced_money) {
-                    prods += `<tr><td>${srcLinks.icons("money") + range(levels?.[minEra].produced_money, levels?.[maxEra].produced_money) + motMod}</td></tr>`;
+                    prods += `<tr><td>${srcLinks.icons("money") + boostedAmount("money", levels?.[minEra].produced_money, levels?.[maxEra].produced_money) + motMod}</td></tr>`;
                 }
                 if (levels?.[minEra]?.clan_power && levels?.[maxEra]?.clan_power) {
                     prods += `<tr><td>${srcLinks.icons("clan_power") + range(levels?.[minEra].clan_power, levels?.[maxEra].clan_power) + motMod}</td></tr>`;
@@ -826,9 +861,9 @@ let Tooltips = {
                         let t = (meta?.available_products?.length !== 1) ? "&nbsp;in " + formatTime(p.production_time) : "";
 
                         if (amount !== 0)
-                            prods += `<tr><td>${srcLinks.icons(resMapper(res, "goods")) + span(amount) + t + motMod}</td></tr>`;
+                            prods += `<tr><td>${srcLinks.icons(resMapper(res, "goods")) + boostedAmount(res, amount) + t + motMod}</td></tr>`;
                         else
-                            prods += `<tr><td>${srcLinks.icons(resMapper(res, "goods")) + range(levels?.[minEra].production_values[p.production_option - 1].value, levels?.[maxEra].production_values[p.production_option - 1].value) + t + motMod}</td></tr>`;
+                            prods += `<tr><td>${srcLinks.icons(resMapper(res, "goods")) + boostedAmount(res, levels?.[minEra].production_values[p.production_option - 1].value, levels?.[maxEra].production_values[p.production_option - 1].value) + t + motMod}</td></tr>`;
                     }
                     if (p.unit_class) {
                         prods += `<tr><td>${srcLinks.icons(p.unit_class) + p.name}</td></tr>`;
@@ -837,11 +872,11 @@ let Tooltips = {
                 for (let a of abilityList.AddResourcesAbility || []) {
                     for (let [res, amount] of Object.entries(a.additionalResources?.[minEra]?.resources || {})) {
                         if (amount !== 0)
-                            prods += `<tr><td>${srcLinks.icons(resMapper(res, "goods")) + range(a.additionalResources?.[minEra].resources[res], a.additionalResources[maxEra].resources[res])}</td></tr>`;
+                            prods += `<tr><td>${srcLinks.icons(resMapper(res, "goods")) + boostedAmount(res, a.additionalResources?.[minEra].resources[res], a.additionalResources[maxEra].resources[res])}</td></tr>`;
                     }
                     for (let [res, amount] of Object.entries(a.additionalResources?.AllAge?.resources || {})) {
                         if (amount !== 0)
-                            prods += `<tr><td>${srcLinks.icons(resMapper(res, "goods")) + span(amount)}</td></tr>`;
+                            prods += `<tr><td>${srcLinks.icons(resMapper(res, "goods")) + boostedAmount(res, amount)}</td></tr>`;
                     }
                 }
                 for (let a of abilityList.AddResourcesToGuildTreasuryAbility || []) {
@@ -857,11 +892,11 @@ let Tooltips = {
                 for (let a of abilityList.AddResourcesWhenMotivatedAbility || []) {
                     for (let [res, amount] of Object.entries(a.additionalResources?.[minEra]?.resources || {})) {
                         if (amount !== 0)
-                            prods += `<tr><td>${srcLinks.icons(resMapper(res, "goods")) + range(a.additionalResources?.[minEra].resources[res], a.additionalResources[maxEra].resources[res]) + ifMot}</td></tr>`;
+                            prods += `<tr><td>${srcLinks.icons(resMapper(res, "goods")) + boostedAmount(res, a.additionalResources?.[minEra].resources[res], a.additionalResources[maxEra].resources[res]) + ifMot}</td></tr>`;
                     }
                     for (let [res, amount] of Object.entries(a.additionalResources?.AllAge?.resources || {})) {
                         if (amount !== 0)
-                            prods += `<tr><td>${srcLinks.icons(resMapper(res, "goods")) + span(amount) + ifMot}</td></tr>`;
+                            prods += `<tr><td>${srcLinks.icons(resMapper(res, "goods")) + boostedAmount(res, amount) + ifMot}</td></tr>`;
                     }
                 }
                 for (let a of abilityList.RandomUnitOfAgeWhenMotivatedAbility || []) {
@@ -904,11 +939,11 @@ let Tooltips = {
                         prods += `<tr><td>${b.level + "x" + srcLinks.icons(a.setId)} ► `;
                         if (b.revenue?.AllAge) {
                             let [res, amount] = Object.entries(b.revenue?.AllAge?.resources)[0];
-                            prods += srcLinks.icons(resMapper(res, "goods")) + span(amount);
+                            prods += srcLinks.icons(resMapper(res, "goods")) + boostedAmount(res, amount);
                         }
                         if (b.revenue?.[minEra] && b.revenue?.[maxEra]) {
                             let [res, amount] = Object.entries(b.revenue?.[minEra]?.resources)[0];
-                            prods += srcLinks.icons(resMapper(res, "goods")) + range(amount, b.revenue?.[maxEra].resources[res]);
+                            prods += srcLinks.icons(resMapper(res, "goods")) + boostedAmount(res, amount, b.revenue?.[maxEra].resources[res]);
                         }
                         prods += `</td></tr>`;
                     }
@@ -943,11 +978,11 @@ let Tooltips = {
 
                         if (b.revenue?.AllAge) {
                             let [res, amount] = Object.entries(b.revenue?.AllAge?.resources)[0];
-                            prods += srcLinks.icons(resMapper(res, "goods")) + span(amount);
+                            prods += srcLinks.icons(resMapper(res, "goods")) + boostedAmount(res, amount);
                         }
                         if (b.revenue?.[minEra] && b.revenue?.[maxEra]) {
                             let [res, amount] = Object.entries(b.revenue?.[minEra]?.resources)[0];
-                            prods += srcLinks.icons(resMapper(res, "goods")) + range(amount, b.revenue?.[maxEra].resources[res]);
+                            prods += srcLinks.icons(resMapper(res, "goods")) + boostedAmount(res, amount, b.revenue?.[maxEra].resources[res]);
                         }
                         prods += `</td></tr>`;
                     }

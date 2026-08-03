@@ -12,17 +12,26 @@
  */
 
 {
-	// refresh the open box when the inventory changes (WS pushes, item usage,
-	// store purchases, ...); a debounce collapses bundled message bursts
+	// track stock additions and refresh the open box when the inventory changes
+	// (WS pushes, item usage, store purchases, ...); a debounce collapses
+	// bundled message bursts
 	let refreshTimer = null;
 	FoEproxy.addFoeHelperHandler('InventoryUpdated', () => {
-		if ($('#inventoryOverview').length === 0) return;
 		clearTimeout(refreshTimer);
 		refreshTimer = setTimeout(() => {
+			InventoryOverview.TrackAdditions();
+			if ($('#inventoryOverview').length === 0) return;
 			InventoryOverview.buildingCache = {};
 			InventoryOverview.RenderList();
 		}, 250);
 	});
+
+	// harvest the game's own inventory log whenever the player opens it ingame:
+	// it delivers the exact "added to inventory" history (order + date labels)
+	// straight from the server, including additions made while the extension was off
+	const harvestLog = (data) => InventoryOverview.HarvestGameLog(data.responseData);
+	FoEproxy.addHandler('InventoryService', 'getLogs', harvestLog);
+	FoEproxy.addWsHandler('InventoryService', 'getLogs', harvestLog);
 }
 
 /**
@@ -37,6 +46,8 @@
  *                              reward) is a building, null otherwise
  * @property {string} icon icon url
  * @property {number} [value] value of the selected property (only while a property filter is active)
+ * @property {number} [added] sort key (ms) of the last stock increase, 0 = unknown (only while sorting by additions)
+ * @property {?string} [addedLabel] the game's own date label from the ingame inventory log, null = use the tracked time
  */
 
 /**
@@ -59,6 +70,15 @@ let InventoryOverview = {
 
 	/** @type {Object<string,Object>} processed buildings keyed by entity id (reset on inventory updates) */
 	buildingCache: {},
+
+	/** @type {?Object<string,number>} timestamps (ms) of the last stock increase per item id, null until loaded */
+	AddedTimes: null,
+
+	/** @type {?Object<string,number>} last known stock per item id, null until the first inventory sync */
+	StockSnapshot: null,
+
+	/** @type {?{at:number,order:string[],dates:Object<string,string>}} snapshot of the ingame inventory log, null until loaded */
+	GameLog: null,
 
 	/** @type {string|null} CDN url of the fragment icon */
 	fragmentURL: null,
@@ -138,6 +158,91 @@ let InventoryOverview = {
 
 
 	/**
+	 * Stamps inventory additions: compares the current stock with the last
+	 * snapshot and remembers the time of every increase. The first sync of a
+	 * session only primes the snapshot, so gains collected while the extension
+	 * was inactive are not stamped as new. Timestamps survive reloads.
+	 */
+	TrackAdditions: () => {
+		const snapshot = {};
+		for (const entry of Object.values(Kits.GetInventoryArray())) {
+			snapshot[entry.id] = entry.inStock;
+		}
+
+		if (InventoryOverview.AddedTimes === null) {
+			InventoryOverview.AddedTimes = JSON.parse(localStorage.getItem('InventoryOverview.AddedTimes') || '{}');
+		}
+
+		if (InventoryOverview.StockSnapshot !== null) {
+			const now = Date.now();
+			for (const [id, amount] of Object.entries(snapshot)) {
+				if (amount > (InventoryOverview.StockSnapshot[id] || 0)) {
+					InventoryOverview.AddedTimes[id] = now;
+				}
+			}
+			// forget timestamps of items that left the inventory
+			for (const id of Object.keys(InventoryOverview.AddedTimes)) {
+				if (snapshot[id] === undefined) delete InventoryOverview.AddedTimes[id];
+			}
+			localStorage.setItem('InventoryOverview.AddedTimes', JSON.stringify(InventoryOverview.AddedTimes));
+		}
+
+		InventoryOverview.StockSnapshot = snapshot;
+	},
+
+
+	/**
+	 * Stores the game's inventory log (sent when the player opens the ingame
+	 * "inventory log" window): recency order and the game's own date labels.
+	 * The log is server-side history, so it also covers additions made while
+	 * the extension was inactive.
+	 * @param {{items: Object[], count: number}} overview InventoryLogOverview response
+	 */
+	HarvestGameLog: (overview) => {
+		if (!overview || !Array.isArray(overview.items)) return;
+
+		const inv = Kits.GetInventoryArray();
+		const log = { at: Date.now(), order: [], dates: {} };
+
+		for (const entry of overview.items) { // items arrive newest first
+			const id = InventoryOverview.LogRewardId(entry.reward, inv);
+			if (id === null || log.dates[id] !== undefined) continue;
+			log.order.push(id);
+			log.dates[id] = entry.date;
+		}
+
+		InventoryOverview.GameLog = log;
+		localStorage.setItem('InventoryOverview.GameLog', JSON.stringify(log));
+
+		if ($('#inventoryOverview').length > 0 && InventoryOverview.FilterType === '@added') {
+			InventoryOverview.RenderList();
+		}
+	},
+
+
+	/**
+	 * Maps a reward of the game's inventory log onto the flattened inventory id
+	 * used by {@link Kits.GetInventoryArray}. Building fragments are logged under
+	 * their asset name, so the id is recomputed from the assembled reward.
+	 * @param {Object} reward FragmentReward or GenericReward of an InventoryLogItem
+	 * @param {Object<string,Object>} inv flattened inventory
+	 * @returns {?string} flattened id or null when nothing matches the inventory
+	 */
+	LogRewardId: (reward, inv) => {
+		if (!reward) return null;
+
+		const candidates = [reward.id];
+		const assembled = reward.assembledReward;
+		if (assembled) {
+			candidates.push('fragment#' + (assembled.type === 'building' ? assembled.subType : (assembled.id || assembled.iconAssetName)));
+		}
+		candidates.push(reward.iconAssetName);
+
+		return candidates.find(id => id && inv[id] !== undefined) || null;
+	},
+
+
+	/**
 	 * Builds the `option` elements of the property dropdown from the efficiency
 	 * rating configuration: every ratable production/boost type becomes a filter,
 	 * grouped like the rating settings (production, battle, quantum incursion).
@@ -153,7 +258,10 @@ let InventoryOverview = {
 			3: i18n('Boxes.General.Quantum_Incursion')
 		};
 
-		const options = [$('<option />').attr('value', '').text(i18n('Boxes.Inventory.AllItems'))];
+		const options = [
+			$('<option />').attr('value', '').text(i18n('Boxes.Inventory.AllItems')),
+			$('<option />').attr('value', '@added').text(i18n('Boxes.Inventory.SortAdded'))
+		];
 		let currentGroup = null;
 
 		for (const [type, config] of types) {
@@ -276,15 +384,37 @@ let InventoryOverview = {
 		}
 
 		const type = InventoryOverview.FilterType;
+		const isProperty = (type !== '' && type !== '@added');
 		let items = InventoryOverview.CollectItems();
 
 		// property filter: only buildings (and their fragments) with a value
-		if (type !== '') {
+		if (isProperty) {
 			items = items.filter(item => item.entityId !== null);
 			for (const item of items) {
 				item.value = InventoryOverview.PropertyValue(item.entityId, type);
 			}
 			items = items.filter(item => item.value !== 0);
+		}
+
+		// "recently added" sort: merge the tracked stock increases with the ingame
+		// inventory log. Log entries get pseudo-timestamps just below their capture
+		// time (1s per position keeps their order), so anything tracked afterwards
+		// sorts as newer; the fresher of both sources wins per item.
+		if (type === '@added') {
+			if (InventoryOverview.StockSnapshot === null) {
+				InventoryOverview.TrackAdditions();
+			}
+			if (InventoryOverview.GameLog === null) {
+				InventoryOverview.GameLog = JSON.parse(localStorage.getItem('InventoryOverview.GameLog') || 'null') || { at: 0, order: [], dates: {} };
+			}
+			const log = InventoryOverview.GameLog;
+			for (const item of items) {
+				const tracked = InventoryOverview.AddedTimes[item.id] || 0;
+				const pos = log.order.indexOf(item.id);
+				const fromLog = (pos !== -1 ? log.at - (pos + 1) * 1000 : 0);
+				item.added = Math.max(tracked, fromLog);
+				item.addedLabel = (pos !== -1 && fromLog >= tracked ? log.dates[item.id] : null);
+			}
 		}
 
 		// name filter (`||` separated regular expressions, like the kits box);
@@ -303,7 +433,8 @@ let InventoryOverview = {
 
 		const direction = (InventoryOverview.SortDescending ? -1 : 1);
 		items.sort((a, b) => {
-			if (type !== '' && a.value !== b.value) return (a.value - b.value) * direction;
+			if (type === '@added' && a.added !== b.added) return (a.added - b.added) * direction;
+			if (isProperty && a.value !== b.value) return (a.value - b.value) * direction;
 			return a.name.localeCompare(b.name) * (type !== '' ? 1 : direction);
 		});
 
@@ -341,7 +472,7 @@ let InventoryOverview = {
 	/**
 	 * Creates the tile `div` for one item.
 	 * @param {InventoryOverviewItem} item
-	 * @param {string} type active property type ('' = none)
+	 * @param {string} type active property type ('' = none, '@added' = sort by additions)
 	 * @returns {string} html string
 	 */
 	ItemDiv: (item, type) => {
@@ -359,9 +490,15 @@ let InventoryOverview = {
 				<span class="fragment-bar"><span style="width:${percent}%"></span></span>`;
 		}
 
-		const value = (type !== ''
-			? `<strong class="prop-value">${HTML.Format(Math.round(item.value * 100) / 100)}</strong>`
-			: '');
+		let value = '';
+		if (type === '@added') {
+			const label = item.addedLabel || (item.added > 0 ? moment(item.added).fromNow() : '');
+			value = (label !== ''
+				? `<strong class="prop-value added-time">${label}</strong>`
+				: '');
+		} else if (type !== '') {
+			value = `<strong class="prop-value">${HTML.Format(Math.round(item.value * 100) / 100)}</strong>`;
+		}
 
 		const stock = (item.isFragment
 			? ''

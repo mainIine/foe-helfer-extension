@@ -7,12 +7,33 @@
   - Neues Modul: das komplette Inventar durchsuchbar in einer Box — mit Eigenschafts-Filter für Gebäude (Forge-Punkte, Kampfboosts, Güter, Einheiten, Zufriedenheit, Quanten-Inkursion u.v.m.)
   - Bei aktivem Filter zeigt jede Kachel den Wert der gewählten Eigenschaft, auf- und absteigend sortierbar; Gebäude-Fragmente zeigen ihren Fortschritt und werden wie ihr fertiges Gebäude bewertet
   - Gebäude-Tooltips wie in der Effizienzbewertung, automatische Aktualisierung bei Inventar-Änderungen; Historische Verbündete bleiben ihrer eigenen Box vorbehalten
+  - Sortierung „Zuletzt eingelagert“: zeigt mit Zeitangabe, was zuletzt ins Inventar gelangt ist (z. B. durch die Stadt-Ernte) — beim Öffnen des Inventar-Protokolls im Spiel wird dessen exakte Historie übernommen, zusätzlich wird jeder Zuwachs live erfasst
 
 - Web Requests:
   - Neues Modul: schicke Sektor-Daten aus den Gildengefechten an deinen eigenen Server — als GET mit URL-Parametern oder als POST mit JSON- oder Formular-Body ($_GET/$_POST)
   - Frei konfigurierbare Profile mit Platzhaltern (#name, #time, #attrition, #guild, #vp, #neighbors u.v.m.), Vorschau und Test-Requests mit Beispieldaten
   - Requests sind fire-and-forget: Es wird nicht auf eine Antwort gewartet, der Server braucht keine CORS-Konfiguration
   - In den Einstellungen der Gildengefechte auswählbar: einzelne Sektoren oder die ganze Auswahl neben den Discord-Buttons versenden
+
+**Update**
+- Discord Webhooks:
+  - Webhook-URLs können optional eine Thread-ID erhalten — die Nachricht landet dann in einem bestimmten Thread bzw. Forum-Beitrag des Channels, auch bei den Gildengefecht-Buttons
+  - Der automatische Versand (mit dem Webhook-Rework in 4.3.0.0 weggefallen) ist wieder integriert — jetzt zeitgesteuert statt beim ersten Angriff: In den Gildengefecht-Einstellungen aktivierbar, angrenzende gegnerische Sektoren werden einmalig mit einstellbarem Vorlauf vor der Öffnung an den gewählten Webhook gesendet (mit Vorlage, solange das Fenster geöffnet ist)
+  - Hilfe-Fragezeichen in der Titelleiste und in den Gildengefecht-Einstellungen; Platzhalter-Übersicht im Vorlagen-Formular in Monospace, jetzt inkl. #player und #world
+  - Die Box lädt ihre Daten beim Öffnen neu (wichtig bei mehreren Spiel-Tabs) und offene Gildengefecht-Einstellungen aktualisieren sich sofort, sobald daneben Webhooks oder Vorlagen angelegt oder gelöscht werden
+- Blaue Galaxy:
+  - Die Länge der Liste kann selber bestimmt werden und ist dadurch nicht mehr auf 50 festgeschrieben
+  - Beim hover über dem Namen wird die Gebäude-Grafik angezeigt um das Gebäude besser identifizieren zu können
+  - Die Fragmentspalte, wenn sie eingeblendet ist, ist nun sortierbar nach Namen
+- Marktübersicht:
+  - Neuer Filter „Für Forschung benötigt": zeigt nur Angebote, deren Gut für die noch nicht erforschten Technologien gebraucht wird und bei denen der eigene Bestand nicht ausreicht — vielen Dank [wolf128058](https://github.com/wolf128058) für die Umsetzung!
+- Forschungskosten:
+  - Güter, die du selbst herstellen kannst, werden grün hervorgehoben; läuft deren Produktion gerade, erscheinen sie zusätzlich kursiv — vielen Dank [wolf128058](https://github.com/wolf128058) für die Umsetzung!
+- Gebäude-Tooltip:
+  - Forge-Punkt-, Güter-, Münz- und Vorrats-Produktionen zeigen jetzt die mit deinen aktiven Produktions-Boosts tatsächlich eingesammelte Menge; klein in Klammern dahinter stehen Basiswert und Boost-Prozent mit dem passenden Boost-Symbol (z.B. in der Effizienzbewertung, Inventar-Übersicht und Stadtkarte)
+
+**Bugfix**
+- Gildengefechte: Bereits abgelaufene Sektoren werden nicht mehr in der Live-Box angezeigt — beim Aufbau werden sie gegen die aktuelle Zeit gefiltert, ein interner Timer räumt zusätzlich alte Zeilen ab, wenn keine Karten-Updates mehr eintreffen
 
 ---
 

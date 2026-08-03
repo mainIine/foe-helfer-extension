@@ -583,6 +583,11 @@ let Technologies = {
 
         // Tabelleninhalt – immer alle relevanten Ressourcen ausgeben
         {
+            // Welche Güter kann der Spieler selbst herstellen?
+            let ProducibleGoods = Technologies.GetProducibleGoods();
+            // Welche Güter werden gerade aktiv produziert?
+            let ActiveProductionGoods = Technologies.GetActiveProductionGoods();
+
             // Reihenfolge der Ausgabe generieren
             let OutputList = ['strategy_points', 'money', 'supplies'];
             for (let i = 0; i < 70; i++) {
@@ -634,9 +639,13 @@ let Technologies = {
 
                     // Fertige Ressourcen (weder im gewählten ZA noch kumulativ benötigt) werden abgedimmt
                     let IsDone = Required <= 0 && (!ShowCumulative || Cumulative <= 0);
+                    // FP, Münzen und Vorräte werden nicht gehighlightet
+                    let IsProducible = (ResourceName !== 'strategy_points' && ResourceName !== 'money' && ResourceName !== 'supplies') && ProducibleGoods.has(ResourceName);
+                    let IsActive = IsProducible && ActiveProductionGoods.has(ResourceName);
+                    let NameClass = IsProducible ? (IsActive ? 'producible-good actively-produced' : 'producible-good') : '';
                     h.push('<tr' + (IsDone ? ' class="technologies-done"' : '') + '>');
                     h.push('<td class="goods-image" style="width:25px"><span class="goods-sprite sprite-35 '+ GoodsData[ResourceName]['id'] +'"></span></td>');
-                    h.push('<td data-text="' + helper.str.cleanup(GoodsData[ResourceName]['name']) + '">' + GoodsData[ResourceName]['name'] + '</td>');
+                    h.push('<td data-text="' + helper.str.cleanup(GoodsData[ResourceName]['name']) + '"' + (NameClass ? ' class="' + NameClass + '"' : '') + '>' + GoodsData[ResourceName]['name'] + '</td>');
                     h.push('<td data-number="' + Required + '">' + HTML.Format(Required) + '</td>');
                     if (ShowCumulative) {
                         h.push('<td data-number="' + Cumulative + '">' + HTML.Format(Cumulative) + '</td>');
@@ -651,6 +660,125 @@ let Technologies = {
 
         $('#technologiesBody').html(h.join(''));
         $('#technologiesBody .sortable-table').tableSorter();
+    },
+
+
+    /**
+     * Returns a Set of good IDs (excluding money/supplies/strategy_points)
+     * that are still needed for unresearched technologies in the range
+     * [CumLowerEraID .. SelectedEraID] and where the player's stock is
+     * insufficient (stock - demand < 0).
+     *
+     * Respects the same ignore options (IgnorePrevEra,
+     * IgnoreCurrentEraOptional) and SelectedEraID as the Technologies
+     * view, so the result matches the red "missing" rows in the
+     * "Forschungskosten für ..." window.
+     *
+     * Used by the Market filter "für Forschung benötigt".
+     */
+    GetNeededResearchGoods: () => {
+        let neededGoods = new Set();
+
+        if (Technologies.AllTechnologies === null || Technologies.UnlockedTechnologies === false) {
+            return neededGoods;
+        }
+
+        // Same ignore flags as the Technologies view (real booleans)
+        let IgnorePrevEra = localStorage.getItem('TechnologiesIgnorePrevEra') !== 'false';
+        let IgnoreCurrentEraOptional = localStorage.getItem('TechnologiesIgnoreCurrentEraOptional') !== 'false';
+        let SelEraID = Technologies.SelectedEraID || CurrentEraID;
+
+        // Build index and mark researched / in-progress techs exactly like CalcBody
+        let TechDict = [];
+        for (let i = 1; i < Technologies.AllTechnologies.length; i++) {
+            TechDict[Technologies.AllTechnologies[i]['id']] = i;
+        }
+
+        let ResearchedTechs = (Technologies.UnlockedTechnologies['unlockedNodes'] && Technologies.UnlockedTechnologies['unlockedNodes'].length)
+            ? Technologies.UnlockedTechnologies['unlockedNodes']
+            : (Technologies.UnlockedTechnologies['unlockedTechnologies'] || []);
+        for (let i = 0; i < ResearchedTechs.length; i++) {
+            let TechName = ResearchedTechs[i];
+            let Index = TechDict[TechName];
+            if (Index === undefined) continue;
+            Technologies.AllTechnologies[Index]['isResearched'] = true;
+            Technologies.AllTechnologies[Index]['currentSP'] = Technologies.GetTechFP(Technologies.AllTechnologies[Index]);
+        }
+
+        for (let i = 0; i < Technologies.UnlockedTechnologies['inProgressTechnologies'].length; i++) {
+            let InProgTech = Technologies.UnlockedTechnologies['inProgressTechnologies'][i];
+            let Index = TechDict[InProgTech['tech_id']];
+            if (Index === undefined) continue;
+            Technologies.AllTechnologies[Index]['currentSP'] = InProgTech['currentSP'];
+        }
+
+        // Cumulative demand over [CumLowerEraID .. SelEraID]
+        let CumulativeResources = [];
+        let CumLowerEraID = IgnorePrevEra ? Math.min(CurrentEraID, SelEraID) : 1;
+
+        for (let i = 1; i < Technologies.AllTechnologies.length; i++) {
+            let Tech = Technologies.AllTechnologies[i];
+            if (Tech['currentSP'] === undefined)
+                Tech['currentSP'] = 0;
+
+            if (Tech['isTeaser']) continue;
+
+            let EraID = Technologies.Eras[Tech['era']];
+
+            if (EraID >= CurrentEraID && Tech['children'].length === 0 && IgnoreCurrentEraOptional) {
+                continue;
+            }
+
+            if (EraID < CumLowerEraID || EraID > SelEraID) {
+                continue;
+            }
+
+            if (!Tech['isResearched']) {
+                for (let ResourceName in Tech['requirements']['resources']) {
+                    if (CumulativeResources[ResourceName] === undefined)
+                        CumulativeResources[ResourceName] = 0;
+
+                    CumulativeResources[ResourceName] += Tech['requirements']['resources'][ResourceName];
+                }
+            }
+        }
+
+        // Same "still missing" logic as CalcBody: when the cumulative range
+        // spans more than just the selected era, compare against the
+        // cumulative demand; otherwise against the selected-era demand.
+        let ShowCumulative = CumLowerEraID < SelEraID;
+
+        let RequiredResources = [];
+        if (!ShowCumulative) {
+            for (let i = 1; i < Technologies.AllTechnologies.length; i++) {
+                let Tech = Technologies.AllTechnologies[i];
+                if (Tech['isTeaser']) continue;
+                let EraID = Technologies.Eras[Tech['era']];
+                if (EraID !== SelEraID) continue;
+                if (EraID >= CurrentEraID && Tech['children'].length === 0 && IgnoreCurrentEraOptional) continue;
+                if (!Tech['isResearched']) {
+                    for (let ResourceName in Tech['requirements']['resources']) {
+                        if (RequiredResources[ResourceName] === undefined)
+                            RequiredResources[ResourceName] = 0;
+                        RequiredResources[ResourceName] += Tech['requirements']['resources'][ResourceName];
+                    }
+                }
+            }
+        }
+
+        for (let ResourceName in CumulativeResources) {
+            if (ResourceName === 'strategy_points' || ResourceName === 'money' || ResourceName === 'supplies') continue;
+
+            let Demand = ShowCumulative ? CumulativeResources[ResourceName] : (RequiredResources[ResourceName] || 0);
+            let Stock = ResourceStock[ResourceName];
+            if (Stock === undefined) Stock = 0;
+
+            if (Stock - Demand < 0) {
+                neededGoods.add(ResourceName);
+            }
+        }
+
+        return neededGoods;
     },
 
 
@@ -672,5 +800,241 @@ let Technologies = {
         h.push(`<p class="text-center"><button class="btn" onclick="HTML.ExportTable($('#technologiesBody').find('.foe-table.exportable'), 'json', 'technologies')">${i18n('Boxes.General.ExportJSON')}</button></p>`);
 
         $('#technologiesSettingsBox').html(h.join(''));
+    },
+
+
+    /**
+     * Expands a (possibly generic) resource name like `random_good_of_age`,
+     * `all_goods_of_age`, `random_good_of_previous_age`, `all_goods_of_next_age`
+     * into the concrete good IDs of the corresponding era relative to `eraName`.
+     * Returns an array of good IDs (may be empty).
+     */
+    _expandGenericGood: (resourceName, eraName) => {
+        let ids = [];
+        let goodEra;
+
+        if (resourceName.includes('previous_age')) {
+            goodEra = Technologies.getPreviousEraIdByCurrentEraName(eraName);
+        } else if (resourceName.includes('next_age')) {
+            goodEra = Technologies.getNextEraIdByCurrentEraName(eraName);
+        } else {
+            goodEra = Technologies.getEraIdByCurrentEraName(eraName);
+        }
+
+        for (let i = 0; i < 5; i++) {
+            let goodIndex = goodEra * 5 - 5 + i;
+            if (goodIndex >= 0 && goodIndex < GoodsList.length) {
+                ids.push(GoodsList[goodIndex].id);
+            }
+        }
+        return ids;
+    },
+
+
+    /**
+     * Collects a good ID from a production resource entry if it is a real,
+     * producible good (present in GoodsData with `goodsProduceable` ability).
+     * Returns the good ID or undefined.
+     */
+    _collectProducibleGoodId: (resourceName) => {
+        if (!resourceName) return undefined;
+        if (resourceName === 'strategy_points' || resourceName === 'money' || resourceName === 'supplies') return undefined;
+        let good = GoodsData[resourceName];
+        if (good && good.abilities && good.abilities.goodsProduceable !== undefined) {
+            return resourceName;
+        }
+        return undefined;
+    },
+
+
+    /**
+     * Returns a Set of good IDs that the player can produce themselves.
+     * Only considers goods buildings owned by the player and reads the
+     * specific good each building produces from its (potential) production
+     * data, available_products, current_product, or productionOption - not
+     * all 5 goods of an era. This prevents false positives like marking
+     * glass as producible when the player only has a brickworks.
+     */
+    GetProducibleGoods: () => {
+        let producibleGoods = new Set();
+
+        // Prefer the processed CityBuildingsData when available
+        let buildings = MainParser.CityBuildingsData && Object.keys(MainParser.CityBuildingsData).length > 0
+            ? MainParser.CityBuildingsData
+            : null;
+
+        if (buildings) {
+            for (let buildingId in buildings) {
+                if (!buildings.hasOwnProperty(buildingId)) continue;
+                let building = buildings[buildingId];
+                if (!building) continue;
+
+                let eraName = building.eraName || CurrentEra;
+
+                // Potential productions (from entity metadata / setAllProductions)
+                if (building.production) {
+                    for (let production of building.production) {
+                        if (!production || !production.resources) continue;
+                        if (production.type === 'resources' || production.type === 'special_goods') {
+                            for (let resourceName of Object.keys(production.resources)) {
+                                let id = Technologies._collectProducibleGoodId(resourceName);
+                                if (id) producibleGoods.add(id);
+                                if (resourceName.includes('random_good_of_') || resourceName.includes('all_goods_of_')) {
+                                    for (let gid of Technologies._expandGenericGood(resourceName, eraName)) {
+                                        if (Technologies._collectProducibleGoodId(gid)) producibleGoods.add(gid);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // Currently running productions
+                if (building.state && building.state.production) {
+                    for (let production of building.state.production) {
+                        if (!production || !production.resources) continue;
+                        if (production.type === 'resources' || production.type === 'special_goods') {
+                            for (let resourceName of Object.keys(production.resources)) {
+                                let id = Technologies._collectProducibleGoodId(resourceName);
+                                if (id) producibleGoods.add(id);
+                            }
+                        }
+                    }
+                }
+
+                // Goods buildings: read the specific good from entity available_products
+                if (building.type === 'goods') {
+                    let entity = MainParser.CityEntities[building.entityId];
+                    if (entity && entity.available_products && Array.isArray(entity.available_products)) {
+                        for (let product of entity.available_products) {
+                            if (product.product && product.product.resources) {
+                                for (let resourceName of Object.keys(product.product.resources)) {
+                                    let id = Technologies._collectProducibleGoodId(resourceName);
+                                    if (id) producibleGoods.add(id);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // Fallback / supplement: raw CityMapData (only own buildings)
+        for (let buildingId in MainParser.CityMapData) {
+            if (!MainParser.CityMapData.hasOwnProperty(buildingId)) continue;
+            let building = MainParser.CityMapData[buildingId];
+            if (!building || !building.cityentity_id) continue;
+            if (building.player_id !== undefined && building.player_id !== ExtPlayerID) continue;
+
+            let entity = MainParser.CityEntities[building.cityentity_id];
+            if (!entity) continue;
+            if (entity.type !== 'goods') continue;
+
+            if (entity.available_products && Array.isArray(entity.available_products)) {
+                for (let product of entity.available_products) {
+                    if (product.product && product.product.resources) {
+                        for (let resourceName of Object.keys(product.product.resources)) {
+                            let id = Technologies._collectProducibleGoodId(resourceName);
+                            if (id) producibleGoods.add(id);
+                        }
+                    }
+                }
+            }
+            if (building.state && building.state.current_product && building.state.current_product.product && building.state.current_product.product.resources) {
+                for (let resourceName of Object.keys(building.state.current_product.product.resources)) {
+                    let id = Technologies._collectProducibleGoodId(resourceName);
+                    if (id) producibleGoods.add(id);
+                }
+            }
+            if (building.state && building.state.productionOption && building.state.productionOption.products) {
+                for (let product of building.state.productionOption.products) {
+                    if (product.playerResources && product.playerResources.resources) {
+                        for (let resourceName of Object.keys(product.playerResources.resources)) {
+                            let id = Technologies._collectProducibleGoodId(resourceName);
+                            if (id) producibleGoods.add(id);
+                        }
+                    }
+                }
+            }
+        }
+
+        return producibleGoods;
+    },
+
+
+    /**
+     * Returns a Set of good IDs that the player is currently producing
+     * (i.e. a production is actively running on the building right now).
+     * Used for the italic "actively producing" highlight.
+     */
+    GetActiveProductionGoods: () => {
+        let activeGoods = new Set();
+
+        let buildings = MainParser.CityBuildingsData && Object.keys(MainParser.CityBuildingsData).length > 0
+            ? MainParser.CityBuildingsData
+            : null;
+
+        let eraName = CurrentEra;
+
+        if (buildings) {
+            for (let buildingId in buildings) {
+                if (!buildings.hasOwnProperty(buildingId)) continue;
+                let building = buildings[buildingId];
+                if (!building) continue;
+                if (!building.state) continue;
+                // only "producing" state counts as actively producing
+                if (building.state.name && building.state.name !== 'producing') continue;
+
+                let productions = building.state.production;
+                if (!productions) continue;
+
+                for (let production of productions) {
+                    if (!production || !production.resources) continue;
+                    if (production.type === 'resources' || production.type === 'special_goods') {
+                        for (let resourceName of Object.keys(production.resources)) {
+                            let id = Technologies._collectProducibleGoodId(resourceName);
+                            if (id) activeGoods.add(id);
+                            if (resourceName.includes('random_good_of_') || resourceName.includes('all_goods_of_')) {
+                                for (let gid of Technologies._expandGenericGood(resourceName, building.eraName || eraName)) {
+                                    if (Technologies._collectProducibleGoodId(gid)) activeGoods.add(gid);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // Fallback: raw CityMapData current_product
+        for (let buildingId in MainParser.CityMapData) {
+            if (!MainParser.CityMapData.hasOwnProperty(buildingId)) continue;
+            let building = MainParser.CityMapData[buildingId];
+            if (!building || !building.cityentity_id) continue;
+            if (building.player_id !== undefined && building.player_id !== ExtPlayerID) continue;
+            if (!building.state) continue;
+
+            // only running productions
+            let stateClass = building.state.__class__;
+            if (stateClass !== 'ProducingState' && stateClass !== 'ProductionFinishedState') continue;
+
+            if (building.state.current_product && building.state.current_product.product && building.state.current_product.product.resources) {
+                for (let resourceName of Object.keys(building.state.current_product.product.resources)) {
+                    let id = Technologies._collectProducibleGoodId(resourceName);
+                    if (id) activeGoods.add(id);
+                }
+            }
+            if (building.state.productionOption && building.state.productionOption.products) {
+                for (let product of building.state.productionOption.products) {
+                    if (product.playerResources && product.playerResources.resources) {
+                        for (let resourceName of Object.keys(product.playerResources.resources)) {
+                            let id = Technologies._collectProducibleGoodId(resourceName);
+                            if (id) activeGoods.add(id);
+                        }
+                    }
+                }
+            }
+        }
+
+        return activeGoods;
     },
 };

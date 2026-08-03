@@ -7,12 +7,33 @@
   - New module: browse your complete inventory in one box — with a property filter for buildings (Forge Points, unit boosts, goods, units, happiness, Quantum Incursion and more)
   - With an active filter every tile shows the value of the selected property, sortable ascending/descending; building fragments show their progress and are rated like their assembled building
   - Building tooltips like in the efficiency rating, automatic refresh on inventory changes; Historical Allies stay in their own box
+  - "Recently added" sort: shows with a timestamp what last entered the inventory (e.g. from collecting the city) — opening the game's inventory log takes over its exact history, in addition every stock increase is tracked live
 
 - Web Requests:
   - New module: send battleground sector data to your own server — as GET with URL parameters or as POST with a JSON or form body ($_GET/$_POST)
   - Freely configurable profiles with placeholders (#name, #time, #attrition, #guild, #vp, #neighbors and more), preview and test requests with sample data
   - Requests are fire-and-forget: sent without waiting for a response, no CORS setup needed on the server
   - Selectable in the Guild Battlegrounds settings: send single sectors or the whole selection next to the Discord buttons
+
+**Update**
+- Discord Webhooks:
+  - Webhook URLs can optionally carry a thread ID — the message is then posted into a specific thread or forum post of the channel, including the Guild Battlegrounds buttons
+  - Automatic sending (dropped with the webhook rework in 4.3.0.0) is back — now time-based instead of on the first attack: enable it in the Guild Battlegrounds settings, adjacent enemy sectors are sent once to the selected webhook with a configurable lead time before they open (with template, as long as the window is open)
+  - Help question mark in the title bar and in the Guild Battlegrounds settings; placeholder overview in the template form in monospace, now including #player and #world
+  - The box reloads its data on opening (important with multiple game tabs) and open Guild Battlegrounds settings refresh immediately as soon as webhooks or templates are created or deleted next to them
+- Blue Galaxy:
+	- You can set the length of the list yourself, so it is no longer fixed at 50
+	- When you hover over the name, the building graphic is displayed to help you identify the building more easily
+	- The ‘Fragments’ column, when displayed, can now be sorted by name
+- Market Filter:
+  - New filter "Needed for research": only shows offers whose good is still needed for your unresearched technologies and where your current stock is insufficient — many thanks to [wolf128058](https://github.com/wolf128058) for contributing this!
+- Tech Tree Research Costs:
+  - Goods you can produce yourself are highlighted in green; goods currently in active production are additionally shown in italics — many thanks to [wolf128058](https://github.com/wolf128058) for contributing this!
+- Building tooltip:
+  - Forge Point, goods, coin and supply productions now show the amount you actually collect with your active production boosts; the base value and boost percentage follow in small print in parentheses with the matching boost icon (e.g. in the efficiency rating, Inventory Overview and city map)
+
+**Bugfix**
+- Guild Battlegrounds: Expired sectors no longer linger in the live box — they are filtered against the current time on rebuild, and an internal timer additionally cleans up old rows when no map updates arrive
 
 ---
 

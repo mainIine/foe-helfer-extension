@@ -212,7 +212,14 @@ let Guild_fights = {
 		url: JSON.parse(localStorage.getItem("LiveFightSettings"))?.discordWebhook || "",
 		template: JSON.parse(localStorage.getItem("LiveFightSettings"))?.discordWebhookTemplate || "",
 		bulkTemplate: JSON.parse(localStorage.getItem("LiveFightSettings"))?.discordWebhookTemplateBulk || "",
+		autoSend: JSON.parse(localStorage.getItem("LiveFightSettings"))?.discordAutoSend || 0,
+		autoLeadTime: JSON.parse(localStorage.getItem("LiveFightSettings"))?.discordAutoLeadTime || 60,
 	},
+	// pending timers and already announced sectors of the automatic Discord send
+	DiscordAutoTimers: [],
+	DiscordAutoDone: {},
+	// fallback sweeper that removes expired sector rows (#discord: "Old GBG sectors still displayed")
+	PruneInterval: null,
 	discordCache: null,
 	webRequestProfile: JSON.parse(localStorage.getItem("LiveFightSettings"))?.webRequestProfile || "",
 
@@ -1599,6 +1606,63 @@ let Guild_fights = {
 			});
 			$('[data-original-title]').tooltip({container: 'body'});
 		});
+
+		Guild_fights.ScheduleDiscordAutoSend();
+
+		// fallback cleanup of expired rows in case no further map updates arrive
+		clearInterval(Guild_fights.PruneInterval);
+		Guild_fights.PruneInterval = setInterval(Guild_fights.PruneExpiredRows, 10000);
+	},
+
+
+	/**
+	 * (Re)schedules the automatic Discord announcements: every adjacent enemy
+	 * sector is sent once, the configured lead time before it unlocks. Runs on
+	 * every rebuild of the live fight box, so conquered sectors get picked up
+	 */
+	ScheduleDiscordAutoSend: () => {
+		for (let timerId of Guild_fights.DiscordAutoTimers) {
+			clearTimeout(timerId);
+		}
+		Guild_fights.DiscordAutoTimers = [];
+
+		const cfg = Guild_fights.discordWebhook;
+		if (cfg.autoSend !== 1 || cfg.url === '') {
+			return;
+		}
+
+		const own = Guild_fights.MapData?.battlegroundParticipants?.find(e => e.clan.id === ExtGuildID);
+		if (!own) {
+			return;
+		}
+
+		for (let prov of Guild_fights.MapData.map.provinces) {
+			if (prov.lockedUntil === undefined || prov.owner === own.clan.name) continue;
+			if (!prov.neighbor || !prov.neighbor.includes(own.participantId)) continue;
+
+			const now = GameTime.get();
+			if (prov.lockedUntil <= now) continue;
+
+			// one announcement per sector and lock period
+			const key = `${prov.id}-${prov.lockedUntil}`;
+			if (Guild_fights.DiscordAutoDone[key]) continue;
+
+			const fireIn = Math.max(0, (prov.lockedUntil - cfg.autoLeadTime - now) * 1000);
+
+			const timerId = setTimeout(() => {
+				Guild_fights.DiscordAutoDone[key] = true;
+
+				const hasTemplate = cfg.template !== '' && Discord.WebHooks.some(t => t.type === 'template' && t.name === cfg.template);
+				if (hasTemplate) {
+					Discord.sendGBGSectorCustom(prov.id);
+				}
+				else {
+					Discord.sendGBGSector(prov.id);
+				}
+			}, fireIn);
+
+			Guild_fights.DiscordAutoTimers.push(timerId);
+		}
 	},
 
 
@@ -1724,7 +1788,8 @@ let Guild_fights = {
 				<th></th>
 			</tr></thead>`);
 
-		let arrayprov = [];
+		let arrayprov = [],
+			now = moment().unix();
 
 		// Time until next sectors will be available
 		for (let i in mapdata) {
@@ -1734,7 +1799,8 @@ let Guild_fights = {
 			if (!Guild_fights.showOwnSectors)
 				ownsectors = (own.clan.name !== mapdata[i].owner);
 
-			if (mapdata[i].lockedUntil !== undefined && ownsectors)
+			// skip sectors whose timer already expired, stale map data would otherwise re-add them
+			if (mapdata[i].lockedUntil !== undefined && mapdata[i].lockedUntil - 2 > now && ownsectors)
 				arrayprov.push(mapdata[i]);  // push all data into array
 		}
 
@@ -1779,7 +1845,7 @@ let Guild_fights = {
 					}
 				}
 				
-				nextup.push(`<tr id="timer-${prov[x].id}" class="timer ${connectionSecured ? 'secure' : ''}" data-tab="nextup" data-id=${prov[x].id}>
+				nextup.push(`<tr id="timer-${prov[x].id}" class="timer ${connectionSecured ? 'secure' : ''}" data-tab="nextup" data-id=${prov[x].id} data-locked-until=${prov[x].lockedUntil}>
 					<td class="prov-name" data-original-title="${i18n('Boxes.GuildFights.Owner')}: ${prov[x].owner}">
 					<span class="province-color" ${color['main'] ? 'style="background-color:' + color['main'] + '"' : ''}"></span>
 					<span class="battletype ${battleType}"></span>
@@ -1866,6 +1932,8 @@ let Guild_fights = {
 		for (let province of provinces) {
 			if (province.ownerId !== Guild_fights.MapData.currentParticipantId) continue;
 			if (province.lockedUntil === undefined) continue;
+			// skip sectors whose timer already expired, stale map data would otherwise re-add them
+			if (province.lockedUntil - 2 <= moment().unix()) continue;
 
 			let countDownDate = moment.unix(province.lockedUntil - 2),
 				color = Guild_fights.SortedColors.find(x => x.id === province.ownerId),
@@ -1875,7 +1943,7 @@ let Guild_fights = {
 
 			let slotWarning = Guild_fights.GetSlotWarningClass(province);
 
-			content.push(`<tr id="time-${province.id}" class="time ${slotWarning}" data-tab="gbgowned" data-id=${province.id}>
+			content.push(`<tr id="time-${province.id}" class="time ${slotWarning}" data-tab="gbgowned" data-id=${province.id} data-locked-until=${province.lockedUntil}>
 				<td class="prov-name" title="${i18n('Boxes.GuildFights.Owner')}: ${province.owner}">
 					<span class="province-color" ${color['main'] ? 'style="background-color:' + color['main'] + '"' : ''}"></span> 
 					<b>${province.title}</b> 
@@ -2192,6 +2260,32 @@ let Guild_fights = {
 
 
 	/**
+	 * Fallback sweeper: removes sector rows whose unlock time has passed but which
+	 * neither a map update nor their per-row countdown cleaned up (e.g. because
+	 * intervals were throttled in a background tab). Runs every 10s while the box is open
+	 */
+	PruneExpiredRows: () => {
+		if ($('#LiveGildFighting').length === 0) {
+			clearInterval(Guild_fights.PruneInterval);
+			Guild_fights.PruneInterval = null;
+			return;
+		}
+
+		let now = moment().unix();
+
+		$('#LiveGildFighting tr[data-locked-until]').each(function () {
+			// 15s grace period so the "!!" flash of UpdateCounter stays visible
+			if ($(this).data('lockedUntil') + 15 > now) return;
+
+			$(this).fadeOut(400, function () {
+				$(this).remove();
+				Guild_fights.ToggleCopyButton();
+			});
+		});
+	},
+
+
+	/**
 	 * Determine and assign colours of the individual guilds
 	 */
 	PrepareColors: () => {
@@ -2484,6 +2578,9 @@ let Guild_fights = {
 	 * server time, alert lead time and discord webhooks)
 	 */
 	ShowLiveFightSettings: () => {
+		// pick up webhooks and templates created since the last render
+		Discord.init();
+
 		let c = [];
 		let LiveFightSettings = JSON.parse(localStorage.getItem('LiveFightSettings'));
 		let showGuildColumn = (LiveFightSettings && LiveFightSettings.showGuildColumn !== undefined) ? LiveFightSettings.showGuildColumn : 0;
@@ -2502,6 +2599,8 @@ let Guild_fights = {
 		let discordWebhook = LiveFightSettings?.discordWebhook ?? '';
 		let discordWebhookTemplate = LiveFightSettings?.discordWebhookTemplate ?? '';
 		let discordWebhookTemplateBulk = LiveFightSettings?.discordWebhookTemplateBulk ?? '';
+		let discordAutoSend = LiveFightSettings?.discordAutoSend ?? 0;
+		let discordAutoLeadTime = LiveFightSettings?.discordAutoLeadTime ?? 60;
 		let webRequestProfile = LiveFightSettings?.webRequestProfile ?? '';
 		let autoOpen = LiveFightSettings?.autoOpen ?? 1;
 
@@ -2523,7 +2622,7 @@ let Guild_fights = {
 		c.push(`<hr><p><label for="alertLeadTime">${i18n('Boxes.GuildFights.AlertLeadTime')} <input id="alertLeadTime" name="alertLeadTime" value="${alertLeadTime}" type="number" min="5" max="3600" step="5" size="6"/></label></p>`);
 
 		c.push(`<hr><p>`);
-			c.push(`<label for="gbgWebhook"><b>${i18n('Menu.Discord.Title')}</b></label><br />`);
+			c.push(`<label for="gbgWebhook"><b>${i18n('Menu.Discord.Title')}</b></label><span class="settings-ask" onclick="window.open('${i18n('Boxes.Discord.HelpLink')}', '_blank')"></span><br />`);
 			if (Discord.WebHooksUrls.length === 0)
 				c.push(`${i18n('Boxes.GuildFights.DiscordSetup')}: <span class="btn btn-slim" onclick="Discord.BuildBox()">${i18n('General.Open')}</span>`);
 			else {
@@ -2549,10 +2648,15 @@ let Guild_fights = {
 					c.push(`<option value="${tpl.name}" ${discordWebhookTemplateBulk === tpl.name ? ' selected="selected"' : ''}>${tpl.name}</option>`);
 				}
 			c.push(`</select>`);}
+			if (Discord.WebHooksUrls.length !== 0) {
+				c.push(`<br /><label for="gbgDiscordAutoSend"><input id="gbgDiscordAutoSend" name="gbgDiscordAutoSend" value="0" type="checkbox" ${(discordAutoSend === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.DiscordAutoSend')}</label><br />`);
+				c.push(`<label for="gbgDiscordAutoLead" class="copy-setting">${i18n('Boxes.GuildFights.DiscordAutoLeadTime')} <input id="gbgDiscordAutoLead" name="gbgDiscordAutoLead" value="${discordAutoLeadTime}" type="number" min="5" max="3600" step="5" size="6"/></label><br />`);
+				c.push(`<span class="copy-setting" style="font-size:smaller;display:inline-block;max-width:280px;">${i18n('Boxes.GuildFights.DiscordAutoSendHint')}</span>`);
+			}
 			c.push(`</p>`);
 
 		c.push(`<hr><p>`);
-			c.push(`<label for="gbgWebRequest"><b>${i18n('Menu.WebRequest.Title')}</b></label><br />`);
+			c.push(`<label for="gbgWebRequest"><b>${i18n('Menu.WebRequest.Title')}</b></label><span class="settings-ask" onclick="window.open('${i18n('Boxes.WebRequest.HelpLink')}', '_blank')"></span><br />`);
 			if (WebRequest.Profiles.length === 0)
 				c.push(`${i18n('Boxes.GuildFights.WebRequestSetup')}: <span class="btn btn-slim" onclick="WebRequest.BuildBox()">${i18n('General.Open')}</span>`);
 			else {
@@ -2647,6 +2751,11 @@ let Guild_fights = {
 		value.discordWebhookTemplateBulk = $("#gbgWebhookTemplateBulk").val();
 		value.webRequestProfile = $("#gbgWebRequest").val() || '';
 
+		value.discordAutoSend = $("#gbgDiscordAutoSend").is(':checked') ? 1 : 0;
+		let discordAutoLeadTime = parseInt($("#gbgDiscordAutoLead").val());
+		if (isNaN(discordAutoLeadTime)) discordAutoLeadTime = 60;
+		value.discordAutoLeadTime = Math.min(Math.max(discordAutoLeadTime, 5), 3600);
+
 		// lead time for sector alerts in seconds, clamped to the input range (#3511)
 		let alertLeadTime = parseInt($("#alertLeadTime").val());
 		if (isNaN(alertLeadTime)) alertLeadTime = 30;
@@ -2662,6 +2771,8 @@ let Guild_fights = {
 		Guild_fights.discordWebhook.url = value.discordWebhook;
 		Guild_fights.discordWebhook.template = value.discordWebhookTemplate;
 		Guild_fights.discordWebhook.bulkTemplate = value.discordWebhookTemplateBulk;
+		Guild_fights.discordWebhook.autoSend = value.discordAutoSend;
+		Guild_fights.discordWebhook.autoLeadTime = value.discordAutoLeadTime;
 		Guild_fights.webRequestProfile = value.webRequestProfile;
 		Guild_fights.alertLeadTime = value.alertLeadTime;
 		Guild_fights.serverOffset = parseInt($("#serverOffset").val()) ?? null;

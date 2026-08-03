@@ -43,6 +43,7 @@ let Market = {
     MinQuantity: 1,
     MaxResults: 100,
     OnlyAffordable: false,
+    NeededForResearch: false,
 
     TradePartnerNeighbor: true,
     TradePartnerGuild: true,
@@ -165,6 +166,11 @@ let Market = {
                 Market.OnlyAffordable = !Market.OnlyAffordable;
                 Market.CalcBody();
             });
+
+            $('#Market').on('change', '.neededforresearch', function () {
+                Market.NeededForResearch = !Market.NeededForResearch;
+                Market.CalcBody();
+            });
         }
         else if (event) {
             Market.CalcBody();
@@ -183,6 +189,11 @@ let Market = {
 	 */
     CalcBody: () => {
         let h = [];
+
+        // Cache für die Forschungsbedarfs-Güter; wird in TestFilter ausgewertet.
+        Market._NeededResearchGoodsCache = Market.NeededForResearch
+            ? Technologies.GetNeededResearchGoods()
+            : null;
 
         // Filters
         h.push('<div class="dark-bg" style="margin-bottom: 3px;">');
@@ -303,9 +314,7 @@ let Market = {
 
         h.push('<tr>');
         h.push('<td colspan="2"><label class="game-cursor"><input class="onlyaffordable game-cursor" ' + (Market.OnlyAffordable ? 'checked' : '') + ' type="checkbox">' + i18n('Boxes.Market.OnlyAffordable') + '</label></td>');
-        h.push('<td></td>');
-        h.push('<td></td>');
-        h.push('<td></td>');
+        h.push('<td colspan="3"><label class="game-cursor"><input class="neededforresearch game-cursor" ' + (Market.NeededForResearch ? 'checked' : '') + ' type="checkbox" title="' + HTML.i18nTooltip(i18n('Boxes.Market.NeededForResearchTT')) + '">' + i18n('Boxes.Market.NeededForResearch') + '</label></td>');
         h.push('</tr>');
 
         h.push('</table>');
@@ -413,6 +422,12 @@ let Market = {
 
         // only Affordable
         if (Market.OnlyAffordable && Trade.need.value > (ResourceStock[Trade.need.good_id] || 0)) {
+            return false;
+        }
+
+        // nur Angebote, deren angebotenes Gut für die Forschung (gemäß
+        // Technologies-Ansicht) noch benötigt wird
+        if (Market._NeededResearchGoodsCache && !Market._NeededResearchGoodsCache.has(Trade['offer']['good_id'])) {
             return false;
         }
 

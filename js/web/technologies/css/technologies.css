@@ -130,3 +130,14 @@
 #technologies #technologiesBody tr.technologies-done {
 	opacity: 0.4;
 }
+
+/* Güter, die der Spieler selbst herstellen kann */
+#technologies #technologiesBody td.producible-good {
+	color: #4caf50;
+}
+
+/* Güter, die aktuell aktiv produziert werden */
+#technologies #technologiesBody td.actively-produced {
+	color: #4caf50;
+	font-style: italic;
+}
