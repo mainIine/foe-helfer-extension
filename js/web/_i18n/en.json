@@ -801,6 +801,8 @@
     "Boxes.Market.OfferColumn": "Offer",
     "Boxes.Market.OfferTT": "__era__<br>You have: __stock__",
     "Boxes.Market.OnlyAffordable": "Only Affordable Offers",
+    "Boxes.Market.NeededForResearch": "Needed for research",
+    "Boxes.Market.NeededForResearchTT": "Only shows offers whose offered good is still needed for the unresearched technologies (as configured in the “Research costs for …” view) and where the current stock is insufficient.",
     "Boxes.Market.PageColumn": "Page",
     "Boxes.Market.PlayerColumn": "Player",
     "Boxes.Market.RateColumn": "Rate",

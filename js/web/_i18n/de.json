@@ -800,6 +800,8 @@
     "Boxes.Market.OfferColumn": "Angebot",
     "Boxes.Market.OfferTT": "__era__<br>Du hast: __stock__",
     "Boxes.Market.OnlyAffordable": "Nur akzeptierbare Angebote",
+    "Boxes.Market.NeededForResearch": "Für Forschung benötigt",
+    "Boxes.Market.NeededForResearchTT": "Zeigt nur Angebote an, deren angebotenes Gut für die (gemäß „Forschungskosten für …“ eingestellten) noch nicht erforschten Technologien benötigt wird und bei dem der Bestand nicht ausreicht.",
     "Boxes.Market.PageColumn": "Seite",
     "Boxes.Market.PlayerColumn": "Spieler",
     "Boxes.Market.RateColumn": "Kurs",
