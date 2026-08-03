@@ -188,6 +188,7 @@ const BlueGalaxy = {
 					name: CityEntity.name,
 					Fragments: Fragments,
 					FragmentAmount: FragmentAmount,
+					FragmentName: Fragments[0]?.name || '',
 					FP: FP,
 					Goods: GoodsSum,
 					OlderGoods: OlderGoodsSum,
@@ -205,10 +206,21 @@ const BlueGalaxy = {
 		}
 
 		Buildings.sort((a, b) => {
-			if (BlueGalaxy.sort.col) {
-				return (BlueGalaxy.sort.order === 'ascending' ? -1 : 1) * (b[BlueGalaxy.sort.col] - a[BlueGalaxy.sort.col]);
+			const { col, order } = BlueGalaxy.sort;
+
+			if (!col) return b.CombinedValue - a.CombinedValue;
+
+			const direction = (order === 'ascending' ? -1 : 1);
+			const valueA = a[col];
+			const valueB = b[col];
+
+			if (typeof valueA === 'string') {
+				// Buildings without a value (e.g. no fragments) always go last
+				if (valueA === '' || valueB === '') return (valueA === '' ? 1 : 0) - (valueB === '' ? 1 : 0);
+				return direction * valueA.localeCompare(valueB);
 			}
-			return b.CombinedValue - a.CombinedValue;
+
+			return direction * (valueB - valueA);
 		});
 
 		const goodsValueInput = (id, value) => {
@@ -239,7 +251,7 @@ const BlueGalaxy = {
 			'<tr class="sorter-header">' +
 			'<th class="no-sort"></th>' +
 			`<th class="no-sort" data-type="bg-group">${i18n('Boxes.BlueGalaxy.Building')}</th>` +
-			(showBGFragments ? iconTh('FragmentAmount', 'fragments', i18n('Boxes.BlueGalaxy.Fragments')) : '') +
+			(showBGFragments ? iconTh('FragmentName', 'fragments', i18n('Boxes.BlueGalaxy.Fragments')) : '') +
 			iconTh('FP', 'fp', i18n('Boxes.BlueGalaxy.FP')) +
 			iconTh('OlderGoods', 'old_goods', i18n('Boxes.BlueGalaxy.OlderGoods')) +
 			iconTh('Goods', 'goods', i18n('Boxes.BlueGalaxy.Goods')) +

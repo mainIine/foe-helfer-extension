@@ -7,7 +7,7 @@
   - New module: browse your complete inventory in one box — with a property filter for buildings (Forge Points, unit boosts, goods, units, happiness, Quantum Incursion and more)
   - With an active filter every tile shows the value of the selected property, sortable ascending/descending; building fragments show their progress and are rated like their assembled building
   - Building tooltips like in the efficiency rating, automatic refresh on inventory changes; Historical Allies stay in their own box
-  - "Recently added" sort: shows with a timestamp what last entered the inventory (e.g. from collecting the city) — tracked while the extension is active
+  - "Recently added" sort: shows with a timestamp what last entered the inventory (e.g. from collecting the city) — opening the game's inventory log takes over its exact history, in addition every stock increase is tracked live
 
 - Web Requests:
   - New module: send battleground sector data to your own server — as GET with URL parameters or as POST with a JSON or form body ($_GET/$_POST)
@@ -24,6 +24,10 @@
 - Blue Galaxy:
 	- You can set the length of the list yourself, so it is no longer fixed at 50
 	- When you hover over the name, the building graphic is displayed to help you identify the building more easily
+	- The ‘Fragments’ column, when displayed, can now be sorted by name
+
+**Bugfix**
+- Guild Battlegrounds: Expired sectors no longer linger in the live box — they are filtered against the current time on rebuild, and an internal timer additionally cleans up old rows when no map updates arrive
 
 ---
 
