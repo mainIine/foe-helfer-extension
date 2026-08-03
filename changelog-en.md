@@ -25,6 +25,12 @@
 	- You can set the length of the list yourself, so it is no longer fixed at 50
 	- When you hover over the name, the building graphic is displayed to help you identify the building more easily
 	- The ‘Fragments’ column, when displayed, can now be sorted by name
+- Market Filter:
+  - New filter "Needed for research": only shows offers whose good is still needed for your unresearched technologies and where your current stock is insufficient — many thanks to [wolf128058](https://github.com/wolf128058) for contributing this!
+- Tech Tree Research Costs:
+  - Goods you can produce yourself are highlighted in green; goods currently in active production are additionally shown in italics — many thanks to [wolf128058](https://github.com/wolf128058) for contributing this!
+- Building tooltip:
+  - Forge Point, goods, coin and supply productions now show the amount you actually collect with your active production boosts; the base value and boost percentage follow in small print in parentheses with the matching boost icon (e.g. in the efficiency rating, Inventory Overview and city map)
 
 **Bugfix**
 - Guild Battlegrounds: Expired sectors no longer linger in the live box — they are filtered against the current time on rebuild, and an internal timer additionally cleans up old rows when no map updates arrive
