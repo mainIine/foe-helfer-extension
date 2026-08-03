@@ -25,6 +25,12 @@
   - Die Länge der Liste kann selber bestimmt werden und ist dadurch nicht mehr auf 50 festgeschrieben
   - Beim hover über dem Namen wird die Gebäude-Grafik angezeigt um das Gebäude besser identifizieren zu können
   - Die Fragmentspalte, wenn sie eingeblendet ist, ist nun sortierbar nach Namen
+- Marktübersicht:
+  - Neuer Filter „Für Forschung benötigt": zeigt nur Angebote, deren Gut für die noch nicht erforschten Technologien gebraucht wird und bei denen der eigene Bestand nicht ausreicht — vielen Dank [wolf128058](https://github.com/wolf128058) für die Umsetzung!
+- Forschungskosten:
+  - Güter, die du selbst herstellen kannst, werden grün hervorgehoben; läuft deren Produktion gerade, erscheinen sie zusätzlich kursiv — vielen Dank [wolf128058](https://github.com/wolf128058) für die Umsetzung!
+- Gebäude-Tooltip:
+  - Forge-Punkt-, Güter-, Münz- und Vorrats-Produktionen zeigen jetzt die mit deinen aktiven Produktions-Boosts tatsächlich eingesammelte Menge; klein in Klammern dahinter stehen Basiswert und Boost-Prozent mit dem passenden Boost-Symbol (z.B. in der Effizienzbewertung, Inventar-Übersicht und Stadtkarte)
 
 **Bugfix**
 - Gildengefechte: Bereits abgelaufene Sektoren werden nicht mehr in der Live-Box angezeigt — beim Aufbau werden sie gegen die aktuelle Zeit gefiltert, ein interner Timer räumt zusätzlich alte Zeilen ab, wenn keine Karten-Updates mehr eintreffen
