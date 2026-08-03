@@ -664,6 +664,125 @@ let Technologies = {
 
 
     /**
+     * Returns a Set of good IDs (excluding money/supplies/strategy_points)
+     * that are still needed for unresearched technologies in the range
+     * [CumLowerEraID .. SelectedEraID] and where the player's stock is
+     * insufficient (stock - demand < 0).
+     *
+     * Respects the same ignore options (IgnorePrevEra,
+     * IgnoreCurrentEraOptional) and SelectedEraID as the Technologies
+     * view, so the result matches the red "missing" rows in the
+     * "Forschungskosten für ..." window.
+     *
+     * Used by the Market filter "für Forschung benötigt".
+     */
+    GetNeededResearchGoods: () => {
+        let neededGoods = new Set();
+
+        if (Technologies.AllTechnologies === null || Technologies.UnlockedTechnologies === false) {
+            return neededGoods;
+        }
+
+        // Same ignore flags as the Technologies view (real booleans)
+        let IgnorePrevEra = localStorage.getItem('TechnologiesIgnorePrevEra') !== 'false';
+        let IgnoreCurrentEraOptional = localStorage.getItem('TechnologiesIgnoreCurrentEraOptional') !== 'false';
+        let SelEraID = Technologies.SelectedEraID || CurrentEraID;
+
+        // Build index and mark researched / in-progress techs exactly like CalcBody
+        let TechDict = [];
+        for (let i = 1; i < Technologies.AllTechnologies.length; i++) {
+            TechDict[Technologies.AllTechnologies[i]['id']] = i;
+        }
+
+        let ResearchedTechs = (Technologies.UnlockedTechnologies['unlockedNodes'] && Technologies.UnlockedTechnologies['unlockedNodes'].length)
+            ? Technologies.UnlockedTechnologies['unlockedNodes']
+            : (Technologies.UnlockedTechnologies['unlockedTechnologies'] || []);
+        for (let i = 0; i < ResearchedTechs.length; i++) {
+            let TechName = ResearchedTechs[i];
+            let Index = TechDict[TechName];
+            if (Index === undefined) continue;
+            Technologies.AllTechnologies[Index]['isResearched'] = true;
+            Technologies.AllTechnologies[Index]['currentSP'] = Technologies.GetTechFP(Technologies.AllTechnologies[Index]);
+        }
+
+        for (let i = 0; i < Technologies.UnlockedTechnologies['inProgressTechnologies'].length; i++) {
+            let InProgTech = Technologies.UnlockedTechnologies['inProgressTechnologies'][i];
+            let Index = TechDict[InProgTech['tech_id']];
+            if (Index === undefined) continue;
+            Technologies.AllTechnologies[Index]['currentSP'] = InProgTech['currentSP'];
+        }
+
+        // Cumulative demand over [CumLowerEraID .. SelEraID]
+        let CumulativeResources = [];
+        let CumLowerEraID = IgnorePrevEra ? Math.min(CurrentEraID, SelEraID) : 1;
+
+        for (let i = 1; i < Technologies.AllTechnologies.length; i++) {
+            let Tech = Technologies.AllTechnologies[i];
+            if (Tech['currentSP'] === undefined)
+                Tech['currentSP'] = 0;
+
+            if (Tech['isTeaser']) continue;
+
+            let EraID = Technologies.Eras[Tech['era']];
+
+            if (EraID >= CurrentEraID && Tech['children'].length === 0 && IgnoreCurrentEraOptional) {
+                continue;
+            }
+
+            if (EraID < CumLowerEraID || EraID > SelEraID) {
+                continue;
+            }
+
+            if (!Tech['isResearched']) {
+                for (let ResourceName in Tech['requirements']['resources']) {
+                    if (CumulativeResources[ResourceName] === undefined)
+                        CumulativeResources[ResourceName] = 0;
+
+                    CumulativeResources[ResourceName] += Tech['requirements']['resources'][ResourceName];
+                }
+            }
+        }
+
+        // Same "still missing" logic as CalcBody: when the cumulative range
+        // spans more than just the selected era, compare against the
+        // cumulative demand; otherwise against the selected-era demand.
+        let ShowCumulative = CumLowerEraID < SelEraID;
+
+        let RequiredResources = [];
+        if (!ShowCumulative) {
+            for (let i = 1; i < Technologies.AllTechnologies.length; i++) {
+                let Tech = Technologies.AllTechnologies[i];
+                if (Tech['isTeaser']) continue;
+                let EraID = Technologies.Eras[Tech['era']];
+                if (EraID !== SelEraID) continue;
+                if (EraID >= CurrentEraID && Tech['children'].length === 0 && IgnoreCurrentEraOptional) continue;
+                if (!Tech['isResearched']) {
+                    for (let ResourceName in Tech['requirements']['resources']) {
+                        if (RequiredResources[ResourceName] === undefined)
+                            RequiredResources[ResourceName] = 0;
+                        RequiredResources[ResourceName] += Tech['requirements']['resources'][ResourceName];
+                    }
+                }
+            }
+        }
+
+        for (let ResourceName in CumulativeResources) {
+            if (ResourceName === 'strategy_points' || ResourceName === 'money' || ResourceName === 'supplies') continue;
+
+            let Demand = ShowCumulative ? CumulativeResources[ResourceName] : (RequiredResources[ResourceName] || 0);
+            let Stock = ResourceStock[ResourceName];
+            if (Stock === undefined) Stock = 0;
+
+            if (Stock - Demand < 0) {
+                neededGoods.add(ResourceName);
+            }
+        }
+
+        return neededGoods;
+    },
+
+
+    /**
      * Displays the settings button in the technologies settings box.
      * Renders two buttons for exporting data in CSV and JSON formats.
      *
