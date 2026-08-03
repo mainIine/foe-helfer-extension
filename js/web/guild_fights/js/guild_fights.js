@@ -218,6 +218,8 @@ let Guild_fights = {
 	// pending timers and already announced sectors of the automatic Discord send
 	DiscordAutoTimers: [],
 	DiscordAutoDone: {},
+	// fallback sweeper that removes expired sector rows (#discord: "Old GBG sectors still displayed")
+	PruneInterval: null,
 	discordCache: null,
 	webRequestProfile: JSON.parse(localStorage.getItem("LiveFightSettings"))?.webRequestProfile || "",
 
@@ -1606,6 +1608,10 @@ let Guild_fights = {
 		});
 
 		Guild_fights.ScheduleDiscordAutoSend();
+
+		// fallback cleanup of expired rows in case no further map updates arrive
+		clearInterval(Guild_fights.PruneInterval);
+		Guild_fights.PruneInterval = setInterval(Guild_fights.PruneExpiredRows, 10000);
 	},
 
 
@@ -1782,7 +1788,8 @@ let Guild_fights = {
 				<th></th>
 			</tr></thead>`);
 
-		let arrayprov = [];
+		let arrayprov = [],
+			now = moment().unix();
 
 		// Time until next sectors will be available
 		for (let i in mapdata) {
@@ -1792,7 +1799,8 @@ let Guild_fights = {
 			if (!Guild_fights.showOwnSectors)
 				ownsectors = (own.clan.name !== mapdata[i].owner);
 
-			if (mapdata[i].lockedUntil !== undefined && ownsectors)
+			// skip sectors whose timer already expired, stale map data would otherwise re-add them
+			if (mapdata[i].lockedUntil !== undefined && mapdata[i].lockedUntil - 2 > now && ownsectors)
 				arrayprov.push(mapdata[i]);  // push all data into array
 		}
 
@@ -1837,7 +1845,7 @@ let Guild_fights = {
 					}
 				}
 				
-				nextup.push(`<tr id="timer-${prov[x].id}" class="timer ${connectionSecured ? 'secure' : ''}" data-tab="nextup" data-id=${prov[x].id}>
+				nextup.push(`<tr id="timer-${prov[x].id}" class="timer ${connectionSecured ? 'secure' : ''}" data-tab="nextup" data-id=${prov[x].id} data-locked-until=${prov[x].lockedUntil}>
 					<td class="prov-name" data-original-title="${i18n('Boxes.GuildFights.Owner')}: ${prov[x].owner}">
 					<span class="province-color" ${color['main'] ? 'style="background-color:' + color['main'] + '"' : ''}"></span>
 					<span class="battletype ${battleType}"></span>
@@ -1924,6 +1932,8 @@ let Guild_fights = {
 		for (let province of provinces) {
 			if (province.ownerId !== Guild_fights.MapData.currentParticipantId) continue;
 			if (province.lockedUntil === undefined) continue;
+			// skip sectors whose timer already expired, stale map data would otherwise re-add them
+			if (province.lockedUntil - 2 <= moment().unix()) continue;
 
 			let countDownDate = moment.unix(province.lockedUntil - 2),
 				color = Guild_fights.SortedColors.find(x => x.id === province.ownerId),
@@ -1933,7 +1943,7 @@ let Guild_fights = {
 
 			let slotWarning = Guild_fights.GetSlotWarningClass(province);
 
-			content.push(`<tr id="time-${province.id}" class="time ${slotWarning}" data-tab="gbgowned" data-id=${province.id}>
+			content.push(`<tr id="time-${province.id}" class="time ${slotWarning}" data-tab="gbgowned" data-id=${province.id} data-locked-until=${province.lockedUntil}>
 				<td class="prov-name" title="${i18n('Boxes.GuildFights.Owner')}: ${province.owner}">
 					<span class="province-color" ${color['main'] ? 'style="background-color:' + color['main'] + '"' : ''}"></span> 
 					<b>${province.title}</b> 
@@ -2246,6 +2256,32 @@ let Guild_fights = {
 				});
 			}, 5000);
 		}
+	},
+
+
+	/**
+	 * Fallback sweeper: removes sector rows whose unlock time has passed but which
+	 * neither a map update nor their per-row countdown cleaned up (e.g. because
+	 * intervals were throttled in a background tab). Runs every 10s while the box is open
+	 */
+	PruneExpiredRows: () => {
+		if ($('#LiveGildFighting').length === 0) {
+			clearInterval(Guild_fights.PruneInterval);
+			Guild_fights.PruneInterval = null;
+			return;
+		}
+
+		let now = moment().unix();
+
+		$('#LiveGildFighting tr[data-locked-until]').each(function () {
+			// 15s grace period so the "!!" flash of UpdateCounter stays visible
+			if ($(this).data('lockedUntil') + 15 > now) return;
+
+			$(this).fadeOut(400, function () {
+				$(this).remove();
+				Guild_fights.ToggleCopyButton();
+			});
+		});
 	},
 
 

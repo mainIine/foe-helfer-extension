@@ -721,7 +721,7 @@
     "Boxes.Inventory.GroupProduction": "Production",
     "Boxes.Inventory.Items": "items",
     "Boxes.Inventory.NoResults": "No matching items found.",
-    "Boxes.Inventory.PropertyFilterHint": "With an active property filter only buildings and building fragments providing this property are listed. Set buildings count as fully linked.<br><br>\"Recently added\" sorts by the time an item last entered the inventory — tracked while the extension is active, items without a known time come last.",
+    "Boxes.Inventory.PropertyFilterHint": "With an active property filter only buildings and building fragments providing this property are listed. Set buildings count as fully linked.<br><br>\"Recently added\" sorts by the time an item last entered the inventory. Open the game's inventory log once to take over its exact history; in addition every stock increase is tracked while the extension is active. Items without a known time come last.",
     "Boxes.Inventory.SortAdded": "Recently added",
     "Boxes.Inventory.SortDirection": "Toggle sort order",
     "Boxes.Inventory.Title": "Inventory Overview",

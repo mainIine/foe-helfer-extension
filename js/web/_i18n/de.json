@@ -720,7 +720,7 @@
     "Boxes.Inventory.GroupProduction": "Produktion",
     "Boxes.Inventory.Items": "Gegenstände",
     "Boxes.Inventory.NoResults": "Keine passenden Gegenstände gefunden.",
-    "Boxes.Inventory.PropertyFilterHint": "Bei aktivem Eigenschafts-Filter werden nur Gebäude und Gebäude-Fragmente mit dieser Eigenschaft angezeigt. Set-Gebäude zählen als vollständig verbunden.<br><br>„Zuletzt eingelagert“ sortiert nach dem Zeitpunkt, zu dem ein Gegenstand zuletzt ins Inventar gelangt ist — erfasst, solange die Erweiterung aktiv ist; Gegenstände ohne bekannten Zeitpunkt stehen am Ende.",
+    "Boxes.Inventory.PropertyFilterHint": "Bei aktivem Eigenschafts-Filter werden nur Gebäude und Gebäude-Fragmente mit dieser Eigenschaft angezeigt. Set-Gebäude zählen als vollständig verbunden.<br><br>„Zuletzt eingelagert“ sortiert nach dem Zeitpunkt, zu dem ein Gegenstand zuletzt ins Inventar gelangt ist. Öffne einmal das Inventar-Protokoll im Spiel, um dessen exakte Historie zu übernehmen; zusätzlich wird jeder Bestandszuwachs erfasst, solange die Erweiterung aktiv ist. Gegenstände ohne bekannten Zeitpunkt stehen am Ende.",
     "Boxes.Inventory.SortAdded": "Zuletzt eingelagert",
     "Boxes.Inventory.SortDirection": "Sortierrichtung umschalten",
     "Boxes.Inventory.Title": "Inventar-Übersicht",

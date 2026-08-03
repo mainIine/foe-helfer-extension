@@ -7,7 +7,7 @@
   - Neues Modul: das komplette Inventar durchsuchbar in einer Box — mit Eigenschafts-Filter für Gebäude (Forge-Punkte, Kampfboosts, Güter, Einheiten, Zufriedenheit, Quanten-Inkursion u.v.m.)
   - Bei aktivem Filter zeigt jede Kachel den Wert der gewählten Eigenschaft, auf- und absteigend sortierbar; Gebäude-Fragmente zeigen ihren Fortschritt und werden wie ihr fertiges Gebäude bewertet
   - Gebäude-Tooltips wie in der Effizienzbewertung, automatische Aktualisierung bei Inventar-Änderungen; Historische Verbündete bleiben ihrer eigenen Box vorbehalten
-  - Sortierung „Zuletzt eingelagert“: zeigt mit Zeitangabe, was zuletzt ins Inventar gelangt ist (z. B. durch die Stadt-Ernte) — erfasst, solange die Erweiterung aktiv ist
+  - Sortierung „Zuletzt eingelagert“: zeigt mit Zeitangabe, was zuletzt ins Inventar gelangt ist (z. B. durch die Stadt-Ernte) — beim Öffnen des Inventar-Protokolls im Spiel wird dessen exakte Historie übernommen, zusätzlich wird jeder Zuwachs live erfasst
 
 - Web Requests:
   - Neues Modul: schicke Sektor-Daten aus den Gildengefechten an deinen eigenen Server — als GET mit URL-Parametern oder als POST mit JSON- oder Formular-Body ($_GET/$_POST)
@@ -24,6 +24,10 @@
 - Blaue Galaxy:
   - Die Länge der Liste kann selber bestimmt werden und ist dadurch nicht mehr auf 50 festgeschrieben
   - Beim hover über dem Namen wird die Gebäude-Grafik angezeigt um das Gebäude besser identifizieren zu können
+  - Die Fragmentspalte, wenn sie eingeblendet ist, ist nun sortierbar nach Namen
+
+**Bugfix**
+- Gildengefechte: Bereits abgelaufene Sektoren werden nicht mehr in der Live-Box angezeigt — beim Aufbau werden sie gegen die aktuelle Zeit gefiltert, ein interner Timer räumt zusätzlich alte Zeilen ab, wenn keine Karten-Updates mehr eintreffen
 
 ---
 
