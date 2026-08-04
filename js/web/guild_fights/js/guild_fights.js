@@ -214,6 +214,7 @@ let Guild_fights = {
 		bulkTemplate: JSON.parse(localStorage.getItem("LiveFightSettings"))?.discordWebhookTemplateBulk || "",
 		autoSend: JSON.parse(localStorage.getItem("LiveFightSettings"))?.discordAutoSend || 0,
 		autoLeadTime: JSON.parse(localStorage.getItem("LiveFightSettings"))?.discordAutoLeadTime || 60,
+		maxAttrition: JSON.parse(localStorage.getItem("LiveFightSettings"))?.discordAutoMaxAttrition || 100,
 	},
 	// pending timers and already announced sectors of the automatic Discord send
 	DiscordAutoTimers: [],
@@ -1653,8 +1654,10 @@ let Guild_fights = {
 
 	/**
 	 * (Re)schedules the automatic Discord announcements: every adjacent enemy
-	 * sector is sent once, the configured lead time before it unlocks. Runs on
-	 * every rebuild of the live fight box, so conquered sectors get picked up
+	 * sector is sent once, the configured lead time before it unlocks. Sectors
+	 * at or above the configured attrition chance are skipped, checked at send
+	 * time. Runs on every rebuild of the live fight box, so conquered sectors
+	 * get picked up
 	 */
 	ScheduleDiscordAutoSend: () => {
 		for (let timerId of Guild_fights.DiscordAutoTimers) {
@@ -1686,6 +1689,12 @@ let Guild_fights = {
 			const fireIn = Math.max(0, (prov.lockedUntil - cfg.autoLeadTime - now) * 1000);
 
 			const timerId = setTimeout(() => {
+				// the attrition chance can drop until the sector opens, so it is checked at send
+				// time; skipped sectors stay unmarked and get re-checked on the next map update
+				const sector = Guild_fights.MapData?.map?.provinces?.find(p => p.id === prov.id) || prov;
+				const attrition = Guild_fights.GetEffectiveAttrition(sector);
+				if (attrition !== undefined && attrition >= cfg.maxAttrition) return;
+
 				Guild_fights.DiscordAutoDone[key] = true;
 
 				const hasTemplate = cfg.template !== '' && Discord.WebHooks.some(t => t.type === 'template' && t.name === cfg.template);
@@ -2645,6 +2654,7 @@ let Guild_fights = {
 		let discordWebhookTemplateBulk = LiveFightSettings?.discordWebhookTemplateBulk ?? '';
 		let discordAutoSend = LiveFightSettings?.discordAutoSend ?? 0;
 		let discordAutoLeadTime = LiveFightSettings?.discordAutoLeadTime ?? 60;
+		let discordAutoMaxAttrition = LiveFightSettings?.discordAutoMaxAttrition ?? 100;
 		let webRequestProfile = LiveFightSettings?.webRequestProfile ?? '';
 		let autoOpen = LiveFightSettings?.autoOpen ?? 1;
 
@@ -2695,6 +2705,7 @@ let Guild_fights = {
 			if (Discord.WebHooksUrls.length !== 0) {
 				c.push(`<br /><label for="gbgDiscordAutoSend"><input id="gbgDiscordAutoSend" name="gbgDiscordAutoSend" value="0" type="checkbox" ${(discordAutoSend === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.DiscordAutoSend')}</label><br />`);
 				c.push(`<label for="gbgDiscordAutoLead" class="copy-setting">${i18n('Boxes.GuildFights.DiscordAutoLeadTime')} <input id="gbgDiscordAutoLead" name="gbgDiscordAutoLead" value="${discordAutoLeadTime}" type="number" min="5" max="3600" step="5" size="6"/></label><br />`);
+				c.push(`<label for="gbgDiscordAutoMaxAttrition" class="copy-setting">${i18n('Boxes.GuildFights.DiscordAutoMaxAttrition')} <input id="gbgDiscordAutoMaxAttrition" name="gbgDiscordAutoMaxAttrition" value="${discordAutoMaxAttrition}" type="number" min="20" max="100" step="1" size="6"/></label><br />`);
 				c.push(`<span class="copy-setting" style="font-size:smaller;display:inline-block;max-width:280px;">${i18n('Boxes.GuildFights.DiscordAutoSendHint')}</span>`);
 			}
 			c.push(`</p>`);
@@ -2800,6 +2811,11 @@ let Guild_fights = {
 		if (isNaN(discordAutoLeadTime)) discordAutoLeadTime = 60;
 		value.discordAutoLeadTime = Math.min(Math.max(discordAutoLeadTime, 5), 3600);
 
+		// sectors at or above this attrition chance are excluded from the automatic send
+		let discordAutoMaxAttrition = parseInt($("#gbgDiscordAutoMaxAttrition").val());
+		if (isNaN(discordAutoMaxAttrition)) discordAutoMaxAttrition = 100;
+		value.discordAutoMaxAttrition = Math.min(Math.max(discordAutoMaxAttrition, 20), 100);
+
 		// lead time for sector alerts in seconds, clamped to the input range (#3511)
 		let alertLeadTime = parseInt($("#alertLeadTime").val());
 		if (isNaN(alertLeadTime)) alertLeadTime = 30;
@@ -2817,6 +2833,7 @@ let Guild_fights = {
 		Guild_fights.discordWebhook.bulkTemplate = value.discordWebhookTemplateBulk;
 		Guild_fights.discordWebhook.autoSend = value.discordAutoSend;
 		Guild_fights.discordWebhook.autoLeadTime = value.discordAutoLeadTime;
+		Guild_fights.discordWebhook.maxAttrition = value.discordAutoMaxAttrition;
 		Guild_fights.webRequestProfile = value.webRequestProfile;
 		Guild_fights.alertLeadTime = value.alertLeadTime;
 		Guild_fights.serverOffset = parseInt($("#serverOffset").val()) ?? null;
