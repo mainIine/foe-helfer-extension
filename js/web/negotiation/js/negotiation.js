@@ -81,7 +81,7 @@ let Negotiation = {
 				'auto_close': true,
 				'minimize': true,
 				'dragdrop': true,
-				settings: 'Negotiation.ShowSettings()',
+				settings: () => Negotiation.ShowSettings(),
 			});
 
 			// CSS in den DOM prügeln

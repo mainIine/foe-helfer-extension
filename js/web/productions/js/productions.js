@@ -153,8 +153,8 @@ let Productions = {
 			dragdrop: true,
 			minimize: true,
 			resize: true,
-			popout: 'MainParser.PopOut(\'Productions\', 1100, 580)',
-        	settings: 'Productions.ShowSettings()'
+			popout: () => MainParser.PopOut('Productions', 1100, 580),
+        	settings: () => Productions.ShowSettings()
 		});
 
 		Productions.ActiveTab = 1;

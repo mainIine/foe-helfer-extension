@@ -21,7 +21,7 @@ const PvPArena = {
                 minimize: true,
                 dragdrop: true,
                 resize: true,
-                settings: 'PvPArena.ShowSettings()',
+                settings: () => PvPArena.ShowSettings(),
 			    active_maps:"main"
             });
 

@@ -217,6 +217,7 @@ let Guild_fights = {
 	},
 	// pending timers and already announced sectors of the automatic Discord send
 	DiscordAutoTimers: [],
+	AlertTimers: [],
 	DiscordAutoDone: {},
 	// fallback sweeper that removes expired sector rows (#discord: "Old GBG sectors still displayed")
 	PruneInterval: null,
@@ -828,7 +829,7 @@ let Guild_fights = {
 		// stale list, e.g. a build happened while the map was not open
 		if ((province.usedBuildingSlots || 0) !== buildings.length) return undefined;
 
-		let now = moment().unix();
+		let now = GameTime.get();
 
 		return buildings.reduce((sum, b) => {
 			// buildings under construction do not block yet
@@ -999,7 +1000,7 @@ let Guild_fights = {
 				dragdrop: true,
 				resize: true,
 				minimize: true,
-				settings: 'Guild_fights.ShowLiveFightSettings()',
+				settings: () => Guild_fights.ShowLiveFightSettings(),
 			    //active_maps:"gg"
 			});
 
@@ -1028,7 +1029,7 @@ let Guild_fights = {
 				dragdrop: true,
 				minimize: true,
 				resize: true,
-				settings: 'Guild_fights.ShowPlayerBoxSettings()',
+				settings: () => Guild_fights.ShowPlayerBoxSettings(),
 			    active_maps:"gg"
 			});
 			HTML.AddCssFile('guild_fights');
@@ -1608,10 +1609,45 @@ let Guild_fights = {
 		});
 
 		Guild_fights.ScheduleDiscordAutoSend();
+		Guild_fights.ScheduleAlertTimers();
 
 		// fallback cleanup of expired rows in case no further map updates arrive
 		clearInterval(Guild_fights.PruneInterval);
 		Guild_fights.PruneInterval = setInterval(Guild_fights.PruneExpiredRows, 10000);
+	},
+
+
+	/**
+	 * (Re)schedules a precise timer for every pending sector alert. Browser alarms
+	 * only wake the background worker with about a minute of accuracy, which a lead
+	 * time of a few seconds cannot survive, so an open game tab fires the alert on
+	 * time and cancels the alarm. The alarm stays the fallback for a closed tab
+	 */
+	ScheduleAlertTimers: () => {
+		for (let timerId of Guild_fights.AlertTimers) {
+			clearTimeout(timerId);
+		}
+		Guild_fights.AlertTimers = [];
+
+		for (let alert of Guild_fights.Alerts) {
+			// expires is local clock time, just like the browser alarm
+			const fireIn = alert.expires - Date.now();
+
+			// already due sectors are left to the alarm, distant ones are rescheduled
+			// on the next rebuild anyway and would overflow the setTimeout range
+			if (fireIn <= 0 || fireIn > 86400000) continue;
+
+			const timerId = setTimeout(() => {
+				MainParser.sendExtMessage({
+					type: 'alerts',
+					playerId: ExtPlayerID,
+					action: 'triggerNow',
+					id: alert.alertId,
+				});
+			}, fireIn);
+
+			Guild_fights.AlertTimers.push(timerId);
+		}
 	},
 
 
@@ -1789,7 +1825,7 @@ let Guild_fights = {
 			</tr></thead>`);
 
 		let arrayprov = [],
-			now = moment().unix();
+			now = GameTime.get();
 
 		// Time until next sectors will be available
 		for (let i in mapdata) {
@@ -1933,7 +1969,7 @@ let Guild_fights = {
 			if (province.ownerId !== Guild_fights.MapData.currentParticipantId) continue;
 			if (province.lockedUntil === undefined) continue;
 			// skip sectors whose timer already expired, stale map data would otherwise re-add them
-			if (province.lockedUntil - 2 <= moment().unix()) continue;
+			if (province.lockedUntil - 2 <= GameTime.get()) continue;
 
 			let countDownDate = moment.unix(province.lockedUntil - 2),
 				color = Guild_fights.SortedColors.find(x => x.id === province.ownerId),
@@ -2229,7 +2265,8 @@ let Guild_fights = {
 			removeIt = false;
 
 		if (countDownDate.isValid()) {
-			let diff = countDownDate.diff(moment());
+			// countDownDate holds a server timestamp, so it has to be measured against server time
+			let diff = countDownDate.diff(moment.unix(GameTime.get()));
 
 			if (diff <= 0) {
 				removeIt = true;
@@ -2271,7 +2308,7 @@ let Guild_fights = {
 			return;
 		}
 
-		let now = moment().unix();
+		let now = GameTime.get();
 
 		$('#LiveGildFighting tr[data-locked-until]').each(function () {
 			// 15s grace period so the "!!" flash of UpdateCounter stays visible
@@ -2481,7 +2518,8 @@ let Guild_fights = {
 					resolve();
 				}
 
-				let currentTime = MainParser.getCurrentDateTime();
+				// alert.data.expires is stored in local clock time, so compare it as such
+				let currentTime = Date.now();
 
 				Guild_fights.Alerts = [];
 
@@ -2496,10 +2534,12 @@ let Guild_fights = {
 
 						if (prov !== undefined)
 						{
-							Guild_fights.Alerts.push({ provId: prov['id'], alertId: alert.id });
+							Guild_fights.Alerts.push({ provId: prov['id'], alertId: alert.id, expires: alertTime });
 						}
 					}
 				});
+
+				Guild_fights.ScheduleAlertTimers();
 				resolve();
 			});
 		});
@@ -2518,7 +2558,9 @@ let Guild_fights = {
 		const data = {
 			title: prov.title,
 			body: HTML.i18nReplacer(i18n('Boxes.GuildFights.SaveAlert'), { provinceName: prov.title }),
-			expires: (prov.lockedUntil - Guild_fights.alertLeadTime) * 1000, // configurable lead time in seconds * milliseconds
+			// lockedUntil is server time, but the browser alarm fires against the local
+			// clock, so the offset has to be removed (see MainParser limited buildings alert)
+			expires: (prov.lockedUntil - Guild_fights.alertLeadTime - GameTime.Offset) * 1000,
 			repeat: -1,
 			persistent: true,
 			tag: '',
@@ -2533,7 +2575,8 @@ let Guild_fights = {
 			action: 'create',
 			data: data,
 		}).then((aId) => {
-			Guild_fights.Alerts.push({ provId: id, alertId: aId });
+			Guild_fights.Alerts.push({ provId: id, alertId: aId, expires: data.expires });
+			Guild_fights.ScheduleAlertTimers();
 			$(`#alert-${id}`).html(Guild_fights.GetAlertButton(id));
 			$('.tooltip').remove();
 			HTML.ShowToastMsg({
@@ -2561,6 +2604,7 @@ let Guild_fights = {
 			id: alert.alertId,
 		}).then(() => {
 			Guild_fights.Alerts = Guild_fights.Alerts.filter((a) => a.provId != provId);
+			Guild_fights.ScheduleAlertTimers();
 			$('.tooltip').remove();
 			HTML.ShowToastMsg({
 				head: i18n('Boxes.GuildFights.DeleteMessage.Title'),

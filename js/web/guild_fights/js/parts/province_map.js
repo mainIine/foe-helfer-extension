@@ -151,7 +151,7 @@ let ProvinceMap = {
 				dragdrop: true,
 				minimize: true,
 				resize: true,
-				popout: 'MainParser.PopOut(\'ProvinceMap\', 650, 580)',
+				popout: () => MainParser.PopOut('ProvinceMap', 650, 580),
 				active_maps:"gg"
 			});
 
@@ -701,9 +701,14 @@ let ProvinceMap = {
 
 		let elem = document.querySelector("#provDetails");
 		elem.style.borderColor = ProvinceMap.selectedProvince.owner.colors.base;
-		elem.innerHTML = `<h2>${ProvinceMap.selectedProvince.short}</h2>`;
-		elem.innerHTML += `<p>${ProvinceMap.selectedProvince.owner.name}</p>`;
-		elem.innerHTML += `<p>${additionalData.victoryPoints}</p>`;
+		elem.replaceChildren();
+		const heading = document.createElement('h2');
+		heading.textContent = ProvinceMap.selectedProvince.short;
+		const owner = document.createElement('p');
+		owner.textContent = ProvinceMap.selectedProvince.owner.name;
+		const points = document.createElement('p');
+		points.textContent = additionalData.victoryPoints;
+		elem.append(heading, owner, points);
 	},
 
 

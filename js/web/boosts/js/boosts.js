@@ -146,7 +146,7 @@ let Boosts = {
         Boosts.Add(boosts)
     },
     InitQIAP: async () => {
-        await ExistenceConfirmed('GoodsData.guild_raids_action_points');
+        await ExistenceConfirmed(() => GoodsData.guild_raids_action_points != null);
         QIActions.capacity  = (GoodsData.guild_raids_action_points?.abilities?.autoRefill?.maxAmount || 200000) - Boosts.Sums['guild_raids_action_points_capacity'];
 
     },

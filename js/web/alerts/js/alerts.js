@@ -938,7 +938,8 @@ let Alerts = function(){
 
 						if ( tmp.model.battlegrounds.provinces ) {
 							tmp.model.battlegrounds.provinces.forEach( function ( province, id ) {
-								let expires = ( province['lockedUntil'] - tmp.preferences.data.early.value ) * 1000;
+								// lockedUntil is server time, alerts are scheduled against the local clock
+								let expires = ( province['lockedUntil'] - tmp.preferences.data.early.value - GameTime.Offset ) * 1000;
 								if ( ! isNaN( expires ) ) {
 									let alert = {
 										id: null,
@@ -1243,7 +1244,8 @@ let Alerts = function(){
 					let battlegroundOptions = '';
 					if ( tmp.model.battlegrounds.provinces ) {
 						tmp.model.battlegrounds.provinces.forEach( function ( province, id ) {
-							let value = ( province['lockedUntil'] - tmp.preferences.data.early.value ) * 1000;
+							// lockedUntil is server time, the datetime field expects local clock time
+							let value = ( province['lockedUntil'] - tmp.preferences.data.early.value - GameTime.Offset ) * 1000;
 							// if the sector is currently taken
 							if ( ! isNaN( value ) ) {
 								let text = `${province.title} (${province.owner})`;
@@ -1622,18 +1624,19 @@ let Alerts = function(){
 					if ( responseData && responseData.forEach ){
 						responseData.forEach( function( item, index ){
 
+							// item.time is server time, the datetime field expects local clock time
 							if ( item && item.type ){
 								switch (item.type) {
 									case 'antiquesExchange' : {
-										tmp.model.antique.exchange = ( item.time - tmp.preferences.data.early.value ) * 1000;
+										tmp.model.antique.exchange = ( item.time - tmp.preferences.data.early.value - GameTime.Offset ) * 1000;
 										break;
 									}
 									case 'antiquesAuction' : {
-										tmp.model.antique.auction = ( item.time - tmp.preferences.data.early.value )  * 1000;
+										tmp.model.antique.auction = ( item.time - tmp.preferences.data.early.value - GameTime.Offset )  * 1000;
 										break;
 									}
 									case 'antiquesAuctionCooldown' : {
-										tmp.model.antique.cooldown = ( item.time - tmp.preferences.data.early.value )  * 1000;
+										tmp.model.antique.cooldown = ( item.time - tmp.preferences.data.early.value - GameTime.Offset )  * 1000;
 										break;
 									}
 									case 'battlegroundsAttrition' : {

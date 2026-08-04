@@ -60,7 +60,7 @@ let Investment = {
 				dragdrop: true,
 				resize: true,
 				minimize: true,
-				settings: 'Investment.ShowInvestmentSettings()'
+				settings: () => Investment.ShowInvestmentSettings()
 			});
 
 			HTML.AddCssFile('investment');

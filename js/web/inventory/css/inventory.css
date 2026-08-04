@@ -179,3 +179,37 @@
 	font-weight: normal;
 	color: var(--beige);
 }
+
+/* Upgrade kit tooltip: source building -> target building */
+#TooltipContainer .inventoryKitTT {
+	max-width: 340px;
+}
+
+#TooltipContainer .inventoryKitTT .kit-chain {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	padding: 5px;
+}
+
+#TooltipContainer .inventoryKitTT .kit-building {
+	flex: 1 1 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 3px;
+	text-align: center;
+}
+
+#TooltipContainer .inventoryKitTT .kit-building img {
+	max-width: 110px;
+	max-height: 90px;
+	image-rendering: -webkit-optimize-contrast;
+}
+
+#TooltipContainer .inventoryKitTT .kit-arrow {
+	flex: 0 0 auto;
+	font-size: 150%;
+	color: var(--sunflower);
+}

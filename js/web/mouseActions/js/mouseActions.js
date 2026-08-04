@@ -29,7 +29,7 @@ let mouseActions = {
      * @returns {Promise<void>}
      */
     init: async () => {
-        await ExistenceConfirmed('$("#openfl-content canvas")');
+        await ExistenceConfirmed(() => $("#openfl-content canvas").length > 0);
 
         mouseActions.targetEl = $("#openfl-content canvas")[0];
 

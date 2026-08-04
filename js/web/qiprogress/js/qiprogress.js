@@ -89,7 +89,7 @@ let QiProgress = {
 				dragdrop: true,
 				minimize: true,
 				resize: true,
-				settings: 'QiProgress.ShowSettings()',
+				settings: () => QiProgress.ShowSettings(),
 			    active_maps:"guild_raids"
 			});
 			HTML.AddCssFile('qiprogress');

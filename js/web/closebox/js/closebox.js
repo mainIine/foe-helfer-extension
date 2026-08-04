@@ -90,7 +90,7 @@ let CloseBox = {
                 dragdrop: true,
                 resize: false,
                 minimize: false,
-                settings: 'CloseBox.CloseBoxSettings()'
+                settings: () => CloseBox.CloseBoxSettings()
             });
 
             HTML.AddCssFile('closebox');

@@ -165,7 +165,7 @@ let reconstruction = {
 				dragdrop: true,
 				minimize: true,
 				resize: true,
-                map: "reconstruction.showMap();",
+                map: () => reconstruction.showMap(),
 			    active_maps:"main"
 			});
         }           
@@ -214,7 +214,7 @@ let reconstruction = {
                 minimize: true,
                 resize: true,
                 active_maps:"main",
-                settings: 'reconstruction.mapSettings();'
+                settings: () => reconstruction.mapSettings()
             });
         }
         let storedUnit = parseInt(localStorage.getItem('ReconstructionMapScale') || 80);

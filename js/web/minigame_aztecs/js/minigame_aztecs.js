@@ -166,7 +166,7 @@ let AztecsHelper = {
                 'minimize': true,
                 'dragdrop': false,
 			    active_maps:"cultural_outpost",
-				settings: 'AztecsHelper.ShowSettings()',
+				settings: () => AztecsHelper.ShowSettings(),
             });
 
             // CSS in den DOM prügeln
@@ -239,7 +239,7 @@ let AztecsHelper = {
             divDes.appendChild(span);
             
             span = document.createElement('span');
-            span.innerHTML= '&nbsp;'+AztecsHelper.nonresourceCell+'&nbsp;0%';
+            span.textContent = ' '+AztecsHelper.nonresourceCell+' 0%';
             span.className = 'aztec color0';
             span.style='font-weight:bold'
             divDes.appendChild(span);
@@ -269,7 +269,7 @@ let AztecsHelper = {
             span.style='font-weight:bold'
             divDes.appendChild(span);
             span = document.createElement('span');
-            span.innerHTML= '&nbsp;100%&nbsp;'+AztecsHelper.resourceCell;
+            span.textContent = ' 100% '+AztecsHelper.resourceCell;
             span.className = 'aztec color6';
             span.style='font-weight:bold'
             divDes.appendChild(span);

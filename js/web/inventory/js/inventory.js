@@ -44,6 +44,8 @@
  * @property {string} kind item category: 'building', 'fragment', 'kit' or 'other'
  * @property {?string} entityId city entity id when the item (or its assembled
  *                              reward) is a building, null otherwise
+ * @property {?string} kitId upgrade kit id when the item (or its assembled
+ *                           reward) is an upgrade kit, null otherwise
  * @property {string} icon icon url
  * @property {number} [value] value of the selected property (only while a property filter is active)
  * @property {number} [added] sort key (ms) of the last stock increase, 0 = unknown (only while sorting by additions)
@@ -144,7 +146,9 @@ let InventoryOverview = {
 					InventoryOverview.RenderList();
 				})
 			),
-			$('<div />').attr('id', 'inventoryOverviewInner'),
+			$('<div />').attr('id', 'inventoryOverviewInner').on('click', '.item', (e) => {
+				InventoryOverview.CopyName($(e.currentTarget).find('.item-name').text());
+			}),
 			$('<div />').attr('id', 'inventoryOverviewBottombar')
 		);
 
@@ -323,6 +327,7 @@ let InventoryOverview = {
 				isFragment: isFragment,
 				kind: kind,
 				entityId: (isBuilding ? targetId : null),
+				kitId: (MainParser.BuildingUpgrades?.[targetId] !== undefined ? targetId : null),
 				icon: InventoryOverview.ItemIcon(entry, isBuilding, targetId)
 			});
 		}
@@ -458,8 +463,7 @@ let InventoryOverview = {
 			.map(([kind, key]) => counts[kind] + ' ' + i18n('Boxes.Inventory.' + key));
 
 		$('#inventoryOverviewBottombar').html(
-			items.length + ' ' + i18n('Boxes.Inventory.Items')
-			+ (breakdown.length > 0 ? '<span class="type-split">' + breakdown.join(', ') + '</span>' : '')
+			items.length + ' ' + i18n('Boxes.Inventory.Items') + (breakdown.length > 0 ? '<span class="type-split">' + breakdown.join(', ') + '</span>' : '')
 		);
 
 		$('#inventoryOverviewInner [data-original-title]').tooltip({
@@ -477,11 +481,15 @@ let InventoryOverview = {
 	 */
 	ItemDiv: (item, type) => {
 		const safeName = item.name.replace(/"/g, '&quot;');
-		// buildings get the rich building tooltip, everything else at least the
-		// full name as native tooltip (names are truncated to one line)
-		const tooltip = (item.entityId !== null
-			? ` data-meta_id="${item.entityId}" data-era="${CurrentEra}" data-callback_tt="Tooltips.buildingTT" class="item fh-tooltip game-cursor"`
-			: ` class="item" title="${safeName}"`);
+		// buildings get the rich building tooltip, upgrade kits show their source
+		// and target building, everything else at least the full name as native
+		// tooltip (names are truncated to one line)
+		let tooltip = ` class="item" title="${safeName}"`;
+		if (item.entityId !== null) {
+			tooltip = ` data-meta_id="${item.entityId}" data-era="${CurrentEra}" data-callback_tt="Tooltips.buildingTT" class="item fh-tooltip game-cursor"`;
+		} else if (item.kitId !== null) {
+			tooltip = ` data-kit_id="${item.kitId}" data-callback_tt="InventoryOverview.KitTooltip" class="item fh-tooltip game-cursor"`;
+		}
 
 		let fragments = '';
 		if (item.isFragment) {
@@ -510,6 +518,52 @@ let InventoryOverview = {
 					<span class="item-name">${item.name}</span>
 					${fragments}
 					${value}
+				</div>`;
+	},
+
+
+	/**
+	 * Copies an item name to the clipboard and confirms it with a toast.
+	 * @param {string} name
+	 */
+	CopyName: (name) => {
+		if (!name) return;
+		helper.str.copyToClipboard(name);
+		HTML.ShowToastMsg({
+			show: true,
+			head: i18n('Boxes.Inventory.CopiedHead'),
+			text: i18n('Boxes.Inventory.CopiedText').replace('__name__', name),
+			type: 'success',
+			hideAfter: 2600
+		});
+	},
+
+
+	/**
+	 * Tooltip of an upgrade kit: shows the source and the target building of the
+	 * kit's upgrade chain (base level and fully upgraded building).
+	 * @param {Object} e pointerenter event on the kit tile
+	 * @returns {?string} tooltip html, null when the chain is unknown
+	 */
+	KitTooltip: (e) => {
+		const upgrade = MainParser.BuildingUpgrades?.[e.currentTarget.dataset.kit_id];
+		const steps = upgrade?.upgradeSteps || [];
+		const from = MainParser.CityEntities[steps[0]?.buildingIds[0]];
+		const to = MainParser.CityEntities[steps[steps.length - 1]?.buildingIds[0]];
+		if (!from || !to || from === to) return null;
+
+		const buildingDiv = (meta) => {
+			const img = srcLinks.get('/city/buildings/' + meta.asset_id.replace(/^(\D_)(.*?)/, '$1SS_$2') + '.png', true);
+			return `<div class="kit-building"><img src="${img}" alt=""><span>${meta.name}</span></div>`;
+		};
+
+		return `<div class="inventoryKitTT">
+					<h2>${upgrade.upgradeItem.name}</h2>
+					<div class="kit-chain">
+						${buildingDiv(from)}
+						<span class="kit-arrow">➜</span>
+						${buildingDiv(to)}
+					</div>
 				</div>`;
 	}
 };

@@ -1,4 +1,4 @@
-﻿{
+{
     "Boxes.Alerts.Form.Antiques.Auction": "Auktion",
     "Boxes.Alerts.Form.Antiques.Cooldown": "Auktion beendet",
     "Boxes.Alerts.Form.Antiques.Dealer": "Antiquitätenhändler",
@@ -717,6 +717,8 @@
     "Boxes.Infobox.Title": "Infobox",
     "Boxes.Infobox.UnknownConversation": "Unbekannte Unterhaltung",
     "Boxes.Inventory.AllItems": "Alle Gegenstände",
+    "Boxes.Inventory.CopiedHead": "Kopiert!",
+    "Boxes.Inventory.CopiedText": "__name__ ist jetzt in der Zwischenablage.",
     "Boxes.Inventory.GroupProduction": "Produktion",
     "Boxes.Inventory.Items": "Gegenstände",
     "Boxes.Inventory.NoResults": "Keine passenden Gegenstände gefunden.",

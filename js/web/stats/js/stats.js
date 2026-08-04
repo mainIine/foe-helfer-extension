@@ -12,12 +12,10 @@
  */
 
 // Guild Battlegrounds leader board log
-// Gildengefechte
 FoEproxy.addHandler('GuildBattlegroundService', 'getPlayerLeaderboard', async (data, postData) => {
 	Stats.HandlePlayerLeaderboard(data.responseData);
 });
 
-// Gildengefechte
 FoEproxy.addHandler('GuildBattlegroundStateService', 'getState', async (data, postData) => {
 	if (data.responseData['stateId'] !== 'participating') {
 		Stats.HandlePlayerLeaderboard(data.responseData['playerLeaderboardEntries']);
@@ -30,123 +28,105 @@ FoEproxy.addHandler('RewardService', 'collectReward', async (data, postData) => 
 	if (!Array.isArray(r)) {
 		return;
 	}
-	var [rewards, rewardIncidentSource] = r; // pair, 1st is reward list, second source of incident, e.g spoilsOfWar
-    await IndexDB.getDB();
-	
-	if (rewardIncidentSource == "event_pass") {
-		if (postData[0].requestData[0].indexOf('guild_raids') >=0) rewardIncidentSource = 'guild_raids'
-	}
-	for (let reward of rewards) {
+	let [rewards, rewardIncidentSource] = r; // pair, 1st is reward list, second source of incident, e.g spoilsOfWar
+	await IndexDB.getDB();
 
+	if (rewardIncidentSource === 'event_pass') {
+		if (postData[0].requestData[0].indexOf('guild_raids') >= 0) rewardIncidentSource = 'guild_raids';
+	}
+
+	for (const reward of rewards) {
 		if (rewardIncidentSource === 'hidden_reward') {
-			//split flying island incidents from Ad-chests
-			if (ActiveMap == 'cultural_outpost'){
+			// split flying island incidents from Ad-chests
+			if (ActiveMap === 'cultural_outpost') {
 				rewardIncidentSource = 'shards';
 			}
 		}
 		if (rewardIncidentSource === 'living_city') {
-			rewardIncidentSource = 'hidden_reward'
+			rewardIncidentSource = 'hidden_reward';
 		}
-		
-		if (rewardIncidentSource === 'default') {
-			//ignore league rewards and fragment assembly
-			if(postData[0].requestMethod === 'useItem'){
-				continue;
-			}
-			//ignore quest rewards
-			if(postData[0].requestMethod === 'advanceQuest'){
-				continue;
-			}
-		}
-		// Add reward info to the db
-		if (!(await IndexDB.db.statsRewardTypes.get(reward.id))) {
-			// Reduce amount of saved data
-			if (reward.unit) {
-				delete reward.unit;
-			}
-			delete reward.__class__;
-			await IndexDB.db.statsRewardTypes.put(reward);
-		}
-		// Add reward incident record
 
-		await Stats.addReward(rewardIncidentSource, reward.amount ||0, reward.id);
+		if (rewardIncidentSource === 'default') {
+			// ignore league rewards, fragment assembly and quest rewards
+			if (postData[0].requestMethod === 'useItem' || postData[0].requestMethod === 'advanceQuest') {
+				continue;
+			}
+		}
+
+		await Stats.saveRewardType(reward);
+		await Stats.addReward(rewardIncidentSource, reward.amount || 0, reward.id);
 	}
 });
 
 FoEproxy.addHandler('RewardService', 'collectRewardSet', async (data, postData) => {
-	//console.log(JSON.parse(JSON.stringify(data)))
 	let rewardIncidentSource = data.responseData.context;
-	if (rewardIncidentSource!='guild_raids' && rewardIncidentSource.indexOf('guild_raids')>=0) rewardIncidentSource='guild_raidsP'; //QI-Pass detection
-	if (rewardIncidentSource.indexOf('event')<0 && !["guild_raids","guild_raidsP"].includes(rewardIncidentSource)) return; //exclude Main city collection "collect all", "aid_all"
-	let rewards = data.responseData.reward.rewards;
-    await IndexDB.getDB();
-	
+
+	// QI-Pass detection
+	if (rewardIncidentSource !== 'guild_raids' && rewardIncidentSource.indexOf('guild_raids') >= 0) rewardIncidentSource = 'guild_raidsP';
+	// exclude main city "collect all" / "aid all"
+	if (rewardIncidentSource.indexOf('event') < 0 && !['guild_raids', 'guild_raidsP'].includes(rewardIncidentSource)) return;
+
+	const rewards = data.responseData.reward.rewards;
+	await IndexDB.getDB();
+
 	for (let reward of rewards) {
-		
-		//QI reward splitting
-		let n = 1
-		if (rewardIncidentSource == 'guild_raids') {
-			let ref = null
-			for (ref of (Stats.QI.RewardLookUp?.[Stats.QI.currentNode]?.[reward.type+"#"+reward.subType] || [])) {
+		// QI reward splitting: a collected stack may be n identical rewards
+		let n = 1;
+		if (rewardIncidentSource === 'guild_raids') {
+			let ref = null;
+			for (ref of (Stats.QI.RewardLookUp?.[Stats.QI.currentNode]?.[reward.type + '#' + reward.subType] || [])) {
 				n = reward.amount / ref.amount;
-				if (n!=Math.floor(n)) {
+				if (n !== Math.floor(n)) {
 					n = 1;
 				} else {
 					break;
 				}
-			}			
-			if (n!=1) reward = ref;
-		}
-
-		// Add reward info to the db
-		if (!(await IndexDB.db.statsRewardTypes.get(reward.id))) {
-			// Reduce amount of saved data
-			if (reward.unit) {
-				delete reward.unit;
 			}
-			delete reward.__class__;
-			await IndexDB.db.statsRewardTypes.put(reward);
+			if (n !== 1) reward = ref;
 		}
 
-		// Add reward incident record
-		for (let i=0;i<n;i++) {
-			let ris = rewardIncidentSource == 'guild_raidsP' ? 'guild_raids' : rewardIncidentSource;
-			await Stats.addReward(ris, reward.amount ||0, reward.id);
+		await Stats.saveRewardType(reward);
+
+		for (let i = 0; i < n; i++) {
+			const ris = rewardIncidentSource === 'guild_raidsP' ? 'guild_raids' : rewardIncidentSource;
+			await Stats.addReward(ris, reward.amount || 0, reward.id);
 		}
 	}
 });
 
-//reward split for QI
+// reward split for QI
 FoEproxy.addHandler('GuildRaidsMapService', 'getNodeExtendedInfo', async (data, postData) => {
-	let rewards = data.responseData?.reward?.reward?.possible_rewards
-	let nodeId = postData?.[0]?.requestData?.[0];
-	
+	const rewards = data.responseData?.reward?.reward?.possible_rewards;
+	const nodeId = postData?.[0]?.requestData?.[0];
+
 	if (!nodeId) return;
-	
-	Stats.QI.RewardLookUp[nodeId]={}
-	
-	if (!rewards) 	return
-	
-	for (let r of rewards) {
-		if (r.reward.type == 'chest') {
-			for (let c of r.reward.possible_rewards) {
-				if (!Stats.QI.RewardLookUp[nodeId][c.reward.type+"#"+c.reward.subType]) Stats.QI.RewardLookUp[nodeId][c.reward.type+"#"+c.reward.subType]=[];
-				Stats.QI.RewardLookUp[nodeId][c.reward.type+"#"+c.reward.subType].push(c.reward);
-			}
+
+	Stats.QI.RewardLookUp[nodeId] = {};
+
+	if (!rewards) return;
+
+	const register = (reward) => {
+		const key = reward.type + '#' + reward.subType;
+		if (!Stats.QI.RewardLookUp[nodeId][key]) Stats.QI.RewardLookUp[nodeId][key] = [];
+		Stats.QI.RewardLookUp[nodeId][key].push(reward);
+	};
+
+	for (const r of rewards) {
+		if (r.reward.type === 'chest') {
+			r.reward.possible_rewards.forEach(c => register(c.reward));
 		} else {
-			if (!Stats.QI.RewardLookUp[nodeId][r.reward.type+"#"+r.reward.subType]) Stats.QI.RewardLookUp[nodeId][r.reward.type+"#"+r.reward.subType]=[];
-			Stats.QI.RewardLookUp[nodeId][r.reward.type+"#"+r.reward.subType].push(r.reward);
+			register(r.reward);
 		}
 	}
-}),
+});
 
 FoEproxy.addHandler('GuildRaidsMapService', 'getOverview', async (data, postData) => {
 	Stats.QI.currentNode = data.responseData.currentNode;
-}),
+});
 
 FoEproxy.addHandler('GuildRaidsMapService', 'move', async (data, postData) => {
 	Stats.QI.currentNode = postData[0].requestData[0].pop();
-}),
+});
 
 // Player treasure log
 FoEproxy.addHandler('ResourceService', 'getPlayerResources', async (data, postData) => {
@@ -155,38 +135,16 @@ FoEproxy.addHandler('ResourceService', 'getPlayerResources', async (data, postDa
 		return;
 	}
 
-    await IndexDB.getDB();
-
-    await IndexDB.db.statsTreasurePlayerD.put({
-		date: moment().startOf('day').toDate(),
-		resources: r.resources
-	});
-
-	await IndexDB.db.statsTreasurePlayerH.put({
-		date: moment().startOf('hour').toDate(),
-		resources: r.resources
-	});
-
+	await Stats.saveSnapshots('statsTreasurePlayerD', 'statsTreasurePlayerH', { resources: r.resources });
 	StockAlarm.checkResources();
 });
 
 FoEproxy.addHandler('ResourceService', 'getPlayerResourceBag', async (data, postData) => {
-	if (data.responseData?.type?.value && data.responseData?.type?.value != 'PlayerMain') return; // for now ignore all other source types
+	if (data.responseData?.type?.value && data.responseData?.type?.value !== 'PlayerMain') return; // for now ignore all other source types
 	const r = data.responseData?.resources?.resources || data.responseData?.resources;
 	if (!r) return;
-	
-	await IndexDB.getDB();
 
-    await IndexDB.db.statsTreasurePlayerD.put({
-		date: moment().startOf('day').toDate(),
-		resources: r
-	});
-
-	await IndexDB.db.statsTreasurePlayerH.put({
-		date: moment().startOf('hour').toDate(),
-		resources: r
-	});
-
+	await Stats.saveSnapshots('statsTreasurePlayerD', 'statsTreasurePlayerH', { resources: r });
 	StockAlarm.checkResources();
 });
 
@@ -197,42 +155,16 @@ FoEproxy.addHandler('ClanService', 'getTreasury', async (data, postData) => {
 		return;
 	}
 
-    await IndexDB.getDB();
-
-	await IndexDB.db.statsTreasureClanD.put({
-		date: moment().startOf('day').toDate(),
-		clanId: ExtGuildID,
-		resources: r.resources
-	});
-
-	await IndexDB.db.statsTreasureClanH.put({
-		date: moment().startOf('hour').toDate(),
-		clanId: ExtGuildID,
-		resources: r.resources
-	});
-	
+	await Stats.saveSnapshots('statsTreasureClanD', 'statsTreasureClanH', { clanId: ExtGuildID, resources: r.resources });
 	StockAlarm.checkTreasury();
 });
 
 FoEproxy.addHandler('ClanService', 'getTreasuryBag', async (data, postData) => {
-	if (data.responseData?.type?.value && data.responseData?.type?.value != 'ClanMain') return; // for now ignore all other source types
+	if (data.responseData?.type?.value && data.responseData?.type?.value !== 'ClanMain') return; // for now ignore all other source types
 	const r = data.responseData?.resources?.resources || data.responseData?.resources;
 	if (!r) return;
-	
-    await IndexDB.getDB();
 
-	await IndexDB.db.statsTreasureClanD.put({
-		date: moment().startOf('day').toDate(),
-		clanId: ExtGuildID,
-		resources: r
-	});
-
-	await IndexDB.db.statsTreasureClanH.put({
-		date: moment().startOf('hour').toDate(),
-		clanId: ExtGuildID,
-		resources: r
-	});
-	
+	await Stats.saveSnapshots('statsTreasureClanD', 'statsTreasureClanH', { clanId: ExtGuildID, resources: r });
 	StockAlarm.checkTreasury();
 });
 
@@ -242,67 +174,87 @@ FoEproxy.addHandler('ArmyUnitManagementService', 'getArmyInfo', async (data, pos
 		return;
 	}
 
-	const r = data.responseData;
-
 	// Convert array to hash to be more compact
-	const army = r.counts.reduce((acc, val) => {
+	const army = data.responseData.counts.reduce((acc, val) => {
 		acc[val.unitTypeId] = (val.attached || 0) + (val.unattached || 0);
 		return acc;
 	}, {});
 
-    await IndexDB.getDB();
-
-	await IndexDB.db.statsUnitsD.put({
-		date: moment().startOf('day').toDate(),
-		army
-	});
-
-    await IndexDB.db.statsUnitsH.put({
-		date: moment().startOf('hour').toDate(),
-		army
-	});
-
+	await Stats.saveSnapshots('statsUnitsD', 'statsUnitsH', { army });
 	StockAlarm.checkArmy();
 });
 
+
 /**
- * @type {{RenderOptions: (function(): string), isSelectedUnitSources: (function(): boolean), DatePickerObj: null, applyDeltaToSeriesIfNeed: (function({series: *, [p: string]: *}): {series: *, chartType: string}), shortEraName: (function(*): (void|string|*)), Render: (function(): Promise<void>), RenderButton: (function({name: *, isActive?: *, dataType: *, value: *, title?: *, disabled?: *}): string), updateCharts: (function(): Promise<void>), getSelectedEras: (function(): string[]), updateOptions: Stats.updateOptions, treasureSources: [string, string, string, string], createUnitsSeries: (function(): Promise<{series, pointFormat: string, footerFormat: string}>), loadHighcharts: (function(): Promise<void>), RemoveTable: Stats.RemoveTable, createTreasureSeries: (function(): Promise<{series, pointFormat: string, colors: *[], footerFormat: string}>), ResMap: {NoAge: [string, string, string, string, string], special: [string, string, string, string]}, RenderCheckbox: (function({name: *, isActive: *, dataType: *, value: *}): string), state: {eras: {}, showAnnotations: boolean, currentType: null, chartType: string, rewardSource: string, eraSelectOpen: boolean, source: string, isGroupByEra: boolean}, createRewardSeries: (function(): Promise<{series: {data: this, name: string}[], title: string}>), isVisitingCulturalOutpost: boolean, isSelectedGBGSources: (function(): boolean), gbgSources: [string], promisedLoadCode: (function(*=): Promise<unknown>), createGBGSeries: (function(*=): Promise<{series: {data, avatarUrl: (string), name: string}[], pointFormat: string}>), createTreasureGroupByEraSeries: (function(): Promise<{series: {data, name: *}[]}>), RenderTab: (function({name: *, isActive?: *, dataType: *, value: *, title?: *, disabled?: *}): string), kilos: (function(*=): string), HandlePlayerLeaderboard: (function(*=): Promise<undefined>), isSelectedTreasureSources: (function(): boolean), RenderBox: (function({name: *, isActive: *, disabled: *, dataType: *, value: *}): string), getAnnotations: (function(): Promise<{xAxisPlotLines: {color: string, dashStyle: string, width: number, value: *}[], annotations: {useHTML: boolean, labelOptions: {verticalAlign: string, backgroundColor: string, y: number, style: {fontSize: string}}, labels: {text: string, point: {xAxis: number, x: *, y: number}}[]}[]}>), updateCommonChart: (function({series: *, colors?: *, pointFormat?: *, footerFormat?: *, chartType?: *}): Promise<void>), RenderSecondaryOptions: (function(): string), PlayableEras: string[], unitSources: [string, string], equals: (function(*=, *=): boolean), isSelectedRewardSources: (function(): boolean), Show: Stats.Show, RenderEraSwitchers: (function(): string), updateRewardCharts: Stats.updateRewardCharts, rewardSources: [string]}}
+ * Statistics module: tracks resources, treasury, units, GBG leaderboards and
+ * rewards in IndexDB and visualizes them with Apache ECharts.
  */
 let Stats = {
 
 	isVisitingCulturalOutpost: false,
-	goodsSubTypes:[],
+	goodsSubTypes: [],
+
+	/** era name -> resource ids shown for that era */
 	ResMap: {
 		NoAge: ['money', 'supplies', 'tavern_silver', 'medals', 'premium', 'guild_raids_medals'],
-		special: ['promethium', 'orichalcum', 'mars_ore', 'asteroid_ice', 'venus_carbon', 'unknown_dna','crystallized_hydrocarbons','dark_matter'],
+		special: ['promethium', 'orichalcum', 'mars_ore', 'asteroid_ice', 'venus_carbon', 'unknown_dna', 'crystallized_hydrocarbons', 'dark_matter'],
 	},
 
-	QI:{
-		RewardLookUp:{},
-		stage:"",
-		currentNode:""
+	QI: {
+		RewardLookUp: {},
+		stage: '',
+		currentNode: ''
 	},
+
 	PlayableEras: [],
 
 	// State for UI
 	state: {
 		source: 'statsTreasurePlayerD', // Source of data - indexdb table name
 		chartType: 'line', // chart type
-		eras: {}, // Selected era for filtering data,
+		eras: {}, // Selected era for filtering data
 		eraSelectOpen: false, // Dropdown
 		isGroupByEra: false,
 		isRenormalize: false,
 		rewardSource: 'battlegrounds_conquest', // filter by type of reward
 		currentType: null,
-		filter:"",
+		filter: ''
 	},
 
-	/*
-	 * Initializes ResMap and PlayableEras
+	DatePickerObj: null,
+	DatePickerFrom: null,
+	DatePickerTo: null,
+
+	playerSources: ['statsTreasurePlayerH', 'statsTreasurePlayerD'],
+	treasureSources: ['statsTreasureClanH', 'statsTreasureClanD'],
+	unitSources: ['statsUnitsH', 'statsUnitsD'],
+	rewardSources: ['statsRewards'],
+	gbgSources: ['statsGBGPlayers'],
+
+	isSelectedPlayerSources: () => Stats.playerSources.includes(Stats.state.source),
+	isSelectedTreasureSources: () => Stats.treasureSources.includes(Stats.state.source),
+	isSelectedUnitSources: () => Stats.unitSources.includes(Stats.state.source),
+	isSelectedRewardSources: () => Stats.rewardSources.includes(Stats.state.source),
+	isSelectedGBGSources: () => Stats.gbgSources.includes(Stats.state.source),
+
+	/** series color palette (dark background friendly) */
+	ChartColors: ['#f2c14e', '#61a0ff', '#5fd068', '#ef5350', '#4dd0e1', '#f06292', '#ba68c8', '#ffa726', '#26a69a', '#9ccc65', '#7986cb', '#d4e157'],
+
+	/** currently rendered chart data, used for the data table and CSV export */
+	ChartData: null,
+
+	ChartInstance: null,
+	_chartLibPromise: null,
+	_chartResizeObserver: null,
+	_tooltipMeta: null,
+
+
+	/**
+	 * Initializes ResMap and PlayableEras once the game meta data is available.
 	 */
 	Init: () => {
 		for (let Era = Technologies.Eras.BronzeAge; Era < Technologies.Eras.NextEra; Era++) {
-			let EraName = Technologies.EraNames[Era];
+			const EraName = Technologies.EraNames[Era];
 			if (!EraName) continue;
 
 			if (GoodsList.length < 5 * (Era - 1)) break; // Era does not exist yet
@@ -312,65 +264,73 @@ let Stats = {
 
 			for (let i = 0; i < 5; i++) {
 				if (GoodsList[(Era - 2) * 5 + i]) {
-					let g = GoodsList[(Era - 2) * 5 + i].id
+					const g = GoodsList[(Era - 2) * 5 + i].id;
 					Stats.ResMap[EraName].push(g);
 					Stats.goodsSubTypes.push(g);
 				}
-            }
+			}
 		}
-    },
-
-	DatePickerObj: null,
-	DatePickerStart: moment(MainParser.getCurrentDate()).subtract(6, 'days'),
-	DatePickerEnd: moment(MainParser.getCurrentDateTime()),//.toDate(),
-
-	minDateFilter: null,
-	maxDateFilter: moment(MainParser.getCurrentDate()).toDate(),
-	DatePickerFrom: null, //moment(MainParser.getCurrentDate()).subtract(6, 'days'),//.format('YYYY-MM-DD'),
-	DatePickerTo: null, //moment(MainParser.getCurrentDateTime()),//.format('YYYY-MM-DD'),
-
-	lockDates: [],
-	TodayEntries: null,
-
-	playerSources: ['statsTreasurePlayerH', 'statsTreasurePlayerD'],
-	treasureSources: ['statsTreasureClanH', 'statsTreasureClanD'],
-	unitSources: ['statsUnitsH', 'statsUnitsD'],
-	rewardSources: ['statsRewards'],
-	gbgSources: ['statsGBGPlayers'],
-	isSelectedPlayerSources: () => Stats.playerSources.includes(Stats.state.source),
-	isSelectedTreasureSources: () => Stats.treasureSources.includes(Stats.state.source),
-	isSelectedUnitSources: () => Stats.unitSources.includes(Stats.state.source),
-	isSelectedRewardSources: () => Stats.rewardSources.includes(Stats.state.source),
-	isSelectedGBGSources: () => Stats.gbgSources.includes(Stats.state.source),
+	},
 
 
 	/**
-	 * Show Box
+	 * Stores a snapshot in the daily and hourly IndexDB table.
+	 *
+	 * @param {string} dailyTable name of the daily table
+	 * @param {string} hourlyTable name of the hourly table
+	 * @param {Object} payload record content (without date)
+	 * @returns {Promise<void>}
+	 */
+	saveSnapshots: async (dailyTable, hourlyTable, payload) => {
+		await IndexDB.getDB();
+
+		await IndexDB.db[dailyTable].put({ date: moment().startOf('day').toDate(), ...payload });
+		await IndexDB.db[hourlyTable].put({ date: moment().startOf('hour').toDate(), ...payload });
+	},
+
+
+	/**
+	 * Stores the (reduced) reward meta data once per reward id.
+	 *
+	 * @param {Object} reward reward info from the game response
+	 * @returns {Promise<void>}
+	 */
+	saveRewardType: async (reward) => {
+		if (await IndexDB.db.statsRewardTypes.get(reward.id)) return;
+
+		// Reduce amount of saved data
+		if (reward.unit) {
+			delete reward.unit;
+		}
+		delete reward.__class__;
+		await IndexDB.db.statsRewardTypes.put(reward);
+	},
+
+
+	/**
+	 * Shows the statistics box.
 	 */
 	Show: (event) => {
 		if ($('#stats').length === 0) {
-			let args = {
+			HTML.Box({
 				id: 'stats',
 				title: i18n('Boxes.Stats.Title'),
 				ask: i18n('Boxes.Stats.HelpLink'),
 				auto_close: true,
 				dragdrop: true,
-				popout: 'MainParser.PopOut(\'stats\', 1100, 600)',
+				popout: () => MainParser.PopOut('stats', 1100, 600),
 				minimize: true
-			};
+			});
 
-			HTML.Box(args);
-			//moment.locale(18n('Local'));
 			HTML.AddCssFile('stats');
 			HTML.AddCssFile('unit');
 		}
-		else if (!event)
-		{
+		else if (!event) {
 			HTML.CloseOpenBox('stats');
 			return;
 		}
 
-		// If not selected any era, preselect 2 last eras of user
+		// If no era is selected, preselect the players current (and previous) era
 		if (!Object.keys(Stats.state.eras).length) {
 			Stats.state.eras = {
 				[Technologies.EraNames[CurrentEraID]]: true,
@@ -383,7 +343,7 @@ let Stats = {
 		Stats.Render();
 
 		// Click action handlers
-		$('#statsBody').on('click', '[data-type]', function(){
+		$('#statsBody').off('click.stats').on('click.stats', '[data-type]', function () {
 			const type = $(this).data('type');
 			const value = $(this).data('value');
 
@@ -400,11 +360,12 @@ let Stats = {
 					}
 					break;
 
-				case 'selectEras':
+				case 'selectEras': {
 					Stats.state.eras = {};
 					const values = (value || '').split(',');
 					values.forEach(it => Stats.state.eras[it] = true);
 					break;
+				}
 
 				case 'groupByToggle':
 					Stats.state.isGroupByEra = !Stats.state.isGroupByEra;
@@ -414,21 +375,20 @@ let Stats = {
 					Stats.state.isRenormalize = !Stats.state.isRenormalize;
 					break;
 
-				case 'selectSource':
+				case 'selectSource': {
 					const isChangedToUnit = Stats.unitSources.includes(value) && !Stats.isSelectedUnitSources();
-					const isChangedToPlayerSource = ['statsTreasurePlayerH', 'statsTreasurePlayerD'].includes(value) && !Stats.isSelectedPlayerSources();
-					const isChangedToClanTreasure = ['statsTreasureClanH', 'statsTreasureClanD'].includes(value) && !Stats.isSelectedTreasureSources();
+					const isChangedToPlayerSource = Stats.playerSources.includes(value) && !Stats.isSelectedPlayerSources();
+					const isChangedToClanTreasure = Stats.treasureSources.includes(value) && !Stats.isSelectedTreasureSources();
 					const isChangedToReward = Stats.rewardSources.includes(value) && !Stats.isSelectedRewardSources();
 					const isChangedToGBG = Stats.gbgSources.includes(value) && !Stats.isSelectedGBGSources();
 
 					if (isChangedToUnit) {
-						// if Changed to units than select all eras by default
+						// if changed to units then select all eras by default
 						Stats.state.eras = {};
-						Object.keys(Stats.ResMap).map(it => Stats.state.eras[it] = true);
+						Object.keys(Stats.ResMap).forEach(it => Stats.state.eras[it] = true);
 
 					} else if (isChangedToPlayerSource) {
-						// If changed to player's treasure select 2 last eras
-						Stats.state.eras = {};
+						// if changed to player's treasure select the 2 last eras
 						Stats.state.eras = {
 							[Technologies.EraNames[CurrentEraID]]: true,
 						};
@@ -437,21 +397,20 @@ let Stats = {
 						}
 
 					} else if (isChangedToClanTreasure) {
-						// If changed to treasure select all playable eras
+						// if changed to treasury select all playable eras
 						Stats.state.eras = {};
 						Stats.PlayableEras.forEach(era => Stats.state.eras[era] = true);
 
 					} else if (isChangedToGBG) {
 						Stats.state.chartType = 'delta';
-						Stats.isGG = true;
 
 					} else if (isChangedToReward) {
 						Stats.state.rewardSource = 'battlegrounds_conquest';
-
 					}
 
 					Stats.state.source = value || 'statsTreasurePlayerD';
 					break;
+				}
 
 				case 'setChartType':
 					Stats.state.chartType = value;
@@ -459,7 +418,6 @@ let Stats = {
 
 				case 'setRewardSource':
 					Stats.state.rewardSource = value;
-					Stats.RemoveTable();
 					break;
 
 				default:
@@ -473,35 +431,26 @@ let Stats = {
 
 
 	/**
-	 * Remove previous data-table
-	 */
-	RemoveTable: () => {
-		$('.highcharts-data-table').remove();
-	},
-
-
-	/**
-	 * Render box content
+	 * Renders the box content.
 	 *
 	 * @returns {Promise<void>}
 	 */
 	Render: async () => {
-		$('#statsBody').html(`<div class="options">${Stats.RenderOptions()}</div><div class="options-2"></div><div id="highcharts">Loading...</div>`);
+		$('#statsBody').html(`<div class="options">${Stats.RenderOptions()}</div><div class="options-2"></div><div id="statsChart">Loading...</div>`);
 
 		Stats.updateOptions();
-		await Stats.loadHighcharts();
-		await Stats.updateCharts(Stats.DatePickerStart, Stats.DatePickerEnd);
+		await Stats.loadChartLib();
+		await Stats.updateCharts();
 	},
 
 
 	/**
-	 * Update options
+	 * Re-renders the option bar and (re)creates the date picker.
 	 */
 	updateOptions: () => {
-		//console.log('updateOptions');
 		$('#statsBody .options').html(Stats.RenderOptions());
 
-		$('#statsBody').promise().done(function(){
+		$('#statsBody').promise().done(function () {
 			if ($('#StatsDatePicker').length > 0) {
 				$('#StatsDatePicker').text(`${Stats.formatRange()}`);
 
@@ -516,53 +465,57 @@ let Stats = {
 					startDate: Stats.DatePickerFrom,
 					resetButton: true,
 					onSelect: async function (start, end) {
-						// get now if day is today
-						if (end.getDate() === MainParser.getCurrentDate().getDate() && end.getMonth() === MainParser.getCurrentDate().getMonth() && end.getYear() === MainParser.getCurrentDate().getYear()) 
-							end = MainParser.getCurrentDate();
-						else
-							// otherwise, take end of day for end date
-							end.setHours(23);
-							end.setMinutes(59);
-							end.setSeconds(59);
-							end.setMilliseconds(999);
+						const now = MainParser.getCurrentDate();
+
+						if (end.getDate() === now.getDate() && end.getMonth() === now.getMonth() && end.getYear() === now.getYear()) {
+							// end is today: use "now"
+							end = MainParser.getCurrentDateTime();
+						}
+						else {
+							// otherwise take the end of the day
+							end.setHours(23, 59, 59, 999);
+						}
 
 						Stats.DatePickerFrom = start;
 						Stats.DatePickerTo = end;
-						
+
 						$('#StatsDatePicker').text(`${Stats.formatRange()}`);
 
-						return await Stats.updateCharts({ s: start, e: end });
+						return await Stats.updateCharts();
 					},
 				});
 			}
 			else {
 				Stats.DatePickerObj = null;
-            }
+			}
 		});
 	},
 
 
 	/**
+	 * Deep-compares two values via JSON.
+	 *
 	 * @param x
 	 * @param y
 	 * @returns {boolean}
 	 */
-	equals: (x, y) => JSON.stringify(x) == JSON.stringify(y),
+	equals: (x, y) => JSON.stringify(x) === JSON.stringify(y),
 
 
 	/**
-	 * Render main options
+	 * Renders the main option bar.
 	 *
 	 * @returns {string}
 	 */
 	RenderOptions: () => {
 		const selectedEras = Stats.getSelectedEras().sort();
+		const noEraSources = !Stats.isSelectedPlayerSources() && !Stats.isSelectedTreasureSources() && !Stats.isSelectedUnitSources();
 
 		const btnSelectNoEra = Stats.RenderButton({
 			name: i18n('Boxes.Stats.BtnNoEra'),
 			isActive: selectedEras.length === 1 && selectedEras[0] === 'NoAge',
 			dataType: 'selectEras',
-			disabled: !Stats.isSelectedPlayerSources() && !Stats.isSelectedTreasureSources() && !Stats.isSelectedUnitSources(),
+			disabled: noEraSources,
 			value: 'NoAge',
 		});
 
@@ -570,7 +523,7 @@ let Stats = {
 			name: i18n('Boxes.Stats.BtnMyEra'),
 			isActive: selectedEras.length === 1 && selectedEras[0] === Technologies.EraNames[CurrentEraID],
 			dataType: 'selectEras',
-			disabled: !Stats.isSelectedPlayerSources() && !Stats.isSelectedTreasureSources() && !Stats.isSelectedUnitSources(),
+			disabled: noEraSources,
 			value: Technologies.EraNames[CurrentEraID]
 		});
 
@@ -578,16 +531,16 @@ let Stats = {
 			name: i18n('Boxes.Stats.BtnNextEra'),
 			isActive: selectedEras.length === 1 && selectedEras[0] === Technologies.EraNames[CurrentEraID + 1],
 			dataType: 'selectEras',
-			disabled: !Stats.isSelectedPlayerSources() && !Stats.isSelectedTreasureSources() && !Stats.isSelectedUnitSources(),
+			disabled: noEraSources,
 			value: Technologies.EraNames[CurrentEraID + 1]
 		});
 
 		const btnSelectAll = Stats.RenderButton({
 			name: i18n('Boxes.Stats.BtnAll'),
 			title: i18n('Boxes.Stats.BtnAllTittle'),
-			isActive: Object.keys(Stats.ResMap).length == selectedEras.length,
+			isActive: Object.keys(Stats.ResMap).length === selectedEras.length,
 			dataType: 'selectEras',
-			disabled: !Stats.isSelectedPlayerSources() && !Stats.isSelectedTreasureSources() && !Stats.isSelectedUnitSources(),
+			disabled: noEraSources,
 			value: Object.keys(Stats.ResMap).join(','),
 		});
 
@@ -597,7 +550,7 @@ let Stats = {
 			isActive: (selectedEras.length === 2 &&
 				selectedEras.includes(Technologies.EraNames[CurrentEraID]) &&
 				selectedEras.includes(Technologies.EraNames[CurrentEraID - 1])),
-			disabled: !Stats.isSelectedPlayerSources() && !Stats.isSelectedTreasureSources() && !Stats.isSelectedUnitSources(),
+			disabled: noEraSources,
 			dataType: 'selectEras',
 			value: Technologies.EraNames[CurrentEraID] + ',' + Technologies.EraNames[CurrentEraID - 1]
 		});
@@ -607,7 +560,7 @@ let Stats = {
 			title: i18n('Boxes.Stats.BtnAllPlayableErasTitle'),
 			isActive: Stats.equals(selectedEras, Stats.PlayableEras.slice().sort()),
 			dataType: 'selectEras',
-			disabled: !Stats.isSelectedPlayerSources() && !Stats.isSelectedTreasureSources() && !Stats.isSelectedUnitSources(),
+			disabled: noEraSources,
 			value: Stats.PlayableEras.join(',')
 		});
 
@@ -646,22 +599,23 @@ let Stats = {
 			title: i18n('Boxes.Stats.BtnChartTypeTitle.' + it),
 			isActive: Stats.state.chartType === it,
 			dataType: 'setChartType',
-			disabled: !Stats.isSelectedPlayerSources() && !Stats.isSelectedTreasureSources() && !Stats.isSelectedUnitSources() && !Stats.isSelectedGBGSources(),
+			disabled: noEraSources && !Stats.isSelectedGBGSources(),
 			value: it
 		}));
 
-		let moreOptions = ``;
+		let moreOptions;
+
 		if (Stats.isSelectedRewardSources()) {
 			const btnsRewardSelect = [
-				'hidden_reward', //incidents
-				'__event', //event rewards
+				'hidden_reward', // incidents
+				'__event', // event rewards
 				'battlegrounds_conquest', // Battlegrounds
 				'guildExpedition', // Temple of Relics
-				'guild_raids', //Quantum Incursion
-				'pvp_arena', //PvP Arena
+				'guild_raids', // Quantum Incursion
+				'pvp_arena', // PvP Arena
 				'spoilsOfWar', // Himeji Castle
-				'diplomaticGifts', //Space Carrier
-				'shards', //Flying Island
+				'diplomaticGifts', // Space Carrier
+				'shards', // Flying Island
 			].map(it => Stats.RenderTab({
 				name: i18n('Boxes.Stats.Rewards.Source.' + it),
 				title: i18n('Boxes.Stats.Rewards.SourceTitle.' + it),
@@ -669,14 +623,14 @@ let Stats = {
 				dataType: 'setRewardSource',
 				value: it,
 			}));
-	
-			moreOptions =	`<div class="tabs option-2-reward-source">
+
+			moreOptions = `<div class="tabs option-2-reward-source">
 								<ul class="horizontal">
 									${btnsRewardSelect.join('')}
 								</ul>
 							</div>
 							<div class="StatsRewardFilter">
-								<input type="text" id="StatsRewardFilter" placeholder="${i18n("Boxes.Stats.FilterRewards")}" value="${Stats.state.filter}" oninput="Stats.state.filter=this.value;Stats.updateCharts();">
+								<input type="text" id="StatsRewardFilter" placeholder="${i18n('Boxes.Stats.FilterRewards')}" value="${Stats.state.filter}" oninput="Stats.state.filter=this.value;Stats.updateCharts();">
 							</div>`;
 		}
 		else {
@@ -702,7 +656,6 @@ let Stats = {
 				</div>`;
 		}
 
-
 		return `<div class="tabs">
 					<ul class="horizontal">
 					${sourceBtns.join('')}
@@ -712,45 +665,37 @@ let Stats = {
 				`<div class="datepicker"><button class="btn" id="StatsDatePicker">${Stats.formatRange()}</button></div>`;
 	},
 
-	formatRange: ()=> {
-		let text = undefined;
-		let dateStart = moment(MainParser.getCurrentDateTime()).subtract(10, 'days');
-		let dateEnd = moment(MainParser.getCurrentDateTime());
 
-		if (Stats.DatePickerFrom !== null && Stats.DatePickerTo !== null) {
-			dateStart = moment(Stats.DatePickerFrom);
-			dateEnd = moment(Stats.DatePickerTo);
-		}
-
-		if (dateStart.isSame(dateEnd)){
-			text = `${dateStart.format(i18n('Date'))}`;
-		}
-		else if (dateStart.year() !== (dateEnd.year())){
-			text = `${dateStart.format(i18n('Date'))}` + ' - ' + `${dateEnd.format(i18n('Date'))}`;
-		}
-		else {
-			text = `${dateStart.format(i18n('DateShort'))}` + ' - ' + `${dateEnd.format(i18n('Date'))}`;
-		}
-
+	/**
+	 * Formats the selected date range for the date picker button.
+	 *
+	 * @returns {string}
+	 */
+	formatRange: () => {
 		if (Stats.DatePickerFrom == null && Stats.DatePickerTo == null) {
-			text = i18n('Boxes.Stats.DatePicker');
+			return i18n('Boxes.Stats.DatePicker');
 		}
 
-		//console.log(dateStart,dateEnd);
+		const dateStart = moment(Stats.DatePickerFrom);
+		const dateEnd = moment(Stats.DatePickerTo);
 
-		return text;
+		if (dateStart.isSame(dateEnd)) {
+			return dateStart.format(i18n('Date'));
+		}
+		if (dateStart.year() !== dateEnd.year()) {
+			return dateStart.format(i18n('Date')) + ' - ' + dateEnd.format(i18n('Date'));
+		}
+		return dateStart.format(i18n('DateShort')) + ' - ' + dateEnd.format(i18n('Date'));
 	},
 
 
 	/**
-	 * Dropdown for eras
+	 * Renders the era dropdown.
 	 *
 	 * @returns {string}
 	 */
 	RenderEraSwitchers: () => {
-		const ages = [
-			'NoAge',
-		].concat(Stats.PlayableEras);
+		const ages = ['NoAge'].concat(Stats.PlayableEras);
 		const selectedErasI18n = Stats.getSelectedEras().map(era => Technologies.Eras.hasOwnProperty(era) ? i18n('Eras.' + Technologies.Eras[era]) : era).join(',');
 
 		return `<div class="dropdown">
@@ -778,7 +723,7 @@ let Stats = {
 
 
 	/**
-	 * Render a checkbox
+	 * Renders a checkbox list item.
 	 *
 	 * @param name
 	 * @param isActive
@@ -786,44 +731,46 @@ let Stats = {
 	 * @param value
 	 * @returns {string}
 	 */
-	RenderCheckbox: ({name, isActive, dataType, value}) => `<li>
+	RenderCheckbox: ({ name, isActive, dataType, value }) => `<li>
 		<label class="game-cursor">
 			<input type="checkbox" data-type="${dataType}" data-value="${value}" class="filter-msg game-cursor" ${isActive ? 'checked' : ''}>${name}</label>
 		</li>`,
 
+
 	/**
-	 * Render a checkbox (without list)
+	 * Renders a checkbox (without list).
 	 *
 	 * @param name
 	 * @param isActive
+	 * @param disabled
 	 * @param dataType
 	 * @param value
 	 * @returns {string}
 	 */
-	RenderBox: ({name, isActive, disabled, dataType, value}) => `<label class="game-cursor${disabled ? ' hidden' : ''}">
+	RenderBox: ({ name, isActive, disabled, dataType, value }) => `<label class="game-cursor${disabled ? ' hidden' : ''}">
 			<input type="checkbox" data-type="${dataType}" data-value="${value}" class="filter-msg game-cursor" ${isActive ? 'checked' : ''}>${name}</label>`,
 
 
 	/**
-	 * Render a button
+	 * Renders a button.
 	 *
 	 * @param name		Name
 	 * @param isActive	Activated
-	 * @param dataType	Typ
+	 * @param dataType	Type
 	 * @param value		Default Value
 	 * @param title		Title for button
 	 * @param disabled	Disabled button
 	 * @returns {string}
 	 */
-	RenderButton: ({ name, isActive, dataType, value, title, disabled }) => `<button ${disabled ? 'disabled' : ''} class="btn btn-slim${!disabled && isActive ? ' btn-active' : ''} ${dataType}" data-type="${dataType}" data-value="${value}" title="${(title || '').replace(/"/g,'&quot;')}"><span>${name}</span></button>`,
+	RenderButton: ({ name, isActive, dataType, value, title, disabled }) => `<button ${disabled ? 'disabled' : ''} class="btn btn-slim${!disabled && isActive ? ' btn-active' : ''} ${dataType}" data-type="${dataType}" data-value="${value}" title="${(title || '').replace(/"/g, '&quot;')}"><span>${name}</span></button>`,
 
 
 	/**
-	 * Render a tab
+	 * Renders a tab.
 	 *
 	 * @param name		Name
 	 * @param isActive	Activated
-	 * @param dataType	Typ
+	 * @param dataType	Type
 	 * @param value		Default Value
 	 * @param title		Title for button
 	 * @param disabled	Disabled button
@@ -833,57 +780,66 @@ let Stats = {
 
 
 	/**
-	 * Update charts
+	 * Updates the chart for the current source selection.
 	 *
 	 * @returns {Promise<void>}
 	 */
-	updateCharts: async (dates = null) => {
-		dates = {s: Stats.DatePickerFrom, e: Stats.DatePickerTo};
+	updateCharts: async () => {
 		if (Stats.isSelectedGBGSources()) {
-			return await Stats.updateCommonChart(Stats.applyDeltaToSeriesIfNeed(await Stats.createGBGSeries()));
+			return Stats.updateCommonChart(Stats.applyDeltaToSeriesIfNeed(await Stats.createGBGSeries()));
 		}
 
 		if (Stats.isSelectedUnitSources()) {
-			return await Stats.updateCommonChart(Stats.applyDeltaToSeriesIfNeed(await Stats.createUnitsSeries()));
+			return Stats.updateCommonChart(Stats.applyDeltaToSeriesIfNeed(await Stats.createUnitsSeries()));
 		}
 
 		if (Stats.isSelectedTreasureSources()) {
-			if (Stats.state.isGroupByEra) {
-				return await Stats.updateCommonChart(Stats.applyDeltaToSeriesIfNeed(await Stats.createTreasureGroupByEraSeries()));
-			} else {
-				return await Stats.updateCommonChart(Stats.applyDeltaToSeriesIfNeed(await Stats.createTreasureSeries()));
-			}
+			const source = Stats.state.isGroupByEra
+				? await Stats.createEraGroupSeries('statsTreasureClanD', 'statsTreasureClanH')
+				: await Stats.createResourceSeries('statsTreasureClanD', 'statsTreasureClanH');
+			return Stats.updateCommonChart(Stats.applyDeltaToSeriesIfNeed(source));
 		}
 
 		if (Stats.isSelectedPlayerSources()) {
-			if (Stats.state.isGroupByEra) {
-				return await Stats.updateCommonChart(Stats.applyDeltaToSeriesIfNeed(await Stats.createPlayerSourcesGroupByEraSeries()));
-			} else {
-				return await Stats.updateCommonChart(Stats.applyDeltaToSeriesIfNeed(await Stats.createPlayerSourcesSeries()));
-			}
+			const source = Stats.state.isGroupByEra
+				? await Stats.createEraGroupSeries('statsTreasurePlayerD', 'statsTreasurePlayerH')
+				: await Stats.createResourceSeries('statsTreasurePlayerD', 'statsTreasurePlayerH');
+			return Stats.updateCommonChart(Stats.applyDeltaToSeriesIfNeed(source));
 		}
 
-		if (Stats.isSelectedRewardSources) {
+		if (Stats.isSelectedRewardSources()) {
 			return Stats.updateRewardCharts(await Stats.createRewardSeries());
 		}
 	},
 
 
 	/**
-	 * Battlegrounds series for highcharts
+	 * Loads the rows of a stats table for the selected date range.
+	 * Falls back to the hourly table for ranges up to 7 days.
 	 *
-	 * @param dates		Date obj with {start, end}
-	 * @returns {Promise<{series: {data, avatarUrl: (string|string), name: string}[], pointFormat: string}>}
+	 * @param {string} dailyTable name of the daily table
+	 * @param {string|null} hourlyTable name of the hourly table (optional)
+	 * @returns {Promise<Object[]>}
 	 */
-	createGBGSeries: async () => {
-		let data;
+	fetchRange: async (dailyTable, hourlyTable = null) => {
+		if (Stats.DatePickerFrom !== null && Stats.DatePickerTo !== null) {
+			const days = (Stats.DatePickerTo - Stats.DatePickerFrom) / 86400000;
+			const table = (hourlyTable && days <= 7) ? hourlyTable : dailyTable;
 
-		if(Stats.DatePickerFrom !== null && Stats.DatePickerTo !== null){
-			data = await IndexDB.db.statsGBGPlayers.where('date').between(Stats.DatePickerFrom, Stats.DatePickerTo).sortBy('date');
-		} else {
-			data = await IndexDB.db.statsGBGPlayers.orderBy('date').toArray();
+			return IndexDB.db[table].where('date').between(Stats.DatePickerFrom, Stats.DatePickerTo).sortBy('date');
 		}
 
+		return IndexDB.db[dailyTable].orderBy('date').toArray();
+	},
+
+
+	/**
+	 * Guild Battlegrounds leaderboard series.
+	 *
+	 * @returns {Promise<{series: Object[]}>}
+	 */
+	createGBGSeries: async () => {
+		const data = await Stats.fetchRange('statsGBGPlayers');
 		const playerCache = await IndexDB.db.statsGBGPlayerCache.toArray();
 
 		const playerKV = playerCache.reduce((acc, it) => {
@@ -897,59 +853,33 @@ let Stats = {
 		}, {}));
 
 		const series = knownIds.map(playerId => {
-			const playerInfo = playerKV[playerId] || {name: '' + playerId};
-			const avatarUrl = srcLinks.GetPortrait(playerInfo.avatar);
+			const playerInfo = playerKV[playerId] || { name: '' + playerId };
+
 			return {
 				name: playerInfo.name,
-				avatarUrl,
-				data: data.map(({date, players}) => {
+				image: srcLinks.GetPortrait(playerInfo.avatar),
+				data: data.map(({ date, players }) => {
 					const player = players[playerId];
-					const score = player && (2 * (player.n || 0) + (player.b || 0))
+					const score = player ? (2 * (player.n || 0) + (player.b || 0)) : null;
 					return [+date, score];
 				})
-			}
+			};
 		});
 
-		return {
-			series,
-			pointFormat: `<tr>
-							<td>
-								<img src="{series.options.avatarUrl}" style="width: 45px; height: 45px; border: 1px white solid; margin-right: 4px;"/>
-							</td>
-							<td>
-								<span style="margin: 0 5px;"><span style="color:{point.color}">●</span> {series.name}: </span>
-							</td>
-							<td class="text-right">
-								<b>{point.y}</b>
-							</td>
-						</tr>`,
-		};
+		return { series };
 	},
 
 
 	/**
-	 * Unit series
+	 * Army unit series.
 	 *
-	 * @returns {Promise<{series, pointFormat: string, footerFormat: string}>}
+	 * @returns {Promise<{series: Object[]}>}
 	 */
 	createUnitsSeries: async () => {
-		let data = null;
-
-		if(Stats.DatePickerFrom !== null && Stats.DatePickerTo !== null) {
-			let days = (Stats.DatePickerTo - Stats.DatePickerFrom)/60/60/24/1000;
-
-			let matchingDB = 'statsUnitsD';
-			if (days <= 7) 
-				matchingDB = 'statsUnitsH';
-
-			data = await IndexDB.db[matchingDB].where('date').between(Stats.DatePickerFrom, Stats.DatePickerTo).sortBy('date');
-		} 
-		else
-			data = await IndexDB.db.statsUnitsD.orderBy('date').toArray();
+		const data = await Stats.fetchRange('statsUnitsD', 'statsUnitsH');
 
 		const unitsTypes = data.reduce((acc, it) => {
-			const unitIds = Object.keys(it.army);
-			unitIds.forEach(it => acc[it] = true)
+			Object.keys(it.army).forEach(unitId => acc[unitId] = true);
 			return acc;
 		}, {});
 
@@ -957,259 +887,126 @@ let Stats = {
 
 		const filteredUnitIds = Object.keys(unitsTypes).filter(unitId => {
 			const unitInfo = Unit.Types.find(it => it.unitTypeId == unitId);
-			const unitEra = unitInfo && unitInfo.minEra;
-			return selectedEras.includes(unitEra);
+			return selectedEras.includes(unitInfo && unitInfo.minEra);
 		});
 
 		const series = filteredUnitIds.map(unitId => {
-			const unitInfo = Unit.Types.find(it => it.unitTypeId == unitId) || {minEra: ''};
+			const unitInfo = Unit.Types.find(it => it.unitTypeId == unitId) || { minEra: '' };
 			const era = unitInfo.minEra;
+
 			return {
 				name: unitInfo.name,
 				era: era ? i18n('Eras.' + Technologies.Eras[era]) : '',
-				unitId,
-				unitUrl:srcLinks.get("/shared/unit_portraits/armyuniticons_50x50/armyuniticons_50x50_"+unitId+".jpg", true),
-				data: data.map(({date, army}) => [
-					+date,
-					army[unitId] || 0
-				])
-			}
+				image: srcLinks.get('/shared/unit_portraits/armyuniticons_50x50/armyuniticons_50x50_' + unitId + '.jpg', true),
+				data: data.map(({ date, army }) => [+date, army[unitId] || 0])
+			};
 		});
-		return {
-			series,
-			pointFormat: `<tr>
-								<td>
-									<img src="{series.options.unitUrl}" style="width: 45px; height: 45px; border: 1px white solid; margin-right: 4px;"/>
-								</td>
-								<td>
-									<span style="margin: 0 5px;"><span style="color:{point.color}">●</span> {series.name}: </span>
-								</td>
-								<td class="text-right">
-									<b>{point.y}</b>
-								</td>
-							</tr>`,
-			footerFormat: '</table><br/><small>{series.options.era}</small>'
-		};
+
+		return { series };
 	},
 
 
 	/**
+	 * Treasury/resource series grouped by era (one series per era).
 	 *
-	 * @returns {Promise<{series: {data, name: *}[]}>}
+	 * @param {string} dailyTable name of the daily table
+	 * @param {string} hourlyTable name of the hourly table
+	 * @returns {Promise<{series: Object[]}>}
 	 */
-	createTreasureGroupByEraSeries: async () => {
-		// todo: ggf gildenid abfangen
-		let data = null;
+	createEraGroupSeries: async (dailyTable, hourlyTable) => {
+		const data = await Stats.fetchRange(dailyTable, hourlyTable);
 
-		if(Stats.DatePickerFrom !== null && Stats.DatePickerTo !== null){
-			let days = (Stats.DatePickerTo - Stats.DatePickerFrom)/60/60/24/1000;
+		const series = Stats.getSelectedEras().map(era => ({
+			name: i18n('Eras.' + Technologies.Eras[era]),
+			data: data.map(({ date, resources }) => [
+				+date,
+				Stats.ResMap[era].reduce((acc, resName) => acc + (resources[resName] || 0), 0)
+			]),
+		}));
 
-			let matchingDB = 'statsTreasureClanD';
-			if (days <= 7) 
-				matchingDB = 'statsTreasureClanH';
-
-			data = await IndexDB.db[matchingDB].where('date').between(Stats.DatePickerFrom, Stats.DatePickerTo).sortBy('date');
-		} 
-		else
-			data = await IndexDB.db.statsTreasureClanD.orderBy('date').toArray();
-
-		const series = Stats.getSelectedEras().map(era => {
-			return {
-				name: i18n('Eras.' + Technologies.Eras[era]),
-				// Group by era's resources
-				data: data.map(({date, resources}) => [
-					+date,
-					Stats.ResMap[era].reduce((acc, resName) => acc + (resources[resName] || 0), 0)
-				]),
-			}
-		});
-		return {series};
+		return { series };
 	},
 
 
 	/**
+	 * Treasury/resource series (one series per resource).
 	 *
-	 * @returns {Promise<{series, pointFormat: string, colors: *[], footerFormat: string}>}
+	 * @param {string} dailyTable name of the daily table
+	 * @param {string} hourlyTable name of the hourly table
+	 * @returns {Promise<{series: Object[], colors: string[]|null}>}
 	 */
-	createTreasureSeries: async () => {
+	createResourceSeries: async (dailyTable, hourlyTable) => {
 		const selectedEras = Stats.getSelectedEras();
-		const hcColors = Highcharts.getOptions().colors;
-		let data = null;
+		const data = await Stats.fetchRange(dailyTable, hourlyTable);
 
-		if(Stats.DatePickerFrom !== null && Stats.DatePickerTo !== null){
-			let days = (Stats.DatePickerTo - Stats.DatePickerFrom)/60/60/24/1000;
-
-			let matchingDB = 'statsTreasureClanD';
-			if (days <= 7) 
-				matchingDB = 'statsTreasureClanH';
-
-			data = await IndexDB.db[matchingDB].where('date').between(Stats.DatePickerFrom, Stats.DatePickerTo).sortBy('date');
-		} 
-		else
-			data = await IndexDB.db.statsTreasureClanD.orderBy('date').toArray();
-
-		let colors;
-
-		// Build color set - brighten each per
-		if (selectedEras.length > 1) {
-			let colorIndex = 0;
-			colors = [];
-			selectedEras.forEach(era => {
-				const baseColor = colorIndex % 9; // there is only 9 colors in theme
-				colorIndex++;
-				Stats.ResMap[era].forEach((it, index) => {
-					colors.push(Highcharts.color(hcColors[baseColor]).brighten(index * 0.05).get())
-				});
-			});
-		}
-
-		const selectedResources = Stats.getSelectedEras()
-			.map(it => Stats.ResMap[it]) // map to arrays of goods of filtered eras
-			.reduce((acc, it) => acc.concat(it), []);// unflat array
+		const selectedResources = selectedEras
+			.map(it => Stats.ResMap[it])
+			.flat();
 
 		const series = selectedResources.map(it => {
-			const goodsData = (GoodsData[it] || {name: it})
+			const goodsData = (GoodsData[it] || { name: it });
+
 			return {
 				era: goodsData.era ? i18n('Eras.' + Technologies.Eras[goodsData.era]) : '',
-				goodsId: it,
+				spriteClass: `goods-sprite sprite-50 ${it}`,
 				name: goodsData.name,
-				data: data.map(({date, resources}) => {
-					return [+date, resources[it] || 0];
-				}),
+				data: data.map(({ date, resources }) => [+date, resources[it] || 0]),
 			};
 		});
 
 		return {
 			series,
-			colors,
-			pointFormat: `<tr>
-								<td>
-									<span class="goods-sprite sprite-50 {series.options.goodsId}"></span>
-								</td>
-								<td>
-									<span style="margin: 0 5px;"><span style="color:{point.color}">●</span> {series.name}: </span>
-								</td>
-								<td class="text-right">
-									<b>{point.y}</b>
-								</td>
-							</tr>`,
-			footerFormat: '</table><br/><small>{series.options.era}</small>'
+			colors: Stats.eraShadedColors(selectedEras)
 		};
 	},
 
-	/**
-	 *
-	 * @returns {Promise<{series: {data, name: *}[]}>}
-	 */
-	 createPlayerSourcesGroupByEraSeries: async () => {
-		// todo: ggf gildenid abfangen
-		let data = null;
-
-		if(Stats.DatePickerFrom !== null && Stats.DatePickerTo !== null){
-			let days = (Stats.DatePickerTo - Stats.DatePickerFrom)/60/60/24/1000;
-
-			let matchingDB = 'statsTreasurePlayerD';
-			if (days <= 7) 
-				matchingDB = 'statsTreasurePlayerH';
-
-			data = await IndexDB.db[matchingDB].where('date').between(Stats.DatePickerFrom, Stats.DatePickerTo).sortBy('date');
-		} 
-		else
-			data = await IndexDB.db.statsTreasurePlayerD.orderBy('date').toArray();
-
-		const series = Stats.getSelectedEras().map(era => {
-			return {
-				name: i18n('Eras.' + Technologies.Eras[era]),
-				// Group by era's resources
-				data: data.map(({date, resources}) => [
-					+date,
-					Stats.ResMap[era].reduce((acc, resName) => acc + (resources[resName] || 0), 0)
-				]),
-			}
-		});
-		return {series};
-	},
-
 
 	/**
+	 * Builds a color list where all resources of one era share a base color
+	 * with slightly increasing brightness.
 	 *
-	 * @returns {Promise<{series, pointFormat: string, colors: *[], footerFormat: string}>}
+	 * @param {string[]} selectedEras
+	 * @returns {string[]|null} color list or null to use the default palette
 	 */
-	createPlayerSourcesSeries: async () => {
-		const selectedEras = Stats.getSelectedEras();
-		const hcColors = Highcharts.getOptions().colors;
-		let data = null;
+	eraShadedColors: (selectedEras) => {
+		if (selectedEras.length <= 1) return null;
 
-		if(Stats.DatePickerFrom !== null && Stats.DatePickerTo !== null){
-			let days = (Stats.DatePickerTo - Stats.DatePickerFrom)/60/60/24/1000;
-
-			let matchingDB = 'statsTreasurePlayerD';
-			if (days <= 7) 
-				matchingDB = 'statsTreasurePlayerH';
-
-			data = await IndexDB.db[matchingDB].where('date').between(Stats.DatePickerFrom, Stats.DatePickerTo).sortBy('date');
-		} 
-		else
-			data = await IndexDB.db.statsTreasurePlayerD.orderBy('date').toArray();
-
-		let colors;
-
-		// Build color set - brighten each per
-		if (selectedEras.length > 1) {
-			let colorIndex = 0;
-			colors = [];
-			selectedEras.forEach(era => {
-				const baseColor = colorIndex % 9; // there is only 9 colors in theme
-				colorIndex++;
-				Stats.ResMap[era].forEach((it, index) => {
-					colors.push(Highcharts.color(hcColors[baseColor]).brighten(index * 0.05).get())
-				});
+		const colors = [];
+		selectedEras.forEach((era, eraIndex) => {
+			const base = Stats.ChartColors[eraIndex % Stats.ChartColors.length];
+			Stats.ResMap[era].forEach((resource, index) => {
+				colors.push(Stats.shadeColor(base, index * 0.06));
 			});
-		}
-
-		const selectedResources = Stats.getSelectedEras()
-			.map(it => Stats.ResMap[it]) // map to arrays of goods of filtered eras
-			.reduce((acc, it) => acc.concat(it), []);// unflat array
-
-		const series = selectedResources.map(it => {
-			const goodsData = (GoodsData[it] || {name: it})
-			return {
-				era: goodsData.era ? i18n('Eras.' + Technologies.Eras[goodsData.era]) : '',
-				goodsId: it,
-				name: goodsData.name,
-				data: data.map(({date, resources}) => {
-					return [+date, resources[it] || 0];
-				}),
-			};
 		});
 
-		return {
-			series,
-			colors,
-			pointFormat: `<tr>
-								<td>
-									<span class="goods-sprite sprite-50 {series.options.goodsId}"></span>
-								</td>
-								<td>
-									<span style="margin: 0 5px;"><span style="color:{point.color}">●</span> {series.name}: </span>
-								</td>
-								<td class="text-right">
-									<b>{point.y}</b>
-								</td>
-							</tr>`,
-			footerFormat: '</table><br/><small>{series.options.era}</small>'
-		};
+		return colors;
 	},
 
 
 	/**
-	 * Calculate diff between points and use it as 'y', change chartType to 'line'
+	 * Lightens a hex color towards white.
+	 *
+	 * @param {string} hex color like '#aabbcc'
+	 * @param {number} amount 0 (unchanged) .. 1 (white)
+	 * @returns {string} rgb() color
+	 */
+	shadeColor: (hex, amount) => {
+		const num = parseInt(hex.slice(1), 16);
+		const channel = (shift) => Math.min(255, Math.round(((num >> shift) & 0xff) * (1 - amount) + 255 * amount));
+
+		return `rgb(${channel(16)}, ${channel(8)}, ${channel(0)})`;
+	},
+
+
+	/**
+	 * Calculates the diff between the points as 'y' for the delta view or
+	 * renormalizes all series to their own maximum.
 	 *
 	 * @param series
 	 * @param args
-	 * @returns {{series: *, chartType: (string)}}
+	 * @returns {{series: Object[], chartType: string}}
 	 */
-	applyDeltaToSeriesIfNeed: ({series, ...args}) => {
+	applyDeltaToSeriesIfNeed: ({ series, ...args }) => {
 		let chartType = Stats.state.chartType || 'line';
 		const isNegativeValuesAllowed = !Stats.isSelectedGBGSources();
 
@@ -1224,14 +1021,11 @@ let Stats = {
 				s.data = s.data.filter(it => it[1] !== 0);
 				return s;
 			});
-			series = series.filter(s => (s.data?.length | 0) > 0);
+			series = series.filter(s => (s.data?.length || 0) > 0);
 		} else if (Stats.state.isRenormalize) {
 			series = series.map(s => {
-				let vals = s.data.map(x=>x[1])
-				let min = Math.min(...vals);
-				let max = Math.max(...vals);
-				let range = max - min;
-				s.data = s.data.map(it => [it[0], max==0 ? 1 : (it[1]) / max]);
+				const max = Math.max(...s.data.map(x => x[1]));
+				s.data = s.data.map(it => [it[0], max === 0 ? 1 : it[1] / max]);
 				return s;
 			});
 		}
@@ -1240,236 +1034,373 @@ let Stats = {
 			...args,
 			series,
 			chartType
-		}
+		};
 	},
 
 
 	/**
-	 * Human readable
-	 * e.g. 5123 => 5k, 2123 => 2.1k
+	 * Formats a number for tooltips and tables.
 	 *
-	 * @param n
+	 * @param {number|null} v
 	 * @returns {string}
 	 */
-	kilos: (n) => (n / 1000).toFixed(Math.abs(n) < 5000 ? 1 : 0) + 'k',
-
-
-	/**
-	 * Get shortname
-	 * e.g shortEraName('BronzeAge'); => 'BA'
-	 *
-	 * @param eraId
-	 * @returns {void | string | *}
-	 */
-	shortEraName: (eraId) => eraId.replace(/([^A-Z])/g, ''),
-
-
-	/**
-	 * Update chart
-	 *
-	 * @param series
-	 * @param colors
-	 * @param pointFormat
-	 * @param footerFormat
-	 * @param chartType
-	 * @returns {Promise<void>}
-	 */
-	updateCommonChart: async ({series, colors, pointFormat, footerFormat, chartType}) => {
-		colors = colors || Highcharts.getOptions().colors;
-		pointFormat = pointFormat || '<tr><td><span style="color:{point.color}">●</span> {series.name}:</td><td class="text-right"><b>{point.y}</b></td></tr>';
-		footerFormat = footerFormat || '</table>';
-
-		const title = i18n('Boxes.Stats.SourceTitle.' + Stats.state.source);
-
-		Highcharts.chart('highcharts', {
-			chart: {
-				type: chartType,
-				marginTop: 30,
-				zoomType: 'xy'
-			},
-			boost: {
-				useAlpha: false,
-				seriesThreshold: (chartType === 'column') ? 300 : 30,
-				// debug: {
-				//	timeSetup: true,
-				//	timeSeriesProcessing: true,
-				//	timeBufferCopy: true,
-				//	timeKDTree: true,
-				//	showSkipSummary: true,
-				// },
-				useGPUTranslations: true,
-			},
-			colors,
-			title: {
-				floating: true,
-				align: 'center',
-				text: title
-			},
-			xAxis: {
-				type: 'datetime',
-			},
-			tooltip: {
-				useHTML: true,
-				shared: series.length <= 8 || series.filter((x, index, array) => x.era == array[0].era && x.era != undefined).length == series.length,
-				headerFormat: '<small>{point.key}</small><br/><table>',
-				borderWidth: series.length <= 5 ? 0 : 1,
-				pointFormat,
-				footerFormat,
-			},
-			yAxis: {
-				maxPadding: 0,
-				title: {text: null},
-				visible: chartType !== 'streamgraph',
-				startOnTick: chartType !== 'streamgraph',
-				endOnTick: chartType !== 'streamgraph',
-			},
-			legend: {enabled: series.length < 26},
-			plotOptions: {
-				series: {
-					marker: {
-						enabled: false
-					}
-				},
-				column: {
-					stacking: 'normal',
-					pointPadding: 0,
-					groupPadding: 0,
-					dataLabels: {
-						enabled: false
-					}
-				},
-			},
-			series,
-			exporting: {
-				buttons: {
-					contextButton: {
-						// Because of FOE freezing removed next: "printChart", downloadPNG", "downloadJPEG", "downloadPDF", "downloadSVG"
-						menuItems: ['viewFullscreen', 'separator', 'downloadCSV', 'downloadXLS', 'viewData'],
-					}
-				},
-				sourceWidth: 800,
-				sourceHeight: 600
-			},
-		});
+	formatNumber: (v) => {
+		if (v == null) return '–';
+		return Number(v).toLocaleString(undefined, { maximumFractionDigits: Math.abs(v) < 10 ? 2 : 0 });
 	},
 
 
 	/**
-	 * Create series
+	 * Shared tooltip for the time based charts. Shows an icon per series
+	 * (avatar, unit or goods sprite), sorted by value.
 	 *
-	 * @returns {Promise<{series: [{data: this, name: string}], title: string}>}
+	 * @param params ECharts tooltip params
+	 * @returns {string}
+	 */
+	timeTooltipFormatter: (params) => {
+		if (!Array.isArray(params)) params = [params];
+
+		const rows = params
+			.map(p => {
+				// themeRiver data: [date, value, name], line/bar data: [date, value]
+				const isRiver = p.seriesType === 'themeRiver';
+				const name = isRiver ? p.data[2] : p.seriesName;
+				const value = isRiver ? p.data[1] : (Array.isArray(p.value) ? p.value[1] : p.value);
+				return { marker: p.marker, name, value };
+			})
+			.filter(r => r.value != null)
+			.sort((a, b) => b.value - a.value);
+
+		const date = params[0]?.axisValue ?? params[0]?.data?.[0];
+		let html = `<small>${moment(date).format(i18n('Date') + ' HH:mm')}</small><table>`;
+
+		const maxRows = 15;
+		rows.slice(0, maxRows).forEach(r => {
+			const meta = Stats._tooltipMeta?.get(r.name) || {};
+			let icon = '';
+			if (meta.image) icon = `<img src="${meta.image}" style="width:28px;height:28px;vertical-align:middle;border:1px solid #606063;">`;
+			if (meta.spriteClass) icon = `<span class="${meta.spriteClass}"></span>`;
+			const era = meta.era ? ` <small style="opacity:0.65">${meta.era}</small>` : '';
+
+			html += `<tr>
+						<td>${icon}</td>
+						<td style="padding:0 8px 0 4px;">${r.marker} ${r.name}${era}</td>
+						<td style="text-align:right;"><b>${Stats.formatNumber(r.value)}</b></td>
+					</tr>`;
+		});
+		html += '</table>';
+
+		if (rows.length > maxRows) {
+			html += `<small>+ ${rows.length - maxRows}</small>`;
+		}
+
+		return html;
+	},
+
+
+	/**
+	 * Returns the ECharts instance for the stats box (creates it if needed)
+	 * and keeps it resized to its container.
+	 *
+	 * @returns {Object|null} ECharts instance
+	 */
+	getChart: () => {
+		const container = document.getElementById('statsChart');
+		if (!container) return null;
+
+		let chart = echarts.getInstanceByDom(container);
+		if (!chart) {
+			if (Stats.ChartInstance) {
+				Stats.ChartInstance.dispose();
+			}
+			Stats._chartResizeObserver?.disconnect();
+
+			container.textContent = '';
+			chart = echarts.init(container, 'foe');
+			Stats.ChartInstance = chart;
+
+			Stats._chartResizeObserver = new ResizeObserver(() => chart.resize());
+			Stats._chartResizeObserver.observe(container);
+		}
+
+		return chart;
+	},
+
+
+	/**
+	 * Toolbox with PNG export, data table and CSV download.
+	 *
+	 * @returns {Object} ECharts toolbox option
+	 */
+	chartToolbox: () => ({
+		right: 8,
+		top: 2,
+		itemGap: 10,
+		feature: {
+			saveAsImage: {
+				title: 'PNG',
+				name: 'foe-helper-stats',
+				backgroundColor: '#2a2a2b'
+			},
+			dataView: {
+				title: 'Data',
+				readOnly: true,
+				lang: ['', 'x', ''],
+				backgroundColor: '#2a2a2b',
+				textareaColor: '#2a2a2b',
+				textColor: '#e0e0e3',
+				buttonColor: '#4d5a6b',
+				optionToContent: () => Stats.renderDataTable()
+			},
+			myCsv: {
+				show: true,
+				title: 'CSV',
+				icon: 'path://M11,3 L13,3 L13,11 L16,11 L12,16 L8,11 L11,11 Z M4,18 L20,18 L20,20 L4,20 Z',
+				onclick: () => Stats.downloadCSV()
+			}
+		}
+	}),
+
+
+	/**
+	 * Renders the current chart data as an HTML table (toolbox data view).
+	 *
+	 * @returns {string}
+	 */
+	renderDataTable: () => {
+		const cd = Stats.ChartData;
+		if (!cd) return '';
+
+		const esc = (s) => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;');
+		let html = '<div class="chart-data-table"><table class="foe-table">';
+
+		if (cd.type === 'pie') {
+			html += '<thead><tr><th></th><th class="text-right">#</th></tr></thead><tbody>';
+			cd.series[0].data.forEach(d => {
+				html += `<tr><td>${esc(d.name)}</td><td class="text-right">${Stats.formatNumber(d.value)}</td></tr>`;
+			});
+		}
+		else {
+			const stamps = [...new Set(cd.series.flatMap(s => s.data.map(d => d[0])))].sort((a, b) => a - b);
+			const maps = cd.series.map(s => new Map(s.data));
+
+			html += `<thead><tr><th></th>${cd.series.map(s => `<th class="text-right">${esc(s.name)}</th>`).join('')}</tr></thead><tbody>`;
+			stamps.forEach(ts => {
+				html += `<tr><td>${moment(ts).format(i18n('Date') + ' HH:mm')}</td>`;
+				html += maps.map(m => `<td class="text-right">${Stats.formatNumber(m.get(ts))}</td>`).join('');
+				html += '</tr>';
+			});
+		}
+
+		html += '</tbody></table></div>';
+		return html;
+	},
+
+
+	/**
+	 * Downloads the current chart data as a CSV file.
+	 */
+	downloadCSV: () => {
+		const cd = Stats.ChartData;
+		if (!cd) return;
+
+		const q = (s) => '"' + String(s ?? '').replace(/"/g, '""') + '"';
+		const lines = [];
+
+		if (cd.type === 'pie') {
+			lines.push(['name', 'count'].map(q).join(';'));
+			cd.series[0].data.forEach(d => lines.push([q(d.name), d.value].join(';')));
+		}
+		else {
+			const stamps = [...new Set(cd.series.flatMap(s => s.data.map(d => d[0])))].sort((a, b) => a - b);
+			const maps = cd.series.map(s => new Map(s.data));
+
+			lines.push(['date', ...cd.series.map(s => s.name)].map(q).join(';'));
+			stamps.forEach(ts => {
+				lines.push([q(moment(ts).format('YYYY-MM-DD HH:mm')), ...maps.map(m => m.get(ts) ?? '')].join(';'));
+			});
+		}
+
+		const blob = new Blob(['\ufeff' + lines.join('\n')], { type: 'text/csv;charset=utf-8' });
+		const a = document.createElement('a');
+		a.href = URL.createObjectURL(blob);
+		a.download = 'foe-helper-stats.csv';
+		a.click();
+		URL.revokeObjectURL(a.href);
+	},
+
+
+	/**
+	 * Renders the line / streamgraph / delta chart.
+	 *
+	 * @param series	series with meta data (name, data, image/spriteClass/era)
+	 * @param colors	optional color list
+	 * @param chartType	'line', 'streamgraph' or 'column'
+	 * @returns {Promise<void>}
+	 */
+	updateCommonChart: async ({ series, colors, chartType }) => {
+		await Stats.loadChartLib();
+		const chart = Stats.getChart();
+		if (!chart) return;
+
+		Stats.ChartData = { type: 'time', series };
+		Stats._tooltipMeta = new Map(series.map(s => [s.name, s]));
+
+		const option = {
+			color: colors || Stats.ChartColors,
+			animation: series.length <= 40,
+			title: {
+				text: i18n('Boxes.Stats.SourceTitle.' + Stats.state.source),
+				left: 'center',
+				top: 4
+			},
+			legend: {
+				type: 'scroll',
+				top: 28,
+				left: 60,
+				right: 130,
+				data: series.map(s => s.name)
+			},
+			toolbox: Stats.chartToolbox(),
+			tooltip: {
+				trigger: 'axis',
+				confine: true,
+				formatter: Stats.timeTooltipFormatter,
+				axisPointer: { type: chartType === 'column' ? 'shadow' : 'line' }
+			}
+		};
+
+		if (chartType === 'streamgraph') {
+			const data = [];
+			series.forEach(s => s.data.forEach(([t, v]) => data.push([t, v || 0, s.name])));
+
+			Object.assign(option, {
+				singleAxis: { type: 'time', top: 70, bottom: 40 },
+				series: [{
+					type: 'themeRiver',
+					data,
+					label: { show: false },
+					emphasis: { itemStyle: { shadowBlur: 20, shadowColor: 'rgba(0, 0, 0, 0.6)' } }
+				}]
+			});
+		}
+		else {
+			const isColumn = chartType === 'column';
+
+			Object.assign(option, {
+				grid: { top: 64, left: 70, right: 30, bottom: 66 },
+				xAxis: { type: 'time' },
+				yAxis: { type: 'value' },
+				dataZoom: [
+					{ type: 'inside', xAxisIndex: 0 },
+					{ type: 'slider', xAxisIndex: 0, height: 20, bottom: 10 }
+				],
+				series: series.map(s => ({
+					name: s.name,
+					type: isColumn ? 'bar' : 'line',
+					stack: isColumn ? 'total' : undefined,
+					large: isColumn,
+					data: s.data,
+					showSymbol: false,
+					smooth: 0.2,
+					sampling: isColumn ? undefined : 'lttb',
+					emphasis: { focus: 'series' },
+					lineStyle: { width: 1.5 }
+				}))
+			});
+		}
+
+		chart.setOption(option, true);
+	},
+
+
+	/**
+	 * Creates the reward series for the pie chart.
+	 *
+	 * @returns {Promise<{series: Object[], title: string}>}
 	 */
 	createRewardSeries: async () => {
-		const {rewardSource} = Stats.state;		
-		let data = null;
-
-		if(Stats.DatePickerFrom !== null && Stats.DatePickerTo !== null){
-			data = await IndexDB.db.statsRewards.where('date').between(Stats.DatePickerFrom, Stats.DatePickerTo).sortBy('date');
-		} 
-		else
-			data = await IndexDB.db.statsRewards.orderBy('date').toArray();
-
+		const { rewardSource } = Stats.state;
+		const data = await Stats.fetchRange('statsRewards');
 		const rewardTypes = await IndexDB.db.statsRewardTypes.toArray();
 		const groupedByRewardSource = {};
 
 		data.forEach(it => {
-            let type = it.type;
-            if (/event/i.test(type)) {
-                type = '__event';
-            }
+			let type = it.type;
+			if (/event/i.test(type)) {
+				type = '__event';
+			}
 			groupedByRewardSource[type] = groupedByRewardSource[type] || {};
 			groupedByRewardSource[type][it.reward] = groupedByRewardSource[type][it.reward] || 0;
 			groupedByRewardSource[type][it.reward]++;
 		});
 
 		const seriesMapBySource = groupedByRewardSource[rewardSource] || {};
+
 		let serieData = Object.keys(seriesMapBySource).map(it => {
-			const rewardInfo = (rewardTypes.find(r => r.id === it) || {name: it});
-			const iconClass = "";
-			//if (rewardInfo.type === 'unit') {
-			//	iconClass = `unit_icon ${rewardInfo.subType}" style="background-image:url('${srcLinks.get("/shared/unit_portraits/armyuniticons_50x50/armyuniticons_50x50_"+rewardInfo.subType+".jpg", true)}')`;
-			//	console.log(rewardInfo)
-			//} 
-			// Asset image if not unit
-			let pointImage = '';
+			const rewardInfo = (rewardTypes.find(r => r.id === it) || { name: it });
+			const amount = seriesMapBySource[it] || 1;
 			let url = '';
-			let text = '';
-			let amount = seriesMapBySource[it] || 1;
-			if (rewardInfo.type == "resource" && Stats.goodsSubTypes.includes(rewardInfo.subType)) rewardInfo.type="good";
+			let text = rewardInfo.name;
+
+			if (rewardInfo.type === 'resource' && Stats.goodsSubTypes.includes(rewardInfo.subType)) rewardInfo.type = 'good';
+
 			switch (rewardInfo.type) {
 				case 'unit':
-					if (rewardInfo.subType == "rogue") {
-						url	= srcLinks.get("/shared/unit_portraits/armyuniticons_50x50/armyuniticons_50x50_rogue.jpg", true);
-						text = rewardInfo.name;
+					if (rewardInfo.subType === 'rogue') {
+						url = srcLinks.get('/shared/unit_portraits/armyuniticons_50x50/armyuniticons_50x50_rogue.jpg', true);
 					} else {
-						url = srcLinks.get("/shared/gui/pvp_arena/hud/pvp_arena_icon_army.png",true);
-						text = rewardInfo.amount + " " + (rewardInfo.amount > 1 ? i18n("General.Units"):i18n("General.Unit"));
+						url = srcLinks.get('/shared/gui/pvp_arena/hud/pvp_arena_icon_army.png', true);
+						text = rewardInfo.amount + ' ' + (rewardInfo.amount > 1 ? i18n('General.Units') : i18n('General.Unit'));
 					}
-					pointImage = `<img src="${url}" style="width: 45px; height: 45px; margin-right: 4px;">`
-					//console.log(rewardInfo)
-					return {
-						iconClass,
-						pointImage,
-						name: text,
-						y: amount
-					};
+					break;
+
 				case 'good':
-					url = srcLinks.get("/shared/icons/goods/goods.png",true);
-					text = rewardInfo.amount + " " + (rewardInfo.amount > 1 ? i18n("General.Goods"):i18n("General.Good"));
+					url = srcLinks.get('/shared/icons/goods/goods.png', true);
+					text = rewardInfo.amount + ' ' + (rewardInfo.amount > 1 ? i18n('General.Goods') : i18n('General.Good'));
+					break;
 
-					pointImage = `<img src="${url}" style="width: 45px; height: 45px; margin-right: 4px;">`
-					return {
-						iconClass,
-						pointImage,
-						name: text,
-						y: amount
-					};
 				default:
-					url = '';
-					if ((rewardInfo.iconAssetName || rewardInfo.assembledReward && rewardInfo.assembledReward.iconAssetName)) {
-						const icon = rewardInfo.assembledReward && rewardInfo.assembledReward.iconAssetName ? rewardInfo.assembledReward.iconAssetName : rewardInfo.iconAssetName;
+					if (rewardInfo.iconAssetName || rewardInfo.assembledReward?.iconAssetName) {
+						const icon = rewardInfo.assembledReward?.iconAssetName || rewardInfo.iconAssetName;
 						url = srcLinks.getReward(icon);
-						//fix for fragment missing images for buildings
-						if (rewardInfo.type == 'good' && rewardInfo.iconAssetName == 'random_goods' && rewardInfo.subType) {
-							url = srcLinks.get(`/shared/icons/reward_icons/reward_icon_random_goods.png`, true);
+
+						// fix for fragment missing images for buildings
+						if (rewardInfo.type === 'good' && rewardInfo.iconAssetName === 'random_goods' && rewardInfo.subType) {
+							url = srcLinks.get('/shared/icons/reward_icons/reward_icon_random_goods.png', true);
 						}
-						if (rewardInfo.subType == 'fragment' && rewardInfo.subType) {
-							if (rewardInfo.assembledReward.type == 'building' && rewardInfo.subType){
-								url = srcLinks.get(`/city/buildings/${rewardInfo.assembledReward.subType.replace(/^(\w)_/, '$1_SS_')}.png`, true);
-							}
+						if (rewardInfo.subType === 'fragment' && rewardInfo.assembledReward?.type === 'building') {
+							url = srcLinks.get(`/city/buildings/${rewardInfo.assembledReward.subType.replace(/^(\w)_/, '$1_SS_')}.png`, true);
 						}
-					} else if (rewardInfo.type == 'building' && rewardInfo.subType) {
-							url = srcLinks.get(`/city/buildings/${rewardInfo.subType.replace(/^(\w)_/, '$1_SS_')}.png`, true);
+					} else if (rewardInfo.type === 'building' && rewardInfo.subType) {
+						url = srcLinks.get(`/city/buildings/${rewardInfo.subType.replace(/^(\w)_/, '$1_SS_')}.png`, true);
 					}
-					if (url) {
-						pointImage = `<img src="${url}" style="width: 45px; height: 45px; margin-right: 4px;">`
-					}
-					return {
-						iconClass,
-						pointImage,
-						name: rewardInfo.name,
-						y: amount
-					};
 			}
 
-		})
-		let i=0;
-		while (i<serieData.length) {
-			let x = serieData.findIndex((it,j) => j > i && it.name == serieData[i].name)
-			if (x>=1) {
-				serieData[i].y+=serieData[x].y;
-				serieData.splice(x,1);
+			return {
+				pointImage: url ? `<img src="${url}" style="width: 45px; height: 45px; margin-right: 4px;">` : '',
+				name: text,
+				y: amount
+			};
+		});
+
+		// merge entries with identical names (e.g. same reward from different ids)
+		let i = 0;
+		while (i < serieData.length) {
+			const x = serieData.findIndex((it, j) => j > i && it.name === serieData[i].name);
+			if (x >= 1) {
+				serieData[i].y += serieData[x].y;
+				serieData.splice(x, 1);
 			} else {
-				i+=1;
+				i += 1;
 			}
-		} 
+		}
 
 		serieData = serieData.sort((a, b) => b.y - a.y);
 
-		if (Stats.state.filter !="") {
-			serieData = serieData.filter( a => a.name.toLowerCase().includes(Stats.state.filter.toLowerCase()))
+		if (Stats.state.filter !== '') {
+			serieData = serieData.filter(a => a.name.toLowerCase().includes(Stats.state.filter.toLowerCase()));
 		}
-
 
 		return {
 			title: i18n('Boxes.Stats.Rewards.SourceTitle.' + rewardSource),
@@ -1477,82 +1408,76 @@ let Stats = {
 				name: rewardSource,
 				data: serieData
 			}]
-		}
+		};
 	},
 
 
 	/**
-	 * Update reward chart
+	 * Renders the reward pie chart.
 	 *
 	 * @param series
 	 * @param title
 	 */
-	updateRewardCharts: ({series, title}) => {
-		Highcharts.chart('highcharts', {
-			chart: {
-				plotBackgroundColor: null,
-				plotBorderWidth: null,
-				plotShadow: false,
-				type: 'pie',
-			},
+	updateRewardCharts: async ({ series, title }) => {
+		await Stats.loadChartLib();
+		const chart = Stats.getChart();
+		if (!chart) return;
+
+		const data = series[0].data;
+		Stats.ChartData = { type: 'pie', series: [{ name: title, data: data.map(d => ({ name: d.name, value: d.y })) }] };
+
+		chart.setOption({
+			color: Stats.ChartColors,
 			title: {
 				text: title,
+				left: 'center',
+				top: 4
 			},
+			toolbox: Stats.chartToolbox(),
 			tooltip: {
-				useHTML: true,
-				headerFormat: '',
-				pointFormat: '<span class="{point.iconClass}"></span>{point.pointImage} {point.name}: <b>{point.y} ({point.percentage:.1f}%)</b>'
-			},
-			accessibility: {
-				point: {
-					valueSuffix: '%'
+				trigger: 'item',
+				confine: true,
+				formatter: (p) => {
+					const src = data[p.dataIndex] || {};
+					return `${src.pointImage || ''} ${p.name}: <b>${Stats.formatNumber(p.value)} (${p.percent}%)</b>`;
 				}
 			},
-			plotOptions: {
-				pie: {
-					allowPointSelect: true,
-					cursor: 'pointer',
-					dataLabels: {
-						enabled: true,
-						format: '<b>{point.name}</b>: {point.y} ({point.percentage:.1f} %)'
-					}
-				}
-			},
-			series: series,
-			exporting: {
-				buttons: {
-					contextButton: {
-						// Because of FOE freezing removed next: "printChart", downloadPNG", "downloadJPEG", "downloadPDF", "downloadSVG"
-						menuItems: ['viewFullscreen', 'separator', 'downloadCSV', 'downloadXLS', 'viewData'],
-					}
-				},
-				sourceWidth: 800,
-				sourceHeight: 600
-			}
-		});
+			series: [{
+				type: 'pie',
+				radius: ['32%', '68%'],
+				center: ['50%', '54%'],
+				minShowLabelAngle: 0.8,
+				itemStyle: { borderColor: '#2a2a2b', borderWidth: 1, borderRadius: 3 },
+				label: { color: '#e0e0e3', formatter: '{b}: {c} ({d}%)' },
+				labelLine: { lineStyle: { color: '#8a8a8d' } },
+				emphasis: { scale: true, scaleSize: 5, label: { fontWeight: 'bold' } },
+				data: data.map(d => ({ name: d.name, value: d.y }))
+			}]
+		}, true);
 	},
 
 
 	/**
-	 * Get ereas
+	 * Returns the selected eras in ResMap order.
 	 *
 	 * @returns {string[]}
 	 */
 	getSelectedEras: () => {
 		const selectedEras = Object.keys(Stats.state.eras).filter(it => Stats.state.eras[it]);
-		// preserv order or era, filter again using ResMap keys
+		// preserve order of eras, filter again using ResMap keys
 		return Object.keys(Stats.ResMap).filter(era => selectedEras.includes(era));
 	},
 
 
 	/**
+	 * Loads a script into the page and resolves when it is ready.
 	 *
-	 * @param src
-	 * @returns {Promise<unknown>}
+	 * @param {string} src script url
+	 * @returns {Promise<void>}
 	 */
 	promisedLoadCode: (src) => {
 		return new Promise(async (resolve, reject) => {
-			let sc = document.createElement('script');
+			const sc = document.createElement('script');
 			sc.src = src;
 
 			sc.addEventListener('load', function () {
@@ -1577,52 +1502,88 @@ let Stats = {
 
 
 	/**
-	 * Load Highcharts
+	 * Loads Apache ECharts once and registers the FoE theme.
+	 * Also used by the GexStat module.
 	 *
 	 * @returns {Promise<void>}
 	 */
-	loadHighcharts: function () {
-		if (!Stats._highChartPromise) {
-			Stats._highChartPromise = load();
+	loadChartLib: () => {
+		if (!Stats._chartLibPromise) {
+			Stats._chartLibPromise = (async () => {
+				await Stats.promisedLoadCode(extUrl + 'vendor/echarts/echarts.min.js');
+				echarts.registerTheme('foe', Stats.chartTheme());
+			})();
 		}
 
-		return Stats._highChartPromise;
-
-		async function load()
-		{
-			const sources = [
-				'highcharts.js',
-				'modules/streamgraph.js',
-				'modules/exporting.js',
-				'modules/export-data.js',
-				'modules/boost.js',
-				'modules/annotations.js',
-			];
-
-			for (const file of sources) {
-				const baseUrl = extUrl + 'vendor/highchart-8.0.4/';
-				await Stats.promisedLoadCode(baseUrl + file);
-			}
-
-			await Stats.promisedLoadCode(extUrl + 'vendor/highchart-8.0.4/foe/foe-theme.js');
-
-			// Use local timezone
-			const timezone = new Date().getTimezoneOffset();
-
-			Highcharts.setOptions({
-				global: {
-					timezoneOffset: timezone
-				}
-			});
-		}
+		return Stats._chartLibPromise;
 	},
 
 
-	/* Handlers */
+	/**
+	 * Dark theme matching the FoE Helper boxes.
+	 *
+	 * @returns {Object} ECharts theme
+	 */
+	chartTheme: () => {
+		const axis = {
+			axisLine: { lineStyle: { color: '#707073' } },
+			axisTick: { lineStyle: { color: '#707073' } },
+			axisLabel: { color: '#e0e0e3' },
+			splitLine: { lineStyle: { color: '#3a3a3d' } },
+			nameTextStyle: { color: '#a0a0a3' }
+		};
+
+		return {
+			color: Stats.ChartColors,
+			backgroundColor: 'transparent',
+			textStyle: { color: '#e0e0e3' },
+			title: {
+				textStyle: { color: '#e0e0e3', fontSize: 15 },
+				subtextStyle: { color: '#a0a0a3' }
+			},
+			legend: {
+				textStyle: { color: '#e0e0e3' },
+				inactiveColor: '#606063',
+				pageTextStyle: { color: '#e0e0e3' },
+				pageIconColor: '#e0e0e3',
+				pageIconInactiveColor: '#606063'
+			},
+			tooltip: {
+				backgroundColor: 'rgba(20, 20, 22, 0.92)',
+				borderColor: '#606063',
+				textStyle: { color: '#f0f0f0' }
+			},
+			toolbox: { iconStyle: { borderColor: '#e0e0e3' } },
+			dataZoom: {
+				borderColor: '#606063',
+				textStyle: { color: '#e0e0e3' },
+				brushStyle: { color: 'rgba(224, 224, 227, 0.15)' },
+				handleStyle: { color: '#8a8a8d', borderColor: '#e0e0e3' },
+				moveHandleStyle: { color: '#8a8a8d' },
+				emphasis: {
+					handleStyle: { borderColor: '#ffffff' },
+					moveHandleStyle: { color: '#a0a0a3' }
+				}
+			},
+			categoryAxis: axis,
+			valueAxis: axis,
+			timeAxis: axis,
+			logAxis: axis
+		};
+	},
+
+
+	/**
+	 * Stores a Guild Battlegrounds leaderboard snapshot.
+	 *
+	 * @param r leaderboard entries
+	 * @returns {Promise<void>}
+	 */
 	HandlePlayerLeaderboard: async (r) => {
 		if (!Array.isArray(r)) {
 			return;
 		}
+
 		const players = r.reduce((acc, it) => {
 			acc[it.player.player_id] = {
 				id: it.player.player_id,
@@ -1647,206 +1608,257 @@ let Stats = {
 			avatar: player.avatar,
 			date: timeNow
 		}));
-		await IndexDB.db.statsGBGPlayerCache.bulkPut(playersForCache);		
-    },
+		await IndexDB.db.statsGBGPlayerCache.bulkPut(playersForCache);
+	},
 
-	addReward: async (type,amount,reward) => {
-		//console.log(`add ${type} -  ${reward}: ${amount}`);
+
+	/**
+	 * Stores a single reward incident.
+	 *
+	 * @param {string} type reward incident source
+	 * @param {number} amount
+	 * @param {string} reward reward id
+	 */
+	addReward: async (type, amount, reward) => {
 		IndexDB.db.statsRewards.add({
 			date: MainParser.getCurrentDate(),
 			type: type,
 			amount: amount,
 			reward: reward
 		}).catch(error => {
-			if (error.inner.name == "ConstraintError") {
-				setTimeout(()=>{Stats.addReward(type,amount,reward)},1) //retry if two rewards came in "at the same time"
+			if (error.inner.name === 'ConstraintError') {
+				// retry if two rewards came in "at the same time"
+				setTimeout(() => { Stats.addReward(type, amount, reward); }, 1);
 			} else {
-				console.log(error)
+				console.log(error);
 			}
 		});
 	}
 };
+
+
+/**
+ * Low stock alarms for resources, treasury and units.
+ */
 let StockAlarm = {
+
 	Alarms: JSON.parse(localStorage.getItem('StockAlarms') || '[]'),
 	triggered: [],
-	OptionsR: "",
-	OptionsT: "",
-	OptionsA: "",
+	OptionsR: '',
+	OptionsT: '',
+	OptionsA: '',
 	Type: null,
 	Repeat: null,
-			
+
+
+	/**
+	 * Checks the army alarms against the two most recent snapshots.
+	 */
 	checkArmy: async () => {
-		if (StockAlarm.Alarms == []) return;
-		let alm = StockAlarm.Alarms.filter(data => data.type=="A")
-		if (alm.length == 0) return
-		await IndexDB.getDB();
-		let x=IndexDB.db.statsUnitsH.orderBy('date').reverse().limit(2).toArray();
-		await x;
-		let oldX = x._value[1]?.army || {};
-		let newX = x._value[0]?.army || {};
-		StockAlarm.check(alm, oldX, newX);
+		await StockAlarm.checkLatest('A', 'statsUnitsH', 'army');
 	},
 
+
+	/**
+	 * Checks the resource alarms against the two most recent snapshots.
+	 */
 	checkResources: async () => {
-		if (StockAlarm.Alarms == []) return;
-		let alm = StockAlarm.Alarms.filter(data => data.type=="R")
-		if (alm.length == 0) return
-		await IndexDB.getDB();
-		let x=IndexDB.db.statsTreasurePlayerH.orderBy('date').reverse().limit(2).toArray();
-		await x;
-		let oldX = x._value[1]?.resources || {};
-		let newX = x._value[0]?.resources || {};
-		StockAlarm.check(alm, oldX, newX);
+		await StockAlarm.checkLatest('R', 'statsTreasurePlayerH', 'resources');
 	},
 
+
+	/**
+	 * Checks the treasury alarms against the two most recent snapshots.
+	 */
 	checkTreasury: async () => {
-		if (StockAlarm.Alarms == []) return;
-		let alm = StockAlarm.Alarms.filter(data => data.type=="T")
-		if (alm.length == 0) return
-		await IndexDB.getDB();
-		let x=IndexDB.db.statsTreasureClanH.orderBy('date').reverse().limit(2).toArray();
-		await x;
-		let oldX = x._value[1]?.resources || {};
-		let newX = x._value[0]?.resources || {};
-		StockAlarm.check(alm, oldX, newX);
+		await StockAlarm.checkLatest('T', 'statsTreasureClanH', 'resources');
 	},
 
+
+	/**
+	 * Loads the two most recent snapshots of a table and runs the alarm check.
+	 *
+	 * @param {string} type alarm type ('R', 'T' or 'A')
+	 * @param {string} table hourly stats table
+	 * @param {string} field record field holding the values
+	 */
+	checkLatest: async (type, table, field) => {
+		const alarms = StockAlarm.Alarms.filter(data => data.type === type);
+		if (alarms.length === 0) return;
+
+		await IndexDB.getDB();
+		const rows = await IndexDB.db[table].orderBy('date').reverse().limit(2).toArray();
+
+		const oldX = rows[1]?.[field] || {};
+		const newX = rows[0]?.[field] || {};
+		StockAlarm.check(alarms, oldX, newX);
+	},
+
+
+	/**
+	 * Triggers matching alarms depending on their repeat mode.
+	 *
+	 * @param {Object[]} alm alarms to check
+	 * @param {Object} oldX previous values by id
+	 * @param {Object} newX current values by id
+	 */
 	check: (alm, oldX, newX) => {
-		for (a of alm) {
-			if (newX[a.id]<a.value) {
+		for (const a of alm) {
+			if (newX[a.id] < a.value) {
 				switch (a.repeat) {
-					case 0: //alarm every time
-						trigger(a);
+					case 0: // alarm every time
+						StockAlarm.trigger(a);
 						break;
-					case 1: //alarm once per session
-						if (!StockAlarm.triggered.some(e => (e.id === a.id && e.type===a.type))) {
-							trigger(a)
+					case 1: // alarm once per session
+						if (!StockAlarm.triggered.some(e => (e.id === a.id && e.type === a.type))) {
+							StockAlarm.trigger(a);
 						}
 						break;
-					case 2: //alarm once
-						if (oldX[a.id] > a.value) trigger(a);
+					case 2: // alarm once
+						if (oldX[a.id] > a.value) StockAlarm.trigger(a);
 						break;
-
 				}
 			}
 		}
 	},
 
+
+	/**
+	 * Shows the alarm toast.
+	 *
+	 * @param {Object} alm triggered alarm
+	 */
 	trigger: (alm) => {
-		StockAlarm.triggered.push({type:alm.type,id:alm.id})
+		StockAlarm.triggered.push({ type: alm.type, id: alm.id });
 		HTML.ShowToastMsg({
 			head: i18n('Boxes.LowStock.LowStockHeader'),
-			text: replace(replace(i18n('Boxes.LowStock.LowStockMessage'),'%name%',alm.name),'%amount%',alm.value),
+			text: replace(replace(i18n('Boxes.LowStock.LowStockMessage'), '%name%', alm.name), '%amount%', alm.value),
 			type: 'warning',
 			hideAfter: 20000,
 		});
 	},
 
+
+	/**
+	 * Shows the alarm configuration box.
+	 */
 	showDialogue: async () => {
-		StockAlarm.Type ="R";
+		StockAlarm.Type = 'R';
 		StockAlarm.Repeat = 1;
-	
+
 		await IndexDB.getDB();
-		let xA=IndexDB.db.statsUnitsH.orderBy('date').reverse().limit(1).toArray();
-		await xA;
-		let A=xA._value[0]?.army || {};
-		let xR=IndexDB.db.statsTreasurePlayerH.orderBy('date').reverse().limit(1).toArray();
-		await xR;
-		let R = xR._value[0]?.resources || {};
-		let xT=IndexDB.db.statsTreasureClanH.orderBy('date').reverse().limit(1).toArray();
-		await xT;
-		let T = xT._value[0]?.resources || {};
-		let OR = [];
-		let OT = [];
-		let OA = [];
-		era="";
-		setClass = true;
-		for (x of GoodsList) {
-			if (era != x.era) {
+		const A = (await IndexDB.db.statsUnitsH.orderBy('date').reverse().limit(1).toArray())[0]?.army || {};
+		const R = (await IndexDB.db.statsTreasurePlayerH.orderBy('date').reverse().limit(1).toArray())[0]?.resources || {};
+		const T = (await IndexDB.db.statsTreasureClanH.orderBy('date').reverse().limit(1).toArray())[0]?.resources || {};
+
+		const OR = [];
+		const OT = [];
+		const OA = [];
+		let era = '';
+		let setClass = true;
+
+		for (const x of GoodsList) {
+			if (era !== x.era) {
 				setClass = !setClass;
 				era = x.era;
 			}
-			if (R[x.id]>0) OR.unshift(`<option value="${x.id}" data-name="${x.name}" class="${setClass ? 'LShighlight':''}">${x.name} (${R[x.id]})</option>`)
-			if (T[x.id]>0) OT.unshift(`<option value="${x.id}" data-name="${x.name}" class="${setClass ? 'LShighlight':''}">${x.name} (${T[x.id]})</option>`)
-		};
-		era="";
+			if (R[x.id] > 0) OR.unshift(`<option value="${x.id}" data-name="${x.name}" class="${setClass ? 'LShighlight' : ''}">${x.name} (${R[x.id]})</option>`);
+			if (T[x.id] > 0) OT.unshift(`<option value="${x.id}" data-name="${x.name}" class="${setClass ? 'LShighlight' : ''}">${x.name} (${T[x.id]})</option>`);
+		}
+
+		era = '';
 		setClass = true;
-		for (x of Unit.Types) {
-			if (era != x.minEra) {
+		for (const x of Unit.Types) {
+			if (era !== x.minEra) {
 				setClass = !setClass;
 				era = x.minEra;
 			}
-			if (A[x.unitTypeId]>0) OA.unshift(`<option value="${x.unitTypeId}" data-name="${x.name}" class="${setClass ? 'LShighlight':''}">${x.name} (${A[x.unitTypeId]})</option>`)
-		};
-		StockAlarm.OptionsR=OR.join();
-		StockAlarm.OptionsA=OA.join();
-		StockAlarm.OptionsT=OT.join();
-		
+			if (A[x.unitTypeId] > 0) OA.unshift(`<option value="${x.unitTypeId}" data-name="${x.name}" class="${setClass ? 'LShighlight' : ''}">${x.name} (${A[x.unitTypeId]})</option>`);
+		}
+
+		StockAlarm.OptionsR = OR.join();
+		StockAlarm.OptionsA = OA.join();
+		StockAlarm.OptionsT = OT.join();
+
 		HTML.AddCssFile('stats');
-        
-        HTML.Box({
-            id: 'LowStock',
-            title: i18n('Boxes.LowStock.Title'),
-            auto_close: true,
-            dragdrop: true,
-            minimize: true,
-			resize : true
-        });
+
+		HTML.Box({
+			id: 'LowStock',
+			title: i18n('Boxes.LowStock.Title'),
+			auto_close: true,
+			dragdrop: true,
+			minimize: true,
+			resize: true
+		});
 
 		let htmltext = `<span id="LowStockType">`;
-		htmltext += `<img class="options selected" data-type="R" src="${srcLinks.get("/shared/icons/reward_icons/reward_icon_random_goods.png",true)}">`;
-		htmltext += `<img class="options" data-type="T" src="${srcLinks.get("/shared/icons/reward_icons/reward_icon_treasury_goods.png",true)}">`;
-		htmltext += `<img class="options" data-type="A" src="${srcLinks.get("/shared/icons/reward_icons/reward_icon_all_units.png",true)}"></span>`;
+		htmltext += `<img alt="" class="options selected" data-type="R" src="${srcLinks.get('/shared/icons/reward_icons/reward_icon_random_goods.png', true)}">`;
+		htmltext += `<img alt="" class="options" data-type="T" src="${srcLinks.get('/shared/icons/reward_icons/reward_icon_treasury_goods.png', true)}">`;
+		htmltext += `<img alt="" class="options" data-type="A" src="${srcLinks.get('/shared/icons/reward_icons/reward_icon_all_units.png', true)}"></span>`;
 		htmltext += `<select id="LowStockID">${StockAlarm.OptionsR}</select>`;
-		htmltext += `<input id="LowStockValue" "type="Number" placeholder="alert threshold">`; //Add i18n!!
+		htmltext += `<input id="LowStockValue" type="Number" placeholder="alert threshold">`; // Add i18n!!
 		htmltext += `<span id="LowStockRepeat">`;
-		htmltext += `<img class="options" data-repeat="2" src="${extUrl}js/web/stats/images/once.png">`;
-		htmltext += `<img class="options  selected" data-repeat="1" src="${extUrl}js/web/stats/images/once_per_session.png">`;
-		htmltext += `<img class="options" data-repeat="0" src="${extUrl}js/web/stats/images/always.png"></span>`
-		htmltext += `<span id="LowStockAddBtn" class="btn btn-green" onclick="StockAlarm.addbtn">+</span>`;
+		htmltext += `<img alt="" class="options" data-repeat="2" src="${extUrl}js/web/stats/images/once.png">`;
+		htmltext += `<img alt="" class="options  selected" data-repeat="1" src="${extUrl}js/web/stats/images/once_per_session.png">`;
+		htmltext += `<img alt="" class="options" data-repeat="0" src="${extUrl}js/web/stats/images/always.png"></span>`;
+		htmltext += `<span id="LowStockAddBtn" class="btn btn-green">+</span>`;
 		htmltext += `<table class="foe-table" id="LowStockAlarmsList">`;
-		htmltext += `<tr><th>type</th><th>name</th><th>threshold</th><th>repeat</th><th></th></tr>` //Add i18n!!
+		htmltext += `<tr><th>type</th><th>name</th><th>threshold</th><th>repeat</th><th></th></tr>`; // Add i18n!!
 		htmltext += `</table>`;
-		
-		
+
 		$('#LowStockBody').html(htmltext);
 
-		for (let x of StockAlarm.Alarms) {
+		for (const x of StockAlarm.Alarms) {
 			StockAlarm.addline(x.type, x.id, x.name, x.value, x.repeat);
 		}
 
-		$('#LowStockType .options').on("click", (e) => {
-			$('#LowStockType .options').removeClass("selected");
-			e.target.classList.add("selected");
+		$('#LowStockType .options').on('click', (e) => {
+			$('#LowStockType .options').removeClass('selected');
+			e.target.classList.add('selected');
 			StockAlarm.Type = e.target.dataset.type;
-			$('#LowStockID').html(StockAlarm["Options" + StockAlarm.Type]);
+			$('#LowStockID').html(StockAlarm['Options' + StockAlarm.Type]);
 		});
-		$('#LowStockRepeat .options').on("click", (e) => {
-			$('#LowStockRepeat .options').removeClass("selected");
-			e.target.classList.add("selected");
+		$('#LowStockRepeat .options').on('click', (e) => {
+			$('#LowStockRepeat .options').removeClass('selected');
+			e.target.classList.add('selected');
 			StockAlarm.Repeat = Number(e.target.dataset.repeat);
 		});
-		$('#LowStockAddBtn').on("click", (e) => {
-			let IDel = document.getElementById("LowStockID");
-			let id = IDel.value;
-			let name = IDel.options[IDel.selectedIndex].dataset.name;
-			let value = Number(document.getElementById("LowStockValue").value);
-			StockAlarm.add(StockAlarm.Type,id, name,value,StockAlarm.Repeat);
-			StockAlarm.addline(StockAlarm.Type,id, name,value,StockAlarm.Repeat);
+		$('#LowStockAddBtn').on('click', (e) => {
+			const IDel = document.getElementById('LowStockID');
+			const id = IDel.value;
+			const name = IDel.options[IDel.selectedIndex].dataset.name;
+			const value = Number(document.getElementById('LowStockValue').value);
+			StockAlarm.add(StockAlarm.Type, id, name, value, StockAlarm.Repeat);
+			StockAlarm.addline(StockAlarm.Type, id, name, value, StockAlarm.Repeat);
 		});
 	},
 
-	rembtn:(e) =>{
-		let line= e.target.parentElement.parentElement;
-		let type= e.target.dataset.type;
-		let id= e.target.dataset.id;
-		let name= e.target.dataset.name;
-		let value= Number(e.target.dataset.value);
-		let repeat= Number(e.target.dataset.repeat);
-		StockAlarm.remove(type,id, name,value,repeat)
-		line.remove()
+
+	/**
+	 * Removes an alarm via its table row button.
+	 *
+	 * @param e click event
+	 */
+	rembtn: (e) => {
+		const line = e.target.parentElement.parentElement;
+		const { type, id, name } = e.target.dataset;
+		const value = Number(e.target.dataset.value);
+		const repeat = Number(e.target.dataset.repeat);
+
+		StockAlarm.remove(type, id, name, value, repeat);
+		line.remove();
 	},
-	
+
+
+	/**
+	 * Adds an alarm and persists the list.
+	 *
+	 * @param {string} type alarm type ('R', 'T' or 'A')
+	 * @param {string} id resource or unit id
+	 * @param {string} name display name
+	 * @param {number} value alert threshold
+	 * @param {number} repeat repeat mode (0=always, 1=per session, 2=once)
+	 */
 	add: (type, id, name, value, repeat) => {
 		StockAlarm.Alarms.push({
 			type: type,
@@ -1854,57 +1866,63 @@ let StockAlarm = {
 			name: name,
 			value: value,
 			repeat: repeat
-		})
-		localStorage.setItem("StockAlarms",JSON.stringify(StockAlarm.Alarms));
+		});
+		localStorage.setItem('StockAlarms', JSON.stringify(StockAlarm.Alarms));
 	},
 
-	addline: (type, id, name, value, repeat)=>{
-		let table = document.getElementById('LowStockAlarmsList');
-		let row = table.insertRow(1);
-		let typeImg = '';
-		switch (type) {
-			case "R": 
-				typeImg = srcLinks.get("/shared/icons/reward_icons/reward_icon_random_goods.png",true);
-				break;
-			case "T":
-				typeImg = srcLinks.get("/shared/icons/reward_icons/reward_icon_treasury_goods.png",true);
-				break;
-			case "A":
-				typeImg = srcLinks.get("/shared/icons/reward_icons/reward_icon_all_units.png",true);
-				break;
-		}
-		let repeatImg = '';
-		switch (repeat) {
-			case 0: 
-				repeatImg = extUrl + "js/web/stats/images/always.png";
-				break;
-			case 1:
-				repeatImg = extUrl + "js/web/stats/images/once_per_session.png";
-				break;
-			case 2:
-				repeatImg = extUrl + "js/web/stats/images/once.png";
-				break;
-		}
-		html = `<td><img src="${typeImg}"></td>`;
+
+	/**
+	 * Adds an alarm row to the configuration table.
+	 *
+	 * @param {string} type alarm type ('R', 'T' or 'A')
+	 * @param {string} id resource or unit id
+	 * @param {string} name display name
+	 * @param {number} value alert threshold
+	 * @param {number} repeat repeat mode (0=always, 1=per session, 2=once)
+	 */
+	addline: (type, id, name, value, repeat) => {
+		const table = document.getElementById('LowStockAlarmsList');
+		const row = table.insertRow(1);
+
+		const typeImgs = {
+			R: srcLinks.get('/shared/icons/reward_icons/reward_icon_random_goods.png', true),
+			T: srcLinks.get('/shared/icons/reward_icons/reward_icon_treasury_goods.png', true),
+			A: srcLinks.get('/shared/icons/reward_icons/reward_icon_all_units.png', true)
+		};
+		const repeatImgs = {
+			0: extUrl + 'js/web/stats/images/always.png',
+			1: extUrl + 'js/web/stats/images/once_per_session.png',
+			2: extUrl + 'js/web/stats/images/once.png'
+		};
+
+		let html = `<td><img alt="" src="${typeImgs[type] || ''}"></td>`;
 		html += `<td>${name}</td>`;
 		html += `<td>${value}</td>`;
-		html += `<td><img src="${repeatImg}"></td>`;
+		html += `<td><img alt="" src="${repeatImgs[repeat] || ''}"></td>`;
 		html += `<td><span class="btn btn-delete LowStockRemBtn" data-id="${id}" data-name="${name}" data-value="${value}" data-repeat="${repeat}" data-type="${type}" onclick="StockAlarm.rembtn(event)">-</span></td>`;
-		
-		row.innerHTML = html;
-		
+
+		$(row).html(html);
 	},
 
+
+	/**
+	 * Removes an alarm, persists the list and restores the form values.
+	 *
+	 * @param {string} type alarm type ('R', 'T' or 'A')
+	 * @param {string} id resource or unit id
+	 * @param {string} name display name
+	 * @param {number} value alert threshold
+	 * @param {number} repeat repeat mode (0=always, 1=per session, 2=once)
+	 */
 	remove: (type, id, name, value, repeat) => {
-		let i = StockAlarm.Alarms.findIndex( x => x.type==type && x.id==id && x.name == name && x.repeat == repeat && x.value == value);
-		if (i>-1) {
-			StockAlarm.Alarms.splice(i,1);
-			localStorage.setItem("StockAlarms",JSON.stringify(StockAlarm.Alarms));
-			$(`#LowStockType [data-type="${type}"]`).trigger("click");
-			$(`#LowStockRepeat [data-repeat="${repeat}"]`).trigger("click");
+		const i = StockAlarm.Alarms.findIndex(x => x.type === type && x.id === id && x.name === name && x.repeat === repeat && x.value === value);
+		if (i > -1) {
+			StockAlarm.Alarms.splice(i, 1);
+			localStorage.setItem('StockAlarms', JSON.stringify(StockAlarm.Alarms));
+			$(`#LowStockType [data-type="${type}"]`).trigger('click');
+			$(`#LowStockRepeat [data-repeat="${repeat}"]`).trigger('click');
 			$(`#LowStockValue`).val(value);
-			$(`#LowStockValue option[value="${id}"]`).prop('selected', true)
+			$(`#LowStockValue option[value="${id}"]`).prop('selected', true);
 		}
 	}
-
-}
+};

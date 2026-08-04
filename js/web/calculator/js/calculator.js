@@ -79,7 +79,7 @@ let Calculator = {
 				auto_close: true,
 				dragdrop: true,
 				minimize: true,
-				settings: 'Calculator.ShowCalculatorSettings()',
+				settings: () => Calculator.ShowCalculatorSettings(),
 				active_maps: "main"
 			});
 

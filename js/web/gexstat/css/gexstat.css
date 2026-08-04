@@ -318,7 +318,7 @@
 	width: 23px;
 }
 
-#GexStat .highcharts-container {
+#GexStat #gexsContentWrapper.chart {
 	width: 100%;
 	height: 100%;
 }

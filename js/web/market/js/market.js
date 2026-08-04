@@ -78,7 +78,7 @@ let Market = {
                 dragdrop: true,
                 minimize: true,
                 resize: true,
-                settings: 'Market.ShowSettingsButton()'
+                settings: () => Market.ShowSettingsButton()
             });
 
             // add css to DOM

@@ -1,4 +1,4 @@
-﻿{
+{
     "Boxes.Alerts.Form.Antiques.Auction": "Auction",
     "Boxes.Alerts.Form.Antiques.Cooldown": "Auction Cool-down",
     "Boxes.Alerts.Form.Antiques.Dealer": "Antiques Dealer",
@@ -718,6 +718,8 @@
     "Boxes.Infobox.Title": "Infobox",
     "Boxes.Infobox.UnknownConversation": "Unknown Conversation",
     "Boxes.Inventory.AllItems": "All items",
+    "Boxes.Inventory.CopiedHead": "Copied!",
+    "Boxes.Inventory.CopiedText": "__name__ is now on the clipboard.",
     "Boxes.Inventory.GroupProduction": "Production",
     "Boxes.Inventory.Items": "items",
     "Boxes.Inventory.NoResults": "No matching items found.",
