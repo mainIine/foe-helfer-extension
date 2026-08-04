@@ -2,6 +2,9 @@
 
 ##### 4.5.1.0
 
+**Update**
+- Guild Battlegrounds: The automatic Discord send now skips sectors with a too high attrition chance — the threshold is configurable in the settings (default: 100%) and checked at send time; if the chance drops below the threshold afterwards, the sector is announced on the next map update
+
 **Bugfix**
 - Guild Battlegrounds: Sector alerts arrived too late when the computer's clock differed from server time — the lead time is now converted to the local clock correctly, as are the countdowns in the live box and the sector and antiques dealer presets in the alerts module
 - Guild Battlegrounds: With the game tab open, sector alerts now fire to the second — the background process' alarms only wake the browser on a roughly one minute grid, which arrived too late with a lead time of a few seconds; they remain as the fallback for a closed tab

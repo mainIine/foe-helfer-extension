@@ -533,6 +533,7 @@
     "Boxes.GuildFights.DeleteMessage.Desc": "The Alert for province __provinceName__ has been deleted!",
     "Boxes.GuildFights.DeleteMessage.Title": "Deleted!",
     "Boxes.GuildFights.DiscordAutoLeadTime": "Lead time (seconds)",
+    "Boxes.GuildFights.DiscordAutoMaxAttrition": "Skip at attrition chance of (%)",
     "Boxes.GuildFights.DiscordAutoSend": "Send sectors automatically",
     "Boxes.GuildFights.DiscordAutoSendHint": "Sends adjacent enemy sectors once shortly before they open, using the selected template — as long as the window is open. Ideally only one guild member enables this!",
     "Boxes.GuildFights.DiscordSend": "Send to Discord",

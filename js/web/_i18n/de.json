@@ -532,6 +532,7 @@
     "Boxes.GuildFights.DeleteMessage.Desc": "Der Alarm für die Provinz __provinceName__ wurde gelöscht!",
     "Boxes.GuildFights.DeleteMessage.Title": "Gelöscht!",
     "Boxes.GuildFights.DiscordAutoLeadTime": "Vorlauf (Sekunden)",
+    "Boxes.GuildFights.DiscordAutoMaxAttrition": "Nicht senden ab Zermürbungschance (%)",
     "Boxes.GuildFights.DiscordAutoSend": "Sektoren automatisch senden",
     "Boxes.GuildFights.DiscordAutoSendHint": "Sendet angrenzende gegnerische Sektoren einmalig kurz vor der Öffnung mit der gewählten Vorlage — solange das Fenster geöffnet ist. Am besten aktiviert das nur ein Gildenmitglied!",
     "Boxes.GuildFights.DiscordSend": "An Discord schicken",
