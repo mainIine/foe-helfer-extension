@@ -46,12 +46,28 @@ let Tooltips = {
 
 
     /**
-     * Resolves a string path (e.g., "Kits.InventoryTooltip") to the actual function.
-     *
-     * Module werden global mit let/const deklariert und sind damit nicht als
-     * window-Property sichtbar. Eine im globalen Scope erzeugte Function
-     * erreicht diese Bindings trotzdem; das Regex stellt sicher, dass nur ein
-     * reiner Objektpfad und kein sonstiger Code ausgewertet wird.
+     * Known root objects for data-callback_tt paths. Modules are declared with
+     * let/const and therefore not reachable as window properties, so every
+     * root a tooltip path may start with must be listed here. The resolvers
+     * are lazy because the modules may not be loaded yet when this file runs.
+     */
+    callbackRoots: {
+        Allies: () => Allies,
+        BlueGalaxy: () => BlueGalaxy,
+        InventoryOverview: () => InventoryOverview,
+        Kits: () => Kits,
+        Productions: () => Productions,
+        QIActions: () => QIActions,
+        shopAssist: () => shopAssist,
+        Tooltips: () => Tooltips,
+    },
+
+
+    /**
+     * Resolves a string path (e.g., "Kits.InventoryTooltip") to the actual
+     * function by walking the path from a registered root object. The regex
+     * ensures only a plain object path is accepted; unknown roots resolve
+     * to null (alternatively modules can self-register via register()).
      */
     resolveCallback: (pathString) => {
         if (Tooltips.callbackCache[pathString]) {
@@ -62,11 +78,16 @@ let Tooltips = {
             return null;
         }
 
+        const parts = pathString.split('.');
+        const root = Tooltips.callbackRoots[parts[0]];
         let fn = null;
         try {
-            fn = new Function(`try { return ${pathString} } catch (e) { return null }`)();
+            fn = root ? root() : null;
+            for (let i = 1; i < parts.length && fn != null; i++) {
+                fn = fn[parts[i]];
+            }
         } catch (e) {
-            fn = null;
+            fn = null; // module not loaded (yet)
         }
 
         if (typeof fn !== "function") {
@@ -165,7 +186,7 @@ let Tooltips = {
     set: (content) => {
         if (!content || !Tooltips.active) return;
 
-        Tooltips.active.container.innerHTML = content;
+        $(Tooltips.active.container).html(content);
         Tooltips.check_position();
     },
 

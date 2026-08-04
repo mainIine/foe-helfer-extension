@@ -40,7 +40,7 @@ let CityBuilder = {
             auto_close: true,
             dragdrop: true,
             minimize: true,
-            popout: 'CityBuilder.PopOut()',
+            popout: () => CityBuilder.PopOut(),
             resize: true
         });
 

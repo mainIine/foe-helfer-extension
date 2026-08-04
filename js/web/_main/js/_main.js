@@ -21,26 +21,25 @@ const extID = ExtbaseData.extID,
 	devMode = ExtbaseData.devMode,
 	loadBeta = ExtbaseData.loadBeta;
 
-let ExistenceConfirmed = async (varlist)=>{
-	varlist = varlist.split('||')
-	return new Promise((resolve, reject) => {
+/**
+ * Waits until the given predicate returns a truthy value.
+ * Exceptions (e.g. a referenced module that is not loaded yet) count as "not ready".
+ *
+ * @param {function(): *} check predicate returning truthy once all dependencies exist
+ * @returns {Promise<void>}
+ */
+let ExistenceConfirmed = async (check)=>{
+	return new Promise((resolve) => {
 		let timer = () => {
-			let doResolve = true;
-			for (let x of varlist ) {
-				if (x.substr(0,2) == '$(' && eval(x).length === 0) { // jQuery object
-					doResolve = false
-					//console.log(x+' not yet defined');
-					break;
-				}
-				if (eval('typeof '+x) === 'undefined' || eval(x) === null || eval(x) === undefined) { // normal var
-					doResolve = false
-					//console.log(x+' not yet defined');
-					break;
-				}
+			let ready = false;
+			try {
+				ready = !!check();
+			} catch (e) {
+				// dependency not loaded yet
 			}
-			if (doResolve) 
+			if (ready)
 				resolve();
-			else 
+			else
 				setTimeout(timer, 100);
 		};
 		timer();
@@ -1605,7 +1604,7 @@ let MainParser = {
 		});
 
 		ExtPlayerAvatar = d.portrait_id;
-		await ExistenceConfirmed('MainParser.CityEntities||srcLinks.FileList||Infoboard||EventHandler');
+		await ExistenceConfirmed(() => MainParser.CityEntities != null && srcLinks.FileList != null && Infoboard != null && EventHandler != null);
 	
 		Infoboard.Init();
 		EventHandler.Init();

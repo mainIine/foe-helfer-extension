@@ -1,5 +1,13 @@
 ## Extension Changelog
 
+##### 4.5.1.0
+
+**Bugfix**
+- Gildengefechte: Sektor-Alarme kamen zu spät, wenn die Uhr des Rechners von der Serverzeit abwich — die Vorlaufzeit wird jetzt korrekt auf die lokale Uhr umgerechnet, ebenso die Countdowns in der Live-Box und die Sektor- und Antiquitätenhändler-Vorlagen im Alarm-Modul
+- Gildengefechte: Bei geöffnetem Spiel-Tab werden Sektor-Alarme jetzt sekundengenau ausgelöst — die Alarme des Hintergrundprozesses wecken den Browser nur im Minutenraster, was bei wenigen Sekunden Vorlaufzeit zu spät kam; für den geschlossenen Tab bleiben sie als Rückfallebene erhalten
+
+---
+
 ##### 4.5.0.0
 
 **Neu**

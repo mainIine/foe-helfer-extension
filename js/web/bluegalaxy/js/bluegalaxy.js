@@ -74,8 +74,8 @@ const BlueGalaxy = {
 				dragdrop: true,
 				minimize: true,
 				resize: true,
-				settings: 'BlueGalaxy.ShowSettings()',
-				popout: 'MainParser.PopOut(\'bluegalaxy\', 520, 560)',
+				settings: () => BlueGalaxy.ShowSettings(),
+				popout: () => MainParser.PopOut('bluegalaxy', 520, 560),
 				active_maps: 'main',
 			});
 

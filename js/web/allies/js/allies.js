@@ -246,8 +246,8 @@ let Allies = {
 				dragdrop: true,
 				minimize: true,
 				resize: true,
-				popout: 'MainParser.PopOut(\'AllyList\', 970, 600)',
-				settings: 'Allies.ShowSettings()',
+				popout: () => MainParser.PopOut('AllyList', 970, 600),
+				settings: () => Allies.ShowSettings(),
 				active_maps: 'main',
 			});
 		}

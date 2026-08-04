@@ -631,8 +631,8 @@ Object.assign(Productions, {
 				dragdrop: true,
 				minimize: true,
 				resize: true,
-				popout: 'MainParser.PopOut(\'ProductionsRating\', 1100, 580)',
-				settings: 'Productions.RSettings()'
+				popout: () => MainParser.PopOut('ProductionsRating', 1100, 580),
+				settings: () => Productions.RSettings()
 			});
 			
 			helper.preloader.show('#ProductionsRating');

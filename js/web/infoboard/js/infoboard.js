@@ -92,8 +92,8 @@ let Infoboard = {
                 resize: true,
                 minimize: true,
                 speaker: 'infoboxTone',
-                popout: 'MainParser.PopOut(\'BackgroundInfo\', 560, 380)',
-                settings: 'Infoboard.ShowSettings()'
+                popout: () => MainParser.PopOut('BackgroundInfo', 560, 380),
+                settings: () => Infoboard.ShowSettings()
             });
             HTML.AddCssFile('infoboard');
 
@@ -494,7 +494,7 @@ let Info = {
      * GBG Map figths
      */
     GuildBattlegroundService_getProvinces: async (d) => {
-        await ExistenceConfirmed('Guild_fights.SortedColors')
+        await ExistenceConfirmed(() => Guild_fights.SortedColors != null)
 
         let data = d[0];
         let bP = Guild_fights.MapData['battlegroundParticipants'],

@@ -51,7 +51,7 @@ let MarketOffers = {
                 dragdrop: true,
                 minimize: true,
                 resize: true,
-                settings: 'MarketOffers.ShowSettingsButton()'
+                settings: () => MarketOffers.ShowSettingsButton()
             });
 
             // add css to DOM
@@ -229,7 +229,7 @@ let MarketOffers = {
                 dragdrop: true,
                 minimize: true,
                 resize: true,
-                settings: 'MarketOffers.ShowEventsSettingsButton()'
+                settings: () => MarketOffers.ShowEventsSettingsButton()
             });
 
             // add css to DOM

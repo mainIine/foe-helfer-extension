@@ -57,7 +57,7 @@ let Recurring = {
                 'dragdrop': true,
                 'minimize': true,
                 'resize': true,
-                'settings': 'Recurring.ShowSettingsButton()'
+                settings: () => Recurring.ShowSettingsButton()
             });
 
             Recurring.RefreshGui();

@@ -173,8 +173,8 @@ let shopAssist = {
 				dragdrop: true,
 				minimize: true,
 				resize: true,
-				popout: 'MainParser.PopOut(\'shopAssist\', 800, 700)',
-				settings: 'shopAssist.ShowSettings()',
+				popout: () => MainParser.PopOut('shopAssist', 800, 700),
+				settings: () => shopAssist.ShowSettings(),
 			});
 		}
 

@@ -507,8 +507,8 @@ let HTML = {
 			document.onpointermove = null;
 
 			// is there a callback function after drag&drop
-			if (HTML.customFunctions[id]) {
-				new Function(`${HTML.customFunctions[id]}`)();
+			if (typeof HTML.customFunctions[id] === 'function') {
+				HTML.customFunctions[id]();
 			}
 		}
 	},
@@ -608,19 +608,25 @@ let HTML = {
 		$(`#${id}`).append(box);
 
 		setTimeout(() => {
-			new Function(`${HTML.customFunctions[id + 'Settings']}`)();
+			if (typeof HTML.customFunctions[id + 'Settings'] === 'function') {
+				HTML.customFunctions[id + 'Settings']();
+			}
 		}, 100);
 	},
 
 
 	PopOutBox: (id) => {
-		new Function(`${HTML.customFunctions[id + 'PopOut']}`)();
+		if (typeof HTML.customFunctions[id + 'PopOut'] === 'function') {
+			HTML.customFunctions[id + 'PopOut']();
+		}
 	},
 
 
 	MapBox: (id) => {
 		setTimeout(() => {
-			new Function(`${HTML.customFunctions[id + 'Map']}`)();
+			if (typeof HTML.customFunctions[id + 'Map'] === 'function') {
+				HTML.customFunctions[id + 'Map']();
+			}
 		}, 100);
 	},
 

@@ -244,7 +244,7 @@ Object.assign(Parts, {
 			
 			Parts.CalcTableBodyPowerLeveling(h);
 
-			tableBody.innerHTML = h.join('');
+			$(tableBody).html(h.join(''));
 
 			// Startlevel
 			const startLevel = /** @type {HTMLInputElement} */(document.getElementById('startLevel'));

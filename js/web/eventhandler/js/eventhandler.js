@@ -313,7 +313,7 @@ let EventHandler = {
 				dragdrop: true,
 				minimize: true,
 				resize: true,
-				settings: 'EventHandler.ShowMoppelHelperSettingsButton()'
+				settings: () => EventHandler.ShowMoppelHelperSettingsButton()
 			});
 
 			HTML.AddCssFile('eventhandler');

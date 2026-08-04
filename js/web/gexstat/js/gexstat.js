@@ -96,7 +96,7 @@ let GexStat = {
 				dragdrop: true,
 				resize: true,
 				minimize: true,
-				settings: 'GexStat.GexStatSettings()'
+				settings: () => GexStat.GexStatSettings()
 			});
 
 			GexStat.showPreloader('#GexStat');
@@ -493,114 +493,68 @@ let GexStat = {
 		}
 		//console.log(CourseData);
 
-		// to prevent double include of Highcharts get it from Stats module
-		await Stats.loadHighcharts();
+		// chart library (ECharts) is shared with the Stats module
+		await Stats.loadChartLib();
 
 		const series = await GexStat.GetChartSeries(CourseData);
+		const showLabel = GexStat.Settings.showAxisLabel;
 
-		GexStat.Chart = new Highcharts.chart('gexsContentWrapper', {
+		/**
+		 * Axis options: only visible if a shown series uses this axis.
+		 *
+		 * @param {number} index axis index
+		 * @param {string} name axis title
+		 * @param {Object} extra additional axis options
+		 * @returns {Object}
+		 */
+		const yAxis = (index, name, extra = {}) => ({
+			type: 'value',
+			minInterval: 1,
+			name: (showLabel && series.yaxis.includes(index)) ? name : '',
+			axisLabel: { show: showLabel && series.yaxis.includes(index) },
+			...extra
+		});
 
-				title: {
-					text: i18n('Boxes.GexStat.Gex') + ' ' + i18n('Boxes.GexStat.Rounds')
-				},
-				subtitle: {
-					text: CourseData.weeks[0] + ' - ' + CourseData.weeks[CourseData.weeks.length - 1] +
-						' (' + CourseData.weeks.length + ' ' + i18n('Boxes.GexStat.Rounds') + ')'
-				},
-				yAxis: [{
-					allowDecimals: false,
-					labels: {
-						enabled: (GexStat.Settings.showAxisLabel && series.yaxis.includes(0)),
-					},
-					title: {
-						enabled: (GexStat.Settings.showAxisLabel && series.yaxis.includes(0)),
-						text: i18n('Boxes.GexStat.Points'),
-					}
-				}, {
-					allowDecimals: false,
-					title: {
-						enabled: (GexStat.Settings.showAxisLabel && series.yaxis.includes(1)),
-						text: i18n('Boxes.GexStat.Member') + ' / ' + i18n('Boxes.GexStat.Participant'),
-					},
-					labels: {
-						enabled: (GexStat.Settings.showAxisLabel && series.yaxis.includes(1)),
-					},
-					opposite: true
-				},
-					{
-						allowDecimals: false,
-						labels: {
-							enabled: (GexStat.Settings.showAxisLabel && series.yaxis.includes(2)),
-						},
-						title: {
-							enabled: (GexStat.Settings.showAxisLabel && series.yaxis.includes(2)),
-							text: i18n('Boxes.GexStat.Encounters'),
-						},
-					},
-					{
-						allowDecimals: false,
-						labels: {
-							enabled: false,
-						},
-						title: {
-							enabled: false
-						},
-						reversed: true
-					}],
-				xAxis: {
-					categories: CourseData.weeks,
-					crosshair: true,
-				},
-				legend: {
-					layout: 'vertical',
-					align: 'right',
-					verticalAlign: 'middle'
-				},
-				plotOptions: {
-					column: {
-						grouping: false,
-						shadow: false,
-						borderWidth: 0
-					},
-					series: {
-						label: {
-							connectorAllowed: false
-						}
-					}
-				},
-				series: series.data,
-				tooltip: {
-					shared: true
-				},
-				exporting: {
-					enabled: false
-				},
-				responsive: {
-					rules: [{
-						condition: {
-							maxWidth: 800
-						},
-						chartOptions: {
-							legend: {
-								align: 'center',
-								verticalAlign: 'bottom',
-								layout: 'horizontal'
-							},
-						}
-					}]
-				}
+		const container = document.getElementById('gexsContentWrapper');
+		container.textContent = '';
+
+		let chart = echarts.getInstanceByDom(container);
+		if (!chart) {
+			chart = echarts.init(container, 'foe');
+			new ResizeObserver(() => chart.resize()).observe(container);
+		}
+		GexStat.Chart = chart;
+
+		chart.setOption({
+			title: {
+				text: i18n('Boxes.GexStat.Gex') + ' ' + i18n('Boxes.GexStat.Rounds'),
+				subtext: CourseData.weeks[0] + ' - ' + CourseData.weeks[CourseData.weeks.length - 1] +
+					' (' + CourseData.weeks.length + ' ' + i18n('Boxes.GexStat.Rounds') + ')',
+				left: 'center'
 			},
-			function (chart) {
+			legend: { top: 48 },
+			tooltip: {
+				trigger: 'axis',
+				confine: true,
+				axisPointer: { type: 'cross' }
+			},
+			grid: { top: 90, left: 70, right: 70, bottom: 40 },
+			xAxis: {
+				type: 'category',
+				data: CourseData.weeks
+			},
+			yAxis: [
+				yAxis(0, i18n('Boxes.GexStat.Points'), { position: 'left' }),
+				yAxis(1, i18n('Boxes.GexStat.Member') + ' / ' + i18n('Boxes.GexStat.Participant'), { position: 'right', splitLine: { show: false } }),
+				yAxis(2, i18n('Boxes.GexStat.Encounters'), { position: 'left', offset: 46, splitLine: { show: false } }),
+				{ type: 'value', inverse: true, show: false }
+			],
+			series: series.data
+		}, true);
 
-				GexStat.hidePreloader();
+		GexStat.hidePreloader();
 
-				$('#GexStat').on('resize', function () {
-					GexStat.showPreloader('#GexStat');
-					chart.setSize($(this).find('#gexsContentWrapper').width(), $(this).find('#gexsContentWrapper').height(),
-						GexStat.hidePreloader())
-				});
-			}
-		);
+		$('#GexStat').off('resize.gexstat').on('resize.gexstat', () => chart.resize());
 	},
 
 
@@ -840,59 +794,21 @@ let GexStat = {
 
 	GetChartSeries: async (data) => {
 
-		const buildZones = function (data) {
-
-			let zones = [],
-				i = -1, len = data.length, current, previous, dashStyle, value;
-
-			while (data[++i] === null);
-			zones.push({
-				value: i
-			});
-
-			while (++i < len)
-			{
-				previous = data[i - 1];
-				current = data[i];
-				dashStyle = '';
-
-				if (previous !== null && current === null)
-				{
-					dashStyle = 'solid';
-					value = i - 1;
-				} else if (previous === null && current !== null)
-				{
-					dashStyle = 'dot';
-					value = i;
-				}
-
-				if (dashStyle)
-				{
-					zones.push({
-						dashStyle: dashStyle,
-						value: value
-					});
-				}
-			}
-
-			return zones;
-		}
-
 		const chartSeries = {
-			points: { name: i18n('Boxes.GexStat.Points'), zones: buildZones(data.pointsData), zoneAxis: 'x', connectNulls: true, data: data.pointsData, color: '#DDDF0D', yAxis: 0, zIndex: 3 },
-			encounters: { gridLineWidth: 0, zones: buildZones(data.encounterData), zoneAxis: 'x', connectNulls: true, name: i18n('Boxes.GexStat.Encounters'), data: data.encounterData, color: '#7798BF', zIndex: 3, yAxis: 2 },
-			member: { type: 'column', name: i18n('Boxes.GexStat.Member'), data: data.allMemberData, color: '#55bf3b', pointPadding: 0.3, pointPlacement: -0.2, yAxis: 1, zIndex: 1 },
-			participants: { type: 'column', name: i18n('Boxes.GexStat.Participant'), data: data.activeMemberData, color: '#DF5353', pointPadding: 0.4, pointPlacement: -0.2, yAxis: 1, zIndex: 2 },
-			rank: { name: i18n('Boxes.GexStat.Rank'), zones: buildZones(data.rankData), zoneAxis: 'x', connectNulls: true, data: data.rankData, color: '#d6dae0', yAxis: 3, marker: { symbol: 'square' }, dataLabels: { enabled: true }, zIndex: 2 }
-		}
+			points: { name: i18n('Boxes.GexStat.Points'), type: 'line', connectNulls: true, data: data.pointsData, color: '#f2c14e', yAxisIndex: 0, z: 3 },
+			encounters: { name: i18n('Boxes.GexStat.Encounters'), type: 'line', connectNulls: true, data: data.encounterData, color: '#61a0ff', yAxisIndex: 2, z: 3 },
+			member: { name: i18n('Boxes.GexStat.Member'), type: 'bar', data: data.allMemberData, color: '#5fd068', barWidth: '45%', yAxisIndex: 1, z: 1 },
+			participants: { name: i18n('Boxes.GexStat.Participant'), type: 'bar', data: data.activeMemberData, color: '#ef5350', barWidth: '28%', barGap: '-100%', yAxisIndex: 1, z: 2 },
+			rank: { name: i18n('Boxes.GexStat.Rank'), type: 'line', connectNulls: true, data: data.rankData, color: '#d6dae0', symbol: 'rect', symbolSize: 7, label: { show: true, color: '#d6dae0' }, yAxisIndex: 3, z: 2 }
+		};
 
-		let series = { data: [], yaxis: [] };
+		const series = { data: [], yaxis: [] };
 
 		GexStat.Settings.chartSeries.forEach(v => {
 			series.data.push(chartSeries[v]);
-			if (!series.yaxis.includes(chartSeries[v].yAxis))
+			if (!series.yaxis.includes(chartSeries[v].yAxisIndex))
 			{
-				series.yaxis.push(chartSeries[v].yAxis);
+				series.yaxis.push(chartSeries[v].yAxisIndex);
 			}
 		});
 

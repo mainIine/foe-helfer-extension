@@ -26,7 +26,7 @@ let findGB = {
     found:[],
 
     init: async () => {
-        await ExistenceConfirmed("MainParser.CityEntities")
+        await ExistenceConfirmed(() => MainParser.CityEntities != null)
         // build into a local array and assign at the end so concurrent init() calls
         // cannot fill the list twice
         let names = [];
