@@ -543,7 +543,8 @@ table.foe-table.vertical-top td {
 	vertical-align: top;
 }
 
-tr.vertical-middle td {
+tr.vertical-middle td,
+tr.vertical-middle th {
 	vertical-align: middle;
 }
 
@@ -818,6 +819,17 @@ p {
 [id$=webRequest-Btn] span {
 	background-image: url('../../js/web/webrequest/images/webrequest.svg');
 	background-size: 65%;
+}
+
+[id$=ascended-Btn] span {
+	background-image: url('../../js/web/ascended/images/ascended.png');
+	background-size: 65%;
+}
+
+/* red counter: expired limited buildings in the city */
+.hud-btn #ascended-expired-count {
+	background-color: var(--red);
+	box-shadow: 0 0 1px 1px var(--danger-red);
 }
 
 /***********************************************************************************/

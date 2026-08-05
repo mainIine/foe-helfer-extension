@@ -53,6 +53,7 @@ let Tooltips = {
      */
     callbackRoots: {
         Allies: () => Allies,
+        Ascended: () => Ascended,
         BlueGalaxy: () => BlueGalaxy,
         InventoryOverview: () => InventoryOverview,
         Kits: () => Kits,

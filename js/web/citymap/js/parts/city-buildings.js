@@ -417,13 +417,17 @@ let CityBuildings = {
 
 
 	/**
-	 * Checks whether a (time) limited building has expired.
+	 * Checks whether a (time) limited building has expired. A re-ascended
+	 * building keeps a stale decayedFromCityEntityId until the next full
+	 * reload, so it only counts as expired while its current version is not
+	 * itself time limited.
 	 *
 	 * @param {Object} data - The placed building entity.
 	 * @returns {boolean}
 	 */
 	isExpiredBuilding(data) {
-		return (data.type === 'generic_building' && data.decayedFromCityEntityId !== undefined);
+		return (data.type === 'generic_building' && data.decayedFromCityEntityId !== undefined
+			&& !MainParser.CityEntities?.[data.cityentity_id]?.components?.AllAge?.limited?.config?.expireTime);
 	},
 
 

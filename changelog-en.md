@@ -1,19 +1,40 @@
 ## Extension Changelog
 
-##### 4.5.1.0
+##### 4.6.0.0
 
 **New**
-- Building marker: New internal module that marks buildings in the city with floating golden arrows — the arrows follow the map live while zooming and panning and can be called by other modules as well as from the console via entity id or building name (`BuildingMarker.show(id)`, `BuildingMarker.showByName(name)`, `BuildingMarker.hide()`); clicking a marked building removes its arrow, the close button below the diamonds removes all of them
-- The eye buttons in Productions, Efficiency Rating, Blue Galaxy and Historical Allies now mark the building directly in the city instead of the city map box; if the marker is unavailable (e.g. Firefox), the city map opens as before
-- Guild Battlegrounds: New arrow button in the sector rows of the live box (can be disabled in the settings) — marks the sector with a floating arrow directly on the battlegrounds map; the same button, a click on the sector or the close button removes it again
-- Guild Battlegrounds: The live box settings are now grouped into tabs (Display, Copying, Time & alerts, Sending)
+- Majestic Buildings:
+	- New module containing all the city’s time-limited (majestic) buildings in a single box
+- City Builder:
+	- Buildings for which no space could be found no longer disappear silently from the map — they are now listed in their own movable box
+	- New loading display with background panel, progress bar and percentage while the layout is being calculated
+- Building Marker:
+	- New internal module that marks buildings in the city with floating golden arrows — the arrows follow the map in real time as you zoom and pan; clicking on a marked building removes its arrow, whilst the close cross beneath the diamonds removes all
+	- The eye buttons in ‘Productions’, ‘Efficiency Rating’, ‘Blue Galaxy’ and ‘Historical Allies’ now highlight the building directly in the city rather than in the city map box; if highlighting is not available (e.g. in Firefox), the city map opens as before
+
+- Gildengefechte:
+	- Neuer Pfeil-Button in den Sektor-Zeilen der Live-Box (per Einstellung abschaltbar) — markiert den Sektor mit einem schwebenden Pfeil direkt auf der Gefechtskarte; derselbe Button, ein Klick auf den Sektor oder das Schließen-Kreuz entfernt ihn wieder
+	- Die Einstellungen der Live-Box sind jetzt in Tabs gegliedert (Anzeige, Kopieren, Zeit & Alarm, Senden)
 
 **Update**
-- Guild Battlegrounds: The automatic Discord send now skips sectors with a too high attrition chance — the threshold is configurable in the settings (default: 100%) and checked at send time; if the chance drops below the threshold afterwards, the sector is announced on the next map update
+- Blue Galaxy:
+	- The fragment column is now split in two — allowing sorting by fragment amount or fragment name separately
+
+- Guild battles:
+	- The automatic Discord notification feature now excludes sectors with an excessively high chance of attrition — the threshold can be selected in the settings (default: 100 per cent); this is checked at the time of sending
 
 **Bugfix**
-- Guild Battlegrounds: Sector alerts arrived too late when the computer's clock differed from server time — the lead time is now converted to the local clock correctly, as are the countdowns in the live box and the sector and antiques dealer presets in the alerts module
-- Guild Battlegrounds: With the game tab open, sector alerts now fire to the second — the background process' alarms only wake the browser on a roughly one minute grid, which arrived too late with a lead time of a few seconds; they remain as the fallback for a closed tab
+- City Builder:
+	- Some individual roads were created in duplicate — the generously planned two-lane dual carriageways and routes are now being scaled back to the necessary minimum; the rest will be single-lane and redundant roads will be removed; if only a single building requires a two-lane road, exactly one 2x2 section right next to the town hall remains
+	- Two-lane roads are now planned as complete 2x2 sections and drawn with a visible grid pattern so that they can be distinguished from parallel single-lane roads; corridors of odd lengths are filled in so that the plan can be recreated in the game using whole sections
+	- The map in the pop-out window can now be panned with the mouse; the opacity slider, useless there, is hidden in the pop-out
+	- Great Buildings could end up walled in without a street connection — the town hall and regular buildings now never occupy the last free neighbouring tile of a still unconnected Great Building; buildings that cannot get a connection at all appear in the unplaced buildings box instead of standing on the map as an unbuildable plan
+	- Whole road sections could lose their connection to the town hall — the cleanup pass wrongly removed the anchor tile of a branch at the town hall; every road tile is now guaranteed to reach the town hall through the network
+
+- Guild Battles:
+	- Sector alerts were triggered too late if the computer’s clock differed from the server time — the lead time is now correctly converted to the local clock, as are the countdowns in the Live Box and the sector and antiquities dealer templates in the Alert Module
+- Guild Battles:
+	- When the game tab is open, sector alerts are now triggered to the nearest second — the background process’s alerts only wake the browser at minute intervals, which was too late when there were only a few seconds’ lead time; for the closed tab, they remain in place as a fallback
 
 ---
 

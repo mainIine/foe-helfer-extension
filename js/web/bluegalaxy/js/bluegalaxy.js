@@ -247,15 +247,18 @@ const BlueGalaxy = {
 		h.push('</div>');
 
 		const sortClass = (col) => (BlueGalaxy.sort.col === col ? BlueGalaxy.sort.order : '');
-		const iconTh = (col, icon, title) => `<th class="is-number icon ${icon} ${sortClass(col)}" title="${title}" data-type="bg-group" data-colname="${col}"><span></span></th>`;
+		const iconTh = (col, icon, title, align = 'text-center') => `<th class="is-number icon ${icon} ${sortClass(col)} ${align}" title="${title}" data-type="bg-group" data-colname="${col}"><span></span></th>`;
 
 		const table = [];
 		table.push('<table id="BGTable" class="foe-table">');
 		table.push('<thead class="sticky">' +
-			'<tr class="sorter-header">' +
+			'<tr class="sorter-header vertical-middle">' +
 			'<th class="no-sort"></th>' +
 			`<th class="no-sort" data-type="bg-group">${i18n('Boxes.BlueGalaxy.Building')}</th>` +
-			(showBGFragments ? iconTh('FragmentName', 'fragments', i18n('Boxes.BlueGalaxy.Fragments')) : '') +
+			(showBGFragments ?
+				iconTh('FragmentAmount', 'fragments', i18n('Boxes.BlueGalaxy.Fragments'), 'text-right') +
+				`<th class="${sortClass('FragmentName')}" data-type="bg-group" data-colname="FragmentName">${i18n('Boxes.BlueGalaxy.Fragments')}</th>`
+				: '') +
 			iconTh('FP', 'fp', i18n('Boxes.BlueGalaxy.FP')) +
 			iconTh('OlderGoods', 'old_goods', i18n('Boxes.BlueGalaxy.OlderGoods')) +
 			iconTh('Goods', 'goods', i18n('Boxes.BlueGalaxy.Goods')) +
@@ -274,8 +277,10 @@ const BlueGalaxy = {
 			table.push(`<td class="fh-tooltip" data-meta_id="${b.EntityID}" data-text="${b.name.replace(/[. -]/g, '')}" data-callback_tt="BlueGalaxy.BuildingImageTT">${b.name}</td>`);
 
 			if (showBGFragments) {
-				const items = Productions.showBuildingItems(true, b.building)[0];
-				table.push(`<td data-number="${b.FragmentAmount}">${items !== false ? items : ''}</td>`);
+				// showBuildingItems may return false, indexing it then yields undefined
+				const items = Productions.showBuildingItems(true, b.building)[2] || [];
+				table.push(`<td class="text-right item-amount" data-number="${b.FragmentAmount}">${items.map(item => item.random ? `Ø ${item.random}x` : `${item.amount}x`).join('<br>')}</td>`);
+				table.push(`<td>${items.map(item => `${item.fragment ? '🧩 ' : ''}${item.name}`).join('<br>')}</td>`);
 			}
 
 			table.push(`<td class="text-center" data-number="${b.FP}">${HTML.Format(b.FP)}</td>`);
