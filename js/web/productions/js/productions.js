@@ -395,9 +395,13 @@ let Productions = {
 			$('.TSinactive').removeClass('TSinactive')					
 			HTML.FilterTable('#Productions .filterCurrentList')
 
-			// show a building on the map
-			$('#Productions').on('click', '.foe-table .show-entity', function () {
-				Productions.ShowOnMap($(this).data('id'));
+			// mark a building in the city, fall back to the city map box if unsupported
+			$('#Productions').on('click', '.foe-table .show-entity', async function () {
+				const id = $(this).data('id');
+
+				if (!await BuildingMarker.show(id)) {
+					Productions.ShowOnMap(id);
+				}
 			});
 		});
 	},

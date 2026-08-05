@@ -2,6 +2,12 @@
 
 ##### 4.5.1.0
 
+**New**
+- Building marker: New internal module that marks buildings in the city with floating golden arrows — the arrows follow the map live while zooming and panning and can be called by other modules as well as from the console via entity id or building name (`BuildingMarker.show(id)`, `BuildingMarker.showByName(name)`, `BuildingMarker.hide()`); clicking a marked building removes its arrow, the close button below the diamonds removes all of them
+- The eye buttons in Productions, Efficiency Rating, Blue Galaxy and Historical Allies now mark the building directly in the city instead of the city map box; if the marker is unavailable (e.g. Firefox), the city map opens as before
+- Guild Battlegrounds: New arrow button in the sector rows of the live box (can be disabled in the settings) — marks the sector with a floating arrow directly on the battlegrounds map; the same button, a click on the sector or the close button removes it again
+- Guild Battlegrounds: The live box settings are now grouped into tabs (Display, Copying, Time & alerts, Sending)
+
 **Update**
 - Guild Battlegrounds: The automatic Discord send now skips sectors with a too high attrition chance — the threshold is configurable in the settings (default: 100%) and checked at send time; if the chance drops below the threshold afterwards, the sector is announced on the next map update
 

@@ -1,0 +1,91 @@
+/*
+ * *************************************************************************************
+ *
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
+ *
+ * See file LICENSE.md or go to
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
+ *
+ * *************************************************************************************
+ */
+
+#BuildingMarkerOverlay {
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 0;
+	height: 0;
+	/* the game canvas lives inside #game-container at z-index 100, so the
+	   overlay has to match it to be painted above the map but below the
+	   extension HUD (150) and tooltips (1000) */
+	z-index: 100;
+	pointer-events: none;
+}
+
+#BuildingMarkerOverlay .building-marker-arrow {
+	position: absolute;
+	left: 0;
+	top: 0;
+	will-change: transform;
+}
+
+#BuildingMarkerOverlay .building-marker-arrow svg {
+	position: absolute;
+	left: -46px;
+	top: -122px;
+	filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.45));
+	animation: building-marker-bob 1.6s ease-in-out infinite;
+}
+
+#BuildingMarkerOverlay .building-marker-close {
+	position: fixed;
+	top: 88px;
+	right: 70px;
+	width: 40px;
+	height: 40px;
+	pointer-events: auto;
+	cursor: pointer;
+	background: radial-gradient(circle at 35% 30%, #ffe28a, #f5b62d 55%, #d78f0f);
+	border: 2px solid #6d4400;
+	border-radius: 50%;
+	color: #5a3200;
+	font: bold 22px/36px Verdana, sans-serif;
+	text-align: center;
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+	user-select: none;
+}
+
+#BuildingMarkerOverlay .building-marker-close:hover {
+	filter: brightness(1.15);
+}
+
+#BuildingMarkerOverlay .building-marker-hidden {
+	display: none;
+}
+
+/* shared toggle button for other modules (e.g. the battlegrounds live box),
+   so every marker trigger looks the same */
+.btn.building-marker-btn {
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 46 54'%3E%3Cpolygon points='23,52 3,26 14,26 14,2 32,2 32,26 43,26' fill='%23f5b62d' stroke='%236d4400' stroke-width='3' stroke-linejoin='round'/%3E%3C/svg%3E"), var(--btn-bg);
+	background-size: 65%, 100%;
+	background-repeat: no-repeat;
+	background-position: center;
+	width: 22px;
+	height: 22px;
+}
+
+.btn.building-marker-btn.active {
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 46 54'%3E%3Cpolygon points='23,52 3,26 14,26 14,2 32,2 32,26 43,26' fill='%23f5b62d' stroke='%236d4400' stroke-width='3' stroke-linejoin='round'/%3E%3C/svg%3E"), var(--btn-bg-red);
+}
+
+@keyframes building-marker-bob {
+	0%, 100% {
+		transform: translateY(0);
+	}
+	50% {
+		transform: translateY(-20px);
+	}
+}

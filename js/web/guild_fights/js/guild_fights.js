@@ -203,6 +203,7 @@ let Guild_fights = {
 	showVPColumn: 0,
 	showAttritionColumn: 1,
 	showFocusTarget: 1,
+	showMarkerButton: 1,
 	// known placed buildings per own province, collected from getBuildings responses (ajax + websocket)
 	ProvinceBuildings: JSON.parse(localStorage.getItem('GuildFights.ProvinceBuildings') || '{}'),
 	serverOffset: JSON.parse(localStorage.getItem("GuildFights.serverOffset")||"null"),
@@ -704,6 +705,27 @@ let Guild_fights = {
 			btn = `<button class="btn btn-slim setalertbutton" data-id="${provId}" data-original-title="${i18n('Boxes.GuildFights.SetAlert')}"></button>`;
 		}
 		return btn;
+	},
+
+
+	/**
+	 * Returns the button that toggles the floating arrow over a sector on the
+	 * battlegrounds map, or an empty string when the option is disabled
+	 *
+	 * @param {number} provId Province id
+	 * @returns {string} Button markup
+	 */
+	GetMarkerButton: (provId) => {
+		if (!Guild_fights.showMarkerButton || typeof BuildingMarker === 'undefined') {
+			return '';
+		}
+
+		// the button style ships with the building-marker module
+		HTML.AddCssFile('building-marker');
+
+		const active = BuildingMarker.isProvinceMarked(provId);
+
+		return `<button class="btn btn-slim building-marker-btn${active ? ' active' : ''}" data-id="${provId}" data-original-title="${i18n('Boxes.GuildFights.MarkOnMap')}"></button>`;
 	},
 
 
@@ -1531,6 +1553,7 @@ let Guild_fights = {
 		Guild_fights.showVPColumn = LiveFightSettings?.showVPColumn ?? 0;
 		Guild_fights.showAttritionColumn = LiveFightSettings?.showAttritionColumn ?? 1;
 		Guild_fights.showFocusTarget = LiveFightSettings?.showFocusTarget ?? 1;
+		Guild_fights.showMarkerButton = LiveFightSettings?.showMarkerButton ?? 1;
 
 		let mapdata = Guild_fights.MapData['map']['provinces'];
 		for (let i in mapdata) {
@@ -1595,6 +1618,18 @@ let Guild_fights = {
 			$('#nextup').on('click', '.setalertbutton', function (e) {
 				Guild_fights.SetAlert($(this).data('id'));
 				e.stopPropagation();
+			});
+			$('#nextup').on('click', '.building-marker-btn', async function (e) {
+				e.stopPropagation();
+				const btn = $(this);
+				await BuildingMarker.toggleProvince(btn.data('id'));
+				btn.toggleClass('active', BuildingMarker.isProvinceMarked(btn.data('id')));
+			});
+			// keep the button states in sync when markers get dismissed on the map or via the close button
+			$(window).off('foe-helper#building-marker-changed.gbg').on('foe-helper#building-marker-changed.gbg', function () {
+				$('#nextup .building-marker-btn').each(function () {
+					$(this).toggleClass('active', BuildingMarker.isProvinceMarked($(this).data('id')));
+				});
 			});
 			$('#nextup').on('click', 'tr', function () {
 				$(this).toggleClass('highlight-row');
@@ -1930,9 +1965,9 @@ let Guild_fights = {
 					nextup.push(`<div class="btn-group">${discordButtons}</div>`);
 				nextup.push(`</td>`);
 
-				nextup.push(`<td class="text-right" id="alert-${prov[x]['id']}">
-					${Guild_fights.GetAlertButton(prov[x].id)}
-					</div></td>`);
+				nextup.push(`<td class="text-right" style="white-space:nowrap">
+					${Guild_fights.GetMarkerButton(prov[x].id)}<span id="alert-${prov[x]['id']}">${Guild_fights.GetAlertButton(prov[x].id)}</span>
+					</td>`);
 				nextup.push('</tr>');
 			}
 		}
@@ -2647,6 +2682,7 @@ let Guild_fights = {
 		let copyAttrition = LiveFightSettings?.copyAttrition ?? 0;
 		let copyFocusTarget = LiveFightSettings?.copyFocusTarget ?? 0;
 		let copyVP = LiveFightSettings?.copyVP ?? 0;
+		let showMarkerButton = LiveFightSettings?.showMarkerButton ?? 1;
 		let showServerTime = LiveFightSettings?.showServerTime ?? 0;
 		let alertLeadTime = LiveFightSettings?.alertLeadTime ?? 30;
 		let discordWebhook = LiveFightSettings?.discordWebhook ?? '';
@@ -2658,6 +2694,16 @@ let Guild_fights = {
 		let webRequestProfile = LiveFightSettings?.webRequestProfile ?? '';
 		let autoOpen = LiveFightSettings?.autoOpen ?? 1;
 
+		// the settings outgrew a single list, so they are grouped into tabs
+		c.push(`<div class="tabs gbg-settings-tabs">`);
+		c.push(`<ul class="horizontal dark-bg">
+			<li class="game-cursor"><a href="#gbgsettings-display" class="game-cursor">${i18n('Boxes.GuildFights.SettingsTabDisplay')}</a></li>
+			<li class="game-cursor"><a href="#gbgsettings-copy" class="game-cursor">${i18n('Boxes.GuildFights.SettingsTabCopy')}</a></li>
+			<li class="game-cursor"><a href="#gbgsettings-time" class="game-cursor">${i18n('Boxes.GuildFights.SettingsTabTime')}</a></li>
+			<li class="game-cursor"><a href="#gbgsettings-sending" class="game-cursor">${i18n('Boxes.GuildFights.SettingsTabSending')}</a></li>
+		</ul>`);
+
+		c.push(`<div id="gbgsettings-display">`);
 		c.push(`<p><label for="autoopenlivefight"><input id="autoopenlivefight" name="autoopenlivefight" value="0" type="checkbox" ${(autoOpen === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.Settings.Autostart')}</label></p>`);
 		c.push(`<p><input id="showguildcolumn" name="showguildcolumn" value="1" type="checkbox" ${(showGuildColumn === 1) ? ' checked="checked"' : ''} /> <label for="showguildcolumn">${i18n('Boxes.GuildFights.ShowOwner')}</label></p>`);
 		c.push(`<p><label for="showAdjacentSectors"><input id="showAdjacentSectors" name="showAdjacentSectors" value="0" type="checkbox" ${(showAdjacentSectors === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.ShowAdjacentSectors')}</label></p>`);
@@ -2665,17 +2711,25 @@ let Guild_fights = {
 		c.push(`<p><label for="showvpcolumn"><input id="showvpcolumn" name="showvpcolumn" value="0" type="checkbox" ${(showVPColumn === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.ShowVPColumn')}</label></p>`);
 		c.push(`<p><label for="showattritioncolumn"><input id="showattritioncolumn" name="showattritioncolumn" value="0" type="checkbox" ${(showAttritionColumn === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.ShowAttritionColumn')}</label></p>`);
 		c.push(`<p><label for="showfocustarget"><input id="showfocustarget" name="showfocustarget" value="0" type="checkbox" ${(showFocusTarget === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.ShowFocusTarget')}</label></p>`);
+		c.push(`<p><label for="showmarkerbutton"><input id="showmarkerbutton" name="showmarkerbutton" value="0" type="checkbox" ${(showMarkerButton === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.ShowMarkerButton')}</label></p>`);
+		c.push(`</div>`);
 
-		c.push(`<hr><p class="settingtitle">${i18n('Boxes.GuildFights.CopyElements')}</p>`);
+		c.push(`<div id="gbgsettings-copy" class="hidden-tab">`);
+		c.push(`<p class="settingtitle">${i18n('Boxes.GuildFights.CopyElements')}</p>`);
 		c.push(`<p class="copy-setting"><label for="copytilecolors"><input id="copytilecolors" name="copytilecolors" value="0" type="checkbox" ${(copyTileColors === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.CopyTileColors')}</label></p>`);
 		c.push(`<p class="copy-setting"><label for="copyattrition"><input id="copyattrition" name="copyattrition" value="0" type="checkbox" ${(copyAttrition === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.Attrition')}</label></p>`);
 		c.push(`<p class="copy-setting"><label for="copyfocustarget"><input id="copyfocustarget" name="copyfocustarget" value="0" type="checkbox" ${(copyFocusTarget === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.FocusTarget')} (🎯)</label></p>`);
 		c.push(`<p class="copy-setting"><label for="copyvp"><input id="copyvp" name="copyvp" value="0" type="checkbox" ${(copyVP === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.CopyVP')}</label></p>`);
-		c.push(`<hr><p><label for="showservertime"><input id="showservertime" name="showservertime" value="0" type="checkbox" ${(showServerTime === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.ShowServerTime')}</label></p>`);
+		c.push(`</div>`);
+
+		c.push(`<div id="gbgsettings-time" class="hidden-tab">`);
+		c.push(`<p><label for="showservertime"><input id="showservertime" name="showservertime" value="0" type="checkbox" ${(showServerTime === 1) ? ' checked="checked"' : ''} /> ${i18n('Boxes.GuildFights.ShowServerTime')}</label></p>`);
 		c.push(`<p><label for="serverOffset">${i18n('Boxes.GuildFights.serverOffset')}<input id="serverOffset" name="serverOffset" value="${Guild_fights.serverOffset??""}" type="text" maxlength="5" size = "5"/></label></p>`);
 		c.push(`<hr><p><label for="alertLeadTime">${i18n('Boxes.GuildFights.AlertLeadTime')} <input id="alertLeadTime" name="alertLeadTime" value="${alertLeadTime}" type="number" min="5" max="3600" step="5" size="6"/></label></p>`);
+		c.push(`</div>`);
 
-		c.push(`<hr><p>`);
+		c.push(`<div id="gbgsettings-sending" class="hidden-tab">`);
+		c.push(`<p>`);
 			c.push(`<label for="gbgWebhook"><b>${i18n('Menu.Discord.Title')}</b></label><span class="settings-ask" onclick="window.open('${i18n('Boxes.Discord.HelpLink')}', '_blank')"></span><br />`);
 			if (Discord.WebHooksUrls.length === 0)
 				c.push(`${i18n('Boxes.GuildFights.DiscordSetup')}: <span class="btn btn-slim" onclick="Discord.BuildBox()">${i18n('General.Open')}</span>`);
@@ -2723,10 +2777,13 @@ let Guild_fights = {
 				c.push(`</select>`);
 			}
 			c.push(`</p>`);
+		c.push(`</div>`); // end of the sending tab
+		c.push(`</div>`); // end of the settings tabs
+
 		c.push(`<p><button onclick="Guild_fights.SaveLiveFightSettings()" id="save-livefight-settings" class="btn btn-green">${i18n('Boxes.GuildFights.SaveSettings')}</button></p>`);
 
-		
 		$('#LiveGildFightingSettingsBox').html(c.join(''));
+		$('#LiveGildFightingSettingsBox .gbg-settings-tabs').tabslet();
 	},
 
 
@@ -2747,6 +2804,7 @@ let Guild_fights = {
 		value.showVPColumn = 0;
 		value.showAttritionColumn = 0;
 		value.showFocusTarget = 0;
+		value.showMarkerButton = 0;
 		value.showServerTime = 0;
 		value.discordWebhook = '';
 		value.discordWebhookTemplate = '';
@@ -2797,6 +2855,10 @@ let Guild_fights = {
 			value.showFocusTarget = 1;
 		}
 
+		if ($("#showmarkerbutton").is(':checked')) {
+			value.showMarkerButton = 1;
+		}
+
 		if ($("#showservertime").is(':checked')) {
 			value.showServerTime = 1;
 		}
@@ -2827,6 +2889,7 @@ let Guild_fights = {
 		Guild_fights.showVPColumn = value.showVPColumn;
 		Guild_fights.showAttritionColumn = value.showAttritionColumn;
 		Guild_fights.showFocusTarget = value.showFocusTarget;
+		Guild_fights.showMarkerButton = value.showMarkerButton;
 		Guild_fights.showServerTime = value.showServerTime;
 		Guild_fights.discordWebhook.url = value.discordWebhook;
 		Guild_fights.discordWebhook.template = value.discordWebhookTemplate;

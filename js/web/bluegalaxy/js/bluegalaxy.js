@@ -94,9 +94,13 @@ const BlueGalaxy = {
 			bindGoodsInput('#goodsValue', 'GoodsValue', 'BlueGalaxyGoodsValue');
 			bindGoodsInput('#OlderGoodsValue', 'OlderGoodsValue', 'BlueGalaxyOlderGoodsValue');
 
-			// A building should be shown on the map
-			$('#bluegalaxy').on('click', '.foe-table .show-entity', function () {
-				Productions.ShowOnMap($(this).data('id'));
+			// A building should be marked in the city, fall back to the city map box if unsupported
+			$('#bluegalaxy').on('click', '.foe-table .show-entity', async function () {
+				const id = $(this).data('id');
+
+				if (!await BuildingMarker.show(id)) {
+					Productions.ShowOnMap(id);
+				}
 			});
 
 			BlueGalaxy.CalcBody();

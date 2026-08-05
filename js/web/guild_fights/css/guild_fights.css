@@ -450,6 +450,47 @@
 	width: 26px;
 }
 
+/* the arrow toggle button itself is styled centrally in building-marker.css
+   (.btn.building-marker-btn), only the table spacing lives here */
+.foe-table .btn.building-marker-btn {
+	margin-right: 2px;
+}
+
+#LiveGildFightingSettingsBox .gbg-settings-tabs > ul {
+	display: flex;
+	list-style: none;
+	margin: 0 0 8px;
+	padding: 0;
+	gap: 2px;
+}
+
+#LiveGildFightingSettingsBox .gbg-settings-tabs > ul li {
+	flex: 1 1 auto;
+	margin: 0;
+}
+
+#LiveGildFightingSettingsBox .gbg-settings-tabs > ul li a {
+	display: block;
+	padding: 4px 6px;
+	text-align: center;
+	white-space: nowrap;
+	text-decoration: none;
+	color: #ddd;
+	background: rgba(0, 0, 0, 0.3);
+	border-radius: 3px;
+	font-weight: bold;
+	font-size: 0.9em;
+}
+
+#LiveGildFightingSettingsBox .gbg-settings-tabs > ul li.active a {
+	background: #4a3520;
+	color: #f8c66c;
+}
+
+#LiveGildFightingSettingsBox .gbg-settings-tabs > ul li a:hover {
+	color: #fff;
+}
+
 /*************************************************************************************************************/
 
 #ProvinceMapBody {

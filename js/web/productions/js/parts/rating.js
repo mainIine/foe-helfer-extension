@@ -1179,8 +1179,12 @@ Object.assign(Productions, {
 				if (!e.target.closest('#ratingOptions')) $('#ratingOptions').removeClass('open');
 			});
 
-			$('.show-all').on('click', function () {
-				Productions.ShowSearchOnMap($(this).attr('data-name'))
+			$('.show-all').on('click', async function () {
+				const name = $(this).attr('data-name');
+
+				if (!await BuildingMarker.showByName(name)) {
+					Productions.ShowSearchOnMap(name);
+				}
 			});
 
 			$('.ratinglist tr').on('click', function () {
