@@ -1,19 +1,40 @@
 ## Extension Changelog
 
-##### 4.5.1.0
+##### 4.6.0.0
 
 **Neu**
-- Gebäude-Markierung: Neues internes Modul, das Gebäude in der Stadt mit schwebenden goldenen Pfeilen markiert — die Pfeile folgen der Karte live bei Zoom und Verschiebung und können von anderen Modulen sowie über die Konsole per Entity-ID oder Gebäudename aufgerufen werden (`BuildingMarker.show(id)`, `BuildingMarker.showByName(name)`, `BuildingMarker.hide()`); ein Klick auf ein markiertes Gebäude entfernt dessen Pfeil, das Schließen-Kreuz unter den Diamanten alle
-- Die Auge-Buttons in Produktionen, Effizienzbewertung, Blaue Galaxie und Historische Verbündete markieren das Gebäude jetzt direkt in der Stadt statt in der Stadtkarten-Box; ist die Markierung nicht verfügbar (z. B. Firefox), öffnet sich wie bisher die Stadtkarte
-- Gildengefechte: Neuer Pfeil-Button in den Sektor-Zeilen der Live-Box (per Einstellung abschaltbar) — markiert den Sektor mit einem schwebenden Pfeil direkt auf der Gefechtskarte; derselbe Button, ein Klick auf den Sektor oder das Schließen-Kreuz entfernt ihn wieder
-- Gildengefechte: Die Einstellungen der Live-Box sind jetzt in Tabs gegliedert (Anzeige, Kopieren, Zeit & Alarm, Senden)
+- Erhabene Gebäude: 
+  - Neues Modul mit allen zeitlich begrenzten (erhabenen) Gebäuden der Stadt in einer Box
+- City Builder: 
+  - Gebäude, für die kein Platz mehr gefunden wurde, verschwinden nicht mehr stillschweigend von der Karte — sie werden jetzt in einer eigenen verschiebbaren Box aufgelistet
+  - Neue Ladeanzeige mit Hintergrund-Panel, Fortschrittsbalken und Prozentanzeige während der Berechnung
+- Gebäude-Markierung: 
+  - Neues internes Modul, das Gebäude in der Stadt mit schwebenden goldenen Pfeilen markiert — die Pfeile folgen der Karte live bei Zoom und Verschiebung; ein Klick auf ein markiertes Gebäude entfernt dessen Pfeil, das Schließen-Kreuz unter den Diamanten alle
+  - Die Auge-Buttons in Produktionen, Effizienzbewertung, Blaue Galaxie und Historische Verbündete markieren das Gebäude jetzt direkt in der Stadt statt in der Stadtkarten-Box; ist die Markierung nicht verfügbar (z.B. Firefox), öffnet sich wie bisher die Stadtkarte
+
+- Gildengefechte: 
+  - Neuer Pfeil-Button in den Sektor-Zeilen (per Einstellung abschaltbar) — markiert den Sektor mit einem schwebenden Pfeil direkt auf der Gefechtskarte; derselbe Button, ein Klick auf den Sektor oder das Schließen-Kreuz entfernt ihn wieder
+  - Die Einstellungen sind jetzt in Tabs gegliedert (Anzeige, Kopieren, Zeit & Alarm, Senden)
 
 **Update**
-- Gildengefechte: Der automatische Discord-Versand lässt Sektoren mit zu hoher Zermürbungschance jetzt aus — die Schwelle ist in den Einstellungen wählbar (Standard: 100 %), geprüft wird zum Sendezeitpunkt; sinkt die Chance danach noch unter die Schwelle, wird der Sektor beim nächsten Karten-Update nachgemeldet
+- Blaue Galaxie: 
+  - Die Fragment-Spalte ist jetzt zweigeteilt — so kann getrennt nach Anzahl oder Name der Fragmente sortiert werden
+
+- Gildengefechte: 
+  - Der automatische Discord-Versand lässt Sektoren mit zu hoher Zermürbungschance jetzt aus — die Schwelle ist in den Einstellungen wählbar (Standard: 100 %), geprüft wird zum Sendezeitpunkt
 
 **Bugfix**
-- Gildengefechte: Sektor-Alarme kamen zu spät, wenn die Uhr des Rechners von der Serverzeit abwich — die Vorlaufzeit wird jetzt korrekt auf die lokale Uhr umgerechnet, ebenso die Countdowns in der Live-Box und die Sektor- und Antiquitätenhändler-Vorlagen im Alarm-Modul
-- Gildengefechte: Bei geöffnetem Spiel-Tab werden Sektor-Alarme jetzt sekundengenau ausgelöst — die Alarme des Hintergrundprozesses wecken den Browser nur im Minutenraster, was bei wenigen Sekunden Vorlaufzeit zu spät kam; für den geschlossenen Tab bleiben sie als Rückfallebene erhalten
+- City Builder: 
+  - Einzelne Straßen wurden teilweise doppelt angelegt — die großzügig geplanten zweispurigen Doppelreihen und Trassen werden jetzt auf das nötige Minimum zurückgestutzt, der Rest wird einspurig und überflüssige Straßen entfernt; braucht nur ein Gebäude eine zweispurige Straße, bleibt genau ein 2x2-Stück direkt am Rathaus übrig
+  - Zweispurige Straßen werden jetzt als ganze 2x2-Stücke geplant und mit sichtbarem Blockraster gezeichnet, damit sie von parallelen einspurigen Straßen unterscheidbar sind; Korridore ungerader Länge werden aufgefüllt, sodass der Plan im Spiel aus ganzen Stücken nachbaubar ist
+  - Die Karte im Pop-out-Fenster lässt sich jetzt mit der Maus verschieben; der dort nutzlose Deckkraft-Regler wird im Pop-out ausgeblendet
+  - Legendäre Gebäude konnten ohne Straßenanschluss eingemauert werden — das Rathaus und normale Gebäude besetzen jetzt nie mehr die letzte freie Nachbarkachel eines noch unangeschlossenen LG; Gebäude, die trotz allem keinen Anschluss bekommen können, erscheinen in der Box der nicht platzierten Gebäude statt als unbaubarer Plan auf der Karte
+  - Ganze Straßenabschnitte konnten den Anschluss ans Rathaus verlieren — der Aufräum-Pass entfernte fälschlich die Ankerkachel eines Astes am Rathaus; jetzt erreicht garantiert jede Straßenkachel das Rathaus über das Netz
+  
+- Gildengefechte: 
+  - Sektor-Alarme kamen zu spät — die Vorlaufzeit wird jetzt korrekt auf die lokale Uhr umgerechnet, ebenso die Countdowns in der Live-Box und die Sektor- und Antiquitätenhändler-Vorlagen im Alarm-Modul
+- Gildengefechte: 
+  - Bei geöffnetem Spiel-Tab werden Sektor-Alarme jetzt sekundengenau ausgelöst
 
 ---
 

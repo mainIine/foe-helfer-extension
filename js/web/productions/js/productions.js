@@ -879,11 +879,17 @@ let Productions = {
 			return i18n('Boxes.Productions.goods_boost');
         }
 		else {
-			if(GoodType && GoodsData[GoodType]){
-				return GoodsData[GoodType]['name'];
-			} else {
-				return GoodType;
+			// prefer own translations for base resources - GoodsData names follow
+			// the world language instead of the extension language
+			const i18nKey = 'Boxes.General.Resource.' + GoodType;
+			const translated = i18n(i18nKey);
+			if (translated !== i18nKey) {
+				return translated;
 			}
+			if (GoodType && GoodsData[GoodType]) {
+				return GoodsData[GoodType]['name'];
+			}
+			return GoodType;
 		}
 	},
 

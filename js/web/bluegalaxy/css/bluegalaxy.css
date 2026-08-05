@@ -107,6 +107,11 @@
     font-size: 95%;
 }
 
+#bluegalaxy #bluegalaxyBody td.item-amount {
+    white-space: nowrap;
+    width: 1%;
+}
+
 #bluegalaxy #bluegalaxyBody .foe-table tr:first-child td:nth-child(5) strong {
     color: var(--success);
 }
