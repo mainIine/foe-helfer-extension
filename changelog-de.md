@@ -2,6 +2,12 @@
 
 ##### 4.5.1.0
 
+**Neu**
+- Gebäude-Markierung: Neues internes Modul, das Gebäude in der Stadt mit schwebenden goldenen Pfeilen markiert — die Pfeile folgen der Karte live bei Zoom und Verschiebung und können von anderen Modulen sowie über die Konsole per Entity-ID oder Gebäudename aufgerufen werden (`BuildingMarker.show(id)`, `BuildingMarker.showByName(name)`, `BuildingMarker.hide()`); ein Klick auf ein markiertes Gebäude entfernt dessen Pfeil, das Schließen-Kreuz unter den Diamanten alle
+- Die Auge-Buttons in Produktionen, Effizienzbewertung, Blaue Galaxie und Historische Verbündete markieren das Gebäude jetzt direkt in der Stadt statt in der Stadtkarten-Box; ist die Markierung nicht verfügbar (z. B. Firefox), öffnet sich wie bisher die Stadtkarte
+- Gildengefechte: Neuer Pfeil-Button in den Sektor-Zeilen der Live-Box (per Einstellung abschaltbar) — markiert den Sektor mit einem schwebenden Pfeil direkt auf der Gefechtskarte; derselbe Button, ein Klick auf den Sektor oder das Schließen-Kreuz entfernt ihn wieder
+- Gildengefechte: Die Einstellungen der Live-Box sind jetzt in Tabs gegliedert (Anzeige, Kopieren, Zeit & Alarm, Senden)
+
 **Update**
 - Gildengefechte: Der automatische Discord-Versand lässt Sektoren mit zu hoher Zermürbungschance jetzt aus — die Schwelle ist in den Einstellungen wählbar (Standard: 100 %), geprüft wird zum Sendezeitpunkt; sinkt die Chance danach noch unter die Schwelle, wird der Sektor beim nächsten Karten-Update nachgemeldet
 

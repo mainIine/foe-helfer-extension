@@ -557,8 +557,12 @@ let Allies = {
 			Allies.updateAllyList();
 		});
 
-		$('#AllyListBody .foe-table .show-entity').on('click', function () {
-			Productions.ShowOnMap($(this).data('id'));
+		$('#AllyListBody .foe-table .show-entity').on('click', async function () {
+			const id = $(this).data('id');
+
+			if (!await BuildingMarker.show(id)) {
+				Productions.ShowOnMap(id);
+			}
 		});
 
 		Allies.applyFilters();
