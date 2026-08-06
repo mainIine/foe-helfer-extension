@@ -15,6 +15,8 @@ let CityBuilder = {
 
     Data: [],
     Unplaced: [],
+    Stats: null,
+    RoadsBefore: 0,
     MapScale: 20,
     Worker: null,
     PanX: 0,
@@ -217,6 +219,19 @@ let CityBuilder = {
         h.push(`</span>`);
 
         h.push(`</div>`);
+
+        // road balance top-left: tiles in the live city vs the planned layout
+        if (CityBuilder.Stats && CityBuilder.RoadsBefore > 0) {
+            const before = CityBuilder.RoadsBefore;
+            const after = CityBuilder.Stats.roads;
+            const pct = Math.round((1 - after / before) * 100);
+            const pctClass = pct >= 0 ? 'saving' : 'extra';
+            h.push(`<div class="city-builder-stats">`);
+            h.push(`<div>${i18n('Boxes.CityBuilder.RoadsBefore')}: <b>${before}</b></div>`);
+            h.push(`<div>${i18n('Boxes.CityBuilder.RoadsAfter')}: <b>${after}</b></div>`);
+            h.push(`<div>${i18n('Boxes.CityBuilder.Savings')}: <b class="${pctClass}">${pct} %</b></div>`);
+            h.push(`</div>`);
+        }
 
         h.push(`<div class="map-grid-wrapper" style="--scale:${storedUnit}; opacity:${storedOpacity};">`);
 
@@ -661,16 +676,26 @@ let CityBuilder = {
         }
 
         let buildingsInput = [];
+        CityBuilder.RoadsBefore = 0;
 
         for (const [id, instance] of Object.entries(mapData)) {
             if (!instance) continue;
 
             // Filter
             if (instance.x < 0 || instance.y < 0) continue;
-            if (instance.type === 'street' || instance.type === 'off_grid') continue;
+            if (instance.type === 'off_grid') continue;
 
             const meta = entities[instance.cityentity_id];
             if (!meta) continue;
+
+            // current road tiles of the live city - baseline for the savings
+            // display (two-lane pieces count with their full 2x2 footprint)
+            if (instance.type === 'street') {
+                const sw = parseInt(meta.components?.AllAge?.placement?.size?.x || meta.width || 1);
+                const sh = parseInt(meta.components?.AllAge?.placement?.size?.y || meta.length || 1);
+                CityBuilder.RoadsBefore += sw * sh;
+                continue;
+            }
 
             // Größe ermitteln (Deep Check)
             let b_width = meta.width;
@@ -798,6 +823,7 @@ let CityBuilder = {
                 // Daten übernehmen statt herunterladen
                 CityBuilder.Data = data.layout;
                 CityBuilder.Unplaced = data.unplaced || [];
+                CityBuilder.Stats = data.stats || null;
 
                 // Karte anzeigen
                 CityBuilder.showMap();
@@ -2846,6 +2872,54 @@ let CityBuilder = {
                     }
                 }
     
+                // compaction: slide every roadless building up and left until it
+                // rests against the city - this closes the thin seams of free
+                // tiles the placement order leaves between the rows, so the
+                // roadless mass stands as one solid block
+                {
+                    const fitsAt = (b, nx, ny) => {
+                        for (let i = nx; i < nx + b.width; i++) {
+                            for (let j = ny; j < ny + b.height; j++) {
+                                const v = this.grid.get(i + ',' + j);
+                                if (v === 0) continue;
+                                if (v === 1 && i >= b.x && i < b.x + b.width && j >= b.y && j < b.y + b.height) continue;
+                                return false;
+                            }
+                        }
+                        return true;
+                    };
+                    const applyMove = (b, nx, ny, val) => {
+                        for (let i = b.x; i < b.x + b.width; i++) {
+                            for (let j = b.y; j < b.y + b.height; j++) this.grid.set(i + ',' + j, 0);
+                        }
+                        for (let i = nx; i < nx + b.width; i++) {
+                            for (let j = ny; j < ny + b.height; j++) this.grid.set(i + ',' + j, val);
+                        }
+                        b.x = nx;
+                        b.y = ny;
+                    };
+                    // pure top-left gravity, processed in top-left order so a
+                    // whole row cascades within one pass; a temporary gap behind
+                    // a sliding building is closed by the neighbours that follow.
+                    // If a slide seals a pocket for good, the wasted metric makes
+                    // that variant lose the selection - no veto needed here
+                    let movedAny = true, cGuard = 0;
+                    while (movedAny && cGuard++ < 15) {
+                        movedAny = false;
+                        const order = this.placedBuildings
+                            .filter(b => b.street_level === 0 && b.type !== 'main_building')
+                            .sort((p, q) => (p.x + p.y) - (q.x + q.y) || p.y - q.y);
+                        for (const b of order) {
+                            for (const [dx, dy] of [[0, -1], [-1, 0]]) {
+                                while (fitsAt(b, b.x + dx, b.y + dy)) {
+                                    applyMove(b, b.x + dx, b.y + dy, 1);
+                                    movedAny = true;
+                                }
+                            }
+                        }
+                    }
+                }
+
                 // usable spare space: the largest empty rectangle left on the map.
                 // "connected" alone is not enough - a thin ring around the city is
                 // connected but useless; free tiles outside the biggest rectangle
