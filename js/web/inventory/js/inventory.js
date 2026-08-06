@@ -44,6 +44,12 @@
  * @property {string} kind item category: 'building', 'fragment', 'kit' or 'other'
  * @property {?string} entityId city entity id when the item (or its assembled
  *                              reward) is a building, null otherwise
+ * @property {?string} kitId upgrade kit id when the item (or its assembled
+ *                           reward) is an upgrade kit, null otherwise
+ * @property {?string} selectionKitId selection kit id when the item (or its
+ *                                    assembled reward) is a selection kit, null otherwise
+ * @property {string} search searchable text: the name, for selection kits
+ *                           extended by the names of the contained items
  * @property {string} icon icon url
  * @property {number} [value] value of the selected property (only while a property filter is active)
  * @property {number} [added] sort key (ms) of the last stock increase, 0 = unknown (only while sorting by additions)
@@ -61,6 +67,9 @@ let InventoryOverview = {
 
 	/** @type {string} selected property type, '' = no property filter */
 	FilterType: '',
+
+	/** @type {string} selected item category ('building', 'fragment', 'kit', 'other'), '' = all */
+	KindFilter: '',
 
 	/** @type {boolean} true = descending sort order */
 	SortDescending: true,
@@ -101,7 +110,8 @@ let InventoryOverview = {
 			auto_close: true,
 			dragdrop: true,
 			minimize: true,
-			resize: true
+			resize: true,
+			popout: () => MainParser.PopOut('inventoryOverview', 680, 460),
 		});
 
 		InventoryOverview.BuildBox();
@@ -125,6 +135,19 @@ let InventoryOverview = {
 					InventoryOverview.RenderList();
 				}),
 				$('<select />').attr({
+					id: 'inventoryOverviewKind',
+					class: 'game-cursor'
+				}).append(
+					$('<option />').attr('value', '').text(i18n('Boxes.Inventory.AllKinds')),
+					$('<option />').attr('value', 'building').text(i18n('Boxes.Inventory.TypeBuildings')),
+					$('<option />').attr('value', 'fragment').text(i18n('Boxes.Inventory.TypeFragments')),
+					$('<option />').attr('value', 'kit').text(i18n('Boxes.Inventory.TypeKits')),
+					$('<option />').attr('value', 'other').text(i18n('Boxes.Inventory.TypeOther'))
+				).on('change', () => {
+					InventoryOverview.KindFilter = String($('#inventoryOverviewKind').val());
+					InventoryOverview.RenderList();
+				}),
+				$('<select />').attr({
 					id: 'inventoryOverviewProperty',
 					class: 'game-cursor',
 					'data-original-title': i18n('Boxes.Inventory.PropertyFilterHint'),
@@ -144,7 +167,9 @@ let InventoryOverview = {
 					InventoryOverview.RenderList();
 				})
 			),
-			$('<div />').attr('id', 'inventoryOverviewInner'),
+			$('<div />').attr('id', 'inventoryOverviewInner').on('click', '.item', (e) => {
+				InventoryOverview.CopyName($(e.currentTarget).find('.item-name').text());
+			}),
 			$('<div />').attr('id', 'inventoryOverviewBottombar')
 		);
 
@@ -315,14 +340,27 @@ let InventoryOverview = {
 				kind = 'kit';
 			}
 
+			const isSelectionKit = (MainParser.SelectionKits?.[targetId] !== undefined);
+			const name = entry.name || targetId;
+
+			// selection kits are searchable by their contents, so looking for a
+			// specific building also surfaces the kits it can be taken from
+			let search = name;
+			if (isSelectionKit) {
+				search += '\n' + InventoryOverview.KitContents(targetId).names.join('\n');
+			}
+
 			items.push({
 				id: entry.id,
-				name: entry.name || targetId,
+				name: name,
 				inStock: entry.inStock,
 				required: entry.required,
 				isFragment: isFragment,
 				kind: kind,
 				entityId: (isBuilding ? targetId : null),
+				kitId: (MainParser.BuildingUpgrades?.[targetId] !== undefined ? targetId : null),
+				selectionKitId: (isSelectionKit ? targetId : null),
+				search: search,
 				icon: InventoryOverview.ItemIcon(entry, isBuilding, targetId)
 			});
 		}
@@ -349,6 +387,68 @@ let InventoryOverview = {
 
 		const asset = Kits.specialCases[entry.itemAssetName] || entry.itemAssetName;
 		return srcLinks.get('/shared/icons/reward_icons/reward_icon_' + asset + '.png', true);
+	},
+
+
+	/** @type {Object<string,{buildings:string[],names:string[]}>} resolved selection kit contents keyed by kit id */
+	kitContentsCache: {},
+
+
+	/**
+	 * Resolves the contents of a selection kit: the city entity ids of all
+	 * obtainable buildings (nested selection kits are followed) and the display
+	 * names of every option (buildings, upgrade kits, nested kits) for the search.
+	 * @param {string} kitId
+	 * @param {number} [depth=0] recursion guard for nested selection kits
+	 * @returns {{buildings: string[], names: string[]}}
+	 */
+	KitContents: (kitId, depth = 0) => {
+		if (depth === 0 && InventoryOverview.kitContentsCache[kitId] !== undefined) {
+			return InventoryOverview.kitContentsCache[kitId];
+		}
+
+		const kit = MainParser.SelectionKits?.[kitId];
+		const options = kit?.options || kit?.eraOptions?.[CurrentEra]?.options || kit?.eraOptions?.BronzeAge?.options || [];
+		const buildings = new Set();
+		const names = new Set();
+
+		for (const option of options) {
+			const item = option.item;
+
+			if (item.cityEntityId !== undefined) {
+				if (MainParser.CityEntities[item.cityEntityId] === undefined) continue;
+				buildings.add(item.cityEntityId);
+				names.add(MainParser.CityEntities[item.cityEntityId].name);
+			}
+			else if (item.upgradeItemId !== undefined) {
+				names.add(MainParser.BuildingUpgrades?.[item.upgradeItemId]?.upgradeItem?.name || item.upgradeItemId);
+			}
+			else if (item.selectionKitId !== undefined && depth < 3) {
+				const nested = InventoryOverview.KitContents(item.selectionKitId, depth + 1);
+				nested.buildings.forEach(id => buildings.add(id));
+				nested.names.forEach(name => names.add(name));
+			}
+		}
+
+		const result = { buildings: Array.from(buildings), names: Array.from(names) };
+		if (depth === 0) InventoryOverview.kitContentsCache[kitId] = result;
+		return result;
+	},
+
+
+	/**
+	 * Calculates the value of the selected property for a selection kit:
+	 * the best value among the contained buildings (the player can pick it).
+	 * @param {string} kitId
+	 * @param {string} type property type (efficiency rating type key)
+	 * @returns {number}
+	 */
+	KitPropertyValue: (kitId, type) => {
+		let best = 0;
+		for (const entityId of InventoryOverview.KitContents(kitId).buildings) {
+			best = Math.max(best, InventoryOverview.PropertyValue(entityId, type));
+		}
+		return best;
 	},
 
 
@@ -387,11 +487,19 @@ let InventoryOverview = {
 		const isProperty = (type !== '' && type !== '@added');
 		let items = InventoryOverview.CollectItems();
 
-		// property filter: only buildings (and their fragments) with a value
+		// category filter (buildings / fragments / kits / other)
+		if (InventoryOverview.KindFilter !== '') {
+			items = items.filter(item => item.kind === InventoryOverview.KindFilter);
+		}
+
+		// property filter: buildings and selection kits (and their fragments) with
+		// a value; a kit counts with the best building it contains
 		if (isProperty) {
-			items = items.filter(item => item.entityId !== null);
+			items = items.filter(item => item.entityId !== null || item.selectionKitId !== null);
 			for (const item of items) {
-				item.value = InventoryOverview.PropertyValue(item.entityId, type);
+				item.value = (item.entityId !== null
+					? InventoryOverview.PropertyValue(item.entityId, type)
+					: InventoryOverview.KitPropertyValue(item.selectionKitId, type));
 			}
 			items = items.filter(item => item.value !== 0);
 		}
@@ -428,7 +536,9 @@ let InventoryOverview = {
 				}
 			});
 		if (filterRegExps.length > 0) {
-			items = items.filter(item => filterRegExps.some(it => it.test(item.name)));
+			// item.search includes the contents of selection kits, so searching a
+			// building also surfaces the kits it can be taken from
+			items = items.filter(item => filterRegExps.some(it => it.test(item.search)));
 		}
 
 		const direction = (InventoryOverview.SortDescending ? -1 : 1);
@@ -458,8 +568,7 @@ let InventoryOverview = {
 			.map(([kind, key]) => counts[kind] + ' ' + i18n('Boxes.Inventory.' + key));
 
 		$('#inventoryOverviewBottombar').html(
-			items.length + ' ' + i18n('Boxes.Inventory.Items')
-			+ (breakdown.length > 0 ? '<span class="type-split">' + breakdown.join(', ') + '</span>' : '')
+			items.length + ' ' + i18n('Boxes.Inventory.Items') + (breakdown.length > 0 ? '<span class="type-split">' + breakdown.join(', ') + '</span>' : '')
 		);
 
 		$('#inventoryOverviewInner [data-original-title]').tooltip({
@@ -477,11 +586,17 @@ let InventoryOverview = {
 	 */
 	ItemDiv: (item, type) => {
 		const safeName = item.name.replace(/"/g, '&quot;');
-		// buildings get the rich building tooltip, everything else at least the
-		// full name as native tooltip (names are truncated to one line)
-		const tooltip = (item.entityId !== null
-			? ` data-meta_id="${item.entityId}" data-era="${CurrentEra}" data-callback_tt="Tooltips.buildingTT" class="item fh-tooltip game-cursor"`
-			: ` class="item" title="${safeName}"`);
+		// buildings get the rich building tooltip, upgrade kits show their source
+		// and target building, everything else at least the full name as native
+		// tooltip (names are truncated to one line)
+		let tooltip = ` class="item" title="${safeName}"`;
+		if (item.entityId !== null) {
+			tooltip = ` data-meta_id="${item.entityId}" data-era="${CurrentEra}" data-callback_tt="Tooltips.buildingTT" class="item fh-tooltip game-cursor"`;
+		} else if (item.selectionKitId !== null) {
+			tooltip = ` data-kit_id="${item.selectionKitId}" data-callback_tt="InventoryOverview.SelectionKitTooltip" class="item fh-tooltip game-cursor"`;
+		} else if (item.kitId !== null) {
+			tooltip = ` data-kit_id="${item.kitId}" data-callback_tt="InventoryOverview.KitTooltip" class="item fh-tooltip game-cursor"`;
+		}
 
 		let fragments = '';
 		if (item.isFragment) {
@@ -510,6 +625,103 @@ let InventoryOverview = {
 					<span class="item-name">${item.name}</span>
 					${fragments}
 					${value}
+				</div>`;
+	},
+
+
+	/**
+	 * Copies an item name to the clipboard and confirms it with a toast.
+	 * @param {string} name
+	 */
+	CopyName: (name) => {
+		if (!name) return;
+		helper.str.copyToClipboard(name);
+		HTML.ShowToastMsg({
+			show: true,
+			head: i18n('Boxes.Inventory.CopiedHead'),
+			text: i18n('Boxes.Inventory.CopiedText').replace('__name__', name),
+			type: 'success',
+			hideAfter: 2600
+		});
+	},
+
+
+	/**
+	 * Tooltip of an upgrade kit: shows the source and the target building of the
+	 * kit's upgrade chain (base level and fully upgraded building).
+	 * @param {Object} e pointerenter event on the kit tile
+	 * @returns {?string} tooltip html, null when the chain is unknown
+	 */
+	KitTooltip: (e) => {
+		const upgrade = MainParser.BuildingUpgrades?.[e.currentTarget.dataset.kit_id];
+		const steps = upgrade?.upgradeSteps || [];
+		const from = MainParser.CityEntities[steps[0]?.buildingIds[0]];
+		const to = MainParser.CityEntities[steps[steps.length - 1]?.buildingIds[0]];
+		if (!from || !to || from === to) return null;
+
+		const buildingDiv = (meta) => {
+			const img = srcLinks.get('/city/buildings/' + meta.asset_id.replace(/^(\D_)(.*?)/, '$1SS_$2') + '.png', true);
+			return `<div class="kit-building"><img src="${img}" alt=""><span>${meta.name}</span></div>`;
+		};
+
+		return `<div class="inventoryKitTT">
+					<h2>${upgrade.upgradeItem.name}</h2>
+					<div class="kit-chain">
+						${buildingDiv(from)}
+						<span class="kit-arrow">➜</span>
+						${buildingDiv(to)}
+					</div>
+				</div>`;
+	},
+
+
+	/**
+	 * Tooltip of a selection kit: lists the contained buildings (with the value
+	 * of the selected property while a property filter is active, best first)
+	 * and the names of the remaining options (upgrade kits, nested kits).
+	 * @param {Object} e pointerenter event on the kit tile
+	 * @returns {?string} tooltip html, null when the kit is unknown
+	 */
+	SelectionKitTooltip: (e) => {
+		const kitId = e.currentTarget.dataset.kit_id;
+		const kit = MainParser.SelectionKits?.[kitId];
+		if (!kit) return null;
+
+		const type = InventoryOverview.FilterType;
+		const isProperty = (type !== '' && type !== '@added');
+		const contents = InventoryOverview.KitContents(kitId);
+
+		let buildings = contents.buildings.map(entityId => ({
+			meta: MainParser.CityEntities[entityId],
+			value: (isProperty ? InventoryOverview.PropertyValue(entityId, type) : 0)
+		}));
+		buildings.sort((a, b) => (b.value - a.value) || a.meta.name.localeCompare(b.meta.name));
+
+		const hidden = Math.max(0, buildings.length - 12);
+		buildings = buildings.slice(0, 12);
+
+		const rows = buildings.map(b => {
+			const img = srcLinks.get('/city/buildings/' + b.meta.asset_id.replace(/^(\D_)(.*?)/, '$1SS_$2') + '.png', true);
+			const value = (isProperty && b.value !== 0 ? `<span class="kit-value">${HTML.Format(Math.round(b.value * 100) / 100)}</span>` : '');
+			return `<div class="kit-row"><img src="${img}" alt=""><span>${b.meta.name}</span>${value}</div>`;
+		}).join('');
+
+		// remaining options without an own entity (upgrade kits, nested kits)
+		const buildingNames = new Set(buildings.map(b => b.meta.name));
+		const others = contents.names.filter(name => !buildingNames.has(name));
+		let footer = '';
+		if (hidden > 0 || others.length > 0) {
+			const parts = [];
+			if (others.length > 0) parts.push(others.slice(0, 6).join(', '));
+			if (hidden > 0 || others.length > 6) parts.push('…');
+			footer = `<p class="kit-others">${parts.join(', ')}</p>`;
+		}
+
+		return `<div class="inventoryKitTT selection">
+					<h2>${kit.name}</h2>
+					<h3>${i18n('Boxes.Inventory.KitContains')}</h3>
+					<div class="kit-list">${rows}</div>
+					${footer}
 				</div>`;
 	}
 };

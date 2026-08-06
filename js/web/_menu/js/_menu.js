@@ -30,6 +30,7 @@ let _menu = {
 	
 	Items: [
 		//'calculator',
+		'ascended',
 		'webRequest',
 		'inventory',
 		'partCalc',
@@ -335,6 +336,7 @@ let _menu = {
 		{ id: 'greatBuildings', title: i18n('Menu.greatbuildings.Title'), description: i18n('Menu.greatbuildings.Desc') },
 		{ id: 'kits', title: i18n('Menu.Kits.Title'), description: i18n('Menu.Kits.Desc') },
 		{ id: 'inventory', title: i18n('Menu.Inventory.Title'), description: i18n('Menu.Inventory.Desc') },
+		{ id: 'ascended', title: i18n('Menu.Ascended.Title'), description: i18n('Menu.Ascended.Desc') },
 		{ id: 'stats', title: i18n('Menu.Stats.Title'), description: i18n('Menu.Stats.Desc') },
 		{ id: 'settings', title: i18n('Menu.Settings.Title'), description: i18n('Menu.Settings.Desc') },
 		{ id: 'notice', title: i18n('Menu.Notice.Title'), description: i18n('Menu.Notice.Desc') },
@@ -636,6 +638,20 @@ let _menu = {
 	/**
 	 * Inventory overview
 	 */
+	/**
+	 * Time limited ("ascended") buildings overview
+	 */
+	ascended_Btn: () => {
+		let btn = _menu.MakeButton('ascended');
+
+		let btn_sp = $('<span />').on('click', function () {
+			Ascended.init();
+		});
+
+		return btn.append(btn_sp, $('<span id="ascended-expired-count" class="hud-counter" style="display:none">0</span>'))
+			.ready(Ascended.UpdateMenuCounter);
+	},
+
 	inventory_Btn: () => {
 		let btn = _menu.MakeButton('inventory');
 

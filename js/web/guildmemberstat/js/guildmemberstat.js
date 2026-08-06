@@ -209,7 +209,7 @@ let GuildMemberStat = {
 				dragdrop: true,
 				resize: true,
 				minimize: true,
-				settings: 'GuildMemberStat.GuildMemberStatSettings()'
+				settings: () => GuildMemberStat.GuildMemberStatSettings()
 			});
 
 			helper.preloader.show('#GuildMemberStat');

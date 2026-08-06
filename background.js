@@ -269,6 +269,39 @@ alertsDB.version(1).stores({
 			);
 		}
 
+		/**
+		 * shows the notification of an alert exactly once, no matter whether the
+		 * browser alarm or a precise page side timer got there first
+		 * @param {!number} alertId the id of the alert to fire
+		 * @returns {Promise<boolean>} true if this call fired the notification
+		 */
+		async function fireAlert(alertId) {
+			const alertData = await db.transaction('rw', db.alerts, async () => {
+				const alertData = await Alerts.get(alertId);
+				// already fired => this is the slower of the two paths, ignore it
+				if (alertData == null || alertData.triggered) return null;
+				alertData.triggered = true;
+				await db.alerts.put(alertData);
+				return alertData;
+			});
+			if (alertData == null) return false;
+
+			triggerAlert(alertData);
+			return true;
+		}
+
+		/**
+		 * fires an alert ahead of its browser alarm and drops the now obsolete alarm
+		 * @param {!number} alertId the id of the alert to fire
+		 * @returns {Promise<boolean>} true if this call fired the notification
+		 */
+		async function fireAlertNow(alertId) {
+			const fired = await fireAlert(alertId);
+			// the alarm would only produce a duplicate now
+			await browser.alarms.clear(prefix + alertId);
+			return fired;
+		}
+
 		// Alarm triggered => show Notification
 		browser.alarms.onAlarm.addListener(async (alarm) => {
 			if (!alarm.name.startsWith(prefix)) return;
@@ -276,16 +309,7 @@ alertsDB.version(1).stores({
 			const alertId = Number.parseInt(alarm.name.substring(prefix.length));
 			if (!Number.isInteger(alertId) || alertId > Number.MAX_SAFE_INTEGER || alertId < 0) return;
 
-			const alertData = await db.transaction('rw', db.alerts, async () => {
-				const alertData = await Alerts.get(alertId);
-				if (alertData == null) return null;
-				alertData.triggered = true;
-				await db.alerts.put(alertData);
-				return alertData;
-			});
-			if (alertData == null) return;
-
-			triggerAlert(alertData);
+			await fireAlert(alertId);
 		});
 
 
@@ -358,7 +382,8 @@ alertsDB.version(1).stores({
 			create: createAlert,
 			createTemp: createAlertData,
 			setData: setAlertData,
-			trigger: triggerAlert
+			trigger: triggerAlert,
+			triggerNow: fireAlertNow
 		};
 	})();
 
@@ -579,6 +604,19 @@ alertsDB.version(1).stores({
 							}, 5000);
 
 							return APIsuccess(true);
+						}
+
+						case 'triggerNow': { // action
+							const id = request.id;
+							if (!Number.isInteger(id)) return APIerror('malformed request: expected "id": integer');
+
+							const alert = await Alerts.get(id);
+							if (!alert || alert.server !== server || alert.playerId !== playerId) return APIsuccess(false);
+
+							// browser alarms are only accurate to roughly a minute, so an open
+							// game tab fires the alert on time and cancels the pending alarm
+							const fired = await Alerts.triggerNow(id);
+							return APIsuccess(fired);
 						}
 
 						case 'delete': { // action

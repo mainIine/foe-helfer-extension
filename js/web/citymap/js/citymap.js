@@ -150,7 +150,7 @@ let CityMap = {
 				dragdrop: true,
 				resize: true,
 				minimize: true,
-				popout: 'MainParser.PopOut(\'citymap-main\', 1100, 580)',
+				popout: () => MainParser.PopOut('citymap-main', 1100, 580),
 				ask: i18n('Boxes.CityMap.HelpLink'),
 			});
 

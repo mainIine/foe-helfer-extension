@@ -153,8 +153,8 @@ let Productions = {
 			dragdrop: true,
 			minimize: true,
 			resize: true,
-			popout: 'MainParser.PopOut(\'Productions\', 1100, 580)',
-        	settings: 'Productions.ShowSettings()'
+			popout: () => MainParser.PopOut('Productions', 1100, 580),
+        	settings: () => Productions.ShowSettings()
 		});
 
 		Productions.ActiveTab = 1;
@@ -395,9 +395,13 @@ let Productions = {
 			$('.TSinactive').removeClass('TSinactive')					
 			HTML.FilterTable('#Productions .filterCurrentList')
 
-			// show a building on the map
-			$('#Productions').on('click', '.foe-table .show-entity', function () {
-				Productions.ShowOnMap($(this).data('id'));
+			// mark a building in the city, fall back to the city map box if unsupported
+			$('#Productions').on('click', '.foe-table .show-entity', async function () {
+				const id = $(this).data('id');
+
+				if (!await BuildingMarker.show(id)) {
+					Productions.ShowOnMap(id);
+				}
 			});
 		});
 	},
@@ -875,11 +879,17 @@ let Productions = {
 			return i18n('Boxes.Productions.goods_boost');
         }
 		else {
-			if(GoodType && GoodsData[GoodType]){
-				return GoodsData[GoodType]['name'];
-			} else {
-				return GoodType;
+			// prefer own translations for base resources - GoodsData names follow
+			// the world language instead of the extension language
+			const i18nKey = 'Boxes.General.Resource.' + GoodType;
+			const translated = i18n(i18nKey);
+			if (translated !== i18nKey) {
+				return translated;
 			}
+			if (GoodType && GoodsData[GoodType]) {
+				return GoodsData[GoodType]['name'];
+			}
+			return GoodType;
 		}
 	},
 

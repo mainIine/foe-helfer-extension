@@ -21,26 +21,25 @@ const extID = ExtbaseData.extID,
 	devMode = ExtbaseData.devMode,
 	loadBeta = ExtbaseData.loadBeta;
 
-let ExistenceConfirmed = async (varlist)=>{
-	varlist = varlist.split('||')
-	return new Promise((resolve, reject) => {
+/**
+ * Waits until the given predicate returns a truthy value.
+ * Exceptions (e.g. a referenced module that is not loaded yet) count as "not ready".
+ *
+ * @param {function(): *} check predicate returning truthy once all dependencies exist
+ * @returns {Promise<void>}
+ */
+let ExistenceConfirmed = async (check)=>{
+	return new Promise((resolve) => {
 		let timer = () => {
-			let doResolve = true;
-			for (let x of varlist ) {
-				if (x.substr(0,2) == '$(' && eval(x).length === 0) { // jQuery object
-					doResolve = false
-					//console.log(x+' not yet defined');
-					break;
-				}
-				if (eval('typeof '+x) === 'undefined' || eval(x) === null || eval(x) === undefined) { // normal var
-					doResolve = false
-					//console.log(x+' not yet defined');
-					break;
-				}
+			let ready = false;
+			try {
+				ready = !!check();
+			} catch (e) {
+				// dependency not loaded yet
 			}
-			if (doResolve) 
+			if (ready)
 				resolve();
-			else 
+			else
 				setTimeout(timer, 100);
 		};
 		timer();
@@ -803,6 +802,7 @@ GetFights = () =>{
 			}
 		}
 	});
+
 
 	// Update Funktion, die ausgeführt wird, sobald beide Informationen in gbUpdateData vorhanden sind.
 	function lgUpdate() {
@@ -1605,7 +1605,7 @@ let MainParser = {
 		});
 
 		ExtPlayerAvatar = d.portrait_id;
-		await ExistenceConfirmed('MainParser.CityEntities||srcLinks.FileList||Infoboard||EventHandler');
+		await ExistenceConfirmed(() => MainParser.CityEntities != null && srcLinks.FileList != null && Infoboard != null && EventHandler != null);
 	
 		Infoboard.Init();
 		EventHandler.Init();
@@ -2154,8 +2154,10 @@ let MainParser = {
 		check: () => {
 			//get list of buildings for which an alert is already set
 			let LB = JSON.parse(localStorage.getItem("LimitedBuildingsAlertSet")||'{}')
-			//get list of expired limited buildings in city
-			let list = Object.values(MainParser.CityMapData).filter(value => !!value.decayedFromCityEntityId).map(value => value.id);
+			//get list of expired limited buildings in city; a re-ascended building keeps a stale
+			//decayedFromCityEntityId, so skip buildings whose current version is itself time limited
+			let list = Object.values(MainParser.CityMapData).filter(value => !!value.decayedFromCityEntityId
+				&& !MainParser.CityEntities[value.cityentity_id]?.components?.AllAge?.limited?.config?.expireTime).map(value => value.id);
 			//remove buildings that were already tracked and that should have just triggered an alert
 			for (let i = list.length-1;i>=0;i--) {
 				if (LB[list[i]] || MainParser.Inactives.ignore.includes(MainParser.CityMapData[list[i]].cityentity_id)) {
@@ -2197,11 +2199,17 @@ let MainParser = {
 			let buildings = Object.values(MainParser.CityMapData)
 			for (let building of buildings) {
 				// set alerts for limited buildings that will run out in the future and that have no alert yet
-				if (!LB[building.id] && MainParser.CityEntities[building.cityentity_id]?.components?.AllAge?.limited?.config?.expireTime) {
+				const limitedConfig = MainParser.CityEntities[building.cityentity_id]?.components?.AllAge?.limited?.config;
+				if (!LB[building.id] && limitedConfig?.expireTime) {
+					// the game delivers the decay timestamp directly (state.decaysAt);
+					// constructionFinishedAt is only a fallback as it is often missing
+					const expireAt = building.state?.decaysAt
+						|| (building.state?.constructionFinishedAt ? building.state.constructionFinishedAt + limitedConfig.expireTime : null);
+					if (!expireAt) continue;
 					const data = {
 						title: i18n("InactiveBuildingsAlert.title"),
-						body: MainParser.CityEntities[MainParser.CityEntities[building.cityentity_id]?.components?.AllAge?.limited?.config?.targetCityEntityId].name,
-						expires: (MainParser.CityEntities[building.cityentity_id]?.components?.AllAge?.limited?.config?.expireTime + building.state.constructionFinishedAt - GameTime.Offset)*1000,
+						body: MainParser.CityEntities[limitedConfig.targetCityEntityId].name,
+						expires: (expireAt - GameTime.Offset)*1000,
 						repeat: -1,
 						persistent: true,
 						tag: '',
@@ -2209,14 +2217,14 @@ let MainParser = {
 						vibrate: false,
 						actions: [{title:"OK"}]
 					};
-			
+
 					MainParser.sendExtMessage({
 						type: 'alerts',
 						playerId: ExtPlayerID,
 						action: 'create',
 						data: data,
 					}).then((aId) => {
-						LB[building.id]=(MainParser.CityEntities[building.cityentity_id]?.components?.AllAge?.limited?.config?.expireTime + building.state.constructionFinishedAt - GameTime.Offset)*1000;
+						LB[building.id]=(expireAt - GameTime.Offset)*1000;
 						localStorage.setItem("LimitedBuildingsAlertSet",JSON.stringify(LB));
 					})
 				}

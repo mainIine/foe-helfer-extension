@@ -32,7 +32,7 @@ CABlocker = {
         
         setTimeout(async () => {
             CABlocker.checkBlock = false;
-            await ExistenceConfirmed('MainParser.CityMapData||MainParser.CityEntities');
+            await ExistenceConfirmed(() => MainParser.CityMapData != null && MainParser.CityEntities != null);
             CABlocker.setTimer();
             let now = GameTime.get();
             let finishedProductions = Object.values(MainParser.CityMapData).filter(x => x.state && x.state.productionOption && (!x.state.next_state_transition_at || x.state.next_state_transition_at < now) && !x.state.pausedAt)
@@ -65,7 +65,7 @@ CABlocker = {
         }, (nextFinish - now + 1)*1000);
     },
     checkFP: async () => {
-        await ExistenceConfirmed('MainParser.Quests');
+        await ExistenceConfirmed(() => MainParser.Quests != null);
         if ((ResourceStock.strategy_points||0) <= (GoodsData?.strategy_points?.abilities?.collectingRestricted?.maxAmount||99)) return false;
         CABlocker.addBlocker();
         return true;

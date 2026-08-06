@@ -246,8 +246,8 @@ let Allies = {
 				dragdrop: true,
 				minimize: true,
 				resize: true,
-				popout: 'MainParser.PopOut(\'AllyList\', 970, 600)',
-				settings: 'Allies.ShowSettings()',
+				popout: () => MainParser.PopOut('AllyList', 970, 600),
+				settings: () => Allies.ShowSettings(),
 				active_maps: 'main',
 			});
 		}
@@ -557,8 +557,12 @@ let Allies = {
 			Allies.updateAllyList();
 		});
 
-		$('#AllyListBody .foe-table .show-entity').on('click', function () {
-			Productions.ShowOnMap($(this).data('id'));
+		$('#AllyListBody .foe-table .show-entity').on('click', async function () {
+			const id = $(this).data('id');
+
+			if (!await BuildingMarker.show(id)) {
+				Productions.ShowOnMap(id);
+			}
 		});
 
 		Allies.applyFilters();

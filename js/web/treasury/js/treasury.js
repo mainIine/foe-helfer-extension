@@ -32,7 +32,7 @@ let Treasury = {
                 'title': i18n('Boxes.Treasury.Title'),
                 'auto_close': true,
                 'dragdrop': true,
-                settings: 'Treasury.ShowSettings()'
+                settings: () => Treasury.ShowSettings()
             });
 
             // CSS in den DOM prügeln

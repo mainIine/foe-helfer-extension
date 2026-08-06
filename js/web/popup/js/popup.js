@@ -110,7 +110,7 @@ let Popup = {
 		if (usePiP) {
 			documentPictureInPicture.requestWindow({width: width, height: height})
 				.then((win) => {
-					win.document.head.innerHTML = `<meta charset="utf-8"><title>${title}</title>${cssLinks.join('')}`;
+					$(win.document.head).html(`<meta charset="utf-8"><title>${title}</title>${cssLinks.join('')}`);
 					win.document.body.className = 'foe-helper-popup';
 					Popup._adopt(id, win, box, options, width, height);
 				})

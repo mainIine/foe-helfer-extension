@@ -310,7 +310,7 @@ let Technologies = {
 				dragdrop: true,
 				minimize: true,
                 resize: true,
-                settings: 'Technologies.ShowSettingsButton()'
+                settings: () => Technologies.ShowSettingsButton()
 			});
 
 			// CSS in den DOM prügeln

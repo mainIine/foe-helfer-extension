@@ -31,7 +31,7 @@ let _menu_box = {
 			id: 'menu_box',
 			title: i18n('Global.BoxTitle'),
 			onlyTitle: true,
-			dragdrop: '_menu_box.CheckButtons()',
+			dragdrop: () => _menu_box.CheckButtons(),
 			minimize: true,
 			resize: true,
 			auto_close: false

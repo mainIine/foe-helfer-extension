@@ -119,7 +119,7 @@ let _menu_right = {
 	CheckButtons: async () => {
 		let activeIdx = 0;
 
-		await ExistenceConfirmed("jQuery._data($('body').get(0), 'events' ).click||$('.hud-btn')");
+		await ExistenceConfirmed(() => jQuery._data($('body').get(0), 'events').click != null && $('.hud-btn').length > 0);
 
 		$('.hud-btn').click(function () {
 			activeIdx = $(this).index('.hud-btn');

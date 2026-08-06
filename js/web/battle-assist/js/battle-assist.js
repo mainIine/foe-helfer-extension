@@ -260,7 +260,7 @@ let BattleAssist = {
                 'auto_close': true,
                 'dragdrop': false,
                 'minimize': false,
-                'settings': 'BattleAssist.ShowArmyAdviceConfig()',
+                settings: () => BattleAssist.ShowArmyAdviceConfig(),
             });
         }
         $('#battleAssistArmyAdviceBody').html(`<span>${advice}</span>`);
@@ -314,7 +314,7 @@ let BattleAssist = {
                 dragdrop: true,
                 minimize: true,
                 resize : true,
-                settings: 'BattleAssist.ShowAASettingsButton()'
+                settings: () => BattleAssist.ShowAASettingsButton()
             });
         }
         let html=`<div class="explanation closed" onclick="BattleAssist.AAExp()">${i18n('Boxes.BattleAssistAAConfig.Exp')}</div>`;
@@ -390,7 +390,7 @@ let BattleAssist = {
             let elm=event.target;
             let id = elm.dataset.id
             if (!id) return;
-            elm.innerHTML = `<input type="Number" value="${BattleAssist.armyAdvice[id]?.bonus ? BattleAssist.armyAdvice[id]?.bonus:""}" onkeydown="BattleAssist.SetBonus(event)" onfocusout="BattleAssist.ShowArmyAdviceConfig()">`;
+            $(elm).html(`<input type="Number" value="${BattleAssist.armyAdvice[id]?.bonus ? BattleAssist.armyAdvice[id]?.bonus:""}" onkeydown="BattleAssist.SetBonus(event)" onfocusout="BattleAssist.ShowArmyAdviceConfig()">`);
             $ (`.AASetBonus[data-id="${id}"] input`)[0].select();
         });
         
@@ -400,8 +400,8 @@ let BattleAssist = {
             if (!id) return;
             BattleAssist.overrideId=null
             
-            elm.innerHTML = `
-                <textarea maxlength="180" onfocusout="BattleAssist.ShowArmyAdviceConfig()" onkeydown="BattleAssist.SetAdvice(event)">${BattleAssist.armyAdvice[id]?.advice || ""}</textarea>`;
+            $(elm).html(`
+                <textarea maxlength="180" onfocusout="BattleAssist.ShowArmyAdviceConfig()" onkeydown="BattleAssist.SetAdvice(event)">${BattleAssist.armyAdvice[id]?.advice || ""}</textarea>`);
             $ (`.AASetAdvice[data-id="${id}"] textarea`)[0].select();
         });
         $(`.battleAssistOverrideType`).on("click",(event)=>{
@@ -467,9 +467,9 @@ let BattleAssist = {
         let elem = $('#battleAssistAAConfig .explanation')[0];
         elem.classList.toggle("closed");
         if (elem.classList.contains("closed")) {
-            elem.innerHTML = i18n('Boxes.BattleAssistAAConfig.Exp');
+            $(elem).html(i18n('Boxes.BattleAssistAAConfig.Exp'));
         } else {
-            elem.innerHTML = i18n('Boxes.BattleAssistAAConfig.Explanation');
+            $(elem).html(i18n('Boxes.BattleAssistAAConfig.Explanation'));
         }
         
     },

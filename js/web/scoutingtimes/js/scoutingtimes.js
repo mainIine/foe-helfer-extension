@@ -199,7 +199,7 @@ let scoutingTimes = {
                     dragdrop: true,
                     minimize: true,
                     ask: i18n('Boxes.scoutingTimes.HelpLink'),
-                    settings: 'scoutingTimes.ShowSettings()',
+                    settings: () => scoutingTimes.ShowSettings(),
                 });
             }
         

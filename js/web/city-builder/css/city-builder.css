@@ -227,3 +227,78 @@ body.foe-helper-popup #CityBuilderBox .window-body {
 body.foe-helper-popup #CityBuilderBox .map-grid-wrapper {
 	transform-origin: 0 0;
 }
+/* box listing the buildings the optimizer could not fit into the layout */
+#CityBuilderUnplacedBox {
+	width: 320px;
+}
+#CityBuilderUnplacedBox .unplaced-hint {
+	padding: 6px 8px;
+	font-style: italic;
+}
+#CityBuilderUnplacedBox .unplaced-table td {
+	padding: 3px 8px;
+}
+
+/* pop-up window: the opacity overlay slider is pointless there */
+body.foe-helper-popup #CityBuilderBox .opacity-control {
+	display: none;
+}
+body.foe-helper-popup #CityBuilderBox .map-grid-wrapper {
+	opacity: 1 !important;
+}
+
+/* loading panel: solid background so it stays readable on top of the live city */
+.city-builder-loading {
+	margin: 40px auto;
+	max-width: 340px;
+	padding: 24px;
+	background: rgba(15, 18, 24, 0.92);
+	border: 1px solid rgba(255, 255, 255, 0.25);
+	border-radius: 8px;
+	text-align: center;
+	color: #fff;
+}
+.city-builder-loading .loading-title {
+	font-size: 14px;
+	margin-bottom: 14px;
+}
+.city-builder-loading .loading-bar {
+	height: 14px;
+	background: rgba(255, 255, 255, 0.15);
+	border-radius: 7px;
+	overflow: hidden;
+}
+.city-builder-loading .loading-bar-fill {
+	height: 100%;
+	width: 0;
+	background: linear-gradient(90deg, #f6b640, #ffd97a);
+	border-radius: 7px;
+	transition: width 0.3s linear;
+}
+.city-builder-loading .calc-progress {
+	margin-top: 8px;
+	font-size: 13px;
+	color: #ffd97a;
+}
+
+/* road balance panel top-left: live city vs planned layout */
+.city-builder-stats {
+	position: absolute;
+	top: 10px;
+	left: 10px;
+	z-index: 10;
+	background-color: #070b18b5;
+	padding: 4px 10px;
+	border-radius: 4px;
+	border: 1px solid var(--black-65);
+	color: #fff;
+	font-size: 12px;
+	line-height: 1.6;
+	pointer-events: none;
+}
+.city-builder-stats .saving {
+	color: #8be28b;
+}
+.city-builder-stats .extra {
+	color: #ff8d8d;
+}

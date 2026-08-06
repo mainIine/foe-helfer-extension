@@ -1,5 +1,46 @@
 ## Extension Changelog
 
+##### 4.6.0.0
+
+**New**
+- Majestic Buildings:
+	- New module containing all the city’s time-limited (majestic) buildings in a single box
+
+- Building Marker:
+	- New internal module that marks buildings in the city with floating golden arrows — the arrows follow the map in real time as you zoom and pan; clicking on a marked building removes its arrow, whilst the close cross beneath the diamonds removes all
+	- The eye buttons in ‘Productions’, ‘Efficiency Rating’, ‘Blue Galaxy’ and ‘Historical Allies’ now highlight the building directly in the city rather than in the city map box; if highlighting is not available (e.g. in Firefox), the city map opens as before
+
+- Gildengefechte:
+	- Neuer Pfeil-Button in den Sektor-Zeilen der Live-Box (per Einstellung abschaltbar) — markiert den Sektor mit einem schwebenden Pfeil direkt auf der Gefechtskarte; derselbe Button, ein Klick auf den Sektor oder das Schließen-Kreuz entfernt ihn wieder
+	- Die Einstellungen der Live-Box sind jetzt in Tabs gegliedert (Anzeige, Kopieren, Zeit & Alarm, Senden)
+
+**Update**
+- Blue Galaxy:
+	- The fragment column is now split in two — allowing sorting by fragment amount or fragment name separately
+
+- City Builder:
+	- Buildings for which no space could be found no longer disappear silently from the map — they are now listed in their own movable box
+	- New loading display with background panel, progress bar and percentage while the layout is being calculated
+	- Road balance in the top left corner of the map: road tiles of the current city, road tiles of the plan and the savings in per cent
+
+- Guild battles:
+	- The automatic Discord notification feature now excludes sectors with an excessively high chance of attrition — the threshold can be selected in the settings (default: 100 per cent); this is checked at the time of sending
+
+**Bugfix**
+- City Builder:
+	- Some individual roads were created in duplicate — the generously planned two-lane dual carriageways and routes are now being scaled back to the necessary minimum; the rest will be single-lane and redundant roads will be removed; if only a single building requires a two-lane road, exactly one 2x2 section right next to the town hall remains
+	- Two-lane roads are now planned as complete 2x2 sections and drawn with a visible grid pattern so that they can be distinguished from parallel single-lane roads; corridors of odd lengths are filled in so that the plan can be recreated in the game using whole sections
+	- The map in the pop-out window can now be panned with the mouse; the opacity slider, useless there, is hidden in the pop-out
+	- Great Buildings could end up walled in without a street connection — the town hall and regular buildings now never occupy the last free neighbouring tile of a still unconnected Great Building; buildings that cannot get a connection at all appear in the unplaced buildings box instead of standing on the map as an unbuildable plan
+	- Whole road sections could lose their connection to the town hall — the cleanup pass wrongly removed the anchor tile of a branch at the town hall; every road tile is now guaranteed to reach the town hall through the network
+	- Buildings without a street requirement now stand as one solid block: rows of uniform height, small notches may be sacrificed instead of leaving stripes, and a compaction pass slides everything flush against the city
+
+- Guild Battles:
+	- Sector alerts were triggered too late if the computer’s clock differed from the server time — the lead time is now correctly converted to the local clock, as are the countdowns in the Live Box and the sector and antiquities dealer templates in the Alert Module
+	- When the game tab is open, sector alerts are now triggered to the nearest second — the background process’s alerts only wake the browser at minute intervals, which was too late when there were only a few seconds’ lead time; for the closed tab, they remain in place as a fallback
+
+---
+
 ##### 4.5.0.0
 
 **New**

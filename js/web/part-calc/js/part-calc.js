@@ -190,7 +190,7 @@ let Parts = {
 				dragdrop: true,
 				minimize: true,
 				//speaker: 'PartsTone',
-				settings: 'Parts.ShowCalculatorSettings()',
+				settings: () => Parts.ShowCalculatorSettings(),
 			    active_maps:"main"
 			});
 

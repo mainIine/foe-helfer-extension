@@ -27,6 +27,7 @@
 #inventoryOverview #inventoryOverviewTopbar {
 	display: flex;
 	align-items: center;
+	flex-wrap: wrap;
 	gap: 5px;
 	padding: 3px 5px;
 	border-bottom: 1px solid var(--border-table-bottom);
@@ -52,7 +53,8 @@
 }
 
 #inventoryOverview #inventoryOverviewInner {
-	height: calc(100% - 52px);
+	flex: 1 1 auto;
+	min-height: 0;
 	overflow: hidden auto;
 	border-bottom: 1px solid var(--border-table-bottom);
 	display: grid;
@@ -178,4 +180,81 @@
 	font-size: 85%;
 	font-weight: normal;
 	color: var(--beige);
+}
+
+/* Upgrade kit tooltip: source building -> target building */
+#TooltipContainer .inventoryKitTT {
+	max-width: 340px;
+}
+
+#TooltipContainer .inventoryKitTT .kit-chain {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	padding: 5px;
+}
+
+#TooltipContainer .inventoryKitTT .kit-building {
+	flex: 1 1 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 3px;
+	text-align: center;
+}
+
+#TooltipContainer .inventoryKitTT .kit-building img {
+	max-width: 110px;
+	max-height: 90px;
+	image-rendering: -webkit-optimize-contrast;
+}
+
+#TooltipContainer .inventoryKitTT .kit-arrow {
+	flex: 0 0 auto;
+	font-size: 150%;
+	color: var(--sunflower);
+}
+
+/* Selection kit tooltip: contained buildings, best value first */
+#TooltipContainer .inventoryKitTT h3 {
+	margin: 0;
+	padding: 2px 5px;
+	color: var(--sunflower);
+	font-size: 90%;
+}
+
+#TooltipContainer .inventoryKitTT .kit-list {
+	display: flex;
+	flex-direction: column;
+	gap: 1px;
+	padding: 0 5px 5px;
+}
+
+#TooltipContainer .inventoryKitTT .kit-row {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	white-space: nowrap;
+}
+
+#TooltipContainer .inventoryKitTT .kit-row img {
+	width: 28px;
+	height: 24px;
+	object-fit: contain;
+	image-rendering: -webkit-optimize-contrast;
+}
+
+#TooltipContainer .inventoryKitTT .kit-row .kit-value {
+	margin-left: auto;
+	padding-left: 10px;
+	color: var(--sunflower);
+	font-weight: bold;
+}
+
+#TooltipContainer .inventoryKitTT .kit-others {
+	margin: 0;
+	padding: 0 5px 5px;
+	font-size: 85%;
+	opacity: 0.8;
 }

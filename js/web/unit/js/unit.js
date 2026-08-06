@@ -91,7 +91,7 @@ let Unit = {
 				dragdrop: true,
 				resize: true,
 				minimize: true,
-				settings: 'Unit.ShowSettings()'
+				settings: () => Unit.ShowSettings()
 			};
 
 			HTML.Box(args);
@@ -134,7 +134,7 @@ let Unit = {
 
 		let sheet = document.createElement('style')
 		sheet.id = 'unit-css-block';
-		sheet.innerHTML = s.join('');
+		sheet.textContent = s.join('');
 		document.head.appendChild(sheet);
 	},
 

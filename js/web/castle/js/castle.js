@@ -350,7 +350,7 @@ let Castle = {
                 dragdrop: true,
                 resize: false,
                 minimize: true,
-                settings: 'Castle.CastleSettings()'
+                settings: () => Castle.CastleSettings()
             });
 
             HTML.AddCssFile('castle');
