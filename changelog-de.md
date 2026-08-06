@@ -5,9 +5,7 @@
 **Neu**
 - Erhabene Gebäude: 
   - Neues Modul mit allen zeitlich begrenzten (erhabenen) Gebäuden der Stadt in einer Box
-- City Builder: 
-  - Gebäude, für die kein Platz mehr gefunden wurde, verschwinden nicht mehr stillschweigend von der Karte — sie werden jetzt in einer eigenen verschiebbaren Box aufgelistet
-  - Neue Ladeanzeige mit Hintergrund-Panel, Fortschrittsbalken und Prozentanzeige während der Berechnung
+  
 - Gebäude-Markierung: 
   - Neues internes Modul, das Gebäude in der Stadt mit schwebenden goldenen Pfeilen markiert — die Pfeile folgen der Karte live bei Zoom und Verschiebung; ein Klick auf ein markiertes Gebäude entfernt dessen Pfeil, das Schließen-Kreuz unter den Diamanten alle
   - Die Auge-Buttons in Produktionen, Effizienzbewertung, Blaue Galaxie und Historische Verbündete markieren das Gebäude jetzt direkt in der Stadt statt in der Stadtkarten-Box; ist die Markierung nicht verfügbar (z.B. Firefox), öffnet sich wie bisher die Stadtkarte
@@ -20,6 +18,11 @@
 - Blaue Galaxie: 
   - Die Fragment-Spalte ist jetzt zweigeteilt — so kann getrennt nach Anzahl oder Name der Fragmente sortiert werden
 
+- City Builder:
+    - Gebäude, für die kein Platz mehr gefunden wurde, verschwinden nicht mehr stillschweigend von der Karte — sie werden jetzt in einer eigenen verschiebbaren Box aufgelistet
+    - Neue Ladeanzeige mit Hintergrund-Panel, Fortschrittsbalken und Prozentanzeige während der Berechnung
+    - Straßen-Bilanz oben links auf der Karte: Straßenkacheln der aktuellen Stadt, Straßenkacheln des Plans und die Ersparnis in Prozent
+
 - Gildengefechte: 
   - Der automatische Discord-Versand lässt Sektoren mit zu hoher Zermürbungschance jetzt aus — die Schwelle ist in den Einstellungen wählbar (Standard: 100 %), geprüft wird zum Sendezeitpunkt
 
@@ -30,10 +33,10 @@
   - Die Karte im Pop-out-Fenster lässt sich jetzt mit der Maus verschieben; der dort nutzlose Deckkraft-Regler wird im Pop-out ausgeblendet
   - Legendäre Gebäude konnten ohne Straßenanschluss eingemauert werden — das Rathaus und normale Gebäude besetzen jetzt nie mehr die letzte freie Nachbarkachel eines noch unangeschlossenen LG; Gebäude, die trotz allem keinen Anschluss bekommen können, erscheinen in der Box der nicht platzierten Gebäude statt als unbaubarer Plan auf der Karte
   - Ganze Straßenabschnitte konnten den Anschluss ans Rathaus verlieren — der Aufräum-Pass entfernte fälschlich die Ankerkachel eines Astes am Rathaus; jetzt erreicht garantiert jede Straßenkachel das Rathaus über das Netz
+  - Gebäude ohne Straßenbedarf stehen jetzt als ein kompakter Block: Reihen einheitlicher Höhe, kleine Nischen dürfen geopfert werden statt Streifen zu hinterlassen, und eine Nachverdichtung schiebt alles lückenlos an die Stadt heran
   
 - Gildengefechte: 
   - Sektor-Alarme kamen zu spät — die Vorlaufzeit wird jetzt korrekt auf die lokale Uhr umgerechnet, ebenso die Countdowns in der Live-Box und die Sektor- und Antiquitätenhändler-Vorlagen im Alarm-Modul
-- Gildengefechte: 
   - Bei geöffnetem Spiel-Tab werden Sektor-Alarme jetzt sekundengenau ausgelöst
 
 ---
