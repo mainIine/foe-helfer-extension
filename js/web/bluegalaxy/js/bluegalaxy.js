@@ -21,6 +21,7 @@ FoEproxy.addHandler('CityProductionService', 'pickupProduction', (data) => {
 
 	if (collectedBlueGalaxy && $('#bluegalaxy').length === 0 && Settings.GetSetting('ShowBlueGalaxyHelper')) {
 		BlueGalaxy.Show();
+		BlueGalaxy.AutoOpened = true;
 	}
 });
 
@@ -45,6 +46,9 @@ const BlueGalaxy = {
 	OlderGoodsValue: 0.1,
 	DoubleCollections: 0,
 	GalaxyFactor: 0,
+	// true while the box was opened automatically by collecting the Blue Galaxy;
+	// only such a box may close itself again when the charges run out
+	AutoOpened: false,
 	sort: JSON.parse(localStorage.getItem('BlueGalaxySorting') || '{"col":null,"order":null}'),
 
 
@@ -52,10 +56,12 @@ const BlueGalaxy = {
 	 * Opens the box (or refreshes/toggles it), restores the stored goods values and wires the input events.
 	 *
 	 * @param {boolean} [event=false] - True refreshes an already open box instead of closing it.
-	 * @param {boolean} [auto_close=false] - Close the box when no double collections are left.
+	 * @param {boolean} [auto_close=false] - Close an automatically opened box again when no double collections are left.
 	 */
 	Show: (event = false, auto_close = false) => {
 		if ($('#bluegalaxy').length === 0) {
+			BlueGalaxy.AutoOpened = false;
+
 			const storedGoodsValue = localStorage.getItem('BlueGalaxyGoodsValue');
 			if (storedGoodsValue !== null) {
 				BlueGalaxy.GoodsValue = parseFloat(storedGoodsValue);
@@ -112,7 +118,7 @@ const BlueGalaxy = {
 			HTML.CloseOpenBox('bluegalaxy');
 		}
 
-		if (auto_close && BlueGalaxy.DoubleCollections === 0) {
+		if (auto_close && BlueGalaxy.AutoOpened && BlueGalaxy.DoubleCollections === 0) {
 			HTML.CloseOpenBox('bluegalaxy');
 		}
 	},
@@ -239,7 +245,7 @@ const BlueGalaxy = {
 		h.push('<div class="text-center dark-bg header">');
 
 		if (BlueGalaxy.DoubleCollections > 0) {
-			h.push(`${i18n('Boxes.BlueGalaxy.AvailableCollections')} ${BlueGalaxy.DoubleCollections}<br>`);
+			h.push(`<div class="collections-left">${i18n('Boxes.BlueGalaxy.AvailableCollections')} <strong>${BlueGalaxy.DoubleCollections}</strong></div>`);
 		}
 
 		h.push(`${i18n('Boxes.BlueGalaxy.GoodsValue')} ${goodsValueInput('goodsValue', BlueGalaxy.GoodsValue)}<br>`);

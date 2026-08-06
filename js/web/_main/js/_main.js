@@ -1726,8 +1726,11 @@ let MainParser = {
 	SetArkBonus2: () => {
 		let ArkBonus = 0;
 
-		for (let i of Object.values(MainParser.CityMapData).filter(x => x?.bonus?.type === "contribution_boost")) {
-			ArkBonus += i.bonus.value;
+		for (let i of Object.values(MainParser.CityMapData)) {
+			// classic single `bonus` field or `bonuses` array of the multi-tier rework
+			for (const bonus of (i?.bonuses || (i?.bonus ? [i.bonus] : []))) {
+				if (bonus.type === "contribution_boost") ArkBonus += bonus.value;
+			}
 		}
 
 		MainParser.updateArkBonus(ArkBonus,"City Map");

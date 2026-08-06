@@ -1,5 +1,32 @@
 ## Extension Changelog
 
+##### 4.6.1.0
+**Neu**
+
+- LG-Bonusübersicht:
+    - Neues Modul: alle legendären Bauwerke mit ihren Boni pro Prestige-Stufe (Kupfer/Silber/Gold) und den Bonuswerten an den Level-Sprüngen in einer Box — filterbar nach Name, gebaut/nicht gebaut und Bonusart
+    - Eigene LG zeigen zusätzlich das aktuelle Level, die freigeschalteten Level mit Fortschrittsbalken und die aktuell aktiven Bonuswerte
+
+**Update**
+
+- Kostenrechner:
+    - Neue Schweinchen-Spalte zeigt wie im Spiel die zusätzlichen FP durch den eigenen Mäzen-Bonus; das Icon entspricht der Stufe des Bauwerks (Kupfer/Silber/Gold), die Spalte lässt sich in den Einstellungen ausblenden
+
+- Verhandlungshelfer:
+    - Wer vom Vorschlag abweicht, wird nicht mehr mit „Falsche Güter gewählt“ abgehängt — der Helfer versteht jeden Zug und rechnet exakt weiter
+    - Mehr als 5 Runden (z.B. Extra-Züge aus der Taverne) werden jetzt voll unterstützt statt gedeckelt; auch nach verbrauchten Runden schlägt der Helfer bei Zusatzzügen weiter die wahrscheinlichste Belegung vor
+    - Verhandlungen mit mehr als 10 Gütern funktionieren jetzt ebenfalls (bisher Fehlermeldung)
+    - In einigen Endspielen spielt der Verhandlungshelfer nachweislich besser als vorher; die angezeigte Gewinnchance entspricht immer der tatsächlich gespielten Strategie
+
+**Bugfixes**
+
+- Nach dem LG-Update des Spiels werden die Boni der eigenen legendären Bauwerke wieder überall berücksichtigt (Effizienzbewertung, Boost-Übersicht, Zufriedenheit/Bevölkerung, Mäzen-Bonus)
+
+- Blaue Galaxie:
+    - Die manuell geöffnete Box schließt sich nicht mehr von selbst beim Einsammeln — nur die automatisch geöffnete Box schließt sich weiterhin, wenn alle Doppel-Einsammlungen verbraucht sind
+
+---
+
 ##### 4.6.0.0
 
 **Neu**

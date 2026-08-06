@@ -1,5 +1,32 @@
 ## Extension Changelog
 
+##### 4.6.1.0
+**New**
+
+- GB Bonus Overview:
+    - New module: every great building with its bonuses per prestige tier (copper/silver/gold) and the bonus values at the level breakpoints in one box — filterable by name, built/not built and bonus type
+    - Your own GBs additionally show the current level, the unlocked levels with a progress bar and the currently active bonus values
+
+**Update**
+
+- GB Cost Calculator:
+    - New piggy bank column shows the extra FP granted by your contribution boost, just like in the game; the icon matches the building's tier (copper/silver/gold) and the column can be hidden in the settings
+
+- Negotiation Helper:
+    - Deviating from the suggestion no longer ends with ‘Wrong goods selected’ — the helper understands every move and keeps calculating exactly
+    - More than 5 rounds (e.g. extra turns from the tavern) are now fully supported instead of capped; even after the planned rounds are used up, the helper keeps suggesting the most likely assignment for extra turns
+    - Negotiations with more than 10 goods now work as well (previously an error message)
+    - In some endgames the negotiation helper provably plays better than before; the displayed win chance always matches the strategy actually played
+
+**Bugfixes**
+
+- After the game's GB update, the bonuses of your own great buildings are taken into account everywhere again (efficiency rating, boost overview, happiness/population, contribution boost)
+
+- Blue Galaxy:
+    - A manually opened box no longer closes itself while collecting — only an automatically opened box still closes once all double collections are used up
+
+---
+
 ##### 4.6.0.0
 
 **New**

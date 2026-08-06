@@ -47,6 +47,17 @@
     padding: 1em 0;
 }
 
+/* remaining double collections, clearly visible above the goods ratings */
+#bluegalaxy .header .collections-left {
+    font-size: 135%;
+    color: var(--sunflower);
+    margin: 4px 0 8px;
+}
+
+#bluegalaxy .header .collections-left strong {
+    font-size: 115%;
+}
+
 #bluegalaxy table th.icon span {
     display: inline-block;
     min-width: 30px;

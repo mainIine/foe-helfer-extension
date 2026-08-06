@@ -1,0 +1,214 @@
+/*
+ * **************************************************************************************
+ * Copyright (C) 2026 FoE-Helper team - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the AGPL license.
+ *
+ * See file LICENSE.md or go to
+ * https://github.com/mainIine/foe-helfer-extension/blob/master/LICENSE.md
+ * for full license details.
+ *
+ * **************************************************************************************
+ */
+
+/* Box */
+#gbBonuses {
+	top: 12%;
+	left: 20%;
+	width: 760px;
+	height: 560px;
+}
+
+#gbBonusesBody {
+	display: flex;
+	flex-direction: column;
+}
+
+#gbBonuses #gbBonusesTopbar {
+	display: flex;
+	align-items: center;
+	gap: 5px;
+	padding: 3px 5px;
+	border-bottom: 1px solid var(--border-table-bottom);
+}
+
+#gbBonuses #gbBonusesTopbar input {
+	flex: 1 1 auto;
+	min-width: 80px;
+}
+
+#gbBonuses #gbBonusesTopbar select {
+	flex: 0 1 auto;
+	max-width: 200px;
+	background-color: var(--text-darker);
+	color: var(--beige);
+	border: 1px solid var(--border-table-bottom);
+	padding: 2px;
+}
+
+#gbBonuses #gbBonusesExpandAll {
+	min-width: 24px;
+	text-align: center;
+}
+
+#gbBonuses #gbBonusesInner {
+	height: calc(100% - 52px);
+	overflow: hidden auto;
+	border-bottom: 1px solid var(--border-table-bottom);
+}
+
+#gbBonuses #gbBonusesBottombar {
+	padding: 3px 8px;
+	text-align: right;
+	font-style: italic;
+}
+
+#gbBonuses .no-data {
+	padding: 20px;
+	text-align: center;
+}
+
+/* Card header */
+#gbBonuses .gbb-card {
+	border-bottom: 1px solid var(--border-table-bottom);
+}
+
+#gbBonuses .gbb-header {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 4px 8px;
+}
+
+#gbBonuses .gbb-header:hover {
+	background: var(--bg-table-hover, rgba(255, 255, 255, 0.05));
+}
+
+#gbBonuses .gbb-chevron {
+	width: 12px;
+	flex: 0 0 auto;
+	font-size: 10px;
+	opacity: 0.7;
+}
+
+#gbBonuses .gbb-icon {
+	width: 42px;
+	height: 42px;
+	flex: 0 0 auto;
+	object-fit: contain;
+}
+
+#gbBonuses .gbb-title {
+	display: flex;
+	flex-direction: column;
+	flex: 1 1 auto;
+	min-width: 0;
+}
+
+#gbBonuses .gbb-name {
+	font-weight: bold;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+#gbBonuses .gbb-era {
+	font-size: 11px;
+	opacity: 0.75;
+}
+
+#gbBonuses .gbb-tier {
+	flex: 0 0 auto;
+}
+
+#gbBonuses .gbb-tier .lb-tier-icon,
+#gbBonuses .gbb-tier-cell .lb-tier-icon {
+	width: 22px;
+	vertical-align: middle;
+}
+
+/* Own progress */
+#gbBonuses .gbb-progress {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	flex: 0 0 auto;
+	min-width: 150px;
+	gap: 1px;
+}
+
+#gbBonuses .gbb-level {
+	font-weight: bold;
+}
+
+#gbBonuses .gbb-unlocked {
+	font-size: 11px;
+	opacity: 0.75;
+}
+
+#gbBonuses .gbb-notbuilt {
+	font-style: italic;
+	opacity: 0.6;
+}
+
+#gbBonuses .gbb-bar {
+	display: block;
+	width: 100%;
+	height: 5px;
+	margin-top: 2px;
+	background-color: var(--text-darker);
+	border-radius: 3px;
+	overflow: hidden;
+}
+
+#gbBonuses .gbb-bar span {
+	display: block;
+	height: 100%;
+	background: var(--btn-bg-green);
+}
+
+/* Detail table */
+#gbBonuses .gbb-table {
+	width: calc(100% - 16px);
+	margin: 0 8px 6px;
+}
+
+#gbBonuses .gbb-table td {
+	vertical-align: middle;
+}
+
+#gbBonuses .gbb-table th {
+	white-space: nowrap;
+}
+
+#gbBonuses .gbb-tier-cell {
+	width: 30px;
+	text-align: center;
+}
+
+#gbBonuses .gbb-bonus-name {
+	white-space: nowrap;
+}
+
+#gbBonuses .gbb-bonus-icon {
+	width: 20px;
+	margin-right: 4px;
+	vertical-align: middle;
+}
+
+#gbBonuses .gbb-table .current-col {
+	background: rgba(126, 190, 74, 0.15);
+	font-weight: bold;
+}
+
+#gbBonuses .gbb-table .gbb-current {
+	border-left: 1px solid var(--border-table-bottom);
+	color: var(--sunflower);
+	font-weight: bold;
+}
+
+#gbBonuses .per-day {
+	font-size: 10px;
+	opacity: 0.7;
+	margin-left: 1px;
+}

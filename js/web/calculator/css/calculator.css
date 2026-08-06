@@ -93,6 +93,11 @@
 	background-size: contain;
 }
 
+#gbCalc tr th span.contribution-boost {
+	background: url(../../x_img/arc_bonus.png) center no-repeat;
+	background-size: contain;
+}
+
 #gbCalc .foe-table td {
 	white-space: nowrap;
 }

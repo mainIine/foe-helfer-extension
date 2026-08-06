@@ -48,6 +48,16 @@ let Calculator = {
 
 
 	/**
+	 * Contribution boost column (piggy bank): show the FP bonus granted by the own
+	 * contribution boost per rank, can be hidden in the settings. Like the game the
+	 * column is always hidden without an own contribution boost.
+	 *
+	 * @returns {boolean} true if the column is visible
+	 */
+	ShowBoostColumn: () => (MainParser.ArkBonus > 0 && localStorage.getItem('CalculatorShowBoostColumn') !== 'false'),
+
+
+	/**
 	 * Shows the cost calculator for the currently opened GB: loads the settings,
 	 * creates the own box in split view when missing and renders the content
 	 * (or a hint while no GB has been opened yet).
@@ -341,7 +351,8 @@ let Calculator = {
 
 		let BestKurs = 999999,
 			arc = 1 + (MainParser.ArkBonus / 100),
-			ForderArc = 1 + (Calculator.ForderBonus / 100);
+			ForderArc = 1 + (Calculator.ForderBonus / 100),
+			ShowBoost = Calculator.ShowBoostColumn();
 
         let EigenPos,
             EigenBetrag = 0;
@@ -361,6 +372,7 @@ let Calculator = {
 			FPRewards = [],
 			BPRewards = [],
 			BPTierRewards = [], // blueprint rewards per rank split by tier: {tier, amount}[] (amount already boosted)
+			BoostRewards = [], // extra FP granted by the own contribution boost (piggy bank column)
 			MedalRewards = [],
 			ForderFPRewards = [],
 			ForderRankCosts = [],
@@ -408,6 +420,7 @@ let Calculator = {
 			FPRewards[Rank] = MainParser.round(FPNettoRewards[Rank] * arc);
 			BPRewards[Rank] = MainParser.round(BPRewards[Rank] * arc);
 			MedalRewards[Rank] = MainParser.round(MedalRewards[Rank] * arc);
+			BoostRewards[Rank] = FPRewards[Rank] - FPNettoRewards[Rank];
 
 			// Blueprints split by tier (multi-tier great buildings)
 			BPTierRewards[Rank] = (MainParser.CurrentGB.Rankings[i]['reward']['blueprintRewards'] || []).map(bp => ({
@@ -524,6 +537,8 @@ let Calculator = {
 			'<th>' + i18n('Boxes.Calculator.Profit') + '</th>');
 			h.push('<th><span class="blueprint"' + GreatBuildings.BlueprintIconStyle(MainParser.CurrentGB.Tier) + ' title="' + HTML.i18nTooltip(i18n('Boxes.Calculator.BPs')) + '"></span></th>');
 			h.push('<th><span class="medal" title="' + HTML.i18nTooltip(i18n('Boxes.Calculator.Meds')) + '"></span></th>');
+			if (ShowBoost)
+				h.push('<th><span class="contribution-boost"' + GreatBuildings.ContributionBoostIconStyle(MainParser.CurrentGB.Tier) + ' title="' + HTML.i18nTooltip(i18n('Boxes.Calculator.Boost')) + '"></span></th>');
 		h.push('</thead>');
 
 		for (let Rank = 0; Rank < ForderRankCosts.length; Rank++) {
@@ -671,6 +686,7 @@ let Calculator = {
 				</td>
 				<td> ${GreatBuildings.FormatBlueprintRewards(BPTierRewards[Rank], BPRewards[Rank])} </td>
 				<td> <small> ${HTML.Format(MedalRewards[Rank])} </small> </td>
+				${ShowBoost ? `<td> <small> ${HTML.Format(BoostRewards[Rank])} </small> </td>` : ''}
 			</tr>`);
 		}
 

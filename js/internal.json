@@ -37,7 +37,10 @@
 	"stats",
 	"bonus-service",
 	"technologies",
-	"negotiation",
+	{
+		"name": "negotiation",
+		"parts": ["solver"]
+	},
 	"eventchests",
 	"settings",
 	"investment",
@@ -51,6 +54,7 @@
 	"building-marker",
 	"hidden-rewards",
 	"greatbuildings",
+	"gbbonus",
 	"notice",
 	"treasury",
 	"market",

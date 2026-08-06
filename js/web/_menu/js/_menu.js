@@ -30,6 +30,7 @@ let _menu = {
 	
 	Items: [
 		//'calculator',
+		'gbBonuses',
 		'ascended',
 		'webRequest',
 		'inventory',
@@ -337,6 +338,7 @@ let _menu = {
 		{ id: 'kits', title: i18n('Menu.Kits.Title'), description: i18n('Menu.Kits.Desc') },
 		{ id: 'inventory', title: i18n('Menu.Inventory.Title'), description: i18n('Menu.Inventory.Desc') },
 		{ id: 'ascended', title: i18n('Menu.Ascended.Title'), description: i18n('Menu.Ascended.Desc') },
+		{ id: 'gbBonuses', title: i18n('Menu.GBBonuses.Title'), description: i18n('Menu.GBBonuses.Desc') },
 		{ id: 'stats', title: i18n('Menu.Stats.Title'), description: i18n('Menu.Stats.Desc') },
 		{ id: 'settings', title: i18n('Menu.Settings.Title'), description: i18n('Menu.Settings.Desc') },
 		{ id: 'notice', title: i18n('Menu.Notice.Title'), description: i18n('Menu.Notice.Desc') },
@@ -657,6 +659,19 @@ let _menu = {
 
 		let btn_sp = $('<span />').on('click', function () {
 			InventoryOverview.init();
+		});
+
+		return btn.append(btn_sp);
+	},
+
+	/**
+	 * Great building bonus overview (multi-tier rework)
+	 */
+	gbBonuses_Btn: () => {
+		let btn = _menu.MakeButton('gbBonuses');
+
+		let btn_sp = $('<span />').on('click', function () {
+			GBBonuses.init();
 		});
 
 		return btn.append(btn_sp);

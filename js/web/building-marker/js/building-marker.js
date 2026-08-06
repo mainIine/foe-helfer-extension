@@ -755,21 +755,33 @@ let BuildingMarker = {
 		for (const marker of BuildingMarker._markers) {
 			let position = null;
 
-			if (rect && marker.provinceId !== undefined) {
-				if (mapView) {
-					const projected = BuildingMarker._projectProvince(mapView, marker.provinceId);
+			// a broken projection of one marker must not kill the loop for the others
+			try {
+				if (rect && marker.provinceId !== undefined) {
+					if (mapView) {
+						const projected = BuildingMarker._projectProvince(mapView, marker.provinceId);
 
-					if (projected) {
-						position = { x: projected.x, y: projected.y, scale: Math.min(1.2, Math.max(0.5, projected.scale)) };
+						if (projected) {
+							position = { x: projected.x, y: projected.y, scale: Math.min(1.2, Math.max(0.5, projected.scale)) };
+						}
 					}
 				}
-			}
-			else if (rect && scene) {
-				const footprint = BuildingMarker._resolveFootprint(marker);
+				else if (rect && scene) {
+					const footprint = BuildingMarker._resolveFootprint(marker);
 
-				if (footprint) {
-					const point = scene.isoToScreen(footprint.x + footprint.width / 2, footprint.y + footprint.length / 2);
-					position = { x: point.x, y: point.y, scale: Math.max(0.5, scene._zoomFactor || 1) };
+					if (footprint) {
+						const point = scene.isoToScreen(footprint.x + footprint.width / 2, footprint.y + footprint.length / 2);
+						position = { x: point.x, y: point.y, scale: Math.max(0.5, scene._zoomFactor || 1) };
+					}
+					else if (!marker.projectionWarned) {
+						marker.projectionWarned = true;
+						console.warn('[BuildingMarker] No grid position for marker (entity without x/y?)', marker, MainParser.CityMapData[marker.entityId]);
+					}
+				}
+			} catch (e) {
+				if (!marker.projectionWarned) {
+					marker.projectionWarned = true;
+					console.warn('[BuildingMarker] Marker projection failed', marker, e);
 				}
 			}
 
