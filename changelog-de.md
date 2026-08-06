@@ -26,6 +26,11 @@
 - Gildengefechte: 
   - Der automatische Discord-Versand lässt Sektoren mit zu hoher Zermürbungschance jetzt aus — die Schwelle ist in den Einstellungen wählbar (Standard: 100 %), geprüft wird zum Sendezeitpunkt
 
+- Inventar-Übersicht:
+  - Auswahl-Kits zeigen jetzt ihren Inhalt — der Tooltip listet alle enthaltenen Gebäude, und die Suche nach einem Gebäude findet auch die Kits, aus denen es entnommen werden kann
+  - Neuer Filter nach Art: Gebäude, Fragmente, Kits oder Sonstiges
+  - Bei aktivem Eigenschafts-Filter zeigen Auswahl-Kits den besten Wert der enthaltenen Gebäude
+
 **Bugfix**
 - City Builder: 
   - Einzelne Straßen wurden teilweise doppelt angelegt — die großzügig geplanten zweispurigen Doppelreihen und Trassen werden jetzt auf das nötige Minimum zurückgestutzt, der Rest wird einspurig und überflüssige Straßen entfernt; braucht nur ein Gebäude eine zweispurige Straße, bleibt genau ein 2x2-Stück direkt am Rathaus übrig

@@ -10,9 +10,9 @@
 	- New internal module that marks buildings in the city with floating golden arrows — the arrows follow the map in real time as you zoom and pan; clicking on a marked building removes its arrow, whilst the close cross beneath the diamonds removes all
 	- The eye buttons in ‘Productions’, ‘Efficiency Rating’, ‘Blue Galaxy’ and ‘Historical Allies’ now highlight the building directly in the city rather than in the city map box; if highlighting is not available (e.g. in Firefox), the city map opens as before
 
-- Gildengefechte:
-	- Neuer Pfeil-Button in den Sektor-Zeilen der Live-Box (per Einstellung abschaltbar) — markiert den Sektor mit einem schwebenden Pfeil direkt auf der Gefechtskarte; derselbe Button, ein Klick auf den Sektor oder das Schließen-Kreuz entfernt ihn wieder
-	- Die Einstellungen der Live-Box sind jetzt in Tabs gegliedert (Anzeige, Kopieren, Zeit & Alarm, Senden)
+- Guild Battles:
+	- New arrow button in the sector rows of the Live Box (can be disabled in the settings) — marks the sector with a floating arrow directly on the battleground map; the same button, a click on the sector or the close cross removes it again
+	- The Live Box settings are now organised in tabs (Display, Copy, Time & Alarm, Send)
 
 **Update**
 - Blue Galaxy:
@@ -25,6 +25,11 @@
 
 - Guild battles:
 	- The automatic Discord notification feature now excludes sectors with an excessively high chance of attrition — the threshold can be selected in the settings (default: 100 per cent); this is checked at the time of sending
+
+- Inventory Overview:
+	- Selection kits now reveal their contents — the tooltip lists all contained buildings, and searching for a building also surfaces the kits it can be taken from
+	- New kind filter: buildings, fragments, kits or other items
+	- With an active property filter, selection kits show the best value among their contained buildings
 
 **Bugfix**
 - City Builder:
