@@ -1,22 +1,33 @@
 ## Extension Changelog
 
-##### 4.6.1.0
+##### 4.7.1.0
 **Neu**
 
 - LG-Bonusübersicht:
+    - Live noch keine Funktion, Beta (zz) läuft bereits
     - Neues Modul: alle legendären Bauwerke mit ihren Boni pro Prestige-Stufe (Kupfer/Silber/Gold) und den Bonuswerten an den Level-Sprüngen in einer Box — filterbar nach Name, gebaut/nicht gebaut und Bonusart
     - Eigene LG zeigen zusätzlich das aktuelle Level, die freigeschalteten Level mit Fortschrittsbalken und die aktuell aktiven Bonuswerte
 
 **Update**
 
 - Kostenrechner:
-    - Neue Schweinchen-Spalte zeigt wie im Spiel die zusätzlichen FP durch den eigenen Mäzen-Bonus; das Icon entspricht der Stufe des Bauwerks (Kupfer/Silber/Gold), die Spalte lässt sich in den Einstellungen ausblenden
+    - Neue Sparschwein-Spalte zeigt wie im Spiel die zusätzlichen FP durch den eigenen Mäzen-Bonus; das Icon entspricht der Stufe des Bauwerks (Kupfer/Silber/Gold), die Spalte lässt sich in den Einstellungen ausblenden
 
 - Verhandlungshelfer:
     - Wer vom Vorschlag abweicht, wird nicht mehr mit „Falsche Güter gewählt“ abgehängt — der Helfer versteht jeden Zug und rechnet exakt weiter
-    - Mehr als 5 Runden (z.B. Extra-Züge aus der Taverne) werden jetzt voll unterstützt statt gedeckelt; auch nach verbrauchten Runden schlägt der Helfer bei Zusatzzügen weiter die wahrscheinlichste Belegung vor
+    - Mehr als 5 Runden werden jetzt voll unterstützt statt gedeckelt; auch nach verbrauchten Runden schlägt der Helfer bei Zusatzzügen weiter die wahrscheinlichste Belegung vor
     - Verhandlungen mit mehr als 10 Gütern funktionieren jetzt ebenfalls (bisher Fehlermeldung)
-    - In einigen Endspielen spielt der Verhandlungshelfer nachweislich besser als vorher; die angezeigte Gewinnchance entspricht immer der tatsächlich gespielten Strategie
+    - In einigen Endspielen spielt der neue Verhandlungshelfer nachweislich besser als vorher; die angezeigte Gewinnchance entspricht immer der tatsächlich gespielten Strategie
+
+- Allgemein:
+    - Der Browser-Tab zeigt jetzt das Welten-Kürzel im Titel (z.B. „de11 - Forge of Empires") — bei mehreren offenen Welten ist sofort erkennbar, welcher Tab zu welcher Welt gehört
+    - Die Güter-Grafiken kommen jetzt direkt aus dem Spiel und aktualisieren sich bei neuen Zeitaltern automatisch — neue Güter erscheinen sofort mit dem richtigen Icon
+    - Neue Zeitalter erkennt die Erweiterung jetzt automatisch aus dem Spiel — Zeitalter-Liste, -Namen und Spezialgüter stimmen damit schon zum Start eines neuen Zeitalters, ohne auf ein Update zu warten
+
+- Eventassistenten:
+    - Die Merge-Game-Aufgabenwarnung (Overlay „Aufgabe einsammeln!“ und Ton) hat einen eigenen Schalter in den Einstellungen und funktioniert damit auch ohne die Merge-Game-Box
+    - Overlay und Ton lassen sich dort einzeln ein- und ausschalten
+    - Die Eventassistenten-Liste ist jetzt pro Event gruppiert und übersichtlicher
 
 **Bugfixes**
 
@@ -49,6 +60,11 @@
     - Gebäude, für die kein Platz mehr gefunden wurde, verschwinden nicht mehr stillschweigend von der Karte — sie werden jetzt in einer eigenen verschiebbaren Box aufgelistet
     - Neue Ladeanzeige mit Hintergrund-Panel, Fortschrittsbalken und Prozentanzeige während der Berechnung
     - Straßen-Bilanz oben links auf der Karte: Straßenkacheln der aktuellen Stadt, Straßenkacheln des Plans und die Ersparnis in Prozent
+    - Neue Option „Namen“: blendet die Gebäudenamen direkt auf der Karte ein — ausgerichtet in Gebäuderichtung, bei größeren Gebäuden mehrzeilig und lesbar in jeder Zoomstufe
+    - Neue Option „Tooltips“: die Gebäude-Tooltips beim Überfahren der Karte lassen sich vorübergehend abschalten
+    - Neuer Entfernen-Modus: aktivieren und Gebäude auf der Karte anklicken, um sie aus dem Plan zu nehmen — sie wandern in die Box der nicht platzierten Gebäude und lassen sich dort für die nächste Berechnung wiederherstellen
+    - Neuer Knopf „Neu berechnen“: plant die Stadt neu, ohne die entfernten Gebäude wieder einzuplanen — wie alle Funktionen auch im Pop-out-Fenster nutzbar
+    - Neue Varianten-Auswahl: die Berechnung behält bis zu 9 unterschiedliche Stadt-Layouts — garantiert inklusive der besten Variante jeder Bau-Strategie (Bänder, vertikale Bänder, organisch) — und über ‹ › lässt sich sofort wechseln; die Anzeige nennt die Strategie und die Straßen-Bilanz zeigt die Werte je Variante
 
 - Gildengefechte: 
   - Der automatische Discord-Versand lässt Sektoren mit zu hoher Zermürbungschance jetzt aus — die Schwelle ist in den Einstellungen wählbar (Standard: 100 %), geprüft wird zum Sendezeitpunkt

@@ -269,6 +269,11 @@ GetFights = () =>{
 		// Player-ID, Gilden-ID und Name setzen
 		MainParser.StartUp(data.responseData.user_data);
 
+		// prepend the world abbreviation to the tab title, e.g. "de11 - Forge of Empires"
+		if (!document.title.startsWith(ExtWorld)) {
+			document.title = `${ExtWorld} - ${document.title}`;
+		}
+
 		// check if DB exists
 		StrategyPoints.checkForDB(ExtPlayerID);
 		EventHandler.checkForDB(ExtPlayerID);

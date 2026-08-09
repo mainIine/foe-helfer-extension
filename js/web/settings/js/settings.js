@@ -388,25 +388,43 @@ let Settings = {
 
 
 	ShowEventHelpers: () => {
-		let eventHelperSettings = {'EventHelperMerge': true, 'EventHelperPresent': true, 'EventHelperIdle': true, 'EventHelperPop': true};
+		// one group per event; the merge game task warning brings its own sub-settings
+		// (fall back to the values formerly stored in the merger game box settings)
+		let mergerSettings = JSON.parse(localStorage.getItem('MergerGameSettings') || '{}');
+		let eventHelperGroups = [
+			[
+				{setting: 'EventHelperMerge', default: true},
+				{setting: 'EventHelperMergeBlocker', default: true},
+				{setting: 'EventHelperMergeBlockerOptical', default: mergerSettings.opticalTaskWarning === true, label: 'Boxes.MergerGame.opticalTaskWarning', sub: true},
+				{setting: 'EventHelperMergeBlockerAudible', default: mergerSettings.audibleTaskWarning !== false, label: 'Boxes.MergerGame.audibleTaskWarning', sub: true}
+			],
+			[{setting: 'EventHelperPresent', default: true}],
+			[{setting: 'EventHelperIdle', default: true}],
+			[{setting: 'EventHelperPop', default: true}]
+		];
 		let dp = [];
-		
+
 		dp.push('<div class="p5">');
 		dp.push('<b>'+i18n('Settings.EventHelper.Advanced')+'</b>')
-		for (let [setting, value] of Object.entries(eventHelperSettings)) {
-			let savedSetting = localStorage.getItem(setting);
-			if (savedSetting !== null) {
-				value = JSON.parse(savedSetting);
+		for (let group of eventHelperGroups) {
+			dp.push('<div class="event-helper-group">');
+			for (let entry of group) {
+				let value = entry.default;
+				let savedSetting = localStorage.getItem(entry.setting);
+				if (savedSetting !== null) {
+					value = JSON.parse(savedSetting);
+				}
+				dp.push('<div'+(entry.sub ? ' class="event-helper-sub"' : '')+'>');
+				dp.push( '<span class="check ' + (value ? '' : 'unchecked') + '">' +
+					'<span class="toogle-word">' + (value ? i18n('Boxes.Settings.Active') : i18n('Boxes.Settings.Inactive')) + '</span>' +
+					'<input name="'+entry.setting+'" data-id="'+entry.setting+'" class="setting-check game-cursor" type="checkbox" ' + (value ? 'checked' : '') + ' />' +
+				'</span>');
+				dp.push(i18n(entry.label || 'Settings.'+entry.setting)+'</div>');
 			}
-			dp.push('<div>');
-			dp.push( '<span class="check ' + (value ? '' : 'unchecked') + '">' +
-				'<span class="toogle-word">' + (value ? i18n('Boxes.Settings.Active') : i18n('Boxes.Settings.Inactive')) + '</span>' +
-				'<input name="'+setting+'" data-id="'+setting+'" class="setting-check game-cursor" type="checkbox" ' + (value ? 'checked' : '') + ' />' +
-			'</span>');
-			dp.push(i18n('Settings.'+setting)+'</div>');
+			dp.push('</div>');
 		}
 		dp.push('</div>');
-		dp.push('<br/><b>'+i18n('Settings.EventHelper.All')+'</b><br/>');
+		dp.push('<b>'+i18n('Settings.EventHelper.All')+'</b><br/>');
 		return dp.join('');
 	},
 

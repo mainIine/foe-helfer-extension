@@ -207,6 +207,7 @@ let Calculator = {
 		}
 	},
 
+
 	/**
 	 * Renders the calculator content into the current box: header with building,
 	 * level and owner, the arc bonus buttons and the contribution table.

@@ -1024,6 +1024,7 @@ let Guild_fights = {
 				resize: true,
 				minimize: true,
 				settings: () => Guild_fights.ShowLiveFightSettings(),
+				popout: () => MainParser.PopOut('LiveGildFighting', 380, 380),
 			    //active_maps:"gg"
 			});
 
@@ -2250,6 +2251,23 @@ let Guild_fights = {
 	},
 
 
+	/**
+	 * Prepares data for Discord integration by creating a cache of guild fights
+	 * from highlighted rows with timers and sorting them by their lockedUntil property.
+	 * Depending on the class of the event target, it triggers either the custom or default
+	 * Discord message sending behavior for Guild Battle Grounds (GBG) sectors.
+	 *
+	 * Steps performed:
+	 * 1. Clears the existing discordCache.
+	 * 2. Iterates over elements with class 'timer highlight-row', pushing relevant map data
+	 *    for provinces matching the element's data-id to discordCache.
+	 * 3. Sorts the discordCache array by the lockedUntil property in ascending order.
+	 * 4. Sends the data to Discord based on the event target's class:
+	 *    - If the target has the 'custom' class, sends a custom GBG sectors message.
+	 *    - Otherwise, sends a default GBG sectors message.
+	 *
+	 * @param {Object} e - The event object that triggered this function.
+	 */
 	PrepareForDiscord: (e) => {
 		Guild_fights.discordCache = [];
 		$('.timer.highlight-row').each(function () {

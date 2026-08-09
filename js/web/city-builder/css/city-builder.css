@@ -50,6 +50,33 @@
 	width: 100px;
 	cursor: pointer;
 }
+.optimized-city-controls .control-toggle {
+	display: flex;
+	align-items: center;
+	gap: 3px;
+	margin-left: 8px;
+	cursor: pointer;
+	white-space: nowrap;
+}
+.optimized-city-controls .control-toggle input[type="checkbox"] {
+	cursor: pointer;
+	margin: 0;
+}
+.optimized-city-controls .recalc-btn {
+	margin-left: 8px;
+	white-space: nowrap;
+}
+.optimized-city-controls .variant-control {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	margin-right: 8px;
+	white-space: nowrap;
+}
+.optimized-city-controls .variant-control .btn {
+	padding: 0 7px;
+	line-height: 1.4;
+}
 .scale-value {
 	min-width: 25px;
 	display: inline-block;
@@ -111,101 +138,9 @@
 .map-grid-canvas:active {
 	cursor: grabbing;
 }
-.map-grid-tooltips {
-	position: absolute;
-	left: 0;
-	top: 0;
-	width: 100%;
-	height: 100%;
-	pointer-events: none;
-}
-.map-grid-tooltips .map-building {
-	position: absolute;
-	pointer-events: all;
-}
-.map-building {
-	border: 1px solid;
-}
-
-.map-building.residential {
-	background-color: var(--background-color-residential);
-	border-color: var(--border-color-residential);
-}
-.map-building.production {
-	background-color: var(--background-color-production);
-	border-color: var(--border-color-production);
-}
-.map-building.greatbuilding {
-	background-color: var(--background-color-greatbuilding);
-	border-color: var(--border-color-greatbuilding);
-}
-.map-building.main_building {
-	background-color: var(--background-color-main_building);
-	border-color: var(--border-color-main_building);
-}
-.map-building.military {
-	background-color: var(--background-color-military);
-	border-color: var(--border-color-military);
-}
-.map-building.goods {
-	background-color: var(--background-color-goods);
-	border-color: var(--border-color-goods);
-}
-.map-building.culture {
-	background-color: var(--background-color-culture);
-	border-color: var(--border-color-culture);
-}
-.map-building.decoration {
-	background-color: var(--background-color-decoration);
-	border-color: var(--border-color-decoration);
-}
-.map-building.street {
-	background-color: var(--background-color-street);
-	border-color: var(--border-color-street);
-}
-.map-building.random_production {
-	background-color: var(--background-color-random_production);
-	border-color: var(--border-color-random_production);
-}
-.map-building.tower {
-	background-color: var(--background-color-tower);
-	border-color: var(--border-color-tower);
-}
-.map-building.roadless {
-	background-color: var(--background-color-noStreet);
-	border-color: var(--border-color-noStreet);
-}
-.map-building:hover {
-	background-color: rgba(255, 255, 255, 0.2);
-	opacity: 0.5 !important;
-	outline: 2px solid #ffffff;
-	box-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
-	z-index: 100;
-}
-
-/* Fallback für Gebäude ohne spezifischen Typ (generic_building) */
-.map-building.generic_building {
-	background-color: #A0A0A0; /* Mittelgrau */
-	border-color: #404040;
-}
-
-/* WICHTIG: Straßen sichtbar machen! (Sonst sind die Wege transparent) */
-.map-building.street {
-	background-color: #333333; /* Dunkelgrau für Asphalt */
-	border-color: #111111;
-	z-index: 1; /* Straßen liegen ganz unten */
-}
-
-/* Lila Deko (Deko ohne Straßenanschluss) */
-.map-building.roadless {
-	background-color: #8A2BE2;
-	border-color: #4B0082;
-	opacity: 0.8;
-}
-
-/* Optional: Fallback, falls CSS-Variablen mal nicht laden */
-.map-building {
-	box-sizing: border-box;
+/* remove mode: buildings on the canvas are click targets */
+.map-grid-canvas.edit-mode {
+	cursor: pointer;
 }
 
 /* Pop-up window: regular filled layout instead of the in-game city overlay */
@@ -237,6 +172,15 @@ body.foe-helper-popup #CityBuilderBox .map-grid-wrapper {
 }
 #CityBuilderUnplacedBox .unplaced-table td {
 	padding: 3px 8px;
+}
+#CityBuilderUnplacedBox .removed-restore {
+	cursor: pointer;
+	font-size: 15px;
+	font-weight: bold;
+	color: #8be28b;
+}
+#CityBuilderUnplacedBox .removed-restore:hover {
+	color: #ffffff;
 }
 
 /* pop-up window: the opacity overlay slider is pointless there */

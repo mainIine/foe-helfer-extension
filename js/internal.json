@@ -50,7 +50,10 @@
 		"name": "citymap",
 		"parts": ["city-buildings"]
 	},
-	"city-builder",
+	{
+		"name": "city-builder",
+		"parts": ["worker", "renderer", "interaction"]
+	},
 	"building-marker",
 	"hidden-rewards",
 	"greatbuildings",

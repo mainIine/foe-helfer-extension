@@ -1,6 +1,6 @@
 ## Extension Changelog
 
-##### 4.6.1.0
+##### 4.7.1.0
 **New**
 
 - GB Bonus Overview:
@@ -17,6 +17,17 @@
     - More than 5 rounds (e.g. extra turns from the tavern) are now fully supported instead of capped; even after the planned rounds are used up, the helper keeps suggesting the most likely assignment for extra turns
     - Negotiations with more than 10 goods now work as well (previously an error message)
     - In some endgames the negotiation helper provably plays better than before; the displayed win chance always matches the strategy actually played
+
+- General:
+    - The browser tab now shows the world abbreviation in its title (e.g. “de11 - Forge of Empires”) — with several worlds open you can instantly tell which tab belongs to which world
+    - Goods graphics now come straight from the game and update automatically with new eras — new goods instantly show up with the correct icon
+    - New eras are now detected automatically from the game — era list, names and special goods are correct the moment a new era launches, without waiting for an update
+    - On the beta server the goods graphics did not load (wrong server requested) — fixed
+
+- Event assistants:
+    - The merge game task warning (“Collect task!” overlay and sound) now has its own toggle in the settings and works even without the merge game box
+    - Overlay and sound can be toggled individually right there (previously in the merge game box's gear menu)
+    - The event assistant list is now grouped per event and easier to read
 
 **Bugfixes**
 
@@ -49,6 +60,11 @@
 	- Buildings for which no space could be found no longer disappear silently from the map — they are now listed in their own movable box
 	- New loading display with background panel, progress bar and percentage while the layout is being calculated
 	- Road balance in the top left corner of the map: road tiles of the current city, road tiles of the plan and the savings in per cent
+	- New "Names" option: shows the building names directly on the map — aligned with the building direction, wrapped onto several lines on larger buildings and readable at any zoom level
+	- New "Tooltips" option: the building tooltips shown when hovering over the map can be switched off temporarily
+	- New remove mode: enable it and click buildings on the map to take them out of the plan — they move into the unplaced buildings box and can be restored there for the next calculation
+	- New "Recalculate" button: plans the city again without planning the removed buildings back in — like all features it also works in the pop-out window
+	- New variant picker: the calculation keeps up to 9 distinct city layouts — guaranteed to include the best variant of every building strategy (bands, vertical bands, organic) — and ‹ › switches between them instantly; the label names the strategy and the road balance shows the numbers per variant
 
 - Guild battles:
 	- The automatic Discord notification feature now excludes sectors with an excessively high chance of attrition — the threshold can be selected in the settings (default: 100 per cent); this is checked at the time of sending
