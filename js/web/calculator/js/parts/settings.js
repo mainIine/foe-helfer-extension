@@ -17,45 +17,28 @@
 // so it can safely extend the existing Calculator object.
 Object.assign(Calculator, {
 	/**
-	 * Builds the settings dialog of the cost calculator: custom percent buttons,
-	 * the per-conversation bonus, view/auto-open options and the sound toggle.
-	 * Renders into the settings box of the box the calculator currently uses.
+	 * Builds the settings dialog of the cost calculator: the percent button
+	 * editor, the per-conversation bonus, view/auto-open options and the sound
+	 * toggle. Renders into the settings box of the box the calculator currently uses.
 	 */
 	ShowCalculatorSettings: ()=> {
 		let c = [],
-			buttons,
-			defaults = Calculator.DefaultButtons,
 			sB = localStorage.getItem('CustomCalculatorButtons'),
 			allGB = JSON.parse(localStorage.getItem('ShowOwnPartOnAllGBs')),
 			autoOpen = localStorage.getItem('OwnPartAutoOpen'),
-			nV = `<p class="new-row text-center bbd p5 flex gap">
-				${i18n('Boxes.Calculator.Settings.newValue')}: <input type="number" class="settings-values" style="width:30px"> 
-				<span class="btn btn-green btn-slim" onclick="Calculator.SettingsInsertNewRow()">+</span>
-				</p>`;
+			buttons = Calculator.SettingsSanitizeButtons(sB ? JSON.parse(sB) : Calculator.DefaultButtons);
 
-		if(sB) {
-			// buttons = [...new Set([...defaults,...JSON.parse(sB)])];
-			buttons = JSON.parse(sB);
+		c.push('<div class="percent-chips bbd">');
+		buttons.forEach(bonus => c.push(Calculator.SettingsChip(bonus)));
 
-			buttons = buttons.filter((item, index) => buttons.indexOf(item) === index); // remove duplicates
-			buttons.sort((a, b) => a - b); // order
-		}
-		else {
-			buttons = defaults;
-		}
+		// ghost chip to bring the arc bonus button back, hidden while it exists
+		c.push(`<span class="percent-chip ghost" title="${i18n('Boxes.Calculator.Settings.AddArk')}" onclick="Calculator.SettingsAddArk()"${buttons.includes('ark') ? ' style="display:none"' : ''}>+ ${MainParser.ArkBonus}%</span>`);
 
-		c.push('<section class="flex gap p2">');
-		buttons.forEach(bonus => {
-			if(bonus === 'ark') {
-				c.push(`<span class="btn-group"><input type="hidden" class="settings-values" value="ark"> <button class="btn btn-slim br">${MainParser.ArkBonus}%</button></span>`);
-			}
-			else {
-				c.push(`<span class="btn-group flex"><button class="btn btn-slim">${bonus}%</button> <input type="hidden" class="settings-values" value="${bonus}"> <span class="btn btn-delete btn-slim" onclick="Calculator.SettingsRemoveRow(this)">x</span> </span>`);
-			}
-		});
-		c.push('</section>');
-
-		c.push(nV);
+		c.push(`<span class="percent-add">
+			<input type="number" class="percent-add-input" step="0.1" min="0" max="200" placeholder="%" title="${i18n('Boxes.Calculator.Settings.newValue')}" onkeydown="if(event.key==='Enter'){Calculator.SettingsAddValue();event.preventDefault();}">
+			<span class="btn btn-green btn-slim" title="${i18n('Boxes.Calculator.Settings.newValue')}" onclick="Calculator.SettingsAddValue()">+</span>
+		</span>`);
+		c.push('</div>');
 
 		// own ids: in split view this dialog can be open next to the own part settings, ids must not collide
 		c.push(`<p class="bbd p5">
@@ -73,24 +56,106 @@ Object.assign(Calculator, {
 
 
 	/**
-	 * Appends another "new value" input row to this settings dialog.
+	 * Removes duplicates and invalid entries from a stored button list and sorts
+	 * it by percent value ('ark' by the current arc bonus).
+	 *
+	 * @param {Array} buttons - Raw button list from storage or defaults
+	 * @returns {Array} Cleaned and sorted list
 	 */
-	SettingsInsertNewRow: ()=> {
-    	let nV = `<p class="new-row">${i18n('Boxes.Calculator.Settings.newValue')}: <input type="number" class="settings-values" style="width:30px"> <span class="btn btn-green" onclick="Calculator.SettingsInsertNewRow()">+</span></p>`;
-
-		// only within the own settings dialog, the own part settings can be open at the same time
-		$(nV).insertAfter( $('#' + Calculator.BoxId() + 'SettingsBox .new-row:eq(-1)') );
+	SettingsSanitizeButtons: (buttons)=> {
+		buttons = buttons.filter((item, index) => (item === 'ark' || isFinite(item)) && buttons.indexOf(item) === index);
+		return buttons.sort((a, b) => (a === 'ark' ? MainParser.ArkBonus : a) - (b === 'ark' ? MainParser.ArkBonus : b));
 	},
 
 
 	/**
-	 * Removes a custom percent button from this settings dialog.
+	 * Returns the markup of one percent chip in this settings dialog.
+	 *
+	 * @param {number|string} bonus - Percent value or 'ark' for the arc bonus entry
+	 * @returns {string} Chip HTML
+	 */
+	SettingsChip: (bonus)=> {
+		let isArk = (bonus === 'ark');
+
+		return `<span class="percent-chip${isArk ? ' arc' : ''}"${isArk ? ` title="${i18n('Boxes.Calculator.Settings.ArkInfo')}"` : ''}>
+			<input type="hidden" class="settings-values" value="${bonus}">
+			<span class="chip-value">${isArk ? MainParser.ArkBonus : bonus}%</span>
+			<span class="chip-del" onclick="Calculator.SettingsRemoveRow(this)">&times;</span>
+		</span>`;
+	},
+
+
+	/**
+	 * Inserts a chip into this settings dialog, sorted by its percent value.
+	 *
+	 * @param {number|string} bonus - Percent value or 'ark'
+	 */
+	SettingsInsertChip: (bonus)=> {
+		let $box = $('#' + Calculator.BoxId() + 'SettingsBox'),
+			value = (bonus === 'ark' ? MainParser.ArkBonus : bonus),
+			$next = $box.find('.percent-chip').not('.ghost').filter(function(){
+				let v = $(this).find('.settings-values').val();
+				return ((v === 'ark' ? MainParser.ArkBonus : parseFloat(v)) > value);
+			}).first();
+
+		if($next.length){
+			$(Calculator.SettingsChip(bonus)).insertBefore($next);
+		}
+		else {
+			$(Calculator.SettingsChip(bonus)).insertBefore($box.find('.percent-chip.ghost'));
+		}
+	},
+
+
+	/**
+	 * Adds the value of the input field as a new percent chip.
+	 */
+	SettingsAddValue: ()=> {
+		let $box = $('#' + Calculator.BoxId() + 'SettingsBox'),
+			$input = $box.find('.percent-add-input'),
+			v = parseFloat($input.val());
+
+		if(isFinite(v) && v >= 0 && v <= 200){
+			v = Math.round(v * 10) / 10;
+
+			let exists = $box.find('.percent-chip .settings-values').toArray().some(el => parseFloat(el.value) === v);
+			if(!exists){
+				Calculator.SettingsInsertChip(v);
+			}
+		}
+
+		$input.val('').trigger('focus');
+	},
+
+
+	/**
+	 * Brings the removed arc bonus chip back and hides the ghost chip again.
+	 */
+	SettingsAddArk: ()=> {
+		let $box = $('#' + Calculator.BoxId() + 'SettingsBox');
+
+		$box.find('.percent-chip.ghost').hide();
+		Calculator.SettingsInsertChip('ark');
+	},
+
+
+	/**
+	 * Removes a percent chip from this settings dialog. Removing the arc bonus
+	 * chip reveals the ghost chip to bring it back.
 	 *
 	 * @param {HTMLElement} $this - The clicked delete button
 	 */
 	SettingsRemoveRow: ($this)=> {
-		$($this).closest('.btn-group').fadeToggle('fast', function(){
+		let $chip = $($this).closest('.percent-chip'),
+			isArk = ($chip.find('.settings-values').val() === 'ark'),
+			$box = $('#' + Calculator.BoxId() + 'SettingsBox');
+
+		$chip.fadeOut('fast', function(){
 			$(this).remove();
+
+			if(isArk){
+				$box.find('.percent-chip.ghost').show();
+			}
 		});
 	},
 
@@ -105,18 +170,27 @@ Object.assign(Calculator, {
 		let $settings = $('#' + Calculator.BoxId() + 'SettingsBox'),
 			values = [];
 
+		// adopt a typed but not yet added value
+		Calculator.SettingsAddValue();
+
 		$settings.find('.settings-values').each(function(){
 			let v = $(this).val().trim();
 
-			if(v){
-				if(v !== 'ark'){
-					values.push( parseFloat(v) );
-				} else {
-					values.push(v);
-				}
+			if(v === 'ark'){
+				values.push(v);
+			}
+			else if(v !== '' && isFinite(parseFloat(v))){
+				values.push( parseFloat(v) );
 			}
 		});
-		localStorage.setItem('CustomCalculatorButtons', JSON.stringify(values));
+
+		if(values.length){
+			localStorage.setItem('CustomCalculatorButtons', JSON.stringify(values));
+		}
+		else {
+			// everything removed: back to the default buttons
+			localStorage.removeItem('CustomCalculatorButtons');
+		}
 
 		Calculator.ForderBonusPerConversation = $settings.find('.forderbonusperconversation').prop('checked');
 		localStorage.setItem('CalculatorForderBonusPerConversation', Calculator.ForderBonusPerConversation);

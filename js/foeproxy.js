@@ -142,21 +142,14 @@ if (typeof globalThis.FoEproxy == 'undefined') {
                 
                 let posts = [];
 
-                if (typeof data === 'object' && data instanceof ArrayBuffer) {
-                    if (data.bytes[0] === 31 && data.bytes[1] === 139 && data.bytes[2] === 8) {
+                if (typeof data === 'object' && (data instanceof ArrayBuffer || data instanceof Uint8Array)) {
+                    const bytes = data instanceof ArrayBuffer ? new Uint8Array(data) : data;
+                    if (bytes[0] === 31 && bytes[1] === 139 && bytes[2] === 8) {
                         // gzipped, ignore
                         return
                     } else {
                         // try plaintext
-                        posts = JSON.parse(new TextDecoder().decode(data));
-                    }
-                } else if (typeof data === 'object' && data instanceof Uint8Array) {
-                    if (data[0] === 31 && data[1] === 139 && data[2] === 8) {
-                        // gzipped, ignore
-                        return
-                    } else {
-                        // try plaintext
-                        posts = JSON.parse(new TextDecoder().decode(data));
+                        posts = JSON.parse(new TextDecoder().decode(bytes));
                     }
                 } else
                     posts = JSON.parse(data);

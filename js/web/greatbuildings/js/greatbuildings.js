@@ -11,9 +11,26 @@
  * **************************************************************************************
  */
 
+{
+	// refresh the open investment box when the city changes (collection,
+	// level up, new building); a debounce collapses bundled message bursts
+	let refreshTimer = null;
+	FoEproxy.addFoeHelperHandler('CityMapUpdated', () => {
+		clearTimeout(refreshTimer);
+		refreshTimer = setTimeout(() => {
+			if ($('#greatbuildings').length === 0) return;
+			GreatBuildings.RenderInvest();
+		}, 250);
+	});
+}
+
+
 /**
- * Great building investment box: rates all great buildings by their return on
- * investment (break-even time in days) to suggest which one to level next.
+ * Great building investment box: pick an investment target (FP, goods, attack
+ * bonus, …), see only the great buildings offering it and what the next level
+ * costs — as own FP share at the configured arc bonus and in daily city
+ * harvests. A switch toggles between the standard productions (per level data)
+ * and the tier bonuses of the multi-tier rework where the game provides them.
  */
 let GreatBuildings = {
 
@@ -78,795 +95,704 @@ let GreatBuildings = {
         { 'ID': 'X_SpaceAgeAsteroidBelt_Landmark1', 'GoodCosts': 1000, 'Rewards': [0.28, 0.36, 0.44, 0.52, 0.75, 0.85, 0.95, 1.05, 1.15, 1.25, 1.281, 1.3125, 1.3435, 1.3745, 1.4055, 1.7232, 1.7598, 1.7958, 1.8318, 1.8672, 1.9026, 1.9368, 1.971, 2.0046, 2.0376, 2.07, 2.1018, 2.4885, 2.5242, 2.5585, 2.5928, 2.6257, 2.6586, 2.6901, 2.7202, 2.7503, 2.7797, 2.8077, 2.835, 2.8616, 3.3, 3.328, 3.3552, 3.3824, 3.408, 3.4328, 3.4568, 3.4792, 3.5016, 3.5232, 3.544, 3.564, 3.5824, 3.6008, 3.6184, 3.6352, 3.652, 4.1256, 4.1427, 4.1589, 4.1742, 4.1886, 4.203, 4.2165, 4.23, 4.2417, 4.2543, 4.2651, 4.2759, 4.2867, 4.2966, 4.3056, 4.3155, 4.3236, 4.3317, 4.3398, 4.3479, 4.3551, 4.3614, 4.3677, 4.374, 4.3803, 4.3857, 4.3011, 4.3965, 4.4019, 4.4064, 4.4109, 4.4154, 4.419, 4.914, 4.918, 4.922, 4.926, 4.93, 4.933, 4.936, 4.939, 4.942, 4.945, 4.948, 4.95, 4.953, 4.955, 4.957, 4.959, 4.961, 4.963, 4.965, 4.967, 4.968, 4.97, 4.971, 4.973, 4.974, 4.975, 4.976, 4.978, 4.979, 4.98, 4.981, 4.982, 4.982, 4.983, 4.984, 4.985, 4.986] }, //Space Carrier
         { 'ID': 'X_SpaceAgeVenus_Landmark1', 'GoodCosts': 1500, 'FPProductions': [6.53, 6.78, 11.29, 11.49, 11.69, 11.9, 12.1, 12.31, 12.52, 12.73, 12.94, 13.14, 13.34, 13.54, 13.74, 13.95, 14.15, 14.36, 14.57, 14.77, 14.98, 15.19, 15.4, 15.61, 15.81, 16.02, 16.23, 16.44, 16.65, 16.86, 17.08, 17.28, 17.5, 17.71, 17.92, 18.13, 18.34, 18.55, 18.75, 18.96, 19.17, 19.37, 19.58, 19.79, 19.99, 20.19, 20.4, 20.6, 20.8, 21, 21.2, 21.4, 21.59, 21.79, 21.98, 22.17, 22.37, 22.56, 22.75, 22.93, 23.12, 23.3, 23.48, 23.67, 23.85, 24.02, 24.19, 24.37, 24.55, 24.71, 24.89, 25.05, 25.23, 25.39, 25.54, 25.71, 25.87, 26.03, 26.18, 26.33, 26.48, 26.64, 26.78, 26.93, 27.08, 27.22, 27.36, 27.5, 27.64, 27.77, 27.91, 28.04, 28.17, 28.3, 28.42, 28.54, 28.67, 28.79, 28.91, 29.03], 'GoodsProductions': [10.9, 11.09, 6.53, 6.78, 11.29, 6.53, 6.78, 11.29, 11.49, 6.53, 6.78, 11.29, 11.49, 11.69, 6.53, 6.78, 11.29, 11.49, 11.69, 11.9, 6.53, 6.78, 11.29, 11.49, 11.69, 11.9, 12.1, 6.53, 6.78, 11.29, 11.49, 11.69, 11.9, 12.1, 12.31, 6.53, 6.78, 11.29, 11.49, 11.69, 11.9, 12.1, 12.31, 12.52, 6.53, 6.78, 11.29, 11.49, 11.69, 11.9, 12.1, 12.31, 12.52, 12.73, 6.53, 6.78, 11.29, 11.49, 11.69, 11.9, 12.1, 12.31, 12.52, 12.73, 12.94, 6.53, 6.78, 11.29, 11.49, 11.69, 11.9, 12.1, 12.31, 12.52, 12.73, 12.94, 13.14, 6.53, 6.78, 11.29, 11.49, 11.69, 11.9, 12.1, 12.31, 12.52, 12.73, 12.94, 13.14, 13.34, 6.53, 6.78, 11.29, 11.49, 11.69, 11.9, 12.1, 12.31, 12.52, 12.73, 12.94, 13.14, 13.34, 13.54, 6.53, 6.78, 11.29, 11.49, 11.69, 11.9, 12.1, 12.31, 12.52, 12.73, 12.94, 13.14, 13.34, 13.54, 13.74, 6.53, 6.78, 11.29, 11.49, 11.69, 11.9, 12.1, 12.31, 12.52, 12.73, 12.94, 13.14, 13.34, 13.54, 13.74, 13.95, 6.53, 6.78, 11.29, 11.49, 11.69, 11.9, 12.1, 12.31, 12.52, 12.73, 12.94, 13.14, 13.34, 13.54, 13.74, 13.95, 14.15, 6.53, 6.78, 11.29, 11.49, 11.69, 11.9, 12.1, 12.31], 'GoodsProductions1': [6.77, 6.88, 6.99, 7.09, 7.2, 7.32, 7.42, 7.54, 7.65, 7.76, 7.88, 7.99, 8.11, 8.22, 8.34, 8.46, 8.57, 8.69, 8.81, 8.92, 9.04, 9.16, 9.28, 9.4, 9.51, 9.63, 9.75, 9.87, 9.98, 10.1, 10.22, 10.34, 10.46, 10.57, 10.69, 10.81, 10.92, 11.04, 11.15, 11.27, 11.38, 11.49, 11.61, 11.72, 11.83, 11.95, 12.06, 12.17, 12.28, 12.38, 12.49, 12.6, 12.71, 12.81, 12.92, 13.02, 13.12, 13.23, 13.33, 13.43, 13.53, 13.63, 13.72, 13.82, 13.91, 14.01, 14.1, 14.19, 14.28, 14.37, 14.46, 14.55, 14.64, 14.73, 14.81, 14.89, 14.98, 15.06, 15.14, 15.22, 15.29, 15.37, 15.45, 15.52, 15.6, 15.67, 15.74, 15.82, 15.88, 15.95, 16.02, 16.09, 16.15, 16.22, 16.28, 16.34, 16.41, 16.47, 16.53, 16.58]},  //Flying Island
         { 'ID': 'X_SpaceAgeTitan_Landmark1', 'GoodCosts': 2000, 'GoodsProductions': [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 53, 57, 62, 66, 71, 76, 81, 86, 92, 98, 103, 109, 115, 122, 128, 135, 141, 148, 155, 162, 169, 176, 183, 190, 197, 205, 212, 219, 226, 233, 241, 248, 255, 262, 269, 276, 283, 290, 297, 304, 311, 317, 324, 331, 337, 344, 350, 357, 363, 369, 376, 382, 388, 394, 400, 406, 412, 418, 424, 430, 435, 441, 447, 453, 458, 464, 469, 475, 481, 486, 492, 497, 502, 508, 513, 519, 524, 529, 535, 540, 545, 550, 556, 561, 566, 571, 577, 582, 587, 592], 'AttackProductions': [4, 8, 12, 16, 20, 24, 28, 32, 36, 40], AttackIncrease: 4 }, //Saturn VI Gate CENTAURUS
-        { 'ID': 'X_SpaceAgeTitan_Landmark2', 'GoodCosts': 2000, 'FPProductions': [2,4,6,8,10,12,14,16,18,20]}, //Saturn VI Gate PEGASUS
+        { 'ID': 'X_SpaceAgeTitan_Landmark2', 'GoodCosts': 2000, 'FPProductions': [2,4,6,8,10,12,14,16,18,20], 'AttackProductions': [5, 10, 15, 20, 25, 30, 35, 40, 45, 50], AttackIncrease: 5}, //Saturn VI Gate PEGASUS
         { 'ID': 'X_SpaceAgeTitan_Landmark3', 'GoodCosts': 2000, 'AttackProductions': [3, 6, 9, 12, 15, 18, 21, 24, 27, 30], AttackIncrease: 3}, //Saturn VI Gate HYDRA
         { 'ID': 'X_SpaceAgeSpaceHub_Landmark1', 'GoodCosts': 30000, 'AttackProductions': [5, 10, 15, 20, 25, 30, 35, 40, 45, 50], AttackIncrease: 5}, //Stellar Warship
     ],
 
-    /**
-     * Average FP and goods per day of special event buildings (great
-     * lighthouse, gentian windmill, …) that have no regular production data,
-     * used for the Blue Galaxy ranking. Indexed by entity id.
-     */
-    BlueGalaxyStaticProductions: {
-        'R_MultiAge_SummerBonus19a': { FP: 0.2, Goods: 1 },
-        'R_MultiAge_SummerBonus19b': { FP: 1.4, Goods: 2 },
-        'R_MultiAge_SummerBonus19c': { FP: 2.75, Goods: 3.75 },
-        'R_MultiAge_SummerBonus19d': { FP: 4, Goods: 5 },
-        'R_MultiAge_SummerBonus19e': { FP: 6.1, Goods: 7.5 },
-        'R_MultiAge_SummerBonus19f': { FP: 7.8, Goods: 10.5 },
-        'R_MultiAge_SummerBonus19g': { FP: 10, Goods: 16 },
-        'R_MultiAge_SummerBonus19h': { FP: 12.8, Goods: 20 },
-        'R_MultiAge_SoccerBonus22d': { FP: 0, Goods: 10.5},
-        'R_MultiAge_SoccerBonus22e': { FP: 3, Goods: 10.5},
-        'R_MultiAge_SoccerBonus22f': { FP: 5, Goods: 16 },
-        'R_MultiAge_SoccerBonus22g': { FP: 7, Goods: 16 },
-        'R_MultiAge_SoccerBonus22h': { FP: 11, Goods: 21.5 }
-    },
 
     /** @type {number} Arc bonus in percent, used to calculate the patron rewards */
     ForderBonus: 90,
 
-    /** @type {number} FP earned per day through patron rewards, used to rate further Arc levels */
-    RewardPerDay: 0,
-
-    /** @type {number} Opportunity costs: assumed FP value one occupied tile produces per day */
-    FPPerTile: 0.2,
-
     /** @type {boolean} Hide great buildings that are not built yet */
     HideNewGBs: false,
 
-    /** @type {boolean} Include goods productions in the rating */
-    ShowGoods: false,
+    /** @type {Object<string, string[]>} Boost types of the military investment targets, classic and rework names */
+    StandardBoostTypes: {
+        attack: ['att_boost_attacker', 'def_boost_attacker', 'attack_boost', 'attacker_defense_boost'],
+        defense: ['att_boost_defender', 'def_boost_defender', 'defense_boost', 'defender_attack_boost'],
+        kill_chance: ['first_strike', 'missile_launch'],
+        critical_hit: ['critical_hit_chance'],
+    },
 
-    /** @type {number} FP value of one good of the current era */
-    GoodsValue0: 0.2,
+    /** @type {string} Value model: 'standard' (per level productions) or 'rework' (multi-tier bonuses) */
+    InvestMode: 'standard',
 
-    /** @type {number} FP value of one good of the previous era */
-    GoodsValue1: 0.15,
+    /** @type {string} Standard mode: selected investment target ('fp', 'goods' or 'attack') */
+    StandardTarget: 'fp',
 
-    /** @type {number} FP value of one unrefined good (three eras back) */
-    GoodsValue3: 0.1,
+    /** @type {string} Rework mode: selected investment target as "type|targetedFeature" */
+    BonusTarget: 'strategy_points|all',
 
-    /** @type {boolean} Include attack boosts in the rating */
-    ShowAttack: false,
+    /** @type {{col: string, order: string}} Current table sorting */
+    InvestSort: { col: 'costs', order: 'ascending' },
 
-    /** @type {number} FP value of 1% attack boost */
-    AttackValue: 0.2,
-
-    /** @type {?Object[]} Cache of all city entities that are great buildings */
-    GreatBuildingEntityCache: null,
-
-    /** @type {number} Sum of all patron reward FP found in the town hall event history */
-    FPRewards: 0,
-
-    /** @type {Object<string, Object>} Already processed town hall events, indexed by event id */
-    EventDict: {},
-
-    /** @type {{ID: number, FP: number, Goods: number}[]} Own buildings collectable by the Blue Galaxy, sorted by value (descending) */
-    GalaxyBuildings: [],
-
-    /** @type {Object<number, boolean>} Expanded state of the detail rows, indexed by great building index */
-    DetailsVisible: {},
 
     /**
-     * Toggles the box: on first open the saved settings are restored from
-     * localStorage and all event listeners are registered, otherwise the box
-     * is closed. Afterwards the body is (re-)rendered.
+     * Toggles the box.
      */
     Show: () => {
-        if ($('#greatbuildings').length === 0) {
-
-            let ForderBonus = localStorage.getItem('GreatBuildingsForderBonus');
-            if (ForderBonus !== null) {
-                GreatBuildings.ForderBonus = parseFloat(ForderBonus);
-            }
-
-            for (let i = 0; i < GreatBuildings.GreatBuildingsData.length; i++) {
-                let GoodCosts = localStorage.getItem('GreatBuildingsGoodCosts' + i);
-                if (GoodCosts !== null) {
-                    GreatBuildings.GreatBuildingsData[i]['GoodCosts'] = parseFloat(GoodCosts);
-                }
-            }
-
-            let FPPerTile = localStorage.getItem('GreatBuildingsFPPerTile');
-            if (FPPerTile != null) {
-                GreatBuildings.FPPerTile = parseFloat(FPPerTile);
-            }
-
-
-            let ShowGoods = localStorage.getItem('GreatBuildingsShowGoods');
-            if (ShowGoods === 'true') {
-                GreatBuildings.ShowGoods = true;
-            }
-
-            let GoodsValue0 = localStorage.getItem('GreatBuildingsGoodsValue0');
-            if (GoodsValue0 !== null) {
-                GreatBuildings.GoodsValue0 = parseFloat(GoodsValue0);
-            }
-
-            let GoodsValue1 = localStorage.getItem('GreatBuildingsGoodsValue1');
-            if (GoodsValue1 !== null) {
-                GreatBuildings.GoodsValue1 = parseFloat(GoodsValue1);
-            }
-
-            let GoodsValue3 = localStorage.getItem('GreatBuildingsGoodsValue3');
-            if (GoodsValue3 !== null) {
-                GreatBuildings.GoodsValue3 = parseFloat(GoodsValue3);
-            }
-
-            let ShowAttack = localStorage.getItem('GreatBuildingsShowAttack');
-            if (ShowAttack === 'true') {
-                GreatBuildings.ShowAttack = true;
-            }
-
-            let AttackValue = localStorage.getItem('GreatBuildingsAttackValue');
-            if (AttackValue !== null) {
-                GreatBuildings.AttackValue = parseFloat(AttackValue);
-            }
-
-            GreatBuildings.RewardPerDay = MainParser.round(GreatBuildings.FPRewards / 6);
-
-            HTML.Box({
-                id: 'greatbuildings',
-                title: i18n('Boxes.GreatBuildings.Title'),
-                ask: i18n('Boxes.GreatBuildings.HelpLink'),
-                auto_close: true,
-                dragdrop: true,
-                minimize: true,
-                resize: true
-            });
-
-            // CSS in den DOM prügeln
-            HTML.AddCssFile('greatbuildings');
-
-            $('#greatbuildings').on('click', '.hidenewgbs', function () {
-                let $this = $(this),
-                    id = $this.data('id'),
-                    v = $this.prop('checked');
-
-                GreatBuildings.HideNewGBs = v;
-
-                GreatBuildings.CalcBody();
-            });
-
-            $('#greatbuildings').on('blur', '#costFactor', function () {
-                GreatBuildings.ForderBonus = parseFloat($('#costFactor').val());
-                if (isNaN(GreatBuildings.ForderBonus)) GreatBuildings.ForderBonus = 0;
-                localStorage.setItem('GreatBuildingsForderBonus', GreatBuildings.ForderBonus);
-                GreatBuildings.CalcBody();
-            });
-
-            $('#greatbuildings').on('blur', '#fpPerTile', function () {
-                GreatBuildings.FPPerTile = parseFloat($('#fpPerTile').val());
-                if (isNaN(GreatBuildings.FPPerTile)) GreatBuildings.FPPerTile = 0;
-                localStorage.setItem('GreatBuildingsFPPerTile', GreatBuildings.FPPerTile);
-                GreatBuildings.CalcBody();
-            });
-
-            $('#greatbuildings').on('blur', '#rewardPerDay', function () {
-                GreatBuildings.RewardPerDay = parseFloat($('#rewardPerDay').val());
-                if (isNaN(GreatBuildings.RewardPerDay)) GreatBuildings.RewardPerDay = 0;
-                GreatBuildings.CalcBody();
-            });
-
-            $('#greatbuildings').on('click', '.showgoods', function () {
-                let $this = $(this),
-                    id = $this.data('id'),
-                    v = $this.prop('checked');
-
-                GreatBuildings.ShowGoods = v;
-                localStorage.setItem('GreatBuildingsShowGoods', GreatBuildings.ShowGoods);
-
-                GreatBuildings.CalcBody();
-            });
-
-            $('#greatbuildings').on('blur', '#goodsValue0', function () {
-                GreatBuildings.GoodsValue0 = parseFloat($('#goodsValue0').val());
-                if (isNaN(GreatBuildings.GoodsValue0)) GreatBuildings.GoodsValue0 = 0;
-                localStorage.setItem('GreatBuildingsGoodsValue0', GreatBuildings.GoodsValue0);
-                GreatBuildings.CalcBody();
-            });
-
-            $('#greatbuildings').on('blur', '#goodsValue1', function () {
-                GreatBuildings.GoodsValue1 = parseFloat($('#goodsValue1').val());
-                if (isNaN(GreatBuildings.GoodsValue1)) GreatBuildings.GoodsValue1 = 0;
-                localStorage.setItem('GreatBuildingsGoodsValue1', GreatBuildings.GoodsValue1);
-                GreatBuildings.CalcBody();
-            });
-
-            $('#greatbuildings').on('blur', '#goodsValue3', function () {
-                GreatBuildings.GoodsValue3 = parseFloat($('#goodsValue3').val());
-                if (isNaN(GreatBuildings.GoodsValue3)) GreatBuildings.GoodsValue3 = 0;
-                localStorage.setItem('GreatBuildingsGoodsValue3', GreatBuildings.GoodsValue3);
-                GreatBuildings.CalcBody();
-            });
-
-            for (let i = 0; i < GreatBuildings.GreatBuildingsData.length; i++) {
-                $('#greatbuildings').on('blur', '#GreatBuildingsGoodCosts' + i, function () {
-                    GreatBuildings.GreatBuildingsData[i].GoodCosts = parseFloat($('#GreatBuildingsGoodCosts' + i).val());
-                    if (isNaN(GreatBuildings.GreatBuildingsData[i].GoodCosts)) GreatBuildings.GreatBuildingsData[i].GoodCosts = 0;
-                    localStorage.setItem('GreatBuildingsGoodCosts' + i, GreatBuildings.GreatBuildingsData[i].GoodCosts);
-                    GreatBuildings.CalcBody();
-                });
-            }
-
-            $('#greatbuildings').on('click', '.showattack', function () {
-                let $this = $(this),
-                    id = $this.data('id'),
-                    v = $this.prop('checked');
-
-                GreatBuildings.ShowAttack = v;
-                localStorage.setItem('GreatBuildingsShowAttack', GreatBuildings.ShowAttack);
-
-                GreatBuildings.CalcBody();
-            });
-
-            $('#greatbuildings').on('blur', '#attackValue', function () {
-                GreatBuildings.AttackValue = parseFloat($('#attackValue').val());
-                if (isNaN(GreatBuildings.AttackValue)) GreatBuildings.AttackValue = 0;
-                localStorage.setItem('GreatBuildingsAttackValue', GreatBuildings.AttackValue);
-                GreatBuildings.CalcBody();
-            });
-
-            // Weiter Level aufklappen
-            $('#greatbuildings').on('click', '.gbmainrow', function () {
-                let Index = $(this).data('value');
-                GreatBuildings.DetailsVisible[Index] = !GreatBuildings.DetailsVisible[Index];
-                $(this).toggleClass('active');
-                
-                GreatBuildings.RefreshDetailsVisible(Index);                
-            });
-
-        } else {
+        if ($('#greatbuildings').length !== 0) {
             HTML.CloseOpenBox('greatbuildings');
+            return;
         }
 
-        GreatBuildings.CalcBody();       
+        GreatBuildings.ShowInvest();
     },
 
 
     /**
-     * Renders the box body: the settings header and the ROI table of all
-     * great buildings, sorted by the break-even time of their best level.
-     * Rows for further levels are collapsed behind the main row.
+     * Opens the investment box: restores the saved settings, creates the box,
+     * registers all event listeners and renders the body.
      */
-    CalcBody: () => {
-        GreatBuildings.DetailsVisible = {};
+    ShowInvest: () => {
+        let ForderBonus = localStorage.getItem('GreatBuildingsForderBonus');
+        if (ForderBonus !== null) GreatBuildings.ForderBonus = parseFloat(ForderBonus);
 
-        let h = [];
-        h.push('<div class="text-center dark-bg header">');
-        h.push('<strong class="title">' + i18n('Boxes.GreatBuildings.SuggestionTitle') + '</strong><br>');
-        if (LastMapPlayerID !== ExtPlayerID) {
-            h.push('<strong class="player-name"><span>' + PlayerDict[LastMapPlayerID]['PlayerName'] + '</span></strong>');
-        }
-        h.push('<br><strong>')
-        h.push(i18n('Boxes.GreatBuildings.ArcBonus') + ' ');
-        h.push('</strong><input type="number" id="costFactor" step="0.1" min="12" max="200" value="' + GreatBuildings.ForderBonus + '">% ');
-        h.push('<br><br>')
-        h.push('<input id="HideNewGBs" class="hidenewgbs game-cursor" ' + (GreatBuildings.HideNewGBs ? 'checked' : '') + ' type="checkbox">');
-        h.push(i18n('Boxes.GreatBuildings.HideNewGBs'));
-        h.push('<br>');
-        h.push(i18n('Boxes.GreatBuildings.FPPerTile') + ' ');
-        h.push('<input type="number" id="fpPerTile" step="0.01" min="0" max="1000" value="' + GreatBuildings.FPPerTile + '" title="' + HTML.i18nTooltip(i18n('Boxes.GreatBuildings.TTFPPerTile')) + '">');
-        h.push('<br>');
-        h.push(i18n('Boxes.GreatBuildings.RewardPerDay') + ' ');
-        h.push('<input type="number" id="rewardPerDay" step="1" min="0" max="1000000" value="' + GreatBuildings.RewardPerDay + '" title="' + HTML.i18nTooltip(i18n('Boxes.GreatBuildings.TTRewardPerDay')) + '">');
-        h.push('<br><br>');
+        GreatBuildings.InvestMode = localStorage.getItem('GreatBuildingsInvestMode') || GreatBuildings.InvestMode;
+        GreatBuildings.StandardTarget = localStorage.getItem('GreatBuildingsStandardTarget') || GreatBuildings.StandardTarget;
+        GreatBuildings.BonusTarget = localStorage.getItem('GreatBuildingsBonusTarget') || GreatBuildings.BonusTarget;
+        GreatBuildings.HideNewGBs = (localStorage.getItem('GreatBuildingsHideNew') === 'true');
+        GreatBuildings.InvestSort = JSON.parse(localStorage.getItem('GreatBuildingsSort') || '{"col":"costs","order":"ascending"}');
 
-        h.push('<input id="ShowGoods" class="showgoods game-cursor" ' + (GreatBuildings.ShowGoods ? 'checked' : '') + ' type="checkbox">');
-        h.push(i18n('Boxes.GreatBuildings.ShowGoods'));
-        h.push('<br>');
-
-        if (GreatBuildings.ShowGoods) { //Güterwert - Boxen ausblenden, wenn Güter deaktiviert
-            h.push(HTML.i18nReplacer(i18n('Boxes.GreatBuildings.GoodsValue'), { eraname: i18n('Eras.' + CurrentEraID) }) + ' ');
-            h.push('<input type="number" id="goodsValue0" step="0.01" min="0" max="1000" value="' + GreatBuildings.GoodsValue0 + '" title="' + HTML.i18nTooltip(i18n('Boxes.GreatBuildings.TTGoodsValue')) + '">');
-            if (GreatBuildings.GoodsValue0 > 0) {
-                h.push('<small> (' + HTML.i18nReplacer(i18n('Boxes.GreatBuildings.GoodsPerFP'), { goods: Math.round(1 / GreatBuildings.GoodsValue0 * 100) / 100 }) + ')</small>')
-            }
-            h.push('<br>');
-
-            if (CurrentEraID >= 3) { //Ab Eisenzeit => Star Gazer liefert Bronzezeitgüter
-                h.push(HTML.i18nReplacer(i18n('Boxes.GreatBuildings.GoodsValue'), { eraname: i18n('Eras.' + (CurrentEraID - 1)) }) + ' ');
-                h.push('<input type="number" id="goodsValue1" step="0.01" min="0" max="1000" value="' + GreatBuildings.GoodsValue1 + '" title="' + HTML.i18nTooltip(i18n('Boxes.GreatBuildings.TTGoodsValue')) + '">');
-                if (GreatBuildings.GoodsValue1 > 0) {
-                    h.push('<small> (' + HTML.i18nReplacer(i18n('Boxes.GreatBuildings.GoodsPerFP'), { goods: Math.round(1 / GreatBuildings.GoodsValue1 * 100) / 100 }) + ')</small>')
-                }
-                h.push('<br>');
-            }
-
-            if (CurrentEraID >= 10) { //Ab Moderne => Unveredelte Güter
-                h.push(HTML.i18nReplacer(i18n('Boxes.GreatBuildings.GoodsValue'), { eraname: i18n('Eras.' + (CurrentEraID - 3)) }) + ' ');
-                h.push('<input type="number" id="goodsValue3" step="0.01" min="0" max="1000" value="' + GreatBuildings.GoodsValue3 + '" title="' + HTML.i18nTooltip(i18n('Boxes.GreatBuildings.TTGoodsValue')) + '">');
-                if (GreatBuildings.GoodsValue3 > 0) {
-                    h.push('<small> (' + HTML.i18nReplacer(i18n('Boxes.GreatBuildings.GoodsPerFP'), { goods: Math.round(1 / GreatBuildings.GoodsValue3 * 100) / 100 }) + ')</small>')
-                }
-                h.push('<br>');
-            }
-        }
-
-        h.push('<input id="ShowAttack" class="showattack game-cursor" ' + (GreatBuildings.ShowAttack ? 'checked' : '') + ' type="checkbox">');
-        h.push(i18n('Boxes.GreatBuildings.ShowAttack'));
-        h.push('<br>');
-
-        if (GreatBuildings.ShowAttack) { //Güterwert - Boxen ausblenden, wenn Güter deaktiviert
-            h.push(i18n('Boxes.GreatBuildings.AttackValue')) + ' ';
-            h.push('<input type="number" id="attackValue" step="0.01" min="0" max="1000" value="' + GreatBuildings.AttackValue + '" title="' + HTML.i18nTooltip(i18n('Boxes.GreatBuildings.TTAttackValue')) + '">');
-            if (GreatBuildings.AttackValue > 0) {
-                h.push('<small> (' + HTML.i18nReplacer(i18n('Boxes.GreatBuildings.AttackPerFP'), { percent: Math.round(1 / GreatBuildings.AttackValue * 100) / 100 }) + ')</small>')
-            }
-            h.push('<br>');
-        }
-
-        h.push('<br>');
-        h.push(i18n('Boxes.GreatBuildings.SuggestionDescription'));
-        h.push('</div>');
-
-        h.push('<table class="foe-table">');
-
-        h.push('<thead class="sticky">');
-        h.push('<tr>');
-        h.push('<th>' + i18n('Boxes.GreatBuildings.GreatBulding') + '</th>');
-        h.push('<th>' + i18n('Boxes.GreatBuildings.Level') + '</th>');
-        h.push('<th>' + i18n('Boxes.GreatBuildings.Costs') + '</th>');
-        h.push('<th>' + i18n('Boxes.GreatBuildings.DailyFP') + '</th>');
-        if (GreatBuildings.ShowGoods) h.push('<th>' + i18n('Boxes.GreatBuildings.DailyGoods') + '</th>');
-        if (GreatBuildings.ShowAttack) h.push('<th>' + i18n('Boxes.GreatBuildings.Attack') + '</th>');
-        h.push('<th>' + i18n('Boxes.GreatBuildings.BreakEven') + '</th>');
-        h.push('<th title="' + HTML.i18nTooltip(i18n('Boxes.GreatBuildings.TTGoodCostsColumn')) + '">' + i18n('Boxes.GreatBuildings.FPCostGoods') + '</th>');
-        h.push('</tr>');
-        h.push('</thead>');
-
-        let CurrentCityMapData = (LastMapPlayerID === ExtPlayerID ? MainParser.CityMapData : CityMap.OtherPlayer.mapData);
-
-        let AllROIResults = [],
-            IsNewGBs = [];
-        
-        for (let i = 0; i < GreatBuildings.GreatBuildingsData.length; i++) {
-            let GBData = GreatBuildings.GreatBuildingsData[i];
-
-            if (GBData.ID === 'X_OceanicFuture_Landmark3') {
-                if (LastMapPlayerID == ExtPlayerID) {
-                    GreatBuildings.RefreshGalaxyBuildings();
-                }
-                else { // Keine Galaxy für andere Spieler weil keine FP Daten vorhanden sind
-                    continue;
-                }
-            }
-                        
-            let CityEntity = MainParser.CityEntities[GBData.ID];
-            if (!CityEntity) continue; //Great building has been removed from the game => skip
-
-            let OwnGB = Object.values(CurrentCityMapData).find(obj => (obj['cityentity_id'] === GBData.ID));
-            let EraName = GreatBuildings.GetEraName(CityEntity['asset_id']);
-            let Era = Technologies.Eras[EraName];
-            let DoubleCollection = (GBData.ID !== 'X_FutureEra_Landmark1' && GBData.ID !== 'X_AllAge_Expedition' && GBData.ID !== 'X_SpaceAgeVenus_Landmark1');
-
-            let NettoCosts = [];
-            for (let j = 0; j < GreatBuildings.Rewards[Era].length; j++) {
-                let P1 = GreatBuildings.Rewards[Era][j];
-                P1 = (P1 !== undefined ? P1 : 0);
-
-                let Maezen = GreatBuildings.GetMaezen(P1, GreatBuildings.ForderBonus);
-                NettoCosts[j] = GreatBuildings.GetBruttoCosts(GBData.ID, j) - Maezen[0] - Maezen[1] - Maezen[2] - Maezen[3] - Maezen[4];
-            }
-
-            let FPProductions = [],
-                GoodsProductions = [],
-                GoodsValue = 0,
-                AttackProductions = [],
-                AttackValue = GreatBuildings.AttackValue;
-
-            for (let j = 0; j < GreatBuildings.Rewards[Era].length; j++) {
-                FPProductions[j] = 0;
-                GoodsProductions[j] = 0;
-                AttackProductions[j] = 0;
-
-                if (GBData.ID === 'X_VirtualFuture_Landmark2' || GBData.ID === 'X_SpaceAgeAsteroidBelt_Landmark1') {
-                    FPProductions[j] = GBData.Rewards[j] * 18.5;
-                    GoodsProductions[j] = GBData.Rewards[j] * 34.5;
-                }
-                else if (GBData.ID === 'X_OceanicFuture_Landmark3') { //Blue Galaxy
-                    FPProductions[j] = GBData.Rewards[j]||0.75;
-                    GoodsProductions[j] = GBData.Rewards[j]||0.75;
-                    GoodsValue = GreatBuildings.GoodsValue0;
-                }
-                else if (GBData.ID === 'X_FutureEra_Landmark1') { // Arche
-                    let arc = 1 + MainParser.ArkBonus / 100;
-                    FPProductions[j] = GBData.Rewards[j] * GreatBuildings.RewardPerDay / arc;
-                }
-//                else if (GBData.ID === 'X_AllAge_Expedition') { // Relikttempel
-//                    FPProductions[j] = GBData.FPProductions[j];
-//                    GoodsProductions[j] = GBData.GoodsProductions[j];
-//                }
-                else if (GBData.ID === 'X_SpaceAgeMars_Landmark1') { // Star Gazer
-                    GoodsProductions[j] = GBData.GoodsProductions[j];
-                }
-                else if (GBData.ID === 'X_SpaceAgeVenus_Landmark1') {
-                    FPProductions[j] = GBData.FPProductions[j];
-                    GoodsProductions[j] = GBData.GoodsProductions[j] * GreatBuildings.GoodsValue0 + GBData.GoodsProductions1[j] * GreatBuildings.GoodsValue1;
-                }
-                else {
-                    if (GBData.FPProductions) {
-                        if (GBData.FPProductions[j]) {
-                            FPProductions[j] = GBData.FPProductions[j];
-                        }
-                        else {
-                            FPProductions[j] = Math.floor(GBData.FPProductions[9] * (j + 1) / 10);
-                        }
-                    }
-
-                    if (GBData.GoodsProductions) {
-                        if (GBData.GoodsProductions[j]) {
-                            GoodsProductions[j] = GBData.GoodsProductions[j];
-                        }
-                        else {
-                            GoodsProductions[j] = Math.floor(GBData.GoodsProductions[9] + Math.ceil((j - 9) * GBData.GoodsIncrease));
-                        }
-                    }
-
-                    if (GBData.AttackProductions) {
-                        if (GBData.ID === 'X_ArcticFuture_Landmark2') {
-                            AttackProductions[j] = GBData.AttackProductions[j] * (100 + Boosts.Sums['att_boost_attacker']) / 100 / 2; //Assume critical hit of +50% damage equals +100% attack, No defense boost => /2
-                        }
-                        else {
-                            if (j < 10) {
-                                AttackProductions[j] = GBData.AttackProductions[j];
-                            }
-                            else {
-                                AttackProductions[j] = GBData.AttackProductions[9] + (j - 9) * GBData.AttackIncrease;
-                            }
-                        }
-                    }
-                }
-
-                if (GBData.ID === 'X_VirtualFuture_Landmark2' || GBData.ID === 'X_SpaceAgeAsteroidBelt_Landmark1' || GBData.ID === 'X_OceanicFuture_Landmark3' || GBData.ID === 'X_AllAge_Expedition' || GBData.ID === 'X_SpaceAgeVenus_Landmark1') { // Himeji, Freighter, Galaxy, Relics, Flying Island
-                    GoodsValue = GreatBuildings.GoodsValue0;
-                }
-                else if (GBData.ID === 'X_SpaceAgeMars_Landmark1') { //Star Gazer
-                    GoodsValue = GreatBuildings.GoodsValue1;
-                }
-                else { //Standard goods production
-                    if (CurrentEraID >= 10) { //ModernEra or higher => unrefined goods
-                        GoodsValue = GreatBuildings.GoodsValue3;
-                        GoodsProductions[j] *= 2;
-                    }
-                    else {
-                        GoodsValue = GreatBuildings.GoodsValue0;
-                    }
-                }
-            }
-
-            if (!GreatBuildings.ShowGoods) GoodsValue = 0;
-            if (!GreatBuildings.ShowAttack) AttackValue = 0;
-
-            let SkipGB = true;
-            for (let j = 0; j < GreatBuildings.Rewards[Era].length; j++) { //Search for level with production
-                if (FPProductions[j] + GoodsProductions[j] * GoodsValue + AttackProductions[j] * AttackValue > 0) {
-                    SkipGB = false;
-                    break;
-                }
-            }
-            if (SkipGB) continue; //Nothing found => dont show GB
-
-            let Charges = GBData.ID === 'X_OceanicFuture_Landmark3' ? (GBData.Charges||15) : undefined;
-
-            let CurrentLevel = (OwnGB !== undefined ? OwnGB['level'] : -1);
-
-            let Size = CityEntity['length'] * CityEntity['width'];
-            let CurrentROIResult = GreatBuildings.GetROIValues(CurrentLevel, NettoCosts, FPProductions, GoodsProductions, GoodsValue, AttackProductions, AttackValue, Size * GreatBuildings.FPPerTile, GBData.GoodCosts, DoubleCollection, Charges);
-            let ROIResults = [CurrentROIResult];
-
-            while (CurrentROIResult['BestLevel'] < NettoCosts.length - 1) {
-                CurrentROIResult = GreatBuildings.GetROIValues(CurrentROIResult['BestLevel'] + 1, NettoCosts, FPProductions, GoodsProductions, GoodsValue, AttackProductions, AttackValue, Size * GreatBuildings.FPPerTile, GBData.GoodCosts, DoubleCollection, Charges)
-                if (CurrentROIResult.BestLevel) {
-                    ROIResults.push(CurrentROIResult);
-                }
-            }
-
-            AllROIResults[i] = ROIResults;
-            IsNewGBs[i] = (CurrentLevel === -1);
-        }
-
-        let ROIResultMap = [];
-        for (let i = 0; i < GreatBuildings.GreatBuildingsData.length; i++) {
-            ROIResultMap[i] = { 'index': i, 'ROIResults': AllROIResults[i] };
-        }
-
-        ROIResultMap = ROIResultMap.sort(function (a, b) {
-            if (!a['ROIResults'] || !a['ROIResults'][0]) return 999999;
-            if (!b['ROIResults'] || !b['ROIResults'][0]) return -999999;
-
-            let Levela = a['ROIResults'][0]['BestLevel'],
-                Levelb = b['ROIResults'][0]['BestLevel'];
-
-            if (Levela === undefined) return 999999;
-            if (Levelb === undefined) return -999999;
-
-            return a['ROIResults'][0]['ROIValues'][Levela]['ROI'] - b['ROIResults'][0]['ROIValues'][Levelb]['ROI'];
+        HTML.Box({
+            id: 'greatbuildings',
+            title: i18n('Boxes.GreatBuildings.Title'),
+            ask: i18n('Boxes.GreatBuildings.HelpLink'),
+            auto_close: true,
+            dragdrop: true,
+            minimize: true,
+            resize: true,
+            popout: () => MainParser.PopOut('greatbuildings', 700, 700),
         });
 
-        for (let i = 0; i < GreatBuildings.GreatBuildingsData.length; i++) {
-            if (!ROIResultMap[i]['ROIResults'] || !ROIResultMap[i]['ROIResults'][0]) continue;
+        HTML.AddCssFile('greatbuildings');
 
-            let Index = ROIResultMap[i]['index'],
-                GBData = GreatBuildings.GreatBuildingsData[Index],
-                FPValueSign = '',
-                GoodsValueSign = '',
-                AttackValueSign = '',
-                TotalValueSign = '';
+        $('#greatbuildings').on('change', '#gbInvestMode', function () {
+            GreatBuildings.InvestMode = String($(this).val());
+            localStorage.setItem('GreatBuildingsInvestMode', GreatBuildings.InvestMode);
+            GreatBuildings.RenderInvest();
+        });
 
-            if (GBData.ID === 'X_OceanicFuture_Landmark3') {               
-                FPValueSign = 'Ø ';
-                TotalValueSign = 'Ø ';
+        $('#greatbuildings').on('change', '#gbInvestTarget', function () {
+            const target = String($(this).val());
+
+            if (GreatBuildings.InvestMode === 'rework' && GreatBuildings.HasReworkData()) {
+                GreatBuildings.BonusTarget = target;
+                localStorage.setItem('GreatBuildingsBonusTarget', target);
             }
-            else if (GBData.ID === 'X_VirtualFuture_Landmark2' || GBData.ID === 'X_SpaceAgeAsteroidBelt_Landmark1' || GBData.ID === 'X_AllAge_Expedition' || GBData.ID === 'X_SpaceAgeVenus_Landmark1') {
-                FPValueSign = 'Ø ';
-                GoodsValueSign = 'Ø ';
-                TotalValueSign = 'Ø ';
-            }
-            else if (GBData.ID === 'X_ArcticFuture_Landmark2') {
-                AttackValueSign = 'Ø ';
-                TotalValueSign = 'Ø ';
+            else {
+                GreatBuildings.StandardTarget = target;
+                localStorage.setItem('GreatBuildingsStandardTarget', target);
             }
 
-            if (GreatBuildings.HideNewGBs && IsNewGBs[Index]) continue;
+            GreatBuildings.RenderInvest();
+        });
 
-            for (let j = 0; j < AllROIResults[Index].length; j++) {
-                let CurrentROIResult = AllROIResults[Index][j];
+        $('#greatbuildings').on('blur', '#costFactor', function () {
+            GreatBuildings.ForderBonus = parseFloat($(this).val());
+            if (isNaN(GreatBuildings.ForderBonus)) GreatBuildings.ForderBonus = 0;
+            localStorage.setItem('GreatBuildingsForderBonus', GreatBuildings.ForderBonus);
+            GreatBuildings.RenderInvest();
+        });
 
-                if (j === 0) {
-                    if (AllROIResults[Index].length >= 1) {
-                        h.push('<tr class="gbmainrow" data-value="' + Index + '">');
-                    }
-                }
-                else {
-                    h.push('<tr class="gbdetailsrow" data-value="' + Index + '" ' + (j === 0 || GreatBuildings.DetailsVisible[Index] ? '' : 'style="display:none;"') + '>');
-                }
+        $('#greatbuildings').on('click', '.hidenewgbs', function () {
+            GreatBuildings.HideNewGBs = $(this).prop('checked');
+            localStorage.setItem('GreatBuildingsHideNew', String(GreatBuildings.HideNewGBs));
+            GreatBuildings.RenderInvest();
+        });
 
-                if (CurrentROIResult['BestLevel'] !== undefined) {
-                    let CurrentLevel = Math.max(CurrentROIResult['CurrentLevel'], 0);
-                    BestLevel = CurrentROIResult['BestLevel'];
+        $('#greatbuildings').on('click', '#gbInvestTable th.sortable', function () {
+            const col = String($(this).data('col'));
 
-                    let Costs = CurrentROIResult['ROIValues'][BestLevel]['Costs'],
-                        FPProduction = CurrentROIResult['ROIValues'][BestLevel]['FP'],
-                        GoodsProduction = CurrentROIResult['ROIValues'][BestLevel]['Goods'],
-                        GoodsValue = CurrentROIResult['GoodsValue'],
-                        AttackProduction = CurrentROIResult['ROIValues'][BestLevel]['Attack'],
-                        AttackValue = CurrentROIResult['AttackValue'],
-                        BreakEven = CurrentROIResult['ROIValues'][BestLevel]['ROI'],
-                        BreakEvenString = TotalValueSign + HTML.Format(MainParser.round(BreakEven)),
-                        BreakEvenClass = (i === 0 && j === 0 ? 'text-success' : 'text-bright');
-                        CostsTT = (IsNewGBs[Index] ? HTML.i18nReplacer(i18n('Boxes.GreatBuildings.NewGBCostsTT'), { 'goodcosts': CurrentROIResult['BuildCosts'] }) : ''),
-                        FPProductionTT = (IsNewGBs[Index] ? HTML.i18nReplacer(i18n('Boxes.GreatBuildings.NewGBFPProductionTT'), { 'tiles': Math.round(CurrentROIResult['BuildDailyCosts'] / GreatBuildings.FPPerTile * 100)/100, 'fppertile': GreatBuildings.FPPerTile, 'opcost': Math.round(CurrentROIResult['BuildDailyCosts'] * 100)/ 100 }) : '');
-
-                    let BreakEvenTT;
-
-                    let HasGoodsProduction = (GoodsProduction * GoodsValue !== 0),
-                        HasAttackProduction = (AttackProduction * AttackValue !== 0);
-
-                    if (HasGoodsProduction && HasAttackProduction) { //FP + Goods + Attack
-                        BreakEvenTT = HTML.i18nReplacer(i18n('Boxes.GreatBuildings.BreakEvenTTGoodsAttack'), { 'days': Math.round(BreakEven), 'costs': HTML.Format(Math.round(Costs)), 'fpproduction': Math.round(FPProduction * 10) / 10, 'goodsproduction': Math.round(GoodsProduction * 10) / 10, 'goodsvalue': GoodsValue, 'goodsproductionvalue': Math.round(GoodsProduction * GoodsValue * 10) / 10, 'attackproduction': Math.round(AttackProduction * 10) / 10, 'attackvalue': AttackValue, 'attackproductionvalue': Math.round(AttackProduction * AttackValue * 10) / 10 });
-                    }
-                    else if (HasGoodsProduction) { //FP + Goods
-                        BreakEvenTT = HTML.i18nReplacer(i18n('Boxes.GreatBuildings.BreakEvenTTGoods'), { 'days': Math.round(BreakEven), 'costs': HTML.Format(Math.round(Costs)), 'fpproduction': Math.round(FPProduction * 10) / 10, 'goodsproduction': Math.round(GoodsProduction * 10) / 10, 'goodsvalue': GoodsValue, 'goodsproductionvalue': Math.round(GoodsProduction * GoodsValue * 10) / 10 });
-                    }
-                    else if (HasAttackProduction) { //FP + Attack
-                        BreakEvenTT = HTML.i18nReplacer(i18n('Boxes.GreatBuildings.BreakEvenTTAttack'), { 'days': Math.round(BreakEven), 'costs': HTML.Format(Math.round(Costs)), 'fpproduction': Math.round(FPProduction * 10) / 10, 'attackproduction': Math.round(AttackProduction * 10) / 10, 'attackvalue': AttackValue, 'attackproductionvalue': Math.round(AttackProduction * AttackValue * 10) / 10 });
-                    }
-                    else { //FP only
-                        BreakEvenTT = HTML.i18nReplacer(i18n('Boxes.GreatBuildings.BreakEvenTT'), { 'days': Math.round(BreakEven), 'costs': HTML.Format(Math.round(Costs)), 'fpproduction': Math.round(FPProduction * 10) / 10 });
-                    }
-                                        
-                    h.push('<td>' + MainParser.CityEntities[GBData.ID]['name'] + '</td>');
-                    h.push('<td style="white-space:nowrap">' + CurrentLevel + ' &rarr; ' + (BestLevel + 1) + '</td>');
-                    h.push('<td title="' + HTML.i18nTooltip(CostsTT) + '">' + HTML.Format(MainParser.round(Costs)) + '</td>');
-                    h.push('<td title="' + HTML.i18nTooltip(FPProductionTT) + '">' + FPValueSign + HTML.Format(MainParser.round(FPProduction * 10) / 10) + '</td>');
-                    if (GreatBuildings.ShowGoods) h.push('<td>' + GoodsValueSign + HTML.Format(MainParser.round(GoodsProduction * 10) / 10) + '</td>');
-                    if (GreatBuildings.ShowAttack) h.push('<td>' + AttackValueSign + HTML.Format(MainParser.round(AttackProduction * 10) / 10) + '</td>');
-                    h.push('<td title="' + HTML.i18nTooltip(BreakEvenTT) + '"><strong class="' + BreakEvenClass + '">' + HTML.i18nReplacer(i18n('Boxes.GreatBuildings.BreakEvenUnit'), { 'days': BreakEvenString }) + '</strong></td>');
-                }
-                else { //LG zu hoch => Keine Daten mehr verfügbar oder Güterkosten zu hoch
-                    h.push('<td>' + MainParser.CityEntities[GBData.ID]['name'] + '</td>');
-                    h.push('<td>-</td>');
-                    h.push('<td>-</td>');
-                    h.push('<td>-</td>');
-                    if (GreatBuildings.ShowGoods) h.push('<td>-</td>');
-                    if (GreatBuildings.ShowAttack) h.push('<td>-</td>');
-                    h.push('<td>-</td>');
-                }
-
-                if (j === 0) {
-                    if (IsNewGBs[Index]) {
-                        h.push('<td><input title="' + HTML.i18nTooltip(i18n('Boxes.GreatBuildings.TTGoodCosts')) + '" type="number" id="GreatBuildingsGoodCosts' + Index + '" step="1" min="0" max="999999" value="' + GBData.GoodCosts + '"></td>');
-                    }
-                    else {
-                        h.push('<td class="text-center">-</td>');
-                    }
-                }
-                else { //j>0
-                    h.push('<td></td>')
-                }
-                                
-                h.push('</tr>');
+            if (GreatBuildings.InvestSort.col === col) {
+                GreatBuildings.InvestSort.order = (GreatBuildings.InvestSort.order === 'ascending' ? 'descending' : 'ascending');
             }
+            else {
+                // bonus values start with the biggest on top, everything else with the smallest
+                GreatBuildings.InvestSort = { col: col, order: (col === 'current' || col === 'max' || col === 'delta' ? 'descending' : 'ascending') };
+            }
+
+            localStorage.setItem('GreatBuildingsSort', JSON.stringify(GreatBuildings.InvestSort));
+            GreatBuildings.RenderInvest();
+        });
+
+        GreatBuildings.RenderInvest();
+    },
+
+
+    /**
+     * Standard production of a great building from the static per level data.
+     * Index j is 0-based (the value once level j+1 has been completed), values
+     * beyond the known data are extrapolated like the game does.
+     *
+     * @param {Object} GBData Entry of `GreatBuildingsData`
+     * @param {string} type 'fp', 'goods', 'attack' or 'crit'
+     * @param {number} j 0-based level index, negative returns 0
+     * @returns {number}
+     */
+    ClassicValue: (GBData, type, j) => {
+        if (j < 0) return 0;
+
+        // Himeji/Space Carrier: chance based war spoils as average FP/goods per day
+        if (GBData.ID === 'X_VirtualFuture_Landmark2' || GBData.ID === 'X_SpaceAgeAsteroidBelt_Landmark1') {
+            const chance = GBData.Rewards[Math.min(j, GBData.Rewards.length - 1)];
+            return (type === 'fp' ? chance * 18.5 : (type === 'goods' ? chance * 34.5 : 0));
         }
 
-        h.push('</table');
+        if (type === 'fp') {
+            if (!GBData.FPProductions) return 0;
+            return GBData.FPProductions[j] ?? Math.floor(GBData.FPProductions[9] * (j + 1) / 10);
+        }
+
+        if (type === 'goods') {
+            if (!GBData.GoodsProductions) return 0;
+
+            // Flying Island: goods of the current era plus goods of the previous era
+            if (GBData.ID === 'X_SpaceAgeVenus_Landmark1') {
+                return GBData.GoodsProductions[Math.min(j, GBData.GoodsProductions.length - 1)] +
+                    GBData.GoodsProductions1[Math.min(j, GBData.GoodsProductions1.length - 1)];
+            }
+
+            let goods;
+            if (GBData.GoodsProductions[j] !== undefined) {
+                goods = GBData.GoodsProductions[j];
+            }
+            else if (GBData.GoodsProductions.length > 10) {
+                goods = GBData.GoodsProductions[GBData.GoodsProductions.length - 1];
+            }
+            else {
+                goods = Math.floor(GBData.GoodsProductions[9] + Math.ceil((j - 9) * (GBData.GoodsIncrease || 0)));
+            }
+
+            // era goods of the standard producers count double from Modern Era on (unrefined goods)
+            if (CurrentEraID >= 10 && GBData.ID !== 'X_AllAge_Expedition' && GBData.ID !== 'X_SpaceAgeMars_Landmark1') {
+                goods *= 2;
+            }
+            return goods;
+        }
+
+        // the attack table of the Arctic Orangery holds its critical hit chance per level
+        if ((GBData.ID === 'X_ArcticFuture_Landmark2') !== (type === 'crit')) return 0;
+        if (!GBData.AttackProductions) return 0;
+
+        if (GBData.AttackProductions[j] !== undefined) return GBData.AttackProductions[j];
+
+        const last = GBData.AttackProductions.length - 1;
+        return GBData.AttackProductions[last] + (j - last) * (GBData.AttackIncrease || 0);
+    },
+
+
+    /**
+     * Value of a standard target of one placed great building, straight from
+     * the normalized city data — the same source the productions overview and
+     * the profile box use.
+     *
+     * @param {Object} building Entry of `MainParser.CityBuildingsData`
+     * @param {string} key Standard target key
+     * @returns {{amount: number, average: boolean}}
+     */
+    StandardBuildingValue: (building, key) => {
+        const boostTypes = GreatBuildings.StandardBoostTypes[key];
+        if (boostTypes) {
+            let sum = 0;
+            for (const boost of (building['boosts'] || [])) {
+                // only boosts that count everywhere; combined boosts (e.g. attack
+                // and defense of the attacking army) are one value like in the game
+                if (boost['feature'] && boost['feature'] !== 'all') continue;
+                if (boost['type'].some(type => boostTypes.includes(type))) sum += boost['value'];
+            }
+            return { amount: sum, average: false };
+        }
+
+        if (key === 'goods') {
+            const goods = CityBuildings.getBuildingGoodsByEra(false, building, false);
+            return { amount: Object.values(goods['eras']).reduce((sum, amount) => sum + amount, 0), average: goods['hasRandomProduction'] };
+        }
+
+        const production = Productions.getBuildingProductionByCategory(false, building, (key === 'fp' ? 'strategy_points' : key));
+        return { amount: production['amount'] || 0, average: production['hasRandomProductions'] };
+    },
+
+
+    /**
+     * Checks whether an unbuilt great building offers a military target,
+     * classified by the passive bonus type of its metadata. Non military
+     * targets are always allowed — the production curves decide those.
+     *
+     * @param {Object} meta City entity metadata of the great building
+     * @param {string} key Standard target key
+     * @returns {boolean}
+     */
+    StandardTargetOffered: (meta, key) => {
+        const boostTypes = GreatBuildings.StandardBoostTypes[key];
+        if (!boostTypes) return true;
+
+        const bonusType = meta['passive_bonus']?.['type'];
+        if (!bonusType) return false;
+
+        return (Boosts.Mapper[bonusType] || [bonusType]).some(type => boostTypes.includes(type));
+    },
+
+
+    /**
+     * Icon of a standard investment target as <img>, empty string when the
+     * asset is not available.
+     *
+     * @param {string} key Standard target key
+     * @returns {string} HTML
+     */
+    StandardTargetIcon: (key) => {
+        if (key === 'units') {
+            return `<img class="gbb-bonus-icon" src="${srcLinks.get('/shared/gui/pvp_arena/hud/pvp_arena_icon_army.png', true)}" alt="">`;
+        }
+
+        const types = { fp: 'strategy_points', goods: 'random_goods', supplies: 'supplies', money: 'money', medals: 'medals', clan_goods: 'clan_goods', attack: 'attack_boost', defense: 'defense_boost', kill_chance: 'first_strike', critical_hit: 'critical_hit_chance' };
+        return GBBonuses.TypeIcon(types[key] || key);
+    },
+
+
+    /**
+     * Builds the table entries of the standard mode: placed great buildings
+     * with their real productions from the city data, unbuilt ones with the
+     * static per level tables. The gain of the next level scales the real
+     * value with the slope of the static curve, without a known curve it
+     * stays open.
+     *
+     * @param {Object<string, Object>} placedById Placed great buildings by city entity id
+     * @returns {{targets: Map<string, string>, entries: Object[]}}
+     */
+    BuildStandardEntries: (placedById) => {
+        const targetDefs = [
+            { key: 'fp', label: GBBonuses.TypeName('strategy_points') },
+            { key: 'goods', label: i18n('Boxes.GreatBuildings.TargetGoods') },
+            { key: 'supplies', label: GBBonuses.TypeName('supplies') },
+            { key: 'money', label: GBBonuses.TypeName('money') },
+            { key: 'medals', label: GBBonuses.TypeName('medals') },
+            { key: 'clan_goods', label: GBBonuses.TypeName('clan_goods') },
+            { key: 'units', label: i18n('Boxes.Productions.Units') },
+            { key: 'attack', label: i18n('Boxes.GreatBuildings.TargetAttack') },
+            { key: 'defense', label: i18n('Boxes.GreatBuildings.TargetDefense') },
+            { key: 'kill_chance', label: i18n('Boxes.GreatBuildings.TargetKillChance') },
+            { key: 'critical_hit', label: GBBonuses.TypeName('critical_hit_chance') },
+        ];
+
+        // targets with a static per level curve, usable for unbuilt buildings and
+        // the gain; the military table of a building serves whichever army its
+        // real bonus type targets
+        const curveTypes = { fp: 'fp', goods: 'goods', attack: 'attack', defense: 'attack', critical_hit: 'crit' };
+        // unbuilt chance based buildings only offer estimated averages
+        const staticAverages = {
+            'X_AllAge_Expedition': ['fp', 'goods'],
+            'X_VirtualFuture_Landmark2': ['fp', 'goods'],
+            'X_SpaceAgeAsteroidBelt_Landmark1': ['fp', 'goods'],
+            'X_SpaceAgeVenus_Landmark1': ['fp', 'goods'],
+        };
+
+        const buildingsByEntityId = {};
+        for (const building of Object.values(MainParser.CityBuildingsData)) {
+            if (building['type'] === 'greatbuilding') buildingsByEntityId[building['entityId']] = building;
+        }
+
+        const available = new Set();
+        const rows = [];
+
+        for (const meta of Object.values(MainParser.CityEntities)) {
+            if (meta['strategy_points_for_upgrade'] === undefined) continue;
+
+            const placed = placedById[meta['id']] || null;
+            if (GreatBuildings.HideNewGBs && !placed) continue;
+
+            const building = (placed ? buildingsByEntityId[meta['id']] : null);
+            const GBData = GreatBuildings.GreatBuildingsData.find(data => data.ID === meta['id']);
+            const level = (placed ? placed['level'] : 0);
+            const values = {};
+
+            for (const def of targetDefs) {
+                let value = null;
+
+                if (building) {
+                    const real = GreatBuildings.StandardBuildingValue(building, def.key);
+                    if (real.amount > 0) {
+                        // gain of the next level: the real value scaled with the static curve
+                        let delta = null;
+                        if (curveTypes[def.key] && GBData) {
+                            const curveNow = GreatBuildings.ClassicValue(GBData, curveTypes[def.key], level - 1);
+                            const curveNext = GreatBuildings.ClassicValue(GBData, curveTypes[def.key], level);
+                            if (curveNow > 0 && curveNext > curveNow) delta = real.amount * (curveNext / curveNow - 1);
+                        }
+                        value = { current: real.amount, delta: delta, avg: real.average };
+                    }
+                }
+                else if (GBData && curveTypes[def.key] && GreatBuildings.StandardTargetOffered(meta, def.key)) {
+                    const first = GreatBuildings.ClassicValue(GBData, curveTypes[def.key], 0);
+                    if (first > 0) {
+                        value = { current: 0, delta: first, avg: (staticAverages[meta['id']] || []).includes(def.key) };
+                    }
+                }
+
+                if (value) {
+                    values[def.key] = value;
+                    available.add(def.key);
+                }
+            }
+
+            if (Object.keys(values).length > 0) rows.push({ meta: meta, placed: placed, values: values });
+        }
+
+        const targets = new Map(targetDefs.filter(def => available.has(def.key)).map(def => [def.key, def.label]));
+        if (!targets.has(GreatBuildings.StandardTarget)) {
+            GreatBuildings.StandardTarget = (targets.has('fp') ? 'fp' : (targets.keys().next().value || 'fp'));
+        }
+
+        const target = GreatBuildings.StandardTarget;
+        const entries = [];
+        for (const row of rows) {
+            const value = row.values[target];
+            if (!value) continue;
+
+            entries.push({
+                meta: row.meta,
+                placed: row.placed,
+                current: MainParser.round(value.current * 100) / 100,
+                second: (value.delta !== null ? MainParser.round(value.delta * 100) / 100 : null),
+                state: 'active',
+                avg: value.avg,
+                cellBonus: (GreatBuildings.StandardBoostTypes[target]
+                    ? { type: { attack: 'attack_boost', defense: 'defense_boost', kill_chance: 'first_strike', critical_hit: 'critical_hit_chance' }[target], bonusCategory: { value: 'passiveBonus' } }
+                    : { type: target, bonusCategory: { value: 'productionBonus' } }),
+                costs: GreatBuildings.InvestCosts(row.meta, row.placed),
+            });
+        }
+
+        return { targets: targets, entries: entries };
+    },
+
+
+    /**
+     * Builds the table entries of the rework mode: one entry per great building
+     * carrying multi-tier metadata that offers the selected bonus, with the
+     * exact current value of the own city and the maximum of the metadata.
+     *
+     * @param {Object<string, Object>} placedById Placed great buildings by city entity id
+     * @returns {{targets: Map<string, string>, entries: Object[]}}
+     */
+    BuildReworkEntries: (placedById) => {
+        const rows = [];
+        for (const meta of Object.values(MainParser.CityEntities)) {
+            if (meta['strategy_points_for_upgrade'] === undefined || !Array.isArray(meta['bonuses']) || meta['bonuses'].length === 0) continue;
+
+            rows.push({
+                meta: meta,
+                placed: placedById[meta['id']] || null,
+                bonuses: meta['bonuses'].flatMap(tier => tier['bonuses']).map(bonus => ({ key: bonus['type'] + '|' + (bonus['targetedFeature'] || 'all'), bonus: bonus })),
+            });
+        }
+
+        // targets over all great buildings, sorted by display name
+        const unsorted = new Map();
+        for (const row of rows) {
+            for (const entry of row.bonuses) {
+                if (!unsorted.has(entry.key)) unsorted.set(entry.key, GreatBuildings.BonusLabel(entry.key));
+            }
+        }
+        const targets = new Map([...unsorted.entries()].sort((a, b) => a[1].localeCompare(b[1])));
+        if (!targets.has(GreatBuildings.BonusTarget)) GreatBuildings.BonusTarget = 'strategy_points|all';
+
+        const entries = [];
+        for (const row of rows) {
+            const match = row.bonuses.find(entry => entry.key === GreatBuildings.BonusTarget);
+            if (!match || (GreatBuildings.HideNewGBs && !row.placed)) continue;
+
+            const bonus = match.bonus;
+            const max = bonus['values'][bonus['values'].length - 1];
+            const current = (row.placed
+                ? (CityBuildings.getGBBonuses(row.placed).find(entry => entry['type'] === bonus['type'])?.['value'] || 0)
+                : (bonus['valuesMap'][1]?.['value'] || 0));
+
+            // first level the bonus becomes active on
+            const startLevel = Math.min(...Object.keys(bonus['valuesMap']).map(Number).filter(level => bonus['valuesMap'][level]['value'] > 0), Infinity);
+
+            let state = 'active';
+            if (row.placed && current >= max - 0.005) state = 'maxed';
+            else if ((row.placed ? row.placed['level'] : 0) + 1 < startLevel) state = 'pending';
+
+            entries.push({
+                meta: row.meta,
+                placed: row.placed,
+                current: current,
+                second: max,
+                state: state,
+                startLevel: startLevel,
+                avg: false,
+                cellBonus: bonus,
+                costs: GreatBuildings.InvestCosts(row.meta, row.placed),
+            });
+        }
+
+        return { targets: targets, entries: entries };
+    },
+
+
+    /**
+     * Daily FP harvest of the own city: the sum of all FP productions with the
+     * FP boost on boostable buildings — the same numbers the production
+     * overview and the profile box show — plus the average extra FP of the
+     * Blue Galaxy (double collection chance applied to the best FP buildings,
+     * one set of charges per day).
+     *
+     * @returns {{base: number, galaxy: number, total: number}}
+     */
+    DailyHarvest: () => {
+        const fpBoost = (Boosts.Sums['forge_points_production'] || 0) / 100;
+
+        let base = 0;
+        const galaxyCandidates = [];
+
+        for (const building of Object.values(MainParser.CityBuildingsData)) {
+            if (building['type'] === 'off_grid') continue;
+
+            const raw = Productions.getBuildingProductionByCategory(false, building, 'strategy_points')['amount'];
+            if (!raw || raw <= 0) continue;
+
+            // boost handling like the productions table: great buildings and the town hall are never boosted
+            const fp = Math.round(building['isBoostable'] ? raw + raw * fpBoost : raw);
+
+            base += fp;
+            // the Blue Galaxy cannot double the town hall or great buildings
+            if (building['type'] !== 'main_building' && building['type'] !== 'greatbuilding') galaxyCandidates.push(fp);
+        }
+
+        let galaxy = 0;
+        const galaxyGB = Object.values(MainParser.CityMapData).find(entity => entity['cityentity_id'] === 'X_OceanicFuture_Landmark3');
+
+        if (galaxyGB && galaxyGB['level'] > 0) {
+            const staticBG = GreatBuildings.GreatBuildingsData.find(data => data.ID === 'X_OceanicFuture_Landmark3');
+            const levelIndex = Math.min(galaxyGB['level'] - 1, staticBG.Rewards.length - 1);
+
+            // chance from the live bonus of the placed building (both worlds),
+            // charges per day from the rework metadata or the static table
+            let chance = CityBuildings.getGBBonuses(galaxyGB).find(bonus => bonus['type'] === 'double_collection')?.['value'];
+            if (chance === undefined) chance = (staticBG.Rewards[levelIndex] || 0.75) * 100;
+
+            const galaxyBonus = (MainParser.CityEntities['X_OceanicFuture_Landmark3']?.['bonuses'] || []).flatMap(tier => tier['bonuses']).find(bonus => bonus['type'] === 'double_collection');
+            const reached = Object.keys(galaxyBonus?.['valuesMap'] || {}).map(Number).filter(level => level <= galaxyGB['level']);
+            const charges = (reached.length > 0
+                ? galaxyBonus['valuesMap'][Math.max(...reached)]['amount']
+                : (staticBG.Charges[Math.min(galaxyGB['level'] - 1, staticBG.Charges.length - 1)] || 15));
+
+            galaxyCandidates.sort((a, b) => b - a);
+            galaxy = chance / 100 * galaxyCandidates.slice(0, charges).reduce((sum, fp) => sum + fp, 0);
+        }
+
+        return { base: base, galaxy: galaxy, total: base + galaxy };
+    },
+
+
+    /**
+     * FP costs of the next level of a great building: the exact total from the
+     * city state where available (with the classic cost table as fallback,
+     * level 1 costs from the metadata for unbuilt ones) minus the expected
+     * patron rewards at the configured arc bonus.
+     *
+     * @param {Object} meta City entity metadata of the great building
+     * @param {?Object} placed The placed city entity, null when not built yet
+     * @returns {?{level: number, brutto: number, patrons: number, netto: number}} null when no cost data is available
+     */
+    InvestCosts: (meta, placed) => {
+        const level = (placed ? placed['level'] : 0);
+        let brutto = (placed ? placed['state']?.['forge_points_for_level_up'] : meta['strategy_points_for_upgrade'][0]);
+        if (brutto === undefined) brutto = GreatBuildings.GetBruttoCosts(meta['id'], level);
+        if (brutto === undefined) return null;
+
+        const era = Technologies.Eras[GreatBuildings.GetEraName(meta['asset_id'])];
+        const p1 = GreatBuildings.Rewards[era]?.[level];
+        const patrons = (p1 !== undefined ? GreatBuildings.GetMaezen(p1, GreatBuildings.ForderBonus).reduce((sum, reward) => sum + reward, 0) : 0);
+
+        return { level: level, brutto: brutto, patrons: patrons, netto: brutto - patrons };
+    },
+
+
+    /**
+     * Renders the investment box: the settings header (investment target, value
+     * model switch, arc bonus, filter, harvest summary) and the sortable table
+     * of all great buildings offering the selected target. Buildings whose
+     * bonus still grows come first, followed by those unlocking it later and
+     * the maxed out ones.
+     */
+    RenderInvest: () => {
+        // normalized city data for the harvest and the real productions
+        CityBuildings.createBuildings();
+
+        const hasRework = GreatBuildings.HasReworkData();
+        const mode = (hasRework && GreatBuildings.InvestMode === 'rework' ? 'rework' : 'standard');
+
+        const placedById = {};
+        for (const entity of Object.values(MainParser.CityMapData)) {
+            if (entity['type'] === 'greatbuilding') placedById[entity['cityentity_id']] = entity;
+        }
+
+        const harvest = GreatBuildings.DailyHarvest();
+        const { targets, entries } = (mode === 'rework'
+            ? GreatBuildings.BuildReworkEntries(placedById)
+            : GreatBuildings.BuildStandardEntries(placedById));
+
+        for (const entry of entries) {
+            entry.harvests = (entry.costs && entry.costs.netto > 0 && harvest.total > 0 ? entry.costs.netto / harvest.total : 0);
+        }
+
+        // sorting: a stored column of the other mode falls back to the costs
+        const secondCol = (mode === 'rework' ? 'max' : 'delta');
+        const validCols = ['name', 'level', 'current', secondCol, 'costs', 'harvests'];
+        const sort = (validCols.includes(GreatBuildings.InvestSort.col) ? GreatBuildings.InvestSort : { col: 'costs', order: 'ascending' });
+        const orderFactor = (sort.order === 'descending' ? -1 : 1);
+        const stateRank = { active: 0, pending: 1, maxed: 2 };
+        const sortValue = (entry) => {
+            switch (sort.col) {
+                case 'name': return entry.meta['name'];
+                case 'level': return (entry.placed ? entry.placed['level'] : -1);
+                case 'current': return entry.current;
+                case secondCol: return (entry.second ?? -1);
+                case 'harvests': return (entry.costs ? Math.max(entry.harvests, 0) : Infinity);
+                default: return (entry.costs ? entry.costs.netto : Infinity);
+            }
+        };
+
+        entries.sort((a, b) => {
+            if (stateRank[a.state] !== stateRank[b.state]) return stateRank[a.state] - stateRank[b.state];
+
+            const valueA = sortValue(a),
+                valueB = sortValue(b);
+
+            if (typeof valueA === 'string') return orderFactor * valueA.localeCompare(valueB);
+            return orderFactor * (valueA - valueB);
+        });
+
+        const selected = (mode === 'rework' ? GreatBuildings.BonusTarget : GreatBuildings.StandardTarget);
+        const icon = (mode === 'rework'
+            ? GBBonuses.TypeIcon(GreatBuildings.BonusTarget.split('|')[0])
+            : GreatBuildings.StandardTargetIcon(GreatBuildings.StandardTarget));
+
+        const h = [];
+        h.push('<div class="text-center dark-bg header">');
+
+        h.push('<div class="invest-row"><label for="gbInvestTarget">' + i18n('Boxes.GreatBuildings.InvestTarget') + '</label> <select id="gbInvestTarget" class="game-cursor">');
+        for (const [key, label] of targets.entries()) {
+            h.push('<option value="' + key + '"' + (key === selected ? ' selected' : '') + '>' + label + '</option>');
+        }
+        h.push('</select>');
+
+        if (hasRework) {
+            h.push(' <select id="gbInvestMode" class="game-cursor">');
+            h.push('<option value="standard"' + (mode === 'standard' ? ' selected' : '') + '>' + i18n('Boxes.GreatBuildings.ModeStandard') + '</option>');
+            h.push('<option value="rework"' + (mode === 'rework' ? ' selected' : '') + '>' + i18n('Boxes.GreatBuildings.ModeRework') + '</option>');
+            h.push('</select>');
+        }
+        h.push('</div>');
+
+        h.push('<div class="invest-row">' + i18n('Boxes.GreatBuildings.ArcBonus') + ' <input type="number" id="costFactor" step="0.1" min="12" max="200" value="' + GreatBuildings.ForderBonus + '">%');
+        h.push(' <span class="invest-hide"><input id="HideNewGBs" class="hidenewgbs game-cursor" type="checkbox"' + (GreatBuildings.HideNewGBs ? ' checked' : '') + '> <label for="HideNewGBs">' + i18n('Boxes.GreatBuildings.HideNewGBs') + '</label></span></div>');
+
+        // harvest summary the "harvests" column is based on
+        let harvestInfo = HTML.i18nReplacer(i18n('Boxes.GreatBuildings.HarvestInfo'), { fp: HTML.Format(Math.round(harvest.total)) });
+        if (harvest.galaxy > 0) {
+            harvestInfo += ' ' + HTML.i18nReplacer(i18n('Boxes.GreatBuildings.HarvestInfoBG'), { fp: HTML.Format(Math.round(harvest.galaxy)) });
+        }
+        h.push('<div class="invest-row harvest-info" title="' + HTML.i18nTooltip(i18n('Boxes.GreatBuildings.HarvestInfoTT')) + '">' + harvestInfo + '</div>');
+
+        h.push('</div>');
+
+        const sortClass = (col) => (sort.col === col ? ' ' + sort.order : '');
+
+        h.push('<table id="gbInvestTable" class="foe-table">');
+        h.push('<thead class="sticky"><tr>');
+        h.push('<th class="sortable' + sortClass('name') + '" data-col="name">' + i18n('Boxes.GreatBuildings.GreatBulding') + '</th>');
+        h.push('<th class="sortable text-center' + sortClass('level') + '" data-col="level">' + i18n('Boxes.GreatBuildings.Level') + '</th>');
+        h.push('<th class="sortable text-center' + sortClass('current') + '" data-col="current">' + icon + i18n('Boxes.GBBonuses.ColCurrent') + '</th>');
+        h.push('<th class="sortable text-center' + sortClass(secondCol) + '" data-col="' + secondCol + '">' + icon + i18n(mode === 'rework' ? 'Boxes.GreatBuildings.ColMax' : 'Boxes.GreatBuildings.ColGain') + '</th>');
+        h.push('<th class="sortable text-center' + sortClass('costs') + '" data-col="costs" title="' + HTML.i18nTooltip(i18n('Boxes.GreatBuildings.CostsColumnTT')) + '">' + i18n('Boxes.GreatBuildings.Costs') + '</th>');
+        h.push('<th class="sortable text-center' + sortClass('harvests') + '" data-col="harvests" title="' + HTML.i18nTooltip(i18n('Boxes.GreatBuildings.HarvestsTT')) + '">' + i18n('Boxes.GreatBuildings.Harvests') + '</th>');
+        h.push('</tr></thead>');
+        h.push('<tbody>');
+
+        for (const entry of entries) {
+            const level = (entry.placed ? entry.placed['level'] : 0);
+            const avgSign = (entry.avg ? 'Ø ' : '');
+
+            h.push('<tr class="gb-' + entry.state + (entry.placed ? '' : ' gb-new') + '">');
+            h.push('<td>' + entry.meta['name'] + '</td>');
+            h.push('<td class="text-center" style="white-space:nowrap"' + (entry.placed ? '' : ' title="' + HTML.i18nTooltip(i18n('Boxes.GBBonuses.NotBuilt')) + '"') + '>' + (entry.placed ? level : '–') + ' &rarr; ' + (level + 1) + '</td>');
+
+            if (entry.state === 'pending') {
+                h.push('<td class="text-center">' + HTML.i18nReplacer(i18n('Boxes.GreatBuildings.PendingFrom'), { lvl: entry.startLevel }) + '</td>');
+            }
+            else {
+                h.push('<td class="text-center"' + (entry.state === 'maxed' ? ' title="' + HTML.i18nTooltip(i18n('Boxes.GreatBuildings.MaxReached')) + '"' : '') + '>' + avgSign + GBBonuses.FormatValue(entry.cellBonus, entry.current) + (entry.state === 'maxed' ? ' ✔' : '') + '</td>');
+            }
+
+            let second = GBBonuses.FormatValue(entry.cellBonus, entry.second);
+            if (mode === 'standard' && entry.second > 0 && !second.startsWith('+')) second = '+' + second;
+            h.push('<td class="text-center">' + (entry.second > 0 ? avgSign : '') + second + '</td>');
+
+            if (entry.costs) {
+                const costsTT = HTML.i18nReplacer(i18n('Boxes.GreatBuildings.CostsTT'), {
+                    level: (entry.costs.level + 1),
+                    brutto: HTML.Format(entry.costs.brutto),
+                    arc: GreatBuildings.ForderBonus,
+                    patrons: HTML.Format(entry.costs.patrons),
+                    netto: HTML.Format(MainParser.round(entry.costs.netto)),
+                });
+                h.push('<td class="text-center' + (entry.costs.netto < 0 ? ' text-success' : '') + '" title="' + HTML.i18nTooltip(costsTT) + '">' + HTML.Format(MainParser.round(entry.costs.netto)) + '</td>');
+
+                let harvests = '–';
+                if (entry.costs.netto <= 0) harvests = '0';
+                else if (harvest.total > 0) {
+                    const rounded = (entry.harvests >= 100 ? Math.round(entry.harvests)
+                        : (entry.harvests >= 1 ? MainParser.round(entry.harvests * 10) / 10
+                            : Math.max(MainParser.round(entry.harvests * 100) / 100, 0.01)));
+                    harvests = 'Ø ' + HTML.Format(rounded);
+                }
+                h.push('<td class="text-center">' + harvests + '</td>');
+            }
+            else {
+                h.push('<td class="text-center">–</td><td class="text-center">–</td>');
+            }
+
+            h.push('</tr>');
+        }
+
+        h.push('</tbody></table>');
 
         $('#greatbuildingsBody').html(h.join(''));
     },
 
 
     /**
-     * Rebuilds `GalaxyBuildings`: collects all own buildings with a motivated
-     * FP or goods production (plus the static event building values) and
-     * sorts them by their FP value in descending order.
+     * Checks whether the game data already carries the multi-tier rework
+     * metadata (`bonuses` per prestige tier) on the great buildings.
+     *
+     * @returns {boolean}
      */
-    RefreshGalaxyBuildings: () => {
-        GreatBuildings.GalaxyBuildings = [];
-
-        let CityMap = Object.values(MainParser.CityMapData);
-
-        for (let i = 0; i < CityMap.length; i++) {
-            let ID = CityMap[i]['id']
-            EntityID = CityMap[i]['cityentity_id'],
-                CityEntity = MainParser.CityEntities[EntityID];
-
-            if (CityEntity['type'] === 'main_building' || CityEntity['type'] === 'greatbuilding') continue;
-
-            if (GreatBuildings.BlueGalaxyStaticProductions[EntityID]) {
-                GreatBuildings.GalaxyBuildings.push({ ID: ID, FP: GreatBuildings.BlueGalaxyStaticProductions[EntityID]['FP'], Goods: GreatBuildings.BlueGalaxyStaticProductions[EntityID]['Goods'] });
-            }
-            else {
-                // todo: check what this does
-                let Production = Productions.readType(CityMap[i]);
-                let FP = 0,
-                    GoodsSum = 0;
-
-                if (Production?.['motivatedproducts']) {
-                    FP = Production['motivatedproducts']['strategy_points'];
-                    if (!FP) FP = 0;
-
-                    for (j = 0; j < GoodsList.length; j++) {
-                        let GoodID = GoodsList[j]['id'];
-                        if (Production['motivatedproducts'][GoodID]) {
-                            GoodsSum += Production['motivatedproducts'][GoodID];
-                        }
-                    }
-                }
-                
-                if (FP > 0 || GoodsSum > 0) {
-                    GreatBuildings.GalaxyBuildings.push({ ID: ID, FP: FP, Goods: GoodsSum });
-                }
-            }
-        }
-
-        GreatBuildings.GalaxyBuildings = GreatBuildings.GalaxyBuildings.sort(function (a, b) {
-            return (b['FP'] + b['Goods'] * GreatBuildings.GoodsValue0) - (a['FP'] + a['Goods'] * GreatBuildings.GoodsValue0);
-        });
+    HasReworkData: () => {
+        return Object.values(MainParser.CityEntities).some(meta => meta['strategy_points_for_upgrade'] !== undefined && Array.isArray(meta['bonuses']) && meta['bonuses'].length > 0);
     },
 
 
     /**
-     * Calculates the daily FP and goods yield of the Blue Galaxy on a given
-     * level, based on the best own buildings from `GalaxyBuildings`.
+     * Display name of an investment target: the translated bonus type plus a
+     * short feature suffix for the guild expedition/battleground variants.
      *
-     * @param {number[]} FPProductions Reward factor per level (chance of a double collection per charge)
-     * @param {number[]} Charges Number of charges per level
-     * @param {number} Level Level to calculate (0-based)
-     * @param {boolean} IsDoubleCollection true for the one-time double collection on level-up: skips the buildings already covered by the previous level
-     * @returns {{FP: number, Goods: number}} Average FP and goods per day
+     * @param {string} key Investment target as "type|targetedFeature"
+     * @returns {string}
      */
-    GetGalaxyProduction: (FPProductions, Charges, Level, IsDoubleCollection) => {
-        let StartIndex = 0;
-        if (IsDoubleCollection && Level > 1) {
-            StartIndex = Charges[Level - 1];
-        }
+    BonusLabel: (key) => {
+        const [type, feature] = key.split('|');
+        let label = GBBonuses.TypeName(type);
 
-        let FPSum = 0,
-            GoodsSum = 0;
-        for (let i = StartIndex; i < StartIndex + Charges[Level]; i++) {
-            if (i >= GreatBuildings.GalaxyBuildings.length) break; // Nicht genug Gebäude vorhanden
+        if (feature === 'guild_expedition') label += ' – ' + i18n('Boxes.GreatBuildings.FeatureGE');
+        else if (feature === 'battleground') label += ' – ' + i18n('Boxes.GreatBuildings.FeatureGBG');
 
-            FPSum += GreatBuildings.GalaxyBuildings[i]['FP'];
-            GoodsSum += GreatBuildings.GalaxyBuildings[i]['Goods'];
-        }
-
-        return { FP: FPProductions[Level] * FPSum, Goods: FPProductions[Level] * GoodsSum};
-    },
-
-
-    /**
-     * Determines the level with the best return on investment for a great
-     * building, starting from the given level.
-     *
-     * @param {number} Level Current level of the great building (-1 = not built yet)
-     * @param {number[]} NettoCosts Net FP costs (owner share after patron rewards) per level
-     * @param {number[]} FPProductions Daily FP production per level
-     * @param {number[]} GoodsProductions Daily goods production per level
-     * @param {number} GoodsValue FP value of one good
-     * @param {number[]} AttackProductions Attack boost per level
-     * @param {number} AttackValue FP value of 1% attack boost
-     * @param {number} BuildDailyCosts Daily opportunity costs of the occupied tiles (size × FP per tile), counted against an unbuilt great building
-     * @param {number} BuildCosts One-time goods costs of a new construction
-     * @param {boolean} DoubleCollection Whether the double collection on level-up is credited against the costs
-     * @param {number[]} [Charges] Blue Galaxy only: charges per level, switches the production lookup to GetGalaxyProduction
-     * @returns {{CurrentLevel: number, BestLevel: (number|undefined), ROIValues: {Costs: number, FP: number, Goods: number, Attack: number, ROI: number}[], GoodsValue: number, AttackValue: number, BuildDailyCosts: number, BuildCosts: number}} The best level and the ROI values of every examined level
-     */
-    GetROIValues: (Level, NettoCosts, FPProductions, GoodsProductions, GoodsValue, AttackProductions, AttackValue, BuildDailyCosts, BuildCosts, DoubleCollection, Charges) => {
-        let Ret = { 'CurrentLevel': Level, 'BestLevel': undefined, ROIValues: [], GoodsValue: GoodsValue, AttackValue: AttackValue, BuildDailyCosts: BuildDailyCosts, BuildCosts: BuildCosts };
-
-        let DoubleCollections = [];
-        if (Charges) {
-
-            for (let i = 0; i < 100; i++) {
-                DoubleCollections[i] = GreatBuildings.GetGalaxyProduction(FPProductions, Charges, Level, true)['FP'];
-                DoubleCollections[i] += GreatBuildings.GetGalaxyProduction(FPProductions, Charges, Level, true)['Goods'] * GoodsValue;
-            }
-        }
-
-        let StartFPProduction = 0,
-            StartGoodsProduction = 0,
-            StartAttackProduction = 0,
-            CurrentInvestment = 0;
-
-        if (Level === -1) {
-            StartFPProduction = BuildDailyCosts;
-            CurrentInvestment = BuildCosts;
-        }
-        else if (Level > 0) {
-            if (Charges) { // Blaue Galaxie
-                StartFPProduction = GreatBuildings.GetGalaxyProduction(FPProductions, Charges, Level - 1, false)['FP'];
-                StartGoodsProduction = GreatBuildings.GetGalaxyProduction(FPProductions, Charges, Level - 1, false)['Goods'];
-            }
-            else {
-                StartFPProduction = FPProductions[Level - 1];
-                StartGoodsProduction = GoodsProductions[Level - 1];
-                StartAttackProduction = AttackProductions[Level - 1];
-            }
-        }
-
-        let BestValue = 999999;
-        for (let i = Math.max(Level, 0); i < NettoCosts.length; i++) {
-            CurrentInvestment += NettoCosts[i];
-            if (DoubleCollection) {
-                if (Charges) { // Blaue Galaxie
-                    CurrentInvestment -= GreatBuildings.GetGalaxyProduction(FPProductions, Charges, i, true)['FP'];
-                    CurrentInvestment -= GreatBuildings.GetGalaxyProduction(FPProductions, Charges, i, true)['Goods'] * GoodsValue;
-                }
-                else {
-                    CurrentInvestment -= FPProductions[i];
-                    CurrentInvestment -= GoodsProductions[i] * GoodsValue;
-                    //Keine Doppelernte bei Angriffsbonus
-                }
-            }
-
-            let CurrentFPProduction,
-                CurrentGoodsProduction,
-                CurrentAttackProduction = 0;
-
-            if (Charges) { // Blaue Galaxie
-                CurrentFPProduction = GreatBuildings.GetGalaxyProduction(FPProductions, Charges, i, false)['FP'];
-                CurrentGoodsProduction = GreatBuildings.GetGalaxyProduction(FPProductions, Charges, i, false)['Goods'];
-            }
-            else {
-                CurrentFPProduction = FPProductions[i];
-                CurrentGoodsProduction = GoodsProductions[i];
-                CurrentAttackProduction = AttackProductions[i];
-            }
-
-            Ret['ROIValues'][i] = { 'Costs': CurrentInvestment, 'FP': CurrentFPProduction - StartFPProduction, 'Goods': CurrentGoodsProduction - StartGoodsProduction, 'Attack': CurrentAttackProduction - StartAttackProduction, 'ROI': CurrentInvestment / ((CurrentFPProduction - StartFPProduction) + (CurrentGoodsProduction - StartGoodsProduction) * GoodsValue + (CurrentAttackProduction - StartAttackProduction) * AttackValue) };
-
-            if (CurrentFPProduction + CurrentGoodsProduction * GoodsValue + CurrentAttackProduction * AttackValue > StartFPProduction + StartGoodsProduction * GoodsValue + StartAttackProduction * AttackValue) {
-                if (Ret['ROIValues'][i]['ROI'] < BestValue) {
-                    Ret['BestLevel'] = i;
-                    BestValue = Ret['ROIValues'][i]['ROI'];
-                }
-            }
-        }
-
-        return Ret;
+        return label;
     },
 
 
@@ -1077,63 +1003,4 @@ let GreatBuildings = {
     },
 
 
-    /**
-     * Processes one page of the town hall event history: sums up the FP of
-     * all not yet counted great building contribution rewards (places 1-5)
-     * into `FPRewards`, which prefills the "rewards per day" setting.
-     *
-     * @param {Object[]} Events Event entries from the town hall event overview
-     */
-    HandleEventPage: (Events) => {
-        for (let i = 0; i < Events.length; i++) {
-            let Event = Events[i];
-            let ID = Event['id'];
-
-            if (GreatBuildings.EventDict[ID]) continue; //Event schon behandelt
-            GreatBuildings.EventDict[ID] = Event;
-
-            if (Event['type'] !== 'great_building_contribution') continue;
-
-            if (!GreatBuildings.GreatBuildingEntityCache) {
-                GreatBuildings.GreatBuildingEntityCache = Object.values(MainParser.CityEntities).filter(obj => (obj['strategy_points_for_upgrade'] !== undefined));
-            }
-
-            let Entity = GreatBuildings.GreatBuildingEntityCache.find(obj => (obj['name'] === Event['great_building_name']))
-            if (!Entity) continue;
-
-            let EraName = GreatBuildings.GetEraName(Entity['asset_id']),
-                Era = Technologies.Eras[EraName],
-                Rank = Event['rank'],
-                Level = Event['level'] - 1,
-                Reward = GreatBuildings.Rewards[Era][Level];
-
-            if (Rank > 5) continue;
-
-            let Maezen = GreatBuildings.GetMaezen(Reward, MainParser.ArkBonus);
-            let FPReward = Maezen[Rank - 1];
-
-            GreatBuildings.FPRewards += FPReward;
-        }
-    },
-
-
-    /**
-     * Shows or hides the detail rows (further levels) of a great building
-     * according to its `DetailsVisible` state.
-     *
-     * @param {number} Index Index of the great building in `GreatBuildingsData`
-     */
-    RefreshDetailsVisible: (Index) => {
-        $('#greatbuildings tr.gbdetailsrow').each(function () {
-            let Data = $(this).data()['value'];
-            if (Data !== Index) return;
-
-            if (GreatBuildings.DetailsVisible[Index]) {
-                $(this).show();
-            }
-            else {
-                $(this).hide();
-            }
-        });
-    },
 };

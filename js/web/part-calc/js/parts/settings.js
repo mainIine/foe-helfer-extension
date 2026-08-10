@@ -17,9 +17,9 @@
 Object.assign(Parts, {
 
 	/**
-	 * Builds the settings dialog of the own part calculator box: custom percent
-	 * buttons plus the display options. In the combined view it delegates to the
-	 * cost calculator settings while its content is shown.
+	 * Builds the settings dialog of the own part calculator box: the percent
+	 * button editor plus the display options. In the combined view it delegates
+	 * to the cost calculator settings while its content is shown.
 	 */
 	ShowCalculatorSettings: ()=> {
 		// combined view: load the other calculators settings if its content is shown
@@ -32,8 +32,6 @@ Object.assign(Parts, {
 		}
 
 		let c = [],
-			buttons,
-			defaults = Parts.DefaultButtons,
 			sB = localStorage.getItem('CustomPartCalcButtons'),
 			allGB = localStorage.getItem('ShowOwnPartOnAllGBs') || 'false',
 			showMedals = localStorage.getItem('OwnPartShowMedals') || 'true',
@@ -41,30 +39,19 @@ Object.assign(Parts, {
 			minView = localStorage.getItem('OwnPartMinView') || 'false',
 			autoOpen = localStorage.getItem('OwnPartAutoOpen'),
 			includeStart = localStorage.getItem('OwnPartIncludeStart') || 'true',
-			nV = `<p class="new-row text-center bbd p5 flex gap"><label>${i18n('Boxes.Calculator.Settings.newValue')}:</label> <input type="number" class="settings-values" style="width:30px"> <span class="btn btn-green btn-slim" onclick="Parts.SettingsInsertNewRow()">+</span></p>`;
-		
-		if(sB) {
-			buttons = JSON.parse(sB);
+			buttons = Calculator.SettingsSanitizeButtons(sB ? JSON.parse(sB) : Parts.DefaultButtons);
 
-			buttons = buttons.filter((item, index) => buttons.indexOf(item) === index); // remove duplicates
-			buttons.sort((a, b) => a - b); // order
-		}
-		else {
-			buttons = defaults;
-		}
+		c.push('<div class="percent-chips bbd">');
+		buttons.forEach(bonus => c.push(Parts.SettingsChip(bonus)));
 
-		c.push('<section class="flex gap p2">');
-		buttons.forEach(bonus => {
-			if(bonus === 'ark') 
-				c.push(`<span class="btn-group"><input type="hidden" class="settings-values" value="ark"> <button class="btn btn-slim br">${MainParser.ArkBonus}%</button></span>`);
-			
-			else 
-				c.push(`<span class="btn-group"><button class="btn btn-slim">${bonus}%</button> <input type="hidden" class="settings-values" value="${bonus}"> <span class="btn btn-delete btn-slim" onclick="Parts.SettingsRemoveRow(this)">x</span></span>`);
-			
-		});
-		c.push('</section>');
+		// ghost chip to bring the arc bonus button back, hidden while it exists
+		c.push(`<span class="percent-chip ghost" title="${i18n('Boxes.Calculator.Settings.AddArk')}" onclick="Parts.SettingsAddArk()"${buttons.includes('ark') ? ' style="display:none"' : ''}>+ ${MainParser.ArkBonus}%</span>`);
 
-		c.push(nV);
+		c.push(`<span class="percent-add">
+			<input type="number" class="percent-add-input" step="0.1" min="0" max="200" placeholder="%" title="${i18n('Boxes.Calculator.Settings.newValue')}" onkeydown="if(event.key==='Enter'){Parts.SettingsAddValue();event.preventDefault();}">
+			<span class="btn btn-green btn-slim" title="${i18n('Boxes.Calculator.Settings.newValue')}" onclick="Parts.SettingsAddValue()">+</span>
+		</span>`);
+		c.push('</div>');
 
 		c.push(`<p class="bbd p5">
 				<input type="checkbox" id="autoOpen" class="autoOpen game-cursor" ${((autoOpen == 'true') ? 'checked' : '')}> <label for="autoOpen">${i18n('Settings.ShowOwnPartAutoOpen.Desc')}</label><br>
@@ -84,24 +71,93 @@ Object.assign(Parts, {
 
 
 	/**
-	 * Appends another "new value" input row to this settings dialog.
+	 * Returns the markup of one percent chip in this settings dialog.
+	 *
+	 * @param {number|string} bonus - Percent value or 'ark' for the arc bonus entry
+	 * @returns {string} Chip HTML
 	 */
-	SettingsInsertNewRow: ()=> {
-		let nV = `<p class="new-row">${i18n('Boxes.Calculator.Settings.newValue')}: <input type="number" class="settings-values" style="width:30px"> <span class="btn btn-green" onclick="Parts.SettingsInsertNewRow()">+</span></p>`;
+	SettingsChip: (bonus)=> {
+		let isArk = (bonus === 'ark');
 
-		// only within the own settings dialog, the cost calculator settings can be open at the same time
-		$(nV).insertAfter( $('#OwnPartBoxSettingsBox .new-row:eq(-1)') );
+		return `<span class="percent-chip${isArk ? ' arc' : ''}"${isArk ? ` title="${i18n('Boxes.Calculator.Settings.ArkInfo')}"` : ''}>
+			<input type="hidden" class="settings-values" value="${bonus}">
+			<span class="chip-value">${isArk ? MainParser.ArkBonus : bonus}%</span>
+			<span class="chip-del" onclick="Parts.SettingsRemoveRow(this)">&times;</span>
+		</span>`;
 	},
 
 
 	/**
-	 * Removes a custom percent button from this settings dialog.
+	 * Inserts a chip into this settings dialog, sorted by its percent value.
+	 *
+	 * @param {number|string} bonus - Percent value or 'ark'
+	 */
+	SettingsInsertChip: (bonus)=> {
+		let $box = $('#OwnPartBoxSettingsBox'),
+			value = (bonus === 'ark' ? MainParser.ArkBonus : bonus),
+			$next = $box.find('.percent-chip').not('.ghost').filter(function(){
+				let v = $(this).find('.settings-values').val();
+				return ((v === 'ark' ? MainParser.ArkBonus : parseFloat(v)) > value);
+			}).first();
+
+		if($next.length){
+			$(Parts.SettingsChip(bonus)).insertBefore($next);
+		}
+		else {
+			$(Parts.SettingsChip(bonus)).insertBefore($box.find('.percent-chip.ghost'));
+		}
+	},
+
+
+	/**
+	 * Adds the value of the input field as a new percent chip.
+	 */
+	SettingsAddValue: ()=> {
+		let $box = $('#OwnPartBoxSettingsBox'),
+			$input = $box.find('.percent-add-input'),
+			v = parseFloat($input.val());
+
+		if(isFinite(v) && v >= 0 && v <= 200){
+			v = Math.round(v * 10) / 10;
+
+			let exists = $box.find('.percent-chip .settings-values').toArray().some(el => parseFloat(el.value) === v);
+			if(!exists){
+				Parts.SettingsInsertChip(v);
+			}
+		}
+
+		$input.val('').trigger('focus');
+	},
+
+
+	/**
+	 * Brings the removed arc bonus chip back and hides the ghost chip again.
+	 */
+	SettingsAddArk: ()=> {
+		let $box = $('#OwnPartBoxSettingsBox');
+
+		$box.find('.percent-chip.ghost').hide();
+		Parts.SettingsInsertChip('ark');
+	},
+
+
+	/**
+	 * Removes a percent chip from this settings dialog. Removing the arc bonus
+	 * chip reveals the ghost chip to bring it back.
 	 *
 	 * @param {HTMLElement} $this - The clicked delete button
 	 */
 	SettingsRemoveRow: ($this)=> {
-		$($this).closest('.btn-group').fadeToggle('fast', function() {
+		let $chip = $($this).closest('.percent-chip'),
+			isArk = ($chip.find('.settings-values').val() === 'ark'),
+			$box = $('#OwnPartBoxSettingsBox');
+
+		$chip.fadeOut('fast', function(){
 			$(this).remove();
+
+			if(isArk){
+				$box.find('.percent-chip.ghost').show();
+			}
 		});
 	},
 
@@ -116,18 +172,27 @@ Object.assign(Parts, {
 		let $settings = $('#OwnPartBoxSettingsBox'),
 			values = [];
 
+		// adopt a typed but not yet added value
+		Parts.SettingsAddValue();
+
 		$settings.find('.settings-values').each(function() {
 			let v = $(this).val().trim();
 
-			if(v) {
-				if(v !== 'ark')
-					values.push( parseFloat(v) );
-				else
-					values.push(v);
+			if(v === 'ark'){
+				values.push(v);
+			}
+			else if(v !== '' && isFinite(parseFloat(v))){
+				values.push( parseFloat(v) );
 			}
 		});
 
-		localStorage.setItem('CustomPartCalcButtons', JSON.stringify(values));
+		if(values.length){
+			localStorage.setItem('CustomPartCalcButtons', JSON.stringify(values));
+		}
+		else {
+			// everything removed: back to the default buttons
+			localStorage.removeItem('CustomPartCalcButtons');
+		}
 
 		let OldCopyFormatPerGB = Parts.CopyFormatPerGB;
 		Parts.CopyFormatPerGB = $settings.find('.copyformatpergb').prop('checked');

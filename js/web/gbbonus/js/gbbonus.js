@@ -200,7 +200,7 @@ let GBBonuses = {
 				maxTier: meta.maxTier?.value || 'copper',
 				level: (placed ? placed.level : null),
 				maxLevel: (placed ? placed.max_level : null),
-				currentBonuses: (placed ? (placed.bonuses || (placed.bonus ? [placed.bonus] : [])) : []),
+				currentBonuses: (placed ? CityBuildings.getGBBonuses(placed) : []),
 			});
 		}
 

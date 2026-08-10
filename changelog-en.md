@@ -1,5 +1,29 @@
 ## Extension Changelog
 
+##### 4.7.2.0
+**Update**
+
+- GB Investment Overview:
+    - Completely new, simpler box: pick your investment target first (FP, goods, supplies, combat boosts and more) — the list only shows GBs really offering it, with real values from the game data and the gain of the next level
+    - Plus your FP share of the next level (adjustable patron bonus) and the new "Harvests" column: how many daily city harvests the level costs
+    - On worlds with the GB update a switch also shows the new tier bonuses; the old rating options are gone
+
+- Merge game (event assistant): each color now shows how much progress is still locked in it — i.e. how many points unlocking all its locked pieces (e.g. with a rainbow/prismatic essence) would earn; the most valuable color is highlighted
+
+- GB Cost Calculator & Own Part Calculator:
+    - The percent buttons are now much easier to manage in the settings: add new values directly via input and Enter, remove each value with a single click — no more stacked input rows
+    - Removing all values brings the default buttons back
+
+**Bugfixes**
+
+- The Arc bonus entry in the calculator settings could not be deleted — players without an Arc saw a mysterious, unremovable "0%" button there; it can now be deleted and re-added at any time
+
+- Bonuses of placed Great Buildings (military, population, contribution boost) were no longer detected on some worlds, because the game already ships an empty new data field — the GB Cost Calculator therefore showed profits without the contribution boost (often wrongly negative)
+
+- After the game's GB update, the Own Part Calculator and Power Leveling browse future levels with the correct level costs again — exact across all prestige tiers (copper/silver/gold)
+
+---
+
 ##### 4.7.1.0
 **New**
 

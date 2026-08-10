@@ -30,6 +30,14 @@
     overflow-y: auto;
 }
 
+/* progress still locked per color (essence value) in the table header */
+#mergerGameDialog th.lockedProgress {
+    white-space: nowrap;
+}
+#mergerGameDialog th.lockedProgress.best {
+    color: var(--success);
+}
+
 #mergerGameResetBlocker {
     width: 60px;
     height: 56px;

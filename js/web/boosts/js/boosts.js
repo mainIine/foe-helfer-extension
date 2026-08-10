@@ -135,9 +135,10 @@ let Boosts = {
     InitLB: async (LBs) => {
 
         // supports both the classic single `bonus` field and the `bonuses`
-        // array of the multi-tier rework (production bonuses are no boosts)
+        // array of the multi-tier rework (production bonuses are no boosts);
+        // classic worlds carry `bonuses` as an empty array next to the filled field
         let boosts=LBs.filter(x=>x.player_id == ExtPlayerID).flatMap(x=>
-            (x.bonuses || (x.bonus ? [x.bonus] : []))
+            (x.bonuses?.length ? x.bonuses : (x.bonus ? [x.bonus] : []))
                 .filter(b=>b?.type && b.bonusCategory?.value !== 'productionBonus')
                 .map(b=>({
                     entityId: x.entityId||x.id,
