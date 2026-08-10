@@ -309,6 +309,75 @@ a[target="_blank"] svg {
 	border-right-width: 1px;
 }
 
+/* percent button editor in the calculator settings */
+.percent-chips {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 4px;
+	justify-content: center;
+	align-items: center;
+	padding: 8px 6px;
+}
+
+.percent-chip {
+	display: inline-flex;
+	align-items: stretch;
+	border-radius: 3px;
+	overflow: hidden;
+	font-size: 9pt;
+	color: var(--white);
+	background: var(--btn-bg);
+	box-shadow: inset 0 0 0 1px var(--black-30);
+	text-shadow: 0 1px 1px var(--black-50);
+}
+
+.percent-chip .chip-value {
+	padding: 2px 6px 3px;
+}
+
+.percent-chip.arc .chip-value {
+	background: var(--btn-bg-active);
+}
+
+.percent-chip .chip-del {
+	display: inline-flex;
+	align-items: center;
+	padding: 2px 5px 3px;
+	background: var(--btn-bg-red);
+	border-left: 1px solid var(--black-30);
+	cursor: url('../images/cursor_hover.cur'), pointer;
+}
+
+.percent-chip .chip-del:hover {
+	background: var(--btn-bg-red-active);
+}
+
+.percent-chip.ghost {
+	background: none;
+	box-shadow: none;
+	border: 1px dashed var(--white-65);
+	color: var(--white-65);
+	padding: 1px 6px 2px;
+	cursor: url('../images/cursor_hover.cur'), pointer;
+}
+
+.percent-chip.ghost:hover {
+	border-color: var(--white);
+	color: var(--white);
+}
+
+.percent-add {
+	display: inline-flex;
+	align-items: center;
+	gap: 3px;
+	margin-left: 4px;
+}
+
+.percent-add input.percent-add-input {
+	width: 44px;
+	text-align: center;
+}
+
 .info-tip {
 	background-color: var(--table-bb-info);
 	color: var(--white);

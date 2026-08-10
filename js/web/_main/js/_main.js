@@ -883,14 +883,6 @@ GetFights = () =>{
 	//--------------------------------------------------------------------------------------------------
 
 
-	// Greatbuildings: LG Belohnungen von Arche in Events zählen
-	FoEproxy.addHandler('OtherPlayerService', 'getEventsPaginated', (data, postData) => {
-		if (data.responseData['events']) {
-			GreatBuildings.HandleEventPage(data.responseData['events']);
-		}
-	});
-
-
 	FoEproxy.addHandler('TimeService', 'updateTime', async (data, postData) => {
 		GameTime.set(data.responseData.time);
 		if (MainMenuLoaded) return;
@@ -1732,9 +1724,10 @@ let MainParser = {
 		let ArkBonus = 0;
 
 		for (let i of Object.values(MainParser.CityMapData)) {
-			// classic single `bonus` field or `bonuses` array of the multi-tier rework
-			for (const bonus of (i?.bonuses || (i?.bonus ? [i.bonus] : []))) {
-				if (bonus.type === "contribution_boost") ArkBonus += bonus.value;
+			// classic single `bonus` field or non-empty `bonuses` array of the multi-tier rework;
+			// a single value-less entry must not turn the sum into NaN (updateArkBonus drops NaN silently)
+			for (const bonus of (i?.bonuses?.length ? i.bonuses : (i?.bonus ? [i.bonus] : []))) {
+				if (bonus?.type === "contribution_boost") ArkBonus += (parseFloat(bonus.value) || 0);
 			}
 		}
 

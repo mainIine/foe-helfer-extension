@@ -15,13 +15,15 @@ let CityBuildings = {
 
 	/**
 	 * Returns the bonuses of a placed great building. Supports both the classic
-	 * single `bonus` field and the `bonuses` array of the multi-tier rework.
+	 * single `bonus` field and the `bonuses` array of the multi-tier rework —
+	 * worlds without the rework already carry `bonuses` as an EMPTY array next
+	 * to the filled classic field, so only a non-empty array counts.
 	 *
 	 * @param {Object} data - The placed building entity.
 	 * @returns {Object[]} The bonus list, empty for buildings without bonuses.
 	 */
 	getGBBonuses(data) {
-		return data.bonuses || (data.bonus ? [data.bonus] : []);
+		return (data.bonuses?.length ? data.bonuses : (data.bonus ? [data.bonus] : []));
 	},
 
 

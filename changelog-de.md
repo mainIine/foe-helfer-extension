@@ -1,5 +1,30 @@
 ## Extension Changelog
 
+##### 4.7.2.0
+**Update**
+
+- LG Investitionen:
+    - Komplett neue, einfachere Box: zuerst das Investitionsziel wählen (FP, Güter, Vorräte, Kampf-Boni u. v. m.) — die Liste zeigt nur LG, die das wirklich bieten, mit echten Werten aus den Spieldaten und dem Zuwachs der nächsten Stufe
+    - Dazu der FP-Eigenanteil der nächsten Stufe (einstellbarer Mäzen-Bonus) und die neue Spalte „Ernten": wie viele Tages-Ernten deiner Stadt die Stufe kostet
+    - Auf Welten mit dem LG-Update zeigt ein Schalter zusätzlich die neuen Stufen-Boni; die alten Bewertungs-Optionen entfallen
+
+- Merge-Game (Event-Helfer): 
+    - Jede Farbe zeigt jetzt, wie viel Fortschritt in ihr noch gesperrt ist — also wie viele Punkte das Freischalten aller gesperrten Teile (z. B. per Essenz) bringen würde; die wertvollste Farbe wird hervorgehoben
+
+- Kostenrechner & Eigenanteilsrechner:
+    - Die Prozent-Buttons lassen sich in den Einstellungen jetzt bequemer verwalten: neue Werte per Eingabe und Enter direkt hinzufügen, jeder Wert einzeln per Klick entfernen — ohne gestapelte Eingabezeilen
+    - Werden alle Werte entfernt, kommen die Standard-Buttons zurück
+
+**Bugfixes**
+
+- Der Arche-Bonus-Eintrag in den Rechner-Einstellungen ließ sich nicht löschen — bei Spielern ohne Arche stand dort ein rätselhafter, nicht entfernbarer „0%"-Button; jetzt ist er löschbar und kann jederzeit wieder hinzugefügt werden
+
+- Boni platzierter legendärer Bauwerke (Militär, Bevölkerung, Mäzen-Bonus) wurden auf manchen Welten nicht mehr erkannt, weil das Spiel bereits ein leeres neues Datenfeld mitliefert — der Kostenrechner zeigte dadurch Gewinne ohne Mäzen-Bonus (oft fälschlich negativ)
+
+- Nach dem LG-Update des Spiels rechnen Eigenanteilsrechner und Powerleveling beim Blättern durch künftige Level mit den richtigen Levelkosten — exakt über alle Prestige-Stufen (Kupfer/Silber/Gold)
+
+---
+
 ##### 4.7.1.0
 **Neu**
 
