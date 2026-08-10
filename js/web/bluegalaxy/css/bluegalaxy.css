@@ -16,7 +16,7 @@
 #bluegalaxy {
     top: 30%;
     right: 15%;
-    width: 450px;
+    width: 490px;
     height: 500px;
 }
 
@@ -99,6 +99,10 @@
 
 #bluegalaxy table th.icon.old_goods span::before  {
     background-position: -524px 3px;
+}
+
+#bluegalaxy table th.icon.next_goods span::before  {
+    background-position: -838px 3px;
 }
 
 #bluegalaxy table th.icon.fragments span  {

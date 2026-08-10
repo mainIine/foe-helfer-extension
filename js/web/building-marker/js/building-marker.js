@@ -487,7 +487,9 @@ let BuildingMarker = {
 	 *
 	 * Entity markers are re-read every frame, so the arrow follows a building
 	 * that gets moved and disappears when it is sold. Plain grid markers get
-	 * a one tile footprint centered on their position.
+	 * a one tile footprint centered on their position. The game omits
+	 * zero-valued coordinates in its payload, so a missing x/y means 0
+	 * (buildings on the two map edges next to the grid origin).
 	 *
 	 * @param {object} marker Marker definition ({entityId} or {x, y})
 	 * @returns {{x: number, y: number, width: number, length: number}|null} Grid footprint
@@ -503,7 +505,7 @@ let BuildingMarker = {
 
 		const entity = MainParser.CityMapData ? MainParser.CityMapData[marker.entityId] : null;
 
-		if (!entity || entity.x === undefined) {
+		if (!entity) {
 			return null;
 		}
 
@@ -516,7 +518,7 @@ let BuildingMarker = {
 			length = size.ysize || 1;
 		}
 
-		return { x: entity.x, y: entity.y, width: width, length: length };
+		return { x: entity.x || 0, y: entity.y || 0, width: width, length: length };
 	},
 
 
@@ -772,10 +774,6 @@ let BuildingMarker = {
 					if (footprint) {
 						const point = scene.isoToScreen(footprint.x + footprint.width / 2, footprint.y + footprint.length / 2);
 						position = { x: point.x, y: point.y, scale: Math.max(0.5, scene._zoomFactor || 1) };
-					}
-					else if (!marker.projectionWarned) {
-						marker.projectionWarned = true;
-						console.warn('[BuildingMarker] No grid position for marker (entity without x/y?)', marker, MainParser.CityMapData[marker.entityId]);
 					}
 				}
 			} catch (e) {

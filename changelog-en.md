@@ -12,6 +12,10 @@
 - GB Cost Calculator:
     - New piggy bank column shows the extra FP granted by your contribution boost, just like in the game; the icon matches the building's tier (copper/silver/gold) and the column can be hidden in the settings
 
+- Blue Galaxy:
+    - New sortable column for goods from the next age (icon with the green arrow); with its own adjustable rating that feeds into the default sorting — if you don't need it, hide it in the settings
+    - Productions like “random good of the next age” or goods chests are now counted as well — such buildings previously did not always show up in the list at all
+
 - Negotiation Helper:
     - Deviating from the suggestion no longer ends with ‘Wrong goods selected’ — the helper understands every move and keeps calculating exactly
     - More than 5 rounds (e.g. extra turns from the tavern) are now fully supported instead of capped; even after the planned rounds are used up, the helper keeps suggesting the most likely assignment for extra turns
@@ -35,6 +39,8 @@
 
 - Blue Galaxy:
     - A manually opened box no longer closes itself while collecting — only an automatically opened box still closes once all double collections are used up
+
+- Building Marker: The golden arrows now also appear for buildings right at the map edge
 
 ---
 

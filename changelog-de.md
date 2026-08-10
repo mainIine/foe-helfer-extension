@@ -13,8 +13,12 @@
 - Kostenrechner:
     - Neue Sparschwein-Spalte zeigt wie im Spiel die zusätzlichen FP durch den eigenen Mäzen-Bonus; das Icon entspricht der Stufe des Bauwerks (Kupfer/Silber/Gold), die Spalte lässt sich in den Einstellungen ausblenden
 
+- Blaue Galaxie:
+    - Neue sortierbare Spalte für Güter aus dem nächsten Zeitalter (Icon mit grünem Pfeil); mit eigener einstellbarer Bewertung, die in die Standard-Sortierung einfließt — wer sie nicht braucht, blendet sie in den Einstellungen aus
+    - Produktionen wie „zufälliges Gut des nächsten Zeitalters" oder Güter-Truhen werden jetzt mitgezählt — solche Gebäude tauchten bisher teils gar nicht in der Liste auf
+
 - Verhandlungshelfer:
-    - Wer vom Vorschlag abweicht, wird nicht mehr mit „Falsche Güter gewählt“ abgehängt — der Helfer versteht jeden Zug und rechnet exakt weiter
+    - Wer vom Vorschlag abweicht, wird nicht mehr mit „Falsche Güter gewählt“ abgehängt — der Helfer versteht jeden Zug und rechnet exakt weiter (Echtzeit)
     - Mehr als 5 Runden werden jetzt voll unterstützt statt gedeckelt; auch nach verbrauchten Runden schlägt der Helfer bei Zusatzzügen weiter die wahrscheinlichste Belegung vor
     - Verhandlungen mit mehr als 10 Gütern funktionieren jetzt ebenfalls (bisher Fehlermeldung)
     - In einigen Endspielen spielt der neue Verhandlungshelfer nachweislich besser als vorher; die angezeigte Gewinnchance entspricht immer der tatsächlich gespielten Strategie
@@ -35,6 +39,8 @@
 
 - Blaue Galaxie:
     - Die manuell geöffnete Box schließt sich nicht mehr von selbst beim Einsammeln — nur die automatisch geöffnete Box schließt sich weiterhin, wenn alle Doppel-Einsammlungen verbraucht sind
+
+- Gebäude-Markierung: Die goldenen Pfeile erscheinen jetzt auch bei Gebäuden direkt am Kartenrand
 
 ---
 
